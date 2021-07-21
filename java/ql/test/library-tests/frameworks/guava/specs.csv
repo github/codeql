@@ -24,34 +24,36 @@ com.google.common.collect;Multimap;true;replaceValues;(Object,Iterable);;Argumen
 com.google.common.collect;Multimap;true;replaceValues;(Object,Iterable);;Element of Argument[1];MapValue of Argument[-1];value
 com.google.common.collect;ImmutableMultimap;true;inverse;();;MapKey of Argument[-1];MapValue of ReturnValue;value
 com.google.common.collect;ImmutableMultimap;true;inverse;();;MapValue of Argument[-1];MapKey of ReturnValue;value
-com.google.common.collect;Table$Cell;true;getRowKey;();;SyntheticField[com.google.common.collect.Table.rowKey] of MapKey of Argument[-1];ReturnValue;value
-com.google.common.collect;Table$Cell;true;getColumnKey;();;SyntheticField[com.google.common.collect.Table.columnKey] of MapKey of Argument[-1];ReturnValue;value
+com.google.common.collect;Table$Cell;true;getRowKey;();;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[-1];ReturnValue;value
+com.google.common.collect;Table$Cell;true;getColumnKey;();;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[-1];ReturnValue;value
 com.google.common.collect;Table$Cell;true;getValue;();;MapValue of Argument[-1];ReturnValue;value
-com.google.common.collect;Table;true;cellSet;();;MapKey of Argument[-1];MapKey of Element of ReturnValue;value
+com.google.common.collect;Table;true;cellSet;();;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[-1];SyntheticField[com.google.common.collect.Table.rowKey] of Element of ReturnValue;value
+com.google.common.collect;Table;true;cellSet;();;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[-1];SyntheticField[com.google.common.collect.Table.columnKey] of Element of ReturnValue;value
 com.google.common.collect;Table;true;cellSet;();;MapValue of Argument[-1];MapValue of Element of ReturnValue;value
-com.google.common.collect;Table;true;row;(Object);;SyntheticField[com.google.common.collect.Table.columnKey] of MapKey of Argument[-1];MapKey of ReturnValue;value
+com.google.common.collect;Table;true;row;(Object);;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[-1];MapKey of ReturnValue;value
 com.google.common.collect;Table;true;row;(Object);;MapValue of Argument[-1];MapValue of ReturnValue;value
-com.google.common.collect;Table;true;rowKeySet;();;SyntheticField[com.google.common.collect.Table.rowKey] of MapKey of Argument[-1];Element of ReturnValue;value
-com.google.common.collect;Table;true;rowMap;();;SyntheticField[com.google.common.collect.Table.rowKey] of MapKey of Argument[-1];MapKey of ReturnValue;value
-com.google.common.collect;Table;true;rowMap;();;SyntheticField[com.google.common.collect.Table.columnKey] of MapKey of Argument[-1];MapKey of MapValue of ReturnValue;value
+com.google.common.collect;Table;true;rowKeySet;();;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[-1];Element of ReturnValue;value
+com.google.common.collect;Table;true;rowMap;();;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[-1];MapKey of ReturnValue;value
+com.google.common.collect;Table;true;rowMap;();;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[-1];MapKey of MapValue of ReturnValue;value
 com.google.common.collect;Table;true;rowMap;();;MapValue of Argument[-1];MapValue of MapValue of ReturnValue;value
-com.google.common.collect;Table;true;column;(Object);;SyntheticField[com.google.common.collect.Table.rowKey] of MapKey of Argument[-1];MapKey of ReturnValue;value
+com.google.common.collect;Table;true;column;(Object);;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[-1];MapKey of ReturnValue;value
 com.google.common.collect;Table;true;column;(Object);;MapValue of Argument[-1];MapValue of ReturnValue;value
-com.google.common.collect;Table;true;columnKeySet;();;SyntheticField[com.google.common.collect.Table.columnKey] of MapKey of Argument[-1];Element of ReturnValue;value
-com.google.common.collect;Table;true;columnMap;();;SyntheticField[com.google.common.collect.Table.columnKey] of MapKey of Argument[-1];MapKey of ReturnValue;value
-com.google.common.collect;Table;true;columnMap;();;SyntheticField[com.google.common.collect.Table.rowKey] of MapKey of Argument[-1];MapKey of MapValue of ReturnValue;value
+com.google.common.collect;Table;true;columnKeySet;();;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[-1];Element of ReturnValue;value
+com.google.common.collect;Table;true;columnMap;();;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[-1];MapKey of ReturnValue;value
+com.google.common.collect;Table;true;columnMap;();;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[-1];MapKey of MapValue of ReturnValue;value
 com.google.common.collect;Table;true;columnMap;();;MapValue of Argument[-1];MapValue of MapValue of ReturnValue;value
 com.google.common.collect;Table;true;values;();;MapValue of Argument[-1];Element of ReturnValue;value
 com.google.common.collect;Table;true;get;(Object,Object);;MapValue of Argument[-1];ReturnValue;value
 com.google.common.collect;Table;true;remove;(Object,Object);;MapValue of Argument[-1];ReturnValue;value
-com.google.common.collect;Table;true;put;(Object,Object,Object);;Argument[0];SyntheticField[com.google.common.collect.Table.rowKey] of MapKey of Argument[-1];value
-com.google.common.collect;Table;true;put;(Object,Object,Object);;Argument[1];SyntheticField[com.google.common.collect.Table.columnKey] of MapKey of Argument[-1];value
+com.google.common.collect;Table;true;put;(Object,Object,Object);;Argument[0];SyntheticField[com.google.common.collect.Table.rowKey] of Argument[-1];value
+com.google.common.collect;Table;true;put;(Object,Object,Object);;Argument[1];SyntheticField[com.google.common.collect.Table.columnKey] of Argument[-1];value
 com.google.common.collect;Table;true;put;(Object,Object,Object);;Argument[2];MapValue of Argument[-1];value
-com.google.common.collect;Table;true;putAll;(Table);;MapKey of Argument[0];MapKey of Argument[-1];value
+com.google.common.collect;Table;true;putAll;(Table);;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[0];SyntheticField[com.google.common.collect.Table.rowKey] of Argument[-1];value
+com.google.common.collect;Table;true;putAll;(Table);;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[0];SyntheticField[com.google.common.collect.Table.columnKey] of Argument[-1];value
 com.google.common.collect;Table;true;putAll;(Table);;MapValue of Argument[0];MapValue of Argument[-1];value
 com.google.common.collect;ImmutableCollection;true;asList;();;Element of Argument[-1];Element of ReturnValue;value
 com.google.common.collect;ImmutableList;true;reverse;();;Element of Argument[-1];Element of ReturnValue;value
-com.google.common.collect;ImmutableCollection;true;subList;(int,int);;Element of Argument[-1];Element of ReturnValue;value
+com.google.common.collect;ImmutableList;true;subList;(int,int);;Element of Argument[-1];Element of ReturnValue;value
 com.google.common.collect;BiMap;true;forcePut;(Object,Object);;Argument[0];MapKey of Argument[-1];value
 com.google.common.collect;BiMap;true;forcePut;(Object,Object);;Argument[1];MapValue of Argument[-1];value
 com.google.common.collect;BiMap;true;inverse;();;MapKey of Argument[-1];MapValue of ReturnValue;value
@@ -99,27 +101,33 @@ com.google.common.collect;ImmutableMultimap$Builder;true;putAll;(Object,Iterable
 com.google.common.collect;ImmutableMultimap$Builder;true;putAll;(Object,Iterable);;Element of Argument[1];MapValue of Argument[-1];value
 com.google.common.collect;ImmutableMultimap$Builder;true;putAll;(Object,Iterable);;Argument[0];MapKey of Argument[-1];value
 com.google.common.collect;ImmutableMultimap$Builder;true;putAll;(Object,Object[]);;ArrayElement of Argument[1];MapValue of Argument[-1];value
-com.google.common.collect;ImmutableTable$Builder;true;build;();;SyntheticField[com.google.common.collect.Table.rowKey] of MapKey of Argument[-1];SyntheticField[com.google.common.collect.Table.rowKey] of MapKey of ReturnValue;value
-com.google.common.collect;ImmutableTable$Builder;true;build;();;SyntheticField[com.google.common.collect.Table.columnKey] of MapKey of Argument[-1];SyntheticField[com.google.common.collect.Table.columnKey] of MapKey of ReturnValue;value
+com.google.common.collect;ImmutableTable$Builder;true;build;();;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[-1];SyntheticField[com.google.common.collect.Table.rowKey] of ReturnValue;value
+com.google.common.collect;ImmutableTable$Builder;true;build;();;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[-1];SyntheticField[com.google.common.collect.Table.columnKey] of ReturnValue;value
 com.google.common.collect;ImmutableTable$Builder;true;build;();;MapValue of Argument[-1];MapValue of ReturnValue;value
 com.google.common.collect;ImmutableTable$Builder;true;orderRowsBy;(Comparator);;Argument[-1];ReturnValue;value
 com.google.common.collect;ImmutableTable$Builder;true;orderColumnsBy;(Comparator);;Argument[-1];ReturnValue;value
 com.google.common.collect;ImmutableTable$Builder;true;put;(Object,Object,Object);;Argument[-1];ReturnValue;value
 com.google.common.collect;ImmutableTable$Builder;true;put;(Cell);;Argument[-1];ReturnValue;value
 com.google.common.collect;ImmutableTable$Builder;true;putAll;(Table);;Argument[-1];ReturnValue;value
-com.google.common.collect;ImmutableTable$Builder;true;put;(Object,Object,Object);;Argument[0];SyntheticField[com.google.common.collect.Table.rowKey] of MapKey of Argument[-1];value
-com.google.common.collect;ImmutableTable$Builder;true;put;(Object,Object,Object);;Argument[1];SyntheticField[com.google.common.collect.Table.columnKey] of MapKey of Argument[-1];value
+com.google.common.collect;ImmutableTable$Builder;true;put;(Object,Object,Object);;Argument[0];SyntheticField[com.google.common.collect.Table.rowKey] of Argument[-1];value
+com.google.common.collect;ImmutableTable$Builder;true;put;(Object,Object,Object);;Argument[1];SyntheticField[com.google.common.collect.Table.columnKey] of Argument[-1];value
 com.google.common.collect;ImmutableTable$Builder;true;put;(Object,Object,Object);;Argument[2];MapValue of Argument[-1];value
-com.google.common.collect;ImmutableTable$Builder;true;put;(Cell);;MapKey of Argument[0];MapKey of Argument[-1];value
+com.google.common.collect;ImmutableTable$Builder;true;put;(Cell);;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[0];SyntheticField[com.google.common.collect.Table.rowKey] of Argument[-1];value
+com.google.common.collect;ImmutableTable$Builder;true;put;(Cell);;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[0];SyntheticField[com.google.common.collect.Table.columnKey] of Argument[-1];value
 com.google.common.collect;ImmutableTable$Builder;true;put;(Cell);;MapValue of Argument[0];MapValue of Argument[-1];value
-com.google.common.collect;ImmutableTable$Builder;true;putAll;(Table);;MapKey of Argument[0];MapKey of Argument[-1];value
+com.google.common.collect;ImmutableTable$Builder;true;putAll;(Table);;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[0];SyntheticField[com.google.common.collect.Table.rowKey] of Argument[-1];value
+com.google.common.collect;ImmutableTable$Builder;true;putAll;(Table);;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[0];SyntheticField[com.google.common.collect.Table.columnKey] of Argument[-1];value
 com.google.common.collect;ImmutableTable$Builder;true;putAll;(Table);;MapValue of Argument[0];MapValue of Argument[-1];value
 com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value
 com.google.common.collect;ImmutableList;true;of;;;ArrayElement of Argument[12];Element of ReturnValue;value
 com.google.common.collect;ImmutableSet;true;of;;;Argument[0..5];Element of ReturnValue;value
 com.google.common.collect;ImmutableSet;true;of;;;ArrayElement of Argument[6];Element of ReturnValue;value
+com.google.common.collect;ImmutableSortedSet;true;of;;;Argument[0..5];Element of ReturnValue;value
+com.google.common.collect;ImmutableSortedSet;true;of;;;ArrayElement of Argument[6];Element of ReturnValue;value
 com.google.common.collect;ImmutableMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value
 com.google.common.collect;ImmutableMultiset;true;of;;;Element of Argument[6];Element of ReturnValue;value
+com.google.common.collect;ImmutableSortedMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value
+com.google.common.collect;ImmutableSortedMultiset;true;of;;;Element of Argument[6];Element of ReturnValue;value
 com.google.common.collect;ImmutableMap;true;of;;;Argument[0];MapKey of ReturnValue;value
 com.google.common.collect;ImmutableMap;true;of;;;Argument[1];MapValue of ReturnValue;value
 com.google.common.collect;ImmutableMap;true;of;;;Argument[2];MapKey of ReturnValue;value
@@ -132,6 +140,16 @@ com.google.common.collect;ImmutableMap;true;of;;;Argument[8];MapKey of ReturnVal
 com.google.common.collect;ImmutableMap;true;of;;;Argument[9];MapValue of ReturnValue;value
 com.google.common.collect;ImmutableMap;true;of;;;Argument[10];MapKey of ReturnValue;value
 com.google.common.collect;ImmutableMap;true;of;;;Argument[11];MapValue of ReturnValue;value
+com.google.common.collect;ImmutableSortedMap;true;of;;;Argument[0];MapKey of ReturnValue;value
+com.google.common.collect;ImmutableSortedMap;true;of;;;Argument[1];MapValue of ReturnValue;value
+com.google.common.collect;ImmutableSortedMap;true;of;;;Argument[2];MapKey of ReturnValue;value
+com.google.common.collect;ImmutableSortedMap;true;of;;;Argument[3];MapValue of ReturnValue;value
+com.google.common.collect;ImmutableSortedMap;true;of;;;Argument[4];MapKey of ReturnValue;value
+com.google.common.collect;ImmutableSortedMap;true;of;;;Argument[5];MapValue of ReturnValue;value
+com.google.common.collect;ImmutableSortedMap;true;of;;;Argument[6];MapKey of ReturnValue;value
+com.google.common.collect;ImmutableSortedMap;true;of;;;Argument[7];MapValue of ReturnValue;value
+com.google.common.collect;ImmutableSortedMap;true;of;;;Argument[8];MapKey of ReturnValue;value
+com.google.common.collect;ImmutableSortedMap;true;of;;;Argument[9];MapValue of ReturnValue;value
 com.google.common.collect;ImmutableMultimap;true;of;;;Argument[0];MapKey of ReturnValue;value
 com.google.common.collect;ImmutableMultimap;true;of;;;Argument[1];MapValue of ReturnValue;value
 com.google.common.collect;ImmutableMultimap;true;of;;;Argument[2];MapKey of ReturnValue;value
@@ -144,8 +162,8 @@ com.google.common.collect;ImmutableMultimap;true;of;;;Argument[8];MapKey of Retu
 com.google.common.collect;ImmutableMultimap;true;of;;;Argument[9];MapValue of ReturnValue;value
 com.google.common.collect;ImmutableClassToInstanceMap;true;of;(Class,Object);;Argument[0];MapKey of ReturnValue;value
 com.google.common.collect;ImmutableClassToInstanceMap;true;of;(Class,Object);;Argument[1];MapValue of ReturnValue;value
-com.google.common.collect;ImmutableTable;true;of;(Object,Object,Object);;Argument[0];SyntheticField[com.google.common.collect.Table.rowKey] of MapKey of ReturnValue;value
-com.google.common.collect;ImmutableTable;true;of;(Object,Object,Object);;Argument[1];SyntheticField[com.google.common.collect.Table.columnKey] of MapKey of ReturnValue;value
+com.google.common.collect;ImmutableTable;true;of;(Object,Object,Object);;Argument[0];SyntheticField[com.google.common.collect.Table.rowKey] of ReturnValue;value
+com.google.common.collect;ImmutableTable;true;of;(Object,Object,Object);;Argument[1];SyntheticField[com.google.common.collect.Table.columnKey] of ReturnValue;value
 com.google.common.collect;ImmutableTable;true;of;(Object,Object,Object);;Argument[2];MapValue of ReturnValue;value
 com.google.common.collect;ImmutableList;true;copyOf;(Object[]);;ArrayElement of Argument[0];Element of ReturnValue;value
 com.google.common.collect;ImmutableList;true;copyOf;(Iterable);;Element of Argument[0];Element of ReturnValue;value
@@ -157,6 +175,10 @@ com.google.common.collect;ImmutableSet;true;copyOf;(Object[]);;ArrayElement of A
 com.google.common.collect;ImmutableSet;true;copyOf;(Iterable);;Element of Argument[0];Element of ReturnValue;value
 com.google.common.collect;ImmutableSet;true;copyOf;(Iterator);;Element of Argument[0];Element of ReturnValue;value
 com.google.common.collect;ImmutableSet;true;copyOf;(Collection);;Element of Argument[0];Element of ReturnValue;value
+com.google.common.collect;ImmutableSortedSet;true;copyOf;(Comparable[]);;ArrayElement of Argument[0];Element of ReturnValue;value
+com.google.common.collect;ImmutableSortedSet;true;copyOf;(Iterable);;Element of Argument[0];Element of ReturnValue;value
+com.google.common.collect;ImmutableSortedSet;true;copyOf;(Iterator);;Element of Argument[0];Element of ReturnValue;value
+com.google.common.collect;ImmutableSortedSet;true;copyOf;(Collection);;Element of Argument[0];Element of ReturnValue;value
 com.google.common.collect;ImmutableSortedSet;true;copyOf;(Comparator,Iterable);;Element of Argument[1];Element of ReturnValue;value
 com.google.common.collect;ImmutableSortedSet;true;copyOf;(Comparator,Iterator);;Element of Argument[1];Element of ReturnValue;value
 com.google.common.collect;ImmutableSortedSet;true;copyOf;(Comparator,Collection);;Element of Argument[1];Element of ReturnValue;value
@@ -164,6 +186,9 @@ com.google.common.collect;ImmutableSortedSet;true;copyOfSorted;(SortedSet);;Elem
 com.google.common.collect;ImmutableMultiset;true;copyOf;(Object[]);;ArrayElement of Argument[0];Element of ReturnValue;value
 com.google.common.collect;ImmutableMultiset;true;copyOf;(Iterable);;Element of Argument[0];Element of ReturnValue;value
 com.google.common.collect;ImmutableMultiset;true;copyOf;(Iterator);;Element of Argument[0];Element of ReturnValue;value
+com.google.common.collect;ImmutableSortedMultiset;true;copyOf;(Comparable[]);;ArrayElement of Argument[0];Element of ReturnValue;value
+com.google.common.collect;ImmutableSortedMultiset;true;copyOf;(Iterable);;Element of Argument[0];Element of ReturnValue;value
+com.google.common.collect;ImmutableSortedMultiset;true;copyOf;(Iterator);;Element of Argument[0];Element of ReturnValue;value
 com.google.common.collect;ImmutableSortedMultiset;true;copyOf;(Comparator,Iterable);;Element of Argument[1];Element of ReturnValue;value
 com.google.common.collect;ImmutableSortedMultiset;true;copyOf;(Comparator,Iterator);;Element of Argument[1];Element of ReturnValue;value
 com.google.common.collect;ImmutableSortedMultiset;true;copyOfSorted;(SortedMultiset);;Element of Argument[0];Element of ReturnValue;value
@@ -171,17 +196,24 @@ com.google.common.collect;ImmutableMap;true;copyOf;(Map);;MapKey of Argument[0];
 com.google.common.collect;ImmutableMap;true;copyOf;(Map);;MapValue of Argument[0];MapValue of ReturnValue;value
 com.google.common.collect;ImmutableMap;true;copyOf;(Iterable);;MapKey of Element of Argument[0];MapKey of ReturnValue;value
 com.google.common.collect;ImmutableMap;true;copyOf;(Iterable);;MapValue of Element of Argument[0];MapValue of ReturnValue;value
+com.google.common.collect;ImmutableSortedMap;true;copyOf;(Map);;MapKey of Argument[0];MapKey of ReturnValue;value
+com.google.common.collect;ImmutableSortedMap;true;copyOf;(Map);;MapValue of Argument[0];MapValue of ReturnValue;value
+com.google.common.collect;ImmutableSortedMap;true;copyOf;(Iterable);;MapKey of Element of Argument[0];MapKey of ReturnValue;value
+com.google.common.collect;ImmutableSortedMap;true;copyOf;(Iterable);;MapValue of Element of Argument[0];MapValue of ReturnValue;value
 com.google.common.collect;ImmutableSortedMap;true;copyOfSorted;(SortedMap);;MapKey of Argument[0];MapKey of ReturnValue;value
 com.google.common.collect;ImmutableSortedMap;true;copyOfSorted;(SortedMap);;MapValue of Argument[0];MapValue of ReturnValue;value
 com.google.common.collect;ImmutableSortedMap;true;copyOf;(Map,Comparator);;MapKey of Argument[0];MapKey of ReturnValue;value
 com.google.common.collect;ImmutableSortedMap;true;copyOf;(Map,Comparator);;MapValue of Argument[0];MapValue of ReturnValue;value
+com.google.common.collect;ImmutableSortedMap;true;copyOf;(Iterable,Comparator);;MapKey of Element of Argument[0];MapKey of ReturnValue;value
+com.google.common.collect;ImmutableSortedMap;true;copyOf;(Iterable,Comparator);;MapValue of Element of Argument[0];MapValue of ReturnValue;value
 com.google.common.collect;ImmutableMultimap;true;copyOf;(Multimap);;MapKey of Argument[0];MapKey of ReturnValue;value
 com.google.common.collect;ImmutableMultimap;true;copyOf;(Multimap);;MapValue of Argument[0];MapValue of ReturnValue;value
 com.google.common.collect;ImmutableMultimap;true;copyOf;(Iterable);;MapKey of Element of Argument[0];MapKey of ReturnValue;value
 com.google.common.collect;ImmutableMultimap;true;copyOf;(Iterable);;MapValue of Element of Argument[0];MapValue of ReturnValue;value
 com.google.common.collect;ImmutableClassToInstanceMap;true;copyOf;(Map);;MapKey of Argument[0];MapKey of ReturnValue;value
 com.google.common.collect;ImmutableClassToInstanceMap;true;copyOf;(Map);;MapValue of Argument[0];MapValue of ReturnValue;value
-com.google.common.collect;ImmutableTable;true;copyOf;(Table);;MapKey of Argument[0];MapKey of ReturnValue;value
+com.google.common.collect;ImmutableTable;true;copyOf;(Table);;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[0];SyntheticField[com.google.common.collect.Table.rowKey] of ReturnValue;value
+com.google.common.collect;ImmutableTable;true;copyOf;(Table);;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[0];SyntheticField[com.google.common.collect.Table.columnKey] of ReturnValue;value
 com.google.common.collect;ImmutableTable;true;copyOf;(Table);;MapValue of Argument[0];MapValue of ReturnValue;value
 com.google.common.collect;HashMultiset;true;create;(Iterable);;Element of Argument[0];Element of ReturnValue;value
 com.google.common.collect;LinkedHashMultiset;true;create;(Iterable);;Element of Argument[0];Element of ReturnValue;value
@@ -201,12 +233,14 @@ com.google.common.collect;HashBiMap;true;create;(Map);;MapKey of Argument[0];Map
 com.google.common.collect;HashBiMap;true;create;(Map);;MapValue of Argument[0];MapValue of ReturnValue;value
 com.google.common.collect;MutableClassToInstanceMap;true;create;(Map);;MapKey of Argument[0];MapKey of ReturnValue;value
 com.google.common.collect;MutableClassToInstanceMap;true;create;(Map);;MapValue of Argument[0];MapValue of ReturnValue;value
-com.google.common.collect;HashBasedTable;true;create;(Table);;MapKey of Argument[0];MapKey of ReturnValue;value
+com.google.common.collect;HashBasedTable;true;create;(Table);;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[0];SyntheticField[com.google.common.collect.Table.rowKey] of ReturnValue;value
+com.google.common.collect;HashBasedTable;true;create;(Table);;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[0];SyntheticField[com.google.common.collect.Table.columnKey] of ReturnValue;value
 com.google.common.collect;HashBasedTable;true;create;(Table);;MapValue of Argument[0];MapValue of ReturnValue;value
-com.google.common.collect;TreeBasedTable;true;create;(TreeBasedTable);;MapKey of Argument[0];MapKey of ReturnValue;value
+com.google.common.collect;TreeBasedTable;true;create;(TreeBasedTable);;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[0];SyntheticField[com.google.common.collect.Table.rowKey] of ReturnValue;value
+com.google.common.collect;TreeBasedTable;true;create;(TreeBasedTable);;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[0];SyntheticField[com.google.common.collect.Table.columnKey] of ReturnValue;value
 com.google.common.collect;TreeBasedTable;true;create;(TreeBasedTable);;MapValue of Argument[0];MapValue of ReturnValue;value
-com.google.common.collect;ArrayTable;true;create;(Iterable,Iterable);;Element of Argument[0];SyntheticField[com.google.common.collect.Table.rowKey] of MapKey of ReturnValue;value
-com.google.common.collect;ArrayTable;true;create;(Iterable,Iterable);;Element of Argument[1];SyntheticField[com.google.common.collect.Table.columnKey] of MapKey of ReturnValue;value
+com.google.common.collect;ArrayTable;true;create;(Iterable,Iterable);;Element of Argument[0];SyntheticField[com.google.common.collect.Table.rowKey] of ReturnValue;value
+com.google.common.collect;ArrayTable;true;create;(Iterable,Iterable);;Element of Argument[1];SyntheticField[com.google.common.collect.Table.columnKey] of ReturnValue;value
 com.google.common.collect;Collections2;false;filter;(Collection,Predicate);;Element of Argument[0];Element of ReturnValue;value
 com.google.common.collect;Collections2;false;orderedPermutations;(Iterable,Comparator);;Element of Argument[0];Element of ReturnValue;value
 com.google.common.collect;Collections2;false;orderedPermutations;(Iterable);;Element of Argument[0];Element of ReturnValue;value
@@ -480,21 +514,25 @@ com.google.common.collect;Multimaps;false;unmodifiableSetMultimap;(ImmutableSetM
 com.google.common.collect;Multimaps;false;unmodifiableSetMultimap;(ImmutableSetMultimap);;MapValue of Argument[0];MapValue of ReturnValue;value
 com.google.common.collect;Multimaps;false;unmodifiableSortedSetMultimap;(SortedSetMultimap);;MapKey of Argument[0];MapKey of ReturnValue;value
 com.google.common.collect;Multimaps;false;unmodifiableSortedSetMultimap;(SortedSetMultimap);;MapValue of Argument[0];MapValue of ReturnValue;value
-com.google.common.collect;Tables;false;immutableCell;(Object,Object,Object);;Argument[0];SyntheticField[com.google.common.collect.Table.rowKey] of MapKey of ReturnValue;value
-com.google.common.collect;Tables;false;immutableCell;(Object,Object,Object);;Argument[1];SyntheticField[com.google.common.collect.Table.columnKey] of MapKey of ReturnValue;value
+com.google.common.collect;Tables;false;immutableCell;(Object,Object,Object);;Argument[0];SyntheticField[com.google.common.collect.Table.rowKey] of ReturnValue;value
+com.google.common.collect;Tables;false;immutableCell;(Object,Object,Object);;Argument[1];SyntheticField[com.google.common.collect.Table.columnKey] of ReturnValue;value
 com.google.common.collect;Tables;false;immutableCell;(Object,Object,Object);;Argument[2];MapValue of ReturnValue;value
-com.google.common.collect;Tables;false;newCustomTable;(Map,Supplier);;MapKey of Argument[0];SyntheticField[com.google.common.collect.Table.rowKey] of MapKey of ReturnValue;value
-com.google.common.collect;Tables;false;newCustomTable;(Map,Supplier);;MapKey of MapValue of Argument[0];SyntheticField[com.google.common.collect.Table.columnKey] of MapKey of ReturnValue;value
+com.google.common.collect;Tables;false;newCustomTable;(Map,Supplier);;MapKey of Argument[0];SyntheticField[com.google.common.collect.Table.rowKey] of ReturnValue;value
+com.google.common.collect;Tables;false;newCustomTable;(Map,Supplier);;MapKey of MapValue of Argument[0];SyntheticField[com.google.common.collect.Table.columnKey] of ReturnValue;value
 com.google.common.collect;Tables;false;newCustomTable;(Map,Supplier);;MapValue of MapValue of Argument[0];MapValue of ReturnValue;value
-com.google.common.collect;Tables;false;transpose;(Table);;SyntheticField[com.google.common.collect.Table.rowKey] of MapKey of Argument[0];SyntheticField[com.google.common.collect.Table.columnKey] of MapKey of ReturnValue;value
-com.google.common.collect;Tables;false;transpose;(Table);;SyntheticField[com.google.common.collect.Table.columnKey] of MapKey of Argument[0];SyntheticField[com.google.common.collect.Table.rowKey] of MapKey of ReturnValue;value
+com.google.common.collect;Tables;false;transpose;(Table);;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[0];SyntheticField[com.google.common.collect.Table.columnKey] of ReturnValue;value
+com.google.common.collect;Tables;false;transpose;(Table);;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[0];SyntheticField[com.google.common.collect.Table.rowKey] of ReturnValue;value
 com.google.common.collect;Tables;false;transpose;(Table);;MapValue of Argument[0];MapValue of ReturnValue;value
 com.google.common.collect;Tables;false;transformValues;(Table,Function);;MapKey of Argument[0];MapKey of ReturnValue;value
-com.google.common.collect;Tables;false;synchronizedTable;(Table);;MapKey of Argument[0];MapKey of ReturnValue;value
+com.google.common.collect;Tables;false;transformValues;(Table,Function);;MapKey of Argument[0];MapKey of ReturnValue;value
+com.google.common.collect;Tables;false;synchronizedTable;(Table);;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[0];SyntheticField[com.google.common.collect.Table.rowKey] of ReturnValue;value
+com.google.common.collect;Tables;false;synchronizedTable;(Table);;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[0];SyntheticField[com.google.common.collect.Table.columnKey] of ReturnValue;value
 com.google.common.collect;Tables;false;synchronizedTable;(Table);;MapValue of Argument[0];MapValue of ReturnValue;value
-com.google.common.collect;Tables;false;unmodifiableTable;(Table);;MapKey of Argument[0];MapKey of ReturnValue;value
+com.google.common.collect;Tables;false;unmodifiableTable;(Table);;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[0];SyntheticField[com.google.common.collect.Table.rowKey] of ReturnValue;value
+com.google.common.collect;Tables;false;unmodifiableTable;(Table);;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[0];SyntheticField[com.google.common.collect.Table.columnKey] of ReturnValue;value
 com.google.common.collect;Tables;false;unmodifiableTable;(Table);;MapValue of Argument[0];MapValue of ReturnValue;value
-com.google.common.collect;Tables;false;unmodifiableRowSortedTable;(RowSortedTable);;MapKey of Argument[0];MapKey of ReturnValue;value
+com.google.common.collect;Tables;false;unmodifiableRowSortedTable;(RowSortedTable);;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[0];SyntheticField[com.google.common.collect.Table.rowKey] of ReturnValue;value
+com.google.common.collect;Tables;false;unmodifiableRowSortedTable;(RowSortedTable);;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[0];SyntheticField[com.google.common.collect.Table.columnKey] of ReturnValue;value
 com.google.common.collect;Tables;false;unmodifiableRowSortedTable;(RowSortedTable);;MapValue of Argument[0];MapValue of ReturnValue;value
 com.google.common.collect;ObjectArrays;false;concat;(Object,Object[]);;Argument[0];ArrayElement of ReturnValue;value
 com.google.common.collect;ObjectArrays;false;concat;(Object,Object[]);;ArrayElement of Argument[1];ArrayElement of ReturnValue;value
