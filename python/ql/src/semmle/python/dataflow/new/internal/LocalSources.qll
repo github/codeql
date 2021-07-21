@@ -179,9 +179,19 @@ private module Cached {
     source = sink
     or
     exists(Node second |
-      simpleLocalFlowStep(source, second) and
-      simpleLocalFlowStep*(second, sink)
+      localSourceFlowStep(source, second) and
+      localSourceFlowStep*(second, sink)
     )
+  }
+
+  /**
+   * Helper predicate for `hasLocalSource`. Removes any steps go to module variable reads, as these
+   * are already local source nodes in their own right.
+   */
+  cached
+  private predicate localSourceFlowStep(Node nodeFrom, Node nodeTo) {
+    simpleLocalFlowStep(nodeFrom, nodeTo) and
+    not nodeTo = any(ModuleVariableNode v).getARead()
   }
 
   /**
