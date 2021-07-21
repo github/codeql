@@ -5,6 +5,9 @@ import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.security.UnsafeCertTrust
 import semmle.code.java.security.Encryption
 
+/**
+ * A taint flow configuration for SSL connections created without a proper certificate trust configuration.
+ */
 class SslEndpointIdentificationFlowConfig extends TaintTracking::Configuration {
   SslEndpointIdentificationFlowConfig() { this = "SslEndpointIdentificationFlowConfig" }
 
