@@ -14,6 +14,7 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import meta.MetaMetrics
+private import semmle.python.dataflow.new.internal.PrintNode
 
 class RemoteFlowSourceReach extends TaintTracking::Configuration {
   RemoteFlowSourceReach() { this = "RemoteFlowSourceReach" }
@@ -43,4 +44,4 @@ class RemoteFlowSourceReach extends TaintTracking::Configuration {
 
 from RemoteFlowSourceReach cfg, DataFlow::Node reachable
 where cfg.hasFlow(_, reachable)
-select reachable, "reachable with taint-tracking from RemoteFlowSource"
+select reachable, prettyNode(reachable)
