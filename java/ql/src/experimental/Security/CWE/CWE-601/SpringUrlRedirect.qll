@@ -82,8 +82,8 @@ private class SpringViewUrlRedirectSink extends SpringUrlRedirectSink {
  */
 private class SpringResponseEntityUrlRedirectSink extends SpringUrlRedirectSink {
   SpringResponseEntityUrlRedirectSink() {
-    // Find `new ResponseEntity<>(httpHeaders, ...)` or
-    // `new ResponseEntity<>(..., httpHeaders, ...)` sinks
+    // Find `new ResponseEntity(httpHeaders, ...)` or
+    // `new ResponseEntity(..., httpHeaders, ...)` sinks
     exists(ClassInstanceExpr cie, Argument argument |
       cie.getConstructedType() instanceof SpringResponseEntity and
       argument.getType() instanceof SpringHttpHeaders and
@@ -96,8 +96,7 @@ private class SpringResponseEntityUrlRedirectSink extends SpringUrlRedirectSink 
     exists(MethodAccess ma |
       ma.getMethod()
           .getDeclaringType()
-          .hasQualifiedName("org.springframework.http",
-            "ResponseEntity<>$HeadersBuilder<BodyBuilder>") and
+          .hasQualifiedName("org.springframework.http", "ResponseEntity$HeadersBuilder<BodyBuilder>") and
       ma.getMethod().getName() in ["headers", "location"] and
       this.asExpr() = ma.getArgument(0)
     )
