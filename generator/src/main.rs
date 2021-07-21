@@ -3,6 +3,7 @@ mod language;
 mod ql;
 mod ql_gen;
 
+use clap;
 use language::Language;
 use std::collections::BTreeMap as Map;
 use std::collections::BTreeSet as Set;
@@ -369,16 +370,20 @@ fn create_tokeninfo<'a>(
     (case, table)
 }
 
-fn write_dbscheme(language: &Language, entries: &[dbscheme::Entry]) -> std::io::Result<()> {
+fn write_dbscheme(
+    dbscheme_path: PathBuf,
+    language: &Language,
+    entries: &[dbscheme::Entry],
+) -> std::io::Result<()> {
     info!(
         "Writing database schema for {} to '{}'",
         &language.name,
-        match language.dbscheme_path.to_str() {
+        match dbscheme_path.to_str() {
             None => "<undisplayable>",
             Some(p) => p,
         }
     );
-    let file = File::create(&language.dbscheme_path)?;
+    let file = File::create(dbscheme_path)?;
     let mut file = LineWriter::new(file);
     dbscheme::write(&language.name, &mut file, &entries)
 }
@@ -665,7 +670,7 @@ fn create_diagnostics<'a>() -> (dbscheme::Case<'a>, dbscheme::Table<'a>) {
     (case, table)
 }
 
-fn main() {
+fn main() -> std::io::Result<()> {
     tracing_subscriber::fmt()
         .with_target(false)
         .without_time()
@@ -673,13 +678,24 @@ fn main() {
         .with_env_filter(tracing_subscriber::EnvFilter::from_default_env())
         .init();
 
-    // TODO: figure out proper dbscheme output path and/or take it from the
-    // command line.
+    let matches = clap::App::new("Ruby dbscheme generator")
+        .version("1.0")
+        .author("GitHub")
+        .about("CodeQL Ruby dbscheme generator")
+        .args_from_usage(
+            "--dbscheme=<FILE>                  'Path of the generated dbscheme file'
+             --library=<FILE>                   'Path of the generated QLL file'",
+        )
+        .get_matches();
+    let dbscheme_path = matches.value_of("dbscheme").expect("missing --dbscheme");
+    let dbscheme_path = PathBuf::from(dbscheme_path);
+
+    let ql_library_path = matches.value_of("library").expect("missing --library");
+    let ql_library_path = PathBuf::from(ql_library_path);
+
     let ruby = Language {
         name: "Ruby".to_owned(),
         node_types: tree_sitter_ruby::NODE_TYPES,
-        dbscheme_path: PathBuf::from("ql/src/ruby.dbscheme"),
-        ql_library_path: PathBuf::from("ql/src/codeql_ruby/ast/internal/TreeSitter.qll"),
     };
     match node_types::read_node_types_str(&ruby.node_types) {
         Err(e) => {
@@ -689,17 +705,18 @@ fn main() {
         Ok(nodes) => {
             let dbscheme_entries = convert_nodes(&nodes);
 
-            if let Err(e) = write_dbscheme(&ruby, &dbscheme_entries) {
+            if let Err(e) = write_dbscheme(dbscheme_path, &ruby, &dbscheme_entries) {
                 error!("Failed to write dbscheme: {}", e);
                 std::process::exit(2);
             }
 
             let classes = ql_gen::convert_nodes(&nodes);
 
-            if let Err(e) = ql_gen::write(&ruby, &classes) {
+            if let Err(e) = ql_gen::write(ql_library_path, &ruby, &classes) {
                 println!("Failed to write QL library: {}", e);
                 std::process::exit(3);
             }
+            Ok(())
         }
     }
 }

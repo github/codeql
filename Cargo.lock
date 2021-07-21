@@ -396,6 +396,7 @@ dependencies = [
 name = "ruby-generator"
 version = "0.1.0"
 dependencies = [
+ "clap",
  "node-types",
  "tracing",
  "tracing-subscriber",

@@ -3,6 +3,7 @@ use crate::ql;
 use std::collections::BTreeSet;
 use std::fs::File;
 use std::io::LineWriter;
+use std::path::PathBuf;
 
 /// Writes the QL AST library for the given library.
 ///
@@ -10,16 +11,20 @@ use std::io::LineWriter;
 ///
 /// `language` - the language for which we're generating a library
 /// `classes` - the list of classes to write.
-pub fn write(language: &Language, classes: &[ql::TopLevel]) -> std::io::Result<()> {
+pub fn write(
+    ql_library_path: PathBuf,
+    language: &Language,
+    classes: &[ql::TopLevel]
+) -> std::io::Result<()> {
     println!(
         "Writing QL library for {} to '{}'",
         &language.name,
-        match language.ql_library_path.to_str() {
+        match ql_library_path.to_str() {
             None => "<undisplayable>",
             Some(p) => p,
         }
     );
-    let file = File::create(&language.ql_library_path)?;
+    let file = File::create(ql_library_path)?;
     let mut file = LineWriter::new(file);
     ql::write(&language.name, &mut file, &classes)
 }
