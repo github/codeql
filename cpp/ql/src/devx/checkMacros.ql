@@ -19,7 +19,6 @@ import semmle.code.cpp.models.interfaces.FormattingFunction
 // Example: syslog(LOG_ERR, "%s: Failed init_producer", __FUNCTION__);
 
 from string format, FormattingFunctionCall fc
-where format = fc.getFormat().getValue() and format.regexpMatch(".*")
+where format = fc.getFormat().getValue() and format.regexpMatch(".*LOG_DEBUG.*")
 and fc.getTarget().hasName("syslog")
-and fc.getArgument(1).getValue()="LOG_DEBUG"
 select fc, "This log message format does not meet the requirements."
