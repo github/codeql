@@ -21,4 +21,5 @@ import semmle.code.cpp.models.interfaces.FormattingFunction
 from string format, FormattingFunctionCall fc
 where format = fc.getFormat().getValue() and format.regexpMatch(".*")
 and fc.getTarget().hasName("syslog")
-select fc.getArgument(0), "This log message format does not meet the requirements."
+and fc.getArgument(1).getValue()="LOG_DEBUG"
+select fc, "This log message format does not meet the requirements."
