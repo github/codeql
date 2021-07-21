@@ -208,7 +208,7 @@ private predicate bbSuccessorEntryReachesDefOrUse(
   boolean skipsFirstLoopAlwaysTrueUponEntry
 ) {
   exists(BasicBlock succ, boolean succSkipsFirstLoopAlwaysTrueUponEntry |
-    bbSuccessorEntryReachesLoopInvariant0(bb, succ, skipsFirstLoopAlwaysTrueUponEntry,
+    bbSuccessorEntryReachesLoopInvariant(bb, succ, skipsFirstLoopAlwaysTrueUponEntry,
       succSkipsFirstLoopAlwaysTrueUponEntry)
   |
     bbEntryReachesDefOrUseLocally(succ, v, defOrUse) and
