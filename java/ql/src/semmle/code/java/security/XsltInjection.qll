@@ -3,7 +3,6 @@
 import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.ExternalFlow
-import semmle.code.java.security.XmlParsers
 
 /**
  * A data flow sink for unvalidated user input that is used in XSLT transformation.
@@ -51,7 +50,6 @@ private class DefaultXsltInjectionAdditionalTaintStep extends XsltInjectionAddit
     staxSourceStep(node1, node2) or
     documentBuilderStep(node1, node2) or
     domSourceStep(node1, node2) or
-    newTransformerOrTemplatesStep(node1, node2) or
     newTransformerFromTemplatesStep(node1, node2) or
     xsltCompilerStep(node1, node2) or
     xsltExecutableStep(node1, node2) or
@@ -65,7 +63,10 @@ private class DefaultXsltInjectionAdditionalTaintStep extends XsltInjectionAddit
  */
 private predicate xmlStreamReaderStep(DataFlow::Node n1, DataFlow::Node n2) {
   exists(XmlInputFactoryStreamReader xmlStreamReader |
-    n1.asExpr() = xmlStreamReader.getSink() and
+    if xmlStreamReader.getMethod().getParameterType(0) instanceof TypeString
+    then n1.asExpr() = xmlStreamReader.getArgument(1)
+    else n1.asExpr() = xmlStreamReader.getArgument(0)
+  |
     n2.asExpr() = xmlStreamReader
   )
 }
@@ -76,7 +77,10 @@ private predicate xmlStreamReaderStep(DataFlow::Node n1, DataFlow::Node n2) {
  */
 private predicate xmlEventReaderStep(DataFlow::Node n1, DataFlow::Node n2) {
   exists(XmlInputFactoryEventReader xmlEventReader |
-    n1.asExpr() = xmlEventReader.getSink() and
+    if xmlEventReader.getMethod().getParameterType(0) instanceof TypeString
+    then n1.asExpr() = xmlEventReader.getArgument(1)
+    else n1.asExpr() = xmlEventReader.getArgument(0)
+  |
     n2.asExpr() = xmlEventReader
   )
 }
@@ -98,7 +102,7 @@ private predicate staxSourceStep(DataFlow::Node n1, DataFlow::Node n2) {
  */
 private predicate documentBuilderStep(DataFlow::Node n1, DataFlow::Node n2) {
   exists(DocumentBuilderParse documentBuilder |
-    n1.asExpr() = documentBuilder.getSink() and
+    n1.asExpr() = documentBuilder.getArgument(0) and
     n2.asExpr() = documentBuilder
   )
 }
@@ -112,60 +116,6 @@ private predicate domSourceStep(DataFlow::Node n1, DataFlow::Node n2) {
     n1.asExpr() = cc.getAnArgument() and
     n2.asExpr() = cc
   )
-}
-
-/**
- * Holds if `n1` to `n2` is a dataflow step that converts between `Source` and `Transformer` or
- * `Templates`, i.e. `TransformerFactory.newTransformer(tainted)` or
- * `TransformerFactory.newTemplates(tainted)`.
- */
-private predicate newTransformerOrTemplatesStep(DataFlow::Node n1, DataFlow::Node n2) {
-  exists(MethodAccess ma, Method m | ma.getMethod() = m |
-    n1.asExpr() = ma.getAnArgument() and
-    n2.asExpr() = ma and
-    m.getDeclaringType() instanceof TransformerFactory and
-    m.hasName(["newTransformer", "newTemplates"]) and
-    not exists(TransformerFactoryWithSecureProcessingFeatureFlowConfig conf |
-      conf.hasFlowToExpr(ma.getQualifier())
-    )
-  )
-}
-
-/**
- * A data flow configuration for secure processing feature that is enabled on `TransformerFactory`.
- */
-private class TransformerFactoryWithSecureProcessingFeatureFlowConfig extends DataFlow2::Configuration {
-  TransformerFactoryWithSecureProcessingFeatureFlowConfig() {
-    this = "TransformerFactoryWithSecureProcessingFeatureFlowConfig"
-  }
-
-  override predicate isSource(DataFlow::Node src) {
-    exists(Variable v | v = src.asExpr().(VarAccess).getVariable() |
-      exists(TransformerFactoryFeatureConfig config | config.getQualifier() = v.getAnAccess() |
-        config.enables(configSecureProcessing())
-      )
-    )
-  }
-
-  override predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma |
-      sink.asExpr() = ma.getQualifier() and
-      ma.getMethod().getDeclaringType() instanceof TransformerFactory
-    )
-  }
-
-  override int fieldFlowBranchLimit() { result = 0 }
-}
-
-/** A `ParserConfig` specific to `TransformerFactory`. */
-private class TransformerFactoryFeatureConfig extends ParserConfig {
-  TransformerFactoryFeatureConfig() {
-    exists(Method m |
-      m = this.getMethod() and
-      m.getDeclaringType() instanceof TransformerFactory and
-      m.hasName("setFeature")
-    )
-  }
 }
 
 /**
@@ -251,4 +201,48 @@ private class TypeXsltExecutable extends Class {
 /** The class `net.sf.saxon.s9api.XsltPackage`. */
 private class TypeXsltPackage extends Class {
   TypeXsltPackage() { this.hasQualifiedName("net.sf.saxon.s9api", "XsltPackage") }
+}
+
+// XmlParsers classes
+/** A call to `DocumentBuilder.parse`. */
+private class DocumentBuilderParse extends MethodAccess {
+  DocumentBuilderParse() {
+    exists(Method m |
+      this.getMethod() = m and
+      m.getDeclaringType() instanceof DocumentBuilder and
+      m.hasName("parse")
+    )
+  }
+}
+
+/** The class `javax.xml.parsers.DocumentBuilder`. */
+private class DocumentBuilder extends RefType {
+  DocumentBuilder() { this.hasQualifiedName("javax.xml.parsers", "DocumentBuilder") }
+}
+
+/** A call to `XMLInputFactory.createXMLStreamReader`. */
+private class XmlInputFactoryStreamReader extends MethodAccess {
+  XmlInputFactoryStreamReader() {
+    exists(Method m |
+      this.getMethod() = m and
+      m.getDeclaringType() instanceof XmlInputFactory and
+      m.hasName("createXMLStreamReader")
+    )
+  }
+}
+
+/** A call to `XMLInputFactory.createEventReader`. */
+private class XmlInputFactoryEventReader extends MethodAccess {
+  XmlInputFactoryEventReader() {
+    exists(Method m |
+      this.getMethod() = m and
+      m.getDeclaringType() instanceof XmlInputFactory and
+      m.hasName("createXMLEventReader")
+    )
+  }
+}
+
+/** The class `javax.xml.stream.XMLInputFactory`. */
+private class XmlInputFactory extends RefType {
+  XmlInputFactory() { this.hasQualifiedName("javax.xml.stream", "XMLInputFactory") }
 }
