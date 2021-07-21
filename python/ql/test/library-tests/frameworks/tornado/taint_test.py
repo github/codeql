@@ -68,8 +68,9 @@ class TaintTest(tornado.web.RequestHandler):
             # Dict[str, http.cookies.Morsel]
             request.cookies, # $ tainted
             request.cookies["cookie-name"], # $ tainted
-            request.cookies["cookie-name"].key, # $ MISSING: tainted
-            request.cookies["cookie-name"].value, # $ MISSING: tainted
+            request.cookies["cookie-name"].key, # $ tainted
+            request.cookies["cookie-name"].value, # $ tainted
+            request.cookies["cookie-name"].coded_value, # $ tainted
         )
 
 

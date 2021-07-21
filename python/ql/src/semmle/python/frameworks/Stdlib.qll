@@ -115,6 +115,59 @@ module Stdlib {
       }
     }
   }
+
+  /**
+   * Provides models for the `http.cookies.Morsel` class
+   *
+   * See https://docs.python.org/3.9/library/http.cookies.html#http.cookies.Morsel.
+   */
+  module Morsel {
+    /**
+     * A source of instances of `http.cookies.Morsel`, extend this class to model new instances.
+     *
+     * This can include instantiations of the class, return values from function
+     * calls, or a special parameter that will be set when functions are called by an external
+     * library.
+     *
+     * Use the predicate `Morsel::instance()` to get references to instances of `http.cookies.Morsel`.
+     */
+    abstract class InstanceSource extends DataFlow::LocalSourceNode { }
+
+    /** Gets a reference to an instance of `http.cookies.Morsel`. */
+    private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
+      t.start() and
+      result instanceof InstanceSource
+      or
+      exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+    }
+
+    /** Gets a reference to an instance of `http.cookies.Morsel`. */
+    DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
+
+    /**
+     * Taint propagation for `http.cookies.Morsel`.
+     */
+    private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+      override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+        // Methods
+        //
+        // TODO: When we have tools that make it easy, model these properly to handle
+        // `meth = obj.meth; meth()`. Until then, we'll use this more syntactic approach
+        // (since it allows us to at least capture the most common cases).
+        nodeFrom = instance() and
+        exists(DataFlow::AttrRead attr | attr.getObject() = nodeFrom |
+          // normal (non-async) methods
+          attr.getAttributeName() in ["output", "js_output"] and
+          nodeTo.(DataFlow::CallCfgNode).getFunction() = attr
+        )
+        or
+        // Attributes
+        nodeFrom = instance() and
+        nodeTo.(DataFlow::AttrRead).getObject() = nodeFrom and
+        nodeTo.(DataFlow::AttrRead).getAttributeName() in ["key", "value", "coded_value"]
+      }
+    }
+  }
 }
 
 /**

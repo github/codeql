@@ -10,6 +10,7 @@ private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
 private import semmle.python.regex
+private import semmle.python.frameworks.Stdlib
 
 /**
  * Provides models for the `tornado` PyPI package.
@@ -365,6 +366,24 @@ private module Tornado {
         private class TornadoRequestHTTPHeadersInstances extends HTTPHeaders::InstanceSource {
           TornadoRequestHTTPHeadersInstances() {
             this.(DataFlow::AttrRead).accesses(instance(), "headers")
+          }
+        }
+
+        /** An `Morsel` instance that originates from a Tornado request. */
+        private class TornadoRequestMorselInstances extends Stdlib::Morsel::InstanceSource {
+          TornadoRequestMorselInstances() {
+            // TODO: this currently only works in local-scope, since writing type-trackers for
+            // this is a little too much effort. Once API-graphs are available for more
+            // things, we can rewrite this.
+            //
+            // TODO: This approach for identifying member-access is very adhoc, and we should
+            // be able to do something more structured for providing modeling of the members
+            // of a container-object.
+            exists(DataFlow::AttrRead files | files.accesses(instance(), "cookies") |
+              this.asCfgNode().(SubscriptNode).getObject() = files.asCfgNode()
+              or
+              this.(DataFlow::MethodCallNode).calls(files, "get")
+            )
           }
         }
       }
