@@ -101,7 +101,7 @@ private module Twisted {
     abstract class InstanceSource extends DataFlow::LocalSourceNode { }
 
     /** Gets a reference to an instance of `twisted.web.server.Request`. */
-    private DataFlow::LocalSourceNode instance(DataFlow::TypeTracker t) {
+    private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
       t.start() and
       result instanceof InstanceSource
       or
@@ -246,5 +246,43 @@ private module Twisted {
     override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
 
     override string getMimetypeDefault() { result = "text/html" }
+  }
+
+  /**
+   * A call to the `addCookie` function on a twisted request.
+   *
+   * See https://twistedmatrix.com/documents/21.2.0/api/twisted.web.http.Request.html#addCookie
+   */
+  class TwistedRequestAddCookieCall extends HTTP::Server::CookieWrite::Range,
+    DataFlow::MethodCallNode {
+    TwistedRequestAddCookieCall() { this.calls(Twisted::Request::instance(), "addCookie") }
+
+    override DataFlow::Node getHeaderArg() { none() }
+
+    override DataFlow::Node getNameArg() { result in [this.getArg(0), this.getArgByName("k")] }
+
+    override DataFlow::Node getValueArg() { result in [this.getArg(1), this.getArgByName("v")] }
+  }
+
+  /**
+   * A call to `append` on the `cookies` attribute of a twisted request.
+   *
+   * See https://twistedmatrix.com/documents/21.2.0/api/twisted.web.http.Request.html#cookies
+   */
+  class TwistedRequestCookiesAppendCall extends HTTP::Server::CookieWrite::Range,
+    DataFlow::MethodCallNode {
+    TwistedRequestCookiesAppendCall() {
+      exists(DataFlow::AttrRead cookiesLookup |
+        cookiesLookup.getObject() = Twisted::Request::instance() and
+        cookiesLookup.getAttributeName() = "cookies" and
+        this.calls(cookiesLookup, "append")
+      )
+    }
+
+    override DataFlow::Node getHeaderArg() { result = this.getArg(0) }
+
+    override DataFlow::Node getNameArg() { none() }
+
+    override DataFlow::Node getValueArg() { none() }
   }
 }

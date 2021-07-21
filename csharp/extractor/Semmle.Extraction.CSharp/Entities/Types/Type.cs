@@ -341,8 +341,6 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NoLabel;
-
         public override bool Equals(object? obj)
         {
             var other = obj as Type;

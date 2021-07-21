@@ -57,4 +57,17 @@ http.createServer(function(req, res) {
   require('util.promisify')(fs.readFileSync)(path); // NOT OK
 
   require("thenify")(fs.readFileSync)(path); // NOT OK
+
+  const readPkg = require('read-pkg');
+  var pkg = readPkg.readPackageSync({cwd: path}); // NOT OK
+  var pkgPromise = readPkg.readPackageAsync({cwd: path}); // NOT OK
+});
+
+const mkdirp = require("mkdirp");
+http.createServer(function(req, res) {
+  var path = url.parse(req.url, true).query.path;
+
+  fs.readFileSync(path); // NOT OK
+  mkdirp(path); // NOT OK
+  mkdirp.sync(path); // NOT OK
 });

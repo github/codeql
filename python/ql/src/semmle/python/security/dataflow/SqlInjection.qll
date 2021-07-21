@@ -1,26 +1,42 @@
 /**
- * Provides a taint-tracking configuration for detecting SQL injection
- * vulnerabilities.
+ * Provides a taint-tracking configuration for detecting "SQL injection" vulnerabilities.
+ *
+ * Note, for performance reasons: only import this file if
+ * `SqlInjection::Configuration` is needed, otherwise
+ * `SqlInjectionCustomizations` should be imported instead.
  */
 
-import python
+private import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
-import semmle.python.Concepts
-import semmle.python.dataflow.new.RemoteFlowSources
-import semmle.python.dataflow.new.BarrierGuards
 
 /**
- * A taint-tracking configuration for detecting SQL injection vulnerabilities.
+ * Provides a taint-tracking configuration for detecting "SQL injection" vulnerabilities.
  */
-class SQLInjectionConfiguration extends TaintTracking::Configuration {
-  SQLInjectionConfiguration() { this = "SQLInjectionConfiguration" }
+module SqlInjection {
+  import SqlInjectionCustomizations::SqlInjection
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  /**
+   * A taint-tracking configuration for detecting "SQL injection" vulnerabilities.
+   */
+  class Configuration extends TaintTracking::Configuration {
+    Configuration() { this = "SqlInjection" }
 
-  override predicate isSink(DataFlow::Node sink) { sink = any(SqlExecution e).getSql() }
+    override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-  override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-    guard instanceof StringConstCompare
+    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+
+    override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
+
+    override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
+      guard instanceof SanitizerGuard
+    }
   }
 }
+
+/**
+ * DEPRECATED: Don't extend this class for customization, since this will lead to bad
+ * performance, instead use the new `SqlInjectionCustomizations.qll` file, and extend
+ * its' classes.
+ */
+deprecated class SQLInjectionConfiguration = SqlInjection::Configuration;

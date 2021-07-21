@@ -1,4 +1,3 @@
-﻿// semmle-extractor-options: /r:System.IO.Compression.dll /r:System.IO.Compression.FileSystem.dll /r:System.IO.Compression.ZipFile.dll /r:System.IO.FileSystem.dll
 using System;
 using System.IO;
 using System.IO.Compression;

@@ -306,7 +306,7 @@ class FormatLiteral extends Literal {
    * Holds if this `FormatLiteral` is in a context that supports
    * Microsoft rules and extensions.
    */
-  predicate isMicrosoft() { any(File f).compiledAsMicrosoft() }
+  predicate isMicrosoft() { anyFileCompiledAsMicrosoft() }
 
   /**
    * Gets the format string, with '%%' and '%@' replaced by '_' (to avoid processing
@@ -866,6 +866,33 @@ class FormatLiteral extends Literal {
     exists(Type t |
       t.getName() = "ANSI_STRING" and
       result.(PointerType).getBaseType() = t
+    )
+  }
+
+  /**
+   * Gets an alternate argument type that would be required by the nth
+   * conversion specifier on a Microsoft or non-Microsoft platform, opposite
+   * to that of the snapshot. This may be useful for answering 'what might
+   * happen' questions.
+   */
+  Type getConversionTypeAlternate(int n) {
+    exists(string len, string conv |
+      this.parseConvSpec(n, _, _, _, _, _, len, conv) and
+      (len != "l" and len != "w" and len != "h") and
+      getUse().getTarget().(FormattingFunction).getFormatCharType().getSize() > 1 and // wide function
+      (
+        conv = "c" and
+        result = getNonDefaultCharType()
+        or
+        conv = "C" and
+        result = getDefaultCharType()
+        or
+        conv = "s" and
+        result.(PointerType).getBaseType() = getNonDefaultCharType()
+        or
+        conv = "S" and
+        result.(PointerType).getBaseType() = getDefaultCharType()
+      )
     )
   }
 

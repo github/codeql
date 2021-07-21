@@ -1,5 +1,3 @@
-//  semmle-extractor-options: --standalone
-
 class ObjectComparisonTest
 {
     UnknownType unknownValue;

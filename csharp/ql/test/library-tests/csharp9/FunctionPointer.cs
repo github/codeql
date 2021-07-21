@@ -1,7 +1,5 @@
 using System;
 
-
-
 public class FnPointer
 {
     public unsafe static class Program

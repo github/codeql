@@ -151,8 +151,8 @@ void test_chars(char c, wchar_t wc, wint_t wt)
 void test_ws(char *c, wchar_t *wc)
 {
   wprintf(L"%s", c); // GOOD
-  wprintf(L"%s", wc); // BAD
-  wprintf(L"%S", c); // BAD
+  wprintf(L"%s", wc); // BAD [NOT DETECTED; correct on Microsoft platforms]
+  wprintf(L"%S", c); // BAD [NOT DETECTED; correct on Microsoft platforms]
   wprintf(L"%S", wc); // GOOD
 }
 

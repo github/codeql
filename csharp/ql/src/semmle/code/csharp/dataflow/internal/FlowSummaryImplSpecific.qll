@@ -7,6 +7,7 @@ private import semmle.code.csharp.frameworks.system.linq.Expressions
 private import DataFlowDispatch
 private import DataFlowPrivate
 private import DataFlowPublic
+private import DataFlowImplCommon
 private import FlowSummaryImpl::Private
 private import FlowSummaryImpl::Public
 private import semmle.code.csharp.Unification
@@ -159,7 +160,7 @@ class InterpretNode extends TInterpretNode {
   DataFlowCallable asCallable() { result = this.asElement() }
 
   /** Gets the target of this call, if any. */
-  Callable getCallTarget() { result = this.asCall().getARuntimeTarget() }
+  Callable getCallTarget() { result = viableCallable(this.asCall()) }
 
   /** Gets a textual representation of this node. */
   string toString() {

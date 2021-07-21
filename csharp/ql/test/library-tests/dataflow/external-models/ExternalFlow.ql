@@ -24,7 +24,8 @@ class SummaryModelTest extends SummaryModelCsv {
         "My.Qltest;D;false;Apply;(System.Func<S,T>,S);;Argument[1];Parameter[0] of Argument[0];value",
         "My.Qltest;D;false;Apply;(System.Func<S,T>,S);;ReturnValue of Argument[0];ReturnValue;value",
         "My.Qltest;D;false;Map;(S[],System.Func<S,T>);;Element of Argument[0];Parameter[0] of Argument[1];value",
-        "My.Qltest;D;false;Map;(S[],System.Func<S,T>);;ReturnValue of Argument[1];Element of ReturnValue;value"
+        "My.Qltest;D;false;Map;(S[],System.Func<S,T>);;ReturnValue of Argument[1];Element of ReturnValue;value",
+        "My.Qltest;D;false;Parse;(System.String,System.Int32);;Argument[0];Argument[1];taint"
       ]
   }
 }

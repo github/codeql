@@ -151,4 +151,8 @@ public class Cookie {
     public String getPath() {
         return null;
     }
+
+    public String toString() {
+        return null;
+    }
 }

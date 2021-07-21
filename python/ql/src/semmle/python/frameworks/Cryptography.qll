@@ -75,7 +75,7 @@ private module CryptographyModel {
     }
 
     /** Gets a reference to a predefined curve class with a specific key size (in bits), as well as the origin of the class. */
-    private DataFlow::LocalSourceNode curveClassWithKeySize(
+    private DataFlow::TypeTrackingNode curveClassWithKeySize(
       DataFlow::TypeTracker t, int keySize, DataFlow::Node origin
     ) {
       t.start() and
@@ -93,7 +93,7 @@ private module CryptographyModel {
     }
 
     /** Gets a reference to a predefined curve class instance with a specific key size (in bits), as well as the origin of the class. */
-    private DataFlow::LocalSourceNode curveClassInstanceWithKeySize(
+    private DataFlow::TypeTrackingNode curveClassInstanceWithKeySize(
       DataFlow::TypeTracker t, int keySize, DataFlow::Node origin
     ) {
       t.start() and
@@ -202,7 +202,7 @@ private module CryptographyModel {
     }
 
     /** Gets a reference to a Cipher instance using algorithm with `algorithmName`. */
-    DataFlow::LocalSourceNode cipherInstance(DataFlow::TypeTracker t, string algorithmName) {
+    DataFlow::TypeTrackingNode cipherInstance(DataFlow::TypeTracker t, string algorithmName) {
       t.start() and
       exists(DataFlow::CallCfgNode call | result = call |
         call =
@@ -226,7 +226,7 @@ private module CryptographyModel {
     }
 
     /** Gets a reference to the encryptor of a Cipher instance using algorithm with `algorithmName`. */
-    DataFlow::LocalSourceNode cipherEncryptor(DataFlow::TypeTracker t, string algorithmName) {
+    DataFlow::TypeTrackingNode cipherEncryptor(DataFlow::TypeTracker t, string algorithmName) {
       t.start() and
       result.(DataFlow::MethodCallNode).calls(cipherInstance(algorithmName), "encryptor")
       or
@@ -243,7 +243,7 @@ private module CryptographyModel {
     }
 
     /** Gets a reference to the dncryptor of a Cipher instance using algorithm with `algorithmName`. */
-    DataFlow::LocalSourceNode cipherDecryptor(DataFlow::TypeTracker t, string algorithmName) {
+    DataFlow::TypeTrackingNode cipherDecryptor(DataFlow::TypeTracker t, string algorithmName) {
       t.start() and
       result.(DataFlow::MethodCallNode).calls(cipherInstance(algorithmName), "decryptor")
       or
@@ -298,7 +298,7 @@ private module CryptographyModel {
     }
 
     /** Gets a reference to a Hash instance using algorithm with `algorithmName`. */
-    private DataFlow::LocalSourceNode hashInstance(DataFlow::TypeTracker t, string algorithmName) {
+    private DataFlow::TypeTrackingNode hashInstance(DataFlow::TypeTracker t, string algorithmName) {
       t.start() and
       exists(DataFlow::CallCfgNode call | result = call |
         call =

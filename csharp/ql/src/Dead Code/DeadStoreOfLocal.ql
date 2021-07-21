@@ -141,20 +141,12 @@ class RelevantDefinition extends AssignableDefinition {
     // Ensure that the definition is not in dead code
     exists(this.getAControlFlowNode()) and
     not this.isMaybeLive() and
-    (
-      // Allow dead initializer assignments, such as `string s = string.Empty`, but only
-      // if the initializer expression assigns a default-like value, and there exists another
-      // definition of the same variable
-      this.isInitializer()
-      implies
-      (
-        not this.isDefaultLikeInitializer()
-        or
-        not exists(AssignableDefinition other | other.getTarget() = this.getTarget() |
-          other != this
-        )
-      )
-    )
+    // Allow dead initializer assignments, such as `string s = string.Empty`, but only
+    // if the initializer expression assigns a default-like value, and there exists another
+    // definition of the same variable
+    if this.isDefaultLikeInitializer()
+    then this = unique(AssignableDefinition def | def.getTarget() = this.getTarget())
+    else any()
   }
 }
 

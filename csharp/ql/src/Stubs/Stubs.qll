@@ -186,13 +186,23 @@ abstract private class GeneratedType extends Type, GeneratedElement {
 
   string stubPrivateConstructor() {
     if
-      this instanceof Interface or
-      this.isStatic() or
-      this.isAbstract() or
-      exists(this.(ValueOrRefType).getAConstructor()) or
-      not exists(this.getAnInterestingBaseType()) or
-      not exists(this.getAnInterestingBaseType().getAConstructor()) or
-      this.getAnInterestingBaseType().getAConstructor().getNumberOfParameters() = 0
+      this instanceof Interface
+      or
+      this.isStatic()
+      or
+      this.isAbstract()
+      or
+      exists(this.(ValueOrRefType).getAConstructor())
+      or
+      not exists(this.getAnInterestingBaseType())
+      or
+      not exists(this.getAnInterestingBaseType().getAConstructor())
+      or
+      exists(Constructor bc |
+        bc = this.getAnInterestingBaseType().getAConstructor() and
+        bc.getNumberOfParameters() = 0 and
+        not bc.isStatic()
+      )
     then result = ""
     else
       result =
@@ -287,7 +297,9 @@ private class ExtraGeneratedConstructor extends GeneratedMember, Constructor {
     (
       // if the base class has no 0 parameter constructor
       not exists(Constructor c |
-        c = this.getDeclaringType().getBaseClass().getAMember() and c.getNumberOfParameters() = 0
+        c = this.getDeclaringType().getBaseClass().getAMember() and
+        c.getNumberOfParameters() = 0 and
+        not c.isStatic()
       )
       or
       // if this constructor might be called from a (generic) derived class
