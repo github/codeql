@@ -725,7 +725,7 @@ class TypeAccess extends @typeaccess, TypeExpr, TypeRef {
       spec.getImportedName() = exportedName and
       this = spec.getLocal().(TypeDecl).getLocalTypeName().getAnAccess()
       or
-      (spec instanceof ImportNamespaceSpecifier or spec instanceof ImportDefaultSpecifier) and
+      spec instanceof ImportNamespaceSpecifier and
       this =
         spec.getLocal().(LocalNamespaceDecl).getLocalNamespaceName().getAMemberAccess(exportedName)
     )

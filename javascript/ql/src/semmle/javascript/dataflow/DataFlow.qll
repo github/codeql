@@ -239,6 +239,7 @@ module DataFlow {
     private TypeAnnotation getFallbackTypeAnnotation() {
       exists(BindingPattern pattern |
         this = valueNode(pattern) and
+        not ast_node_type(pattern, _) and
         result = pattern.getTypeAnnotation()
       )
       or
