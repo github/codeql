@@ -68,7 +68,7 @@ class MyHandler(BaseHTTPRequestHandler):
             bytes(self.headers), # $ tainted
 
             self.rfile, # $ tainted
-            self.rfile.read(), # $ MISSING: tainted
+            self.rfile.read(), # $ tainted
         )
 
         form = cgi.FieldStorage(

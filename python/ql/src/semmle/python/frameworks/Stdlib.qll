@@ -1031,6 +1031,13 @@ private module StdlibPrivate {
       }
     }
 
+    /** A file-like object that originates from a `BaseHTTPRequestHandler` instance. */
+    private class BaseHTTPRequestHandlerFileLikeObjectInstances extends Stdlib::FileLikeObject::InstanceSource {
+      BaseHTTPRequestHandlerFileLikeObjectInstances() {
+        this.(DataFlow::AttrRead).accesses(instance(), "rfile")
+      }
+    }
+
     /**
      * The entry-point for handling a request with a `BaseHTTPRequestHandler` subclass.
      *
