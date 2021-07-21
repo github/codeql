@@ -61,8 +61,8 @@ class TaintTest(tornado.web.RequestHandler):
             # dict-like, see https://www.tornadoweb.org/en/stable/httputil.html#tornado.httputil.HTTPHeaders
             request.headers, # $ tainted
             request.headers["header-name"], # $ tainted
-            request.headers.get_list("header-name"), # $ MISSING: tainted
-            request.headers.get_all(), # $ MISSING: tainted
+            request.headers.get_list("header-name"), # $ tainted
+            request.headers.get_all(), # $ tainted
             [(k, v) for (k, v) in request.headers.get_all()], # $ MISSING: tainted
 
             # Dict[str, http.cookies.Morsel]

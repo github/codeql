@@ -16,6 +16,54 @@ private import semmle.python.regex
  * See https://www.tornadoweb.org/en/stable/.
  */
 private module Tornado {
+  /**
+   * Provides models for the `tornado.httputil.HTTPHeaders` class
+   *
+   * See https://www.tornadoweb.org/en/stable/httputil.html#tornado.httputil.HTTPHeaders.
+   */
+  module HTTPHeaders {
+    /**
+     * A source of instances of `tornado.httputil.HTTPHeaders`, extend this class to model new instances.
+     *
+     * This can include instantiations of the class, return values from function
+     * calls, or a special parameter that will be set when functions are called by an external
+     * library.
+     *
+     * Use the predicate `HTTPHeaders::instance()` to get references to instances of `tornado.httputil.HTTPHeaders`.
+     */
+    abstract class InstanceSource extends DataFlow::LocalSourceNode { }
+
+    /** Gets a reference to an instance of `tornado.httputil.HTTPHeaders`. */
+    private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
+      t.start() and
+      result instanceof InstanceSource
+      or
+      exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+    }
+
+    /** Gets a reference to an instance of `tornado.httputil.HTTPHeaders`. */
+    DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
+
+    /**
+     * Taint propagation for `tornado.httputil.HTTPHeaders`.
+     */
+    private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+      override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+        // Methods
+        //
+        // TODO: When we have tools that make it easy, model these properly to handle
+        // `meth = obj.meth; meth()`. Until then, we'll use this more syntactic approach
+        // (since it allows us to at least capture the most common cases).
+        nodeFrom = instance() and
+        exists(DataFlow::AttrRead attr | attr.getObject() = nodeFrom |
+          // normal (non-async) methods
+          attr.getAttributeName() in ["get_list", "get_all"] and
+          nodeTo.(DataFlow::CallCfgNode).getFunction() = attr
+        )
+      }
+    }
+  }
+
   // ---------------------------------------------------------------------------
   // tornado
   // ---------------------------------------------------------------------------
@@ -310,6 +358,13 @@ private module Tornado {
                   "cookies"
                 ]
             )
+          }
+        }
+
+        /** An `HTTPHeaders` instance that originates from a Tornado request. */
+        private class TornadoRequestHTTPHeadersInstances extends HTTPHeaders::InstanceSource {
+          TornadoRequestHTTPHeadersInstances() {
+            this.(DataFlow::AttrRead).accesses(instance(), "headers")
           }
         }
       }
