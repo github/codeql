@@ -138,32 +138,6 @@ private module Tornado {
         /** Gets a reference to an instance of the `tornado.web.RequestHandler` class or any subclass. */
         DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
 
-        /** Gets a reference to one of the methods `get_argument`, `get_body_argument`, `get_query_argument`. */
-        private DataFlow::TypeTrackingNode argumentMethod(DataFlow::TypeTracker t) {
-          t.startInAttr(["get_argument", "get_body_argument", "get_query_argument"]) and
-          result = instance()
-          or
-          exists(DataFlow::TypeTracker t2 | result = argumentMethod(t2).track(t2, t))
-        }
-
-        /** Gets a reference to one of the methods `get_argument`, `get_body_argument`, `get_query_argument`. */
-        DataFlow::Node argumentMethod() {
-          argumentMethod(DataFlow::TypeTracker::end()).flowsTo(result)
-        }
-
-        /** Gets a reference to one of the methods `get_arguments`, `get_body_arguments`, `get_query_arguments`. */
-        private DataFlow::TypeTrackingNode argumentsMethod(DataFlow::TypeTracker t) {
-          t.startInAttr(["get_arguments", "get_body_arguments", "get_query_arguments"]) and
-          result = instance()
-          or
-          exists(DataFlow::TypeTracker t2 | result = argumentsMethod(t2).track(t2, t))
-        }
-
-        /** Gets a reference to one of the methods `get_arguments`, `get_body_arguments`, `get_query_arguments`. */
-        DataFlow::Node argumentsMethod() {
-          argumentsMethod(DataFlow::TypeTracker::end()).flowsTo(result)
-        }
-
         /** Gets a reference the `redirect` method. */
         private DataFlow::TypeTrackingNode redirectMethod(DataFlow::TypeTracker t) {
           t.startInAttr("redirect") and
@@ -190,14 +164,15 @@ private module Tornado {
 
         private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
           override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-            // Method access
-            nodeTo.(DataFlow::AttrRead).getObject() = nodeFrom and
+            // normal (non-async) methods
             nodeFrom = instance() and
-            nodeTo in [argumentMethod(), argumentsMethod()]
-            or
-            // Method call
-            nodeTo.asCfgNode().(CallNode).getFunction() = nodeFrom.asCfgNode() and
-            nodeFrom in [argumentMethod(), argumentsMethod()]
+            nodeTo
+                .(DataFlow::MethodCallNode)
+                .calls(nodeFrom,
+                  [
+                    "get_argument", "get_body_argument", "get_query_argument", "get_arguments",
+                    "get_body_arguments", "get_query_arguments"
+                  ])
             or
             // Attributes
             nodeFrom = instance() and
@@ -315,27 +290,11 @@ private module Tornado {
         /** Gets a reference to an instance of `tornado.httputil.HttpServerRequest`. */
         DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
 
-        /** Gets a reference to the `full_url` method. */
-        private DataFlow::TypeTrackingNode full_url(DataFlow::TypeTracker t) {
-          t.startInAttr("full_url") and
-          result = instance()
-          or
-          exists(DataFlow::TypeTracker t2 | result = full_url(t2).track(t2, t))
-        }
-
-        /** Gets a reference to the `full_url` method. */
-        DataFlow::Node full_url() { full_url(DataFlow::TypeTracker::end()).flowsTo(result) }
-
         private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
           override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-            // Method access
-            nodeTo.(DataFlow::AttrRead).getObject() = nodeFrom and
+            // normal (non-async) methods
             nodeFrom = instance() and
-            nodeTo in [full_url()]
-            or
-            // Method call
-            nodeTo.asCfgNode().(CallNode).getFunction() = nodeFrom.asCfgNode() and
-            nodeFrom in [full_url()]
+            nodeTo.(DataFlow::MethodCallNode).calls(nodeFrom, ["full_url"])
             or
             // Attributes
             nodeFrom = instance() and

@@ -347,17 +347,9 @@ module Flask {
    */
   private class FlaskRequestAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
     override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-      // Methods
-      exists(string method_name | method_name in ["get_data", "get_json"] |
-        // Method access
-        nodeFrom = request().getAUse() and
-        nodeTo.(DataFlow::AttrRead).getObject() = nodeFrom and
-        nodeTo.(DataFlow::AttrRead).getAttributeName() = method_name
-        or
-        // Method call
-        nodeFrom = request().getMember(method_name).getAUse() and
-        nodeTo.(DataFlow::CallCfgNode).getFunction() = nodeFrom
-      )
+      // normal (non-async) methods
+      nodeFrom = request().getAUse() and
+      nodeTo.(DataFlow::MethodCallNode).calls(nodeFrom, ["get_data", "get_json"])
       or
       // Attributes
       nodeFrom = request().getAUse() and
