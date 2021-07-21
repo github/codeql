@@ -124,7 +124,7 @@ fn main() -> std::io::Result<()> {
 
     let language = tree_sitter_ruby::language();
     let erb = tree_sitter_embedded_template::language();
-    let schema = node_types::read_node_types_str(tree_sitter_ruby::NODE_TYPES)?;
+    let schema = node_types::read_node_types_str("ruby", tree_sitter_ruby::NODE_TYPES)?;
     let lines: std::io::Result<Vec<String>> = std::io::BufReader::new(file_list).lines().collect();
     let lines = lines?;
     lines.par_iter().try_for_each(|line| {
@@ -145,7 +145,7 @@ fn main() -> std::io::Result<()> {
         } else {
             code_ranges = vec![];
         }
-        let trap = extractor::extract(language, &schema, &path, &source, &code_ranges)?;
+        let trap = extractor::extract(language, "ruby", &schema, &path, &source, &code_ranges)?;
         std::fs::create_dir_all(&src_archive_file.parent().unwrap())?;
         std::fs::copy(&path, &src_archive_file)?;
         std::fs::create_dir_all(&trap_file.parent().unwrap())?;

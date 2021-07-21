@@ -81,15 +81,15 @@ pub enum Storage {
     },
 }
 
-pub fn read_node_types(node_types_path: &Path) -> std::io::Result<NodeTypeMap> {
+pub fn read_node_types(prefix: &str, node_types_path: &Path) -> std::io::Result<NodeTypeMap> {
     let file = fs::File::open(node_types_path)?;
     let node_types = serde_json::from_reader(file)?;
-    Ok(convert_nodes(&node_types))
+    Ok(convert_nodes(&prefix, &node_types))
 }
 
-pub fn read_node_types_str(node_types_json: &str) -> std::io::Result<NodeTypeMap> {
+pub fn read_node_types_str(prefix: &str, node_types_json: &str) -> std::io::Result<NodeTypeMap> {
     let node_types = serde_json::from_str(node_types_json)?;
-    Ok(convert_nodes(&node_types))
+    Ok(convert_nodes(&prefix, &node_types))
 }
 
 fn convert_type(node_type: &NodeType) -> TypeName {
@@ -104,7 +104,7 @@ fn convert_types(node_types: &Vec<NodeType>) -> Set<TypeName> {
     std::collections::BTreeSet::from(iter)
 }
 
-pub fn convert_nodes(nodes: &Vec<NodeInfo>) -> NodeTypeMap {
+pub fn convert_nodes(prefix: &str, nodes: &Vec<NodeInfo>) -> NodeTypeMap {
     let mut entries = NodeTypeMap::new();
     let mut token_kinds = Set::new();
 
@@ -125,6 +125,7 @@ pub fn convert_nodes(nodes: &Vec<NodeInfo>) -> NodeTypeMap {
         let flattened_name = &node_type_name(&node.kind, node.named);
         let dbscheme_name = escape_name(&flattened_name);
         let ql_class_name = dbscheme_name_to_class_name(&dbscheme_name);
+        let dbscheme_name = format!("{}_{}", prefix, &dbscheme_name);
         if let Some(subtypes) = &node.subtypes {
             // It's a tree-sitter supertype node, for which we create a union
             // type.
@@ -150,6 +151,8 @@ pub fn convert_nodes(nodes: &Vec<NodeInfo>) -> NodeTypeMap {
                 named: node.named,
             };
             let table_name = escape_name(&(format!("{}_def", &flattened_name)));
+            let table_name = format!("{}_{}", prefix, &table_name);
+
             let mut fields = Vec::new();
 
             // If the type also has fields or children, then we create either
@@ -157,6 +160,7 @@ pub fn convert_nodes(nodes: &Vec<NodeInfo>) -> NodeTypeMap {
             if let Some(node_fields) = &node.fields {
                 for (field_name, field_info) in node_fields {
                     add_field(
+                        &prefix,
                         &type_name,
                         Some(field_name.to_string()),
                         field_info,
@@ -167,7 +171,14 @@ pub fn convert_nodes(nodes: &Vec<NodeInfo>) -> NodeTypeMap {
             }
             if let Some(children) = &node.children {
                 // Treat children as if they were a field called 'child'.
-                add_field(&type_name, None, children, &mut fields, &token_kinds);
+                add_field(
+                    &prefix,
+                    &type_name,
+                    None,
+                    children,
+                    &mut fields,
+                    &token_kinds,
+                );
             }
             entries.insert(
                 type_name,
@@ -188,13 +199,13 @@ pub fn convert_nodes(nodes: &Vec<NodeInfo>) -> NodeTypeMap {
             counter += 1;
             let unprefixed_name = node_type_name(&type_name.kind, true);
             Entry {
-                dbscheme_name: escape_name(&format!("token_{}", &unprefixed_name)),
+                dbscheme_name: escape_name(&format!("{}_token_{}", &prefix, &unprefixed_name)),
                 ql_class_name: dbscheme_name_to_class_name(&escape_name(&unprefixed_name)),
                 kind: EntryKind::Token { kind_id: counter },
             }
         } else {
             Entry {
-                dbscheme_name: "reserved_word".to_owned(),
+                dbscheme_name: format!("{}_reserved_word", &prefix),
                 ql_class_name: "ReservedWord".to_owned(),
                 kind: EntryKind::Token { kind_id: 0 },
             }
@@ -205,6 +216,7 @@ pub fn convert_nodes(nodes: &Vec<NodeInfo>) -> NodeTypeMap {
 }
 
 fn add_field(
+    prefix: &str,
     parent_type_name: &TypeName,
     field_name: Option<String>,
     field_info: &FieldInfo,
@@ -221,7 +233,8 @@ fn add_field(
         // Put the field in an auxiliary table.
         let has_index = field_info.multiple;
         let field_table_name = escape_name(&format!(
-            "{}_{}",
+            "{}_{}_{}",
+            &prefix,
             parent_flattened_name,
             &name_for_field_or_child(&field_name)
         ));
@@ -244,7 +257,7 @@ fn add_field(
         let mut field_token_ints: BTreeMap<String, (usize, String)> = BTreeMap::new();
         for t in converted_types {
             let dbscheme_variant_name =
-                escape_name(&format!("{}_{}", parent_flattened_name, t.kind));
+                escape_name(&format!("{}_{}_{}", &prefix, parent_flattened_name, t.kind));
             field_token_ints.insert(t.kind.to_owned(), (counter, dbscheme_variant_name));
             counter += 1;
         }
@@ -256,7 +269,8 @@ fn add_field(
         FieldTypeInfo::Multiple {
             types: converted_types,
             dbscheme_union: format!(
-                "{}_{}_type",
+                "{}_{}_{}_type",
+                &prefix,
                 &parent_flattened_name,
                 &name_for_field_or_child(&field_name)
             ),
@@ -380,6 +394,23 @@ fn escape_name(name: &str) -> String {
     result
 }
 
+pub fn to_snake_case(word: &str) -> String {
+    let mut prev_upper = true;
+    let mut result = String::new();
+    for c in word.chars() {
+        if c.is_uppercase() {
+            if !prev_upper {
+                result.push('_')
+            }
+            prev_upper = true;
+            result.push(c.to_ascii_lowercase());
+        } else {
+            prev_upper = false;
+            result.push(c);
+        }
+    }
+    result
+}
 /// Given a valid dbscheme name (i.e. in snake case), produces the equivalent QL
 /// name (i.e. in CamelCase). For example, "foo_bar_baz" becomes "FooBarBaz".
 fn dbscheme_name_to_class_name(dbscheme_name: &str) -> String {
@@ -401,4 +432,11 @@ fn dbscheme_name_to_class_name(dbscheme_name: &str) -> String {
         .map(|word| to_title_case(word))
         .collect::<Vec<String>>()
         .join("")
+}
+
+#[test]
+fn to_snake_case_test() {
+    assert_eq!("ruby", to_snake_case("Ruby"));
+    assert_eq!("erb", to_snake_case("ERB"));
+    assert_eq!("embedded_template", to_snake_case("EmbeddedTemplate"));
 }

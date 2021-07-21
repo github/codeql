@@ -152,6 +152,7 @@ impl TrapWriter {
 /// Extracts the source file at `path`, which is assumed to be canonicalized.
 pub fn extract(
     language: Language,
+    language_prefix: &str,
     schema: &NodeTypeMap,
     path: &Path,
     source: &Vec<u8>,
@@ -183,6 +184,7 @@ pub fn extract(
         token_counter: 0,
         toplevel_child_counter: 0,
         stack: Vec::new(),
+        language_prefix,
         schema,
     };
     traverse(&tree, &mut visitor);
@@ -293,6 +295,8 @@ struct Visitor<'a> {
     token_counter: usize,
     /// A counter for top-level child nodes
     toplevel_child_counter: usize,
+    /// Language prefix
+    language_prefix: &'a str,
     /// A lookup table from type name to node types
     schema: &'a NodeTypeMap,
     /// A stack for gathering information from child nodes. Whenever a node is
@@ -400,7 +404,7 @@ impl Visitor<'_> {
         match &table.kind {
             EntryKind::Token { kind_id, .. } => {
                 self.trap_writer.add_tuple(
-                    "ast_node_parent",
+                    &format!("{}_ast_node_parent", self.language_prefix),
                     vec![
                         Arg::Label(id),
                         Arg::Label(parent_id),
@@ -408,7 +412,7 @@ impl Visitor<'_> {
                     ],
                 );
                 self.trap_writer.add_tuple(
-                    "tokeninfo",
+                    &format!("{}_tokeninfo", self.language_prefix),
                     vec![
                         Arg::Label(id),
                         Arg::Int(*kind_id),
@@ -426,7 +430,7 @@ impl Visitor<'_> {
             } => {
                 if let Some(args) = self.complex_node(&node, fields, &child_nodes, id) {
                     self.trap_writer.add_tuple(
-                        "ast_node_parent",
+                        &format!("{}_ast_node_parent", self.language_prefix),
                         vec![
                             Arg::Label(id),
                             Arg::Label(parent_id),

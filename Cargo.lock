@@ -400,6 +400,7 @@ dependencies = [
  "node-types",
  "tracing",
  "tracing-subscriber",
+ "tree-sitter-embedded-template",
  "tree-sitter-ruby",
 ]
 
