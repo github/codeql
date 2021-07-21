@@ -104,26 +104,20 @@ class LocalSourceNode extends Node {
   }
 
   /**
-   * DEPRECATED. Use `TypeTrackingNode::track` instead.
-   *
    * Gets a node that this node may flow to using one heap and/or interprocedural step.
    *
    * See `TypeTracker` for more details about how to use this.
    */
   pragma[inline]
-  deprecated LocalSourceNode track(TypeTracker t2, TypeTracker t) { t = t2.step(this, result) }
+  LocalSourceNode track(TypeTracker t2, TypeTracker t) { t = t2.step(this, result) }
 
   /**
-   * DEPRECATED. Use `TypeTrackingNode::backtrack` instead.
-   *
    * Gets a node that may flow into this one using one heap and/or interprocedural step.
    *
    * See `TypeBackTracker` for more details about how to use this.
    */
   pragma[inline]
-  deprecated LocalSourceNode backtrack(TypeBackTracker t2, TypeBackTracker t) {
-    t2 = t.step(result, this)
-  }
+  LocalSourceNode backtrack(TypeBackTracker t2, TypeBackTracker t) { t2 = t.step(result, this) }
 }
 
 /**
@@ -131,40 +125,46 @@ class LocalSourceNode extends Node {
  *
  * All steps made during type tracking should be between instances of this class.
  */
-class TypeTrackingNode extends Node {
-  TypeTrackingNode() {
-    this instanceof LocalSourceNode
-    or
-    this instanceof ModuleVariableNode
+class TypeTrackingNode = LocalSourceNode;
+
+/** Temporary holding ground for the `TypeTrackingNode` class. */
+private module FutureWork {
+  class FutureTypeTrackingNode extends Node {
+    FutureTypeTrackingNode() {
+      this instanceof LocalSourceNode
+      or
+      this instanceof ModuleVariableNode
+    }
+
+    /**
+     * Holds if this node can flow to `nodeTo` in one or more local flow steps.
+     *
+     * For `ModuleVariableNode`s, the only "local" step is to the node itself.
+     * For `LocalSourceNode`s, this is the usual notion of local flow.
+     */
+    pragma[inline]
+    predicate flowsTo(Node node) {
+      this instanceof ModuleVariableNode and this = node
+      or
+      this.(LocalSourceNode).flowsTo(node)
+    }
+
+    /**
+     * Gets a node that this node may flow to using one heap and/or interprocedural step.
+     *
+     * See `TypeTracker` for more details about how to use this.
+     */
+    pragma[inline]
+    TypeTrackingNode track(TypeTracker t2, TypeTracker t) { t = t2.step(this, result) }
+
+    /**
+     * Gets a node that may flow into this one using one heap and/or interprocedural step.
+     *
+     * See `TypeBackTracker` for more details about how to use this.
+     */
+    pragma[inline]
+    TypeTrackingNode backtrack(TypeBackTracker t2, TypeBackTracker t) { t2 = t.step(result, this) }
   }
-
-  /**
-   * Holds if this node can flow to `nodeTo` in one or more local flow steps.
-   *
-   * For `ModuleVariableNode`s, the only "local" step is to the node itself.
-   * For `LocalSourceNode`s, this is the usual notion of local flow.
-   */
-  predicate flowsTo(Node node) {
-    this instanceof ModuleVariableNode and this = node
-    or
-    this.(LocalSourceNode).flowsTo(node)
-  }
-
-  /**
-   * Gets a node that this node may flow to using one heap and/or interprocedural step.
-   *
-   * See `TypeTracker` for more details about how to use this.
-   */
-  pragma[inline]
-  TypeTrackingNode track(TypeTracker t2, TypeTracker t) { t = t2.step(this, result) }
-
-  /**
-   * Gets a node that may flow into this one using one heap and/or interprocedural step.
-   *
-   * See `TypeBackTracker` for more details about how to use this.
-   */
-  pragma[inline]
-  TypeTrackingNode backtrack(TypeBackTracker t2, TypeBackTracker t) { t2 = t.step(result, this) }
 }
 
 cached
