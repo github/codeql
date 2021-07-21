@@ -65,6 +65,56 @@ module Stdlib {
       }
     }
   }
+
+  /**
+   * Provides models for the `http.client.HTTPMessage` class
+   *
+   * Has no official docs, but see
+   * https://github.com/python/cpython/blob/64f54b7ccd49764b0304e076bfd79b5482988f53/Lib/http/client.py#L175
+   * and https://docs.python.org/3.9/library/email.compat32-message.html#email.message.Message
+   */
+  module HTTPMessage {
+    /**
+     * A source of instances of `http.client.HTTPMessage`, extend this class to model new instances.
+     *
+     * This can include instantiations of the class, return values from function
+     * calls, or a special parameter that will be set when functions are called by an external
+     * library.
+     *
+     * Use the predicate `HTTPMessage::instance()` to get references to instances of `http.client.HTTPMessage`.
+     */
+    abstract class InstanceSource extends DataFlow::LocalSourceNode { }
+
+    /** Gets a reference to an instance of `http.client.HTTPMessage`. */
+    private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
+      t.start() and
+      result instanceof InstanceSource
+      or
+      exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+    }
+
+    /** Gets a reference to an instance of `http.client.HTTPMessage`. */
+    DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
+
+    /**
+     * Taint propagation for `http.client.HTTPMessage`.
+     */
+    private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+      override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+        // Methods
+        //
+        // TODO: When we have tools that make it easy, model these properly to handle
+        // `meth = obj.meth; meth()`. Until then, we'll use this more syntactic approach
+        // (since it allows us to at least capture the most common cases).
+        nodeFrom = instance() and
+        exists(DataFlow::AttrRead attr | attr.getObject() = nodeFrom |
+          // normal (non-async) methods
+          attr.getAttributeName() in ["get_all", "as_bytes", "as_string", "keys"] and
+          nodeTo.(DataFlow::CallCfgNode).getFunction() = attr
+        )
+      }
+    }
+  }
 }
 
 /**
@@ -971,6 +1021,13 @@ private module StdlibPrivate {
               "rfile"
             ]
         )
+      }
+    }
+
+    /** An `HTTPMessage` instance that originates from a `BaseHTTPRequestHandler` instance. */
+    private class BaseHTTPRequestHandlerHeadersInstances extends Stdlib::HTTPMessage::InstanceSource {
+      BaseHTTPRequestHandlerHeadersInstances() {
+        this.(DataFlow::AttrRead).accesses(instance(), "headers")
       }
     }
 
