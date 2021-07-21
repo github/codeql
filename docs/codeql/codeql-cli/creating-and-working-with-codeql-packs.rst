@@ -9,7 +9,7 @@ You can use CodeQL packs to create, share, depend on, and run CodeQL queries and
 
    Note
 
-   The CodeQL package manager is currently in beta and subject to change. During the beta, CodeQL packs are available only in the GitHub Package Registry (GHPR).
+   The CodeQL package manager is currently in beta and subject to change. During the beta, CodeQL packs are available only in the GitHub Package Registry (GHPR). You must use version 2.5.8 or later of the CodeQL CLI to use the CodeQL package manager.
 
 About CodeQL packs and the CodeQL CLI package manager
 -----------------------------------------------------
@@ -55,8 +55,18 @@ You can add dependencies on CodeQL packs using the command ``codeql pack add``. 
 
 The version number is optional. If you leave off the version number, the latest version will be added.
 
+This command updates the ``qlpack.yml`` file with the requested dependencies and downloads them into the package cache.
+
 You can also manually edit the ``qlpack.yml`` file to include dependencies and install the dependencies with the command:
 
 ::
 
   codeql pack install
+
+This command downloads all dependencies to the shared cache on the local disk.
+
+.. pull-quote::
+
+   Note
+
+   Running the ``codeql pack add`` and ``codeql pack install`` commands will generate or update the ``qlpack.lock.yml`` file. This file should be checked-in to version control. ``qlpack.lock.yml`` contains the precise version numbers used by the pack.
