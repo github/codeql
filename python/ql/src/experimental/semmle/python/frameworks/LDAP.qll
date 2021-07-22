@@ -99,6 +99,42 @@ private module LDAP {
       override DataFlow::Node getPassword() {
         result in [this.getArg(1), this.getArgByName("cred")]
       }
+
+      override DataFlow::Node getHost() {
+        exists(DataFlow::CallCfgNode initialize |
+          this.getFunction().(DataFlow::AttrRead).getObject().getALocalSource() = initialize and
+          initialize = ldapInitialize().getACall() and
+          result = initialize.getArg(0)
+        )
+      }
+
+      override predicate useSSL() {
+        // use initialize to correlate `this` and so avoid FP in several instances
+        exists(DataFlow::CallCfgNode initialize |
+          this.getFunction().(DataFlow::AttrRead).getObject().getALocalSource() = initialize and
+          initialize = ldapInitialize().getACall() and
+          (
+            // ldap_connection.start_tls_s()
+            exists(DataFlow::AttrRead startTLS |
+              startTLS.getObject().getALocalSource() = initialize and
+              startTLS.getAttributeName().matches("%start_tls%")
+            )
+            or
+            // ldap_connection.set_option(ldap.OPT_X_TLS_%s, True)
+            // ldap_connection.set_option(ldap.OPT_X_TLS_%s)
+            exists(DataFlow::CallCfgNode setOption |
+              setOption.getFunction().(DataFlow::AttrRead).getObject().getALocalSource() =
+                initialize and
+              setOption.getFunction().(DataFlow::AttrRead).getAttributeName() = "set_option" and
+              setOption.getArg(0) =
+                ldap().getMember("OPT_X_TLS_" + ["ALLOW", "TRY", "DEMAND", "HARD"]).getAUse() and
+              not DataFlow::exprNode(any(False falseExpr))
+                  .(DataFlow::LocalSourceNode)
+                  .flowsTo(setOption.getArg(1))
+            )
+          )
+        )
+      }
     }
 
     /**
@@ -165,6 +201,24 @@ private module LDAP {
 
       override DataFlow::Node getPassword() {
         result in [this.getArg(2), this.getArgByName("password")]
+      }
+
+      override DataFlow::Node getHost() {
+        exists(DataFlow::CallCfgNode serverCall |
+          serverCall = ldap3Server().getACall() and
+          this.getArg(0).getALocalSource() = serverCall and
+          result = serverCall.getArg(0)
+        )
+      }
+
+      override predicate useSSL() {
+        exists(DataFlow::CallCfgNode serverCall |
+          serverCall = ldap3Server().getACall() and
+          this.getArg(0).getALocalSource() = serverCall and
+          DataFlow::exprNode(any(True trueExpr))
+              .(DataFlow::LocalSourceNode)
+              .flowsTo([serverCall.getArg(2), serverCall.getArgByName("use_ssl")])
+        )
       }
     }
 

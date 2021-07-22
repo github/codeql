@@ -83,7 +83,7 @@ def six():
 def four():
     host = "ldap://" + partial_host
 
-    srv = Server(host, port=1337, True)
+    srv = Server(host, 1337, True)
     conn = Connection(srv, "dn", "password")
     conn.search("dn", "search_filter")
     return conn.response
