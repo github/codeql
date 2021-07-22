@@ -281,8 +281,15 @@ module Templating {
    *   likely template file being referenced.
    */
   abstract class TemplateFileReference extends DataFlow::Node {
-    /** Gets the value that identifies the template. Defaults to `getStringValue()`. */
-    string getValue() { result = getStringValue() }
+    /** Gets the value that identifies the template. */
+    string getValue() {
+      result = getStringValue()
+      or
+      exists(API::Node node |
+        this = node.getARhs() and
+        result = node.getAValueReachingRhs().getStringValue()
+      )
+    }
 
     /** Gets the template file referenced by this node. */
     final TemplateFile getTemplateFile() {
