@@ -16,9 +16,9 @@ For information about writing queries to run with ``database analyze``, see
 Before starting an analysis you must:
 
 - :doc:`Set up the CodeQL CLI <getting-started-with-the-codeql-cli>` so that it can find the queries
-  and libraries included in the CodeQL repository. 
-- :doc:`Create a CodeQL database <creating-codeql-databases>` for the source 
-  code you want to analyze. 
+  and libraries included in the CodeQL repository.
+- :doc:`Create a CodeQL database <creating-codeql-databases>` for the source
+  code you want to analyze.
 
 
 Running ``codeql database analyze``
@@ -65,7 +65,7 @@ You can also specify:
 - .. include:: ../reusables/threads-query-execution.rst
 
 
-.. pull-quote:: 
+.. pull-quote::
 
    Upgrading databases
 
@@ -94,7 +94,7 @@ Running a single query
 To run a single query over a CodeQL database for a JavaScript codebase,
 you could use the following command from the directory containing your database::
 
-   codeql database analyze <javascript-database> ../ql/javascript/ql/src/Declarations/UnusedVariable.ql --format=csv --output=js-analysis/js-results.csv 
+   codeql database analyze <javascript-database> ../ql/javascript/ql/src/Declarations/UnusedVariable.ql --format=csv --output=js-analysis/js-results.csv
 
 This command runs a simple query that finds potential bugs related to unused
 variables, imports, functions, or classes---it is one of the JavaScript
@@ -102,28 +102,50 @@ queries included in the CodeQL repository. You could run more than one query by
 specifying a space-separated list of similar paths.
 
 The analysis generates a CSV file (``js-results.csv``) in a new directory
-(``js-analysis``).  
+(``js-analysis``).
 
 You can also run your own custom queries with the ``database analyze`` command.
 For more information about preparing your queries to use with the CodeQL CLI,
 see ":doc:`Using custom queries with the CodeQL CLI <using-custom-queries-with-the-codeql-cli>`."
 
+Running a CodeQL pack
+~~~~~~~~~~~~~~~~~~~~~
+
+.. pull-quote::
+
+    Note
+
+    The CodeQL package manager is currently in beta and subject to change. During the beta, CodeQL packs are available only in the GitHub Package Registry (GHPR). You must use version 2.5.8 or later of the CodeQL CLI to use the CodeQL package manager.
+
+    During the beta, you must specify ``--allow-packs`` whenever you run the ``analyze`` command.
+
+To run an existing CodeQl pack from the GitHub Package Registry (GHPR), you need to download it first:
+
+   codeql pack download microsoft/coding-standards@1.0.0
+
+Afterwards, you can run the pack on a specific database:
+
+   codeql database analyze <database> --allow-packs microsoft/coding-standards@1.0.0 <scope>/<other-pack>
+
+The ``analyze`` command above runs the default suite from ``microsoft/coding-standards v1.0.0`` and the latest version of ``scope/other-pack`` on the specified database.
+For further information about default suites, see ":ref:`Publishing and using CodeQL packs <publishing-and-using-codeql-packs>`".
+
 Running GitHub code scanning suites
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-To run the GitHub code scanning suite of queries over a CodeQL database for a C/C++ codebase, 
+To run the GitHub code scanning suite of queries over a CodeQL database for a C/C++ codebase,
 you could use the following command from the directory containing your database::
 
    codeql database analyze <cpp-database> cpp-code-scanning.qls --format=sarifv2.1.0 --output=cpp-results.sarif
 
 The analysis generates a file in the v2.1.0 SARIF format that is supported by all versions of GitHub.
 This file can be uploaded to GitHub using ``github upload-results`` or the code scanning API.
-For more information, see `Analyzing a CodeQL database <https://docs.github.com/en/code-security/secure-coding/configuring-codeql-cli-in-your-ci-system#analyzing-a-codeql-database>`__ 
+For more information, see `Analyzing a CodeQL database <https://docs.github.com/en/code-security/secure-coding/configuring-codeql-cli-in-your-ci-system#analyzing-a-codeql-database>`__
 or `Code scanning API <https://docs.github.com/en/rest/reference/code-scanning>`__ in the GitHub documentation.
 
-CodeQL query suites are ``.qls`` files that use directives to select queries to run 
+CodeQL query suites are ``.qls`` files that use directives to select queries to run
 based on certain metadata properties. The standard QL packs have metadata that specify
-the location of the code scanning suites, so the CodeQL CLI knows where to find these 
+the location of the code scanning suites, so the CodeQL CLI knows where to find these
 suite files automatically, and you don't have to specify the full path on the command line.
 For more information, see ":ref:`About QL packs <standard-ql-packs>`."
 
