@@ -8,27 +8,30 @@ import subprocess
 import json
 import glob
 import shlex
+import shutil
+import tempfile
 from shutil import copyfile
 
 
 def print_usage(exit_code=1):
-    print("Usage: makeStubs.py testDir stubDir\n",
+    print("Usage: makeStubs.py testDir stubDir [pom.xml]\n",
           "testDir: the directory containing the qltest to be stubbed.\n"
-          "    Should contain an `options0` file pointing to the jars to stub, and an `options1` file pointing to `stubdir`.\n"
-          "    These files should be in the same format as a normal `options` file.\n",
-          "stubDir: the directory to output the generated stubs to")
+          "    Should contain an 'options' file pointing to 'stubdir'.\n"
+          "    These files should be in the same format as a normal 'options' file.\n",
+          "stubDir: the directory to output the generated stubs to\n",
+          "pom.xml: a 'pom.xml' file that can be used to build the project\n",
+          "    If the test can be extracted without a 'pom.xml', this argument can be ommitted.")
     exit(exit_code)
 
 
 if "--help" in sys.argv or "-h" in sys.argv:
     print_usage(0)
 
-if len(sys.argv) != 3:
+if len(sys.argv) not in [3, 4]:
     print_usage()
 
 testDir = sys.argv[1].rstrip("/")
 stubDir = sys.argv[2].rstrip("/")
-
 
 def check_dir_exists(path):
     if not os.path.isdir(path):
@@ -46,11 +49,8 @@ check_dir_exists(testDir)
 check_dir_exists(stubDir)
 
 optionsFile = os.path.join(testDir, "options")
-options0File = os.path.join(testDir, "options0")
-options1File = os.path.join(testDir, "options1")
 
-check_file_exists(options0File)
-check_file_exists(options1File)
+check_file_exists(optionsFile)
 
 # Does it contain a .ql file and a .java file?
 
@@ -67,12 +67,33 @@ if not foundJava:
     exit(1)
 
 
+workDir = tempfile.TemporaryDirectory().name
+
+print("Created temporary directory '%s'" % workDir)
+
 javaQueries = os.path.abspath(os.path.dirname(sys.argv[0]))
-outputBqrsFile = os.path.join(testDir, 'output.bqrs')
-outputJsonFile = os.path.join(testDir, 'output.json')
+outputBqrsFile = os.path.join(workDir, 'output.bqrs')
+outputJsonFile = os.path.join(workDir, 'output.json')
 
-dbDir = os.path.join(testDir, os.path.basename(testDir) + ".testproj")
+# Make a database that touches all types whose methods we want to test:
+print("Creating Maven project")
+projectDir = os.path.join(workDir, "mavenProject")
+os.makedirs(projectDir)
 
+if len(sys.argv) == 4:
+    projectTestPkgDir = os.path.join(projectDir, "src", "main", "java", "test")
+    shutil.copytree(testDir, projectTestPkgDir, ignore=shutil.ignore_patterns('*.testproj'))
+
+    try:
+        shutil.copyfile(sys.argv[3], os.path.join(projectDir, "pom.xml"))
+    except Exception as e:
+        print("Failed to read project POM %s: %s" % (sys.argv[2], e), file = sys.stderr)
+        sys.exit(1)
+else:
+    # if `pom.xml` is omitted, simply copy the test directory to `projectDir`
+    shutil.copytree(testDir, projectDir, ignore=shutil.ignore_patterns('*.testproj'))
+
+dbDir = os.path.join(workDir, "db")
 
 def print_javac_output():
     logFiles = glob.glob(os.path.join(dbDir, "log", "javac-output*"))
@@ -98,11 +119,9 @@ def run(cmd):
 
 print("Stubbing qltest in", testDir)
 
-copyfile(options0File, optionsFile)
-
-if run(['codeql', 'test', 'run', '--keep-databases', testDir]):
+if run(['codeql', 'database', 'create', '--language=java', '--source-root='+projectDir, dbDir]):
     print_javac_output()
-    print("codeql test failed. Please fix up the test before proceeding.")
+    print("codeql database create failed. Please fix up the test before proceeding.")
     exit(1)
 
 if not os.path.isdir(dbDir):
@@ -143,12 +162,12 @@ for (typ, stub) in results['#select']['tuples']:
 
 print("Verifying stub correctness")
 
-copyfile(options1File, optionsFile)
-
 if run(['codeql', 'test', 'run', testDir]):
     print_javac_output()
     print('\nTest failed. You may need to fix up the generated stubs.')
     exit(1)
+
+os.rmdir(workDir)
 
 print("\nStub generation successful!")
 
