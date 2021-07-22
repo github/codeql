@@ -358,7 +358,7 @@ class GetDelimFunction extends DataFlowFunction {
 /**
  * @name Untrusted data to alloca
  * @id cpp/untrusted-data-to-alloca
- * @k
+ * @kind path-problem
  */
 import cpp
 import semmle.code.cpp.controlflow.Guards

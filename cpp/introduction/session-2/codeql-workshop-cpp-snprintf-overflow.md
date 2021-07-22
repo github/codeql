@@ -122,7 +122,7 @@ The workshop is split into several steps. You can write one query per step, or w
     from FunctionCall snprintfCall
     where
       snprintfCall.getTarget().getName() = "snprintf" and
-      snprintfCall instanceof ExprInVoidContext
+      not snprintfCall instanceof ExprInVoidContext
     select snprintfCall
     ```
     </details>
@@ -170,7 +170,7 @@ The workshop is split into several steps. You can write one query per step, or w
       TaintTracking::localTaint(source, sink) and
       source.asExpr() = snprintfCall and
       sink.asExpr() = snprintfCall.getArgument(1)
-    select call
+    select snprintfCall
     ```
     </details>
 
