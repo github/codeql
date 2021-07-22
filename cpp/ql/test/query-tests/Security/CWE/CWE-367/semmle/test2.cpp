@@ -36,7 +36,7 @@ void test1_1(const char *path)
 	if (f == NULL)
 	{
 		// retry
-		f = fopen(path, "r"); // GOOD (this is just trying again) [FALSE POSITIVE]
+		f = fopen(path, "r"); // GOOD (this is just trying again)
 	}
 
 	// ...
@@ -49,7 +49,7 @@ void test1_2(const char *path)
 	// try until we succeed
 	while (f == NULL)
 	{
-		f = fopen(path, "r"); // GOOD (this is just trying again) [FALSE POSITIVE]
+		f = fopen(path, "r"); // GOOD (this is just trying again)
 
 		// ...
 	}
@@ -80,7 +80,7 @@ void test2_2(const char *path)
 	stat(path, &buf);
 	if (buf.foo > 0)
 	{
-		f = fopen(path, "r"); // BAD [NOT DETECTED]
+		f = fopen(path, "r"); // BAD
 	}
 
 	// ...
@@ -112,7 +112,7 @@ void test2_4(const char *path)
 	stat(path, &buf);
 	if (stat_condition(&buf))
 	{
-		f = fopen(path, "r"); // BAD [NOT DETECTED]
+		f = fopen(path, "r"); // BAD
 	}
 
 	// ...
@@ -127,7 +127,7 @@ void test2_5(const char *path)
 	stat(path, buf_ptr);
 	if (stat_condition(buf_ptr))
 	{
-		f = fopen(path, "r"); // BAD [NOT DETECTED]
+		f = fopen(path, "r"); // BAD
 	}
 
 	// ...
@@ -242,7 +242,7 @@ void test4_1(const char *path)
 
 		fclose(f);
 
-		chmod(path, 0); // DUBIOUS (bad but perhaps not exploitable) [REPORTED]
+		chmod(path, 0); // BAD
 	}
 }
 
@@ -252,7 +252,7 @@ void test5_1(const char *path1, const char *path2)
 {
 	if (rename(path1, path2))
 	{
-		remove(path1); // DUBIOUS (bad but perhaps not exploitable) [REPORTED]
+		remove(path1); // DUBIOUS (bad but perhaps not exploitable)
 	}
 }
 
@@ -329,5 +329,30 @@ void test6_5(const char *path1, const char *path2)
 		f = fopen(path2, "r"); // GOOD (different file)
 
 		// ...
+	}
+}
+
+// --- open / rename -> chmod ---
+
+void test7_1(const char *path)
+{
+	FILE *f;
+
+	f = fopen(path, "wt");
+	if (f != 0)
+	{
+		// ...
+	
+		fclose(f);
+
+		chmod(path, 1234); // BAD
+	}
+}
+
+void test7_1(const char *path1, const char *path2)
+{
+	if (!rename(path1, path2))
+	{
+		chmod(path2, 1234); // BAD
 	}
 }
