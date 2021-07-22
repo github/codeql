@@ -15,7 +15,7 @@ import UnsafeReflectionLib
 import semmle.code.java.dataflow.FlowSources
 import DataFlow::PathGraph
 
-class ContainsSanitizer extends DataFlow::BarrierGuard {
+private class ContainsSanitizer extends DataFlow::BarrierGuard {
   ContainsSanitizer() { this.(MethodAccess).getMethod().hasName("contains") }
 
   override predicate checks(Expr e, boolean branch) {
@@ -23,7 +23,7 @@ class ContainsSanitizer extends DataFlow::BarrierGuard {
   }
 }
 
-class EqualsSanitizer extends DataFlow::BarrierGuard {
+private class EqualsSanitizer extends DataFlow::BarrierGuard {
   EqualsSanitizer() { this.(MethodAccess).getMethod().hasName("equals") }
 
   override predicate checks(Expr e, boolean branch) {
