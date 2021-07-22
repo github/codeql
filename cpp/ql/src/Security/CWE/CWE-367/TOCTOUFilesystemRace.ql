@@ -29,7 +29,7 @@ FunctionCall filenameOperation(Expr path) {
     name =
       [
         "remove", "unlink", "rmdir", "rename", "fopen", "open", "freopen", "_open", "_wopen",
-        "_wfopen", "_wfsopen"
+        "_wfopen", "_fsopen", "_wfsopen"
       ] and
     result.getArgument(0) = path
     or
