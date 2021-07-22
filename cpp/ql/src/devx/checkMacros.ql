@@ -21,8 +21,20 @@ import semmle.code.cpp.models.interfaces.FormattingFunction
 
 // Example: syslog(LOG_ERR, "%s: Failed init_producer", __FUNCTION__);
 
-from string format, FormattingFunctionCall fc, FormatLiteral fl
+
+predicate isLogDebug(Expr mie) {
+    exists(MacroInvocation mi |
+        mi.getExpr() = mie and
+        (
+          mi.getMacroName() = "LOG_DEBUG" or
+        )
+      )
+}
+
+
+from string format, FormattingFunctionCall fc
 where format = fc.getFormat().getValue() // format: "%s: Failed init_producer"
 and format.regexpMatch(".*")
 and fc.getTarget().hasName("syslog") 
-select fc, fc.getArgument(0).getValue().toString()
+and isLogDebug(fc.getArgument(0))
+select fc, "test"
