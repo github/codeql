@@ -47,7 +47,29 @@ For more information about these metadata properties, see ":ref:`Metadata for Co
    Metadata requirements may differ if you want to use your query with other
    applications. For more information, see ":ref:`Metadata for CodeQL queries
    <metadata-for-codeql-queries>`
-   ."  
+   ."
+
+Packaging custom QL queries
+---------------------------
+
+When writing your own queries, you can either just save them in a custom QL pack
+directory or subsequently include the pack in a CodeQL package which you can
+then upload to the GitHub Package Registry (GHPR).
+
+QL packs organize the files used in CodeQL analysis and can store queries,
+library files, query suites, and important metadata. Their root directory must
+contain a file named ``qlpack.yml``. Your custom queries should be saved in the
+QL pack root, or its subdirectories.
+
+For each QL pack, the ``qlpack.yml`` file includes information that tells CodeQL
+how to compile the queries, which other CodeQL packs and libraries the pack
+depends on, and where to find query suite definitions. For more information
+about what to include in this file, see ":ref:`About QL packs <about-ql-packs>`."
+
+CodeQL packages are used to create, share, depend on, and run CodeQL queries and
+libraries. You can publish your own CodeQL packages and download ones created by
+others via the the GitHub Package Registry (GHPR). For further information see
+":ref:`About CodeQL packs <about-codeql-packs>`."
 
 Contributing to the CodeQL repository
 -------------------------------------
