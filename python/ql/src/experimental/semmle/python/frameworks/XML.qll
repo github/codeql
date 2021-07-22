@@ -76,8 +76,35 @@ private module XML {
 
   private class LXMLParsing extends DataFlow::CallCfgNode, XMLParsing::Range {
     LXMLParsing() {
-      this = lxmlEtree().getMember(["fromstring", "fromstringlist", "XML"]).getACall()
+      this = lxmlEtree().getMember(["fromstring", "fromstringlist", "XML", "parse"]).getACall()
     }
+
+    override DataFlow::Node getAnInput() { result = this.getArg(0) }
+
+    override predicate mayBeDangerous() {
+      exists(XMLParser xmlParser |
+        xmlParser.mayBeDangerous() and this.getArgByName("parser").getALocalSource() = xmlParser
+      )
+    }
+  }
+
+  private API::Node xmltodict() { result = API::moduleImport("xmltodict") }
+
+  private class XMLtoDictParsing extends DataFlow::CallCfgNode, XMLParsing::Range {
+    XMLtoDictParsing() { this = xmltodict().getMember("parse").getACall() }
+
+    override DataFlow::Node getAnInput() { result = this.getArg(0) }
+
+    override predicate mayBeDangerous() {
+      DataFlow::localFlow(DataFlow::exprNode(any(False falseName)),
+        this.getArgByName("disable_entities"))
+    }
+  }
+
+  private API::Node xmlDom() { result = xml().getMember("dom").getMember(["mini", "pull"] + "dom") }
+
+  private class XMLDomParsing extends DataFlow::CallCfgNode, XMLParsing::Range {
+    XMLDomParsing() { this = xmlDom().getMember("parse").getACall() }
 
     override DataFlow::Node getAnInput() { result = this.getArg(0) }
 
