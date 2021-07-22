@@ -16,8 +16,8 @@ from shutil import copyfile
 def print_usage(exit_code=1):
     print("Usage: makeStubs.py testDir stubDir [pom.xml]\n",
           "testDir: the directory containing the qltest to be stubbed.\n"
-          "    Should contain an 'options' file pointing to 'stubdir'.\n"
-          "    These files should be in the same format as a normal 'options' file.\n",
+          "    Should contain an 'options' file pointing to 'stubDir'.\n"
+          "    This file should be in the same format as a normal 'options' file.\n",
           "stubDir: the directory to output the generated stubs to\n",
           "pom.xml: a 'pom.xml' file that can be used to build the project\n",
           "    If the test can be extracted without a 'pom.xml', this argument can be ommitted.")
@@ -32,6 +32,7 @@ if len(sys.argv) not in [3, 4]:
 
 testDir = os.path.normpath(sys.argv[1])
 stubDir = os.path.normpath(sys.argv[2])
+
 
 def check_dir_exists(path):
     if not os.path.isdir(path):
@@ -82,18 +83,22 @@ os.makedirs(projectDir)
 
 if len(sys.argv) == 4:
     projectTestPkgDir = os.path.join(projectDir, "src", "main", "java", "test")
-    shutil.copytree(testDir, projectTestPkgDir, ignore=shutil.ignore_patterns('*.testproj'))
+    shutil.copytree(testDir, projectTestPkgDir,
+                    ignore=shutil.ignore_patterns('*.testproj'))
 
     try:
         shutil.copyfile(sys.argv[3], os.path.join(projectDir, "pom.xml"))
     except Exception as e:
-        print("Failed to read project POM %s: %s" % (sys.argv[2], e), file = sys.stderr)
+        print("Failed to read project POM %s: %s" %
+              (sys.argv[2], e), file=sys.stderr)
         sys.exit(1)
 else:
     # if `pom.xml` is omitted, simply copy the test directory to `projectDir`
-    shutil.copytree(testDir, projectDir, ignore=shutil.ignore_patterns('*.testproj'))
+    shutil.copytree(testDir, projectDir,
+                    ignore=shutil.ignore_patterns('*.testproj'))
 
 dbDir = os.path.join(workDir, "db")
+
 
 def print_javac_output():
     logFiles = glob.glob(os.path.join(dbDir, "log", "javac-output*"))
@@ -143,7 +148,7 @@ try:
     results['#select']['tuples']
     results['noGeneratedStubs']['tuples']
     results['multipleGeneratedStubs']['tuples']
-except ValueError:
+except KeyError:
     print('Unexpected JSON output - no tuples found')
     exit(1)
 
