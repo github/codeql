@@ -19,6 +19,15 @@ class FileWrite extends Expr {
    * Gets the expression for the object being written to.
    */
   Expr getDest() { fileWrite(this, _, result) }
+
+  /**
+   * Gets the conversion character for this write, if it exists and is known. For example in the following code the write of `value1` has conversion character `"s"`, whereas the write of `value2` has no conversion specifier.
+   * ```
+   * fprintf(file, "%s", value1);
+   * stream << value2;
+   * ```
+   */
+  string getSourceConvChar(Expr source) { fileWriteWithConvChar(this, source, result) }
 }
 
 /**
@@ -149,4 +158,23 @@ private predicate fileWrite(Call write, Expr source, Expr dest) {
   or
   // file stream using '<<', 'put' or 'write'
   fileStreamChain(write, source, dest)
+}
+
+/**
+ * Whether the function call is a write to a file from 'source' with
+ * conversion character 'conv'. Does not hold if there isn't a conversion
+ * character, or if it is unknown (for example the format string is not a
+ * constant).
+ */
+private predicate fileWriteWithConvChar(
+  FormattingFunctionCall ffc, Expr source, string conv
+) {
+  // fprintf
+  exists(FormattingFunction f, int n |
+    f = ffc.getTarget() and
+    source = ffc.getFormatArgument(n)
+  |
+    exists(f.getOutputParameterIndex(true)) and
+    conv = ffc.(FormattingFunctionCall).getFormat().(FormatLiteral).getConversionChar(n)
+  )
 }

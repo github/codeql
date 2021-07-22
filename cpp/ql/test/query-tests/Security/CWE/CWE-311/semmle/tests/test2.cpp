@@ -76,7 +76,7 @@ void tests(FILE *log, myStruct &s)
 		fprintf(log, "buf = %s\n", buf); // GOOD
 	}
 
-	fprintf(log, "password = %p\n", s.password); // GOOD [FALSE POSITIVE]
+	fprintf(log, "password = %p\n", s.password); // GOOD
 
 	{
 		if (fopen(s.passwd_config2, "rt") == 0)

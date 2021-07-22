@@ -25,27 +25,29 @@ predicate filenameOperation(FunctionCall op, Expr path) {
     name =
       [
         "remove", "unlink", "rmdir", "rename", "fopen", "open", "freopen", "_open", "_wopen",
-        "_wfopen", "_fsopen", "_wfsopen", "chmod", "chown", "stat", "lstat", "fstat", "access", "_access", "_waccess", "_access_s", "_waccess_s"
+        "_wfopen", "_fsopen", "_wfsopen", "chmod", "chown", "stat", "lstat", "fstat", "access",
+        "_access", "_waccess", "_access_s", "_waccess_s"
       ] and
-      path = op.getArgument(0)
+    path = op.getArgument(0)
     or
     name = ["fopen_s", "wfopen_s", "rename"] and
     path = op.getArgument(1)
   )
 }
 
-predicate isFileName(GVN gvn)
-{
+predicate isFileName(GVN gvn) {
   exists(FunctionCall op, Expr path |
     filenameOperation(op, path) and
     gvn = globalValueNumber(path)
   )
 }
 
-from FileWrite w, SensitiveExpr source, Expr dest
+from FileWrite w, SensitiveExpr source, Expr mid, Expr dest
 where
-  DataFlow::localFlow(DataFlow::exprNode(source), DataFlow::exprNode(w.getASource())) and
+  DataFlow::localFlow(DataFlow::exprNode(source), DataFlow::exprNode(mid)) and
+  mid = w.getASource() and
   dest = w.getDest() and
-  not isFileName(globalValueNumber(source)) // file names are not passwords
+  not isFileName(globalValueNumber(source)) and // file names are not passwords
+  not exists(string convChar | convChar = w.getSourceConvChar(mid) | not convChar = ["s", "S"]) // ignore things written with other conversion characters
 select w, "This write into file '" + dest.toString() + "' may contain unencrypted data from $@",
   source, "this source."
