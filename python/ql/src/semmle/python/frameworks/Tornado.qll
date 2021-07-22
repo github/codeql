@@ -11,6 +11,7 @@ private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
 private import semmle.python.regex
 private import semmle.python.frameworks.Stdlib
+private import semmle.python.frameworks.internal.InstanceTaintStepsHelper
 
 /**
  * Provides models for the `tornado` PyPI package.
@@ -48,12 +49,16 @@ private module Tornado {
     /**
      * Taint propagation for `tornado.httputil.HTTPHeaders`.
      */
-    private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
-      override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-        // normal (non-async) methods
-        nodeFrom = instance() and
-        nodeTo.(DataFlow::MethodCallNode).calls(nodeFrom, ["get_list", "get_all"])
-      }
+    private class InstanceTaintSteps extends InstanceTaintStepsHelper {
+      InstanceTaintSteps() { this = "tornado.httputil.HTTPHeaders" }
+
+      override DataFlow::Node getInstance() { result = instance() }
+
+      override string getAttributeName() { none() }
+
+      override string getMethodName() { result in ["get_list", "get_all"] }
+
+      override string getAsyncMethodName() { none() }
     }
   }
 
@@ -162,31 +167,33 @@ private module Tornado {
         /** Gets a reference to the `write` method. */
         DataFlow::Node writeMethod() { writeMethod(DataFlow::TypeTracker::end()).flowsTo(result) }
 
-        private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
-          override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-            // normal (non-async) methods
-            nodeFrom = instance() and
-            nodeTo
-                .(DataFlow::MethodCallNode)
-                .calls(nodeFrom,
-                  [
-                    "get_argument", "get_body_argument", "get_query_argument", "get_arguments",
-                    "get_body_arguments", "get_query_arguments"
-                  ])
-            or
-            // Attributes
-            nodeFrom = instance() and
-            exists(DataFlow::AttrRead read | nodeTo = read and read.getObject() = nodeFrom |
-              read.getAttributeName() in [
-                  // List[str]
-                  "path_args",
-                  // Dict[str, str]
-                  "path_kwargs",
-                  // tornado.httputil.HTTPServerRequest
-                  "request"
-                ]
-            )
+        /**
+         * Taint propagation for `tornado.web.RequestHandler`.
+         */
+        private class InstanceTaintSteps extends InstanceTaintStepsHelper {
+          InstanceTaintSteps() { this = "tornado.web.RequestHandler" }
+
+          override DataFlow::Node getInstance() { result = instance() }
+
+          override string getAttributeName() {
+            result in [
+                // List[str]
+                "path_args",
+                // Dict[str, str]
+                "path_kwargs",
+                // tornado.httputil.HTTPServerRequest
+                "request"
+              ]
           }
+
+          override string getMethodName() {
+            result in [
+                "get_argument", "get_body_argument", "get_query_argument", "get_arguments",
+                "get_body_arguments", "get_query_arguments"
+              ]
+          }
+
+          override string getAsyncMethodName() { none() }
         }
 
         private class RequestAttrAccess extends tornado::httputil::HttpServerRequest::InstanceSource {
@@ -290,27 +297,30 @@ private module Tornado {
         /** Gets a reference to an instance of `tornado.httputil.HttpServerRequest`. */
         DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
 
-        private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
-          override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-            // normal (non-async) methods
-            nodeFrom = instance() and
-            nodeTo.(DataFlow::MethodCallNode).calls(nodeFrom, ["full_url"])
-            or
-            // Attributes
-            nodeFrom = instance() and
-            exists(DataFlow::AttrRead read | nodeTo = read and read.getObject() = nodeFrom |
-              read.getAttributeName() in [
-                  // str / bytes
-                  "uri", "path", "query", "remote_ip", "body",
-                  // Dict[str, List[bytes]]
-                  "arguments", "query_arguments", "body_arguments",
-                  // dict-like, https://www.tornadoweb.org/en/stable/httputil.html#tornado.httputil.HTTPHeaders
-                  "headers",
-                  // Dict[str, http.cookies.Morsel]
-                  "cookies"
-                ]
-            )
+        /**
+         * Taint propagation for `tornado.httputil.HttpServerRequest`.
+         */
+        private class InstanceTaintSteps extends InstanceTaintStepsHelper {
+          InstanceTaintSteps() { this = "tornado.httputil.HttpServerRequest" }
+
+          override DataFlow::Node getInstance() { result = instance() }
+
+          override string getAttributeName() {
+            result in [
+                // str / bytes
+                "uri", "path", "query", "remote_ip", "body",
+                // Dict[str, List[bytes]]
+                "arguments", "query_arguments", "body_arguments",
+                // dict-like, https://www.tornadoweb.org/en/stable/httputil.html#tornado.httputil.HTTPHeaders
+                "headers",
+                // Dict[str, http.cookies.Morsel]
+                "cookies"
+              ]
           }
+
+          override string getMethodName() { result in ["full_url"] }
+
+          override string getAsyncMethodName() { none() }
         }
 
         /** An `HTTPHeaders` instance that originates from a Tornado request. */

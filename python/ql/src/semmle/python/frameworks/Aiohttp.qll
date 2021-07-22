@@ -13,6 +13,7 @@ private import semmle.python.frameworks.internal.PoorMansFunctionResolution
 private import semmle.python.frameworks.internal.SelfRefMixin
 private import semmle.python.frameworks.Multidict
 private import semmle.python.frameworks.Yarl
+private import semmle.python.frameworks.internal.InstanceTaintStepsHelper
 
 /**
  * INTERNAL: Do not use.
@@ -296,32 +297,24 @@ module AiohttpWebModel {
 
     /**
      * Taint propagation for `aiohttp.web.Request`.
-     *
-     * See https://docs.aiohttp.org/en/stable/web_reference.html#request-and-base-request
      */
-    private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
-      override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-        // normal (non-async) methods
-        nodeFrom = Request::instance() and
-        nodeTo.(DataFlow::MethodCallNode).calls(nodeFrom, ["clone", "get_extra_info"])
-        or
-        // async methods
-        exists(DataFlow::MethodCallNode call, Await await |
-          nodeTo.asExpr() = await and
-          nodeFrom = Request::instance()
-        |
-          await.getValue() = any(DataFlow::Node awaitable | call.flowsTo(awaitable)).asExpr() and
-          call.calls(nodeFrom, ["read", "text", "json", "multipart", "post"])
-        )
-        or
-        // Attributes
-        nodeFrom = Request::instance() and
-        nodeTo.(DataFlow::AttrRead).getObject() = nodeFrom and
-        nodeTo.(DataFlow::AttrRead).getAttributeName() in [
+    private class InstanceTaintSteps extends InstanceTaintStepsHelper {
+      InstanceTaintSteps() { this = "aiohttp.web.Request" }
+
+      override DataFlow::Node getInstance() { result = instance() }
+
+      override string getAttributeName() {
+        result in [
             "url", "rel_url", "forwarded", "host", "remote", "path", "path_qs", "raw_path", "query",
             "headers", "transport", "cookies", "content", "_payload", "content_type", "charset",
             "http_range", "if_modified_since", "if_unmodified_since", "if_range", "match_info"
           ]
+      }
+
+      override string getMethodName() { result in ["clone", "get_extra_info"] }
+
+      override string getAsyncMethodName() {
+        result in ["read", "text", "json", "multipart", "post"]
       }
     }
 
@@ -424,24 +417,20 @@ module AiohttpWebModel {
     /**
      * Taint propagation for `aiohttp.StreamReader`.
      */
-    private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
-      override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-        // normal (non-async) methods
-        nodeFrom = instance() and
-        nodeTo.(DataFlow::MethodCallNode).calls(nodeFrom, ["read_nowait"])
-        or
-        // async methods
-        exists(DataFlow::MethodCallNode call, Await await |
-          nodeTo.asExpr() = await and
-          nodeFrom = instance()
-        |
-          await.getValue() = any(DataFlow::Node awaitable | call.flowsTo(awaitable)).asExpr() and
-          call.calls(nodeFrom,
-            [
-              "read", "readany", "readexactly", "readline", "readchunk", "iter_chunked", "iter_any",
-              "iter_chunks"
-            ])
-        )
+    private class InstanceTaintSteps extends InstanceTaintStepsHelper {
+      InstanceTaintSteps() { this = "aiohttp.StreamReader" }
+
+      override DataFlow::Node getInstance() { result = instance() }
+
+      override string getAttributeName() { none() }
+
+      override string getMethodName() { result in ["read_nowait"] }
+
+      override string getAsyncMethodName() {
+        result in [
+            "read", "readany", "readexactly", "readline", "readchunk", "iter_chunked", "iter_any",
+            "iter_chunks"
+          ]
       }
     }
   }

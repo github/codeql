@@ -9,6 +9,7 @@ private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
+private import semmle.python.frameworks.internal.InstanceTaintStepsHelper
 
 /**
  * Provides models for the `twisted` PyPI package.
@@ -114,26 +115,26 @@ private module Twisted {
     /**
      * Taint propagation for `twisted.web.server.Request`.
      */
-    private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
-      override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-        // normal (non-async) methods
-        nodeFrom = instance() and
-        nodeTo
-            .(DataFlow::MethodCallNode)
-            .calls(nodeFrom,
-              [
-                "getCookie", "getHeader", "getAllHeaders", "getUser", "getPassword", "getHost",
-                "getRequestHostname"
-              ])
-        or
-        // Attributes
-        nodeFrom = instance() and
-        nodeTo.(DataFlow::AttrRead).getObject() = nodeFrom and
-        nodeTo.(DataFlow::AttrRead).getAttributeName() in [
+    private class InstanceTaintSteps extends InstanceTaintStepsHelper {
+      InstanceTaintSteps() { this = "twisted.web.server.Request" }
+
+      override DataFlow::Node getInstance() { result = instance() }
+
+      override string getAttributeName() {
+        result in [
             "uri", "path", "prepath", "postpath", "content", "args", "received_cookies",
             "requestHeaders", "user", "password", "host"
           ]
       }
+
+      override string getMethodName() {
+        result in [
+            "getCookie", "getHeader", "getAllHeaders", "getUser", "getPassword", "getHost",
+            "getRequestHostname"
+          ]
+      }
+
+      override string getAsyncMethodName() { none() }
     }
   }
 

@@ -10,6 +10,7 @@ private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
 private import semmle.python.frameworks.PEP249
+private import semmle.python.frameworks.internal.InstanceTaintStepsHelper
 
 /** Provides models for the Python standard library. */
 module Stdlib {
@@ -47,12 +48,23 @@ module Stdlib {
     /**
      * Taint propagation for file-like objects.
      */
+    private class InstanceTaintSteps extends InstanceTaintStepsHelper {
+      InstanceTaintSteps() { this = "<file-like object>" }
+
+      override DataFlow::Node getInstance() { result = instance() }
+
+      override string getAttributeName() { none() }
+
+      override string getMethodName() { result in ["read", "readline", "readlines"] }
+
+      override string getAsyncMethodName() { none() }
+    }
+
+    /**
+     * Extra taint propagation for file-like objects, not covered by `InstanceTaintSteps`.",
+     */
     private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
       override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-        // result of method call is tainted
-        nodeFrom = instance() and
-        nodeTo.(DataFlow::MethodCallNode).calls(nodeFrom, ["read", "readline", "readlines"])
-        or
         // taint-propagation back to instance from `foo.write(tainted_data)`
         exists(DataFlow::AttrRead write, DataFlow::CallCfgNode call, DataFlow::Node instance_ |
           instance_ = instance() and
@@ -99,14 +111,16 @@ module Stdlib {
     /**
      * Taint propagation for `http.client.HTTPMessage`.
      */
-    private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
-      override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-        // normal (non-async) methods
-        nodeFrom = instance() and
-        nodeTo
-            .(DataFlow::MethodCallNode)
-            .calls(nodeFrom, ["get_all", "as_bytes", "as_string", "keys"])
-      }
+    private class InstanceTaintSteps extends InstanceTaintStepsHelper {
+      InstanceTaintSteps() { this = "http.client.HTTPMessage" }
+
+      override DataFlow::Node getInstance() { result = instance() }
+
+      override string getAttributeName() { none() }
+
+      override string getMethodName() { result in ["get_all", "as_bytes", "as_string", "keys"] }
+
+      override string getAsyncMethodName() { none() }
     }
   }
 
@@ -141,17 +155,16 @@ module Stdlib {
     /**
      * Taint propagation for `http.cookies.Morsel`.
      */
-    private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
-      override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-        // normal (non-async) methods
-        nodeFrom = instance() and
-        nodeTo.(DataFlow::MethodCallNode).calls(nodeFrom, ["output", "js_output"])
-        or
-        // Attributes
-        nodeFrom = instance() and
-        nodeTo.(DataFlow::AttrRead).getObject() = nodeFrom and
-        nodeTo.(DataFlow::AttrRead).getAttributeName() in ["key", "value", "coded_value"]
-      }
+    private class InstanceTaintSteps extends InstanceTaintStepsHelper {
+      InstanceTaintSteps() { this = "http.cookies.Morsel" }
+
+      override DataFlow::Node getInstance() { result = instance() }
+
+      override string getAttributeName() { result in ["key", "value", "coded_value"] }
+
+      override string getMethodName() { result in ["output", "js_output"] }
+
+      override string getAsyncMethodName() { none() }
     }
   }
 }

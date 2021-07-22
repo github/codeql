@@ -9,6 +9,7 @@ private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
 private import semmle.python.frameworks.Multidict
+private import semmle.python.frameworks.internal.InstanceTaintStepsHelper
 
 /**
  * INTERNAL: Do not use.
@@ -52,8 +53,28 @@ module Yarl {
 
     /**
      * Taint propagation for `yarl.URL`.
-     *
-     * See https://yarl.readthedocs.io/en/stable/api.html#yarl.URL
+     */
+    private class InstanceTaintSteps extends InstanceTaintStepsHelper {
+      InstanceTaintSteps() { this = "yarl.URL" }
+
+      override DataFlow::Node getInstance() { result = instance() }
+
+      override string getAttributeName() {
+        result in [
+            "user", "raw_user", "password", "raw_password", "host", "raw_host", "port",
+            "explicit_port", "authority", "raw_authority", "path", "raw_path", "path_qs",
+            "raw_path_qs", "query_string", "raw_query_string", "fragment", "raw_fragment", "parts",
+            "raw_parts", "name", "raw_name", "query"
+          ]
+      }
+
+      override string getMethodName() { result in ["human_repr"] }
+
+      override string getAsyncMethodName() { none() }
+    }
+
+    /**
+     * Extra taint propagation for `yarl.URL`, not covered by `InstanceTaintSteps`.
      */
     private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
       override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
@@ -62,10 +83,6 @@ module Yarl {
           nodeFrom in [call.getArg(0), call.getArgByName("val")] and
           nodeTo = call
         )
-        or
-        // normal (non-async) methods
-        nodeFrom = instance() and
-        nodeTo.(DataFlow::MethodCallNode).calls(nodeFrom, ["human_repr"])
         or
         // methods that give an altered URL. taint both from object, and form argument
         // (to result of call)
@@ -81,16 +98,6 @@ module Yarl {
           nodeTo = call and
           nodeFrom in [call.getObject(), call.getArg(_), call.getArgByName(_)]
         )
-        or
-        // Attributes
-        nodeFrom = instance() and
-        nodeTo.(DataFlow::AttrRead).getObject() = nodeFrom and
-        nodeTo.(DataFlow::AttrRead).getAttributeName() in [
-            "user", "raw_user", "password", "raw_password", "host", "raw_host", "port",
-            "explicit_port", "authority", "raw_authority", "path", "raw_path", "path_qs",
-            "raw_path_qs", "query_string", "raw_query_string", "fragment", "raw_fragment", "parts",
-            "raw_parts", "name", "raw_name", "query"
-          ]
       }
     }
 

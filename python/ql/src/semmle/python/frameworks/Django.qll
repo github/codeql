@@ -14,6 +14,7 @@ private import semmle.python.frameworks.Stdlib
 private import semmle.python.regex
 private import semmle.python.frameworks.internal.PoorMansFunctionResolution
 private import semmle.python.frameworks.internal.SelfRefMixin
+private import semmle.python.frameworks.internal.InstanceTaintStepsHelper
 
 /**
  * Provides models for the `django` PyPI package.
@@ -340,6 +341,23 @@ private module Django {
     /**
      * Taint propagation for `django.utils.datastructures.MultiValueDict`.
      */
+    private class InstanceTaintSteps extends InstanceTaintStepsHelper {
+      InstanceTaintSteps() { this = "django.utils.datastructures.MultiValueDict" }
+
+      override DataFlow::Node getInstance() { result = instance() }
+
+      override string getAttributeName() { none() }
+
+      override string getMethodName() {
+        result in ["getlist", "lists", "popitem", "dict", "urlencode"]
+      }
+
+      override string getAsyncMethodName() { none() }
+    }
+
+    /**
+     * Extra taint propagation for `django.utils.datastructures.MultiValueDict`, not covered by `InstanceTaintSteps`.
+     */
     private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
       override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
         // class instantiation
@@ -347,12 +365,6 @@ private module Django {
           nodeFrom = call.getArg(0) and
           nodeTo = call
         )
-        or
-        // normal (non-async) methods
-        nodeFrom = instance() and
-        nodeTo
-            .(DataFlow::MethodCallNode)
-            .calls(nodeFrom, ["getlist", "lists", "popitem", "dict", "urlencode"])
       }
     }
   }
@@ -388,15 +400,20 @@ private module Django {
     /**
      * Taint propagation for `django.core.files.uploadedfile.UploadedFile`.
      */
-    private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
-      override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-        // Attributes
-        nodeFrom = instance() and
-        nodeTo.(DataFlow::AttrRead).getObject() = nodeFrom and
-        nodeTo.(DataFlow::AttrRead).getAttributeName() in [
+    private class InstanceTaintSteps extends InstanceTaintStepsHelper {
+      InstanceTaintSteps() { this = "django.core.files.uploadedfile.UploadedFile" }
+
+      override DataFlow::Node getInstance() { result = instance() }
+
+      override string getAttributeName() {
+        result in [
             "content_type", "content_type_extra", "content_type_extra", "charset", "name", "file"
           ]
       }
+
+      override string getMethodName() { none() }
+
+      override string getAsyncMethodName() { none() }
     }
 
     /** A file-like object instance that originates from a `UploadedFile`. */
@@ -436,13 +453,16 @@ private module Django {
     /**
      * Taint propagation for `django.urls.ResolverMatch`.
      */
-    private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
-      override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-        // Attributes
-        nodeFrom = instance() and
-        nodeTo.(DataFlow::AttrRead).getObject() = nodeFrom and
-        nodeTo.(DataFlow::AttrRead).getAttributeName() in ["args", "kwargs"]
-      }
+    private class InstanceTaintSteps extends InstanceTaintStepsHelper {
+      InstanceTaintSteps() { this = "django.urls.ResolverMatch" }
+
+      override DataFlow::Node getInstance() { result = instance() }
+
+      override string getAttributeName() { result in ["args", "kwargs"] }
+
+      override string getMethodName() { none() }
+
+      override string getAsyncMethodName() { none() }
     }
   }
 }
@@ -747,15 +767,43 @@ private module PrivateDjango {
           /**
            * Taint propagation for `django.http.request.HttpRequest`.
            */
+          private class InstanceTaintSteps extends InstanceTaintStepsHelper {
+            InstanceTaintSteps() { this = "django.http.request.HttpRequest" }
+
+            override DataFlow::Node getInstance() { result = instance() }
+
+            override string getAttributeName() {
+              result in [
+                  // str / bytes
+                  "body", "path", "path_info", "method", "encoding", "content_type",
+                  // django.http.QueryDict
+                  "GET", "POST",
+                  // dict[str, str]
+                  "content_params", "COOKIES",
+                  // dict[str, Any]
+                  "META",
+                  // HttpHeaders (case insensitive dict-like)
+                  "headers",
+                  // MultiValueDict[str, UploadedFile]
+                  "FILES",
+                  // django.urls.ResolverMatch
+                  "resolver_match"
+                ]
+              // TODO: Handle that a HttpRequest is iterable
+            }
+
+            override string getMethodName() {
+              result in ["get_full_path", "get_full_path_info", "read", "readline", "readlines"]
+            }
+
+            override string getAsyncMethodName() { none() }
+          }
+
+          /**
+           * Extra taint propagation for `django.http.request.HttpRequest`, not covered by `InstanceTaintSteps`.
+           */
           private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
             override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-              // normal (non-async) methods
-              nodeFrom = django::http::request::HttpRequest::instance() and
-              nodeTo
-                  .(DataFlow::MethodCallNode)
-                  .calls(nodeFrom,
-                    ["get_full_path", "get_full_path_info", "read", "readline", "readlines"])
-              or
               // special handling of the `build_absolute_uri` method, see
               // https://docs.djangoproject.com/en/3.0/ref/request-response/#django.http.HttpRequest.build_absolute_uri
               exists(DataFlow::AttrRead attr, DataFlow::CallCfgNode call, DataFlow::Node instance |
@@ -775,27 +823,6 @@ private module PrivateDjango {
                   nodeFrom = call.getArgByName("location")
                 )
               )
-              or
-              // Attributes
-              nodeFrom = django::http::request::HttpRequest::instance() and
-              nodeTo.(DataFlow::AttrRead).getObject() = nodeFrom and
-              nodeTo.(DataFlow::AttrRead).getAttributeName() in [
-                  // str / bytes
-                  "body", "path", "path_info", "method", "encoding", "content_type",
-                  // django.http.QueryDict
-                  "GET", "POST",
-                  // dict[str, str]
-                  "content_params", "COOKIES",
-                  // dict[str, Any]
-                  "META",
-                  // HttpHeaders (case insensitive dict-like)
-                  "headers",
-                  // MultiValueDict[str, UploadedFile]
-                  "FILES",
-                  // django.urls.ResolverMatch
-                  "resolver_match"
-                ]
-              // TODO: Handle that a HttpRequest is iterable
             }
           }
 

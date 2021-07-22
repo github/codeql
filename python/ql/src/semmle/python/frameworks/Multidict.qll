@@ -8,6 +8,7 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
+private import semmle.python.frameworks.internal.InstanceTaintStepsHelper
 
 /**
  * INTERNAL: Do not use.
@@ -60,8 +61,21 @@ module Multidict {
 
     /**
      * Taint propagation for `multidict.MultiDictProxy`.
-     *
-     * See https://multidict.readthedocs.io/en/stable/multidict.html#multidictproxy
+     */
+    private class InstanceTaintSteps extends InstanceTaintStepsHelper {
+      InstanceTaintSteps() { this = "multidict.MultiDictProxy" }
+
+      override DataFlow::Node getInstance() { result = instance() }
+
+      override string getAttributeName() { none() }
+
+      override string getMethodName() { result in ["getone", "getall"] }
+
+      override string getAsyncMethodName() { none() }
+    }
+
+    /**
+     * Extra taint propagation for `multidict.MultiDictProxy`, not covered by `InstanceTaintSteps`.
      */
     private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
       override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
@@ -70,10 +84,6 @@ module Multidict {
           nodeFrom = call.getArg(0) and
           nodeTo = call
         )
-        or
-        // normal (non-async) methods
-        nodeFrom = instance() and
-        nodeTo.(DataFlow::MethodCallNode).calls(nodeFrom, ["getone", "getall"])
       }
     }
   }

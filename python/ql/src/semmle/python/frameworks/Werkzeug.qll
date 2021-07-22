@@ -11,6 +11,7 @@ private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.ApiGraphs
 private import semmle.python.frameworks.Stdlib
 private import semmle.python.Concepts
+private import semmle.python.frameworks.internal.InstanceTaintStepsHelper
 
 /**
  * Provides models for the `Werkzeug` PyPI package.
@@ -47,11 +48,19 @@ module Werkzeug {
     /** Gets a reference to an instance of `werkzeug.datastructures.MultiDict`. */
     DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
 
-    private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
-      override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-        nodeFrom = instance() and
-        nodeTo.(DataFlow::MethodCallNode).calls(nodeFrom, "getlist")
-      }
+    /**
+     * Taint propagation for `werkzeug.datastructures.MultiDict`.
+     */
+    private class InstanceTaintSteps extends InstanceTaintStepsHelper {
+      InstanceTaintSteps() { this = "werkzeug.datastructures.MultiDict" }
+
+      override DataFlow::Node getInstance() { result = instance() }
+
+      override string getAttributeName() { none() }
+
+      override string getMethodName() { result in ["getlist"] }
+
+      override string getAsyncMethodName() { none() }
     }
   }
 
@@ -87,23 +96,30 @@ module Werkzeug {
     /** Gets a reference to an instance of `werkzeug.datastructures.FileStorage`. */
     DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
 
-    private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
-      override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-        nodeFrom = instance() and
-        exists(DataFlow::AttrRead read | nodeTo = read |
-          read.getAttributeName() in [
-              // str
-              "filename", "name", "content_type", "mimetype",
-              // file-like
-              "stream",
-              // TODO: werkzeug.datastructures.Headers
-              "headers",
-              // dict[str, str]
-              "mimetype_params"
-            ] and
-          read.getObject() = nodeFrom
-        )
+    /**
+     * Taint propagation for `werkzeug.datastructures.FileStorage`.
+     */
+    private class InstanceTaintSteps extends InstanceTaintStepsHelper {
+      InstanceTaintSteps() { this = "werkzeug.datastructures.FileStorage" }
+
+      override DataFlow::Node getInstance() { result = instance() }
+
+      override string getAttributeName() {
+        result in [
+            // str
+            "filename", "name", "content_type", "mimetype",
+            // file-like
+            "stream",
+            // TODO: werkzeug.datastructures.Headers
+            "headers",
+            // dict[str, str]
+            "mimetype_params"
+          ]
       }
+
+      override string getMethodName() { none() }
+
+      override string getAsyncMethodName() { none() }
     }
 
     /** A file-like object instance that originates from a `FileStorage`. */
@@ -152,14 +168,18 @@ module Werkzeug {
     /**
      * Taint propagation for `werkzeug.datastructures.Headers`.
      */
-    private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
-      override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-        // normal (non-async) methods
-        nodeFrom = instance() and
-        nodeTo
-            .(DataFlow::MethodCallNode)
-            .calls(nodeFrom, ["getlist", "get_all", "popitem", "to_wsgi_list"])
+    private class InstanceTaintSteps extends InstanceTaintStepsHelper {
+      InstanceTaintSteps() { this = "werkzeug.datastructures.Headers" }
+
+      override DataFlow::Node getInstance() { result = instance() }
+
+      override string getAttributeName() { none() }
+
+      override string getMethodName() {
+        result in ["getlist", "get_all", "popitem", "to_wsgi_list"]
       }
+
+      override string getAsyncMethodName() { none() }
     }
   }
 
@@ -194,16 +214,21 @@ module Werkzeug {
     /**
      * Taint propagation for `werkzeug.datastructures.Authorization`.
      */
-    private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
-      override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-        // Attributes
-        nodeFrom = instance() and
-        nodeTo.(DataFlow::AttrRead).getObject() = nodeFrom and
-        nodeTo.(DataFlow::AttrRead).getAttributeName() in [
+    private class InstanceTaintSteps extends InstanceTaintStepsHelper {
+      InstanceTaintSteps() { this = "werkzeug.datastructures.Authorization" }
+
+      override DataFlow::Node getInstance() { result = instance() }
+
+      override string getAttributeName() {
+        result in [
             "username", "password", "realm", "nonce", "uri", "nc", "cnonce", "response", "opaque",
             "qop"
           ]
       }
+
+      override string getMethodName() { none() }
+
+      override string getAsyncMethodName() { none() }
     }
   }
 
