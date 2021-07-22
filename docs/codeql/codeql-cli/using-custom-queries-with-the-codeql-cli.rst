@@ -8,7 +8,7 @@ specific vulnerabilities or errors.
 
 This topic is specifically about writing
 queries to use with the `database analyze <../manual/database-analyze>`__
-command to produce :ref:`interpreted results <interpret-query-results>`. 
+command to produce :ref:`interpreted results <interpret-query-results>`.
 
 .. include:: ../reusables/advanced-query-execution.rst
 
@@ -26,16 +26,16 @@ Including query metadata
 ------------------------
 
 Query metadata is included at the top of each query file. It provides users with information about
-the query, and tells the CodeQL CLI how to process the query results. 
+the query, and tells the CodeQL CLI how to process the query results.
 
 When running queries with the ``database analyze`` command, you must include the
 following two properties to ensure that the results are interpreted correctly:
 
 - Query identifier (``@id``): a sequence of words composed of lowercase letters or
-  digits, delimited by ``/`` or ``-``, identifying and classifying the query. 
+  digits, delimited by ``/`` or ``-``, identifying and classifying the query.
 - Query type (``@kind``): identifies the query as a simple alert (``@kind problem``),
-  an alert documented by a sequence of code locations (``@kind path-problem``), 
-  for extractor troubleshooting (``@kind diagnostic``), or a summary metric 
+  an alert documented by a sequence of code locations (``@kind path-problem``),
+  for extractor troubleshooting (``@kind diagnostic``), or a summary metric
   (``@kind metric`` and ``@tags summary``).
 
 For more information about these metadata properties, see ":ref:`Metadata for CodeQL queries
@@ -48,21 +48,6 @@ For more information about these metadata properties, see ":ref:`Metadata for Co
    applications. For more information, see ":ref:`Metadata for CodeQL queries
    <metadata-for-codeql-queries>`
    ."  
-
-
-Creating a custom QL pack
--------------------------
-
-When writing your own queries, you should save them in a custom QL pack
-directory. QL packs provide a way of organizing
-the files used in CodeQL analysis. This directory must contain a file
-named ``qlpack.yml`` at the root. Your custom queries should be saved in the QL
-pack root, or its subdirectories.
-
-For each QL pack, the ``qlpack.yml`` file includes information that tells CodeQL
-how to compile the queries, what libraries the pack depends on, and where to find
-query suite definitions. For more information about what to include in this
-file, see ":ref:`About QL packs <custom-ql-packs>`."
 
 Contributing to the CodeQL repository
 -------------------------------------
