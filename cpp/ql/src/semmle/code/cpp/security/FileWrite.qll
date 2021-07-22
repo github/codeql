@@ -166,9 +166,7 @@ private predicate fileWrite(Call write, Expr source, Expr dest) {
  * character, or if it is unknown (for example the format string is not a
  * constant).
  */
-private predicate fileWriteWithConvChar(
-  FormattingFunctionCall ffc, Expr source, string conv
-) {
+private predicate fileWriteWithConvChar(FormattingFunctionCall ffc, Expr source, string conv) {
   // fprintf
   exists(FormattingFunction f, int n |
     f = ffc.getTarget() and
