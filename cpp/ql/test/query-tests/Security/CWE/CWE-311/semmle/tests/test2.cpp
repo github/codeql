@@ -81,7 +81,7 @@ void tests(FILE *log, myStruct &s)
 	{
 		if (fopen(s.passwd_config2, "rt") == 0)
 		{
-			fprintf(log, "could not open file '%s'.\n", s.passwd_config2); // GOOD [FALSE POSITIVE]
+			fprintf(log, "could not open file '%s'.\n", s.passwd_config2); // GOOD
 		}
 	}
 
