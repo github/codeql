@@ -11,7 +11,9 @@
  */
 
 import java
+import DataFlow
 import UnsafeReflectionLib
+import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.FlowSources
 import DataFlow::PathGraph
 
@@ -19,7 +21,7 @@ private class ContainsSanitizer extends DataFlow::BarrierGuard {
   ContainsSanitizer() { this.(MethodAccess).getMethod().hasName("contains") }
 
   override predicate checks(Expr e, boolean branch) {
-    e = this.(MethodAccess).getArgument(0) and branch = false
+    e = this.(MethodAccess).getArgument(0) and branch = true
   }
 }
 
@@ -38,6 +40,45 @@ class UnsafeReflectionConfig extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof UnsafeReflectionSink }
+
+  override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(ReflectiveClassIdentifierMethodAccessCall rcimac |
+      rcimac.getArgument(0) = pred.asExpr() and rcimac = succ.asExpr()
+    )
+    or
+    exists(MethodAccess ma |
+      (
+        ma instanceof ReflectiveConstructorsAccess or
+        ma instanceof ReflectiveMethodsAccess
+      ) and
+      ma.getQualifier() = pred.asExpr() and
+      ma = succ.asExpr()
+    )
+    or
+    exists(MethodAccess ma |
+      ma.getMethod().getReturnType() instanceof TypeObject and
+      ma.getMethod().getAParamType() instanceof TypeClass and
+      ma.getAnArgument() = pred.asExpr() and
+      ma = succ.asExpr()
+    )
+    or
+    exists(MethodAccess ma |
+      ma.getMethod().hasName("getClass") and
+      ma.getMethod().getDeclaringType().hasQualifiedName("java.lang", "Object") and
+      ma.getQualifier() = pred.asExpr() and
+      ma = succ.asExpr()
+    )
+    or
+    exists(MethodAccess ma, Method m, int i, Expr arg |
+      m = ma.getMethod() and arg = ma.getArgument(i)
+    |
+      m.getReturnType() instanceof JacksonTypeDescriptorType and
+      m.getName().toLowerCase().regexpMatch("resolve|load|class|type") and
+      arg.getType() instanceof TypeString and
+      arg = pred.asExpr() and
+      ma = succ.asExpr()
+    )
+  }
 
   override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
     guard instanceof ContainsSanitizer or guard instanceof EqualsSanitizer

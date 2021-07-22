@@ -315,6 +315,26 @@ class ClassMethodAccess extends MethodAccess {
 }
 
 /**
+ * A call to `Class.getConstructors(..)` or `Class.getDeclaredConstructors(..)`.
+ */
+class ReflectiveConstructorsAccess extends ClassMethodAccess {
+  ReflectiveConstructorsAccess() {
+    this.getCallee().hasName("getConstructors") or
+    this.getCallee().hasName("getDeclaredConstructors")
+  }
+}
+
+/**
+ * A call to `Class.getMethods(..)` or `Class.getDeclaredMethods(..)`.
+ */
+class ReflectiveMethodsAccess extends ClassMethodAccess {
+  ReflectiveMethodsAccess() {
+    this.getCallee().hasName("getMethods") or
+    this.getCallee().hasName("getDeclaredMethods")
+  }
+}
+
+/**
  * A call to `Class.getMethod(..)` or `Class.getDeclaredMethod(..)`.
  */
 class ReflectiveMethodAccess extends ClassMethodAccess {

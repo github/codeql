@@ -1,11 +1,25 @@
 edges
-| UnsafeReflection.java:12:28:12:60 | getParameter(...) : String | UnsafeReflection.java:14:41:14:49 | className |
-| UnsafeReflection.java:22:28:22:60 | getParameter(...) : String | UnsafeReflection.java:25:49:25:57 | className |
+| UnsafeReflection.java:21:28:21:60 | getParameter(...) : String | UnsafeReflection.java:25:29:25:59 | getDeclaredConstructors(...) : Constructor[] |
+| UnsafeReflection.java:21:28:21:60 | getParameter(...) : String | UnsafeReflection.java:25:29:25:62 | ...[...] |
+| UnsafeReflection.java:25:29:25:59 | getDeclaredConstructors(...) : Constructor[] | UnsafeReflection.java:25:29:25:62 | ...[...] |
+| UnsafeReflection.java:33:28:33:60 | getParameter(...) : String | UnsafeReflection.java:39:13:39:38 | getDeclaredMethods(...) : Method[] |
+| UnsafeReflection.java:33:28:33:60 | getParameter(...) : String | UnsafeReflection.java:39:13:39:41 | ...[...] |
+| UnsafeReflection.java:39:13:39:38 | getDeclaredMethods(...) : Method[] | UnsafeReflection.java:39:13:39:41 | ...[...] |
+| UnsafeReflection.java:46:24:46:82 | beanIdOrClassName : String | UnsafeReflection.java:53:30:53:46 | beanIdOrClassName : String |
+| UnsafeReflection.java:53:30:53:46 | beanIdOrClassName : String | UnsafeReflection.java:104:34:104:57 | beanIdOrClassName : String |
+| UnsafeReflection.java:104:34:104:57 | beanIdOrClassName : String | UnsafeReflection.java:132:33:132:38 | method |
 nodes
-| UnsafeReflection.java:12:28:12:60 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| UnsafeReflection.java:14:41:14:49 | className | semmle.label | className |
-| UnsafeReflection.java:22:28:22:60 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| UnsafeReflection.java:25:49:25:57 | className | semmle.label | className |
+| UnsafeReflection.java:21:28:21:60 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| UnsafeReflection.java:25:29:25:59 | getDeclaredConstructors(...) : Constructor[] | semmle.label | getDeclaredConstructors(...) : Constructor[] |
+| UnsafeReflection.java:25:29:25:62 | ...[...] | semmle.label | ...[...] |
+| UnsafeReflection.java:33:28:33:60 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| UnsafeReflection.java:39:13:39:38 | getDeclaredMethods(...) : Method[] | semmle.label | getDeclaredMethods(...) : Method[] |
+| UnsafeReflection.java:39:13:39:41 | ...[...] | semmle.label | ...[...] |
+| UnsafeReflection.java:46:24:46:82 | beanIdOrClassName : String | semmle.label | beanIdOrClassName : String |
+| UnsafeReflection.java:53:30:53:46 | beanIdOrClassName : String | semmle.label | beanIdOrClassName : String |
+| UnsafeReflection.java:104:34:104:57 | beanIdOrClassName : String | semmle.label | beanIdOrClassName : String |
+| UnsafeReflection.java:132:33:132:38 | method | semmle.label | method |
 #select
-| UnsafeReflection.java:14:41:14:49 | className | UnsafeReflection.java:12:28:12:60 | getParameter(...) : String | UnsafeReflection.java:14:41:14:49 | className | Unsafe reflection of $@. | UnsafeReflection.java:12:28:12:60 | getParameter(...) | user input |
-| UnsafeReflection.java:25:49:25:57 | className | UnsafeReflection.java:22:28:22:60 | getParameter(...) : String | UnsafeReflection.java:25:49:25:57 | className | Unsafe reflection of $@. | UnsafeReflection.java:22:28:22:60 | getParameter(...) | user input |
+| UnsafeReflection.java:25:29:25:62 | ...[...] | UnsafeReflection.java:21:28:21:60 | getParameter(...) : String | UnsafeReflection.java:25:29:25:62 | ...[...] | Unsafe reflection of $@. | UnsafeReflection.java:21:28:21:60 | getParameter(...) | user input |
+| UnsafeReflection.java:39:13:39:41 | ...[...] | UnsafeReflection.java:33:28:33:60 | getParameter(...) : String | UnsafeReflection.java:39:13:39:41 | ...[...] | Unsafe reflection of $@. | UnsafeReflection.java:33:28:33:60 | getParameter(...) | user input |
+| UnsafeReflection.java:132:33:132:38 | method | UnsafeReflection.java:46:24:46:82 | beanIdOrClassName : String | UnsafeReflection.java:132:33:132:38 | method | Unsafe reflection of $@. | UnsafeReflection.java:46:24:46:82 | beanIdOrClassName | user input |
