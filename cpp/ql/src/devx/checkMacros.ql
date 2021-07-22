@@ -22,4 +22,4 @@ from string format, FormattingFunctionCall fc
 where format = fc.getFormat().getValue() 
 and format.regexpMatch(".*")
 and fc.getTarget().hasName("syslog")
-select fc.getArgument(0).toString(), format
+select fc, format
