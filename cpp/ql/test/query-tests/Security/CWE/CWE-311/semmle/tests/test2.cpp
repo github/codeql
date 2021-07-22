@@ -46,7 +46,7 @@ void tests(FILE *log, myStruct &s)
 	fprintf(log, "password_hash = %s\n", s.password_hash); // GOOD
 	fprintf(log, "encrypted_passwd = %s\n", s.encrypted_passwd); // GOOD
 	fprintf(log, "password_file = %s\n", s.password_file); // GOOD
-	fprintf(log, "password_path = %s\n", s.password_path); // GOOD [FALSE POSITIVE]
+	fprintf(log, "password_path = %s\n", s.password_path); // GOOD
 	fprintf(log, "passwd_config = %s\n", s.passwd_config); // DUBIOUS [REPORTED]
 	fprintf(log, "num_passwords = %i\n", s.num_passwords); // GOOD
 	fprintf(log, "password_tries = %i\n", *(s.password_tries)); // GOOD

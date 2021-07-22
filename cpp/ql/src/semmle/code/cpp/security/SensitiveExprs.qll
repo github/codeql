@@ -19,7 +19,8 @@ private predicate suspicious(string s) {
   not (
     s.matches("%hash%") or
     s.matches("%crypt%") or
-    s.matches("%file%")
+    s.matches("%file%") or
+    s.matches("%path%")
   )
 }
 

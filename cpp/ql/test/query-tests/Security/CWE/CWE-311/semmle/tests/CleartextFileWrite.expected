@@ -1,6 +1,5 @@
 | test2.cpp:43:2:43:8 | call to fprintf | This write into file 'log' may contain unencrypted data from $@ | test2.cpp:43:36:43:43 | password | this source. |
 | test2.cpp:44:2:44:8 | call to fprintf | This write into file 'log' may contain unencrypted data from $@ | test2.cpp:44:37:44:45 | thepasswd | this source. |
-| test2.cpp:49:2:49:8 | call to fprintf | This write into file 'log' may contain unencrypted data from $@ | test2.cpp:49:41:49:53 | password_path | this source. |
 | test2.cpp:50:2:50:8 | call to fprintf | This write into file 'log' may contain unencrypted data from $@ | test2.cpp:50:41:50:53 | passwd_config | this source. |
 | test2.cpp:54:2:54:8 | call to fprintf | This write into file 'log' may contain unencrypted data from $@ | test2.cpp:54:41:54:52 | widepassword | this source. |
 | test2.cpp:55:2:55:8 | call to fprintf | This write into file 'log' may contain unencrypted data from $@ | test2.cpp:55:40:55:51 | widepassword | this source. |
