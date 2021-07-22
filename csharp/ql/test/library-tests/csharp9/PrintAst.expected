@@ -285,158 +285,158 @@ ForeachExtension.cs:
 #   46|       2: [YieldReturnStmt] yield return ...;
 #   46|         0: [IntLiteral] 1
 FunctionPointer.cs:
-#    5| [Class] FnPointer
-#    7|   5: [Class] Program
-#    9|     5: [Field] pointer
-#    9|       -1: [TypeMention] delegate* default<Int32>
-#    9|       1: [AssignExpr] ... = ...
-#    9|         0: [FieldAccess] access to field pointer
-#    9|         1: [AddressOfExpr] &...
-#    9|           0: [MethodAccess] access to method M0
-#   11|     6: [Method] M0
-#   11|       -1: [TypeMention] int
-#   12|       4: [BlockStmt] {...}
-#   13|         0: [ReturnStmt] return ...;
-#   13|           0: [IntLiteral] 0
-#   16|     7: [Method] M1
-#   16|       -1: [TypeMention] Void
+#    3| [Class] FnPointer
+#    5|   5: [Class] Program
+#    7|     5: [Field] pointer
+#    7|       -1: [TypeMention] delegate* default<Int32>
+#    7|       1: [AssignExpr] ... = ...
+#    7|         0: [FieldAccess] access to field pointer
+#    7|         1: [AddressOfExpr] &...
+#    7|           0: [MethodAccess] access to method M0
+#    9|     6: [Method] M0
+#    9|       -1: [TypeMention] int
+#   10|       4: [BlockStmt] {...}
+#   11|         0: [ReturnStmt] return ...;
+#   11|           0: [IntLiteral] 0
+#   14|     7: [Method] M1
+#   14|       -1: [TypeMention] Void
 #-----|       2: (Parameters)
-#   16|         0: [Parameter] f
-#   16|           -1: [TypeMention] delegate* default<Int32 ref,Object out,Int32 ref readonly>
-#   17|       4: [BlockStmt] {...}
-#   18|         0: [LocalVariableDeclStmt] ... ...;
-#   18|           0: [LocalVariableDeclAndInitExpr] Int32 i = ...
-#   18|             -1: [TypeMention] int
-#   18|             0: [LocalVariableAccess] access to local variable i
-#   18|             1: [IntLiteral] 42
-#   19|         1: [LocalVariableDeclStmt] ... ...;
-#   19|           0: [LocalVariableDeclAndInitExpr] Int32 j = ...
-#   19|             -1: [TypeMention] int
-#   19|             0: [LocalVariableAccess] access to local variable j
-#   19|             1: [FunctionPointerCall] function pointer call
-#   19|               -1: [ParameterAccess] access to parameter f
-#   19|               0: [LocalVariableAccess] access to local variable i
-#   19|               1: [LocalVariableAccess,LocalVariableDeclExpr] Object o
-#   22|     8: [Method] M2
-#   22|       -1: [TypeMention] Void
+#   14|         0: [Parameter] f
+#   14|           -1: [TypeMention] delegate* default<Int32 ref,Object out,Int32 ref readonly>
+#   15|       4: [BlockStmt] {...}
+#   16|         0: [LocalVariableDeclStmt] ... ...;
+#   16|           0: [LocalVariableDeclAndInitExpr] Int32 i = ...
+#   16|             -1: [TypeMention] int
+#   16|             0: [LocalVariableAccess] access to local variable i
+#   16|             1: [IntLiteral] 42
+#   17|         1: [LocalVariableDeclStmt] ... ...;
+#   17|           0: [LocalVariableDeclAndInitExpr] Int32 j = ...
+#   17|             -1: [TypeMention] int
+#   17|             0: [LocalVariableAccess] access to local variable j
+#   17|             1: [FunctionPointerCall] function pointer call
+#   17|               -1: [ParameterAccess] access to parameter f
+#   17|               0: [LocalVariableAccess] access to local variable i
+#   17|               1: [LocalVariableAccess,LocalVariableDeclExpr] Object o
+#   20|     8: [Method] M2
+#   20|       -1: [TypeMention] Void
 #-----|       1: (Type parameters)
-#   22|         0: [TypeParameter] T
+#   20|         0: [TypeParameter] T
 #-----|       2: (Parameters)
-#   22|         0: [Parameter] f
-#   22|           -1: [TypeMention] delegate* stdcall<Int32 ref,Object out,T,Void>
-#   23|       4: [BlockStmt] {...}
-#   24|         0: [LocalVariableDeclStmt] ... ...;
-#   24|           0: [LocalVariableDeclAndInitExpr] Int32 i = ...
-#   24|             -1: [TypeMention] int
-#   24|             0: [LocalVariableAccess] access to local variable i
-#   24|             1: [IntLiteral] 42
-#   25|         1: [ExprStmt] ...;
-#   25|           0: [FunctionPointerCall] function pointer call
-#   25|             -1: [ParameterAccess] access to parameter f
-#   25|             0: [LocalVariableAccess] access to local variable i
-#   25|             1: [LocalVariableAccess,LocalVariableDeclExpr] Object o
-#   25|             2: [ObjectCreation] object creation of type T
-#   25|               0: [TypeMention] T
-#   28|     9: [Method] M3
-#   28|       -1: [TypeMention] Void
+#   20|         0: [Parameter] f
+#   20|           -1: [TypeMention] delegate* stdcall<Int32 ref,Object out,T,Void>
+#   21|       4: [BlockStmt] {...}
+#   22|         0: [LocalVariableDeclStmt] ... ...;
+#   22|           0: [LocalVariableDeclAndInitExpr] Int32 i = ...
+#   22|             -1: [TypeMention] int
+#   22|             0: [LocalVariableAccess] access to local variable i
+#   22|             1: [IntLiteral] 42
+#   23|         1: [ExprStmt] ...;
+#   23|           0: [FunctionPointerCall] function pointer call
+#   23|             -1: [ParameterAccess] access to parameter f
+#   23|             0: [LocalVariableAccess] access to local variable i
+#   23|             1: [LocalVariableAccess,LocalVariableDeclExpr] Object o
+#   23|             2: [ObjectCreation] object creation of type T
+#   23|               0: [TypeMention] T
+#   26|     9: [Method] M3
+#   26|       -1: [TypeMention] Void
 #-----|       2: (Parameters)
-#   28|         0: [Parameter] f
-#   28|           -1: [TypeMention] delegate* default<Int32 ref,Object out,Int32 in,Int32 ref>
-#   29|       4: [BlockStmt] {...}
-#   30|         0: [LocalVariableDeclStmt] ... ...;
-#   30|           0: [LocalVariableDeclAndInitExpr] Int32 i = ...
-#   30|             -1: [TypeMention] int
-#   30|             0: [LocalVariableAccess] access to local variable i
-#   30|             1: [IntLiteral] 42
-#   31|         1: [LocalVariableDeclStmt] ... ...;
-#   31|           0: [LocalVariableDeclAndInitExpr] Int32 j = ...
-#   31|             -1: [TypeMention] null
-#   31|             0: [LocalVariableAccess] access to local variable j
-#   31|             1: [RefExpr] ref ...
-#   31|               0: [FunctionPointerCall] function pointer call
-#   31|                 -1: [ParameterAccess] access to parameter f
-#   31|                 0: [LocalVariableAccess] access to local variable i
-#   31|                 1: [LocalVariableAccess,LocalVariableDeclExpr] Object o
-#   31|                 2: [LocalVariableAccess] access to local variable i
-#   34|     10: [Method] M4
-#   34|       -1: [TypeMention] Void
+#   26|         0: [Parameter] f
+#   26|           -1: [TypeMention] delegate* default<Int32 ref,Object out,Int32 in,Int32 ref>
+#   27|       4: [BlockStmt] {...}
+#   28|         0: [LocalVariableDeclStmt] ... ...;
+#   28|           0: [LocalVariableDeclAndInitExpr] Int32 i = ...
+#   28|             -1: [TypeMention] int
+#   28|             0: [LocalVariableAccess] access to local variable i
+#   28|             1: [IntLiteral] 42
+#   29|         1: [LocalVariableDeclStmt] ... ...;
+#   29|           0: [LocalVariableDeclAndInitExpr] Int32 j = ...
+#   29|             -1: [TypeMention] null
+#   29|             0: [LocalVariableAccess] access to local variable j
+#   29|             1: [RefExpr] ref ...
+#   29|               0: [FunctionPointerCall] function pointer call
+#   29|                 -1: [ParameterAccess] access to parameter f
+#   29|                 0: [LocalVariableAccess] access to local variable i
+#   29|                 1: [LocalVariableAccess,LocalVariableDeclExpr] Object o
+#   29|                 2: [LocalVariableAccess] access to local variable i
+#   32|     10: [Method] M4
+#   32|       -1: [TypeMention] Void
 #-----|       1: (Type parameters)
-#   34|         0: [TypeParameter] T
+#   32|         0: [TypeParameter] T
 #-----|       2: (Parameters)
-#   34|         0: [Parameter] f
-#   34|           -1: [TypeMention] delegate* default<T,Int32>
-#   35|       4: [BlockStmt] {...}
-#   36|         0: [LocalVariableDeclStmt] ... ...;
-#   36|           0: [LocalVariableDeclAndInitExpr] Int32 j = ...
-#   36|             -1: [TypeMention] int
-#   36|             0: [LocalVariableAccess] access to local variable j
-#   36|             1: [FunctionPointerCall] function pointer call
-#   36|               -1: [ParameterAccess] access to parameter f
-#   36|               0: [ObjectCreation] object creation of type T
-#   36|                 0: [TypeMention] T
-#   39|     11: [Method] M5
-#   39|       -1: [TypeMention] Void
+#   32|         0: [Parameter] f
+#   32|           -1: [TypeMention] delegate* default<T,Int32>
+#   33|       4: [BlockStmt] {...}
+#   34|         0: [LocalVariableDeclStmt] ... ...;
+#   34|           0: [LocalVariableDeclAndInitExpr] Int32 j = ...
+#   34|             -1: [TypeMention] int
+#   34|             0: [LocalVariableAccess] access to local variable j
+#   34|             1: [FunctionPointerCall] function pointer call
+#   34|               -1: [ParameterAccess] access to parameter f
+#   34|               0: [ObjectCreation] object creation of type T
+#   34|                 0: [TypeMention] T
+#   37|     11: [Method] M5
+#   37|       -1: [TypeMention] Void
 #-----|       2: (Parameters)
-#   39|         0: [Parameter] f
-#   39|           -1: [TypeMention] delegate* default<B,A>
-#   39|         1: [Parameter] ff
-#   39|           -1: [TypeMention] delegate* default<A,B>
-#   40|       4: [BlockStmt] {...}
-#   41|         0: [ExprStmt] ...;
-#   41|           0: [MethodCall] call to method M5
-#   41|             0: [CastExpr] (...) ...
-#   41|               1: [ParameterAccess] access to parameter ff
-#   41|             1: [ParameterAccess] access to parameter ff
-#   44|     12: [Method] M6
-#   44|       -1: [TypeMention] Void
+#   37|         0: [Parameter] f
+#   37|           -1: [TypeMention] delegate* default<B,A>
+#   37|         1: [Parameter] ff
+#   37|           -1: [TypeMention] delegate* default<A,B>
+#   38|       4: [BlockStmt] {...}
+#   39|         0: [ExprStmt] ...;
+#   39|           0: [MethodCall] call to method M5
+#   39|             0: [CastExpr] (...) ...
+#   39|               1: [ParameterAccess] access to parameter ff
+#   39|             1: [ParameterAccess] access to parameter ff
+#   42|     12: [Method] M6
+#   42|       -1: [TypeMention] Void
 #-----|       2: (Parameters)
-#   44|         0: [Parameter] f
-#   44|           -1: [TypeMention] delegate* default<Int32*,Void*>
-#   44|         1: [Parameter] ff
-#   44|           -1: [TypeMention] delegate* default<Void*,Int32*>
-#   45|       4: [BlockStmt] {...}
-#   46|         0: [ExprStmt] ...;
-#   46|           0: [MethodCall] call to method M6
-#   46|             0: [CastExpr] (...) ...
-#   46|               1: [ParameterAccess] access to parameter ff
-#   46|             1: [ParameterAccess] access to parameter ff
-#   49|     13: [Class] A
-#   50|     14: [Class] B
+#   42|         0: [Parameter] f
+#   42|           -1: [TypeMention] delegate* default<Int32*,Void*>
+#   42|         1: [Parameter] ff
+#   42|           -1: [TypeMention] delegate* default<Void*,Int32*>
+#   43|       4: [BlockStmt] {...}
+#   44|         0: [ExprStmt] ...;
+#   44|           0: [MethodCall] call to method M6
+#   44|             0: [CastExpr] (...) ...
+#   44|               1: [ParameterAccess] access to parameter ff
+#   44|             1: [ParameterAccess] access to parameter ff
+#   47|     13: [Class] A
+#   48|     14: [Class] B
 #-----|       3: (Base types)
-#   50|         0: [TypeMention] A
+#   48|         0: [TypeMention] A
 GlobalStmt.cs:
-#    7| [Class] <Program>$
-#    7|   4: [Method] <Main>$
+#    5| [Class] <Program>$
+#    5|   4: [Method] <Main>$
 #-----|     2: (Parameters)
 #    1|       0: [Parameter] args
-#    7|     4: [BlockStmt] {...}
-#   11|       0: [ExprStmt] ...;
-#   11|         0: [MethodCall] call to method WriteLine
-#   11|           -1: [TypeAccess] access to type Console
-#   11|             0: [TypeMention] Console
-#   11|           0: [StringLiteral] "1"
-#   12|       1: [ExprStmt] ...;
-#   12|         0: [MethodCall] call to method WriteLine
-#   12|           -1: [TypeAccess] access to type Console
-#   12|             0: [TypeMention] Console
-#   12|           0: [StringLiteral] "2"
-#   13|       2: [ExprStmt] ...;
-#   13|         0: [LocalFunctionCall] call to local function M
-#   13|           -1: [LocalFunctionAccess] access to local function M
-#   15|       3: [LocalFunctionStmt] M(...)
-#   15|         0: [LocalFunction] M
-#   16|           4: [BlockStmt] {...}
-#   19| [Class] Attr
+#    5|     4: [BlockStmt] {...}
+#    9|       0: [ExprStmt] ...;
+#    9|         0: [MethodCall] call to method WriteLine
+#    9|           -1: [TypeAccess] access to type Console
+#    9|             0: [TypeMention] Console
+#    9|           0: [StringLiteral] "1"
+#   10|       1: [ExprStmt] ...;
+#   10|         0: [MethodCall] call to method WriteLine
+#   10|           -1: [TypeAccess] access to type Console
+#   10|             0: [TypeMention] Console
+#   10|           0: [StringLiteral] "2"
+#   11|       2: [ExprStmt] ...;
+#   11|         0: [LocalFunctionCall] call to local function M
+#   11|           -1: [LocalFunctionAccess] access to local function M
+#   13|       3: [LocalFunctionStmt] M(...)
+#   13|         0: [LocalFunction] M
+#   14|           4: [BlockStmt] {...}
+#   17| [Class] Attr
 #-----|   3: (Base types)
-#   19|     0: [TypeMention] Attribute
-#   21|   5: [Method] M1
-#   21|     -1: [TypeMention] Void
-#   22|     4: [BlockStmt] {...}
-#   23|       0: [ExprStmt] ...;
-#   23|         0: [MethodCall] call to method WriteLine
-#   23|           -1: [TypeAccess] access to type Console
-#   23|             0: [TypeMention] Console
-#   23|           0: [StringLiteral] "3"
+#   17|     0: [TypeMention] Attribute
+#   19|   5: [Method] M1
+#   19|     -1: [TypeMention] Void
+#   20|     4: [BlockStmt] {...}
+#   21|       0: [ExprStmt] ...;
+#   21|         0: [MethodCall] call to method WriteLine
+#   21|           -1: [TypeAccess] access to type Console
+#   21|             0: [TypeMention] Console
+#   21|           0: [StringLiteral] "3"
 InitOnlyProperty.cs:
 #    3| [Class] Base
 #    5|   5: [Property] Prop0
@@ -770,44 +770,44 @@ ParenthesizedPattern.cs:
 #   13|             0: [VariablePatternExpr] Object p2
 #   13|             3: [PropertyPatternExpr] { ... }
 #   14|         1: [BlockStmt] {...}
-#   19|   6: [Method] M2
-#   19|     -1: [TypeMention] Void
+#   18|   6: [Method] M2
+#   18|     -1: [TypeMention] Void
 #-----|     2: (Parameters)
-#   19|       0: [Parameter] o
-#   19|         -1: [TypeMention] object
-#   20|     4: [BlockStmt] {...}
-#   21|       0: [LocalVariableDeclStmt] ... ...;
-#   21|         0: [LocalVariableDeclAndInitExpr] Int32 r = ...
-#   21|           -1: [TypeMention] int
-#   21|           0: [LocalVariableAccess] access to local variable r
-#   21|           1: [SwitchExpr] ... switch { ... }
-#   21|             -1: [ParameterAccess] access to parameter o
-#   23|             0: [SwitchCaseExpr] ... => ...
-#   23|               0: [ConstantPatternExpr,IntLiteral] 1
-#   23|               2: [IntLiteral] 1
-#   24|             1: [SwitchCaseExpr] ... => ...
-#   24|               0: [ConstantPatternExpr,IntLiteral] 2
-#   24|               2: [IntLiteral] 2
-#   25|             2: [SwitchCaseExpr] ... => ...
-#   25|               0: [VariablePatternExpr] T t
-#   25|                 0: [TypeMention] T
+#   18|       0: [Parameter] o
+#   18|         -1: [TypeMention] object
+#   19|     4: [BlockStmt] {...}
+#   20|       0: [LocalVariableDeclStmt] ... ...;
+#   20|         0: [LocalVariableDeclAndInitExpr] Int32 r = ...
+#   20|           -1: [TypeMention] int
+#   20|           0: [LocalVariableAccess] access to local variable r
+#   20|           1: [SwitchExpr] ... switch { ... }
+#   20|             -1: [ParameterAccess] access to parameter o
+#   22|             0: [SwitchCaseExpr] ... => ...
+#   22|               0: [ConstantPatternExpr,IntLiteral] 1
+#   22|               2: [IntLiteral] 1
+#   23|             1: [SwitchCaseExpr] ... => ...
+#   23|               0: [ConstantPatternExpr,IntLiteral] 2
+#   23|               2: [IntLiteral] 2
+#   24|             2: [SwitchCaseExpr] ... => ...
+#   24|               0: [VariablePatternExpr] T t
+#   24|                 0: [TypeMention] T
+#   24|               1: [IsExpr] ... is ...
+#   24|                 0: [LocalVariableAccess] access to local variable t
+#   24|                 1: [RecursivePatternExpr] { ... }
+#   24|                   3: [PropertyPatternExpr] { ... }
+#   24|               2: [IntLiteral] 3
+#   25|             3: [SwitchCaseExpr] ... => ...
+#   25|               0: [VariablePatternExpr] Object o1
+#   25|                 0: [TypeMention] object
 #   25|               1: [IsExpr] ... is ...
-#   25|                 0: [LocalVariableAccess] access to local variable t
+#   25|                 0: [LocalVariableAccess] access to local variable o1
 #   25|                 1: [RecursivePatternExpr] { ... }
 #   25|                   3: [PropertyPatternExpr] { ... }
-#   25|               2: [IntLiteral] 3
-#   26|             3: [SwitchCaseExpr] ... => ...
-#   26|               0: [VariablePatternExpr] Object o1
-#   26|                 0: [TypeMention] object
-#   26|               1: [IsExpr] ... is ...
-#   26|                 0: [LocalVariableAccess] access to local variable o1
-#   26|                 1: [RecursivePatternExpr] { ... }
-#   26|                   3: [PropertyPatternExpr] { ... }
-#   26|               2: [IntLiteral] 4
-#   27|             4: [SwitchCaseExpr] ... => ...
-#   27|               0: [TypeAccessPatternExpr] access to type String
-#   27|                 0: [TypeMention] string
-#   27|               2: [IntLiteral] 5
+#   25|               2: [IntLiteral] 4
+#   26|             4: [SwitchCaseExpr] ... => ...
+#   26|               0: [TypeAccessPatternExpr] access to type String
+#   26|                 0: [TypeMention] string
+#   26|               2: [IntLiteral] 5
 Record.cs:
 #    4| [Record] Person
 #    4|   11: [NEOperator] !=

@@ -46,17 +46,6 @@ class Expr extends ExprParent, @expr {
    */
   int getKind() { exprs(this, result, _, _, _) }
 
-  /**
-   * DEPRECATED: This is no longer necessary. See `Expr.isParenthesized()`.
-   *
-   * Gets this expression with any surrounding parentheses removed.
-   */
-  deprecated Expr getProperExpr() {
-    result = this.(ParExpr).getExpr().getProperExpr()
-    or
-    result = this and not this instanceof ParExpr
-  }
-
   /** Gets the statement containing this expression, if any. */
   Stmt getEnclosingStmt() { statementEnclosingExpr(this, result) }
 
@@ -1316,19 +1305,6 @@ class SwitchExpr extends Expr, StmtParent, @switchexpr {
   override string toString() { result = "switch (...)" }
 
   override string getAPrimaryQlClass() { result = "SwitchExpr" }
-}
-
-/**
- * DEPRECATED: Use `Expr.isParenthesized()` instead.
- *
- * A parenthesised expression.
- */
-deprecated class ParExpr extends Expr, @parexpr {
-  /** Gets the expression inside the parentheses. */
-  deprecated Expr getExpr() { result.getParent() = this }
-
-  /** Gets a printable representation of this expression. */
-  override string toString() { result = "(...)" }
 }
 
 /** An `instanceof` expression. */

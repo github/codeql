@@ -194,15 +194,6 @@ predicate urlOpen(DataFlow::Node node1, DataFlow::Node node2) {
   )
 }
 
-/** Constructor of `BasicRequestLine` */
-predicate basicRequestLine(DataFlow::Node node1, DataFlow::Node node2) {
-  exists(ConstructorCall mcc |
-    mcc.getConstructedType().hasQualifiedName("org.apache.http.message", "BasicRequestLine") and
-    mcc.getArgument(1) = node1.asExpr() and // `BasicRequestLine(String method, String uri, ProtocolVersion version)
-    node2.asExpr() = mcc
-  )
-}
-
 class BasicAuthFlowConfig extends TaintTracking::Configuration {
   BasicAuthFlowConfig() { this = "InsecureBasicAuth::BasicAuthFlowConfig" }
 
@@ -236,7 +227,6 @@ class BasicAuthFlowConfig extends TaintTracking::Configuration {
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
     apacheHttpRequest(node1, node2) or
     createURI(node1, node2) or
-    basicRequestLine(node1, node2) or
     createURL(node1, node2) or
     urlOpen(node1, node2)
   }

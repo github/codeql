@@ -1,4 +1,3 @@
-// semmle-extractor-options: ${testdir}/../../../../../resources/stubs/EntityFramework.cs /r:System.ComponentModel.TypeConverter.dll
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;

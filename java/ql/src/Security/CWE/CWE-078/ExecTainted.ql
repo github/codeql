@@ -4,7 +4,7 @@
  *              changes in the strings.
  * @kind path-problem
  * @problem.severity error
- * @security-severity 5.9
+ * @security-severity 9.8
  * @precision high
  * @id java/command-line-injection
  * @tags security
@@ -15,7 +15,7 @@
 import java
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.ExternalProcess
-import ExecCommon
+import semmle.code.java.security.CommandLineQuery
 import DataFlow::PathGraph
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, ArgumentToExec execArg

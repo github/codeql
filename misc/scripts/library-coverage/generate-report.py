@@ -1,39 +1,17 @@
-import subprocess
 import csv
 import sys
 import os
 import shutil
 import settings
+import utils
+import packages as pack
+import frameworks as fr
 
 """
 This script runs the CSV coverage report QL query, and transforms it to a more readable format.
 There are two main outputs: (i) a CSV file containing the coverage data, and (ii) an RST page containing the coverage
 data.
  """
-
-
-def subprocess_run(cmd):
-    """Runs a command through subprocess.run, with a few tweaks. Raises an Exception if exit code != 0."""
-    return subprocess.run(cmd, capture_output=True, text=True, env=os.environ.copy(), check=True)
-
-
-def create_empty_database(lang, extension, database):
-    """Creates an empty database for the given language."""
-    subprocess_run(["codeql", "database", "init", "--language=" + lang,
-                   "--source-root=/tmp/empty", "--allow-missing-source-root", database])
-    subprocess_run(["mkdir", "-p", database + "/src/tmp/empty"])
-    subprocess_run(["touch", database + "/src/tmp/empty/empty" + extension])
-    subprocess_run(["codeql", "database", "finalize",
-                   database, "--no-pre-finalize"])
-
-
-def run_codeql_query(query, database, output):
-    """Runs a codeql query on the given database."""
-    subprocess_run(["codeql", "query", "run", query,
-                   "--database", database, "--output", output + ".bqrs"])
-    subprocess_run(["codeql", "bqrs", "decode", output + ".bqrs",
-                   "--format=csv", "--no-titles", "--output", output])
-    os.remove(output + ".bqrs")
 
 
 def append_csv_number(list, value):
@@ -52,14 +30,7 @@ def append_csv_dict_item(list, dictionary, key):
         list.append(None)
 
 
-def increment_dict_item(value, dictionary, key):
-    """Increments the value of the dictionary[key] by value."""
-    if key not in dictionary:
-        dictionary[key] = 0
-    dictionary[key] += int(value)
-
-
-def collect_package_stats(packages, cwes, filter):
+def collect_package_stats(packages: pack.PackageCollection, cwes, filter):
     """
     Collects coverage statistics for packages matching the given filter. `filter` is a `lambda` that for example (i) matches
     packages to frameworks, or (2) matches packages that were previously not processed.
@@ -72,20 +43,23 @@ def collect_package_stats(packages, cwes, filter):
     framework_cwes = {}
     processed_packages = set()
 
-    for package in packages:
+    for package in packages.get_packages():
+        package: pack.Package = package
         if filter(package):
             processed_packages.add(package)
-            sources += int(packages[package]["kind"].get("source:remote", 0))
-            steps += int(packages[package]["part"].get("summary", 0))
-            sinks += int(packages[package]["part"].get("sink", 0))
+            sources += package.get_part_count("source")
+            steps += package.get_part_count("summary")
+            sinks += package.get_part_count("sink")
 
             for cwe in cwes:
-                sink = "sink:" + cwes[cwe]["sink"]
-                if sink in packages[package]["kind"]:
+                count = 0
+                for sink in cwes[cwe]["sink"].split(" "):
+                    sink = "sink:" + sink
+                    count += package.get_kind_count(sink)
+                if count > 0:
                     if cwe not in framework_cwes:
                         framework_cwes[cwe] = 0
-                    framework_cwes[cwe] += int(
-                        packages[package]["kind"][sink])
+                    framework_cwes[cwe] += count
 
     return sources, steps, sinks, framework_cwes, processed_packages
 
@@ -108,16 +82,8 @@ def add_package_stats_to_row(row, sorted_cwes, collect):
     return row, processed_packages
 
 
-class LanguageConfig:
-    def __init__(self, lang, capitalized_lang, ext, ql_path):
-        self.lang = lang
-        self.capitalized_lang = capitalized_lang
-        self.ext = ext
-        self.ql_path = ql_path
-
-
 try:  # Check for `codeql` on path
-    subprocess_run(["codeql", "--version"])
+    utils.subprocess_run(["codeql", "--version"])
 except Exception as e:
     print("Error: couldn't invoke CodeQL CLI 'codeql'. Is it on the path? Aborting.", file=sys.stderr)
     raise e
@@ -145,8 +111,10 @@ if len(sys.argv) > 2:
 
 # Languages for which we want to generate coverage reports.
 configs = [
-    LanguageConfig(
-        "java", "Java", ".java", query_prefix + "java/ql/src/meta/frameworks/Coverage.ql")
+    utils.LanguageConfig(
+        "java", "Java", ".java", query_prefix + "java/ql/src/meta/frameworks/Coverage.ql"),
+    utils.LanguageConfig(
+        "csharp", "C#", ".cs", query_prefix + "csharp/ql/src/meta/frameworks/Coverage.ql")
 ]
 
 # The names of input and output files. The placeholder {language} is replaced with the language name.
@@ -161,45 +129,20 @@ else:
     output_rst = settings.generated_output_rst
     output_csv = settings.generated_output_csv
 
-for config in configs:
-    lang = config.lang
+for lang in settings.languages:
+    config = [c for c in configs if c.lang == lang][0]
     db = "empty-" + lang
     ql_output = output_ql_csv.format(language=lang)
-    create_empty_database(lang, config.ext, db)
-    run_codeql_query(config.ql_path, db, ql_output)
+    utils.create_empty_database(lang, config.ext, db)
+    utils.run_codeql_query(config.ql_path, db, ql_output, query_prefix)
     shutil.rmtree(db)
 
-    packages = {}
-    parts = set()
-    kinds = set()
-
-    # Read the generated CSV file, and collect package statistics.
-    with open(ql_output) as csvfile:
-        reader = csv.reader(csvfile)
-        for row in reader:
-            # row: "android.util",1,"remote","source",16
-            package = row[0]
-            if package not in packages:
-                packages[package] = {
-                    "count": row[1],
-                    # part: "summary", "sink", or "source"
-                    "part": {},
-                    # kind: "source:remote", "sink:create-file", ...
-                    "kind": {}
-                }
-
-            part = row[3]
-            parts.add(part)
-            increment_dict_item(row[4], packages[package]["part"], part)
-
-            kind = part + ":" + row[2]
-            kinds.add(kind)
-            increment_dict_item(row[4], packages[package]["kind"], kind)
+    packages = pack.PackageCollection(ql_output)
 
     os.remove(ql_output)
 
-    parts = sorted(parts)
-    kinds = sorted(kinds)
+    parts = packages.get_parts()
+    kinds = packages.get_kinds()
 
     # Write the denormalized package statistics to a CSV file.
     with open(output_csv.format(language=lang), 'w', newline='') as csvfile:
@@ -211,44 +154,21 @@ for config in configs:
 
         csvwriter.writerow(headers)
 
-        for package in sorted(packages):
-            row = [package]
+        for package in packages.get_packages():
+            package: pack.Package = package
+            row = [package.name]
             for part in parts:
-                append_csv_dict_item(row, packages[package]["part"], part)
+                append_csv_number(row, package.get_part_count(part))
             for kind in kinds:
-                append_csv_dict_item(row, packages[package]["kind"], kind)
+                append_csv_number(row, package.get_kind_count(kind))
             csvwriter.writerow(row)
 
     # Read the additional framework data, such as URL, friendly name
-    frameworks = {}
-
-    with open(input_framework_csv.format(language=lang)) as csvfile:
-        reader = csv.reader(csvfile)
-        next(reader)
-        for row in reader:
-            # row: Hibernate,https://hibernate.org/,org.hibernate
-            framwork = row[0]
-            if framwork not in frameworks:
-                frameworks[framwork] = {
-                    "package": row[2],
-                    "url": row[1]
-                }
+    frameworks = fr.FrameworkCollection(
+        input_framework_csv.format(language=lang))
 
     # Read the additional CWE data
-    cwes = {}
-
-    with open(input_cwe_sink_csv.format(language=lang)) as csvfile:
-        reader = csv.reader(csvfile)
-        next(reader)
-        for row in reader:
-            # row: CWE-89,sql,SQL injection
-            cwe = row[0]
-            if cwe not in cwes:
-                cwes[cwe] = {
-                    "sink": row[1],
-                    "label": row[2]
-                }
-
+    cwes = utils.read_cwes(input_cwe_sink_csv.format(language=lang))
     sorted_cwes = sorted(cwes)
 
     with open(output_rst.format(language=lang), 'w', newline='') as rst_file:
@@ -268,7 +188,7 @@ for config in configs:
         # Write CSV header.
         headers = [row_prefix + "Framework / library",
                    "Package",
-                   "Remote flow sources",
+                   "Flow sources",
                    "Taint & value steps",
                    "Sinks (total)"]
         for cwe in sorted_cwes:
@@ -278,34 +198,25 @@ for config in configs:
 
         processed_packages = set()
 
-        all_package_patterns = set(
-            (frameworks[fr]["package"] for fr in frameworks))
-
         # Write a row for each framework.
-        for framework in sorted(frameworks):
+        for framework in frameworks.get_frameworks():
+            framework: fr.Framework = framework
             row = []
 
             # Add the framework name to the row
-            if not frameworks[framework]["url"]:
-                row.append(row_prefix + framework)
+            if not framework.url:
+                row.append(row_prefix + framework.name)
             else:
                 row.append(
-                    row_prefix + "`" + framework + " <" + frameworks[framework]["url"] + ">`_")
+                    row_prefix + "`" + framework.name + " <" + framework.url + ">`_")
 
             # Add the package name to the row
-            row.append("``" + frameworks[framework]["package"] + "``")
-
-            current_package_pattern = frameworks[framework]["package"]
+            row.append(", ".join("``{0}``".format(p)
+                       for p in framework.package_pattern.split(" ")))
 
             # Collect statistics on the current framework
-            # current_package_pattern is either full name, such as "org.hibernate", or a prefix, such as "java.*"
-            # Package patterns might overlap, in case of 'org.apache.commons.io' and 'org.apache.*', the statistics for
-            # the latter will not include the statistics for the former.
-            def package_match(package_name, pattern): return (pattern.endswith(
-                "*") and package_name.startswith(pattern[:-1])) or (not pattern.endswith("*") and pattern == package_name)
-
             def collect_framework(): return collect_package_stats(
-                packages, cwes, lambda p: package_match(p, current_package_pattern) and all(len(current_package_pattern) >= len(pattern) or not package_match(p, pattern) for pattern in all_package_patterns))
+                packages, cwes, frameworks.get_package_filter(framework))
 
             row, f_processed_packages = add_package_stats_to_row(
                 row, sorted_cwes, collect_framework)
@@ -322,10 +233,11 @@ for config in configs:
         row, other_packages = add_package_stats_to_row(
             row, sorted_cwes, collect_others)
 
-        row[1] = ", ".join("``{0}``".format(p)
-                           for p in sorted(other_packages))
+        row[1] = ", ".join("``{0}``".format(p.name)
+                           for p in sorted(other_packages, key=lambda x: x.name))
 
-        csvwriter.writerow(row)
+        if any(other_packages):
+            csvwriter.writerow(row)
 
         # Collect statistics on all packages
         row = [row_prefix + "Totals", None]

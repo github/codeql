@@ -1774,6 +1774,8 @@ The following built-in predicates are members of type ``int``:
 +-------------------------+-------------+----------------+----------------------------------------------------------------------------------------------------------------+
 | ``toString``            | string      |                | The result is the decimal representation of the number as a string.                                            |
 +-------------------------+-------------+----------------+----------------------------------------------------------------------------------------------------------------+
+| ``toUnicode``           | string      |                | The result is the unicode character for the receiver seen as a unicode code point.                             |
++-------------------------+-------------+----------------+----------------------------------------------------------------------------------------------------------------+
 
 The leftmost bit after ``bitShiftRightSigned`` depends on sign extension, whereas after ``bitShiftRight`` it is zero.
 

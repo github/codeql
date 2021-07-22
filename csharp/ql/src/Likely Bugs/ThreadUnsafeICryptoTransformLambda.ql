@@ -6,7 +6,7 @@
  *              but under some circumstances may also result in incorrect results.
  * @kind problem
  * @problem.severity warning
- * @security-severity 6.9
+ * @security-severity 7.0
  * @precision medium
  * @id cs/thread-unsafe-icryptotransform-captured-in-lambda
  * @tags concurrency

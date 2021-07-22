@@ -101,7 +101,7 @@ private module DispatchImpl {
    * restricted to those `ma`s for which a context might make a difference.
    */
   Method viableImplInCallContext(MethodAccess ma, Call ctx) {
-    result = VirtualDispatch::viableImpl(ma) and
+    result = viableCallable(ma) and
     exists(int i, Callable c, Method def, RefType t, boolean exact |
       mayBenefitFromCallContext(ma, c, i) and
       c = viableCallable(ctx) and
@@ -115,6 +115,8 @@ private module DispatchImpl {
         result = VirtualDispatch::viableMethodImpl(def, t.getSourceDeclaration(), t2) and
         not failsUnification(t, t2)
       )
+      or
+      result = def and def instanceof SummarizedCallable
     )
   }
 

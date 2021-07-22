@@ -1,5 +1,3 @@
-// semmle-extractor-options: /r:System.Linq.dll
-
 using System;
 using System.Linq;
 using System.Collections.Generic;

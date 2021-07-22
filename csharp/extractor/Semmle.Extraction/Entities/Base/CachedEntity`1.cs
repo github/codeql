@@ -60,7 +60,7 @@ namespace Semmle.Extraction
             return other?.GetType() == GetType() && Equals(other.Symbol, Symbol);
         }
 
-        public override TrapStackBehaviour TrapStackBehaviour { get; }
+        public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NoLabel;
     }
 
     /// <summary>

@@ -52,7 +52,9 @@ module NormalHashFunction {
    * A source of sensitive data, considered as a flow source.
    */
   class SensitiveDataSourceAsSource extends Source, SensitiveDataSource {
-    override string getClassification() { result = SensitiveDataSource.super.getClassification() }
+    override SensitiveDataClassification getClassification() {
+      result = SensitiveDataSource.super.getClassification()
+    }
   }
 
   /** The input to a hashing operation using a weak algorithm, considered as a flow sink. */
@@ -120,12 +122,12 @@ module ComputationallyExpensiveHashFunction {
    */
   class PasswordSourceAsSource extends Source, SensitiveDataSource {
     PasswordSourceAsSource() {
-      // TODO: once https://github.com/github/codeql/pull/5739 has been merged,
-      // don't use hardcoded value anymore
-      SensitiveDataSource.super.getClassification() = "password"
+      SensitiveDataSource.super.getClassification() = SensitiveDataClassification::password()
     }
 
-    override string getClassification() { result = SensitiveDataSource.super.getClassification() }
+    override SensitiveDataClassification getClassification() {
+      result = SensitiveDataSource.super.getClassification()
+    }
   }
 
   /**
