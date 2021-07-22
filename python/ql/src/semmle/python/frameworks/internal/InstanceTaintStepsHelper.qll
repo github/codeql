@@ -33,14 +33,15 @@ private class InstanceAdditionalTaintStep extends TaintTracking::AdditionalTaint
       nodeFrom = helper.getInstance() and
       nodeTo.(DataFlow::MethodCallNode).calls(nodeFrom, helper.getMethodName())
       or
-      // async methods
-      exists(DataFlow::MethodCallNode call, Await await |
-        nodeTo.asExpr() = await and
-        nodeFrom = helper.getInstance()
-      |
-        await.getValue() = any(DataFlow::Node awaitable | call.flowsTo(awaitable)).asExpr() and
-        call.calls(nodeFrom, helper.getAsyncMethodName())
-      )
+      // async methods.
+      //
+      // since we have general taint-step from `foo` in `await foo` to the whole
+      // expression, we simply taint the awaitable that is the result of "calling" the
+      // async method. That also allows such an awaitable to be placed in a list (for
+      // use with `asyncio.gather` for example), and thereby propagate taint to the
+      // list.
+      nodeFrom = helper.getInstance() and
+      nodeTo.(DataFlow::MethodCallNode).calls(nodeFrom, helper.getAsyncMethodName())
       or
       // Attributes
       nodeFrom = helper.getInstance() and

@@ -51,6 +51,8 @@ private module Cached {
     DataFlowPrivate::iterableUnpackingReadStep(nodeFrom, _, nodeTo)
     or
     DataFlowPrivate::iterableUnpackingStoreStep(nodeFrom, _, nodeTo)
+    or
+    awaitStep(nodeFrom, nodeTo)
   }
 }
 
@@ -200,4 +202,11 @@ predicate copyStep(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeTo) {
     call = API::moduleImport("copy").getMember(["copy", "deepcopy"]).getACall() and
     call.getArg(0) = nodeFrom
   )
+}
+
+/**
+ * Holds if taint can flow from `nodeFrom` to `nodeTo` with a step related `await`.
+ */
+predicate awaitStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+  nodeTo.asExpr().(Await).getValue() = nodeFrom.asExpr()
 }
