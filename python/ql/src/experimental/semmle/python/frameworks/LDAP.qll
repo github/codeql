@@ -219,6 +219,11 @@ private module LDAP {
               .(DataFlow::LocalSourceNode)
               .flowsTo([serverCall.getArg(2), serverCall.getArgByName("use_ssl")])
         )
+        or
+        exists(DataFlow::AttrRead startTLS |
+          startTLS.getAttributeName().matches("%start_tls%") and
+          startTLS.getObject().getALocalSource() = this
+        )
       }
     }
 

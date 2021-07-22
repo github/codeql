@@ -48,7 +48,7 @@ def three():
 def four():
     host = "ldap://" + remote_host
 
-    srv = Server(host, port=1337, True)
+    srv = Server(host, 1337, True)
     conn = Connection(srv, "dn", "password")
     conn.search("dn", "search_filter")
     return conn.response
@@ -87,7 +87,7 @@ def six():
 def seven():
     host = schema + request.args['host']
 
-    srv = Server(host, port=1337, True)
+    srv = Server(host, 1337, True)
     conn = Connection(srv, "dn", "password")
     conn.search("dn", "search_filter")
     return conn.response
@@ -112,7 +112,7 @@ def eight():
 @app.route("/nine")
 def nine():
     host = schema + "somethingon.theinternet.com"
-    srv = Server(host, port=1337, False)
+    srv = Server(host, 1337, False)
     conn = Connection(srv, "dn", "password")
     conn.search("dn", "search_filter")
     return conn.response
