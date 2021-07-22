@@ -24,6 +24,5 @@ import semmle.code.cpp.models.interfaces.FormattingFunction
 from string format, FormattingFunctionCall fc, FormatLiteral fl
 where format = fc.getFormat().getValue() // format: "%s: Failed init_producer"
 and format.regexpMatch(".*")
-and fc.getTarget().hasName("syslog")
-and fc.getArgument(0).getValue() ="LOG_DEBUG"
-select fc, format
+and fc.getTarget().hasName("syslog") 
+select fc, fc.getArgument(0).getValue().toString()
