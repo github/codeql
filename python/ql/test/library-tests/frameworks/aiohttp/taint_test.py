@@ -55,7 +55,7 @@ async def test_taint(request: web.Request): # $ requestHandler
         await request.content.readline(), # $ tainted
         await request.content.readchunk(), # $ tainted
         (await request.content.readchunk())[0], # $ tainted
-        [line async for line in request.content], # $ MISSING: tainted
+        [line async for line in request.content], # $ tainted
         [data async for data in request.content.iter_chunked(1024)], # $ MISSING: tainted
         [data async for data in request.content.iter_any()], # $ MISSING: tainted
         [data async for data, _ in request.content.iter_chunks()], # $ MISSING: tainted

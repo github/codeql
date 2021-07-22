@@ -46,9 +46,11 @@ private module Cached {
     or
     copyStep(nodeFrom, nodeTo)
     or
-    forStep(nodeFrom, nodeTo)
+    DataFlowPrivate::forReadStep(nodeFrom, _, nodeTo)
     or
-    unpackingAssignmentStep(nodeFrom, nodeTo)
+    DataFlowPrivate::iterableUnpackingReadStep(nodeFrom, _, nodeTo)
+    or
+    DataFlowPrivate::iterableUnpackingStoreStep(nodeFrom, _, nodeTo)
   }
 }
 
@@ -197,30 +199,5 @@ predicate copyStep(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeTo) {
   exists(DataFlow::CallCfgNode call | call = nodeTo |
     call = API::moduleImport("copy").getMember(["copy", "deepcopy"]).getACall() and
     call.getArg(0) = nodeFrom
-  )
-}
-
-/**
- * Holds if taint can flow from `nodeFrom` to `nodeTo` with a step related to `for`-iteration,
- * for example `for x in xs`, or `for x,y in points`.
- */
-predicate forStep(DataFlow::CfgNode nodeFrom, DataFlow::EssaNode nodeTo) {
-  exists(EssaNodeDefinition defn, For for |
-    for.getTarget().getAChildNode*() = defn.getDefiningNode().getNode() and
-    nodeTo.getVar() = defn and
-    nodeFrom.asExpr() = for.getIter()
-  )
-}
-
-/**
- * Holds if taint can flow from `nodeFrom` to `nodeTo` with a step related to iterable unpacking.
- * Only handles normal assignment (`x,y = calc_point()`), since `for x,y in points` is handled by `forStep`.
- */
-predicate unpackingAssignmentStep(DataFlow::CfgNode nodeFrom, DataFlow::EssaNode nodeTo) {
-  // `a, b = myiterable` or `head, *tail = myiterable` (only Python 3)
-  exists(MultiAssignmentDefinition defn, Assign assign |
-    assign.getATarget().contains(defn.getDefiningNode().getNode()) and
-    nodeTo.getVar() = defn and
-    nodeFrom.asExpr() = assign.getValue()
   )
 }

@@ -108,7 +108,7 @@ def test_taint(request: HttpRequest, foo, bar, baz=None):  # $requestHandler rou
         request.readline(), # $ tainted
         request.readlines(), # $ tainted
         request.readlines()[0], # $ tainted
-        [line for line in request], # $ MISSING: tainted
+        [line for line in request], # $ tainted
     )
 
     # django.urls.ResolverMatch also supports iterable unpacking
