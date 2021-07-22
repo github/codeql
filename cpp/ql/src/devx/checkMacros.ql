@@ -14,12 +14,16 @@ import cpp
 import semmle.code.cpp.models.interfaces.FormattingFunction
 
 // Find the syslog calls that meet two conditions
+
 // 1. First parameter is not "LOG_DEBUG". Such as LOG_ERR.
-// 2. Macros show in log messages.
+
+// 2. Macros in log messages.
+
 // Example: syslog(LOG_ERR, "%s: Failed init_producer", __FUNCTION__);
 
-from string format, FormattingFunctionCall fc
-where format = fc.getFormat().getValue() 
+from string format, FormattingFunctionCall fc, FormatLiteral fl
+where format = fc.getFormat().getValue() // format: "%s: Failed init_producer"
 and format.regexpMatch(".*")
 and fc.getTarget().hasName("syslog")
+and fc.getArgument(0).getValue() ="LOG_DEBUG"
 select fc, format
