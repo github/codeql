@@ -120,6 +120,14 @@ public class ScopeManager {
   }
 
   /**
+   * Reset the scope in which to declare variables that are referenced without
+   * being declared back to the global scope.
+   */
+  public void resetImplicitVariableScope() {
+    this.implicitVariableScope = toplevelScope;
+  }
+
+  /**
    * Enter a new scope.
    *
    * @param scopeKind the numeric scope kind

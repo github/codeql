@@ -732,7 +732,10 @@ public class ASTExtractor {
       visitAll(nd.getBody(), toplevelLabel);
 
       // Leave the local scope again.
-      if (sourceType.hasLocalScope()) scopeManager.leaveScope();
+      if (sourceType.hasLocalScope()) {
+        scopeManager.leaveScope();
+        scopeManager.resetImplicitVariableScope();
+      }
 
       contextManager.leaveContainer();
 
