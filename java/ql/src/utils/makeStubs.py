@@ -30,8 +30,8 @@ if "--help" in sys.argv or "-h" in sys.argv:
 if len(sys.argv) not in [3, 4]:
     print_usage()
 
-testDir = sys.argv[1].rstrip("/")
-stubDir = sys.argv[2].rstrip("/")
+testDir = os.path.normpath(sys.argv[1])
+stubDir = os.path.normpath(sys.argv[2])
 
 def check_dir_exists(path):
     if not os.path.isdir(path):
@@ -155,7 +155,7 @@ for (typ,) in results['multipleGeneratedStubs']['tuples']:
         f"WARNING: Multiple stubs generated for {typ}. This is probably a bug. One will be chosen arbitrarily.")
 
 for (typ, stub) in results['#select']['tuples']:
-    stubFile = os.path.join(stubDir, typ.replace(".", "/") + ".java")
+    stubFile = os.path.join(stubDir, *typ.split(".")) + ".java"
     os.makedirs(os.path.dirname(stubFile), exist_ok=True)
     with open(stubFile, "w") as f:
         f.write(stub)
