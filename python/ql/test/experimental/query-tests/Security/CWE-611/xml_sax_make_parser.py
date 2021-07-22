@@ -1,5 +1,9 @@
+from flask import request, Flask
 from io import StringIO
 import xml.sax
+
+
+app = Flask(__name__)
 
 # https://docs.python.org/3/library/xml.sax.handler.html#xml.sax.handler.feature_external_ges
 

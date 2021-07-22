@@ -12,8 +12,6 @@ TO-DO
 
 Extend tests
 Model xmltodict and xml.dom
-Write StringIO/BytesIO additional tain steps
-
 
 XML Parsers:
   xml.etree.ElementTree.XMLParser() - no options, vuln by default
@@ -34,6 +32,8 @@ XML Parsing:
     lxml.etree.parse
     xml.dom.(mini|pull)dom.parse(String)
 '''
+
+app = Flask(__name__)
 
 
 @app.route("/XMLParser-Empty&xml.etree.ElementTree.fromstring")
