@@ -26,7 +26,7 @@ predicate isLogDebug(Expr mie) {
     exists(MacroInvocation mi |
         mi.getExpr() = mie and
         (
-          mi.getMacroName() = "LOG_DEBUG" or
+          mi.getMacroName() = "LOG_DEBUG"
         )
       )
 }
