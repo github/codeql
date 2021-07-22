@@ -6,7 +6,7 @@
  * @kind path-problem
  * @problem.severity error
  * @security-severity 9.8
- * @precision low
+ * @precision high
  * @id cpp/command-line-injection
  * @tags security
  *       external/cwe/cwe-078
