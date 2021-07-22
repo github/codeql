@@ -171,12 +171,50 @@ When you create a CodeQL database, the extractor stores diagnostic data in the d
 
 If the analysis found fewer results for standard queries than you expected, review the results of the diagnostic and summary queries to check whether the CodeQL database is likely to be a good representation of the codebase that you want to analyze.
 
+Integrating a CodeQL pack into a Code Scanning workflow
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. pull-quote::
+
+    Note
+
+    The CodeQL package manager is currently in beta and subject to change. During the beta, CodeQL packs are available only in the GitHub Package Registry (GHPR). You must use version 2.5.8 or later of the CodeQL CLI to use the CodeQL package manager.
+
+Using packs inside your Code Scanning setup allows selecting query packs from various sources.
+
+In the CodeQL configuration file, the section called ``packs`` holds a list of CodeQL package references. Each package listed there will be downloaded by the action and the its default suite will be run.
+
+   queries:
+     - queries/query1.ql
+     - queries/suite1.qls
+   packs:
+     - codeql/pack1@~1.2.3  # latest version compatible with 1.2.3
+     - codeql/pack2         # latest version
+
+For multi-language runs, you can specify a nested map of packs:
+
+   packs:
+     javascript:
+       - codeql/js-pack1@~1.2.3
+       - codeql/js-pack2
+     java:
+       - codeql/java-pack1@~1.2.3
+       - codeql/java-pack2
+
+In the CodeQL workflow file, you can add ``packs`` as input for the ``init`` action by using a comma-separated list of CodeQL packages and optional versions.
+
+   uses: github/codeql-action@v1
+   with:
+     packs: codeql/pack1@~1.2.3, codeql/pack2
+
+This format does not yet support multi-language analyses.
+
 Running all queries in a directory
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can run all the queries located in a directory by providing the directory
 path, rather than listing all the individual query files. Paths are searched
-recursively, so any queries contained in subfolders will also be executed. 
+recursively, so any queries contained in subfolders will also be executed.
 
 .. pull-quote::
 
@@ -186,12 +224,12 @@ recursively, so any queries contained in subfolders will also be executed.
    <about-ql-packs>` when executing ``database analyze``
    as it contains some special queries that aren't designed to be used with
    the command. Rather, to run a wide range of useful queries, run one of the
-   LGTM.com query suites. 
-   
+   LGTM.com query suites.
+
 For example, to execute all Python queries contained in the ``Functions``
 directory you would run::
 
-   codeql database analyze <python-database> ../ql/python/ql/src/Functions/ --format=sarif-latest --output=python-analysis/python-results.sarif 
+   codeql database analyze <python-database> ../ql/python/ql/src/Functions/ --format=sarif-latest --output=python-analysis/python-results.sarif
 
 A SARIF results file is generated. Specifying ``--format=sarif-latest`` ensures
 that the results are formatted according to the most recent SARIF specification
@@ -218,19 +256,19 @@ corresponds to an alert. Each line is a comma-separated list with the following 
      - Description
      - Example
    * - Name
-     - Name of the query that identified the result. 
+     - Name of the query that identified the result.
      - ``Inefficient regular expression``
    * - Description
-     - Description of the query. 
-     - ``A regular expression that requires exponential time to match certain 
-       inputs can be a performance bottleneck, and may be vulnerable to 
+     - Description of the query.
+     - ``A regular expression that requires exponential time to match certain
+       inputs can be a performance bottleneck, and may be vulnerable to
        denial-of-service attacks.``
    * - Severity
      - Severity of the query.
      - ``error``
    * - Message
-     - Alert message. 
-     - ``This part of the regular expression may cause exponential backtracking 
+     - Alert message.
+     - ``This part of the regular expression may cause exponential backtracking
        on strings containing many repetitions of '\\\\'.``
    * - Path
      - Path of the file containing the alert.
@@ -247,14 +285,14 @@ corresponds to an alert. Each line is a comma-separated list with the following 
        included when the same value as the start line.
      - ``64``
    * - End column
-     - Where available, the column of the end line that marks the end of the 
+     - Where available, the column of the end line that marks the end of the
        alert code. Otherwise the end line is repeated.
      - ``617``
 
 Results files can be integrated into your own code-review or debugging
 infrastructure. For example, SARIF file output can be used to highlight alerts
 in the correct location in your source code using a SARIF viewer plugin for your
-IDE. 
+IDE.
 
 Further reading
 ---------------
