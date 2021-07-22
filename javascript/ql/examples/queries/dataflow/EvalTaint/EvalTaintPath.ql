@@ -3,6 +3,7 @@
  * @description Tracks user-controlled values into 'eval' calls (special case of js/code-injection),
  *              and generates a visualizable path from the source to the sink.
  * @kind path-problem
+ * @problem.severity error
  * @tags security
  * @id js/examples/eval-taint-path
  */

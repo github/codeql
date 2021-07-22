@@ -1,3 +1,4 @@
+| tst2.js:8:5:8:29 | rejectU ... : false | Disabling certificate validation is strongly discouraged. |
 | tst.js:15:3:15:27 | rejectU ... : false | Disabling certificate validation is strongly discouraged. |
 | tst.js:18:1:18:40 | process ... HORIZED | Disabling certificate validation is strongly discouraged. |
 | tst.js:21:3:21:27 | rejectU ... : false | Disabling certificate validation is strongly discouraged. |

@@ -407,7 +407,7 @@ public class AutoBuild {
     // codeql-javascript-*.json files
     patterns.add("**/.eslintrc*");
     patterns.add("**/package.json");
-    patterns.add("**/tsconfig.json");
+    patterns.add("**/tsconfig*.json");
     patterns.add("**/codeql-javascript-*.json");
 
     // include any explicitly specified extensions

@@ -96,6 +96,7 @@ module DataFlow {
     predicate accessesGlobal(string g) { globalVarRef(g).flowsTo(this) }
 
     /** Holds if this node may evaluate to the string `s`, possibly through local data flow. */
+    pragma[nomagic]
     predicate mayHaveStringValue(string s) {
       getAPredecessor().mayHaveStringValue(s)
       or
@@ -238,7 +239,6 @@ module DataFlow {
     private TypeAnnotation getFallbackTypeAnnotation() {
       exists(BindingPattern pattern |
         this = valueNode(pattern) and
-        not ast_node_type(pattern, _) and
         result = pattern.getTypeAnnotation()
       )
       or
@@ -254,7 +254,9 @@ module DataFlow {
      * Holds if this node is annotated with the given named type,
      * or is declared as a subtype thereof, or is a union or intersection containing such a type.
      */
+    cached
     predicate hasUnderlyingType(string globalName) {
+      Stages::TypeTracking::ref() and
       getType().hasUnderlyingType(globalName)
       or
       getFallbackTypeAnnotation().getAnUnderlyingType().hasQualifiedName(globalName)
@@ -264,7 +266,9 @@ module DataFlow {
      * Holds if this node is annotated with the given named type,
      * or is declared as a subtype thereof, or is a union or intersection containing such a type.
      */
+    cached
     predicate hasUnderlyingType(string moduleName, string typeName) {
+      Stages::TypeTracking::ref() and
       getType().hasUnderlyingType(moduleName, typeName)
       or
       getFallbackTypeAnnotation().getAnUnderlyingType().hasQualifiedName(moduleName, typeName)
@@ -492,6 +496,7 @@ module DataFlow {
      * Gets the data flow node corresponding to the base object
      * whose property is read from or written to.
      */
+    cached
     abstract Node getBase();
 
     /**
@@ -530,6 +535,13 @@ module DataFlow {
      */
     predicate isPrivateField() {
       getPropertyName().charAt(0) = "#" and getPropertyNameExpr() instanceof Label
+    }
+
+    /**
+     * Gets an accessor (`get` or `set` method) that may be invoked by this property reference.
+     */
+    final DataFlow::FunctionNode getAnAccessorCallee() {
+      result = CallGraph::getAnAccessorCallee(this)
     }
   }
 
@@ -588,7 +600,10 @@ module DataFlow {
 
     PropLValueAsPropWrite() { astNode instanceof LValue }
 
-    override Node getBase() { result = valueNode(astNode.getBase()) }
+    override Node getBase() {
+      result = valueNode(astNode.getBase()) and
+      Stages::DataFlowStage::ref()
+    }
 
     override Expr getPropertyNameExpr() { result = astNode.getPropertyNameExpr() }
 
@@ -717,7 +732,7 @@ module DataFlow {
     override ParameterField prop;
 
     override Node getBase() {
-      result = thisNode(prop.getDeclaringClass().getConstructor().getBody())
+      thisNode(result, prop.getDeclaringClass().getConstructor().getBody())
     }
 
     override Expr getPropertyNameExpr() {
@@ -751,7 +766,7 @@ module DataFlow {
     }
 
     override Node getBase() {
-      result = thisNode(prop.getDeclaringClass().getConstructor().getBody())
+      thisNode(result, prop.getDeclaringClass().getConstructor().getBody())
     }
 
     override Expr getPropertyNameExpr() { result = prop.getNameExpr() }
@@ -1670,6 +1685,7 @@ module DataFlow {
   import Configuration
   import TrackedNodes
   import TypeTracking
+  import internal.FunctionWrapperSteps
 
   predicate localTaintStep = TaintTracking::localTaintStep/2;
 }

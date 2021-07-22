@@ -8,6 +8,8 @@ import Expr
 import semmle.code.csharp.Callable
 import semmle.code.csharp.dataflow.CallContext as CallContext
 private import semmle.code.csharp.dataflow.internal.DelegateDataFlow
+private import semmle.code.csharp.dataflow.internal.DataFlowDispatch
+private import semmle.code.csharp.dataflow.internal.DataFlowImplCommon
 private import semmle.code.csharp.dispatch.Dispatch
 private import dotnet
 
@@ -536,10 +538,12 @@ class DelegateLikeCall extends Call, DelegateLikeCall_ {
   override Callable getTarget() { none() }
 
   /**
+   * DEPRECATED: Use `getARuntimeTarget/0` instead.
+   *
    * Gets a potential run-time target of this delegate or function pointer call in the given
    * call context `cc`.
    */
-  Callable getARuntimeTarget(CallContext::CallContext cc) {
+  deprecated Callable getARuntimeTarget(CallContext::CallContext cc) {
     exists(DelegateLikeCallExpr call |
       this = call.getCall() and
       result = call.getARuntimeTarget(cc)
@@ -562,7 +566,12 @@ class DelegateLikeCall extends Call, DelegateLikeCall_ {
    */
   Expr getExpr() { result = this.getChild(-1) }
 
-  override Callable getARuntimeTarget() { result = getARuntimeTarget(_) }
+  final override Callable getARuntimeTarget() {
+    exists(ExplicitDelegateLikeDataFlowCall call |
+      this = call.getCall() and
+      result = viableCallableLambda(call, _)
+    )
+  }
 
   override Expr getRuntimeArgument(int i) { result = getArgument(i) }
 }
@@ -582,10 +591,12 @@ class DelegateLikeCall extends Call, DelegateLikeCall_ {
  */
 class DelegateCall extends DelegateLikeCall, @delegate_invocation_expr {
   /**
+   * DEPRECATED: Use `getARuntimeTarget/0` instead.
+   *
    * Gets a potential run-time target of this delegate call in the given
    * call context `cc`.
    */
-  override Callable getARuntimeTarget(CallContext::CallContext cc) {
+  deprecated override Callable getARuntimeTarget(CallContext::CallContext cc) {
     result = DelegateLikeCall.super.getARuntimeTarget(cc)
     or
     exists(AddEventSource aes, CallContext::CallContext cc2 |
@@ -601,16 +612,16 @@ class DelegateCall extends DelegateLikeCall, @delegate_invocation_expr {
     )
   }
 
-  private AddEventSource getAnAddEventSource(Callable enclosingCallable) {
+  deprecated private AddEventSource getAnAddEventSource(Callable enclosingCallable) {
     this.getExpr().(EventAccess).getTarget() = result.getEvent() and
     enclosingCallable = result.getExpr().getEnclosingCallable()
   }
 
-  private AddEventSource getAnAddEventSourceSameEnclosingCallable() {
+  deprecated private AddEventSource getAnAddEventSourceSameEnclosingCallable() {
     result = getAnAddEventSource(this.getEnclosingCallable())
   }
 
-  private AddEventSource getAnAddEventSourceDifferentEnclosingCallable() {
+  deprecated private AddEventSource getAnAddEventSourceDifferentEnclosingCallable() {
     exists(Callable c | result = getAnAddEventSource(c) | c != this.getEnclosingCallable())
   }
 

@@ -192,3 +192,12 @@ private module Fancylog {
     override DataFlow::Node getAMessageComponent() { result = getAnArgument() }
   }
 }
+
+/**
+ * A class modelling [debug](https://npmjs.org/package/debug) as a logging mechanism.
+ */
+private class DebugLoggerCall extends LoggerCall, API::CallNode {
+  DebugLoggerCall() { this = API::moduleImport("debug").getReturn().getACall() }
+
+  override DataFlow::Node getAMessageComponent() { result = getAnArgument() }
+}

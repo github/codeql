@@ -129,6 +129,82 @@ class TextStringBuilderTest {
         TextStringBuilder sb72 = new TextStringBuilder(); sb72.append(taint()); sink(sb72.toCharArray(0, 0)); // $hasTaintFlow
         TextStringBuilder sb73 = new TextStringBuilder(); sb73.append(taint()); sink(sb73.toStringBuffer()); // $hasTaintFlow
         TextStringBuilder sb74 = new TextStringBuilder(); sb74.append(taint()); sink(sb74.toStringBuilder()); // $hasTaintFlow
+
+        // Tests for fluent methods (those returning `this`):
+
+        TextStringBuilder fluentTest = new TextStringBuilder();
+        sink(fluentTest.append("Harmless").append(taint()).append("Also harmless").toString()); // $hasTaintFlow
+
+        TextStringBuilder fluentBackflowTest = new TextStringBuilder();
+        fluentBackflowTest.append("Harmless").append(taint()).append("Also harmless");
+        sink(fluentBackflowTest.toString()); // $hasTaintFlow
+
+        // Test the case where the fluent method contributing taint is at the end of a statement:
+        TextStringBuilder fluentBackflowTest2 = new TextStringBuilder();
+        fluentBackflowTest2.append("Harmless").append(taint());
+        sink(fluentBackflowTest2.toString()); // $hasTaintFlow
+
+        // Test all fluent methods are passing taint through to their result:
+        TextStringBuilder fluentAllMethodsTest = new TextStringBuilder(taint());
+        sink(fluentAllMethodsTest // $hasTaintFlow
+        .append("text")
+        .appendAll("text")
+        .appendFixedWidthPadLeft("text", 4, ' ')
+        .appendFixedWidthPadRight("text", 4, ' ')
+        .appendln("text")
+        .appendNewLine()
+        .appendNull()
+        .appendPadding(0, ' ')
+        .appendSeparator(',')
+        .appendWithSeparators(new String[] { }, ",")
+        .delete(0, 0)
+        .deleteAll(' ')
+        .deleteCharAt(0)
+        .deleteFirst("delme")
+        .ensureCapacity(100)
+        .insert(1, "insertme")
+        .minimizeCapacity()
+        .replace(0, 0, "replacement")
+        .replaceAll("find", "replace")
+        .replaceFirst("find", "replace")
+        .reverse()
+        .setCharAt(0, 'a')
+        .setLength(500)
+        .setNewLineText("newline")
+        .setNullText("NULL")
+        .trim());
+
+        // Test all fluent methods are passing taint back to their qualifier:
+        TextStringBuilder fluentAllMethodsTest2 = new TextStringBuilder();
+        fluentAllMethodsTest2
+        .append("text")
+        .appendAll("text")
+        .appendFixedWidthPadLeft("text", 4, ' ')
+        .appendFixedWidthPadRight("text", 4, ' ')
+        .appendln("text")
+        .appendNewLine()
+        .appendNull()
+        .appendPadding(0, ' ')
+        .appendSeparator(',')
+        .appendWithSeparators(new String[] { }, ",")
+        .delete(0, 0)
+        .deleteAll(' ')
+        .deleteCharAt(0)
+        .deleteFirst("delme")
+        .ensureCapacity(100)
+        .insert(1, "insertme")
+        .minimizeCapacity()
+        .replace(0, 0, "replacement")
+        .replaceAll("find", "replace")
+        .replaceFirst("find", "replace")
+        .reverse()
+        .setCharAt(0, 'a')
+        .setLength(500)
+        .setNewLineText("newline")
+        .setNullText("NULL")
+        .trim()
+        .append(taint());
+        sink(fluentAllMethodsTest2); // $hasTaintFlow
     }
 
 }

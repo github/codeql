@@ -4,7 +4,6 @@
  *              in the documentation, queries that rely on the contract may yield unexpected
  *              results.
  * @kind table
- * @problem.severity error
  * @id js/consistency/api-contracts
  * @tags consistency
  */

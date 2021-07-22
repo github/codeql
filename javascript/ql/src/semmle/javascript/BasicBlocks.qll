@@ -307,7 +307,7 @@ class ReachableBasicBlock extends BasicBlock {
   /**
    * Holds if this basic block strictly dominates `bb`.
    */
-  cached
+  pragma[inline]
   predicate strictlyDominates(ReachableBasicBlock bb) { bbIDominates+(this, bb) }
 
   /**
@@ -315,15 +315,13 @@ class ReachableBasicBlock extends BasicBlock {
    *
    * This predicate is reflexive: each reachable basic block dominates itself.
    */
-  predicate dominates(ReachableBasicBlock bb) {
-    bb = this or
-    strictlyDominates(bb)
-  }
+  pragma[inline]
+  predicate dominates(ReachableBasicBlock bb) { bbIDominates*(this, bb) }
 
   /**
    * Holds if this basic block strictly post-dominates `bb`.
    */
-  cached
+  pragma[inline]
   predicate strictlyPostDominates(ReachableBasicBlock bb) { bbIPostDominates+(this, bb) }
 
   /**
@@ -331,10 +329,8 @@ class ReachableBasicBlock extends BasicBlock {
    *
    * This predicate is reflexive: each reachable basic block post-dominates itself.
    */
-  predicate postDominates(ReachableBasicBlock bb) {
-    bb = this or
-    strictlyPostDominates(bb)
-  }
+  pragma[inline]
+  predicate postDominates(ReachableBasicBlock bb) { bbIPostDominates*(this, bb) }
 }
 
 /**

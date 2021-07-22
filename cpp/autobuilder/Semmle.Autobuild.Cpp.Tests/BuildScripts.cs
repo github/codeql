@@ -5,6 +5,7 @@ using System;
 using System.Linq;
 using Microsoft.Build.Construction;
 using System.Xml;
+using System.IO;
 
 namespace Semmle.Autobuild.Cpp.Tests
 {
@@ -43,6 +44,8 @@ namespace Semmle.Autobuild.Cpp.Tests
         public IDictionary<string, int> RunProcess = new Dictionary<string, int>();
         public IDictionary<string, string> RunProcessOut = new Dictionary<string, string>();
         public IDictionary<string, string> RunProcessWorkingDirectory = new Dictionary<string, string>();
+        public HashSet<string> CreateDirectories { get; } = new HashSet<string>();
+        public HashSet<(string, string)> DownloadFiles { get; } = new HashSet<(string, string)>();
 
         int IBuildActions.RunProcess(string cmd, string args, string? workingDirectory, IDictionary<string, string>? env, out IList<string> stdOut)
         {
@@ -135,6 +138,14 @@ namespace Semmle.Autobuild.Cpp.Tests
 
         string IBuildActions.GetFullPath(string path) => path;
 
+        string? IBuildActions.GetFileName(string? path) => Path.GetFileName(path?.Replace('\\', '/'));
+
+        public string? GetDirectoryName(string? path)
+        {
+            var dir = Path.GetDirectoryName(path?.Replace('\\', '/'));
+            return dir is null ? path : path?.Substring(0, dir.Length);
+        }
+
         void IBuildActions.WriteAllText(string filename, string contents)
         {
         }
@@ -152,6 +163,18 @@ namespace Semmle.Autobuild.Cpp.Tests
             foreach (var kvp in GetEnvironmentVariable)
                 s = s.Replace($"%{kvp.Key}%", kvp.Value);
             return s;
+        }
+
+        public void CreateDirectory(string path)
+        {
+            if (!CreateDirectories.Contains(path))
+                throw new ArgumentException($"Missing CreateDirectory, {path}");
+        }
+
+        public void DownloadFile(string address, string fileName)
+        {
+            if (!DownloadFiles.Contains((address, fileName)))
+                throw new ArgumentException($"Missing DownloadFile, {address}, {fileName}");
         }
     }
 
@@ -213,6 +236,7 @@ namespace Semmle.Autobuild.Cpp.Tests
             Actions.GetEnvironmentVariable[$"CODEQL_EXTRACTOR_{codeqlUpperLanguage}_SOURCE_ARCHIVE_DIR"] = "";
             Actions.GetEnvironmentVariable[$"CODEQL_EXTRACTOR_{codeqlUpperLanguage}_ROOT"] = $@"C:\codeql\{codeqlUpperLanguage.ToLowerInvariant()}";
             Actions.GetEnvironmentVariable["CODEQL_JAVA_HOME"] = @"C:\codeql\tools\java";
+            Actions.GetEnvironmentVariable["CODEQL_PLATFORM"] = "win64";
             Actions.GetEnvironmentVariable["SEMMLE_DIST"] = @"C:\odasa";
             Actions.GetEnvironmentVariable["SEMMLE_JAVA_HOME"] = @"C:\odasa\tools\java";
             Actions.GetEnvironmentVariable["SEMMLE_PLATFORM_TOOLS"] = @"C:\odasa\tools";
@@ -273,7 +297,8 @@ namespace Semmle.Autobuild.Cpp.Tests
         [Fact]
         public void TestCppAutobuilderSuccess()
         {
-            Actions.RunProcess[@"cmd.exe /C C:\odasa\tools\csharp\nuget\nuget.exe restore C:\Project\test.sln"] = 1;
+            Actions.RunProcess[@"cmd.exe /C nuget restore C:\Project\test.sln -DisableParallelProcessing"] = 1;
+            Actions.RunProcess[@"cmd.exe /C C:\Project\.nuget\nuget.exe restore C:\Project\test.sln -DisableParallelProcessing"] = 0;
             Actions.RunProcess[@"cmd.exe /C CALL ^""C:\Program Files ^(x86^)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat^"" && set Platform=&& type NUL && C:\odasa\tools\odasa index --auto msbuild C:\Project\test.sln /p:UseSharedCompilation=false /t:rebuild /p:Platform=""x86"" /p:Configuration=""Release"" /p:MvcBuildViews=true"] = 0;
             Actions.RunProcessOut[@"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe -prerelease -legacy -property installationPath"] = "";
             Actions.RunProcess[@"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe -prerelease -legacy -property installationPath"] = 1;
@@ -286,11 +311,13 @@ namespace Semmle.Autobuild.Cpp.Tests
             Actions.FileExists[@"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe"] = true;
             Actions.EnumerateFiles[@"C:\Project"] = "foo.cs\ntest.slx";
             Actions.EnumerateDirectories[@"C:\Project"] = "";
+            Actions.CreateDirectories.Add(@"C:\Project\.nuget");
+            Actions.DownloadFiles.Add(("https://dist.nuget.org/win-x86-commandline/latest/nuget.exe", @"C:\Project\.nuget\nuget.exe"));
 
             var autobuilder = CreateAutoBuilder(true);
             var solution = new TestSolution(@"C:\Project\test.sln");
             autobuilder.ProjectsOrSolutionsToBuild.Add(solution);
-            TestAutobuilderScript(autobuilder, 0, 2);
+            TestAutobuilderScript(autobuilder, 0, 3);
         }
     }
 }

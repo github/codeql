@@ -4,6 +4,7 @@
  *              allows a malicious attacker to submit a request on behalf of the user.
  * @kind problem
  * @problem.severity error
+ * @security-severity 6.4
  * @precision high
  * @id cs/web/missing-token-validation
  * @tags security

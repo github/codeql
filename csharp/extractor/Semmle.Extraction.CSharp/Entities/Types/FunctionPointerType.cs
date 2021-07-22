@@ -11,9 +11,9 @@ namespace Semmle.Extraction.CSharp.Entities
         {
         }
 
-        public override void WriteId(TextWriter trapFile)
+        public override void WriteId(EscapingTextWriter trapFile)
         {
-            Symbol.BuildTypeId(Context, trapFile, Symbol);
+            Symbol.BuildTypeId(Context, trapFile, Symbol, constructUnderlyingTupleType: false);
             trapFile.Write(";functionpointertype");
         }
 

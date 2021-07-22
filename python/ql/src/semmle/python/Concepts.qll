@@ -526,3 +526,150 @@ module HTTP {
     }
   }
 }
+
+/**
+ * Provides models for cryptographic things.
+ *
+ * Note: The `CryptographicAlgorithm` class currently doesn't take weak keys into
+ * consideration for the `isWeak` member predicate. So RSA is always considered
+ * secure, although using a low number of bits will actually make it insecure. We plan
+ * to improve our libraries in the future to more precisely capture this aspect.
+ */
+module Cryptography {
+  /** Provides models for public-key cryptography, also called asymmetric cryptography. */
+  module PublicKey {
+    /**
+     * A data-flow node that generates a new key-pair for use with public-key cryptography.
+     *
+     * Extend this class to refine existing API models. If you want to model new APIs,
+     * extend `KeyGeneration::Range` instead.
+     */
+    class KeyGeneration extends DataFlow::Node {
+      KeyGeneration::Range range;
+
+      KeyGeneration() { this = range }
+
+      /** Gets the name of the cryptographic algorithm (for example `"RSA"` or `"AES"`). */
+      string getName() { result = range.getName() }
+
+      /** Gets the argument that specifies the size of the key in bits, if available. */
+      DataFlow::Node getKeySizeArg() { result = range.getKeySizeArg() }
+
+      /**
+       * Gets the size of the key generated (in bits), as well as the `origin` that
+       * explains how we obtained this specific key size.
+       */
+      int getKeySizeWithOrigin(DataFlow::Node origin) {
+        result = range.getKeySizeWithOrigin(origin)
+      }
+
+      /** Gets the minimum key size (in bits) for this algorithm to be considered secure. */
+      int minimumSecureKeySize() { result = range.minimumSecureKeySize() }
+    }
+
+    /** Provides classes for modeling new key-pair generation APIs. */
+    module KeyGeneration {
+      /** Gets a back-reference to the keysize argument `arg` that was used to generate a new key-pair. */
+      private DataFlow::LocalSourceNode keysizeBacktracker(
+        DataFlow::TypeBackTracker t, DataFlow::Node arg
+      ) {
+        t.start() and
+        arg = any(KeyGeneration::Range r).getKeySizeArg() and
+        result = arg.getALocalSource()
+        or
+        exists(DataFlow::TypeBackTracker t2 | result = keysizeBacktracker(t2, arg).backtrack(t2, t))
+      }
+
+      /** Gets a back-reference to the keysize argument `arg` that was used to generate a new key-pair. */
+      DataFlow::LocalSourceNode keysizeBacktracker(DataFlow::Node arg) {
+        result = keysizeBacktracker(DataFlow::TypeBackTracker::end(), arg)
+      }
+
+      /**
+       * A data-flow node that generates a new key-pair for use with public-key cryptography.
+       *
+       * Extend this class to model new APIs. If you want to refine existing API models,
+       * extend `KeyGeneration` instead.
+       */
+      abstract class Range extends DataFlow::Node {
+        /** Gets the name of the cryptographic algorithm (for example `"RSA"`). */
+        abstract string getName();
+
+        /** Gets the argument that specifies the size of the key in bits, if available. */
+        abstract DataFlow::Node getKeySizeArg();
+
+        /**
+         * Gets the size of the key generated (in bits), as well as the `origin` that
+         * explains how we obtained this specific key size.
+         */
+        int getKeySizeWithOrigin(DataFlow::Node origin) {
+          origin = keysizeBacktracker(this.getKeySizeArg()) and
+          result = origin.asExpr().(IntegerLiteral).getValue()
+        }
+
+        /** Gets the minimum key size (in bits) for this algorithm to be considered secure. */
+        abstract int minimumSecureKeySize();
+      }
+
+      /** A data-flow node that generates a new RSA key-pair. */
+      abstract class RsaRange extends Range {
+        final override string getName() { result = "RSA" }
+
+        final override int minimumSecureKeySize() { result = 2048 }
+      }
+
+      /** A data-flow node that generates a new DSA key-pair. */
+      abstract class DsaRange extends Range {
+        final override string getName() { result = "DSA" }
+
+        final override int minimumSecureKeySize() { result = 2048 }
+      }
+
+      /** A data-flow node that generates a new ECC key-pair. */
+      abstract class EccRange extends Range {
+        final override string getName() { result = "ECC" }
+
+        final override int minimumSecureKeySize() { result = 224 }
+      }
+    }
+  }
+
+  import semmle.python.concepts.CryptoAlgorithms
+
+  /**
+   * A data-flow node that is an application of a cryptographic algorithm. For example,
+   * encryption, decryption, signature-validation.
+   *
+   * Extend this class to refine existing API models. If you want to model new APIs,
+   * extend `CryptographicOperation::Range` instead.
+   */
+  class CryptographicOperation extends DataFlow::Node {
+    CryptographicOperation::Range range;
+
+    CryptographicOperation() { this = range }
+
+    /** Gets the algorithm used, if it matches a known `CryptographicAlgorithm`. */
+    CryptographicAlgorithm getAlgorithm() { result = range.getAlgorithm() }
+
+    /** Gets an input the algorithm is used on, for example the plain text input to be encrypted. */
+    DataFlow::Node getAnInput() { result = range.getAnInput() }
+  }
+
+  /** Provides classes for modeling new applications of a cryptographic algorithms. */
+  module CryptographicOperation {
+    /**
+     * A data-flow node that is an application of a cryptographic algorithm. For example,
+     * encryption, decryption, signature-validation.
+     *
+     * Extend this class to model new APIs. If you want to refine existing API models,
+     * extend `CryptographicOperation` instead.
+     */
+    abstract class Range extends DataFlow::Node {
+      /** Gets the algorithm used, if it matches a known `CryptographicAlgorithm`. */
+      abstract CryptographicAlgorithm getAlgorithm();
+
+      /** Gets an input the algorithm is used on, for example the plain text input to be encrypted. */
+      abstract DataFlow::Node getAnInput();
+    }
+  }
+}

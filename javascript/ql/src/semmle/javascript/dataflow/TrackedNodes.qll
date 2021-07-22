@@ -102,7 +102,7 @@ private module NodeTracking {
   predicate localFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
     pred = succ.getAPredecessor()
     or
-    any(DataFlow::AdditionalFlowStep afs).step(pred, succ)
+    DataFlow::SharedFlowStep::step(pred, succ)
     or
     localExceptionStep(pred, succ)
   }

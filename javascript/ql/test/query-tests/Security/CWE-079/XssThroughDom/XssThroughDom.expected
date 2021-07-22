@@ -103,6 +103,15 @@ nodes
 | xss-through-dom.js:81:17:81:43 | $('#foo ... rText') |
 | xss-through-dom.js:81:17:81:43 | $('#foo ... rText') |
 | xss-through-dom.js:81:17:81:43 | $('#foo ... rText') |
+| xss-through-dom.js:84:8:84:30 | text |
+| xss-through-dom.js:84:15:84:30 | $("text").text() |
+| xss-through-dom.js:84:15:84:30 | $("text").text() |
+| xss-through-dom.js:86:16:86:37 | anser.a ... l(text) |
+| xss-through-dom.js:86:16:86:37 | anser.a ... l(text) |
+| xss-through-dom.js:86:33:86:36 | text |
+| xss-through-dom.js:87:16:87:40 | new ans ... s(text) |
+| xss-through-dom.js:87:16:87:40 | new ans ... s(text) |
+| xss-through-dom.js:87:36:87:39 | text |
 edges
 | forms.js:8:23:8:28 | values | forms.js:9:31:9:36 | values |
 | forms.js:8:23:8:28 | values | forms.js:9:31:9:36 | values |
@@ -161,6 +170,14 @@ edges
 | xss-through-dom.js:73:20:73:41 | $("inpu ... 0).name | xss-through-dom.js:73:9:73:41 | selector |
 | xss-through-dom.js:79:4:79:34 | documen ... t.value | xss-through-dom.js:79:4:79:34 | documen ... t.value |
 | xss-through-dom.js:81:17:81:43 | $('#foo ... rText') | xss-through-dom.js:81:17:81:43 | $('#foo ... rText') |
+| xss-through-dom.js:84:8:84:30 | text | xss-through-dom.js:86:33:86:36 | text |
+| xss-through-dom.js:84:8:84:30 | text | xss-through-dom.js:87:36:87:39 | text |
+| xss-through-dom.js:84:15:84:30 | $("text").text() | xss-through-dom.js:84:8:84:30 | text |
+| xss-through-dom.js:84:15:84:30 | $("text").text() | xss-through-dom.js:84:8:84:30 | text |
+| xss-through-dom.js:86:33:86:36 | text | xss-through-dom.js:86:16:86:37 | anser.a ... l(text) |
+| xss-through-dom.js:86:33:86:36 | text | xss-through-dom.js:86:16:86:37 | anser.a ... l(text) |
+| xss-through-dom.js:87:36:87:39 | text | xss-through-dom.js:87:16:87:40 | new ans ... s(text) |
+| xss-through-dom.js:87:36:87:39 | text | xss-through-dom.js:87:16:87:40 | new ans ... s(text) |
 #select
 | forms.js:9:31:9:40 | values.foo | forms.js:8:23:8:28 | values | forms.js:9:31:9:40 | values.foo | $@ is reinterpreted as HTML without escaping meta-characters. | forms.js:8:23:8:28 | values | DOM text |
 | forms.js:12:31:12:40 | values.bar | forms.js:11:24:11:29 | values | forms.js:12:31:12:40 | values.bar | $@ is reinterpreted as HTML without escaping meta-characters. | forms.js:11:24:11:29 | values | DOM text |
@@ -190,3 +207,5 @@ edges
 | xss-through-dom.js:77:4:77:11 | selector | xss-through-dom.js:73:20:73:41 | $("inpu ... 0).name | xss-through-dom.js:77:4:77:11 | selector | $@ is reinterpreted as HTML without escaping meta-characters. | xss-through-dom.js:73:20:73:41 | $("inpu ... 0).name | DOM text |
 | xss-through-dom.js:79:4:79:34 | documen ... t.value | xss-through-dom.js:79:4:79:34 | documen ... t.value | xss-through-dom.js:79:4:79:34 | documen ... t.value | $@ is reinterpreted as HTML without escaping meta-characters. | xss-through-dom.js:79:4:79:34 | documen ... t.value | DOM text |
 | xss-through-dom.js:81:17:81:43 | $('#foo ... rText') | xss-through-dom.js:81:17:81:43 | $('#foo ... rText') | xss-through-dom.js:81:17:81:43 | $('#foo ... rText') | $@ is reinterpreted as HTML without escaping meta-characters. | xss-through-dom.js:81:17:81:43 | $('#foo ... rText') | DOM text |
+| xss-through-dom.js:86:16:86:37 | anser.a ... l(text) | xss-through-dom.js:84:15:84:30 | $("text").text() | xss-through-dom.js:86:16:86:37 | anser.a ... l(text) | $@ is reinterpreted as HTML without escaping meta-characters. | xss-through-dom.js:84:15:84:30 | $("text").text() | DOM text |
+| xss-through-dom.js:87:16:87:40 | new ans ... s(text) | xss-through-dom.js:84:15:84:30 | $("text").text() | xss-through-dom.js:87:16:87:40 | new ans ... s(text) | $@ is reinterpreted as HTML without escaping meta-characters. | xss-through-dom.js:84:15:84:30 | $("text").text() | DOM text |

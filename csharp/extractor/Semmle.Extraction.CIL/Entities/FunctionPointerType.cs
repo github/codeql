@@ -42,7 +42,7 @@ namespace Semmle.Extraction.CIL.Entities
 
         public override void WriteAssemblyPrefix(TextWriter trapFile) { }
 
-        public override void WriteId(TextWriter trapFile, bool inContext)
+        public override void WriteId(EscapingTextWriter trapFile, bool inContext)
         {
             WriteName(
                 trapFile.Write,

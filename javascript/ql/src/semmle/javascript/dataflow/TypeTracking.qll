@@ -9,6 +9,7 @@
 private import javascript
 private import internal.FlowSteps
 private import internal.StepSummary
+private import semmle.javascript.Unit
 private import semmle.javascript.internal.CachedStages
 
 private newtype TTypeTracker = MkTypeTracker(Boolean hasCall, OptionalPropertyName prop)
@@ -253,6 +254,12 @@ class TypeBackTracker extends TTypeBackTracker {
   predicate start() { hasReturn = false and prop = "" }
 
   /**
+   * Holds if this is the starting point of type backtracking, and the value is in the property named `propName`.
+   * The type tracking only ends after the property has been stored.
+   */
+  predicate isInProp(PropertyName propName) { hasReturn = false and prop = propName }
+
+  /**
    * Holds if this is the end point of type tracking.
    */
   predicate end() { prop = "" }
@@ -330,14 +337,14 @@ module TypeBackTracker {
 /**
  * A data flow edge that should be followed by type tracking.
  *
- * Unlike `AdditionalFlowStep`, this type of edge does not affect
+ * Unlike `SharedFlowStep`, this type of edge does not affect
  * the local data flow graph, and is not used by data-flow configurations.
  *
  * Note: For performance reasons, all subclasses of this class should be part
  * of the standard library. For query-specific steps, consider including the
  * custom steps in the type-tracking predicate itself.
  */
-abstract class AdditionalTypeTrackingStep extends DataFlow::Node {
+class SharedTypeTrackingStep extends Unit {
   /**
    * Holds if type-tracking should step from `pred` to `succ`.
    */
@@ -357,4 +364,108 @@ abstract class AdditionalTypeTrackingStep extends DataFlow::Node {
    * Holds if type-tracking should step from the `prop` property of `pred` to the same property in `succ`.
    */
   predicate loadStoreStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) { none() }
+
+  /**
+   * Holds if type-tracking should step from the `loadProp` property of `pred` to the `storeProp` property in `succ`.
+   */
+  predicate loadStoreStep(
+    DataFlow::Node pred, DataFlow::SourceNode succ, string loadProp, string storeProp
+  ) {
+    none()
+  }
+}
+
+/** Provides access to the steps contributed by subclasses of `SharedTypeTrackingStep`. */
+module SharedTypeTrackingStep {
+  /**
+   * Holds if type-tracking should step from `pred` to `succ`.
+   */
+  predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+    any(SharedTypeTrackingStep s).step(pred, succ)
+  }
+
+  /**
+   * Holds if type-tracking should step from `pred` into the `prop` property of `succ`.
+   */
+  predicate storeStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
+    any(SharedTypeTrackingStep s).storeStep(pred, succ, prop)
+  }
+
+  /**
+   * Holds if type-tracking should step from the `prop` property of `pred` to `succ`.
+   */
+  predicate loadStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+    any(SharedTypeTrackingStep s).loadStep(pred, succ, prop)
+  }
+
+  /**
+   * Holds if type-tracking should step from the `prop` property of `pred` to the same property in `succ`.
+   */
+  predicate loadStoreStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
+    any(SharedTypeTrackingStep s).loadStoreStep(pred, succ, prop)
+  }
+
+  /**
+   * Holds if type-tracking should step from the `loadProp` property of `pred` to the `storeProp` property in `succ`.
+   */
+  predicate loadStoreStep(
+    DataFlow::Node pred, DataFlow::SourceNode succ, string loadProp, string storeProp
+  ) {
+    any(SharedTypeTrackingStep s).loadStoreStep(pred, succ, loadProp, storeProp)
+  }
+}
+
+/**
+ * DEPRECATED. Use `SharedTypeTrackingStep` instead.
+ *
+ * A data flow edge that should be followed by type tracking.
+ *
+ * Unlike `AdditionalFlowStep`, this type of edge does not affect
+ * the local data flow graph, and is not used by data-flow configurations.
+ *
+ * Note: For performance reasons, all subclasses of this class should be part
+ * of the standard library. For query-specific steps, consider including the
+ * custom steps in the type-tracking predicate itself.
+ */
+deprecated class AdditionalTypeTrackingStep = LegacyTypeTrackingStep;
+
+// Internal version of AdditionalTypeTrackingStep that we can reference without deprecation warnings.
+abstract private class LegacyTypeTrackingStep extends DataFlow::Node {
+  /**
+   * Holds if type-tracking should step from `pred` to `succ`.
+   */
+  predicate step(DataFlow::Node pred, DataFlow::Node succ) { none() }
+
+  /**
+   * Holds if type-tracking should step from `pred` into the `prop` property of `succ`.
+   */
+  predicate storeStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) { none() }
+
+  /**
+   * Holds if type-tracking should step from the `prop` property of `pred` to `succ`.
+   */
+  predicate loadStep(DataFlow::Node pred, DataFlow::Node succ, string prop) { none() }
+
+  /**
+   * Holds if type-tracking should step from the `prop` property of `pred` to the same property in `succ`.
+   */
+  predicate loadStoreStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) { none() }
+}
+
+private class LegacyStepAsSharedTypeTrackingStep extends SharedTypeTrackingStep {
+  override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+    any(LegacyTypeTrackingStep s).step(pred, succ)
+  }
+
+  override predicate storeStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
+    any(LegacyTypeTrackingStep s).storeStep(pred, succ, prop)
+  }
+
+  override predicate loadStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+    any(LegacyTypeTrackingStep s).loadStep(pred, succ, prop)
+  }
+
+  override predicate loadStoreStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
+    any(LegacyTypeTrackingStep s).loadStoreStep(pred, succ, prop)
+  }
 }

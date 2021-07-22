@@ -3,6 +3,7 @@
  * @description Using external input in format strings can lead to exceptions or information leaks.
  * @kind path-problem
  * @problem.severity recommendation
+ * @security-severity 6.9
  * @precision medium
  * @id java/tainted-format-string-local
  * @tags security

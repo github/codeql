@@ -41,6 +41,16 @@
 | exceptions.js:144:9:144:16 | source() | exceptions.js:132:8:132:27 | returnThrownSource() |
 | exceptions.js:150:13:150:20 | source() | exceptions.js:153:10:153:10 | e |
 | exceptions.js:158:13:158:20 | source() | exceptions.js:161:10:161:10 | e |
+| getters-and-setters.js:6:20:6:27 | source() | getters-and-setters.js:9:10:9:18 | new C().x |
+| getters-and-setters.js:6:20:6:27 | source() | getters-and-setters.js:13:18:13:20 | c.x |
+| getters-and-setters.js:27:15:27:22 | source() | getters-and-setters.js:23:18:23:18 | v |
+| getters-and-setters.js:47:23:47:30 | source() | getters-and-setters.js:45:14:45:16 | c.x |
+| getters-and-setters.js:60:20:60:27 | source() | getters-and-setters.js:66:10:66:14 | obj.x |
+| getters-and-setters.js:67:13:67:20 | source() | getters-and-setters.js:63:18:63:22 | value |
+| getters-and-setters.js:79:20:79:27 | source() | getters-and-setters.js:88:10:88:18 | new C().x |
+| getters-and-setters.js:79:20:79:27 | source() | getters-and-setters.js:92:14:92:16 | c.x |
+| getters-and-setters.js:79:20:79:27 | source() | getters-and-setters.js:100:10:100:22 | getX(new C()) |
+| getters-and-setters.js:89:17:89:24 | source() | getters-and-setters.js:82:18:82:22 | value |
 | indexOf.js:4:11:4:18 | source() | indexOf.js:9:10:9:10 | x |
 | indexOf.js:4:11:4:18 | source() | indexOf.js:13:10:13:10 | x |
 | nested-props.js:4:13:4:20 | source() | nested-props.js:5:10:5:14 | obj.x |

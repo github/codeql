@@ -11,6 +11,8 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Semmle.Util.Logging;
 using System.Collections.Concurrent;
+using System.Globalization;
+using System.Threading;
 
 namespace Semmle.Extraction.CSharp
 {
@@ -50,6 +52,21 @@ namespace Semmle.Extraction.CSharp
             public void MissingSummary(int types, int namespaces) { }
 
             public void MissingType(string type) { }
+        }
+
+        /// <summary>
+        /// Set the application culture to the invariant culture.
+        ///
+        /// This is required among others to ensure that the invariant culture is used for value formatting during TRAP
+        /// file writing.
+        /// </summary>
+        public static void SetInvariantCulture()
+        {
+            var culture = CultureInfo.InvariantCulture;
+            CultureInfo.DefaultThreadCurrentCulture = culture;
+            CultureInfo.DefaultThreadCurrentUICulture = culture;
+            Thread.CurrentThread.CurrentCulture = culture;
+            Thread.CurrentThread.CurrentUICulture = culture;
         }
 
         /// <summary>
@@ -399,9 +416,10 @@ namespace Semmle.Extraction.CSharp
                         compilerArguments.CompilationName,
                         syntaxTrees,
                         references,
-                        compilerArguments.CompilationOptions.
-                            WithAssemblyIdentityComparer(DesktopAssemblyIdentityComparer.Default).
-                            WithStrongNameProvider(new DesktopStrongNameProvider(compilerArguments.KeyFileSearchPaths))
+                        compilerArguments.CompilationOptions
+                            .WithAssemblyIdentityComparer(DesktopAssemblyIdentityComparer.Default)
+                            .WithStrongNameProvider(new DesktopStrongNameProvider(compilerArguments.KeyFileSearchPaths))
+                            .WithMetadataImportOptions(MetadataImportOptions.All)
                         );
                 },
                 (compilation, options) => analyser.EndInitialize(compilerArguments, options, compilation),

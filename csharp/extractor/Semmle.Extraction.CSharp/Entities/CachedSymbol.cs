@@ -16,7 +16,11 @@ namespace Semmle.Extraction.CSharp.Entities
         {
         }
 
-        public virtual Type? ContainingType => Symbol.ContainingType is not null ? Type.Create(Context, Symbol.ContainingType) : null;
+        public virtual Type? ContainingType => Symbol.ContainingType is not null
+            ? Symbol.ContainingType.IsTupleType
+                ? NamedType.CreateNamedTypeFromTupleType(Context, Symbol.ContainingType)
+                : Type.Create(Context, Symbol.ContainingType)
+            : null;
 
         public void PopulateModifiers(TextWriter trapFile)
         {
@@ -151,13 +155,10 @@ namespace Semmle.Extraction.CSharp.Entities
                 if (handleProp is null)
                 {
                     var underlyingSymbolProp = GetPropertyInfo(Symbol, "UnderlyingSymbol");
-                    if (underlyingSymbolProp is not null)
+                    if (underlyingSymbolProp?.GetValue(Symbol) is object underlying)
                     {
-                        if (underlyingSymbolProp.GetValue(Symbol) is object underlying)
-                        {
-                            handleProp = GetPropertyInfo(underlying, "Handle");
-                            handleObj = underlying;
-                        }
+                        handleProp = GetPropertyInfo(underlying, "Handle");
+                        handleObj = underlying;
                     }
                 }
 

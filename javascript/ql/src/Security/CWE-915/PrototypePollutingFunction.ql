@@ -4,6 +4,7 @@
  *              the cause of accidental modification of a built-in prototype object.
  * @kind path-problem
  * @problem.severity warning
+ * @security-severity 3.6
  * @precision high
  * @id js/prototype-pollution-utility
  * @tags security

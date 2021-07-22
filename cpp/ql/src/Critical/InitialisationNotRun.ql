@@ -4,6 +4,7 @@
  * @kind problem
  * @id cpp/initialization-not-run
  * @problem.severity warning
+ * @security-severity 6.4
  * @tags reliability
  *       security
  *       external/cwe/cwe-456

@@ -3,6 +3,7 @@
  * @description Credentials are hard-coded in a connection string in the source code of the application.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 5.9
  * @precision high
  * @id cs/hardcoded-connection-string-credentials
  * @tags security

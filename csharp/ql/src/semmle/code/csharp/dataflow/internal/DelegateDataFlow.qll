@@ -1,4 +1,6 @@
 /**
+ * DEPRECATED.
+ *
  * INTERNAL: Do not use.
  *
  * Provides classes for resolving delegate calls.
@@ -108,7 +110,7 @@ abstract private class DelegateLikeFlowSink extends DataFlow::Node {
    * possible delegates resolved on line 6.
    */
   cached
-  Callable getARuntimeTarget(CallContext context) {
+  deprecated Callable getARuntimeTarget(CallContext context) {
     exists(DelegateLikeFlowSource dfs |
       flowsFrom(this, dfs, _, context) and
       result = dfs.getCallable()
@@ -117,7 +119,7 @@ abstract private class DelegateLikeFlowSink extends DataFlow::Node {
 }
 
 /** A delegate or function pointer call expression. */
-class DelegateLikeCallExpr extends DelegateLikeFlowSink, DataFlow::ExprNode {
+deprecated class DelegateLikeCallExpr extends DelegateLikeFlowSink, DataFlow::ExprNode {
   DelegateLikeCall dc;
 
   DelegateLikeCallExpr() { this.getExpr() = dc.getExpr() }
@@ -126,16 +128,8 @@ class DelegateLikeCallExpr extends DelegateLikeFlowSink, DataFlow::ExprNode {
   DelegateLikeCall getCall() { result = dc }
 }
 
-/** A parameter of delegate type belonging to a callable with a flow summary. */
-class SummaryDelegateParameterSink extends DelegateLikeFlowSink, ParameterNode {
-  SummaryDelegateParameterSink() {
-    this.getType() instanceof SystemLinqExpressions::DelegateExtType and
-    this.isParameterOf(any(SummarizedCallable c), _)
-  }
-}
-
 /** A delegate expression that is added to an event. */
-class AddEventSource extends DelegateLikeFlowSink, DataFlow::ExprNode {
+deprecated class AddEventSource extends DelegateLikeFlowSink, DataFlow::ExprNode {
   AddEventExpr ae;
 
   AddEventSource() { this.getExpr() = ae.getRValue() }
@@ -173,7 +167,7 @@ private class NormalReturnNode extends Node {
  * `node` goes through a returned expression. The call context `lastCall`
  * records the last call on the path from `node` to `sink`, if any.
  */
-private predicate flowsFrom(
+deprecated private predicate flowsFrom(
   DelegateLikeFlowSink sink, DataFlow::Node node, boolean isReturned, CallContext lastCall
 ) {
   // Base case
@@ -244,7 +238,7 @@ private predicate flowsFrom(
  * previous call if it exists, otherwise `call` is the last call.
  */
 bindingset[call, i]
-private CallContext getLastCall(CallContext prevLastCall, Expr call, int i) {
+deprecated private CallContext getLastCall(CallContext prevLastCall, Expr call, int i) {
   prevLastCall instanceof EmptyCallContext and
   result.(ArgumentCallContext).isArgument(call, i)
   or
@@ -263,7 +257,7 @@ private predicate flowIntoNonDelegateCall(NonDelegateCall call, Expr arg, DotNet
 }
 
 pragma[noinline]
-private predicate flowIntoDelegateCall(DelegateLikeCall call, Callable c, Expr arg, int i) {
+deprecated private predicate flowIntoDelegateCall(DelegateLikeCall call, Callable c, Expr arg, int i) {
   exists(DelegateLikeFlowSource dfs, DelegateLikeCallExpr dce |
     // the call context is irrelevant because the delegate call
     // itself will be the context
@@ -280,7 +274,7 @@ private predicate flowOutOfNonDelegateCall(NonDelegateCall call, NormalReturnNod
 }
 
 pragma[noinline]
-private predicate flowOutOfDelegateCall(
+deprecated private predicate flowOutOfDelegateCall(
   DelegateLikeCall dc, NormalReturnNode ret, CallContext lastCall
 ) {
   exists(DelegateLikeFlowSource dfs, DelegateLikeCallExpr dce, Callable c |

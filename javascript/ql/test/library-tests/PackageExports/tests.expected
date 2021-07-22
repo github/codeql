@@ -1,6 +1,3 @@
-getTopmostPackageJSON
-| absent_main/package.json:1:1:4:1 | {\\n    " ... t.js"\\n} |
-| lib1/package.json:1:1:4:1 | {\\n    " ... n.js"\\n} |
 getALibraryInputParameter
 | lib1/foo.js:3:44:3:44 | d |
 | lib1/main.js:6:17:6:17 | a |

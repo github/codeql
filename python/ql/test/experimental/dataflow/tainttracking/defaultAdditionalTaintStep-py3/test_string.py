@@ -14,10 +14,10 @@ def str_methods():
     ts = TAINTED_STRING
     tb = TAINTED_BYTES
     ensure_tainted(
-        ts.casefold(),
+        ts.casefold(), # $ tainted
 
-        ts.format_map({}),
-        "{unsafe}".format_map({"unsafe": ts}),
+        ts.format_map({}), # $ tainted
+        "{unsafe}".format_map({"unsafe": ts}), # $ tainted
     )
 
 
@@ -28,16 +28,16 @@ def binary_decode_encode():
 
     ensure_tainted(
         # New in Python 3.4
-        base64.a85encode(tb),
-        base64.a85decode(base64.a85encode(tb)),
+        base64.a85encode(tb), # $ tainted
+        base64.a85decode(base64.a85encode(tb)), # $ tainted
 
         # New in Python 3.4
-        base64.b85encode(tb),
-        base64.b85decode(base64.b85encode(tb)),
+        base64.b85encode(tb), # $ tainted
+        base64.b85decode(base64.b85encode(tb)), # $ tainted
 
         # New in Python 3.1
-        base64.encodebytes(tb),
-        base64.decodebytes(base64.encodebytes(tb)),
+        base64.encodebytes(tb), # $ tainted
+        base64.decodebytes(base64.encodebytes(tb)), # $ tainted
     )
 
 
@@ -45,7 +45,7 @@ def f_strings():
     print("\n# f_strings")
     ts = TAINTED_STRING
 
-    ensure_tainted(f"foo {ts} bar")
+    ensure_tainted(f"foo {ts} bar") # $ tainted
 
 
 # Make tests runable

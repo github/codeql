@@ -228,7 +228,6 @@ module EssaFlow {
  * data flow. It is a strict subset of the `localFlowStep` predicate, as it
  * excludes SSA flow through instance fields.
  */
-cached
 predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   // If there is ESSA-flow out of a node `node`, we want flow
   // both out of `node` and any post-update node of `node`.
@@ -1517,9 +1516,12 @@ predicate forReadStep(CfgNode nodeFrom, Content c, Node nodeTo) {
     or
     c instanceof SetElementContent
     or
-    c instanceof TupleElementContent
+    c = small_tuple()
   )
 }
+
+pragma[noinline]
+TupleElementContent small_tuple() { result.getIndex() <= 7 }
 
 /**
  * Holds if `nodeTo` is a read of an attribute (corresponding to `c`) of the object in `nodeFrom`.
@@ -1556,7 +1558,6 @@ predicate kwUnpackReadStep(CfgNode nodeFrom, DictionaryElementContent c, Node no
  * any value stored inside `f` is cleared at the pre-update node associated with `x`
  * in `x.f = newValue`.
  */
-cached
 predicate clearsContent(Node n, Content c) {
   exists(CallNode call, CallableValue callable, string name |
     call_unpacks(call, _, callable, name, _) and
@@ -1605,3 +1606,14 @@ int accessPathLimit() { result = 5 }
 
 /** Holds if `n` should be hidden from path explanations. */
 predicate nodeIsHidden(Node n) { none() }
+
+class LambdaCallKind = Unit;
+
+/** Holds if `creation` is an expression that creates a lambda of kind `kind` for `c`. */
+predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c) { none() }
+
+/** Holds if `call` is a lambda call of kind `kind` where `receiver` is the lambda expression. */
+predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) { none() }
+
+/** Extra data-flow steps needed for lambda flow analysis. */
+predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) { none() }

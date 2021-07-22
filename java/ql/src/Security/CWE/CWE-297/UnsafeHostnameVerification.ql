@@ -3,6 +3,7 @@
  * @description Marking a certificate as valid for a host without checking the certificate hostname allows an attacker to perform a machine-in-the-middle attack.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 4.9
  * @precision high
  * @id java/unsafe-hostname-verification
  * @tags security
@@ -15,6 +16,7 @@ import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.Encryption
 import DataFlow::PathGraph
+private import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * Holds if `m` always returns `true` ignoring any exceptional flow.
@@ -49,14 +51,7 @@ class TrustAllHostnameVerifierConfiguration extends DataFlow::Configuration {
     source.asExpr().(ClassInstanceExpr).getConstructedType() instanceof TrustAllHostnameVerifier
   }
 
-  override predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma, Method m |
-      (m instanceof SetDefaultHostnameVerifierMethod or m instanceof SetHostnameVerifierMethod) and
-      ma.getMethod() = m
-    |
-      ma.getArgument(0) = sink.asExpr()
-    )
-  }
+  override predicate isSink(DataFlow::Node sink) { sink instanceof HostnameVerifierSink }
 
   override predicate isBarrier(DataFlow::Node barrier) {
     // ignore nodes that are in functions that intentionally disable hostname verification
@@ -82,6 +77,13 @@ class TrustAllHostnameVerifierConfiguration extends DataFlow::Configuration {
             "|(set)?(accept|trust|ignore|allow)(all|every|any)" +
             "|(use|do|enable)insecure|(set|do|use)?no.*(check|validation|verify|verification)|disable).*$")
   }
+}
+
+/**
+ * A sink that sets the `HostnameVerifier` on `HttpsURLConnection`.
+ */
+private class HostnameVerifierSink extends DataFlow::Node {
+  HostnameVerifierSink() { sinkNode(this, "set-hostname-verifier") }
 }
 
 bindingset[result]

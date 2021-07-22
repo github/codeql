@@ -1,17 +1,34 @@
+import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.FlowSources
+import TestUtilities.InlineExpectationsTest
 
 class Conf extends TaintTracking::Configuration {
   Conf() { this = "qltest:dataflow:jackson" }
 
-  override predicate isSource(DataFlow::Node source) {
-    source.asExpr().(MethodAccess).getMethod().hasName("taint")
+  override predicate isSource(DataFlow::Node n) {
+    n.asExpr().(MethodAccess).getMethod().hasName("taint")
+    or
+    n instanceof RemoteFlowSource
   }
 
-  override predicate isSink(DataFlow::Node sink) { any() }
+  override predicate isSink(DataFlow::Node n) {
+    exists(MethodAccess ma | ma.getMethod().hasName("sink") | n.asExpr() = ma.getAnArgument())
+  }
 }
 
-from DataFlow::Node source, DataFlow::Node sink, Conf config
-where config.hasFlow(source, sink)
-select sink
+class HasFlowTest extends InlineExpectationsTest {
+  HasFlowTest() { this = "HasFlowTest" }
+
+  override string getARelevantTag() { result = "hasTaintFlow" }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    tag = "hasTaintFlow" and
+    exists(DataFlow::Node src, DataFlow::Node sink, Conf conf | conf.hasFlow(src, sink) |
+      sink.getLocation() = location and
+      element = sink.toString() and
+      value = ""
+    )
+  }
+}

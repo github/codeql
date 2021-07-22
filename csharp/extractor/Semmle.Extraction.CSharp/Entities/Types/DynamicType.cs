@@ -22,7 +22,7 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.parent_namespace(this, Namespace.Create(Context, Context.Compilation.GlobalNamespace));
         }
 
-        public override void WriteId(TextWriter trapFile)
+        public override void WriteId(EscapingTextWriter trapFile)
         {
             trapFile.Write("dynamic;type");
         }

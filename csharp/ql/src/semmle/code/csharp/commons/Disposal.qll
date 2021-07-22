@@ -11,14 +11,22 @@ private predicate isDisposeMethod(DotNet::Callable method) {
   method.getNumberOfParameters() = 0
 }
 
+private predicate cilVariableReadFlowsTo(CIL::Variable variable, CIL::DataFlowNode n) {
+  n = variable.getARead()
+  or
+  exists(CIL::DataFlowNode mid |
+    cilVariableReadFlowsTo(variable, mid) and
+    mid.getALocalFlowSucc(n, any(CIL::Untainted u))
+  )
+}
+
 private predicate disposedCilVariable(CIL::Variable variable) {
   // `variable` is the `this` parameter on a dispose method.
   isDisposeMethod(variable.(CIL::ThisParameter).getMethod())
   or
   // `variable` is passed to a method that disposes it.
-  exists(CIL::Call call, CIL::Parameter param, CIL::ReadAccess read |
-    read.getTarget() = variable and
-    read.flowsTo(call.getArgumentForParameter(param)) and
+  exists(CIL::Call call, CIL::Parameter param |
+    cilVariableReadFlowsTo(variable, call.getArgumentForParameter(param)) and
     disposedCilVariable(param)
   )
   or
@@ -27,9 +35,8 @@ private predicate disposedCilVariable(CIL::Variable variable) {
   or
   // A variable is disposed if it's assigned to another variable
   // that may be disposed.
-  exists(CIL::ReadAccess read, CIL::WriteAccess write |
-    read.flowsTo(write.getExpr()) and
-    read.getTarget() = variable and
+  exists(CIL::WriteAccess write |
+    cilVariableReadFlowsTo(variable, write.getExpr()) and
     disposedCilVariable(write.getTarget())
   )
 }

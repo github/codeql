@@ -9,7 +9,7 @@ namespace Semmle.Extraction.CIL.Entities
         private readonly Method method;
         private readonly int index;
 
-        public override void WriteId(TextWriter trapFile, bool inContext)
+        public override void WriteId(EscapingTextWriter trapFile, bool inContext)
         {
             if (!(inContext && method == gc))
             {

@@ -5,6 +5,7 @@
     "java/ql/src/semmle/code/java/dataflow/internal/DataFlowImpl3.qll",
     "java/ql/src/semmle/code/java/dataflow/internal/DataFlowImpl4.qll",
     "java/ql/src/semmle/code/java/dataflow/internal/DataFlowImpl5.qll",
+    "java/ql/src/semmle/code/java/dataflow/internal/DataFlowImpl6.qll",
     "cpp/ql/src/semmle/code/cpp/dataflow/internal/DataFlowImpl.qll",
     "cpp/ql/src/semmle/code/cpp/dataflow/internal/DataFlowImpl2.qll",
     "cpp/ql/src/semmle/code/cpp/dataflow/internal/DataFlowImpl3.qll",
@@ -36,6 +37,7 @@
     "cpp/ql/src/semmle/code/cpp/dataflow/internal/tainttracking2/TaintTrackingImpl.qll",
     "cpp/ql/src/semmle/code/cpp/ir/dataflow/internal/tainttracking1/TaintTrackingImpl.qll",
     "cpp/ql/src/semmle/code/cpp/ir/dataflow/internal/tainttracking2/TaintTrackingImpl.qll",
+    "cpp/ql/src/semmle/code/cpp/ir/dataflow/internal/tainttracking3/TaintTrackingImpl.qll",
     "csharp/ql/src/semmle/code/csharp/dataflow/internal/tainttracking1/TaintTrackingImpl.qll",
     "csharp/ql/src/semmle/code/csharp/dataflow/internal/tainttracking2/TaintTrackingImpl.qll",
     "csharp/ql/src/semmle/code/csharp/dataflow/internal/tainttracking3/TaintTrackingImpl.qll",
@@ -54,6 +56,10 @@
     "cpp/ql/src/semmle/code/cpp/ir/dataflow/internal/DataFlowImplConsistency.qll",
     "csharp/ql/src/semmle/code/csharp/dataflow/internal/DataFlowImplConsistency.qll",
     "python/ql/src/semmle/python/dataflow/new/internal/DataFlowImplConsistency.qll"
+  ],
+  "DataFlow Java/C# Flow Summaries": [
+    "java/ql/src/semmle/code/java/dataflow/internal/FlowSummaryImpl.qll",
+    "csharp/ql/src/semmle/code/csharp/dataflow/internal/FlowSummaryImpl.qll"
   ],
   "SsaReadPosition Java/C#": [
     "java/ql/src/semmle/code/java/dataflow/internal/rangeanalysis/SsaReadPositionCommon.qll",
@@ -244,6 +250,10 @@
     "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/internal/AliasAnalysis.qll",
     "csharp/ql/src/experimental/ir/implementation/unaliased_ssa/internal/AliasAnalysis.qll"
   ],
+  "SSA PrintAliasAnalysis": [
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/PrintAliasAnalysis.qll",
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/internal/PrintAliasAnalysis.qll"
+  ],
   "C++ SSA AliasAnalysisImports": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/AliasAnalysisImports.qll",
     "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/internal/AliasAnalysisImports.qll"
@@ -376,7 +386,6 @@
   ],
   "DuplicationProblems.inc.qhelp": [
     "cpp/ql/src/Metrics/Files/DuplicationProblems.inc.qhelp",
-    "csharp/ql/src/Metrics/Files/DuplicationProblems.inc.qhelp",
     "javascript/ql/src/Metrics/DuplicationProblems.inc.qhelp",
     "python/ql/src/Metrics/DuplicationProblems.inc.qhelp"
   ],
@@ -429,10 +438,15 @@
   "SSA C#": [
     "csharp/ql/src/semmle/code/csharp/dataflow/internal/SsaImplCommon.qll",
     "csharp/ql/src/semmle/code/csharp/controlflow/internal/pressa/SsaImplCommon.qll",
-    "csharp/ql/src/semmle/code/csharp/dataflow/internal/basessa/SsaImplCommon.qll"
+    "csharp/ql/src/semmle/code/csharp/dataflow/internal/basessa/SsaImplCommon.qll",
+    "csharp/ql/src/semmle/code/cil/internal/SsaImplCommon.qll"
   ],
   "CryptoAlgorithms Python/JS": [
     "javascript/ql/src/semmle/javascript/security/CryptoAlgorithms.qll",
-    "python/ql/src/semmle/crypto/Crypto.qll"
+    "python/ql/src/semmle/python/concepts/CryptoAlgorithms.qll"
+  ],
+  "SensitiveDataHeuristics Python/JS": [
+    "javascript/ql/src/semmle/javascript/security/internal/SensitiveDataHeuristics.qll",
+    "python/ql/src/semmle/python/security/internal/SensitiveDataHeuristics.qll"
   ]
 }

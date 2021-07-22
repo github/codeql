@@ -15,15 +15,6 @@ class TypeApacheRandomStringUtils extends Class {
 }
 
 /**
- * The class `org.apache.commons.lang.ArrayUtils` or `org.apache.commons.lang3.ArrayUtils`.
- */
-class TypeApacheArrayUtils extends Class {
-  TypeApacheArrayUtils() {
-    hasQualifiedName(["org.apache.commons.lang", "org.apache.commons.lang3"], "ArrayUtils")
-  }
-}
-
-/**
  * The method `deserialize` in either `org.apache.commons.lang.SerializationUtils`
  * or `org.apache.commons.lang3.SerializationUtils`.
  */
@@ -37,179 +28,522 @@ class MethodApacheSerializationUtilsDeserialize extends Method {
 }
 
 /**
- * A taint preserving method on `org.apache.commons.lang.ArrayUtils` or `org.apache.commons.lang3.ArrayUtils`
+ * Taint-propagating models for `ArrayUtils`.
  */
-private class ApacheLangArrayUtilsTaintPreservingMethod extends TaintPreservingCallable {
-  ApacheLangArrayUtilsTaintPreservingMethod() {
-    this.getDeclaringType() instanceof TypeApacheArrayUtils
-  }
-
-  override predicate returnsTaintFrom(int src) {
-    this.hasName(["addAll", "addFirst"]) and
-    src = [0 .. getNumberOfParameters() - 1]
-    or
-    this.hasName([
-        "clone", "nullToEmpty", "remove", "removeAll", "removeElement", "removeElements", "reverse",
-        "shift", "shuffle", "subarray", "swap", "toArray", "toMap", "toObject", "toPrimitive",
-        "toString", "toStringArray"
-      ]) and
-    src = 0
-    or
-    this.hasName("add") and
-    this.getNumberOfParameters() = 2 and
-    src = [0, 1]
-    or
-    this.hasName("add") and
-    this.getNumberOfParameters() = 3 and
-    src = [0, 2]
+private class ApacheArrayUtilsModel extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "org.apache.commons.lang3;ArrayUtils;false;add;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;ArrayUtils;false;add;;;Argument[2];ReturnValue;taint",
+        "org.apache.commons.lang3;ArrayUtils;false;add;(java.lang.Object[],java.lang.Object);;Argument[1];ReturnValue;taint",
+        "org.apache.commons.lang3;ArrayUtils;false;add;(boolean[],boolean);;Argument[1];ReturnValue;taint",
+        "org.apache.commons.lang3;ArrayUtils;false;add;(byte[],byte);;Argument[1];ReturnValue;taint",
+        "org.apache.commons.lang3;ArrayUtils;false;add;(char[],char);;Argument[1];ReturnValue;taint",
+        "org.apache.commons.lang3;ArrayUtils;false;add;(double[],double);;Argument[1];ReturnValue;taint",
+        "org.apache.commons.lang3;ArrayUtils;false;add;(float[],float);;Argument[1];ReturnValue;taint",
+        "org.apache.commons.lang3;ArrayUtils;false;add;(int[],int);;Argument[1];ReturnValue;taint",
+        "org.apache.commons.lang3;ArrayUtils;false;add;(long[],long);;Argument[1];ReturnValue;taint",
+        "org.apache.commons.lang3;ArrayUtils;false;add;(short[],short);;Argument[1];ReturnValue;taint",
+        "org.apache.commons.lang3;ArrayUtils;false;addAll;;;Argument[0..1];ReturnValue;taint",
+        "org.apache.commons.lang3;ArrayUtils;false;addFirst;;;Argument[0..1];ReturnValue;taint",
+        "org.apache.commons.lang3;ArrayUtils;false;clone;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;ArrayUtils;false;get;(java.lang.Object[],int,java.lang.Object);;Argument[2];ReturnValue;taint",
+        "org.apache.commons.lang3;ArrayUtils;false;get;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;ArrayUtils;false;insert;;;Argument[1];ReturnValue;taint",
+        "org.apache.commons.lang3;ArrayUtils;false;insert;;;Argument[2];ReturnValue;taint",
+        "org.apache.commons.lang3;ArrayUtils;false;insert;;;Argument[3];ReturnValue;taint",
+        "org.apache.commons.lang3;ArrayUtils;false;nullToEmpty;(java.lang.Object[],java.lang.Class);;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;ArrayUtils;false;nullToEmpty;(java.lang.String[]);;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;ArrayUtils;false;remove;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;ArrayUtils;false;removeAll;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;ArrayUtils;false;removeAllOccurences;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;ArrayUtils;false;removeAllOccurrences;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;ArrayUtils;false;removeElement;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;ArrayUtils;false;removeElements;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;ArrayUtils;false;subarray;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;ArrayUtils;false;toArray;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;ArrayUtils;false;toMap;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;ArrayUtils;false;toObject;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;ArrayUtils;false;toPrimitive;;;Argument[0..1];ReturnValue;taint"
+      ]
   }
 }
 
-private Type getAnExcludedParameterType() {
-  result instanceof PrimitiveType or
-  result.(RefType).hasQualifiedName("java.nio.charset", "Charset") or
-  result.(RefType).hasQualifiedName("java.util", "Locale")
+private class ApacheStringUtilsModel extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "org.apache.commons.lang3;StringUtils;false;abbreviate;(java.lang.String,java.lang.String,int);;Argument[1];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;abbreviate;(java.lang.String,java.lang.String,int,int);;Argument[1];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;abbreviate;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;abbreviateMiddle;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;abbreviateMiddle;;;Argument[1];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;appendIfMissing;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;appendIfMissing;;;Argument[1];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;appendIfMissingIgnoreCase;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;appendIfMissingIgnoreCase;;;Argument[1];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;capitalize;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;center;(java.lang.String,int,java.lang.String);;Argument[2];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;center;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;chomp;(java.lang.String);;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;chomp;(java.lang.String,java.lang.String);;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;chop;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;defaultIfBlank;;;Argument[0..1];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;defaultIfEmpty;;;Argument[0..1];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;defaultString;;;Argument[0..1];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;deleteWhitespace;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;difference;;;Argument[0..1];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;firstNonBlank;;;ArrayElement of Argument[0];ReturnValue;value",
+        "org.apache.commons.lang3;StringUtils;false;firstNonEmpty;;;ArrayElement of Argument[0];ReturnValue;value",
+        "org.apache.commons.lang3;StringUtils;false;getBytes;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;getCommonPrefix;;;ArrayElement of Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;getDigits;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;getIfBlank;;;Argument[0..1];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;getIfEmpty;;;Argument[0..1];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;join;(char[],char);;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;join;(char[],char,int,int);;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;join;(java.lang.Iterable,char);;Element of Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;join;(java.lang.Iterable,java.lang.String);;Element of Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;join;(java.lang.Iterable,java.lang.String);;Argument[1];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;join;(java.lang.Object[]);;ArrayElement of Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;join;(java.lang.Object[],char);;ArrayElement of Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;join;(java.lang.Object[],char,int,int);;ArrayElement of Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;join;(java.lang.Object[],java.lang.String);;ArrayElement of Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;join;(java.lang.Object[],java.lang.String);;Argument[1];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;join;(java.lang.Object[],java.lang.String,int,int);;ArrayElement of Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;join;(java.lang.Object[],java.lang.String,int,int);;Argument[1];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;join;(java.util.Iterator,char);;Element of Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;join;(java.util.Iterator,java.lang.String);;Element of Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;join;(java.util.Iterator,java.lang.String);;Argument[1];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;join;(java.util.List,char,int,int);;Element of Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;join;(java.util.List,java.lang.String,int,int);;Element of Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;join;(java.util.List,java.lang.String,int,int);;Argument[1];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;joinWith;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;joinWith;;;ArrayElement of Argument[1];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;left;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;leftPad;(java.lang.String,int,java.lang.String);;Argument[2];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;leftPad;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;lowerCase;(java.lang.String);;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;lowerCase;(java.lang.String,java.util.Locale);;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;mid;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;normalizeSpace;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;overlay;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;overlay;;;Argument[1];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;prependIfMissing;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;prependIfMissing;;;Argument[1];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;prependIfMissingIgnoreCase;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;prependIfMissingIgnoreCase;;;Argument[1];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;remove;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;removeAll;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;removeEnd;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;removeEndIgnoreCase;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;removeFirst;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;removeIgnoreCase;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;removePattern;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;removeStart;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;removeStartIgnoreCase;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;repeat;(java.lang.String,java.lang.String,int);;Argument[1];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;repeat;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;replace;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;replace;;;Argument[2];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;replaceAll;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;replaceAll;;;Argument[2];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;replaceChars;(java.lang.String,java.lang.String,java.lang.String);;Argument[2];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;replaceChars;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;replaceEach;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;replaceEach;;;ArrayElement of Argument[2];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;replaceEachRepeatedly;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;replaceEachRepeatedly;;;ArrayElement of Argument[2];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;replaceFirst;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;replaceFirst;;;Argument[2];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;replaceIgnoreCase;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;replaceIgnoreCase;;;Argument[2];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;replaceOnce;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;replaceOnce;;;Argument[2];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;replaceOnceIgnoreCase;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;replaceOnceIgnoreCase;;;Argument[2];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;replacePattern;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;replacePattern;;;Argument[2];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;reverse;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;reverseDelimited;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;right;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;rightPad;(java.lang.String,int,java.lang.String);;Argument[2];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;rightPad;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;rotate;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;split;(java.lang.String);;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;split;(java.lang.String,char);;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;split;(java.lang.String,java.lang.String);;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;split;(java.lang.String,java.lang.String,int);;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;splitByCharacterType;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;splitByCharacterTypeCamelCase;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;splitByWholeSeparator;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;splitByWholeSeparatorPreserveAllTokens;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;splitPreserveAllTokens;(java.lang.String);;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;splitPreserveAllTokens;(java.lang.String,char);;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;splitPreserveAllTokens;(java.lang.String,java.lang.String);;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;splitPreserveAllTokens;(java.lang.String,java.lang.String,int);;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;strip;(java.lang.String);;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;strip;(java.lang.String,java.lang.String);;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;stripAccents;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;stripAll;;;ArrayElement of Argument[0];ArrayElement of ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;stripEnd;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;stripStart;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;stripToEmpty;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;stripToNull;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;substring;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;substringAfter;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;substringAfterLast;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;substringBefore;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;substringBeforeLast;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;substringBetween;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;substringsBetween;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;swapCase;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;toCodePoints;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;toEncodedString;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;toRootLowerCase;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;toRootUpperCase;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;toString;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;trim;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;trimToEmpty;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;trimToNull;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;truncate;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;uncapitalize;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;unwrap;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;upperCase;(java.lang.String);;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;upperCase;(java.lang.String,java.util.Locale);;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;valueOf;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;wrap;(java.lang.String,char);;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;wrap;(java.lang.String,java.lang.String);;Argument[0..1];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;wrapIfMissing;(java.lang.String,char);;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;wrapIfMissing;(java.lang.String,java.lang.String);;Argument[0..1];ReturnValue;taint"
+      ]
+  }
 }
 
-private class ApacheStringUtilsTaintPreservingMethod extends TaintPreservingCallable {
-  ApacheStringUtilsTaintPreservingMethod() {
-    this.getDeclaringType().hasQualifiedName("org.apache.commons.lang3", "StringUtils") and
-    this.hasName([
-        "abbreviate", "abbreviateMiddle", "appendIfMissing", "appendIfMissingIgnoreCase",
-        "capitalize", "center", "chomp", "chop", "defaultIfBlank", "defaultIfEmpty",
-        "defaultString", "deleteWhitespace", "difference", "firstNonBlank", "firstNonEmpty",
-        "getBytes", "getCommonPrefix", "getDigits", "getIfBlank", "getIfEmpty", "join", "joinWith",
-        "left", "leftPad", "lowerCase", "mid", "normalizeSpace", "overlay", "prependIfMissing",
-        "prependIfMissingIgnoreCase", "remove", "removeAll", "removeEnd", "removeEndIgnoreCase",
-        "removeFirst", "removeIgnoreCase", "removePattern", "removeStart", "removeStartIgnoreCase",
-        "repeat", "replace", "replaceAll", "replaceChars", "replaceEach", "replaceEachRepeatedly",
-        "replaceFirst", "replaceIgnoreCase", "replaceOnce", "replaceOnceIgnoreCase",
-        "replacePattern", "reverse", "reverseDelimited", "right", "rightPad", "rotate", "split",
-        "splitByCharacterType", "splitByCharacterTypeCamelCase", "splitByWholeSeparator",
-        "splitByWholeSeparatorPreserveAllTokens", "splitPreserveAllTokens", "strip", "stripAccents",
-        "stripAll", "stripEnd", "stripStart", "stripToEmpty", "stripToNull", "substring",
-        "substringAfter", "substringAfterLast", "substringBefore", "substringBeforeLast",
-        "substringBetween", "substringsBetween", "swapCase", "toCodePoints", "toEncodedString",
-        "toRootLowerCase", "toRootUpperCase", "toString", "trim", "trimToEmpty", "trimToNull",
-        "truncate", "uncapitalize", "unwrap", "upperCase", "valueOf", "wrap", "wrapIfMissing"
-      ])
+private class ApacheStrBuilderModel extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "org.apache.commons.lang3.text;StrBuilder;false;StrBuilder;(java.lang.String);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;append;(char[]);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;append;(char[],int,int);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;append;(java.lang.CharSequence);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;append;(java.lang.CharSequence,int,int);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;append;(java.lang.Object);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;append;(java.lang.String);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;append;(java.lang.String,int,int);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;append;(java.lang.String,java.lang.Object[]);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;append;(java.lang.String,java.lang.Object[]);;ArrayElement of Argument[1];Argument[-1];taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;append;(java.lang.StringBuffer);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;append;(java.lang.StringBuffer,int,int);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;append;(java.lang.StringBuilder);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;append;(java.lang.StringBuilder,int,int);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;append;(java.nio.CharBuffer);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;append;(java.nio.CharBuffer,int,int);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;append;(org.apache.commons.lang3.text.StrBuilder);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;append;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;appendAll;(Iterable);;Element of Argument[0];Argument[-1];taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;appendAll;(Iterator);;Element of Argument[0];Argument[-1];taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;appendAll;(Object[]);;ArrayElement of Argument[0];Argument[-1];taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;appendAll;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;appendFixedWidthPadLeft;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;appendFixedWidthPadLeft;;;Argument[0];Argument[-1];taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;appendFixedWidthPadRight;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;appendFixedWidthPadRight;;;Argument[0];Argument[-1];taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;appendSeparator;(java.lang.String);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;appendSeparator;(java.lang.String,int);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;appendSeparator;(java.lang.String,java.lang.String);;Argument[0..1];Argument[-1];taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;appendSeparator;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;appendTo;;;Argument[-1];Argument[0];taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;appendWithSeparators;(Iterable,String);;Element of Argument[0];Argument[-1];taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;appendWithSeparators;(Iterator,String);;Element of Argument[0];Argument[-1];taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;appendWithSeparators;(Object[],String);;ArrayElement of Argument[0];Argument[-1];taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;appendWithSeparators;;;Argument[1];Argument[-1];taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;appendWithSeparators;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;appendln;(char[]);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;appendln;(char[],int,int);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;appendln;(java.lang.Object);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;appendln;(java.lang.String);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;appendln;(java.lang.String,int,int);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;appendln;(java.lang.String,java.lang.Object[]);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;appendln;(java.lang.String,java.lang.Object[]);;ArrayElement of Argument[1];Argument[-1];taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;appendln;(java.lang.StringBuffer);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;appendln;(java.lang.StringBuffer,int,int);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;appendln;(java.lang.StringBuilder);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;appendln;(java.lang.StringBuilder,int,int);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;appendln;(org.apache.commons.lang3.text.StrBuilder);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;appendln;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;asReader;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;asTokenizer;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;build;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;getChars;(char[]);;Argument[-1];Argument[0];taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;getChars;(char[]);;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;getChars;(int,int,char[],int);;Argument[-1];Argument[2];taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;insert;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;insert;;;Argument[1];Argument[-1];taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;leftString;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;midString;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;readFrom;;;Argument[0];Argument[-1];taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;replace;(int,int,java.lang.String);;Argument[2];Argument[-1];taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;replace;(org.apache.commons.lang3.text.StrMatcher,java.lang.String,int,int,int);;Argument[1];Argument[-1];taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;replace;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;replaceAll;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;replaceAll;;;Argument[1];Argument[-1];taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;replaceFirst;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;replaceFirst;;;Argument[1];Argument[-1];taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;rightString;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;subSequence;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;substring;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;toCharArray;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;toString;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;toStringBuffer;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;toStringBuilder;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.text;StrBuilder;false;StrBuilder;(java.lang.String);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;StrBuilder;false;append;(char[]);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;StrBuilder;false;append;(char[],int,int);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;StrBuilder;false;append;(java.lang.CharSequence);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;StrBuilder;false;append;(java.lang.CharSequence,int,int);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;StrBuilder;false;append;(java.lang.Object);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;StrBuilder;false;append;(java.lang.String);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;StrBuilder;false;append;(java.lang.String,int,int);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;StrBuilder;false;append;(java.lang.String,java.lang.Object[]);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;StrBuilder;false;append;(java.lang.String,java.lang.Object[]);;ArrayElement of Argument[1];Argument[-1];taint",
+        "org.apache.commons.text;StrBuilder;false;append;(java.lang.StringBuffer);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;StrBuilder;false;append;(java.lang.StringBuffer,int,int);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;StrBuilder;false;append;(java.lang.StringBuilder);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;StrBuilder;false;append;(java.lang.StringBuilder,int,int);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;StrBuilder;false;append;(java.nio.CharBuffer);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;StrBuilder;false;append;(java.nio.CharBuffer,int,int);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;StrBuilder;false;append;(org.apache.commons.text.StrBuilder);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;StrBuilder;false;append;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.text;StrBuilder;false;appendAll;(Iterable);;Element of Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;StrBuilder;false;appendAll;(Iterator);;Element of Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;StrBuilder;false;appendAll;(Object[]);;ArrayElement of Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;StrBuilder;false;appendAll;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.text;StrBuilder;false;appendFixedWidthPadLeft;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.text;StrBuilder;false;appendFixedWidthPadLeft;;;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;StrBuilder;false;appendFixedWidthPadRight;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.text;StrBuilder;false;appendFixedWidthPadRight;;;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;StrBuilder;false;appendSeparator;(java.lang.String);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;StrBuilder;false;appendSeparator;(java.lang.String,int);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;StrBuilder;false;appendSeparator;(java.lang.String,java.lang.String);;Argument[0..1];Argument[-1];taint",
+        "org.apache.commons.text;StrBuilder;false;appendSeparator;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.text;StrBuilder;false;appendTo;;;Argument[-1];Argument[0];taint",
+        "org.apache.commons.text;StrBuilder;false;appendWithSeparators;(Iterable,String);;Element of Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;StrBuilder;false;appendWithSeparators;(Iterator,String);;Element of Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;StrBuilder;false;appendWithSeparators;(Object[],String);;ArrayElement of Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;StrBuilder;false;appendWithSeparators;;;Argument[1];Argument[-1];taint",
+        "org.apache.commons.text;StrBuilder;false;appendWithSeparators;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.text;StrBuilder;false;appendln;(char[]);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;StrBuilder;false;appendln;(char[],int,int);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;StrBuilder;false;appendln;(java.lang.Object);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;StrBuilder;false;appendln;(java.lang.String);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;StrBuilder;false;appendln;(java.lang.String,int,int);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;StrBuilder;false;appendln;(java.lang.String,java.lang.Object[]);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;StrBuilder;false;appendln;(java.lang.String,java.lang.Object[]);;ArrayElement of Argument[1];Argument[-1];taint",
+        "org.apache.commons.text;StrBuilder;false;appendln;(java.lang.StringBuffer);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;StrBuilder;false;appendln;(java.lang.StringBuffer,int,int);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;StrBuilder;false;appendln;(java.lang.StringBuilder);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;StrBuilder;false;appendln;(java.lang.StringBuilder,int,int);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;StrBuilder;false;appendln;(org.apache.commons.text.StrBuilder);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;StrBuilder;false;appendln;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.text;StrBuilder;false;asReader;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.text;StrBuilder;false;asTokenizer;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.text;StrBuilder;false;build;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.text;StrBuilder;false;getChars;(char[]);;Argument[-1];Argument[0];taint",
+        "org.apache.commons.text;StrBuilder;false;getChars;(char[]);;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.text;StrBuilder;false;getChars;(int,int,char[],int);;Argument[-1];Argument[2];taint",
+        "org.apache.commons.text;StrBuilder;false;insert;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.text;StrBuilder;false;insert;;;Argument[1];Argument[-1];taint",
+        "org.apache.commons.text;StrBuilder;false;leftString;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.text;StrBuilder;false;midString;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.text;StrBuilder;false;readFrom;;;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;StrBuilder;false;replace;(int,int,java.lang.String);;Argument[2];Argument[-1];taint",
+        "org.apache.commons.text;StrBuilder;false;replace;(org.apache.commons.text.StrMatcher,java.lang.String,int,int,int);;Argument[1];Argument[-1];taint",
+        "org.apache.commons.text;StrBuilder;false;replace;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.text;StrBuilder;false;replaceAll;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.text;StrBuilder;false;replaceAll;;;Argument[1];Argument[-1];taint",
+        "org.apache.commons.text;StrBuilder;false;replaceFirst;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.text;StrBuilder;false;replaceFirst;;;Argument[1];Argument[-1];taint",
+        "org.apache.commons.text;StrBuilder;false;rightString;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.text;StrBuilder;false;subSequence;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.text;StrBuilder;false;substring;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.text;StrBuilder;false;toCharArray;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.text;StrBuilder;false;toString;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.text;StrBuilder;false;toStringBuffer;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.text;StrBuilder;false;toStringBuilder;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.text;TextStringBuilder;false;TextStringBuilder;(java.lang.String);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;TextStringBuilder;false;TextStringBuilder;(java.lang.CharSequence);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;TextStringBuilder;false;append;(char[]);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;TextStringBuilder;false;append;(char[],int,int);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;TextStringBuilder;false;append;(java.lang.CharSequence);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;TextStringBuilder;false;append;(java.lang.CharSequence,int,int);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;TextStringBuilder;false;append;(java.lang.Object);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;TextStringBuilder;false;append;(java.lang.String);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;TextStringBuilder;false;append;(java.lang.String,int,int);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;TextStringBuilder;false;append;(java.lang.String,java.lang.Object[]);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;TextStringBuilder;false;append;(java.lang.String,java.lang.Object[]);;ArrayElement of Argument[1];Argument[-1];taint",
+        "org.apache.commons.text;TextStringBuilder;false;append;(java.lang.StringBuffer);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;TextStringBuilder;false;append;(java.lang.StringBuffer,int,int);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;TextStringBuilder;false;append;(java.lang.StringBuilder);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;TextStringBuilder;false;append;(java.lang.StringBuilder,int,int);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;TextStringBuilder;false;append;(java.nio.CharBuffer);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;TextStringBuilder;false;append;(java.nio.CharBuffer,int,int);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;TextStringBuilder;false;append;(org.apache.commons.text.TextStringBuilder);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;TextStringBuilder;false;append;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.text;TextStringBuilder;false;appendAll;(Iterable);;Element of Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;TextStringBuilder;false;appendAll;(Iterator);;Element of Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;TextStringBuilder;false;appendAll;(Object[]);;ArrayElement of Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;TextStringBuilder;false;appendAll;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.text;TextStringBuilder;false;appendFixedWidthPadLeft;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.text;TextStringBuilder;false;appendFixedWidthPadLeft;;;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;TextStringBuilder;false;appendFixedWidthPadRight;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.text;TextStringBuilder;false;appendFixedWidthPadRight;;;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;TextStringBuilder;false;appendSeparator;(java.lang.String);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;TextStringBuilder;false;appendSeparator;(java.lang.String,int);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;TextStringBuilder;false;appendSeparator;(java.lang.String,java.lang.String);;Argument[0..1];Argument[-1];taint",
+        "org.apache.commons.text;TextStringBuilder;false;appendSeparator;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.text;TextStringBuilder;false;appendTo;;;Argument[-1];Argument[0];taint",
+        "org.apache.commons.text;TextStringBuilder;false;appendWithSeparators;(Iterable,String);;Element of Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;TextStringBuilder;false;appendWithSeparators;(Iterator,String);;Element of Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;TextStringBuilder;false;appendWithSeparators;(Object[],String);;ArrayElement of Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;TextStringBuilder;false;appendWithSeparators;;;Argument[1];Argument[-1];taint",
+        "org.apache.commons.text;TextStringBuilder;false;appendWithSeparators;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.text;TextStringBuilder;false;appendln;(char[]);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;TextStringBuilder;false;appendln;(char[],int,int);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;TextStringBuilder;false;appendln;(java.lang.Object);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;TextStringBuilder;false;appendln;(java.lang.String);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;TextStringBuilder;false;appendln;(java.lang.String,int,int);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;TextStringBuilder;false;appendln;(java.lang.String,java.lang.Object[]);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;TextStringBuilder;false;appendln;(java.lang.String,java.lang.Object[]);;ArrayElement of Argument[1];Argument[-1];taint",
+        "org.apache.commons.text;TextStringBuilder;false;appendln;(java.lang.StringBuffer);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;TextStringBuilder;false;appendln;(java.lang.StringBuffer,int,int);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;TextStringBuilder;false;appendln;(java.lang.StringBuilder);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;TextStringBuilder;false;appendln;(java.lang.StringBuilder,int,int);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;TextStringBuilder;false;appendln;(org.apache.commons.text.TextStringBuilder);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;TextStringBuilder;false;appendln;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.text;TextStringBuilder;false;asReader;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.text;TextStringBuilder;false;asTokenizer;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.text;TextStringBuilder;false;build;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.text;TextStringBuilder;false;getChars;(char[]);;Argument[-1];Argument[0];taint",
+        "org.apache.commons.text;TextStringBuilder;false;getChars;(char[]);;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.text;TextStringBuilder;false;getChars;(int,int,char[],int);;Argument[-1];Argument[2];taint",
+        "org.apache.commons.text;TextStringBuilder;false;insert;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.text;TextStringBuilder;false;insert;;;Argument[1];Argument[-1];taint",
+        "org.apache.commons.text;TextStringBuilder;false;leftString;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.text;TextStringBuilder;false;midString;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.text;TextStringBuilder;false;readFrom;;;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;TextStringBuilder;false;replace;(int,int,java.lang.String);;Argument[2];Argument[-1];taint",
+        "org.apache.commons.text;TextStringBuilder;false;replace;(org.apache.commons.text.matcher.StringMatcher,java.lang.String,int,int,int);;Argument[1];Argument[-1];taint",
+        "org.apache.commons.text;TextStringBuilder;false;replace;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.text;TextStringBuilder;false;replaceAll;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.text;TextStringBuilder;false;replaceAll;;;Argument[1];Argument[-1];taint",
+        "org.apache.commons.text;TextStringBuilder;false;replaceFirst;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.text;TextStringBuilder;false;replaceFirst;;;Argument[1];Argument[-1];taint",
+        "org.apache.commons.text;TextStringBuilder;false;rightString;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.text;TextStringBuilder;false;subSequence;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.text;TextStringBuilder;false;substring;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.text;TextStringBuilder;false;toCharArray;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.text;TextStringBuilder;false;toString;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.text;TextStringBuilder;false;toStringBuffer;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.text;TextStringBuilder;false;toStringBuilder;;;Argument[-1];ReturnValue;taint"
+      ]
   }
+}
 
-  private predicate isExcludedParameter(int arg) {
-    this.getName().matches(["appendIfMissing%", "prependIfMissing%"]) and arg = [2, 3]
-    or
-    this.getName().matches(["remove%", "split%", "substring%", "strip%"]) and
-    arg = [1 .. getNumberOfParameters() - 1]
-    or
-    this.getName().matches(["chomp", "getBytes", "replace%", "toString", "unwrap"]) and arg = 1
-    or
-    this.getName() = "join" and
-    // Exclude joins of types that render numerically (char[] and non-primitive arrays
-    // are still considered taint sources)
-    exists(PrimitiveType pt |
-      this.getParameterType(arg).(Array).getComponentType() = pt and
-      not pt instanceof CharacterType
-    ) and
-    arg = 0
-  }
-
-  override predicate returnsTaintFrom(int arg) {
-    arg = [0 .. getNumberOfParameters() - 1] and
-    not this.getParameterType(arg) = getAnExcludedParameterType() and
-    not isExcludedParameter(arg)
+private class ApacheStrBuilderFluentMethodsModel extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "org.apache.commons.lang3.text;StrBuilder;false;append;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.lang3.text;StrBuilder;false;appendAll;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.lang3.text;StrBuilder;false;appendFixedWidthPadLeft;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.lang3.text;StrBuilder;false;appendFixedWidthPadRight;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.lang3.text;StrBuilder;false;appendln;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.lang3.text;StrBuilder;false;appendNewLine;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.lang3.text;StrBuilder;false;appendNull;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.lang3.text;StrBuilder;false;appendPadding;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.lang3.text;StrBuilder;false;appendSeparator;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.lang3.text;StrBuilder;false;appendWithSeparators;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.lang3.text;StrBuilder;false;delete;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.lang3.text;StrBuilder;false;deleteAll;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.lang3.text;StrBuilder;false;deleteCharAt;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.lang3.text;StrBuilder;false;deleteFirst;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.lang3.text;StrBuilder;false;ensureCapacity;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.lang3.text;StrBuilder;false;insert;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.lang3.text;StrBuilder;false;minimizeCapacity;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.lang3.text;StrBuilder;false;replace;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.lang3.text;StrBuilder;false;replaceAll;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.lang3.text;StrBuilder;false;replaceFirst;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.lang3.text;StrBuilder;false;reverse;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.lang3.text;StrBuilder;false;setCharAt;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.lang3.text;StrBuilder;false;setLength;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.lang3.text;StrBuilder;false;setNewLineText;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.lang3.text;StrBuilder;false;setNullText;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.lang3.text;StrBuilder;false;trim;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.text;StrBuilder;false;append;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.text;StrBuilder;false;appendAll;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.text;StrBuilder;false;appendFixedWidthPadLeft;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.text;StrBuilder;false;appendFixedWidthPadRight;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.text;StrBuilder;false;appendln;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.text;StrBuilder;false;appendNewLine;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.text;StrBuilder;false;appendNull;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.text;StrBuilder;false;appendPadding;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.text;StrBuilder;false;appendSeparator;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.text;StrBuilder;false;appendWithSeparators;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.text;StrBuilder;false;delete;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.text;StrBuilder;false;deleteAll;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.text;StrBuilder;false;deleteCharAt;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.text;StrBuilder;false;deleteFirst;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.text;StrBuilder;false;ensureCapacity;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.text;StrBuilder;false;insert;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.text;StrBuilder;false;minimizeCapacity;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.text;StrBuilder;false;replace;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.text;StrBuilder;false;replaceAll;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.text;StrBuilder;false;replaceFirst;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.text;StrBuilder;false;reverse;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.text;StrBuilder;false;setCharAt;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.text;StrBuilder;false;setLength;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.text;StrBuilder;false;setNewLineText;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.text;StrBuilder;false;setNullText;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.text;StrBuilder;false;trim;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.text;TextStringBuilder;false;append;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.text;TextStringBuilder;false;appendAll;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.text;TextStringBuilder;false;appendFixedWidthPadLeft;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.text;TextStringBuilder;false;appendFixedWidthPadRight;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.text;TextStringBuilder;false;appendln;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.text;TextStringBuilder;false;appendNewLine;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.text;TextStringBuilder;false;appendNull;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.text;TextStringBuilder;false;appendPadding;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.text;TextStringBuilder;false;appendSeparator;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.text;TextStringBuilder;false;appendWithSeparators;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.text;TextStringBuilder;false;delete;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.text;TextStringBuilder;false;deleteAll;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.text;TextStringBuilder;false;deleteCharAt;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.text;TextStringBuilder;false;deleteFirst;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.text;TextStringBuilder;false;ensureCapacity;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.text;TextStringBuilder;false;insert;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.text;TextStringBuilder;false;minimizeCapacity;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.text;TextStringBuilder;false;replace;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.text;TextStringBuilder;false;replaceAll;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.text;TextStringBuilder;false;replaceFirst;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.text;TextStringBuilder;false;reverse;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.text;TextStringBuilder;false;setCharAt;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.text;TextStringBuilder;false;setLength;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.text;TextStringBuilder;false;setNewLineText;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.text;TextStringBuilder;false;setNullText;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.text;TextStringBuilder;false;trim;;;Argument[-1];ReturnValue;value"
+      ]
   }
 }
 
 /**
- * A method declared on Apache Commons Lang's `StrBuilder`, or the same class or its
- * renamed version `TextStringBuilder` in Commons Text.
+ * An Apache Commons-Lang StrBuilder method that returns `this`.
  */
-class ApacheStrBuilderCallable extends Callable {
-  ApacheStrBuilderCallable() {
-    this.getDeclaringType().hasQualifiedName("org.apache.commons.lang3.text", "StrBuilder") or
-    this.getDeclaringType()
-        .hasQualifiedName("org.apache.commons.text", ["StrBuilder", "TextStringBuilder"])
-  }
-}
-
-/**
- * An Apache Commons Lang `StrBuilder` method that adds taint to the `StrBuilder`.
- */
-private class ApacheStrBuilderTaintingMethod extends ApacheStrBuilderCallable,
-  TaintPreservingCallable {
-  ApacheStrBuilderTaintingMethod() {
-    this instanceof Constructor
-    or
-    this.hasName([
-        "append", "appendAll", "appendFixedWidthPadLeft", "appendFixedWidthPadRight", "appendln",
-        "appendSeparator", "appendWithSeparators", "insert", "readFrom", "replace", "replaceAll",
-        "replaceFirst"
-      ])
-  }
-
-  private predicate consumesTaintFromAllArgs() {
-    // Specifically the append[ln](String, Object...) overloads also consume taint from their other arguments:
-    this.getName() in ["appendAll", "appendWithSeparators"]
-    or
-    this.getName() = ["append", "appendln"] and this.getAParameter().isVarargs()
-    or
-    this.getName() = "appendSeparator" and this.getParameterType(1) instanceof TypeString
-  }
-
-  override predicate transfersTaint(int fromArg, int toArg) {
-    // Taint the qualifier
-    toArg = -1 and
-    (
-      this.getName().matches(["append%", "readFrom"]) and fromArg = 0
-      or
-      this.getName() = "insert" and fromArg = 1
-      or
-      this.getName().matches("replace%") and
-      (
-        if this.getParameterType(0).(PrimitiveType).getName() = "int"
-        then fromArg = 2
-        else fromArg = 1
-      )
-      or
-      this.consumesTaintFromAllArgs() and fromArg in [0 .. this.getNumberOfParameters() - 1]
-    )
-  }
-
-  override predicate returnsTaintFrom(int arg) { this instanceof Constructor and arg = 0 }
-}
-
-/**
- * An Apache Commons Lang `StrBuilder` method that returns taint from the `StrBuilder`.
- */
-private class ApacheStrBuilderTaintGetter extends ApacheStrBuilderCallable, TaintPreservingCallable {
-  ApacheStrBuilderTaintGetter() {
-    // Taint getters:
-    this.hasName([
-        "asReader", "asTokenizer", "build", "getChars", "leftString", "midString", "rightString",
-        "subSequence", "substring", "toCharArray", "toString", "toStringBuffer", "toStringBuilder"
-      ])
-    or
-    // Fluent methods that return an alias of `this`:
-    this.getReturnType() = this.getDeclaringType()
-  }
-
-  override predicate returnsTaintFrom(int arg) { arg = -1 }
-}
-
-/**
- * An Apache Commons Lang `StrBuilder` method that writes taint from the `StrBuilder` to some parameter.
- */
-private class ApacheStrBuilderTaintWriter extends ApacheStrBuilderCallable, TaintPreservingCallable {
-  ApacheStrBuilderTaintWriter() { this.hasName(["appendTo", "getChars"]) }
-
-  override predicate transfersTaint(int fromArg, int toArg) {
-    fromArg = -1 and
-    // appendTo(Readable) and getChars(char[])
-    if this.getNumberOfParameters() = 1
-    then toArg = 0
-    else
-      // getChars(int, int, char[], int)
-      toArg = 2
+private class ApacheStrBuilderFluentMethod extends FluentMethod {
+  ApacheStrBuilderFluentMethod() {
+    this.getReturnType().(RefType).hasQualifiedName("org.apache.commons.lang3.text", "StrBuilder")
   }
 }
 
@@ -223,28 +557,28 @@ private class ApacheWordUtilsModel extends SummaryModelCsv {
         "org.apache.commons.lang3.text;WordUtils;false;wrap;;;Argument[0];ReturnValue;taint",
         "org.apache.commons.lang3.text;WordUtils;false;wrap;(java.lang.String,int,java.lang.String,boolean);;Argument[2];ReturnValue;taint",
         "org.apache.commons.lang3.text;WordUtils;false;wrap;(java.lang.String,int,java.lang.String,boolean,java.lang.String);;Argument[2];ReturnValue;taint",
-        "org.apache.commons.lang3.text;WordUtils;false;uncapitalize;(java.lang.String);;Argument;ReturnValue;taint",
+        "org.apache.commons.lang3.text;WordUtils;false;uncapitalize;(java.lang.String);;Argument[0];ReturnValue;taint",
         "org.apache.commons.lang3.text;WordUtils;false;uncapitalize;(java.lang.String,char[]);;Argument[0];ReturnValue;taint",
-        "org.apache.commons.lang3.text;WordUtils;false;swapCase;;;Argument;ReturnValue;taint",
-        "org.apache.commons.lang3.text;WordUtils;false;capitalize;(java.lang.String);;Argument;ReturnValue;taint",
+        "org.apache.commons.lang3.text;WordUtils;false;swapCase;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3.text;WordUtils;false;capitalize;(java.lang.String);;Argument[0];ReturnValue;taint",
         "org.apache.commons.lang3.text;WordUtils;false;capitalize;(java.lang.String,char[]);;Argument[0];ReturnValue;taint",
-        "org.apache.commons.lang3.text;WordUtils;false;initials;(java.lang.String);;Argument;ReturnValue;taint",
+        "org.apache.commons.lang3.text;WordUtils;false;initials;(java.lang.String);;Argument[0];ReturnValue;taint",
         "org.apache.commons.lang3.text;WordUtils;false;initials;(java.lang.String,char[]);;Argument[0];ReturnValue;taint",
-        "org.apache.commons.lang3.text;WordUtils;false;capitalizeFully;(java.lang.String);;Argument;ReturnValue;taint",
+        "org.apache.commons.lang3.text;WordUtils;false;capitalizeFully;(java.lang.String);;Argument[0];ReturnValue;taint",
         "org.apache.commons.lang3.text;WordUtils;false;capitalizeFully;(java.lang.String,char[]);;Argument[0];ReturnValue;taint",
         "org.apache.commons.text;WordUtils;false;wrap;;;Argument[0];ReturnValue;taint",
         "org.apache.commons.text;WordUtils;false;wrap;(java.lang.String,int,java.lang.String,boolean);;Argument[2];ReturnValue;taint",
         "org.apache.commons.text;WordUtils;false;wrap;(java.lang.String,int,java.lang.String,boolean,java.lang.String);;Argument[2];ReturnValue;taint",
-        "org.apache.commons.text;WordUtils;false;uncapitalize;(java.lang.String);;Argument;ReturnValue;taint",
+        "org.apache.commons.text;WordUtils;false;uncapitalize;(java.lang.String);;Argument[0];ReturnValue;taint",
         "org.apache.commons.text;WordUtils;false;uncapitalize;(java.lang.String,char[]);;Argument[0];ReturnValue;taint",
-        "org.apache.commons.text;WordUtils;false;swapCase;;;Argument;ReturnValue;taint",
-        "org.apache.commons.text;WordUtils;false;capitalize;(java.lang.String);;Argument;ReturnValue;taint",
+        "org.apache.commons.text;WordUtils;false;swapCase;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.text;WordUtils;false;capitalize;(java.lang.String);;Argument[0];ReturnValue;taint",
         "org.apache.commons.text;WordUtils;false;capitalize;(java.lang.String,char[]);;Argument[0];ReturnValue;taint",
         "org.apache.commons.text;WordUtils;false;abbreviate;;;Argument[0];ReturnValue;taint",
         "org.apache.commons.text;WordUtils;false;abbreviate;;;Argument[3];ReturnValue;taint",
-        "org.apache.commons.text;WordUtils;false;initials;(java.lang.String);;Argument;ReturnValue;taint",
+        "org.apache.commons.text;WordUtils;false;initials;(java.lang.String);;Argument[0];ReturnValue;taint",
         "org.apache.commons.text;WordUtils;false;initials;(java.lang.String,char[]);;Argument[0];ReturnValue;taint",
-        "org.apache.commons.text;WordUtils;false;capitalizeFully;(java.lang.String);;Argument;ReturnValue;taint",
+        "org.apache.commons.text;WordUtils;false;capitalizeFully;(java.lang.String);;Argument[0];ReturnValue;taint",
         "org.apache.commons.text;WordUtils;false;capitalizeFully;(java.lang.String,char[]);;Argument[0];ReturnValue;taint"
       ]
   }
@@ -257,11 +591,11 @@ private class ApacheStrTokenizerModel extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
-        "org.apache.commons.lang3.text;StrTokenizer;false;StrTokenizer;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3.text;StrTokenizer;false;StrTokenizer;;;Argument[0];Argument[-1];taint",
         "org.apache.commons.lang3.text;StrTokenizer;false;clone;;;Argument[-1];ReturnValue;taint",
         "org.apache.commons.lang3.text;StrTokenizer;false;toString;;;Argument[-1];ReturnValue;taint",
-        "org.apache.commons.lang3.text;StrTokenizer;false;reset;;;Argument;ReturnValue;taint",
-        "org.apache.commons.lang3.text;StrTokenizer;false;reset;;;Argument;Argument[-1];taint",
+        "org.apache.commons.lang3.text;StrTokenizer;false;reset;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3.text;StrTokenizer;false;reset;;;Argument[0];Argument[-1];taint",
         "org.apache.commons.lang3.text;StrTokenizer;false;next;;;Argument[-1];ReturnValue;taint",
         "org.apache.commons.lang3.text;StrTokenizer;false;getContent;;;Argument[-1];ReturnValue;taint",
         "org.apache.commons.lang3.text;StrTokenizer;false;previous;;;Argument[-1];ReturnValue;taint",
@@ -269,13 +603,13 @@ private class ApacheStrTokenizerModel extends SummaryModelCsv {
         "org.apache.commons.lang3.text;StrTokenizer;false;getTokenArray;;;Argument[-1];ReturnValue;taint",
         "org.apache.commons.lang3.text;StrTokenizer;false;previousToken;;;Argument[-1];ReturnValue;taint",
         "org.apache.commons.lang3.text;StrTokenizer;false;nextToken;;;Argument[-1];ReturnValue;taint",
-        "org.apache.commons.lang3.text;StrTokenizer;false;getTSVInstance;;;Argument;ReturnValue;taint",
-        "org.apache.commons.lang3.text;StrTokenizer;false;getCSVInstance;;;Argument;ReturnValue;taint",
-        "org.apache.commons.text;StrTokenizer;false;StrTokenizer;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3.text;StrTokenizer;false;getTSVInstance;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3.text;StrTokenizer;false;getCSVInstance;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.text;StrTokenizer;false;StrTokenizer;;;Argument[0];Argument[-1];taint",
         "org.apache.commons.text;StrTokenizer;false;clone;;;Argument[-1];ReturnValue;taint",
         "org.apache.commons.text;StrTokenizer;false;toString;;;Argument[-1];ReturnValue;taint",
-        "org.apache.commons.text;StrTokenizer;false;reset;;;Argument;ReturnValue;taint",
-        "org.apache.commons.text;StrTokenizer;false;reset;;;Argument;Argument[-1];taint",
+        "org.apache.commons.text;StrTokenizer;false;reset;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.text;StrTokenizer;false;reset;;;Argument[0];Argument[-1];taint",
         "org.apache.commons.text;StrTokenizer;false;next;;;Argument[-1];ReturnValue;taint",
         "org.apache.commons.text;StrTokenizer;false;getContent;;;Argument[-1];ReturnValue;taint",
         "org.apache.commons.text;StrTokenizer;false;previous;;;Argument[-1];ReturnValue;taint",
@@ -283,13 +617,13 @@ private class ApacheStrTokenizerModel extends SummaryModelCsv {
         "org.apache.commons.text;StrTokenizer;false;getTokenArray;;;Argument[-1];ReturnValue;taint",
         "org.apache.commons.text;StrTokenizer;false;previousToken;;;Argument[-1];ReturnValue;taint",
         "org.apache.commons.text;StrTokenizer;false;nextToken;;;Argument[-1];ReturnValue;taint",
-        "org.apache.commons.text;StrTokenizer;false;getTSVInstance;;;Argument;ReturnValue;taint",
-        "org.apache.commons.text;StrTokenizer;false;getCSVInstance;;;Argument;ReturnValue;taint",
-        "org.apache.commons.text;StringTokenizer;false;StringTokenizer;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.text;StrTokenizer;false;getTSVInstance;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.text;StrTokenizer;false;getCSVInstance;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.text;StringTokenizer;false;StringTokenizer;;;Argument[0];Argument[-1];taint",
         "org.apache.commons.text;StringTokenizer;false;clone;;;Argument[-1];ReturnValue;taint",
         "org.apache.commons.text;StringTokenizer;false;toString;;;Argument[-1];ReturnValue;taint",
-        "org.apache.commons.text;StringTokenizer;false;reset;;;Argument;ReturnValue;taint",
-        "org.apache.commons.text;StringTokenizer;false;reset;;;Argument;Argument[-1];taint",
+        "org.apache.commons.text;StringTokenizer;false;reset;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.text;StringTokenizer;false;reset;;;Argument[0];Argument[-1];taint",
         "org.apache.commons.text;StringTokenizer;false;next;;;Argument[-1];ReturnValue;taint",
         "org.apache.commons.text;StringTokenizer;false;getContent;;;Argument[-1];ReturnValue;taint",
         "org.apache.commons.text;StringTokenizer;false;previous;;;Argument[-1];ReturnValue;taint",
@@ -297,8 +631,8 @@ private class ApacheStrTokenizerModel extends SummaryModelCsv {
         "org.apache.commons.text;StringTokenizer;false;getTokenArray;;;Argument[-1];ReturnValue;taint",
         "org.apache.commons.text;StringTokenizer;false;previousToken;;;Argument[-1];ReturnValue;taint",
         "org.apache.commons.text;StringTokenizer;false;nextToken;;;Argument[-1];ReturnValue;taint",
-        "org.apache.commons.text;StringTokenizer;false;getTSVInstance;;;Argument;ReturnValue;taint",
-        "org.apache.commons.text;StringTokenizer;false;getCSVInstance;;;Argument;ReturnValue;taint"
+        "org.apache.commons.text;StringTokenizer;false;getTSVInstance;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.text;StringTokenizer;false;getCSVInstance;;;Argument[0];ReturnValue;taint"
       ]
   }
 }
@@ -311,9 +645,9 @@ private class ApacheStrLookupModel extends SummaryModelCsv {
     row =
       [
         "org.apache.commons.lang3.text;StrLookup;false;lookup;;;Argument[-1];ReturnValue;taint",
-        "org.apache.commons.lang3.text;StrLookup;false;mapLookup;;;Argument;ReturnValue;taint",
+        "org.apache.commons.lang3.text;StrLookup;false;mapLookup;;;MapValue of Argument[0];ReturnValue;taint",
         "org.apache.commons.text.lookup;StringLookup;true;lookup;;;Argument[-1];ReturnValue;taint",
-        "org.apache.commons.text.lookup;StringLookupFactory;false;mapStringLookup;;;Argument;ReturnValue;taint"
+        "org.apache.commons.text.lookup;StringLookupFactory;false;mapStringLookup;;;MapValue of Argument[0];ReturnValue;taint"
       ]
   }
 }
@@ -325,53 +659,59 @@ private class ApacheStrSubstitutorModel extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
-        "org.apache.commons.lang3.text;StrSubstitutor;false;StrSubstitutor;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3.text;StrSubstitutor;false;StrSubstitutor;;;Argument[0];Argument[-1];taint",
+        "org.apache.commons.lang3.text;StrSubstitutor;false;StrSubstitutor;;;MapValue of Argument[0];Argument[-1];taint",
         "org.apache.commons.lang3.text;StrSubstitutor;false;replace;;;Argument[-1];ReturnValue;taint",
-        "org.apache.commons.lang3.text;StrSubstitutor;false;replace;(java.lang.Object);;Argument;ReturnValue;taint",
-        "org.apache.commons.lang3.text;StrSubstitutor;false;replace;(char[]);;Argument;ReturnValue;taint",
+        "org.apache.commons.lang3.text;StrSubstitutor;false;replace;(java.lang.Object);;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3.text;StrSubstitutor;false;replace;(char[]);;Argument[0];ReturnValue;taint",
         "org.apache.commons.lang3.text;StrSubstitutor;false;replace;(char[],int,int);;Argument[0];ReturnValue;taint",
-        "org.apache.commons.lang3.text;StrSubstitutor;false;replace;(java.lang.CharSequence);;Argument;ReturnValue;taint",
+        "org.apache.commons.lang3.text;StrSubstitutor;false;replace;(java.lang.CharSequence);;Argument[0];ReturnValue;taint",
         "org.apache.commons.lang3.text;StrSubstitutor;false;replace;(java.lang.CharSequence,int,int);;Argument[0];ReturnValue;taint",
-        "org.apache.commons.lang3.text;StrSubstitutor;false;replace;(java.lang.String);;Argument;ReturnValue;taint",
-        "org.apache.commons.lang3.text;StrSubstitutor;false;replace;(org.apache.commons.lang3.text.StrBuilder);;Argument;ReturnValue;taint",
-        "org.apache.commons.lang3.text;StrSubstitutor;false;replace;(java.lang.StringBuffer);;Argument;ReturnValue;taint",
+        "org.apache.commons.lang3.text;StrSubstitutor;false;replace;(java.lang.String);;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3.text;StrSubstitutor;false;replace;(org.apache.commons.lang3.text.StrBuilder);;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3.text;StrSubstitutor;false;replace;(java.lang.StringBuffer);;Argument[0];ReturnValue;taint",
         "org.apache.commons.lang3.text;StrSubstitutor;false;replace;(java.lang.StringBuffer,int,int);;Argument[0];ReturnValue;taint",
         "org.apache.commons.lang3.text;StrSubstitutor;false;replace;(java.lang.String,int,int);;Argument[0];ReturnValue;taint",
         "org.apache.commons.lang3.text;StrSubstitutor;false;replace;(org.apache.commons.lang3.text.StrBuilder,int,int);;Argument[0];ReturnValue;taint",
-        "org.apache.commons.lang3.text;StrSubstitutor;false;replace;(java.lang.Object,java.util.Map);;Argument;ReturnValue;taint",
+        "org.apache.commons.lang3.text;StrSubstitutor;false;replace;(java.lang.Object,java.util.Map);;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3.text;StrSubstitutor;false;replace;(java.lang.Object,java.util.Map);;MapValue of Argument[1];ReturnValue;taint",
         "org.apache.commons.lang3.text;StrSubstitutor;false;replace;(java.lang.Object,java.util.Map,java.lang.String,java.lang.String);;Argument[0];ReturnValue;taint",
-        "org.apache.commons.lang3.text;StrSubstitutor;false;replace;(java.lang.Object,java.util.Map,java.lang.String,java.lang.String);;Argument[1];ReturnValue;taint",
-        "org.apache.commons.lang3.text;StrSubstitutor;false;replace;(java.lang.Object,java.util.Properties);;Argument;ReturnValue;taint",
-        "org.apache.commons.lang3.text;StrSubstitutor;false;setVariableResolver;;;Argument;Argument[-1];taint",
-        "org.apache.commons.lang3.text;StrSubstitutor;false;replaceIn;(org.apache.commons.lang3.text.StrBuilder);;Argument[-1];Argument;taint",
-        "org.apache.commons.lang3.text;StrSubstitutor;false;replaceIn;(java.lang.StringBuffer);;Argument[-1];Argument;taint",
+        "org.apache.commons.lang3.text;StrSubstitutor;false;replace;(java.lang.Object,java.util.Map,java.lang.String,java.lang.String);;MapValue of Argument[1];ReturnValue;taint",
+        "org.apache.commons.lang3.text;StrSubstitutor;false;replace;(java.lang.Object,java.util.Properties);;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3.text;StrSubstitutor;false;replace;(java.lang.Object,java.util.Properties);;MapValue of Argument[1];ReturnValue;taint",
+        "org.apache.commons.lang3.text;StrSubstitutor;false;setVariableResolver;;;Argument[0];Argument[-1];taint",
+        "org.apache.commons.lang3.text;StrSubstitutor;false;replaceIn;(org.apache.commons.lang3.text.StrBuilder);;Argument[-1];Argument[0];taint",
+        "org.apache.commons.lang3.text;StrSubstitutor;false;replaceIn;(java.lang.StringBuffer);;Argument[-1];Argument[0];taint",
         "org.apache.commons.lang3.text;StrSubstitutor;false;replaceIn;(java.lang.StringBuffer,int,int);;Argument[-1];Argument[0];taint",
-        "org.apache.commons.lang3.text;StrSubstitutor;false;replaceIn;(java.lang.StringBuilder);;Argument[-1];Argument;taint",
+        "org.apache.commons.lang3.text;StrSubstitutor;false;replaceIn;(java.lang.StringBuilder);;Argument[-1];Argument[0];taint",
         "org.apache.commons.lang3.text;StrSubstitutor;false;replaceIn;(java.lang.StringBuilder,int,int);;Argument[-1];Argument[0];taint",
         "org.apache.commons.lang3.text;StrSubstitutor;false;replaceIn;(org.apache.commons.lang3.text.StrBuilder,int,int);;Argument[-1];Argument[0];taint",
-        "org.apache.commons.text;StringSubstitutor;false;StringSubstitutor;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.text;StringSubstitutor;false;StringSubstitutor;;;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;StringSubstitutor;false;StringSubstitutor;;;MapValue of Argument[0];Argument[-1];taint",
         "org.apache.commons.text;StringSubstitutor;false;replace;;;Argument[-1];ReturnValue;taint",
-        "org.apache.commons.text;StringSubstitutor;false;replace;(java.lang.Object);;Argument;ReturnValue;taint",
-        "org.apache.commons.text;StringSubstitutor;false;replace;(char[]);;Argument;ReturnValue;taint",
+        "org.apache.commons.text;StringSubstitutor;false;replace;(java.lang.Object);;Argument[0];ReturnValue;taint",
+        "org.apache.commons.text;StringSubstitutor;false;replace;(char[]);;Argument[0];ReturnValue;taint",
         "org.apache.commons.text;StringSubstitutor;false;replace;(char[],int,int);;Argument[0];ReturnValue;taint",
-        "org.apache.commons.text;StringSubstitutor;false;replace;(java.lang.CharSequence);;Argument;ReturnValue;taint",
+        "org.apache.commons.text;StringSubstitutor;false;replace;(java.lang.CharSequence);;Argument[0];ReturnValue;taint",
         "org.apache.commons.text;StringSubstitutor;false;replace;(java.lang.CharSequence,int,int);;Argument[0];ReturnValue;taint",
-        "org.apache.commons.text;StringSubstitutor;false;replace;(java.lang.String);;Argument;ReturnValue;taint",
-        "org.apache.commons.text;StringSubstitutor;false;replace;(java.lang.StringBuffer);;Argument;ReturnValue;taint",
+        "org.apache.commons.text;StringSubstitutor;false;replace;(java.lang.String);;Argument[0];ReturnValue;taint",
+        "org.apache.commons.text;StringSubstitutor;false;replace;(java.lang.StringBuffer);;Argument[0];ReturnValue;taint",
         "org.apache.commons.text;StringSubstitutor;false;replace;(java.lang.StringBuffer,int,int);;Argument[0];ReturnValue;taint",
         "org.apache.commons.text;StringSubstitutor;false;replace;(java.lang.String,int,int);;Argument[0];ReturnValue;taint",
-        "org.apache.commons.text;StringSubstitutor;false;replace;(java.lang.Object,java.util.Map);;Argument;ReturnValue;taint",
+        "org.apache.commons.text;StringSubstitutor;false;replace;(java.lang.Object,java.util.Map);;Argument[0];ReturnValue;taint",
+        "org.apache.commons.text;StringSubstitutor;false;replace;(java.lang.Object,java.util.Map);;MapValue of Argument[1];ReturnValue;taint",
         "org.apache.commons.text;StringSubstitutor;false;replace;(java.lang.Object,java.util.Map,java.lang.String,java.lang.String);;Argument[0];ReturnValue;taint",
-        "org.apache.commons.text;StringSubstitutor;false;replace;(java.lang.Object,java.util.Map,java.lang.String,java.lang.String);;Argument[1];ReturnValue;taint",
-        "org.apache.commons.text;StringSubstitutor;false;replace;(java.lang.Object,java.util.Properties);;Argument;ReturnValue;taint",
-        "org.apache.commons.text;StringSubstitutor;false;replace;(org.apache.commons.text.TextStringBuilder);;Argument;ReturnValue;taint",
+        "org.apache.commons.text;StringSubstitutor;false;replace;(java.lang.Object,java.util.Map,java.lang.String,java.lang.String);;MapValue of Argument[1];ReturnValue;taint",
+        "org.apache.commons.text;StringSubstitutor;false;replace;(java.lang.Object,java.util.Properties);;Argument[0];ReturnValue;taint",
+        "org.apache.commons.text;StringSubstitutor;false;replace;(java.lang.Object,java.util.Properties);;MapValue of Argument[1];ReturnValue;taint",
+        "org.apache.commons.text;StringSubstitutor;false;replace;(org.apache.commons.text.TextStringBuilder);;Argument[0];ReturnValue;taint",
         "org.apache.commons.text;StringSubstitutor;false;replace;(org.apache.commons.text.TextStringBuilder,int,int);;Argument[0];ReturnValue;taint",
-        "org.apache.commons.text;StringSubstitutor;false;setVariableResolver;;;Argument;Argument[-1];taint",
-        "org.apache.commons.text;StringSubstitutor;false;replaceIn;(java.lang.StringBuffer);;Argument[-1];Argument;taint",
+        "org.apache.commons.text;StringSubstitutor;false;setVariableResolver;;;Argument[0];Argument[-1];taint",
+        "org.apache.commons.text;StringSubstitutor;false;replaceIn;(java.lang.StringBuffer);;Argument[-1];Argument[0];taint",
         "org.apache.commons.text;StringSubstitutor;false;replaceIn;(java.lang.StringBuffer,int,int);;Argument[-1];Argument[0];taint",
-        "org.apache.commons.text;StringSubstitutor;false;replaceIn;(java.lang.StringBuilder);;Argument[-1];Argument;taint",
+        "org.apache.commons.text;StringSubstitutor;false;replaceIn;(java.lang.StringBuilder);;Argument[-1];Argument[0];taint",
         "org.apache.commons.text;StringSubstitutor;false;replaceIn;(java.lang.StringBuilder,int,int);;Argument[-1];Argument[0];taint",
-        "org.apache.commons.text;StringSubstitutor;false;replaceIn;(org.apache.commons.text.TextStringBuilder);;Argument[-1];Argument;taint",
+        "org.apache.commons.text;StringSubstitutor;false;replaceIn;(org.apache.commons.text.TextStringBuilder);;Argument[-1];Argument[0];taint",
         "org.apache.commons.text;StringSubstitutor;false;replaceIn;(org.apache.commons.text.TextStringBuilder,int,int);;Argument[-1];Argument[0];taint"
       ]
   }
@@ -406,20 +746,46 @@ private class ApacheObjectUtilsModel extends SummaryModelCsv {
       [
         // Note all the functions annotated with `taint` flow really should have `value` flow,
         // but we don't support value-preserving varargs functions at the moment.
-        "org.apache.commons.lang3;ObjectUtils;false;clone;;;Argument;ReturnValue;value",
-        "org.apache.commons.lang3;ObjectUtils;false;cloneIfPossible;;;Argument;ReturnValue;value",
-        "org.apache.commons.lang3;ObjectUtils;false;CONST;;;Argument;ReturnValue;value",
-        "org.apache.commons.lang3;ObjectUtils;false;CONST_BYTE;;;Argument;ReturnValue;value",
-        "org.apache.commons.lang3;ObjectUtils;false;CONST_SHORT;;;Argument;ReturnValue;value",
-        "org.apache.commons.lang3;ObjectUtils;false;defaultIfNull;;;Argument;ReturnValue;value",
-        "org.apache.commons.lang3;ObjectUtils;false;firstNonNull;;;Argument;ReturnValue;taint",
+        "org.apache.commons.lang3;ObjectUtils;false;clone;;;Argument[0];ReturnValue;value",
+        "org.apache.commons.lang3;ObjectUtils;false;cloneIfPossible;;;Argument[0];ReturnValue;value",
+        "org.apache.commons.lang3;ObjectUtils;false;CONST;;;Argument[0];ReturnValue;value",
+        "org.apache.commons.lang3;ObjectUtils;false;CONST_BYTE;;;Argument[0];ReturnValue;value",
+        "org.apache.commons.lang3;ObjectUtils;false;CONST_SHORT;;;Argument[0];ReturnValue;value",
+        "org.apache.commons.lang3;ObjectUtils;false;defaultIfNull;;;Argument[0..1];ReturnValue;value",
+        "org.apache.commons.lang3;ObjectUtils;false;firstNonNull;;;ArrayElement of Argument[0];ReturnValue;value",
         "org.apache.commons.lang3;ObjectUtils;false;getIfNull;;;Argument[0];ReturnValue;value",
-        "org.apache.commons.lang3;ObjectUtils;false;max;;;Argument;ReturnValue;taint",
-        "org.apache.commons.lang3;ObjectUtils;false;median;;;Argument;ReturnValue;taint",
-        "org.apache.commons.lang3;ObjectUtils;false;min;;;Argument;ReturnValue;taint",
-        "org.apache.commons.lang3;ObjectUtils;false;mode;;;Argument;ReturnValue;taint",
+        "org.apache.commons.lang3;ObjectUtils;false;max;;;ArrayElement of Argument[0];ReturnValue;value",
+        "org.apache.commons.lang3;ObjectUtils;false;median;;;ArrayElement of Argument[0];ReturnValue;value",
+        "org.apache.commons.lang3;ObjectUtils;false;min;;;ArrayElement of Argument[0];ReturnValue;value",
+        "org.apache.commons.lang3;ObjectUtils;false;mode;;;ArrayElement of Argument[0];ReturnValue;value",
         "org.apache.commons.lang3;ObjectUtils;false;requireNonEmpty;;;Argument[0];ReturnValue;value",
         "org.apache.commons.lang3;ObjectUtils;false;toString;(Object,String);;Argument[1];ReturnValue;value"
+      ]
+  }
+}
+
+private class ApacheToStringBuilderModel extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "org.apache.commons.lang3.builder;ToStringBuilder;false;toString;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.lang3.builder;ToStringBuilder;false;append;(java.lang.Object);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.lang3.builder;ToStringBuilder;false;append;(java.lang.Object[]);;ArrayElement of Argument[0];Argument[-1];taint",
+        "org.apache.commons.lang3.builder;ToStringBuilder;false;append;(java.lang.String,java.lang.Object[]);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.lang3.builder;ToStringBuilder;false;append;(java.lang.String,java.lang.Object[]);;ArrayElement of Argument[1];Argument[-1];taint",
+        "org.apache.commons.lang3.builder;ToStringBuilder;false;append;(java.lang.String,boolean);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.lang3.builder;ToStringBuilder;false;append;(java.lang.String,java.lang.Object);;Argument[0..1];Argument[-1];taint",
+        "org.apache.commons.lang3.builder;ToStringBuilder;false;append;(java.lang.String,java.lang.Object[],boolean);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.lang3.builder;ToStringBuilder;false;append;(java.lang.String,java.lang.Object[],boolean);;ArrayElement of Argument[1];Argument[-1];taint",
+        "org.apache.commons.lang3.builder;ToStringBuilder;false;build;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.lang3.builder;ToStringBuilder;false;getStringBuffer;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.lang3.builder;ToStringBuilder;false;appendToString;;;Argument[0];Argument[-1];taint",
+        "org.apache.commons.lang3.builder;ToStringBuilder;false;appendSuper;;;Argument[0];Argument[-1];taint",
+        // The following are value-preserving steps for fluent methods:
+        "org.apache.commons.lang3.builder;ToStringBuilder;false;append;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.lang3.builder;ToStringBuilder;false;appendAsObjectToString;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.lang3.builder;ToStringBuilder;false;appendSuper;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.lang3.builder;ToStringBuilder;false;appendToString;;;Argument[-1];ReturnValue;value"
       ]
   }
 }

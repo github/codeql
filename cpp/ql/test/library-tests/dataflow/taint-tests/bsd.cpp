@@ -19,6 +19,6 @@ void test_accept() {
   int size = sizeof(sockaddr);
   int a = accept(s, &addr, &size);
 
-  sink(a); // $ ast=17:11 SPURIOUS: ast=18:12 MISSING: ir
-  sink(addr); // $ ast MISSING: ir
+  sink(a); // $ ast=17:11 ir SPURIOUS: ast=18:12
+  sink(addr); // $ ast,ir
 }

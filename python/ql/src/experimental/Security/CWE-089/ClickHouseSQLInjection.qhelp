@@ -1,0 +1,59 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+If a database query (such as a SQL or NoSQL query) is built from
+user-provided data without sufficient sanitization, a user
+may be able to run malicious database queries.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Most database connector libraries offer a way of safely
+embedding untrusted data into a query by means of query parameters
+or prepared statements.
+</p>
+</recommendation>
+
+<example>
+<p>
+In the following snippet, a user is fetched from a <code>ClickHouse</code> database
+using five different queries. In the "BAD" cases the query is built directly from user-controlled data.
+In the "GOOD" case the user-controlled data is safely embedded into the query by using query parameters.
+</p>
+
+<p>
+In the first case, the query executed via aioch Client. aioch - is a module
+for asynchronous queries to database.
+</p>
+
+<p>
+In the second and third cases, the connection is established via `Client` class.
+This class implement different method to execute a query.
+</p>
+
+<p>
+In the forth case, good pattern is presented. Query parameters are send through
+second dict-like argument.
+</p>
+
+<p>
+In the fifth case, there is example of PEP249 interface usage.
+</p>
+
+<p>
+In the sixth case, there is custom Class usge which is a subclass of default Client.
+</p>
+
+<sample src="ClickHouseSQLInjection.py" />
+</example>
+
+<references>
+<li>Wikipedia: <a href="https://en.wikipedia.org/wiki/SQL_injection">SQL injection</a>.</li>
+<li>OWASP: <a href="https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html">SQL Injection Prevention Cheat Sheet</a>.</li>
+</references>
+</qhelp>

@@ -4,6 +4,7 @@
  *              can cause unexpected truncation.
  * @kind path-problem
  * @problem.severity recommendation
+ * @security-severity 5.9
  * @precision medium
  * @id java/tainted-numeric-cast-local
  * @tags security

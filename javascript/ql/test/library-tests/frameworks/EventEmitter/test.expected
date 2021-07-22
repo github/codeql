@@ -1,4 +1,4 @@
-taintSteps
+flowSteps
 | customEmitter.js:5:20:5:24 | "bar" | customEmitter.js:6:19:6:22 | data |
 | customEmitter.js:12:21:12:25 | "baz" | customEmitter.js:13:23:13:26 | data |
 | customEmitter.js:12:21:12:25 | "baz" | customEmitter.js:22:14:22:18 | yData |

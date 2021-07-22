@@ -1,0 +1,2 @@
+| beans.xml:10:5:13:12 | /unsafeBooking | Unsafe deserialization in a Spring exporter bean '/unsafeBooking' |
+| beans.xml:15:5:18:12 | org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter | Unsafe deserialization in a Spring exporter bean 'org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter' |

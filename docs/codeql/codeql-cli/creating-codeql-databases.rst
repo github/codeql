@@ -165,13 +165,15 @@ build steps, you may need to explicitly define each step in the command line.
 
 .. pull-quote:: Creating databases for Go
   
-   For Go, you should always use the CodeQL autobuilder. Install the Go
-   toolchain (version 1.11 or later) and, if there are dependencies, the
-   appropriate dependency manager (such as `dep
-   <https://golang.github.io/dep/>`__ or `Glide <http://glide.sh/>`__).
+   For Go, install the Go toolchain (version 1.11 or later) and, if there
+   are dependencies, the appropriate dependency manager (such as `dep
+   <https://golang.github.io/dep/>`__).
    
-   Do not specify any build commands, as you will override the autobuilder
-   invocation, which will create an empty database.  
+   The Go autobuilder attempts to automatically detect code written in Go in a repository,
+   and only runs build scripts in an attempt to fetch dependencies. To force
+   CodeQL to limit extraction to the files compiled by your build script, set the environment variable
+   `CODEQL_EXTRACTOR_GO_BUILD_TRACING=on` or use the ``--command`` option to specify a
+   build command.
 
 Specifying build commands
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -199,6 +201,14 @@ commands that you can specify for compiled languages.
   with .NET Core 2 or earlier, so expand the command to::
 
      codeql database create csharp-database --language=csharp --command='dotnet build /p:UseSharedCompilation=false /t:rebuild'
+
+- Go project built using the ``COEQL_EXTRACTOR_GO_BUILD_TRACING=on`` environment variable::
+
+   CODEQL_EXTRACTOR_GO_BUILD_TRACING=on codeql database create go-database --language=go
+
+- Go project built using a custom build script::
+
+   codeql database create go-database --language=go --command='./scripts/build.sh'
 
 - Java project built using Gradle::
 

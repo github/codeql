@@ -26,3 +26,7 @@ connection.query(
     console.log(results);
   }
 );
+
+const conn2 = await mysql.createConnectionPromise();
+await conn2.query('SELECT * FROM users');
+await conn2.execute('SELECT * FROM users');

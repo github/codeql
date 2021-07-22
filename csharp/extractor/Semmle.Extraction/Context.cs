@@ -108,7 +108,7 @@ namespace Semmle.Extraction
                     Populate(init as ISymbol, entity);
 
 #if DEBUG_LABELS
-                using var id = new StringWriter();
+                using var id = new EscapingTextWriter();
                 entity.WriteQuotedId(id);
                 CheckEntityHasUniqueLabel(id.ToString(), entity);
 #endif
@@ -376,6 +376,19 @@ namespace Semmle.Extraction
             Extractor.Message(msg);
         }
 
+        private void ExtractionError(InternalError error)
+        {
+            ExtractionError(new Message(error.Message, error.EntityText, CreateLocation(error.Location), error.StackTrace, Severity.Error));
+        }
+
+        private void ReportError(InternalError error)
+        {
+            if (!Extractor.Standalone)
+                throw error;
+
+            ExtractionError(error);
+        }
+
         /// <summary>
         /// Signal an error in the program model.
         /// </summary>
@@ -383,8 +396,7 @@ namespace Semmle.Extraction
         /// <param name="msg">The error message.</param>
         public void ModelError(SyntaxNode node, string msg)
         {
-            if (!Extractor.Standalone)
-                throw new InternalError(node, msg);
+            ReportError(new InternalError(node, msg));
         }
 
         /// <summary>
@@ -394,8 +406,7 @@ namespace Semmle.Extraction
         /// <param name="msg">The error message.</param>
         public void ModelError(ISymbol symbol, string msg)
         {
-            if (!Extractor.Standalone)
-                throw new InternalError(symbol, msg);
+            ReportError(new InternalError(symbol, msg));
         }
 
         /// <summary>
@@ -404,8 +415,7 @@ namespace Semmle.Extraction
         /// <param name="msg">The error message.</param>
         public void ModelError(string msg)
         {
-            if (!Extractor.Standalone)
-                throw new InternalError(msg);
+            ReportError(new InternalError(msg));
         }
 
         /// <summary>

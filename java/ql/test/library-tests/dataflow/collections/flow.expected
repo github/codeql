@@ -85,9 +85,6 @@
 | ContainterTest.java:46:4:46:38 | navMap | ContainterTest.java:199:8:199:48 | subMap(...) |
 | ContainterTest.java:46:4:46:38 | navMap | ContainterTest.java:200:8:200:34 | tailMap(...) |
 | ContainterTest.java:47:4:47:48 | syncHashMap | ContainterTest.java:203:8:203:29 | elements(...) |
-| ContainterTest.java:47:4:47:48 | syncHashMap | ContainterTest.java:204:8:204:42 | search(...) |
-| ContainterTest.java:47:4:47:48 | syncHashMap | ContainterTest.java:205:8:205:55 | searchEntries(...) |
-| ContainterTest.java:47:4:47:48 | syncHashMap | ContainterTest.java:206:8:206:43 | searchValues(...) |
 | ContainterTest.java:48:4:48:34 | dict | ContainterTest.java:209:8:209:22 | elements(...) |
 | ContainterTest.java:48:4:48:34 | dict | ContainterTest.java:210:8:210:25 | get(...) |
 | ContainterTest.java:48:4:48:34 | dict | ContainterTest.java:211:8:211:31 | put(...) |

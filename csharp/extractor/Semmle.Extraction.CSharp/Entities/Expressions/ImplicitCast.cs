@@ -3,7 +3,7 @@ using Semmle.Extraction.Kinds;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
-    internal class ImplicitCast : Expression
+    internal sealed class ImplicitCast : Expression
     {
         public Expression Expr
         {

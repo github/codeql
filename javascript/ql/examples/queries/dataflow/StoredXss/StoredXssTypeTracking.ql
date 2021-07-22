@@ -3,6 +3,7 @@
  * @description Extends the standard Stored XSS query with an additional source,
  *              using TrackedNode to track MySQL connections globally.
  * @kind path-problem
+ * @problem.severity error
  * @tags security
  * @id js/examples/stored-xss-trackednode
  */

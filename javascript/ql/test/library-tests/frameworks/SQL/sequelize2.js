@@ -9,3 +9,9 @@ const sequelize = new Sequelize('database', {
 });
 sequelize.query('SELECT * FROM Products WHERE (name LIKE \'%' + criteria + '%\') AND deletedAt IS NULL) ORDER BY name');
 
+sequelize.query({
+  query: 'SELECT $1',
+  values: [123]
+});
+
+let value = Sequelize.literal('123 + 345');

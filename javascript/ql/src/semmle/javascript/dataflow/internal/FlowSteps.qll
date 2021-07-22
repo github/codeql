@@ -25,7 +25,9 @@ predicate shouldTrackProperties(AbstractValue obj) {
  */
 pragma[noinline]
 predicate returnExpr(Function f, DataFlow::Node source, DataFlow::Node sink) {
-  sink.asExpr() = f.getAReturnedExpr() and source = sink
+  sink.asExpr() = f.getAReturnedExpr() and
+  source = sink and
+  not f = any(SetterMethodDeclaration decl).getBody()
 }
 
 /**
@@ -39,9 +41,9 @@ predicate localFlowStep(
 ) {
   pred = succ.getAPredecessor() and predlbl = succlbl
   or
-  any(DataFlow::AdditionalFlowStep afs).step(pred, succ) and predlbl = succlbl
+  DataFlow::SharedFlowStep::step(pred, succ) and predlbl = succlbl
   or
-  any(DataFlow::AdditionalFlowStep afs).step(pred, succ, predlbl, succlbl)
+  DataFlow::SharedFlowStep::step(pred, succ, predlbl, succlbl)
   or
   exists(boolean vp | configuration.isAdditionalFlowStep(pred, succ, vp) |
     vp = true and
@@ -120,7 +122,11 @@ private module CachedSteps {
    * Holds if `invk` may invoke `f`.
    */
   cached
-  predicate calls(DataFlow::InvokeNode invk, Function f) { f = invk.getACallee(0) }
+  predicate calls(DataFlow::SourceNode invk, Function f) {
+    f = invk.(DataFlow::InvokeNode).getACallee(0)
+    or
+    f = invk.(DataFlow::PropRef).getAnAccessorCallee().getFunction()
+  }
 
   private predicate callsBoundInternal(
     DataFlow::InvokeNode invk, Function f, int boundArgs, boolean contextDependent
@@ -177,11 +183,11 @@ private module CachedSteps {
    */
   cached
   predicate argumentPassing(
-    DataFlow::InvokeNode invk, DataFlow::ValueNode arg, Function f, DataFlow::SourceNode parm
+    DataFlow::SourceNode invk, DataFlow::Node arg, Function f, DataFlow::SourceNode parm
   ) {
     calls(invk, f) and
     (
-      exists(int i | arg = invk.getArgument(i) |
+      exists(int i | arg = invk.(DataFlow::InvokeNode).getArgument(i) |
         exists(Parameter p |
           f.getParameter(i) = p and
           not p.isRestParameter() and
@@ -193,12 +199,19 @@ private module CachedSteps {
       or
       arg = invk.(DataFlow::CallNode).getReceiver() and
       parm = DataFlow::thisNode(f)
+      or
+      arg = invk.(DataFlow::PropRef).getBase() and
+      parm = DataFlow::thisNode(f)
+      or
+      arg = invk.(DataFlow::PropWrite).getRhs() and
+      parm = DataFlow::parameterNode(f.getParameter(0))
     )
     or
-    exists(DataFlow::Node callback, int i, Parameter p |
+    exists(DataFlow::Node callback, int i, Parameter p, Function target |
       invk.(DataFlow::PartialInvokeNode).isPartialArgument(callback, arg, i) and
       partiallyCalls(invk, callback, f) and
-      f.getParameter(i) = p and
+      f = pragma[only_bind_into](target) and
+      target.getParameter(i) = p and
       not p.isRestParameter() and
       parm = DataFlow::parameterNode(p)
     )
@@ -213,7 +226,7 @@ private module CachedSteps {
       callsBound(invk, f, boundArgs) and
       f.getParameter(boundArgs + i) = p and
       not p.isRestParameter() and
-      arg = invk.getArgument(i) and
+      arg = invk.(DataFlow::InvokeNode).getArgument(i) and
       parm = DataFlow::parameterNode(p)
     )
   }

@@ -53,6 +53,8 @@ class LocalVariableDecl extends @localvar, LocalScopeVariable {
 
   /** Gets the initializer expression of this local variable declaration. */
   override Expr getInitializer() { result = getDeclExpr().getInit() }
+
+  override string getAPrimaryQlClass() { result = "LocalVariableDecl" }
 }
 
 /** A formal parameter of a callable. */

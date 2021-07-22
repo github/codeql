@@ -144,7 +144,7 @@ class JSDocParamTag extends JSDocTag {
   /** Gets the parameter this tag refers to, if it can be determined. */
   Variable getDocumentedParameter() {
     exists(Parameterized parm | parm.getDocumentation() = getParent() |
-      result = parm.getParameterVariable(getName())
+      result = pragma[only_bind_out](parm).getParameterVariable(getName())
     )
   }
 }

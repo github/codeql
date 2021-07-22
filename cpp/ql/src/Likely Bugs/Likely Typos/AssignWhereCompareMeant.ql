@@ -54,13 +54,28 @@ class BooleanControllingAssignmentInExpr extends BooleanControllingAssignment {
   override predicate isWhitelisted() {
     this.getConversion().(ParenthesisExpr).isParenthesised()
     or
-    // whitelist this assignment if all comparison operations in the expression that this
+    // Allow this assignment if all comparison operations in the expression that this
     // assignment is part of, are not parenthesized. In that case it seems like programmer
     // is fine with unparenthesized comparison operands to binary logical operators, and
     // the parenthesis around this assignment was used to call it out as an assignment.
     this.isParenthesised() and
     forex(ComparisonOperation op | op = getComparisonOperand*(this.getParent+()) |
       not op.isParenthesised()
+    )
+    or
+    // Match a pattern like:
+    // ```
+    // if((a = b) && use_value(a)) { ... }
+    // ```
+    // where the assignment is meant to update the value of `a` before it's used in some other boolean
+    // subexpression that is guarenteed to be evaluate _after_ the assignment.
+    this.isParenthesised() and
+    exists(LogicalAndExpr parent, Variable var, VariableAccess access |
+      var = this.getLValue().(VariableAccess).getTarget() and
+      access = var.getAnAccess() and
+      not access.isUsedAsLValue() and
+      parent.getRightOperand() = access.getParent*() and
+      parent.getLeftOperand() = this.getParent*()
     )
   }
 }

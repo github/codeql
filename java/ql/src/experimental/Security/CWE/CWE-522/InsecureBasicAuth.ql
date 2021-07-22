@@ -1,7 +1,12 @@
 /**
  * @name Insecure basic authentication
- * @description Basic authentication only obfuscates username/password in Base64 encoding, which can be easily recognized and reversed. Transmission of sensitive information not over HTTPS is vulnerable to packet sniffing.
+ * @description Basic authentication only obfuscates username/password in
+ *              Base64 encoding, which can be easily recognized and reversed.
+ *              Transmission of sensitive information not over HTTPS is
+ *              vulnerable to packet sniffing.
  * @kind path-problem
+ * @problem.severity warning
+ * @precision medium
  * @id java/insecure-basic-auth
  * @tags security
  *       external/cwe-522

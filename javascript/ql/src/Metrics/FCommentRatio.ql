@@ -5,7 +5,6 @@
  * @treemap.warnOn lowValues
  * @metricType file
  * @metricAggregate avg max
- * @precision very-high
  * @tags maintainability
  * @id js/comment-ratio-per-file
  */

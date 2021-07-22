@@ -152,8 +152,8 @@ void test_map()
 	for (i2 = m2.begin(); i2 != m2.end(); i2++)
 	{
 		sink(*i2); // $ ast,ir
-		sink(i2->first); // $ SPURIOUS: ir
-		sink(i2->second); // $ ir MISSING: ast
+		sink(i2->first); // clean
+		sink(i2->second); // $ MISSING: ast,ir
 	}
 	for (i3 = m3.begin(); i3 != m3.end(); i3++)
 	{
@@ -304,8 +304,8 @@ void test_unordered_map()
 	for (i2 = m2.begin(); i2 != m2.end(); i2++)
 	{
 		sink(*i2); // $ ast,ir
-		sink(i2->first); // $ SPURIOUS: ir
-		sink(i2->second); // $ ir MISSING: ast
+		sink(i2->first); // clean
+		sink(i2->second); // $ MISSING: ast,ir
 	}
 	for (i3 = m3.begin(); i3 != m3.end(); i3++)
 	{

@@ -30,9 +30,9 @@ namespace Semmle.Extraction.CSharp.Entities
         // All tuple types are "local types"
         public override bool NeedsPopulation => true;
 
-        public override void WriteId(TextWriter trapFile)
+        public override void WriteId(EscapingTextWriter trapFile)
         {
-            Symbol.BuildTypeId(Context, trapFile, Symbol);
+            Symbol.BuildTypeId(Context, trapFile, Symbol, constructUnderlyingTupleType: false);
             trapFile.Write(";tuple");
         }
 

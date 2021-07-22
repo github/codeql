@@ -3,6 +3,8 @@
  * @description Using externally controlled strings in a command line may allow a malicious
  *              user to change the meaning of the command.
  * @kind path-problem
+ * @problem.severity error
+ * @id py/old/command-line-injection
  */
 
 import python

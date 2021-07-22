@@ -4,9 +4,9 @@ edges
 | CSharp7.cs:51:22:51:23 | SSA def(t1) : String | CSharp7.cs:53:18:53:19 | access to local variable t1 |
 | CSharp7.cs:57:11:57:19 | "tainted" : String | CSharp7.cs:57:30:57:31 | SSA def(t4) : String |
 | CSharp7.cs:57:30:57:31 | SSA def(t4) : String | CSharp7.cs:58:18:58:19 | access to local variable t4 |
-| CSharp7.cs:89:18:89:34 | (..., ...) [Item1] : String | CSharp7.cs:92:20:92:21 | access to local variable t1 [Item1] : String |
-| CSharp7.cs:89:19:89:27 | "tainted" : String | CSharp7.cs:89:18:89:34 | (..., ...) [Item1] : String |
-| CSharp7.cs:92:20:92:21 | access to local variable t1 [Item1] : String | CSharp7.cs:92:20:92:27 | access to field Item1 : String |
+| CSharp7.cs:89:18:89:34 | (..., ...) [field Item1] : String | CSharp7.cs:92:20:92:21 | access to local variable t1 [field Item1] : String |
+| CSharp7.cs:89:19:89:27 | "tainted" : String | CSharp7.cs:89:18:89:34 | (..., ...) [field Item1] : String |
+| CSharp7.cs:92:20:92:21 | access to local variable t1 [field Item1] : String | CSharp7.cs:92:20:92:27 | access to field Item1 : String |
 | CSharp7.cs:92:20:92:27 | access to field Item1 : String | CSharp7.cs:92:18:92:28 | call to method I |
 | CSharp7.cs:177:22:177:30 | "tainted" : String | CSharp7.cs:183:23:183:25 | access to local variable src : String |
 | CSharp7.cs:177:22:177:30 | "tainted" : String | CSharp7.cs:184:23:184:25 | access to local variable src : String |
@@ -20,10 +20,10 @@ nodes
 | CSharp7.cs:57:11:57:19 | "tainted" : String | semmle.label | "tainted" : String |
 | CSharp7.cs:57:30:57:31 | SSA def(t4) : String | semmle.label | SSA def(t4) : String |
 | CSharp7.cs:58:18:58:19 | access to local variable t4 | semmle.label | access to local variable t4 |
-| CSharp7.cs:89:18:89:34 | (..., ...) [Item1] : String | semmle.label | (..., ...) [Item1] : String |
+| CSharp7.cs:89:18:89:34 | (..., ...) [field Item1] : String | semmle.label | (..., ...) [field Item1] : String |
 | CSharp7.cs:89:19:89:27 | "tainted" : String | semmle.label | "tainted" : String |
 | CSharp7.cs:92:18:92:28 | call to method I | semmle.label | call to method I |
-| CSharp7.cs:92:20:92:21 | access to local variable t1 [Item1] : String | semmle.label | access to local variable t1 [Item1] : String |
+| CSharp7.cs:92:20:92:21 | access to local variable t1 [field Item1] : String | semmle.label | access to local variable t1 [field Item1] : String |
 | CSharp7.cs:92:20:92:27 | access to field Item1 : String | semmle.label | access to field Item1 : String |
 | CSharp7.cs:177:22:177:30 | "tainted" | semmle.label | "tainted" |
 | CSharp7.cs:177:22:177:30 | "tainted" : String | semmle.label | "tainted" : String |

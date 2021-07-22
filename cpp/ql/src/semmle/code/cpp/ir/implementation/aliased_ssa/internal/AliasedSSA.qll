@@ -3,6 +3,7 @@ import semmle.code.cpp.ir.internal.Overlap
 private import semmle.code.cpp.ir.internal.IRCppLanguage as Language
 private import semmle.code.cpp.Print
 private import semmle.code.cpp.ir.implementation.unaliased_ssa.IR
+private import semmle.code.cpp.ir.implementation.unaliased_ssa.internal.SSAConstruction as OldSSA
 private import semmle.code.cpp.ir.internal.IntegerConstant as Ints
 private import semmle.code.cpp.ir.internal.IntegerInterval as Interval
 private import semmle.code.cpp.ir.implementation.internal.OperandTag
@@ -131,6 +132,8 @@ abstract class MemoryLocation extends TMemoryLocation {
    * with automatic storage duration).
    */
   predicate isAlwaysAllocatedOnStack() { none() }
+
+  final predicate canReuseSSA() { none() }
 }
 
 /**
@@ -562,10 +565,17 @@ private Overlap getVariableMemoryLocationOverlap(
       use.getEndBitOffset())
 }
 
+/**
+ * Holds if the def/use information for the result of `instr` can be reused from the previous
+ * iteration of the IR.
+ */
+predicate canReuseSSAForOldResult(Instruction instr) { OldSSA::canReuseSSAForMemoryResult(instr) }
+
 bindingset[result, b]
 private boolean unbindBool(boolean b) { result != b.booleanNot() }
 
 MemoryLocation getResultMemoryLocation(Instruction instr) {
+  not canReuseSSAForOldResult(instr) and
   exists(MemoryAccessKind kind, boolean isMayAccess |
     kind = instr.getResultMemoryAccess() and
     (if instr.hasResultMayMemoryAccess() then isMayAccess = true else isMayAccess = false) and
@@ -598,6 +608,7 @@ MemoryLocation getResultMemoryLocation(Instruction instr) {
 }
 
 MemoryLocation getOperandMemoryLocation(MemoryOperand operand) {
+  not canReuseSSAForOldResult(operand.getAnyDef()) and
   exists(MemoryAccessKind kind, boolean isMayAccess |
     kind = operand.getMemoryAccess() and
     (if operand.hasMayReadMemoryAccess() then isMayAccess = true else isMayAccess = false) and

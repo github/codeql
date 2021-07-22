@@ -4,6 +4,7 @@
  *              code execution.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 10.0
  * @sub-severity high
  * @precision high
  * @id py/code-injection

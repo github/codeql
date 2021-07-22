@@ -4,6 +4,7 @@
  *              malicious code by the user.
  * @kind path-problem
  * @problem.severity recommendation
+ * @security-severity 6.4
  * @precision medium
  * @id java/sql-injection-local
  * @tags security

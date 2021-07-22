@@ -3,6 +3,7 @@
  * @description Using indexOf to implement endsWith functionality is error-prone if the -1 case is not explicitly handled.
  * @kind problem
  * @problem.severity error
+ * @security-severity 5.9
  * @precision high
  * @id js/incorrect-suffix-check
  * @tags security

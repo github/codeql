@@ -122,7 +122,7 @@ private module Impl {
     )
     or
     exists(G::AbstractValue v0 |
-      G::Internal::impliesSteps(result, v, eqFlowCondAbs(def, e, delta, isEq, v0), v0)
+      G::Internal::impliesStep(result, v, eqFlowCondAbs(def, e, delta, isEq, v0), v0)
     )
   }
 

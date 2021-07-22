@@ -3,7 +3,7 @@
  * @description The expression `buffer [strlen (buffer)] = 0` is potentially dangerous, if the variable `buffer` does not have a terminal zero, then access beyond the bounds of the allocated memory is possible, which will lead to undefined behavior.
  *              If terminal zero is present, then the specified expression is meaningless.
  * @kind problem
- * @id cpp/access-memory-location-after-end-buffer
+ * @id cpp/access-memory-location-after-end-buffer-strlen
  * @problem.severity warning
  * @precision medium
  * @tags correctness

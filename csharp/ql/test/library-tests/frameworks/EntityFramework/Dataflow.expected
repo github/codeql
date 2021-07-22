@@ -1,97 +1,97 @@
 edges
-| ../../../resources/stubs/EntityFramework.cs:40:20:40:30 | this [Addresses, [], Street] : String | EntityFramework.cs:214:18:214:30 | access to property Addresses [[], Street] : String |
-| ../../../resources/stubs/EntityFramework.cs:40:20:40:30 | this [Addresses, [], Street] : String | EntityFramework.cs:221:18:221:28 | access to property Persons [[], Addresses, [], Street] : String |
-| ../../../resources/stubs/EntityFramework.cs:40:20:40:30 | this [PersonAddresses, [], Address, Street] : String | EntityFramework.cs:214:18:214:30 | access to property Addresses [[], Street] : String |
-| ../../../resources/stubs/EntityFramework.cs:40:20:40:30 | this [PersonAddresses, [], Address, Street] : String | EntityFramework.cs:221:18:221:28 | access to property Persons [[], Addresses, [], Street] : String |
-| ../../../resources/stubs/EntityFramework.cs:40:20:40:30 | this [PersonAddresses, [], Person, Name] : String | EntityFramework.cs:206:18:206:28 | access to property Persons [[], Name] : String |
-| ../../../resources/stubs/EntityFramework.cs:40:20:40:30 | this [Persons, [], Addresses, [], Street] : String | EntityFramework.cs:214:18:214:30 | access to property Addresses [[], Street] : String |
-| ../../../resources/stubs/EntityFramework.cs:40:20:40:30 | this [Persons, [], Addresses, [], Street] : String | EntityFramework.cs:221:18:221:28 | access to property Persons [[], Addresses, [], Street] : String |
-| ../../../resources/stubs/EntityFramework.cs:40:20:40:30 | this [Persons, [], Name] : String | EntityFramework.cs:206:18:206:28 | access to property Persons [[], Name] : String |
-| ../../../resources/stubs/EntityFramework.cs:41:49:41:64 | this [Persons, [], Name] : String | EntityFramework.cs:206:18:206:28 | access to property Persons [[], Name] : String |
-| ../../../resources/stubs/EntityFramework.cs:80:20:80:30 | this [Addresses, [], Street] : String | EntityFrameworkCore.cs:238:18:238:30 | access to property Addresses [[], Street] : String |
-| ../../../resources/stubs/EntityFramework.cs:80:20:80:30 | this [Addresses, [], Street] : String | EntityFrameworkCore.cs:245:18:245:28 | access to property Persons [[], Addresses, [], Street] : String |
-| ../../../resources/stubs/EntityFramework.cs:80:20:80:30 | this [PersonAddresses, [], Address, Street] : String | EntityFrameworkCore.cs:238:18:238:30 | access to property Addresses [[], Street] : String |
-| ../../../resources/stubs/EntityFramework.cs:80:20:80:30 | this [PersonAddresses, [], Address, Street] : String | EntityFrameworkCore.cs:245:18:245:28 | access to property Persons [[], Addresses, [], Street] : String |
-| ../../../resources/stubs/EntityFramework.cs:80:20:80:30 | this [PersonAddresses, [], Person, Name] : String | EntityFrameworkCore.cs:230:18:230:28 | access to property Persons [[], Name] : String |
-| ../../../resources/stubs/EntityFramework.cs:80:20:80:30 | this [Persons, [], Addresses, [], Street] : String | EntityFrameworkCore.cs:238:18:238:30 | access to property Addresses [[], Street] : String |
-| ../../../resources/stubs/EntityFramework.cs:80:20:80:30 | this [Persons, [], Addresses, [], Street] : String | EntityFrameworkCore.cs:245:18:245:28 | access to property Persons [[], Addresses, [], Street] : String |
-| ../../../resources/stubs/EntityFramework.cs:80:20:80:30 | this [Persons, [], Name] : String | EntityFrameworkCore.cs:230:18:230:28 | access to property Persons [[], Name] : String |
-| ../../../resources/stubs/EntityFramework.cs:81:49:81:64 | this [Persons, [], Name] : String | EntityFrameworkCore.cs:230:18:230:28 | access to property Persons [[], Name] : String |
-| EntityFramework.cs:61:13:64:13 | { ..., ... } [Name] : String | EntityFramework.cs:68:29:68:30 | access to local variable p1 [Name] : String |
-| EntityFramework.cs:63:24:63:32 | "tainted" : String | EntityFramework.cs:61:13:64:13 | { ..., ... } [Name] : String |
-| EntityFramework.cs:68:13:68:15 | [post] access to local variable ctx [Persons, [], Name] : String | EntityFramework.cs:70:13:70:15 | access to local variable ctx [Persons, [], Name] : String |
-| EntityFramework.cs:68:13:68:23 | [post] access to property Persons [[], Name] : String | EntityFramework.cs:68:13:68:15 | [post] access to local variable ctx [Persons, [], Name] : String |
-| EntityFramework.cs:68:29:68:30 | access to local variable p1 [Name] : String | EntityFramework.cs:68:13:68:23 | [post] access to property Persons [[], Name] : String |
-| EntityFramework.cs:70:13:70:15 | access to local variable ctx [Persons, [], Name] : String | ../../../resources/stubs/EntityFramework.cs:40:20:40:30 | this [Persons, [], Name] : String |
-| EntityFramework.cs:83:13:86:13 | { ..., ... } [Name] : String | EntityFramework.cs:90:29:90:30 | access to local variable p1 [Name] : String |
-| EntityFramework.cs:85:24:85:32 | "tainted" : String | EntityFramework.cs:83:13:86:13 | { ..., ... } [Name] : String |
-| EntityFramework.cs:90:13:90:15 | [post] access to local variable ctx [Persons, [], Name] : String | EntityFramework.cs:92:19:92:21 | access to local variable ctx [Persons, [], Name] : String |
-| EntityFramework.cs:90:13:90:23 | [post] access to property Persons [[], Name] : String | EntityFramework.cs:90:13:90:15 | [post] access to local variable ctx [Persons, [], Name] : String |
-| EntityFramework.cs:90:29:90:30 | access to local variable p1 [Name] : String | EntityFramework.cs:90:13:90:23 | [post] access to property Persons [[], Name] : String |
-| EntityFramework.cs:92:19:92:21 | access to local variable ctx [Persons, [], Name] : String | ../../../resources/stubs/EntityFramework.cs:41:49:41:64 | this [Persons, [], Name] : String |
-| EntityFramework.cs:105:13:108:13 | { ..., ... } [Name] : String | EntityFramework.cs:111:27:111:28 | access to local variable p1 [Name] : String |
-| EntityFramework.cs:107:24:107:32 | "tainted" : String | EntityFramework.cs:105:13:108:13 | { ..., ... } [Name] : String |
-| EntityFramework.cs:111:27:111:28 | access to local variable p1 [Name] : String | EntityFramework.cs:195:35:195:35 | p [Name] : String |
-| EntityFramework.cs:124:13:127:13 | { ..., ... } [Title] : String | EntityFramework.cs:131:18:131:19 | access to local variable p1 [Title] : String |
-| EntityFramework.cs:126:25:126:33 | "tainted" : String | EntityFramework.cs:124:13:127:13 | { ..., ... } [Title] : String |
-| EntityFramework.cs:131:18:131:19 | access to local variable p1 [Title] : String | EntityFramework.cs:131:18:131:25 | access to property Title |
-| EntityFramework.cs:143:13:150:13 | { ..., ... } [Addresses, [], Street] : String | EntityFramework.cs:151:29:151:30 | access to local variable p1 [Addresses, [], Street] : String |
-| EntityFramework.cs:144:29:149:17 | array creation of type Address[] [[], Street] : String | EntityFramework.cs:143:13:150:13 | { ..., ... } [Addresses, [], Street] : String |
-| EntityFramework.cs:144:35:149:17 | { ..., ... } [[], Street] : String | EntityFramework.cs:144:29:149:17 | array creation of type Address[] [[], Street] : String |
-| EntityFramework.cs:145:21:148:21 | object creation of type Address [Street] : String | EntityFramework.cs:144:35:149:17 | { ..., ... } [[], Street] : String |
-| EntityFramework.cs:145:33:148:21 | { ..., ... } [Street] : String | EntityFramework.cs:145:21:148:21 | object creation of type Address [Street] : String |
-| EntityFramework.cs:147:34:147:42 | "tainted" : String | EntityFramework.cs:145:33:148:21 | { ..., ... } [Street] : String |
-| EntityFramework.cs:151:13:151:15 | [post] access to local variable ctx [Persons, [], Addresses, [], Street] : String | EntityFramework.cs:152:13:152:15 | access to local variable ctx [Persons, [], Addresses, [], Street] : String |
-| EntityFramework.cs:151:13:151:15 | [post] access to local variable ctx [Persons, [], Addresses, [], Street] : String | EntityFramework.cs:156:13:156:15 | access to local variable ctx [Persons, [], Addresses, [], Street] : String |
-| EntityFramework.cs:151:13:151:15 | [post] access to local variable ctx [Persons, [], Addresses, [], Street] : String | EntityFramework.cs:164:13:164:15 | access to local variable ctx [Persons, [], Addresses, [], Street] : String |
-| EntityFramework.cs:151:13:151:15 | [post] access to local variable ctx [Persons, [], Addresses, [], Street] : String | EntityFramework.cs:168:13:168:15 | access to local variable ctx [Persons, [], Addresses, [], Street] : String |
-| EntityFramework.cs:151:13:151:23 | [post] access to property Persons [[], Addresses, [], Street] : String | EntityFramework.cs:151:13:151:15 | [post] access to local variable ctx [Persons, [], Addresses, [], Street] : String |
-| EntityFramework.cs:151:29:151:30 | access to local variable p1 [Addresses, [], Street] : String | EntityFramework.cs:151:13:151:23 | [post] access to property Persons [[], Addresses, [], Street] : String |
-| EntityFramework.cs:152:13:152:15 | access to local variable ctx [Persons, [], Addresses, [], Street] : String | ../../../resources/stubs/EntityFramework.cs:40:20:40:30 | this [Persons, [], Addresses, [], Street] : String |
-| EntityFramework.cs:156:13:156:15 | access to local variable ctx [Persons, [], Addresses, [], Street] : String | ../../../resources/stubs/EntityFramework.cs:40:20:40:30 | this [Persons, [], Addresses, [], Street] : String |
-| EntityFramework.cs:159:13:162:13 | { ..., ... } [Street] : String | EntityFramework.cs:163:31:163:32 | access to local variable a1 [Street] : String |
-| EntityFramework.cs:161:26:161:34 | "tainted" : String | EntityFramework.cs:159:13:162:13 | { ..., ... } [Street] : String |
-| EntityFramework.cs:163:13:163:15 | [post] access to local variable ctx [Addresses, [], Street] : String | EntityFramework.cs:164:13:164:15 | access to local variable ctx [Addresses, [], Street] : String |
-| EntityFramework.cs:163:13:163:15 | [post] access to local variable ctx [Addresses, [], Street] : String | EntityFramework.cs:168:13:168:15 | access to local variable ctx [Addresses, [], Street] : String |
-| EntityFramework.cs:163:13:163:25 | [post] access to property Addresses [[], Street] : String | EntityFramework.cs:163:13:163:15 | [post] access to local variable ctx [Addresses, [], Street] : String |
-| EntityFramework.cs:163:31:163:32 | access to local variable a1 [Street] : String | EntityFramework.cs:163:13:163:25 | [post] access to property Addresses [[], Street] : String |
-| EntityFramework.cs:164:13:164:15 | access to local variable ctx [Addresses, [], Street] : String | ../../../resources/stubs/EntityFramework.cs:40:20:40:30 | this [Addresses, [], Street] : String |
-| EntityFramework.cs:164:13:164:15 | access to local variable ctx [Persons, [], Addresses, [], Street] : String | ../../../resources/stubs/EntityFramework.cs:40:20:40:30 | this [Persons, [], Addresses, [], Street] : String |
-| EntityFramework.cs:168:13:168:15 | access to local variable ctx [Addresses, [], Street] : String | ../../../resources/stubs/EntityFramework.cs:40:20:40:30 | this [Addresses, [], Street] : String |
-| EntityFramework.cs:168:13:168:15 | access to local variable ctx [Persons, [], Addresses, [], Street] : String | ../../../resources/stubs/EntityFramework.cs:40:20:40:30 | this [Persons, [], Addresses, [], Street] : String |
-| EntityFramework.cs:175:13:178:13 | { ..., ... } [Name] : String | EntityFramework.cs:184:71:184:72 | access to local variable p1 [Name] : String |
-| EntityFramework.cs:177:24:177:32 | "tainted" : String | EntityFramework.cs:175:13:178:13 | { ..., ... } [Name] : String |
-| EntityFramework.cs:180:13:183:13 | { ..., ... } [Street] : String | EntityFramework.cs:184:85:184:86 | access to local variable a1 [Street] : String |
-| EntityFramework.cs:182:26:182:34 | "tainted" : String | EntityFramework.cs:180:13:183:13 | { ..., ... } [Street] : String |
-| EntityFramework.cs:184:60:184:88 | { ..., ... } [Address, Street] : String | EntityFramework.cs:185:37:185:53 | access to local variable personAddressMap1 [Address, Street] : String |
-| EntityFramework.cs:184:60:184:88 | { ..., ... } [Person, Name] : String | EntityFramework.cs:185:37:185:53 | access to local variable personAddressMap1 [Person, Name] : String |
-| EntityFramework.cs:184:71:184:72 | access to local variable p1 [Name] : String | EntityFramework.cs:184:60:184:88 | { ..., ... } [Person, Name] : String |
-| EntityFramework.cs:184:85:184:86 | access to local variable a1 [Street] : String | EntityFramework.cs:184:60:184:88 | { ..., ... } [Address, Street] : String |
-| EntityFramework.cs:185:13:185:15 | [post] access to local variable ctx [PersonAddresses, [], Address, Street] : String | EntityFramework.cs:186:13:186:15 | access to local variable ctx [PersonAddresses, [], Address, Street] : String |
-| EntityFramework.cs:185:13:185:15 | [post] access to local variable ctx [PersonAddresses, [], Address, Street] : String | EntityFramework.cs:192:13:192:15 | access to local variable ctx [PersonAddresses, [], Address, Street] : String |
-| EntityFramework.cs:185:13:185:15 | [post] access to local variable ctx [PersonAddresses, [], Person, Name] : String | EntityFramework.cs:186:13:186:15 | access to local variable ctx [PersonAddresses, [], Person, Name] : String |
-| EntityFramework.cs:185:13:185:15 | [post] access to local variable ctx [PersonAddresses, [], Person, Name] : String | EntityFramework.cs:192:13:192:15 | access to local variable ctx [PersonAddresses, [], Person, Name] : String |
-| EntityFramework.cs:185:13:185:31 | [post] access to property PersonAddresses [[], Address, Street] : String | EntityFramework.cs:185:13:185:15 | [post] access to local variable ctx [PersonAddresses, [], Address, Street] : String |
-| EntityFramework.cs:185:13:185:31 | [post] access to property PersonAddresses [[], Person, Name] : String | EntityFramework.cs:185:13:185:15 | [post] access to local variable ctx [PersonAddresses, [], Person, Name] : String |
-| EntityFramework.cs:185:37:185:53 | access to local variable personAddressMap1 [Address, Street] : String | EntityFramework.cs:185:13:185:31 | [post] access to property PersonAddresses [[], Address, Street] : String |
-| EntityFramework.cs:185:37:185:53 | access to local variable personAddressMap1 [Person, Name] : String | EntityFramework.cs:185:13:185:31 | [post] access to property PersonAddresses [[], Person, Name] : String |
-| EntityFramework.cs:186:13:186:15 | access to local variable ctx [PersonAddresses, [], Address, Street] : String | ../../../resources/stubs/EntityFramework.cs:40:20:40:30 | this [PersonAddresses, [], Address, Street] : String |
-| EntityFramework.cs:186:13:186:15 | access to local variable ctx [PersonAddresses, [], Person, Name] : String | ../../../resources/stubs/EntityFramework.cs:40:20:40:30 | this [PersonAddresses, [], Person, Name] : String |
-| EntityFramework.cs:192:13:192:15 | access to local variable ctx [PersonAddresses, [], Address, Street] : String | ../../../resources/stubs/EntityFramework.cs:40:20:40:30 | this [PersonAddresses, [], Address, Street] : String |
-| EntityFramework.cs:192:13:192:15 | access to local variable ctx [PersonAddresses, [], Person, Name] : String | ../../../resources/stubs/EntityFramework.cs:40:20:40:30 | this [PersonAddresses, [], Person, Name] : String |
-| EntityFramework.cs:195:35:195:35 | p [Name] : String | EntityFramework.cs:198:29:198:29 | access to parameter p [Name] : String |
-| EntityFramework.cs:198:13:198:15 | [post] access to local variable ctx [Persons, [], Name] : String | EntityFramework.cs:199:13:199:15 | access to local variable ctx [Persons, [], Name] : String |
-| EntityFramework.cs:198:13:198:23 | [post] access to property Persons [[], Name] : String | EntityFramework.cs:198:13:198:15 | [post] access to local variable ctx [Persons, [], Name] : String |
-| EntityFramework.cs:198:29:198:29 | access to parameter p [Name] : String | EntityFramework.cs:198:13:198:23 | [post] access to property Persons [[], Name] : String |
-| EntityFramework.cs:199:13:199:15 | access to local variable ctx [Persons, [], Name] : String | ../../../resources/stubs/EntityFramework.cs:40:20:40:30 | this [Persons, [], Name] : String |
-| EntityFramework.cs:206:18:206:28 | access to property Persons [[], Name] : String | EntityFramework.cs:206:18:206:36 | call to method First [Name] : String |
-| EntityFramework.cs:206:18:206:36 | call to method First [Name] : String | EntityFramework.cs:206:18:206:41 | access to property Name |
-| EntityFramework.cs:214:18:214:30 | access to property Addresses [[], Street] : String | EntityFramework.cs:214:18:214:38 | call to method First [Street] : String |
-| EntityFramework.cs:214:18:214:38 | call to method First [Street] : String | EntityFramework.cs:214:18:214:45 | access to property Street |
-| EntityFramework.cs:221:18:221:28 | access to property Persons [[], Addresses, [], Street] : String | EntityFramework.cs:221:18:221:36 | call to method First [Addresses, [], Street] : String |
-| EntityFramework.cs:221:18:221:36 | call to method First [Addresses, [], Street] : String | EntityFramework.cs:221:18:221:46 | access to property Addresses [[], Street] : String |
-| EntityFramework.cs:221:18:221:46 | access to property Addresses [[], Street] : String | EntityFramework.cs:221:18:221:54 | call to method First [Street] : String |
-| EntityFramework.cs:221:18:221:54 | call to method First [Street] : String | EntityFramework.cs:221:18:221:61 | access to property Street |
+| ../../../resources/stubs/EntityFramework.cs:40:20:40:30 | this [property Addresses, element, property Street] : String | EntityFramework.cs:214:18:214:30 | access to property Addresses [element, property Street] : String |
+| ../../../resources/stubs/EntityFramework.cs:40:20:40:30 | this [property Addresses, element, property Street] : String | EntityFramework.cs:221:18:221:28 | access to property Persons [element, property Addresses, element, property Street] : String |
+| ../../../resources/stubs/EntityFramework.cs:40:20:40:30 | this [property PersonAddresses, element, property Address, property Street] : String | EntityFramework.cs:214:18:214:30 | access to property Addresses [element, property Street] : String |
+| ../../../resources/stubs/EntityFramework.cs:40:20:40:30 | this [property PersonAddresses, element, property Address, property Street] : String | EntityFramework.cs:221:18:221:28 | access to property Persons [element, property Addresses, element, property Street] : String |
+| ../../../resources/stubs/EntityFramework.cs:40:20:40:30 | this [property PersonAddresses, element, property Person, property Name] : String | EntityFramework.cs:206:18:206:28 | access to property Persons [element, property Name] : String |
+| ../../../resources/stubs/EntityFramework.cs:40:20:40:30 | this [property Persons, element, property Addresses, element, property Street] : String | EntityFramework.cs:214:18:214:30 | access to property Addresses [element, property Street] : String |
+| ../../../resources/stubs/EntityFramework.cs:40:20:40:30 | this [property Persons, element, property Addresses, element, property Street] : String | EntityFramework.cs:221:18:221:28 | access to property Persons [element, property Addresses, element, property Street] : String |
+| ../../../resources/stubs/EntityFramework.cs:40:20:40:30 | this [property Persons, element, property Name] : String | EntityFramework.cs:206:18:206:28 | access to property Persons [element, property Name] : String |
+| ../../../resources/stubs/EntityFramework.cs:41:49:41:64 | this [property Persons, element, property Name] : String | EntityFramework.cs:206:18:206:28 | access to property Persons [element, property Name] : String |
+| ../../../resources/stubs/EntityFramework.cs:80:20:80:30 | this [property Addresses, element, property Street] : String | EntityFrameworkCore.cs:238:18:238:30 | access to property Addresses [element, property Street] : String |
+| ../../../resources/stubs/EntityFramework.cs:80:20:80:30 | this [property Addresses, element, property Street] : String | EntityFrameworkCore.cs:245:18:245:28 | access to property Persons [element, property Addresses, element, property Street] : String |
+| ../../../resources/stubs/EntityFramework.cs:80:20:80:30 | this [property PersonAddresses, element, property Address, property Street] : String | EntityFrameworkCore.cs:238:18:238:30 | access to property Addresses [element, property Street] : String |
+| ../../../resources/stubs/EntityFramework.cs:80:20:80:30 | this [property PersonAddresses, element, property Address, property Street] : String | EntityFrameworkCore.cs:245:18:245:28 | access to property Persons [element, property Addresses, element, property Street] : String |
+| ../../../resources/stubs/EntityFramework.cs:80:20:80:30 | this [property PersonAddresses, element, property Person, property Name] : String | EntityFrameworkCore.cs:230:18:230:28 | access to property Persons [element, property Name] : String |
+| ../../../resources/stubs/EntityFramework.cs:80:20:80:30 | this [property Persons, element, property Addresses, element, property Street] : String | EntityFrameworkCore.cs:238:18:238:30 | access to property Addresses [element, property Street] : String |
+| ../../../resources/stubs/EntityFramework.cs:80:20:80:30 | this [property Persons, element, property Addresses, element, property Street] : String | EntityFrameworkCore.cs:245:18:245:28 | access to property Persons [element, property Addresses, element, property Street] : String |
+| ../../../resources/stubs/EntityFramework.cs:80:20:80:30 | this [property Persons, element, property Name] : String | EntityFrameworkCore.cs:230:18:230:28 | access to property Persons [element, property Name] : String |
+| ../../../resources/stubs/EntityFramework.cs:81:49:81:64 | this [property Persons, element, property Name] : String | EntityFrameworkCore.cs:230:18:230:28 | access to property Persons [element, property Name] : String |
+| EntityFramework.cs:61:13:64:13 | { ..., ... } [property Name] : String | EntityFramework.cs:68:29:68:30 | access to local variable p1 [property Name] : String |
+| EntityFramework.cs:63:24:63:32 | "tainted" : String | EntityFramework.cs:61:13:64:13 | { ..., ... } [property Name] : String |
+| EntityFramework.cs:68:13:68:15 | [post] access to local variable ctx [property Persons, element, property Name] : String | EntityFramework.cs:70:13:70:15 | access to local variable ctx [property Persons, element, property Name] : String |
+| EntityFramework.cs:68:13:68:23 | [post] access to property Persons [element, property Name] : String | EntityFramework.cs:68:13:68:15 | [post] access to local variable ctx [property Persons, element, property Name] : String |
+| EntityFramework.cs:68:29:68:30 | access to local variable p1 [property Name] : String | EntityFramework.cs:68:13:68:23 | [post] access to property Persons [element, property Name] : String |
+| EntityFramework.cs:70:13:70:15 | access to local variable ctx [property Persons, element, property Name] : String | ../../../resources/stubs/EntityFramework.cs:40:20:40:30 | this [property Persons, element, property Name] : String |
+| EntityFramework.cs:83:13:86:13 | { ..., ... } [property Name] : String | EntityFramework.cs:90:29:90:30 | access to local variable p1 [property Name] : String |
+| EntityFramework.cs:85:24:85:32 | "tainted" : String | EntityFramework.cs:83:13:86:13 | { ..., ... } [property Name] : String |
+| EntityFramework.cs:90:13:90:15 | [post] access to local variable ctx [property Persons, element, property Name] : String | EntityFramework.cs:92:19:92:21 | access to local variable ctx [property Persons, element, property Name] : String |
+| EntityFramework.cs:90:13:90:23 | [post] access to property Persons [element, property Name] : String | EntityFramework.cs:90:13:90:15 | [post] access to local variable ctx [property Persons, element, property Name] : String |
+| EntityFramework.cs:90:29:90:30 | access to local variable p1 [property Name] : String | EntityFramework.cs:90:13:90:23 | [post] access to property Persons [element, property Name] : String |
+| EntityFramework.cs:92:19:92:21 | access to local variable ctx [property Persons, element, property Name] : String | ../../../resources/stubs/EntityFramework.cs:41:49:41:64 | this [property Persons, element, property Name] : String |
+| EntityFramework.cs:105:13:108:13 | { ..., ... } [property Name] : String | EntityFramework.cs:111:27:111:28 | access to local variable p1 [property Name] : String |
+| EntityFramework.cs:107:24:107:32 | "tainted" : String | EntityFramework.cs:105:13:108:13 | { ..., ... } [property Name] : String |
+| EntityFramework.cs:111:27:111:28 | access to local variable p1 [property Name] : String | EntityFramework.cs:195:35:195:35 | p [property Name] : String |
+| EntityFramework.cs:124:13:127:13 | { ..., ... } [property Title] : String | EntityFramework.cs:131:18:131:19 | access to local variable p1 [property Title] : String |
+| EntityFramework.cs:126:25:126:33 | "tainted" : String | EntityFramework.cs:124:13:127:13 | { ..., ... } [property Title] : String |
+| EntityFramework.cs:131:18:131:19 | access to local variable p1 [property Title] : String | EntityFramework.cs:131:18:131:25 | access to property Title |
+| EntityFramework.cs:143:13:150:13 | { ..., ... } [property Addresses, element, property Street] : String | EntityFramework.cs:151:29:151:30 | access to local variable p1 [property Addresses, element, property Street] : String |
+| EntityFramework.cs:144:29:149:17 | array creation of type Address[] [element, property Street] : String | EntityFramework.cs:143:13:150:13 | { ..., ... } [property Addresses, element, property Street] : String |
+| EntityFramework.cs:144:35:149:17 | { ..., ... } [element, property Street] : String | EntityFramework.cs:144:29:149:17 | array creation of type Address[] [element, property Street] : String |
+| EntityFramework.cs:145:21:148:21 | object creation of type Address [property Street] : String | EntityFramework.cs:144:35:149:17 | { ..., ... } [element, property Street] : String |
+| EntityFramework.cs:145:33:148:21 | { ..., ... } [property Street] : String | EntityFramework.cs:145:21:148:21 | object creation of type Address [property Street] : String |
+| EntityFramework.cs:147:34:147:42 | "tainted" : String | EntityFramework.cs:145:33:148:21 | { ..., ... } [property Street] : String |
+| EntityFramework.cs:151:13:151:15 | [post] access to local variable ctx [property Persons, element, property Addresses, element, property Street] : String | EntityFramework.cs:152:13:152:15 | access to local variable ctx [property Persons, element, property Addresses, element, property Street] : String |
+| EntityFramework.cs:151:13:151:15 | [post] access to local variable ctx [property Persons, element, property Addresses, element, property Street] : String | EntityFramework.cs:156:13:156:15 | access to local variable ctx [property Persons, element, property Addresses, element, property Street] : String |
+| EntityFramework.cs:151:13:151:15 | [post] access to local variable ctx [property Persons, element, property Addresses, element, property Street] : String | EntityFramework.cs:164:13:164:15 | access to local variable ctx [property Persons, element, property Addresses, element, property Street] : String |
+| EntityFramework.cs:151:13:151:15 | [post] access to local variable ctx [property Persons, element, property Addresses, element, property Street] : String | EntityFramework.cs:168:13:168:15 | access to local variable ctx [property Persons, element, property Addresses, element, property Street] : String |
+| EntityFramework.cs:151:13:151:23 | [post] access to property Persons [element, property Addresses, element, property Street] : String | EntityFramework.cs:151:13:151:15 | [post] access to local variable ctx [property Persons, element, property Addresses, element, property Street] : String |
+| EntityFramework.cs:151:29:151:30 | access to local variable p1 [property Addresses, element, property Street] : String | EntityFramework.cs:151:13:151:23 | [post] access to property Persons [element, property Addresses, element, property Street] : String |
+| EntityFramework.cs:152:13:152:15 | access to local variable ctx [property Persons, element, property Addresses, element, property Street] : String | ../../../resources/stubs/EntityFramework.cs:40:20:40:30 | this [property Persons, element, property Addresses, element, property Street] : String |
+| EntityFramework.cs:156:13:156:15 | access to local variable ctx [property Persons, element, property Addresses, element, property Street] : String | ../../../resources/stubs/EntityFramework.cs:40:20:40:30 | this [property Persons, element, property Addresses, element, property Street] : String |
+| EntityFramework.cs:159:13:162:13 | { ..., ... } [property Street] : String | EntityFramework.cs:163:31:163:32 | access to local variable a1 [property Street] : String |
+| EntityFramework.cs:161:26:161:34 | "tainted" : String | EntityFramework.cs:159:13:162:13 | { ..., ... } [property Street] : String |
+| EntityFramework.cs:163:13:163:15 | [post] access to local variable ctx [property Addresses, element, property Street] : String | EntityFramework.cs:164:13:164:15 | access to local variable ctx [property Addresses, element, property Street] : String |
+| EntityFramework.cs:163:13:163:15 | [post] access to local variable ctx [property Addresses, element, property Street] : String | EntityFramework.cs:168:13:168:15 | access to local variable ctx [property Addresses, element, property Street] : String |
+| EntityFramework.cs:163:13:163:25 | [post] access to property Addresses [element, property Street] : String | EntityFramework.cs:163:13:163:15 | [post] access to local variable ctx [property Addresses, element, property Street] : String |
+| EntityFramework.cs:163:31:163:32 | access to local variable a1 [property Street] : String | EntityFramework.cs:163:13:163:25 | [post] access to property Addresses [element, property Street] : String |
+| EntityFramework.cs:164:13:164:15 | access to local variable ctx [property Addresses, element, property Street] : String | ../../../resources/stubs/EntityFramework.cs:40:20:40:30 | this [property Addresses, element, property Street] : String |
+| EntityFramework.cs:164:13:164:15 | access to local variable ctx [property Persons, element, property Addresses, element, property Street] : String | ../../../resources/stubs/EntityFramework.cs:40:20:40:30 | this [property Persons, element, property Addresses, element, property Street] : String |
+| EntityFramework.cs:168:13:168:15 | access to local variable ctx [property Addresses, element, property Street] : String | ../../../resources/stubs/EntityFramework.cs:40:20:40:30 | this [property Addresses, element, property Street] : String |
+| EntityFramework.cs:168:13:168:15 | access to local variable ctx [property Persons, element, property Addresses, element, property Street] : String | ../../../resources/stubs/EntityFramework.cs:40:20:40:30 | this [property Persons, element, property Addresses, element, property Street] : String |
+| EntityFramework.cs:175:13:178:13 | { ..., ... } [property Name] : String | EntityFramework.cs:184:71:184:72 | access to local variable p1 [property Name] : String |
+| EntityFramework.cs:177:24:177:32 | "tainted" : String | EntityFramework.cs:175:13:178:13 | { ..., ... } [property Name] : String |
+| EntityFramework.cs:180:13:183:13 | { ..., ... } [property Street] : String | EntityFramework.cs:184:85:184:86 | access to local variable a1 [property Street] : String |
+| EntityFramework.cs:182:26:182:34 | "tainted" : String | EntityFramework.cs:180:13:183:13 | { ..., ... } [property Street] : String |
+| EntityFramework.cs:184:60:184:88 | { ..., ... } [property Address, property Street] : String | EntityFramework.cs:185:37:185:53 | access to local variable personAddressMap1 [property Address, property Street] : String |
+| EntityFramework.cs:184:60:184:88 | { ..., ... } [property Person, property Name] : String | EntityFramework.cs:185:37:185:53 | access to local variable personAddressMap1 [property Person, property Name] : String |
+| EntityFramework.cs:184:71:184:72 | access to local variable p1 [property Name] : String | EntityFramework.cs:184:60:184:88 | { ..., ... } [property Person, property Name] : String |
+| EntityFramework.cs:184:85:184:86 | access to local variable a1 [property Street] : String | EntityFramework.cs:184:60:184:88 | { ..., ... } [property Address, property Street] : String |
+| EntityFramework.cs:185:13:185:15 | [post] access to local variable ctx [property PersonAddresses, element, property Address, property Street] : String | EntityFramework.cs:186:13:186:15 | access to local variable ctx [property PersonAddresses, element, property Address, property Street] : String |
+| EntityFramework.cs:185:13:185:15 | [post] access to local variable ctx [property PersonAddresses, element, property Address, property Street] : String | EntityFramework.cs:192:13:192:15 | access to local variable ctx [property PersonAddresses, element, property Address, property Street] : String |
+| EntityFramework.cs:185:13:185:15 | [post] access to local variable ctx [property PersonAddresses, element, property Person, property Name] : String | EntityFramework.cs:186:13:186:15 | access to local variable ctx [property PersonAddresses, element, property Person, property Name] : String |
+| EntityFramework.cs:185:13:185:15 | [post] access to local variable ctx [property PersonAddresses, element, property Person, property Name] : String | EntityFramework.cs:192:13:192:15 | access to local variable ctx [property PersonAddresses, element, property Person, property Name] : String |
+| EntityFramework.cs:185:13:185:31 | [post] access to property PersonAddresses [element, property Address, property Street] : String | EntityFramework.cs:185:13:185:15 | [post] access to local variable ctx [property PersonAddresses, element, property Address, property Street] : String |
+| EntityFramework.cs:185:13:185:31 | [post] access to property PersonAddresses [element, property Person, property Name] : String | EntityFramework.cs:185:13:185:15 | [post] access to local variable ctx [property PersonAddresses, element, property Person, property Name] : String |
+| EntityFramework.cs:185:37:185:53 | access to local variable personAddressMap1 [property Address, property Street] : String | EntityFramework.cs:185:13:185:31 | [post] access to property PersonAddresses [element, property Address, property Street] : String |
+| EntityFramework.cs:185:37:185:53 | access to local variable personAddressMap1 [property Person, property Name] : String | EntityFramework.cs:185:13:185:31 | [post] access to property PersonAddresses [element, property Person, property Name] : String |
+| EntityFramework.cs:186:13:186:15 | access to local variable ctx [property PersonAddresses, element, property Address, property Street] : String | ../../../resources/stubs/EntityFramework.cs:40:20:40:30 | this [property PersonAddresses, element, property Address, property Street] : String |
+| EntityFramework.cs:186:13:186:15 | access to local variable ctx [property PersonAddresses, element, property Person, property Name] : String | ../../../resources/stubs/EntityFramework.cs:40:20:40:30 | this [property PersonAddresses, element, property Person, property Name] : String |
+| EntityFramework.cs:192:13:192:15 | access to local variable ctx [property PersonAddresses, element, property Address, property Street] : String | ../../../resources/stubs/EntityFramework.cs:40:20:40:30 | this [property PersonAddresses, element, property Address, property Street] : String |
+| EntityFramework.cs:192:13:192:15 | access to local variable ctx [property PersonAddresses, element, property Person, property Name] : String | ../../../resources/stubs/EntityFramework.cs:40:20:40:30 | this [property PersonAddresses, element, property Person, property Name] : String |
+| EntityFramework.cs:195:35:195:35 | p [property Name] : String | EntityFramework.cs:198:29:198:29 | access to parameter p [property Name] : String |
+| EntityFramework.cs:198:13:198:15 | [post] access to local variable ctx [property Persons, element, property Name] : String | EntityFramework.cs:199:13:199:15 | access to local variable ctx [property Persons, element, property Name] : String |
+| EntityFramework.cs:198:13:198:23 | [post] access to property Persons [element, property Name] : String | EntityFramework.cs:198:13:198:15 | [post] access to local variable ctx [property Persons, element, property Name] : String |
+| EntityFramework.cs:198:29:198:29 | access to parameter p [property Name] : String | EntityFramework.cs:198:13:198:23 | [post] access to property Persons [element, property Name] : String |
+| EntityFramework.cs:199:13:199:15 | access to local variable ctx [property Persons, element, property Name] : String | ../../../resources/stubs/EntityFramework.cs:40:20:40:30 | this [property Persons, element, property Name] : String |
+| EntityFramework.cs:206:18:206:28 | access to property Persons [element, property Name] : String | EntityFramework.cs:206:18:206:36 | call to method First [property Name] : String |
+| EntityFramework.cs:206:18:206:36 | call to method First [property Name] : String | EntityFramework.cs:206:18:206:41 | access to property Name |
+| EntityFramework.cs:214:18:214:30 | access to property Addresses [element, property Street] : String | EntityFramework.cs:214:18:214:38 | call to method First [property Street] : String |
+| EntityFramework.cs:214:18:214:38 | call to method First [property Street] : String | EntityFramework.cs:214:18:214:45 | access to property Street |
+| EntityFramework.cs:221:18:221:28 | access to property Persons [element, property Addresses, element, property Street] : String | EntityFramework.cs:221:18:221:36 | call to method First [property Addresses, element, property Street] : String |
+| EntityFramework.cs:221:18:221:36 | call to method First [property Addresses, element, property Street] : String | EntityFramework.cs:221:18:221:46 | access to property Addresses [element, property Street] : String |
+| EntityFramework.cs:221:18:221:46 | access to property Addresses [element, property Street] : String | EntityFramework.cs:221:18:221:54 | call to method First [property Street] : String |
+| EntityFramework.cs:221:18:221:54 | call to method First [property Street] : String | EntityFramework.cs:221:18:221:61 | access to property Street |
 | EntityFrameworkCore.cs:75:31:75:39 | "tainted" : String | EntityFrameworkCore.cs:76:18:76:28 | access to local variable taintSource |
 | EntityFrameworkCore.cs:75:31:75:39 | "tainted" : String | EntityFrameworkCore.cs:77:35:77:45 | access to local variable taintSource : String |
 | EntityFrameworkCore.cs:75:31:75:39 | "tainted" : String | EntityFrameworkCore.cs:78:32:78:42 | access to local variable taintSource : String |
@@ -99,166 +99,166 @@ edges
 | EntityFrameworkCore.cs:77:35:77:45 | access to local variable taintSource : String | EntityFrameworkCore.cs:77:18:77:46 | object creation of type RawSqlString : RawSqlString |
 | EntityFrameworkCore.cs:78:18:78:42 | call to operator implicit conversion : RawSqlString | EntityFrameworkCore.cs:78:18:78:42 | (...) ... |
 | EntityFrameworkCore.cs:78:32:78:42 | access to local variable taintSource : String | EntityFrameworkCore.cs:78:18:78:42 | call to operator implicit conversion : RawSqlString |
-| EntityFrameworkCore.cs:85:13:88:13 | { ..., ... } [Name] : String | EntityFrameworkCore.cs:92:29:92:30 | access to local variable p1 [Name] : String |
-| EntityFrameworkCore.cs:87:24:87:32 | "tainted" : String | EntityFrameworkCore.cs:85:13:88:13 | { ..., ... } [Name] : String |
-| EntityFrameworkCore.cs:92:13:92:15 | [post] access to local variable ctx [Persons, [], Name] : String | EntityFrameworkCore.cs:94:13:94:15 | access to local variable ctx [Persons, [], Name] : String |
-| EntityFrameworkCore.cs:92:13:92:23 | [post] access to property Persons [[], Name] : String | EntityFrameworkCore.cs:92:13:92:15 | [post] access to local variable ctx [Persons, [], Name] : String |
-| EntityFrameworkCore.cs:92:29:92:30 | access to local variable p1 [Name] : String | EntityFrameworkCore.cs:92:13:92:23 | [post] access to property Persons [[], Name] : String |
-| EntityFrameworkCore.cs:94:13:94:15 | access to local variable ctx [Persons, [], Name] : String | ../../../resources/stubs/EntityFramework.cs:80:20:80:30 | this [Persons, [], Name] : String |
-| EntityFrameworkCore.cs:107:13:110:13 | { ..., ... } [Name] : String | EntityFrameworkCore.cs:114:29:114:30 | access to local variable p1 [Name] : String |
-| EntityFrameworkCore.cs:109:24:109:32 | "tainted" : String | EntityFrameworkCore.cs:107:13:110:13 | { ..., ... } [Name] : String |
-| EntityFrameworkCore.cs:114:13:114:15 | [post] access to local variable ctx [Persons, [], Name] : String | EntityFrameworkCore.cs:116:19:116:21 | access to local variable ctx [Persons, [], Name] : String |
-| EntityFrameworkCore.cs:114:13:114:23 | [post] access to property Persons [[], Name] : String | EntityFrameworkCore.cs:114:13:114:15 | [post] access to local variable ctx [Persons, [], Name] : String |
-| EntityFrameworkCore.cs:114:29:114:30 | access to local variable p1 [Name] : String | EntityFrameworkCore.cs:114:13:114:23 | [post] access to property Persons [[], Name] : String |
-| EntityFrameworkCore.cs:116:19:116:21 | access to local variable ctx [Persons, [], Name] : String | ../../../resources/stubs/EntityFramework.cs:81:49:81:64 | this [Persons, [], Name] : String |
-| EntityFrameworkCore.cs:129:13:132:13 | { ..., ... } [Name] : String | EntityFrameworkCore.cs:135:27:135:28 | access to local variable p1 [Name] : String |
-| EntityFrameworkCore.cs:131:24:131:32 | "tainted" : String | EntityFrameworkCore.cs:129:13:132:13 | { ..., ... } [Name] : String |
-| EntityFrameworkCore.cs:135:27:135:28 | access to local variable p1 [Name] : String | EntityFrameworkCore.cs:219:35:219:35 | p [Name] : String |
-| EntityFrameworkCore.cs:148:13:151:13 | { ..., ... } [Title] : String | EntityFrameworkCore.cs:155:18:155:19 | access to local variable p1 [Title] : String |
-| EntityFrameworkCore.cs:150:25:150:33 | "tainted" : String | EntityFrameworkCore.cs:148:13:151:13 | { ..., ... } [Title] : String |
-| EntityFrameworkCore.cs:155:18:155:19 | access to local variable p1 [Title] : String | EntityFrameworkCore.cs:155:18:155:25 | access to property Title |
-| EntityFrameworkCore.cs:167:13:174:13 | { ..., ... } [Addresses, [], Street] : String | EntityFrameworkCore.cs:175:29:175:30 | access to local variable p1 [Addresses, [], Street] : String |
-| EntityFrameworkCore.cs:168:29:173:17 | array creation of type Address[] [[], Street] : String | EntityFrameworkCore.cs:167:13:174:13 | { ..., ... } [Addresses, [], Street] : String |
-| EntityFrameworkCore.cs:168:35:173:17 | { ..., ... } [[], Street] : String | EntityFrameworkCore.cs:168:29:173:17 | array creation of type Address[] [[], Street] : String |
-| EntityFrameworkCore.cs:169:21:172:21 | object creation of type Address [Street] : String | EntityFrameworkCore.cs:168:35:173:17 | { ..., ... } [[], Street] : String |
-| EntityFrameworkCore.cs:169:33:172:21 | { ..., ... } [Street] : String | EntityFrameworkCore.cs:169:21:172:21 | object creation of type Address [Street] : String |
-| EntityFrameworkCore.cs:171:34:171:42 | "tainted" : String | EntityFrameworkCore.cs:169:33:172:21 | { ..., ... } [Street] : String |
-| EntityFrameworkCore.cs:175:13:175:15 | [post] access to local variable ctx [Persons, [], Addresses, [], Street] : String | EntityFrameworkCore.cs:176:13:176:15 | access to local variable ctx [Persons, [], Addresses, [], Street] : String |
-| EntityFrameworkCore.cs:175:13:175:15 | [post] access to local variable ctx [Persons, [], Addresses, [], Street] : String | EntityFrameworkCore.cs:180:13:180:15 | access to local variable ctx [Persons, [], Addresses, [], Street] : String |
-| EntityFrameworkCore.cs:175:13:175:15 | [post] access to local variable ctx [Persons, [], Addresses, [], Street] : String | EntityFrameworkCore.cs:188:13:188:15 | access to local variable ctx [Persons, [], Addresses, [], Street] : String |
-| EntityFrameworkCore.cs:175:13:175:15 | [post] access to local variable ctx [Persons, [], Addresses, [], Street] : String | EntityFrameworkCore.cs:192:13:192:15 | access to local variable ctx [Persons, [], Addresses, [], Street] : String |
-| EntityFrameworkCore.cs:175:13:175:23 | [post] access to property Persons [[], Addresses, [], Street] : String | EntityFrameworkCore.cs:175:13:175:15 | [post] access to local variable ctx [Persons, [], Addresses, [], Street] : String |
-| EntityFrameworkCore.cs:175:29:175:30 | access to local variable p1 [Addresses, [], Street] : String | EntityFrameworkCore.cs:175:13:175:23 | [post] access to property Persons [[], Addresses, [], Street] : String |
-| EntityFrameworkCore.cs:176:13:176:15 | access to local variable ctx [Persons, [], Addresses, [], Street] : String | ../../../resources/stubs/EntityFramework.cs:80:20:80:30 | this [Persons, [], Addresses, [], Street] : String |
-| EntityFrameworkCore.cs:180:13:180:15 | access to local variable ctx [Persons, [], Addresses, [], Street] : String | ../../../resources/stubs/EntityFramework.cs:80:20:80:30 | this [Persons, [], Addresses, [], Street] : String |
-| EntityFrameworkCore.cs:183:13:186:13 | { ..., ... } [Street] : String | EntityFrameworkCore.cs:187:31:187:32 | access to local variable a1 [Street] : String |
-| EntityFrameworkCore.cs:185:26:185:34 | "tainted" : String | EntityFrameworkCore.cs:183:13:186:13 | { ..., ... } [Street] : String |
-| EntityFrameworkCore.cs:187:13:187:15 | [post] access to local variable ctx [Addresses, [], Street] : String | EntityFrameworkCore.cs:188:13:188:15 | access to local variable ctx [Addresses, [], Street] : String |
-| EntityFrameworkCore.cs:187:13:187:15 | [post] access to local variable ctx [Addresses, [], Street] : String | EntityFrameworkCore.cs:192:13:192:15 | access to local variable ctx [Addresses, [], Street] : String |
-| EntityFrameworkCore.cs:187:13:187:25 | [post] access to property Addresses [[], Street] : String | EntityFrameworkCore.cs:187:13:187:15 | [post] access to local variable ctx [Addresses, [], Street] : String |
-| EntityFrameworkCore.cs:187:31:187:32 | access to local variable a1 [Street] : String | EntityFrameworkCore.cs:187:13:187:25 | [post] access to property Addresses [[], Street] : String |
-| EntityFrameworkCore.cs:188:13:188:15 | access to local variable ctx [Addresses, [], Street] : String | ../../../resources/stubs/EntityFramework.cs:80:20:80:30 | this [Addresses, [], Street] : String |
-| EntityFrameworkCore.cs:188:13:188:15 | access to local variable ctx [Persons, [], Addresses, [], Street] : String | ../../../resources/stubs/EntityFramework.cs:80:20:80:30 | this [Persons, [], Addresses, [], Street] : String |
-| EntityFrameworkCore.cs:192:13:192:15 | access to local variable ctx [Addresses, [], Street] : String | ../../../resources/stubs/EntityFramework.cs:80:20:80:30 | this [Addresses, [], Street] : String |
-| EntityFrameworkCore.cs:192:13:192:15 | access to local variable ctx [Persons, [], Addresses, [], Street] : String | ../../../resources/stubs/EntityFramework.cs:80:20:80:30 | this [Persons, [], Addresses, [], Street] : String |
-| EntityFrameworkCore.cs:199:13:202:13 | { ..., ... } [Name] : String | EntityFrameworkCore.cs:208:71:208:72 | access to local variable p1 [Name] : String |
-| EntityFrameworkCore.cs:201:24:201:32 | "tainted" : String | EntityFrameworkCore.cs:199:13:202:13 | { ..., ... } [Name] : String |
-| EntityFrameworkCore.cs:204:13:207:13 | { ..., ... } [Street] : String | EntityFrameworkCore.cs:208:85:208:86 | access to local variable a1 [Street] : String |
-| EntityFrameworkCore.cs:206:26:206:34 | "tainted" : String | EntityFrameworkCore.cs:204:13:207:13 | { ..., ... } [Street] : String |
-| EntityFrameworkCore.cs:208:60:208:88 | { ..., ... } [Address, Street] : String | EntityFrameworkCore.cs:209:37:209:53 | access to local variable personAddressMap1 [Address, Street] : String |
-| EntityFrameworkCore.cs:208:60:208:88 | { ..., ... } [Person, Name] : String | EntityFrameworkCore.cs:209:37:209:53 | access to local variable personAddressMap1 [Person, Name] : String |
-| EntityFrameworkCore.cs:208:71:208:72 | access to local variable p1 [Name] : String | EntityFrameworkCore.cs:208:60:208:88 | { ..., ... } [Person, Name] : String |
-| EntityFrameworkCore.cs:208:85:208:86 | access to local variable a1 [Street] : String | EntityFrameworkCore.cs:208:60:208:88 | { ..., ... } [Address, Street] : String |
-| EntityFrameworkCore.cs:209:13:209:15 | [post] access to local variable ctx [PersonAddresses, [], Address, Street] : String | EntityFrameworkCore.cs:210:13:210:15 | access to local variable ctx [PersonAddresses, [], Address, Street] : String |
-| EntityFrameworkCore.cs:209:13:209:15 | [post] access to local variable ctx [PersonAddresses, [], Address, Street] : String | EntityFrameworkCore.cs:216:13:216:15 | access to local variable ctx [PersonAddresses, [], Address, Street] : String |
-| EntityFrameworkCore.cs:209:13:209:15 | [post] access to local variable ctx [PersonAddresses, [], Person, Name] : String | EntityFrameworkCore.cs:210:13:210:15 | access to local variable ctx [PersonAddresses, [], Person, Name] : String |
-| EntityFrameworkCore.cs:209:13:209:15 | [post] access to local variable ctx [PersonAddresses, [], Person, Name] : String | EntityFrameworkCore.cs:216:13:216:15 | access to local variable ctx [PersonAddresses, [], Person, Name] : String |
-| EntityFrameworkCore.cs:209:13:209:31 | [post] access to property PersonAddresses [[], Address, Street] : String | EntityFrameworkCore.cs:209:13:209:15 | [post] access to local variable ctx [PersonAddresses, [], Address, Street] : String |
-| EntityFrameworkCore.cs:209:13:209:31 | [post] access to property PersonAddresses [[], Person, Name] : String | EntityFrameworkCore.cs:209:13:209:15 | [post] access to local variable ctx [PersonAddresses, [], Person, Name] : String |
-| EntityFrameworkCore.cs:209:37:209:53 | access to local variable personAddressMap1 [Address, Street] : String | EntityFrameworkCore.cs:209:13:209:31 | [post] access to property PersonAddresses [[], Address, Street] : String |
-| EntityFrameworkCore.cs:209:37:209:53 | access to local variable personAddressMap1 [Person, Name] : String | EntityFrameworkCore.cs:209:13:209:31 | [post] access to property PersonAddresses [[], Person, Name] : String |
-| EntityFrameworkCore.cs:210:13:210:15 | access to local variable ctx [PersonAddresses, [], Address, Street] : String | ../../../resources/stubs/EntityFramework.cs:80:20:80:30 | this [PersonAddresses, [], Address, Street] : String |
-| EntityFrameworkCore.cs:210:13:210:15 | access to local variable ctx [PersonAddresses, [], Person, Name] : String | ../../../resources/stubs/EntityFramework.cs:80:20:80:30 | this [PersonAddresses, [], Person, Name] : String |
-| EntityFrameworkCore.cs:216:13:216:15 | access to local variable ctx [PersonAddresses, [], Address, Street] : String | ../../../resources/stubs/EntityFramework.cs:80:20:80:30 | this [PersonAddresses, [], Address, Street] : String |
-| EntityFrameworkCore.cs:216:13:216:15 | access to local variable ctx [PersonAddresses, [], Person, Name] : String | ../../../resources/stubs/EntityFramework.cs:80:20:80:30 | this [PersonAddresses, [], Person, Name] : String |
-| EntityFrameworkCore.cs:219:35:219:35 | p [Name] : String | EntityFrameworkCore.cs:222:29:222:29 | access to parameter p [Name] : String |
-| EntityFrameworkCore.cs:222:13:222:15 | [post] access to local variable ctx [Persons, [], Name] : String | EntityFrameworkCore.cs:223:13:223:15 | access to local variable ctx [Persons, [], Name] : String |
-| EntityFrameworkCore.cs:222:13:222:23 | [post] access to property Persons [[], Name] : String | EntityFrameworkCore.cs:222:13:222:15 | [post] access to local variable ctx [Persons, [], Name] : String |
-| EntityFrameworkCore.cs:222:29:222:29 | access to parameter p [Name] : String | EntityFrameworkCore.cs:222:13:222:23 | [post] access to property Persons [[], Name] : String |
-| EntityFrameworkCore.cs:223:13:223:15 | access to local variable ctx [Persons, [], Name] : String | ../../../resources/stubs/EntityFramework.cs:80:20:80:30 | this [Persons, [], Name] : String |
-| EntityFrameworkCore.cs:230:18:230:28 | access to property Persons [[], Name] : String | EntityFrameworkCore.cs:230:18:230:36 | call to method First [Name] : String |
-| EntityFrameworkCore.cs:230:18:230:36 | call to method First [Name] : String | EntityFrameworkCore.cs:230:18:230:41 | access to property Name |
-| EntityFrameworkCore.cs:238:18:238:30 | access to property Addresses [[], Street] : String | EntityFrameworkCore.cs:238:18:238:38 | call to method First [Street] : String |
-| EntityFrameworkCore.cs:238:18:238:38 | call to method First [Street] : String | EntityFrameworkCore.cs:238:18:238:45 | access to property Street |
-| EntityFrameworkCore.cs:245:18:245:28 | access to property Persons [[], Addresses, [], Street] : String | EntityFrameworkCore.cs:245:18:245:36 | call to method First [Addresses, [], Street] : String |
-| EntityFrameworkCore.cs:245:18:245:36 | call to method First [Addresses, [], Street] : String | EntityFrameworkCore.cs:245:18:245:46 | access to property Addresses [[], Street] : String |
-| EntityFrameworkCore.cs:245:18:245:46 | access to property Addresses [[], Street] : String | EntityFrameworkCore.cs:245:18:245:54 | call to method First [Street] : String |
-| EntityFrameworkCore.cs:245:18:245:54 | call to method First [Street] : String | EntityFrameworkCore.cs:245:18:245:61 | access to property Street |
+| EntityFrameworkCore.cs:85:13:88:13 | { ..., ... } [property Name] : String | EntityFrameworkCore.cs:92:29:92:30 | access to local variable p1 [property Name] : String |
+| EntityFrameworkCore.cs:87:24:87:32 | "tainted" : String | EntityFrameworkCore.cs:85:13:88:13 | { ..., ... } [property Name] : String |
+| EntityFrameworkCore.cs:92:13:92:15 | [post] access to local variable ctx [property Persons, element, property Name] : String | EntityFrameworkCore.cs:94:13:94:15 | access to local variable ctx [property Persons, element, property Name] : String |
+| EntityFrameworkCore.cs:92:13:92:23 | [post] access to property Persons [element, property Name] : String | EntityFrameworkCore.cs:92:13:92:15 | [post] access to local variable ctx [property Persons, element, property Name] : String |
+| EntityFrameworkCore.cs:92:29:92:30 | access to local variable p1 [property Name] : String | EntityFrameworkCore.cs:92:13:92:23 | [post] access to property Persons [element, property Name] : String |
+| EntityFrameworkCore.cs:94:13:94:15 | access to local variable ctx [property Persons, element, property Name] : String | ../../../resources/stubs/EntityFramework.cs:80:20:80:30 | this [property Persons, element, property Name] : String |
+| EntityFrameworkCore.cs:107:13:110:13 | { ..., ... } [property Name] : String | EntityFrameworkCore.cs:114:29:114:30 | access to local variable p1 [property Name] : String |
+| EntityFrameworkCore.cs:109:24:109:32 | "tainted" : String | EntityFrameworkCore.cs:107:13:110:13 | { ..., ... } [property Name] : String |
+| EntityFrameworkCore.cs:114:13:114:15 | [post] access to local variable ctx [property Persons, element, property Name] : String | EntityFrameworkCore.cs:116:19:116:21 | access to local variable ctx [property Persons, element, property Name] : String |
+| EntityFrameworkCore.cs:114:13:114:23 | [post] access to property Persons [element, property Name] : String | EntityFrameworkCore.cs:114:13:114:15 | [post] access to local variable ctx [property Persons, element, property Name] : String |
+| EntityFrameworkCore.cs:114:29:114:30 | access to local variable p1 [property Name] : String | EntityFrameworkCore.cs:114:13:114:23 | [post] access to property Persons [element, property Name] : String |
+| EntityFrameworkCore.cs:116:19:116:21 | access to local variable ctx [property Persons, element, property Name] : String | ../../../resources/stubs/EntityFramework.cs:81:49:81:64 | this [property Persons, element, property Name] : String |
+| EntityFrameworkCore.cs:129:13:132:13 | { ..., ... } [property Name] : String | EntityFrameworkCore.cs:135:27:135:28 | access to local variable p1 [property Name] : String |
+| EntityFrameworkCore.cs:131:24:131:32 | "tainted" : String | EntityFrameworkCore.cs:129:13:132:13 | { ..., ... } [property Name] : String |
+| EntityFrameworkCore.cs:135:27:135:28 | access to local variable p1 [property Name] : String | EntityFrameworkCore.cs:219:35:219:35 | p [property Name] : String |
+| EntityFrameworkCore.cs:148:13:151:13 | { ..., ... } [property Title] : String | EntityFrameworkCore.cs:155:18:155:19 | access to local variable p1 [property Title] : String |
+| EntityFrameworkCore.cs:150:25:150:33 | "tainted" : String | EntityFrameworkCore.cs:148:13:151:13 | { ..., ... } [property Title] : String |
+| EntityFrameworkCore.cs:155:18:155:19 | access to local variable p1 [property Title] : String | EntityFrameworkCore.cs:155:18:155:25 | access to property Title |
+| EntityFrameworkCore.cs:167:13:174:13 | { ..., ... } [property Addresses, element, property Street] : String | EntityFrameworkCore.cs:175:29:175:30 | access to local variable p1 [property Addresses, element, property Street] : String |
+| EntityFrameworkCore.cs:168:29:173:17 | array creation of type Address[] [element, property Street] : String | EntityFrameworkCore.cs:167:13:174:13 | { ..., ... } [property Addresses, element, property Street] : String |
+| EntityFrameworkCore.cs:168:35:173:17 | { ..., ... } [element, property Street] : String | EntityFrameworkCore.cs:168:29:173:17 | array creation of type Address[] [element, property Street] : String |
+| EntityFrameworkCore.cs:169:21:172:21 | object creation of type Address [property Street] : String | EntityFrameworkCore.cs:168:35:173:17 | { ..., ... } [element, property Street] : String |
+| EntityFrameworkCore.cs:169:33:172:21 | { ..., ... } [property Street] : String | EntityFrameworkCore.cs:169:21:172:21 | object creation of type Address [property Street] : String |
+| EntityFrameworkCore.cs:171:34:171:42 | "tainted" : String | EntityFrameworkCore.cs:169:33:172:21 | { ..., ... } [property Street] : String |
+| EntityFrameworkCore.cs:175:13:175:15 | [post] access to local variable ctx [property Persons, element, property Addresses, element, property Street] : String | EntityFrameworkCore.cs:176:13:176:15 | access to local variable ctx [property Persons, element, property Addresses, element, property Street] : String |
+| EntityFrameworkCore.cs:175:13:175:15 | [post] access to local variable ctx [property Persons, element, property Addresses, element, property Street] : String | EntityFrameworkCore.cs:180:13:180:15 | access to local variable ctx [property Persons, element, property Addresses, element, property Street] : String |
+| EntityFrameworkCore.cs:175:13:175:15 | [post] access to local variable ctx [property Persons, element, property Addresses, element, property Street] : String | EntityFrameworkCore.cs:188:13:188:15 | access to local variable ctx [property Persons, element, property Addresses, element, property Street] : String |
+| EntityFrameworkCore.cs:175:13:175:15 | [post] access to local variable ctx [property Persons, element, property Addresses, element, property Street] : String | EntityFrameworkCore.cs:192:13:192:15 | access to local variable ctx [property Persons, element, property Addresses, element, property Street] : String |
+| EntityFrameworkCore.cs:175:13:175:23 | [post] access to property Persons [element, property Addresses, element, property Street] : String | EntityFrameworkCore.cs:175:13:175:15 | [post] access to local variable ctx [property Persons, element, property Addresses, element, property Street] : String |
+| EntityFrameworkCore.cs:175:29:175:30 | access to local variable p1 [property Addresses, element, property Street] : String | EntityFrameworkCore.cs:175:13:175:23 | [post] access to property Persons [element, property Addresses, element, property Street] : String |
+| EntityFrameworkCore.cs:176:13:176:15 | access to local variable ctx [property Persons, element, property Addresses, element, property Street] : String | ../../../resources/stubs/EntityFramework.cs:80:20:80:30 | this [property Persons, element, property Addresses, element, property Street] : String |
+| EntityFrameworkCore.cs:180:13:180:15 | access to local variable ctx [property Persons, element, property Addresses, element, property Street] : String | ../../../resources/stubs/EntityFramework.cs:80:20:80:30 | this [property Persons, element, property Addresses, element, property Street] : String |
+| EntityFrameworkCore.cs:183:13:186:13 | { ..., ... } [property Street] : String | EntityFrameworkCore.cs:187:31:187:32 | access to local variable a1 [property Street] : String |
+| EntityFrameworkCore.cs:185:26:185:34 | "tainted" : String | EntityFrameworkCore.cs:183:13:186:13 | { ..., ... } [property Street] : String |
+| EntityFrameworkCore.cs:187:13:187:15 | [post] access to local variable ctx [property Addresses, element, property Street] : String | EntityFrameworkCore.cs:188:13:188:15 | access to local variable ctx [property Addresses, element, property Street] : String |
+| EntityFrameworkCore.cs:187:13:187:15 | [post] access to local variable ctx [property Addresses, element, property Street] : String | EntityFrameworkCore.cs:192:13:192:15 | access to local variable ctx [property Addresses, element, property Street] : String |
+| EntityFrameworkCore.cs:187:13:187:25 | [post] access to property Addresses [element, property Street] : String | EntityFrameworkCore.cs:187:13:187:15 | [post] access to local variable ctx [property Addresses, element, property Street] : String |
+| EntityFrameworkCore.cs:187:31:187:32 | access to local variable a1 [property Street] : String | EntityFrameworkCore.cs:187:13:187:25 | [post] access to property Addresses [element, property Street] : String |
+| EntityFrameworkCore.cs:188:13:188:15 | access to local variable ctx [property Addresses, element, property Street] : String | ../../../resources/stubs/EntityFramework.cs:80:20:80:30 | this [property Addresses, element, property Street] : String |
+| EntityFrameworkCore.cs:188:13:188:15 | access to local variable ctx [property Persons, element, property Addresses, element, property Street] : String | ../../../resources/stubs/EntityFramework.cs:80:20:80:30 | this [property Persons, element, property Addresses, element, property Street] : String |
+| EntityFrameworkCore.cs:192:13:192:15 | access to local variable ctx [property Addresses, element, property Street] : String | ../../../resources/stubs/EntityFramework.cs:80:20:80:30 | this [property Addresses, element, property Street] : String |
+| EntityFrameworkCore.cs:192:13:192:15 | access to local variable ctx [property Persons, element, property Addresses, element, property Street] : String | ../../../resources/stubs/EntityFramework.cs:80:20:80:30 | this [property Persons, element, property Addresses, element, property Street] : String |
+| EntityFrameworkCore.cs:199:13:202:13 | { ..., ... } [property Name] : String | EntityFrameworkCore.cs:208:71:208:72 | access to local variable p1 [property Name] : String |
+| EntityFrameworkCore.cs:201:24:201:32 | "tainted" : String | EntityFrameworkCore.cs:199:13:202:13 | { ..., ... } [property Name] : String |
+| EntityFrameworkCore.cs:204:13:207:13 | { ..., ... } [property Street] : String | EntityFrameworkCore.cs:208:85:208:86 | access to local variable a1 [property Street] : String |
+| EntityFrameworkCore.cs:206:26:206:34 | "tainted" : String | EntityFrameworkCore.cs:204:13:207:13 | { ..., ... } [property Street] : String |
+| EntityFrameworkCore.cs:208:60:208:88 | { ..., ... } [property Address, property Street] : String | EntityFrameworkCore.cs:209:37:209:53 | access to local variable personAddressMap1 [property Address, property Street] : String |
+| EntityFrameworkCore.cs:208:60:208:88 | { ..., ... } [property Person, property Name] : String | EntityFrameworkCore.cs:209:37:209:53 | access to local variable personAddressMap1 [property Person, property Name] : String |
+| EntityFrameworkCore.cs:208:71:208:72 | access to local variable p1 [property Name] : String | EntityFrameworkCore.cs:208:60:208:88 | { ..., ... } [property Person, property Name] : String |
+| EntityFrameworkCore.cs:208:85:208:86 | access to local variable a1 [property Street] : String | EntityFrameworkCore.cs:208:60:208:88 | { ..., ... } [property Address, property Street] : String |
+| EntityFrameworkCore.cs:209:13:209:15 | [post] access to local variable ctx [property PersonAddresses, element, property Address, property Street] : String | EntityFrameworkCore.cs:210:13:210:15 | access to local variable ctx [property PersonAddresses, element, property Address, property Street] : String |
+| EntityFrameworkCore.cs:209:13:209:15 | [post] access to local variable ctx [property PersonAddresses, element, property Address, property Street] : String | EntityFrameworkCore.cs:216:13:216:15 | access to local variable ctx [property PersonAddresses, element, property Address, property Street] : String |
+| EntityFrameworkCore.cs:209:13:209:15 | [post] access to local variable ctx [property PersonAddresses, element, property Person, property Name] : String | EntityFrameworkCore.cs:210:13:210:15 | access to local variable ctx [property PersonAddresses, element, property Person, property Name] : String |
+| EntityFrameworkCore.cs:209:13:209:15 | [post] access to local variable ctx [property PersonAddresses, element, property Person, property Name] : String | EntityFrameworkCore.cs:216:13:216:15 | access to local variable ctx [property PersonAddresses, element, property Person, property Name] : String |
+| EntityFrameworkCore.cs:209:13:209:31 | [post] access to property PersonAddresses [element, property Address, property Street] : String | EntityFrameworkCore.cs:209:13:209:15 | [post] access to local variable ctx [property PersonAddresses, element, property Address, property Street] : String |
+| EntityFrameworkCore.cs:209:13:209:31 | [post] access to property PersonAddresses [element, property Person, property Name] : String | EntityFrameworkCore.cs:209:13:209:15 | [post] access to local variable ctx [property PersonAddresses, element, property Person, property Name] : String |
+| EntityFrameworkCore.cs:209:37:209:53 | access to local variable personAddressMap1 [property Address, property Street] : String | EntityFrameworkCore.cs:209:13:209:31 | [post] access to property PersonAddresses [element, property Address, property Street] : String |
+| EntityFrameworkCore.cs:209:37:209:53 | access to local variable personAddressMap1 [property Person, property Name] : String | EntityFrameworkCore.cs:209:13:209:31 | [post] access to property PersonAddresses [element, property Person, property Name] : String |
+| EntityFrameworkCore.cs:210:13:210:15 | access to local variable ctx [property PersonAddresses, element, property Address, property Street] : String | ../../../resources/stubs/EntityFramework.cs:80:20:80:30 | this [property PersonAddresses, element, property Address, property Street] : String |
+| EntityFrameworkCore.cs:210:13:210:15 | access to local variable ctx [property PersonAddresses, element, property Person, property Name] : String | ../../../resources/stubs/EntityFramework.cs:80:20:80:30 | this [property PersonAddresses, element, property Person, property Name] : String |
+| EntityFrameworkCore.cs:216:13:216:15 | access to local variable ctx [property PersonAddresses, element, property Address, property Street] : String | ../../../resources/stubs/EntityFramework.cs:80:20:80:30 | this [property PersonAddresses, element, property Address, property Street] : String |
+| EntityFrameworkCore.cs:216:13:216:15 | access to local variable ctx [property PersonAddresses, element, property Person, property Name] : String | ../../../resources/stubs/EntityFramework.cs:80:20:80:30 | this [property PersonAddresses, element, property Person, property Name] : String |
+| EntityFrameworkCore.cs:219:35:219:35 | p [property Name] : String | EntityFrameworkCore.cs:222:29:222:29 | access to parameter p [property Name] : String |
+| EntityFrameworkCore.cs:222:13:222:15 | [post] access to local variable ctx [property Persons, element, property Name] : String | EntityFrameworkCore.cs:223:13:223:15 | access to local variable ctx [property Persons, element, property Name] : String |
+| EntityFrameworkCore.cs:222:13:222:23 | [post] access to property Persons [element, property Name] : String | EntityFrameworkCore.cs:222:13:222:15 | [post] access to local variable ctx [property Persons, element, property Name] : String |
+| EntityFrameworkCore.cs:222:29:222:29 | access to parameter p [property Name] : String | EntityFrameworkCore.cs:222:13:222:23 | [post] access to property Persons [element, property Name] : String |
+| EntityFrameworkCore.cs:223:13:223:15 | access to local variable ctx [property Persons, element, property Name] : String | ../../../resources/stubs/EntityFramework.cs:80:20:80:30 | this [property Persons, element, property Name] : String |
+| EntityFrameworkCore.cs:230:18:230:28 | access to property Persons [element, property Name] : String | EntityFrameworkCore.cs:230:18:230:36 | call to method First [property Name] : String |
+| EntityFrameworkCore.cs:230:18:230:36 | call to method First [property Name] : String | EntityFrameworkCore.cs:230:18:230:41 | access to property Name |
+| EntityFrameworkCore.cs:238:18:238:30 | access to property Addresses [element, property Street] : String | EntityFrameworkCore.cs:238:18:238:38 | call to method First [property Street] : String |
+| EntityFrameworkCore.cs:238:18:238:38 | call to method First [property Street] : String | EntityFrameworkCore.cs:238:18:238:45 | access to property Street |
+| EntityFrameworkCore.cs:245:18:245:28 | access to property Persons [element, property Addresses, element, property Street] : String | EntityFrameworkCore.cs:245:18:245:36 | call to method First [property Addresses, element, property Street] : String |
+| EntityFrameworkCore.cs:245:18:245:36 | call to method First [property Addresses, element, property Street] : String | EntityFrameworkCore.cs:245:18:245:46 | access to property Addresses [element, property Street] : String |
+| EntityFrameworkCore.cs:245:18:245:46 | access to property Addresses [element, property Street] : String | EntityFrameworkCore.cs:245:18:245:54 | call to method First [property Street] : String |
+| EntityFrameworkCore.cs:245:18:245:54 | call to method First [property Street] : String | EntityFrameworkCore.cs:245:18:245:61 | access to property Street |
 nodes
-| ../../../resources/stubs/EntityFramework.cs:40:20:40:30 | this [Addresses, [], Street] : String | semmle.label | this [Addresses, [], Street] : String |
-| ../../../resources/stubs/EntityFramework.cs:40:20:40:30 | this [PersonAddresses, [], Address, Street] : String | semmle.label | this [PersonAddresses, [], Address, Street] : String |
-| ../../../resources/stubs/EntityFramework.cs:40:20:40:30 | this [PersonAddresses, [], Person, Name] : String | semmle.label | this [PersonAddresses, [], Person, Name] : String |
-| ../../../resources/stubs/EntityFramework.cs:40:20:40:30 | this [Persons, [], Addresses, [], Street] : String | semmle.label | this [Persons, [], Addresses, [], Street] : String |
-| ../../../resources/stubs/EntityFramework.cs:40:20:40:30 | this [Persons, [], Name] : String | semmle.label | this [Persons, [], Name] : String |
-| ../../../resources/stubs/EntityFramework.cs:41:49:41:64 | this [Persons, [], Name] : String | semmle.label | this [Persons, [], Name] : String |
-| ../../../resources/stubs/EntityFramework.cs:80:20:80:30 | this [Addresses, [], Street] : String | semmle.label | this [Addresses, [], Street] : String |
-| ../../../resources/stubs/EntityFramework.cs:80:20:80:30 | this [PersonAddresses, [], Address, Street] : String | semmle.label | this [PersonAddresses, [], Address, Street] : String |
-| ../../../resources/stubs/EntityFramework.cs:80:20:80:30 | this [PersonAddresses, [], Person, Name] : String | semmle.label | this [PersonAddresses, [], Person, Name] : String |
-| ../../../resources/stubs/EntityFramework.cs:80:20:80:30 | this [Persons, [], Addresses, [], Street] : String | semmle.label | this [Persons, [], Addresses, [], Street] : String |
-| ../../../resources/stubs/EntityFramework.cs:80:20:80:30 | this [Persons, [], Name] : String | semmle.label | this [Persons, [], Name] : String |
-| ../../../resources/stubs/EntityFramework.cs:81:49:81:64 | this [Persons, [], Name] : String | semmle.label | this [Persons, [], Name] : String |
-| EntityFramework.cs:61:13:64:13 | { ..., ... } [Name] : String | semmle.label | { ..., ... } [Name] : String |
+| ../../../resources/stubs/EntityFramework.cs:40:20:40:30 | this [property Addresses, element, property Street] : String | semmle.label | this [property Addresses, element, property Street] : String |
+| ../../../resources/stubs/EntityFramework.cs:40:20:40:30 | this [property PersonAddresses, element, property Address, property Street] : String | semmle.label | this [property PersonAddresses, element, property Address, property Street] : String |
+| ../../../resources/stubs/EntityFramework.cs:40:20:40:30 | this [property PersonAddresses, element, property Person, property Name] : String | semmle.label | this [property PersonAddresses, element, property Person, property Name] : String |
+| ../../../resources/stubs/EntityFramework.cs:40:20:40:30 | this [property Persons, element, property Addresses, element, property Street] : String | semmle.label | this [property Persons, element, property Addresses, element, property Street] : String |
+| ../../../resources/stubs/EntityFramework.cs:40:20:40:30 | this [property Persons, element, property Name] : String | semmle.label | this [property Persons, element, property Name] : String |
+| ../../../resources/stubs/EntityFramework.cs:41:49:41:64 | this [property Persons, element, property Name] : String | semmle.label | this [property Persons, element, property Name] : String |
+| ../../../resources/stubs/EntityFramework.cs:80:20:80:30 | this [property Addresses, element, property Street] : String | semmle.label | this [property Addresses, element, property Street] : String |
+| ../../../resources/stubs/EntityFramework.cs:80:20:80:30 | this [property PersonAddresses, element, property Address, property Street] : String | semmle.label | this [property PersonAddresses, element, property Address, property Street] : String |
+| ../../../resources/stubs/EntityFramework.cs:80:20:80:30 | this [property PersonAddresses, element, property Person, property Name] : String | semmle.label | this [property PersonAddresses, element, property Person, property Name] : String |
+| ../../../resources/stubs/EntityFramework.cs:80:20:80:30 | this [property Persons, element, property Addresses, element, property Street] : String | semmle.label | this [property Persons, element, property Addresses, element, property Street] : String |
+| ../../../resources/stubs/EntityFramework.cs:80:20:80:30 | this [property Persons, element, property Name] : String | semmle.label | this [property Persons, element, property Name] : String |
+| ../../../resources/stubs/EntityFramework.cs:81:49:81:64 | this [property Persons, element, property Name] : String | semmle.label | this [property Persons, element, property Name] : String |
+| EntityFramework.cs:61:13:64:13 | { ..., ... } [property Name] : String | semmle.label | { ..., ... } [property Name] : String |
 | EntityFramework.cs:63:24:63:32 | "tainted" : String | semmle.label | "tainted" : String |
-| EntityFramework.cs:68:13:68:15 | [post] access to local variable ctx [Persons, [], Name] : String | semmle.label | [post] access to local variable ctx [Persons, [], Name] : String |
-| EntityFramework.cs:68:13:68:23 | [post] access to property Persons [[], Name] : String | semmle.label | [post] access to property Persons [[], Name] : String |
-| EntityFramework.cs:68:29:68:30 | access to local variable p1 [Name] : String | semmle.label | access to local variable p1 [Name] : String |
-| EntityFramework.cs:70:13:70:15 | access to local variable ctx [Persons, [], Name] : String | semmle.label | access to local variable ctx [Persons, [], Name] : String |
-| EntityFramework.cs:83:13:86:13 | { ..., ... } [Name] : String | semmle.label | { ..., ... } [Name] : String |
+| EntityFramework.cs:68:13:68:15 | [post] access to local variable ctx [property Persons, element, property Name] : String | semmle.label | [post] access to local variable ctx [property Persons, element, property Name] : String |
+| EntityFramework.cs:68:13:68:23 | [post] access to property Persons [element, property Name] : String | semmle.label | [post] access to property Persons [element, property Name] : String |
+| EntityFramework.cs:68:29:68:30 | access to local variable p1 [property Name] : String | semmle.label | access to local variable p1 [property Name] : String |
+| EntityFramework.cs:70:13:70:15 | access to local variable ctx [property Persons, element, property Name] : String | semmle.label | access to local variable ctx [property Persons, element, property Name] : String |
+| EntityFramework.cs:83:13:86:13 | { ..., ... } [property Name] : String | semmle.label | { ..., ... } [property Name] : String |
 | EntityFramework.cs:85:24:85:32 | "tainted" : String | semmle.label | "tainted" : String |
-| EntityFramework.cs:90:13:90:15 | [post] access to local variable ctx [Persons, [], Name] : String | semmle.label | [post] access to local variable ctx [Persons, [], Name] : String |
-| EntityFramework.cs:90:13:90:23 | [post] access to property Persons [[], Name] : String | semmle.label | [post] access to property Persons [[], Name] : String |
-| EntityFramework.cs:90:29:90:30 | access to local variable p1 [Name] : String | semmle.label | access to local variable p1 [Name] : String |
-| EntityFramework.cs:92:19:92:21 | access to local variable ctx [Persons, [], Name] : String | semmle.label | access to local variable ctx [Persons, [], Name] : String |
-| EntityFramework.cs:105:13:108:13 | { ..., ... } [Name] : String | semmle.label | { ..., ... } [Name] : String |
+| EntityFramework.cs:90:13:90:15 | [post] access to local variable ctx [property Persons, element, property Name] : String | semmle.label | [post] access to local variable ctx [property Persons, element, property Name] : String |
+| EntityFramework.cs:90:13:90:23 | [post] access to property Persons [element, property Name] : String | semmle.label | [post] access to property Persons [element, property Name] : String |
+| EntityFramework.cs:90:29:90:30 | access to local variable p1 [property Name] : String | semmle.label | access to local variable p1 [property Name] : String |
+| EntityFramework.cs:92:19:92:21 | access to local variable ctx [property Persons, element, property Name] : String | semmle.label | access to local variable ctx [property Persons, element, property Name] : String |
+| EntityFramework.cs:105:13:108:13 | { ..., ... } [property Name] : String | semmle.label | { ..., ... } [property Name] : String |
 | EntityFramework.cs:107:24:107:32 | "tainted" : String | semmle.label | "tainted" : String |
-| EntityFramework.cs:111:27:111:28 | access to local variable p1 [Name] : String | semmle.label | access to local variable p1 [Name] : String |
-| EntityFramework.cs:124:13:127:13 | { ..., ... } [Title] : String | semmle.label | { ..., ... } [Title] : String |
+| EntityFramework.cs:111:27:111:28 | access to local variable p1 [property Name] : String | semmle.label | access to local variable p1 [property Name] : String |
+| EntityFramework.cs:124:13:127:13 | { ..., ... } [property Title] : String | semmle.label | { ..., ... } [property Title] : String |
 | EntityFramework.cs:126:25:126:33 | "tainted" : String | semmle.label | "tainted" : String |
-| EntityFramework.cs:131:18:131:19 | access to local variable p1 [Title] : String | semmle.label | access to local variable p1 [Title] : String |
+| EntityFramework.cs:131:18:131:19 | access to local variable p1 [property Title] : String | semmle.label | access to local variable p1 [property Title] : String |
 | EntityFramework.cs:131:18:131:25 | access to property Title | semmle.label | access to property Title |
-| EntityFramework.cs:143:13:150:13 | { ..., ... } [Addresses, [], Street] : String | semmle.label | { ..., ... } [Addresses, [], Street] : String |
-| EntityFramework.cs:144:29:149:17 | array creation of type Address[] [[], Street] : String | semmle.label | array creation of type Address[] [[], Street] : String |
-| EntityFramework.cs:144:35:149:17 | { ..., ... } [[], Street] : String | semmle.label | { ..., ... } [[], Street] : String |
-| EntityFramework.cs:145:21:148:21 | object creation of type Address [Street] : String | semmle.label | object creation of type Address [Street] : String |
-| EntityFramework.cs:145:33:148:21 | { ..., ... } [Street] : String | semmle.label | { ..., ... } [Street] : String |
+| EntityFramework.cs:143:13:150:13 | { ..., ... } [property Addresses, element, property Street] : String | semmle.label | { ..., ... } [property Addresses, element, property Street] : String |
+| EntityFramework.cs:144:29:149:17 | array creation of type Address[] [element, property Street] : String | semmle.label | array creation of type Address[] [element, property Street] : String |
+| EntityFramework.cs:144:35:149:17 | { ..., ... } [element, property Street] : String | semmle.label | { ..., ... } [element, property Street] : String |
+| EntityFramework.cs:145:21:148:21 | object creation of type Address [property Street] : String | semmle.label | object creation of type Address [property Street] : String |
+| EntityFramework.cs:145:33:148:21 | { ..., ... } [property Street] : String | semmle.label | { ..., ... } [property Street] : String |
 | EntityFramework.cs:147:34:147:42 | "tainted" : String | semmle.label | "tainted" : String |
-| EntityFramework.cs:151:13:151:15 | [post] access to local variable ctx [Persons, [], Addresses, [], Street] : String | semmle.label | [post] access to local variable ctx [Persons, [], Addresses, [], Street] : String |
-| EntityFramework.cs:151:13:151:23 | [post] access to property Persons [[], Addresses, [], Street] : String | semmle.label | [post] access to property Persons [[], Addresses, [], Street] : String |
-| EntityFramework.cs:151:29:151:30 | access to local variable p1 [Addresses, [], Street] : String | semmle.label | access to local variable p1 [Addresses, [], Street] : String |
-| EntityFramework.cs:152:13:152:15 | access to local variable ctx [Persons, [], Addresses, [], Street] : String | semmle.label | access to local variable ctx [Persons, [], Addresses, [], Street] : String |
-| EntityFramework.cs:156:13:156:15 | access to local variable ctx [Persons, [], Addresses, [], Street] : String | semmle.label | access to local variable ctx [Persons, [], Addresses, [], Street] : String |
-| EntityFramework.cs:159:13:162:13 | { ..., ... } [Street] : String | semmle.label | { ..., ... } [Street] : String |
+| EntityFramework.cs:151:13:151:15 | [post] access to local variable ctx [property Persons, element, property Addresses, element, property Street] : String | semmle.label | [post] access to local variable ctx [property Persons, element, property Addresses, element, property Street] : String |
+| EntityFramework.cs:151:13:151:23 | [post] access to property Persons [element, property Addresses, element, property Street] : String | semmle.label | [post] access to property Persons [element, property Addresses, element, property Street] : String |
+| EntityFramework.cs:151:29:151:30 | access to local variable p1 [property Addresses, element, property Street] : String | semmle.label | access to local variable p1 [property Addresses, element, property Street] : String |
+| EntityFramework.cs:152:13:152:15 | access to local variable ctx [property Persons, element, property Addresses, element, property Street] : String | semmle.label | access to local variable ctx [property Persons, element, property Addresses, element, property Street] : String |
+| EntityFramework.cs:156:13:156:15 | access to local variable ctx [property Persons, element, property Addresses, element, property Street] : String | semmle.label | access to local variable ctx [property Persons, element, property Addresses, element, property Street] : String |
+| EntityFramework.cs:159:13:162:13 | { ..., ... } [property Street] : String | semmle.label | { ..., ... } [property Street] : String |
 | EntityFramework.cs:161:26:161:34 | "tainted" : String | semmle.label | "tainted" : String |
-| EntityFramework.cs:163:13:163:15 | [post] access to local variable ctx [Addresses, [], Street] : String | semmle.label | [post] access to local variable ctx [Addresses, [], Street] : String |
-| EntityFramework.cs:163:13:163:25 | [post] access to property Addresses [[], Street] : String | semmle.label | [post] access to property Addresses [[], Street] : String |
-| EntityFramework.cs:163:31:163:32 | access to local variable a1 [Street] : String | semmle.label | access to local variable a1 [Street] : String |
-| EntityFramework.cs:164:13:164:15 | access to local variable ctx [Addresses, [], Street] : String | semmle.label | access to local variable ctx [Addresses, [], Street] : String |
-| EntityFramework.cs:164:13:164:15 | access to local variable ctx [Persons, [], Addresses, [], Street] : String | semmle.label | access to local variable ctx [Persons, [], Addresses, [], Street] : String |
-| EntityFramework.cs:168:13:168:15 | access to local variable ctx [Addresses, [], Street] : String | semmle.label | access to local variable ctx [Addresses, [], Street] : String |
-| EntityFramework.cs:168:13:168:15 | access to local variable ctx [Persons, [], Addresses, [], Street] : String | semmle.label | access to local variable ctx [Persons, [], Addresses, [], Street] : String |
-| EntityFramework.cs:175:13:178:13 | { ..., ... } [Name] : String | semmle.label | { ..., ... } [Name] : String |
+| EntityFramework.cs:163:13:163:15 | [post] access to local variable ctx [property Addresses, element, property Street] : String | semmle.label | [post] access to local variable ctx [property Addresses, element, property Street] : String |
+| EntityFramework.cs:163:13:163:25 | [post] access to property Addresses [element, property Street] : String | semmle.label | [post] access to property Addresses [element, property Street] : String |
+| EntityFramework.cs:163:31:163:32 | access to local variable a1 [property Street] : String | semmle.label | access to local variable a1 [property Street] : String |
+| EntityFramework.cs:164:13:164:15 | access to local variable ctx [property Addresses, element, property Street] : String | semmle.label | access to local variable ctx [property Addresses, element, property Street] : String |
+| EntityFramework.cs:164:13:164:15 | access to local variable ctx [property Persons, element, property Addresses, element, property Street] : String | semmle.label | access to local variable ctx [property Persons, element, property Addresses, element, property Street] : String |
+| EntityFramework.cs:168:13:168:15 | access to local variable ctx [property Addresses, element, property Street] : String | semmle.label | access to local variable ctx [property Addresses, element, property Street] : String |
+| EntityFramework.cs:168:13:168:15 | access to local variable ctx [property Persons, element, property Addresses, element, property Street] : String | semmle.label | access to local variable ctx [property Persons, element, property Addresses, element, property Street] : String |
+| EntityFramework.cs:175:13:178:13 | { ..., ... } [property Name] : String | semmle.label | { ..., ... } [property Name] : String |
 | EntityFramework.cs:177:24:177:32 | "tainted" : String | semmle.label | "tainted" : String |
-| EntityFramework.cs:180:13:183:13 | { ..., ... } [Street] : String | semmle.label | { ..., ... } [Street] : String |
+| EntityFramework.cs:180:13:183:13 | { ..., ... } [property Street] : String | semmle.label | { ..., ... } [property Street] : String |
 | EntityFramework.cs:182:26:182:34 | "tainted" : String | semmle.label | "tainted" : String |
-| EntityFramework.cs:184:60:184:88 | { ..., ... } [Address, Street] : String | semmle.label | { ..., ... } [Address, Street] : String |
-| EntityFramework.cs:184:60:184:88 | { ..., ... } [Person, Name] : String | semmle.label | { ..., ... } [Person, Name] : String |
-| EntityFramework.cs:184:71:184:72 | access to local variable p1 [Name] : String | semmle.label | access to local variable p1 [Name] : String |
-| EntityFramework.cs:184:85:184:86 | access to local variable a1 [Street] : String | semmle.label | access to local variable a1 [Street] : String |
-| EntityFramework.cs:185:13:185:15 | [post] access to local variable ctx [PersonAddresses, [], Address, Street] : String | semmle.label | [post] access to local variable ctx [PersonAddresses, [], Address, Street] : String |
-| EntityFramework.cs:185:13:185:15 | [post] access to local variable ctx [PersonAddresses, [], Person, Name] : String | semmle.label | [post] access to local variable ctx [PersonAddresses, [], Person, Name] : String |
-| EntityFramework.cs:185:13:185:31 | [post] access to property PersonAddresses [[], Address, Street] : String | semmle.label | [post] access to property PersonAddresses [[], Address, Street] : String |
-| EntityFramework.cs:185:13:185:31 | [post] access to property PersonAddresses [[], Person, Name] : String | semmle.label | [post] access to property PersonAddresses [[], Person, Name] : String |
-| EntityFramework.cs:185:37:185:53 | access to local variable personAddressMap1 [Address, Street] : String | semmle.label | access to local variable personAddressMap1 [Address, Street] : String |
-| EntityFramework.cs:185:37:185:53 | access to local variable personAddressMap1 [Person, Name] : String | semmle.label | access to local variable personAddressMap1 [Person, Name] : String |
-| EntityFramework.cs:186:13:186:15 | access to local variable ctx [PersonAddresses, [], Address, Street] : String | semmle.label | access to local variable ctx [PersonAddresses, [], Address, Street] : String |
-| EntityFramework.cs:186:13:186:15 | access to local variable ctx [PersonAddresses, [], Person, Name] : String | semmle.label | access to local variable ctx [PersonAddresses, [], Person, Name] : String |
-| EntityFramework.cs:192:13:192:15 | access to local variable ctx [PersonAddresses, [], Address, Street] : String | semmle.label | access to local variable ctx [PersonAddresses, [], Address, Street] : String |
-| EntityFramework.cs:192:13:192:15 | access to local variable ctx [PersonAddresses, [], Person, Name] : String | semmle.label | access to local variable ctx [PersonAddresses, [], Person, Name] : String |
-| EntityFramework.cs:195:35:195:35 | p [Name] : String | semmle.label | p [Name] : String |
-| EntityFramework.cs:198:13:198:15 | [post] access to local variable ctx [Persons, [], Name] : String | semmle.label | [post] access to local variable ctx [Persons, [], Name] : String |
-| EntityFramework.cs:198:13:198:23 | [post] access to property Persons [[], Name] : String | semmle.label | [post] access to property Persons [[], Name] : String |
-| EntityFramework.cs:198:29:198:29 | access to parameter p [Name] : String | semmle.label | access to parameter p [Name] : String |
-| EntityFramework.cs:199:13:199:15 | access to local variable ctx [Persons, [], Name] : String | semmle.label | access to local variable ctx [Persons, [], Name] : String |
-| EntityFramework.cs:206:18:206:28 | access to property Persons [[], Name] : String | semmle.label | access to property Persons [[], Name] : String |
-| EntityFramework.cs:206:18:206:36 | call to method First [Name] : String | semmle.label | call to method First [Name] : String |
+| EntityFramework.cs:184:60:184:88 | { ..., ... } [property Address, property Street] : String | semmle.label | { ..., ... } [property Address, property Street] : String |
+| EntityFramework.cs:184:60:184:88 | { ..., ... } [property Person, property Name] : String | semmle.label | { ..., ... } [property Person, property Name] : String |
+| EntityFramework.cs:184:71:184:72 | access to local variable p1 [property Name] : String | semmle.label | access to local variable p1 [property Name] : String |
+| EntityFramework.cs:184:85:184:86 | access to local variable a1 [property Street] : String | semmle.label | access to local variable a1 [property Street] : String |
+| EntityFramework.cs:185:13:185:15 | [post] access to local variable ctx [property PersonAddresses, element, property Address, property Street] : String | semmle.label | [post] access to local variable ctx [property PersonAddresses, element, property Address, property Street] : String |
+| EntityFramework.cs:185:13:185:15 | [post] access to local variable ctx [property PersonAddresses, element, property Person, property Name] : String | semmle.label | [post] access to local variable ctx [property PersonAddresses, element, property Person, property Name] : String |
+| EntityFramework.cs:185:13:185:31 | [post] access to property PersonAddresses [element, property Address, property Street] : String | semmle.label | [post] access to property PersonAddresses [element, property Address, property Street] : String |
+| EntityFramework.cs:185:13:185:31 | [post] access to property PersonAddresses [element, property Person, property Name] : String | semmle.label | [post] access to property PersonAddresses [element, property Person, property Name] : String |
+| EntityFramework.cs:185:37:185:53 | access to local variable personAddressMap1 [property Address, property Street] : String | semmle.label | access to local variable personAddressMap1 [property Address, property Street] : String |
+| EntityFramework.cs:185:37:185:53 | access to local variable personAddressMap1 [property Person, property Name] : String | semmle.label | access to local variable personAddressMap1 [property Person, property Name] : String |
+| EntityFramework.cs:186:13:186:15 | access to local variable ctx [property PersonAddresses, element, property Address, property Street] : String | semmle.label | access to local variable ctx [property PersonAddresses, element, property Address, property Street] : String |
+| EntityFramework.cs:186:13:186:15 | access to local variable ctx [property PersonAddresses, element, property Person, property Name] : String | semmle.label | access to local variable ctx [property PersonAddresses, element, property Person, property Name] : String |
+| EntityFramework.cs:192:13:192:15 | access to local variable ctx [property PersonAddresses, element, property Address, property Street] : String | semmle.label | access to local variable ctx [property PersonAddresses, element, property Address, property Street] : String |
+| EntityFramework.cs:192:13:192:15 | access to local variable ctx [property PersonAddresses, element, property Person, property Name] : String | semmle.label | access to local variable ctx [property PersonAddresses, element, property Person, property Name] : String |
+| EntityFramework.cs:195:35:195:35 | p [property Name] : String | semmle.label | p [property Name] : String |
+| EntityFramework.cs:198:13:198:15 | [post] access to local variable ctx [property Persons, element, property Name] : String | semmle.label | [post] access to local variable ctx [property Persons, element, property Name] : String |
+| EntityFramework.cs:198:13:198:23 | [post] access to property Persons [element, property Name] : String | semmle.label | [post] access to property Persons [element, property Name] : String |
+| EntityFramework.cs:198:29:198:29 | access to parameter p [property Name] : String | semmle.label | access to parameter p [property Name] : String |
+| EntityFramework.cs:199:13:199:15 | access to local variable ctx [property Persons, element, property Name] : String | semmle.label | access to local variable ctx [property Persons, element, property Name] : String |
+| EntityFramework.cs:206:18:206:28 | access to property Persons [element, property Name] : String | semmle.label | access to property Persons [element, property Name] : String |
+| EntityFramework.cs:206:18:206:36 | call to method First [property Name] : String | semmle.label | call to method First [property Name] : String |
 | EntityFramework.cs:206:18:206:41 | access to property Name | semmle.label | access to property Name |
-| EntityFramework.cs:214:18:214:30 | access to property Addresses [[], Street] : String | semmle.label | access to property Addresses [[], Street] : String |
-| EntityFramework.cs:214:18:214:38 | call to method First [Street] : String | semmle.label | call to method First [Street] : String |
+| EntityFramework.cs:214:18:214:30 | access to property Addresses [element, property Street] : String | semmle.label | access to property Addresses [element, property Street] : String |
+| EntityFramework.cs:214:18:214:38 | call to method First [property Street] : String | semmle.label | call to method First [property Street] : String |
 | EntityFramework.cs:214:18:214:45 | access to property Street | semmle.label | access to property Street |
-| EntityFramework.cs:221:18:221:28 | access to property Persons [[], Addresses, [], Street] : String | semmle.label | access to property Persons [[], Addresses, [], Street] : String |
-| EntityFramework.cs:221:18:221:36 | call to method First [Addresses, [], Street] : String | semmle.label | call to method First [Addresses, [], Street] : String |
-| EntityFramework.cs:221:18:221:46 | access to property Addresses [[], Street] : String | semmle.label | access to property Addresses [[], Street] : String |
-| EntityFramework.cs:221:18:221:54 | call to method First [Street] : String | semmle.label | call to method First [Street] : String |
+| EntityFramework.cs:221:18:221:28 | access to property Persons [element, property Addresses, element, property Street] : String | semmle.label | access to property Persons [element, property Addresses, element, property Street] : String |
+| EntityFramework.cs:221:18:221:36 | call to method First [property Addresses, element, property Street] : String | semmle.label | call to method First [property Addresses, element, property Street] : String |
+| EntityFramework.cs:221:18:221:46 | access to property Addresses [element, property Street] : String | semmle.label | access to property Addresses [element, property Street] : String |
+| EntityFramework.cs:221:18:221:54 | call to method First [property Street] : String | semmle.label | call to method First [property Street] : String |
 | EntityFramework.cs:221:18:221:61 | access to property Street | semmle.label | access to property Street |
 | EntityFrameworkCore.cs:75:31:75:39 | "tainted" : String | semmle.label | "tainted" : String |
 | EntityFrameworkCore.cs:76:18:76:28 | access to local variable taintSource | semmle.label | access to local variable taintSource |
@@ -268,78 +268,78 @@ nodes
 | EntityFrameworkCore.cs:78:18:78:42 | (...) ... | semmle.label | (...) ... |
 | EntityFrameworkCore.cs:78:18:78:42 | call to operator implicit conversion : RawSqlString | semmle.label | call to operator implicit conversion : RawSqlString |
 | EntityFrameworkCore.cs:78:32:78:42 | access to local variable taintSource : String | semmle.label | access to local variable taintSource : String |
-| EntityFrameworkCore.cs:85:13:88:13 | { ..., ... } [Name] : String | semmle.label | { ..., ... } [Name] : String |
+| EntityFrameworkCore.cs:85:13:88:13 | { ..., ... } [property Name] : String | semmle.label | { ..., ... } [property Name] : String |
 | EntityFrameworkCore.cs:87:24:87:32 | "tainted" : String | semmle.label | "tainted" : String |
-| EntityFrameworkCore.cs:92:13:92:15 | [post] access to local variable ctx [Persons, [], Name] : String | semmle.label | [post] access to local variable ctx [Persons, [], Name] : String |
-| EntityFrameworkCore.cs:92:13:92:23 | [post] access to property Persons [[], Name] : String | semmle.label | [post] access to property Persons [[], Name] : String |
-| EntityFrameworkCore.cs:92:29:92:30 | access to local variable p1 [Name] : String | semmle.label | access to local variable p1 [Name] : String |
-| EntityFrameworkCore.cs:94:13:94:15 | access to local variable ctx [Persons, [], Name] : String | semmle.label | access to local variable ctx [Persons, [], Name] : String |
-| EntityFrameworkCore.cs:107:13:110:13 | { ..., ... } [Name] : String | semmle.label | { ..., ... } [Name] : String |
+| EntityFrameworkCore.cs:92:13:92:15 | [post] access to local variable ctx [property Persons, element, property Name] : String | semmle.label | [post] access to local variable ctx [property Persons, element, property Name] : String |
+| EntityFrameworkCore.cs:92:13:92:23 | [post] access to property Persons [element, property Name] : String | semmle.label | [post] access to property Persons [element, property Name] : String |
+| EntityFrameworkCore.cs:92:29:92:30 | access to local variable p1 [property Name] : String | semmle.label | access to local variable p1 [property Name] : String |
+| EntityFrameworkCore.cs:94:13:94:15 | access to local variable ctx [property Persons, element, property Name] : String | semmle.label | access to local variable ctx [property Persons, element, property Name] : String |
+| EntityFrameworkCore.cs:107:13:110:13 | { ..., ... } [property Name] : String | semmle.label | { ..., ... } [property Name] : String |
 | EntityFrameworkCore.cs:109:24:109:32 | "tainted" : String | semmle.label | "tainted" : String |
-| EntityFrameworkCore.cs:114:13:114:15 | [post] access to local variable ctx [Persons, [], Name] : String | semmle.label | [post] access to local variable ctx [Persons, [], Name] : String |
-| EntityFrameworkCore.cs:114:13:114:23 | [post] access to property Persons [[], Name] : String | semmle.label | [post] access to property Persons [[], Name] : String |
-| EntityFrameworkCore.cs:114:29:114:30 | access to local variable p1 [Name] : String | semmle.label | access to local variable p1 [Name] : String |
-| EntityFrameworkCore.cs:116:19:116:21 | access to local variable ctx [Persons, [], Name] : String | semmle.label | access to local variable ctx [Persons, [], Name] : String |
-| EntityFrameworkCore.cs:129:13:132:13 | { ..., ... } [Name] : String | semmle.label | { ..., ... } [Name] : String |
+| EntityFrameworkCore.cs:114:13:114:15 | [post] access to local variable ctx [property Persons, element, property Name] : String | semmle.label | [post] access to local variable ctx [property Persons, element, property Name] : String |
+| EntityFrameworkCore.cs:114:13:114:23 | [post] access to property Persons [element, property Name] : String | semmle.label | [post] access to property Persons [element, property Name] : String |
+| EntityFrameworkCore.cs:114:29:114:30 | access to local variable p1 [property Name] : String | semmle.label | access to local variable p1 [property Name] : String |
+| EntityFrameworkCore.cs:116:19:116:21 | access to local variable ctx [property Persons, element, property Name] : String | semmle.label | access to local variable ctx [property Persons, element, property Name] : String |
+| EntityFrameworkCore.cs:129:13:132:13 | { ..., ... } [property Name] : String | semmle.label | { ..., ... } [property Name] : String |
 | EntityFrameworkCore.cs:131:24:131:32 | "tainted" : String | semmle.label | "tainted" : String |
-| EntityFrameworkCore.cs:135:27:135:28 | access to local variable p1 [Name] : String | semmle.label | access to local variable p1 [Name] : String |
-| EntityFrameworkCore.cs:148:13:151:13 | { ..., ... } [Title] : String | semmle.label | { ..., ... } [Title] : String |
+| EntityFrameworkCore.cs:135:27:135:28 | access to local variable p1 [property Name] : String | semmle.label | access to local variable p1 [property Name] : String |
+| EntityFrameworkCore.cs:148:13:151:13 | { ..., ... } [property Title] : String | semmle.label | { ..., ... } [property Title] : String |
 | EntityFrameworkCore.cs:150:25:150:33 | "tainted" : String | semmle.label | "tainted" : String |
-| EntityFrameworkCore.cs:155:18:155:19 | access to local variable p1 [Title] : String | semmle.label | access to local variable p1 [Title] : String |
+| EntityFrameworkCore.cs:155:18:155:19 | access to local variable p1 [property Title] : String | semmle.label | access to local variable p1 [property Title] : String |
 | EntityFrameworkCore.cs:155:18:155:25 | access to property Title | semmle.label | access to property Title |
-| EntityFrameworkCore.cs:167:13:174:13 | { ..., ... } [Addresses, [], Street] : String | semmle.label | { ..., ... } [Addresses, [], Street] : String |
-| EntityFrameworkCore.cs:168:29:173:17 | array creation of type Address[] [[], Street] : String | semmle.label | array creation of type Address[] [[], Street] : String |
-| EntityFrameworkCore.cs:168:35:173:17 | { ..., ... } [[], Street] : String | semmle.label | { ..., ... } [[], Street] : String |
-| EntityFrameworkCore.cs:169:21:172:21 | object creation of type Address [Street] : String | semmle.label | object creation of type Address [Street] : String |
-| EntityFrameworkCore.cs:169:33:172:21 | { ..., ... } [Street] : String | semmle.label | { ..., ... } [Street] : String |
+| EntityFrameworkCore.cs:167:13:174:13 | { ..., ... } [property Addresses, element, property Street] : String | semmle.label | { ..., ... } [property Addresses, element, property Street] : String |
+| EntityFrameworkCore.cs:168:29:173:17 | array creation of type Address[] [element, property Street] : String | semmle.label | array creation of type Address[] [element, property Street] : String |
+| EntityFrameworkCore.cs:168:35:173:17 | { ..., ... } [element, property Street] : String | semmle.label | { ..., ... } [element, property Street] : String |
+| EntityFrameworkCore.cs:169:21:172:21 | object creation of type Address [property Street] : String | semmle.label | object creation of type Address [property Street] : String |
+| EntityFrameworkCore.cs:169:33:172:21 | { ..., ... } [property Street] : String | semmle.label | { ..., ... } [property Street] : String |
 | EntityFrameworkCore.cs:171:34:171:42 | "tainted" : String | semmle.label | "tainted" : String |
-| EntityFrameworkCore.cs:175:13:175:15 | [post] access to local variable ctx [Persons, [], Addresses, [], Street] : String | semmle.label | [post] access to local variable ctx [Persons, [], Addresses, [], Street] : String |
-| EntityFrameworkCore.cs:175:13:175:23 | [post] access to property Persons [[], Addresses, [], Street] : String | semmle.label | [post] access to property Persons [[], Addresses, [], Street] : String |
-| EntityFrameworkCore.cs:175:29:175:30 | access to local variable p1 [Addresses, [], Street] : String | semmle.label | access to local variable p1 [Addresses, [], Street] : String |
-| EntityFrameworkCore.cs:176:13:176:15 | access to local variable ctx [Persons, [], Addresses, [], Street] : String | semmle.label | access to local variable ctx [Persons, [], Addresses, [], Street] : String |
-| EntityFrameworkCore.cs:180:13:180:15 | access to local variable ctx [Persons, [], Addresses, [], Street] : String | semmle.label | access to local variable ctx [Persons, [], Addresses, [], Street] : String |
-| EntityFrameworkCore.cs:183:13:186:13 | { ..., ... } [Street] : String | semmle.label | { ..., ... } [Street] : String |
+| EntityFrameworkCore.cs:175:13:175:15 | [post] access to local variable ctx [property Persons, element, property Addresses, element, property Street] : String | semmle.label | [post] access to local variable ctx [property Persons, element, property Addresses, element, property Street] : String |
+| EntityFrameworkCore.cs:175:13:175:23 | [post] access to property Persons [element, property Addresses, element, property Street] : String | semmle.label | [post] access to property Persons [element, property Addresses, element, property Street] : String |
+| EntityFrameworkCore.cs:175:29:175:30 | access to local variable p1 [property Addresses, element, property Street] : String | semmle.label | access to local variable p1 [property Addresses, element, property Street] : String |
+| EntityFrameworkCore.cs:176:13:176:15 | access to local variable ctx [property Persons, element, property Addresses, element, property Street] : String | semmle.label | access to local variable ctx [property Persons, element, property Addresses, element, property Street] : String |
+| EntityFrameworkCore.cs:180:13:180:15 | access to local variable ctx [property Persons, element, property Addresses, element, property Street] : String | semmle.label | access to local variable ctx [property Persons, element, property Addresses, element, property Street] : String |
+| EntityFrameworkCore.cs:183:13:186:13 | { ..., ... } [property Street] : String | semmle.label | { ..., ... } [property Street] : String |
 | EntityFrameworkCore.cs:185:26:185:34 | "tainted" : String | semmle.label | "tainted" : String |
-| EntityFrameworkCore.cs:187:13:187:15 | [post] access to local variable ctx [Addresses, [], Street] : String | semmle.label | [post] access to local variable ctx [Addresses, [], Street] : String |
-| EntityFrameworkCore.cs:187:13:187:25 | [post] access to property Addresses [[], Street] : String | semmle.label | [post] access to property Addresses [[], Street] : String |
-| EntityFrameworkCore.cs:187:31:187:32 | access to local variable a1 [Street] : String | semmle.label | access to local variable a1 [Street] : String |
-| EntityFrameworkCore.cs:188:13:188:15 | access to local variable ctx [Addresses, [], Street] : String | semmle.label | access to local variable ctx [Addresses, [], Street] : String |
-| EntityFrameworkCore.cs:188:13:188:15 | access to local variable ctx [Persons, [], Addresses, [], Street] : String | semmle.label | access to local variable ctx [Persons, [], Addresses, [], Street] : String |
-| EntityFrameworkCore.cs:192:13:192:15 | access to local variable ctx [Addresses, [], Street] : String | semmle.label | access to local variable ctx [Addresses, [], Street] : String |
-| EntityFrameworkCore.cs:192:13:192:15 | access to local variable ctx [Persons, [], Addresses, [], Street] : String | semmle.label | access to local variable ctx [Persons, [], Addresses, [], Street] : String |
-| EntityFrameworkCore.cs:199:13:202:13 | { ..., ... } [Name] : String | semmle.label | { ..., ... } [Name] : String |
+| EntityFrameworkCore.cs:187:13:187:15 | [post] access to local variable ctx [property Addresses, element, property Street] : String | semmle.label | [post] access to local variable ctx [property Addresses, element, property Street] : String |
+| EntityFrameworkCore.cs:187:13:187:25 | [post] access to property Addresses [element, property Street] : String | semmle.label | [post] access to property Addresses [element, property Street] : String |
+| EntityFrameworkCore.cs:187:31:187:32 | access to local variable a1 [property Street] : String | semmle.label | access to local variable a1 [property Street] : String |
+| EntityFrameworkCore.cs:188:13:188:15 | access to local variable ctx [property Addresses, element, property Street] : String | semmle.label | access to local variable ctx [property Addresses, element, property Street] : String |
+| EntityFrameworkCore.cs:188:13:188:15 | access to local variable ctx [property Persons, element, property Addresses, element, property Street] : String | semmle.label | access to local variable ctx [property Persons, element, property Addresses, element, property Street] : String |
+| EntityFrameworkCore.cs:192:13:192:15 | access to local variable ctx [property Addresses, element, property Street] : String | semmle.label | access to local variable ctx [property Addresses, element, property Street] : String |
+| EntityFrameworkCore.cs:192:13:192:15 | access to local variable ctx [property Persons, element, property Addresses, element, property Street] : String | semmle.label | access to local variable ctx [property Persons, element, property Addresses, element, property Street] : String |
+| EntityFrameworkCore.cs:199:13:202:13 | { ..., ... } [property Name] : String | semmle.label | { ..., ... } [property Name] : String |
 | EntityFrameworkCore.cs:201:24:201:32 | "tainted" : String | semmle.label | "tainted" : String |
-| EntityFrameworkCore.cs:204:13:207:13 | { ..., ... } [Street] : String | semmle.label | { ..., ... } [Street] : String |
+| EntityFrameworkCore.cs:204:13:207:13 | { ..., ... } [property Street] : String | semmle.label | { ..., ... } [property Street] : String |
 | EntityFrameworkCore.cs:206:26:206:34 | "tainted" : String | semmle.label | "tainted" : String |
-| EntityFrameworkCore.cs:208:60:208:88 | { ..., ... } [Address, Street] : String | semmle.label | { ..., ... } [Address, Street] : String |
-| EntityFrameworkCore.cs:208:60:208:88 | { ..., ... } [Person, Name] : String | semmle.label | { ..., ... } [Person, Name] : String |
-| EntityFrameworkCore.cs:208:71:208:72 | access to local variable p1 [Name] : String | semmle.label | access to local variable p1 [Name] : String |
-| EntityFrameworkCore.cs:208:85:208:86 | access to local variable a1 [Street] : String | semmle.label | access to local variable a1 [Street] : String |
-| EntityFrameworkCore.cs:209:13:209:15 | [post] access to local variable ctx [PersonAddresses, [], Address, Street] : String | semmle.label | [post] access to local variable ctx [PersonAddresses, [], Address, Street] : String |
-| EntityFrameworkCore.cs:209:13:209:15 | [post] access to local variable ctx [PersonAddresses, [], Person, Name] : String | semmle.label | [post] access to local variable ctx [PersonAddresses, [], Person, Name] : String |
-| EntityFrameworkCore.cs:209:13:209:31 | [post] access to property PersonAddresses [[], Address, Street] : String | semmle.label | [post] access to property PersonAddresses [[], Address, Street] : String |
-| EntityFrameworkCore.cs:209:13:209:31 | [post] access to property PersonAddresses [[], Person, Name] : String | semmle.label | [post] access to property PersonAddresses [[], Person, Name] : String |
-| EntityFrameworkCore.cs:209:37:209:53 | access to local variable personAddressMap1 [Address, Street] : String | semmle.label | access to local variable personAddressMap1 [Address, Street] : String |
-| EntityFrameworkCore.cs:209:37:209:53 | access to local variable personAddressMap1 [Person, Name] : String | semmle.label | access to local variable personAddressMap1 [Person, Name] : String |
-| EntityFrameworkCore.cs:210:13:210:15 | access to local variable ctx [PersonAddresses, [], Address, Street] : String | semmle.label | access to local variable ctx [PersonAddresses, [], Address, Street] : String |
-| EntityFrameworkCore.cs:210:13:210:15 | access to local variable ctx [PersonAddresses, [], Person, Name] : String | semmle.label | access to local variable ctx [PersonAddresses, [], Person, Name] : String |
-| EntityFrameworkCore.cs:216:13:216:15 | access to local variable ctx [PersonAddresses, [], Address, Street] : String | semmle.label | access to local variable ctx [PersonAddresses, [], Address, Street] : String |
-| EntityFrameworkCore.cs:216:13:216:15 | access to local variable ctx [PersonAddresses, [], Person, Name] : String | semmle.label | access to local variable ctx [PersonAddresses, [], Person, Name] : String |
-| EntityFrameworkCore.cs:219:35:219:35 | p [Name] : String | semmle.label | p [Name] : String |
-| EntityFrameworkCore.cs:222:13:222:15 | [post] access to local variable ctx [Persons, [], Name] : String | semmle.label | [post] access to local variable ctx [Persons, [], Name] : String |
-| EntityFrameworkCore.cs:222:13:222:23 | [post] access to property Persons [[], Name] : String | semmle.label | [post] access to property Persons [[], Name] : String |
-| EntityFrameworkCore.cs:222:29:222:29 | access to parameter p [Name] : String | semmle.label | access to parameter p [Name] : String |
-| EntityFrameworkCore.cs:223:13:223:15 | access to local variable ctx [Persons, [], Name] : String | semmle.label | access to local variable ctx [Persons, [], Name] : String |
-| EntityFrameworkCore.cs:230:18:230:28 | access to property Persons [[], Name] : String | semmle.label | access to property Persons [[], Name] : String |
-| EntityFrameworkCore.cs:230:18:230:36 | call to method First [Name] : String | semmle.label | call to method First [Name] : String |
+| EntityFrameworkCore.cs:208:60:208:88 | { ..., ... } [property Address, property Street] : String | semmle.label | { ..., ... } [property Address, property Street] : String |
+| EntityFrameworkCore.cs:208:60:208:88 | { ..., ... } [property Person, property Name] : String | semmle.label | { ..., ... } [property Person, property Name] : String |
+| EntityFrameworkCore.cs:208:71:208:72 | access to local variable p1 [property Name] : String | semmle.label | access to local variable p1 [property Name] : String |
+| EntityFrameworkCore.cs:208:85:208:86 | access to local variable a1 [property Street] : String | semmle.label | access to local variable a1 [property Street] : String |
+| EntityFrameworkCore.cs:209:13:209:15 | [post] access to local variable ctx [property PersonAddresses, element, property Address, property Street] : String | semmle.label | [post] access to local variable ctx [property PersonAddresses, element, property Address, property Street] : String |
+| EntityFrameworkCore.cs:209:13:209:15 | [post] access to local variable ctx [property PersonAddresses, element, property Person, property Name] : String | semmle.label | [post] access to local variable ctx [property PersonAddresses, element, property Person, property Name] : String |
+| EntityFrameworkCore.cs:209:13:209:31 | [post] access to property PersonAddresses [element, property Address, property Street] : String | semmle.label | [post] access to property PersonAddresses [element, property Address, property Street] : String |
+| EntityFrameworkCore.cs:209:13:209:31 | [post] access to property PersonAddresses [element, property Person, property Name] : String | semmle.label | [post] access to property PersonAddresses [element, property Person, property Name] : String |
+| EntityFrameworkCore.cs:209:37:209:53 | access to local variable personAddressMap1 [property Address, property Street] : String | semmle.label | access to local variable personAddressMap1 [property Address, property Street] : String |
+| EntityFrameworkCore.cs:209:37:209:53 | access to local variable personAddressMap1 [property Person, property Name] : String | semmle.label | access to local variable personAddressMap1 [property Person, property Name] : String |
+| EntityFrameworkCore.cs:210:13:210:15 | access to local variable ctx [property PersonAddresses, element, property Address, property Street] : String | semmle.label | access to local variable ctx [property PersonAddresses, element, property Address, property Street] : String |
+| EntityFrameworkCore.cs:210:13:210:15 | access to local variable ctx [property PersonAddresses, element, property Person, property Name] : String | semmle.label | access to local variable ctx [property PersonAddresses, element, property Person, property Name] : String |
+| EntityFrameworkCore.cs:216:13:216:15 | access to local variable ctx [property PersonAddresses, element, property Address, property Street] : String | semmle.label | access to local variable ctx [property PersonAddresses, element, property Address, property Street] : String |
+| EntityFrameworkCore.cs:216:13:216:15 | access to local variable ctx [property PersonAddresses, element, property Person, property Name] : String | semmle.label | access to local variable ctx [property PersonAddresses, element, property Person, property Name] : String |
+| EntityFrameworkCore.cs:219:35:219:35 | p [property Name] : String | semmle.label | p [property Name] : String |
+| EntityFrameworkCore.cs:222:13:222:15 | [post] access to local variable ctx [property Persons, element, property Name] : String | semmle.label | [post] access to local variable ctx [property Persons, element, property Name] : String |
+| EntityFrameworkCore.cs:222:13:222:23 | [post] access to property Persons [element, property Name] : String | semmle.label | [post] access to property Persons [element, property Name] : String |
+| EntityFrameworkCore.cs:222:29:222:29 | access to parameter p [property Name] : String | semmle.label | access to parameter p [property Name] : String |
+| EntityFrameworkCore.cs:223:13:223:15 | access to local variable ctx [property Persons, element, property Name] : String | semmle.label | access to local variable ctx [property Persons, element, property Name] : String |
+| EntityFrameworkCore.cs:230:18:230:28 | access to property Persons [element, property Name] : String | semmle.label | access to property Persons [element, property Name] : String |
+| EntityFrameworkCore.cs:230:18:230:36 | call to method First [property Name] : String | semmle.label | call to method First [property Name] : String |
 | EntityFrameworkCore.cs:230:18:230:41 | access to property Name | semmle.label | access to property Name |
-| EntityFrameworkCore.cs:238:18:238:30 | access to property Addresses [[], Street] : String | semmle.label | access to property Addresses [[], Street] : String |
-| EntityFrameworkCore.cs:238:18:238:38 | call to method First [Street] : String | semmle.label | call to method First [Street] : String |
+| EntityFrameworkCore.cs:238:18:238:30 | access to property Addresses [element, property Street] : String | semmle.label | access to property Addresses [element, property Street] : String |
+| EntityFrameworkCore.cs:238:18:238:38 | call to method First [property Street] : String | semmle.label | call to method First [property Street] : String |
 | EntityFrameworkCore.cs:238:18:238:45 | access to property Street | semmle.label | access to property Street |
-| EntityFrameworkCore.cs:245:18:245:28 | access to property Persons [[], Addresses, [], Street] : String | semmle.label | access to property Persons [[], Addresses, [], Street] : String |
-| EntityFrameworkCore.cs:245:18:245:36 | call to method First [Addresses, [], Street] : String | semmle.label | call to method First [Addresses, [], Street] : String |
-| EntityFrameworkCore.cs:245:18:245:46 | access to property Addresses [[], Street] : String | semmle.label | access to property Addresses [[], Street] : String |
-| EntityFrameworkCore.cs:245:18:245:54 | call to method First [Street] : String | semmle.label | call to method First [Street] : String |
+| EntityFrameworkCore.cs:245:18:245:28 | access to property Persons [element, property Addresses, element, property Street] : String | semmle.label | access to property Persons [element, property Addresses, element, property Street] : String |
+| EntityFrameworkCore.cs:245:18:245:36 | call to method First [property Addresses, element, property Street] : String | semmle.label | call to method First [property Addresses, element, property Street] : String |
+| EntityFrameworkCore.cs:245:18:245:46 | access to property Addresses [element, property Street] : String | semmle.label | access to property Addresses [element, property Street] : String |
+| EntityFrameworkCore.cs:245:18:245:54 | call to method First [property Street] : String | semmle.label | call to method First [property Street] : String |
 | EntityFrameworkCore.cs:245:18:245:61 | access to property Street | semmle.label | access to property Street |
 #select
 | EntityFramework.cs:131:18:131:25 | access to property Title | EntityFramework.cs:126:25:126:33 | "tainted" : String | EntityFramework.cs:131:18:131:25 | access to property Title | $@ | EntityFramework.cs:126:25:126:33 | "tainted" : String | "tainted" : String |

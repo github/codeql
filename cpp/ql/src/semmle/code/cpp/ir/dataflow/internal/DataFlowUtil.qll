@@ -12,10 +12,20 @@ private import semmle.code.cpp.controlflow.IRGuards
 private import semmle.code.cpp.models.interfaces.DataFlow
 
 cached
-private newtype TIRDataFlowNode =
-  TInstructionNode(Instruction i) or
-  TOperandNode(Operand op) or
-  TVariableNode(Variable var)
+private module Cached {
+  cached
+  newtype TIRDataFlowNode =
+    TInstructionNode(Instruction i) or
+    TOperandNode(Operand op) or
+    TVariableNode(Variable var)
+
+  cached
+  predicate localFlowStepCached(Node nodeFrom, Node nodeTo) {
+    simpleLocalFlowStep(nodeFrom, nodeTo)
+  }
+}
+
+private import Cached
 
 /**
  * A node in a data flow graph.
@@ -362,15 +372,22 @@ private class ExplicitFieldStoreQualifierNode extends PartialDefinitionNode {
 
 /**
  * Not every store instruction generates a chi instruction that we can attach a PostUpdateNode to.
- * For instance, an update to a field of a struct containing only one field. For these cases we
- * attach the PostUpdateNode to the store instruction. There's no obvious pre update node for this case
- * (as the entire memory is updated), so `getPreUpdateNode` is implemented as `none()`.
+ * For instance, an update to a field of a struct containing only one field. Even if the store does
+ * have a chi instruction, a subsequent use of the result of the store may be linked directly to the
+ * result of the store as an inexact definition if the store totally overlaps the use. For these
+ * cases we attach the PostUpdateNode to the store instruction. There's no obvious pre update node
+ * for this case (as the entire memory is updated), so `getPreUpdateNode` is implemented as
+ * `none()`.
  */
 private class ExplicitSingleFieldStoreQualifierNode extends PartialDefinitionNode {
   override StoreInstruction instr;
 
   ExplicitSingleFieldStoreQualifierNode() {
-    not exists(ChiInstruction chi | chi.getPartial() = instr) and
+    (
+      instr.getAUse().isDefinitionInexact()
+      or
+      not exists(ChiInstruction chi | chi.getPartial() = instr)
+    ) and
     // Without this condition any store would create a `PostUpdateNode`.
     instr.getDestinationAddress() instanceof FieldAddressInstruction
   }
@@ -583,7 +600,7 @@ Node uninitializedNode(LocalVariable v) { none() }
  * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local
  * (intra-procedural) step.
  */
-predicate localFlowStep(Node nodeFrom, Node nodeTo) { simpleLocalFlowStep(nodeFrom, nodeTo) }
+predicate localFlowStep = localFlowStepCached/2;
 
 /**
  * INTERNAL: do not use.
@@ -591,7 +608,6 @@ predicate localFlowStep(Node nodeFrom, Node nodeTo) { simpleLocalFlowStep(nodeFr
  * This is the local flow predicate that's used as a building block in global
  * data flow. It may have less flow than the `localFlowStep` predicate.
  */
-cached
 predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   // Operand -> Instruction flow
   simpleInstructionLocalFlowStep(nodeFrom.asOperand(), nodeTo.asInstruction())
@@ -649,7 +665,7 @@ private predicate simpleOperandLocalFlowStep(Instruction iFrom, Operand opTo) {
   exists(LoadInstruction load |
     load.getSourceValueOperand() = opTo and
     opTo.getAnyDef() = iFrom and
-    isSingleFieldClass(iFrom.getResultType(), opTo)
+    isSingleFieldClass(pragma[only_bind_out](pragma[only_bind_out](iFrom).getResultType()), opTo)
   )
 }
 
@@ -732,14 +748,8 @@ private predicate modelFlow(Operand opFrom, Instruction iTo) {
       )
       or
       exists(int index, ReadSideEffectInstruction read |
-        modelIn.isParameterDeref(index) and
+        modelIn.isParameterDerefOrQualifierObject(index) and
         read = getSideEffectFor(call, index) and
-        opFrom = read.getSideEffectOperand()
-      )
-      or
-      exists(ReadSideEffectInstruction read |
-        modelIn.isQualifierObject() and
-        read = getSideEffectFor(call, -1) and
         opFrom = read.getSideEffectOperand()
       )
     )

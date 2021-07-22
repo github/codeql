@@ -3,6 +3,7 @@
  * @description Untrusted XML is read with an insecure resolver and DTD processing enabled.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 5.9
  * @precision high
  * @id cs/xml/insecure-dtd-handling
  * @tags security

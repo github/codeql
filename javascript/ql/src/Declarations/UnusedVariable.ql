@@ -65,8 +65,8 @@ predicate isReactForJSX(UnusedLocal v) {
       v.getName() =
         tsconfig
             .getPropValue("compilerOptions")
-            .(JSONObject)
-            .getPropStringValue(["jsxFactory", "jsxFragmentFactory"])
+            .getPropValue(["jsxFactory", "jsxFragmentFactory"])
+            .getStringValue()
     )
   )
 }

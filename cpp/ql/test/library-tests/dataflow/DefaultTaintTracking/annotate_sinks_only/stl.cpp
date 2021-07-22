@@ -73,7 +73,7 @@ void test_string()
 	sink(b); // clean
 	sink(c); // $ ir MISSING: ast
 	sink(b.c_str()); // clean
-	sink(c.c_str()); // $ MISSING: ast,ir
+	sink(c.c_str()); // $ ir MISSING: ast
 }
 
 void test_stringstream()
@@ -93,10 +93,10 @@ void test_stringstream()
 	sink(ss4); // $ ir MISSING: ast
 	sink(ss5); // $ ir MISSING: ast
 	sink(ss1.str());
-	sink(ss2.str()); // $ MISSING: ast,ir
+	sink(ss2.str()); // $ ir MISSING: ast
 	sink(ss3.str()); // $ MISSING: ast,ir
-	sink(ss4.str()); // $ MISSING: ast,ir
-	sink(ss5.str()); // $ MISSING: ast,ir
+	sink(ss4.str()); // $ ir MISSING: ast
+	sink(ss5.str()); // $ ir MISSING: ast
 }
 
 void test_stringstream_int(int source)
@@ -123,14 +123,14 @@ void sink(const char *filename, const char *mode);
 void test_strings2()
 {
 	string path1 = user_input();
-	sink(path1.c_str(), "r"); // $ MISSING: ast,ir
+	sink(path1.c_str(), "r"); // $ ir MISSING: ast
 
 	string path2;
 	path2 = user_input();
-	sink(path2.c_str(), "r"); // $ MISSING: ast,ir
+	sink(path2.c_str(), "r"); // $ ir MISSING: ast
 
 	string path3(user_input());
-	sink(path3.c_str(), "r"); // $ MISSING: ast,ir
+	sink(path3.c_str(), "r"); // $ ir MISSING: ast
 }
 
 void test_string3()
@@ -154,6 +154,6 @@ void test_string4()
 	// convert back std::string -> char *
 	cs = ss.c_str();
 
-	sink(cs); // $ ast MISSING: ir
+	sink(cs); // $ ast,ir
 	sink(ss); // $ ir MISSING: ast
 }

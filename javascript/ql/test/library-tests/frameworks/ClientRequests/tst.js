@@ -281,3 +281,36 @@ httpProxy.createProxyServer({
     },
     changeOrigin: true
 }).listen(8000);
+
+function webSocket() {
+    const socket = new WebSocket('ws://localhost:8080');
+    socket.addEventListener('open', function (event) {
+        socket.send('Hello Server!');
+    });
+    socket.addEventListener('message', function (event) {
+        console.log("Data from server: " + event.data);
+    });
+}
+
+function moreAxios() {
+    axios({
+        method: 'GET',
+        url: "http://example.org/more-axios",
+    }).then(
+        x => res.send(x.data),
+        (err) => {
+            const status = err.response.status;
+            const data = err.response.data;
+            const agent = err.response.headers.useragent;
+        }
+    );
+}
+
+import { fetch as fetchPolyfill } from 'whatwg-fetch'
+
+function usePolyfill() {
+    return fetchPolyfill('/foo/bar')
+        .then(function (response) {
+            return response.text()
+        })
+}

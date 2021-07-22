@@ -7,4 +7,7 @@ var cp = require('child_process'),
 
 	execa.shell('rm -rf ' + path.join(__dirname, "temp")); // NOT OK
 	execa.shellSync('rm -rf ' + path.join(__dirname, "temp")); // NOT OK
+
+	const safe = "\"" + path.join(__dirname, "temp") + "\"";
+	execa.shellSync('rm -rf ' + safe); // OK
 });

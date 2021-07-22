@@ -4,6 +4,7 @@
  *              may cause redirection to malicious web sites.
  * @kind path-problem
  * @problem.severity recommendation
+ * @security-severity 2.7
  * @precision medium
  * @id java/unvalidated-url-redirection-local
  * @tags security

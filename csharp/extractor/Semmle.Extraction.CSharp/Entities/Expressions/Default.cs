@@ -14,5 +14,20 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         {
             TypeAccess.Create(Context, Syntax.Type, this, 0);
         }
+
+        public static Expression CreateGenerated(Context cx, IExpressionParentEntity parent, int childIndex, Extraction.Entities.Location location, string? value)
+        {
+            var info = new ExpressionInfo(
+                cx,
+                null,
+                location,
+                ExprKind.DEFAULT,
+                parent,
+                childIndex,
+                true,
+                value);
+
+            return new Expression(info);
+        }
     }
 }

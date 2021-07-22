@@ -4,7 +4,7 @@ using Semmle.Extraction.Kinds;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
-    internal class MemberAccess : Expression
+    internal sealed class MemberAccess : Expression
     {
         private MemberAccess(ExpressionNodeInfo info, ExpressionSyntax qualifier, ISymbol? target) : base(info)
         {

@@ -189,3 +189,30 @@ int *&conversionInFlow() {
   int *&pRef = p; // has conversion in the middle of data flow
   return pRef; // BAD [NOT DETECTED]
 }
+
+namespace std {
+	template<typename T>
+	class shared_ptr {
+	public:
+		shared_ptr() noexcept;
+		explicit shared_ptr(T*);
+		shared_ptr(const shared_ptr&) noexcept;
+		template<class U> shared_ptr(const shared_ptr<U>&) noexcept;
+		template<class U> shared_ptr(shared_ptr<U>&&) noexcept;
+
+		shared_ptr<T>& operator=(const shared_ptr<T>&) noexcept;
+		shared_ptr<T>& operator=(shared_ptr<T>&&) noexcept;
+
+		T& operator*() const noexcept;
+		T* operator->() const noexcept;
+
+		T* get() const noexcept;
+	};
+}
+
+auto make_read_port()
+{
+  auto port = std::shared_ptr<int>(new int);
+  auto ptr = port.get();
+  return ptr; // GOOD
+}

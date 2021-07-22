@@ -5,3 +5,5 @@ query predicate resolveableImport(Import imp, Module mod) {
   not imp.getTopLevel().isExterns() and
   not mod.getTopLevel().isExterns()
 }
+
+query Module getMain(PackageJSON json) { result = json.getMainModule() }

@@ -4,6 +4,7 @@
  *              may cause redirection to malicious web sites.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 2.7
  * @precision high
  * @id cs/web/unvalidated-url-redirection
  * @tags security

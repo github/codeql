@@ -16,6 +16,7 @@ test_ReactComponent_getInstanceMethod
 | es5.js:18:33:22:1 | {\\n  ren ... ;\\n  }\\n} | render | es5.js:19:11:21:3 | functio ... 1>;\\n  } |
 | es6.js:1:1:8:1 | class H ... ;\\n  }\\n} | render | es6.js:2:9:4:3 | () {\\n   ... v>;\\n  } |
 | exportedComponent.jsx:1:8:3:1 | functio ... r}}/>\\n} | render | exportedComponent.jsx:1:8:3:1 | functio ... r}}/>\\n} |
+| importedComponent.jsx:3:8:5:1 | functio ... or}/>\\n} | render | importedComponent.jsx:3:8:5:1 | functio ... or}/>\\n} |
 | plainfn.js:1:1:3:1 | functio ... div>;\\n} | render | plainfn.js:1:1:3:1 | functio ... div>;\\n} |
 | plainfn.js:5:1:7:1 | functio ... iv");\\n} | render | plainfn.js:5:1:7:1 | functio ... iv");\\n} |
 | plainfn.js:9:1:12:1 | functio ... rn x;\\n} | render | plainfn.js:9:1:12:1 | functio ... rn x;\\n} |
@@ -97,6 +98,7 @@ test_ReactComponent_ref
 | es6.js:14:1:20:1 | class H ...     }\\n} | es6.js:17:9:17:12 | this |
 | es6.js:14:1:20:1 | class H ...     }\\n} | es6.js:18:9:18:12 | this |
 | exportedComponent.jsx:1:8:3:1 | functio ... r}}/>\\n} | exportedComponent.jsx:1:8:1:7 | this |
+| importedComponent.jsx:3:8:5:1 | functio ... or}/>\\n} | importedComponent.jsx:3:8:3:7 | this |
 | namedImport.js:3:1:3:28 | class C ... nent {} | namedImport.js:3:27:3:26 | this |
 | namedImport.js:5:1:5:20 | class D extends C {} | namedImport.js:5:19:5:18 | this |
 | plainfn.js:1:1:3:1 | functio ... div>;\\n} | plainfn.js:1:1:1:0 | this |
@@ -198,6 +200,7 @@ test_ReactComponent_getADirectPropsSource
 | es6.js:1:1:8:1 | class H ... ;\\n  }\\n} | es6.js:1:37:1:36 | args |
 | es6.js:1:1:8:1 | class H ... ;\\n  }\\n} | es6.js:3:24:3:33 | this.props |
 | exportedComponent.jsx:1:8:3:1 | functio ... r}}/>\\n} | exportedComponent.jsx:1:29:1:33 | props |
+| importedComponent.jsx:3:8:5:1 | functio ... or}/>\\n} | importedComponent.jsx:3:24:3:40 | {color, location} |
 | namedImport.js:3:1:3:28 | class C ... nent {} | namedImport.js:3:27:3:26 | args |
 | namedImport.js:5:1:5:20 | class D extends C {} | namedImport.js:5:19:5:18 | args |
 | plainfn.js:1:1:3:1 | functio ... div>;\\n} | plainfn.js:1:16:1:20 | props |
@@ -236,6 +239,7 @@ test_ReactComponent
 | es6.js:1:1:8:1 | class H ... ;\\n  }\\n} |
 | es6.js:14:1:20:1 | class H ...     }\\n} |
 | exportedComponent.jsx:1:8:3:1 | functio ... r}}/>\\n} |
+| importedComponent.jsx:3:8:5:1 | functio ... or}/>\\n} |
 | namedImport.js:3:1:3:28 | class C ... nent {} |
 | namedImport.js:5:1:5:20 | class D extends C {} |
 | plainfn.js:1:1:3:1 | functio ... div>;\\n} |
@@ -264,6 +268,8 @@ test_ReactComponent_getAPropRead
 | es5.js:18:33:22:1 | {\\n  ren ... ;\\n  }\\n} | name | es5.js:20:24:20:38 | this.props.name |
 | es6.js:1:1:8:1 | class H ... ;\\n  }\\n} | name | es6.js:3:24:3:38 | this.props.name |
 | exportedComponent.jsx:1:8:3:1 | functio ... r}}/>\\n} | color | exportedComponent.jsx:2:32:2:42 | props.color |
+| importedComponent.jsx:3:8:5:1 | functio ... or}/>\\n} | color | importedComponent.jsx:3:25:3:29 | color |
+| importedComponent.jsx:3:8:5:1 | functio ... or}/>\\n} | location | importedComponent.jsx:3:32:3:39 | location |
 | plainfn.js:1:1:3:1 | functio ... div>;\\n} | name | plainfn.js:2:22:2:31 | props.name |
 | preact.js:1:1:7:1 | class H ...     }\\n} | name | preact.js:3:9:3:18 | props.name |
 | probably-a-component.js:1:1:6:1 | class H ...     }\\n} | name | probably-a-component.js:3:9:3:23 | this.props.name |
@@ -288,6 +294,9 @@ test_JSXname
 | thisAccesses.js:60:19:60:41 | <this.n ... s.name> | thisAccesses.js:60:20:60:28 | this.name | this.name | dot |
 | thisAccesses.js:61:19:61:41 | <this.t ... s.this> | thisAccesses.js:61:20:61:28 | this.this | this.this | dot |
 | thisAccesses_importedMappers.js:13:16:13:21 | <div/> | thisAccesses_importedMappers.js:13:17:13:19 | div | div | Identifier |
+| use-react-router.jsx:5:17:5:87 | <Router ... Router> | use-react-router.jsx:5:18:5:23 | Router | Router | Identifier |
+| use-react-router.jsx:5:25:5:78 | <Route> ... /Route> | use-react-router.jsx:5:26:5:30 | Route | Route | Identifier |
+| use-react-router.jsx:5:32:5:70 | <Import ... ponent> | use-react-router.jsx:5:33:5:49 | ImportedComponent | ImportedComponent | Identifier |
 | useHigherOrderComponent.jsx:5:12:5:39 | <SomeCo ... "red"/> | useHigherOrderComponent.jsx:5:13:5:25 | SomeComponent | SomeComponent | Identifier |
 | useHigherOrderComponent.jsx:11:12:11:46 | <LazyLo ... lazy"/> | useHigherOrderComponent.jsx:11:13:11:31 | LazyLoadedComponent | LazyLoadedComponent | Identifier |
 | useHigherOrderComponent.jsx:17:12:17:48 | <LazyLo ... azy2"/> | useHigherOrderComponent.jsx:17:13:17:32 | LazyLoadedComponent2 | LazyLoadedComponent2 | Identifier |
@@ -298,3 +307,5 @@ test_JSXName_this
 | statePropertyWrites.js:38:12:38:45 | <div>He ... }</div> | statePropertyWrites.js:38:24:38:27 | this |
 | thisAccesses.js:60:19:60:41 | <this.n ... s.name> | thisAccesses.js:60:20:60:23 | this |
 | thisAccesses.js:61:19:61:41 | <this.t ... s.this> | thisAccesses.js:61:20:61:23 | this |
+locationSource
+| importedComponent.jsx:3:32:3:39 | location |

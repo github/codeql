@@ -3,6 +3,7 @@
 import DataFlowUtil
 import DataFlowPublic
 private import DataFlowPrivate
+private import semmle.python.types.Builtins
 
 /**
  * A data flow node that reads or writes an attribute of an object.
@@ -83,8 +84,6 @@ private class AttributeAssignmentAsAttrWrite extends AttrWrite, CfgNode {
 
   override string getAttributeName() { result = node.getName() }
 }
-
-import semmle.python.types.Builtins
 
 /** Represents `CallNode`s that may refer to calls to built-in functions or classes. */
 private class BuiltInCallNode extends CallNode {

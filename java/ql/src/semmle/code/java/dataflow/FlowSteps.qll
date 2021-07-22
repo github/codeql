@@ -152,8 +152,7 @@ private class NumberTaintPreservingCallable extends TaintPreservingCallable {
 
 /** Holds for the types `StringBuilder`, `StringBuffer`, and `StringWriter`. */
 private predicate stringBuilderType(RefType t) {
-  t.hasQualifiedName("java.lang", "StringBuilder") or
-  t.hasQualifiedName("java.lang", "StringBuffer") or
+  t instanceof StringBuildingType or
   t.hasQualifiedName("java.io", "StringWriter")
 }
 

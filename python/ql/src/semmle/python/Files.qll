@@ -72,6 +72,33 @@ class File extends Container {
    * are specified to be extracted.
    */
   string getContents() { file_contents(this, result) }
+
+  /** Holds if this file is likely to get executed directly, and thus act as an entry point for execution. */
+  predicate isPossibleEntryPoint() {
+    // Only consider files in the source code, and not things like the standard library
+    exists(this.getRelativePath()) and
+    (
+      // The file doesn't have the extension `.py` but still contains Python statements
+      not this.getExtension().matches("py%") and
+      exists(Stmt s | s.getLocation().getFile() = this)
+      or
+      // The file contains the usual `if __name__ == '__main__':` construction
+      exists(If i, Name name, StrConst main, Cmpop op |
+        i.getScope().(Module).getFile() = this and
+        op instanceof Eq and
+        i.getTest().(Compare).compares(name, op, main) and
+        name.getId() = "__name__" and
+        main.getText() = "__main__"
+      )
+      or
+      // The file contains a `#!` line referencing the python interpreter
+      exists(Comment c |
+        c.getLocation().getFile() = this and
+        c.getLocation().getStartLine() = 1 and
+        c.getText().regexpMatch("^#! */.*python(2|3)?[ \\\\t]*$")
+      )
+    )
+  }
 }
 
 private predicate occupied_line(File f, int n) {

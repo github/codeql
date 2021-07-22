@@ -401,13 +401,15 @@ module Flask {
     }
   }
 
-  private class RequestAttrMultiDict extends Werkzeug::werkzeug::datastructures::MultiDict::InstanceSource {
+  private class RequestAttrMultiDict extends Werkzeug::werkzeug::datastructures::MultiDict::InstanceSourceApiNode {
     string attr_name;
 
     RequestAttrMultiDict() {
       attr_name in ["args", "values", "form", "files"] and
-      this = request().getMember(attr_name).getAnImmediateUse()
+      this = request().getMember(attr_name)
     }
+
+    override string toString() { result = this.(API::Node).toString() }
   }
 
   private class RequestAttrFiles extends RequestAttrMultiDict {

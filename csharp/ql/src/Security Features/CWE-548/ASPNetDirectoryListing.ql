@@ -3,6 +3,7 @@
  * @description Directory browsing should not be enabled in production as it can leak sensitive information.
  * @kind problem
  * @problem.severity warning
+ * @security-severity 3.6
  * @precision very-high
  * @id cs/web/directory-browse-enabled
  * @tags security

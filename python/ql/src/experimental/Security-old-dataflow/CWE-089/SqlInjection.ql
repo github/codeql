@@ -3,6 +3,8 @@
  * @description Building a SQL query from user-controlled sources is vulnerable to insertion of
  *              malicious SQL code by the user.
  * @kind path-problem
+ * @problem.severity error
+ * @id py/old/sql-injection
  */
 
 import python

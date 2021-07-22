@@ -15,9 +15,14 @@ namespace Semmle.Extraction
 
         public Label Label { get; set; }
 
-        public abstract void WriteId(TextWriter trapFile);
+        public abstract void WriteId(EscapingTextWriter trapFile);
 
-        public abstract void WriteQuotedId(TextWriter trapFile);
+        public virtual void WriteQuotedId(EscapingTextWriter trapFile)
+        {
+            trapFile.WriteUnescaped("@\"");
+            WriteId(trapFile);
+            trapFile.WriteUnescaped('\"');
+        }
 
         public abstract Location? ReportingLocation { get; }
 
@@ -27,9 +32,10 @@ namespace Semmle.Extraction
         {
             trapFile.WriteLabel(this);
             trapFile.Write("=");
+            using var escaping = new EscapingTextWriter(trapFile);
             try
             {
-                WriteQuotedId(trapFile);
+                WriteQuotedId(escaping);
             }
             catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
             {
@@ -51,7 +57,7 @@ namespace Semmle.Extraction
         /// </summary>
         public string GetDebugLabel()
         {
-            using var writer = new StringWriter();
+            using var writer = new EscapingTextWriter();
             writer.WriteLabel(Label.Value);
             writer.Write('=');
             WriteQuotedId(writer);

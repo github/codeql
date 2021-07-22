@@ -81,6 +81,13 @@ File tryExtensions(Folder dir, string basename, int priority) {
 }
 
 /**
+ * Gets `name` without a file extension.
+ * Or `name`, if `name` has no file extension.
+ */
+bindingset[name]
+private string getStem(string name) { result = name.regexpCapture("(.+?)(?:\\.([^.]+))?", 1) }
+
+/**
  * Gets the main module described by `pkg` with the given `priority`.
  */
 File resolveMainModule(PackageJSON pkg, int priority) {
@@ -90,14 +97,37 @@ File resolveMainModule(PackageJSON pkg, int priority) {
     result = tryExtensions(main.resolve(), "index", priority)
     or
     not exists(main.resolve()) and
-    not exists(main.getExtension()) and
     exists(int n | n = main.getNumComponent() |
-      result = tryExtensions(main.resolveUpTo(n - 1), main.getComponent(n - 1), priority)
+      result = tryExtensions(main.resolveUpTo(n - 1), getStem(main.getComponent(n - 1)), priority)
     )
   )
   or
-  result =
-    tryExtensions(pkg.getFile().getParentContainer(), "index", priority - prioritiesPerCandidate())
+  exists(Folder folder | folder = pkg.getFile().getParentContainer() |
+    result =
+      tryExtensions([folder, folder.getChildContainer(["src", "lib"])], "index",
+        priority - prioritiesPerCandidate())
+  )
+  or
+  // if there is no main module, then we look for files that are explicitly included in the published package.
+  exists(PathExpr file |
+    // `FilesPath` only exists if there is no main module for a given package.
+    file = FilesPath::of(pkg) and priority = 100 // fixing the priority, because there might be multiple files in the package.
+  |
+    result = file.resolve()
+    or
+    result = min(int i, File f | f = tryExtensions(file.resolve(), "index", i) | f order by i)
+    or
+    // resolve "file.js" to e.g. "file.ts".
+    not exists(file.resolve()) and
+    exists(int n | n = file.getNumComponent() |
+      result =
+        min(int i, File res |
+          res = tryExtensions(file.resolveUpTo(n - 1), getStem(file.getComponent(n - 1)), i)
+        |
+          res order by i
+        )
+    )
+  )
 }
 
 /**
@@ -122,4 +152,32 @@ class MainModulePath extends PathExpr, @json_string {
 
 module MainModulePath {
   MainModulePath of(PackageJSON pkg) { result.getPackageJSON() = pkg }
+}
+
+/**
+ * A JSON string in a `package.json` file specifying a file that should be included in the published package.
+ * These files are often imported directly from a client when a "main" module is not specified.
+ * For performance reasons this only exists if there is no "main" field in the `package.json` file.
+ */
+private class FilesPath extends PathExpr, @json_string {
+  PackageJSON pkg;
+
+  FilesPath() {
+    this = pkg.getPropValue("files").(JSONArray).getElementValue(_) and
+    not exists(MainModulePath::of(pkg))
+  }
+
+  /** Gets the `package.json` file in which this path occurs. */
+  PackageJSON getPackageJSON() { result = pkg }
+
+  override string getValue() { result = this.(JSONString).getValue() }
+
+  override Folder getAdditionalSearchRoot(int priority) {
+    priority = 0 and
+    result = pkg.getFile().getParentContainer()
+  }
+}
+
+private module FilesPath {
+  FilesPath of(PackageJSON pkg) { result.getPackageJSON() = pkg }
 }

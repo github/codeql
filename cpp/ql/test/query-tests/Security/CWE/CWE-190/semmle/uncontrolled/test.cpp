@@ -28,7 +28,7 @@ void randomTester2()
 	{
 		int r;
 		get_rand2(&r);
-		r = r + 100; // BAD [NOT DETECTED]
+		r = r + 100; // BAD
 	}
 
 	{
@@ -36,4 +36,15 @@ void randomTester2()
 		get_rand3(r);
 		r = r + 100; // BAD
 	}
+}
+
+int rand(int min, int max);
+unsigned rand(int max);
+
+void test_with_bounded_randomness() {
+  int r = rand(0, 10);
+  r++; // GOOD
+
+	unsigned unsigned_r = rand(10);
+	unsigned_r++; // GOOD
 }

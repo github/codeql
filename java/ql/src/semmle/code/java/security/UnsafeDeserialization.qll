@@ -48,6 +48,65 @@ class SafeKryo extends DataFlow2::Configuration {
       ma.getMethod() instanceof KryoReadObjectMethod
     )
   }
+
+  override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+    stepKryoPoolBuilderFactoryArgToConstructor(node1, node2) or
+    stepKryoPoolRunMethodAccessQualifierToFunctionalArgument(node1, node2) or
+    stepKryoPoolBuilderChainMethod(node1, node2) or
+    stepKryoPoolBorrowMethod(node1, node2)
+  }
+
+  /**
+   * Holds when a functional expression is used to create a `KryoPool.Builder`.
+   * Eg. `new KryoPool.Builder(() -> new Kryo())`
+   */
+  private predicate stepKryoPoolBuilderFactoryArgToConstructor(
+    DataFlow::Node node1, DataFlow::Node node2
+  ) {
+    exists(ConstructorCall cc, FunctionalExpr fe |
+      cc.getConstructedType() instanceof KryoPoolBuilder and
+      fe.asMethod().getBody().getAStmt().(ReturnStmt).getResult() = node1.asExpr() and
+      node2.asExpr() = cc and
+      cc.getArgument(0) = fe
+    )
+  }
+
+  /**
+   * Holds when a `KryoPool.run` is called to use a `Kryo` instance.
+   * Eg. `pool.run(kryo -> ...)`
+   */
+  private predicate stepKryoPoolRunMethodAccessQualifierToFunctionalArgument(
+    DataFlow::Node node1, DataFlow::Node node2
+  ) {
+    exists(MethodAccess ma |
+      ma.getMethod() instanceof KryoPoolRunMethod and
+      node1.asExpr() = ma.getQualifier() and
+      ma.getArgument(0).(FunctionalExpr).asMethod().getParameter(0) = node2.asParameter()
+    )
+  }
+
+  /**
+   * Holds when a `KryoPool.Builder` method is called fluently.
+   */
+  private predicate stepKryoPoolBuilderChainMethod(DataFlow::Node node1, DataFlow::Node node2) {
+    exists(MethodAccess ma |
+      ma.getMethod() instanceof KryoPoolBuilderMethod and
+      ma = node2.asExpr() and
+      ma.getQualifier() = node1.asExpr()
+    )
+  }
+
+  /**
+   * Holds when a `KryoPool.borrow` method is called.
+   */
+  private predicate stepKryoPoolBorrowMethod(DataFlow::Node node1, DataFlow::Node node2) {
+    exists(MethodAccess ma |
+      ma.getMethod() =
+        any(Method m | m.getDeclaringType() instanceof KryoPool and m.hasName("borrow")) and
+      node1.asExpr() = ma.getQualifier() and
+      node2.asExpr() = ma
+    )
+  }
 }
 
 predicate unsafeDeserialization(MethodAccess ma, Expr sink) {

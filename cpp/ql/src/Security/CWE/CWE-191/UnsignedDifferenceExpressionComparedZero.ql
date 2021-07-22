@@ -4,6 +4,7 @@
  * @kind problem
  * @id cpp/unsigned-difference-expression-compared-zero
  * @problem.severity warning
+ * @security-severity 5.9
  * @precision medium
  * @tags security
  *       correctness
@@ -12,29 +13,60 @@
 
 import cpp
 import semmle.code.cpp.commons.Exclusions
-import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
+import semmle.code.cpp.rangeanalysis.RangeAnalysisUtils
 import semmle.code.cpp.controlflow.Guards
+import semmle.code.cpp.dataflow.DataFlow
 
-/** Holds if `sub` is guarded by a condition which ensures that `left >= right`. */
+/**
+ *  Holds if `sub` is guarded by a condition which ensures that
+ * `left >= right`.
+ */
 pragma[noinline]
 predicate isGuarded(SubExpr sub, Expr left, Expr right) {
-  exists(GuardCondition guard |
-    guard.controls(sub.getBasicBlock(), true) and
-    guard.ensuresLt(left, right, 0, sub.getBasicBlock(), false)
+  exists(GuardCondition guard, int k |
+    guard.controls(sub.getBasicBlock(), _) and
+    guard.ensuresLt(left, right, k, sub.getBasicBlock(), false) and
+    k >= 0
   )
 }
 
-/** Holds if `sub` will never be negative. */
-predicate nonNegative(SubExpr sub) {
-  not exprMightOverflowNegatively(sub.getFullyConverted())
+/**
+ * Holds if `n` is known or suspected to be less than or equal to
+ * `sub.getLeftOperand()`.
+ */
+predicate exprIsSubLeftOrLess(SubExpr sub, DataFlow::Node n) {
+  n.asExpr() = sub.getLeftOperand()
   or
-  // The subtraction is guarded by a check of the form `left >= right`.
-  exists(GVN left, GVN right |
-    // This is basically a poor man's version of a directional unbind operator.
-    strictcount([left, globalValueNumber(sub.getLeftOperand())]) = 1 and
-    strictcount([right, globalValueNumber(sub.getRightOperand())]) = 1 and
-    isGuarded(sub, left.getAnExpr(), right.getAnExpr())
+  exists(DataFlow::Node other |
+    // dataflow
+    exprIsSubLeftOrLess(sub, other) and
+    (
+      DataFlow::localFlowStep(n, other) or
+      DataFlow::localFlowStep(other, n)
+    )
+  )
+  or
+  exists(DataFlow::Node other |
+    // guard constraining `sub`
+    exprIsSubLeftOrLess(sub, other) and
+    isGuarded(sub, other.asExpr(), n.asExpr()) // other >= n
+  )
+  or
+  exists(DataFlow::Node other, float p, float q |
+    // linear access of `other`
+    exprIsSubLeftOrLess(sub, other) and
+    linearAccess(n.asExpr(), other.asExpr(), p, q) and // n = p * other + q
+    p <= 1 and
+    q <= 0
+  )
+  or
+  exists(DataFlow::Node other, float p, float q |
+    // linear access of `n`
+    exprIsSubLeftOrLess(sub, other) and
+    linearAccess(other.asExpr(), n.asExpr(), p, q) and // other = p * n + q
+    p >= 1 and
+    q >= 0
   )
 }
 
@@ -45,5 +77,6 @@ where
   ro.getLesserOperand().getValue().toInt() = 0 and
   ro.getGreaterOperand() = sub and
   sub.getFullyConverted().getUnspecifiedType().(IntegralType).isUnsigned() and
-  not nonNegative(sub)
+  exprMightOverflowNegatively(sub.getFullyConverted()) and // generally catches false positives involving constants
+  not exprIsSubLeftOrLess(sub, DataFlow::exprNode(sub.getRightOperand())) // generally catches false positives where there's a relation between the left and right operands
 select ro, "Unsigned subtraction can never be negative."

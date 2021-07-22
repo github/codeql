@@ -1,8 +1,13 @@
 /**
  * @name Local Android DoS Caused By NumberFormatException
- * @id java/android/nfe-local-android-dos
- * @description NumberFormatException thrown but not caught by an Android application that allows external inputs can crash the application, constituting a local Denial of Service (DoS) attack.
+ * @description NumberFormatException thrown but not caught by an Android
+ *              application that allows external inputs can crash the
+ *              application, constituting a local Denial of Service (DoS)
+ *              attack.
  * @kind path-problem
+ * @problem.severity warning
+ * @precision medium
+ * @id java/android/nfe-local-android-dos
  * @tags security
  *       external/cwe/cwe-755
  */

@@ -68,6 +68,7 @@ import semmle.javascript.dataflow.TaintTracking
 import semmle.javascript.dataflow.TypeInference
 import semmle.javascript.frameworks.Angular2
 import semmle.javascript.frameworks.AngularJS
+import semmle.javascript.frameworks.Anser
 import semmle.javascript.frameworks.AsyncPackage
 import semmle.javascript.frameworks.AWS
 import semmle.javascript.frameworks.Azure
@@ -75,6 +76,7 @@ import semmle.javascript.frameworks.Babel
 import semmle.javascript.frameworks.Cheerio
 import semmle.javascript.frameworks.ComposedFunctions
 import semmle.javascript.frameworks.Classnames
+import semmle.javascript.frameworks.ClassValidator
 import semmle.javascript.frameworks.ClientRequests
 import semmle.javascript.frameworks.ClosureLibrary
 import semmle.javascript.frameworks.CookieLibraries
@@ -91,6 +93,7 @@ import semmle.javascript.frameworks.FormParsers
 import semmle.javascript.frameworks.jQuery
 import semmle.javascript.frameworks.JWT
 import semmle.javascript.frameworks.Handlebars
+import semmle.javascript.frameworks.History
 import semmle.javascript.frameworks.Immutable
 import semmle.javascript.frameworks.LazyCache
 import semmle.javascript.frameworks.LodashUnderscore
@@ -98,12 +101,16 @@ import semmle.javascript.frameworks.Logging
 import semmle.javascript.frameworks.HttpFrameworks
 import semmle.javascript.frameworks.HttpProxy
 import semmle.javascript.frameworks.Markdown
+import semmle.javascript.frameworks.Nest
 import semmle.javascript.frameworks.Next
 import semmle.javascript.frameworks.NoSQL
 import semmle.javascript.frameworks.PkgCloud
+import semmle.javascript.frameworks.Prettier
 import semmle.javascript.frameworks.PropertyProjection
+import semmle.javascript.frameworks.Puppeteer
 import semmle.javascript.frameworks.React
 import semmle.javascript.frameworks.ReactNative
+import semmle.javascript.frameworks.Redux
 import semmle.javascript.frameworks.Request
 import semmle.javascript.frameworks.RxJS
 import semmle.javascript.frameworks.ServerLess

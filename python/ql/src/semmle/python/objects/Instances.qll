@@ -30,18 +30,19 @@ abstract class InstanceObject extends ObjectInternal {
 
   pragma[noinline]
   private predicate classAttribute(string name, ObjectInternal cls_attr) {
-    PointsToInternal::attributeRequired(this, name) and
-    this.getClass().(ClassObjectInternal).lookup(name, cls_attr, _)
+    PointsToInternal::attributeRequired(this, pragma[only_bind_into](name)) and
+    this.getClass().(ClassObjectInternal).lookup(pragma[only_bind_into](name), cls_attr, _)
   }
 
   pragma[noinline]
   private predicate selfAttribute(string name, ObjectInternal value, CfgOrigin origin) {
-    PointsToInternal::attributeRequired(this, name) and
+    PointsToInternal::attributeRequired(this, pragma[only_bind_into](name)) and
     exists(EssaVariable self, PythonFunctionObjectInternal init, Context callee |
       this.initializer(init, callee) and
       self_variable_reaching_init_exit(self) and
       self.getScope() = init.getScope() and
-      AttributePointsTo::variableAttributePointsTo(self, callee, name, value, origin)
+      AttributePointsTo::variableAttributePointsTo(self, callee, pragma[only_bind_into](name),
+        value, origin)
     )
   }
 
@@ -316,9 +317,11 @@ class UnknownInstanceInternal extends TUnknownInstance, ObjectInternal {
 
   pragma[noinline]
   override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
-    PointsToInternal::attributeRequired(this, name) and
+    PointsToInternal::attributeRequired(this, pragma[only_bind_into](name)) and
     exists(ObjectInternal cls_attr, CfgOrigin attr_orig |
-      this.getClass().(ClassObjectInternal).lookup(name, cls_attr, attr_orig)
+      this.getClass()
+          .(ClassObjectInternal)
+          .lookup(pragma[only_bind_into](name), cls_attr, attr_orig)
     |
       cls_attr.isDescriptor() = false and value = cls_attr and origin = attr_orig
       or
@@ -456,8 +459,8 @@ class SuperInstance extends TSuperInstance, ObjectInternal {
   /* Helper for `attribute` */
   pragma[noinline]
   private predicate attribute_descriptor(string name, ObjectInternal cls_attr, CfgOrigin attr_orig) {
-    PointsToInternal::attributeRequired(this, name) and
-    this.lookup(name, cls_attr, attr_orig)
+    PointsToInternal::attributeRequired(this, pragma[only_bind_into](name)) and
+    this.lookup(pragma[only_bind_into](name), cls_attr, attr_orig)
   }
 
   private predicate lookup(string name, ObjectInternal value, CfgOrigin origin) {

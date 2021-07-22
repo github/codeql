@@ -43,11 +43,13 @@ namespace Semmle.Extraction.CIL.Entities
         /// (This is to avoid infinite recursion generating a method ID that returns a
         /// type parameter.)
         /// </param>
-        public abstract void WriteId(TextWriter trapFile, bool inContext);
+        public abstract void WriteId(EscapingTextWriter trapFile, bool inContext);
 
-        public sealed override void WriteId(TextWriter trapFile) => WriteId(trapFile, false);
-
-        public override string IdSuffix => ";cil-type";
+        public sealed override void WriteId(EscapingTextWriter trapFile)
+        {
+            WriteId(trapFile, false);
+            trapFile.Write(";cil-type");
+        }
 
         /// <summary>
         /// Returns the friendly qualified name of types, such as
@@ -58,10 +60,12 @@ namespace Semmle.Extraction.CIL.Entities
         /// </summary>
         public string GetQualifiedName()
         {
-            using var writer = new StringWriter();
+            using var writer = new EscapingTextWriter();
             WriteId(writer, false);
             var name = writer.ToString();
-            return name.Substring(name.IndexOf(AssemblyTypeNameSeparator) + 2);
+            return name.Substring(name.IndexOf(AssemblyTypeNameSeparator) + 2).
+                Replace(";namespace", "").
+                Replace(";cil-type", "");
         }
 
         public abstract CilTypeKind Kind { get; }

@@ -4,6 +4,7 @@
  *              a global error handler, otherwise they may leak exception information.
  * @kind problem
  * @problem.severity warning
+ * @security-severity 3.6
  * @precision high
  * @id cs/web/missing-global-error-handler
  * @tags security

@@ -75,11 +75,11 @@ The following properties are supported in ``qlpack.yml`` files.
    * - ``name``
      - ``org-queries``
      - All packs
-     - The name of the QL pack defined using alphanumeric characters, hyphens, and periods. It must be unique as CodeQL cannot differentiate between QL packs with identical names. If you intend to    distribute the pack, prefix the name with your (or your organization's) name followed by a hyphen. Use the pack name to specify queries to run using ``database analyze`` and to define    dependencies between QL packs (see examples below).- '
+     - The name of the QL pack defined using alphanumeric characters, hyphens, and periods. It must be unique as CodeQL cannot differentiate between QL packs with identical names. If you intend to    distribute the pack, prefix the name with your (or your organization's) name followed by a hyphen. Use the pack name to specify queries to run using ``database analyze`` and to define    dependencies between QL packs (see examples below).
    * - ``version``
      - ``0.0.0``
      - All packs
-     - A version number for this QL pack. This field is not currently used by any commands, but may be required by future releases of CodeQL.
+     - A version number for this QL pack. This must be a valid semantic version that meets the `SemVer v2.0.0 specification <https://semver.org/spec/v2.0.0.html>`__.
    * - ``libraryPathDependencies``
      - ``codeql-javascript``
      - Optional

@@ -1,0 +1,8 @@
+Framework name,URL,Package prefix
+Java Standard Library,,java.*
+Google,,com.google.common.*
+Apache,,org.apache.*
+Apache Commons IO,https://commons.apache.org/proper/commons-io/,org.apache.commons.io
+Android,,android.*
+Spring,https://spring.io/,org.springframework.*
+Java extensions,,javax.*
