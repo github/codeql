@@ -284,8 +284,7 @@ private module SsaDefReaches {
   predicate ssaDefReachesReadWithinBlock(SourceVariable v, Definition def, BasicBlock bb, int i) {
     exists(int rnk |
       ssaDefReachesRank(bb, def, rnk, v) and
-      rnk = ssaRefRank(bb, i, v, SsaRead()) and
-      variableRead(bb, i, v, _)
+      rnk = ssaRefRank(bb, i, v, SsaRead())
     )
   }
 

@@ -4,7 +4,7 @@
  *              expose it to an attacker.
  * @kind path-problem
  * @problem.severity error
- * @security-severity 5.9
+ * @security-severity 7.5
  * @precision high
  * @id js/build-artifact-leak
  * @tags security

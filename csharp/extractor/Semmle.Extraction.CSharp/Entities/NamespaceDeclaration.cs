@@ -60,8 +60,6 @@ namespace Semmle.Extraction.CSharp.Entities
                 new NamespaceDeclaration(cx, init.decl, init.parent);
         }
 
-        public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NoLabel;
-
         public override Microsoft.CodeAnalysis.Location ReportingLocation => node.Name.GetLocation();
 
         public override bool NeedsPopulation => true;

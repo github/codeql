@@ -5,7 +5,7 @@
  * @kind path-problem
  * @id cs/adding-cert-to-root-store
  * @problem.severity error
- * @security-severity 5.2
+ * @security-severity 7.5
  * @tags security
  *       external/cwe/cwe-327
  */

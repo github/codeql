@@ -168,7 +168,13 @@ module Consistency {
     msg = "ArgumentNode is missing PostUpdateNode."
   }
 
-  query predicate postWithInFlow(PostUpdateNode n, string msg) {
+  // This predicate helps the compiler forget that in some languages
+  // it is impossible for a `PostUpdateNode` to be the target of
+  // `simpleLocalFlowStep`.
+  private predicate isPostUpdateNode(Node n) { n instanceof PostUpdateNode or none() }
+
+  query predicate postWithInFlow(Node n, string msg) {
+    isPostUpdateNode(n) and
     simpleLocalFlowStep(_, n) and
     msg = "PostUpdateNode should not be the target of local flow."
   }

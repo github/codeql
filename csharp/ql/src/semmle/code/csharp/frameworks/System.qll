@@ -2,6 +2,7 @@
 
 import csharp
 private import system.Reflection
+private import semmle.code.csharp.dataflow.ExternalFlow
 
 /** The `System` namespace. */
 class SystemNamespace extends Namespace {
@@ -197,6 +198,28 @@ class SystemInt32Struct extends IntType {
     result.getParameter(0).getType() instanceof StringType and
     result.getParameter(result.getNumberOfParameters() - 1).getType() instanceof IntType and
     result.getReturnType() instanceof BoolType
+  }
+}
+
+/** Data flow for `System.Int32`. */
+private class SystemInt32FlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "System;Int32;false;Parse;(System.String);;Argument[0];ReturnValue;taint",
+        "System;Int32;false;Parse;(System.String,System.IFormatProvider);;Argument[0];ReturnValue;taint",
+        "System;Int32;false;Parse;(System.String,System.Globalization.NumberStyles);;Argument[0];ReturnValue;taint",
+        "System;Int32;false;Parse;(System.String,System.Globalization.NumberStyles,System.IFormatProvider);;Argument[0];ReturnValue;taint",
+        "System;Int32;false;Parse;(System.ReadOnlySpan<System.Char>,System.Globalization.NumberStyles,System.IFormatProvider);;Element of Argument[0];ReturnValue;taint",
+        "System;Int32;false;TryParse;(System.String,System.Int32);;Argument[0];ReturnValue;taint",
+        "System;Int32;false;TryParse;(System.String,System.Int32);;Argument[0];Argument[1];taint",
+        "System;Int32;false;TryParse;(System.ReadOnlySpan<System.Char>,System.Int32);;Element of Argument[0];ReturnValue;taint",
+        "System;Int32;false;TryParse;(System.ReadOnlySpan<System.Char>,System.Int32);;Element of Argument[0];Argument[1];taint",
+        "System;Int32;false;TryParse;(System.String,System.Globalization.NumberStyles,System.IFormatProvider,System.Int32);;Argument[0];ReturnValue;taint",
+        "System;Int32;false;TryParse;(System.String,System.Globalization.NumberStyles,System.IFormatProvider,System.Int32);;Argument[0];Argument[3];taint",
+        "System;Int32;false;TryParse;(System.ReadOnlySpan<System.Char>,System.Globalization.NumberStyles,System.IFormatProvider,System.Int32);;Element of Argument[0];ReturnValue;taint",
+        "System;Int32;false;TryParse;(System.ReadOnlySpan<System.Char>,System.Globalization.NumberStyles,System.IFormatProvider,System.Int32);;Element of Argument[0];Argument[3];taint"
+      ]
   }
 }
 

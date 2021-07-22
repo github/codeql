@@ -20,7 +20,7 @@ abstract class SelfRefMixin extends Class {
    * Note: TODO: This doesn't take MRO into account
    * Note: TODO: This doesn't take staticmethod/classmethod into account
    */
-  private DataFlow::LocalSourceNode getASelfRef(DataFlow::TypeTracker t) {
+  private DataFlow::TypeTrackingNode getASelfRef(DataFlow::TypeTracker t) {
     t.start() and
     result.(DataFlow::ParameterNode).getParameter() = this.getAMethod().getArg(0)
     or

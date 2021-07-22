@@ -3,7 +3,7 @@
  * @description Creating a file that is world-writable can allow an attacker to write to the file.
  * @kind problem
  * @problem.severity warning
- * @security-severity 5.9
+ * @security-severity 7.8
  * @precision medium
  * @id cpp/world-writable-file-creation
  * @tags security

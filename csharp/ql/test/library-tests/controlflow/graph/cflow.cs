@@ -300,5 +300,3 @@ class NegationInConstructor
         new NegationInConstructor(i: 0, b: !(i > 0) && s != null, s: "");
     }
 }
-
-// semmle-extractor-options: /r:System.Linq.dll /r:System.Runtime.Extensions.dll

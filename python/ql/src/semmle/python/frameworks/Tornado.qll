@@ -54,7 +54,7 @@ private module Tornado {
           }
 
           /** Gets a reference to this class. */
-          private DataFlow::LocalSourceNode getARef(DataFlow::TypeTracker t) {
+          private DataFlow::TypeTrackingNode getARef(DataFlow::TypeTracker t) {
             t.start() and
             result.asExpr().(ClassExpr) = this.getParent()
             or
@@ -87,7 +87,7 @@ private module Tornado {
         }
 
         /** Gets a reference to an instance of the `tornado.web.RequestHandler` class or any subclass. */
-        private DataFlow::LocalSourceNode instance(DataFlow::TypeTracker t) {
+        private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
           t.start() and
           result instanceof InstanceSource
           or
@@ -98,7 +98,7 @@ private module Tornado {
         DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
 
         /** Gets a reference to one of the methods `get_argument`, `get_body_argument`, `get_query_argument`. */
-        private DataFlow::LocalSourceNode argumentMethod(DataFlow::TypeTracker t) {
+        private DataFlow::TypeTrackingNode argumentMethod(DataFlow::TypeTracker t) {
           t.startInAttr(["get_argument", "get_body_argument", "get_query_argument"]) and
           result = instance()
           or
@@ -111,7 +111,7 @@ private module Tornado {
         }
 
         /** Gets a reference to one of the methods `get_arguments`, `get_body_arguments`, `get_query_arguments`. */
-        private DataFlow::LocalSourceNode argumentsMethod(DataFlow::TypeTracker t) {
+        private DataFlow::TypeTrackingNode argumentsMethod(DataFlow::TypeTracker t) {
           t.startInAttr(["get_arguments", "get_body_arguments", "get_query_arguments"]) and
           result = instance()
           or
@@ -124,7 +124,7 @@ private module Tornado {
         }
 
         /** Gets a reference the `redirect` method. */
-        private DataFlow::LocalSourceNode redirectMethod(DataFlow::TypeTracker t) {
+        private DataFlow::TypeTrackingNode redirectMethod(DataFlow::TypeTracker t) {
           t.startInAttr("redirect") and
           result = instance()
           or
@@ -137,7 +137,7 @@ private module Tornado {
         }
 
         /** Gets a reference to the `write` method. */
-        private DataFlow::LocalSourceNode writeMethod(DataFlow::TypeTracker t) {
+        private DataFlow::TypeTrackingNode writeMethod(DataFlow::TypeTracker t) {
           t.startInAttr("write") and
           result = instance()
           or
@@ -207,7 +207,7 @@ private module Tornado {
         }
 
         /** Gets a reference to an instance of `tornado.web.Application`. */
-        private DataFlow::LocalSourceNode instance(DataFlow::TypeTracker t) {
+        private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
           t.start() and
           result instanceof InstanceSource
           or
@@ -218,7 +218,7 @@ private module Tornado {
         DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
 
         /** Gets a reference to the `add_handlers` method. */
-        private DataFlow::LocalSourceNode add_handlers(DataFlow::TypeTracker t) {
+        private DataFlow::TypeTrackingNode add_handlers(DataFlow::TypeTracker t) {
           t.startInAttr("add_handlers") and
           result = instance()
           or
@@ -264,7 +264,7 @@ private module Tornado {
         }
 
         /** Gets a reference to an instance of `tornado.httputil.HttpServerRequest`. */
-        private DataFlow::LocalSourceNode instance(DataFlow::TypeTracker t) {
+        private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
           t.start() and
           result instanceof InstanceSource
           or
@@ -275,7 +275,7 @@ private module Tornado {
         DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
 
         /** Gets a reference to the `full_url` method. */
-        private DataFlow::LocalSourceNode full_url(DataFlow::TypeTracker t) {
+        private DataFlow::TypeTrackingNode full_url(DataFlow::TypeTracker t) {
           t.startInAttr("full_url") and
           result = instance()
           or
@@ -349,7 +349,7 @@ private module Tornado {
 
     TornadoRouteRegex() {
       this instanceof StrConst and
-      DataFlow::exprNode(this).(DataFlow::LocalSourceNode).flowsTo(setup.getUrlPatternArg())
+      setup.getUrlPatternArg().getALocalSource() = DataFlow::exprNode(this)
     }
 
     TornadoRouteSetup getRouteSetup() { result = setup }
@@ -422,7 +422,7 @@ private module Tornado {
   /**
    * A call to the `tornado.web.RequestHandler.redirect` method.
    *
-   * See https://www.tornadoweb.org/en/stable/web.html?highlight=write#tornado.web.RequestHandler.redirect
+   * See https://www.tornadoweb.org/en/stable/web.html#tornado.web.RequestHandler.redirect
    */
   private class TornadoRequestHandlerRedirectCall extends HTTP::Server::HttpRedirectResponse::Range,
     DataFlow::CallCfgNode {
@@ -431,7 +431,7 @@ private module Tornado {
     }
 
     override DataFlow::Node getRedirectLocation() {
-      result.asCfgNode() in [node.getArg(0), node.getArgByName("url")]
+      result in [this.getArg(0), this.getArgByName("url")]
     }
 
     override DataFlow::Node getBody() { none() }
@@ -444,7 +444,7 @@ private module Tornado {
   /**
    * A call to the `tornado.web.RequestHandler.write` method.
    *
-   * See https://www.tornadoweb.org/en/stable/web.html?highlight=write#tornado.web.RequestHandler.write
+   * See https://www.tornadoweb.org/en/stable/web.html#tornado.web.RequestHandler.write
    */
   private class TornadoRequestHandlerWriteCall extends HTTP::Server::HttpResponse::Range,
     DataFlow::CallCfgNode {
@@ -452,12 +452,28 @@ private module Tornado {
       this.getFunction() = tornado::web::RequestHandler::writeMethod()
     }
 
-    override DataFlow::Node getBody() {
-      result.asCfgNode() in [node.getArg(0), node.getArgByName("chunk")]
-    }
+    override DataFlow::Node getBody() { result in [this.getArg(0), this.getArgByName("chunk")] }
 
     override string getMimetypeDefault() { result = "text/html" }
 
     override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
+  }
+
+  /**
+   * A call to the `tornado.web.RequestHandler.set_cookie` method.
+   *
+   * See https://www.tornadoweb.org/en/stable/web.html#tornado.web.RequestHandler.set_cookie
+   */
+  class TornadoRequestHandlerSetCookieCall extends HTTP::Server::CookieWrite::Range,
+    DataFlow::MethodCallNode {
+    TornadoRequestHandlerSetCookieCall() {
+      this.calls(tornado::web::RequestHandler::instance(), "set_cookie")
+    }
+
+    override DataFlow::Node getHeaderArg() { none() }
+
+    override DataFlow::Node getNameArg() { result in [this.getArg(0), this.getArgByName("name")] }
+
+    override DataFlow::Node getValueArg() { result in [this.getArg(1), this.getArgByName("value")] }
   }
 }

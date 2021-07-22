@@ -9,7 +9,7 @@
 	/^http:\/\/(?:.+)\\.test\\.example.com\//; // NOT OK
 	/^http:\/\/test.example.com\/(?:.*)/; // OK
 	new RegExp("^http://test.example.com"); // NOT OK
-	s.match("^http://test.example.com"); // NOT OK
+	if (s.match("^http://test.example.com")) {} // NOT OK
 
 	function id(e) { return e; }
 	new RegExp(id(id(id("^http://test.example.com")))); // NOT OK

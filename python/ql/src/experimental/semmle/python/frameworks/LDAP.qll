@@ -26,7 +26,7 @@ private module LDAP {
     API::Node ldapInitialize() { result = ldap().getMember("initialize") }
 
     /** Gets a reference to a `ldap` operation. */
-    private DataFlow::LocalSourceNode ldapOperation(DataFlow::TypeTracker t) {
+    private DataFlow::TypeTrackingNode ldapOperation(DataFlow::TypeTracker t) {
       t.start() and
       result.(DataFlow::AttrRead).getObject().getALocalSource() = ldapInitialize().getACall()
       or
