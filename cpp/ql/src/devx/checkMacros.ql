@@ -21,7 +21,9 @@ import semmle.code.cpp.models.interfaces.FormattingFunction
 
 // Example: syslog(LOG_ERR, "%s: Failed init_producer", __FUNCTION__);
 
-
+/*
+Holds if the log macro is debug.
+*/
 predicate isLogDebug(Expr mie) {
     exists(MacroInvocation mi |
         mi.getExpr() = mie and
@@ -31,10 +33,24 @@ predicate isLogDebug(Expr mie) {
       )
 }
 
+/*
+Holds if there is macro in parameters.
+For example: syslog (LOG_ERR, 
+                    "***** %s: return throttled errcode vrf %s afi %u loc 1*****", 
+                    __FUNCTION__, <------ should be reported
+                    table_ctx->vrf_name, 
+                    table_ctx->official_afi);
+*/
+// predicate hasMacro(FormattingFunctionCall fc) {
+//     exists(MacroInvocation mi |
+//         mi.getExpr() = v)
+// }
 
 from string format, FormattingFunctionCall fc
 where format = fc.getFormat().getValue() // format: "%s: Failed init_producer"
 and format.regexpMatch(".*")
 and fc.getTarget().hasName("syslog") 
-and isLogDebug(fc.getArgument(0))
-select fc, "test"
+and not isLogDebug(fc.getArgument(0)) // exclude debug logs
+// need to loop over the rest parameters in syslog(0, rest) and check if any of them is macro. 
+// and hasMacro(fc)
+select fc, "this is conversion argument $@",fc.getConversionArgument(1).getValue()
