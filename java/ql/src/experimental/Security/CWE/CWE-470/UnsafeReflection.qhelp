@@ -3,26 +3,21 @@
 
 <overview>
 <p>
-Allowing users to freely choose to call the constructor or method of the class through reflection. This means that 
-malicious users can carefully construct requests to create instances of any class or call methods of any class.
+Allowing users to freely choose the name of a class to instantiate could provide means to attack a vulnerable appplication.
 </p>
 </overview>
 
 <recommendation>
 <p>
-Create a list of classes that are allowed to load reflectively and strictly verify the input content to ensure that 
-users can only execute classes or codes that are running.
+Create a list of classes that are allowed to load reflectively and strictly verify the input to ensure that 
+users can only instantiate classes or execute methods that ought to be allowed.
 </p>
 </recommendation>
 
 <example>
 <p>
-The following examples are good examples and bad examples. When using <code>Class.forName(...)</code> or 
-<code>ClassLoader.loadClass(...)</code> to get the class, then create the class object or call the method of the class. 
-When the user is not authenticated Input, it is easy to cause security risks, for example: <code>bad1</code>/<code>bad2
-</code>/<code>bad3</code>. When the user input is verified by <code>contains</code> or <code>equals</code> and then 
-the reflection operation is performed, the system security can be well controlled, for example: 
-<code >good1</code>/<code>good2</code>/<code>good3</code>.
+The <code>bad</code> method shown below illustrate class loading with <code>Class.forName</code> without any check on the particular class being instantiated. 
+The <code>good</code> methods illustrate some different ways to restrict which classes can be instantiated.
 </p>
 <sample src="UnsafeReflection.java" />
 

@@ -7,15 +7,6 @@ import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.TaintTracking2
 
-/** Type descriptors in Jackson libraries. */
-class JacksonTypeDescriptorType extends RefType {
-  JacksonTypeDescriptorType() {
-    this instanceof TypeClass or
-    hasQualifiedName("com.fasterxml.jackson.databind", "JavaType") or
-    hasQualifiedName("com.fasterxml.jackson.core.type", "TypeReference")
-  }
-}
-
 /**
  * A call to a Java standard library method which constructs or returns a `Class<T>` from a `String`.
  * e.g `Class.forName(...)` or `ClassLoader.loadClass(...)`

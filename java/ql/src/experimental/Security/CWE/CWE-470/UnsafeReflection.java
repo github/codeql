@@ -16,34 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 @Controller
 public class UnsafeReflection {
 
-    @GetMapping(value = "uf1")
-    public void bad1(HttpServletRequest request) {
-        String className = request.getParameter("className");
-        String parameterValue = request.getParameter("parameterValue");
-        try {
-            Class clazz = Class.forName(className);
-            Object object = clazz.getDeclaredConstructors()[0].newInstance(parameterValue); //bad
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @GetMapping(value = "uf2")
-    public void bad2(HttpServletRequest request) {
-        String className = request.getParameter("className");
-        String parameterValue = request.getParameter("parameterValue");
-        try {
-            ClassLoader classLoader = ClassLoader.getSystemClassLoader();
-            Class clazz = classLoader.loadClass(className);
-            Object object = clazz.newInstance();
-            clazz.getDeclaredMethods()[0].invoke(object, parameterValue); //bad
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     @RequestMapping(value = {"/service/{beanIdOrClassName}/{methodName}"}, method = {RequestMethod.POST}, consumes = {"application/json"}, produces = {"application/json"})
-    public Object bad3(@PathVariable("beanIdOrClassName") String beanIdOrClassName, @PathVariable("methodName") String methodName, @RequestBody Map<String, Object> body) throws Exception {
+    public Object bad1(@PathVariable("beanIdOrClassName") String beanIdOrClassName, @PathVariable("methodName") String methodName, @RequestBody Map<String, Object> body) throws Exception {
         List<Object> rawData = null;
         try {
             rawData = (List<Object>)body.get("methodInput");
@@ -53,7 +27,7 @@ public class UnsafeReflection {
         return invokeService(beanIdOrClassName, methodName, null, rawData);
     }
 
-    @GetMapping(value = "uf3")
+    @GetMapping(value = "uf1")
     public void good1(HttpServletRequest request) throws Exception {
         HashSet<String> hashSet = new HashSet<>();
         hashSet.add("com.example.test1");
@@ -71,26 +45,11 @@ public class UnsafeReflection {
         }
     }
 
-    @GetMapping(value = "uf4")
+    @GetMapping(value = "uf2")
     public void good2(HttpServletRequest request) throws Exception {
         String className = request.getParameter("className");
         String parameterValue = request.getParameter("parameterValue");
         if (!"com.example.test1".equals(className)){
-            throw new Exception("Class not valid: "  + className);
-        }
-        try {
-            Class clazz = Class.forName(className);
-            Object object = clazz.getDeclaredConstructors()[0].newInstance(parameterValue); //good
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @GetMapping(value = "uf5")
-    public void good3(HttpServletRequest request) throws Exception {
-        String className = request.getParameter("className");
-        String parameterValue = request.getParameter("parameterValue");
-        if (!className.equals("com.example.test1")){ //good
             throw new Exception("Class not valid: "  + className);
         }
         try {
