@@ -53,4 +53,4 @@ and fc.getTarget().hasName("syslog")
 and not isLogDebug(fc.getArgument(0)) // exclude debug logs
 // need to loop over the rest parameters in syslog(0, rest) and check if any of them is macro. 
 // and hasMacro(fc)
-select fc, "this is conversion argument $@",fc.getConversionArgument(1).getValue()
+select fc,fc.getConversionArgument(1).getValue().toString()
