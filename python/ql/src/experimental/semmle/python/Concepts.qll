@@ -213,7 +213,7 @@ class JWTEncoding extends DataFlow::Node {
 /** Provides classes for modeling JWT decoding-related APIs. */
 module JWTDecoding {
   /**
-   * A data-flow node that collects functions escaping regular expressions.
+   * A data-flow node that collects methods encoding a JWT token.
    *
    * Extend this class to model new APIs. If you want to refine existing API models,
    * extend `JWTDecoding` instead.

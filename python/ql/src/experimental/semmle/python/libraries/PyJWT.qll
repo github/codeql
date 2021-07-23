@@ -13,6 +13,7 @@ private module PyJWT {
   /** Gets a reference to `jwt.decode` */
   private API::Node pyjwtDecode() { result = pyjwt().getMember("decode") }
 
+  // def encode(self, payload, key, algorithm="HS256", headers=None, json_encoder=None)
   private class PyJWTEncodeCall extends DataFlow::CallCfgNode, JWTEncoding::Range {
     PyJWTEncodeCall() { this = pyjwtEncode().getACall() }
 
@@ -34,6 +35,7 @@ private module PyJWT {
     }
   }
 
+  // def decode(self, jwt, key="", algorithms=None, options=None)
   private class PyJWTDecodeCall extends DataFlow::CallCfgNode, JWTDecoding::Range {
     PyJWTDecodeCall() { this = pyjwtDecode().getACall() }
 
