@@ -9,10 +9,13 @@ private import experimental.semmle.python.Concepts
 private import semmle.python.ApiGraphs
 
 private module XML {
+  /** Gets a reference to the `xml` module. */
   private API::Node xml() { result = API::moduleImport("xml") }
 
+  /** Gets a reference to `xml.etree.ElementTree`. */
   private API::Node xmlEtree() { result = xml().getMember("etree").getMember("ElementTree") }
 
+  /** Gets a call to `xml.etree.ElementTree.XMLParser`. */
   private class XMLEtreeParser extends DataFlow::CallCfgNode, XMLParser::Range {
     XMLEtreeParser() { this = xmlEtree().getMember("XMLParser").getACall() }
 
@@ -21,6 +24,20 @@ private module XML {
     override predicate mayBeDangerous() { any() }
   }
 
+  /**
+   * Gets a call to `xml.etree.ElementTree.fromstring`, `xml.etree.ElementTree.fromstringlist`,
+   * `xml.etree.ElementTree.XML` or `xml.etree.ElementTree.parse`.
+   *
+   * Given the following example:
+   *
+   * ```py
+   * parser = lxml.etree.XMLParser()
+   * parsed_xml = xml.etree.ElementTree.fromstring(xml_content, parser=parser).text
+   * ```
+   *
+   * `this` would be `xml.etree.ElementTree.fromstring(xml_content, parser=parser)`
+   * and `xml_content` would be the result of `getAnInput()`.
+   */
   private class XMLEtreeParsing extends DataFlow::CallCfgNode, XMLParsing::Range {
     XMLEtreeParsing() {
       this = xmlEtree().getMember(["fromstring", "fromstringlist", "XML", "parse"]).getACall()
@@ -35,8 +52,27 @@ private module XML {
     }
   }
 
+  /** Gets a reference to `xml.sax`. */
   private API::Node xmlSax() { result = xml().getMember("sax") }
 
+  /**
+   * Gets a call to `xml.sax.make_parser` and following calls.
+   *
+   * Given the following example:
+   *
+   * ```py
+   * BadHandler = MainHandler()
+   * parser = xml.sax.make_parser()
+   * parser.setContentHandler(BadHandler)
+   * parser.setFeature(xml.sax.handler.feature_external_ges, False)
+   * parser.parse(StringIO(xml_content))
+   * parsed_xml = BadHandler._result
+   * ```
+   *
+   * `this` would be `xml.sax.make_parser()`, `getAnInput()` would return `StringIO(xml_content)`
+   * and `mayBeDangerous()` would succeed since `xml.sax.handler.feature_external_ges` is set to
+   * `False` and so it's vulnerable.
+   */
   private class XMLSaxParser extends DataFlow::CallCfgNode, XMLParser::Range {
     DataFlow::CallCfgNode attrCall;
 
@@ -57,10 +93,17 @@ private module XML {
     }
   }
 
+  /** Gets a reference to `lxml`. */
   private API::Node lxml() { result = API::moduleImport("lxml") }
 
+  /** Gets a reference to `lxml.etree`. */
   private API::Node lxmlEtree() { result = lxml().getMember("etree") }
 
+  /**
+   * Gets a call to `lxml.etree.XMLParser` or `lxml.etree.get_default_parser` and `mayBeDangerous()`
+   * identifies whether the argument `no_network` is set to `False` or the arguments `huge_tree`
+   * or `resolve_entities` are set to True.
+   */
   private class LXMLParser extends DataFlow::CallCfgNode, XMLParser::Range {
     LXMLParser() { this = lxmlEtree().getMember(["XMLParser", "get_default_parser"]).getACall() }
 
@@ -74,6 +117,20 @@ private module XML {
     }
   }
 
+  /**
+   * Gets a call to `lxml.etree.fromstring`, `xml.etree.fromstringlist`,
+   * `xml.etree.XML` or `xml.etree.parse`.
+   *
+   * Given the following example:
+   *
+   * ```py
+   * parser = lxml.etree.XMLParser()
+   * parsed_xml = lxml.etree.fromstring(xml_content, parser=parser).text
+   * ```
+   *
+   * `this` would be `lxml.etree.fromstring(xml_content, parser=parser)`
+   * and `xml_content` would be the result of `getAnInput()`.
+   */
   private class LXMLParsing extends DataFlow::CallCfgNode, XMLParsing::Range {
     LXMLParsing() {
       this = lxmlEtree().getMember(["fromstring", "fromstringlist", "XML", "parse"]).getACall()
@@ -88,8 +145,13 @@ private module XML {
     }
   }
 
+  /** Gets a reference to the `xmltodict` module. */
   private API::Node xmltodict() { result = API::moduleImport("xmltodict") }
 
+  /**
+   * Gets a call to `xmltodict.parse` and `mayBeDangerous()` identifies
+   * whether the argument `disable_entities` is set to `False`.
+   */
   private class XMLtoDictParsing extends DataFlow::CallCfgNode, XMLParsing::Range {
     XMLtoDictParsing() { this = xmltodict().getMember("parse").getACall() }
 
@@ -101,8 +163,23 @@ private module XML {
     }
   }
 
+  /** Gets a reference to `xml.dom.minidom` or `xml.dom.pulldom`. */
   private API::Node xmlDom() { result = xml().getMember("dom").getMember(["mini", "pull"] + "dom") }
 
+  /**
+   * Gets a call to `xml.dom.minidom.parse` or `xml.dom.pulldom.parse`.
+   *
+   * Given the following example:
+   *
+   * ```py
+   * parser = xml.sax.make_parser()
+   * parser.setFeature(xml.sax.handler.feature_external_ges, True)
+   * parsed_xml = xml.dom.minidom.parse(StringIO(xml_content), parser=parser).documentElement.childNod
+   * ```
+   *
+   * `this` would be `xml.dom.minidom.parse(StringIO(xml_content), parser=parser)`
+   * and `StringIO(xml_content)` would be the result of `getAnInput()`.
+   */
   private class XMLDomParsing extends DataFlow::CallCfgNode, XMLParsing::Range {
     XMLDomParsing() { this = xmlDom().getMember("parse").getACall() }
 
