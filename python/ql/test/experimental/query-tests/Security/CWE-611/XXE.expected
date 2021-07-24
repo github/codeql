@@ -1,0 +1,83 @@
+edges
+| general.py:18:19:18:25 | ControlFlowNode for request | general.py:18:19:18:30 | ControlFlowNode for Attribute |
+| general.py:18:19:18:30 | ControlFlowNode for Attribute | general.py:18:19:18:45 | ControlFlowNode for Subscript |
+| general.py:18:19:18:45 | ControlFlowNode for Subscript | general.py:20:34:20:44 | ControlFlowNode for xml_content |
+| general.py:25:19:25:25 | ControlFlowNode for request | general.py:25:19:25:30 | ControlFlowNode for Attribute |
+| general.py:25:19:25:30 | ControlFlowNode for Attribute | general.py:25:19:25:45 | ControlFlowNode for Subscript |
+| general.py:25:19:25:45 | ControlFlowNode for Subscript | general.py:27:27:27:37 | ControlFlowNode for xml_content |
+| general.py:32:19:32:25 | ControlFlowNode for request | general.py:32:19:32:30 | ControlFlowNode for Attribute |
+| general.py:32:19:32:30 | ControlFlowNode for Attribute | general.py:32:19:32:45 | ControlFlowNode for Subscript |
+| general.py:32:19:32:45 | ControlFlowNode for Subscript | general.py:34:29:34:49 | ControlFlowNode for StringIO() |
+| general.py:39:19:39:25 | ControlFlowNode for request | general.py:39:19:39:30 | ControlFlowNode for Attribute |
+| general.py:39:19:39:30 | ControlFlowNode for Attribute | general.py:39:19:39:45 | ControlFlowNode for Subscript |
+| general.py:39:19:39:45 | ControlFlowNode for Subscript | general.py:41:28:41:38 | ControlFlowNode for xml_content |
+| general.py:46:19:46:25 | ControlFlowNode for request | general.py:46:19:46:30 | ControlFlowNode for Attribute |
+| general.py:46:19:46:30 | ControlFlowNode for Attribute | general.py:46:19:46:45 | ControlFlowNode for Subscript |
+| general.py:46:19:46:45 | ControlFlowNode for Subscript | general.py:49:34:49:44 | ControlFlowNode for xml_content |
+| general.py:54:19:54:25 | ControlFlowNode for request | general.py:54:19:54:30 | ControlFlowNode for Attribute |
+| general.py:54:19:54:30 | ControlFlowNode for Attribute | general.py:54:19:54:45 | ControlFlowNode for Subscript |
+| general.py:54:19:54:45 | ControlFlowNode for Subscript | general.py:57:34:57:44 | ControlFlowNode for xml_content |
+| general.py:62:19:62:25 | ControlFlowNode for request | general.py:62:19:62:30 | ControlFlowNode for Attribute |
+| general.py:62:19:62:30 | ControlFlowNode for Attribute | general.py:62:19:62:45 | ControlFlowNode for Subscript |
+| general.py:62:19:62:45 | ControlFlowNode for Subscript | general.py:65:45:65:55 | ControlFlowNode for xml_content |
+| general.py:70:19:70:25 | ControlFlowNode for request | general.py:70:19:70:30 | ControlFlowNode for Attribute |
+| general.py:70:19:70:30 | ControlFlowNode for Attribute | general.py:70:19:70:45 | ControlFlowNode for Subscript |
+| general.py:70:19:70:45 | ControlFlowNode for Subscript | general.py:73:40:73:60 | ControlFlowNode for StringIO() |
+| xml_sax_make_parser.py:59:19:59:25 | ControlFlowNode for request | xml_sax_make_parser.py:59:19:59:30 | ControlFlowNode for Attribute |
+| xml_sax_make_parser.py:59:19:59:30 | ControlFlowNode for Attribute | xml_sax_make_parser.py:59:19:59:45 | ControlFlowNode for Subscript |
+| xml_sax_make_parser.py:59:19:59:45 | ControlFlowNode for Subscript | xml_sax_make_parser.py:65:18:65:38 | ControlFlowNode for StringIO() |
+| xml_sax_make_parser.py:71:19:71:25 | ControlFlowNode for request | xml_sax_make_parser.py:71:19:71:30 | ControlFlowNode for Attribute |
+| xml_sax_make_parser.py:71:19:71:30 | ControlFlowNode for Attribute | xml_sax_make_parser.py:71:19:71:45 | ControlFlowNode for Subscript |
+| xml_sax_make_parser.py:71:19:71:45 | ControlFlowNode for Subscript | xml_sax_make_parser.py:75:34:75:54 | ControlFlowNode for StringIO() |
+nodes
+| general.py:18:19:18:25 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| general.py:18:19:18:30 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| general.py:18:19:18:45 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| general.py:20:34:20:44 | ControlFlowNode for xml_content | semmle.label | ControlFlowNode for xml_content |
+| general.py:25:19:25:25 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| general.py:25:19:25:30 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| general.py:25:19:25:45 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| general.py:27:27:27:37 | ControlFlowNode for xml_content | semmle.label | ControlFlowNode for xml_content |
+| general.py:32:19:32:25 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| general.py:32:19:32:30 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| general.py:32:19:32:45 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| general.py:34:29:34:49 | ControlFlowNode for StringIO() | semmle.label | ControlFlowNode for StringIO() |
+| general.py:39:19:39:25 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| general.py:39:19:39:30 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| general.py:39:19:39:45 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| general.py:41:28:41:38 | ControlFlowNode for xml_content | semmle.label | ControlFlowNode for xml_content |
+| general.py:46:19:46:25 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| general.py:46:19:46:30 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| general.py:46:19:46:45 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| general.py:49:34:49:44 | ControlFlowNode for xml_content | semmle.label | ControlFlowNode for xml_content |
+| general.py:54:19:54:25 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| general.py:54:19:54:30 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| general.py:54:19:54:45 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| general.py:57:34:57:44 | ControlFlowNode for xml_content | semmle.label | ControlFlowNode for xml_content |
+| general.py:62:19:62:25 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| general.py:62:19:62:30 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| general.py:62:19:62:45 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| general.py:65:45:65:55 | ControlFlowNode for xml_content | semmle.label | ControlFlowNode for xml_content |
+| general.py:70:19:70:25 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| general.py:70:19:70:30 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| general.py:70:19:70:45 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| general.py:73:40:73:60 | ControlFlowNode for StringIO() | semmle.label | ControlFlowNode for StringIO() |
+| xml_sax_make_parser.py:59:19:59:25 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| xml_sax_make_parser.py:59:19:59:30 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| xml_sax_make_parser.py:59:19:59:45 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| xml_sax_make_parser.py:65:18:65:38 | ControlFlowNode for StringIO() | semmle.label | ControlFlowNode for StringIO() |
+| xml_sax_make_parser.py:71:19:71:25 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| xml_sax_make_parser.py:71:19:71:30 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| xml_sax_make_parser.py:71:19:71:45 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| xml_sax_make_parser.py:75:34:75:54 | ControlFlowNode for StringIO() | semmle.label | ControlFlowNode for StringIO() |
+#select
+| general.py:20:34:20:44 | ControlFlowNode for xml_content | general.py:18:19:18:25 | ControlFlowNode for request | general.py:20:34:20:44 | ControlFlowNode for xml_content | $@ XML input is constructed from a $@ and isn't secured against XML External Entities abuse | general.py:20:34:20:44 | ControlFlowNode for xml_content | This | general.py:18:19:18:25 | ControlFlowNode for request | user-provided value |
+| general.py:27:27:27:37 | ControlFlowNode for xml_content | general.py:25:19:25:25 | ControlFlowNode for request | general.py:27:27:27:37 | ControlFlowNode for xml_content | $@ XML input is constructed from a $@ and isn't secured against XML External Entities abuse | general.py:27:27:27:37 | ControlFlowNode for xml_content | This | general.py:25:19:25:25 | ControlFlowNode for request | user-provided value |
+| general.py:34:29:34:49 | ControlFlowNode for StringIO() | general.py:32:19:32:25 | ControlFlowNode for request | general.py:34:29:34:49 | ControlFlowNode for StringIO() | $@ XML input is constructed from a $@ and isn't secured against XML External Entities abuse | general.py:34:29:34:49 | ControlFlowNode for StringIO() | This | general.py:32:19:32:25 | ControlFlowNode for request | user-provided value |
+| general.py:41:28:41:38 | ControlFlowNode for xml_content | general.py:39:19:39:25 | ControlFlowNode for request | general.py:41:28:41:38 | ControlFlowNode for xml_content | $@ XML input is constructed from a $@ and isn't secured against XML External Entities abuse | general.py:41:28:41:38 | ControlFlowNode for xml_content | This | general.py:39:19:39:25 | ControlFlowNode for request | user-provided value |
+| general.py:49:34:49:44 | ControlFlowNode for xml_content | general.py:46:19:46:25 | ControlFlowNode for request | general.py:49:34:49:44 | ControlFlowNode for xml_content | $@ XML input is constructed from a $@ and isn't secured against XML External Entities abuse | general.py:49:34:49:44 | ControlFlowNode for xml_content | This | general.py:46:19:46:25 | ControlFlowNode for request | user-provided value |
+| general.py:57:34:57:44 | ControlFlowNode for xml_content | general.py:54:19:54:25 | ControlFlowNode for request | general.py:57:34:57:44 | ControlFlowNode for xml_content | $@ XML input is constructed from a $@ and isn't secured against XML External Entities abuse | general.py:57:34:57:44 | ControlFlowNode for xml_content | This | general.py:54:19:54:25 | ControlFlowNode for request | user-provided value |
+| general.py:65:45:65:55 | ControlFlowNode for xml_content | general.py:62:19:62:25 | ControlFlowNode for request | general.py:65:45:65:55 | ControlFlowNode for xml_content | $@ XML input is constructed from a $@ and isn't secured against XML External Entities abuse | general.py:65:45:65:55 | ControlFlowNode for xml_content | This | general.py:62:19:62:25 | ControlFlowNode for request | user-provided value |
+| general.py:73:40:73:60 | ControlFlowNode for StringIO() | general.py:70:19:70:25 | ControlFlowNode for request | general.py:73:40:73:60 | ControlFlowNode for StringIO() | $@ XML input is constructed from a $@ and isn't secured against XML External Entities abuse | general.py:73:40:73:60 | ControlFlowNode for StringIO() | This | general.py:70:19:70:25 | ControlFlowNode for request | user-provided value |
+| xml_sax_make_parser.py:65:18:65:38 | ControlFlowNode for StringIO() | xml_sax_make_parser.py:59:19:59:25 | ControlFlowNode for request | xml_sax_make_parser.py:65:18:65:38 | ControlFlowNode for StringIO() | $@ XML input is constructed from a $@ and isn't secured against XML External Entities abuse | xml_sax_make_parser.py:65:18:65:38 | ControlFlowNode for StringIO() | This | xml_sax_make_parser.py:59:19:59:25 | ControlFlowNode for request | user-provided value |
+| xml_sax_make_parser.py:75:34:75:54 | ControlFlowNode for StringIO() | xml_sax_make_parser.py:71:19:71:25 | ControlFlowNode for request | xml_sax_make_parser.py:75:34:75:54 | ControlFlowNode for StringIO() | $@ XML input is constructed from a $@ and isn't secured against XML External Entities abuse | xml_sax_make_parser.py:75:34:75:54 | ControlFlowNode for StringIO() | This | xml_sax_make_parser.py:71:19:71:25 | ControlFlowNode for request | user-provided value |
