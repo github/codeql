@@ -22,14 +22,14 @@ class MainHandler(xml.sax.ContentHandler):
 
 
 @app.route("/MainHandler")
-def test1():
+def mainHandler():
     xml_content = request.args['xml_content']
 
     return MainHandler().parse(StringIO(xml_content))
 
 
 @app.route("/xml.sax.make_parser()+MainHandler")
-def test1():
+def xml_makeparser_MainHandler():
     xml_content = request.args['xml_content']
 
     BadHandler = MainHandler()
@@ -40,7 +40,7 @@ def test1():
 
 
 @app.route("/xml.sax.make_parser()+MainHandler-xml.sax.handler.feature_external_ges_False")
-def test1():
+def xml_makeparser_MainHandler_entitiesFalse():
     xml_content = request.args['xml_content']
 
     BadHandler = MainHandler()
@@ -55,7 +55,7 @@ def test1():
 
 
 @app.route("/xml.sax.make_parser()+MainHandler-xml.sax.handler.feature_external_ges_True")
-def test1():
+def xml_makeparser_MainHandler_entitiesTrue():
     xml_content = request.args['xml_content']
 
     GoodHandler = MainHandler()
@@ -67,7 +67,7 @@ def test1():
 
 
 @app.route("/xml.sax.make_parser()+xml.dom.minidom.parse-xml.sax.handler.feature_external_ges_True")
-def test1():
+def xml_makeparser_minidom_entitiesTrue():
     xml_content = request.args['xml_content']
 
     parser = xml.sax.make_parser()

@@ -142,6 +142,8 @@ private module XML {
       exists(XMLParser xmlParser |
         xmlParser.mayBeDangerous() and this.getArgByName("parser").getALocalSource() = xmlParser
       )
+      or
+      not exists(this.getArgByName("parser"))
     }
   }
 

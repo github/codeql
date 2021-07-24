@@ -19,17 +19,19 @@ class XXEFlowConfig extends TaintTracking::Configuration {
 
   override predicate isSink(DataFlow::Node sink) {
     exists(XMLParsing xmlParsing | xmlParsing.mayBeDangerous() and sink = xmlParsing.getAnInput())
+    or
+    exists(XMLParser xmlParser | sink = xmlParser.getAnInput() and xmlParser.mayBeDangerous())
   }
 
   override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
     guard instanceof StringConstCompare
   }
 
-  override predicate isAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeIn) {
+  override predicate isAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     exists(DataFlow::CallCfgNode ioCalls |
       ioCalls = API::moduleImport("io").getMember(["StringIO", "BytesIO"]).getACall() and
-      nodeFrom = ioCalls and
-      nodeIn = ioCalls.getArg(0)
+      nodeFrom = ioCalls.getArg(0) and
+      nodeTo = ioCalls
     )
   }
 }

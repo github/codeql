@@ -1,5 +1,5 @@
 from flask import request, Flask
-from io import StringIO
+from io import StringIO, BytesIO
 import xml.etree
 import xml.etree.ElementTree
 import lxml.etree
@@ -42,7 +42,7 @@ def xmltodict_parse():
 
 
 @app.route("/lxml.etree.XMLParser+lxml.etree.fromstring")
-def test1():
+def lxml_XMLParser_fromstring():
     xml_content = request.args['xml_content']
 
     parser = lxml.etree.XMLParser()
@@ -50,7 +50,7 @@ def test1():
 
 
 @app.route("/lxml.etree.get_default_parser+lxml.etree.fromstring")
-def test1():
+def lxml_defaultParser_fromstring():
     xml_content = request.args['xml_content']
 
     parser = lxml.etree.get_default_parser()
@@ -58,7 +58,7 @@ def test1():
 
 
 @app.route("/lxml.etree.XMLParser+xml.etree.ElementTree.fromstring")
-def test1():
+def lxml_XMLParser_xml_fromstring():
     xml_content = request.args['xml_content']
 
     parser = lxml.etree.XMLParser()
@@ -66,7 +66,7 @@ def test1():
 
 
 @app.route("/lxml.etree.XMLParser+xml.etree.ElementTree.parse")
-def test1():
+def lxml_XMLParser_xml_parse():
     xml_content = request.args['xml_content']
 
     parser = lxml.etree.XMLParser()
