@@ -2,10 +2,9 @@ from flask import request, Flask
 from io import StringIO
 import xml.sax
 
+# xml_content = '<?xml version="1.0"?><!DOCTYPE dt [<!ENTITY xxe SYSTEM "file:///etc/passwd">]><test>&xxe;</test>'
 
 app = Flask(__name__)
-
-# https://docs.python.org/3/library/xml.sax.handler.html#xml.sax.handler.feature_external_ges
 
 
 class MainHandler(xml.sax.ContentHandler):
@@ -24,7 +23,6 @@ class MainHandler(xml.sax.ContentHandler):
 
 @app.route("/MainHandler")
 def test1():
-    # <?xml version="1.0"?><!DOCTYPE dt [<!ENTITY xxe SYSTEM "file:///etc/passwd">]><test>&xxe;</test>
     xml_content = request.args['xml_content']
 
     return MainHandler().parse(StringIO(xml_content))
@@ -32,7 +30,6 @@ def test1():
 
 @app.route("/xml.sax.make_parser()+MainHandler")
 def test1():
-    # <?xml version="1.0"?><!DOCTYPE dt [<!ENTITY xxe SYSTEM "file:///etc/passwd">]><test>&xxe;</test>
     xml_content = request.args['xml_content']
 
     BadHandler = MainHandler()
@@ -44,12 +41,12 @@ def test1():
 
 @app.route("/xml.sax.make_parser()+MainHandler-xml.sax.handler.feature_external_ges_False")
 def test1():
-    # <?xml version="1.0"?><!DOCTYPE dt [<!ENTITY xxe SYSTEM "file:///etc/passwd">]><test>&xxe;</test>
     xml_content = request.args['xml_content']
 
     BadHandler = MainHandler()
     parser = xml.sax.make_parser()
     parser.setContentHandler(BadHandler)
+    # https://docs.python.org/3/library/xml.sax.handler.html#xml.sax.handler.feature_external_ges
     parser.setFeature(xml.sax.handler.feature_external_ges, False)
     parser.parse(StringIO(xml_content))
     return BadHandler._result
@@ -59,7 +56,6 @@ def test1():
 
 @app.route("/xml.sax.make_parser()+MainHandler-xml.sax.handler.feature_external_ges_True")
 def test1():
-    # <?xml version="1.0"?><!DOCTYPE dt [<!ENTITY xxe SYSTEM "file:///etc/passwd">]><test>&xxe;</test>
     xml_content = request.args['xml_content']
 
     GoodHandler = MainHandler()
@@ -72,7 +68,6 @@ def test1():
 
 @app.route("/xml.sax.make_parser()+xml.dom.minidom.parse-xml.sax.handler.feature_external_ges_True")
 def test1():
-    # <?xml version="1.0"?><!DOCTYPE dt [<!ENTITY xxe SYSTEM "file:///etc/passwd">]><test>&xxe;</test>
     xml_content = request.args['xml_content']
 
     parser = xml.sax.make_parser()
