@@ -15,7 +15,7 @@ import semmle.python.dataflow.new.DataFlow
 import semmle.python.Concepts
 import experimental.semmle.python.Concepts
 
-from Expr cookieExpr, False f, None n
+from Expr cookieExpr
 where
   exists(HeaderDeclaration headerWrite, StrConst headerName, StrConst headerValue |
     headerName.getText() = "Set-Cookie" and
@@ -25,7 +25,7 @@ where
     cookieExpr = headerWrite.asExpr()
   )
   or
-  exists(ExperimentalHTTP::CookieWrite cookieWrite |
+  exists(ExperimentalHTTP::CookieWrite cookieWrite, False f, None n |
     [DataFlow::exprNode(f), DataFlow::exprNode(n)]
         .(DataFlow::LocalSourceNode)
         .flowsTo(cookieWrite.(DataFlow::CallCfgNode).getArgByName("secure")) and
