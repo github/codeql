@@ -1,0 +1,6 @@
+| django_bad.py:6:5:6:49 | Attribute() | Cookie is added to response without the 'secure' flag being set. |
+| django_bad.py:12:5:12:50 | Attribute() | Cookie is added to response without the 'secure' flag being set. |
+| flask_bad.py:9:5:9:56 | Attribute() | Cookie is added to response without the 'secure' flag being set. |
+| flask_bad.py:16:5:16:55 | Attribute() | Cookie is added to response without the 'secure' flag being set. |
+| flask_bad.py:23:5:23:30 | Subscript | Cookie is added to response without the 'secure' flag being set. |
+| flask_bad.py:30:5:30:30 | Subscript | Cookie is added to response without the 'secure' flag being set. |
