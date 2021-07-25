@@ -10,7 +10,7 @@ import java.util.Objects;
 import javax.crypto.Cipher;
 import javax.crypto.Mac;
 
-public class NonConstantTimeCheckOnSignature {
+public class Test {
 
     // BAD: compare MACs using a non-constant-time method
     public boolean unsafeMacCheckWithArrayEquals(Socket socket) throws Exception {
@@ -177,6 +177,7 @@ public class NonConstantTimeCheckOnSignature {
     }
 
     // GOOD: compare ciphertexts using a constant-time method, but no user input
+    //       but NonConstantTimeCheckOnSignature.ql still detects it
     public boolean noUserInputWhenCheckingCiphertext(Socket socket, Key key) throws Exception {
         try (InputStream is = socket.getInputStream()) {
             byte[] plaintext = is.readNBytes(100);

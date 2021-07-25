@@ -5,7 +5,8 @@
 <p>
 A constant-time algorithm should be used for checking a MAC or a digital signature.
 In other words, the comparison time should not depend on the content of the input. 
-Otherwise, an attacker may be able to implement a timing attack.
+Otherwise, an attacker may be able to implement a timing attack if they control inputs
+for the cryptographic operation and the checking prodedure.
 A successful attack may uncover a valid signature that in turn can result in authentication bypass.
 </p>
 </overview>
@@ -20,15 +21,16 @@ and does not depend on the contents of the arrays.
 
 <example>
 <p>
-The following example uses <code>Arrays.equals()</code> method for validating a MAC.
-This method implements a non-constant-time algorithm:
+The following example uses <code>Arrays.equals()</code> method for validating a MAC over a messgae.
+This method implements a non-constant-time algorithm.
+Both the message and the signature come from an untrusted HTTP request:
 </p>
-<sample src="UnsafeMacComparison.java" />
+<sample src="UnsafeMacComparisonWithRemoteInputs.java" />
 
 <p>
 The next example uses a safe constant-time algorithm for validating a MAC:
 </p>
-<sample src="SafeMacComparison.java" />
+<sample src="SafeMacComparisonWithRemoteInputs.java" />
 
 </example>
 
