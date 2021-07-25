@@ -81,4 +81,20 @@ module ExperimentalFlask {
 
     override DataFlow::Node getValueArg() { result.asExpr() = item.getValue() }
   }
+
+  class DjangoSetCookieCall extends DataFlow::CallCfgNode, ExperimentalHTTP::CookieWrite::Range {
+    DjangoSetCookieCall() {
+      this =
+        [Flask::Response::classRef(), flaskMakeResponse()]
+            .getReturn()
+            .getMember("set_cookie")
+            .getACall()
+    }
+
+    override DataFlow::Node getHeaderArg() { none() }
+
+    override DataFlow::Node getNameArg() { result = this.getArg(0) }
+
+    override DataFlow::Node getValueArg() { result = this.getArg(1) }
+  }
 }

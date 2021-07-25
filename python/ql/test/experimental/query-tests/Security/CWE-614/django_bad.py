@@ -9,5 +9,5 @@ def django_response(request):
 
 def django_response(request):
     resp = django.http.HttpResponse()
-    resp.set_cookie("name", "value")
+    resp.set_cookie("name", "value", secure=False)
     return resp

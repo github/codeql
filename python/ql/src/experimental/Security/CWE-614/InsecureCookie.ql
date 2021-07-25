@@ -15,16 +15,20 @@ import semmle.python.dataflow.new.DataFlow
 import semmle.python.Concepts
 import experimental.semmle.python.Concepts
 
-from HeaderDeclaration headerWrite, False f, None n
+from Expr cookieExpr, False f, None n
 where
-  exists(StrConst headerName, StrConst headerValue |
+  exists(HeaderDeclaration headerWrite, StrConst headerName, StrConst headerValue |
     headerName.getText() = "Set-Cookie" and
     DataFlow::exprNode(headerName).(DataFlow::LocalSourceNode).flowsTo(headerWrite.getNameArg()) and
     not headerValue.getText().regexpMatch(".*; *Secure;.*") and
-    DataFlow::exprNode(headerValue).(DataFlow::LocalSourceNode).flowsTo(headerWrite.getValueArg())
+    DataFlow::exprNode(headerValue).(DataFlow::LocalSourceNode).flowsTo(headerWrite.getValueArg()) and
+    cookieExpr = headerWrite.asExpr()
   )
   or
-  [DataFlow::exprNode(f), DataFlow::exprNode(n)]
-      .(DataFlow::LocalSourceNode)
-      .flowsTo(headerWrite.(DataFlow::CallCfgNode).getArgByName("secure"))
-select headerWrite, "Cookie is added to response without the 'secure' flag being set."
+  exists(ExperimentalHTTP::CookieWrite cookieWrite |
+    [DataFlow::exprNode(f), DataFlow::exprNode(n)]
+        .(DataFlow::LocalSourceNode)
+        .flowsTo(cookieWrite.(DataFlow::CallCfgNode).getArgByName("secure")) and
+    cookieExpr = cookieWrite.asExpr()
+  )
+select cookieExpr, "Cookie is added to response without the 'secure' flag being set."
