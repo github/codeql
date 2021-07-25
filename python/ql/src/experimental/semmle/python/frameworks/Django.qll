@@ -75,6 +75,17 @@ private module PrivateDjango {
 
             override DataFlow::Node getValueArg() { result = headerInput }
           }
+
+          class DjangoSetCookieCall extends DataFlow::CallCfgNode,
+            ExperimentalHTTP::CookieWrite::Range {
+            DjangoSetCookieCall() { this = baseClassRef().getMember("set_cookie").getACall() }
+
+            override DataFlow::Node getHeaderArg() { none() }
+
+            override DataFlow::Node getNameArg() { result = this.getArg(0) }
+
+            override DataFlow::Node getValueArg() { result = this.getArg(1) }
+          }
         }
       }
     }
