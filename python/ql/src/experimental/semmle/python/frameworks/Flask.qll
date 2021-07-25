@@ -54,20 +54,31 @@ module ExperimentalFlask {
       headerInput.asCfgNode() = this.asCfgNode().(DefinitionNode).getValue()
     }
 
-    override DataFlow::Node getAnInput() {
-      result.asExpr() in [headerInput.asExpr(), this.asExpr().(Subscript).getIndex()]
-    }
+    override DataFlow::Node getNameArg() { result.asExpr() = this.asExpr().(Subscript).getIndex() }
+
+    override DataFlow::Node getValueArg() { result = headerInput }
   }
 
   private class FlaskMakeResponseExtend extends DataFlow::CallCfgNode, HeaderDeclaration::Range {
-    FlaskMakeResponseExtend() { this.getFunction() = headerInstanceCall() }
+    KeyValuePair item;
 
-    override DataFlow::Node getAnInput() { result = this.getArg(_) }
+    FlaskMakeResponseExtend() {
+      this.getFunction() = headerInstanceCall() and
+      item = this.getArg(_).asExpr().(Dict).getAnItem()
+    }
+
+    override DataFlow::Node getNameArg() { result.asExpr() = item.getKey() }
+
+    override DataFlow::Node getValueArg() { result.asExpr() = item.getValue() }
   }
 
   private class FlaskResponse extends DataFlow::CallCfgNode, HeaderDeclaration::Range {
+    KeyValuePair item;
+
     FlaskResponse() { this = Flask::Response::classRef().getACall() }
 
-    override DataFlow::Node getAnInput() { result = this.getArgByName("headers") }
+    override DataFlow::Node getNameArg() { result.asExpr() = item.getKey() }
+
+    override DataFlow::Node getValueArg() { result.asExpr() = item.getValue() }
   }
 }

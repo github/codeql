@@ -213,21 +213,26 @@ class SQLEscape extends DataFlow::Node {
 /** Provides classes for modeling HTTP Header APIs. */
 module HeaderDeclaration {
   /**
-   * A data-flow node that collects functions setting HTTP Headers' content.
+   * A data-flow node that collects functions setting HTTP Headers.
    *
    * Extend this class to model new APIs. If you want to refine existing API models,
    * extend `HeaderDeclaration` instead.
    */
   abstract class Range extends DataFlow::Node {
     /**
+     * Gets the argument containing the header name.
+     */
+    abstract DataFlow::Node getNameArg();
+
+    /**
      * Gets the argument containing the header value.
      */
-    abstract DataFlow::Node getAnInput();
+    abstract DataFlow::Node getValueArg();
   }
 }
 
 /**
- * A data-flow node that collects functions setting HTTP Headers' content.
+ * A data-flow node that collects functions setting HTTP Headers.
  *
  * Extend this class to model new APIs. If you want to refine existing API models,
  * extend `HeaderDeclaration` instead.
@@ -238,7 +243,12 @@ class HeaderDeclaration extends DataFlow::Node {
   HeaderDeclaration() { this = range }
 
   /**
-   * Gets the argument containing the header value.
+   * Gets the argument containing the header name.
    */
-  DataFlow::Node getAnInput() { result = range.getAnInput() }
+  DataFlow::Node getNameArg() { result = range.getNameArg() }
+
+  /**
+   * Gets the argument containing the header name.
+   */
+  DataFlow::Node getValueArg() { result = range.getValueArg() }
 }

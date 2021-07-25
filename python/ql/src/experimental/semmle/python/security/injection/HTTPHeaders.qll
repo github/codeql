@@ -13,6 +13,8 @@ class HeaderInjectionFlowConfig extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   override predicate isSink(DataFlow::Node sink) {
-    sink = any(HeaderDeclaration headerDeclaration).getAnInput()
+    exists(HeaderDeclaration headerDeclaration |
+      sink in [headerDeclaration.getNameArg(), headerDeclaration.getValueArg()]
+    )
   }
 }
