@@ -109,6 +109,25 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 	// root directories of packages that we want to extract
 	wantedRoots := make(map[string]bool)
 
+	log.Printf("Running go list to resolve package and module directories.")
+	// get all packages information
+	pkgsInfo, err := util.GetPkgsInfo(patterns, true, modFlags...)
+	if err != nil {
+		log.Fatalf("Error getting dependency package or module directories: %v.", err)
+	}
+	for pkgPath, pkgInfo := range pkgsInfo {
+		mdir := pkgInfo.ModDir
+		pdir := pkgInfo.PkgDir
+		// GetPkgsInfo returns the empty string if the module directory cannot be determined, e.g. if the package
+		// is not using modules. If this is the case, fall back to the package directory
+		if mdir == "" {
+			mdir = pdir
+		}
+		pkgRoots[pkgPath] = mdir
+		pkgDirs[pkgPath] = pdir
+	}
+	log.Printf("Done running go list deps: resolved %d packages.", len(pkgsInfo))
+
 	// recursively visit all packages in depth-first order;
 	// on the way down, associate each package scope with its corresponding package,
 	// and on the way up extract the package's scope
@@ -116,18 +135,6 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 		return true
 	}, func(pkg *packages.Package) {
 		log.Printf("Processing package %s.", pkg.PkgPath)
-
-		if _, ok := pkgRoots[pkg.PkgPath]; !ok {
-			mdir := util.GetModDir(pkg.PkgPath, modFlags...)
-			pdir := util.GetPkgDir(pkg.PkgPath, modFlags...)
-			// GetModDir returns the empty string if the module directory cannot be determined, e.g. if the package
-			// is not using modules. If this is the case, fall back to the package directory
-			if mdir == "" {
-				mdir = pdir
-			}
-			pkgRoots[pkg.PkgPath] = mdir
-			pkgDirs[pkg.PkgPath] = pdir
-		}
 
 		log.Printf("Extracting types for package %s.", pkg.PkgPath)
 
