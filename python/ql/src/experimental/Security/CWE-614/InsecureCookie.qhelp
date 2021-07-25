@@ -1,0 +1,26 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>Failing to set the 'secure' flag on a cookie can cause it to be sent in cleartext.
+This makes it easier for an attacker to intercept.</p>
+</overview>
+
+<recommendation>
+<p>Always set <code>secure</code> to <code>True</code> or add "; Secure;" to the cookie's raw value.</p>
+</recommendation>
+
+<example>
+<p>This example shows two ways of adding a cookie to a Flask response. The first way uses <code>set_cookie</code>'s
+secure flag and the second adds the secure flag in the cookie's raw value.</p>
+<sample src="InsecureCookie.py" />
+</example>
+
+<references>
+<li>Detectify: <a href="https://support.detectify.com/support/solutions/articles/48001048982-cookie-lack-secure-flag">Cookie lack Secure flag</a>.</li>
+<li>PortSwigger: <a href="https://portswigger.net/kb/issues/00500200_tls-cookie-without-secure-flag-set">TLS cookie without secure flag set</a>.</li>
+</references>
+
+</qhelp>
