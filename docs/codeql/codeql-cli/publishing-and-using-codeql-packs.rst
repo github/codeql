@@ -43,7 +43,7 @@ The published package will appear in the packages section of your GitHub organiz
 Running ``codeql pack download <scope>/<pack>``
 -----------------------------------------------
 
-To run a pack that someone else has created, you must download it by running the following command:
+To run a pack that someone else has created, you must first download it by running the following command:
 
 ::
 
