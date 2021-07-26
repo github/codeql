@@ -123,7 +123,7 @@ To run an existing CodeQl pack from GitHub Packages - the GitHub Container Regis
 
 Afterwards, you can run the pack on a specific database:
 
-   codeql database analyze <database> microsoft/coding-standards@1.0.0 <scope>/<other-pack>
+   codeql database analyze <database> microsoft/coding-standards@1.0.0 <scope>/<other-pack> --format=sarifv2.1.0 --output=query-results.sarif
 
 The ``analyze`` command above runs the default suite from ``microsoft/coding-standards v1.0.0`` and the latest version of ``scope/other-pack`` on the specified database.
 For further information about default suites, see ":ref:`Publishing and using CodeQL packs <publishing-and-using-codeql-packs>`".
