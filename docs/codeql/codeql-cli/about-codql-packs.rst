@@ -77,7 +77,7 @@ The following properties are supported in ``qlpack.yml`` files.
    * - ``extractor``
      - ``javascript``
      - All test packs
-     - The CodeQL language extractor to use when the CLI creates a database from test files in the pack. For more information about testing queries, see ":doc:`Testing custom queries <testing-custom-queries>`."
+     - The CodeQL language extractor to use when the CLI creates a database in the pack. For more information about testing queries, see ":doc:`Testing custom queries <testing-custom-queries>`."
    * - ``tests``
      - ``.``
      - Optional for test packs
