@@ -79,7 +79,6 @@ outputJsonFile = os.path.join(workDir, 'output.json')
 # Make a database that touches all types whose methods we want to test:
 print("Creating Maven project")
 projectDir = os.path.join(workDir, "mavenProject")
-os.makedirs(projectDir)
 
 if len(sys.argv) == 4:
     projectTestPkgDir = os.path.join(projectDir, "src", "main", "java", "test")
