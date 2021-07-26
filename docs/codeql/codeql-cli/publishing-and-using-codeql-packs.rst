@@ -53,6 +53,8 @@ To run a pack that someone else has created, you must first download it by runni
 - ``<pack>``: the name for the pack that you are creating.
 - ``@x.x.x``: an optional version number. If omitted, the latest version will be downloaded.
 
+This command accepts arguments for multiple packs, as well as query suites.
+
 Using a CodeQL pack to analyze a CodeQL database
 ------------------------------------------------
 
