@@ -52,12 +52,7 @@ For more information about these metadata properties, see ":ref:`Metadata for Co
 Packaging custom QL queries
 ---------------------------
 
-.. pull-quote::
-
-    Note
-
-    The CodeQL package manager is currently in beta and subject to change. During the beta, CodeQL packs are available only using GitHub Packages - the GitHub Container registry. You must use version 2.5.8 or later of the CodeQL CLI to use the CodeQL package manager.
-
+.. include:: ../reusables/beta-note-package-manager.rst
 
 When you write your own queries, you should save them in a custom QL pack
 directory. When you are ready to share your queries with other users, you can publish the pack as a CodeQL pack to GitHub Packages - the GitHub Container registry.

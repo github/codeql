@@ -3,11 +3,7 @@
 About CodeQL packs
 ==================
 
-.. pull-quote::
-
-   Note
-
-   CodeQL packs are currently in beta and subject to change.
+.. include:: ../reusables/beta-note-package-manager.rst
 
 CodeQL packs are used to create, share, depend on, and run CodeQL queries and libraries. You can publish your own CodeQL packs and download packs created by others. CodeQL packs contain queries, library files, query suites, and  metadata.
 

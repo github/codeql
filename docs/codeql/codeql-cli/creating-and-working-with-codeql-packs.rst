@@ -5,11 +5,7 @@ Creating and working with CodeQL packs
 
 You can use CodeQL packs to create, share, depend on, and run CodeQL queries and libraries.
 
-.. pull-quote::
-
-   Note
-
-   The CodeQL package manager is currently in beta and subject to change. During the beta, CodeQL packs are available only using GitHub Packages - the GitHub Container registry. You must use version 2.5.8 or later of the CodeQL CLI to use the CodeQL package manager.
+.. include:: ../reusables/beta-note-package-manager.rst
 
 About CodeQL packs and the CodeQL CLI package manager
 -----------------------------------------------------
