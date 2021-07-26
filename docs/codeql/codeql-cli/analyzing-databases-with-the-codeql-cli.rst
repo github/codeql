@@ -117,15 +117,13 @@ Running a CodeQL pack
 
     The CodeQL package manager is currently in beta and subject to change. During the beta, CodeQL packs are available only in GitHub Packages - the GitHub Container Registry (GHCR). You must use version 2.5.8 or later of the CodeQL CLI to use the CodeQL package manager.
 
-    During the beta, you must specify ``--allow-packs`` whenever you run the ``analyze`` command.
-
 To run an existing CodeQl pack from GitHub Packages - the GitHub Container Registry (GHCR), you need to download it first:
 
    codeql pack download microsoft/coding-standards@1.0.0
 
 Afterwards, you can run the pack on a specific database:
 
-   codeql database analyze <database> --allow-packs microsoft/coding-standards@1.0.0 <scope>/<other-pack>
+   codeql database analyze <database> microsoft/coding-standards@1.0.0 <scope>/<other-pack>
 
 The ``analyze`` command above runs the default suite from ``microsoft/coding-standards v1.0.0`` and the latest version of ``scope/other-pack`` on the specified database.
 For further information about default suites, see ":ref:`Publishing and using CodeQL packs <publishing-and-using-codeql-packs>`".
