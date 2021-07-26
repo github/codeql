@@ -5,7 +5,7 @@ About CodeQL packs
 
 .. include:: ../reusables/beta-note-package-manager.rst
 
-CodeQL packs are used to create, share, depend on, and run CodeQL queries and libraries. You can publish your own CodeQL packs and download packs created by others. CodeQL packs contain queries, library files, query suites, and  metadata.
+CodeQL packs are used to create, share, depend on, and run CodeQL queries and libraries. You can publish your own CodeQL packs and download packs created by others. CodeQL packs contain queries, library files, query suites, and metadata.
 
 There are two types of CodeQL packs: query packs and library packs.
 
@@ -88,7 +88,7 @@ The following properties are supported in ``qlpack.yml`` files.
      - The path to the :ref:`database schema <codeql-database-schema>` for all libraries and queries written for this CodeQL language (see example below).
    * - ``upgrades``
      - ``.``
-     - Packs with upgrades
+     - Core language packs only
      - The path to a directory within the pack that contains upgrade scripts, defined relative to the pack directory. The ``database upgrade`` action uses these scripts to update databases that were created by an older version of an extractor so they're compatible with the current extractor (see `Upgrade scripts for a language <#upgrade-scripts-for-a-language>`__ below.)
    * - ``authors``
      - ``example@github.com``
@@ -99,6 +99,6 @@ The following properties are supported in ``qlpack.yml`` files.
      - All packs
      - Metadata that will be displayed on the packaging search page in the packages section of the account that the CodeQL pack is published to. For a list of allowed licenses, see `SPDX License List <https://spdx.org/licenses/>`__ in the SPDX Specification. 
    * - ``description``
-     - ``Human-readable description of the software packaged in the image.``
+     - ``Human-readable description of the contents of the CodeQL pack.``
      - All packs
      - Metadata that will be displayed on the packaging search page in the packages section of the account that the CodeQL pack is published to.
