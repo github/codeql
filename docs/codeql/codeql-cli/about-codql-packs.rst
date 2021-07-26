@@ -90,7 +90,7 @@ The following properties are supported in ``qlpack.yml`` files.
      - ``.``
      - Packs with upgrades
      - The path to a directory within the pack that contains upgrade scripts, defined relative to the pack directory. The ``database upgrade`` action uses these scripts to update databases that were created by an older version of an extractor so they're compatible with the current extractor (see `Upgrade scripts for a language <#upgrade-scripts-for-a-language>`__ below.)
-   * - ``collaborators``
+   * - ``authors``
      - ``example@github.com``
      - Metadata that will be displayed on the packaging search page in the packages section of the organization that a CodeQL pack is published to.
    * - ``bugs``
