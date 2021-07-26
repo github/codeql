@@ -52,6 +52,8 @@ For more information about these metadata properties, see ":ref:`Metadata for Co
 Packaging custom QL queries
 ---------------------------
 
+.. pull-quote::
+
     Note
 
     The CodeQL package manager is currently in beta and subject to change. During the beta, CodeQL packages are available only in GitHub Packages - the GitHub Container Registry (GHCR). You must use version 2.5.8 or later of the CodeQL CLI to use the CodeQL package manager.
