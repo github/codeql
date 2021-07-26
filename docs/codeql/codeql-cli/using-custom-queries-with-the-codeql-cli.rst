@@ -54,12 +54,12 @@ Packaging custom QL queries
 
     Note
 
-    The CodeQL package manager is currently in beta and subject to change. During the beta, CodeQL packages are available only in the GitHub Package Registry (GHPR). You must use version 2.5.8 or later of the CodeQL CLI to use the CodeQL package manager.
+    The CodeQL package manager is currently in beta and subject to change. During the beta, CodeQL packages are available only in GitHub Packages - the GitHub Container Registry (GHCR). You must use version 2.5.8 or later of the CodeQL CLI to use the CodeQL package manager.
 
 
 When writing your own queries, you can either just save them in a custom QL pack
 directory or subsequently include the pack in a CodeQL package which you can
-then upload to the GitHub Package Registry (GHPR).
+then upload to GitHub Packages - the GitHub Container Registry (GHCR).
 
 QL packs organize the files used in CodeQL analysis and can store queries,
 library files, query suites, and important metadata. Their root directory must
@@ -73,7 +73,7 @@ about what to include in this file, see ":ref:`About QL packs <about-ql-packs>`.
 
 CodeQL packages are used to create, share, depend on, and run CodeQL queries and
 libraries. You can publish your own CodeQL packages and download ones created by
-others via the the GitHub Package Registry (GHPR). For further information see
+others via the the Container registry. For further information see
 ":ref:`About CodeQL packs <about-codeql-packs>`."
 
 Contributing to the CodeQL repository
