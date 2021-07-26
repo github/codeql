@@ -13,8 +13,8 @@ CodeQL packs are used to create, share, depend on, and run CodeQL queries and li
 
 There are two types of CodeQL packs: query packs and library packs.
 
-* Query packs are designed to be run. They are bundled with all transitive dependencies. Also included in the tarball is a compilation cache which is used to ensure the packs' efficient execution.
-* Library packs are designed to be used by query packs (or other library packs) and do not contain queries themselves. The libraries are not compiled and there is no compilation cache included in the final pack.
+* Query packs are designed to be run. When a query pack is published, the bundle includes all the transitive dependencies and a compilation cache. This ensures consistent and efficient execution of the queries in the pack.
+* Library packs are designed to be used by query packs (or other library packs) and do not contain queries themselves. The libraries are not compiled and there is no compilation cache included when the pack is published.
 
 You can use the CodeQL package manger in the CodeQL CLI to create CodeQL packs, add dependencies to packs, and install or update dependencies. For more information, see ":ref:`Creating and working with CodeQL packs <creating-and-working-with-codeql-packs>`." You can also publish and download CodeQL packs using the CodeQL package manager. For more information, see ":doc:`Publishing and using CodeQL packs <publishing-and-using-codeql-packs>`."
 
@@ -31,11 +31,11 @@ files and directories within the pack should be logically organized. For example
 About ``qlpack.yml`` files
 --------------------------
 
-When executing query-related commands, CodeQL first looks in the package cache for CodeQL packs which have already been downloaded. If a suitable pack cannot be found, then CodeQL scans siblings of the installation directory (and their subdirectories) for ``qlpack.yml`` files. The metadata in the file tells
-CodeQL how to compile queries, what libraries the pack depends on, and where to
+When executing query-related commands, CodeQL first looks in the package cache for CodeQL packs which have already been downloaded. If a suitable pack cannot be found, then CodeQL scans siblings of the installation directory (and their subdirectories) for ``qlpack.yml`` files. The metadata in each `qlpack.yml`` file tells
+CodeQL how to compile any queries in the pack, what libraries the pack depends on, and where to
 find query suite definitions.
 
-The content of the CodeQL pack (queries and libraries used in CodeQL analysis) is
+The contents of the CodeQL pack (queries or libraries used in CodeQL analysis) is
 included in the same directory as ``qlpack.yml``, or its subdirectories.
 
 The location of ``qlpack.yml`` defines the library path for the content
@@ -61,7 +61,7 @@ The following properties are supported in ``qlpack.yml`` files.
    * - ``name``
      - ``octo-org/security-queries``
      - All packs
-     - The scope, where the CodeQL pack is published, and the name of the pack defined using alphanumeric characters, hyphens, and periods. It must be unique as CodeQL cannot differentiate between CodeQL packs with identical names. Name components cannot start or end with a hyphen. Additionally, a period is not allowed in pack names at all. Use the pack name to specify queries to run using ``database analyze`` and to define dependencies between QL packs (see examples below).
+     - The scope, where the CodeQL pack is published, and the name of the pack defined using alphanumeric characters and hyphens. It must be unique as CodeQL cannot differentiate between CodeQL packs with identical names. Name components cannot start or end with a hyphen. Additionally, a period is not allowed in pack names at all. Use the pack name to specify queries to run using ``database analyze`` and to define dependencies between QL packs (see examples below).
    * - ``version``
      - ``0.0.0``
      - All packs
@@ -69,7 +69,7 @@ The following properties are supported in ``qlpack.yml`` files.
    * - ``dependencies``
      - ``codeql/javascript-all: 1.2.3``
      - Optional
-     - The names of any CodeQL packs that this pack depends on, as a sequence. This gives the pack access to any libraries, database schema, and query suites defined in the dependency.
+     - The names of any CodeQL packs that this pack depends on, as a sequence. This gives the pack access to any libraries, database schema, and query suites defined in the dependency. Optionally a version for the dependency is specified. 
    * - ``suites``
      - ``octo-org-query-suites``
      - Optional
@@ -84,7 +84,7 @@ The following properties are supported in ``qlpack.yml`` files.
      - The path to a directory within the pack that contains tests, defined relative to the pack directory. Use ``.`` to specify the whole pack. Any queries in this directory are run as tests when ``test run`` is run with the ``--strict-test-discovery`` option. These queries are ignored by query suite definitions that use ``queries`` or ``qlpack``    instructions to ask for all queries in a particular pack.
    * - ``dbscheme``
      - ``semmlecode.python.dbscheme``
-     - Core language pack only
+     - Core language packs only
      - The path to the :ref:`database schema <codeql-database-schema>` for all libraries and queries written for this CodeQL language (see example below).
    * - ``upgrades``
      - ``.``

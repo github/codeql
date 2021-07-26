@@ -9,7 +9,7 @@ You can publish your own CodeQL packs and use packs published by other people.
 
    Note
 
-   The CodeQL package manager is currently in beta and subject to change. During the beta, CodeQL packs are available only in GitHub Packages - the GitHub Container Registry (GHCR). You must use version 2.5.8 or later of the CodeQL CLI to use the CodeQL package manager.
+   The CodeQL package manager is currently in beta and subject to change. During the beta, CodeQL packs are available only using GitHub Packages - the GitHub Container registry. You must use version 2.5.8 or later of the CodeQL CLI to use the CodeQL package manager.
 
 Configuring the ``qlpack.yml`` file before publishing
 -----------------------------------------------------
@@ -20,27 +20,27 @@ You can check and modify the configuration details of your CodeQL pack prior to 
 
    library: # set to true if the pack is a library. Set to false or omit for a query pack
    name: <scope>/<pack>
-   version: x.x.x
-   description:
+   version: <x.x.x>
+   description: <Description to publish with the package>
    default-suite: # a query-suite file that has been inlined
        - query:
    default-suite-file: default-queries.qls # a pointer to a query-suite in this pack
-   license:
+   license: # optional, the license under which the pack is published
    dependencies:
 
 - ``name:`` must follow the <scope>/<pack> format, where <scope> is the GitHub organization that you will publish to and <pack> is the name for the pack.
-- Only one of ``default-suite`` or ``default-suite-file`` is allowed. Both options define a default query suite to be run.
+- Only one of ``default-suite`` or ``default-suite-file`` is allowed. Both options define a default query suite to be run, the first by specifying queries directly in the `qlpack.yml` file and the second by specifying a query suite in the pack.
 
 Running ``codeql pack publish``
 -------------------------------
 
-When you are ready to upload a pack to a shared repository, you can run the following command in the root of the pack directory:
+When you are ready to publish a pack to the GitHub Container registry, you can run the following command in the root of the pack directory:
 
 ::
 
   codeql pack publish
 
-The published package will appear in the packages section of your GitHub organization.
+The published package will be displayed in the packages section of GitHub organization specified by the scope in the ``qlpack.yml`` file.
 
 Running ``codeql pack download <scope>/<pack>``
 -----------------------------------------------

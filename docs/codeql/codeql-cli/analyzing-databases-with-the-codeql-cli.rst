@@ -115,13 +115,13 @@ Running a CodeQL pack
 
     Note
 
-    The CodeQL package manager is currently in beta and subject to change. During the beta, CodeQL packs are available only in GitHub Packages - the GitHub Container Registry (GHCR). You must use version 2.5.8 or later of the CodeQL CLI to use the CodeQL package manager.
+    The CodeQL package manager is currently in beta and subject to change. During the beta, CodeQL packs are available only using GitHub Packages - the GitHub Container registry. You must use version 2.5.8 or later of the CodeQL CLI to use the CodeQL package manager.
 
-To run an existing CodeQl pack from GitHub Packages - the GitHub Container Registry (GHCR), you need to download it first:
+To run an existing CodeQL query pack from the GitHub Container registry, you need to download it first::
 
    codeql pack download microsoft/coding-standards@1.0.0
 
-Afterwards, you can run the pack on a specific database:
+Afterwards, you can run the pack on a specific database::
 
    codeql database analyze <database> microsoft/coding-standards@1.0.0 <scope>/<other-pack> --format=sarifv2.1.0 --output=query-results.sarif
 
@@ -137,13 +137,13 @@ you could use the following command from the directory containing your database:
    codeql database analyze <cpp-database> cpp-code-scanning.qls --format=sarifv2.1.0 --output=cpp-results.sarif
 
 The analysis generates a file in the v2.1.0 SARIF format that is supported by all versions of GitHub.
-This file can be uploaded to GitHub executing ``codeql github upload-results`` or the code scanning API.
+This file can be uploaded to GitHub by executing ``codeql github upload-results`` or the code scanning API.
 For more information, see `Analyzing a CodeQL database <https://docs.github.com/en/code-security/secure-coding/configuring-codeql-cli-in-your-ci-system#analyzing-a-codeql-database>`__
 or `Code scanning API <https://docs.github.com/en/rest/reference/code-scanning>`__ in the GitHub documentation.
 
 CodeQL query suites are ``.qls`` files that use directives to select queries to run
 based on certain metadata properties. The standard QL packs have metadata that specify
-the location of the query suites, so the CodeQL CLI knows where to find these
+the location of the query suites used by code scanning, so the CodeQL CLI knows where to find these
 suite files automatically, and you don't have to specify the full path on the command line.
 For more information, see ":ref:`About QL packs <standard-ql-packs>`."
 
@@ -157,7 +157,7 @@ and at the following path in the CodeQL for Go repository::
    ql/src/codeql-suites/go-code-scanning.qls
 
 The repository also includes the query suites used by `LGTM.com <https://lgtm.com>`__.
-These are stored alongside the query suites with names of the form: ``<language>-lgtm.qls``.
+These are stored alongside the query suites for code scanning with names of the form: ``<language>-lgtm.qls``.
 
 For information about creating custom query suites, see ":doc:`Creating
 CodeQL query suites <creating-codeql-query-suites>`."
@@ -169,46 +169,18 @@ When you create a CodeQL database, the extractor stores diagnostic data in the d
 
 If the analysis found fewer results for standard queries than you expected, review the results of the diagnostic and summary queries to check whether the CodeQL database is likely to be a good representation of the codebase that you want to analyze.
 
-Integrating a CodeQL pack into a Code Scanning workflow
+Integrating a CodeQL pack into a code scanning workflow in GitHub
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. pull-quote::
 
     Note
 
-    The CodeQL package manager is currently in beta and subject to change. During the beta, CodeQL packs are available only in GitHub Packages - the GitHub Container Registry (GHCR). You must use version 2.5.8 or later of the CodeQL CLI to use the CodeQL package manager.
+    The CodeQL package manager is currently in beta and subject to change. During the beta, CodeQL packs are available only using GitHub Packages - the GitHub Container registry. You must use version 2.5.8 or later of the CodeQL CLI to use the CodeQL package manager.
 
-Using packs inside your Code Scanning setup allows selecting query packs from various sources.
+You can use CodeQL query packs in your Code Scanning setup. This allows you to select query packs published by various sources and use them to analyze your code. 
+For more information, see "`Using CodeQL query packs in the CodeQL action <https://docs.github.com/en/code-security/secure-coding/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning#using-codeql-query-packs/>`_" or "`Downloading and using CodeQL query packs in your CI system <https://docs.github.com/en/code-security/secure-coding/using-codeql-code-scanning-with-your-existing-ci-system/configuring-codeql-cli-in-your-ci-system#downloading-and-using-codeql-query-packs>`_."
 
-In the CodeQL configuration file, the section called ``packs`` holds a list of CodeQL package references. Each package listed there will be downloaded by the action and the its default suite will be run.
-
-   queries:
-     - queries/query1.ql
-     - queries/suite1.qls
-   packs:
-     - codeql/pack1@~1.2.3  # latest version compatible with 1.2.3
-     - codeql/pack2         # latest version
-
-For multi-language runs, you can specify a nested map of packs:
-
-   packs:
-     javascript:
-       - codeql/js-pack1@~1.2.3
-       - codeql/js-pack2
-     java:
-       - codeql/java-pack1@~1.2.3
-       - codeql/java-pack2
-
-In the CodeQL workflow file, you can add ``packs`` as input for the ``init`` action by using a comma-separated list of CodeQL packages and optional versions.
-
-.. code-block:: none
-
-   uses: github/codeql-action@v1
-   with:
-     packs: codeql/pack1@~1.2.3, +codeql/pack2
-
-This format does not support multi-language analyses.
-You can prefix a package reference with a plus sign, resulting in the input being combined with the config file. Without it, the input overwrites the config file.
 
 Running all queries in a directory
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

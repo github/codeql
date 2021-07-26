@@ -9,23 +9,23 @@ You can use CodeQL packs to create, share, depend on, and run CodeQL queries and
 
    Note
 
-   The CodeQL package manager is currently in beta and subject to change. During the beta, CodeQL packs are available only in the GitHub Package Registry (GHPR). You must use version 2.5.8 or later of the CodeQL CLI to use the CodeQL package manager.
+   The CodeQL package manager is currently in beta and subject to change. During the beta, CodeQL packs are available only using GitHub Packages - the GitHub Container registry. You must use version 2.5.8 or later of the CodeQL CLI to use the CodeQL package manager.
 
 About CodeQL packs and the CodeQL CLI package manager
 -----------------------------------------------------
 
-With CodeQL packs and the CodeQL CLI package manager, you can publish your custom queries and integrate them into your CodeQL code scanning workflow to run and analyze your codebase.
+With CodeQL packs and the CodeQL CLI package manager, you can publish your custom queries and integrate them into your codebase analysis.
 
 There are two types of CodeQL packs: query packs and library packs.
 
-* Query packs are designed to be run. The query packs are bundled with all transitive dependencies and a compilation cache is included in the tarball.
-* Library packs are designed to be used by query packs (or other library packs) and do not contain queries themselves. The libraries are not compiled and there is no compilation cache included in the final pack.
+* Query packs are designed to be run. When a query pack is published, the bundle includes all the transitive dependencies and a compilation cache. This ensures consistent and efficient execution of the queries in the pack.
+* Library packs are designed to be used by query packs (or other library packs) and do not contain queries themselves. The libraries are not compiled and there is no compilation cache included when the pack is published.
 
 You can use the CodeQL package manger in the CodeQL CLI to create CodeQL packs, add dependencies to packs, and install or update dependencies. You can also publish and download CodeQL packs using the CodeQL package manager. For more information, see ":doc:`Publishing and using CodeQL packs <publishing-and-using-codeql-packs>`."
 
-Running ``codeql pack init``
+Creating a CodeQL pack
 ----------------------------
-You can create CodeQL packs are by running the following command from the checkout root of your project:
+You can create a CodeQL pack by running the following command from the checkout root of your project:
 
 ::
 
@@ -40,10 +40,12 @@ The ``codeql pack init`` command creates the directory structure and configurati
 
 Modifying an existing QL pack to create a CodeQL pack
 -----------------------------------------------------
-If you already have a ``qlpack.yml`` file, you can edit it manually to be a CodeQL pack.
+If you already have a ``qlpack.yml`` file, you can edit it manually to convert it into a CodeQL pack.
 
-#. Edit the name so that it matches the format ``<scope>/<name>``, where ``<scope>`` is the name of the GitHub organization that you will publish to.
-#. In the ``qlpack.yml`` file, include a version property with a semver identifier, as well as an optional dependencies block.
+#. Edit the ``name`` property so that it matches the format ``<scope>/<name>``, where ``<scope>`` is the name of the GitHub organization that you will publish to.
+#. In the ``qlpack.yml`` file, include a ``version`` property with a semver identifier, as well as an optional ``dependencies`` block.
+
+For more information about the properties, see ":ref:`About CodeQL packs <about-codeql-packs>`."
 
 Adding and installing dependencies to a CodeQL pack
 ---------------------------------------------------
@@ -69,4 +71,4 @@ This command downloads all dependencies to the shared cache on the local disk.
 
    Note
 
-   Running the ``codeql pack add`` and ``codeql pack install`` commands will generate or update the ``qlpack.lock.yml`` file. This file should be checked-in to version control. ``qlpack.lock.yml`` contains the precise version numbers used by the pack.
+   Running the ``codeql pack add`` and ``codeql pack install`` commands will generate or update the ``qlpack.lock.yml`` file. This file should be checked-in to version control. The ``qlpack.lock.yml`` file contains the precise version numbers used by the pack.
