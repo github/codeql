@@ -32,7 +32,7 @@ You can check and modify the configuration details of your CodeQL pack prior to 
 Running ``codeql pack publish``
 -------------------------------
 
-When you are ready to upload a pack to a shared repository, you can run the following command:
+When you are ready to upload a pack to a shared repository, you can run the following command in the root of the pack directory:
 
 ::
 
