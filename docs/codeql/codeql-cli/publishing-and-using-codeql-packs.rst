@@ -1,4 +1,4 @@
-.. publishing-and-using-codeql-packs:
+.. _publishing-and-using-codeql-packs:
 
 Publishing and using CodeQL packs
 =================================
@@ -15,6 +15,8 @@ Configuring the ``qlpack.yml`` file before publishing
 -----------------------------------------------------
 
 You can check and modify the configuration details of your CodeQL pack prior to publishing. Open the ``qlpack.yml`` file in your preferred text editor.
+
+.. code-block:: none
 
    library: # set to true if the pack is a library. Set to false or omit for a query pack
    name: <scope>/<pack>
