@@ -37,6 +37,11 @@ class Node extends TNode {
   ) {
     getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
+
+  /**
+   * Gets a local source node from which data may flow to this node in zero or more local data-flow steps.
+   */
+  LocalSourceNode getALocalSource() { result.flowsTo(this) }
 }
 
 /** A data-flow node corresponding to a call in the control-flow graph. */
