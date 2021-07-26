@@ -128,10 +128,10 @@ Afterwards, you can run the pack on a specific database:
 The ``analyze`` command above runs the default suite from ``microsoft/coding-standards v1.0.0`` and the latest version of ``scope/other-pack`` on the specified database.
 For further information about default suites, see ":ref:`Publishing and using CodeQL packs <publishing-and-using-codeql-packs>`".
 
-Running GitHub code scanning suites
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Running query suites
+~~~~~~~~~~~~~~~~~~~~
 
-To run the GitHub code scanning suite of queries over a CodeQL database for a C/C++ codebase,
+To run a query suite over a CodeQL database for a C/C++ codebase,
 you could use the following command from the directory containing your database::
 
    codeql database analyze <cpp-database> cpp-code-scanning.qls --format=sarifv2.1.0 --output=cpp-results.sarif
@@ -143,7 +143,7 @@ or `Code scanning API <https://docs.github.com/en/rest/reference/code-scanning>`
 
 CodeQL query suites are ``.qls`` files that use directives to select queries to run
 based on certain metadata properties. The standard QL packs have metadata that specify
-the location of the code scanning suites, so the CodeQL CLI knows where to find these
+the location of the query suites, so the CodeQL CLI knows where to find these
 suite files automatically, and you don't have to specify the full path on the command line.
 For more information, see ":ref:`About QL packs <standard-ql-packs>`."
 
@@ -157,7 +157,7 @@ and at the following path in the CodeQL for Go repository::
    ql/src/codeql-suites/go-code-scanning.qls
 
 The repository also includes the query suites used by `LGTM.com <https://lgtm.com>`__.
-These are stored alongside the code scanning suites with names of the form: ``<language>-lgtm.qls``.
+These are stored alongside the query suites with names of the form: ``<language>-lgtm.qls``.
 
 For information about creating custom query suites, see ":doc:`Creating
 CodeQL query suites <creating-codeql-query-suites>`."
