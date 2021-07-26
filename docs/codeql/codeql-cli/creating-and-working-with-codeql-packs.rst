@@ -42,7 +42,7 @@ Modifying an existing QL pack to create a CodeQL pack
 -----------------------------------------------------
 If you already have a ``qlpack.yml`` file, you can edit it manually to convert it into a CodeQL pack.
 
-#. Edit the ``name`` property so that it matches the format ``<scope>/<name>``, where ``<scope>`` is the name of the GitHub organization that you will publish to.
+#. Edit the ``name`` property so that it matches the format ``<scope>/<name>``, where ``<scope>`` is the name of the GitHub organization or user account that you will publish to.
 #. In the ``qlpack.yml`` file, include a ``version`` property with a semver identifier, as well as an optional ``dependencies`` block.
 
 For more information about the properties, see ":ref:`About CodeQL packs <about-codeql-packs>`."
@@ -55,7 +55,7 @@ You can add dependencies on CodeQL packs using the command ``codeql pack add``. 
 
   codeql pack add <scope>/<name>@x.x.x <scope>/<other-name>
 
-The version number is optional. If you leave off the version number, the latest version will be added.
+The version range is optional. If you leave off the version range, the latest version will be added. Otherwise, the latest version that satisfies the requested range will be added.
 
 This command updates the ``qlpack.yml`` file with the requested dependencies and downloads them into the package cache. Please note that this command will reformat the file and remove all comments.
 

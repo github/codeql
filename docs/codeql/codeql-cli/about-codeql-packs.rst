@@ -67,7 +67,7 @@ The following properties are supported in ``qlpack.yml`` files.
      - All packs
      - A version number for this CodeQL pack. This must be a valid semantic version that meets the `SemVer v2.0.0 specification <https://semver.org/spec/v2.0.0.html>`__.
    * - ``dependencies``
-     - ``codeql/javascript-all: 1.2.3``
+     - ``codeql/javascript-all: ^1.2.3``
      - Optional
      - The names of any CodeQL packs that this pack depends on, as a sequence. This gives the pack access to any libraries, database schema, and query suites defined in the dependency. Optionally a version for the dependency is specified. 
    * - ``suites``
