@@ -60,7 +60,7 @@ To analyze a CodeQL database with a CodeQL pack, run the following command:
 
 ::
 
-   codeql database analyze <database> --allow-packs <scope>/<pack>@x.x.x
+   codeql database analyze <database> <scope>/<pack>@x.x.x
 
 - ``<database>``: the CodeQL database to be analyzed.
 - ``<scope>``: the name of the GitHub organization that the pack is published to.
