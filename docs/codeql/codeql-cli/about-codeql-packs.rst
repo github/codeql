@@ -43,7 +43,7 @@ of the CodeQL pack. That is, for all ``.ql`` and ``.qll`` files in the pack,
 CodeQL will resolve all import statements relative to the ``qlpack.yml`` at the
 pack's root.
 
-.. _qlpack-yml-properties:
+.. _codeqlpack-yml-properties:
 
 ``qlpack.yml`` properties
 ~~~~~~~~~~~~~~~~~~~~~~~~~
