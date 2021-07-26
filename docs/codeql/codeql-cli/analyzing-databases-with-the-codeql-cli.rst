@@ -137,7 +137,7 @@ you could use the following command from the directory containing your database:
    codeql database analyze <cpp-database> cpp-code-scanning.qls --format=sarifv2.1.0 --output=cpp-results.sarif
 
 The analysis generates a file in the v2.1.0 SARIF format that is supported by all versions of GitHub.
-This file can be uploaded to GitHub using ``github upload-results`` or the code scanning API.
+This file can be uploaded to GitHub executing ``codeql github upload-results`` or the code scanning API.
 For more information, see `Analyzing a CodeQL database <https://docs.github.com/en/code-security/secure-coding/configuring-codeql-cli-in-your-ci-system#analyzing-a-codeql-database>`__
 or `Code scanning API <https://docs.github.com/en/rest/reference/code-scanning>`__ in the GitHub documentation.
 
