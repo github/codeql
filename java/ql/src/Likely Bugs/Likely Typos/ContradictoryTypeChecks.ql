@@ -18,7 +18,7 @@ import semmle.code.java.dataflow.SSA
 /** `ioe` is of the form `va instanceof t`. */
 predicate instanceOfCheck(InstanceOfExpr ioe, VarAccess va, RefType t) {
   ioe.getExpr() = va and
-  ioe.getTypeName().getType().(RefType).getSourceDeclaration() = t
+  ioe.getCheckedType().getSourceDeclaration() = t
 }
 
 /** Expression `e` assumes that `va` could be of type `t`. */

@@ -76,7 +76,7 @@ predicate depends(RefType t, RefType dep) {
     or
     // the type accessed in an `instanceof` expression in `t`.
     exists(InstanceOfExpr ioe | t = ioe.getEnclosingCallable().getDeclaringType() |
-      usesType(ioe.getTypeName().getType(), dep)
+      usesType(ioe.getCheckedType(), dep)
     )
   )
 }

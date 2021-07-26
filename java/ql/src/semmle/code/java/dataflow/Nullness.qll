@@ -504,7 +504,7 @@ private predicate correlatedConditions(
       inverted = pol1.booleanXor(pol2)
     )
     or
-    exists(SsaVariable v, Type type |
+    exists(SsaVariable v, RefType type |
       cond1.getCondition() = instanceofExpr(v, type) and
       cond2.getCondition() = instanceofExpr(v, type) and
       inverted = false
