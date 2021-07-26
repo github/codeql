@@ -70,8 +70,8 @@ The following properties are supported in ``qlpack.yml`` files.
      - ``codeql/javascript-all: 1.2.3``
      - Optional
      - The names of any CodeQL packs that this pack depends on, as a sequence. This gives the pack access to any libraries, database schema, and query suites defined in the dependency.
-   * - ``default-suite-file``
-     - ``default-queries.qls``
+   * - ``suites``
+     - ``octo-org-query-suites``
      - Optional
      - The path to a directory that contains the "well-known" query suites in the pack, defined relative to the pack directory. You can run "well-known" suites stored in this directory by specifying the pack name, without providing their full path. For more information about query suites, see ":doc:`Creating CodeQL query suites <creating-codeql-query-suites>`."
    * - ``extractor``
