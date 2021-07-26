@@ -55,7 +55,7 @@ You can add dependencies on CodeQL packs using the command ``codeql pack add``. 
 
 The version number is optional. If you leave off the version number, the latest version will be added.
 
-This command updates the ``qlpack.yml`` file with the requested dependencies and downloads them into the package cache.
+This command updates the ``qlpack.yml`` file with the requested dependencies and downloads them into the package cache. Please note that this command will reformat the file and remove all comments.
 
 You can also manually edit the ``qlpack.yml`` file to include dependencies and install the dependencies with the command:
 
