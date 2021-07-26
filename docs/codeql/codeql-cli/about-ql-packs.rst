@@ -124,7 +124,7 @@ A custom QL pack for queries must include a ``qlpack.yml`` file at
 the pack root, containing ``name``, ``version``,
 and ``libraryPathDependencies`` properties. If the pack contains query suites, you can
 use the ``suites`` property to define their location. Query suites defined 
-here are called "known" suites, and can be used on the command line by referring to 
+here are called "well-known" suites, and can be used on the command line by referring to 
 their name only, rather than their full path.
 For more information about query suites, see ":doc:`Creating CodeQL query suites <creating-codeql-query-suites>`."
 
