@@ -31,8 +31,7 @@ files and directories within the pack should be logically organized. For example
 About ``qlpack.yml`` files
 --------------------------
 
-When executing commands, CodeQL scans siblings of the installation directory (and
-their subdirectories) for ``qlpack.yml`` files. The metadata in the file tells
+When executing query-related commands, CodeQL first looks in the package cache for CodeQL packs which have already been downloaded. If a suitable pack cannot be found, then CodeQL scans siblings of the installation directory (and their subdirectories) for ``qlpack.yml`` files. The metadata in the file tells
 CodeQL how to compile queries, what libraries the pack depends on, and where to
 find query suite definitions.
 
