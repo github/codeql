@@ -13,7 +13,7 @@ CodeQL packs are used to create, share, depend on, and run CodeQL queries and li
 
 There are two types of CodeQL packs: query packs and library packs.
 
-* Query packs are designed to be run. The query packs are bundled with all transitive dependencies and a compilation cache is included in the tarball.
+* Query packs are designed to be run. They are bundled with all transitive dependencies. Also included in the tarball is a compilation cache which is used to ensure the packs' efficient execution.
 * Library packs are designed to be used by query packs (or other library packs) and do not contain queries themselves. The libraries are not compiled and there is no compilation cache included in the final pack.
 
 You can use the CodeQL package manger in the CodeQL CLI to create CodeQL packs, add dependencies to packs, and install or update dependencies. For more information, see ":ref:`Creating and working with CodeQL packs <creating-and-working-with-codeql-packs>`." You can also publish and download CodeQL packs using the CodeQL package manager. For more information, see ":doc:`Publishing and using CodeQL packs <publishing-and-using-codeql-packs>`."
@@ -21,14 +21,14 @@ You can use the CodeQL package manger in the CodeQL CLI to create CodeQL packs, 
 CodeQL pack structure
 ---------------------
 
-A CodeQL pack must contain a file called ``qlpack.yml`` in its root directory. In the ``qlpack.yml`` file, the ``name:`` field must have a value that follows the format of ``<scope>/<pack>``, where ``<scope>`` is the GitHub organization that the pack is published to and ``<pack>`` is the name of the pack. The other 
-files and directories within the pack should be logically organized. For example, typically:  
+A CodeQL pack must contain a file called ``qlpack.yml`` in its root directory. In the ``qlpack.yml`` file, the ``name:`` field must have a value that follows the format of ``<scope>/<pack>``, where ``<scope>`` is the GitHub organization that the pack is published to and ``<pack>`` is the name of the pack. The other
+files and directories within the pack should be logically organized. For example, typically:
 
 - Queries are organized into directories for specific categories.
-- Queries for specific products, libraries, and frameworks are organized into 
+- Queries for specific products, libraries, and frameworks are organized into
   their own top-level directories.
-- There is a top-level directory named ``<owner>/<language>`` for query library 
-  (``.qll``) files. Within this directory, ``.qll`` files should be organized into 
+- There is a top-level directory named ``<owner>/<language>`` for query library
+  (``.qll``) files. Within this directory, ``.qll`` files should be organized into
   subdirectories for specific categories.
 
 About ``qlpack.yml`` files
@@ -37,14 +37,14 @@ About ``qlpack.yml`` files
 When executing commands, CodeQL scans siblings of the installation directory (and
 their subdirectories) for ``qlpack.yml`` files. The metadata in the file tells
 CodeQL how to compile queries, what libraries the pack depends on, and where to
-find query suite definitions. 
+find query suite definitions.
 
-The content of the CodeQL pack (queries and libraries used in CodeQL analysis) is 
+The content of the CodeQL pack (queries and libraries used in CodeQL analysis) is
 included in the same directory as ``qlpack.yml``, or its subdirectories.
 
-The location of ``qlpack.yml`` defines the library path for the content 
-of the CodeQL pack. That is, for all ``.ql`` and ``.qll`` files in the pack, 
-CodeQL will resolve all import statements relative to the ``qlpack.yml`` at the 
+The location of ``qlpack.yml`` defines the library path for the content
+of the CodeQL pack. That is, for all ``.ql`` and ``.qll`` files in the pack,
+CodeQL will resolve all import statements relative to the ``qlpack.yml`` at the
 pack's root.
 
 .. _qlpack-yml-properties:
@@ -100,4 +100,3 @@ The following properties are supported in ``qlpack.yml`` files.
    * - ``bugs``
      - ``https://github.com/my-org/my-repo/issues/X``
      - Metadata that will be displayed on the packaging search page in the packages section of the organization that a CodeQL pack is published to.
-
