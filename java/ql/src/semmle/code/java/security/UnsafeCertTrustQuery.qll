@@ -53,7 +53,7 @@ private class SafeSslParametersFlowConfig extends DataFlow2::Configuration {
 }
 
 /**
- * A call to `SSLParameters.setEndpointIdentificationAlgorithm` with a non-null and non-zero parameter.
+ * A call to `SSLParameters.setEndpointIdentificationAlgorithm` with a non-null and non-empty parameter.
  */
 private class SafeSetEndpointIdentificationAlgorithm extends MethodAccess {
   SafeSetEndpointIdentificationAlgorithm() {
