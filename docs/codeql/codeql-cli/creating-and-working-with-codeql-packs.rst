@@ -33,7 +33,7 @@ You can create a CodeQL pack by running the following command from the checkout 
 
 You must specify:
 
-- ``<scope>``: the name of the GitHub organization that you will publish to.
+- ``<scope>``: the name of the GitHub organization or user account that you will publish to.
 - ``<pack>``: the name for the pack that you are creating.
 
 The ``codeql pack init`` command creates the directory structure and configuration files for a CodeQL pack. By default, the command creates a query pack. If you want to create a library pack, you must edit the ``qlpack.yml`` file to explicitly declare the file as a library pack by including the ``library:true`` property.
@@ -49,7 +49,7 @@ For more information about the properties, see ":ref:`About CodeQL packs <about-
 
 Adding and installing dependencies to a CodeQL pack
 ---------------------------------------------------
-You can add dependencies on CodeQL packs using the command ``codeql pack add``. You can specify the scope, name, and version.
+You can add dependencies on CodeQL packs using the command ``codeql pack add``. You must specify the scope, name, and version range.
 
 ::
 

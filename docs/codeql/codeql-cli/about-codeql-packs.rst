@@ -21,7 +21,7 @@ You can use the CodeQL package manger in the CodeQL CLI to create CodeQL packs, 
 CodeQL pack structure
 ---------------------
 
-A CodeQL pack must contain a file called ``qlpack.yml`` in its root directory. In the ``qlpack.yml`` file, the ``name:`` field must have a value that follows the format of ``<scope>/<pack>``, where ``<scope>`` is the GitHub organization that the pack is published to and ``<pack>`` is the name of the pack. The other
+A CodeQL pack must contain a file called ``qlpack.yml`` in its root directory. In the ``qlpack.yml`` file, the ``name:`` field must have a value that follows the format of ``<scope>/<pack>``, where ``<scope>`` is the GitHub organization or user account that the pack will be published to and ``<pack>`` is the name of the pack. The other
 files and directories within the pack should be logically organized. For example, typically:
 
 - Queries are organized into directories for specific categories.
@@ -31,7 +31,11 @@ files and directories within the pack should be logically organized. For example
 About ``qlpack.yml`` files
 --------------------------
 
-When executing query-related commands, CodeQL first looks in the package cache for CodeQL packs which have already been downloaded. If a suitable pack cannot be found, then CodeQL scans siblings of the installation directory (and their subdirectories) for ``qlpack.yml`` files. The metadata in each `qlpack.yml`` file tells
+When executing query-related commands, CodeQL first looks in siblings of the installation directory (and their subdirectories) for ``qlpack.yml`` files. 
+Then it checks the package cache for CodeQL packs which have been downloaded. This means that when you are developing queries locally, the local packages 
+in the installation directory override packages of the same name in the package cache, so that you can test your local changes.
+
+The metadata in each `qlpack.yml`` file tells
 CodeQL how to compile any queries in the pack, what libraries the pack depends on, and where to
 find query suite definitions.
 
@@ -65,11 +69,11 @@ The following properties are supported in ``qlpack.yml`` files.
    * - ``version``
      - ``0.0.0``
      - All packs
-     - A version number for this CodeQL pack. This must be a valid semantic version that meets the `SemVer v2.0.0 specification <https://semver.org/spec/v2.0.0.html>`__.
+     - A version range for this CodeQL pack. This must be a valid semantic version that meets the `SemVer v2.0.0 specification <https://semver.org/spec/v2.0.0.html>`__.
    * - ``dependencies``
      - ``codeql/javascript-all: ^1.2.3``
      - Optional
-     - The names of any CodeQL packs that this pack depends on, as a sequence. This gives the pack access to any libraries, database schema, and query suites defined in the dependency. Optionally a version for the dependency is specified. 
+     - The names and version ranges of any CodeQL packs that this pack depends on, as a mapping. This gives the pack access to any libraries, database schema, and query suites defined in the dependency. For more information, see `SemVer ranges <https://docs.npmjs.com/cli/v6/using-npm/semver#ranges>`__ in the NPM documentation.
    * - ``suites``
      - ``octo-org-query-suites``
      - Optional
@@ -93,12 +97,12 @@ The following properties are supported in ``qlpack.yml`` files.
    * - ``authors``
      - ``example@github.com``
      - All packs
-     - Metadata that will be displayed on the packaging search page in the packages section of the organization that a CodeQL pack is published to.
+     - Metadata that will be displayed on the packaging search page in the packages section of the account that the CodeQL pack is published to.
    * - ``licenses``
      - ``(LGPL-2.1 AND MIT)``
      - All packs
-     - Metadata that will be displayed on the packaging search page in the packages section of the organization that a CodeQL pack is published to.
+     - Metadata that will be displayed on the packaging search page in the packages section of the account that the CodeQL pack is published to. For a list of allowed licenses, see `SPDX License List <https://spdx.org/licenses/>`__ in the SPDX Specification. 
    * - ``description``
      - ``Human-readable description of the software packaged in the image.``
      - All packs
-     - Metadata that will be displayed on the packaging search page in the packages section of the organization that a CodeQL pack is published to.
+     - Metadata that will be displayed on the packaging search page in the packages section of the account that the CodeQL pack is published to.
