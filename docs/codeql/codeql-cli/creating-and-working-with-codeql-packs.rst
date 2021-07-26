@@ -7,20 +7,20 @@ You can use CodeQL packs to create, share, depend on, and run CodeQL queries and
 
 .. include:: ../reusables/beta-note-package-manager.rst
 
-About CodeQL packs and the CodeQL CLI package manager
------------------------------------------------------
+About CodeQL packs and the CodeQL CLI
+-------------------------------------
 
-With CodeQL packs and the CodeQL CLI package manager, you can publish your custom queries and integrate them into your codebase analysis.
+With CodeQL packs and the package management commands in the CodeQL CLI, you can publish your custom queries and integrate them into your codebase analysis.
 
 There are two types of CodeQL packs: query packs and library packs.
 
 * Query packs are designed to be run. When a query pack is published, the bundle includes all the transitive dependencies and a compilation cache. This ensures consistent and efficient execution of the queries in the pack.
 * Library packs are designed to be used by query packs (or other library packs) and do not contain queries themselves. The libraries are not compiled and there is no compilation cache included when the pack is published.
 
-You can use the CodeQL package manger in the CodeQL CLI to create CodeQL packs, add dependencies to packs, and install or update dependencies. You can also publish and download CodeQL packs using the CodeQL package manager. For more information, see ":doc:`Publishing and using CodeQL packs <publishing-and-using-codeql-packs>`."
+You can use the ``pack`` command in the CodeQL CLI to create CodeQL packs, add dependencies to packs, and install or update dependencies. You can also publish and download CodeQL packs using the ``pack`` command. For more information, see ":doc:`Publishing and using CodeQL packs <publishing-and-using-codeql-packs>`."
 
 Creating a CodeQL pack
-----------------------------
+----------------------
 You can create a CodeQL pack by running the following command from the checkout root of your project:
 
 ::
