@@ -96,3 +96,6 @@ The following properties are supported in ``qlpack.yml`` files.
    * - ``licenses``
      - ``(LGPL-2.1 AND MIT)``
      - Metadata that will be displayed on the packaging search page in the packages section of the organization that a CodeQL pack is published to.
+   * - ``description``
+     - ``Human-readable description of the software packaged in the image.``
+     - Metadata that will be displayed on the packaging search page in the packages section of the organization that a CodeQL pack is published to.
