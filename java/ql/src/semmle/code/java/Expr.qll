@@ -1425,6 +1425,12 @@ class TypeLiteral extends Expr, @typeliteral {
   /** Gets the access to the type whose class is accessed. */
   Expr getTypeName() { result.getParent() = this }
 
+  /**
+   * Gets the type this type literal refers to. For example for `String.class` the
+   * result is the type representing `String`.
+   */
+  Type getReferencedType() { result = getTypeName().getType() }
+
   /** Gets a printable representation of this expression. */
   override string toString() { result = this.getTypeName().toString() + ".class" }
 

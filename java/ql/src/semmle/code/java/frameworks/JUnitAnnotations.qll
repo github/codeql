@@ -64,5 +64,5 @@ class RunWithAnnotation extends Annotation {
   /**
    * Gets the runner that will be used.
    */
-  Type getRunner() { result = getValue("value").(TypeLiteral).getTypeName().getType() }
+  Type getRunner() { result = getValue("value").(TypeLiteral).getReferencedType() }
 }
