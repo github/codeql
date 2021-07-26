@@ -54,7 +54,7 @@ private class SafeEvaluationContextFlowConfig extends DataFlow2::Configuration {
 }
 
 /**
- * A `ContextSource` that is safe from SpEL injection
+ * A `ContextSource` that is safe from SpEL injection.
  */
 private class SafeContextSource extends DataFlow::ExprNode {
   SafeContextSource() {

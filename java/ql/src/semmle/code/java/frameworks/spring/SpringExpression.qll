@@ -22,7 +22,7 @@ class ExpressionParser extends RefType {
 }
 
 /**
- * The class `org.springframework.expression.spel.support."SimpleEvaluationContext$Builder`.
+ * The class `org.springframework.expression.spel.support.SimpleEvaluationContext$Builder`.
  */
 class SimpleEvaluationContextBuilder extends RefType {
   SimpleEvaluationContextBuilder() {
