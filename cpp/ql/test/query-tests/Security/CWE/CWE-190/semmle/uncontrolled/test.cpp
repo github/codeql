@@ -48,3 +48,78 @@ void test_with_bounded_randomness() {
 	unsigned unsigned_r = rand(10);
 	unsigned_r++; // GOOD
 }
+
+int test_remainder_subtract()
+{
+	int x = rand();
+	int y = x % 100; // y <= x
+
+	return x - y; // GOOD (as y <= x) [FALSE POSITIVE]
+}
+
+typedef unsigned long size_t;
+int snprintf(char *s, size_t n, const char *format, ...);
+
+int test_buffer(char *buf_start, char *buf_end)
+{
+	int len = buf_end - buf_start;
+
+	return len * 2; // GOOD [FALSE POSITIVE]
+}
+
+int test_snprintf(char *buf, size_t buf_sz)
+{
+	snprintf(buf, buf_sz, "my random number: %i\n", rand());
+	test_buffer(buf, buf + buf_sz);
+}
+
+int test_else_1()
+{
+	int x = rand();
+
+	if (x > 100)
+	{
+		return x * 10; // BAD
+	} else {
+		return x * 10; // GOOD (as x <= 100) [FALSE POSITIVE]
+	}
+}
+
+int test_else_2()
+{
+	int x = rand();
+
+	if (x > 100)
+	{
+		return x * 10; // BAD
+	}
+
+	return x * 10; // GOOD (as x <= 100) [FALSE POSITIVE]
+}
+
+int test_conditional_assignment_1()
+{
+	int x = rand();
+	int y = 100;
+
+	if (x < y)
+	{
+		y = x;
+		return y * 10; // GOOD (as y <= 100) [FALSE POSITIVE]
+	} else {
+		return y * 10; // GOOD (as y = 100)
+	}
+}
+
+int test_conditional_assignment_2()
+{
+	int x = rand();
+	int y = 100;
+
+	if (x < y)
+	{
+		y = x;
+	}
+	
+	return y * 10; // GOOD (as y <= 100) [FALSE POSITIVE]
+}
