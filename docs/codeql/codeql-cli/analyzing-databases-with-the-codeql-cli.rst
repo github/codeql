@@ -203,7 +203,7 @@ In the CodeQL workflow file, you can add ``packs`` as input for the ``init`` act
 
    uses: github/codeql-action@v1
    with:
-     packs: codeql/pack1@~1.2.3,+codeql/pack2
+     packs: codeql/pack1@~1.2.3, +codeql/pack2
 
 This format does not support multi-language analyses.
 You can prefix a package reference with a plus sign, resulting in the input being combined with the config file. Without it, the input overwrites the config file.
