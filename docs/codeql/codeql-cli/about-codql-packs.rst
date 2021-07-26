@@ -59,7 +59,7 @@ The following properties are supported in ``qlpack.yml`` files.
      - Required
      - Purpose
    * - ``name``
-     - ``codeql/queries``
+     - ``octo-org/security-queries``
      - All packs
      - The scope, where the CodeQL pack is published, and the name of the pack defined using alphanumeric characters, hyphens, and periods. It must be unique as CodeQL cannot differentiate between CodeQL packs with identical names. Use the pack name to specify queries to run using ``database analyze`` and to define    dependencies between QL packs (see examples below).
    * - ``version``
