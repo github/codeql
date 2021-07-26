@@ -201,6 +201,8 @@ For multi-language runs, you can specify a nested map of packs:
 
 In the CodeQL workflow file, you can add ``packs`` as input for the ``init`` action by using a comma-separated list of CodeQL packages and optional versions.
 
+.. code-block:: none
+
    uses: github/codeql-action@v1
    with:
      packs: codeql/pack1@~1.2.3, +codeql/pack2
