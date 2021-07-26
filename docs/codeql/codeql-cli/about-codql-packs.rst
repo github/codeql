@@ -61,7 +61,7 @@ The following properties are supported in ``qlpack.yml`` files.
    * - ``name``
      - ``octo-org/security-queries``
      - All packs
-     - The scope, where the CodeQL pack is published, and the name of the pack defined using alphanumeric characters, hyphens, and periods. It must be unique as CodeQL cannot differentiate between CodeQL packs with identical names. Use the pack name to specify queries to run using ``database analyze`` and to define    dependencies between QL packs (see examples below).
+     - The scope, where the CodeQL pack is published, and the name of the pack defined using alphanumeric characters, hyphens, and periods. It must be unique as CodeQL cannot differentiate between CodeQL packs with identical names. Name components cannot start or end with a hyphen. Additionally, a period is not allowed in pack names at all. Use the pack name to specify queries to run using ``database analyze`` and to define dependencies between QL packs (see examples below).
    * - ``version``
      - ``0.0.0``
      - All packs
