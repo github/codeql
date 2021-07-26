@@ -190,6 +190,15 @@ module Templating {
     TemplateFile getTemplateFile() {
       result = getTemplateFileNode().(TemplateFileReference).getTemplateFile()
     }
+
+    /**
+     * Gets the template syntax used by this template instantiation, if known.
+     *
+     * If not known, the relevant syntax will be determined by a heuristic.
+     */
+    TemplateSyntax getTemplateSyntax() {
+      result = range.getTemplateSyntax()
+    }
   }
 
   /** Companion module to the `TemplateInstantiation` class. */
@@ -206,6 +215,13 @@ module Templating {
 
       /** Gets a data flow node that refers to an object whose properties become variables in the template. */
       abstract DataFlow::Node getTemplateParamsNode();
+
+      /**
+       * Gets the template syntax used by this template instantiation, if known.
+       *
+       * If not known, the relevant syntax will be determined by a heuristic.
+       */
+      TemplateSyntax getTemplateSyntax() { none() }
     }
   }
 
@@ -558,12 +574,20 @@ module Templating {
     result = getTemplateSyntaxInFolder(f.getParentContainer())
   }
 
+  private TemplateSyntax getTemplateSyntaxFromInstantiation(TemplateFile file) {
+    result = any(TemplateInstantiaton inst | inst.getTemplateFile() = file).getTemplateSyntax()
+  }
+
   /**
    * Gets a template syntax likely to be used in the given file.
    */
   TemplateSyntax getLikelyTemplateSyntax(TemplateFile file) {
+    result = getTemplateSyntaxFromInstantiation(file)
+    or
+    not exists(getTemplateSyntaxFromInstantiation(file)) and
     result.getAFileExtension() = file.getExtension()
     or
+    not exists(getTemplateSyntaxFromInstantiation(file)) and
     not file.getExtension() = any(TemplateSyntax s).getAFileExtension() and
     result = getTemplateSyntaxInFolder(file.getParentContainer())
   }
@@ -654,6 +678,40 @@ module Templating {
 
     override Folder getContextFolder() {
       result = tag.getFile().getParentContainer()
+    }
+  }
+
+  /**
+   * A call to a member of the `consolidate` library, seen as a template instantiation.
+   */
+  private class ConsolidateCall extends TemplateInstantiaton::Range, API::CallNode {
+    string engine;
+
+    ConsolidateCall() {
+      this = API::moduleImport("consolidate").getMember(engine).getACall()
+    }
+
+    override TemplateSyntax getTemplateSyntax() {
+      result.getAPackageName() = engine
+    }
+
+    override DataFlow::SourceNode getOutput() {
+      result = getParameter([1, 2]).getParameter(1).getAnImmediateUse()
+      or
+      not exists(getParameter([1, 2]).getParameter(1)) and
+      result = this
+    }
+
+    override DataFlow::Node getTemplateFileNode() {
+      result = getArgument(0)
+    }
+
+    override DataFlow::Node getTemplateContentNode() {
+      none()
+    }
+
+    override DataFlow::Node getTemplateParamsNode() {
+      result = getArgument(1)
     }
   }
 }
