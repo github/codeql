@@ -9,7 +9,7 @@ You can publish your own CodeQL packs and use packs published by other people.
 
    Note
 
-   The CodeQL package manager is currently in beta and subject to change. During the beta, CodeQL packs are available only in the GitHub Package Registry (GHPR). You must use version 2.5.8 or later of the CodeQL CLI to use the CodeQL package manager.
+   The CodeQL package manager is currently in beta and subject to change. During the beta, CodeQL packs are available only in GitHub Packages - the GitHub Container Registry (GHCR). You must use version 2.5.8 or later of the CodeQL CLI to use the CodeQL package manager.
 
 Configuring the ``qlpack.yml`` file before publishing
 -----------------------------------------------------
@@ -19,7 +19,7 @@ You can check and modify the configuration details of your CodeQL pack prior to 
    library: # set to true if the pack is a library. Set to false or omit for a query pack
    name: <scope>/<pack>
    version: x.x.x
-   description: 
+   description:
    default-suite: # a query-suite file that has been inlined
        - query:
    default-suite-file: default-queries.qls # a pointer to a query-suite in this pack
@@ -66,7 +66,7 @@ To analyze a CodeQL database with a CodeQL pack, run the following command:
 - ``<scope>``: the name of the GitHub organization that the pack is published to.
 - ``<pack>``: the name for the pack that you are using.
 - ``@x.x.x``: an optional version number. If omitted, the latest version will be used.
- 
+
 The ``analyze`` command will run the default suite of any specified CodeQL packs. You can specify multiple CodeQL packs to be used for analyzing a CodeQL database. For example:
 
 ::
