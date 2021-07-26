@@ -205,7 +205,7 @@ In the CodeQL workflow file, you can add ``packs`` as input for the ``init`` act
    with:
      packs: codeql/pack1@~1.2.3, codeql/pack2
 
-This format does not yet support multi-language analyses.
+This format does not support multi-language analyses.
 
 Running all queries in a directory
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
