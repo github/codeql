@@ -93,3 +93,6 @@ The following properties are supported in ``qlpack.yml`` files.
    * - ``authors``
      - ``example@github.com``
      - Metadata that will be displayed on the packaging search page in the packages section of the organization that a CodeQL pack is published to.
+   * - ``licenses``
+     - ``(LGPL-2.1 AND MIT)``
+     - Metadata that will be displayed on the packaging search page in the packages section of the organization that a CodeQL pack is published to.
