@@ -115,11 +115,11 @@ Running a CodeQL pack
 
     Note
 
-    The CodeQL package manager is currently in beta and subject to change. During the beta, CodeQL packs are available only in the GitHub Package Registry (GHPR). You must use version 2.5.8 or later of the CodeQL CLI to use the CodeQL package manager.
+    The CodeQL package manager is currently in beta and subject to change. During the beta, CodeQL packs are available only in GitHub Packages - the GitHub Container Registry (GHCR). You must use version 2.5.8 or later of the CodeQL CLI to use the CodeQL package manager.
 
     During the beta, you must specify ``--allow-packs`` whenever you run the ``analyze`` command.
 
-To run an existing CodeQl pack from the GitHub Package Registry (GHPR), you need to download it first:
+To run an existing CodeQl pack from GitHub Packages - the GitHub Container Registry (GHCR), you need to download it first:
 
    codeql pack download microsoft/coding-standards@1.0.0
 
@@ -178,7 +178,7 @@ Integrating a CodeQL pack into a Code Scanning workflow
 
     Note
 
-    The CodeQL package manager is currently in beta and subject to change. During the beta, CodeQL packs are available only in the GitHub Package Registry (GHPR). You must use version 2.5.8 or later of the CodeQL CLI to use the CodeQL package manager.
+    The CodeQL package manager is currently in beta and subject to change. During the beta, CodeQL packs are available only in GitHub Packages - the GitHub Container Registry (GHCR). You must use version 2.5.8 or later of the CodeQL CLI to use the CodeQL package manager.
 
 Using packs inside your Code Scanning setup allows selecting query packs from various sources.
 
