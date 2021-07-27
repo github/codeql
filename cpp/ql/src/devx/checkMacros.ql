@@ -50,6 +50,6 @@ from string format, FormattingFunctionCall fc, MacroInvocation mi, int arg, Stri
 where format = fc.getFormat().getValue() // format: "%s: Failed init_producer"
     and fc.getTarget().hasName("syslog") 
     and not isLogDebug(fc.getArgument(0)) // exclude debug logs
-    and lit.getValue() = "bgp_nbr_range_print"
-    and fc.getFormatArgument(arg) = lit // The arg'th formatting argument is a use of the macro `mi.getMacro()`.
-select fc, "Argument " + arg + " of " + fc.toString() + " is " + lit.getValue()
+    // and lit.getValue() = "bgp_nbr_range_print"
+    and fc.getFormatArgument(arg).toString() = fc.getEnclosingFunction().toString() 
+select fc, "Argument " + arg + " of " + fc.toString() + " is " + fc.getFormatArgument(arg)
