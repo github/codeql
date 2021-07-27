@@ -39,6 +39,8 @@ class ValueFlowConf extends DataFlow::Configuration {
   override predicate isSink(DataFlow::Node n) {
     n.asExpr().(Argument).getCall().getCallee().hasName("sink")
   }
+
+  override int fieldFlowBranchLimit() { result = 10 }
 }
 
 class TaintFlowConf extends TaintTracking::Configuration {
