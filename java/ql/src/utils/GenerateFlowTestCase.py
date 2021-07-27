@@ -155,9 +155,9 @@ def getTuples(queryName, jsonResult, fname):
 with open(generatedJson, "r") as f:
     generateOutput = json.load(f)
     expectedTables = ("getTestCase", "getASupportMethodModel",
-                      "missingSummaryModelCsv", "getAParseFailure")
+                      "missingSummaryModelCsv", "getAParseFailure", "noTestCaseGenerated")
 
-    testCaseRows, supportModelRows, missingSummaryModelCsvRows, parseFailureRows = \
+    testCaseRows, supportModelRows, missingSummaryModelCsvRows, parseFailureRows, noTestCaseGeneratedRows = \
         tuple([getTuples(k, generateOutput, generatedJson)
                for k in expectedTables])
 
@@ -170,6 +170,9 @@ with open(generatedJson, "r") as f:
     if any(len(row) != 2 for row in parseFailureRows):
         print("Expected exactly two columns in parseFailureRows relation (got: %s)" %
               json.dumps(parseFailureRows), file=sys.stderr)
+    if any(len(row) != 1 for row in noTestCaseGeneratedRows):
+        print("Expected exactly one column in noTestCaseGenerated relation (got: %s)" %
+              json.dumps(noTestCaseGeneratedRows), file=sys.stderr)
 
     if len(missingSummaryModelCsvRows) != 0:
         print("Tests for some CSV rows were requested that were not in scope (SummaryModelCsv.row does not hold):\n" +
@@ -179,6 +182,9 @@ with open(generatedJson, "r") as f:
         print("The following rows failed to generate any test case. Check package, class and method name spelling, and argument and result specifications:\n%s" %
               "\n".join(r[0] + ": " + r[1] for r in parseFailureRows), file=sys.stderr)
         sys.exit(1)
+    if len(noTestCaseGeneratedRows) != 0:
+        print("The following CSV rows failed to generate any test case due to a limitation of the query. Other test cases will still be generated:\n" +
+              "\n".join(r[0] for r in noTestCaseGeneratedRows))
 
 with open(resultJava, "w") as f:
     f.write(generateOutput["getTestCase"]["tuples"][0][0])
