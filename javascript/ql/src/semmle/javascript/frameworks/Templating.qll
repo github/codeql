@@ -266,15 +266,14 @@ module Templating {
   }
 
   /**
-   * A taint step from a `TemplatePlaceholderTag` to the corresponding `GeneratedCodeExpr`,
-   * representing that control over the generated code gives control over the expression
-   * return value.
+   * A taint step from a `TemplatePlaceholderTag` to the enclosing expression in the
+   * surrounding JavaScript program.
    */
   private class PlaceholderToGeneratedCodeStep extends TaintTracking::SharedTaintStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      exists(GeneratedCodeExpr expr |
-        pred = expr.getPlaceholderTag().asDataFlowNode() and
-        succ = expr.flow()
+      exists(TemplatePlaceholderTag tag |
+        pred = tag.asDataFlowNode() and
+        succ = tag.getEnclosingExpr().flow()
       )
     }
   }
