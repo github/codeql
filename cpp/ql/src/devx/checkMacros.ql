@@ -11,6 +11,8 @@
  */
 
 import cpp
+import semmle.code.cpp.dataflow.DataFlow
+import semmle.code.cpp.commons.Printf
 import semmle.code.cpp.models.interfaces.FormattingFunction
 
 // Find the syslog calls that meet two conditions
@@ -51,5 +53,9 @@ where format = fc.getFormat().getValue() // format: "%s: Failed init_producer"
     and fc.getTarget().hasName("syslog") 
     and not isLogDebug(fc.getArgument(0)) // exclude debug logs
     // and lit.getValue() = "bgp_nbr_range_print"
-    and fc.getFormatArgument(arg).toString() = fc.getEnclosingFunction().toString() 
+    and exists(DataFlow::Node source, DataFlow::Node sink |
+        DataFlow::localFlow(source, sink) and
+        source.asExpr() instanceof StringLiteral and
+        sink.asExpr() = fc.getFormatArgument(arg)
+      )
 select fc, "Argument " + arg + " of " + fc.toString() + " is " + fc.getFormatArgument(arg)
