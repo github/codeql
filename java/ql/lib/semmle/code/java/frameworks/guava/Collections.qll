@@ -159,8 +159,6 @@ private class GuavaCollectCsv extends SummaryModelCsv {
         "com.google.common.collect;ImmutableMap;true;of;;;Argument[7];MapValue of ReturnValue;value",
         "com.google.common.collect;ImmutableMap;true;of;;;Argument[8];MapKey of ReturnValue;value",
         "com.google.common.collect;ImmutableMap;true;of;;;Argument[9];MapValue of ReturnValue;value",
-        "com.google.common.collect;ImmutableMap;true;of;;;Argument[10];MapKey of ReturnValue;value",
-        "com.google.common.collect;ImmutableMap;true;of;;;Argument[11];MapValue of ReturnValue;value",
         "com.google.common.collect;ImmutableSortedMap;true;of;;;Argument[0];MapKey of ReturnValue;value",
         "com.google.common.collect;ImmutableSortedMap;true;of;;;Argument[1];MapValue of ReturnValue;value",
         "com.google.common.collect;ImmutableSortedMap;true;of;;;Argument[2];MapKey of ReturnValue;value",
