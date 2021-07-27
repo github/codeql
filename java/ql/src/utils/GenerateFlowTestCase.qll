@@ -37,6 +37,9 @@ query string getAParseFailure(string reason) {
   any(TargetSummaryModelCsv target).row(result) and
   any(SummaryModelCsv model).row(result) and
   (
+    not summaryModel(_, _, _, _, _, _, _, _, _, result) and
+    reason = "row could not be parsed"
+    or
     exists(
       string namespace, string type, boolean subtypes, string name, string signature, string ext
     |
