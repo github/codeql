@@ -539,7 +539,7 @@ module Templating {
 
     override string getEscapingInterpolationRegexp() { result = "(?s)\\{\\{[^{](.*?)\\}\\}" }
 
-    override string getAFileExtension() { result = "hbs" }
+    override string getAFileExtension() { result = ["hbs", "njk"] }
 
     override string getAPackageName() {
       result =
