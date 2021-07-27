@@ -84,6 +84,7 @@ jobs:
         run: |
           codeql/codeql pack create ql/src --output target/packs
           PACK_FOLDER=$(readlink -f target/packs/github/codeql-ruby/*)
+          codeql/codeql generate query-help --format=sarifv2.1.0 --output="${PACK_FOLDER}/rules.sarif" ql/src
           (cd ql/src; find queries \( -name '*.qhelp' -o -name '*.rb' -o -name '*.erb' \) -exec bash -c 'mkdir -p "'"${PACK_FOLDER}"'/$(dirname "{}")"' \; -exec cp "{}" "${PACK_FOLDER}/{}" \;)
       - name: Compile with previous CodeQL versions
         run: |
