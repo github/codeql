@@ -3,3 +3,4 @@ version: 0.0.2
 dbscheme: semmlecode.csharp.dbscheme
 suites: codeql-suites
 extractor: csharp
+library: true
