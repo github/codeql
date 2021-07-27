@@ -19,9 +19,9 @@ import org.jetbrains.kotlin.ir.IrFileEntry
 
 class KotlinExtractorExtension(private val tests: List<String>) : IrGenerationExtension {
     override fun generate(moduleFragment: IrModuleFragment, pluginContext: IrPluginContext) {
-        val trapDir = File(System.getenv("CODEQL_EXTRACTOR_KOTLIN_TRAP_DIR").takeUnless { it.isNullOrEmpty() } ?: "kotlin-extractor/trap")
+        val trapDir = File(System.getenv("CODEQL_EXTRACTOR_JAVA_TRAP_DIR").takeUnless { it.isNullOrEmpty() } ?: "kotlin-extractor/trap")
         trapDir.mkdirs()
-        val srcDir = File(System.getenv("CODEQL_EXTRACTOR_KOTLIN_SOURCE_ARCHIVE_DIR").takeUnless { it.isNullOrEmpty() } ?: "kotlin-extractor/src")
+        val srcDir = File(System.getenv("CODEQL_EXTRACTOR_JAVA_SOURCE_ARCHIVE_DIR").takeUnless { it.isNullOrEmpty() } ?: "kotlin-extractor/src")
         srcDir.mkdirs()
         moduleFragment.accept(KotlinExtractorVisitor(trapDir, srcDir), RootTrapWriter())
         // We don't want the compiler to continue and generate class
@@ -105,11 +105,14 @@ class KotlinExtractorVisitor(val trapDir: File, val srcDir: File) : IrElementVis
     }
     override fun visitClass(declaration: IrClass, data: TrapWriter) {
         val id = data.getFreshId()
+        val pkgId = data.getFreshId()
         val locId = data.getLocation(declaration.startOffset, declaration.endOffset)
         val pkg = declaration.packageFqName?.asString() ?: ""
         val cls = declaration.name.asString()
+        data.writeTrap("#$pkgId = @\"pkg;$pkg\"\n")
+        data.writeTrap("packages(#$pkgId, \"$pkg\")\n")
         data.writeTrap("#$id = @\"class;$pkg.$cls\"\n")
-        data.writeTrap("classes(#$id, \"$cls\")\n")
+        data.writeTrap("classes(#$id, \"$cls\", #$pkgId, #$id)\n")
         data.writeTrap("hasLocation(#$id, #$locId)\n")
         declaration.acceptChildren(this, data)
     }
