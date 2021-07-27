@@ -46,11 +46,10 @@ For example: syslog (LOG_ERR,
 //         mi.getExpr() = v)
 // }
 
-from string format, FormattingFunctionCall fc
+from string format, FormattingFunctionCall fc, MacroInvocation mi, int arg
 where format = fc.getFormat().getValue() // format: "%s: Failed init_producer"
-and format.regexpMatch(".*")
-and fc.getTarget().hasName("syslog") 
-and not isLogDebug(fc.getArgument(0)) // exclude debug logs
-// need to loop over the rest parameters in syslog(0, rest) and check if any of them is macro. 
-// and hasMacro(fc)
-select fc,fc.getConversionArgument(1).getValue().toString()
+    and format.regexpMatch(".*")
+    and fc.getTarget().hasName("syslog") 
+    and not isLogDebug(fc.getArgument(0)) // exclude debug logs
+    and fc.getFormatArgument(arg) = mi.getExpr() // The arg'th formatting argument is a use of the macro `mi.getMacro()`.
+select fc, "Argument " + arg + " of " + fc.toString() + " is " + mi.getMacroName()
