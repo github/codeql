@@ -75,6 +75,13 @@ module Templating {
       getRawText().regexpMatch(getLikelyTemplateSyntax(getFile()).getRawInterpolationRegexp())
     }
 
+    /**
+     * Holds if this performs HTML escaping on the result before inserting it in the template.
+     */
+    predicate isEscapingInterpolation() {
+      getRawText().regexpMatch(getLikelyTemplateSyntax(getFile()).getEscapingInterpolationRegexp())
+    }
+
     /** Holds if this occurs in a `script` tag. */
     predicate isInScriptTag() {
       // We want to exclude non-code scripts like JSON.
