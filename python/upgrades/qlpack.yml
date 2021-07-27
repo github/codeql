@@ -1,2 +1,4 @@
-name: codeql-python-upgrades
+name: codeql/python-upgrades
+version: 0.0.1
 upgrades: .
+library: true
