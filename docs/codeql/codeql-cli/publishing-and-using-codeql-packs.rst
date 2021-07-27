@@ -48,7 +48,7 @@ To run a pack that someone else has created, you must first download it by runni
   codeql pack download <scope>/<pack>@x.x.x
 
 - ``<scope>``: the name of the GitHub organization that you will download from.
-- ``<pack>``: the name for the pack that you are creating.
+- ``<pack>``: the name for the pack that you want to download.
 - ``@x.x.x``: an optional version number. If omitted, the latest version will be downloaded.
 
 This command accepts arguments for multiple packs.
