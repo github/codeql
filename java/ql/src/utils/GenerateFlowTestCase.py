@@ -13,7 +13,7 @@ import tempfile
 
 if any(s == "--help" for s in sys.argv):
     print("""Usage:
-GenerateFlowTestCase.py specsToTest.csv projectPom.xml outdir
+GenerateFlowTestCase.py specsToTest.csv projectPom.xml outdir [--force]
 
 This generates test cases exercising function model specifications found in specsToTest.csv
 producing files Test.java, test.ql and test.expected in outdir.
@@ -22,6 +22,8 @@ projectPom.xml should be a Maven pom sufficient to resolve the classes named in 
 Typically this means supplying a skeleton POM <dependencies> section that retrieves whatever jars
 contain the needed classes.
 
+If --force is present, existing files may be overwritten.
+
 Requirements: `mvn` and `codeql` should both appear on your path.
 
 After test generation completes, any lines in specsToTest.csv that didn't produce tests are output.
@@ -29,8 +31,14 @@ If this happens, check the spelling of class and method names, and the syntax of
 """)
     sys.exit(0)
 
+force = False
+if "--force" in sys.argv:
+    sys.argv.remove("--force")
+    force = True
+
 if len(sys.argv) != 4:
-    print("Usage: GenerateFlowTestCase.py specsToTest.csv projectPom.xml outdir", file=sys.stderr)
+    print(
+        "Usage: GenerateFlowTestCase.py specsToTest.csv projectPom.xml outdir [--force]", file=sys.stderr)
     print("specsToTest.csv should contain CSV rows describing method taint-propagation specifications to test", file=sys.stderr)
     print("projectPom.xml should import dependencies sufficient to resolve the types used in specsToTest.csv", file=sys.stderr)
     sys.exit(1)
@@ -45,7 +53,7 @@ except Exception as e:
 resultJava = os.path.join(sys.argv[3], "Test.java")
 resultQl = os.path.join(sys.argv[3], "test.ql")
 
-if os.path.exists(resultJava) or os.path.exists(resultQl):
+if not force and (os.path.exists(resultJava) or os.path.exists(resultQl)):
     print("Won't overwrite existing files '%s' or '%s'" %
           (resultJava, resultQl), file=sys.stderr)
     sys.exit(1)
