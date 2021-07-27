@@ -28,9 +28,9 @@ This is typically done when using Groovy for its scripting or domain specific la
 The fundamental problem is that Groovy is a dynamic language, yet <code>SecureASTCustomizer</code> works by looking at Groovy AST statically.
 
 This makes it very easy for an attacker to bypass many of the intended checks
-(see https://kohsuke.org/2012/04/27/groovy-secureastcustomizer-is-harmful/).
+(see [Groovy SecureASTCustomizer is harmful](https://kohsuke.org/2012/04/27/groovy-secureastcustomizer-is-harmful/)).
 Therefore, besides <code>SecureASTCustomizer</code>, runtime checks are also necessary before calling Groovy methods
-(see https://melix.github.io/blog/2015/03/sandboxing.html).
+(see [Improved sandboxing of Groovy scripts](https://melix.github.io/blog/2015/03/sandboxing.html)).
 
 It is also possible to use a block-list method, excluding unwanted classes from being loaded by the JVM. 
 This method is not always recommended, because block-lists can be bypassed by unexpected values.
