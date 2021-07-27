@@ -108,6 +108,9 @@ class UncontrolledArithConfiguration extends TaintTracking::Configuration {
         op instanceof BitwiseAndExpr or
         op instanceof ComplementExpr
       ).getAnOperand*()
+    or
+    // block unintended flow to pointers
+    node.asExpr().getUnspecifiedType() instanceof PointerType
   }
 }
 

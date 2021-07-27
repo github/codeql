@@ -64,7 +64,7 @@ int test_buffer(char *buf_start, char *buf_end)
 {
 	int len = buf_end - buf_start;
 
-	return len * 2; // GOOD [FALSE POSITIVE]
+	return len * 2; // GOOD
 }
 
 int test_snprintf(char *buf, size_t buf_sz)
