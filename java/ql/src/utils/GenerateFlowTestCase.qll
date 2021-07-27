@@ -158,7 +158,10 @@ string contentToken(Content c) {
 RefType getRootType(RefType t) {
   if t instanceof NestedType
   then result = getRootType(t.(NestedType).getEnclosingType())
-  else result = t
+  else
+    if t instanceof Array
+    then result = getRootType(t.(Array).getElementType())
+    else result = t
 }
 
 /**
@@ -495,18 +498,22 @@ predicate isImportable(Type t) {
  * if we cannot import it due to a name clash.
  */
 string getShortNameIfPossible(Type t) {
-  getRootSourceDeclaration(t) = any(TestCase tc).getADesiredImport() and
-  if t instanceof RefType
-  then
-    exists(RefType replaced, string nestedName |
-      replaced = replaceTypeVariable(t).getSourceDeclaration() and
-      nestedName = replaced.nestedName().replaceAll("$", ".")
-    |
-      if isImportable(getRootSourceDeclaration(t))
-      then result = nestedName
-      else result = replaced.getPackage().getName() + "." + nestedName
-    )
-  else result = t.getName()
+  if t instanceof Array
+  then result = getShortNameIfPossible(t.(Array).getElementType()) + "[]"
+  else (
+    getRootSourceDeclaration(t) = any(TestCase tc).getADesiredImport() and
+    if t instanceof RefType
+    then
+      exists(RefType replaced, string nestedName |
+        replaced = replaceTypeVariable(t).getSourceDeclaration() and
+        nestedName = replaced.nestedName().replaceAll("$", ".")
+      |
+        if isImportable(getRootSourceDeclaration(t))
+        then result = nestedName
+        else result = replaced.getPackage().getName() + "." + nestedName
+      )
+    else result = t.getName()
+  )
 }
 
 /**
