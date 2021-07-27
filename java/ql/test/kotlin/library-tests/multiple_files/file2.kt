@@ -1,0 +1,3 @@
+
+class Class2 { }
+
