@@ -111,7 +111,7 @@ see ":doc:`Using custom queries with the CodeQL CLI <using-custom-queries-with-t
 Running a CodeQL pack
 ~~~~~~~~~~~~~~~~~~~~~
 
-.. include:: ../reusables/beta-note-package-manager.rst
+.. include:: ../reusables/beta-note-package-management.rst
 
 To run an existing CodeQL query pack from the GitHub Container registry, you need to download it first::
 
@@ -168,7 +168,7 @@ If the analysis found fewer results for standard queries than you expected, revi
 Integrating a CodeQL pack into a code scanning workflow in GitHub
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. include:: ../reusables/beta-note-package-manager.rst
+.. include:: ../reusables/beta-note-package-management.rst
 
 You can use CodeQL query packs in your Code Scanning setup. This allows you to select query packs published by various sources and use them to analyze your code. 
 For more information, see "`Using CodeQL query packs in the CodeQL action <https://docs.github.com/en/code-security/secure-coding/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning#using-codeql-query-packs/>`_" or "`Downloading and using CodeQL query packs in your CI system <https://docs.github.com/en/code-security/secure-coding/using-codeql-code-scanning-with-your-existing-ci-system/configuring-codeql-cli-in-your-ci-system#downloading-and-using-codeql-query-packs>`_."

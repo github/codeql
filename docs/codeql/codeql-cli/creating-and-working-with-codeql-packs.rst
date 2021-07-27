@@ -5,7 +5,7 @@ Creating and working with CodeQL packs
 
 You can use CodeQL packs to create, share, depend on, and run CodeQL queries and libraries.
 
-.. include:: ../reusables/beta-note-package-manager.rst
+.. include:: ../reusables/beta-note-package-management.rst
 
 About CodeQL packs and the CodeQL CLI
 -------------------------------------

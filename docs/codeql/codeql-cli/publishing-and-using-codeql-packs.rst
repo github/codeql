@@ -5,7 +5,7 @@ Publishing and using CodeQL packs
 
 You can publish your own CodeQL packs and use packs published by other people.
 
-.. include:: ../reusables/beta-note-package-manager.rst
+.. include:: ../reusables/beta-note-package-management.rst
 
 Configuring the ``qlpack.yml`` file before publishing
 -----------------------------------------------------

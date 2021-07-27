@@ -52,7 +52,7 @@ For more information about these metadata properties, see ":ref:`Metadata for Co
 Packaging custom QL queries
 ---------------------------
 
-.. include:: ../reusables/beta-note-package-manager.rst
+.. include:: ../reusables/beta-note-package-management.rst
 
 When you write your own queries, you should save them in a custom QL pack
 directory. When you are ready to share your queries with other users, you can publish the pack as a CodeQL pack to GitHub Packages - the GitHub Container registry.
