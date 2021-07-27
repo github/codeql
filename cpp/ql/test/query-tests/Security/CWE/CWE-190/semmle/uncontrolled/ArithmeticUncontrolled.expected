@@ -21,11 +21,7 @@ edges
 | test.cpp:36:13:36:13 | get_rand3 output argument [[]] | test.cpp:36:13:36:13 | Chi |
 | test.cpp:54:10:54:13 | call to rand | test.cpp:57:9:57:9 | x |
 | test.cpp:78:10:78:13 | call to rand | test.cpp:82:10:82:10 | x |
-| test.cpp:78:10:78:13 | call to rand | test.cpp:84:10:84:10 | x |
 | test.cpp:90:10:90:13 | call to rand | test.cpp:94:10:94:10 | x |
-| test.cpp:90:10:90:13 | call to rand | test.cpp:97:9:97:9 | x |
-| test.cpp:102:10:102:13 | call to rand | test.cpp:108:10:108:10 | y |
-| test.cpp:116:10:116:13 | call to rand | test.cpp:124:9:124:9 | y |
 nodes
 | test.c:18:13:18:16 | call to rand | semmle.label | call to rand |
 | test.c:21:17:21:17 | r | semmle.label | r |
@@ -61,14 +57,8 @@ nodes
 | test.cpp:57:9:57:9 | x | semmle.label | x |
 | test.cpp:78:10:78:13 | call to rand | semmle.label | call to rand |
 | test.cpp:82:10:82:10 | x | semmle.label | x |
-| test.cpp:84:10:84:10 | x | semmle.label | x |
 | test.cpp:90:10:90:13 | call to rand | semmle.label | call to rand |
 | test.cpp:94:10:94:10 | x | semmle.label | x |
-| test.cpp:97:9:97:9 | x | semmle.label | x |
-| test.cpp:102:10:102:13 | call to rand | semmle.label | call to rand |
-| test.cpp:108:10:108:10 | y | semmle.label | y |
-| test.cpp:116:10:116:13 | call to rand | semmle.label | call to rand |
-| test.cpp:124:9:124:9 | y | semmle.label | y |
 #select
 | test.c:21:17:21:17 | r | test.c:18:13:18:16 | call to rand | test.c:21:17:21:17 | r | $@ flows to here and is used in arithmetic, potentially causing an overflow. | test.c:18:13:18:16 | call to rand | Uncontrolled value |
 | test.c:35:5:35:5 | r | test.c:34:13:34:18 | call to rand | test.c:35:5:35:5 | r | $@ flows to here and is used in arithmetic, potentially causing an overflow. | test.c:34:13:34:18 | call to rand | Uncontrolled value |
@@ -79,14 +69,9 @@ nodes
 | test.c:83:9:83:9 | r | test.c:81:23:81:26 | call to rand | test.c:83:9:83:9 | r | $@ flows to here and is used in arithmetic, potentially causing an underflow. | test.c:81:23:81:26 | call to rand | Uncontrolled value |
 | test.c:100:5:100:5 | r | test.c:99:14:99:19 | call to rand | test.c:100:5:100:5 | r | $@ flows to here and is used in arithmetic, potentially causing an underflow. | test.c:99:14:99:19 | call to rand | Uncontrolled value |
 | test.c:127:9:127:9 | r | test.c:125:13:125:16 | call to rand | test.c:127:9:127:9 | r | $@ flows to here and is used in arithmetic, potentially causing an overflow. | test.c:125:13:125:16 | call to rand | Uncontrolled value |
-| test.c:127:9:127:9 | r | test.c:125:13:125:16 | call to rand | test.c:127:9:127:9 | r | $@ flows to here and is used in arithmetic, potentially causing an underflow. | test.c:125:13:125:16 | call to rand | Uncontrolled value |
 | test.cpp:25:7:25:7 | r | test.cpp:8:9:8:12 | call to rand | test.cpp:25:7:25:7 | r | $@ flows to here and is used in arithmetic, potentially causing an overflow. | test.cpp:8:9:8:12 | call to rand | Uncontrolled value |
 | test.cpp:31:7:31:7 | r | test.cpp:13:10:13:13 | call to rand | test.cpp:31:7:31:7 | r | $@ flows to here and is used in arithmetic, potentially causing an overflow. | test.cpp:13:10:13:13 | call to rand | Uncontrolled value |
 | test.cpp:37:7:37:7 | r | test.cpp:18:9:18:12 | call to rand | test.cpp:37:7:37:7 | r | $@ flows to here and is used in arithmetic, potentially causing an overflow. | test.cpp:18:9:18:12 | call to rand | Uncontrolled value |
 | test.cpp:57:9:57:9 | x | test.cpp:54:10:54:13 | call to rand | test.cpp:57:9:57:9 | x | $@ flows to here and is used in arithmetic, potentially causing an underflow. | test.cpp:54:10:54:13 | call to rand | Uncontrolled value |
 | test.cpp:82:10:82:10 | x | test.cpp:78:10:78:13 | call to rand | test.cpp:82:10:82:10 | x | $@ flows to here and is used in arithmetic, potentially causing an overflow. | test.cpp:78:10:78:13 | call to rand | Uncontrolled value |
-| test.cpp:84:10:84:10 | x | test.cpp:78:10:78:13 | call to rand | test.cpp:84:10:84:10 | x | $@ flows to here and is used in arithmetic, potentially causing an underflow. | test.cpp:78:10:78:13 | call to rand | Uncontrolled value |
 | test.cpp:94:10:94:10 | x | test.cpp:90:10:90:13 | call to rand | test.cpp:94:10:94:10 | x | $@ flows to here and is used in arithmetic, potentially causing an overflow. | test.cpp:90:10:90:13 | call to rand | Uncontrolled value |
-| test.cpp:97:9:97:9 | x | test.cpp:90:10:90:13 | call to rand | test.cpp:97:9:97:9 | x | $@ flows to here and is used in arithmetic, potentially causing an underflow. | test.cpp:90:10:90:13 | call to rand | Uncontrolled value |
-| test.cpp:108:10:108:10 | y | test.cpp:102:10:102:13 | call to rand | test.cpp:108:10:108:10 | y | $@ flows to here and is used in arithmetic, potentially causing an underflow. | test.cpp:102:10:102:13 | call to rand | Uncontrolled value |
-| test.cpp:124:9:124:9 | y | test.cpp:116:10:116:13 | call to rand | test.cpp:124:9:124:9 | y | $@ flows to here and is used in arithmetic, potentially causing an underflow. | test.cpp:116:10:116:13 | call to rand | Uncontrolled value |

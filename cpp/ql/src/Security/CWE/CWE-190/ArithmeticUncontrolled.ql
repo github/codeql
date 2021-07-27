@@ -74,7 +74,10 @@ private class RandS extends RandomFunction {
 
 predicate missingGuard(VariableAccess va, string effect) {
   exists(Operation op | op.getAnOperand() = va |
-    missingGuardAgainstUnderflow(op, va) and effect = "underflow"
+    (
+      missingGuardAgainstUnderflow(op, va) and effect = "underflow" and
+      not op instanceof MulExpr // random numbers are usually non-negative, so multiplication doesn't underflow.
+    )
     or
     missingGuardAgainstOverflow(op, va) and effect = "overflow"
   )

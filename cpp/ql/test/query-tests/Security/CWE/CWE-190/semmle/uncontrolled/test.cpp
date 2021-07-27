@@ -81,7 +81,7 @@ int test_else_1()
 	{
 		return x * 10; // BAD
 	} else {
-		return x * 10; // GOOD (as x <= 100) [FALSE POSITIVE]
+		return x * 10; // GOOD (as x <= 100)
 	}
 }
 
@@ -94,7 +94,7 @@ int test_else_2()
 		return x * 10; // BAD
 	}
 
-	return x * 10; // GOOD (as x <= 100) [FALSE POSITIVE]
+	return x * 10; // GOOD (as x <= 100)
 }
 
 int test_conditional_assignment_1()
@@ -105,7 +105,7 @@ int test_conditional_assignment_1()
 	if (x < y)
 	{
 		y = x;
-		return y * 10; // GOOD (as y <= 100) [FALSE POSITIVE]
+		return y * 10; // GOOD (as y <= 100)
 	} else {
 		return y * 10; // GOOD (as y = 100)
 	}
@@ -121,5 +121,5 @@ int test_conditional_assignment_2()
 		y = x;
 	}
 	
-	return y * 10; // GOOD (as y <= 100) [FALSE POSITIVE]
+	return y * 10; // GOOD (as y <= 100)
 }
