@@ -15,7 +15,7 @@ public class JoddJsonServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     @Override
-    // GOOD: class type specified without whitelisted class types
+    // GOOD: class type specified
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String json = req.getParameter("json");
         String clazz = req.getParameter("class");
@@ -48,30 +48,5 @@ public class JoddJsonServlet extends HttpServlet {
         } catch (ClassNotFoundException cne) {
             throw new IOException(cne.getMessage());
         }
-    }
-
-    @Override
-    // BAD: enable user controlled class types and allow overly generic class types
-    public void doTrace(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String json = req.getParameter("json");
-        String clazz = req.getParameter("class");
-
-        JsonParser parser = new JsonParser();
-        parser.allowClass("com.thirdparty.*");
-        parser.withClassMetadata(true);
-        Person obj = parser.parse(json, Person.class);
-
-    }
-
-    @Override
-    // BAD: enable user controlled class types and allow overly generic class types
-    public void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String json = req.getParameter("json");
-        String clazz = req.getParameter("class");
-
-        JsonParser parser = new JsonParser();
-        parser.allowClass("com.thirdparty.*");
-        parser.setClassMetadataName("class");
-        Person obj = parser.parse(json, Person.class);
     }
 }

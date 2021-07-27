@@ -93,7 +93,7 @@ JsonIO deserialization vulnerabilities:
 <a href="https://klezvirus.github.io/Advanced-Web-Hacking/Serialisation/">JsonIO deserialization</a>.
 </li>
 <li>
-Gson deserialization vulnerabilities:
+Android Intent deserialization vulnerabilities with GSON parser:
 <a href="https://blog.oversecured.com/Exploiting-memory-corruption-vulnerabilities-on-Android/#insecure-use-of-json-parsers">Insecure use of JSON parsers</a>.
 </li>
 <li>

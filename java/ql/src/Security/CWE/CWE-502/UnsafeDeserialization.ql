@@ -70,15 +70,16 @@ class UnsafeDeserializationConfig extends TaintTracking::Configuration {
       ) and
       node.asExpr() = ma.getAnArgument() and
       (
-        ma.getArgument(1).(TypeLiteral).getType() instanceof NullType // Require that the class parameter is non-null
+        ma.getArgument(1).getType() instanceof TypeClass and
+        not ma.getArgument(1).getType().getName() = ["Class<Object>", "Class<?>"]
         or
         exists(
           MethodAccess dma // Specified class type
         |
-          dma.getMethod() instanceof DeserializerUseMethod and
+          isSafeFlexjsonUseCall(dma) and
           (
-            ma.getQualifier() = dma or
-            ma.getQualifier().(VarAccess).getVariable().getAnAccess() = dma.getQualifier() // new flexjson.JSONDeserializer<Person>().use(null, Person.class).deserialize(json)
+            ma.getQualifier() = dma or // new flexjson.JSONDeserializer<Person>().use(null, Person.class).deserialize(json)
+            ma.getQualifier().(VarAccess).getVariable().getAnAccess() = dma.getQualifier()
           )
         )
       )

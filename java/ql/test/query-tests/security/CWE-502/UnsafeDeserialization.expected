@@ -80,6 +80,8 @@ edges
 | C.java:85:29:85:68 | new ByteArrayInputStream(...) : ByteArrayInputStream | C.java:87:3:87:13 | burlapInput |
 | C.java:85:29:85:68 | new ByteArrayInputStream(...) : ByteArrayInputStream | C.java:91:3:91:14 | burlapInput1 |
 | C.java:85:54:85:67 | serializedData : byte[] | C.java:85:29:85:68 | new ByteArrayInputStream(...) : ByteArrayInputStream |
+| FlexjsonServlet.java:67:23:67:46 | getParameter(...) : String | FlexjsonServlet.java:68:127:68:130 | json |
+| FlexjsonServlet.java:79:23:79:46 | getParameter(...) : String | FlexjsonServlet.java:80:93:80:96 | json |
 | GsonActivity.java:15:54:15:64 | getIntent(...) : Intent | GsonActivity.java:15:54:15:97 | getParcelableExtra(...) |
 | GsonServlet.java:40:24:40:48 | getParameter(...) : String | GsonServlet.java:44:46:44:65 | forName(...) |
 | GsonServlet.java:54:24:54:48 | getParameter(...) : String | GsonServlet.java:60:46:60:65 | forName(...) |
@@ -87,8 +89,6 @@ edges
 | JabsorbServlet.java:110:23:110:46 | getParameter(...) : String | JabsorbServlet.java:116:52:116:55 | json |
 | JoddJsonServlet.java:30:23:30:46 | getParameter(...) : String | JoddJsonServlet.java:36:33:36:36 | json |
 | JoddJsonServlet.java:42:23:42:46 | getParameter(...) : String | JoddJsonServlet.java:47:39:47:42 | json |
-| JoddJsonServlet.java:56:23:56:46 | getParameter(...) : String | JoddJsonServlet.java:62:35:62:38 | json |
-| JoddJsonServlet.java:69:23:69:46 | getParameter(...) : String | JoddJsonServlet.java:75:35:75:38 | json |
 | TestMessageBodyReader.java:20:55:20:78 | entityStream : InputStream | TestMessageBodyReader.java:22:18:22:52 | new ObjectInputStream(...) |
 | TestMessageBodyReader.java:20:55:20:78 | entityStream : InputStream | TestMessageBodyReader.java:22:40:22:51 | entityStream : InputStream |
 | TestMessageBodyReader.java:22:40:22:51 | entityStream : InputStream | TestMessageBodyReader.java:22:18:22:52 | new ObjectInputStream(...) |
@@ -185,11 +185,13 @@ nodes
 | C.java:85:54:85:67 | serializedData : byte[] | semmle.label | serializedData : byte[] |
 | C.java:87:3:87:13 | burlapInput | semmle.label | burlapInput |
 | C.java:91:3:91:14 | burlapInput1 | semmle.label | burlapInput1 |
-| FlexjsonServlet.java:22:46:22:60 | getReader(...) | semmle.label | getReader(...) |
-| FlexjsonServlet.java:29:50:29:64 | getReader(...) | semmle.label | getReader(...) |
 | FlexjsonServlet.java:36:53:36:67 | getReader(...) | semmle.label | getReader(...) |
 | FlexjsonServlet.java:44:53:44:67 | getReader(...) | semmle.label | getReader(...) |
 | FlexjsonServlet.java:52:53:52:67 | getReader(...) | semmle.label | getReader(...) |
+| FlexjsonServlet.java:67:23:67:46 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| FlexjsonServlet.java:68:127:68:130 | json | semmle.label | json |
+| FlexjsonServlet.java:79:23:79:46 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| FlexjsonServlet.java:80:93:80:96 | json | semmle.label | json |
 | GsonActivity.java:15:54:15:64 | getIntent(...) : Intent | semmle.label | getIntent(...) : Intent |
 | GsonActivity.java:15:54:15:97 | getParcelableExtra(...) | semmle.label | getParcelableExtra(...) |
 | GsonServlet.java:40:24:40:48 | getParameter(...) : String | semmle.label | getParameter(...) : String |
@@ -204,10 +206,6 @@ nodes
 | JoddJsonServlet.java:36:33:36:36 | json | semmle.label | json |
 | JoddJsonServlet.java:42:23:42:46 | getParameter(...) : String | semmle.label | getParameter(...) : String |
 | JoddJsonServlet.java:47:39:47:42 | json | semmle.label | json |
-| JoddJsonServlet.java:56:23:56:46 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| JoddJsonServlet.java:62:35:62:38 | json | semmle.label | json |
-| JoddJsonServlet.java:69:23:69:46 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| JoddJsonServlet.java:75:35:75:38 | json | semmle.label | json |
 | TestMessageBodyReader.java:20:55:20:78 | entityStream : InputStream | semmle.label | entityStream : InputStream |
 | TestMessageBodyReader.java:22:18:22:52 | new ObjectInputStream(...) | semmle.label | new ObjectInputStream(...) |
 | TestMessageBodyReader.java:22:40:22:51 | entityStream : InputStream | semmle.label | entityStream : InputStream |
@@ -258,11 +256,11 @@ nodes
 | C.java:79:3:79:72 | unmarshal(...) | C.java:79:43:79:70 | getParameter(...) : String | C.java:79:26:79:71 | new StringReader(...) | Unsafe deserialization of $@. | C.java:79:43:79:70 | getParameter(...) | user input |
 | C.java:87:3:87:26 | readObject(...) | C.java:84:27:84:54 | getParameter(...) : String | C.java:87:3:87:13 | burlapInput | Unsafe deserialization of $@. | C.java:84:27:84:54 | getParameter(...) | user input |
 | C.java:91:3:91:27 | readObject(...) | C.java:84:27:84:54 | getParameter(...) : String | C.java:91:3:91:14 | burlapInput1 | Unsafe deserialization of $@. | C.java:84:27:84:54 | getParameter(...) | user input |
-| FlexjsonServlet.java:22:21:22:73 | deserialize(...) | FlexjsonServlet.java:22:46:22:60 | getReader(...) | FlexjsonServlet.java:22:46:22:60 | getReader(...) | Unsafe deserialization of $@. | FlexjsonServlet.java:22:46:22:60 | getReader(...) | user input |
-| FlexjsonServlet.java:29:25:29:79 | deserialize(...) | FlexjsonServlet.java:29:50:29:64 | getReader(...) | FlexjsonServlet.java:29:50:29:64 | getReader(...) | Unsafe deserialization of $@. | FlexjsonServlet.java:29:50:29:64 | getReader(...) | user input |
 | FlexjsonServlet.java:36:28:36:68 | deserialize(...) | FlexjsonServlet.java:36:53:36:67 | getReader(...) | FlexjsonServlet.java:36:53:36:67 | getReader(...) | Unsafe deserialization of $@. | FlexjsonServlet.java:36:53:36:67 | getReader(...) | user input |
 | FlexjsonServlet.java:44:28:44:68 | deserialize(...) | FlexjsonServlet.java:44:53:44:67 | getReader(...) | FlexjsonServlet.java:44:53:44:67 | getReader(...) | Unsafe deserialization of $@. | FlexjsonServlet.java:44:53:44:67 | getReader(...) | user input |
 | FlexjsonServlet.java:52:28:52:82 | deserialize(...) | FlexjsonServlet.java:52:53:52:67 | getReader(...) | FlexjsonServlet.java:52:53:52:67 | getReader(...) | Unsafe deserialization of $@. | FlexjsonServlet.java:52:53:52:67 | getReader(...) | user input |
+| FlexjsonServlet.java:68:25:68:131 | deserialize(...) | FlexjsonServlet.java:67:23:67:46 | getParameter(...) : String | FlexjsonServlet.java:68:127:68:130 | json | Unsafe deserialization of $@. | FlexjsonServlet.java:67:23:67:46 | getParameter(...) | user input |
+| FlexjsonServlet.java:80:25:80:97 | deserialize(...) | FlexjsonServlet.java:79:23:79:46 | getParameter(...) : String | FlexjsonServlet.java:80:93:80:96 | json | Unsafe deserialization of $@. | FlexjsonServlet.java:79:23:79:46 | getParameter(...) | user input |
 | GsonActivity.java:15:54:15:97 | getParcelableExtra(...) | GsonActivity.java:15:54:15:64 | getIntent(...) : Intent | GsonActivity.java:15:54:15:97 | getParcelableExtra(...) | Unsafe deserialization of $@. | GsonActivity.java:15:54:15:64 | getIntent(...) | user input |
 | GsonServlet.java:44:26:44:66 | fromJson(...) | GsonServlet.java:40:24:40:48 | getParameter(...) : String | GsonServlet.java:44:46:44:65 | forName(...) | Unsafe deserialization of $@. | GsonServlet.java:40:24:40:48 | getParameter(...) | user input |
 | GsonServlet.java:60:26:60:66 | fromJson(...) | GsonServlet.java:54:24:54:48 | getParameter(...) : String | GsonServlet.java:60:46:60:65 | forName(...) | Unsafe deserialization of $@. | GsonServlet.java:54:24:54:48 | getParameter(...) | user input |
@@ -270,6 +268,4 @@ nodes
 | JabsorbServlet.java:116:32:116:56 | fromJSON(...) | JabsorbServlet.java:110:23:110:46 | getParameter(...) : String | JabsorbServlet.java:116:52:116:55 | json | Unsafe deserialization of $@. | JabsorbServlet.java:110:23:110:46 | getParameter(...) | user input |
 | JoddJsonServlet.java:36:20:36:43 | parse(...) | JoddJsonServlet.java:30:23:30:46 | getParameter(...) : String | JoddJsonServlet.java:36:33:36:36 | json | Unsafe deserialization of $@. | JoddJsonServlet.java:30:23:30:46 | getParameter(...) | user input |
 | JoddJsonServlet.java:47:26:47:65 | parse(...) | JoddJsonServlet.java:42:23:42:46 | getParameter(...) : String | JoddJsonServlet.java:47:39:47:42 | json | Unsafe deserialization of $@. | JoddJsonServlet.java:42:23:42:46 | getParameter(...) | user input |
-| JoddJsonServlet.java:62:22:62:53 | parse(...) | JoddJsonServlet.java:56:23:56:46 | getParameter(...) : String | JoddJsonServlet.java:62:35:62:38 | json | Unsafe deserialization of $@. | JoddJsonServlet.java:56:23:56:46 | getParameter(...) | user input |
-| JoddJsonServlet.java:75:22:75:53 | parse(...) | JoddJsonServlet.java:69:23:69:46 | getParameter(...) : String | JoddJsonServlet.java:75:35:75:38 | json | Unsafe deserialization of $@. | JoddJsonServlet.java:69:23:69:46 | getParameter(...) | user input |
 | TestMessageBodyReader.java:22:18:22:65 | readObject(...) | TestMessageBodyReader.java:20:55:20:78 | entityStream : InputStream | TestMessageBodyReader.java:22:18:22:52 | new ObjectInputStream(...) | Unsafe deserialization of $@. | TestMessageBodyReader.java:20:55:20:78 | entityStream | user input |

@@ -251,6 +251,22 @@ class UnsafeJabsorbConfig extends TaintTracking2::Configuration {
   }
 }
 
+/**
+ * Holds if `ma` is a safe usage of the `use` method of Flexjson, which could be:
+ *     use(String, ...) where the path is null or
+ *     use(ObjectFactory, String...) where the string varargs (or array) contains null
+ */
+predicate isSafeFlexjsonUseCall(MethodAccess ma) {
+  ma.getMethod() instanceof DeserializerUseMethod and
+  (
+    ma.getMethod().getParameterType(0) instanceof TypeString and
+    ma.getArgument(0) instanceof NullLiteral
+    or
+    ma.getMethod().getParameterType(0) instanceof FlexjsonObjectFactory and
+    ma.getAnArgument() instanceof NullLiteral
+  )
+}
+
 predicate unsafeDeserialization(MethodAccess ma, Expr sink) {
   exists(Method m | m = ma.getMethod() |
     m instanceof ObjectInputStreamReadObjectMethod and
