@@ -150,7 +150,7 @@ class ElementReference extends MethodCall, TElementReference {
  * ```
  */
 class YieldCall extends Call, TYieldCall {
-  Generated::Yield g;
+  Ruby::Yield g;
 
   YieldCall() { this = TYieldCall(g) }
 
@@ -180,7 +180,7 @@ class SuperCall extends MethodCall, TSuperCall {
  * ```
  */
 class BlockArgument extends Expr, TBlockArgument {
-  private Generated::BlockArgument g;
+  private Ruby::BlockArgument g;
 
   BlockArgument() { this = TBlockArgument(g) }
 

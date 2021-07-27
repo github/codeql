@@ -3,13 +3,13 @@ private import Variable
 private import codeql_ruby.AST
 private import codeql_ruby.ast.internal.AST
 
-predicate isIdentifierMethodCall(Generated::Identifier g) { vcall(g) and not access(g, _) }
+predicate isIdentifierMethodCall(Ruby::Identifier g) { vcall(g) and not access(g, _) }
 
-predicate isRegularMethodCall(Generated::Call g) { not g.getMethod() instanceof Generated::Super }
+predicate isRegularMethodCall(Ruby::Call g) { not g.getMethod() instanceof Ruby::Super }
 
-predicate isScopeResolutionMethodCall(Generated::ScopeResolution g, Generated::Identifier i) {
+predicate isScopeResolutionMethodCall(Ruby::ScopeResolution g, Ruby::Identifier i) {
   i = g.getName() and
-  not exists(Generated::Call c | c.getMethod() = g)
+  not exists(Ruby::Call c | c.getMethod() = g)
 }
 
 abstract class CallImpl extends Call {
@@ -50,7 +50,7 @@ class MethodCallSynth extends MethodCallImpl, TMethodCallSynth {
 }
 
 class IdentifierMethodCall extends MethodCallImpl, TIdentifierMethodCall {
-  private Generated::Identifier g;
+  private Ruby::Identifier g;
 
   IdentifierMethodCall() { this = TIdentifierMethodCall(g) }
 
@@ -64,8 +64,8 @@ class IdentifierMethodCall extends MethodCallImpl, TIdentifierMethodCall {
 }
 
 class ScopeResolutionMethodCall extends MethodCallImpl, TScopeResolutionMethodCall {
-  private Generated::ScopeResolution g;
-  private Generated::Identifier i;
+  private Ruby::ScopeResolution g;
+  private Ruby::Identifier i;
 
   ScopeResolutionMethodCall() { this = TScopeResolutionMethodCall(g, i) }
 
@@ -79,7 +79,7 @@ class ScopeResolutionMethodCall extends MethodCallImpl, TScopeResolutionMethodCa
 }
 
 class RegularMethodCall extends MethodCallImpl, TRegularMethodCall {
-  private Generated::Call g;
+  private Ruby::Call g;
 
   RegularMethodCall() { this = TRegularMethodCall(g) }
 
@@ -87,7 +87,7 @@ class RegularMethodCall extends MethodCallImpl, TRegularMethodCall {
     toGenerated(result) = g.getReceiver()
     or
     not exists(g.getReceiver()) and
-    toGenerated(result) = g.getMethod().(Generated::ScopeResolution).getScope()
+    toGenerated(result) = g.getMethod().(Ruby::ScopeResolution).getScope()
     or
     result = TSelfSynth(this, 0)
   }
@@ -95,31 +95,30 @@ class RegularMethodCall extends MethodCallImpl, TRegularMethodCall {
   final override string getMethodNameImpl() {
     isRegularMethodCall(g) and
     (
-      result = "call" and g.getMethod() instanceof Generated::ArgumentList
+      result = "call" and g.getMethod() instanceof Ruby::ArgumentList
       or
-      result = g.getMethod().(Generated::Token).getValue()
+      result = g.getMethod().(Ruby::Token).getValue()
       or
-      result = g.getMethod().(Generated::ScopeResolution).getName().(Generated::Token).getValue()
+      result = g.getMethod().(Ruby::ScopeResolution).getName().(Ruby::Token).getValue()
     )
   }
 
   final override Expr getArgumentImpl(int n) {
     toGenerated(result) = g.getArguments().getChild(n)
     or
-    toGenerated(result) = g.getMethod().(Generated::ArgumentList).getChild(n)
+    toGenerated(result) = g.getMethod().(Ruby::ArgumentList).getChild(n)
   }
 
   final override int getNumberOfArgumentsImpl() {
     result =
-      count(g.getArguments().getChild(_)) +
-        count(g.getMethod().(Generated::ArgumentList).getChild(_))
+      count(g.getArguments().getChild(_)) + count(g.getMethod().(Ruby::ArgumentList).getChild(_))
   }
 
   final override Block getBlock() { toGenerated(result) = g.getBlock() }
 }
 
 class ElementReferenceImpl extends MethodCallImpl, TElementReference {
-  private Generated::ElementReference g;
+  private Ruby::ElementReference g;
 
   ElementReferenceImpl() { this = TElementReference(g) }
 
@@ -133,7 +132,7 @@ class ElementReferenceImpl extends MethodCallImpl, TElementReference {
 }
 
 class TokenSuperCall extends SuperCall, MethodCallImpl, TTokenSuperCall {
-  private Generated::Super g;
+  private Ruby::Super g;
 
   TokenSuperCall() { this = TTokenSuperCall(g) }
 
@@ -147,11 +146,11 @@ class TokenSuperCall extends SuperCall, MethodCallImpl, TTokenSuperCall {
 }
 
 class RegularSuperCall extends SuperCall, MethodCallImpl, TRegularSuperCall {
-  private Generated::Call g;
+  private Ruby::Call g;
 
   RegularSuperCall() { this = TRegularSuperCall(g) }
 
-  final override string getMethodNameImpl() { result = g.getMethod().(Generated::Super).getValue() }
+  final override string getMethodNameImpl() { result = g.getMethod().(Ruby::Super).getValue() }
 
   final override Expr getReceiverImpl() { none() }
 

@@ -353,9 +353,9 @@ class ExitBasicBlock extends BasicBlock {
 }
 
 private module JoinBlockPredecessors {
-  private predicate id(Generated::AstNode x, Generated::AstNode y) { x = y }
+  private predicate id(Ruby::AstNode x, Ruby::AstNode y) { x = y }
 
-  private predicate idOf(Generated::AstNode x, int y) = equivalenceRelation(id/2)(x, y)
+  private predicate idOf(Ruby::AstNode x, int y) = equivalenceRelation(id/2)(x, y)
 
   int getId(JoinBlockPredecessor jbp) {
     idOf(toGeneratedInclSynth(jbp.getFirstNode().(AstCfgNode).getNode()), result)

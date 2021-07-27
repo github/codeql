@@ -65,12 +65,12 @@ class TuplePattern extends Pattern, TTuplePattern {
 
   private TuplePatternImpl getImpl() { result = toGenerated(this) }
 
-  private Generated::AstNode getChild(int i) { result = this.getImpl().getChildNode(i) }
+  private Ruby::AstNode getChild(int i) { result = this.getImpl().getChildNode(i) }
 
   /** Gets the `i`th pattern in this tuple pattern. */
   final Pattern getElement(int i) {
-    exists(Generated::AstNode c | c = this.getChild(i) |
-      toGenerated(result) = c.(Generated::RestAssignment).getChild()
+    exists(Ruby::AstNode c | c = this.getChild(i) |
+      toGenerated(result) = c.(Ruby::RestAssignment).getChild()
       or
       toGenerated(result) = c
     )

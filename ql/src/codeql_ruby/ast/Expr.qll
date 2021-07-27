@@ -37,14 +37,14 @@ class Self extends Expr, TSelf {
  * ```
  */
 class ArgumentList extends Expr, TArgumentList {
-  private Generated::AstNode g;
+  private Ruby::AstNode g;
 
   ArgumentList() { this = TArgumentList(g) }
 
   /** Gets the `i`th element in this argument list. */
   Expr getElement(int i) {
     toGenerated(result) in [
-        g.(Generated::ArgumentList).getChild(i), g.(Generated::RightAssignmentList).getChild(i)
+        g.(Ruby::ArgumentList).getChild(i), g.(Ruby::RightAssignmentList).getChild(i)
       ]
   }
 
@@ -92,7 +92,7 @@ private class StmtSequenceSynth extends StmtSequence, TStmtSequenceSynth {
 }
 
 private class Then extends StmtSequence, TThen {
-  private Generated::Then g;
+  private Ruby::Then g;
 
   Then() { this = TThen(g) }
 
@@ -102,7 +102,7 @@ private class Then extends StmtSequence, TThen {
 }
 
 private class Else extends StmtSequence, TElse {
-  private Generated::Else g;
+  private Ruby::Else g;
 
   Else() { this = TElse(g) }
 
@@ -112,7 +112,7 @@ private class Else extends StmtSequence, TElse {
 }
 
 private class Do extends StmtSequence, TDo {
-  private Generated::Do g;
+  private Ruby::Do g;
 
   Do() { this = TDo(g) }
 
@@ -122,7 +122,7 @@ private class Do extends StmtSequence, TDo {
 }
 
 private class Ensure extends StmtSequence, TEnsure {
-  private Generated::Ensure g;
+  private Ruby::Ensure g;
 
   Ensure() { this = TEnsure(g) }
 
@@ -138,28 +138,28 @@ private class Ensure extends StmtSequence, TEnsure {
  */
 class BodyStmt extends StmtSequence, TBodyStmt {
   // Not defined by dispatch, as it should not be exposed
-  private Generated::AstNode getChild(int i) {
-    result = any(Generated::Method g | this = TMethod(g)).getChild(i)
+  private Ruby::AstNode getChild(int i) {
+    result = any(Ruby::Method g | this = TMethod(g)).getChild(i)
     or
-    result = any(Generated::SingletonMethod g | this = TSingletonMethod(g)).getChild(i)
+    result = any(Ruby::SingletonMethod g | this = TSingletonMethod(g)).getChild(i)
     or
-    exists(Generated::Lambda g | this = TLambda(g) |
-      result = g.getBody().(Generated::DoBlock).getChild(i) or
-      result = g.getBody().(Generated::Block).getChild(i)
+    exists(Ruby::Lambda g | this = TLambda(g) |
+      result = g.getBody().(Ruby::DoBlock).getChild(i) or
+      result = g.getBody().(Ruby::Block).getChild(i)
     )
     or
-    result = any(Generated::DoBlock g | this = TDoBlock(g)).getChild(i)
+    result = any(Ruby::DoBlock g | this = TDoBlock(g)).getChild(i)
     or
-    result = any(Generated::Program g | this = TToplevel(g)).getChild(i) and
-    not result instanceof Generated::BeginBlock
+    result = any(Ruby::Program g | this = TToplevel(g)).getChild(i) and
+    not result instanceof Ruby::BeginBlock
     or
-    result = any(Generated::Class g | this = TClassDeclaration(g)).getChild(i)
+    result = any(Ruby::Class g | this = TClassDeclaration(g)).getChild(i)
     or
-    result = any(Generated::SingletonClass g | this = TSingletonClass(g)).getChild(i)
+    result = any(Ruby::SingletonClass g | this = TSingletonClass(g)).getChild(i)
     or
-    result = any(Generated::Module g | this = TModuleDeclaration(g)).getChild(i)
+    result = any(Ruby::Module g | this = TModuleDeclaration(g)).getChild(i)
     or
-    result = any(Generated::Begin g | this = TBeginExpr(g)).getChild(i)
+    result = any(Ruby::Begin g | this = TBeginExpr(g)).getChild(i)
   }
 
   final override Stmt getStmt(int n) {
@@ -218,7 +218,7 @@ class BodyStmt extends StmtSequence, TBodyStmt {
  * ```
  */
 class ParenthesizedExpr extends StmtSequence, TParenthesizedExpr {
-  private Generated::ParenthesizedStatements g;
+  private Ruby::ParenthesizedStatements g;
 
   ParenthesizedExpr() { this = TParenthesizedExpr(g) }
 
@@ -240,7 +240,7 @@ class ParenthesizedExpr extends StmtSequence, TParenthesizedExpr {
  * ```
  */
 class Pair extends Expr, TPair {
-  private Generated::Pair g;
+  private Ruby::Pair g;
 
   Pair() { this = TPair(g) }
 
@@ -289,7 +289,7 @@ class Pair extends Expr, TPair {
  * end
  */
 class RescueClause extends Expr, TRescueClause {
-  private Generated::Rescue g;
+  private Ruby::Rescue g;
 
   RescueClause() { this = TRescueClause(g) }
 
@@ -357,7 +357,7 @@ class RescueClause extends Expr, TRescueClause {
  * ```
  */
 class RescueModifierExpr extends Expr, TRescueModifierExpr {
-  private Generated::RescueModifier g;
+  private Ruby::RescueModifier g;
 
   RescueModifierExpr() { this = TRescueModifierExpr(g) }
 
@@ -398,7 +398,7 @@ class RescueModifierExpr extends Expr, TRescueModifierExpr {
  * ```
  */
 class StringConcatenation extends Expr, TStringConcatenation {
-  private Generated::ChainedString g;
+  private Ruby::ChainedString g;
 
   StringConcatenation() { this = TStringConcatenation(g) }
 

@@ -12,8 +12,8 @@ private class TModuleLike = TToplevel or TModuleDeclaration or TClassDeclaration
 module Scope {
   class TypeRange = Callable::TypeRange or ModuleBase::TypeRange or @ruby_end_block;
 
-  class Range extends Generated::AstNode, TypeRange {
-    Range() { not this = any(Generated::Lambda l).getBody() }
+  class Range extends Ruby::AstNode, TypeRange {
+    Range() { not this = any(Ruby::Lambda l).getBody() }
 
     ModuleBase::Range getEnclosingModule() {
       result = this
@@ -44,11 +44,11 @@ module Callable {
 
   class Range extends Scope::Range, TypeRange {
     Parameter::Range getParameter(int i) {
-      result = this.(Generated::Method).getParameters().getChild(i) or
-      result = this.(Generated::SingletonMethod).getParameters().getChild(i) or
-      result = this.(Generated::DoBlock).getParameters().getChild(i) or
-      result = this.(Generated::Lambda).getParameters().getChild(i) or
-      result = this.(Generated::Block).getParameters().getChild(i)
+      result = this.(Ruby::Method).getParameters().getChild(i) or
+      result = this.(Ruby::SingletonMethod).getParameters().getChild(i) or
+      result = this.(Ruby::DoBlock).getParameters().getChild(i) or
+      result = this.(Ruby::Lambda).getParameters().getChild(i) or
+      result = this.(Ruby::Block).getParameters().getChild(i)
     }
   }
 }
@@ -60,19 +60,19 @@ module ModuleBase {
 }
 
 pragma[noinline]
-private predicate rankHeredocBody(File f, Generated::HeredocBody b, int i) {
+private predicate rankHeredocBody(File f, Ruby::HeredocBody b, int i) {
   b =
-    rank[i](Generated::HeredocBody b0 |
+    rank[i](Ruby::HeredocBody b0 |
       f = b0.getLocation().getFile()
     |
       b0 order by b0.getLocation().getStartLine(), b0.getLocation().getStartColumn()
     )
 }
 
-Generated::HeredocBody getHereDocBody(Generated::HeredocBeginning g) {
+Ruby::HeredocBody getHereDocBody(Ruby::HeredocBeginning g) {
   exists(int i, File f |
     g =
-      rank[i](Generated::HeredocBeginning b |
+      rank[i](Ruby::HeredocBeginning b |
         f = b.getLocation().getFile()
       |
         b order by b.getLocation().getStartLine(), b.getLocation().getStartColumn()
@@ -81,17 +81,17 @@ Generated::HeredocBody getHereDocBody(Generated::HeredocBeginning g) {
   )
 }
 
-private Generated::AstNode parentOf(Generated::AstNode n) {
+private Ruby::AstNode parentOf(Ruby::AstNode n) {
   n = getHereDocBody(result)
   or
-  exists(Generated::AstNode parent | parent = n.getParent() |
+  exists(Ruby::AstNode parent | parent = n.getParent() |
     if
       n =
         [
-          parent.(Generated::Module).getName(), parent.(Generated::Class).getName(),
-          parent.(Generated::Class).getSuperclass(), parent.(Generated::SingletonClass).getValue(),
-          parent.(Generated::Method).getName(), parent.(Generated::SingletonMethod).getName(),
-          parent.(Generated::SingletonMethod).getObject()
+          parent.(Ruby::Module).getName(), parent.(Ruby::Class).getName(),
+          parent.(Ruby::Class).getSuperclass(), parent.(Ruby::SingletonClass).getValue(),
+          parent.(Ruby::Method).getName(), parent.(Ruby::SingletonMethod).getName(),
+          parent.(Ruby::SingletonMethod).getObject()
         ]
     then result = parent.getParent()
     else result = parent
@@ -100,8 +100,8 @@ private Generated::AstNode parentOf(Generated::AstNode n) {
 
 /** Gets the enclosing scope of a node */
 cached
-Scope::Range scopeOf(Generated::AstNode n) {
-  exists(Generated::AstNode p | p = parentOf(n) |
+Scope::Range scopeOf(Ruby::AstNode n) {
+  exists(Ruby::AstNode p | p = parentOf(n) |
     p = result
     or
     not p instanceof Scope::Range and result = scopeOf(p)

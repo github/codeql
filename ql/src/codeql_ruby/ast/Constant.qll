@@ -47,7 +47,7 @@ class ConstantAccess extends Expr, TConstantAccess {
 }
 
 private class TokenConstantAccess extends ConstantAccess, TTokenConstantAccess {
-  private Generated::Constant g;
+  private Ruby::Constant g;
 
   TokenConstantAccess() { this = TTokenConstantAccess(g) }
 
@@ -55,8 +55,8 @@ private class TokenConstantAccess extends ConstantAccess, TTokenConstantAccess {
 }
 
 private class ScopeResolutionConstantAccess extends ConstantAccess, TScopeResolutionConstantAccess {
-  private Generated::ScopeResolution g;
-  private Generated::Constant constant;
+  private Ruby::ScopeResolution g;
+  private Ruby::Constant constant;
 
   ScopeResolutionConstantAccess() { this = TScopeResolutionConstantAccess(g, constant) }
 

@@ -52,7 +52,7 @@ class IntegerLiteral extends NumericLiteral, TIntegerLiteral {
 }
 
 private class IntegerLiteralReal extends IntegerLiteral, TIntegerLiteralReal {
-  private Generated::Integer g;
+  private Ruby::Integer g;
 
   IntegerLiteralReal() { this = TIntegerLiteralReal(g) }
 
@@ -113,7 +113,7 @@ private class IntegerLiteralSynth extends IntegerLiteral, TIntegerLiteralSynth {
  * ```
  */
 class FloatLiteral extends NumericLiteral, TFloatLiteral {
-  private Generated::Float g;
+  private Ruby::Float g;
 
   FloatLiteral() { this = TFloatLiteral(g) }
 
@@ -132,11 +132,11 @@ class FloatLiteral extends NumericLiteral, TFloatLiteral {
  * ```
  */
 class RationalLiteral extends NumericLiteral, TRationalLiteral {
-  private Generated::Rational g;
+  private Ruby::Rational g;
 
   RationalLiteral() { this = TRationalLiteral(g) }
 
-  final override string getValueText() { result = g.getChild().(Generated::Token).getValue() + "r" }
+  final override string getValueText() { result = g.getChild().(Ruby::Token).getValue() + "r" }
 
   final override string toString() { result = this.getValueText() }
 
@@ -151,7 +151,7 @@ class RationalLiteral extends NumericLiteral, TRationalLiteral {
  * ```
  */
 class ComplexLiteral extends NumericLiteral, TComplexLiteral {
-  private Generated::Complex g;
+  private Ruby::Complex g;
 
   ComplexLiteral() { this = TComplexLiteral(g) }
 
@@ -164,7 +164,7 @@ class ComplexLiteral extends NumericLiteral, TComplexLiteral {
 
 /** A `nil` literal. */
 class NilLiteral extends Literal, TNilLiteral {
-  private Generated::Nil g;
+  private Ruby::Nil g;
 
   NilLiteral() { this = TNilLiteral(g) }
 
@@ -197,7 +197,7 @@ class BooleanLiteral extends Literal, TBooleanLiteral {
 }
 
 private class TrueLiteral extends BooleanLiteral, TTrueLiteral {
-  private Generated::True g;
+  private Ruby::True g;
 
   TrueLiteral() { this = TTrueLiteral(g) }
 
@@ -207,7 +207,7 @@ private class TrueLiteral extends BooleanLiteral, TTrueLiteral {
 }
 
 private class FalseLiteral extends BooleanLiteral, TFalseLiteral {
-  private Generated::False g;
+  private Ruby::False g;
 
   FalseLiteral() { this = TFalseLiteral(g) }
 
@@ -241,7 +241,7 @@ class StringComponent extends AstNode, TStringComponent {
  * ```
  */
 class StringTextComponent extends StringComponent, TStringTextComponent {
-  private Generated::Token g;
+  private Ruby::Token g;
 
   StringTextComponent() { this = TStringTextComponent(g) }
 
@@ -256,7 +256,7 @@ class StringTextComponent extends StringComponent, TStringTextComponent {
  * An escape sequence component of a string or string-like literal.
  */
 class StringEscapeSequenceComponent extends StringComponent, TStringEscapeSequenceComponent {
-  private Generated::EscapeSequence g;
+  private Ruby::EscapeSequence g;
 
   StringEscapeSequenceComponent() { this = TStringEscapeSequenceComponent(g) }
 
@@ -272,7 +272,7 @@ class StringEscapeSequenceComponent extends StringComponent, TStringEscapeSequen
  */
 class StringInterpolationComponent extends StringComponent, StmtSequence,
   TStringInterpolationComponent {
-  private Generated::Interpolation g;
+  private Ruby::Interpolation g;
 
   StringInterpolationComponent() { this = TStringInterpolationComponent(g) }
 
@@ -386,9 +386,9 @@ class StringlikeLiteral extends Literal, TStringlikeLiteral {
         concat(StringComponent c, int i, string s |
           c = this.getComponent(i) and
           (
-            s = toGenerated(c).(Generated::Token).getValue()
+            s = toGenerated(c).(Ruby::Token).getValue()
             or
-            not toGenerated(c) instanceof Generated::Token and
+            not toGenerated(c) instanceof Ruby::Token and
             s = "#{...}"
           )
         |
@@ -424,7 +424,7 @@ class StringLiteral extends StringlikeLiteral, TStringLiteral {
 }
 
 private class RegularStringLiteral extends StringLiteral, TRegularStringLiteral {
-  private Generated::String g;
+  private Ruby::String g;
 
   RegularStringLiteral() { this = TRegularStringLiteral(g) }
 
@@ -432,7 +432,7 @@ private class RegularStringLiteral extends StringLiteral, TRegularStringLiteral 
 }
 
 private class BareStringLiteral extends StringLiteral, TBareStringLiteral {
-  private Generated::BareString g;
+  private Ruby::BareString g;
 
   BareStringLiteral() { this = TBareStringLiteral(g) }
 
@@ -447,7 +447,7 @@ private class BareStringLiteral extends StringLiteral, TBareStringLiteral {
  * ```
  */
 class RegExpLiteral extends StringlikeLiteral, TRegExpLiteral {
-  private Generated::Regex g;
+  private Ruby::Regex g;
 
   RegExpLiteral() { this = TRegExpLiteral(g) }
 
@@ -467,11 +467,7 @@ class RegExpLiteral extends StringlikeLiteral, TRegExpLiteral {
     // For `/foo/i`, there should be an `/i` token in the database with `this`
     // as its parents. Strip the delimiter, which can vary.
     result =
-      max(Generated::Token t |
-        t.getParent() = g
-      |
-        t.getValue().suffix(1) order by t.getParentIndex()
-      )
+      max(Ruby::Token t | t.getParent() = g | t.getValue().suffix(1) order by t.getParentIndex())
   }
 
   /**
@@ -528,7 +524,7 @@ class SymbolLiteral extends StringlikeLiteral, TSymbolLiteral {
 }
 
 private class SimpleSymbolLiteral extends SymbolLiteral, TSimpleSymbolLiteral {
-  private Generated::SimpleSymbol g;
+  private Ruby::SimpleSymbol g;
 
   SimpleSymbolLiteral() { this = TSimpleSymbolLiteral(g) }
 
@@ -541,7 +537,7 @@ private class SimpleSymbolLiteral extends SymbolLiteral, TSimpleSymbolLiteral {
 private class ComplexSymbolLiteral extends SymbolLiteral, TComplexSymbolLiteral { }
 
 private class DelimitedSymbolLiteral extends ComplexSymbolLiteral, TDelimitedSymbolLiteral {
-  private Generated::DelimitedSymbol g;
+  private Ruby::DelimitedSymbol g;
 
   DelimitedSymbolLiteral() { this = TDelimitedSymbolLiteral(g) }
 
@@ -549,7 +545,7 @@ private class DelimitedSymbolLiteral extends ComplexSymbolLiteral, TDelimitedSym
 }
 
 private class BareSymbolLiteral extends ComplexSymbolLiteral, TBareSymbolLiteral {
-  private Generated::BareSymbol g;
+  private Ruby::BareSymbol g;
 
   BareSymbolLiteral() { this = TBareSymbolLiteral(g) }
 
@@ -557,7 +553,7 @@ private class BareSymbolLiteral extends ComplexSymbolLiteral, TBareSymbolLiteral
 }
 
 private class HashKeySymbolLiteral extends SymbolLiteral, THashKeySymbolLiteral {
-  private Generated::HashKeySymbol g;
+  private Ruby::HashKeySymbol g;
 
   HashKeySymbolLiteral() { this = THashKeySymbolLiteral(g) }
 
@@ -575,7 +571,7 @@ private class HashKeySymbolLiteral extends SymbolLiteral, THashKeySymbolLiteral 
  * ```
  */
 class SubshellLiteral extends StringlikeLiteral, TSubshellLiteral {
-  private Generated::Subshell g;
+  private Ruby::Subshell g;
 
   SubshellLiteral() { this = TSubshellLiteral(g) }
 
@@ -593,7 +589,7 @@ class SubshellLiteral extends StringlikeLiteral, TSubshellLiteral {
  * ```
  */
 class CharacterLiteral extends Literal, TCharacterLiteral {
-  private Generated::Character g;
+  private Ruby::Character g;
 
   CharacterLiteral() { this = TCharacterLiteral(g) }
 
@@ -614,7 +610,7 @@ class CharacterLiteral extends Literal, TCharacterLiteral {
  * ```
  */
 class HereDoc extends StringlikeLiteral, THereDoc {
-  private Generated::HeredocBeginning g;
+  private Ruby::HeredocBeginning g;
 
   HereDoc() { this = THereDoc(g) }
 
@@ -698,7 +694,7 @@ class ArrayLiteral extends Literal, TArrayLiteral {
 }
 
 private class RegularArrayLiteral extends ArrayLiteral, TRegularArrayLiteral {
-  private Generated::Array g;
+  private Ruby::Array g;
 
   RegularArrayLiteral() { this = TRegularArrayLiteral(g) }
 
@@ -708,7 +704,7 @@ private class RegularArrayLiteral extends ArrayLiteral, TRegularArrayLiteral {
 }
 
 private class StringArrayLiteral extends ArrayLiteral, TStringArrayLiteral {
-  private Generated::StringArray g;
+  private Ruby::StringArray g;
 
   StringArrayLiteral() { this = TStringArrayLiteral(g) }
 
@@ -718,7 +714,7 @@ private class StringArrayLiteral extends ArrayLiteral, TStringArrayLiteral {
 }
 
 private class SymbolArrayLiteral extends ArrayLiteral, TSymbolArrayLiteral {
-  private Generated::SymbolArray g;
+  private Ruby::SymbolArray g;
 
   SymbolArrayLiteral() { this = TSymbolArrayLiteral(g) }
 
@@ -735,7 +731,7 @@ private class SymbolArrayLiteral extends ArrayLiteral, TSymbolArrayLiteral {
  * ```
  */
 class HashLiteral extends Literal, THashLiteral {
-  private Generated::Hash g;
+  private Ruby::Hash g;
 
   HashLiteral() { this = THashLiteral(g) }
 
@@ -820,7 +816,7 @@ class RangeLiteral extends Literal, TRangeLiteral {
 }
 
 private class RangeLiteralReal extends RangeLiteral, TRangeLiteralReal {
-  private Generated::Range g;
+  private Ruby::Range g;
 
   RangeLiteralReal() { this = TRangeLiteralReal(g) }
 
@@ -868,9 +864,9 @@ private class TokenMethodName extends MethodName, TTokenMethodName {
   TokenMethodName() { this = TTokenMethodName(g) }
 
   final override string getValueText() {
-    result = g.(Generated::Token).getValue()
+    result = g.(Ruby::Token).getValue()
     or
-    result = g.(Generated::Setter).getName().getValue() + "="
+    result = g.(Ruby::Setter).getName().getValue() + "="
   }
 
   final override string toString() { result = this.getValueText() }

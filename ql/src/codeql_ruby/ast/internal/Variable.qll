@@ -9,73 +9,73 @@ private import codeql_ruby.ast.internal.Synthesis
 /**
  * Holds if `n` is in the left-hand-side of an explicit assignment `assignment`.
  */
-predicate explicitAssignmentNode(Generated::AstNode n, Generated::AstNode assignment) {
-  n = assignment.(Generated::Assignment).getLeft()
+predicate explicitAssignmentNode(Ruby::AstNode n, Ruby::AstNode assignment) {
+  n = assignment.(Ruby::Assignment).getLeft()
   or
-  n = assignment.(Generated::OperatorAssignment).getLeft()
+  n = assignment.(Ruby::OperatorAssignment).getLeft()
   or
-  exists(Generated::AstNode parent |
+  exists(Ruby::AstNode parent |
     parent = n.getParent() and
     explicitAssignmentNode(parent, assignment)
   |
-    parent instanceof Generated::DestructuredLeftAssignment
+    parent instanceof Ruby::DestructuredLeftAssignment
     or
-    parent instanceof Generated::LeftAssignmentList
+    parent instanceof Ruby::LeftAssignmentList
     or
-    parent instanceof Generated::RestAssignment
+    parent instanceof Ruby::RestAssignment
   )
 }
 
 /** Holds if `n` is inside an implicit assignment. */
-predicate implicitAssignmentNode(Generated::AstNode n) {
-  n = any(Generated::ExceptionVariable ev).getChild()
+predicate implicitAssignmentNode(Ruby::AstNode n) {
+  n = any(Ruby::ExceptionVariable ev).getChild()
   or
-  n = any(Generated::For for).getPattern()
+  n = any(Ruby::For for).getPattern()
   or
   implicitAssignmentNode(n.getParent())
 }
 
 /** Holds if `n` is inside a parameter. */
-predicate implicitParameterAssignmentNode(Generated::AstNode n, Callable::Range c) {
+predicate implicitParameterAssignmentNode(Ruby::AstNode n, Callable::Range c) {
   n = c.getParameter(_)
   or
-  implicitParameterAssignmentNode(n.getParent().(Generated::DestructuredParameter), c)
+  implicitParameterAssignmentNode(n.getParent().(Ruby::DestructuredParameter), c)
 }
 
 private predicate instanceVariableAccess(
-  Generated::InstanceVariable var, string name, Scope::Range scope, boolean instance
+  Ruby::InstanceVariable var, string name, Scope::Range scope, boolean instance
 ) {
   name = var.getValue() and
   scope = enclosingModuleOrClass(var) and
   if hasEnclosingMethod(var) then instance = true else instance = false
 }
 
-private predicate classVariableAccess(Generated::ClassVariable var, string name, Scope::Range scope) {
+private predicate classVariableAccess(Ruby::ClassVariable var, string name, Scope::Range scope) {
   name = var.getValue() and
   scope = enclosingModuleOrClass(var)
 }
 
-private predicate hasEnclosingMethod(Generated::AstNode node) {
+private predicate hasEnclosingMethod(Ruby::AstNode node) {
   exists(Scope::Range s | scopeOf(node) = s and exists(s.getEnclosingMethod()))
 }
 
-private ModuleBase::Range enclosingModuleOrClass(Generated::AstNode node) {
+private ModuleBase::Range enclosingModuleOrClass(Ruby::AstNode node) {
   exists(Scope::Range s | scopeOf(node) = s and result = s.getEnclosingModule())
 }
 
-private predicate parameterAssignment(Callable::Range scope, string name, Generated::Identifier i) {
+private predicate parameterAssignment(Callable::Range scope, string name, Ruby::Identifier i) {
   implicitParameterAssignmentNode(i, scope) and
   name = i.getValue()
 }
 
 /** Holds if `scope` defines `name` in its parameter declaration at `i`. */
 private predicate scopeDefinesParameterVariable(
-  Callable::Range scope, string name, Generated::Identifier i
+  Callable::Range scope, string name, Ruby::Identifier i
 ) {
   // In case of overlapping parameter names (e.g. `_`), only the first
   // parameter will give rise to a variable
   i =
-    min(Generated::Identifier other |
+    min(Ruby::Identifier other |
       parameterAssignment(scope, name, other)
     |
       other order by other.getLocation().getStartLine(), other.getLocation().getStartColumn()
@@ -85,16 +85,16 @@ private predicate scopeDefinesParameterVariable(
     p = scope.getParameter(_) and
     name = i.getValue()
   |
-    i = p.(Generated::BlockParameter).getName() or
-    i = p.(Generated::HashSplatParameter).getName() or
-    i = p.(Generated::KeywordParameter).getName() or
-    i = p.(Generated::OptionalParameter).getName() or
-    i = p.(Generated::SplatParameter).getName()
+    i = p.(Ruby::BlockParameter).getName() or
+    i = p.(Ruby::HashSplatParameter).getName() or
+    i = p.(Ruby::KeywordParameter).getName() or
+    i = p.(Ruby::OptionalParameter).getName() or
+    i = p.(Ruby::SplatParameter).getName()
   )
 }
 
 /** Holds if `name` is assigned in `scope` at `i`. */
-private predicate scopeAssigns(Scope::Range scope, string name, Generated::Identifier i) {
+private predicate scopeAssigns(Scope::Range scope, string name, Ruby::Identifier i) {
   (explicitAssignmentNode(i, _) or implicitAssignmentNode(i)) and
   name = i.getValue() and
   scope = scopeOf(i)
@@ -112,28 +112,28 @@ cached
 private module Cached {
   cached
   newtype TVariable =
-    TGlobalVariable(string name) { name = any(Generated::GlobalVariable var).getValue() } or
-    TClassVariable(Scope::Range scope, string name, Generated::AstNode decl) {
+    TGlobalVariable(string name) { name = any(Ruby::GlobalVariable var).getValue() } or
+    TClassVariable(Scope::Range scope, string name, Ruby::AstNode decl) {
       decl =
-        min(Generated::ClassVariable other |
+        min(Ruby::ClassVariable other |
           classVariableAccess(other, name, scope)
         |
           other order by other.getLocation().getStartLine(), other.getLocation().getStartColumn()
         )
     } or
-    TInstanceVariable(Scope::Range scope, string name, boolean instance, Generated::AstNode decl) {
+    TInstanceVariable(Scope::Range scope, string name, boolean instance, Ruby::AstNode decl) {
       decl =
-        min(Generated::InstanceVariable other |
+        min(Ruby::InstanceVariable other |
           instanceVariableAccess(other, name, scope, instance)
         |
           other order by other.getLocation().getStartLine(), other.getLocation().getStartColumn()
         )
     } or
-    TLocalVariableReal(Scope::Range scope, string name, Generated::Identifier i) {
+    TLocalVariableReal(Scope::Range scope, string name, Ruby::Identifier i) {
       scopeDefinesParameterVariable(scope, name, i)
       or
       i =
-        min(Generated::Identifier other |
+        min(Ruby::Identifier other |
           scopeAssigns(scope, name, other)
         |
           other order by other.getLocation().getStartLine(), other.getLocation().getStartColumn()
@@ -162,135 +162,135 @@ private module Cached {
    */
   cached
   predicate vcall(VcallToken i) {
-    i = any(Generated::ArgumentList x).getChild(_)
+    i = any(Ruby::ArgumentList x).getChild(_)
     or
-    i = any(Generated::Array x).getChild(_)
+    i = any(Ruby::Array x).getChild(_)
     or
-    i = any(Generated::Assignment x).getRight()
+    i = any(Ruby::Assignment x).getRight()
     or
-    i = any(Generated::Begin x).getChild(_)
+    i = any(Ruby::Begin x).getChild(_)
     or
-    i = any(Generated::BeginBlock x).getChild(_)
+    i = any(Ruby::BeginBlock x).getChild(_)
     or
-    i = any(Generated::Binary x).getLeft()
+    i = any(Ruby::Binary x).getLeft()
     or
-    i = any(Generated::Binary x).getRight()
+    i = any(Ruby::Binary x).getRight()
     or
-    i = any(Generated::Block x).getChild(_)
+    i = any(Ruby::Block x).getChild(_)
     or
-    i = any(Generated::BlockArgument x).getChild()
+    i = any(Ruby::BlockArgument x).getChild()
     or
-    i = any(Generated::Call x).getReceiver()
+    i = any(Ruby::Call x).getReceiver()
     or
-    i = any(Generated::Case x).getValue()
+    i = any(Ruby::Case x).getValue()
     or
-    i = any(Generated::Class x).getChild(_)
+    i = any(Ruby::Class x).getChild(_)
     or
-    i = any(Generated::Conditional x).getCondition()
+    i = any(Ruby::Conditional x).getCondition()
     or
-    i = any(Generated::Conditional x).getConsequence()
+    i = any(Ruby::Conditional x).getConsequence()
     or
-    i = any(Generated::Conditional x).getAlternative()
+    i = any(Ruby::Conditional x).getAlternative()
     or
-    i = any(Generated::Do x).getChild(_)
+    i = any(Ruby::Do x).getChild(_)
     or
-    i = any(Generated::DoBlock x).getChild(_)
+    i = any(Ruby::DoBlock x).getChild(_)
     or
-    i = any(Generated::ElementReference x).getChild(_)
+    i = any(Ruby::ElementReference x).getChild(_)
     or
-    i = any(Generated::ElementReference x).getObject()
+    i = any(Ruby::ElementReference x).getObject()
     or
-    i = any(Generated::Else x).getChild(_)
+    i = any(Ruby::Else x).getChild(_)
     or
-    i = any(Generated::Elsif x).getCondition()
+    i = any(Ruby::Elsif x).getCondition()
     or
-    i = any(Generated::EndBlock x).getChild(_)
+    i = any(Ruby::EndBlock x).getChild(_)
     or
-    i = any(Generated::Ensure x).getChild(_)
+    i = any(Ruby::Ensure x).getChild(_)
     or
-    i = any(Generated::Exceptions x).getChild(_)
+    i = any(Ruby::Exceptions x).getChild(_)
     or
-    i = any(Generated::HashSplatArgument x).getChild()
+    i = any(Ruby::HashSplatArgument x).getChild()
     or
-    i = any(Generated::If x).getCondition()
+    i = any(Ruby::If x).getCondition()
     or
-    i = any(Generated::IfModifier x).getCondition()
+    i = any(Ruby::IfModifier x).getCondition()
     or
-    i = any(Generated::IfModifier x).getBody()
+    i = any(Ruby::IfModifier x).getBody()
     or
-    i = any(Generated::In x).getChild()
+    i = any(Ruby::In x).getChild()
     or
-    i = any(Generated::Interpolation x).getChild(_)
+    i = any(Ruby::Interpolation x).getChild(_)
     or
-    i = any(Generated::KeywordParameter x).getValue()
+    i = any(Ruby::KeywordParameter x).getValue()
     or
-    i = any(Generated::Method x).getChild(_)
+    i = any(Ruby::Method x).getChild(_)
     or
-    i = any(Generated::Module x).getChild(_)
+    i = any(Ruby::Module x).getChild(_)
     or
-    i = any(Generated::OperatorAssignment x).getRight()
+    i = any(Ruby::OperatorAssignment x).getRight()
     or
-    i = any(Generated::OptionalParameter x).getValue()
+    i = any(Ruby::OptionalParameter x).getValue()
     or
-    i = any(Generated::Pair x).getKey()
+    i = any(Ruby::Pair x).getKey()
     or
-    i = any(Generated::Pair x).getValue()
+    i = any(Ruby::Pair x).getValue()
     or
-    i = any(Generated::ParenthesizedStatements x).getChild(_)
+    i = any(Ruby::ParenthesizedStatements x).getChild(_)
     or
-    i = any(Generated::Pattern x).getChild()
+    i = any(Ruby::Pattern x).getChild()
     or
-    i = any(Generated::Program x).getChild(_)
+    i = any(Ruby::Program x).getChild(_)
     or
-    i = any(Generated::Range x).getBegin()
+    i = any(Ruby::Range x).getBegin()
     or
-    i = any(Generated::Range x).getEnd()
+    i = any(Ruby::Range x).getEnd()
     or
-    i = any(Generated::RescueModifier x).getBody()
+    i = any(Ruby::RescueModifier x).getBody()
     or
-    i = any(Generated::RescueModifier x).getHandler()
+    i = any(Ruby::RescueModifier x).getHandler()
     or
-    i = any(Generated::RightAssignmentList x).getChild(_)
+    i = any(Ruby::RightAssignmentList x).getChild(_)
     or
-    i = any(Generated::ScopeResolution x).getScope()
+    i = any(Ruby::ScopeResolution x).getScope()
     or
-    i = any(Generated::SingletonClass x).getValue()
+    i = any(Ruby::SingletonClass x).getValue()
     or
-    i = any(Generated::SingletonClass x).getChild(_)
+    i = any(Ruby::SingletonClass x).getChild(_)
     or
-    i = any(Generated::SingletonMethod x).getChild(_)
+    i = any(Ruby::SingletonMethod x).getChild(_)
     or
-    i = any(Generated::SingletonMethod x).getObject()
+    i = any(Ruby::SingletonMethod x).getObject()
     or
-    i = any(Generated::SplatArgument x).getChild()
+    i = any(Ruby::SplatArgument x).getChild()
     or
-    i = any(Generated::Superclass x).getChild()
+    i = any(Ruby::Superclass x).getChild()
     or
-    i = any(Generated::Then x).getChild(_)
+    i = any(Ruby::Then x).getChild(_)
     or
-    i = any(Generated::Unary x).getOperand()
+    i = any(Ruby::Unary x).getOperand()
     or
-    i = any(Generated::Unless x).getCondition()
+    i = any(Ruby::Unless x).getCondition()
     or
-    i = any(Generated::UnlessModifier x).getCondition()
+    i = any(Ruby::UnlessModifier x).getCondition()
     or
-    i = any(Generated::UnlessModifier x).getBody()
+    i = any(Ruby::UnlessModifier x).getBody()
     or
-    i = any(Generated::Until x).getCondition()
+    i = any(Ruby::Until x).getCondition()
     or
-    i = any(Generated::UntilModifier x).getCondition()
+    i = any(Ruby::UntilModifier x).getCondition()
     or
-    i = any(Generated::UntilModifier x).getBody()
+    i = any(Ruby::UntilModifier x).getBody()
     or
-    i = any(Generated::While x).getCondition()
+    i = any(Ruby::While x).getCondition()
     or
-    i = any(Generated::WhileModifier x).getCondition()
+    i = any(Ruby::WhileModifier x).getCondition()
     or
-    i = any(Generated::WhileModifier x).getBody()
+    i = any(Ruby::WhileModifier x).getBody()
   }
 
   cached
-  predicate access(Generated::Identifier access, VariableReal::Range variable) {
+  predicate access(Ruby::Identifier access, VariableReal::Range variable) {
     exists(string name |
       variable.getName() = name and
       name = access.getValue()
@@ -310,17 +310,17 @@ private module Cached {
     )
   }
 
-  private class Access extends Generated::Token {
+  private class Access extends Ruby::Token {
     Access() {
       access(this, _) or
-      this instanceof Generated::GlobalVariable or
-      this instanceof Generated::InstanceVariable or
-      this instanceof Generated::ClassVariable
+      this instanceof Ruby::GlobalVariable or
+      this instanceof Ruby::InstanceVariable or
+      this instanceof Ruby::ClassVariable
     }
   }
 
   cached
-  predicate explicitWriteAccess(Access access, Generated::AstNode assignment) {
+  predicate explicitWriteAccess(Access access, Ruby::AstNode assignment) {
     explicitAssignmentNode(access, assignment)
   }
 
@@ -337,7 +337,7 @@ private module Cached {
   }
 
   cached
-  predicate instanceVariableAccess(Generated::InstanceVariable var, InstanceVariable v) {
+  predicate instanceVariableAccess(Ruby::InstanceVariable var, InstanceVariable v) {
     exists(string name, Scope::Range scope, boolean instance |
       v = TInstanceVariable(scope, name, instance, _) and
       instanceVariableAccess(var, name, scope, instance)
@@ -345,7 +345,7 @@ private module Cached {
   }
 
   cached
-  predicate classVariableAccess(Generated::ClassVariable var, ClassVariable variable) {
+  predicate classVariableAccess(Ruby::ClassVariable var, ClassVariable variable) {
     exists(Scope::Range scope, string name |
       variable = TClassVariable(scope, name, _) and
       classVariableAccess(var, name, scope)
@@ -357,14 +357,14 @@ import Cached
 
 /** Holds if this scope inherits `name` from an outer scope `outer`. */
 private predicate inherits(Scope::Range scope, string name, Scope::Range outer) {
-  (scope instanceof Generated::Block or scope instanceof Generated::DoBlock) and
+  (scope instanceof Ruby::Block or scope instanceof Ruby::DoBlock) and
   not scopeDefinesParameterVariable(scope, name, _) and
   (
     outer = scope.getOuterScope() and
     (
       scopeDefinesParameterVariable(outer, name, _)
       or
-      exists(Generated::Identifier i |
+      exists(Ruby::Identifier i |
         scopeAssigns(outer, name, i) and
         strictlyBefore(i.getLocation(), scope.getLocation())
       )
@@ -394,7 +394,7 @@ module LocalVariable {
   class Range extends VariableReal::Range, TLocalVariableReal {
     private Scope::Range scope;
     private string name;
-    private Generated::Identifier i;
+    private Ruby::Identifier i;
 
     Range() { this = TLocalVariableReal(scope, name, i) }
 
@@ -464,7 +464,7 @@ module InstanceVariable {
     private ModuleBase::Range scope;
     private boolean instance;
     private string name;
-    private Generated::AstNode decl;
+    private Ruby::AstNode decl;
 
     Range() { this = TInstanceVariable(scope, name, instance, decl) }
 
@@ -482,7 +482,7 @@ module ClassVariable {
   class Range extends VariableReal::Range, TClassVariable {
     private ModuleBase::Range scope;
     private string name;
-    private Generated::AstNode decl;
+    private Ruby::AstNode decl;
 
     Range() { this = TClassVariable(scope, name, decl) }
 
@@ -499,7 +499,7 @@ abstract class VariableAccessImpl extends VariableAccess {
 }
 
 module LocalVariableAccess {
-  predicate range(Generated::Identifier id, LocalVariable v) {
+  predicate range(Ruby::Identifier id, LocalVariable v) {
     access(id, v) and
     (
       explicitWriteAccess(id, _)
@@ -517,7 +517,7 @@ class TVariableAccessReal =
 
 private class LocalVariableAccessReal extends VariableAccessImpl, LocalVariableAccess,
   TLocalVariableAccessReal {
-  private Generated::Identifier g;
+  private Ruby::Identifier g;
   private LocalVariable v;
 
   LocalVariableAccessReal() { this = TLocalVariableAccessReal(g, v) }
@@ -539,12 +539,12 @@ private class LocalVariableAccessSynth extends VariableAccessImpl, LocalVariable
 }
 
 module GlobalVariableAccess {
-  predicate range(Generated::GlobalVariable n, GlobalVariable v) { n.getValue() = v.getName() }
+  predicate range(Ruby::GlobalVariable n, GlobalVariable v) { n.getValue() = v.getName() }
 }
 
 private class GlobalVariableAccessReal extends GlobalVariableAccess, VariableAccessImpl,
   TGlobalVariableAccessReal {
-  private Generated::GlobalVariable g;
+  private Ruby::GlobalVariable g;
   private GlobalVariable v;
 
   GlobalVariableAccessReal() { this = TGlobalVariableAccessReal(g, v) }
@@ -566,14 +566,12 @@ private class GlobalVariableAccessSynth extends GlobalVariableAccess, VariableAc
 }
 
 module InstanceVariableAccess {
-  predicate range(Generated::InstanceVariable n, InstanceVariable v) {
-    instanceVariableAccess(n, v)
-  }
+  predicate range(Ruby::InstanceVariable n, InstanceVariable v) { instanceVariableAccess(n, v) }
 }
 
 private class InstanceVariableAccessReal extends InstanceVariableAccess, VariableAccessImpl,
   TInstanceVariableAccessReal {
-  private Generated::InstanceVariable g;
+  private Ruby::InstanceVariable g;
   private InstanceVariable v;
 
   InstanceVariableAccessReal() { this = TInstanceVariableAccessReal(g, v) }
@@ -595,12 +593,12 @@ private class InstanceVariableAccessSynth extends InstanceVariableAccess, Variab
 }
 
 module ClassVariableAccess {
-  predicate range(Generated::ClassVariable n, ClassVariable v) { classVariableAccess(n, v) }
+  predicate range(Ruby::ClassVariable n, ClassVariable v) { classVariableAccess(n, v) }
 }
 
 private class ClassVariableAccessReal extends ClassVariableAccess, VariableAccessImpl,
   TClassVariableAccessReal {
-  private Generated::ClassVariable g;
+  private Ruby::ClassVariable g;
   private ClassVariable v;
 
   ClassVariableAccessReal() { this = TClassVariableAccessReal(g, v) }
