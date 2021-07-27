@@ -15,6 +15,7 @@ import ast.Variable
 private import ast.internal.AST
 private import ast.internal.Scope
 private import ast.internal.Synthesis
+private import ast.internal.TreeSitter
 
 /**
  * A node in the abstract syntax tree. This class is the base class for all Ruby
@@ -103,4 +104,28 @@ class AstNode extends TAstNode {
    * then the desugared version is used in the control-flow graph.
    */
   final AstNode getDesugared() { result = getSynthChild(this, -1) }
+}
+
+class RubyFile extends File {
+  /** Gets a token in this file. */
+  private Ruby::Token getAToken() { result.getLocation().getFile() = this }
+
+  /** Holds if `line` contains a token. */
+  private predicate line(int line, boolean comment) {
+    exists(Ruby::Token token, Location l |
+      token = this.getAToken() and
+      l = token.getLocation() and
+      line in [l.getStartLine() .. l.getEndLine()] and
+      if token instanceof @ruby_token_comment then comment = true else comment = false
+    )
+  }
+
+  /** Gets the number of lines in this file. */
+  int getNumberOfLines() { result = max([0, this.getAToken().getLocation().getEndLine()]) }
+
+  /** Gets the number of lines of code in this file. */
+  int getNumberOfLinesOfCode() { result = count(int line | this.line(line, false)) }
+
+  /** Gets the number of lines of comments in this file. */
+  int getNumberOfLinesOfComments() { result = count(int line | this.line(line, true)) }
 }

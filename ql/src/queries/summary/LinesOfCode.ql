@@ -12,4 +12,4 @@
 
 import ruby
 
-select sum(File f | exists(f.getRelativePath()) | f.getNumberOfLinesOfCode())
+select sum(RubyFile f | exists(f.getRelativePath()) | f.getNumberOfLinesOfCode())

@@ -8,6 +8,6 @@
 
 import ruby
 
-from File f, int n
+from RubyFile f, int n
 where n = f.getNumberOfLinesOfComments()
 select f, n order by n desc

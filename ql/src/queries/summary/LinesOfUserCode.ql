@@ -10,7 +10,7 @@
 
 import ruby
 
-select sum(File f |
+select sum(RubyFile f |
     f.fromSource() and
     exists(f.getRelativePath()) and
     not f.getAbsolutePath().matches("%/vendor/%")
