@@ -127,8 +127,95 @@ private class ApacheCollectionsModel extends SummaryModelCsv {
         "org.apache.commons.collections4;SortedBag;true;last;;;Element of Argument[-1];ReturnValue;value",
         "org.apache.commons.collections4;Trie;true;prefixMap;;;MapKey of Argument[-1];MapKey of ReturnValue;value",
         "org.apache.commons.collections4;Trie;true;prefixMap;;;MapValue of Argument[-1];MapValue of ReturnValue;value",
+        "org.apache.commons.collections;ArrayStack;true;peek;;;Element of Argument[-1];ReturnValue;value",
+        "org.apache.commons.collections;ArrayStack;true;pop;;;Element of Argument[-1];ReturnValue;value",
+        "org.apache.commons.collections;ArrayStack;true;push;;;Argument[0];Element of Argument[-1];value",
+        "org.apache.commons.collections;Bag;true;add;;;Argument[0];Element of Argument[-1];value",
+        "org.apache.commons.collections;Bag;true;uniqueSet;;;Element of Argument[-1];Element of ReturnValue;value",
+        "org.apache.commons.collections;BidiMap;true;getKey;;;MapKey of Argument[-1];ReturnValue;value",
+        "org.apache.commons.collections;BidiMap;true;removeValue;;;MapKey of Argument[-1];ReturnValue;value",
+        "org.apache.commons.collections;BidiMap;true;inverseBidiMap;;;MapKey of Argument[-1];MapValue of ReturnValue;value",
+        "org.apache.commons.collections;BidiMap;true;inverseBidiMap;;;MapValue of Argument[-1];MapKey of ReturnValue;value",
+        "org.apache.commons.collections;FluentIterable;true;append;(Object[]);;Element of Argument[-1];Element of ReturnValue;value",
+        "org.apache.commons.collections;FluentIterable;true;append;(Object[]);;ArrayElement of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;FluentIterable;true;append;(Iterable);;Element of Argument[-1];Element of ReturnValue;value",
+        "org.apache.commons.collections;FluentIterable;true;append;(Iterable);;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;FluentIterable;true;asEnumeration;;;Element of Argument[-1];Element of ReturnValue;value",
+        "org.apache.commons.collections;FluentIterable;true;collate;;;Element of Argument[-1];Element of ReturnValue;value",
+        "org.apache.commons.collections;FluentIterable;true;collate;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;FluentIterable;true;copyInto;;;Element of Argument[-1];Element of Argument[0];value",
+        "org.apache.commons.collections;FluentIterable;true;eval;;;Element of Argument[-1];Element of ReturnValue;value",
+        "org.apache.commons.collections;FluentIterable;true;filter;;;Element of Argument[-1];Element of ReturnValue;value",
+        "org.apache.commons.collections;FluentIterable;true;get;;;Element of Argument[-1];ReturnValue;value",
+        "org.apache.commons.collections;FluentIterable;true;limit;;;Element of Argument[-1];Element of ReturnValue;value",
+        "org.apache.commons.collections;FluentIterable;true;loop;;;Element of Argument[-1];Element of ReturnValue;value",
+        "org.apache.commons.collections;FluentIterable;true;of;(Iterable);;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;FluentIterable;true;of;(Object[]);;ArrayElement of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;FluentIterable;true;of;(Object);;Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;FluentIterable;true;reverse;;;Element of Argument[-1];Element of ReturnValue;value",
+        "org.apache.commons.collections;FluentIterable;true;skip;;;Element of Argument[-1];Element of ReturnValue;value",
+        "org.apache.commons.collections;FluentIterable;true;toArray;;;Element of Argument[-1];ArrayElement of ReturnValue;value",
+        "org.apache.commons.collections;FluentIterable;true;toList;;;Element of Argument[-1];Element of ReturnValue;value",
+        "org.apache.commons.collections;FluentIterable;true;toString;;;Element of Argument[-1];ReturnValue;taint",
+        "org.apache.commons.collections;FluentIterable;true;unique;;;Element of Argument[-1];Element of ReturnValue;value",
+        "org.apache.commons.collections;FluentIterable;true;unmodifiable;;;Element of Argument[-1];Element of ReturnValue;value",
+        "org.apache.commons.collections;FluentIterable;true;zip;(Iterable);;Element of Argument[-1];Element of ReturnValue;value",
+        "org.apache.commons.collections;FluentIterable;true;zip;(Iterable);;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;FluentIterable;true;zip;(Iterable);;Element of Argument[-1];Element of ReturnValue;value",
+        "org.apache.commons.collections;FluentIterable;true;zip;(Iterable[]);;Element of ArrayElement of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;Get;true;entrySet;;;MapKey of Argument[-1];MapKey of Element of ReturnValue;value",
+        "org.apache.commons.collections;Get;true;entrySet;;;MapValue of Argument[-1];MapValue of Element of ReturnValue;value",
+        "org.apache.commons.collections;Get;true;get;;;MapValue of Argument[-1];ReturnValue;value",
+        "org.apache.commons.collections;Get;true;keySet;();;MapKey of Argument[-1];Element of ReturnValue;value",
+        "org.apache.commons.collections;Get;true;values;();;MapValue of Argument[-1];Element of ReturnValue;value",
+        "org.apache.commons.collections;Get;true;remove;(Object);;MapValue of Argument[-1];ReturnValue;value",
+        "org.apache.commons.collections;IterableGet;true;mapIterator;;;MapKey of Argument[-1];Element of ReturnValue;value",
+        "org.apache.commons.collections;IterableGet;true;mapIterator;;;MapValue of Argument[-1];MapValue of ReturnValue;value",
         "org.apache.commons.collections;KeyValue;true;getKey;;;MapKey of Argument[-1];ReturnValue;value",
-        "org.apache.commons.collections;KeyValue;true;getValue;;;MapValue of Argument[-1];ReturnValue;value"
+        "org.apache.commons.collections;KeyValue;true;getValue;;;MapValue of Argument[-1];ReturnValue;value",
+        "org.apache.commons.collections;MapIterator;true;getKey;;;Element of Argument[-1];ReturnValue;value",
+        "org.apache.commons.collections;MapIterator;true;getValue;;;MapValue of Argument[-1];ReturnValue;value",
+        "org.apache.commons.collections;MapIterator;true;next;;;Element of Argument[-1];ReturnValue;value",
+        "org.apache.commons.collections;MapIterator;true;setValue;;;MapValue of Argument[-1];ReturnValue;value",
+        "org.apache.commons.collections;MapIterator;true;setValue;;;Argument[0];MapValue of Argument[-1];value",
+        "org.apache.commons.collections;MultiMap;true;get;;;Element of MapValue of Argument[-1];Element of ReturnValue;value",
+        "org.apache.commons.collections;MultiMap;true;put;;;Argument[0];MapKey of Argument[-1];value",
+        "org.apache.commons.collections;MultiMap;true;put;;;Argument[1];Element of MapValue of Argument[-1];value",
+        "org.apache.commons.collections;MultiMap;true;values;;;Element of MapValue of Argument[-1];Element of ReturnValue;value",
+        "org.apache.commons.collections;MultiSet$Entry;true;getElement;;;Element of Argument[-1];ReturnValue;value",
+        "org.apache.commons.collections;MultiSet;true;add;;;Argument[0];Element of Argument[-1];value",
+        "org.apache.commons.collections;MultiSet;true;uniqueSet;;;Element of Argument[-1];Element of ReturnValue;value",
+        "org.apache.commons.collections;MultiSet;true;entrySet;;;Element of Argument[-1];Element of Element of ReturnValue;value",
+        "org.apache.commons.collections;MultiValuedMap;true;asMap;;;MapKey of Argument[-1];MapKey of ReturnValue;value",
+        "org.apache.commons.collections;MultiValuedMap;true;asMap;;;Element of MapValue of Argument[-1];Element of MapValue of ReturnValue;value",
+        "org.apache.commons.collections;MultiValuedMap;true;get;;;Element of MapValue of Argument[-1];Element of ReturnValue;value",
+        "org.apache.commons.collections;MultiValuedMap;true;keys;;;MapKey of Argument[-1];Element of ReturnValue;value",
+        "org.apache.commons.collections;MultiValuedMap;true;keySet;;;MapKey of Argument[-1];Element of ReturnValue;value",
+        "org.apache.commons.collections;MultiValuedMap;true;mapIterator;;;MapKey of Argument[-1];Element of ReturnValue;value",
+        "org.apache.commons.collections;MultiValuedMap;true;mapIterator;;;Element of MapValue of Argument[-1];MapValue of ReturnValue;value",
+        "org.apache.commons.collections;MultiValuedMap;true;put;;;Argument[0];MapKey of Argument[-1];value",
+        "org.apache.commons.collections;MultiValuedMap;true;put;;;Argument[1];Element of MapValue of Argument[-1];value",
+        "org.apache.commons.collections;MultiValuedMap;true;putAll;(Object,Iterable);;Argument[0];MapKey of Argument[-1];value",
+        "org.apache.commons.collections;MultiValuedMap;true;putAll;(Object,Iterable);;Element of Argument[1];Element of MapValue of Argument[-1];value",
+        "org.apache.commons.collections;MultiValuedMap;true;putAll;(Map);;MapKey of Argument[0];MapKey of Argument[-1];value",
+        "org.apache.commons.collections;MultiValuedMap;true;putAll;(Map);;MapValue of Argument[0];Element of MapValue of Argument[-1];value",
+        "org.apache.commons.collections;MultiValuedMap;true;putAll;(MultiValuedMap);;MapKey of Argument[0];MapKey of Argument[-1];value",
+        "org.apache.commons.collections;MultiValuedMap;true;putAll;(MultiValuedMap);;Element of MapValue of Argument[0];Element of MapValue of Argument[-1];value",
+        "org.apache.commons.collections;MultiValuedMap;true;values;;;Element of MapValue of Argument[-1];Element of ReturnValue;value",
+        "org.apache.commons.collections;OrderedIterator;true;previous;;;Element of Argument[-1];ReturnValue;value",
+        "org.apache.commons.collections;OrderedMap;true;firstKey;;;MapKey of Argument[-1];ReturnValue;value",
+        "org.apache.commons.collections;OrderedMap;true;lastKey;;;MapKey of Argument[-1];ReturnValue;value",
+        "org.apache.commons.collections;OrderedMap;true;nextKey;;;MapKey of Argument[-1];ReturnValue;value",
+        "org.apache.commons.collections;OrderedMap;true;previousKey;;;MapKey of Argument[-1];ReturnValue;value",
+        "org.apache.commons.collections;Put;true;put;;;MapValue of Argument[-1];ReturnValue;value",
+        "org.apache.commons.collections;Put;true;put;;;Argument[0];MapKey of Argument[-1];value",
+        "org.apache.commons.collections;Put;true;put;;;Argument[1];MapValue of Argument[-1];value",
+        "org.apache.commons.collections;Put;true;putAll;(Map);;MapKey of Argument[0];MapKey of Argument[-1];value",
+        "org.apache.commons.collections;Put;true;putAll;(Map);;MapValue of Argument[0];MapValue of Argument[-1];value",
+        "org.apache.commons.collections;SortedBag;true;first;;;Element of Argument[-1];ReturnValue;value",
+        "org.apache.commons.collections;SortedBag;true;last;;;Element of Argument[-1];ReturnValue;value",
+        "org.apache.commons.collections;Trie;true;prefixMap;;;MapKey of Argument[-1];MapKey of ReturnValue;value",
+        "org.apache.commons.collections;Trie;true;prefixMap;;;MapValue of Argument[-1];MapValue of ReturnValue;value"
       ]
   }
 }
@@ -394,7 +481,44 @@ private class ApacheCollectionUtilsModel extends SummaryModelCsv {
         "org.apache.commons.collections4;CollectionUtils;true;transformingCollection;;;Element of Argument[0];Element of ReturnValue;value",
         "org.apache.commons.collections4;CollectionUtils;true;union;;;Element of Argument[0];Element of ReturnValue;value",
         "org.apache.commons.collections4;CollectionUtils;true;union;;;Element of Argument[1];Element of ReturnValue;value",
-        "org.apache.commons.collections4;CollectionUtils;true;unmodifiableCollection;;;Element of Argument[0];Element of ReturnValue;value"
+        "org.apache.commons.collections4;CollectionUtils;true;unmodifiableCollection;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;CollectionUtils;true;addAll;(Collection,Object[]);;ArrayElement of Argument[1];Element of Argument[0];value",
+        "org.apache.commons.collections;CollectionUtils;true;addAll;(Collection,Enumeration);;Element of Argument[1];Element of Argument[0];value",
+        "org.apache.commons.collections;CollectionUtils;true;addAll;(Collection,Iterable);;Element of Argument[1];Element of Argument[0];value",
+        "org.apache.commons.collections;CollectionUtils;true;addAll;(Collection,Iterator);;Element of Argument[1];Element of Argument[0];value",
+        "org.apache.commons.collections;CollectionUtils;true;addIgnoreNull;;;Argument[1];Element of Argument[0];value",
+        "org.apache.commons.collections;CollectionUtils;true;collate;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;CollectionUtils;true;collate;;;Element of Argument[1];Element of ReturnValue;value",
+        "org.apache.commons.collections;CollectionUtils;true;disjunction;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;CollectionUtils;true;disjunction;;;Element of Argument[1];Element of ReturnValue;value",
+        "org.apache.commons.collections;CollectionUtils;true;emptyIfNull;;;Argument[0];ReturnValue;value",
+        "org.apache.commons.collections;CollectionUtils;true;extractSingleton;;;Element of Argument[0];ReturnValue;value",
+        "org.apache.commons.collections;CollectionUtils;true;find;;;Element of Argument[0];ReturnValue;value",
+        "org.apache.commons.collections;CollectionUtils;true;get;(Iterator,int);;Element of Argument[0];ReturnValue;value",
+        "org.apache.commons.collections;CollectionUtils;true;get;(Map,int);;MapKey of Argument[0];MapKey of ReturnValue;value",
+        "org.apache.commons.collections;CollectionUtils;true;get;(Map,int);;MapValue of Argument[0];MapValue of ReturnValue;value",
+        "org.apache.commons.collections;CollectionUtils;true;get;(Object,int);;ArrayElement of Argument[0];ReturnValue;value",
+        "org.apache.commons.collections;CollectionUtils;true;get;(Object,int);;Element of Argument[0];ReturnValue;value",
+        "org.apache.commons.collections;CollectionUtils;true;get;(Object,int);;MapKey of Argument[0];MapKey of ReturnValue;value",
+        "org.apache.commons.collections;CollectionUtils;true;get;(Object,int);;MapValue of Argument[0];MapValue of ReturnValue;value",
+        "org.apache.commons.collections;CollectionUtils;true;getCardinalityMap;;;Element of Argument[0];MapKey of ReturnValue;value",
+        "org.apache.commons.collections;CollectionUtils;true;intersection;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;CollectionUtils;true;intersection;;;Element of Argument[1];Element of ReturnValue;value",
+        "org.apache.commons.collections;CollectionUtils;true;permutations;;;Element of Argument[0];Element of Element of ReturnValue;value",
+        "org.apache.commons.collections;CollectionUtils;true;predicatedCollection;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;CollectionUtils;true;removeAll;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;CollectionUtils;true;retainAll;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;CollectionUtils;true;select;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;CollectionUtils;true;select;;;Element of Argument[0];Element of Argument[2];value",
+        "org.apache.commons.collections;CollectionUtils;true;select;;;Element of Argument[0];Element of Argument[3];value",
+        "org.apache.commons.collections;CollectionUtils;true;selectRejected;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;CollectionUtils;true;selectRejected;;;Element of Argument[0];Element of Argument[2];value",
+        "org.apache.commons.collections;CollectionUtils;true;subtract;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;CollectionUtils;true;synchronizedCollection;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;CollectionUtils;true;transformingCollection;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;CollectionUtils;true;union;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;CollectionUtils;true;union;;;Element of Argument[1];Element of ReturnValue;value",
+        "org.apache.commons.collections;CollectionUtils;true;unmodifiableCollection;;;Element of Argument[0];Element of ReturnValue;value"
       ]
   }
 }
@@ -431,7 +555,33 @@ private class ApacheListUtilsModel extends SummaryModelCsv {
         "org.apache.commons.collections4;ListUtils;true;transformedList;;;Element of Argument[0];Element of ReturnValue;value",
         "org.apache.commons.collections4;ListUtils;true;union;;;Element of Argument[0];Element of ReturnValue;value",
         "org.apache.commons.collections4;ListUtils;true;union;;;Element of Argument[1];Element of ReturnValue;value",
-        "org.apache.commons.collections4;ListUtils;true;unmodifiableList;;;Element of Argument[0];Element of ReturnValue;value"
+        "org.apache.commons.collections4;ListUtils;true;unmodifiableList;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;ListUtils;true;defaultIfNull;;;Argument[1];ReturnValue;value",
+        "org.apache.commons.collections;ListUtils;true;emptyIfNull;;;Argument[0];ReturnValue;value",
+        "org.apache.commons.collections;ListUtils;true;fixedSizeList;;;Element of Argument[1];Element of ReturnValue;value",
+        "org.apache.commons.collections;ListUtils;true;intersection;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;ListUtils;true;intersection;;;Element of Argument[1];Element of ReturnValue;value",
+        "org.apache.commons.collections;ListUtils;true;lazyList;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;ListUtils;true;longestCommonSubsequence;(CharSequence,CharSequence);;Argument[0];ReturnValue;taint",
+        "org.apache.commons.collections;ListUtils;true;longestCommonSubsequence;(CharSequence,CharSequence);;Argument[1];ReturnValue;taint",
+        "org.apache.commons.collections;ListUtils;true;longestCommonSubsequence;(List,List);;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;ListUtils;true;longestCommonSubsequence;(List,List);;Element of Argument[1];Element of ReturnValue;value",
+        "org.apache.commons.collections;ListUtils;true;longestCommonSubsequence;(List,List,Equator);;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;ListUtils;true;longestCommonSubsequence;(List,List,Equator);;Element of Argument[1];Element of ReturnValue;value",
+        "org.apache.commons.collections;ListUtils;true;partition;;;Element of Argument[0];Element of Element of ReturnValue;value",
+        "org.apache.commons.collections;ListUtils;true;predicatedList;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;ListUtils;true;removeAll;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;ListUtils;true;retainAll;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;ListUtils;true;select;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;ListUtils;true;selectRejected;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;ListUtils;true;subtract;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;ListUtils;true;sum;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;ListUtils;true;sum;;;Element of Argument[1];Element of ReturnValue;value",
+        "org.apache.commons.collections;ListUtils;true;synchronizedList;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;ListUtils;true;transformedList;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;ListUtils;true;union;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;ListUtils;true;union;;;Element of Argument[1];Element of ReturnValue;value",
+        "org.apache.commons.collections;ListUtils;true;unmodifiableList;;;Element of Argument[0];Element of ReturnValue;value"
       ]
   }
 }
@@ -487,7 +637,51 @@ private class ApacheIteratorUtilsModel extends SummaryModelCsv {
         "org.apache.commons.collections4;IteratorUtils;true;zippingIterator;(Iterator,Iterator);;Element of Argument[1];Element of ReturnValue;value",
         "org.apache.commons.collections4;IteratorUtils;true;zippingIterator;(Iterator,Iterator,Iterator);;Element of Argument[0];Element of ReturnValue;value",
         "org.apache.commons.collections4;IteratorUtils;true;zippingIterator;(Iterator,Iterator,Iterator);;Element of Argument[1];Element of ReturnValue;value",
-        "org.apache.commons.collections4;IteratorUtils;true;zippingIterator;(Iterator,Iterator,Iterator);;Element of Argument[2];Element of ReturnValue;value"
+        "org.apache.commons.collections4;IteratorUtils;true;zippingIterator;(Iterator,Iterator,Iterator);;Element of Argument[2];Element of ReturnValue;value",
+        "org.apache.commons.collections;IteratorUtils;true;arrayIterator;;;ArrayElement of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;IteratorUtils;true;arrayListIterator;;;ArrayElement of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;IteratorUtils;true;asEnumeration;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;IteratorUtils;true;asIterable;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;IteratorUtils;true;asIterator;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;IteratorUtils;true;asMultipleUseIterable;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;IteratorUtils;true;boundedIterator;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;IteratorUtils;true;chainedIterator;(Collection);;Element of Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;IteratorUtils;true;chainedIterator;(Iterator,Iterator);;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;IteratorUtils;true;chainedIterator;(Iterator,Iterator);;Element of Argument[1];Element of ReturnValue;value",
+        "org.apache.commons.collections;IteratorUtils;true;collatedIterator;(Comparator,Collection);;Element of Element of Argument[1];Element of ReturnValue;value",
+        "org.apache.commons.collections;IteratorUtils;true;collatedIterator;(Comparator,Iterator[]);;Element of Argument[1];Element of Element of ReturnValue;value",
+        "org.apache.commons.collections;IteratorUtils;true;collatedIterator;(Comparator,Iterator,Iterator);;Element of Argument[1];Element of ReturnValue;value",
+        "org.apache.commons.collections;IteratorUtils;true;collatedIterator;(Comparator,Iterator,Iterator);;Element of Argument[2];Element of ReturnValue;value",
+        "org.apache.commons.collections;IteratorUtils;true;filteredIterator;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;IteratorUtils;true;filteredListIterator;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;IteratorUtils;true;find;;;Element of Argument[0];ReturnValue;value",
+        "org.apache.commons.collections;IteratorUtils;true;first;;;Element of Argument[0];ReturnValue;value",
+        "org.apache.commons.collections;IteratorUtils;true;get;;;Element of Argument[0];ReturnValue;value",
+        "org.apache.commons.collections;IteratorUtils;true;getIterator;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;IteratorUtils;true;getIterator;;;ArrayElement of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;IteratorUtils;true;getIterator;;;Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;IteratorUtils;true;getIterator;;;MapValue of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;IteratorUtils;true;loopingIterator;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;IteratorUtils;true;loopingListIterator;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;IteratorUtils;true;peekingIterator;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;IteratorUtils;true;pushbackIterator;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;IteratorUtils;true;singletonIterator;;;Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;IteratorUtils;true;singletonListIterator;;;Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;IteratorUtils;true;skippingIterator;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;IteratorUtils;true;toArray;;;Element of Argument[0];ArrayElement of ReturnValue;value",
+        "org.apache.commons.collections;IteratorUtils;true;toList;;;Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;IteratorUtils;true;toListIterator;;;Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;IteratorUtils;true;toString;;;Element of Argument[0];ReturnValue;taint",
+        "org.apache.commons.collections;IteratorUtils;true;unmodifiableIterator;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;IteratorUtils;true;unmodifiableListIterator;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;IteratorUtils;true;unmodifiableMapIterator;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;IteratorUtils;true;unmodifiableMapIterator;;;MapValue of Argument[0];MapValue of ReturnValue;value",
+        "org.apache.commons.collections;IteratorUtils;true;zippingIterator;(Iterator[]);;Element of Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;IteratorUtils;true;zippingIterator;(Iterator,Iterator);;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;IteratorUtils;true;zippingIterator;(Iterator,Iterator);;Element of Argument[1];Element of ReturnValue;value",
+        "org.apache.commons.collections;IteratorUtils;true;zippingIterator;(Iterator,Iterator,Iterator);;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;IteratorUtils;true;zippingIterator;(Iterator,Iterator,Iterator);;Element of Argument[1];Element of ReturnValue;value",
+        "org.apache.commons.collections;IteratorUtils;true;zippingIterator;(Iterator,Iterator,Iterator);;Element of Argument[2];Element of ReturnValue;value"
       ]
   }
 }
@@ -530,7 +724,38 @@ private class ApacheIterableUtilsModel extends SummaryModelCsv {
         "org.apache.commons.collections4;IterableUtils;true;unmodifiableIterable;;;Element of Argument[0];Element of ReturnValue;value",
         "org.apache.commons.collections4;IterableUtils;true;zippingIterable;;;Element of Argument[0];Element of ReturnValue;value",
         "org.apache.commons.collections4;IterableUtils;true;zippingIterable;(Iterable,Iterable[]);;Element of Element of Argument[1];Element of ReturnValue;value",
-        "org.apache.commons.collections4;IterableUtils;true;zippingIterable;(Iterable,Iterable);;Element of Argument[1];Element of ReturnValue;value"
+        "org.apache.commons.collections4;IterableUtils;true;zippingIterable;(Iterable,Iterable);;Element of Argument[1];Element of ReturnValue;value",
+        "org.apache.commons.collections;IterableUtils;true;boundedIterable;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;IterableUtils;true;chainedIterable;(Iterable[]);;Element of Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;IterableUtils;true;chainedIterable;(Iterable,Iterable);;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;IterableUtils;true;chainedIterable;(Iterable,Iterable);;Element of Argument[1];Element of ReturnValue;value",
+        "org.apache.commons.collections;IterableUtils;true;chainedIterable;(Iterable,Iterable,Iterable);;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;IterableUtils;true;chainedIterable;(Iterable,Iterable,Iterable);;Element of Argument[1];Element of ReturnValue;value",
+        "org.apache.commons.collections;IterableUtils;true;chainedIterable;(Iterable,Iterable,Iterable);;Element of Argument[2];Element of ReturnValue;value",
+        "org.apache.commons.collections;IterableUtils;true;chainedIterable;(Iterable,Iterable,Iterable,Iterable);;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;IterableUtils;true;chainedIterable;(Iterable,Iterable,Iterable,Iterable);;Element of Argument[1];Element of ReturnValue;value",
+        "org.apache.commons.collections;IterableUtils;true;chainedIterable;(Iterable,Iterable,Iterable,Iterable);;Element of Argument[2];Element of ReturnValue;value",
+        "org.apache.commons.collections;IterableUtils;true;chainedIterable;(Iterable,Iterable,Iterable,Iterable);;Element of Argument[3];Element of ReturnValue;value",
+        "org.apache.commons.collections;IterableUtils;true;collatedIterable;(Comparator,Iterable,Iterable);;Element of Argument[1];Element of ReturnValue;value",
+        "org.apache.commons.collections;IterableUtils;true;collatedIterable;(Comparator,Iterable,Iterable);;Element of Argument[2];Element of ReturnValue;value",
+        "org.apache.commons.collections;IterableUtils;true;collatedIterable;(Iterable,Iterable);;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;IterableUtils;true;collatedIterable;(Iterable,Iterable);;Element of Argument[1];Element of ReturnValue;value",
+        "org.apache.commons.collections;IterableUtils;true;emptyIfNull;;;Argument[0];ReturnValue;value",
+        "org.apache.commons.collections;IterableUtils;true;filteredIterable;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;IterableUtils;true;find;;;Element of Argument[0];ReturnValue;value",
+        "org.apache.commons.collections;IterableUtils;true;first;;;Element of Argument[0];ReturnValue;value",
+        "org.apache.commons.collections;IterableUtils;true;get;;;Element of Argument[0];ReturnValue;value",
+        "org.apache.commons.collections;IterableUtils;true;loopingIterable;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;IterableUtils;true;partition;;;Element of Argument[0];Element of Element of ReturnValue;value",
+        "org.apache.commons.collections;IterableUtils;true;reversedIterable;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;IterableUtils;true;skippingIterable;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;IterableUtils;true;toList;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;IterableUtils;true;toString;;;Element of Argument[0];ReturnValue;taint",
+        "org.apache.commons.collections;IterableUtils;true;uniqueIterable;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;IterableUtils;true;unmodifiableIterable;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;IterableUtils;true;zippingIterable;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;IterableUtils;true;zippingIterable;(Iterable,Iterable[]);;Element of Element of Argument[1];Element of ReturnValue;value",
+        "org.apache.commons.collections;IterableUtils;true;zippingIterable;(Iterable,Iterable);;Element of Argument[1];Element of ReturnValue;value"
       ]
   }
 }
@@ -544,7 +769,10 @@ private class ApacheEnumerationUtilsModel extends SummaryModelCsv {
       [
         "org.apache.commons.collections4;EnumerationUtils;true;get;;;Element of Argument[0];ReturnValue;value",
         "org.apache.commons.collections4;EnumerationUtils;true;toList;(Enumeration);;Element of Argument[0];Element of ReturnValue;value",
-        "org.apache.commons.collections4;EnumerationUtils;true;toList;(StringTokenizer);;Argument[0];Element of ReturnValue;taint"
+        "org.apache.commons.collections4;EnumerationUtils;true;toList;(StringTokenizer);;Argument[0];Element of ReturnValue;taint",
+        "org.apache.commons.collections;EnumerationUtils;true;get;;;Element of Argument[0];ReturnValue;value",
+        "org.apache.commons.collections;EnumerationUtils;true;toList;(Enumeration);;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;EnumerationUtils;true;toList;(StringTokenizer);;Argument[0];Element of ReturnValue;taint"
       ]
   }
 }
@@ -564,7 +792,16 @@ private class ApacheMultiMapUtilsModel extends SummaryModelCsv {
         "org.apache.commons.collections4;MultiMapUtils;true;transformedMultiValuedMap;;;MapKey of Argument[0];MapKey of ReturnValue;value",
         "org.apache.commons.collections4;MultiMapUtils;true;transformedMultiValuedMap;;;MapValue of Argument[0];MapValue of ReturnValue;value",
         "org.apache.commons.collections4;MultiMapUtils;true;unmodifiableMultiValuedMap;;;MapKey of Argument[0];MapKey of ReturnValue;value",
-        "org.apache.commons.collections4;MultiMapUtils;true;unmodifiableMultiValuedMap;;;MapValue of Argument[0];MapValue of ReturnValue;value"
+        "org.apache.commons.collections4;MultiMapUtils;true;unmodifiableMultiValuedMap;;;MapValue of Argument[0];MapValue of ReturnValue;value",
+        "org.apache.commons.collections;MultiMapUtils;true;emptyIfNull;;;Argument[0];ReturnValue;value",
+        "org.apache.commons.collections;MultiMapUtils;true;getCollection;;;MapValue of Argument[0];ReturnValue;value",
+        "org.apache.commons.collections;MultiMapUtils;true;getValuesAsBag;;;MapValue of Argument[0];ReturnValue;value",
+        "org.apache.commons.collections;MultiMapUtils;true;getValuesAsList;;;MapValue of Argument[0];ReturnValue;value",
+        "org.apache.commons.collections;MultiMapUtils;true;getValuesAsSet;;;MapValue of Argument[0];ReturnValue;value",
+        "org.apache.commons.collections;MultiMapUtils;true;transformedMultiValuedMap;;;MapKey of Argument[0];MapKey of ReturnValue;value",
+        "org.apache.commons.collections;MultiMapUtils;true;transformedMultiValuedMap;;;MapValue of Argument[0];MapValue of ReturnValue;value",
+        "org.apache.commons.collections;MultiMapUtils;true;unmodifiableMultiValuedMap;;;MapKey of Argument[0];MapKey of ReturnValue;value",
+        "org.apache.commons.collections;MultiMapUtils;true;unmodifiableMultiValuedMap;;;MapValue of Argument[0];MapValue of ReturnValue;value"
       ]
   }
 }
@@ -578,7 +815,10 @@ private class ApacheMultiSetUtilsModel extends SummaryModelCsv {
       [
         "org.apache.commons.collections4;MultiSetUtils;true;predicatedMultiSet;;;Element of Argument[0];Element of ReturnValue;value",
         "org.apache.commons.collections4;MultiSetUtils;true;synchronizedMultiSet;;;Element of Argument[0];Element of ReturnValue;value",
-        "org.apache.commons.collections4;MultiSetUtils;true;unmodifiableMultiSet;;;Element of Argument[0];Element of ReturnValue;value"
+        "org.apache.commons.collections4;MultiSetUtils;true;unmodifiableMultiSet;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;MultiSetUtils;true;predicatedMultiSet;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;MultiSetUtils;true;synchronizedMultiSet;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;MultiSetUtils;true;unmodifiableMultiSet;;;Element of Argument[0];Element of ReturnValue;value"
       ]
   }
 }
@@ -593,7 +833,11 @@ private class ApacheQueueUtilsModel extends SummaryModelCsv {
         "org.apache.commons.collections4;QueueUtils;true;predicatedQueue;;;Element of Argument[0];Element of ReturnValue;value",
         "org.apache.commons.collections4;QueueUtils;true;synchronizedQueue;;;Element of Argument[0];Element of ReturnValue;value",
         "org.apache.commons.collections4;QueueUtils;true;transformingQueue;;;Element of Argument[0];Element of ReturnValue;value",
-        "org.apache.commons.collections4;QueueUtils;true;unmodifiableQueue;;;Element of Argument[0];Element of ReturnValue;value"
+        "org.apache.commons.collections4;QueueUtils;true;unmodifiableQueue;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;QueueUtils;true;predicatedQueue;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;QueueUtils;true;synchronizedQueue;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;QueueUtils;true;transformingQueue;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;QueueUtils;true;unmodifiableQueue;;;Element of Argument[0];Element of ReturnValue;value"
       ]
   }
 }
@@ -629,7 +873,31 @@ private class ApacheSetUtilsModel extends SummaryModelCsv {
         "org.apache.commons.collections4;SetUtils;true;unmodifiableNavigableSet;;;Element of Argument[0];Element of ReturnValue;value",
         "org.apache.commons.collections4;SetUtils;true;unmodifiableSet;(Object[]);;ArrayElement of Argument[0];Element of ReturnValue;value",
         "org.apache.commons.collections4;SetUtils;true;unmodifiableSet;(Set);;Element of Argument[0];Element of ReturnValue;value",
-        "org.apache.commons.collections4;SetUtils;true;unmodifiableSortedSet;;;Element of Argument[0];Element of ReturnValue;value"
+        "org.apache.commons.collections4;SetUtils;true;unmodifiableSortedSet;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;SetUtils$SetView;true;copyInto;;;Element of Argument[-1];Element of Argument[0];value",
+        "org.apache.commons.collections;SetUtils$SetView;true;createIterator;;;Element of Argument[-1];Element of ReturnValue;value",
+        "org.apache.commons.collections;SetUtils$SetView;true;toSet;;;Element of Argument[-1];Element of Argument[0];value",
+        "org.apache.commons.collections;SetUtils;true;difference;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;SetUtils;true;difference;;;Element of Argument[1];Element of ReturnValue;value",
+        "org.apache.commons.collections;SetUtils;true;emptyIfNull;;;Argument[0];ReturnValue;value",
+        "org.apache.commons.collections;SetUtils;true;hashSet;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;SetUtils;true;intersection;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;SetUtils;true;intersection;;;Element of Argument[1];Element of ReturnValue;value",
+        "org.apache.commons.collections;SetUtils;true;orderedSet;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;SetUtils;true;predicatedNavigableSet;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;SetUtils;true;predicatedSet;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;SetUtils;true;predicatedSortedSet;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;SetUtils;true;synchronizedSet;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;SetUtils;true;synchronizedSortedSet;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;SetUtils;true;transformedNavigableSet;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;SetUtils;true;transformedSet;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;SetUtils;true;transformedSortedSet;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;SetUtils;true;union;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;SetUtils;true;union;;;Element of Argument[1];Element of ReturnValue;value",
+        "org.apache.commons.collections;SetUtils;true;unmodifiableNavigableSet;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;SetUtils;true;unmodifiableSet;(Object[]);;ArrayElement of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;SetUtils;true;unmodifiableSet;(Set);;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;SetUtils;true;unmodifiableSortedSet;;;Element of Argument[0];Element of ReturnValue;value"
       ]
   }
 }
@@ -644,7 +912,11 @@ private class ApacheSplitMapUtilsModel extends SummaryModelCsv {
         "org.apache.commons.collections4;SplitMapUtils;true;readableMap;;;MapKey of Argument[0];MapKey of ReturnValue;value",
         "org.apache.commons.collections4;SplitMapUtils;true;readableMap;;;MapValue of Argument[0];MapValue of ReturnValue;value",
         "org.apache.commons.collections4;SplitMapUtils;true;writableMap;;;MapKey of Argument[0];MapKey of ReturnValue;value",
-        "org.apache.commons.collections4;SplitMapUtils;true;writableMap;;;MapValue of Argument[0];MapValue of ReturnValue;value"
+        "org.apache.commons.collections4;SplitMapUtils;true;writableMap;;;MapValue of Argument[0];MapValue of ReturnValue;value",
+        "org.apache.commons.collections;SplitMapUtils;true;readableMap;;;MapKey of Argument[0];MapKey of ReturnValue;value",
+        "org.apache.commons.collections;SplitMapUtils;true;readableMap;;;MapValue of Argument[0];MapValue of ReturnValue;value",
+        "org.apache.commons.collections;SplitMapUtils;true;writableMap;;;MapKey of Argument[0];MapKey of ReturnValue;value",
+        "org.apache.commons.collections;SplitMapUtils;true;writableMap;;;MapValue of Argument[0];MapValue of ReturnValue;value"
       ]
   }
 }
@@ -657,7 +929,9 @@ private class ApacheTrieUtilsModel extends SummaryModelCsv {
     row =
       [
         "org.apache.commons.collections4;TrieUtils;true;unmodifiableTrie;;;MapKey of Argument[0];MapKey of ReturnValue;value",
-        "org.apache.commons.collections4;TrieUtils;true;unmodifiableTrie;;;MapValue of Argument[0];MapValue of ReturnValue;value"
+        "org.apache.commons.collections4;TrieUtils;true;unmodifiableTrie;;;MapValue of Argument[0];MapValue of ReturnValue;value",
+        "org.apache.commons.collections;TrieUtils;true;unmodifiableTrie;;;MapKey of Argument[0];MapKey of ReturnValue;value",
+        "org.apache.commons.collections;TrieUtils;true;unmodifiableTrie;;;MapValue of Argument[0];MapValue of ReturnValue;value"
       ]
   }
 }
@@ -677,7 +951,16 @@ private class ApacheBagUtilsModel extends SummaryModelCsv {
         "org.apache.commons.collections4;BagUtils;true;transformingBag;;;Element of Argument[0];Element of ReturnValue;value",
         "org.apache.commons.collections4;BagUtils;true;transformingSortedBag;;;Element of Argument[0];Element of ReturnValue;value",
         "org.apache.commons.collections4;BagUtils;true;unmodifiableBag;;;Element of Argument[0];Element of ReturnValue;value",
-        "org.apache.commons.collections4;BagUtils;true;unmodifiableSortedBag;;;Element of Argument[0];Element of ReturnValue;value"
+        "org.apache.commons.collections4;BagUtils;true;unmodifiableSortedBag;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;BagUtils;true;collectionBag;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;BagUtils;true;predicatedBag;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;BagUtils;true;predicatedSortedBag;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;BagUtils;true;synchronizedBag;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;BagUtils;true;synchronizedSortedBag;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;BagUtils;true;transformingBag;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;BagUtils;true;transformingSortedBag;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;BagUtils;true;unmodifiableBag;;;Element of Argument[0];Element of ReturnValue;value",
+        "org.apache.commons.collections;BagUtils;true;unmodifiableSortedBag;;;Element of Argument[0];Element of ReturnValue;value"
       ]
   }
 }
