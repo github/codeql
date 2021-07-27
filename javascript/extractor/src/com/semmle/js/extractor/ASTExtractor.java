@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.Stack;
+import java.util.regex.Matcher;
 
 import com.semmle.js.ast.AClass;
 import com.semmle.js.ast.AFunction;
@@ -570,6 +571,16 @@ public class ASTExtractor {
         regexpExtractor.extract(source.substring(1, source.lastIndexOf('/')), offsets, nd, false);
       } else if (nd.isStringLiteral() && !c.isInsideType() && nd.getRaw().length() < 1000) {
         regexpExtractor.extract(valueString, makeStringLiteralOffsets(nd.getRaw()), nd, true);
+
+        // Scan the string for template tags, if we're in a context where such tags are relevant.
+        if (scopeManager.isInTemplateFile()) {
+          Matcher m = TemplateEngines.TEMPLATE_TAGS.matcher(nd.getRaw());
+          int offset = nd.getLoc().getStart().getOffset();
+          while (m.find()) {
+            Label locationLbl = TemplateEngines.makeLocation(lexicalExtractor.getTextualExtractor(), offset + m.start(), offset + m.end());
+            trapwriter.addTuple("expr_contains_template_tag_location", key, locationLbl);
+          }
+        }
       }
       return key;
     }
@@ -2225,7 +2236,8 @@ public class ASTExtractor {
     @Override
     public Label visit(GeneratedCodeExpr nd, Context c) {
         Label key = super.visit(nd, c);
-        trapwriter.addTuple("generated_code_expr_info", key, nd.getOpeningDelimiter(), nd.getClosingDelimiter(), nd.getBody());
+        Label templateLbl = TemplateEngines.makeLocation(lexicalExtractor.getTextualExtractor(), nd.getLoc().getStart().getOffset(), nd.getLoc().getEnd().getOffset());
+        trapwriter.addTuple("expr_contains_template_tag_location", key, templateLbl);
         return key;
     }
   }

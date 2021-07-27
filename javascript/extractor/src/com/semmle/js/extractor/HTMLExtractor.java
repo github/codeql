@@ -39,7 +39,7 @@ public class HTMLExtractor implements IExtractor {
       this.textualExtractor = textualExtractor;
 
       this.scopeManager =
-          new ScopeManager(textualExtractor.getTrapwriter(), config.getEcmaVersion());
+          new ScopeManager(textualExtractor.getTrapwriter(), config.getEcmaVersion(), true);
     }
 
     /*
@@ -382,21 +382,6 @@ public class HTMLExtractor implements IExtractor {
     writer.addTuple("toplevel_parent_xml_node", topLevelLabel, htmlNodeLabel);
   }
 
-  private static final String MUSTACHE_TAG_DOUBLE = "\\{\\{(?!\\{)(.*?)\\}\\}"; // {{ x }}
-  private static final String MUSTACHE_TAG_TRIPLE = "\\{\\{\\{(.*?)\\}\\}\\}"; // {{{ x }}}
-  private static final String MUSTACHE_TAG_PERCENT = "\\{%(?!>)(.*?)%\\}"; // {% x %}
-  private static final String EJS_TAG = "<%(?![%<>}])[-=]?(.*?)[_-]?%>"; // <% x %>
-
-  /** Pattern for a template tag whose contents should be parsed as an expression */
-  private static final Pattern TEMPLATE_EXPR_OPENING_TAG =
-      Pattern.compile("^(?:\\{\\{\\{?|<%[-=])"); // {{, {{{, <%=, <%-
-
-  private static final Pattern TEMPLATE_TAGS =
-      Pattern.compile(
-          StringUtil.glue(
-              "|", MUSTACHE_TAG_DOUBLE, MUSTACHE_TAG_TRIPLE, MUSTACHE_TAG_PERCENT, EJS_TAG),
-          Pattern.DOTALL);
-
   private void extractTemplateTags(
       TextualExtractor textualExtractor,
       ScopeManager scopeManager,
@@ -407,9 +392,8 @@ public class HTMLExtractor implements IExtractor {
     if (start >= end) return;
     if (isEmbedded) return; // Do not extract template tags for HTML snippets embedded in a JS file
 
-    LocationManager locationManager = textualExtractor.getLocationManager();
     TrapWriter trapwriter = textualExtractor.getTrapwriter();
-    Matcher m = TEMPLATE_TAGS.matcher(textualExtractor.getSource()).region(start, end);
+    Matcher m = TemplateEngines.TEMPLATE_TAGS.matcher(textualExtractor.getSource()).region(start, end);
     while (m.find()) {
       int startOffset = m.start();
       int endOffset = m.end();
@@ -424,15 +408,12 @@ public class HTMLExtractor implements IExtractor {
       String rawText = m.group();
       trapwriter.addTuple("template_placeholder_tag_info", lbl, parentLabel.get(), rawText);
 
-      // Emit location
-      Position startPos = textualExtractor.getSourceMap().getStart(startOffset);
-      Position endPos = textualExtractor.getSourceMap().getEnd(endOffset - 1);
-      int endColumn = endPos.getColumn() - 1; // Convert to inclusive end position (still 1-based)
-      locationManager.emitFileLocation(
-          lbl, startPos.getLine(), startPos.getColumn(), endPos.getLine(), endColumn);
+      // Emit location entity
+      Label locationLbl = TemplateEngines.makeLocation(textualExtractor, startOffset, endOffset);
+      trapwriter.addTuple("hasLocation", lbl, locationLbl);
 
       // Parse the contents as a template expression, if the delimiter expects an expression.
-      Matcher delimMatcher = TEMPLATE_EXPR_OPENING_TAG.matcher(rawText);
+      Matcher delimMatcher = TemplateEngines.TEMPLATE_EXPR_OPENING_TAG.matcher(rawText);
       if (delimMatcher.find()) {
         // The body of the template tag is stored in the first capture group of each pattern
         int bodyGroup = getNonNullCaptureGroup(m);

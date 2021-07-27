@@ -417,11 +417,9 @@ case @expr.kind of
 @e4x_xml_attribute_selector = @e4x_xml_static_attribute_selector | @e4x_xml_dynamic_attribute_selector;
 @e4x_xml_qualident = @e4x_xml_static_qualident | @e4x_xml_dynamic_qualident;
 
-generated_code_expr_info(
-  unique int expr: @generated_code_expr ref,
-  varchar(900) openingDelimiter: string ref,
-  varchar(900) closingDelimiter: string ref,
-  varchar(900) body: string ref
+expr_contains_template_tag_location(
+  int expr: @expr ref,
+  int location: @location ref
 );
 
 @template_placeholder_tag_parent = @xmlelement | @xmlattribute | @file;

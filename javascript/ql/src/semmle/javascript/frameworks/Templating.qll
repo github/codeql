@@ -114,6 +114,13 @@ module Templating {
      * that is, without being enclosed in a string literal or similar.
      */
     predicate isInPlainCodeContext() { this = any(GeneratedCodeExpr e).getPlaceholderTag() }
+
+    /**
+     * Gets the innermost JavaScript expression containing this template tag, if any.
+     */
+    Expr getEnclosingExpr() {
+      expr_contains_template_tag_location(result, getLocation())
+    }
   }
 
   /**
