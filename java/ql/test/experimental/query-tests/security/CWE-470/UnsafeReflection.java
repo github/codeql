@@ -103,78 +103,42 @@ public class UnsafeReflection {
 
     private Object invokeService(String beanIdOrClassName, String methodName, MultipartFile[] files, List<Object> data) throws Exception {
         BeanFactory beanFactory = new BeanFactory();
-        try {
-            Object bean = null;
-            String beanName = null;
-            Class<?> beanClass = null;
-            try {
-                beanClass = Class.forName(beanIdOrClassName);
-                beanName = StringUtils.uncapitalize(beanClass.getSimpleName());
-            } catch (ClassNotFoundException classNotFoundException) {
-                beanName = beanIdOrClassName;
-            }
-            try {
-                bean = beanFactory.getBean(beanName);
-            } catch (BeansException beansException) {
-                bean = beanFactory.getBean(beanClass);
-            }
-            byte b;
-            int i;
-            Method[] arrayOfMethod;
-            for (i = (arrayOfMethod = bean.getClass().getMethods()).length, b = 0; b < i; ) {
-                Method method = arrayOfMethod[b];
-                if (!method.getName().equals(methodName)) {
-                    b++;
-                    continue;
-                }
-                ProxygenSerializer serializer = new ProxygenSerializer();
-                Object[] methodInput = serializer.deserializeMethodInput(data, files, method);
-                Object result = method.invoke(bean, methodInput);
-                Map<String, Object> map = new HashMap<>();
-                map.put("result", serializer.serialize(result));
-                return map;
-            }
-        } catch (Exception e) {
-            return e;
-        }
-        return null;
+		try {
+			Object bean = null;
+			Class<?> beanClass = Class.forName(beanIdOrClassName);
+			bean = beanFactory.getBean(beanClass);
+			byte b;
+			int i;
+			Method[] arrayOfMethod;
+			for (i = (arrayOfMethod = bean.getClass().getMethods()).length, b = 0; b < i; ) {
+				Method method = arrayOfMethod[b];
+				if (!method.getName().equals(methodName)) {
+					b++;
+					continue;
+				}
+				Object result = method.invoke(bean, data);
+				Map<String, Object> map = new HashMap<>();
+				return map;
+			}
+		} catch (Exception e) {
+			return e;
+		}
+		return null;
     }
-}
-
-class BeansException extends Exception {
-
 }
 
 class BeanFactory {
 
-    private static HashMap<String, Object> classNameMap = new HashMap<>();
+	private static HashMap<String, Object> classNameMap = new HashMap<>();
 
-    private static HashMap<Class<?>, Object> classMap = new HashMap<>();;
+	private static HashMap<Class<?>, Object> classMap = new HashMap<>();
 
-    static {
-        classNameMap.put("xxxx", Runtime.getRuntime());
-        classMap.put(Runtime.class, Runtime.getRuntime());
-    }
+	static {
+		classNameMap.put("xxxx", Runtime.getRuntime());
+		classMap.put(Runtime.class, Runtime.getRuntime());
+	}
 
-    public Object getBean(String className) throws BeansException {
-        if (classNameMap.get(className) == null) {
-            throw new BeansException();
-        }
-        return classNameMap.get(className);
-    }
-
-    public Object getBean(Class<?> clzz) {
-        return classMap.get(clzz);
-    }
-}
-
-class ProxygenSerializer {
-
-    public Object[] deserializeMethodInput(List<Object> data, MultipartFile[] files, Method method) {
-        return null;
-    }
-
-    public String serialize(Object result) {
-        return null;
-    }
+	public Object getBean(Class<?> clzz) {
+		return classMap.get(clzz);
+	}
 }

@@ -55,16 +55,9 @@ class UnsafeReflectionConfig extends TaintTracking::Configuration {
       ma = succ.asExpr()
     )
     or
-    exists(MethodAccess ma, Method m, int i, Expr arg |
-      m = ma.getMethod() and arg = ma.getArgument(i)
+    exists(
+      MethodAccess ma // Object.getClass()
     |
-      m.getReturnType() instanceof TypeObject and
-      arg.getType() instanceof TypeClass and
-      arg = pred.asExpr() and
-      ma = succ.asExpr()
-    )
-    or
-    exists(MethodAccess ma |
       ma.getMethod().hasName("getClass") and
       ma.getMethod().getDeclaringType().hasQualifiedName("java.lang", "Object") and
       ma.getQualifier() = pred.asExpr() and
@@ -76,6 +69,15 @@ class UnsafeReflectionConfig extends TaintTracking::Configuration {
     |
       m.getReturnType() instanceof TypeClass and
       arg.getType() instanceof TypeString and
+      arg = pred.asExpr() and
+      ma = succ.asExpr()
+    )
+    or
+    exists(MethodAccess ma, Method m, int i, Expr arg |
+      m = ma.getMethod() and arg = ma.getArgument(i)
+    |
+      m.getReturnType() instanceof TypeObject and
+      arg.getType() instanceof TypeClass and
       arg = pred.asExpr() and
       ma = succ.asExpr()
     )
