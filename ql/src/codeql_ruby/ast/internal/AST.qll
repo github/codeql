@@ -14,8 +14,9 @@ module MethodName {
   }
 
   class Token =
-    @setter or @token_class_variable or @token_constant or @token_global_variable or
-        @token_identifier or @token_instance_variable or @token_operator;
+    @ruby_setter or @ruby_token_class_variable or @ruby_token_constant or
+        @ruby_token_global_variable or @ruby_token_identifier or @ruby_token_instance_variable or
+        @ruby_token_operator;
 }
 
 private predicate mkSynthChild(SynthKind kind, AST::AstNode parent, int i) {
@@ -26,7 +27,7 @@ cached
 private module Cached {
   cached
   newtype TAstNode =
-    TAddExprReal(Generated::Binary g) { g instanceof @binary_plus } or
+    TAddExprReal(Generated::Binary g) { g instanceof @ruby_binary_plus } or
     TAddExprSynth(AST::AstNode parent, int i) { mkSynthChild(AddExprKind(), parent, i) } or
     TAliasStmt(Generated::Alias g) or
     TArgumentList(Generated::AstNode g) {
@@ -43,50 +44,58 @@ private module Cached {
         g instanceof Generated::RightAssignmentList
       )
     } or
-    TAssignAddExpr(Generated::OperatorAssignment g) { g instanceof @operator_assignment_plusequal } or
+    TAssignAddExpr(Generated::OperatorAssignment g) {
+      g instanceof @ruby_operator_assignment_plusequal
+    } or
     TAssignBitwiseAndExpr(Generated::OperatorAssignment g) {
-      g instanceof @operator_assignment_ampersandequal
+      g instanceof @ruby_operator_assignment_ampersandequal
     } or
     TAssignBitwiseOrExpr(Generated::OperatorAssignment g) {
-      g instanceof @operator_assignment_pipeequal
+      g instanceof @ruby_operator_assignment_pipeequal
     } or
     TAssignBitwiseXorExpr(Generated::OperatorAssignment g) {
-      g instanceof @operator_assignment_caretequal
+      g instanceof @ruby_operator_assignment_caretequal
     } or
-    TAssignDivExpr(Generated::OperatorAssignment g) { g instanceof @operator_assignment_slashequal } or
+    TAssignDivExpr(Generated::OperatorAssignment g) {
+      g instanceof @ruby_operator_assignment_slashequal
+    } or
     TAssignExponentExpr(Generated::OperatorAssignment g) {
-      g instanceof @operator_assignment_starstarequal
+      g instanceof @ruby_operator_assignment_starstarequal
     } or
     TAssignExprReal(Generated::Assignment g) or
     TAssignExprSynth(AST::AstNode parent, int i) { mkSynthChild(AssignExprKind(), parent, i) } or
     TAssignLShiftExpr(Generated::OperatorAssignment g) {
-      g instanceof @operator_assignment_langlelangleequal
+      g instanceof @ruby_operator_assignment_langlelangleequal
     } or
     TAssignLogicalAndExpr(Generated::OperatorAssignment g) {
-      g instanceof @operator_assignment_ampersandampersandequal
+      g instanceof @ruby_operator_assignment_ampersandampersandequal
     } or
     TAssignLogicalOrExpr(Generated::OperatorAssignment g) {
-      g instanceof @operator_assignment_pipepipeequal
+      g instanceof @ruby_operator_assignment_pipepipeequal
     } or
     TAssignModuloExpr(Generated::OperatorAssignment g) {
-      g instanceof @operator_assignment_percentequal
+      g instanceof @ruby_operator_assignment_percentequal
     } or
-    TAssignMulExpr(Generated::OperatorAssignment g) { g instanceof @operator_assignment_starequal } or
+    TAssignMulExpr(Generated::OperatorAssignment g) {
+      g instanceof @ruby_operator_assignment_starequal
+    } or
     TAssignRShiftExpr(Generated::OperatorAssignment g) {
-      g instanceof @operator_assignment_ranglerangleequal
+      g instanceof @ruby_operator_assignment_ranglerangleequal
     } or
-    TAssignSubExpr(Generated::OperatorAssignment g) { g instanceof @operator_assignment_minusequal } or
+    TAssignSubExpr(Generated::OperatorAssignment g) {
+      g instanceof @ruby_operator_assignment_minusequal
+    } or
     TBareStringLiteral(Generated::BareString g) or
     TBareSymbolLiteral(Generated::BareSymbol g) or
     TBeginBlock(Generated::BeginBlock g) or
     TBeginExpr(Generated::Begin g) or
-    TBitwiseAndExprReal(Generated::Binary g) { g instanceof @binary_ampersand } or
+    TBitwiseAndExprReal(Generated::Binary g) { g instanceof @ruby_binary_ampersand } or
     TBitwiseAndExprSynth(AST::AstNode parent, int i) {
       mkSynthChild(BitwiseAndExprKind(), parent, i)
     } or
-    TBitwiseOrExprReal(Generated::Binary g) { g instanceof @binary_pipe } or
+    TBitwiseOrExprReal(Generated::Binary g) { g instanceof @ruby_binary_pipe } or
     TBitwiseOrExprSynth(AST::AstNode parent, int i) { mkSynthChild(BitwiseOrExprKind(), parent, i) } or
-    TBitwiseXorExprReal(Generated::Binary g) { g instanceof @binary_caret } or
+    TBitwiseXorExprReal(Generated::Binary g) { g instanceof @ruby_binary_caret } or
     TBitwiseXorExprSynth(AST::AstNode parent, int i) {
       mkSynthChild(BitwiseXorExprKind(), parent, i)
     } or
@@ -94,7 +103,7 @@ private module Cached {
     TBlockParameter(Generated::BlockParameter g) or
     TBraceBlock(Generated::Block g) { not g.getParent() instanceof Generated::Lambda } or
     TBreakStmt(Generated::Break g) or
-    TCaseEqExpr(Generated::Binary g) { g instanceof @binary_equalequalequal } or
+    TCaseEqExpr(Generated::Binary g) { g instanceof @ruby_binary_equalequalequal } or
     TCaseExpr(Generated::Case g) or
     TCharacterLiteral(Generated::Character g) or
     TClassDeclaration(Generated::Class g) or
@@ -104,14 +113,14 @@ private module Cached {
     TClassVariableAccessSynth(AST::AstNode parent, int i, AST::ClassVariable v) {
       mkSynthChild(ClassVariableAccessKind(v), parent, i)
     } or
-    TComplementExpr(Generated::Unary g) { g instanceof @unary_tilde } or
+    TComplementExpr(Generated::Unary g) { g instanceof @ruby_unary_tilde } or
     TComplexLiteral(Generated::Complex g) or
-    TDefinedExpr(Generated::Unary g) { g instanceof @unary_definedquestion } or
+    TDefinedExpr(Generated::Unary g) { g instanceof @ruby_unary_definedquestion } or
     TDelimitedSymbolLiteral(Generated::DelimitedSymbol g) or
     TDestructuredLeftAssignment(Generated::DestructuredLeftAssignment g) {
       not strictcount(int i | exists(g.getParent().(Generated::LeftAssignmentList).getChild(i))) = 1
     } or
-    TDivExprReal(Generated::Binary g) { g instanceof @binary_slash } or
+    TDivExprReal(Generated::Binary g) { g instanceof @ruby_binary_slash } or
     TDivExprSynth(AST::AstNode parent, int i) { mkSynthChild(DivExprKind(), parent, i) } or
     TDo(Generated::Do g) or
     TDoBlock(Generated::DoBlock g) { not g.getParent() instanceof Generated::Lambda } or
@@ -121,15 +130,15 @@ private module Cached {
     TEmptyStmt(Generated::EmptyStatement g) or
     TEndBlock(Generated::EndBlock g) or
     TEnsure(Generated::Ensure g) or
-    TEqExpr(Generated::Binary g) { g instanceof @binary_equalequal } or
-    TExponentExprReal(Generated::Binary g) { g instanceof @binary_starstar } or
+    TEqExpr(Generated::Binary g) { g instanceof @ruby_binary_equalequal } or
+    TExponentExprReal(Generated::Binary g) { g instanceof @ruby_binary_starstar } or
     TExponentExprSynth(AST::AstNode parent, int i) { mkSynthChild(ExponentExprKind(), parent, i) } or
     TFalseLiteral(Generated::False g) or
     TFloatLiteral(Generated::Float g) { not any(Generated::Rational r).getChild() = g } or
     TForExpr(Generated::For g) or
     TForIn(Generated::In g) or // TODO REMOVE
-    TGEExpr(Generated::Binary g) { g instanceof @binary_rangleequal } or
-    TGTExpr(Generated::Binary g) { g instanceof @binary_rangle } or
+    TGEExpr(Generated::Binary g) { g instanceof @ruby_binary_rangleequal } or
+    TGTExpr(Generated::Binary g) { g instanceof @ruby_binary_rangle } or
     TGlobalVariableAccessReal(Generated::GlobalVariable g, AST::GlobalVariable v) {
       GlobalVariableAccess::range(g, v)
     } or
@@ -155,10 +164,10 @@ private module Cached {
       mkSynthChild(IntegerLiteralKind(value), parent, i)
     } or
     TKeywordParameter(Generated::KeywordParameter g) or
-    TLEExpr(Generated::Binary g) { g instanceof @binary_langleequal } or
-    TLShiftExprReal(Generated::Binary g) { g instanceof @binary_langlelangle } or
+    TLEExpr(Generated::Binary g) { g instanceof @ruby_binary_langleequal } or
+    TLShiftExprReal(Generated::Binary g) { g instanceof @ruby_binary_langlelangle } or
     TLShiftExprSynth(AST::AstNode parent, int i) { mkSynthChild(LShiftExprKind(), parent, i) } or
-    TLTExpr(Generated::Binary g) { g instanceof @binary_langle } or
+    TLTExpr(Generated::Binary g) { g instanceof @ruby_binary_langle } or
     TLambda(Generated::Lambda g) or
     TLeftAssignmentList(Generated::LeftAssignmentList g) or
     TLocalVariableAccessReal(Generated::Identifier g, AST::LocalVariable v) {
@@ -170,13 +179,13 @@ private module Cached {
       mkSynthChild(LocalVariableAccessSynthKind(v), parent, i)
     } or
     TLogicalAndExprReal(Generated::Binary g) {
-      g instanceof @binary_and or g instanceof @binary_ampersandampersand
+      g instanceof @ruby_binary_and or g instanceof @ruby_binary_ampersandampersand
     } or
     TLogicalAndExprSynth(AST::AstNode parent, int i) {
       mkSynthChild(LogicalAndExprKind(), parent, i)
     } or
     TLogicalOrExprReal(Generated::Binary g) {
-      g instanceof @binary_or or g instanceof @binary_pipepipe
+      g instanceof @ruby_binary_or or g instanceof @ruby_binary_pipepipe
     } or
     TLogicalOrExprSynth(AST::AstNode parent, int i) { mkSynthChild(LogicalOrExprKind(), parent, i) } or
     TMethod(Generated::Method g) or
@@ -184,19 +193,19 @@ private module Cached {
       mkSynthChild(MethodCallKind(name, setter, arity), parent, i)
     } or
     TModuleDeclaration(Generated::Module g) or
-    TModuloExprReal(Generated::Binary g) { g instanceof @binary_percent } or
+    TModuloExprReal(Generated::Binary g) { g instanceof @ruby_binary_percent } or
     TModuloExprSynth(AST::AstNode parent, int i) { mkSynthChild(ModuloExprKind(), parent, i) } or
-    TMulExprReal(Generated::Binary g) { g instanceof @binary_star } or
+    TMulExprReal(Generated::Binary g) { g instanceof @ruby_binary_star } or
     TMulExprSynth(AST::AstNode parent, int i) { mkSynthChild(MulExprKind(), parent, i) } or
-    TNEExpr(Generated::Binary g) { g instanceof @binary_bangequal } or
+    TNEExpr(Generated::Binary g) { g instanceof @ruby_binary_bangequal } or
     TNextStmt(Generated::Next g) or
     TNilLiteral(Generated::Nil g) or
-    TNoRegExpMatchExpr(Generated::Binary g) { g instanceof @binary_bangtilde } or
-    TNotExpr(Generated::Unary g) { g instanceof @unary_bang or g instanceof @unary_not } or
+    TNoRegExpMatchExpr(Generated::Binary g) { g instanceof @ruby_binary_bangtilde } or
+    TNotExpr(Generated::Unary g) { g instanceof @ruby_unary_bang or g instanceof @ruby_unary_not } or
     TOptionalParameter(Generated::OptionalParameter g) or
     TPair(Generated::Pair g) or
     TParenthesizedExpr(Generated::ParenthesizedStatements g) or
-    TRShiftExprReal(Generated::Binary g) { g instanceof @binary_ranglerangle } or
+    TRShiftExprReal(Generated::Binary g) { g instanceof @ruby_binary_ranglerangle } or
     TRShiftExprSynth(AST::AstNode parent, int i) { mkSynthChild(RShiftExprKind(), parent, i) } or
     TRangeLiteralReal(Generated::Range g) or
     TRangeLiteralSynth(AST::AstNode parent, int i, boolean inclusive) {
@@ -205,7 +214,7 @@ private module Cached {
     TRationalLiteral(Generated::Rational g) or
     TRedoStmt(Generated::Redo g) or
     TRegExpLiteral(Generated::Regex g) or
-    TRegExpMatchExpr(Generated::Binary g) { g instanceof @binary_equaltilde } or
+    TRegExpMatchExpr(Generated::Binary g) { g instanceof @ruby_binary_equaltilde } or
     TRegularArrayLiteral(Generated::Array g) or
     TRegularMethodCall(Generated::Call g) { isRegularMethodCall(g) } or
     TRegularStringLiteral(Generated::String g) or
@@ -234,7 +243,7 @@ private module Cached {
     TSimpleSymbolLiteral(Generated::SimpleSymbol g) or
     TSingletonClass(Generated::SingletonClass g) or
     TSingletonMethod(Generated::SingletonMethod g) or
-    TSpaceshipExpr(Generated::Binary g) { g instanceof @binary_langleequalrangle } or
+    TSpaceshipExpr(Generated::Binary g) { g instanceof @ruby_binary_langleequalrangle } or
     TSplatExprReal(Generated::SplatArgument g) or
     TSplatExprSynth(AST::AstNode parent, int i) { mkSynthChild(SplatExprKind(), parent, i) } or
     TSplatParameter(Generated::SplatParameter g) or
@@ -246,7 +255,7 @@ private module Cached {
     TStringTextComponent(Generated::Token g) {
       g instanceof Generated::StringContent or g instanceof Generated::HeredocContent
     } or
-    TSubExprReal(Generated::Binary g) { g instanceof @binary_minus } or
+    TSubExprReal(Generated::Binary g) { g instanceof @ruby_binary_minus } or
     TSubExprSynth(AST::AstNode parent, int i) { mkSynthChild(SubExprKind(), parent, i) } or
     TSubshellLiteral(Generated::Subshell g) or
     TSymbolArrayLiteral(Generated::SymbolArray g) or
@@ -264,8 +273,8 @@ private module Cached {
     TToplevel(Generated::Program g) { g.getLocation().getFile().getExtension() != "erb" } or
     TTrueLiteral(Generated::True g) or
     TTuplePatternParameter(Generated::DestructuredParameter g) or
-    TUnaryMinusExpr(Generated::Unary g) { g instanceof @unary_minus } or
-    TUnaryPlusExpr(Generated::Unary g) { g instanceof @unary_plus } or
+    TUnaryMinusExpr(Generated::Unary g) { g instanceof @ruby_unary_minus } or
+    TUnaryPlusExpr(Generated::Unary g) { g instanceof @ruby_unary_plus } or
     TUndefStmt(Generated::Undef g) or
     TUnlessExpr(Generated::Unless g) or
     TUnlessModifierExpr(Generated::UnlessModifier g) or

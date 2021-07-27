@@ -145,7 +145,7 @@ private module Cached {
 
   // Db types that can be vcalls
   private class VcallToken =
-    @scope_resolution or @token_constant or @token_identifier or @token_super;
+    @ruby_scope_resolution or @ruby_token_constant or @ruby_token_identifier or @ruby_token_super;
 
   /**
    * Holds if `i` is an `identifier` node occurring in the context where it

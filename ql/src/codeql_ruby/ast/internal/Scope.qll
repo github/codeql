@@ -10,7 +10,7 @@ private class TBlockLike = TDoBlock or TLambda or TBlock or TEndBlock;
 private class TModuleLike = TToplevel or TModuleDeclaration or TClassDeclaration or TSingletonClass;
 
 module Scope {
-  class TypeRange = Callable::TypeRange or ModuleBase::TypeRange or @end_block;
+  class TypeRange = Callable::TypeRange or ModuleBase::TypeRange or @ruby_end_block;
 
   class Range extends Generated::AstNode, TypeRange {
     Range() { not this = any(Generated::Lambda l).getBody() }
@@ -34,13 +34,13 @@ module Scope {
 }
 
 module MethodBase {
-  class TypeRange = @method or @singleton_method;
+  class TypeRange = @ruby_method or @ruby_singleton_method;
 
   class Range extends Scope::Range, TypeRange { }
 }
 
 module Callable {
-  class TypeRange = MethodBase::TypeRange or @do_block or @lambda or @block;
+  class TypeRange = MethodBase::TypeRange or @ruby_do_block or @ruby_lambda or @ruby_block;
 
   class Range extends Scope::Range, TypeRange {
     Parameter::Range getParameter(int i) {
@@ -54,7 +54,7 @@ module Callable {
 }
 
 module ModuleBase {
-  class TypeRange = @program or @module or @class or @singleton_class;
+  class TypeRange = @ruby_program or @ruby_module or @ruby_class or @ruby_singleton_class;
 
   class Range extends Scope::Range, TypeRange { }
 }

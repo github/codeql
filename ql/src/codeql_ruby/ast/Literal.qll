@@ -828,9 +828,9 @@ private class RangeLiteralReal extends RangeLiteral, TRangeLiteralReal {
 
   final override Expr getEnd() { toGenerated(result) = g.getEnd() }
 
-  final override predicate isInclusive() { g instanceof @range_dotdot }
+  final override predicate isInclusive() { g instanceof @ruby_range_dotdot }
 
-  final override predicate isExclusive() { g instanceof @range_dotdotdot }
+  final override predicate isExclusive() { g instanceof @ruby_range_dotdotdot }
 }
 
 private class RangeLiteralSynth extends RangeLiteral, TRangeLiteralSynth {
