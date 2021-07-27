@@ -125,6 +125,8 @@ fn main() -> std::io::Result<()> {
     let language = tree_sitter_ruby::language();
     let erb = tree_sitter_embedded_template::language();
     let schema = node_types::read_node_types_str("ruby", tree_sitter_ruby::NODE_TYPES)?;
+    let erb_schema =
+        node_types::read_node_types_str("erb", tree_sitter_embedded_template::NODE_TYPES)?;
     let lines: std::io::Result<Vec<String>> = std::io::BufReader::new(file_list).lines().collect();
     let lines = lines?;
     lines.par_iter().try_for_each(|line| {
@@ -133,8 +135,18 @@ fn main() -> std::io::Result<()> {
         let src_archive_file = path_for(&src_archive_dir, &path, "");
         let mut source = std::fs::read(&path)?;
         let code_ranges;
+        let erb_trap;
         if path.extension().map_or(false, |x| x == "erb") {
             tracing::info!("scanning: {}", path.display());
+            erb_trap = Some(extractor::extract(
+                erb,
+                "erb",
+                &erb_schema,
+                &path,
+                &source,
+                &[],
+            )?);
+
             let (ranges, line_breaks) = scan_erb(erb, &source);
             for i in line_breaks {
                 if i < source.len() {
@@ -144,6 +156,7 @@ fn main() -> std::io::Result<()> {
             code_ranges = ranges;
         } else {
             code_ranges = vec![];
+            erb_trap = None;
         }
         let trap = extractor::extract(language, "ruby", &schema, &path, &source, &code_ranges)?;
         std::fs::create_dir_all(&src_archive_file.parent().unwrap())?;
@@ -152,9 +165,17 @@ fn main() -> std::io::Result<()> {
         let trap_file = std::fs::File::create(&trap_file)?;
         let mut trap_file = BufWriter::new(trap_file);
         match trap_compression {
-            TrapCompression::None => write!(trap_file, "{}", trap),
+            TrapCompression::None => {
+                if erb_trap.is_some() {
+                    write!(trap_file, "{}", erb_trap.unwrap())?;
+                }
+                write!(trap_file, "{}", trap)
+            }
             TrapCompression::Gzip => {
                 let mut compressed_writer = GzEncoder::new(trap_file, flate2::Compression::fast());
+                if erb_trap.is_some() {
+                    write!(compressed_writer, "{}", erb_trap.unwrap())?;
+                }
                 write!(compressed_writer, "{}", trap)
             }
         }
