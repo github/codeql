@@ -22,8 +22,6 @@ import semmle.code.cpp.ir.IR
 import semmle.code.cpp.security.FlowSources
 import semmle.code.cpp.models.implementations.Strcat
 
-import DataFlow::PathGraph
-
 Expr sinkAsArgumentIndirection(DataFlow::Node sink) {
   result =
     sink.asOperand()
@@ -54,7 +52,7 @@ predicate interestingConcatenation(DataFlow::Node fst, DataFlow::Node snd) {
     rse.getArgumentDef() = call.getArgument(strcatFunc.getParamSrc()) and
     fst.asOperand() = rse.getSideEffectOperand() and
     snd.asInstruction().(WriteSideEffectInstruction).getDestinationAddress() =
-        call.getArgument(strcatFunc.getParamDest())
+      call.getArgument(strcatFunc.getParamDest())
   )
   or
   exists(CallInstruction call, Operator op, ReadSideEffectInstruction rse |
@@ -63,8 +61,7 @@ predicate interestingConcatenation(DataFlow::Node fst, DataFlow::Node snd) {
     op.getType().(UserType).hasQualifiedName("std", "basic_string") and
     call.getArgument(1) = rse.getArgumentOperand().getAnyDef() and // left operand
     fst.asOperand() = rse.getSideEffectOperand() and
-    call =
-      snd.asInstruction()
+    call = snd.asInstruction()
   )
 }
 
@@ -72,13 +69,9 @@ predicate interestingConcatenation(DataFlow::Node fst, DataFlow::Node snd) {
 class TaintToConcatenationConfiguration extends TaintTracking::Configuration {
   TaintToConcatenationConfiguration() { this = "TaintToConcatenationConfiguration" }
 
-  override predicate isSource(DataFlow::Node source) {
-    source instanceof FlowSource
-  }
+  override predicate isSource(DataFlow::Node source) { source instanceof FlowSource }
 
-  override predicate isSink(DataFlow::Node sink) {
-    interestingConcatenation(sink, _)
-  }
+  override predicate isSink(DataFlow::Node sink) { interestingConcatenation(sink, _) }
 
   override predicate isSanitizer(DataFlow::Node node) {
     node.asInstruction().getResultType() instanceof IntegralType
@@ -90,9 +83,7 @@ class TaintToConcatenationConfiguration extends TaintTracking::Configuration {
 class ExecTaintConfiguration extends TaintTracking2::Configuration {
   ExecTaintConfiguration() { this = "ExecTaintConfiguration" }
 
-  override predicate isSource(DataFlow::Node source) {
-    interestingConcatenation(_, source)
-  }
+  override predicate isSource(DataFlow::Node source) { interestingConcatenation(_, source) }
 
   override predicate isSink(DataFlow::Node sink) {
     shellCommand(sinkAsArgumentIndirection(sink), _)
@@ -103,16 +94,105 @@ class ExecTaintConfiguration extends TaintTracking2::Configuration {
   }
 }
 
+module StitchedPathGraph {
+  // There's a different PathNode class for each DataFlowImplN.qll, so we can't simply combine the
+  // PathGraph predicates directly. Instead, we use a newtype so there's a single type that
+  // contains both sets of PathNodes.
+  newtype TMergedPathNode =
+    TPathNode1(DataFlow::PathNode node) or
+    TPathNode2(DataFlow2::PathNode node)
+
+  // this wraps the toString and location predicates so we can use the merged node type in a
+  // selection
+  class MergedPathNode extends TMergedPathNode {
+    string toString() {
+      exists(DataFlow::PathNode n |
+        this = TPathNode1(n) and
+        result = n.toString()
+      )
+      or
+      exists(DataFlow2::PathNode n |
+        this = TPathNode2(n) and
+        result = n.toString()
+      )
+    }
+
+    DataFlow::Node getNode() {
+      exists(DataFlow::PathNode n |
+        this = TPathNode1(n) and
+        result = n.getNode()
+      )
+      or
+      exists(DataFlow2::PathNode n |
+        this = TPathNode2(n) and
+        result = n.getNode()
+      )
+    }
+
+    predicate hasLocationInfo(
+      string filepath, int startline, int startcolumn, int endline, int endcolumn
+    ) {
+      exists(DataFlow::PathNode n |
+        this = TPathNode1(n) and
+        n.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+      )
+      or
+      exists(DataFlow2::PathNode n |
+        this = TPathNode2(n) and
+        n.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+      )
+    }
+  }
+
+  query predicate edges(MergedPathNode a, MergedPathNode b) {
+    exists(DataFlow::PathNode an, DataFlow::PathNode bn |
+      a = TPathNode1(an) and
+      b = TPathNode1(bn) and
+      DataFlow::PathGraph::edges(an, bn)
+    )
+    or
+    exists(DataFlow2::PathNode an, DataFlow2::PathNode bn |
+      a = TPathNode2(an) and
+      b = TPathNode2(bn) and
+      DataFlow2::PathGraph::edges(an, bn)
+    )
+    or
+    // This is where paths from the two configurations are connected. `interestingConcatenation`
+    // is the only thing in this module that's actually specific to the query - everything else is
+    // just using types and predicates from the DataFlow library.
+    interestingConcatenation(a.getNode(), b.getNode()) and
+    a instanceof TPathNode1 and
+    b instanceof TPathNode2
+  }
+
+  query predicate nodes(MergedPathNode mpn, string key, string val) {
+    // here we just need the union of the underlying `nodes` predicates
+    exists(DataFlow::PathNode n |
+      mpn = TPathNode1(n) and
+      DataFlow::PathGraph::nodes(n, key, val)
+    )
+    or
+    exists(DataFlow2::PathNode n |
+      mpn = TPathNode2(n) and
+      DataFlow2::PathGraph::nodes(n, key, val)
+    )
+  }
+}
+
+import StitchedPathGraph
+
 from
-  DataFlow::PathNode sourceNode, DataFlow::PathNode concatSink, DataFlow2::PathNode concatSource, DataFlow2::PathNode sinkNode, string taintCause, string callChain,
+  DataFlow::PathNode sourceNode, DataFlow::PathNode concatSink, DataFlow2::PathNode concatSource,
+  DataFlow2::PathNode sinkNode, string taintCause, string callChain,
   TaintToConcatenationConfiguration conf1, ExecTaintConfiguration conf2
 where
   taintCause = sourceNode.getNode().(FlowSource).getSourceType() and
-  conf1.hasFlowPath(sourceNode, concatSink) and // TODO: can we link these better?
-  interestingConcatenation(concatSink.getNode(), concatSource.getNode()) and
+  conf1.hasFlowPath(sourceNode, concatSink) and
+  interestingConcatenation(concatSink.getNode(), concatSource.getNode()) and // this loses call context
   conf2.hasFlowPath(concatSource, sinkNode) and
   shellCommand(sinkAsArgumentIndirection(sinkNode.getNode()), callChain)
-select sinkAsArgumentIndirection(sinkNode.getNode()), sourceNode, sinkNode,
-  "This argument to an OS command is derived from $@, dangerously concatenated into $@, and then passed to " + callChain, sourceNode,
-  "user input (" + taintCause + ")", concatSource, concatSource.toString()
-  
+select sinkAsArgumentIndirection(sinkNode.getNode()), TPathNode1(sourceNode).(MergedPathNode),
+  TPathNode2(sinkNode).(MergedPathNode),
+  "This argument to an OS command is derived from $@, dangerously concatenated into $@, and then passed to "
+    + callChain, sourceNode, "user input (" + taintCause + ")", concatSource,
+  concatSource.toString()
