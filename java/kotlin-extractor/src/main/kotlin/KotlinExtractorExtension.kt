@@ -12,11 +12,16 @@ import org.jetbrains.kotlin.ir.declarations.path
 import org.jetbrains.kotlin.ir.declarations.IrModuleFragment
 import org.jetbrains.kotlin.ir.declarations.IrClass
 import org.jetbrains.kotlin.ir.declarations.IrDeclaration
+import org.jetbrains.kotlin.ir.declarations.IrDeclarationParent
 import org.jetbrains.kotlin.ir.declarations.IrFile
+import org.jetbrains.kotlin.ir.declarations.IrFunction
+import org.jetbrains.kotlin.ir.declarations.IrValueParameter
 import org.jetbrains.kotlin.ir.util.dump
 import org.jetbrains.kotlin.ir.util.packageFqName
 import org.jetbrains.kotlin.ir.visitors.IrElementVisitor
 import org.jetbrains.kotlin.ir.IrFileEntry
+import org.jetbrains.kotlin.ir.types.IrType
+import org.jetbrains.kotlin.ir.types.IrSimpleType
 
 class KotlinExtractorExtension(private val tests: List<String>) : IrGenerationExtension {
     override fun generate(moduleFragment: IrModuleFragment, pluginContext: IrPluginContext) {
@@ -96,12 +101,16 @@ fun extractFile(trapDir: File, srcDir: File, declaration: IrFile) {
         val pkg = declaration.fqName.asString()
         val pkgId = fileExtractor.extractPackage(pkg)
         tw.writeCupackage(id, pkgId)
-        declaration.declarations.map { fileExtractor.extractDeclaration(it) }
+        declaration.declarations.map { fileExtractor.extractDeclaration(it, pkgId) }
     }
 }
 
 class KotlinFileExtractor(val tw: TrapWriter) {
-    fun extractPackage(pkg: String): Label<DbPackage> {
+    fun usePackage(pkg: String): Label<out DbPackage> {
+        return extractPackage(pkg)
+    }
+
+    fun extractPackage(pkg: String): Label<out DbPackage> {
         val pkgLabel = "@\"package;$pkg\""
         val id: Label<DbPackage> = tw.getIdFor(pkgLabel, {
             tw.writePackages(it, pkg)
@@ -109,24 +118,83 @@ class KotlinFileExtractor(val tw: TrapWriter) {
         return id
     }
 
-    fun extractDeclaration(declaration: IrDeclaration) {
+    fun extractDeclaration(declaration: IrDeclaration, parentid: Label<out DbPackage_or_reftype>) {
         when (declaration) {
             is IrClass -> extractClass(declaration)
+            is IrFunction -> extractFunction(declaration, parentid)
             else -> extractorBug("Unrecognised IrDeclaration: " + declaration.javaClass)
         }
     }
 
-    fun extractClass(declaration: IrClass) {
-        val id: Label<DbClass> = tw.getFreshId()
-        val locId = tw.getLocation(declaration.startOffset, declaration.endOffset)
-        val pkg = declaration.packageFqName?.asString() ?: ""
-        val cls = declaration.name.asString()
+    @Suppress("UNUSED_PARAMETER")
+    fun useSimpleType(c: IrSimpleType): Label<out DbPrimitive> {
+        // TODO: This shouldn't assume all SimpleType's are Int
+        val label = "@\"type;int\""
+        val id: Label<DbPrimitive> = tw.getIdFor(label, {
+            tw.writePrimitives(it, "int")
+        })
+        return id
+    }
+
+    fun useClass(c: IrClass): Label<out DbClass> {
+        val pkg = c.packageFqName?.asString() ?: ""
+        val cls = c.name.asString()
         val qualClassName = if (pkg.isEmpty()) cls else "$pkg.$cls"
+        val label = "@\"class;$qualClassName\""
+        val id: Label<DbClass> = tw.getIdFor(label)
+        return id
+    }
+
+    fun extractClass(c: IrClass) {
+        val id = useClass(c)
+        val locId = tw.getLocation(c.startOffset, c.endOffset)
+        val pkg = c.packageFqName?.asString() ?: ""
+        val cls = c.name.asString()
         val pkgId = extractPackage(pkg)
-        tw.writeTrap("$id = @\"class;$qualClassName\"\n")
         tw.writeClasses(id, cls, pkgId, id)
         tw.writeHasLocation(id, locId)
-        declaration.declarations.map { extractDeclaration(it) }
+        c.declarations.map { extractDeclaration(it, id) }
     }
+
+    fun useType(t: IrType): Label<out DbType> {
+        when(t) {
+            is IrSimpleType -> return useSimpleType(t)
+            is IrClass -> return useClass(t)
+            else -> {
+                extractorBug("Unrecognised IrType: " + t.javaClass)
+                return Label(0)
+            }
+        }
+    }
+
+    fun useDeclarationParent(dp: IrDeclarationParent): Label<out DbPackage_or_reftype> {
+        when(dp) {
+            is IrFile -> return usePackage(dp.fqName.asString())
+            is IrClass -> return useClass(dp)
+            else -> {
+                extractorBug("Unrecognised IrDeclarationParent: " + dp.javaClass)
+                return Label(0)
+            }
+        }
+    }
+
+    fun useFunction(f: IrFunction): Label<out DbMethod> {
+        val paramTypeIds = f.valueParameters.joinToString() { "{${useType(it.type).toString()}}" }
+        val returnTypeId = useType(f.returnType)
+        val parentId = useDeclarationParent(f.parent)
+        val label = "@\"callable;{$parentId}.${f.name.asString()}($paramTypeIds){$returnTypeId}\""
+        val id: Label<DbMethod> = tw.getIdFor(label)
+        return id
+    }
+
+    fun extractFunction(f: IrFunction, parentid: Label<out DbPackage_or_reftype>) {
+        val id = useFunction(f)
+        val locId = tw.getLocation(f.startOffset, f.endOffset)
+        val signature = "TODO"
+        val returnTypeId = useType(f.returnType)
+        tw.writeMethods(id, f.name.asString(), signature, returnTypeId, parentid, id)
+        tw.writeHasLocation(id, locId)
+    }
+
 }
 

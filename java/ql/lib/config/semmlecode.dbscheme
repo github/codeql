@@ -332,12 +332,14 @@ constrs(
   int sourceid: @constructor ref
 );
 
+@package_or_reftype = @package | @reftype
+
 methods(
   unique int id: @method,
   string nodeName: string ref,
   string signature: string ref,
   int typeid: @type ref,
-  int parentid: @reftype ref,
+  int parentid: @package_or_reftype ref,
   int sourceid: @method ref
 );
 

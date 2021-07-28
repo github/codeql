@@ -1,0 +1,10 @@
+| methods2.kt:7:1:10:1 | <init> |
+| methods2.kt:7:1:10:1 | equals |
+| methods2.kt:7:1:10:1 | hashCode |
+| methods2.kt:7:1:10:1 | toString |
+| methods2.kt:8:5:9:5 | fooBarClassMethod |
+| methods.kt:5:1:8:1 | <init> |
+| methods.kt:5:1:8:1 | equals |
+| methods.kt:5:1:8:1 | hashCode |
+| methods.kt:5:1:8:1 | toString |
+| methods.kt:6:5:7:5 | classMethod |
