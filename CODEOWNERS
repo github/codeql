@@ -1,6 +1,4 @@
 * @github/codeql-go
 
-# Documentation
-**/*.qhelp @shati-patel
 # Exclude experimental
 **/experimental/**/*.qhelp @github/codeql-go
