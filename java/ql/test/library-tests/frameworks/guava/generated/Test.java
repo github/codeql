@@ -92,6 +92,13 @@ public class Test {
 
 	<T> T getArrayElement(T[] container) { return container[0]; }
 	Object getElement(Object container) { return null; }
+	<T> T getElement2(Collection<T> container) { return container.iterator().next(); }
+	<T> T getElement2(ImmutableCollection.Builder<T> container) { return getElement2(container.build()); }
+	<T> T getElement2(Iterable<T> container) { return container.iterator().next(); }
+	<T> T getElement2(Iterator<T> container) { return container.next(); }
+	<T> T getElement2(Optional<T> container) { return container.get(); }
+	<T> T getElement2(Enumeration<T> container) { return container.nextElement(); }
+	<T> T getElement2(Multiset.Entry<T> container) { return container.getElement(); }
 	Object getMapDifference_left(Object container) { return null; }
 	Object getMapDifference_right(Object container) { return null; }
 	Object getMapKey(Object container) { return null; }
@@ -263,35 +270,35 @@ public class Test {
 			Collection out = null;
 			Collection in = (Collection)newWithElement(source());
 			out = Collections2.filter(in, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Collections2;false;orderedPermutations;(Iterable);;Element of Argument[0];Element of ReturnValue;value"
 			Collection out = null;
 			Iterable in = (Iterable)newWithElement(source());
 			out = Collections2.orderedPermutations(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Collections2;false;orderedPermutations;(Iterable,Comparator);;Element of Argument[0];Element of ReturnValue;value"
 			Collection out = null;
 			Iterable in = (Iterable)newWithElement(source());
 			out = Collections2.orderedPermutations(in, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Collections2;false;permutations;(Collection);;Element of Argument[0];Element of ReturnValue;value"
 			Collection out = null;
 			Collection in = (Collection)newWithElement(source());
 			out = Collections2.permutations(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ConcurrentHashMultiset;true;create;(Iterable);;Element of Argument[0];Element of ReturnValue;value"
 			ConcurrentHashMultiset out = null;
 			Iterable in = (Iterable)newWithElement(source());
 			out = ConcurrentHashMultiset.create(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;HashBasedTable;true;create;(Table);;MapValue of Argument[0];MapValue of ReturnValue;value"
@@ -347,7 +354,7 @@ public class Test {
 			HashMultiset out = null;
 			Iterable in = (Iterable)newWithElement(source());
 			out = HashMultiset.create(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableClassToInstanceMap;true;copyOf;(Map);;MapKey of Argument[0];MapKey of ReturnValue;value"
@@ -382,84 +389,84 @@ public class Test {
 			ImmutableSortedSet.Builder out = null;
 			Object in = source();
 			out.add(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableCollection$Builder;true;add;(Object);;Argument[0];Element of Argument[-1];value"
 			ImmutableSortedMultiset.Builder out = null;
 			Object in = source();
 			out.add(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableCollection$Builder;true;add;(Object);;Argument[0];Element of Argument[-1];value"
 			ImmutableSet.Builder out = null;
 			Object in = source();
 			out.add(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableCollection$Builder;true;add;(Object);;Argument[0];Element of Argument[-1];value"
 			ImmutableMultiset.Builder out = null;
 			Object in = source();
 			out.add(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableCollection$Builder;true;add;(Object);;Argument[0];Element of Argument[-1];value"
 			ImmutableList.Builder out = null;
 			Object in = source();
 			out.add(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableCollection$Builder;true;add;(Object);;Argument[0];Element of Argument[-1];value"
 			ImmutableCollection.Builder out = null;
 			Object in = source();
 			out.add(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableCollection$Builder;true;add;(Object[]);;ArrayElement of Argument[0];Element of Argument[-1];value"
 			ImmutableSortedSet.Builder out = null;
 			Object[] in = newWithArrayElement(source());
 			out.add(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableCollection$Builder;true;add;(Object[]);;ArrayElement of Argument[0];Element of Argument[-1];value"
 			ImmutableSortedMultiset.Builder out = null;
 			Object[] in = newWithArrayElement(source());
 			out.add(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableCollection$Builder;true;add;(Object[]);;ArrayElement of Argument[0];Element of Argument[-1];value"
 			ImmutableSet.Builder out = null;
 			Object[] in = newWithArrayElement(source());
 			out.add(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableCollection$Builder;true;add;(Object[]);;ArrayElement of Argument[0];Element of Argument[-1];value"
 			ImmutableMultiset.Builder out = null;
 			Object[] in = newWithArrayElement(source());
 			out.add(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableCollection$Builder;true;add;(Object[]);;ArrayElement of Argument[0];Element of Argument[-1];value"
 			ImmutableList.Builder out = null;
 			Object[] in = newWithArrayElement(source());
 			out.add(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableCollection$Builder;true;add;(Object[]);;ArrayElement of Argument[0];Element of Argument[-1];value"
 			ImmutableCollection.Builder out = null;
 			Object[] in = newWithArrayElement(source());
 			out.add(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableCollection$Builder;true;add;;;Argument[-1];ReturnValue;value"
@@ -550,84 +557,84 @@ public class Test {
 			ImmutableSortedSet.Builder out = null;
 			Iterable in = (Iterable)newWithElement(source());
 			out.addAll(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableCollection$Builder;true;addAll;(Iterable);;Element of Argument[0];Element of Argument[-1];value"
 			ImmutableSortedMultiset.Builder out = null;
 			Iterable in = (Iterable)newWithElement(source());
 			out.addAll(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableCollection$Builder;true;addAll;(Iterable);;Element of Argument[0];Element of Argument[-1];value"
 			ImmutableSet.Builder out = null;
 			Iterable in = (Iterable)newWithElement(source());
 			out.addAll(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableCollection$Builder;true;addAll;(Iterable);;Element of Argument[0];Element of Argument[-1];value"
 			ImmutableMultiset.Builder out = null;
 			Iterable in = (Iterable)newWithElement(source());
 			out.addAll(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableCollection$Builder;true;addAll;(Iterable);;Element of Argument[0];Element of Argument[-1];value"
 			ImmutableList.Builder out = null;
 			Iterable in = (Iterable)newWithElement(source());
 			out.addAll(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableCollection$Builder;true;addAll;(Iterable);;Element of Argument[0];Element of Argument[-1];value"
 			ImmutableCollection.Builder out = null;
 			Iterable in = (Iterable)newWithElement(source());
 			out.addAll(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableCollection$Builder;true;addAll;(Iterator);;Element of Argument[0];Element of Argument[-1];value"
 			ImmutableSortedSet.Builder out = null;
 			Iterator in = (Iterator)newWithElement(source());
 			out.addAll(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableCollection$Builder;true;addAll;(Iterator);;Element of Argument[0];Element of Argument[-1];value"
 			ImmutableSortedMultiset.Builder out = null;
 			Iterator in = (Iterator)newWithElement(source());
 			out.addAll(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableCollection$Builder;true;addAll;(Iterator);;Element of Argument[0];Element of Argument[-1];value"
 			ImmutableSet.Builder out = null;
 			Iterator in = (Iterator)newWithElement(source());
 			out.addAll(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableCollection$Builder;true;addAll;(Iterator);;Element of Argument[0];Element of Argument[-1];value"
 			ImmutableMultiset.Builder out = null;
 			Iterator in = (Iterator)newWithElement(source());
 			out.addAll(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableCollection$Builder;true;addAll;(Iterator);;Element of Argument[0];Element of Argument[-1];value"
 			ImmutableList.Builder out = null;
 			Iterator in = (Iterator)newWithElement(source());
 			out.addAll(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableCollection$Builder;true;addAll;(Iterator);;Element of Argument[0];Element of Argument[-1];value"
 			ImmutableCollection.Builder out = null;
 			Iterator in = (Iterator)newWithElement(source());
 			out.addAll(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableCollection$Builder;true;addAll;;;Argument[-1];ReturnValue;value"
@@ -718,679 +725,679 @@ public class Test {
 			ImmutableSortedSet out = null;
 			ImmutableSortedSet.Builder in = (ImmutableSortedSet.Builder)newWithElement(source());
 			out = in.build();
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableCollection$Builder;true;build;();;Element of Argument[-1];Element of ReturnValue;value"
 			ImmutableSortedMultiset out = null;
 			ImmutableSortedMultiset.Builder in = (ImmutableSortedMultiset.Builder)newWithElement(source());
 			out = in.build();
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableCollection$Builder;true;build;();;Element of Argument[-1];Element of ReturnValue;value"
 			ImmutableSet out = null;
 			ImmutableSet.Builder in = (ImmutableSet.Builder)newWithElement(source());
 			out = in.build();
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableCollection$Builder;true;build;();;Element of Argument[-1];Element of ReturnValue;value"
 			ImmutableMultiset out = null;
 			ImmutableMultiset.Builder in = (ImmutableMultiset.Builder)newWithElement(source());
 			out = in.build();
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableCollection$Builder;true;build;();;Element of Argument[-1];Element of ReturnValue;value"
 			ImmutableList out = null;
 			ImmutableList.Builder in = (ImmutableList.Builder)newWithElement(source());
 			out = in.build();
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableCollection$Builder;true;build;();;Element of Argument[-1];Element of ReturnValue;value"
 			ImmutableCollection out = null;
 			ImmutableCollection.Builder in = (ImmutableCollection.Builder)newWithElement(source());
 			out = in.build();
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableCollection;true;asList;();;Element of Argument[-1];Element of ReturnValue;value"
 			ImmutableList out = null;
 			ImmutableSet in = (ImmutableSet)newWithElement(source());
 			out = in.asList();
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableCollection;true;asList;();;Element of Argument[-1];Element of ReturnValue;value"
 			ImmutableList out = null;
 			ImmutableMultiset in = (ImmutableMultiset)newWithElement(source());
 			out = in.asList();
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableCollection;true;asList;();;Element of Argument[-1];Element of ReturnValue;value"
 			ImmutableList out = null;
 			ImmutableList in = (ImmutableList)newWithElement(source());
 			out = in.asList();
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableCollection;true;asList;();;Element of Argument[-1];Element of ReturnValue;value"
 			ImmutableList out = null;
 			ImmutableCollection in = (ImmutableCollection)newWithElement(source());
 			out = in.asList();
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;copyOf;(Collection);;Element of Argument[0];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Collection in = (Collection)newWithElement(source());
 			out = ImmutableList.copyOf(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;copyOf;(Iterable);;Element of Argument[0];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Iterable in = (Iterable)newWithElement(source());
 			out = ImmutableList.copyOf(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;copyOf;(Iterator);;Element of Argument[0];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Iterator in = (Iterator)newWithElement(source());
 			out = ImmutableList.copyOf(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;copyOf;(Object[]);;ArrayElement of Argument[0];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object[] in = newWithArrayElement(source());
 			out = ImmutableList.copyOf(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(null, null, null, null, null, null, null, null, null, null, null, in, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(null, null, null, null, null, null, null, null, null, null, in, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(null, null, null, null, null, null, null, null, null, null, in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(null, null, null, null, null, null, null, null, null, in, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(null, null, null, null, null, null, null, null, null, in, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(null, null, null, null, null, null, null, null, null, in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(null, null, null, null, null, null, null, null, in, null, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(null, null, null, null, null, null, null, null, in, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(null, null, null, null, null, null, null, null, in, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(null, null, null, null, null, null, null, null, in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(null, null, null, null, null, null, null, in, null, null, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(null, null, null, null, null, null, null, in, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(null, null, null, null, null, null, null, in, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(null, null, null, null, null, null, null, in, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(null, null, null, null, null, null, null, in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(null, null, null, null, null, null, in, null, null, null, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(null, null, null, null, null, null, in, null, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(null, null, null, null, null, null, in, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(null, null, null, null, null, null, in, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(null, null, null, null, null, null, in, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(null, null, null, null, null, null, in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(null, null, null, null, null, in, null, null, null, null, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(null, null, null, null, null, in, null, null, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(null, null, null, null, null, in, null, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(null, null, null, null, null, in, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(null, null, null, null, null, in, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(null, null, null, null, null, in, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(null, null, null, null, null, in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(null, null, null, null, in, null, null, null, null, null, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(null, null, null, null, in, null, null, null, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(null, null, null, null, in, null, null, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(null, null, null, null, in, null, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(null, null, null, null, in, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(null, null, null, null, in, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(null, null, null, null, in, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(null, null, null, null, in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(null, null, null, in, null, null, null, null, null, null, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(null, null, null, in, null, null, null, null, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(null, null, null, in, null, null, null, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(null, null, null, in, null, null, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(null, null, null, in, null, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(null, null, null, in, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(null, null, null, in, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(null, null, null, in, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(null, null, null, in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(null, null, in, null, null, null, null, null, null, null, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(null, null, in, null, null, null, null, null, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(null, null, in, null, null, null, null, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(null, null, in, null, null, null, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(null, null, in, null, null, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(null, null, in, null, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(null, null, in, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(null, null, in, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(null, null, in, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(null, null, in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(null, in, null, null, null, null, null, null, null, null, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(null, in, null, null, null, null, null, null, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(null, in, null, null, null, null, null, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(null, in, null, null, null, null, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(null, in, null, null, null, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(null, in, null, null, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(null, in, null, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(null, in, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(null, in, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(null, in, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(null, in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(in, null, null, null, null, null, null, null, null, null, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(in, null, null, null, null, null, null, null, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(in, null, null, null, null, null, null, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(in, null, null, null, null, null, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(in, null, null, null, null, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(in, null, null, null, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(in, null, null, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(in, null, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(in, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(in, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(in, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object in = source();
 			out = ImmutableList.of(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;of;;;ArrayElement of Argument[12];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Object[] in = newWithArrayElement(source());
 			out = ImmutableList.of(null, null, null, null, null, null, null, null, null, null, null, null, in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;reverse;();;Element of Argument[-1];Element of ReturnValue;value"
 			ImmutableList out = null;
 			ImmutableList in = (ImmutableList)newWithElement(source());
 			out = in.reverse();
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;sortedCopyOf;(Comparator,Iterable);;Element of Argument[1];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Iterable in = (Iterable)newWithElement(source());
 			out = ImmutableList.sortedCopyOf(null, in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;sortedCopyOf;(Iterable);;Element of Argument[0];Element of ReturnValue;value"
 			ImmutableList out = null;
 			Iterable in = (Iterable)newWithElement(source());
 			out = ImmutableList.sortedCopyOf(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableList;true;subList;(int,int);;Element of Argument[-1];Element of ReturnValue;value"
 			ImmutableList out = null;
 			ImmutableList in = (ImmutableList)newWithElement(source());
 			out = in.subList(0, 0);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableMap$Builder;true;build;();;MapKey of Argument[-1];MapKey of ReturnValue;value"
@@ -2580,371 +2587,371 @@ public class Test {
 			ImmutableSortedMultiset.Builder out = null;
 			Object in = source();
 			out.addCopies(in, 0);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableMultiset$Builder;true;addCopies;(Object,int);;Argument[0];Element of Argument[-1];value"
 			ImmutableMultiset.Builder out = null;
 			Object in = source();
 			out.addCopies(in, 0);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableMultiset;true;copyOf;(Iterable);;Element of Argument[0];Element of ReturnValue;value"
 			ImmutableMultiset out = null;
 			Iterable in = (Iterable)newWithElement(source());
 			out = ImmutableMultiset.copyOf(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableMultiset;true;copyOf;(Iterator);;Element of Argument[0];Element of ReturnValue;value"
 			ImmutableMultiset out = null;
 			Iterator in = (Iterator)newWithElement(source());
 			out = ImmutableMultiset.copyOf(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableMultiset;true;copyOf;(Object[]);;ArrayElement of Argument[0];Element of ReturnValue;value"
 			ImmutableMultiset out = null;
 			Object[] in = newWithArrayElement(source());
 			out = ImmutableMultiset.copyOf(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableMultiset out = null;
 			Object in = source();
 			out = ImmutableMultiset.of(null, null, null, null, null, in, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableMultiset out = null;
 			Object in = source();
 			out = ImmutableMultiset.of(null, null, null, null, in, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableMultiset out = null;
 			Object in = source();
 			out = ImmutableMultiset.of(null, null, null, null, in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableMultiset out = null;
 			Object in = source();
 			out = ImmutableMultiset.of(null, null, null, in, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableMultiset out = null;
 			Object in = source();
 			out = ImmutableMultiset.of(null, null, null, in, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableMultiset out = null;
 			Object in = source();
 			out = ImmutableMultiset.of(null, null, null, in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableMultiset out = null;
 			Object in = source();
 			out = ImmutableMultiset.of(null, null, in, null, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableMultiset out = null;
 			Object in = source();
 			out = ImmutableMultiset.of(null, null, in, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableMultiset out = null;
 			Object in = source();
 			out = ImmutableMultiset.of(null, null, in, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableMultiset out = null;
 			Object in = source();
 			out = ImmutableMultiset.of(null, null, in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableMultiset out = null;
 			Object in = source();
 			out = ImmutableMultiset.of(null, in, null, null, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableMultiset out = null;
 			Object in = source();
 			out = ImmutableMultiset.of(null, in, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableMultiset out = null;
 			Object in = source();
 			out = ImmutableMultiset.of(null, in, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableMultiset out = null;
 			Object in = source();
 			out = ImmutableMultiset.of(null, in, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableMultiset out = null;
 			Object in = source();
 			out = ImmutableMultiset.of(null, in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableMultiset out = null;
 			Object in = source();
 			out = ImmutableMultiset.of(in, null, null, null, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableMultiset out = null;
 			Object in = source();
 			out = ImmutableMultiset.of(in, null, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableMultiset out = null;
 			Object in = source();
 			out = ImmutableMultiset.of(in, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableMultiset out = null;
 			Object in = source();
 			out = ImmutableMultiset.of(in, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableMultiset out = null;
 			Object in = source();
 			out = ImmutableMultiset.of(in, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableMultiset out = null;
 			Object in = source();
 			out = ImmutableMultiset.of(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableMultiset;true;of;;;ArrayElement of Argument[6];Element of ReturnValue;value"
 			ImmutableMultiset out = null;
 			Object[] in = newWithArrayElement(source());
 			out = ImmutableMultiset.of(null, null, null, null, null, null, in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSet;true;copyOf;(Collection);;Element of Argument[0];Element of ReturnValue;value"
 			ImmutableSet out = null;
 			Collection in = (Collection)newWithElement(source());
 			out = ImmutableSet.copyOf(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSet;true;copyOf;(Iterable);;Element of Argument[0];Element of ReturnValue;value"
 			ImmutableSet out = null;
 			Iterable in = (Iterable)newWithElement(source());
 			out = ImmutableSet.copyOf(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSet;true;copyOf;(Iterator);;Element of Argument[0];Element of ReturnValue;value"
 			ImmutableSet out = null;
 			Iterator in = (Iterator)newWithElement(source());
 			out = ImmutableSet.copyOf(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSet;true;copyOf;(Object[]);;ArrayElement of Argument[0];Element of ReturnValue;value"
 			ImmutableSet out = null;
 			Object[] in = newWithArrayElement(source());
 			out = ImmutableSet.copyOf(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSet;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableSet out = null;
 			Object in = source();
 			out = ImmutableSet.of(null, null, null, null, null, in, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSet;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableSet out = null;
 			Object in = source();
 			out = ImmutableSet.of(null, null, null, null, in, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSet;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableSet out = null;
 			Object in = source();
 			out = ImmutableSet.of(null, null, null, null, in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSet;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableSet out = null;
 			Object in = source();
 			out = ImmutableSet.of(null, null, null, in, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSet;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableSet out = null;
 			Object in = source();
 			out = ImmutableSet.of(null, null, null, in, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSet;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableSet out = null;
 			Object in = source();
 			out = ImmutableSet.of(null, null, null, in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSet;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableSet out = null;
 			Object in = source();
 			out = ImmutableSet.of(null, null, in, null, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSet;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableSet out = null;
 			Object in = source();
 			out = ImmutableSet.of(null, null, in, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSet;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableSet out = null;
 			Object in = source();
 			out = ImmutableSet.of(null, null, in, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSet;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableSet out = null;
 			Object in = source();
 			out = ImmutableSet.of(null, null, in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSet;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableSet out = null;
 			Object in = source();
 			out = ImmutableSet.of(null, in, null, null, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSet;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableSet out = null;
 			Object in = source();
 			out = ImmutableSet.of(null, in, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSet;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableSet out = null;
 			Object in = source();
 			out = ImmutableSet.of(null, in, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSet;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableSet out = null;
 			Object in = source();
 			out = ImmutableSet.of(null, in, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSet;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableSet out = null;
 			Object in = source();
 			out = ImmutableSet.of(null, in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSet;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableSet out = null;
 			Object in = source();
 			out = ImmutableSet.of(in, null, null, null, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSet;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableSet out = null;
 			Object in = source();
 			out = ImmutableSet.of(in, null, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSet;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableSet out = null;
 			Object in = source();
 			out = ImmutableSet.of(in, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSet;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableSet out = null;
 			Object in = source();
 			out = ImmutableSet.of(in, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSet;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableSet out = null;
 			Object in = source();
 			out = ImmutableSet.of(in, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSet;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableSet out = null;
 			Object in = source();
 			out = ImmutableSet.of(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSet;true;of;;;ArrayElement of Argument[6];Element of ReturnValue;value"
 			ImmutableSet out = null;
 			Object[] in = newWithArrayElement(source());
 			out = ImmutableSet.of(null, null, null, null, null, null, in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSortedMap;true;copyOf;(Iterable);;MapKey of Element of Argument[0];MapKey of ReturnValue;value"
@@ -3231,406 +3238,406 @@ public class Test {
 			ImmutableSortedMultiset out = null;
 			Comparable[] in = newWithArrayElement(source());
 			out = ImmutableSortedMultiset.copyOf(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSortedMultiset;true;copyOf;(Comparator,Iterable);;Element of Argument[1];Element of ReturnValue;value"
 			ImmutableSortedMultiset out = null;
 			Iterable in = (Iterable)newWithElement(source());
 			out = ImmutableSortedMultiset.copyOf((Comparator)null, in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSortedMultiset;true;copyOf;(Comparator,Iterator);;Element of Argument[1];Element of ReturnValue;value"
 			ImmutableSortedMultiset out = null;
 			Iterator in = (Iterator)newWithElement(source());
 			out = ImmutableSortedMultiset.copyOf((Comparator)null, in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSortedMultiset;true;copyOf;(Iterable);;Element of Argument[0];Element of ReturnValue;value"
 			ImmutableSortedMultiset out = null;
 			Iterable in = (Iterable)newWithElement(source());
 			out = ImmutableSortedMultiset.copyOf(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSortedMultiset;true;copyOf;(Iterator);;Element of Argument[0];Element of ReturnValue;value"
 			ImmutableSortedMultiset out = null;
 			Iterator in = (Iterator)newWithElement(source());
 			out = ImmutableSortedMultiset.copyOf(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSortedMultiset;true;copyOfSorted;(SortedMultiset);;Element of Argument[0];Element of ReturnValue;value"
 			ImmutableSortedMultiset out = null;
 			SortedMultiset in = (SortedMultiset)newWithElement(source());
 			out = ImmutableSortedMultiset.copyOfSorted(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSortedMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableSortedMultiset out = null;
 			Comparable in = source();
 			out = ImmutableSortedMultiset.of(null, null, null, null, null, in, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSortedMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableSortedMultiset out = null;
 			Comparable in = source();
 			out = ImmutableSortedMultiset.of(null, null, null, null, in, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSortedMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableSortedMultiset out = null;
 			Comparable in = source();
 			out = ImmutableSortedMultiset.of(null, null, null, null, in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSortedMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableSortedMultiset out = null;
 			Comparable in = source();
 			out = ImmutableSortedMultiset.of(null, null, null, in, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSortedMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableSortedMultiset out = null;
 			Comparable in = source();
 			out = ImmutableSortedMultiset.of(null, null, null, in, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSortedMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableSortedMultiset out = null;
 			Comparable in = source();
 			out = ImmutableSortedMultiset.of(null, null, null, in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSortedMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableSortedMultiset out = null;
 			Comparable in = source();
 			out = ImmutableSortedMultiset.of(null, null, in, null, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSortedMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableSortedMultiset out = null;
 			Comparable in = source();
 			out = ImmutableSortedMultiset.of(null, null, in, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSortedMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableSortedMultiset out = null;
 			Comparable in = source();
 			out = ImmutableSortedMultiset.of(null, null, in, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSortedMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableSortedMultiset out = null;
 			Comparable in = source();
 			out = ImmutableSortedMultiset.of(null, null, in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSortedMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableSortedMultiset out = null;
 			Comparable in = source();
 			out = ImmutableSortedMultiset.of(null, in, null, null, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSortedMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableSortedMultiset out = null;
 			Comparable in = source();
 			out = ImmutableSortedMultiset.of(null, in, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSortedMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableSortedMultiset out = null;
 			Comparable in = source();
 			out = ImmutableSortedMultiset.of(null, in, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSortedMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableSortedMultiset out = null;
 			Comparable in = source();
 			out = ImmutableSortedMultiset.of(null, in, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSortedMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableSortedMultiset out = null;
 			Comparable in = source();
 			out = ImmutableSortedMultiset.of(null, in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSortedMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableSortedMultiset out = null;
 			Comparable in = source();
 			out = ImmutableSortedMultiset.of(in, null, null, null, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSortedMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableSortedMultiset out = null;
 			Comparable in = source();
 			out = ImmutableSortedMultiset.of(in, null, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSortedMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableSortedMultiset out = null;
 			Comparable in = source();
 			out = ImmutableSortedMultiset.of(in, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSortedMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableSortedMultiset out = null;
 			Comparable in = source();
 			out = ImmutableSortedMultiset.of(in, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSortedMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableSortedMultiset out = null;
 			Comparable in = source();
 			out = ImmutableSortedMultiset.of(in, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSortedMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableSortedMultiset out = null;
 			Comparable in = source();
 			out = ImmutableSortedMultiset.of(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSortedMultiset;true;of;;;ArrayElement of Argument[6];Element of ReturnValue;value"
 			ImmutableSortedMultiset out = null;
 			Comparable[] in = newWithArrayElement(source());
 			out = ImmutableSortedMultiset.of(null, null, null, null, null, null, in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSortedSet;true;copyOf;(Collection);;Element of Argument[0];Element of ReturnValue;value"
 			ImmutableSortedSet out = null;
 			Collection in = (Collection)newWithElement(source());
 			out = ImmutableSortedSet.copyOf(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSortedSet;true;copyOf;(Comparable[]);;ArrayElement of Argument[0];Element of ReturnValue;value"
 			ImmutableSortedSet out = null;
 			Comparable[] in = newWithArrayElement(source());
 			out = ImmutableSortedSet.copyOf(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSortedSet;true;copyOf;(Comparator,Collection);;Element of Argument[1];Element of ReturnValue;value"
 			ImmutableSortedSet out = null;
 			Collection in = (Collection)newWithElement(source());
 			out = ImmutableSortedSet.copyOf((Comparator)null, in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSortedSet;true;copyOf;(Comparator,Iterable);;Element of Argument[1];Element of ReturnValue;value"
 			ImmutableSortedSet out = null;
 			Iterable in = (Iterable)newWithElement(source());
 			out = ImmutableSortedSet.copyOf((Comparator)null, in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSortedSet;true;copyOf;(Comparator,Iterator);;Element of Argument[1];Element of ReturnValue;value"
 			ImmutableSortedSet out = null;
 			Iterator in = (Iterator)newWithElement(source());
 			out = ImmutableSortedSet.copyOf((Comparator)null, in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSortedSet;true;copyOf;(Iterable);;Element of Argument[0];Element of ReturnValue;value"
 			ImmutableSortedSet out = null;
 			Iterable in = (Iterable)newWithElement(source());
 			out = ImmutableSortedSet.copyOf(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSortedSet;true;copyOf;(Iterator);;Element of Argument[0];Element of ReturnValue;value"
 			ImmutableSortedSet out = null;
 			Iterator in = (Iterator)newWithElement(source());
 			out = ImmutableSortedSet.copyOf(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSortedSet;true;copyOfSorted;(SortedSet);;Element of Argument[0];Element of ReturnValue;value"
 			ImmutableSortedSet out = null;
 			SortedSet in = (SortedSet)newWithElement(source());
 			out = ImmutableSortedSet.copyOfSorted(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSortedSet;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableSortedSet out = null;
 			Comparable in = source();
 			out = ImmutableSortedSet.of(null, null, null, null, null, in, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSortedSet;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableSortedSet out = null;
 			Comparable in = source();
 			out = ImmutableSortedSet.of(null, null, null, null, in, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSortedSet;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableSortedSet out = null;
 			Comparable in = source();
 			out = ImmutableSortedSet.of(null, null, null, null, in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSortedSet;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableSortedSet out = null;
 			Comparable in = source();
 			out = ImmutableSortedSet.of(null, null, null, in, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSortedSet;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableSortedSet out = null;
 			Comparable in = source();
 			out = ImmutableSortedSet.of(null, null, null, in, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSortedSet;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableSortedSet out = null;
 			Comparable in = source();
 			out = ImmutableSortedSet.of(null, null, null, in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSortedSet;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableSortedSet out = null;
 			Comparable in = source();
 			out = ImmutableSortedSet.of(null, null, in, null, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSortedSet;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableSortedSet out = null;
 			Comparable in = source();
 			out = ImmutableSortedSet.of(null, null, in, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSortedSet;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableSortedSet out = null;
 			Comparable in = source();
 			out = ImmutableSortedSet.of(null, null, in, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSortedSet;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableSortedSet out = null;
 			Comparable in = source();
 			out = ImmutableSortedSet.of(null, null, in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSortedSet;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableSortedSet out = null;
 			Comparable in = source();
 			out = ImmutableSortedSet.of(null, in, null, null, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSortedSet;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableSortedSet out = null;
 			Comparable in = source();
 			out = ImmutableSortedSet.of(null, in, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSortedSet;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableSortedSet out = null;
 			Comparable in = source();
 			out = ImmutableSortedSet.of(null, in, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSortedSet;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableSortedSet out = null;
 			Comparable in = source();
 			out = ImmutableSortedSet.of(null, in, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSortedSet;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableSortedSet out = null;
 			Comparable in = source();
 			out = ImmutableSortedSet.of(null, in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSortedSet;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableSortedSet out = null;
 			Comparable in = source();
 			out = ImmutableSortedSet.of(in, null, null, null, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSortedSet;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableSortedSet out = null;
 			Comparable in = source();
 			out = ImmutableSortedSet.of(in, null, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSortedSet;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableSortedSet out = null;
 			Comparable in = source();
 			out = ImmutableSortedSet.of(in, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSortedSet;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableSortedSet out = null;
 			Comparable in = source();
 			out = ImmutableSortedSet.of(in, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSortedSet;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableSortedSet out = null;
 			Comparable in = source();
 			out = ImmutableSortedSet.of(in, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSortedSet;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableSortedSet out = null;
 			Comparable in = source();
 			out = ImmutableSortedSet.of(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSortedSet;true;of;;;ArrayElement of Argument[6];Element of ReturnValue;value"
 			ImmutableSortedSet out = null;
 			Comparable[] in = newWithArrayElement(source());
 			out = ImmutableSortedSet.of(null, null, null, null, null, null, in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableTable$Builder;true;build;();;MapValue of Argument[-1];MapValue of ReturnValue;value"
@@ -3798,119 +3805,119 @@ public class Test {
 			Collection out = null;
 			Iterable in = (Iterable)newWithElement(source());
 			Iterables.addAll(out, in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterables;false;concat;(Iterable);;Element of Element of Argument[0];Element of ReturnValue;value"
 			Iterable out = null;
 			Iterable in = (Iterable)newWithElement(newWithElement(source()));
 			out = Iterables.concat(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterables;false;concat;(Iterable,Iterable);;Element of Argument[0..1];Element of ReturnValue;value"
 			Iterable out = null;
 			Iterable in = (Iterable)newWithElement(source());
 			out = Iterables.concat(null, in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterables;false;concat;(Iterable,Iterable);;Element of Argument[0..1];Element of ReturnValue;value"
 			Iterable out = null;
 			Iterable in = (Iterable)newWithElement(source());
 			out = Iterables.concat(in, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterables;false;concat;(Iterable,Iterable,Iterable);;Element of Argument[0..2];Element of ReturnValue;value"
 			Iterable out = null;
 			Iterable in = (Iterable)newWithElement(source());
 			out = Iterables.concat(null, null, in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterables;false;concat;(Iterable,Iterable,Iterable);;Element of Argument[0..2];Element of ReturnValue;value"
 			Iterable out = null;
 			Iterable in = (Iterable)newWithElement(source());
 			out = Iterables.concat(null, in, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterables;false;concat;(Iterable,Iterable,Iterable);;Element of Argument[0..2];Element of ReturnValue;value"
 			Iterable out = null;
 			Iterable in = (Iterable)newWithElement(source());
 			out = Iterables.concat(in, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterables;false;concat;(Iterable,Iterable,Iterable,Iterable);;Element of Argument[0..3];Element of ReturnValue;value"
 			Iterable out = null;
 			Iterable in = (Iterable)newWithElement(source());
 			out = Iterables.concat(null, null, null, in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterables;false;concat;(Iterable,Iterable,Iterable,Iterable);;Element of Argument[0..3];Element of ReturnValue;value"
 			Iterable out = null;
 			Iterable in = (Iterable)newWithElement(source());
 			out = Iterables.concat(null, null, in, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterables;false;concat;(Iterable,Iterable,Iterable,Iterable);;Element of Argument[0..3];Element of ReturnValue;value"
 			Iterable out = null;
 			Iterable in = (Iterable)newWithElement(source());
 			out = Iterables.concat(null, in, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterables;false;concat;(Iterable,Iterable,Iterable,Iterable);;Element of Argument[0..3];Element of ReturnValue;value"
 			Iterable out = null;
 			Iterable in = (Iterable)newWithElement(source());
 			out = Iterables.concat(in, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterables;false;concat;(Iterable[]);;Element of ArrayElement of Argument[0];Element of ReturnValue;value"
 			Iterable out = null;
 			Iterable[] in = (Iterable[])newWithArrayElement(newWithElement(source()));
 			out = Iterables.concat(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterables;false;consumingIterable;(Iterable);;Element of Argument[0];Element of ReturnValue;value"
 			Iterable out = null;
 			Iterable in = (Iterable)newWithElement(source());
 			out = Iterables.consumingIterable(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterables;false;cycle;(Iterable);;Element of Argument[0];Element of ReturnValue;value"
 			Iterable out = null;
 			Iterable in = (Iterable)newWithElement(source());
 			out = Iterables.cycle(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterables;false;cycle;(Object[]);;ArrayElement of Argument[0];Element of ReturnValue;value"
 			Iterable out = null;
 			Object[] in = newWithArrayElement(source());
 			out = Iterables.cycle(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterables;false;filter;(Iterable,Class);;Element of Argument[0];Element of ReturnValue;value"
 			Iterable out = null;
 			Iterable in = (Iterable)newWithElement(source());
 			out = Iterables.filter(in, (Class)null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterables;false;filter;(Iterable,Predicate);;Element of Argument[0];Element of ReturnValue;value"
 			Iterable out = null;
 			Iterable in = (Iterable)newWithElement(source());
 			out = Iterables.filter(in, (Predicate)null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterables;false;find;(Iterable,Predicate);;Element of Argument[0];ReturnValue;value"
@@ -3920,11 +3927,11 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "com.google.common.collect;Iterables;false;find;(Iterable,Predicate,Object);;Argument[2];Element of ReturnValue;value"
+			// "com.google.common.collect;Iterables;false;find;(Iterable,Predicate,Object);;Argument[2];ReturnValue;value"
 			Object out = null;
 			Object in = source();
 			out = Iterables.find(null, null, in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(out); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterables;false;find;(Iterable,Predicate,Object);;Element of Argument[0];ReturnValue;value"
@@ -3941,11 +3948,11 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "com.google.common.collect;Iterables;false;get;(Iterable,int,Object);;Argument[2];Element of ReturnValue;value"
+			// "com.google.common.collect;Iterables;false;get;(Iterable,int,Object);;Argument[2];ReturnValue;value"
 			Object out = null;
 			Object in = source();
 			out = Iterables.get(null, 0, in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(out); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterables;false;get;(Iterable,int,Object);;Element of Argument[0];ReturnValue;value"
@@ -3962,11 +3969,11 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "com.google.common.collect;Iterables;false;getLast;(Iterable,Object);;Argument[1];Element of ReturnValue;value"
+			// "com.google.common.collect;Iterables;false;getLast;(Iterable,Object);;Argument[1];ReturnValue;value"
 			Object out = null;
 			Object in = source();
 			out = Iterables.getLast(null, in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(out); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterables;false;getLast;(Iterable,Object);;Element of Argument[0];ReturnValue;value"
@@ -3983,11 +3990,11 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "com.google.common.collect;Iterables;false;getOnlyElement;(Iterable,Object);;Argument[1];Element of ReturnValue;value"
+			// "com.google.common.collect;Iterables;false;getOnlyElement;(Iterable,Object);;Argument[1];ReturnValue;value"
 			Object out = null;
 			Object in = source();
 			out = Iterables.getOnlyElement(null, in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(out); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterables;false;getOnlyElement;(Iterable,Object);;Element of Argument[0];ReturnValue;value"
@@ -4001,35 +4008,35 @@ public class Test {
 			Iterable out = null;
 			Iterable in = (Iterable)newWithElement(source());
 			out = Iterables.limit(in, 0);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterables;false;mergeSorted;(Iterable,Comparator);;Element of Element of Argument[0];Element of ReturnValue;value"
 			Iterable out = null;
 			Iterable in = (Iterable)newWithElement(newWithElement(source()));
 			out = Iterables.mergeSorted(in, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterables;false;paddedPartition;(Iterable,int);;Element of Element of Argument[0];Element of ReturnValue;value"
 			Iterable out = null;
 			Iterable in = (Iterable)newWithElement(newWithElement(source()));
 			out = Iterables.paddedPartition(in, 0);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterables;false;partition;(Iterable,int);;Element of Element of Argument[0];Element of ReturnValue;value"
 			Iterable out = null;
 			Iterable in = (Iterable)newWithElement(newWithElement(source()));
 			out = Iterables.partition(in, 0);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterables;false;skip;(Iterable,int);;Element of Argument[0];Element of ReturnValue;value"
 			Iterable out = null;
 			Iterable in = (Iterable)newWithElement(source());
 			out = Iterables.skip(in, 0);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterables;false;toArray;(Iterable,Class);;Element of Argument[0];ArrayElement of ReturnValue;value"
@@ -4050,147 +4057,147 @@ public class Test {
 			Optional out = null;
 			Iterable in = (Iterable)newWithElement(source());
 			out = Iterables.tryFind(in, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterables;false;unmodifiableIterable;(ImmutableCollection);;Element of Argument[0];Element of ReturnValue;value"
 			Iterable out = null;
 			ImmutableCollection in = (ImmutableCollection)newWithElement(source());
 			out = Iterables.unmodifiableIterable(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterables;false;unmodifiableIterable;(Iterable);;Element of Argument[0];Element of ReturnValue;value"
 			Iterable out = null;
 			Iterable in = (Iterable)newWithElement(source());
 			out = Iterables.unmodifiableIterable(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterators;false;addAll;(Collection,Iterator);;Element of Argument[1];Element of Argument[0];value"
 			Collection out = null;
 			Iterator in = (Iterator)newWithElement(source());
 			Iterators.addAll(out, in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterators;false;asEnumeration;(Iterator);;Element of Argument[0];Element of ReturnValue;value"
 			Enumeration out = null;
 			Iterator in = (Iterator)newWithElement(source());
 			out = Iterators.asEnumeration(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterators;false;concat;(Iterator);;Element of Element of Argument[0];Element of ReturnValue;value"
 			Iterator out = null;
 			Iterator in = (Iterator)newWithElement(newWithElement(source()));
 			out = Iterators.concat(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterators;false;concat;(Iterator,Iterator);;Element of Argument[0..1];Element of ReturnValue;value"
 			Iterator out = null;
 			Iterator in = (Iterator)newWithElement(source());
 			out = Iterators.concat(null, in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterators;false;concat;(Iterator,Iterator);;Element of Argument[0..1];Element of ReturnValue;value"
 			Iterator out = null;
 			Iterator in = (Iterator)newWithElement(source());
 			out = Iterators.concat(in, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterators;false;concat;(Iterator,Iterator,Iterator);;Element of Argument[0..2];Element of ReturnValue;value"
 			Iterator out = null;
 			Iterator in = (Iterator)newWithElement(source());
 			out = Iterators.concat(null, null, in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterators;false;concat;(Iterator,Iterator,Iterator);;Element of Argument[0..2];Element of ReturnValue;value"
 			Iterator out = null;
 			Iterator in = (Iterator)newWithElement(source());
 			out = Iterators.concat(null, in, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterators;false;concat;(Iterator,Iterator,Iterator);;Element of Argument[0..2];Element of ReturnValue;value"
 			Iterator out = null;
 			Iterator in = (Iterator)newWithElement(source());
 			out = Iterators.concat(in, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterators;false;concat;(Iterator,Iterator,Iterator,Iterator);;Element of Argument[0..3];Element of ReturnValue;value"
 			Iterator out = null;
 			Iterator in = (Iterator)newWithElement(source());
 			out = Iterators.concat(null, null, null, in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterators;false;concat;(Iterator,Iterator,Iterator,Iterator);;Element of Argument[0..3];Element of ReturnValue;value"
 			Iterator out = null;
 			Iterator in = (Iterator)newWithElement(source());
 			out = Iterators.concat(null, null, in, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterators;false;concat;(Iterator,Iterator,Iterator,Iterator);;Element of Argument[0..3];Element of ReturnValue;value"
 			Iterator out = null;
 			Iterator in = (Iterator)newWithElement(source());
 			out = Iterators.concat(null, in, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterators;false;concat;(Iterator,Iterator,Iterator,Iterator);;Element of Argument[0..3];Element of ReturnValue;value"
 			Iterator out = null;
 			Iterator in = (Iterator)newWithElement(source());
 			out = Iterators.concat(in, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterators;false;concat;(Iterator[]);;Element of ArrayElement of Argument[0];Element of ReturnValue;value"
 			Iterator out = null;
 			Iterator[] in = (Iterator[])newWithArrayElement(newWithElement(source()));
 			out = Iterators.concat(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterators;false;consumingIterator;(Iterator);;Element of Argument[0];Element of ReturnValue;value"
 			Iterator out = null;
 			Iterator in = (Iterator)newWithElement(source());
 			out = Iterators.consumingIterator(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterators;false;cycle;(Iterable);;Element of Argument[0];Element of ReturnValue;value"
 			Iterator out = null;
 			Iterable in = (Iterable)newWithElement(source());
 			out = Iterators.cycle(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterators;false;cycle;(Object[]);;ArrayElement of Argument[0];Element of ReturnValue;value"
 			Iterator out = null;
 			Object[] in = newWithArrayElement(source());
 			out = Iterators.cycle(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterators;false;filter;(Iterator,Class);;Element of Argument[0];Element of ReturnValue;value"
 			UnmodifiableIterator out = null;
 			Iterator in = (Iterator)newWithElement(source());
 			out = Iterators.filter(in, (Class)null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterators;false;filter;(Iterator,Predicate);;Element of Argument[0];Element of ReturnValue;value"
 			UnmodifiableIterator out = null;
 			Iterator in = (Iterator)newWithElement(source());
 			out = Iterators.filter(in, (Predicate)null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterators;false;find;(Iterator,Predicate);;Element of Argument[0];ReturnValue;value"
@@ -4200,11 +4207,11 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "com.google.common.collect;Iterators;false;find;(Iterator,Predicate,Object);;Argument[2];Element of ReturnValue;value"
+			// "com.google.common.collect;Iterators;false;find;(Iterator,Predicate,Object);;Argument[2];ReturnValue;value"
 			Object out = null;
 			Object in = source();
 			out = Iterators.find(null, null, in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(out); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterators;false;find;(Iterator,Predicate,Object);;Element of Argument[0];ReturnValue;value"
@@ -4218,14 +4225,14 @@ public class Test {
 			UnmodifiableIterator out = null;
 			Object[] in = newWithArrayElement(source());
 			out = Iterators.forArray(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterators;false;forEnumeration;(Enumeration);;Element of Argument[0];Element of ReturnValue;value"
 			UnmodifiableIterator out = null;
 			Enumeration in = (Enumeration)newWithElement(source());
 			out = Iterators.forEnumeration(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterators;false;get;(Iterator,int);;Element of Argument[0];ReturnValue;value"
@@ -4235,11 +4242,11 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "com.google.common.collect;Iterators;false;get;(Iterator,int,Object);;Argument[2];Element of ReturnValue;value"
+			// "com.google.common.collect;Iterators;false;get;(Iterator,int,Object);;Argument[2];ReturnValue;value"
 			Object out = null;
 			Object in = source();
 			out = Iterators.get(null, 0, in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(out); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterators;false;get;(Iterator,int,Object);;Element of Argument[0];ReturnValue;value"
@@ -4256,11 +4263,11 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "com.google.common.collect;Iterators;false;getLast;(Iterator,Object);;Argument[1];Element of ReturnValue;value"
+			// "com.google.common.collect;Iterators;false;getLast;(Iterator,Object);;Argument[1];ReturnValue;value"
 			Object out = null;
 			Object in = source();
 			out = Iterators.getLast(null, in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(out); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterators;false;getLast;(Iterator,Object);;Element of Argument[0];ReturnValue;value"
@@ -4270,11 +4277,11 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "com.google.common.collect;Iterators;false;getNext;(Iterator,Object);;Argument[1];Element of ReturnValue;value"
+			// "com.google.common.collect;Iterators;false;getNext;(Iterator,Object);;Argument[1];ReturnValue;value"
 			Object out = null;
 			Object in = source();
 			out = Iterators.getNext(null, in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(out); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterators;false;getNext;(Iterator,Object);;Element of Argument[0];ReturnValue;value"
@@ -4291,11 +4298,11 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "com.google.common.collect;Iterators;false;getOnlyElement;(Iterator,Object);;Argument[1];Element of ReturnValue;value"
+			// "com.google.common.collect;Iterators;false;getOnlyElement;(Iterator,Object);;Argument[1];ReturnValue;value"
 			Object out = null;
 			Object in = source();
 			out = Iterators.getOnlyElement(null, in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(out); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterators;false;getOnlyElement;(Iterator,Object);;Element of Argument[0];ReturnValue;value"
@@ -4309,49 +4316,49 @@ public class Test {
 			Iterator out = null;
 			Iterator in = (Iterator)newWithElement(source());
 			out = Iterators.limit(in, 0);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterators;false;mergeSorted;(Iterable,Comparator);;Element of Element of Argument[0];Element of ReturnValue;value"
 			UnmodifiableIterator out = null;
 			Iterable in = (Iterable)newWithElement(newWithElement(source()));
 			out = Iterators.mergeSorted(in, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterators;false;paddedPartition;(Iterator,int);;Element of Element of Argument[0];Element of ReturnValue;value"
 			UnmodifiableIterator out = null;
 			Iterator in = (Iterator)newWithElement(newWithElement(source()));
 			out = Iterators.paddedPartition(in, 0);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterators;false;partition;(Iterator,int);;Element of Element of Argument[0];Element of ReturnValue;value"
 			UnmodifiableIterator out = null;
 			Iterator in = (Iterator)newWithElement(newWithElement(source()));
 			out = Iterators.partition(in, 0);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterators;false;peekingIterator;(Iterator);;Element of Argument[0];Element of ReturnValue;value"
 			PeekingIterator out = null;
 			Iterator in = (Iterator)newWithElement(source());
 			out = Iterators.peekingIterator(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterators;false;peekingIterator;(PeekingIterator);;Element of Argument[0];Element of ReturnValue;value"
 			PeekingIterator out = null;
 			PeekingIterator in = (PeekingIterator)newWithElement(source());
 			out = Iterators.peekingIterator(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterators;false;singletonIterator;(Object);;Argument[0];Element of ReturnValue;value"
 			UnmodifiableIterator out = null;
 			Object in = source();
 			out = Iterators.singletonIterator(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterators;false;toArray;(Iterator,Class);;Element of Argument[0];ArrayElement of ReturnValue;value"
@@ -4372,21 +4379,21 @@ public class Test {
 			Optional out = null;
 			Iterator in = (Iterator)newWithElement(source());
 			out = Iterators.tryFind(in, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterators;false;unmodifiableIterator;(Iterator);;Element of Argument[0];Element of ReturnValue;value"
 			UnmodifiableIterator out = null;
 			Iterator in = (Iterator)newWithElement(source());
 			out = Iterators.unmodifiableIterator(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterators;false;unmodifiableIterator;(UnmodifiableIterator);;Element of Argument[0];Element of ReturnValue;value"
 			UnmodifiableIterator out = null;
 			UnmodifiableIterator in = (UnmodifiableIterator)newWithElement(source());
 			out = Iterators.unmodifiableIterator(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;LinkedHashMultimap;true;create;(Multimap);;MapKey of Argument[0];MapKey of ReturnValue;value"
@@ -4407,7 +4414,7 @@ public class Test {
 			LinkedHashMultiset out = null;
 			Iterable in = (Iterable)newWithElement(source());
 			out = LinkedHashMultiset.create(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;LinkedListMultimap;true;create;(Multimap);;MapKey of Argument[0];MapKey of ReturnValue;value"
@@ -4428,112 +4435,112 @@ public class Test {
 			List out = null;
 			Object in = source();
 			out = Lists.asList(null, in, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Lists;false;asList;(Object,Object,Object[]);;Argument[0..1];Element of ReturnValue;value"
 			List out = null;
 			Object in = source();
 			out = Lists.asList(in, null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Lists;false;asList;(Object,Object,Object[]);;ArrayElement of Argument[2];Element of ReturnValue;value"
 			List out = null;
 			Object[] in = newWithArrayElement(source());
 			out = Lists.asList(null, null, in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Lists;false;asList;(Object,Object[]);;Argument[0];Element of ReturnValue;value"
 			List out = null;
 			Object in = source();
 			out = Lists.asList(in, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Lists;false;asList;(Object,Object[]);;ArrayElement of Argument[1];Element of ReturnValue;value"
 			List out = null;
 			Object[] in = newWithArrayElement(source());
 			out = Lists.asList(null, in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Lists;false;cartesianProduct;(List);;Element of Element of Argument[0];Element of Element of ReturnValue;value"
-			List out = null;
+			List<List> out = null;
 			List in = (List)newWithElement(newWithElement(source()));
 			out = Lists.cartesianProduct(in);
-			sink(getElement(getElement(out))); // $ hasValueFlow
+			sink(getElement2(getElement2(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Lists;false;cartesianProduct;(List[]);;Element of ArrayElement of Argument[0];Element of Element of ReturnValue;value"
-			List out = null;
+			List<List> out = null;
 			List[] in = (List[])newWithArrayElement(newWithElement(source()));
 			out = Lists.cartesianProduct(in);
-			sink(getElement(getElement(out))); // $ hasValueFlow
+			sink(getElement2(getElement2(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Lists;false;charactersOf;(CharSequence);;Argument[0];Element of ReturnValue;taint"
 			List out = null;
 			CharSequence in = source();
 			out = Lists.charactersOf(in);
-			sink(getElement(out)); // $ hasTaintFlow
+			sink(getElement2(out)); // $ hasTaintFlow
 		}
 		{
 			// "com.google.common.collect;Lists;false;charactersOf;(String);;Argument[0];Element of ReturnValue;taint"
 			ImmutableList out = null;
 			String in = source();
 			out = Lists.charactersOf(in);
-			sink(getElement(out)); // $ hasTaintFlow
+			sink(getElement2(out)); // $ hasTaintFlow
 		}
 		{
 			// "com.google.common.collect;Lists;false;newArrayList;(Iterable);;Element of Argument[0];Element of ReturnValue;value"
 			ArrayList out = null;
 			Iterable in = (Iterable)newWithElement(source());
 			out = Lists.newArrayList(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Lists;false;newArrayList;(Iterator);;Element of Argument[0];Element of ReturnValue;value"
 			ArrayList out = null;
 			Iterator in = (Iterator)newWithElement(source());
 			out = Lists.newArrayList(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Lists;false;newArrayList;(Object[]);;ArrayElement of Argument[0];Element of ReturnValue;value"
 			ArrayList out = null;
 			Object[] in = newWithArrayElement(source());
 			out = Lists.newArrayList(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Lists;false;newCopyOnWriteArrayList;(Iterable);;Element of Argument[0];Element of ReturnValue;value"
 			CopyOnWriteArrayList out = null;
 			Iterable in = (Iterable)newWithElement(source());
 			out = Lists.newCopyOnWriteArrayList(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Lists;false;newLinkedList;(Iterable);;Element of Argument[0];Element of ReturnValue;value"
 			LinkedList out = null;
 			Iterable in = (Iterable)newWithElement(source());
 			out = Lists.newLinkedList(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Lists;false;partition;(List,int);;Element of Argument[0];Element of Element of ReturnValue;value"
-			List out = null;
+			List<List> out = null;
 			List in = (List)newWithElement(source());
 			out = Lists.partition(in, 0);
-			sink(getElement(getElement(out))); // $ hasValueFlow
+			sink(getElement2(getElement2(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Lists;false;reverse;(List);;Element of Argument[0];Element of ReturnValue;value"
 			List out = null;
 			List in = (List)newWithElement(source());
 			out = Lists.reverse(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;MapDifference$ValueDifference;true;leftValue;();;SyntheticField[com.google.common.collect.MapDifference.left] of Argument[-1];ReturnValue;value"
@@ -5268,189 +5275,189 @@ public class Test {
 			Set out = null;
 			SetMultimap in = (SetMultimap)newWithMapKey(source());
 			out = in.entries();
-			sink(getMapKey(getElement(out))); // $ hasValueFlow
+			sink(getMapKey(getElement2(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multimap;true;entries;();;MapKey of Argument[-1];MapKey of Element of ReturnValue;value"
 			Set out = null;
 			LinkedHashMultimap in = (LinkedHashMultimap)newWithMapKey(source());
 			out = in.entries();
-			sink(getMapKey(getElement(out))); // $ hasValueFlow
+			sink(getMapKey(getElement2(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multimap;true;entries;();;MapKey of Argument[-1];MapKey of Element of ReturnValue;value"
 			List out = null;
 			LinkedListMultimap in = (LinkedListMultimap)newWithMapKey(source());
 			out = in.entries();
-			sink(getMapKey(getElement(out))); // $ hasValueFlow
+			sink(getMapKey(getElement2(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multimap;true;entries;();;MapKey of Argument[-1];MapKey of Element of ReturnValue;value"
 			ImmutableSet out = null;
 			ImmutableSetMultimap in = (ImmutableSetMultimap)newWithMapKey(source());
 			out = in.entries();
-			sink(getMapKey(getElement(out))); // $ hasValueFlow
+			sink(getMapKey(getElement2(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multimap;true;entries;();;MapKey of Argument[-1];MapKey of Element of ReturnValue;value"
 			ImmutableCollection out = null;
 			ImmutableMultimap in = (ImmutableMultimap)newWithMapKey(source());
 			out = in.entries();
-			sink(getMapKey(getElement(out))); // $ hasValueFlow
+			sink(getMapKey(getElement2(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multimap;true;entries;();;MapKey of Argument[-1];MapKey of Element of ReturnValue;value"
 			Collection out = null;
 			Multimap in = (Multimap)newWithMapKey(source());
 			out = in.entries();
-			sink(getMapKey(getElement(out))); // $ hasValueFlow
+			sink(getMapKey(getElement2(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multimap;true;entries;();;MapValue of Argument[-1];MapValue of Element of ReturnValue;value"
 			Set out = null;
 			SetMultimap in = (SetMultimap)newWithMapValue(source());
 			out = in.entries();
-			sink(getMapValue(getElement(out))); // $ hasValueFlow
+			sink(getMapValue(getElement2(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multimap;true;entries;();;MapValue of Argument[-1];MapValue of Element of ReturnValue;value"
 			Set out = null;
 			LinkedHashMultimap in = (LinkedHashMultimap)newWithMapValue(source());
 			out = in.entries();
-			sink(getMapValue(getElement(out))); // $ hasValueFlow
+			sink(getMapValue(getElement2(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multimap;true;entries;();;MapValue of Argument[-1];MapValue of Element of ReturnValue;value"
 			List out = null;
 			LinkedListMultimap in = (LinkedListMultimap)newWithMapValue(source());
 			out = in.entries();
-			sink(getMapValue(getElement(out))); // $ hasValueFlow
+			sink(getMapValue(getElement2(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multimap;true;entries;();;MapValue of Argument[-1];MapValue of Element of ReturnValue;value"
 			ImmutableSet out = null;
 			ImmutableSetMultimap in = (ImmutableSetMultimap)newWithMapValue(source());
 			out = in.entries();
-			sink(getMapValue(getElement(out))); // $ hasValueFlow
+			sink(getMapValue(getElement2(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multimap;true;entries;();;MapValue of Argument[-1];MapValue of Element of ReturnValue;value"
 			ImmutableCollection out = null;
 			ImmutableMultimap in = (ImmutableMultimap)newWithMapValue(source());
 			out = in.entries();
-			sink(getMapValue(getElement(out))); // $ hasValueFlow
+			sink(getMapValue(getElement2(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multimap;true;entries;();;MapValue of Argument[-1];MapValue of Element of ReturnValue;value"
 			Collection out = null;
 			Multimap in = (Multimap)newWithMapValue(source());
 			out = in.entries();
-			sink(getMapValue(getElement(out))); // $ hasValueFlow
+			sink(getMapValue(getElement2(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multimap;true;get;(Object);;MapValue of Argument[-1];Element of ReturnValue;value"
 			SortedSet out = null;
 			SortedSetMultimap in = (SortedSetMultimap)newWithMapValue(source());
 			out = in.get(null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multimap;true;get;(Object);;MapValue of Argument[-1];Element of ReturnValue;value"
 			Set out = null;
 			SetMultimap in = (SetMultimap)newWithMapValue(source());
 			out = in.get(null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multimap;true;get;(Object);;MapValue of Argument[-1];Element of ReturnValue;value"
 			NavigableSet out = null;
 			TreeMultimap in = (TreeMultimap)newWithMapValue(source());
 			out = in.get(null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multimap;true;get;(Object);;MapValue of Argument[-1];Element of ReturnValue;value"
 			List out = null;
 			ListMultimap in = (ListMultimap)newWithMapValue(source());
 			out = in.get(null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multimap;true;get;(Object);;MapValue of Argument[-1];Element of ReturnValue;value"
 			List out = null;
 			LinkedListMultimap in = (LinkedListMultimap)newWithMapValue(source());
 			out = in.get(null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multimap;true;get;(Object);;MapValue of Argument[-1];Element of ReturnValue;value"
 			ImmutableSet out = null;
 			ImmutableSetMultimap in = (ImmutableSetMultimap)newWithMapValue(source());
 			out = in.get(null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multimap;true;get;(Object);;MapValue of Argument[-1];Element of ReturnValue;value"
 			ImmutableList out = null;
 			ImmutableListMultimap in = (ImmutableListMultimap)newWithMapValue(source());
 			out = in.get(null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multimap;true;get;(Object);;MapValue of Argument[-1];Element of ReturnValue;value"
 			ImmutableCollection out = null;
 			ImmutableMultimap in = (ImmutableMultimap)newWithMapValue(source());
 			out = in.get(null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multimap;true;get;(Object);;MapValue of Argument[-1];Element of ReturnValue;value"
 			Collection out = null;
 			Multimap in = (Multimap)newWithMapValue(source());
 			out = in.get(null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multimap;true;keySet;();;MapKey of Argument[-1];Element of ReturnValue;value"
 			Set out = null;
 			Multimap in = (Multimap)newWithMapKey(source());
 			out = in.keySet();
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multimap;true;keySet;();;MapKey of Argument[-1];Element of ReturnValue;value"
 			Set out = null;
 			LinkedHashMultimap in = (LinkedHashMultimap)newWithMapKey(source());
 			out = in.keySet();
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multimap;true;keySet;();;MapKey of Argument[-1];Element of ReturnValue;value"
 			NavigableSet out = null;
 			TreeMultimap in = (TreeMultimap)newWithMapKey(source());
 			out = in.keySet();
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multimap;true;keySet;();;MapKey of Argument[-1];Element of ReturnValue;value"
 			ImmutableSet out = null;
 			ImmutableMultimap in = (ImmutableMultimap)newWithMapKey(source());
 			out = in.keySet();
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multimap;true;keys;();;MapKey of Argument[-1];Element of ReturnValue;value"
 			Multiset out = null;
 			Multimap in = (Multimap)newWithMapKey(source());
 			out = in.keys();
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multimap;true;keys;();;MapKey of Argument[-1];Element of ReturnValue;value"
 			ImmutableMultiset out = null;
 			ImmutableMultimap in = (ImmutableMultimap)newWithMapKey(source());
 			out = in.keys();
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multimap;true;put;(Object,Object);;Argument[0];MapKey of Argument[-1];value"
@@ -5737,91 +5744,91 @@ public class Test {
 			SortedSet out = null;
 			SortedSetMultimap in = (SortedSetMultimap)newWithMapValue(source());
 			out = in.replaceValues(null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multimap;true;replaceValues;(Object,Iterable);;MapValue of Argument[-1];Element of ReturnValue;value"
 			Set out = null;
 			SetMultimap in = (SetMultimap)newWithMapValue(source());
 			out = in.replaceValues(null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multimap;true;replaceValues;(Object,Iterable);;MapValue of Argument[-1];Element of ReturnValue;value"
 			Set out = null;
 			LinkedHashMultimap in = (LinkedHashMultimap)newWithMapValue(source());
 			out = in.replaceValues(null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multimap;true;replaceValues;(Object,Iterable);;MapValue of Argument[-1];Element of ReturnValue;value"
 			List out = null;
 			ListMultimap in = (ListMultimap)newWithMapValue(source());
 			out = in.replaceValues(null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multimap;true;replaceValues;(Object,Iterable);;MapValue of Argument[-1];Element of ReturnValue;value"
 			List out = null;
 			LinkedListMultimap in = (LinkedListMultimap)newWithMapValue(source());
 			out = in.replaceValues(null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multimap;true;replaceValues;(Object,Iterable);;MapValue of Argument[-1];Element of ReturnValue;value"
 			ImmutableSet out = null;
 			ImmutableSetMultimap in = (ImmutableSetMultimap)newWithMapValue(source());
 			out = in.replaceValues(null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multimap;true;replaceValues;(Object,Iterable);;MapValue of Argument[-1];Element of ReturnValue;value"
 			ImmutableList out = null;
 			ImmutableListMultimap in = (ImmutableListMultimap)newWithMapValue(source());
 			out = in.replaceValues(null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multimap;true;replaceValues;(Object,Iterable);;MapValue of Argument[-1];Element of ReturnValue;value"
 			ImmutableCollection out = null;
 			ImmutableMultimap in = (ImmutableMultimap)newWithMapValue(source());
 			out = in.replaceValues(null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multimap;true;replaceValues;(Object,Iterable);;MapValue of Argument[-1];Element of ReturnValue;value"
 			Collection out = null;
 			Multimap in = (Multimap)newWithMapValue(source());
 			out = in.replaceValues(null, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multimap;true;values;();;MapValue of Argument[-1];Element of ReturnValue;value"
 			List out = null;
 			LinkedListMultimap in = (LinkedListMultimap)newWithMapValue(source());
 			out = in.values();
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multimap;true;values;();;MapValue of Argument[-1];Element of ReturnValue;value"
 			ImmutableCollection out = null;
 			ImmutableMultimap in = (ImmutableMultimap)newWithMapValue(source());
 			out = in.values();
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multimap;true;values;();;MapValue of Argument[-1];Element of ReturnValue;value"
 			Collection out = null;
 			Multimap in = (Multimap)newWithMapValue(source());
 			out = in.values();
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multimap;true;values;();;MapValue of Argument[-1];Element of ReturnValue;value"
 			Collection out = null;
 			LinkedHashMultimap in = (LinkedHashMultimap)newWithMapValue(source());
 			out = in.values();
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multimaps;false;asMap;(ListMultimap);;MapKey of Argument[0];MapKey of ReturnValue;value"
@@ -6241,210 +6248,210 @@ public class Test {
 			TreeMultiset out = null;
 			Object in = source();
 			out.add(in, 0);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multiset;true;add;(Object,int);;Argument[0];Element of Argument[-1];value"
 			Multiset out = null;
 			Object in = source();
 			out.add(in, 0);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multiset;true;add;(Object,int);;Argument[0];Element of Argument[-1];value"
 			ImmutableMultiset out = null;
 			Object in = source();
 			out.add(in, 0);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multiset;true;add;(Object,int);;Argument[0];Element of Argument[-1];value"
 			ConcurrentHashMultiset out = null;
 			Object in = source();
 			out.add(in, 0);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multiset;true;elementSet;();;Element of Argument[-1];Element of ReturnValue;value"
 			Set out = null;
 			Multiset in = (Multiset)newWithElement(source());
 			out = in.elementSet();
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multiset;true;elementSet;();;Element of Argument[-1];Element of ReturnValue;value"
 			NavigableSet out = null;
 			SortedMultiset in = (SortedMultiset)newWithElement(source());
 			out = in.elementSet();
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multiset;true;elementSet;();;Element of Argument[-1];Element of ReturnValue;value"
 			ImmutableSortedSet out = null;
 			ImmutableSortedMultiset in = (ImmutableSortedMultiset)newWithElement(source());
 			out = in.elementSet();
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multiset;true;elementSet;();;Element of Argument[-1];Element of ReturnValue;value"
 			ImmutableSet out = null;
 			ImmutableMultiset in = (ImmutableMultiset)newWithElement(source());
 			out = in.elementSet();
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multiset;true;entrySet;();;Element of Argument[-1];Element of Element of ReturnValue;value"
-			Set out = null;
+			Set<Multiset.Entry> out = null;
 			SortedMultiset in = (SortedMultiset)newWithElement(source());
 			out = in.entrySet();
-			sink(getElement(getElement(out))); // $ hasValueFlow
+			sink(getElement2(getElement2(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multiset;true;entrySet;();;Element of Argument[-1];Element of Element of ReturnValue;value"
-			Set out = null;
+			Set<Multiset.Entry> out = null;
 			Multiset in = (Multiset)newWithElement(source());
 			out = in.entrySet();
-			sink(getElement(getElement(out))); // $ hasValueFlow
+			sink(getElement2(getElement2(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multiset;true;entrySet;();;Element of Argument[-1];Element of Element of ReturnValue;value"
-			ImmutableSet out = null;
+			ImmutableSet<Multiset.Entry> out = null;
 			ImmutableMultiset in = (ImmutableMultiset)newWithElement(source());
 			out = in.entrySet();
-			sink(getElement(getElement(out))); // $ hasValueFlow
+			sink(getElement2(getElement2(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multiset;true;setCount;(Object,int);;Argument[0];Element of Argument[-1];value"
 			TreeMultiset out = null;
 			Object in = source();
 			out.setCount(in, 0);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multiset;true;setCount;(Object,int);;Argument[0];Element of Argument[-1];value"
 			Multiset out = null;
 			Object in = source();
 			out.setCount(in, 0);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multiset;true;setCount;(Object,int);;Argument[0];Element of Argument[-1];value"
 			ImmutableMultiset out = null;
 			Object in = source();
 			out.setCount(in, 0);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multiset;true;setCount;(Object,int);;Argument[0];Element of Argument[-1];value"
 			ConcurrentHashMultiset out = null;
 			Object in = source();
 			out.setCount(in, 0);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multiset;true;setCount;(Object,int,int);;Argument[0];Element of Argument[-1];value"
 			TreeMultiset out = null;
 			Object in = source();
 			out.setCount(in, 0, 0);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multiset;true;setCount;(Object,int,int);;Argument[0];Element of Argument[-1];value"
 			Multiset out = null;
 			Object in = source();
 			out.setCount(in, 0, 0);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multiset;true;setCount;(Object,int,int);;Argument[0];Element of Argument[-1];value"
 			ImmutableMultiset out = null;
 			Object in = source();
 			out.setCount(in, 0, 0);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multiset;true;setCount;(Object,int,int);;Argument[0];Element of Argument[-1];value"
 			ConcurrentHashMultiset out = null;
 			Object in = source();
 			out.setCount(in, 0, 0);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multisets;false;copyHighestCountFirst;(Multiset);;Element of Argument[0];Element of ReturnValue;value"
 			ImmutableMultiset out = null;
 			Multiset in = (Multiset)newWithElement(source());
 			out = Multisets.copyHighestCountFirst(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multisets;false;difference;(Multiset,Multiset);;Element of Argument[0];Element of ReturnValue;value"
 			Multiset out = null;
 			Multiset in = (Multiset)newWithElement(source());
 			out = Multisets.difference(in, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multisets;false;filter;(Multiset,Predicate);;Element of Argument[0];Element of ReturnValue;value"
 			Multiset out = null;
 			Multiset in = (Multiset)newWithElement(source());
 			out = Multisets.filter(in, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multisets;false;immutableEntry;(Object,int);;Argument[0];Element of ReturnValue;value"
 			Multiset.Entry out = null;
 			Object in = source();
 			out = Multisets.immutableEntry(in, 0);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multisets;false;sum;(Multiset,Multiset);;Element of Argument[0..1];Element of ReturnValue;value"
 			Multiset out = null;
 			Multiset in = (Multiset)newWithElement(source());
 			out = Multisets.sum(null, in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multisets;false;sum;(Multiset,Multiset);;Element of Argument[0..1];Element of ReturnValue;value"
 			Multiset out = null;
 			Multiset in = (Multiset)newWithElement(source());
 			out = Multisets.sum(in, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multisets;false;union;(Multiset,Multiset);;Element of Argument[0..1];Element of ReturnValue;value"
 			Multiset out = null;
 			Multiset in = (Multiset)newWithElement(source());
 			out = Multisets.union(null, in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multisets;false;union;(Multiset,Multiset);;Element of Argument[0..1];Element of ReturnValue;value"
 			Multiset out = null;
 			Multiset in = (Multiset)newWithElement(source());
 			out = Multisets.union(in, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multisets;false;unmodifiableMultiset;(ImmutableMultiset);;Element of Argument[0];Element of ReturnValue;value"
 			Multiset out = null;
 			ImmutableMultiset in = (ImmutableMultiset)newWithElement(source());
 			out = Multisets.unmodifiableMultiset(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multisets;false;unmodifiableMultiset;(Multiset);;Element of Argument[0];Element of ReturnValue;value"
 			Multiset out = null;
 			Multiset in = (Multiset)newWithElement(source());
 			out = Multisets.unmodifiableMultiset(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multisets;false;unmodifiableSortedMultiset;(SortedMultiset);;Element of Argument[0];Element of ReturnValue;value"
 			SortedMultiset out = null;
 			SortedMultiset in = (SortedMultiset)newWithElement(source());
 			out = Multisets.unmodifiableSortedMultiset(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;MutableClassToInstanceMap;true;create;(Map);;MapKey of Argument[0];MapKey of ReturnValue;value"
@@ -6507,245 +6514,245 @@ public class Test {
 			Collection out = null;
 			BlockingQueue in = (BlockingQueue)newWithElement(source());
 			Queues.drain(in, out, 0, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Queues;false;drain;(BlockingQueue,Collection,int,long,TimeUnit);;Element of Argument[0];Element of Argument[1];value"
 			Collection out = null;
 			BlockingQueue in = (BlockingQueue)newWithElement(source());
 			Queues.drain(in, out, 0, 0L, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Queues;false;newArrayDeque;(Iterable);;Element of Argument[0];Element of ReturnValue;value"
 			ArrayDeque out = null;
 			Iterable in = (Iterable)newWithElement(source());
 			out = Queues.newArrayDeque(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Queues;false;newConcurrentLinkedQueue;(Iterable);;Element of Argument[0];Element of ReturnValue;value"
 			ConcurrentLinkedQueue out = null;
 			Iterable in = (Iterable)newWithElement(source());
 			out = Queues.newConcurrentLinkedQueue(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Queues;false;newLinkedBlockingDeque;(Iterable);;Element of Argument[0];Element of ReturnValue;value"
 			LinkedBlockingDeque out = null;
 			Iterable in = (Iterable)newWithElement(source());
 			out = Queues.newLinkedBlockingDeque(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Queues;false;newLinkedBlockingQueue;(Iterable);;Element of Argument[0];Element of ReturnValue;value"
 			LinkedBlockingQueue out = null;
 			Iterable in = (Iterable)newWithElement(source());
 			out = Queues.newLinkedBlockingQueue(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Queues;false;newPriorityBlockingQueue;(Iterable);;Element of Argument[0];Element of ReturnValue;value"
 			PriorityBlockingQueue out = null;
 			Iterable in = (Iterable)newWithElement(source());
 			out = Queues.newPriorityBlockingQueue(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Queues;false;newPriorityQueue;(Iterable);;Element of Argument[0];Element of ReturnValue;value"
 			PriorityQueue out = null;
 			Iterable in = (Iterable)newWithElement(source());
 			out = Queues.newPriorityQueue(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Queues;false;synchronizedDeque;(Deque);;Element of Argument[0];Element of ReturnValue;value"
 			Deque out = null;
 			Deque in = (Deque)newWithElement(source());
 			out = Queues.synchronizedDeque(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Queues;false;synchronizedQueue;(Queue);;Element of Argument[0];Element of ReturnValue;value"
 			Queue out = null;
 			Queue in = (Queue)newWithElement(source());
 			out = Queues.synchronizedQueue(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Sets$SetView;true;copyInto;(Set);;Element of Argument[-1];Element of Argument[0];value"
 			Set out = null;
 			Sets.SetView in = (Sets.SetView)newWithElement(source());
 			in.copyInto(out);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Sets$SetView;true;immutableCopy;();;Element of Argument[-1];Element of ReturnValue;value"
 			ImmutableSet out = null;
 			Sets.SetView in = (Sets.SetView)newWithElement(source());
 			out = in.immutableCopy();
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Sets;false;cartesianProduct;(List);;Element of Element of Argument[0];Element of Element of ReturnValue;value"
-			Set out = null;
+			Set<Set> out = null;
 			List in = (List)newWithElement(newWithElement(source()));
 			out = Sets.cartesianProduct(in);
-			sink(getElement(getElement(out))); // $ hasValueFlow
+			sink(getElement2(getElement2(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Sets;false;cartesianProduct;(Set[]);;Element of ArrayElement of Argument[0];Element of Element of ReturnValue;value"
-			Set out = null;
+			Set<Set> out = null;
 			Set[] in = (Set[])newWithArrayElement(newWithElement(source()));
 			out = Sets.cartesianProduct(in);
-			sink(getElement(getElement(out))); // $ hasValueFlow
+			sink(getElement2(getElement2(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Sets;false;combinations;(Set,int);;Element of Argument[0];Element of Element of ReturnValue;value"
-			Set out = null;
+			Set<Set> out = null;
 			Set in = (Set)newWithElement(source());
 			out = Sets.combinations(in, 0);
-			sink(getElement(getElement(out))); // $ hasValueFlow
+			sink(getElement2(getElement2(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Sets;false;difference;(Set,Set);;Element of Argument[0];Element of ReturnValue;value"
 			Sets.SetView out = null;
 			Set in = (Set)newWithElement(source());
 			out = Sets.difference(in, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Sets;false;filter;(NavigableSet,Predicate);;Element of Argument[0];Element of ReturnValue;value"
 			NavigableSet out = null;
 			NavigableSet in = (NavigableSet)newWithElement(source());
 			out = Sets.filter(in, (Predicate)null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Sets;false;filter;(Set,Predicate);;Element of Argument[0];Element of ReturnValue;value"
 			Set out = null;
 			Set in = (Set)newWithElement(source());
 			out = Sets.filter(in, (Predicate)null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Sets;false;filter;(SortedSet,Predicate);;Element of Argument[0];Element of ReturnValue;value"
 			SortedSet out = null;
 			SortedSet in = (SortedSet)newWithElement(source());
 			out = Sets.filter(in, (Predicate)null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Sets;false;newConcurrentHashSet;(Iterable);;Element of Argument[0];Element of ReturnValue;value"
 			Set out = null;
 			Iterable in = (Iterable)newWithElement(source());
 			out = Sets.newConcurrentHashSet(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Sets;false;newCopyOnWriteArraySet;(Iterable);;Element of Argument[0];Element of ReturnValue;value"
 			CopyOnWriteArraySet out = null;
 			Iterable in = (Iterable)newWithElement(source());
 			out = Sets.newCopyOnWriteArraySet(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Sets;false;newHashSet;(Iterable);;Element of Argument[0];Element of ReturnValue;value"
 			HashSet out = null;
 			Iterable in = (Iterable)newWithElement(source());
 			out = Sets.newHashSet(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Sets;false;newHashSet;(Iterator);;Element of Argument[0];Element of ReturnValue;value"
 			HashSet out = null;
 			Iterator in = (Iterator)newWithElement(source());
 			out = Sets.newHashSet(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Sets;false;newHashSet;(Object[]);;ArrayElement of Argument[0];Element of ReturnValue;value"
 			HashSet out = null;
 			Object[] in = newWithArrayElement(source());
 			out = Sets.newHashSet(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Sets;false;newLinkedHashSet;(Iterable);;Element of Argument[0];Element of ReturnValue;value"
 			LinkedHashSet out = null;
 			Iterable in = (Iterable)newWithElement(source());
 			out = Sets.newLinkedHashSet(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Sets;false;newSetFromMap;(Map);;MapKey of Argument[0];Element of ReturnValue;value"
 			Set out = null;
 			Map in = (Map)newWithMapKey(source());
 			out = Sets.newSetFromMap(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Sets;false;newTreeSet;(Iterable);;Element of Argument[0];Element of ReturnValue;value"
 			TreeSet out = null;
 			Iterable in = (Iterable)newWithElement(source());
 			out = Sets.newTreeSet(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Sets;false;powerSet;(Set);;Element of Argument[0];Element of Element of ReturnValue;value"
-			Set out = null;
+			Set<Set> out = null;
 			Set in = (Set)newWithElement(source());
 			out = Sets.powerSet(in);
-			sink(getElement(getElement(out))); // $ hasValueFlow
+			sink(getElement2(getElement2(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Sets;false;subSet;(NavigableSet,Range);;Element of Argument[0];Element of ReturnValue;value"
 			NavigableSet out = null;
 			NavigableSet in = (NavigableSet)newWithElement(source());
 			out = Sets.subSet(in, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Sets;false;symmetricDifference;(Set,Set);;Element of Argument[0..1];Element of ReturnValue;value"
 			Sets.SetView out = null;
 			Set in = (Set)newWithElement(source());
 			out = Sets.symmetricDifference(null, in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Sets;false;symmetricDifference;(Set,Set);;Element of Argument[0..1];Element of ReturnValue;value"
 			Sets.SetView out = null;
 			Set in = (Set)newWithElement(source());
 			out = Sets.symmetricDifference(in, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Sets;false;synchronizedNavigableSet;(NavigableSet);;Element of Argument[0];Element of ReturnValue;value"
 			NavigableSet out = null;
 			NavigableSet in = (NavigableSet)newWithElement(source());
 			out = Sets.synchronizedNavigableSet(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Sets;false;union;(Set,Set);;Element of Argument[0..1];Element of ReturnValue;value"
 			Sets.SetView out = null;
 			Set in = (Set)newWithElement(source());
 			out = Sets.union(null, in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Sets;false;union;(Set,Set);;Element of Argument[0..1];Element of ReturnValue;value"
 			Sets.SetView out = null;
 			Set in = (Set)newWithElement(source());
 			out = Sets.union(in, null);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Sets;false;unmodifiableNavigableSet;(NavigableSet);;Element of Argument[0];Element of ReturnValue;value"
 			NavigableSet out = null;
 			NavigableSet in = (NavigableSet)newWithElement(source());
 			out = Sets.unmodifiableNavigableSet(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table$Cell;true;getColumnKey;();;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[-1];ReturnValue;value"
@@ -6773,63 +6780,63 @@ public class Test {
 			Set out = null;
 			Table in = (Table)newWithMapValue(source());
 			out = in.cellSet();
-			sink(getMapValue(getElement(out))); // $ hasValueFlow
+			sink(getMapValue(getElement2(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;cellSet;();;MapValue of Argument[-1];MapValue of Element of ReturnValue;value"
 			Set out = null;
 			ArrayTable in = (ArrayTable)newWithMapValue(source());
 			out = in.cellSet();
-			sink(getMapValue(getElement(out))); // $ hasValueFlow
+			sink(getMapValue(getElement2(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;cellSet;();;MapValue of Argument[-1];MapValue of Element of ReturnValue;value"
 			ImmutableSet out = null;
 			ImmutableTable in = (ImmutableTable)newWithMapValue(source());
 			out = in.cellSet();
-			sink(getMapValue(getElement(out))); // $ hasValueFlow
+			sink(getMapValue(getElement2(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;cellSet;();;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[-1];SyntheticField[com.google.common.collect.Table.columnKey] of Element of ReturnValue;value"
 			Set out = null;
 			Table in = (Table)newWithTable_columnKey(source());
 			out = in.cellSet();
-			sink(getTable_columnKey(getElement(out))); // $ hasValueFlow
+			sink(getTable_columnKey(getElement2(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;cellSet;();;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[-1];SyntheticField[com.google.common.collect.Table.columnKey] of Element of ReturnValue;value"
 			Set out = null;
 			ArrayTable in = (ArrayTable)newWithTable_columnKey(source());
 			out = in.cellSet();
-			sink(getTable_columnKey(getElement(out))); // $ hasValueFlow
+			sink(getTable_columnKey(getElement2(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;cellSet;();;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[-1];SyntheticField[com.google.common.collect.Table.columnKey] of Element of ReturnValue;value"
 			ImmutableSet out = null;
 			ImmutableTable in = (ImmutableTable)newWithTable_columnKey(source());
 			out = in.cellSet();
-			sink(getTable_columnKey(getElement(out))); // $ hasValueFlow
+			sink(getTable_columnKey(getElement2(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;cellSet;();;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[-1];SyntheticField[com.google.common.collect.Table.rowKey] of Element of ReturnValue;value"
 			Set out = null;
 			Table in = (Table)newWithTable_rowKey(source());
 			out = in.cellSet();
-			sink(getTable_rowKey(getElement(out))); // $ hasValueFlow
+			sink(getTable_rowKey(getElement2(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;cellSet;();;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[-1];SyntheticField[com.google.common.collect.Table.rowKey] of Element of ReturnValue;value"
 			Set out = null;
 			ArrayTable in = (ArrayTable)newWithTable_rowKey(source());
 			out = in.cellSet();
-			sink(getTable_rowKey(getElement(out))); // $ hasValueFlow
+			sink(getTable_rowKey(getElement2(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;cellSet;();;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[-1];SyntheticField[com.google.common.collect.Table.rowKey] of Element of ReturnValue;value"
 			ImmutableSet out = null;
 			ImmutableTable in = (ImmutableTable)newWithTable_rowKey(source());
 			out = in.cellSet();
-			sink(getTable_rowKey(getElement(out))); // $ hasValueFlow
+			sink(getTable_rowKey(getElement2(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;column;(Object);;MapValue of Argument[-1];MapValue of ReturnValue;value"
@@ -6878,21 +6885,21 @@ public class Test {
 			Set out = null;
 			Table in = (Table)newWithTable_columnKey(source());
 			out = in.columnKeySet();
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;columnKeySet;();;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[-1];Element of ReturnValue;value"
 			ImmutableSet out = null;
 			ImmutableTable in = (ImmutableTable)newWithTable_columnKey(source());
 			out = in.columnKeySet();
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;columnKeySet;();;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[-1];Element of ReturnValue;value"
 			ImmutableSet out = null;
 			ArrayTable in = (ArrayTable)newWithTable_columnKey(source());
 			out = in.columnKeySet();
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;columnMap;();;MapValue of Argument[-1];MapValue of MapValue of ReturnValue;value"
@@ -7193,35 +7200,35 @@ public class Test {
 			SortedSet out = null;
 			TreeBasedTable in = (TreeBasedTable)newWithTable_rowKey(source());
 			out = in.rowKeySet();
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;rowKeySet;();;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[-1];Element of ReturnValue;value"
 			SortedSet out = null;
 			RowSortedTable in = (RowSortedTable)newWithTable_rowKey(source());
 			out = in.rowKeySet();
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;rowKeySet;();;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[-1];Element of ReturnValue;value"
 			Set out = null;
 			Table in = (Table)newWithTable_rowKey(source());
 			out = in.rowKeySet();
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;rowKeySet;();;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[-1];Element of ReturnValue;value"
 			ImmutableSet out = null;
 			ImmutableTable in = (ImmutableTable)newWithTable_rowKey(source());
 			out = in.rowKeySet();
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;rowKeySet;();;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[-1];Element of ReturnValue;value"
 			ImmutableSet out = null;
 			ArrayTable in = (ArrayTable)newWithTable_rowKey(source());
 			out = in.rowKeySet();
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;rowMap;();;MapValue of Argument[-1];MapValue of MapValue of ReturnValue;value"
@@ -7333,21 +7340,21 @@ public class Test {
 			ImmutableCollection out = null;
 			ImmutableTable in = (ImmutableTable)newWithMapValue(source());
 			out = in.values();
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;values;();;MapValue of Argument[-1];Element of ReturnValue;value"
 			Collection out = null;
 			Table in = (Table)newWithMapValue(source());
 			out = in.values();
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;values;();;MapValue of Argument[-1];Element of ReturnValue;value"
 			Collection out = null;
 			ArrayTable in = (ArrayTable)newWithMapValue(source());
 			out = in.values();
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Tables;false;immutableCell;(Object,Object,Object);;Argument[0];SyntheticField[com.google.common.collect.Table.rowKey] of ReturnValue;value"
@@ -7522,7 +7529,7 @@ public class Test {
 			TreeMultiset out = null;
 			Iterable in = (Iterable)newWithElement(source());
 			out = TreeMultiset.create(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement2(out)); // $ hasValueFlow
 		}
 
 	}
