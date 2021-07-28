@@ -12,7 +12,7 @@
  */
 
 import Clones
-import DOMProperties
+import Expressions.DOMProperties
 
 /**
  * Gets a description of expression `e`, which is assumed to be the left-hand
