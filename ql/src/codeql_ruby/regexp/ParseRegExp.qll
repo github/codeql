@@ -205,26 +205,24 @@ class RegExp extends AST::RegExpLiteral {
     this.namedCharacterProperty(start, end, result)
   }
 
-  /** Matches a POSIX bracket expression such as `[[:alnum:]]` */
+  /** Matches a POSIX bracket expression such as `[:alnum:]` within a character class. */
   private predicate posixStyleNamedCharacterProperty(int start, int end, string name) {
     this.getChar(start) = "[" and
-    this.getChar(start + 1) = "[" and
-    this.getChar(start + 2) = ":" and
+    this.getChar(start + 1) = ":" and
     end =
       min(int e |
         e > start and
-        this.getChar(e - 3) = ":" and
-        this.getChar(e - 2) = "]" and
+        this.getChar(e - 2) = ":" and
         this.getChar(e - 1) = "]"
       |
         e
       ) and
     exists(int nameStart |
-      this.getChar(start + 3) = "^" and nameStart = start + 4
+      this.getChar(start + 2) = "^" and nameStart = start + 3
       or
-      not this.getChar(start + 3) = "^" and nameStart = start + 3
+      not this.getChar(start + 2) = "^" and nameStart = start + 2
     |
-      name = this.getText().substring(nameStart, end - 3)
+      name = this.getText().substring(nameStart, end - 2)
     )
   }
 
@@ -233,6 +231,8 @@ class RegExp extends AST::RegExpLiteral {
    * - `\p{Space}`
    * - `\P{Digit}` upper-case P means inverted
    * - `\p{^Word}` caret also means inverted
+   *
+   * These can occur both inside and outside of character classes.
    */
   private predicate pStyleNamedCharacterProperty(int start, int end, string name) {
     this.escapingChar(start) and
@@ -297,11 +297,22 @@ class RegExp extends AST::RegExpLiteral {
     exists(int x, int y | this.charSet(x, y) and index in [x + 1 .. y - 2])
   }
 
+  predicate inPosixBracket(int index) {
+    exists(int x, int y |
+      this.posixStyleNamedCharacterProperty(x, y, _) and index in [x + 1 .. y - 2]
+    )
+  }
+
   /** 'Simple' characters are any that don't alter the parsing of the regex. */
   private predicate simpleCharacter(int start, int end) {
     end = start + 1 and
     not this.charSet(start, _) and
     not this.charSet(_, start + 1) and
+    not exists(int x, int y |
+      this.posixStyleNamedCharacterProperty(x, y, _) and
+      start >= x and
+      end <= y
+    ) and
     exists(string c | c = this.getChar(start) |
       exists(int x, int y, int z |
         this.charSet(x, z) and
@@ -332,7 +343,9 @@ class RegExp extends AST::RegExpLiteral {
     ) and
     not exists(int x, int y | this.groupStart(x, y) and x <= start and y >= end) and
     not exists(int x, int y | this.backreference(x, y) and x <= start and y >= end) and
-    not exists(int x, int y | this.namedCharacterProperty(x, y, _) and x <= start and y >= end)
+    not exists(int x, int y |
+      this.pStyleNamedCharacterProperty(x, y, _) and x <= start and y >= end
+    )
   }
 
   predicate normalCharacter(int start, int end) {
@@ -595,7 +608,7 @@ class RegExp extends AST::RegExpLiteral {
     or
     this.backreference(start, end)
     or
-    this.namedCharacterProperty(start, end, _)
+    this.pStyleNamedCharacterProperty(start, end, _)
   }
 
   private predicate qualifier(int start, int end, boolean maybeEmpty, boolean mayRepeatForever) {
