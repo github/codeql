@@ -144,7 +144,7 @@ void test_readlink(int fd, const char *path, size_t sz)
 		int v;
 
 		readlinkat(fd, path, buffer, sizeof(buffer));
-		v = strlen(buffer); // BAD [NOT DETECTED]
+		v = strlen(buffer); // BAD
 	}
 
 	{
