@@ -22,6 +22,8 @@ import semmle.code.cpp.ir.IR
 import semmle.code.cpp.security.FlowSources
 import semmle.code.cpp.models.implementations.Strcat
 
+import DataFlow::PathGraph
+
 Expr sinkAsArgumentIndirection(DataFlow::Node sink) {
   result =
     sink.asOperand()
@@ -85,7 +87,7 @@ class TaintToConcatenationConfiguration extends TaintTracking::Configuration {
   }
 }
 
-class ExecTaintConfiguration extends TaintTracking::Configuration {
+class ExecTaintConfiguration extends TaintTracking2::Configuration {
   ExecTaintConfiguration() { this = "ExecTaintConfiguration" }
 
   override predicate isSource(DataFlow::Node source) {
@@ -101,17 +103,8 @@ class ExecTaintConfiguration extends TaintTracking::Configuration {
   }
 }
 
-query predicate nodes = DataFlow::PathGraph::nodes/3;
-
-query predicate edges(DataFlow::PathNode a, DataFlow::PathNode b) {
-  DataFlow::PathGraph::edges(a, b) or
-  interestingConcatenation(a.getNode(), b.getNode()) and
-  a.getConfiguration() instanceof TaintToConcatenationConfiguration and
-  b.getConfiguration() instanceof ExecTaintConfiguration
-}
-
 from
-  DataFlow::PathNode sourceNode, DataFlow::PathNode concatSink, DataFlow::PathNode concatSource, DataFlow::PathNode sinkNode, string taintCause, string callChain,
+  DataFlow::PathNode sourceNode, DataFlow::PathNode concatSink, DataFlow2::PathNode concatSource, DataFlow2::PathNode sinkNode, string taintCause, string callChain,
   TaintToConcatenationConfiguration conf1, ExecTaintConfiguration conf2
 where
   taintCause = sourceNode.getNode().(FlowSource).getSourceType() and
@@ -122,3 +115,4 @@ where
 select sinkAsArgumentIndirection(sinkNode.getNode()), sourceNode, sinkNode,
   "This argument to an OS command is derived from $@, dangerously concatenated into $@, and then passed to " + callChain, sourceNode,
   "user input (" + taintCause + ")", concatSource, concatSource.toString()
+  
