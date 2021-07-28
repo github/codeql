@@ -98,10 +98,10 @@ public class Test {
 	<T> T getElement(Optional<T> container) { return container.get(); }
 	<T> T getElement(Enumeration<T> container) { return container.nextElement(); }
 	<T> T getElement(Multiset.Entry<T> container) { return container.getElement(); }
-	Object getMapDifference_left(Object container) { return null; }
-	Object getMapDifference_right(Object container) { return null; }
-	Object getMapKey2(Object container) { return null; }
-	Object getMapValue2(Object container) { return null; }
+	<K,V> Map<K,V> getMapDifference_left(MapDifference<K,V> container) { return container.entriesOnlyOnLeft(); }
+	<V> V getMapDifference_left(MapDifference.ValueDifference<V> container) { return container.leftValue(); }
+	<K,V> Map<K,V> getMapDifference_right(MapDifference<K,V> container) { return container.entriesOnlyOnRight(); }
+	<V> V getMapDifference_right(MapDifference.ValueDifference<V> container) { return container.rightValue(); }
 	<K,V> K getMapKey(Map<K,V> container) { return getElement(container.keySet()); }
 	<K,V> K getMapKey(Multimap<K,V> container) { return getElement(container.keySet()); }
 	<K,V> K getMapKey(Map.Entry<K,V> container) { return container.getKey(); }
@@ -115,8 +115,12 @@ public class Test {
 	<R,C,V> V getMapValue(Table<R,C,V> container) { return getElement(container.values()); }
 	<R,C,V> V getMapValue(Table.Cell<R,C,V> container) { return container.getValue(); }
 	<R,C,V> V getMapValue(ImmutableTable.Builder<R,C,V> container) { return getMapValue(container.build()); }
-	Object getTable_columnKey(Object container) { return null; }
-	Object getTable_rowKey(Object container) { return null; }
+	<R,C,V> C getTable_columnKey(Table<R,C,V> container) { return getElement(container.columnKeySet()); }
+	<R,C,V> C getTable_columnKey(Table.Cell<R,C,V> container) { return container.getColumnKey(); }
+	<R,C,V> C getTable_columnKey(ImmutableTable.Builder<R,C,V> container) { return getTable_columnKey(container.build()); }
+	<R,C,V> R getTable_rowKey(Table<R,C,V> container) { return getElement(container.rowKeySet()); }
+	<R,C,V> R getTable_rowKey(Table.Cell<R,C,V> container) { return container.getRowKey(); }
+	<R,C,V> R getTable_rowKey(ImmutableTable.Builder<R,C,V> container) { return getTable_rowKey(container.build()); }
 	<T> T[] newWithArrayElement(T element) { return (T[]) new Object[]{element}; }
 	Object newWithElement(Object element) { return null; }
 	Object newWithMapDifference_left(Object element) { return null; }
@@ -4598,28 +4602,28 @@ public class Test {
 		}
 		{
 			// "com.google.common.collect;MapDifference;true;entriesDiffering;();;MapValue of SyntheticField[com.google.common.collect.MapDifference.left] of Argument[-1];SyntheticField[com.google.common.collect.MapDifference.left] of MapValue of ReturnValue;value"
-			SortedMap out = null;
+			SortedMap<Object,MapDifference.ValueDifference> out = null;
 			SortedMapDifference in = (SortedMapDifference)newWithMapDifference_left(newWithMapValue(source()));
 			out = in.entriesDiffering();
 			sink(getMapDifference_left(getMapValue(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;MapDifference;true;entriesDiffering;();;MapValue of SyntheticField[com.google.common.collect.MapDifference.left] of Argument[-1];SyntheticField[com.google.common.collect.MapDifference.left] of MapValue of ReturnValue;value"
-			Map out = null;
+			Map<Object,MapDifference.ValueDifference> out = null;
 			MapDifference in = (MapDifference)newWithMapDifference_left(newWithMapValue(source()));
 			out = in.entriesDiffering();
 			sink(getMapDifference_left(getMapValue(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;MapDifference;true;entriesDiffering;();;MapValue of SyntheticField[com.google.common.collect.MapDifference.right] of Argument[-1];SyntheticField[com.google.common.collect.MapDifference.right] of MapValue of ReturnValue;value"
-			SortedMap out = null;
+			SortedMap<Object,MapDifference.ValueDifference> out = null;
 			SortedMapDifference in = (SortedMapDifference)newWithMapDifference_right(newWithMapValue(source()));
 			out = in.entriesDiffering();
 			sink(getMapDifference_right(getMapValue(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;MapDifference;true;entriesDiffering;();;MapValue of SyntheticField[com.google.common.collect.MapDifference.right] of Argument[-1];SyntheticField[com.google.common.collect.MapDifference.right] of MapValue of ReturnValue;value"
-			Map out = null;
+			Map<Object,MapDifference.ValueDifference> out = null;
 			MapDifference in = (MapDifference)newWithMapDifference_right(newWithMapValue(source()));
 			out = in.entriesDiffering();
 			sink(getMapDifference_right(getMapValue(out))); // $ hasValueFlow
@@ -4762,84 +4766,84 @@ public class Test {
 			MapDifference out = null;
 			Map in = (Map)newWithMapKey(source());
 			out = Maps.difference(in, (Map)null);
-			sink(getMapKey2(getMapDifference_left(out))); // $ hasValueFlow
+			sink(getMapKey(getMapDifference_left(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Maps;false;difference;(Map,Map);;MapKey of Argument[1];MapKey of SyntheticField[com.google.common.collect.MapDifference.right] of ReturnValue;value"
 			MapDifference out = null;
 			Map in = (Map)newWithMapKey(source());
 			out = Maps.difference((Map)null, in);
-			sink(getMapKey2(getMapDifference_right(out))); // $ hasValueFlow
+			sink(getMapKey(getMapDifference_right(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Maps;false;difference;(Map,Map);;MapValue of Argument[0];MapValue of SyntheticField[com.google.common.collect.MapDifference.left] of ReturnValue;value"
 			MapDifference out = null;
 			Map in = (Map)newWithMapValue(source());
 			out = Maps.difference(in, (Map)null);
-			sink(getMapValue2(getMapDifference_left(out))); // $ hasValueFlow
+			sink(getMapValue(getMapDifference_left(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Maps;false;difference;(Map,Map);;MapValue of Argument[1];MapValue of SyntheticField[com.google.common.collect.MapDifference.right] of ReturnValue;value"
 			MapDifference out = null;
 			Map in = (Map)newWithMapValue(source());
 			out = Maps.difference((Map)null, in);
-			sink(getMapValue2(getMapDifference_right(out))); // $ hasValueFlow
+			sink(getMapValue(getMapDifference_right(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Maps;false;difference;(Map,Map,Equivalence);;MapKey of Argument[0];MapKey of SyntheticField[com.google.common.collect.MapDifference.left] of ReturnValue;value"
 			MapDifference out = null;
 			Map in = (Map)newWithMapKey(source());
 			out = Maps.difference(in, null, null);
-			sink(getMapKey2(getMapDifference_left(out))); // $ hasValueFlow
+			sink(getMapKey(getMapDifference_left(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Maps;false;difference;(Map,Map,Equivalence);;MapKey of Argument[1];MapKey of SyntheticField[com.google.common.collect.MapDifference.right] of ReturnValue;value"
 			MapDifference out = null;
 			Map in = (Map)newWithMapKey(source());
 			out = Maps.difference(null, in, null);
-			sink(getMapKey2(getMapDifference_right(out))); // $ hasValueFlow
+			sink(getMapKey(getMapDifference_right(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Maps;false;difference;(Map,Map,Equivalence);;MapValue of Argument[0];MapValue of SyntheticField[com.google.common.collect.MapDifference.left] of ReturnValue;value"
 			MapDifference out = null;
 			Map in = (Map)newWithMapValue(source());
 			out = Maps.difference(in, null, null);
-			sink(getMapValue2(getMapDifference_left(out))); // $ hasValueFlow
+			sink(getMapValue(getMapDifference_left(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Maps;false;difference;(Map,Map,Equivalence);;MapValue of Argument[1];MapValue of SyntheticField[com.google.common.collect.MapDifference.right] of ReturnValue;value"
 			MapDifference out = null;
 			Map in = (Map)newWithMapValue(source());
 			out = Maps.difference(null, in, null);
-			sink(getMapValue2(getMapDifference_right(out))); // $ hasValueFlow
+			sink(getMapValue(getMapDifference_right(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Maps;false;difference;(SortedMap,Map);;MapKey of Argument[0];MapKey of SyntheticField[com.google.common.collect.MapDifference.left] of ReturnValue;value"
 			SortedMapDifference out = null;
 			SortedMap in = (SortedMap)newWithMapKey(source());
 			out = Maps.difference(in, (Map)null);
-			sink(getMapKey2(getMapDifference_left(out))); // $ hasValueFlow
+			sink(getMapKey(getMapDifference_left(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Maps;false;difference;(SortedMap,Map);;MapKey of Argument[1];MapKey of SyntheticField[com.google.common.collect.MapDifference.right] of ReturnValue;value"
 			SortedMapDifference out = null;
 			Map in = (Map)newWithMapKey(source());
 			out = Maps.difference((SortedMap)null, in);
-			sink(getMapKey2(getMapDifference_right(out))); // $ hasValueFlow
+			sink(getMapKey(getMapDifference_right(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Maps;false;difference;(SortedMap,Map);;MapValue of Argument[0];MapValue of SyntheticField[com.google.common.collect.MapDifference.left] of ReturnValue;value"
 			SortedMapDifference out = null;
 			SortedMap in = (SortedMap)newWithMapValue(source());
 			out = Maps.difference(in, (Map)null);
-			sink(getMapValue2(getMapDifference_left(out))); // $ hasValueFlow
+			sink(getMapValue(getMapDifference_left(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Maps;false;difference;(SortedMap,Map);;MapValue of Argument[1];MapValue of SyntheticField[com.google.common.collect.MapDifference.right] of ReturnValue;value"
 			SortedMapDifference out = null;
 			Map in = (Map)newWithMapValue(source());
 			out = Maps.difference((SortedMap)null, in);
-			sink(getMapValue2(getMapDifference_right(out))); // $ hasValueFlow
+			sink(getMapValue(getMapDifference_right(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Maps;false;filterEntries;(BiMap,Predicate);;MapKey of Argument[0];MapKey of ReturnValue;value"
@@ -6810,42 +6814,42 @@ public class Test {
 		}
 		{
 			// "com.google.common.collect;Table;true;cellSet;();;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[-1];SyntheticField[com.google.common.collect.Table.columnKey] of Element of ReturnValue;value"
-			Set out = null;
+			Set<Table.Cell> out = null;
 			Table in = (Table)newWithTable_columnKey(source());
 			out = in.cellSet();
 			sink(getTable_columnKey(getElement(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;cellSet;();;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[-1];SyntheticField[com.google.common.collect.Table.columnKey] of Element of ReturnValue;value"
-			Set out = null;
+			Set<Table.Cell> out = null;
 			ArrayTable in = (ArrayTable)newWithTable_columnKey(source());
 			out = in.cellSet();
 			sink(getTable_columnKey(getElement(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;cellSet;();;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[-1];SyntheticField[com.google.common.collect.Table.columnKey] of Element of ReturnValue;value"
-			ImmutableSet out = null;
+			ImmutableSet<Table.Cell> out = null;
 			ImmutableTable in = (ImmutableTable)newWithTable_columnKey(source());
 			out = in.cellSet();
 			sink(getTable_columnKey(getElement(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;cellSet;();;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[-1];SyntheticField[com.google.common.collect.Table.rowKey] of Element of ReturnValue;value"
-			Set out = null;
+			Set<Table.Cell> out = null;
 			Table in = (Table)newWithTable_rowKey(source());
 			out = in.cellSet();
 			sink(getTable_rowKey(getElement(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;cellSet;();;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[-1];SyntheticField[com.google.common.collect.Table.rowKey] of Element of ReturnValue;value"
-			Set out = null;
+			Set<Table.Cell> out = null;
 			ArrayTable in = (ArrayTable)newWithTable_rowKey(source());
 			out = in.cellSet();
 			sink(getTable_rowKey(getElement(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;cellSet;();;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[-1];SyntheticField[com.google.common.collect.Table.rowKey] of Element of ReturnValue;value"
-			ImmutableSet out = null;
+			ImmutableSet<Table.Cell> out = null;
 			ImmutableTable in = (ImmutableTable)newWithTable_rowKey(source());
 			out = in.cellSet();
 			sink(getTable_rowKey(getElement(out))); // $ hasValueFlow
