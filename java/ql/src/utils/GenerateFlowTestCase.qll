@@ -138,7 +138,7 @@ string getFieldToken(FieldContent fc) {
 }
 
 /**
- * Returns a valid Java token naming the synthtic field `fc`,
+ * Returns a valid Java token naming the synthetic field `fc`,
  * assuming that the name of that field consists only of characters valid in a Java identifier and `.`.
  */
 string getSyntheticFieldToken(SyntheticFieldContent fc) {
