@@ -9,8 +9,6 @@ class SummaryModelTest extends SummaryModelCsv {
     row =
       [
         //"package;type;overrides;name;signature;ext;inputspec;outputspec;kind",
-        "generatedtest;Test;false;newWithArrayElement;;;Argument[0];ArrayElement of ReturnValue;value",
-        "generatedtest;Test;false;getArrayElement;;;ArrayElement of Argument[0];ReturnValue;value",
         "generatedtest;Test;false;getElement;;;Element of Argument[0];ReturnValue;value",
         "generatedtest;Test;false;newWithElement;;;Argument[0];Element of ReturnValue;value",
         "generatedtest;Test;false;getMapKey;;;MapKey of Argument[0];ReturnValue;value",
