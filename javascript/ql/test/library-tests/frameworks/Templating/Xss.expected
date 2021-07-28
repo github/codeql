@@ -1,0 +1,53 @@
+nodes
+| app.js:8:18:8:34 | req.query.rawHtml |
+| app.js:8:18:8:34 | req.query.rawHtml |
+| app.js:11:26:11:46 | req.que ... tmlProp |
+| app.js:11:26:11:46 | req.que ... tmlProp |
+| app.js:14:33:14:64 | req.que ... eralRaw |
+| app.js:14:33:14:64 | req.que ... eralRaw |
+| app.js:16:33:16:64 | req.que ... CodeRaw |
+| app.js:16:33:16:64 | req.que ... CodeRaw |
+| app.js:20:38:20:74 | req.que ... ringRaw |
+| app.js:20:38:20:74 | req.que ... ringRaw |
+| views/ejs_sinks.ejs:4:9:4:22 | <%- rawHtml %> |
+| views/ejs_sinks.ejs:4:9:4:22 | <%- rawHtml %> |
+| views/ejs_sinks.ejs:4:13:4:19 | rawHtml |
+| views/ejs_sinks.ejs:7:9:7:33 | <%- object.rawHtmlProp %> |
+| views/ejs_sinks.ejs:7:9:7:33 | <%- object.rawHtmlProp %> |
+| views/ejs_sinks.ejs:7:13:7:30 | object.rawHtmlProp |
+| views/ejs_sinks.ejs:11:43:11:71 | <%- dataInStringLiteralRaw %> |
+| views/ejs_sinks.ejs:11:43:11:71 | <%- dataInStringLiteralRaw %> |
+| views/ejs_sinks.ejs:11:47:11:68 | dataInS ... eralRaw |
+| views/ejs_sinks.ejs:14:42:14:70 | <%- dataInGeneratedCodeRaw %> |
+| views/ejs_sinks.ejs:14:42:14:70 | <%- dataInGeneratedCodeRaw %> |
+| views/ejs_sinks.ejs:14:46:14:67 | dataInG ... CodeRaw |
+| views/ejs_sinks.ejs:22:39:22:72 | <%- dataInEventHandlerStringRaw %> |
+| views/ejs_sinks.ejs:22:39:22:72 | <%- dataInEventHandlerStringRaw %> |
+| views/ejs_sinks.ejs:22:43:22:69 | dataInE ... ringRaw |
+edges
+| app.js:8:18:8:34 | req.query.rawHtml | views/ejs_sinks.ejs:4:13:4:19 | rawHtml |
+| app.js:8:18:8:34 | req.query.rawHtml | views/ejs_sinks.ejs:4:13:4:19 | rawHtml |
+| app.js:11:26:11:46 | req.que ... tmlProp | views/ejs_sinks.ejs:7:13:7:30 | object.rawHtmlProp |
+| app.js:11:26:11:46 | req.que ... tmlProp | views/ejs_sinks.ejs:7:13:7:30 | object.rawHtmlProp |
+| app.js:14:33:14:64 | req.que ... eralRaw | views/ejs_sinks.ejs:11:47:11:68 | dataInS ... eralRaw |
+| app.js:14:33:14:64 | req.que ... eralRaw | views/ejs_sinks.ejs:11:47:11:68 | dataInS ... eralRaw |
+| app.js:16:33:16:64 | req.que ... CodeRaw | views/ejs_sinks.ejs:14:46:14:67 | dataInG ... CodeRaw |
+| app.js:16:33:16:64 | req.que ... CodeRaw | views/ejs_sinks.ejs:14:46:14:67 | dataInG ... CodeRaw |
+| app.js:20:38:20:74 | req.que ... ringRaw | views/ejs_sinks.ejs:22:43:22:69 | dataInE ... ringRaw |
+| app.js:20:38:20:74 | req.que ... ringRaw | views/ejs_sinks.ejs:22:43:22:69 | dataInE ... ringRaw |
+| views/ejs_sinks.ejs:4:13:4:19 | rawHtml | views/ejs_sinks.ejs:4:9:4:22 | <%- rawHtml %> |
+| views/ejs_sinks.ejs:4:13:4:19 | rawHtml | views/ejs_sinks.ejs:4:9:4:22 | <%- rawHtml %> |
+| views/ejs_sinks.ejs:7:13:7:30 | object.rawHtmlProp | views/ejs_sinks.ejs:7:9:7:33 | <%- object.rawHtmlProp %> |
+| views/ejs_sinks.ejs:7:13:7:30 | object.rawHtmlProp | views/ejs_sinks.ejs:7:9:7:33 | <%- object.rawHtmlProp %> |
+| views/ejs_sinks.ejs:11:47:11:68 | dataInS ... eralRaw | views/ejs_sinks.ejs:11:43:11:71 | <%- dataInStringLiteralRaw %> |
+| views/ejs_sinks.ejs:11:47:11:68 | dataInS ... eralRaw | views/ejs_sinks.ejs:11:43:11:71 | <%- dataInStringLiteralRaw %> |
+| views/ejs_sinks.ejs:14:46:14:67 | dataInG ... CodeRaw | views/ejs_sinks.ejs:14:42:14:70 | <%- dataInGeneratedCodeRaw %> |
+| views/ejs_sinks.ejs:14:46:14:67 | dataInG ... CodeRaw | views/ejs_sinks.ejs:14:42:14:70 | <%- dataInGeneratedCodeRaw %> |
+| views/ejs_sinks.ejs:22:43:22:69 | dataInE ... ringRaw | views/ejs_sinks.ejs:22:39:22:72 | <%- dataInEventHandlerStringRaw %> |
+| views/ejs_sinks.ejs:22:43:22:69 | dataInE ... ringRaw | views/ejs_sinks.ejs:22:39:22:72 | <%- dataInEventHandlerStringRaw %> |
+#select
+| views/ejs_sinks.ejs:4:9:4:22 | <%- rawHtml %> | app.js:8:18:8:34 | req.query.rawHtml | views/ejs_sinks.ejs:4:9:4:22 | <%- rawHtml %> | Cross-site scripting vulnerability due to $@. | app.js:8:18:8:34 | req.query.rawHtml | user-provided value |
+| views/ejs_sinks.ejs:7:9:7:33 | <%- object.rawHtmlProp %> | app.js:11:26:11:46 | req.que ... tmlProp | views/ejs_sinks.ejs:7:9:7:33 | <%- object.rawHtmlProp %> | Cross-site scripting vulnerability due to $@. | app.js:11:26:11:46 | req.que ... tmlProp | user-provided value |
+| views/ejs_sinks.ejs:11:43:11:71 | <%- dataInStringLiteralRaw %> | app.js:14:33:14:64 | req.que ... eralRaw | views/ejs_sinks.ejs:11:43:11:71 | <%- dataInStringLiteralRaw %> | Cross-site scripting vulnerability due to $@. | app.js:14:33:14:64 | req.que ... eralRaw | user-provided value |
+| views/ejs_sinks.ejs:14:42:14:70 | <%- dataInGeneratedCodeRaw %> | app.js:16:33:16:64 | req.que ... CodeRaw | views/ejs_sinks.ejs:14:42:14:70 | <%- dataInGeneratedCodeRaw %> | Cross-site scripting vulnerability due to $@. | app.js:16:33:16:64 | req.que ... CodeRaw | user-provided value |
+| views/ejs_sinks.ejs:22:39:22:72 | <%- dataInEventHandlerStringRaw %> | app.js:20:38:20:74 | req.que ... ringRaw | views/ejs_sinks.ejs:22:39:22:72 | <%- dataInEventHandlerStringRaw %> | Cross-site scripting vulnerability due to $@. | app.js:20:38:20:74 | req.que ... ringRaw | user-provided value |

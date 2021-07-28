@@ -1,0 +1,33 @@
+nodes
+| app.js:15:30:15:58 | req.que ... tedCode |
+| app.js:15:30:15:58 | req.que ... tedCode |
+| app.js:17:25:17:48 | req.que ... shSink1 |
+| app.js:17:25:17:48 | req.que ... shSink1 |
+| app.js:19:35:19:68 | req.que ... rString |
+| app.js:19:35:19:68 | req.que ... rString |
+| views/ejs_sinks.ejs:13:39:13:64 | <%= dataInGeneratedCode %> |
+| views/ejs_sinks.ejs:13:39:13:64 | <%= dataInGeneratedCode %> |
+| views/ejs_sinks.ejs:13:43:13:61 | dataInGeneratedCode |
+| views/ejs_sinks.ejs:16:19:16:39 | <%= backslashSink1 %> |
+| views/ejs_sinks.ejs:16:19:16:39 | <%= backslashSink1 %> |
+| views/ejs_sinks.ejs:16:23:16:36 | backslashSink1 |
+| views/ejs_sinks.ejs:21:39:21:69 | <%= dataInEventHandlerString %> |
+| views/ejs_sinks.ejs:21:39:21:69 | <%= dataInEventHandlerString %> |
+| views/ejs_sinks.ejs:21:43:21:66 | dataInE ... rString |
+edges
+| app.js:15:30:15:58 | req.que ... tedCode | views/ejs_sinks.ejs:13:43:13:61 | dataInGeneratedCode |
+| app.js:15:30:15:58 | req.que ... tedCode | views/ejs_sinks.ejs:13:43:13:61 | dataInGeneratedCode |
+| app.js:17:25:17:48 | req.que ... shSink1 | views/ejs_sinks.ejs:16:23:16:36 | backslashSink1 |
+| app.js:17:25:17:48 | req.que ... shSink1 | views/ejs_sinks.ejs:16:23:16:36 | backslashSink1 |
+| app.js:19:35:19:68 | req.que ... rString | views/ejs_sinks.ejs:21:43:21:66 | dataInE ... rString |
+| app.js:19:35:19:68 | req.que ... rString | views/ejs_sinks.ejs:21:43:21:66 | dataInE ... rString |
+| views/ejs_sinks.ejs:13:43:13:61 | dataInGeneratedCode | views/ejs_sinks.ejs:13:39:13:64 | <%= dataInGeneratedCode %> |
+| views/ejs_sinks.ejs:13:43:13:61 | dataInGeneratedCode | views/ejs_sinks.ejs:13:39:13:64 | <%= dataInGeneratedCode %> |
+| views/ejs_sinks.ejs:16:23:16:36 | backslashSink1 | views/ejs_sinks.ejs:16:19:16:39 | <%= backslashSink1 %> |
+| views/ejs_sinks.ejs:16:23:16:36 | backslashSink1 | views/ejs_sinks.ejs:16:19:16:39 | <%= backslashSink1 %> |
+| views/ejs_sinks.ejs:21:43:21:66 | dataInE ... rString | views/ejs_sinks.ejs:21:39:21:69 | <%= dataInEventHandlerString %> |
+| views/ejs_sinks.ejs:21:43:21:66 | dataInE ... rString | views/ejs_sinks.ejs:21:39:21:69 | <%= dataInEventHandlerString %> |
+#select
+| views/ejs_sinks.ejs:13:39:13:64 | <%= dataInGeneratedCode %> | app.js:15:30:15:58 | req.que ... tedCode | views/ejs_sinks.ejs:13:39:13:64 | <%= dataInGeneratedCode %> | $@ flows to here and is interpreted as code. | app.js:15:30:15:58 | req.que ... tedCode | User-provided value |
+| views/ejs_sinks.ejs:16:19:16:39 | <%= backslashSink1 %> | app.js:17:25:17:48 | req.que ... shSink1 | views/ejs_sinks.ejs:16:19:16:39 | <%= backslashSink1 %> | $@ flows to here and is interpreted as code. | app.js:17:25:17:48 | req.que ... shSink1 | User-provided value |
+| views/ejs_sinks.ejs:21:39:21:69 | <%= dataInEventHandlerString %> | app.js:19:35:19:68 | req.que ... rString | views/ejs_sinks.ejs:21:39:21:69 | <%= dataInEventHandlerString %> | $@ flows to here and is interpreted as code. | app.js:19:35:19:68 | req.que ... rString | User-provided value |

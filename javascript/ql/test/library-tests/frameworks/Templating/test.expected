@@ -2,8 +2,23 @@ getTemplateInstantiationSyntax
 | consolidate.js:3:1:3:83 | consoli ...  => {}) | ejs |
 | consolidate.js:4:1:4:90 | consoli ...  => {}) | mustache |
 getLikelyTemplateSyntax
+| views/ejs_sinks.ejs:0:0:0:0 | views/ejs_sinks.ejs | ejs |
 | views/instantiated_as_ejs.html:0:0:0:0 | views/instantiated_as_ejs.html | ejs |
 | views/instantiated_as_hbs.html:0:0:0:0 | views/instantiated_as_hbs.html | mustache |
+getTargetFile
+| app.js:6:5:21:6 | res.ren ... \\n    }) | views/ejs_sinks.ejs:0:0:0:0 | views/ejs_sinks.ejs |
+| consolidate.js:3:1:3:83 | consoli ...  => {}) | views/instantiated_as_ejs.html:0:0:0:0 | views/instantiated_as_ejs.html |
+| consolidate.js:4:1:4:90 | consoli ...  => {}) | views/instantiated_as_hbs.html:0:0:0:0 | views/instantiated_as_hbs.html |
 xssSink
+| views/ejs_sinks.ejs:4:9:4:22 | <%- rawHtml %> |
+| views/ejs_sinks.ejs:5:9:5:31 | <%- rawHtmlSafeValue %> |
+| views/ejs_sinks.ejs:7:9:7:33 | <%- object.rawHtmlProp %> |
+| views/ejs_sinks.ejs:11:43:11:71 | <%- dataInStringLiteralRaw %> |
+| views/ejs_sinks.ejs:14:42:14:70 | <%- dataInGeneratedCodeRaw %> |
+| views/ejs_sinks.ejs:22:39:22:72 | <%- dataInEventHandlerStringRaw %> |
 | views/instantiated_as_ejs.html:4:9:4:23 | <%- xss_sink %> |
 | views/instantiated_as_hbs.html:7:9:7:24 | {{{ xss_sink }}} |
+codeInjectionSink
+| views/ejs_sinks.ejs:13:39:13:64 | <%= dataInGeneratedCode %> |
+| views/ejs_sinks.ejs:16:19:16:39 | <%= backslashSink1 %> |
+| views/ejs_sinks.ejs:21:39:21:69 | <%= dataInEventHandlerString %> |
