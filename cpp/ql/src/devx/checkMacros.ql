@@ -48,17 +48,13 @@ For example: syslog (LOG_ERR,
 //         mi.getExpr() = v)
 // }
 
-class SourceNode extends DataFlow::Node {
-    SourceNode() {
-      not DataFlow::localFlowStep(_, this)
-    }
-  }
 
-from string format, FormattingFunctionCall fc, SourceNode src, DataFlow::Node arg
-where format = fc.getFormat().getValue() // format: "%s: Failed init_producer"
-    and fc.getTarget().hasName("syslog") 
-    and not isLogDebug(fc.getArgument(0)) // exclude debug logs
-    // and lit.getValue() = "bgp_nbr_range_print"
-    and DataFlow::localFlow(src, arg)
-    and src.asExpr() instanceof StringLiteral
-select fc, "Argument " + arg + " of " + fc.toString() + " is " + arg
+from string format, FormattingFunctionCall fc, DataFlow::Node src, DataFlow::Node sink, int n
+where
+  format = fc.getFormat().getValue() and // format: "%s: Failed init_producer"
+  fc.getTarget().hasName("syslog") and
+  not isLogDebug(fc.getArgument(0)) and
+  DataFlow::localFlow(src, sink) and
+  fc.getFormatArgument(n) = sink.asExpr() and
+  src.toString() = fc.getEnclosingFunction().toString()
+select fc, "Argument " + sink + " of " + fc.toString() + " is " + src.toString()
