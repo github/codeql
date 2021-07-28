@@ -3,6 +3,7 @@
  * @description Using weak cryptographic key can allow an attacker to compromise security.
  * @kind path-problem
  * @problem.severity error
+ * @precision high
  * @id go/weak-crypto-key
  * @tags security
  *         external/cwe/cwe-326
