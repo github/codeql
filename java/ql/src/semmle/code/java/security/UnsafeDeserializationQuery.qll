@@ -3,18 +3,19 @@
  */
 
 import semmle.code.java.dataflow.FlowSources
-import semmle.code.java.frameworks.Kryo
-import semmle.code.java.frameworks.XStream
-import semmle.code.java.frameworks.SnakeYaml
-import semmle.code.java.frameworks.FastJson
-import semmle.code.java.frameworks.JYaml
-import semmle.code.java.frameworks.JsonIo
-import semmle.code.java.frameworks.YamlBeans
-import semmle.code.java.frameworks.HessianBurlap
-import semmle.code.java.frameworks.Castor
-import semmle.code.java.frameworks.Jackson
-import semmle.code.java.frameworks.apache.Lang
-import semmle.code.java.Reflection
+private import semmle.code.java.dataflow.TaintTracking2
+private import semmle.code.java.frameworks.Kryo
+private import semmle.code.java.frameworks.XStream
+private import semmle.code.java.frameworks.SnakeYaml
+private import semmle.code.java.frameworks.FastJson
+private import semmle.code.java.frameworks.JYaml
+private import semmle.code.java.frameworks.JsonIo
+private import semmle.code.java.frameworks.YamlBeans
+private import semmle.code.java.frameworks.HessianBurlap
+private import semmle.code.java.frameworks.Castor
+private import semmle.code.java.frameworks.Jackson
+private import semmle.code.java.frameworks.apache.Lang
+private import semmle.code.java.Reflection
 
 private class ObjectInputStreamReadObjectMethod extends Method {
   ObjectInputStreamReadObjectMethod() {
@@ -190,7 +191,7 @@ predicate unsafeDeserialization(MethodAccess ma, Expr sink) {
 class UnsafeDeserializationSink extends DataFlow::ExprNode {
   UnsafeDeserializationSink() { unsafeDeserialization(_, this.getExpr()) }
 
-  /** Get a call that triggers unsafe deserialization. */
+  /** Returns a call that triggers unsafe deserialization. */
   MethodAccess getMethodAccess() { unsafeDeserialization(result, this.getExpr()) }
 }
 

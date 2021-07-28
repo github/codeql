@@ -3,9 +3,8 @@
  */
 
 import java
-import semmle.code.java.Reflection
-import semmle.code.java.dataflow.FlowSources
-import semmle.code.java.dataflow.TaintTracking2
+private import semmle.code.java.Reflection
+private import semmle.code.java.dataflow.DataFlow
 
 private class ObjectMapper extends RefType {
   ObjectMapper() {
@@ -28,7 +27,7 @@ private class JsonParser extends RefType {
   JsonParser() { hasQualifiedName("com.fasterxml.jackson.core", "JsonParser") }
 }
 
-/** Type descriptors in Jackson libraries. */
+/** A type descriptor in Jackson libraries. */
 class JacksonTypeDescriptorType extends RefType {
   JacksonTypeDescriptorType() {
     this instanceof TypeClass or
@@ -37,7 +36,7 @@ class JacksonTypeDescriptorType extends RefType {
   }
 }
 
-/** Methods in `ObjectMapper` that deserialize data. */
+/** A method in `ObjectMapper` that deserialize data. */
 class ObjectMapperReadMethod extends Method {
   ObjectMapperReadMethod() {
     this.getDeclaringType() instanceof ObjectMapper and
