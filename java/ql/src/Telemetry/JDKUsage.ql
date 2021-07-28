@@ -12,5 +12,5 @@ where
   cu = call.getCompilationUnit() and
   isJavaRuntime(call) and
   isInterestingAPI(call)
-select cu, call as API, supportKind(call) as Kind, count(Call c | c.getCallee() = call) as calls
-  order by calls desc
+select cu as Class, call as API, supportKind(call) as Kind,
+  count(Call c | c.getCallee() = call) as Usages order by Usages desc
