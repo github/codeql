@@ -11,10 +11,4 @@
 | test.cpp:130:14:130:19 | buffer | Variable $@ may not be null terminated. | test.cpp:127:7:127:12 | buffer | buffer |
 | test.cpp:139:10:139:15 | buffer | Variable $@ may not be null terminated. | test.cpp:136:8:136:13 | buffer | buffer |
 | test.cpp:147:14:147:19 | buffer | Variable $@ may not be null terminated. | test.cpp:143:8:143:13 | buffer | buffer |
-| test.cpp:154:10:154:15 | buffer | Variable $@ may not be null terminated. | test.cpp:151:8:151:13 | buffer | buffer |
-| test.cpp:162:10:162:15 | buffer | Variable $@ may not be null terminated. | test.cpp:158:8:158:13 | buffer | buffer |
 | test.cpp:170:10:170:15 | buffer | Variable $@ may not be null terminated. | test.cpp:166:8:166:13 | buffer | buffer |
-| test.cpp:186:10:186:15 | buffer | Variable $@ may not be null terminated. | test.cpp:183:9:183:14 | buffer | buffer |
-| test.cpp:194:10:194:15 | buffer | Variable $@ may not be null terminated. | test.cpp:190:9:190:14 | buffer | buffer |
-| test.cpp:201:10:201:15 | buffer | Variable $@ may not be null terminated. | test.cpp:198:9:198:14 | buffer | buffer |
-| test.cpp:209:10:209:15 | buffer | Variable $@ may not be null terminated. | test.cpp:205:9:205:14 | buffer | buffer |

@@ -151,7 +151,7 @@ void test_readlink(int fd, const char *path, size_t sz)
 		char buffer[1024] = {0};
 
 		readlink(path, buffer, sizeof(buffer) - 1);
-		strdup(buffer); // GOOD [FALSE POSITIVE]
+		strdup(buffer); // GOOD
 	}
 
 	{
@@ -159,7 +159,7 @@ void test_readlink(int fd, const char *path, size_t sz)
 
 		memset(buffer, 0, sizeof(buffer));
 		readlink(path, buffer, sizeof(buffer) - 1);
-		strdup(buffer); // GOOD [FALSE POSITIVE]
+		strdup(buffer); // GOOD
 	}
 
 	{
@@ -183,7 +183,7 @@ void test_readlink(int fd, const char *path, size_t sz)
 		char *buffer = (char *)malloc(1024);
 
 		readlink(path, buffer, 1024);
-		strdup(buffer); // BAD
+		strdup(buffer); // BAD [NOT DETECTED]
 	}
 
 	{
@@ -191,14 +191,14 @@ void test_readlink(int fd, const char *path, size_t sz)
 
 		buffer[1023] = 0;
 		readlink(path, buffer, 1023);
-		strdup(buffer); // GOOD [FALSE POSITIVE]
+		strdup(buffer); // GOOD
 	}
 
 	{
 		char *buffer = (char *)malloc(sz);
 
 		readlink(path, buffer, sz);
-		strdup(buffer); // BAD
+		strdup(buffer); // BAD [NOT DETECTED]
 	}
 
 	{
@@ -206,6 +206,6 @@ void test_readlink(int fd, const char *path, size_t sz)
 
 		memset(buffer, 0, sz);
 		readlink(path, buffer, sz - 1);
-		strdup(buffer); // GOOD [FALSE POSITIVE]
+		strdup(buffer); // GOOD
 	}
 }
