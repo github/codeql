@@ -9,6 +9,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.semmle.extractor.html.HtmlPopulator;
+import com.semmle.js.extractor.ExtractorConfig.ECMAVersion;
 import com.semmle.js.extractor.ExtractorConfig.Platform;
 import com.semmle.js.extractor.ExtractorConfig.SourceType;
 import com.semmle.js.parser.ParseError;
@@ -96,7 +97,6 @@ public class HTMLExtractor implements IExtractor {
 
             extractTemplateTags(
                 textualExtractor,
-                scopeManager,
                 attr.getSource(),
                 attr.getBegin(),
                 attr.getEnd(),
@@ -154,7 +154,7 @@ public class HTMLExtractor implements IExtractor {
     public void handleText(
         Source src, int textBegin, int textEnd, Label parentLabel, boolean isCData) {
       extractTemplateTags(
-          textualExtractor, scopeManager, src, textBegin, textEnd, () -> parentLabel);
+          textualExtractor, src, textBegin, textEnd, () -> parentLabel);
     }
 
     @Override
@@ -384,7 +384,6 @@ public class HTMLExtractor implements IExtractor {
 
   private void extractTemplateTags(
       TextualExtractor textualExtractor,
-      ScopeManager scopeManager,
       Source root,
       int start,
       int end,
@@ -421,7 +420,7 @@ public class HTMLExtractor implements IExtractor {
           extractSnippet(
               TopLevelKind.ANGULAR_STYLE_TEMPLATE,
               config.withSourceType(SourceType.ANGULAR_STYLE_TEMPLATE),
-              scopeManager,
+              new ScopeManager(textualExtractor.getTrapwriter(), ECMAVersion.ECMA2020, true),
               textualExtractor,
               m.group(bodyGroup),
               m.start(bodyGroup),
