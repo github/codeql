@@ -17,6 +17,7 @@ import freemarker.cache.StringTemplateLoader;
 
     // cfg.setAPIBuiltinEnabled(true);
     // cfg.setNewBuiltinClassResolver(TemplateClassResolver.ALLOWS_NOTHING_RESOLVER);
+    // cfg.setSetting("new_builtin_class_resolver", "allows_nothing");
 
     Map<String, Object> input = new HashMap<String, Object>();
     input.put("title", argv[1]);

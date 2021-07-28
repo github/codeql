@@ -14,6 +14,7 @@ import freemarker.cache.StringTemplateLoader;
     cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
 
     // cfg.setNewBuiltinClassResolver(TemplateClassResolver.ALLOWS_NOTHING_RESOLVER);
+    // cfg.setSetting("new_builtin_class_resolver", "allows_nothing");
 
     // String templateStr="<#assign ex=\"freemarker.template.utility.Execute\"?new()> ${ex(\"id\")}";
     String templateStr=argv[1];

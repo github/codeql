@@ -62,6 +62,19 @@ module Freemarker {
     }
   }
 
+  // setSetting method configuration method: https://freemarker.apache.org/docs/api/freemarker/template/Configuration.html#setSetting-java.lang.String-java.lang.String-
+  class FreemarkerSetSettingClassResolver extends MethodAccess {
+    FreemarkerSetSettingClassResolver() {
+      exists(Method m |
+        m = this.getMethod() and
+        m.getDeclaringType() instanceof FreemarkerTemplateConfiguration and
+        m.hasName("setSetting") and
+        m.getParameter(0).getAnArgument().(Literal).getValue().matches("new_builtin_class_resolver") and
+        m.getParameter(1).getAnArgument().(Literal).getValue().matches("allows_nothing")
+      )
+    }
+  }
+
   class FreemarkerSetAPIBuiltinEnabled extends MethodAccess {
     FreemarkerSetAPIBuiltinEnabled() {
       exists(Method m |
@@ -92,6 +105,8 @@ module Freemarker {
 
     override predicate isSink(DataFlow2::Node sink) {
       sink.asExpr() = any(FreemarkerSetClassResolver r).getQualifier()
+      or
+      sink.asExpr() = any(FreemarkerSetSettingClassResolver r).getQualifier()
     }
     // override int fieldFlowBranchLimit() { result = 0 }
   }
