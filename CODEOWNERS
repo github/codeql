@@ -1,4 +1,1 @@
 * @github/codeql-go
-
-# Exclude experimental
-**/experimental/**/*.qhelp @github/codeql-go
