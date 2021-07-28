@@ -141,6 +141,21 @@ string getFieldToken(FieldContent fc) {
 }
 
 /**
+ * Returns a valid Java token naming the synthetic field `fc`,
+ * assuming that the name of that field consists only of characters valid in a Java identifier and `.`.
+ */
+string getSyntheticFieldToken(SyntheticFieldContent fc) {
+  exists(string name, int parts |
+    name = fc.getField() and
+    parts = count(name.splitAt("."))
+  |
+    if parts = 1
+    then result = name
+    else result = name.splitAt(".", parts - 2) + "_" + name.splitAt(".", parts - 1)
+  )
+}
+
+/**
  * Returns a token suitable for incorporation into a Java method name describing content `c`.
  */
 string contentToken(Content c) {
@@ -153,6 +168,8 @@ string contentToken(Content c) {
   c instanceof MapValueContent and result = "MapValue"
   or
   result = getFieldToken(c)
+  or
+  result = getSyntheticFieldToken(c)
 }
 
 /**
@@ -425,6 +442,8 @@ class TestCase extends TTestCase {
         content instanceof CollectionContent and result = "Element"
         or
         result = "Field[" + content.(FieldContent).getField().getQualifiedName() + "]"
+        or
+        result = "SyntheticField[" + content.(SyntheticFieldContent).getField() + "]"
       )
     )
   }
