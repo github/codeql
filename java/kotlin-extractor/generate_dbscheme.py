@@ -50,7 +50,7 @@ with open('src/main/kotlin/KotlinExtractorDbScheme.kt', 'w') as kt:
                                     flags=re.DOTALL):
         for db_type in re.findall(':\s*@([^\s,]+)\s*(?:,|$)', body):
             type_hierarchy[db_type] = type_hierarchy.get(db_type, set())
-        kt.write('fun write' + upperFirst(relname) + '(data: TrapWriter, ')
+        kt.write('fun TrapWriter.write' + upperFirst(relname) + '(')
         for colname, db_type in re.findall('(\S+)\s*:\s*([^\s,]+)', body):
             kt.write(colname + ': ')
             if db_type == 'int':
@@ -70,7 +70,7 @@ with open('src/main/kotlin/KotlinExtractorDbScheme.kt', 'w') as kt:
                 raise Exception('Bad db_type: ' + db_type)
             kt.write(', ')
         kt.write(') {\n')
-        kt.write('    data.writeTrap("' + relname + '(')
+        kt.write('    this.writeTrap("' + relname + '(')
         comma = ''
         for colname, db_type in re.findall('(\S+)\s*:\s*([^\s,]+)', body):
             kt.write(comma)

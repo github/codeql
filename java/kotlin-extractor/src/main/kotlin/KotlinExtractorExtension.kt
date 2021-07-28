@@ -76,7 +76,7 @@ class FileTrapWriter(
         val id: Label<DbLocation_default> = getFreshId()
         val fileId: Label<DbFile> = getIdFor(fileLabel)
         writeTrap("$id = @\"loc,{$fileId},$startLine,$startColumn,$endLine,$endColumn\"\n")
-        writeLocations_default(this, id, fileId, startLine, startColumn, endLine, endColumn)
+        writeLocations_default(id, fileId, startLine, startColumn, endLine, endColumn)
         return id
     }
     val labelMapping: MutableMap<String, Label<*>> = mutableMapOf<String, Label<*>>()
@@ -110,10 +110,10 @@ class KotlinExtractorVisitor(val trapDir: File, val srcDir: File) : IrElementVis
         val pkg = declaration.packageFqName?.asString() ?: ""
         val cls = declaration.name.asString()
         data.writeTrap("$pkgId = @\"pkg;$pkg\"\n")
-        writePackages(data, pkgId, pkg)
+        data.writePackages(pkgId, pkg)
         data.writeTrap("$id = @\"class;$pkg.$cls\"\n")
-        writeClasses(data, id, cls, pkgId, id)
-        writeHasLocation(data, id, locId)
+        data.writeClasses(id, cls, pkgId, id)
+        data.writeHasLocation(id, locId)
         declaration.acceptChildren(this, data)
     }
     override fun visitFile(declaration: IrFile, data: TrapWriter) {
@@ -134,7 +134,7 @@ class KotlinExtractorVisitor(val trapDir: File, val srcDir: File) : IrElementVis
             val tw = FileTrapWriter(fileLabel, trapFileBW, declaration.fileEntry)
             val id: Label<DbFile> = tw.getIdFor(fileLabel)
             tw.writeTrap("$id = $fileLabel\n")
-            writeFiles(tw, id, filePath, basename, extension, 0)
+            tw.writeFiles(id, filePath, basename, extension, 0)
             declaration.acceptChildren(this, tw)
         }
     }
