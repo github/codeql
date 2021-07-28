@@ -87,6 +87,7 @@ class FileTrapWriter(
             labelMapping.put(label, id)
             return id
         } else {
+            @Suppress("UNCHECKED_CAST")
             return maybeId as Label<T>
         }
     }
