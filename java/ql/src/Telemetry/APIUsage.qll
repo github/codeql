@@ -2,7 +2,7 @@ import java
 private import semmle.code.java.dataflow.FlowSteps
 private import semmle.code.java.dataflow.ExternalFlow
 
-private string jarName(CompilationUnit cu) {
+string jarName(CompilationUnit cu) {
   result = cu.getParentContainer().toString().regexpCapture(".*/(.*\\.jar)/?.*", 1)
 }
 
