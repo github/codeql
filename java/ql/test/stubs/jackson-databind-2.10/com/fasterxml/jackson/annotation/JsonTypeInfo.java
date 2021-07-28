@@ -14,14 +14,8 @@ public @interface JsonTypeInfo {
         CLASS("@class"),
         MINIMAL_CLASS("@c");
 
-        private final String _defaultPropertyName;
+        private Id(String defProp) { }
 
-        private Id(String defProp) {
-            this._defaultPropertyName = defProp;
-        }
-
-        public String getDefaultPropertyName() {
-            return this._defaultPropertyName;
-        }
+        public String getDefaultPropertyName() { return null; }
     }
 }
