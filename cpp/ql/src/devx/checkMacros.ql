@@ -35,26 +35,31 @@ predicate isLogDebug(Expr mie) {
       )
 }
 
-/*
-Holds if there is macro in parameters.
-For example: syslog (LOG_ERR, 
-                    "***** %s: return throttled errcode vrf %s afi %u loc 1*****", 
-                    __FUNCTION__, <------ should be reported
-                    table_ctx->vrf_name, 
-                    table_ctx->official_afi);
-*/
-// predicate hasMacro(FormattingFunctionCall fc) {
-//     exists(MacroInvocation mi |
-//         mi.getExpr() = v)
-// }
+class Likely__FUNCTION__ extends StringLiteral {
+    Likely__FUNCTION__() { this.getValue() = this.getEnclosingFunction().getName() }
+  }
+  
+/**
+ * Holds if `e` is either:
+ * 1. a macro invocation with the name `s`, or
+ * 2. a string literal with the same value as the name of `e`'s enclosing function. This likely means
+ * that `e` is a use of the `__FUNCTION__` macro.
+ */
+predicate isMacroInvocationLike(Expr e, string s) {
+exists(MacroInvocation mi |
+    e = mi.getExpr() and
+    s = mi.getMacroName()
+)
+or
+e instanceof Likely__FUNCTION__ and
+s = "__FUNCTION__"
+}
 
 
-from string format, FormattingFunctionCall fc, DataFlow::Node src, DataFlow::Node sink, int n
+from string format, FormattingFunctionCall fc, int n, string name
 where
-  format = fc.getFormat().getValue() and // format: "%s: Failed init_producer"
-  fc.getTarget().hasName("syslog") and
-  not isLogDebug(fc.getArgument(0)) and
-  DataFlow::localFlow(src, sink) and
-  fc.getFormatArgument(n) = sink.asExpr() and
-  src.toString() = fc.getEnclosingFunction().toString()
-select fc, "Argument " + sink + " of " + fc.toString() + " is " + src.toString()
+format = fc.getFormat().getValue() and // format: "%s: Failed init_producer"
+fc.getTarget().hasName("syslog") and
+not isLogDebug(fc.getArgument(0)) and
+isMacroInvocationLike(fc.getFormatArgument(n), name)
+select fc, "Argument " + n + " of " + fc.toString() + " is " + name
