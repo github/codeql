@@ -59,7 +59,7 @@ private class ReflectiveClassIdentifierLiteral extends ReflectiveClassIdentifier
 /**
  * A call to a Java standard library method which constructs or returns a `Class<T>` from a `String`.
  */
-library class ReflectiveClassIdentifierMethodAccess extends ReflectiveClassIdentifier, MethodAccess {
+class ReflectiveClassIdentifierMethodAccess extends ReflectiveClassIdentifier, MethodAccess {
   ReflectiveClassIdentifierMethodAccess() {
     // A call to `Class.forName(...)`, from which we can infer `T` in the returned type `Class<T>`.
     getCallee().getDeclaringType() instanceof TypeClass and getCallee().hasName("forName")

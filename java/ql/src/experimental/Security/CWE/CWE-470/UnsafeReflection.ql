@@ -42,10 +42,12 @@ class UnsafeReflectionConfig extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) { sink instanceof UnsafeReflectionSink }
 
   override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
-    exists(ReflectiveClassIdentifierMethodAccessCall rcimac |
+    // Argument -> return of Class.forName, ClassLoader.loadClass
+    exists(ReflectiveClassIdentifierMethodAccess rcimac |
       rcimac.getArgument(0) = pred.asExpr() and rcimac = succ.asExpr()
     )
     or
+    // Qualifier -> return of Class.getDeclaredConstructors/Methods and similar
     exists(MethodAccess ma |
       (
         ma instanceof ReflectiveConstructorsAccess or
@@ -55,31 +57,42 @@ class UnsafeReflectionConfig extends TaintTracking::Configuration {
       ma = succ.asExpr()
     )
     or
-    exists(
-      MethodAccess ma // Object.getClass()
-    |
+    // Qualifier -> return of Object.getClass
+    exists(MethodAccess ma |
       ma.getMethod().hasName("getClass") and
       ma.getMethod().getDeclaringType().hasQualifiedName("java.lang", "Object") and
       ma.getQualifier() = pred.asExpr() and
       ma = succ.asExpr()
     )
     or
-    exists(MethodAccess ma, Method m, int i, Expr arg |
-      m = ma.getMethod() and arg = ma.getArgument(i)
-    |
-      m.getReturnType() instanceof TypeClass and
-      arg.getType() instanceof TypeString and
-      arg = pred.asExpr() and
-      ma = succ.asExpr()
+    // Argument -> return of methods that look like Class.forName
+    looksLikeResolveClassStep(pred, succ)
+    or
+    // Argument -> return of methods that look like `Object getInstance(Class c)`
+    looksLikeInstantiateClassStep(pred, succ)
+    or
+    // Argument -> return of BeanFactory.getBean
+    exists(MethodAccess ma, Method getBean, Expr argument |
+      getBean.hasQualifiedName("org.springframework.beans.factory", "BeanFactory", "getBean") and
+      (
+        ma.getMethod().overrides(getBean)
+        or
+        ma.getMethod() = getBean
+      ) and
+      argument = ma.getAnArgument() and
+      (
+        argument.getType() instanceof TypeString
+        or
+        argument.getType() instanceof TypeClass
+      ) and
+      pred.asExpr() = argument and
+      succ.asExpr() = ma
     )
     or
-    exists(MethodAccess ma, Method m, int i, Expr arg |
-      m = ma.getMethod() and arg = ma.getArgument(i)
-    |
-      m.getReturnType() instanceof TypeObject and
-      arg.getType() instanceof TypeClass and
-      arg = pred.asExpr() and
-      ma = succ.asExpr()
+    // Qualifier -> return of Constructor.newInstance, Class.newInstance
+    exists(NewInstance ni |
+      ni.getQualifier() = pred.asExpr() and
+      ni = succ.asExpr()
     )
   }
 
@@ -88,6 +101,17 @@ class UnsafeReflectionConfig extends TaintTracking::Configuration {
   }
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, UnsafeReflectionConfig conf
-where conf.hasFlowPath(source, sink)
+private Expr getAMethodArgument(MethodAccess reflectiveCall) {
+  result = reflectiveCall.(NewInstance).getAnArgument()
+  or
+  result = reflectiveCall.(MethodInvokeCall).getAnArgument()
+}
+
+from
+  DataFlow::PathNode source, DataFlow::PathNode sink, UnsafeReflectionConfig conf,
+  MethodAccess reflectiveCall
+where
+  conf.hasFlowPath(source, sink) and
+  sink.getNode().asExpr() = reflectiveCall.getQualifier() and
+  conf.hasFlowToExpr(getAMethodArgument(reflectiveCall))
 select sink.getNode(), source, sink, "Unsafe reflection of $@.", source.getNode(), "user input"

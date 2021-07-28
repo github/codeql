@@ -1,83 +1,62 @@
 import java
 import DataFlow
 import semmle.code.java.Reflection
-import semmle.code.java.dataflow.DataFlow3
 import semmle.code.java.dataflow.FlowSources
-import semmle.code.java.dataflow.TaintTracking2
 
 /**
- * A call to a Java standard library method which constructs or returns a `Class<T>` from a `String`.
- * e.g `Class.forName(...)` or `ClassLoader.loadClass(...)`
+ * A call to `java.lang.reflect.Method.invoke`.
  */
-class ReflectiveClassIdentifierMethodAccessCall extends MethodAccess {
-  ReflectiveClassIdentifierMethodAccessCall() {
-    this instanceof ReflectiveClassIdentifierMethodAccess
-  }
+class MethodInvokeCall extends MethodAccess {
+  MethodInvokeCall() { this.getMethod().hasQualifiedName("java.lang.reflect", "Method", "invoke") }
 }
 
 /**
- * Unsafe reflection sink.
- * e.g `Constructor.newInstance(...)` or `Method.invoke(...)` or `Class.newInstance()`.
+ * Unsafe reflection sink (the qualifier or method arguments to `Constructor.newInstance(...)` or `Method.invoke(...)`)
  */
 class UnsafeReflectionSink extends DataFlow::ExprNode {
   UnsafeReflectionSink() {
     exists(MethodAccess ma |
       (
-        ma.getMethod().hasQualifiedName("java.lang.reflect", "Constructor<>", "newInstance")
-        or
-        ma.getMethod().hasQualifiedName("java.lang.reflect", "Method", "invoke")
+        ma.getMethod().hasQualifiedName("java.lang.reflect", "Constructor<>", "newInstance") or
+        ma instanceof MethodInvokeCall
       ) and
-      ma.getQualifier() = this.asExpr() and
-      exists(ReflectionArgsConfig rac | rac.hasFlowToExpr(ma.getAnArgument()))
+      this.asExpr() = [ma.getQualifier(), ma.getAnArgument()]
     )
   }
 }
 
-/** Taint-tracking configuration tracing flow from remote sources to specifying the initialization parameters to the constructor or method. */
-class ReflectionArgsConfig extends TaintTracking2::Configuration {
-  ReflectionArgsConfig() { this = "ReflectionArgsConfig" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
-
-  override predicate isSink(DataFlow::Node sink) {
-    exists(NewInstance ni | ni.getAnArgument() = sink.asExpr())
-    or
-    exists(MethodAccess ma |
-      ma.getMethod().hasQualifiedName("java.lang.reflect", "Method", "invoke") and
-      ma.getArgument(1) = sink.asExpr() and
-      exists(ReflectionInvokeObjectConfig rioc | rioc.hasFlowToExpr(ma.getArgument(0)))
-    )
-  }
+/**
+ * Holds if `fromNode` to `toNode` is a dataflow step that looks like resolving a class.
+ * A method probably resolves a class if it takes a string, returns a Class
+ * and its name contains "resolve", "load", etc.
+ */
+predicate looksLikeResolveClassStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
+  exists(MethodAccess ma, Method m, int i, Expr arg |
+    m = ma.getMethod() and arg = ma.getArgument(i)
+  |
+    m.getReturnType() instanceof TypeClass and
+    m.getName().toLowerCase().regexpMatch("resolve|load|class|type") and
+    arg.getType() instanceof TypeString and
+    arg = fromNode.asExpr() and
+    ma = toNode.asExpr()
+  )
 }
 
-/** A data flow configuration tracing flow from the class object associated with the class to specifying the initialization parameters. */
-class ReflectionInvokeObjectConfig extends DataFlow3::Configuration {
-  ReflectionInvokeObjectConfig() { this = "ReflectionInvokeObjectConfig" }
-
-  override predicate isSource(DataFlow::Node source) {
-    exists(ReflectiveClassIdentifierMethodAccessCall rma | rma = source.asExpr())
-  }
-
-  override predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma |
-      ma.getMethod().hasQualifiedName("java.lang.reflect", "Method", "invoke") and
-      ma.getArgument(0) = sink.asExpr()
-    )
-  }
-
-  override predicate isAdditionalFlowStep(Node pred, Node succ) {
-    exists(NewInstance ni |
-      ni.getQualifier() = pred.asExpr() and
-      ni = succ.asExpr()
-    )
-    or
-    exists(MethodAccess ma, Method m, int i, Expr arg |
-      m = ma.getMethod() and arg = ma.getArgument(i)
-    |
-      m.getReturnType() instanceof TypeObject and
-      arg.getType() instanceof TypeClass and
-      arg = pred.asExpr() and
-      ma = succ.asExpr()
-    )
-  }
+/**
+ * Holds if `fromNode` to `toNode` is a dataflow step that looks like instantiating a class.
+ * A method probably instantiates a class if it is external, takes a Class, returns an Object
+ * and its name contains "instantiate" or similar terms.
+ */
+predicate looksLikeInstantiateClassStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
+  exists(MethodAccess ma, Method m, int i, Expr arg |
+    m = ma.getMethod() and arg = ma.getArgument(i)
+  |
+    m.getReturnType() instanceof TypeObject and
+    m.getName()
+        .toLowerCase()
+        .regexpMatch("instantiate|instance|create|make|getbean|instantiateclass") and
+    arg.getType() instanceof TypeClass and
+    arg = fromNode.asExpr() and
+    ma = toNode.asExpr()
+  )
 }
