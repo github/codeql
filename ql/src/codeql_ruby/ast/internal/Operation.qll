@@ -9,7 +9,7 @@ class AssignmentImpl extends Operation, TAssignment {
 }
 
 class AssignExprReal extends AssignmentImpl, AssignExpr, TAssignExprReal {
-  private Generated::Assignment g;
+  private Ruby::Assignment g;
 
   AssignExprReal() { this = TAssignExprReal(g) }
 
@@ -35,7 +35,7 @@ abstract class SplatExprImpl extends SplatExpr {
 }
 
 class SplatExprReal extends SplatExprImpl, TSplatExprReal {
-  private Generated::SplatArgument g;
+  private Ruby::SplatArgument g;
 
   SplatExprReal() { this = TSplatExprReal(g) }
 

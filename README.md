@@ -16,7 +16,7 @@ The generated `ql/src/ruby.dbscheme` and `ql/src/codeql_ruby/ast/internal/TreeSi
 
 ```bash
 # Run the generator
-cargo run --release -p ruby-generator
+cargo run --release -p ruby-generator -- --dbscheme ql/src/ruby.dbscheme --library ql/src/codeql_ruby/ast/internal/TreeSitter.qll
 # Then auto-format the QL library
 codeql query format -i ql/src/codeql_ruby/ast/internal/TreeSitter.qll
 ```

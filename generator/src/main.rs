@@ -3,13 +3,14 @@ mod language;
 mod ql;
 mod ql_gen;
 
+use clap;
 use language::Language;
 use std::collections::BTreeMap as Map;
 use std::collections::BTreeSet as Set;
 use std::fs::File;
 use std::io::LineWriter;
+use std::io::Write;
 use std::path::PathBuf;
-use tracing::{error, info};
 
 /// Given the name of the parent node, and its field information, returns a pair,
 /// the first of which is the field's type. The second is an optional dbscheme
@@ -135,18 +136,16 @@ fn add_field_for_column_storage<'a>(
 }
 
 /// Converts the given tree-sitter node types into CodeQL dbscheme entries.
-fn convert_nodes<'a>(nodes: &'a node_types::NodeTypeMap) -> Vec<dbscheme::Entry<'a>> {
-    let mut entries: Vec<dbscheme::Entry> = vec![
-        create_location_union(),
-        create_locations_default_table(),
-        create_sourceline_union(),
-        create_numlines_table(),
-        create_files_table(),
-        create_folders_table(),
-        create_container_union(),
-        create_containerparent_table(),
-        create_source_location_prefix_table(),
-    ];
+/// Returns a tuple containing:
+///
+/// 1. A vector of dbscheme entries.
+/// 2. A set of names of the members of the `<lang>_ast_node` union.
+/// 3. A map where the keys are the dbscheme names for token kinds, and the
+/// values are their integer representations.
+fn convert_nodes<'a>(
+    nodes: &'a node_types::NodeTypeMap,
+) -> (Vec<dbscheme::Entry<'a>>, Set<&'a str>, Map<&'a str, usize>) {
+    let mut entries: Vec<dbscheme::Entry> = Vec::new();
     let mut ast_node_members: Set<&str> = Set::new();
     let token_kinds: Map<&str, usize> = nodes
         .iter()
@@ -157,7 +156,6 @@ fn convert_nodes<'a>(nodes: &'a node_types::NodeTypeMap) -> Vec<dbscheme::Entry<
             _ => None,
         })
         .collect();
-    ast_node_members.insert("token");
     for (_, node) in nodes {
         match &node.kind {
             node_types::EntryKind::Union { members: n_members } => {
@@ -250,48 +248,30 @@ fn convert_nodes<'a>(nodes: &'a node_types::NodeTypeMap) -> Vec<dbscheme::Entry<
         }
     }
 
-    // Add the tokeninfo table
-    let (token_case, token_table) = create_tokeninfo(token_kinds);
-    entries.push(dbscheme::Entry::Table(token_table));
-    entries.push(dbscheme::Entry::Case(token_case));
-
-    // Add the diagnostics table
-    let (diagnostics_case, diagnostics_table) = create_diagnostics();
-    entries.push(dbscheme::Entry::Table(diagnostics_table));
-    entries.push(dbscheme::Entry::Case(diagnostics_case));
-
-    // Create a union of all database types.
-    entries.push(dbscheme::Entry::Union(dbscheme::Union {
-        name: "ast_node",
-        members: ast_node_members,
-    }));
-
-    // Create the ast_node_parent union.
-    entries.push(dbscheme::Entry::Union(dbscheme::Union {
-        name: "ast_node_parent",
-        members: ["ast_node", "file"].iter().cloned().collect(),
-    }));
-
-    entries.push(dbscheme::Entry::Table(create_ast_node_parent_table()));
-
-    entries
+    (entries, ast_node_members, token_kinds)
 }
-fn create_ast_node_parent_table<'a>() -> dbscheme::Table<'a> {
+
+/// Creates a dbscheme table entry representing the parent relation for AST nodes.
+///
+/// # Arguments
+/// - `name` - the name of both the table to create and the node parent type.
+/// - `ast_node_name` - the name of the node child type.
+fn create_ast_node_parent_table<'a>(name: &'a str, ast_node_name: &'a str) -> dbscheme::Table<'a> {
     dbscheme::Table {
-        name: "ast_node_parent",
+        name,
         columns: vec![
             dbscheme::Column {
                 db_type: dbscheme::DbColumnType::Int,
                 name: "child",
                 unique: false,
-                ql_type: ql::Type::AtType("ast_node"),
+                ql_type: ql::Type::AtType(ast_node_name),
                 ql_type_is_ref: true,
             },
             dbscheme::Column {
                 db_type: dbscheme::DbColumnType::Int,
                 name: "parent",
                 unique: false,
-                ql_type: ql::Type::AtType("ast_node_parent"),
+                ql_type: ql::Type::AtType(name),
                 ql_type_is_ref: true,
             },
             dbscheme::Column {
@@ -306,18 +286,16 @@ fn create_ast_node_parent_table<'a>() -> dbscheme::Table<'a> {
     }
 }
 
-fn create_tokeninfo<'a>(
-    token_kinds: Map<&'a str, usize>,
-) -> (dbscheme::Case<'a>, dbscheme::Table<'a>) {
-    let table = dbscheme::Table {
-        name: "tokeninfo",
+fn create_tokeninfo<'a>(name: &'a str, type_name: &'a str) -> dbscheme::Table<'a> {
+    dbscheme::Table {
+        name,
         keysets: None,
         columns: vec![
             dbscheme::Column {
                 db_type: dbscheme::DbColumnType::Int,
                 name: "id",
                 unique: true,
-                ql_type: ql::Type::AtType("token"),
+                ql_type: ql::Type::AtType(type_name),
                 ql_type_is_ref: false,
             },
             dbscheme::Column {
@@ -356,31 +334,19 @@ fn create_tokeninfo<'a>(
                 ql_type_is_ref: true,
             },
         ],
-    };
+    }
+}
+
+fn create_token_case<'a>(name: &'a str, token_kinds: Map<&'a str, usize>) -> dbscheme::Case<'a> {
     let branches: Vec<(usize, &str)> = token_kinds
         .iter()
         .map(|(&name, kind_id)| (*kind_id, name))
         .collect();
-    let case = dbscheme::Case {
-        name: "token",
+    dbscheme::Case {
+        name: name,
         column: "kind",
         branches: branches,
-    };
-    (case, table)
-}
-
-fn write_dbscheme(language: &Language, entries: &[dbscheme::Entry]) -> std::io::Result<()> {
-    info!(
-        "Writing database schema for {} to '{}'",
-        &language.name,
-        match language.dbscheme_path.to_str() {
-            None => "<undisplayable>",
-            Some(p) => p,
-        }
-    );
-    let file = File::create(&language.dbscheme_path)?;
-    let mut file = LineWriter::new(file);
-    dbscheme::write(&language.name, &mut file, &entries)
+    }
 }
 
 fn create_location_union<'a>() -> dbscheme::Entry<'a> {
@@ -665,7 +631,7 @@ fn create_diagnostics<'a>() -> (dbscheme::Case<'a>, dbscheme::Table<'a>) {
     (case, table)
 }
 
-fn main() {
+fn main() -> std::io::Result<()> {
     tracing_subscriber::fmt()
         .with_target(false)
         .without_time()
@@ -673,33 +639,122 @@ fn main() {
         .with_env_filter(tracing_subscriber::EnvFilter::from_default_env())
         .init();
 
-    // TODO: figure out proper dbscheme output path and/or take it from the
-    // command line.
-    let ruby = Language {
-        name: "Ruby".to_owned(),
-        node_types: tree_sitter_ruby::NODE_TYPES,
-        dbscheme_path: PathBuf::from("ql/src/ruby.dbscheme"),
-        ql_library_path: PathBuf::from("ql/src/codeql_ruby/ast/internal/TreeSitter.qll"),
-    };
-    match node_types::read_node_types_str(&ruby.node_types) {
-        Err(e) => {
-            error!("Failed to read node-types JSON for {}: {}", ruby.name, e);
-            std::process::exit(1);
-        }
-        Ok(nodes) => {
-            let dbscheme_entries = convert_nodes(&nodes);
+    let matches = clap::App::new("Ruby dbscheme generator")
+        .version("1.0")
+        .author("GitHub")
+        .about("CodeQL Ruby dbscheme generator")
+        .args_from_usage(
+            "--dbscheme=<FILE>                  'Path of the generated dbscheme file'
+             --library=<FILE>                   'Path of the generated QLL file'",
+        )
+        .get_matches();
+    let dbscheme_path = matches.value_of("dbscheme").expect("missing --dbscheme");
+    let dbscheme_path = PathBuf::from(dbscheme_path);
 
-            if let Err(e) = write_dbscheme(&ruby, &dbscheme_entries) {
-                error!("Failed to write dbscheme: {}", e);
-                std::process::exit(2);
-            }
+    let ql_library_path = matches.value_of("library").expect("missing --library");
+    let ql_library_path = PathBuf::from(ql_library_path);
 
-            let classes = ql_gen::convert_nodes(&nodes);
+    let languages = vec![
+        Language {
+            name: "Ruby".to_owned(),
+            node_types: tree_sitter_ruby::NODE_TYPES,
+        },
+        Language {
+            name: "Erb".to_owned(),
+            node_types: tree_sitter_embedded_template::NODE_TYPES,
+        },
+    ];
+    let mut dbscheme_writer = LineWriter::new(File::create(dbscheme_path)?);
+    write!(
+        dbscheme_writer,
+        "// CodeQL database schema for {}\n\
+         // Automatically generated from the tree-sitter grammar; do not edit\n\n",
+        languages[0].name
+    )?;
+    let (diagnostics_case, diagnostics_table) = create_diagnostics();
+    dbscheme::write(
+        &mut dbscheme_writer,
+        &[
+            create_location_union(),
+            create_locations_default_table(),
+            create_sourceline_union(),
+            create_numlines_table(),
+            create_files_table(),
+            create_folders_table(),
+            create_container_union(),
+            create_containerparent_table(),
+            create_source_location_prefix_table(),
+            dbscheme::Entry::Table(diagnostics_table),
+            dbscheme::Entry::Case(diagnostics_case),
+        ],
+    )?;
 
-            if let Err(e) = ql_gen::write(&ruby, &classes) {
-                println!("Failed to write QL library: {}", e);
-                std::process::exit(3);
-            }
-        }
+    let mut ql_writer = LineWriter::new(File::create(ql_library_path)?);
+    write!(
+        ql_writer,
+        "/*\n\
+          * CodeQL library for {}
+          * Automatically generated from the tree-sitter grammar; do not edit\n\
+          */\n\n",
+        languages[0].name
+    )?;
+    ql::write(
+        &mut ql_writer,
+        &[
+            ql::TopLevel::Import("codeql.files.FileSystem"),
+            ql::TopLevel::Import("codeql.Locations"),
+        ],
+    )?;
+
+    for language in languages {
+        let prefix = node_types::to_snake_case(&language.name);
+        let ast_node_name = format!("{}_ast_node", &prefix);
+        let ast_node_parent_name = format!("{}_ast_node_parent", &prefix);
+        let token_name = format!("{}_token", &prefix);
+        let tokeninfo_name = format!("{}_tokeninfo", &prefix);
+        let reserved_word_name = format!("{}_reserved_word", &prefix);
+        let nodes = node_types::read_node_types_str(&prefix, &language.node_types)?;
+        let (dbscheme_entries, mut ast_node_members, token_kinds) = convert_nodes(&nodes);
+        ast_node_members.insert(&token_name);
+        dbscheme::write(&mut dbscheme_writer, &dbscheme_entries)?;
+        let token_case = create_token_case(&token_name, token_kinds);
+        dbscheme::write(
+            &mut dbscheme_writer,
+            &[
+                dbscheme::Entry::Table(create_tokeninfo(&tokeninfo_name, &token_name)),
+                dbscheme::Entry::Case(token_case),
+                dbscheme::Entry::Union(dbscheme::Union {
+                    name: &ast_node_name,
+                    members: ast_node_members,
+                }),
+                dbscheme::Entry::Union(dbscheme::Union {
+                    name: &ast_node_parent_name,
+                    members: [&ast_node_name, "file"].iter().cloned().collect(),
+                }),
+                dbscheme::Entry::Table(create_ast_node_parent_table(
+                    &ast_node_parent_name,
+                    &ast_node_name,
+                )),
+            ],
+        )?;
+
+        let mut body = vec![
+            ql::TopLevel::Class(ql_gen::create_ast_node_class(
+                &ast_node_name,
+                &ast_node_parent_name,
+            )),
+            ql::TopLevel::Class(ql_gen::create_token_class(&token_name, &tokeninfo_name)),
+            ql::TopLevel::Class(ql_gen::create_reserved_word_class(&reserved_word_name)),
+        ];
+        body.append(&mut ql_gen::convert_nodes(&nodes));
+        ql::write(
+            &mut ql_writer,
+            &[ql::TopLevel::Module(ql::Module {
+                qldoc: None,
+                name: &language.name,
+                body,
+            })],
+        )?;
     }
+    Ok(())
 }

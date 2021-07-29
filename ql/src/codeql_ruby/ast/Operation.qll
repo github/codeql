@@ -39,7 +39,7 @@ class UnaryOperation extends Operation, TUnaryOperation {
 }
 
 private class UnaryOperationGenerated extends UnaryOperation, TUnaryOperation {
-  private Generated::Unary g;
+  private Ruby::Unary g;
 
   UnaryOperationGenerated() { g = toGenerated(this) }
 
@@ -106,7 +106,7 @@ class SplatExpr extends UnaryOperation, TSplatExpr {
  * ```
  */
 class HashSplatExpr extends UnaryOperation, THashSplatExpr {
-  private Generated::HashSplatArgument g;
+  private Ruby::HashSplatArgument g;
 
   HashSplatExpr() { this = THashSplatExpr(g) }
 
@@ -164,7 +164,7 @@ class BinaryOperation extends Operation, TBinaryOperation {
 }
 
 private class BinaryOperationReal extends BinaryOperation {
-  private Generated::Binary g;
+  private Ruby::Binary g;
 
   BinaryOperationReal() { g = toGenerated(this) }
 
@@ -569,7 +569,7 @@ class AssignExpr extends Assignment, TAssignExpr {
  * A binary assignment operation other than `=`.
  */
 class AssignOperation extends Assignment, TAssignOperation {
-  Generated::OperatorAssignment g;
+  Ruby::OperatorAssignment g;
 
   AssignOperation() { g = toGenerated(this) }
 

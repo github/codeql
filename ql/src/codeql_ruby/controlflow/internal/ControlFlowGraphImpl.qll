@@ -202,7 +202,7 @@ private class ForRange extends ForExpr {
   }
 
   ForIn getIn() {
-    result = ASTInternal::TForIn(ASTInternal::toGenerated(this).(Generated::For).getValue())
+    result = ASTInternal::TForIn(ASTInternal::toGenerated(this).(Ruby::For).getValue())
   }
 }
 

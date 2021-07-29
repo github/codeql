@@ -149,13 +149,13 @@ private module ImplicitSelfSynthesis {
 
   pragma[nomagic]
   private predicate regularMethodCallSelfSynthesis(TRegularMethodCall mc, int i, Child child) {
-    exists(Generated::AstNode g |
+    exists(Ruby::AstNode g |
       mc = TRegularMethodCall(g) and
       // If there's no explicit receiver (or scope resolution that acts like a
       // receiver), then the receiver is implicitly `self`.  N.B.  `::Foo()` is
       // not valid Ruby.
-      not exists(g.(Generated::Call).getReceiver()) and
-      not exists(g.(Generated::Call).getMethod().(Generated::ScopeResolution).getScope())
+      not exists(g.(Ruby::Call).getReceiver()) and
+      not exists(g.(Ruby::Call).getMethod().(Ruby::ScopeResolution).getScope())
     ) and
     child = SynthChild(SelfKind()) and
     i = 0
@@ -316,7 +316,7 @@ private module AssignOperationDesugar {
   }
 
   private Location getAssignOperationLocation(AssignOperation ao) {
-    exists(Generated::OperatorAssignment g, Generated::Token op |
+    exists(Ruby::OperatorAssignment g, Ruby::Token op |
       g = toGenerated(ao) and
       op.getParent() = g and
       op.getParentIndex() = 1 and

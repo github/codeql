@@ -111,7 +111,7 @@ class IfExpr extends ConditionalExpr, TIfExpr {
 }
 
 private class If extends IfExpr, TIf {
-  private Generated::If g;
+  private Ruby::If g;
 
   If() { this = TIf(g) }
 
@@ -125,7 +125,7 @@ private class If extends IfExpr, TIf {
 }
 
 private class Elsif extends IfExpr, TElsif {
-  private Generated::Elsif g;
+  private Ruby::Elsif g;
 
   Elsif() { this = TElsif(g) }
 
@@ -149,7 +149,7 @@ private class Elsif extends IfExpr, TElsif {
  * ```
  */
 class UnlessExpr extends ConditionalExpr, TUnlessExpr {
-  private Generated::Unless g;
+  private Ruby::Unless g;
 
   UnlessExpr() { this = TUnlessExpr(g) }
 
@@ -207,7 +207,7 @@ class UnlessExpr extends ConditionalExpr, TUnlessExpr {
  * ```
  */
 class IfModifierExpr extends ConditionalExpr, TIfModifierExpr {
-  private Generated::IfModifier g;
+  private Ruby::IfModifier g;
 
   IfModifierExpr() { this = TIfModifierExpr(g) }
 
@@ -242,7 +242,7 @@ class IfModifierExpr extends ConditionalExpr, TIfModifierExpr {
  * ```
  */
 class UnlessModifierExpr extends ConditionalExpr, TUnlessModifierExpr {
-  private Generated::UnlessModifier g;
+  private Ruby::UnlessModifier g;
 
   UnlessModifierExpr() { this = TUnlessModifierExpr(g) }
 
@@ -277,7 +277,7 @@ class UnlessModifierExpr extends ConditionalExpr, TUnlessModifierExpr {
  * ```
  */
 class TernaryIfExpr extends ConditionalExpr, TTernaryIfExpr {
-  private Generated::Conditional g;
+  private Ruby::Conditional g;
 
   TernaryIfExpr() { this = TTernaryIfExpr(g) }
 
@@ -309,7 +309,7 @@ class TernaryIfExpr extends ConditionalExpr, TTernaryIfExpr {
 }
 
 class CaseExpr extends ControlExpr, TCaseExpr {
-  private Generated::Case g;
+  private Ruby::Case g;
 
   CaseExpr() { this = TCaseExpr(g) }
 
@@ -379,7 +379,7 @@ class CaseExpr extends ControlExpr, TCaseExpr {
  * ```
  */
 class WhenExpr extends Expr, TWhenExpr {
-  private Generated::When g;
+  private Ruby::When g;
 
   WhenExpr() { this = TWhenExpr(g) }
 
@@ -465,7 +465,7 @@ class ConditionalLoop extends Loop, TConditionalLoop {
  * ```
  */
 class WhileExpr extends ConditionalLoop, TWhileExpr {
-  private Generated::While g;
+  private Ruby::While g;
 
   WhileExpr() { this = TWhileExpr(g) }
 
@@ -495,7 +495,7 @@ class WhileExpr extends ConditionalLoop, TWhileExpr {
  * ```
  */
 class UntilExpr extends ConditionalLoop, TUntilExpr {
-  private Generated::Until g;
+  private Ruby::Until g;
 
   UntilExpr() { this = TUntilExpr(g) }
 
@@ -522,7 +522,7 @@ class UntilExpr extends ConditionalLoop, TUntilExpr {
  * ```
  */
 class WhileModifierExpr extends ConditionalLoop, TWhileModifierExpr {
-  private Generated::WhileModifier g;
+  private Ruby::WhileModifier g;
 
   WhileModifierExpr() { this = TWhileModifierExpr(g) }
 
@@ -548,7 +548,7 @@ class WhileModifierExpr extends ConditionalLoop, TWhileModifierExpr {
  * ```
  */
 class UntilModifierExpr extends ConditionalLoop, TUntilModifierExpr {
-  private Generated::UntilModifier g;
+  private Ruby::UntilModifier g;
 
   UntilModifierExpr() { this = TUntilModifierExpr(g) }
 
@@ -576,7 +576,7 @@ class UntilModifierExpr extends ConditionalLoop, TUntilModifierExpr {
  * ```
  */
 class ForExpr extends Loop, TForExpr {
-  private Generated::For g;
+  private Ruby::For g;
 
   ForExpr() { this = TForExpr(g) }
 

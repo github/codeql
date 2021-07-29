@@ -1,9 +1,11 @@
 use std::collections::BTreeSet;
 use std::fmt;
 
+#[derive(Clone, Eq, PartialEq, Hash)]
 pub enum TopLevel<'a> {
     Class(Class<'a>),
     Import(&'a str),
+    Module(Module<'a>),
 }
 
 impl<'a> fmt::Display for TopLevel<'a> {
@@ -11,6 +13,7 @@ impl<'a> fmt::Display for TopLevel<'a> {
         match self {
             TopLevel::Import(x) => write!(f, "private import {}", x),
             TopLevel::Class(cls) => write!(f, "{}", cls),
+            TopLevel::Module(m) => write!(f, "{}", m),
         }
     }
 }
@@ -67,6 +70,26 @@ impl<'a> fmt::Display for Class<'a> {
     }
 }
 
+#[derive(Clone, Eq, PartialEq, Hash)]
+pub struct Module<'a> {
+    pub qldoc: Option<String>,
+    pub name: &'a str,
+    pub body: Vec<TopLevel<'a>>,
+}
+
+impl<'a> fmt::Display for Module<'a> {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        if let Some(qldoc) = &self.qldoc {
+            write!(f, "/** {} */", qldoc)?;
+        }
+        write!(f, "module {} {{ \n", self.name)?;
+        for decl in &self.body {
+            write!(f, "  {}\n", decl)?;
+        }
+        write!(f, "}}")?;
+        Ok(())
+    }
+}
 // The QL type of a column.
 #[derive(Clone, Eq, PartialEq, Hash, Ord, PartialOrd)]
 pub enum Type<'a> {
@@ -226,25 +249,10 @@ impl<'a> fmt::Display for FormalParameter<'a> {
     }
 }
 
-/// Generates a QL library by writing the given `classes` to the `file`.
-pub fn write<'a>(
-    language_name: &str,
-    file: &mut dyn std::io::Write,
-    elements: &'a [TopLevel],
-) -> std::io::Result<()> {
-    write!(file, "/*\n")?;
-    write!(file, " * CodeQL library for {}\n", language_name)?;
-    write!(
-        file,
-        " * Automatically generated from the tree-sitter grammar; do not edit\n"
-    )?;
-    write!(file, " */\n\n")?;
-    write!(file, "module Generated {{\n")?;
-
+/// Generates a QL library by writing the given `elements` to the `file`.
+pub fn write<'a>(file: &mut dyn std::io::Write, elements: &'a [TopLevel]) -> std::io::Result<()> {
     for element in elements {
         write!(file, "{}\n\n", &element)?;
     }
-
-    write!(file, "}}")?;
     Ok(())
 }

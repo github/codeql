@@ -109,7 +109,7 @@ class ModuleBase extends BodyStmt, Scope, TModuleBase {
  * ```
  */
 class Toplevel extends ModuleBase, TToplevel {
-  private Generated::Program g;
+  private Ruby::Program g;
 
   Toplevel() { this = TToplevel(g) }
 
@@ -119,8 +119,7 @@ class Toplevel extends ModuleBase, TToplevel {
    * Gets the `n`th `BEGIN` block.
    */
   final BeginBlock getBeginBlock(int n) {
-    toGenerated(result) =
-      rank[n + 1](int i, Generated::BeginBlock b | b = g.getChild(i) | b order by i)
+    toGenerated(result) = rank[n + 1](int i, Ruby::BeginBlock b | b = g.getChild(i) | b order by i)
   }
 
   /**
@@ -231,7 +230,7 @@ class Namespace extends ModuleBase, ConstantWriteAccess, TNamespace {
  * ```
  */
 class ClassDeclaration extends Namespace, TClassDeclaration {
-  private Generated::Class g;
+  private Ruby::Class g;
 
   ClassDeclaration() { this = TClassDeclaration(g) }
 
@@ -256,16 +255,16 @@ class ClassDeclaration extends Namespace, TClassDeclaration {
   final Expr getSuperclassExpr() { toGenerated(result) = g.getSuperclass().getChild() }
 
   final override string getName() {
-    result = g.getName().(Generated::Token).getValue() or
-    result = g.getName().(Generated::ScopeResolution).getName().(Generated::Token).getValue()
+    result = g.getName().(Ruby::Token).getValue() or
+    result = g.getName().(Ruby::ScopeResolution).getName().(Ruby::Token).getValue()
   }
 
   final override Expr getScopeExpr() {
-    toGenerated(result) = g.getName().(Generated::ScopeResolution).getScope()
+    toGenerated(result) = g.getName().(Ruby::ScopeResolution).getScope()
   }
 
   final override predicate hasGlobalScope() {
-    exists(Generated::ScopeResolution sr |
+    exists(Ruby::ScopeResolution sr |
       sr = g.getName() and
       not exists(sr.getScope())
     )
@@ -290,7 +289,7 @@ class ClassDeclaration extends Namespace, TClassDeclaration {
  * ```
  */
 class SingletonClass extends ModuleBase, TSingletonClass {
-  private Generated::SingletonClass g;
+  private Ruby::SingletonClass g;
 
   SingletonClass() { this = TSingletonClass(g) }
 
@@ -342,23 +341,23 @@ class SingletonClass extends ModuleBase, TSingletonClass {
  * ```
  */
 class ModuleDeclaration extends Namespace, TModuleDeclaration {
-  private Generated::Module g;
+  private Ruby::Module g;
 
   ModuleDeclaration() { this = TModuleDeclaration(g) }
 
   final override string getAPrimaryQlClass() { result = "ModuleDeclaration" }
 
   final override string getName() {
-    result = g.getName().(Generated::Token).getValue() or
-    result = g.getName().(Generated::ScopeResolution).getName().(Generated::Token).getValue()
+    result = g.getName().(Ruby::Token).getValue() or
+    result = g.getName().(Ruby::ScopeResolution).getName().(Ruby::Token).getValue()
   }
 
   final override Expr getScopeExpr() {
-    toGenerated(result) = g.getName().(Generated::ScopeResolution).getScope()
+    toGenerated(result) = g.getName().(Ruby::ScopeResolution).getScope()
   }
 
   final override predicate hasGlobalScope() {
-    exists(Generated::ScopeResolution sr |
+    exists(Ruby::ScopeResolution sr |
       sr = g.getName() and
       not exists(sr.getScope())
     )

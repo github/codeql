@@ -40,15 +40,15 @@ private class Private extends MethodCall {
 
 /** A normal method. */
 class Method extends MethodBase, TMethod {
-  private Generated::Method g;
+  private Ruby::Method g;
 
   Method() { this = TMethod(g) }
 
   final override string getAPrimaryQlClass() { result = "Method" }
 
   final override string getName() {
-    result = g.getName().(Generated::Token).getValue() or
-    result = g.getName().(Generated::Setter).getName().getValue() + "="
+    result = g.getName().(Ruby::Token).getValue() or
+    result = g.getName().(Ruby::Setter).getName().getValue() + "="
   }
 
   /**
@@ -61,7 +61,7 @@ class Method extends MethodBase, TMethod {
    * end
    * ```
    */
-  final predicate isSetter() { g.getName() instanceof Generated::Setter }
+  final predicate isSetter() { g.getName() instanceof Ruby::Setter }
 
   /**
    * Holds if this method is private. All methods with the name prefix
@@ -118,7 +118,7 @@ class Method extends MethodBase, TMethod {
 
 /** A singleton method. */
 class SingletonMethod extends MethodBase, TSingletonMethod {
-  private Generated::SingletonMethod g;
+  private Ruby::SingletonMethod g;
 
   SingletonMethod() { this = TSingletonMethod(g) }
 
@@ -128,9 +128,9 @@ class SingletonMethod extends MethodBase, TSingletonMethod {
   final Expr getObject() { toGenerated(result) = g.getObject() }
 
   final override string getName() {
-    result = g.getName().(Generated::Token).getValue()
+    result = g.getName().(Ruby::Token).getValue()
     or
-    result = g.getName().(Generated::Setter).getName().getValue() + "="
+    result = g.getName().(Ruby::Setter).getName().getValue() + "="
   }
 
   final override Parameter getParameter(int n) {
@@ -153,7 +153,7 @@ class SingletonMethod extends MethodBase, TSingletonMethod {
  * ```
  */
 class Lambda extends Callable, BodyStmt, TLambda {
-  private Generated::Lambda g;
+  private Ruby::Lambda g;
 
   Lambda() { this = TLambda(g) }
 
@@ -183,7 +183,7 @@ class Block extends Callable, StmtSequence, Scope, TBlock {
 
 /** A block enclosed within `do` and `end`. */
 class DoBlock extends Block, BodyStmt, TDoBlock {
-  private Generated::DoBlock g;
+  private Ruby::DoBlock g;
 
   DoBlock() { this = TDoBlock(g) }
 
@@ -209,7 +209,7 @@ class DoBlock extends Block, BodyStmt, TDoBlock {
  * ```
  */
 class BraceBlock extends Block, TBraceBlock {
-  private Generated::Block g;
+  private Ruby::Block g;
 
   BraceBlock() { this = TBraceBlock(g) }
 

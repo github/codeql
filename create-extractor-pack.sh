@@ -12,7 +12,7 @@ fi
 
 cargo build --release
 
-cargo run --release -p ruby-generator
+cargo run --release -p ruby-generator -- --dbscheme ql/src/ruby.dbscheme --library ql/src/codeql_ruby/ast/internal/TreeSitter.qll
 codeql query format -i ql/src/codeql_ruby/ast/internal/TreeSitter.qll
 
 rm -rf extractor-pack

@@ -66,7 +66,7 @@ class NamedParameter extends Parameter, TNamedParameter {
 
 /** A simple (normal) parameter. */
 class SimpleParameter extends NamedParameter, PatternParameter, VariablePattern, TSimpleParameter {
-  private Generated::Identifier g;
+  private Ruby::Identifier g;
 
   SimpleParameter() { this = TSimpleParameter(g) }
 
@@ -90,7 +90,7 @@ class SimpleParameter extends NamedParameter, PatternParameter, VariablePattern,
  * ```
  */
 class BlockParameter extends NamedParameter, TBlockParameter {
-  private Generated::BlockParameter g;
+  private Ruby::BlockParameter g;
 
   BlockParameter() { this = TBlockParameter(g) }
 
@@ -113,7 +113,7 @@ class BlockParameter extends NamedParameter, TBlockParameter {
  * ```
  */
 class HashSplatParameter extends NamedParameter, THashSplatParameter {
-  private Generated::HashSplatParameter g;
+  private Ruby::HashSplatParameter g;
 
   HashSplatParameter() { this = THashSplatParameter(g) }
 
@@ -138,7 +138,7 @@ class HashSplatParameter extends NamedParameter, THashSplatParameter {
  * ```
  */
 class KeywordParameter extends NamedParameter, TKeywordParameter {
-  private Generated::KeywordParameter g;
+  private Ruby::KeywordParameter g;
 
   KeywordParameter() { this = TKeywordParameter(g) }
 
@@ -182,7 +182,7 @@ class KeywordParameter extends NamedParameter, TKeywordParameter {
  * ```
  */
 class OptionalParameter extends NamedParameter, TOptionalParameter {
-  private Generated::OptionalParameter g;
+  private Ruby::OptionalParameter g;
 
   OptionalParameter() { this = TOptionalParameter(g) }
 
@@ -218,7 +218,7 @@ class OptionalParameter extends NamedParameter, TOptionalParameter {
  * ```
  */
 class SplatParameter extends NamedParameter, TSplatParameter {
-  private Generated::SplatParameter g;
+  private Ruby::SplatParameter g;
 
   SplatParameter() { this = TSplatParameter(g) }
 

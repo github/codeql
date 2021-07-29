@@ -51,7 +51,7 @@ class BeginExpr extends BodyStmt, TBeginExpr {
  * ```
  */
 class BeginBlock extends StmtSequence, TBeginBlock {
-  private Generated::BeginBlock g;
+  private Ruby::BeginBlock g;
 
   BeginBlock() { this = TBeginBlock(g) }
 
@@ -69,7 +69,7 @@ class BeginBlock extends StmtSequence, TBeginBlock {
  * ```
  */
 class EndBlock extends StmtSequence, TEndBlock {
-  private Generated::EndBlock g;
+  private Ruby::EndBlock g;
 
   EndBlock() { this = TEndBlock(g) }
 
@@ -89,7 +89,7 @@ class EndBlock extends StmtSequence, TEndBlock {
  * ```
  */
 class UndefStmt extends Stmt, TUndefStmt {
-  private Generated::Undef g;
+  private Ruby::Undef g;
 
   UndefStmt() { this = TUndefStmt(g) }
 
@@ -119,7 +119,7 @@ class UndefStmt extends Stmt, TUndefStmt {
  * ```
  */
 class AliasStmt extends Stmt, TAliasStmt {
-  private Generated::Alias g;
+  private Ruby::Alias g;
 
   AliasStmt() { this = TAliasStmt(g) }
 
@@ -155,19 +155,19 @@ class AliasStmt extends Stmt, TAliasStmt {
  * ```
  */
 class ReturningStmt extends Stmt, TReturningStmt {
-  private Generated::ArgumentList getArgumentList() {
-    result = any(Generated::Return g | this = TReturnStmt(g)).getChild()
+  private Ruby::ArgumentList getArgumentList() {
+    result = any(Ruby::Return g | this = TReturnStmt(g)).getChild()
     or
-    result = any(Generated::Break g | this = TBreakStmt(g)).getChild()
+    result = any(Ruby::Break g | this = TBreakStmt(g)).getChild()
     or
-    result = any(Generated::Next g | this = TNextStmt(g)).getChild()
+    result = any(Ruby::Next g | this = TNextStmt(g)).getChild()
   }
 
   /** Gets the returned value, if any. */
   final Expr getValue() {
     toGenerated(result) =
-      any(Generated::AstNode res |
-        exists(Generated::ArgumentList a, int c |
+      any(Ruby::AstNode res |
+        exists(Ruby::ArgumentList a, int c |
           a = this.getArgumentList() and c = count(a.getChild(_))
         |
           res = a.getChild(0) and c = 1
