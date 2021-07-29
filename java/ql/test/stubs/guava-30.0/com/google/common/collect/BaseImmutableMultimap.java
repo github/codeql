@@ -6,5 +6,4 @@ import com.google.common.collect.AbstractMultimap;
 
 abstract class BaseImmutableMultimap<K, V> extends AbstractMultimap<K, V>
 {
-    BaseImmutableMultimap(){}
 }

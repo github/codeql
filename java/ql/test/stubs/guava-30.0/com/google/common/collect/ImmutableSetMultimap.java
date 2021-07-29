@@ -2,12 +2,10 @@
 
 package com.google.common.collect;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.SetMultimap;
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.function.Function;
@@ -17,8 +15,6 @@ import java.util.stream.Stream;
 public class ImmutableSetMultimap<K, V> extends ImmutableMultimap<K, V> implements SetMultimap<K, V>
 {
     protected ImmutableSetMultimap() {}
-    Comparator<? super V> valueComparator(){ return null; }
-    ImmutableSetMultimap(ImmutableMap<K, ImmutableSet<V>> p0, int p1, Comparator<? super V> p2){}
     public ImmutableSet<Map.Entry<K, V>> entries(){ return null; }
     public ImmutableSet<V> get(K p0){ return null; }
     public ImmutableSetMultimap<V, K> inverse(){ return null; }
@@ -35,11 +31,8 @@ public class ImmutableSetMultimap<K, V> extends ImmutableMultimap<K, V> implemen
     public static <K, V> ImmutableSetMultimap<K, V> of(K p0, V p1, K p2, V p3, K p4, V p5, K p6, V p7, K p8, V p9){ return null; }
     public static <T, K, V> Collector<T, ? extends Object, ImmutableSetMultimap<K, V>> flatteningToImmutableSetMultimap(Function<? super T, ? extends K> p0, Function<? super T, ? extends Stream<? extends V>> p1){ return null; }
     public static <T, K, V> Collector<T, ? extends Object, ImmutableSetMultimap<K, V>> toImmutableSetMultimap(Function<? super T, ? extends K> p0, Function<? super T, ? extends V> p1){ return null; }
-    static <K, V> ImmutableSetMultimap<K, V> fromMapEntries(Collection<? extends Map.Entry<? extends K, ? extends Collection<? extends V>>> p0, Comparator<? super V> p1){ return null; }
     static public class Builder<K, V> extends ImmutableMultimap.Builder<K, V>
     {
-        Collection<V> newMutableValueCollection(){ return null; }
-        ImmutableSetMultimap.Builder<K, V> combine(ImmutableMultimap.Builder<K, V> p0){ return null; }
         public Builder(){}
         public ImmutableSetMultimap.Builder<K, V> orderKeysBy(Comparator<? super K> p0){ return null; }
         public ImmutableSetMultimap.Builder<K, V> orderValuesBy(Comparator<? super V> p0){ return null; }

@@ -5,11 +5,9 @@ package com.google.common.collect;
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.ImmutableSetMultimap;
-import com.google.common.collect.UnmodifiableIterator;
 import java.io.Serializable;
 import java.util.Comparator;
 import java.util.Map;
-import java.util.Spliterator;
 import java.util.function.BiFunction;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
@@ -17,15 +15,6 @@ import java.util.stream.Collector;
 
 abstract public class ImmutableMap<K, V> implements Map<K, V>, Serializable
 {
-    ImmutableMap(){}
-    Object writeReplace(){ return null; }
-    Spliterator<K> keySpliterator(){ return null; }
-    UnmodifiableIterator<K> keyIterator(){ return null; }
-    abstract ImmutableCollection<V> createValues();
-    abstract ImmutableSet<K> createKeySet();
-    abstract ImmutableSet<Map.Entry<K, V>> createEntrySet();
-    abstract boolean isPartialView();
-    boolean isHashCodeFast(){ return false; }
     public ImmutableCollection<V> values(){ return null; }
     public ImmutableSet<K> keySet(){ return null; }
     public ImmutableSet<Map.Entry<K, V>> entrySet(){ return null; }
@@ -63,18 +52,8 @@ abstract public class ImmutableMap<K, V> implements Map<K, V>, Serializable
     public static <K, V> ImmutableMap<K, V> of(K p0, V p1, K p2, V p3, K p4, V p5, K p6, V p7, K p8, V p9){ return null; }
     public static <T, K, V> Collector<T, ? extends Object, ImmutableMap<K, V>> toImmutableMap(Function<? super T, ? extends K> p0, Function<? super T, ? extends V> p1){ return null; }
     public static <T, K, V> Collector<T, ? extends Object, ImmutableMap<K, V>> toImmutableMap(Function<? super T, ? extends K> p0, Function<? super T, ? extends V> p1, BinaryOperator<V> p2){ return null; }
-    static <K, V> Map.Entry<K, V> entryOf(K p0, V p1){ return null; }
-    static IllegalArgumentException conflictException(String p0, Object p1, Object p2){ return null; }
-    static Map.Entry<? extends Object, ? extends Object>[] EMPTY_ENTRY_ARRAY = null;
     static public class Builder<K, V>
     {
-        Builder(int p0){}
-        Comparator<? super V> valueComparator = null;
-        ImmutableMap.Builder<K, V> combine(ImmutableMap.Builder<K, V> p0){ return null; }
-        ImmutableMap<K, V> buildJdkBacked(){ return null; }
-        Map.Entry<K, V>[] entries = null;
-        boolean entriesUsed = false;
-        int size = 0;
         public Builder(){}
         public ImmutableMap.Builder<K, V> orderEntriesByValue(Comparator<? super V> p0){ return null; }
         public ImmutableMap.Builder<K, V> put(K p0, V p1){ return null; }
@@ -83,5 +62,4 @@ abstract public class ImmutableMap<K, V> implements Map<K, V>, Serializable
         public ImmutableMap.Builder<K, V> putAll(Map<? extends K, ? extends V> p0){ return null; }
         public ImmutableMap<K, V> build(){ return null; }
     }
-    static void checkNoConflict(boolean p0, String p1, Map.Entry<? extends Object, ? extends Object> p2, Map.Entry<? extends Object, ? extends Object> p3){}
 }

@@ -8,7 +8,6 @@ import com.google.common.collect.ImmutableMultisetGwtSerializationDependencies;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.UnmodifiableIterator;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.function.Function;
 import java.util.function.ToIntFunction;
@@ -16,10 +15,6 @@ import java.util.stream.Collector;
 
 abstract public class ImmutableMultiset<E> extends ImmutableMultisetGwtSerializationDependencies<E> implements Multiset<E>
 {
-    ImmutableMultiset(){}
-    Object writeReplace(){ return null; }
-    abstract Multiset.Entry<E> getEntry(int p0);
-    int copyIntoArray(Object[] p0, int p1){ return 0; }
     public ImmutableList<E> asList(){ return null; }
     public ImmutableSet<Multiset.Entry<E>> entrySet(){ return null; }
     public String toString(){ return null; }
@@ -45,12 +40,8 @@ abstract public class ImmutableMultiset<E> extends ImmutableMultisetGwtSerializa
     public static <E> ImmutableMultiset<E> of(E p0, E p1, E p2, E p3, E p4){ return null; }
     public static <E> ImmutableMultiset<E> of(E p0, E p1, E p2, E p3, E p4, E p5, E... p6){ return null; }
     public static <T, E> Collector<T, ? extends Object, ImmutableMultiset<E>> toImmutableMultiset(Function<? super T, ? extends E> p0, ToIntFunction<? super T> p1){ return null; }
-    static <E> ImmutableMultiset<E> copyFromEntries(Collection<? extends Multiset.Entry<? extends E>> p0){ return null; }
     static public class Builder<E> extends ImmutableCollection.Builder<E>
     {
-        Builder(Multiset<E> p0){}
-        ImmutableMultiset<E> buildJdkBacked(){ return null; }
-        final Multiset<E> contents = null;
         public Builder(){}
         public ImmutableMultiset.Builder<E> add(E p0){ return null; }
         public ImmutableMultiset.Builder<E> add(E... p0){ return null; }

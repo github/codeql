@@ -6,5 +6,4 @@ import com.google.common.collect.ImmutableCollection;
 
 abstract class ImmutableMultisetGwtSerializationDependencies<E> extends ImmutableCollection<E>
 {
-    ImmutableMultisetGwtSerializationDependencies(){}
 }

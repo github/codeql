@@ -8,30 +8,15 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMultiset;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Multimap;
-import com.google.common.collect.UnmodifiableIterator;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Map;
-import java.util.Set;
-import java.util.Spliterator;
 import java.util.function.BiConsumer;
 
 abstract public class ImmutableMultimap<K, V> extends BaseImmutableMultimap<K, V> implements Serializable
 {
     protected ImmutableMultimap() {}
-    ImmutableCollection<Map.Entry<K, V>> createEntries(){ return null; }
-    ImmutableCollection<V> createValues(){ return null; }
-    ImmutableMultimap(ImmutableMap<K, ? extends ImmutableCollection<V>> p0, int p1){}
-    ImmutableMultiset<K> createKeys(){ return null; }
-    Map<K, Collection<V>> createAsMap(){ return null; }
-    Set<K> createKeySet(){ return null; }
-    Spliterator<Map.Entry<K, V>> entrySpliterator(){ return null; }
-    UnmodifiableIterator<Map.Entry<K, V>> entryIterator(){ return null; }
-    UnmodifiableIterator<V> valueIterator(){ return null; }
-    boolean isPartialView(){ return false; }
-    final ImmutableMap<K, ? extends ImmutableCollection<V>> map = null;
-    final int size = 0;
     public ImmutableCollection<Map.Entry<K, V>> entries(){ return null; }
     public ImmutableCollection<V> removeAll(Object p0){ return null; }
     public ImmutableCollection<V> replaceValues(K p0, Iterable<? extends V> p1){ return null; }
@@ -61,11 +46,6 @@ abstract public class ImmutableMultimap<K, V> extends BaseImmutableMultimap<K, V
     public void forEach(BiConsumer<? super K, ? super V> p0){}
     static public class Builder<K, V>
     {
-        Collection<V> newMutableValueCollection(){ return null; }
-        Comparator<? super K> keyComparator = null;
-        Comparator<? super V> valueComparator = null;
-        ImmutableMultimap.Builder<K, V> combine(ImmutableMultimap.Builder<K, V> p0){ return null; }
-        Map<K, Collection<V>> builderMap = null;
         public Builder(){}
         public ImmutableMultimap.Builder<K, V> orderKeysBy(Comparator<? super K> p0){ return null; }
         public ImmutableMultimap.Builder<K, V> orderValuesBy(Comparator<? super V> p0){ return null; }
