@@ -19,8 +19,10 @@ Including user input in a MVEL expression should be avoided.
 
 <example>
 <p>
-The following example uses untrusted data to build a MVEL expression
-and then runs it in the default powerfull context.
+In the following sample, the first example uses untrusted data to build a MVEL expression
+and then runs it in the default context. In the second example, the untrusted data is
+validated with a custom method that checks that the expression does not contain unexpected code
+before evaluating it.
 </p>
 <sample src="UnsafeMvelExpressionEvaluation.java" />
 </example>
