@@ -1,4 +1,5 @@
 import java
+import semmle.code.configfiles.ConfigFiles
 
 // Locations should either be :0:0:0:0 locations (UnknownLocation, or
 // a whole file), or all 4 fields should be positive.
@@ -15,7 +16,20 @@ Location backwardsLocation() {
   result.getStartColumn() > result.getEndColumn()
 }
 
+Location unusedLocation() {
+  not exists(Top t | t.getLocation() = result) and
+  not exists(XMLLocatable x | x.getLocation() = result) and
+  not exists(ConfigLocatable c | c.getLocation() = result) and
+  not (result.getFile().getExtension() = "xml" and
+       result.getStartLine() = 0 and
+       result.getStartColumn() = 0 and
+       result.getEndLine() = 0 and
+       result.getEndColumn() = 0)
+}
+
 from Location l
-where l = badLocation() or l = backwardsLocation()
+where l = badLocation()
+   or l = backwardsLocation()
+   or l = unusedLocation()
 select l
 
