@@ -67,23 +67,6 @@ private class JacksonReadValueMethod extends Method, TaintPreservingCallable {
   override predicate returnsTaintFrom(int arg) { arg = 0 }
 }
 
-/**
- * A method used for creating a `JsonParser` object using Jackson. The first parameter is the object to
- * create the `JsonParser` from.
- */
-private class JacksonCreateParserMethod extends Method, TaintPreservingCallable {
-  JacksonCreateParserMethod() {
-    (
-      getDeclaringType().hasQualifiedName("com.fasterxml.jackson.core", "JsonFactory") or
-      getDeclaringType().hasQualifiedName("com.fasterxml.jackson.databind", "ObjectMapper") or
-      getDeclaringType().hasQualifiedName("com.fasterxml.jackson.databind", "ObjectReader")
-    ) and
-    hasName("createParser")
-  }
-
-  override predicate returnsTaintFrom(int arg) { arg = 0 }
-}
-
 /** A type whose values are explicitly serialized in a call to a Jackson method. */
 private class ExplicitlyWrittenJacksonSerializableType extends JacksonSerializableType {
   ExplicitlyWrittenJacksonSerializableType() {
@@ -302,7 +285,10 @@ private class JacksonModel extends SummaryModelCsv {
       [
         "com.fasterxml.jackson.databind;ObjectMapper;true;valueToTree;;;Argument[0];ReturnValue;taint",
         "com.fasterxml.jackson.databind;ObjectMapper;true;valueToTree;;;MapValue of Argument[0];ReturnValue;taint",
-        "com.fasterxml.jackson.databind;ObjectMapper;true;convertValue;;;Argument[0];ReturnValue;taint"
+        "com.fasterxml.jackson.databind;ObjectMapper;true;convertValue;;;Argument[0];ReturnValue;taint",
+        "com.fasterxml.jackson.databind;ObjectMapper;false;createParser;;;Argument[0];ReturnValue;taint",
+        "com.fasterxml.jackson.databind;ObjectMapper;false;createParser;;;Argument[0];ReturnValue;taint",
+        "com.fasterxml.jackson.core;JsonFactory;false;createParser;;;Argument[0];ReturnValue;taint"
       ]
   }
 }
