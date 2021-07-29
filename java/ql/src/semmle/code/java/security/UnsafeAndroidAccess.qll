@@ -26,13 +26,11 @@ abstract class UrlResourceSink extends DataFlow::Node {
  */
 private class CrossOriginUrlResourceSink extends JavaScriptEnabledUrlResourceSink {
   CrossOriginUrlResourceSink() {
-    exists(MethodAccess ma, MethodAccess getSettingsMa |
+    exists(Variable settings, MethodAccess ma |
+      webViewLoadUrl(this.asExpr(), settings) and
       ma.getMethod() instanceof CrossOriginAccessMethod and
       ma.getArgument(0).(BooleanLiteral).getBooleanValue() = true and
-      ma.getQualifier().(VarAccess).getVariable().getAnAssignedValue() = getSettingsMa and
-      getSettingsMa.getMethod() instanceof WebViewGetSettingsMethod and
-      getSettingsMa.getQualifier().(VarAccess).getVariable().getAnAccess() =
-        this.asExpr().(Argument).getCall().getQualifier()
+      ma.getQualifier() = settings.getAnAccess()
     )
   }
 
@@ -46,18 +44,28 @@ private class CrossOriginUrlResourceSink extends JavaScriptEnabledUrlResourceSin
  */
 private class JavaScriptEnabledUrlResourceSink extends UrlResourceSink {
   JavaScriptEnabledUrlResourceSink() {
-    exists(MethodAccess loadUrl, VarAccess webviewVa, MethodAccess getSettingsMa, Variable v |
-      loadUrl.getArgument(0) = this.asExpr() and
-      loadUrl.getMethod() instanceof WebViewLoadUrlMethod and
-      loadUrl.getQualifier() = webviewVa and
-      getSettingsMa.getMethod() instanceof WebViewGetSettingsMethod and
-      webviewVa.getVariable().getAnAccess() = getSettingsMa.getQualifier() and
-      v.getAnAssignedValue() = getSettingsMa and
-      isJSEnabled(v)
+    exists(Variable settings |
+      webViewLoadUrl(this.asExpr(), settings) and
+      isJSEnabled(settings)
     )
   }
 
   override string getSinkType() { result = "user input vulnerable to XSS attacks" }
+}
+
+/**
+ * Holds if a `WebViewLoadUrlMethod` method is called with the given `urlArg` on a
+ * WebView with settings stored in `settings`.
+ */
+private predicate webViewLoadUrl(Expr urlArg, Variable settings) {
+  exists(MethodAccess loadUrl, Variable webview, MethodAccess getSettings |
+    loadUrl.getArgument(0) = urlArg and
+    loadUrl.getMethod() instanceof WebViewLoadUrlMethod and
+    loadUrl.getQualifier() = webview.getAnAccess() and
+    getSettings.getMethod() instanceof WebViewGetSettingsMethod and
+    webview.getAnAccess() = getSettings.getQualifier() and
+    settings.getAnAssignedValue() = getSettings
+  )
 }
 
 /**
