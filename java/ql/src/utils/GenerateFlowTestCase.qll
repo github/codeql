@@ -521,7 +521,7 @@ predicate isImportable(Type t) {
  */
 string getShortNameIfPossible(Type t) {
   if t instanceof Array
-  then result = getShortNameIfPossible(t.(Array).getElementType()) + "[]"
+  then result = getShortNameIfPossible(t.(Array).getComponentType()) + "[]"
   else (
     getRootSourceDeclaration(t) = any(TestCase tc).getADesiredImport() and
     if t instanceof RefType
