@@ -74,30 +74,30 @@ void randomTester() {
   {
     int r = RAND2();
 
-    r = r - 100; // GOOD
+    r = r + 100; // BAD
   }
 
   {
     int r = (rand() ^ rand());
 
-    r = r - 100; // GOOD
+    r = r + 100; // BAD
   }
 
   {
-    int r = RAND2() - 100; // BAD [NOT DETECTED]
+    int r = RAND2() + 100; // BAD [NOT DETECTED]
   }
 
   {
     int r = RAND();
     int *ptr_r = &r;
-    *ptr_r -= 100; // BAD [NOT DETECTED]
+    *ptr_r += 100; // BAD [NOT DETECTED]
   }
 
   {
     int r = 0;
     int *ptr_r = &r;
     *ptr_r = RAND();
-    r -= 100; // GOOD
+    r += 100; // BAD
   }
 
   {
@@ -136,5 +136,17 @@ void moreTests() {
     int r = rand();
     
     r <<= 8; // BAD [NOT DETECTED]
+  }
+
+  {
+    int r = rand();
+    
+    r = r - 100; // GOOD
+  }
+
+  {
+    unsigned int r = rand();
+    
+    r = r - 100; // BAD [NOT DETECTED]
   }
 }
