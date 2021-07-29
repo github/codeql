@@ -157,6 +157,8 @@ If your query is a security query, use one or more `@tags` to associate it with 
 
 When you tag a query like this, the associated CWE pages from [MITRE.org](http://cwe.mitre.org/index.html) will automatically appear in the reference section of its associated qhelp file.
 
+Security relevant queries that will be run in Code Scanning should also have a `@security-severity` tag.  See https://github.com/github/cwe-scores for more information about this tag.
+
 ## QL area
 
 ### Alert messages
