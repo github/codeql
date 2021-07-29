@@ -34,6 +34,9 @@ public class B {
     // tainted - data preserving constructors
     String constructed = new String(complex);
     sink(constructed);
+    // tainted - data preserving method
+    String valueOf = String.valueOf(complex.toCharArray());
+    sink(valueOf);
     // tainted - unsafe escape
     String badEscape = constructed.replaceAll("(<script>)", "");
     sink(badEscape);

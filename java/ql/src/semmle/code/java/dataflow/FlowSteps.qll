@@ -111,14 +111,14 @@ private class StringTaintPreservingMethod extends TaintPreservingCallable {
     this.hasName([
         "concat", "copyValueOf", "endsWith", "format", "formatted", "getBytes", "indent", "intern",
         "join", "repeat", "split", "strip", "stripIndent", "stripLeading", "stripTrailing",
-        "substring", "toCharArray", "toLowerCase", "toString", "toUpperCase", "trim"
+        "substring", "toCharArray", "toLowerCase", "toString", "toUpperCase", "trim", "valueOf"
       ])
   }
 
   override predicate returnsTaintFrom(int arg) {
     arg = -1 and not this.isStatic()
     or
-    this.hasName(["concat", "copyValueOf"]) and arg = 0
+    this.hasName(["concat", "copyValueOf", "valueOf"]) and arg = 0
     or
     this.hasName(["format", "formatted", "join"]) and arg = [0 .. getNumberOfParameters()]
   }
