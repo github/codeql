@@ -28,21 +28,21 @@ private class DefaultOgnlInjectionSinkModel extends SinkModelCsv {
   override predicate row(string row) {
     row =
       [
-        "org.apache.commons.ognl;Ognl;false;getValue;;;Argument[-1..0];ognl-injection",
-        "org.apache.commons.ognl;Ognl;false;setValue;;;Argument[-1..0];ognl-injection",
-        "org.apache.commons.ognl;Node;false;getValue;;;Argument[-1..0];ognl-injection",
-        "org.apache.commons.ognl;Node;false;setValue;;;Argument[-1..0];ognl-injection",
+        "org.apache.commons.ognl;Ognl;false;getValue;;;Argument[0];ognl-injection",
+        "org.apache.commons.ognl;Ognl;false;setValue;;;Argument[0];ognl-injection",
+        "org.apache.commons.ognl;Node;true;getValue;;;Argument[-1];ognl-injection",
+        "org.apache.commons.ognl;Node;true;setValue;;;Argument[-1];ognl-injection",
         "org.apache.commons.ognl.enhance;ExpressionAccessor;true;get;;;Argument[-1];ognl-injection",
         "org.apache.commons.ognl.enhance;ExpressionAccessor;true;set;;;Argument[-1];ognl-injection",
-        "ognl;Ognl;false;getValue;;;Argument[-1..0];ognl-injection",
-        "ognl;Ognl;false;setValue;;;Argument[-1..0];ognl-injection",
-        "ognl;Node;false;getValue;;;Argument[-1..0];ognl-injection",
-        "ognl;Node;false;setValue;;;Argument[-1..0];ognl-injection",
+        "ognl;Ognl;false;getValue;;;Argument[0];ognl-injection",
+        "ognl;Ognl;false;setValue;;;Argument[0];ognl-injection",
+        "ognl;Node;false;getValue;;;Argument[-1];ognl-injection",
+        "ognl;Node;false;setValue;;;Argument[-1];ognl-injection",
         "ognl.enhance;ExpressionAccessor;true;get;;;Argument[-1];ognl-injection",
         "ognl.enhance;ExpressionAccessor;true;set;;;Argument[-1];ognl-injection",
-        "com.opensymphony.xwork2.ognl;OgnlUtil;false;getValue;;;Argument[-1..0];ognl-injection",
-        "com.opensymphony.xwork2.ognl;OgnlUtil;false;setValue;;;Argument[-1..0];ognl-injection",
-        "com.opensymphony.xwork2.ognl;OgnlUtil;false;callMethod;;;Argument[-1..0];ognl-injection"
+        "com.opensymphony.xwork2.ognl;OgnlUtil;false;getValue;;;Argument[0];ognl-injection",
+        "com.opensymphony.xwork2.ognl;OgnlUtil;false;setValue;;;Argument[0];ognl-injection",
+        "com.opensymphony.xwork2.ognl;OgnlUtil;false;callMethod;;;Argument[0];ognl-injection"
       ]
   }
 }
@@ -91,12 +91,12 @@ private predicate parseCompileExpressionStep(DataFlow::Node n1, DataFlow::Node n
  */
 private predicate getAccessorStep(DataFlow::Node n1, DataFlow::Node n2) {
   exists(MethodAccess ma, Method m |
-    n1.asExpr() = ma.getQualifier() and
-    n2.asExpr() = ma and
     ma.getMethod() = m and
-    m.getDeclaringType().getASupertype*() instanceof TypeNode
-  |
+    m.getDeclaringType().getASupertype*() instanceof TypeNode and
     m.hasName("getAccessor")
+  |
+    n1.asExpr() = ma.getQualifier() and
+    n2.asExpr() = ma
   )
 }
 
@@ -106,12 +106,12 @@ private predicate getAccessorStep(DataFlow::Node n1, DataFlow::Node n2) {
  */
 private predicate setExpressionStep(DataFlow::Node n1, DataFlow::Node n2) {
   exists(MethodAccess ma, Method m |
-    n1.asExpr() = ma.getArgument(0) and
-    n2.(PostUpdateNode).getPreUpdateNode().asExpr() = ma.getQualifier() and
     ma.getMethod() = m and
+    m.hasName("setExpression") and
     m.getDeclaringType().getASupertype*() instanceof TypeExpressionAccessor
   |
-    m.hasName("setExpression")
+    n1.asExpr() = ma.getArgument(0) and
+    n2.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr() = ma.getQualifier()
   )
 }
 
