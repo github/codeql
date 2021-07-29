@@ -54,7 +54,7 @@ int test_remainder_subtract()
 	int x = rand();
 	int y = x % 100; // y <= x
 
-	return x - y; // GOOD (as y <= x) [FALSE POSITIVE]
+	return x - y; // GOOD (as y <= x)
 }
 
 typedef unsigned long size_t;
