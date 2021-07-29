@@ -1,125 +1,63 @@
-/*
- * Copyright (C) 2008 The Guava Authors
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Generated automatically from com.google.common.collect.ImmutableMultiset for testing purposes
 
 package com.google.common.collect;
 
+import com.google.common.collect.ImmutableCollection;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMultisetGwtSerializationDependencies;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Multiset;
+import com.google.common.collect.UnmodifiableIterator;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.function.Function;
+import java.util.function.ToIntFunction;
+import java.util.stream.Collector;
 
-public abstract class ImmutableMultiset<E> extends ImmutableCollection<E>
-    implements Multiset<E> {
-
-  public static <E> ImmutableMultiset<E> of() {
-    return null;
-  }
-
-  public static <E> ImmutableMultiset<E> of(E element) {
-    return null;
-  }
-
-  public static <E> ImmutableMultiset<E> of(E e1, E e2) {
-    return null;
-  }
-
-  public static <E> ImmutableMultiset<E> of(E e1, E e2, E e3) {
-    return null;
-  }
-
-  public static <E> ImmutableMultiset<E> of(E e1, E e2, E e3, E e4) {
-    return null;
-  }
-
-  public static <E> ImmutableMultiset<E> of(E e1, E e2, E e3, E e4, E e5) {
-    return null;
-  }
-
-  public static <E> ImmutableMultiset<E> of(E e1, E e2, E e3, E e4, E e5, E e6, E... others) {
-    return null;
-  }
-
-  public static <E> ImmutableMultiset<E> copyOf(E[] elements) {
-    return null;
-  }
-
-  public static <E> ImmutableMultiset<E> copyOf(Iterable<? extends E> elements) {
-    return null;
-  }
-
-  public static <E> ImmutableMultiset<E> copyOf(Iterator<? extends E> elements) {
-    return null;
-  }
-
-  @Override
-  public boolean contains(Object object) {
-    return false;
-  }
-
-  @Override
-  public final int add(E element, int occurrences) {
-    return 0;
-  }
-
-  @Override
-  public final int remove(Object element, int occurrences) {
-    return 0;
-  }
-
-  @Override
-  public final int setCount(E element, int count) {
-    return 0;
-  }
-
-  @Override
-  public final boolean setCount(E element, int oldCount, int newCount) {
-    return false;
-  }
-
-  @Override
-  public abstract ImmutableSet<E> elementSet();
-
-  @Override
-  public ImmutableSet<Entry<E>> entrySet() {
-    return null;
-  }
-
-  public static <E> Builder<E> builder() {
-    return null;
-  }
-
-  public static class Builder<E> extends ImmutableCollection.Builder<E> {
-    public Builder() {
+abstract public class ImmutableMultiset<E> extends ImmutableMultisetGwtSerializationDependencies<E> implements Multiset<E>
+{
+    ImmutableMultiset(){}
+    Object writeReplace(){ return null; }
+    abstract Multiset.Entry<E> getEntry(int p0);
+    int copyIntoArray(Object[] p0, int p1){ return 0; }
+    public ImmutableList<E> asList(){ return null; }
+    public ImmutableSet<Multiset.Entry<E>> entrySet(){ return null; }
+    public String toString(){ return null; }
+    public UnmodifiableIterator<E> iterator(){ return null; }
+    public abstract ImmutableSet<E> elementSet();
+    public boolean contains(Object p0){ return false; }
+    public boolean equals(Object p0){ return false; }
+    public final boolean setCount(E p0, int p1, int p2){ return false; }
+    public final int add(E p0, int p1){ return 0; }
+    public final int remove(Object p0, int p1){ return 0; }
+    public final int setCount(E p0, int p1){ return 0; }
+    public int hashCode(){ return 0; }
+    public static <E> Collector<E, ? extends Object, ImmutableMultiset<E>> toImmutableMultiset(){ return null; }
+    public static <E> ImmutableMultiset.Builder<E> builder(){ return null; }
+    public static <E> ImmutableMultiset<E> copyOf(E[] p0){ return null; }
+    public static <E> ImmutableMultiset<E> copyOf(Iterable<? extends E> p0){ return null; }
+    public static <E> ImmutableMultiset<E> copyOf(Iterator<? extends E> p0){ return null; }
+    public static <E> ImmutableMultiset<E> of(){ return null; }
+    public static <E> ImmutableMultiset<E> of(E p0){ return null; }
+    public static <E> ImmutableMultiset<E> of(E p0, E p1){ return null; }
+    public static <E> ImmutableMultiset<E> of(E p0, E p1, E p2){ return null; }
+    public static <E> ImmutableMultiset<E> of(E p0, E p1, E p2, E p3){ return null; }
+    public static <E> ImmutableMultiset<E> of(E p0, E p1, E p2, E p3, E p4){ return null; }
+    public static <E> ImmutableMultiset<E> of(E p0, E p1, E p2, E p3, E p4, E p5, E... p6){ return null; }
+    public static <T, E> Collector<T, ? extends Object, ImmutableMultiset<E>> toImmutableMultiset(Function<? super T, ? extends E> p0, ToIntFunction<? super T> p1){ return null; }
+    static <E> ImmutableMultiset<E> copyFromEntries(Collection<? extends Multiset.Entry<? extends E>> p0){ return null; }
+    static public class Builder<E> extends ImmutableCollection.Builder<E>
+    {
+        Builder(Multiset<E> p0){}
+        ImmutableMultiset<E> buildJdkBacked(){ return null; }
+        final Multiset<E> contents = null;
+        public Builder(){}
+        public ImmutableMultiset.Builder<E> add(E p0){ return null; }
+        public ImmutableMultiset.Builder<E> add(E... p0){ return null; }
+        public ImmutableMultiset.Builder<E> addAll(Iterable<? extends E> p0){ return null; }
+        public ImmutableMultiset.Builder<E> addAll(Iterator<? extends E> p0){ return null; }
+        public ImmutableMultiset.Builder<E> addCopies(E p0, int p1){ return null; }
+        public ImmutableMultiset.Builder<E> setCount(E p0, int p1){ return null; }
+        public ImmutableMultiset<E> build(){ return null; }
     }
-
-    @Override
-    public Builder<E> add(E element) {
-      return null;
-    }
-
-    public Builder<E> addCopies(E element, int occurrences) {
-      return null;
-    }
-
-    public Builder<E> setCount(E element, int count) {
-      return null;
-    }
-
-    @Override
-    public ImmutableMultiset<E> build() {
-      return null;
-    }
-
-  }
 }
