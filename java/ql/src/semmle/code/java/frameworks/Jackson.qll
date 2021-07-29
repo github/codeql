@@ -77,7 +77,7 @@ class SetPolymorphicTypeValidatorSource extends DataFlow::ExprNode {
   }
 }
 
-/** Holds if `fromNode` to `toNode` is a dataflow step that resolves a class. s */
+/** Holds if `fromNode` to `toNode` is a dataflow step that resolves a class. */
 predicate resolveClassStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
   exists(ReflectiveClassIdentifierMethodAccess ma |
     ma.getArgument(0) = fromNode.asExpr() and
@@ -88,7 +88,7 @@ predicate resolveClassStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
 /**
  * Holds if `fromNode` to `toNode` is a dataflow step that creates a Jackson parser.
  *
- * For example, a `createParser(userString)` call yields a `JsonParser` which becomes dangerous
+ * For example, a `createParser(userString)` call yields a `JsonParser`, which becomes dangerous
  * if passed to an unsafely-configured `ObjectMapper`'s `readValue` method.
  */
 predicate createJacksonJsonParserStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
