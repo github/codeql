@@ -1,8 +1,8 @@
 /**
  * @name Insecure JavaMail SSL Configuration
- * @description Java application configured to use authenticated mail session
- *              over SSL does not validate the SSL certificate to properly
- *              ensure that it is actually associated with that host.
+ * @description Configuring a Java application to use authenticated mail session
+ *              over SSL without certificate validation
+ *              makes the session susceptible to a man-in-the-middle attack.
  * @kind problem
  * @problem.severity warning
  * @precision medium
