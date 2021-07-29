@@ -3,10 +3,12 @@ getTemplateInstantiationSyntax
 | consolidate.js:4:1:4:90 | consoli ...  => {}) | mustache |
 getLikelyTemplateSyntax
 | views/ejs_sinks.ejs:0:0:0:0 | views/ejs_sinks.ejs | ejs |
+| views/hbs_sinks.hbs:0:0:0:0 | views/hbs_sinks.hbs | mustache |
 | views/instantiated_as_ejs.html:0:0:0:0 | views/instantiated_as_ejs.html | ejs |
 | views/instantiated_as_hbs.html:0:0:0:0 | views/instantiated_as_hbs.html | mustache |
 getTargetFile
 | app.js:6:5:21:6 | res.ren ... \\n    }) | views/ejs_sinks.ejs:0:0:0:0 | views/ejs_sinks.ejs |
+| app.js:25:5:40:6 | res.ren ... \\n    }) | views/hbs_sinks.hbs:0:0:0:0 | views/hbs_sinks.hbs |
 | consolidate.js:3:1:3:83 | consoli ...  => {}) | views/instantiated_as_ejs.html:0:0:0:0 | views/instantiated_as_ejs.html |
 | consolidate.js:4:1:4:90 | consoli ...  => {}) | views/instantiated_as_hbs.html:0:0:0:0 | views/instantiated_as_hbs.html |
 xssSink
@@ -16,9 +18,18 @@ xssSink
 | views/ejs_sinks.ejs:11:43:11:71 | <%- dataInStringLiteralRaw %> |
 | views/ejs_sinks.ejs:14:42:14:70 | <%- dataInGeneratedCodeRaw %> |
 | views/ejs_sinks.ejs:22:39:22:72 | <%- dataInEventHandlerStringRaw %> |
+| views/hbs_sinks.hbs:4:9:4:23 | {{{ rawHtml }}} |
+| views/hbs_sinks.hbs:5:9:5:32 | {{{ rawHtmlSafeValue }}} |
+| views/hbs_sinks.hbs:7:9:7:34 | {{{ object.rawHtmlProp }}} |
+| views/hbs_sinks.hbs:11:43:11:72 | {{{ dataInStringLiteralRaw }}} |
+| views/hbs_sinks.hbs:14:42:14:71 | {{{ dataInGeneratedCodeRaw }}} |
+| views/hbs_sinks.hbs:22:39:22:73 | {{{ dataInEventHandlerStringRaw }}} |
 | views/instantiated_as_ejs.html:4:9:4:23 | <%- xss_sink %> |
 | views/instantiated_as_hbs.html:7:9:7:24 | {{{ xss_sink }}} |
 codeInjectionSink
 | views/ejs_sinks.ejs:13:39:13:64 | <%= dataInGeneratedCode %> |
 | views/ejs_sinks.ejs:16:19:16:39 | <%= backslashSink1 %> |
 | views/ejs_sinks.ejs:21:39:21:69 | <%= dataInEventHandlerString %> |
+| views/hbs_sinks.hbs:13:39:13:63 | {{ dataInGeneratedCode }} |
+| views/hbs_sinks.hbs:16:19:16:38 | {{ backslashSink1 }} |
+| views/hbs_sinks.hbs:21:39:21:68 | {{ dataInEventHandlerString }} |
