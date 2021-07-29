@@ -31,6 +31,25 @@ nodes
 | app.js:55:37:55:72 | req.que ... JsonRaw |
 | app.js:59:38:59:74 | req.que ... ringRaw |
 | app.js:59:38:59:74 | req.que ... ringRaw |
+| projectA/src/index.js:7:16:7:30 | req.query.sinkA |
+| projectA/src/index.js:7:16:7:30 | req.query.sinkA |
+| projectA/src/index.js:12:16:12:30 | req.query.sinkA |
+| projectA/src/index.js:12:16:12:30 | req.query.sinkA |
+| projectA/src/index.js:17:16:17:30 | req.query.sinkA |
+| projectA/src/index.js:17:16:17:30 | req.query.sinkA |
+| projectA/src/index.js:32:16:32:30 | req.query.sinkA |
+| projectA/src/index.js:32:16:32:30 | req.query.sinkA |
+| projectA/src/index.js:37:16:37:30 | req.query.sinkA |
+| projectA/src/index.js:37:16:37:30 | req.query.sinkA |
+| projectA/views/main.ejs:2:1:2:12 | <%- sinkA %> |
+| projectA/views/main.ejs:2:1:2:12 | <%- sinkA %> |
+| projectA/views/main.ejs:2:5:2:9 | sinkA |
+| projectA/views/subfolder/index.ejs:2:1:2:12 | <%- sinkA %> |
+| projectA/views/subfolder/index.ejs:2:1:2:12 | <%- sinkA %> |
+| projectA/views/subfolder/index.ejs:2:5:2:9 | sinkA |
+| projectA/views/subfolder/other.ejs:2:1:2:12 | <%- sinkA %> |
+| projectA/views/subfolder/other.ejs:2:1:2:12 | <%- sinkA %> |
+| projectA/views/subfolder/other.ejs:2:5:2:9 | sinkA |
 | views/ejs_sinks.ejs:4:9:4:22 | <%- rawHtml %> |
 | views/ejs_sinks.ejs:4:9:4:22 | <%- rawHtml %> |
 | views/ejs_sinks.ejs:4:13:4:19 | rawHtml |
@@ -117,6 +136,22 @@ edges
 | app.js:59:38:59:74 | req.que ... ringRaw | views/njk_sinks.njk:23:42:23:68 | dataInE ... ringRaw |
 | app.js:59:38:59:74 | req.que ... ringRaw | views/njk_sinks.njk:23:42:23:68 | dataInE ... ringRaw |
 | app.js:59:38:59:74 | req.que ... ringRaw | views/njk_sinks.njk:23:42:23:68 | dataInE ... ringRaw |
+| projectA/src/index.js:7:16:7:30 | req.query.sinkA | projectA/views/main.ejs:2:5:2:9 | sinkA |
+| projectA/src/index.js:7:16:7:30 | req.query.sinkA | projectA/views/main.ejs:2:5:2:9 | sinkA |
+| projectA/src/index.js:12:16:12:30 | req.query.sinkA | projectA/views/main.ejs:2:5:2:9 | sinkA |
+| projectA/src/index.js:12:16:12:30 | req.query.sinkA | projectA/views/main.ejs:2:5:2:9 | sinkA |
+| projectA/src/index.js:17:16:17:30 | req.query.sinkA | projectA/views/subfolder/index.ejs:2:5:2:9 | sinkA |
+| projectA/src/index.js:17:16:17:30 | req.query.sinkA | projectA/views/subfolder/index.ejs:2:5:2:9 | sinkA |
+| projectA/src/index.js:32:16:32:30 | req.query.sinkA | projectA/views/subfolder/other.ejs:2:5:2:9 | sinkA |
+| projectA/src/index.js:32:16:32:30 | req.query.sinkA | projectA/views/subfolder/other.ejs:2:5:2:9 | sinkA |
+| projectA/src/index.js:37:16:37:30 | req.query.sinkA | projectA/views/subfolder/other.ejs:2:5:2:9 | sinkA |
+| projectA/src/index.js:37:16:37:30 | req.query.sinkA | projectA/views/subfolder/other.ejs:2:5:2:9 | sinkA |
+| projectA/views/main.ejs:2:5:2:9 | sinkA | projectA/views/main.ejs:2:1:2:12 | <%- sinkA %> |
+| projectA/views/main.ejs:2:5:2:9 | sinkA | projectA/views/main.ejs:2:1:2:12 | <%- sinkA %> |
+| projectA/views/subfolder/index.ejs:2:5:2:9 | sinkA | projectA/views/subfolder/index.ejs:2:1:2:12 | <%- sinkA %> |
+| projectA/views/subfolder/index.ejs:2:5:2:9 | sinkA | projectA/views/subfolder/index.ejs:2:1:2:12 | <%- sinkA %> |
+| projectA/views/subfolder/other.ejs:2:5:2:9 | sinkA | projectA/views/subfolder/other.ejs:2:1:2:12 | <%- sinkA %> |
+| projectA/views/subfolder/other.ejs:2:5:2:9 | sinkA | projectA/views/subfolder/other.ejs:2:1:2:12 | <%- sinkA %> |
 | views/ejs_sinks.ejs:4:13:4:19 | rawHtml | views/ejs_sinks.ejs:4:9:4:22 | <%- rawHtml %> |
 | views/ejs_sinks.ejs:4:13:4:19 | rawHtml | views/ejs_sinks.ejs:4:9:4:22 | <%- rawHtml %> |
 | views/ejs_sinks.ejs:7:13:7:30 | object.rawHtmlProp | views/ejs_sinks.ejs:7:9:7:33 | <%- object.rawHtmlProp %> |
@@ -140,6 +175,11 @@ edges
 | views/njk_sinks.njk:15:49:15:74 | dataInG ... JsonRaw | views/njk_sinks.njk:15:49:15:81 | dataInG ...  \| json |
 | views/njk_sinks.njk:15:49:15:74 | dataInG ... JsonRaw | views/njk_sinks.njk:15:49:15:81 | dataInG ...  \| json |
 #select
+| projectA/views/main.ejs:2:1:2:12 | <%- sinkA %> | projectA/src/index.js:7:16:7:30 | req.query.sinkA | projectA/views/main.ejs:2:1:2:12 | <%- sinkA %> | Cross-site scripting vulnerability due to $@. | projectA/src/index.js:7:16:7:30 | req.query.sinkA | user-provided value |
+| projectA/views/main.ejs:2:1:2:12 | <%- sinkA %> | projectA/src/index.js:12:16:12:30 | req.query.sinkA | projectA/views/main.ejs:2:1:2:12 | <%- sinkA %> | Cross-site scripting vulnerability due to $@. | projectA/src/index.js:12:16:12:30 | req.query.sinkA | user-provided value |
+| projectA/views/subfolder/index.ejs:2:1:2:12 | <%- sinkA %> | projectA/src/index.js:17:16:17:30 | req.query.sinkA | projectA/views/subfolder/index.ejs:2:1:2:12 | <%- sinkA %> | Cross-site scripting vulnerability due to $@. | projectA/src/index.js:17:16:17:30 | req.query.sinkA | user-provided value |
+| projectA/views/subfolder/other.ejs:2:1:2:12 | <%- sinkA %> | projectA/src/index.js:32:16:32:30 | req.query.sinkA | projectA/views/subfolder/other.ejs:2:1:2:12 | <%- sinkA %> | Cross-site scripting vulnerability due to $@. | projectA/src/index.js:32:16:32:30 | req.query.sinkA | user-provided value |
+| projectA/views/subfolder/other.ejs:2:1:2:12 | <%- sinkA %> | projectA/src/index.js:37:16:37:30 | req.query.sinkA | projectA/views/subfolder/other.ejs:2:1:2:12 | <%- sinkA %> | Cross-site scripting vulnerability due to $@. | projectA/src/index.js:37:16:37:30 | req.query.sinkA | user-provided value |
 | views/ejs_sinks.ejs:4:9:4:22 | <%- rawHtml %> | app.js:8:18:8:34 | req.query.rawHtml | views/ejs_sinks.ejs:4:9:4:22 | <%- rawHtml %> | Cross-site scripting vulnerability due to $@. | app.js:8:18:8:34 | req.query.rawHtml | user-provided value |
 | views/ejs_sinks.ejs:7:9:7:33 | <%- object.rawHtmlProp %> | app.js:11:26:11:46 | req.que ... tmlProp | views/ejs_sinks.ejs:7:9:7:33 | <%- object.rawHtmlProp %> | Cross-site scripting vulnerability due to $@. | app.js:11:26:11:46 | req.que ... tmlProp | user-provided value |
 | views/ejs_sinks.ejs:11:43:11:71 | <%- dataInStringLiteralRaw %> | app.js:14:33:14:64 | req.que ... eralRaw | views/ejs_sinks.ejs:11:43:11:71 | <%- dataInStringLiteralRaw %> | Cross-site scripting vulnerability due to $@. | app.js:14:33:14:64 | req.que ... eralRaw | user-provided value |
