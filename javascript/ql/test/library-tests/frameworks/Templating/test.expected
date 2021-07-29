@@ -5,6 +5,9 @@ getLikelyTemplateSyntax
 | projectA/views/main.ejs:0:0:0:0 | projectA/views/main.ejs | ejs |
 | projectA/views/subfolder/index.ejs:0:0:0:0 | projectA/views/subfolder/index.ejs | ejs |
 | projectA/views/subfolder/other.ejs:0:0:0:0 | projectA/views/subfolder/other.ejs | ejs |
+| projectB/views/main.ejs:0:0:0:0 | projectB/views/main.ejs | ejs |
+| projectB/views/subfolder/index.ejs:0:0:0:0 | projectB/views/subfolder/index.ejs | ejs |
+| projectB/views/subfolder/other.ejs:0:0:0:0 | projectB/views/subfolder/other.ejs | ejs |
 | views/ejs_sinks.ejs:0:0:0:0 | views/ejs_sinks.ejs | ejs |
 | views/hbs_sinks.hbs:0:0:0:0 | views/hbs_sinks.hbs | mustache |
 | views/instantiated_as_ejs.html:0:0:0:0 | views/instantiated_as_ejs.html | ejs |
@@ -21,10 +24,18 @@ getTargetFile
 | projectA/src/index.js:16:5:19:6 | res.ren ... \\n    }) | projectA/views/subfolder/index.ejs:0:0:0:0 | projectA/views/subfolder/index.ejs |
 | projectA/src/index.js:31:5:34:6 | res.ren ... \\n    }) | projectA/views/subfolder/other.ejs:0:0:0:0 | projectA/views/subfolder/other.ejs |
 | projectA/src/index.js:36:5:39:6 | res.ren ... \\n    }) | projectA/views/subfolder/other.ejs:0:0:0:0 | projectA/views/subfolder/other.ejs |
+| projectB/src/index.js:6:5:9:6 | res.ren ... \\n    }) | projectB/views/main.ejs:0:0:0:0 | projectB/views/main.ejs |
+| projectB/src/index.js:11:5:14:6 | res.ren ... \\n    }) | projectB/views/main.ejs:0:0:0:0 | projectB/views/main.ejs |
+| projectB/src/index.js:16:5:19:6 | res.ren ... \\n    }) | projectB/views/subfolder/index.ejs:0:0:0:0 | projectB/views/subfolder/index.ejs |
+| projectB/src/index.js:31:5:34:6 | res.ren ... \\n    }) | projectB/views/subfolder/other.ejs:0:0:0:0 | projectB/views/subfolder/other.ejs |
+| projectB/src/index.js:36:5:39:6 | res.ren ... \\n    }) | projectB/views/subfolder/other.ejs:0:0:0:0 | projectB/views/subfolder/other.ejs |
 xssSink
 | projectA/views/main.ejs:2:1:2:12 | <%- sinkA %> |
 | projectA/views/subfolder/index.ejs:2:1:2:12 | <%- sinkA %> |
 | projectA/views/subfolder/other.ejs:2:1:2:12 | <%- sinkA %> |
+| projectB/views/main.ejs:3:1:3:12 | <%- sinkB %> |
+| projectB/views/subfolder/index.ejs:3:1:3:12 | <%- sinkB %> |
+| projectB/views/subfolder/other.ejs:3:1:3:12 | <%- sinkB %> |
 | views/ejs_sinks.ejs:4:9:4:22 | <%- rawHtml %> |
 | views/ejs_sinks.ejs:5:9:5:31 | <%- rawHtmlSafeValue %> |
 | views/ejs_sinks.ejs:7:9:7:33 | <%- object.rawHtmlProp %> |
