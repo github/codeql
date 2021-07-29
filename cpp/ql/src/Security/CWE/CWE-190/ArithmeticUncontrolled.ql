@@ -72,10 +72,8 @@ private class RandS extends RandomFunction {
   override FunctionOutput getFunctionOutput() { result.isParameterDeref(0) }
 }
 
-predicate missingGuard(VariableAccess va, string effect) {
-  exists(Operation op | op.getAnOperand() = va |
-    missingGuardAgainstOverflow(op, va) and effect = "overflow"
-  )
+predicate missingGuard(VariableAccess va) {
+  exists(Operation op | op.getAnOperand() = va | missingGuardAgainstOverflow(op, va))
 }
 
 class UncontrolledArithConfiguration extends TaintTracking::Configuration {
@@ -93,7 +91,7 @@ class UncontrolledArithConfiguration extends TaintTracking::Configuration {
     )
   }
 
-  override predicate isSink(DataFlow::Node sink) { missingGuard(sink.asExpr(), _) }
+  override predicate isSink(DataFlow::Node sink) { missingGuard(sink.asExpr()) }
 
   override predicate isSanitizer(DataFlow::Node node) {
     bounded(node.asExpr())
@@ -117,11 +115,11 @@ Expr getExpr(DataFlow::Node node) { result = [node.asExpr(), node.asDefiningArgu
 
 from
   UncontrolledArithConfiguration config, DataFlow::PathNode source, DataFlow::PathNode sink,
-  VariableAccess va, string effect
+  VariableAccess va
 where
   config.hasFlowPath(source, sink) and
   sink.getNode().asExpr() = va and
-  missingGuard(va, effect)
+  missingGuard(va)
 select sink.getNode(), source, sink,
-  "$@ flows to here and is used in arithmetic, potentially causing an " + effect + ".",
+  "$@ flows to here and is used in arithmetic, potentially causing an overflow.",
   getExpr(source.getNode()), "Uncontrolled value"
