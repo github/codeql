@@ -59,3 +59,10 @@ app.get('/njk', (req, res) => {
         dataInEventHandlerStringRaw: req.query.dataInEventHandlerStringRaw,
     });
 });
+
+app.get('/angularjs', (req, res) => {
+    res.render('angularjs_sinks', {
+        escapedHtml: req.query.escapedHtml,
+        rawHtml: req.query.rawHtml,
+    });
+});
