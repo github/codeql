@@ -14,4 +14,9 @@ public void evaluate(HttpServletRequest request, Object root) throws OgnlExcepti
   } else {
     // Reject the request
   }
-} 
+}
+
+public void isValid(Strig expression) {
+  // Custom method to validate the expression.
+  // For instance, make sure it doesn't include unexpected code.
+}

@@ -16,5 +16,5 @@ import DataFlow::PathGraph
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, OgnlInjectionFlowConfig conf
 where conf.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "OGNL expression might include input from $@.",
+select sink.getNode(), source, sink, "OGNL expression might include data from $@.",
   source.getNode(), "this user input"
