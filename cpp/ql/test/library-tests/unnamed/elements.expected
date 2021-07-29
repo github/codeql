@@ -41,6 +41,7 @@
 | file://:0:0:0:0 | const | Other |
 | file://:0:0:0:0 | declared_constexpr | Other |
 | file://:0:0:0:0 | declared_constinit | Other |
+| file://:0:0:0:0 | declared_virtual | Other |
 | file://:0:0:0:0 | decltype(nullptr) | Other |
 | file://:0:0:0:0 | definition of fp_offset | Other |
 | file://:0:0:0:0 | definition of gp_offset | Other |
@@ -53,6 +54,7 @@
 | file://:0:0:0:0 | explicit | Other |
 | file://:0:0:0:0 | extern | Other |
 | file://:0:0:0:0 | far | Other |
+| file://:0:0:0:0 | final | Other |
 | file://:0:0:0:0 | float | Other |
 | file://:0:0:0:0 | forceinline | Other |
 | file://:0:0:0:0 | fp_offset | Other |
