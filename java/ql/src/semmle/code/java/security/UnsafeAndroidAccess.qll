@@ -14,15 +14,15 @@ private import semmle.code.java.dataflow.ExternalFlow
  */
 abstract class UrlResourceSink extends DataFlow::Node {
   /**
-   * Returns a description of this vulnerability,
+   * Gets a description of this vulnerability.
    */
   abstract string getSinkType();
 }
 
 /**
- * Cross-origin access enabled resource fetch.
+ * A cross-origin access enabled resource fetch.
  *
- * It requires JavaScript to be enabled too to be considered a valid sink.
+ * Only considered a valid sink when JavaScript is also enabled.
  */
 private class CrossOriginUrlResourceSink extends JavaScriptEnabledUrlResourceSink {
   CrossOriginUrlResourceSink() {
@@ -61,7 +61,7 @@ private class JavaScriptEnabledUrlResourceSink extends UrlResourceSink {
 }
 
 /**
- * Methods allowing any-local-file and cross-origin access in the WebSettings class
+ * A method allowing any-local-file and cross-origin access in the WebSettings class.
  */
 private class CrossOriginAccessMethod extends Method {
   CrossOriginAccessMethod() {
@@ -71,7 +71,7 @@ private class CrossOriginAccessMethod extends Method {
 }
 
 /**
- * `setJavaScriptEnabled` method for the webview
+ * The `setJavaScriptEnabled` method for the webview.
  */
 private class AllowJavaScriptMethod extends Method {
   AllowJavaScriptMethod() {
@@ -81,7 +81,7 @@ private class AllowJavaScriptMethod extends Method {
 }
 
 /**
- * Holds if a call to `v.setJavaScriptEnabled(true)` exists
+ * Holds if a call to `v.setJavaScriptEnabled(true)` exists.
  */
 private predicate isJSEnabled(Variable v) {
   exists(MethodAccess jsa |

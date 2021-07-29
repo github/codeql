@@ -7,7 +7,7 @@ import semmle.code.java.security.RequestForgery
 import semmle.code.java.security.UnsafeAndroidAccess
 
 /**
- * Taint configuration tracking flow from untrusted inputs to a resource fetching call.
+ * A taint configuration tracking flow from untrusted inputs to a resource fetching call.
  */
 class FetchUntrustedResourceConfiguration extends TaintTracking::Configuration {
   FetchUntrustedResourceConfiguration() { this = "FetchUntrustedResourceConfiguration" }

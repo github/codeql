@@ -1,7 +1,7 @@
 /**
- * @name Unsafe resource fetching in Android webview
- * @description JavaScript rendered inside WebViews can access any protected
- *              application file and web resource from any origin
+ * @name Unsafe resource fetching in Android WebView
+ * @description JavaScript rendered inside WebViews can access protected
+ *              application files and web resources from any origin exposing them to attack.
  * @kind path-problem
  * @problem.severity warning
  * @precision medium
@@ -17,5 +17,5 @@ import DataFlow::PathGraph
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, FetchUntrustedResourceConfiguration conf
 where conf.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "Unsafe resource fetching in Android webview due to $@.",
+select sink.getNode(), source, sink, "Unsafe resource fetching in Android WebView due to $@.",
   source.getNode(), sink.getNode().(UrlResourceSink).getSinkType()
