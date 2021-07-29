@@ -1,6 +1,6 @@
 /**
  * @name XSLT transformation with user-controlled stylesheet
- * @description Doing an XSLT transformation with user-controlled stylesheet can lead to
+ * @description Performing an XSLT transformation with user-controlled stylesheets can lead to
  *              information disclosure or execution of arbitrary code.
  * @kind path-problem
  * @problem.severity error
