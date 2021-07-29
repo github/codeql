@@ -1,6 +1,6 @@
 /**
  * @name JNDI lookup with user-controlled name
- * @description Doing a JNDI lookup with user-controlled name can lead to download an untrusted
+ * @description Performing a JNDI lookup with a user-controlled name can lead to the download of an untrusted
  *              object and to execution of arbitrary code.
  * @kind path-problem
  * @problem.severity error
