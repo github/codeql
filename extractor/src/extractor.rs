@@ -3,11 +3,13 @@ use std::borrow::Cow;
 use std::collections::BTreeMap as Map;
 use std::collections::BTreeSet as Set;
 use std::fmt;
+use std::io::Write;
 use std::path::Path;
+
 use tracing::{error, info, span, Level};
 use tree_sitter::{Language, Node, Parser, Range, Tree};
 
-struct TrapWriter {
+pub struct TrapWriter {
     /// The accumulated trap entries
     trap_output: Vec<TrapEntry>,
     /// A counter for generating fresh labels
@@ -16,7 +18,7 @@ struct TrapWriter {
     global_keys: std::collections::HashMap<String, Label>,
 }
 
-fn new_trap_writer() -> TrapWriter {
+pub fn new_trap_writer() -> TrapWriter {
     TrapWriter {
         counter: 0,
         trap_output: Vec::new(),
@@ -147,6 +149,10 @@ impl TrapWriter {
     fn comment(&mut self, text: String) {
         self.trap_output.push(TrapEntry::Comment(text));
     }
+
+    pub fn output(self, writer: &mut dyn Write) -> std::io::Result<()> {
+        write!(writer, "{}", Program(self.trap_output))
+    }
 }
 
 /// Extracts the source file at `path`, which is assumed to be canonicalized.
@@ -154,10 +160,11 @@ pub fn extract(
     language: Language,
     language_prefix: &str,
     schema: &NodeTypeMap,
+    trap_writer: &mut TrapWriter,
     path: &Path,
     source: &Vec<u8>,
     ranges: &[Range],
-) -> std::io::Result<Program> {
+) -> std::io::Result<()> {
     let span = span!(
         Level::TRACE,
         "extract",
@@ -172,8 +179,7 @@ pub fn extract(
     parser.set_language(language).unwrap();
     parser.set_included_ranges(&ranges).unwrap();
     let tree = parser.parse(&source, None).expect("Failed to parse file");
-    let mut trap_writer = new_trap_writer();
-    trap_writer.comment(format!("Auto-generated TRAP file for {}", path.display()));
+    &trap_writer.comment(format!("Auto-generated TRAP file for {}", path.display()));
     let file_label = &trap_writer.populate_file(path);
     let mut visitor = Visitor {
         source: &source,
@@ -190,7 +196,7 @@ pub fn extract(
     traverse(&tree, &mut visitor);
 
     parser.reset();
-    Ok(Program(visitor.trap_writer.trap_output))
+    Ok(())
 }
 
 /// Escapes a string for use in a TRAP key, by replacing special characters with
@@ -290,7 +296,7 @@ struct Visitor<'a> {
     /// The source code as a UTF-8 byte array
     source: &'a Vec<u8>,
     /// A TrapWriter to accumulate trap entries
-    trap_writer: TrapWriter,
+    trap_writer: &'a mut TrapWriter,
     /// A counter for tokens
     token_counter: usize,
     /// A counter for top-level child nodes
