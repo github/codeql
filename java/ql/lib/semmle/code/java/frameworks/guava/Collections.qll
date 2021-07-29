@@ -286,7 +286,7 @@ private class GuavaCollectCsv extends SummaryModelCsv {
         "com.google.common.collect;Iterators;false;forEnumeration;(Enumeration);;Element of Argument[0];Element of ReturnValue;value",
         "com.google.common.collect;Iterators;false;get;(Iterator,int);;Element of Argument[0];ReturnValue;value",
         "com.google.common.collect;Iterators;false;get;(Iterator,int,Object);;Element of Argument[0];ReturnValue;value",
-        "com.google.common.collect;Iterators;false;get;(Iterator,int,Object);;Argument[2];Element of ReturnValue;value",
+        "com.google.common.collect;Iterators;false;get;(Iterator,int,Object);;Argument[2];ReturnValue;value",
         "com.google.common.collect;Iterators;false;getLast;(Iterator);;Element of Argument[0];ReturnValue;value",
         "com.google.common.collect;Iterators;false;getLast;(Iterator,Object);;Element of Argument[0];ReturnValue;value",
         "com.google.common.collect;Iterators;false;getLast;(Iterator,Object);;Argument[1];ReturnValue;value",
