@@ -22,6 +22,14 @@ import org.jetbrains.kotlin.ir.visitors.IrElementVisitor
 import org.jetbrains.kotlin.ir.IrFileEntry
 import org.jetbrains.kotlin.ir.types.IrType
 import org.jetbrains.kotlin.ir.types.IrSimpleType
+import org.jetbrains.kotlin.ir.expressions.IrBody
+import org.jetbrains.kotlin.ir.expressions.IrBlockBody
+import org.jetbrains.kotlin.ir.expressions.IrReturn
+import org.jetbrains.kotlin.ir.expressions.IrExpression
+import org.jetbrains.kotlin.ir.expressions.IrCall
+import org.jetbrains.kotlin.ir.expressions.IrGetValue
+import org.jetbrains.kotlin.ir.expressions.IrConst
+import org.jetbrains.kotlin.ir.IrStatement
 
 class KotlinExtractorExtension(private val tests: List<String>) : IrGenerationExtension {
     override fun generate(moduleFragment: IrModuleFragment, pluginContext: IrPluginContext) {
@@ -54,17 +62,17 @@ class TrapWriter (
         val startColumn = fileEntry.getColumnNumber(startOffset) + 1
         val endLine = fileEntry.getLineNumber(endOffset) + 1
         val endColumn = fileEntry.getColumnNumber(endOffset)
-        val id: Label<DbLocation_default> = getFreshId()
-        val fileId: Label<DbFile> = getIdFor(fileLabel)
+        val id: Label<DbLocation_default> = getFreshLabel()
+        val fileId: Label<DbFile> = getLabelFor(fileLabel)
         writeTrap("$id = @\"loc,{$fileId},$startLine,$startColumn,$endLine,$endColumn\"\n")
         writeLocations_default(id, fileId, startLine, startColumn, endLine, endColumn)
         return id
     }
     val labelMapping: MutableMap<String, Label<*>> = mutableMapOf<String, Label<*>>()
-    fun <T> getIdFor(label: String, initialise: (Label<T>) -> Unit = {}): Label<T> {
+    fun <T> getLabelFor(label: String, initialise: (Label<T>) -> Unit = {}): Label<T> {
         val maybeId = labelMapping.get(label)
         if(maybeId == null) {
-            val id: Label<T> = getFreshId()
+            val id: Label<T> = getFreshLabel()
             labelMapping.put(label, id)
             writeTrap("$id = $label\n")
             initialise(id)
@@ -74,8 +82,13 @@ class TrapWriter (
             return maybeId as Label<T>
         }
     }
-    fun <T> getFreshId(): Label<T> {
+    fun <T> getFreshLabel(): Label<T> {
         return Label(nextId++)
+    }
+    fun <T> getFreshIdLabel(): Label<T> {
+        val label = Label<T>(nextId++)
+        writeTrap("$label = *\n")
+        return label
     }
 }
 
@@ -95,7 +108,7 @@ fun extractFile(trapDir: File, srcDir: File, declaration: IrFile) {
     trapFileDir.mkdirs()
     trapFile.bufferedWriter().use { trapFileBW ->
         val tw = TrapWriter(fileLabel, trapFileBW, declaration.fileEntry)
-        val id: Label<DbFile> = tw.getIdFor(fileLabel)
+        val id: Label<DbFile> = tw.getLabelFor(fileLabel)
         tw.writeFiles(id, filePath, basename, extension, 0)
         val fileExtractor = KotlinFileExtractor(tw)
         val pkg = declaration.fqName.asString()
@@ -112,7 +125,7 @@ class KotlinFileExtractor(val tw: TrapWriter) {
 
     fun extractPackage(pkg: String): Label<out DbPackage> {
         val pkgLabel = "@\"package;$pkg\""
-        val id: Label<DbPackage> = tw.getIdFor(pkgLabel, {
+        val id: Label<DbPackage> = tw.getLabelFor(pkgLabel, {
             tw.writePackages(it, pkg)
         })
         return id
@@ -130,7 +143,7 @@ class KotlinFileExtractor(val tw: TrapWriter) {
     fun useSimpleType(c: IrSimpleType): Label<out DbPrimitive> {
         // TODO: This shouldn't assume all SimpleType's are Int
         val label = "@\"type;int\""
-        val id: Label<DbPrimitive> = tw.getIdFor(label, {
+        val id: Label<DbPrimitive> = tw.getLabelFor(label, {
             tw.writePrimitives(it, "int")
         })
         return id
@@ -141,7 +154,7 @@ class KotlinFileExtractor(val tw: TrapWriter) {
         val cls = c.name.asString()
         val qualClassName = if (pkg.isEmpty()) cls else "$pkg.$cls"
         val label = "@\"class;$qualClassName\""
-        val id: Label<DbClass> = tw.getIdFor(label)
+        val id: Label<DbClass> = tw.getLabelFor(label)
         return id
     }
 
@@ -183,7 +196,7 @@ class KotlinFileExtractor(val tw: TrapWriter) {
         val returnTypeId = useType(f.returnType)
         val parentId = useDeclarationParent(f.parent)
         val label = "@\"callable;{$parentId}.${f.name.asString()}($paramTypeIds){$returnTypeId}\""
-        val id: Label<DbMethod> = tw.getIdFor(label)
+        val id: Label<DbMethod> = tw.getLabelFor(label)
         return id
     }
 
@@ -194,7 +207,80 @@ class KotlinFileExtractor(val tw: TrapWriter) {
         val returnTypeId = useType(f.returnType)
         tw.writeMethods(id, f.name.asString(), signature, returnTypeId, parentid, id)
         tw.writeHasLocation(id, locId)
+        val body = f.body
+        if(body != null) {
+            extractBody(body, id)
+        }
     }
 
+    fun extractBody(b: IrBody, callable: Label<out DbCallable>) {
+        when(b) {
+            is IrBlockBody -> extractBlockBody(b, callable, callable, 0)
+            else -> extractorBug("Unrecognised IrBody: " + b.javaClass)
+        }
+    }
+
+    fun extractBlockBody(b: IrBlockBody, callable: Label<out DbCallable>, parent: Label<out DbStmtparent>, idx: Int) {
+        val id = tw.getFreshIdLabel<DbBlock>()
+        val locId = tw.getLocation(b.startOffset, b.endOffset)
+        val kind = 0 // TODO: stmt kind for block from generated module
+        tw.writeStmts(id, kind, parent, idx, callable)
+        tw.writeHasLocation(id, locId)
+        for((sIdx, stmt) in b.statements.withIndex()) {
+            extractStatement(stmt, callable, id, sIdx)
+        }
+    }
+
+    fun extractStatement(s: IrStatement, callable: Label<out DbCallable>, parent: Label<out DbStmtparent>, idx: Int) {
+        when(s) {
+            is IrReturn -> {
+                val id = tw.getFreshIdLabel<DbReturnstmt>()
+                val locId = tw.getLocation(s.startOffset, s.endOffset)
+                val kind = 9 // TODO: stmt kind for return from generated module
+                tw.writeStmts(id, kind, parent, idx, callable)
+                tw.writeHasLocation(id, locId)
+                extractExpression(s.value, id, 0)
+            }
+        }
+    }
+
+    fun extractExpression(e: IrExpression, parent: Label<out DbExprparent>, idx: Int) {
+        when(e) {
+            is IrCall -> {
+                // TODO: This shouldn't assume all IrCalls's are addexpr's
+                if(e.valueArgumentsCount == 1) {
+                    val left = e.dispatchReceiver
+                    val right = e.getValueArgument(0)
+                    if(left != null && right != null) {
+                        val kind = 27 // TODO: expr kind for addexpr from generated module
+                        val id = tw.getFreshIdLabel<DbAddexpr>()
+                        val typeId = useType(e.type)
+                        val locId = tw.getLocation(e.startOffset, e.endOffset)
+                        tw.writeExprs(id, kind, typeId, parent, idx)
+                        tw.writeHasLocation(id, locId)
+                        extractExpression(left, id, 0)
+                        extractExpression(right, id, 1)
+                    } else {
+                        extractorBug("Unrecognised IrCall: left or right is null")
+                    }
+                } else {
+                    extractorBug("Unrecognised IrCall: Not binary")
+                }
+            }
+            is IrConst<*> -> {
+                val v = e.value as Int
+                val kind = 17 // TODO: expr kind for integerliteral from generated module
+                val id = tw.getFreshIdLabel<DbIntegerliteral>()
+                val typeId = useType(e.type)
+                val locId = tw.getLocation(e.startOffset, e.endOffset)
+                tw.writeExprs(id, kind, typeId, parent, idx)
+                tw.writeHasLocation(id, locId)
+                tw.writeNamestrings(v.toString(), v.toString(), id)
+            }
+            else -> {
+                extractorBug("Unrecognised IrExpression: " + e.javaClass)
+            }
+        }
+    }
 }
 
