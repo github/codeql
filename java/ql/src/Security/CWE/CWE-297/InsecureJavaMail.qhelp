@@ -3,7 +3,7 @@
 
   <overview>
     <p>JavaMail is commonly used in Java applications to send emails. There are popular third-party libraries like Apache Commons Email which are built on JavaMail and facilitate integration. Authenticated mail sessions require user credentials and mail sessions can require SSL/TLS authentication. It is a common security vulnerability that host-specific certificate data is not validated or is incorrectly validated. Failing to validate the certificate makes the SSL session susceptible to a man-in-the-middle attack.</p>
-    <p>This query checks whether SSL certificate is validated when username/password is sent in authenticator and when SSL is enabled.</p>
+    <p>This query checks whether the SSL certificate is validated when credentials are used and SSL is enabled in email communications.</p>
     <p>The query has code for both plain JavaMail invocation and mailing through Apache SimpleMail to make it more comprehensive.</p>
   </overview>
 
