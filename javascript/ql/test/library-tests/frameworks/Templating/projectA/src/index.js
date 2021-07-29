@@ -37,4 +37,9 @@ app.get('/fooA', (req, res) => {
         sinkA: req.query.sinkA,
         sinkB: req.query.sinkB,
     });
+
+    res.render('subfolder/subsub', {
+        sinkA: req.query.sinkA,
+        sinkB: req.query.sinkB,
+    });
 });
