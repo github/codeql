@@ -322,7 +322,7 @@ module Templating {
 
     /** Gets the template file referenced by this node. */
     final TemplateFile getTemplateFile() {
-      result = this.getValue().(TemplateFileReferenceString).getTemplateFile()
+      result = this.getValue().(TemplateFileReferenceString).getTemplateFile(getFile().getParentContainer())
     }
   }
 
@@ -361,19 +361,16 @@ module Templating {
      */
     string getStem() { result = getBaseName().regexpCapture("(.*?)(?:\\.([^.]*))?", 1) }
 
-    /** Gets a template string with all leading `../` sequences resolved. */
-    private TemplateFileReferenceString resolveUpwardTraversal() {
+    /** Gets the template file referenced by this string when resolved from `baseFolder`. */
+    final TemplateFile getTemplateFile(Folder baseFolder) {
+      result = getBestMatchingTarget(baseFolder, this)
+      or
       exists(UpwardTraversalSuffix up |
         this = up.getOriginal() and
-        result = up.(TemplateFileReferenceString).resolveUpwardTraversal()
+        result = up.(TemplateFileReferenceString).getTemplateFile(baseFolder.getParentContainer()) and
+        baseFolder = getContextFolder()
       )
-      or
-      not this = any(UpwardTraversalSuffix up).getOriginal() and
-      result = this
     }
-
-    /** Gets the template file referenced by this string. */
-    final TemplateFile getTemplateFile() { result = getBestMatchingTarget(this.resolveUpwardTraversal()) }
   }
 
   /** The value of a template reference node, as a template reference string. */
@@ -470,7 +467,7 @@ module Templating {
   }
 
   /**
-   * Gets the length of the longest common prefix between `file` and `ref`.
+   * Gets the length of the longest common prefix between `file` and the `baseFolder` of `ref`.
    *
    * This is used to rank all the possible files that `ref` could refer to.
    * Picking the one with the highest rank ensures that the file most closely related
@@ -487,21 +484,22 @@ module Templating {
    * and vice versa in `B/components/foo.js`.
    */
   pragma[nomagic]
-  private int getRankOfMatchingTarget(TemplateFile file, TemplateFileReferenceString ref) {
+  private int getRankOfMatchingTarget(TemplateFile file, Folder baseFolder, TemplateFileReferenceString ref) {
     file = getAMatchingTarget(ref) and
+    baseFolder = ref.getContextFolder() and
     exists(string filePath, string refPath |
       // Pad each file name to ensure they differ at some index, in case one was a prefix of the other
       filePath = file.getRelativePath() + "!" and
-      refPath = ref.getContextFolder().getRelativePath() + "@" and
+      refPath = baseFolder.getRelativePath() + "@" and
       result = min(int i | filePath.charAt(i) != refPath.charAt(i))
     )
   }
 
   /**
-   * Gets the template file referred to by `ref`.
+   * Gets the template file referred to by `ref` when resolved from `baseFolder`.
    */
-  private TemplateFile getBestMatchingTarget(TemplateFileReferenceString ref) {
-    result = max(getAMatchingTarget(ref) as f order by getRankOfMatchingTarget(f, ref))
+  private TemplateFile getBestMatchingTarget(Folder baseFolder, TemplateFileReferenceString ref) {
+    result = max(getAMatchingTarget(ref) as f order by getRankOfMatchingTarget(f, baseFolder, ref))
   }
 
   /**
@@ -677,7 +675,7 @@ module Templating {
 
     /** Gets the file referenced by this inclusion tag. */
     TemplateFile getImportedFile() {
-      result = getPath().(TemplateFileReferenceString).getTemplateFile()
+      result = getPath().(TemplateFileReferenceString).getTemplateFile(getFile().getParentContainer())
     }
   }
 
