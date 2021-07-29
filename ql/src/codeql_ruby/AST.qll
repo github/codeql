@@ -106,7 +106,10 @@ class AstNode extends TAstNode {
   final AstNode getDesugared() { result = getSynthChild(this, -1) }
 }
 
+/** A Ruby source file */
 class RubyFile extends File {
+  RubyFile() { ruby_ast_node_parent(_, this, _) }
+
   /** Gets a token in this file. */
   private Ruby::Token getAToken() { result.getLocation().getFile() = this }
 
