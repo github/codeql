@@ -107,7 +107,7 @@ private predicate getAccessorStep(DataFlow::Node n1, DataFlow::Node n2) {
 private predicate setExpressionStep(DataFlow::Node n1, DataFlow::Node n2) {
   exists(MethodAccess ma, Method m |
     n1.asExpr() = ma.getArgument(0) and
-    n2.asExpr() = ma.getQualifier() and
+    n2.(PostUpdateNode).getPreUpdateNode().asExpr() = ma.getQualifier() and
     ma.getMethod() = m and
     m.getDeclaringType().getASupertype*() instanceof TypeExpressionAccessor
   |
