@@ -4,12 +4,12 @@
 <qhelp>
 <overview>
 <p>XSLT (Extensible Stylesheet Language Transformations) is a language for transforming XML
-documents into other XML documents or other formats. Processing of unvalidated XSLT stylesheet can
-let attacker to read arbitrary files from the filesystem or to execute arbitrary code.</p>
+documents into other XML documents or other formats. Processing unvalidated XSLT stylesheets can
+allow attackers to read arbitrary files from the filesystem or to execute arbitrary code.</p>
 </overview>
 
 <recommendation>
-<p>The general recommendation is to not process untrusted XSLT stylesheets. If user provided
+<p>The general recommendation is to not process untrusted XSLT stylesheets. If user-provided
 stylesheets must be processed, enable the secure processing mode.</p>
 </recommendation>
 
@@ -17,7 +17,7 @@ stylesheets must be processed, enable the secure processing mode.</p>
 <p>In the following examples, the code accepts an XSLT stylesheet from the user and processes it.
 </p>
 
-<p>In the first example, the user provided XSLT stylesheet is parsed and processed.</p>
+<p>In the first example, the user-provided XSLT stylesheet is parsed and processed.</p>
 
 <p>In the second example, secure processing mode is enabled.</p>
 
