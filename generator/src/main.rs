@@ -136,6 +136,12 @@ fn add_field_for_column_storage<'a>(
 }
 
 /// Converts the given tree-sitter node types into CodeQL dbscheme entries.
+/// Returns a tuple containing:
+///
+/// 1. A vector of dbscheme entries.
+/// 2. A set of names of the members of the `<lang>_ast_node` union.
+/// 3. A map where the keys are the dbscheme names for token kinds, and the
+/// values are their integer representations.
 fn convert_nodes<'a>(
     nodes: &'a node_types::NodeTypeMap,
 ) -> (Vec<dbscheme::Entry<'a>>, Set<&'a str>, Map<&'a str, usize>) {
@@ -244,6 +250,12 @@ fn convert_nodes<'a>(
 
     (entries, ast_node_members, token_kinds)
 }
+
+/// Creates a dbscheme table entry representing the parent relation for AST nodes.
+///
+/// # Arguments
+/// - `name` - the name of both the table to create and the node parent type.
+/// - `ast_node_name` - the name of the node child type.
 fn create_ast_node_parent_table<'a>(name: &'a str, ast_node_name: &'a str) -> dbscheme::Table<'a> {
     dbscheme::Table {
         name,

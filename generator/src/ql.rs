@@ -249,7 +249,7 @@ impl<'a> fmt::Display for FormalParameter<'a> {
     }
 }
 
-/// Generates a QL library by writing the given `classes` to the `file`.
+/// Generates a QL library by writing the given `elements` to the `file`.
 pub fn write<'a>(file: &mut dyn std::io::Write, elements: &'a [TopLevel]) -> std::io::Result<()> {
     for element in elements {
         write!(file, "{}\n\n", &element)?;

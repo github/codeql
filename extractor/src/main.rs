@@ -166,15 +166,15 @@ fn main() -> std::io::Result<()> {
         let mut trap_file = BufWriter::new(trap_file);
         match trap_compression {
             TrapCompression::None => {
-                if erb_trap.is_some() {
-                    write!(trap_file, "{}", erb_trap.unwrap())?;
+                if let Some(erb_trap) = erb_trap {
+                    write!(trap_file, "{}", erb_trap)?;
                 }
                 write!(trap_file, "{}", trap)
             }
             TrapCompression::Gzip => {
                 let mut compressed_writer = GzEncoder::new(trap_file, flate2::Compression::fast());
-                if erb_trap.is_some() {
-                    write!(compressed_writer, "{}", erb_trap.unwrap())?;
+                if let Some(erb_trap) = erb_trap {
+                    write!(compressed_writer, "{}", erb_trap)?;
                 }
                 write!(compressed_writer, "{}", trap)
             }
