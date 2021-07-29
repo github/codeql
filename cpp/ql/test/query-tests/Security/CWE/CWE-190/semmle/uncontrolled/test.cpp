@@ -123,3 +123,41 @@ int test_conditional_assignment_2()
 	
 	return y * 10; // GOOD (as y <= 100)
 }
+
+int test_underflow()
+{
+	int x = rand();
+	int a = -x; // GOOD
+	int b = 10 - x; // GOOD
+	int c = b * 2; // BAD
+}
+
+int test_cast()
+{
+	int x = rand();
+	short a = x; // BAD [NOT DETECTED]
+	short b = -x; // BAD [NOT DETECTED]
+	long long c = x; // GOOD
+	long long d = -x; // GOOD
+}
+
+void test_float()
+{
+	{
+		int x = rand();
+		float y = x; // GOOD
+		int z = (int)y * 5; // BAD
+	}
+
+	{
+		int x = rand();
+		float y = x * 5.0f; // GOOD
+		int z = y; // BAD [NOT DETECTED]
+	}
+
+	{
+		int x = rand();
+		float y = x / 10.0f; // GOOD
+		int z = (int)y * 5; // GOOD
+	}
+}
