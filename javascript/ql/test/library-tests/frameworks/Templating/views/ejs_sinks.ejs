@@ -20,5 +20,8 @@
 
         <button onclick="doSomething('<%= dataInEventHandlerString %>')">Click me</button>
         <button onclick="doSomething('<%- dataInEventHandlerStringRaw %>')">Click me</button>
+
+        <%- include('ejs_include1', { foo: rawHtml }) _%>
+        <% include ejs_include2 %>
     </body>
 </html>
