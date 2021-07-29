@@ -220,7 +220,7 @@ private string stubTypeName(Type t) {
         then result = "?" + stubTypeBound(t)
         else
           if t instanceof Array
-          then result = stubTypeName(t.(Array).getElementType()) + "[]"
+          then result = stubTypeName(t.(Array).getComponentType()) + "[]"
           else
             if t instanceof ClassOrInterface
             then
@@ -338,7 +338,7 @@ private string stubParameter(Parameter p) {
   exists(Type t, string suff | result = stubTypeName(t) + suff + " " + p.getName() |
     if p.isVarargs()
     then (
-      t = p.getType().(Array).getElementType() and
+      t = p.getType().(Array).getComponentType() and
       suff = "..."
     ) else (
       t = p.getType() and suff = ""
@@ -426,7 +426,7 @@ private RefType getAReferencedType(RefType t) {
     or
     result = t1.(ParameterizedType).getATypeArgument()
     or
-    result = t1.(Array).getElementType()
+    result = t1.(Array).getComponentType()
     or
     result = t1.(BoundedType).getATypeBound().getType()
   )
