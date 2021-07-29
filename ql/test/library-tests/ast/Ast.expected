@@ -1476,6 +1476,11 @@ control/loops.rb:
 #   66|       getAnOperand/getLeftOperand/getLesserOperand: [LocalVariableAccess] x
 #   66|       getAnOperand/getGreaterOperand/getRightOperand: [LocalVariableAccess] y
 #   66|     getBody: [StmtSequence] do ...
+misc/misc.erb:
+#    2| [MethodCall] call to require_asset
+#    2|   getReceiver: [Self] self
+#    2|   getArgument: [StringLiteral] "main_include_admin.js"
+#    2|     getComponent: [StringTextComponent] main_include_admin.js
 misc/misc.rb:
 #    1| [Toplevel] misc.rb
 #    1|   getStmt: [AssignExpr] ... = ...
