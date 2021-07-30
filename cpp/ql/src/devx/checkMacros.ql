@@ -59,6 +59,7 @@ from string format, FormattingFunctionCall fc, int n
 where
 format = fc.getFormat().getValue() and // format: "%s: Failed init_producer"
 fc.getTarget().hasName("syslog") and
-not isLogDebug(fc.getArgument(0)) and
-isMacroInvocationLike(fc.getFormatArgument(n))
+not isLogDebug(fc.getArgument(0)) 
+// isMacroInvocationLike(fc.getFormatArgument(n))
+// fc.getFormatArgument(n).getValue() = fc.getEnclosingFunction().getName()
 select fc, "Argument " + n + " of " + fc.toString() + " is " + fc.getFormatArgument(n).getValue()
