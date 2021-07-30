@@ -11,7 +11,6 @@
  */
 
 import cpp
-import semmle.code.cpp.dataflow.DataFlow
 import semmle.code.cpp.commons.Printf
 import semmle.code.cpp.models.interfaces.FormattingFunction
 
@@ -36,7 +35,9 @@ predicate isLogDebug(Expr mie) {
 }
 
 class Likely__FUNCTION__ extends StringLiteral {
-    Likely__FUNCTION__() { this.getValue() = this.getEnclosingFunction().getName() }
+    Likely__FUNCTION__() { 
+        this.getValue() = this.getEnclosingFunction().getName() 
+    }
   }
   
 /**
@@ -46,13 +47,12 @@ class Likely__FUNCTION__ extends StringLiteral {
  * that `e` is a use of the `__FUNCTION__` macro.
  */
 predicate isMacroInvocationLike(Expr e, string s) {
-exists(MacroInvocation mi |
-    e = mi.getExpr() and
-    s = mi.getMacroName()
-)
-or
-e instanceof Likely__FUNCTION__ and
-s = "__FUNCTION__"
+    exists(MacroInvocation mi |
+        e = mi.getExpr() and
+        s = mi.getMacroName()
+    )
+    or
+    e instanceof Likely__FUNCTION__
 }
 
 
