@@ -238,7 +238,7 @@ private predicate looksLikeConstant(Expr expr) {
  * Holds if `firstObject` and `secondObject` are compared using a method
  * that does not use a constant-time algorithm, for example, `String.equals()`.
  */
-private predicate isNonConstantEqualsCall(Expr firstObject, Expr secondObject) {
+private predicate isNonConstantTimeEqualsCall(Expr firstObject, Expr secondObject) {
   exists(NonConstantTimeEqualsCall call |
     firstObject = call.getQualifier() and
     secondObject = call.getAnArgument()

@@ -257,7 +257,6 @@ private predicate sinkModelCsv(string row) {
     ]
 }
 
-// TODO: add ByteBuffer
 private predicate summaryModelCsv(string row) {
   row =
     [
