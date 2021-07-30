@@ -48,7 +48,7 @@ class Likely__FUNCTION__ extends StringLiteral {
  */
 predicate isMacroInvocationLike(Expr e) {
     exists(MacroInvocation mi |
-        e = mi.getExpr() and
+        e = mi.getExpr()
     )
     or
     e instanceof Likely__FUNCTION__
