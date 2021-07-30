@@ -27,7 +27,7 @@ private class JsonParser extends RefType {
   JsonParser() { hasQualifiedName("com.fasterxml.jackson.core", "JsonParser") }
 }
 
-/** A type descriptor in Jackson libraries. */
+/** A type descriptor in Jackson libraries. For example, `java.lang.Class`. */
 class JacksonTypeDescriptorType extends RefType {
   JacksonTypeDescriptorType() {
     this instanceof TypeClass or
@@ -128,7 +128,7 @@ predicate createJacksonTreeNodeStep(DataFlow::Node fromNode, DataFlow::Node toNo
  */
 private predicate hasJsonTypeInfoAnnotation(RefType type) {
   hasFieldWithJsonTypeAnnotation(type.getASupertype*()) or
-  hasFieldWithJsonTypeAnnotation(type.getAField().getType())
+  hasJsonTypeInfoAnnotation(type.getAField().getType())
 }
 
 /**
