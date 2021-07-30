@@ -1,5 +1,5 @@
 /**
- * Provides classes and predicates for deserialization vulnerabilities.
+ * Provides classes and predicates for finding deserialization vulnerabilities.
  */
 
 import semmle.code.java.dataflow.FlowSources
@@ -123,7 +123,7 @@ private class SafeKryo extends DataFlow2::Configuration {
 }
 
 /**
- * Holds if `ma` is a call that triggers deserialization with tainted data from `sink`.
+ * Holds if `ma` is a call that deserializes data from `sink`.
  */
 predicate unsafeDeserialization(MethodAccess ma, Expr sink) {
   exists(Method m | m = ma.getMethod() |
@@ -191,7 +191,7 @@ predicate unsafeDeserialization(MethodAccess ma, Expr sink) {
 class UnsafeDeserializationSink extends DataFlow::ExprNode {
   UnsafeDeserializationSink() { unsafeDeserialization(_, this.getExpr()) }
 
-  /** Returns a call that triggers unsafe deserialization. */
+  /** Gets a call that triggers unsafe deserialization. */
   MethodAccess getMethodAccess() { unsafeDeserialization(result, this.getExpr()) }
 }
 
@@ -286,7 +286,7 @@ class EnableJacksonDefaultTypingConfig extends DataFlow2::Configuration {
 }
 
 /**
- * Tracks flow from calls which set a type validator to a subsequent Jackson deserialization method call,
+ * Tracks flow from calls that set a type validator to a subsequent Jackson deserialization method call,
  * including across builder method calls.
  *
  * Such a Jackson deserialization method call is safe because validation will likely prevent instantiating unexpected types.
