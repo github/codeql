@@ -156,7 +156,7 @@ predicate hasArgumentWithUnsafeJacksonAnnotation(MethodAccess call) {
 
 /**
  * Holds if `fromNode` to `toNode` is a dataflow step that looks like resolving a class.
- * A method probably resolves a class if it is external, takes a string, returns a type descriptor
+ * A method probably resolves a class if takes a string, returns a type descriptor,
  * and its name contains "resolve", "load", etc.
  *
  * Any method call that satisfies the rule above is assumed to propagate taint from its string arguments,
@@ -164,11 +164,9 @@ predicate hasArgumentWithUnsafeJacksonAnnotation(MethodAccess call) {
  * completely different purpose before returning a type descriptor could result in false positives.
  */
 predicate looksLikeResolveClassStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
-  exists(MethodAccess ma, Method m, int i, Expr arg |
-    m = ma.getMethod() and arg = ma.getArgument(i)
-  |
+  exists(MethodAccess ma, Method m, Expr arg | m = ma.getMethod() and arg = ma.getAnArgument() |
     m.getReturnType() instanceof JacksonTypeDescriptorType and
-    m.getName().toLowerCase().regexpMatch("resolve|load|class|type") and
+    m.getName().toLowerCase().regexpMatch("(.*)(resolve|load|class|type)(.*)") and
     arg.getType() instanceof TypeString and
     arg = fromNode.asExpr() and
     ma = toNode.asExpr()

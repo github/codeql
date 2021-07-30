@@ -1,5 +1,6 @@
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
@@ -179,12 +180,12 @@ class UnsafeCatDeserialization {
             String data = parts[0];
             String type = parts[1];
             ObjectMapper mapper = new ObjectMapper();
-            mapper.readValue(data, resolveTypeImpl(type)); // $unsafeDeserialization
+            mapper.readValue(data, resolveImpl(type, mapper)); // $unsafeDeserialization
         });
     }
 
-    private static Class resolveTypeImpl(String type) throws Exception {
-        return Class.forName(type);
+    private static JavaType resolveImpl(String type, ObjectMapper mapper) throws Exception {
+        return mapper.constructType(Class.forName(type));
     }
 }
 

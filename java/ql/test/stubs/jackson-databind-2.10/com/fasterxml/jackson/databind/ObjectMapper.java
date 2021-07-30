@@ -3,6 +3,7 @@ package com.fasterxml.jackson.databind;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.TreeNode;
 import com.fasterxml.jackson.databind.jsontype.PolymorphicTypeValidator;
+import java.lang.reflect.Type;
 import java.io.*;
 import java.util.*;
 
@@ -54,6 +55,10 @@ public class ObjectMapper {
     return null;
   }
 
+  public <T> T readValue(String content, JavaType valueType) {
+    return null;
+  }
+
   public <T> MappingIterator<T> readValues(JsonParser p, Class<T> valueType) {
     return null;
   }
@@ -63,6 +68,10 @@ public class ObjectMapper {
   }
 
   public JsonNode readTree(String content) {
+    return null;
+  }
+
+  public JavaType constructType(Type t) {
     return null;
   }
 }
