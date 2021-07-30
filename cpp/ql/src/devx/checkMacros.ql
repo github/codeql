@@ -46,20 +46,19 @@ class Likely__FUNCTION__ extends StringLiteral {
  * 2. a string literal with the same value as the name of `e`'s enclosing function. This likely means
  * that `e` is a use of the `__FUNCTION__` macro.
  */
-predicate isMacroInvocationLike(Expr e, string s) {
+predicate isMacroInvocationLike(Expr e) {
     exists(MacroInvocation mi |
         e = mi.getExpr() and
-        s = mi.getMacroName()
     )
     or
     e instanceof Likely__FUNCTION__
 }
 
 
-from string format, FormattingFunctionCall fc, int n, string name
+from string format, FormattingFunctionCall fc, int n
 where
 format = fc.getFormat().getValue() and // format: "%s: Failed init_producer"
 fc.getTarget().hasName("syslog") and
 not isLogDebug(fc.getArgument(0)) and
-isMacroInvocationLike(fc.getFormatArgument(n), name)
-select fc, "Argument " + n + " of " + fc.toString() + " is " + name
+isMacroInvocationLike(fc.getFormatArgument(n))
+select fc, "Argument " + n + " of " + fc.toString() + " is " + fc.getFormatArgument(n).getValue()
