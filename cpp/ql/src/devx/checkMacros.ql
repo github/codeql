@@ -52,8 +52,7 @@ predicate isMacroInvocationLike(Expr e, string s) {
       s = mi.getMacroName()
     )
     or
-    e instanceof Likely__FUNCTION__ or
-    s = "__FUNCTION__"
+    e instanceof Likely__FUNCTION__ 
   }
 
 from string format, FormattingFunctionCall fc, int n, string name
