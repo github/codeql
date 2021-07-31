@@ -3,6 +3,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -25,8 +26,8 @@ public class MybatisSqlInjection {
 	}
 
 	@GetMapping(value = "bad3")
-	public List<Test> bad3(String name) {
-		List<Test> result = mybatisSqlInjectionService.bad3(name);
+	public List<Test> bad3(@ModelAttribute Test test) {
+		List<Test> result = mybatisSqlInjectionService.bad3(test);
 		return result;
 	}
 

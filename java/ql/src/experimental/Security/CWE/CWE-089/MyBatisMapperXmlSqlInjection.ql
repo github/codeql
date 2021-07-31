@@ -16,15 +16,14 @@ import DataFlow::PathGraph
 import MyBatisMapperXmlSqlInjectionLib
 import semmle.code.java.dataflow.FlowSources
 
-/**
- * A taint-tracking configuration for tracking untrusted user input used by the Mybatis mapper xml file dynamic splicing sql use.
- */
 private class MyBatisMapperXmlSqlInjectionConfiguration extends TaintTracking::Configuration {
   MyBatisMapperXmlSqlInjectionConfiguration() { this = "MyBatis mapper xml sql injection" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof MyBatisMapperXmlSqlInjectionSink }
+  override predicate isSink(DataFlow::Node sink) {
+    sink instanceof MyBatisMapperXmlSqlInjectionSink
+  }
 
   override predicate isSanitizer(DataFlow::Node node) {
     node.getType() instanceof PrimitiveType or
@@ -33,7 +32,8 @@ private class MyBatisMapperXmlSqlInjectionConfiguration extends TaintTracking::C
   }
 }
 
-from MyBatisMapperXmlSqlInjectionConfiguration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
+from
+  MyBatisMapperXmlSqlInjectionConfiguration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where cfg.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "MyBatis Mapper XML sql injection might include code from $@.", source.getNode(),
-  "this user input"
+select sink.getNode(), source, sink, "MyBatis Mapper XML sql injection might include code from $@.",
+  source.getNode(), "this user input"

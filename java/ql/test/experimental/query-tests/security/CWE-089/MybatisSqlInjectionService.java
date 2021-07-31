@@ -18,8 +18,8 @@ public class MybatisSqlInjectionService {
 		return result;
 	}
 
-	public List<Test> bad3(String name) {
-		List<Test> result = sqlInjectionMapper.bad3(name);
+	public List<Test> bad3(Test test) {
+		List<Test> result = sqlInjectionMapper.bad3(test);
 		return result;
 	}
 

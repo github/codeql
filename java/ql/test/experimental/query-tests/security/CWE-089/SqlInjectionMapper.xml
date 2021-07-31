@@ -11,11 +11,11 @@
 
   <sql id="Update_By_Example_Where_Clause">
     <where>
-      <if test="name != null">
-        and name = ${name}
+      <if test="test.name != null">
+        and name = ${test.name,jdbcType=VARCHAR}
       </if>
-      <if test="id != null">
-        and id = #{id}
+      <if test="test.id != null">
+        and id = #{test.id}
       </if>
     </where>
   </sql>
@@ -24,19 +24,19 @@
     select id,name from test where name like '%${name}%'
   </select>
 
-  <select id="bad2" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select id,name from test order by ${name} desc
+  <select id="bad2" resultMap="BaseResultMap">
+    select id,name from test order by ${orderby,jdbcType=VARCHAR} desc
   </select>
 
   <select id="bad3" parameterType="java.lang.String" resultMap="BaseResultMap">
     select id,name from test where name in ${name}
   </select>
 
-  <update id="bad4" parameterType="Test">
+  <update id="bad4" parameterType="com.example.demo.entity.Test">
     update test
     <set>
-      <if test="pass != null">
-        pass = #{pass},
+      <if test="test.pass != null">
+        pass = #{test.pass},
       </if>
     </set>
     <if test="_parameter != null">
