@@ -1,0 +1,10 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+<recommendation>
+<p>
+Use <code>MessageDigest.isEqual()</code> method to check MACs and signatures.
+If this method is used, then the calculation time depends only on the length of input byte arrays,
+and does not depend on the contents of the arrays.
+</p>
+</recommendation>
+</qhelp>

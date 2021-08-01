@@ -1,0 +1,21 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+<references>
+<li>
+  Wikipedia:
+  <a href="https://en.wikipedia.org/wiki/Timing_attack">Timing attack</a>.
+</li>
+<li>
+  Coursera:
+  <a href="https://www.coursera.org/lecture/crypto/timing-attacks-on-mac-verification-FHGW1">Timing attacks on MAC verification</a>
+</li>
+<li>
+  NCC Group:
+  <a href="https://www.nccgroup.trust/globalassets/our-research/us/whitepapers/TimeTrial.pdf">Time Trial: Racing Towards Practical Remote Timing Attacks</a>
+</li>
+<li>
+  Java API Specification:
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/security/MessageDigest.html#isEqual(byte[],byte[])">MessageDigest.isEqual() method</a>
+</li>
+</references>
+</qhelp>

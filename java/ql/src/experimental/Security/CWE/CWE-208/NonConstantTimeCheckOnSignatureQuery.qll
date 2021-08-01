@@ -292,7 +292,7 @@ class NonConstantTimeComparisonSink extends DataFlow::Node {
 
   NonConstantTimeComparisonSink() {
     (
-      isNonConstantEqualsCall(this.asExpr(), anotherParameter)
+      isNonConstantTimeEqualsCall(this.asExpr(), anotherParameter)
       or
       isNonConstantTimeComparisonCall(this.asExpr(), anotherParameter)
       or

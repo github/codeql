@@ -1,10 +1,10 @@
 /**
  * @name Timing attack against signature validation
- * @description When checking a signature, a constant-time algorithm should be used.
- *              Otherwise, an attacker may be able to implement a timing attack
- *              if they control inputs for the cryptographic operation and the checking procedure.
- *              A successful attack may uncover a valid signature
- *              that in turn can result in authentication bypass.
+ * @description When checking a signature over a message, a constant-time algorithm should be used.
+ *              Otherwise, an attacker may be able to forge a valid signature for an arbitrary message
+ *              by running a timing attack if they can send to the validation procedure
+ *              both the message and the signature.
+ *              A successful attack can result in authentication bypass.
  * @kind path-problem
  * @problem.severity error
  * @precision high
