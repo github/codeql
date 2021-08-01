@@ -25,18 +25,6 @@ public class Test {
     }
 
     // BAD: compare MACs using a non-constant-time method
-    public boolean unsafeMacCheckWithArraysDeepEquals(Socket socket) throws Exception {
-        try (InputStream is = socket.getInputStream()) {
-            Mac mac = Mac.getInstance("HmacSHA256");
-            byte[] data = socket.getInputStream().readAllBytes();
-            mac.update(data);
-            byte[] actualMac = mac.doFinal();
-            byte[] expectedMac = is.readNBytes(32);
-            return Arrays.deepEquals(castToObjectArray(expectedMac), castToObjectArray(actualMac));
-        }
-    }
-
-    // BAD: compare MACs using a non-constant-time method
     public boolean unsafeMacCheckWithDoFinalWithOutputArray(Socket socket) throws Exception {
         try (InputStream is = socket.getInputStream()) {
             byte[] data = is.readNBytes(100);
@@ -198,14 +186,6 @@ public class Test {
             byte[] actualMac = mac.doFinal(data);
             return "constant".equals(new String(actualMac));
         }
-    }
-
-    private static Object[] castToObjectArray(byte[] array) {
-        Object[] result = new Object[array.length];
-        for (int i = 0; i < array.length; i++) {
-            result[i] = array[i];
-        }
-        return result;
     }
 
     // BAD: compare MAC using a non-constant-time loop
