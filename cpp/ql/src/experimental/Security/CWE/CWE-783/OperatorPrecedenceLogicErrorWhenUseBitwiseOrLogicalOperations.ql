@@ -109,6 +109,7 @@ predicate isRealRange(Expr exp) {
 }
 
 /** Holds if expressions are of different size or range */
+pragma[inline]
 predicate isDifferentSize(Expr exp1, Expr exp2, Expr exp3) {
   exp1.getType().getSize() = exp2.getType().getSize() and
   exp1.getType().getSize() != exp3.getType().getSize()
@@ -127,6 +128,7 @@ predicate isDifferentSize(Expr exp1, Expr exp2, Expr exp3) {
 }
 
 /** Holds if it is possible to get different values of the expression */
+pragma[inline]
 predicate isDifferentResults(
   Expr exp1, Expr exp2, Expr exp3, BinaryBitwiseOperation op1, BinaryBitwiseOperation op2
 ) {
