@@ -5,6 +5,7 @@ import semmle.code.java.frameworks.Servlets
 import semmle.code.java.frameworks.android.WebView
 import semmle.code.java.frameworks.spring.SpringController
 import semmle.code.java.frameworks.spring.SpringHttp
+import semmle.code.java.frameworks.javaee.jsf.JSFRenderer
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.TaintTracking2
 import semmle.code.java.dataflow.ExternalFlow
@@ -87,6 +88,12 @@ private class DefaultXssSink extends XssSink {
         returnType instanceof RawClass
       )
     )
+    or
+    exists(FacesWriterSourceToWritingMethodFlowConfig writer, MethodAccess ma |
+      ma.getMethod() instanceof WritingMethod and
+      writer.hasFlowToExpr(ma.getQualifier()) and
+      this.asExpr() = ma.getArgument(_)
+    )
   }
 }
 
@@ -158,3 +165,27 @@ predicate isXssVulnerableContentType(string s) {
  */
 bindingset[s]
 predicate isXssSafeContentType(string s) { not isXssVulnerableContentType(s) }
+
+/** An output stream or writer that writes to a JSF response. */
+class FacesWriterSource extends MethodAccess {
+  FacesWriterSource() {
+    this.getMethod() instanceof FacesGetResponseWriterMethod
+    or
+    this.getMethod() instanceof FacesGetResponseStreamMethod
+  }
+}
+
+/** A configuration that tracks data from a JSF writer to an output method. */
+private class FacesWriterSourceToWritingMethodFlowConfig extends TaintTracking2::Configuration {
+  FacesWriterSourceToWritingMethodFlowConfig() {
+    this = "XSS::FacesWriterSourceToWritingMethodFlowConfig"
+  }
+
+  override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof FacesWriterSource }
+
+  override predicate isSink(DataFlow::Node sink) {
+    exists(MethodAccess ma |
+      sink.asExpr() = ma.getQualifier() and ma.getMethod() instanceof WritingMethod
+    )
+  }
+}
