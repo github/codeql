@@ -1,6 +1,5 @@
-void testFunction(char c1)
+void testFunction(char c1,int i1)
 {
-
 
   switch(c1){ // GOOD
     case 12:
@@ -10,7 +9,14 @@ void testFunction(char c1)
     case 9:
       break;
   }
-  
+
+  switch(i1){ // GOOD
+    for(i1=0;i1<20;i1++){
+      case 12:
+      case 10:
+      case 9:
+    }
+  }
   switch(c1){ // BAD
     case 12:
       break;
@@ -20,7 +26,7 @@ void testFunction(char c1)
       break;
   dafault:
   }
-  
+
   switch(c1){ // BAD
       c1=c1*2;
     case 12:
@@ -31,10 +37,9 @@ void testFunction(char c1)
       break;
   }
 
-  
   if((c1<6)&&(c1>0))
   switch(c1){ // BAD
-    case 7:
+    case 8:
       break;
     case 5:
       break;
@@ -43,7 +48,7 @@ void testFunction(char c1)
     case 1:
       break;
   }
-  
+
   if((c1<6)&&(c1>0))
   switch(c1){ // BAD
     case 3:
