@@ -1,4 +1,4 @@
-| test.c:14:3:22:3 | switch (...) ...  | Possibly erroneous label name. |
-| test.c:24:3:32:3 | switch (...) ...  | Code before case will not be executed. |
-| test.c:36:3:45:3 | switch (...) ...  | The range of condition values is less than the selection. |
-| test.c:48:3:53:3 | switch (...) ...  | The range of condition values is wider than the choices. |
+| test.c:20:3:28:3 | switch (...) ...  | Possibly erroneous label name. |
+| test.c:30:3:38:3 | switch (...) ...  | Code before case will not be executed. |
+| test.c:41:3:50:3 | switch (...) ...  | The range of condition values is less than the selection. |
+| test.c:53:3:58:3 | switch (...) ...  | The range of condition values is wider than the choices. |
