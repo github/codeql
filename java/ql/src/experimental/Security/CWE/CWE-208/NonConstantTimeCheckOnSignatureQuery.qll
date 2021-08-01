@@ -12,10 +12,10 @@ import semmle.code.java.dataflow.FlowSources
 abstract private class ProduceCryptoCall extends MethodAccess {
   Expr output;
 
-  /** Return the result of cryptographic operation. */
+  /** Gets the result of cryptographic operation. */
   Expr output() { result = output }
 
-  /** Return a type of the result of cryptographic operation such as MAC, signature or ciphertext. */
+  /** Gets a type of cryptographic operation such as MAC, signature or ciphertext. */
   abstract string getResultType();
 }
 
@@ -186,6 +186,7 @@ class CryptoOperationSource extends DataFlow::Node {
     )
   }
 
+  /** Gets a method call that produces cryptographic result. */
   ProduceCryptoCall getCall() { result = call }
 }
 
@@ -198,7 +199,7 @@ private class NonConstantTimeEqualsCall extends MethodAccess {
   }
 }
 
-/** Static methods that use a non-constant-time algorithm for comparing inputs. */
+/** A static method that uses a non-constant-time algorithm for comparing inputs. */
 private class NonConstantTimeComparisonCall extends StaticMethodAccess {
   NonConstantTimeComparisonCall() {
     getMethod().hasQualifiedName("java.util", "Arrays", ["equals", "deepEquals"]) or
