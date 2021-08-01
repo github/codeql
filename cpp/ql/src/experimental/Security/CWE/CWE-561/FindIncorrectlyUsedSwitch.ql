@@ -45,12 +45,7 @@ predicate isRealRange(Expr exp) {
   lowerBound(exp) != -8388608 and
   lowerBound(exp) != -65536 and
   lowerBound(exp) != -32768 and
-  lowerBound(exp) != -128 and
-  lowerBound(exp) != 0 and
-  lowerBound(exp) != upperBound(exp)
-  or
-  lowerBound(exp) = 0 and
-  upperBound(exp) = 1
+  lowerBound(exp) != -128
 }
 
 /** Holds if the range of values for the condition is less than the choices. */
@@ -115,6 +110,10 @@ predicate isWrongLableName(SwitchStmt swtmp) {
 predicate isCodeBeforeCase(SwitchStmt swtmp) {
   exists(Expr exp |
     exp.getEnclosingStmt().getParentStmt*() = swtmp.getStmt() and
+    not exists(Loop lp |
+      exp.getEnclosingStmt().getParentStmt*() = lp and
+      lp.getEnclosingStmt().getParentStmt*() = swtmp.getStmt()
+    ) and
     not exists(Stmt sttmp, SwitchCase sctmp |
       sttmp = swtmp.getASwitchCase().getAStmt() and
       sctmp = swtmp.getASwitchCase() and
@@ -129,6 +128,13 @@ predicate isCodeBeforeCase(SwitchStmt swtmp) {
 from SwitchStmt sw, string msg
 where
   isRealRange(sw.getExpr()) and
+  lowerBound(sw.getExpr()) != upperBound(sw.getExpr()) and
+  lowerBound(sw.getExpr()) != 0 and
+  not exists(Expr cexp |
+    cexp = sw.getASwitchCase().getExpr() and not isRealRange(cexp)
+    or
+    cexp = sw.getASwitchCase().getEndExpr() and not isRealRange(cexp)
+  ) and
   not exists(Expr exptmp |
     exptmp = sw.getExpr().getAChild*() and
     not exptmp.isConstant() and
