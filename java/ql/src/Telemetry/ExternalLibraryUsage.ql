@@ -1,15 +1,21 @@
 /**
  * @name External libraries
  * @description A list of external libraries used in the code
+ * @kind diagnostic
  * @id java/telemetry/external-libs
  */
 
 import java
 import ExternalAPI
 
-from ExternalAPI api
-where not api.getDeclaringType() instanceof TestLibrary
-// TODO [bm]: the count is not aggregated and we have the same jar with multiple usages, e.g.
-// 1	protobuf-java-3.17.3.jar	373
-// 2	protobuf-java-3.17.3.jar	48
-select api.jarName() as jarname, count(Call c | c.getCallee() = api) as Usages order by Usages desc
+from int Usages, JarFile jar
+where
+  jar = any(ExternalAPI api).getCompilationUnit().getParentContainer*() and
+  Usages =
+    strictcount(Call c, ExternalAPI a |
+      c.getCallee() = a and
+      not c.getFile() instanceof GeneratedFile and
+      a.getCompilationUnit().getParentContainer*() = jar and
+      not a.getDeclaringType() instanceof TestLibrary
+    )
+select jar.getFile().getStem() + "." + jar.getFile().getExtension(), Usages order by Usages desc

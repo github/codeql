@@ -9,8 +9,6 @@ class ExternalAPI extends Callable {
     not isJavaRuntime(this)
   }
 
-  string jarName() { result = jarName(this.getCompilationUnit()) }
-
   string simpleName() {
     result = getDeclaringType().getSourceDeclaration() + "#" + this.getStringSignature()
   }

@@ -2,12 +2,8 @@ import java
 private import semmle.code.java.dataflow.FlowSteps
 private import semmle.code.java.dataflow.ExternalFlow
 
-string jarName(CompilationUnit cu) {
-  result = cu.getParentContainer().toString().regexpCapture(".*/(.*\\.jar)/?.*", 1)
-}
-
 predicate isJavaRuntime(Callable call) {
-  jarName(call.getCompilationUnit()) = "rt.jar" or
+  call.getCompilationUnit().getParentContainer*().getStem() = "rt" and
   call.getCompilationUnit().getParentContainer().toString().substring(0, 14) = "/modules/java."
 }
 
