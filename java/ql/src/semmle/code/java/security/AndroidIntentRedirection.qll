@@ -19,6 +19,10 @@ abstract class IntentRedirectionSanitizer extends DataFlow::Node { }
  * Extend this class to add additional taint steps that should apply to `IntentRedirectionConfiguration`.
  */
 class IntentRedirectionAdditionalTaintStep extends Unit {
+  /**
+   * Holds if the step from `node1` to `node2` should be considered a taint
+   * step for the `IntentRedirectionConfiguration` configuration.
+   */
   abstract predicate step(DataFlow::Node node1, DataFlow::Node node2);
 }
 
