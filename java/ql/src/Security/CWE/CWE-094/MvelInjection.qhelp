@@ -24,7 +24,7 @@ and then runs it in the default context. In the second example, the untrusted da
 validated with a custom method that checks that the expression does not contain unexpected code
 before evaluating it.
 </p>
-<sample src="UnsafeMvelExpressionEvaluation.java" />
+<sample src="MvelExpressionEvaluation.java" />
 </example>
 
 <references>
