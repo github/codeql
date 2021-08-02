@@ -3,11 +3,11 @@
 
 <overview>
 <p>
-MVEL is an expression language based on Java-syntax. 
-The language offers many features
+MVEL is an expression language based on Java-syntax, 
+which offers many features
 including invocation of methods available in the JVM.
 If a MVEL expression is built using attacker-controlled data, 
-and then evaluated, then it may allow the attacker to run arbitrary code.
+and then evaluated, then it may allow attackers to run arbitrary code.
 </p>
 </overview>
 
@@ -19,10 +19,12 @@ Including user input in a MVEL expression should be avoided.
 
 <example>
 <p>
-The following example uses untrusted data to build a MVEL expression
-and then runs it in the default powerfull context.
+In the following sample, the first example uses untrusted data to build a MVEL expression
+and then runs it in the default context. In the second example, the untrusted data is
+validated with a custom method that checks that the expression does not contain unexpected code
+before evaluating it.
 </p>
-<sample src="UnsafeMvelExpressionEvaluation.java" />
+<sample src="MvelExpressionEvaluation.java" />
 </example>
 
 <references>

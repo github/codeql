@@ -470,3 +470,15 @@ void viaOutparam() {
   intOutparamSource(&x);
   sink(x); // $ ast,ir
 }
+
+void writes_to_content(void*);
+
+struct MyStruct {
+  int* content; 
+};
+
+void local_field_flow_def_by_ref_steps_with_local_flow(MyStruct * s) {
+  writes_to_content(s->content);
+  int* p_content = s->content;
+  sink(*p_content);
+}
