@@ -71,24 +71,6 @@ class UnsafeReflectionConfig extends TaintTracking::Configuration {
     // Argument -> return of methods that look like `Object getInstance(Class c)`
     looksLikeInstantiateClassStep(pred, succ)
     or
-    // Argument -> return of BeanFactory.getBean
-    exists(MethodAccess ma, Method getBean, Expr argument |
-      getBean.hasQualifiedName("org.springframework.beans.factory", "BeanFactory", "getBean") and
-      (
-        ma.getMethod().overrides(getBean)
-        or
-        ma.getMethod() = getBean
-      ) and
-      argument = ma.getAnArgument() and
-      (
-        argument.getType() instanceof TypeString
-        or
-        argument.getType() instanceof TypeClass
-      ) and
-      pred.asExpr() = argument and
-      succ.asExpr() = ma
-    )
-    or
     // Qualifier -> return of Constructor.newInstance, Class.newInstance
     exists(NewInstance ni |
       ni.getQualifier() = pred.asExpr() and

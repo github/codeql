@@ -52,9 +52,7 @@ predicate looksLikeInstantiateClassStep(DataFlow::Node fromNode, DataFlow::Node 
     m = ma.getMethod() and arg = ma.getArgument(i)
   |
     m.getReturnType() instanceof TypeObject and
-    m.getName()
-        .toLowerCase()
-        .regexpMatch("instantiate|instance|create|make|getbean|instantiateclass") and
+    m.getName().toLowerCase().regexpMatch("instantiate|instance|create|make|getbean") and
     arg.getType() instanceof TypeClass and
     arg = fromNode.asExpr() and
     ma = toNode.asExpr()
