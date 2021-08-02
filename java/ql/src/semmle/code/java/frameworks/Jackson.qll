@@ -156,7 +156,7 @@ predicate hasArgumentWithUnsafeJacksonAnnotation(MethodAccess call) {
 
 /**
  * Holds if `fromNode` to `toNode` is a dataflow step that looks like resolving a class.
- * A method probably resolves a class if takes a string, returns a type descriptor,
+ * A method probably resolves a class if it takes a string, returns a type descriptor,
  * and its name contains "resolve", "load", etc.
  *
  * Any method call that satisfies the rule above is assumed to propagate taint from its string arguments,
