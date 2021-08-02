@@ -9,7 +9,6 @@ import com.fasterxml.jackson.core.*;
 public abstract class JsonNode implements TreeNode, Iterable<JsonNode> {
   public abstract <T extends JsonNode> T deepCopy();
 
-  @Override
   public int size() {
     return 0;
   }
@@ -18,51 +17,40 @@ public abstract class JsonNode implements TreeNode, Iterable<JsonNode> {
     return size() == 0;
   }
 
-  @Override
   public final boolean isValueNode() {
     return false;
   }
 
-  @Override
   public final boolean isContainerNode() {
     return false;
   }
 
-  @Override
   public boolean isMissingNode() {
     return false;
   }
 
-  @Override
   public boolean isArray() {
     return false;
   }
 
-  @Override
   public boolean isObject() {
     return false;
   }
 
-  @Override
   public abstract JsonNode get(int index);
 
-  @Override
   public JsonNode get(String fieldName) {
     return null;
   }
 
-  @Override
   public abstract JsonNode path(String fieldName);
 
-  @Override
   public abstract JsonNode path(int index);
 
-  @Override
   public Iterator<String> fieldNames() {
     return null;
   }
 
-  @Override
   public final JsonNode at(String jsonPtrExpr) {
     return null;
   }
@@ -257,7 +245,6 @@ public abstract class JsonNode implements TreeNode, Iterable<JsonNode> {
     return false;
   }
 
-  @Override
   public final Iterator<JsonNode> iterator() {
     return elements();
   }
@@ -306,14 +293,12 @@ public abstract class JsonNode implements TreeNode, Iterable<JsonNode> {
     return false;
   }
 
-  @Override
   public abstract String toString();
 
   public String toPrettyString() {
     return null;
   }
 
-  @Override
   public abstract boolean equals(Object o);
 
 }
