@@ -95,6 +95,7 @@ Java built-in support
    Guava, Utility and collections library
    Hibernate, Database
    iBatis / MyBatis, Database
+   Jackson, Serialization
    Java Persistence API (JPA), Database
    JDBC, Database
    Protobuf, Serialization

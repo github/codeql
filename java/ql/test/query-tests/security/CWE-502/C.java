@@ -21,16 +21,16 @@ public class C {
 	@GetMapping(value = "jyaml")
 	public void bad1(HttpServletRequest request) throws Exception {
 		String data = request.getParameter("data");
-		Yaml.load(data);  //bad
-		Yaml.loadStream(data);  //bad
-		Yaml.loadStreamOfType(data, Object.class);  //bad
-		Yaml.loadType(data, Object.class);  //bad
+		Yaml.load(data);  // $unsafeDeserialization
+		Yaml.loadStream(data);  // $unsafeDeserialization
+		Yaml.loadStreamOfType(data, Object.class);  // $unsafeDeserialization
+		Yaml.loadType(data, Object.class);  // $unsafeDeserialization
 
 		org.ho.yaml.YamlConfig yamlConfig = new YamlConfig();
-		yamlConfig.load(data);  //bad
-		yamlConfig.loadStream(data);  //bad
-		yamlConfig.loadStreamOfType(data, Object.class);  //bad
-		yamlConfig.loadType(data, Object.class);  //bad
+		yamlConfig.load(data);  // $unsafeDeserialization
+		yamlConfig.loadStream(data);  // $unsafeDeserialization
+		yamlConfig.loadStreamOfType(data, Object.class);  // $unsafeDeserialization
+		yamlConfig.loadType(data, Object.class);  // $unsafeDeserialization
 	}
 
 	@GetMapping(value = "jsonio")
@@ -40,19 +40,19 @@ public class C {
 		HashMap hashMap = new HashMap();
 		hashMap.put("USE_MAPS", true);
 
-		JsonReader.jsonToJava(data); //bad
+		JsonReader.jsonToJava(data); // $unsafeDeserialization
 
-		JsonReader jr = new JsonReader(data, null); //bad
-		jr.readObject();
+		JsonReader jr = new JsonReader(data, null);
+		jr.readObject(); // $unsafeDeserialization
 	}
 
 	@GetMapping(value = "yamlbeans")
 	public void bad3(HttpServletRequest request) throws Exception {
 		String data = request.getParameter("data");
 		YamlReader r = new YamlReader(data);
-		r.read(); //bad
-		r.read(Object.class); //bad
-		r.read(Object.class, Object.class); //bad
+		r.read(); // $unsafeDeserialization
+		r.read(Object.class); // $unsafeDeserialization
+		r.read(Object.class, Object.class); // $unsafeDeserialization
 	}
 
         @GetMapping(value = "hessian")
@@ -60,8 +60,8 @@ public class C {
 		byte[] bytes = request.getParameter("data").getBytes();
 		ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
 		HessianInput hessianInput = new HessianInput(bis);
-		hessianInput.readObject(); //bad
-		hessianInput.readObject(Object.class); //bad
+		hessianInput.readObject(); // $unsafeDeserialization
+		hessianInput.readObject(Object.class); // $unsafeDeserialization
 	}
 
 	@GetMapping(value = "hessian2")
@@ -69,14 +69,14 @@ public class C {
 		byte[] bytes = request.getParameter("data").getBytes();
 		ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
 		Hessian2Input hessianInput = new Hessian2Input(bis);
-		hessianInput.readObject(); //bad
-		hessianInput.readObject(Object.class); //bad
+		hessianInput.readObject(); // $unsafeDeserialization
+		hessianInput.readObject(Object.class); // $unsafeDeserialization
 	}
 
     @GetMapping(value = "castor")
 	public void bad6(HttpServletRequest request) throws Exception {
 		Unmarshaller unmarshaller = new Unmarshaller();
-		unmarshaller.unmarshal(new StringReader(request.getParameter("data"))); //bad
+		unmarshaller.unmarshal(new StringReader(request.getParameter("data"))); // $unsafeDeserialization
 	}
 
     @GetMapping(value = "burlap")
@@ -84,11 +84,11 @@ public class C {
 		byte[] serializedData = request.getParameter("data").getBytes();
 		ByteArrayInputStream is = new ByteArrayInputStream(serializedData);
 		BurlapInput burlapInput = new BurlapInput(is);
-		burlapInput.readObject(); //bad
+		burlapInput.readObject(); // $unsafeDeserialization
 
         BurlapInput burlapInput1 = new BurlapInput();
 		burlapInput1.init(is);
-		burlapInput1.readObject(); //bad
+		burlapInput1.readObject(); // $unsafeDeserialization
 	}
 
 	@GetMapping(value = "jsonio1")

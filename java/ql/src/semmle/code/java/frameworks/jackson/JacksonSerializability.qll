@@ -116,7 +116,7 @@ private class TypeLiteralToJacksonDatabindFlowConfiguration extends DataFlow5::C
 private class ExplicitlyReadJacksonDeserializableType extends JacksonDeserializableType {
   ExplicitlyReadJacksonDeserializableType() {
     exists(TypeLiteralToJacksonDatabindFlowConfiguration conf |
-      usesType(conf.getSourceWithFlowToJacksonDatabind().getTypeName().getType(), this)
+      usesType(conf.getSourceWithFlowToJacksonDatabind().getReferencedType(), this)
     )
     or
     exists(MethodAccess ma |

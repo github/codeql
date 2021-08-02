@@ -33,7 +33,7 @@ class HttpResponseParseAsDeserializableField extends DeserializableField {
   HttpResponseParseAsDeserializableField() {
     exists(RefType decltype, TypeLiteralToParseAsFlowConfiguration conf |
       decltype = getDeclaringType() and
-      conf.getSourceWithFlowToParseAs().getTypeName().getType() = decltype and
+      conf.getSourceWithFlowToParseAs().getReferencedType() = decltype and
       decltype.fromSource()
     )
   }

@@ -35,6 +35,7 @@ predicate instantiates(RefType t, GenericType g, int i, RefType arg) {
  * - a class `MyIntMap<V> extends HashMap<Integer, V>` instantiates `Map` (among others)
  *   with the `0`-th type parameter being `Integer` and the `1`-th type parameter being `V`.
  */
+pragma[nomagic]
 predicate indirectlyInstantiates(RefType t, GenericType g, int i, RefType arg) {
   instantiates(t, g, i, arg)
   or
