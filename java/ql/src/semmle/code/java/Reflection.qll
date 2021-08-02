@@ -47,6 +47,9 @@ private XMLElement elementReferencingType(RefType rt) {
 }
 
 abstract private class ReflectiveClassIdentifier extends Expr {
+  /**
+   * Gets the type of a class identified by this expression.
+   */
   abstract RefType getReflectivelyIdentifiedClass();
 }
 
