@@ -25,4 +25,8 @@ public class MappingIterator<T> implements Iterator<T>, Closeable {
     public void close() throws IOException {
         
     }
+
+    public List<T> readAll() {
+        return null;
+    }
 }
