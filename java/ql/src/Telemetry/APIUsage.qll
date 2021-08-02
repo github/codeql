@@ -2,11 +2,6 @@ import java
 private import semmle.code.java.dataflow.FlowSteps
 private import semmle.code.java.dataflow.ExternalFlow
 
-predicate isJavaRuntime(Callable call) {
-  call.getCompilationUnit().getParentContainer*().getStem() = "rt" and
-  call.getCompilationUnit().getParentContainer().toString().substring(0, 14) = "/modules/java."
-}
-
 // TODO Is this heuristic too broad?
 predicate isInterestingAPI(Callable call) {
   call.getNumberOfParameters() > 0 and

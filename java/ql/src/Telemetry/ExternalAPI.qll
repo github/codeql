@@ -4,21 +4,12 @@ private import experimental.semmle.code.java.Logging
 
 class ExternalAPI extends Callable {
   ExternalAPI() {
-    not this.fromSource() and
-    not this.getDeclaringType().getPackage().getName().matches("java.%") and
-    not isJavaRuntime(this)
+    not this.fromSource()
   }
 
   string simpleName() {
     result = getDeclaringType().getSourceDeclaration() + "#" + this.getStringSignature()
   }
-}
-
-// TODO [bm]: Shall we move this into LoggingCall or a LoggingSetup predicate?
-predicate loggingRelated(Call call) {
-  call instanceof LoggingCall or
-  call.getCallee().getName() = "getLogger" or // getLogger is not a LoggingCall
-  call.getCallee().getName() = "isDebugEnabled" // org.slf4j.Logger#isDebugEnabled is not a LoggingCall
 }
 
 class TestLibrary extends RefType {

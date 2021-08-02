@@ -15,7 +15,6 @@ where
 select api.simpleName() as API,
   count(Call c |
     c.getCallee() = api and
-    not c.getFile() instanceof GeneratedFile and
-    not loggingRelated(c)
+    not c.getFile() instanceof GeneratedFile
   ) as Usages, supportKind(api) as Kind, api.getReturnType() as ReturnType,
   api.getDeclaringType().getPackage() as Package order by Usages desc
