@@ -2,12 +2,12 @@
 <qhelp>
 
   <overview>
-    <p>Android WebViews that allow loading URLs controlled by external inputs, and whose JavaScript interface is enabled, are potentially vulnerable to cross-site scripting and sensitive resource disclosure attacks.</p>
+    <p>Android WebViews that allow externally controlled URLs to be loaded, and whose JavaScript interface is enabled, are potentially vulnerable to cross-site scripting and sensitive resource disclosure attacks.</p>
     <p>A <code>WebView</code> whose <code>WebSettings</code> object has called <code>setAllowFileAccessFromFileURLs(true)</code> or <code>setAllowUniversalAccessFromFileURLs(true)</code> must not load any untrusted web content.</p>
-    <p>Enabling these settings allows malicious scripts loaded in a <code>file://</code> context to launch cross-site scripting attacks, either accessing arbitrary local files including WebView cookies, session tokens, private app data or even credentials used on arbitrary web sites.</p>
+    <p>Enabling these settings allows malicious scripts loaded in a <code>file://</code> context to launch cross-site scripting attacks, accessing arbitrary local files including WebView cookies, session tokens, private app data or even credentials used on arbitrary web sites.</p>
     <p>This query detects the following two scenarios:</p>
     <ol>
-      <li>Vulnerability introduced by WebViews with JavaScript enabled and remote inputs allowed.</li>
+      <li>A vulnerability introduced by WebViews when JavaScript is enabled and remote inputs are allowed.</li>
       <li>A more severe vulnerability when "allow cross-origin resource access" is also enabled. This setting was deprecated in API level 30 (Android 11), but most devices are still affected, especially since some Android phones are updated slowly or no longer updated at all.</li>
     </ol>
   </overview>
