@@ -29,7 +29,7 @@ jobs:
             target
           key: ${{ runner.os }}-qltest-cargo-${{ hashFiles('**/Cargo.lock') }}
       - name: Build Extractor
-        run: env "PATH=$PATH:${{ github.workspace }}/codeql" ./create-extractor-pack.sh
+        run: env "PATH=$PATH:${{ github.workspace }}/codeql" scripts/create-extractor-pack.sh
       - name: Run QL tests
         run: codeql/codeql test run --check-databases --check-unused-labels --check-repeated-labels --check-redefined-labels --check-use-before-definition --search-path "${{ github.workspace }}" --consistency-queries ql/consistency-queries ql/test
       - name: Check QL formatting

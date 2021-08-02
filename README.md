@@ -26,7 +26,7 @@ codeql query format -i ql/src/codeql_ruby/ast/internal/TreeSitter.qll
 First, get an extractor pack. There are two options:
 
 1. Either download the latest `codeql-ruby-pack` from Actions and unzip it twice, or
-2. Run `./create-extractor-pack.sh` (Linux/Mac) or `.\create-extractor-pack.ps1` (Windows PowerShell) and the pack will be created in the `extractor-pack` directory.
+2. Run `scripts/create-extractor-pack.sh` (Linux/Mac) or `scripts\create-extractor-pack.ps1` (Windows PowerShell) and the pack will be created in the `extractor-pack` directory.
 
 Then run
 
@@ -41,3 +41,7 @@ Run
 ```bash
 codeql test run <test-path> --search-path <repository-root-path>
 ```
+
+## Writing database upgrade scripts
+
+See [this guide](doc/prepare-db-upgrade.md).
