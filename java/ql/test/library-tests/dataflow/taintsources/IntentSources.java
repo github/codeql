@@ -1,10 +1,15 @@
 package com.example.myapp;
 
 import android.app.Activity;
+import android.content.Context;
 
 public class IntentSources extends Activity {
 
 	private static void sink(Object o) {}
+
+	public IntentSources(Context base) {
+		super(base);
+	}
 
 	public void test() throws java.io.IOException {
 
