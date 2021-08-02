@@ -2894,9 +2894,7 @@ class ImportMetaExpr extends @import_meta_expr, Expr {
  */
 class GeneratedCodeExpr extends @generated_code_expr, Expr {
   /** Gets the placeholder tag that was parsed as an expression. */
-  Templating::TemplatePlaceholderTag getPlaceholderTag() {
-    this = result.getEnclosingExpr()
-  }
+  Templating::TemplatePlaceholderTag getPlaceholderTag() { this = result.getEnclosingExpr() }
 
   override string getAPrimaryQlClass() { result = "GeneratedCodeExpr" }
 }

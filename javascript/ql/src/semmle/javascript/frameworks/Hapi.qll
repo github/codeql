@@ -41,9 +41,7 @@ module Hapi {
     /**
      * Gets a source node referring to the request toolkit parameter, usually named `h`.
      */
-    DataFlow::SourceNode getRequestToolkit() {
-      result = getRequestToolkitParameter().flow()
-    }
+    DataFlow::SourceNode getRequestToolkit() { result = getRequestToolkitParameter().flow() }
   }
 
   /**
@@ -255,24 +253,14 @@ module Hapi {
    * A call to `h.view('file', { ... })` seen as a template instantiation.
    */
   private class ViewCall extends Templating::TemplateInstantiaton::Range, DataFlow::CallNode {
-    ViewCall() {
-      this = any(RouteHandler rh).getRequestToolkit().getAMethodCall("view")
-    }
+    ViewCall() { this = any(RouteHandler rh).getRequestToolkit().getAMethodCall("view") }
 
-    override DataFlow::SourceNode getOutput() {
-      none()
-    }
+    override DataFlow::SourceNode getOutput() { none() }
 
-    override DataFlow::Node getTemplateFileNode() {
-      result = getArgument(0)
-    }
+    override DataFlow::Node getTemplateFileNode() { result = getArgument(0) }
 
-    override DataFlow::Node getTemplateContentNode() {
-      none()
-    }
+    override DataFlow::Node getTemplateContentNode() { none() }
 
-    override DataFlow::Node getTemplateParamsNode() {
-      result = getArgument(1)
-    }
+    override DataFlow::Node getTemplateParamsNode() { result = getArgument(1) }
   }
 }

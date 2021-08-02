@@ -2,7 +2,9 @@ import javascript
 import semmle.javascript.security.dataflow.Xss
 import semmle.javascript.security.dataflow.CodeInjectionCustomizations
 
-query Templating::TemplateSyntax getTemplateInstantiationSyntax(Templating::TemplateInstantiaton inst) {
+query Templating::TemplateSyntax getTemplateInstantiationSyntax(
+  Templating::TemplateInstantiaton inst
+) {
   result = inst.getTemplateSyntax()
 }
 
@@ -14,10 +16,6 @@ query Templating::TemplateFile getTargetFile(Templating::TemplateInstantiaton in
   result = inst.getTemplateFile()
 }
 
-query DomBasedXss::Sink xssSink() {
-  any()
-}
+query DomBasedXss::Sink xssSink() { any() }
 
-query CodeInjection::Sink codeInjectionSink() {
-  any()
-}
+query CodeInjection::Sink codeInjectionSink() { any() }

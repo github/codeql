@@ -125,9 +125,7 @@ module Templating {
     /**
      * Gets the innermost JavaScript expression containing this template tag, if any.
      */
-    Expr getEnclosingExpr() {
-      expr_contains_template_tag_location(result, getLocation())
-    }
+    Expr getEnclosingExpr() { expr_contains_template_tag_location(result, getLocation()) }
   }
 
   /**
@@ -210,9 +208,7 @@ module Templating {
      *
      * If not known, the relevant syntax will be determined by a heuristic.
      */
-    TemplateSyntax getTemplateSyntax() {
-      result = range.getTemplateSyntax()
-    }
+    TemplateSyntax getTemplateSyntax() { result = range.getTemplateSyntax() }
   }
 
   /** Companion module to the `TemplateInstantiation` class. */
@@ -244,7 +240,12 @@ module Templating {
     exists(TemplateInstantiaton inst, API::Node base, string name |
       base.getARhs() = inst.getTemplateParamsNode() and
       result = base.getMember(name) and
-      succ = inst.getTemplateFile().getAnImportedFile*().getAPlaceholder().getInnerTopLevel().getAVariableUse(name)
+      succ =
+        inst.getTemplateFile()
+            .getAnImportedFile*()
+            .getAPlaceholder()
+            .getInnerTopLevel()
+            .getAVariableUse(name)
     )
     or
     exists(string prop, DataFlow::SourceNode prev |
@@ -322,7 +323,10 @@ module Templating {
 
     /** Gets the template file referenced by this node. */
     final TemplateFile getTemplateFile() {
-      result = this.getValue().(TemplateFileReferenceString).getTemplateFile(getFile().getParentContainer())
+      result =
+        this.getValue()
+            .(TemplateFileReferenceString)
+            .getTemplateFile(getFile().getParentContainer())
     }
   }
 
@@ -386,18 +390,12 @@ module Templating {
   private class UpwardTraversalSuffix extends TemplateFileReferenceString {
     TemplateFileReferenceString original;
 
-    UpwardTraversalSuffix() {
-      original = "../" + this
-    }
+    UpwardTraversalSuffix() { original = "../" + this }
 
-    override Folder getContextFolder() {
-      result = original.getContextFolder().getParentContainer()
-    }
+    override Folder getContextFolder() { result = original.getContextFolder().getParentContainer() }
 
     /** Gets the original string including the `../` prefix. */
-    TemplateFileReferenceString getOriginal() {
-      result = original
-    }
+    TemplateFileReferenceString getOriginal() { result = original }
   }
 
   /**
@@ -484,7 +482,9 @@ module Templating {
    * and vice versa in `B/components/foo.js`.
    */
   pragma[nomagic]
-  private int getRankOfMatchingTarget(TemplateFile file, Folder baseFolder, TemplateFileReferenceString ref) {
+  private int getRankOfMatchingTarget(
+    TemplateFile file, Folder baseFolder, TemplateFileReferenceString ref
+  ) {
     file = getAMatchingTarget(ref) and
     baseFolder = ref.getContextFolder() and
     exists(string filePath, string refPath |
@@ -663,19 +663,21 @@ module Templating {
     string rawPath;
 
     TemplateInclusionTag() {
-      rawPath = getRawText().regexpCapture("[{<]% *(?:import|include|extend|require)s? *(?:[(] *)?['\"]?(.*?)['\"]? *(?:[)] *)?%[}>]", 1)
+      rawPath =
+        getRawText()
+            .regexpCapture("[{<]% *(?:import|include|extend|require)s? *(?:[(] *)?['\"]?(.*?)['\"]? *(?:[)] *)?%[}>]",
+              1)
       or
       rawPath = getRawText().regexpCapture("\\{\\{!?[<>](.*?)\\}\\}", 1)
     }
 
     /** Gets the imported path (normalized). */
-    string getPath() {
-      result = rawPath.trim().replaceAll("\\", "/").regexpReplaceAll("^\\./", "")
-    }
+    string getPath() { result = rawPath.trim().replaceAll("\\", "/").regexpReplaceAll("^\\./", "") }
 
     /** Gets the file referenced by this inclusion tag. */
     TemplateFile getImportedFile() {
-      result = getPath().(TemplateFileReferenceString).getTemplateFile(getFile().getParentContainer())
+      result =
+        getPath().(TemplateFileReferenceString).getTemplateFile(getFile().getParentContainer())
     }
   }
 
@@ -683,13 +685,9 @@ module Templating {
   private class TemplateInclusionPathString extends TemplateFileReferenceString {
     TemplateInclusionTag tag;
 
-    TemplateInclusionPathString() {
-      this = tag.getPath()
-    }
+    TemplateInclusionPathString() { this = tag.getPath() }
 
-    override Folder getContextFolder() {
-      result = tag.getFile().getParentContainer()
-    }
+    override Folder getContextFolder() { result = tag.getFile().getParentContainer() }
   }
 
   /**
@@ -698,13 +696,9 @@ module Templating {
   private class ConsolidateCall extends TemplateInstantiaton::Range, API::CallNode {
     string engine;
 
-    ConsolidateCall() {
-      this = API::moduleImport("consolidate").getMember(engine).getACall()
-    }
+    ConsolidateCall() { this = API::moduleImport("consolidate").getMember(engine).getACall() }
 
-    override TemplateSyntax getTemplateSyntax() {
-      result.getAPackageName() = engine
-    }
+    override TemplateSyntax getTemplateSyntax() { result.getAPackageName() = engine }
 
     override DataFlow::SourceNode getOutput() {
       result = getParameter([1, 2]).getParameter(1).getAnImmediateUse()
@@ -713,16 +707,10 @@ module Templating {
       result = this
     }
 
-    override DataFlow::Node getTemplateFileNode() {
-      result = getArgument(0)
-    }
+    override DataFlow::Node getTemplateFileNode() { result = getArgument(0) }
 
-    override DataFlow::Node getTemplateContentNode() {
-      none()
-    }
+    override DataFlow::Node getTemplateContentNode() { none() }
 
-    override DataFlow::Node getTemplateParamsNode() {
-      result = getArgument(1)
-    }
+    override DataFlow::Node getTemplateParamsNode() { result = getArgument(1) }
   }
 }

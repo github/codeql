@@ -122,9 +122,7 @@ module Koa {
     }
 
     /** Gets a source node that refers to this context object. */
-    DataFlow::SourceNode ref() {
-      result = ref(DataFlow::TypeTracker::end())
-    }
+    DataFlow::SourceNode ref() { result = ref(DataFlow::TypeTracker::end()) }
   }
 
   /**
@@ -436,21 +434,13 @@ module Koa {
   private class RenderCall extends Templating::TemplateInstantiaton::Range, DataFlow::CallNode {
     ContextSource ctx;
 
-    RenderCall() {
-      this = ctx.ref().getAMethodCall("render")
-    }
+    RenderCall() { this = ctx.ref().getAMethodCall("render") }
 
-    override DataFlow::SourceNode getOutput() {
-      none()
-    }
+    override DataFlow::SourceNode getOutput() { none() }
 
-    override DataFlow::Node getTemplateFileNode() {
-      result = getArgument(0)
-    }
+    override DataFlow::Node getTemplateFileNode() { result = getArgument(0) }
 
-    override DataFlow::Node getTemplateContentNode() {
-      none()
-    }
+    override DataFlow::Node getTemplateContentNode() { none() }
 
     override DataFlow::Node getTemplateParamsNode() {
       result = getArgument(1)

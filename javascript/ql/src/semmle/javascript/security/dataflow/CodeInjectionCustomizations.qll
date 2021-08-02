@@ -77,7 +77,9 @@ module CodeInjection {
         //
         // For example, setting foo to `\` and bar to `, alert(1));//`, code injection is obtained.
         tag.isInScriptTag() and
-        not tag.getEnclosingExpr() = getLastStringWithPlaceholderOnLine(tag.getLocation().getFile(), tag.getLocation().getStartLine())
+        not tag.getEnclosingExpr() =
+          getLastStringWithPlaceholderOnLine(tag.getLocation().getFile(),
+            tag.getLocation().getStartLine())
       )
     }
   }
@@ -85,16 +87,17 @@ module CodeInjection {
   /** Gets the last string literal containing a template placeholder on the given line. */
   pragma[nomagic]
   private StringLiteral getLastStringWithPlaceholderOnLine(File file, int line) {
-    result = max(StringLiteral lit, Location loc |
-      loc = lit.getLocation() and
-      loc.getFile() = file and
-      loc.getStartLine() = line and
-      lit = any(Templating::TemplatePlaceholderTag tag | tag.isEscapingInterpolation()).getEnclosingExpr()
-    |
-      lit
-      order by
-      loc.getStartColumn()
-    )
+    result =
+      max(StringLiteral lit, Location loc |
+        loc = lit.getLocation() and
+        loc.getFile() = file and
+        loc.getStartLine() = line and
+        lit =
+          any(Templating::TemplatePlaceholderTag tag | tag.isEscapingInterpolation())
+              .getEnclosingExpr()
+      |
+        lit order by loc.getStartColumn()
+      )
   }
 
   /**
