@@ -9,10 +9,10 @@ class ExternalAPI extends Callable {
 
   predicate isInteresting() {
     getNumberOfParameters() > 0 and
-    not (
-      getReturnType() instanceof VoidType or
-      getReturnType() instanceof PrimitiveType or
-      getReturnType() instanceof BoxedType
+    exists(Type retType | retType = getReturnType() |
+      not retType instanceof VoidType and
+      not retType instanceof PrimitiveType and
+      not retType instanceof BoxedType
     )
   }
 
