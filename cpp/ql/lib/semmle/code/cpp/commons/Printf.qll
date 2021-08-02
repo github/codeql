@@ -261,7 +261,12 @@ class FormattingFunctionCall extends Expr {
    * is, this call behaves like `sprintf`)
    */
   Expr getOutputArgument(boolean isStream) {
-    result = this.(Call).getArgument(this.(Call).getTarget().(FormattingFunction).getOutputParameterIndex(isStream))
+    result =
+      this.(Call)
+          .getArgument(this.(Call)
+                .getTarget()
+                .(FormattingFunction)
+                .getOutputParameterIndex(isStream))
   }
 }
 
