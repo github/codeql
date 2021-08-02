@@ -188,4 +188,31 @@ module PasswordHeuristics {
       normalized.regexpMatch(".*(pass|test|sample|example|secret|root|admin|user|change|auth).*")
     )
   }
+
+  /**
+   * Holds if `header` looks like a deliberately weak authentication header.
+   */
+  bindingset[header]
+  predicate isDummyAuthHeader(string header) {
+    isDummyPassword(header)
+    or
+    exists(string prefix, string suffix | prefix = getAnHTTPAuthenticationScheme() |
+      header = prefix + " " + suffix and
+      isDummyPassword(suffix)
+    )
+    or
+    header.trim() = getAnHTTPAuthenticationScheme()
+  }
+
+  /**
+   * Gets a HTTP authentication scheme.
+   * From this list: https://www.iana.org/assignments/http-authschemes/http-authschemes.xhtml
+   */
+  private string getAnHTTPAuthenticationScheme() {
+    result =
+      [
+        "Basic", "Bearer", "Digest", "HOBA", "Mutual", "Negotiate", "OAuth", "SCRAM-SHA-1",
+        "SCRAM-SHA-256", "vapid"
+      ]
+  }
 }
