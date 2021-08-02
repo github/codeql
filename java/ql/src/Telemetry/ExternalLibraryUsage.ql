@@ -16,6 +16,6 @@ where
       c.getCallee() = a and
       not c.getFile() instanceof GeneratedFile and
       a.getCompilationUnit().getParentContainer*() = jar and
-      not a.getDeclaringType() instanceof TestLibrary
+      not a.isTestLibrary()
     )
 select jar.getFile().getStem() + "." + jar.getFile().getExtension(), Usages order by Usages desc

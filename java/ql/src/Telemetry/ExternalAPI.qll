@@ -1,16 +1,29 @@
-import java
-import APIUsage
-private import experimental.semmle.code.java.Logging
+private import java
+private import APIUsage
+private import semmle.code.java.dataflow.ExternalFlow
 
 class ExternalAPI extends Callable {
   ExternalAPI() { not this.fromSource() }
 
-  string simpleName() {
-    result = getDeclaringType().getSourceDeclaration() + "#" + this.getStringSignature()
+  predicate isTestLibrary() { getDeclaringType() instanceof TestLibrary }
+
+  predicate isInteresting() {
+    getNumberOfParameters() > 0 and
+    not (
+      getReturnType() instanceof VoidType or
+      getReturnType() instanceof PrimitiveType or
+      getReturnType() instanceof BoxedType
+    )
+  }
+
+  string asCSV(ExternalAPI api) {
+    result =
+      api.getDeclaringType().getPackage() + ";?;" + api.getDeclaringType().getSourceDeclaration() +
+        ";" + api.getName() + ";" + paramsString(api)
   }
 }
 
-class TestLibrary extends RefType {
+private class TestLibrary extends RefType {
   TestLibrary() {
     getPackage()
         .getName()
