@@ -43,10 +43,12 @@
 | Function | specifiers2pp.cpp:10:18:10:24 | MyClass | MyClass | public |
 | Function | specifiers2pp.cpp:12:14:12:22 | publicFun | publicFun | inline |
 | Function | specifiers2pp.cpp:12:14:12:22 | publicFun | publicFun | public |
+| Function | specifiers2pp.cpp:13:21:13:26 | getInt | getInt | declared_virtual |
 | Function | specifiers2pp.cpp:13:21:13:26 | getInt | getInt | extern |
 | Function | specifiers2pp.cpp:13:21:13:26 | getInt | getInt | public |
 | Function | specifiers2pp.cpp:13:21:13:26 | getInt | getInt | pure |
 | Function | specifiers2pp.cpp:13:21:13:26 | getInt | getInt | virtual |
+| Function | specifiers2pp.cpp:14:21:14:21 | f | f | declared_virtual |
 | Function | specifiers2pp.cpp:14:21:14:21 | f | f | extern |
 | Function | specifiers2pp.cpp:14:21:14:21 | f | f | public |
 | Function | specifiers2pp.cpp:14:21:14:21 | f | f | virtual |
@@ -71,6 +73,7 @@
 | Function | specifiers2pp.cpp:24:7:24:7 | operator= | operator= | inline |
 | Function | specifiers2pp.cpp:24:7:24:7 | operator= | operator= | public |
 | Function | specifiers2pp.cpp:24:7:24:7 | operator= | operator= | public |
+| Function | specifiers2pp.cpp:26:21:26:21 | f | f | declared_virtual |
 | Function | specifiers2pp.cpp:26:21:26:21 | f | f | extern |
 | Function | specifiers2pp.cpp:26:21:26:21 | f | f | override |
 | Function | specifiers2pp.cpp:26:21:26:21 | f | f | public |

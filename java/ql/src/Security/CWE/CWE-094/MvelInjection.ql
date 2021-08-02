@@ -11,9 +11,9 @@
  */
 
 import java
-import MvelInjectionLib
+import semmle.code.java.security.MvelInjectionQuery
 import DataFlow::PathGraph
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, MvelInjectionConfig conf
+from DataFlow::PathNode source, DataFlow::PathNode sink, MvelInjectionFlowConfig conf
 where conf.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "MVEL injection from $@.", source.getNode(), "this user input"

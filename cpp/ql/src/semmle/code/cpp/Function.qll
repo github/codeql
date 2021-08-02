@@ -82,8 +82,22 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
   /** Holds if this function is inline. */
   predicate isInline() { this.hasSpecifier("inline") }
 
-  /** Holds if this function is virtual. */
+  /**
+   * Holds if this function is virtual.
+   *
+   * Unlike `isDeclaredVirtual()`, `isVirtual()` holds even if the function
+   * is not explicitly declared with the `virtual` specifier.
+   */
   predicate isVirtual() { this.hasSpecifier("virtual") }
+
+  /** Holds if this function is declared with the `virtual` specifier. */
+  predicate isDeclaredVirtual() { this.hasSpecifier("declared_virtual") }
+
+  /** Holds if this function is declared with the `override` specifier. */
+  predicate isOverride() { this.hasSpecifier("override") }
+
+  /** Holds if this function is declared with the `final` specifier. */
+  predicate isFinal() { this.hasSpecifier("final") }
 
   /**
    * Holds if this function is deleted.
