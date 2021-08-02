@@ -3,9 +3,7 @@ import APIUsage
 private import experimental.semmle.code.java.Logging
 
 class ExternalAPI extends Callable {
-  ExternalAPI() {
-    not this.fromSource()
-  }
+  ExternalAPI() { not this.fromSource() }
 
   string simpleName() {
     result = getDeclaringType().getSourceDeclaration() + "#" + this.getStringSignature()
