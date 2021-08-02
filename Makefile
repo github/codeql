@@ -35,8 +35,8 @@ extractor-common:
 
 .PHONY:	tools
 tools: $(BIN_FILES)
-	mkdir tools
-	mkdir bin
+	rm -rf tools/bin
+	mkdir tools/bin
 	cp -r target/release/ruby-autobuilder$(EXE) tools/bin/autobuilder$(EXE)
 	cp -r target/release/ruby-extractor$(EXE) tools/bin/extractor$(EXE)	
 
@@ -45,7 +45,7 @@ target/release/%$(EXE):
 
 dbscheme:
 	cargo build --bin ruby-generator
-	cargo run -p ruby-generator
+	cargo run -p ruby-generator -- --dbscheme ql/src/ruby.dbscheme --library ql/src/codeql_ruby/ast/internal/TreeSitter.qll
 	codeql query format -i ql/src/codeql_ruby/ast/internal/TreeSitter.qll
 
 .PHONY:	extractor
@@ -65,4 +65,3 @@ extractor:	$(FILES) $(BIN_FILES)
 	cp ql/src/ruby.dbscheme extractor-pack/ruby.dbscheme
 	cp target/release/ruby-extractor$(EXE) extractor-pack/tools/$(CODEQL_PLATFORM)/extractor$(EXE)
 	cp target/release/ruby-autobuilder$(EXE) extractor-pack/tools/$(CODEQL_PLATFORM)/autobuilder$(EXE)
-
