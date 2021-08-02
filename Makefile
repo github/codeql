@@ -27,14 +27,16 @@ FILES=codeql-extractor.yml\
 BIN_FILES=target/release/ruby-extractor$(EXE) target/release/ruby-autobuilder$(EXE)
 
 extractor-common:
-	rm -rf build/codeql-extractor-ruby
-	mkdir -p build/codeql-extractor-ruby
+	rm -rf build
+	mkdir build
+	mkdir build/codeql-extractor-ruby
 	cp codeql-extractor.yml ql/src/ruby.dbscheme ql/src/ruby.dbscheme.stats build/codeql-extractor-ruby
 	cp -r tools build/codeql-extractor-ruby/
 
 .PHONY:	tools
 tools: $(BIN_FILES)
-	mkdir -p tools/bin
+	mkdir tools
+	mkdir bin
 	cp -r target/release/ruby-autobuilder$(EXE) tools/bin/autobuilder$(EXE)
 	cp -r target/release/ruby-extractor$(EXE) tools/bin/extractor$(EXE)	
 
@@ -49,7 +51,9 @@ dbscheme:
 .PHONY:	extractor
 extractor:	$(FILES) $(BIN_FILES)
 	rm -rf extractor-pack
-	mkdir -p extractor-pack/tools/$(CODEQL_PLATFORM)
+	mkdir extractor-pack
+	mkdir extractor-pack/tools
+	mkdir extractor-pack/tools/$(CODEQL_PLATFORM)
 	cp codeql-extractor.yml extractor-pack/codeql-extractor.yml
 	cp tools/qltest.cmd extractor-pack/tools/qltest.cmd
 	cp tools/index-files.sh extractor-pack/tools/index-files.sh
