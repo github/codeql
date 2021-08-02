@@ -43,7 +43,7 @@ public class AndroidIntentRedirectionTest extends Activity {
             sendBroadcastAsUser(intent, null, null); // $ hasAndroidIntentRedirection
             sendBroadcastAsUser(intent, null, null, null); // $ hasAndroidIntentRedirection
             sendBroadcastAsUser(intent, null, null, 0); // $ hasAndroidIntentRedirection
-            sendBroadcastAsUserMultiplePermissions(intent, null, null); // $ hasAndroidIntentRedirection
+            sendBroadcastWithMultiplePermissions(intent, null); // $ hasAndroidIntentRedirection
             sendStickyBroadcast(intent); // $ hasAndroidIntentRedirection
             sendStickyBroadcastAsUser(intent, null); // $ hasAndroidIntentRedirection
             sendStickyBroadcastAsUser(intent, null, null); // $ hasAndroidIntentRedirection
