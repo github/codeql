@@ -308,11 +308,9 @@ class JaxRSProducesAnnotation extends JaxRSAnnotation {
    * Gets a declared content type that can be produced by this resource.
    */
   Expr getADeclaredContentTypeExpr() {
-    (
-      result = this.getAValue() and not result instanceof ArrayInit
-      or
-      result = this.getAValue().(ArrayInit).getAnInit()
-    )
+    result = this.getAValue() and not result instanceof ArrayInit
+    or
+    result = this.getAValue().(ArrayInit).getAnInit()
   }
 }
 
@@ -823,7 +821,7 @@ private predicate isXssSafeContentTypeExpr(Expr e) { isXssSafeContentType(getCon
  * This could be an instance of `Response.ResponseBuilder`, `Variant`, `Variant.VariantListBuilder` or
  * a `List<Variant>`.
  *
- * This routine is used to search forwards for response entities set after the content-type is configured.
+ * This predicate is used to search forwards for response entities set after the content-type is configured.
  * It does not need to consider cases where the entity is set in the same call, or the entity has already
  * been set: these are handled by simple sanitization below.
  */
@@ -882,7 +880,7 @@ private DataFlow::Node getABuilderWithExplicitContentType(Expr contentType) {
     )
   or
   // Recursive case: ordinary local dataflow
-  DataFlow::localFlow(getABuilderWithExplicitContentType(contentType), result)
+  DataFlow::localFlowStep(getABuilderWithExplicitContentType(contentType), result)
 }
 
 private DataFlow::Node getASanitizedBuilder() {
