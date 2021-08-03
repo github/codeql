@@ -4,10 +4,10 @@
  *              --For example, `a || b ^ c` and `(a || b) ^ c` give different results when `b` is zero.
  * @kind problem
  * @id cpp/operator-precedence-logic-error-when-use-bitwise-logical-operations
- * @problem.severity warning
+ * @problem.severity recommendation
  * @precision medium
- * @tags correctness
- *       security
+ * @tags maintainability
+ *       readability
  *       external/cwe/cwe-783
  *       external/cwe/cwe-480
  */
