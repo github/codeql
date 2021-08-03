@@ -108,11 +108,16 @@ abstract class TaintPreservingCallable extends Callable {
 private class StringTaintPreservingMethod extends TaintPreservingCallable {
   StringTaintPreservingMethod() {
     this.getDeclaringType() instanceof TypeString and
-    this.hasName([
-        "concat", "copyValueOf", "endsWith", "format", "formatted", "getBytes", "indent", "intern",
-        "join", "repeat", "split", "strip", "stripIndent", "stripLeading", "stripTrailing",
-        "substring", "toCharArray", "toLowerCase", "toString", "toUpperCase", "trim", "valueOf"
-      ])
+    (
+      this.hasName([
+          "concat", "copyValueOf", "endsWith", "format", "formatted", "getBytes", "indent",
+          "intern", "join", "repeat", "split", "strip", "stripIndent", "stripLeading",
+          "stripTrailing", "substring", "toCharArray", "toLowerCase", "toString", "toUpperCase",
+          "trim"
+        ])
+      or
+      this.hasName("valueOf") and this.getParameterType(0) instanceof Array
+    )
   }
 
   override predicate returnsTaintFrom(int arg) {

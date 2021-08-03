@@ -37,6 +37,9 @@ public class B {
     // tainted - data preserving method
     String valueOf = String.valueOf(complex.toCharArray());
     sink(valueOf);
+    // tainted - data preserving method
+    String valueOfSubstring = String.valueOf(complex.toCharArray(), 0, 1);
+    sink(valueOfSubstring);
     // tainted - unsafe escape
     String badEscape = constructed.replaceAll("(<script>)", "");
     sink(badEscape);
@@ -52,7 +55,11 @@ public class B {
     // non-whitelisted constructors don't pass taint
     StringWrapper herring = new StringWrapper(complex);
     sink(herring);
+    // toString does not pass taint yet 
+    String valueOfObject = String.valueOf(args);
+    sink(valueOfObject);
 
+    
     // tainted equality check with constant
     boolean cond = "foo" == s;
     sink(cond);
