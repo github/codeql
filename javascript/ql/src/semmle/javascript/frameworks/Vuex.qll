@@ -120,7 +120,7 @@ module Vuex {
     pragma[noinline]
     string getNamespace() {
       getNumArgument() = 2 and
-      result = namespace + getParameter(0).getAValueReachingRhs().getStringValue() + "/"
+      result = appendToNamespace(namespace, getParameter(0).getAValueReachingRhs().getStringValue())
       or
       getNumArgument() = 1 and
       result = namespace
