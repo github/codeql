@@ -6,9 +6,6 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableMultiset;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.SortedMultiset;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Spliterator;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
@@ -32,16 +29,4 @@ public class Multisets
     public static boolean removeOccurrences(Multiset<? extends Object> p0, Iterable<? extends Object> p1){ return false; }
     public static boolean removeOccurrences(Multiset<? extends Object> p0, Multiset<? extends Object> p1){ return false; }
     public static boolean retainOccurrences(Multiset<? extends Object> p0, Multiset<? extends Object> p1){ return false; }
-    static <E> Iterator<E> elementIterator(Iterator<Multiset.Entry<E>> p0){ return null; }
-    static <E> Iterator<E> iteratorImpl(Multiset<E> p0){ return null; }
-    static <E> Spliterator<E> spliteratorImpl(Multiset<E> p0){ return null; }
-    static <E> boolean addAllImpl(Multiset<E> p0, Collection<? extends E> p1){ return false; }
-    static <E> boolean setCountImpl(Multiset<E> p0, E p1, int p2, int p3){ return false; }
-    static <E> int setCountImpl(Multiset<E> p0, E p1, int p2){ return 0; }
-    static <T> Multiset<T> cast(Iterable<T> p0){ return null; }
-    static boolean equalsImpl(Multiset<? extends Object> p0, Object p1){ return false; }
-    static boolean removeAllImpl(Multiset<? extends Object> p0, Collection<? extends Object> p1){ return false; }
-    static boolean retainAllImpl(Multiset<? extends Object> p0, Collection<? extends Object> p1){ return false; }
-    static int inferDistinctElements(Iterable<? extends Object> p0){ return 0; }
-    static int linearTimeSizeImpl(Multiset<? extends Object> p0){ return 0; }
 }

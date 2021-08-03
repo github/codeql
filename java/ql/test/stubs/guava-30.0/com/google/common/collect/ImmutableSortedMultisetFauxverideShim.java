@@ -10,7 +10,6 @@ import java.util.stream.Collector;
 
 abstract class ImmutableSortedMultisetFauxverideShim<E> extends ImmutableMultiset<E>
 {
-    ImmutableSortedMultisetFauxverideShim(){}
     public static <E> Collector<E, ? extends Object, ImmutableMultiset<E>> toImmutableMultiset(){ return null; }
     public static <E> ImmutableSortedMultiset.Builder<E> builder(){ return null; }
     public static <E> ImmutableSortedMultiset<E> copyOf(E[] p0){ return null; }

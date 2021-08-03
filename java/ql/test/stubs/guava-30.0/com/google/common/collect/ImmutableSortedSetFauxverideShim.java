@@ -8,7 +8,6 @@ import java.util.stream.Collector;
 
 abstract class ImmutableSortedSetFauxverideShim<E> extends ImmutableSet<E>
 {
-    ImmutableSortedSetFauxverideShim(){}
     public static <E> Collector<E, ? extends Object, ImmutableSet<E>> toImmutableSet(){ return null; }
     public static <E> ImmutableSortedSet.Builder<E> builder(){ return null; }
     public static <E> ImmutableSortedSet.Builder<E> builderWithExpectedSize(int p0){ return null; }

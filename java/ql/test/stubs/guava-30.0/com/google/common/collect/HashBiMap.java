@@ -5,7 +5,6 @@ package com.google.common.collect;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.Maps;
 import java.io.Serializable;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.BiConsumer;
@@ -14,7 +13,6 @@ import java.util.function.BiFunction;
 public class HashBiMap<K, V> extends Maps.IteratorBasedAbstractMap<K, V> implements BiMap<K, V>, Serializable
 {
     protected HashBiMap() {}
-    Iterator<Map.Entry<K, V>> entryIterator(){ return null; }
     public BiMap<V, K> inverse(){ return null; }
     public Set<K> keySet(){ return null; }
     public Set<V> values(){ return null; }

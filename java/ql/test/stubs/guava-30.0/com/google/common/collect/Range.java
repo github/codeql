@@ -2,21 +2,15 @@
 
 package com.google.common.collect;
 
-import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.BoundType;
-import com.google.common.collect.Cut;
 import com.google.common.collect.DiscreteDomain;
-import com.google.common.collect.Ordering;
 import com.google.common.collect.RangeGwtSerializationDependencies;
 import java.io.Serializable;
 
 public class Range<C extends Comparable> extends RangeGwtSerializationDependencies implements Predicate<C>, Serializable
 {
     protected Range() {}
-    Object readResolve(){ return null; }
-    final Cut<C> lowerBound = null;
-    final Cut<C> upperBound = null;
     public BoundType lowerBoundType(){ return null; }
     public BoundType upperBoundType(){ return null; }
     public C lowerEndpoint(){ return null; }
@@ -50,9 +44,4 @@ public class Range<C extends Comparable> extends RangeGwtSerializationDependenci
     public static <C extends Comparable<? extends Object>> Range<C> range(C p0, BoundType p1, C p2, BoundType p3){ return null; }
     public static <C extends Comparable<? extends Object>> Range<C> singleton(C p0){ return null; }
     public static <C extends Comparable<? extends Object>> Range<C> upTo(C p0, BoundType p1){ return null; }
-    static <C extends Comparable<? extends Object>> Function<Range<C>, Cut<C>> lowerBoundFn(){ return null; }
-    static <C extends Comparable<? extends Object>> Function<Range<C>, Cut<C>> upperBoundFn(){ return null; }
-    static <C extends Comparable<? extends Object>> Ordering<Range<C>> rangeLexOrdering(){ return null; }
-    static <C extends Comparable<? extends Object>> Range<C> create(Cut<C> p0, Cut<C> p1){ return null; }
-    static int compareOrThrow(Comparable p0, Comparable p1){ return 0; }
 }

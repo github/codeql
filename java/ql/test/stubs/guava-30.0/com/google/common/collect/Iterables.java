@@ -8,7 +8,6 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableCollection;
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 
 public class Iterables
@@ -56,8 +55,4 @@ public class Iterables
     public static boolean retainAll(Iterable<? extends Object> p0, Collection<? extends Object> p1){ return false; }
     public static int frequency(Iterable<? extends Object> p0, Object p1){ return 0; }
     public static int size(Iterable<? extends Object> p0){ return 0; }
-    static <T> Function<Iterable<? extends T>, Iterator<? extends T>> toIterator(){ return null; }
-    static <T> T removeFirstMatching(Iterable<T> p0, Predicate<? super T> p1){ return null; }
-    static <T> T[] toArray(Iterable<? extends T> p0, T[] p1){ return null; }
-    static Object[] toArray(Iterable<? extends Object> p0){ return null; }
 }

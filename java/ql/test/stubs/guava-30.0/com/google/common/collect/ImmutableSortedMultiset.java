@@ -16,9 +16,6 @@ import java.util.stream.Collector;
 
 abstract public class ImmutableSortedMultiset<E> extends ImmutableSortedMultisetFauxverideShim<E> implements SortedMultiset<E>
 {
-    ImmutableSortedMultiset(){}
-    ImmutableSortedMultiset<E> descendingMultiset = null;
-    Object writeReplace(){ return null; }
     public ImmutableSortedMultiset<E> descendingMultiset(){ return null; }
     public ImmutableSortedMultiset<E> subMultiset(E p0, BoundType p1, E p2, BoundType p3){ return null; }
     public abstract ImmutableSortedMultiset<E> headMultiset(E p0, BoundType p1);
@@ -45,7 +42,6 @@ abstract public class ImmutableSortedMultiset<E> extends ImmutableSortedMultiset
     public static <E> ImmutableSortedMultiset<E> copyOfSorted(SortedMultiset<E> p0){ return null; }
     public static <E> ImmutableSortedMultiset<E> of(){ return null; }
     public static <T, E> Collector<T, ? extends Object, ImmutableSortedMultiset<E>> toImmutableSortedMultiset(Comparator<? super E> p0, Function<? super T, ? extends E> p1, ToIntFunction<? super T> p2){ return null; }
-    static <E> ImmutableSortedMultiset<E> emptyMultiset(Comparator<? super E> p0){ return null; }
     static public class Builder<E> extends ImmutableMultiset.Builder<E>
     {
         protected Builder() {}

@@ -10,7 +10,6 @@ import java.util.stream.Collector;
 
 abstract class ImmutableSortedMapFauxverideShim<K, V> extends ImmutableMap<K, V>
 {
-    ImmutableSortedMapFauxverideShim(){}
     public static <K, V> ImmutableSortedMap.Builder<K, V> builder(){ return null; }
     public static <K, V> ImmutableSortedMap.Builder<K, V> builderWithExpectedSize(int p0){ return null; }
     public static <K, V> ImmutableSortedMap<K, V> of(K p0, V p1){ return null; }

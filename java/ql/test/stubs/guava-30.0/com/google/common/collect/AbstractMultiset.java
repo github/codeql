@@ -5,17 +5,10 @@ package com.google.common.collect;
 import com.google.common.collect.Multiset;
 import java.util.AbstractCollection;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.Set;
 
 abstract class AbstractMultiset<E> extends AbstractCollection<E> implements Multiset<E>
 {
-    AbstractMultiset(){}
-    Set<E> createElementSet(){ return null; }
-    Set<Multiset.Entry<E>> createEntrySet(){ return null; }
-    abstract Iterator<E> elementIterator();
-    abstract Iterator<Multiset.Entry<E>> entryIterator();
-    abstract int distinctElements();
     public Set<E> elementSet(){ return null; }
     public Set<Multiset.Entry<E>> entrySet(){ return null; }
     public abstract void clear();

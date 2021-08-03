@@ -1,4 +1,4 @@
-// Generated automatically from com.google.common.collect.HashBasedTable for testing purposes, and manually adjusted.
+// Generated automatically from com.google.common.collect.HashBasedTable for testing purposes
 
 package com.google.common.collect;
 

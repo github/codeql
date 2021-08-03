@@ -13,11 +13,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class ConcurrentHashMultiset<E> extends AbstractMultiset<E> implements Serializable
 {
     protected ConcurrentHashMultiset() {}
-    ConcurrentHashMultiset(ConcurrentMap<E, AtomicInteger> p0){}
-    Iterator<E> elementIterator(){ return null; }
-    Iterator<Multiset.Entry<E>> entryIterator(){ return null; }
-    Set<E> createElementSet(){ return null; }
-    int distinctElements(){ return 0; }
     public <T> T[] toArray(T[] p0){ return null; }
     public Iterator<E> iterator(){ return null; }
     public Object[] toArray(){ return null; }

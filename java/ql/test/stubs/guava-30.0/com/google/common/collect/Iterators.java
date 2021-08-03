@@ -7,13 +7,11 @@ import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.PeekingIterator;
 import com.google.common.collect.UnmodifiableIterator;
-import com.google.common.collect.UnmodifiableListIterator;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 public class Iterators
 {
@@ -65,13 +63,4 @@ public class Iterators
     public static int advance(Iterator<? extends Object> p0, int p1){ return 0; }
     public static int frequency(Iterator<? extends Object> p0, Object p1){ return 0; }
     public static int size(Iterator<? extends Object> p0){ return 0; }
-    static <T> Iterator<T> concatNoDefensiveCopy(Iterator<? extends T>... p0){ return null; }
-    static <T> Iterator<T> emptyModifiableIterator(){ return null; }
-    static <T> ListIterator<T> cast(Iterator<T> p0){ return null; }
-    static <T> T pollNext(Iterator<T> p0){ return null; }
-    static <T> UnmodifiableIterator<T> emptyIterator(){ return null; }
-    static <T> UnmodifiableListIterator<T> emptyListIterator(){ return null; }
-    static <T> UnmodifiableListIterator<T> forArray(T[] p0, int p1, int p2, int p3){ return null; }
-    static void checkNonnegative(int p0){}
-    static void clear(Iterator<? extends Object> p0){}
 }

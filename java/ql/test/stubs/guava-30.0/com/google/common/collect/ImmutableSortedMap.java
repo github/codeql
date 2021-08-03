@@ -3,12 +3,10 @@
 package com.google.common.collect;
 
 import com.google.common.collect.ImmutableCollection;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.ImmutableSortedMapFauxverideShim;
 import com.google.common.collect.ImmutableSortedSet;
-import com.google.common.collect.RegularImmutableSortedSet;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.NavigableMap;
@@ -21,13 +19,6 @@ import java.util.stream.Collector;
 public class ImmutableSortedMap<K, V> extends ImmutableSortedMapFauxverideShim<K, V> implements NavigableMap<K, V>
 {
     protected ImmutableSortedMap() {}
-    ImmutableCollection<V> createValues(){ return null; }
-    ImmutableSet<K> createKeySet(){ return null; }
-    ImmutableSet<Map.Entry<K, V>> createEntrySet(){ return null; }
-    ImmutableSortedMap(RegularImmutableSortedSet<K> p0, ImmutableList<V> p1){}
-    ImmutableSortedMap(RegularImmutableSortedSet<K> p0, ImmutableList<V> p1, ImmutableSortedMap<K, V> p2){}
-    Object writeReplace(){ return null; }
-    boolean isPartialView(){ return false; }
     public Comparator<? super K> comparator(){ return null; }
     public ImmutableCollection<V> values(){ return null; }
     public ImmutableSet<Map.Entry<K, V>> entrySet(){ return null; }
@@ -74,11 +65,9 @@ public class ImmutableSortedMap<K, V> extends ImmutableSortedMapFauxverideShim<K
     public static <T, K, V> Collector<T, ? extends Object, ImmutableSortedMap<K, V>> toImmutableSortedMap(Comparator<? super K> p0, Function<? super T, ? extends K> p1, Function<? super T, ? extends V> p2){ return null; }
     public static <T, K, V> Collector<T, ? extends Object, ImmutableSortedMap<K, V>> toImmutableSortedMap(Comparator<? super K> p0, Function<? super T, ? extends K> p1, Function<? super T, ? extends V> p2, BinaryOperator<V> p3){ return null; }
     public void forEach(BiConsumer<? super K, ? super V> p0){}
-    static <K, V> ImmutableSortedMap<K, V> emptyMap(Comparator<? super K> p0){ return null; }
     static public class Builder<K, V> extends ImmutableMap.Builder<K, V>
     {
         protected Builder() {}
-        ImmutableSortedMap.Builder<K, V> combine(ImmutableMap.Builder<K, V> p0){ return null; }
         public Builder(Comparator<? super K> p0){}
         public ImmutableSortedMap.Builder<K, V> put(K p0, V p1){ return null; }
         public ImmutableSortedMap.Builder<K, V> put(Map.Entry<? extends K, ? extends V> p0){ return null; }

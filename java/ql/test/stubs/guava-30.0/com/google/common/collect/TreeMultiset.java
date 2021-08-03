@@ -1,11 +1,9 @@
-// Generated automatically from com.google.common.collect.TreeMultiset for testing purposes, and manually adjusted.
+// Generated automatically from com.google.common.collect.TreeMultiset for testing purposes
 
 package com.google.common.collect;
 
 import com.google.common.collect.AbstractSortedMultiset;
 import com.google.common.collect.BoundType;
-import com.google.common.collect.GeneralRange;
-import com.google.common.collect.Multiset;
 import com.google.common.collect.SortedMultiset;
 import java.io.Serializable;
 import java.util.Comparator;
@@ -15,11 +13,6 @@ import java.util.function.ObjIntConsumer;
 public class TreeMultiset<E> extends AbstractSortedMultiset<E> implements Serializable
 {
     protected TreeMultiset() {}
-    Iterator<E> elementIterator(){ return null; }
-    Iterator<Multiset.Entry<E>> descendingEntryIterator(){ return null; }
-    Iterator<Multiset.Entry<E>> entryIterator(){ return null; }
-    TreeMultiset(Comparator<? super E> p0){}
-    int distinctElements(){ return 0; }
     public Iterator<E> iterator(){ return null; }
     public SortedMultiset<E> headMultiset(E p0, BoundType p1){ return null; }
     public SortedMultiset<E> tailMultiset(E p0, BoundType p1){ return null; }

@@ -6,18 +6,12 @@ import com.google.common.collect.AbstractSortedKeySortedSetMultimap;
 import com.google.common.collect.Multimap;
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.Map;
 import java.util.NavigableMap;
 import java.util.NavigableSet;
-import java.util.SortedSet;
 
 public class TreeMultimap<K, V> extends AbstractSortedKeySortedSetMultimap<K, V>
 {
     protected TreeMultimap() {}
-    Collection<V> createCollection(K p0){ return null; }
-    Map<K, Collection<V>> createAsMap(){ return null; }
-    SortedSet<V> createCollection(){ return null; }
-    TreeMultimap(Comparator<? super K> p0, Comparator<? super V> p1){}
     public Comparator<? super K> keyComparator(){ return null; }
     public Comparator<? super V> valueComparator(){ return null; }
     public NavigableMap<K, Collection<V>> asMap(){ return null; }

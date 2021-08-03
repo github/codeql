@@ -10,7 +10,6 @@ import java.util.Map;
 public class ImmutableClassToInstanceMap<B> extends ForwardingMap<Class<? extends B>, B> implements ClassToInstanceMap<B>, Serializable
 {
     protected ImmutableClassToInstanceMap() {}
-    Object readResolve(){ return null; }
     protected Map<Class<? extends B>, B> delegate(){ return null; }
     public <T extends B> T getInstance(Class<T> p0){ return null; }
     public <T extends B> T putInstance(Class<T> p0, T p1){ return null; }

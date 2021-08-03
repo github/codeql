@@ -3,11 +3,9 @@
 package com.google.common.collect;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multimap;
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.function.Function;
@@ -17,7 +15,6 @@ import java.util.stream.Stream;
 public class ImmutableListMultimap<K, V> extends ImmutableMultimap<K, V> implements ListMultimap<K, V>
 {
     protected ImmutableListMultimap() {}
-    ImmutableListMultimap(ImmutableMap<K, ImmutableList<V>> p0, int p1){}
     public ImmutableList<V> get(K p0){ return null; }
     public ImmutableListMultimap<V, K> inverse(){ return null; }
     public final ImmutableList<V> removeAll(Object p0){ return null; }
@@ -33,10 +30,8 @@ public class ImmutableListMultimap<K, V> extends ImmutableMultimap<K, V> impleme
     public static <K, V> ImmutableListMultimap<K, V> of(K p0, V p1, K p2, V p3, K p4, V p5, K p6, V p7, K p8, V p9){ return null; }
     public static <T, K, V> Collector<T, ? extends Object, ImmutableListMultimap<K, V>> flatteningToImmutableListMultimap(Function<? super T, ? extends K> p0, Function<? super T, ? extends Stream<? extends V>> p1){ return null; }
     public static <T, K, V> Collector<T, ? extends Object, ImmutableListMultimap<K, V>> toImmutableListMultimap(Function<? super T, ? extends K> p0, Function<? super T, ? extends V> p1){ return null; }
-    static <K, V> ImmutableListMultimap<K, V> fromMapEntries(Collection<? extends Map.Entry<? extends K, ? extends Collection<? extends V>>> p0, Comparator<? super V> p1){ return null; }
     static public class Builder<K, V> extends ImmutableMultimap.Builder<K, V>
     {
-        ImmutableListMultimap.Builder<K, V> combine(ImmutableMultimap.Builder<K, V> p0){ return null; }
         public Builder(){}
         public ImmutableListMultimap.Builder<K, V> orderKeysBy(Comparator<? super K> p0){ return null; }
         public ImmutableListMultimap.Builder<K, V> orderValuesBy(Comparator<? super V> p0){ return null; }

@@ -4,19 +4,10 @@ package com.google.common.collect;
 
 import com.google.common.collect.Table;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.Set;
-import java.util.Spliterator;
 
 abstract class AbstractTable<R, C, V> implements Table<R, C, V>
 {
-    AbstractTable(){}
-    Collection<V> createValues(){ return null; }
-    Iterator<V> valuesIterator(){ return null; }
-    Set<Table.Cell<R, C, V>> createCellSet(){ return null; }
-    Spliterator<V> valuesSpliterator(){ return null; }
-    abstract Iterator<Table.Cell<R, C, V>> cellIterator();
-    abstract Spliterator<Table.Cell<R, C, V>> cellSpliterator();
     public Collection<V> values(){ return null; }
     public Set<C> columnKeySet(){ return null; }
     public Set<R> rowKeySet(){ return null; }

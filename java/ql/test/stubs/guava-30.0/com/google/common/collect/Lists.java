@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Lists
@@ -33,13 +32,4 @@ public class Lists
     public static <T> List<T> reverse(List<T> p0){ return null; }
     public static ImmutableList<Character> charactersOf(String p0){ return null; }
     public static List<Character> charactersOf(CharSequence p0){ return null; }
-    static <E> List<E> subListImpl(List<E> p0, int p1, int p2){ return null; }
-    static <E> ListIterator<E> listIteratorImpl(List<E> p0, int p1){ return null; }
-    static <E> boolean addAllImpl(List<E> p0, int p1, Iterable<? extends E> p2){ return false; }
-    static <T> List<T> cast(Iterable<T> p0){ return null; }
-    static boolean equalsImpl(List<? extends Object> p0, Object p1){ return false; }
-    static int computeArrayListCapacity(int p0){ return 0; }
-    static int hashCodeImpl(List<? extends Object> p0){ return 0; }
-    static int indexOfImpl(List<? extends Object> p0, Object p1){ return 0; }
-    static int lastIndexOfImpl(List<? extends Object> p0, Object p1){ return 0; }
 }

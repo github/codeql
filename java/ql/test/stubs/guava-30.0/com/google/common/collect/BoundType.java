@@ -7,7 +7,4 @@ public enum BoundType
 {
     CLOSED, OPEN;
     private BoundType() {}
-    BoundType flip(){ return null; }
-    final boolean inclusive = false;
-    static BoundType forBoolean(boolean p0){ return null; }
 }

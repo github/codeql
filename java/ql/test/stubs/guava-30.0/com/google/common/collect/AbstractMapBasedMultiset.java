@@ -14,9 +14,6 @@ import java.util.function.ObjIntConsumer;
 abstract class AbstractMapBasedMultiset<E> extends AbstractMultiset<E> implements Serializable
 {
     protected AbstractMapBasedMultiset() {}
-    Iterator<E> elementIterator(){ return null; }
-    Iterator<Multiset.Entry<E>> entryIterator(){ return null; }
-    int distinctElements(){ return 0; }
     protected AbstractMapBasedMultiset(Map<E, Count> p0){}
     public Iterator<E> iterator(){ return null; }
     public Set<Multiset.Entry<E>> entrySet(){ return null; }
@@ -27,5 +24,4 @@ abstract class AbstractMapBasedMultiset<E> extends AbstractMultiset<E> implement
     public int size(){ return 0; }
     public void clear(){}
     public void forEachEntry(ObjIntConsumer<? super E> p0){}
-    void setBackingMap(Map<E, Count> p0){}
 }

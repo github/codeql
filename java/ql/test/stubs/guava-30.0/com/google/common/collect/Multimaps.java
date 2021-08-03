@@ -1,4 +1,4 @@
-// Generated automatically from com.google.common.collect.Multimaps for testing purposes, and manually adjusted.
+// Generated automatically from com.google.common.collect.Multimaps for testing purposes, and adjusted manually
 
 package com.google.common.collect;
 
@@ -61,5 +61,4 @@ public class Multimaps
     public static <K, V> SortedSetMultimap<K, V> unmodifiableSortedSetMultimap(SortedSetMultimap<K, V> p0){ return null; }
     public static <T, K, V, M extends Multimap<K, V>> Collector<T, ? extends Object, M> flatteningToMultimap(Function<? super T, ? extends K> p0, Function<? super T, ? extends Stream<? extends V>> p1, Supplier<M> p2){ return null; }
     public static <T, K, V, M extends Multimap<K, V>> Collector<T, ? extends Object, M> toMultimap(Function<? super T, ? extends K> p0, Function<? super T, ? extends V> p1, Supplier<M> p2){ return null; }
-    static boolean equalsImpl(Multimap<? extends Object, ? extends Object> p0, Object p1){ return false; }
 }

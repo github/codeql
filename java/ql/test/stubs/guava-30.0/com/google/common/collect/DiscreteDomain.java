@@ -6,8 +6,6 @@ import java.math.BigInteger;
 
 abstract public class DiscreteDomain<C extends Comparable>
 {
-    C offset(C p0, long p1){ return null; }
-    final boolean supportsFastOffset = false;
     protected DiscreteDomain(){}
     public C maxValue(){ return null; }
     public C minValue(){ return null; }

@@ -11,10 +11,6 @@ import java.util.Set;
 abstract class AbstractSetMultimap<K, V> extends AbstractMapBasedMultimap<K, V> implements SetMultimap<K, V>
 {
     protected AbstractSetMultimap() {}
-    <E> Collection<E> unmodifiableCollectionSubclass(Collection<E> p0){ return null; }
-    Collection<V> wrapCollection(K p0, Collection<V> p1){ return null; }
-    Set<V> createUnmodifiableEmptyCollection(){ return null; }
-    abstract Set<V> createCollection();
     protected AbstractSetMultimap(Map<K, Collection<V>> p0){}
     public Map<K, Collection<V>> asMap(){ return null; }
     public Set<Map.Entry<K, V>> entries(){ return null; }

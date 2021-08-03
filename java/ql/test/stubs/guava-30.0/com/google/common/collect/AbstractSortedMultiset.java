@@ -7,18 +7,10 @@ import com.google.common.collect.BoundType;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.SortedMultiset;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.NavigableSet;
 
 abstract class AbstractSortedMultiset<E> extends AbstractMultiset<E> implements SortedMultiset<E>
 {
-    AbstractSortedMultiset(){}
-    AbstractSortedMultiset(Comparator<? super E> p0){}
-    Iterator<E> descendingIterator(){ return null; }
-    NavigableSet<E> createElementSet(){ return null; }
-    SortedMultiset<E> createDescendingMultiset(){ return null; }
-    abstract Iterator<Multiset.Entry<E>> descendingEntryIterator();
-    final Comparator<? super E> comparator = null;
     public Comparator<? super E> comparator(){ return null; }
     public Multiset.Entry<E> firstEntry(){ return null; }
     public Multiset.Entry<E> lastEntry(){ return null; }

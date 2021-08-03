@@ -1,4 +1,4 @@
-// Generated automatically from com.google.common.collect.Sets for testing purposes, and manually adjusted.
+// Generated automatically from com.google.common.collect.Sets for testing purposes, and adjusted manually
 
 package com.google.common.collect;
 
@@ -76,8 +76,4 @@ public class Sets
     public static <E> SortedSet<E> filter(SortedSet<E> p0, Predicate<? super E> p1){ return null; }
     public static <E> TreeSet<E> newTreeSet(Comparator<? super E> p0){ return null; }
     public static <K extends Comparable<? super K>> NavigableSet<K> subSet(NavigableSet<K> p0, Range<K> p1){ return null; }
-    static boolean equalsImpl(Set<? extends Object> p0, Object p1){ return false; }
-    static boolean removeAllImpl(Set<? extends Object> p0, Collection<? extends Object> p1){ return false; }
-    static boolean removeAllImpl(Set<? extends Object> p0, Iterator<? extends Object> p1){ return false; }
-    static int hashCodeImpl(Set<? extends Object> p0){ return 0; }
 }

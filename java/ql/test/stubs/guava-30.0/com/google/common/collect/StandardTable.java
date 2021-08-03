@@ -2,26 +2,16 @@
 
 package com.google.common.collect;
 
-import com.google.common.base.Supplier;
 import com.google.common.collect.AbstractTable;
 import com.google.common.collect.Table;
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-import java.util.Spliterator;
 
 class StandardTable<R, C, V> extends AbstractTable<R, C, V> implements Serializable
 {
     protected StandardTable() {}
-    Iterator<C> createColumnKeyIterator(){ return null; }
-    Iterator<Table.Cell<R, C, V>> cellIterator(){ return null; }
-    Map<R, Map<C, V>> createRowMap(){ return null; }
-    Spliterator<Table.Cell<R, C, V>> cellSpliterator(){ return null; }
-    StandardTable(Map<R, Map<C, V>> p0, Supplier<? extends Map<C, V>> p1){}
-    final Map<R, Map<C, V>> backingMap = null;
-    final Supplier<? extends Map<C, V>> factory = null;
     public Collection<V> values(){ return null; }
     public Map<C, Map<R, V>> columnMap(){ return null; }
     public Map<C, V> row(R p0){ return null; }

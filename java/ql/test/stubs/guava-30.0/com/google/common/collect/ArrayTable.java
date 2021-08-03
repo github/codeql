@@ -8,18 +8,12 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Table;
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-import java.util.Spliterator;
 
 public class ArrayTable<R, C, V> extends AbstractTable<R, C, V> implements Serializable
 {
     protected ArrayTable() {}
-    Iterator<Table.Cell<R, C, V>> cellIterator(){ return null; }
-    Iterator<V> valuesIterator(){ return null; }
-    Spliterator<Table.Cell<R, C, V>> cellSpliterator(){ return null; }
-    Spliterator<V> valuesSpliterator(){ return null; }
     public Collection<V> values(){ return null; }
     public ImmutableList<C> columnKeyList(){ return null; }
     public ImmutableList<R> rowKeyList(){ return null; }

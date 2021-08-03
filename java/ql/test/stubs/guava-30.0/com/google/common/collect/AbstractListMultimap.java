@@ -11,10 +11,6 @@ import java.util.Map;
 abstract class AbstractListMultimap<K, V> extends AbstractMapBasedMultimap<K, V> implements ListMultimap<K, V>
 {
     protected AbstractListMultimap() {}
-    <E> Collection<E> unmodifiableCollectionSubclass(Collection<E> p0){ return null; }
-    Collection<V> wrapCollection(K p0, Collection<V> p1){ return null; }
-    List<V> createUnmodifiableEmptyCollection(){ return null; }
-    abstract List<V> createCollection();
     protected AbstractListMultimap(Map<K, Collection<V>> p0){}
     public List<V> get(K p0){ return null; }
     public List<V> removeAll(Object p0){ return null; }

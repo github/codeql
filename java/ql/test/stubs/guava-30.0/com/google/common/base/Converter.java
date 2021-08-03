@@ -6,10 +6,6 @@ import com.google.common.base.Function;
 
 abstract public class Converter<A, B> implements Function<A, B>
 {
-    <C> Converter<A, C> doAndThen(Converter<B, C> p0){ return null; }
-    A correctedDoBackward(B p0){ return null; }
-    B correctedDoForward(A p0){ return null; }
-    Converter(boolean p0){}
     protected Converter(){}
     protected abstract A doBackward(B p0);
     protected abstract B doForward(A p0);

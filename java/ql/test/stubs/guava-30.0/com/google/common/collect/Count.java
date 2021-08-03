@@ -7,7 +7,6 @@ import java.io.Serializable;
 class Count implements Serializable
 {
     protected Count() {}
-    Count(int p0){}
     public String toString(){ return null; }
     public boolean equals(Object p0){ return false; }
     public int addAndGet(int p0){ return 0; }

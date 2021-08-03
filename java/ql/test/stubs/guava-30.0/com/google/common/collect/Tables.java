@@ -1,4 +1,4 @@
-// Generated automatically from com.google.common.collect.Tables for testing purposes, and manually adjusted.
+// Generated automatically from com.google.common.collect.Tables for testing purposes, and adjusted manually
 
 package com.google.common.collect;
 
@@ -22,5 +22,4 @@ public class Tables
     public static <R, C, V> Table<R, C, V> unmodifiableTable(Table<? extends R, ? extends C, ? extends V> p0){ return null; }
     public static <T, R, C, V, I extends Table<R, C, V>> Collector<T, ? extends Object, I> toTable(Function<? super T, ? extends R> p0, Function<? super T, ? extends C> p1, Function<? super T, ? extends V> p2, BinaryOperator<V> p3, Supplier<I> p4){ return null; }
     public static <T, R, C, V, I extends Table<R, C, V>> Collector<T, ? extends Object, I> toTable(Function<? super T, ? extends R> p0, Function<? super T, ? extends C> p1, Function<? super T, ? extends V> p2, Supplier<I> p3){ return null; }
-    static boolean equalsImpl(Table<? extends Object, ? extends Object, ? extends Object> p0, Object p1){ return false; }
 }

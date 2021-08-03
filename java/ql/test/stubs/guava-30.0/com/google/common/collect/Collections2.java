@@ -16,9 +16,4 @@ public class Collections2
     public static <E> Collection<List<E>> orderedPermutations(Iterable<E> p0, Comparator<? super E> p1){ return null; }
     public static <E> Collection<List<E>> permutations(Collection<E> p0){ return null; }
     public static <F, T> Collection<T> transform(Collection<F> p0, Function<? super F, T> p1){ return null; }
-    static String toStringImpl(Collection<? extends Object> p0){ return null; }
-    static StringBuilder newStringBuilderForCollection(int p0){ return null; }
-    static boolean containsAllImpl(Collection<? extends Object> p0, Collection<? extends Object> p1){ return false; }
-    static boolean safeContains(Collection<? extends Object> p0, Object p1){ return false; }
-    static boolean safeRemove(Collection<? extends Object> p0, Object p1){ return false; }
 }

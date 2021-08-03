@@ -4,7 +4,6 @@ package com.google.common.collect;
 
 import com.google.common.collect.StandardRowSortedTable;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.SortedSet;
@@ -12,8 +11,6 @@ import java.util.SortedSet;
 public class TreeBasedTable<R, C, V> extends StandardRowSortedTable<R, C, V>
 {
     protected TreeBasedTable() {}
-    Iterator<C> createColumnKeyIterator(){ return null; }
-    TreeBasedTable(Comparator<? super R> p0, Comparator<? super C> p1){}
     public Comparator<? super C> columnComparator(){ return null; }
     public Comparator<? super R> rowComparator(){ return null; }
     public SortedMap<C, V> row(R p0){ return null; }
