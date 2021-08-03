@@ -9,9 +9,15 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 public class UnsafeActivity4 extends Activity {
-	/** 
-	 * Test onCreate with both JavaScript and cross-origin resource access enabled while taking remote user inputs from bundle extras
-     * Note this case of invoking utility method that takes an Activity a then calls `a.getIntent().getStringExtra(...)` is not yet detected thus is beyond what the query is capable of.
+	/*
+	 * Test onCreate with both JavaScript and cross-origin resource access enabled while taking
+	 * remote user inputs from bundle extras.
+	 * 
+	 * The Activity is explicitly exported.
+	 * 
+	 * Note this case of invoking a utility method that takes an Activity and then calls
+	 * `a.getIntent().getStringExtra(...)` is not yet detected thus is beyond what the query is
+	 * capable of.
 	 */
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -33,6 +39,6 @@ public class UnsafeActivity4 extends Activity {
 
 		String thisUrl = IntentUtils.getIntentUrl(this);
 		thisUrl = IntentUtils.getBundleUrl(this);
-		wv.loadUrl(thisUrl);
+		wv.loadUrl(thisUrl); // $ MISSING: hasUnsafeAndroidAccess
 	}
 }

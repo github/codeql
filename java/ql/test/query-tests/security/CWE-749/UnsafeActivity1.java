@@ -8,8 +8,10 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-public class SafeActivity1 extends Activity {
-	//Test onCreate with both JavaScript and cross-origin resource access enabled while taking remote user inputs from bundle extras
+public class UnsafeActivity1 extends Activity {
+	// Test onCreate with both JavaScript and cross-origin resource access enabled while taking
+	// remote user inputs from bundle extras.
+	// The Activity is exported and has an intent-filter.
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(-1);
@@ -29,6 +31,6 @@ public class SafeActivity1 extends Activity {
 		});
 
 		String thisUrl = getIntent().getExtras().getString("url");
-		wv.loadUrl(thisUrl);
+		wv.loadUrl(thisUrl); // $hasUnsafeAndroidAccess
 	}
 }
