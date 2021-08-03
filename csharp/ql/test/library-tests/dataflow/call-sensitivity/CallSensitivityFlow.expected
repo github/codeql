@@ -1,12 +1,8 @@
 edges
 | CallSensitivityFlow.cs:19:39:19:39 | o : Object | CallSensitivityFlow.cs:23:18:23:18 | access to parameter o |
 | CallSensitivityFlow.cs:27:40:27:40 | o : Object | CallSensitivityFlow.cs:31:18:31:18 | access to parameter o |
-| CallSensitivityFlow.cs:27:40:27:40 | o : Object | CallSensitivityFlow.cs:31:18:31:18 | access to parameter o |
 | CallSensitivityFlow.cs:35:41:35:41 | o : Object | CallSensitivityFlow.cs:39:18:39:18 | [cond (line 35): true] access to parameter o |
 | CallSensitivityFlow.cs:43:45:43:45 | o : Object | CallSensitivityFlow.cs:53:14:53:15 | access to local variable o3 |
-| CallSensitivityFlow.cs:56:46:56:46 | o : Object | CallSensitivityFlow.cs:66:14:66:15 | access to local variable o3 |
-| CallSensitivityFlow.cs:56:46:56:46 | o : Object | CallSensitivityFlow.cs:66:14:66:15 | access to local variable o3 |
-| CallSensitivityFlow.cs:56:46:56:46 | o : Object | CallSensitivityFlow.cs:66:14:66:15 | access to local variable o3 |
 | CallSensitivityFlow.cs:56:46:56:46 | o : Object | CallSensitivityFlow.cs:66:14:66:15 | access to local variable o3 |
 | CallSensitivityFlow.cs:78:24:78:35 | object creation of type Object : Object | CallSensitivityFlow.cs:19:39:19:39 | o : Object |
 | CallSensitivityFlow.cs:79:25:79:36 | object creation of type Object : Object | CallSensitivityFlow.cs:27:40:27:40 | o : Object |
@@ -38,15 +34,11 @@ nodes
 | CallSensitivityFlow.cs:19:39:19:39 | o : Object | semmle.label | o : Object |
 | CallSensitivityFlow.cs:23:18:23:18 | access to parameter o | semmle.label | access to parameter o |
 | CallSensitivityFlow.cs:27:40:27:40 | o : Object | semmle.label | o : Object |
-| CallSensitivityFlow.cs:27:40:27:40 | o : Object | semmle.label | o : Object |
 | CallSensitivityFlow.cs:31:18:31:18 | access to parameter o | semmle.label | access to parameter o |
 | CallSensitivityFlow.cs:35:41:35:41 | o : Object | semmle.label | o : Object |
 | CallSensitivityFlow.cs:39:18:39:18 | [cond (line 35): true] access to parameter o | semmle.label | [cond (line 35): true] access to parameter o |
 | CallSensitivityFlow.cs:43:45:43:45 | o : Object | semmle.label | o : Object |
 | CallSensitivityFlow.cs:53:14:53:15 | access to local variable o3 | semmle.label | access to local variable o3 |
-| CallSensitivityFlow.cs:56:46:56:46 | o : Object | semmle.label | o : Object |
-| CallSensitivityFlow.cs:56:46:56:46 | o : Object | semmle.label | o : Object |
-| CallSensitivityFlow.cs:56:46:56:46 | o : Object | semmle.label | o : Object |
 | CallSensitivityFlow.cs:56:46:56:46 | o : Object | semmle.label | o : Object |
 | CallSensitivityFlow.cs:66:14:66:15 | access to local variable o3 | semmle.label | access to local variable o3 |
 | CallSensitivityFlow.cs:78:24:78:35 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
