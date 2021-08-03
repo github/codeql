@@ -98,7 +98,7 @@ private predicate groovyCompilationUnitTaintStep(DataFlow::Node fromNode, DataFl
     m.getDeclaringType() instanceof TypeGroovyCompilationUnit
   |
     fromNode.asExpr() = ma.getArgument(ma.getNumArgument() - 1) and
-    toNode.(PostUpdateNode).getPreUpdateNode().asExpr() = ma.getQualifier()
+    toNode.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr() = ma.getQualifier()
   )
 }
 
