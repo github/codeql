@@ -116,9 +116,9 @@ module Vuex {
     /** Gets the name of the `vuex` method being invoked, such as `mapGetters`. */
     string getHelperName() { result = helperName }
 
-    /** Gets the namespace prefix provided via the first argument, if any. */
+    /** Gets the namespace prefix to use, or an empty string if no namespace was given. */
     pragma[noinline]
-    string getPrefix() {
+    string getNamespace() {
       getNumArgument() = 2 and
       result = namespace + getParameter(0).getAValueReachingRhs().getStringValue() + "/"
       or
@@ -132,15 +132,15 @@ module Vuex {
     predicate hasMapping(string localName, string storeName) {
       // mapGetters('foo')
       getLastParameter().getAValueReachingRhs().getStringValue() = localName and
-      storeName = getPrefix() + localName
+      storeName = getNamespace() + localName
       or
       // mapGetters(['foo', 'bar'])
       getLastParameter().getUnknownMember().getAValueReachingRhs().getStringValue() = localName and
-      storeName = getPrefix() + localName
+      storeName = getNamespace() + localName
       or
       // mapGetters({foo: 'bar'})
       storeName =
-        getPrefix() +
+        getNamespace() +
           getLastParameter().getMember(localName).getAValueReachingRhs().getStringValue() and
       localName != "*" // ignore special API graph member named "*"
     }
@@ -220,7 +220,7 @@ module Vuex {
     exists(MapHelperCall mapMutations |
       mapMutations.getHelperName() = "mapMutations" and
       result = mapMutations.getLastParameter().getAMember().getParameter(0) and
-      prefix = mapMutations.getPrefix()
+      prefix = mapMutations.getNamespace()
     )
   }
 
@@ -314,7 +314,7 @@ module Vuex {
     exists(MapHelperCall call |
       call.getHelperName() = "mapState" and
       result = call.getLastParameter().getAMember().getParameter(0) and
-      path = call.getPrefix()
+      path = call.getNamespace()
     )
     or
     exists(string base, string prop |
