@@ -6,7 +6,7 @@ import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.DataFlow2
 import semmle.code.java.dataflow.DataFlow3
 import DataFlow::PathGraph
-import semmle.code.xml.MybatisMapper
+import experimental.semmle.code.xml.MybatisMapper
 
 predicate hasSqlInjection(MapperXMLFile xmlFile, Mapper mapper, SqlStatement sql, string sqlString) {
   sql.getFile() = xmlFile and
