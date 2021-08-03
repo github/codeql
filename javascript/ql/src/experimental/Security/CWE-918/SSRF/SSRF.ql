@@ -1,5 +1,5 @@
 /**
- * @id javascript/ssrf-path
+ * @id javascript/ssrf
  * @kind path-problem
  * @name Uncontrolled data used in network request
  * @description Sending network requests with user-controlled data as part of the URL allows for request forgery attacks.
