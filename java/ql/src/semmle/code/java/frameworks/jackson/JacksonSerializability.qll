@@ -7,7 +7,7 @@ import java
 import semmle.code.java.Serializability
 import semmle.code.java.Reflection
 import semmle.code.java.dataflow.DataFlow
-import semmle.code.java.dataflow.DataFlow5
+private import semmle.code.java.dataflow.internal.DataFlowForSerializability
 import semmle.code.java.dataflow.FlowSteps
 private import semmle.code.java.dataflow.ExternalFlow
 
@@ -85,7 +85,7 @@ private class FieldReferencedJacksonSerializableType extends JacksonSerializable
 /** A type whose values may be deserialized by the Jackson JSON framework. */
 abstract class JacksonDeserializableType extends Type { }
 
-private class TypeLiteralToJacksonDatabindFlowConfiguration extends DataFlow5::Configuration {
+private class TypeLiteralToJacksonDatabindFlowConfiguration extends DataFlowForSerializability::Configuration {
   TypeLiteralToJacksonDatabindFlowConfiguration() {
     this = "TypeLiteralToJacksonDatabindFlowConfiguration"
   }
