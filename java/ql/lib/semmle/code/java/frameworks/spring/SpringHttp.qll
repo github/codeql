@@ -4,7 +4,6 @@
  */
 
 import java
-
 private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.frameworks.spring.SpringController
@@ -270,8 +269,7 @@ private DataFlow::Node getABodyBuilderWithExplicitContentType(Expr contentType) 
   result.asExpr() =
     any(MethodAccess ma |
       ma.getCallee()
-          .hasQualifiedName("org.springframework.http", "ResponseEntity<>$BodyBuilder",
-            "contentType") and
+          .hasQualifiedName("org.springframework.http", "ResponseEntity$BodyBuilder", "contentType") and
       contentType = ma.getArgument(0)
     )
   or
@@ -280,7 +278,7 @@ private DataFlow::Node getABodyBuilderWithExplicitContentType(Expr contentType) 
       ma.getQualifier() = getABodyBuilderWithExplicitContentType(contentType).asExpr() and
       ma.getType()
           .(RefType)
-          .hasQualifiedName("org.springframework.http", "ResponseEntity<>$BodyBuilder")
+          .hasQualifiedName("org.springframework.http", "ResponseEntity$BodyBuilder")
     )
   or
   DataFlow::localFlow(getABodyBuilderWithExplicitContentType(contentType), result)
