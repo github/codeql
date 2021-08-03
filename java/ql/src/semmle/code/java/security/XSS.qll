@@ -94,6 +94,9 @@ private class DefaultXssSink extends XssSink {
 private class DefaultXSSSanitizer extends XssSanitizer {
   DefaultXSSSanitizer() {
     this.getType() instanceof NumericType or this.getType() instanceof BooleanType
+    or
+    // Match `org.springframework.web.util.HtmlUtils.htmlEscape` and possibly other methods like it.
+    this.asExpr().(MethodAccess).getMethod().getName().regexpMatch("(?i)html_?escape.*")
   }
 }
 
