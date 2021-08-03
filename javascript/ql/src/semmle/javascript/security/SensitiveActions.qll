@@ -197,15 +197,15 @@ module PasswordHeuristics {
     isDummyPassword(header)
     or
     exists(string prefix, string suffix | prefix = getAnHTTPAuthenticationScheme() |
-      header = prefix + " " + suffix and
+      header.toLowerCase() = prefix + " " + suffix and
       isDummyPassword(suffix)
     )
     or
-    header.trim() = getAnHTTPAuthenticationScheme()
+    header.trim().toLowerCase() = getAnHTTPAuthenticationScheme()
   }
 
   /**
-   * Gets a HTTP authentication scheme.
+   * Gets a HTTP authentication scheme normalized to lowercase.
    * From this list: https://www.iana.org/assignments/http-authschemes/http-authschemes.xhtml
    */
   private string getAnHTTPAuthenticationScheme() {
@@ -213,6 +213,6 @@ module PasswordHeuristics {
       [
         "Basic", "Bearer", "Digest", "HOBA", "Mutual", "Negotiate", "OAuth", "SCRAM-SHA-1",
         "SCRAM-SHA-256", "vapid"
-      ]
+      ].toLowerCase()
   }
 }
