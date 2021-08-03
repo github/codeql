@@ -72,8 +72,19 @@ private class RandS extends RandomFunction {
   override FunctionOutput getFunctionOutput() { result.isParameterDeref(0) }
 }
 
-predicate missingGuard(VariableAccess va) {
-  exists(Operation op | op.getAnOperand() = va | missingGuardAgainstOverflow(op, va))
+predicate missingGuard(VariableAccess va, string effect) {
+  exists(Operation op | op.getAnOperand() = va |
+    // underflow - random numbers are usually non-negative, so underflow is
+    // only likely if the type is unsigned. Multiplication is also unlikely to
+    // cause underflow of a non-negative number.
+    missingGuardAgainstUnderflow(op, va) and
+    effect = "underflow" and
+    op.getUnspecifiedType().(IntegralType).isUnsigned() and
+    not op instanceof MulExpr
+    or
+    // overflow
+    missingGuardAgainstOverflow(op, va) and effect = "overflow"
+  )
 }
 
 class UncontrolledArithConfiguration extends TaintTracking::Configuration {
@@ -91,7 +102,7 @@ class UncontrolledArithConfiguration extends TaintTracking::Configuration {
     )
   }
 
-  override predicate isSink(DataFlow::Node sink) { missingGuard(sink.asExpr()) }
+  override predicate isSink(DataFlow::Node sink) { missingGuard(sink.asExpr(), _) }
 
   override predicate isSanitizer(DataFlow::Node node) {
     bounded(node.asExpr())
@@ -115,11 +126,11 @@ Expr getExpr(DataFlow::Node node) { result = [node.asExpr(), node.asDefiningArgu
 
 from
   UncontrolledArithConfiguration config, DataFlow::PathNode source, DataFlow::PathNode sink,
-  VariableAccess va
+  VariableAccess va, string effect
 where
   config.hasFlowPath(source, sink) and
   sink.getNode().asExpr() = va and
-  missingGuard(va)
+  missingGuard(va, effect)
 select sink.getNode(), source, sink,
-  "$@ flows to here and is used in arithmetic, potentially causing an overflow.",
+  "$@ flows to here and is used in arithmetic, potentially causing an " + effect + ".",
   getExpr(source.getNode()), "Uncontrolled value"
