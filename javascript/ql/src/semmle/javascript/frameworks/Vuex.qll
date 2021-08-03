@@ -75,7 +75,7 @@ module Vuex {
 
   /**
    * Gets the options object passed to a Vuex store creation or one of its modules,
-   * with `namespace` bound its namespace.
+   * with `namespace` bound to the namespace of the store.
    */
   API::Node storeConfigObject(string namespace) {
     result = vuex().getMember("Store").getParameter(0) and namespace = ""
