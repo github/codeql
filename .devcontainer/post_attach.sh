@@ -34,4 +34,4 @@ mkdir -p "${REPO_DIR}"
 test -e "${REPO_DIR_ERB}" || git clone -q --bare https://github.com/tree-sitter/tree-sitter-embedded-template "${REPO_DIR_ERB}"
 test -e "${REPO_DIR_RUBY}" || git clone -q --bare https://github.com/tree-sitter/tree-sitter-ruby.git "${REPO_DIR_RUBY}"
 
-./create-extractor-pack.sh
+scripts/create-extractor-pack.sh
