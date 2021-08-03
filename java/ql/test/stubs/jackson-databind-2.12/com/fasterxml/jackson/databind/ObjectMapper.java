@@ -9,6 +9,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import com.fasterxml.jackson.core.*;
 import com.fasterxml.jackson.core.type.ResolvedType;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.jsontype.PolymorphicTypeValidator;
 
 public class ObjectMapper implements java.io.Serializable // as of 2.1
 {
@@ -586,5 +587,7 @@ public class ObjectMapper implements java.io.Serializable // as of 2.1
   public <T> T updateValue(T valueToUpdate, Object overrides) throws JsonMappingException {
     return null;
   }
+
+  public void setPolymorphicTypeValidator(PolymorphicTypeValidator ptv) {}
 
 }
