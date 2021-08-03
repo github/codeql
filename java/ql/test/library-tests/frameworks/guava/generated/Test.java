@@ -4493,7 +4493,7 @@ public class Test {
 			List<List> out = null;
 			List[] in = (List[])newWithArrayElement(newWithElement(source()));
 			out = Lists.cartesianProduct(in);
-			sink(getElement(getElement(out))); // $ hasValueFlow
+			sink(getElement(getElement(out))); // $ MISSING: hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Lists;false;charactersOf;(CharSequence);;Argument[0];Element of ReturnValue;taint"
@@ -6621,7 +6621,7 @@ public class Test {
 			Set<Set> out = null;
 			Set[] in = (Set[])newWithArrayElement(newWithElement(source()));
 			out = Sets.cartesianProduct(in);
-			sink(getElement(getElement(out))); // $ hasValueFlow
+			sink(getElement(getElement(out))); // $ MISSING: hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Sets;false;combinations;(Set,int);;Element of Argument[0];Element of Element of ReturnValue;value"
