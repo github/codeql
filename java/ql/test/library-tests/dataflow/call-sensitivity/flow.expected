@@ -6,8 +6,6 @@ edges
 | A.java:26:31:26:38 | o : Number | A.java:28:9:28:9 | o |
 | A.java:32:35:32:42 | o : Number | A.java:40:8:40:9 | o3 |
 | A.java:43:36:43:43 | o : Number | A.java:51:8:51:9 | o3 |
-| A.java:43:36:43:43 | o : Number | A.java:51:8:51:9 | o3 |
-| A.java:43:36:43:43 | o : Number | A.java:51:8:51:9 | o3 |
 | A.java:62:18:62:31 | new Integer(...) : Number | A.java:14:29:14:36 | o : Number |
 | A.java:63:19:63:32 | new Integer(...) : Number | A.java:20:30:20:37 | o : Number |
 | A.java:64:20:64:33 | new Integer(...) : Number | A.java:26:31:26:38 | o : Number |
@@ -40,8 +38,6 @@ nodes
 | A.java:28:9:28:9 | o | semmle.label | o |
 | A.java:32:35:32:42 | o : Number | semmle.label | o : Number |
 | A.java:40:8:40:9 | o3 | semmle.label | o3 |
-| A.java:43:36:43:43 | o : Number | semmle.label | o : Number |
-| A.java:43:36:43:43 | o : Number | semmle.label | o : Number |
 | A.java:43:36:43:43 | o : Number | semmle.label | o : Number |
 | A.java:51:8:51:9 | o3 | semmle.label | o3 |
 | A.java:62:18:62:31 | new Integer(...) : Number | semmle.label | new Integer(...) : Number |
