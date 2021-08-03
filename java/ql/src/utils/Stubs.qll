@@ -95,6 +95,7 @@ abstract private class GeneratedType extends RefType {
       )
     ) and
     not result.isPrivate() and
+    not result.isPackageProtected() and
     not result instanceof StaticInitializer and
     not result instanceof InstanceInitializer
   }
