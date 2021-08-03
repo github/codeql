@@ -139,12 +139,12 @@ public class SpringXSS {
 
     @GetMapping(value = "/xyz", produces = {"application/json"})
     public ResponseEntity<String> overridesWithSafe(String userControlled) {
-      return ResponseEntity.ok(userControlled); // $SPURIOUS: xss
+      return ResponseEntity.ok(userControlled);
     }
 
     @GetMapping(value = "/abc")
     public ResponseEntity<String> overridesWithSafe2(String userControlled) {
-      return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(userControlled); // $SPURIOUS: xss
+      return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(userControlled);
     }
   }
 
