@@ -127,7 +127,7 @@ predicate isDifferentSize(Expr exp1, Expr exp2, Expr exp3) {
   )
 }
 
-/** Holds if it is possible to get different values of the expression */
+/** Holds if different values of the expression obtained from the parameters of the predicate can be obtained. */
 pragma[inline]
 predicate isDifferentResults(
   Expr exp1, Expr exp2, Expr exp3, BinaryBitwiseOperation op1, BinaryBitwiseOperation op2
