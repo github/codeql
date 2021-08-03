@@ -1,8 +1,8 @@
 /** Provides classes to reason about Groovy code injection attacks. */
 
-import semmle.code.java.dataflow.DataFlow
-import semmle.code.java.dataflow.ExternalFlow
-import semmle.code.java.frameworks.Networking
+private import semmle.code.java.dataflow.DataFlow
+private import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.frameworks.Networking
 
 /** A data flow sink for Groovy expression injection vulnerabilities. */
 abstract class GroovyInjectionSink extends DataFlow::ExprNode { }
@@ -98,7 +98,7 @@ private predicate groovyCompilationUnitTaintStep(DataFlow::Node fromNode, DataFl
     m.getDeclaringType() instanceof TypeGroovyCompilationUnit
   |
     fromNode.asExpr() = ma.getArgument(ma.getNumArgument() - 1) and
-    toNode.asExpr() = ma.getQualifier()
+    toNode.(PostUpdateNode).getPreUpdateNode().asExpr() = ma.getQualifier()
   )
 }
 
@@ -136,7 +136,7 @@ private predicate groovySourceUnitTaintStep(DataFlow::Node fromNode, DataFlow::N
 
 /**
  * Holds if `fromNode` to `toNode` is a dataflow step from a tainted object to
- * a `ReaderSource` instance by calling `new *ReaderSource(tainted, ...)`
+ * a `ReaderSource` instance by calling `new ReaderSource(tainted, ...)`.
  */
 private predicate groovyReaderSourceTaintStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
   exists(ClassInstanceExpr cie | cie.getConstructedType() instanceof TypeReaderSource |
