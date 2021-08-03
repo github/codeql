@@ -28,6 +28,9 @@ where
       not (
         sink.getNode().(Sink).(DefaultCredentialsSink).getKind() = "password" and
         PasswordHeuristics::isDummyPassword(val)
+        or
+        sink.getNode().(Sink).getKind() = "authorization header" and
+        PasswordHeuristics::isDummyAuthHeader(val)
       ) and
       value = "The hard-coded value \"" + val + "\""
     )

@@ -10,6 +10,7 @@
  */
 
 import javascript
+private import semmle.javascript.dataflow.internal.FlowSteps as FlowSteps
 
 /**
  * Provides classes and predicates for working with APIs defined or used in a database.
@@ -747,6 +748,18 @@ module API {
         result = DataFlow::moduleVarNode(imp.getImportedModule()).getAPropertyRead("exports")
       )
       or
+      exists(ObjectExpr obj |
+        obj = trackDefNode(nd, t.continue()).asExpr() and
+        result =
+          obj.getAProperty()
+              .(SpreadProperty)
+              .getInit()
+              .(SpreadElement)
+              .getOperand()
+              .flow()
+              .getALocalSource()
+      )
+      or
       t = defStep(nd, result)
     }
 
@@ -930,9 +943,30 @@ private module Label {
   /** Gets the `member` edge label for the unknown member. */
   string unknownMember() { result = "member *" }
 
+  /**
+   * Gets a property name referred to by the given dynamic property access,
+   * allowing one property flow step in the process (to allow flow through imports).
+   *
+   * This is to support code patterns where the property name is actually constant,
+   * but the property name has been factored into a library.
+   */
+  private string getAnIndirectPropName(DataFlow::PropRef ref) {
+    exists(DataFlow::Node pred |
+      FlowSteps::propertyFlowStep(pred, ref.getPropertyNameExpr().flow()) and
+      result = pred.getStringValue()
+    )
+  }
+
+  /**
+   * Gets unique result of `getAnIndirectPropName` if there is one.
+   */
+  private string getIndirectPropName(DataFlow::PropRef ref) {
+    result = unique(string s | s = getAnIndirectPropName(ref))
+  }
+
   /** Gets the `member` edge label for the given property reference. */
   string memberFromRef(DataFlow::PropRef pr) {
-    exists(string pn | pn = pr.getPropertyName() |
+    exists(string pn | pn = pr.getPropertyName() or pn = getIndirectPropName(pr) |
       result = member(pn) and
       // only consider properties with alphanumeric(-ish) names, excluding special properties
       // and properties whose names look like they are meant to be internal
@@ -940,6 +974,7 @@ private module Label {
     )
     or
     not exists(pr.getPropertyName()) and
+    not exists(getIndirectPropName(pr)) and
     result = unknownMember()
   }
 

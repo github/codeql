@@ -126,6 +126,7 @@ import semmle.javascript.frameworks.TorrentLibraries
 import semmle.javascript.frameworks.Typeahead
 import semmle.javascript.frameworks.UriLibraries
 import semmle.javascript.frameworks.Vue
+import semmle.javascript.frameworks.Vuex
 import semmle.javascript.frameworks.WebSocket
 import semmle.javascript.frameworks.XmlParsers
 import semmle.javascript.frameworks.xUnit
