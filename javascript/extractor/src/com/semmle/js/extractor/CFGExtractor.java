@@ -934,22 +934,13 @@ public class CFGExtractor {
     }
 
     /**
-     * Creates an `Collection<Node>` from the one-or-more nodes contained in `nodes`.
-     * `nodes` is either `null`, a `Node`, or a `Collection<Node>`.
+     * Creates a new collection that contains the same elements, but is reversed.
+     * 
+     * @return The reversed collection.
      */
-    @SuppressWarnings("unchecked")
-    private Collection<Node> createCollection(Object nodes) { // TODO: Delete usages.
-      if (nodes == null) return Collections.<Node>emptySet();
-      if (nodes instanceof Node) return Collections.<Node>singleton((Node) nodes);
-      return (Collection<Node>) nodes;
-    }
-
-    /**
-     * Creates an `Collection<Node>` that iterates the nodes in reverse order from the one-or-more nodes contained in `nodes`.
-     */
-    private Collection<Node> createReversedCollection(final Object nodes) {
-      List<Node> list = new ArrayList<>();
-      createCollection(nodes).forEach(list::add);
+    private <T> Collection<T> reverse(Collection<T> col) {
+      List<T> list = new ArrayList<>();
+      col.forEach(list::add);
       Collections.reverse(list);
       return list;
     }
@@ -961,15 +952,27 @@ public class CFGExtractor {
      * 
      * @return The earliest non-null (collection of) node from `nodes`.
      */
-    private Collection<Node> visitSequence(Object... nodes) {
-      Object fst = nodes[nodes.length - 1];
-      for (int i = nodes.length - 2; i >= 0; --i) {
-        for (Node node : createReversedCollection(nodes[i])) {
-          Node ffst = visitWithSuccessors(node, createCollection(fst));
-          if (ffst != null) fst = ffst;
+    @SuppressWarnings("unchecked")
+    private Collection<Node> visitSequence(Object... rawNodes) {
+      List<Collection<Node>> nodes = new ArrayList<>();
+      for (Object node : rawNodes) {
+        if (node == null) {
+          nodes.add(Collections.<Node>emptySet());
+        } else if (node instanceof Node) {
+          nodes.add(Collections.<Node>singleton((Node) node));
+        } else {
+          nodes.add((Collection<Node>)node);
         }
       }
-      return createCollection(fst);
+
+      Collection<Node> fst = nodes.get(nodes.size() - 1);
+      for (int i = nodes.size() - 2; i >= 0; --i) {
+        for (Node node : reverse(nodes.get(i))) {
+          Node ffst = visitWithSuccessors(node, fst);
+          if (ffst != null) fst = Collections.<Node>singleton(ffst);
+        }
+      }
+      return fst;
     }
 
     @Override
