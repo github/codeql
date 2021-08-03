@@ -1,7 +1,7 @@
 import java
 import semmle.code.java.Serializability
 import semmle.code.java.dataflow.DataFlow
-import semmle.code.java.dataflow.internal.DataFlowForSerializability
+private import semmle.code.java.dataflow.internal.DataFlowForSerializability
 
 /** The method `parseAs` in `com.google.api.client.http.HttpResponse`. */
 private class ParseAsMethod extends Method {
