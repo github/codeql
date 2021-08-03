@@ -87,7 +87,7 @@ The following properties are supported in ``qlpack.yml`` files.
    * - ``suites``
      - ``suites``
      - Optional
-     - The path to a directory that contains the "well-known" query suites in the pack, defined relative to the pack directory. You can run "well-known" suites stored in this directory by specifying the pack name, without providing their full path. To use query suites stored in other directories in the pack, you must provide their full path. For more information about query suites, see ":doc:`Creating CodeQL query suites <creating-codeql-query-suites>`."
+     - The path to a directory in the pack that contains the query suites you want to make known to the CLI, defined relative to the pack directory. QL pack users can run "well-known" suites stored in this directory by specifying the pack name, without providing their full path. For more information about query suites, see ":doc:`Creating CodeQL query suites <creating-codeql-query-suites>`."
    * - ``extractor``
      - ``javascript``
      - All test packs

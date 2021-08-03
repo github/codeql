@@ -46,17 +46,6 @@ class Expr extends ExprParent, @expr {
    */
   int getKind() { exprs(this, result, _, _, _) }
 
-  /**
-   * DEPRECATED: This is no longer necessary. See `Expr.isParenthesized()`.
-   *
-   * Gets this expression with any surrounding parentheses removed.
-   */
-  deprecated Expr getProperExpr() {
-    result = this.(ParExpr).getExpr().getProperExpr()
-    or
-    result = this and not this instanceof ParExpr
-  }
-
   /** Gets the statement containing this expression, if any. */
   Stmt getEnclosingStmt() { statementEnclosingExpr(this, result) }
 
@@ -1318,19 +1307,6 @@ class SwitchExpr extends Expr, StmtParent, @switchexpr {
   override string getAPrimaryQlClass() { result = "SwitchExpr" }
 }
 
-/**
- * DEPRECATED: Use `Expr.isParenthesized()` instead.
- *
- * A parenthesised expression.
- */
-deprecated class ParExpr extends Expr, @parexpr {
-  /** Gets the expression inside the parentheses. */
-  deprecated Expr getExpr() { result.getParent() = this }
-
-  /** Gets a printable representation of this expression. */
-  override string toString() { result = "(...)" }
-}
-
 /** An `instanceof` expression. */
 class InstanceOfExpr extends Expr, @instanceofexpr {
   /** Gets the expression on the left-hand side of the `instanceof` operator. */
@@ -1356,6 +1332,9 @@ class InstanceOfExpr extends Expr, @instanceofexpr {
 
   /** Gets the access to the type on the right-hand side of the `instanceof` operator. */
   Expr getTypeName() { result.isNthChildOf(this, 1) }
+
+  /** Gets the type this `instanceof` expression checks for. */
+  RefType getCheckedType() { result = getTypeName().getType() }
 
   /** Gets a printable representation of this expression. */
   override string toString() { result = "...instanceof..." }
@@ -1448,6 +1427,12 @@ class VariableAssign extends VariableUpdate {
 class TypeLiteral extends Expr, @typeliteral {
   /** Gets the access to the type whose class is accessed. */
   Expr getTypeName() { result.getParent() = this }
+
+  /**
+   * Gets the type this type literal refers to. For example for `String.class` the
+   * result is the type representing `String`.
+   */
+  Type getReferencedType() { result = getTypeName().getType() }
 
   /** Gets a printable representation of this expression. */
   override string toString() { result = this.getTypeName().toString() + ".class" }

@@ -1,94 +1,94 @@
-| ..()(..) | PrintableElement, RoutineDumpType |  |  |  |  |
-| ..(*)(..) | FunctionPointerDumpType, PrintableElement |  | ..()(..) |  |  |
-| _Complex __float128 | BinaryFloatingPointType, BuiltInDumpType, ComplexNumberType, PrintableElement |  |  |  |  |
-| _Complex double | BinaryFloatingPointType, BuiltInDumpType, ComplexNumberType, PrintableElement |  |  |  |  |
-| _Complex float | BinaryFloatingPointType, BuiltInDumpType, ComplexNumberType, PrintableElement |  |  |  |  |
-| _Complex long double | BinaryFloatingPointType, BuiltInDumpType, ComplexNumberType, PrintableElement |  |  |  |  |
-| _Decimal32 | BuiltInDumpType, Decimal32Type, PrintableElement |  |  |  |  |
-| _Decimal64 | BuiltInDumpType, Decimal64Type, PrintableElement |  |  |  |  |
-| _Decimal128 | BuiltInDumpType, Decimal128Type, PrintableElement |  |  |  |  |
-| _Float32 | BinaryFloatingPointType, BuiltInDumpType, PrintableElement, RealNumberType |  |  |  |  |
-| _Float32x | BinaryFloatingPointType, BuiltInDumpType, PrintableElement, RealNumberType |  |  |  |  |
-| _Float64 | BinaryFloatingPointType, BuiltInDumpType, PrintableElement, RealNumberType |  |  |  |  |
-| _Float64x | BinaryFloatingPointType, BuiltInDumpType, PrintableElement, RealNumberType |  |  |  |  |
-| _Float128 | BinaryFloatingPointType, BuiltInDumpType, PrintableElement, RealNumberType |  |  |  |  |
-| _Float128x | BinaryFloatingPointType, BuiltInDumpType, PrintableElement, RealNumberType |  |  |  |  |
-| _Imaginary double | BinaryFloatingPointType, BuiltInDumpType, ImaginaryNumberType, PrintableElement |  |  |  |  |
-| _Imaginary float | BinaryFloatingPointType, BuiltInDumpType, ImaginaryNumberType, PrintableElement |  |  |  |  |
-| _Imaginary long double | BinaryFloatingPointType, BuiltInDumpType, ImaginaryNumberType, PrintableElement |  |  |  |  |
-| __float128 | BuiltInDumpType, Float128Type, PrintableElement |  |  |  |  |
-| __int128 | Int128Type, IntegralDumpType, PrintableElement |  |  |  |  |
-| __va_list_tag | DirectAccessHolder, MetricClass, PrintableElement, Struct, StructLikeClass, UserDumpType |  |  |  |  |
-| __va_list_tag & | LValueReferenceDumpType, PrintableElement |  | __va_list_tag |  |  |
-| __va_list_tag && | PrintableElement, RValueReferenceDumpType |  | __va_list_tag |  |  |
-| address | DirectAccessHolder, MetricClass, PrintableElement, Struct, StructLikeClass, UserDumpType |  |  |  |  |
-| address & | LValueReferenceDumpType, PrintableElement |  | address |  |  |
-| address && | PrintableElement, RValueReferenceDumpType |  | address |  |  |
-| auto | AutoType, PrintableElement, UserDumpType |  |  |  |  |
-| bool | BoolType, IntegralDumpType, PrintableElement |  |  |  |  |
-| char | IntegralDumpType, MicrosoftInt8Type, PlainCharType, PrintableElement |  |  |  |  |
-| char8_t | Char8Type, IntegralDumpType, PrintableElement |  |  |  |  |
-| char16_t | Char16Type, IntegralDumpType, PrintableElement |  |  |  |  |
-| char32_t | Char32Type, IntegralDumpType, PrintableElement |  |  |  |  |
-| char * | CharPointerType, PointerDumpType, PrintableElement |  | char |  |  |
-| char *[3] | ArrayDumpType, PrintableElement | char * | char * |  |  |
-| char *[32] | ArrayDumpType, PrintableElement | char * | char * |  |  |
-| char *[] | ArrayDumpType, PrintableElement | char * | char * |  |  |
-| char[2] | ArrayDumpType, PrintableElement | char | char |  |  |
-| char[3] | ArrayDumpType, PrintableElement | char | char |  |  |
-| char[5] | ArrayDumpType, PrintableElement | char | char |  |  |
-| char[6] | ArrayDumpType, PrintableElement | char | char |  |  |
-| char[8] | ArrayDumpType, PrintableElement | char | char |  |  |
-| char[9] | ArrayDumpType, PrintableElement | char | char |  |  |
-| char[10] | ArrayDumpType, PrintableElement | char | char |  |  |
-| char[53] | ArrayDumpType, PrintableElement | char | char |  |  |
-| char[] | ArrayDumpType, PrintableElement | char | char |  |  |
-| const __va_list_tag | PrintableElement, SpecifiedDumpType |  | __va_list_tag |  |  |
-| const __va_list_tag & | LValueReferenceDumpType, PrintableElement |  | const __va_list_tag |  |  |
-| const address | PrintableElement, SpecifiedDumpType |  | address |  |  |
-| const address & | LValueReferenceDumpType, PrintableElement |  | const address |  |  |
-| const char | PrintableElement, SpecifiedDumpType |  | char |  |  |
-| const char * | PointerDumpType, PrintableElement |  | const char |  |  |
-| const char *[3] | ArrayDumpType, PrintableElement | const char * | const char * |  |  |
-| const char *[] | ArrayDumpType, PrintableElement | const char * | const char * |  |  |
-| const char[5] | ArrayDumpType, PrintableElement | const char | const char |  |  |
-| const char[6] | ArrayDumpType, PrintableElement | const char | const char |  |  |
-| const char[8] | ArrayDumpType, PrintableElement | const char | const char |  |  |
-| const char[9] | ArrayDumpType, PrintableElement | const char | const char |  |  |
-| const char[10] | ArrayDumpType, PrintableElement | const char | const char |  |  |
-| const char[53] | ArrayDumpType, PrintableElement | const char | const char |  |  |
-| const double | PrintableElement, SpecifiedDumpType |  | double |  |  |
-| const int | PrintableElement, SpecifiedDumpType |  | int |  |  |
-| decltype(nullptr) | BuiltInDumpType, NullPointerType, PrintableElement |  |  |  |  |
-| double | BuiltInDumpType, DoubleType, PrintableElement |  |  |  |  |
-| error | BuiltInDumpType, ErroneousType, PrintableElement |  |  |  |  |
-| float | BuiltInDumpType, FloatType, PrintableElement |  |  |  |  |
-| float[3] | ArrayDumpType, PrintableElement | float | float |  |  |
-| int | IntType, IntegralDumpType, MicrosoftInt32Type, PrintableElement |  |  |  |  |
-| int * | IntPointerType, PointerDumpType, PrintableElement |  | int |  |  |
-| int[4] | ArrayDumpType, PrintableElement | int | int |  |  |
-| int[8] | ArrayDumpType, PrintableElement | int | int |  |  |
-| int[10] | ArrayDumpType, PrintableElement | int | int |  |  |
-| int[10][20] | ArrayDumpType, PrintableElement | int[20] | int[20] |  |  |
-| int[20] | ArrayDumpType, PrintableElement | int | int |  |  |
-| int[] | ArrayDumpType, PrintableElement | int | int |  |  |
-| long | IntegralDumpType, LongType, PrintableElement |  |  |  |  |
-| long double | BuiltInDumpType, LongDoubleType, PrintableElement |  |  |  |  |
-| long long | IntegralDumpType, LongLongType, MicrosoftInt64Type, PrintableElement |  |  |  |  |
-| short | IntegralDumpType, MicrosoftInt16Type, PrintableElement, ShortType |  |  |  |  |
-| signed __int128 | Int128Type, IntegralDumpType, PrintableElement |  |  |  |  |
-| signed char | IntegralDumpType, PrintableElement, SignedCharType |  |  |  |  |
-| signed int | IntType, IntegralDumpType, PrintableElement |  |  |  |  |
-| signed long | IntegralDumpType, LongType, PrintableElement |  |  |  |  |
-| signed long long | IntegralDumpType, LongLongType, PrintableElement |  |  |  |  |
-| signed short | IntegralDumpType, PrintableElement, ShortType |  |  |  |  |
-| unknown | BuiltInDumpType, PrintableElement, UnknownType |  |  |  |  |
-| unsigned __int128 | Int128Type, IntegralDumpType, PrintableElement |  |  |  | unsigned integral |
-| unsigned char | IntegralDumpType, PrintableElement, UnsignedCharType |  |  |  | unsigned integral |
-| unsigned int | IntType, IntegralDumpType, PrintableElement |  |  | unsigned int | unsigned integral |
-| unsigned long | IntegralDumpType, LongType, PrintableElement |  |  |  | unsigned integral |
-| unsigned long long | IntegralDumpType, LongLongType, PrintableElement |  |  |  | unsigned integral |
-| unsigned short | IntegralDumpType, PrintableElement, ShortType |  |  |  | unsigned integral |
-| void | BuiltInDumpType, PrintableElement, VoidType |  |  |  |  |
-| void * | PointerDumpType, PrintableElement, VoidPointerType |  | void |  |  |
-| wchar_t | IntegralDumpType, PrintableElement, Wchar_t, WideCharType |  |  |  |  |
+| ..()(..) | RoutineType |  |  |  |  |
+| ..(*)(..) | FunctionPointerType |  | ..()(..) |  |  |
+| _Complex __float128 | BinaryFloatingPointType, ComplexNumberType |  |  |  |  |
+| _Complex double | BinaryFloatingPointType, ComplexNumberType |  |  |  |  |
+| _Complex float | BinaryFloatingPointType, ComplexNumberType |  |  |  |  |
+| _Complex long double | BinaryFloatingPointType, ComplexNumberType |  |  |  |  |
+| _Decimal32 | Decimal32Type |  |  |  |  |
+| _Decimal64 | Decimal64Type |  |  |  |  |
+| _Decimal128 | Decimal128Type |  |  |  |  |
+| _Float32 | BinaryFloatingPointType, RealNumberType |  |  |  |  |
+| _Float32x | BinaryFloatingPointType, RealNumberType |  |  |  |  |
+| _Float64 | BinaryFloatingPointType, RealNumberType |  |  |  |  |
+| _Float64x | BinaryFloatingPointType, RealNumberType |  |  |  |  |
+| _Float128 | BinaryFloatingPointType, RealNumberType |  |  |  |  |
+| _Float128x | BinaryFloatingPointType, RealNumberType |  |  |  |  |
+| _Imaginary double | BinaryFloatingPointType, ImaginaryNumberType |  |  |  |  |
+| _Imaginary float | BinaryFloatingPointType, ImaginaryNumberType |  |  |  |  |
+| _Imaginary long double | BinaryFloatingPointType, ImaginaryNumberType |  |  |  |  |
+| __float128 | Float128Type |  |  |  |  |
+| __int128 | Int128Type |  |  |  |  |
+| __va_list_tag | DirectAccessHolder, MetricClass, Struct, StructLikeClass |  |  |  |  |
+| __va_list_tag & | LValueReferenceType |  | __va_list_tag |  |  |
+| __va_list_tag && | RValueReferenceType |  | __va_list_tag |  |  |
+| address | DirectAccessHolder, MetricClass, Struct, StructLikeClass |  |  |  |  |
+| address & | LValueReferenceType |  | address |  |  |
+| address && | RValueReferenceType |  | address |  |  |
+| auto | AutoType |  |  |  |  |
+| bool | BoolType |  |  |  |  |
+| char | MicrosoftInt8Type, PlainCharType |  |  |  |  |
+| char8_t | Char8Type |  |  |  |  |
+| char16_t | Char16Type |  |  |  |  |
+| char32_t | Char32Type |  |  |  |  |
+| char * | CharPointerType |  | char |  |  |
+| char *[3] | ArrayType | char * | char * |  |  |
+| char *[32] | ArrayType | char * | char * |  |  |
+| char *[] | ArrayType | char * | char * |  |  |
+| char[2] | ArrayType | char | char |  |  |
+| char[3] | ArrayType | char | char |  |  |
+| char[5] | ArrayType | char | char |  |  |
+| char[6] | ArrayType | char | char |  |  |
+| char[8] | ArrayType | char | char |  |  |
+| char[9] | ArrayType | char | char |  |  |
+| char[10] | ArrayType | char | char |  |  |
+| char[53] | ArrayType | char | char |  |  |
+| char[] | ArrayType | char | char |  |  |
+| const __va_list_tag | SpecifiedType |  | __va_list_tag |  |  |
+| const __va_list_tag & | LValueReferenceType |  | const __va_list_tag |  |  |
+| const address | SpecifiedType |  | address |  |  |
+| const address & | LValueReferenceType |  | const address |  |  |
+| const char | SpecifiedType |  | char |  |  |
+| const char * | PointerType |  | const char |  |  |
+| const char *[3] | ArrayType | const char * | const char * |  |  |
+| const char *[] | ArrayType | const char * | const char * |  |  |
+| const char[5] | ArrayType | const char | const char |  |  |
+| const char[6] | ArrayType | const char | const char |  |  |
+| const char[8] | ArrayType | const char | const char |  |  |
+| const char[9] | ArrayType | const char | const char |  |  |
+| const char[10] | ArrayType | const char | const char |  |  |
+| const char[53] | ArrayType | const char | const char |  |  |
+| const double | SpecifiedType |  | double |  |  |
+| const int | SpecifiedType |  | int |  |  |
+| decltype(nullptr) | NullPointerType |  |  |  |  |
+| double | DoubleType |  |  |  |  |
+| error | ErroneousType |  |  |  |  |
+| float | FloatType |  |  |  |  |
+| float[3] | ArrayType | float | float |  |  |
+| int | IntType, MicrosoftInt32Type |  |  |  |  |
+| int * | IntPointerType |  | int |  |  |
+| int[4] | ArrayType | int | int |  |  |
+| int[8] | ArrayType | int | int |  |  |
+| int[10] | ArrayType | int | int |  |  |
+| int[10][20] | ArrayType | int[20] | int[20] |  |  |
+| int[20] | ArrayType | int | int |  |  |
+| int[] | ArrayType | int | int |  |  |
+| long | LongType |  |  |  |  |
+| long double | LongDoubleType |  |  |  |  |
+| long long | LongLongType, MicrosoftInt64Type |  |  |  |  |
+| short | MicrosoftInt16Type, ShortType |  |  |  |  |
+| signed __int128 | Int128Type |  |  |  |  |
+| signed char | SignedCharType |  |  |  |  |
+| signed int | IntType |  |  |  |  |
+| signed long | LongType |  |  |  |  |
+| signed long long | LongLongType |  |  |  |  |
+| signed short | ShortType |  |  |  |  |
+| unknown | UnknownType |  |  |  |  |
+| unsigned __int128 | Int128Type |  |  |  | unsigned integral |
+| unsigned char | UnsignedCharType |  |  |  | unsigned integral |
+| unsigned int | IntType |  |  | unsigned int | unsigned integral |
+| unsigned long | LongType |  |  |  | unsigned integral |
+| unsigned long long | LongLongType |  |  |  | unsigned integral |
+| unsigned short | ShortType |  |  |  | unsigned integral |
+| void | VoidType |  |  |  |  |
+| void * | VoidPointerType |  | void |  |  |
+| wchar_t | Wchar_t, WideCharType |  |  |  |  |

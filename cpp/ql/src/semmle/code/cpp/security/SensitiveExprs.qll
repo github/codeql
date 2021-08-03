@@ -14,14 +14,13 @@ private predicate suspicious(string s) {
   (
     s.matches("%password%") or
     s.matches("%passwd%") or
-    s.matches("%account%") or
-    s.matches("%accnt%") or
     s.matches("%trusted%")
   ) and
   not (
-    s.matches("%hashed%") or
-    s.matches("%encrypted%") or
-    s.matches("%crypt%")
+    s.matches("%hash%") or
+    s.matches("%crypt%") or
+    s.matches("%file%") or
+    s.matches("%path%")
   )
 }
 
@@ -29,14 +28,20 @@ private predicate suspicious(string s) {
  * A variable that might contain a password or other sensitive information.
  */
 class SensitiveVariable extends Variable {
-  SensitiveVariable() { suspicious(getName().toLowerCase()) }
+  SensitiveVariable() {
+    suspicious(getName().toLowerCase()) and
+    not this.getUnspecifiedType() instanceof IntegralType
+  }
 }
 
 /**
  * A function that might return a password or other sensitive information.
  */
 class SensitiveFunction extends Function {
-  SensitiveFunction() { suspicious(getName().toLowerCase()) }
+  SensitiveFunction() {
+    suspicious(getName().toLowerCase()) and
+    not this.getUnspecifiedType() instanceof IntegralType
+  }
 }
 
 /**

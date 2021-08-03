@@ -199,7 +199,7 @@ abstract class EjbInterfaceAnnotation extends Annotation {
     // within the "value" element of this annotation.
     // Uses `getAChildExpr*()` since the "value" element can have type `Class` or `Class[]`.
     exists(TypeLiteral tl | tl = getValue("value").getAChildExpr*() |
-      exists(TypeAccess ta | ta = tl.getTypeName() | result = ta.getType())
+      result = tl.getReferencedType()
     )
   }
 }

@@ -299,7 +299,7 @@ private predicate downcastSuccessor(VarAccess va, RefType t) {
 private predicate instanceOfGuarded(VarAccess va, RefType t) {
   exists(InstanceOfExpr ioe, BaseSsaVariable v |
     ioe.getExpr() = v.getAUse() and
-    t = ioe.getTypeName().getType() and
+    t = ioe.getCheckedType() and
     va = v.getAUse() and
     guardControls_v1(ioe, va.getBasicBlock(), true)
   )
@@ -311,7 +311,7 @@ private predicate instanceOfGuarded(VarAccess va, RefType t) {
 predicate arrayInstanceOfGuarded(ArrayAccess aa, RefType t) {
   exists(InstanceOfExpr ioe, BaseSsaVariable v1, BaseSsaVariable v2, ArrayAccess aa1 |
     ioe.getExpr() = aa1 and
-    t = ioe.getTypeName().getType() and
+    t = ioe.getCheckedType() and
     aa1.getArray() = v1.getAUse() and
     aa1.getIndexExpr() = v2.getAUse() and
     aa.getArray() = v1.getAUse() and
