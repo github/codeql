@@ -192,9 +192,6 @@ module Templating {
     /** Gets a data flow node that refers a template file to be instantiated, if any. */
     DataFlow::Node getTemplateFileNode() { result = range.getTemplateFileNode() }
 
-    /** Gets a data flow node that refers to the contents of the template to be instantiated, if any. */
-    DataFlow::Node getTemplateContentNode() { result = range.getTemplateContentNode() }
-
     /** Gets a data flow node that refers to an object whose properties become variables in the template. */
     DataFlow::Node getTemplateParamsNode() { result = range.getTemplateParamsNode() }
 
@@ -219,9 +216,6 @@ module Templating {
 
       /** Gets a data flow node that refers a template file to be instantiated, if any. */
       abstract DataFlow::Node getTemplateFileNode();
-
-      /** Gets a data flow node that refers to the contents of the template to be instantiated, if any. */
-      abstract DataFlow::Node getTemplateContentNode();
 
       /** Gets a data flow node that refers to an object whose properties become variables in the template. */
       abstract DataFlow::Node getTemplateParamsNode();
@@ -631,9 +625,6 @@ module Templating {
     /** Gets a data flow node that refers a template file to be instantiated, if any. */
     override DataFlow::Node getTemplateFileNode() { result = getArgument(0) }
 
-    /** Gets a data flow node that refers to the contents of the template to be instantiated, if any. */
-    override DataFlow::Node getTemplateContentNode() { none() }
-
     /** Gets a data flow node that refers to an object whose properties become variables in the template. */
     override DataFlow::Node getTemplateParamsNode() { result = getArgument(1) }
   }
@@ -708,8 +699,6 @@ module Templating {
     }
 
     override DataFlow::Node getTemplateFileNode() { result = getArgument(0) }
-
-    override DataFlow::Node getTemplateContentNode() { none() }
 
     override DataFlow::Node getTemplateParamsNode() { result = getArgument(1) }
   }

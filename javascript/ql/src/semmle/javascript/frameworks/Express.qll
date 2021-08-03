@@ -984,8 +984,6 @@ module Express {
 
     override DataFlow::Node getTemplateFileNode() { result = getArgument(0) }
 
-    override DataFlow::Node getTemplateContentNode() { none() }
-
     override DataFlow::Node getTemplateParamsNode() { result = getArgument(1) }
 
     override DataFlow::SourceNode getOutput() { result = getCallback(2).getParameter(1) }

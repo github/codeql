@@ -301,8 +301,6 @@ module Fastify {
 
     override DataFlow::Node getTemplateFileNode() { result = getArgument(0) }
 
-    override DataFlow::Node getTemplateContentNode() { none() }
-
     override DataFlow::Node getTemplateParamsNode() { result = getArgument(1) }
   }
 }
