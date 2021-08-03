@@ -233,7 +233,11 @@ private class NodeEx extends TNodeEx {
 }
 
 private class ArgNodeEx extends NodeEx {
-  ArgNodeEx() { this.asNode() instanceof ArgNode }
+  private ArgNode arg;
+
+  ArgNodeEx() { this = TNodeNormal(arg) }
+
+  override ArgNode asNode() { result = arg }
 }
 
 private class ParamNodeEx extends NodeEx {
@@ -940,11 +944,19 @@ private module Stage2 {
 
   private class LocalCc = Unit;
 
-  bindingset[call, c, outercc]
-  private CcCall getCallContextCall(DataFlowCall call, DataFlowCallable c, Cc outercc) { any() }
+  bindingset[call, c, outercc, config]
+  private CcCall getCallContextCall(
+    DataFlowCall call, DataFlowCallable c, Cc outercc, Configuration config
+  ) {
+    any()
+  }
 
-  bindingset[call, c, innercc]
-  private CcNoCall getCallContextReturn(DataFlowCallable c, DataFlowCall call, Cc innercc) { any() }
+  bindingset[call, c, innercc, config]
+  private CcNoCall getCallContextReturn(
+    DataFlowCallable c, DataFlowCall call, Cc innercc, Configuration config
+  ) {
+    any()
+  }
 
   bindingset[node, cc, config]
   private LocalCc getLocalCc(NodeEx node, Cc cc, Configuration config) { any() }
@@ -1100,7 +1112,7 @@ private module Stage2 {
     exists(ArgNodeEx arg, boolean allowsFieldFlow |
       fwdFlow(arg, outercc, argAp, ap, config) and
       flowIntoCall(call, arg, p, allowsFieldFlow, config) and
-      innercc = getCallContextCall(call, p.getEnclosingCallable(), outercc)
+      innercc = getCallContextCall(call, p.getEnclosingCallable(), outercc, config)
     |
       ap instanceof ApNil or allowsFieldFlow = true
     )
@@ -1117,7 +1129,7 @@ private module Stage2 {
       fwdFlow(ret, innercc, argAp, ap, config) and
       flowOutOfCall(call, ret, out, allowsFieldFlow, config) and
       inner = ret.getEnclosingCallable() and
-      ccOut = getCallContextReturn(inner, call, innercc)
+      ccOut = getCallContextReturn(inner, call, innercc, config)
     |
       ap instanceof ApNil or allowsFieldFlow = true
     )
@@ -1606,11 +1618,19 @@ private module Stage3 {
 
   private class LocalCc = Unit;
 
-  bindingset[call, c, outercc]
-  private CcCall getCallContextCall(DataFlowCall call, DataFlowCallable c, Cc outercc) { any() }
+  bindingset[call, c, outercc, config]
+  private CcCall getCallContextCall(
+    DataFlowCall call, DataFlowCallable c, Cc outercc, Configuration config
+  ) {
+    any()
+  }
 
-  bindingset[call, c, innercc]
-  private CcNoCall getCallContextReturn(DataFlowCallable c, DataFlowCall call, Cc innercc) { any() }
+  bindingset[call, c, innercc, config]
+  private CcNoCall getCallContextReturn(
+    DataFlowCallable c, DataFlowCall call, Cc innercc, Configuration config
+  ) {
+    any()
+  }
 
   bindingset[node, cc, config]
   private LocalCc getLocalCc(NodeEx node, Cc cc, Configuration config) { any() }
@@ -1788,7 +1808,7 @@ private module Stage3 {
     exists(ArgNodeEx arg, boolean allowsFieldFlow |
       fwdFlow(arg, outercc, argAp, ap, config) and
       flowIntoCall(call, arg, p, allowsFieldFlow, config) and
-      innercc = getCallContextCall(call, p.getEnclosingCallable(), outercc)
+      innercc = getCallContextCall(call, p.getEnclosingCallable(), outercc, config)
     |
       ap instanceof ApNil or allowsFieldFlow = true
     )
@@ -1805,7 +1825,7 @@ private module Stage3 {
       fwdFlow(ret, innercc, argAp, ap, config) and
       flowOutOfCall(call, ret, out, allowsFieldFlow, config) and
       inner = ret.getEnclosingCallable() and
-      ccOut = getCallContextReturn(inner, call, innercc)
+      ccOut = getCallContextReturn(inner, call, innercc, config)
     |
       ap instanceof ApNil or allowsFieldFlow = true
     )
@@ -2350,16 +2370,61 @@ private module Stage4 {
 
   private class LocalCc = LocalCallContext;
 
-  bindingset[call, c, outercc]
-  private CcCall getCallContextCall(DataFlowCall call, DataFlowCallable c, Cc outercc) {
-    checkCallContextCall(outercc, call, c) and
-    if recordDataFlowCallSite(call, c) then result = TSpecificCall(call) else result = TSomeCall()
+  /**
+   * Same as `recordDataFlowCallSite/2`, but reduced in size using pruning from
+   * previous stages.
+   */
+  pragma[nomagic]
+  private predicate recordDataFlowCallSite(
+    DataFlowCall call, DataFlowCallable callable, Configuration config
+  ) {
+    exists(DataFlowCall inner, ArgNodeEx arg |
+      reducedViableImplInCallContext(inner, callable, call) and
+      arg.asNode().argumentOf(inner, _) and
+      PrevStage::revFlow(arg, config)
+    )
+    or
+    exists(NodeEx n |
+      n.getEnclosingCallable() = callable and
+      isUnreachableInCallCached(pragma[only_bind_into](n.asNode()), call) and
+      Stage2::revFlow(n, config)
+    )
   }
 
-  bindingset[call, c, innercc]
-  private CcNoCall getCallContextReturn(DataFlowCallable c, DataFlowCall call, Cc innercc) {
+  bindingset[call, c, outercc, config]
+  private CcCall getCallContextCall(
+    DataFlowCall call, DataFlowCallable c, Cc outercc, Configuration config
+  ) {
+    checkCallContextCall(outercc, call, c) and
+    if recordDataFlowCallSite(call, c, config)
+    then result = TSpecificCall(call)
+    else result = TSomeCall()
+  }
+
+  /**
+   * Same as `reducedViableImplInReturn/2`, but reduced in size using pruning from
+   * previous stage.
+   */
+  pragma[nomagic]
+  private predicate reducedViableImplInReturn(
+    DataFlowCallable c, DataFlowCall call, Configuration config
+  ) {
+    reducedViableImplInReturn(c, call) and
+    exists(DataFlowCall ctx, RetNodeEx ret |
+      callEnclosingCallable(call, ret.getEnclosingCallable()) and
+      flowOutOfCall(ctx, ret, _, _, config) and
+      not c = viableImplInCallContextExt(call, ctx)
+    )
+  }
+
+  bindingset[call, c, innercc, config]
+  private CcNoCall getCallContextReturn(
+    DataFlowCallable c, DataFlowCall call, Cc innercc, Configuration config
+  ) {
     checkCallContextReturn(innercc, c, call) and
-    if reducedViableImplInReturn(c, call) then result = TReturn(c, call) else result = ccNone()
+    if reducedViableImplInReturn(c, call, config)
+    then result = TReturn(c, call)
+    else result = ccNone()
   }
 
   bindingset[node, cc, config]
@@ -2377,7 +2442,7 @@ private module Stage4 {
   }
 
   pragma[nomagic]
-  private predicate flowOutOfCall(
+  predicate flowOutOfCall(
     DataFlowCall call, RetNodeEx node1, NodeEx node2, boolean allowsFieldFlow, Configuration config
   ) {
     flowOutOfCallNodeCand2(call, node1, node2, allowsFieldFlow, config) and
@@ -2546,7 +2611,7 @@ private module Stage4 {
     exists(ArgNodeEx arg, boolean allowsFieldFlow |
       fwdFlow(arg, outercc, argAp, ap, config) and
       flowIntoCall(call, arg, p, allowsFieldFlow, config) and
-      innercc = getCallContextCall(call, p.getEnclosingCallable(), outercc)
+      innercc = getCallContextCall(call, p.getEnclosingCallable(), outercc, config)
     |
       ap instanceof ApNil or allowsFieldFlow = true
     )
@@ -2563,7 +2628,7 @@ private module Stage4 {
       fwdFlow(ret, innercc, argAp, ap, config) and
       flowOutOfCall(call, ret, out, allowsFieldFlow, config) and
       inner = ret.getEnclosingCallable() and
-      ccOut = getCallContextReturn(inner, call, innercc)
+      ccOut = getCallContextReturn(inner, call, innercc, config)
     |
       ap instanceof ApNil or allowsFieldFlow = true
     )
@@ -3482,6 +3547,23 @@ private predicate pathOutOfCallable0(
   config = mid.getConfiguration()
 }
 
+/**
+ * Same as `reducedViableImplInReturn/2`, but reduced in size using pruning from
+ * previous stage.
+ */
+pragma[nomagic]
+private predicate pathReducedViableImplInReturn(
+  DataFlowCallable c, DataFlowCall call, Configuration config
+) {
+  reducedViableImplInReturn(c, call) and
+  exists(DataFlowCall ctx, RetNodeEx ret |
+    callEnclosingCallable(call, ret.getEnclosingCallable()) and
+    Stage4::flowOutOfCall(ctx, ret, _, _, pragma[only_bind_into](config)) and
+    Stage4::revFlow(ret, pragma[only_bind_into](config)) and
+    not c = viableImplInCallContextExt(call, ctx)
+  )
+}
+
 pragma[nomagic]
 private predicate pathOutOfCallable1(
   PathNodeMid mid, DataFlowCall call, ReturnKindExt kind, CallContext cc, AccessPathApprox apa,
@@ -3493,7 +3575,9 @@ private predicate pathOutOfCallable1(
     kind = pos.getKind() and
     resolveReturn(innercc, c, call)
   |
-    if reducedViableImplInReturn(c, call) then cc = TReturn(c, call) else cc = TAnyCallContext()
+    if pathReducedViableImplInReturn(c, call, config)
+    then cc = TReturn(c, call)
+    else cc = TAnyCallContext()
   )
 }
 
@@ -3556,6 +3640,27 @@ private predicate pathIntoCallable0(
 }
 
 /**
+ * Same as `recordDataFlowCallSite/2`, but reduced in size using pruning from
+ * previous stages.
+ */
+pragma[nomagic]
+private predicate pathRecordDataFlowCallSite(
+  DataFlowCall call, DataFlowCallable callable, Configuration config
+) {
+  exists(DataFlowCall inner, ArgNodeEx arg |
+    reducedViableImplInCallContext(inner, callable, call) and
+    arg.asNode().argumentOf(inner, _) and
+    Stage4::revFlow(arg, config)
+  )
+  or
+  exists(NodeEx n |
+    n.getEnclosingCallable() = callable and
+    isUnreachableInCallCached(pragma[only_bind_into](n.asNode()), call) and
+    Stage2::revFlow(n, config)
+  )
+}
+
+/**
  * Holds if data may flow from `mid` to `p` through `call`. The contexts
  * before and after entering the callable are `outercc` and `innercc`,
  * respectively.
@@ -3564,7 +3669,7 @@ private predicate pathIntoCallable(
   PathNodeMid mid, ParamNodeEx p, CallContext outercc, CallContextCall innercc, SummaryCtx sc,
   DataFlowCall call
 ) {
-  exists(int i, DataFlowCallable callable, AccessPath ap |
+  exists(int i, DataFlowCallable callable, AccessPath ap, Configuration config |
     pathIntoCallable0(mid, callable, i, outercc, call, ap) and
     p.isParameterOf(callable, i) and
     (
@@ -3572,9 +3677,10 @@ private predicate pathIntoCallable(
       or
       not exists(TSummaryCtxSome(p, ap)) and
       sc = TSummaryCtxNone()
-    )
+    ) and
+    config = mid.getConfiguration()
   |
-    if recordDataFlowCallSite(call, callable)
+    if pathRecordDataFlowCallSite(call, callable, config)
     then innercc = TSpecificCall(call)
     else innercc = TSomeCall()
   )
