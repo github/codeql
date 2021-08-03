@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.util.concurrent.Executor;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
@@ -41,7 +42,15 @@ import android.view.Display;
  * the original Context.
  */
 public class ContextWrapper extends Context {
-    public ContextWrapper() {
+    public ContextWrapper() {}
+
+    public Context getBaseContext() {
+        return null;
+    }
+
+    @Override
+    public Executor getMainExecutor() {
+        return null;
     }
 
     public ContextWrapper(Context base) {

@@ -20,7 +20,6 @@ import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.annotation.RequiresPermission;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.net.Uri;
@@ -29,9 +28,8 @@ import android.os.UserHandle;
 import android.view.View;
 
 public class Activity extends ContextWrapper {
-    public Activity(Context base) {
-        super(base);
-    }
+
+    public void onCreate(Bundle savedInstanceState) {}
 
     public Intent getIntent() {
         return null;
@@ -131,6 +129,8 @@ public class Activity extends ContextWrapper {
     public void setPersistent(boolean isPersistent) {}
 
     public void setContentView(View view) {}
+
+    public void setContentView(int layoutResID) {}
 
     public void setFinishOnTouchOutside(boolean finish) {}
 
@@ -486,4 +486,8 @@ public class Activity extends ContextWrapper {
     public void setShowWhenLocked(boolean showWhenLocked) {}
 
     public void setTurnScreenOn(boolean turnScreenOn) {}
+
+    public <T extends View> T findViewById(int id) {
+        return null;
+    }
 }
