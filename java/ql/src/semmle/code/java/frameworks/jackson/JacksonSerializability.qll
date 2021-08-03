@@ -51,6 +51,10 @@ private class JacksonWriteValueMethod extends Method, TaintPreservingCallable {
   }
 }
 
+/**
+ * A method used for deserializing objects using Jackson. The first parameter is the object to be
+ * deserialized.
+ */
 private class JacksonReadValueMethod extends Method, TaintPreservingCallable {
   JacksonReadValueMethod() {
     (
@@ -281,7 +285,10 @@ private class JacksonModel extends SummaryModelCsv {
       [
         "com.fasterxml.jackson.databind;ObjectMapper;true;valueToTree;;;Argument[0];ReturnValue;taint",
         "com.fasterxml.jackson.databind;ObjectMapper;true;valueToTree;;;MapValue of Argument[0];ReturnValue;taint",
-        "com.fasterxml.jackson.databind;ObjectMapper;true;convertValue;;;Argument[0];ReturnValue;taint"
+        "com.fasterxml.jackson.databind;ObjectMapper;true;convertValue;;;Argument[0];ReturnValue;taint",
+        "com.fasterxml.jackson.databind;ObjectMapper;false;createParser;;;Argument[0];ReturnValue;taint",
+        "com.fasterxml.jackson.databind;ObjectReader;false;createParser;;;Argument[0];ReturnValue;taint",
+        "com.fasterxml.jackson.core;JsonFactory;false;createParser;;;Argument[0];ReturnValue;taint"
       ]
   }
 }
