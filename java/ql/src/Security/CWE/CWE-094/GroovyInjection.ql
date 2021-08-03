@@ -11,8 +11,8 @@
  */
 
 import java
+import semmle.code.java.security.GroovyInjectionQuery
 import DataFlow::PathGraph
-import GroovyInjectionLib
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, GroovyInjectionConfig conf
 where conf.hasFlowPath(source, sink)

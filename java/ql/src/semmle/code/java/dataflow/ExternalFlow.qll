@@ -97,6 +97,7 @@ private module Frameworks {
   private import semmle.code.java.frameworks.spring.SpringWebMultipart
   private import semmle.code.java.security.ResponseSplitting
   private import semmle.code.java.security.InformationLeak
+  private import semmle.code.java.security.GroovyInjection
   private import semmle.code.java.security.JexlInjectionSinkModels
   private import semmle.code.java.security.LdapInjection
   private import semmle.code.java.security.MvelInjection
@@ -329,6 +330,7 @@ private predicate summaryModelCsv(string row) {
       "java.io;File;false;File;;;Argument[0];Argument[-1];taint",
       "java.io;File;false;File;;;Argument[1];Argument[-1];taint",
       "java.net;URI;false;URI;(String);;Argument[0];Argument[-1];taint",
+      "java.net;URL;false;URL;(String);;Argument[0];Argument[-1];taint",
       "javax.xml.transform.stream;StreamSource;false;StreamSource;;;Argument[0];Argument[-1];taint",
       "javax.xml.transform.sax;SAXSource;false;SAXSource;(InputSource);;Argument[0];Argument[-1];taint",
       "javax.xml.transform.sax;SAXSource;false;SAXSource;(XMLReader,InputSource);;Argument[1];Argument[-1];taint",

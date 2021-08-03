@@ -14,7 +14,10 @@ edges
 | InsecureBasicAuth.java:109:19:109:68 | "http://www.example.com/rest/getuser.do?uid=abcdx" : String | InsecureBasicAuth.java:110:58:110:63 | uriStr : String |
 | InsecureBasicAuth.java:110:29:110:70 | new BasicRequestLine(...) : BasicRequestLine | InsecureBasicAuth.java:119:3:119:6 | post |
 | InsecureBasicAuth.java:110:58:110:63 | uriStr : String | InsecureBasicAuth.java:110:29:110:70 | new BasicRequestLine(...) : BasicRequestLine |
+| InsecureBasicAuth.java:126:19:126:68 | "http://www.example.com/rest/getuser.do?uid=abcdx" : String | InsecureBasicAuth.java:129:21:129:26 | urlStr : String |
 | InsecureBasicAuth.java:126:19:126:68 | "http://www.example.com/rest/getuser.do?uid=abcdx" : String | InsecureBasicAuth.java:130:28:130:67 | (...)... : URLConnection |
+| InsecureBasicAuth.java:129:13:129:27 | new URL(...) : URL | InsecureBasicAuth.java:130:28:130:67 | (...)... : URLConnection |
+| InsecureBasicAuth.java:129:21:129:26 | urlStr : String | InsecureBasicAuth.java:129:13:129:27 | new URL(...) : URL |
 | InsecureBasicAuth.java:130:28:130:67 | (...)... : URLConnection | InsecureBasicAuth.java:133:3:133:6 | conn |
 | InsecureBasicAuth.java:145:21:145:28 | protocol : String | InsecureBasicAuth.java:146:28:146:67 | (...)... : URLConnection |
 | InsecureBasicAuth.java:146:28:146:67 | (...)... : URLConnection | InsecureBasicAuth.java:149:3:149:6 | conn |
@@ -40,6 +43,8 @@ nodes
 | InsecureBasicAuth.java:110:58:110:63 | uriStr : String | semmle.label | uriStr : String |
 | InsecureBasicAuth.java:119:3:119:6 | post | semmle.label | post |
 | InsecureBasicAuth.java:126:19:126:68 | "http://www.example.com/rest/getuser.do?uid=abcdx" : String | semmle.label | "http://www.example.com/rest/getuser.do?uid=abcdx" : String |
+| InsecureBasicAuth.java:129:13:129:27 | new URL(...) : URL | semmle.label | new URL(...) : URL |
+| InsecureBasicAuth.java:129:21:129:26 | urlStr : String | semmle.label | urlStr : String |
 | InsecureBasicAuth.java:130:28:130:67 | (...)... : URLConnection | semmle.label | (...)... : URLConnection |
 | InsecureBasicAuth.java:133:3:133:6 | conn | semmle.label | conn |
 | InsecureBasicAuth.java:145:21:145:28 | protocol : String | semmle.label | protocol : String |
