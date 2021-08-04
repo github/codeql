@@ -42,8 +42,8 @@ int rand(int min, int max);
 unsigned rand(int max);
 
 void test_with_bounded_randomness() {
-  int r = rand(0, 10);
-  r++; // GOOD
+	int r = rand(0, 10);
+	r++; // GOOD
 
 	unsigned unsigned_r = rand(10);
 	unsigned_r++; // GOOD
@@ -56,6 +56,14 @@ int test_remainder_subtract()
 
 	return x - y; // GOOD (as y <= x)
 }
+
+
+
+
+
+
+
+
 
 typedef unsigned long size_t;
 int snprintf(char *s, size_t n, const char *format, ...);
@@ -123,6 +131,20 @@ int test_conditional_assignment_2()
 	
 	return y * 10; // GOOD (as y <= 100)
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 int test_underflow()
 {
