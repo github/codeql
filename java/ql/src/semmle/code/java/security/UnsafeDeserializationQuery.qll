@@ -14,6 +14,7 @@ private import semmle.code.java.frameworks.YamlBeans
 private import semmle.code.java.frameworks.HessianBurlap
 private import semmle.code.java.frameworks.Castor
 private import semmle.code.java.frameworks.Jackson
+private import semmle.code.java.frameworks.Jabsorb
 private import semmle.code.java.frameworks.apache.Lang
 private import semmle.code.java.Reflection
 
@@ -184,6 +185,13 @@ predicate unsafeDeserialization(MethodAccess ma, Expr sink) {
       hasArgumentWithUnsafeJacksonAnnotation(ma)
     ) and
     not exists(SafeObjectMapperConfig config | config.hasFlowToExpr(ma.getQualifier()))
+    or
+    m instanceof JabsorbUnmarshallMethod and
+    sink = ma.getArgument(2) and
+    any(UnsafeTypeConfig config).hasFlowToExpr(ma.getArgument(1))
+    or
+    m instanceof JabsorbFromJsonMethod and
+    sink = ma.getArgument(0)
   )
 }
 
@@ -243,9 +251,36 @@ class UnsafeDeserializationConfig extends TaintTracking::Configuration {
   }
 }
 
+/** Holds if `fromNode` to `toNode` is a dataflow step that resolves a class. */
+predicate resolveClassStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
+  exists(ReflectiveClassIdentifierMethodAccess ma |
+    ma.getArgument(0) = fromNode.asExpr() and
+    ma = toNode.asExpr()
+  )
+}
+
+/**
+ * Holds if `fromNode` to `toNode` is a dataflow step that looks like resolving a class.
+ * A method probably resolves a class if it takes a string, returns a type descriptor,
+ * and its name contains "resolve", "load", etc.
+ *
+ * Any method call that satisfies the rule above is assumed to propagate taint from its string arguments,
+ * so methods that accept user-controlled data but sanitize it or use it for some
+ * completely different purpose before returning a type descriptor could result in false positives.
+ */
+predicate looksLikeResolveClassStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
+  exists(MethodAccess ma, Method m, Expr arg | m = ma.getMethod() and arg = ma.getAnArgument() |
+    m.getReturnType() instanceof JacksonTypeDescriptorType and
+    m.getName().toLowerCase().regexpMatch("(?i).*(resolve|load|class|type).*") and
+    arg.getType() instanceof TypeString and
+    arg = fromNode.asExpr() and
+    ma = toNode.asExpr()
+  )
+}
+
 /**
  * Tracks flow from a remote source to a type descriptor (e.g. a `java.lang.Class` instance)
- * passed to a Jackson deserialization method.
+ * passed to a deserialization method.
  *
  * If this is user-controlled, arbitrary code could be executed while instantiating the user-specified type.
  */
@@ -256,7 +291,12 @@ class UnsafeTypeConfig extends TaintTracking2::Configuration {
 
   override predicate isSink(DataFlow::Node sink) {
     exists(MethodAccess ma, int i, Expr arg | i > 0 and ma.getArgument(i) = arg |
-      ma.getMethod() instanceof ObjectMapperReadMethod and
+      (
+        ma.getMethod() instanceof ObjectMapperReadMethod
+        or
+        ma.getMethod() instanceof JabsorbUnmarshallMethod
+      ) and
+      // Note `JacksonTypeDescriptorType` includes plain old `java.lang.Class`
       arg.getType() instanceof JacksonTypeDescriptorType and
       arg = sink.asExpr()
     )
