@@ -120,7 +120,6 @@ public class Test {
 	HashedMap newHashedMapWithMapKey(Object element) { HashedMap m = new HashedMap(); m.put(element,null); return m; }
 	MyAbstractMapEntry newMAMEWithMapKey(Object element) { return new MyAbstractMapEntry(element,null); }
 	MyAbstractMapEntryDecorator newMAMEDWithMapKey(Object element) { return new MyAbstractMapEntryDecorator(newMAMEWithMapKey(element)); }
-	// MultiMap newMMWithMapKey(Object element) { MultiMap m = new MultiValueMap(); m.put(element,null); return m; }
 	MultiValuedMap newMVMWithMapKey(Object element) { MultiValuedMap m = new ArrayListValuedHashMap(); m.put(element,null); return m; }
 	OrderedMapIterator newOMIWithElement(Object element) { LinkedMap m = new LinkedMap(); m.put(element,null); return m.mapIterator(); }
 	ResourceBundle newRBWithMapKey(Object element) { return (ResourceBundle)null; }
