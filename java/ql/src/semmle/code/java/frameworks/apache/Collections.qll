@@ -84,6 +84,8 @@ private class ApacheCollectionsModel extends SummaryModelCsv {
         "org.apache.commons.collections4;IterableGet;true;mapIterator;;;MapValue of Argument[-1];MapValue of ReturnValue;value",
         "org.apache.commons.collections4;KeyValue;true;getKey;;;MapKey of Argument[-1];ReturnValue;value",
         "org.apache.commons.collections4;KeyValue;true;getValue;;;MapValue of Argument[-1];ReturnValue;value",
+        // Note that MapIterator<K, V> implements Iterator<K>, so it iterates over the keys of the map.
+        // In order for the models of Iterator to work we have to use Element instead of MapKey for key data.
         "org.apache.commons.collections4;MapIterator;true;getKey;;;Element of Argument[-1];ReturnValue;value",
         "org.apache.commons.collections4;MapIterator;true;getValue;;;MapValue of Argument[-1];ReturnValue;value",
         "org.apache.commons.collections4;MapIterator;true;next;;;Element of Argument[-1];ReturnValue;value",
