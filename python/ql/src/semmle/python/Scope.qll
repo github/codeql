@@ -146,8 +146,9 @@ class Scope extends Scope_ {
   Stmt getLastStatement() { result = this.getBody().getLastItem().getLastStatement() }
 
   /** Whether this contains `inner` syntactically and `inner` has the same scope as `this` */
+  pragma[nomagic]
   predicate containsInScope(AstNode inner) {
     this.getBody().contains(inner) and
-    this = inner.getScope()
+    this = pragma[only_bind_out](inner).getScope()
   }
 }
