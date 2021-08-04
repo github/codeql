@@ -6,8 +6,8 @@
 <p>Casts are often used when you iterate over a collection of elements of a type that is known to 
 contain only elements of a different type (possibly more specific). For example, <code>List&lt;Animal
 &gt; </code> might refer to a collection of instances of <code>Dog</code>, a class derived from 
-<code> Animal</code>. Programmers often write a loop to iterate over the collection and cast each 
-<code> Animal</code> in turn to <code>Dog</code> before using it</p>
+<code>Animal</code>. Programmers often write a loop to iterate over the collection and cast each 
+<code>Animal</code> in turn to <code>Dog</code> before using it</p>
 
 </overview>
 <recommendation>

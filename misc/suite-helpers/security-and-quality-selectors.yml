@@ -14,6 +14,14 @@
     problem.severity:
       - error
       - warning
+- include:
+    kind:
+    - diagnostic
+- include:
+    kind:
+    - metric
+    tags contain:
+    - summary
 - exclude:
     deprecated: //
 - exclude:

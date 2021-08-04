@@ -25,8 +25,8 @@ Expr enumConstEquality(Expr e, boolean polarity, EnumConstant c) {
 }
 
 /** Gets an instanceof expression of `v` with type `type` */
-InstanceOfExpr instanceofExpr(SsaVariable v, Type type) {
-  result.getTypeName().getType() = type and
+InstanceOfExpr instanceofExpr(SsaVariable v, RefType type) {
+  result.getCheckedType() = type and
   result.getExpr() = v.getAUse()
 }
 

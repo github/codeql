@@ -374,6 +374,13 @@ nodes
 | string-manipulations.js:10:16:10:45 | String( ... n.href) |
 | string-manipulations.js:10:23:10:44 | documen ... on.href |
 | string-manipulations.js:10:23:10:44 | documen ... on.href |
+| tooltip.jsx:6:11:6:30 | source |
+| tooltip.jsx:6:20:6:30 | window.name |
+| tooltip.jsx:6:20:6:30 | window.name |
+| tooltip.jsx:10:25:10:30 | source |
+| tooltip.jsx:10:25:10:30 | source |
+| tooltip.jsx:11:25:11:30 | source |
+| tooltip.jsx:11:25:11:30 | source |
 | translate.js:6:7:6:39 | target |
 | translate.js:6:16:6:39 | documen ... .search |
 | translate.js:6:16:6:39 | documen ... .search |
@@ -684,6 +691,14 @@ nodes
 | tst.js:444:44:444:49 | source |
 | tst.js:445:32:445:37 | source |
 | tst.js:445:32:445:37 | source |
+| tst.js:453:7:453:39 | source |
+| tst.js:453:16:453:39 | documen ... .search |
+| tst.js:453:16:453:39 | documen ... .search |
+| tst.js:455:18:455:23 | source |
+| tst.js:455:18:455:23 | source |
+| tst.js:456:18:456:42 | ansiToH ... source) |
+| tst.js:456:18:456:42 | ansiToH ... source) |
+| tst.js:456:36:456:41 | source |
 | typeahead.js:20:13:20:45 | target |
 | typeahead.js:20:22:20:45 | documen ... .search |
 | typeahead.js:20:22:20:45 | documen ... .search |
@@ -1077,6 +1092,12 @@ edges
 | string-manipulations.js:10:23:10:44 | documen ... on.href | string-manipulations.js:10:16:10:45 | String( ... n.href) |
 | string-manipulations.js:10:23:10:44 | documen ... on.href | string-manipulations.js:10:16:10:45 | String( ... n.href) |
 | string-manipulations.js:10:23:10:44 | documen ... on.href | string-manipulations.js:10:16:10:45 | String( ... n.href) |
+| tooltip.jsx:6:11:6:30 | source | tooltip.jsx:10:25:10:30 | source |
+| tooltip.jsx:6:11:6:30 | source | tooltip.jsx:10:25:10:30 | source |
+| tooltip.jsx:6:11:6:30 | source | tooltip.jsx:11:25:11:30 | source |
+| tooltip.jsx:6:11:6:30 | source | tooltip.jsx:11:25:11:30 | source |
+| tooltip.jsx:6:20:6:30 | window.name | tooltip.jsx:6:11:6:30 | source |
+| tooltip.jsx:6:20:6:30 | window.name | tooltip.jsx:6:11:6:30 | source |
 | translate.js:6:7:6:39 | target | translate.js:7:42:7:47 | target |
 | translate.js:6:16:6:39 | documen ... .search | translate.js:6:7:6:39 | target |
 | translate.js:6:16:6:39 | documen ... .search | translate.js:6:7:6:39 | target |
@@ -1341,6 +1362,13 @@ edges
 | tst.js:436:6:436:38 | source | tst.js:445:32:445:37 | source |
 | tst.js:436:15:436:38 | documen ... .search | tst.js:436:6:436:38 | source |
 | tst.js:436:15:436:38 | documen ... .search | tst.js:436:6:436:38 | source |
+| tst.js:453:7:453:39 | source | tst.js:455:18:455:23 | source |
+| tst.js:453:7:453:39 | source | tst.js:455:18:455:23 | source |
+| tst.js:453:7:453:39 | source | tst.js:456:36:456:41 | source |
+| tst.js:453:16:453:39 | documen ... .search | tst.js:453:7:453:39 | source |
+| tst.js:453:16:453:39 | documen ... .search | tst.js:453:7:453:39 | source |
+| tst.js:456:36:456:41 | source | tst.js:456:18:456:42 | ansiToH ... source) |
+| tst.js:456:36:456:41 | source | tst.js:456:18:456:42 | ansiToH ... source) |
 | typeahead.js:20:13:20:45 | target | typeahead.js:21:12:21:17 | target |
 | typeahead.js:20:22:20:45 | documen ... .search | typeahead.js:20:13:20:45 | target |
 | typeahead.js:20:22:20:45 | documen ... .search | typeahead.js:20:13:20:45 | target |
@@ -1483,6 +1511,8 @@ edges
 | string-manipulations.js:8:16:8:48 | documen ... mLeft() | string-manipulations.js:8:16:8:37 | documen ... on.href | string-manipulations.js:8:16:8:48 | documen ... mLeft() | Cross-site scripting vulnerability due to $@. | string-manipulations.js:8:16:8:37 | documen ... on.href | user-provided value |
 | string-manipulations.js:9:16:9:58 | String. ... n.href) | string-manipulations.js:9:36:9:57 | documen ... on.href | string-manipulations.js:9:16:9:58 | String. ... n.href) | Cross-site scripting vulnerability due to $@. | string-manipulations.js:9:36:9:57 | documen ... on.href | user-provided value |
 | string-manipulations.js:10:16:10:45 | String( ... n.href) | string-manipulations.js:10:23:10:44 | documen ... on.href | string-manipulations.js:10:16:10:45 | String( ... n.href) | Cross-site scripting vulnerability due to $@. | string-manipulations.js:10:23:10:44 | documen ... on.href | user-provided value |
+| tooltip.jsx:10:25:10:30 | source | tooltip.jsx:6:20:6:30 | window.name | tooltip.jsx:10:25:10:30 | source | Cross-site scripting vulnerability due to $@. | tooltip.jsx:6:20:6:30 | window.name | user-provided value |
+| tooltip.jsx:11:25:11:30 | source | tooltip.jsx:6:20:6:30 | window.name | tooltip.jsx:11:25:11:30 | source | Cross-site scripting vulnerability due to $@. | tooltip.jsx:6:20:6:30 | window.name | user-provided value |
 | translate.js:9:27:9:50 | searchP ... 'term') | translate.js:6:16:6:39 | documen ... .search | translate.js:9:27:9:50 | searchP ... 'term') | Cross-site scripting vulnerability due to $@. | translate.js:6:16:6:39 | documen ... .search | user-provided value |
 | tst3.js:4:25:4:32 | data.src | tst3.js:2:42:2:63 | window. ... .search | tst3.js:4:25:4:32 | data.src | Cross-site scripting vulnerability due to $@. | tst3.js:2:42:2:63 | window. ... .search | user-provided value |
 | tst3.js:5:26:5:31 | data.p | tst3.js:2:42:2:63 | window. ... .search | tst3.js:5:26:5:31 | data.p | Cross-site scripting vulnerability due to $@. | tst3.js:2:42:2:63 | window. ... .search | user-provided value |
@@ -1566,6 +1596,8 @@ edges
 | tst.js:443:41:443:46 | source | tst.js:436:15:436:38 | documen ... .search | tst.js:443:41:443:46 | source | Cross-site scripting vulnerability due to $@. | tst.js:436:15:436:38 | documen ... .search | user-provided value |
 | tst.js:444:44:444:49 | source | tst.js:436:15:436:38 | documen ... .search | tst.js:444:44:444:49 | source | Cross-site scripting vulnerability due to $@. | tst.js:436:15:436:38 | documen ... .search | user-provided value |
 | tst.js:445:32:445:37 | source | tst.js:436:15:436:38 | documen ... .search | tst.js:445:32:445:37 | source | Cross-site scripting vulnerability due to $@. | tst.js:436:15:436:38 | documen ... .search | user-provided value |
+| tst.js:455:18:455:23 | source | tst.js:453:16:453:39 | documen ... .search | tst.js:455:18:455:23 | source | Cross-site scripting vulnerability due to $@. | tst.js:453:16:453:39 | documen ... .search | user-provided value |
+| tst.js:456:18:456:42 | ansiToH ... source) | tst.js:453:16:453:39 | documen ... .search | tst.js:456:18:456:42 | ansiToH ... source) | Cross-site scripting vulnerability due to $@. | tst.js:453:16:453:39 | documen ... .search | user-provided value |
 | typeahead.js:25:18:25:20 | val | typeahead.js:20:22:20:45 | documen ... .search | typeahead.js:25:18:25:20 | val | Cross-site scripting vulnerability due to $@. | typeahead.js:20:22:20:45 | documen ... .search | user-provided value |
 | v-html.vue:2:8:2:23 | v-html=tainted | v-html.vue:6:42:6:58 | document.location | v-html.vue:2:8:2:23 | v-html=tainted | Cross-site scripting vulnerability due to $@. | v-html.vue:6:42:6:58 | document.location | user-provided value |
 | various-concat-obfuscations.js:4:4:4:31 | "<div>" ... </div>" | various-concat-obfuscations.js:2:16:2:39 | documen ... .search | various-concat-obfuscations.js:4:4:4:31 | "<div>" ... </div>" | Cross-site scripting vulnerability due to $@. | various-concat-obfuscations.js:2:16:2:39 | documen ... .search | user-provided value |

@@ -512,7 +512,7 @@ module API {
      *
      * The flow from `src` to that node may be inter-procedural.
      */
-    private DataFlow::LocalSourceNode trackUseNode(
+    private DataFlow::TypeTrackingNode trackUseNode(
       DataFlow::LocalSourceNode src, DataFlow::TypeTracker t
     ) {
       t.start() and
@@ -530,7 +530,6 @@ module API {
     cached
     DataFlow::LocalSourceNode trackUseNode(DataFlow::LocalSourceNode src) {
       result = trackUseNode(src, DataFlow::TypeTracker::end()) and
-      // We exclude module variable nodes, as these do not correspond to real uses.
       not result instanceof DataFlow::ModuleVariableNode
     }
 

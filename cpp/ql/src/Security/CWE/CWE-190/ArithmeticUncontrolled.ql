@@ -15,58 +15,122 @@
 import cpp
 import semmle.code.cpp.security.Overflow
 import semmle.code.cpp.security.Security
-import semmle.code.cpp.security.TaintTracking
-import TaintedWithPath
+import semmle.code.cpp.security.FlowSources
+import semmle.code.cpp.ir.dataflow.TaintTracking
+import DataFlow::PathGraph
 import Bounded
 
-predicate isUnboundedRandCall(FunctionCall fc) {
-  exists(Function func | func = fc.getTarget() |
-    func.hasGlobalOrStdOrBslName("rand") and
-    not bounded(fc) and
-    func.getNumberOfParameters() = 0
-  )
+/**
+ * A function that outputs random data such as `std::rand`.
+ */
+abstract class RandomFunction extends Function {
+  /**
+   * Gets the `FunctionOutput` that describes how this function returns the random data.
+   */
+  FunctionOutput getFunctionOutput() { result.isReturnValue() }
 }
 
-predicate isUnboundedRandCallOrParent(Expr e) {
-  isUnboundedRandCall(e)
-  or
-  isUnboundedRandCallOrParent(e.getAChild())
-}
-
-predicate isUnboundedRandValue(Expr e) {
-  isUnboundedRandCall(e)
-  or
-  exists(MacroInvocation mi |
-    e = mi.getExpr() and
-    isUnboundedRandCallOrParent(e)
-  )
-}
-
-class SecurityOptionsArith extends SecurityOptions {
-  override predicate isUserInput(Expr expr, string cause) {
-    isUnboundedRandValue(expr) and
-    cause = "rand"
+/**
+ * The standard function `std::rand`.
+ */
+private class StdRand extends RandomFunction {
+  StdRand() {
+    this.hasGlobalOrStdOrBslName("rand") and
+    this.getNumberOfParameters() = 0
   }
+}
+
+/**
+ * The Unix function `rand_r`.
+ */
+private class RandR extends RandomFunction {
+  RandR() {
+    this.hasGlobalName("rand_r") and
+    this.getNumberOfParameters() = 1
+  }
+}
+
+/**
+ * The Unix function `random`.
+ */
+private class Random extends RandomFunction {
+  Random() {
+    this.hasGlobalName("random") and
+    this.getNumberOfParameters() = 1
+  }
+}
+
+/**
+ * The Windows `rand_s` function.
+ */
+private class RandS extends RandomFunction {
+  RandS() {
+    this.hasGlobalName("rand_s") and
+    this.getNumberOfParameters() = 1
+  }
+
+  override FunctionOutput getFunctionOutput() { result.isParameterDeref(0) }
 }
 
 predicate missingGuard(VariableAccess va, string effect) {
   exists(Operation op | op.getAnOperand() = va |
-    missingGuardAgainstUnderflow(op, va) and effect = "underflow"
+    // underflow - random numbers are usually non-negative, so underflow is
+    // only likely if the type is unsigned. Multiplication is also unlikely to
+    // cause underflow of a non-negative number.
+    missingGuardAgainstUnderflow(op, va) and
+    effect = "underflow" and
+    op.getUnspecifiedType().(IntegralType).isUnsigned() and
+    not op instanceof MulExpr
     or
+    // overflow
     missingGuardAgainstOverflow(op, va) and effect = "overflow"
   )
 }
 
-class Configuration extends TaintTrackingConfiguration {
-  override predicate isSink(Element e) { missingGuard(e, _) }
+class UncontrolledArithConfiguration extends TaintTracking::Configuration {
+  UncontrolledArithConfiguration() { this = "UncontrolledArithConfiguration" }
 
-  override predicate isBarrier(Expr e) { super.isBarrier(e) or bounded(e) }
+  override predicate isSource(DataFlow::Node source) {
+    exists(RandomFunction rand, Call call | call.getTarget() = rand |
+      rand.getFunctionOutput().isReturnValue() and
+      source.asExpr() = call
+      or
+      exists(int n |
+        source.asDefiningArgument() = call.getArgument(n) and
+        rand.getFunctionOutput().isParameterDeref(n)
+      )
+    )
+  }
+
+  override predicate isSink(DataFlow::Node sink) { missingGuard(sink.asExpr(), _) }
+
+  override predicate isSanitizer(DataFlow::Node node) {
+    bounded(node.asExpr())
+    or
+    // If this expression is part of bitwise 'and' or 'or' operation it's likely that the value is
+    // only used as a bit pattern.
+    node.asExpr() =
+      any(Operation op |
+        op instanceof BitwiseOrExpr or
+        op instanceof BitwiseAndExpr or
+        op instanceof ComplementExpr
+      ).getAnOperand*()
+    or
+    // block unintended flow to pointers
+    node.asExpr().getUnspecifiedType() instanceof PointerType
+  }
 }
 
-from Expr origin, VariableAccess va, string effect, PathNode sourceNode, PathNode sinkNode
+/** Gets the expression that corresponds to `node`, if any. */
+Expr getExpr(DataFlow::Node node) { result = [node.asExpr(), node.asDefiningArgument()] }
+
+from
+  UncontrolledArithConfiguration config, DataFlow::PathNode source, DataFlow::PathNode sink,
+  VariableAccess va, string effect
 where
-  taintedWithPath(origin, va, sourceNode, sinkNode) and
+  config.hasFlowPath(source, sink) and
+  sink.getNode().asExpr() = va and
   missingGuard(va, effect)
-select va, sourceNode, sinkNode,
-  "$@ flows to here and is used in arithmetic, potentially causing an " + effect + ".", origin,
-  "Uncontrolled value"
+select sink.getNode(), source, sink,
+  "$@ flows to here and is used in arithmetic, potentially causing an " + effect + ".",
+  getExpr(source.getNode()), "Uncontrolled value"

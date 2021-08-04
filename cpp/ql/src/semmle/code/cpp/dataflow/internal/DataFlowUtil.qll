@@ -735,7 +735,12 @@ private module FieldFlow {
   private class FieldConfiguration extends Configuration {
     FieldConfiguration() { this = "FieldConfiguration" }
 
-    override predicate isSource(Node source) { storeStep(source, _, _) }
+    override predicate isSource(Node source) {
+      storeStep(source, _, _)
+      or
+      // Also mark `foo(a.b);` as a source when `a.b` may be overwritten by `foo`.
+      readStep(_, _, any(Node node | node.asExpr() = source.asDefiningArgument()))
+    }
 
     override predicate isSink(Node sink) { readStep(_, _, sink) }
 

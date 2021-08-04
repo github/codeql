@@ -1,5 +1,5 @@
 import default
-import semmle.code.java.security.UnsafeDeserialization
+import semmle.code.java.security.UnsafeDeserializationQuery
 
 from Method m, MethodAccess ma
 where ma.getMethod() = m and unsafeDeserialization(ma, _)

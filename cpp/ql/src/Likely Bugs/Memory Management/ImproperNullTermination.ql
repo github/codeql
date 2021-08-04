@@ -29,11 +29,19 @@ class ImproperNullTerminationReachability extends StackVariableReachabilityWithR
   override predicate isSourceActual(ControlFlowNode node, StackVariable v) {
     node = declWithNoInit(v)
     or
-    exists(Call c, VariableAccess va |
+    exists(Call c, int bufferArg, int sizeArg |
       c = node and
-      c.getTarget().hasName("readlink") and
-      c.getArgument(1) = va and
-      va.getTarget() = v
+      (
+        c.getTarget().hasName("readlink") and bufferArg = 1 and sizeArg = 2
+        or
+        c.getTarget().hasName("readlinkat") and bufferArg = 2 and sizeArg = 3
+      ) and
+      c.getArgument(bufferArg).(VariableAccess).getTarget() = v and
+      (
+        // buffer size parameter likely matches the full buffer size
+        c.getArgument(sizeArg) instanceof SizeofOperator or
+        c.getArgument(sizeArg).getValue().toInt() = v.getType().getSize()
+      )
     )
   }
 

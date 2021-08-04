@@ -34,6 +34,10 @@ class SpringUrlRedirectFlowConfig extends TaintTracking::Configuration {
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof SpringUrlRedirectSink }
 
+  override predicate isAdditionalTaintStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
+    springUrlRedirectTaintStep(fromNode, toNode)
+  }
+
   override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
     guard instanceof StartsWithSanitizer
   }
@@ -57,6 +61,8 @@ class SpringUrlRedirectFlowConfig extends TaintTracking::Configuration {
         not ma.getArgument(0).(CompileTimeConstantExpr).getStringValue().regexpMatch("^%s.*")
       )
     )
+    or
+    nonLocationHeaderSanitizer(node)
   }
 }
 

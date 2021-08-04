@@ -54,7 +54,7 @@ private module Tornado {
           }
 
           /** Gets a reference to this class. */
-          private DataFlow::LocalSourceNode getARef(DataFlow::TypeTracker t) {
+          private DataFlow::TypeTrackingNode getARef(DataFlow::TypeTracker t) {
             t.start() and
             result.asExpr().(ClassExpr) = this.getParent()
             or
@@ -87,7 +87,7 @@ private module Tornado {
         }
 
         /** Gets a reference to an instance of the `tornado.web.RequestHandler` class or any subclass. */
-        private DataFlow::LocalSourceNode instance(DataFlow::TypeTracker t) {
+        private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
           t.start() and
           result instanceof InstanceSource
           or
@@ -98,7 +98,7 @@ private module Tornado {
         DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
 
         /** Gets a reference to one of the methods `get_argument`, `get_body_argument`, `get_query_argument`. */
-        private DataFlow::LocalSourceNode argumentMethod(DataFlow::TypeTracker t) {
+        private DataFlow::TypeTrackingNode argumentMethod(DataFlow::TypeTracker t) {
           t.startInAttr(["get_argument", "get_body_argument", "get_query_argument"]) and
           result = instance()
           or
@@ -111,7 +111,7 @@ private module Tornado {
         }
 
         /** Gets a reference to one of the methods `get_arguments`, `get_body_arguments`, `get_query_arguments`. */
-        private DataFlow::LocalSourceNode argumentsMethod(DataFlow::TypeTracker t) {
+        private DataFlow::TypeTrackingNode argumentsMethod(DataFlow::TypeTracker t) {
           t.startInAttr(["get_arguments", "get_body_arguments", "get_query_arguments"]) and
           result = instance()
           or
@@ -124,7 +124,7 @@ private module Tornado {
         }
 
         /** Gets a reference the `redirect` method. */
-        private DataFlow::LocalSourceNode redirectMethod(DataFlow::TypeTracker t) {
+        private DataFlow::TypeTrackingNode redirectMethod(DataFlow::TypeTracker t) {
           t.startInAttr("redirect") and
           result = instance()
           or
@@ -137,7 +137,7 @@ private module Tornado {
         }
 
         /** Gets a reference to the `write` method. */
-        private DataFlow::LocalSourceNode writeMethod(DataFlow::TypeTracker t) {
+        private DataFlow::TypeTrackingNode writeMethod(DataFlow::TypeTracker t) {
           t.startInAttr("write") and
           result = instance()
           or
@@ -207,7 +207,7 @@ private module Tornado {
         }
 
         /** Gets a reference to an instance of `tornado.web.Application`. */
-        private DataFlow::LocalSourceNode instance(DataFlow::TypeTracker t) {
+        private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
           t.start() and
           result instanceof InstanceSource
           or
@@ -218,7 +218,7 @@ private module Tornado {
         DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
 
         /** Gets a reference to the `add_handlers` method. */
-        private DataFlow::LocalSourceNode add_handlers(DataFlow::TypeTracker t) {
+        private DataFlow::TypeTrackingNode add_handlers(DataFlow::TypeTracker t) {
           t.startInAttr("add_handlers") and
           result = instance()
           or
@@ -264,7 +264,7 @@ private module Tornado {
         }
 
         /** Gets a reference to an instance of `tornado.httputil.HttpServerRequest`. */
-        private DataFlow::LocalSourceNode instance(DataFlow::TypeTracker t) {
+        private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
           t.start() and
           result instanceof InstanceSource
           or
@@ -275,7 +275,7 @@ private module Tornado {
         DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
 
         /** Gets a reference to the `full_url` method. */
-        private DataFlow::LocalSourceNode full_url(DataFlow::TypeTracker t) {
+        private DataFlow::TypeTrackingNode full_url(DataFlow::TypeTracker t) {
           t.startInAttr("full_url") and
           result = instance()
           or

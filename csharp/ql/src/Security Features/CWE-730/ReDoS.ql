@@ -13,7 +13,7 @@
  */
 
 import csharp
-import semmle.code.csharp.security.dataflow.ReDoS::ReDoS
+import semmle.code.csharp.security.dataflow.ReDoSQuery
 import semmle.code.csharp.frameworks.system.text.RegularExpressions
 import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 

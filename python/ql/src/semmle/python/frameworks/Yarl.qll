@@ -40,7 +40,7 @@ module Yarl {
     }
 
     /** Gets a reference to an instance of `yarl.URL`. */
-    private DataFlow::LocalSourceNode instance(DataFlow::TypeTracker t) {
+    private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
       t.start() and
       result instanceof InstanceSource
       or

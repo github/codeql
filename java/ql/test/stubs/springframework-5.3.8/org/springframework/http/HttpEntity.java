@@ -1,40 +1,21 @@
+// Generated automatically from org.springframework.http.HttpEntity for testing purposes
+
 package org.springframework.http;
 
-public class HttpEntity<T> {
+import org.springframework.http.HttpHeaders;
+import org.springframework.util.MultiValueMap;
 
-    protected HttpEntity() {
-    }
-
-    public HttpEntity(T body) {
-    }
-
-    public HttpEntity(org.springframework.util.MultiValueMap<java.lang.String, java.lang.String> headers) {
-    }
-
-    public HttpEntity(T body, org.springframework.util.MultiValueMap<java.lang.String, java.lang.String> headers) {
-    }
-
-    public org.springframework.http.HttpHeaders getHeaders() {
-        return null;
-    }
-
-    public T getBody() {
-        return null;
-    }
-
-    public boolean hasBody() {
-        return false;
-    }
-
-    public boolean equals(java.lang.Object other) {
-        return false;
-    }
-
-    public int hashCode() {
-        return 0;
-    }
-
-    public java.lang.String toString() {
-        return null;
-    }
+public class HttpEntity<T>
+{
+    protected HttpEntity(){}
+    public HttpEntity(MultiValueMap<String, String> p0){}
+    public HttpEntity(T p0){}
+    public HttpEntity(T p0, MultiValueMap<String, String> p1){}
+    public HttpHeaders getHeaders(){ return null; }
+    public String toString(){ return null; }
+    public T getBody(){ return null; }
+    public boolean equals(Object p0){ return false; }
+    public boolean hasBody(){ return false; }
+    public int hashCode(){ return 0; }
+    public static HttpEntity<? extends Object> EMPTY = null;
 }
