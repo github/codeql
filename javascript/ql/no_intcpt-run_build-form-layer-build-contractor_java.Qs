@@ -1,8 +1,8 @@
-/**
- * Provides classes for working with regular expressions that can
- * perform backtracking in superlinear/exponential time.
- *
- * This module contains a number of utility predicates for compiling a regular expression into a NFA and reasoning about this NFA.
+## '#"$_*
+##" * Provides classes for working with regular expressions that can
+##" * perform backtracking in superlinear/exponential time.
+##" *
+##" * This module contains a number of utility predicates for compiling a regular expression into a NFA and reasoning about this NFA.
  *
  * The `ReDoSConfiguration` contains a `isReDoSCandidate` predicate that is used to
  * to determine which states the prefix/suffix search should happen on.
