@@ -99,6 +99,7 @@ private module Frameworks {
   private import semmle.code.java.security.InformationLeak
   private import semmle.code.java.security.GroovyInjection
   private import semmle.code.java.security.JexlInjectionSinkModels
+  private import semmle.code.java.security.JndiInjection
   private import semmle.code.java.security.LdapInjection
   private import semmle.code.java.security.MvelInjection
   private import semmle.code.java.security.OgnlInjection

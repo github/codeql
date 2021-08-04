@@ -1,5 +1,5 @@
 /**
- * Provides classes and predicates for working with the Java JDBC API.
+ * Provides classes and predicates for working with the Java JNDI API.
  */
 
 import java
@@ -7,9 +7,29 @@ import semmle.code.java.Type
 import semmle.code.java.Member
 
 /*--- Types ---*/
+/** The interface `javax.naming.Context`. */
+class TypeNamingContext extends Interface {
+  TypeNamingContext() { this.hasQualifiedName("javax.naming", "Context") }
+}
+
+/** The class `javax.naming.CompositeName`. */
+class TypeCompositeName extends Class {
+  TypeCompositeName() { this.hasQualifiedName("javax.naming", "CompositeName") }
+}
+
+/** The class `javax.naming.CompoundName`. */
+class TypeCompoundName extends Class {
+  TypeCompoundName() { this.hasQualifiedName("javax.naming", "CompoundName") }
+}
+
 /** The interface `javax.naming.directory.DirContext`. */
 class TypeDirContext extends Interface {
   TypeDirContext() { this.hasQualifiedName("javax.naming.directory", "DirContext") }
+}
+
+/** The class `javax.naming.directory.SearchControls` */
+class TypeSearchControls extends Class {
+  TypeSearchControls() { this.hasQualifiedName("javax.naming.directory", "SearchControls") }
 }
 
 /** The class `javax.naming.ldap.LdapName`. */

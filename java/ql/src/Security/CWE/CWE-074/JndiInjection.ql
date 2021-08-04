@@ -1,6 +1,6 @@
 /**
  * @name JNDI lookup with user-controlled name
- * @description Doing a JNDI lookup with user-controlled name can lead to download an untrusted
+ * @description Performing a JNDI lookup with a user-controlled name can lead to the download of an untrusted
  *              object and to execution of arbitrary code.
  * @kind path-problem
  * @problem.severity error
@@ -11,8 +11,7 @@
  */
 
 import java
-import semmle.code.java.dataflow.FlowSources
-import JndiInjectionLib
+import semmle.code.java.security.JndiInjectionQuery
 import DataFlow::PathGraph
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, JndiInjectionFlowConfig conf
