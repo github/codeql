@@ -48,7 +48,7 @@ class JwtParserWithInsecureParseSink extends DataFlow::Node {
 /**
  * A unit class for adding additional flow steps.
  *
- * Extend this class to add additional flow steps that should apply to the `SigningToInsecureMethodAccessDataFlow`.
+ * Extend this class to add additional flow steps that should apply to the `MissingJwtSignatureCheckConf `.
  */
 class JwtParserWithInsecureParseAdditionalFlowStep extends Unit {
   abstract predicate step(DataFlow::Node node1, DataFlow::Node node2);
