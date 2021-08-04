@@ -46,9 +46,18 @@ class JwtParserWithInsecureParseSink extends DataFlow::Node {
   MethodAccess getParseMethodAccess() { result = insecureParseMa }
 }
 
-/** A set of additional taint steps to consider when taint tracking JWT related data flows. */
-class JwtParserWithInsecureParseAdditionalTaintStep extends Unit {
-  predicate step(DataFlow::Node node1, DataFlow::Node node2) {
+/**
+ * A unit class for adding additional flow steps.
+ *
+ * Extend this class to add additional flow steps that should apply to the `SigningToInsecureMethodAccessDataFlow`.
+ */
+class JwtParserWithInsecureParseAdditionalFlowStep extends Unit {
+  abstract predicate step(DataFlow::Node node1, DataFlow::Node node2);
+}
+
+/** A set of additional flow steps to consider when working with JWT parsing related data flows. */
+private class DefaultJwtParserWithInsecureParseAdditionalFlowStep extends JwtParserWithInsecureParseAdditionalFlowStep {
+  override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
     jwtParserStep(node1.asExpr(), node2.asExpr())
   }
 }

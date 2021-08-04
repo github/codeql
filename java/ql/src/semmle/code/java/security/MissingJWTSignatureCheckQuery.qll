@@ -50,6 +50,6 @@ private class SigningToInsecureMethodAccessDataFlow extends DataFlow::Configurat
   override predicate isSink(DataFlow::Node sink) { sink instanceof JwtParserWithInsecureParseSink }
 
   override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-    any(JwtParserWithInsecureParseAdditionalTaintStep c).step(node1, node2)
+    any(JwtParserWithInsecureParseAdditionalFlowStep c).step(node1, node2)
   }
 }
