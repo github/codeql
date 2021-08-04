@@ -3,7 +3,6 @@
  */
 
 import java
-private import semmle.code.java.Reflection
 private import semmle.code.java.dataflow.DataFlow
 
 private class ObjectMapper extends RefType {

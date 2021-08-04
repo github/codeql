@@ -271,7 +271,7 @@ predicate resolveClassStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
 predicate looksLikeResolveClassStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
   exists(MethodAccess ma, Method m, Expr arg | m = ma.getMethod() and arg = ma.getAnArgument() |
     m.getReturnType() instanceof JacksonTypeDescriptorType and
-    m.getName().toLowerCase().regexpMatch("(?i).*(resolve|load|class|type).*") and
+    m.getName().regexpMatch("(?i).*(resolve|load|class|type).*") and
     arg.getType() instanceof TypeString and
     arg = fromNode.asExpr() and
     ma = toNode.asExpr()
