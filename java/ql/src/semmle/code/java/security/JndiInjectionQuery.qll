@@ -40,20 +40,20 @@ private class UnsafeSearchControlsSink extends JndiInjectionSink {
 
 /**
  * Find flows between a `SearchControls` object with `setReturningObjFlag` = `true`
- * and an argument of a `LdapOperations.search` or `DirContext.search` call.
+ * and an argument of an `LdapOperations.search` or `DirContext.search` call.
  */
 private class UnsafeSearchControlsConf extends DataFlow2::Configuration {
   UnsafeSearchControlsConf() { this = "UnsafeSearchControlsConf" }
 
-  override predicate isSource(DataFlow2::Node source) { source instanceof UnsafeSearchControls }
+  override predicate isSource(DataFlow::Node source) { source instanceof UnsafeSearchControls }
 
-  override predicate isSink(DataFlow2::Node sink) { sink instanceof UnsafeSearchControlsArgument }
+  override predicate isSink(DataFlow::Node sink) { sink instanceof UnsafeSearchControlsArgument }
 }
 
 /**
- * An argument of type `SearchControls` of a a `LdapOperations.search` or `DirContext.search` call.
+ * An argument of type `SearchControls` of an `LdapOperations.search` or `DirContext.search` call.
  */
-private class UnsafeSearchControlsArgument extends DataFlow2::ExprNode {
+private class UnsafeSearchControlsArgument extends DataFlow::ExprNode {
   UnsafeSearchControlsArgument() {
     exists(MethodAccess ma, Method m |
       ma.getMethod() = m and
@@ -70,7 +70,7 @@ private class UnsafeSearchControlsArgument extends DataFlow2::ExprNode {
 /**
  * A `SearchControls` object with `setReturningObjFlag` = `true`.
  */
-private class UnsafeSearchControls extends DataFlow2::ExprNode {
+private class UnsafeSearchControls extends DataFlow::ExprNode {
   UnsafeSearchControls() {
     exists(MethodAccess ma |
       ma.getMethod() instanceof SetReturningObjFlagMethod and
@@ -94,9 +94,4 @@ private class SetReturningObjFlagMethod extends Method {
     this.getDeclaringType() instanceof TypeSearchControls and
     this.hasName("setReturningObjFlag")
   }
-}
-
-/** The class `java.util.Hashtable`. */
-private class TypeHashtable extends Class {
-  TypeHashtable() { this.getSourceDeclaration().hasQualifiedName("java.util", "Hashtable") }
 }
