@@ -2676,13 +2676,6 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.apache.commons.collections4;MapIterator;true;next;;;Element of Argument[-1];ReturnValue;value"
-			Object out = null;
-			MapIterator in = newOMIWithElement((String)source());
-			out = in.next();
-			sink(out); // $ hasValueFlow
-		}
-		{
 			// "org.apache.commons.collections4;MapIterator;true;setValue;;;Argument[0];MapValue of Argument[-1];value"
 			MapIterator out = null;
 			Object in = (Object)source();

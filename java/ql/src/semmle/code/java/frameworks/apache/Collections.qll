@@ -88,7 +88,6 @@ private class ApacheCollectionsModel extends SummaryModelCsv {
         // In order for the models of Iterator to work we have to use Element instead of MapKey for key data.
         "org.apache.commons.collections4;MapIterator;true;getKey;;;Element of Argument[-1];ReturnValue;value",
         "org.apache.commons.collections4;MapIterator;true;getValue;;;MapValue of Argument[-1];ReturnValue;value",
-        "org.apache.commons.collections4;MapIterator;true;next;;;Element of Argument[-1];ReturnValue;value",
         "org.apache.commons.collections4;MapIterator;true;setValue;;;MapValue of Argument[-1];ReturnValue;value",
         "org.apache.commons.collections4;MapIterator;true;setValue;;;Argument[0];MapValue of Argument[-1];value",
         "org.apache.commons.collections4;MultiMap;true;get;;;Element of MapValue of Argument[-1];Element of ReturnValue;value",
@@ -177,7 +176,6 @@ private class ApacheCollectionsModel extends SummaryModelCsv {
         "org.apache.commons.collections;KeyValue;true;getValue;;;MapValue of Argument[-1];ReturnValue;value",
         "org.apache.commons.collections;MapIterator;true;getKey;;;Element of Argument[-1];ReturnValue;value",
         "org.apache.commons.collections;MapIterator;true;getValue;;;MapValue of Argument[-1];ReturnValue;value",
-        "org.apache.commons.collections;MapIterator;true;next;;;Element of Argument[-1];ReturnValue;value",
         "org.apache.commons.collections;MapIterator;true;setValue;;;MapValue of Argument[-1];ReturnValue;value",
         "org.apache.commons.collections;MapIterator;true;setValue;;;Argument[0];MapValue of Argument[-1];value",
         "org.apache.commons.collections;MultiMap;true;get;;;Element of MapValue of Argument[-1];Element of ReturnValue;value",
