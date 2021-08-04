@@ -15,34 +15,18 @@ import ruby
 import codeql_ruby.ast.internal.Module
 import codeql_ruby.dataflow.SSA
 
-from DefLoc loc, Location src, Location target, string kind
+from DefLoc loc, Expr src, Expr target, string kind
 where
-  (
-    exists(ConstantReadAccess read, ConstantWriteAccess write | ConstantDefLoc(read, write) = loc |
-      src = read.getLocation() and
-      target = write.getLocation() and
-      kind = "constant"
-    )
-    or
-    exists(MethodCall call, Method meth | LocalMethodLoc(call, meth) = loc |
-      src = call.getLocation() and
-      target = meth.getLocation() and
-      kind = "method"
-    )
-    or
-    exists(VariableReadAccess read, Ssa::WriteDefinition write |
-      LocalVariableLoc(read, write) = loc
-    |
-      src = read.getLocation() and
-      target = write.getLocation() and
-      kind = "variable"
-    )
-  )
+  ConstantDefLoc(src, target) = loc and kind = "constant"
+  or
+  LocalMethodLoc(src, target) = loc and kind = "method"
+  or
+  LocalVariableLoc(src, target) = loc and kind = "variable"
 select src, target, kind
 
 /**
  * Definition location info for different identifiers.
- * Each branch holds two values that have a `getLocation()` predicate.
+ * Each branch holds two values that are subclasses of `Expr`.
  * The first is the "source" - some usage of an identifier.
  * The second is the "target" - the definition of that identifier.
  */
@@ -55,8 +39,12 @@ newtype DefLoc =
     call.getReceiver() instanceof Self
   } or
   /** A local variable. */
-  LocalVariableLoc(VariableReadAccess read, Ssa::WriteDefinition write) {
-    read = write.getARead().getExpr() and not read.getLocation() = write.getLocation()
+  LocalVariableLoc(VariableReadAccess read, VariableWriteAccess write) {
+    exists(Ssa::WriteDefinition w |
+      write = w.getWriteAccess() and
+      read = w.getARead().getExpr() and
+      not read.getLocation() = write.getLocation()
+    )
   }
 
 /**
@@ -72,7 +60,7 @@ newtype DefLoc =
  *  end
  *  ```
  *
- *  the constant `Bar` has the fully qualified name `Foo::Bar::Baz`.
+ *  the constant `Baz` has the fully qualified name `Foo::Bar::Baz`.
  */
 string constantQualifiedName(ConstantWriteAccess w) {
   not exists(ConstantWriteAccess w2 | w2.getAChild() = w) and result = w.getName()

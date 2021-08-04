@@ -1,8 +1,8 @@
-| Definitions.rb:4:7:4:9 | Definitions.rb@4:7:4:9 | Definitions.rb:7:5:9:7 | Definitions.rb@7:5:9:7 | method |
-| Definitions.rb:8:7:8:7 | Definitions.rb@8:7:8:7 | Definitions.rb:7:11:7:11 | Definitions.rb@7:11:7:11 | variable |
-| Definitions.rb:12:7:12:7 | Definitions.rb@12:7:12:7 | Definitions.rb:3:5:5:7 | Definitions.rb@3:5:5:7 | method |
-| Definitions.rb:20:7:20:7 | Definitions.rb@20:7:20:7 | Definitions.rb:1:1:15:3 | Definitions.rb@1:1:15:3 | constant |
-| Definitions.rb:20:7:20:10 | Definitions.rb@20:7:20:10 | Definitions.rb:2:3:14:5 | Definitions.rb@2:3:14:5 | constant |
-| Definitions.rb:20:18:20:18 | Definitions.rb@20:18:20:18 | Definitions.rb:19:11:19:11 | Definitions.rb@19:11:19:11 | variable |
-| Definitions.rb:26:1:26:1 | Definitions.rb@26:1:26:1 | Definitions.rb:17:1:24:3 | Definitions.rb@17:1:24:3 | constant |
-| Definitions.rb:26:1:26:4 | Definitions.rb@26:1:26:4 | Definitions.rb:18:3:23:5 | Definitions.rb@18:3:23:5 | constant |
+| Definitions.rb:4:7:4:9 | call to g | Definitions.rb:7:5:9:7 | g | method |
+| Definitions.rb:8:7:8:7 | x | Definitions.rb:7:11:7:11 | x | variable |
+| Definitions.rb:12:7:12:7 | call to f | Definitions.rb:3:5:5:7 | f | method |
+| Definitions.rb:20:7:20:7 | A | Definitions.rb:1:1:15:3 | A | constant |
+| Definitions.rb:20:7:20:10 | B | Definitions.rb:2:3:14:5 | B | constant |
+| Definitions.rb:20:18:20:18 | y | Definitions.rb:19:11:19:11 | y | variable |
+| Definitions.rb:26:1:26:1 | C | Definitions.rb:17:1:24:3 | C | constant |
+| Definitions.rb:26:1:26:4 | D | Definitions.rb:18:3:23:5 | D | constant |
