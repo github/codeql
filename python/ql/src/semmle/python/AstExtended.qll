@@ -49,12 +49,15 @@ abstract class AstNode extends AstNode_ {
   /** Whether this contains `inner` syntactically */
   predicate contains(AstNode inner) { this.getAChildNode+() = inner }
 
-  /** Whether this contains `inner` syntactically and `inner` has the same scope as `this` */
-  predicate containsInScope(AstNode inner) {
+  pragma[noinline]
+  private predicate containsInScope(AstNode inner, Scope scope) {
     this.contains(inner) and
-    this.getScope() = inner.getScope() and
-    not inner instanceof Scope
+    not inner instanceof Scope and
+    scope = this.getScope()
   }
+
+  /** Whether this contains `inner` syntactically and `inner` has the same scope as `this` */
+  predicate containsInScope(AstNode inner) { this.containsInScope(inner, inner.getScope()) }
 }
 
 /* Parents */
