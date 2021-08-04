@@ -1,4 +1,4 @@
-/** Provides classes to reason about Androind Intent redirect vulnerabilities. */
+/** Provides classes to reason about Android Intent redirect vulnerabilities. */
 
 import java
 private import semmle.code.java.dataflow.DataFlow
