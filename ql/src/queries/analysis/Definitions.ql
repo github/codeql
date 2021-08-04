@@ -63,11 +63,13 @@ newtype DefLoc =
  *  the constant `Baz` has the fully qualified name `Foo::Bar::Baz`.
  */
 string constantQualifiedName(ConstantWriteAccess w) {
-  not exists(ConstantWriteAccess w2 | w2.getAChild() = w) and result = w.getName()
-  or
-  exists(ConstantWriteAccess w2 |
-    w2.getAChild() = w and result = constantQualifiedName(w2) + "::" + w.getName()
+  /* get the qualified name for the parent module, then append w */
+  exists(ConstantWriteAccess parent |
+    parent = w.getParent() and result = constantQualifiedName(parent) + "::" + w.getName()
   )
+  or
+  /* base case - there's no parent module */
+  result = w.getName()
 }
 
 /**
