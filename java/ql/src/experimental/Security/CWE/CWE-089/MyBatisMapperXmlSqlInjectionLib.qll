@@ -7,95 +7,100 @@ private class TypeParam extends Interface {
   TypeParam() { this.hasQualifiedName("org.apache.ibatis.annotations", "Param") }
 }
 
-/** A sink for MyBatis Mapper XML file sql injection vulnerabilities. */
-abstract class MyBatisMapperXmlSqlInjectionSink extends DataFlow::Node { }
+/** A reference type that extends a parameterization of `java.util.List`. */
+private class ListType extends RefType {
+  ListType() {
+    this.getSourceDeclaration().getASourceSupertype*().hasQualifiedName("java.util", "List")
+  }
+}
 
-/**
- * A sink for MyBatis Mapper method parameter name sql injection vulnerabilities.
- *
- * e.g. MyBatis Mapper method: `void test(String name);` and MyBatis Mapper XML file:`select id,name from test where name like '%${name}%'`
- */
-class MyBatisMapperParameterNameSqlInjectionSink extends MyBatisMapperXmlSqlInjectionSink {
-  MyBatisMapperParameterNameSqlInjectionSink() {
-    exists(
-      MyBatisMapperSqlOperation mbmxe, MyBatisMapperSql mbms, MethodAccess ma, int i, Method m,
-      Expr arg, string sql
+/** A sink for MyBatis Mapper method call an argument. */
+class MyBatisMapperMethodCallAnArgument extends DataFlow::Node {
+  MyBatisMapperMethodCallAnArgument() {
+    exists(MyBatisMapperSqlOperation mbmxe, MethodAccess mc |
+      mbmxe.getMapperMethod() = mc.getMethod()
     |
-      m = ma.getMethod() and arg = ma.getArgument(i)
-    |
-      arg = this.asExpr() and
-      (
-        mbmxe.getAChild*().getTextValue().trim() = sql
-        or
-        mbmxe.getInclude().getRefid() = mbms.getId() and
-        mbms.getAChild*().getTextValue().trim() = sql
-      ) and
-      not m.getParameter(i).hasAnnotation() and
-      sql.matches("%${" + m.getParameter(i).getName() + "%") and
-      mbmxe.getId() = ma.getMethod().getName() and
-      ma.getMethod().getDeclaringType() =
-        mbmxe.getParent().(MyBatisMapperXMLElement).getNamespaceRefType()
+      mc.getAnArgument() = this.asExpr()
     )
   }
 }
 
-/**
- * A sink for MyBatis Mapper method Param Annotation sql injection vulnerabilities.
- *
- * e.g. MyBatis Mapper method: `void test(@Param("orderby") String name);` and MyBatis Mapper XML file:`select id,name from test order by ${orderby,jdbcType=VARCHAR}`
- */
-class MyBatisMapperParamAnnotationSqlInjectionSink extends MyBatisMapperXmlSqlInjectionSink {
-  MyBatisMapperParamAnnotationSqlInjectionSink() {
-    exists(
-      MyBatisMapperSqlOperation mbmxe, MyBatisMapperSql mbms, MethodAccess ma, int i, Method m,
-      Expr arg, Annotation a, string sql
-    |
-      m = ma.getMethod() and arg = ma.getArgument(i)
-    |
-      arg = this.asExpr() and
-      (
-        mbmxe.getAChild*().getTextValue().trim() = sql
-        or
-        mbmxe.getInclude().getRefid() = mbms.getId() and
-        mbms.getAChild*().getTextValue().trim() = sql
-      ) and
-      m.getParameter(i).hasAnnotation() and
-      m.getParameter(i).getAnAnnotation() = a and
-      a.getType() instanceof TypeParam and
-      sql.matches("%${" + a.getValue("value").(CompileTimeConstantExpr).getStringValue() + "%") and
-      mbmxe.getId() = ma.getMethod().getName() and
-      ma.getMethod().getDeclaringType() =
-        mbmxe.getParent().(MyBatisMapperXMLElement).getNamespaceRefType()
-    )
-  }
-}
-
-/**
- * A sink for MyBatis Mapper method Class Field sql injection vulnerabilities.
- *
- * e.g. MyBatis Mapper method: `void test(Test test);` and MyBatis Mapper XML file:`select id,name from test order by ${name,jdbcType=VARCHAR}`
- */
-class MyBatisMapperClassFieldSqlInjectionSink extends MyBatisMapperXmlSqlInjectionSink {
-  MyBatisMapperClassFieldSqlInjectionSink() {
-    exists(
-      MyBatisMapperSqlOperation mbmxe, MyBatisMapperSql mbms, MethodAccess ma, int i, Method m,
-      Expr arg, string sql, Class c
-    |
-      m = ma.getMethod() and arg = ma.getArgument(i)
-    |
-      arg = this.asExpr() and
-      (
-        mbmxe.getAChild*().getTextValue().trim() = sql
-        or
-        mbmxe.getInclude().getRefid() = mbms.getId() and
-        mbms.getAChild*().getTextValue().trim() = sql
-      ) and
-      not m.getParameter(i).hasAnnotation() and
-      m.getParameterType(i).getName() = c.getName() and
-      sql.matches("%${" + c.getAField().getName() + "%") and
-      mbmxe.getId() = ma.getMethod().getName() and
-      ma.getMethod().getDeclaringType() =
-        mbmxe.getParent().(MyBatisMapperXMLElement).getNamespaceRefType()
-    )
-  }
+predicate isSqlInjection(DataFlow::Node node, XMLElement xmle) {
+  // MyBatis Mapper method parameter name sql injection vulnerabilities.
+  // e.g. MyBatis Mapper method: `void test(String name);` and MyBatis Mapper XML file:`select id,name from test where name like '%${name}%'`
+  exists(MyBatisMapperSqlOperation mbmxe, MyBatisMapperSql mbms, MethodAccess mc, int i |
+    mbmxe.getMapperMethod() = mc.getMethod()
+  |
+    (
+      mbmxe.getAChild*() = xmle
+      or
+      mbmxe.getInclude().getRefid() = mbms.getId() and
+      mbms.getAChild*() = xmle
+    ) and
+    not mc.getMethod().getParameter(i).hasAnnotation() and
+    xmle.getTextValue().trim().matches("%${" + mc.getMethod().getParameter(i).getName() + "%") and
+    mc.getArgument(i) = node.asExpr()
+  )
+  or
+  // MyBatis Mapper method Param Annotation sql injection vulnerabilities.
+  // e.g. MyBatis Mapper method: `void test(@Param("orderby") String name);` and MyBatis Mapper XML file:`select id,name from test order by ${orderby,jdbcType=VARCHAR}`
+  exists(
+    MyBatisMapperSqlOperation mbmxe, MyBatisMapperSql mbms, MethodAccess mc, int i,
+    Annotation annotation
+  |
+    mbmxe.getMapperMethod() = mc.getMethod()
+  |
+    (
+      mbmxe.getAChild*() = xmle
+      or
+      mbmxe.getInclude().getRefid() = mbms.getId() and
+      mbms.getAChild*() = xmle
+    ) and
+    mc.getMethod().getParameter(i).hasAnnotation() and
+    mc.getMethod().getParameter(i).getAnAnnotation() = annotation and
+    annotation.getType() instanceof TypeParam and
+    xmle.getTextValue()
+        .trim()
+        .matches("%${" + annotation.getValue("value").(CompileTimeConstantExpr).getStringValue() +
+            "%") and
+    mc.getArgument(i) = node.asExpr()
+  )
+  or
+  // MyBatis Mapper method Class Field sql injection vulnerabilities.
+  // e.g. MyBatis Mapper method: `void test(Test test);` and MyBatis Mapper XML file:`select id,name from test order by ${name,jdbcType=VARCHAR}`
+  exists(MyBatisMapperSqlOperation mbmxe, MyBatisMapperSql mbms, MethodAccess mc, int i, Class c |
+    mbmxe.getMapperMethod() = mc.getMethod()
+  |
+    (
+      mbmxe.getAChild*() = xmle
+      or
+      mbmxe.getInclude().getRefid() = mbms.getId() and
+      mbms.getAChild*() = xmle
+    ) and
+    not mc.getMethod().getParameter(i).hasAnnotation() and
+    mc.getMethod().getParameterType(i).getName() = c.getName() and
+    xmle.getTextValue().trim().matches("%${" + c.getAField().getName() + "%") and
+    mc.getArgument(i) = node.asExpr()
+  )
+  or
+  // The parameter type of MyBatis Mapper method is Map or List or Array, which may cause SQL injection vulnerability.
+  // e.g. MyBatis Mapper method: `void test(Map<String, String> params);` and MyBatis Mapper XML file:`select id,name from test where name like '%${name}%'`
+  exists(MyBatisMapperSqlOperation mbmxe, MyBatisMapperSql mbms, MethodAccess mc, int i |
+    mbmxe.getMapperMethod() = mc.getMethod()
+  |
+    (
+      mbmxe.getAChild*() = xmle
+      or
+      mbmxe.getInclude().getRefid() = mbms.getId() and
+      mbms.getAChild*() = xmle
+    ) and
+    not mc.getMethod().getParameter(i).hasAnnotation() and
+    (
+      mc.getMethod().getParameterType(i) instanceof MapType or
+      mc.getMethod().getParameterType(i) instanceof ListType or
+      mc.getMethod().getParameterType(i) instanceof Array
+    ) and
+    xmle.getTextValue().trim().matches("%${%") and
+    mc.getArgument(i) = node.asExpr()
+  )
 }

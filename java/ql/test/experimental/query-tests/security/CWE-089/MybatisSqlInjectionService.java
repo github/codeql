@@ -1,4 +1,5 @@
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +30,18 @@ public class MybatisSqlInjectionService {
 
 	public void bad5(Test test) {
 		sqlInjectionMapper.bad5(test);
+	}
+
+	public void bad6(Map<String, String> params) {
+		sqlInjectionMapper.bad6(params);
+	}
+
+	public void bad7(List<String> params) {
+		sqlInjectionMapper.bad7(params);
+	}
+
+	public void bad8(String[] params) {
+		sqlInjectionMapper.bad8(params);
 	}
 
 	public List<Test> good1(Integer id) {

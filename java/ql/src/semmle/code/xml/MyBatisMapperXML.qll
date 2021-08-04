@@ -37,6 +37,12 @@ abstract class MyBatisMapperSqlOperation extends MyBatisMapperXMLElement {
    * Gets the `<include>` element in a `MyBatisMapperSqlOperation`.
    */
   MyBatisMapperInclude getInclude() { result = getAChild*() }
+
+
+  Method getMapperMethod() {
+    result.getName() = this.getId() and
+    result.getDeclaringType() = this.getParent().(MyBatisMapperXMLElement).getNamespaceRefType()
+  }
 }
 
 /**

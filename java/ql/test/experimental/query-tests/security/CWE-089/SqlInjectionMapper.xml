@@ -28,11 +28,11 @@
     select id,name from test order by ${orderby,jdbcType=VARCHAR} desc
   </select>
 
-  <select id="bad3" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="bad3" parameterType="Test" resultMap="BaseResultMap">
     select id,name from test where name in ${name}
   </select>
 
-  <update id="bad4" parameterType="com.example.demo.entity.Test">
+  <update id="bad4" parameterType="Test">
     update test
     <set>
       <if test="test.pass != null">
@@ -48,13 +48,31 @@
     insert into test (name, pass)
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="name != null">
-        name = ${name},
+        name = ${name,jdbcType=VARCHAR},
       </if>
       <if test="pass != null">
         pass = ${pass},
       </if>
     </trim>
   </insert>
+
+  <select id="bad6" resultMap="BaseResultMap">
+    select id,name from test where name like '%${name}%'
+  </select>
+
+  <select id="bad7" resultMap="BaseResultMap">
+    select id,name from test where name in
+    <foreach collection="list" item="value" open="(" close=")" separator=",">
+      ${value}
+    </foreach>
+  </select>
+
+  <select id="bad8" resultMap="BaseResultMap">
+    select id,name from test where name in
+    <foreach collection="array" item="value" open="(" close=")" separator=",">
+      ${value}
+    </foreach>
+  </select>
 
   <select id="good1" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select id,name from test where id = ${id}
