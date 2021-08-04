@@ -371,10 +371,13 @@ abstract class RegexString extends Expr {
       or
       // octal value \ooo
       end in [start + 2 .. start + 4] and
-      this.getText().substring(start + 1, end).toInt() >= 0 and
+      // this.isOctal([start + 1 .. end]) and
+      forall(int i | i in [start + 1 .. end - 1] | this.isOctal(i)) and
+      // this.getText().substring(start + 1, end).toInt() >= 0 and
       not (
         end < start + 4 and
-        exists(this.getText().substring(start + 1, end + 1).toInt())
+        this.isOctal(end) //and
+        // exists(this.getText().substring(start + 1, end + 1).toInt())
       )
       or
       // 16-bit hex value \uhhhh
@@ -390,6 +393,11 @@ abstract class RegexString extends Expr {
       not exists(this.getChar(start + 1).toInt()) and
       end = start + 2
     )
+  }
+
+  pragma[inline]
+  private predicate isOctal(int index) {
+    this.getChar(index) in ["0", "1", "2", "3", "4", "5", "6", "7"]
   }
 
   /** Holds if `index` is inside a character set. */
@@ -690,6 +698,7 @@ abstract class RegexString extends Expr {
 
   private predicate numbered_backreference(int start, int end, int value) {
     this.escapingChar(start) and
+    // starting with 0 makes it an octal escape
     not this.getChar(start + 1) = "0" and
     exists(string text, string svalue, int len |
       end = start + len and
@@ -698,8 +707,18 @@ abstract class RegexString extends Expr {
     |
       svalue = text.substring(start + 1, start + len) and
       value = svalue.toInt() and
-      not exists(text.substring(start + 1, start + len + 1).toInt()) and
-      value > 0
+      // value is composed of digits
+      forall(int i | i in [start + 1 .. start + len - 1] |
+        this.getChar(i) in ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+      ) and
+      // a longer reference is not possible
+      not (
+        len = 2 and
+        exists(text.substring(start + 1, start + len + 1).toInt())
+      ) and
+      // 3 octal digits makes it an octal escape
+      not forall(int i | i in [start + 1 .. start + 4] | this.isOctal(i))
+      // TODO: Inside a character set, all numeric escapes are treated as characters.
     )
   }
 

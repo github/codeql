@@ -75,7 +75,11 @@ class RegExpTerm extends RegExpParent {
   int end;
 
   RegExpTerm() {
-    this = TRegExpAlt(re, start, end)
+    this = TRegExpAlt(re, start, end) and
+    exists(int part_end |
+      re.alternationOption(start, end, start, part_end) and
+      part_end < end
+    ) // if an alternation does not have more than one element, it should be treated as that element instead.
     or
     this = TRegExpBackRef(re, start, end)
     or
