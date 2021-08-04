@@ -1864,6 +1864,13 @@ public class Test {
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
+			// "org.apache.commons.collections4;IterableUtils;true;chainedIterable;(Iterable[]);;Element of ArrayElement of Argument[0];Element of ReturnValue;value"
+			Iterable out = null;
+			Iterable in = newVectorWithElement((String)source());
+			out = IterableUtils.chainedIterable(in);
+			sink(getElement(out)); // $ hasValueFlow
+		}
+		{
 			// "org.apache.commons.collections4;IterableUtils;true;chainedIterable;(Iterable,Iterable);;Element of Argument[0];Element of ReturnValue;value"
 			Iterable out = null;
 			Iterable in = newVectorWithElement((String)source());
@@ -2081,6 +2088,13 @@ public class Test {
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
+			// "org.apache.commons.collections4;IterableUtils;true;zippingIterable;(Iterable,Iterable[]);;Element of ArrayElement of Argument[1];Element of ReturnValue;value"
+			Iterable out = null;
+			Iterable in = newVectorWithElement((String)source());
+			out = IterableUtils.zippingIterable((Iterable)null, in);
+			sink(getElement(out)); // $ hasValueFlow
+		}
+		{
 			// "org.apache.commons.collections4;IterableUtils;true;zippingIterable;;;Element of Argument[0];Element of ReturnValue;value"
 			Iterable out = null;
 			Iterable in = newVectorWithElement((String)source());
@@ -2210,6 +2224,13 @@ public class Test {
 			// "org.apache.commons.collections4;IteratorUtils;true;collatedIterator;(Comparator,Collection);;Element of Element of Argument[1];Element of ReturnValue;value"
 			Iterator out = null;
 			Collection in = (Collection)newVectorWithElement(newVectorWithElement((String)source()));
+			out = IteratorUtils.collatedIterator((Comparator)null, in);
+			sink(getElement(out)); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4;IteratorUtils;true;collatedIterator;(Comparator,Iterator[]);;Element of ArrayElement of Argument[1];Element of ReturnValue;value"
+			Iterator out = null;
+			Iterator in = newListIteratorWithElement((String)source());
 			out = IteratorUtils.collatedIterator((Comparator)null, in);
 			sink(getElement(out)); // $ hasValueFlow
 		}
@@ -2415,6 +2436,13 @@ public class Test {
 			MapIterator in = newOMIWithMapValue((String)source());
 			out = IteratorUtils.unmodifiableMapIterator(in);
 			sink(getMapValue(out)); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4;IteratorUtils;true;zippingIterator;(Iterator[]);;Element of ArrayElement of Argument[0];Element of ReturnValue;value"
+			ZippingIterator out = null;
+			Iterator in = newListIteratorWithElement((String)source());
+			out = IteratorUtils.zippingIterator(in);
+			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;IteratorUtils;true;zippingIterator;(Iterator,Iterator);;Element of Argument[0];Element of ReturnValue;value"
@@ -3122,6 +3150,13 @@ public class Test {
 			Set in = (Set)source();
 			out = SetUtils.emptyIfNull(in);
 			sink(out); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4;SetUtils;true;hashSet;;;ArrayElement of Argument[0];Element of ReturnValue;value"
+			HashSet out = null;
+			Object in = source();
+			out = SetUtils.hashSet(in, null);
+			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;SetUtils;true;intersection;;;Element of Argument[0];Element of ReturnValue;value"
