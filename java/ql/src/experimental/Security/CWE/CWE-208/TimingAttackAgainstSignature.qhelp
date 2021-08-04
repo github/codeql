@@ -11,7 +11,13 @@ both the message and the signature. A successful attack can result in authentica
 </p>
 </overview>
 
-<include src="NonConstantTimeCheckRecommendation.inc.qhelp" />
+<recommendation>
+<p>
+Use <code>MessageDigest.isEqual()</code> method to check MACs and signatures.
+If this method is used, then the calculation time depends only on the length of input byte arrays,
+and does not depend on the contents of the arrays.
+</p>
+</recommendation>
 
 <example>
 <p>
@@ -19,13 +25,31 @@ The following example uses <code>Arrays.equals()</code> method for validating a 
 This method implements a non-constant-time algorithm.
 Both the message and the signature come from an untrusted HTTP request:
 </p>
-<sample src="UnsafeMacComparisonWithRemoteInputs.java" />
+<sample src="UnsafeMacComparison.java" />
 
 <p>
 The next example uses a safe constant-time algorithm for validating a MAC:
 </p>
-<sample src="SafeMacComparisonWithRemoteInputs.java" />
+<sample src="SafeMacComparison.java" />
 </example>
 
-<include src="NonConstantTimeCheckReferences.inc.qhelp" />
+<references>
+<li>
+  Wikipedia:
+  <a href="https://en.wikipedia.org/wiki/Timing_attack">Timing attack</a>.
+</li>
+<li>
+  Coursera:
+  <a href="https://www.coursera.org/lecture/crypto/timing-attacks-on-mac-verification-FHGW1">Timing attacks on MAC verification</a>
+</li>
+<li>
+  NCC Group:
+  <a href="https://www.nccgroup.trust/globalassets/our-research/us/whitepapers/TimeTrial.pdf">Time Trial: Racing Towards Practical Remote Timing Attacks</a>
+</li>
+<li>
+  Java API Specification:
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/security/MessageDigest.html#isEqual(byte[],byte[])">MessageDigest.isEqual() method</a>
+</li>
+</references>
+
 </qhelp>
