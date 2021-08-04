@@ -10,7 +10,7 @@
  */
 
 import java
-import semmle.code.java.security.JWTQuery
+import semmle.code.java.security.MissingJWTSignatureCheckQuery
 
 from JwtParserWithInsecureParseSink sink, JwtParserWithSigningKeyExpr parserExpr
 where sink.asExpr() = parserExpr

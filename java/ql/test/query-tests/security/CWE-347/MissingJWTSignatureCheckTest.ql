@@ -1,5 +1,5 @@
 import java
-import semmle.code.java.security.JWTQuery
+import semmle.code.java.security.MissingJWTSignatureCheckQuery
 import TestUtilities.InlineExpectationsTest
 
 class HasMissingJwtSignatureCheckTest extends InlineExpectationsTest {
