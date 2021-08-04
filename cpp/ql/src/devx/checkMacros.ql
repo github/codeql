@@ -34,28 +34,6 @@ predicate isLogDebug(Expr mie) {
       )
 }
 
-class Likely__FUNCTION__ extends StringLiteral {
-    Likely__FUNCTION__() { 
-        this.getValue() = this.getEnclosingFunction().getName() 
-    }
-  }
-  
-/**
- * Holds if `e` is either:
- * 1. a macro invocation with the name `s`, or
- * 2. a string literal with the same value as the name of `e`'s enclosing function. This likely means
- * that `e` is a use of the `__FUNCTION__` macro.
- */
-// predicate isMacroInvocationLike(Expr e, string s) {
-//     exists(MacroInvocation mi |
-//       e = mi.getExpr() and
-//       s = mi.getMacroName()
-//     )
-//     or
-//     e instanceof Likely__FUNCTION__ and 
-//     s in ["__FUNCTION__", "__FILE__", "__LINE__"]
-//   }
-
 from string format, FormattingFunctionCall fc, int n, string name
 where
     format = fc.getFormat().getValue() and // format: "%s: Failed init_producer"
