@@ -212,13 +212,15 @@ module API {
   Root root() { any() }
 
   /**
-   * Gets a node corresponding to an import of top-level module `m`.
+   * Gets a node corresponding to a top-level member `m` (typically a module).
+   *
+   * This is equivalent to `root().getAMember("m")`.
    *
    * Note: You should only use this predicate for top level modules or classes. If you want nodes corresponding to a nested module or class,
    * you should use `.getMember` on the parent module/class. For example, for nodes corresponding to the class `Gem::Version`,
-   * use `moduleImport("Gem").getMember("Version")`.
+   * use `getTopLevelMember("Gem").getMember("Version")`.
    */
-  Node moduleImport(string m) { result = root().getMember(m) }
+  Node getTopLevelMember(string m) { result = root().getMember(m) }
 
   /**
    * Provides the actual implementation of API graphs, cached for performance.
