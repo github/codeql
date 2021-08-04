@@ -122,8 +122,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Extractor for intra-procedural expression-level control flow graphs.
@@ -187,21 +185,55 @@ public class CFGExtractor {
   }
 
   private static Collection<Node> union(Node x, Node y) {
-    return union(Collections.singleton(x), Collections.singleton(y));
+    if (x == y) {
+      if (x == null) {
+        return Collections.emptySet();
+      } else {
+        return Collections.singleton(x);
+      }
+    }
+    
+    if (x == null) {
+      return Collections.singleton(y);
+    }
+    if (y == null) {
+      return Collections.singleton(x);
+    }
+
+    return Arrays.asList(x, y);
   }
 
   private static Collection<Node> union(Collection<Node> xs, Node y) {
-    return union(xs, Collections.singleton(y));
+    if (y == null) {
+      return xs;
+    }
+    if (xs == null || xs.isEmpty()) {
+      return Collections.singleton(y);
+    }
+    if (xs.contains(y)) {
+      return xs;
+    }
+
+    return nonNullUnion(xs, Collections.singleton(y));
   }
 
   private static Collection<Node> union(Node x, Collection<Node> ys) {
-    return union(Collections.singleton(x), ys);
+    if (x == null) {
+      return ys;
+    }
+    if (ys == null || ys.isEmpty()) {
+      return Collections.singleton(x);
+    }
+    if (ys.contains(x)) {
+      return ys;
+    }
+
+    return nonNullUnion(Collections.singleton(x), ys);
   }
 
   /**
    * Creates an order preserving concatenation of the nodes in `xs` and `ys` without duplicates.
    */
-  @SuppressWarnings("unchecked")
   private static Collection<Node> union(Collection<Node> xs, Collection<Node> ys) {
     if (xs == null || xs.size() == 0) {
       return ys;
@@ -210,8 +242,21 @@ public class CFGExtractor {
       return xs;
     }
     
-    Set<Node> set = new HashSet<>();
-    return Stream.concat(xs.stream(), ys.stream()).filter(set::add).collect(Collectors.toList());
+    return nonNullUnion(xs, ys);
+  }
+
+  /**
+   * Creates an order preserving concatenation of the nodes in `xs` and `ys` without duplicates.
+   * Where `xs` and `ys` have non null values, and are non-empty.
+   */
+  private static Collection<Node> nonNullUnion(Collection<Node> xs, Collection<Node> ys) {
+    List<Node> result = new ArrayList<>(xs);
+    for (Node y : ys) {
+      if (!result.contains(y)) {
+        result.add(y);
+      }
+    }
+    return result;
   }
 
   /**
@@ -1167,12 +1212,12 @@ public class CFGExtractor {
           instanceDecorators.addAll(decorators);
         }
       }
-      return Arrays.asList(
-        instanceDecorators, 
-        staticDecorators, 
-        constructorParameterDecorators, 
-        classDecorators
-      ).stream().flatMap(list -> list.stream()).collect(Collectors.toList());
+      List<Node> result = new ArrayList<>();
+      result.addAll(instanceDecorators);
+      result.addAll(staticDecorators);
+      result.addAll(constructorParameterDecorators);
+      result.addAll(classDecorators);
+      return result;
     }
 
     @Override
