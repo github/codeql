@@ -5,7 +5,7 @@ import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.security.JWT
 
 /**
- * Models flow from signing keys assignements to qualifiers of JWT insecure parsers.
+ * Models flow from signing keys assignments to qualifiers of JWT insecure parsers.
  * This is used to determine whether a `JwtParser` performing unsafe parsing has a signing key set.
  */
 class MissingJwtSignatureCheckConf extends DataFlow::Configuration {
