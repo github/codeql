@@ -10,8 +10,6 @@ class SummaryModelTest extends SummaryModelCsv {
       [
         //"package;type;overrides;name;signature;ext;inputspec;outputspec;kind",
         "org.apache.commons.collections4.iterators;IteratorEnumeration;true;IteratorEnumeration;;;Element of Argument[0];Element of Argument[-1];value",
-        "generatedtest;Test;false;getMapKeyFromPut;;;MapKey of Argument[0];ReturnValue;value",
-        "generatedtest;Test;false;getMapValueFromPut;;;MapValue of Argument[0];ReturnValue;value",
         "generatedtest;Test;false;newRBWithMapValue;;;Argument[0];MapValue of ReturnValue;value",
         "generatedtest;Test;false;newRBWithMapKey;;;Argument[0];MapKey of ReturnValue;value"
       ]

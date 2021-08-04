@@ -91,14 +91,14 @@ public class Test {
 	static Object getMapKey(AbstractMapEntryDecorator container) { return container.getKey(); }
 	static Object getMapKey(Map container) { return container.keySet().iterator().next(); }
 	static Object getMapKey(MultiValuedMap container) { return container.keySet().iterator().next(); }
-	static Object getMapKeyFromPut(Put container) { return null; }
+	static Object getMapKeyFromPut(Put container) { return getMapKey((Map)container); }
 	static Object getMapValue(AbstractKeyValue container) { return container.getValue(); }
 	static Object getMapValueFromEntry(Map.Entry container) { return container.getValue(); }
 	static Object getMapValue(AbstractMapEntryDecorator container) { return container.getValue(); }
 	static Object getMapValue(Map container) { return container.get(null); }
 	static Object getMapValue(MapIterator container) { return container.getValue(); }
 	static Collection getMapValue(MultiValuedMap container) { return container.get(null); }
-	static Object getMapValueFromPut(Put container) { return null; }
+	static Object getMapValueFromPut(Put container) { return getMapValue((Map)container); }
 
 	Object[] newWithArrayElement(Object element) { return new Object[] {element}; }
 	ArrayStack<String> newArrayStackWithElement(String element) { ArrayStack<String> a = new ArrayStack<String>(); a.push(element); return a; }
