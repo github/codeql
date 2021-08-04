@@ -133,11 +133,11 @@ void moreTests() {
     r *= 100; // BAD [NOT DETECTED]
   }
 
-
-
-
-
-
+  {
+    int r = rand();
+    int v = 100;
+    v *= r; // BAD [NOT DETECTED]
+  }
 
   {
     int r = rand();
