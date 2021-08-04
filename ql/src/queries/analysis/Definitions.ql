@@ -13,8 +13,6 @@
 
 import ruby
 import codeql_ruby.ast.internal.Module
-import codeql_ruby.controlflow.ControlFlowGraph
-import codeql_ruby.controlflow.CfgNodes
 import codeql_ruby.dataflow.SSA
 
 from DefLoc loc, Location src, Location target, string kind
