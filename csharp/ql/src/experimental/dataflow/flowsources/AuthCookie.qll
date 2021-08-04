@@ -175,7 +175,8 @@ abstract private class OnAppendCookieTrackingConfig extends DataFlow::Configurat
     node2.asExpr() =
       any(PropertyRead pr |
         pr.getQualifier() = node1.asExpr() and
-        pr.getProperty().getDeclaringType() instanceof MicrosoftAspNetCoreCookiePolicyAppendCookieContext
+        pr.getProperty().getDeclaringType() instanceof
+          MicrosoftAspNetCoreCookiePolicyAppendCookieContext
       )
   }
 }
