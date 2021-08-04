@@ -3,7 +3,7 @@
     <overview>
         <p>An exported Android component that obtains a user-provided Intent and uses it to launch another component
         can be exploited to obtain access to private, unexported components of the same app or to launch other apps' components
-        in behalf of the victim app.</p>
+        on behalf of the victim app.</p>
     </overview>
     <recommendation>
         <p>Do not export compontents that start other components from a user-provided Intent. 
