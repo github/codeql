@@ -1,6 +1,6 @@
 /**
  * @name Missing JWT signature check
- * @description Failing to check the JWT signature may allow an attacker to forge their own tokens.
+ * @description Failing to check the Json Web Token (JWT) signature may allow an attacker to forge their own tokens.
  * @kind path-problem
  * @problem.severity error
  * @security-severity 7.8

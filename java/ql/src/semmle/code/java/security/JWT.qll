@@ -1,4 +1,4 @@
-/** Provides classes for working with JWT libraries. */
+/** Provides classes for working with JSON Web Token (JWT) libraries. */
 
 import java
 private import semmle.code.java.dataflow.ExternalFlow

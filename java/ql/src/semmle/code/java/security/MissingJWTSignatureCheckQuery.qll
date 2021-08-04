@@ -1,8 +1,7 @@
-/** Provides classes to be used in queries related to JWT signature vulnerabilities. */
+/** Provides classes to be used in queries related to JSON Web Token (JWT) signature vulnerabilities. */
 
 import java
 import semmle.code.java.dataflow.DataFlow
-import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.java.security.JWT
 
 /**
