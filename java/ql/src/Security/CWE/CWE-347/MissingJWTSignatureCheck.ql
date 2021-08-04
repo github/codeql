@@ -1,8 +1,9 @@
 /**
  * @name Missing JWT signature check
  * @description Failing to check the JWT signature may allow an attacker to forge their own tokens.
- * @kind problem
+ * @kind path-problem
  * @problem.severity error
+ * @security-severity 7.8
  * @precision high
  * @id java/missing-jwt-signature-check
  * @tags security
@@ -11,8 +12,9 @@
 
 import java
 import semmle.code.java.security.MissingJWTSignatureCheckQuery
+import DataFlow::PathGraph
 
-from JwtParserWithInsecureParseSink sink, JwtParserWithSigningKeyExpr parserExpr
-where sink.asExpr() = parserExpr
-select sink.getParseMethodAccess(), "A signing key is set $@, but the signature is not verified.",
-  parserExpr.getSigningMethodAccess(), "here"
+from DataFlow::PathNode source, DataFlow::PathNode sink, MissingJwtSignatureCheckConf conf
+where conf.hasFlowPath(source, sink)
+select sink.getNode(), source, sink, "A signing key is set $@, but the signature is not verified.",
+  source.getNode(), "here"
