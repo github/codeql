@@ -15,6 +15,8 @@
  */
 
 import codeql_ruby.regexp.ExponentialBackTracking
+import codeql_ruby.regexp.ReDoSUtil
+import codeql_ruby.regexp.RegExpTreeView
 
 from RegExpTerm t, string pump, State s, string prefixMsg
 where hasReDoSResult(t, pump, s, prefixMsg)

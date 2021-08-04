@@ -25,6 +25,9 @@
 /[^]]/ # MRI gives a warning, but accepts this as matching anything except ']'
 /[^-]/
 
+# Nested character classes
+/[[a-f]A-F]/ # BAD - not parsed correctly
+
 # Meta-character classes
 /.*/
 /.*/m
@@ -48,8 +51,20 @@
 /(a+)b+\1/
 /(?<qux>q+)\s+\k<qux>+/
 
-# Named character properties
+# Named character properties using the p-style syntax
 /\p{Word}*/
 /\P{Digit}+/
 /\p{^Alnum}{2,3}/
-/[[:alpha:]][[:digit:]]+/
+/[a-f\p{Digit}]+/ # Also valid inside character classes
+
+# Two separate character classes, each containing a single POSIX bracket expression
+/[[:alpha:]][[:digit:]]/
+
+# A single character class containing two POSIX bracket expressions
+/[[:alpha:][:digit:]]/
+
+# A single character class containing two ranges and one POSIX bracket expression
+/[A-F[:digit:]a-f]/
+
+# *Not* a POSIX bracket expression; just a regular character class.
+/[:digit:]/

@@ -9,39 +9,72 @@ private import codeql_ruby.ast.Literal as AST
 private import codeql.Locations
 
 class RegExp extends AST::RegExpLiteral {
-  /** result is true for those start chars that actually mark a start of a char set. */
+  /**
+   * Helper predicate for `charSetStart(int start, int end)`.
+   *
+   * In order to identify left brackets ('[') which actually start a character class,
+   * we perform a left to right scan of the string.
+   *
+   * To avoid negative recursion we return a boolean. See `escaping`,
+   * the helper for `escapingChar`, for a clean use of this pattern.
+   *
+   * result is true for those start chars that actually mark a start of a char set.
+   */
   boolean charSetStart(int pos) {
     exists(int index |
-      charSetDelimiter(index, pos) = true and
+      // is opening bracket
+      this.charSetDelimiter(index, pos) = true and
       (
-        index = 1 and result = true // if a '[' is first in the string (among brackets), it starts a char set
+        // if this is the first bracket, `pos` starts a char set
+        index = 1 and result = true
         or
+        // if the previous char set delimiter was not a closing bracket, `pos` does
+        // not start a char set. This is needed to handle cases such as `[[]` (a
+        // char set that matches the `[` char)
         index > 1 and
-        not charSetDelimiter(index - 1, _) = false and
+        not this.charSetDelimiter(index - 1, _) = false and
         result = false
         or
-        exists(int p1 |
-          charSetDelimiter(index - 1, p1) = false and // if it is preceded by a closing bracket, it starts a char set
+        // special handling of cases such as `[][]` (the character-set of the characters `]` and `[`).
+        exists(int prevClosingBracketPos |
+          // previous bracket is a closing bracket
+          this.charSetDelimiter(index - 1, prevClosingBracketPos) = false and
           if
-            exists(int p2 |
-              p1 = p2 + 1
-              or
-              this.getChar(p2 + 1) = "^" and
-              p1 = p2 + 2
+            // check if the character that comes before the previous closing bracket
+            // is an opening bracket (taking `^` into account)
+            // check if the character that comes before the previous closing bracket
+            // is an opening bracket (taking `^` into account)
+            exists(int posBeforePrevClosingBracket |
+              if this.getChar(prevClosingBracketPos - 1) = "^"
+              then posBeforePrevClosingBracket = prevClosingBracketPos - 2
+              else posBeforePrevClosingBracket = prevClosingBracketPos - 1
             |
-              charSetDelimiter(index - 2, p2) = true // but the closing bracket only closes...
+              this.charSetDelimiter(index - 2, posBeforePrevClosingBracket) = true
             )
           then
-            exists(int p2 | charSetDelimiter(index - 2, p2) = true |
-              result = charSetStart(p2).booleanNot() // ...if it is not the first in a char set
+            // brackets without anything in between is not valid character ranges, so
+            // the first closing bracket in `[]]` and `[^]]` does not count,
+            //
+            // and we should _not_ mark the second opening bracket in `[][]` and `[^][]`
+            // as starting a new char set.                               ^           ^
+            exists(int posBeforePrevClosingBracket |
+              this.charSetDelimiter(index - 2, posBeforePrevClosingBracket) = true
+            |
+              result = this.charSetStart(posBeforePrevClosingBracket).booleanNot()
             )
-          else result = true
+          else
+            // if not, `pos` does in fact mark a real start of a character range
+            result = true
         )
       )
     )
   }
 
-  /** result denotes if the index is a left bracket */
+  /**
+   * Helper predicate for chars that could be character-set delimiters.
+   * Holds if the (non-escaped) char at `pos` in the string, is the (one-based) `index` occurrence of a bracket (`[` or `]`) in the string.
+   * Result if `true` is the char is `[`, and `false` if the char is `]`.
+   */
   boolean charSetDelimiter(int index, int pos) {
     pos =
       rank[index](int p |
@@ -205,26 +238,24 @@ class RegExp extends AST::RegExpLiteral {
     this.namedCharacterProperty(start, end, result)
   }
 
-  /** Matches a POSIX bracket expression such as `[[:alnum:]]` */
+  /** Matches a POSIX bracket expression such as `[:alnum:]` within a character class. */
   private predicate posixStyleNamedCharacterProperty(int start, int end, string name) {
     this.getChar(start) = "[" and
-    this.getChar(start + 1) = "[" and
-    this.getChar(start + 2) = ":" and
+    this.getChar(start + 1) = ":" and
     end =
       min(int e |
         e > start and
-        this.getChar(e - 3) = ":" and
-        this.getChar(e - 2) = "]" and
+        this.getChar(e - 2) = ":" and
         this.getChar(e - 1) = "]"
       |
         e
       ) and
     exists(int nameStart |
-      this.getChar(start + 3) = "^" and nameStart = start + 4
+      this.getChar(start + 2) = "^" and nameStart = start + 3
       or
-      not this.getChar(start + 3) = "^" and nameStart = start + 3
+      not this.getChar(start + 2) = "^" and nameStart = start + 2
     |
-      name = this.getText().substring(nameStart, end - 3)
+      name = this.getText().substring(nameStart, end - 2)
     )
   }
 
@@ -233,6 +264,8 @@ class RegExp extends AST::RegExpLiteral {
    * - `\p{Space}`
    * - `\P{Digit}` upper-case P means inverted
    * - `\p{^Word}` caret also means inverted
+   *
+   * These can occur both inside and outside of character classes.
    */
   private predicate pStyleNamedCharacterProperty(int start, int end, string name) {
     this.escapingChar(start) and
@@ -297,11 +330,22 @@ class RegExp extends AST::RegExpLiteral {
     exists(int x, int y | this.charSet(x, y) and index in [x + 1 .. y - 2])
   }
 
+  predicate inPosixBracket(int index) {
+    exists(int x, int y |
+      this.posixStyleNamedCharacterProperty(x, y, _) and index in [x + 1 .. y - 2]
+    )
+  }
+
   /** 'Simple' characters are any that don't alter the parsing of the regex. */
   private predicate simpleCharacter(int start, int end) {
     end = start + 1 and
     not this.charSet(start, _) and
     not this.charSet(_, start + 1) and
+    not exists(int x, int y |
+      this.posixStyleNamedCharacterProperty(x, y, _) and
+      start >= x and
+      end <= y
+    ) and
     exists(string c | c = this.getChar(start) |
       exists(int x, int y, int z |
         this.charSet(x, z) and
@@ -332,7 +376,9 @@ class RegExp extends AST::RegExpLiteral {
     ) and
     not exists(int x, int y | this.groupStart(x, y) and x <= start and y >= end) and
     not exists(int x, int y | this.backreference(x, y) and x <= start and y >= end) and
-    not exists(int x, int y | this.namedCharacterProperty(x, y, _) and x <= start and y >= end)
+    not exists(int x, int y |
+      this.pStyleNamedCharacterProperty(x, y, _) and x <= start and y >= end
+    )
   }
 
   predicate normalCharacter(int start, int end) {
@@ -595,7 +641,7 @@ class RegExp extends AST::RegExpLiteral {
     or
     this.backreference(start, end)
     or
-    this.namedCharacterProperty(start, end, _)
+    this.pStyleNamedCharacterProperty(start, end, _)
   }
 
   private predicate qualifier(int start, int end, boolean maybeEmpty, boolean mayRepeatForever) {
