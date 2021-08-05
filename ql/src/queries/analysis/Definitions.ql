@@ -7,7 +7,7 @@
 
 /*
  * TODO:
- *    - instance and class variables
+ *    - class variables
  *    - should `Foo.new` point to `Foo#initialize`?
  */
 
@@ -22,6 +22,8 @@ where
   LocalMethodLoc(src, target) = loc and kind = "method"
   or
   LocalVariableLoc(src, target) = loc and kind = "variable"
+  or
+  InstanceVariableLoc(src, target) = loc and kind = "instance variable"
 select src, target, kind
 
 /**
@@ -46,6 +48,18 @@ newtype DefLoc =
       not read.getLocation() = write.getLocation() and
       not read.isSynthesized()
     )
+  } or
+  /** An instance variable */
+  InstanceVariableLoc(InstanceVariableReadAccess read, InstanceVariableWriteAccess write) {
+    /*
+     * We consider instance variables to be "defined" in the initialize method of their enclosing class.
+     * If that method doesn't exist, we won't provide any jump-to-def information for the instance variable.
+     */
+
+    exists(Method m |
+      m.getAChild+() = write and
+      m.getName() = "initialize" and
+      write.getVariable() = read.getVariable()
     )
   }
 

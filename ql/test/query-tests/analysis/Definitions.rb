@@ -17,6 +17,7 @@ end
 module C
   class D
     def initialize
+      @e = 1
       x, y = [1, 2]
       y
     end
@@ -24,6 +25,9 @@ module C
     def h y
       A::B.new.g y
       UnknownClass.some_method
+      @f = 2
+      @e
+      @f
     end
   end
 end
