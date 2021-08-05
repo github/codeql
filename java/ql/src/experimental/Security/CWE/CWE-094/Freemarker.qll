@@ -65,12 +65,13 @@ module Freemarker {
   // setSetting method configuration method: https://freemarker.apache.org/docs/api/freemarker/template/Configuration.html#setSetting-java.lang.String-java.lang.String-
   class FreemarkerSetSettingClassResolver extends MethodAccess {
     FreemarkerSetSettingClassResolver() {
-      exists(Method m |
+      exists(Method m, string s |
         m = this.getMethod() and
         m.getDeclaringType() instanceof FreemarkerTemplateConfiguration and
         m.hasName("setSetting") and
         m.getParameter(0).getAnArgument().(Literal).getValue().matches("new_builtin_class_resolver") and
-        m.getParameter(1).getAnArgument().(Literal).getValue().matches("allows_nothing")
+        m.getParameter(1).getAnArgument().(Literal).getValue().matches(s) and
+        s in ["allows_nothing", "allowsNothing"]
       )
     }
   }
