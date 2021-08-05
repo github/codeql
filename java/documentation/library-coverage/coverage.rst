@@ -15,8 +15,8 @@ Java framework & library support
    `Apache HttpComponents <https://hc.apache.org/>`_,"``org.apache.hc.core5.*``, ``org.apache.http``",5,136,28,,,3,,,,25
    `Google Guava <https://guava.dev/>`_,``com.google.common.*``,,158,6,,6,,,,,
    Java Standard Library,``java.*``,3,365,30,13,,,7,,,10
-   Java extensions,"``javax.*``, ``jakarta.*``",22,540,19,,,,,1,1,2
-   `Spring <https://spring.io/>`_,``org.springframework.*``,29,306,62,,,,19,14,,29
-   Others,"``com.esotericsoftware.kryo.io``, ``com.esotericsoftware.kryo5.io``, ``com.fasterxml.jackson.core``, ``com.fasterxml.jackson.databind``, ``com.opensymphony.xwork2.ognl``, ``com.unboundid.ldap.sdk``, ``groovy.lang``, ``groovy.util``, ``ognl``, ``org.apache.commons.codec``, ``org.apache.commons.jexl2``, ``org.apache.commons.jexl3``, ``org.apache.commons.ognl``, ``org.apache.directory.ldap.client.api``, ``org.apache.ibatis.jdbc``, ``org.codehaus.groovy.control``, ``org.dom4j``, ``org.hibernate``, ``org.jooq``, ``org.json``, ``org.mvel2``, ``org.xml.sax``, ``org.xmlpull.v1``, ``play.mvc``",7,251,145,,,,14,18,,
-   Totals,,84,2705,360,13,6,6,107,33,1,66
+   Java extensions,"``javax.*``, ``jakarta.*``",22,540,27,,,,,1,1,2
+   `Spring <https://spring.io/>`_,``org.springframework.*``,29,306,91,,,,19,14,,29
+   Others,"``com.esotericsoftware.kryo.io``, ``com.esotericsoftware.kryo5.io``, ``com.fasterxml.jackson.core``, ``com.fasterxml.jackson.databind``, ``com.opensymphony.xwork2.ognl``, ``com.unboundid.ldap.sdk``, ``groovy.lang``, ``groovy.util``, ``ognl``, ``org.apache.commons.codec``, ``org.apache.commons.jexl2``, ``org.apache.commons.jexl3``, ``org.apache.commons.ognl``, ``org.apache.directory.ldap.client.api``, ``org.apache.ibatis.jdbc``, ``org.apache.shiro.jndi``, ``org.codehaus.groovy.control``, ``org.dom4j``, ``org.hibernate``, ``org.jooq``, ``org.json``, ``org.mvel2``, ``org.xml.sax``, ``org.xmlpull.v1``, ``play.mvc``",7,251,146,,,,14,18,,
+   Totals,,84,2705,398,13,6,6,107,33,1,66
 
