@@ -16,6 +16,11 @@ end
 
 module C
   class D
+    def initialize
+      x, y = [1, 2]
+      y
+    end
+
     def h y
       A::B.new.g y
       UnknownClass.some_method

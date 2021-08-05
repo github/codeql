@@ -43,7 +43,9 @@ newtype DefLoc =
     exists(Ssa::WriteDefinition w |
       write = w.getWriteAccess() and
       read = w.getARead().getExpr() and
-      not read.getLocation() = write.getLocation()
+      not read.getLocation() = write.getLocation() and
+      not read.isSynthesized()
+    )
     )
   }
 
