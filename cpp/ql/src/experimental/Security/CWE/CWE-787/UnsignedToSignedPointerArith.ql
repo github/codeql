@@ -1,5 +1,4 @@
 /**
- * @author Jordy Zomer
  * @name unsiged to signed used in pointer arithmetic
  * @description finds unsigned to signed conversions used in pointer arithmetic, potentially causing an out-of-bound access
  * @id cpp/sign-conversion-pointer-arithmetic
