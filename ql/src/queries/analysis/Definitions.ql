@@ -46,7 +46,6 @@ newtype DefLoc =
     exists(Ssa::WriteDefinition w |
       write = w.getWriteAccess() and
       read = w.getARead().getExpr() and
-      not read.getLocation() = write.getLocation() and
       not read.isSynthesized()
     )
   } or
@@ -66,7 +65,7 @@ newtype DefLoc =
   /** A class variable */
   ClassVariableLoc(ClassVariableReadAccess read, ClassVariableWriteAccess write) {
     read.getVariable() = write.getVariable() and
-     not exists(MethodBase m | m.getAChild+() = write)
+    not exists(MethodBase m | m.getAChild+() = write)
   }
 
 /**
