@@ -212,7 +212,9 @@ public class CFGExtractor {
       return xs;
     }
 
-    return nonNullUnion(xs, Collections.singleton(y));
+    List<Node> result = new ArrayList<>(xs);
+    result.add(y);
+    return result;
   }
 
   private static Collection<Node> union(Node x, Collection<Node> ys) {
@@ -226,7 +228,10 @@ public class CFGExtractor {
       return ys;
     }
 
-    return nonNullUnion(Collections.singleton(x), ys);
+    List<Node> result = new ArrayList<>();
+    result.add(x);
+    result.addAll(ys);
+    return result;
   }
 
   /**
@@ -240,14 +245,6 @@ public class CFGExtractor {
       return xs;
     }
     
-    return nonNullUnion(xs, ys);
-  }
-
-  /**
-   * Creates an order preserving concatenation of the nodes in `xs` and `ys` without duplicates.
-   * Where `xs` and `ys` have non null values, and are non-empty.
-   */
-  private static Collection<Node> nonNullUnion(Collection<Node> xs, Collection<Node> ys) {
     List<Node> result = new ArrayList<>(xs);
     for (Node y : ys) {
       if (!result.contains(y)) {
