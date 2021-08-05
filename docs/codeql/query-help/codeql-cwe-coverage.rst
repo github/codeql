@@ -21,8 +21,9 @@ These relationships are associated with Views (another kind of CWE entity). For 
 Every security query is associated with one or more CWEs, which are the most precise CWEs that are covered by that query.
 Overall coverage is claimed for the most-precise CWEs, as well as for any of their ancestors in the View.
 
+Note that the CWE coverage includes both "`supported queries <https://github.com/github/codeql/blob/main/docs/supported-queries.md>`_" and "`experimental queries <https://github.com/github/codeql/blob/main/docs/experimental.md>`_."
+
 .. toctree::
-   :hidden:
    :titlesonly:
 
    full-cwe
