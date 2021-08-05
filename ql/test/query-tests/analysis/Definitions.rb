@@ -15,7 +15,15 @@ module A
 end
 
 module C
+  @@a = 1
+
+  def self.a
+    @@a
+  end
+
   class D
+    @@b = 2
+
     def initialize
       @e = 1
       x, y = [1, 2]
@@ -28,6 +36,7 @@ module C
       @f = 2
       @e
       @f
+      @@b
     end
   end
 end

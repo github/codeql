@@ -7,7 +7,6 @@
 
 /*
  * TODO:
- *    - class variables
  *    - should `Foo.new` point to `Foo#initialize`?
  */
 
@@ -24,6 +23,8 @@ where
   LocalVariableLoc(src, target) = loc and kind = "variable"
   or
   InstanceVariableLoc(src, target) = loc and kind = "instance variable"
+  or
+  ClassVariableLoc(src, target) = loc and kind = "class variable"
 select src, target, kind
 
 /**
@@ -61,6 +62,11 @@ newtype DefLoc =
       m.getName() = "initialize" and
       write.getVariable() = read.getVariable()
     )
+  } or
+  /** A class variable */
+  ClassVariableLoc(ClassVariableReadAccess read, ClassVariableWriteAccess write) {
+    read.getVariable() = write.getVariable() and
+     not exists(MethodBase m | m.getAChild+() = write)
   }
 
 /**
