@@ -85,6 +85,7 @@ private module Frameworks {
   private import semmle.code.java.frameworks.jackson.JacksonSerializability
   private import semmle.code.java.frameworks.JavaxJson
   private import semmle.code.java.frameworks.JaxWS
+  private import semmle.code.java.frameworks.JoddJson
   private import semmle.code.java.frameworks.JsonJava
   private import semmle.code.java.frameworks.Optional
   private import semmle.code.java.frameworks.spring.SpringCache
