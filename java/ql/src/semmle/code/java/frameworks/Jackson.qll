@@ -3,7 +3,6 @@
  */
 
 import java
-private import semmle.code.java.Reflection
 private import semmle.code.java.dataflow.DataFlow
 
 private class ObjectMapper extends RefType {
@@ -77,14 +76,6 @@ class SetPolymorphicTypeValidatorSource extends DataFlow::ExprNode {
   }
 }
 
-/** Holds if `fromNode` to `toNode` is a dataflow step that resolves a class. */
-predicate resolveClassStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
-  exists(ReflectiveClassIdentifierMethodAccess ma |
-    ma.getArgument(0) = fromNode.asExpr() and
-    ma = toNode.asExpr()
-  )
-}
-
 /**
  * Holds if `fromNode` to `toNode` is a dataflow step that creates a Jackson parser.
  *
@@ -151,24 +142,5 @@ predicate hasArgumentWithUnsafeJacksonAnnotation(MethodAccess call) {
   call.getMethod() instanceof ObjectMapperReadMethod and
   exists(RefType argType, int i | i > 0 and argType = call.getArgument(i).getType() |
     hasJsonTypeInfoAnnotation(argType.(ParameterizedType).getATypeArgument())
-  )
-}
-
-/**
- * Holds if `fromNode` to `toNode` is a dataflow step that looks like resolving a class.
- * A method probably resolves a class if it takes a string, returns a type descriptor,
- * and its name contains "resolve", "load", etc.
- *
- * Any method call that satisfies the rule above is assumed to propagate taint from its string arguments,
- * so methods that accept user-controlled data but sanitize it or use it for some
- * completely different purpose before returning a type descriptor could result in false positives.
- */
-predicate looksLikeResolveClassStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
-  exists(MethodAccess ma, Method m, Expr arg | m = ma.getMethod() and arg = ma.getAnArgument() |
-    m.getReturnType() instanceof JacksonTypeDescriptorType and
-    m.getName().toLowerCase().regexpMatch("(.*)(resolve|load|class|type)(.*)") and
-    arg.getType() instanceof TypeString and
-    arg = fromNode.asExpr() and
-    ma = toNode.asExpr()
   )
 }
