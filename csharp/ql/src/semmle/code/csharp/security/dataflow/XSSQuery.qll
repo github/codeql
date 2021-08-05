@@ -53,6 +53,15 @@ module PathGraph {
     xssFlow(pred, succ, _) and
     pred instanceof XssAspNode
   }
+
+  /** Holds if `n` is a node in the graph of data flow path explanations. */
+  query predicate nodes(XssNode n, string key, string val) {
+    DataFlow2::PathGraph::nodes(n.asDataFlowNode(), key, val)
+    or
+    xssFlow(n, n, _) and
+    key = "semmle.label" and
+    val = n.(XssAspNode).toString()
+  }
 }
 
 private newtype TXssNode =
