@@ -25,9 +25,9 @@ by overriding the <code>onPlaintextJws</code> or <code>onClaimsJws</code> of <co
 <example>
 
 <p>The following example shows four cases where a signing key is set for a parser.
-In the first bad case the <code>parse</code> method is used which will not validate the signature.
-The second bad case uses a <code>JwtHandlerAdapter</code> where the <code>onPlaintextJwt</code> method is overriden so it will not validate the signature.
-The third and fourth good cases use <code>parseClaimsJws</code> method or override the <code>onPlaintextJws</code> method.
+In the first 'BAD' case the <code>parse</code> method is used, which will not validate the signature.
+The second 'BAD' case uses a <code>JwtHandlerAdapter</code> where the <code>onPlaintextJwt</code> method is overriden, so it will not validate the signature.
+The third and fourth 'GOOD' cases use <code>parseClaimsJws</code> method or override the <code>onPlaintextJws</code> method.
 </p>
 
 <sample src="MissingJWTSignatureCheck.java" />

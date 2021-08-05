@@ -1,18 +1,13 @@
-//semmle-extractor-options: --javac-args -cp ${testdir}/../../../stubs/jwtk-jjwt-0.11.2
-
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.JwtParser;
-import io.jsonwebtoken.Jwt;
-import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Header;
-import io.jsonwebtoken.JwtParserBuilder;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.Jwt;
 import io.jsonwebtoken.JwtHandlerAdapter;
+import io.jsonwebtoken.JwtParser;
+import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.impl.DefaultJwtParser;
+import io.jsonwebtoken.impl.DefaultJwtParserBuilder;
 
-public class MissingJWTSignatureCheck {
-
-
-    // SIGNED
+public class MissingJWTSignatureCheckTest {
 
     private JwtParser getASignedParser() {
         return Jwts.parser().setSigningKey("someBase64EncodedKey");
@@ -45,10 +40,6 @@ public class MissingJWTSignatureCheck {
         goodJwtOnParserBuilder(parser3, "");
         goodJwtHandler(parser3, "");
     }
-
-    // SIGNED END
-
-    // UNSIGNED
 
     private JwtParser getAnUnsignedParser() {
         return Jwts.parser();
@@ -84,81 +75,67 @@ public class MissingJWTSignatureCheck {
 
     private void signParserAfterParseCall() {
         JwtParser parser = getAnUnsignedParser();
-        parser.parse(""); // Should not be detected
+        parser.parse(""); // Safe
         parser.setSigningKey("someBase64EncodedKey");
     }
 
-    // UNSIGNED END
-
-    // INDIRECT
-
     private void badJwtOnParserBuilder(JwtParser parser, String token) {
-        parser.parse(token); // BAD: Does not verify the signature
+        parser.parse(token); // $hasMissingJwtSignatureCheck
     }
 
     private void badJwtHandlerOnParserBuilder(JwtParser parser, String token) {
-        parser.parse(token, new JwtHandlerAdapter<Jwt<Header, String>>() { // BAD: The handler is called on an unverified JWT
-                        @Override
-                        public Jwt<Header, String> onPlaintextJwt(Jwt<Header, String> jwt) {
-                            return jwt;
-                        }
-                    });
+        parser.parse(token, new JwtHandlerAdapter<Jwt<Header, String>>() { // $hasMissingJwtSignatureCheck
+            @Override
+            public Jwt<Header, String> onPlaintextJwt(Jwt<Header, String> jwt) {
+                return jwt;
+            }
+        });
     }
 
     private void goodJwtOnParserBuilder(JwtParser parser, String token) {
-        parser.parseClaimsJws(token) // GOOD: Verify the signature
-                    .getBody();
+        parser.parseClaimsJws(token) // Safe
+                .getBody();
     }
 
     private void goodJwtHandler(JwtParser parser, String token) {
-        parser.parse(token, new JwtHandlerAdapter<Jws<String>>() { // GOOD: The handler is called on a verified JWS
-                        @Override
-                        public Jws<String> onPlaintextJws(Jws<String> jws) {
-                            return jws;
-                        }
-                    });
+        parser.parse(token, new JwtHandlerAdapter<Jws<String>>() { // Safe
+            @Override
+            public Jws<String> onPlaintextJws(Jws<String> jws) {
+                return jws;
+            }
+        });
     }
 
-    // INDIRECT END
-
-    // DIRECT
-
     private void badJwtOnParserBuilder(String token) {
-        Jwts.parserBuilder()
-                    .setSigningKey("someBase64EncodedKey").build()
-                    .parse(token); // BAD: Does not verify the signature
+        Jwts.parserBuilder().setSigningKey("someBase64EncodedKey").build().parse(token); // $hasMissingJwtSignatureCheck
+    }
+
+    private void badJwtOnDefaultParserBuilder(String token) {
+        new DefaultJwtParserBuilder().setSigningKey("someBase64EncodedKey").build().parse(token); // $hasMissingJwtSignatureCheck
     }
 
     private void badJwtHandlerOnParser(String token) {
-        Jwts.parser()
-                    .setSigningKey("someBase64EncodedKey")
-                    .parse(token, new JwtHandlerAdapter<Jwt<Header, String>>() {  // BAD: The handler is called on an unverified JWT
-                        @Override
-                        public Jwt<Header, String> onPlaintextJwt(Jwt<Header, String> jwt) {
-                            return jwt;
-                        }
-                    });
+        Jwts.parser().setSigningKey("someBase64EncodedKey").parse(token, // $hasMissingJwtSignatureCheck
+                new JwtHandlerAdapter<Jwt<Header, String>>() {
+                    @Override
+                    public Jwt<Header, String> onPlaintextJwt(Jwt<Header, String> jwt) {
+                        return jwt;
+                    }
+                });
     }
 
     private void goodJwtOnParser(String token) {
-        Jwts.parser()
-                    .setSigningKey("someBase64EncodedKey")
-                    .parseClaimsJws(token) // GOOD: Verify the signature
-                    .getBody();
+        Jwts.parser().setSigningKey("someBase64EncodedKey").parseClaimsJws(token) // Safe
+                .getBody();
     }
 
     private void goodJwtHandlerOnParserBuilder(String token) {
-        Jwts.parserBuilder()
-                    .setSigningKey("someBase64EncodedKey").build()
-                    .parse(token, new JwtHandlerAdapter<Jws<String>>() { // GOOD: The handler is called on a verified JWS
-                        @Override
-                        public Jws<String> onPlaintextJws(Jws<String> jws) {
-                            return jws;
-                        }
-                    });
+        Jwts.parserBuilder().setSigningKey("someBase64EncodedKey").build().parse(token, // Safe
+                new JwtHandlerAdapter<Jws<String>>() {
+                    @Override
+                    public Jws<String> onPlaintextJws(Jws<String> jws) {
+                        return jws;
+                    }
+                });
     }
-
-    // DIRECT END
-
-
 }
