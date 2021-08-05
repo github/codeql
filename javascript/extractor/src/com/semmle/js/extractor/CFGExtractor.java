@@ -225,7 +225,14 @@ public class CFGExtractor {
       return Collections.singleton(x);
     }
     if (ys.contains(x)) {
-      return ys;
+      List<Node> result = new ArrayList<>();
+      result.add(x);
+      for (Node y : ys) {
+        if (y != x) {
+          result.add(y);
+        }
+      }
+      return result;
     }
 
     List<Node> result = new ArrayList<>();
