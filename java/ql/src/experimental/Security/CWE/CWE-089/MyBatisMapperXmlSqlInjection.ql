@@ -14,6 +14,7 @@
 import java
 import DataFlow::PathGraph
 import MyBatisMapperXmlSqlInjectionLib
+import semmle.code.java.security.SanitizerGuard
 import semmle.code.java.dataflow.FlowSources
 
 private class MyBatisMapperXmlSqlInjectionConfiguration extends TaintTracking::Configuration {
@@ -29,6 +30,10 @@ private class MyBatisMapperXmlSqlInjectionConfiguration extends TaintTracking::C
     node.getType() instanceof PrimitiveType or
     node.getType() instanceof BoxedType or
     node.getType() instanceof NumberType
+  }
+
+  override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
+    guard instanceof ContainsSanitizer or guard instanceof EqualsSanitizer
   }
 }
 

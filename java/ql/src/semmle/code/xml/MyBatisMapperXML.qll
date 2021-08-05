@@ -6,7 +6,8 @@ import java
 class MyBatisMapperXMLFile extends XMLFile {
   MyBatisMapperXMLFile() {
     count(XMLElement e | e = this.getAChild()) = 1 and
-    this.getAChild().getName() = "mapper"
+    this.getAChild().getName() = "mapper" and
+    this.getFile().getAbsolutePath().indexOf("/src/main") > 0
   }
 }
 
