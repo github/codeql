@@ -14,5 +14,5 @@ import cpp
 
 from Function f
 where
-    f.getName().regexpMatch("ios_msg_*")
+    f.getName().regexpMatch("ios_errmsg")
 select f.getACallToThisFunction(), "Function name is: "+f.getName()
