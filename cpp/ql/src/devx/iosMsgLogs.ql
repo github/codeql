@@ -15,4 +15,4 @@ import cpp
 from Function f
 where
     f.getName().regexpMatch("ios_msg_*")
-select f.getACallToThisFunction(), "Function name is: "+f.getName().toString()
+select f.getACallToThisFunction(), "Function name is: "+f.getName()
