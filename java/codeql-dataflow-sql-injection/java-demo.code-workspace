@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"name": "[java-sqli-b198dd7 source archive]",
+			"uri": "codeql-zip-archive://0-103/Users/hohn/local/codeql-training-material/java/codeql-dataflow-sql-injection/java-sqli-b198dd7/src.zip"
+		}
+	],
+	"settings": {
+		"codeQL.runningQueries.autoSave": true
+	}
+}
