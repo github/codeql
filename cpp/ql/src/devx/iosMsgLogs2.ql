@@ -11,8 +11,6 @@
  */
 
 import cpp
-import semmle.code.cpp.commons.Printf
-
 
 from Function f
 where

@@ -4,15 +4,13 @@
  * @kind problem
  * @problem.severity recommendation
  * @precision high
- * @id cpp/check-macros
+ * @id cpp/ios-msg
  * @tags testability
  *       readability
  *       maintainability
  */
 
 import cpp
-import semmle.code.cpp.commons.Printf
-
 
 from Function f
 where
