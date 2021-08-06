@@ -1,6 +1,6 @@
 /**
- * @name Name: Find ios_*msg
- * @description Description: Finding all functions with name "ios_*msg"
+ * @name Name: Find ios_msg_*
+ * @description Description: Finding all functions with name "ios_msg_*"
  * @kind problem
  * @problem.severity recommendation
  * @precision high
@@ -16,5 +16,5 @@ import semmle.code.cpp.commons.Printf
 
 from Function f
 where
-    f.getName().regexpMatch("ios_*msg")
+    f.getName().regexpMatch("ios_msg_*")
 select f.getACallToThisFunction(), "Function name is: "+f.getName().toString()
