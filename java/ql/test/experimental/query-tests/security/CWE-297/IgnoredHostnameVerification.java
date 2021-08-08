@@ -1,6 +1,7 @@
 import java.io.IOException;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLException;
+import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 
@@ -87,6 +88,21 @@ public class IgnoredHostnameVerification {
 
     socket.close();
     throw new SSLException("Oops! Hostname verification failed!");
+  }
+
+  public static class HostnameVerifierWrapper implements HostnameVerifier {
+
+    private final HostnameVerifier verifier;
+
+    public HostnameVerifierWrapper(HostnameVerifier verifier) {
+        this.verifier = verifier;
+    }
+
+    @Override
+    public boolean verify(String hostname, SSLSession session) {
+        return verifier.verify(hostname, session); // GOOD: wrapped calls should not be reported
+    }
+
   }
 
 }

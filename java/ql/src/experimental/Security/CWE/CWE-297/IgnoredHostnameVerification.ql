@@ -7,34 +7,43 @@
  * @precision medium
  * @id java/ignored-hostname-verification
  * @tags security
- *       external/cwe/cwe-295
+ *       external/cwe/cwe-297
  */
 
 import java
 import semmle.code.java.controlflow.Guards
-import semmle.code.java.dataflow.TaintTracking
+import semmle.code.java.dataflow.DataFlow
 
+/** The `HostnameVerifier.verify()` method. */
+private class HostnameVerifierVerifyMethod extends Method {
+  HostnameVerifierVerifyMethod() {
+    this.getDeclaringType().getASupertype*().hasQualifiedName("javax.net.ssl", "HostnameVerifier") and
+    this.hasStringSignature("verify(String, SSLSession)")
+  }
+}
+
+/** Defines `HostnameVerifier.verity()` calls that are not wrapped by another `HostnameVerifier`. */
 private class HostnameVerificationCall extends MethodAccess {
   HostnameVerificationCall() {
-    getMethod()
-        .getDeclaringType()
-        .getASupertype*()
-        .hasQualifiedName("javax.net.ssl", "HostnameVerifier") and
-    getMethod().hasStringSignature("verify(String, SSLSession)")
+    this.getMethod() instanceof HostnameVerifierVerifyMethod and
+    not this.getCaller() instanceof HostnameVerifierVerifyMethod
   }
 
-  predicate ignored() {
+  /** Holds if the result if the call is not useds. */
+  predicate isIgnored() {
     not exists(
       DataFlow::Node source, DataFlow::Node sink, CheckFailedHostnameVerificationConfig config
     |
-      this = source.asExpr()
-    |
-      config.hasFlow(source, sink)
+      this = source.asExpr() and config.hasFlow(source, sink)
     )
   }
 }
 
-private class CheckFailedHostnameVerificationConfig extends TaintTracking::Configuration {
+/**
+ * A configuration that tracks data flows from the result of a `HostnameVerifier.vefiry()` call
+ * to a condition that controls a throw statement.
+ */
+private class CheckFailedHostnameVerificationConfig extends DataFlow::Configuration {
   CheckFailedHostnameVerificationConfig() { this = "CheckFailedHostnameVerificationConfig" }
 
   override predicate isSource(DataFlow::Node source) {
@@ -54,5 +63,5 @@ private class CheckFailedHostnameVerificationConfig extends TaintTracking::Confi
 }
 
 from HostnameVerificationCall verification
-where verification.ignored()
+where verification.isIgnored()
 select verification, "Ignored result of hostname verification."
