@@ -5,7 +5,7 @@
  *              therefore they should be unique and ideally unpredictable.
  *              Otherwise, the same plaintexts result in same ciphertexts under a given secret key.
  *              If a static IV is used for encryption, this lets an attacker learn
- *              if the same data pieces are transfered or stored,
+ *              if the same data pieces are transferred or stored,
  *              or this can help the attacker run a dictionary attack.
  * @kind path-problem
  * @problem.severity warning
