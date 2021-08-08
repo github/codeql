@@ -2579,6 +2579,48 @@ public class Test {
 			out = WebUtils.parseMatrixVariables(in);
 			sink(getMapValue(out)); // $hasTaintFlow
 		}
+    {
+      // "org.springframework.web.util;HtmlUtils;false;htmlEscape;;;Argument[0];ReturnValue;taint"
+      String out = null;
+      String in = (String)source();
+      out = HtmlUtils.htmlEscape(in, null);
+      sink(out); // $ hasTaintFlow
+    }
+    {
+      // "org.springframework.web.util;HtmlUtils;false;htmlEscape;;;Argument[0];ReturnValue;taint"
+      String out = null;
+      String in = (String)source();
+      out = HtmlUtils.htmlEscape(in);
+      sink(out); // $ hasTaintFlow
+    }
+    {
+      // "org.springframework.web.util;HtmlUtils;false;htmlEscapeDecimal;;;Argument[0];ReturnValue;taint"
+      String out = null;
+      String in = (String)source();
+      out = HtmlUtils.htmlEscapeDecimal(in, null);
+      sink(out); // $ hasTaintFlow
+    }
+    {
+      // "org.springframework.web.util;HtmlUtils;false;htmlEscapeDecimal;;;Argument[0];ReturnValue;taint"
+      String out = null;
+      String in = (String)source();
+      out = HtmlUtils.htmlEscapeDecimal(in);
+      sink(out); // $ hasTaintFlow
+    }
+    {
+      // "org.springframework.web.util;HtmlUtils;false;htmlEscapeHex;;;Argument[0];ReturnValue;taint"
+      String out = null;
+      String in = (String)source();
+      out = HtmlUtils.htmlEscapeHex(in, null);
+      sink(out); // $ hasTaintFlow
+    }
+    {
+      // "org.springframework.web.util;HtmlUtils;false;htmlEscapeHex;;;Argument[0];ReturnValue;taint"
+      String out = null;
+      String in = (String)source();
+      out = HtmlUtils.htmlEscapeHex(in);
+      sink(out); // $ hasTaintFlow
+    }
 
 	}
 
