@@ -8,6 +8,8 @@ import semmle.python.dataflow.new.TypeTracker
 import Attributes
 import LocalSources
 private import semmle.python.essa.SsaCompute
+private import FlowSummaryImpl as FlowSummaryImpl
+private import semmle.python.dataflow.FlowSummary
 
 /**
  * IPA type for data flow nodes.
@@ -70,7 +72,13 @@ newtype TNode =
    * A synthetic node representing that there may be an iterable element
    * for `consumer` to consume.
    */
-  TIterableElementNode(UnpackingAssignmentTarget consumer)
+  TIterableElementNode(UnpackingAssignmentTarget consumer) or
+  /**
+   * A synthetic node to hold the flow summary of a calable.
+   */
+  TSummaryInternalNode(SummarizedCallable c, FlowSummaryImpl::Private::SummaryNodeState state) {
+    FlowSummaryImpl::Private::summaryNodeRange(c, state)
+  }
 
 /** Helper for `Node::getEnclosingCallable`. */
 private DataFlowCallable getCallableScope(Scope s) {

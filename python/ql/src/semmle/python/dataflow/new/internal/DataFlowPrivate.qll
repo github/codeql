@@ -2,6 +2,9 @@ private import python
 private import DataFlowPublic
 import semmle.python.SpecialMethods
 private import semmle.python.essa.SsaCompute
+private import FlowSummaryImpl as FlowSummaryImpl
+// private import FlowSummaryImplSpecific as FlowSummaryImplSpecific
+private import semmle.python.dataflow.FlowSummary
 
 //--------
 // Data flow graph
@@ -143,6 +146,35 @@ module syntheticPostUpdateNode {
 }
 
 import syntheticPostUpdateNode
+
+/**
+ * A data-flow node used to model flow summaries.
+ */
+class SummaryNode extends Node, TSummaryInternalNode {
+  private SummarizedCallable c;
+  private FlowSummaryImpl::Private::SummaryNodeState state;
+
+  SummaryNode() { this = TSummaryInternalNode(c, state) }
+
+  override Location getLocation() { result = c.getLocation() }
+
+  override string toString() { result = "[summary] " + state + " in " + c }
+
+  /** Holds if this summary node is the `i`th argument of `call`. */
+  predicate isArgumentOf(DataFlowCall call, int i) {
+    FlowSummaryImpl::Private::summaryArgumentNode(call, this, i)
+  }
+
+  /** Holds if this summary node is a return node. */
+  predicate isReturn() { FlowSummaryImpl::Private::summaryReturnNode(this, _) }
+
+  /** Holds if this summary node is an out node for `call`. */
+  predicate isOut(DataFlowCall call) { FlowSummaryImpl::Private::summaryOutNode(call, this, _) }
+}
+
+SummaryNode getSummaryNode(SummarizedCallable c, FlowSummaryImpl::Private::SummaryNodeState state) {
+  result = TSummaryInternalNode(c, state)
+}
 
 class DataFlowExpr = Expr;
 
@@ -534,24 +566,26 @@ newtype TDataFlowCallable =
   TModule(Module m)
 
 /** Represents a callable. */
-abstract class DataFlowCallable extends TDataFlowCallable {
+class DataFlowCallable extends TDataFlowCallable {
   /** Gets a textual representation of this element. */
-  abstract string toString();
+  string toString() { result = "DataFlowCallable" }
 
   /** Gets a call to this callable. */
-  abstract CallNode getACall();
+  CallNode getACall() { none() }
 
   /** Gets the scope of this callable */
-  abstract Scope getScope();
+  Scope getScope() { none() }
 
   /** Gets the specified parameter of this callable */
-  abstract NameNode getParameter(int n);
+  NameNode getParameter(int n) { none() }
 
   /** Gets the name of this callable. */
-  abstract string getName();
+  string getName() { none() }
 
   /** Gets a callable value for this callable, if one exists. */
-  abstract CallableValue getCallableValue();
+  CallableValue getCallableValue() { none() }
+
+  Location getLocation() { none() }
 }
 
 /** A class representing a callable value. */
@@ -571,6 +605,8 @@ class DataFlowCallableValue extends DataFlowCallable, TCallableValue {
   override string getName() { result = callable.getName() }
 
   override CallableValue getCallableValue() { result = callable }
+
+  override Location getLocation() { result = callable.getScope().getLocation() }
 }
 
 /** A class representing a callable lambda. */
@@ -592,6 +628,8 @@ class DataFlowLambda extends DataFlowCallable, TLambda {
   override FunctionValue getCallableValue() {
     result.getOrigin().getNode() = lambda.getDefinition()
   }
+
+  override Location getLocation() { result = lambda.getLocation() }
 }
 
 /** A class representing the scope in which a `ModuleVariableNode` appears. */
@@ -611,6 +649,8 @@ class DataFlowModuleScope extends DataFlowCallable, TModule {
   override string getName() { result = mod.getName() }
 
   override CallableValue getCallableValue() { none() }
+
+  override Location getLocation() { result = mod.getLocation() }
 }
 
 /**
