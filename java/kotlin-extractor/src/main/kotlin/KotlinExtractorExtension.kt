@@ -57,12 +57,12 @@ class TrapWriter (
     fun writeTrap(trap: String) {
         file.write(trap)
     }
-    fun getLocation(startOffset: Int, endOffset: Int): Label<DbLocation_default> {
+    fun getLocation(startOffset: Int, endOffset: Int): Label<DbLocation> {
         val startLine = fileEntry.getLineNumber(startOffset) + 1
         val startColumn = fileEntry.getColumnNumber(startOffset) + 1
         val endLine = fileEntry.getLineNumber(endOffset) + 1
         val endColumn = fileEntry.getColumnNumber(endOffset)
-        val id: Label<DbLocation_default> = getFreshLabel()
+        val id: Label<DbLocation> = getFreshLabel()
         val fileId: Label<DbFile> = getLabelFor(fileLabel)
         writeTrap("$id = @\"loc,{$fileId},$startLine,$startColumn,$endLine,$endColumn\"\n")
         writeLocations_default(id, fileId, startLine, startColumn, endLine, endColumn)

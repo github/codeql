@@ -13,6 +13,7 @@ with open('../ql/src/config/semmlecode.dbscheme', 'r') as f:
 dbscheme = re.sub(r'/\*.*?\*/', '', dbscheme, flags=re.DOTALL)
 dbscheme = re.sub(r'//[^\r\n]*/', '', dbscheme)
 
+type_aliases = {}
 type_hierarchy = {}
 
 with open('src/main/kotlin/KotlinExtractorDbScheme.kt', 'w') as kt:
@@ -38,10 +39,14 @@ with open('src/main/kotlin/KotlinExtractorDbScheme.kt', 'w') as kt:
                                        dbscheme,
                                        flags=re.DOTALL):
         type_hierarchy[name] = type_hierarchy.get(name, set())
-        for typ in re.findall(r'@(\w+)', unions):
-            s = type_hierarchy.get(typ, set())
-            s.add(name)
-            type_hierarchy[typ] = s
+        typs = re.findall(r'@(\w+)', unions)
+        if len(typs) == 1:
+            type_aliases[name] = typs[0]
+        else:
+            for typ in typs:
+                s = type_hierarchy.get(typ, set())
+                s.add(name)
+                type_hierarchy[typ] = s
 
     # tables
     for relname, body in re.findall('\n([\w_]+)(\([^)]*\))',
@@ -84,10 +89,13 @@ with open('src/main/kotlin/KotlinExtractorDbScheme.kt', 'w') as kt:
         kt.write('}\n')
 
     for typ in sorted(type_hierarchy):
-        kt.write('sealed interface Db' + upperFirst(typ))
-        names = sorted(type_hierarchy[typ])
-        if names:
-            kt.write(': ')
-            kt.write(', '.join(map(lambda name: 'Db' + upperFirst(name), names)))
-        kt.write(' {}\n')
+        if typ in type_aliases:
+            kt.write('typealias Db' + upperFirst(typ) + ' = Db' + upperFirst(type_aliases[typ]) + '\n')
+        else:
+            kt.write('sealed interface Db' + upperFirst(typ))
+            names = sorted(type_hierarchy[typ])
+            if names:
+                kt.write(': ')
+                kt.write(', '.join(map(lambda name: 'Db' + upperFirst(name), names)))
+            kt.write('\n')
 
