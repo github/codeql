@@ -116,14 +116,14 @@ The workshop is split into several steps. You can write one query per step, or w
     <details>
     <summary>Solution</summary>
 	
-    	```ql
-    	import java
+    ```ql
+    import java
 
-    	from MethodAccess ma, VarAccess arg
-    	where ma.getMethod().hasQualifiedName("net.sqlcipher.database", "SQLiteDatabase", "rawQuery") and
-      	arg  = ma.getArgument(0)
-    	select ma, arg
-    	```
+    from MethodAccess ma, VarAccess arg
+    where ma.getMethod().hasQualifiedName("net.sqlcipher.database", "SQLiteDatabase", "rawQuery") and
+    arg  = ma.getArgument(0)
+    select ma, arg
+    ```
     </details>
 
 ### Section 3: Data Flow  <a id="section3"></a>
