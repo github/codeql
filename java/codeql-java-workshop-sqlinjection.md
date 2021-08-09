@@ -240,6 +240,9 @@ class AndroidSQLInjection extends TaintTracking::Configuration {
   <summary>Solution</summary>
 	
  ```codeql
+ // String CheckName = username.getText().toString();
+ //                  \----methodAccess------------/
+ //                  \--- qualifier---/ \-method--/	
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
 	exists(MethodAccess ma |	 
 		ma.getQualifier().getType().hasName(["Editable", "EditText"]) and
