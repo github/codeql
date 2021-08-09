@@ -124,7 +124,7 @@ public class Test {
 	MyAbstractMapEntry newMAMEWithMapKey(Object element) { return new MyAbstractMapEntry(element,null); }
 	MyAbstractMapEntryDecorator newMAMEDWithMapKey(Object element) { return new MyAbstractMapEntryDecorator(newMAMEWithMapKey(element)); }
 	MultiValueMap newMVMWithMapKey(Object element) { MultiValueMap m = new MultiValueMap(); m.put(element,null); return m; }
-	MultiValuedMap newMVdMWithMapKey(Object element) { MultiValuedMap m = new ArrayListValuedHashMap(); m.put(element,null); return m; }
+	ArrayListValuedHashMap newALVHMWithMapKey(Object element) { ArrayListValuedHashMap m = new ArrayListValuedHashMap(); m.put(element,null); return m; }
 	OrderedMapIterator newOMIWithElement(Object element) { LinkedMap m = new LinkedMap(); m.put(element,null); return m.mapIterator(); }
 	ResourceBundle newRBWithMapKey(Object element) { return (ResourceBundle)null; }
 	SortedMap newTreeMapWithMapKey(Object element) { SortedMap m = new TreeMap(); m.put(element,null); return m; }
@@ -2944,7 +2944,7 @@ public class Test {
 		{
 			// "org.apache.commons.collections4;MultiMapUtils;true;transformedMultiValuedMap;;;MapKey of Argument[0];MapKey of ReturnValue;value"
 			MultiValuedMap out = null;
-			MultiValuedMap in = newMVdMWithMapKey((String)source());
+			MultiValuedMap in = newALVHMWithMapKey((String)source());
 			out = MultiMapUtils.transformedMultiValuedMap(in, null, null);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
@@ -2958,7 +2958,7 @@ public class Test {
 		{
 			// "org.apache.commons.collections4;MultiMapUtils;true;unmodifiableMultiValuedMap;;;MapKey of Argument[0];MapKey of ReturnValue;value"
 			MultiValuedMap out = null;
-			MultiValuedMap in = newMVdMWithMapKey((String)source());
+			MultiValuedMap in = newALVHMWithMapKey((String)source());
 			out = MultiMapUtils.unmodifiableMultiValuedMap(in);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
@@ -3035,7 +3035,7 @@ public class Test {
 		{
 			// "org.apache.commons.collections4;MultiValuedMap;true;asMap;;;MapKey of Argument[-1];MapKey of ReturnValue;value"
 			Map out = null;
-			MultiValuedMap in = newMVdMWithMapKey((String)source());
+			MultiValuedMap in = newALVHMWithMapKey((String)source());
 			out = in.asMap();
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
@@ -3063,14 +3063,14 @@ public class Test {
 		{
 			// "org.apache.commons.collections4;MultiValuedMap;true;keySet;;;MapKey of Argument[-1];Element of ReturnValue;value"
 			Set out = null;
-			MultiValuedMap in = newMVdMWithMapKey((String)source());
+			MultiValuedMap in = newALVHMWithMapKey((String)source());
 			out = in.keySet();
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MultiValuedMap;true;keys;;;MapKey of Argument[-1];Element of ReturnValue;value"
 			MultiSet out = null;
-			MultiValuedMap in = newMVdMWithMapKey((String)source());
+			MultiValuedMap in = newALVHMWithMapKey((String)source());
 			out = in.keys();
 			sink(getElement(out)); // $ hasValueFlow
 		}
@@ -3084,7 +3084,7 @@ public class Test {
 		{
 			// "org.apache.commons.collections4;MultiValuedMap;true;mapIterator;;;MapKey of Argument[-1];Element of ReturnValue;value"
 			MapIterator out = null;
-			MultiValuedMap in = newMVdMWithMapKey((String)source());
+			MultiValuedMap in = newALVHMWithMapKey((String)source());
 			out = in.mapIterator();
 			sink(getElement(out)); // $ hasValueFlow
 		}
@@ -3126,7 +3126,7 @@ public class Test {
 		{
 			// "org.apache.commons.collections4;MultiValuedMap;true;putAll;(MultiValuedMap);;MapKey of Argument[0];MapKey of Argument[-1];value"
 			MultiValuedMap out = null;
-			MultiValuedMap in = newMVdMWithMapKey((String)source());
+			MultiValuedMap in = newALVHMWithMapKey((String)source());
 			out.putAll(in);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
