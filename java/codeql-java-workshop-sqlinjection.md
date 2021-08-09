@@ -148,7 +148,7 @@ In this section we will create a data flow query by populating this template:
 */
 	
 import java
-import semmle.code.java.dataflow.DataFlow
+import semmle.code.java.dataflow.TaintTracking
 
 
 class AndroidSQLInjection extends TaintTracking::Configuration {
@@ -170,7 +170,7 @@ class AndroidSQLInjection extends TaintTracking::Configuration {
 }
 from AndroidSQLInjection config, DataFlow::Node source, DataFlow::Node sink
 where config.hasFlow(source, sink)
-select sink, source, sink, "SQL Injection"
+select sink, source
   ```
 
 1. Complete the `isSource` predicate using the query you wrote previously
