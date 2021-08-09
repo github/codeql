@@ -72,13 +72,14 @@ Blurb aboout Android framwork
     where ma.getMethod().hasQualifiedName(net.sqlcipher.databaset", "SQLLiteDatabase", "rawQuery")
     select ma
     ```
-1. The `rawQuery` method sends the SQL query which is first argument (i.e the argument at index 0) to the database. Update your query to report the sql argument. 
+1. The `rawQuery` method sends the SQL query which is first argument (i.e the argument at index 0) to the database. Update your query to report this argument. 
   
     <details>
     <summary>Hint</summary>
 
     - `MethodCall.getArgument(int i)` returns the argument at the i-th index.
     - The arguments are _expressions_ in the program, represented by the CodeQL class `Expr`. Introduce a new variable to hold the argument expression.
+    - `VarAccess` is a reference to a field, parameter or local variable
 
     </details>
     <details>
@@ -87,43 +88,22 @@ Blurb aboout Android framwork
     ```ql
     import java
 
-    from MethodAccess fromXML, Expr arg
-    where
-      fromXML.getMethod().getName() = "fromXML" and
-      arg = fromXML.getArgument(0)
-    select fromXML, arg
+    from MethodAccess ma, VarAccess arg
+    where ma.getMethod().hasQualifiedName("net.sqlcipher.database", "SQLiteDatabase", "rawQuery") and
+      arg  = ma.getArgument(0)
+    select ma, arg
     ```
     </details>
 
 
 Like predicates, _classes_ in CodeQL can be used to encapsulate reusable portions of logic. Classes represent single sets of values, and they can also include operations (known as _member predicates_) specific to that set of values. You have already seen numerous instances of CodeQL classes (`MethodAccess`, `Method` etc.) and associated member predicates (`MethodAccess.getMethod()`, `Method.getName()`, etc.).
-### Section 3: Unsafe XML deserialization <a id="section3"></a>
+### Section 3: Data Flow  <a id="section3"></a>
 
-We have now identified (a) places in the program which receive untrusted data and (b) places in the program which potentially perform unsafe XML deserialization. We now want to tie these two together to ask: does the untrusted data ever _flow_ to the potentially unsafe XML deserialization call?
+We have now identified (a) places in the program which receive untrusted data and (b) places in the program which potentially trigger malicious SQL queries.. We now want to tie these two together to ask: does the untrusted data ever _flow_ to the potentially unsafe SQL query call?
 
 In program analysis we call this a _data flow_ problem. Data flow helps us answer questions like: does this expression ever hold a value that originates from a particular other place in the program?
 
 We can visualize the data flow problem as one of finding paths through a directed graph, where the nodes of the graph are elements in program, and the edges represent the flow of data between those elements. If a path exists, then the data flows between those two nodes.
-
-Consider this example Java method:
-
-```c
-int func(int tainted) {
-   int x = tainted;
-   if (someCondition) {
-     int y = x;
-     callFoo(y);
-   } else {
-     return x;
-   }
-   return -1;
-}
-```
-The data flow graph for this method will look something like this:
-
-<img src="https://help.semmle.com/QL/ql-training/_images/graphviz-2ad90ce0f4b6f3f315f2caf0dd8753fbba789a14.png" alt="drawing" width="260"/>
-
-This graph represents the flow of data from the tainted parameter. The nodes of graph represent program elements that have a value, such as function parameters and expressions. The edges of this graph represent flow through these nodes.
 
 CodeQL for Java provides data flow analysis as part of the standard library. You can import it using `semmle.code.java.dataflow.DataFlow`. The library models nodes using the `DataFlow::Node` CodeQL class. These nodes are separate and distinct from the AST (Abstract Syntax Tree, which represents the basic structure of the program) nodes, to allow for flexibility in how data flow is modeled.
 
@@ -133,22 +113,23 @@ In this section we will create a data flow query by populating this template:
 
 ```ql
 /**
- * @name Unsafe XML deserialization
+ * @name SQL Injection in OWASP Security Shepard
  * @kind problem
- * @id java/unsafe-deserialization
+ * @id java/sqlinjectionowasp
  */
 import java
 import semmle.code.java.dataflow.DataFlow
 
+class AndroidSQLInjection extends TaintTracking::Configuration {
+  AndroidSQLInjection() { this = "AndroidSQLInjection" }
 // TODO add previous class and predicate definitions here
-
-class StrutsUnsafeDeserializationConfig extends DataFlow::Configuration {
-  StrutsUnsafeDeserializationConfig() { this = "StrutsUnsafeDeserializationConfig" }
   override predicate isSource(DataFlow::Node source) {
     exists(/** TODO fill me in **/ |
-      source.asParameter() = /** TODO fill me in **/
+      source.asExpr()) = /** TODO fill me in **/
     )
   }
+  }
+
   override predicate isSink(DataFlow::Node sink) {
     exists(/** TODO fill me in **/ |
       /** TODO fill me in **/
@@ -157,9 +138,9 @@ class StrutsUnsafeDeserializationConfig extends DataFlow::Configuration {
   }
 }
 
-from StrutsUnsafeDeserializationConfig config, DataFlow::Node source, DataFlow::Node sink
+from AndroidSQLInjection config, DataFlow::Node source, DataFlow::Node sink
 where config.hasFlow(source, sink)
-select sink, "Unsafe XML deserialization"
+select sink, source, sink, "SQL Injection"
 ```
 
  1. Complete the `isSource` predicate using the query you wrote for [Section 2](#section2).
@@ -171,23 +152,23 @@ select sink, "Unsafe XML deserialization"
        - Converting the variable declarations in the `from` part to the variable declarations of an `exists`
        - Placing the `where` clause conditions (if any) in the body of the exists
        - Adding a condition which equates the `select` to one of the parameters of the predicate.
-    - Remember to include the `ContentTypeHandlerToObject` class you defined earlier.
-
+   
     </details>
     <details>
     <summary>Solution</summary>
 
     ```ql
-      override predicate isSource(Node source) {
-        exists(ContentTypeHandlerToObject toObjectMethod |
-          source.asParameter() = toObjectMethod.getParameter(0)
+      override predicate isSource(DataFlow::Node node) {
+        exists(MethodAccess ma |
+          ma.getMethod().hasQualifiedName("android.widget", "EditText", "getText") and
+          node.asExpr() = ma
         )
       }
-    ```
+     ```
     </details>
 
- 1. Complete the `isSink` predicate by using the final query you wrote for [Section 1](#section1). Remember to use the `isXMLDeserialized` predicate!
-    <details>
+ 1. Complete the `isSink` predicate 
+ <details>
     <summary>Hint</summary>
 
     - Complete the same process as above.
