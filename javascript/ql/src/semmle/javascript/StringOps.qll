@@ -802,4 +802,11 @@ module StringOps {
       override boolean getPolarity() { result = polarity }
     }
   }
+
+  /**
+   * Gets the name of a string method which performs substring extraction.
+   *
+   * These are `substring`, `substr`, and `slice`.
+   */
+  string substringMethodName() { result = ["substring", "substr", "slice"] }
 }

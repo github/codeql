@@ -67,7 +67,7 @@ module TaintedUrlSuffix {
         name = call.getMethodName()
       |
         // Substring that is not a prefix
-        name = ["substring", "substr", "slice"] and
+        name = StringOps::substringMethodName() and
         not call.getArgument(0).getIntValue() = 0
         or
         // Split around '#' or '?' and extract the suffix

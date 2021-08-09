@@ -734,15 +734,9 @@ module TaintedPath {
     exists(DataFlow::MethodCallNode mcn, string name |
       srclabel = dstlabel and dst = mcn and mcn.calls(src, name)
     |
-      exists(string substringMethodName |
-        substringMethodName = "substr" or
-        substringMethodName = "substring" or
-        substringMethodName = "slice"
-      |
-        name = substringMethodName and
-        // to avoid very dynamic transformations, require at least one fixed index
-        exists(mcn.getAnArgument().asExpr().getIntValue())
-      )
+      name = StringOps::substringMethodName() and
+      // to avoid very dynamic transformations, require at least one fixed index
+      exists(mcn.getAnArgument().asExpr().getIntValue())
       or
       exists(string argumentlessMethodName |
         argumentlessMethodName = "toLocaleLowerCase" or
