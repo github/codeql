@@ -36,7 +36,7 @@ class TypeParameter extends DotNet::TypeParameter, Type, @cil_typeparameter {
 class ValueOrRefType extends DotNet::ValueOrRefType, Type, @cil_valueorreftype {
   override ValueOrRefType getDeclaringType() { result = getParent() }
 
-  override string getUndecoratedName() { result = getName() }
+  override string getUndecoratedName() { cil_type(this, result, _, _, _) }
 
   override Namespace getDeclaringNamespace() { result = getNamespace() }
 

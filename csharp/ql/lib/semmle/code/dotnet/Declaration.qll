@@ -15,6 +15,9 @@ class Declaration extends NamedElement, @dotnet_declaration {
   /** Gets the name of this declaration, without additional decoration such as `<...>`. */
   string getUndecoratedName() { none() }
 
+  /** Holds if this element has undecorated name 'name'. */
+  final predicate hasUndecoratedName(string name) { name = getUndecoratedName() }
+
   /** Gets the type containing this declaration, if any. */
   Type getDeclaringType() { none() }
 

@@ -217,18 +217,18 @@ delegates.cs:
 #   74|               1: [LocalVariableAccess] access to local variable x
 #   76|         13: [LocalVariableDeclStmt] ... ...;
 #   76|           0: [LocalVariableDeclAndInitExpr] Predicate<Int32> pi = ...
-#   76|             -1: [TypeMention] Predicate<Int32>
+#   76|             -1: [TypeMention] Predicate<int>
 #   76|               1: [TypeMention] int
 #   76|             0: [LocalVariableAccess] access to local variable pi
 #   76|             1: [ExplicitDelegateCreation] delegate creation of type Predicate<Int32>
-#   76|               -1: [TypeMention] Predicate<Int32>
+#   76|               -1: [TypeMention] Predicate<int>
 #   76|                 1: [TypeMention] int
 #   76|               0: [MethodAccess] access to method F
 #   76|                 -1: [TypeAccess] access to type X
 #   76|                   0: [TypeMention] X
 #   77|         14: [LocalVariableDeclStmt] ... ...;
 #   77|           0: [LocalVariableDeclAndInitExpr] Predicate<String> ps = ...
-#   77|             -1: [TypeMention] Predicate<String>
+#   77|             -1: [TypeMention] Predicate<string>
 #   77|               1: [TypeMention] string
 #   77|             0: [LocalVariableAccess] access to local variable ps
 #   77|             1: [ImplicitDelegateCreation] delegate creation of type Predicate<String>

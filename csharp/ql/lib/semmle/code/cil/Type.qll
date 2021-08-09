@@ -25,8 +25,6 @@ class Namespace extends DotNet::Namespace, TypeContainer, @namespace {
 
   override Namespace getParentNamespace() { parent_namespace(this, result) }
 
-  override string getName() { namespaces(this, result) }
-
   override Location getLocation() { none() }
 }
 
@@ -73,7 +71,7 @@ class Type extends DotNet::Type, Declaration, TypeContainer, @cil_type {
   predicate isSystemType(string name) {
     exists(Namespace system | this.getParent() = system |
       system.getName() = "System" and
-      system.getParentNamespace() instanceof DotNet::GlobalNamespace and
+      system.getParentNamespace().getName() = "" and
       name = this.getName()
     )
   }

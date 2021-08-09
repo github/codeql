@@ -149,7 +149,7 @@ query predicate test18(
 
 /** Test that locations are populated for the type parameters of generic methods. */
 query predicate test19(UnboundGenericMethod m, TypeParameter tp, int hasLoc) {
-  m.hasName("fs") and
+  m.hasUndecoratedName("fs") and
   tp = m.getATypeParameter() and
   if exists(tp.getLocation()) then hasLoc = 1 else hasLoc = 0
 }
@@ -194,7 +194,7 @@ query predicate test24(UnboundGenericInterface ugi, TypeParameter tp, string s) 
 }
 
 query predicate test25(ConstructedMethod cm) {
-  cm.hasName("CM3") and
+  cm.hasUndecoratedName("CM3") and
   cm.getParameter(0).getType() instanceof DoubleType and
   cm.getParameter(1).getType() instanceof IntType and
   cm.getReturnType() instanceof DoubleType and
@@ -249,4 +249,28 @@ query predicate test30(Declaration d, string s) {
 query predicate test31(ConstructedGeneric cg, string s) {
   not exists(cg.getUnboundGeneric()) and
   s = "Missing unbound generic"
+}
+
+query predicate test32(ConstructedGeneric cg, string s1, string s2) {
+  cg.fromSource() and
+  cg.toStringWithTypes() = s1 and
+  cg.toString() = s2
+}
+
+query predicate test33(ConstructedMethod cm, string s1, string s2) {
+  cm.fromSource() and
+  cm.getQualifiedName() = s1 and
+  cm.getQualifiedNameWithTypes() = s2
+}
+
+query predicate test34(UnboundGeneric ug, string s1, string s2) {
+  ug.fromSource() and
+  ug.getQualifiedName() = s1 and
+  ug.getQualifiedNameWithTypes() = s2
+}
+
+query predicate test35(UnboundGenericMethod gm, string s1, string s2) {
+  gm.fromSource() and
+  gm.getQualifiedName() = s1 and
+  gm.getQualifiedNameWithTypes() = s2
 }

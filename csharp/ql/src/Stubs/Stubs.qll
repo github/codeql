@@ -759,7 +759,7 @@ private string stubMethod(Method m, Assembly assembly) {
   then
     result =
       "    " + stubModifiers(m) + stubClassName(m.(Method).getReturnType()) + " " +
-        stubExplicitImplementation(m) + m.getName() + stubGenericMethodParams(m) + "(" +
+        stubExplicitImplementation(m) + m.getUndecoratedName() + stubGenericMethodParams(m) + "(" +
         stubParameters(m) + ")" + stubTypeParametersConstraints(m) + stubImplementation(m) + ";\n"
   else result = "    // Stub generator skipped method: " + m.getName() + "\n"
 }

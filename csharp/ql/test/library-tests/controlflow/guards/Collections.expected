@@ -22,13 +22,13 @@
 | Collections.cs:36:13:36:29 | ... != ... | Collections.cs:36:13:36:16 | access to parameter args | false | false |
 | Collections.cs:37:13:37:28 | ... > ... | Collections.cs:37:13:37:16 | access to parameter args | true | false |
 | Collections.cs:39:13:39:29 | ... >= ... | Collections.cs:39:13:39:16 | access to parameter args | true | false |
-| Collections.cs:44:17:44:26 | call to method Any | Collections.cs:44:17:44:20 | access to parameter args | false | true |
-| Collections.cs:44:17:44:26 | call to method Any | Collections.cs:44:17:44:20 | access to parameter args | true | false |
+| Collections.cs:44:17:44:26 | call to method Any<String> | Collections.cs:44:17:44:20 | access to parameter args | false | true |
+| Collections.cs:44:17:44:26 | call to method Any<String> | Collections.cs:44:17:44:20 | access to parameter args | true | false |
 | Collections.cs:49:13:49:27 | ... == ... | Collections.cs:49:13:49:16 | access to parameter args | false | false |
 | Collections.cs:49:13:49:27 | ... == ... | Collections.cs:49:13:49:16 | access to parameter args | true | true |
 | Collections.cs:64:13:64:24 | ... == ... | Collections.cs:64:13:64:13 | access to local variable x | false | false |
 | Collections.cs:64:13:64:24 | ... == ... | Collections.cs:64:13:64:13 | access to local variable x | true | true |
-| Collections.cs:74:17:74:33 | call to method Any | Collections.cs:74:17:74:20 | access to parameter args | true | false |
+| Collections.cs:74:17:74:33 | call to method Any<String> | Collections.cs:74:17:74:20 | access to parameter args | true | false |
 | Collections.cs:75:13:75:36 | ... == ... | Collections.cs:75:13:75:16 | access to parameter args | false | false |
 | Collections.cs:76:13:76:36 | ... == ... | Collections.cs:76:13:76:16 | access to parameter args | true | false |
 | Collections.cs:77:13:77:36 | ... != ... | Collections.cs:77:13:77:16 | access to parameter args | true | false |
