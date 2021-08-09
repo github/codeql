@@ -101,7 +101,7 @@ string constantQualifiedName(ConstantWriteAccess w) {
  */
 ConstantWriteAccess definitionOf(ConstantReadAccess r) {
   result =
-    max(ConstantWriteAccess w |
+    min(ConstantWriteAccess w |
       constantQualifiedName(w) = resolveConstant(r)
     |
       w order by w.getLocation().toString()
