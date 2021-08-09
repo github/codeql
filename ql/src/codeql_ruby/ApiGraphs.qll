@@ -270,8 +270,7 @@ module API {
         or
         name = read.getName() and
         not exists(resolveScopeExpr(read)) and
-        not exists(read.getScopeExpr()) and
-        not exists(read.getValue())
+        not exists(read.getScopeExpr())
       )
       or
       exists(DataFlow::LocalSourceNode src, DataFlow::LocalSourceNode pred |

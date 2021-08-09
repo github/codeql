@@ -13,7 +13,7 @@ Unknown.new.run #$ use=getMember("Unknown").instance.getReturn("run")
 Foo::Bar::Baz #$ use=getMember("Foo").getMember("Bar").getMember("Baz")
 
 Const = [1, 2, 3]
-Const.each do |c|
+Const.each do |c| #$ use=getMember("Const").getReturn("each")
     puts c
 end
 
