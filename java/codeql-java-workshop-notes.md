@@ -114,17 +114,43 @@ select sink, "SQL Injection"
 - because not all toString() will propogate taint to the Object.toString()
 - node1 adding flow from Qualifier (Editable)
 - node2 is the return of the method
+As alternative, we can just check all flows from a source:
+```codeql
+import java
+import semmle.code.java.dataflow.TaintTracking
 
-```ql
-override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
-    exists(MethodAccess ma |
-      ma.getQualifier().getType().hasName(["Editable", "EditText"]) and
-      ma.getMethod().hasName("toString") and
-      node1.asExpr() = ma.getQualifier() and
-      node2.asExpr() = ma
-    )
-  }
+class AndroidSQLInjection extends TaintTracking::Configuration {
+    AndroidSQLInjection() { this = "AndroidSQLInjection" }
+
+    override predicate isSource(DataFlow::Node node) {
+        exists(MethodAccess ma |
+            ma.getMethod().hasQualifiedName("android.widget", "EditText", "getText") and
+            node.asExpr() = ma
+        )
+    }
+
+    override predicate isSink(DataFlow::Node sink) { any() }
+}
+
+from AndroidSQLInjection config, DataFlow::Node source, DataFlow::Node sink
+where config.hasFlow(source, sink)
+select sink, source, sink, "SQL Injection"
 ```
+
+Note that this stops at the source -- so we start expanding there via
+```codeql
+
+
+    override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+        exists(MethodAccess ma |
+            ma.getQualifier().getType().hasName(["Editable", "EditText"]) and
+            ma.getMethod().hasName("toString") and
+            node1.asExpr() = ma.getQualifier() and
+            node2.asExpr() = ma
+        )
+    }
+```
+and try again.
 
 ## Final Query
 - convert to path problem
