@@ -264,16 +264,6 @@ Note that this stops at the source -- so we start expanding there via
 and try again.
 
 
-```codeql
-class AndroidSQLInjection extends TaintTracking::Configuration {
-  …
-  // this will add flow from node1 to node2
-  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
-    /* TODO */
-  }
-}
-```
-
 (If you are using `DataFlow::Configuration`, this predicate is called `isAdditionalFlowStep` instead.
   <details>
   <summary>Solution</summary>
