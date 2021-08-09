@@ -6,11 +6,14 @@
 
  - [Problem statement](#problemstatement)
  - [Setup instructions](#setupinstructions)
- - [Documentation links](#documentationlinks)
  - [Workshop](#workshop)
-   - [Section 1: Finding XML deserialization](#section1)
-   - [Section 2: Find the implementations of the `toObject` method from ContentTypeHandler](#section2)
-   - [Section 3: Unsafe XML deserialization](#section3)
+   - [Section 1: Finding Sources - Method Calls to getText()](#section1)
+   - [Section 2: Finding Sinks - Method Calls to rawQuery](#section2)
+   - [Section 3: Data Flow](#section3)
+   - [Section 4: Adding Additional Taint Steps](#section4)
+   - [Section 5: Final Query](#section5)
+   - [Section 6 - Extending default queries](#section6)
+ - [What's next](#whatsnext)
 
 ## Problem statement <a id="problemstatement"></a>
 In this workshop, we will write a query to find CVE-2017-9805 in a database built from the known vulnerable version of Apache Struts.
@@ -84,19 +87,17 @@ Blurb aboout Android framwork
     </details>
     <details>
     <summary>Solution</summary>
+	
+    	```ql
+    	import java
 
-    ```ql
-    import java
-
-    from MethodAccess ma, VarAccess arg
-    where ma.getMethod().hasQualifiedName("net.sqlcipher.database", "SQLiteDatabase", "rawQuery") and
-      arg  = ma.getArgument(0)
-    select ma, arg
-    ```
+    	from MethodAccess ma, VarAccess arg
+    	where ma.getMethod().hasQualifiedName("net.sqlcipher.database", "SQLiteDatabase", "rawQuery") and
+      	arg  = ma.getArgument(0)
+    	select ma, arg
+    	```
     </details>
 
-
-Like predicates, _classes_ in CodeQL can be used to encapsulate reusable portions of logic. Classes represent single sets of values, and they can also include operations (known as _member predicates_) specific to that set of values. You have already seen numerous instances of CodeQL classes (`MethodAccess`, `Method` etc.) and associated member predicates (`MethodAccess.getMethod()`, `Method.getName()`, etc.).
 ### Section 3: Data Flow  <a id="section3"></a>
 
 We have now identified (a) places in the program which receive untrusted data and (b) places in the program which potentially trigger malicious SQL queries.. We now want to tie these two together to ask: does the untrusted data ever _flow_ to the potentially unsafe SQL query call?
@@ -111,39 +112,40 @@ There are a small number of data flow node types – expression nodes and parame
 
 In this section we will create a data flow query by populating this template:
 
-	```ql
-	/**
-	 * @name SQL Injection in OWASP Security Shepard
-	 * @kind problem
-	 * @id java/sqlinjectionowasp
-	 */
-	import java
-	import semmle.code.java.dataflow.DataFlow
+```ql
+/**
+* @name SQL Injection in OWASP Security Shepard
+* @kind problem
+* @id java/sqlinjectionowasp
+*/
+	
+import java
+import semmle.code.java.dataflow.DataFlow
 
-	class AndroidSQLInjection extends TaintTracking::Configuration {
- 	 AndroidSQLInjection() { this = "AndroidSQLInjection" }
+
+class AndroidSQLInjection extends TaintTracking::Configuration {
+	AndroidSQLInjection() { this = "AndroidSQLInjection" }
 	// TODO add previous class and predicate definitions here
-	  override predicate isSource(DataFlow::Node source) {
-   		 exists(/** TODO fill me in **/ |
-      		source.asExpr()) = /** TODO fill me in **/
-        	)
- 	 }
- 	 }
-
+	override predicate isSource(DataFlow::Node source) {
+		exists(/** TODO fill me in **/ |
+      		source.asExpr() = /** TODO fill me in **/     
+		)
+	}
+ 	 
   	override predicate isSink(DataFlow::Node sink) {
-   	    exists(/** TODO fill me in **/ |
+		exists(/** TODO fill me in **/ |
      		 /** TODO fill me in **/
-            sink.asExpr() = /** TODO fill me in **/
-        )
-    }
-   }
-    
-   from AndroidSQLInjection config, DataFlow::Node source, DataFlow::Node sink
-   where config.hasFlow(source, sink)
-   select sink, source, sink, "SQL Injection"
-   ```
+		      sink.asExpr() = /** TODO fill me in **/     
+		      )
+		}
+	}
+}
+from AndroidSQLInjection config, DataFlow::Node source, DataFlow::Node sink
+where config.hasFlow(source, sink)
+select sink, source, sink, "SQL Injection"
+  ```
 
- 1. Complete the `isSource` predicate using the query you wrote for [Section 2](#section2).
+1. Complete the `isSource` predicate using the query you wrote for [Section 2](#section2).
 
     <details>
     <summary>Hint</summary>
@@ -167,29 +169,61 @@ In this section we will create a data flow query by populating this template:
      ```
     </details>
 
- 1. Complete the `isSink` predicate 
- <details>
-    <summary>Hint</summary>
-
-    - Complete the same process as above.
-
-    </details>
+1. Complete the `isSink` predicate 
     <details>
+    <summary>Hint</summary>
+      `Complete the same process as above.`
+   </details>
+   <details>
     <summary>Solution</summary>
 
-    ```ql
-      override predicate isSink(Node sink) {
-        exists(Expr arg |
-          isXMLDeserialized(arg) and
-          sink.asExpr() = arg
-        )
-      }
-    ```
-    </details>
+     ```ql
+      override predicate isSink(DataFlow::Node node) {
+          exists(MethodAccess ma |
+              ma.getMethod().hasQualifiedName("net.sqlcipher.database", "SQLiteDatabase", "rawQuery") and
+              node.asExpr() = ma.getArgument(0)
+       	  )
+       }
+     ```
+  </details>
 
-You can now run the completed query. You should find exactly one result, which is the CVE reported by our security researchers in 2017!
 
-For this result, it is easy to verify that it is correct, because both the source and sink are in the same method. However, for many data flow problems this is not the case.
+You can now run the completed query. What results did you get? Was it what you were expecting? 
+
+### Section 4: Adding Additional Taint Steps <a id="section4"></a>
+Sometimes the data flow or taint tracking analysis will not be aware that data may flow through a particular code pattern or function call. It is conservative by default, to keep results precise.
+
+We can add additional problem-specific steps if necessary, by implementing the `isAdditionalTaintStep` predicate on our `TaintTracking::Configuration` subclass.
+
+By inspecting `String CheckName = username.getText().toString()` we can observe that the `toString()` is a method call on the return value of `getText()` which is an `Editable` type. Our current taint tracking analysis does not capture flow from the `Editable` object returned by `username.getText()` to `toString()`
+
+```codeql
+class AndroidSQLInjection extends TaintTracking::Configuration {
+  …
+  // this will add flow from node1 to node2
+  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+    /* TODO */
+  }
+}
+```
+
+(If you are using `DataFlow::Configuration`, this predicate is called `isAdditionalFlowStep` instead.
+  <details>
+  <summary>Solution</summary>
+	
+ ```codeql
+  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+	exists(MethodAccess ma |	 
+		ma.getQualifier().getType().hasName(["Editable", "EditText"]) and
+	     	ma.getMethod().hasName("toString") and
+	      	node1.asExpr() = ma.getQualifier() and
+	      	 node2.asExpr() = ma
+	       )
+        }
+  ```
+  </details>
+
+### Section 5: Final Query <a id="section5"></a>
 
 We can update the query so that it not only reports the sink, but it also reports the source and the path to that source. We can do this by making these changes:
 The answer to this is to convert the query to a _path problem_ query. There are five parts we will need to change:
@@ -203,64 +237,99 @@ The answer to this is to convert the query to a _path problem_ query. There are 
     <details>
     <summary>Solution</summary>
 
-    ```ql
-    /**
-    * @name Unsafe XML deserialization
-    * @kind path-problem
-    * @id java/unsafe-deserialization
-    */
-    import java
-    import semmle.code.java.dataflow.DataFlow
-    import DataFlow::PathGraph
+	```ql
+	/**
+	* @name SQL Injection in OWASP Security Shepard
+	* @kind problem
+	* @id java/sqlinjectionowasp
+	*/
 
-    predicate isXMLDeserialized(Expr arg) {
-      exists(MethodAccess fromXML |
-        fromXML.getMethod().getName() = "fromXML" and
-        arg = fromXML.getArgument(0)
-      )
-    }
+	import java
+	import semmle.code.java.dataflow.TaintTracking
+	import DataFlow::PathGraph
 
-    /** The interface `org.apache.struts2.rest.handler.ContentTypeHandler`. */
-    class ContentTypeHandler extends RefType {
-      ContentTypeHandler() {
-        this.hasQualifiedName("org.apache.struts2.rest.handler", "ContentTypeHandler")
-      }
-    }
+	class AndroidSQLInjection extends TaintTracking::Configuration {
+	  AndroidSQLInjection() { this = "AndroidSQLInjection" }
 
-    /** A `toObject` method on a subtype of `org.apache.struts2.rest.handler.ContentTypeHandler`. */
-    class ContentTypeHandlerToObject extends Method {
-      ContentTypeHandlerToObject() {
-        this.getDeclaringType().getASupertype() instanceof ContentTypeHandler and
-        this.hasName("toObject")
-      }
-    }
+	  override predicate isSource(DataFlow::Node node) {
+	    exists(MethodAccess ma |
+	      ma.getMethod().hasQualifiedName("android.widget", "EditText", "getText") and
+	      node.asExpr() = ma
+	    )
+	  }
 
-    class StrutsUnsafeDeserializationConfig extends DataFlow::Configuration {
-      StrutsUnsafeDeserializationConfig() { this = "StrutsUnsafeDeserializationConfig" }
-      override predicate isSource(DataFlow::Node source) {
-        exists(ContentTypeHandlerToObject toObjectMethod |
-          source.asParameter() = toObjectMethod.getParameter(0)
-        )
-      }
-      override predicate isSink(DataFlow::Node sink) {
-        exists(Expr arg |
-          isXMLDeserialized(arg) and
-          sink.asExpr() = arg
-        )
-      }
-    }
+	  override predicate isSink(DataFlow::Node node) {
+	    exists(MethodAccess ma |
+	      ma.getMethod().hasQualifiedName("net.sqlcipher.database", "SQLiteDatabase", "rawQuery") and
+	      node.asExpr() = ma.getArgument(0)
+	    )
+	  }
 
-    from StrutsUnsafeDeserializationConfig config, DataFlow::PathNode source, DataFlow::PathNode sink
-    where config.hasFlowPath(source, sink)
-    select sink, source, sink, "Unsafe XML deserialization"
-    ```
+	  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+	    exists(MethodAccess ma |
+	      ma.getQualifier().getType().hasName(["Editable", "EditText"]) and
+	      ma.getMethod().hasName("toString") and
+	      node1.asExpr() = ma.getQualifier() and
+	      node2.asExpr() = ma
+	    )
+	  }
+	}
+
+	from AndroidSQLInjection config, DataFlow::PathNode source, DataFlow::PathNode sink
+	where config.hasFlowPath(source, sink)
+	select sink, source, sink, "SQL Injection"
+
+	```
     </details>
 
-For more information on how the vulnerability was identified, you can read the [blog disclosing the original problem](https://securitylab.github.com/research/apache-struts-vulnerability-cve-2017-9805).
+### Section 6 - Extending default queries <a id="section6"></a>
 
-Although we have created a query from scratch to find this problem, it can also be found with one of our default security queries, [UnsafeDeserialization.ql](https://github.com/github/codeql/blob/master/java/ql/src/Security/CWE/CWE-502/UnsafeDeserialization.ql). You can see this on a [vulnerable copy of Apache Struts](https://github.com/m-y-mo/struts_9805) that has been [analyzed on LGTM.com](https://lgtm.com/projects/g/m-y-mo/struts_9805/snapshot/31a8d6be58033679a83402b022bb89dad6c6e330/files/plugins/rest/src/main/java/org/apache/struts2/rest/handler/XStreamHandler.java?sort=name&dir=ASC&mode=heatmap#x121788d71061ed86:1), our free open source analysis platform.
+Although we have created a query from scratch to find this problem, we can also extend our default SQL Injection queries, [UnsafeDeserialization.ql](https://github.com/github/codeql/blob/master/java/ql/src/Security/CWE/CWE-502/UnsafeDeserialization.ql) and [] to capture these sources and sinks. This is done by implementing the file [Customizations.qll] located at the root of the CodeQL repository.  
 
-## What's next?
+Like predicates, _classes_ in CodeQL can be used to encapsulate reusable portions of logic. Classes represent single sets of values, and they can also include operations (known as _member predicates_) specific to that set of values. You have already seen numerous instances of CodeQL classes (`MethodAccess`, `Method` etc.) and associated member predicates (`MethodAccess.getMethod()`, `Method.getName()`, etc.).
+
+  <details>
+  <summary>Solution</summary>
+
+  ```ql
+	
+		import java
+		import semmle.code.java.security.QueryInjection
+		import semmle.code.java.dataflow.FlowSources
+
+		class EditTextLocalSource extends LocalUserInput {
+		  EditTextLocalSource() {
+		    exists(MethodAccess ma |
+		      ma.getMethod().hasQualifiedName("android.widget", "EditText", "getText") and
+		      this.asExpr() = ma
+		    )
+		  }
+		}
+
+		class SqlCipherRawQuery extends QueryInjectionSink {
+		  SqlCipherRawQuery() {
+		    exists(MethodAccess ma |
+		      ma.getMethod().hasQualifiedName("net.sqlcipher.database", "SQLiteDatabase", "rawQuery") and
+		      this.asExpr() = ma.getArgument(0)
+		    )
+		  }
+		}
+
+		class ToStringStep extends AdditionalQueryInjectionTaintStep {
+		  override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
+		    exists(MethodAccess ma |
+		      ma.getQualifier().getType().hasName(["Editable", "EditText"]) and
+		      ma.getMethod().hasName("toString") and
+		      node1.asExpr() = ma.getQualifier() and
+		      node2.asExpr() = ma
+		    )
+		  }
+
+  ```
+  </details>
+
+
+## What's next? <a id="whatsnext"></a>
 - Read the [tutorial on analyzing data flow in Java](https://help.semmle.com/QL/learn-ql/java/dataflow.html).
 - Go through more [CodeQL training materials for Java](https://help.semmle.com/QL/learn-ql/ql-training.html#codeql-and-variant-analysis-for-java).
 - Try out the latest CodeQL Java Capture-the-Flag challenge on the [GitHub Security Lab website](https://securitylab.github.com/ctf) for a chance to win a prize! Or try one of the older Capture-the-Flag challenges to improve your CodeQL skills.
