@@ -85,7 +85,7 @@ select ma
 */
 	
 import java
-import semmle.code.java.dataflow.DataFlow
+import semmle.code.java.dataflow.TaintTracking
 
 override predicate isSource(DataFlow::Node node) {
     exists(MethodAccess ma |
