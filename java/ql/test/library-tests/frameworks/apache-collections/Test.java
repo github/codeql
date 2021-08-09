@@ -1088,6 +1088,14 @@ public class Test {
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
+			// "org.apache.commons.collections4;ArrayStack;true;push;;;Argument[0];ReturnValue;value"
+			Object out = null;
+			Object in = source();
+			ArrayStack instance = null;
+			out = instance.push(in);
+			sink(out); // $ hasValueFlow
+		}
+		{
 			// "org.apache.commons.collections4;Bag;true;add;;;Argument[0];Element of Argument[-1];value"
 			Bag out = null;
 			Object in = source();
@@ -2912,6 +2920,20 @@ public class Test {
 			MultiValuedMap in = (MultiValuedMap)source();
 			out = MultiMapUtils.emptyIfNull(in);
 			sink(out); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4;MultiValuedMap;true;entries;;;MapKey of Argument[-1];MapKey of Element of ReturnValue;value"
+			Collection<Map.Entry> out = null;
+			MultiValuedMap in = newALVHMWithMapKey((String)source());
+			out = in.entries();
+			sink(getMapKeyFromEntry(getElement(out))); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4;MultiValuedMap;true;entries;;;Element of MapValue of Argument[-1];MapValue of Element of ReturnValue;value"
+			Collection<Map.Entry> out = null;
+			MultiValuedMap in = newALVHMWithMapValue((String)source());
+			out = in.entries();
+			sink(getMapValueFromEntry(getElement(out))); // $ hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MultiMapUtils;true;getCollection;;;MapValue of Argument[0];ReturnValue;value"
