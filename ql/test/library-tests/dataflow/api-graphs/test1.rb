@@ -1,13 +1,24 @@
-MyModule #$ use=moduleImport("MyModule")
-print MyModule.foo #$ use=moduleImport("MyModule").getReturn("foo")
-Kernel.print(e) #$ use=moduleImport("Kernel").getReturn("print")
-Object::Kernel #$ use=moduleImport("Kernel")
-Object::Kernel.print(e)  #$ use=moduleImport("Kernel").getReturn("print")
+MyModule #$ use=getMember("MyModule")
+print MyModule.foo #$ use=getMember("MyModule").getReturn("foo")
+Kernel.print(e) #$ use=getMember("Kernel").getReturn("print")
+Object::Kernel #$ use=getMember("Kernel")
+Object::Kernel.print(e)  #$ use=getMember("Kernel").getReturn("print")
 begin
-    print MyModule.bar #$ use=moduleImport("MyModule").getReturn("bar")
-    raise AttributeError #$ use=moduleImport("AttributeError")
-rescue AttributeError => e #$ use=moduleImport("AttributeError")
-    Kernel.print(e)  #$ use=moduleImport("Kernel").getReturn("print")
+    print MyModule.bar #$ use=getMember("MyModule").getReturn("bar")
+    raise AttributeError #$ use=getMember("AttributeError")
+rescue AttributeError => e #$ use=getMember("AttributeError")
+    Kernel.print(e)  #$ use=getMember("Kernel").getReturn("print")
 end
-Unknown.new.run #$ use=moduleImport("Unknown").instance.getReturn("run")
-Foo::Bar::Baz #$ use=moduleImport("Foo").getMember("Bar").getMember("Baz")
+Unknown.new.run #$ use=getMember("Unknown").instance.getReturn("run")
+Foo::Bar::Baz #$ use=getMember("Foo").getMember("Bar").getMember("Baz")
+
+Const = [1, 2, 3]
+Const.each do |c| #$ use=getMember("Const").getReturn("each")
+    puts c
+end
+
+foo = Foo #$ use=getMember("Foo")
+foo::Bar::Baz #$ use=getMember("Foo").getMember("Bar").getMember("Baz")
+
+FooAlias = Foo #$ use=getMember("Foo")
+FooAlias::Bar::Baz #$ use=getMember("Foo").getMember("Bar").getMember("Baz")

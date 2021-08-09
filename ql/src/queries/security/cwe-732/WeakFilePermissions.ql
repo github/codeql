@@ -49,7 +49,7 @@ class PermissionArgument extends DataFlow::Node {
 
   PermissionArgument() {
     exists(string methodName |
-      call = API::moduleImport(["File", "FileUtils"]).getAMethodCall(methodName)
+      call = API::getTopLevelMember(["File", "FileUtils"]).getAMethodCall(methodName)
     |
       methodName in ["chmod", "chmod_R", "lchmod"] and this = call.getArgument(0)
       or
