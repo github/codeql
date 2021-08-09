@@ -4,12 +4,14 @@
 
 import python
 private import new.internal.FlowSummaryImpl as Impl
-// private import internal.DataFlowDispatch
 private import new.internal.DataFlowUtil
 
 // import all instances of SummarizedCallable below
 private module Summaries {
+  // Flow defined in CSV files (to come)
   private import ExternalFlow
+  // Specific flow summaries defined in code
+  private import FlowSummaries
 }
 
 class SummaryComponent = Impl::Public::SummaryComponent;
