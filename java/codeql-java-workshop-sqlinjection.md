@@ -6,6 +6,7 @@
 
  - [Problem statement](#problemstatement)
  - [Setup instructions](#setupinstructions)
+ - [Documentation Links](#documentationlinks)
  - [Workshop](#workshop)
    - [Section 1: Finding Sources - Method Calls to getText()](#section1)
    - [Section 2: Finding Sinks - Method Calls to rawQuery](#section2)
@@ -16,16 +17,43 @@
  - [What's next](#whatsnext)
 
 ## Problem statement <a id="problemstatement"></a>
-In this workshop, we will write a query to find CVE-2017-9805 in a database built from the known vulnerable version of Apache Struts.
+In this workshop, we will write a query to find a SQL injection vulnerabilities (CWE-089) in a database built from the Security Shephard repository maintained by OWASP. This repository is generally used for training and education purposes. We will be looking at client side injection in an Android application. The vulnerability arises from an Android Activity that takes in user input values via multiple fields. It reads these fields via the activity and passes them into the `login` method. This method opens a SQLite database on the users device and it constructs a query using string concatenation which it then passes to the `rawQuery` method that eventually gets executed on the databate. There is no sanitization so there exists a potential SQL injection vulnerability inside this applicatiion. 
+
+**Source**
+
+`String CheckName = userName.getText().toString();`
+
+**Sink**
+
+`db.rawQuery(query, null);`
 
 ## Setup instructions for Visual Studio Code <a id="setupinstructions"></a>
+
+To take part in the workshop you will need to follow these steps to get the CodeQL development environment setup:
+
+1. Install the Visual Studio Code IDE.
+2. Download and install the [CodeQL extension for Visual Studio Code](https://help.semmle.com/codeql/codeql-for-vscode.html). Full setup instructions are [here](https://help.semmle.com/codeql/codeql-for-vscode/procedures/setting-up.html).
+3. [Set up the starter workspace](https://help.semmle.com/codeql/codeql-for-vscode/procedures/setting-up.html#using-the-starter-workspace).
+    -   ****Important****: Don't forget to `git clone --recursive` or `git submodule update --init --remote`, so that you obtain the standard query libraries.
+4. Open the starter workspace: File > Open Workspace > Browse to `vscode-codeql-starter/vscode-codeql-starter.code-workspace`.
+5. Download and unzip the [OWASP Mobile Shepard CodeQL database](https://drive.google.com/file/d/10hx6RR3BHJ4-uy4AVnUZphaNBxfGpweQ/view?usp=sharing).
+6. Choose this database in CodeQL (using `Ctrl + Shift + P` to open the command palette, then selecting "CodeQL: Choose Database").
+7. Create a new file in the `codeql-custom-queries-java` directory called `sqlinjection-workshop.ql`.
+
+## Documentation links <a id="documentationlinks"></a>
+If you get stuck, try searching our documentation and blog posts for help and ideas. Below are a few links to help you get started:
+- [Learning CodeQL](https://help.semmle.com/QL/learn-ql)
+- [Learning CodeQL for Java](https://help.semmle.com/QL/learn-ql/cpp/ql-for-java.html)
+- [Using the CodeQL extension for VS Code](https://help.semmle.com/codeql/codeql-for-vscode.html)
+
+
+
 
 ## Workshop <a id="workshop"></a>
 
 The workshop is split into several steps. You can write one query per step, or work with a single query that you refine at each step. Each step has a **hint** that describes useful classes and predicates in the CodeQL standard libraries for Java. You can explore these in your IDE using the autocomplete suggestions (`Ctrl + Space`) and the jump-to-definition command (`F12`).
 
 ### Section 1: Finding Sources - Method Calls to getText()  <a id="section1"></a>
-Blurb aboout Android framwork
 
  1. Find all method calls in the program.
     <details>
@@ -145,7 +173,7 @@ where config.hasFlow(source, sink)
 select sink, source, sink, "SQL Injection"
   ```
 
-1. Complete the `isSource` predicate using the query you wrote for [Section 2](#section2).
+1. Complete the `isSource` predicate using the query you wrote previously
 
     <details>
     <summary>Hint</summary>
@@ -284,7 +312,7 @@ The answer to this is to convert the query to a _path problem_ query. There are 
 
 ### Section 6 - Extending default queries <a id="section6"></a>
 
-Although we have created a query from scratch to find this problem, we can also extend our default SQL Injection queries, [UnsafeDeserialization.ql](https://github.com/github/codeql/blob/master/java/ql/src/Security/CWE/CWE-502/UnsafeDeserialization.ql) and [] to capture these sources and sinks. This is done by implementing the file [Customizations.qll] located at the root of the CodeQL repository.  
+Although we have created a query from scratch to find this problem, we can also extend our default SQL Injection queries, [SqlTaintedLocal.ql](https://github.com/github/codeql/blob/main/java/ql/src/Security/CWE/CWE-089/SqlTaintedLocal.ql) and [SqlTainted.ql](https://github.com/github/codeql/blob/main/java/ql/src/Security/CWE/CWE-089/SqlTainted.ql) to capture these sources and sinks. This is done by implementing the file [Customizations.qll](https://github.com/github/codeql/blob/main/java/ql/src/Customizations.qll) located at the root of the CodeQL repository.  
 
 Like predicates, _classes_ in CodeQL can be used to encapsulate reusable portions of logic. Classes represent single sets of values, and they can also include operations (known as _member predicates_) specific to that set of values. You have already seen numerous instances of CodeQL classes (`MethodAccess`, `Method` etc.) and associated member predicates (`MethodAccess.getMethod()`, `Method.getName()`, etc.).
 
