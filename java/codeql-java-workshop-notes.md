@@ -11,7 +11,7 @@
 - Therefore this is a potential SQL injection issue as there is no sanitisation of the username and password and is user controlled 
 - Go to last slide and talk about source and sink 
 
-##VS Code
+## VS Code
 
 - We have  a number of queries to find default SQL injections in our queries. There are two which are most interesting `SqlTainted.ql` and `SqlTaintedLocal.ql`
 - These are located in CWE-089 folder 
