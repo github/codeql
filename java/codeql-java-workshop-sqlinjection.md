@@ -46,7 +46,6 @@ Blurb aboout Android framwork
     <details>
     <summary>Hints</summary>
 
-    - Add a CodeQL variable called `method` with type `Method`.
     - `MethodAccess` has a predicate called `getMethod()` for returning the method.
     - Add a `where` clause.
 
@@ -64,14 +63,38 @@ Blurb aboout Android framwork
     </details>
 
 ### Section 2: Finding Sinks - Method Calls to rawQuery  <a id="section2"></a>
+ 1. Find all the calls in the program to methods called `rawQuery`
 
     ```ql
     import java
 
     from MethodAccess call
-    where ma.getMethod().hasQualifiedName(net.sqlcipher.databaset", "SQLLiteDatabase", "rawQueryt")
+    where ma.getMethod().hasQualifiedName(net.sqlcipher.databaset", "SQLLiteDatabase", "rawQuery")
     select ma
     ```
+1. The `rawQuery` method sends the SQL query which is first argument (i.e the argument at index 0) to the database. Update your query to report the sql argument. 
+  
+    <details>
+    <summary>Hint</summary>
+
+    - `MethodCall.getArgument(int i)` returns the argument at the i-th index.
+    - The arguments are _expressions_ in the program, represented by the CodeQL class `Expr`. Introduce a new variable to hold the argument expression.
+
+    </details>
+    <details>
+    <summary>Solution</summary>
+
+    ```ql
+    import java
+
+    from MethodAccess fromXML, Expr arg
+    where
+      fromXML.getMethod().getName() = "fromXML" and
+      arg = fromXML.getArgument(0)
+    select fromXML, arg
+    ```
+    </details>
+
 
 Like predicates, _classes_ in CodeQL can be used to encapsulate reusable portions of logic. Classes represent single sets of values, and they can also include operations (known as _member predicates_) specific to that set of values. You have already seen numerous instances of CodeQL classes (`MethodAccess`, `Method` etc.) and associated member predicates (`MethodAccess.getMethod()`, `Method.getName()`, etc.).
 ### Section 3: Unsafe XML deserialization <a id="section3"></a>
