@@ -33,7 +33,6 @@ public class IntentSources extends Activity {
 
 }
 
-
 class OtherClass {
 
 	private static void sink(Object o) {}
