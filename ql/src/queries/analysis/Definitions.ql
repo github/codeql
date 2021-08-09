@@ -13,12 +13,13 @@
 import ruby
 import codeql_ruby.ast.internal.Module
 import codeql_ruby.dataflow.SSA
+import codeql_ruby.dataflow.internal.DataFlowDispatch
 
 from DefLoc loc, Expr src, Expr target, string kind
 where
   ConstantDefLoc(src, target) = loc and kind = "constant"
   or
-  LocalMethodLoc(src, target) = loc and kind = "method"
+  MethodLoc(src, target) = loc and kind = "method"
   or
   LocalVariableLoc(src, target) = loc and kind = "variable"
   or
@@ -36,10 +37,9 @@ select src, target, kind
 newtype DefLoc =
   /** A constant, module or class. */
   ConstantDefLoc(ConstantReadAccess read, ConstantWriteAccess write) { write = definitionOf(read) } or
-  /** A call to a method that is defined in the same class as the call. */
-  LocalMethodLoc(MethodCall call, Method meth) {
-    meth = lookupMethod(call.getEnclosingModule().getModule(), call.getMethodName()) and
-    call.getReceiver() instanceof Self
+  /** A method call. */
+  MethodLoc(MethodCall call, Method meth) {
+    exists(DataFlowCall c | c.getExpr() = call and c.getTarget() = meth)
   } or
   /** A local variable. */
   LocalVariableLoc(VariableReadAccess read, VariableWriteAccess write) {
