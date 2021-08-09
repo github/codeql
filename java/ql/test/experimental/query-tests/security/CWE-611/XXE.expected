@@ -1,0 +1,31 @@
+edges
+| XXE.java:21:43:21:66 | getInputStream(...) : ServletInputStream | XXE.java:23:18:23:35 | servletInputStream |
+| XXE.java:28:23:28:41 | getReader(...) : BufferedReader | XXE.java:31:17:31:18 | br : BufferedReader |
+| XXE.java:31:17:31:18 | br : BufferedReader | XXE.java:31:17:31:29 | readLine(...) : String |
+| XXE.java:31:17:31:29 | readLine(...) : String | XXE.java:34:48:34:68 | toString(...) |
+| XXE.java:39:43:39:66 | getInputStream(...) : ServletInputStream | XXE.java:43:42:43:59 | servletInputStream : ServletInputStream |
+| XXE.java:43:25:43:60 | new StreamSource(...) : StreamSource | XXE.java:44:22:44:27 | source |
+| XXE.java:43:42:43:59 | servletInputStream : ServletInputStream | XXE.java:43:25:43:60 | new StreamSource(...) : StreamSource |
+| XXE.java:49:43:49:66 | getInputStream(...) : ServletInputStream | XXE.java:50:42:50:59 | servletInputStream : ServletInputStream |
+| XXE.java:50:27:50:60 | new XMLDecoder(...) : XMLDecoder | XXE.java:51:3:51:12 | xmlDecoder |
+| XXE.java:50:42:50:59 | servletInputStream : ServletInputStream | XXE.java:50:27:50:60 | new XMLDecoder(...) : XMLDecoder |
+nodes
+| XXE.java:21:43:21:66 | getInputStream(...) : ServletInputStream | semmle.label | getInputStream(...) : ServletInputStream |
+| XXE.java:23:18:23:35 | servletInputStream | semmle.label | servletInputStream |
+| XXE.java:28:23:28:41 | getReader(...) : BufferedReader | semmle.label | getReader(...) : BufferedReader |
+| XXE.java:31:17:31:18 | br : BufferedReader | semmle.label | br : BufferedReader |
+| XXE.java:31:17:31:29 | readLine(...) : String | semmle.label | readLine(...) : String |
+| XXE.java:34:48:34:68 | toString(...) | semmle.label | toString(...) |
+| XXE.java:39:43:39:66 | getInputStream(...) : ServletInputStream | semmle.label | getInputStream(...) : ServletInputStream |
+| XXE.java:43:25:43:60 | new StreamSource(...) : StreamSource | semmle.label | new StreamSource(...) : StreamSource |
+| XXE.java:43:42:43:59 | servletInputStream : ServletInputStream | semmle.label | servletInputStream : ServletInputStream |
+| XXE.java:44:22:44:27 | source | semmle.label | source |
+| XXE.java:49:43:49:66 | getInputStream(...) : ServletInputStream | semmle.label | getInputStream(...) : ServletInputStream |
+| XXE.java:50:27:50:60 | new XMLDecoder(...) : XMLDecoder | semmle.label | new XMLDecoder(...) : XMLDecoder |
+| XXE.java:50:42:50:59 | servletInputStream : ServletInputStream | semmle.label | servletInputStream : ServletInputStream |
+| XXE.java:51:3:51:12 | xmlDecoder | semmle.label | xmlDecoder |
+#select
+| XXE.java:23:18:23:35 | servletInputStream | XXE.java:21:43:21:66 | getInputStream(...) : ServletInputStream | XXE.java:23:18:23:35 | servletInputStream | Unsafe parsing of XML file from $@. | XXE.java:21:43:21:66 | getInputStream(...) | user input |
+| XXE.java:34:48:34:68 | toString(...) | XXE.java:28:23:28:41 | getReader(...) : BufferedReader | XXE.java:34:48:34:68 | toString(...) | Unsafe parsing of XML file from $@. | XXE.java:28:23:28:41 | getReader(...) | user input |
+| XXE.java:44:22:44:27 | source | XXE.java:39:43:39:66 | getInputStream(...) : ServletInputStream | XXE.java:44:22:44:27 | source | Unsafe parsing of XML file from $@. | XXE.java:39:43:39:66 | getInputStream(...) | user input |
+| XXE.java:51:3:51:12 | xmlDecoder | XXE.java:49:43:49:66 | getInputStream(...) : ServletInputStream | XXE.java:51:3:51:12 | xmlDecoder | Unsafe parsing of XML file from $@. | XXE.java:49:43:49:66 | getInputStream(...) | user input |

@@ -144,7 +144,7 @@ private predicate constantStringExpr(Expr e, string val) {
 }
 
 /** An expression that always has the same string value. */
-private class ConstantStringExpr extends Expr {
+class ConstantStringExpr extends Expr {
   string value;
 
   ConstantStringExpr() { constantStringExpr(this, value) }
