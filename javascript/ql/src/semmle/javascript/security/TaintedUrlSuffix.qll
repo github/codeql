@@ -2,6 +2,7 @@
  * Provides a flow label for reasoning about URLs with a tainted query and fragment part,
  * which we collectively refer to as the "suffix" of the URL.
  */
+
 import javascript
 
 /**
@@ -17,9 +18,7 @@ module TaintedUrlSuffix {
    * Can also be accessed using `TaintedUrlSuffix::label()`.
    */
   class TaintedUrlSuffixLabel extends FlowLabel {
-    TaintedUrlSuffixLabel() {
-      this = "tainted-url-suffix"
-    }
+    TaintedUrlSuffixLabel() { this = "tainted-url-suffix" }
   }
 
   /**
@@ -30,7 +29,7 @@ module TaintedUrlSuffix {
   /** Holds for `pred -> succ` is a step of form `x -> x.p` */
   private predicate isSafeLocationProp(DataFlow::PropRead read) {
     // Ignore properties that refer to the scheme, domain, port, auth, or path.
-    exists (string name | name = read.getPropertyName() |
+    exists(string name | name = read.getPropertyName() |
       name = "protocol" or
       name = "scheme" or
       name = "host" or
@@ -86,10 +85,14 @@ module TaintedUrlSuffix {
         name = "get"
         or
         // Methods on URL objects from the Closure library
-        name = "getDecodedQuery" or
-        name = "getFragment" or
-        name = "getParameterValue" or
-        name = "getParameterValues" or
+        name = "getDecodedQuery"
+        or
+        name = "getFragment"
+        or
+        name = "getParameterValue"
+        or
+        name = "getParameterValues"
+        or
         name = "getQueryData"
       )
       or

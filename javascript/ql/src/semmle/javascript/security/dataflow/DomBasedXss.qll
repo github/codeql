@@ -80,7 +80,9 @@ module DomBasedXss {
       guard instanceof SanitizerGuard
     }
 
-    override predicate isAdditionalFlowStep(DataFlow::Node src, DataFlow::Node trg, DataFlow::FlowLabel inlbl, DataFlow::FlowLabel outlbl) {
+    override predicate isAdditionalFlowStep(
+      DataFlow::Node src, DataFlow::Node trg, DataFlow::FlowLabel inlbl, DataFlow::FlowLabel outlbl
+    ) {
       TaintedUrlSuffix::step(src, trg, inlbl, outlbl)
       or
       exists(DataFlow::Node operator |
