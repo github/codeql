@@ -42,7 +42,6 @@ with open('src/main/kotlin/KotlinExtractorDbScheme.kt', 'w') as kt:
             s = type_hierarchy.get(typ, set())
             s.add(name)
             type_hierarchy[typ] = s
-    kt.write('\n')
 
     # tables
     for relname, body in re.findall('\n([\w_]+)(\([^)]*\))',
@@ -84,11 +83,11 @@ with open('src/main/kotlin/KotlinExtractorDbScheme.kt', 'w') as kt:
         kt.write(')\\n")\n')
         kt.write('}\n')
 
-    for typ in type_hierarchy:
+    for typ in sorted(type_hierarchy):
         kt.write('sealed interface Db' + upperFirst(typ))
-        names = type_hierarchy[typ]
+        names = sorted(type_hierarchy[typ])
         if names:
             kt.write(': ')
-            kt.write(', '.join(map(lambda name: 'Db' + upperFirst(name), type_hierarchy[typ])))
+            kt.write(', '.join(map(lambda name: 'Db' + upperFirst(name), names)))
         kt.write(' {}\n')
 
