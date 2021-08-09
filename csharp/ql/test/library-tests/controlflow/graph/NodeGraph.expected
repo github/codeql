@@ -2821,6 +2821,7 @@
 | Initializers.cs:15:39:15:39 | access to local variable i | Initializers.cs:15:59:15:60 | "" | semmle.label | successor |
 | Initializers.cs:15:42:15:61 | object creation of type Initializers | Initializers.cs:15:37:15:63 | { ..., ... } | semmle.label | successor |
 | Initializers.cs:15:59:15:60 | "" | Initializers.cs:15:42:15:61 | object creation of type Initializers | semmle.label | successor |
+| Initializers.cs:18:16:18:16 | enter H | Initializers.cs:18:20:18:20 | 1 | semmle.label | successor |
 | Initializers.cs:18:20:18:20 | 1 | Initializers.cs:18:16:18:20 | ... = ... | semmle.label | successor |
 | Initializers.cs:20:11:20:23 | enter NoConstructor | Initializers.cs:22:23:22:23 | this access | semmle.label | successor |
 | Initializers.cs:20:11:20:23 | exit NoConstructor (normal) | Initializers.cs:20:11:20:23 | exit NoConstructor | semmle.label | successor |

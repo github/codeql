@@ -43,13 +43,22 @@
  */
 
 import csharp
-private import semmle.code.csharp.controlflow.ControlFlowGraph::ControlFlow
 private import Completion
-private import SuccessorType
-private import SuccessorTypes
 private import Splitting
 private import semmle.code.csharp.ExprOrStmtParent
 private import semmle.code.csharp.commons.Compilation
+import ControlFlowGraphImplShared
+
+/** An element that defines a new CFG scope. */
+class CfgScope extends Element, @top_level_exprorstmt_parent {
+  CfgScope() {
+    this instanceof Callable
+    or
+    // For now, static initializer values have their own scope. Eventually, they
+    // should be treated like instance initializers.
+    this.(Assignable).(Modifiable).isStatic()
+  }
+}
 
 /**
  * A compilation.
@@ -71,16 +80,11 @@ CompilationExt getCompilation(SourceFile f) {
   result = TBuildless()
 }
 
-/** An element that defines a new CFG scope. */
-class CfgScope extends Element, @top_level_exprorstmt_parent {
-  CfgScope() { not this instanceof Attribute }
-}
-
 module ControlFlowTree {
   class Range_ = @callable or @control_flow_element;
 
   class Range extends Element, Range_ {
-    Range() { this = getAChild*(any(CfgScope scope)) }
+    Range() { this = getAChild*(any(@top_level_exprorstmt_parent p | not p instanceof Attribute)) }
   }
 
   Element getAChild(Element p) {
@@ -91,61 +95,6 @@ module ControlFlowTree {
   private predicate id(Range_ x, Range_ y) { x = y }
 
   predicate idOf(Range_ x, int y) = equivalenceRelation(id/2)(x, y)
-}
-
-abstract private class ControlFlowTree extends ControlFlowTree::Range {
-  /**
-   * Holds if `first` is the first element executed within this control
-   * flow element.
-   */
-  pragma[nomagic]
-  abstract predicate first(ControlFlowElement first);
-
-  /**
-   * Holds if `last` with completion `c` is a potential last element executed
-   * within this control flow element.
-   */
-  pragma[nomagic]
-  abstract predicate last(ControlFlowElement last, Completion c);
-
-  /** Holds if abnormal execution of `child` should propagate upwards. */
-  abstract predicate propagatesAbnormal(ControlFlowElement child);
-
-  /**
-   * Holds if `succ` is a control flow successor for `pred`, given that `pred`
-   * finishes with completion `c`.
-   */
-  pragma[nomagic]
-  abstract predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c);
-}
-
-/**
- * Holds if `first` is the first element executed within control flow
- * element `cft`.
- */
-predicate first(ControlFlowTree cft, ControlFlowElement first) { cft.first(first) }
-
-/**
- * Holds if `last` with completion `c` is a potential last element executed
- * within control flow element `cft`.
- */
-predicate last(ControlFlowTree cft, ControlFlowElement last, Completion c) {
-  cft.last(last, c)
-  or
-  exists(ControlFlowElement cfe |
-    cft.propagatesAbnormal(cfe) and
-    last(cfe, last, c) and
-    not c instanceof NormalCompletion
-  )
-}
-
-/**
- * Holds if `succ` is a control flow successor for `pred`, given that `pred`
- * finishes with completion `c`.
- */
-pragma[nomagic]
-predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
-  any(ControlFlowTree cft).succ(pred, succ, c)
 }
 
 /** Holds if `first` is first executed when entering `scope`. */
@@ -161,8 +110,7 @@ predicate scopeFirst(CfgScope scope, ControlFlowElement first) {
     )
   or
   expr_parent_top_level_adjusted(any(Expr e | first(e, first)), _, scope) and
-  not scope instanceof Callable and
-  not scope instanceof InitializerSplitting::InitializedInstanceMember
+  not scope instanceof Callable
 }
 
 /** Holds if `scope` is exited when `last` finishes with completion `c`. */
@@ -201,53 +149,6 @@ private class ConstructorTree extends ControlFlowTree, Constructor {
       ae = InitializerSplitting::lastConstructorInitializer(this, comp) and
       first(this.getBody(comp), succ)
     )
-  }
-}
-
-/**
- * A control flow element where the children are evaluated following a
- * standard left-to-right evaluation. The actual evaluation order is
- * determined by the predicate `getChildElement()`.
- */
-abstract private class StandardElement extends ControlFlowTree {
-  /** Gets the `i`th child element, in order of evaluation, starting from 0. */
-  abstract ControlFlowElement getChildElement(int i);
-
-  /** Gets the first child element of this element. */
-  final ControlFlowElement getFirstChild() { result = this.getChildElement(0) }
-
-  /** Holds if this element has no children. */
-  final predicate isLeafElement() { not exists(this.getFirstChild()) }
-
-  /** Gets the last child element of this element. */
-  final ControlFlowTree getLastChild() {
-    exists(int last |
-      result = this.getChildElement(last) and
-      not exists(this.getChildElement(last + 1))
-    )
-  }
-
-  final override predicate propagatesAbnormal(ControlFlowElement child) {
-    child = this.getChildElement(_)
-  }
-
-  override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
-    exists(int i |
-      last(this.getChildElement(i), pred, c) and
-      first(this.getChildElement(i + 1), succ) and
-      c instanceof NormalCompletion
-    )
-  }
-}
-
-abstract private class PreOrderTree extends ControlFlowTree {
-  final override predicate first(ControlFlowElement first) { first = this }
-}
-
-abstract private class PostOrderTree extends ControlFlowTree {
-  override predicate last(ControlFlowElement last, Completion c) {
-    last = this and
-    c.isValidFor(last)
   }
 }
 
@@ -368,7 +269,7 @@ module Expressions {
     )
   }
 
-  private class StandardExpr extends StandardElement, PostOrderTree, Expr {
+  private class StandardExpr extends StandardPostOrderTree, Expr {
     StandardExpr() {
       // The following expressions need special treatment
       not this instanceof LogicalNotExpr and
@@ -396,21 +297,6 @@ module Expressions {
     }
 
     final override ControlFlowElement getChildElement(int i) { result = getExprChild(this, i) }
-
-    final override predicate first(ControlFlowElement first) {
-      first(this.getFirstChild(), first)
-      or
-      not exists(this.getFirstChild()) and
-      first = this
-    }
-
-    final override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
-      StandardElement.super.succ(pred, succ, c)
-      or
-      last(this.getLastChild(), pred, c) and
-      succ = this and
-      c instanceof NormalCompletion
-    }
   }
 
   /**
@@ -1095,7 +981,7 @@ private class PropertyPatternExprExprTree extends PostOrderTree, PropertyPattern
 }
 
 module Statements {
-  private class StandardStmt extends StandardElement, PreOrderTree, Stmt {
+  private class StandardStmt extends StandardPreOrderTree, Stmt {
     StandardStmt() {
       // The following statements need special treatment
       not this instanceof IfStmt and
@@ -1139,22 +1025,6 @@ module Statements {
     final override ControlFlowElement getChildElement(int i) {
       result =
         rank[i + 1](ControlFlowElement cfe, int j | cfe = this.getChildElement0(j) | cfe order by j)
-    }
-
-    final override predicate last(ControlFlowElement last, Completion c) {
-      last(this.getLastChild(), last, c)
-      or
-      this.isLeafElement() and
-      last = this and
-      c.isValidFor(this)
-    }
-
-    final override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
-      StandardElement.super.succ(pred, succ, c)
-      or
-      pred = this and
-      first(this.getFirstChild(), succ) and
-      c instanceof SimpleCompletion
     }
   }
 
@@ -1778,88 +1648,6 @@ module Statements {
     }
   }
 }
-
-cached
-private module Cached {
-  private import semmle.code.csharp.Caching
-
-  private predicate isAbnormalExitType(SuccessorType t) {
-    t instanceof ExceptionSuccessor or t instanceof ExitSuccessor
-  }
-
-  /**
-   * Internal representation of control flow nodes in the control flow graph.
-   * The control flow graph is pruned for unreachable nodes.
-   */
-  cached
-  newtype TNode =
-    TEntryNode(Callable c) {
-      Stages::ControlFlowStage::forceCachingInSameStage() and
-      succEntrySplits(c, _, _, _)
-    } or
-    TAnnotatedExitNode(Callable c, boolean normal) {
-      exists(Reachability::SameSplitsBlock b, SuccessorType t | b.isReachable(_) |
-        succExitSplits(b.getAnElement(), _, c, t) and
-        if isAbnormalExitType(t) then normal = false else normal = true
-      )
-    } or
-    TExitNode(Callable c) {
-      exists(Reachability::SameSplitsBlock b | b.isReachable(_) |
-        succExitSplits(b.getAnElement(), _, c, _)
-      )
-    } or
-    TElementNode(ControlFlowElement cfe, Splits splits) {
-      exists(Reachability::SameSplitsBlock b | b.isReachable(splits) | cfe = b.getAnElement())
-    }
-
-  /** Gets a successor node of a given flow type, if any. */
-  cached
-  Node getASuccessorByType(Node pred, SuccessorType t) {
-    // Callable entry node -> callable body
-    exists(ControlFlowElement succElement, Splits succSplits |
-      result = TElementNode(succElement, succSplits)
-    |
-      succEntrySplits(pred.(Nodes::EntryNode).getCallable(), succElement, succSplits, t)
-    )
-    or
-    exists(ControlFlowElement predElement, Splits predSplits |
-      pred = TElementNode(predElement, predSplits)
-    |
-      // Element node -> callable exit (annotated)
-      result =
-        any(Nodes::AnnotatedExitNode exit |
-          succExitSplits(predElement, predSplits, exit.getCallable(), t) and
-          if isAbnormalExitType(t) then not exit.isNormal() else exit.isNormal()
-        )
-      or
-      // Element node -> element node
-      exists(ControlFlowElement succElement, Splits succSplits, Completion c |
-        result = TElementNode(succElement, succSplits)
-      |
-        succSplits(predElement, predSplits, succElement, succSplits, c) and
-        t = c.getAMatchingSuccessorType()
-      )
-    )
-    or
-    // Callable exit (annotated) -> callable exit
-    pred.(Nodes::AnnotatedExitNode).getCallable() = result.(Nodes::ExitNode).getCallable() and
-    t instanceof SuccessorTypes::NormalSuccessor
-  }
-
-  /**
-   * Gets a first control flow element executed within `cfe`.
-   */
-  cached
-  ControlFlowElement getAControlFlowEntryNode(ControlFlowElement cfe) { first(cfe, result) }
-
-  /**
-   * Gets a potential last control flow element executed within `cfe`.
-   */
-  cached
-  ControlFlowElement getAControlFlowExitNode(ControlFlowElement cfe) { last(cfe, result, _) }
-}
-
-import Cached
 
 /** A control flow element that is split into multiple control flow nodes. */
 class SplitControlFlowElement extends ControlFlowElement {
