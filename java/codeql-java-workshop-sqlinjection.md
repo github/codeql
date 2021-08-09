@@ -42,7 +42,7 @@ Blurb aboout Android framwork
     ```
     </details>
 
- 1. Update your query to report the method being called by each method call.
+ 1. Find all the calls in the program to methods called `getText`
     <details>
     <summary>Hints</summary>
 
@@ -59,179 +59,21 @@ Blurb aboout Android framwork
 
     from MethodAccess call
     where ma.getMethod().hasQualifiedName("android.widget", "EditText", "getText") 
-    select mad
+    select ma
     ```
     </details>
 
- 1. Find all calls in the program to methods called `fromXML`.<a id="question1"></a>
-
-    <details>
-    <summary>Hint</summary>
-
-    - `Method.getName()` returns a string representing the name of the method.
-
-    </details>
-    <details>
-    <summary>Solution</summary>
+### Section 2: Finding Sinks - Method Calls to rawQuery  <a id="section2"></a>
 
     ```ql
     import java
 
-    from MethodAccess fromXML, Method method
-    where
-      fromXML.getMethod() = method and
-      method.getName() = "fromXML"
-    select fromXML
+    from MethodAccess call
+    where ma.getMethod().hasQualifiedName(net.sqlcipher.databaset", "SQLLiteDatabase", "rawQueryt")
+    select ma
     ```
-    However, as we now want to report only the call itself, we can inline the temporary `method` variable like so:
-    ```ql
-    import java
-
-    from MethodAccess fromXML
-    where fromXML.getMethod().getName() = "fromXML"
-    select fromXML
-    ```
-    </details>
-
- 1. The `XStream.fromXML` method deserializes the first argument (i.e. the argument at index `0`). Update your query to report the deserialized argument.
-
-    <details>
-    <summary>Hint</summary>
-
-    - `MethodCall.getArgument(int i)` returns the argument at the i-th index.
-    - The arguments are _expressions_ in the program, represented by the CodeQL class `Expr`. Introduce a new variable to hold the argument expression.
-
-    </details>
-    <details>
-    <summary>Solution</summary>
-
-    ```ql
-    import java
-
-    from MethodAccess fromXML, Expr arg
-    where
-      fromXML.getMethod().getName() = "fromXML" and
-      arg = fromXML.getArgument(0)
-    select fromXML, arg
-    ```
-    </details>
-
- 1. Recall that _predicates_ allow you to encapsulate logical conditions in a reusable format. Convert your previous query to a predicate which identifies the set of expressions in the program which are deserialized directly by `fromXML`. You can use the following template:
-    ```ql
-    predicate isXMLDeserialized(Expr arg) {
-      exists(MethodAccess fromXML |
-        // TODO fill me in
-      )
-    }
-    ```
-    [`exists`](https://help.semmle.com/QL/ql-handbook/formulas.html#exists) is a mechanism for introducing temporary variables with a restricted scope. You can think of them as their own `from`-`where`-`select`. In this case, we use it to introduce the `fromXML` temporary variable, with type `MethodAccess`.
-
-    <details>
-    <summary>Hint</summary>
-
-     - Copy the `where` clause of the previous query.
-    </details>
-    <details>
-    <summary>Solution</summary>
-
-    ```ql
-    import java
-
-    predicate isXMLDeserialized(Expr arg) {
-      exists(MethodAccess fromXML |
-        fromXML.getMethod().getName() = "fromXML" and
-        arg = fromXML.getArgument(0)
-      )
-    }
-
-    from Expr arg
-    where isXMLDeserialized(arg)
-    select arg
-    ```
-
-### Section 2: Find the implementations of the toObject method from ContentTypeHandler <a id="section2"></a>
 
 Like predicates, _classes_ in CodeQL can be used to encapsulate reusable portions of logic. Classes represent single sets of values, and they can also include operations (known as _member predicates_) specific to that set of values. You have already seen numerous instances of CodeQL classes (`MethodAccess`, `Method` etc.) and associated member predicates (`MethodAccess.getMethod()`, `Method.getName()`, etc.).
-
- 1. Create a CodeQL class called `ContentTypeHandler` to find the interface `org.apache.struts2.rest.handler.ContentTypeHandler`. You can use this template:
-    ```ql
-    class ContentTypeHandler extends RefType {
-      ContentTypeHandler() {
-          // TODO Fill me in
-      }
-    }
-    ```
-
-    <details>
-    <summary>Hint</summary>
-
-    - Use `RefType.hasQualifiedName(string packageName, string className)` to identify classes with the given package name and class name. For example:
-        ```ql
-        from RefType r
-        where r.hasQualifiedName("java.lang", "String")
-        select r
-        ```
-    - Within the characteristic predicate you can use the magic variable `this` to refer to the RefType
-
-    </details>
-    <details>
-    <summary>Solution</summary>
-
-    ```ql
-    import java
-
-    /** The interface `org.apache.struts2.rest.handler.ContentTypeHandler`. */
-    class ContentTypeHandler extends RefType {
-      ContentTypeHandler() {
-        this.hasQualifiedName("org.apache.struts2.rest.handler", "ContentTypeHandler")
-      }
-    }
-    ```
-    </details>
-
- 2. Create a CodeQL class called `ContentTypeHandlerToObject` for identfying `Method`s called `toObject` on classes whose direct super-types include `ContentTypeHandler`.
-
-    <details>
-    <summary>Hint</summary>
-
-    - Use `Method.getName()` to identify the name of the method.
-    - To identify whether the method is declared on a class whose direct super-type includes `ContentTypeHandler`, you will need to:
-      - Identify the declaring type of the method using `Method.getDeclaringType()`.
-      - Identify the super-types of that type using `RefType.getASuperType()`
-      - Use `instanceof` to assert that one of the super-types is a `ContentTypeHandler`
-
-    </details>
-    <details>
-    <summary>Solution</summary>
-
-    ```ql
-    /** A `toObject` method on a subtype of `org.apache.struts2.rest.handler.ContentTypeHandler`. */
-    class ContentTypeHandlerToObject extends Method {
-      ContentTypeHandlerToObject() {
-        this.getDeclaringType().getASupertype() instanceof ContentTypeHandler and
-        this.hasName("toObject")
-      }
-    }
-    ```
-    </details>
-
- 3. `toObject` methods should consider the first parameter as untrusted user input. Write a query to find the first (i.e. index 0) parameter for `toObject` methods.
-    <details>
-    <summary>Hint</summary>
-
-    - Use `Method.getParameter(int index)` to get the i-th index parameter.
-    - Create a query with a single CodeQL variable of type `ContentTypeHandlerToObject`.
-
-    </details>
-    <details>
-    <summary>Solution</summary>
-
-    ```ql
-    from ContentTypeHandlerToObject toObjectMethod
-    select toObjectMethod.getParameter(0)
-    ```
-    </details>
-
 ### Section 3: Unsafe XML deserialization <a id="section3"></a>
 
 We have now identified (a) places in the program which receive untrusted data and (b) places in the program which potentially perform unsafe XML deserialization. We now want to tie these two together to ask: does the untrusted data ever _flow_ to the potentially unsafe XML deserialization call?
