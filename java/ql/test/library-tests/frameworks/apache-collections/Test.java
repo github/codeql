@@ -316,20 +316,6 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.apache.commons.collections4.keyvalue;AbstractKeyValue;true;toString;;;MapKey of Argument[-1];ReturnValue;taint"
-			String out = null;
-			AbstractKeyValue in = newMAKVWithMapKey((String)source());
-			out = in.toString();
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "org.apache.commons.collections4.keyvalue;AbstractKeyValue;true;toString;;;MapValue of Argument[-1];ReturnValue;taint"
-			String out = null;
-			AbstractKeyValue in = newMAKVWithMapValue((String)source());
-			out = in.toString();
-			sink(out); // $ hasTaintFlow
-		}
-		{
 			// "org.apache.commons.collections4.keyvalue;AbstractMapEntry;true;AbstractMapEntry;;;Argument[0];MapKey of Argument[-1];value"
 			AbstractMapEntry out = null;
 			Object in = source();
@@ -370,20 +356,6 @@ public class Test {
 			MyAbstractMapEntryDecorator in = newMAMEDWithMapValue((String)source());
 			out = in.myGetMapEntry();
 			sink(getMapValueFromEntry(out)); // $ hasValueFlow
-		}
-		{
-			// "org.apache.commons.collections4.keyvalue;AbstractMapEntryDecorator;true;toString;;;MapKey of Argument[-1];ReturnValue;taint"
-			String out = null;
-			AbstractMapEntryDecorator in = newMAMEDWithMapKey((String)source());
-			out = in.toString();
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "org.apache.commons.collections4.keyvalue;AbstractMapEntryDecorator;true;toString;;;MapValue of Argument[-1];ReturnValue;taint"
-			String out = null;
-			AbstractMapEntryDecorator in = newMAMEDWithMapValue((String)source());
-			out = in.toString();
-			sink(out); // $ hasTaintFlow
 		}
 		{
 			// "org.apache.commons.collections4.keyvalue;DefaultKeyValue;true;DefaultKeyValue;(Entry);;MapKey of Argument[0];MapKey of Argument[-1];value"
@@ -1764,13 +1736,6 @@ public class Test {
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
-			// "org.apache.commons.collections4;FluentIterable;true;toString;;;Element of Argument[-1];ReturnValue;taint"
-			String out = null;
-			FluentIterable in = newFluentIterableWithElement((String)source());
-			out = in.toString();
-			sink(out); // $ hasTaintFlow
-		}
-		{
 			// "org.apache.commons.collections4;FluentIterable;true;unique;;;Element of Argument[-1];Element of ReturnValue;value"
 			FluentIterable out = null;
 			FluentIterable in = newFluentIterableWithElement((String)source());
@@ -2179,27 +2144,6 @@ public class Test {
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
-			// "org.apache.commons.collections4;IterableUtils;true;toString;;;Element of Argument[0];ReturnValue;taint"
-			String out = null;
-			Iterable in = newVectorWithElement((String)source());
-			out = IterableUtils.toString(in, null, null, null, null);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "org.apache.commons.collections4;IterableUtils;true;toString;;;Element of Argument[0];ReturnValue;taint"
-			String out = null;
-			Iterable in = newVectorWithElement((String)source());
-			out = IterableUtils.toString(in, null);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "org.apache.commons.collections4;IterableUtils;true;toString;;;Element of Argument[0];ReturnValue;taint"
-			String out = null;
-			Iterable in = newVectorWithElement((String)source());
-			out = IterableUtils.toString(in);
-			sink(out); // $ hasTaintFlow
-		}
-		{
 			// "org.apache.commons.collections4;IterableUtils;true;toString;;;Argument[2];ReturnValue;taint"
 			String out = null;
 			String in = (String)source();
@@ -2597,27 +2541,6 @@ public class Test {
 			Iterator in = newListIteratorWithElement((String)source());
 			out = IteratorUtils.toListIterator(in);
 			sink(getElement(out)); // $ hasValueFlow
-		}
-		{
-			// "org.apache.commons.collections4;IteratorUtils;true;toString;;;Element of Argument[0];ReturnValue;taint"
-			String out = null;
-			Iterator in = newListIteratorWithElement((String)source());
-			out = IteratorUtils.toString(in, null, null, null, null);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "org.apache.commons.collections4;IteratorUtils;true;toString;;;Element of Argument[0];ReturnValue;taint"
-			String out = null;
-			Iterator in = newListIteratorWithElement((String)source());
-			out = IteratorUtils.toString(in, null);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "org.apache.commons.collections4;IteratorUtils;true;toString;;;Element of Argument[0];ReturnValue;taint"
-			String out = null;
-			Iterator in = newListIteratorWithElement((String)source());
-			out = IteratorUtils.toString(in);
-			sink(out); // $ hasTaintFlow
 		}
 		{
 			// "org.apache.commons.collections4;IteratorUtils;true;toString;;;Argument[2];ReturnValue;taint"
