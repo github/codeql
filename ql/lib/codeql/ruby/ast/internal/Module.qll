@@ -99,14 +99,22 @@ private module Cached {
   }
 
   /**
-   * Resolve constant read access (typically a scope expression) to a qualified module name.
+   * Resolve class or module read access to a qualified module name.
+   */
+  cached
+  TResolved resolveScopeExpr(ConstantReadAccess r) {
+    exists(string qname | qname = resolveConstant(r) and result = TResolved(qname))
+  }
+
+  /**
+   * Resolve constant access (class, module or otherwise) to a qualified module name.
    * `resolveScopeExpr/1` picks the best (lowest priority number) result of
    * `resolveScopeExpr/2` that resolves to a constant definition. If the constant
    * definition is a Namespace then it is returned, if it's a constant assignment then
    * the right-hand side of the assignment is resolved.
    */
   cached
-  TResolved resolveScopeExpr(ConstantReadAccess r) {
+  string resolveConstant(ConstantReadAccess r) {
     exists(string qname |
       qname =
         min(string qn, int p |
@@ -122,11 +130,11 @@ private module Cached {
           qn order by p
         )
     |
-      result = TResolved(qname)
+      result = qname
       or
       exists(ConstantAssignment a |
         qname = constantDefinition0(a) and
-        result = resolveScopeExpr(a.getParent().(Assignment).getRightOperand())
+        result = resolveConstant(a.getParent().(Assignment).getRightOperand())
       )
     )
   }

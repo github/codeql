@@ -1,7 +1,9 @@
 module A
+  SOME_CONSTANT = 1
+
   class B
     def f
-      g 1
+      g SOME_CONSTANT
     end
 
     def g x

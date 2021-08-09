@@ -86,7 +86,7 @@ newtype DefLoc =
 string constantQualifiedName(ConstantWriteAccess w) {
   /* get the qualified name for the parent module, then append w */
   exists(ConstantWriteAccess parent |
-    parent = w.getParent() and result = constantQualifiedName(parent) + "::" + w.getName()
+    parent = w.getEnclosingModule() and result = constantQualifiedName(parent) + "::" + w.getName()
   )
   or
   /* base case - there's no parent module */
@@ -102,7 +102,7 @@ string constantQualifiedName(ConstantWriteAccess w) {
 ConstantWriteAccess definitionOf(ConstantReadAccess r) {
   result =
     max(ConstantWriteAccess w |
-      TResolved(constantQualifiedName(w)) = resolveScopeExpr(r)
+      constantQualifiedName(w) = resolveConstant(r)
     |
       w order by w.getLocation().toString()
     )
