@@ -58,9 +58,10 @@
     "csharp/ql/src/semmle/code/csharp/dataflow/internal/DataFlowImplConsistency.qll",
     "python/ql/src/semmle/python/dataflow/new/internal/DataFlowImplConsistency.qll"
   ],
-  "DataFlow Java/C# Flow Summaries": [
+  "DataFlow Java/C#/Python Flow Summaries": [
     "java/ql/src/semmle/code/java/dataflow/internal/FlowSummaryImpl.qll",
-    "csharp/ql/src/semmle/code/csharp/dataflow/internal/FlowSummaryImpl.qll"
+    "csharp/ql/src/semmle/code/csharp/dataflow/internal/FlowSummaryImpl.qll",
+    "python/ql/src/semmle/python/dataflow/new/internal/FlowSummaryImpl.qll"
   ],
   "SsaReadPosition Java/C#": [
     "java/ql/src/semmle/code/java/dataflow/internal/rangeanalysis/SsaReadPositionCommon.qll",
