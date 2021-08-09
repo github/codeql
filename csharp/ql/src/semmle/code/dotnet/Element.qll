@@ -57,6 +57,7 @@ class Element extends @dotnet_element {
 /** An element that has a name. */
 class NamedElement extends Element, @dotnet_named_element {
   /** Gets the name of this element. */
+  cached
   string getName() { none() }
 
   /** Holds if this element has name 'name'. */
