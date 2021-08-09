@@ -223,8 +223,7 @@ class KotlinFileExtractor(val tw: TrapWriter) {
     fun extractBlockBody(b: IrBlockBody, callable: Label<out DbCallable>, parent: Label<out DbStmtparent>, idx: Int) {
         val id = tw.getFreshIdLabel<DbBlock>()
         val locId = tw.getLocation(b.startOffset, b.endOffset)
-        val kind = 0 // TODO: stmt kind for block from generated module
-        tw.writeStmts(id, kind, parent, idx, callable)
+        tw.writeStmts_block(id, parent, idx, callable)
         tw.writeHasLocation(id, locId)
         for((sIdx, stmt) in b.statements.withIndex()) {
             extractStatement(stmt, callable, id, sIdx)
@@ -236,8 +235,7 @@ class KotlinFileExtractor(val tw: TrapWriter) {
             is IrReturn -> {
                 val id = tw.getFreshIdLabel<DbReturnstmt>()
                 val locId = tw.getLocation(s.startOffset, s.endOffset)
-                val kind = 9 // TODO: stmt kind for return from generated module
-                tw.writeStmts(id, kind, parent, idx, callable)
+                tw.writeStmts_returnstmt(id, parent, idx, callable)
                 tw.writeHasLocation(id, locId)
                 extractExpression(s.value, id, 0)
             }
@@ -252,11 +250,10 @@ class KotlinFileExtractor(val tw: TrapWriter) {
                     val left = e.dispatchReceiver
                     val right = e.getValueArgument(0)
                     if(left != null && right != null) {
-                        val kind = 27 // TODO: expr kind for addexpr from generated module
                         val id = tw.getFreshIdLabel<DbAddexpr>()
                         val typeId = useType(e.type)
                         val locId = tw.getLocation(e.startOffset, e.endOffset)
-                        tw.writeExprs(id, kind, typeId, parent, idx)
+                        tw.writeExprs_addexpr(id, typeId, parent, idx)
                         tw.writeHasLocation(id, locId)
                         extractExpression(left, id, 0)
                         extractExpression(right, id, 1)
@@ -269,11 +266,10 @@ class KotlinFileExtractor(val tw: TrapWriter) {
             }
             is IrConst<*> -> {
                 val v = e.value as Int
-                val kind = 17 // TODO: expr kind for integerliteral from generated module
                 val id = tw.getFreshIdLabel<DbIntegerliteral>()
                 val typeId = useType(e.type)
                 val locId = tw.getLocation(e.startOffset, e.endOffset)
-                tw.writeExprs(id, kind, typeId, parent, idx)
+                tw.writeExprs_integerliteral(id, typeId, parent, idx)
                 tw.writeHasLocation(id, locId)
                 tw.writeNamestrings(v.toString(), v.toString(), id)
             }
