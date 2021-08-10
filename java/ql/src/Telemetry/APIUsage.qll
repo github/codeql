@@ -1,26 +1,48 @@
 import java
 private import semmle.code.java.dataflow.FlowSteps
 private import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.FlowSummary
+private import semmle.code.java.dataflow.DataFlow
+private import semmle.code.java.dataflow.TaintTracking
+private import semmle.code.java.dataflow.FlowSources
 
 string supportKind(Callable api) {
   if api instanceof TaintPreservingCallable
   then result = "taint-preserving"
   else
-    if summaryModel(packageName(api), typeName(api), _, api.getName(), _, _, _, _, _)
+    if summaryCall(api)
     then result = "summary"
     else
-      if sinkModel(packageName(api), typeName(api), _, api.getName(), _, _, _, _)
+      if sink(api)
       then result = "sink"
       else
-        if sourceModel(packageName(api), typeName(api), _, api.getName(), _, _, _, _)
+        if source(api)
         then result = "source"
         else result = "?"
 }
 
-private string packageName(Callable api) {
-  result = api.getCompilationUnit().getPackage().toString()
+predicate summaryCall(Callable api) {
+  api instanceof SummarizedCallable
+  or
+  exists(Call call, DataFlow::Node arg |
+    call.getCallee() = api and
+    [call.getAnArgument(), call.getQualifier()] = arg.asExpr() and
+    TaintTracking::localAdditionalTaintStep(arg, _)
+  )
 }
 
-private string typeName(Callable api) {
-  result = api.getDeclaringType().getAnAncestor().getSourceDeclaration().toString()
+predicate sink(Callable api) {
+  exists(Call call, DataFlow::Node arg |
+    call.getCallee() = api and
+    [call.getAnArgument(), call.getQualifier()] = arg.asExpr() and
+    sinkNode(arg, _)
+  )
+}
+
+predicate source(Callable api) {
+  exists(Call call, DataFlow::Node arg |
+    call.getCallee() = api and
+    [call.getAnArgument(), call.getQualifier()] = arg.asExpr() and
+    arg instanceof RemoteFlowSource
+  )
 }
