@@ -349,6 +349,18 @@ public final class Bundle extends BaseBundle implements Cloneable, Parcelable {
     }
 
     /**
+     * Returns the value associated with the given key, or null if
+     * no mapping of the desired type exists for the given key or a null
+     * value is explicitly associated with the key.
+     *
+     * @param key a String, or null
+     * @return a Parcelable value, or null
+     */
+    public <T extends Parcelable> T getParcelable(String key) {
+        return null;
+    }
+
+    /**
      * Returns the value associated with the given key, or null if no mapping of the
      * desired type exists for the given key or a null value is explicitly
      * associated with the key.

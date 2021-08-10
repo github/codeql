@@ -5,6 +5,7 @@
 import java
 import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.xml.AndroidManifest
+private import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * Gets a transitive superType avoiding magic optimisation
@@ -200,5 +201,61 @@ private class ContentProviderSourceModels extends SourceModelCsv {
         "android.content;ContentProvider;true;update;(Uri,ContentValues,Bundle);;Parameter[0..2];contentprovider",
         "android.content;ContentProvider;true;update;(Uri,ContentValues,String,String[]);;Parameter[0..3];contentprovider"
       ]
+  }
+}
+
+/** Interface for classes whose instances can be written to and restored from a Parcel. */
+class TypeParcelable extends Interface {
+  TypeParcelable() { this.hasQualifiedName("android.os", "Parcelable") }
+}
+
+/**
+ * A method that overrides `android.os.Parcelable.Creator.createFromParcel`.
+ */
+class CreateFromParcelMethod extends Method {
+  CreateFromParcelMethod() {
+    this.hasName("createFromParcel") and
+    this.getEnclosingCallable().getDeclaringType().getASupertype*() instanceof TypeParcelable
+  }
+}
+
+private class TaintPropagationModels extends SummaryModelCsv {
+  override predicate row(string s) {
+    // BaseBundle getters
+    s =
+      "android.os;BaseBundle;true;get" + ["Boolean", "Double", "Int", "Long", "String"] +
+        ["", "Array"] + ";;;Argument[-1];ReturnValue;taint"
+    or
+    // Bundle getters
+    s =
+      "android.os;Bundle;true;get" +
+        [
+          "Binder", "Bundle", "Byte", "ByteArray", "Char", "CharArray", "CharSequence",
+          "CharSequenceArray", "CharSequenceArrayList", "Float", "FloatArray", "IntegerArrayList",
+          "Parcelable", "ParcelableArray", "ParcelableArrayList", "Serializable", "Short",
+          "ShortArray", "Size", "SizeF", "SparseParcelableArray", "StringArrayList"
+        ] + ";;;Argument[-1];ReturnValue;taint"
+    or
+    // Intent readers that return their value
+    s =
+      "android.os;Parcel;false;read" +
+        [
+          "Array", "ArrayList", "Boolean", "Bundle", "Byte", "Double", "FileDescriptor", "Float",
+          "HashMap", "Int", "Long", "Parcelable", "ParcelableArray", "PersistableBundle",
+          "Serializable", "Size", "SizeF", "SparseArray", "SparseBolleanArray", "String",
+          "StrongBinder", "TypedObject", "Value"
+        ] + ";;;Argument[-1];ReturnValue;taint"
+    or
+    // Intent readers that write to an existing object
+    s =
+      "android.os;Parcel;false;read" +
+        [
+          "BinderArray", "BinderList", "BooleanArray", "ByteArray", "CharArray", "DoubleArray",
+          "FloatArray", "IntArray", "List", "LongArray", "Map", "ParcelableList", "StringArray",
+          "StringList", "TypedArray", "TypedList"
+        ] + ";;;Argument[-1];Argument[0];taint"
+    or
+    // One Intent method that aliases an argument to a return value
+    s = "android.os;Parcel;false;readParcelableList;;;Argument[0];ReturnValue;value"
   }
 }
