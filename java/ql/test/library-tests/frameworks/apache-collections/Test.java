@@ -239,13 +239,6 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.apache.commons.collections4.keyvalue;AbstractKeyValue;true;setKey;;;MapValue of Argument[-1];ReturnValue;value"
-			Object out = null;
-			MyAbstractKeyValue in = newMAKVWithMapValue((String)source());
-			out = in.mySetKey((Object)null);
-			sink(out); // $ hasValueFlow
-		}
-		{
 			// "org.apache.commons.collections4.keyvalue;AbstractKeyValue;true;setValue;;;Argument[0];MapValue of Argument[-1];value"
 			UnmodifiableMapEntry out = null;
 			Object in = source();
