@@ -242,7 +242,7 @@ private class TaintPropagationModels extends SummaryModelCsv {
         [
           "Array", "ArrayList", "Boolean", "Bundle", "Byte", "Double", "FileDescriptor", "Float",
           "HashMap", "Int", "Long", "Parcelable", "ParcelableArray", "PersistableBundle",
-          "Serializable", "Size", "SizeF", "SparseArray", "SparseBolleanArray", "String",
+          "Serializable", "Size", "SizeF", "SparseArray", "SparseBooleanArray", "String",
           "StrongBinder", "TypedObject", "Value"
         ] + ";;;Argument[-1];ReturnValue;taint"
     or
