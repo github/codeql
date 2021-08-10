@@ -167,3 +167,63 @@ jobs:
              codeql-ruby-bundle.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+
+    runs-on: ${{ matrix.os }}
+    needs: [package]
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          repository: Shopify/example-ruby-app
+          ref: 67a0decc5eb550f3a9228eda53925c3afd40dfe9
+      - name: Fetch CodeQL
+        shell: bash
+        run: |
+          LATEST=$(gh release list --repo https://github.com/github/codeql-cli-binaries | cut -f 1 | sort --version-sort | tail -1)
+          gh release download --repo https://github.com/github/codeql-cli-binaries --pattern codeql.zip "$LATEST"
+          unzip -q codeql.zip
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        working-directory: ${{ runner.temp }}
+      - name: Download Ruby bundle
+        uses: actions/download-artifact@v2
+        with:
+          name: codeql-ruby-bundle
+          path: ${{ runner.temp }}
+      - name: Unzip Ruby bundle
+        shell: bash
+        run: unzip -q -d "${{ runner.temp }}/ruby-bundle" "${{ runner.temp }}/codeql-ruby-bundle.zip"
+      - name: Prepare test files
+        shell: bash
+        run: |
+          echo "import ruby select count(File f)" > "test.ql"
+          echo "| 2 |" > "test.expected"
+          echo 'name: sample-tests
+          version: 0.0.0
+          libraryPathDependencies:
+          - codeql-ruby
+          extractor: ruby
+          tests: .
+          ' > qlpack.yml
+          echo '- qlpack: codeql-ruby
+          - include:
+              kind:
+              - problem
+              - path-problem
+          ' > suite.qls
+      - name: Run QL test
+        shell: bash
+        run: |
+          "${{ runner.temp }}/codeql/codeql" test run --search-path "${{ runner.temp }}/ruby-bundle" .
+      - name: Create database
+        shell: bash
+        run: |
+          "${{ runner.temp }}/codeql/codeql" database create --search-path "${{ runner.temp }}/ruby-bundle" --language ruby --source-root . ../database
+      - name: Analyze database
+        shell: bash
+        run: |
+          "${{ runner.temp }}/codeql/codeql" database analyze --search-path "${{ runner.temp }}/ruby-bundle" --format=sarifv2.1.0 --output=out.sarif ../database suite.qls
