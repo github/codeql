@@ -2,6 +2,7 @@
 
 import java
 private import semmle.code.java.dataflow.DataFlow
+private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.frameworks.android.Intent
 
 /**
@@ -28,19 +29,5 @@ class IntentRedirectionAdditionalTaintStep extends Unit {
 
 /** Default sink for Intent redirection vulnerabilities. */
 private class DefaultIntentRedirectionSink extends IntentRedirectionSink {
-  DefaultIntentRedirectionSink() {
-    exists(MethodAccess ma, Method m |
-      ma.getMethod() = m and
-      this.asExpr() = ma.getAnArgument() and
-      (
-        this.asExpr().getType() instanceof TypeIntent
-        or
-        this.asExpr().getType().(Array).getComponentType() instanceof TypeIntent
-      )
-    |
-      m instanceof StartActivityMethod or
-      m instanceof StartServiceMethod or
-      m instanceof SendBroadcastMethod
-    )
-  }
+  DefaultIntentRedirectionSink() { sinkNode(this, "intent-start") }
 }

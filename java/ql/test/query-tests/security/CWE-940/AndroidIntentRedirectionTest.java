@@ -18,7 +18,6 @@ public class AndroidIntentRedirectionTest extends Activity {
             startActivityAsUser(intent, null); // $ hasAndroidIntentRedirection
             startActivityAsUser(intent, null, null); // $ hasAndroidIntentRedirection
             startActivityAsCaller(intent, null, false, 0); // $ hasAndroidIntentRedirection
-            startActivityAsUserFromFragment(null, intent, 0, null, null); // $ hasAndroidIntentRedirection
             startActivityForResult(intent, 0); // $ hasAndroidIntentRedirection
             startActivityForResult(intent, 0, null); // $ hasAndroidIntentRedirection
             startActivityForResult(null, intent, 0, null); // $ hasAndroidIntentRedirection
