@@ -170,8 +170,6 @@ module Public {
      */
     pragma[nomagic]
     predicate clearsContent(int i, Content content) { none() }
-
-    DataFlowType getReturnType() { any() }
   }
 }
 
