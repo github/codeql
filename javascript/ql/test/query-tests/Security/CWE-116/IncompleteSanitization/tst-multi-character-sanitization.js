@@ -134,6 +134,6 @@
 (function (content) {
 	content.replace(/<script.*\/script>/gi, ""); // NOT OK
 	content.replace(/<(script).*\/script>/gi, ""); // NOT OK
-	content.replace(/.+<(script).*\/script>/gi, ""); // OK
+	content.replace(/.+<(script).*\/script>/gi, ""); // NOT OK
 	content.replace(/.*<(script).*\/script>/gi, ""); // NOT OK
 });
