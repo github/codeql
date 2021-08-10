@@ -3,6 +3,8 @@
  * @description Evaluation of a user-controlled malicious expression in Java Python
  *              interpreter may lead to remote code execution.
  * @kind path-problem
+ * @problem.severity error
+ * @precision high
  * @id java/jython-injection
  * @tags security
  *       external/cwe/cwe-094

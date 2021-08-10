@@ -69,25 +69,14 @@ of the active database schema (for example, ``<queries
 language="java"/>``).
 
 A ``qlpack.yml`` file defines a :ref:`QL pack <about-ql-packs>`.
-The content of a ``qlpack.yml`` file is described in the CodeQL CLI documentation. This file
-will not be recognized when using legacy tools that are not based
-on the CodeQL CLI (that is, LGTM.com, LGTM Enterprise, ODASA, CodeQL for
-Eclipse, and CodeQL for Visual Studio).
+The content of a ``qlpack.yml`` file is described in the CodeQL CLI documentation.
 
 If both a ``queries.xml`` and a ``qlpack.yml`` exist in the same
 directory, the latter takes precedence (and the former is assumed to
 exist for compatibility with older tooling).
 
-In legacy QL tools that don't recognize ``qlpack.yml`` files, the default
-value of the library path for
-each supported language is hard-coded. The tools contain directories within the ODASA
-distribution that define the default CodeQL libraries for the selected
-language. Which language to use depends on the ``language`` attribute
-of the ``queries.xml`` file if not overridden with a ``--language``
-option to the ODASA CLI.
-
-On the other hand, the CodeQL CLI and newer tools based on it (such as
-GitHub Code Scanning and the CodeQL extension for Visual Studio Code)
+The CodeQL CLI and newer tools based on it (such as,
+GitHub code scanning and the CodeQL extension for Visual Studio Code)
 construct a library path using QL packs. For each QL pack
 added to the library path, the QL packs named in its
 ``libraryPathDependencies`` will be subsequently added to the library
@@ -508,6 +497,7 @@ The following sequences of characters are keyword tokens:
    max
    min
    module
+   newtype
    none
    not
    or
@@ -525,6 +515,7 @@ The following sequences of characters are keyword tokens:
    then
    this
    true
+   unique
    where
 
 Operators
@@ -1784,6 +1775,8 @@ The following built-in predicates are members of type ``int``:
 | ``bitShiftRightSigned`` | int         | int            | The result is the signed bitwise right shift of the receiver by the argument, modulo 32.                       |
 +-------------------------+-------------+----------------+----------------------------------------------------------------------------------------------------------------+
 | ``toString``            | string      |                | The result is the decimal representation of the number as a string.                                            |
++-------------------------+-------------+----------------+----------------------------------------------------------------------------------------------------------------+
+| ``toUnicode``           | string      |                | The result is the unicode character for the receiver seen as a unicode code point.                             |
 +-------------------------+-------------+----------------+----------------------------------------------------------------------------------------------------------------+
 
 The leftmost bit after ``bitShiftRightSigned`` depends on sign extension, whereas after ``bitShiftRight`` it is zero.

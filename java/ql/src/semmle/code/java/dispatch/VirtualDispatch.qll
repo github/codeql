@@ -176,7 +176,7 @@ private module Dispatch {
       v.getAUse() = q and
       guardControls_v1(ioe, q.getBasicBlock(), false) and
       ioe.getExpr() = v.getAUse() and
-      ioe.getTypeName().getType().getErasure() = t and
+      ioe.getCheckedType().getErasure() = t and
       tgt.getDeclaringType().getSourceDeclaration().getASourceSupertype*() = t
     )
   }

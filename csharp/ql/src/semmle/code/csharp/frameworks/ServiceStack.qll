@@ -91,11 +91,12 @@ module Sinks {
       exists(MethodCall mc |
         mc.getTarget().getQualifiedName() in [
             "ServiceStack.IRestClient.Get", "ServiceStack.IRestClient.Put",
-            "ServiceStack.IRestClient.Post", "ServiceStack.IRestClient.Delete", 
+            "ServiceStack.IRestClient.Post", "ServiceStack.IRestClient.Delete",
             "ServiceStack.IRestClient.Patch", "ServiceStack.IRestClient.Send",
-            "ServiceStack.IRestClientAsync.GetAsync","ServiceStack.IRestClientAsync.DeleteAsync",
-            "ServiceStack.IRestClientAsync.PutAsync","ServiceStack.IRestClientAsync.PostAsync",
-            "ServiceStack.IRestClientAsync.PatchAsync","ServiceStack.IRestClientAsync.CustomMethodAsync"
+            "ServiceStack.IRestClientAsync.GetAsync", "ServiceStack.IRestClientAsync.DeleteAsync",
+            "ServiceStack.IRestClientAsync.PutAsync", "ServiceStack.IRestClientAsync.PostAsync",
+            "ServiceStack.IRestClientAsync.PatchAsync",
+            "ServiceStack.IRestClientAsync.CustomMethodAsync"
           ] and
         this.asExpr() = mc.getAnArgument()
       )
@@ -105,7 +106,7 @@ module Sinks {
 
 /** SQLi support for the ServiceStack framework */
 module SQL {
-  private import semmle.code.csharp.security.dataflow.SqlInjection::SqlInjection
+  private import semmle.code.csharp.security.dataflow.SqlInjectionQuery
 
   /** SQLi sinks for ServiceStack */
   class ServiceStackSink extends Sink {
@@ -160,7 +161,7 @@ module SQL {
 
 /** XSS support for ServiceStack framework */
 module XSS {
-  private import semmle.code.csharp.security.dataflow.XSS::XSS
+  private import semmle.code.csharp.security.dataflow.XSSSinks
 
   /** XSS sinks for ServiceStack */
   class XssSink extends Sink {

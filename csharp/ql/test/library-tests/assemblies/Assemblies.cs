@@ -14,5 +14,3 @@ namespace TestAssemblies
         Locations.Test l = new Locations.Test();
     }
 }
-
-// semmle-extractor-options: /r:System.Runtime.Extensions.dll

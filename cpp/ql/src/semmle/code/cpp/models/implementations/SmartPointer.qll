@@ -146,8 +146,7 @@ private class SmartPtrSetterFunction extends MemberFunction, AliasFunction, Side
   }
 
   private FunctionInput getPointerInput() {
-    exists(Parameter param0 |
-      param0 = this.getParameter(0) and
+    exists(Parameter param0 | param0 = this.getParameter(0) |
       (
         param0.getUnspecifiedType().(ReferenceType).getBaseType() instanceof SmartPtr and
         if this.getParameter(1).getUnspecifiedType() instanceof PointerType
@@ -158,11 +157,11 @@ private class SmartPtrSetterFunction extends MemberFunction, AliasFunction, Side
           // parameter.
           result.isParameter(1)
         else result.isParameterDeref(0)
+        or
+        // One of the functions that takes ownership of a raw pointer.
+        param0.getUnspecifiedType() instanceof PointerType and
+        result.isParameter(0)
       )
-      or
-      // One of the functions that takes ownership of a raw pointer.
-      param0.getUnspecifiedType() instanceof PointerType and
-      result.isParameter(0)
     )
   }
 }

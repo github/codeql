@@ -4,6 +4,7 @@
  *              may cause redirection to malicious web sites.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 6.1
  * @precision high
  * @id cs/web/unvalidated-url-redirection
  * @tags security
@@ -11,7 +12,7 @@
  */
 
 import csharp
-import semmle.code.csharp.security.dataflow.UrlRedirect::UrlRedirect
+import semmle.code.csharp.security.dataflow.UrlRedirectQuery
 import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 
 from TaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink

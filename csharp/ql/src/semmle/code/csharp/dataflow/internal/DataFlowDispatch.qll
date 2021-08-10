@@ -6,6 +6,7 @@ private import DataFlowPublic
 private import DataFlowPrivate
 private import FlowSummaryImpl as FlowSummaryImpl
 private import semmle.code.csharp.dataflow.FlowSummary
+private import semmle.code.csharp.dataflow.ExternalFlow
 private import semmle.code.csharp.dispatch.Dispatch
 private import semmle.code.csharp.frameworks.system.Collections
 private import semmle.code.csharp.frameworks.system.collections.Generic
@@ -14,6 +15,8 @@ private predicate summarizedCallable(DataFlowCallable c) {
   c instanceof SummarizedCallable
   or
   FlowSummaryImpl::Private::summaryReturnNode(_, TJumpReturnKind(c, _))
+  or
+  c = interpretElement(_, _, _, _, _, _)
 }
 
 /**

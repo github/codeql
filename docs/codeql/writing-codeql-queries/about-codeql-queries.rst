@@ -13,7 +13,7 @@ CodeQL includes queries to find the most relevant and interesting problems for e
 - **Alert queries**: queries that highlight issues in specific locations in your code.
 - **Path queries**: queries that describe the flow of information between a source and a sink in your code.
 
-You can add custom queries to :doc:`QL packs <../codeql-cli/about-ql-packs>` to analyze your projects with "`Code scanning <https://docs.github.com/github/finding-security-vulnerabilities-and-errors-in-your-code>`__", use them to analyze a database with the ":ref:`CodeQL CLI <codeql-cli>`," or you can contribute to the standard CodeQL queries in our `open source repository on GitHub <https://github.com/github/codeql>`__.
+You can add custom queries to :doc:`QL packs <../codeql-cli/about-ql-packs>` to analyze your projects with "`Code scanning <https://docs.github.com/en/code-security/secure-coding/automatically-scanning-your-code-for-vulnerabilities-and-errors/about-code-scanning>`__", use them to analyze a database with the ":ref:`CodeQL CLI <codeql-cli>`," or you can contribute to the standard CodeQL queries in our `open source repository on GitHub <https://github.com/github/codeql>`__.
 
 This topic is a basic introduction to query files. You can find more information on writing queries for specific programming languages in the ":ref:`CodeQL language guides <codeql-language-guides>`," and detailed technical information about QL in the ":ref:`QL language reference <ql-language-reference>`."
 For more information on how to format your code when contributing queries to the GitHub repository, see the `CodeQL style guide <https://github.com/github/codeql/blob/main/docs/ql-style-guide.md>`__.
@@ -57,8 +57,10 @@ Query metadata is used to identify your custom queries when they are added to th
 
     Queries that are contributed to the open source repository, added to a query pack in LGTM, or used to analyze a database with the :ref:`CodeQL CLI <codeql-cli>` must have a query type (``@kind``) specified. The ``@kind`` property indicates how to interpret and display the results of the query analysis:
 
-    - Alert query metadata must contain ``@kind problem``.
-    - Path query metadata must contain ``@kind path-problem``.
+    - Alert query metadata must contain ``@kind problem`` to identify the results as a simple alert.
+    - Path query metadata must contain ``@kind path-problem`` to identify the results as an alert documented by a sequence of code locations.
+    - Diagnostic query metadata must contain ``@kind diagnostic`` to identify the results as troubleshooting data about the extraction process.
+    - Summary query metadata must contain ``@kind metric`` and ``@tags summary`` to identify the results as summary metrics for the CodeQL database.
 
     When you define the ``@kind`` property of a custom query you must also ensure that the rest of your query has the correct structure in order to be valid, as described below.
 
@@ -113,6 +115,8 @@ Select clauses for alert queries (``@kind problem``) consist of two 'columns', w
 You can modify the alert message defined in the final column of the ``select`` statement to give more detail about the alert or path found by the query using links and placeholders. For more information, see ":doc:`Defining the results of a query <defining-the-results-of-a-query>`." 
 
 Select clauses for path queries (``@kind path-problem``) are crafted to display both an alert and the source and sink of an associated path graph. For more information, see ":doc:`Creating path queries <creating-path-queries>`."
+
+Select clauses for diagnostic queries (``@kind diagnostic``) and summary metric queries (``@kind metric`` and ``@tags summary``) have different requirements. For examples, see the `diagnostic queries <https://github.com/github/codeql/search?q=%22%40kind+diagnostic%22>`__ and the `summary metric queries <https://github.com/github/codeql/search?q=%22%40kind+metric%22+%22%40tags+summary%22>`__  in the CodeQL repository.
 
 Viewing the standard CodeQL queries
 ***********************************

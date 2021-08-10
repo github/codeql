@@ -14,6 +14,7 @@ private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.internal.DataFlowPrivate
 import semmle.code.java.dataflow.FlowSteps
 private import FlowSummaryImpl as FlowSummaryImpl
+private import semmle.code.java.frameworks.JaxWS
 
 /**
  * Holds if taint can flow from `src` to `sink` in zero or more
@@ -60,10 +61,16 @@ private module Cached {
     localAdditionalTaintUpdateStep(src.asExpr(),
       sink.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr())
     or
-    exists(Argument arg |
-      src.asExpr() = arg and
-      arg.isVararg() and
-      sink.(DataFlow::ImplicitVarargsArray).getCall() = arg.getCall()
+    exists(DataFlow::Content f |
+      readStep(src, f, sink) and
+      not sink.getTypeBound() instanceof PrimitiveType and
+      not sink.getTypeBound() instanceof BoxedType and
+      not sink.getTypeBound() instanceof NumberType
+    |
+      f instanceof DataFlow::ArrayContent or
+      f instanceof DataFlow::CollectionContent or
+      f instanceof DataFlow::MapKeyContent or
+      f instanceof DataFlow::MapValueContent
     )
     or
     FlowSummaryImpl::Private::Steps::summaryLocalStep(src, sink, false)
@@ -93,6 +100,33 @@ private module Cached {
 
 import Cached
 
+private RefType getElementType(RefType container) {
+  result = container.(Array).getComponentType() or
+  result = container.(CollectionType).getElementType() or
+  result = container.(MapType).getValueType()
+}
+
+/**
+ * Holds if default `TaintTracking::Configuration`s should allow implicit reads
+ * of `c` at sinks and inputs to additional taint steps.
+ */
+bindingset[node]
+predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::Content c) {
+  exists(RefType container |
+    (node.asExpr() instanceof Argument or node instanceof ArgumentNode) and
+    getElementType*(node.getType()) = container
+  |
+    container instanceof Array and
+    c instanceof DataFlow::ArrayContent
+    or
+    container instanceof CollectionType and
+    c instanceof DataFlow::CollectionContent
+    or
+    container instanceof MapType and
+    c instanceof DataFlow::MapValueContent
+  )
+}
+
 /**
  * Holds if taint can flow in one local step from `src` to `sink` excluding
  * local data flow steps. That is, `src` and `sink` are likely to represent
@@ -103,21 +137,7 @@ private predicate localAdditionalTaintExprStep(Expr src, Expr sink) {
   or
   sink.(AssignAddExpr).getSource() = src and sink.getType() instanceof TypeString
   or
-  sink.(ArrayCreationExpr).getInit() = src
-  or
-  sink.(ArrayInit).getAnInit() = src
-  or
-  sink.(ArrayAccess).getArray() = src
-  or
   sink.(LogicExpr).getAnOperand() = src
-  or
-  exists(EnhancedForStmt for, SsaExplicitUpdate v |
-    for.getExpr() = src and
-    v.getDefiningExpr() = for.getVariable() and
-    v.getAFirstUse() = sink
-  )
-  or
-  containerReturnValueStep(src, sink)
   or
   constructorStep(src, sink)
   or
@@ -141,12 +161,6 @@ private predicate localAdditionalTaintExprStep(Expr src, Expr sink) {
  * This is restricted to cases where the step updates the value of `sink`.
  */
 private predicate localAdditionalTaintUpdateStep(Expr src, Expr sink) {
-  exists(Assignment assign | assign.getSource() = src |
-    sink = assign.getDest().(ArrayAccess).getArray()
-  )
-  or
-  containerUpdateStep(src, sink)
-  or
   qualifierToArgumentStep(src, sink)
   or
   argToArgStep(src, sink)
@@ -194,22 +208,6 @@ private predicate constructorStep(Expr tracked, ConstructorCall sink) {
     or
     // a custom InputStream that wraps a tainted data source is tainted
     inputStreamWrapper(sink.getConstructor(), argi)
-    or
-    // A SpringHttpEntity is a wrapper around a body and some headers
-    // Track flow through iff body is a String
-    exists(SpringHttpEntity she |
-      sink.getConstructor() = she.getAConstructor() and
-      argi = 0 and
-      tracked.getType() instanceof TypeString
-    )
-    or
-    // A SpringRequestEntity is a wrapper around a body and some headers
-    // Track flow through iff body is a String
-    exists(SpringResponseEntity sre |
-      sink.getConstructor() = sre.getAConstructor() and
-      argi = 0 and
-      tracked.getType() instanceof TypeString
-    )
     or
     sink.getConstructor().(TaintPreservingCallable).returnsTaintFrom(argToParam(sink, argi))
   )
@@ -263,20 +261,11 @@ private predicate taintPreservingQualifierToMethod(Method m) {
   m.getDeclaringType().getASubtype*() instanceof SpringUntrustedDataType and
   not m.getDeclaringType() instanceof TypeObject
   or
-  m.getDeclaringType() instanceof SpringHttpEntity and
-  m.getName().regexpMatch("getBody|getHeaders")
-  or
-  exists(SpringHttpHeaders headers | m = headers.getAMethod() |
-    m.getReturnType() instanceof TypeString
-    or
-    exists(ParameterizedType stringlist |
-      m.getReturnType().(RefType).getASupertype*() = stringlist and
-      stringlist.getSourceDeclaration().hasQualifiedName("java.util", "List") and
-      stringlist.getTypeArgument(0) instanceof TypeString
-    )
-  )
-  or
   m.(TaintPreservingCallable).returnsTaintFrom(-1)
+  or
+  exists(JaxRsResourceMethod resourceMethod |
+    m.(GetterMethod).getDeclaringType() = resourceMethod.getAParameter().getType()
+  )
 }
 
 private class StringReplaceMethod extends TaintPreservingCallable {

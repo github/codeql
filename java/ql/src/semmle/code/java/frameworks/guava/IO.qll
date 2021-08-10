@@ -7,7 +7,7 @@ private class GuavaIoCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
-        //"package;type;overrides;name;signature;ext;inputspec;outputspec;kind",
+        //`namespace; type; subtypes; name; signature; ext; input; output; kind`
         "com.google.common.io;BaseEncoding;true;decode;(CharSequence);;Argument[0];ReturnValue;taint",
         "com.google.common.io;BaseEncoding;true;decodingStream;(Reader);;Argument[0];ReturnValue;taint",
         "com.google.common.io;BaseEncoding;true;decodingSource;(CharSource);;Argument[0];ReturnValue;taint",
@@ -24,7 +24,9 @@ private class GuavaIoCsv extends SummaryModelCsv {
         "com.google.common.io;BaseEncoding;true;omitPadding;();;Argument[-1];ReturnValue;taint",
         "com.google.common.io;BaseEncoding;true;encode;(byte[],int,int);;Argument[-1];ReturnValue;taint",
         "com.google.common.io;ByteSource;true;asCharSource;(Charset);;Argument[-1];ReturnValue;taint",
-        "com.google.common.io;ByteSource;true;concat;;;Argument[0];ReturnValue;taint",
+        "com.google.common.io;ByteSource;true;concat;(ByteSource[]);;ArrayElement of Argument[0];ReturnValue;taint",
+        "com.google.common.io;ByteSource;true;concat;(Iterable);;Element of Argument[0];ReturnValue;taint",
+        "com.google.common.io;ByteSource;true;concat;(Iterator);;Element of Argument[0];ReturnValue;taint",
         "com.google.common.io;ByteSource;true;copyTo;(OutputStream);;Argument[-1];Argument[0];taint",
         "com.google.common.io;ByteSource;true;openStream;();;Argument[-1];ReturnValue;taint",
         "com.google.common.io;ByteSource;true;openBufferedStream;();;Argument[-1];ReturnValue;taint",
@@ -43,7 +45,9 @@ private class GuavaIoCsv extends SummaryModelCsv {
         "com.google.common.io;ByteStreams;false;readFully;(InputStream,byte[],int,int);;Argument[0];Argument[1];taint",
         "com.google.common.io;ByteStreams;false;toByteArray;(InputStream);;Argument[0];ReturnValue;taint",
         "com.google.common.io;CharSource;true;asByteSource;(Charset);;Argument[-1];ReturnValue;taint",
-        "com.google.common.io;CharSource;true;concat;;;Argument[0];ReturnValue;taint",
+        "com.google.common.io;CharSource;true;concat;(CharSource[]);;ArrayElement of Argument[0];ReturnValue;taint",
+        "com.google.common.io;CharSource;true;concat;(Iterable);;Element of Argument[0];ReturnValue;taint",
+        "com.google.common.io;CharSource;true;concat;(Iterator);;Element of Argument[0];ReturnValue;taint",
         "com.google.common.io;CharSource;true;copyTo;(Appendable);;Argument[-1];Argument[0];taint",
         "com.google.common.io;CharSource;true;openStream;();;Argument[-1];ReturnValue;taint",
         "com.google.common.io;CharSource;true;openBufferedStream;();;Argument[-1];ReturnValue;taint",
@@ -85,7 +89,7 @@ private class GuavaIoSinkCsv extends SinkModelCsv {
   override predicate row(string row) {
     row =
       [
-        //"package;type;overrides;name;signature;ext;inputspec;kind",
+        //`namespace; type; subtypes; name; signature; ext; input; kind`
         "com.google.common.io;Resources;false;asByteSource;(URL);;Argument[0];url-open-stream",
         "com.google.common.io;Resources;false;asCharSource;(URL,Charset);;Argument[0];url-open-stream",
         "com.google.common.io;Resources;false;copy;(URL,OutputStream);;Argument[0];url-open-stream",

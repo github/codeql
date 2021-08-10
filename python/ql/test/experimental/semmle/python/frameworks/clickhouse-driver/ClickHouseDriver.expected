@@ -1,5 +1,0 @@
-| ClickHouseDriver.py:15:22:15:106 | ControlFlowNode for Attribute() | ClickHouseDriver.py:15:52:15:105 | ControlFlowNode for BinaryExpr |
-| ClickHouseDriver.py:18:5:18:87 | ControlFlowNode for Attribute() | ClickHouseDriver.py:18:33:18:86 | ControlFlowNode for BinaryExpr |
-| ClickHouseDriver.py:22:5:22:62 | ControlFlowNode for Attribute() | ClickHouseDriver.py:22:33:22:37 | ControlFlowNode for query |
-| ClickHouseDriver.py:27:5:27:74 | ControlFlowNode for Attribute() | ClickHouseDriver.py:27:20:27:73 | ControlFlowNode for BinaryExpr |
-| ClickHouseDriver.py:30:5:30:89 | ControlFlowNode for Attribute() | ClickHouseDriver.py:30:35:30:88 | ControlFlowNode for BinaryExpr |

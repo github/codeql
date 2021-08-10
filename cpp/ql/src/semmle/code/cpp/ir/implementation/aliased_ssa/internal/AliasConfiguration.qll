@@ -2,9 +2,13 @@ private import AliasConfigurationInternal
 private import semmle.code.cpp.ir.implementation.unaliased_ssa.IR
 private import cpp
 private import AliasAnalysis
+private import semmle.code.cpp.ir.implementation.unaliased_ssa.internal.SimpleSSA as UnaliasedSSA
 
 private newtype TAllocation =
-  TVariableAllocation(IRVariable var) or
+  TVariableAllocation(IRVariable var) {
+    // Only model variables that were not already handled in unaliased SSA.
+    not UnaliasedSSA::canReuseSSAForVariable(var)
+  } or
   TIndirectParameterAllocation(IRAutomaticVariable var) {
     exists(InitializeIndirectionInstruction instr | instr.getIRVariable() = var)
   } or
@@ -138,3 +142,5 @@ class DynamicAllocation extends Allocation, TDynamicAllocation {
 
   final override predicate alwaysEscapes() { none() }
 }
+
+predicate phaseNeedsSoundEscapeAnalysis() { none() }

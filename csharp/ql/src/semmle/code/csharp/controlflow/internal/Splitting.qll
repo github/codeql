@@ -209,6 +209,13 @@ abstract class SplitImpl extends Split {
     or
     exists(ControlFlowElement pred | this.appliesTo(pred) | this.hasSuccessor(pred, cfe, _))
   }
+
+  /** The `succ` relation restricted to predecessors `pred` that this split applies to. */
+  pragma[noinline]
+  final predicate appliesSucc(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+    this.appliesTo(pred) and
+    succ(pred, succ, c)
+  }
 }
 
 module InitializerSplitting {
@@ -382,8 +389,7 @@ module InitializerSplitting {
     }
 
     override predicate hasSuccessor(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
-      this.appliesTo(pred) and
-      succ(pred, succ, c) and
+      this.appliesSucc(pred, succ, c) and
       succ =
         any(InitializedInstanceMember m |
           constructorInitializes(this.getConstructor(), m.getInitializer())
@@ -620,8 +626,7 @@ module AssertionSplitting {
     }
 
     override predicate hasSuccessor(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
-      this.appliesTo(pred) and
-      succ(pred, succ, c) and
+      this.appliesSucc(pred, succ, c) and
       succ = getAnAssertionDescendant(a)
     }
   }
@@ -858,8 +863,7 @@ module FinallySplitting {
     }
 
     override predicate hasSuccessor(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
-      this.appliesToPredecessor(pred) and
-      succ(pred, succ, c) and
+      this.appliesSucc(pred, succ, c) and
       succ =
         any(FinallyControlFlowElement fcfe |
           if fcfe.isEntryNode()
@@ -1037,7 +1041,7 @@ module ExceptionHandlerSplitting {
 
     override predicate hasSuccessor(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
       this.appliesToPredecessor(pred, c) and
-      succ(pred, succ, c) and
+      this.appliesSucc(pred, succ, c) and
       not first(any(SpecificCatchClause scc).getBlock(), succ) and
       not succ instanceof GeneralCatchClause and
       not exists(TryStmt ts, SpecificCatchClause scc, int last |
@@ -1298,7 +1302,7 @@ module BooleanSplitting {
     override predicate hasSuccessor(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
       exists(PreBasicBlock bb, Completion c0 | this.appliesToBlock(bb, c0) |
         pred = bb.getAnElement() and
-        succ(pred, succ, c) and
+        this.appliesSucc(pred, succ, c) and
         (
           pred = bb.getLastElement()
           implies
@@ -1489,7 +1493,7 @@ module LoopSplitting {
 
     override predicate hasSuccessor(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
       this.appliesToPredecessor(pred, c) and
-      succ(pred, succ, c) and
+      this.appliesSucc(pred, succ, c) and
       not loop.stop(pred, succ, c)
     }
   }

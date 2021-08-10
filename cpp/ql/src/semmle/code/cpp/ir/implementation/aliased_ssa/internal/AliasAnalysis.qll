@@ -90,6 +90,9 @@ private predicate operandIsConsumedWithoutEscaping(Operand operand) {
       or
       // Converting an address to a `bool` does not escape the address.
       instr.(ConvertInstruction).getResultIRType() instanceof IRBooleanType
+      or
+      instr instanceof CallInstruction and
+      not exists(IREscapeAnalysisConfiguration config | config.useSoundEscapeAnalysis())
     )
   )
   or
@@ -284,14 +287,24 @@ private predicate isArgumentForParameter(
 private predicate isOnlyEscapesViaReturnArgument(Operand operand) {
   exists(AliasModels::AliasFunction f |
     f = operand.getUse().(CallInstruction).getStaticCallTarget() and
-    f.parameterEscapesOnlyViaReturn(operand.(PositionalArgumentOperand).getIndex())
+    (
+      f.parameterEscapesOnlyViaReturn(operand.(PositionalArgumentOperand).getIndex())
+      or
+      f.parameterEscapesOnlyViaReturn(-1) and
+      operand instanceof ThisArgumentOperand
+    )
   )
 }
 
 private predicate isNeverEscapesArgument(Operand operand) {
   exists(AliasModels::AliasFunction f |
     f = operand.getUse().(CallInstruction).getStaticCallTarget() and
-    f.parameterNeverEscapes(operand.(PositionalArgumentOperand).getIndex())
+    (
+      f.parameterNeverEscapes(operand.(PositionalArgumentOperand).getIndex())
+      or
+      f.parameterNeverEscapes(-1) and
+      operand instanceof ThisArgumentOperand
+    )
   )
 }
 
@@ -325,6 +338,9 @@ predicate allocationEscapes(Configuration::Allocation allocation) {
   exists(IREscapeAnalysisConfiguration config |
     config.useSoundEscapeAnalysis() and resultEscapesNonReturn(allocation.getABaseInstruction())
   )
+  or
+  Configuration::phaseNeedsSoundEscapeAnalysis() and
+  resultEscapesNonReturn(allocation.getABaseInstruction())
 }
 
 /**
@@ -395,8 +411,51 @@ predicate addressOperandAllocationAndOffset(
     allocation.getABaseInstruction() = base and
     hasBaseAndOffset(addrOperand, base, bitOffset) and
     not exists(Instruction previousBase |
-      hasBaseAndOffset(addrOperand, previousBase, _) and
+      hasBaseAndOffset(addrOperand, pragma[only_bind_out](previousBase), _) and
       previousBase = base.getAnOperand().getDef()
     )
   )
+}
+
+/**
+ * Predicates used only for printing annotated IR dumps. These should not be used in production
+ * queries.
+ */
+module Print {
+  string getOperandProperty(Operand operand, string key) {
+    key = "alloc" and
+    result =
+      strictconcat(Configuration::Allocation allocation, IntValue bitOffset |
+        addressOperandAllocationAndOffset(operand, allocation, bitOffset)
+      |
+        allocation.toString() + Ints::getBitOffsetString(bitOffset), ", "
+      )
+    or
+    key = "prop" and
+    result =
+      strictconcat(Instruction destInstr, IntValue bitOffset, string value |
+        operandIsPropagatedIncludingByCall(operand, bitOffset, destInstr) and
+        if destInstr = operand.getUse()
+        then value = "@" + Ints::getBitOffsetString(bitOffset) + "->result"
+        else value = "@" + Ints::getBitOffsetString(bitOffset) + "->" + destInstr.getResultId()
+      |
+        value, ", "
+      )
+  }
+
+  string getInstructionProperty(Instruction instr, string key) {
+    key = "prop" and
+    result =
+      strictconcat(IntValue bitOffset, Operand sourceOperand, string value |
+        operandIsPropagatedIncludingByCall(sourceOperand, bitOffset, instr) and
+        if instr = sourceOperand.getUse()
+        then value = sourceOperand.getDumpId() + Ints::getBitOffsetString(bitOffset) + "->@"
+        else
+          value =
+            sourceOperand.getUse().getResultId() + "." + sourceOperand.getDumpId() +
+              Ints::getBitOffsetString(bitOffset) + "->@"
+      |
+        value, ", "
+      )
+  }
 }

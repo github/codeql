@@ -1168,139 +1168,139 @@ stmts.cs:
 #   40|           0: [LocalVariableAccess] access to local variable select
 #   42|       3: [ReturnStmt] return ...;
 #   42|         0: [IntLiteral] 0
-#   46|   8: [Method] tryCatchFinally
-#   46|     -1: [TypeMention] Void
-#   47|     4: [BlockStmt] {...}
-#   48|       0: [LocalVariableDeclStmt] ... ...;
-#   48|         0: [LocalVariableDeclAndInitExpr] Int32 x = ...
-#   48|           -1: [TypeMention] int
-#   48|           0: [LocalVariableAccess] access to local variable x
-#   48|           1: [IntLiteral] 5
-#   49|       1: [TryStmt] try {...} ...
-#   64|         -1: [BlockStmt] {...}
-#   65|           0: [ExprStmt] ...;
-#   65|             0: [AssignExpr] ... = ...
-#   65|               0: [LocalVariableAccess] access to local variable x
-#   65|               1: [IntLiteral] 2
-#   50|         0: [BlockStmt] {...}
-#   51|           0: [IfStmt] if (...) ...
-#   51|             0: [NEExpr] ... != ...
-#   51|               0: [LocalVariableAccess] access to local variable x
-#   51|               1: [IntLiteral] 0
-#   52|             1: [ThrowStmt] throw ...;
-#   52|               0: [ObjectCreation] object creation of type Exception
-#   52|                 0: [TypeMention] Exception
-#   53|           1: [ExprStmt] ...;
-#   53|             0: [AssignExpr] ... = ...
-#   53|               0: [LocalVariableAccess] access to local variable x
-#   53|               1: [IntLiteral] 0
-#   55|         1: [SpecificCatchClause] catch (...) {...}
-#   55|           0: [LocalVariableDeclExpr] Exception ex
-#   55|             0: [TypeMention] Exception
-#   56|           1: [BlockStmt] {...}
-#   57|             0: [ExprStmt] ...;
-#   57|               0: [AssignExpr] ... = ...
-#   57|                 0: [LocalVariableAccess] access to local variable x
-#   57|                 1: [IntLiteral] 1
-#   59|         2: [GeneralCatchClause] catch {...}
-#   60|           1: [BlockStmt] {...}
-#   61|             0: [ThrowStmt] throw ...;
-#   69|   9: [Method] forStmt
-#   69|     -1: [TypeMention] Void
-#   70|     4: [BlockStmt] {...}
-#   71|       0: [LocalVariableDeclStmt] ... ...;
-#   71|         0: [LocalVariableDeclAndInitExpr] Int32 x = ...
+#   45|   8: [Method] tryCatchFinally
+#   45|     -1: [TypeMention] Void
+#   46|     4: [BlockStmt] {...}
+#   47|       0: [LocalVariableDeclStmt] ... ...;
+#   47|         0: [LocalVariableDeclAndInitExpr] Int32 x = ...
+#   47|           -1: [TypeMention] int
+#   47|           0: [LocalVariableAccess] access to local variable x
+#   47|           1: [IntLiteral] 5
+#   48|       1: [TryStmt] try {...} ...
+#   63|         -1: [BlockStmt] {...}
+#   64|           0: [ExprStmt] ...;
+#   64|             0: [AssignExpr] ... = ...
+#   64|               0: [LocalVariableAccess] access to local variable x
+#   64|               1: [IntLiteral] 2
+#   49|         0: [BlockStmt] {...}
+#   50|           0: [IfStmt] if (...) ...
+#   50|             0: [NEExpr] ... != ...
+#   50|               0: [LocalVariableAccess] access to local variable x
+#   50|               1: [IntLiteral] 0
+#   51|             1: [ThrowStmt] throw ...;
+#   51|               0: [ObjectCreation] object creation of type Exception
+#   51|                 0: [TypeMention] Exception
+#   52|           1: [ExprStmt] ...;
+#   52|             0: [AssignExpr] ... = ...
+#   52|               0: [LocalVariableAccess] access to local variable x
+#   52|               1: [IntLiteral] 0
+#   54|         1: [SpecificCatchClause] catch (...) {...}
+#   54|           0: [LocalVariableDeclExpr] Exception ex
+#   54|             0: [TypeMention] Exception
+#   55|           1: [BlockStmt] {...}
+#   56|             0: [ExprStmt] ...;
+#   56|               0: [AssignExpr] ... = ...
+#   56|                 0: [LocalVariableAccess] access to local variable x
+#   56|                 1: [IntLiteral] 1
+#   58|         2: [GeneralCatchClause] catch {...}
+#   59|           1: [BlockStmt] {...}
+#   60|             0: [ThrowStmt] throw ...;
+#   68|   9: [Method] forStmt
+#   68|     -1: [TypeMention] Void
+#   69|     4: [BlockStmt] {...}
+#   70|       0: [LocalVariableDeclStmt] ... ...;
+#   70|         0: [LocalVariableDeclAndInitExpr] Int32 x = ...
+#   70|           -1: [TypeMention] int
+#   70|           0: [LocalVariableAccess] access to local variable x
+#   70|           1: [IntLiteral] 0
+#   71|       1: [ForStmt] for (...;...;...) ...
+#   71|         -2: [LocalVariableDeclAndInitExpr] Int32 j = ...
 #   71|           -1: [TypeMention] int
-#   71|           0: [LocalVariableAccess] access to local variable x
+#   71|           0: [LocalVariableAccess] access to local variable j
+#   71|           1: [IntLiteral] 10
+#   71|         -1: [LocalVariableDeclAndInitExpr] Int32 i = ...
+#   71|           -1: [TypeMention] int
+#   71|           0: [LocalVariableAccess] access to local variable i
 #   71|           1: [IntLiteral] 0
-#   72|       1: [ForStmt] for (...;...;...) ...
-#   72|         -2: [LocalVariableDeclAndInitExpr] Int32 j = ...
-#   72|           -1: [TypeMention] int
-#   72|           0: [LocalVariableAccess] access to local variable j
-#   72|           1: [IntLiteral] 10
-#   72|         -1: [LocalVariableDeclAndInitExpr] Int32 i = ...
-#   72|           -1: [TypeMention] int
-#   72|           0: [LocalVariableAccess] access to local variable i
-#   72|           1: [IntLiteral] 0
-#   72|         0: [LTExpr] ... < ...
-#   72|           0: [LocalVariableAccess] access to local variable i
-#   72|           1: [LocalVariableAccess] access to local variable j
-#   72|         1: [PostIncrExpr] ...++
-#   72|           0: [LocalVariableAccess] access to local variable i
-#   72|         2: [PostDecrExpr] ...--
-#   72|           0: [LocalVariableAccess] access to local variable j
-#   73|         3: [BlockStmt] {...}
-#   74|           0: [ExprStmt] ...;
-#   74|             0: [AssignExpr] ... = ...
-#   74|               0: [LocalVariableAccess] access to local variable x
-#   74|               1: [SubExpr] ... - ...
-#   74|                 0: [LocalVariableAccess] access to local variable x
-#   74|                 1: [IntLiteral] 1
-#   77|       2: [LocalVariableDeclStmt] ... ...;
-#   77|         0: [LocalVariableDeclExpr] Int32 a
-#   77|           0: [TypeMention] int
-#   77|         1: [LocalVariableDeclAndInitExpr] Int32 b = ...
-#   77|           -1: [TypeMention] int
-#   77|           0: [LocalVariableAccess] access to local variable b
-#   77|           1: [IntLiteral] 10
-#   78|       3: [ForStmt] for (...;...;...) ...
-#   78|         -1: [AssignExpr] ... = ...
-#   78|           0: [LocalVariableAccess] access to local variable a
-#   78|           1: [IntLiteral] 0
-#   78|         0: [LTExpr] ... < ...
-#   78|           0: [LocalVariableAccess] access to local variable a
-#   78|           1: [LocalVariableAccess] access to local variable b
-#   79|         1: [BlockStmt] {...}
-#   80|           0: [ExprStmt] ...;
-#   80|             0: [PostIncrExpr] ...++
-#   80|               0: [LocalVariableAccess] access to local variable a
-#   83|       4: [ForStmt] for (...;...;...) ...
-#   84|         1: [BlockStmt] {...}
-#   89|   10: [Method] doWhile
-#   89|     -1: [TypeMention] Void
-#   90|     4: [BlockStmt] {...}
-#   91|       0: [LocalVariableDeclStmt] ... ...;
-#   91|         0: [LocalVariableDeclAndInitExpr] Int32 x = ...
-#   91|           -1: [TypeMention] int
-#   91|           0: [LocalVariableAccess] access to local variable x
-#   91|           1: [IntLiteral] 0
-#   92|       1: [DoStmt] do ... while (...);
-#   96|         0: [LTExpr] ... < ...
-#   96|           0: [LocalVariableAccess] access to local variable x
-#   96|           1: [IntLiteral] 10
-#   93|         1: [BlockStmt] {...}
-#   94|           0: [ExprStmt] ...;
-#   94|             0: [AssignExpr] ... = ...
-#   94|               0: [LocalVariableAccess] access to local variable x
-#   94|               1: [AddExpr] ... + ...
-#   94|                 0: [LocalVariableAccess] access to local variable x
-#   94|                 1: [IntLiteral] 1
-#   99|   11: [Method] checkedUnchecked
-#   99|     -1: [TypeMention] Void
-#  100|     4: [BlockStmt] {...}
-#  101|       0: [LocalVariableDeclStmt] ... ...;
-#  101|         0: [LocalVariableDeclAndInitExpr] Int32 num = ...
-#  101|           -1: [TypeMention] int
-#  101|           0: [LocalVariableAccess] access to local variable num
-#  101|           1: [MemberConstantAccess] access to constant MaxValue
-#  101|             -1: [TypeAccess] access to type Int32
-#  101|               0: [TypeMention] int
-#  102|       1: [UncheckedStmt] unchecked {...}
-#  103|         0: [BlockStmt] {...}
-#  104|           0: [ExprStmt] ...;
-#  104|             0: [AssignExpr] ... = ...
-#  104|               0: [LocalVariableAccess] access to local variable num
-#  104|               1: [AddExpr] ... + ...
-#  104|                 0: [LocalVariableAccess] access to local variable num
-#  104|                 1: [IntLiteral] 1
-#  106|       2: [CheckedStmt] checked {...}
-#  107|         0: [BlockStmt] {...}
-#  108|           0: [ExprStmt] ...;
-#  108|             0: [AssignExpr] ... = ...
-#  108|               0: [LocalVariableAccess] access to local variable num
-#  108|               1: [AddExpr] ... + ...
-#  108|                 0: [LocalVariableAccess] access to local variable num
-#  108|                 1: [IntLiteral] 1
+#   71|         0: [LTExpr] ... < ...
+#   71|           0: [LocalVariableAccess] access to local variable i
+#   71|           1: [LocalVariableAccess] access to local variable j
+#   71|         1: [PostIncrExpr] ...++
+#   71|           0: [LocalVariableAccess] access to local variable i
+#   71|         2: [PostDecrExpr] ...--
+#   71|           0: [LocalVariableAccess] access to local variable j
+#   72|         3: [BlockStmt] {...}
+#   73|           0: [ExprStmt] ...;
+#   73|             0: [AssignExpr] ... = ...
+#   73|               0: [LocalVariableAccess] access to local variable x
+#   73|               1: [SubExpr] ... - ...
+#   73|                 0: [LocalVariableAccess] access to local variable x
+#   73|                 1: [IntLiteral] 1
+#   76|       2: [LocalVariableDeclStmt] ... ...;
+#   76|         0: [LocalVariableDeclExpr] Int32 a
+#   76|           0: [TypeMention] int
+#   76|         1: [LocalVariableDeclAndInitExpr] Int32 b = ...
+#   76|           -1: [TypeMention] int
+#   76|           0: [LocalVariableAccess] access to local variable b
+#   76|           1: [IntLiteral] 10
+#   77|       3: [ForStmt] for (...;...;...) ...
+#   77|         -1: [AssignExpr] ... = ...
+#   77|           0: [LocalVariableAccess] access to local variable a
+#   77|           1: [IntLiteral] 0
+#   77|         0: [LTExpr] ... < ...
+#   77|           0: [LocalVariableAccess] access to local variable a
+#   77|           1: [LocalVariableAccess] access to local variable b
+#   78|         1: [BlockStmt] {...}
+#   79|           0: [ExprStmt] ...;
+#   79|             0: [PostIncrExpr] ...++
+#   79|               0: [LocalVariableAccess] access to local variable a
+#   82|       4: [ForStmt] for (...;...;...) ...
+#   83|         1: [BlockStmt] {...}
+#   88|   10: [Method] doWhile
+#   88|     -1: [TypeMention] Void
+#   89|     4: [BlockStmt] {...}
+#   90|       0: [LocalVariableDeclStmt] ... ...;
+#   90|         0: [LocalVariableDeclAndInitExpr] Int32 x = ...
+#   90|           -1: [TypeMention] int
+#   90|           0: [LocalVariableAccess] access to local variable x
+#   90|           1: [IntLiteral] 0
+#   91|       1: [DoStmt] do ... while (...);
+#   95|         0: [LTExpr] ... < ...
+#   95|           0: [LocalVariableAccess] access to local variable x
+#   95|           1: [IntLiteral] 10
+#   92|         1: [BlockStmt] {...}
+#   93|           0: [ExprStmt] ...;
+#   93|             0: [AssignExpr] ... = ...
+#   93|               0: [LocalVariableAccess] access to local variable x
+#   93|               1: [AddExpr] ... + ...
+#   93|                 0: [LocalVariableAccess] access to local variable x
+#   93|                 1: [IntLiteral] 1
+#   98|   11: [Method] checkedUnchecked
+#   98|     -1: [TypeMention] Void
+#   99|     4: [BlockStmt] {...}
+#  100|       0: [LocalVariableDeclStmt] ... ...;
+#  100|         0: [LocalVariableDeclAndInitExpr] Int32 num = ...
+#  100|           -1: [TypeMention] int
+#  100|           0: [LocalVariableAccess] access to local variable num
+#  100|           1: [MemberConstantAccess] access to constant MaxValue
+#  100|             -1: [TypeAccess] access to type Int32
+#  100|               0: [TypeMention] int
+#  101|       1: [UncheckedStmt] unchecked {...}
+#  102|         0: [BlockStmt] {...}
+#  103|           0: [ExprStmt] ...;
+#  103|             0: [AssignExpr] ... = ...
+#  103|               0: [LocalVariableAccess] access to local variable num
+#  103|               1: [AddExpr] ... + ...
+#  103|                 0: [LocalVariableAccess] access to local variable num
+#  103|                 1: [IntLiteral] 1
+#  105|       2: [CheckedStmt] checked {...}
+#  106|         0: [BlockStmt] {...}
+#  107|           0: [ExprStmt] ...;
+#  107|             0: [AssignExpr] ... = ...
+#  107|               0: [LocalVariableAccess] access to local variable num
+#  107|               1: [AddExpr] ... + ...
+#  107|                 0: [LocalVariableAccess] access to local variable num
+#  107|                 1: [IntLiteral] 1
 using.cs:
 #    3| [Class] UsingStmt
 #    5|   5: [Class] MyDisposable

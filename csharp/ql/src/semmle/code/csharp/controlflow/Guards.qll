@@ -1466,8 +1466,10 @@ module Internal {
         PreSsa::Definition def, AssignableRead read
       ) {
         read = def.getAFirstRead() and
-        not exists(AssignableRead other | PreSsa::adjacentReadPairSameVar(other, read) |
-          other != read
+        (
+          not PreSsa::adjacentReadPairSameVar(_, read)
+          or
+          read = unique(AssignableRead read0 | PreSsa::adjacentReadPairSameVar(read0, read))
         )
       }
 
@@ -1651,10 +1653,14 @@ module Internal {
         AssignableRead read1, AssignableRead read2
       ) {
         PreSsa::adjacentReadPairSameVar(read1, read2) and
-        not exists(AssignableRead other |
-          PreSsa::adjacentReadPairSameVar(other, read2) and
-          other != read1 and
-          other != read2
+        (
+          read1 = read2 and
+          read1 = unique(AssignableRead other | PreSsa::adjacentReadPairSameVar(other, read2))
+          or
+          read1 =
+            unique(AssignableRead other |
+              PreSsa::adjacentReadPairSameVar(other, read2) and other != read2
+            )
         )
       }
 
@@ -1887,10 +1893,14 @@ module Internal {
       Ssa::Definition def, ControlFlow::Node cfn1, ControlFlow::Node cfn2
     ) {
       SsaImpl::adjacentReadPairSameVar(def, cfn1, cfn2) and
-      not exists(ControlFlow::Node other |
-        SsaImpl::adjacentReadPairSameVar(def, other, cfn2) and
-        other != cfn1 and
-        other != cfn2
+      (
+        cfn1 = cfn2 and
+        cfn1 = unique(ControlFlow::Node other | SsaImpl::adjacentReadPairSameVar(def, other, cfn2))
+        or
+        cfn1 =
+          unique(ControlFlow::Node other |
+            SsaImpl::adjacentReadPairSameVar(def, other, cfn2) and other != cfn2
+          )
       )
     }
 

@@ -1,7 +1,7 @@
 import java
 import semmle.code.java.Serializability
 import semmle.code.java.dataflow.DataFlow
-import semmle.code.java.dataflow.DataFlow5
+private import semmle.code.java.dataflow.internal.DataFlowForSerializability
 
 /** The method `parseAs` in `com.google.api.client.http.HttpResponse`. */
 private class ParseAsMethod extends Method {
@@ -11,7 +11,7 @@ private class ParseAsMethod extends Method {
   }
 }
 
-private class TypeLiteralToParseAsFlowConfiguration extends DataFlow5::Configuration {
+private class TypeLiteralToParseAsFlowConfiguration extends DataFlowForSerializability::Configuration {
   TypeLiteralToParseAsFlowConfiguration() {
     this = "GoogleHttpClientApi::TypeLiteralToParseAsFlowConfiguration"
   }
@@ -33,7 +33,7 @@ class HttpResponseParseAsDeserializableField extends DeserializableField {
   HttpResponseParseAsDeserializableField() {
     exists(RefType decltype, TypeLiteralToParseAsFlowConfiguration conf |
       decltype = getDeclaringType() and
-      conf.getSourceWithFlowToParseAs().getTypeName().getType() = decltype and
+      conf.getSourceWithFlowToParseAs().getReferencedType() = decltype and
       decltype.fromSource()
     )
   }

@@ -77,7 +77,7 @@ class CfgScope extends Element, @top_level_exprorstmt_parent {
 }
 
 module ControlFlowTree {
-  private class Range_ = @callable or @control_flow_element;
+  class Range_ = @callable or @control_flow_element;
 
   class Range extends Element, Range_ {
     Range() { this = getAChild*(any(CfgScope scope)) }
@@ -88,9 +88,9 @@ module ControlFlowTree {
     result = p.(AssignOperation).getExpandedAssignment()
   }
 
-  private predicate id(Range x, Range y) { x = y }
+  private predicate id(Range_ x, Range_ y) { x = y }
 
-  predicate idOf(Range x, int y) = equivalenceRelation(id/2)(x, y)
+  predicate idOf(Range_ x, int y) = equivalenceRelation(id/2)(x, y)
 }
 
 abstract private class ControlFlowTree extends ControlFlowTree::Range {

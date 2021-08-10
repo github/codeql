@@ -34,6 +34,29 @@ public class SpringUrlRedirect {
     }
 
     @GetMapping("url5")
+    public ResponseEntity<Void> bad5(String redirectUrl) {
+        return ResponseEntity.status(HttpStatus.FOUND)
+                .location(URI.create(redirectUrl))
+                .build();
+    }
+
+    @GetMapping("url6")
+    public ResponseEntity<Void> bad6(String redirectUrl) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setLocation(URI.create(redirectUrl));
+
+        return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER);
+    }
+
+    @GetMapping("url7")
+    public ResponseEntity<Void> bad7(String redirectUrl) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Location", redirectUrl);
+
+        return ResponseEntity.status(HttpStatus.SEE_OTHER).headers(httpHeaders).build();
+    }
+
+    @GetMapping("url8")
     public RedirectView good1(String redirectUrl) {
         RedirectView rv = new RedirectView();
         if (redirectUrl.startsWith(VALID_REDIRECT)){

@@ -4,6 +4,7 @@
  *              attacker.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 7.5
  * @precision high
  * @id cs/cleartext-storage-of-sensitive-information
  * @tags security
@@ -13,7 +14,7 @@
  */
 
 import csharp
-import semmle.code.csharp.security.dataflow.CleartextStorage::CleartextStorage
+import semmle.code.csharp.security.dataflow.CleartextStorageQuery
 import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 
 from TaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink

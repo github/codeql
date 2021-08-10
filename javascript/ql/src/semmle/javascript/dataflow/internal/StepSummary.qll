@@ -27,6 +27,8 @@ private module Cached {
         SharedTypeTrackingStep::loadStoreStep(_, _, this, _)
         or
         SharedTypeTrackingStep::loadStoreStep(_, _, _, this)
+        or
+        this = DataFlow::PseudoProperties::arrayLikeElement()
       }
     }
 

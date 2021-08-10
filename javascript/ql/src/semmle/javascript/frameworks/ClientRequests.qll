@@ -302,6 +302,8 @@ module ClientRequest {
       exists(DataFlow::SourceNode fetch |
         fetch = DataFlow::moduleImport(["node-fetch", "cross-fetch", "isomorphic-fetch"])
         or
+        fetch = DataFlow::moduleMember("whatwg-fetch", "fetch")
+        or
         fetch = DataFlow::globalVarRef("fetch") // https://fetch.spec.whatwg.org/#fetch-api
       |
         this = fetch.getACall() and

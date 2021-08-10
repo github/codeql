@@ -1994,6 +1994,14 @@ class PhiInstruction extends Instruction {
    */
   pragma[noinline]
   final Instruction getAnInput() { result = this.getAnInputOperand().getDef() }
+
+  /**
+   * Gets the input operand representing the value that flows from the specified predecessor block.
+   */
+  final PhiInputOperand getInputOperand(IRBlock predecessorBlock) {
+    result = this.getAnOperand() and
+    result.getPredecessorBlock() = predecessorBlock
+  }
 }
 
 /**

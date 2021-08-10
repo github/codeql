@@ -496,9 +496,13 @@
 | map.cpp:49:7:49:7 | f [post update] | map.cpp:51:7:51:7 | f |  |
 | map.cpp:49:7:49:7 | f [post update] | map.cpp:53:30:53:30 | f |  |
 | map.cpp:49:7:49:7 | f [post update] | map.cpp:59:6:59:6 | f |  |
+| map.cpp:49:9:49:13 | ref arg first | map.cpp:54:9:54:13 | first |  |
+| map.cpp:49:9:49:13 | ref arg first | map.cpp:60:9:60:13 | first |  |
 | map.cpp:50:7:50:7 | f [post update] | map.cpp:51:7:51:7 | f |  |
 | map.cpp:50:7:50:7 | f [post update] | map.cpp:53:30:53:30 | f |  |
 | map.cpp:50:7:50:7 | f [post update] | map.cpp:59:6:59:6 | f |  |
+| map.cpp:50:9:50:14 | ref arg second | map.cpp:55:9:55:14 | second |  |
+| map.cpp:50:9:50:14 | ref arg second | map.cpp:61:9:61:14 | second |  |
 | map.cpp:53:30:53:30 | f | map.cpp:54:7:54:7 | g |  |
 | map.cpp:53:30:53:30 | f | map.cpp:55:7:55:7 | g |  |
 | map.cpp:53:30:53:30 | f | map.cpp:56:7:56:7 | g |  |
@@ -3395,6 +3399,7 @@
 | smart_pointer.cpp:125:20:125:20 | call to operator-> [post update] | smart_pointer.cpp:125:18:125:19 | ref arg p1 | TAINT |
 | smart_pointer.cpp:125:22:125:22 | q | smart_pointer.cpp:125:18:125:22 | call to shared_ptr |  |
 | smart_pointer.cpp:125:22:125:22 | ref arg q | smart_pointer.cpp:125:22:125:22 | q [inner post update] |  |
+| smart_pointer.cpp:125:22:125:22 | ref arg q | smart_pointer.cpp:126:12:126:12 | q |  |
 | smart_pointer.cpp:126:8:126:9 | p1 | smart_pointer.cpp:126:10:126:10 | call to operator-> |  |
 | smart_pointer.cpp:126:8:126:9 | ref arg p1 | smart_pointer.cpp:124:48:124:49 | p1 |  |
 | smart_pointer.cpp:126:10:126:10 | call to operator-> [post update] | smart_pointer.cpp:126:8:126:9 | ref arg p1 | TAINT |
@@ -3432,6 +3437,7 @@
 | smart_pointer.cpp:133:23:133:24 | ref arg p1 | smart_pointer.cpp:132:53:132:54 | p1 |  |
 | smart_pointer.cpp:133:23:133:24 | ref arg p1 | smart_pointer.cpp:134:8:134:9 | p1 |  |
 | smart_pointer.cpp:133:25:133:25 | call to operator-> [post update] | smart_pointer.cpp:133:23:133:24 | ref arg p1 | TAINT |
+| smart_pointer.cpp:133:27:133:27 | ref arg q | smart_pointer.cpp:134:12:134:12 | q |  |
 | smart_pointer.cpp:134:8:134:9 | p1 | smart_pointer.cpp:134:10:134:10 | call to operator-> |  |
 | smart_pointer.cpp:134:8:134:9 | ref arg p1 | smart_pointer.cpp:132:53:132:54 | p1 |  |
 | smart_pointer.cpp:134:10:134:10 | call to operator-> [post update] | smart_pointer.cpp:134:8:134:9 | ref arg p1 | TAINT |
@@ -6435,6 +6441,7 @@
 | taint.cpp:669:18:669:18 | s [post update] | taint.cpp:671:7:671:7 | s |  |
 | taint.cpp:669:18:669:18 | s [post update] | taint.cpp:672:7:672:7 | s |  |
 | taint.cpp:669:18:669:18 | s [post update] | taint.cpp:673:7:673:7 | s |  |
+| taint.cpp:669:20:669:20 | ref arg x | taint.cpp:672:9:672:9 | x |  |
 | taint.cpp:672:7:672:7 | s [post update] | taint.cpp:673:7:673:7 | s |  |
 | vector.cpp:16:43:16:49 | source1 | vector.cpp:17:26:17:32 | source1 |  |
 | vector.cpp:16:43:16:49 | source1 | vector.cpp:31:38:31:44 | source1 |  |
@@ -7076,14 +7083,20 @@
 | vector.cpp:198:3:198:4 | ee [post update] | vector.cpp:200:3:200:4 | ee |  |
 | vector.cpp:198:3:198:4 | ee [post update] | vector.cpp:201:8:201:9 | ee |  |
 | vector.cpp:198:3:198:4 | ee [post update] | vector.cpp:202:2:202:2 | ee |  |
+| vector.cpp:198:6:198:7 | ref arg vs | vector.cpp:199:11:199:12 | vs |  |
+| vector.cpp:198:6:198:7 | ref arg vs | vector.cpp:200:6:200:7 | vs |  |
+| vector.cpp:198:6:198:7 | ref arg vs | vector.cpp:201:11:201:12 | vs |  |
 | vector.cpp:198:19:198:19 | 0 | vector.cpp:198:6:198:7 | ref arg vs | TAINT |
 | vector.cpp:199:8:199:9 | ee [post update] | vector.cpp:200:3:200:4 | ee |  |
 | vector.cpp:199:8:199:9 | ee [post update] | vector.cpp:201:8:201:9 | ee |  |
 | vector.cpp:199:8:199:9 | ee [post update] | vector.cpp:202:2:202:2 | ee |  |
+| vector.cpp:199:11:199:12 | ref arg vs | vector.cpp:200:6:200:7 | vs |  |
+| vector.cpp:199:11:199:12 | ref arg vs | vector.cpp:201:11:201:12 | vs |  |
 | vector.cpp:199:11:199:12 | vs | vector.cpp:199:13:199:13 | call to operator[] | TAINT |
 | vector.cpp:200:3:200:4 | ee [post update] | vector.cpp:201:8:201:9 | ee |  |
 | vector.cpp:200:3:200:4 | ee [post update] | vector.cpp:202:2:202:2 | ee |  |
 | vector.cpp:200:3:200:21 | ... = ... | vector.cpp:200:8:200:8 | call to operator[] [post update] |  |
+| vector.cpp:200:6:200:7 | ref arg vs | vector.cpp:201:11:201:12 | vs |  |
 | vector.cpp:200:6:200:7 | vs | vector.cpp:200:8:200:8 | call to operator[] | TAINT |
 | vector.cpp:200:8:200:8 | call to operator[] [post update] | vector.cpp:200:6:200:7 | ref arg vs | TAINT |
 | vector.cpp:200:14:200:19 | call to source | vector.cpp:200:3:200:21 | ... = ... |  |

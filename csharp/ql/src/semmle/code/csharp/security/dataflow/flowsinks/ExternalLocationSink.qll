@@ -7,6 +7,7 @@ private import Remote
 private import semmle.code.csharp.commons.Loggers
 private import semmle.code.csharp.frameworks.system.Web
 private import semmle.code.csharp.frameworks.ServiceStack::Sinks
+
 /**
  * An external location sink.
  *

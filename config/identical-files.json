@@ -6,6 +6,7 @@
     "java/ql/src/semmle/code/java/dataflow/internal/DataFlowImpl4.qll",
     "java/ql/src/semmle/code/java/dataflow/internal/DataFlowImpl5.qll",
     "java/ql/src/semmle/code/java/dataflow/internal/DataFlowImpl6.qll",
+    "java/ql/src/semmle/code/java/dataflow/internal/DataFlowImplForSerializability.qll",
     "cpp/ql/src/semmle/code/cpp/dataflow/internal/DataFlowImpl.qll",
     "cpp/ql/src/semmle/code/cpp/dataflow/internal/DataFlowImpl2.qll",
     "cpp/ql/src/semmle/code/cpp/dataflow/internal/DataFlowImpl3.qll",
@@ -250,6 +251,10 @@
     "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/internal/AliasAnalysis.qll",
     "csharp/ql/src/experimental/ir/implementation/unaliased_ssa/internal/AliasAnalysis.qll"
   ],
+  "SSA PrintAliasAnalysis": [
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/PrintAliasAnalysis.qll",
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/internal/PrintAliasAnalysis.qll"
+  ],
   "C++ SSA AliasAnalysisImports": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/AliasAnalysisImports.qll",
     "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/internal/AliasAnalysisImports.qll"
@@ -444,5 +449,17 @@
   "SensitiveDataHeuristics Python/JS": [
     "javascript/ql/src/semmle/javascript/security/internal/SensitiveDataHeuristics.qll",
     "python/ql/src/semmle/python/security/internal/SensitiveDataHeuristics.qll"
+  ],
+  "ReDoS Util Python/JS": [
+    "javascript/ql/src/semmle/javascript/security/performance/ReDoSUtil.qll",
+    "python/ql/src/semmle/python/security/performance/ReDoSUtil.qll"
+  ],
+  "ReDoS Exponential Python/JS": [
+    "javascript/ql/src/semmle/javascript/security/performance/ExponentialBackTracking.qll",
+    "python/ql/src/semmle/python/security/performance/ExponentialBackTracking.qll"
+  ],
+  "ReDoS Polynomial Python/JS": [
+    "javascript/ql/src/semmle/javascript/security/performance/SuperlinearBackTracking.qll",
+    "python/ql/src/semmle/python/security/performance/SuperlinearBackTracking.qll"
   ]
 }

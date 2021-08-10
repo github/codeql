@@ -4,6 +4,7 @@ private import DataFlowImplCommon
 private import DataFlowDispatch
 private import semmle.code.java.controlflow.Guards
 private import semmle.code.java.dataflow.SSA
+private import ContainerFlow
 private import FlowSummaryImpl as FlowSummaryImpl
 import DataFlowNodes::Private
 
@@ -82,67 +83,19 @@ private predicate instanceFieldAssign(Expr src, FieldAccess fa) {
   )
 }
 
-private newtype TContent =
-  TFieldContent(InstanceField f) or
-  TArrayContent() or
-  TCollectionContent() or
-  TMapKeyContent() or
-  TMapValueContent()
-
-/**
- * A reference contained in an object. Examples include instance fields, the
- * contents of a collection object, or the contents of an array.
- */
-class Content extends TContent {
-  /** Gets a textual representation of this element. */
-  abstract string toString();
-
-  predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
-    path = "" and sl = 0 and sc = 0 and el = 0 and ec = 0
-  }
-}
-
-class FieldContent extends Content, TFieldContent {
-  InstanceField f;
-
-  FieldContent() { this = TFieldContent(f) }
-
-  InstanceField getField() { result = f }
-
-  override string toString() { result = f.toString() }
-
-  override predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
-    f.getLocation().hasLocationInfo(path, sl, sc, el, ec)
-  }
-}
-
-class ArrayContent extends Content, TArrayContent {
-  override string toString() { result = "[]" }
-}
-
-class CollectionContent extends Content, TCollectionContent {
-  override string toString() { result = "<element>" }
-}
-
-class MapKeyContent extends Content, TMapKeyContent {
-  override string toString() { result = "<map.key>" }
-}
-
-class MapValueContent extends Content, TMapValueContent {
-  override string toString() { result = "<map.value>" }
-}
-
 /**
  * Holds if data can flow from `node1` to `node2` via an assignment to `f`.
  * Thus, `node2` references an object with a field `f` that contains the
  * value of `node1`.
  */
-predicate storeStep(Node node1, Content f, PostUpdateNode node2) {
+predicate storeStep(Node node1, Content f, Node node2) {
   exists(FieldAccess fa |
     instanceFieldAssign(node1.asExpr(), fa) and
-    node2.getPreUpdateNode() = getFieldQualifier(fa) and
+    node2.(PostUpdateNode).getPreUpdateNode() = getFieldQualifier(fa) and
     f.(FieldContent).getField() = fa.getField()
   )
+  or
+  f instanceof ArrayContent and arrayStoreStep(node1, node2)
   or
   FlowSummaryImpl::Private::Steps::summaryStoreStep(node1, f, node2)
 }
@@ -170,6 +123,10 @@ predicate readStep(Node node1, Content f, Node node2) {
     node1.asExpr() = get.getQualifier() and
     node2.asExpr() = get
   )
+  or
+  f instanceof ArrayContent and arrayReadStep(node1, node2, _)
+  or
+  f instanceof CollectionContent and collectionReadStep(node1, node2)
   or
   FlowSummaryImpl::Private::Steps::summaryReadStep(node1, f, node2)
 }
@@ -296,7 +253,9 @@ predicate isUnreachableInCall(Node n, DataFlowCall call) {
     // which is used in a guard
     param.getAUse() = guard and
     // which controls `n` with the opposite value of `arg`
-    guard.controls(n.asExpr().getBasicBlock(), arg.getBooleanValue().booleanNot())
+    guard
+        .controls(n.asExpr().getBasicBlock(),
+          pragma[only_bind_out](arg.getBooleanValue()).booleanNot())
   )
 }
 

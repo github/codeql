@@ -62,3 +62,12 @@ function good() {
 }
 
 app.use(express.static(__dirname)) // NOT OK
+
+const serveHandler = require("serve-handler");
+const http = require("http");
+
+http.createServer((request, response) => {
+    serveHandler(request, response, {public: "./node_modules/angular"}); // NOT OK
+
+    serveHandler(request, response); // OK
+}).listen(8080);

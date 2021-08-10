@@ -55,6 +55,17 @@ module Shared {
     }
   }
 
+  /**
+   * A call to `serialize-javascript`, which prevents XSS vulnerabilities unless
+   * the `unsafe` option is set to `true`.
+   */
+  class SerializeJavascriptSanitizer extends Sanitizer, DataFlow::CallNode {
+    SerializeJavascriptSanitizer() {
+      this = DataFlow::moduleImport("serialize-javascript").getACall() and
+      not this.getOptionArgument(1, "unsafe").mayHaveBooleanValue(true)
+    }
+  }
+
   private import semmle.javascript.security.dataflow.IncompleteHtmlAttributeSanitizationCustomizations::IncompleteHtmlAttributeSanitization as IncompleteHTML
 
   /**
@@ -181,6 +192,8 @@ module DomBasedXss {
         this = instance.getArgument(0) and
         instance.getOptionArgument(1, "runScripts").mayHaveStringValue("dangerously")
       )
+      or
+      MooTools::interpretsNodeAsHtml(this)
     }
   }
 
@@ -306,6 +319,20 @@ module DomBasedXss {
   }
 
   /**
+   * A React tooltip where the `data-html` attribute is set to `true`.
+   */
+  class TooltipSink extends Sink {
+    TooltipSink() {
+      exists(JSXElement el |
+        el.getAttributeByName("data-html").getStringValue() = "true" or
+        el.getAttributeByName("data-html").getValue().mayHaveBooleanValue(true)
+      |
+        this = el.getAttributeByName("data-tip").getValue().flow()
+      )
+    }
+  }
+
+  /**
    * The HTML body of an email, viewed as an XSS sink.
    */
   class EmailHtmlBodySink extends Sink {
@@ -318,7 +345,10 @@ module DomBasedXss {
    * A write to the `template` option of a Vue instance, viewed as an XSS sink.
    */
   class VueTemplateSink extends DomBasedXss::Sink {
-    VueTemplateSink() { this = any(Vue::Instance i).getTemplate() }
+    VueTemplateSink() {
+      // Note: don't use Vue::Instance#getTemplate as it includes an unwanted getALocalSource() step
+      this = any(Vue::Instance i).getOption("template")
+    }
   }
 
   /**
@@ -358,6 +388,9 @@ module DomBasedXss {
   private class MetacharEscapeSanitizer extends Sanitizer, Shared::MetacharEscapeSanitizer { }
 
   private class UriEncodingSanitizer extends Sanitizer, Shared::UriEncodingSanitizer { }
+
+  private class SerializeJavascriptSanitizer extends Sanitizer, Shared::SerializeJavascriptSanitizer {
+  }
 
   private class IsEscapedInSwitchSanitizer extends Sanitizer, Shared::IsEscapedInSwitchSanitizer { }
 
@@ -497,6 +530,9 @@ module ReflectedXss {
 
   private class UriEncodingSanitizer extends Sanitizer, Shared::UriEncodingSanitizer { }
 
+  private class SerializeJavascriptSanitizer extends Sanitizer, Shared::SerializeJavascriptSanitizer {
+  }
+
   private class IsEscapedInSwitchSanitizer extends Sanitizer, Shared::IsEscapedInSwitchSanitizer { }
 
   private class QuoteGuard extends SanitizerGuard, Shared::QuoteGuard { }
@@ -533,6 +569,9 @@ module StoredXss {
   private class MetacharEscapeSanitizer extends Sanitizer, Shared::MetacharEscapeSanitizer { }
 
   private class UriEncodingSanitizer extends Sanitizer, Shared::UriEncodingSanitizer { }
+
+  private class SerializeJavascriptSanitizer extends Sanitizer, Shared::SerializeJavascriptSanitizer {
+  }
 
   private class IsEscapedInSwitchSanitizer extends Sanitizer, Shared::IsEscapedInSwitchSanitizer { }
 
@@ -597,6 +636,8 @@ module ExceptionXss {
   private class JsonSchemaValidationError extends Source {
     JsonSchemaValidationError() {
       this = any(JsonSchema::Ajv::Instance i).getAValidationError().getAnImmediateUse()
+      or
+      this = any(JsonSchema::Joi::JoiValidationErrorRead r).getAValidationResultAccess(_)
     }
 
     override string getDescription() { result = "JSON schema validation error" }

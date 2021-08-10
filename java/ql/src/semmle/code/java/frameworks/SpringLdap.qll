@@ -59,6 +59,17 @@ class TypeSpringLdapUtils extends Class {
   TypeSpringLdapUtils() { this.hasQualifiedName("org.springframework.ldap.support", "LdapUtils") }
 }
 
+/**
+ * The interface `org.springframework.ldap.core.LdapOperations` or
+ * `org.springframework.ldap.LdapOperations`
+ */
+class TypeLdapOperations extends Interface {
+  TypeLdapOperations() {
+    this.hasQualifiedName(["org.springframework.ldap.core", "org.springframework.ldap"],
+      "LdapOperations")
+  }
+}
+
 /*--- Methods ---*/
 /**
  * A method with the name `authenticate` declared in
