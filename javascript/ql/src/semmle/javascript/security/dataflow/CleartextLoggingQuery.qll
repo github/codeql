@@ -33,10 +33,10 @@ class Configuration extends TaintTracking::Configuration {
   override predicate isSanitizer(DataFlow::Node node) { node instanceof Barrier }
 
   override predicate isSanitizerEdge(DataFlow::Node pred, DataFlow::Node succ) {
-    CleartextLogging::isSanitizerEdge(pred, succ)
+    isSanitizerEdge(pred, succ)
   }
 
   override predicate isAdditionalTaintStep(DataFlow::Node src, DataFlow::Node trg) {
-    CleartextLogging::isAdditionalTaintStep(src, trg)
+    isAdditionalTaintStep(src, trg)
   }
 }
