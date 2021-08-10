@@ -15,7 +15,7 @@ may have unforeseen effects, such as the execution of arbitrary code.
 <p>
 There are many different serialization frameworks.  This query currently
 supports Kryo, XmlDecoder, XStream, SnakeYaml, JYaml, JsonIO, YAMLBeans, HessianBurlap, Castor, Burlap,
-Jackson, Jabsorb, Jodd JSON, Flexjson and Java IO serialization through
+Jackson, Jabsorb, Jodd JSON, Flexjson, Gson and Java IO serialization through
 <code>ObjectInputStream</code>/<code>ObjectOutputStream</code>.
 </p>
 </overview>
@@ -112,6 +112,10 @@ Jodd JSON documentation on deserialization:
 <li>
 RCE in Flexjson:
 <a href="https://codewhitesec.blogspot.com/2020/03/liferay-portal-json-vulns.html">Flexjson deserialization</a>.
+</li>
+<li>
+Android Intent deserialization vulnerabilities with GSON parser:
+<a href="https://blog.oversecured.com/Exploiting-memory-corruption-vulnerabilities-on-Android/#insecure-use-of-json-parsers">Insecure use of JSON parsers</a>.
 </li>
 </references>
 
