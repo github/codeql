@@ -32,6 +32,9 @@ import org.jetbrains.kotlin.ir.expressions.IrExpression
 import org.jetbrains.kotlin.ir.expressions.IrCall
 import org.jetbrains.kotlin.ir.expressions.IrGetValue
 import org.jetbrains.kotlin.ir.expressions.IrConst
+import org.jetbrains.kotlin.ir.expressions.IrStatementOrigin.*
+import org.jetbrains.kotlin.ir.expressions.IrWhen
+import org.jetbrains.kotlin.ir.expressions.IrElseBranch
 import org.jetbrains.kotlin.ir.IrStatement
 
 class KotlinExtractorExtension(private val tests: List<String>) : IrGenerationExtension {
@@ -248,6 +251,28 @@ class KotlinFileExtractor(val tw: TrapWriter) {
                 tw.writeStmts_returnstmt(id, parent, idx, callable)
                 tw.writeHasLocation(id, locId)
                 extractExpression(s.value, id, 0)
+            } is IrWhen -> {
+                val x: IrWhen = s
+                if(s.origin == IF) {
+                    var branchParent = parent
+                    var branchIdx = idx
+                    for(b in x.branches) {
+                        if(b is IrElseBranch) {
+                            // TODO
+                        } else {
+                            val id = tw.getFreshIdLabel<DbIfstmt>()
+                            val locId = tw.getLocation(b.startOffset, b.endOffset)
+                            tw.writeStmts_ifstmt(id, branchParent, branchIdx, callable)
+                            tw.writeHasLocation(id, locId)
+                            extractExpression(b.condition, id, 0)
+                            extractExpression(b.result, id, 1) // TODO: The QLLs think this is a Stmt
+                            branchParent = id
+                            branchIdx = 2
+                        }
+                    }
+                } else {
+                    extractorBug("Unrecognised IrWhen: " + s.javaClass)
+                }
             } else -> {
                 extractorBug("Unrecognised IrStatement: " + s.javaClass)
             }
@@ -262,7 +287,7 @@ class KotlinFileExtractor(val tw: TrapWriter) {
                     extractorBug("IrCall without public signature")
                 } else {
                     when {
-                        sig.packageFqName == "kotlin" && sig.declarationFqName == "Int.plus" -> {
+                        e.origin == PLUS -> {
                             if(e.valueArgumentsCount == 1) {
                                 val left = e.dispatchReceiver
                                 val right = e.getValueArgument(0)
