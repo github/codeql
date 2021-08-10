@@ -1,6 +1,6 @@
 name: "ruby"
 display_name: "Ruby"
-version: 0.1
+version: 0.1.0
 column_kind: "utf8"
 legacy_qltest_extraction: true
 file_types:
