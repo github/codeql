@@ -19,6 +19,7 @@ class Configuration extends TaintTracking::Configuration {
 
   override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
+  /** Holds if `sink` is a command-injection sink with `highlight` as the corresponding alert location. */
   predicate isSinkWithHighlight(DataFlow::Node sink, DataFlow::Node highlight) {
     sink instanceof Sink and highlight = sink
     or
