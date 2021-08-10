@@ -9,6 +9,7 @@
 
 import javascript
 import CleartextLoggingCustomizations::CleartextLogging
+private import CleartextLoggingCustomizations::CleartextLogging as CleartextLogging
 
 /**
  * A taint tracking configuration for clear-text logging of sensitive information.
@@ -33,10 +34,10 @@ class Configuration extends TaintTracking::Configuration {
   override predicate isSanitizer(DataFlow::Node node) { node instanceof Barrier }
 
   override predicate isSanitizerEdge(DataFlow::Node pred, DataFlow::Node succ) {
-    isSanitizerEdge(pred, succ)
+    CleartextLogging::isSanitizerEdge(pred, succ)
   }
 
   override predicate isAdditionalTaintStep(DataFlow::Node src, DataFlow::Node trg) {
-    isAdditionalTaintStep(src, trg)
+    CleartextLogging::isAdditionalTaintStep(src, trg)
   }
 }
