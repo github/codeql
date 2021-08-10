@@ -151,6 +151,20 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
    */
   predicate isNaked() { getAnAttribute().hasName("naked") }
 
+  /**
+   * Holds if this function has a trailing return type.
+   *
+   * Note that this is true whether or not deduction took place. For example,
+   * this holds for both `e` and `f`, but not `g` or `h`:
+   * ```
+   * auto e() -> int { return 0; }
+   * auto f() -> auto { return 0; }
+   * auto g() { return 0; }
+   * int h() { return 0; }
+   * ```
+   */
+  predicate hasTrailingReturnType() { this.hasSpecifier("has_trailing_return_type") }
+
   /** Gets the return type of this function. */
   Type getType() { function_return_type(underlyingElement(this), unresolveElement(result)) }
 
