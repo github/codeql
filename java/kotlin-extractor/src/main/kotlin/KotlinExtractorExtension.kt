@@ -238,6 +238,8 @@ class KotlinFileExtractor(val tw: TrapWriter) {
                 tw.writeStmts_returnstmt(id, parent, idx, callable)
                 tw.writeHasLocation(id, locId)
                 extractExpression(s.value, id, 0)
+            } else -> {
+                extractorBug("Unrecognised IrStatement: " + s.javaClass)
             }
         }
     }
