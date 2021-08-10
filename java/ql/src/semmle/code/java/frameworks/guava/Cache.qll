@@ -21,7 +21,7 @@ private class GuavaBaseCsv extends SummaryModelCsv {
         "com.google.common.cache;LoadingCache;true;get;(Object);;MapValue of Argument[-1];ReturnValue;value",
         "com.google.common.cache;LoadingCache;true;getUnchecked;(Object);;MapValue of Argument[-1];ReturnValue;value",
         "com.google.common.cache;LoadingCache;true;apply;(Object);;MapValue of Argument[-1];ReturnValue;value",
-        "com.google.common.cache;LoadingCache;true;getAll;(Iterable);;Element of Argument[0];MapKey of ReturnValue;value",
+        "com.google.common.cache;LoadingCache;true;getAll;(Iterable);;MapKey of Argument[-1];MapKey of ReturnValue;value", // technically, an interestion between MapKey of Argument[-1] and Element of Argument[0]; but we don't model intersections.
         "com.google.common.cache;LoadingCache;true;getAll;(Iterable);;MapValue of Argument[-1];MapValue of ReturnValue;value"
       ]
   }

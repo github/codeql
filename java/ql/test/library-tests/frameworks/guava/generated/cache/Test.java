@@ -139,11 +139,10 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "com.google.common.cache;LoadingCache;true;getAll;(Iterable);;Element of Argument[0];MapKey of ReturnValue;value"
+			// "com.google.common.cache;LoadingCache;true;getAll;(Iterable);;MapKey of Argument[-1];MapKey of ReturnValue;value"
 			ImmutableMap out = null;
-			Iterable in = newWithElement(source());
-			LoadingCache instance = null;
-			out = instance.getAll(in);
+			LoadingCache in = newCacheWithMapKey(source());
+			out = in.getAll(null);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
