@@ -13,4 +13,3 @@ class ClassFour: ClassThree() {
     override fun foo(arg: Int) {
     }
 }
-

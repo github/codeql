@@ -22,9 +22,7 @@ import org.jetbrains.kotlin.ir.util.packageFqName
 import org.jetbrains.kotlin.ir.util.render
 import org.jetbrains.kotlin.ir.visitors.IrElementVisitor
 import org.jetbrains.kotlin.ir.IrFileEntry
-import org.jetbrains.kotlin.ir.types.isInt
-import org.jetbrains.kotlin.ir.types.IrType
-import org.jetbrains.kotlin.ir.types.IrSimpleType
+import org.jetbrains.kotlin.ir.types.*
 import org.jetbrains.kotlin.ir.expressions.IrBody
 import org.jetbrains.kotlin.ir.expressions.IrBlockBody
 import org.jetbrains.kotlin.ir.expressions.IrReturn
@@ -36,6 +34,7 @@ import org.jetbrains.kotlin.ir.expressions.IrStatementOrigin.*
 import org.jetbrains.kotlin.ir.expressions.IrWhen
 import org.jetbrains.kotlin.ir.expressions.IrElseBranch
 import org.jetbrains.kotlin.ir.IrStatement
+import org.jetbrains.kotlin.ir.symbols.IrClassifierSymbol
 
 class KotlinExtractorExtension(private val tests: List<String>) : IrGenerationExtension {
     override fun generate(moduleFragment: IrModuleFragment, pluginContext: IrPluginContext) {
@@ -64,19 +63,25 @@ class TrapWriter (
         file.write(trap)
     }
     fun getLocation(startOffset: Int, endOffset: Int): Label<DbLocation> {
-        val startLine = fileEntry.getLineNumber(startOffset) + 1
-        val startColumn = fileEntry.getColumnNumber(startOffset) + 1
-        val endLine = fileEntry.getLineNumber(endOffset) + 1
-        val endColumn = fileEntry.getColumnNumber(endOffset)
+        val unknownLoc = startOffset == -1 && endOffset == -1
+        val startLine =   if(unknownLoc) 0 else fileEntry.getLineNumber(startOffset) + 1
+        val startColumn = if(unknownLoc) 0 else fileEntry.getColumnNumber(startOffset) + 1
+        val endLine =     if(unknownLoc) 0 else fileEntry.getLineNumber(endOffset) + 1
+        val endColumn =   if(unknownLoc) 0 else fileEntry.getColumnNumber(endOffset)
         val id: Label<DbLocation> = getFreshLabel()
+        // TODO: This isn't right for UnknownLocation
         val fileId: Label<DbFile> = getLabelFor(fileLabel)
         writeTrap("$id = @\"loc,{$fileId},$startLine,$startColumn,$endLine,$endColumn\"\n")
         writeLocations_default(id, fileId, startLine, startColumn, endLine, endColumn)
         return id
     }
     val labelMapping: MutableMap<String, Label<*>> = mutableMapOf<String, Label<*>>()
+    fun <T> getExistingLabelFor(label: String): Label<T>? {
+        @Suppress("UNCHECKED_CAST")
+        return labelMapping.get(label) as Label<T>?
+    }
     fun <T> getLabelFor(label: String, initialise: (Label<T>) -> Unit = {}): Label<T> {
-        val maybeId = labelMapping.get(label)
+        val maybeId: Label<T>? = getExistingLabelFor(label)
         if(maybeId == null) {
             val id: Label<T> = getFreshLabel()
             labelMapping.put(label, id)
@@ -84,8 +89,7 @@ class TrapWriter (
             initialise(id)
             return id
         } else {
-            @Suppress("UNCHECKED_CAST")
-            return maybeId as Label<T>
+            return maybeId
         }
     }
     fun <T> getFreshLabel(): Label<T> {
@@ -146,7 +150,7 @@ class KotlinFileExtractor(val tw: TrapWriter) {
     }
 
     @Suppress("UNUSED_PARAMETER")
-    fun useSimpleType(s: IrSimpleType): Label<out DbPrimitive> {
+    fun useSimpleType(s: IrSimpleType): Label<out DbType> {
         when {
             s.isInt() -> {
                 val label = "@\"type;int\""
@@ -155,24 +159,56 @@ class KotlinFileExtractor(val tw: TrapWriter) {
                 })
                 return id
             }
+            s.isBoolean() -> {
+                val label = "@\"type;boolean\""
+                val id: Label<DbPrimitive> = tw.getLabelFor(label, {
+                    tw.writePrimitives(it, "boolean")
+                })
+                return id
+            }
+            s.isString() -> {
+                val label = "@\"type;string\""
+                val id: Label<DbPrimitive> = tw.getLabelFor(label, {
+                    tw.writePrimitives(it, "string")
+                })
+                return id
+            }
+            s.classifier.owner is IrClass -> {
+                val classifier: IrClassifierSymbol = s.classifier
+                val cls: IrClass = classifier.owner as IrClass
+                return useClass(cls)
+            }
             else -> {
-                extractorBug("Unrecognised IrSimpleType: " + s.javaClass)
+                extractorBug("Unrecognised IrSimpleType: " + s.javaClass + ": " + s.render())
                 return Label(0)
             }
         }
     }
 
-    fun useClass(c: IrClass): Label<out DbClass> {
+    fun getClassLabel(c: IrClass): String {
         val pkg = c.packageFqName?.asString() ?: ""
         val cls = c.name.asString()
         val qualClassName = if (pkg.isEmpty()) cls else "$pkg.$cls"
         val label = "@\"class;$qualClassName\""
+        return label
+    }
+
+    fun addClassLabel(c: IrClass): Label<out DbClass> {
+        val label = getClassLabel(c)
         val id: Label<DbClass> = tw.getLabelFor(label)
         return id
     }
 
-    fun extractClass(c: IrClass) {
-        val id = useClass(c)
+    fun useClass(c: IrClass): Label<out DbClass> {
+        if(c.name.asString() == "Unit" && tw.getExistingLabelFor<DbClass>(getClassLabel(c)) == null) {
+            return extractClass(c)
+        } else {
+            return addClassLabel(c)
+        }
+    }
+
+    fun extractClass(c: IrClass): Label<out DbClass> {
+        val id = addClassLabel(c)
         val locId = tw.getLocation(c.startOffset, c.endOffset)
         val pkg = c.packageFqName?.asString() ?: ""
         val cls = c.name.asString()
@@ -180,6 +216,7 @@ class KotlinFileExtractor(val tw: TrapWriter) {
         tw.writeClasses(id, cls, pkgId, id)
         tw.writeHasLocation(id, locId)
         c.declarations.map { extractDeclaration(it, id) }
+        return id
     }
 
     fun useType(t: IrType): Label<out DbType> {
