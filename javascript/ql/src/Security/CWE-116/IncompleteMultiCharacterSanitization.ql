@@ -67,7 +67,8 @@ DangerousPrefixSubstring getADangerousMatchedChar(EmptyReplaceRegExpTerm t) {
   or
   t.getAMatchedString() = result
   or
-  ReDoSUtil::getCanonicalCharClass(t).(ReDoSUtil::CharacterClass).matches(result)
+  ReDoSUtil::getCanonicalCharClass(t).(ReDoSUtil::CharacterClass).matches(result) and
+  result.regexpMatch("\\w")
   or
   t instanceof RegExpDot and
   result.length() = 1
