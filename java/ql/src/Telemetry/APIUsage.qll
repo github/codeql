@@ -1,9 +1,4 @@
 import java
-private import semmle.code.java.dataflow.FlowSteps
-private import semmle.code.java.dataflow.ExternalFlow
-private import semmle.code.java.dataflow.FlowSummary
-private import semmle.code.java.dataflow.DataFlow
-private import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.dataflow.FlowSources
 
 string supportKind(Callable api) {
@@ -22,27 +17,21 @@ string supportKind(Callable api) {
 }
 
 predicate summaryCall(Callable api) {
-  api instanceof SummarizedCallable
-  or
-  exists(Call call, DataFlow::Node arg |
-    call.getCallee() = api and
-    [call.getAnArgument(), call.getQualifier()] = arg.asExpr() and
-    TaintTracking::localAdditionalTaintStep(arg, _)
-  )
+  summaryModel(packageName(api), typeName(api), _, api.getName(), _, _, _, _, _)
 }
 
 predicate sink(Callable api) {
-  exists(Call call, DataFlow::Node arg |
-    call.getCallee() = api and
-    [call.getAnArgument(), call.getQualifier()] = arg.asExpr() and
-    sinkNode(arg, _)
-  )
+  sinkModel(packageName(api), typeName(api), _, api.getName(), _, _, _, _)
 }
 
 predicate source(Callable api) {
-  exists(Call call, DataFlow::Node arg |
-    call.getCallee() = api and
-    [call.getAnArgument(), call.getQualifier()] = arg.asExpr() and
-    arg instanceof RemoteFlowSource
-  )
+  sourceModel(packageName(api), typeName(api), _, api.getName(), _, _, _, _)
+}
+
+private string packageName(Callable api) {
+  result = api.getCompilationUnit().getPackage().toString()
+}
+
+private string typeName(Callable api) {
+  result = api.getDeclaringType().getAnAncestor().getSourceDeclaration().toString()
 }
