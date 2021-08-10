@@ -143,6 +143,8 @@ private class IndirectType extends GeneratedType {
     this.(NestedType).getEnclosingType() instanceof GeneratedType
     or
     exists(NestedType nt | nt instanceof GeneratedType and this = nt.getEnclosingType())
+    or
+    this = any(GeneratedType a).(Array).getComponentType()
   }
 }
 
