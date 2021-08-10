@@ -36,6 +36,6 @@ class FlexjsonDeserializerUseMethod extends Method {
 
 private class FluentUseMethodModel extends SummaryModelCsv {
   override predicate row(string r) {
-    r = "flexjson;JSONDeserializer;false;use;;;Argument[-1];ReturnValue;value"
+    r = "flexjson;JSONDeserializer;true;use;;;Argument[-1];ReturnValue;value"
   }
 }
