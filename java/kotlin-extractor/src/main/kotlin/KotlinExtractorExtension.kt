@@ -20,6 +20,7 @@ import org.jetbrains.kotlin.ir.util.dump
 import org.jetbrains.kotlin.ir.util.packageFqName
 import org.jetbrains.kotlin.ir.visitors.IrElementVisitor
 import org.jetbrains.kotlin.ir.IrFileEntry
+import org.jetbrains.kotlin.ir.types.isInt
 import org.jetbrains.kotlin.ir.types.IrType
 import org.jetbrains.kotlin.ir.types.IrSimpleType
 import org.jetbrains.kotlin.ir.expressions.IrBody
@@ -140,13 +141,20 @@ class KotlinFileExtractor(val tw: TrapWriter) {
     }
 
     @Suppress("UNUSED_PARAMETER")
-    fun useSimpleType(c: IrSimpleType): Label<out DbPrimitive> {
-        // TODO: This shouldn't assume all SimpleType's are Int
-        val label = "@\"type;int\""
-        val id: Label<DbPrimitive> = tw.getLabelFor(label, {
-            tw.writePrimitives(it, "int")
-        })
-        return id
+    fun useSimpleType(s: IrSimpleType): Label<out DbPrimitive> {
+        when {
+            s.isInt() -> {
+                val label = "@\"type;int\""
+                val id: Label<DbPrimitive> = tw.getLabelFor(label, {
+                    tw.writePrimitives(it, "int")
+                })
+                return id
+            }
+            else -> {
+                extractorBug("Unrecognised IrSimpleType: " + s.javaClass)
+                return Label(0)
+            }
+        }
     }
 
     fun useClass(c: IrClass): Label<out DbClass> {
