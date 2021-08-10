@@ -13,8 +13,8 @@ private module FlowSummaries {
   private import semmle.python.dataflow.FlowSummary as F
 }
 
-/** Holds is `i` is a valid parameter position. */
-predicate parameterPosition(int i) { i in [-1 .. any(Parameter p).getPosition()] }
+/** Holds if `i` is a valid parameter position. */
+predicate parameterPosition(int i) { i in [0 .. any(Parameter p).getPosition()] }
 
 /** Gets the synthesized summary data-flow node for the given values. */
 Node summaryNode(SummarizedCallable c, SummaryNodeState state) { result = getSummaryNode(c, state) }
