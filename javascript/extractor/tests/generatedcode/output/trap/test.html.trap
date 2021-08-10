@@ -160,7 +160,7 @@ locations_default(#20055,#10000,9,19,9,36)
 hasLocation(#20054,#20055)
 enclosing_stmt(#20054,#20049)
 expr_containers(#20054,#20002)
-generated_code_expr_info(#20054,"{{{","}}}"," user_data1 ")
+expr_contains_template_tag_location(#20054,#20055)
 #20056=*
 stmts(#20056,18,#20002,1,"var dat ... afe }};")
 #20057=@"loc,{#10000},10,7,10,49"
@@ -188,7 +188,7 @@ locations_default(#20062,#10000,10,19,10,48)
 hasLocation(#20061,#20062)
 enclosing_stmt(#20061,#20056)
 expr_containers(#20061,#20002)
-generated_code_expr_info(#20061,"{{","}}"," user_data2 | json | safe ")
+expr_contains_template_tag_location(#20061,#20062)
 #20063=*
 stmts(#20063,18,#20002,2,"var dat ... ta3 %>;")
 #20064=@"loc,{#10000},11,7,11,36"
@@ -216,7 +216,7 @@ locations_default(#20069,#10000,11,19,11,35)
 hasLocation(#20068,#20069)
 enclosing_stmt(#20068,#20063)
 expr_containers(#20068,#20002)
-generated_code_expr_info(#20068,"<%-","%>"," user_data3 ")
+expr_contains_template_tag_location(#20068,#20069)
 #20070=*
 entry_cfg_node(#20070,#20002)
 hasLocation(#20070,#20004)
@@ -276,6 +276,7 @@ template_placeholder_tag_info(#20084,#20080,"{{{subtitle_html}}}")
 #20085=@"loc,{#10000},5,5,5,23"
 locations_default(#20085,#10000,5,5,5,23)
 hasLocation(#20084,#20085)
+scopes(#20000,0)
 #20086=@"script;{#10000},5,8"
 #20087=*
 lines(#20087,#20086,"subtitle_html","")
@@ -356,6 +357,7 @@ xmllocations(#20001,#20107)
 template_placeholder_tag_info(#20108,#20001,"{{{ user_data1 }}}")
 locations_default(#20055,#10000,9,19,9,36)
 hasLocation(#20108,#20055)
+scopes(#20000,0)
 #20109=@"script;{#10000},9,22"
 #20110=*
 lines(#20110,#20109," user_data1 ","")
@@ -410,6 +412,7 @@ toplevel_parent_xml_node(#20109,#20108)
 template_placeholder_tag_info(#20123,#20001,"{{ user_data2 | json | safe }}")
 locations_default(#20062,#10000,10,19,10,48)
 hasLocation(#20123,#20062)
+scopes(#20000,0)
 #20124=@"script;{#10000},10,21"
 #20125=*
 lines(#20125,#20124," user_data2 | json | safe ","")
@@ -524,6 +527,7 @@ toplevel_parent_xml_node(#20124,#20123)
 template_placeholder_tag_info(#20154,#20001,"<%- user_data3 %>")
 locations_default(#20069,#10000,11,19,11,35)
 hasLocation(#20154,#20069)
+scopes(#20000,0)
 #20155=@"script;{#10000},11,22"
 #20156=*
 lines(#20156,#20155," user_data3 ","")
@@ -592,6 +596,7 @@ template_placeholder_tag_info(#20172,#20170,"<%= footer %>")
 #20173=@"loc,{#10000},7,8,7,20"
 locations_default(#20173,#10000,7,8,7,20)
 hasLocation(#20172,#20173)
+scopes(#20000,0)
 #20174=@"script;{#10000},7,11"
 #20175=*
 lines(#20175,#20174," footer ","")
@@ -656,6 +661,7 @@ template_placeholder_tag_info(#20191,#20189,"<%- body_html %>")
 #20192=@"loc,{#10000},6,8,6,23"
 locations_default(#20192,#10000,6,8,6,23)
 hasLocation(#20191,#20192)
+scopes(#20000,0)
 #20193=@"script;{#10000},6,11"
 #20194=*
 lines(#20194,#20193," body_html ","")
@@ -720,6 +726,7 @@ template_placeholder_tag_info(#20210,#20208,"{{title}}")
 #20211=@"loc,{#10000},4,9,4,17"
 locations_default(#20211,#10000,4,9,4,17)
 hasLocation(#20210,#20211)
+scopes(#20000,0)
 #20212=@"script;{#10000},4,11"
 #20213=*
 lines(#20213,#20212,"title","")
