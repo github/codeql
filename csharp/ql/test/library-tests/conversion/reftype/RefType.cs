@@ -91,5 +91,3 @@ class C3<T5, T6> where T5 : C1
 {
     public I4<T5, T6> M(I4<C1, T6> x) => x;
 }
-
-// semmle-extractor-options: /r:System.Dynamic.Runtime.dll /r:System.Linq.Expressions.dll

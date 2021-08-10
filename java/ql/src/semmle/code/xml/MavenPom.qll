@@ -15,7 +15,7 @@ private string normalize(string path) {
 /**
  * An XML element that provides convenience access methods
  * to retrieve child XML elements named "groupId", "artifactId"
- * and "versionID", typically contained in Maven POM XML files.
+ * and "version", typically contained in Maven POM XML files.
  */
 class ProtoPom extends XMLElement {
   /** Gets a child XML element named "groupId". */

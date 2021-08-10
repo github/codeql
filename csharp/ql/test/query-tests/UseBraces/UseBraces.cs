@@ -1,5 +1,3 @@
-// semmle-extractor-options: /r:System.Runtime.Extensions.dll
-
 using System;
 using System.IO;
 
@@ -75,7 +73,6 @@ class UseBraces
         }
         g();    // GOOD
 
-
         while (x > 1)
             f();
         g();
@@ -87,7 +84,6 @@ class UseBraces
 
         while (x > 1)
             f(); g();    // BAD
-
 
         while (x > 1)
             if (x != null) x = 1;
@@ -116,7 +112,6 @@ class UseBraces
 
         for (int i = 0; i < 10; ++i)
             f(); g();     // BAD
-
 
         // Foreach statement
 

@@ -4,7 +4,7 @@
  *              to gain unauthorized access.
  * @kind path-problem
  * @problem.severity warning
- * @security-severity 5.9
+ * @security-severity 9.8
  * @precision high
  * @id js/hardcoded-credentials
  * @tags security
@@ -28,6 +28,9 @@ where
       not (
         sink.getNode().(Sink).(DefaultCredentialsSink).getKind() = "password" and
         PasswordHeuristics::isDummyPassword(val)
+        or
+        sink.getNode().(Sink).getKind() = "authorization header" and
+        PasswordHeuristics::isDummyAuthHeader(val)
       ) and
       value = "The hard-coded value \"" + val + "\""
     )

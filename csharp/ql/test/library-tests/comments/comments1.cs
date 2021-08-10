@@ -10,7 +10,6 @@ class C { }
 
 /* A multiline comment */
 
-
 // 2) Comment blocks
 
 // A line on its own is a commentblock

@@ -47,19 +47,22 @@ private XMLElement elementReferencingType(RefType rt) {
 }
 
 abstract private class ReflectiveClassIdentifier extends Expr {
+  /**
+   * Gets the type of a class identified by this expression.
+   */
   abstract RefType getReflectivelyIdentifiedClass();
 }
 
 private class ReflectiveClassIdentifierLiteral extends ReflectiveClassIdentifier, TypeLiteral {
   override RefType getReflectivelyIdentifiedClass() {
-    result = getTypeName().getType().(RefType).getSourceDeclaration()
+    result = getReferencedType().(RefType).getSourceDeclaration()
   }
 }
 
 /**
  * A call to a Java standard library method which constructs or returns a `Class<T>` from a `String`.
  */
-library class ReflectiveClassIdentifierMethodAccess extends ReflectiveClassIdentifier, MethodAccess {
+class ReflectiveClassIdentifierMethodAccess extends ReflectiveClassIdentifier, MethodAccess {
   ReflectiveClassIdentifierMethodAccess() {
     // A call to `Class.forName(...)`, from which we can infer `T` in the returned type `Class<T>`.
     getCallee().getDeclaringType() instanceof TypeClass and getCallee().hasName("forName")
@@ -311,6 +314,26 @@ class ClassMethodAccess extends MethodAccess {
     not result instanceof TypeVariable and
     // If this is called on a `Class<T>` instance, return the inferred type `T`.
     result = inferClassParameterType(getQualifier())
+  }
+}
+
+/**
+ * A call to `Class.getConstructors(..)` or `Class.getDeclaredConstructors(..)`.
+ */
+class ReflectiveConstructorsAccess extends ClassMethodAccess {
+  ReflectiveConstructorsAccess() {
+    this.getCallee().hasName("getConstructors") or
+    this.getCallee().hasName("getDeclaredConstructors")
+  }
+}
+
+/**
+ * A call to `Class.getMethods(..)` or `Class.getDeclaredMethods(..)`.
+ */
+class ReflectiveMethodsAccess extends ClassMethodAccess {
+  ReflectiveMethodsAccess() {
+    this.getCallee().hasName("getMethods") or
+    this.getCallee().hasName("getDeclaredMethods")
   }
 }
 

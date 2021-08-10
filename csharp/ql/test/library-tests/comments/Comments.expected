@@ -3,20 +3,20 @@ singlelineComment
 | comments1.cs:1:1:2:46 | // ... | comments1.cs:2:1:2:46 | // ... | 2 | This tests the basic types of comment block | // This tests the basic types of comment block |
 | comments1.cs:4:1:4:25 | // ... | comments1.cs:4:1:4:25 | // ... | 1 | 1) Basic comment types | // 1) Basic comment types |
 | comments1.cs:6:1:6:24 | // ... | comments1.cs:6:1:6:24 | // ... | 1 | A single-line comment | // A single-line comment |
-| comments1.cs:14:1:14:20 | // ... | comments1.cs:14:1:14:20 | // ... | 1 | 2) Comment blocks | // 2) Comment blocks |
-| comments1.cs:16:1:16:38 | // ... | comments1.cs:16:1:16:38 | // ... | 1 | A line on its own is a commentblock | // A line on its own is a commentblock |
-| comments1.cs:18:1:19:31 | // ... | comments1.cs:18:1:18:21 | // ... | 2 | Two lines together | // Two lines together |
-| comments1.cs:18:1:19:31 | // ... | comments1.cs:19:1:19:31 | // ... | 2 | are in the same commentblock | // are in the same commentblock |
-| comments1.cs:21:1:23:15 | // ... | comments1.cs:21:1:21:14 | // ... | 3 | Three lines | // Three lines |
-| comments1.cs:21:1:23:15 | // ... | comments1.cs:22:1:22:14 | // ... | 3 | in the same | // in the same |
-| comments1.cs:21:1:23:15 | // ... | comments1.cs:23:1:23:15 | // ... | 3 | commentblock | // commentblock |
-| comments1.cs:31:1:33:30 | // ... | comments1.cs:31:1:31:21 | // ... | 3 | These three lines, | // These three lines, |
-| comments1.cs:37:5:39:41 | /* ... */ | comments1.cs:39:5:39:41 | // ... | 3 | This is not the same comment block | // This is not the same comment block |
-| comments1.cs:40:13:41:51 | // ... | comments1.cs:40:13:40:27 | // ... | 2 | as this line | // as this line |
-| comments1.cs:40:13:41:51 | // ... | comments1.cs:41:13:41:51 | // ... | 2 | because they are offset differently. | // because they are offset differently. |
-| comments1.cs:43:15:43:36 | // ... | comments1.cs:43:15:43:36 | // ... | 1 | These are different | // These are different |
-| comments1.cs:44:15:44:32 | // ... | comments1.cs:44:15:44:32 | // ... | 1 | comment blocks. | // comment blocks. |
-| comments1.cs:47:1:47:21 | // ... | comments1.cs:47:1:47:21 | // ... | 1 | End of comment1.cs | // End of comment1.cs |
+| comments1.cs:13:1:13:20 | // ... | comments1.cs:13:1:13:20 | // ... | 1 | 2) Comment blocks | // 2) Comment blocks |
+| comments1.cs:15:1:15:38 | // ... | comments1.cs:15:1:15:38 | // ... | 1 | A line on its own is a commentblock | // A line on its own is a commentblock |
+| comments1.cs:17:1:18:31 | // ... | comments1.cs:17:1:17:21 | // ... | 2 | Two lines together | // Two lines together |
+| comments1.cs:17:1:18:31 | // ... | comments1.cs:18:1:18:31 | // ... | 2 | are in the same commentblock | // are in the same commentblock |
+| comments1.cs:20:1:22:15 | // ... | comments1.cs:20:1:20:14 | // ... | 3 | Three lines | // Three lines |
+| comments1.cs:20:1:22:15 | // ... | comments1.cs:21:1:21:14 | // ... | 3 | in the same | // in the same |
+| comments1.cs:20:1:22:15 | // ... | comments1.cs:22:1:22:15 | // ... | 3 | commentblock | // commentblock |
+| comments1.cs:30:1:32:30 | // ... | comments1.cs:30:1:30:21 | // ... | 3 | These three lines, | // These three lines, |
+| comments1.cs:36:5:38:41 | /* ... */ | comments1.cs:38:5:38:41 | // ... | 3 | This is not the same comment block | // This is not the same comment block |
+| comments1.cs:39:13:40:51 | // ... | comments1.cs:39:13:39:27 | // ... | 2 | as this line | // as this line |
+| comments1.cs:39:13:40:51 | // ... | comments1.cs:40:13:40:51 | // ... | 2 | because they are offset differently. | // because they are offset differently. |
+| comments1.cs:42:15:42:36 | // ... | comments1.cs:42:15:42:36 | // ... | 1 | These are different | // These are different |
+| comments1.cs:43:15:43:32 | // ... | comments1.cs:43:15:43:32 | // ... | 1 | comment blocks. | // comment blocks. |
+| comments1.cs:46:1:46:21 | // ... | comments1.cs:46:1:46:21 | // ... | 1 | End of comment1.cs | // End of comment1.cs |
 | comments2.cs:1:1:2:15 | // ... | comments2.cs:1:1:1:23 | // ... | 2 | Start of comment2.cs | // Start of comment2.cs |
 | comments2.cs:1:1:2:15 | // ... | comments2.cs:2:1:2:15 | // ... | 2 | Unassociated | // Unassociated |
 | comments2.cs:5:27:5:41 | // ... | comments2.cs:5:27:5:41 | // ... | 1 | Unassociated | // Unassociated |
@@ -86,15 +86,15 @@ singlelineComment
 | trivia.cs:57:27:57:87 | // ... | trivia.cs:57:27:57:87 | // ... | 1 | Restores the nullable warning context to project settings. | // Restores the nullable warning context to project settings. |
 multilineComment
 | comments1.cs:11:1:11:25 | /* ... */ | comments1.cs:11:1:11:25 | /* ... */ | 1 | A multiline comment | /* A multiline comment */ |
-| comments1.cs:25:1:25:43 | /* ... */ | comments1.cs:25:1:25:15 | /* ... */ | 2 | This is a | /* This is a */ |
-| comments1.cs:25:1:25:43 | /* ... */ | comments1.cs:25:18:25:43 | /* ... */ | 2 | single comment block | /* single comment block */ |
-| comments1.cs:27:1:29:13 | /* ... */ | comments1.cs:27:1:27:12 | /* ... */ | 3 | This is a | /* This is a |
-| comments1.cs:27:1:29:13 | /* ... */ | comments1.cs:28:1:28:17 | /* ... */ | 3 | true multiline |    true multiline |
-| comments1.cs:27:1:29:13 | /* ... */ | comments1.cs:29:1:29:13 | /* ... */ | 3 | comment |    comment */ |
-| comments1.cs:31:1:33:30 | // ... | comments1.cs:32:1:32:61 | /* ... */ | 3 | even though they are using different commenting styles, | /* even though they are using different commenting styles, */ |
-| comments1.cs:37:5:39:41 | /* ... */ | comments1.cs:37:5:37:6 | /* ... */ | 3 |  | /* |
-| comments1.cs:37:5:39:41 | /* ... */ | comments1.cs:38:1:38:6 | /* ... */ | 3 |  |     */ |
+| comments1.cs:24:1:24:43 | /* ... */ | comments1.cs:24:1:24:15 | /* ... */ | 2 | This is a | /* This is a */ |
+| comments1.cs:24:1:24:43 | /* ... */ | comments1.cs:24:18:24:43 | /* ... */ | 2 | single comment block | /* single comment block */ |
+| comments1.cs:26:1:28:13 | /* ... */ | comments1.cs:26:1:26:12 | /* ... */ | 3 | This is a | /* This is a |
+| comments1.cs:26:1:28:13 | /* ... */ | comments1.cs:27:1:27:17 | /* ... */ | 3 | true multiline |    true multiline |
+| comments1.cs:26:1:28:13 | /* ... */ | comments1.cs:28:1:28:13 | /* ... */ | 3 | comment |    comment */ |
+| comments1.cs:30:1:32:30 | // ... | comments1.cs:31:1:31:61 | /* ... */ | 3 | even though they are using different commenting styles, | /* even though they are using different commenting styles, */ |
+| comments1.cs:36:5:38:41 | /* ... */ | comments1.cs:36:5:36:6 | /* ... */ | 3 |  | /* |
+| comments1.cs:36:5:38:41 | /* ... */ | comments1.cs:37:1:37:6 | /* ... */ | 3 |  |     */ |
 xmlComment
 | comments1.cs:8:1:8:18 | /// ... | comments1.cs:8:1:8:18 | /// ... | 1 | An XML comment | /// An XML comment |
-| comments1.cs:31:1:33:30 | // ... | comments1.cs:33:1:33:30 | /// ... | 3 | form a single commentblock | /// form a single commentblock |
+| comments1.cs:30:1:32:30 | // ... | comments1.cs:32:1:32:30 | /// ... | 3 | form a single commentblock | /// form a single commentblock |
 | comments2.cs:10:1:10:6 | /// ... | comments2.cs:10:1:10:6 | /// ... | 1 | C2 | /// C2 |

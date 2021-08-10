@@ -7,11 +7,11 @@ private import semmle.code.java.dataflow.ExternalFlow
 
 private class EntryType extends RefType {
   EntryType() {
-    this.getSourceDeclaration().getASourceSupertype*().hasQualifiedName("java.util", "Map<>$Entry")
+    this.getSourceDeclaration().getASourceSupertype*().hasQualifiedName("java.util", "Map$Entry")
   }
 
   RefType getValueType() {
-    exists(GenericType t | t.hasQualifiedName("java.util", "Map<>$Entry") |
+    exists(GenericType t | t.hasQualifiedName("java.util", "Map$Entry") |
       indirectlyInstantiates(this, t, 1, result)
     )
   }
@@ -95,9 +95,10 @@ private class ContainerFlowSummaries extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
-        "java.util;Map<>$Entry;true;getValue;;;MapValue of Argument[-1];ReturnValue;value",
-        "java.util;Map<>$Entry;true;setValue;;;MapValue of Argument[-1];ReturnValue;value",
-        "java.util;Map<>$Entry;true;setValue;;;Argument[0];MapValue of Argument[-1];value",
+        "java.util;Map$Entry;true;getKey;;;MapKey of Argument[-1];ReturnValue;value",
+        "java.util;Map$Entry;true;getValue;;;MapValue of Argument[-1];ReturnValue;value",
+        "java.util;Map$Entry;true;setValue;;;MapValue of Argument[-1];ReturnValue;value",
+        "java.util;Map$Entry;true;setValue;;;Argument[0];MapValue of Argument[-1];value",
         "java.lang;Iterable;true;iterator;();;Element of Argument[-1];Element of ReturnValue;value",
         "java.lang;Iterable;true;spliterator;();;Element of Argument[-1];Element of ReturnValue;value",
         "java.util;Iterator;true;next;;;Element of Argument[-1];ReturnValue;value",
@@ -114,9 +115,9 @@ private class ContainerFlowSummaries extends SummaryModelCsv {
         "java.util;Map;true;get;;;MapValue of Argument[-1];ReturnValue;value",
         "java.util;Map;true;getOrDefault;;;MapValue of Argument[-1];ReturnValue;value",
         "java.util;Map;true;getOrDefault;;;Argument[1];ReturnValue;value",
-        "java.util;Map;true;put;;;MapValue of Argument[-1];ReturnValue;value",
-        "java.util;Map;true;put;;;Argument[0];MapKey of Argument[-1];value",
-        "java.util;Map;true;put;;;Argument[1];MapValue of Argument[-1];value",
+        "java.util;Map;true;put;(Object,Object);;MapValue of Argument[-1];ReturnValue;value",
+        "java.util;Map;true;put;(Object,Object);;Argument[0];MapKey of Argument[-1];value",
+        "java.util;Map;true;put;(Object,Object);;Argument[1];MapValue of Argument[-1];value",
         "java.util;Map;true;putIfAbsent;;;MapValue of Argument[-1];ReturnValue;value",
         "java.util;Map;true;putIfAbsent;;;Argument[0];MapKey of Argument[-1];value",
         "java.util;Map;true;putIfAbsent;;;Argument[1];MapValue of Argument[-1];value",
@@ -193,6 +194,7 @@ private class ContainerFlowSummaries extends SummaryModelCsv {
         "java.util.concurrent;ConcurrentHashMap;true;elements;();;MapValue of Argument[-1];Element of ReturnValue;value",
         "java.util;Dictionary;true;elements;();;MapValue of Argument[-1];Element of ReturnValue;value",
         "java.util;Dictionary;true;get;(Object);;MapValue of Argument[-1];ReturnValue;value",
+        "java.util;Dictionary;true;keys;();;MapKey of Argument[-1];Element of ReturnValue;value",
         "java.util;Dictionary;true;put;(Object,Object);;MapValue of Argument[-1];ReturnValue;value",
         "java.util;Dictionary;true;put;(Object,Object);;Argument[0];MapKey of Argument[-1];value",
         "java.util;Dictionary;true;put;(Object,Object);;Argument[1];MapValue of Argument[-1];value",
@@ -366,7 +368,44 @@ private class ContainerFlowSummaries extends SummaryModelCsv {
         "java.util;Collections;false;copy;(List,List);;Element of Argument[1];Element of Argument[0];value",
         "java.util;Collections;false;fill;(List,Object);;Argument[1];Element of Argument[0];value",
         "java.util;Arrays;false;asList;;;ArrayElement of Argument[0];Element of ReturnValue;value",
-        "java.util;Collections;false;addAll;(Collection,Object[]);;ArrayElement of Argument[1];Element of Argument[0];value"
+        "java.util;Collections;false;addAll;(Collection,Object[]);;ArrayElement of Argument[1];Element of Argument[0];value",
+        "java.util;AbstractMap$SimpleEntry;false;SimpleEntry;(Object,Object);;Argument[0];MapKey of Argument[-1];value",
+        "java.util;AbstractMap$SimpleEntry;false;SimpleEntry;(Object,Object);;Argument[1];MapValue of Argument[-1];value",
+        "java.util;AbstractMap$SimpleEntry;false;SimpleEntry;(Entry);;MapKey of Argument[0];MapKey of Argument[-1];value",
+        "java.util;AbstractMap$SimpleEntry;false;SimpleEntry;(Entry);;MapValue of Argument[0];MapValue of Argument[-1];value",
+        "java.util;AbstractMap$SimpleImmutableEntry;false;SimpleImmutableEntry;(Object,Object);;Argument[0];MapKey of Argument[-1];value",
+        "java.util;AbstractMap$SimpleImmutableEntry;false;SimpleImmutableEntry;(Object,Object);;Argument[1];MapValue of Argument[-1];value",
+        "java.util;AbstractMap$SimpleImmutableEntry;false;SimpleImmutableEntry;(Entry);;MapKey of Argument[0];MapKey of Argument[-1];value",
+        "java.util;AbstractMap$SimpleImmutableEntry;false;SimpleImmutableEntry;(Entry);;MapValue of Argument[0];MapValue of Argument[-1];value",
+        "java.util;ArrayDeque;false;ArrayDeque;(Collection);;Element of Argument[0];Element of Argument[-1];value",
+        "java.util;ArrayList;false;ArrayList;(Collection);;Element of Argument[0];Element of Argument[-1];value",
+        "java.util;EnumMap;false;EnumMap;(Map);;MapKey of Argument[0];MapKey of Argument[-1];value",
+        "java.util;EnumMap;false;EnumMap;(Map);;MapValue of Argument[0];MapValue of Argument[-1];value",
+        "java.util;EnumMap;false;EnumMap;(EnumMap);;MapKey of Argument[0];MapKey of Argument[-1];value",
+        "java.util;EnumMap;false;EnumMap;(EnumMap);;MapValue of Argument[0];MapValue of Argument[-1];value",
+        "java.util;HashMap;false;HashMap;(Map);;MapKey of Argument[0];MapKey of Argument[-1];value",
+        "java.util;HashMap;false;HashMap;(Map);;MapValue of Argument[0];MapValue of Argument[-1];value",
+        "java.util;HashSet;false;HashSet;(Collection);;Element of Argument[0];Element of Argument[-1];value",
+        "java.util;Hashtable;false;Hashtable;(Map);;MapKey of Argument[0];MapKey of Argument[-1];value",
+        "java.util;Hashtable;false;Hashtable;(Map);;MapValue of Argument[0];MapValue of Argument[-1];value",
+        "java.util;IdentityHashMap;false;IdentityHashMap;(Map);;MapKey of Argument[0];MapKey of Argument[-1];value",
+        "java.util;IdentityHashMap;false;IdentityHashMap;(Map);;MapValue of Argument[0];MapValue of Argument[-1];value",
+        "java.util;LinkedHashMap;false;LinkedHashMap;(Map);;MapKey of Argument[0];MapKey of Argument[-1];value",
+        "java.util;LinkedHashMap;false;LinkedHashMap;(Map);;MapValue of Argument[0];MapValue of Argument[-1];value",
+        "java.util;LinkedHashSet;false;LinkedHashSet;(Collection);;Element of Argument[0];Element of Argument[-1];value",
+        "java.util;LinkedList;false;LinkedList;(Collection);;Element of Argument[0];Element of Argument[-1];value",
+        "java.util;PriorityQueue;false;PriorityQueue;(Collection);;Element of Argument[0];Element of Argument[-1];value",
+        "java.util;PriorityQueue;false;PriorityQueue;(PriorityQueue);;Element of Argument[0];Element of Argument[-1];value",
+        "java.util;PriorityQueue;false;PriorityQueue;(SortedSet);;Element of Argument[0];Element of Argument[-1];value",
+        "java.util;TreeMap;false;TreeMap;(Map);;MapKey of Argument[0];MapKey of Argument[-1];value",
+        "java.util;TreeMap;false;TreeMap;(Map);;MapValue of Argument[0];MapValue of Argument[-1];value",
+        "java.util;TreeMap;false;TreeMap;(SortedMap);;MapKey of Argument[0];MapKey of Argument[-1];value",
+        "java.util;TreeMap;false;TreeMap;(SortedMap);;MapValue of Argument[0];MapValue of Argument[-1];value",
+        "java.util;TreeSet;false;TreeSet;(Collection);;Element of Argument[0];Element of Argument[-1];value",
+        "java.util;TreeSet;false;TreeSet;(SortedSet);;Element of Argument[0];Element of Argument[-1];value",
+        "java.util;Vector;false;Vector;(Collection);;Element of Argument[0];Element of Argument[-1];value",
+        "java.util;WeakHashMap;false;WeakHashMap;(Map);;MapKey of Argument[0];MapKey of Argument[-1];value",
+        "java.util;WeakHashMap;false;WeakHashMap;(Map);;MapValue of Argument[0];MapValue of Argument[-1];value"
       ]
   }
 }

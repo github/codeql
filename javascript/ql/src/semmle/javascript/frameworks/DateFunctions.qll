@@ -53,14 +53,111 @@ private module DateFns {
   }
 }
 
+/**
+ * Provides classes and predicates modelling the `@date-io` libraries.
+ */
+private module DateIO {
+  private class FormatStep extends TaintTracking::SharedTaintStep {
+    override predicate stringManipulationStep(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(API::CallNode formatCall |
+        formatCall =
+          API::moduleImport("@date-io/" +
+              ["date-fns", "moment", "luxon", "dayjs", "date-fns-jalali", "jalaali", "hijri"])
+              .getInstance()
+              // the `format` function only select between a predefined list of formats, but the `formatByString` function formats using any string.
+              .getMember(["formatByString", "formatNumber"])
+              .getACall()
+      |
+        pred = formatCall.getArgument(1) and
+        succ = formatCall
+      )
+    }
+  }
+
+  /** Gets a method name from an `@date-io` adapter that returns an instance of the adapted library. */
+  private string getAnAdapterMethodName() {
+    result =
+      [
+        "addSeconds", "addMinutes", "addHours", "addDays", "addWeeks", "addMonths", "endOfDay",
+        "setHours", "setMinutes", "setSeconds", "startOfMonth", "endOfMonth", "startOfWeek",
+        "endOfWeek", "setYear", "date", "parse", "setMonth", "getNextMonth", "getPreviousMonth"
+      ]
+  }
+
+  /**
+   * Gets an instance of `library` that has been created by an `@date-io` adapter.
+   * Library is one of: "moment", "luxon", or "dayjs".
+   */
+  API::Node getAnAdaptedInstance(string library) {
+    exists(API::Node adapter |
+      library = "moment" and
+      adapter = API::moduleImport("@date-io/moment")
+      or
+      library = "luxon" and
+      adapter = API::moduleImport("@date-io/luxon")
+      or
+      library = "dayjs" and
+      adapter = API::moduleImport("@date-io/dayjs")
+    |
+      result = adapter.getInstance().getMember(getAnAdapterMethodName()).getReturn()
+    )
+  }
+}
+
+/**
+ * Provides classes and predicates modelling the `luxon` library.
+ */
+private module Luxon {
+  /**
+   * Gets a reference to a `DateTime` object from the `luxon` library.
+   */
+  private API::Node luxonDateTime() {
+    exists(API::Node constructor | constructor = API::moduleImport("luxon").getMember("DateTime") |
+      result = constructor.getInstance()
+      or
+      result =
+        constructor
+            .getMember([
+                "fromJSDate", "fromJSDate", "fromISO", "now", "fromMillis", "fromHTTP",
+                "fromObject", "fromRFC2822", "fromSeconds", "fromSQL", "fromFormat", "fromString",
+                "invalid", "local", "utc"
+              ])
+            .getReturn()
+      or
+      // fluent API that return immutable objects
+      result = luxonDateTime().getAMember()
+      or
+      result = luxonDateTime().getReturn()
+      or
+      result = DateIO::getAnAdaptedInstance("luxon")
+    )
+  }
+
+  /**
+   * A step of the form: `f -> luxonDateTime.toFormat(f)`.
+   */
+  private class ToFormatStep extends TaintTracking::SharedTaintStep {
+    override predicate stringManipulationStep(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(API::CallNode call | call = luxonDateTime().getMember("toFormat").getACall() |
+        pred = call.getArgument(0) and succ = call
+      )
+    }
+  }
+}
+
 private module Moment {
   /** Gets a reference to a `moment` object. */
   private API::Node moment() {
     result = API::moduleImport(["moment", "moment-timezone"])
     or
+    // `dayjs` largely has a similar API to `moment`
+    result = API::moduleImport("dayjs")
+    or
     result = moment().getReturn()
     or
     result = moment().getAMember()
+    or
+    result = DateIO::getAnAdaptedInstance(["moment", "dayjs"])
   }
 
   /**

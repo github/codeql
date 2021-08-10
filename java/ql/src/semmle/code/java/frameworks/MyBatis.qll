@@ -3,25 +3,24 @@
  */
 
 import java
+import semmle.code.java.dataflow.ExternalFlow
 
 /** The class `org.apache.ibatis.jdbc.SqlRunner`. */
 class MyBatisSqlRunner extends RefType {
   MyBatisSqlRunner() { this.hasQualifiedName("org.apache.ibatis.jdbc", "SqlRunner") }
 }
 
-/**
- * Holds if `m` is a method on `MyBatisSqlRunner` taking an SQL string as its
- * first argument.
- */
-predicate mybatisSqlMethod(Method m) {
-  m.getDeclaringType() instanceof MyBatisSqlRunner and
-  m.getParameterType(0) instanceof TypeString and
-  (
-    m.hasName("delete") or
-    m.hasName("insert") or
-    m.hasName("run") or
-    m.hasName("selectAll") or
-    m.hasName("selectOne") or
-    m.hasName("update")
-  )
+private class SqlSinkCsv extends SinkModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        //"package;type;overrides;name;signature;ext;spec;kind"
+        "org.apache.ibatis.jdbc;SqlRunner;false;delete;(String,Object[]);;Argument[0];sql",
+        "org.apache.ibatis.jdbc;SqlRunner;false;insert;(String,Object[]);;Argument[0];sql",
+        "org.apache.ibatis.jdbc;SqlRunner;false;run;(String);;Argument[0];sql",
+        "org.apache.ibatis.jdbc;SqlRunner;false;selectAll;(String,Object[]);;Argument[0];sql",
+        "org.apache.ibatis.jdbc;SqlRunner;false;selectOne;(String,Object[]);;Argument[0];sql",
+        "org.apache.ibatis.jdbc;SqlRunner;false;update;(String,Object[]);;Argument[0];sql"
+      ]
+  }
 }

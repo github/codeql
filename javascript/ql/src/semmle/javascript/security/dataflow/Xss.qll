@@ -192,6 +192,8 @@ module DomBasedXss {
         this = instance.getArgument(0) and
         instance.getOptionArgument(1, "runScripts").mayHaveStringValue("dangerously")
       )
+      or
+      MooTools::interpretsNodeAsHtml(this)
     }
   }
 
@@ -317,6 +319,20 @@ module DomBasedXss {
   }
 
   /**
+   * A React tooltip where the `data-html` attribute is set to `true`.
+   */
+  class TooltipSink extends Sink {
+    TooltipSink() {
+      exists(JSXElement el |
+        el.getAttributeByName("data-html").getStringValue() = "true" or
+        el.getAttributeByName("data-html").getValue().mayHaveBooleanValue(true)
+      |
+        this = el.getAttributeByName("data-tip").getValue().flow()
+      )
+    }
+  }
+
+  /**
    * The HTML body of an email, viewed as an XSS sink.
    */
   class EmailHtmlBodySink extends Sink {
@@ -329,7 +345,10 @@ module DomBasedXss {
    * A write to the `template` option of a Vue instance, viewed as an XSS sink.
    */
   class VueTemplateSink extends DomBasedXss::Sink {
-    VueTemplateSink() { this = any(Vue::Instance i).getTemplate() }
+    VueTemplateSink() {
+      // Note: don't use Vue::Instance#getTemplate as it includes an unwanted getALocalSource() step
+      this = any(Vue::Instance i).getOption("template")
+    }
   }
 
   /**
