@@ -18,4 +18,4 @@ where
       a.getCompilationUnit().getParentContainer*() = jar and
       not a.isTestLibrary()
     )
-select jar.getFile().getStem() + "." + jar.getFile().getExtension(), Usages order by Usages desc
+select jar.getFile().getBaseName(), Usages order by Usages desc
