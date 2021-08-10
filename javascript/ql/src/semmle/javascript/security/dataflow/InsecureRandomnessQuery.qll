@@ -10,6 +10,7 @@
 import javascript
 private import semmle.javascript.security.SensitiveActions
 import InsecureRandomnessCustomizations::InsecureRandomness
+private import InsecureRandomnessCustomizations::InsecureRandomness as InsecureRandomness
 
 /**
  * A taint tracking configuration for random values that are not cryptographically secure.
