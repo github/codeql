@@ -170,6 +170,7 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
    * }
    * ```
    */
+  pragma[inline]
   predicate hasMethod(Method m) { this.hasMember(m) }
 
   /**
@@ -196,6 +197,7 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
    * }
    * ```
    */
+  pragma[inline]
   predicate hasCallable(Callable c) {
     hasMethod(c)
     or
@@ -225,23 +227,13 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
    * }
    * ```
    */
+  pragma[inline]
   predicate hasMember(Member m) {
-    // For performance reasons, split up into "cheap" computation
-    // (non-overridden members) and "expensive" computation
-    // (overridden members). The latter is cached, and generally
-    // much smaller than the full relation.
-    hasNonOverriddenMember(m)
+    m = this.getAMember()
+    or
+    hasNonOverriddenMember(this.getBaseClass+(), m)
     or
     hasOverriddenMember(m)
-  }
-
-  private predicate hasNonOverriddenMember(Member m) {
-    isNonOverridden(m) and
-    (
-      m = getAMember()
-      or
-      getBaseClass+().getAMember() = m and not m.isPrivate()
-    )
   }
 
   cached
@@ -722,8 +714,12 @@ class RefType extends ValueOrRefType, @ref_type {
   override predicate isRefType() { any() }
 }
 
-// Helper predicate to avoid slow "negation_body"
-private predicate isNonOverridden(Member m) { not m.(Virtualizable).isOverridden() }
+pragma[noinline]
+private predicate hasNonOverriddenMember(Class c, Member m) {
+  m = c.getAMember() and
+  not m.(Virtualizable).isOverridden() and
+  not m.isPrivate()
+}
 
 /**
  * A `class`, for example
