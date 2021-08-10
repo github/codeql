@@ -21,6 +21,8 @@ class ExternalAPI extends Callable {
       api.getDeclaringType().getPackage() + ";?;" + api.getDeclaringType().getSourceDeclaration() +
         ";" + api.getName() + ";" + paramsString(api)
   }
+
+  predicate isSupported() { not supportKind(this) = "?" }
 }
 
 private class TestLibrary extends RefType {
