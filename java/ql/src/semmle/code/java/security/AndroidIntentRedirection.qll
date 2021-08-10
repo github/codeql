@@ -1,6 +1,7 @@
 /** Provides classes to reason about Android Intent redirect vulnerabilities. */
 
 import java
+private import semmle.code.java.controlflow.Guards
 private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.frameworks.android.Intent
@@ -30,4 +31,19 @@ class IntentRedirectionAdditionalTaintStep extends Unit {
 /** Default sink for Intent redirection vulnerabilities. */
 private class DefaultIntentRedirectionSink extends IntentRedirectionSink {
   DefaultIntentRedirectionSink() { sinkNode(this, "intent-start") }
+}
+
+/**
+ * A default sanitizer for nodes dominated by calls to `ComponentName.getPackageName`
+ * or `ComponentName.getClassName`. These are used to check whether the origin or destination
+ * components are trusted.
+ */
+private class DefaultIntentRedirectionSanitizer extends IntentRedirectionSanitizer {
+  DefaultIntentRedirectionSanitizer() {
+    exists(MethodAccess ma, Method m |
+      ma.getMethod() = m and
+      m.hasQualifiedName("android.content", "ComponentName", ["getPackageName", "getClassName"]) and
+      ma.getBasicBlock().(ConditionBlock).controls(this.asExpr().getBasicBlock(), true)
+    )
+  }
 }
