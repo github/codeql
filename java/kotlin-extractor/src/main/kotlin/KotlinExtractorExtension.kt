@@ -17,7 +17,9 @@ import org.jetbrains.kotlin.ir.declarations.IrFile
 import org.jetbrains.kotlin.ir.declarations.IrFunction
 import org.jetbrains.kotlin.ir.declarations.IrValueParameter
 import org.jetbrains.kotlin.ir.util.dump
+import org.jetbrains.kotlin.ir.util.IdSignature
 import org.jetbrains.kotlin.ir.util.packageFqName
+import org.jetbrains.kotlin.ir.util.render
 import org.jetbrains.kotlin.ir.visitors.IrElementVisitor
 import org.jetbrains.kotlin.ir.IrFileEntry
 import org.jetbrains.kotlin.ir.types.isInt
@@ -255,23 +257,32 @@ class KotlinFileExtractor(val tw: TrapWriter) {
     fun extractExpression(e: IrExpression, parent: Label<out DbExprparent>, idx: Int) {
         when(e) {
             is IrCall -> {
-                // TODO: This shouldn't assume all IrCalls's are addexpr's
-                if(e.valueArgumentsCount == 1) {
-                    val left = e.dispatchReceiver
-                    val right = e.getValueArgument(0)
-                    if(left != null && right != null) {
-                        val id = tw.getFreshIdLabel<DbAddexpr>()
-                        val typeId = useType(e.type)
-                        val locId = tw.getLocation(e.startOffset, e.endOffset)
-                        tw.writeExprs_addexpr(id, typeId, parent, idx)
-                        tw.writeHasLocation(id, locId)
-                        extractExpression(left, id, 0)
-                        extractExpression(right, id, 1)
-                    } else {
-                        extractorBug("Unrecognised IrCall: left or right is null")
-                    }
+                val sig: IdSignature.PublicSignature? = e.symbol.signature?.asPublic()
+                if(sig == null) {
+                    extractorBug("IrCall without public signature")
                 } else {
-                    extractorBug("Unrecognised IrCall: Not binary")
+                    when {
+                        sig.packageFqName == "kotlin" && sig.declarationFqName == "Int.plus" -> {
+                            if(e.valueArgumentsCount == 1) {
+                                val left = e.dispatchReceiver
+                                val right = e.getValueArgument(0)
+                                if(left != null && right != null) {
+                                    val id = tw.getFreshIdLabel<DbAddexpr>()
+                                    val typeId = useType(e.type)
+                                    val locId = tw.getLocation(e.startOffset, e.endOffset)
+                                    tw.writeExprs_addexpr(id, typeId, parent, idx)
+                                    tw.writeHasLocation(id, locId)
+                                    extractExpression(left, id, 0)
+                                    extractExpression(right, id, 1)
+                                } else {
+                                    extractorBug("Unrecognised IrCall: left or right is null")
+                                }
+                            } else {
+                                extractorBug("Unrecognised IrCall: Not binary")
+                            }
+                        }
+                        else -> extractorBug("Unrecognised IrCall: " + e.render())
+                    }
                 }
             }
             is IrConst<*> -> {
