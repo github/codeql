@@ -9,7 +9,6 @@
  */
 
 import javascript
-import DataFlow
 import semmle.javascript.security.dataflow.StoredXssQuery
 import DataFlow::PathGraph
 
@@ -18,7 +17,7 @@ import DataFlow::PathGraph
  */
 DataFlow::SourceNode mysqlConnection(DataFlow::TypeTracker t) {
   t.start() and
-  result = moduleImport("mysql").getAMemberCall("createConnection")
+  result = DataFlow::moduleImport("mysql").getAMemberCall("createConnection")
   or
   exists(DataFlow::TypeTracker t2 | result = mysqlConnection(t2).track(t2, t))
 }
@@ -46,6 +45,6 @@ class MysqlSource extends Source {
   MysqlSource() { this = mysqlConnection().getAMethodCall("query").getCallback(1).getParameter(1) }
 }
 
-from Configuration cfg, PathNode source, PathNode sink
+from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where cfg.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "Stored XSS from $@.", source.getNode(), "database value."
