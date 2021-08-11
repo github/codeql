@@ -21,6 +21,9 @@ public class ParcelableEntity implements Parcelable {
         parcel.writeString(GSON.toJson(obj));
     }
 
+    @Override
+    public int describeContents() { return 0; }
+
     public static final Parcelable.Creator CREATOR = new Creator<ParcelableEntity>() {
         @Override
         public ParcelableEntity createFromParcel(Parcel parcel) {

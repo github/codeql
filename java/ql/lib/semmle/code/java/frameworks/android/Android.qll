@@ -221,10 +221,12 @@ class CreateFromParcelMethod extends Method {
 
 private class TaintPropagationModels extends SummaryModelCsv {
   override predicate row(string s) {
-    // BaseBundle getters
+    // BaseBundle getters. These are also modelled on Bundle because BaseBundle was factored out of Bundle
+    // in Android 5.0; before that these methods were declared directly on Bundle.
     s =
-      "android.os;BaseBundle;true;get" + ["Boolean", "Double", "Int", "Long", "String"] +
-        ["", "Array"] + ";;;Argument[-1];ReturnValue;taint"
+      "android.os;" + ["BaseBundle", "Bundle"] + ";true;get" +
+        ["Boolean", "Double", "Int", "Long", "String"] + ["", "Array"] +
+        ";;;Argument[-1];ReturnValue;taint"
     or
     // Bundle getters
     s =
