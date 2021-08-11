@@ -17,6 +17,7 @@ import org.jetbrains.kotlin.ir.declarations.IrFile
 import org.jetbrains.kotlin.ir.declarations.IrFunction
 import org.jetbrains.kotlin.ir.declarations.IrValueParameter
 import org.jetbrains.kotlin.ir.declarations.IrProperty
+import org.jetbrains.kotlin.ir.declarations.IrVariable
 import org.jetbrains.kotlin.ir.util.dump
 import org.jetbrains.kotlin.ir.util.IdSignature
 import org.jetbrains.kotlin.ir.util.packageFqName
@@ -305,10 +306,24 @@ class KotlinFileExtractor(val tw: TrapWriter) {
         }
     }
 
+    fun extractVariable(v: IrVariable, parent: Label<out DbStmtparent>, idx: Int) {
+        val id = tw.getFreshIdLabel<DbLocalvariabledeclexpr>()
+        val locId = tw.getLocation(v.startOffset, v.endOffset)
+        val typeId = useType(v.type)
+        tw.writeExprs_localvariabledeclexpr(id, typeId, parent, idx)
+        tw.writeHasLocation(id, locId)
+        val varId = tw.getFreshIdLabel<DbLocalvar>()
+        tw.writeLocalvars(varId, v.name.asString(), typeId, id)
+        tw.writeHasLocation(varId, locId)
+    }
+
     fun extractStatement(s: IrStatement, callable: Label<out DbCallable>, parent: Label<out DbStmtparent>, idx: Int) {
         when(s) {
             is IrExpression -> {
                 extractExpression(s, callable, parent, idx)
+            }
+            is IrVariable -> {
+                extractVariable(s, parent, idx)
             }
             else -> {
                 extractorBug("Unrecognised IrStatement: " + s.javaClass)

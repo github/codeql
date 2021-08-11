@@ -1,1 +1,2 @@
-| variables.kt:3:5:3:21 | prop |
+| variables.kt:3:5:3:21 | prop | file://:0:0:0:0 | int |
+| variables.kt:6:9:6:21 | int local | file://:0:0:0:0 | int |

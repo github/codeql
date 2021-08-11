@@ -1,5 +1,5 @@
 import java
 
 from Variable v
-select v
+select v, v.getType()
 
