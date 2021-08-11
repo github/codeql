@@ -6,7 +6,7 @@ import csharp
 private import Remote
 private import semmle.code.csharp.commons.Loggers
 private import semmle.code.csharp.frameworks.system.Web
-private import semmle.code.csharp.frameworks.ServiceStack::Sinks
+private import semmle.code.csharp.dataflow.ExternalFlow
 
 /**
  * An external location sink.
@@ -16,6 +16,10 @@ private import semmle.code.csharp.frameworks.ServiceStack::Sinks
  * filesystem (including log files and cookies).
  */
 abstract class ExternalLocationSink extends DataFlow::ExprNode { }
+
+private class ExternalModelSink extends ExternalLocationSink {
+  ExternalModelSink() { sinkNode(this, "remote") }
+}
 
 /**
  * An argument to a call to a method on a logger class.

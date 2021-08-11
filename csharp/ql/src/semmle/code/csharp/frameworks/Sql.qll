@@ -5,7 +5,6 @@ private import semmle.code.csharp.frameworks.system.Data
 private import semmle.code.csharp.frameworks.system.data.SqlClient
 private import semmle.code.csharp.frameworks.EntityFramework
 private import semmle.code.csharp.frameworks.NHibernate
-private import semmle.code.csharp.frameworks.ServiceStack::SQL
 private import semmle.code.csharp.frameworks.Dapper
 private import semmle.code.csharp.dataflow.DataFlow4
 
