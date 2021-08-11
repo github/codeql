@@ -171,7 +171,7 @@ class Container extends @container {
 
 /** A folder. */
 class Folder extends Container, @folder {
-  override string getAbsolutePath() { folders(this, result, _) }
+  override string getAbsolutePath() { folders(this, result) }
 
   override string getURL() { result = "folder://" + getAbsolutePath() }
 }

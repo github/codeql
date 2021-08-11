@@ -209,8 +209,8 @@ namespace Semmle.Extraction.CIL
         internal static Tuple file_extraction_mode(File file, int mode) =>
             new Tuple("file_extraction_mode", file, mode);
 
-        internal static Tuple folders(Folder folder, string path, string name) =>
-            new Tuple("folders", folder, path, name);
+        internal static Tuple folders(Folder folder, string path) =>
+            new Tuple("folders", folder, path);
 
         internal static Tuple locations_default(PdbSourceLocation label, File file, int startLine, int startCol, int endLine, int endCol) =>
             new Tuple("locations_default", label, file, startLine, startCol, endLine, endCol);

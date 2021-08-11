@@ -23,9 +23,9 @@ namespace Semmle.Extraction
             trapFile.WriteTuple("files", file, fullName, name, extension, 0);
         }
 
-        internal static void folders(this System.IO.TextWriter trapFile, Folder folder, string path, string name)
+        internal static void folders(this System.IO.TextWriter trapFile, Folder folder, string path)
         {
-            trapFile.WriteTuple("folders", folder, path, name);
+            trapFile.WriteTuple("folders", folder, path);
         }
 
         public static void locations_default(this System.IO.TextWriter trapFile, SourceLocation label, Entities.File file, int startLine, int startCol, int endLine, int endCol)

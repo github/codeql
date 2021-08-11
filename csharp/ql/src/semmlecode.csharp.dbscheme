@@ -280,8 +280,7 @@ files(
 
 folders(
   unique int id: @folder,
-  string name: string ref,
-  string simple: string ref);
+  string name: string ref);
 
 @container = @folder | @file ;
 
