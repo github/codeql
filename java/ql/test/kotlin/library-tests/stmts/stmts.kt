@@ -4,6 +4,8 @@ fun topLevelMethod(x: Int, y: Int): Int {
     } else if(x < y) {
     } else {
     }
+    while(x > y)
+        return x
     return x + y
 }
 
