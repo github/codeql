@@ -182,7 +182,7 @@ class ThrowingAllocator extends Function {
       // 3. the allocator isn't marked with `throw()` or `noexcept`.
       not exists(this.getBlock()) and
       not exists(Parameter p | p = this.getAParameter() |
-        p.getUnspecifiedType() instanceof NoThrowType
+        p.getUnspecifiedType().stripType() instanceof NoThrowType
       ) and
       not this.isNoExcept() and
       not this.isNoThrow()

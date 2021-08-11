@@ -16,4 +16,3 @@
 | test.cpp:151:9:151:24 | new | This allocation cannot throw. $@ is unnecessary. | test.cpp:152:15:152:18 | { ... } | This catch block |
 | test.cpp:199:15:199:35 | new | This allocation cannot throw. $@ is unnecessary. | test.cpp:201:16:201:19 | { ... } | This catch block |
 | test.cpp:212:14:212:34 | new | This allocation cannot throw. $@ is unnecessary. | test.cpp:213:34:213:36 | { ... } | This catch block |
-| test.cpp:233:12:233:36 | new | This allocation cannot return null. $@ is unnecessary. | test.cpp:234:6:234:17 | ... == ... | This check |
