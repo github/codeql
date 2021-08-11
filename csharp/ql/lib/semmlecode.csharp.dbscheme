@@ -276,22 +276,13 @@ assemblies(
   string name: string ref,
   string version: string ref);
 
-/*
-  fromSource(0) = unknown,
-  fromSource(1) = from source,
-  fromSource(2) = from library
-*/
 files(
   unique int id: @file,
-  string name: string ref,
-  string simple: string ref,
-  string ext: string ref,
-  int fromSource: int ref);
+  string name: string ref);
 
 folders(
   unique int id: @folder,
-  string name: string ref,
-  string simple: string ref);
+  string name: string ref);
 
 @container = @folder | @file ;
 
