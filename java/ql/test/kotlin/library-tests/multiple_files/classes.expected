@@ -1,2 +1,4 @@
+| file1.kt:0:0:0:0 | Any |
 | file1.kt:2:1:2:16 | Class1 |
+| file2.kt:0:0:0:0 | Any |
 | file2.kt:2:1:2:16 | Class2 |
