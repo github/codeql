@@ -17,7 +17,7 @@ where
   not api.isSupported() and
   api.isInteresting()
 select api.asCSV(api) as csv,
-  count(Call c |
+  strictcount(Call c |
     c.getCallee() = api and
     not c.getFile() instanceof GeneratedFile
   ) as Usages order by Usages desc
