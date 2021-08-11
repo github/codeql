@@ -1,7 +1,7 @@
-name: codeql-ruby-tests
-version: 0.0.0
-libraryPathDependencies:
-  - codeql-ruby
-  - codeql-ruby-examples
+name: codeql/ruby-tests
+version: 0.0.1
+dependencies:
+  codeql/ruby-queries: 0.0.1
+  codeql/ruby-examples: 0.0.1
 extractor: ruby
 tests: .

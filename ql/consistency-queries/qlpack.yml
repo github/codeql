@@ -1,5 +1,5 @@
-name: codeql-ruby-consistency-queries
-version: 0.0.0
-libraryPathDependencies:
-  - codeql-ruby
-extractor: ruby
+name: codeql/ruby-consistency-queries
+version: 0.0.1
+dependencies:
+  codeql/ruby-all: 0.0.1
+

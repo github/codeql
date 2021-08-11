@@ -1,5 +1,6 @@
 {
     "provide": [
+        "ql/lib/qlpack.yml",
         "ql/src/qlpack.yml",
         "ql/consistency-queries/qlpack.yml",
         "ql/test/qlpack.yml",

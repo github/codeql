@@ -12,13 +12,13 @@ cargo build --release
 
 ## Generating the database schema and QL library
 
-The generated `ql/src/ruby.dbscheme` and `ql/src/codeql_ruby/ast/internal/TreeSitter.qll` files are included in the repository, but they can be re-generated as follows:
+The generated `ql/lib/ruby.dbscheme` and `ql/lib/codeql_ruby/ast/internal/TreeSitter.qll` files are included in the repository, but they can be re-generated as follows:
 
 ```bash
 # Run the generator
-cargo run --release -p ruby-generator -- --dbscheme ql/src/ruby.dbscheme --library ql/src/codeql_ruby/ast/internal/TreeSitter.qll
+cargo run --release -p ruby-generator -- --dbscheme ql/lib/ruby.dbscheme --library ql/lib/codeql_ruby/ast/internal/TreeSitter.qll
 # Then auto-format the QL library
-codeql query format -i ql/src/codeql_ruby/ast/internal/TreeSitter.qll
+codeql query format -i ql/lib/codeql_ruby/ast/internal/TreeSitter.qll
 ```
 
 ## Building a CodeQL database for a Ruby program
