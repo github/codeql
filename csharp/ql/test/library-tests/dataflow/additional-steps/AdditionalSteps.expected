@@ -1,0 +1,29 @@
+edges
+| AdditionalSteps.cs:5:37:5:39 | arg : Int32 | AdditionalSteps.cs:7:18:7:20 | access to parameter arg |
+| AdditionalSteps.cs:22:17:22:21 | false : Boolean | AdditionalSteps.cs:23:22:23:22 | access to local variable b : Int32 |
+| AdditionalSteps.cs:23:17:23:23 | call to method M2 : String | AdditionalSteps.cs:24:14:24:14 | access to local variable d |
+| AdditionalSteps.cs:23:22:23:22 | access to local variable b : Int32 | AdditionalSteps.cs:5:37:5:39 | arg : Int32 |
+| AdditionalSteps.cs:23:22:23:22 | access to local variable b : Int32 | AdditionalSteps.cs:23:17:23:23 | call to method M2 : String |
+| AdditionalSteps.cs:30:9:30:9 | [post] access to local variable a [field Field] : Int32 | AdditionalSteps.cs:31:17:31:17 | access to local variable a [field Field] : Int32 |
+| AdditionalSteps.cs:30:19:30:19 | 0 : Int32 | AdditionalSteps.cs:30:9:30:9 | [post] access to local variable a [field Field] : Int32 |
+| AdditionalSteps.cs:31:17:31:17 | access to local variable a [field Field] : Int32 | AdditionalSteps.cs:31:17:31:22 | call to method M4 : Int32 |
+| AdditionalSteps.cs:31:17:31:17 | access to local variable a [field Field] : Int32 | AdditionalSteps.cs:31:17:31:22 | call to method M4 : Int32 |
+| AdditionalSteps.cs:31:17:31:22 | call to method M4 : Int32 | AdditionalSteps.cs:32:14:32:14 | access to local variable o |
+| AdditionalSteps.cs:31:17:31:22 | call to method M4 : Int32 | AdditionalSteps.cs:32:14:32:14 | access to local variable o |
+nodes
+| AdditionalSteps.cs:5:37:5:39 | arg : Int32 | semmle.label | arg : Int32 |
+| AdditionalSteps.cs:7:18:7:20 | access to parameter arg | semmle.label | access to parameter arg |
+| AdditionalSteps.cs:22:17:22:21 | false : Boolean | semmle.label | false : Boolean |
+| AdditionalSteps.cs:23:17:23:23 | call to method M2 : String | semmle.label | call to method M2 : String |
+| AdditionalSteps.cs:23:22:23:22 | access to local variable b : Int32 | semmle.label | access to local variable b : Int32 |
+| AdditionalSteps.cs:24:14:24:14 | access to local variable d | semmle.label | access to local variable d |
+| AdditionalSteps.cs:30:9:30:9 | [post] access to local variable a [field Field] : Int32 | semmle.label | [post] access to local variable a [field Field] : Int32 |
+| AdditionalSteps.cs:30:19:30:19 | 0 : Int32 | semmle.label | 0 : Int32 |
+| AdditionalSteps.cs:31:17:31:17 | access to local variable a [field Field] : Int32 | semmle.label | access to local variable a [field Field] : Int32 |
+| AdditionalSteps.cs:31:17:31:22 | call to method M4 : Int32 | semmle.label | call to method M4 : Int32 |
+| AdditionalSteps.cs:31:17:31:22 | call to method M4 : Int32 | semmle.label | call to method M4 : Int32 |
+| AdditionalSteps.cs:32:14:32:14 | access to local variable o | semmle.label | access to local variable o |
+#select
+| AdditionalSteps.cs:22:17:22:21 | false : Boolean | AdditionalSteps.cs:22:17:22:21 | false : Boolean | AdditionalSteps.cs:7:18:7:20 | access to parameter arg | $@ | AdditionalSteps.cs:7:18:7:20 | access to parameter arg | access to parameter arg |
+| AdditionalSteps.cs:22:17:22:21 | false : Boolean | AdditionalSteps.cs:22:17:22:21 | false : Boolean | AdditionalSteps.cs:24:14:24:14 | access to local variable d | $@ | AdditionalSteps.cs:24:14:24:14 | access to local variable d | access to local variable d |
+| AdditionalSteps.cs:30:19:30:19 | 0 : Int32 | AdditionalSteps.cs:30:19:30:19 | 0 : Int32 | AdditionalSteps.cs:32:14:32:14 | access to local variable o | $@ | AdditionalSteps.cs:32:14:32:14 | access to local variable o | access to local variable o |
