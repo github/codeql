@@ -68,6 +68,7 @@
 | file://:0:0:0:0 | forceinline |
 | file://:0:0:0:0 | fp_offset |
 | file://:0:0:0:0 | gp_offset |
+| file://:0:0:0:0 | has_trailing_return_type |
 | file://:0:0:0:0 | implicit_int |
 | file://:0:0:0:0 | initializer for <error> |
 | file://:0:0:0:0 | inline |
