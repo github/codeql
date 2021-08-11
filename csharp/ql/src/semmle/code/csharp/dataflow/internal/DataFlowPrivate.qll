@@ -2001,3 +2001,40 @@ predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preserves
     preservesValue = false
   )
 }
+
+/** The type of calls to be used in `isAdditionalCallTarget`. */
+class DataFlowCallAdditional = DotNet::Call;
+
+/** Injects a call from `isAdditionalCallTarget` into a `DataFlowCall`. */
+DataFlowCall injectAdditionalCall(DataFlowCallAdditional call) { result.getExpr() = call }
+
+/** The type of call targets to be used in `isAdditionalCallTarget`. */
+class DataFlowCallableAdditional = DotNet::Callable;
+
+/** Injects a callable from `isAdditionalCallTarget` into a `DataFlowCallable`. */
+DataFlowCallable injectAdditionalCallable(DataFlowCallableAdditional callable) {
+  result = callable.getUnboundDeclaration()
+}
+
+private DataFlowType getReturnTypeBase(DataFlowCallable c, ReturnKind rk) {
+  exists(Type t | result = Gvn::getGlobalValueNumber(t) |
+    rk instanceof NormalReturnKind and
+    (
+      t = c.(Constructor).getDeclaringType()
+      or
+      not c instanceof Constructor and
+      t = c.getReturnType()
+    )
+    or
+    t = c.getParameter(rk.(OutRefReturnKind).getPosition()).getType()
+  )
+}
+
+/** Gets the return type of kind `rk` for callable `c`. */
+bindingset[c]
+DataFlowType getReturnType(DataFlowCallable c, ReturnKind rk) {
+  result = getReturnTypeBase(c, rk)
+  or
+  rk =
+    any(JumpReturnKind jrk | result = getReturnTypeBase(jrk.getTarget(), jrk.getTargetReturnKind()))
+}

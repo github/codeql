@@ -34,29 +34,6 @@ DataFlowType getContentType(Content c) {
   )
 }
 
-private DataFlowType getReturnTypeBase(DataFlowCallable c, ReturnKind rk) {
-  exists(Type t | result = Gvn::getGlobalValueNumber(t) |
-    rk instanceof NormalReturnKind and
-    (
-      t = c.(Constructor).getDeclaringType()
-      or
-      not c instanceof Constructor and
-      t = c.getReturnType()
-    )
-    or
-    t = c.getParameter(rk.(OutRefReturnKind).getPosition()).getType()
-  )
-}
-
-/** Gets the return type of kind `rk` for callable `c`. */
-bindingset[c]
-DataFlowType getReturnType(SummarizedCallable c, ReturnKind rk) {
-  result = getReturnTypeBase(c, rk)
-  or
-  rk =
-    any(JumpReturnKind jrk | result = getReturnTypeBase(jrk.getTarget(), jrk.getTargetReturnKind()))
-}
-
 /**
  * Gets the type of the `i`th parameter in a synthesized call that targets a
  * callback of type `t`.
