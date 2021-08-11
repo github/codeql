@@ -1,4 +1,5 @@
 name: legacy-libraries-javascript
 version: 0.0.0
 libraryPathDependencies:
-  - codeql-javascript
+  - codeql/javascript-all
+  - codeql/javascript-queries
