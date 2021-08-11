@@ -17,7 +17,7 @@
  - [What's next](#whatsnext)
 
 ## Problem statement <a id="problemstatement"></a>
-In this workshop, we will write a query to find a SQL injection vulnerabilities (CWE-089) in a database built from the Security Shephard repository maintained by OWASP. This repository is generally used for training and education purposes. We will be looking at client side injection in an Android application. The vulnerability arises from an Android Activity that takes in user input values via multiple fields. It reads these fields via the activity and passes them into the `login` method. This method opens a SQLite database on the users device and it constructs a query using string concatenation which it then passes to the `rawQuery` method that eventually gets executed on the databate. There is no sanitization so there exists a potential SQL injection vulnerability inside this applicatiion. 
+In this workshop, we will be using CodeQL to find SQL injection vulnerabilities (CWE-089) in a database built from the Security Shephard solution maintained by OWASP. This repository is generally used for training and education purposes. This repository consists of many small applications. We will be analysiing client side injection in an Android application. The vulnerability arises from an Android Activity that takes in user input values via multiple fields. It reads these fields via the activity and passes them into the `login` method. This method opens a SQLite database on the users device and it constructs a query using string concatenation which it then passes to the `rawQuery` method that eventually gets executed on the databate. There is no sanitization so there exists a potential SQL injection vulnerability inside this applicatiion. 
 
 **Source**
 
@@ -200,7 +200,7 @@ select sink, source
 1. Complete the `isSink` predicate 
     <details>
     <summary>Hint</summary>
-      `Complete the same process as above.`
+     Complete the same process as above.
    </details>
    <details>
     <summary>Solution</summary>
@@ -245,7 +245,7 @@ class AndroidSQLInjection extends TaintTracking::Configuration {
 
 from AndroidSQLInjection config, DataFlow::Node source, DataFlow::Node sink
 where config.hasFlow(source, sink)
-select sink, source, sink, "SQL Injection"
+select source, sink
 ```
 
 Note that this stops at the source -- so we start expanding there via
@@ -254,7 +254,7 @@ Note that this stops at the source -- so we start expanding there via
 
     override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
         exists(MethodAccess ma |
-            ma.getQualifier().getType().hasName(["Editable", "EditText"]) and
+            ma.getQualifier().getType().hasName(["Editable"]) and
             ma.getMethod().hasName("toString") and
             node1.asExpr() = ma.getQualifier() and
             node2.asExpr() = ma
@@ -274,7 +274,7 @@ and try again.
  //                  \--- qualifier---/ \-method--/	
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
 	exists(MethodAccess ma |	 
-		ma.getQualifier().getType().hasName(["Editable", "EditText"]) and
+		ma.getQualifier().getType().hasName(["Editable"]) and
 	     	ma.getMethod().hasName("toString") and
 	      	node1.asExpr() = ma.getQualifier() and
 	      	 node2.asExpr() = ma
@@ -327,7 +327,7 @@ The answer to this is to convert the query to a _path problem_ query. There are 
 
 	  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
 	    exists(MethodAccess ma |
-	      ma.getQualifier().getType().hasName(["Editable", "EditText"]) and
+	      ma.getQualifier().getType().hasName(["Editable"]) and
 	      ma.getMethod().hasName("toString") and
 	      node1.asExpr() = ma.getQualifier() and
 	      node2.asExpr() = ma
@@ -378,7 +378,7 @@ Like predicates, _classes_ in CodeQL can be used to encapsulate reusable portion
 		class ToStringStep extends AdditionalQueryInjectionTaintStep {
 		  override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
 		    exists(MethodAccess ma |
-		      ma.getQualifier().getType().hasName(["Editable", "EditText"]) and
+		      ma.getQualifier().getType().hasName(["Editable"]) and
 		      ma.getMethod().hasName("toString") and
 		      node1.asExpr() = ma.getQualifier() and
 		      node2.asExpr() = ma
@@ -396,3 +396,9 @@ Like predicates, _classes_ in CodeQL can be used to encapsulate reusable portion
 - Try out a CodeQL course on [GitHub Learning Lab](https://lab.github.com/githubtraining/codeql-u-boot-challenge-(cc++)).
 - Read about more vulnerabilities found using CodeQL on the [GitHub Security Lab research blog](https://securitylab.github.com/research).
 - Explore the [open-source CodeQL queries and libraries](https://github.com/github/codeql), and [learn how to contribute a new query](https://github.com/github/codeql/blob/master/CONTRIBUTING.md)
+
+
+## Acknowledgements
+@lcartey identified and reported missing framework support for this vulnerability and also delivered the first tutorial based on this query.
+@s-samadi adapted it into this workshop, and @hohn provided valuable feedback.
+
