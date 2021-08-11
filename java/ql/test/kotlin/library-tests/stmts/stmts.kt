@@ -9,6 +9,9 @@ fun topLevelMethod(x: Int, y: Int): Int {
     while(x < y) {
         return y
     }
+    do {
+        return y
+    } while(x < y)
     return x + y
 }
 

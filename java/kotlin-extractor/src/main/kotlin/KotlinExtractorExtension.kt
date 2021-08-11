@@ -35,6 +35,7 @@ import org.jetbrains.kotlin.ir.expressions.IrWhen
 import org.jetbrains.kotlin.ir.expressions.IrElseBranch
 import org.jetbrains.kotlin.ir.expressions.IrWhileLoop
 import org.jetbrains.kotlin.ir.expressions.IrBlock
+import org.jetbrains.kotlin.ir.expressions.IrDoWhileLoop
 import org.jetbrains.kotlin.ir.IrStatement
 import org.jetbrains.kotlin.ir.symbols.IrClassifierSymbol
 
@@ -351,6 +352,16 @@ class KotlinFileExtractor(val tw: TrapWriter) {
                 val id = tw.getFreshIdLabel<DbWhilestmt>()
                 val locId = tw.getLocation(e.startOffset, e.endOffset)
                 tw.writeStmts_whilestmt(id, parent, idx, callable)
+                tw.writeHasLocation(id, locId)
+                extractExpression(e.condition, callable, id, 0)
+                val body = e.body
+                if(body != null) {
+                    extractExpression(body, callable, id, 1) // TODO: The QLLs think this is a Stmt
+                }
+            } is IrDoWhileLoop -> {
+                val id = tw.getFreshIdLabel<DbDostmt>()
+                val locId = tw.getLocation(e.startOffset, e.endOffset)
+                tw.writeStmts_dostmt(id, parent, idx, callable)
                 tw.writeHasLocation(id, locId)
                 extractExpression(e.condition, callable, id, 0)
                 val body = e.body
