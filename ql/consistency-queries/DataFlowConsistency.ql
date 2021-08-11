@@ -1,1 +1,1 @@
-import codeql_ruby.dataflow.internal.DataFlowImplConsistency::Consistency
+import codeql.ruby.dataflow.internal.DataFlowImplConsistency::Consistency

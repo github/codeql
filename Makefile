@@ -45,8 +45,8 @@ target/release/%$(EXE):
 
 dbscheme:
 	cargo build --bin ruby-generator
-	cargo run -p ruby-generator -- --dbscheme ql/lib/ruby.dbscheme --library ql/lib/codeql_ruby/ast/internal/TreeSitter.qll
-	codeql query format -i ql/lib/codeql_ruby/ast/internal/TreeSitter.qll
+	cargo run -p ruby-generator -- --dbscheme ql/lib/ruby.dbscheme --library ql/lib/codeql/ruby/ast/internal/TreeSitter.qll
+	codeql query format -i ql/lib/codeql/ruby/ast/internal/TreeSitter.qll
 
 .PHONY:	extractor
 extractor:	$(FILES) $(BIN_FILES)

@@ -11,7 +11,7 @@
  */
 
 import ruby
-import codeql_ruby.dataflow.SSA
+import codeql.ruby.dataflow.SSA
 
 class RelevantParameterVariable extends LocalVariable {
   RelevantParameterVariable() {

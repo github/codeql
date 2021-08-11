@@ -8,7 +8,7 @@
  */
 
 import ruby
-import codeql_ruby.Diagnostics
+import codeql.ruby.Diagnostics
 
 select count(File f |
     exists(ExtractionError e | e.getLocation().getFile() = f) and exists(f.getRelativePath())

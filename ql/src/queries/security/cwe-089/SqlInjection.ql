@@ -13,11 +13,11 @@
  */
 
 import ruby
-import codeql_ruby.Concepts
-import codeql_ruby.DataFlow
-import codeql_ruby.dataflow.BarrierGuards
-import codeql_ruby.dataflow.RemoteFlowSources
-import codeql_ruby.TaintTracking
+import codeql.ruby.Concepts
+import codeql.ruby.DataFlow
+import codeql.ruby.dataflow.BarrierGuards
+import codeql.ruby.dataflow.RemoteFlowSources
+import codeql.ruby.TaintTracking
 import DataFlow::PathGraph
 
 class SQLInjectionConfiguration extends TaintTracking::Configuration {

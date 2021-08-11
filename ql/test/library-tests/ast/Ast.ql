@@ -2,4 +2,4 @@
  * @kind graph
  */
 
-import codeql_ruby.printAst
+import codeql.ruby.printAst

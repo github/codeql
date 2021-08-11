@@ -1,5 +1,5 @@
-import codeql_ruby.AST
-import codeql_ruby.ast.internal.Synthesis
+import codeql.ruby.AST
+import codeql.ruby.ast.internal.Synthesis
 
 private string getAPrimaryQlClass(AstNode node) {
   result = node.getAPrimaryQlClass()

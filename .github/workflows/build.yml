@@ -47,7 +47,7 @@ jobs:
         run: cargo build --release
       - name: Generate dbscheme
         if: ${{ matrix.os == 'ubuntu-latest' }}
-        run: target/release/ruby-generator --dbscheme ql/lib/ruby.dbscheme --library ql/lib/codeql_ruby/ast/internal/TreeSitter.qll
+        run: target/release/ruby-generator --dbscheme ql/lib/ruby.dbscheme --library ql/lib/codeql/ruby/ast/internal/TreeSitter.qll
       - uses: actions/upload-artifact@v2
         if: ${{ matrix.os == 'ubuntu-latest' }}
         with:
@@ -57,7 +57,7 @@ jobs:
         if: ${{ matrix.os == 'ubuntu-latest' }}
         with:
           name: TreeSitter.qll
-          path: ql/lib/codeql_ruby/ast/internal/TreeSitter.qll
+          path: ql/lib/codeql/ruby/ast/internal/TreeSitter.qll
       - uses: actions/upload-artifact@v2
         with:
           name: extractor-${{ matrix.os }}

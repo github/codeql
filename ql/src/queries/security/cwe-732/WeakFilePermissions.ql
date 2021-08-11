@@ -11,9 +11,9 @@
  */
 
 import ruby
-import codeql_ruby.DataFlow
+import codeql.ruby.DataFlow
 import DataFlow::PathGraph
-import codeql_ruby.ApiGraphs
+import codeql.ruby.ApiGraphs
 
 bindingset[p]
 int world_permission(int p) { result = p.bitAnd(7) }

@@ -1,5 +1,5 @@
-import codeql_ruby.ast.Variable
-import codeql_ruby.ast.Parameter
+import codeql.ruby.ast.Variable
+import codeql.ruby.ast.Parameter
 
 query predicate parameterVariable(Parameter p, Variable v) { v = p.getAVariable() }
 

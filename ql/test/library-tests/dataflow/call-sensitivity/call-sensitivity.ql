@@ -3,7 +3,7 @@
  */
 
 import ruby
-import codeql_ruby.DataFlow
+import codeql.ruby.DataFlow
 import DataFlow::PathGraph
 
 class Conf extends DataFlow::Configuration {

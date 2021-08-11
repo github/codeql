@@ -1,1 +1,1 @@
-import codeql_ruby.AST
+import codeql.ruby.AST

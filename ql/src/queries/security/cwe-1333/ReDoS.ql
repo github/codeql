@@ -14,9 +14,9 @@
  *       external/cwe/cwe-400
  */
 
-import codeql_ruby.regexp.ExponentialBackTracking
-import codeql_ruby.regexp.ReDoSUtil
-import codeql_ruby.regexp.RegExpTreeView
+import codeql.ruby.regexp.ExponentialBackTracking
+import codeql.ruby.regexp.ReDoSUtil
+import codeql.ruby.regexp.RegExpTreeView
 
 from RegExpTerm t, string pump, State s, string prefixMsg
 where hasReDoSResult(t, pump, s, prefixMsg)

@@ -11,7 +11,7 @@
 // This is an implementation of the Rubocop rule
 // https://github.com/rubocop/rubocop-performance/blob/master/lib/rubocop/cop/performance/detect.rb
 import ruby
-import codeql_ruby.dataflow.SSA
+import codeql.ruby.dataflow.SSA
 
 /** A call that extracts the first or last element of a list. */
 class EndCall extends MethodCall {

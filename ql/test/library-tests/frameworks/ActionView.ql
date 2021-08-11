@@ -1,5 +1,5 @@
-import codeql_ruby.frameworks.ActionController
-import codeql_ruby.frameworks.ActionView
+import codeql.ruby.frameworks.ActionController
+import codeql.ruby.frameworks.ActionView
 
 query predicate htmlSafeCalls(HtmlSafeCall c) { any() }
 

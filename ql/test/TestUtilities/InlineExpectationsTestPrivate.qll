@@ -1,5 +1,5 @@
 import ruby
-import codeql_ruby.ast.internal.TreeSitter
+import codeql.ruby.ast.internal.TreeSitter
 
 /**
  * A class representing line comments in Ruby.

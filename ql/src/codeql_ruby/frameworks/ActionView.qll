@@ -1,9 +1,9 @@
-private import codeql_ruby.AST
-private import codeql_ruby.Concepts
-private import codeql_ruby.controlflow.CfgNodes
-private import codeql_ruby.DataFlow
-private import codeql_ruby.dataflow.RemoteFlowSources
-private import codeql_ruby.ast.internal.Module
+private import codeql.ruby.AST
+private import codeql.ruby.Concepts
+private import codeql.ruby.controlflow.CfgNodes
+private import codeql.ruby.DataFlow
+private import codeql.ruby.dataflow.RemoteFlowSources
+private import codeql.ruby.ast.internal.Module
 private import ActionController
 
 predicate inActionViewContext(AstNode n) {
