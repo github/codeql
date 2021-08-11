@@ -7,13 +7,15 @@
  */
 
 import python
+import semmle.python.ApiGraphs
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
 import DataFlow::PathGraph
 
 predicate isSource1(DataFlow::Node source) {
-    Value::named("input").getACall() = source.asCfgNode()
+    API::moduleImport("builtins").getMember("input").getACall() = source
 }
+
 
 predicate isSink(Call call, DataFlow::Node dfsink) {
     call.getFunc().(Attribute).getName() = "executescript" and

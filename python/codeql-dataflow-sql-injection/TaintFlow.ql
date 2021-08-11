@@ -1,18 +1,19 @@
 /**
  * @name SQLI Vulnerability
  * @description Using untrusted strings in a sql query allows sql injection attacks.
- * @kind problem
+ * @kind 
  * @id python/SQLIVulnerable
  * @problem.severity warning
  */
 
 import python
 import semmle.python.dataflow.new.DataFlow
+import semmle.python.ApiGraphs
 import semmle.python.dataflow.new.TaintTracking
 
 
 predicate isSource1(DataFlow::Node source) {
-    Value::named("input").getACall() = source.asCfgNode()
+    API::moduleImport("builtins").getMember("input").getACall() = source
 }
 
 predicate isSink(Call call, DataFlow::Node dfsink) {

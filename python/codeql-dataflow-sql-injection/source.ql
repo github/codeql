@@ -1,17 +1,18 @@
 import python
 import semmle.python.dataflow.new.DataFlow
+import semmle.python.ApiGraphs
 
 /*
  *    Find the taint source, and notice the three distinct CodeQL classes involved.
  */
-from Value target, CallNode call, DataFlow::Node source
+from DataFlow::CallCfgNode call, DataFlow::Node source, API::Node target
 where
-    target = Value::named("input") and
+    target = API::moduleImport("builtins").getMember("input") and
     call = target.getACall() and
-    source.asCfgNode() = call
+    source = call
 select target, call, source
 
 // Shorter and as predicate
 predicate isSource(DataFlow::Node source) {
-    Value::named("input").getACall() = source.asCfgNode()
+    API::moduleImport("builtins").getMember("input").getACall() = source
 }
