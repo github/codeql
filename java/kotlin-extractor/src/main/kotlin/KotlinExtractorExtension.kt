@@ -34,6 +34,7 @@ import org.jetbrains.kotlin.ir.expressions.IrStatementOrigin.*
 import org.jetbrains.kotlin.ir.expressions.IrWhen
 import org.jetbrains.kotlin.ir.expressions.IrElseBranch
 import org.jetbrains.kotlin.ir.expressions.IrWhileLoop
+import org.jetbrains.kotlin.ir.expressions.IrBlock
 import org.jetbrains.kotlin.ir.IrStatement
 import org.jetbrains.kotlin.ir.symbols.IrClassifierSymbol
 
@@ -338,6 +339,14 @@ class KotlinFileExtractor(val tw: TrapWriter) {
                 tw.writeStmts_returnstmt(id, parent, idx, callable)
                 tw.writeHasLocation(id, locId)
                 extractExpression(e.value, callable, id, 0)
+            } is IrBlock -> {
+                val id = tw.getFreshIdLabel<DbBlock>()
+                val locId = tw.getLocation(e.startOffset, e.endOffset)
+                tw.writeStmts_block(id, parent, idx, callable)
+                tw.writeHasLocation(id, locId)
+                e.statements.forEachIndexed { i, s ->
+                    extractStatement(s, callable, id, i)
+                }
             } is IrWhileLoop -> {
                 val id = tw.getFreshIdLabel<DbWhilestmt>()
                 val locId = tw.getLocation(e.startOffset, e.endOffset)
