@@ -29,9 +29,9 @@ predicate isLogicalOrandBitwise(Expr exptmp) {
   (
     exptmp.(LogicalOrExpr).getRightOperand().(BinaryBitwiseOperation).getLeftOperand().getType()
       instanceof BoolType and
-    // The essence of these lines is to improve the quality of detection by eliminating the situation 
-    // of processing a logical type by bit operations. In fact, the predicate looks for a situation 
-    // when the left operand of a bit operation has a boolean type, which already suggests that the priority is not correct. 
+    // The essence of these lines is to improve the quality of detection by eliminating the situation
+    // of processing a logical type by bit operations. In fact, the predicate looks for a situation
+    // when the left operand of a bit operation has a boolean type, which already suggests that the priority is not correct.
     // But if the right-hand operand is 0 or 1, then there is a possibility that the author intended so.
     not exptmp
         .(LogicalOrExpr)
@@ -54,7 +54,7 @@ predicate isLogicalOrandBitwise(Expr exptmp) {
       instanceof BoolType and
     // Looking for a situation in which the right-hand operand of a bit operation is not limited to 0 or 1.
     // In this case, the logical operation will be performed with the result of a binary operation that is not a Boolean type.
-    // In my opinion this indicates a priority error. after all, it will be quite difficult for a developer 
+    // In my opinion this indicates a priority error. after all, it will be quite difficult for a developer
     // to evaluate the conversion of the results of a bit operation to a boolean type.
     not exptmp
         .(LogicalAndExpr)
@@ -173,17 +173,17 @@ where
   isLogicalOrandBitwise(exp) and
   msg = "Binary operations have higher priority."
   or
-  // Looking for a situation where the equality of the sizes of the first operands 
+  // Looking for a situation where the equality of the sizes of the first operands
   // might indicate that the developer planned to perform an operation between them.
-  // However, the absence of parentheses means that the rightmost operation will be performed initially. 
+  // However, the absence of parentheses means that the rightmost operation will be performed initially.
   isBitwiseandBitwise(exp) and
   isDifferentSize(exp.(BinaryBitwiseOperation).getLeftOperand(),
     exp.(BinaryBitwiseOperation).getRightOperand().(BinaryBitwiseOperation).getLeftOperand(),
     exp.(BinaryBitwiseOperation).getRightOperand().(BinaryBitwiseOperation).getRightOperand()) and
   msg = "Expression ranges do not match operation precedence."
   or
-  // Looking for a out those expressions that, as a result of identifying the priority with parentheses, 
-  // will give different values. As a consequence, this piece of code was supposed to find errors associated 
+  // Looking for a out those expressions that, as a result of identifying the priority with parentheses,
+  // will give different values. As a consequence, this piece of code was supposed to find errors associated
   // with possible outcomes of operations.
   isBitwiseandBitwise(exp) and
   isDifferentResults(exp.(BinaryBitwiseOperation).getLeftOperand(),
