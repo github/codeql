@@ -125,6 +125,7 @@ module Templating {
     /**
      * Gets the innermost JavaScript expression containing this template tag, if any.
      */
+    pragma[nomagic]
     Expr getEnclosingExpr() { expr_contains_template_tag_location(result, getLocation()) }
   }
 
@@ -315,12 +316,17 @@ module Templating {
       )
     }
 
+    pragma[nomagic]
+    private Folder getFolder() {
+      result = getFile().getParentContainer()
+    }
+
     /** Gets the template file referenced by this node. */
     final TemplateFile getTemplateFile() {
       result =
         this.getValue()
             .(TemplateFileReferenceString)
-            .getTemplateFile(getFile().getParentContainer())
+            .getTemplateFile(getFolder())
     }
   }
 
@@ -377,7 +383,12 @@ module Templating {
 
     DefaultTemplateReferenceString() { this = r.getValue().replaceAll("\\", "/") }
 
-    override Folder getContextFolder() { result = r.getFile().getParentContainer() }
+    pragma[nomagic] // Stop optimizer from trying to share the 'getParentContainer' join
+    private Folder getFileReferenceFolder() {
+      result = pragma[only_bind_out](r).getFile().getParentContainer()
+    }
+
+    override Folder getContextFolder() { result = getFileReferenceFolder() }
   }
 
   /** The `X` in a path of form `../X`, treated as a separate path string with a different context folder. */
