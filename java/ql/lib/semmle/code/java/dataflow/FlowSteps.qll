@@ -10,6 +10,7 @@ private import semmle.code.java.dataflow.DataFlow
  * ensuring that they are visible to the taint tracking library.
  */
 private module Frameworks {
+  private import semmle.code.java.Strings
   private import semmle.code.java.frameworks.jackson.JacksonSerializability
   private import semmle.code.java.frameworks.android.Intent
   private import semmle.code.java.frameworks.android.SQLite
@@ -106,12 +107,6 @@ private class StringTaintPreservingMethod extends TaintPreservingCallable {
     or
     this.hasName(["format", "formatted", "join"]) and arg = [0 .. getNumberOfParameters()]
   }
-}
-
-private class StringTaintPreservingConstructor extends Constructor, TaintPreservingCallable {
-  StringTaintPreservingConstructor() { this.getDeclaringType() instanceof TypeString }
-
-  override predicate returnsTaintFrom(int arg) { arg = 0 }
 }
 
 private class NumberTaintPreservingCallable extends TaintPreservingCallable {
