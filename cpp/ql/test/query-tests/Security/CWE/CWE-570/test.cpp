@@ -230,6 +230,6 @@ void good_new_catch_exception_in_conversion() {
 void *operator new(std::size_t, int n, const std::nothrow_t &);
 
 void test_operator_new_without_exception_spec() {
-  int* p = new(42, std::nothrow) int; // GOOD [FALSE POSITIVE]
+  int* p = new(42, std::nothrow) int; // GOOD
   if(p == nullptr) {}
 }
