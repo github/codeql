@@ -1,6 +1,11 @@
+/** Provides classes and predicates related to support coverage of external libraries. */
+
 import java
 private import semmle.code.java.dataflow.FlowSources
 
+/**
+ * Gets the coverage support for the given `Callable`. If the `Callable` is not supported, returns "?".
+ */
 string supportKind(Callable api) {
   if api instanceof TaintPreservingCallable
   then result = "taint-preserving"
@@ -16,15 +21,15 @@ string supportKind(Callable api) {
         else result = "?"
 }
 
-predicate summaryCall(Callable api) {
+private predicate summaryCall(Callable api) {
   summaryModel(packageName(api), typeName(api), _, api.getName(), _, _, _, _, _)
 }
 
-predicate sink(Callable api) {
+private predicate sink(Callable api) {
   sinkModel(packageName(api), typeName(api), _, api.getName(), _, _, _, _)
 }
 
-predicate source(Callable api) {
+private predicate source(Callable api) {
   sourceModel(packageName(api), typeName(api), _, api.getName(), _, _, _, _)
 }
 

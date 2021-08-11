@@ -1,12 +1,19 @@
+/** Provides classes and predicates related to handling APIs from external libraries. */
+
 private import java
 private import APIUsage
 private import semmle.code.java.dataflow.ExternalFlow
 
+/**
+ * An external API from either the Java Standard Library or a 3rd party library.
+ */
 class ExternalAPI extends Callable {
   ExternalAPI() { not this.fromSource() }
 
+  /** Holds true if this API is part of a common testing library or framework */
   predicate isTestLibrary() { getDeclaringType() instanceof TestLibrary }
 
+  /** Holds true if this API has inputs or outputs that are interesting to support by CodeQL. */
   predicate isInteresting() {
     getNumberOfParameters() > 0 and
     exists(Type retType | retType = getReturnType() |
@@ -16,14 +23,21 @@ class ExternalAPI extends Callable {
     )
   }
 
+  /**
+   * Gets information about the external API in the form expected by the CSV modeling framework.
+   */
   string asCSV(ExternalAPI api) {
     result =
       api.getDeclaringType().getPackage() + ";?;" + api.getDeclaringType().getSourceDeclaration() +
         ";" + api.getName() + ";" + paramsString(api)
   }
 
+  /** Holds true if this API is not yet supported by existing CodeQL libraries */
   predicate isSupported() { not supportKind(this) = "?" }
 
+  /**
+   * Gets the jar file containing this API. Normalizes the Java Runtime to "rt.jar" despite the presence of modules.
+   */
   string jarContainer() {
     result = containerAsJar(any(ExternalAPI api).getCompilationUnit().getParentContainer*())
   }
