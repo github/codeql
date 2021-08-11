@@ -25,12 +25,6 @@ DataFlowCall summaryDataFlowCall(Node receiver) { none() }
 /** Gets the type of content `c`. */
 DataFlowType getContentType(Content c) { result = c.getType() }
 
-/** Gets the return type of kind `rk` for callable `c`. */
-DataFlowType getReturnType(SummarizedCallable c, ReturnKind rk) {
-  result = getErasedRepr(c.getReturnType()) and
-  exists(rk)
-}
-
 /**
  * Gets the type of the `i`th parameter in a synthesized call that targets a
  * callback of type `t`.

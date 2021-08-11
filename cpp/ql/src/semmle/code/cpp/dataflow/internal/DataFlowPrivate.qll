@@ -283,3 +283,21 @@ predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) { no
 
 /** Extra data-flow steps needed for lambda flow analysis. */
 predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) { none() }
+
+/** The type of calls to be used in `isAdditionalCallTarget`. */
+class DataFlowCallAdditional = DataFlowCall;
+
+/** Injects a call from `isAdditionalCallTarget` into a `DataFlowCall`. */
+DataFlowCall injectAdditionalCall(DataFlowCallAdditional call) { result = call }
+
+/** The type of call targets to be used in `isAdditionalCallTarget`. */
+class DataFlowCallableAdditional = DataFlowCallable;
+
+/** Injects a callable from `isAdditionalCallTarget` into a `DataFlowCallable`. */
+DataFlowCallable injectAdditionalCallable(DataFlowCallableAdditional callable) { result = callable }
+
+/** Gets the return type of kind `rk` for callable `c`. */
+bindingset[c, rk]
+DataFlowType getReturnType(DataFlowCallable c, ReturnKind rk) {
+  exists(c) and exists(rk) and result instanceof VoidType
+}

@@ -1044,6 +1044,10 @@ abstract class ReturnKindExt extends TReturnKindExt {
   /** Gets a textual representation of this return kind. */
   abstract string toString();
 
+  /** Gets the return type of this kind for callable c, if any. */
+  bindingset[c]
+  abstract DataFlowType getReturnType(DataFlowCallable c);
+
   /** Gets a node corresponding to data flow out of `call`. */
   final OutNodeExt getAnOutNode(DataFlowCall call) { result = getAnOutNodeExt(call, this) }
 }
@@ -1055,6 +1059,9 @@ class ValueReturnKind extends ReturnKindExt, TValueReturn {
 
   ReturnKind getKind() { result = kind }
 
+  bindingset[c]
+  override DataFlowType getReturnType(DataFlowCallable c) { result = getReturnType(c, kind) }
+
   override string toString() { result = kind.toString() }
 }
 
@@ -1064,6 +1071,13 @@ class ParamUpdateReturnKind extends ReturnKindExt, TParamUpdate {
   ParamUpdateReturnKind() { this = TParamUpdate(pos) }
 
   int getPosition() { result = pos }
+
+  override DataFlowType getReturnType(DataFlowCallable c) {
+    exists(ParameterNode p |
+      p.isParameterOf(c, pos) and
+      result = getNodeDataFlowType(p)
+    )
+  }
 
   override string toString() { result = "param update " + pos }
 }
