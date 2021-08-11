@@ -23,6 +23,14 @@ class ExternalAPI extends Callable {
   }
 
   predicate isSupported() { not supportKind(this) = "?" }
+
+  string jarContainer() {
+    result = containerAsJar(any(ExternalAPI api).getCompilationUnit().getParentContainer*())
+  }
+
+  private string containerAsJar(Container container) {
+    if container instanceof JarFile then result = container.getBaseName() else result = "rt.jar"
+  }
 }
 
 private class TestLibrary extends RefType {

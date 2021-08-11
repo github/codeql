@@ -1,21 +1,22 @@
 /**
  * @name External libraries
  * @description A list of external libraries used in the code
- * @kind diagnostic
+ * @kind metric
+ * @metricType callable
  * @id java/telemetry/external-libs
  */
 
 import java
 import ExternalAPI
 
-from int Usages, JarFile jar
+from int Usages, string jarname
 where
-  jar = any(ExternalAPI api).getCompilationUnit().getParentContainer*() and
+  jarname = any(ExternalAPI api).jarContainer() and
   Usages =
     strictcount(Call c, ExternalAPI a |
       c.getCallee() = a and
       not c.getFile() instanceof GeneratedFile and
-      a.getCompilationUnit().getParentContainer*() = jar and
+      a.jarContainer() = jarname and
       not a.isTestLibrary()
     )
-select jar.getFile().getBaseName(), Usages order by Usages desc
+select jarname, Usages order by Usages desc
