@@ -16,6 +16,7 @@ import org.jetbrains.kotlin.ir.declarations.IrDeclarationParent
 import org.jetbrains.kotlin.ir.declarations.IrFile
 import org.jetbrains.kotlin.ir.declarations.IrFunction
 import org.jetbrains.kotlin.ir.declarations.IrValueParameter
+import org.jetbrains.kotlin.ir.declarations.IrProperty
 import org.jetbrains.kotlin.ir.util.dump
 import org.jetbrains.kotlin.ir.util.IdSignature
 import org.jetbrains.kotlin.ir.util.packageFqName
@@ -148,6 +149,7 @@ class KotlinFileExtractor(val tw: TrapWriter) {
         when (declaration) {
             is IrClass -> extractClass(declaration)
             is IrFunction -> extractFunction(declaration, parentid)
+            is IrProperty -> extractProperty(declaration, parentid)
             else -> extractorBug("Unrecognised IrDeclaration: " + declaration.javaClass)
         }
     }
@@ -263,6 +265,26 @@ class KotlinFileExtractor(val tw: TrapWriter) {
         val body = f.body
         if(body != null) {
             extractBody(body, id)
+        }
+    }
+
+    fun useProperty(p: IrProperty): Label<out DbField> {
+        val parentId = useDeclarationParent(p.parent)
+        val label = "@\"field;{$parentId};${p.name.asString()}\""
+        val id: Label<DbField> = tw.getLabelFor(label)
+        return id
+    }
+
+    fun extractProperty(p: IrProperty, parentid: Label<out DbPackage_or_reftype>) {
+        val bf = p.backingField
+        if(bf == null) {
+            extractorBug("IrProperty without backing field")
+        } else {
+            val id = useProperty(p)
+            val locId = tw.getLocation(p.startOffset, p.endOffset)
+            val typeId = useType(bf.type)
+            tw.writeFields(id, p.name.asString(), typeId, parentid, id)
+            tw.writeHasLocation(id, locId)
         }
     }
 
