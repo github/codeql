@@ -2,4 +2,5 @@
 | stmts.kt:3:8:3:12 | if (...) |
 | stmts.kt:4:15:4:19 | if (...) |
 | stmts.kt:7:5:8:16 | while (...) |
+| stmts.kt:8:9:8:16 | return ... |
 | stmts.kt:9:5:9:16 | return ... |

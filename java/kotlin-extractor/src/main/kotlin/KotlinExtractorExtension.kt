@@ -283,51 +283,16 @@ class KotlinFileExtractor(val tw: TrapWriter) {
 
     fun extractStatement(s: IrStatement, callable: Label<out DbCallable>, parent: Label<out DbStmtparent>, idx: Int) {
         when(s) {
-            is IrReturn -> {
-                val id = tw.getFreshIdLabel<DbReturnstmt>()
-                val locId = tw.getLocation(s.startOffset, s.endOffset)
-                tw.writeStmts_returnstmt(id, parent, idx, callable)
-                tw.writeHasLocation(id, locId)
-                extractExpression(s.value, id, 0)
-            } is IrWhileLoop -> {
-                val id = tw.getFreshIdLabel<DbWhilestmt>()
-                val locId = tw.getLocation(s.startOffset, s.endOffset)
-                tw.writeStmts_whilestmt(id, parent, idx, callable)
-                tw.writeHasLocation(id, locId)
-                extractExpression(s.condition, id, 0)
-                val body = s.body
-                if(body != null) {
-                    extractExpression(body, id, 1) // TODO: The QLLs think this is a Stmt
-                }
-            } is IrWhen -> {
-                val x: IrWhen = s
-                if(s.origin == IF) {
-                    var branchParent = parent
-                    var branchIdx = idx
-                    for(b in x.branches) {
-                        if(b is IrElseBranch) {
-                            // TODO
-                        } else {
-                            val id = tw.getFreshIdLabel<DbIfstmt>()
-                            val locId = tw.getLocation(b.startOffset, b.endOffset)
-                            tw.writeStmts_ifstmt(id, branchParent, branchIdx, callable)
-                            tw.writeHasLocation(id, locId)
-                            extractExpression(b.condition, id, 0)
-                            extractExpression(b.result, id, 1) // TODO: The QLLs think this is a Stmt
-                            branchParent = id
-                            branchIdx = 2
-                        }
-                    }
-                } else {
-                    extractorBug("Unrecognised IrWhen: " + s.javaClass)
-                }
-            } else -> {
+            is IrExpression -> {
+                extractExpression(s, callable, parent, idx)
+            }
+            else -> {
                 extractorBug("Unrecognised IrStatement: " + s.javaClass)
             }
         }
     }
 
-    fun extractExpression(e: IrExpression, parent: Label<out DbExprparent>, idx: Int) {
+    fun extractExpression(e: IrExpression, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int) {
         when(e) {
             is IrCall -> {
                 val sig: IdSignature.PublicSignature? = e.symbol.signature?.asPublic()
@@ -345,8 +310,8 @@ class KotlinFileExtractor(val tw: TrapWriter) {
                                     val locId = tw.getLocation(e.startOffset, e.endOffset)
                                     tw.writeExprs_addexpr(id, typeId, parent, idx)
                                     tw.writeHasLocation(id, locId)
-                                    extractExpression(left, id, 0)
-                                    extractExpression(right, id, 1)
+                                    extractExpression(left, callable, id, 0)
+                                    extractExpression(right, callable, id, 1)
                                 } else {
                                     extractorBug("Unrecognised IrCall: left or right is null")
                                 }
@@ -366,6 +331,44 @@ class KotlinFileExtractor(val tw: TrapWriter) {
                 tw.writeExprs_integerliteral(id, typeId, parent, idx)
                 tw.writeHasLocation(id, locId)
                 tw.writeNamestrings(v.toString(), v.toString(), id)
+            }
+            is IrReturn -> {
+                val id = tw.getFreshIdLabel<DbReturnstmt>()
+                val locId = tw.getLocation(e.startOffset, e.endOffset)
+                tw.writeStmts_returnstmt(id, parent, idx, callable)
+                tw.writeHasLocation(id, locId)
+                extractExpression(e.value, callable, id, 0)
+            } is IrWhileLoop -> {
+                val id = tw.getFreshIdLabel<DbWhilestmt>()
+                val locId = tw.getLocation(e.startOffset, e.endOffset)
+                tw.writeStmts_whilestmt(id, parent, idx, callable)
+                tw.writeHasLocation(id, locId)
+                extractExpression(e.condition, callable, id, 0)
+                val body = e.body
+                if(body != null) {
+                    extractExpression(body, callable, id, 1) // TODO: The QLLs think this is a Stmt
+                }
+            } is IrWhen -> {
+                if(e.origin == IF) {
+                    var branchParent = parent
+                    var branchIdx = idx
+                    for(b in e.branches) {
+                        if(b is IrElseBranch) {
+                            // TODO
+                        } else {
+                            val id = tw.getFreshIdLabel<DbIfstmt>()
+                            val locId = tw.getLocation(b.startOffset, b.endOffset)
+                            tw.writeStmts_ifstmt(id, branchParent, branchIdx, callable)
+                            tw.writeHasLocation(id, locId)
+                            extractExpression(b.condition, callable, id, 0)
+                            extractExpression(b.result, callable, id, 1) // TODO: The QLLs think this is a Stmt
+                            branchParent = id
+                            branchIdx = 2
+                        }
+                    }
+                } else {
+                    extractorBug("Unrecognised IrWhen: " + e.javaClass)
+                }
             }
             else -> {
                 extractorBug("Unrecognised IrExpression: " + e.javaClass)

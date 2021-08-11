@@ -17,6 +17,11 @@ enums = {}
 type_aliases = {}
 type_hierarchy = {}
 
+def unalias(t):
+    while t in type_aliases:
+        t = type_aliases[t]
+    return t
+
 def genTable(kt, relname, body, enum = None, kind = None, num = None, typ = None):
     kt.write('fun TrapWriter.write' + upperFirst(relname))
     if kind is not None:
@@ -117,7 +122,10 @@ with open('src/main/kotlin/KotlinExtractorDbScheme.kt', 'w') as kt:
             kt.write('typealias Db' + upperFirst(typ) + ' = Db' + upperFirst(type_aliases[typ]) + '\n')
         else:
             kt.write('sealed interface Db' + upperFirst(typ))
-            names = sorted(type_hierarchy[typ])
+            # This map of unalias avoids duplicates when both T and an
+            # alias of T appear in the set. Sorting makes the output
+            # deterministic.
+            names = sorted(set(map(unalias, type_hierarchy[typ])))
             if names:
                 kt.write(': ')
                 kt.write(', '.join(map(lambda name: 'Db' + upperFirst(name), names)))
