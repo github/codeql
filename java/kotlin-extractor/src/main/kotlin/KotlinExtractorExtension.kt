@@ -156,28 +156,28 @@ class KotlinFileExtractor(val tw: TrapWriter) {
 
     @Suppress("UNUSED_PARAMETER")
     fun useSimpleType(s: IrSimpleType): Label<out DbType> {
+        fun primitiveType(name: String): Label<DbPrimitive> {
+            return tw.getLabelFor("@\"type;$name\"", {
+                tw.writePrimitives(it, name)
+            })
+        }
         when {
-            s.isInt() -> {
-                val label = "@\"type;int\""
-                val id: Label<DbPrimitive> = tw.getLabelFor(label, {
-                    tw.writePrimitives(it, "int")
-                })
-                return id
+            s.isByte() -> return primitiveType("byte")
+            s.isShort() -> return primitiveType("short")
+            s.isInt() -> return primitiveType("int")
+            s.isLong() -> return primitiveType("long")
+            s.isUByte() || s.isUShort() || s.isUInt() || s.isULong() -> {
+                extractorBug("Unhandled unsigned type")
+                return Label(0)
             }
-            s.isBoolean() -> {
-                val label = "@\"type;boolean\""
-                val id: Label<DbPrimitive> = tw.getLabelFor(label, {
-                    tw.writePrimitives(it, "boolean")
-                })
-                return id
-            }
-            s.isString() -> {
-                val label = "@\"type;string\""
-                val id: Label<DbPrimitive> = tw.getLabelFor(label, {
-                    tw.writePrimitives(it, "string")
-                })
-                return id
-            }
+
+            s.isDouble() -> return primitiveType("double")
+            s.isFloat() -> return primitiveType("float")
+
+            s.isBoolean() -> return primitiveType("boolean")
+
+            s.isChar() -> return primitiveType("char")
+            s.isString() -> return primitiveType("string") // TODO: Wrong
             s.classifier.owner is IrClass -> {
                 val classifier: IrClassifierSymbol = s.classifier
                 val cls: IrClass = classifier.owner as IrClass
