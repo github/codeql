@@ -36,4 +36,4 @@ where
     format = fc.getFormat().getValue() // format: "%s: Failed init_producer"
     // fc.getTarget().hasName("DEBUG_AN_LOG") 
     // format.regexpMatch(".*Interface [a-zA-Z0-9/%]+ is (DOWN|UP)")
-select fc, "Format string is: "+format.toString()
+select fc, "Format string is: "+format
