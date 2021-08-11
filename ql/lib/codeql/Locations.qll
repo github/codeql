@@ -51,3 +51,11 @@ class Location extends @location {
     )
   }
 }
+
+/** Holds if location `one` starts strictly before location `two` */
+pragma[inline]
+predicate strictlyBefore(Location one, Location two) {
+  one.getStartLine() < two.getStartLine()
+  or
+  one.getStartLine() = two.getStartLine() and one.getStartColumn() < two.getStartColumn()
+}

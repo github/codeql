@@ -2058,6 +2058,28 @@ params/params.rb:
 #   70|           getAnOperand/getLeftOperand: [LocalVariableAccess] a
 #   70|           getAnOperand/getRightOperand: [LocalVariableAccess] b
 #   70|         getAnOperand/getRightOperand: [LocalVariableAccess] c
+erb/template.html.erb:
+#   19| [Toplevel] template.html.erb
+#   19|   getStmt: [StringLiteral] "hello world"
+#   19|     getComponent: [StringTextComponent] hello world
+#   25|   getStmt: [AssignExpr] ... = ...
+#   25|     getAnOperand/getLeftOperand: [LocalVariableAccess] xs
+#   25|     getAnOperand/getRightOperand: [StringLiteral] ""
+#   27|   getStmt: [ForExpr] for ... in ...
+#   27|     getPattern: [LocalVariableAccess] x
+#   27|     <in>: [???] In
+#   27|     getValue: [ArrayLiteral] [...]
+#   27|       getElement: [StringLiteral] "foo"
+#   27|         getComponent: [StringTextComponent] foo
+#   27|       getElement: [StringLiteral] "bar"
+#   27|         getComponent: [StringTextComponent] bar
+#   27|       getElement: [StringLiteral] "baz"
+#   27|         getComponent: [StringTextComponent] baz
+#   27|     getBody: [StmtSequence] do ...
+#   28|       getStmt: [AssignAddExpr] ... += ...
+#   28|         getAnOperand/getLeftOperand: [LocalVariableAccess] xs
+#   28|         getAnOperand/getRightOperand: [LocalVariableAccess] x
+#   29|       getStmt: [LocalVariableAccess] xs
 modules/toplevel.rb:
 #    1| [Toplevel] toplevel.rb
 #    1|   getStmt: [MethodCall] call to puts

@@ -100,14 +100,6 @@ private predicate scopeAssigns(Scope::Range scope, string name, Ruby::Identifier
   scope = scopeOf(i)
 }
 
-/** Holds if location `one` starts strictly before location `two` */
-pragma[inline]
-private predicate strictlyBefore(Location one, Location two) {
-  one.getStartLine() < two.getStartLine()
-  or
-  one.getStartLine() = two.getStartLine() and one.getStartColumn() < two.getStartColumn()
-}
-
 cached
 private module Cached {
   cached
