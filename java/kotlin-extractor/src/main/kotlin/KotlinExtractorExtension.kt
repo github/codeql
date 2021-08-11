@@ -206,11 +206,12 @@ class KotlinFileExtractor(val tw: TrapWriter) {
     }
 
     fun useClass(c: IrClass): Label<out DbClass> {
-        if(c.name.asString() == "Unit" && tw.getExistingLabelFor<DbClass>(getClassLabel(c)) == null) {
-            return extractClass(c)
-        } else {
-            return addClassLabel(c)
+        if(c.name.asString() == "Any" || c.name.asString() == "Unit") {
+            if(tw.getExistingLabelFor<DbClass>(getClassLabel(c)) == null) {
+                return extractClass(c)
+            }
         }
+        return addClassLabel(c)
     }
 
     fun extractClass(c: IrClass): Label<out DbClass> {
@@ -256,6 +257,15 @@ class KotlinFileExtractor(val tw: TrapWriter) {
         return id
     }
 
+    fun extractValueParameter(vp: IrValueParameter, parent: Label<out DbMethod>, idx: Int) {
+        val id = tw.getFreshIdLabel<DbParam>()
+        val typeId = useType(vp.type)
+        val locId = tw.getLocation(vp.startOffset, vp.endOffset)
+        tw.writeParams(id, typeId, idx, parent, id)
+        tw.writeHasLocation(id, locId)
+        tw.writeParamName(id, vp.name.asString())
+    }
+
     fun extractFunction(f: IrFunction, parentid: Label<out DbPackage_or_reftype>) {
         val id = useFunction(f)
         val locId = tw.getLocation(f.startOffset, f.endOffset)
@@ -266,6 +276,9 @@ class KotlinFileExtractor(val tw: TrapWriter) {
         val body = f.body
         if(body != null) {
             extractBody(body, id)
+        }
+        f.valueParameters.forEachIndexed { i, vp ->
+            extractValueParameter(vp, id, i)
         }
     }
 
