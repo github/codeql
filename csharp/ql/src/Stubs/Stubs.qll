@@ -759,8 +759,9 @@ private string stubMethod(Method m, Assembly assembly) {
   then
     result =
       "    " + stubModifiers(m) + stubClassName(m.(Method).getReturnType()) + " " +
-        stubExplicitImplementation(m) + m.getUndecoratedName() + stubGenericMethodParams(m) + "(" +
-        stubParameters(m) + ")" + stubTypeParametersConstraints(m) + stubImplementation(m) + ";\n"
+        stubExplicitImplementation(m) + escapeIfKeyword(m.getUndecoratedName()) +
+        stubGenericMethodParams(m) + "(" + stubParameters(m) + ")" +
+        stubTypeParametersConstraints(m) + stubImplementation(m) + ";\n"
   else result = "    // Stub generator skipped method: " + m.getName() + "\n"
 }
 
@@ -786,7 +787,7 @@ pragma[noinline]
 private string stubEnumConstant(EnumConstant ec, Assembly assembly) {
   ec instanceof GeneratedMember and
   ec.getALocation() = assembly and
-  result = "    " + ec.getName() + ",\n"
+  result = "    " + escapeIfKeyword(ec.getName()) + ",\n"
 }
 
 pragma[noinline]
@@ -795,7 +796,7 @@ private string stubProperty(Property p, Assembly assembly) {
   p.getALocation() = assembly and
   result =
     "    " + stubModifiers(p) + stubClassName(p.getType()) + " " + stubExplicitImplementation(p) +
-      p.getName() + " { " + stubGetter(p) + stubSetter(p) + "}\n"
+      escapeIfKeyword(p.getName()) + " { " + stubGetter(p) + stubSetter(p) + "}\n"
 }
 
 pragma[noinline]
@@ -810,7 +811,7 @@ private string stubConstructor(Constructor c, Assembly assembly) {
       c.getNumberOfParameters() > 0
     then
       result =
-        "    " + stubModifiers(c) + c.getName() + "(" + stubParameters(c) + ")" +
+        "    " + stubModifiers(c) + escapeIfKeyword(c.getName()) + "(" + stubParameters(c) + ")" +
           stubConstructorInitializer(c) + " => throw null;\n"
     else result = "    // Stub generator skipped constructor \n"
 }
@@ -844,7 +845,7 @@ private string stubEvent(Event e, Assembly assembly) {
   e.getALocation() = assembly and
   result =
     "    " + stubModifiers(e) + "event " + stubClassName(e.getType()) + " " +
-      stubExplicitImplementation(e) + e.getName() + stubEventAccessors(e) + "\n"
+      stubExplicitImplementation(e) + escapeIfKeyword(e.getName()) + stubEventAccessors(e) + "\n"
 }
 
 pragma[nomagic]
