@@ -1,0 +1,78 @@
+* SQL injection example
+** Setup and sample run
+   Execute the following in a bourne-style shell, one block at a time to see
+   results. 
+
+  #+BEGIN_SRC sh
+    # Prepare db
+    ./admin -r
+    ./admin -c
+    ./admin -s 
+
+    # Add regular user
+    ./add-user.py 2>> log
+    First User
+
+    # Check
+    ./admin -s
+
+    # Add Johnny Droptable 
+    ./add-user.py 2>> log
+    Johnny'); DROP TABLE users; --
+
+    # See the problem:
+    ./admin -s
+
+    # Check the log
+    tail log
+  #+END_SRC
+
+** Build codeql database
+   #+BEGIN_SRC sh
+     #* Build the db with source commit id.
+     export PATH=$HOME/local/vmsync/codeql243:"$PATH"
+     SRCDIR=$HOME/local/codeql-training-material.python-sqli/python/codeql-dataflow-sql-injection
+     DB=$HOME/local/db/python-sqli-$(cd $SRCDIR && git rev-parse --short HEAD)
+
+     echo $DB
+     test -d "$DB" && rm -fR "$DB"
+     mkdir -p "$DB"
+
+     cd $SRCDIR
+     codeql database create --language=python -s $SRCDIR -j 8 -v $DB
+
+   #+END_SRC
+   # Versions:
+   # ~/local/db/python-sqli-6a5a10d
+
+** Queries
+   Written against v1.26.0 of the libraries, using v2.4.3 of the cli.  For
+   example, using 
+   #+BEGIN_SRC sh
+     cd ~/local/vmsync/ql
+     git checkout v1.26.0
+   #+END_SRC
+   you should add the =ql/= tree 
+   : ~/local/vmsync/ql
+   to the VS Code workspace.
+** Reading Order
+   The queries introduce CodeQL concepts and should be read bottom-up in this
+   order:
+   1. =source.ql=: introduces Value, ControlFlowNode and DataFlow::Node
+   2. =sink.ql=: introduces AstNode
+   3. =TaintFlowTemplate.ql=: introduce the taint flow template
+   4. =TaintFlow.ql=: taint flow with endpoints only
+   5. =TaintFlowPath.ql=: taint flow with full path
+
+
+** Note on the Python code
+   The Python call 
+   : conn.execute(query)
+   to sqlite3 only allows one statement and produces an exception:
+   : sqlite3.Warning: You can only execute one statement at a time.
+   This makes it safer than the raw
+   : sqlite3_exec() 
+   or Python's
+   : conn.executescript
+   
+   For this tutorial, we use the multi-statement =executescript()= call.

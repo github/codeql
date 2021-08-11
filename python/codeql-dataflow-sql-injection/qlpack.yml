@@ -1,0 +1,3 @@
+name: python-sql-injection
+version: 0.0.0
+libraryPathDependencies: codeql-python
