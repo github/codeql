@@ -82,6 +82,8 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
       - name: Build Query Pack
         run: |
+          codeql/codeql pack create ql/lib --output target/packs
+          codeql/codeql pack install ql/src
           codeql/codeql pack create ql/src --output target/packs
           PACK_FOLDER=$(readlink -f target/packs/codeql/ruby-queries/*)
           codeql/codeql generate query-help --format=sarifv2.1.0 --output="${PACK_FOLDER}/rules.sarif" ql/src
@@ -209,16 +211,10 @@ jobs:
           extractor: ruby
           tests: .
           ' > qlpack.yml
-          echo '- qlpack: codeql-ruby
-          - include:
-              kind:
-              - problem
-              - path-problem
-          ' > suite.qls
       - name: Run QL test
         shell: bash
         run: |
-          "${{ runner.temp }}/codeql/codeql" test run --search-path "${{ runner.temp }}/ruby-bundle" .
+          "${{ runner.temp }}/codeql/codeql" test run --search-path "${{ runner.temp }}/ruby-bundle" --additional-packs "${{ runner.temp }}/ruby-bundle" .
       - name: Create database
         shell: bash
         run: |
@@ -226,4 +222,4 @@ jobs:
       - name: Analyze database
         shell: bash
         run: |
-          "${{ runner.temp }}/codeql/codeql" database analyze --search-path "${{ runner.temp }}/ruby-bundle" --format=sarifv2.1.0 --output=out.sarif ../database suite.qls
+          "${{ runner.temp }}/codeql/codeql" database analyze --search-path "${{ runner.temp }}/ruby-bundle" --format=sarifv2.1.0 --output=out.sarif ../database ruby-code-scanning.qls
