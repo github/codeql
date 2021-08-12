@@ -471,6 +471,20 @@ class KotlinFileExtractor(val tw: TrapWriter) {
                         tw.writeExprs_booleanliteral(id, typeId, parent, idx)
                         tw.writeHasLocation(id, locId)
                         tw.writeNamestrings(v.toString(), v.toString(), id)
+                    } is Char -> {
+                        val id = tw.getFreshIdLabel<DbCharacterliteral>()
+                        val typeId = useType(e.type)
+                        val locId = tw.getLocation(e.startOffset, e.endOffset)
+                        tw.writeExprs_characterliteral(id, typeId, parent, idx)
+                        tw.writeHasLocation(id, locId)
+                        tw.writeNamestrings(v.toString(), v.toString(), id)
+                    } is String -> {
+                        val id = tw.getFreshIdLabel<DbStringliteral>()
+                        val typeId = useType(e.type)
+                        val locId = tw.getLocation(e.startOffset, e.endOffset)
+                        tw.writeExprs_stringliteral(id, typeId, parent, idx)
+                        tw.writeHasLocation(id, locId)
+                        tw.writeNamestrings(v.toString(), v.toString(), id)
                     } else -> {
                         if(v == null) {
                             extractorBug("Unrecognised IrConst: null value")

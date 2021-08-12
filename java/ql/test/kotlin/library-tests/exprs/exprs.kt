@@ -25,6 +25,8 @@ fun topLevelMethod(x: Int, y: Int): Int {
     val b3 = b1 && b2
     val b4 = b1 || b2
     val b5 = !b1
+    val c = 'x'
+    val str = "string lit"
     return 123 + 456
 }
 
