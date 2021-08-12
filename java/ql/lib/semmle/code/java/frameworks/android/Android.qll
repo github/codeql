@@ -238,7 +238,7 @@ private class TaintPropagationModels extends SummaryModelCsv {
           "ShortArray", "Size", "SizeF", "SparseParcelableArray", "StringArrayList"
         ] + ";;;Argument[-1];ReturnValue;taint"
     or
-    // Intent readers that return their value
+    // Parcel readers that return their value
     s =
       "android.os;Parcel;false;read" +
         [
@@ -248,7 +248,7 @@ private class TaintPropagationModels extends SummaryModelCsv {
           "StrongBinder", "TypedObject", "Value"
         ] + ";;;Argument[-1];ReturnValue;taint"
     or
-    // Intent readers that write to an existing object
+    // Parcel readers that write to an existing object
     s =
       "android.os;Parcel;false;read" +
         [
@@ -257,7 +257,7 @@ private class TaintPropagationModels extends SummaryModelCsv {
           "StringList", "TypedArray", "TypedList"
         ] + ";;;Argument[-1];Argument[0];taint"
     or
-    // One Intent method that aliases an argument to a return value
+    // One Parcel method that aliases an argument to a return value
     s = "android.os;Parcel;false;readParcelableList;;;Argument[0];ReturnValue;value"
   }
 }
