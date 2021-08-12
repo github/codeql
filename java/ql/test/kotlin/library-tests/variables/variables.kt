@@ -3,7 +3,7 @@ class Foo {
     val prop: Int = 1
 
     fun myFunction(param: Int) {
-        val local = 2
+        val local = 2 + 3
     }
 }
 

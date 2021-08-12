@@ -319,15 +319,19 @@ class KotlinFileExtractor(val tw: TrapWriter) {
         }
     }
 
-    fun extractVariable(v: IrVariable, parent: Label<out DbStmtparent>, idx: Int) {
-        val id = tw.getFreshIdLabel<DbLocalvariabledeclexpr>()
+    fun extractVariable(v: IrVariable, callable: Label<out DbCallable>) {
+        val id = tw.getFreshIdLabel<DbLocalvar>()
         val locId = tw.getLocation(v.startOffset, v.endOffset)
         val typeId = useType(v.type)
-        tw.writeExprs_localvariabledeclexpr(id, typeId, parent, idx)
+        val decId = tw.getFreshIdLabel<DbLocalvariabledeclexpr>()
+        tw.writeLocalvars(id, v.name.asString(), typeId, decId)
         tw.writeHasLocation(id, locId)
-        val varId = tw.getFreshIdLabel<DbLocalvar>()
-        tw.writeLocalvars(varId, v.name.asString(), typeId, id)
-        tw.writeHasLocation(varId, locId)
+        tw.writeExprs_localvariabledeclexpr(decId, typeId, id, 0)
+        tw.writeHasLocation(id, locId)
+        val i = v.initializer
+        if(i != null) {
+            extractExpression(i, callable, decId, 0)
+        }
     }
 
     fun extractStatement(s: IrStatement, callable: Label<out DbCallable>, parent: Label<out DbStmtparent>, idx: Int) {
@@ -336,7 +340,7 @@ class KotlinFileExtractor(val tw: TrapWriter) {
                 extractExpression(s, callable, parent, idx)
             }
             is IrVariable -> {
-                extractVariable(s, parent, idx)
+                extractVariable(s, callable)
             }
             else -> {
                 extractorBug("Unrecognised IrStatement: " + s.javaClass)
