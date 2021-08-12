@@ -11,7 +11,7 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.TaintedFormatString::TaintedFormatString
+import semmle.javascript.security.dataflow.TaintedFormatStringQuery
 import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
