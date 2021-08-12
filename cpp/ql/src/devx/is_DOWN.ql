@@ -11,8 +11,6 @@
  */
 
 import cpp
-import semmle.code.cpp.commons.Printf
-import semmle.code.cpp.models.interfaces.FormattingFunction
 
 // Example:
 // There are "Interface Ethernet1/1 is DOWN"-like logs. 
@@ -36,4 +34,4 @@ where
     fc.getArgument(i).getValue().regexpMatch(".*Interface [a-zA-Z0-9/%]+ is (DOWN|UP)")
     // fc.getTarget().hasName("DEBUG_AN_LOG")
     // format.regexpMatch(".*Interface [a-zA-Z0-9/%]+ is (DOWN|UP)")
-select fc, "test "
+select fc, "Function: "+fc.getTarget().getName()+" Log: "+fc.getArgument(i).getValue()
