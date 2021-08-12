@@ -353,6 +353,9 @@ class File extends Container, @file {
       firstDotPos = min([name.indexOf("."), name.length()]) and
       result = name.prefix(firstDotPos)
     )
+    or
+    this.getAbsolutePath() = "" and
+    result = ""
   }
 }
 
