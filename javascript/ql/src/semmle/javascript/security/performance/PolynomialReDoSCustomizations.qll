@@ -100,9 +100,7 @@ module PolynomialReDoS {
         root instanceof RegExpCharacterClassEscape
       )
       or
-      exists(string name | name = "slice" or name = "substring" or name = "substr" |
-        this.(DataFlow::MethodCallNode).getMethodName() = name
-      )
+      this.(DataFlow::MethodCallNode).getMethodName() = StringOps::substringMethodName()
     }
   }
 
