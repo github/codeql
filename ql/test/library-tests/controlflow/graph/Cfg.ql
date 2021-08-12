@@ -2,8 +2,9 @@
  * @kind graph
  */
 
-import codeql.ruby.controlflow.internal.Cfg
+import codeql.ruby.CFG
+import codeql.ruby.controlflow.internal.ControlFlowGraphImpl::TestOutput
 
-class MyRelevantCfgNode extends RelevantCfgNode {
-  MyRelevantCfgNode() { exists(this) }
+class MyRelevantNode extends RelevantNode {
+  MyRelevantNode() { exists(this) }
 }

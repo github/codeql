@@ -23,8 +23,12 @@
         "codeql/python/ql/lib/semmle/python/dataflow/new/internal/TypeTracker.qll",
         "ql/lib/codeql/ruby/typetracking/TypeTracker.qll"
     ],
-  "Inline Test Expectations": [
-    "codeql/python/ql/test/TestUtilities/InlineExpectationsTest.qll",
-    "ql/test/TestUtilities/InlineExpectationsTest.qll"
-  ]
+    "Inline Test Expectations": [
+        "codeql/python/ql/test/TestUtilities/InlineExpectationsTest.qll",
+        "ql/test/TestUtilities/InlineExpectationsTest.qll"
+    ],
+    "CFG": [
+        "codeql/csharp/ql/lib/semmle/code/csharp/controlflow/internal/ControlFlowGraphImplShared.qll",
+        "ql/lib/codeql/ruby/controlflow/internal/ControlFlowGraphImplShared.qll"
+    ]
 }

@@ -62,11 +62,11 @@ class ExitNode extends CfgNode, TExitNode {
  * (dead) code or not important for control flow, and multiple when there are different
  * splits for the AST node.
  */
-class AstCfgNode extends CfgNode, TAstCfgNode {
+class AstCfgNode extends CfgNode, TElementNode {
   private Splits splits;
   private AstNode n;
 
-  AstCfgNode() { this = TAstCfgNode(n, splits) }
+  AstCfgNode() { this = TElementNode(n, splits) }
 
   final override AstNode getNode() { result = n }
 

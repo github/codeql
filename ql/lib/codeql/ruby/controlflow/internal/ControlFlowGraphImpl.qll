@@ -35,13 +35,11 @@ private import codeql.ruby.AST
 private import codeql.ruby.ast.internal.AST as ASTInternal
 private import codeql.ruby.ast.internal.Scope
 private import codeql.ruby.ast.Scope
-private import codeql.ruby.ast.internal.Synthesis
 private import codeql.ruby.ast.internal.TreeSitter
 private import codeql.ruby.ast.internal.Variable
 private import codeql.ruby.controlflow.ControlFlowGraph
 private import Completion
-private import SuccessorTypes
-private import Splitting
+import ControlFlowGraphImplShared
 
 module CfgScope {
   abstract class Range_ extends AstNode {
@@ -85,59 +83,6 @@ module CfgScope {
   }
 }
 
-abstract private class ControlFlowTree extends AstNode {
-  ControlFlowTree() { not any(Synthesis s).excludeFromControlFlowTree(this) }
-
-  /**
-   * Holds if `first` is the first element executed within this AST node.
-   */
-  pragma[nomagic]
-  abstract predicate first(AstNode first);
-
-  /**
-   * Holds if `last` with completion `c` is a potential last element executed
-   * within this AST node.
-   */
-  pragma[nomagic]
-  abstract predicate last(AstNode last, Completion c);
-
-  /** Holds if abnormal execution of `child` should propagate upwards. */
-  abstract predicate propagatesAbnormal(AstNode child);
-
-  /**
-   * Holds if `succ` is a control flow successor for `pred`, given that `pred`
-   * finishes with completion `c`.
-   */
-  pragma[nomagic]
-  abstract predicate succ(AstNode pred, AstNode succ, Completion c);
-}
-
-/** Holds if `first` is the first element executed within AST node `n`. */
-predicate first(ControlFlowTree n, AstNode first) { n.first(first) }
-
-/**
- * Holds if `last` with completion `c` is a potential last element executed
- * within AST node `n`.
- */
-predicate last(ControlFlowTree n, AstNode last, Completion c) {
-  n.last(last, c)
-  or
-  exists(AstNode child |
-    n.propagatesAbnormal(child) and
-    last(child, last, c) and
-    not c instanceof NormalCompletion
-  )
-}
-
-/**
- * Holds if `succ` is a control flow successor for `pred`, given that `pred`
- * finishes with completion `c`.
- */
-pragma[nomagic]
-predicate succ(AstNode pred, AstNode succ, Completion c) {
-  any(ControlFlowTree cft).succ(pred, succ, c)
-}
-
 /** Holds if `first` is first executed when entering `scope`. */
 pragma[nomagic]
 predicate succEntry(CfgScope::Range_ scope, AstNode first) { scope.entry(first) }
@@ -145,47 +90,6 @@ predicate succEntry(CfgScope::Range_ scope, AstNode first) { scope.entry(first) 
 /** Holds if `last` with completion `c` can exit `scope`. */
 pragma[nomagic]
 predicate succExit(CfgScope::Range_ scope, AstNode last, Completion c) { scope.exit(last, c) }
-
-/**
- * An AST node where the children are evaluated following a standard left-to-right
- * evaluation. The actual evaluation order is determined by the predicate
- * `getChildNode()`.
- */
-abstract private class StandardTree extends ControlFlowTree {
-  /** Gets the `i`th child node, in order of evaluation. */
-  abstract ControlFlowTree getChildNode(int i);
-
-  private ControlFlowTree getChildNodeRanked(int i) {
-    result =
-      rank[i + 1](ControlFlowTree child, int j | child = this.getChildNode(j) | child order by j)
-  }
-
-  /** Gets the first child node of this element. */
-  final AstNode getFirstChildNode() { result = this.getChildNodeRanked(0) }
-
-  /** Gets the last child node of this node. */
-  final AstNode getLastChildNode() {
-    exists(int last |
-      result = this.getChildNodeRanked(last) and
-      not exists(this.getChildNodeRanked(last + 1))
-    )
-  }
-
-  override predicate propagatesAbnormal(AstNode child) { child = this.getChildNode(_) }
-
-  pragma[nomagic]
-  override predicate succ(AstNode pred, AstNode succ, Completion c) {
-    exists(int i |
-      last(this.getChildNodeRanked(i), pred, c) and
-      c instanceof NormalCompletion and
-      first(this.getChildNodeRanked(i + 1), succ)
-    )
-  }
-}
-
-abstract private class PreOrderTree extends ControlFlowTree {
-  final override predicate first(AstNode first) { first = this }
-}
 
 // TODO: remove this class; it should be replaced with an implicit non AST node
 private class ForIn extends AstNode, ASTInternal::TForIn {
@@ -206,66 +110,10 @@ private class ForRange extends ForExpr {
   }
 }
 
-abstract private class StandardPreOrderTree extends StandardTree, PreOrderTree {
-  final override predicate last(AstNode last, Completion c) {
-    last(this.getLastChildNode(), last, c)
-    or
-    not exists(this.getLastChildNode()) and
-    c.isValidFor(this) and
-    last = this
-  }
-
-  final override predicate succ(AstNode pred, AstNode succ, Completion c) {
-    StandardTree.super.succ(pred, succ, c)
-    or
-    pred = this and
-    first(this.getFirstChildNode(), succ) and
-    c instanceof SimpleCompletion
-  }
-}
-
-abstract private class PostOrderTree extends ControlFlowTree {
-  override predicate last(AstNode last, Completion c) {
-    last = this and
-    c.isValidFor(last)
-  }
-}
-
-abstract private class StandardPostOrderTree extends StandardTree, PostOrderTree {
-  final override predicate first(AstNode first) {
-    first(this.getFirstChildNode(), first)
-    or
-    not exists(this.getFirstChildNode()) and
-    first = this
-  }
-
-  final override predicate succ(AstNode pred, AstNode succ, Completion c) {
-    StandardTree.super.succ(pred, succ, c)
-    or
-    last(this.getLastChildNode(), pred, c) and
-    succ = this and
-    c instanceof NormalCompletion
-  }
-}
-
-abstract private class LeafTree extends PreOrderTree, PostOrderTree {
-  override predicate propagatesAbnormal(AstNode child) { none() }
-
-  override predicate succ(AstNode pred, AstNode succ, Completion c) { none() }
-}
-
-abstract class ScopeTree extends StandardTree, LeafTree {
-  final override predicate propagatesAbnormal(AstNode child) { none() }
-
-  final override predicate succ(AstNode pred, AstNode succ, Completion c) {
-    StandardTree.super.succ(pred, succ, c)
-  }
-}
-
 /** Defines the CFG by dispatch on the various AST types. */
 module Trees {
   private class AliasStmtTree extends StandardPreOrderTree, AliasStmt {
-    final override ControlFlowTree getChildNode(int i) {
+    final override ControlFlowTree getChildElement(int i) {
       result = this.getNewName() and i = 0
       or
       result = this.getOldName() and i = 1
@@ -273,17 +121,17 @@ module Trees {
   }
 
   private class ArgumentListTree extends StandardTree, ArgumentList {
-    final override ControlFlowTree getChildNode(int i) { result = this.getElement(i) }
+    final override ControlFlowTree getChildElement(int i) { result = this.getElement(i) }
 
-    final override predicate first(AstNode first) { first(this.getFirstChildNode(), first) }
+    final override predicate first(AstNode first) { first(this.getFirstChildElement(), first) }
 
     final override predicate last(AstNode last, Completion c) {
-      last(this.getLastChildNode(), last, c)
+      last(this.getLastChildElement(), last, c)
     }
   }
 
   private class ArrayLiteralTree extends StandardPostOrderTree, ArrayLiteral {
-    final override ControlFlowTree getChildNode(int i) { result = this.getElement(i) }
+    final override ControlFlowTree getChildElement(int i) { result = this.getElement(i) }
   }
 
   private class AssignExprTree extends StandardPostOrderTree, AssignExpr {
@@ -294,7 +142,7 @@ module Trees {
       )
     }
 
-    final override ControlFlowTree getChildNode(int i) {
+    final override ControlFlowTree getChildElement(int i) {
       result = this.getLeftOperand() and i = 0
       or
       result = this.getRightOperand() and i = 1
@@ -313,7 +161,7 @@ module Trees {
     // Logical AND and OR are handled separately
     BinaryOperationTree() { not this instanceof BinaryLogicalOperation }
 
-    final override ControlFlowTree getChildNode(int i) {
+    final override ControlFlowTree getChildElement(int i) {
       result = this.getLeftOperand() and i = 0
       or
       result = this.getRightOperand() and i = 1
@@ -321,7 +169,7 @@ module Trees {
   }
 
   private class BlockArgumentTree extends StandardPostOrderTree, BlockArgument {
-    final override ControlFlowTree getChildNode(int i) { result = this.getValue() and i = 0 }
+    final override ControlFlowTree getChildElement(int i) { result = this.getValue() and i = 0 }
   }
 
   abstract private class NonDefaultValueParameterTree extends ControlFlowTree, NamedParameter {
@@ -549,7 +397,7 @@ module Trees {
   }
 
   private class CallTree extends StandardPostOrderTree, Call {
-    override ControlFlowTree getChildNode(int i) { result = this.getArgument(i) }
+    override ControlFlowTree getChildElement(int i) { result = this.getArgument(i) }
   }
 
   private class CaseTree extends PreOrderTree, CaseExpr {
@@ -855,13 +703,13 @@ module Trees {
   private class GlobalVariableTree extends LeafTree, GlobalVariableAccess { }
 
   private class HashLiteralTree extends StandardPostOrderTree, HashLiteral {
-    final override ControlFlowTree getChildNode(int i) { result = this.getElement(i) }
+    final override ControlFlowTree getChildElement(int i) { result = this.getElement(i) }
   }
 
   private class HashSplatParameterTree extends NonDefaultValueParameterTree, HashSplatParameter { }
 
   private class HereDocTree extends StandardPreOrderTree, HereDoc {
-    final override ControlFlowTree getChildNode(int i) { result = this.getComponent(i) }
+    final override ControlFlowTree getChildElement(int i) { result = this.getComponent(i) }
   }
 
   private class InstanceVariableTree extends LeafTree, InstanceVariableAccess { }
@@ -938,7 +786,7 @@ module Trees {
   }
 
   private class MethodCallTree extends CallTree, MethodCall {
-    final override ControlFlowTree getChildNode(int i) {
+    final override ControlFlowTree getChildElement(int i) {
       result = this.getReceiver() and i = 0
       or
       result = this.getArgument(i - 1)
@@ -996,7 +844,7 @@ module Trees {
   }
 
   private class PairTree extends StandardPostOrderTree, Pair {
-    final override ControlFlowTree getChildNode(int i) {
+    final override ControlFlowTree getChildElement(int i) {
       result = this.getKey() and i = 0
       or
       result = this.getValue() and i = 1
@@ -1004,7 +852,7 @@ module Trees {
   }
 
   private class RangeLiteralTree extends StandardPostOrderTree, RangeLiteral {
-    final override ControlFlowTree getChildNode(int i) {
+    final override ControlFlowTree getChildElement(int i) {
       result = this.getBegin() and i = 0
       or
       result = this.getEnd() and i = 1
@@ -1114,7 +962,7 @@ module Trees {
   private class RetryStmtTree extends LeafTree, RetryStmt { }
 
   private class ReturningStmtTree extends StandardPostOrderTree, ReturningStmt {
-    final override ControlFlowTree getChildNode(int i) { result = this.getValue() and i = 0 }
+    final override ControlFlowTree getChildElement(int i) { result = this.getValue() and i = 0 }
   }
 
   private class SelfTree extends LeafTree, Self { }
@@ -1208,19 +1056,19 @@ module Trees {
   }
 
   private class StringConcatenationTree extends StandardTree, StringConcatenation {
-    final override ControlFlowTree getChildNode(int i) { result = this.getString(i) }
+    final override ControlFlowTree getChildElement(int i) { result = this.getString(i) }
 
-    final override predicate first(AstNode first) { first(this.getFirstChildNode(), first) }
+    final override predicate first(AstNode first) { first(this.getFirstChildElement(), first) }
 
     final override predicate last(AstNode last, Completion c) {
-      last(this.getLastChildNode(), last, c)
+      last(this.getLastChildElement(), last, c)
     }
   }
 
   private class StringlikeLiteralTree extends StandardPostOrderTree, StringlikeLiteral {
     StringlikeLiteralTree() { not this instanceof HereDoc }
 
-    final override ControlFlowTree getChildNode(int i) { result = this.getComponent(i) }
+    final override ControlFlowTree getChildElement(int i) { result = this.getComponent(i) }
   }
 
   private class ToplevelTree extends BodyStmtTree, Toplevel {
@@ -1240,18 +1088,18 @@ module Trees {
   }
 
   private class TuplePatternTree extends StandardPostOrderTree, TuplePattern {
-    final override ControlFlowTree getChildNode(int i) { result = this.getElement(i) }
+    final override ControlFlowTree getChildElement(int i) { result = this.getElement(i) }
   }
 
   private class UnaryOperationTree extends StandardPostOrderTree, UnaryOperation {
     // Logical NOT is handled separately
     UnaryOperationTree() { not this instanceof NotExpr }
 
-    final override ControlFlowTree getChildNode(int i) { result = this.getOperand() and i = 0 }
+    final override ControlFlowTree getChildElement(int i) { result = this.getOperand() and i = 0 }
   }
 
   private class UndefStmtTree extends StandardPreOrderTree, UndefStmt {
-    final override ControlFlowTree getChildNode(int i) { result = this.getMethodName(i) }
+    final override ControlFlowTree getChildElement(int i) { result = this.getMethodName(i) }
   }
 
   private class WhenTree extends PreOrderTree, WhenExpr {
@@ -1310,30 +1158,9 @@ private module Cached {
   /** Gets the CFG scope of node `n`. */
   cached
   CfgScope getCfgScopeImpl(AstNode n) {
+    forceCachingInSameStage() and
     result = parent*(ASTInternal::fromGenerated(scopeOf(ASTInternal::toGeneratedInclSynth(n))))
   }
-
-  private predicate isAbnormalExitType(SuccessorType t) {
-    t instanceof RaiseSuccessor or t instanceof ExitSuccessor
-  }
-
-  cached
-  newtype TCfgNode =
-    TEntryNode(CfgScope scope) { succEntrySplits(scope, _, _, _) } or
-    TAnnotatedExitNode(CfgScope scope, boolean normal) {
-      exists(Reachability::SameSplitsBlock b, SuccessorType t | b.isReachable(_) |
-        succExitSplits(b.getANode(), _, scope, t) and
-        if isAbnormalExitType(t) then normal = false else normal = true
-      )
-    } or
-    TExitNode(CfgScope scope) {
-      exists(Reachability::SameSplitsBlock b | b.isReachable(_) |
-        succExitSplits(b.getANode(), _, scope, _)
-      )
-    } or
-    TAstCfgNode(AstNode n, Splits splits) {
-      exists(Reachability::SameSplitsBlock b | b.isReachable(splits) | n = b.getANode())
-    }
 
   cached
   newtype TSuccessorType =
@@ -1348,49 +1175,6 @@ private module Cached {
     TRetrySuccessor() or
     TRaiseSuccessor() or // TODO: Add exception type?
     TExitSuccessor()
-
-  /** Gets a successor node of a given flow type, if any. */
-  cached
-  CfgNode getASuccessor(CfgNode pred, SuccessorType t) {
-    exists(CfgScope scope, AstNode succElement, Splits succSplits |
-      pred = TEntryNode(scope) and
-      succEntrySplits(scope, succElement, succSplits, t) and
-      result = TAstCfgNode(succElement, succSplits)
-    )
-    or
-    exists(AstNode predNode, Splits predSplits | pred = TAstCfgNode(predNode, predSplits) |
-      exists(CfgScope scope, boolean normal |
-        succExitSplits(predNode, predSplits, scope, t) and
-        (if isAbnormalExitType(t) then normal = false else normal = true) and
-        result = TAnnotatedExitNode(scope, normal)
-      )
-      or
-      exists(AstNode succElement, Splits succSplits, Completion c |
-        succSplits(predNode, predSplits, succElement, succSplits, c) and
-        t = c.getAMatchingSuccessorType() and
-        result = TAstCfgNode(succElement, succSplits)
-      )
-    )
-    or
-    exists(CfgScope scope |
-      pred = TAnnotatedExitNode(scope, _) and
-      t instanceof SuccessorTypes::NormalSuccessor and
-      result = TExitNode(scope)
-    )
-  }
-
-  /** Gets a first control flow element executed within `n`. */
-  cached
-  AstNode getAControlFlowEntryNode(AstNode n) { first(n, result) }
-
-  /** Gets a potential last control flow element executed within `n`. */
-  cached
-  AstNode getAControlFlowExitNode(AstNode n) { last(n, result, _) }
 }
 
 import Cached
-
-/** An AST node that is split into multiple control flow nodes. */
-class SplitAstNode extends AstNode {
-  SplitAstNode() { strictcount(CfgNode n | n.getNode() = this) > 1 }
-}
