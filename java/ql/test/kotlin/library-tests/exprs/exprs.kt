@@ -27,6 +27,9 @@ fun topLevelMethod(x: Int, y: Int): Int {
     val b5 = !b1
     val c = 'x'
     val str = "string lit"
+    val b6 = i1 is Int
+    val b7 = i1 !is Int
+    val b8 = b7 as Boolean
     return 123 + 456
 }
 
