@@ -48,7 +48,7 @@ class SensitiveInfoExpr extends Expr {
  */
 class SendBroadcastMethodAccess extends MethodAccess {
   SendBroadcastMethodAccess() {
-    this.getMethod().getDeclaringType() instanceof TypeContext and
+    this.getMethod().getDeclaringType().getASourceSupertype*() instanceof TypeContext and
     this.getMethod().getName().matches("send%Broadcast%")
   }
 }
