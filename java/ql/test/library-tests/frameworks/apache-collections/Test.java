@@ -1446,66 +1446,80 @@ public class Test {
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
-			// "org.apache.commons.collections4;CollectionUtils;true;select;;;Element of Argument[0];Element of Argument[2];value"
-			Collection out = null;
-			Iterable in = newVectorWithElement((String)source());
-			CollectionUtils.select(in, null, out, null);
-			sink(getElement(out)); // $ hasValueFlow
-		}
-		{
-			// "org.apache.commons.collections4;CollectionUtils;true;select;;;Element of Argument[0];Element of Argument[2];value"
-			Collection out = null;
-			Iterable in = newVectorWithElement((String)source());
-			CollectionUtils.select(in, null, out);
-			sink(getElement(out)); // $ hasValueFlow
-		}
-		{
-			// "org.apache.commons.collections4;CollectionUtils;true;select;;;Element of Argument[0];Element of Argument[3];value"
-			Collection out = null;
-			Iterable in = newVectorWithElement((String)source());
-			CollectionUtils.select(in, null, null, out);
-			sink(getElement(out)); // $ hasValueFlow
-		}
-		{
-			// "org.apache.commons.collections4;CollectionUtils;true;select;;;Element of Argument[0];Element of ReturnValue;value"
-			Collection out = null;
-			Iterable in = newVectorWithElement((String)source());
-			out = CollectionUtils.select(in, null, null, null);
-			sink(getElement(out)); // $ hasValueFlow
-		}
-		{
-			// "org.apache.commons.collections4;CollectionUtils;true;select;;;Element of Argument[0];Element of ReturnValue;value"
-			Collection out = null;
-			Iterable in = newVectorWithElement((String)source());
-			out = CollectionUtils.select(in, null, null);
-			sink(getElement(out)); // $ hasValueFlow
-		}
-		{
-			// "org.apache.commons.collections4;CollectionUtils;true;select;;;Element of Argument[0];Element of ReturnValue;value"
+			// "org.apache.commons.collections4;CollectionUtils;true;select;(Iterable,Predicate);;Element of Argument[0];Element of ReturnValue;value"
 			Collection out = null;
 			Iterable in = newVectorWithElement((String)source());
 			out = CollectionUtils.select(in, null);
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
-			// "org.apache.commons.collections4;CollectionUtils;true;selectRejected;;;Element of Argument[0];Element of Argument[2];value"
+			// "org.apache.commons.collections4;CollectionUtils;true;select;(Iterable,Predicate,Collection);;Argument[2];ReturnValue;value"
+			Collection out = null;
+			Collection in = (Collection)source();
+			out = CollectionUtils.select(null, null, in);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4;CollectionUtils;true;select;(Iterable,Predicate,Collection);;Element of Argument[0];Element of Argument[2];value"
 			Collection out = null;
 			Iterable in = newVectorWithElement((String)source());
-			CollectionUtils.selectRejected(in, null, out);
+			CollectionUtils.select(in, null, out);
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
-			// "org.apache.commons.collections4;CollectionUtils;true;selectRejected;;;Element of Argument[0];Element of ReturnValue;value"
+			Collection mid = null;
 			Collection out = null;
 			Iterable in = newVectorWithElement((String)source());
-			out = CollectionUtils.selectRejected(in, null, null);
+			out = CollectionUtils.select(in, null, mid);
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
-			// "org.apache.commons.collections4;CollectionUtils;true;selectRejected;;;Element of Argument[0];Element of ReturnValue;value"
+			// "org.apache.commons.collections4;CollectionUtils;true;select;(Iterable,Predicate,Collection,Collection);;Argument[2];ReturnValue;value"
+			Collection out = null;
+			Collection in = (Collection)source();
+			out = CollectionUtils.select(null, null, in, null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4;CollectionUtils;true;select;(Iterable,Predicate,Collection,Collection);;Element of Argument[0];Element of Argument[2];value"
+			Collection out = null;
+			Iterable in = newVectorWithElement((String)source());
+			CollectionUtils.select(in, null, out, null);
+			sink(getElement(out)); // $ hasValueFlow
+		}
+		{
+			Collection mid = null;
+			Collection out = null;
+			Iterable in = newVectorWithElement((String)source());
+			out = CollectionUtils.select(in, null, mid, null);
+			sink(getElement(out)); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4;CollectionUtils;true;select;(Iterable,Predicate,Collection,Collection);;Element of Argument[0];Element of Argument[3];value"
+			Collection out = null;
+			Iterable in = newVectorWithElement((String)source());
+			CollectionUtils.select(in, null, null, out);
+			sink(getElement(out)); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4;CollectionUtils;true;selectRejected;(Iterable,Predicate);;Element of Argument[0];Element of ReturnValue;value"
 			Collection out = null;
 			Iterable in = newVectorWithElement((String)source());
 			out = CollectionUtils.selectRejected(in, null);
+			sink(getElement(out)); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4;CollectionUtils;true;selectRejected;(Iterable,Predicate,Collection);;Argument[2];ReturnValue;value"
+			Collection out = null;
+			Collection in = (Collection)source();
+			out = CollectionUtils.selectRejected(null, null, in);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4;CollectionUtils;true;selectRejected;(Iterable,Predicate,Collection);;Element of Argument[0];Element of Argument[2];value"
+			Collection out = null;
+			Iterable in = newVectorWithElement((String)source());
+			CollectionUtils.selectRejected(in, null, out);
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
@@ -2089,6 +2103,13 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
+			// "org.apache.commons.collections4;IterableUtils;true;forEachButLast;;;Element of Argument[0];ReturnValue;value"
+			Object out = null;
+			Iterable in = newVectorWithElement((String)source());
+			out = IterableUtils.forEachButLast(in, null);
+			sink(out); // $ hasValueFlow
+		}
+		{
 			// "org.apache.commons.collections4;IterableUtils;true;get;;;Element of Argument[0];ReturnValue;value"
 			Object out = null;
 			Iterable in = newVectorWithElement((String)source());
@@ -2422,6 +2443,13 @@ public class Test {
 			Object out = null;
 			Iterator in = newListIteratorWithElement((String)source());
 			out = IteratorUtils.first(in);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4;IteratorUtils;true;forEachButLast;;;Element of Argument[0];ReturnValue;value"
+			Object out = null;
+			Iterator in = newListIteratorWithElement((String)source());
+			out = IteratorUtils.forEachButLast(in, null);
 			sink(out); // $ hasValueFlow
 		}
 		{
@@ -2936,21 +2964,21 @@ public class Test {
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
-			// "org.apache.commons.collections4;MultiMapUtils;true;getValuesAsBag;;;MapValue of Argument[0];ReturnValue;value"
+			// "org.apache.commons.collections4;MultiMapUtils;true;getValuesAsBag;;;Element of MapValue of Argument[0];Element of ReturnValue;value"
 			Bag out = null;
 			MultiValuedMap in = newALVHMWithMapValue((String)source());
 			out = MultiMapUtils.getValuesAsBag(in, null);
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
-			// "org.apache.commons.collections4;MultiMapUtils;true;getValuesAsList;;;MapValue of Argument[0];ReturnValue;value"
+			// "org.apache.commons.collections4;MultiMapUtils;true;getValuesAsList;;;Element of MapValue of Argument[0];Element of ReturnValue;value"
 			List out = null;
 			MultiValuedMap in = newALVHMWithMapValue((String)source());
 			out = MultiMapUtils.getValuesAsList(in, null);
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
-			// "org.apache.commons.collections4;MultiMapUtils;true;getValuesAsSet;;;MapValue of Argument[0];ReturnValue;value"
+			// "org.apache.commons.collections4;MultiMapUtils;true;getValuesAsSet;;;Element of MapValue of Argument[0];Element of ReturnValue;value"
 			Set out = null;
 			MultiValuedMap in = newALVHMWithMapValue((String)source());
 			out = MultiMapUtils.getValuesAsSet(in, null);
