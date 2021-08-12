@@ -41,7 +41,7 @@ class HtmlInjectionConfiguration extends TaintTracking::Configuration {
   }
 
   override predicate isSanitizerEdge(DataFlow::Node pred, DataFlow::Node succ) {
-    DomBasedXss::isOptionallySanitizedEdge(pred, succ)
+    isOptionallySanitizedEdge(pred, succ)
   }
 }
 
