@@ -31,9 +31,9 @@ import semmle.code.cpp.models.interfaces.FormattingFunction
 // " and session is not bundle member",
 // bfd_session_key_str(&session->session_key));
 
-from string format, FormattingFunctionCall fc
+from FunctionCall fc, int i
 where
-    format = fc.getFormat().getValue() // format: "%s: Failed init_producer"
+    fc.getArgument(i).toString().regexpMatch(".*Interface [a-zA-Z0-9/%]+ is (DOWN|UP)")
     // fc.getTarget().hasName("DEBUG_AN_LOG")
     // format.regexpMatch(".*Interface [a-zA-Z0-9/%]+ is (DOWN|UP)")
 select fc, "test "
