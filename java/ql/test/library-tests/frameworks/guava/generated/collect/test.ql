@@ -9,13 +9,13 @@ class SummaryModelTest extends SummaryModelCsv {
     row =
       [
         //"package;type;overrides;name;signature;ext;inputspec;outputspec;kind",
-        "generatedtest;Test;false;newWithElement;;;Argument[0];Element of ReturnValue;value",
-        "generatedtest;Test;false;newWithMapKey;;;Argument[0];MapKey of ReturnValue;value",
-        "generatedtest;Test;false;newWithMapValue;;;Argument[0];MapValue of ReturnValue;value",
-        "generatedtest;Test;false;newWithTable_rowKey;;;Argument[0];SyntheticField[com.google.common.collect.Table.rowKey] of ReturnValue;value",
-        "generatedtest;Test;false;newWithTable_columnKey;;;Argument[0];SyntheticField[com.google.common.collect.Table.columnKey] of ReturnValue;value",
-        "generatedtest;Test;false;newWithMapDifference_left;;;Argument[0];SyntheticField[com.google.common.collect.MapDifference.left] of ReturnValue;value",
-        "generatedtest;Test;false;newWithMapDifference_right;;;Argument[0];SyntheticField[com.google.common.collect.MapDifference.right] of ReturnValue;value"
+        "generatedtest;Methods;false;newWithElement;;;Argument[0];Element of ReturnValue;value",
+        "generatedtest;Methods;false;newWithMapKey;;;Argument[0];MapKey of ReturnValue;value",
+        "generatedtest;Methods;false;newWithMapValue;;;Argument[0];MapValue of ReturnValue;value",
+        "generatedtest;Methods;false;newWithTable_rowKey;;;Argument[0];SyntheticField[com.google.common.collect.Table.rowKey] of ReturnValue;value",
+        "generatedtest;Methods;false;newWithTable_columnKey;;;Argument[0];SyntheticField[com.google.common.collect.Table.columnKey] of ReturnValue;value",
+        "generatedtest;Methods;false;newWithMapDifference_left;;;Argument[0];SyntheticField[com.google.common.collect.MapDifference.left] of ReturnValue;value",
+        "generatedtest;Methods;false;newWithMapDifference_right;;;Argument[0];SyntheticField[com.google.common.collect.MapDifference.right] of ReturnValue;value"
       ]
   }
 }
