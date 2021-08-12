@@ -24,7 +24,7 @@ predicate hasName(Element e, string name) {
   or
   packages(e, name)
   or
-  files(e, _, name, _, _)
+  name = e.(File).getStem()
   or
   paramName(e, name)
   or
