@@ -301,6 +301,7 @@ private class ApacheCollectionUtilsModel extends SummaryModelCsv {
           ";CollectionUtils;true;selectRejected;(Iterable,Predicate,Collection);;Argument[2];ReturnValue;value",
           ";CollectionUtils;true;subtract;;;Element of Argument[0];Element of ReturnValue;value",
           ";CollectionUtils;true;synchronizedCollection;;;Element of Argument[0];Element of ReturnValue;value",
+          // Note that `CollectionUtils.transformingCollection` does not transform existing list elements
           ";CollectionUtils;true;transformingCollection;;;Element of Argument[0];Element of ReturnValue;value",
           ";CollectionUtils;true;union;;;Element of Argument[0];Element of ReturnValue;value",
           ";CollectionUtils;true;union;;;Element of Argument[1];Element of ReturnValue;value",
@@ -323,6 +324,7 @@ private class ApacheListUtilsModel extends SummaryModelCsv {
           ";ListUtils;true;fixedSizeList;;;Element of Argument[0];Element of ReturnValue;value",
           ";ListUtils;true;intersection;;;Element of Argument[0];Element of ReturnValue;value",
           ";ListUtils;true;intersection;;;Element of Argument[1];Element of ReturnValue;value",
+          // Note that `ListUtils.lazyList` does not transform existing list elements
           ";ListUtils;true;lazyList;;;Element of Argument[0];Element of ReturnValue;value",
           ";ListUtils;true;longestCommonSubsequence;(CharSequence,CharSequence);;Argument[0];ReturnValue;taint",
           ";ListUtils;true;longestCommonSubsequence;(CharSequence,CharSequence);;Argument[1];ReturnValue;taint",
@@ -340,6 +342,7 @@ private class ApacheListUtilsModel extends SummaryModelCsv {
           ";ListUtils;true;sum;;;Element of Argument[0];Element of ReturnValue;value",
           ";ListUtils;true;sum;;;Element of Argument[1];Element of ReturnValue;value",
           ";ListUtils;true;synchronizedList;;;Element of Argument[0];Element of ReturnValue;value",
+          // Note that `ListUtils.transformedList` does not transform existing list elements
           ";ListUtils;true;transformedList;;;Element of Argument[0];Element of ReturnValue;value",
           ";ListUtils;true;union;;;Element of Argument[0];Element of ReturnValue;value",
           ";ListUtils;true;union;;;Element of Argument[1];Element of ReturnValue;value",
