@@ -8,16 +8,7 @@ import kotlin.system.exitProcess
 import org.jetbrains.kotlin.backend.common.extensions.IrGenerationExtension
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.ir.IrElement
-import org.jetbrains.kotlin.ir.declarations.path
-import org.jetbrains.kotlin.ir.declarations.IrModuleFragment
-import org.jetbrains.kotlin.ir.declarations.IrClass
-import org.jetbrains.kotlin.ir.declarations.IrDeclaration
-import org.jetbrains.kotlin.ir.declarations.IrDeclarationParent
-import org.jetbrains.kotlin.ir.declarations.IrFile
-import org.jetbrains.kotlin.ir.declarations.IrFunction
-import org.jetbrains.kotlin.ir.declarations.IrValueParameter
-import org.jetbrains.kotlin.ir.declarations.IrProperty
-import org.jetbrains.kotlin.ir.declarations.IrVariable
+import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.util.dump
 import org.jetbrains.kotlin.ir.util.IdSignature
 import org.jetbrains.kotlin.ir.util.packageFqName
@@ -237,10 +228,11 @@ class KotlinFileExtractor(val tw: TrapWriter) {
         }
     }
 
-    fun useDeclarationParent(dp: IrDeclarationParent): Label<out DbPackage_or_reftype> {
+    fun useDeclarationParent(dp: IrDeclarationParent): Label<out DbElement> {
         when(dp) {
             is IrFile -> return usePackage(dp.fqName.asString())
             is IrClass -> return useClass(dp)
+            is IrFunction -> return useFunction(dp)
             else -> {
                 extractorBug("Unrecognised IrDeclarationParent: " + dp.javaClass)
                 return Label(0)
@@ -257,9 +249,17 @@ class KotlinFileExtractor(val tw: TrapWriter) {
         return id
     }
 
-    fun extractValueParameter(vp: IrValueParameter, parent: Label<out DbMethod>, idx: Int) {
-        val label = "@\"params;{$parent};$idx\""
+    fun useValueParameter(vp: IrValueParameter): Label<out DbParam> {
+        @Suppress("UNCHECKED_CAST")
+        val parentId: Label<out DbMethod> = useDeclarationParent(vp.parent) as Label<out DbMethod>
+        val idx = vp.index
+        val label = "@\"params;{$parentId};$idx\""
         val id = tw.getLabelFor<DbParam>(label)
+        return id
+    }
+
+    fun extractValueParameter(vp: IrValueParameter, parent: Label<out DbMethod>, idx: Int) {
+        val id = useValueParameter(vp)
         val typeId = useType(vp.type)
         val locId = tw.getLocation(vp.startOffset, vp.endOffset)
         tw.writeParams(id, typeId, idx, parent, id)
@@ -349,6 +349,18 @@ class KotlinFileExtractor(val tw: TrapWriter) {
         }
     }
 
+    fun useValueDeclaration(d: IrValueDeclaration): Label<out DbVariable> {
+        when(d) {
+            is IrValueParameter -> {
+                return useValueParameter(d)
+            }
+            else -> {
+                extractorBug("Unrecognised IrValueDeclaration: " + d.javaClass)
+                return Label(0)
+            }
+        }
+    }
+
     fun extractExpression(e: IrExpression, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int) {
         when(e) {
             is IrCall -> {
@@ -388,6 +400,16 @@ class KotlinFileExtractor(val tw: TrapWriter) {
                 tw.writeExprs_integerliteral(id, typeId, parent, idx)
                 tw.writeHasLocation(id, locId)
                 tw.writeNamestrings(v.toString(), v.toString(), id)
+            }
+            is IrGetValue -> {
+                val id = tw.getFreshIdLabel<DbVaraccess>()
+                val typeId = useType(e.type)
+                val locId = tw.getLocation(e.startOffset, e.endOffset)
+                tw.writeExprs_varaccess(id, typeId, parent, idx)
+                tw.writeHasLocation(id, locId)
+
+                val vId = useValueDeclaration(e.symbol.owner)
+                tw.writeVariableBinding(id, vId)
             }
             is IrReturn -> {
                 val id = tw.getFreshIdLabel<DbReturnstmt>()
