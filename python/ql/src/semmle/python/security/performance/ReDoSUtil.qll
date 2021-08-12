@@ -156,14 +156,21 @@ private class RegexpCharacterConstant extends RegExpConstant {
 }
 
 /**
+ * A regexp term that is relevant for this ReDoS analysis.
+ */
+class RelevantRegExpTerm extends RegExpTerm {
+  RelevantRegExpTerm() { getRoot(this).isRelevant() }
+}
+
+/**
  * Holds if `term` is the chosen canonical representative for all terms with string representation `str`.
  *
  * Using canonical representatives gives a huge performance boost when working with tuples containing multiple `InputSymbol`s.
  * The number of `InputSymbol`s is decreased by 3 orders of magnitude or more in some larger benchmarks.
  */
-private predicate isCanonicalTerm(RegExpTerm term, string str) {
+private predicate isCanonicalTerm(RelevantRegExpTerm term, string str) {
   term =
-    rank[1](RegExpTerm t, Location loc, File file |
+    min(RelevantRegExpTerm t, Location loc, File file |
       loc = t.getLocation() and
       file = t.getFile() and
       str = t.getRawValue()
@@ -178,15 +185,15 @@ private predicate isCanonicalTerm(RegExpTerm term, string str) {
 private newtype TInputSymbol =
   /** An input symbol corresponding to character `c`. */
   Char(string c) {
-    c = any(RegexpCharacterConstant cc | getRoot(cc).isRelevant()).getValue().charAt(_)
+    c = any(RegexpCharacterConstant cc | cc instanceof RelevantRegExpTerm).getValue().charAt(_)
   } or
   /**
    * An input symbol representing all characters matched by
    * a (non-universal) character class that has string representation `charClassString`.
    */
   CharClass(string charClassString) {
-    exists(RegExpTerm term | term.getRawValue() = charClassString | getRoot(term).isRelevant()) and
-    exists(RegExpTerm recc | isCanonicalTerm(recc, charClassString) |
+    exists(RelevantRegExpTerm term | term.getRawValue() = charClassString) and
+    exists(RelevantRegExpTerm recc | isCanonicalTerm(recc, charClassString) |
       recc instanceof RegExpCharacterClass and
       not recc.(RegExpCharacterClass).isUniversalClass()
       or
@@ -626,13 +633,10 @@ RegExpRoot getRoot(RegExpTerm term) {
 }
 
 private newtype TState =
-  Match(RegExpTerm t, int i) {
-    getRoot(t).isRelevant() and
-    (
-      i = 0
-      or
-      exists(t.(RegexpCharacterConstant).getValue().charAt(i))
-    )
+  Match(RelevantRegExpTerm t, int i) {
+    i = 0
+    or
+    exists(t.(RegexpCharacterConstant).getValue().charAt(i))
   } or
   Accept(RegExpRoot l) { l.isRelevant() } or
   AcceptAnySuffix(RegExpRoot l) { l.isRelevant() }
