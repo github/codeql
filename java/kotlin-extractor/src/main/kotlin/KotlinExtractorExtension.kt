@@ -391,6 +391,48 @@ class KotlinFileExtractor(val tw: TrapWriter) {
                 tw.writeExprs_remexpr(id, typeId, parent, idx)
                 tw.writeHasLocation(id, locId)
                 id
+            } c.origin == EQEQ -> {
+                val id = tw.getFreshIdLabel<DbEqexpr>()
+                val typeId = useType(c.type)
+                val locId = tw.getLocation(c.startOffset, c.endOffset)
+                tw.writeExprs_eqexpr(id, typeId, parent, idx)
+                tw.writeHasLocation(id, locId)
+                id
+            } c.origin == EXCLEQ -> {
+                val id = tw.getFreshIdLabel<DbNeexpr>()
+                val typeId = useType(c.type)
+                val locId = tw.getLocation(c.startOffset, c.endOffset)
+                tw.writeExprs_neexpr(id, typeId, parent, idx)
+                tw.writeHasLocation(id, locId)
+                id
+            } c.origin == LT -> {
+                val id = tw.getFreshIdLabel<DbLtexpr>()
+                val typeId = useType(c.type)
+                val locId = tw.getLocation(c.startOffset, c.endOffset)
+                tw.writeExprs_ltexpr(id, typeId, parent, idx)
+                tw.writeHasLocation(id, locId)
+                id
+            } c.origin == LTEQ -> {
+                val id = tw.getFreshIdLabel<DbLeexpr>()
+                val typeId = useType(c.type)
+                val locId = tw.getLocation(c.startOffset, c.endOffset)
+                tw.writeExprs_leexpr(id, typeId, parent, idx)
+                tw.writeHasLocation(id, locId)
+                id
+            } c.origin == GT -> {
+                val id = tw.getFreshIdLabel<DbGtexpr>()
+                val typeId = useType(c.type)
+                val locId = tw.getLocation(c.startOffset, c.endOffset)
+                tw.writeExprs_gtexpr(id, typeId, parent, idx)
+                tw.writeHasLocation(id, locId)
+                id
+            } c.origin == GTEQ -> {
+                val id = tw.getFreshIdLabel<DbGeexpr>()
+                val typeId = useType(c.type)
+                val locId = tw.getLocation(c.startOffset, c.endOffset)
+                tw.writeExprs_geexpr(id, typeId, parent, idx)
+                tw.writeHasLocation(id, locId)
+                id
             } else -> {
                 extractorBug("Unrecognised IrCall: " + c.render())
                 return

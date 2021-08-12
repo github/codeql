@@ -12,6 +12,14 @@ fun topLevelMethod(x: Int, y: Int): Int {
     val i10 = x or y
     val i11 = x xor y
     val i12 = x.inv()
+    val i13 = x == y
+    val i14 = x != y
+    val i15 = x < y
+    val i16 = x <= y
+    val i17 = x > y
+    val i18 = x >= y
+    val i20 = x in x .. y
+    val i21 = x !in x .. y
     return 123 + 456
 }
 
