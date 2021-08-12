@@ -258,7 +258,8 @@ class KotlinFileExtractor(val tw: TrapWriter) {
     }
 
     fun extractValueParameter(vp: IrValueParameter, parent: Label<out DbMethod>, idx: Int) {
-        val id = tw.getFreshIdLabel<DbParam>()
+        val label = "@\"params;{$parent};$idx\""
+        val id = tw.getLabelFor<DbParam>(label)
         val typeId = useType(vp.type)
         val locId = tw.getLocation(vp.startOffset, vp.endOffset)
         tw.writeParams(id, typeId, idx, parent, id)
