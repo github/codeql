@@ -544,11 +544,17 @@ private class UriInfoModel extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
+        "javax.ws.rs.core;UriInfo;true;getAbsolutePath;;;Argument[-1];ReturnValue;taint",
+        "javax.ws.rs.core;UriInfo;true;getAbsolutePathBuilder;;;Argument[-1];ReturnValue;taint",
+        "javax.ws.rs.core;UriInfo;true;getPath;;;Argument[-1];ReturnValue;taint",
         "javax.ws.rs.core;UriInfo;true;getPathParameters;;;Argument[-1];ReturnValue;taint",
         "javax.ws.rs.core;UriInfo;true;getPathSegments;;;Argument[-1];ReturnValue;taint",
         "javax.ws.rs.core;UriInfo;true;getQueryParameters;;;Argument[-1];ReturnValue;taint",
         "javax.ws.rs.core;UriInfo;true;getRequestUri;;;Argument[-1];ReturnValue;taint",
         "javax.ws.rs.core;UriInfo;true;getRequestUriBuilder;;;Argument[-1];ReturnValue;taint",
+        "jakarta.ws.rs.core;UriInfo;true;getAbsolutePath;;;Argument[-1];ReturnValue;taint",
+        "jakarta.ws.rs.core;UriInfo;true;getAbsolutePathBuilder;;;Argument[-1];ReturnValue;taint",
+        "jakarta.ws.rs.core;UriInfo;true;getPath;;;Argument[-1];ReturnValue;taint",
         "jakarta.ws.rs.core;UriInfo;true;getPathParameters;;;Argument[-1];ReturnValue;taint",
         "jakarta.ws.rs.core;UriInfo;true;getPathSegments;;;Argument[-1];ReturnValue;taint",
         "jakarta.ws.rs.core;UriInfo;true;getQueryParameters;;;Argument[-1];ReturnValue;taint",
@@ -953,5 +959,19 @@ private class VulnerableEntity extends XssSinkBarrier {
         ) and
         ma.getMethod().hasName("ok")
       ).getArgument(0)
+  }
+}
+
+/**
+ * Model sources stemming from `ContainerRequestContext`.
+ */
+private class ContainerRequestContextModel extends SourceModelCsv {
+  override predicate row(string s) {
+    s =
+      ["javax", "jakarta"] + ".ws.rs.container;ContainerRequestContext;true;" +
+        [
+          "getAcceptableLanguages", "getAcceptableMediaTypes", "getCookies", "getEntityStream",
+          "getHeaders", "getHeaderString", "getUriInfo"
+        ] + ";;;ReturnValue;remote"
   }
 }

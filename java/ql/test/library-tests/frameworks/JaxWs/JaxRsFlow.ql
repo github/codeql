@@ -1,5 +1,6 @@
 import java
 import semmle.code.java.dataflow.TaintTracking
+import semmle.code.java.dataflow.FlowSources
 import TestUtilities.InlineExpectationsTest
 
 class TaintFlowConf extends TaintTracking::Configuration {
@@ -7,6 +8,8 @@ class TaintFlowConf extends TaintTracking::Configuration {
 
   override predicate isSource(DataFlow::Node n) {
     n.asExpr().(MethodAccess).getMethod().hasName("taint")
+    or
+    n instanceof RemoteFlowSource
   }
 
   override predicate isSink(DataFlow::Node n) {
@@ -21,6 +24,8 @@ class ValueFlowConf extends DataFlow::Configuration {
 
   override predicate isSource(DataFlow::Node n) {
     n.asExpr().(MethodAccess).getMethod().hasName("taint")
+    or
+    n instanceof RemoteFlowSource
   }
 
   override predicate isSink(DataFlow::Node n) {

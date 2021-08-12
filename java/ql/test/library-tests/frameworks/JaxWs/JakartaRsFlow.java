@@ -57,11 +57,11 @@ public class JakartaRsFlow {
   static PathSegment taint(PathSegment ps) { return ps; }
 
   static UriInfo taint(UriInfo ui) { return ui; }
-  
+
   static Map taint(Map m) { return m; }
-  
+
   static Link taint(Link l) { return l; }
-  
+
   static Class taint(Class c) { return c; }
 
   private static class UriSource {
@@ -196,12 +196,16 @@ public class JakartaRsFlow {
     sink(taint(ps2).getPath()); // $ hasTaintFlow
   }
 
-  void testUriInfo(UriInfo ui1, UriInfo ui2, UriInfo ui3, UriInfo ui4, UriInfo ui5) {
-    sink(taint(ui1).getPathParameters()); // $ hasTaintFlow
-    sink(taint(ui2).getPathSegments()); // $ hasTaintFlow
-    sink(taint(ui2).getQueryParameters()); // $ hasTaintFlow
-    sink(taint(ui2).getRequestUri()); // $ hasTaintFlow
-    sink(taint(ui2).getRequestUriBuilder()); // $ hasTaintFlow
+  void testUriInfo(UriInfo ui) {
+    ui = taint(ui);
+    sink(ui.getPathParameters()); // $ hasTaintFlow
+    sink(ui.getPathSegments()); // $ hasTaintFlow
+    sink(ui.getQueryParameters()); // $ hasTaintFlow
+    sink(ui.getRequestUri()); // $ hasTaintFlow
+    sink(ui.getRequestUriBuilder()); // $ hasTaintFlow
+    sink(ui.getQueryParameters().getFirst("someKey")); // $ hasTaintFlow
+    sink(ui.getRequestUri()); // $ hasTaintFlow
+    sink(ui.getRequestUriBuilder().build()); // $ hasTaintFlow
   }
 
   void testCookie() {
@@ -341,7 +345,7 @@ public class JakartaRsFlow {
     sink(UriBuilder.fromPath(taint()).buildFromEncodedMap(new HashMap<String, String>())); // $ hasTaintFlow
     sink(UriBuilder.fromPath("").buildFromMap(taint(new HashMap<String, String>()), false)); // $ hasTaintFlow
     sink(UriBuilder.fromPath(taint()).buildFromMap(new HashMap<String, String>(), true)); // $ hasTaintFlow
-    
+
     sink(UriBuilder.fromPath(taint()).clone()); // $ hasTaintFlow
     sink(UriBuilder.fromPath("").fragment(taint())); // $ hasTaintFlow
     sink(UriBuilder.fromPath(taint()).fragment("")); // $ hasTaintFlow
