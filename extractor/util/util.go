@@ -14,9 +14,9 @@ import (
 
 var extractorPath string
 
-// Getenv retrieves the value of the environment variable named by the key.
-// If that variable is not present, it iterates over the given aliases until
-// it finds one that is. If none are present, the empty string is returned.
+// Getenv retrieves the value of the environment variable named by the key.  If that variable is not
+// present, it iterates over the given aliases until it finds one that is. If none are present, the
+// empty string is returned.
 func Getenv(key string, aliases ...string) string {
 	val := os.Getenv(key)
 	if val != "" {
@@ -37,8 +37,9 @@ func runGoList(format string, pkgpath string, flags ...string) (string, error) {
 	return runGoListWithEnv(format, []string{pkgpath}, nil, flags...)
 }
 
-// runGoListWithEnv is a helper function for running go list with format `format` and flags `flags` on
-// pattern `patterns`, with environment variables `additionalEnv`, which is a slice of strings in the format `NAME=VALUE`.
+// runGoListWithEnv is a helper function for running go list with format `format` and flags `flags`
+// on pattern `patterns`, with environment variables `additionalEnv`, which is a slice of strings in
+// the format `NAME=VALUE`.
 func runGoListWithEnv(format string, patterns []string, additionalEnv []string, flags ...string) (string, error) {
 	args := append([]string{"list", "-e", "-f", format}, flags...)
 	args = append(args, patterns...)
@@ -59,9 +60,9 @@ func runGoListWithEnv(format string, patterns []string, additionalEnv []string, 
 	return strings.TrimSpace(string(out)), nil
 }
 
-// PkgInfo holds package directory and module directory(if any) for a package
+// PkgInfo holds package directory and module directory (if any) for a package
 type PkgInfo struct {
-	PkgDir string // the directory directly containing source code of this pacakge
+	PkgDir string // the directory directly containing source code of this package
 	ModDir string // the module directory containing this package, empty if not a module
 }
 
