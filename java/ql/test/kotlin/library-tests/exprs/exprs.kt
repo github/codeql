@@ -20,6 +20,11 @@ fun topLevelMethod(x: Int, y: Int): Int {
     val i18 = x >= y
     val i20 = x in x .. y
     val i21 = x !in x .. y
+    val b1 = true
+    val b2 = false
+    val b3 = b1 && b2
+    val b4 = b1 || b2
+    val b5 = !b1
     return 123 + 456
 }
 

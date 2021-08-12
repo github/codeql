@@ -455,13 +455,30 @@ class KotlinFileExtractor(val tw: TrapWriter) {
         when(e) {
             is IrCall -> extractCall(e, callable, parent, idx)
             is IrConst<*> -> {
-                val v = e.value as Int
-                val id = tw.getFreshIdLabel<DbIntegerliteral>()
-                val typeId = useType(e.type)
-                val locId = tw.getLocation(e.startOffset, e.endOffset)
-                tw.writeExprs_integerliteral(id, typeId, parent, idx)
-                tw.writeHasLocation(id, locId)
-                tw.writeNamestrings(v.toString(), v.toString(), id)
+                val v = e.value
+                when(v) {
+                    is Int -> {
+                        val id = tw.getFreshIdLabel<DbIntegerliteral>()
+                        val typeId = useType(e.type)
+                        val locId = tw.getLocation(e.startOffset, e.endOffset)
+                        tw.writeExprs_integerliteral(id, typeId, parent, idx)
+                        tw.writeHasLocation(id, locId)
+                        tw.writeNamestrings(v.toString(), v.toString(), id)
+                    } is Boolean -> {
+                        val id = tw.getFreshIdLabel<DbBooleanliteral>()
+                        val typeId = useType(e.type)
+                        val locId = tw.getLocation(e.startOffset, e.endOffset)
+                        tw.writeExprs_booleanliteral(id, typeId, parent, idx)
+                        tw.writeHasLocation(id, locId)
+                        tw.writeNamestrings(v.toString(), v.toString(), id)
+                    } else -> {
+                        if(v == null) {
+                            extractorBug("Unrecognised IrConst: null value")
+                        } else {
+                            extractorBug("Unrecognised IrConst: " + v.javaClass)
+                        }
+                    }
+                }
             }
             is IrGetValue -> {
                 val id = tw.getFreshIdLabel<DbVaraccess>()
