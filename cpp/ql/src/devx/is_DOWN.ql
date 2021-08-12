@@ -31,7 +31,7 @@ import cpp
 
 from FunctionCall fc, int i
 where
-    fc.getArgument(i).getValue().regexpMatch(".*Interface [a-zA-Z0-9/%]+ is (DOWN|UP)")
+    fc.getArgument(i).getValue().regexpMatch("\n%sInterface %s is (DOWN|Down|UP|Up)")
     // fc.getTarget().hasName("DEBUG_AN_LOG")
     // format.regexpMatch(".*Interface [a-zA-Z0-9/%]+ is (DOWN|UP)")
 select fc, "Function: "+fc.getTarget().getName()+" Log: "+fc.getArgument(i).getValue()
