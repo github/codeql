@@ -122,14 +122,10 @@ svnchurn(
 
 /* fromSource is ignored */
 files(unique int id: @file,
-      varchar(900) name: string ref,
-      varchar(900) simple: string ref,
-      varchar(900) ext: string ref,
-      int fromSource: int ref);
+      varchar(900) name: string ref);
 
 folders(unique int id: @folder,
-        varchar(900) name: string ref,
-        varchar(900) simple: string ref);
+        varchar(900) name: string ref);
 
 @container = @folder | @file;
 
