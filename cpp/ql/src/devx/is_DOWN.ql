@@ -34,6 +34,6 @@ import semmle.code.cpp.models.interfaces.FormattingFunction
 from string format, FormattingFunctionCall fc
 where
     format = fc.getFormat().getValue() and // format: "%s: Failed init_producer"
-    fc.getTarget().hasName("DEBUG_AN_LOG") 
+    fc.getTarget().hasName("DEBUG_AN_LOG")
     // format.regexpMatch(".*Interface [a-zA-Z0-9/%]+ is (DOWN|UP)")
 select fc, "test "
