@@ -15,7 +15,7 @@ CodeQL packs are used to create, share, depend on, and run CodeQL queries and li
 
 Creating and editing CodeQL packs in Visual Studio Code
 -------------------------------------------------------
-To create a new CodeQL pack, you will need to use the CodeQL CLI from a terminal, which you can do within Visual Studio Code or outside of it with the ``codeql pack init`` command. Once you create an empty pack, you can edit the ``qlpack.yml`` file or run the ``codeql pack add`` command to add dependencies or change the name or version. For more information, see ":ref:`Creating and working with CodeQL packs <creating-and-working-with-codeql-packs>`".
+To create a new CodeQL pack, you will need to use the CodeQL CLI from a terminal, which you can do within Visual Studio Code or outside of it with the ``codeql pack init`` command. Once you create an empty pack, you can edit the ``qlpack.yml`` file or run the ``codeql pack add`` command to add dependencies or change the name or version. For more information, see ":ref:`Creating and working with CodeQL packs <creating-and-working-with-codeql-packs>`."
 
 You can create or edit queries in a CodeQL pack in Visual Studio Code as you would with any CodeQL query, using the standard code editing features such as autocomplete suggestions to find elements to use from the pack's dependencies. 
 
