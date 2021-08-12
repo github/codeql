@@ -361,37 +361,57 @@ class KotlinFileExtractor(val tw: TrapWriter) {
         }
     }
 
+    fun extractCall(c: IrCall, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int) {
+        val exprId: Label<out DbExpr> = when {
+            c.origin == PLUS -> {
+                val id = tw.getFreshIdLabel<DbAddexpr>()
+                val typeId = useType(c.type)
+                val locId = tw.getLocation(c.startOffset, c.endOffset)
+                tw.writeExprs_addexpr(id, typeId, parent, idx)
+                tw.writeHasLocation(id, locId)
+                id
+            } c.origin == MINUS -> {
+                val id = tw.getFreshIdLabel<DbSubexpr>()
+                val typeId = useType(c.type)
+                val locId = tw.getLocation(c.startOffset, c.endOffset)
+                tw.writeExprs_subexpr(id, typeId, parent, idx)
+                tw.writeHasLocation(id, locId)
+                id
+            } c.origin == DIV -> {
+                val id = tw.getFreshIdLabel<DbDivexpr>()
+                val typeId = useType(c.type)
+                val locId = tw.getLocation(c.startOffset, c.endOffset)
+                tw.writeExprs_divexpr(id, typeId, parent, idx)
+                tw.writeHasLocation(id, locId)
+                id
+            } c.origin == PERC -> {
+                val id = tw.getFreshIdLabel<DbRemexpr>()
+                val typeId = useType(c.type)
+                val locId = tw.getLocation(c.startOffset, c.endOffset)
+                tw.writeExprs_remexpr(id, typeId, parent, idx)
+                tw.writeHasLocation(id, locId)
+                id
+            } else -> {
+                extractorBug("Unrecognised IrCall: " + c.render())
+                return
+            }
+        }
+        val dr = c.dispatchReceiver
+        val offset = if(dr == null) 0 else 1
+        if(dr != null) {
+            extractExpression(dr, callable, exprId, 0)
+        }
+        for(i in 0 until c.valueArgumentsCount) {
+            val arg = c.getValueArgument(i)
+            if(arg != null) {
+                extractExpression(arg, callable, exprId, i + offset)
+            }
+        }
+    }
+
     fun extractExpression(e: IrExpression, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int) {
         when(e) {
-            is IrCall -> {
-                val sig: IdSignature.PublicSignature? = e.symbol.signature?.asPublic()
-                if(sig == null) {
-                    extractorBug("IrCall without public signature")
-                } else {
-                    when {
-                        e.origin == PLUS -> {
-                            if(e.valueArgumentsCount == 1) {
-                                val left = e.dispatchReceiver
-                                val right = e.getValueArgument(0)
-                                if(left != null && right != null) {
-                                    val id = tw.getFreshIdLabel<DbAddexpr>()
-                                    val typeId = useType(e.type)
-                                    val locId = tw.getLocation(e.startOffset, e.endOffset)
-                                    tw.writeExprs_addexpr(id, typeId, parent, idx)
-                                    tw.writeHasLocation(id, locId)
-                                    extractExpression(left, callable, id, 0)
-                                    extractExpression(right, callable, id, 1)
-                                } else {
-                                    extractorBug("Unrecognised IrCall: left or right is null")
-                                }
-                            } else {
-                                extractorBug("Unrecognised IrCall: Not binary")
-                            }
-                        }
-                        else -> extractorBug("Unrecognised IrCall: " + e.render())
-                    }
-                }
-            }
+            is IrCall -> extractCall(e, callable, parent, idx)
             is IrConst<*> -> {
                 val v = e.value as Int
                 val id = tw.getFreshIdLabel<DbIntegerliteral>()
