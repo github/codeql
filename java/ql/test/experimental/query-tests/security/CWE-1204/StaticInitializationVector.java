@@ -50,6 +50,54 @@ public class StaticInitializationVector {
         return cipher.doFinal();
     }
 
+    // BAD: AES-GCM with static IV from a multidimensional byte array
+    public byte[] encryptWithOneOfStaticIvs01(byte[] key, byte[] plaintext) throws Exception {
+        byte[][] staticIvs = new byte[][] {
+            { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5 },
+            { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 42 }
+        };
+
+        GCMParameterSpec ivSpec = new GCMParameterSpec(128, staticIvs[1]);
+        SecretKeySpec keySpec = new SecretKeySpec(key, "AES");
+
+        Cipher cipher = Cipher.getInstance("AES/GCM/PKCS5PADDING");
+        cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec); // $staticInitializationVector
+        cipher.update(plaintext);
+        return cipher.doFinal();
+    }
+
+    // BAD: AES-GCM with static IV from a multidimensional byte array
+    public byte[] encryptWithOneOfStaticIvs02(byte[] key, byte[] plaintext) throws Exception {
+        byte[][] staticIvs = new byte[][] {
+            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5 },
+            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 42 }
+        };
+
+        GCMParameterSpec ivSpec = new GCMParameterSpec(128, staticIvs[1]);
+        SecretKeySpec keySpec = new SecretKeySpec(key, "AES");
+
+        Cipher cipher = Cipher.getInstance("AES/GCM/PKCS5PADDING");
+        cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec); // $staticInitializationVector
+        cipher.update(plaintext);
+        return cipher.doFinal();
+    }
+
+    // BAD: AES-GCM with static IV from a multidimensional byte array
+    public byte[] encryptWithOneOfStaticZeroIvs(byte[] key, byte[] plaintext) throws Exception {
+        byte[][] ivs = new byte[][] {
+            new byte[8],
+            new byte[16]
+        };
+
+        GCMParameterSpec ivSpec = new GCMParameterSpec(128, ivs[1]);
+        SecretKeySpec keySpec = new SecretKeySpec(key, "AES");
+
+        Cipher cipher = Cipher.getInstance("AES/GCM/PKCS5PADDING");
+        cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec); // $staticInitializationVector
+        cipher.update(plaintext);
+        return cipher.doFinal();
+    }
+
     // GOOD: AES-GCM with a random IV
     public byte[] encryptWithRandomIv(byte[] key, byte[] plaintext) throws Exception {
         byte[] iv = new byte[16];

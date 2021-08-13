@@ -3,13 +3,17 @@ import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.TaintTracking2
 
 /**
- * Holds if `array` is initialized only with constants, for example,
- * `new byte[8]` or `new byte[] { 1, 2, 3, 4, 5, 6, 7, 8 }`.
+ * Holds if `array` is initialized only with constants.
  */
 private predicate initializedWithConstants(ArrayCreationExpr array) {
+  // creating an array without an initializer, for example `new byte[8]`
   not exists(array.getInit())
   or
-  forex(Expr element | element = array.getInit().getAChildExpr() |
+  // creating a multidimensional array with an initializer like `{ new byte[8], new byte[16] }`
+  array.getInit().getAnInit().getAChildExpr() instanceof IntegerLiteral
+  or
+  // creating an array wit an initializer like `new byte[] { 1, 2 }`
+  forex(Expr element | element = array.getInit().getAnInit() |
     element instanceof CompileTimeConstantExpr
   )
 }
