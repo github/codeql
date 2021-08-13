@@ -19,6 +19,12 @@ import semmle.code.cpp.controlflow.Dominance
 import semmle.code.cpp.controlflow.SSA
 import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
 
+class Config extends Configuration {
+  Config() { this = "ComparisonWithWiderTypeConfig" }
+
+  override predicate isUnconvertedSink(Expr e) { select0(_, _, _, _, e) }
+}
+
 /**
  * C++ references are all pointer width, but the comparison takes place with
  * the pointed-to value
@@ -45,14 +51,11 @@ Element friendlyLoc(Expr e) {
   not e instanceof Access and not e instanceof Call and result = e
 }
 
-from Loop l, RelationalOperation rel, VariableAccess small, Expr large
-where
+predicate select0(Loop l, RelationalOperation rel, VariableAccess small, Expr large, Expr conv) {
   small = rel.getLesserOperand() and
   large = rel.getGreaterOperand() and
   rel = l.getCondition().getAChild*() and
-  forall(Expr conv | conv = large.getConversion*() |
-    upperBound(conv).log2() > getComparisonSize(small) * 8
-  ) and
+  conv = large.getConversion*() and
   // Ignore cases where the smaller type is int or larger
   // These are still bugs, but you should need a very large string or array to
   // trigger them. We will want to disable this for some applications, but it's
@@ -67,6 +70,14 @@ where
     getComparisonSize(small) and
   // ignore loop-invariant smaller variables
   loopVariant(small, l)
+}
+
+from Loop l, RelationalOperation rel, VariableAccess small, Expr large
+where
+  select0(l, rel, small, large, _) and
+  forall(Expr conv | conv = large.getConversion*() |
+    upperBound(conv).log2() > getComparisonSize(small) * 8
+  )
 select rel,
   "Comparison between $@ of type " + small.getType().getName() + " and $@ of wider type " +
     large.getType().getName() + ".", friendlyLoc(small), small.toString(), friendlyLoc(large),

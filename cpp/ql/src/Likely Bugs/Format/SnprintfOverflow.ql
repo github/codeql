@@ -16,6 +16,59 @@
 import cpp
 import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
 
+class Config extends Configuration {
+  Config() { this = "SnprintfOverflowConfig" }
+
+  override predicate isUnconvertedSink(Expr e) { flowsToExpr0(_, e) }
+}
+
+predicate flowsToExpr0(Expr source, Expr sink) { flowsToExprImpl0(source, sink) }
+
+predicate flowsToExprImpl0(Expr source, Expr sink) {
+  source = sink and
+  source.(FunctionCall).getTarget().(Snprintf).returnsFullFormatLength()
+  or
+  exists(RangeSsaDefinition def, StackVariable v |
+    flowsToDef0(source, def, v) and
+    sink = def.getAUse(v)
+  )
+  or
+  flowsToExpr0(source, sink.(UnaryArithmeticOperation).getOperand())
+  or
+  flowsToExpr0(source, sink.(BinaryArithmeticOperation).getAnOperand())
+  or
+  flowsToExpr0(source, sink.(Assignment).getRValue())
+  or
+  flowsToExpr0(source, sink.(AssignOperation).getLValue())
+  or
+  exists(FormattingFunctionCall call |
+    sink = call and
+    flowsToExpr0(source, call.getArgument(call.getTarget().getSizeParameterIndex()))
+  )
+}
+
+predicate flowsToDef0(Expr source, RangeSsaDefinition def, StackVariable v) {
+  flowsToDefImpl0(source, def, v)
+}
+
+predicate flowsToDefImpl0(Expr source, RangeSsaDefinition def, StackVariable v) {
+  // Assignment or initialization: `e = v;`
+  exists(Expr e |
+    e = def.getDefiningValue(v) and
+    flowsToExpr0(source, e)
+  )
+  or
+  // `x++`
+  exists(CrementOperation crem |
+    def = crem and
+    crem.getOperand() = v.getAnAccess() and
+    flowsToExpr0(source, crem.getOperand())
+  )
+  or
+  // Phi definition.
+  flowsToDef0(source, def.getAPhiInput(v), v)
+}
+
 /**
  * Holds if there is a dataflow path from `source` to `sink`
  * with no bounds checks along the way. `pathMightOverflow` is

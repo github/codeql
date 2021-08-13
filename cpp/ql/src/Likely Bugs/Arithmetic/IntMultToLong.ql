@@ -22,6 +22,12 @@ import semmle.code.cpp.controlflow.SSA
 import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
 import semmle.code.cpp.rangeanalysis.RangeAnalysisUtils
 
+class Config extends Configuration {
+  Config() { this = "IntMultToLongConfig" }
+
+  override predicate isUnconvertedSink(Expr e) { select0(e, _, _) }
+}
+
 /**
  * Holds if `e` is either:
  *  - a constant
@@ -176,8 +182,7 @@ predicate overflows(MulExpr me, Type t) {
   )
 }
 
-from MulExpr me, Type t1, Type t2
-where
+predicate select0(MulExpr me, Type t1, Type t2) {
   t1 = me.getType().getUnderlyingType() and
   t2 = me.getConversion().getType().getUnderlyingType() and
   t1.getSize() < t2.getSize() and
@@ -213,7 +218,12 @@ where
       e = other.(BinaryOperation).getAnOperand*()
     ) and
     e.(Literal).getType().getSize() = t2.getSize()
-  ) and
+  )
+}
+
+from MulExpr me, Type t1, Type t2
+where
+  select0(me, t1, t2) and
   // only report if we cannot prove that the result of the
   // multiplication will be less (resp. greater) than the
   // maximum (resp. minimum) number we can compute.

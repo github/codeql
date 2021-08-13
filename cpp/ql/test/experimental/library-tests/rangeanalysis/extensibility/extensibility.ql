@@ -3,6 +3,12 @@ import semmle.code.cpp.rangeanalysis.RangeAnalysisUtils
 import experimental.semmle.code.cpp.models.interfaces.SimpleRangeAnalysisExpr
 import experimental.semmle.code.cpp.models.interfaces.SimpleRangeAnalysisDefinition
 
+class Config extends Configuration {
+  Config() { this = "ExtensibilityConfig" }
+
+  override predicate isUnconvertedSink(Expr e) { e instanceof VariableAccess }
+}
+
 class CustomAddFunctionCall extends SimpleRangeAnalysisExpr, FunctionCall {
   CustomAddFunctionCall() { this.getTarget().hasGlobalName("custom_add_function") }
 

@@ -19,14 +19,24 @@ private import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 private import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
 private import semmle.code.cpp.commons.Exclusions
 
-from RelationalOperation ro, AddExpr add, Expr expr1, Expr expr2
-where
+predicate select0(RelationalOperation ro, AddExpr add, Expr expr1, Expr expr2) {
   ro.getAnOperand() = add and
   add.getAnOperand() = expr1 and
   ro.getAnOperand() = expr2 and
   globalValueNumber(expr1) = globalValueNumber(expr2) and
   add.getUnspecifiedType().(IntegralType).isSigned() and
-  not isFromMacroDefinition(ro) and
+  not isFromMacroDefinition(ro)
+}
+
+class Config extends Configuration {
+  Config() { this = "SignedOverflowCheckConfig" }
+
+  override predicate isUnconvertedSink(Expr e) { select0(_, e, _, _) }
+}
+
+from RelationalOperation ro, AddExpr add
+where
+  select0(ro, add, _, _) and
   exprMightOverflowPositively(add) and
   exists(Compilation c | c.getAFileCompiled() = ro.getFile() |
     not c.getAnArgument() = "-fwrapv" and

@@ -5,6 +5,12 @@
 import cpp
 import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
 
+class Config extends Configuration {
+  Config() { this = "PointlessComparisonConfig" }
+
+  override predicate isUnconvertedSink(Expr e) { e = any(ComparisonOperation cmp).getAnOperand() }
+}
+
 /** Gets the lower bound of the fully converted expression. */
 private float lowerBoundFC(Expr expr) { result = lowerBound(expr.getFullyConverted()) }
 

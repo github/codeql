@@ -18,6 +18,19 @@ import semmle.code.cpp.commons.Buffer
 import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
 import LoopBounds
 
+class Config extends Configuration {
+  Config() { this = "OverflowStaticConfig" }
+
+  override predicate isUnconvertedSink(Expr e) {
+    exists(BufferAccess bufaccess |
+      overflowOffsetInLoop0(bufaccess, _, _) and
+      e = bufaccess.getArrayOffset()
+    )
+    or
+    e = any(CallWithBufferSize call).statedSizeExpr()
+  }
+}
+
 private predicate staticBufferBase(VariableAccess access, Variable v) {
   v.getType().(ArrayType).getBaseType() instanceof CharType and
   access = v.getAnAccess() and
@@ -48,17 +61,21 @@ class BufferAccess extends ArrayExpr {
   Variable buffer() { result.getAnAccess() = this.getArrayBase() }
 }
 
+predicate overflowOffsetInLoop0(BufferAccess bufaccess, ClassicForLoop loop, string msg) {
+  loop.getStmt().getAChild*() = bufaccess.getEnclosingStmt() and
+  loop.limit() >= bufaccess.bufferSize() and
+  loop.counter().getAnAccess() = bufaccess.getArrayOffset() and
+  // Ensure that we don't have an upper bound on the array index that's less than the buffer size.
+  msg =
+    "Potential buffer-overflow: counter '" + loop.counter().toString() + "' <= " +
+      loop.limit().toString() + " but '" + bufaccess.buffer().getName() + "' has " +
+      bufaccess.bufferSize().toString() + " elements."
+}
+
 predicate overflowOffsetInLoop(BufferAccess bufaccess, string msg) {
   exists(ClassicForLoop loop |
-    loop.getStmt().getAChild*() = bufaccess.getEnclosingStmt() and
-    loop.limit() >= bufaccess.bufferSize() and
-    loop.counter().getAnAccess() = bufaccess.getArrayOffset() and
-    // Ensure that we don't have an upper bound on the array index that's less than the buffer size.
-    not upperBound(bufaccess.getArrayOffset().getFullyConverted()) < bufaccess.bufferSize() and
-    msg =
-      "Potential buffer-overflow: counter '" + loop.counter().toString() + "' <= " +
-        loop.limit().toString() + " but '" + bufaccess.buffer().getName() + "' has " +
-        bufaccess.bufferSize().toString() + " elements."
+    overflowOffsetInLoop0(bufaccess, loop, msg) and
+    not upperBound(bufaccess.getArrayOffset().getFullyConverted()) < bufaccess.bufferSize()
   )
 }
 

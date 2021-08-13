@@ -18,6 +18,16 @@ import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
 import semmle.code.cpp.security.TaintTracking
 import TaintedWithPath
 
+class Config extends Configuration {
+  Config() { this = "TaintedAllocationSizeConfig" }
+
+  override predicate isUnconvertedSink(Expr e) {
+    e instanceof UnaryArithmeticOperation or
+    e instanceof BinaryArithmeticOperation or
+    e instanceof AssignArithmeticOperation
+  }
+}
+
 /**
  * Holds if `alloc` is an allocation, and `tainted` is a child of it that is a
  * taint sink.

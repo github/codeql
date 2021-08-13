@@ -70,13 +70,23 @@ predicate exprIsSubLeftOrLess(SubExpr sub, DataFlow::Node n) {
   )
 }
 
-from RelationalOperation ro, SubExpr sub
-where
+class Config extends Configuration {
+  Config() { this = "UnsignedDifferenceExpressionComparedZero" }
+
+  override predicate isUnconvertedSink(Expr e) { select0(_, e) }
+}
+
+predicate select0(RelationalOperation ro, SubExpr sub) {
   not isFromMacroDefinition(ro) and
   not isFromMacroDefinition(sub) and
   ro.getLesserOperand().getValue().toInt() = 0 and
   ro.getGreaterOperand() = sub and
   sub.getFullyConverted().getUnspecifiedType().(IntegralType).isUnsigned() and
-  exprMightOverflowNegatively(sub.getFullyConverted()) and // generally catches false positives involving constants
   not exprIsSubLeftOrLess(sub, DataFlow::exprNode(sub.getRightOperand())) // generally catches false positives where there's a relation between the left and right operands
+}
+
+from RelationalOperation ro, SubExpr sub
+where
+  select0(ro, sub) and
+  exprMightOverflowNegatively(sub.getFullyConverted()) // generally catches false positives involving constants
 select ro, "Unsigned subtraction can never be negative."

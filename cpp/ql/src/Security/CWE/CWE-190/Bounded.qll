@@ -7,6 +7,18 @@ private import cpp
 private import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
 private import semmle.code.cpp.rangeanalysis.RangeAnalysisUtils
 
+private class Config extends Configuration {
+  Config() { this = "BoundedConfig" }
+
+  override predicate isUnconvertedSink(Expr e) {
+    e instanceof UnaryArithmeticOperation or
+    e instanceof BinaryArithmeticOperation or
+    e instanceof AssignArithmeticOperation or
+    e = any(BitwiseAndExpr andExpr).getAnOperand() or
+    e = any(AssignAndExpr andExpr).getAnOperand()
+  }
+}
+
 /**
  * An operand `e` of a bitwise and expression `andExpr` (i.e., `andExpr` is either an `BitwiseAndExpr`
  * or an `AssignAndExpr`) with operands `operand1` and `operand2` is the operand that is not `e` is upper

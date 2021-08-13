@@ -17,6 +17,24 @@ import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
 import BadAdditionOverflowCheck
 import PointlessSelfComparison
 
+class Config extends Configuration {
+  Config() { this = "ComparisonWithCancelingSubExprConfig" }
+
+  override predicate isUnconvertedSink(Expr e) { cmpLinearSubExpr0(_, e, _) }
+}
+
+predicate cmpLinearSubExpr0(ComparisonOperation cmp, Expr child, float multiplier) {
+  child = cmp.getLeftOperand() and multiplier = 1.0
+  or
+  child = cmp.getRightOperand() and multiplier = -1.0
+  or
+  exists(Expr parent, float m1, float m2 |
+    cmpLinearSubExpr0(cmp, parent, m1) and
+    linearChild(parent, child, m2) and
+    multiplier = m1 * m2
+  )
+}
+
 /**
  * Holds if `parent` is a linear expression of `child`. For example:
  *

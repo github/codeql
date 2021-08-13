@@ -7,6 +7,26 @@
 import cpp
 import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
 
+private class Config extends Configuration {
+  Config() { this = "PointlessSelfComparison" }
+
+  override predicate isUnconvertedSink(Expr e) {
+    pointlessSelfComparison0(_, _, e, _) or
+    pointlessSelfComparison0(_, _, _, e)
+  }
+}
+
+private predicate pointlessSelfComparison0(
+  ComparisonOperation cmp, Variable v, VariableAccess lhs, VariableAccess rhs
+) {
+  lhs = cmp.getLeftOperand() and
+  rhs = cmp.getRightOperand() and
+  lhs = v.getAnAccess() and
+  rhs = v.getAnAccess() and
+  not exists(lhs.getQualifier()) and // Avoid structure fields
+  not exists(rhs.getQualifier()) // Avoid structure fields
+}
+
 /**
  * Holds if `cmp` is a comparison of the following form:
  *
@@ -22,12 +42,7 @@ import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
  */
 predicate pointlessSelfComparison(ComparisonOperation cmp) {
   exists(Variable v, VariableAccess lhs, VariableAccess rhs |
-    lhs = cmp.getLeftOperand() and
-    rhs = cmp.getRightOperand() and
-    lhs = v.getAnAccess() and
-    rhs = v.getAnAccess() and
-    not exists(lhs.getQualifier()) and // Avoid structure fields
-    not exists(rhs.getQualifier()) and // Avoid structure fields
+    pointlessSelfComparison0(cmp, v, lhs, rhs) and
     not convertedExprMightOverflow(lhs) and
     not convertedExprMightOverflow(rhs)
   )

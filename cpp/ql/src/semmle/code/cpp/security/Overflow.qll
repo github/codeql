@@ -7,7 +7,7 @@ import cpp
 import semmle.code.cpp.controlflow.Dominance
 // `GlobalValueNumbering` is only imported to prevent IR re-evaluation.
 private import semmle.code.cpp.valuenumbering.GlobalValueNumbering
-import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
+private import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
 import semmle.code.cpp.rangeanalysis.RangeAnalysisUtils
 
 /**
@@ -97,15 +97,16 @@ predicate guardedGreater(Operation e, Expr use) {
  */
 VariableAccess varUse(LocalScopeVariable v) { result = v.getAnAccess() }
 
-/**
- * Holds if `e` potentially overflows and `use` is an operand of `e` that is not guarded.
- */
-predicate missingGuardAgainstOverflow(Operation e, VariableAccess use) {
-  // Since `e` is guarenteed to be a `BinaryArithmeticOperation`, a `UnaryArithmeticOperation` or
-  // an `AssignArithmeticOperation` by the other constraints in this predicate, we know that
-  // `convertedExprMightOverflowPositively` will have a result even when `e` is not analyzable
-  // by `SimpleRangeAnalysis`.
-  convertedExprMightOverflowPositively(e) and
+private class Config extends Configuration {
+  Config() { this = "OverflowConfig" }
+
+  override predicate isUnconvertedSink(Expr e) {
+    missingGuardAgainstOverflow0(e, _) or
+    missingGuardAgainstUnderflow0(e, _)
+  }
+}
+
+predicate missingGuardAgainstOverflow0(Operation e, VariableAccess use) {
   use = e.getAnOperand() and
   exists(LocalScopeVariable v | use.getTarget() = v |
     // overflow possible if large
@@ -124,14 +125,18 @@ predicate missingGuardAgainstOverflow(Operation e, VariableAccess use) {
 }
 
 /**
- * Holds if `e` potentially underflows and `use` is an operand of `e` that is not guarded.
+ * Holds if `e` potentially overflows and `use` is an operand of `e` that is not guarded.
  */
-predicate missingGuardAgainstUnderflow(Operation e, VariableAccess use) {
+predicate missingGuardAgainstOverflow(Operation e, VariableAccess use) {
   // Since `e` is guarenteed to be a `BinaryArithmeticOperation`, a `UnaryArithmeticOperation` or
   // an `AssignArithmeticOperation` by the other constraints in this predicate, we know that
-  // `convertedExprMightOverflowNegatively` will have a result even when `e` is not analyzable
+  // `convertedExprMightOverflowPositively` will have a result even when `e` is not analyzable
   // by `SimpleRangeAnalysis`.
-  convertedExprMightOverflowNegatively(e) and
+  convertedExprMightOverflowPositively(e) and
+  missingGuardAgainstOverflow0(e, use)
+}
+
+predicate missingGuardAgainstUnderflow0(Operation e, VariableAccess use) {
   use = e.getAnOperand() and
   exists(LocalScopeVariable v | use.getTarget() = v |
     // underflow possible if use is left operand and small
@@ -148,4 +153,16 @@ predicate missingGuardAgainstUnderflow(Operation e, VariableAccess use) {
     e instanceof MulExpr and
     not (guardedLesser(e, varUse(v)) and guardedGreater(e, varUse(v)))
   )
+}
+
+/**
+ * Holds if `e` potentially underflows and `use` is an operand of `e` that is not guarded.
+ */
+predicate missingGuardAgainstUnderflow(Operation e, VariableAccess use) {
+  // Since `e` is guarenteed to be a `BinaryArithmeticOperation`, a `UnaryArithmeticOperation` or
+  // an `AssignArithmeticOperation` by the other constraints in this predicate, we know that
+  // `convertedExprMightOverflowNegatively` will have a result even when `e` is not analyzable
+  // by `SimpleRangeAnalysis`.
+  convertedExprMightOverflowNegatively(e) and
+  missingGuardAgainstUnderflow0(e, use)
 }

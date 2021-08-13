@@ -15,6 +15,17 @@ import cpp
 import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
 import semmle.code.cpp.dataflow.DataFlow
 
+class Config extends Configuration {
+  Config() { this = "InconsistentLoopDirectionConfig" }
+
+  override predicate isUnconvertedSink(Expr e) {
+    illDefinedDecrForStmt0(_, _, e, _, _) or
+    illDefinedDecrForStmt0(_, _, _, e, _) or
+    illDefinedIncrForStmt0(_, _, e, _, _) or
+    illDefinedIncrForStmt0(_, _, _, e, _)
+  }
+}
+
 /**
  * A `for` statement whose update is a crement operation on a variable.
  */
@@ -39,15 +50,22 @@ predicate candidateDecrForStmt(
   )
 }
 
+predicate illDefinedDecrForStmt0(
+  ForStmt forstmt, Variable v, Expr initialCondition, Expr terminalCondition,
+  VariableAccess lesserOperand
+) {
+  // decrementing for loop
+  candidateDecrForStmt(forstmt, v, lesserOperand, terminalCondition) and
+  // `initialCondition` is a value of `v` in the for loop
+  v.getAnAssignedValue() = initialCondition and
+  DataFlow::localFlowStep(DataFlow::exprNode(initialCondition), DataFlow::exprNode(lesserOperand))
+}
+
 predicate illDefinedDecrForStmt(
   ForStmt forstmt, Variable v, Expr initialCondition, Expr terminalCondition
 ) {
   exists(VariableAccess lesserOperand |
-    // decrementing for loop
-    candidateDecrForStmt(forstmt, v, lesserOperand, terminalCondition) and
-    // `initialCondition` is a value of `v` in the for loop
-    v.getAnAssignedValue() = initialCondition and
-    DataFlow::localFlowStep(DataFlow::exprNode(initialCondition), DataFlow::exprNode(lesserOperand)) and
+    illDefinedDecrForStmt0(forstmt, v, initialCondition, terminalCondition, lesserOperand) and
     // `initialCondition` < `terminalCondition`
     (
       upperBound(initialCondition) < lowerBound(terminalCondition) and
@@ -75,15 +93,22 @@ predicate candidateIncrForStmt(
   )
 }
 
+predicate illDefinedIncrForStmt0(
+  ForStmt forstmt, Variable v, Expr initialCondition, Expr terminalCondition,
+  VariableAccess greaterOperand
+) {
+  // incrementing for loop
+  candidateIncrForStmt(forstmt, v, greaterOperand, terminalCondition) and
+  // `initialCondition` is a value of `v` in the for loop
+  v.getAnAssignedValue() = initialCondition and
+  DataFlow::localFlowStep(DataFlow::exprNode(initialCondition), DataFlow::exprNode(greaterOperand))
+}
+
 predicate illDefinedIncrForStmt(
   ForStmt forstmt, Variable v, Expr initialCondition, Expr terminalCondition
 ) {
   exists(VariableAccess greaterOperand |
-    // incrementing for loop
-    candidateIncrForStmt(forstmt, v, greaterOperand, terminalCondition) and
-    // `initialCondition` is a value of `v` in the for loop
-    v.getAnAssignedValue() = initialCondition and
-    DataFlow::localFlowStep(DataFlow::exprNode(initialCondition), DataFlow::exprNode(greaterOperand)) and
+    illDefinedIncrForStmt0(forstmt, v, initialCondition, terminalCondition, greaterOperand) and
     // `terminalCondition` < `initialCondition`
     (
       upperBound(terminalCondition) < lowerBound(initialCondition)
