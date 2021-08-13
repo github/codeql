@@ -6,16 +6,31 @@
 private import cpp
 private import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
 private import semmle.code.cpp.rangeanalysis.RangeAnalysisUtils
+private import semmle.code.cpp.ir.dataflow.TaintTracking2
+private import semmle.code.cpp.ir.dataflow.DataFlow2
+private import semmle.code.cpp.security.FlowSources
+
+private class BoundedConfig extends TaintTracking2::Configuration {
+  BoundedConfig() { this = "BoundedConfig" }
+
+  override predicate isSource(DataFlow2::Node source) { source instanceof FlowSource }
+
+  override predicate isSink(DataFlow2::Node sink) {
+    exists(Expr e | e = sink.asExpr() |
+      e instanceof UnaryArithmeticOperation or
+      e instanceof BinaryArithmeticOperation or
+      e instanceof AssignArithmeticOperation or
+      e = any(BitwiseAndExpr andExpr).getAnOperand() or
+      e = any(AssignAndExpr andExpr).getAnOperand()
+    )
+  }
+}
 
 private class Config extends Configuration {
   Config() { this = "BoundedConfig" }
 
   override predicate isUnconvertedSink(Expr e) {
-    e instanceof UnaryArithmeticOperation or
-    e instanceof BinaryArithmeticOperation or
-    e instanceof AssignArithmeticOperation or
-    e = any(BitwiseAndExpr andExpr).getAnOperand() or
-    e = any(AssignAndExpr andExpr).getAnOperand()
+    exists(BoundedConfig conf | conf.hasFlowTo(DataFlow::exprNode(e)))
   }
 }
 
