@@ -51,7 +51,7 @@ private class ArrayUpdate extends Expr {
     )
     or
     exists(StaticMethodAccess ma |
-      ma.getMethod().hasQualifiedName("java.util", "Arrays", "copyOf") and
+      ma.getMethod().hasQualifiedName("java.util", "Arrays", ["copyOf", "copyOfRange"]) and
       ma = this and
       ma = array
     )
@@ -65,6 +65,10 @@ private class ArrayUpdate extends Expr {
       m.hasQualifiedName("java.nio", "ByteBuffer", "get") or
       m.hasQualifiedName("java.security", "SecureRandom", "nextBytes") or
       m.hasQualifiedName("java.util", "Random", "nextBytes")
+    )
+    or
+    exists(MethodAccess ma, Method m | m = ma.getMethod() |
+      m.getDeclaringType().hasName("byte[]") and m.hasName("clone") and ma = this and ma = array
     )
   }
 
