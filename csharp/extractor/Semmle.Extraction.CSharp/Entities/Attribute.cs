@@ -20,7 +20,7 @@ namespace Semmle.Extraction.CSharp.Entities
             this.entity = entity;
         }
 
-        public override void WriteId(TextWriter trapFile)
+        public override void WriteId(EscapingTextWriter trapFile)
         {
             if (ReportingLocation?.IsInSource == true)
             {
@@ -33,7 +33,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        public override void WriteQuotedId(TextWriter trapFile)
+        public sealed override void WriteQuotedId(EscapingTextWriter trapFile)
         {
             if (ReportingLocation?.IsInSource == true)
             {

@@ -27,6 +27,8 @@ private module Cached {
         SharedTypeTrackingStep::loadStoreStep(_, _, this, _)
         or
         SharedTypeTrackingStep::loadStoreStep(_, _, _, this)
+        or
+        this = DataFlow::PseudoProperties::arrayLikeElement()
       }
     }
 
@@ -53,49 +55,11 @@ private module Cached {
   predicate step(DataFlow::SourceNode pred, DataFlow::SourceNode succ, StepSummary summary) {
     exists(DataFlow::Node mid | pred.flowsTo(mid) | StepSummary::smallstep(mid, succ, summary))
   }
-}
-
-import Cached::Public
-
-class OptionalPropertyName extends string {
-  OptionalPropertyName() { this instanceof PropertyName or this = "" }
-}
-
-/**
- * INTERNAL: Use `TypeTracker` or `TypeBackTracker` instead.
- *
- * A description of a step on an inter-procedural data flow path.
- */
-class StepSummary extends TStepSummary {
-  /** Gets a textual representation of this step summary. */
-  string toString() {
-    this instanceof LevelStep and result = "level"
-    or
-    this instanceof CallStep and result = "call"
-    or
-    this instanceof ReturnStep and result = "return"
-    or
-    exists(string prop | this = StoreStep(prop) | result = "store " + prop)
-    or
-    exists(string prop | this = LoadStep(prop) | result = "load " + prop)
-    or
-    exists(string prop | this = CopyStep(prop) | result = "copy " + prop)
-    or
-    exists(string fromProp, string toProp | this = LoadStoreStep(fromProp, toProp) |
-      result = "load " + fromProp + " and store to " + toProp
-    )
-  }
-}
-
-module StepSummary {
-  /**
-   * INTERNAL: Use `SourceNode.track()` or `SourceNode.backtrack()` instead.
-   */
-  predicate step = Cached::step/3;
 
   /**
    * INTERNAL: Use `TypeBackTracker.smallstep()` instead.
    */
+  cached
   predicate smallstep(DataFlow::Node pred, DataFlow::Node succ, StepSummary summary) {
     // Flow through properties of objects
     propertyFlowStep(pred, succ) and
@@ -193,4 +157,48 @@ module StepSummary {
       )
     )
   }
+}
+
+import Cached::Public
+
+class OptionalPropertyName extends string {
+  OptionalPropertyName() { this instanceof PropertyName or this = "" }
+}
+
+/**
+ * INTERNAL: Use `TypeTracker` or `TypeBackTracker` instead.
+ *
+ * A description of a step on an inter-procedural data flow path.
+ */
+class StepSummary extends TStepSummary {
+  /** Gets a textual representation of this step summary. */
+  string toString() {
+    this instanceof LevelStep and result = "level"
+    or
+    this instanceof CallStep and result = "call"
+    or
+    this instanceof ReturnStep and result = "return"
+    or
+    exists(string prop | this = StoreStep(prop) | result = "store " + prop)
+    or
+    exists(string prop | this = LoadStep(prop) | result = "load " + prop)
+    or
+    exists(string prop | this = CopyStep(prop) | result = "copy " + prop)
+    or
+    exists(string fromProp, string toProp | this = LoadStoreStep(fromProp, toProp) |
+      result = "load " + fromProp + " and store to " + toProp
+    )
+  }
+}
+
+module StepSummary {
+  /**
+   * INTERNAL: Use `SourceNode.track()` or `SourceNode.backtrack()` instead.
+   */
+  predicate step = Cached::step/3;
+
+  /**
+   * INTERNAL: Use `TypeBackTracker.smallstep()` instead.
+   */
+  predicate smallstep = Cached::smallstep/3;
 }

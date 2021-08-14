@@ -192,7 +192,7 @@ class File extends Container, @file {
   override string getURL() { result = "file://" + this.getAbsolutePath() + ":0:0:0:0" }
 
   /** Holds if this file contains source code. */
-  predicate fromSource() { this.getNumberOfLinesOfCode() > 0 }
+  predicate fromSource() { files(this, _, _, "cs", _) }
 
   /** Holds if this file is a library. */
   predicate fromLibrary() {

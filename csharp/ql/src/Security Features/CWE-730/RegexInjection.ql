@@ -5,6 +5,7 @@
  *              exponential time on certain inputs.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 7.5
  * @precision high
  * @id cs/regex-injection
  * @tags security
@@ -13,7 +14,7 @@
  */
 
 import csharp
-import semmle.code.csharp.security.dataflow.RegexInjection::RegexInjection
+import semmle.code.csharp.security.dataflow.RegexInjectionQuery
 import semmle.code.csharp.frameworks.system.text.RegularExpressions
 import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 

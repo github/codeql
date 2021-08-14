@@ -27,4 +27,6 @@ class Exception extends Element, @exception {
   override predicate hasName(string name) { this.getType().hasName(name) }
 
   override string toString() { result = this.getType().toString() }
+
+  override string getAPrimaryQlClass() { result = "Exception" }
 }

@@ -118,7 +118,7 @@ namespace Semmle.Extraction.CSharp.Entities
         private readonly Lazy<Type> type;
         public Type Type => type.Value;
 
-        public override void WriteId(TextWriter trapFile)
+        public override void WriteId(EscapingTextWriter trapFile)
         {
             trapFile.WriteSubId(Type);
             trapFile.Write(" ");

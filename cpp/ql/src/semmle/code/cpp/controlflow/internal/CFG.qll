@@ -1307,7 +1307,8 @@ private predicate conditionJumps(Expr test, boolean truth, Node n2, Pos p2) {
   )
 }
 
-// Factored out for performance. See QL-796.
+// Pulled out for performance. See
+// https://github.com/github/codeql-coreql-team/issues/1044.
 private predicate normalGroupMemberBaseCase(Node memberNode, Pos memberPos, Node atNode) {
   memberNode = atNode and
   memberPos.isAt() and

@@ -5,27 +5,37 @@
  */
 
 import javascript
+private import semmle.javascript.internal.CachedStages
 
 /**
  * Gets a parameter that is a library input to a top-level package.
  */
+cached
 DataFlow::ParameterNode getALibraryInputParameter() {
+  Stages::Taint::ref() and
   exists(int bound, DataFlow::FunctionNode func |
     func = getAValueExportedByPackage().getABoundFunctionValue(bound) and
     result = func.getParameter(any(int arg | arg >= bound))
   )
 }
 
+private import NodeModuleResolutionImpl as NodeModule
+
 /**
  * Gets a value exported by the main module from a named `package.json` file.
- * The value is either directly the `module.exports` value, a nested property of `module.exports`, or a method on an exported class.
  */
 private DataFlow::Node getAValueExportedByPackage() {
+  // The base case, an export from a named `package.json` file.
   result =
     getAnExportFromModule(any(PackageJSON pack | exists(pack.getPackageName())).getMainModule())
   or
+  // module.exports.bar.baz = result;
   result = getAValueExportedByPackage().(DataFlow::PropWrite).getRhs()
   or
+  // class Foo {
+  //   bar() {} // <- result
+  // };
+  // module.exports = new Foo();
   exists(DataFlow::SourceNode callee |
     callee = getAValueExportedByPackage().(DataFlow::NewNode).getCalleeNode().getALocalSource()
   |
@@ -36,18 +46,65 @@ private DataFlow::Node getAValueExportedByPackage() {
   or
   result = getAValueExportedByPackage().getALocalSource()
   or
+  // Nested property reads.
   result = getAValueExportedByPackage().(DataFlow::SourceNode).getAPropertyReference()
   or
+  // module.exports.foo = require("./other-module.js");
   exists(Module mod |
     mod = getAValueExportedByPackage().getEnclosingExpr().(Import).getImportedModule()
   |
     result = getAnExportFromModule(mod)
   )
   or
+  // module.exports = class Foo {
+  //   bar() {} // <- result
+  //   static baz() {} // <- result
+  //   constructor() {} // <- result
+  // };
   exists(DataFlow::ClassNode cla | cla = getAValueExportedByPackage() |
     result = cla.getAnInstanceMethod() or
     result = cla.getAStaticMethod() or
     result = cla.getConstructor()
+  )
+  or
+  // One shot closures that define a "factory" function.
+  // Recognizes the following pattern:
+  // ```Javascript
+  // (function (root, factory) {
+  //   if (typeof define === 'function' && define.amd) {
+  //     define('library-name', factory);
+  //   } else if (typeof exports === 'object') {
+  //     module.exports = factory();
+  //   } else {
+  //     root.libraryName = factory();
+  //   }
+  // }(this, function () {
+  //   ....
+  // }));
+  // ```
+  // Such files are not recognized as modules, so we manually use `NodeModule::resolveMainModule` to resolve the file against a `package.json` file.
+  exists(ImmediatelyInvokedFunctionExpr func, DataFlow::ParameterNode prev, int i |
+    prev.getName() = "factory" and
+    func.getParameter(i) = prev.getParameter() and
+    result = func.getInvocation().getArgument(i).flow().getAFunctionValue().getAReturn() and
+    DataFlow::globalVarRef("define").getACall().getArgument(1) = prev.getALocalUse() and
+    func.getFile() =
+      min(int j, File f |
+        f = NodeModule::resolveMainModule(any(PackageJSON pack | exists(pack.getPackageName())), j)
+      |
+        f order by j
+      )
+  )
+  or
+  // the exported value is a call to a unique callee
+  // ```JavaScript
+  // module.exports = foo();
+  // function foo() {
+  //   return result;
+  // }
+  // ```
+  exists(DataFlow::CallNode call | call = getAValueExportedByPackage() |
+    result = unique( | | call.getCalleeNode().getAFunctionValue()).getAReturn()
   )
   or
   // *****

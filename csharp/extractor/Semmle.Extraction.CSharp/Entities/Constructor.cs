@@ -41,7 +41,41 @@ namespace Semmle.Extraction.CSharp.Entities
             var initializer = syntax?.Initializer;
 
             if (initializer is null)
+            {
+                if (Symbol.MethodKind is MethodKind.Constructor)
+                {
+                    var baseType = Symbol.ContainingType.BaseType;
+                    if (baseType is null)
+                    {
+                        if (Symbol.ContainingType.SpecialType != SpecialType.System_Object)
+                        {
+                            Context.ModelError(Symbol, "Unable to resolve base type in implicit constructor initializer");
+                        }
+                        return;
+                    }
+
+                    var baseConstructor = baseType.InstanceConstructors.FirstOrDefault(c => c.Arity is 0);
+
+                    if (baseConstructor is null)
+                    {
+                        Context.ModelError(Symbol, "Unable to resolve implicit constructor initializer call");
+                        return;
+                    }
+
+                    var baseConstructorTarget = Create(Context, baseConstructor);
+                    var info = new ExpressionInfo(Context,
+                        AnnotatedTypeSymbol.CreateNotAnnotated(baseType),
+                        Location,
+                        Kinds.ExprKind.CONSTRUCTOR_INIT,
+                        this,
+                        -1,
+                        isCompilerGenerated: true,
+                        null);
+
+                    trapFile.expr_call(new Expression(info), baseConstructorTarget);
+                }
                 return;
+            }
 
             ITypeSymbol initializerType;
             var symbolInfo = Context.GetSymbolInfo(initializer);
@@ -113,8 +147,17 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        public override void WriteId(TextWriter trapFile)
+        public override void WriteId(EscapingTextWriter trapFile)
         {
+            if (!SymbolEqualityComparer.Default.Equals(Symbol, Symbol.OriginalDefinition))
+            {
+                trapFile.WriteSubId(ContainingType!);
+                trapFile.Write(".");
+                trapFile.WriteSubId(OriginalDefinition);
+                trapFile.Write(";constructor");
+                return;
+            }
+
             if (Symbol.IsStatic)
                 trapFile.Write("static");
             trapFile.WriteSubId(ContainingType!);

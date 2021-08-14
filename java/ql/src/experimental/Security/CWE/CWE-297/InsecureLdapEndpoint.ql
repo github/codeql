@@ -68,7 +68,7 @@ predicate isBooleanTrue(Expr expr) {
   or
   exists(MethodAccess ma |
     expr = ma and
-    ma.getMethod().hasName("toString") and
+    ma.getMethod() instanceof ToStringMethod and
     ma.getQualifier().(FieldAccess).getField().hasName("TRUE") and
     ma.getQualifier()
         .(FieldAccess)

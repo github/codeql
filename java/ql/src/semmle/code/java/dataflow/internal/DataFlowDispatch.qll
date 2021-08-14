@@ -2,9 +2,17 @@ private import java
 private import DataFlowPrivate
 private import DataFlowUtil
 private import semmle.code.java.dataflow.InstanceAccess
-import semmle.code.java.dispatch.VirtualDispatch
+private import semmle.code.java.dataflow.FlowSummary
+private import semmle.code.java.dispatch.VirtualDispatch as VirtualDispatch
 
 private module DispatchImpl {
+  /** Gets a viable implementation of the target of the given `Call`. */
+  Callable viableCallable(Call c) {
+    result = VirtualDispatch::viableCallable(c)
+    or
+    result.(SummarizedCallable) = c.getCallee().getSourceDeclaration()
+  }
+
   /**
    * Holds if the set of viable implementations that can be called by `ma`
    * might be improved by knowing the call context. This is the case if the
@@ -12,7 +20,7 @@ private module DispatchImpl {
    */
   private predicate mayBenefitFromCallContext(MethodAccess ma, Callable c, int i) {
     exists(Parameter p |
-      2 <= strictcount(viableImpl(ma)) and
+      2 <= strictcount(VirtualDispatch::viableImpl(ma)) and
       ma.getQualifier().(VarAccess).getVariable() = p and
       p.getPosition() = i and
       c.getAParameter() = p and
@@ -21,7 +29,7 @@ private module DispatchImpl {
     )
     or
     exists(OwnInstanceAccess ia |
-      2 <= strictcount(viableImpl(ma)) and
+      2 <= strictcount(VirtualDispatch::viableImpl(ma)) and
       (ia.isExplicit(ma.getQualifier()) or ia.isImplicitMethodQualifier(ma)) and
       i = -1 and
       c = ma.getEnclosingCallable()
@@ -60,7 +68,7 @@ private module DispatchImpl {
         or
         ctx.getArgument(i) = arg
       |
-        src = variableTrack(arg) and
+        src = VirtualDispatch::variableTrack(arg) and
         srctype = getPreciseType(src) and
         if src instanceof ClassInstanceExpr then exact = true else exact = false
       )
@@ -93,20 +101,22 @@ private module DispatchImpl {
    * restricted to those `ma`s for which a context might make a difference.
    */
   Method viableImplInCallContext(MethodAccess ma, Call ctx) {
-    result = viableImpl(ma) and
+    result = viableCallable(ma) and
     exists(int i, Callable c, Method def, RefType t, boolean exact |
       mayBenefitFromCallContext(ma, c, i) and
       c = viableCallable(ctx) and
       contextArgHasType(ctx, i, t, exact) and
-      ma.getMethod() = def
+      ma.getMethod().getSourceDeclaration() = def
     |
-      exact = true and result = exactMethodImpl(def, t.getSourceDeclaration())
+      exact = true and result = VirtualDispatch::exactMethodImpl(def, t.getSourceDeclaration())
       or
       exact = false and
       exists(RefType t2 |
-        result = viableMethodImpl(def, t.getSourceDeclaration(), t2) and
+        result = VirtualDispatch::viableMethodImpl(def, t.getSourceDeclaration(), t2) and
         not failsUnification(t, t2)
       )
+      or
+      result = def and def instanceof SummarizedCallable
     )
   }
 
@@ -117,7 +127,7 @@ private module DispatchImpl {
 
   pragma[noinline]
   private predicate unificationTargetRight(ParameterizedType t2, GenericType g) {
-    exists(viableMethodImpl(_, _, t2)) and t2.getGenericType() = g
+    exists(VirtualDispatch::viableMethodImpl(_, _, t2)) and t2.getGenericType() = g
   }
 
   private predicate unificationTargets(Type t1, Type t2) {

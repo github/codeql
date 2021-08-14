@@ -7,5 +7,6 @@ import csharp
 from Method s
 where
   s.hasName("Swap") and
-  s.isStatic()
+  s.isStatic() and
+  s.fromSource()
 select s

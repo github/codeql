@@ -10,6 +10,7 @@
  */
 
 import javascript
+private import semmle.javascript.dataflow.internal.FlowSteps as FlowSteps
 
 /**
  * Provides classes and predicates for working with APIs defined or used in a database.
@@ -184,6 +185,11 @@ module API {
     Node getPromised() { result = getASuccessor(Label::promised()) }
 
     /**
+     * Gets a node representing the error wrapped in the `Promise` object represented by this node.
+     */
+    Node getPromisedError() { result = getASuccessor(Label::promisedError()) }
+
+    /**
      * Gets a string representation of the lexicographically least among all shortest access paths
      * from the root to this node.
      */
@@ -313,7 +319,7 @@ module API {
   module Node {
     /** Gets a node whose type has the given qualified name. */
     Node ofType(string moduleName, string exportedName) {
-      result = Impl::MkHasUnderlyingType(moduleName, exportedName).(Node).getInstance()
+      result = Impl::MkTypeUse(moduleName, exportedName).(Node).getInstance()
     }
   }
 
@@ -374,15 +380,13 @@ module API {
             exists(SSA::implicitInit([nm.getModuleVariable(), nm.getExportsVariable()]))
           )
         )
-        or
-        m = any(CanonicalName n | isDefined(n)).getExternalModuleName()
       } or
       MkModuleImport(string m) {
         imports(_, m)
         or
-        m = any(CanonicalName n | isUsed(n)).getExternalModuleName()
-        or
         any(TypeAnnotation n).hasQualifiedName(m, _)
+        or
+        any(Type t).hasUnderlyingType(m, _)
       } or
       MkClassInstance(DataFlow::ClassNode cls) { cls = trackDefNode(_) and hasSemantics(cls) } or
       MkAsyncFuncResult(DataFlow::FunctionNode f) {
@@ -390,11 +394,8 @@ module API {
       } or
       MkDef(DataFlow::Node nd) { rhs(_, _, nd) } or
       MkUse(DataFlow::Node nd) { use(_, _, nd) } or
-      /**
-       * A TypeScript type, identified by name of the type-annotation.
-       * This API node is exclusively used by `API::Node::ofType`.
-       */
-      MkHasUnderlyingType(string moduleName, string exportName) {
+      /** A use of a TypeScript type. */
+      MkTypeUse(string moduleName, string exportName) {
         any(TypeAnnotation n).hasQualifiedName(moduleName, exportName)
         or
         any(Type t).hasUnderlyingType(moduleName, exportName)
@@ -408,7 +409,7 @@ module API {
     class TNonModuleDef =
       MkModuleExport or MkClassInstance or MkAsyncFuncResult or MkDef or MkSyntheticCallbackArg;
 
-    class TUse = MkModuleUse or MkModuleImport or MkUse or MkHasUnderlyingType;
+    class TUse = MkModuleUse or MkModuleImport or MkUse or MkTypeUse;
 
     private predicate hasSemantics(DataFlow::Node nd) { not nd.getTopLevel().isExterns() }
 
@@ -428,20 +429,6 @@ module API {
         result = pkg.getMainModule() and
         not result.isExterns() and
         m = pkg.getPackageName()
-      )
-    }
-
-    private predicate isUsed(CanonicalName n) {
-      exists(n.(TypeName).getAnAccess()) or
-      exists(n.(Namespace).getAnAccess())
-    }
-
-    private predicate isDefined(CanonicalName n) {
-      exists(ASTNode def |
-        def = n.(TypeName).getADefinition() or
-        def = n.(Namespace).getADefinition()
-      |
-        not def.isAmbient()
       )
     }
 
@@ -487,6 +474,9 @@ module API {
           or
           lbl = Label::promised() and
           PromiseFlow::storeStep(rhs, pred, Promises::valueProp())
+          or
+          lbl = Label::promisedError() and
+          PromiseFlow::storeStep(rhs, pred, Promises::errorProp())
         )
         or
         exists(DataFlow::ClassNode cls, string name |
@@ -499,6 +489,12 @@ module API {
           base = MkAsyncFuncResult(f) and
           lbl = Label::promised() and
           rhs = f.getAReturn()
+        )
+        or
+        exists(DataFlow::FunctionNode f |
+          base = MkAsyncFuncResult(f) and
+          lbl = Label::promisedError() and
+          rhs = f.getExceptionalReturn()
         )
         or
         exists(int i |
@@ -578,6 +574,9 @@ module API {
           or
           lbl = Label::promised() and
           PromiseFlow::loadStep(pred, ref, Promises::valueProp())
+          or
+          lbl = Label::promisedError() and
+          PromiseFlow::loadStep(pred, ref, Promises::errorProp())
         )
         or
         exists(DataFlow::Node def, DataFlow::FunctionNode fn |
@@ -600,7 +599,7 @@ module API {
         )
         or
         exists(string moduleName, string exportName |
-          base = MkHasUnderlyingType(moduleName, exportName) and
+          base = MkTypeUse(moduleName, exportName) and
           lbl = Label::instance() and
           ref.(DataFlow::SourceNode).hasUnderlyingType(moduleName, exportName)
         )
@@ -619,11 +618,11 @@ module API {
     cached
     predicate use(TApiNode nd, DataFlow::Node ref) {
       exists(string m, Module mod | nd = MkModuleDef(m) and mod = importableModule(m) |
-        ref.(ModuleVarNode).getModule() = mod
+        ref = DataFlow::moduleVarNode(mod)
       )
       or
       exists(string m, Module mod | nd = MkModuleExport(m) and mod = importableModule(m) |
-        ref.(ExportsVarNode).getModule() = mod
+        ref = DataFlow::exportsVarNode(mod)
         or
         exists(DataFlow::Node base | use(MkModuleDef(m), base) |
           ref = trackUseNode(base).getAPropertyRead("exports")
@@ -688,9 +687,7 @@ module API {
       promisified = false and
       boundArgs = 0
       or
-      exists(DataFlow::CallNode promisify |
-        promisify = DataFlow::moduleImport(["util", "bluebird"]).getAMemberCall("promisify")
-      |
+      exists(Promisify::PromisifyCall promisify |
         trackUseNode(nd, false, boundArgs, t.continue()).flowsTo(promisify.getArgument(0)) and
         promisified = true and
         result = promisify
@@ -746,12 +743,21 @@ module API {
       or
       // additional backwards step from `require('m')` to `exports` or `module.exports` in m
       exists(Import imp | imp.getImportedModuleNode() = trackDefNode(nd, t.continue()) |
-        result.(ExportsVarNode).getModule() = imp.getImportedModule()
+        result = DataFlow::exportsVarNode(imp.getImportedModule())
         or
-        exists(ModuleVarNode mod |
-          mod.getModule() = imp.getImportedModule() and
-          result = mod.(DataFlow::SourceNode).getAPropertyRead("exports")
-        )
+        result = DataFlow::moduleVarNode(imp.getImportedModule()).getAPropertyRead("exports")
+      )
+      or
+      exists(ObjectExpr obj |
+        obj = trackDefNode(nd, t.continue()).asExpr() and
+        result =
+          obj.getAProperty()
+              .(SpreadProperty)
+              .getInit()
+              .(SpreadElement)
+              .getOperand()
+              .flow()
+              .getALocalSource()
       )
       or
       t = defStep(nd, result)
@@ -839,7 +845,7 @@ module API {
       exists(string moduleName, string exportName |
         pred = MkModuleImport(moduleName) and
         lbl = Label::member(exportName) and
-        succ = MkHasUnderlyingType(moduleName, exportName)
+        succ = MkTypeUse(moduleName, exportName)
       )
       or
       exists(DataFlow::Node nd, DataFlow::FunctionNode f |
@@ -937,16 +943,38 @@ private module Label {
   /** Gets the `member` edge label for the unknown member. */
   string unknownMember() { result = "member *" }
 
+  /**
+   * Gets a property name referred to by the given dynamic property access,
+   * allowing one property flow step in the process (to allow flow through imports).
+   *
+   * This is to support code patterns where the property name is actually constant,
+   * but the property name has been factored into a library.
+   */
+  private string getAnIndirectPropName(DataFlow::PropRef ref) {
+    exists(DataFlow::Node pred |
+      FlowSteps::propertyFlowStep(pred, ref.getPropertyNameExpr().flow()) and
+      result = pred.getStringValue()
+    )
+  }
+
+  /**
+   * Gets unique result of `getAnIndirectPropName` if there is one.
+   */
+  private string getIndirectPropName(DataFlow::PropRef ref) {
+    result = unique(string s | s = getAnIndirectPropName(ref))
+  }
+
   /** Gets the `member` edge label for the given property reference. */
   string memberFromRef(DataFlow::PropRef pr) {
-    exists(string pn | pn = pr.getPropertyName() |
+    exists(string pn | pn = pr.getPropertyName() or pn = getIndirectPropName(pr) |
       result = member(pn) and
       // only consider properties with alphanumeric(-ish) names, excluding special properties
       // and properties whose names look like they are meant to be internal
-      pn.regexpMatch("(?!prototype$|__)[a-zA-Z_$][\\w\\-.$]*")
+      pn.regexpMatch("(?!prototype$|__)[\\w_$][\\w\\-.$]*")
     )
     or
     not exists(pr.getPropertyName()) and
+    not exists(getIndirectPropName(pr)) and
     result = unknownMember()
   }
 
@@ -981,47 +1009,7 @@ private module Label {
 
   /** Gets the `promised` edge label connecting a promise to its contained value. */
   string promised() { result = "promised" }
-}
 
-private class NodeModuleSourcesNodes extends DataFlow::SourceNode::Range {
-  Variable v;
-
-  NodeModuleSourcesNodes() {
-    exists(NodeModule m |
-      this = DataFlow::ssaDefinitionNode(SSA::implicitInit(v)) and
-      v = [m.getModuleVariable(), m.getExportsVariable()]
-    )
-  }
-
-  Variable getVariable() { result = v }
-}
-
-/**
- * A CommonJS/AMD `module` variable.
- */
-private class ModuleVarNode extends DataFlow::Node {
-  Module m;
-
-  ModuleVarNode() {
-    this.(NodeModuleSourcesNodes).getVariable() = m.(NodeModule).getModuleVariable()
-    or
-    DataFlow::parameterNode(this, m.(AmdModule).getDefine().getModuleParameter())
-  }
-
-  Module getModule() { result = m }
-}
-
-/**
- * A CommonJS/AMD `exports` variable.
- */
-private class ExportsVarNode extends DataFlow::Node {
-  Module m;
-
-  ExportsVarNode() {
-    this.(NodeModuleSourcesNodes).getVariable() = m.(NodeModule).getExportsVariable()
-    or
-    DataFlow::parameterNode(this, m.(AmdModule).getDefine().getExportsParameter())
-  }
-
-  Module getModule() { result = m }
+  /** Gets the `promisedError` edge label connecting a promise to its rejected value. */
+  string promisedError() { result = "promisedError" }
 }

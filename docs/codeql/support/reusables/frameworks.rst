@@ -1,7 +1,7 @@
 C and C++ built-in support
 ================================
 
-.. csv-table:: 
+.. csv-table::
    :header-rows: 1
    :class: fullWidthTable
    :widths: auto
@@ -14,7 +14,7 @@ C and C++ built-in support
 C# built-in support
 ================================
 
-.. csv-table:: 
+.. csv-table::
    :header-rows: 1
    :class: fullWidthTable
    :widths: auto
@@ -23,6 +23,7 @@ C# built-in support
    ASP.NET, Web application framework
    ASP.NET Core, Web application framework
    ASP.NET Razor templates, Web application framework
+   Dapper, Database ORM
    EntityFramework, Database ORM
    EntityFramework Core, Database ORM
    Json.NET, Serialization
@@ -83,7 +84,7 @@ Go built-in support
 Java built-in support
 ==================================
 
-.. csv-table:: 
+.. csv-table::
    :header-rows: 1
    :class: fullWidthTable
    :widths: auto
@@ -94,6 +95,7 @@ Java built-in support
    Guava, Utility and collections library
    Hibernate, Database
    iBatis / MyBatis, Database
+   Jackson, Serialization
    Java Persistence API (JPA), Database
    JDBC, Database
    Protobuf, Serialization
@@ -108,7 +110,7 @@ Java built-in support
 JavaScript and TypeScript built-in support
 =======================================================
 
-.. csv-table:: 
+.. csv-table::
    :header-rows: 1
    :class: fullWidthTable
    :widths: auto
@@ -128,9 +130,11 @@ JavaScript and TypeScript built-in support
    mssql, Database
    mysql, Database
    node, Runtime environment
+   nest.js, Server
    postgres, Database
    ramda, Utility library
    react, HTML framework
+   react native, HTML framework
    request, Network communicator
    sequelize, Database
    socket.io, Network communicator
@@ -149,17 +153,31 @@ Python built-in support
    :widths: auto
 
    Name, Category
+   aiohttp.web, Web framework
    Django, Web framework
    Flask, Web framework
    Tornado, Web framework
+   Twisted, Web framework
    PyYAML, Serialization
    dill, Serialization
+   simplejson, Serialization
+   ujson, Serialization
    fabric, Utility library
+   idna, Utility library
    invoke, Utility library
+   jmespath, Utility library
+   multidict, Utility library
+   yarl, Utility library
+   aioch, Database
+   clickhouse-driver, Database
    mysql-connector-python, Database
-   MySQLdb, Database
+   mysql-connector, Database
+   MySQL-python, Database
+   mysqlclient, Database
    psycopg2, Database
    sqlite3, Database
    cryptography, Cryptography library
    pycryptodome, Cryptography library
    pycryptodomex, Cryptography library
+   rsa, Cryptography library
+   MarkupSafe, Escaping Library

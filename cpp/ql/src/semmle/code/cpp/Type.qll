@@ -101,6 +101,7 @@ class Type extends Locatable, @type {
    *
    * For example, starting with `const i64* const` in the context of `typedef long long i64;`, this predicate will return `long long*`.
    */
+  pragma[nomagic]
   Type getUnspecifiedType() { unspecifiedtype(underlyingElement(this), unresolveElement(result)) }
 
   /**

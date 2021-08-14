@@ -52,6 +52,8 @@ namespace Semmle.Extraction.CSharp.Standalone
     {
         public static int Main(string[] args)
         {
+            Extractor.SetInvariantCulture();
+
             var options = Options.Create(args);
             // options.CIL = true;  // To do: Enable this
             using var output = new ConsoleLogger(options.Verbosity);

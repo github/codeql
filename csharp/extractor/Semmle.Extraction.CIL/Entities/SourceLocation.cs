@@ -15,7 +15,7 @@ namespace Semmle.Extraction.CIL.Entities
             file = cx.CreateSourceFile(location.File);
         }
 
-        public override void WriteId(TextWriter trapFile)
+        public override void WriteId(EscapingTextWriter trapFile)
         {
             file.WriteId(trapFile);
             trapFile.Write(',');

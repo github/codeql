@@ -20,7 +20,7 @@ namespace Semmle.Extraction.CSharp.Entities
             this.parent = parent;
         }
 
-        public override void WriteId(TextWriter trapFile)
+        public override void WriteId(EscapingTextWriter trapFile)
         {
             trapFile.WriteSubId(Context.CreateLocation(ReportingLocation));
             trapFile.Write(";namespacedeclaration");
@@ -59,8 +59,6 @@ namespace Semmle.Extraction.CSharp.Entities
             public override NamespaceDeclaration Create(Context cx, (NamespaceDeclarationSyntax decl, NamespaceDeclaration parent) init) =>
                 new NamespaceDeclaration(cx, init.decl, init.parent);
         }
-
-        public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NoLabel;
 
         public override Microsoft.CodeAnalysis.Location ReportingLocation => node.Name.GetLocation();
 

@@ -187,10 +187,10 @@ void test_pointers1()
 	ptr4 = &ptr3;
 
 	sink(buffer); // $ ast,ir
-	sink(ptr1); // $ ast,ir
+	sink(ptr1); // $ ast MISSING: ir
 	sink(ptr2); // $ SPURIOUS: ast
 	sink(*ptr2); // $ ast MISSING: ir
-	sink(ptr3); // $ ast,ir
+	sink(ptr3); // $ ast MISSING: ir
 	sink(ptr4); // $ SPURIOUS: ast
 	sink(*ptr4); // $ ast MISSING: ir
 }

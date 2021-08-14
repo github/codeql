@@ -1,0 +1,6 @@
+| test.c:17:10:17:12 | min | $@ flows to here and is used in arithmetic, potentially causing an overflow. | test.c:8:9:8:15 | 2147483647 | Extreme value |
+| test.c:48:3:48:5 | sc2 | $@ flows to here and is used in arithmetic, potentially causing an underflow. | test.c:47:9:47:16 | - ... | Extreme value |
+| test.c:50:3:50:5 | sc3 | $@ flows to here and is used in arithmetic, potentially causing an overflow. | test.c:49:9:49:16 | 127 | Extreme value |
+| test.c:59:3:59:5 | sc6 | $@ flows to here and is used in arithmetic, potentially causing an overflow. | test.c:58:9:58:16 | 127 | Extreme value |
+| test.c:63:3:63:5 | sc8 | $@ flows to here and is used in arithmetic, potentially causing an underflow. | test.c:62:9:62:16 | - ... | Extreme value |
+| test.c:124:9:124:9 | x | $@ flows to here and is used in arithmetic, potentially causing an overflow. | test.c:118:17:118:23 | 2147483647 | Extreme value |

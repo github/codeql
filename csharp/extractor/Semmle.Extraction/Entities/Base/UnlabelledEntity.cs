@@ -9,14 +9,14 @@ namespace Semmle.Extraction
             cx.AddFreshLabel(this);
         }
 
-        public sealed override void WriteId(TextWriter writer)
+        public sealed override void WriteId(EscapingTextWriter writer)
         {
             writer.Write('*');
         }
 
-        public sealed override void WriteQuotedId(TextWriter writer)
+        public sealed override void WriteQuotedId(EscapingTextWriter writer)
         {
-            WriteId(writer);
+            writer.Write('*');
         }
     }
 }

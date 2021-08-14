@@ -17,7 +17,6 @@ private import semmle.python.ApiGraphs
  * See https://pycryptodome.readthedocs.io/en/latest/
  */
 private module CryptodomeModel {
-  // ---------------------------------------------------------------------------
   /**
    * A call to `Cryptodome.PublicKey.RSA.generate`/`Crypto.PublicKey.RSA.generate`
    *
@@ -100,5 +99,121 @@ private module CryptodomeModel {
 
     // Note: There is not really a key-size argument, since it's always specified by the curve.
     override DataFlow::Node getKeySizeArg() { none() }
+  }
+
+  /**
+   * A cryptographic operation on an instance from the `Cipher` subpackage of `Cryptodome`/`Crypto`.
+   */
+  class CryptodomeGenericCipherOperation extends Cryptography::CryptographicOperation::Range,
+    DataFlow::CallCfgNode {
+    string methodName;
+    string cipherName;
+
+    CryptodomeGenericCipherOperation() {
+      methodName in [
+          "encrypt", "decrypt", "verify", "update", "hexverify", "encrypt_and_digest",
+          "decrypt_and_verify"
+        ] and
+      this =
+        API::moduleImport(["Crypto", "Cryptodome"])
+            .getMember(["Cipher"])
+            .getMember(cipherName)
+            .getMember("new")
+            .getReturn()
+            .getMember(methodName)
+            .getACall()
+    }
+
+    override Cryptography::CryptographicAlgorithm getAlgorithm() { result.matchesName(cipherName) }
+
+    override DataFlow::Node getAnInput() {
+      methodName = "encrypt" and
+      result in [this.getArg(0), this.getArgByName(["message", "plaintext"])]
+      or
+      methodName = "decrypt" and
+      result in [this.getArg(0), this.getArgByName("ciphertext")]
+      or
+      // for the following methods, method signatures can be found in
+      // https://pycryptodome.readthedocs.io/en/latest/src/cipher/modern.html
+      methodName in ["update"] and
+      result in [this.getArg(0), this.getArgByName("data")]
+      or
+      // although `mac_tag` is used as the parameter name in the spec above, some implementations use `received_mac_tag`, for an example, see
+      // https://github.com/Legrandin/pycryptodome/blob/5dace638b70ac35bb5d9b565f3e75f7869c9d851/lib/Crypto/Cipher/ChaCha20_Poly1305.py#L207
+      methodName in ["verify"] and
+      result in [this.getArg(0), this.getArgByName(["mac_tag", "received_mac_tag"])]
+      or
+      methodName in ["hexverify"] and
+      result in [this.getArg(0), this.getArgByName("mac_tag_hex")]
+      or
+      methodName in ["encrypt_and_digest"] and
+      result in [this.getArg(0), this.getArgByName("plaintext")]
+      or
+      methodName in ["decrypt_and_verify"] and
+      result in [
+          this.getArg(0), this.getArgByName("ciphertext"), this.getArg(1),
+          this.getArgByName("mac_tag")
+        ]
+    }
+  }
+
+  /**
+   * A cryptographic operation on an instance from the `Signature` subpackage of `Cryptodome`/`Crypto`.
+   */
+  class CryptodomeGenericSignatureOperation extends Cryptography::CryptographicOperation::Range,
+    DataFlow::CallCfgNode {
+    string methodName;
+    string signatureName;
+
+    CryptodomeGenericSignatureOperation() {
+      methodName in ["sign", "verify"] and
+      this =
+        API::moduleImport(["Crypto", "Cryptodome"])
+            .getMember(["Signature"])
+            .getMember(signatureName)
+            .getMember("new")
+            .getReturn()
+            .getMember(methodName)
+            .getACall()
+    }
+
+    override Cryptography::CryptographicAlgorithm getAlgorithm() {
+      result.matchesName(signatureName)
+    }
+
+    override DataFlow::Node getAnInput() {
+      methodName = "sign" and
+      result in [this.getArg(0), this.getArgByName("msg_hash")] // Cryptodome.Hash instance
+      or
+      methodName in ["verify"] and
+      (
+        result in [this.getArg(0), this.getArgByName(["msg_hash"])] // Cryptodome.Hash instance
+        or
+        result in [this.getArg(1), this.getArgByName(["signature"])]
+      )
+    }
+  }
+
+  /**
+   * A cryptographic operation on an instance from the `Hash` subpackage of `Cryptodome`/`Crypto`.
+   */
+  class CryptodomeGenericHashOperation extends Cryptography::CryptographicOperation::Range,
+    DataFlow::CallCfgNode {
+    string hashName;
+
+    CryptodomeGenericHashOperation() {
+      exists(API::Node hashModule |
+        hashModule =
+          API::moduleImport(["Crypto", "Cryptodome"]).getMember(["Hash"]).getMember(hashName)
+      |
+        this = hashModule.getMember("new").getACall()
+        or
+        this = hashModule.getMember("new").getReturn().getMember("update").getACall()
+      )
+    }
+
+    override Cryptography::CryptographicAlgorithm getAlgorithm() { result.matchesName(hashName) }
+
+    override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("data")] }
   }
 }

@@ -1,6 +1,5 @@
 private import csharp
 private import TaintTrackingPublic
-private import DataFlowImplCommon
 private import FlowSummaryImpl as FlowSummaryImpl
 private import semmle.code.csharp.Caching
 private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
@@ -18,6 +17,13 @@ private import semmle.code.csharp.frameworks.WCF
  * but not in local taint.
  */
 predicate defaultTaintSanitizer(DataFlow::Node node) { none() }
+
+/**
+ * Holds if default `TaintTracking::Configuration`s should allow implicit reads
+ * of `c` at sinks and inputs to additional taint steps.
+ */
+bindingset[node]
+predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::Content c) { none() }
 
 deprecated predicate localAdditionalTaintStep = defaultAdditionalTaintStep/2;
 
@@ -79,7 +85,6 @@ private class LocalTaintExprStepConfiguration extends ControlFlowReachabilityCon
 }
 
 private predicate localTaintStepCommon(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-  Stages::DataFlowStage::forceCachingInSameStage() and
   hasNodePath(any(LocalTaintExprStepConfiguration x), nodeFrom, nodeTo)
   or
   localTaintStepCil(nodeFrom, nodeTo)
@@ -87,6 +92,11 @@ private predicate localTaintStepCommon(DataFlow::Node nodeFrom, DataFlow::Node n
 
 cached
 private module Cached {
+  private import DataFlowImplCommon as DataFlowImplCommon
+
+  cached
+  predicate forceCachingInSameStage() { DataFlowImplCommon::forceCachingInSameStage() }
+
   /**
    * Holds if taint propagates from `nodeFrom` to `nodeTo` in exactly one local
    * (intra-procedural) step.

@@ -14,7 +14,7 @@ namespace Semmle.Extraction.CIL.Entities
         {
         }
 
-        public override void WriteId(TextWriter trapFile)
+        public override void WriteId(EscapingTextWriter trapFile)
         {
             trapFile.WriteSubId(DeclaringType);
             trapFile.Write('.');

@@ -104,9 +104,43 @@ private predicate loopConditionAlwaysUponEntry(ControlFlowNode loop, Expr condit
   )
 }
 
+/**
+ * This relation is the same as the `el instanceof Function`, only obfuscated
+ * so the optimizer will not understand that any `FunctionCall.getTarget()`
+ * should be in this relation.
+ */
+pragma[noinline]
+private predicate isFunction(Element el) {
+  el instanceof Function
+  or
+  el.(Expr).getParent() = el
+}
+
+/**
+ * Holds if `fc` is a `FunctionCall` with no return value for `getTarget`. This
+ * can happen in case of rare database inconsistencies.
+ */
+pragma[noopt]
+private predicate callHasNoTarget(@funbindexpr fc) {
+  exists(Function f |
+    funbind(fc, f) and
+    not isFunction(f)
+  )
+}
+
+// Pulled out for performance. See
+// https://github.com/github/codeql-coreql-team/issues/1044.
+private predicate potentiallyReturningFunctionCall_base(FunctionCall fc) {
+  fc.isVirtual()
+  or
+  callHasNoTarget(fc)
+}
+
 /** A function call that *may* return; if in doubt, we assume it may. */
 private predicate potentiallyReturningFunctionCall(FunctionCall fc) {
-  potentiallyReturningFunction(fc.getTarget()) or fc.isVirtual()
+  potentiallyReturningFunctionCall_base(fc)
+  or
+  potentiallyReturningFunction(fc.getTarget())
 }
 
 /** A function that *may* return; if in doubt, we assume it may. */

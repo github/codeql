@@ -6,13 +6,14 @@
  * @kind path-problem
  * @id cs/zipslip
  * @problem.severity error
+ * @security-severity 7.5
  * @precision high
  * @tags security
  *       external/cwe/cwe-022
  */
 
 import csharp
-import semmle.code.csharp.security.dataflow.ZipSlip::ZipSlip
+import semmle.code.csharp.security.dataflow.ZipSlipQuery
 import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 
 from TaintTrackingConfiguration zipTaintTracking, DataFlow::PathNode source, DataFlow::PathNode sink

@@ -10,9 +10,8 @@
 
 import java
 
-from MethodAccess ma, Method tostring
+from MethodAccess ma, ToStringMethod tostring
 where
-  tostring.hasName("toString") and
   tostring.getDeclaringType() instanceof TypeString and
   ma.getMethod() = tostring
 select ma, "Redundant call to 'toString' on a String object."

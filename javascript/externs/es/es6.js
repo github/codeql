@@ -210,7 +210,7 @@ String.prototype.repeat = function(count) {};
 /**
  * @constructor
  * @extends {Array<string>}
- * @see http://www.ecma-international.org/ecma-262/6.0/#sec-gettemplateobject
+ * @see https://262.ecma-international.org/6.0/#sec-gettemplateobject
  */
 var ITemplateArray = function() {};
 
@@ -1228,7 +1228,7 @@ Array.prototype.entries;
  * @return {T|undefined}
  * @this {IArrayLike<T>|string}
  * @template T,S
- * @see http://www.ecma-international.org/ecma-262/6.0/#sec-array.prototype.find
+ * @see https://262.ecma-international.org/6.0/#sec-array.prototype.find
  */
 Array.prototype.find = function(predicate, opt_this) {};
 
@@ -1239,7 +1239,7 @@ Array.prototype.find = function(predicate, opt_this) {};
  * @return {number}
  * @this {IArrayLike<T>|string}
  * @template T,S
- * @see http://www.ecma-international.org/ecma-262/6.0/#sec-array.prototype.findindex
+ * @see https://262.ecma-international.org/6.0/#sec-array.prototype.findindex
  */
 Array.prototype.findIndex = function(predicate, opt_this) {};
 
@@ -1251,7 +1251,7 @@ Array.prototype.findIndex = function(predicate, opt_this) {};
  * @return {!IArrayLike<T>}
  * @this {!IArrayLike<T>|string}
  * @template T
- * @see http://www.ecma-international.org/ecma-262/6.0/#sec-array.prototype.fill
+ * @see https://262.ecma-international.org/6.0/#sec-array.prototype.fill
  */
 Array.prototype.fill = function(value, opt_begin, opt_end) {};
 
@@ -1260,7 +1260,7 @@ Array.prototype.fill = function(value, opt_begin, opt_end) {};
  * @param {number} target
  * @param {number} start
  * @param {number=} opt_end
- * @see http://www.ecma-international.org/ecma-262/6.0/#sec-array.prototype.copywithin
+ * @see https://262.ecma-international.org/6.0/#sec-array.prototype.copywithin
  * @template T
  * @return {!IArrayLike<T>}
  */
@@ -1281,7 +1281,7 @@ Array.prototype.includes = function(searchElement, opt_fromIndex) {};
 /**
  * @param {!Object} obj
  * @return {!Array<symbol>}
- * @see http://www.ecma-international.org/ecma-262/6.0/#sec-object.getownpropertysymbols
+ * @see https://262.ecma-international.org/6.0/#sec-object.getownpropertysymbols
  */
 Object.getOwnPropertySymbols = function(obj) {};
 
@@ -1290,7 +1290,7 @@ Object.getOwnPropertySymbols = function(obj) {};
  * @param {!Object} obj
  * @param {?} proto
  * @return {!Object}
- * @see http://www.ecma-international.org/ecma-262/6.0/#sec-object.setprototypeof
+ * @see https://262.ecma-international.org/6.0/#sec-object.setprototypeof
  */
 Object.setPrototypeOf = function(obj, proto) {};
 

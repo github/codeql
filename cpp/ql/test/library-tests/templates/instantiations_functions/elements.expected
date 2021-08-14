@@ -1,4 +1,6 @@
 | file://:0:0:0:0 |  |
+| file://:0:0:0:0 | & |
+| file://:0:0:0:0 | && |
 | file://:0:0:0:0 | (composite<int> *)... |
 | file://:0:0:0:0 | (composite<int> *)... |
 | file://:0:0:0:0 | (global namespace) |
@@ -107,6 +109,7 @@
 | file://:0:0:0:0 | declaration of 1st parameter |
 | file://:0:0:0:0 | declared_constexpr |
 | file://:0:0:0:0 | declared_constinit |
+| file://:0:0:0:0 | declared_virtual |
 | file://:0:0:0:0 | decltype(nullptr) |
 | file://:0:0:0:0 | definition of fp_offset |
 | file://:0:0:0:0 | definition of gp_offset |
@@ -119,12 +122,14 @@
 | file://:0:0:0:0 | explicit |
 | file://:0:0:0:0 | extern |
 | file://:0:0:0:0 | far |
+| file://:0:0:0:0 | final |
 | file://:0:0:0:0 | float |
 | file://:0:0:0:0 | forceinline |
 | file://:0:0:0:0 | fp_offset |
 | file://:0:0:0:0 | gp_offset |
 | file://:0:0:0:0 | grammar_helper_base & |
 | file://:0:0:0:0 | grammar_helper_base && |
+| file://:0:0:0:0 | has_trailing_return_type |
 | file://:0:0:0:0 | implicit_int |
 | file://:0:0:0:0 | inline |
 | file://:0:0:0:0 | int |

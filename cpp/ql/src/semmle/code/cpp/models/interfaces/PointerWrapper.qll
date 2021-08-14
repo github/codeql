@@ -11,4 +11,7 @@ abstract class PointerWrapper extends Class {
    * that return a reference to the pointed-to object.
    */
   abstract MemberFunction getAnUnwrapperFunction();
+
+  /** Holds if the type of the data that is pointed to by this pointer wrapper is `const`. */
+  abstract predicate pointsToConst();
 }

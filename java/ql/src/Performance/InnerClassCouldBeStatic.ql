@@ -100,8 +100,7 @@ predicate potentiallyStatic(InnerClass c) {
     m = a.getEnclosingCallable() and
     m.getDeclaringType() = c
   ) and
-  not c instanceof AnonymousClass and
-  not c instanceof LocalClass and
+  c instanceof MemberType and
   forall(
     InnerClass other // If nested and non-static, ...
   |
@@ -128,7 +127,9 @@ predicate potentiallyStatic(InnerClass c) {
     forall(InnerClass superOfNested | superOfNested = nested.getASourceSupertype+() |
       potentiallyStatic(superOfNested)
     )
-  )
+  ) and
+  // JUnit Nested test classes are required to be non-static.
+  not c.hasAnnotation("org.junit.jupiter.api", "Nested")
 }
 
 /**

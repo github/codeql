@@ -52,6 +52,37 @@ module CodeInjection {
   }
 
   /**
+   * Gets a reference to a `<script />` tag created using `document.createElement`.
+   */
+  private DataFlow::SourceNode scriptTag(DataFlow::TypeTracker t) {
+    t.start() and
+    exists(DataFlow::CallNode call | call = result |
+      call = DOM::documentRef().getAMethodCall("createElement") and
+      call.getArgument(0).mayHaveStringValue("script")
+    )
+    or
+    exists(DataFlow::TypeTracker t2 | result = scriptTag(t2).track(t2, t))
+  }
+
+  /**
+   * Gets a reference to a `<script />` tag created using `document.createElement`,
+   * or an element of type `HTMLScriptElement`.
+   */
+  private DataFlow::SourceNode scriptTag() {
+    result = scriptTag(DataFlow::TypeTracker::end())
+    or
+    result.hasUnderlyingType("HTMLScriptElement")
+  }
+
+  /**
+   * A write to the `textContent` property of a `<script />` tag,
+   * seen as a sink for code injection vulnerabilities.
+   */
+  class ScriptContentSink extends Sink {
+    ScriptContentSink() { this = scriptTag().getAPropertyWrite("textContent").getRhs() }
+  }
+
+  /**
    * An expression which may be evaluated as JavaScript.
    */
   class EvalJavaScriptSink extends Sink, DataFlow::ValueNode {
@@ -138,13 +169,19 @@ module CodeInjection {
   }
 
   /**
-   * The first argument to `Module.prototype._compile` from the Node.js built-in module `module`,
-   * considered as a code-injection sink.
+   * The first argument to `Module.prototype._compile`, considered as a code-injection sink.
    */
   class ModuleCompileSink extends Sink {
     ModuleCompileSink() {
+      // `require('module').prototype._compile`
       this =
         API::moduleImport("module").getInstance().getMember("_compile").getACall().getArgument(0)
+      or
+      // `module.constructor.prototype._compile`
+      exists(DataFlow::SourceNode moduleConstructor |
+        moduleConstructor = DataFlow::moduleVarNode(_).getAPropertyRead("constructor") and
+        this = moduleConstructor.getAnInstantiation().getAMethodCall("_compile").getArgument(0)
+      )
     }
   }
 
@@ -166,11 +203,63 @@ module CodeInjection {
   }
 
   /**
-   * A value interpreted as a tempalte by the `dot` library.
+   * A value interpreted as a template by the `handlebars` library.
+   */
+  class HandlebarsTemplateSink extends TemplateSink {
+    HandlebarsTemplateSink() {
+      this = any(Handlebars::Handlebars h).getAMemberCall("compile").getArgument(0)
+    }
+  }
+
+  /**
+   * A value interpreted as a template by the `mustache` library.
+   */
+  class MustacheTemplateSink extends TemplateSink {
+    MustacheTemplateSink() {
+      this = DataFlow::moduleMember("mustache", "render").getACall().getArgument(0)
+    }
+  }
+
+  /**
+   * A value interpreted as a template by the `hogan.js` library.
+   */
+  class HoganTemplateSink extends TemplateSink {
+    HoganTemplateSink() {
+      this = DataFlow::moduleMember("hogan.js", "compile").getACall().getArgument(0)
+    }
+  }
+
+  /**
+   * A value interpreted as a template by the `eta` library.
+   */
+  class EtaTemplateSink extends TemplateSink {
+    EtaTemplateSink() { this = DataFlow::moduleMember("eta", "render").getACall().getArgument(0) }
+  }
+
+  /**
+   * A value interpreted as a template by the `squirrelly` library.
+   */
+  class SquirrelTemplateSink extends TemplateSink {
+    SquirrelTemplateSink() {
+      this = DataFlow::moduleMember("squirrelly", "render").getACall().getArgument(0)
+    }
+  }
+
+  /**
+   * A value interpreted as a template by the `whiskers` library.
+   */
+  class WhiskersTemplateSink extends TemplateSink {
+    WhiskersTemplateSink() {
+      this = DataFlow::moduleMember("whiskers", "render").getACall().getArgument(0)
+    }
+  }
+
+  /**
+   * A value interpreted as a template by the `dot` library.
    */
   class DotTemplateSink extends TemplateSink {
     DotTemplateSink() {
-      this = DataFlow::moduleImport("dot").getAMemberCall("template").getArgument(0)
+      this = DataFlow::moduleImport("dot").getAMemberCall(["template", "compile"]).getArgument(0)
     }
   }
 

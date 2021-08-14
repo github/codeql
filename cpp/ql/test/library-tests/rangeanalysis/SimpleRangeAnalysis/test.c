@@ -659,3 +659,8 @@ void guard_bound_out_of_range(void) {
     out(u); // unreachable [BUG: is 0 .. +max]
   }
 }
+
+void test_mod(int s) {
+  int s2 = s % 5;
+  out(s2); // -4 .. 4
+}

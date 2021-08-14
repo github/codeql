@@ -4,6 +4,7 @@
  *              may cause redirection to malicious web sites.
  * @kind path-problem
  * @problem.severity warning
+ * @security-severity 6.1
  * @id js/server-side-unvalidated-url-redirection
  * @tags security
  *       external/cwe/cwe-601

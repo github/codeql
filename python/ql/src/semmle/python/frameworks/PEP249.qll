@@ -7,20 +7,26 @@ private import python
 private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.Concepts
+private import semmle.python.ApiGraphs
 
-/** A module implementing PEP 249. Extend this class for implementations. */
-abstract class PEP249Module extends DataFlow::Node { }
+/**
+ * A module implementing PEP 249. Extend this class for implementations.
+ *
+ * DEPRECATED: Extend `PEP249ModuleApiNode` instead.
+ */
+abstract deprecated class PEP249Module extends DataFlow::Node { }
 
-/** Gets a reference to a connect call. */
-private DataFlow::Node connect(DataFlow::TypeTracker t) {
-  t.startInAttr("connect") and
-  result instanceof PEP249Module
-  or
-  exists(DataFlow::TypeTracker t2 | result = connect(t2).track(t2, t))
+/**
+ * An abstract class encompassing API graph nodes that implement PEP 249.
+ * Extend this class for implementations.
+ */
+abstract class PEP249ModuleApiNode extends API::Node {
+  /** Gets a string representation of this element. */
+  override string toString() { result = this.(API::Node).toString() }
 }
 
 /** Gets a reference to a connect call. */
-DataFlow::Node connect() { result = connect(DataFlow::TypeTracker::end()) }
+DataFlow::Node connect() { result = any(PEP249ModuleApiNode a).getMember("connect").getAUse() }
 
 /**
  * Provides models for the `db.Connection` class
@@ -43,14 +49,12 @@ module Connection {
   abstract class InstanceSource extends DataFlow::Node { }
 
   /** A direct instantiation of `db.Connection`. */
-  private class ClassInstantiation extends InstanceSource, DataFlow::CfgNode {
-    override CallNode node;
-
-    ClassInstantiation() { node.getFunction() = connect().asCfgNode() }
+  private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
+    ClassInstantiation() { this.getFunction() = connect() }
   }
 
   /** Gets a reference to an instance of `db.Connection`. */
-  private DataFlow::Node instance(DataFlow::TypeTracker t) {
+  private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
     t.start() and
     result instanceof InstanceSource
     or
@@ -58,7 +62,7 @@ module Connection {
   }
 
   /** Gets a reference to an instance of `db.Connection`. */
-  DataFlow::Node instance() { result = instance(DataFlow::TypeTracker::end()) }
+  DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
 }
 
 /**
@@ -67,7 +71,7 @@ module Connection {
  */
 module cursor {
   /** Gets a reference to the `cursor` method on a connection. */
-  private DataFlow::Node methodRef(DataFlow::TypeTracker t) {
+  private DataFlow::TypeTrackingNode methodRef(DataFlow::TypeTracker t) {
     t.startInAttr("cursor") and
     result = Connection::instance()
     or
@@ -75,10 +79,10 @@ module cursor {
   }
 
   /** Gets a reference to the `cursor` method on a connection. */
-  DataFlow::Node methodRef() { result = methodRef(DataFlow::TypeTracker::end()) }
+  DataFlow::Node methodRef() { methodRef(DataFlow::TypeTracker::end()).flowsTo(result) }
 
   /** Gets a reference to a result of calling the `cursor` method on a connection. */
-  private DataFlow::Node methodResult(DataFlow::TypeTracker t) {
+  private DataFlow::TypeTrackingNode methodResult(DataFlow::TypeTracker t) {
     t.start() and
     result.asCfgNode().(CallNode).getFunction() = methodRef().asCfgNode()
     or
@@ -86,7 +90,7 @@ module cursor {
   }
 
   /** Gets a reference to a result of calling the `cursor` method on a connection. */
-  DataFlow::Node methodResult() { result = methodResult(DataFlow::TypeTracker::end()) }
+  DataFlow::Node methodResult() { methodResult(DataFlow::TypeTracker::end()).flowsTo(result) }
 }
 
 /**
@@ -97,7 +101,7 @@ module cursor {
  *
  * See https://www.python.org/dev/peps/pep-0249/#id15.
  */
-private DataFlow::Node execute(DataFlow::TypeTracker t) {
+private DataFlow::TypeTrackingNode execute(DataFlow::TypeTracker t) {
   t.startInAttr("execute") and
   result in [cursor::methodResult(), Connection::instance()]
   or
@@ -112,15 +116,11 @@ private DataFlow::Node execute(DataFlow::TypeTracker t) {
  *
  * See https://www.python.org/dev/peps/pep-0249/#id15.
  */
-DataFlow::Node execute() { result = execute(DataFlow::TypeTracker::end()) }
+DataFlow::Node execute() { execute(DataFlow::TypeTracker::end()).flowsTo(result) }
 
 /** A call to the `execute` method on a cursor (or on a connection). */
-private class ExecuteCall extends SqlExecution::Range, DataFlow::CfgNode {
-  override CallNode node;
+private class ExecuteCall extends SqlExecution::Range, DataFlow::CallCfgNode {
+  ExecuteCall() { this.getFunction() = execute() }
 
-  ExecuteCall() { node.getFunction() = execute().asCfgNode() }
-
-  override DataFlow::Node getSql() {
-    result.asCfgNode() in [node.getArg(0), node.getArgByName("sql")]
-  }
+  override DataFlow::Node getSql() { result in [this.getArg(0), this.getArgByName("sql")] }
 }

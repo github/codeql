@@ -5,6 +5,7 @@
  *              vulnerable to spoofing attacks.
  * @kind path-problem
  * @problem.severity warning
+ * @security-severity 8.1
  * @precision medium
  * @id cpp/user-controlled-bypass
  * @tags security

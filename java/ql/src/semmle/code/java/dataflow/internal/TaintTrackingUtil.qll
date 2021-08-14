@@ -13,6 +13,8 @@ private import semmle.code.java.frameworks.Networking
 private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.internal.DataFlowPrivate
 import semmle.code.java.dataflow.FlowSteps
+private import FlowSummaryImpl as FlowSummaryImpl
+private import semmle.code.java.frameworks.JaxWS
 
 /**
  * Holds if taint can flow from `src` to `sink` in zero or more
@@ -28,78 +30,101 @@ predicate localExprTaint(Expr src, Expr sink) {
   localTaint(DataFlow::exprNode(src), DataFlow::exprNode(sink))
 }
 
-/**
- * Holds if taint can flow in one local step from `src` to `sink`.
- */
-predicate localTaintStep(DataFlow::Node src, DataFlow::Node sink) {
-  DataFlow::localFlowStep(src, sink) or
-  localAdditionalTaintStep(src, sink)
+cached
+private module Cached {
+  private import DataFlowImplCommon as DataFlowImplCommon
+
+  cached
+  predicate forceCachingInSameStage() { DataFlowImplCommon::forceCachingInSameStage() }
+
+  /**
+   * Holds if taint can flow in one local step from `src` to `sink`.
+   */
+  cached
+  predicate localTaintStep(DataFlow::Node src, DataFlow::Node sink) {
+    DataFlow::localFlowStep(src, sink) or
+    localAdditionalTaintStep(src, sink) or
+    // Simple flow through library code is included in the exposed local
+    // step relation, even though flow is technically inter-procedural
+    FlowSummaryImpl::Private::Steps::summaryThroughStep(src, sink, false)
+  }
+
+  /**
+   * Holds if taint can flow in one local step from `src` to `sink` excluding
+   * local data flow steps. That is, `src` and `sink` are likely to represent
+   * different objects.
+   */
+  cached
+  predicate localAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink) {
+    localAdditionalTaintExprStep(src.asExpr(), sink.asExpr())
+    or
+    localAdditionalTaintUpdateStep(src.asExpr(),
+      sink.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr())
+    or
+    exists(DataFlow::Content f |
+      readStep(src, f, sink) and
+      not sink.getTypeBound() instanceof PrimitiveType and
+      not sink.getTypeBound() instanceof BoxedType and
+      not sink.getTypeBound() instanceof NumberType
+    |
+      f instanceof DataFlow::ArrayContent or
+      f instanceof DataFlow::CollectionContent or
+      f instanceof DataFlow::MapKeyContent or
+      f instanceof DataFlow::MapValueContent
+    )
+    or
+    FlowSummaryImpl::Private::Steps::summaryLocalStep(src, sink, false)
+  }
+
+  /**
+   * Holds if the additional step from `src` to `sink` should be included in all
+   * global taint flow configurations.
+   */
+  cached
+  predicate defaultAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink) {
+    localAdditionalTaintStep(src, sink) or
+    any(AdditionalTaintStep a).step(src, sink)
+  }
+
+  /**
+   * Holds if `node` should be a sanitizer in all global taint flow configurations
+   * but not in local taint.
+   */
+  cached
+  predicate defaultTaintSanitizer(DataFlow::Node node) {
+    // Ignore paths through test code.
+    node.getEnclosingCallable().getDeclaringType() instanceof NonSecurityTestClass or
+    node.asExpr() instanceof ValidatedVariableAccess
+  }
+}
+
+import Cached
+
+private RefType getElementType(RefType container) {
+  result = container.(Array).getComponentType() or
+  result = container.(CollectionType).getElementType() or
+  result = container.(MapType).getValueType()
 }
 
 /**
- * Holds if taint can flow in one local step from `src` to `sink` excluding
- * local data flow steps. That is, `src` and `sink` are likely to represent
- * different objects.
+ * Holds if default `TaintTracking::Configuration`s should allow implicit reads
+ * of `c` at sinks and inputs to additional taint steps.
  */
-predicate localAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink) {
-  localAdditionalBasicTaintStep(src, sink)
-  or
-  composedValueAndTaintModelStep(src, sink)
-}
-
-private predicate localAdditionalBasicTaintStep(DataFlow::Node src, DataFlow::Node sink) {
-  localAdditionalTaintExprStep(src.asExpr(), sink.asExpr())
-  or
-  localAdditionalTaintUpdateStep(src.asExpr(),
-    sink.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr())
-  or
-  summaryStep(src, sink, "taint") and
-  not summaryStep(src, sink, "value")
-  or
-  exists(Argument arg |
-    src.asExpr() = arg and
-    arg.isVararg() and
-    sink.(DataFlow::ImplicitVarargsArray).getCall() = arg.getCall()
+bindingset[node]
+predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::Content c) {
+  exists(RefType container |
+    (node.asExpr() instanceof Argument or node instanceof ArgumentNode) and
+    getElementType*(node.getType()) = container
+  |
+    container instanceof Array and
+    c instanceof DataFlow::ArrayContent
+    or
+    container instanceof CollectionType and
+    c instanceof DataFlow::CollectionContent
+    or
+    container instanceof MapType and
+    c instanceof DataFlow::MapValueContent
   )
-}
-
-/**
- * Holds if an additional step from `src` to `sink` through a call can be inferred from the
- * combination of a value-preserving step providing an alias between an input and the output
- * and a taint step from `src` to one the aliased nodes. For example, if we know that `f(a, b)` returns
- * the exact value of `a` and also propagates taint from `b` to `a`, then we also know that
- * the return value is tainted after `f` completes.
- */
-private predicate composedValueAndTaintModelStep(ArgumentNode src, DataFlow::Node sink) {
-  exists(Call call, ArgumentNode valueSource, DataFlow::PostUpdateNode valueSourcePost |
-    src.argumentOf(call, _) and
-    valueSource.argumentOf(call, _) and
-    src != valueSource and
-    valueSourcePost.getPreUpdateNode() = valueSource and
-    // in-x -value-> out-y and in-z -taint-> in-x ==> in-z -taint-> out-y
-    localAdditionalBasicTaintStep(src, valueSourcePost) and
-    DataFlow::localFlowStep(valueSource, DataFlow::exprNode(call)) and
-    sink = DataFlow::exprNode(call)
-  )
-}
-
-/**
- * Holds if the additional step from `src` to `sink` should be included in all
- * global taint flow configurations.
- */
-predicate defaultAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink) {
-  localAdditionalTaintStep(src, sink) or
-  any(AdditionalTaintStep a).step(src, sink)
-}
-
-/**
- * Holds if `node` should be a sanitizer in all global taint flow configurations
- * but not in local taint.
- */
-predicate defaultTaintSanitizer(DataFlow::Node node) {
-  // Ignore paths through test code.
-  node.getEnclosingCallable().getDeclaringType() instanceof NonSecurityTestClass or
-  node.asExpr() instanceof ValidatedVariableAccess
 }
 
 /**
@@ -112,21 +137,7 @@ private predicate localAdditionalTaintExprStep(Expr src, Expr sink) {
   or
   sink.(AssignAddExpr).getSource() = src and sink.getType() instanceof TypeString
   or
-  sink.(ArrayCreationExpr).getInit() = src
-  or
-  sink.(ArrayInit).getAnInit() = src
-  or
-  sink.(ArrayAccess).getArray() = src
-  or
   sink.(LogicExpr).getAnOperand() = src
-  or
-  exists(EnhancedForStmt for, SsaExplicitUpdate v |
-    for.getExpr() = src and
-    v.getDefiningExpr() = for.getVariable() and
-    v.getAFirstUse() = sink
-  )
-  or
-  containerReturnValueStep(src, sink)
   or
   constructorStep(src, sink)
   or
@@ -150,12 +161,6 @@ private predicate localAdditionalTaintExprStep(Expr src, Expr sink) {
  * This is restricted to cases where the step updates the value of `sink`.
  */
 private predicate localAdditionalTaintUpdateStep(Expr src, Expr sink) {
-  exists(Assignment assign | assign.getSource() = src |
-    sink = assign.getDest().(ArrayAccess).getArray()
-  )
-  or
-  containerUpdateStep(src, sink)
-  or
   qualifierToArgumentStep(src, sink)
   or
   argToArgStep(src, sink)
@@ -203,22 +208,6 @@ private predicate constructorStep(Expr tracked, ConstructorCall sink) {
     or
     // a custom InputStream that wraps a tainted data source is tainted
     inputStreamWrapper(sink.getConstructor(), argi)
-    or
-    // A SpringHttpEntity is a wrapper around a body and some headers
-    // Track flow through iff body is a String
-    exists(SpringHttpEntity she |
-      sink.getConstructor() = she.getAConstructor() and
-      argi = 0 and
-      tracked.getType() instanceof TypeString
-    )
-    or
-    // A SpringRequestEntity is a wrapper around a body and some headers
-    // Track flow through iff body is a String
-    exists(SpringResponseEntity sre |
-      sink.getConstructor() = sre.getAConstructor() and
-      argi = 0 and
-      tracked.getType() instanceof TypeString
-    )
     or
     sink.getConstructor().(TaintPreservingCallable).returnsTaintFrom(argToParam(sink, argi))
   )
@@ -272,20 +261,11 @@ private predicate taintPreservingQualifierToMethod(Method m) {
   m.getDeclaringType().getASubtype*() instanceof SpringUntrustedDataType and
   not m.getDeclaringType() instanceof TypeObject
   or
-  m.getDeclaringType() instanceof SpringHttpEntity and
-  m.getName().regexpMatch("getBody|getHeaders")
-  or
-  exists(SpringHttpHeaders headers | m = headers.getAMethod() |
-    m.getReturnType() instanceof TypeString
-    or
-    exists(ParameterizedType stringlist |
-      m.getReturnType().(RefType).getASupertype*() = stringlist and
-      stringlist.getSourceDeclaration().hasQualifiedName("java.util", "List") and
-      stringlist.getTypeArgument(0) instanceof TypeString
-    )
-  )
-  or
   m.(TaintPreservingCallable).returnsTaintFrom(-1)
+  or
+  exists(JaxRsResourceMethod resourceMethod |
+    m.(GetterMethod).getDeclaringType() = resourceMethod.getAParameter().getType()
+  )
 }
 
 private class StringReplaceMethod extends TaintPreservingCallable {

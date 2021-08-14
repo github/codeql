@@ -46,7 +46,7 @@ class Node extends TNode {
   /**
    * INTERNAL: Do not use. Alternative name for `getFunction`.
    */
-  final Function getEnclosingCallable() { result = unique(Function f | f = this.getFunction() | f) }
+  final Function getEnclosingCallable() { result = this.getFunction() }
 
   /** Gets the type of this node. */
   Type getType() { none() } // overridden in subclasses
@@ -324,7 +324,7 @@ private class VariablePartialDefinitionNode extends PartialDefinitionNode {
  * A synthetic data flow node used for flow into a collection when an iterator
  * write occurs in a callee.
  */
-class IteratorPartialDefinitionNode extends PartialDefinitionNode {
+private class IteratorPartialDefinitionNode extends PartialDefinitionNode {
   override IteratorPartialDefinition pd;
 
   override Node getPreUpdateNode() { pd.definesExpressions(_, result.asExpr()) }
@@ -526,7 +526,6 @@ predicate localFlowStep(Node nodeFrom, Node nodeTo) {
  * This is the local flow predicate that's used as a building block in global
  * data flow. It may have less flow than the `localFlowStep` predicate.
  */
-cached
 predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   // Expr -> Expr
   exprToExprStep_nocfg(nodeFrom.asExpr(), nodeTo.asExpr())
@@ -694,7 +693,12 @@ private predicate exprToExprStep_nocfg(Expr fromExpr, Expr toExpr) {
           fromExpr = call.getQualifier()
         ) and
         call.getTarget() = f and
-        outModel.isReturnValue()
+        // AST dataflow treats a reference as if it were the referred-to object, while the dataflow
+        // models treat references as pointers. If the return type of the call is a reference, then
+        // look for data flow the the referred-to object, rather than the reference itself.
+        if call.getType().getUnspecifiedType() instanceof ReferenceType
+        then outModel.isReturnValueDeref()
+        else outModel.isReturnValue()
       )
     )
 }
@@ -715,6 +719,7 @@ private predicate exprToDefinitionByReferenceStep(Expr exprIn, Expr argOut) {
 }
 
 private module FieldFlow {
+  private import DataFlowImplCommon
   private import DataFlowImplLocal
   private import DataFlowPrivate
 
@@ -730,7 +735,12 @@ private module FieldFlow {
   private class FieldConfiguration extends Configuration {
     FieldConfiguration() { this = "FieldConfiguration" }
 
-    override predicate isSource(Node source) { storeStep(source, _, _) }
+    override predicate isSource(Node source) {
+      storeStep(source, _, _)
+      or
+      // Also mark `foo(a.b);` as a source when `a.b` may be overwritten by `foo`.
+      readStep(_, _, any(Node node | node.asExpr() = source.asDefiningArgument()))
+    }
 
     override predicate isSink(Node sink) { readStep(_, _, sink) }
 
@@ -747,7 +757,7 @@ private module FieldFlow {
     exists(FieldConfiguration cfg | cfg.hasFlow(node1, node2)) and
     // This configuration should not be able to cross function boundaries, but
     // we double-check here just to be sure.
-    node1.getEnclosingCallable() = node2.getEnclosingCallable()
+    getNodeEnclosingCallable(node1) = getNodeEnclosingCallable(node2)
   }
 }
 
@@ -761,6 +771,50 @@ VariableAccess getAnAccessToAssignedVariable(Expr assign) {
     var.definedByExpr(_, assign) and
     result = var.getAnAccess()
   )
+}
+
+private newtype TContent =
+  TFieldContent(Field f) or
+  TCollectionContent() or
+  TArrayContent()
+
+/**
+ * A description of the way data may be stored inside an object. Examples
+ * include instance fields, the contents of a collection object, or the contents
+ * of an array.
+ */
+class Content extends TContent {
+  /** Gets a textual representation of this element. */
+  abstract string toString();
+
+  predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
+    path = "" and sl = 0 and sc = 0 and el = 0 and ec = 0
+  }
+}
+
+/** A reference through an instance field. */
+class FieldContent extends Content, TFieldContent {
+  Field f;
+
+  FieldContent() { this = TFieldContent(f) }
+
+  Field getField() { result = f }
+
+  override string toString() { result = f.toString() }
+
+  override predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
+    f.getLocation().hasLocationInfo(path, sl, sc, el, ec)
+  }
+}
+
+/** A reference through an array. */
+private class ArrayContent extends Content, TArrayContent {
+  override string toString() { result = "[]" }
+}
+
+/** A reference through the contents of some collection-like container. */
+private class CollectionContent extends Content, TCollectionContent {
+  override string toString() { result = "<element>" }
 }
 
 /**

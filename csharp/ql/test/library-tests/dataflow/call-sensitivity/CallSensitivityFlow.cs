@@ -129,7 +129,6 @@ public class A
             }
         }
 
-
         public void CallSinkIfFalse(object o, bool cond)
         {
             if (!cond)
@@ -137,7 +136,6 @@ public class A
                 Sink(o);
             }
         }
-
 
         public void LocalCallSensitivity(object o, bool c)
         {

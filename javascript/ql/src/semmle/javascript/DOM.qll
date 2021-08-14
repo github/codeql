@@ -291,10 +291,33 @@ module DOM {
      */
     abstract class Range extends DataFlow::Node { }
 
+    private predicate isDomElementType(ExternalType type) { isDomRootType(type.getASupertype*()) }
+
     private string getADomPropertyName() {
       exists(ExternalInstanceMemberDecl decl |
         result = decl.getName() and
-        isDomRootType(decl.getDeclaringType().getASupertype*())
+        isDomElementType(decl.getDeclaringType())
+      )
+    }
+
+    private predicate isDomElementTypeName(string name) {
+      exists(ExternalType type |
+        isDomElementType(type) and
+        name = type.getName()
+      )
+    }
+
+    /** Gets a method name which, if invoked on a DOM element (possibly of a specific subtype), returns a DOM element. */
+    private string getAMethodProducingDomElements() {
+      exists(ExternalInstanceMemberDecl decl |
+        result = decl.getName() and
+        isDomElementType(decl.getDeclaringType()) and
+        isDomElementTypeName(decl.getDocumentation()
+              .getATagByTitle("return")
+              .getType()
+              .getAnUnderlyingType()
+              .(JSDocNamedTypeExpr)
+              .getName())
       )
     }
 
@@ -338,6 +361,8 @@ module DOM {
         this = domElementCreationOrQuery()
         or
         this = domElementCollection()
+        or
+        this = domValueRef().getAMethodCall(getAMethodProducingDomElements())
         or
         this = forms()
         or
@@ -468,6 +493,9 @@ module DOM {
   private DataFlow::SourceNode locationRef(DataFlow::TypeTracker t) {
     t.start() and
     result = locationSource()
+    or
+    t.startInProp("location") and
+    result = [DataFlow::globalObjectRef(), documentSource()]
     or
     exists(DataFlow::TypeTracker t2 | result = locationRef(t2).track(t2, t))
   }

@@ -18,36 +18,6 @@ import csharp
 import Dispose
 import semmle.code.csharp.frameworks.System
 
-/**
- * Gets an exception type that may be thrown during the execution of method `m`.
- * Assumes any exception may be thrown by library types.
- */
-Class getAThrownException(Method m) {
-  m.fromLibrary() and
-  result = any(SystemExceptionClass sc)
-  or
-  exists(ControlFlowElement cfe |
-    cfe = any(ThrowElement te | result = te.getExpr().getType()) or
-    cfe = any(MethodCall mc | result = getAThrownException(mc.getARuntimeTarget()))
-  |
-    cfe.getEnclosingCallable() = m and
-    not isTriedAgainstException(cfe, result)
-  )
-}
-
-/**
- * Holds if control flow element is tried against throwing an exception of type
- * `ec`.
- */
-pragma[noinline]
-predicate isTriedAgainstException(ControlFlowElement cfe, ExceptionClass ec) {
-  (cfe instanceof ThrowElement or cfe instanceof MethodCall) and
-  exists(TryStmt ts |
-    ts.getATriedElement() = cfe and
-    exists(ts.getAnExceptionHandler(ec))
-  )
-}
-
 private class DisposeCall extends MethodCall {
   DisposeCall() { this.getTarget() instanceof DisposeMethod }
 }
@@ -78,8 +48,17 @@ predicate disposeReachableFromDisposableCreation(DisposeCall disposeCall, Expr d
   reachesDisposeCall(disposeCall, DataFlow::exprNode(disposableCreation))
 }
 
-class MethodCallThatMayThrow extends MethodCall {
-  MethodCallThatMayThrow() { exists(getAThrownException(this.getARuntimeTarget())) }
+/**
+ * Holds if control flow element is tried against throwing an exception of type
+ * `ec`.
+ */
+pragma[noinline]
+predicate isTriedAgainstException(ControlFlowElement cfe, ExceptionClass ec) {
+  (cfe instanceof ThrowElement or cfe instanceof MethodCall) and
+  exists(TryStmt ts |
+    ts.getATriedElement() = cfe and
+    exists(ts.getAnExceptionHandler(ec))
+  )
 }
 
 ControlFlowElement getACatchOrFinallyClauseChild() {
@@ -88,15 +67,71 @@ ControlFlowElement getACatchOrFinallyClauseChild() {
   result = getACatchOrFinallyClauseChild().getAChild()
 }
 
-from DisposeCall disposeCall, Expr disposableCreation, MethodCallThatMayThrow callThatThrows
-where
+private predicate candidate(DisposeCall disposeCall, Call call, Expr disposableCreation) {
   disposeReachableFromDisposableCreation(disposeCall, disposableCreation) and
   // The dispose call is not, itself, within a dispose method.
   not disposeCall.getEnclosingCallable() instanceof DisposeMethod and
   // Dispose call not within a finally or catch block
   not getACatchOrFinallyClauseChild() = disposeCall and
   // At least one method call exists between the allocation and disposal that could throw
-  disposableCreation.getAReachableElement() = callThatThrows and
-  callThatThrows.getAReachableElement() = disposeCall
+  disposableCreation.getAReachableElement() = call and
+  call.getAReachableElement() = disposeCall
+}
+
+private class RelevantMethod extends Method {
+  RelevantMethod() {
+    exists(Call call |
+      candidate(_, call, _) and
+      this = call.getARuntimeTarget()
+    )
+    or
+    exists(RelevantMethod other | other.calls(this))
+  }
+
+  pragma[noinline]
+  private RelevantMethod callsNoTry() {
+    exists(MethodCall mc |
+      result = mc.getARuntimeTarget() and
+      not isTriedAgainstException(mc, _) and
+      mc.getEnclosingCallable() = this
+    )
+  }
+
+  pragma[noinline]
+  private RelevantMethod callsInTry(MethodCall mc) {
+    result = mc.getARuntimeTarget() and
+    isTriedAgainstException(mc, _) and
+    mc.getEnclosingCallable() = this
+  }
+
+  /**
+   * Gets an exception type that may be thrown during the execution of this method.
+   * Assumes any exception may be thrown by library types.
+   */
+  Class getAThrownException() {
+    this.fromLibrary() and
+    result instanceof SystemExceptionClass
+    or
+    exists(ControlFlowElement cfe |
+      result = cfe.(ThrowElement).getExpr().getType() and
+      cfe.getEnclosingCallable() = this
+      or
+      result = this.callsInTry(cfe).getAThrownException()
+    |
+      not isTriedAgainstException(cfe, result)
+    )
+    or
+    result = this.callsNoTry().getAThrownException()
+  }
+}
+
+class MethodCallThatMayThrow extends MethodCall {
+  MethodCallThatMayThrow() {
+    exists(this.getARuntimeTarget().(RelevantMethod).getAThrownException())
+  }
+}
+
+from DisposeCall disposeCall, Expr disposableCreation, MethodCallThatMayThrow callThatThrows
+where candidate(disposeCall, callThatThrows, disposableCreation)
 select disposeCall, "Dispose missed if exception is thrown by $@.", callThatThrows,
   callThatThrows.toString()

@@ -69,7 +69,7 @@ module ClientSideUrlRedirect {
       // exclude all splits where only the prefix is accessed, which is safe for url-redirects.
       not exists(PropAccess pacc | mce = pacc.getBase() | pacc.getPropertyName() = "0")
       or
-      (methodName = "substring" or methodName = "substr" or methodName = "slice") and
+      methodName = StringOps::substringMethodName() and
       // exclude `location.href.substring(0, ...)` and similar, which can
       // never refer to the query string
       not mce.getArgument(0).(NumberLiteral).getIntValue() = 0
@@ -188,6 +188,15 @@ module ClientSideUrlRedirect {
       |
         this = attr.getValue().flow()
       )
+    }
+  }
+
+  /**
+   * A write to the location using the [history](https://npmjs.com/package/history) library
+   */
+  class HistoryWriteUrlSink extends ScriptUrlSink {
+    HistoryWriteUrlSink() {
+      this = History::getBrowserHistory().getMember(["push", "replace"]).getACall().getArgument(0)
     }
   }
 

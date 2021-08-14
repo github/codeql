@@ -39,9 +39,12 @@ Callable viableCallable(Call c) {
   c instanceof ConstructorCall and result = c.getCallee().getSourceDeclaration()
 }
 
-/** A method that is the target of a call. */
-class CalledMethod extends Method {
-  CalledMethod() { exists(MethodAccess ma | ma.getMethod() = this) }
+/** The source declaration of a method that is the target of a virtual call. */
+class VirtCalledSrcMethod extends SrcMethod {
+  pragma[nomagic]
+  VirtCalledSrcMethod() {
+    exists(VirtualMethodAccess ma | ma.getMethod().getSourceDeclaration() = this)
+  }
 }
 
 cached
@@ -73,7 +76,7 @@ private module Dispatch {
     (
       exists(Method def, RefType t, boolean exact |
         qualType(ma, t, exact) and
-        def = ma.getMethod()
+        def = ma.getMethod().getSourceDeclaration()
       |
         exact = true and result = exactMethodImpl(def, t.getSourceDeclaration())
         or
@@ -173,7 +176,7 @@ private module Dispatch {
       v.getAUse() = q and
       guardControls_v1(ioe, q.getBasicBlock(), false) and
       ioe.getExpr() = v.getAUse() and
-      ioe.getTypeName().getType().getErasure() = t and
+      ioe.getCheckedType().getErasure() = t and
       tgt.getDeclaringType().getSourceDeclaration().getASourceSupertype*() = t
     )
   }
@@ -185,8 +188,8 @@ private module Dispatch {
     not result.isAbstract() and
     if source instanceof VirtualMethodAccess
     then
-      exists(CalledMethod def, RefType t, boolean exact |
-        source.getMethod() = def and
+      exists(VirtCalledSrcMethod def, RefType t, boolean exact |
+        source.getMethod().getSourceDeclaration() = def and
         hasQualifierType(source, t, exact)
       |
         exact = true and result = exactMethodImpl(def, t.getSourceDeclaration())
@@ -301,14 +304,14 @@ private module Dispatch {
 
   /** Gets the implementation of `top` present on a value of precisely type `t`. */
   cached
-  Method exactMethodImpl(CalledMethod top, SrcRefType t) {
+  Method exactMethodImpl(VirtCalledSrcMethod top, SrcRefType t) {
     hasSrcMethod(t, result) and
-    top.getAPossibleImplementation() = result
+    top.getAPossibleImplementationOfSrcMethod() = result
   }
 
   /** Gets the implementations of `top` present on viable subtypes of `t`. */
   cached
-  Method viableMethodImpl(CalledMethod top, SrcRefType tsrc, RefType t) {
+  Method viableMethodImpl(VirtCalledSrcMethod top, SrcRefType tsrc, RefType t) {
     exists(SrcRefType sub |
       result = exactMethodImpl(top, sub) and
       tsrc = t.getSourceDeclaration() and

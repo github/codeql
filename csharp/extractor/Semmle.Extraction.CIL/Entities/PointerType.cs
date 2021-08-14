@@ -20,7 +20,7 @@ namespace Semmle.Extraction.CIL.Entities
 
         public override int GetHashCode() => HashCode.Combine(pointee, nameof(PointerType));
 
-        public override void WriteId(TextWriter trapFile, bool inContext)
+        public override void WriteId(EscapingTextWriter trapFile, bool inContext)
         {
             pointee.WriteId(trapFile, inContext);
             trapFile.Write('*');

@@ -236,63 +236,11 @@ module HTTP {
   }
 
   /**
-   * Holds if `call` decorates the function `pred`.
-   * This means that `call` returns a function that forwards its arguments to `pred`.
-   * Only holds when the decorator looks like it is decorating a route-handler.
-   *
-   * Below is a code example relating `call`, `decoratee`, `outer`, `inner`.
-   * ```
-   * function outer(method) {
-   *    return function inner(req, res) {
-   *      return method.call(this, req, res);
-   *    };
-   *  }
-   *  var route = outer(function decoratee(req, res) { // <- call
-   *    res.end("foo");
-   *  });
-   * ```
-   */
-  private predicate isDecoratedCall(DataFlow::CallNode call, DataFlow::FunctionNode decoratee) {
-    // indirect route-handler `result` is given to function `outer`, which returns function `inner` which calls the function `pred`.
-    exists(int i, DataFlow::FunctionNode outer, HTTP::RouteHandlerCandidate inner |
-      inner = outer.getAReturn().getALocalSource() and
-      decoratee = call.getArgument(i).getALocalSource() and
-      outer.getFunction() = call.getACallee() and
-      hasForwardingHandlerParameter(i, outer, inner)
-    )
-  }
-
-  /**
-   * Holds if the `i`th parameter of `outer` has a call that `inner` forwards its parameters to.
-   */
-  private predicate hasForwardingHandlerParameter(
-    int i, DataFlow::FunctionNode outer, HTTP::RouteHandlerCandidate inner
-  ) {
-    isAForwardingRouteHandlerCall(outer.getParameter(i), inner)
-  }
-
-  /**
-   * Holds if `f` looks like a route-handler and a call to `callee` inside `f` forwards all of the parameters from `f` to that call.
-   */
-  private predicate isAForwardingRouteHandlerCall(
-    DataFlow::SourceNode callee, HTTP::RouteHandlerCandidate f
-  ) {
-    exists(DataFlow::CallNode call | call = callee.getACall() |
-      forall(int arg | arg = [0 .. f.getNumParameter() - 1] |
-        f.getParameter(arg).flowsTo(call.getArgument(arg))
-      ) and
-      call.getContainer() = f.getFunction()
-    )
-  }
-
-  /**
    * Holds if there exists a step from `pred` to `succ` for a RouteHandler - beyond the usual steps defined by TypeTracking.
    */
   predicate routeHandlerStep(DataFlow::SourceNode pred, DataFlow::SourceNode succ) {
-    isDecoratedCall(succ, pred)
-    or
     // A forwarding call
-    isAForwardingRouteHandlerCall(pred, succ)
+    DataFlow::functionOneWayForwardingStep(pred.getALocalUse(), succ)
     or
     // a container containing route-handlers.
     exists(HTTP::RouteHandlerCandidateContainer container | pred = container.getRouteHandler(succ))
@@ -687,7 +635,7 @@ module HTTP {
     DataFlow::SourceNode getAPossiblyDecoratedHandler(RouteHandlerCandidate candidate) {
       result = candidate
       or
-      isDecoratedCall(result, candidate)
+      DataFlow::functionOneWayForwardingStep(candidate, result)
     }
 
     private string mapValueProp() {

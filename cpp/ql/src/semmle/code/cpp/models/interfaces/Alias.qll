@@ -50,5 +50,16 @@ abstract class AliasFunction extends Function {
   /**
    * Holds if the function always returns the value of the parameter at the specified index.
    */
-  abstract predicate parameterIsAlwaysReturned(int index);
+  predicate parameterIsAlwaysReturned(int index) { none() }
+
+  /**
+   * Holds if the address passed in via `input` is always propagated to `output`.
+   */
+  predicate hasAddressFlow(FunctionInput input, FunctionOutput output) {
+    exists(int index |
+      // By default, just use the old `parameterIsAlwaysReturned` predicate to detect flow from the
+      // parameter to the return value.
+      input.isParameter(index) and output.isReturnValue() and this.parameterIsAlwaysReturned(index)
+    )
+  }
 }

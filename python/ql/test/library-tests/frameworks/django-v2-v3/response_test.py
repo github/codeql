@@ -49,6 +49,15 @@ def redirect_through_normal_response(request):
     resp.content = private # $ MISSING: responseBody=private
     return resp
 
+def redirect_through_normal_response_new_headers_attr(request):
+    private = "private"
+    next = request.GET.get("next")
+
+    resp = HttpResponse() # $ HttpResponse mimetype=text/html
+    resp.status_code = 302
+    resp.headers['Location'] = next # $ MISSING: redirectLocation=next
+    resp.content = private # $ MISSING: responseBody=private
+    return resp
 
 def redirect_shortcut(request):
     next = request.GET.get("next")
@@ -58,27 +67,27 @@ def redirect_shortcut(request):
 class CustomRedirectView(RedirectView):
 
     def get_redirect_url(self, foo): # $ requestHandler routedParameter=foo
-        ensure_tainted(foo)
+        ensure_tainted(foo) # $ tainted
         next = "https://example.com/{}".format(foo)
         return next # $ HttpResponse HttpRedirectResponse redirectLocation=next
 
 
 # Ensure that simple subclasses are still vuln to XSS
 def xss__not_found(request):
-    return HttpResponseNotFound(request.GET.get("name"))  # $HttpResponse mimetype=text/html responseBody=Attribute()
+    return HttpResponseNotFound(request.GET.get("name"))  # $HttpResponse mimetype=text/html responseBody=request.GET.get(..)
 
 # Ensure we still have an XSS sink when manually setting the content_type to HTML
 def xss__manual_response_type(request):
-    return HttpResponse(request.GET.get("name"), content_type="text/html; charset=utf-8")  # $HttpResponse mimetype=text/html responseBody=Attribute()
+    return HttpResponse(request.GET.get("name"), content_type="text/html; charset=utf-8")  # $HttpResponse mimetype=text/html responseBody=request.GET.get(..)
 
 def xss__write(request):
     response = HttpResponse()  # $HttpResponse mimetype=text/html
-    response.write(request.GET.get("name"))  # $HttpResponse mimetype=text/html responseBody=Attribute()
+    response.write(request.GET.get("name"))  # $HttpResponse mimetype=text/html responseBody=request.GET.get(..)
 
 # This is safe but probably a bug if the argument to `write` is not a result of `json.dumps` or similar.
 def safe__write_json(request):
     response = JsonResponse()  # $HttpResponse mimetype=application/json
-    response.write(request.GET.get("name"))  # $HttpResponse mimetype=application/json responseBody=Attribute()
+    response.write(request.GET.get("name"))  # $HttpResponse mimetype=application/json responseBody=request.GET.get(..)
 
 # Ensure manual subclasses are vulnerable
 class CustomResponse(HttpResponse):
@@ -86,7 +95,7 @@ class CustomResponse(HttpResponse):
         super().__init__(content, *args, content_type="text/html", **kwargs)
 
 def xss__custom_response(request):
-    return CustomResponse("ACME Responses", request.GET("name"))  # $HttpResponse MISSING: mimetype=text/html responseBody=Attribute() SPURIOUS: responseBody="ACME Responses"
+    return CustomResponse("ACME Responses", request.GET("name"))  # $HttpResponse MISSING: mimetype=text/html responseBody=request.GET.get(..) SPURIOUS: responseBody="ACME Responses"
 
 class CustomJsonResponse(JsonResponse):
     def __init__(self, banner, content, *args, **kwargs):
@@ -94,3 +103,17 @@ class CustomJsonResponse(JsonResponse):
 
 def safe__custom_json_response(request):
     return CustomJsonResponse("ACME Responses", {"foo": request.GET.get("foo")})  # $HttpResponse mimetype=application/json MISSING: responseBody=Dict SPURIOUS: responseBody="ACME Responses"
+
+################################################################################
+# Cookies
+################################################################################
+
+def setting_cookie(request):
+    resp = HttpResponse() # $ HttpResponse mimetype=text/html
+    resp.set_cookie("key", "value") # $ CookieWrite CookieName="key" CookieValue="value"
+    resp.set_cookie(key="key", value="value") # $ CookieWrite CookieName="key" CookieValue="value"
+    resp.headers["Set-Cookie"] = "key2=value2" # $ MISSING: CookieWrite CookieRawHeader="key2=value2"
+    resp.cookies["key3"] = "value3" # $ CookieWrite CookieName="key3" CookieValue="value3"
+    resp.delete_cookie("key4") # $ CookieWrite CookieName="key4"
+    resp.delete_cookie(key="key4") # $ CookieWrite CookieName="key4"
+    return resp

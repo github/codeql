@@ -1,0 +1,25 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Cookies without <code>HttpOnly</code> flag are accessible to JavaScript running in the same origin. In case of
+Cross-Site Scripting (XSS) vulnerability the cookie can be stolen by malicious script.</p>
+</overview>
+<recommendation>
+
+<p>Protect sensitive cookies, such as those related to authentication, by setting <code>HttpOnly</code> to <code>true</code> to make
+them not accessible to JavaScript.</p>
+
+</recommendation>
+
+<references>
+
+<li>Production Best Practices: Security:<a href="https://expressjs.com/en/advanced/best-practice-security.html#use-cookies-securely">Use cookies securely</a>.</li>
+<li>NodeJS security cheat sheet:<a href="https://cheatsheetseries.owasp.org/cheatsheets/Nodejs_Security_Cheat_Sheet.html#set-cookie-flags-appropriately">Set cookie flags appropriately</a>.</li>
+<li>express-session:<a href="https://github.com/expressjs/session#cookiehttponly">cookie.httpOnly</a>.</li>
+<li>cookie-session:<a href="https://github.com/expressjs/cookie-session#cookie-options">Cookie Options</a>.</li>
+<li><a href="https://expressjs.com/en/api.html#res.cookie">express response.cookie</a>.</li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie">Set-Cookie</a>.</li>
+</references>
+</qhelp>

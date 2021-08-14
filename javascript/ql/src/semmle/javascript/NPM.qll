@@ -40,9 +40,7 @@ class PackageJSON extends JSONObject {
   ContributorInfo getAuthor() { result = getPropValue("author") }
 
   /** Gets information for a contributor to this package. */
-  ContributorInfo getAContributor() {
-    result = getPropValue("contributors").(JSONArray).getElementValue(_)
-  }
+  ContributorInfo getAContributor() { result = getPropValue("contributors").getElementValue(_) }
 
   /** Gets the array of files for this package. */
   JSONArray getFiles() { result = getPropValue("files") }
@@ -57,13 +55,13 @@ class PackageJSON extends JSONObject {
   string getBin(string cmd) {
     cmd = getPackageName() and result = getPropStringValue("bin")
     or
-    result = getPropValue("bin").(JSONObject).getPropStringValue(cmd)
+    result = getPropValue("bin").getPropValue(cmd).getStringValue()
   }
 
   /** Gets a manual page for this package. */
   string getAManFile() {
     result = getPropStringValue("man") or
-    result = getPropValue("man").(JSONArray).getElementStringValue(_)
+    result = getPropValue("man").getElementValue(_).getStringValue()
   }
 
   /** Gets information about the directories of this package. */
@@ -191,12 +189,12 @@ class BugTrackerInfo extends JSONValue {
 
   /** Gets the bug tracker URL. */
   string getUrl() {
-    result = this.(JSONObject).getPropStringValue("url") or
-    result = this.(JSONString).getValue()
+    result = this.getPropValue("url").getStringValue() or
+    result = this.getStringValue()
   }
 
   /** Gets the bug reporting email address. */
-  string getEmail() { result = this.(JSONObject).getPropStringValue("email") }
+  string getEmail() { result = this.getPropValue("email").getStringValue() }
 }
 
 /**
@@ -206,7 +204,7 @@ class ContributorInfo extends JSONValue {
   ContributorInfo() {
     exists(PackageJSON pkg |
       this = pkg.getPropValue("author") or
-      this = pkg.getPropValue("contributors").(JSONArray).getElementValue(_)
+      this = pkg.getPropValue("contributors").getElementValue(_)
     ) and
     (this instanceof JSONObject or this instanceof JSONString)
   }
@@ -217,24 +215,24 @@ class ContributorInfo extends JSONValue {
    * homepage URL.
    */
   private string parseInfo(int group) {
-    result = this.(JSONString).getValue().regexpCapture("(.*?)(?: <(.*?)>)?(?: \\((.*)?\\))", group)
+    result = this.getStringValue().regexpCapture("(.*?)(?: <(.*?)>)?(?: \\((.*)?\\))", group)
   }
 
   /** Gets the contributor's name. */
   string getName() {
-    result = this.(JSONObject).getPropStringValue("name") or
+    result = this.getPropValue("name").getStringValue() or
     result = parseInfo(1)
   }
 
   /** Gets the contributor's email address. */
   string getEmail() {
-    result = this.(JSONObject).getPropStringValue("email") or
+    result = this.getPropValue("email").getStringValue() or
     result = parseInfo(2)
   }
 
   /** Gets the contributor's homepage URL. */
   string getUrl() {
-    result = this.(JSONObject).getPropStringValue("url") or
+    result = this.getPropValue("url").getStringValue() or
     result = parseInfo(3)
   }
 }

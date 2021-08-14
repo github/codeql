@@ -5,6 +5,7 @@
  * @kind problem
  * @id cpp/uninitialized-local
  * @problem.severity warning
+ * @security-severity 7.8
  * @precision medium
  * @tags security
  *       external/cwe/cwe-665
@@ -40,7 +41,7 @@ DeclStmt declWithNoInit(LocalVariable v) {
   result.getADeclaration() = v and
   not exists(v.getInitializer()) and
   /* The type of the variable is not stack-allocated. */
-  not allocatedType(v.getType())
+  exists(Type t | t = v.getType() | not allocatedType(t))
 }
 
 class UninitialisedLocalReachability extends StackVariableReachability {

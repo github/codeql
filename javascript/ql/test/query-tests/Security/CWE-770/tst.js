@@ -71,3 +71,9 @@ const rateLimiterMiddleware = (req, res, next) => {
   rateLimiter.consume(req.ip).then(next).catch(res.status(429).send('rate limited'));
 };
 express().get('/:path', rateLimiterMiddleware, expensiveHandler1);
+
+const catchAsync = fn => (...args) => fn(...args).catch(args[2]);
+express().get('/:path', catchAsync(expensiveHandler1)); // NOT OK
+express().get('/:path', rateLimiterMiddleware, catchAsync(expensiveHandler1)); // OK
+express().get('/:path', catchAsync(rateLimiterMiddleware), expensiveHandler1); // OK
+express().get('/:path', catchAsync(rateLimiterMiddleware), catchAsync(expensiveHandler1)); // OK

@@ -314,6 +314,7 @@ class OverloadedPointerDereferenceFunction extends Function {
  * T1 operator*(const T2 &);
  * T1 a; T2 b;
  * a = *b;
+ * ```
  */
 class OverloadedPointerDereferenceExpr extends FunctionCall {
   OverloadedPointerDereferenceExpr() {

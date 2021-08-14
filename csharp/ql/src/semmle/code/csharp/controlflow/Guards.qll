@@ -36,7 +36,7 @@ class Guard extends Expr {
    * Holds if basic block `bb` is guarded by this expression having value `v`.
    */
   predicate controlsBasicBlock(BasicBlock bb, AbstractValue v) {
-    Internal::guardControls(this, _, bb, v)
+    Internal::guardControls(this, bb, v)
   }
 
   /**
@@ -50,6 +50,12 @@ class Guard extends Expr {
       polarity = v.getValue()
     )
   }
+
+  /**
+   * Gets a valid value for this guard. For example, if this guard is a test, then
+   * it can have Boolean values `true` and `false`.
+   */
+  AbstractValue getAValue() { isGuard(this, result) }
 }
 
 /** An abstract value. */
@@ -967,13 +973,6 @@ module Internal {
     e = any(BinaryArithmeticOperation bao | result = bao.getAnOperand())
   }
 
-  /** Same as `this.getAChildExpr*()`, but avoids `fastTC`. */
-  private Expr getAChildExprStar(Guard g) {
-    result = g
-    or
-    result = getAChildExprStar(g).getAChildExpr()
-  }
-
   private Expr stripConditionalExpr(Expr e) {
     e =
       any(ConditionalExpr ce |
@@ -1009,8 +1008,11 @@ module Internal {
 
     /** Holds if pre-basic-block `bb` only is reached when guard `g` has abstract value `v`. */
     predicate preControls(Guard g, PreBasicBlocks::PreBasicBlock bb, AbstractValue v) {
-      exists(AbstractValue v0, Guard g0 | preControlsDirect(g0, bb, v0) |
-        preImpliesSteps(g0, v0, g, v)
+      preControlsDirect(g, bb, v)
+      or
+      exists(AbstractValue v0, Guard g0 |
+        preControls(g0, bb, v0) and
+        preImpliesStep(g0, v0, g, v)
       )
     }
 
@@ -1038,6 +1040,23 @@ module Internal {
       }
     }
 
+    private predicate canReturnBool(Callable c, Expr ret) {
+      canReturn(c, ret) and
+      c.getReturnType() instanceof BoolType
+    }
+
+    private predicate boolReturnImplies(Expr ret, BooleanValue retVal, Guard g, AbstractValue v) {
+      canReturnBool(_, ret) and
+      isGuard(ret, retVal) and
+      g = ret and
+      v = retVal
+      or
+      exists(Guard g0, AbstractValue v0 |
+        boolReturnImplies(ret, retVal, g0, v0) and
+        preImpliesStep(g0, v0, g, v)
+      )
+    }
+
     /**
      * Holds if `ret` is an expression returned by the callable to which parameter
      * `p` belongs, and `ret` having Boolean value `retVal` allows the conclusion
@@ -1046,14 +1065,14 @@ module Internal {
     private predicate validReturnInCustomNullCheck(
       Expr ret, Parameter p, BooleanValue retVal, boolean isNull
     ) {
-      exists(Callable c | canReturn(c, ret) |
-        p.getCallable() = c and
-        c.getReturnType() instanceof BoolType
+      exists(Callable c |
+        canReturnBool(c, ret) and
+        p.getCallable() = c
       ) and
       exists(PreSsaImplicitParameterDefinition def | p = def.getParameter() |
         def.nullGuardedReturn(ret, isNull)
         or
-        exists(NullValue nv | preImpliesSteps(ret, retVal, def.getARead(), nv) |
+        exists(NullValue nv | boolReturnImplies(ret, retVal, def.getARead(), nv) |
           if nv.isNull() then isNull = true else isNull = false
         )
       )
@@ -1447,8 +1466,10 @@ module Internal {
         PreSsa::Definition def, AssignableRead read
       ) {
         read = def.getAFirstRead() and
-        not exists(AssignableRead other | PreSsa::adjacentReadPairSameVar(other, read) |
-          other != read
+        (
+          not PreSsa::adjacentReadPairSameVar(_, read)
+          or
+          read = unique(AssignableRead read0 | PreSsa::adjacentReadPairSameVar(read0, read))
         )
       }
 
@@ -1632,10 +1653,14 @@ module Internal {
         AssignableRead read1, AssignableRead read2
       ) {
         PreSsa::adjacentReadPairSameVar(read1, read2) and
-        not exists(AssignableRead other |
-          PreSsa::adjacentReadPairSameVar(other, read2) and
-          other != read1 and
-          other != read2
+        (
+          read1 = read2 and
+          read1 = unique(AssignableRead other | PreSsa::adjacentReadPairSameVar(other, read2))
+          or
+          read1 =
+            unique(AssignableRead other |
+              PreSsa::adjacentReadPairSameVar(other, read2) and other != read2
+            )
         )
       }
 
@@ -1691,6 +1716,79 @@ module Internal {
 
   import PreCFG
 
+  private predicate interestingDescendantCandidate(Expr e) {
+    guardControls(e, _, _)
+    or
+    e instanceof AccessOrCallExpr
+  }
+
+  /**
+   * An (interesting) descendant of a guard that controls some basic block.
+   *
+   * This class exists purely for performance reasons: It allows us to big-step
+   * through the child hierarchy in `guardControlsSub()` instead of using
+   * `getAChildExpr()`.
+   */
+  private class ControlGuardDescendant extends Expr {
+    ControlGuardDescendant() {
+      guardControls(this, _, _)
+      or
+      any(ControlGuardDescendant other).interestingDescendant(this)
+    }
+
+    private predicate descendant(Expr e) {
+      e = this.getAChildExpr()
+      or
+      exists(Expr mid |
+        descendant(mid) and
+        not interestingDescendantCandidate(mid) and
+        e = mid.getAChildExpr()
+      )
+    }
+
+    /** Holds if `e` is an interesting descendant of this descendant. */
+    predicate interestingDescendant(Expr e) {
+      descendant(e) and
+      interestingDescendantCandidate(e)
+    }
+  }
+
+  /**
+   * Holds if `g` controls basic block `bb`, and `sub` is some (interesting)
+   * sub expression of `g`.
+   *
+   * Sub expressions inside nested logical operations that themselve control `bb`
+   * are not included, since these will be sub expressions of their immediately
+   * enclosing logical operation. (This restriction avoids a quadratic blow-up.)
+   *
+   * For example, in
+   *
+   * ```csharp
+   * if (a && (b && c))
+   *     BLOCK
+   * ```
+   *
+   * `a` is included as a sub expression of `a && (b && c)` (which controls `BLOCK`),
+   * while `b` and `c` are only included as sub expressions of `b && c` (which also
+   * controls `BLOCK`).
+   */
+  pragma[nomagic]
+  private predicate guardControlsSub(Guard g, BasicBlock bb, ControlGuardDescendant sub) {
+    guardControls(g, bb, _) and
+    sub = g
+    or
+    exists(ControlGuardDescendant mid |
+      guardControlsSub(g, bb, mid) and
+      mid.interestingDescendant(sub)
+    |
+      not guardControls(sub, bb, _)
+      or
+      not mid instanceof UnaryLogicalOperation and
+      not mid instanceof BinaryLogicalOperation and
+      not mid instanceof BitwiseOperation
+    )
+  }
+
   /**
    * A helper class for calculating structurally equal access/call expressions.
    */
@@ -1710,13 +1808,13 @@ module Internal {
 
     /**
      * Holds if access/call expression `e` (targeting declaration `target`)
-     * is a sub expression of a condition that controls whether basic block
+     * is a sub expression of a guard that controls whether basic block
      * `bb` is reached.
      */
     pragma[noinline]
     private predicate candidateAux(AccessOrCallExpr e, Declaration target, BasicBlock bb) {
       target = e.getTarget() and
-      exists(Guard g | e = getAChildExprStar(g) | guardControls(g, _, bb, _))
+      guardControlsSub(_, bb, e)
     }
   }
 
@@ -1727,49 +1825,67 @@ module Internal {
 
     /**
      * Holds if basic block `bb` only is reached when guard `g` has abstract value `v`.
-     *
-     * `cb` records all of the possible condition blocks for `g` that a path from the
-     * callable entry point to `bb` may go through.
      */
     cached
-    predicate guardControls(Guard g, ConditionBlock cb, BasicBlock bb, AbstractValue v) {
+    predicate guardControls(Guard g, BasicBlock bb, AbstractValue v) {
+      exists(ControlFlowElement cfe, ConditionalSuccessor cs |
+        v.branch(cfe, cs, g) and cfe.controlsBlock(bb, cs, _)
+      )
+      or
       exists(AbstractValue v0, Guard g0 |
-        impliesSteps(g0, v0, g, v) and
-        exists(ControlFlowElement cfe, ConditionalSuccessor cs |
-          v0.branch(cfe, cs, g0) and cfe.controlsBlock(bb, cs, cb)
-        )
+        guardControls(g0, bb, v0) and
+        impliesStep(g0, v0, g, v)
       )
     }
 
-    pragma[noinline]
+    pragma[nomagic]
+    private predicate guardControlsSubSame(Guard g, BasicBlock bb, ControlGuardDescendant sub) {
+      guardControlsSub(g, bb, sub) and
+      any(ConditionOnExprComparisonConfig c).same(sub, _)
+    }
+
+    pragma[nomagic]
     private predicate nodeIsGuardedBySameSubExpr0(
-      ControlFlow::Node guardedCfn, AccessOrCallExpr guarded, Guard g, ConditionBlock cb,
+      ControlFlow::Node guardedCfn, BasicBlock guardedBB, AccessOrCallExpr guarded, Guard g,
       AccessOrCallExpr sub, AbstractValue v
     ) {
       Stages::GuardsStage::forceCachingInSameStage() and
       guardedCfn = guarded.getAControlFlowNode() and
-      guardControls(g, cb, guardedCfn.getBasicBlock(), v) and
-      exists(ConditionOnExprComparisonConfig c | c.same(sub, guarded))
+      guardedBB = guardedCfn.getBasicBlock() and
+      guardControls(g, guardedBB, v) and
+      guardControlsSubSame(g, guardedBB, sub) and
+      any(ConditionOnExprComparisonConfig c).same(sub, guarded)
     }
 
-    pragma[noinline]
+    pragma[nomagic]
     private predicate nodeIsGuardedBySameSubExpr(
-      ControlFlow::Node guardedCfn, AccessOrCallExpr guarded, Guard g, ConditionBlock cb,
+      ControlFlow::Node guardedCfn, BasicBlock guardedBB, AccessOrCallExpr guarded, Guard g,
       AccessOrCallExpr sub, AbstractValue v
     ) {
-      nodeIsGuardedBySameSubExpr0(guardedCfn, guarded, g, cb, sub, v) and
-      sub = getAChildExprStar(g)
+      nodeIsGuardedBySameSubExpr0(guardedCfn, guardedBB, guarded, g, sub, v) and
+      guardControlsSub(g, guardedBB, sub)
     }
 
-    pragma[noinline]
+    pragma[nomagic]
+    private predicate nodeIsGuardedBySameSubExprSsaDef0(
+      ControlFlow::Node cfn, BasicBlock guardedBB, AccessOrCallExpr guarded, Guard g,
+      ControlFlow::Node subCfn, BasicBlock subCfnBB, AccessOrCallExpr sub, AbstractValue v,
+      Ssa::Definition def
+    ) {
+      nodeIsGuardedBySameSubExpr(cfn, guardedBB, guarded, g, sub, v) and
+      def = sub.getAnSsaQualifier(subCfn) and
+      subCfnBB = subCfn.getBasicBlock()
+    }
+
+    pragma[nomagic]
     private predicate nodeIsGuardedBySameSubExprSsaDef(
-      ControlFlow::Node cfn, AccessOrCallExpr guarded, Guard g, ControlFlow::Node subCfn,
+      ControlFlow::Node guardedCfn, AccessOrCallExpr guarded, Guard g, ControlFlow::Node subCfn,
       AccessOrCallExpr sub, AbstractValue v, Ssa::Definition def
     ) {
-      exists(ConditionBlock cb |
-        nodeIsGuardedBySameSubExpr(cfn, guarded, g, cb, sub, v) and
-        subCfn.getBasicBlock().dominates(cb) and
-        def = sub.getAnSsaQualifier(subCfn)
+      exists(BasicBlock guardedBB, BasicBlock subCfnBB |
+        nodeIsGuardedBySameSubExprSsaDef0(guardedCfn, guardedBB, guarded, g, subCfn, subCfnBB, sub,
+          v, def) and
+        subCfnBB.getASuccessor*() = guardedBB
       )
     }
 
@@ -1777,10 +1893,14 @@ module Internal {
       Ssa::Definition def, ControlFlow::Node cfn1, ControlFlow::Node cfn2
     ) {
       SsaImpl::adjacentReadPairSameVar(def, cfn1, cfn2) and
-      not exists(ControlFlow::Node other |
-        SsaImpl::adjacentReadPairSameVar(def, other, cfn2) and
-        other != cfn1 and
-        other != cfn2
+      (
+        cfn1 = cfn2 and
+        cfn1 = unique(ControlFlow::Node other | SsaImpl::adjacentReadPairSameVar(def, other, cfn2))
+        or
+        cfn1 =
+          unique(ControlFlow::Node other |
+            SsaImpl::adjacentReadPairSameVar(def, other, cfn2) and other != cfn2
+          )
       )
     }
 
@@ -1789,7 +1909,7 @@ module Internal {
       AccessOrCallExpr guarded, Guard g, AccessOrCallExpr sub, AbstractValue v
     ) {
       forex(ControlFlow::Node cfn | cfn = guarded.getAControlFlowNode() |
-        nodeIsGuardedBySameSubExpr(cfn, guarded, g, _, sub, v)
+        nodeIsGuardedBySameSubExpr(cfn, _, guarded, g, sub, v)
       )
     }
 
@@ -1814,7 +1934,7 @@ module Internal {
     predicate isGuardedByNode(
       ControlFlow::Nodes::ElementNode guarded, Guard g, AccessOrCallExpr sub, AbstractValue v
     ) {
-      nodeIsGuardedBySameSubExpr(guarded, _, g, _, sub, v) and
+      nodeIsGuardedBySameSubExpr(guarded, _, _, g, sub, v) and
       forall(ControlFlow::Node subCfn, Ssa::Definition def |
         nodeIsGuardedBySameSubExprSsaDef(guarded, _, g, subCfn, sub, v, def)
       |
@@ -1860,40 +1980,6 @@ module Internal {
   }
 
   import Cached
-
-  /**
-   * Holds if the assumption that `g1` has abstract value `v1` implies that
-   * `g2` has abstract value `v2`, using zero or more steps of reasoning. That is,
-   * the evaluation of `g2` to `v2` dominates the evaluation of `g1` to `v1`.
-   *
-   * This predicate does not rely on the control flow graph.
-   */
-  predicate preImpliesSteps(Guard g1, AbstractValue v1, Guard g2, AbstractValue v2) {
-    g1 = g2 and
-    v1 = v2 and
-    isGuard(g1, v1)
-    or
-    exists(Expr mid, AbstractValue vMid | preImpliesSteps(g1, v1, mid, vMid) |
-      preImpliesStep(mid, vMid, g2, v2)
-    )
-  }
-
-  /**
-   * Holds if the assumption that `g1` has abstract value `v1` implies that
-   * `g2` has abstract value `v2`, using zero or more steps of reasoning. That is,
-   * the evaluation of `g2` to `v2` dominates the evaluation of `g1` to `v1`.
-   *
-   * This predicate relies on the control flow graph.
-   */
-  predicate impliesSteps(Guard g1, AbstractValue v1, Guard g2, AbstractValue v2) {
-    g1 = g2 and
-    v1 = v2 and
-    isGuard(g1, v1)
-    or
-    exists(Expr mid, AbstractValue vMid | impliesSteps(g1, v1, mid, vMid) |
-      impliesStep(mid, vMid, g2, v2)
-    )
-  }
 }
 
 private import Internal

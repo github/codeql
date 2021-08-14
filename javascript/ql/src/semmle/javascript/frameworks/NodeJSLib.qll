@@ -465,18 +465,16 @@ module NodeJSLib {
       ) and
       t.start()
       or
+      t.start() and
+      result = DataFlow::moduleMember("fs", "promises")
+      or
       exists(DataFlow::TypeTracker t2, DataFlow::SourceNode pred | pred = fsModule(t2) |
         result = pred.track(t2, t)
         or
         t.continue() = t2 and
-        exists(DataFlow::CallNode promisifyAllCall |
+        exists(Promisify::PromisifyAllCall promisifyAllCall |
           result = promisifyAllCall and
-          pred.flowsTo(promisifyAllCall.getArgument(0)) and
-          promisifyAllCall =
-            [
-              DataFlow::moduleMember("bluebird", "promisifyAll"),
-              DataFlow::moduleImport("util-promisifyall")
-            ].getACall()
+          pred.flowsTo(promisifyAllCall.getArgument(0))
         )
         or
         // const fs = require('fs');
@@ -645,9 +643,7 @@ module NodeJSLib {
   private DataFlow::SourceNode maybePromisified(DataFlow::SourceNode callback) {
     result = callback
     or
-    exists(DataFlow::CallNode promisify |
-      promisify = DataFlow::moduleMember(["util", "bluebird"], "promisify").getACall()
-    |
+    exists(Promisify::PromisifyCall promisify |
       result = promisify and promisify.getArgument(0).getALocalSource() = callback
     )
   }

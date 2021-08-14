@@ -850,6 +850,24 @@ class NewOrNewArrayExpr extends Expr, @any_new_expr {
       this.getAllocatorCall()
           .getArgument(this.getAllocator().(OperatorNewAllocationFunction).getPlacementArgument())
   }
+
+  /**
+   * For `operator new`, this gets the call or expression that initializes the allocated object, if any.
+   *
+   * As examples, for `new int(4)`, this will be `4`, and for `new std::vector(4)`, this will
+   * be a call to the constructor `std::vector::vector(size_t)` with `4` as an argument.
+   *
+   * For `operator new[]`, this gets the call or expression that initializes the first element of the
+   * array, if any.
+   *
+   * This will either be a call to the default constructor for the array's element type (as
+   * in `new std::string[10]`), or a literal zero for arrays of scalars which are zero-initialized
+   * due to extra parentheses (as in `new int[10]()`).
+   *
+   * At runtime, the constructor will be called once for each element in the array, but the
+   * constructor call only exists once in the AST.
+   */
+  final Expr getInitializer() { result = this.getChild(1) }
 }
 
 /**
@@ -871,14 +889,6 @@ class NewExpr extends NewOrNewArrayExpr, @new_expr {
   override Type getAllocatedType() {
     new_allocated_type(underlyingElement(this), unresolveElement(result))
   }
-
-  /**
-   * Gets the call or expression that initializes the allocated object, if any.
-   *
-   * As examples, for `new int(4)`, this will be `4`, and for `new std::vector(4)`, this will
-   * be a call to the constructor `std::vector::vector(size_t)` with `4` as an argument.
-   */
-  Expr getInitializer() { result = this.getChild(1) }
 }
 
 /**
@@ -908,18 +918,6 @@ class NewArrayExpr extends NewOrNewArrayExpr, @new_array_expr {
   Type getAllocatedElementType() {
     result = getType().getUnderlyingType().(PointerType).getBaseType()
   }
-
-  /**
-   * Gets the call or expression that initializes the first element of the array, if any.
-   *
-   * This will either be a call to the default constructor for the array's element type (as
-   * in `new std::string[10]`), or a literal zero for arrays of scalars which are zero-initialized
-   * due to extra parentheses (as in `new int[10]()`).
-   *
-   * At runtime, the constructor will be called once for each element in the array, but the
-   * constructor call only exists once in the AST.
-   */
-  Expr getInitializer() { result = this.getChild(1) }
 
   /**
    * Gets the extent of the non-constant array dimension, if any.
@@ -1271,7 +1269,8 @@ private predicate convparents(Expr child, int idx, Element parent) {
   )
 }
 
-// Pulled out for performance. See QL-796.
+// Pulled out for performance. See
+// https://github.com/github/codeql-coreql-team/issues/1044.
 private predicate hasNoConversions(Expr e) { not e.hasConversion() }
 
 /**

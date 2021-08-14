@@ -108,7 +108,7 @@ private class RemoteFlowSourceAccessPath extends JSONString {
     exists(JSONObject specs |
       specs.isTopLevel() and
       this.getFile().getBaseName() = "codeql-javascript-remote-flow-sources.json" and
-      this = specs.getPropValue(sourceType).(JSONArray).getElementValue(_) and
+      this = specs.getPropValue(sourceType).getElementValue(_) and
       this.getValue().regexpMatch("window(\\.\\w+)+")
     )
   }
