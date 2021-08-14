@@ -102,7 +102,11 @@ private class EncryptionModeConfig extends TaintTracking2::Configuration {
   EncryptionModeConfig() { this = "EncryptionModeConfig" }
 
   override predicate isSource(DataFlow::Node source) {
-    source.asExpr().(VarAccess).getVariable().hasName("ENCRYPT_MODE")
+    source
+        .asExpr()
+        .(FieldRead)
+        .getField()
+        .hasQualifiedName("javax.crypto", "Cipher", "ENCRYPT_MODE")
   }
 
   override predicate isSink(DataFlow::Node sink) {
