@@ -30,7 +30,7 @@ private class StaticByteArrayCreation extends ArrayCreationExpr {
 
 /**
  * Defines a sub-set of expressions that update either content of an array or an array reference.
- * There sub-set covers only methods that are likely to set a non-static IV.
+ * This sub-set covers only methods that are likely to set a non-static IV.
  * For example, `java.util.Arrays.fill()` is not covered because it assigns the same value
  * to each element of the array.
  */
