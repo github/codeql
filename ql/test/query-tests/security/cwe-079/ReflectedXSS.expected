@@ -1,0 +1,44 @@
+edges
+| app/controllers/foo/bars_controller.rb:10:12:10:17 | call to params :  | app/controllers/foo/bars_controller.rb:10:12:10:29 | ...[...] :  |
+| app/controllers/foo/bars_controller.rb:10:12:10:29 | ...[...] :  | app/views/foo/bars/show.html.erb:49:5:49:13 | call to user_name |
+| app/controllers/foo/bars_controller.rb:19:10:19:15 | call to params :  | app/controllers/foo/bars_controller.rb:20:53:20:54 | dt :  |
+| app/controllers/foo/bars_controller.rb:20:53:20:54 | dt :  | app/views/foo/bars/show.html.erb:5:9:5:21 | @display_text |
+| app/controllers/foo/bars_controller.rb:20:53:20:54 | dt :  | app/views/foo/bars/show.html.erb:8:9:8:20 | call to display_text |
+| app/controllers/foo/bars_controller.rb:20:53:20:54 | dt :  | app/views/foo/bars/show.html.erb:11:9:11:29 | ...[...] |
+| app/controllers/foo/bars_controller.rb:20:53:20:54 | dt :  | app/views/foo/bars/show.html.erb:15:9:15:19 | ...[...] |
+| app/controllers/foo/bars_controller.rb:20:53:20:54 | dt :  | app/views/foo/bars/show.html.erb:36:3:36:15 | @display_text |
+| app/controllers/foo/bars_controller.rb:20:53:20:54 | dt :  | app/views/foo/bars/show.html.erb:46:76:46:87 | call to display_text :  |
+| app/views/foo/bars/show.html.erb:46:64:46:87 | ... + ... :  | app/views/foo/bars/_widget.html.erb:2:9:2:21 | @display_text |
+| app/views/foo/bars/show.html.erb:46:64:46:87 | ... + ... :  | app/views/foo/bars/_widget.html.erb:5:9:5:20 | call to display_text |
+| app/views/foo/bars/show.html.erb:46:64:46:87 | ... + ... :  | app/views/foo/bars/_widget.html.erb:8:9:8:29 | ...[...] |
+| app/views/foo/bars/show.html.erb:46:76:46:87 | call to display_text :  | app/views/foo/bars/show.html.erb:46:64:46:87 | ... + ... :  |
+| app/views/foo/bars/show.html.erb:56:29:56:34 | call to params :  | app/views/foo/bars/show.html.erb:56:29:56:44 | ...[...] |
+nodes
+| app/controllers/foo/bars_controller.rb:10:12:10:17 | call to params :  | semmle.label | call to params :  |
+| app/controllers/foo/bars_controller.rb:10:12:10:29 | ...[...] :  | semmle.label | ...[...] :  |
+| app/controllers/foo/bars_controller.rb:19:10:19:15 | call to params :  | semmle.label | call to params :  |
+| app/controllers/foo/bars_controller.rb:20:53:20:54 | dt :  | semmle.label | dt :  |
+| app/views/foo/bars/_widget.html.erb:2:9:2:21 | @display_text | semmle.label | @display_text |
+| app/views/foo/bars/_widget.html.erb:5:9:5:20 | call to display_text | semmle.label | call to display_text |
+| app/views/foo/bars/_widget.html.erb:8:9:8:29 | ...[...] | semmle.label | ...[...] |
+| app/views/foo/bars/show.html.erb:5:9:5:21 | @display_text | semmle.label | @display_text |
+| app/views/foo/bars/show.html.erb:8:9:8:20 | call to display_text | semmle.label | call to display_text |
+| app/views/foo/bars/show.html.erb:11:9:11:29 | ...[...] | semmle.label | ...[...] |
+| app/views/foo/bars/show.html.erb:15:9:15:19 | ...[...] | semmle.label | ...[...] |
+| app/views/foo/bars/show.html.erb:36:3:36:15 | @display_text | semmle.label | @display_text |
+| app/views/foo/bars/show.html.erb:46:64:46:87 | ... + ... :  | semmle.label | ... + ... :  |
+| app/views/foo/bars/show.html.erb:46:76:46:87 | call to display_text :  | semmle.label | call to display_text :  |
+| app/views/foo/bars/show.html.erb:49:5:49:13 | call to user_name | semmle.label | call to user_name |
+| app/views/foo/bars/show.html.erb:56:29:56:34 | call to params :  | semmle.label | call to params :  |
+| app/views/foo/bars/show.html.erb:56:29:56:44 | ...[...] | semmle.label | ...[...] |
+#select
+| app/views/foo/bars/_widget.html.erb:2:9:2:21 | @display_text | app/controllers/foo/bars_controller.rb:19:10:19:15 | call to params :  | app/views/foo/bars/_widget.html.erb:2:9:2:21 | @display_text | Cross-site scripting vulnerability due to $@. | app/controllers/foo/bars_controller.rb:19:10:19:15 | call to params | a user-provided value |
+| app/views/foo/bars/_widget.html.erb:5:9:5:20 | call to display_text | app/controllers/foo/bars_controller.rb:19:10:19:15 | call to params :  | app/views/foo/bars/_widget.html.erb:5:9:5:20 | call to display_text | Cross-site scripting vulnerability due to $@. | app/controllers/foo/bars_controller.rb:19:10:19:15 | call to params | a user-provided value |
+| app/views/foo/bars/_widget.html.erb:8:9:8:29 | ...[...] | app/controllers/foo/bars_controller.rb:19:10:19:15 | call to params :  | app/views/foo/bars/_widget.html.erb:8:9:8:29 | ...[...] | Cross-site scripting vulnerability due to $@. | app/controllers/foo/bars_controller.rb:19:10:19:15 | call to params | a user-provided value |
+| app/views/foo/bars/show.html.erb:5:9:5:21 | @display_text | app/controllers/foo/bars_controller.rb:19:10:19:15 | call to params :  | app/views/foo/bars/show.html.erb:5:9:5:21 | @display_text | Cross-site scripting vulnerability due to $@. | app/controllers/foo/bars_controller.rb:19:10:19:15 | call to params | a user-provided value |
+| app/views/foo/bars/show.html.erb:8:9:8:20 | call to display_text | app/controllers/foo/bars_controller.rb:19:10:19:15 | call to params :  | app/views/foo/bars/show.html.erb:8:9:8:20 | call to display_text | Cross-site scripting vulnerability due to $@. | app/controllers/foo/bars_controller.rb:19:10:19:15 | call to params | a user-provided value |
+| app/views/foo/bars/show.html.erb:11:9:11:29 | ...[...] | app/controllers/foo/bars_controller.rb:19:10:19:15 | call to params :  | app/views/foo/bars/show.html.erb:11:9:11:29 | ...[...] | Cross-site scripting vulnerability due to $@. | app/controllers/foo/bars_controller.rb:19:10:19:15 | call to params | a user-provided value |
+| app/views/foo/bars/show.html.erb:15:9:15:19 | ...[...] | app/controllers/foo/bars_controller.rb:19:10:19:15 | call to params :  | app/views/foo/bars/show.html.erb:15:9:15:19 | ...[...] | Cross-site scripting vulnerability due to $@. | app/controllers/foo/bars_controller.rb:19:10:19:15 | call to params | a user-provided value |
+| app/views/foo/bars/show.html.erb:36:3:36:15 | @display_text | app/controllers/foo/bars_controller.rb:19:10:19:15 | call to params :  | app/views/foo/bars/show.html.erb:36:3:36:15 | @display_text | Cross-site scripting vulnerability due to $@. | app/controllers/foo/bars_controller.rb:19:10:19:15 | call to params | a user-provided value |
+| app/views/foo/bars/show.html.erb:49:5:49:13 | call to user_name | app/controllers/foo/bars_controller.rb:10:12:10:17 | call to params :  | app/views/foo/bars/show.html.erb:49:5:49:13 | call to user_name | Cross-site scripting vulnerability due to $@. | app/controllers/foo/bars_controller.rb:10:12:10:17 | call to params | a user-provided value |
+| app/views/foo/bars/show.html.erb:56:29:56:44 | ...[...] | app/views/foo/bars/show.html.erb:56:29:56:34 | call to params :  | app/views/foo/bars/show.html.erb:56:29:56:44 | ...[...] | Cross-site scripting vulnerability due to $@. | app/views/foo/bars/show.html.erb:56:29:56:34 | call to params | a user-provided value |
