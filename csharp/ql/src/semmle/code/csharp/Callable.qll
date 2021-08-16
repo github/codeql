@@ -313,6 +313,7 @@ class ExtensionMethod extends Method {
   override predicate isStatic() { any() }
 
   /** Gets the type being extended by this method. */
+  pragma[noinline]
   Type getExtendedType() { result = getParameter(0).getType() }
 
   override string getAPrimaryQlClass() { result = "ExtensionMethod" }
