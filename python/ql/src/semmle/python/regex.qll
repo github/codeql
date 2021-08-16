@@ -396,9 +396,7 @@ abstract class RegexString extends Expr {
   }
 
   pragma[inline]
-  private predicate isOctal(int index) {
-    this.getChar(index) in [0..7].toString()
-  }
+  private predicate isOctal(int index) { this.getChar(index) = [0 .. 7].toString() }
 
   /** Holds if `index` is inside a character set. */
   predicate inCharSet(int index) {
@@ -708,9 +706,7 @@ abstract class RegexString extends Expr {
       svalue = text.substring(start + 1, start + len) and
       value = svalue.toInt() and
       // value is composed of digits
-      forall(int i | i in [start + 1 .. start + len - 1] |
-        this.getChar(i) in [0..9].toString()
-      ) and
+      forall(int i | i in [start + 1 .. start + len - 1] | this.getChar(i) = [0 .. 9].toString()) and
       // a longer reference is not possible
       not (
         len = 2 and
