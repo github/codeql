@@ -317,16 +317,11 @@ module Templating {
     }
 
     pragma[nomagic]
-    private Folder getFolder() {
-      result = getFile().getParentContainer()
-    }
+    private Folder getFolder() { result = getFile().getParentContainer() }
 
     /** Gets the template file referenced by this node. */
     final TemplateFile getTemplateFile() {
-      result =
-        this.getValue()
-            .(TemplateFileReferenceString)
-            .getTemplateFile(getFolder())
+      result = this.getValue().(TemplateFileReferenceString).getTemplateFile(getFolder())
     }
   }
 
@@ -383,7 +378,8 @@ module Templating {
 
     DefaultTemplateReferenceString() { this = r.getValue().replaceAll("\\", "/") }
 
-    pragma[nomagic] // Stop optimizer from trying to share the 'getParentContainer' join
+    // Stop optimizer from trying to share the 'getParentContainer' join
+    pragma[nomagic]
     private Folder getFileReferenceFolder() {
       result = pragma[only_bind_out](r).getFile().getParentContainer()
     }
