@@ -23,7 +23,7 @@ private class StringSummaryCsv extends SummaryModelCsv {
         "java.lang;String;false;join;;;Argument[0..1];ReturnValue;taint",
         "java.lang;String;false;repeat;(int);;Argument[-1];ReturnValue;taint",
         "java.lang;String;false;split;;;Argument[-1];ReturnValue;taint",
-        "java.lang;String;false;String;;;Argument[0];Argument[-1];value",
+        "java.lang;String;false;String;;;Argument[0];Argument[-1];taint",
         "java.lang;String;false;strip;;;Argument[-1];ReturnValue;taint",
         "java.lang;String;false;stripIndent;;;Argument[-1];ReturnValue;taint",
         "java.lang;String;false;stripLeading;;;Argument[-1];ReturnValue;taint",
