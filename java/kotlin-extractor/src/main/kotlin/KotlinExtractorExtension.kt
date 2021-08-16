@@ -574,7 +574,7 @@ class KotlinFileExtractor(val logger: Logger, val tw: TrapWriter) {
                 extractExpression(e.condition, callable, id, 0)
                 val body = e.body
                 if(body != null) {
-                    extractExpression(body, callable, id, 1) // TODO: The QLLs think this is a Stmt
+                    extractExpression(body, callable, id, 1)
                 }
             } is IrDoWhileLoop -> {
                 val id = tw.getFreshIdLabel<DbDostmt>()
@@ -584,28 +584,27 @@ class KotlinFileExtractor(val logger: Logger, val tw: TrapWriter) {
                 extractExpression(e.condition, callable, id, 0)
                 val body = e.body
                 if(body != null) {
-                    extractExpression(body, callable, id, 1) // TODO: The QLLs think this is a Stmt
+                    extractExpression(body, callable, id, 1)
                 }
             } is IrWhen -> {
+                val id = tw.getFreshIdLabel<DbWhenexpr>()
+                val typeId = useType(e.type)
+                val locId = tw.getLocation(e.startOffset, e.endOffset)
+                tw.writeExprs_whenexpr(id, typeId, parent, idx)
+                tw.writeHasLocation(id, locId)
                 if(e.origin == IF) {
-                    var branchParent = parent
-                    var branchIdx = idx
-                    for(b in e.branches) {
-                        if(b is IrElseBranch) {
-                            // TODO
-                        } else {
-                            val id = tw.getFreshIdLabel<DbIfstmt>()
-                            val locId = tw.getLocation(b.startOffset, b.endOffset)
-                            tw.writeStmts_ifstmt(id, branchParent, branchIdx, callable)
-                            tw.writeHasLocation(id, locId)
-                            extractExpression(b.condition, callable, id, 0)
-                            extractExpression(b.result, callable, id, 1) // TODO: The QLLs think this is a Stmt
-                            branchParent = id
-                            branchIdx = 2
-                        }
+                    tw.writeWhen_if(id)
+                }
+                e.branches.forEachIndexed { i, b ->
+                    val bId = tw.getFreshIdLabel<DbWhenbranch>()
+                    val bLocId = tw.getLocation(b.startOffset, b.endOffset)
+                    tw.writeWhen_branch(bId, id, i)
+                    tw.writeHasLocation(bId, bLocId)
+                    extractExpression(b.condition, callable, bId, 0)
+                    extractExpression(b.result, callable, bId, 1)
+                    if(b is IrElseBranch) {
+                        tw.writeWhen_branch_else(bId)
                     }
-                } else {
-                    logger.warn("Unrecognised IrWhen: " + e.javaClass)
                 }
             }
             else -> {

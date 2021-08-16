@@ -2133,3 +2133,33 @@ class Argument extends Expr {
     )
   }
 }
+
+/** A Kotlin `when` expression. */
+class WhenExpr extends Expr, @whenexpr {
+  override string toString() { result = "when ..." }
+
+  override string getHalsteadID() { result = "WhenExpr" }
+
+  override string getAPrimaryQlClass() { result = "WhenExpr" }
+
+  /** Gets the `i`th branch. */
+  WhenBranch getBranch(int i) {
+    when_branch(result, this, i)
+  }
+}
+
+/** A Kotlin `when` branch. */
+class WhenBranch extends Top, @whenbranch {
+  /** Gets the condition of this branch. */
+  Expr getCondition() { result.isNthChildOf(this, 0) }
+
+  /** Gets the result of this branch. */
+  Top getResult() {
+    result.(Expr).isNthChildOf(this, 1) or
+    result.(Stmt).isNthChildOf(this, 1)
+  }
+
+  override string toString() { result = "... -> ..." }
+
+  override string getAPrimaryQlClass() { result = "WhenBranch" }
+}

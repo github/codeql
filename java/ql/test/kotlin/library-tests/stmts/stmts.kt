@@ -12,6 +12,10 @@ fun topLevelMethod(x: Int, y: Int): Int {
     do {
         return y
     } while(x < y)
+    var z = 3
+// TODO:    val q1: () -> Unit =          { z = 4 }
+    val q2:       Unit = if(true) { z = 4 } else { z = 5 }
+    val q3:       Unit = if(true)   z = 4   else   z = 5
     return x + y
 }
 

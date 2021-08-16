@@ -1,8 +1,7 @@
-| stmts.kt:2:41:16:1 | { ... } |
-| stmts.kt:3:8:3:12 | if (...) |
+| stmts.kt:2:41:20:1 | { ... } |
 | stmts.kt:3:15:4:5 | { ... } |
-| stmts.kt:4:15:4:19 | if (...) |
 | stmts.kt:4:22:5:5 | { ... } |
+| stmts.kt:5:12:6:5 | { ... } |
 | stmts.kt:7:5:8:16 | while (...) |
 | stmts.kt:8:9:8:16 | return ... |
 | stmts.kt:9:5:11:5 | while (...) |
@@ -10,4 +9,6 @@
 | stmts.kt:10:9:10:16 | return ... |
 | stmts.kt:12:5:14:18 | do ... while (...) |
 | stmts.kt:12:5:14:18 | { ... } |
-| stmts.kt:15:5:15:16 | return ... |
+| stmts.kt:17:35:17:43 | { ... } |
+| stmts.kt:17:50:17:58 | { ... } |
+| stmts.kt:19:5:19:16 | return ... |

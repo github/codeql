@@ -633,7 +633,21 @@ case @expr.kind of
 | 72  = @intersectiontypeaccess
 | 73  = @switchexpr
 | 74  = @errorexpr
+| 75  = @whenexpr
 ;
+
+/** Holds if this `when` expression was written as an `if` expression. */
+when_if(unique int id: @whenexpr ref);
+
+#keyset[whenid,idx]
+when_branch(
+    int id: @whenbranch,
+    int whenid: @whenexpr ref,
+    int idx: int ref
+);
+
+/** Holds if this `when` branch was written as an `else` branch. */
+when_branch_else(unique int id: @whenbranch ref);
 
 @classinstancexpr = @newexpr | @lambdaexpr | @memberref
 
@@ -713,7 +727,7 @@ memberRefBinding(
   int callable: @callable ref
 );
 
-@exprparent = @stmt | @expr | @callable | @field | @fielddecl | @class | @interface | @param | @localvar | @typevariable;
+@exprparent = @stmt | @expr | @whenbranch | @callable | @field | @fielddecl | @class | @interface | @param | @localvar | @typevariable;
 
 variableBinding(
   unique int expr: @varaccess ref,
@@ -881,7 +895,7 @@ javadocText(
 
 @locatable = @file | @class | @interface | @fielddecl | @field | @constructor | @method | @param | @exception
              | @boundedtype | @typebound | @array | @primitive
-             | @import | @stmt | @expr | @localvar | @javadoc | @javadocTag | @javadocText
+             | @import | @stmt | @expr | @whenbranch | @localvar | @javadoc | @javadocTag | @javadocText
              | @xmllocatable;
 
 @top = @element | @locatable | @folder;
