@@ -13,6 +13,9 @@ private class GuavaBaseCsv extends SummaryModelCsv {
         // lambda flow from Argument[1] not implemented
         "com.google.common.cache;Cache;true;get;(Object,Callable);;MapValue of Argument[-1];ReturnValue;value",
         "com.google.common.cache;Cache;true;getIfPresent;(Object);;MapValue of Argument[-1];ReturnValue;value",
+        // the true flow to MapKey of ReturnValue for getAllPresent is the intersection of the these inputs, but intersections cannot be modelled fully accurately.
+        "com.google.common.cache;Cache;true;getAllPresent;(Iterable);;MapKey of Argument[-1];MapKey of ReturnValue;value",
+        "com.google.common.cache;Cache;true;getAllPresent;(Iterable);;Element of Argument[0];MapKey of ReturnValue;value",
         "com.google.common.cache;Cache;true;getAllPresent;(Iterable);;MapValue of Argument[-1];MapValue of ReturnValue;value",
         "com.google.common.cache;Cache;true;put;(Object,Object);;Argument[0];MapKey of Argument[-1];value",
         "com.google.common.cache;Cache;true;put;(Object,Object);;Argument[1];MapValue of Argument[-1];value",
@@ -21,7 +24,8 @@ private class GuavaBaseCsv extends SummaryModelCsv {
         "com.google.common.cache;LoadingCache;true;get;(Object);;MapValue of Argument[-1];ReturnValue;value",
         "com.google.common.cache;LoadingCache;true;getUnchecked;(Object);;MapValue of Argument[-1];ReturnValue;value",
         "com.google.common.cache;LoadingCache;true;apply;(Object);;MapValue of Argument[-1];ReturnValue;value",
-        "com.google.common.cache;LoadingCache;true;getAll;(Iterable);;MapKey of Argument[-1];MapKey of ReturnValue;value", // technically, an interestion between MapKey of Argument[-1] and Element of Argument[0]; but we don't model intersections.
+        "com.google.common.cache;LoadingCache;true;getAll;(Iterable);;Element of Argument[0];MapKey of ReturnValue;value",
+        "com.google.common.cache;LoadingCache;true;getAll;(Iterable);;Element of Argument[0];MapKey of Agument[-1];value",
         "com.google.common.cache;LoadingCache;true;getAll;(Iterable);;MapValue of Argument[-1];MapValue of ReturnValue;value"
       ]
   }
