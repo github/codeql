@@ -1,7 +1,7 @@
 /**
  * @name Usage of APIs coming from external libraries
  * @description A list of 3rd party APIs used in the codebase. Excludes test and generated code.
- * @id java/telemetry/external-api
+ * @id java/telemetry/unsupported-external-api
  * @kind metric
  * @metricType callable
  */

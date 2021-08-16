@@ -31,6 +31,12 @@ private predicate sink(Callable api) {
 
 private predicate source(Callable api) {
   sourceModel(packageName(api), typeName(api), _, api.getName(), _, _, _, _)
+  or
+  exists(Call call, DataFlow::Node arg |
+    call.getCallee() = api and
+    [call.getAnArgument(), call.getQualifier()] = arg.asExpr() and
+    arg instanceof RemoteFlowSource
+  )
 }
 
 private string packageName(Callable api) {
