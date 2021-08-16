@@ -1,0 +1,6 @@
+- description: Experimental queries showing how we use CodeQL internally for developer happiness
+- qlpack: codeql-go
+- include:
+    id: go/examples/database-call-in-loop
+    id: go/examples/deferinloop
+    id: go/examples/gorm-error-not-checked
