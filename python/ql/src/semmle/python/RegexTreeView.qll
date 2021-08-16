@@ -839,9 +839,11 @@ class RegExpSubPattern extends RegExpZeroWidthMatch {
 
   /** Gets the lookahead term. */
   RegExpTerm getOperand() {
-    result.getRegex() = re and
-    result.getStart() = start + 3 and
-    result.getEnd() = end - 1
+    exists(int in_start, int in_end | re.groupContents(start, end, in_start, in_end) |
+      result.getRegex() = re and
+      result.getStart() = in_start and
+      result.getEnd() = in_end
+    )
   }
 }
 
