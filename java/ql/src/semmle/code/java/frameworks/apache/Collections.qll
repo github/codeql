@@ -5,7 +5,7 @@ private import semmle.code.java.dataflow.FlowSteps
 private import semmle.code.java.dataflow.ExternalFlow
 
 /**
- * The method `isNotEmpty` in either `org.apache.commons.collections.CollectionUtils`
+ * The method `isEmpty` in either `org.apache.commons.collections.CollectionUtils`
  * or `org.apache.commons.collections4.CollectionUtils`.
  */
 class MethodApacheCollectionsIsEmpty extends Method {
@@ -146,7 +146,7 @@ private class ApacheKeyValueModel extends SummaryModelCsv {
         [
           ".keyvalue;AbstractKeyValue;true;AbstractKeyValue;;;Argument[0];MapKey of Argument[-1];value",
           ".keyvalue;AbstractKeyValue;true;AbstractKeyValue;;;Argument[1];MapValue of Argument[-1];value",
-          ".keyvalue;AbstractKeyValue;true;setKey;;;MapValue of Argument[-1];ReturnValue;value",
+          ".keyvalue;AbstractKeyValue;true;setKey;;;MapKey of Argument[-1];ReturnValue;value",
           ".keyvalue;AbstractKeyValue;true;setKey;;;Argument[0];MapKey of Argument[-1];value",
           ".keyvalue;AbstractKeyValue;true;setValue;;;MapValue of Argument[-1];ReturnValue;value",
           ".keyvalue;AbstractKeyValue;true;setValue;;;Argument[0];MapValue of Argument[-1];value",

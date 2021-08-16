@@ -225,16 +225,16 @@ public class Test {
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
-			// "org.apache.commons.collections4.keyvalue;AbstractKeyValue;true;setKey;;;MapValue of Argument[-1];ReturnValue;value"
+			// "org.apache.commons.collections4.keyvalue;AbstractKeyValue;true;setKey;;;MapKey of Argument[-1];ReturnValue;value"
 			Object out = null;
-			DefaultKeyValue in = newDKVWithMapValue((String)source());
+			DefaultKeyValue in = newDKVWithMapKey((String)source());
 			out = in.setKey(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.apache.commons.collections4.keyvalue;AbstractKeyValue;true;setKey;;;MapValue of Argument[-1];ReturnValue;value"
+			// "org.apache.commons.collections4.keyvalue;AbstractKeyValue;true;setKey;;;MapKey of Argument[-1];ReturnValue;value"
 			Object out = null;
-			MyAbstractKeyValue in = newMAKVWithMapValue((String)source());
+			MyAbstractKeyValue in = newMAKVWithMapKey((String)source());
 			out = in.mySetKey(null);
 			sink(out); // $ hasValueFlow
 		}
