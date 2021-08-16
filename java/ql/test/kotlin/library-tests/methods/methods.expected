@@ -17,8 +17,9 @@
 | methods.kt:0:0:0:0 | hashCode |
 | methods.kt:0:0:0:0 | toString |
 | methods.kt:0:0:0:0 | toString |
-| methods.kt:5:1:8:1 | <init> |
-| methods.kt:5:1:8:1 | equals |
-| methods.kt:5:1:8:1 | hashCode |
-| methods.kt:5:1:8:1 | toString |
+| methods.kt:5:1:13:1 | <init> |
+| methods.kt:5:1:13:1 | equals |
+| methods.kt:5:1:13:1 | hashCode |
+| methods.kt:5:1:13:1 | toString |
 | methods.kt:6:5:7:5 | classMethod |
+| methods.kt:9:5:12:5 | anotherClassMethod |

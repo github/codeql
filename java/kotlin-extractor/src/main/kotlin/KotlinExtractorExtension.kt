@@ -499,8 +499,14 @@ class KotlinFileExtractor(val logger: Logger, val tw: TrapWriter) {
                 tw.writeHasLocation(id, locId)
                 id
             } else -> {
-                logger.warn("Unrecognised IrCall: " + c.render())
-                return
+                val id = tw.getFreshIdLabel<DbMethodaccess>()
+                val typeId = useType(c.type)
+                val locId = tw.getLocation(c.startOffset, c.endOffset)
+                val methodId = useFunction(c.symbol.owner)
+                tw.writeExprs_methodaccess(id, typeId, parent, idx)
+                tw.writeHasLocation(id, locId)
+                tw.writeCallableBinding(id, methodId)
+                id
             }
         }
         val dr = c.dispatchReceiver
@@ -560,14 +566,23 @@ class KotlinFileExtractor(val logger: Logger, val tw: TrapWriter) {
                 }
             }
             is IrGetValue -> {
-                val id = tw.getFreshIdLabel<DbVaraccess>()
-                val typeId = useType(e.type)
-                val locId = tw.getLocation(e.startOffset, e.endOffset)
-                tw.writeExprs_varaccess(id, typeId, parent, idx)
-                tw.writeHasLocation(id, locId)
+                val owner = e.symbol.owner
+                if (owner is IrValueParameter && owner.index == -1) {
+                    val id = tw.getFreshIdLabel<DbThisaccess>()
+                    val typeId = useType(e.type)
+                    val locId = tw.getLocation(e.startOffset, e.endOffset)
+                    tw.writeExprs_thisaccess(id, typeId, parent, idx)
+                    tw.writeHasLocation(id, locId)
+                } else {
+                    val id = tw.getFreshIdLabel<DbVaraccess>()
+                    val typeId = useType(e.type)
+                    val locId = tw.getLocation(e.startOffset, e.endOffset)
+                    tw.writeExprs_varaccess(id, typeId, parent, idx)
+                    tw.writeHasLocation(id, locId)
 
-                val vId = useValueDeclaration(e.symbol.owner)
-                tw.writeVariableBinding(id, vId)
+                    val vId = useValueDeclaration(owner)
+                    tw.writeVariableBinding(id, vId)
+                }
             }
             is IrSetValue -> {
                 val id = tw.getFreshIdLabel<DbAssignexpr>()
