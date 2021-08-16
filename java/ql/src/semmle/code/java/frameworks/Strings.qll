@@ -36,7 +36,19 @@ private class StringSummaryCsv extends SummaryModelCsv {
         "java.lang;String;false;trim;;;Argument[-1];ReturnValue;taint",
         "java.lang;String;false;valueOf;(char);;Argument[0];ReturnValue;taint",
         "java.lang;String;false;valueOf;(char[],int,int);;Argument[0];ReturnValue;taint",
-        "java.lang;String;false;valueOf;(char[]);;Argument[0];ReturnValue;taint"
+        "java.lang;String;false;valueOf;(char[]);;Argument[0];ReturnValue;taint",
+        "java.io;StringWriter;true;append;;;Argument[0];Argument[-1];taint",
+        "java.io;StringWriter;true;append;;;Argument[0];ReturnValue;taint",
+        "java.io;StringWriter;true;write;;;Argument[0];Argument[-1];taint",
+        "java.lang;AbstractStringBuilder;true;AbstractStringBuilder;(String);;Argument[0];Argument[-1];taint",
+        "java.lang;AbstractStringBuilder;true;append;;;Argument[0];Argument[-1];taint",
+        "java.lang;AbstractStringBuilder;true;append;;;Argument[-1];ReturnValue;taint",
+        "java.lang;AbstractStringBuilder;true;insert;;;Argument[1];Argument[-1];taint",
+        "java.lang;AbstractStringBuilder;true;insert;;;Argument[-1];ReturnValue;taint",
+        "java.lang;AbstractStringBuilder;true;toString;;;Argument[-1];ReturnValue;taint",
+        "java.lang;StringBuffer;true;StringBuffer;(CharSequence);;Argument[0];Argument[-1];taint",
+        "java.lang;StringBuffer;true;StringBuffer;(String);;Argument[0];Argument[-1];taint",
+        "java.lang;StringBuilder;true;StringBuilder;;;Argument[0];Argument[-1];taint"
       ]
   }
 }
