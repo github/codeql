@@ -2,6 +2,8 @@ package com.github.codeql
 
 import java.io.BufferedWriter
 import java.io.File
+import java.io.PrintWriter
+import java.io.StringWriter
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.text.SimpleDateFormat
@@ -18,19 +20,8 @@ import org.jetbrains.kotlin.ir.util.render
 import org.jetbrains.kotlin.ir.visitors.IrElementVisitor
 import org.jetbrains.kotlin.ir.IrFileEntry
 import org.jetbrains.kotlin.ir.types.*
-import org.jetbrains.kotlin.ir.expressions.IrBody
-import org.jetbrains.kotlin.ir.expressions.IrBlockBody
-import org.jetbrains.kotlin.ir.expressions.IrReturn
-import org.jetbrains.kotlin.ir.expressions.IrExpression
-import org.jetbrains.kotlin.ir.expressions.IrCall
-import org.jetbrains.kotlin.ir.expressions.IrGetValue
-import org.jetbrains.kotlin.ir.expressions.IrConst
+import org.jetbrains.kotlin.ir.expressions.*
 import org.jetbrains.kotlin.ir.expressions.IrStatementOrigin.*
-import org.jetbrains.kotlin.ir.expressions.IrWhen
-import org.jetbrains.kotlin.ir.expressions.IrElseBranch
-import org.jetbrains.kotlin.ir.expressions.IrWhileLoop
-import org.jetbrains.kotlin.ir.expressions.IrBlock
-import org.jetbrains.kotlin.ir.expressions.IrDoWhileLoop
 import org.jetbrains.kotlin.ir.IrStatement
 import org.jetbrains.kotlin.ir.symbols.IrClassifierSymbol
 
@@ -136,6 +127,18 @@ class TrapWriter (
             return maybeId
         }
     }
+    val variableLabelMapping: MutableMap<IrVariable, Label<out DbLocalvar>> = mutableMapOf<IrVariable, Label<out DbLocalvar>>()
+    fun <T> getVariableLabelFor(v: IrVariable): Label<out DbLocalvar> {
+        val maybeId = variableLabelMapping.get(v)
+        if(maybeId == null) {
+            val id = getFreshLabel<DbLocalvar>()
+            variableLabelMapping.put(v, id)
+            writeTrap("$id = *\n")
+            return id
+        } else {
+            return maybeId
+        }
+    }
     fun <T> getFreshLabel(): Label<T> {
         return Label(nextId++)
     }
@@ -170,6 +173,13 @@ fun extractFile(logger: Logger, trapDir: File, srcDir: File, declaration: IrFile
         tw.writeCupackage(id, pkgId)
         declaration.declarations.map { fileExtractor.extractDeclaration(it, pkgId) }
     }
+}
+
+fun <T> fakeLabel(): Label<T> {
+    val sw = StringWriter()
+    Exception().printStackTrace(PrintWriter(sw))
+    println("Fake label from:\n$sw")
+    return Label(0)
 }
 
 class KotlinFileExtractor(val logger: Logger, val tw: TrapWriter) {
@@ -208,7 +218,7 @@ class KotlinFileExtractor(val logger: Logger, val tw: TrapWriter) {
             s.isLong() -> return primitiveType("long")
             s.isUByte() || s.isUShort() || s.isUInt() || s.isULong() -> {
                 logger.warn("Unhandled unsigned type")
-                return Label(0)
+                return fakeLabel()
             }
 
             s.isDouble() -> return primitiveType("double")
@@ -225,7 +235,7 @@ class KotlinFileExtractor(val logger: Logger, val tw: TrapWriter) {
             }
             else -> {
                 logger.warn("Unrecognised IrSimpleType: " + s.javaClass + ": " + s.render())
-                return Label(0)
+                return fakeLabel()
             }
         }
     }
@@ -271,7 +281,7 @@ class KotlinFileExtractor(val logger: Logger, val tw: TrapWriter) {
             is IrClass -> return useClass(t)
             else -> {
                 logger.warn("Unrecognised IrType: " + t.javaClass)
-                return Label(0)
+                return fakeLabel()
             }
         }
     }
@@ -283,7 +293,7 @@ class KotlinFileExtractor(val logger: Logger, val tw: TrapWriter) {
             is IrFunction -> return useFunction(dp)
             else -> {
                 logger.warn("Unrecognised IrDeclarationParent: " + dp.javaClass)
-                return Label(0)
+                return fakeLabel()
             }
         }
     }
@@ -368,8 +378,12 @@ class KotlinFileExtractor(val logger: Logger, val tw: TrapWriter) {
         }
     }
 
+    fun useVariable(v: IrVariable): Label<out DbLocalvar> {
+        return tw.getVariableLabelFor<DbLocalvar>(v)
+    }
+
     fun extractVariable(v: IrVariable, callable: Label<out DbCallable>) {
-        val id = tw.getFreshIdLabel<DbLocalvar>()
+        val id = useVariable(v)
         val locId = tw.getLocation(v.startOffset, v.endOffset)
         val typeId = useType(v.type)
         val decId = tw.getFreshIdLabel<DbLocalvariabledeclexpr>()
@@ -402,9 +416,12 @@ class KotlinFileExtractor(val logger: Logger, val tw: TrapWriter) {
             is IrValueParameter -> {
                 return useValueParameter(d)
             }
+            is IrVariable -> {
+                return useVariable(d)
+            }
             else -> {
                 logger.warn("Unrecognised IrValueDeclaration: " + d.javaClass)
-                return Label(0)
+                return fakeLabel()
             }
         }
     }
@@ -551,6 +568,22 @@ class KotlinFileExtractor(val logger: Logger, val tw: TrapWriter) {
 
                 val vId = useValueDeclaration(e.symbol.owner)
                 tw.writeVariableBinding(id, vId)
+            }
+            is IrSetValue -> {
+                val id = tw.getFreshIdLabel<DbAssignexpr>()
+                val typeId = useType(e.type)
+                val locId = tw.getLocation(e.startOffset, e.endOffset)
+                tw.writeExprs_assignexpr(id, typeId, parent, idx)
+                tw.writeHasLocation(id, locId)
+
+                val lhsId = tw.getFreshIdLabel<DbVaraccess>()
+                val lhsTypeId = useType(e.symbol.owner.type)
+                tw.writeExprs_varaccess(lhsId, lhsTypeId, id, 0)
+                tw.writeHasLocation(id, locId)
+                val vId = useValueDeclaration(e.symbol.owner)
+                tw.writeVariableBinding(lhsId, vId)
+
+                extractExpression(e.value, callable, id, 1)
             }
             is IrReturn -> {
                 val id = tw.getFreshIdLabel<DbReturnstmt>()
