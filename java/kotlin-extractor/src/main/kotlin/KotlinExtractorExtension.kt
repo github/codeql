@@ -51,6 +51,12 @@ class KotlinExtractorExtension(private val tests: List<String>) : IrGenerationEx
     }
 }
 
+class Label<T>(val name: Int) {
+    override fun toString(): String = "#$name"
+}
+
+fun escapeTrapString(str: String) = str.replace("\"", "\"\"")
+
 class Logger() {
     private val warningCounts = mutableMapOf<String, Int>()
     private val warningLimit: Int
