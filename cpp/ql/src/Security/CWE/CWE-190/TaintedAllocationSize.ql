@@ -14,6 +14,7 @@
  */
 
 import cpp
+import semmle.code.cpp.valuenumbering.GlobalValueNumbering // Only here to prevent IR re-evaluation
 import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
 import semmle.code.cpp.security.FlowSources
 import semmle.code.cpp.ir.dataflow.TaintTracking
