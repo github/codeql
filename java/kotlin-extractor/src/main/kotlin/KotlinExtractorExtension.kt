@@ -591,7 +591,7 @@ class KotlinFileExtractor(val logger: Logger, val tw: TrapWriter) {
                 tw.writeStmts_returnstmt(id, parent, idx, callable)
                 tw.writeHasLocation(id, locId)
                 extractExpression(e.value, callable, id, 0)
-            } is IrBlock -> {
+            } is IrContainerExpression -> {
                 val id = tw.getFreshIdLabel<DbBlock>()
                 val locId = tw.getLocation(e.startOffset, e.endOffset)
                 tw.writeStmts_block(id, parent, idx, callable)
@@ -639,8 +639,7 @@ class KotlinFileExtractor(val logger: Logger, val tw: TrapWriter) {
                         tw.writeWhen_branch_else(bId)
                     }
                 }
-            }
-            else -> {
+            } else -> {
                 logger.warn("Unrecognised IrExpression: " + e.javaClass)
             }
         }

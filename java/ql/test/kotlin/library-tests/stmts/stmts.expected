@@ -9,6 +9,8 @@
 | stmts.kt:10:9:10:16 | return ... |
 | stmts.kt:12:5:14:18 | do ... while (...) |
 | stmts.kt:12:5:14:18 | { ... } |
+| stmts.kt:12:8:14:5 | { ... } |
+| stmts.kt:13:9:13:16 | return ... |
 | stmts.kt:17:35:17:43 | { ... } |
 | stmts.kt:17:50:17:58 | { ... } |
 | stmts.kt:19:5:19:16 | return ... |
