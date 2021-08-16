@@ -1,3 +1,4 @@
-name: codeql-python-examples
-version: 0.0.0
-libraryPathDependencies: codeql-python
+name: codeql/python-examples
+version: 0.0.1
+dependencies:
+  codeql/python-queries: 0.0.1

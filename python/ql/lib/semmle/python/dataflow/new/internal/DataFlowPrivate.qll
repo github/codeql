@@ -168,7 +168,7 @@ module EssaFlow {
     exists(With with, ControlFlowNode contextManager, ControlFlowNode var |
       nodeFrom.(CfgNode).getNode() = contextManager and
       nodeTo.(EssaNode).getVar().getDefinition().(WithDefinition).getDefiningNode() = var and
-      // see `with_flow` in `python/ql/src/semmle/python/dataflow/Implementation.qll`
+      // see `with_flow` in `python/ql/lib/semmle/python/dataflow/Implementation.qll`
       with.getContextExpr() = contextManager.getNode() and
       with.getOptionalVars() = var.getNode() and
       contextManager.strictlyDominates(var)
