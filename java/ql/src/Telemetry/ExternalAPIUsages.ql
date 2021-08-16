@@ -14,8 +14,7 @@ import semmle.code.java.GeneratedFiles
 from ExternalAPI api
 where
   not api.isTestLibrary() and
-  not api.isSupported() and
-  api.isInteresting()
+  not api.isSupported()
 select api.asCSV(api) as csv,
   strictcount(Call c |
     c.getCallee() = api and

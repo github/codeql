@@ -13,16 +13,6 @@ class ExternalAPI extends Callable {
   /** Holds true if this API is part of a common testing library or framework */
   predicate isTestLibrary() { getDeclaringType() instanceof TestLibrary }
 
-  /** Holds true if this API has inputs or outputs that are interesting to support by CodeQL. */
-  predicate isInteresting() {
-    getNumberOfParameters() > 0 and
-    exists(Type retType | retType = getReturnType() |
-      not retType instanceof VoidType and
-      not retType instanceof PrimitiveType and
-      not retType instanceof BoxedType
-    )
-  }
-
   /**
    * Gets information about the external API in the form expected by the CSV modeling framework.
    */
