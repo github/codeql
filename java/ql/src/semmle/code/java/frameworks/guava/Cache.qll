@@ -25,7 +25,7 @@ private class GuavaBaseCsv extends SummaryModelCsv {
         "com.google.common.cache;LoadingCache;true;getUnchecked;(Object);;MapValue of Argument[-1];ReturnValue;value",
         "com.google.common.cache;LoadingCache;true;apply;(Object);;MapValue of Argument[-1];ReturnValue;value",
         "com.google.common.cache;LoadingCache;true;getAll;(Iterable);;Element of Argument[0];MapKey of ReturnValue;value",
-        "com.google.common.cache;LoadingCache;true;getAll;(Iterable);;Element of Argument[0];MapKey of Agument[-1];value",
+        "com.google.common.cache;LoadingCache;true;getAll;(Iterable);;Element of Argument[0];MapKey of Argument[-1];value",
         "com.google.common.cache;LoadingCache;true;getAll;(Iterable);;MapValue of Argument[-1];MapValue of ReturnValue;value"
       ]
   }

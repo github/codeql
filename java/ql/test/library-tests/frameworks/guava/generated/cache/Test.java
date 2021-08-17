@@ -83,11 +83,19 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "com.google.common.cache;Cache;true;getAllPresent;(Iterable);;MapValue of Argument[-1];MapValue of ReturnValue;value"
+			// "com.google.common.cache;Cache;true;getAllPresent;(Iterable);;Element of Argument[0];MapKey of ReturnValue;value"
 			ImmutableMap out = null;
-			Cache in = newCacheWithMapValue(source());
+			Iterable in = newWithElement(source());
+			Cache instance = null;
+			out = instance.getAllPresent(in);
+			sink(getMapKey(out)); // $ hasValueFlow
+		}
+		{
+			// "com.google.common.cache;Cache;true;getAllPresent;(Iterable);;MapKey of Argument[-1];MapKey of ReturnValue;value"
+			ImmutableMap out = null;
+			Cache in = newCacheWithMapKey(source());
 			out = in.getAllPresent(null);
-			sink(getMapValue(out)); // $ hasValueFlow
+			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.cache;Cache;true;getIfPresent;;;MapValue of Argument[-1];ReturnValue;value"
@@ -139,10 +147,18 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "com.google.common.cache;LoadingCache;true;getAll;(Iterable);;MapKey of Argument[-1];MapKey of ReturnValue;value"
+			// "com.google.common.cache;LoadingCache;true;getAll;(Iterable);;Element of Argument[0];MapKey of Argument[-1];value"
+			LoadingCache out = null;
+			Iterable in = (Iterable)newWithElement(source());
+			out.getAll(in);
+			sink(getMapKey(out)); // $ hasValueFlow
+		}
+		{
+			// "com.google.common.cache;LoadingCache;true;getAll;(Iterable);;Element of Argument[0];MapKey of ReturnValue;value"
 			ImmutableMap out = null;
-			LoadingCache in = newCacheWithMapKey(source());
-			out = in.getAll(null);
+			Iterable in = (Iterable)newWithElement(source());
+			LoadingCache instance = null;
+			out = instance.getAll(in);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
