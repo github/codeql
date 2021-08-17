@@ -465,6 +465,168 @@ case.rb:
 #    4| "2"
 #-----|  -> call to puts
 
+cfg.html.erb:
+#    5| enter cfg.html.erb
+#-----|  -> @title
+
+#    5| @title
+#-----|  -> self
+
+#    5| exit cfg.html.erb
+
+#    5| exit cfg.html.erb (normal)
+#-----|  -> exit cfg.html.erb
+
+#    6| call to stylesheet_link_tag
+#-----|  -> self
+
+#    6| self
+#-----|  -> "application"
+
+#    6| "application"
+#-----|  -> :media
+
+#    6| Pair
+#-----|  -> call to stylesheet_link_tag
+
+#    6| :media
+#-----|  -> "all"
+
+#    6| "all"
+#-----|  -> Pair
+
+#   12| call to link_to
+#-----|  -> self
+
+#   12| self
+#-----|  -> "A"
+
+#   12| "A"
+#-----|  -> self
+
+#   12| call to a
+#-----|  -> :id
+
+#   12| self
+#-----|  -> call to a
+
+#   12| :id
+#-----|  -> "a"
+
+#   12| Pair
+#-----|  -> call to link_to
+
+#   12| "a"
+#-----|  -> Pair
+
+#   15| call to link_to
+#-----|  -> self
+
+#   15| self
+#-----|  -> "B"
+
+#   15| "B"
+#-----|  -> self
+
+#   15| call to a
+#-----|  -> call to link_to
+
+#   15| self
+#-----|  -> call to a
+
+#   16| call to link_to
+#-----|  -> self
+
+#   16| self
+#-----|  -> "C"
+
+#   16| "C"
+#-----|  -> self
+
+#   16| call to b
+#-----|  -> call to link_to
+
+#   16| self
+#-----|  -> call to b
+
+#   18| if ...
+#-----|  -> self
+
+#   18| call to admin?
+#-----| true -> self
+#-----| false -> self
+
+#   18| self
+#-----|  -> call to admin?
+
+#   18| then ...
+#-----|  -> if ...
+
+#   19| call to link_to
+#-----|  -> then ...
+
+#   19| self
+#-----|  -> "D"
+
+#   19| "D"
+#-----|  -> self
+
+#   19| call to d
+#-----|  -> call to link_to
+
+#   19| self
+#-----|  -> call to d
+
+#   20| else ...
+#-----|  -> if ...
+
+#   21| call to link_to
+#-----|  -> else ...
+
+#   21| self
+#-----|  -> "E"
+
+#   21| "E"
+#-----|  -> self
+
+#   21| call to e
+#-----|  -> call to link_to
+
+#   21| self
+#-----|  -> call to e
+
+#   29| call to each
+#-----|  -> exit cfg.html.erb (normal)
+
+#   29| call to collection
+#-----|  -> do ... end
+
+#   29| self
+#-----|  -> call to collection
+
+#   29| enter do ... end
+#-----|  -> key
+
+#   29| do ... end
+#-----|  -> call to each
+
+#   29| exit do ... end
+
+#   29| exit do ... end (normal)
+#-----|  -> exit do ... end
+
+#   29| key
+#-----|  -> value
+
+#   29| value
+#-----|  -> key
+
+#   30| key
+#-----|  -> value
+
+#   30| value
+#-----|  -> exit do ... end (normal)
+
 cfg.rb:
 #    1| enter cfg.rb
 #-----|  -> self

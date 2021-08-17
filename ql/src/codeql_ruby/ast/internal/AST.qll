@@ -262,7 +262,7 @@ private module Cached {
     } or
     TTokenMethodName(MethodName::Token g) { MethodName::range(g) } or
     TTokenSuperCall(Ruby::Super g) { vcall(g) } or
-    TToplevel(Ruby::Program g) { g.getLocation().getFile().getExtension() != "erb" } or
+    TToplevel(Ruby::Program g) or
     TTrueLiteral(Ruby::True g) or
     TTuplePatternParameter(Ruby::DestructuredParameter g) or
     TUnaryMinusExpr(Ruby::Unary g) { g instanceof @ruby_unary_minus } or
