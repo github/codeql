@@ -1,0 +1,24 @@
+| Web.config:1:1:2:1 |  lgtm  |  lgtm  | lgtm | Web.config:1:1:2:1 | suppression range |
+| Web.config:2:1:3:1 |  lgtm[cs/unused-reftype]  |  lgtm[cs/unused-reftype]  | lgtm[cs/unused-reftype] | Web.config:2:1:3:1 | suppression range |
+| Web.config:3:1:4:1 |  lgtm[cs/unused-reftype, cs/unused-field]  |  lgtm[cs/unused-reftype, cs/unused-field]  | lgtm[cs/unused-reftype, cs/unused-field] | Web.config:3:1:4:1 | suppression range |
+| Web.config:4:1:5:1 |  lgtm[@tag:nullness]  |  lgtm[@tag:nullness]  | lgtm[@tag:nullness] | Web.config:4:1:5:1 | suppression range |
+| Web.config:5:1:6:1 |  lgtm[@tag:useless-code,cs/unused-reftype]  |  lgtm[@tag:useless-code,cs/unused-reftype]  | lgtm[@tag:useless-code,cs/unused-reftype] | Web.config:5:1:6:1 | suppression range |
+| Web.config:6:1:7:1 |  lgtm[@expires:2017-06-11]  |  lgtm[@expires:2017-06-11]  | lgtm[@expires:2017-06-11] | Web.config:6:1:7:1 | suppression range |
+| Web.config:7:1:8:1 |  lgtm[cs/unused-reftype] because I know better than lgtm  |  lgtm[cs/unused-reftype] because I know better than lgtm  | lgtm[cs/unused-reftype] | Web.config:7:1:8:1 | suppression range |
+| Web.config:8:1:9:1 |  lgtm: blah blah  |  lgtm: blah blah  | lgtm | Web.config:8:1:9:1 | suppression range |
+| Web.config:9:1:10:1 |  lgtm blah blah #falsepositive  |  lgtm blah blah #falsepositive  | lgtm | Web.config:9:1:10:1 | suppression range |
+| Web.config:10:1:11:1 | lgtm  [cs/unused-reftype] | lgtm  [cs/unused-reftype] | lgtm  [cs/unused-reftype] | Web.config:10:1:11:1 | suppression range |
+| Web.config:11:1:12:1 |  lgtm[]  |  lgtm[]  | lgtm[] | Web.config:11:1:12:1 | suppression range |
+| Web.config:13:1:14:1 | lgtm | lgtm | lgtm | Web.config:13:1:14:1 | suppression range |
+| Web.config:14:1:15:1 |   lgtm  |   lgtm  | lgtm | Web.config:14:1:15:1 | suppression range |
+| Web.config:15:1:16:1 |  lgtm [cs/unused-reftype]  |  lgtm [cs/unused-reftype]  | lgtm [cs/unused-reftype] | Web.config:15:1:16:1 | suppression range |
+| Web.config:18:1:19:1 |  foo; lgtm  |  foo; lgtm  | lgtm | Web.config:18:1:19:1 | suppression range |
+| Web.config:19:1:20:1 |  foo; lgtm[cs/unused-reftype]  |  foo; lgtm[cs/unused-reftype]  | lgtm[cs/unused-reftype] | Web.config:19:1:20:1 | suppression range |
+| Web.config:21:1:22:1 |  foo lgtm[cs/unused-reftype]  |  foo lgtm[cs/unused-reftype]  | lgtm[cs/unused-reftype] | Web.config:21:1:22:1 | suppression range |
+| Web.config:23:1:24:1 |  foo lgtm[cs/unused-reftype] bar  |  foo lgtm[cs/unused-reftype] bar  | lgtm[cs/unused-reftype] | Web.config:23:1:24:1 | suppression range |
+| Web.config:24:1:25:1 |  LGTM!  |  LGTM!  | LGTM | Web.config:24:1:25:1 | suppression range |
+| Web.config:25:1:26:1 |  LGTM[cs/unused-reftype]  |  LGTM[cs/unused-reftype]  | LGTM[cs/unused-reftype] | Web.config:25:1:26:1 | suppression range |
+| Web.config:26:1:27:1 |  lgtm[cs/unused-reftype] and lgtm[cs/unused-field]  |  lgtm[cs/unused-reftype] and lgtm[cs/unused-field]  | lgtm[cs/unused-field] | Web.config:26:1:27:1 | suppression range |
+| Web.config:26:1:27:1 |  lgtm[cs/unused-reftype] and lgtm[cs/unused-field]  |  lgtm[cs/unused-reftype] and lgtm[cs/unused-field]  | lgtm[cs/unused-reftype] | Web.config:26:1:27:1 | suppression range |
+| Web.config:27:1:27:39 |  lgtm[cs/unused-reftype]; lgtm  |  lgtm[cs/unused-reftype]; lgtm  | lgtm | Web.config:27:1:27:39 | suppression range |
+| Web.config:27:1:27:39 |  lgtm[cs/unused-reftype]; lgtm  |  lgtm[cs/unused-reftype]; lgtm  | lgtm[cs/unused-reftype] | Web.config:27:1:27:39 | suppression range |
