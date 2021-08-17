@@ -1,4 +1,4 @@
-//go:build (amd64 || arm64 || arm64be || ppc64 || ppc64le || mips64 || mips64le || s390x || sparc64) && gc && go1.4
+// autoformat-ignore (gofmt adds new style build constraints)
 // +build amd64 arm64 arm64be ppc64 ppc64le mips64 mips64le s390x sparc64
 // +build gc
 // +build go1.4
@@ -9,7 +9,7 @@ import (
 	"strconv"
 )
 
-func testIntSink64() {
+func oldTestIntSink64() {
 	{
 		parsed, err := strconv.ParseInt("3456", 10, 64)
 		if err != nil {
