@@ -1,9 +1,9 @@
 - description: Standard LGTM queries for C/C++, including ones not displayed by default
 - qlpack: codeql-cpp
 - apply: lgtm-selectors.yml
-  from: codeql-suite-helpers
+  from: codeql/suite-helpers
 - apply: codeql-suites/exclude-slow-queries.yml
-  from: codeql-cpp 
+  from: codeql-cpp
 # These are only for IDE use.
 - exclude:
     tags contain:
