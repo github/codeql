@@ -12,6 +12,8 @@ public class JaxRsContainerRequestContextSources {
     sink(buf); // $ hasTaintFlow
     sink(context.getHeaders().getFirst("someKey")); // $ hasTaintFlow
     sink(context.getHeaderString("someKey")); // $ hasValueFlow
+    sink(context.getLanguage()); // $ hasValueFlow
+    sink(context.getMediaType().getType()); // $ hasTaintFlow
     sink(context.getUriInfo().getPath()); // $ hasTaintFlow
   }
 }

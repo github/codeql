@@ -977,7 +977,7 @@ private class ContainerRequestContextModel extends SourceModelCsv {
       ["javax", "jakarta"] + ".ws.rs.container;ContainerRequestContext;true;" +
         [
           "getAcceptableLanguages", "getAcceptableMediaTypes", "getCookies", "getEntityStream",
-          "getHeaders", "getHeaderString", "getUriInfo"
+          "getHeaders", "getHeaderString", "getLanguage", "getMediaType", "getUriInfo"
         ] + ";;;ReturnValue;remote"
   }
 }
