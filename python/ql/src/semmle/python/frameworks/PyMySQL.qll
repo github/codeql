@@ -16,7 +16,7 @@ private import semmle.python.frameworks.PEP249
  */
 private module PyMySQL {
   /** PyMySQL implements PEP 249, providing ways to execute SQL statements against a database. */
-  class PyMySQLPEP249 extends PEP249ModuleApiNode {
+  class PyMySQLPEP249 extends PEP249::PEP249ModuleApiNode {
     PyMySQLPEP249() { this = API::moduleImport("pymysql") }
   }
 }

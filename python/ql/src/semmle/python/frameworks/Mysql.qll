@@ -30,7 +30,7 @@ private module Mysql {
      * The mysql.connector module
      * See https://dev.mysql.com/doc/connector-python/en/connector-python-example-connecting.html
      */
-    class MysqlConnector extends PEP249ModuleApiNode {
+    class MysqlConnector extends PEP249::PEP249ModuleApiNode {
       MysqlConnector() { this = API::moduleImport("mysql").getMember("connector") }
     }
   }
