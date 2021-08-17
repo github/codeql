@@ -4,7 +4,7 @@ About QL packs
 ==============
 
 QL packs are used to organize the files used in CodeQL analysis. They
-contain queries, library files, query suites, and important metadata. 
+contain queries, library files, query suites, and important metadata.
 
 The `CodeQL repository <https://github.com/github/codeql>`__ contains QL packs for
 C/C++, C#, Java, JavaScript, and Python. The `CodeQL for Go
@@ -15,15 +15,15 @@ libraries.
 QL pack structure
 -----------------
 
-A QL pack must contain a file called ``qlpack.yml`` in its root directory. The other 
-files and directories within the pack should be logically organized. For example, typically:  
+A QL pack must contain a file called ``qlpack.yml`` in its root directory. The other
+files and directories within the pack should be logically organized. For example, typically:
 
 - Queries are organized into directories for specific categories.
-- Queries for specific products, libraries, and frameworks are organized into 
+- Queries for specific products, libraries, and frameworks are organized into
   their own top-level directories.
-- There is a top-level directory named ``<owner>/<language>`` for query library 
-  (``.qll``) files. Within this directory, ``.qll`` files should be organized into 
-  subdirectories for specific categories. 
+- There is a top-level directory named ``<owner>/<language>`` for query library
+  (``.qll``) files. Within this directory, ``.qll`` files should be organized into
+  subdirectories for specific categories.
 
 About ``qlpack.yml`` files
 --------------------------
@@ -31,18 +31,18 @@ About ``qlpack.yml`` files
 When executing commands, CodeQL scans siblings of the installation directory (and
 their subdirectories) for ``qlpack.yml`` files. The metadata in the file tells
 CodeQL how to compile queries, what libraries the pack depends on, and where to
-find query suite definitions. 
+find query suite definitions.
 
-The content of the QL pack (queries and libraries used in CodeQL analysis) is 
+The content of the QL pack (queries and libraries used in CodeQL analysis) is
 included in the same directory as ``qlpack.yml``, or its subdirectories.
 
-The location of ``qlpack.yml`` defines the library path for the content 
-of the QL pack. That is, for all ``.ql`` and ``.qll`` files in the QL pack, 
-CodeQL will resolve all import statements relative to the ``qlpack.yml`` at the 
+The location of ``qlpack.yml`` defines the library path for the content
+of the QL pack. That is, for all ``.ql`` and ``.qll`` files in the QL pack,
+CodeQL will resolve all import statements relative to the ``qlpack.yml`` at the
 pack's root.
 
 For example, in a QL pack with the following contents, you can import ``CustomSinks.qll``
-from any location in the pack by declaring ``import mycompany.java.CustomSinks``. 
+from any location in the pack by declaring ``import mycompany.java.CustomSinks``.
 
 .. code-block:: none
 
@@ -54,7 +54,7 @@ from any location in the pack by declaring ``import mycompany.java.CustomSinks``
    Security/
    CustomQuery.ql
 
-For more information, see ":ref:`Importing modules <importing-modules>`" 
+For more information, see ":ref:`Importing modules <importing-modules>`"
 in the QL language reference.
 
 .. _qlpack-yml-properties:
@@ -113,9 +113,9 @@ Examples of custom QL packs
 
 When you write custom queries or tests, you should save them in
 custom QL packs. For simplicity, try to organize each pack logically. For more
-information, see `QL pack structure <#ql-pack-structure>`__. Save files for queries 
-and tests in separate packs and, where possible, organize custom packs into specific 
-folders for each target language. 
+information, see `QL pack structure <#ql-pack-structure>`__. Save files for queries
+and tests in separate packs and, where possible, organize custom packs into specific
+folders for each target language.
 
 QL packs for custom queries
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -123,8 +123,8 @@ QL packs for custom queries
 A custom QL pack for queries must include a ``qlpack.yml`` file at
 the pack root, containing ``name``, ``version``,
 and ``libraryPathDependencies`` properties. If the pack contains query suites, you can
-use the ``suites`` property to define their location. Query suites defined 
-here are called "well-known" suites, and can be used on the command line by referring to 
+use the ``suites`` property to define their location. Query suites defined
+here are called "well-known" suites, and can be used on the command line by referring to
 their name only, rather than their full path.
 For more information about query suites, see ":doc:`Creating CodeQL query suites <creating-codeql-query-suites>`."
 
@@ -135,11 +135,11 @@ and libraries may contain:
 
    name: my-custom-queries
    version: 0.0.0
-   libraryPathDependencies: codeql-cpp
+   libraryPathDependencies: codeql/cpp-all
    suites: my-custom-suites
 
 where ``codeql-cpp`` is the name of the QL pack for C/C++ analysis included in
-the CodeQL repository. 
+the CodeQL repository.
 
 .. pull-quote::
 
@@ -207,13 +207,13 @@ contains:
 
    name: codeql-cpp-tests
    version: 0.0.0
-   libraryPathDependencies: codeql-cpp
+   libraryPathDependencies: codeql/cpp-all
 
 Notice that, unlike the example QL pack for custom tests, this file does not define
 an ``extractor`` or ``tests`` property. These properties have been added to
-the QL pack file since the release of CodeQL CLI 2.0.1. 
+the QL pack file since the release of CodeQL CLI 2.0.1.
 They haven't been added yet to ensure compatibility for LGTM Enterprise users.
-After the next release of LGTM Enterprise, these files can be updated. 
+After the next release of LGTM Enterprise, these files can be updated.
 
 .. _upgrade-ql-packs:
 
