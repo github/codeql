@@ -55,27 +55,12 @@ private predicate isObjectClass(Class c) { c instanceof ObjectType }
  * Either a value type (`ValueType`) or a reference type (`RefType`).
  */
 class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_or_ref_type {
-  /** Gets the name of this type without `<...>` brackets, in case it is a constructed type. */
-  private string getNameWithoutBrackets() {
-    exists(UnboundGenericType unbound, string name |
-      unbound = this.(ConstructedType).getUnboundDeclaration() and
-      name = unbound.getName() and
-      result = name.prefix(name.length() - unbound.getNumberOfTypeParameters() - 1)
-    )
-    or
-    not this instanceof ConstructedType and
-    result = this.getName()
-  }
-
-  language[monotonicAggregates]
-  private string getQualifiedTypeArguments() {
-    result =
-      strictconcat(Type t, int i |
-        t = this.(ConstructedType).getTypeArgument(i)
-      |
-        t.getQualifiedName(), "," order by i
-      )
-  }
+  /**
+   * DEPRECATED: use `getUndecoratedName()` instead.
+   *
+   * Gets the name of this type without `<...>` brackets, in case it is a generic type.
+   */
+  deprecated string getNameWithoutBrackets() { types(this, _, result) }
 
   /**
    * Holds if this type has the qualified name `qualifier`.`name`.
@@ -84,21 +69,14 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
    * `qualifier`=`System.IO` and `name`=`IOException`.
    */
   override predicate hasQualifiedName(string qualifier, string name) {
-    exists(string name0 |
-      not this instanceof ConstructedType and
-      name = name0
-      or
-      name = name0 + "<" + this.getQualifiedTypeArguments() + ">"
-    |
-      exists(string enclosing |
-        this.getDeclaringType().hasQualifiedName(qualifier, enclosing) and
-        name0 = enclosing + "+" + this.getNameWithoutBrackets()
-      )
-      or
-      not exists(this.getDeclaringType()) and
-      qualifier = this.getNamespace().getQualifiedName() and
-      name0 = this.getNameWithoutBrackets()
+    exists(string enclosing |
+      this.getDeclaringType().hasQualifiedName(qualifier, enclosing) and
+      name = enclosing + "+" + this.getUndecoratedName()
     )
+    or
+    not exists(this.getDeclaringType()) and
+    qualifier = this.getNamespace().getQualifiedName() and
+    name = this.getUndecoratedName()
   }
 
   /** Gets the namespace containing this type. */
@@ -112,16 +90,7 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
 
   override ValueOrRefType getDeclaringType() { none() }
 
-  override string getUndecoratedName() {
-    if this.getName().indexOf("<") > 0
-    then
-      exists(string name, int p |
-        name = this.getName() and p = min(int p2 | p2 = name.indexOf("<") and p2 > 0)
-      |
-        result = name.substring(0, p)
-      )
-    else result = this.getName()
-  }
+  override string getUndecoratedName() { types(this, _, result) }
 
   /** Gets a nested child type, if any. */
   NestedType getAChildType() { nested_types(result, this, _) }
@@ -201,6 +170,7 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
    * }
    * ```
    */
+  pragma[inline]
   predicate hasMethod(Method m) { this.hasMember(m) }
 
   /**
@@ -227,6 +197,7 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
    * }
    * ```
    */
+  pragma[inline]
   predicate hasCallable(Callable c) {
     hasMethod(c)
     or
@@ -256,23 +227,13 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
    * }
    * ```
    */
+  pragma[inline]
   predicate hasMember(Member m) {
-    // For performance reasons, split up into "cheap" computation
-    // (non-overridden members) and "expensive" computation
-    // (overridden members). The latter is cached, and generally
-    // much smaller than the full relation.
-    hasNonOverriddenMember(m)
+    m = this.getAMember()
+    or
+    hasNonOverriddenMember(this.getBaseClass+(), m)
     or
     hasOverriddenMember(m)
-  }
-
-  private predicate hasNonOverriddenMember(Member m) {
-    isNonOverridden(m) and
-    (
-      m = getAMember()
-      or
-      getBaseClass+().getAMember() = m and not m.isPrivate()
-    )
   }
 
   cached
@@ -753,8 +714,12 @@ class RefType extends ValueOrRefType, @ref_type {
   override predicate isRefType() { any() }
 }
 
-// Helper predicate to avoid slow "negation_body"
-private predicate isNonOverridden(Member m) { not m.(Virtualizable).isOverridden() }
+pragma[noinline]
+private predicate hasNonOverriddenMember(Class c, Member m) {
+  m = c.getAMember() and
+  not m.(Virtualizable).isOverridden() and
+  not m.isPrivate()
+}
 
 /**
  * A `class`, for example
@@ -963,6 +928,15 @@ class NullableType extends ValueType, DotNet::ConstructedGeneric, @nullable_type
   override Type getTypeArgument(int p) { p = 0 and result = getUnderlyingType() }
 
   override string getAPrimaryQlClass() { result = "NullableType" }
+
+  final override string getName() {
+    result = "Nullable<" + this.getUnderlyingType().getName() + ">"
+  }
+
+  final override predicate hasQualifiedName(string qualifier, string name) {
+    qualifier = "System" and
+    name = "Nullable<" + this.getUnderlyingType().getQualifiedName() + ">"
+  }
 }
 
 /**
@@ -1046,7 +1020,7 @@ class PointerType extends DotNet::PointerType, Type, @pointer_type {
 
   override Type getChild(int n) { result = getReferentType() and n = 0 }
 
-  override string getName() { result = DotNet::PointerType.super.getName() }
+  override string getName() { types(this, _, result) }
 
   override Location getALocation() { result = getReferentType().getALocation() }
 
@@ -1120,11 +1094,14 @@ class TupleType extends ValueType, @tuple_type {
   override string toStringWithTypes() {
     result =
       "(" +
-        concat(int i |
-          exists(getElement(i))
-        |
-          getElement(i).getType().toStringWithTypes(), ", " order by i
-        ) + ")"
+        concat(Type t, int i | t = getElement(i).getType() | t.toStringWithTypes(), ", " order by i)
+        + ")"
+  }
+
+  language[monotonicAggregates]
+  override string getName() {
+    result =
+      "(" + concat(Type t, int i | t = getElement(i).getType() | t.getName(), "," order by i) + ")"
   }
 
   override string getLabel() { result = getUnderlyingType().getLabel() }

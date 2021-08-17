@@ -103,6 +103,7 @@ import semmle.javascript.frameworks.Logging
 import semmle.javascript.frameworks.HttpFrameworks
 import semmle.javascript.frameworks.HttpProxy
 import semmle.javascript.frameworks.Markdown
+import semmle.javascript.frameworks.MooTools
 import semmle.javascript.frameworks.Nest
 import semmle.javascript.frameworks.Next
 import semmle.javascript.frameworks.NoSQL
@@ -125,6 +126,7 @@ import semmle.javascript.frameworks.TorrentLibraries
 import semmle.javascript.frameworks.Typeahead
 import semmle.javascript.frameworks.UriLibraries
 import semmle.javascript.frameworks.Vue
+import semmle.javascript.frameworks.Vuex
 import semmle.javascript.frameworks.WebSocket
 import semmle.javascript.frameworks.XmlParsers
 import semmle.javascript.frameworks.xUnit

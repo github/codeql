@@ -222,6 +222,31 @@ nodes
 | jquery.js:16:38:16:52 | window.location |
 | jquery.js:16:38:16:52 | window.location |
 | jquery.js:16:38:16:63 | window. ... tring() |
+| jquery.js:18:7:18:33 | hash |
+| jquery.js:18:14:18:33 | window.location.hash |
+| jquery.js:18:14:18:33 | window.location.hash |
+| jquery.js:21:5:21:8 | hash |
+| jquery.js:21:5:21:21 | hash.substring(1) |
+| jquery.js:21:5:21:21 | hash.substring(1) |
+| jquery.js:22:5:22:8 | hash |
+| jquery.js:22:5:22:25 | hash.su ... (1, 10) |
+| jquery.js:22:5:22:25 | hash.su ... (1, 10) |
+| jquery.js:23:5:23:8 | hash |
+| jquery.js:23:5:23:18 | hash.substr(1) |
+| jquery.js:23:5:23:18 | hash.substr(1) |
+| jquery.js:24:5:24:8 | hash |
+| jquery.js:24:5:24:17 | hash.slice(1) |
+| jquery.js:24:5:24:17 | hash.slice(1) |
+| jquery.js:27:5:27:8 | hash |
+| jquery.js:27:5:27:25 | hash.re ... #', '') |
+| jquery.js:27:5:27:25 | hash.re ... #', '') |
+| jquery.js:28:5:28:26 | window. ... .search |
+| jquery.js:28:5:28:26 | window. ... .search |
+| jquery.js:28:5:28:43 | window. ... ?', '') |
+| jquery.js:28:5:28:43 | window. ... ?', '') |
+| jquery.js:34:5:34:25 | '<b>' + ...  '</b>' |
+| jquery.js:34:5:34:25 | '<b>' + ...  '</b>' |
+| jquery.js:34:13:34:16 | hash |
 | jwt-server.js:7:9:7:35 | taint |
 | jwt-server.js:7:17:7:35 | req.param("wobble") |
 | jwt-server.js:7:17:7:35 | req.param("wobble") |
@@ -381,6 +406,13 @@ nodes
 | string-manipulations.js:10:16:10:45 | String( ... n.href) |
 | string-manipulations.js:10:23:10:44 | documen ... on.href |
 | string-manipulations.js:10:23:10:44 | documen ... on.href |
+| tooltip.jsx:6:11:6:30 | source |
+| tooltip.jsx:6:20:6:30 | window.name |
+| tooltip.jsx:6:20:6:30 | window.name |
+| tooltip.jsx:10:25:10:30 | source |
+| tooltip.jsx:10:25:10:30 | source |
+| tooltip.jsx:11:25:11:30 | source |
+| tooltip.jsx:11:25:11:30 | source |
 | translate.js:6:7:6:39 | target |
 | translate.js:6:16:6:39 | documen ... .search |
 | translate.js:6:16:6:39 | documen ... .search |
@@ -676,6 +708,38 @@ nodes
 | tst.js:430:18:430:23 | target |
 | tst.js:430:18:430:89 | target. ... data>') |
 | tst.js:430:18:430:89 | target. ... data>') |
+| tst.js:436:6:436:38 | source |
+| tst.js:436:15:436:38 | documen ... .search |
+| tst.js:436:15:436:38 | documen ... .search |
+| tst.js:440:28:440:33 | source |
+| tst.js:440:28:440:33 | source |
+| tst.js:441:33:441:38 | source |
+| tst.js:441:33:441:38 | source |
+| tst.js:442:34:442:39 | source |
+| tst.js:442:34:442:39 | source |
+| tst.js:443:41:443:46 | source |
+| tst.js:443:41:443:46 | source |
+| tst.js:444:44:444:49 | source |
+| tst.js:444:44:444:49 | source |
+| tst.js:445:32:445:37 | source |
+| tst.js:445:32:445:37 | source |
+| tst.js:453:7:453:39 | source |
+| tst.js:453:16:453:39 | documen ... .search |
+| tst.js:453:16:453:39 | documen ... .search |
+| tst.js:455:18:455:23 | source |
+| tst.js:455:18:455:23 | source |
+| tst.js:456:18:456:42 | ansiToH ... source) |
+| tst.js:456:18:456:42 | ansiToH ... source) |
+| tst.js:456:36:456:41 | source |
+| tst.js:460:6:460:38 | source |
+| tst.js:460:15:460:38 | documen ... .search |
+| tst.js:460:15:460:38 | documen ... .search |
+| tst.js:463:21:463:26 | source |
+| tst.js:463:21:463:26 | source |
+| tst.js:465:19:465:24 | source |
+| tst.js:465:19:465:24 | source |
+| tst.js:467:20:467:25 | source |
+| tst.js:467:20:467:25 | source |
 | typeahead.js:9:28:9:30 | loc |
 | typeahead.js:9:28:9:30 | loc |
 | typeahead.js:10:16:10:18 | loc |
@@ -938,6 +1002,30 @@ edges
 | jquery.js:16:38:16:52 | window.location | jquery.js:16:38:16:63 | window. ... tring() |
 | jquery.js:16:38:16:63 | window. ... tring() | jquery.js:16:19:16:64 | decodeU ... ring()) |
 | jquery.js:16:38:16:63 | window. ... tring() | jquery.js:16:19:16:64 | decodeU ... ring()) |
+| jquery.js:18:7:18:33 | hash | jquery.js:21:5:21:8 | hash |
+| jquery.js:18:7:18:33 | hash | jquery.js:22:5:22:8 | hash |
+| jquery.js:18:7:18:33 | hash | jquery.js:23:5:23:8 | hash |
+| jquery.js:18:7:18:33 | hash | jquery.js:24:5:24:8 | hash |
+| jquery.js:18:7:18:33 | hash | jquery.js:27:5:27:8 | hash |
+| jquery.js:18:7:18:33 | hash | jquery.js:34:13:34:16 | hash |
+| jquery.js:18:14:18:33 | window.location.hash | jquery.js:18:7:18:33 | hash |
+| jquery.js:18:14:18:33 | window.location.hash | jquery.js:18:7:18:33 | hash |
+| jquery.js:21:5:21:8 | hash | jquery.js:21:5:21:21 | hash.substring(1) |
+| jquery.js:21:5:21:8 | hash | jquery.js:21:5:21:21 | hash.substring(1) |
+| jquery.js:22:5:22:8 | hash | jquery.js:22:5:22:25 | hash.su ... (1, 10) |
+| jquery.js:22:5:22:8 | hash | jquery.js:22:5:22:25 | hash.su ... (1, 10) |
+| jquery.js:23:5:23:8 | hash | jquery.js:23:5:23:18 | hash.substr(1) |
+| jquery.js:23:5:23:8 | hash | jquery.js:23:5:23:18 | hash.substr(1) |
+| jquery.js:24:5:24:8 | hash | jquery.js:24:5:24:17 | hash.slice(1) |
+| jquery.js:24:5:24:8 | hash | jquery.js:24:5:24:17 | hash.slice(1) |
+| jquery.js:27:5:27:8 | hash | jquery.js:27:5:27:25 | hash.re ... #', '') |
+| jquery.js:27:5:27:8 | hash | jquery.js:27:5:27:25 | hash.re ... #', '') |
+| jquery.js:28:5:28:26 | window. ... .search | jquery.js:28:5:28:43 | window. ... ?', '') |
+| jquery.js:28:5:28:26 | window. ... .search | jquery.js:28:5:28:43 | window. ... ?', '') |
+| jquery.js:28:5:28:26 | window. ... .search | jquery.js:28:5:28:43 | window. ... ?', '') |
+| jquery.js:28:5:28:26 | window. ... .search | jquery.js:28:5:28:43 | window. ... ?', '') |
+| jquery.js:34:13:34:16 | hash | jquery.js:34:5:34:25 | '<b>' + ...  '</b>' |
+| jquery.js:34:13:34:16 | hash | jquery.js:34:5:34:25 | '<b>' + ...  '</b>' |
 | jwt-server.js:7:9:7:35 | taint | jwt-server.js:9:16:9:20 | taint |
 | jwt-server.js:7:17:7:35 | req.param("wobble") | jwt-server.js:7:9:7:35 | taint |
 | jwt-server.js:7:17:7:35 | req.param("wobble") | jwt-server.js:7:9:7:35 | taint |
@@ -1086,6 +1174,12 @@ edges
 | string-manipulations.js:10:23:10:44 | documen ... on.href | string-manipulations.js:10:16:10:45 | String( ... n.href) |
 | string-manipulations.js:10:23:10:44 | documen ... on.href | string-manipulations.js:10:16:10:45 | String( ... n.href) |
 | string-manipulations.js:10:23:10:44 | documen ... on.href | string-manipulations.js:10:16:10:45 | String( ... n.href) |
+| tooltip.jsx:6:11:6:30 | source | tooltip.jsx:10:25:10:30 | source |
+| tooltip.jsx:6:11:6:30 | source | tooltip.jsx:10:25:10:30 | source |
+| tooltip.jsx:6:11:6:30 | source | tooltip.jsx:11:25:11:30 | source |
+| tooltip.jsx:6:11:6:30 | source | tooltip.jsx:11:25:11:30 | source |
+| tooltip.jsx:6:20:6:30 | window.name | tooltip.jsx:6:11:6:30 | source |
+| tooltip.jsx:6:20:6:30 | window.name | tooltip.jsx:6:11:6:30 | source |
 | translate.js:6:7:6:39 | target | translate.js:7:42:7:47 | target |
 | translate.js:6:16:6:39 | documen ... .search | translate.js:6:7:6:39 | target |
 | translate.js:6:16:6:39 | documen ... .search | translate.js:6:7:6:39 | target |
@@ -1336,6 +1430,35 @@ edges
 | tst.js:428:16:428:39 | documen ... .search | tst.js:428:7:428:39 | target |
 | tst.js:430:18:430:23 | target | tst.js:430:18:430:89 | target. ... data>') |
 | tst.js:430:18:430:23 | target | tst.js:430:18:430:89 | target. ... data>') |
+| tst.js:436:6:436:38 | source | tst.js:440:28:440:33 | source |
+| tst.js:436:6:436:38 | source | tst.js:440:28:440:33 | source |
+| tst.js:436:6:436:38 | source | tst.js:441:33:441:38 | source |
+| tst.js:436:6:436:38 | source | tst.js:441:33:441:38 | source |
+| tst.js:436:6:436:38 | source | tst.js:442:34:442:39 | source |
+| tst.js:436:6:436:38 | source | tst.js:442:34:442:39 | source |
+| tst.js:436:6:436:38 | source | tst.js:443:41:443:46 | source |
+| tst.js:436:6:436:38 | source | tst.js:443:41:443:46 | source |
+| tst.js:436:6:436:38 | source | tst.js:444:44:444:49 | source |
+| tst.js:436:6:436:38 | source | tst.js:444:44:444:49 | source |
+| tst.js:436:6:436:38 | source | tst.js:445:32:445:37 | source |
+| tst.js:436:6:436:38 | source | tst.js:445:32:445:37 | source |
+| tst.js:436:15:436:38 | documen ... .search | tst.js:436:6:436:38 | source |
+| tst.js:436:15:436:38 | documen ... .search | tst.js:436:6:436:38 | source |
+| tst.js:453:7:453:39 | source | tst.js:455:18:455:23 | source |
+| tst.js:453:7:453:39 | source | tst.js:455:18:455:23 | source |
+| tst.js:453:7:453:39 | source | tst.js:456:36:456:41 | source |
+| tst.js:453:16:453:39 | documen ... .search | tst.js:453:7:453:39 | source |
+| tst.js:453:16:453:39 | documen ... .search | tst.js:453:7:453:39 | source |
+| tst.js:456:36:456:41 | source | tst.js:456:18:456:42 | ansiToH ... source) |
+| tst.js:456:36:456:41 | source | tst.js:456:18:456:42 | ansiToH ... source) |
+| tst.js:460:6:460:38 | source | tst.js:463:21:463:26 | source |
+| tst.js:460:6:460:38 | source | tst.js:463:21:463:26 | source |
+| tst.js:460:6:460:38 | source | tst.js:465:19:465:24 | source |
+| tst.js:460:6:460:38 | source | tst.js:465:19:465:24 | source |
+| tst.js:460:6:460:38 | source | tst.js:467:20:467:25 | source |
+| tst.js:460:6:460:38 | source | tst.js:467:20:467:25 | source |
+| tst.js:460:15:460:38 | documen ... .search | tst.js:460:6:460:38 | source |
+| tst.js:460:15:460:38 | documen ... .search | tst.js:460:6:460:38 | source |
 | typeahead.js:9:28:9:30 | loc | typeahead.js:10:16:10:18 | loc |
 | typeahead.js:9:28:9:30 | loc | typeahead.js:10:16:10:18 | loc |
 | typeahead.js:9:28:9:30 | loc | typeahead.js:10:16:10:18 | loc |

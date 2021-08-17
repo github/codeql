@@ -85,6 +85,13 @@ namespace My.Qltest
             Sink(objs2[0]);
         }
 
+        void M14()
+        {
+            var s = new string("");
+            Parse(s, out var i);
+            Sink(i);
+        }
+
         object StepArgRes(object x) { return null; }
 
         void StepArgArg(object @in, object @out) { }
@@ -114,6 +121,8 @@ namespace My.Qltest
         static T Apply<S, T>(Func<S, T> f, S s) => throw null;
 
         static S[] Map<S, T>(S[] elements, Func<S, T> f) => throw null;
+
+        static void Parse(string s, out int i) => throw null;
 
         static void Sink(object o) { }
     }

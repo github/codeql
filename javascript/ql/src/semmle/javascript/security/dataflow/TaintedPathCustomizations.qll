@@ -683,6 +683,20 @@ module TaintedPath {
   }
 
   /**
+   * The `cwd` option for the `read-pkg` library.
+   */
+  private class ReadPkgCwdSink extends TaintedPath::Sink {
+    ReadPkgCwdSink() {
+      this =
+        API::moduleImport("read-pkg")
+            .getMember(["readPackageAsync", "readPackageSync"])
+            .getParameter(0)
+            .getMember("cwd")
+            .getARhs()
+    }
+  }
+
+  /**
    * Holds if there is a step `src -> dst` mapping `srclabel` to `dstlabel` relevant for path traversal vulnerabilities.
    */
   predicate isAdditionalTaintedPathFlowStep(
@@ -720,15 +734,9 @@ module TaintedPath {
     exists(DataFlow::MethodCallNode mcn, string name |
       srclabel = dstlabel and dst = mcn and mcn.calls(src, name)
     |
-      exists(string substringMethodName |
-        substringMethodName = "substr" or
-        substringMethodName = "substring" or
-        substringMethodName = "slice"
-      |
-        name = substringMethodName and
-        // to avoid very dynamic transformations, require at least one fixed index
-        exists(mcn.getAnArgument().asExpr().getIntValue())
-      )
+      name = StringOps::substringMethodName() and
+      // to avoid very dynamic transformations, require at least one fixed index
+      exists(mcn.getAnArgument().asExpr().getIntValue())
       or
       exists(string argumentlessMethodName |
         argumentlessMethodName = "toLocaleLowerCase" or
@@ -797,6 +805,12 @@ module TaintedPath {
       ) and
       srclabel instanceof Label::SplitPath and
       dstlabel.(Label::PosixPath).canContainDotDotSlash()
+    )
+    or
+    exists(API::CallNode call | call = API::moduleImport("slash").getACall() |
+      src = call.getArgument(0) and
+      dst = call and
+      srclabel = dstlabel
     )
   }
 

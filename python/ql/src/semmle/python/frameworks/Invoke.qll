@@ -36,7 +36,7 @@ private module Invoke {
         }
 
         /** Gets a reference to an instance of `invoke.context.Context`. */
-        private DataFlow::LocalSourceNode instance(DataFlow::TypeTracker t) {
+        private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
           t.start() and
           (
             result = invoke::context::Context::classRef().getACall()
@@ -54,7 +54,7 @@ private module Invoke {
         DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
 
         /** Gets a reference to the `run` or `sudo` methods on a `invoke.context.Context` instance. */
-        private DataFlow::LocalSourceNode instanceRunMethods(DataFlow::TypeTracker t) {
+        private DataFlow::TypeTrackingNode instanceRunMethods(DataFlow::TypeTracker t) {
           t.startInAttr(["run", "sudo"]) and
           result = invoke::context::Context::instance()
           or

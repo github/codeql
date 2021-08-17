@@ -401,7 +401,7 @@ private module PrivateDjango {
              * Gets an instance of the `django.db.models.expressions.RawSQL` class,
              * that was initiated with the SQL represented by `sql`.
              */
-            private DataFlow::LocalSourceNode instance(DataFlow::TypeTracker t, DataFlow::Node sql) {
+            private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t, DataFlow::Node sql) {
               t.start() and
               exists(DataFlow::CallCfgNode c | result = c |
                 c = classRef().getACall() and
@@ -578,7 +578,7 @@ private module PrivateDjango {
           abstract class InstanceSource extends DataFlow::Node { }
 
           /** Gets a reference to an instance of `django.http.request.HttpRequest`. */
-          private DataFlow::LocalSourceNode instance(DataFlow::TypeTracker t) {
+          private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
             t.start() and
             result instanceof InstanceSource
             or
@@ -643,7 +643,7 @@ private module PrivateDjango {
           }
 
           /** Gets a reference to an instance of `django.http.response.HttpResponse`. */
-          private DataFlow::LocalSourceNode instance(DataFlow::TypeTracker t) {
+          private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
             t.start() and
             result instanceof InstanceSource
             or
@@ -709,7 +709,7 @@ private module PrivateDjango {
           }
 
           /** Gets a reference to an instance of `django.http.response.HttpResponseRedirect`. */
-          private DataFlow::LocalSourceNode instance(DataFlow::TypeTracker t) {
+          private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
             t.start() and
             result instanceof InstanceSource
             or
@@ -771,7 +771,7 @@ private module PrivateDjango {
           }
 
           /** Gets a reference to an instance of `django.http.response.HttpResponsePermanentRedirect`. */
-          private DataFlow::LocalSourceNode instance(DataFlow::TypeTracker t) {
+          private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
             t.start() and
             result instanceof InstanceSource
             or
@@ -824,7 +824,7 @@ private module PrivateDjango {
           }
 
           /** Gets a reference to an instance of `django.http.response.HttpResponseNotModified`. */
-          private DataFlow::LocalSourceNode instance(DataFlow::TypeTracker t) {
+          private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
             t.start() and
             result instanceof InstanceSource
             or
@@ -878,7 +878,7 @@ private module PrivateDjango {
           }
 
           /** Gets a reference to an instance of `django.http.response.HttpResponseBadRequest`. */
-          private DataFlow::LocalSourceNode instance(DataFlow::TypeTracker t) {
+          private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
             t.start() and
             result instanceof InstanceSource
             or
@@ -932,7 +932,7 @@ private module PrivateDjango {
           }
 
           /** Gets a reference to an instance of `django.http.response.HttpResponseNotFound`. */
-          private DataFlow::LocalSourceNode instance(DataFlow::TypeTracker t) {
+          private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
             t.start() and
             result instanceof InstanceSource
             or
@@ -986,7 +986,7 @@ private module PrivateDjango {
           }
 
           /** Gets a reference to an instance of `django.http.response.HttpResponseForbidden`. */
-          private DataFlow::LocalSourceNode instance(DataFlow::TypeTracker t) {
+          private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
             t.start() and
             result instanceof InstanceSource
             or
@@ -1041,7 +1041,7 @@ private module PrivateDjango {
           }
 
           /** Gets a reference to an instance of `django.http.response.HttpResponseNotAllowed`. */
-          private DataFlow::LocalSourceNode instance(DataFlow::TypeTracker t) {
+          private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
             t.start() and
             result instanceof InstanceSource
             or
@@ -1095,7 +1095,7 @@ private module PrivateDjango {
           }
 
           /** Gets a reference to an instance of `django.http.response.HttpResponseGone`. */
-          private DataFlow::LocalSourceNode instance(DataFlow::TypeTracker t) {
+          private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
             t.start() and
             result instanceof InstanceSource
             or
@@ -1149,7 +1149,7 @@ private module PrivateDjango {
           }
 
           /** Gets a reference to an instance of `django.http.response.HttpResponseServerError`. */
-          private DataFlow::LocalSourceNode instance(DataFlow::TypeTracker t) {
+          private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
             t.start() and
             result instanceof InstanceSource
             or
@@ -1203,7 +1203,7 @@ private module PrivateDjango {
           }
 
           /** Gets a reference to an instance of `django.http.response.JsonResponse`. */
-          private DataFlow::LocalSourceNode instance(DataFlow::TypeTracker t) {
+          private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
             t.start() and
             result instanceof InstanceSource
             or
@@ -1260,7 +1260,7 @@ private module PrivateDjango {
           }
 
           /** Gets a reference to an instance of `django.http.response.StreamingHttpResponse`. */
-          private DataFlow::LocalSourceNode instance(DataFlow::TypeTracker t) {
+          private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
             t.start() and
             result instanceof InstanceSource
             or
@@ -1317,7 +1317,7 @@ private module PrivateDjango {
           }
 
           /** Gets a reference to an instance of `django.http.response.FileResponse`. */
-          private DataFlow::LocalSourceNode instance(DataFlow::TypeTracker t) {
+          private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
             t.start() and
             result instanceof InstanceSource
             or
@@ -1329,7 +1329,7 @@ private module PrivateDjango {
         }
 
         /** Gets a reference to the `django.http.response.HttpResponse.write` function. */
-        private DataFlow::LocalSourceNode write(
+        private DataFlow::TypeTrackingNode write(
           django::http::response::HttpResponse::InstanceSource instance, DataFlow::TypeTracker t
         ) {
           t.startInAttr("write") and
@@ -1350,9 +1350,9 @@ private module PrivateDjango {
          * See https://docs.djangoproject.com/en/3.1/ref/request-response/#django.http.HttpResponse.write
          */
         class HttpResponseWriteCall extends HTTP::Server::HttpResponse::Range, DataFlow::CallCfgNode {
-          HTTP::Server::HttpResponse::Range instance;
+          django::http::response::HttpResponse::InstanceSource instance;
 
-          HttpResponseWriteCall() { node.getFunction() = write(instance).asCfgNode() }
+          HttpResponseWriteCall() { this.getFunction() = write(instance) }
 
           override DataFlow::Node getBody() {
             result in [this.getArg(0), this.getArgByName("content")]
@@ -1363,6 +1363,77 @@ private module PrivateDjango {
           }
 
           override string getMimetypeDefault() { result = instance.getMimetypeDefault() }
+        }
+
+        /**
+         * A call to `set_cookie` on a HTTP Response.
+         */
+        class DjangoResponseSetCookieCall extends HTTP::Server::CookieWrite::Range,
+          DataFlow::MethodCallNode {
+          DjangoResponseSetCookieCall() {
+            this.calls(django::http::response::HttpResponse::instance(), "set_cookie")
+          }
+
+          override DataFlow::Node getHeaderArg() { none() }
+
+          override DataFlow::Node getNameArg() {
+            result in [this.getArg(0), this.getArgByName("key")]
+          }
+
+          override DataFlow::Node getValueArg() {
+            result in [this.getArg(1), this.getArgByName("value")]
+          }
+        }
+
+        /**
+         * A call to `delete_cookie` on a HTTP Response.
+         */
+        class DjangoResponseDeleteCookieCall extends HTTP::Server::CookieWrite::Range,
+          DataFlow::MethodCallNode {
+          DjangoResponseDeleteCookieCall() {
+            this.calls(django::http::response::HttpResponse::instance(), "delete_cookie")
+          }
+
+          override DataFlow::Node getHeaderArg() { none() }
+
+          override DataFlow::Node getNameArg() {
+            result in [this.getArg(0), this.getArgByName("key")]
+          }
+
+          override DataFlow::Node getValueArg() { none() }
+        }
+
+        /**
+         * A dict-like write to an item of the `cookies` attribute on a HTTP response, such as
+         * `response.cookies[name] = value`.
+         */
+        class DjangoResponseCookieSubscriptWrite extends HTTP::Server::CookieWrite::Range {
+          DataFlow::Node index;
+          DataFlow::Node value;
+
+          DjangoResponseCookieSubscriptWrite() {
+            exists(SubscriptNode subscript, DataFlow::AttrRead cookieLookup |
+              // To give `this` a value, we need to choose between either LHS or RHS,
+              // and just go with the LHS
+              this.asCfgNode() = subscript
+            |
+              cookieLookup.getAttributeName() = "cookies" and
+              cookieLookup.getObject() = django::http::response::HttpResponse::instance() and
+              exists(DataFlow::Node subscriptObj |
+                subscriptObj.asCfgNode() = subscript.getObject()
+              |
+                cookieLookup.flowsTo(subscriptObj)
+              ) and
+              value.asCfgNode() = subscript.(DefinitionNode).getValue() and
+              index.asCfgNode() = subscript.getIndex()
+            )
+          }
+
+          override DataFlow::Node getHeaderArg() { none() }
+
+          override DataFlow::Node getNameArg() { result = index }
+
+          override DataFlow::Node getValueArg() { result = value }
         }
       }
     }
@@ -1464,7 +1535,7 @@ private module PrivateDjango {
    */
   class DjangoViewClassHelper extends Class {
     /** Gets a reference to this class. */
-    private DataFlow::LocalSourceNode getARef(DataFlow::TypeTracker t) {
+    private DataFlow::TypeTrackingNode getARef(DataFlow::TypeTracker t) {
       t.start() and
       result.asExpr().(ClassExpr) = this.getParent()
       or
@@ -1475,7 +1546,7 @@ private module PrivateDjango {
     DataFlow::Node getARef() { this.getARef(DataFlow::TypeTracker::end()).flowsTo(result) }
 
     /** Gets a reference to the `as_view` classmethod of this class. */
-    private DataFlow::LocalSourceNode asViewRef(DataFlow::TypeTracker t) {
+    private DataFlow::TypeTrackingNode asViewRef(DataFlow::TypeTracker t) {
       t.startInAttr("as_view") and
       result = this.getARef()
       or
@@ -1486,7 +1557,7 @@ private module PrivateDjango {
     DataFlow::Node asViewRef() { this.asViewRef(DataFlow::TypeTracker::end()).flowsTo(result) }
 
     /** Gets a reference to the result of calling the `as_view` classmethod of this class. */
-    private DataFlow::LocalSourceNode asViewResult(DataFlow::TypeTracker t) {
+    private DataFlow::TypeTrackingNode asViewResult(DataFlow::TypeTracker t) {
       t.start() and
       result.asCfgNode().(CallNode).getFunction() = this.asViewRef().asCfgNode()
       or

@@ -104,7 +104,7 @@ private module FabricV2 {
         }
 
         /** Gets a reference to an instance of `fabric.connection.Connection`. */
-        private DataFlow::LocalSourceNode instance(DataFlow::TypeTracker t) {
+        private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
           t.start() and
           result instanceof InstanceSource
           or
@@ -123,7 +123,7 @@ private module FabricV2 {
          * - https://docs.fabfile.org/en/2.5/api/connection.html#fabric.connection.Connection.sudo
          * - https://docs.fabfile.org/en/2.5/api/connection.html#fabric.connection.Connection.local
          */
-        private DataFlow::LocalSourceNode instanceRunMethods(DataFlow::TypeTracker t) {
+        private DataFlow::TypeTrackingNode instanceRunMethods(DataFlow::TypeTracker t) {
           t.startInAttr(["run", "sudo", "local"]) and
           result = instance()
           or

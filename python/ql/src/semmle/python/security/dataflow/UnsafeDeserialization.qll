@@ -1,32 +1,42 @@
 /**
- * Provides a taint-tracking configuration for detecting arbitrary code execution
- * vulnerabilities due to deserializing user-controlled data.
+ * Provides a taint-tracking configuration for detecting "code execution from deserialization" vulnerabilities.
+ *
+ * Note, for performance reasons: only import this file if
+ * `UnsafeDeserialization::Configuration` is needed, otherwise
+ * `UnsafeDeserializationCustomizations` should be imported instead.
  */
 
-import python
+private import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
-import semmle.python.Concepts
-import semmle.python.dataflow.new.RemoteFlowSources
-import semmle.python.dataflow.new.BarrierGuards
 
 /**
- * A taint-tracking configuration for detecting arbitrary code execution
- * vulnerabilities due to deserializing user-controlled data.
+ * Provides a taint-tracking configuration for detecting "code execution from deserialization" vulnerabilities.
  */
-class UnsafeDeserializationConfiguration extends TaintTracking::Configuration {
-  UnsafeDeserializationConfiguration() { this = "UnsafeDeserializationConfiguration" }
+module UnsafeDeserialization {
+  import UnsafeDeserializationCustomizations::UnsafeDeserialization
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  /**
+   * A taint-tracking configuration for detecting "code execution from deserialization" vulnerabilities.
+   */
+  class Configuration extends TaintTracking::Configuration {
+    Configuration() { this = "UnsafeDeserialization" }
 
-  override predicate isSink(DataFlow::Node sink) {
-    exists(Decoding d |
-      d.mayExecuteInput() and
-      sink = d.getAnInput()
-    )
-  }
+    override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-  override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-    guard instanceof StringConstCompare
+    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+
+    override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
+
+    override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
+      guard instanceof SanitizerGuard
+    }
   }
 }
+
+/**
+ * DEPRECATED: Don't extend this class for customization, since this will lead to bad
+ * performance, instead use the new `UnsafeDeserializationCustomizations.qll` file, and extend
+ * its' classes.
+ */
+deprecated class UnsafeDeserializationConfiguration = UnsafeDeserialization::Configuration;

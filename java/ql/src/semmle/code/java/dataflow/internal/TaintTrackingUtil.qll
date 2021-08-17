@@ -209,22 +209,6 @@ private predicate constructorStep(Expr tracked, ConstructorCall sink) {
     // a custom InputStream that wraps a tainted data source is tainted
     inputStreamWrapper(sink.getConstructor(), argi)
     or
-    // A SpringHttpEntity is a wrapper around a body and some headers
-    // Track flow through iff body is a String
-    exists(SpringHttpEntity she |
-      sink.getConstructor() = she.getAConstructor() and
-      argi = 0 and
-      tracked.getType() instanceof TypeString
-    )
-    or
-    // A SpringRequestEntity is a wrapper around a body and some headers
-    // Track flow through iff body is a String
-    exists(SpringResponseEntity sre |
-      sink.getConstructor() = sre.getAConstructor() and
-      argi = 0 and
-      tracked.getType() instanceof TypeString
-    )
-    or
     sink.getConstructor().(TaintPreservingCallable).returnsTaintFrom(argToParam(sink, argi))
   )
 }
@@ -276,19 +260,6 @@ private predicate taintPreservingQualifierToMethod(Method m) {
   m instanceof GetterMethod and
   m.getDeclaringType().getASubtype*() instanceof SpringUntrustedDataType and
   not m.getDeclaringType() instanceof TypeObject
-  or
-  m.getDeclaringType() instanceof SpringHttpEntity and
-  m.getName().regexpMatch("getBody|getHeaders")
-  or
-  exists(SpringHttpHeaders headers | m = headers.getAMethod() |
-    m.getReturnType() instanceof TypeString
-    or
-    exists(ParameterizedType stringlist |
-      m.getReturnType().(RefType).getASupertype*() = stringlist and
-      stringlist.getSourceDeclaration().hasQualifiedName("java.util", "List") and
-      stringlist.getTypeArgument(0) instanceof TypeString
-    )
-  )
   or
   m.(TaintPreservingCallable).returnsTaintFrom(-1)
   or

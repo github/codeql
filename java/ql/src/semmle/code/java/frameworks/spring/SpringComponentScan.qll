@@ -45,7 +45,7 @@ class SpringComponentScan extends Annotation {
       // Base package classes are type literals whose package should be considered a base package.
       typeLiteral = getAValue("basePackageClasses")
     |
-      result = typeLiteral.getTypeName().getType().(RefType).getPackage().getName()
+      result = typeLiteral.getReferencedType().(RefType).getPackage().getName()
     )
   }
 }

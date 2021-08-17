@@ -22,8 +22,7 @@ owner = repo.split('/')[0]
 
 
 def overwrite_files():
-    languages = ['java']
-    for lang in languages:
+    for lang in settings.languages:
         repo_output_rst = settings.repo_output_rst.format(language=lang)
         repo_output_csv = settings.repo_output_csv.format(language=lang)
 

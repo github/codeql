@@ -21,7 +21,8 @@ class SummaryModelTest extends SummaryModelCsv {
         "My.Qltest;C;false;StepElementGetter;();;Element of Argument[-1];ReturnValue;value",
         "My.Qltest;C;false;StepElementSetter;(System.Int32);;Argument[0];Element of Argument[-1];value",
         "My.Qltest;C+Generic<>;false;StepGeneric;(T);;Argument[0];ReturnValue;value",
-        "My.Qltest;C+Generic<>;false;StepGeneric2;(S);;Argument[0];ReturnValue;value"
+        "My.Qltest;C+Generic<>;false;StepGeneric2;(S);;Argument[0];ReturnValue;value",
+        "My.Qltest;C+Base<>;true;StepOverride;(T);;Argument[0];ReturnValue;value"
       ]
   }
 }

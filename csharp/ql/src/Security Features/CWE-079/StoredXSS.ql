@@ -14,7 +14,8 @@
 
 import csharp
 import semmle.code.csharp.security.dataflow.flowsources.Stored
-import semmle.code.csharp.security.dataflow.XSS::XSS
+import semmle.code.csharp.security.dataflow.XSSQuery
+import semmle.code.csharp.security.dataflow.XSSSinks
 import semmle.code.csharp.dataflow.DataFlow2
 import DataFlow2::PathGraph
 

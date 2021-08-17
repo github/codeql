@@ -656,16 +656,28 @@ module Vue {
   /** Gets a data flow node that refers to a `Route` object from `vue-router`. */
   DataFlow::SourceNode routeObject() { result = routeObject(DataFlow::TypeTracker::end()) }
 
-  private class VueRouterFlowSource extends RemoteFlowSource {
+  private class VueRouterFlowSource extends ClientSideRemoteFlowSource {
+    ClientSideRemoteFlowKind kind;
+
     VueRouterFlowSource() {
-      this = routeObject().getAPropertyRead(["params", "query", "hash", "path", "fullPath"])
-      or
-      exists(Instance i, string prop |
-        this = i.getWatchHandler(prop).getParameter([0, 1]) and
-        prop.regexpMatch("\\$route\\.(params|query|hash|path|fullPath)\\b.*")
+      exists(string name |
+        this = routeObject().getAPropertyRead(name)
+        or
+        exists(string prop |
+          this = any(Instance i).getWatchHandler(prop).getParameter([0, 1]) and
+          name = prop.regexpCapture("\\$route\\.(params|query|hash|path|fullPath)\\b.*", 1)
+        )
+      |
+        name = ["params", "path", "fullPath"] and kind.isPath()
+        or
+        name = "query" and kind.isQuery()
+        or
+        name = "hash" and kind.isFragment()
       )
     }
 
     override string getSourceType() { result = "Vue route parameter" }
+
+    override ClientSideRemoteFlowKind getKind() { result = kind }
   }
 }

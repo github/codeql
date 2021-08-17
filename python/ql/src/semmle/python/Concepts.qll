@@ -4,7 +4,7 @@
  * provide concrete subclasses.
  */
 
-import python
+private import python
 private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.TaintTracking
@@ -69,6 +69,39 @@ module FileSystemAccess {
   abstract class Range extends DataFlow::Node {
     /** Gets an argument to this file system access that is interpreted as a path. */
     abstract DataFlow::Node getAPathArgument();
+  }
+}
+
+/**
+ * A data flow node that writes data to the file system access.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `FileSystemWriteAccess::Range` instead.
+ */
+class FileSystemWriteAccess extends FileSystemAccess {
+  override FileSystemWriteAccess::Range range;
+
+  /**
+   * Gets a node that represents data to be written to the file system (possibly with
+   * some transformation happening before it is written, like JSON encoding).
+   */
+  DataFlow::Node getADataNode() { result = range.getADataNode() }
+}
+
+/** Provides a class for modeling new file system writes. */
+module FileSystemWriteAccess {
+  /**
+   * A data flow node that writes data to the file system access.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `FileSystemWriteAccess` instead.
+   */
+  abstract class Range extends FileSystemAccess::Range {
+    /**
+     * Gets a node that represents data to be written to the file system (possibly with
+     * some transformation happening before it is written, like JSON encoding).
+     */
+    abstract DataFlow::Node getADataNode();
   }
 }
 
@@ -236,6 +269,35 @@ private class EncodingAdditionalTaintStep extends TaintTracking::AdditionalTaint
 }
 
 /**
+ * A data-flow node that logs data.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `Logging::Range` instead.
+ */
+class Logging extends DataFlow::Node {
+  Logging::Range range;
+
+  Logging() { this = range }
+
+  /** Gets an input that is logged. */
+  DataFlow::Node getAnInput() { result = range.getAnInput() }
+}
+
+/** Provides a class for modeling new logging mechanisms. */
+module Logging {
+  /**
+   * A data-flow node that logs data.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `Logging` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /** Gets an input that is logged. */
+    abstract DataFlow::Node getAnInput();
+  }
+}
+
+/**
  * A data-flow node that dynamically executes Python code.
  *
  * Extend this class to refine existing API models. If you want to model new APIs,
@@ -291,6 +353,78 @@ module SqlExecution {
     /** Gets the argument that specifies the SQL statements to be executed. */
     abstract DataFlow::Node getSql();
   }
+}
+
+/**
+ * A data-flow node that escapes meta-characters, which could be used to prevent
+ * injection attacks.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `Escaping::Range` instead.
+ */
+class Escaping extends DataFlow::Node {
+  Escaping::Range range;
+
+  Escaping() {
+    this = range and
+    // escapes that don't have _both_ input/output defined are not valid
+    exists(range.getAnInput()) and
+    exists(range.getOutput())
+  }
+
+  /** Gets an input that will be escaped. */
+  DataFlow::Node getAnInput() { result = range.getAnInput() }
+
+  /** Gets the output that contains the escaped data. */
+  DataFlow::Node getOutput() { result = range.getOutput() }
+
+  /**
+   * Gets the context that this function escapes for, such as `html`, or `url`.
+   */
+  string getKind() { result = range.getKind() }
+}
+
+/** Provides a class for modeling new escaping APIs. */
+module Escaping {
+  /**
+   * A data-flow node that escapes meta-characters, which could be used to prevent
+   * injection attacks.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `Escaping` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /** Gets an input that will be escaped. */
+    abstract DataFlow::Node getAnInput();
+
+    /** Gets the output that contains the escaped data. */
+    abstract DataFlow::Node getOutput();
+
+    /**
+     * Gets the context that this function escapes for.
+     *
+     * While kinds are represented as strings, this should not be relied upon. Use the
+     * predicates in  the `Escaping` module, such as `getHtmlKind`.
+     */
+    abstract string getKind();
+  }
+
+  /** Gets the escape-kind for escaping a string so it can safely be included in HTML. */
+  string getHtmlKind() { result = "html" }
+  // TODO: If adding an XML kind, update the modeling of the `MarkupSafe` PyPI package.
+  //
+  // Technically it claims to escape for both HTML and XML, but for now we don't have
+  // anything that relies on XML escaping, so I'm going to defer deciding whether they
+  // should be the same kind, or whether they deserve to be treated differently.
+}
+
+/**
+ * An escape of a string so it can be safely included in
+ * the body of an HTML element, for example, replacing `{}` in
+ * `<p>{}</p>`.
+ */
+class HtmlEscaping extends Escaping {
+  HtmlEscaping() { range.getKind() = Escaping::getHtmlKind() }
 }
 
 /** Provides classes for modeling HTTP-related APIs. */
@@ -522,6 +656,62 @@ module HTTP {
         abstract DataFlow::Node getRedirectLocation();
       }
     }
+
+    /**
+     * A data-flow node that sets a cookie in an HTTP response.
+     *
+     * Extend this class to refine existing API models. If you want to model new APIs,
+     * extend `HTTP::CookieWrite::Range` instead.
+     */
+    class CookieWrite extends DataFlow::Node {
+      CookieWrite::Range range;
+
+      CookieWrite() { this = range }
+
+      /**
+       * Gets the argument, if any, specifying the raw cookie header.
+       */
+      DataFlow::Node getHeaderArg() { result = range.getHeaderArg() }
+
+      /**
+       * Gets the argument, if any, specifying the cookie name.
+       */
+      DataFlow::Node getNameArg() { result = range.getNameArg() }
+
+      /**
+       * Gets the argument, if any, specifying the cookie value.
+       */
+      DataFlow::Node getValueArg() { result = range.getValueArg() }
+    }
+
+    /** Provides a class for modeling new cookie writes on HTTP responses. */
+    module CookieWrite {
+      /**
+       * A data-flow node that sets a cookie in an HTTP response.
+       *
+       * Note: we don't require that this redirect must be sent to a client (a kind of
+       * "if a tree falls in a forest and nobody hears it" situation).
+       *
+       * Extend this class to model new APIs. If you want to refine existing API models,
+       * extend `HttpResponse` instead.
+       */
+      abstract class Range extends DataFlow::Node {
+        /**
+         * Gets the argument, if any, specifying the raw cookie header.
+         */
+        abstract DataFlow::Node getHeaderArg();
+
+        /**
+         * Gets the argument, if any, specifying the cookie name.
+         */
+        abstract DataFlow::Node getNameArg();
+
+        /**
+         * Gets the argument, if any, specifying the cookie value.
+         */
+        abstract DataFlow::Node getValueArg();
+      }
+    }
   }
 }
 
@@ -568,7 +758,7 @@ module Cryptography {
     /** Provides classes for modeling new key-pair generation APIs. */
     module KeyGeneration {
       /** Gets a back-reference to the keysize argument `arg` that was used to generate a new key-pair. */
-      private DataFlow::LocalSourceNode keysizeBacktracker(
+      private DataFlow::TypeTrackingNode keysizeBacktracker(
         DataFlow::TypeBackTracker t, DataFlow::Node arg
       ) {
         t.start() and

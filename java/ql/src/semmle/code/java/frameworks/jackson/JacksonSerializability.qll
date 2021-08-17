@@ -7,7 +7,7 @@ import java
 import semmle.code.java.Serializability
 import semmle.code.java.Reflection
 import semmle.code.java.dataflow.DataFlow
-import semmle.code.java.dataflow.DataFlow5
+private import semmle.code.java.dataflow.internal.DataFlowForSerializability
 import semmle.code.java.dataflow.FlowSteps
 private import semmle.code.java.dataflow.ExternalFlow
 
@@ -51,6 +51,10 @@ private class JacksonWriteValueMethod extends Method, TaintPreservingCallable {
   }
 }
 
+/**
+ * A method used for deserializing objects using Jackson. The first parameter is the object to be
+ * deserialized.
+ */
 private class JacksonReadValueMethod extends Method, TaintPreservingCallable {
   JacksonReadValueMethod() {
     (
@@ -85,7 +89,7 @@ private class FieldReferencedJacksonSerializableType extends JacksonSerializable
 /** A type whose values may be deserialized by the Jackson JSON framework. */
 abstract class JacksonDeserializableType extends Type { }
 
-private class TypeLiteralToJacksonDatabindFlowConfiguration extends DataFlow5::Configuration {
+private class TypeLiteralToJacksonDatabindFlowConfiguration extends DataFlowForSerializability::Configuration {
   TypeLiteralToJacksonDatabindFlowConfiguration() {
     this = "TypeLiteralToJacksonDatabindFlowConfiguration"
   }
@@ -112,7 +116,7 @@ private class TypeLiteralToJacksonDatabindFlowConfiguration extends DataFlow5::C
 private class ExplicitlyReadJacksonDeserializableType extends JacksonDeserializableType {
   ExplicitlyReadJacksonDeserializableType() {
     exists(TypeLiteralToJacksonDatabindFlowConfiguration conf |
-      usesType(conf.getSourceWithFlowToJacksonDatabind().getTypeName().getType(), this)
+      usesType(conf.getSourceWithFlowToJacksonDatabind().getReferencedType(), this)
     )
     or
     exists(MethodAccess ma |
@@ -281,7 +285,10 @@ private class JacksonModel extends SummaryModelCsv {
       [
         "com.fasterxml.jackson.databind;ObjectMapper;true;valueToTree;;;Argument[0];ReturnValue;taint",
         "com.fasterxml.jackson.databind;ObjectMapper;true;valueToTree;;;MapValue of Argument[0];ReturnValue;taint",
-        "com.fasterxml.jackson.databind;ObjectMapper;true;convertValue;;;Argument[0];ReturnValue;taint"
+        "com.fasterxml.jackson.databind;ObjectMapper;true;convertValue;;;Argument[0];ReturnValue;taint",
+        "com.fasterxml.jackson.databind;ObjectMapper;false;createParser;;;Argument[0];ReturnValue;taint",
+        "com.fasterxml.jackson.databind;ObjectReader;false;createParser;;;Argument[0];ReturnValue;taint",
+        "com.fasterxml.jackson.core;JsonFactory;false;createParser;;;Argument[0];ReturnValue;taint"
       ]
   }
 }

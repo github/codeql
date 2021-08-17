@@ -82,8 +82,22 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
   /** Holds if this function is inline. */
   predicate isInline() { this.hasSpecifier("inline") }
 
-  /** Holds if this function is virtual. */
+  /**
+   * Holds if this function is virtual.
+   *
+   * Unlike `isDeclaredVirtual()`, `isVirtual()` holds even if the function
+   * is not explicitly declared with the `virtual` specifier.
+   */
   predicate isVirtual() { this.hasSpecifier("virtual") }
+
+  /** Holds if this function is declared with the `virtual` specifier. */
+  predicate isDeclaredVirtual() { this.hasSpecifier("declared_virtual") }
+
+  /** Holds if this function is declared with the `override` specifier. */
+  predicate isOverride() { this.hasSpecifier("override") }
+
+  /** Holds if this function is declared with the `final` specifier. */
+  predicate isFinal() { this.hasSpecifier("final") }
 
   /**
    * Holds if this function is deleted.
@@ -136,6 +150,20 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
    * `__declspec(naked)`.
    */
   predicate isNaked() { getAnAttribute().hasName("naked") }
+
+  /**
+   * Holds if this function has a trailing return type.
+   *
+   * Note that this is true whether or not deduction took place. For example,
+   * this holds for both `e` and `f`, but not `g` or `h`:
+   * ```
+   * auto e() -> int { return 0; }
+   * auto f() -> auto { return 0; }
+   * auto g() { return 0; }
+   * int h() { return 0; }
+   * ```
+   */
+  predicate hasTrailingReturnType() { this.hasSpecifier("has_trailing_return_type") }
 
   /** Gets the return type of this function. */
   Type getType() { function_return_type(underlyingElement(this), unresolveElement(result)) }

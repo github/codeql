@@ -337,3 +337,56 @@ class StripAnsiStep extends TaintTracking::SharedTaintStep {
     )
   }
 }
+
+/**
+ * Provides classes and predicates for working with the `pino` library.
+ */
+private module Pino {
+  /**
+   * Gets a logger instance created by importing the `pino` library.
+   */
+  private API::Node pinoApi() {
+    result = API::moduleImport("pino").getReturn()
+    or
+    result = pinoApi().getMember("child").getReturn()
+  }
+
+  /**
+   * Gets a logger instance from the `pino` library.
+   */
+  private API::Node pino() {
+    result = pinoApi()
+    or
+    // `pino` is installed as the "log" property on the request object in `Express` and similar libraries.
+    // in `Hapi` the property is "logger".
+    exists(HTTP::RequestExpr req, API::Node reqNode |
+      reqNode.getAnImmediateUse() = req.flow().getALocalSource() and
+      result = reqNode.getMember(["log", "logger"])
+    )
+  }
+
+  /**
+   * A logging call to the `pino` library.
+   */
+  private class PinoCall extends LoggerCall {
+    PinoCall() {
+      this = pino().getMember(["trace", "debug", "info", "warn", "error", "fatal"]).getACall()
+    }
+
+    override DataFlow::Node getAMessageComponent() { result = getAnArgument() }
+  }
+}
+
+/**
+ * A step through the [`ansi-to-html`](https://npmjs.org/package/ansi-to-html) library.
+ */
+class AnsiToHtmlStep extends TaintTracking::SharedTaintStep {
+  override predicate stringManipulationStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(API::CallNode call |
+      call = API::moduleImport("ansi-to-html").getInstance().getMember("toHtml").getACall()
+    |
+      pred = call.getArgument(0) and
+      succ = call
+    )
+  }
+}

@@ -33,15 +33,20 @@ private import DataFlowPrivate
 class LocalSourceNode extends Node {
   cached
   LocalSourceNode() {
-    not simpleLocalFlowStep(_, this) and
-    // Currently, we create synthetic post-update nodes for
-    // - arguments to calls that may modify said argument
-    // - direct reads a writes of object attributes
-    // Both of these preserve the identity of the underlying pointer, and hence we exclude these as
-    // local source nodes.
-    // We do, however, allow the post-update nodes that arise from object creation (which are non-synthetic).
-    not this instanceof SyntheticPostUpdateNode
+    this instanceof ExprNode and
+    not simpleLocalFlowStep(_, this)
     or
+    // We include all module variable nodes, as these act as stepping stones between writes and
+    // reads of global variables. Without them, type tracking based on `LocalSourceNode`s would be
+    // unable to track across global variables.
+    //
+    // Once the `track` and `backtrack` methods have been fully deprecated, this disjunct can be
+    // removed, and the entire class can extend `ExprNode`. At that point, `TypeTrackingNode` should
+    // be used for type tracking instead of `LocalSourceNode`.
+    this instanceof ModuleVariableNode
+    or
+    // We explicitly include any read of a global variable, as some of these may have local flow going
+    // into them.
     this = any(ModuleVariableNode mvn).getARead()
   }
 
@@ -115,6 +120,53 @@ class LocalSourceNode extends Node {
   LocalSourceNode backtrack(TypeBackTracker t2, TypeBackTracker t) { t2 = t.step(result, this) }
 }
 
+/**
+ * A node that can be used for type tracking or type back-tracking.
+ *
+ * All steps made during type tracking should be between instances of this class.
+ */
+class TypeTrackingNode = LocalSourceNode;
+
+/** Temporary holding ground for the `TypeTrackingNode` class. */
+private module FutureWork {
+  class FutureTypeTrackingNode extends Node {
+    FutureTypeTrackingNode() {
+      this instanceof LocalSourceNode
+      or
+      this instanceof ModuleVariableNode
+    }
+
+    /**
+     * Holds if this node can flow to `nodeTo` in one or more local flow steps.
+     *
+     * For `ModuleVariableNode`s, the only "local" step is to the node itself.
+     * For `LocalSourceNode`s, this is the usual notion of local flow.
+     */
+    pragma[inline]
+    predicate flowsTo(Node node) {
+      this instanceof ModuleVariableNode and this = node
+      or
+      this.(LocalSourceNode).flowsTo(node)
+    }
+
+    /**
+     * Gets a node that this node may flow to using one heap and/or interprocedural step.
+     *
+     * See `TypeTracker` for more details about how to use this.
+     */
+    pragma[inline]
+    TypeTrackingNode track(TypeTracker t2, TypeTracker t) { t = t2.step(this, result) }
+
+    /**
+     * Gets a node that may flow into this one using one heap and/or interprocedural step.
+     *
+     * See `TypeBackTracker` for more details about how to use this.
+     */
+    pragma[inline]
+    TypeTrackingNode backtrack(TypeBackTracker t2, TypeBackTracker t) { t2 = t.step(result, this) }
+  }
+}
+
 cached
 private module Cached {
   /**
@@ -127,9 +179,19 @@ private module Cached {
     source = sink
     or
     exists(Node second |
-      simpleLocalFlowStep(source, second) and
-      simpleLocalFlowStep*(second, sink)
+      localSourceFlowStep(source, second) and
+      localSourceFlowStep*(second, sink)
     )
+  }
+
+  /**
+   * Helper predicate for `hasLocalSource`. Removes any steps go to module variable reads, as these
+   * are already local source nodes in their own right.
+   */
+  cached
+  private predicate localSourceFlowStep(Node nodeFrom, Node nodeTo) {
+    simpleLocalFlowStep(nodeFrom, nodeTo) and
+    not nodeTo = any(ModuleVariableNode v).getARead()
   }
 
   /**

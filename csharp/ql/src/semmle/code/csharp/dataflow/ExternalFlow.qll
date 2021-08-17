@@ -84,7 +84,10 @@ private import internal.FlowSummaryImplSpecific
  * ensuring that they are visible to the taint tracking / data flow library.
  */
 private module Frameworks {
-  // TODO
+  private import semmle.code.csharp.security.dataflow.flowsources.Local
+  private import semmle.code.csharp.security.dataflow.flowsinks.Html
+  private import semmle.code.csharp.frameworks.System
+  private import semmle.code.csharp.security.dataflow.XSSSinks
 }
 
 /**
@@ -322,33 +325,49 @@ private predicate elementSpec(
   summaryModel(namespace, type, subtypes, name, signature, ext, _, _, _)
 }
 
+private predicate elementSpec(
+  string namespace, string type, boolean subtypes, string name, string signature, string ext,
+  UnboundValueOrRefType t
+) {
+  elementSpec(namespace, type, subtypes, name, signature, ext) and
+  t.hasQualifiedName(namespace, type)
+}
+
 private class UnboundValueOrRefType extends ValueOrRefType {
   UnboundValueOrRefType() { this.isUnboundDeclaration() }
 
-  UnboundValueOrRefType getASubTypeUnbound() { result = this.getASubType().getUnboundDeclaration() }
+  UnboundValueOrRefType getASubTypeUnbound() {
+    exists(Type t |
+      result.getABaseType() = t and
+      this = t.getUnboundDeclaration()
+    )
+  }
 }
 
-bindingset[namespace, type, subtypes]
-private UnboundValueOrRefType interpretType(string namespace, string type, boolean subtypes) {
-  exists(UnboundValueOrRefType t |
-    t.hasQualifiedName(namespace, type) and
-    if subtypes = true then result = t.getASubTypeUnbound*() else result = t
-  )
-}
+private class UnboundCallable extends Callable, Virtualizable {
+  UnboundCallable() { this.isUnboundDeclaration() }
 
-private Member interpretMember(
-  string namespace, string type, boolean subtypes, string name, string signature
-) {
-  elementSpec(namespace, type, subtypes, name, signature, _) and
-  exists(UnboundValueOrRefType t |
-    t = interpretType(namespace, type, subtypes) and
-    result.getDeclaringType() = t and
-    result.hasName(name)
-  )
+  predicate overridesOrImplementsUnbound(UnboundCallable that) {
+    exists(Callable c |
+      this.overridesOrImplementsOrEquals(c) and
+      this != c and
+      that = c.getUnboundDeclaration()
+    )
+  }
 }
 
 private class InterpretedCallable extends Callable {
-  InterpretedCallable() { this = interpretMember(_, _, _, _, _) }
+  InterpretedCallable() {
+    exists(UnboundValueOrRefType t, boolean subtypes, string name |
+      elementSpec(_, _, subtypes, name, _, _, t) and
+      this.hasName(name)
+    |
+      this.getDeclaringType() = t
+      or
+      subtypes = true and
+      this.getDeclaringType() = t.getASubTypeUnbound+()
+    )
+  }
 }
 
 private string paramsStringPartA(InterpretedCallable c, int i) {
@@ -385,10 +404,13 @@ private string paramsString(InterpretedCallable c) {
 private Element interpretElement0(
   string namespace, string type, boolean subtypes, string name, string signature
 ) {
-  elementSpec(namespace, type, subtypes, name, signature, _) and
-  exists(UnboundValueOrRefType t | t = interpretType(namespace, type, subtypes) |
+  exists(UnboundValueOrRefType t | elementSpec(namespace, type, subtypes, name, signature, _, t) |
     exists(Member m |
-      result = m and
+      (
+        result = m
+        or
+        subtypes = true and result.(UnboundCallable).overridesOrImplementsUnbound(m)
+      ) and
       m.getDeclaringType() = t and
       m.hasName(name)
     |
@@ -397,6 +419,12 @@ private Element interpretElement0(
       paramsString(m) = signature
     )
     or
+    (
+      result = t
+      or
+      subtypes = true and
+      result = t.(UnboundValueOrRefType).getASubTypeUnbound+()
+    ) and
     result = t and
     name = "" and
     signature = ""

@@ -10,6 +10,7 @@
  */
 
 import javascript
+private import semmle.javascript.dataflow.internal.FlowSteps as FlowSteps
 
 /**
  * Provides classes and predicates for working with APIs defined or used in a database.
@@ -617,11 +618,11 @@ module API {
     cached
     predicate use(TApiNode nd, DataFlow::Node ref) {
       exists(string m, Module mod | nd = MkModuleDef(m) and mod = importableModule(m) |
-        ref.(ModuleVarNode).getModule() = mod
+        ref = DataFlow::moduleVarNode(mod)
       )
       or
       exists(string m, Module mod | nd = MkModuleExport(m) and mod = importableModule(m) |
-        ref.(ExportsVarNode).getModule() = mod
+        ref = DataFlow::exportsVarNode(mod)
         or
         exists(DataFlow::Node base | use(MkModuleDef(m), base) |
           ref = trackUseNode(base).getAPropertyRead("exports")
@@ -742,12 +743,21 @@ module API {
       or
       // additional backwards step from `require('m')` to `exports` or `module.exports` in m
       exists(Import imp | imp.getImportedModuleNode() = trackDefNode(nd, t.continue()) |
-        result.(ExportsVarNode).getModule() = imp.getImportedModule()
+        result = DataFlow::exportsVarNode(imp.getImportedModule())
         or
-        exists(ModuleVarNode mod |
-          mod.getModule() = imp.getImportedModule() and
-          result = mod.(DataFlow::SourceNode).getAPropertyRead("exports")
-        )
+        result = DataFlow::moduleVarNode(imp.getImportedModule()).getAPropertyRead("exports")
+      )
+      or
+      exists(ObjectExpr obj |
+        obj = trackDefNode(nd, t.continue()).asExpr() and
+        result =
+          obj.getAProperty()
+              .(SpreadProperty)
+              .getInit()
+              .(SpreadElement)
+              .getOperand()
+              .flow()
+              .getALocalSource()
       )
       or
       t = defStep(nd, result)
@@ -933,9 +943,30 @@ private module Label {
   /** Gets the `member` edge label for the unknown member. */
   string unknownMember() { result = "member *" }
 
+  /**
+   * Gets a property name referred to by the given dynamic property access,
+   * allowing one property flow step in the process (to allow flow through imports).
+   *
+   * This is to support code patterns where the property name is actually constant,
+   * but the property name has been factored into a library.
+   */
+  private string getAnIndirectPropName(DataFlow::PropRef ref) {
+    exists(DataFlow::Node pred |
+      FlowSteps::propertyFlowStep(pred, ref.getPropertyNameExpr().flow()) and
+      result = pred.getStringValue()
+    )
+  }
+
+  /**
+   * Gets unique result of `getAnIndirectPropName` if there is one.
+   */
+  private string getIndirectPropName(DataFlow::PropRef ref) {
+    result = unique(string s | s = getAnIndirectPropName(ref))
+  }
+
   /** Gets the `member` edge label for the given property reference. */
   string memberFromRef(DataFlow::PropRef pr) {
-    exists(string pn | pn = pr.getPropertyName() |
+    exists(string pn | pn = pr.getPropertyName() or pn = getIndirectPropName(pr) |
       result = member(pn) and
       // only consider properties with alphanumeric(-ish) names, excluding special properties
       // and properties whose names look like they are meant to be internal
@@ -943,6 +974,7 @@ private module Label {
     )
     or
     not exists(pr.getPropertyName()) and
+    not exists(getIndirectPropName(pr)) and
     result = unknownMember()
   }
 
@@ -980,47 +1012,4 @@ private module Label {
 
   /** Gets the `promisedError` edge label connecting a promise to its rejected value. */
   string promisedError() { result = "promisedError" }
-}
-
-private class NodeModuleSourcesNodes extends DataFlow::SourceNode::Range {
-  Variable v;
-
-  NodeModuleSourcesNodes() {
-    exists(NodeModule m |
-      this = DataFlow::ssaDefinitionNode(SSA::implicitInit(v)) and
-      v = [m.getModuleVariable(), m.getExportsVariable()]
-    )
-  }
-
-  Variable getVariable() { result = v }
-}
-
-/**
- * A CommonJS/AMD `module` variable.
- */
-private class ModuleVarNode extends DataFlow::Node {
-  Module m;
-
-  ModuleVarNode() {
-    this.(NodeModuleSourcesNodes).getVariable() = m.(NodeModule).getModuleVariable()
-    or
-    DataFlow::parameterNode(this, m.(AmdModule).getDefine().getModuleParameter())
-  }
-
-  Module getModule() { result = m }
-}
-
-/**
- * A CommonJS/AMD `exports` variable.
- */
-private class ExportsVarNode extends DataFlow::Node {
-  Module m;
-
-  ExportsVarNode() {
-    this.(NodeModuleSourcesNodes).getVariable() = m.(NodeModule).getExportsVariable()
-    or
-    DataFlow::parameterNode(this, m.(AmdModule).getDefine().getExportsParameter())
-  }
-
-  Module getModule() { result = m }
 }

@@ -14,7 +14,7 @@
  */
 
 import csharp
-import semmle.code.csharp.security.dataflow.CommandInjection::CommandInjection
+import semmle.code.csharp.security.dataflow.CommandInjectionQuery
 import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 
 from TaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink

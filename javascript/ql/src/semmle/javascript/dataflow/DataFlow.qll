@@ -1495,6 +1495,16 @@ module DataFlow {
       predExpr = succExpr.(NonNullAssertion).getExpression()
       or
       predExpr = succExpr.(ExpressionWithTypeArguments).getExpression()
+      or
+      (
+        succExpr instanceof AssignLogOrExpr or
+        succExpr instanceof AssignLogAndExpr or
+        succExpr instanceof AssignNullishCoalescingExpr
+      ) and
+      (
+        predExpr = succExpr.(CompoundAssignExpr).getLhs() or
+        predExpr = succExpr.(CompoundAssignExpr).getRhs()
+      )
     )
     or
     // flow from 'this' parameter into 'this' expressions
