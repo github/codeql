@@ -33,7 +33,7 @@ class KotlinExtractorExtension(private val tests: List<String>) : IrGenerationEx
         trapDir.mkdirs()
         val srcDir = File(System.getenv("CODEQL_EXTRACTOR_JAVA_SOURCE_ARCHIVE_DIR").takeUnless { it.isNullOrEmpty() } ?: "kotlin-extractor/src")
         srcDir.mkdirs()
-        moduleFragment.files.map { extractFile(logger, trapDir, srcDir, it) }
+        moduleFragment.files.map { doFile(logger, trapDir, srcDir, it) }
         logger.printLimitedWarningCounts()
         // We don't want the compiler to continue and generate class
         // files etc, so we just exit when we are finished extracting.
@@ -149,7 +149,7 @@ class TrapWriter (
     }
 }
 
-fun extractFile(logger: Logger, trapDir: File, srcDir: File, declaration: IrFile) {
+fun doFile(logger: Logger, trapDir: File, srcDir: File, declaration: IrFile) {
     val filePath = declaration.path
     val file = File(filePath)
     val fileLabel = "@\"$filePath;sourcefile\""
@@ -168,10 +168,7 @@ fun extractFile(logger: Logger, trapDir: File, srcDir: File, declaration: IrFile
         val id: Label<DbFile> = tw.getLabelFor(fileLabel)
         tw.writeFiles(id, filePath, basename, extension, 0)
         val fileExtractor = KotlinFileExtractor(logger, tw)
-        val pkg = declaration.fqName.asString()
-        val pkgId = fileExtractor.extractPackage(pkg)
-        tw.writeCupackage(id, pkgId)
-        declaration.declarations.map { fileExtractor.extractDeclaration(it, pkgId) }
+        fileExtractor.extractFile(id, declaration)
     }
 }
 
@@ -183,6 +180,47 @@ fun <T> fakeLabel(): Label<T> {
 }
 
 class KotlinFileExtractor(val logger: Logger, val tw: TrapWriter) {
+    fun extractFile(id: Label<DbFile>, f: IrFile) {
+        val pkg = f.fqName.asString()
+        val pkgId = extractPackage(pkg)
+        tw.writeCupackage(id, pkgId)
+        // TODO: This shouldn't really exist if there is nothing to go on it
+        val fileClass = extractFileClass(f)
+        f.declarations.map { extractDeclaration(it, fileClass) }
+    }
+
+  fun extractFileClass(f: IrFile): Label<out DbClass> {
+      val fileName = f.fileEntry.name
+      val pkg = f.fqName.asString()
+      val defaultName = fileName.replaceFirst(Regex(""".*[/\\]"""), "").replaceFirst(Regex("""\.kt$"""), "").replaceFirstChar({ it.uppercase() }) + "Kt"
+      var jvmName = defaultName
+      for(a: IrConstructorCall in f.annotations) {
+          val t = a.type
+          if(t is IrSimpleType && a.valueArgumentsCount == 1) {
+              val owner = t.classifier.owner
+              val v = a.getValueArgument(0)
+              if(owner is IrClass) {
+                  val aPkg = owner.packageFqName?.asString()
+                  val name = owner.name.asString()
+                  if(aPkg == "kotlin.jvm" && name == "JvmName" && v is IrConst<*>) {
+                      val value = v.value
+                      if(value is String) {
+                          jvmName = value
+                      }
+                  }
+              }
+          }
+      }
+      val qualClassName = if (pkg.isEmpty()) jvmName else "$pkg.$jvmName"
+      val label = "@\"class;$qualClassName\""
+      val id: Label<DbClass> = tw.getLabelFor(label)
+      val locId = tw.getLocation(-1, -1) // TODO: This should be the whole file
+      val pkgId = extractPackage(pkg)
+      tw.writeClasses(id, jvmName, pkgId, id)
+      tw.writeHasLocation(id, locId)
+      return id
+  }
+
     fun usePackage(pkg: String): Label<out DbPackage> {
         return extractPackage(pkg)
     }
@@ -195,7 +233,7 @@ class KotlinFileExtractor(val logger: Logger, val tw: TrapWriter) {
         return id
     }
 
-    fun extractDeclaration(declaration: IrDeclaration, parentid: Label<out DbPackage_or_reftype>) {
+    fun extractDeclaration(declaration: IrDeclaration, parentid: Label<out DbReftype>) {
         when (declaration) {
             is IrClass -> extractClass(declaration)
             is IrFunction -> extractFunction(declaration, parentid)
@@ -325,7 +363,7 @@ class KotlinFileExtractor(val logger: Logger, val tw: TrapWriter) {
         tw.writeParamName(id, vp.name.asString())
     }
 
-    fun extractFunction(f: IrFunction, parentid: Label<out DbPackage_or_reftype>) {
+    fun extractFunction(f: IrFunction, parentid: Label<out DbReftype>) {
         val id = useFunction(f)
         val locId = tw.getLocation(f.startOffset, f.endOffset)
         val signature = "TODO"

@@ -8,4 +8,5 @@
 | file://:0:0:0:0 | short | PrimitiveType |
 | file://:0:0:0:0 | string | ??? |
 | types.kt:0:0:0:0 | Any | Class |
+| types.kt:0:0:0:0 | TypesKt | Class |
 | types.kt:2:1:33:1 | Foo | Class |

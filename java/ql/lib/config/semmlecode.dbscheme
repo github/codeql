@@ -339,7 +339,7 @@ methods(
   string nodeName: string ref,
   string signature: string ref,
   int typeid: @type ref,
-  int parentid: @package_or_reftype ref,
+  int parentid: @reftype ref,
   int sourceid: @method ref
 );
 
