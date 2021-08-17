@@ -39,7 +39,7 @@ module Vue {
     MkVueInstance(DataFlow::NewNode def) { def = vueLibrary().getAnInstantiation() } or
     MkExtendedVue(VueExtend extend) or
     MkExtendedInstance(VueExtend extend, DataFlow::NewNode sub) {
-      sub = extend.getAnInstantiation()
+      sub = extend.getReturn().getAnInstantiation()
     } or
     MkComponentRegistration(DataFlow::CallNode def) { def = vueLibrary().getMember("component").getACall() } or
     MkSingleFileComponent(VueFile file)
