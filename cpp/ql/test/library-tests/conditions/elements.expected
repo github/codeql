@@ -40,6 +40,7 @@
 | file://:0:0:0:0 | auto |
 | file://:0:0:0:0 | auto |
 | file://:0:0:0:0 | bool |
+| file://:0:0:0:0 | c_linkage |
 | file://:0:0:0:0 | char |
 | file://:0:0:0:0 | char8_t |
 | file://:0:0:0:0 | char16_t |
