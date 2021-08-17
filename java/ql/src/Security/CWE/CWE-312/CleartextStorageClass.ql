@@ -12,15 +12,12 @@
  */
 
 import java
-import SensitiveStorage
+import semmle.code.java.security.CleartextStorageClassQuery
 
 from SensitiveSource data, ClassStore s, Expr input, Expr store
 where
   input = s.getAnInput() and
   store = s.getAStore() and
-  data.flowsToCached(input) and
-  // Exclude results in test code.
-  not testMethod(store.getEnclosingCallable()) and
-  not testMethod(data.getEnclosingCallable())
+  data.flowsToCached(input)
 select store, "Storable class $@ containing $@ is stored here. Data was added $@.", s, s.toString(),
   data, "sensitive data", input, "here"
