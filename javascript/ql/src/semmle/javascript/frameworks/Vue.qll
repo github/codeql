@@ -27,7 +27,7 @@ module Vue {
     MkExtendedInstance(VueExtend extend, DataFlow::NewNode sub) {
       sub = extend.getAnInstantiation()
     } or
-    MkComponent(DataFlow::CallNode def) { def = vue().getAMemberCall("component") } or
+    MkComponentRegistration(DataFlow::CallNode def) { def = vue().getAMemberCall("component") } or
     MkSingleFileComponent(VueFile file)
 
   /** Gets the name of a lifecycle hook method. */
@@ -402,10 +402,10 @@ module Vue {
   /**
    * A Vue component from `Vue.component("my-component", { ... })`.
    */
-  class Component extends Instance, MkComponent {
+  class ComponentRegistration extends Instance, MkComponentRegistration {
     DataFlow::CallNode def;
 
-    Component() { this = MkComponent(def) }
+    ComponentRegistration() { this = MkComponentRegistration(def) }
 
     override string toString() { result = def.toString() }
 
