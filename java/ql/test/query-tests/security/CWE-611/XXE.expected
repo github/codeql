@@ -18,29 +18,37 @@ edges
 | SchemaTests.java:45:56:45:76 | getInputStream(...) : InputStream | SchemaTests.java:45:39:45:77 | new StreamSource(...) |
 | SimpleXMLTests.java:24:63:24:83 | getInputStream(...) : InputStream | SimpleXMLTests.java:24:41:24:84 | new InputStreamReader(...) |
 | SimpleXMLTests.java:30:5:30:25 | getInputStream(...) : InputStream | SimpleXMLTests.java:30:32:30:32 | b [post update] : byte[] |
-| SimpleXMLTests.java:30:32:30:32 | b [post update] : byte[] | SimpleXMLTests.java:31:41:31:53 | new String(...) |
+| SimpleXMLTests.java:30:32:30:32 | b [post update] : byte[] | SimpleXMLTests.java:31:52:31:52 | b : byte[] |
+| SimpleXMLTests.java:31:52:31:52 | b : byte[] | SimpleXMLTests.java:31:41:31:53 | new String(...) |
 | SimpleXMLTests.java:37:5:37:25 | getInputStream(...) : InputStream | SimpleXMLTests.java:37:32:37:32 | b [post update] : byte[] |
-| SimpleXMLTests.java:37:32:37:32 | b [post update] : byte[] | SimpleXMLTests.java:38:41:38:53 | new String(...) |
+| SimpleXMLTests.java:37:32:37:32 | b [post update] : byte[] | SimpleXMLTests.java:38:52:38:52 | b : byte[] |
+| SimpleXMLTests.java:38:52:38:52 | b : byte[] | SimpleXMLTests.java:38:41:38:53 | new String(...) |
 | SimpleXMLTests.java:43:63:43:83 | getInputStream(...) : InputStream | SimpleXMLTests.java:43:41:43:84 | new InputStreamReader(...) |
 | SimpleXMLTests.java:68:59:68:79 | getInputStream(...) : InputStream | SimpleXMLTests.java:68:37:68:80 | new InputStreamReader(...) |
 | SimpleXMLTests.java:73:59:73:79 | getInputStream(...) : InputStream | SimpleXMLTests.java:73:37:73:80 | new InputStreamReader(...) |
 | SimpleXMLTests.java:78:48:78:68 | getInputStream(...) : InputStream | SimpleXMLTests.java:78:26:78:69 | new InputStreamReader(...) |
 | SimpleXMLTests.java:83:48:83:68 | getInputStream(...) : InputStream | SimpleXMLTests.java:83:26:83:69 | new InputStreamReader(...) |
 | SimpleXMLTests.java:89:5:89:25 | getInputStream(...) : InputStream | SimpleXMLTests.java:89:32:89:32 | b [post update] : byte[] |
-| SimpleXMLTests.java:89:32:89:32 | b [post update] : byte[] | SimpleXMLTests.java:90:37:90:49 | new String(...) |
+| SimpleXMLTests.java:89:32:89:32 | b [post update] : byte[] | SimpleXMLTests.java:90:48:90:48 | b : byte[] |
+| SimpleXMLTests.java:90:48:90:48 | b : byte[] | SimpleXMLTests.java:90:37:90:49 | new String(...) |
 | SimpleXMLTests.java:96:5:96:25 | getInputStream(...) : InputStream | SimpleXMLTests.java:96:32:96:32 | b [post update] : byte[] |
-| SimpleXMLTests.java:96:32:96:32 | b [post update] : byte[] | SimpleXMLTests.java:97:37:97:49 | new String(...) |
+| SimpleXMLTests.java:96:32:96:32 | b [post update] : byte[] | SimpleXMLTests.java:97:48:97:48 | b : byte[] |
+| SimpleXMLTests.java:97:48:97:48 | b : byte[] | SimpleXMLTests.java:97:37:97:49 | new String(...) |
 | SimpleXMLTests.java:103:5:103:25 | getInputStream(...) : InputStream | SimpleXMLTests.java:103:32:103:32 | b [post update] : byte[] |
-| SimpleXMLTests.java:103:32:103:32 | b [post update] : byte[] | SimpleXMLTests.java:104:26:104:38 | new String(...) |
+| SimpleXMLTests.java:103:32:103:32 | b [post update] : byte[] | SimpleXMLTests.java:104:37:104:37 | b : byte[] |
+| SimpleXMLTests.java:104:37:104:37 | b : byte[] | SimpleXMLTests.java:104:26:104:38 | new String(...) |
 | SimpleXMLTests.java:110:5:110:25 | getInputStream(...) : InputStream | SimpleXMLTests.java:110:32:110:32 | b [post update] : byte[] |
-| SimpleXMLTests.java:110:32:110:32 | b [post update] : byte[] | SimpleXMLTests.java:111:26:111:38 | new String(...) |
+| SimpleXMLTests.java:110:32:110:32 | b [post update] : byte[] | SimpleXMLTests.java:111:37:111:37 | b : byte[] |
+| SimpleXMLTests.java:111:37:111:37 | b : byte[] | SimpleXMLTests.java:111:26:111:38 | new String(...) |
 | SimpleXMLTests.java:119:44:119:64 | getInputStream(...) : InputStream | SimpleXMLTests.java:119:22:119:65 | new InputStreamReader(...) |
 | SimpleXMLTests.java:129:44:129:64 | getInputStream(...) : InputStream | SimpleXMLTests.java:129:22:129:65 | new InputStreamReader(...) |
 | SimpleXMLTests.java:139:44:139:64 | getInputStream(...) : InputStream | SimpleXMLTests.java:139:22:139:65 | new InputStreamReader(...) |
 | SimpleXMLTests.java:145:5:145:25 | getInputStream(...) : InputStream | SimpleXMLTests.java:145:32:145:32 | b [post update] : byte[] |
-| SimpleXMLTests.java:145:32:145:32 | b [post update] : byte[] | SimpleXMLTests.java:146:22:146:34 | new String(...) |
+| SimpleXMLTests.java:145:32:145:32 | b [post update] : byte[] | SimpleXMLTests.java:146:33:146:33 | b : byte[] |
+| SimpleXMLTests.java:146:33:146:33 | b : byte[] | SimpleXMLTests.java:146:22:146:34 | new String(...) |
 | SimpleXMLTests.java:152:5:152:25 | getInputStream(...) : InputStream | SimpleXMLTests.java:152:32:152:32 | b [post update] : byte[] |
-| SimpleXMLTests.java:152:32:152:32 | b [post update] : byte[] | SimpleXMLTests.java:153:22:153:34 | new String(...) |
+| SimpleXMLTests.java:152:32:152:32 | b [post update] : byte[] | SimpleXMLTests.java:153:33:153:33 | b : byte[] |
+| SimpleXMLTests.java:153:33:153:33 | b : byte[] | SimpleXMLTests.java:153:22:153:34 | new String(...) |
 | TransformerTests.java:20:44:20:64 | getInputStream(...) : InputStream | TransformerTests.java:20:27:20:65 | new StreamSource(...) |
 | TransformerTests.java:21:40:21:60 | getInputStream(...) : InputStream | TransformerTests.java:21:23:21:61 | new StreamSource(...) |
 | TransformerTests.java:71:44:71:64 | getInputStream(...) : InputStream | TransformerTests.java:71:27:71:65 | new StreamSource(...) |
@@ -123,9 +131,11 @@ nodes
 | SimpleXMLTests.java:30:5:30:25 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
 | SimpleXMLTests.java:30:32:30:32 | b [post update] : byte[] | semmle.label | b [post update] : byte[] |
 | SimpleXMLTests.java:31:41:31:53 | new String(...) | semmle.label | new String(...) |
+| SimpleXMLTests.java:31:52:31:52 | b : byte[] | semmle.label | b : byte[] |
 | SimpleXMLTests.java:37:5:37:25 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
 | SimpleXMLTests.java:37:32:37:32 | b [post update] : byte[] | semmle.label | b [post update] : byte[] |
 | SimpleXMLTests.java:38:41:38:53 | new String(...) | semmle.label | new String(...) |
+| SimpleXMLTests.java:38:52:38:52 | b : byte[] | semmle.label | b : byte[] |
 | SimpleXMLTests.java:43:41:43:84 | new InputStreamReader(...) | semmle.label | new InputStreamReader(...) |
 | SimpleXMLTests.java:43:63:43:83 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
 | SimpleXMLTests.java:48:37:48:57 | getInputStream(...) | semmle.label | getInputStream(...) |
@@ -143,15 +153,19 @@ nodes
 | SimpleXMLTests.java:89:5:89:25 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
 | SimpleXMLTests.java:89:32:89:32 | b [post update] : byte[] | semmle.label | b [post update] : byte[] |
 | SimpleXMLTests.java:90:37:90:49 | new String(...) | semmle.label | new String(...) |
+| SimpleXMLTests.java:90:48:90:48 | b : byte[] | semmle.label | b : byte[] |
 | SimpleXMLTests.java:96:5:96:25 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
 | SimpleXMLTests.java:96:32:96:32 | b [post update] : byte[] | semmle.label | b [post update] : byte[] |
 | SimpleXMLTests.java:97:37:97:49 | new String(...) | semmle.label | new String(...) |
+| SimpleXMLTests.java:97:48:97:48 | b : byte[] | semmle.label | b : byte[] |
 | SimpleXMLTests.java:103:5:103:25 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
 | SimpleXMLTests.java:103:32:103:32 | b [post update] : byte[] | semmle.label | b [post update] : byte[] |
 | SimpleXMLTests.java:104:26:104:38 | new String(...) | semmle.label | new String(...) |
+| SimpleXMLTests.java:104:37:104:37 | b : byte[] | semmle.label | b : byte[] |
 | SimpleXMLTests.java:110:5:110:25 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
 | SimpleXMLTests.java:110:32:110:32 | b [post update] : byte[] | semmle.label | b [post update] : byte[] |
 | SimpleXMLTests.java:111:26:111:38 | new String(...) | semmle.label | new String(...) |
+| SimpleXMLTests.java:111:37:111:37 | b : byte[] | semmle.label | b : byte[] |
 | SimpleXMLTests.java:115:22:115:42 | getInputStream(...) | semmle.label | getInputStream(...) |
 | SimpleXMLTests.java:119:22:119:65 | new InputStreamReader(...) | semmle.label | new InputStreamReader(...) |
 | SimpleXMLTests.java:119:44:119:64 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
@@ -164,9 +178,11 @@ nodes
 | SimpleXMLTests.java:145:5:145:25 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
 | SimpleXMLTests.java:145:32:145:32 | b [post update] : byte[] | semmle.label | b [post update] : byte[] |
 | SimpleXMLTests.java:146:22:146:34 | new String(...) | semmle.label | new String(...) |
+| SimpleXMLTests.java:146:33:146:33 | b : byte[] | semmle.label | b : byte[] |
 | SimpleXMLTests.java:152:5:152:25 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
 | SimpleXMLTests.java:152:32:152:32 | b [post update] : byte[] | semmle.label | b [post update] : byte[] |
 | SimpleXMLTests.java:153:22:153:34 | new String(...) | semmle.label | new String(...) |
+| SimpleXMLTests.java:153:33:153:33 | b : byte[] | semmle.label | b : byte[] |
 | TransformerTests.java:20:27:20:65 | new StreamSource(...) | semmle.label | new StreamSource(...) |
 | TransformerTests.java:20:44:20:64 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
 | TransformerTests.java:21:23:21:61 | new StreamSource(...) | semmle.label | new StreamSource(...) |
