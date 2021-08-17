@@ -1,5 +1,5 @@
 - description: Standard LGTM queries for C/C++, including ones not displayed by default
-- qlpack: codeql-cpp
+- queries: .
 - apply: lgtm-selectors.yml
   from: codeql/suite-helpers
 - apply: codeql-suites/exclude-slow-queries.yml
