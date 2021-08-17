@@ -1,4 +1,4 @@
-#include <stdint.h>
+typedef unsigned char uint8_t;
 #define SIZE (32)
 
 void test_buffer_overrun_in_for_loop()
