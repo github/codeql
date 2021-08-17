@@ -8,7 +8,7 @@ class Class {
 
     fun anotherClassMethod(a: Int, b: Int) {
         classMethod(a, 3)
-        // TODO topLevelMethod(b, 4)
+        topLevelMethod(b, 4)
     }
 }
 

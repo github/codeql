@@ -386,7 +386,7 @@ class KotlinFileExtractor(val logger: Logger, val tw: TrapWriter) {
         return id
     }
 
-    fun extractProperty(p: IrProperty, parentid: Label<out DbPackage_or_reftype>) {
+    fun extractProperty(p: IrProperty, parentid: Label<out DbReftype>) {
         val bf = p.backingField
         if(bf == null) {
             logger.warn("IrProperty without backing field")

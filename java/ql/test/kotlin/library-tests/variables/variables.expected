@@ -4,3 +4,4 @@
 | variables.kt:3:5:3:21 | prop | file://:0:0:0:0 | int | file://:0:0:0:0 | <none> |
 | variables.kt:5:20:5:29 | param | file://:0:0:0:0 | int | file://:0:0:0:0 | <none> |
 | variables.kt:6:9:6:25 | int local | file://:0:0:0:0 | int | variables.kt:6:21:6:25 | ... + ... |
+| variables.kt:10:1:10:21 | topLevel | file://:0:0:0:0 | int | file://:0:0:0:0 | <none> |

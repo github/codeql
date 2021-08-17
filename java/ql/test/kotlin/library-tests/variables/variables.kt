@@ -7,5 +7,5 @@ class Foo {
     }
 }
 
-// TODO: val topLevel: Int = 1
+val topLevel: Int = 1
 

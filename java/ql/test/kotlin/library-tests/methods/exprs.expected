@@ -2,3 +2,6 @@
 | methods.kt:10:9:10:25 | this |
 | methods.kt:10:21:10:21 | a |
 | methods.kt:10:24:10:24 | 3 |
+| methods.kt:11:9:11:28 | topLevelMethod(...) |
+| methods.kt:11:24:11:24 | b |
+| methods.kt:11:27:11:27 | 4 |
