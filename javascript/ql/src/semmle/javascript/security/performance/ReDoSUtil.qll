@@ -72,6 +72,49 @@ private int ascii(string char) {
 }
 
 /**
+ * Holds if `t` matches at least an epsilon symbol.
+ *
+ * That is, this term does not restrict the language of the enclosing regular expression.
+ *
+ * This is implemented as an under-approximation, and this predicate does not hold for sub-patterns in particular.
+ */
+predicate matchesEpsilon(RegExpTerm t) {
+  t instanceof RegExpStar
+  or
+  t instanceof RegExpOpt
+  or
+  t.(RegExpRange).getLowerBound() = 0
+  or
+  exists(RegExpTerm child |
+    child = t.getAChild() and
+    matchesEpsilon(child)
+  |
+    t instanceof RegExpAlt or
+    t instanceof RegExpGroup or
+    t instanceof RegExpPlus or
+    t instanceof RegExpRange
+  )
+  or
+  matchesEpsilon(t.(RegExpBackRef).getGroup())
+  or
+  forex(RegExpTerm child | child = t.(RegExpSequence).getAChild() | matchesEpsilon(child))
+}
+
+/**
+ * A lookahead/lookbehind that matches the empty string.
+ */
+class EmptyPositiveSubPatttern extends RegExpSubPattern {
+  EmptyPositiveSubPatttern() {
+    (
+      this instanceof RegExpPositiveLookahead
+      or
+      this instanceof RegExpPositiveLookbehind
+    ) and
+    matchesEpsilon(this.getOperand())
+  }
+}
+
+/**
  * A branch in a disjunction that is the root node in a literal, or a literal
  * whose root node is not a disjunction.
  */
@@ -549,6 +592,10 @@ predicate delta(State q1, EdgeLabel lbl, State q2) {
   or
   exists(RegExpDollar dollar | q1 = before(dollar) |
     lbl = Epsilon() and q2 = Accept(getRoot(dollar))
+  )
+  or
+  exists(EmptyPositiveSubPatttern empty | q1 = before(empty) |
+    lbl = Epsilon() and q2 = after(empty)
   )
 }
 

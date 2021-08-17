@@ -14,7 +14,7 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.UnsafeShellCommandConstruction::UnsafeShellCommandConstruction
+import semmle.javascript.security.dataflow.UnsafeShellCommandConstructionQuery
 import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, Sink sinkNode

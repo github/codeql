@@ -936,7 +936,7 @@ private module Stdlib {
    *
    * See https://devdocs.io/python~3.9/library/sqlite3
    */
-  class Sqlite3 extends PEP249ModuleApiNode {
+  class Sqlite3 extends PEP249::PEP249ModuleApiNode {
     Sqlite3() { this = API::moduleImport("sqlite3") }
   }
 

@@ -39,7 +39,7 @@ module SystemDataEntity {
   /** The `System.Data.Entity.DbSet` class. */
   class DbSet extends Class {
     DbSet() {
-      this.getUnboundDeclaration().(csharp::UnboundGenericClass).getNameWithoutBrackets() = "DbSet"
+      this.getUnboundDeclaration().(csharp::UnboundGenericClass).getUndecoratedName() = "DbSet"
     }
 
     /** Gets the `SqlQuery` method. */
@@ -100,7 +100,7 @@ module SystemDataEntityInfrastructure {
       this.getABaseType*()
           .getUnboundDeclaration()
           .(csharp::UnboundGenericClass)
-          .getNameWithoutBrackets() = "DbRawSqlQuery"
+          .getUndecoratedName() = "DbRawSqlQuery"
     }
   }
 }

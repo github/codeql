@@ -1,4 +1,5 @@
 import javascript
+import semmle.javascript.security.dataflow.Xss
 
 query predicate instance_getAPropertyValue(Vue::Instance i, string name, DataFlow::Node prop) {
   i.getAPropertyValue(name) = prop
@@ -18,13 +19,9 @@ query predicate instance_heapStep(
 
 query predicate templateElement(Vue::Template::Element template) { any() }
 
-import semmle.javascript.security.dataflow.DomBasedXss
-
 query predicate vhtmlSourceWrite(Vue::VHtmlSourceWrite w, DataFlow::Node pred, DataFlow::Node succ) {
   w.step(pred, succ)
 }
-
-import semmle.javascript.security.dataflow.DomBasedXss
 
 query predicate xssSink(DomBasedXss::Sink s) { any() }
 

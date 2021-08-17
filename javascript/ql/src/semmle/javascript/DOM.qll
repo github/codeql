@@ -384,6 +384,13 @@ module DOM {
           this = eachCall.getABoundCallbackParameter(0, 1)
         )
         or
+        // A read of an array-element from a JQuery object. E.g. `$("#foo")[0]`
+        exists(DataFlow::PropRead read |
+          read = this and read = JQuery::objectRef().getAPropertyRead()
+        |
+          unique(InferredType t | t = read.getPropertyNameExpr().analyze().getAType()) = TTNumber()
+        )
+        or
         // A receiver node of an event handler on a DOM node
         exists(DataFlow::SourceNode domNode, DataFlow::FunctionNode eventHandler |
           // NOTE: we do not use `getABoundFunctionValue()`, since bound functions tend to have

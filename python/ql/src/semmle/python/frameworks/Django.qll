@@ -313,7 +313,7 @@ private module PrivateDjango {
     /**
      * `django.db` implements PEP249, providing ways to execute SQL statements against a database.
      */
-    private class DjangoDb extends PEP249ModuleApiNode {
+    private class DjangoDb extends PEP249::PEP249ModuleApiNode {
       DjangoDb() { this = API::moduleImport("django").getMember("db") }
     }
 
@@ -322,7 +322,7 @@ private module PrivateDjango {
       /** Gets a reference to the `django.db.connection` object. */
       API::Node connection() { result = db().getMember("connection") }
 
-      class DjangoDbConnection extends Connection::InstanceSource {
+      class DjangoDbConnection extends PEP249::Connection::InstanceSource {
         DjangoDbConnection() { this = connection().getAUse() }
       }
 

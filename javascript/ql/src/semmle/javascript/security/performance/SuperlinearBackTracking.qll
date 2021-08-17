@@ -364,35 +364,6 @@ predicate polynimalReDoS(RegExpTerm t, string pump, string prefixMsg, RegExpTerm
 }
 
 /**
- * Holds if `t` matches at least an epsilon symbol.
- *
- * That is, this term does not restrict the language of the enclosing regular expression.
- *
- * This is implemented as an under-approximation, and this predicate does not hold for sub-patterns in particular.
- */
-private predicate matchesEpsilon(RegExpTerm t) {
-  t instanceof RegExpStar
-  or
-  t instanceof RegExpOpt
-  or
-  t.(RegExpRange).getLowerBound() = 0
-  or
-  exists(RegExpTerm child |
-    child = t.getAChild() and
-    matchesEpsilon(child)
-  |
-    t instanceof RegExpAlt or
-    t instanceof RegExpGroup or
-    t instanceof RegExpPlus or
-    t instanceof RegExpRange
-  )
-  or
-  matchesEpsilon(t.(RegExpBackRef).getGroup())
-  or
-  forex(RegExpTerm child | child = t.(RegExpSequence).getAChild() | matchesEpsilon(child))
-}
-
-/**
  * Gets a message for why `term` can cause polynomial backtracking.
  */
 string getReasonString(RegExpTerm term, string pump, string prefixMsg, RegExpTerm prev) {

@@ -183,14 +183,26 @@ class Callable extends StmtParent, Member, @callable {
   Type getParameterType(int n) { params(_, result, n, this, _) }
 
   /**
-   * Gets the signature of this callable, including its name and the types of all its parameters,
-   * identified by their simple (unqualified) names.
+   * Gets the signature of this callable, including its name and the types of all
+   * its parameters, identified by their simple (unqualified) names.
+   *
+   * The format of the string is `<name><params>`, where `<name>` is the result of
+   * the predicate `getName()` and `<params>` is the result of `paramsString()`.
+   * For example, the method `void printf(java.lang.String, java.lang.Object...)`
+   * has the string signature `printf(String, Object[])`.
    *
    * Use `getSignature` to obtain a signature including fully qualified type names.
    */
   string getStringSignature() { result = this.getName() + this.paramsString() }
 
-  /** Gets a parenthesized string containing all parameter types of this callable, separated by a comma. */
+  /**
+   * Gets a parenthesized string containing all parameter types of this callable,
+   * separated by a comma and space. For the parameter types the unqualified string
+   * representation is used. If this callable has no parameters, the result is `()`.
+   *
+   * For example, the method `void printf(java.lang.String, java.lang.Object...)`
+   * has the params string `(String, Object[])`.
+   */
   pragma[nomagic]
   string paramsString() {
     exists(int n | n = getNumberOfParameters() |
@@ -210,7 +222,12 @@ class Callable extends StmtParent, Member, @callable {
     n > 0 and result = paramUpTo(n - 1) + ", " + getParameterType(n)
   }
 
-  /** Holds if this callable has the specified string signature. */
+  /**
+   * Holds if this callable has the specified string signature.
+   *
+   * This predicate simply tests if `sig` is equal to the result of the
+   * `getStringSignature()` predicate.
+   */
   predicate hasStringSignature(string sig) { sig = this.getStringSignature() }
 
   /** Gets an exception that occurs in the `throws` clause of this callable. */
@@ -250,8 +267,10 @@ class Callable extends StmtParent, Member, @callable {
 
   /**
    * Gets the signature of this callable, where all types in the signature have a fully-qualified name.
+   * The parameter types are only separated by a comma (without space). If this callable has
+   * no parameters, the callable name is followed by `()`.
    *
-   * For example, method `void m(String s)` has the signature `m(java.lang.String)`.
+   * For example, method `void m(String s, int i)` has the signature `m(java.lang.String,int)`.
    */
   string getSignature() {
     constrs(this, _, result, _, _, _) or
