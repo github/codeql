@@ -94,6 +94,8 @@ private class FlowSummaries extends SummaryModelCsv {
         "org.springframework.web.util;UriComponents;false;getUserInfo;;;Argument[-1];ReturnValue;taint",
         "org.springframework.web.util;UriComponents;false;toUri;;;Argument[-1];ReturnValue;taint",
         "org.springframework.web.util;UriComponents;false;toUriString;;;Argument[-1];ReturnValue;taint",
+        "org.springframework.web.util;UriComponents;false;toString;;;Argument[-1];ReturnValue;taint",
+        "org.springframework.web.util;UriComponents;false;normalize;;;Argument[-1];ReturnValue;taint",
         "org.springframework.web.util;UriComponentsBuilder;false;build;;;Argument[-1];ReturnValue;taint",
         "org.springframework.web.util;UriComponentsBuilder;false;build;(Map);;MapValue of Argument[0];ReturnValue;taint",
         "org.springframework.web.util;UriComponentsBuilder;false;build;(Object[]);;ArrayElement of Argument[0];ReturnValue;taint",
@@ -121,6 +123,7 @@ private class FlowSummaries extends SummaryModelCsv {
         "org.springframework.web.util;UriTemplate;false;expand;(Object[]);;ArrayElement of Argument[0];ReturnValue;taint",
         "org.springframework.web.util;UriTemplate;false;getVariableNames;;;Argument[-1];Element of ReturnValue;taint",
         "org.springframework.web.util;UriTemplate;false;match;;;Argument[0];MapValue of ReturnValue;taint",
+        "org.springframework.web.util;UriTemplate;false;toString;;;Argument[-1];ReturnValue;taint",
         "org.springframework.web.util;UriUtils;false;decode;;;Argument[0];ReturnValue;taint",
         "org.springframework.web.util;UriUtils;false;encode;;;Argument[0];ReturnValue;taint",
         "org.springframework.web.util;UriUtils;false;encodeAuthority;;;Argument[0];ReturnValue;taint",
@@ -148,7 +151,8 @@ private class FlowSummaries extends SummaryModelCsv {
         "org.springframework.web.util;UrlPathHelper;false;getOriginatingContextPath;;;Argument[0];ReturnValue;taint",
         "org.springframework.web.util;UrlPathHelper;false;getOriginatingQueryString;;;Argument[0];ReturnValue;taint",
         "org.springframework.web.util;UrlPathHelper;false;getOriginatingRequestUri;;;Argument[0];ReturnValue;taint",
-        "org.springframework.web.util;UrlPathHelper;false;getOriginatingServletPath;;;Argument[0];ReturnValue;taint",
+        "org.springframework.web.util;UrlPathHelper;false;getPathWithinApplication;;;Argument[0];ReturnValue;taint",
+        "org.springframework.web.util;UrlPathHelper;false;getPathWithinServletMapping;;;Argument[0];ReturnValue;taint",
         "org.springframework.web.util;UrlPathHelper;false;getRequestUri;;;Argument[0];ReturnValue;taint",
         "org.springframework.web.util;UrlPathHelper;false;getResolvedLookupPath;;;Argument[0];ReturnValue;taint",
         "org.springframework.web.util;UrlPathHelper;false;getServletPath;;;Argument[0];ReturnValue;taint",
@@ -165,7 +169,8 @@ private class FlowSummaries extends SummaryModelCsv {
         "org.springframework.web.util;WebUtils;false;getRequiredSessionAttribute;;;Argument[0];ReturnValue;taint",
         "org.springframework.web.util;WebUtils;false;getSessionAttribute;;;Argument[0];ReturnValue;taint",
         "org.springframework.web.util;WebUtils;false;parseMatrixVariables;;;Argument[0];MapKey of ReturnValue;taint",
-        "org.springframework.web.util;WebUtils;false;parseMatrixVariables;;;Argument[0];MapValue of ReturnValue;taint"
+        "org.springframework.web.util;WebUtils;false;parseMatrixVariables;;;Argument[0];MapValue of ReturnValue;taint",
+        "org.springframework.web.util;WebUtils;false;setSessionAttribute;;;Argument[2];Argument[0];taint"
       ]
   }
 }

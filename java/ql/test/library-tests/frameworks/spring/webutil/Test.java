@@ -2442,14 +2442,6 @@ public class Test {
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.web.util;UrlPathHelper;false;getOriginatingServletPath;;;Argument[0];ReturnValue;taint"
-			String out = null;
-			HttpServletRequest in = (HttpServletRequest)source();
-			UrlPathHelper instance = null;
-			out = instance.getOriginatingServletPath(in);
-			sink(out); // $hasTaintFlow
-		}
-		{
 			// "org.springframework.web.util;UrlPathHelper;false;getRequestUri;;;Argument[0];ReturnValue;taint"
 			String out = null;
 			HttpServletRequest in = (HttpServletRequest)source();
@@ -2621,6 +2613,50 @@ public class Test {
       out = HtmlUtils.htmlEscapeHex(in);
       sink(out); // $ hasTaintFlow
     }
+		{
+			// "org.springframework.web.util;UriComponents;false;normalize;;;Argument[-1];ReturnValue;taint"
+			UriComponents out = null;
+			UriComponents in = (UriComponents)source();
+			out = in.normalize();
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "org.springframework.web.util;UriComponents;false;toString;;;Argument[-1];ReturnValue;taint"
+			String out = null;
+			UriComponents in = (UriComponents)source();
+			out = in.toString();
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "org.springframework.web.util;UriTemplate;false;toString;;;Argument[-1];ReturnValue;taint"
+			String out = null;
+			UriTemplate in = (UriTemplate)source();
+			out = in.toString();
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "org.springframework.web.util;UrlPathHelper;false;getPathWithinApplication;;;Argument[0];ReturnValue;taint"
+			String out = null;
+			HttpServletRequest in = (HttpServletRequest)source();
+			UrlPathHelper instance = null;
+			out = instance.getPathWithinApplication(in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "org.springframework.web.util;UrlPathHelper;false;getPathWithinServletMapping;;;Argument[0];ReturnValue;taint"
+			String out = null;
+			HttpServletRequest in = (HttpServletRequest)source();
+			UrlPathHelper instance = null;
+			out = instance.getPathWithinServletMapping(in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "org.springframework.web.util;WebUtils;false;setSessionAttribute;;;Argument[2];Argument[0];taint"
+			HttpServletRequest out = null;
+			Object in = (Object)source();
+			WebUtils.setSessionAttribute(out, null, in);
+			sink(out); // $ hasTaintFlow
+		}
 
 	}
 
