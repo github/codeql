@@ -535,13 +535,13 @@ module Vue {
    */
   class VHtmlSourceWrite extends TaintTracking::SharedTaintStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      exists(Vue::Component instance, string expr, VHtmlAttribute attr |
+      exists(Vue::Component component, string expr, VHtmlAttribute attr |
         attr.getAttr().getRoot() =
-          instance.getTemplateElement().(Vue::Template::HtmlElement).getElement() and
+          component.getTemplateElement().(Vue::Template::HtmlElement).getElement() and
         expr = attr.getAttr().getValue() and
         // only support for simple identifier expressions
         expr.regexpMatch("(?i)[a-z0-9_]+") and
-        pred = instance.getAPropertyValue(expr) and
+        pred = component.getAPropertyValue(expr) and
         succ = attr
       )
     }
@@ -642,15 +642,15 @@ module Vue {
       or
       result = routeConfig().getMember("beforeEnter").getParameter([0, 1]).getAnImmediateUse()
       or
-      exists(Component i |
-        result = i.getABoundFunction().getAFunctionValue().getReceiver().getAPropertyRead("$route")
+      exists(Component c |
+        result = c.getABoundFunction().getAFunctionValue().getReceiver().getAPropertyRead("$route")
         or
         result =
-          i.getALifecycleHook(["beforeRouteEnter", "beforeRouteUpdate", "beforeRouteLeave"])
+          c.getALifecycleHook(["beforeRouteEnter", "beforeRouteUpdate", "beforeRouteLeave"])
               .getAFunctionValue()
               .getParameter([0, 1])
         or
-        result = i.getWatchHandler("$route").getParameter([0, 1])
+        result = c.getWatchHandler("$route").getParameter([0, 1])
       )
     )
     or
@@ -668,7 +668,7 @@ module Vue {
         this = routeObject().getAPropertyRead(name)
         or
         exists(string prop |
-          this = any(Component i).getWatchHandler(prop).getParameter([0, 1]) and
+          this = any(Component c).getWatchHandler(prop).getParameter([0, 1]) and
           name = prop.regexpCapture("\\$route\\.(params|query|hash|path|fullPath)\\b.*", 1)
         )
       |

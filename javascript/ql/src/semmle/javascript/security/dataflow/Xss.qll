@@ -347,7 +347,7 @@ module DomBasedXss {
   class VueTemplateSink extends DomBasedXss::Sink {
     VueTemplateSink() {
       // Note: don't use Vue::Instance#getTemplate as it includes an unwanted getALocalSource() step
-      this = any(Vue::Component i).getOption("template")
+      this = any(Vue::Component c).getOption("template")
     }
   }
 
@@ -357,8 +357,8 @@ module DomBasedXss {
    */
   class VueCreateElementSink extends DomBasedXss::Sink {
     VueCreateElementSink() {
-      exists(Vue::Component i, DataFlow::FunctionNode f |
-        f.flowsTo(i.getRender()) and
+      exists(Vue::Component c, DataFlow::FunctionNode f |
+        f.flowsTo(c.getRender()) and
         this = f.getParameter(0).getACall().getArgument(0)
       )
     }
