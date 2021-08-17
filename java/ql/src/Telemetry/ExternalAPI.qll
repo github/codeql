@@ -28,9 +28,7 @@ class ExternalAPI extends Callable {
   /**
    * Gets the jar file containing this API. Normalizes the Java Runtime to "rt.jar" despite the presence of modules.
    */
-  string jarContainer() {
-    result = containerAsJar(any(ExternalAPI api).getCompilationUnit().getParentContainer*())
-  }
+  string jarContainer() { result = containerAsJar(this.getCompilationUnit().getParentContainer*()) }
 
   private string containerAsJar(Container container) {
     if container instanceof JarFile then result = container.getBaseName() else result = "rt.jar"
