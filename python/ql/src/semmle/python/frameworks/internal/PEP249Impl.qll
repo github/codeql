@@ -61,7 +61,7 @@ module PEP249 {
     }
 
     /** Gets a reference to a database connection (following PEP 249). */
-    private DataFlow::LocalSourceNode instance(DataFlow::TypeTracker t) {
+    private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
       t.start() and
       result instanceof InstanceSource
       or
@@ -94,7 +94,7 @@ module PEP249 {
     abstract class InstanceSource extends DataFlow::LocalSourceNode { }
 
     /** Gets a reference to a database cursor. */
-    private DataFlow::LocalSourceNode instance(DataFlow::TypeTracker t) {
+    private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
       t.start() and
       result instanceof InstanceSource
       or
@@ -105,7 +105,7 @@ module PEP249 {
     DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
 
     /** Gets a reference to the `cursor` method on a database connection. */
-    private DataFlow::LocalSourceNode methodRef(DataFlow::TypeTracker t) {
+    private DataFlow::TypeTrackingNode methodRef(DataFlow::TypeTracker t) {
       t.startInAttr("cursor") and
       result = Connection::instance()
       or
@@ -121,7 +121,7 @@ module PEP249 {
     }
 
     /** Gets a reference to a result of calling the `cursor` method on a database connection. */
-    private DataFlow::LocalSourceNode methodResult(DataFlow::TypeTracker t) {
+    private DataFlow::TypeTrackingNode methodResult(DataFlow::TypeTracker t) {
       t.start() and
       result.asCfgNode().(CallNode).getFunction() = methodRef().asCfgNode()
       or
@@ -146,7 +146,7 @@ module PEP249 {
    *
    * See https://www.python.org/dev/peps/pep-0249/#id15.
    */
-  private DataFlow::LocalSourceNode execute(DataFlow::TypeTracker t) {
+  private DataFlow::TypeTrackingNode execute(DataFlow::TypeTracker t) {
     t.startInAttr("execute") and
     result in [Cursor::instance(), Connection::instance()]
     or
