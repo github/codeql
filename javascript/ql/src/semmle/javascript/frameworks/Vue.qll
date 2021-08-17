@@ -132,15 +132,15 @@ module Vue {
     DataFlow::Node getOwnOptionsObject() { none() } // overridden in subclasses
 
     /**
-     * Gets the class component implementing this Vue instance, if any.
+     * Gets the class implementing this Vue component, if any.
      *
      * Specifically, this is a class annotated with `@Component` which flows to the options
-     * object of this Vue instance.
+     * object of this Vue component.
      */
     ClassComponent getAsClassComponent() { result.flowsTo(getOwnOptionsObject()) }
 
     /**
-     * Gets the node for option `name` for this instance, this does not include
+     * Gets the node for option `name` for this component, not including
      * those from extended objects and mixins.
      */
     DataFlow::Node getOwnOption(string name) {
@@ -148,7 +148,7 @@ module Vue {
     }
 
     /**
-     * Gets the node for option `name` for this instance, including those from
+     * Gets the node for option `name` for this component, including those from
      * extended objects and mixins.
      */
     DataFlow::Node getOption(string name) {
@@ -173,25 +173,25 @@ module Vue {
     }
 
     /**
-     * Gets a source node flowing into the option `name` of this instance, including those from
+     * Gets a source node flowing into the option `name` of this component, including those from
      * extended objects and mixins.
      */
     pragma[nomagic]
     DataFlow::SourceNode getOptionSource(string name) { result = getOption(name).getALocalSource() }
 
     /**
-     * Gets the template element used by this instance, if any.
+     * Gets the template element used by this component, if any.
      */
     Template::Element getTemplateElement() { none() } // overridden in subclasses
 
     /**
-     * Gets the node for the `data` option object of this instance.
+     * Gets the node for the `data` option object of this component.
      */
     DataFlow::Node getData() {
       exists(DataFlow::Node data | data = getOption("data") |
         result = data
         or
-        // a constructor variant is available for all instance definitions
+        // a constructor variant is available for all component definitions
         exists(DataFlow::FunctionNode f |
           f.flowsTo(data) and
           result = f.getAReturn()
@@ -204,13 +204,13 @@ module Vue {
     }
 
     /**
-     * Gets the node for the `template` option of this instance.
+     * Gets the node for the `template` option of this component.
      */
     pragma[nomagic]
     DataFlow::SourceNode getTemplate() { result = getOptionSource("template") }
 
     /**
-     * Gets the node for the `render` option of this instance.
+     * Gets the node for the `render` option of this component.
      */
     pragma[nomagic]
     DataFlow::SourceNode getRender() {
@@ -220,19 +220,19 @@ module Vue {
     }
 
     /**
-     * Gets the node for the `methods` option of this instance.
+     * Gets the node for the `methods` option of this component.
      */
     pragma[nomagic]
     DataFlow::SourceNode getMethods() { result = getOptionSource("methods") }
 
     /**
-     * Gets the node for the `computed` option of this instance.
+     * Gets the node for the `computed` option of this component.
      */
     pragma[nomagic]
     DataFlow::SourceNode getComputed() { result = getOptionSource("computed") }
 
     /**
-     * Gets the node for the `watch` option of this instance.
+     * Gets the node for the `watch` option of this component.
      */
     pragma[nomagic]
     DataFlow::SourceNode getWatch() { result = getOptionSource("watch") }
@@ -249,7 +249,7 @@ module Vue {
     }
 
     /**
-     * Gets a node for a member of the `methods` option of this instance.
+     * Gets a node for a member of the `methods` option of this component.
      */
     pragma[nomagic]
     private DataFlow::SourceNode getAMethod() {
@@ -260,7 +260,7 @@ module Vue {
     }
 
     /**
-     * Gets a node for a member of the `computed` option of this instance that matches `kind`.
+     * Gets a node for a member of the `computed` option of this component that matches `kind`.
      */
     pragma[nomagic]
     private DataFlow::SourceNode getAnAccessor(DataFlow::MemberKind kind) {
@@ -273,7 +273,7 @@ module Vue {
     }
 
     /**
-     * Gets a node for a member `name` of the `computed` option of this instance that matches `kind`.
+     * Gets a node for a member `name` of the `computed` option of this component that matches `kind`.
      */
     private DataFlow::SourceNode getAccessor(string name, DataFlow::MemberKind kind) {
       result = getComputed().getAPropertySource(name) and kind = DataFlow::MemberKind::getter()
@@ -285,7 +285,7 @@ module Vue {
     }
 
     /**
-     * Gets the node for the life cycle hook of the `hookName` option of this instance.
+     * Gets the node for the life cycle hook of the `hookName` option of this component.
      */
     pragma[nomagic]
     DataFlow::SourceNode getALifecycleHook(string hookName) {
@@ -298,7 +298,7 @@ module Vue {
     }
 
     /**
-     * Gets a node for a function that will be invoked with `this` bound to this instance.
+     * Gets a node for a function that will be invoked with `this` bound to this component.
      */
     DataFlow::FunctionNode getABoundFunction() {
       result = getAMethod()
@@ -325,7 +325,7 @@ module Vue {
     }
 
     /**
-     * Gets the data flow node that flows into the property `name` of this instance, or is
+     * Gets the data flow node that flows into the property `name` of this component, or is
      * returned form a getter defining that property.
      */
     DataFlow::Node getAPropertyValue(string name) {
@@ -339,7 +339,7 @@ module Vue {
   }
 
   /**
-   * A Vue instance from `new Vue({...})`.
+   * A Vue component from `new Vue({...})`.
    */
   class VueInstance extends Component, MkVueInstance {
     DataFlow::NewNode def;

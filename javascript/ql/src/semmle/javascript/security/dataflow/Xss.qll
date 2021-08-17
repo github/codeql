@@ -346,7 +346,7 @@ module DomBasedXss {
    */
   class VueTemplateSink extends DomBasedXss::Sink {
     VueTemplateSink() {
-      // Note: don't use Vue::Instance#getTemplate as it includes an unwanted getALocalSource() step
+      // Note: don't use Vue::Component#getTemplate as it includes an unwanted getALocalSource() step
       this = any(Vue::Component c).getOption("template")
     }
   }
