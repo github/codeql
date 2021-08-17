@@ -48,7 +48,7 @@ module PEP249 {
      * calls, or a special parameter that will be set when functions are called by external
      * libraries.
      *
-     * Use the predicate `Connection::instance()` to get references database connections (following PEP 249).
+     * Use the predicate `Connection::instance()` to get references to database connections (following PEP 249).
      *
      * Extend this class if the module implementing PEP 249 offers more direct ways to obtain
      * a connection than going through `connect`.
@@ -75,7 +75,7 @@ module PEP249 {
   /**
    * Provides models for database cursors (following PEP 249).
    *
-   * These are are returned by the `cursor` method on a database connection.
+   * These are returned by the `cursor` method on a database connection.
    * See https://www.python.org/dev/peps/pep-0249/#cursor.
    */
   module Cursor {
@@ -86,7 +86,7 @@ module PEP249 {
      * calls, or a special parameter that will be set when functions are called by external
      * libraries.
      *
-     * Use the predicate `Connection::instance()` to get references database cursors (following PEP 249).
+     * Use the predicate `Cursor::instance()` to get references to database cursors (following PEP 249).
      *
      * Extend this class if the module implementing PEP 249 offers more direct ways to obtain
      * a connection than going through `connect`.
