@@ -196,7 +196,7 @@ public class JakartaRsFlow {
     sink(taint(ps2).getPath()); // $ hasTaintFlow
   }
 
-  void testUriInfo(UriInfo ui) {
+  void testUriInfo(UriInfo ui, UriInfo untaintedUriInfo) throws Exception {
     ui = taint(ui);
     sink(ui.getPathParameters()); // $ hasTaintFlow
     sink(ui.getPathSegments()); // $ hasTaintFlow
@@ -206,6 +206,11 @@ public class JakartaRsFlow {
     sink(ui.getQueryParameters().getFirst("someKey")); // $ hasTaintFlow
     sink(ui.getRequestUri()); // $ hasTaintFlow
     sink(ui.getRequestUriBuilder().build()); // $ hasTaintFlow
+    URI taintedUri = UriSource.taint();
+    URI untaintedUri = new URI("");
+    sink(untaintedUriInfo.relativize(taintedUri)); // $ hasTaintFlow
+    sink(untaintedUriInfo.resolve(taintedUri)); // $ hasTaintFlow
+    sink(ui.resolve(untaintedUri)); // $ hasTaintFlow
   }
 
   void testCookie() {

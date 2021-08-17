@@ -552,6 +552,9 @@ private class UriInfoModel extends SummaryModelCsv {
         "javax.ws.rs.core;UriInfo;true;getQueryParameters;;;Argument[-1];ReturnValue;taint",
         "javax.ws.rs.core;UriInfo;true;getRequestUri;;;Argument[-1];ReturnValue;taint",
         "javax.ws.rs.core;UriInfo;true;getRequestUriBuilder;;;Argument[-1];ReturnValue;taint",
+        "javax.ws.rs.core;UriInfo;true;relativize;;;Argument[0];ReturnValue;taint",
+        "javax.ws.rs.core;UriInfo;true;resolve;;;Argument[-1];ReturnValue;taint",
+        "javax.ws.rs.core;UriInfo;true;resolve;;;Argument[0];ReturnValue;taint",
         "jakarta.ws.rs.core;UriInfo;true;getAbsolutePath;;;Argument[-1];ReturnValue;taint",
         "jakarta.ws.rs.core;UriInfo;true;getAbsolutePathBuilder;;;Argument[-1];ReturnValue;taint",
         "jakarta.ws.rs.core;UriInfo;true;getPath;;;Argument[-1];ReturnValue;taint",
@@ -559,7 +562,10 @@ private class UriInfoModel extends SummaryModelCsv {
         "jakarta.ws.rs.core;UriInfo;true;getPathSegments;;;Argument[-1];ReturnValue;taint",
         "jakarta.ws.rs.core;UriInfo;true;getQueryParameters;;;Argument[-1];ReturnValue;taint",
         "jakarta.ws.rs.core;UriInfo;true;getRequestUri;;;Argument[-1];ReturnValue;taint",
-        "jakarta.ws.rs.core;UriInfo;true;getRequestUriBuilder;;;Argument[-1];ReturnValue;taint"
+        "jakarta.ws.rs.core;UriInfo;true;getRequestUriBuilder;;;Argument[-1];ReturnValue;taint",
+        "jakarta.ws.rs.core;UriInfo;true;relativize;;;Argument[0];ReturnValue;taint",
+        "jakarta.ws.rs.core;UriInfo;true;resolve;;;Argument[-1];ReturnValue;taint",
+        "jakarta.ws.rs.core;UriInfo;true;resolve;;;Argument[0];ReturnValue;taint"
       ]
   }
 }
