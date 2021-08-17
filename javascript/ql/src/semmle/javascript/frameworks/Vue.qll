@@ -21,7 +21,7 @@ module Vue {
     VueExtend() { this = vue().getAMemberCall("extend") }
   }
 
-  private newtype TInstance =
+  private newtype TComponent =
     MkVueInstance(DataFlow::NewNode def) { def = vue().getAnInstantiation() } or
     MkExtendedVue(VueExtend extend) or
     MkExtendedInstance(VueExtend extend, DataFlow::NewNode sub) {
@@ -82,20 +82,24 @@ module Vue {
   }
 
   /**
-   * A Vue instance definition.
+   * A Vue component, such as a `new Vue({ ... })` call or a `.vue` file.
    *
-   * This includes both explicit instantiations of Vue objects, and
-   * implicit instantiations in the form of components or Vue
-   * extensions that have not yet been instantiated to a Vue instance.
+   * Generally speaking, a component is always created by calling `Vue.extend()` or
+   * calling `extend` on another component.
+   * Often the `Vue.extend()` call is performed by the Vue
+   * framework, however, so the call is not always visible in the user code.
+   * For instance, `new Vue(obj)` is shorthand for `new (Vue.extend(obj))`.
    *
-   * The following instances are recognized:
+   * This class covers both the explicit `Vue.extend()` calls an those implicit in the framework.
+   *
+   * The following types of components are recognized:
    *   - `new Vue({...})`
    *   - `Vue.extend({...})`
    *   - `new ExtendedVue({...})`
    *   - `Vue.component("my-component", {...})`
    *   - single file components in .vue files
    */
-  class Instance extends TInstance {
+  class Component extends TComponent {
     /** Gets a textual representation of this element. */
     string toString() { none() } // overridden in subclasses
 
@@ -332,7 +336,7 @@ module Vue {
   /**
    * A Vue instance from `new Vue({...})`.
    */
-  class VueInstance extends Instance, MkVueInstance {
+  class VueInstance extends Component, MkVueInstance {
     DataFlow::NewNode def;
 
     VueInstance() { this = MkVueInstance(def) }
@@ -353,7 +357,7 @@ module Vue {
   /**
    * An extended Vue from `Vue.extend({...})`.
    */
-  class ExtendedVue extends Instance, MkExtendedVue {
+  class ExtendedVue extends Component, MkExtendedVue {
     VueExtend extend;
 
     ExtendedVue() { this = MkExtendedVue(extend) }
@@ -374,7 +378,7 @@ module Vue {
   /**
    * An instance of an extended Vue, for example `instance` of `var Ext = Vue.extend({...}); var instance = new Ext({...})`.
    */
-  class ExtendedInstance extends Instance, MkExtendedInstance {
+  class ExtendedInstance extends Component, MkExtendedInstance {
     VueExtend extend;
     DataFlow::NewNode sub;
 
@@ -391,7 +395,7 @@ module Vue {
     override DataFlow::Node getOwnOptionsObject() { result = sub.getArgument(0) }
 
     override DataFlow::Node getOption(string name) {
-      result = Instance.super.getOption(name)
+      result = Component.super.getOption(name)
       or
       result = MkExtendedVue(extend).(ExtendedVue).getOption(name)
     }
@@ -402,7 +406,7 @@ module Vue {
   /**
    * A Vue component from `Vue.component("my-component", { ... })`.
    */
-  class ComponentRegistration extends Instance, MkComponentRegistration {
+  class ComponentRegistration extends Component, MkComponentRegistration {
     DataFlow::CallNode def;
 
     ComponentRegistration() { this = MkComponentRegistration(def) }
@@ -423,7 +427,7 @@ module Vue {
   /**
    * A single file Vue component in a `.vue` file.
    */
-  class SingleFileComponent extends Instance, MkSingleFileComponent {
+  class SingleFileComponent extends Component, MkSingleFileComponent {
     VueFile file;
 
     SingleFileComponent() { this = MkSingleFileComponent(file) }
@@ -496,7 +500,7 @@ module Vue {
    */
   class InstanceHeapStep extends TaintTracking::SharedTaintStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      exists(Instance i, string name, DataFlow::FunctionNode bound |
+      exists(Component i, string name, DataFlow::FunctionNode bound |
         bound.flowsTo(i.getABoundFunction()) and
         not bound.getFunction() instanceof ArrowFunctionExpr and
         succ = bound.getReceiver().getAPropertyRead(name) and
@@ -531,7 +535,7 @@ module Vue {
    */
   class VHtmlSourceWrite extends TaintTracking::SharedTaintStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      exists(Vue::Instance instance, string expr, VHtmlAttribute attr |
+      exists(Vue::Component instance, string expr, VHtmlAttribute attr |
         attr.getAttr().getRoot() =
           instance.getTemplateElement().(Vue::Template::HtmlElement).getElement() and
         expr = attr.getAttr().getValue() and
@@ -638,7 +642,7 @@ module Vue {
       or
       result = routeConfig().getMember("beforeEnter").getParameter([0, 1]).getAnImmediateUse()
       or
-      exists(Instance i |
+      exists(Component i |
         result = i.getABoundFunction().getAFunctionValue().getReceiver().getAPropertyRead("$route")
         or
         result =
@@ -664,7 +668,7 @@ module Vue {
         this = routeObject().getAPropertyRead(name)
         or
         exists(string prop |
-          this = any(Instance i).getWatchHandler(prop).getParameter([0, 1]) and
+          this = any(Component i).getWatchHandler(prop).getParameter([0, 1]) and
           name = prop.regexpCapture("\\$route\\.(params|query|hash|path|fullPath)\\b.*", 1)
         )
       |
