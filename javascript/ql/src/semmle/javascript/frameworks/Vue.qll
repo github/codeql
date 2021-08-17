@@ -82,6 +82,11 @@ module Vue {
   }
 
   /**
+   * DEPRECATED. This class has been renamed to `Vue::Component`.
+   */
+  deprecated class Instance = Component;
+
+  /**
    * A Vue component, such as a `new Vue({ ... })` call or a `.vue` file.
    *
    * Generally speaking, a component is always created by calling `Vue.extend()` or
