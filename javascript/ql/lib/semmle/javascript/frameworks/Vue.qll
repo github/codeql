@@ -5,29 +5,43 @@
 import javascript
 
 module Vue {
+  /** The global variable `Vue`, as an API graph entry point. */
+  private class GlobalVueEntryPoint extends API::EntryPoint {
+    GlobalVueEntryPoint() { this = "VueEntryPoint" }
+
+    override DataFlow::SourceNode getAUse() { result = DataFlow::globalVarRef("Vue") }
+
+    override DataFlow::Node getARhs() { none() }
+  }
+
+  /**
+   * Gets a reference to the `Vue` object.
+   */
+  API::Node vueLibrary() {
+    result = API::moduleImport("vue")
+    or
+    result = API::root().getASuccessor(any(GlobalVueEntryPoint e))
+  }
+
   /**
    * Gets a reference to the 'Vue' object.
    */
-  DataFlow::SourceNode vue() {
-    result = DataFlow::globalVarRef("Vue")
-    or
-    result = DataFlow::moduleImport("vue")
-  }
+  DataFlow::SourceNode vue() { result = vueLibrary().getAnImmediateUse() }
 
   /**
    * A call to `vue.extend`.
    */
-  private class VueExtend extends DataFlow::CallNode {
-    VueExtend() { this = vue().getAMemberCall("extend") }
+  private class VueExtend extends API::CallNode {
+    VueExtend() { this = vueLibrary().getMember("extend").getACall() }
   }
 
   private newtype TComponent =
-    MkVueInstance(DataFlow::NewNode def) { def = vue().getAnInstantiation() } or
+    MkVueInstance(DataFlow::NewNode def) { def = vueLibrary().getAnInstantiation() } or
     MkExtendedVue(VueExtend extend) or
     MkExtendedInstance(VueExtend extend, DataFlow::NewNode sub) {
       sub = extend.getAnInstantiation()
     } or
-    MkComponentRegistration(DataFlow::CallNode def) { def = vue().getAMemberCall("component") } or
+    MkComponentRegistration(DataFlow::CallNode def) { def = vueLibrary().getMember("component").getACall() } or
     MkSingleFileComponent(VueFile file)
 
   /** Gets the name of a lifecycle hook method. */
