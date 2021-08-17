@@ -20,7 +20,7 @@ jobs:
         echo "Done"
         cd $HOME
         echo "Downloading CodeQL CLI..."
-        LATEST=$(gh release list --repo https://github.com/github/codeql-cli-binaries | cut -f 1 | sort --version-sort | tail -1)
+        LATEST=$(gh release list --repo https://github.com/github/codeql-cli-binaries | cut -f 1 | sort --version-sort | grep -v beta | tail -1)
         gh release download --repo https://github.com/github/codeql-cli-binaries --pattern codeql-linux64.zip "$LATEST"
         echo "Done"
         echo "Unpacking CodeQL CLI..."
@@ -72,7 +72,7 @@ jobs:
         echo "Done"
         cd $HOME
         echo "Downloading CodeQL CLI..."
-        LATEST=$(gh release list --repo https://github.com/github/codeql-cli-binaries | cut -f 1 | sort --version-sort | tail -1)
+        LATEST=$(gh release list --repo https://github.com/github/codeql-cli-binaries | cut -f 1 | sort --version-sort | grep -v beta | tail -1)
         gh release download --repo https://github.com/github/codeql-cli-binaries --pattern codeql-osx64.zip "$LATEST"
         echo "Done"
         echo "Unpacking CodeQL CLI..."
@@ -112,7 +112,7 @@ jobs:
         echo "Done"
         cd "$HOME"
         echo "Downloading CodeQL CLI..."
-        LATEST=$(gh release list --repo https://github.com/github/codeql-cli-binaries | cut -f 1 | sort --version-sort | tail -1)
+        LATEST=$(gh release list --repo https://github.com/github/codeql-cli-binaries | cut -f 1 | sort --version-sort | grep -v beta | tail -1)
         gh release download --repo https://github.com/github/codeql-cli-binaries --pattern codeql-win64.zip "$LATEST"
         echo "Done"
         echo "Unpacking CodeQL CLI..."
