@@ -95,9 +95,9 @@ module Vue {
    *   - `Vue.component("my-component", {...})`
    *   - single file components in .vue files
    */
-  abstract class Instance extends TInstance {
+  class Instance extends TInstance {
     /** Gets a textual representation of this element. */
-    abstract string toString();
+    string toString() { none() } // overridden in subclasses
 
     /**
      * Holds if this element is at the specified location.
@@ -120,7 +120,7 @@ module Vue {
      * Gets the options passed to the Vue object, such as the object literal `{...}` in `new Vue{{...})`
      * or the default export of a single-file component.
      */
-    abstract DataFlow::Node getOwnOptionsObject();
+    DataFlow::Node getOwnOptionsObject() { none() } // overridden in subclasses
 
     /**
      * Gets the class component implementing this Vue instance, if any.
@@ -173,7 +173,7 @@ module Vue {
     /**
      * Gets the template element used by this instance, if any.
      */
-    abstract Template::Element getTemplateElement();
+    Template::Element getTemplateElement() { none() } // overridden in subclasses
 
     /**
      * Gets the node for the `data` option object of this instance.
