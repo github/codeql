@@ -46,6 +46,10 @@ module ArchiveZip {
       hasQualifiedName("archive/zip", "Writer", "Create") and
       (inp.isResult(0) and outp.isReceiver())
       or
+      // signature: func (*Writer) Copy(f *File) error
+      hasQualifiedName("archive/zip", "Writer", "Create") and
+      (inp.isParameter(0) and outp.isReceiver())
+      or
       // signature: func (*Writer) CreateHeader(fh *FileHeader) (io.Writer, error)
       hasQualifiedName("archive/zip", "Writer", "CreateHeader") and
       (inp.isResult(0) and outp.isReceiver())
