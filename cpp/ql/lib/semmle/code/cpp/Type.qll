@@ -1621,6 +1621,19 @@ class RoutineType extends Type, @routinetype {
    */
   Type getReturnType() { routinetypes(underlyingElement(this), unresolveElement(result)) }
 
+  /**
+   * Holds if this function type has "C" language linkage.
+   *
+   * This includes any function declared in a C source file, or explicitly marked as having "C" linkage:
+   * ```
+   * extern "C" void f();
+   * extern "C" {
+   * void g();
+   * }
+   * ```
+   */
+  predicate hasCLinkage() { this.hasSpecifier("c_linkage") }
+
   override string explain() {
     result =
       "function returning {" + this.getReturnType().explain() + "} with arguments (" +

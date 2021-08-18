@@ -34,6 +34,7 @@
 | file://:0:0:0:0 | auto | Other |
 | file://:0:0:0:0 | auto | Other |
 | file://:0:0:0:0 | bool | Other |
+| file://:0:0:0:0 | c_linkage | Other |
 | file://:0:0:0:0 | char | Other |
 | file://:0:0:0:0 | char8_t | Other |
 | file://:0:0:0:0 | char16_t | Other |
