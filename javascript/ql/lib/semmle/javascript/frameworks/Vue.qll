@@ -161,6 +161,23 @@ module Vue {
      */
     API::Node getOwnOptions() { none() } // overridden in subclass
 
+    /** Gets a component which is extended by this one. */
+    Component getABaseComponent() {
+      result.getComponentRef().getAUse() = getOwnOptions().getMember(["extends", "mixins"]).getARhs()
+    }
+
+    /**
+     * Gets an API node referring to the options passed to the Vue object or one
+     * of its base component.
+     */
+    API::Node getOptions() {
+      result = getOwnOptions()
+      or
+      result = getOwnOptions().getMember(["extends", "mixins"]).getAMember()
+      or
+      result = getABaseComponent().getOptions()
+    }
+
     /**
      * Gets the options passed to the Vue object, such as the object literal `{...}` in `new Vue{{...})`
      * or the default export of a single-file component.
@@ -188,23 +205,9 @@ module Vue {
      * extended objects and mixins.
      */
     DataFlow::Node getOption(string name) {
-      result = getOwnOption(name)
+      result = getOptions().getMember(name).getARhs()
       or
-      exists(DataFlow::SourceNode extendsVal | extendsVal.flowsTo(getOwnOption("extends")) |
-        result = extendsVal.(DataFlow::ObjectLiteralNode).getAPropertyWrite(name).getRhs()
-        or
-        exists(ExtendedVue extend |
-          MkExtendedVue(extendsVal) = extend and
-          result = extend.getOption(name)
-        )
-      )
-      or
-      exists(DataFlow::ArrayCreationNode mixins, DataFlow::ObjectLiteralNode mixin |
-        mixins.flowsTo(getOwnOption("mixins")) and
-        mixin.flowsTo(mixins.getAnElement()) and
-        result = mixin.getAPropertyWrite(name).getRhs()
-      )
-      or
+      // not ported to API graphs yet
       result = getAsClassComponent().getDecoratorOption(name)
     }
 

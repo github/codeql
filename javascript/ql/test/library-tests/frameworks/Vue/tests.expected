@@ -19,6 +19,7 @@ component_getAPropertyValue
 | tst.js:48:1:50:2 | new Ext ... 42 }\\n}) | fromSuper | tst.js:44:18:44:19 | 42 |
 | tst.js:51:17:57:2 | Vue.ext ... \\n  }\\n}) | fromSuper | tst.js:54:18:54:19 | 42 |
 | tst.js:58:1:61:2 | new Vue ... 42 }\\n}) | fromSub | tst.js:60:19:60:20 | 42 |
+| tst.js:58:1:61:2 | new Vue ... 42 }\\n}) | fromSuper | tst.js:54:18:54:19 | 42 |
 | tst.js:63:1:66:2 | new Vue ... 42 }\\n}) | fromMixin1 | tst.js:64:32:64:33 | 42 |
 | tst.js:63:1:66:2 | new Vue ... 42 }\\n}) | fromMixin2 | tst.js:64:61:64:62 | 42 |
 | tst.js:63:1:66:2 | new Vue ... 42 }\\n}) | fromSub | tst.js:65:19:65:20 | 42 |
@@ -44,6 +45,7 @@ component_getOption
 | tst.js:48:1:50:2 | new Ext ... 42 }\\n}) | data | tst.js:42:9:46:3 | functio ...  };\\n  } |
 | tst.js:48:1:50:2 | new Ext ... 42 }\\n}) | data | tst.js:49:8:49:22 | { fromSub: 42 } |
 | tst.js:51:17:57:2 | Vue.ext ... \\n  }\\n}) | data | tst.js:52:9:56:3 | functio ...  };\\n  } |
+| tst.js:58:1:61:2 | new Vue ... 42 }\\n}) | data | tst.js:52:9:56:3 | functio ...  };\\n  } |
 | tst.js:58:1:61:2 | new Vue ... 42 }\\n}) | data | tst.js:60:8:60:22 | { fromSub: 42 } |
 | tst.js:58:1:61:2 | new Vue ... 42 }\\n}) | mixins | tst.js:59:10:59:18 | Extended2 |
 | tst.js:63:1:66:2 | new Vue ... 42 }\\n}) | data | tst.js:64:18:64:35 | { fromMixin1: 42 } |
