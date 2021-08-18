@@ -16,6 +16,7 @@ CodeQL queries are used in code scanning analyses to find problems in source cod
    about-data-flow-analysis
    creating-path-queries
    troubleshooting-query-performance
+   debugging-data-flow-queries-using-partial-flow
 
 - :doc:`About CodeQL queries <about-codeql-queries>`: CodeQL queries are used to analyze code for issues related to security, correctness, maintainability, and readability. 
 - :doc:`Metadata for CodeQL queries <metadata-for-codeql-queries>`: Metadata tells users important information about CodeQL queries. You must include the correct query metadata in a query to be able to view query results in source code.
@@ -25,4 +26,4 @@ CodeQL queries are used in code scanning analyses to find problems in source cod
 - :doc:`About data flow analysis <about-data-flow-analysis>`: Data flow analysis is used to compute the possible values that a variable can hold at various points in a program, determining how those values propagate through the program and where they are used. 
 - :doc:`Creating path queries <creating-path-queries>`: You can create path queries to visualize the flow of information through a codebase.
 - :doc:`Troubleshooting query performance <troubleshooting-query-performance>`: Improve the performance of your CodeQL queries by following a few simple guidelines.
-- :doc:`Debugging data-flow queries using partial flow <debugging-a-data-flow-query-using-partial-flow>`: If a data-flow query unexpectedly produces no results, you can use partial flow to debug the problem.
+- :doc:`Debugging data-flow queries using partial flow <debugging-data-flow-queries-using-partial-flow>`: If a data-flow query unexpectedly produces no results, you can use partial flow to debug the problem.
