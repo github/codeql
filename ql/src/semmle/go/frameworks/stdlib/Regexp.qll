@@ -85,77 +85,77 @@ module Regexp {
     FunctionOutput outp;
 
     MethodModels() {
-      // signature: func (*Regexp).Expand(dst []byte, template []byte, src []byte, match []int) []byte
+      // signature: func (*Regexp) Expand(dst []byte, template []byte, src []byte, match []int) []byte
       hasQualifiedName("regexp", "Regexp", "Expand") and
       (
         inp.isParameter([1, 2]) and
         (outp.isParameter(0) or outp.isResult())
       )
       or
-      // signature: func (*Regexp).ExpandString(dst []byte, template string, src string, match []int) []byte
+      // signature: func (*Regexp) ExpandString(dst []byte, template string, src string, match []int) []byte
       hasQualifiedName("regexp", "Regexp", "ExpandString") and
       (
         inp.isParameter([1, 2]) and
         (outp.isParameter(0) or outp.isResult())
       )
       or
-      // signature: func (*Regexp).Find(b []byte) []byte
+      // signature: func (*Regexp) Find(b []byte) []byte
       hasQualifiedName("regexp", "Regexp", "Find") and
       (inp.isParameter(0) and outp.isResult())
       or
-      // signature: func (*Regexp).FindAll(b []byte, n int) [][]byte
+      // signature: func (*Regexp) FindAll(b []byte, n int) [][]byte
       hasQualifiedName("regexp", "Regexp", "FindAll") and
       (inp.isParameter(0) and outp.isResult())
       or
-      // signature: func (*Regexp).FindAllString(s string, n int) []string
+      // signature: func (*Regexp) FindAllString(s string, n int) []string
       hasQualifiedName("regexp", "Regexp", "FindAllString") and
       (inp.isParameter(0) and outp.isResult())
       or
-      // signature: func (*Regexp).FindAllStringSubmatch(s string, n int) [][]string
+      // signature: func (*Regexp) FindAllStringSubmatch(s string, n int) [][]string
       hasQualifiedName("regexp", "Regexp", "FindAllStringSubmatch") and
       (inp.isParameter(0) and outp.isResult())
       or
-      // signature: func (*Regexp).FindAllSubmatch(b []byte, n int) [][][]byte
+      // signature: func (*Regexp) FindAllSubmatch(b []byte, n int) [][][]byte
       hasQualifiedName("regexp", "Regexp", "FindAllSubmatch") and
       (inp.isParameter(0) and outp.isResult())
       or
-      // signature: func (*Regexp).FindString(s string) string
+      // signature: func (*Regexp) FindString(s string) string
       hasQualifiedName("regexp", "Regexp", "FindString") and
       (inp.isParameter(0) and outp.isResult())
       or
-      // signature: func (*Regexp).FindStringSubmatch(s string) []string
+      // signature: func (*Regexp) FindStringSubmatch(s string) []string
       hasQualifiedName("regexp", "Regexp", "FindStringSubmatch") and
       (inp.isParameter(0) and outp.isResult())
       or
-      // signature: func (*Regexp).FindSubmatch(b []byte) [][]byte
+      // signature: func (*Regexp) FindSubmatch(b []byte) [][]byte
       hasQualifiedName("regexp", "Regexp", "FindSubmatch") and
       (inp.isParameter(0) and outp.isResult())
       or
-      // signature: func (*Regexp).ReplaceAll(src []byte, repl []byte) []byte
+      // signature: func (*Regexp) ReplaceAll(src []byte, repl []byte) []byte
       hasQualifiedName("regexp", "Regexp", "ReplaceAll") and
       (inp.isParameter(_) and outp.isResult())
       or
-      // signature: func (*Regexp).ReplaceAllFunc(src []byte, repl func([]byte) []byte) []byte
+      // signature: func (*Regexp) ReplaceAllFunc(src []byte, repl func([]byte) []byte) []byte
       hasQualifiedName("regexp", "Regexp", "ReplaceAllFunc") and
       (inp.isParameter(_) and outp.isResult())
       or
-      // signature: func (*Regexp).ReplaceAllLiteral(src []byte, repl []byte) []byte
+      // signature: func (*Regexp) ReplaceAllLiteral(src []byte, repl []byte) []byte
       hasQualifiedName("regexp", "Regexp", "ReplaceAllLiteral") and
       (inp.isParameter(_) and outp.isResult())
       or
-      // signature: func (*Regexp).ReplaceAllLiteralString(src string, repl string) string
+      // signature: func (*Regexp) ReplaceAllLiteralString(src string, repl string) string
       hasQualifiedName("regexp", "Regexp", "ReplaceAllLiteralString") and
       (inp.isParameter(_) and outp.isResult())
       or
-      // signature: func (*Regexp).ReplaceAllString(src string, repl string) string
+      // signature: func (*Regexp) ReplaceAllString(src string, repl string) string
       hasQualifiedName("regexp", "Regexp", "ReplaceAllString") and
       (inp.isParameter(_) and outp.isResult())
       or
-      // signature: func (*Regexp).ReplaceAllStringFunc(src string, repl func(string) string) string
+      // signature: func (*Regexp) ReplaceAllStringFunc(src string, repl func(string) string) string
       hasQualifiedName("regexp", "Regexp", "ReplaceAllStringFunc") and
       (inp.isParameter(_) and outp.isResult())
       or
-      // signature: func (*Regexp).Split(s string, n int) []string
+      // signature: func (*Regexp) Split(s string, n int) []string
       hasQualifiedName("regexp", "Regexp", "Split") and
       (inp.isParameter(0) and outp.isResult())
     }

@@ -82,67 +82,67 @@ module EncodingXml {
     FunctionOutput outp;
 
     MethodModels() {
-      // signature: func (CharData).Copy() CharData
+      // signature: func (CharData) Copy() CharData
       hasQualifiedName("encoding/xml", "CharData", "Copy") and
       (inp.isReceiver() and outp.isResult())
       or
-      // signature: func (Comment).Copy() Comment
+      // signature: func (Comment) Copy() Comment
       hasQualifiedName("encoding/xml", "Comment", "Copy") and
       (inp.isReceiver() and outp.isResult())
       or
-      // signature: func (*Decoder).Decode(v interface{}) error
+      // signature: func (*Decoder) Decode(v interface{}) error
       hasQualifiedName("encoding/xml", "Decoder", "Decode") and
       (inp.isReceiver() and outp.isParameter(0))
       or
-      // signature: func (*Decoder).DecodeElement(v interface{}, start *StartElement) error
+      // signature: func (*Decoder) DecodeElement(v interface{}, start *StartElement) error
       hasQualifiedName("encoding/xml", "Decoder", "DecodeElement") and
       (inp.isReceiver() and outp.isParameter(0))
       or
-      // signature: func (*Decoder).RawToken() (Token, error)
+      // signature: func (*Decoder) RawToken() (Token, error)
       hasQualifiedName("encoding/xml", "Decoder", "RawToken") and
       (inp.isReceiver() and outp.isResult(0))
       or
-      // signature: func (*Decoder).Token() (Token, error)
+      // signature: func (*Decoder) Token() (Token, error)
       hasQualifiedName("encoding/xml", "Decoder", "Token") and
       (inp.isReceiver() and outp.isResult(0))
       or
-      // signature: func (Directive).Copy() Directive
+      // signature: func (Directive) Copy() Directive
       hasQualifiedName("encoding/xml", "Directive", "Copy") and
       (inp.isReceiver() and outp.isResult())
       or
-      // signature: func (*Encoder).Encode(v interface{}) error
+      // signature: func (*Encoder) Encode(v interface{}) error
       hasQualifiedName("encoding/xml", "Encoder", "Encode") and
       (inp.isParameter(0) and outp.isReceiver())
       or
-      // signature: func (*Encoder).EncodeElement(v interface{}, start StartElement) error
+      // signature: func (*Encoder) EncodeElement(v interface{}, start StartElement) error
       hasQualifiedName("encoding/xml", "Encoder", "EncodeElement") and
       (inp.isParameter(0) and outp.isReceiver())
       or
-      // signature: func (*Encoder).EncodeToken(t Token) error
+      // signature: func (*Encoder) EncodeToken(t Token) error
       hasQualifiedName("encoding/xml", "Encoder", "EncodeToken") and
       (inp.isParameter(0) and outp.isReceiver())
       or
-      // signature: func (*Encoder).Indent(prefix string, indent string)
+      // signature: func (*Encoder) Indent(prefix string, indent string)
       hasQualifiedName("encoding/xml", "Encoder", "Indent") and
       (inp.isParameter(_) and outp.isReceiver())
       or
-      // signature: func (ProcInst).Copy() ProcInst
+      // signature: func (ProcInst) Copy() ProcInst
       hasQualifiedName("encoding/xml", "ProcInst", "Copy") and
       (inp.isReceiver() and outp.isResult())
       or
-      // signature: func (StartElement).Copy() StartElement
+      // signature: func (StartElement) Copy() StartElement
       hasQualifiedName("encoding/xml", "StartElement", "Copy") and
       (inp.isReceiver() and outp.isResult())
       or
-      // signature: func (Marshaler).MarshalXML(e *Encoder, start StartElement) error
+      // signature: func (Marshaler) MarshalXML(e *Encoder, start StartElement) error
       this.implements("encoding/xml", "Marshaler", "MarshalXML") and
       (inp.isReceiver() and outp.isParameter(0))
       or
-      // signature: func (TokenReader).Token() (Token, error)
+      // signature: func (TokenReader) Token() (Token, error)
       this.implements("encoding/xml", "TokenReader", "Token") and
       (inp.isReceiver() and outp.isResult(0))
       or
-      // signature: func (Unmarshaler).UnmarshalXML(d *Decoder, start StartElement) error
+      // signature: func (Unmarshaler) UnmarshalXML(d *Decoder, start StartElement) error
       this.implements("encoding/xml", "Unmarshaler", "UnmarshalXML") and
       (inp.isParameter(0) and outp.isReceiver())
     }

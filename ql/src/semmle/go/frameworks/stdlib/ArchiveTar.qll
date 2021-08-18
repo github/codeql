@@ -35,15 +35,15 @@ module ArchiveTar {
 
     MethodModels() {
       // Methods:
-      // signature: func (*Header).FileInfo() os.FileInfo
+      // signature: func (*Header) FileInfo() os.FileInfo
       hasQualifiedName("archive/tar", "Header", "FileInfo") and
       (inp.isReceiver() and outp.isResult())
       or
-      // signature: func (*Reader).Next() (*Header, error)
+      // signature: func (*Reader) Next() (*Header, error)
       hasQualifiedName("archive/tar", "Reader", "Next") and
       (inp.isReceiver() and outp.isResult(0))
       or
-      // signature: func (*Writer).WriteHeader(hdr *Header) error
+      // signature: func (*Writer) WriteHeader(hdr *Header) error
       hasQualifiedName("archive/tar", "Writer", "WriteHeader") and
       (inp.isParameter(0) and outp.isReceiver())
     }

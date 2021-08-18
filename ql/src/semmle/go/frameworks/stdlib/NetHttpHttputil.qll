@@ -58,7 +58,7 @@ module NetHttpHttputil {
     FunctionOutput outp;
 
     MethodModels() {
-      // signature: func (*ClientConn).Hijack() (c net.Conn, r *bufio.Reader)
+      // signature: func (*ClientConn) Hijack() (c net.Conn, r *bufio.Reader)
       hasQualifiedName("net/http/httputil", "ClientConn", "Hijack") and
       (
         inp.isReceiver() and outp.isResult(_)
@@ -66,7 +66,7 @@ module NetHttpHttputil {
         inp.isResult(0) and outp.isReceiver()
       )
       or
-      // signature: func (*ServerConn).Hijack() (net.Conn, *bufio.Reader)
+      // signature: func (*ServerConn) Hijack() (net.Conn, *bufio.Reader)
       hasQualifiedName("net/http/httputil", "ServerConn", "Hijack") and
       (
         inp.isReceiver() and outp.isResult(_)
@@ -74,11 +74,11 @@ module NetHttpHttputil {
         inp.isResult(0) and outp.isReceiver()
       )
       or
-      // signature: func (BufferPool).Get() []byte
+      // signature: func (BufferPool) Get() []byte
       implements("net/http/httputil", "BufferPool", "Get") and
       (inp.isReceiver() and outp.isResult())
       or
-      // signature: func (BufferPool).Put([]byte)
+      // signature: func (BufferPool) Put([]byte)
       implements("net/http/httputil", "BufferPool", "Put") and
       (inp.isParameter(0) and outp.isReceiver())
     }

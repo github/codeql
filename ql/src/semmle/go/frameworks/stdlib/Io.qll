@@ -81,31 +81,31 @@ module Io {
     FunctionOutput outp;
 
     MethodModels() {
-      // signature: func (Reader).Read(p []byte) (n int, err error)
+      // signature: func (Reader) Read(p []byte) (n int, err error)
       implements("io", "Reader", "Read") and
       (inp.isReceiver() and outp.isParameter(0))
       or
-      // signature: func (ReaderAt).ReadAt(p []byte, off int64) (n int, err error)
+      // signature: func (ReaderAt) ReadAt(p []byte, off int64) (n int, err error)
       implements("io", "ReaderAt", "ReadAt") and
       (inp.isReceiver() and outp.isParameter(0))
       or
-      // signature: func (ReaderFrom).ReadFrom(r Reader) (n int64, err error)
+      // signature: func (ReaderFrom) ReadFrom(r Reader) (n int64, err error)
       implements("io", "ReaderFrom", "ReadFrom") and
       (inp.isParameter(0) and outp.isReceiver())
       or
-      // signature: func (Writer).Write(p []byte) (n int, err error)
+      // signature: func (Writer) Write(p []byte) (n int, err error)
       implements("io", "Writer", "Write") and
       (inp.isParameter(0) and outp.isReceiver())
       or
-      // signature: func (WriterAt).WriteAt(p []byte, off int64) (n int, err error)
+      // signature: func (WriterAt) WriteAt(p []byte, off int64) (n int, err error)
       implements("io", "WriterAt", "WriteAt") and
       (inp.isParameter(0) and outp.isReceiver())
       or
-      // signature: func (StringWriter).WriteString(s string) (n int, err error)
+      // signature: func (StringWriter) WriteString(s string) (n int, err error)
       implements("io", "StringWriter", "WriteString") and
       (inp.isParameter(0) and outp.isReceiver())
       or
-      // signature: func (WriterTo).WriteTo(w Writer) (n int64, err error)
+      // signature: func (WriterTo) WriteTo(w Writer) (n int64, err error)
       implements("io", "WriterTo", "WriteTo") and
       (inp.isReceiver() and outp.isParameter(0))
     }

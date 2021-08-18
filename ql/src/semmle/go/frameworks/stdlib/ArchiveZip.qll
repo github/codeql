@@ -38,15 +38,15 @@ module ArchiveZip {
     FunctionOutput outp;
 
     MethodModels() {
-      // signature: func (*File).Open() (io.ReadCloser, error)
+      // signature: func (*File) Open() (io.ReadCloser, error)
       hasQualifiedName("archive/zip", "File", "Open") and
       (inp.isReceiver() and outp.isResult(0))
       or
-      // signature: func (*Writer).Create(name string) (io.Writer, error)
+      // signature: func (*Writer) Create(name string) (io.Writer, error)
       hasQualifiedName("archive/zip", "Writer", "Create") and
       (inp.isResult(0) and outp.isReceiver())
       or
-      // signature: func (*Writer).CreateHeader(fh *FileHeader) (io.Writer, error)
+      // signature: func (*Writer) CreateHeader(fh *FileHeader) (io.Writer, error)
       hasQualifiedName("archive/zip", "Writer", "CreateHeader") and
       (inp.isResult(0) and outp.isReceiver())
     }

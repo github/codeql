@@ -50,67 +50,67 @@ module NetTextproto {
     FunctionOutput outp;
 
     MethodModels() {
-      // signature: func (MIMEHeader).Add(key string, value string)
+      // signature: func (MIMEHeader) Add(key string, value string)
       hasQualifiedName("net/textproto", "MIMEHeader", "Add") and
       (inp.isParameter(_) and outp.isReceiver())
       or
-      // signature: func (MIMEHeader).Get(key string) string
+      // signature: func (MIMEHeader) Get(key string) string
       hasQualifiedName("net/textproto", "MIMEHeader", "Get") and
       (inp.isReceiver() and outp.isResult())
       or
-      // signature: func (MIMEHeader).Set(key string, value string)
+      // signature: func (MIMEHeader) Set(key string, value string)
       hasQualifiedName("net/textproto", "MIMEHeader", "Set") and
       (inp.isParameter(_) and outp.isReceiver())
       or
-      // signature: func (MIMEHeader).Values(key string) []string
+      // signature: func (MIMEHeader) Values(key string) []string
       hasQualifiedName("net/textproto", "MIMEHeader", "Values") and
       (inp.isReceiver() and outp.isResult())
       or
-      // signature: func (*Reader).DotReader() io.Reader
+      // signature: func (*Reader) DotReader() io.Reader
       hasQualifiedName("net/textproto", "Reader", "DotReader") and
       (inp.isReceiver() and outp.isResult())
       or
-      // signature: func (*Reader).ReadCodeLine(expectCode int) (code int, message string, err error)
+      // signature: func (*Reader) ReadCodeLine(expectCode int) (code int, message string, err error)
       hasQualifiedName("net/textproto", "Reader", "ReadCodeLine") and
       (inp.isReceiver() and outp.isResult(1))
       or
-      // signature: func (*Reader).ReadContinuedLine() (string, error)
+      // signature: func (*Reader) ReadContinuedLine() (string, error)
       hasQualifiedName("net/textproto", "Reader", "ReadContinuedLine") and
       (inp.isReceiver() and outp.isResult(0))
       or
-      // signature: func (*Reader).ReadContinuedLineBytes() ([]byte, error)
+      // signature: func (*Reader) ReadContinuedLineBytes() ([]byte, error)
       hasQualifiedName("net/textproto", "Reader", "ReadContinuedLineBytes") and
       (inp.isReceiver() and outp.isResult(0))
       or
-      // signature: func (*Reader).ReadDotBytes() ([]byte, error)
+      // signature: func (*Reader) ReadDotBytes() ([]byte, error)
       hasQualifiedName("net/textproto", "Reader", "ReadDotBytes") and
       (inp.isReceiver() and outp.isResult(0))
       or
-      // signature: func (*Reader).ReadDotLines() ([]string, error)
+      // signature: func (*Reader) ReadDotLines() ([]string, error)
       hasQualifiedName("net/textproto", "Reader", "ReadDotLines") and
       (inp.isReceiver() and outp.isResult(0))
       or
-      // signature: func (*Reader).ReadLine() (string, error)
+      // signature: func (*Reader) ReadLine() (string, error)
       hasQualifiedName("net/textproto", "Reader", "ReadLine") and
       (inp.isReceiver() and outp.isResult(0))
       or
-      // signature: func (*Reader).ReadLineBytes() ([]byte, error)
+      // signature: func (*Reader) ReadLineBytes() ([]byte, error)
       hasQualifiedName("net/textproto", "Reader", "ReadLineBytes") and
       (inp.isReceiver() and outp.isResult(0))
       or
-      // signature: func (*Reader).ReadMIMEHeader() (MIMEHeader, error)
+      // signature: func (*Reader) ReadMIMEHeader() (MIMEHeader, error)
       hasQualifiedName("net/textproto", "Reader", "ReadMIMEHeader") and
       (inp.isReceiver() and outp.isResult(0))
       or
-      // signature: func (*Reader).ReadResponse(expectCode int) (code int, message string, err error)
+      // signature: func (*Reader) ReadResponse(expectCode int) (code int, message string, err error)
       hasQualifiedName("net/textproto", "Reader", "ReadResponse") and
       (inp.isReceiver() and outp.isResult(1))
       or
-      // signature: func (*Writer).DotWriter() io.WriteCloser
+      // signature: func (*Writer) DotWriter() io.WriteCloser
       hasQualifiedName("net/textproto", "Writer", "DotWriter") and
       (inp.isResult() and outp.isReceiver())
       or
-      // signature: func (*Writer).PrintfLine(format string, args ...interface{}) error
+      // signature: func (*Writer) PrintfLine(format string, args ...interface{}) error
       hasQualifiedName("net/textproto", "Writer", "PrintfLine") and
       (inp.isParameter(_) and outp.isReceiver())
     }
