@@ -1,6 +1,6 @@
 /**
  * @name Selecting minimum element using `rank[1]`
- * @description Selecting the minimim element using `rank[1]` performs worse than doing the same thing with `min(..)`.
+ * @description Selecting the minimum element using `rank[1](..)` performs worse than doing the same thing with `min(..)`.
  * @kind problem
  * @problem.severity warning
  * @id ql/rank-one
