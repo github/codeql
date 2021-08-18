@@ -140,6 +140,12 @@ module Vue {
     }
 
     /**
+     * Gets an API node referring to the options passed to the Vue object,
+     * such as the object literal `{...}` in `new Vue{{...})` or the default export of a single-file component.
+     */
+    API::Node getOwnOptions() { none() } // overridden in subclass
+
+    /**
      * Gets the options passed to the Vue object, such as the object literal `{...}` in `new Vue{{...})`
      * or the default export of a single-file component.
      */
@@ -356,7 +362,7 @@ module Vue {
    * A Vue component from `new Vue({...})`.
    */
   class VueInstance extends Component, MkVueInstance {
-    DataFlow::NewNode def;
+    API::NewNode def;
 
     VueInstance() { this = MkVueInstance(def) }
 
@@ -367,6 +373,8 @@ module Vue {
     ) {
       def.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     }
+
+    override API::Node getOwnOptions() { result = def.getParameter(0) }
 
     override DataFlow::Node getOwnOptionsObject() { result = def.getArgument(0) }
 
@@ -389,6 +397,8 @@ module Vue {
       extend.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     }
 
+    override API::Node getOwnOptions() { result = extend.getParameter(0) }
+
     override DataFlow::Node getOwnOptionsObject() { result = extend.getArgument(0) }
 
     override Template::Element getTemplateElement() { none() }
@@ -399,7 +409,7 @@ module Vue {
    */
   class ExtendedInstance extends Component, MkExtendedInstance {
     VueExtend extend;
-    DataFlow::NewNode sub;
+    API::NewNode sub;
 
     ExtendedInstance() { this = MkExtendedInstance(extend, sub) }
 
@@ -410,6 +420,8 @@ module Vue {
     ) {
       sub.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     }
+
+    override API::Node getOwnOptions() { result = sub.getParameter(0) }
 
     override DataFlow::Node getOwnOptionsObject() { result = sub.getArgument(0) }
 
@@ -426,7 +438,7 @@ module Vue {
    * A Vue component from `Vue.component("my-component", { ... })`.
    */
   class ComponentRegistration extends Component, MkComponentRegistration {
-    DataFlow::CallNode def;
+    API::CallNode def;
 
     ComponentRegistration() { this = MkComponentRegistration(def) }
 
@@ -437,6 +449,8 @@ module Vue {
     ) {
       def.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     }
+
+    override API::Node getOwnOptions() { result = def.getParameter(1) }
 
     override DataFlow::Node getOwnOptionsObject() { result = def.getArgument(1) }
 
@@ -473,6 +487,13 @@ module Vue {
       exists(HTML::ScriptElement elem |
         xmlElements(elem, _, _, _, file) and // Avoid materializing all of Locatable.getFile()
         result.getTopLevel() = elem.getScript()
+      )
+    }
+
+    override API::Node getOwnOptions() {
+      exists(ExportDefaultDeclaration decl |
+        decl.getTopLevel() = getModule() and
+        result.getARhs() = DataFlow::valueNode(decl.getOperand())
       )
     }
 
