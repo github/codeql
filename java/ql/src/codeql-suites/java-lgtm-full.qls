@@ -1,5 +1,5 @@
 - description: Standard LGTM queries for Java, including ones not displayed by default
-- qlpack: codeql-java
+- queries: .
 - apply: lgtm-selectors.yml
   from: codeql/suite-helpers
 # These are only for IDE use.

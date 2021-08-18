@@ -1,5 +1,7 @@
-name: codeql-java-tests
+name: codeql/java-tests
 version: 0.0.0
-libraryPathDependencies: codeql-java
+dependencies:
+    codeql/java-all: ^0.0.1
+    codeql/java-queries: ^0.0.1
 extractor: java
 tests: .
