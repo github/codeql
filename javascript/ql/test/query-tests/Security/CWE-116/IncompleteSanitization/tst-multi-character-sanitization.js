@@ -143,4 +143,5 @@
   content = content.replace(/<[a-zA-Z\/](.|\n)*?>/g, '') || ' '; // NOT OK
   content = content.replace(/<(script|iframe|video)[\s\S]*?<\/(script|iframe|video)>/g, '') // NOT OK
   content = content.replace(/<(script|iframe|video)(.|\s)*?\/(script|iframe|video)>/g, '') // NOT OK
+  content = content.replace(/<[^<]*>/g, ""); // OK
 });
