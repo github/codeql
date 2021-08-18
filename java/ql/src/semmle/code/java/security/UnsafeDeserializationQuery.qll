@@ -15,6 +15,7 @@ private import semmle.code.java.frameworks.HessianBurlap
 private import semmle.code.java.frameworks.Castor
 private import semmle.code.java.frameworks.Jackson
 private import semmle.code.java.frameworks.Jabsorb
+private import semmle.code.java.frameworks.JoddJson
 private import semmle.code.java.frameworks.apache.Lang
 private import semmle.code.java.Reflection
 
@@ -192,6 +193,16 @@ predicate unsafeDeserialization(MethodAccess ma, Expr sink) {
     or
     m instanceof JabsorbFromJsonMethod and
     sink = ma.getArgument(0)
+    or
+    m instanceof JoddJsonParseMethod and
+    sink = ma.getArgument(0) and
+    (
+      // User controls the target type for deserialization
+      any(UnsafeTypeConfig c).hasFlowToExpr(ma.getArgument(1))
+      or
+      // jodd.json.JsonParser may be configured for unrestricted deserialization to user-specified types
+      joddJsonParserConfiguredUnsafely(ma.getQualifier())
+    )
   )
 }
 
@@ -248,6 +259,17 @@ class UnsafeDeserializationConfig extends TaintTracking::Configuration {
       ma.getArgument(0) = node.asExpr() and
       exists(SafeJsonIoConfig sji | sji.hasFlowToExpr(ma.getArgument(1)))
     )
+    or
+    exists(MethodAccess ma |
+      // Sanitize the input to jodd.json.JsonParser.parse et al whenever it appears
+      // to be called with an explicit class argument limiting those types that can
+      // be instantiated during deserialization.
+      ma.getMethod() instanceof JoddJsonParseMethod and
+      ma.getArgument(1).getType() instanceof TypeClass and
+      not ma.getArgument(1) instanceof NullLiteral and
+      not ma.getArgument(1).getType().getName() = ["Class<Object>", "Class<?>"] and
+      node.asExpr() = ma.getAnArgument()
+    )
   }
 }
 
@@ -295,6 +317,8 @@ class UnsafeTypeConfig extends TaintTracking2::Configuration {
         ma.getMethod() instanceof ObjectMapperReadMethod
         or
         ma.getMethod() instanceof JabsorbUnmarshallMethod
+        or
+        ma.getMethod() instanceof JoddJsonParseMethod
       ) and
       // Note `JacksonTypeDescriptorType` includes plain old `java.lang.Class`
       arg.getType() instanceof JacksonTypeDescriptorType and
@@ -355,4 +379,86 @@ class SafeObjectMapperConfig extends DataFlow2::Configuration {
       ma = toNode.asExpr()
     )
   }
+}
+
+/**
+ * A method that configures Jodd's JsonParser, either enabling dangerous deserialization to
+ * arbitrary Java types or restricting the types that can be instantiated.
+ */
+private class JoddJsonParserConfigurationMethodQualifier extends DataFlow::ExprNode {
+  JoddJsonParserConfigurationMethodQualifier() {
+    exists(MethodAccess ma, Method m | ma.getQualifier() = this.asExpr() and m = ma.getMethod() |
+      m instanceof WithClassMetadataMethod
+      or
+      m instanceof SetClassMetadataNameMethod
+      or
+      m instanceof AllowClassMethod
+    )
+  }
+}
+
+/**
+ * Configuration tracking flow from methods that configure `jodd.json.JsonParser`'s class
+ * instantiation feature to a `.parse` call on the same parser.
+ */
+private class JoddJsonParserConfigurationMethodConfig extends DataFlow2::Configuration {
+  JoddJsonParserConfigurationMethodConfig() {
+    this = "UnsafeDeserialization::JoddJsonParserConfigurationMethodConfig"
+  }
+
+  override predicate isSource(DataFlow::Node src) {
+    src instanceof JoddJsonParserConfigurationMethodQualifier
+  }
+
+  override predicate isSink(DataFlow::Node sink) {
+    exists(MethodAccess ma |
+      ma.getMethod() instanceof JoddJsonParseMethod and
+      sink.asExpr() = ma.getQualifier() // The class type argument
+    )
+  }
+}
+
+/**
+ * Gets the qualifier to a method call that configures a `jodd.json.JsonParser` instance unsafely.
+ *
+ * Such a parser may instantiate an arbtirary type when deserializing untrusted data.
+ */
+private DataFlow::Node getAnUnsafelyConfiguredParser() {
+  exists(MethodAccess ma | result.asExpr() = ma.getQualifier() |
+    ma.getMethod() instanceof WithClassMetadataMethod and
+    ma.getArgument(0).(CompileTimeConstantExpr).getBooleanValue() = true
+    or
+    ma.getMethod() instanceof SetClassMetadataNameMethod and
+    not ma.getArgument(0) instanceof NullLiteral
+  )
+}
+
+/**
+ * Gets the qualifier to a method call that configures a `jodd.json.JsonParser` instance safely.
+ *
+ * Such a parser will not instantiate an arbtirary type when deserializing untrusted data.
+ */
+private DataFlow::Node getASafelyConfiguredParser() {
+  exists(MethodAccess ma | result.asExpr() = ma.getQualifier() |
+    ma.getMethod() instanceof WithClassMetadataMethod and
+    ma.getArgument(0).(CompileTimeConstantExpr).getBooleanValue() = false
+    or
+    ma.getMethod() instanceof SetClassMetadataNameMethod and
+    ma.getArgument(0) instanceof NullLiteral
+    or
+    ma.getMethod() instanceof AllowClassMethod
+  )
+}
+
+/**
+ * Holds if `parseMethodQualifierExpr` is a `jodd.json.JsonParser` instance that is configured unsafely
+ * and which never appears to be configured safely.
+ */
+private predicate joddJsonParserConfiguredUnsafely(Expr parserExpr) {
+  exists(DataFlow::Node parser, JoddJsonParserConfigurationMethodConfig config |
+    parser.asExpr() = parserExpr
+  |
+    config.hasFlow(getAnUnsafelyConfiguredParser(), parser) and
+    not config.hasFlow(getASafelyConfiguredParser(), parser)
+  )
 }
