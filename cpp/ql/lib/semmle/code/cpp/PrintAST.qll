@@ -46,7 +46,7 @@ private string escapeString(string s) {
  * string representation comes first in lexicographical order.
  */
 private Location getRepresentativeLocation(Locatable ast) {
-  result = rank[1](Location loc | loc = ast.getLocation() | loc order by loc.toString())
+  result = min(Location loc | loc = ast.getLocation() | loc order by loc.toString())
 }
 
 /**
