@@ -21,6 +21,7 @@ external string selectedSourceFile();
  */
 class Cfg extends PrintAstConfiguration {
   override predicate shouldPrintNode(AstNode n) {
+    super.shouldPrintNode(n) and
     n.getLocation().getFile() = getFileBySourceArchiveName(selectedSourceFile())
   }
 }
