@@ -56,3 +56,6 @@ if __name__ == "__main__":
     check_tests_valid("variable-capture.in")
     check_tests_valid("variable-capture.nonlocal")
     check_tests_valid("variable-capture.dict")
+    # The below fails when trying to import modules
+    # check_tests_valid("module-initialization.test")
+    # check_tests_valid("module-initialization.testOnce")
