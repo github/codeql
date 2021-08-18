@@ -36,12 +36,12 @@ module Vue {
   }
 
   private newtype TComponent =
-    MkVueInstance(DataFlow::NewNode def) { def = vueLibrary().getAnInstantiation() } or
+    MkVueInstance(API::NewNode def) { def = vueLibrary().getAnInstantiation() } or
     MkExtendedVue(VueExtend extend) or
-    MkExtendedInstance(VueExtend extend, DataFlow::NewNode sub) {
+    MkExtendedInstance(VueExtend extend, API::NewNode sub) {
       sub = extend.getReturn().getAnInstantiation()
     } or
-    MkComponentRegistration(DataFlow::CallNode def) { def = vueLibrary().getMember("component").getACall() } or
+    MkComponentRegistration(API::CallNode def) { def = vueLibrary().getMember("component").getACall() } or
     MkSingleFileComponent(VueFile file)
 
   /** Gets the name of a lifecycle hook method. */
