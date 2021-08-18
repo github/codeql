@@ -97,6 +97,15 @@ For example, in the following snippet, you could select the predicate name ``foo
 
    predicate foo(string s) { s = "bar" }
 
+Running a query on multiple databases
+--------------------------------------
+
+This is helpful if you want to test your query on multiple codebases, or find a vulnerability in multiple projects.
+
+#. Open a query (``.ql``) file.
+#. Right-click and select **CodeQL: Run Query on Multiple Databases**.
+#. From the dropdown menu, select the databases that you want to run the query on.
+
 Viewing previous queries
 --------------------------
 
