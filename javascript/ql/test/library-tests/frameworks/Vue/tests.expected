@@ -29,6 +29,8 @@ component_getAPropertyValue
 | tst.js:85:1:87:2 | new Vue ... e; }\\n}) | created | tst.js:86:38:86:41 | true |
 | tst.js:94:2:96:3 | new Vue ...  f,\\n\\t}) | dataA | tst.js:89:22:89:23 | 42 |
 | tst.js:99:2:104:3 | new Vue ... \\t\\t}\\n\\t}) | dataA | tst.js:100:18:100:19 | 42 |
+| tst.js:107:12:109:2 | new Vue ... 23 }\\n}) | fromBase | tst.js:108:20:108:22 | 123 |
+| tst.js:110:16:112:2 | new Vue ... base\\n}) | fromBase | tst.js:108:20:108:22 | 123 |
 component_getOption
 | compont-with-route.vue:0:0:0:0 | compont-with-route.vue | watch | compont-with-route.vue:10:12:16:5 | {\\n      ... }\\n    } |
 | single-component-file-1.vue:0:0:0:0 | single-component-file-1.vue | data | single-component-file-1.vue:6:11:6:45 | functio ...  42 } } |
@@ -60,6 +62,9 @@ component_getOption
 | tst.js:94:2:96:3 | new Vue ...  f,\\n\\t}) | data | tst.js:95:9:95:9 | f |
 | tst.js:99:2:104:3 | new Vue ... \\t\\t}\\n\\t}) | data | tst.js:100:9:100:21 | { dataA: 42 } |
 | tst.js:99:2:104:3 | new Vue ... \\t\\t}\\n\\t}) | methods | tst.js:101:12:103:3 | {\\n\\t\\t\\tm: ... ; }\\n\\t\\t} |
+| tst.js:107:12:109:2 | new Vue ... 23 }\\n}) | data | tst.js:108:8:108:24 | { fromBase: 123 } |
+| tst.js:110:16:112:2 | new Vue ... base\\n}) | data | tst.js:108:8:108:24 | { fromBase: 123 } |
+| tst.js:110:16:112:2 | new Vue ... base\\n}) | extends | tst.js:111:11:111:14 | base |
 component
 | compont-with-route.vue:0:0:0:0 | compont-with-route.vue |
 | single-component-file-1.vue:0:0:0:0 | single-component-file-1.vue |
@@ -82,6 +87,8 @@ component
 | tst.js:85:1:87:2 | new Vue ... e; }\\n}) |
 | tst.js:94:2:96:3 | new Vue ...  f,\\n\\t}) |
 | tst.js:99:2:104:3 | new Vue ... \\t\\t}\\n\\t}) |
+| tst.js:107:12:109:2 | new Vue ... 23 }\\n}) |
+| tst.js:110:16:112:2 | new Vue ... base\\n}) |
 instance_heapStep
 | Unit | compont-with-route.vue:31:14:31:34 | this.$r ... ery.foo | compont-with-route.vue:2:8:2:21 | v-html=dataA |
 | Unit | single-component-file-1.vue:6:40:6:41 | 42 | single-component-file-1.vue:2:8:2:21 | v-html=dataA |
