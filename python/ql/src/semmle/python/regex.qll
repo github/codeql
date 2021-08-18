@@ -371,13 +371,10 @@ abstract class RegexString extends Expr {
       or
       // octal value \ooo
       end in [start + 2 .. start + 4] and
-      // this.isOctal([start + 1 .. end]) and
       forall(int i | i in [start + 1 .. end - 1] | this.isOctal(i)) and
-      // this.getText().substring(start + 1, end).toInt() >= 0 and
       not (
         end < start + 4 and
-        this.isOctal(end) //and
-        // exists(this.getText().substring(start + 1, end + 1).toInt())
+        this.isOctal(end)
       )
       or
       // 16-bit hex value \uhhhh
