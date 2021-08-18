@@ -13,7 +13,7 @@
 
 import javascript
 import DataFlow
-import semmle.javascript.security.dataflow.DomBasedXss
+import semmle.javascript.security.dataflow.DomBasedXssQuery as DomBasedXss
 import DataFlow::PathGraph
 
 /*
