@@ -14,6 +14,17 @@ module Vue {
     override DataFlow::Node getARhs() { none() }
   }
 
+  /** A value exported from a `.vue` file. */
+  private class VueExportEntryPoint extends API::EntryPoint {
+    VueExportEntryPoint() { this = "VueExportEntryPoint" }
+
+    override DataFlow::SourceNode getAUse() { none() }
+
+    override DataFlow::Node getARhs() {
+      result = any(SingleFileComponent c).getModule().getAnExportedValue("default")
+    }
+  }
+
   /**
    * Gets a reference to the `Vue` object.
    */
@@ -521,7 +532,8 @@ module Vue {
       endcolumn = 0
     }
 
-    private Module getModule() {
+    /** Gets the module defined by the `script` tag in this .vue file, if any. */
+    Module getModule() {
       exists(HTML::ScriptElement elem |
         xmlElements(elem, _, _, _, file) and // Avoid materializing all of Locatable.getFile()
         result.getTopLevel() = elem.getScript()

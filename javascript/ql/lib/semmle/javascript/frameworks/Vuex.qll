@@ -7,19 +7,6 @@ private import semmle.javascript.dataflow.internal.FlowSteps as FlowSteps
 
 /** A minimal adapter for the `vue` model based on API nodes. */
 private module VueAPI {
-  /** A value exported from a `.vue` file. */
-  private class VueExportEntryPoint extends API::EntryPoint {
-    VueExportEntryPoint() { this = "VueExportEntryPoint" }
-
-    override DataFlow::SourceNode getAUse() { none() }
-
-    override DataFlow::Node getARhs() {
-      exists(Module mod |
-        mod.getFile() instanceof Vue::VueFile and
-        result = mod.getAnExportedValue("default")
-      )
-    }
-  }
 
   /**
    * An API node representing the object passed to the Vue constructor `new Vue({...})`
