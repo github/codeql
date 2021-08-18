@@ -508,10 +508,6 @@ edges
 | hello.go:8:2:8:12 | selection of Println | hello.go:8:14:8:20 | message |
 | hello.go:8:2:8:21 | call to Println | hello.go:9:1:9:1 | exit |
 | hello.go:8:14:8:20 | message | hello.go:8:2:8:21 | call to Println |
-| linux.go:0:0:0:0 | entry | linux.go:5:7:5:11 | skip |
-| linux.go:5:7:5:11 | assignment to linux | linux.go:0:0:0:0 | exit |
-| linux.go:5:7:5:11 | skip | linux.go:5:15:5:18 | true |
-| linux.go:5:15:5:18 | true | linux.go:5:7:5:11 | assignment to linux |
 | main.go:0:0:0:0 | entry | main.go:3:1:6:1 | skip |
 | main.go:3:1:6:1 | skip | main.go:8:6:8:9 | skip |
 | main.go:8:1:8:1 | entry | main.go:9:9:9:20 | selection of Float64 |
