@@ -1,0 +1,102 @@
+.. _debugging-data-flow-queries-using-partial-flow
+
+Debugging data-flow queries using partial flow
+==============================================
+
+If a data-flow query unexpectedly produces no results, you can use partial flow to debug the problem.
+
+A typical data-flow query looks like this:
+
+.. code-block:: ql
+
+::
+
+    class MyConfig extends TaintTracking::Configuration {
+      MyConfig() { this = "MyConfig" }
+
+      override predicate isSource(DataFlow::Node node) { node instanceof MySource }
+
+      override predicate isSink(DataFlow::Node node) { node instanceof MySink }
+    }
+
+    from MyConfig config, DataFlow::PathNode source, DataFlow::PathNode sink
+    where config.hasFlowPath(source, sink)
+    select sink.getNode(), source, sink, "Sink is reached from $@.", source.getNode(), "here"
+
+Or slightly simpler without path explanations:
+
+.. code-block:: ql
+
+    from MyConfig config, DataFlow::Node source, DataFlow::Node sink
+    where config.hasPath(source, sink)
+    select sink, "Sink is reached from $@.", source.getNode(), "here"
+
+Checking sources and sinks
+--------------------------
+
+As a first step, make sure that the source and sink definitions contain what you expect. If one of these is empty then there can never be any data flow. The easiest way to verify this is using quick evaluation: Select the text ``node instanceof MySource``, right-click, and choose "CodeQL: Quick Evaluation". This will evaluate the highlighted text, which in this case means the set of sources.
+
+If both source and sink definitions look good then we will need to look for missing flow steps.
+
+``fieldFlowBranchLimit``
+------------------------
+
+Data-flow configurations contain a parameter called ``fieldFlowBranchLimit``. This is a slightly unfortunate, but currently necessary, performance trade-off, and a too low value can cause false negatives. It is worth a quick check to set this to a high value and see whether this causes the query to yield result. Try, for example, to add the following to your configuration:
+
+.. code-block:: ql
+
+    override int fieldFlowBranchLimit() { result = 5000 }
+
+If there are still no results and performance did not degrade to complete uselessness, then it is best to leave this set to a high value while doing further debugging.
+
+Partial flow
+------------
+
+A naive next step could be to try changing the sink definition to ``any()``. This would mean that we would get a lot of flow to all the places that are reachable from the sources. While this approach makes sense and can work, it can be hard to get an overview of the results as they can be quite plentiful, and it does come with a couple of additional caveats: Performance might degrade to uselessness and we might not even see all the partial flow paths. The latter point is somewhat subtle and deserves elaboration. Since the data-flow library tries very hard to prune impossible paths and since field stores and reads must be evenly matched along a path, then we will never see paths going through a store that fail to reach a corresponding read. This can make it hard to see where flow actually stops.
+
+Because of this, a ``Configuration`` comes with a mechanism for exploring partial flow that tries to deal with these caveats. This is the ``Configuration.hasPartialFlow`` predicate:
+
+.. code-block:: ql
+
+      /**
+       * Holds if there is a partial data flow path from `source` to `node`. The
+       * approximate distance between `node` and the closest source is `dist` and
+       * is restricted to be less than or equal to `explorationLimit()`. This
+       * predicate completely disregards sink definitions.
+       *
+       * This predicate is intended for dataflow exploration and debugging and may
+       * perform poorly if the number of sources is too big and/or the exploration
+       * limit is set too high without using barriers.
+       *
+       * This predicate is disabled (has no results) by default. Override
+       * `explorationLimit()` with a suitable number to enable this predicate.
+       *
+       * To use this in a `path-problem` query, import the module `PartialPathGraph`.
+       */
+      final predicate hasPartialFlow(PartialPathNode source, PartialPathNode node, int dist) {
+
+As noted in the qldoc for ``hasPartialFlow`` one must first enable this by adding an override of ``explorationLimit``. For example:
+
+.. code-block:: ql
+
+    override int explorationLimit() { result = 5 }
+
+This defines the exploration radius within which ``hasPartialFlow`` returns results.
+
+It is also generally useful to focus on a single source at a time as the starting point for the flow exploration. This is most easily done by adding some ad-hoc restriction in the ``isSource`` predicate.
+
+To do quick ad-hoc evaluations of partial flow it is often easiest to add a predicate to the query that is solely intended for quick evaluation (right-click the predicate name and choose "CodeQL: Quick Evaluation"). A good starting point is something like:
+
+.. code-block:: ql
+
+    predicate adhocPartialFlow(Callable c, PartialPathNode n, Node src, int dist) {
+      exists(MyConfig conf, PartialPathNode source |
+        conf.hasPartialFlow(source, n, dist) and
+        src = source.getNode() and
+        c = n.getNode().getEnclosingCallable()
+      )
+    }
+
+If you are focusing on a single source then the ``src`` column is of course superfluous, and you may of course also add other columns of interest based on ``n``, but including the enclosing callable and the distance to the source at the very least is generally recommended, as they can be useful columns to sort on to better inspect the results.
+
+A couple of advanced tips in order to focus the partial flow results: If flow travels a long distance following an expected path and the distance means that a lot of uninteresting flow gets included in the exploration radius then one can simply replace the source definition with a suitable node found along the way and restart the partial flow exploration from that point. Alternatively, creative use of barriers/sanitizers can be used to cut off flow paths that are uninteresting and thereby reduce the number of partial flow results to increase overview.
