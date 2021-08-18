@@ -16,6 +16,7 @@ private class StrdupFunction extends AllocationFunction, ArrayFunction, DataFlow
     hasGlobalName([
         // --- C library allocation
         "strdup", // strdup(str)
+        "strdupa", // strdupa(str) - returns stack allocated buffer
         "wcsdup", // wcsdup(str)
         "_strdup", // _strdup(str)
         "_wcsdup", // _wcsdup(str)
@@ -31,6 +32,8 @@ private class StrdupFunction extends AllocationFunction, ArrayFunction, DataFlow
     input.isParameterDeref(0) and
     output.isReturnValueDeref()
   }
+
+  override predicate requiresDealloc() { not hasGlobalName("strdupa") }
 }
 
 /**
@@ -38,11 +41,11 @@ private class StrdupFunction extends AllocationFunction, ArrayFunction, DataFlow
  */
 private class StrndupFunction extends AllocationFunction, ArrayFunction, DataFlowFunction {
   StrndupFunction() {
-    exists(string name |
-      hasGlobalName(name) and
-      // --- C library allocation
-      name = "strndup" // strndup(str, maxlen)
-    )
+    hasGlobalName([
+        // -- C library allocation
+        "strndup", // strndup(str, maxlen)
+        "strndupa" // strndupa(str, maxlen) -- returns stack allocated buffer
+      ])
   }
 
   override predicate hasArrayInput(int bufParam) { bufParam = 0 }
@@ -56,4 +59,6 @@ private class StrndupFunction extends AllocationFunction, ArrayFunction, DataFlo
     ) and
     output.isReturnValueDeref()
   }
+
+  override predicate requiresDealloc() { not hasGlobalName("strndupa") }
 }
