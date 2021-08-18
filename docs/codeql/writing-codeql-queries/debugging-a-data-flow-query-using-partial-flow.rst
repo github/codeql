@@ -1,4 +1,4 @@
-.. _debugging-data-flow-queries-using-partial-flow
+.. _debugging-data-flow-queries-using-partial-flow:
 
 Debugging data-flow queries using partial flow
 ==============================================
