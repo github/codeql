@@ -9,6 +9,7 @@ private class StringSummaryCsv extends SummaryModelCsv {
       [
         //`namespace; type; subtypes; name; signature; ext; input; output; kind`
         "java.lang;String;false;concat;(String);;Argument[0];ReturnValue;taint",
+        "java.lang;String;false;concat;(String);;Argument[-1];ReturnValue;taint",
         "java.lang;String;false;copyValueOf;;;Argument[0];ReturnValue;taint",
         "java.lang;String;false;endsWith;;;Argument[-1];ReturnValue;taint",
         "java.lang;String;false;format;(Locale,String,Object[]);;Argument[1];ReturnValue;taint",
