@@ -372,3 +372,10 @@ bad87 = re.compile(r'X(\u0061|a)*Y')
 
 # GOOD
 good43 = re.compile(r'X(\u0061|b)+Y')
+
+# GOOD
+good44 = re.compile(r'("[^"]*?"|[^"\s]+)+(?=\s*|\s*$)')
+
+# BAD
+bad88 = re.compile(r'/("[^"]*?"|[^"\s]+)+(?=\s*|\s*$)X')
+bad89 = re.compile(r'/("[^"]*?"|[^"\s]+)+(?=X)')

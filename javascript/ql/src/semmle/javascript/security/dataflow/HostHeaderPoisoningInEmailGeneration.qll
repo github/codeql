@@ -1,26 +1,7 @@
-/**
- * Provides a taint tracking configuration for reasoning about host header
- * poisoning in email generation.
- */
+/** DEPRECATED. Import `HostHeaderPoisoningInEmailGenerationQuery` instead. */
 
 import javascript
+private import HostHeaderPoisoningInEmailGenerationQuery as HostHeaderPoisoningInEmailGenerationQuery // ignore-query-import
 
-module HostHeaderPoisoningInEmailGeneration {
-  /**
-   * A taint tracking configuration for host header poisoning in email generation.
-   */
-  class Configuration extends TaintTracking::Configuration {
-    Configuration() { this = "TaintedHostHeader" }
-
-    override predicate isSource(DataFlow::Node node) {
-      exists(HTTP::RequestHeaderAccess input | node = input |
-        input.getKind() = "header" and
-        input.getAHeaderName() = "host"
-      )
-    }
-
-    override predicate isSink(DataFlow::Node node) {
-      exists(EmailSender email | node = email.getABody())
-    }
-  }
-}
+/** DEPRECATED. Import `HostHeaderPoisoningInEmailGenerationQuery` instead. */
+deprecated module HostHeaderPoisoningInEmailGeneration = HostHeaderPoisoningInEmailGenerationQuery;

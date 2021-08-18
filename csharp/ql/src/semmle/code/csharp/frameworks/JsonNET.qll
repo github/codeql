@@ -17,6 +17,19 @@ module JsonNET {
     JsonClass() { this.getParent() instanceof JsonNETNamespace }
   }
 
+  /** Newtonsoft.Json.TypeNameHandling enum */
+  class TypeNameHandlingEnum extends Enum {
+    TypeNameHandlingEnum() {
+      this.getParent() instanceof JsonNETNamespace and
+      this.hasName("TypeNameHandling")
+    }
+  }
+
+  /** Newtonsoft.Json.JsonSerializerSettings class */
+  class JsonSerializerSettingsClass extends JsonClass {
+    JsonSerializerSettingsClass() { this.hasName("JsonSerializerSettings") }
+  }
+
   /** The class `Newtonsoft.Json.JsonConvert`. */
   class JsonConvertClass extends JsonClass, LibraryTypeDataFlow {
     JsonConvertClass() { this.hasName("JsonConvert") }

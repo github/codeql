@@ -407,7 +407,7 @@ class AnnotatedConstructedType extends AnnotatedType {
 
   override string toString() {
     result =
-      annotations.getTypePrefix() + type.getUnboundGeneric().getNameWithoutBrackets() + "<" +
+      annotations.getTypePrefix() + type.getUnboundGeneric().getUndecoratedName() + "<" +
         this.getTypeArgumentsString() + ">" + annotations.getTypeSuffix()
   }
 
