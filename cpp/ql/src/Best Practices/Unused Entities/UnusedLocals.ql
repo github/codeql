@@ -56,13 +56,5 @@ where
   not exists(DeclStmt ds | ds.getADeclaration() = v and ds.isInMacroExpansion()) and // variable declared in a macro expansion
   not declarationHasSideEffects(v) and
   not exists(AsmStmt s | f = s.getEnclosingFunction()) and
-  not v.getAnAttribute().getName() = "unused" and
-  not any(ErrorExpr e).getEnclosingFunction() = f and // unextracted expr may use `v`
-  not exists(
-    Literal l // this case can be removed when the `myFunction2( [obj](){} );` test case doesn't depend on this exclusion
-  |
-    l.getEnclosingFunction() = f and
-    not exists(l.getValue())
-  ) and
-  not any(ConditionDeclExpr cde).getEnclosingFunction() = f // this case can be removed when the `if (a = b; a)` test case doesn't depend on this exclusion
+  not v.getAnAttribute().getName() = "unused"
 select v, "Variable " + v.getName() + " is not used"
