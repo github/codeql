@@ -140,6 +140,11 @@ module Vue {
     }
 
     /**
+     * Gets an API node referring to the component itself, such as the return value of `new Vue()`.
+     */
+    API::Node getComponentRef() { none() } // overridden in subclass
+
+    /**
      * Gets an API node referring to the options passed to the Vue object,
      * such as the object literal `{...}` in `new Vue{{...})` or the default export of a single-file component.
      */
@@ -374,6 +379,8 @@ module Vue {
       def.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     }
 
+    override API::Node getComponentRef() { result = def.getReturn() }
+
     override API::Node getOwnOptions() { result = def.getParameter(0) }
 
     override DataFlow::Node getOwnOptionsObject() { result = def.getArgument(0) }
@@ -396,6 +403,8 @@ module Vue {
     ) {
       extend.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     }
+
+    override API::Node getComponentRef() { result = extend.getReturn() }
 
     override API::Node getOwnOptions() { result = extend.getParameter(0) }
 
@@ -420,6 +429,8 @@ module Vue {
     ) {
       sub.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     }
+
+    override API::Node getComponentRef() { result = sub.getReturn() }
 
     override API::Node getOwnOptions() { result = sub.getParameter(0) }
 
@@ -450,11 +461,38 @@ module Vue {
       def.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     }
 
+    override API::Node getComponentRef() {
+      // The component can be obtained via 1-argument calls to `Vue.component()` with the
+      // same name, but we don't model this at the moment.
+      none()
+    }
+
     override API::Node getOwnOptions() { result = def.getParameter(1) }
 
     override DataFlow::Node getOwnOptionsObject() { result = def.getArgument(1) }
 
     override Template::Element getTemplateElement() { none() }
+  }
+
+  /**
+   * An import referring to a `.vue` file, seen as an API entry point.
+   *
+   * Concretely, such an import receives the Vue component generated from the .vue file,
+   * not the actual exports of the script tag in the file.
+   */
+  private class VueFileImportEntryPoint extends API::EntryPoint {
+    VueFileImportEntryPoint() { this = "VueFileImportEntryPoint" }
+
+    override DataFlow::SourceNode getAUse() {
+      exists(Import imprt |
+        imprt.getImportedPath().resolve() instanceof VueFile and
+        result = imprt.getImportedModuleNode()
+      )
+    }
+
+    override DataFlow::Node getARhs() {
+      none()
+    }
   }
 
   /**
@@ -487,6 +525,15 @@ module Vue {
       exists(HTML::ScriptElement elem |
         xmlElements(elem, _, _, _, file) and // Avoid materializing all of Locatable.getFile()
         result.getTopLevel() = elem.getScript()
+      )
+    }
+
+    override API::Node getComponentRef() {
+      // There is no explicit `new Vue()` call in .vue files, so instead get all the imports
+      // of the .vue file.
+      exists(Import imprt |
+        imprt.getImportedPath().resolve() = file and
+        result.getAnImmediateUse() = imprt.getImportedModuleNode()
       )
     }
 
