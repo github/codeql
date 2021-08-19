@@ -153,8 +153,7 @@ public class HTMLExtractor implements IExtractor {
     @Override
     public void handleText(
         Source src, int textBegin, int textEnd, Label parentLabel, boolean isCData) {
-      extractTemplateTags(
-          textualExtractor, src, textBegin, textEnd, () -> parentLabel);
+      extractTemplateTags(textualExtractor, src, textBegin, textEnd, () -> parentLabel);
     }
 
     @Override
@@ -392,7 +391,8 @@ public class HTMLExtractor implements IExtractor {
     if (isEmbedded) return; // Do not extract template tags for HTML snippets embedded in a JS file
 
     TrapWriter trapwriter = textualExtractor.getTrapwriter();
-    Matcher m = TemplateEngines.TEMPLATE_TAGS.matcher(textualExtractor.getSource()).region(start, end);
+    Matcher m =
+        TemplateEngines.TEMPLATE_TAGS.matcher(textualExtractor.getSource()).region(start, end);
     while (m.find()) {
       int startOffset = m.start();
       int endOffset = m.end();
