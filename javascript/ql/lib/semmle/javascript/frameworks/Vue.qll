@@ -467,12 +467,6 @@ module Vue {
 
     override DataFlow::Node getOwnOptionsObject() { result = sub.getArgument(0) }
 
-    override DataFlow::Node getOption(string name) {
-      result = Component.super.getOption(name)
-      or
-      result = MkExtendedVue(extend).(ExtendedVue).getOption(name)
-    }
-
     override Template::Element getTemplateElement() { none() }
 
     override Component getABaseComponent() {
