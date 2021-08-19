@@ -630,8 +630,8 @@ private module Cached {
      * Holds if the set of viable implementations that can be called by `call`
      * might be improved by knowing the call context.
      */
-    pragma[nomagic]
-    private predicate mayBenefitFromCallContextExt(DataFlowCall call, DataFlowCallable callable) {
+    cached
+    predicate mayBenefitFromCallContextExt(DataFlowCall call, DataFlowCallable callable) {
       mayBenefitFromCallContext(call, callable)
       or
       callEnclosingCallable(call, callable) and
@@ -786,13 +786,10 @@ private module Cached {
   }
 
   /**
-   * Holds if the call context `call` either improves virtual dispatch in
-   * `callable` or if it allows us to prune unreachable nodes in `callable`.
+   * Holds if the call context `call` allows us to prune unreachable nodes in `callable`.
    */
   cached
-  predicate recordDataFlowCallSite(DataFlowCall call, DataFlowCallable callable) {
-    reducedViableImplInCallContext(_, callable, call)
-    or
+  predicate recordDataFlowCallSiteUnreachable(DataFlowCall call, DataFlowCallable callable) {
     exists(Node n | getNodeEnclosingCallable(n) = callable | isUnreachableInCallCached(n, call))
   }
 
@@ -844,6 +841,15 @@ private module Cached {
   newtype TAccessPathFrontOption =
     TAccessPathFrontNone() or
     TAccessPathFrontSome(AccessPathFront apf)
+}
+
+/**
+ * Holds if the call context `call` either improves virtual dispatch in
+ * `callable` or if it allows us to prune unreachable nodes in `callable`.
+ */
+predicate recordDataFlowCallSite(DataFlowCall call, DataFlowCallable callable) {
+  reducedViableImplInCallContext(_, callable, call) or
+  recordDataFlowCallSiteUnreachable(call, callable)
 }
 
 /**
@@ -912,9 +918,18 @@ class CallContextAny extends CallContextNoCall, TAnyCallContext {
 }
 
 abstract class CallContextCall extends CallContext {
+  pragma[noinline]
+  private predicate matchesCallImpl(DataFlowCall call) {
+    this = TSpecificCall(call)
+    or
+    this = TSomeCall()
+  }
+
   /** Holds if this call context may be `call`. */
-  bindingset[call]
-  abstract predicate matchesCall(DataFlowCall call);
+  pragma[inline]
+  final predicate matchesCall(DataFlowCall call) {
+    pragma[only_bind_into](this).matchesCallImpl(pragma[only_bind_out](call))
+  }
 }
 
 class CallContextSpecificCall extends CallContextCall, TSpecificCall {
@@ -926,8 +941,6 @@ class CallContextSpecificCall extends CallContextCall, TSpecificCall {
     recordDataFlowCallSite(getCall(), callable)
   }
 
-  override predicate matchesCall(DataFlowCall call) { call = this.getCall() }
-
   DataFlowCall getCall() { this = TSpecificCall(result) }
 }
 
@@ -937,8 +950,6 @@ class CallContextSomeCall extends CallContextCall, TSomeCall {
   override predicate relevantFor(DataFlowCallable callable) {
     exists(ParamNode p | getNodeEnclosingCallable(p) = callable)
   }
-
-  override predicate matchesCall(DataFlowCall call) { any() }
 }
 
 class CallContextReturn extends CallContextNoCall, TReturn {
