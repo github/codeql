@@ -299,30 +299,6 @@ module Vue {
     }
 
     /**
-     * Gets a node for a member of the `methods` option of this component.
-     */
-    pragma[nomagic]
-    private DataFlow::SourceNode getAMethod() {
-      result = getMethods().getAPropertySource()
-      or
-      result = getAsClassComponent().getAnInstanceMethod() and
-      not result = getAsClassComponent().getInstanceMethod([lifecycleHookName(), "render", "data"])
-    }
-
-    /**
-     * Gets a node for a member of the `computed` option of this component that matches `kind`.
-     */
-    pragma[nomagic]
-    private DataFlow::SourceNode getAnAccessor(DataFlow::MemberKind kind) {
-      result = getComputed().getAPropertySource() and kind = DataFlow::MemberKind::getter()
-      or
-      result = getComputed().getAPropertySource().getAPropertySource(memberKindVerb(kind))
-      or
-      result = getAsClassComponent().getAnInstanceMember(kind) and
-      kind.isAccessor()
-    }
-
-    /**
      * Gets a node for a member `name` of the `computed` option of this component that matches `kind`.
      */
     private DataFlow::SourceNode getAccessor(string name, DataFlow::MemberKind kind) {
@@ -351,15 +327,9 @@ module Vue {
      * Gets a node for a function that will be invoked with `this` bound to this component.
      */
     DataFlow::FunctionNode getABoundFunction() {
-      result = getAMethod()
+      result = getOptions().getAMember+().getAValueReachingRhs()
       or
-      result = getAnAccessor(_)
-      or
-      result = getALifecycleHook(_)
-      or
-      result = getOptionSource(_)
-      or
-      result = getOptionSource(_).getAPropertySource()
+      result = getAsClassComponent().getAnInstanceMember()
     }
 
     pragma[noinline]
