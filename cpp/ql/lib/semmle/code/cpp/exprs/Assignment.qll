@@ -35,7 +35,7 @@ class Assignment extends Operation, @assign_expr {
  * ```
  * a = b;
  * ```
- * Note that `int a = b;` _not_ an `AssignExpr`. It is a `Variable`,
+ * Note that `int a = b;` is _not_ an `AssignExpr`. It is a `Variable`,
  * and `b` can be obtained using `Variable.getInitializer()`.
  */
 class AssignExpr extends Assignment, @assignexpr {
