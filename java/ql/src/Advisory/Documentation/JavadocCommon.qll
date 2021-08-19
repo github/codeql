@@ -5,10 +5,9 @@ import java
 /** Holds if the given `Javadoc` contains a minimum of a few characters of text. */
 private predicate acceptableDocText(Javadoc j) {
   // Require minimum combined length of all non-tag elements.
-  sum(JavadocElement e, int toSum |
-    e = j.getAChild() and
-    not e = j.getATag(_) and
-    toSum = e.toString().length()
+  sum(JavadocText t, int toSum |
+    t = j.getATextElement() and
+    toSum = t.getText().length()
   |
     toSum
   ) >= 5
@@ -16,9 +15,9 @@ private predicate acceptableDocText(Javadoc j) {
 
 /** Holds if the given `JavadocTag` contains a minimum of a few characters of text. */
 private predicate acceptableTag(JavadocTag t) {
-  sum(JavadocElement e, int toSum |
-    e = t.getAChild() and
-    toSum = e.toString().length()
+  sum(JavadocText text, int toSum |
+    text = t.getATextElement() and
+    toSum = text.getText().length()
   |
     toSum
   ) >= 5
@@ -72,7 +71,7 @@ class DocuParam extends Parameter {
   /** Holds if this parameter has a non-trivial `@param` tag. */
   predicate hasAcceptableParamTag() {
     exists(ParamTag t |
-      t = this.getCallable().getDoc().getJavadoc().getATag("@param") and
+      t = this.getCallable().getDoc().getJavadoc().getATag() and
       t.getParamName() = this.getName() and
       acceptableTag(t)
     )
@@ -90,7 +89,7 @@ class DocuReturn extends DocuCallable {
 
   /** Holds if this callable's `Javadoc` has a non-trivial `@return` tag. */
   predicate hasAcceptableReturnTag() {
-    acceptableTag(this.getDoc().getJavadoc().getATag("@return"))
+    acceptableTag(this.getDoc().getJavadoc().getATag().(ReturnTag))
   }
 }
 
@@ -111,9 +110,9 @@ class DocuThrows extends DocuCallable {
   predicate hasAcceptableThrowsTag(Exception e) {
     exists(Javadoc j |
       j = this.getDoc().getJavadoc() and
-      exists(JavadocTag t |
-        (t = j.getATag("@throws") or t = j.getATag("@exception")) and
-        t.getChild(0).toString() = e.getName() and
+      exists(ThrowsTag t |
+        t = j.getATag() and
+        t.getExceptionName() = e.getName() and
         acceptableTag(t)
       )
     )

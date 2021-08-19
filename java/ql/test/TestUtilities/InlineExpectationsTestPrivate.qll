@@ -8,5 +8,5 @@ class LineComment extends Javadoc {
   LineComment() { isEolComment(this) }
 
   /** Gets the contents of the given comment, _without_ the preceding comment marker (`//`). */
-  string getContents() { result = this.getChild(0).toString() }
+  string getContents() { result = this.getChild(0).(JavadocText).getText() }
 }

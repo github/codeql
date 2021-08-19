@@ -16,8 +16,19 @@ class JavadocParent extends @javadocParent, Top {
   /** Gets the number of documentation elements attached to this parent. */
   int getNumChild() { result = count(getAChild()) }
 
-  /** Gets a documentation element with the specified Javadoc tag name. */
-  JavadocTag getATag(string name) { result = this.getAChild() and result.getTagName() = name }
+  /**
+   * DEPRECATED: Only `Javadoc` can have tag elements; `JavadocTag` (which also extends
+   * `JavadocParent`) cannot have nested tag elements. Therefore this predicate has been
+   * moved to `Javadoc`.
+   *
+   * Gets a documentation element with the specified Javadoc tag name.
+   */
+  deprecated JavadocTag getATag(string name) {
+    result = this.getAChild() and result.getTagName() = name
+  }
+
+  /** Gets a text documentation element which is a direct child of this parent. */
+  JavadocText getATextElement() { result = this.getAChild() }
 
   /*abstract*/ override string toString() { result = "Javadoc" }
 }
@@ -27,11 +38,19 @@ class Javadoc extends JavadocParent, @javadoc {
   /** Gets the number of lines in this Javadoc comment. */
   int getNumberOfLines() { result = this.getLocation().getNumberOfCommentLines() }
 
+  /** Gets a documentation element with the specified Javadoc tag name. */
+  override JavadocTag getATag(string name) {
+    result = this.getATag() and result.getTagName() = name
+  }
+
+  /** Gets a Javadoc tag documentation element. */
+  JavadocTag getATag() { result = getAChild() }
+
   /** Gets the value of the `@version` tag, if any. */
-  string getVersion() { result = this.getATag("@version").getChild(0).toString() }
+  string getVersion() { result = getATag().(VersionTag).getVersion() }
 
   /** Gets the value of the `@author` tag, if any. */
-  string getAuthor() { result = this.getATag("@author").getChild(0).toString() }
+  string getAuthor() { result = getATag().(AuthorTag).getAuthorName() }
 
   override string toString() { result = toStringPrefix() + getChild(0) + toStringPostfix() }
 
@@ -90,7 +109,7 @@ class JavadocTag extends JavadocElement, JavadocParent, @javadocTag {
   override string toString() { result = this.getTagName() }
 
   /** Gets the text associated with this Javadoc tag. */
-  override string getText() { result = this.getChild(0).toString() }
+  override string getText() { result = this.getChild(0).(JavadocText).getText() }
 
   override string getAPrimaryQlClass() { result = "JavadocTag" }
 }
@@ -100,21 +119,26 @@ class ParamTag extends JavadocTag {
   ParamTag() { this.getTagName() = "@param" }
 
   /** Gets the name of the parameter. */
-  string getParamName() { result = this.getChild(0).toString() }
+  string getParamName() { result = this.getChild(0).(JavadocText).getText() }
 
   /** Gets the documentation for the parameter. */
-  override string getText() { result = this.getChild(1).toString() }
+  override string getText() { result = this.getChild(1).(JavadocText).getText() }
+}
+
+/** A Javadoc `@return` tag. */
+class ReturnTag extends JavadocTag {
+  ReturnTag() { this.getTagName() = "@return" }
 }
 
 /** A Javadoc `@throws` or `@exception` tag. */
 class ThrowsTag extends JavadocTag {
-  ThrowsTag() { this.getTagName() = "@throws" or this.getTagName() = "@exception" }
+  ThrowsTag() { this.getTagName() = ["@throws", "@exception"] }
 
   /** Gets the name of the exception. */
-  string getExceptionName() { result = this.getChild(0).toString() }
+  string getExceptionName() { result = this.getChild(0).(JavadocText).getText() }
 
   /** Gets the documentation for the exception. */
-  override string getText() { result = this.getChild(1).toString() }
+  override string getText() { result = this.getChild(1).(JavadocText).getText() }
 }
 
 /** A Javadoc `@see` tag. */
@@ -122,7 +146,12 @@ class SeeTag extends JavadocTag {
   SeeTag() { getTagName() = "@see" }
 
   /** Gets the name of the entity referred to. */
-  string getReference() { result = getChild(0).toString() }
+  string getReference() { result = getText() }
+}
+
+/** A Javadoc `@deprecated` tag. */
+class DeprecatedTag extends JavadocTag {
+  DeprecatedTag() { this.getTagName() = "@deprecated" }
 }
 
 /** A Javadoc `@author` tag. */
@@ -130,7 +159,15 @@ class AuthorTag extends JavadocTag {
   AuthorTag() { this.getTagName() = "@author" }
 
   /** Gets the name of the author. */
-  string getAuthorName() { result = this.getChild(0).toString() }
+  string getAuthorName() { result = getText() }
+}
+
+/** A Javadoc `@version` tag. */
+class VersionTag extends JavadocTag {
+  VersionTag() { this.getTagName() = "@version" }
+
+  /** Gets the version specified by this tag. */
+  string getVersion() { result = getText() }
 }
 
 /** A piece of Javadoc text. */

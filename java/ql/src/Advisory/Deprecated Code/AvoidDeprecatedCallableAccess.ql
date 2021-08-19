@@ -15,7 +15,7 @@ import java
 
 private predicate isDeprecatedCallable(Callable c) {
   c.getAnAnnotation() instanceof DeprecatedAnnotation or
-  exists(c.getDoc().getJavadoc().getATag("@deprecated"))
+  exists(c.getDoc().getJavadoc().getATag().(DeprecatedTag))
 }
 
 from Call ca, Callable c
