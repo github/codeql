@@ -5,7 +5,8 @@ import semmle.code.cpp.exprs.BitwiseOperation
 /**
  * A non-overloaded binary assignment operation, including `=`, `+=`, `&=`,
  * etc. A C++ overloaded assignment operation looks syntactically identical but is instead
- * a `FunctionCall`.
+ * a `FunctionCall`. This class does _not_ include variable initializers. To get a variable
+ * initializer, use `Initializer` instead.
  *
  * This is a QL base class for all (non-overloaded) assignments.
  */
@@ -34,6 +35,8 @@ class Assignment extends Operation, @assign_expr {
  * ```
  * a = b;
  * ```
+ * Note that `int a = b;` _not_ an `AssignExpr`. It is a `Variable`,
+ * and `b` can be obtained using `Variable.getInitializer()`.
  */
 class AssignExpr extends Assignment, @assignexpr {
   override string getOperator() { result = "=" }
@@ -46,6 +49,9 @@ class AssignExpr extends Assignment, @assignexpr {
 
 /**
  * A non-overloaded binary assignment operation other than `=`.
+ *
+ * This class does _not_ include variable initializers. To get a variable
+ * initializer, use `Initializer` instead.
  */
 class AssignOperation extends Assignment, @assign_op_expr {
   override string toString() { result = "... " + this.getOperator() + " ..." }
