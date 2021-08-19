@@ -369,7 +369,7 @@ abstract class RegexString extends Expr {
       // hex value \xhh
       this.getChar(start + 1) = "x" and end = start + 4
       or
-      // octal value \ooo
+      // octal value \o, \oo, or \ooo
       end in [start + 2 .. start + 4] and
       forall(int i | i in [start + 1 .. end - 1] | this.isOctal(i)) and
       not (
