@@ -442,7 +442,7 @@ isAnonymClass(
 
 #keyset[classid] #keyset[parent]
 isLocalClass(
-  int classid: @classorinterface ref,
+  int classid: @class ref,
   int parent: @localclassdeclstmt ref
 );
 
