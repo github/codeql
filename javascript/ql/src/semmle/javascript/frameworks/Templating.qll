@@ -117,12 +117,6 @@ module Templating {
     }
 
     /**
-     * Holds if this occurs in generated code as an expression or statement,
-     * that is, without being enclosed in a string literal or similar.
-     */
-    predicate isInPlainCodeContext() { this = any(GeneratedCodeExpr e).getPlaceholderTag() }
-
-    /**
      * Gets the innermost JavaScript expression containing this template tag, if any.
      */
     pragma[nomagic]
