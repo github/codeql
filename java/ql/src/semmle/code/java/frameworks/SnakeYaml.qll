@@ -6,13 +6,14 @@ import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.DataFlow2
 import semmle.code.java.dataflow.DataFlow3
+import semmle.code.xml.MavenPom
 
 /**
  * The class `org.yaml.snakeyaml.constructor.SafeConstructor`.
  */
 class SnakeYamlSafeConstructor extends RefType {
   SnakeYamlSafeConstructor() {
-    this.hasQualifiedName("org.yaml.snakeyaml.constructor", "SafeConstructor")
+    this.hasQualifiedName(getAShadedPackage("org.yaml.snakeyaml.constructor"), "SafeConstructor")
   }
 }
 
@@ -27,7 +28,7 @@ class SafeSnakeYamlConstruction extends ClassInstanceExpr {
  * The class `org.yaml.snakeyaml.Yaml`.
  */
 class Yaml extends RefType {
-  Yaml() { this.getASupertype*().hasQualifiedName("org.yaml.snakeyaml", "Yaml") }
+  Yaml() { this.getASupertype*().hasQualifiedName(getAShadedPackage("org.yaml.snakeyaml"), "Yaml") }
 }
 
 private class SafeYamlConstructionFlowConfig extends DataFlow2::Configuration {

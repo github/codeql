@@ -485,3 +485,80 @@ class MavenRepoJar extends File {
     else getVersion().matches(pom.getVersionString() + "%")
   }
 }
+
+/**
+ * A `<plugin>` element in a Maven POM file.
+ */
+class MavenPlugin extends ProtoPom {
+  MavenPlugin() { this.hasName("plugin") }
+}
+
+/**
+ * A `maven-shade-plugin` plugin element in a Maven POM file.
+ */
+class MavenShadePlugin extends MavenPlugin {
+  MavenShadePlugin() {
+    (
+      this.getGroup().getValue() = "org.apache.maven.plugins" or
+      not exists(this.getGroup()) // org.apache.maven.plugins is the default
+    ) and
+    this.getArtifact().getValue() = "maven-shade-plugin"
+  }
+
+  MavenShadeRelocation getARelocation() { result.getPlugin() = this }
+}
+
+/**
+ * A `<relocation>` specification within a `maven-shade-plugin` configuration.
+ */
+class MavenShadeRelocation extends XMLElement {
+  MavenShadePlugin plugin;
+
+  MavenShadeRelocation() {
+    this =
+      [plugin, plugin.getAChild("executions").getAChild("execution")]
+          .getAChild("configuration")
+          .getAChild("relocations")
+          .getAChild("relocation")
+  }
+
+  /**
+   * Gets the `<plugin>` ancestor of this relocation.
+   */
+  MavenShadePlugin getPlugin() { result = plugin }
+
+  /**
+   * Gets the pattern this relocation replaces (e.g. `org.foo`)
+   */
+  string getPattern() { result = this.getAChild("pattern").getTextValue() }
+
+  /**
+   * Gets the shaded package that replaces `getPattern()` (e.g. `org.bar.shaded.org.foo`).
+   */
+  string getShadedPattern() { result = this.getAChild("shadedPattern").getTextValue() }
+
+  /**
+   * Holds if this `<relocation>` specification relocates `fromPackage` to `toPackage`.
+   */
+  predicate relocates(string fromPackage, string toPackage) {
+    this.getPattern() = fromPackage and this.getShadedPattern() = toPackage
+  }
+}
+
+/**
+ * Gets a package name that may be used to refer to `package` after shading, including `package`
+ * itself.
+ *
+ * For example, if `package` is `org.foo.sub` and we have a `<relocation>` specification relocating
+ * `org.foo` to `org.bar.shaded.org.foo` then the results will be `{"org.foo.sub", "org.bar.shaded.org.foo.sub"}`.
+ */
+bindingset[package]
+string getAShadedPackage(string package) {
+  result = package
+  or
+  exists(string originalPackage, string shadedPackage, MavenShadeRelocation relocDirective |
+    relocDirective.relocates(originalPackage, shadedPackage)
+  |
+    result = package.regexpReplaceAll("^" + originalPackage, shadedPackage)
+  )
+}
