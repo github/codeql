@@ -39,17 +39,28 @@ module Vue {
    */
   DataFlow::SourceNode vue() { result = vueLibrary().getAnImmediateUse() }
 
+  /** An API node referring to a component or `Vue`. */
+  private API::Node component() {
+    result = vueLibrary()
+    or
+    result = component().getMember("extend").getReturn()
+    or
+    result = vueLibrary().getMember("component").getReturn()
+    or
+    result = API::root().getASuccessor(any(VueFileImportEntryPoint e))
+  }
+
   /**
-   * A call to `vue.extend`.
+   * A call to `Vue.extend` or `extend` on a component.
    */
-  private class VueExtend extends API::CallNode {
-    VueExtend() { this = vueLibrary().getMember("extend").getACall() }
+  private class VueExtendCall extends API::CallNode {
+    VueExtendCall() { this = component().getMember("extend").getACall() }
   }
 
   private newtype TComponent =
     MkVueInstance(API::NewNode def) { def = vueLibrary().getAnInstantiation() } or
-    MkExtendedVue(VueExtend extend) or
-    MkExtendedInstance(VueExtend extend, API::NewNode sub) {
+    MkExtendedVue(VueExtendCall extend) or
+    MkExtendedInstance(VueExtendCall extend, API::NewNode sub) {
       sub = extend.getReturn().getAnInstantiation()
     } or
     MkComponentRegistration(API::CallNode def) { def = vueLibrary().getMember("component").getACall() } or
@@ -406,7 +417,7 @@ module Vue {
    * An extended Vue from `Vue.extend({...})`.
    */
   class ExtendedVue extends Component, MkExtendedVue {
-    VueExtend extend;
+    VueExtendCall extend;
 
     ExtendedVue() { this = MkExtendedVue(extend) }
 
@@ -425,13 +436,19 @@ module Vue {
     override DataFlow::Node getOwnOptionsObject() { result = extend.getArgument(0) }
 
     override Template::Element getTemplateElement() { none() }
+
+    override Component getABaseComponent() {
+      result = Component.super.getABaseComponent()
+      or
+      result.getComponentRef().getMember("extend").getACall() = extend
+    }
   }
 
   /**
    * An instance of an extended Vue, for example `instance` of `var Ext = Vue.extend({...}); var instance = new Ext({...})`.
    */
   class ExtendedInstance extends Component, MkExtendedInstance {
-    VueExtend extend;
+    VueExtendCall extend;
     API::NewNode sub;
 
     ExtendedInstance() { this = MkExtendedInstance(extend, sub) }
@@ -457,6 +474,12 @@ module Vue {
     }
 
     override Template::Element getTemplateElement() { none() }
+
+    override Component getABaseComponent() {
+      result = Component.super.getABaseComponent()
+      or
+      result.getComponentRef().getAnInstantiation() = sub
+    }
   }
 
   /**
