@@ -431,7 +431,7 @@ module Koa {
   /**
    * A call to `ctx.render('file', { ... })`, seen as a template instantiation.
    */
-  private class RenderCall extends Templating::TemplateInstantiaton::Range, DataFlow::CallNode {
+  private class RenderCall extends Templating::TemplateInstantiation::Range, DataFlow::CallNode {
     ContextSource ctx;
 
     RenderCall() { this = ctx.ref().getAMethodCall("render") }

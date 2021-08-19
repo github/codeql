@@ -176,10 +176,10 @@ module Templating {
   /**
    * A place where a template is instantiated or rendered.
    */
-  class TemplateInstantiaton extends DataFlow::Node {
-    TemplateInstantiaton::Range range;
+  class TemplateInstantiation extends DataFlow::Node {
+    TemplateInstantiation::Range range;
 
-    TemplateInstantiaton() { this = range }
+    TemplateInstantiation() { this = range }
 
     /** Gets a data flow node that refers to the instantiated template string, if any. */
     DataFlow::SourceNode getOutput() { result = range.getOutput() }
@@ -204,7 +204,7 @@ module Templating {
   }
 
   /** Companion module to the `TemplateInstantiation` class. */
-  module TemplateInstantiaton {
+  module TemplateInstantiation {
     abstract class Range extends DataFlow::Node {
       /** Gets a data flow node that refers to the instantiated template, if any. */
       abstract DataFlow::SourceNode getOutput();
@@ -226,7 +226,7 @@ module Templating {
 
   /** Gets an API node that may flow to `succ` through a template instantiation. */
   private API::Node getTemplateInput(DataFlow::SourceNode succ) {
-    exists(TemplateInstantiaton inst, API::Node base, string name |
+    exists(TemplateInstantiation inst, API::Node base, string name |
       base.getARhs() = inst.getTemplateParamsNode() and
       result = base.getMember(name) and
       succ =
@@ -321,7 +321,7 @@ module Templating {
 
   /** Get file argument of a template instantiation, seen as a template file reference. */
   private class DefaultTemplateFileReference extends TemplateFileReference {
-    DefaultTemplateFileReference() { this = any(TemplateInstantiaton inst).getTemplateFileNode() }
+    DefaultTemplateFileReference() { this = any(TemplateInstantiation inst).getTemplateFileNode() }
   }
 
   /**
@@ -581,7 +581,7 @@ module Templating {
   }
 
   private TemplateSyntax getTemplateSyntaxFromInstantiation(TemplateFile file) {
-    result = any(TemplateInstantiaton inst | inst.getTemplateFile() = file).getTemplateSyntax()
+    result = any(TemplateInstantiation inst | inst.getTemplateFile() = file).getTemplateSyntax()
   }
 
   /**
@@ -612,7 +612,7 @@ module Templating {
   /**
    * An EJS-style `include` call within a template tag, such as `<%- include(file, { params }) %>`.
    */
-  private class EjsIncludeCallInTemplate extends TemplateInstantiaton::Range, DataFlow::CallNode {
+  private class EjsIncludeCallInTemplate extends TemplateInstantiation::Range, DataFlow::CallNode {
     EjsIncludeCallInTemplate() {
       exists(TemplatePlaceholderTag tag |
         tag.getRawText().regexpMatch("(?s)<%-.*") and
@@ -685,7 +685,7 @@ module Templating {
   /**
    * A call to a member of the `consolidate` library, seen as a template instantiation.
    */
-  private class ConsolidateCall extends TemplateInstantiaton::Range, API::CallNode {
+  private class ConsolidateCall extends TemplateInstantiation::Range, API::CallNode {
     string engine;
 
     ConsolidateCall() { this = API::moduleImport("consolidate").getMember(engine).getACall() }

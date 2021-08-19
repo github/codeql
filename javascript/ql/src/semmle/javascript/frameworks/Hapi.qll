@@ -252,7 +252,7 @@ module Hapi {
   /**
    * A call to `h.view('file', { ... })` seen as a template instantiation.
    */
-  private class ViewCall extends Templating::TemplateInstantiaton::Range, DataFlow::CallNode {
+  private class ViewCall extends Templating::TemplateInstantiation::Range, DataFlow::CallNode {
     ViewCall() { this = any(RouteHandler rh).getRequestToolkit().getAMethodCall("view") }
 
     override DataFlow::SourceNode getOutput() { none() }

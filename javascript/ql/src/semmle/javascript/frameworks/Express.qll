@@ -976,7 +976,7 @@ module Express {
   /**
    * A call to the Express `res.render()` method, seen as a template instantiation.
    */
-  private class RenderCallAsTemplateInstantiation extends Templating::TemplateInstantiaton::Range,
+  private class RenderCallAsTemplateInstantiation extends Templating::TemplateInstantiation::Range,
     DataFlow::CallNode {
     RenderCallAsTemplateInstantiation() {
       this = any(ResponseSource res).ref().getAMethodCall("render")

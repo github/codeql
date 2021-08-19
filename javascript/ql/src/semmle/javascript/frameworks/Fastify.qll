@@ -294,7 +294,7 @@ module Fastify {
    *
    * Assumes the presense of a plugin that provides the `view` method, such as the `point-of-view` plugin.
    */
-  private class ViewCall extends Templating::TemplateInstantiaton::Range, DataFlow::CallNode {
+  private class ViewCall extends Templating::TemplateInstantiation::Range, DataFlow::CallNode {
     ViewCall() { this = any(ReplySource rep).ref().getAMethodCall("view") }
 
     override DataFlow::SourceNode getOutput() { result = getCallback(2).getParameter(1) }
