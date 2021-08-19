@@ -58,11 +58,10 @@ module Vue {
   }
 
   private newtype TComponent =
-    MkVueInstance(API::NewNode def) { def = vueLibrary().getAnInstantiation() } or
-    MkExtendedVue(VueExtendCall extend) or
-    MkExtendedInstance(VueExtendCall extend, API::NewNode sub) {
-      sub = extend.getReturn().getAnInstantiation()
+    MkComponentInstantiation(API::NewNode sub) {
+      sub = component().getAnInstantiation()
     } or
+    MkExtendedVue(VueExtendCall extend) or
     MkComponentRegistration(API::CallNode def) { def = vueLibrary().getMember("component").getACall() } or
     MkSingleFileComponent(VueFile file)
 
@@ -389,12 +388,12 @@ module Vue {
   }
 
   /**
-   * A Vue component from `new Vue({...})`.
+   * A Vue component created implicitly at an invocation of form `new Vue({...})` or `new CustomComponent({...})`.
    */
-  class VueInstance extends Component, MkVueInstance {
+  private class ComponentInstantiation extends Component, MkComponentInstantiation {
     API::NewNode def;
 
-    VueInstance() { this = MkVueInstance(def) }
+    ComponentInstantiation() { this = MkComponentInstantiation(def) }
 
     override string toString() { result = def.toString() }
 
@@ -411,6 +410,24 @@ module Vue {
     override DataFlow::Node getOwnOptionsObject() { result = def.getArgument(0) }
 
     override Template::Element getTemplateElement() { none() }
+
+    override Component getABaseComponent() {
+      result = Component.super.getABaseComponent()
+      or
+      result.getComponentRef().getAnInstantiation() = def
+    }
+  }
+
+  /**
+   * DEPRECATED. Use `Vue::Component` instead.
+   *
+   * A Vue component from `new Vue({...})`.
+   */
+  deprecated class VueInstance extends Component {
+    VueInstance() {
+      // restrict charpred to match original behavior
+      this = MkComponentInstantiation(vueLibrary().getAnInstantiation())
+    }
   }
 
   /**
@@ -445,34 +462,14 @@ module Vue {
   }
 
   /**
+   * DEPRECATED. Use `Vue::Component` instead.
+   *
    * An instance of an extended Vue, for example `instance` of `var Ext = Vue.extend({...}); var instance = new Ext({...})`.
    */
-  class ExtendedInstance extends Component, MkExtendedInstance {
-    VueExtendCall extend;
-    API::NewNode sub;
-
-    ExtendedInstance() { this = MkExtendedInstance(extend, sub) }
-
-    override string toString() { result = sub.toString() }
-
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      sub.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
-
-    override API::Node getComponentRef() { result = sub.getReturn() }
-
-    override API::Node getOwnOptions() { result = sub.getParameter(0) }
-
-    override DataFlow::Node getOwnOptionsObject() { result = sub.getArgument(0) }
-
-    override Template::Element getTemplateElement() { none() }
-
-    override Component getABaseComponent() {
-      result = Component.super.getABaseComponent()
-      or
-      result.getComponentRef().getAnInstantiation() = sub
+  deprecated class ExtendedInstance extends Component {
+    ExtendedInstance() {
+      // restrict charpred to match original behavior
+      this = MkComponentInstantiation(vueLibrary().getMember("extend").getReturn().getAnInstantiation())
     }
   }
 
