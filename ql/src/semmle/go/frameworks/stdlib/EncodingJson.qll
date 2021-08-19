@@ -81,31 +81,31 @@ module EncodingJson {
     FunctionOutput outp;
 
     MethodModels() {
-      // signature: func (*Decoder).Buffered() io.Reader
+      // signature: func (*Decoder) Buffered() io.Reader
       hasQualifiedName("encoding/json", "Decoder", "Buffered") and
       (inp.isReceiver() and outp.isResult())
       or
-      // signature: func (*Decoder).Decode(v interface{}) error
+      // signature: func (*Decoder) Decode(v interface{}) error
       hasQualifiedName("encoding/json", "Decoder", "Decode") and
       (inp.isReceiver() and outp.isParameter(0))
       or
-      // signature: func (*Decoder).Token() (Token, error)
+      // signature: func (*Decoder) Token() (Token, error)
       hasQualifiedName("encoding/json", "Decoder", "Token") and
       (inp.isReceiver() and outp.isResult(0))
       or
-      // signature: func (*Encoder).Encode(v interface{}) error
+      // signature: func (*Encoder) Encode(v interface{}) error
       hasQualifiedName("encoding/json", "Encoder", "Encode") and
       (inp.isParameter(0) and outp.isReceiver())
       or
-      // signature: func (*Encoder).SetIndent(prefix string, indent string)
+      // signature: func (*Encoder) SetIndent(prefix string, indent string)
       hasQualifiedName("encoding/json", "Encoder", "SetIndent") and
       (inp.isParameter(_) and outp.isReceiver())
       or
-      // signature: func (Marshaler).MarshalJSON() ([]byte, error)
+      // signature: func (Marshaler) MarshalJSON() ([]byte, error)
       implements("encoding/json", "Marshaler", "MarshalJSON") and
       (inp.isReceiver() and outp.isResult(0))
       or
-      // signature: func (Unmarshaler).UnmarshalJSON([]byte) error
+      // signature: func (Unmarshaler) UnmarshalJSON([]byte) error
       implements("encoding/json", "Unmarshaler", "UnmarshalJSON") and
       (inp.isParameter(0) and outp.isReceiver())
     }

@@ -150,23 +150,23 @@ module Bytes {
     FunctionOutput outp;
 
     MethodModels() {
-      // signature: func (*Buffer).Bytes() []byte
+      // signature: func (*Buffer) Bytes() []byte
       hasQualifiedName("bytes", "Buffer", "Bytes") and
       (inp.isReceiver() and outp.isResult())
       or
-      // signature: func (*Buffer).Next(n int) []byte
+      // signature: func (*Buffer) Next(n int) []byte
       hasQualifiedName("bytes", "Buffer", "Next") and
       (inp.isReceiver() and outp.isResult())
       or
-      // signature: func (*Buffer).ReadBytes(delim byte) (line []byte, err error)
+      // signature: func (*Buffer) ReadBytes(delim byte) (line []byte, err error)
       hasQualifiedName("bytes", "Buffer", "ReadBytes") and
       (inp.isReceiver() and outp.isResult(0))
       or
-      // signature: func (*Buffer).ReadString(delim byte) (line string, err error)
+      // signature: func (*Buffer) ReadString(delim byte) (line string, err error)
       hasQualifiedName("bytes", "Buffer", "ReadString") and
       (inp.isReceiver() and outp.isResult(0))
       or
-      // signature: func (*Reader).Reset(b []byte)
+      // signature: func (*Reader) Reset(b []byte)
       hasQualifiedName("bytes", "Reader", "Reset") and
       (inp.isParameter(0) and outp.isReceiver())
     }

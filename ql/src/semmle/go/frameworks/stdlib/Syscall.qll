@@ -42,11 +42,11 @@ module Syscall {
     FunctionOutput outp;
 
     MethodModels() {
-      // signature: func (RawConn).Read(f func(fd uintptr) (done bool)) error
+      // signature: func (RawConn) Read(f func(fd uintptr) (done bool)) error
       implements("syscall", "RawConn", "Read") and
       (inp.isReceiver() and outp.isParameter(0))
       or
-      // signature: func (Conn).SyscallConn() (RawConn, error)
+      // signature: func (Conn) SyscallConn() (RawConn, error)
       implements("syscall", "Conn", "SyscallConn") and
       (
         inp.isReceiver() and outp.isResult(0)
@@ -54,7 +54,7 @@ module Syscall {
         inp.isResult(0) and outp.isReceiver()
       )
       or
-      // signature: func (RawConn).Write(f func(fd uintptr) (done bool)) error
+      // signature: func (RawConn) Write(f func(fd uintptr) (done bool)) error
       implements("syscall", "RawConn", "Write") and
       (inp.isParameter(0) and outp.isReceiver())
     }

@@ -11,7 +11,7 @@ module Crypto {
     FunctionOutput outp;
 
     MethodModels() {
-      // signature: func (Decrypter).Decrypt(rand io.Reader, msg []byte, opts DecrypterOpts) (plaintext []byte, err error)
+      // signature: func (Decrypter) Decrypt(rand io.Reader, msg []byte, opts DecrypterOpts) (plaintext []byte, err error)
       implements("crypto", "Decrypter", "Decrypt") and
       (inp.isParameter(1) and outp.isResult(0))
     }

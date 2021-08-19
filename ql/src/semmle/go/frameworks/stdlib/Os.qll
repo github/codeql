@@ -110,11 +110,11 @@ module Os {
     FunctionOutput outp;
 
     MethodModels() {
-      // signature: func (*File).Fd() uintptr
+      // signature: func (*File) Fd() uintptr
       hasQualifiedName("os", "File", "Fd") and
       (inp.isReceiver() and outp.isResult())
       or
-      // signature: func (*File).SyscallConn() (syscall.RawConn, error)
+      // signature: func (*File) SyscallConn() (syscall.RawConn, error)
       hasQualifiedName("os", "File", "SyscallConn") and
       (
         inp.isReceiver() and outp.isResult(0)

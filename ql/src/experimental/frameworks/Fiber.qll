@@ -138,7 +138,7 @@ private module Fiber {
       package = fiberPackagePath() and
       // Receiver type: Ctx
       (
-        // signature: func (*Ctx).Redirect(location string, status ...int)
+        // signature: func (*Ctx) Redirect(location string, status ...int)
         this = any(Method m | m.hasQualifiedName(package, "Ctx", "Redirect")).getACall() and
         urlNode = this.getArgument(0)
       )
@@ -184,12 +184,12 @@ private module Fiber {
         // Receiver type: Ctx
         receiverName = "Ctx" and
         (
-          // signature: func (*Ctx).Append(field string, values ...string)
+          // signature: func (*Ctx) Append(field string, values ...string)
           methodName = "Append" and
           headerNameNode = headerSetterCall.getArgument(0) and
           headerValueNode = headerSetterCall.getArgument(any(int i | i >= 1))
           or
-          // signature: func (*Ctx).Set(key string, val string)
+          // signature: func (*Ctx) Set(key string, val string)
           methodName = "Set" and
           headerNameNode = headerSetterCall.getArgument(0) and
           headerValueNode = headerSetterCall.getArgument(1)
@@ -231,12 +231,12 @@ private module Fiber {
         // Receiver type: Ctx
         receiverName = "Ctx" and
         (
-          // signature: func (*Ctx).JSON(data interface{}) error
+          // signature: func (*Ctx) JSON(data interface{}) error
           methodName = "JSON" and
           bodyNode = bodySetterCall.getArgument(0) and
           contentTypeString = "application/json"
           or
-          // signature: func (*Ctx).JSONP(data interface{}, callback ...string) error
+          // signature: func (*Ctx) JSONP(data interface{}, callback ...string) error
           methodName = "JSONP" and
           bodyNode = bodySetterCall.getArgument(0) and
           contentTypeString = "application/javascript"
@@ -274,27 +274,27 @@ private module Fiber {
         // Receiver type: Ctx
         receiverName = "Ctx" and
         (
-          // signature: func (*Ctx).Format(body interface{})
+          // signature: func (*Ctx) Format(body interface{})
           methodName = "Format" and
           bodyNode = bodySetterCall.getArgument(0)
           or
-          // signature: func (*Ctx).Send(bodies ...interface{})
+          // signature: func (*Ctx) Send(bodies ...interface{})
           methodName = "Send" and
           bodyNode = bodySetterCall.getArgument(_)
           or
-          // signature: func (*Ctx).SendBytes(body []byte)
+          // signature: func (*Ctx) SendBytes(body []byte)
           methodName = "SendBytes" and
           bodyNode = bodySetterCall.getArgument(0)
           or
-          // signature: func (*Ctx).SendStream(stream io.Reader, size ...int)
+          // signature: func (*Ctx) SendStream(stream io.Reader, size ...int)
           methodName = "SendStream" and
           bodyNode = bodySetterCall.getArgument(0)
           or
-          // signature: func (*Ctx).SendString(body string)
+          // signature: func (*Ctx) SendString(body string)
           methodName = "SendString" and
           bodyNode = bodySetterCall.getArgument(0)
           or
-          // signature: func (*Ctx).Write(bodies ...interface{})
+          // signature: func (*Ctx) Write(bodies ...interface{})
           methodName = "Write" and
           bodyNode = bodySetterCall.getArgument(_)
         )
@@ -314,71 +314,71 @@ private module Fiber {
       |
         receiverName = "Ctx" and
         (
-          // signature: func (*Ctx).BaseURL() string
+          // signature: func (*Ctx) BaseURL() string
           methodName = "BaseURL" and
           out.isResult()
           or
-          // signature: func (*Ctx).Body() string
+          // signature: func (*Ctx) Body() string
           methodName = "Body" and
           out.isResult()
           or
-          // signature: func (*Ctx).BodyParser(out interface{}) error
+          // signature: func (*Ctx) BodyParser(out interface{}) error
           methodName = "BodyParser" and
           out.isParameter(0)
           or
-          // signature: func (*Ctx).Cookies(key string, defaultValue ...string) string
+          // signature: func (*Ctx) Cookies(key string, defaultValue ...string) string
           methodName = "Cookies" and
           out.isResult()
           or
-          // signature: func (*Ctx).FormFile(key string) (*mime/multipart.FileHeader, error)
+          // signature: func (*Ctx) FormFile(key string) (*mime/multipart.FileHeader, error)
           methodName = "FormFile" and
           out.isResult(0)
           or
-          // signature: func (*Ctx).FormValue(key string) (value string)
+          // signature: func (*Ctx) FormValue(key string) (value string)
           methodName = "FormValue" and
           out.isResult()
           or
-          // signature: func (*Ctx).Get(key string, defaultValue ...string) string
+          // signature: func (*Ctx) Get(key string, defaultValue ...string) string
           methodName = "Get" and
           out.isResult()
           or
-          // signature: func (*Ctx).Hostname() string
+          // signature: func (*Ctx) Hostname() string
           methodName = "Hostname" and
           out.isResult()
           or
-          // signature: func (*Ctx).Method(override ...string) string
+          // signature: func (*Ctx) Method(override ...string) string
           methodName = "Method" and
           out.isResult()
           or
-          // signature: func (*Ctx).MultipartForm() (*mime/multipart.Form, error)
+          // signature: func (*Ctx) MultipartForm() (*mime/multipart.Form, error)
           methodName = "MultipartForm" and
           out.isResult(0)
           or
-          // signature: func (*Ctx).OriginalURL() string
+          // signature: func (*Ctx) OriginalURL() string
           methodName = "OriginalURL" and
           out.isResult()
           or
-          // signature: func (*Ctx).Params(key string, defaultValue ...string) string
+          // signature: func (*Ctx) Params(key string, defaultValue ...string) string
           methodName = "Params" and
           out.isResult()
           or
-          // signature: func (*Ctx).Path(override ...string) string
+          // signature: func (*Ctx) Path(override ...string) string
           methodName = "Path" and
           out.isResult()
           or
-          // signature: func (*Ctx).Query(key string, defaultValue ...string) string
+          // signature: func (*Ctx) Query(key string, defaultValue ...string) string
           methodName = "Query" and
           out.isResult()
           or
-          // signature: func (*Ctx).QueryParser(out interface{}) error
+          // signature: func (*Ctx) QueryParser(out interface{}) error
           methodName = "QueryParser" and
           out.isParameter(0)
           or
-          // signature: func (*Ctx).Range(size int) (rangeData Range, err error)
+          // signature: func (*Ctx) Range(size int) (rangeData Range, err error)
           methodName = "Range" and
           out.isResult(0)
           or
-          // signature: func (*Ctx).Subdomains(offset ...int) []string
+          // signature: func (*Ctx) Subdomains(offset ...int) []string
           methodName = "Subdomains" and
           out.isResult()
         )

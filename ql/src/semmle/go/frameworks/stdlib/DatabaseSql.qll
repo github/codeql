@@ -128,15 +128,15 @@ module DatabaseSql {
     FunctionOutput outp;
 
     SqlMethodModels() {
-      // signature: func (*Row).Scan(dest ...interface{}) error
+      // signature: func (*Row) Scan(dest ...interface{}) error
       this.hasQualifiedName("database/sql", "Row", "Scan") and
       (inp.isReceiver() and outp.isParameter(_))
       or
-      // signature: func (*Rows).Scan(dest ...interface{}) error
+      // signature: func (*Rows) Scan(dest ...interface{}) error
       this.hasQualifiedName("database/sql", "Rows", "Scan") and
       (inp.isReceiver() and outp.isParameter(_))
       or
-      // signature: func (Scanner).Scan(src interface{}) error
+      // signature: func (Scanner) Scan(src interface{}) error
       this.implements("database/sql", "Scanner", "Scan") and
       (inp.isParameter(0) and outp.isReceiver())
       or
@@ -159,27 +159,27 @@ module DatabaseSql {
     FunctionOutput outp;
 
     SqlDriverMethodModels() {
-      // signature: func (NotNull).ConvertValue(v interface{}) (Value, error)
+      // signature: func (NotNull) ConvertValue(v interface{}) (Value, error)
       this.hasQualifiedName("database/sql/driver", "NotNull", "ConvertValue") and
       (inp.isParameter(0) and outp.isResult(0))
       or
-      // signature: func (Null).ConvertValue(v interface{}) (Value, error)
+      // signature: func (Null) ConvertValue(v interface{}) (Value, error)
       this.hasQualifiedName("database/sql/driver", "Null", "ConvertValue") and
       (inp.isParameter(0) and outp.isResult(0))
       or
-      // signature: func (ValueConverter).ConvertValue(v interface{}) (Value, error)
+      // signature: func (ValueConverter) ConvertValue(v interface{}) (Value, error)
       this.implements("database/sql/driver", "ValueConverter", "ConvertValue") and
       (inp.isParameter(0) and outp.isResult(0))
       or
-      // signature: func (Conn).Prepare(query string) (Stmt, error)
+      // signature: func (Conn) Prepare(query string) (Stmt, error)
       this.implements("database/sql/driver", "Conn", "Prepare") and
       (inp.isParameter(0) and outp.isResult(0))
       or
-      // signature: func (ConnPrepareContext).PrepareContext(ctx context.Context, query string) (Stmt, error)
+      // signature: func (ConnPrepareContext) PrepareContext(ctx context.Context, query string) (Stmt, error)
       this.implements("database/sql/driver", "ConnPrepareContext", "PrepareContext") and
       (inp.isParameter(1) and outp.isResult(0))
       or
-      // signature: func (Valuer).Value() (Value, error)
+      // signature: func (Valuer) Value() (Value, error)
       this.implements("database/sql/driver", "Valuer", "Value") and
       (inp.isReceiver() and outp.isResult(0))
     }

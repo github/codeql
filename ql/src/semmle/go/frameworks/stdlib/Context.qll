@@ -46,7 +46,7 @@ module Context {
     FunctionOutput outp;
 
     MethodModels() {
-      // signature: func (Context).Value(key interface{}) interface{}
+      // signature: func (Context) Value(key interface{}) interface{}
       implements(packagePath(), "Context", "Value") and
       (inp.isReceiver() and outp.isResult())
     }

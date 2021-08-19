@@ -51,51 +51,51 @@ module Log {
     FunctionOutput outp;
 
     MethodModels() {
-      // signature: func (*Logger).Fatal(v ...interface{})
+      // signature: func (*Logger) Fatal(v ...interface{})
       hasQualifiedName("log", "Logger", "Fatal") and
       (inp.isParameter(_) and outp.isReceiver())
       or
-      // signature: func (*Logger).Fatalf(format string, v ...interface{})
+      // signature: func (*Logger) Fatalf(format string, v ...interface{})
       hasQualifiedName("log", "Logger", "Fatalf") and
       (inp.isParameter(_) and outp.isReceiver())
       or
-      // signature: func (*Logger).Fatalln(v ...interface{})
+      // signature: func (*Logger) Fatalln(v ...interface{})
       hasQualifiedName("log", "Logger", "Fatalln") and
       (inp.isParameter(_) and outp.isReceiver())
       or
-      // signature: func (*Logger).Panic(v ...interface{})
+      // signature: func (*Logger) Panic(v ...interface{})
       hasQualifiedName("log", "Logger", "Panic") and
       (inp.isParameter(_) and outp.isReceiver())
       or
-      // signature: func (*Logger).Panicf(format string, v ...interface{})
+      // signature: func (*Logger) Panicf(format string, v ...interface{})
       hasQualifiedName("log", "Logger", "Panicf") and
       (inp.isParameter(_) and outp.isReceiver())
       or
-      // signature: func (*Logger).Panicln(v ...interface{})
+      // signature: func (*Logger) Panicln(v ...interface{})
       hasQualifiedName("log", "Logger", "Panicln") and
       (inp.isParameter(_) and outp.isReceiver())
       or
-      // signature: func (*Logger).Print(v ...interface{})
+      // signature: func (*Logger) Print(v ...interface{})
       hasQualifiedName("log", "Logger", "Print") and
       (inp.isParameter(_) and outp.isReceiver())
       or
-      // signature: func (*Logger).Printf(format string, v ...interface{})
+      // signature: func (*Logger) Printf(format string, v ...interface{})
       hasQualifiedName("log", "Logger", "Printf") and
       (inp.isParameter(_) and outp.isReceiver())
       or
-      // signature: func (*Logger).Println(v ...interface{})
+      // signature: func (*Logger) Println(v ...interface{})
       hasQualifiedName("log", "Logger", "Println") and
       (inp.isParameter(_) and outp.isReceiver())
       or
-      // signature: func (*Logger).SetOutput(w io.Writer)
+      // signature: func (*Logger) SetOutput(w io.Writer)
       hasQualifiedName("log", "Logger", "SetOutput") and
       (inp.isReceiver() and outp.isParameter(0))
       or
-      // signature: func (*Logger).SetPrefix(prefix string)
+      // signature: func (*Logger) SetPrefix(prefix string)
       hasQualifiedName("log", "Logger", "SetPrefix") and
       (inp.isParameter(0) and outp.isReceiver())
       or
-      // signature: func (*Logger).Writer() io.Writer
+      // signature: func (*Logger) Writer() io.Writer
       hasQualifiedName("log", "Logger", "Writer") and
       (inp.isReceiver() and outp.isResult())
     }

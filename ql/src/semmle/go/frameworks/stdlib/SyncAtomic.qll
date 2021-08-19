@@ -69,11 +69,11 @@ module SyncAtomic {
     FunctionOutput outp;
 
     MethodModels() {
-      // signature: func (*Value).Load() (x interface{})
+      // signature: func (*Value) Load() (x interface{})
       hasQualifiedName("sync/atomic", "Value", "Load") and
       (inp.isReceiver() and outp.isResult())
       or
-      // signature: func (*Value).Store(x interface{})
+      // signature: func (*Value) Store(x interface{})
       hasQualifiedName("sync/atomic", "Value", "Store") and
       (inp.isParameter(0) and outp.isReceiver())
     }
