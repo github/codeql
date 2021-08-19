@@ -1997,6 +1997,15 @@ class Argument extends Expr {
   int getPosition() { result = pos }
 
   /**
+   * Gets the parameter for which this argument is a value. If this argument is part
+   * of an implicit varargs array this predicate has no result.
+   */
+  Parameter getParameter() {
+    result = call.getCallee().getParameter(pos) and
+    not isVararg()
+  }
+
+  /**
    * Holds if this argument is an array of the appropriate type passed to a
    * varargs parameter.
    */
@@ -2018,6 +2027,12 @@ class Argument extends Expr {
 
   /** Holds if this argument is part of an implicit varargs array. */
   predicate isVararg() { isNthVararg(_) }
+
+  /**
+   * If this argument is part of an implicit varargs array gets the
+   * varargs parameter it is a value for. Otherwise has no result.
+   */
+  Parameter getVarargsParameter() { isVararg() and result = call.getCallee().getVarargsParameter() }
 
   /**
    * Holds if this argument is part of an implicit varargs array at the

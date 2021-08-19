@@ -179,6 +179,9 @@ class Callable extends StmtParent, Member, @callable {
   /** Gets the formal parameter at the specified (zero-based) position. */
   Parameter getParameter(int n) { params(result, _, n, this, _) }
 
+  /** Gets the varargs (variable arity) parameter, if any. */
+  Parameter getVarargsParameter() { result = getAParameter() and result.isVarargs() }
+
   /** Gets the type of the formal parameter at the specified (zero-based) position. */
   Type getParameterType(int n) { params(_, result, n, this, _) }
 
