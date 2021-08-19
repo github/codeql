@@ -138,7 +138,9 @@ class Variable extends Declaration, @variable {
    * For example: `x=...` or `x+=...`.
    *
    * This does _not_ include the initialization of the variable. Use
-   * `Variable.getInitializer()` to get the variable's initializer.
+   * `Variable.getInitializer()` to get the variable's initializer,
+   * or use `Variable.getAnAssignedValue()` to get an expression that
+   * is assigned to this variable somewhere in the program.
    */
   Assignment getAnAssignment() { result.getLValue() = this.getAnAccess() }
 
