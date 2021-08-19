@@ -15,7 +15,7 @@ string GeneratePassword()
         password = "mypassword" + BitConverter.ToInt32(randomBytes);
     }
 
-    // BAD: Membership.GeneratePassword is generates a password with a bias
+    // BAD: Membership.GeneratePassword generates a password with a bias
     password = Membership.GeneratePassword(12, 3);
 
     return password;
