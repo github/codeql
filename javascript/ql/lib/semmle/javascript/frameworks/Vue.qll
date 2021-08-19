@@ -57,11 +57,12 @@ module Vue {
     VueExtendCall() { this = component().getMember("extend").getACall() }
   }
 
+  /** A component created by an explicit or implicit call to `Vue.extend`. */
   private newtype TComponent =
+    MkComponentExtension(VueExtendCall extend) or
     MkComponentInstantiation(API::NewNode sub) {
       sub = component().getAnInstantiation()
     } or
-    MkExtendedVue(VueExtendCall extend) or
     MkComponentRegistration(API::CallNode def) { def = vueLibrary().getMember("component").getACall() } or
     MkSingleFileComponent(VueFile file)
 
@@ -431,12 +432,17 @@ module Vue {
   }
 
   /**
-   * An extended Vue from `Vue.extend({...})`.
+   * DEPRECATED. Use `Vue::ComponentExtension` or `Vue::Component` instead.
    */
-  class ExtendedVue extends Component, MkExtendedVue {
+  deprecated class ExtendedVue = ComponentExtension;
+
+  /**
+   * A component created via an explicit call to `Vue.extend({...})` or `CustomComponent.extend({...})`.
+   */
+  class ComponentExtension extends Component, MkComponentExtension {
     VueExtendCall extend;
 
-    ExtendedVue() { this = MkExtendedVue(extend) }
+    ComponentExtension() { this = MkComponentExtension(extend) }
 
     override string toString() { result = extend.toString() }
 
