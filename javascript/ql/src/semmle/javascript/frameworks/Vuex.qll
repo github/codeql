@@ -26,7 +26,7 @@ private module VueAPI {
    * or equivalent.
    */
   class VueConfigObject extends API::Node {
-    VueConfigObject() { this.getARhs() = any(Vue::Instance i).getOwnOptionsObject() }
+    VueConfigObject() { this.getARhs() = any(Vue::Component c).getOwnOptionsObject() }
 
     /** Gets an API node representing `this` in the Vue component. */
     API::Node getAnInstanceRef() {
