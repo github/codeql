@@ -45,20 +45,31 @@ Expr clearlyNotNullExpr(Expr reason) {
   or
   result instanceof ArrayCreationExpr and reason = result
   or
+  result instanceof FunctionalExpr and reason = result
+  or
   result instanceof TypeLiteral and reason = result
   or
   result instanceof ThisAccess and reason = result
   or
   result instanceof StringLiteral and reason = result
   or
+  // Add and AssignAdd performing String concatenation never have null result
   result instanceof AddExpr and result.getType() instanceof TypeString and reason = result
+  or
+  result instanceof AssignAddExpr and result.getType() instanceof TypeString and reason = result
   or
   exists(Field f |
     result = f.getAnAccess() and
-    (f.hasName("TRUE") or f.hasName("FALSE")) and
+    f.hasName(["TRUE", "FALSE"]) and
     f.getDeclaringType().hasQualifiedName("java.lang", "Boolean") and
     reason = result
   )
+  or
+  result.getType() instanceof PrimitiveType and not result instanceof TypeAccess and reason = result
+  or
+  // Ignore RValue because that is covered by SsaVariable check below and correctly
+  // reports the assigned value as 'reason'
+  result instanceof CompileTimeConstantExpr and not result instanceof RValue and reason = result
   or
   result.(CastExpr).getExpr() = clearlyNotNullExpr(reason)
   or
@@ -69,6 +80,12 @@ Expr clearlyNotNullExpr(Expr reason) {
     c.getTrueExpr() = clearlyNotNullExpr(r1) and
     c.getFalseExpr() = clearlyNotNullExpr(r2) and
     (reason = r1 or reason = r2)
+  )
+  or
+  exists(SwitchExpr s |
+    s = result and
+    s.getAResult() = clearlyNotNullExpr(reason) and
+    forall(Expr resultExpr | resultExpr = s.getAResult() | resultExpr = clearlyNotNullExpr())
   )
   or
   exists(SsaVariable v, boolean branch, RValue rval, Guard guard |
@@ -105,10 +122,13 @@ predicate clearlyNotNull(SsaVariable v, Expr reason) {
     clearlyNotNull(captured, reason)
   )
   or
-  exists(Field f |
-    v.getSourceVariable().getVariable() = f and
-    f.isFinal() and
-    f.getInitializer() = clearlyNotNullExpr(reason)
+  exists(Variable var |
+    v.getSourceVariable().getVariable() = var and
+    var.isFinal() and
+    var.getAnAssignedValue() = clearlyNotNullExpr(reason) and
+    forall(Expr assignedValue | assignedValue = var.getAnAssignedValue() |
+      assignedValue = clearlyNotNullExpr()
+    )
   )
 }
 
