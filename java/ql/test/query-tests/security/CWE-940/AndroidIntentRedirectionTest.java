@@ -21,6 +21,8 @@ public class AndroidIntentRedirectionTest extends Activity {
             startActivity(intent); // $ hasAndroidIntentRedirection
         }
 
+        startActivity(getIntent()); // Safe - not an intent obtained from the Extras
+
         // @formatter:off
         startActivities(new Intent[] {intent}); // $ hasAndroidIntentRedirection
         startActivities(new Intent[] {intent}, null); // $ hasAndroidIntentRedirection
