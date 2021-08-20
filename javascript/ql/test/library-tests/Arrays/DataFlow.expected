@@ -23,3 +23,7 @@
 | arrays.js | arrays.js:56:10:56:10 | x | arrays.js:2:16:2:23 | "source" |
 | arrays.js | arrays.js:60:10:60:10 | x | arrays.js:2:16:2:23 | "source" |
 | arrays.js | arrays.js:66:10:66:10 | x | arrays.js:2:16:2:23 | "source" |
+| arrays.js | arrays.js:71:10:71:10 | x | arrays.js:2:16:2:23 | "source" |
+| arrays.js | arrays.js:74:8:74:29 | arr.fin ... llback) | arrays.js:2:16:2:23 | "source" |
+| arrays.js | arrays.js:77:8:77:35 | arrayFi ... llback) | arrays.js:2:16:2:23 | "source" |
+| arrays.js | arrays.js:81:10:81:10 | x | arrays.js:2:16:2:23 | "source" |
