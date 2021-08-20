@@ -404,4 +404,20 @@ private module ArrayLibraries {
       )
     }
   }
+
+  /**
+   * A step modelling that a call of `.apply()` function with passing an array of arguments via 2nd parameter.
+   */
+  private class ApplyCallStep extends DataFlow::SharedFlowStep {
+    override predicate loadStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+      exists(DataFlow::MethodCallNode call, DataFlow::FunctionNode func, int i |
+        call.getMethodName() = "apply" and
+        call.getReceiver().getABoundFunctionValue(_) = func and
+        prop = arrayElement(i) and
+        not prop = arrayElement() and
+        pred = call.getArgument(1) and
+        succ = func.getParameter(i)
+      )
+    }
+  }
 }
