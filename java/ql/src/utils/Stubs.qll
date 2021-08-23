@@ -8,15 +8,10 @@
 import java
 
 /** A type that should be in the generated code. */
-abstract private class GeneratedType extends RefType {
+abstract private class GeneratedType extends ClassOrInterface {
   GeneratedType() {
-    (
-      this instanceof Interface
-      or
-      this instanceof Class
-    ) and
     not this instanceof AnonymousClass and
-    not this instanceof LocalClass and
+    not this.isLocal() and
     not this.getPackage() instanceof ExcludedPackage
   }
 

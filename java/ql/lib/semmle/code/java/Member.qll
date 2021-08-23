@@ -45,7 +45,7 @@ class Member extends Element, Annotatable, Modifiable, @member {
   Callable getEnclosingCallable() {
     exists(NestedClass nc | this.getDeclaringType() = nc |
       nc.(AnonymousClass).getClassInstanceExpr().getEnclosingCallable() = result or
-      nc.(LocalClass).getLocalClassDeclStmt().getEnclosingCallable() = result
+      nc.(LocalClassOrInterface).getLocalClassDeclStmt().getEnclosingCallable() = result
     )
   }
 }

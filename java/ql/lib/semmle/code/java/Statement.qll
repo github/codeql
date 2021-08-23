@@ -786,14 +786,20 @@ class LocalVariableDeclStmt extends Stmt, @localvariabledeclstmt {
   override string getAPrimaryQlClass() { result = "LocalVariableDeclStmt" }
 }
 
-/** A statement that declares a local class. */
+/** A statement that declares a local class or interface. */
 class LocalClassDeclStmt extends Stmt, @localclassdeclstmt {
   /** Gets the local class declared by this statement. */
-  LocalClass getLocalClass() { isLocalClass(result, this) }
+  LocalClassOrInterface getLocalClass() { isLocalClass(result, this) }
 
-  override string pp() { result = "class " + this.getLocalClass().toString() }
+  private string getDeclKeyword() {
+    result = "class" and this.getLocalClass() instanceof Class
+    or
+    result = "interface" and this.getLocalClass() instanceof Interface
+  }
 
-  override string toString() { result = "class ..." }
+  override string pp() { result = this.getDeclKeyword() + " " + this.getLocalClass().toString() }
+
+  override string toString() { result = this.getDeclKeyword() + " ..." }
 
   override string getHalsteadID() { result = "LocalClassDeclStmt" }
 

@@ -6,8 +6,8 @@
  * (`Interface`).
  *
  * Reference types can be at the top level (`TopLevelType`) or nested (`NestedType`).
- * Classes can also be local (`LocalClass`) or anonymous (`AnonymousClass`).
- * Enumerated types (`EnumType`) are a special kind of class.
+ * Classes and interfaces can also be local (`LocalClassOrInterface`, `LocalClass`) or anonymous (`AnonymousClass`).
+ * Enumerated types (`EnumType`) and records (`Record`) are a special kinds of class.
  */
 
 import Member
@@ -269,7 +269,7 @@ predicate declaresMember(Type t, @member m) {
   // Since the type `@member` in the dbscheme includes all `@reftype`s,
   // anonymous and local classes need to be excluded here.
   not m instanceof AnonymousClass and
-  not m instanceof LocalClass
+  not m instanceof LocalClassOrInterface
 }
 
 /**
@@ -608,19 +608,9 @@ class SrcRefType extends RefType {
 }
 
 /** A class declaration. */
-class Class extends RefType, @class {
+class Class extends ClassOrInterface, @class {
   /** Holds if this class is an anonymous class. */
   predicate isAnonymous() { isAnonymClass(this, _) }
-
-  /** Holds if this class is a local class. */
-  predicate isLocal() { isLocalClass(this, _) }
-
-  /** Holds if this class is package protected, that is, neither public nor private nor protected. */
-  predicate isPackageProtected() {
-    not isPrivate() and
-    not isProtected() and
-    not isPublic()
-  }
 
   override RefType getSourceDeclaration() { classes(this, _, _, result) }
 
@@ -630,11 +620,13 @@ class Class extends RefType, @class {
    * Note that a class may inherit annotations from super-classes.
    */
   override Annotation getAnAnnotation() {
-    result = RefType.super.getAnAnnotation()
+    result = ClassOrInterface.super.getAnAnnotation()
     or
     exists(AnnotationType tp | tp = result.getType() |
       tp.isInherited() and
-      not exists(Annotation ann | ann = RefType.super.getAnAnnotation() | ann.getType() = tp) and
+      not exists(Annotation ann | ann = ClassOrInterface.super.getAnAnnotation() |
+        ann.getType() = tp
+      ) and
       result = this.getASupertype().(Class).getAnAnnotation()
     )
   }
@@ -643,8 +635,6 @@ class Class extends RefType, @class {
 }
 
 /**
- * PREVIEW FEATURE in Java 14. Subject to removal in a future release.
- *
  * A record declaration.
  */
 class Record extends Class {
@@ -727,12 +717,19 @@ class AnonymousClass extends NestedClass {
   override string getAPrimaryQlClass() { result = "AnonymousClass" }
 }
 
-/** A local class. */
-class LocalClass extends NestedClass {
-  LocalClass() { this.isLocal() }
+/** A local class or interface. */
+class LocalClassOrInterface extends NestedType, ClassOrInterface {
+  LocalClassOrInterface() { this.isLocal() }
 
   /** Gets the statement that declares this local class. */
   LocalClassDeclStmt getLocalClassDeclStmt() { isLocalClass(this, result) }
+
+  override string getAPrimaryQlClass() { result = "LocalClassOrInterface" }
+}
+
+/** A local class. */
+class LocalClass extends LocalClassOrInterface, NestedClass {
+  LocalClass() { this.isLocal() }
 
   override string getAPrimaryQlClass() { result = "LocalClass" }
 }
@@ -847,19 +844,12 @@ class InnerClass extends NestedClass {
 }
 
 /** An interface. */
-class Interface extends RefType, @interface {
+class Interface extends ClassOrInterface, @interface {
   override RefType getSourceDeclaration() { interfaces(this, _, _, result) }
 
   override predicate isAbstract() {
     // JLS 9.1.1.1: "Every interface is implicitly abstract"
     any()
-  }
-
-  /** Holds if this interface is package protected, that is, neither public nor private nor protected. */
-  predicate isPackageProtected() {
-    not isPrivate() and
-    not isProtected() and
-    not isPublic()
   }
 
   override string getAPrimaryQlClass() { result = "Interface" }
@@ -868,8 +858,18 @@ class Interface extends RefType, @interface {
 /** A class or interface. */
 class ClassOrInterface extends RefType {
   ClassOrInterface() {
-    this instanceof Class or
-    this instanceof Interface
+    this instanceof @class or
+    this instanceof @interface
+  }
+
+  /** Holds if this class or interface is local. */
+  predicate isLocal() { isLocalClass(this, _) }
+
+  /** Holds if this class or interface is package protected, that is, neither public nor private nor protected. */
+  predicate isPackageProtected() {
+    not isPrivate() and
+    not isProtected() and
+    not isPublic()
   }
 }
 
