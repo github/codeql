@@ -18,6 +18,12 @@ import semmle.code.cpp.controlflow.ControlFlowGraph
  *   ...
  * }
  * ```
+ * But _not_ `4` in the following code:
+ * ```
+ * int myUninitializedVariable;
+ * myUninitializedVariable = 4;
+ * ```
+ * Instead, this is an `Assignment`.
  */
 class Initializer extends ControlFlowNode, @initialiser {
   override Location getLocation() { initialisers(underlyingElement(this), _, _, result) }
