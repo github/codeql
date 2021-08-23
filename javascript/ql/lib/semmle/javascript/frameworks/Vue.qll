@@ -86,7 +86,7 @@ module Vue {
   /**
    * A class with a `@Component` decorator, making it usable as an "options" object in Vue.
    */
-  private class ClassComponent extends DataFlow::ClassNode {
+  class ClassComponent extends DataFlow::ClassNode {
     DataFlow::Node decorator;
 
     ClassComponent() {
@@ -102,12 +102,12 @@ module Vue {
     }
 
     /**
-     * Gets an option passed to the `@Component` decorator.
+     * Gets the options object passed to the `@Component` decorator, if any.
      *
      * These options correspond to the options one would pass to `new Vue({...})` or similar.
      */
-    DataFlow::Node getDecoratorOption(string name) {
-      result = decorator.(DataFlow::CallNode).getOptionArgument(0, name)
+    API::Node getDecoratorOptions() {
+      result = decorator.(API::CallNode).getParameter(0)
     }
   }
 
@@ -187,6 +187,8 @@ module Vue {
       result = getOwnOptions().getMember(["extends", "mixins"]).getAMember()
       or
       result = getABaseComponent().getOptions()
+      or
+      result = getAsClassComponent().getDecoratorOptions()
     }
 
     /**
@@ -219,9 +221,6 @@ module Vue {
      */
     DataFlow::Node getOption(string name) {
       result = getOptions().getMember(name).getARhs()
-      or
-      // not ported to API graphs yet
-      result = getAsClassComponent().getDecoratorOption(name)
     }
 
     /**
