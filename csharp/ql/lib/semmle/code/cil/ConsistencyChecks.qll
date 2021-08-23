@@ -670,7 +670,7 @@ class MissingCilDeclaration extends ConsistencyViolation, MissingCSharpCheck {
   override string getMessage() {
     result =
       "Cannot locate CIL for " + getDeclaration().toStringWithTypes() + " of class " +
-        getDeclaration().getAPrimaryQlClass()
+        getDeclaration().getPrimaryQlClasses()
   }
 
   override string toString() { result = getDeclaration().toStringWithTypes() }
