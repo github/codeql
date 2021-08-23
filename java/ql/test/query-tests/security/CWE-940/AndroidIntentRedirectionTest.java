@@ -1,6 +1,7 @@
 package com.example.app;
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -54,5 +55,86 @@ public class AndroidIntentRedirectionTest extends Activity {
         sendStickyOrderedBroadcast(intent, null, null, 0, null, null); // $ hasAndroidIntentRedirection
         sendStickyOrderedBroadcastAsUser(intent, null, null, null, 0, null, null); // $ hasAndroidIntentRedirection
         // @formatter:on
+
+        try {
+            {
+                Intent fwdIntent = new Intent();
+                fwdIntent.setClassName((Context) null, (String) intent.getExtra("className"));
+                startActivity(fwdIntent); // $ hasAndroidIntentRedirection
+            }
+            {
+                Intent fwdIntent = new Intent();
+                fwdIntent.setClassName((String) intent.getExtra("packageName"), null);
+                startActivity(fwdIntent); // $ hasAndroidIntentRedirection
+            }
+            {
+                Intent fwdIntent = new Intent();
+                fwdIntent.setClassName((String) intent.getExtra("packageName"),
+                        (String) intent.getExtra("className"));
+                startActivity(fwdIntent); // $ hasAndroidIntentRedirection
+            }
+            {
+                Intent fwdIntent = new Intent();
+                fwdIntent.setClass(null, Class.forName((String) intent.getExtra("className")));
+                // needs taint step for Class.forName
+                startActivity(fwdIntent); // $ MISSING: $hasAndroidIntentRedirection
+            }
+            {
+                Intent fwdIntent = new Intent();
+                fwdIntent.setPackage((String) intent.getExtra("packageName"));
+                startActivity(fwdIntent); // $ hasAndroidIntentRedirection
+            }
+            {
+                Intent fwdIntent = new Intent();
+                ComponentName component =
+                        new ComponentName((String) intent.getExtra("packageName"), null);
+                fwdIntent.setComponent(component);
+                startActivity(fwdIntent); // $ hasAndroidIntentRedirection
+            }
+            {
+                Intent fwdIntent = new Intent();
+                ComponentName component =
+                        new ComponentName("", (String) intent.getExtra("className"));
+                fwdIntent.setComponent(component);
+                startActivity(fwdIntent); // $ hasAndroidIntentRedirection
+            }
+            {
+                Intent fwdIntent = new Intent();
+                ComponentName component =
+                        new ComponentName((Context) null, (String) intent.getExtra("className"));
+                fwdIntent.setComponent(component);
+                startActivity(fwdIntent); // $ hasAndroidIntentRedirection
+            }
+            {
+                Intent fwdIntent = new Intent();
+                ComponentName component = new ComponentName((Context) null,
+                        Class.forName((String) intent.getExtra("className")));
+                fwdIntent.setComponent(component);
+                // needs taint step for Class.forName
+                startActivity(fwdIntent); // $ MISSING: $hasAndroidIntentRedirection
+            }
+            {
+                Intent fwdIntent = new Intent();
+                ComponentName component =
+                        ComponentName.createRelative("", (String) intent.getExtra("className"));
+                fwdIntent.setComponent(component);
+                startActivity(fwdIntent); // $ hasAndroidIntentRedirection
+            }
+            {
+                Intent fwdIntent = new Intent();
+                ComponentName component =
+                        ComponentName.createRelative((String) intent.getExtra("packageName"), "");
+                fwdIntent.setComponent(component);
+                startActivity(fwdIntent); // $ hasAndroidIntentRedirection
+            }
+            {
+                Intent fwdIntent = new Intent();
+                ComponentName component = ComponentName.createRelative((Context) null,
+                        (String) intent.getExtra("className"));
+                fwdIntent.setComponent(component);
+                startActivity(fwdIntent); // $ hasAndroidIntentRedirection
+            }
+        } catch (Exception e) {
+        }
     }
 }

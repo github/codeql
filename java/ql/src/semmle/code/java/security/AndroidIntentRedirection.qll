@@ -70,7 +70,8 @@ private class DefaultIntentRedirectionSanitizer extends IntentRedirectionSanitiz
   DefaultIntentRedirectionSanitizer() {
     exists(MethodAccess ma, Method m |
       ma.getMethod() = m and
-      m.hasQualifiedName("android.content", "ComponentName", ["getPackageName", "getClassName"]) and
+      m.getDeclaringType() instanceof TypeComponentName and
+      m.hasName(["getPackageName", "getClassName"]) and
       ma.getBasicBlock().(ConditionBlock).controls(this.asExpr().getBasicBlock(), true)
     )
   }
