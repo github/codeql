@@ -7,7 +7,6 @@ private import semmle.javascript.dataflow.internal.FlowSteps as FlowSteps
 
 /** A minimal adapter for the `vue` model based on API nodes. */
 private module VueAPI {
-
   /**
    * An API node representing the object passed to the Vue constructor `new Vue({...})`
    * or equivalent.

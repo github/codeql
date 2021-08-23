@@ -60,10 +60,10 @@ module Vue {
   /** A component created by an explicit or implicit call to `Vue.extend`. */
   private newtype TComponent =
     MkComponentExtension(VueExtendCall extend) or
-    MkComponentInstantiation(API::NewNode sub) {
-      sub = component().getAnInstantiation()
+    MkComponentInstantiation(API::NewNode sub) { sub = component().getAnInstantiation() } or
+    MkComponentRegistration(API::CallNode def) {
+      def = vueLibrary().getMember("component").getACall()
     } or
-    MkComponentRegistration(API::CallNode def) { def = vueLibrary().getMember("component").getACall() } or
     MkSingleFileComponent(VueFile file)
 
   /** Gets the name of a lifecycle hook method. */
@@ -106,9 +106,7 @@ module Vue {
      *
      * These options correspond to the options one would pass to `new Vue({...})` or similar.
      */
-    API::Node getDecoratorOptions() {
-      result = decorator.(API::CallNode).getParameter(0)
-    }
+    API::Node getDecoratorOptions() { result = decorator.(API::CallNode).getParameter(0) }
   }
 
   private string memberKindVerb(DataFlow::MemberKind kind) {
@@ -174,7 +172,8 @@ module Vue {
 
     /** Gets a component which is extended by this one. */
     Component getABaseComponent() {
-      result.getComponentRef().getAUse() = getOwnOptions().getMember(["extends", "mixins"]).getARhs()
+      result.getComponentRef().getAUse() =
+        getOwnOptions().getMember(["extends", "mixins"]).getARhs()
     }
 
     /**
@@ -211,17 +210,13 @@ module Vue {
      * Gets the node for option `name` for this component, not including
      * those from extended objects and mixins.
      */
-    DataFlow::Node getOwnOption(string name) {
-      result = getOwnOptions().getMember(name).getARhs()
-    }
+    DataFlow::Node getOwnOption(string name) { result = getOwnOptions().getMember(name).getARhs() }
 
     /**
      * Gets the node for option `name` for this component, including those from
      * extended objects and mixins.
      */
-    DataFlow::Node getOption(string name) {
-      result = getOptions().getMember(name).getARhs()
-    }
+    DataFlow::Node getOption(string name) { result = getOptions().getMember(name).getARhs() }
 
     /**
      * Gets a source node flowing into the option `name` of this component, including those from
@@ -331,9 +326,7 @@ module Vue {
     /**
      * Gets a reference to `this` inside the component, referring to an instance of the component.
      */
-    DataFlow::SourceNode getASelfRef() {
-      result = getABoundFunction().getReceiver()
-    }
+    DataFlow::SourceNode getASelfRef() { result = getABoundFunction().getReceiver() }
 
     pragma[noinline]
     private DataFlow::PropWrite getAPropertyValueWrite(string name) {
@@ -439,7 +432,8 @@ module Vue {
   deprecated class ExtendedInstance extends Component {
     ExtendedInstance() {
       // restrict charpred to match original behavior
-      this = MkComponentInstantiation(vueLibrary().getMember("extend").getReturn().getAnInstantiation())
+      this =
+        MkComponentInstantiation(vueLibrary().getMember("extend").getReturn().getAnInstantiation())
     }
   }
 
@@ -486,9 +480,7 @@ module Vue {
       )
     }
 
-    override DataFlow::Node getARhs() {
-      none()
-    }
+    override DataFlow::Node getARhs() { none() }
   }
 
   /**
