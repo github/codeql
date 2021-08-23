@@ -1,2 +1,2 @@
 lgtm,codescanning
-* Added `ElementBase.getPrimaryQlClasses()` predicate, which gets a comma-separated list of the names of the primary CodeQL classes to which this element belongs.
+* Added `Element.getPrimaryQlClasses()` predicate, which gets a comma-separated list of the names of the primary CodeQL classes to which this element belongs.
