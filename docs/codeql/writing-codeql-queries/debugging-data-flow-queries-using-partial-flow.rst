@@ -56,9 +56,9 @@ If there are still no results and performance did not degrade to complete useles
 Partial flow
 ------------
 
-A naive next step could be to try changing the sink definition to ``any()``. This would mean that we would get a lot of flow to all the places that are reachable from the sources. While this approach makes sense and can work, it can be hard to get an overview of the results as they can be quite plentiful, and it does come with a couple of additional caveats: Performance might degrade to uselessness and we might not even see all the partial flow paths. The latter point is somewhat subtle and deserves elaboration. Since the data-flow library tries very hard to prune impossible paths and since field stores and reads must be evenly matched along a path, then we will never see paths going through a store that fail to reach a corresponding read. This can make it hard to see where flow actually stops.
+A naive next step could be to try changing the sink definition to ``any()``. This would mean that we would get a lot of flow to all the places that are reachable from the sources. While this approach makes sense and can work in some cases, you might find that it produces so many results that it's very hard to explore the findings, which can also dramtatically affect query performance. More importnatly, you might not even see all the partial flow paths. This is because the data-flow library tries very hard to prune impossible paths and, since field stores and reads must be evenly matched along a path, we will never see paths going through a store that fail to reach a corresponding read. This can make it hard to see where flow actually stops.
 
-Because of this, a ``Configuration`` comes with a mechanism for exploring partial flow that tries to deal with these caveats. This is the ``Configuration.hasPartialFlow`` predicate:
+To avoid these problems, a data-flow ``Configuration`` comes with a mechanism for exploring partial flow that tries to deal with these caveats. This is the ``Configuration.hasPartialFlow`` predicate:
 
 .. code-block:: ql
 
@@ -79,7 +79,7 @@ Because of this, a ``Configuration`` comes with a mechanism for exploring partia
        */
       final predicate hasPartialFlow(PartialPathNode source, PartialPathNode node, int dist) {
 
-As noted in the qldoc for ``hasPartialFlow`` one must first enable this by adding an override of ``explorationLimit``. For example:
+As noted in the documentation for ``hasPartialFlow`` (for example, in the `CodeQL for Java documentation <https://codeql.github.com/codeql-standard-libraries/java/semmle/code/java/dataflow/internal/DataFlowImpl2.qll/predicate.DataFlowImpl2$Configuration$hasPartialFlow.3.html>__`) you must first enable this by adding an override of ``explorationLimit``. For example:
 
 .. code-block:: ql
 
