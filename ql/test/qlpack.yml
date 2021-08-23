@@ -1,6 +1,6 @@
-name: codeql-go-tests
-version: 0.0.0
-libraryPathDependencies:
-  - codeql-go
-  - codeql-go-examples
+name: codeql/go-tests
+version: 0.0.2
+dependencies:
+    codeql/go-queries: ^0.0.2
+    codeql/go-all: ^0.0.2
 extractor: go
