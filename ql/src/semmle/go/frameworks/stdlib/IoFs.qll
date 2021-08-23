@@ -16,6 +16,10 @@ module IoFs {
     FunctionOutput outp;
 
     FunctionModels() {
+      //signature: func FileInfoToDirEntry(info FileInfo) DirEntry
+      this.hasQualifiedName(packagePath(), "FileInfoToDirEntry") and
+      (inp.isParameter(0) and outp.isResult())
+      or
       //signature: func Glob(fsys FS, pattern string) (matches []string, err error)
       this.hasQualifiedName(packagePath(), "Glob") and
       (inp.isParameter(0) and outp.isResult(0))

@@ -189,7 +189,7 @@ private Comment getInitialComment(File f, int i) {
 }
 
 /**
- * A build constraint comment of the form `// +build ...`.
+ * A build constraint comment of the form `// +build ...` or `//go:build ...`.
  *
  * Examples:
  *
@@ -203,17 +203,23 @@ class BuildConstraintComment extends LineComment {
     // a line comment preceding the package declaration, itself only preceded by
     // line comments
     exists(File f, int i |
+      // correctness of the placement of the build constraint is not checked here;
+      // this is more lax than the actual rules for build constraints
       this = getInitialComment(f, i) and
       not getInitialComment(f, [0 .. i - 1]) instanceof BlockComment
     ) and
-    // comment text starts with `+build`
-    getText().regexpMatch("\\s*\\+build.*")
+    (
+      // comment text starts with `+build` or `go:build`
+      this.getText().regexpMatch("\\s*\\+build.*")
+      or
+      this.getText().regexpMatch("\\s*go:build.*")
+    )
   }
 
   override string getAPrimaryQlClass() { result = "BuildConstraintComment" }
 
   /** Gets the body of this build constraint. */
-  string getConstraintBody() { result = getText().splitAt("+build ", 1) }
+  string getConstraintBody() { result = getText().splitAt("build ", 1) }
 
   /** Gets a disjunct of this build constraint. */
   string getADisjunct() { result = getConstraintBody().splitAt(" ") }

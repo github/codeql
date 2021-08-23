@@ -56,6 +56,10 @@ module Strconv {
       hasQualifiedName("strconv", "Quote") and
       (inp.isParameter(0) and outp.isResult())
       or
+      // signature: func QuotedPrefix(s string) (string, error)
+      hasQualifiedName("strconv", "QuotedPrefix") and
+      (inp.isParameter(0) and outp.isResult(0))
+      or
       // signature: func QuoteToASCII(s string) string
       hasQualifiedName("strconv", "QuoteToASCII") and
       (inp.isParameter(0) and outp.isResult())

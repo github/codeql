@@ -458,7 +458,7 @@ func (extraction *Extraction) extractError(tw *trap.Writer, err packages.Error, 
 		e         error
 	)
 
-	if pos == "" {
+	if pos == "" || pos == "-" {
 		// extract a dummy file
 		wd, e := os.Getwd()
 		if e != nil {

@@ -222,6 +222,8 @@ class ExtractedOrExternalFile extends Container, @file, Documentable, ExprParent
     exists(BuildConstraintComment bcc | this = bcc.getFile() |
       forex(string disjunct | disjunct = bcc.getADisjunct() |
         disjunct.splitAt(",").(Architecture).getBitSize() = bitSize
+        or
+        disjunct.splitAt("/").(Architecture).getBitSize() = bitSize
       )
     )
   }

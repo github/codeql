@@ -1184,6 +1184,14 @@ module CFG {
   }
 
   private class ConversionExprTree extends PostOrderTree, ConversionExpr {
+    override Completion getCompletion() {
+      // conversions of a slice to an array pointer are the only kind that may panic
+      this.getType().(PointerType).getBaseType() instanceof ArrayType and
+      result = Panic()
+      or
+      result = Done()
+    }
+
     override ControlFlow::Node getNode() { result = MkExprNode(this) }
 
     override ControlFlowTree getChildTree(int i) { i = 0 and result = getOperand() }
