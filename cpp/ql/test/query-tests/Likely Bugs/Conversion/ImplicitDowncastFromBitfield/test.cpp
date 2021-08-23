@@ -2,8 +2,8 @@ typedef struct {
 	int x : 24;
 } my_struct;
 
-unsigned int getX1(my_struct m) {
-	return m.x;
+int getX1(my_struct m) {
+	return m.x; // GOOD
 }
 
 short getX2(my_struct m) {
