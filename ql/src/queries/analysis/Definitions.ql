@@ -90,6 +90,7 @@ string constantQualifiedName(ConstantWriteAccess w) {
   )
   or
   /* base case - there's no parent module */
+  not exists(ConstantWriteAccess parent | parent = w.getEnclosingModule()) and
   result = w.getName()
 }
 
