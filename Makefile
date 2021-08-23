@@ -38,7 +38,7 @@ check-formatting:
 	test -z "$$(find . -path '**/vendor' -prune -or -type f -iname '*.go' ! -empty -print0 | xargs -0 grep -L "//\s*autoformat-ignore" | xargs gofmt -l)"
 
 install-deps:
-	scripts/install-deps.sh $(CODEQL_LOCK_MODE)
+	bash scripts/install-deps.sh $(CODEQL_LOCK_MODE)
 
 ifeq ($(QHELP_OUT_DIR),)
 # If not otherwise specified, compile qhelp to markdown in place
