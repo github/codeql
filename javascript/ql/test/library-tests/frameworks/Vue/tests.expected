@@ -94,13 +94,13 @@ component
 | tst.js:107:12:109:2 | Vue.ext ... 23 }\\n}) |
 | tst.js:110:16:112:2 | new Vue ... base\\n}) |
 | tst.js:113:17:117:2 | base.ex ... 0\\n\\t}\\n}) |
-instance_heapStep
-| Unit | compont-with-route.vue:31:14:31:34 | this.$r ... ery.foo | compont-with-route.vue:2:8:2:21 | v-html=dataA |
-| Unit | single-component-file-1.vue:6:40:6:41 | 42 | single-component-file-1.vue:2:8:2:21 | v-html=dataA |
-| Unit | single-file-component-3-script.js:4:37:4:38 | 42 | single-file-component-3.vue:2:8:2:21 | v-html=dataA |
-| Unit | single-file-component-4.vue:15:14:15:15 | 42 | single-file-component-4.vue:2:8:2:21 | v-html=dataA |
-| Unit | single-file-component-5.vue:13:14:13:15 | 42 | single-file-component-5.vue:2:8:2:21 | v-html=dataA |
-| Unit | tst.js:100:18:100:19 | 42 | tst.js:102:20:102:29 | this.dataA |
+viewComponentStep
+| compont-with-route.vue:31:14:31:34 | this.$r ... ery.foo | compont-with-route.vue:2:8:2:21 | v-html=dataA |
+| single-component-file-1.vue:6:40:6:41 | 42 | single-component-file-1.vue:2:8:2:21 | v-html=dataA |
+| single-file-component-3-script.js:4:37:4:38 | 42 | single-file-component-3.vue:2:8:2:21 | v-html=dataA |
+| single-file-component-4.vue:15:14:15:15 | 42 | single-file-component-4.vue:2:8:2:21 | v-html=dataA |
+| single-file-component-5.vue:13:14:13:15 | 42 | single-file-component-5.vue:2:8:2:21 | v-html=dataA |
+| tst.js:100:18:100:19 | 42 | tst.js:102:20:102:29 | this.dataA |
 templateElement
 | compont-with-route.vue:1:1:3:11 | <template>...</> |
 | compont-with-route.vue:2:5:51:9 | <p>...</> |
@@ -126,13 +126,6 @@ templateElement
 | single-file-component-5.vue:2:5:18:9 | <p>...</> |
 | single-file-component-5.vue:4:1:16:9 | <script>...</> |
 | single-file-component-5.vue:17:1:18:8 | <style>...</> |
-vhtmlSourceWrite
-| Unit | compont-with-route.vue:31:14:31:34 | this.$r ... ery.foo | compont-with-route.vue:2:8:2:21 | v-html=dataA |
-| Unit | single-component-file-1.vue:6:40:6:41 | 42 | single-component-file-1.vue:2:8:2:21 | v-html=dataA |
-| Unit | single-file-component-3-script.js:4:37:4:38 | 42 | single-file-component-3.vue:2:8:2:21 | v-html=dataA |
-| Unit | single-file-component-4.vue:15:14:15:15 | 42 | single-file-component-4.vue:2:8:2:21 | v-html=dataA |
-| Unit | single-file-component-5.vue:13:14:13:15 | 42 | single-file-component-5.vue:2:8:2:21 | v-html=dataA |
-| Unit | tst.js:100:18:100:19 | 42 | tst.js:102:20:102:29 | this.dataA |
 xssSink
 | compont-with-route.vue:2:8:2:21 | v-html=dataA |
 | single-component-file-1.vue:2:8:2:21 | v-html=dataA |

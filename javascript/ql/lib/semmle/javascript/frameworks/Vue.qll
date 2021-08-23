@@ -328,16 +328,18 @@ module Vue {
       result = getAsClassComponent().getAnInstanceMember()
     }
 
+    /**
+     * Gets a reference to `this` inside the component, referring to an instance of the component.
+     */
+    DataFlow::SourceNode getASelfRef() {
+      result = getABoundFunction().getReceiver()
+    }
+
     pragma[noinline]
     private DataFlow::PropWrite getAPropertyValueWrite(string name) {
       result = getData().getALocalSource().getAPropertyWrite(name)
       or
-      result =
-        getABoundFunction()
-            .getALocalSource()
-            .(DataFlow::FunctionNode)
-            .getReceiver()
-            .getAPropertyWrite(name)
+      result = getASelfRef().getAPropertyWrite(name)
     }
 
     /**
@@ -547,19 +549,30 @@ module Vue {
     VueFile() { getExtension() = "vue" }
   }
 
+  pragma[nomagic]
+  private DataFlow::Node propStepPred(Component comp, string name) {
+    result = comp.getAPropertyValue(name)
+  }
+
+  pragma[nomagic]
+  private DataFlow::Node propStepSucc(Component comp, string name) {
+    result = comp.getASelfRef().getAPropertyRead(name)
+  }
+
   /**
    * A taint propagating data flow edge through a Vue instance property.
    */
-  class InstanceHeapStep extends TaintTracking::SharedTaintStep {
-    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      exists(Component i, string name, DataFlow::FunctionNode bound |
-        bound.flowsTo(i.getABoundFunction()) and
-        not bound.getFunction() instanceof ArrowFunctionExpr and
-        succ = bound.getReceiver().getAPropertyRead(name) and
-        pred = i.getAPropertyValue(name)
+  private class PropStep extends TaintTracking::SharedTaintStep {
+    override predicate viewComponentStep(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(Component comp, string name |
+        pred = propStepPred(comp, name) and
+        succ = propStepSucc(comp, name)
       )
     }
   }
+
+  /** DEPRECATED. Do not use. */
+  deprecated class InstanceHeapStep = PropStep;
 
   /**
    * A Vue `v-html` attribute.
@@ -585,11 +598,11 @@ module Vue {
    * of `inst = new Vue({ ..., data: { prop: source } })`, if the
    * `div` element is part of the template for `inst`.
    */
-  class VHtmlSourceWrite extends TaintTracking::SharedTaintStep {
-    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      exists(Vue::Component component, string expr, VHtmlAttribute attr |
+  private class VHtmlAttributeStep extends TaintTracking::SharedTaintStep {
+    override predicate viewComponentStep(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(Component component, string expr, VHtmlAttribute attr |
         attr.getAttr().getRoot() =
-          component.getTemplateElement().(Vue::Template::HtmlElement).getElement() and
+          component.getTemplateElement().(Template::HtmlElement).getElement() and
         expr = attr.getAttr().getValue() and
         // only support for simple identifier expressions
         expr.regexpMatch("(?i)[a-z0-9_]+") and
@@ -598,6 +611,11 @@ module Vue {
       )
     }
   }
+
+  /**
+   * DEPRECATED. Do not use.
+   */
+  deprecated class VHtmlSourceWrite = VHtmlAttributeStep;
 
   /*
    * Provides classes for working with Vue templates.
