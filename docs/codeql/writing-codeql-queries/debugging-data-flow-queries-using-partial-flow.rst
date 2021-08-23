@@ -3,7 +3,7 @@
 Debugging data-flow queries using partial flow
 ==============================================
 
-If a data-flow query unexpectedly produces no results, you can use partial flow to debug the problem.
+If a data-flow query doesn't produce the results you expect to see, you can use partial flow to debug the problem.
 
 In CodeQL, you can use :ref:`data flow analysis <about-data-flow-analysis>` to compute the possible values that a variable can hold at various points in a program.
 A typical data-flow query looks like this:
@@ -32,7 +32,7 @@ Or slightly simpler without path explanations:
     where config.hasPath(source, sink)
     select sink, "Sink is reached from $@.", source.getNode(), "here"
 
-If a data-flow query that you have written does not produce any results when you expect it to, there may be a problem with your query.
+If a data-flow query that you have written doesn't produce the results you expect it to, there may be a problem with your query.
 You can try to debug the potential problem by following the steps described below. 
 
 Checking sources and sinks
