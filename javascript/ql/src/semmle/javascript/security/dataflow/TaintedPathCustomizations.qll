@@ -697,6 +697,18 @@ module TaintedPath {
   }
 
   /**
+   * The `cwd` option to a shell execution.
+   */
+  private class ShellCwdSink extends TaintedPath::Sink {
+    ShellCwdSink() {
+      exists(SystemCommandExecution sys, API::Node opts |
+        opts.getARhs() = sys.getOptionsArg() and // assuming that an API::Node exists here.
+        this = opts.getMember("cwd").getARhs()
+      )
+    }
+  }
+
+  /**
    * Holds if there is a step `src -> dst` mapping `srclabel` to `dstlabel` relevant for path traversal vulnerabilities.
    */
   predicate isAdditionalTaintedPathFlowStep(
