@@ -1,5 +1,7 @@
-name: codeql-go
-version: 0.0.0
-dbscheme: go.dbscheme
+name: codeql/go-queries
+version: 0.0.2
 suites: codeql-suites
 extractor: go
+dependencies:
+  codeql/go-all: ^0.0.2
+  codeql/suite-helpers: ^0.0.2
