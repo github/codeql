@@ -134,7 +134,7 @@ Viewing query results
    .. pull-quote:: Note
 
       Depending on the query, you can also choose different views such as CSV, :ref:`SARIF <sarif-output>`, or :ref:`DIL format <dil>`. For example, to view the DIL format, right-click a result and select **View DIL**.
-      The available output views are determined by the format of the query and the metadata. For more information, see ":ref:`CodeQL queries <codeql-queries>`."
+      The available output views are determined by the format and the metadata of the query. For more information, see ":ref:`CodeQL queries <codeql-queries>`."
 
 #. Use the dropdown menu in the Results view to choose which results to display, and in what form to display them, such as a formatted alert message or a table of raw results.
 
