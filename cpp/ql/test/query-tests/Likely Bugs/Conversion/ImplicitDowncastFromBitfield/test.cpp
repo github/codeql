@@ -23,7 +23,7 @@ short getX5(my_struct m) {
 }
 
 const char& getx6(my_struct& m) {
-	const char& result = m.x; // BAD [NOT DETECTED]
+	const char& result = m.x; // BAD
 	return result;
 }
 
