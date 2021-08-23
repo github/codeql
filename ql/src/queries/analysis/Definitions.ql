@@ -85,8 +85,8 @@ newtype DefLoc =
  */
 string constantQualifiedName(ConstantWriteAccess w) {
   /* get the qualified name for the parent module, then append w */
-  exists(ConstantWriteAccess parent |
-    parent = w.getEnclosingModule() and result = constantQualifiedName(parent) + "::" + w.getName()
+  exists(ConstantWriteAccess parent | parent = w.getEnclosingModule() |
+    result = constantQualifiedName(parent) + "::" + w.getName()
   )
   or
   /* base case - there's no parent module */
