@@ -228,7 +228,9 @@ module Vue {
      * extended objects and mixins.
      */
     pragma[nomagic]
-    DataFlow::SourceNode getOptionSource(string name) { result = getOption(name).getALocalSource() }
+    DataFlow::SourceNode getOptionSource(string name) {
+      result = getOptions().getMember(name).getAValueReachingRhs()
+    }
 
     /**
      * Gets the template element used by this component, if any.
@@ -239,15 +241,9 @@ module Vue {
      * Gets the node for the `data` option object of this component.
      */
     DataFlow::Node getData() {
-      exists(DataFlow::Node data | data = getOption("data") |
-        result = data
-        or
-        // a constructor variant is available for all component definitions
-        exists(DataFlow::FunctionNode f |
-          f.flowsTo(data) and
-          result = f.getAReturn()
-        )
-      )
+      result = getOption("data")
+      or
+      result = getOptionSource("data").(DataFlow::FunctionNode).getReturnNode()
       or
       result = getAsClassComponent().getAReceiverNode()
       or
@@ -292,10 +288,9 @@ module Vue {
      * Gets the function responding to changes to the given `propName`.
      */
     DataFlow::FunctionNode getWatchHandler(string propName) {
-      exists(DataFlow::SourceNode watcher | watcher = getWatch().getAPropertySource(propName) |
-        result = watcher
-        or
-        result = watcher.getAPropertySource("handler")
+      exists(API::Node propWatch |
+        propWatch = getOptions().getMember("watch").getMember(propName) and
+        result = [propWatch, propWatch.getMember("handler")].getAValueReachingRhs()
       )
     }
 
