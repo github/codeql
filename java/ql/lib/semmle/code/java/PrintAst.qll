@@ -89,7 +89,7 @@ private predicate duplicateMetadata(Field f) {
  * Retrieves the canonical QL class(es) for entity `el`
  */
 private string getQlClass(Top el) {
-  result = "[" + concat(el.getAPrimaryQlClass(), ",") + "] "
+  result = "[" + el.getPrimaryQlClasses() + "] "
   // Alternative implementation -- do not delete. It is useful for QL class discovery.
   // result = "[" + concat(el.getAQlClass(), ",") + "] "
 }

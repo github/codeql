@@ -59,6 +59,11 @@ class ElementBase extends @element {
   deprecated string getCanonicalQLClass() { result = this.getAPrimaryQlClass() }
 
   /**
+   * Gets a comma-separated list of the names of the primary CodeQL classes to which this element belongs.
+   */
+  final string getPrimaryQlClasses() { result = concat(getAPrimaryQlClass(), ",") }
+
+  /**
    * Gets the name of a primary CodeQL class to which this element belongs.
    *
    * For most elements, this is simply the most precise syntactic category to
