@@ -84,7 +84,12 @@ class TaintToConcatenationConfiguration extends TaintTracking::Configuration {
 class ExecTaintConfiguration extends TaintTracking2::Configuration {
   ExecTaintConfiguration() { this = "ExecTaintConfiguration" }
 
-  override predicate isSource(DataFlow::Node source) { interestingConcatenation(_, source) }
+  override predicate isSource(DataFlow::Node source) {
+    exists(DataFlow::Node prevSink, TaintToConcatenationConfiguration conf |
+      conf.hasFlow(_, prevSink) and
+      interestingConcatenation(prevSink, source)
+    )
+  }
 
   override predicate isSink(DataFlow::Node sink) {
     shellCommand(sinkAsArgumentIndirection(sink), _)
