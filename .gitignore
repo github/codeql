@@ -23,3 +23,6 @@ tools/osx64
 tools/win64
 tools/tokenizer.jar
 main
+
+# QL pack output directories
+.codeql
