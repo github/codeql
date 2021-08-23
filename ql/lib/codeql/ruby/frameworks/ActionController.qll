@@ -155,6 +155,25 @@ class RedirectToCall extends ActionControllerContextCall {
 }
 
 /**
+ * A call to the `redirect_to` method, as an `HttpRedirectResponse`.
+ */
+class ActionControllerRedirectResponse extends HTTP::Server::HttpRedirectResponse::Range {
+  RedirectToCall redirectToCall;
+
+  ActionControllerRedirectResponse() { this.asExpr().getExpr() = redirectToCall }
+
+  override DataFlow::Node getBody() { none() }
+
+  override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
+
+  override string getMimetypeDefault() { none() }
+
+  override DataFlow::Node getRedirectLocation() {
+    result.asExpr().getExpr() = redirectToCall.getRedirectUrl()
+  }
+}
+
+/**
  * A method in an `ActionController` class that is accessible from within a
  * Rails view as a helper method. For instance, in:
  *
