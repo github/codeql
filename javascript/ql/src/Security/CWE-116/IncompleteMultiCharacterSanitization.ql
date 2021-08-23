@@ -67,9 +67,12 @@ DangerousPrefixSubstring getADangerousMatchedChar(EmptyReplaceRegExpTerm t) {
   or
   t.getAMatchedString() = result
   or
+  // A substring matched by some character class. This is only used to match the "word" part of a HTML tag (e.g. "iframe" in "<iframe").
   exists(ReDoSUtil::CharacterClass cc |
     cc = ReDoSUtil::getCanonicalCharClass(t) and
     cc.matches(result) and
+    result.regexpMatch("\\w") and
+    // excluding character classes that match ">" (e.g. /<[^<]*>/), as these might consume nested HTML tags, and thus prevent the dangerous pattern this query is looking for.
     not cc.matches(">")
   )
   or
