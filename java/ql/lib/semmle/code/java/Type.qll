@@ -7,7 +7,7 @@
  *
  * Reference types can be at the top level (`TopLevelType`) or nested (`NestedType`).
  * Classes and interfaces can also be local (`LocalClassOrInterface`, `LocalClass`) or anonymous (`AnonymousClass`).
- * Enumerated types (`EnumType`) and records (`Record`) are a special kinds of class.
+ * Enumerated types (`EnumType`) and records (`Record`) are special kinds of classes.
  */
 
 import Member
