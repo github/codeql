@@ -5,24 +5,6 @@
 private import javascript
 private import semmle.javascript.dataflow.internal.FlowSteps as FlowSteps
 
-/** A minimal adapter for the `vue` model based on API nodes. */
-private module VueAPI {
-  /**
-   * An API node representing the object passed to the Vue constructor `new Vue({...})`
-   * or equivalent.
-   */
-  class VueConfigObject extends API::Node {
-    VueConfigObject() { this.getARhs() = any(Vue::Component c).getOwnOptionsObject() }
-
-    /** Gets an API node representing `this` in the Vue component. */
-    API::Node getAnInstanceRef() {
-      result = getAMember().getReceiver()
-      or
-      result = getAMember().getAMember().getReceiver()
-    }
-  }
-}
-
 /**
  * Provides classes and predicates for working with the `vuex` library.
  */
@@ -49,7 +31,7 @@ module Vuex {
   API::Node storeRef(string namespace) {
     result = vuex().getMember("Store").getInstance() and namespace = ""
     or
-    result = any(VueAPI::VueConfigObject v).getAnInstanceRef().getMember("$store") and
+    result = any(Vue::Component v).getInstance().getMember("$store") and
     namespace = ""
     or
     result =
@@ -132,13 +114,13 @@ module Vuex {
     }
 
     /** Gets the Vue component in which the generated functions are installed. */
-    VueAPI::VueConfigObject getVueConfigObject() {
+    Vue::Component getVueComponent() {
       exists(DataFlow::ObjectLiteralNode obj |
         obj.getASpreadProperty() = getReturn().getAUse() and
-        result.getAMember().getARhs() = obj
+        result.getOwnOptions().getAMember().getARhs() = obj
       )
       or
-      result.getAMember().getARhs() = this
+      result.getOwnOptions().getAMember().getARhs() = this
     }
   }
 
@@ -153,7 +135,7 @@ module Vuex {
     exists(MapHelperCall call, string localName |
       call.getHelperName() = helperName and
       call.hasMapping(localName, storeName) and
-      result = call.getVueConfigObject().getAnInstanceRef().getMember(localName) and
+      result = call.getVueComponent().getInstance().getMember(localName) and
       localName != "*"
     )
   }
@@ -339,10 +321,10 @@ module Vuex {
   /**
    * Gets the `x` in `mapState({name: () => x})`.
    */
-  DataFlow::Node mapStateHelperPred(VueAPI::VueConfigObject vue, string name) {
+  DataFlow::Node mapStateHelperPred(Vue::Component component, string name) {
     exists(MapHelperCall call |
       call.getHelperName() = "mapState" and
-      vue = call.getVueConfigObject() and
+      component = call.getVueComponent() and
       result = call.getLastParameter().getMember(name).getReturn().getARhs()
     )
   }
@@ -352,9 +334,9 @@ module Vuex {
    * corresponding property access.
    */
   predicate mapStateHelperStep(DataFlow::Node pred, DataFlow::Node succ) {
-    exists(VueAPI::VueConfigObject vue, string name |
-      pred = mapStateHelperPred(vue, name) and
-      succ = pragma[only_bind_out](vue).getAnInstanceRef().getMember(name).getAnImmediateUse()
+    exists(Vue::Component component, string name |
+      pred = mapStateHelperPred(component, name) and
+      succ = pragma[only_bind_out](component).getInstance().getMember(name).getAnImmediateUse()
     )
   }
 
