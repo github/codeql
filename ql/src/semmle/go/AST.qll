@@ -82,6 +82,11 @@ class AstNode extends @node, Locatable {
   FuncDef getEnclosingFunction() { result = getParent().parentInSameFunction*() }
 
   /**
+   * Gets a comma-separated list of the names of the primary CodeQL classes to which this element belongs.
+   */
+  final string getPrimaryQlClasses() { result = concat(getAPrimaryQlClass(), ",") }
+
+  /**
    * Gets the name of a primary CodeQL class to which this node belongs.
    *
    * For most nodes, this is simply the most precise syntactic category to which they belong;
