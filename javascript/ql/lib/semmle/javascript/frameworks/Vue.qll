@@ -160,7 +160,7 @@ module Vue {
     }
 
     /**
-     * Gets an API node referring to the component itself, such as the return value of `new Vue()`.
+     * Gets an API node referring to the component itself.
      */
     API::Node getComponentRef() { none() } // overridden in subclass
 
@@ -368,7 +368,11 @@ module Vue {
       def.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     }
 
-    override API::Node getComponentRef() { result = def.getReturn() }
+    override API::Node getComponentRef() {
+      // The Vue.extend call is made in the Vue framework; there is no explicit reference
+      // to the component in user code.
+      none()
+    }
 
     override API::Node getOwnOptions() { result = def.getParameter(0) }
 
