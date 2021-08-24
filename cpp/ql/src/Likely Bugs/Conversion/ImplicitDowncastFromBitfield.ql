@@ -23,6 +23,5 @@ where
   fi.getNumBits() > fct.getSize() * 8 and
   va.getExplicitlyConverted().getType().getSize() > fct.getSize() and
   va.getTarget() = fi and
-  not fct.getUnspecifiedType() instanceof BoolType and
-  any()
+  not fct.getUnspecifiedType() instanceof BoolType
 select va, "Implicit downcast of bitfield $@", fi, fi.toString()
