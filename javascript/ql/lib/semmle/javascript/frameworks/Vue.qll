@@ -196,7 +196,7 @@ module Vue {
      * Gets the options passed to the Vue object, such as the object literal `{...}` in `new Vue{{...})`
      * or the default export of a single-file component.
      */
-    deprecated DataFlow::Node getOwnOptionsObject() { none() } // overridden in subclasses
+    deprecated DataFlow::Node getOwnOptionsObject() { result = getOwnOptions().getARhs() }
 
     /**
      * Gets the class implementing this Vue component, if any.
