@@ -102,10 +102,14 @@ File resolveMainModule(PackageJSON pkg, int priority) {
     )
   )
   or
-  exists(Folder folder | folder = pkg.getFile().getParentContainer() |
-    result =
-      tryExtensions([folder, folder.getChildContainer(["src", "lib"])], "index",
-        priority - prioritiesPerCandidate())
+  exists(Folder folder, Folder child |
+    child = folder or
+    child = folder.getChildContainer(getASrcFolderName()) or
+    child =
+      folder.getChildContainer(getASrcFolderName()).(Folder).getChildContainer(getASrcFolderName())
+  |
+    folder = pkg.getFile().getParentContainer() and
+    result = tryExtensions(child, "index", priority - prioritiesPerCandidate())
   )
   or
   // if there is no main module, then we look for files that are explicitly included in the published package.
@@ -129,6 +133,11 @@ File resolveMainModule(PackageJSON pkg, int priority) {
     )
   )
 }
+
+/**
+ * Gets a folder name that is a common source folder name.
+ */
+private string getASrcFolderName() { result = ["ts", "js", "src", "lib"] }
 
 /**
  * A JSON string in a `package.json` file specifying the path of the main
