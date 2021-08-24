@@ -11,19 +11,6 @@ public class AndroidIntentRedirectionTest extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         Intent intent = (Intent) getIntent().getParcelableExtra("forward_intent");
 
-        if (intent.getComponent().getPackageName().equals("something")) {
-            startActivity(intent); // Safe - sanitized
-        } else {
-            startActivity(intent); // $ hasAndroidIntentRedirection
-        }
-        if (intent.getComponent().getClassName().equals("something")) {
-            startActivity(intent); // Safe - sanitized
-        } else {
-            startActivity(intent); // $ hasAndroidIntentRedirection
-        }
-
-        startActivity(getIntent()); // Safe - not an intent obtained from the Extras
-
         // @formatter:off
         startActivities(new Intent[] {intent}); // $ hasAndroidIntentRedirection
         startActivities(new Intent[] {intent}, null); // $ hasAndroidIntentRedirection
@@ -55,6 +42,17 @@ public class AndroidIntentRedirectionTest extends Activity {
         sendStickyOrderedBroadcast(intent, null, null, 0, null, null); // $ hasAndroidIntentRedirection
         sendStickyOrderedBroadcastAsUser(intent, null, null, null, 0, null, null); // $ hasAndroidIntentRedirection
         // @formatter:on
+
+        if (intent.getComponent().getPackageName().equals("something")) {
+            startActivity(intent); // Safe - sanitized
+        } else {
+            startActivity(intent); // $ hasAndroidIntentRedirection
+        }
+        if (intent.getComponent().getClassName().equals("something")) {
+            startActivity(intent); // Safe - sanitized
+        } else {
+            startActivity(intent); // $ hasAndroidIntentRedirection
+        }
 
         try {
             {
@@ -132,6 +130,25 @@ public class AndroidIntentRedirectionTest extends Activity {
                 ComponentName component = ComponentName.createRelative((Context) null,
                         (String) intent.getExtra("className"));
                 fwdIntent.setComponent(component);
+                startActivity(fwdIntent); // $ hasAndroidIntentRedirection
+            }
+            {
+                Intent originalIntent = getIntent();
+                Intent fwdIntent = (Intent) originalIntent.getParcelableExtra("forward_intent");
+                startActivity(originalIntent); // Safe - not an Intent obtained from the Extras
+            }
+            {
+                Intent originalIntent = getIntent();
+                ComponentName cp = new ComponentName(originalIntent.getStringExtra("packageName"),
+                        originalIntent.getStringExtra("className"));
+                Intent anotherIntent = new Intent();
+                anotherIntent.setComponent(cp);
+                startActivity(originalIntent); // Safe - not a tainted Intent
+            }
+            {
+                // Delayed cast
+                Object obj = getIntent().getParcelableExtra("forward_intent");
+                Intent fwdIntent = (Intent) obj;
                 startActivity(fwdIntent); // $ hasAndroidIntentRedirection
             }
         } catch (Exception e) {

@@ -7,12 +7,31 @@ import semmle.code.java.dataflow.TaintTracking2
 import semmle.code.java.security.AndroidIntentRedirection
 
 /**
+ * Holds if taint may flow from `source` to `sink` for `IntentRedirectionConfiguration`.
+ *
+ * It ensures that `ChangeIntentComponent` is an intermediate step in the flow.
+ */
+predicate hasIntentRedirectionFlowPath(DataFlow::PathNode source, DataFlow::PathNode sink) {
+  exists(IntentRedirectionConfiguration conf, DataFlow::PathNode intermediate |
+    intermediate.getNode().(ChangeIntentComponent).hasFlowFrom(source.getNode()) and
+    conf.hasFlowPath(intermediate, sink)
+  )
+}
+
+/**
  * A taint tracking configuration for tainted Intents being used to start Android components.
  */
-class IntentRedirectionConfiguration extends TaintTracking::Configuration {
+private class IntentRedirectionConfiguration extends TaintTracking::Configuration {
   IntentRedirectionConfiguration() { this = "IntentRedirectionConfiguration" }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof IntentRedirectionSource }
+  override predicate isSource(DataFlow::Node source) {
+    exists(ChangeIntentComponent c |
+      c = source
+      or
+      // This is needed for PathGraph to be able to build the full flow
+      c.hasFlowFrom(source)
+    )
+  }
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof IntentRedirectionSink }
 
@@ -26,11 +45,16 @@ class IntentRedirectionConfiguration extends TaintTracking::Configuration {
 }
 
 /** An expression modifying an `Intent` component with tainted data. */
-private class IntentRedirectionSource extends DataFlow::Node {
-  IntentRedirectionSource() {
+private class ChangeIntentComponent extends DataFlow::Node {
+  DataFlow::Node src;
+
+  ChangeIntentComponent() {
     changesIntentComponent(this.asExpr()) and
-    exists(TaintedIntentComponentConf conf | conf.hasFlowTo(this))
+    exists(TaintedIntentComponentConf conf | conf.hasFlow(src, this))
   }
+
+  /** Holds if `source` flows to `this`. */
+  predicate hasFlowFrom(DataFlow::Node source) { source = src }
 }
 
 /**
@@ -46,7 +70,7 @@ private class TaintedIntentComponentConf extends TaintTracking2::Configuration {
 
 /** Holds if `expr` modifies the component of an `Intent`. */
 private predicate changesIntentComponent(Expr expr) {
-  any(IntentGetParcelableExtra igpe).getQualifier() = expr or
+  any(IntentGetParcelableExtra igpe) = expr or
   any(IntentSetComponent isc).getSink() = expr
 }
 
