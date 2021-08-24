@@ -70,8 +70,10 @@ private class TaintedIntentComponentConf extends TaintTracking2::Configuration {
 
 /** Holds if `expr` modifies the component of an `Intent`. */
 private predicate changesIntentComponent(Expr expr) {
-  any(IntentGetParcelableExtra igpe) = expr or
   any(IntentSetComponent isc).getSink() = expr
+  or
+  // obtaining an arbitrary Intent as a Parcelable extra
+  expr instanceof IntentGetParcelableExtra
 }
 
 /** A call to the method `Intent.getParcelableExtra`. */
