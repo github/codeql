@@ -630,7 +630,10 @@ module Templating {
     override DataFlow::Node getTemplateParamsNode() { result = getArgument(1) }
   }
 
-  /** The `include` function, seen as an API node, so we can treat it as a template instantiation. */
+  /** 
+   * The `include` function, seen as an API node, so we can treat it as a template instantiation.
+   * These API nodes are used in the `getTemplateInput` predicate.
+   */```
   private class IncludeFunctionAsEntryPoint extends API::EntryPoint {
     IncludeFunctionAsEntryPoint() { this = "IncludeFunctionAsEntryPoint" }
 
