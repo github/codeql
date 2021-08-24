@@ -398,7 +398,7 @@ module NodeJSLib {
     override CallExpr astNode;
 
     ProcessTermination() {
-      this = DataFlow::moduleImport("exit").getAnInvocation()
+      this = API::moduleImport("exit").getAnInvocation()
       or
       this = processMember("exit").getACall()
     }
@@ -679,13 +679,14 @@ module NodeJSLib {
   /**
    * A call to a method from module `child_process`.
    */
-  private class ChildProcessMethodCall extends SystemCommandExecution, DataFlow::CallNode {
+  private class ChildProcessMethodCall extends SystemCommandExecution, API::CallNode {
     string methodName;
 
     ChildProcessMethodCall() {
-      this = maybePromisified(DataFlow::moduleMember("child_process", methodName)).getACall()
-      or
-      this = DataFlow::moduleMember("mz/child_process", methodName).getACall()
+      this =
+        API::moduleImport(["mz/child_process", "child_process"])
+            .getMember(methodName)
+            .getMaybePromisifiedCall()
     }
 
     private DataFlow::Node getACommandArgument(boolean shell) {
@@ -707,7 +708,7 @@ module NodeJSLib {
         )
       ) and
       // all of the above methods take the command as their first argument
-      result = getArgument(0)
+      result = getParameter(0).getARhs()
     }
 
     override DataFlow::Node getACommandArgument() { result = getACommandArgument(_) }
@@ -723,7 +724,7 @@ module NodeJSLib {
         methodName = "spawnSync"
       ) and
       // all of the above methods take the argument list as their second argument
-      result = getArgument(1)
+      result = getParameter(1).getARhs()
     }
 
     override predicate isSync() { "Sync" = methodName.suffix(methodName.length() - 4) }
@@ -731,7 +732,7 @@ module NodeJSLib {
     override DataFlow::Node getOptionsArg() {
       not result.getALocalSource() instanceof DataFlow::FunctionNode and // looks like callback
       not result.getALocalSource() instanceof DataFlow::ArrayCreationNode and // looks like argumentlist
-      not result = getArgument(0) and
+      not result = getParameter(0).getARhs() and
       // fork/spawn and all sync methos always has options as the last argument
       if
         methodName.regexpMatch("fork.*") or
@@ -740,7 +741,7 @@ module NodeJSLib {
       then result = getLastArgument()
       else
         // the rest (exec/execFile) has the options argument as their second last.
-        result = getArgument(this.getNumArgument() - 2)
+        result = getParameter(this.getNumArgument() - 2).getARhs()
     }
   }
 
@@ -1027,9 +1028,9 @@ module NodeJSLib {
   /**
    * Gets an import of the NodeJS EventEmitter.
    */
-  private DataFlow::SourceNode getAnEventEmitterImport() {
-    result = DataFlow::moduleImport("events") or
-    result = DataFlow::moduleMember("events", "EventEmitter")
+  private API::Node getAnEventEmitterImport() {
+    result = API::moduleImport("events") or
+    result = API::moduleImport("events").getMember("EventEmitter")
   }
 
   /**
@@ -1051,7 +1052,7 @@ module NodeJSLib {
    */
   private class EventEmitterSubClass extends DataFlow::ClassNode {
     EventEmitterSubClass() {
-      this.getASuperClassNode().getALocalSource() = getAnEventEmitterImport() or
+      this.getASuperClassNode() = getAnEventEmitterImport().getAUse() or
       this.getADirectSuperClass() instanceof EventEmitterSubClass
     }
   }
@@ -1186,7 +1187,7 @@ module NodeJSLib {
    * An instantiation of the `respjs` library, which is an EventEmitter.
    */
   private class RespJS extends NodeJSEventEmitter {
-    RespJS() { this = DataFlow::moduleImport("respjs").getAnInstantiation() }
+    RespJS() { this = API::moduleImport("respjs").getAnInstantiation() }
   }
 
   /**
