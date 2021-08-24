@@ -4,7 +4,7 @@
  * @kind problem
  * @problem.severity warning
  * @security-severity 10.0
- * @precision high
+ * @precision medium
  * @id cpp/potentially-dangerous-function
  * @tags reliability
  *       security
