@@ -323,16 +323,19 @@ module Vue {
       result = getAsClassComponent().getAnInstanceMember()
     }
 
-    /**
-     * Gets a reference to `this` inside the component, referring to an instance of the component.
-     */
-    DataFlow::SourceNode getASelfRef() { result = getABoundFunction().getReceiver() }
+    /** Gets an API node referring to an instance of this component. */
+    API::Node getInstance() {
+      result.getAnImmediateUse() = getABoundFunction().getReceiver()
+    }
+
+    /** Gets a data flow node referring to an instance of this component. */
+    DataFlow::SourceNode getAnInstanceRef() { result = getInstance().getAnImmediateUse() }
 
     pragma[noinline]
     private DataFlow::PropWrite getAPropertyValueWrite(string name) {
       result = getData().getALocalSource().getAPropertyWrite(name)
       or
-      result = getASelfRef().getAPropertyWrite(name)
+      result = getAnInstanceRef().getAPropertyWrite(name)
     }
 
     /**
@@ -548,7 +551,7 @@ module Vue {
 
   pragma[nomagic]
   private DataFlow::Node propStepSucc(Component comp, string name) {
-    result = comp.getASelfRef().getAPropertyRead(name)
+    result = comp.getAnInstanceRef().getAPropertyRead(name)
   }
 
   /**
