@@ -1,4 +1,4 @@
-all: extractor ql/src/go.dbscheme
+all: extractor ql/lib/go.dbscheme
 
 ifeq ($(OS),Windows_NT)
 EXE = .exe
@@ -74,11 +74,11 @@ $(addsuffix .exe,$(addprefix tools/win64/,$(BINARIES))):
 	env GOOS=windows GOARCH=amd64 go build -mod=vendor -o $@ ./extractor/cli/$(basename $(@F))
 
 .PHONY: extractor-common extractor extractor-full
-extractor-common: codeql-extractor.yml LICENSE ql/src/go.dbscheme \
+extractor-common: codeql-extractor.yml LICENSE ql/lib/go.dbscheme \
 	tools/tokenizer.jar $(CODEQL_TOOLS)
 	rm -rf $(EXTRACTOR_PACK_OUT)
 	mkdir -p $(EXTRACTOR_PACK_OUT)
-	cp codeql-extractor.yml LICENSE ql/src/go.dbscheme ql/src/go.dbscheme.stats $(EXTRACTOR_PACK_OUT)
+	cp codeql-extractor.yml LICENSE ql/lib/go.dbscheme ql/lib/go.dbscheme.stats $(EXTRACTOR_PACK_OUT)
 	mkdir $(EXTRACTOR_PACK_OUT)/tools
 	cp -r tools/tokenizer.jar $(CODEQL_TOOLS) $(EXTRACTOR_PACK_OUT)/tools
 
@@ -99,7 +99,7 @@ tools/net/sourceforge/pmd/cpd/GoLanguage.class: extractor/net/sourceforge/pmd/cp
 	rm tools/net/sourceforge/pmd/cpd/TokenEntry.class
 	rm tools/net/sourceforge/pmd/cpd/Tokenizer.class
 
-ql/src/go.dbscheme: tools/$(CODEQL_PLATFORM)/go-gen-dbscheme$(EXE)
+ql/lib/go.dbscheme: tools/$(CODEQL_PLATFORM)/go-gen-dbscheme$(EXE)
 	$< $@
 
 build/stats/src.stamp:
@@ -108,7 +108,7 @@ build/stats/src.stamp:
 	git -C $(@D)/src checkout 9b52d559c609 -q
 	touch $@
 
-ql/src/go.dbscheme.stats: ql/src/go.dbscheme build/stats/src.stamp extractor
+ql/lib/go.dbscheme.stats: ql/lib/go.dbscheme build/stats/src.stamp extractor
 	rm -rf build/stats/database
 	codeql database create -l go -s build/stats/src -j4 --search-path . build/stats/database
 	codeql dataset measure -o $@ build/stats/database/db-go
@@ -121,9 +121,9 @@ test: all build/testdb/check-upgrade-path
 	bash extractor-smoke-test/test.sh || (echo "Extractor smoke test FAILED"; exit 1)
 
 .PHONY: build/testdb/check-upgrade-path
-build/testdb/check-upgrade-path : build/testdb/go.dbscheme ql/src/go.dbscheme
+build/testdb/check-upgrade-path : build/testdb/go.dbscheme ql/lib/go.dbscheme
 	codeql dataset upgrade build/testdb --search-path upgrades
-	diff -q build/testdb/go.dbscheme ql/src/go.dbscheme
+	diff -q build/testdb/go.dbscheme ql/lib/go.dbscheme
 
 .PHONY: build/testdb/go.dbscheme
 build/testdb/go.dbscheme: upgrades/initial/go.dbscheme
