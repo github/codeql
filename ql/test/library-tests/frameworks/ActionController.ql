@@ -14,6 +14,7 @@ query predicate redirectToCalls(RedirectToCall c) { any() }
 
 query predicate actionControllerHelperMethods(ActionControllerHelperMethod m) { any() }
 
-query predicate getAssociatedControllerClasses(ActionControllerControllerClass cls, ErbFile f) {
+// TODO: second parameter should be `ErbFile`
+query predicate getAssociatedControllerClasses(ActionControllerControllerClass cls, File f) {
   cls = getAssociatedControllerClass(f)
 }

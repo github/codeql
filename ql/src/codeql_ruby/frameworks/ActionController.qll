@@ -68,7 +68,8 @@ class ActionControllerActionMethod extends Method, HTTP::Server::RequestHandler:
    * corresponding template file at
    * `<source_prefix>/app/views/<subpath>/<method_name>.html.erb`.
    */
-  ErbFile getDefaultTemplateFile() {
+  // TODO: result should be `ErbFile`
+  File getDefaultTemplateFile() {
     exists(string templatePath, string sourcePrefix, string subPath, string controllerPath |
       controllerPath = this.getLocation().getFile().getAbsolutePath() and
       sourcePrefix = controllerPath.regexpCapture("^(.*)/app/controllers/.*$", 1) and
@@ -183,7 +184,8 @@ class ActionControllerHelperMethod extends Method {
  * Gets an `ActionControllerControllerClass` associated with the given `ErbFile`
  * according to Rails path conventions.
  */
-ActionControllerControllerClass getAssociatedControllerClass(ErbFile f) {
+// TODO: parameter should be `ErbFile`
+ActionControllerControllerClass getAssociatedControllerClass(File f) {
   exists(string localPrefix, string sourcePrefix, string controllerPath |
     controllerPath = result.getLocation().getFile().getAbsolutePath() and
     sourcePrefix = f.getAbsolutePath().regexpCapture("^(.*)/app/views/(?:.*?)/(?:[^/]*)$", 1) and
