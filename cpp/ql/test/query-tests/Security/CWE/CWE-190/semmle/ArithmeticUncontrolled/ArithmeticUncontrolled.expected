@@ -8,6 +8,8 @@ edges
 | test.c:81:23:81:26 | call to rand | test.c:83:9:83:9 | r |
 | test.c:99:14:99:19 | call to rand | test.c:100:5:100:5 | r |
 | test.c:125:13:125:16 | call to rand | test.c:127:9:127:9 | r |
+| test.c:131:13:131:16 | call to rand | test.c:133:5:133:5 | r |
+| test.c:137:13:137:16 | call to rand | test.c:139:10:139:10 | r |
 | test.c:155:22:155:25 | call to rand | test.c:157:9:157:9 | r |
 | test.c:155:22:155:27 | (unsigned int)... | test.c:157:9:157:9 | r |
 | test.cpp:8:9:8:12 | Store | test.cpp:24:11:24:18 | call to get_rand |
@@ -55,6 +57,10 @@ nodes
 | test.c:100:5:100:5 | r | semmle.label | r |
 | test.c:125:13:125:16 | call to rand | semmle.label | call to rand |
 | test.c:127:9:127:9 | r | semmle.label | r |
+| test.c:131:13:131:16 | call to rand | semmle.label | call to rand |
+| test.c:133:5:133:5 | r | semmle.label | r |
+| test.c:137:13:137:16 | call to rand | semmle.label | call to rand |
+| test.c:139:10:139:10 | r | semmle.label | r |
 | test.c:155:22:155:25 | call to rand | semmle.label | call to rand |
 | test.c:155:22:155:27 | (unsigned int)... | semmle.label | (unsigned int)... |
 | test.c:157:9:157:9 | r | semmle.label | r |
@@ -109,6 +115,8 @@ nodes
 | test.c:83:9:83:9 | r | test.c:81:23:81:26 | call to rand | test.c:83:9:83:9 | r | $@ flows to here and is used in arithmetic, potentially causing an overflow. | test.c:81:23:81:26 | call to rand | Uncontrolled value |
 | test.c:100:5:100:5 | r | test.c:99:14:99:19 | call to rand | test.c:100:5:100:5 | r | $@ flows to here and is used in arithmetic, potentially causing an overflow. | test.c:99:14:99:19 | call to rand | Uncontrolled value |
 | test.c:127:9:127:9 | r | test.c:125:13:125:16 | call to rand | test.c:127:9:127:9 | r | $@ flows to here and is used in arithmetic, potentially causing an overflow. | test.c:125:13:125:16 | call to rand | Uncontrolled value |
+| test.c:133:5:133:5 | r | test.c:131:13:131:16 | call to rand | test.c:133:5:133:5 | r | $@ flows to here and is used in arithmetic, potentially causing an overflow. | test.c:131:13:131:16 | call to rand | Uncontrolled value |
+| test.c:139:10:139:10 | r | test.c:137:13:137:16 | call to rand | test.c:139:10:139:10 | r | $@ flows to here and is used in arithmetic, potentially causing an overflow. | test.c:137:13:137:16 | call to rand | Uncontrolled value |
 | test.c:157:9:157:9 | r | test.c:155:22:155:25 | call to rand | test.c:157:9:157:9 | r | $@ flows to here and is used in arithmetic, potentially causing an underflow. | test.c:155:22:155:25 | call to rand | Uncontrolled value |
 | test.c:157:9:157:9 | r | test.c:155:22:155:27 | (unsigned int)... | test.c:157:9:157:9 | r | $@ flows to here and is used in arithmetic, potentially causing an underflow. | test.c:155:22:155:25 | call to rand | Uncontrolled value |
 | test.cpp:25:7:25:7 | r | test.cpp:8:9:8:12 | call to rand | test.cpp:25:7:25:7 | r | $@ flows to here and is used in arithmetic, potentially causing an overflow. | test.cpp:8:9:8:12 | call to rand | Uncontrolled value |

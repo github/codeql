@@ -120,6 +120,10 @@ predicate missingGuardAgainstOverflow(Operation e, VariableAccess use) {
     // overflow possible if large or small
     e instanceof MulExpr and
     not (guardedLesser(e, varUse(v)) and guardedGreater(e, varUse(v)))
+    or
+    // overflow possible if large or small
+    e instanceof AssignMulExpr and
+    not (guardedLesser(e, varUse(v)) and guardedGreater(e, varUse(v)))
   )
 }
 
@@ -146,6 +150,10 @@ predicate missingGuardAgainstUnderflow(Operation e, VariableAccess use) {
     or
     // underflow possible if large or small
     e instanceof MulExpr and
+    not (guardedLesser(e, varUse(v)) and guardedGreater(e, varUse(v)))
+    or
+    // underflow possible if large or small
+    e instanceof AssignMulExpr and
     not (guardedLesser(e, varUse(v)) and guardedGreater(e, varUse(v)))
   )
 }
