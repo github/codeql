@@ -7,7 +7,7 @@ def simple(l = []):
 def includes(l = []):
     x = [0]
     x.extend(l)
-    x.extend([1])  # FP
+    x.extend([1])
     return x
 
 def extends(l):
@@ -76,5 +76,5 @@ def dict_deferred_method(d = {}):
 def dict_includes(d = {}):
     x = {}
     x.update(d)
-    x.update({'a': 1})  # FP
+    x.update({'a': 1})
     return x
