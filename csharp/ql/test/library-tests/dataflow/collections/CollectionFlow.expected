@@ -160,12 +160,6 @@ edges
 | CollectionFlow.cs:373:52:373:53 | access to parameter ts [element] : A | CollectionFlow.cs:373:52:373:56 | access to array element |
 | CollectionFlow.cs:373:52:373:53 | access to parameter ts [element] : A | CollectionFlow.cs:373:52:373:56 | access to array element |
 | CollectionFlow.cs:375:49:375:52 | list [element] : A | CollectionFlow.cs:375:63:375:66 | access to parameter list [element] : A |
-| CollectionFlow.cs:375:49:375:52 | list [element] : A | CollectionFlow.cs:375:63:375:66 | access to parameter list [element] : A |
-| CollectionFlow.cs:375:49:375:52 | list [element] : A | CollectionFlow.cs:375:63:375:66 | access to parameter list [element] : A |
-| CollectionFlow.cs:375:49:375:52 | list [element] : A | CollectionFlow.cs:375:63:375:66 | access to parameter list [element] : A |
-| CollectionFlow.cs:375:63:375:66 | access to parameter list [element] : A | CollectionFlow.cs:375:63:375:69 | access to indexer |
-| CollectionFlow.cs:375:63:375:66 | access to parameter list [element] : A | CollectionFlow.cs:375:63:375:69 | access to indexer |
-| CollectionFlow.cs:375:63:375:66 | access to parameter list [element] : A | CollectionFlow.cs:375:63:375:69 | access to indexer |
 | CollectionFlow.cs:375:63:375:66 | access to parameter list [element] : A | CollectionFlow.cs:375:63:375:69 | access to indexer |
 | CollectionFlow.cs:377:61:377:64 | dict [element, property Value] : A | CollectionFlow.cs:377:75:377:78 | access to parameter dict [element, property Value] : A |
 | CollectionFlow.cs:377:75:377:78 | access to parameter dict [element, property Value] : A | CollectionFlow.cs:377:75:377:81 | access to indexer |
@@ -343,12 +337,6 @@ nodes
 | CollectionFlow.cs:373:52:373:53 | access to parameter ts [element] : A | semmle.label | access to parameter ts [element] : A |
 | CollectionFlow.cs:373:52:373:56 | access to array element | semmle.label | access to array element |
 | CollectionFlow.cs:375:49:375:52 | list [element] : A | semmle.label | list [element] : A |
-| CollectionFlow.cs:375:49:375:52 | list [element] : A | semmle.label | list [element] : A |
-| CollectionFlow.cs:375:49:375:52 | list [element] : A | semmle.label | list [element] : A |
-| CollectionFlow.cs:375:49:375:52 | list [element] : A | semmle.label | list [element] : A |
-| CollectionFlow.cs:375:63:375:66 | access to parameter list [element] : A | semmle.label | access to parameter list [element] : A |
-| CollectionFlow.cs:375:63:375:66 | access to parameter list [element] : A | semmle.label | access to parameter list [element] : A |
-| CollectionFlow.cs:375:63:375:66 | access to parameter list [element] : A | semmle.label | access to parameter list [element] : A |
 | CollectionFlow.cs:375:63:375:66 | access to parameter list [element] : A | semmle.label | access to parameter list [element] : A |
 | CollectionFlow.cs:375:63:375:69 | access to indexer | semmle.label | access to indexer |
 | CollectionFlow.cs:377:61:377:64 | dict [element, property Value] : A | semmle.label | dict [element, property Value] : A |
