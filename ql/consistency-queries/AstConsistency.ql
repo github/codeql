@@ -1,17 +1,11 @@
 import codeql_ruby.AST
 import codeql_ruby.ast.internal.Synthesis
 
-private string getAPrimaryQlClass(AstNode node) {
-  result = node.getAPrimaryQlClass()
-  or
-  not exists(node.getAPrimaryQlClass()) and result = "(none)"
-}
-
 query predicate missingParent(AstNode node, string cls) {
   not exists(node.getParent()) and
   node.getLocation().getFile().getExtension() != "erb" and
   not node instanceof Toplevel and
-  cls = getAPrimaryQlClass(node)
+  cls = node.getPrimaryQlClasses()
 }
 
 pragma[noinline]
@@ -22,7 +16,7 @@ private AstNode parent(AstNode child, int desugarLevel) {
 
 query predicate multipleParents(AstNode node, AstNode parent, string cls) {
   parent = node.getParent() and
-  cls = getAPrimaryQlClass(parent) and
+  cls = parent.getPrimaryQlClasses() and
   exists(AstNode one, AstNode two, int desugarLevel |
     one = parent(node, desugarLevel) and
     two = parent(node, desugarLevel) and

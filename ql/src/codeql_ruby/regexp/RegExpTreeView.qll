@@ -18,10 +18,15 @@ class RegExpParent extends TRegExpParent {
 
   /**
    * Gets the name of a primary CodeQL class to which this regular
-   * expression
-   * term belongs.
+   * expression term belongs.
    */
   string getAPrimaryQlClass() { result = "RegExpParent" }
+
+  /**
+   * Gets a comma-separated list of the names of the primary CodeQL classes to
+   * which this regular expression term belongs.
+   */
+  final string getPrimaryQlClasses() { result = concat(this.getAPrimaryQlClass(), ",") }
 }
 
 class RegExpLiteral extends TRegExpLiteral, RegExpParent {
