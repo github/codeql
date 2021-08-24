@@ -234,9 +234,13 @@ class TestCase extends TTestCase {
   string getInput(SummaryComponentStack stack) {
     stack = input and result = "source()"
     or
-    exists(SummaryComponentStack s |
-      result = "newWith" + contentToken(getContent(s.head())) + "(" + this.getInput(s) + ")" and
-      stack = s.tail()
+    exists(SummaryComponentStack s | s.tail() = stack |
+      // we currently only know the type if the stack is one level in
+      s = input and
+      result = SupportMethod::genMethodFor(this.getInputType(), s).getCall(this.getInput(s))
+      or
+      not s = input and
+      result = SupportMethod::genMethodForContent(s).getCall(this.getInput(s))
     )
   }
 
@@ -252,45 +256,19 @@ class TestCase extends TTestCase {
       then result = "out"
       else
         result =
-          "get" + contentToken(getContent(componentStack.head())) + "(" +
-            this.getOutput(componentStack.tail()) + ")"
+          SupportMethod::getMethodForContent(componentStack)
+              .getCall(this.getOutput(componentStack.tail()))
     )
   }
 
   /**
    * Returns the definition of a `newWith` method needed to set up the input or a `get` method needed to set up the output for this test.
    */
-  string getASupportMethod() {
-    result =
-      "Object newWith" + contentToken(getContent(input.drop(_).head())) +
-        "(Object element) { return null; }" or
-    result =
-      "Object get" + contentToken(getContent(output.drop(_).head())) +
-        "(Object container) { return null; }"
-  }
-
-  /**
-   * Returns a CSV row describing a support method (`newWith` or `get` method) needed to set up the output for this test.
-   *
-   * For example, `newWithMapValue` will propagate a value from `Argument[0]` to `MapValue of ReturnValue`, and `getMapValue`
-   * will do the opposite.
-   */
-  string getASupportMethodModel() {
-    exists(SummaryComponent c, string contentCsvDescription |
-      c = input.drop(_).head() and contentCsvDescription = getComponentSpec(c)
-    |
-      result =
-        "generatedtest;Test;false;newWith" + contentToken(getContent(c)) + ";;;Argument[0];" +
-          contentCsvDescription + " of ReturnValue;value"
-    )
-    or
-    exists(SummaryComponent c, string contentCsvDescription |
-      c = output.drop(_).head() and contentCsvDescription = getComponentSpec(c)
-    |
-      result =
-        "generatedtest;Test;false;get" + contentToken(getContent(c)) + ";;;" + contentCsvDescription
-          + " of Argument[0];ReturnValue;value"
-    )
+  SupportMethod getASupportMethod() {
+    result = SupportMethod::genMethodFor(this.getInputType(), input) or
+    result = SupportMethod::genMethodForContent(input.tail().drop(_)) or
+    result = SupportMethod::getMethodFor(this.getOutputType(), output) or
+    result = SupportMethod::getMethodForContent(output.tail().drop(_))
   }
 
   /**

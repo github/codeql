@@ -127,7 +127,7 @@ queryDir = os.path.join(workDir, "query")
 os.makedirs(queryDir)
 qlFile = os.path.join(queryDir, "gen.ql")
 with open(os.path.join(queryDir, "qlpack.yml"), "w") as f:
-    f.write("name: test-generation-query\nversion: 0.0.0\nlibraryPathDependencies: codeql/java-queries")
+    f.write("name: test-generation-query\nversion: 0.0.0\nlibraryPathDependencies: codeql-java")
 with open(qlFile, "w") as f:
     f.write(
         "import java\nimport utils.GenerateFlowTestCase\n\nclass GenRow extends TargetSummaryModelCsv {\n\n\toverride predicate row(string r) {\n\t\tr = [\n")
