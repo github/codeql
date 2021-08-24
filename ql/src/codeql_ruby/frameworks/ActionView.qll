@@ -43,16 +43,14 @@ class RawCall extends ActionViewContextCall {
   RawCall() { this.getMethodName() = "raw" }
 }
 
-/**
- * A call to the `params` method within the context of a template or view component.
- */
+// A call to the `params` method within the context of a template or view component.
 private class ActionViewParamsCall extends ActionViewContextCall, ParamsCall { }
 
 /**
  * A call to a `render` method that will populate the response body with the
  * rendered content.
  */
-class RenderCall extends ActionViewContextCall {
+abstract class RenderCall extends MethodCall {
   RenderCall() { this.getMethodName() = "render" }
 
   private string getWorkingDirectory() {
@@ -96,7 +94,7 @@ class RenderCall extends ActionViewContextCall {
   /**
    * Get the template file to be rendered by this call, if any.
    */
-  ErbFile getTemplate() { result.getAbsolutePath().matches(this.getTemplatePathPatterns()) }
+  ErbFile getTemplateFile() { result.getAbsolutePath().matches(this.getTemplatePathPatterns()) }
 
   /**
    * Get the local variables passed as context to the renderer
@@ -104,6 +102,9 @@ class RenderCall extends ActionViewContextCall {
   HashLiteral getLocals() { result = this.getKeywordArgument("locals") }
   // TODO: implicit renders in controller actions
 }
+
+// A call to the `render` method within the context of a template or view component.
+private class ActionViewRenderCall extends RenderCall, ActionViewContextCall { }
 
 /**
  * A render call that does not automatically set the HTTP response body.

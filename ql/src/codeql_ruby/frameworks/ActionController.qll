@@ -127,12 +127,17 @@ class ParamsSource extends RemoteFlowSource::Range {
 // A call to `params` from within a controller.
 private class ActionControllerParamsCall extends ActionControllerContextCall, ParamsCall { }
 
+// A call to `render` from within a controller.
+private class ActionControllerRenderCall extends ActionControllerContextCall, RenderCall { }
+
 // A call to `render_to` from within a controller.
 private class ActionControllerRenderToCall extends ActionControllerContextCall, RenderToCall { }
 
 // A call to `html_safe` from within a controller.
 private class ActionControllerHtmlSafeCall extends HtmlSafeCall {
-  ActionControllerHtmlSafeCall() { this.getEnclosingModule() instanceof ActionControllerControllerClass }
+  ActionControllerHtmlSafeCall() {
+    this.getEnclosingModule() instanceof ActionControllerControllerClass
+  }
 }
 
 /**
@@ -156,13 +161,6 @@ class RedirectToCall extends ActionControllerContextCall {
 }
 
 /**
- * A `SetterMethodCall` that assigns a value to the `response_body`.
- */
-class ResponseBodySetterCall extends SetterMethodCall {
-  ResponseBodySetterCall() { this.getMethodName() = "response_body=" }
-}
-
-/**
  * A method in an `ActionController` class that is accessible from within a view as a helper method.
  */
 class ActionControllerHelperMethod extends Method {
@@ -179,4 +177,17 @@ class ActionControllerHelperMethod extends Method {
 
   /** Gets the class containing this helper method. */
   ActionControllerControllerClass getControllerClass() { result = controllerClass }
+}
+
+/**
+ * Gets an `ActionControllerControllerClass` associated with the given `ErbFile`
+ * according to Rails path conventions.
+ */
+ActionControllerControllerClass getAssociatedControllerClass(ErbFile f) {
+  exists(string localPrefix, string sourcePrefix, string controllerPath |
+    controllerPath = result.getLocation().getFile().getAbsolutePath() and
+    sourcePrefix = f.getAbsolutePath().regexpCapture("^(.*)/app/views/(?:.*?)/(?:[^/]*)$", 1) and
+    localPrefix = f.getAbsolutePath().regexpCapture(".*/app/views/(.*?)/(?:[^/]*)$", 1) and
+    controllerPath = sourcePrefix + "/app/controllers/" + localPrefix + "_controller.rb"
+  )
 }
