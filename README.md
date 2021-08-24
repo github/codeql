@@ -17,7 +17,11 @@ repository](https://github.com/github/codeql).
 
 ## Installation
 
-Simply clone this repository. There are no external dependencies.
+Clone this repository.
+
+Run `scripts/install-deps.sh`. This will ensure that the necessary external CodeQL packs are
+downloaded to your machine. You will need to re-run this script whenever you pull new commits from
+the repo.
 
 If you want to use the CodeQL extension for Visual Studio Code, import this repository into your VS
 Code workspace.
