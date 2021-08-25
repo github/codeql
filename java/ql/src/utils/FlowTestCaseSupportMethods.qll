@@ -8,6 +8,7 @@ private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSummary
 private import semmle.code.java.dataflow.internal.FlowSummaryImpl
 private import FlowTestCaseUtils
+private import FlowTestCase
 
 /**
  * Returns a valid Java token naming the field `fc`.
@@ -157,7 +158,7 @@ private class DefaultGetMethod extends GetMethod {
   override predicate appliesTo(Type t, Content c1) {
     c = c1 and
     // suppress unused variable warning
-    t = t
+    t = [any(TestCase tc).getOutputType(), any(VoidType v)]
   }
 
   bindingset[arg]
@@ -297,7 +298,7 @@ private class DefaultGenMethod extends GenMethod {
   override predicate appliesTo(Type t, Content c1) {
     c = c1 and
     // suppress unused variable warning
-    t = t
+    t = [any(TestCase tc).getInputType(), any(VoidType v)]
   }
 
   bindingset[arg]
