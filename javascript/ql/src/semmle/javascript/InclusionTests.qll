@@ -16,16 +16,13 @@ private import javascript
  * ~A.indexOf(B)
  * ```
  */
-class InclusionTest extends DataFlow::Node {
-  InclusionTest::Range range;
-
-  InclusionTest() { this = range }
+class InclusionTest extends DataFlow::Node instanceof InclusionTest::Range {
 
   /** Gets the `A` in `A.includes(B)`. */
-  DataFlow::Node getContainerNode() { result = range.getContainerNode() }
+  DataFlow::Node getContainerNode() { result = super.getContainerNode() }
 
   /** Gets the `B` in `A.includes(B)`. */
-  DataFlow::Node getContainedNode() { result = range.getContainedNode() }
+  DataFlow::Node getContainedNode() { result = super.getContainedNode() }
 
   /**
    * Gets the polarity of the check.
@@ -33,7 +30,7 @@ class InclusionTest extends DataFlow::Node {
    * If the polarity is `false` the check returns `true` if the container does not contain
    * the given element.
    */
-  boolean getPolarity() { result = range.getPolarity() }
+  boolean getPolarity() { result = super.getPolarity() }
 }
 
 module InclusionTest {

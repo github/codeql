@@ -9,27 +9,24 @@ import javascript
  *
  * Additional candidates can be added by subclassing `MembershipCandidate::Range`
  */
-class MembershipCandidate extends DataFlow::Node {
-  MembershipCandidate::Range range;
-
-  MembershipCandidate() { this = range }
+class MembershipCandidate extends DataFlow::Node instanceof MembershipCandidate::Range {
 
   /**
    * Gets the expression that performs the membership test, if any.
    */
-  DataFlow::Node getTest() { result = range.getTest() }
+  DataFlow::Node getTest() { result = super.getTest() }
 
   /**
    * Gets a string that this candidate is tested against, if
    * it can be determined.
    */
-  string getAMemberString() { result = range.getAMemberString() }
+  string getAMemberString() { result = super.getAMemberString() }
 
   /**
    * Gets a node that this candidate is tested against, if
    * it can be determined.
    */
-  DataFlow::Node getAMemberNode() { result = range.getAMemberNode() }
+  DataFlow::Node getAMemberNode() { result = super.getAMemberNode() }
 
   /**
    * Gets the polarity of the test.
@@ -37,7 +34,7 @@ class MembershipCandidate extends DataFlow::Node {
    * If the polarity is `false` the test returns `true` if the
    * collection does not contain this candidate.
    */
-  boolean getTestPolarity() { result = range.getTestPolarity() }
+  boolean getTestPolarity() { result = super.getTestPolarity() }
 }
 
 /**

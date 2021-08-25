@@ -68,40 +68,40 @@ module EventEmitter {
  * An EventEmitter instance that implements the EventEmitter API.
  * Extend EventEmitter::Range to mark something as being an EventEmitter.
  */
-class EventEmitter extends DataFlow::Node {
-  EventEmitter::Range range;
-
-  EventEmitter() { this = range }
+class EventEmitter extends DataFlow::Node instanceof EventEmitter::Range {
 }
 
 /**
  * A registration of an event handler on an EventEmitter.
  */
-class EventRegistration extends DataFlow::Node {
-  EventRegistration::Range range;
-
-  EventRegistration() { this = range }
+class EventRegistration extends DataFlow::Node instanceof EventRegistration::Range {
 
   /** Gets the EventEmitter that the event handler is registered on. */
-  final EventEmitter getEmitter() { result = range.getEmitter() }
+  final EventEmitter getEmitter() { result = super.getEmitter() }
 
   /** Gets the name of the channel if possible. */
-  string getChannel() { result = range.getChannel() }
+  string getChannel() { result = super.getChannel() }
 
   /** Gets the `i`th parameter in the event handler. */
-  DataFlow::Node getReceivedItem(int i) { result = range.getReceivedItem(i) }
+  DataFlow::Node getReceivedItem(int i) {
+    result = super.getReceivedItem(i)
+  }
 
   /**
    * Gets a value that is returned by the event handler.
    * The default implementation is that no value can be returned.
    */
-  DataFlow::Node getAReturnedValue() { result = range.getAReturnedValue() }
+  DataFlow::Node getAReturnedValue() {
+    result = super.getAReturnedValue()
+  }
 
   /**
    * Get a dispatch that this event handler can return a value to.
    * The default implementation is that there exists no such dispatch.
    */
-  EventDispatch getAReturnDispatch() { result = range.getAReturnDispatch() }
+  EventDispatch getAReturnDispatch() {
+    result = super.getAReturnDispatch()
+  }
 }
 
 module EventRegistration {
@@ -140,26 +140,23 @@ module EventRegistration {
 /**
  * A dispatch of an event on an EventEmitter.
  */
-class EventDispatch extends DataFlow::Node {
-  EventDispatch::Range range;
-
-  EventDispatch() { this = range }
+class EventDispatch extends DataFlow::Node instanceof EventDispatch::Range {
 
   /** Gets the emitter that the event dispatch happens on. */
-  EventEmitter getEmitter() { result = range.getEmitter() }
+  EventEmitter getEmitter() { result = super.getEmitter() }
 
   /** Gets the name of the channel if possible. */
-  string getChannel() { result = range.getChannel() }
+  string getChannel() { result = this.(EventDispatch::Range).getChannel() }
 
   /** Gets the `i`th argument that is send to the event handler. */
-  DataFlow::Node getSentItem(int i) { result = range.getSentItem(i) }
+  DataFlow::Node getSentItem(int i) { result = super.getSentItem(i) }
 
   /**
    * Get an EventRegistration that this event dispatch can send an event to.
    * The default implementation is that the emitters of the dispatch and registration have to be equal.
    * Channels are by default ignored.
    */
-  EventRegistration getAReceiver() { result = range.getAReceiver() }
+  EventRegistration getAReceiver() { result = super.getAReceiver() }
 }
 
 module EventDispatch {
