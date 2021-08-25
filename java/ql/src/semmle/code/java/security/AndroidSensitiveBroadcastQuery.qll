@@ -1,4 +1,4 @@
-/** Provides classes to reason about Android Sensitive Broadcast queries */
+/** Provides definitions to reason about Android Sensitive Broadcast queries */
 
 import java
 import semmle.code.java.dataflow.DataFlow3
@@ -10,29 +10,6 @@ import semmle.code.java.security.SensitiveActions
  * Gets regular expression for matching names of Android variables that indicate the value being held contains sensitive information.
  */
 private string getAndroidSensitiveInfoRegex() { result = "(?i).*(email|phone|ticket).*" }
-
-/**
- * Method call to pass information to the `Intent` object.
- */
-class PutIntentExtraMethodAccess extends MethodAccess {
-  PutIntentExtraMethodAccess() {
-    (
-      getMethod().getName().matches("put%Extra") or
-      getMethod().hasName("putExtras")
-    ) and
-    getMethod().getDeclaringType() instanceof TypeIntent
-  }
-}
-
-/**
- * Method call to pass information to the intent extra bundle object.
- */
-class PutBundleExtraMethodAccess extends MethodAccess {
-  PutBundleExtraMethodAccess() {
-    getMethod().getName().regexpMatch("put\\w+") and
-    getMethod().getDeclaringType().getASupertype*().hasQualifiedName("android.os", "BaseBundle")
-  }
-}
 
 /** Finds variables that hold sensitive information judging by their names. */
 class SensitiveInfoExpr extends Expr {
@@ -132,19 +109,6 @@ class SensitiveBroadcastConfig extends TaintTracking::Configuration {
   }
 
   override predicate isSink(DataFlow::Node sink) { isSensitiveBroadcastSink(sink) }
-
-  /**
-   * Holds if there is an additional flow step from `PutIntentExtraMethodAccess` or `PutBundleExtraMethodAccess` that taints the `Intent` or its extras `Bundle`.
-   */
-  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
-    exists(PutIntentExtraMethodAccess pia |
-      node1.asExpr() = pia.getAnArgument() and node2.asExpr() = pia.getQualifier()
-    )
-    or
-    exists(PutBundleExtraMethodAccess pba |
-      node1.asExpr() = pba.getAnArgument() and node2.asExpr() = pba.getQualifier()
-    )
-  }
 
   /**
    * Holds if broadcast doesn't specify receiving package name of the 3rd party app
