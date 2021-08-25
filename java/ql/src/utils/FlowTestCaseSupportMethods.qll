@@ -55,19 +55,25 @@ private Content getContent(SummaryComponent component) {
 
 module SupportMethod {
   GenMethod genMethodForContent(SummaryComponentStack c) {
-    result = min(GenMethod g | g.appliesTo(any(VoidType v), getContent(c.head())))
+    result = genMethodFor(any(VoidType v), c)
   }
 
   GenMethod genMethodFor(Type t, SummaryComponentStack c) {
-    result = min(GenMethod g | g.appliesTo(t, getContent(c.head())))
+    result =
+      min(GenMethod g |
+        g = min(GenMethod g1 | g1.appliesTo(t, getContent(c.head())) | g1 order by g1.getPriority())
+      )
   }
 
   GetMethod getMethodForContent(SummaryComponentStack c) {
-    result = min(GetMethod g | g.appliesTo(any(VoidType v), getContent(c.head())))
+    result = getMethodFor(any(VoidType v), c)
   }
 
   GetMethod getMethodFor(Type t, SummaryComponentStack c) {
-    result = min(GetMethod g | g.appliesTo(t, getContent(c.head())))
+    result =
+      min(GetMethod g |
+        g = min(GetMethod g1 | g1.appliesTo(t, getContent(c.head())) | g1 order by g1.getPriority())
+      )
   }
 }
 
@@ -81,6 +87,10 @@ abstract class SupportMethod extends string {
 
   bindingset[this, arg]
   abstract string getCall(string arg);
+
+  /** Gets the priority of this support method. Lower priorities are preferred when multiple support methods apply. */
+  bindingset[this]
+  int getPriority() { result = 50 }
 
   /**
    * Gets the CSV row describing this support method if it is needed to set up the output for this test.
@@ -123,10 +133,11 @@ abstract class GetMethod extends SupportMethod { }
 private class DefaultGetMethod extends GetMethod {
   Content c;
 
-  // prefix with zzz so the default getter is always last
-  DefaultGetMethod() { this = "zzzDefaultGet" + contentToken(c) }
+  DefaultGetMethod() { this = "DefaultGet" + contentToken(c) }
 
   string getName() { result = "get" + contentToken(c) }
+
+  override int getPriority() { result = 999 }
 
   override predicate appliesTo(Type t, Content c1) {
     c = c1 and
@@ -248,10 +259,11 @@ abstract class GenMethod extends SupportMethod { }
 private class DefaultGenMethod extends GenMethod {
   Content c;
 
-  // prefix with zzz so the default generator is always last
-  DefaultGenMethod() { this = "zzzDefaultGen" + contentToken(c) }
+  DefaultGenMethod() { this = "DefaultGen" + contentToken(c) }
 
   string getName() { result = "newWith" + contentToken(c) }
+
+  override int getPriority() { result = 999 }
 
   override predicate appliesTo(Type t, Content c1) {
     c = c1 and
