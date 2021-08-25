@@ -23,7 +23,7 @@ import DataFlow::PathGraph
 
 SourceNode clipboardDataTransferSource(TypeTracker t) {
   t.start() and
-  exists(DataFlow::PropRead pr | pr.getPropertyName() = "clipboardData" and pr.flowsTo(result))
+  exists(DataFlow::PropRead pr | pr.getPropertyName() = "clipboardData" and result = pr)
   or
   exists(TypeTracker t2 | result = clipboardDataTransferSource(t2).track(t2, t))
 }
@@ -39,7 +39,7 @@ SourceNode clipboardDataTransferSource() {
 
 SourceNode clipboardDataSource(TypeTracker t) {
   t.start() and
-  clipboardDataTransferSource().getAMethodCall("getData").flowsTo(result)
+  result = clipboardDataTransferSource().getAMethodCall("getData")
   or
   exists(TypeTracker t2 | result = clipboardDataSource(t2).track(t2, t))
 }
