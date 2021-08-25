@@ -180,11 +180,14 @@ predicate isCommonWordMatcher(RegExpTerm t) {
   )
 }
 
-from
-  StringReplaceCall replace, EmptyReplaceRegExpTerm regexp, EmptyReplaceRegExpTerm dangerous,
-  string prefix, string kind
-where
-  regexp = replace.getRegExp().getRoot() and
+/**
+ * Gets a call to `String.prototype.replace` that replaces some regexp with the empty string
+ * in a way where the dangerous pattern may still appear in the result.
+ */
+private StringReplaceCall getADangerousEmptyReplaceCall(
+  EmptyReplaceRegExpTerm regexp, EmptyReplaceRegExpTerm dangerous, string prefix, string kind
+) {
+  regexp = result.getRegExp().getRoot() and
   dangerous.getRootTerm() = regexp and
   // skip leading optional elements
   not dangerous.isNullable() and
@@ -198,8 +201,18 @@ where
     not other.isNullable()
   ) and
   // don't flag replace operations in a loop
-  not replace.getAMethodCall*().flowsTo(replace.getReceiver()) and
+  not result.getAMethodCall*().flowsTo(result.getReceiver()) and
   // avoid anchored terms
   not exists(RegExpAnchor a | regexp = a.getRootTerm())
-select replace, "This string may still contain $@, which may cause a " + kind + " vulnerability.",
-  dangerous, prefix
+}
+
+from DataFlow::Node node1, string str1, Locatable node2, string str2
+where
+  exists(StringReplaceCall replace, EmptyReplaceRegExpTerm dangerous, string prefix, string kind |
+    replace = getADangerousEmptyReplaceCall(_, dangerous, prefix, kind) and
+    node1 = replace and
+    str1 = "This string may still contain $@, which may cause a " + kind + " vulnerability." and
+    node2 = dangerous and
+    str2 = prefix
+  )
+select node1, str1, node2, str2
