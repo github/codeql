@@ -503,3 +503,16 @@ function copyPlainObject2(dst, src) {
         }
     }
 }
+
+function doubleGuarded2(dst, src) {
+    _.each(src, (value, key, o) => {
+        if (key === "__proto__" || key === "prototype") { 
+            return;
+        }
+        if (dst[key]) {
+            doubleGuarded2(dst[key], src[key]);
+        } else {
+            dst[key] = value; // OK
+        }
+    });
+}

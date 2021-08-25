@@ -302,13 +302,18 @@ class DenyListEqualityGuard extends DataFlow::LabeledBarrierGuardNode, ValueNode
 
   DenyListEqualityGuard() {
     astNode.getAnOperand().getStringValue() = propName and
-    propName = unsafePropName()
+    propName = [unsafePropName(), "prototype"]
   }
 
   override predicate blocks(boolean outcome, Expr e, FlowLabel label) {
     e = astNode.getAnOperand() and
     outcome = astNode.getPolarity().booleanNot() and
-    label = propName
+    (
+      label = propName
+      or
+      propName = "prototype" and
+      label = "constructor"
+    )
   }
 }
 
