@@ -51,7 +51,7 @@ string getZero(PrimitiveType t) {
   or
   t.hasName("byte") and result = "(byte)0"
   or
-  t.hasName("char") and result = "'a'"
+  t.hasName("char") and result = "'\\0'"
   or
   t.hasName("long") and result = "0L"
 }
