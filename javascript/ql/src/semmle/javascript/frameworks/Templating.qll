@@ -630,7 +630,7 @@ module Templating {
     override DataFlow::Node getTemplateParamsNode() { result = getArgument(1) }
   }
 
-  /** 
+  /**
    * The `include` function, seen as an API node, so we can treat it as a template instantiation
    * in `EjsIncludeCallInTemplate`.
    *
