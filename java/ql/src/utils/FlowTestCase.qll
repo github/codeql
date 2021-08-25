@@ -236,11 +236,9 @@ class TestCase extends TTestCase {
     or
     exists(SummaryComponentStack s | s.tail() = stack |
       // we currently only know the type if the stack is one level in
-      s = input and
-      result = SupportMethod::genMethodFor(this.getInputType(), s).getCall(this.getInput(s))
-      or
-      not s = input and
-      result = SupportMethod::genMethodForContent(s).getCall(this.getInput(s))
+      if s = input
+      then result = SupportMethod::genMethodFor(this.getInputType(), s).getCall(this.getInput(s))
+      else result = SupportMethod::genMethodForContent(s).getCall(this.getInput(s))
     )
   }
 
