@@ -513,7 +513,7 @@ private State before(RegExpTerm t) { result = Match(t, 0) }
 /**
  * Gets a state the NFA may be in after matching `t`.
  */
-private State after(RegExpTerm t) {
+State after(RegExpTerm t) {
   exists(RegExpAlt alt | t = alt.getAChild() | result = after(alt))
   or
   exists(RegExpSequence seq, int i | t = seq.getChild(i) |
@@ -632,7 +632,7 @@ RegExpRoot getRoot(RegExpTerm term) {
   result = getRoot(term.getParent())
 }
 
-private newtype TState =
+newtype TState =
   Match(RelevantRegExpTerm t, int i) {
     i = 0
     or

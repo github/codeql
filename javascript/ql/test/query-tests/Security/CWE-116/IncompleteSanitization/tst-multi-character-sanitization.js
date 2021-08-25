@@ -145,3 +145,18 @@
   content = content.replace(/<(script|iframe|video)(.|\s)*?\/(script|iframe|video)>/g, '') // NOT OK
   content = content.replace(/<[^<]*>/g, ""); // OK
 });
+
+function comments(content) {
+  // html comments - wronly not matching `--!>` as an end of comment.
+  var oldContent = content;
+  while(true) {
+    content = content.replace(/<!--[\s\S]*?-->/g, ""); // NOT OK
+    content = content.replace(/<!--(.|\s)*?--!?>/g, ""); // OK
+    content = content.replace(/<(!--[\S|\s]*?-->)/g, ''); // NOT OK
+    if(oldContent === content) {
+      break;
+    }
+    oldContent = content;
+  }
+  return content;
+}

@@ -206,6 +206,16 @@ private StringReplaceCall getADangerousEmptyReplaceCall(
   not exists(RegExpAnchor a | regexp = a.getRootTerm())
 }
 
+import semmle.javascript.security.performance.RegexpMatching as RegexpMatching
+
+class CommentMatchingRegExp extends RegexpMatching::MatchedRegExp {
+  CommentMatchingRegExp() { this instanceof DataFlow::RegExpCreationNode }
+
+  override predicate toTest(string str, boolean ignorePrefix) {
+    str = ["<!-- foo -->", "<!-- foo --!>"] and ignorePrefix = true
+  }
+}
+
 from DataFlow::Node node1, string str1, Locatable node2, string str2
 where
   exists(StringReplaceCall replace, EmptyReplaceRegExpTerm dangerous, string prefix, string kind |
@@ -214,5 +224,15 @@ where
     str1 = "This string may still contain $@, which may cause a " + kind + " vulnerability." and
     node2 = dangerous and
     str2 = prefix
+  )
+  or
+  exists(CommentMatchingRegExp reg |
+    reg.matches("<!-- foo -->") and
+    not reg.matches("<!-- foo --!>")
+  |
+    node1 = reg and
+    str1 = "This regular expression only matches -->  and not --!> as a HTML comment end tag." and
+    node2 = reg.asExpr() and
+    str2 = ""
   )
 select node1, str1, node2, str2
