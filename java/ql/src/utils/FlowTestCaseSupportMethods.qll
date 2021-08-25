@@ -79,14 +79,9 @@ module SupportMethod {
 
 bindingset[this]
 abstract class SupportMethod extends string {
-  abstract predicate appliesTo(Type t, Content c);
-
   string getARequiredImport() { none() }
 
   string getDefinition() { none() }
-
-  bindingset[this, arg]
-  abstract string getCall(string arg);
 
   /** Gets the priority of this support method. Lower priorities are preferred when multiple support methods apply. */
   bindingset[this]
@@ -104,31 +99,28 @@ abstract class SupportMethod extends string {
 class SourceMethod extends SupportMethod {
   SourceMethod() { this = "source" }
 
-  override predicate appliesTo(Type t, Content c) { none() }
-
-  bindingset[arg]
-  override string getCall(string arg) {
-    result = "source()" and
-    // suppress unused variable warning
-    arg = arg
-  }
-
   override string getDefinition() { result = "Object source() { return null; }" }
 }
 
 class SinkMethod extends SupportMethod {
   SinkMethod() { this = "sink" }
 
-  override predicate appliesTo(Type t, Content c) { none() }
-
-  bindingset[arg]
-  override string getCall(string arg) { result = "sink(" + arg + ")" }
-
   override string getDefinition() { result = "void sink(Object o) { }" }
 }
 
 bindingset[this]
-abstract class GetMethod extends SupportMethod { }
+abstract class GetMethod extends SupportMethod {
+  /**
+   * Holds if this get method can be used to get the content `c` from the type `t`.
+   */
+  abstract predicate appliesTo(Type t, Content c);
+
+  /**
+   * Gets the call to get the content from the argument `arg`.
+   */
+  bindingset[this, arg]
+  abstract string getCall(string arg);
+}
 
 private class DefaultGetMethod extends GetMethod {
   Content c;
@@ -254,7 +246,18 @@ private class ArrayGetMethod extends GetMethod {
 }
 
 bindingset[this]
-abstract class GenMethod extends SupportMethod { }
+abstract class GenMethod extends SupportMethod {
+  /**
+   * Holds if this generator method can be used to generate a new `t` that contains content `c`.
+   */
+  abstract predicate appliesTo(Type t, Content c);
+
+  /**
+   * Gets the call to generate an object with content `arg`.
+   */
+  bindingset[this, arg]
+  abstract string getCall(string arg);
+}
 
 private class DefaultGenMethod extends GenMethod {
   Content c;
