@@ -1,5 +1,7 @@
-name: codeql-python-tests
+name: codeql/python-tests
 version: 0.0.0
-libraryPathDependencies: codeql-python
+dependencies:
+    codeql/python-all: ^0.0.1
+    codeql/python-queries: ^0.0.1
 extractor: python
 tests: .
