@@ -70,6 +70,8 @@ predicate mayBeAmbiguous(Callable c) {
     other.getNumberOfParameters() = c.getNumberOfParameters() and
     other != c
   )
+  or
+  c.isVarargs()
 }
 
 /**
