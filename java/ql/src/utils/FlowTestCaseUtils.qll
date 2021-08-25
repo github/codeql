@@ -1,3 +1,7 @@
+/**
+ * Utility predicates useful for test generation.
+ */
+
 import java
 private import semmle.code.java.dataflow.internal.DataFlowUtil
 private import semmle.code.java.dataflow.FlowSummary

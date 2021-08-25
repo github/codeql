@@ -1,3 +1,7 @@
+/**
+ * Contains predicates and classes relating to support methods for tests, such as the `source()` and `sink()`.
+ */
+
 import java
 private import semmle.code.java.dataflow.internal.DataFlowUtil
 private import semmle.code.java.dataflow.ExternalFlow
@@ -53,11 +57,14 @@ private Content getContent(SummaryComponent component) {
   component = SummaryComponent::content(result)
 }
 
+/** Contains utility predicates for getting relevant support methods. */
 module SupportMethod {
+  /** Gets a generator method for the content type of the head of the component stack `c`. */
   GenMethod genMethodForContent(SummaryComponentStack c) {
     result = genMethodFor(any(VoidType v), c)
   }
 
+  /** Gets a generator method for the type `t` and the content type of the head of the component stack `c`. */
   GenMethod genMethodFor(Type t, SummaryComponentStack c) {
     result =
       min(GenMethod g |
@@ -65,10 +72,12 @@ module SupportMethod {
       )
   }
 
+  /** Gets a getter method for the content type of the head of the component stack `c`. */
   GetMethod getMethodForContent(SummaryComponentStack c) {
     result = getMethodFor(any(VoidType v), c)
   }
 
+  /** Gets a getter method for the type `t` and the content type of the head of the component stack `c`. */
   GetMethod getMethodFor(Type t, SummaryComponentStack c) {
     result =
       min(GetMethod g |
@@ -77,10 +86,15 @@ module SupportMethod {
   }
 }
 
+/**
+ * A support method for tests, such as `source()` or `sink()`.
+ */
 bindingset[this]
 abstract class SupportMethod extends string {
+  /** Gets an import that is required for this support method. */
   string getARequiredImport() { none() }
 
+  /** Gets the Java definition of this support method, if one is necessary. */
   string getDefinition() { none() }
 
   /** Gets the priority of this support method. Lower priorities are preferred when multiple support methods apply. */
@@ -96,18 +110,27 @@ abstract class SupportMethod extends string {
   string getCsvModel() { none() }
 }
 
+/**
+ * The method `source()` which is considered as the source for the flow test.
+ */
 class SourceMethod extends SupportMethod {
   SourceMethod() { this = "source" }
 
   override string getDefinition() { result = "Object source() { return null; }" }
 }
 
+/**
+ * The method `sink()` which is considered as the sink for the flow test.
+ */
 class SinkMethod extends SupportMethod {
   SinkMethod() { this = "sink" }
 
   override string getDefinition() { result = "void sink(Object o) { }" }
 }
 
+/**
+ * A method for getting content from a type.
+ */
 bindingset[this]
 abstract class GetMethod extends SupportMethod {
   /**
@@ -245,6 +268,9 @@ private class ArrayGetMethod extends GetMethod {
   override string getCall(string arg) { result = "getArrayElement(" + arg + ")" }
 }
 
+/**
+ * A method for generating a type with content.
+ */
 bindingset[this]
 abstract class GenMethod extends SupportMethod {
   /**

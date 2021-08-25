@@ -1,3 +1,7 @@
+/**
+ * Classes pertaining to test cases themselves.
+ */
+
 import java
 private import semmle.code.java.dataflow.internal.DataFlowUtil
 private import semmle.code.java.dataflow.ExternalFlow
