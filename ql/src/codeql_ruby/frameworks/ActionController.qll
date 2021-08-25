@@ -64,20 +64,14 @@ class ActionControllerActionMethod extends Method, HTTP::Server::RequestHandler:
 
   /**
    * Establishes a mapping between a method within the file
-   * `<source_prefix>/app/controllers/<subpath>_controller.rb` and the
+   * `<sourcePrefix>app/controllers/<subpath>_controller.rb` and the
    * corresponding template file at
-   * `<source_prefix>/app/views/<subpath>/<method_name>.html.erb`.
+   * `<sourcePrefix>app/views/<subpath>/<method_name>.html.erb`.
    */
   // TODO: result should be `ErbFile`
   File getDefaultTemplateFile() {
-    exists(string templatePath, string sourcePrefix, string subPath, string controllerPath |
-      controllerPath = this.getLocation().getFile().getAbsolutePath() and
-      sourcePrefix = controllerPath.regexpCapture("^(.*)/app/controllers/.*$", 1) and
-      controllerPath = sourcePrefix + "/app/controllers/" + subPath + "_controller.rb" and
-      templatePath = sourcePrefix + "/app/views/" + subPath + "/" + this.getName() + ".html.erb"
-    |
-      result.getAbsolutePath() = templatePath
-    )
+    controllerTemplatesFolder(this.getControllerClass(), result.getParentContainer()) and
+    result.getBaseName() = this.getName() + ".html.erb"
   }
 
   // params come from `params` method rather than a method parameter
@@ -183,13 +177,31 @@ class ActionControllerHelperMethod extends Method {
 /**
  * Gets an `ActionControllerControllerClass` associated with the given `ErbFile`
  * according to Rails path conventions.
+ * For instance, a template file at `app/views/foo/bar/baz.html.erb` will be
+ * mapped to a controller class in `app/controllers/foo/bar/baz_controller.rb`,
+ * if such a controller class exists.
  */
 // TODO: parameter should be `ErbFile`
 ActionControllerControllerClass getAssociatedControllerClass(File f) {
-  exists(string localPrefix, string sourcePrefix, string controllerPath |
-    controllerPath = result.getLocation().getFile().getAbsolutePath() and
-    sourcePrefix = f.getAbsolutePath().regexpCapture("^(.*)/app/views/(?:.*?)/(?:[^/]*)$", 1) and
-    localPrefix = f.getAbsolutePath().regexpCapture(".*/app/views/(.*?)/(?:[^/]*)$", 1) and
-    controllerPath = sourcePrefix + "/app/controllers/" + localPrefix + "_controller.rb"
+  controllerTemplatesFolder(result, f.getParentContainer())
+}
+
+/**
+ * Holds if `templatesFolder` is in the correct location to contain template
+ * files "belonging" to the given `ActionControllerControllerClass`, according
+ * to Rails conventions.
+ *
+ * In particular, this means that an action method in `cls` will by default
+ * render a correspondingly named template file within `templatesFolder`.
+ */
+predicate controllerTemplatesFolder(ActionControllerControllerClass cls, Folder templatesFolder) {
+  exists(string templatesPath, string sourcePrefix, string subPath, string controllerPath |
+    controllerPath = cls.getLocation().getFile().getRelativePath() and
+    templatesPath = templatesFolder.getRelativePath() and
+    // `sourcePrefix` is either a prefix path ending in a slash, or empty if
+    // the rails app is at the source root
+    sourcePrefix = [controllerPath.regexpCapture("^(.*/)app/controllers/(?:.*?)/(?:[^/]*)$", 1), ""] and
+    controllerPath = sourcePrefix + "app/controllers/" + subPath + "_controller.rb" and
+    templatesPath = sourcePrefix + "app/views/" + subPath
   )
 }

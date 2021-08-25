@@ -18,3 +18,7 @@ query predicate actionControllerHelperMethods(ActionControllerHelperMethod m) { 
 query predicate getAssociatedControllerClasses(ActionControllerControllerClass cls, File f) {
   cls = getAssociatedControllerClass(f)
 }
+
+query predicate controllerTemplatesFolders(ActionControllerControllerClass cls, Folder f) {
+  controllerTemplatesFolder(cls, f)
+}
