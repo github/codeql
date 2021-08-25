@@ -58,11 +58,16 @@ query string noTestCaseGenerated() {
 }
 
 /**
+ * Gets a valid test case, i.e. one that has a test snippet.
+ */
+TestCase getAValidTestCase() { exists(result.getATestSnippetForRow(_)) }
+
+/**
  * Returns an import statement to include in the test case header.
  */
 string getAnImportStatement() {
   exists(RefType t |
-    t = any(TestCase tc).getADesiredImport() and
+    t = getAValidTestCase().getADesiredImport() and
     isImportable(t) and
     t.getPackage().getName() != "java.lang"
   |
@@ -76,7 +81,7 @@ string getAnImportStatement() {
 SupportMethod getASupportMethod() {
   result instanceof SourceMethod or
   result instanceof SinkMethod or
-  result = any(TestCase tc).getASupportMethod()
+  result = getAValidTestCase().getASupportMethod()
 }
 
 /**
