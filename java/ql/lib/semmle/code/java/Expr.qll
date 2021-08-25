@@ -454,10 +454,10 @@ class ArrayInit extends Expr, @arrayinit {
    * expression representing an element of the array,
    * depending on the level of nesting.
    */
-  Expr getAnInit() { result.getParent() = this }
+  Expr getAnInit() { result.getParent() = this and not result.isNthChildOf(this, -1) }
 
   /** Gets the initializer occurring at the specified (zero-based) position. */
-  Expr getInit(int index) { result = this.getAnInit() and result.getIndex() = index }
+  Expr getInit(int index) { result = this.getAnInit() and result.getIndex() = index and index >= 0 }
 
   /**
    * Gets the number of expressions in this initializer, that is, the size the
