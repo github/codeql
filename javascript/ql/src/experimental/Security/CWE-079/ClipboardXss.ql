@@ -25,7 +25,7 @@ SourceNode clipboardDataTransferSource(TypeTracker t) {
   t.start() and
   exists(DataFlow::PropRead pr | pr.getPropertyName() = "clipboardData" and pr.flowsTo(result))
   or
-  exists(TypeTracker t2 | result = clipboardDataSource(t2).track(t2, t))
+  exists(TypeTracker t2 | result = clipboardDataTransferSource(t2).track(t2, t))
 }
 
 SourceNode clipboardDataTransferSource() {
