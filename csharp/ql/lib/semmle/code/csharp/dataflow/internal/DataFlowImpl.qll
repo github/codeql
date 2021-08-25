@@ -1226,11 +1226,10 @@ private module Stage2 {
   pragma[nomagic]
   private predicate callMayFlowThroughFwd(DataFlowCall call, Configuration config) {
     exists(Ap argAp0, NodeEx out, Cc cc, ApOption argAp, Ap ap |
-      fwdFlow(out, pragma[only_bind_into](cc), pragma[only_bind_into](argAp), ap,
-        pragma[only_bind_into](config)) and
+      fwdFlow(pragma[only_bind_out](out), pragma[only_bind_out](cc), pragma[only_bind_out](argAp),
+        pragma[only_bind_out](ap), pragma[only_bind_out](config)) and
       fwdFlowOutFromArg(call, out, argAp0, ap, config) and
-      fwdFlowIsEntered(call, pragma[only_bind_into](cc), pragma[only_bind_into](argAp), argAp0,
-        pragma[only_bind_into](config))
+      fwdFlowIsEntered(call, cc, argAp, argAp0, config)
     )
   }
 
@@ -2022,11 +2021,10 @@ private module Stage3 {
   pragma[nomagic]
   private predicate callMayFlowThroughFwd(DataFlowCall call, Configuration config) {
     exists(Ap argAp0, NodeEx out, Cc cc, ApOption argAp, Ap ap |
-      fwdFlow(out, pragma[only_bind_into](cc), pragma[only_bind_into](argAp), ap,
-        pragma[only_bind_into](config)) and
+      fwdFlow(pragma[only_bind_out](out), pragma[only_bind_out](cc), pragma[only_bind_out](argAp),
+        pragma[only_bind_out](ap), pragma[only_bind_out](config)) and
       fwdFlowOutFromArg(call, out, argAp0, ap, config) and
-      fwdFlowIsEntered(call, pragma[only_bind_into](cc), pragma[only_bind_into](argAp), argAp0,
-        pragma[only_bind_into](config))
+      fwdFlowIsEntered(call, cc, argAp, argAp0, config)
     )
   }
 
@@ -2842,11 +2840,10 @@ private module Stage4 {
   pragma[nomagic]
   private predicate callMayFlowThroughFwd(DataFlowCall call, Configuration config) {
     exists(Ap argAp0, NodeEx out, Cc cc, ApOption argAp, Ap ap |
-      fwdFlow(out, pragma[only_bind_into](cc), pragma[only_bind_into](argAp), ap,
-        pragma[only_bind_into](config)) and
+      fwdFlow(pragma[only_bind_out](out), pragma[only_bind_out](cc), pragma[only_bind_out](argAp),
+        pragma[only_bind_out](ap), pragma[only_bind_out](config)) and
       fwdFlowOutFromArg(call, out, argAp0, ap, config) and
-      fwdFlowIsEntered(call, pragma[only_bind_into](cc), pragma[only_bind_into](argAp), argAp0,
-        pragma[only_bind_into](config))
+      fwdFlowIsEntered(call, cc, argAp, argAp0, config)
     )
   }
 
