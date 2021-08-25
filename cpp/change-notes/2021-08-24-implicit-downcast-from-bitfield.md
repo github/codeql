@@ -1,3 +1,2 @@
 lgtm,codescanning
-* Extend query `ImplicitDowncastFromBitfield` to detect implicit
-  downcast on references
+* The query `cpp/implicit-bitfield-downcast` now accounts for C++ reference types, which leads to more true positive results.
