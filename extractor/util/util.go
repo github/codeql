@@ -32,19 +32,11 @@ func Getenv(key string, aliases ...string) string {
 }
 
 // runGoList is a helper function for running go list with format `format` and flags `flags` on
-// package `pkgpath`.
-func runGoList(format string, pkgpath string, flags ...string) (string, error) {
-	return runGoListWithEnv(format, []string{pkgpath}, nil, flags...)
-}
-
-// runGoListWithEnv is a helper function for running go list with format `format` and flags `flags`
-// on pattern `patterns`, with environment variables `additionalEnv`, which is a slice of strings in
-// the format `NAME=VALUE`.
-func runGoListWithEnv(format string, patterns []string, additionalEnv []string, flags ...string) (string, error) {
+// the packages defined by `patterns`.
+func runGoList(format string, patterns []string, flags ...string) (string, error) {
 	args := append([]string{"list", "-e", "-f", format}, flags...)
 	args = append(args, patterns...)
 	cmd := exec.Command("go", args...)
-	cmd.Env = append(os.Environ(), additionalEnv...)
 	log.Printf("Running cmd: %s", cmd.String())
 	out, err := cmd.Output()
 
@@ -78,7 +70,7 @@ func GetPkgsInfo(patterns []string, includingDeps bool, flags ...string) (map[st
 	}
 
 	// using -json overrides -f format
-	output, err := runGoListWithEnv("", patterns, []string{"GO111MODULE=on"}, append(flags, "-json")...)
+	output, err := runGoList("", patterns, append(flags, "-json")...)
 	if err != nil {
 		return nil, err
 	}
@@ -125,7 +117,7 @@ func GetPkgsInfo(patterns []string, includingDeps bool, flags ...string) (map[st
 // DepErrors checks there are any errors resolving dependencies for `pkgpath`. It passes the `go
 // list` command the flags specified by `flags`.
 func DepErrors(pkgpath string, flags ...string) bool {
-	out, err := runGoList("{{if .DepsErrors}}{{else}}error{{end}}", pkgpath, flags...)
+	out, err := runGoList("{{if .DepsErrors}}{{else}}error{{end}}", []string{pkgpath}, flags...)
 	if err != nil {
 		// if go list failed, assume dependencies are broken
 		return false
