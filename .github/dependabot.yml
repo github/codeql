@@ -1,0 +1,18 @@
+version: 2
+updates:
+  - package-ecosystem: "cargo"
+    directory: "/node-types"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "cargo"
+    directory: "/generator"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "cargo"
+    directory: "/extractor"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "cargo"
+    directory: "/autobuilder"
+    schedule:
+      interval: "daily"
