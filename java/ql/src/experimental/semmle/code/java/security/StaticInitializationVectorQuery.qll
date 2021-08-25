@@ -161,8 +161,4 @@ class StaticInitializationVectorConfig extends TaintTracking::Configuration {
   override predicate isAdditionalTaintStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
     createInitializationVectorSpecStep(fromNode, toNode)
   }
-
-  override predicate isSanitizer(DataFlow::Node node) {
-    exists(ArrayUpdate update | update.getArray() = node.asExpr())
-  }
 }
