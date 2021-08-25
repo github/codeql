@@ -13,7 +13,6 @@
 import ruby
 import codeql.ruby.ast.internal.Module
 import codeql.ruby.dataflow.SSA
-import codeql.ruby.dataflow.internal.DataFlowDispatch
 
 from DefLoc loc, Expr src, Expr target, string kind
 where
@@ -38,9 +37,7 @@ newtype DefLoc =
   /** A constant, module or class. */
   ConstantDefLoc(ConstantReadAccess read, ConstantWriteAccess write) { write = definitionOf(read) } or
   /** A method call. */
-  MethodLoc(MethodCall call, Method meth) {
-    exists(DataFlowCall c | c.getExpr() = call and c.getTarget() = meth)
-  } or
+  MethodLoc(MethodCall call, Method meth) { meth = call.getATarget() } or
   /** A local variable. */
   LocalVariableLoc(VariableReadAccess read, VariableWriteAccess write) {
     exists(Ssa::WriteDefinition w |

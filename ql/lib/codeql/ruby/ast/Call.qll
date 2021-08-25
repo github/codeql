@@ -53,10 +53,8 @@ class Call extends Expr, TCall {
 
   /** Gets a potential target of this call, if any. */
   final Callable getATarget() {
-    exists(DataFlowCall c | this = c.getExpr() |
-      result = viableCallable(c)
-      or
-      result = viableCallableLambda(c, _)
+    exists(DataFlowCall c | this = c.asCall().getExpr() |
+      TCfgScope(result) = [viableCallable(c), viableCallableLambda(c, _)]
     )
   }
 

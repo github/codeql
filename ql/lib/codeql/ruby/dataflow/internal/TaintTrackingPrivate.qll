@@ -2,6 +2,7 @@ private import ruby
 private import TaintTrackingPublic
 private import codeql.ruby.CFG
 private import codeql.ruby.DataFlow
+private import FlowSummaryImpl as FlowSummaryImpl
 
 /**
  * Holds if `node` should be a sanitizer in all global taint flow configurations
@@ -35,4 +36,6 @@ predicate defaultAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nod
   or
   // element reference from nodeFrom
   nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::ElementReferenceCfgNode).getReceiver()
+  or
+  FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, false)
 }
