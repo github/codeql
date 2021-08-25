@@ -9,6 +9,7 @@ private import codeql.ruby.CFG
 private import codeql.ruby.DataFlow
 private import codeql.ruby.Frameworks
 private import codeql.ruby.dataflow.RemoteFlowSources
+private import codeql.ruby.ApiGraphs
 
 /**
  * A data-flow node that executes SQL statements.
@@ -310,5 +311,38 @@ module HTTP {
         abstract DataFlow::Node getRedirectLocation();
       }
     }
+  }
+}
+
+/**
+ * A data flow node that executes an operating system command,
+ * for instance by spawning a new process.
+ */
+class SystemCommandExecution extends DataFlow::Node {
+  SystemCommandExecution::Range range;
+
+  SystemCommandExecution() { this = range }
+
+  /** Holds if a shell interprets `arg`. */
+  predicate isShellInterpreted(DataFlow::Node arg) { range.isShellInterpreted(arg) }
+
+  /** Gets an argument to this execution that specifies the command or an argument to it. */
+  DataFlow::Node getAnArgument() { result = range.getAnArgument() }
+}
+
+module SystemCommandExecution {
+  /**
+   * A data flow node that executes an operating system command, for instance by spawning a new
+   * process.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `SystemCommandExecution` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /** Gets an argument to this execution that specifies the command or an argument to it. */
+    abstract DataFlow::Node getAnArgument();
+
+    /** Holds if a shell interprets `arg`. */
+    predicate isShellInterpreted(DataFlow::Node arg) { none() }
   }
 }
