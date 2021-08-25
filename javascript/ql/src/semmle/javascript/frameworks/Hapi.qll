@@ -31,6 +31,17 @@ module Hapi {
      * Gets the parameter of the route handler that contains the request object.
      */
     Parameter getRequestParameter() { result = function.getParameter(0) }
+
+    /**
+     * Gets the parameter of the route handler that contains the "request toolkit",
+     * usually named `h`.
+     */
+    Parameter getRequestToolkitParameter() { result = function.getParameter(1) }
+
+    /**
+     * Gets a source node referring to the request toolkit parameter, usually named `h`.
+     */
+    DataFlow::SourceNode getRequestToolkit() { result = getRequestToolkitParameter().flow() }
   }
 
   /**
@@ -236,5 +247,18 @@ module Hapi {
   private class TrackedRouteHandlerCandidateWithSetup extends RouteHandler,
     HTTP::Servers::StandardRouteHandler, DataFlow::FunctionNode {
     TrackedRouteHandlerCandidateWithSetup() { this = any(RouteSetup s).getARouteHandler() }
+  }
+
+  /**
+   * A call to `h.view('file', { ... })` seen as a template instantiation.
+   */
+  private class ViewCall extends Templating::TemplateInstantiation::Range, DataFlow::CallNode {
+    ViewCall() { this = any(RouteHandler rh).getRequestToolkit().getAMethodCall("view") }
+
+    override DataFlow::SourceNode getOutput() { none() }
+
+    override DataFlow::Node getTemplateFileNode() { result = getArgument(0) }
+
+    override DataFlow::Node getTemplateParamsNode() { result = getArgument(1) }
   }
 }

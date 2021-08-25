@@ -374,7 +374,8 @@ DataFlow::SourceNode globalObjectRef() {
   // top-level `this`
   exists(StmtContainer sc |
     sc = result.(ThisNode).getBindingContainer() and
-    not sc instanceof Function
+    not sc instanceof Function and
+    not sc instanceof Templating::TemplateTopLevel
   )
   or
   // DOM

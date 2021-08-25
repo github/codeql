@@ -230,46 +230,11 @@ module Angular2 {
     DomAdapterLocation() { this = domAdapter().getAMethodCall("getLocation") }
   }
 
-  /**
-   * A reference to a pipe function, occurring in an Angular pipe expression
-   * that has been desugared to a function call.
-   *
-   * For example, the expression `x | f: y` is desugared to `f(x, y)` where
-   * `f` is a `PipeRefExpr`.
-   */
-  class PipeRefExpr extends Expr, @angular_pipe_ref {
-    /** Gets the identifier node naming the pipe. */
-    Identifier getIdentifier() { result = getChildExpr(0) }
+  class PipeRefExpr = Templating::PipeRefExpr;
 
-    /** Gets the name of the pipe being referenced. */
-    string getName() { result = getIdentifier().getName() }
+  class TemplateVarRefExpr = Templating::TemplateVarRefExpr;
 
-    override string getAPrimaryQlClass() { result = "Angular2::PipeRefExpr" }
-  }
-
-  /**
-   * A reference to a variable in a template expression, corresponding
-   * to a property on the component class.
-   */
-  class TemplateVarRefExpr extends Expr {
-    TemplateVarRefExpr() { this = any(TemplateTopLevel tl).getScope().getAVariable().getAnAccess() }
-  }
-
-  /** The top-level containing an Angular expression. */
-  class TemplateTopLevel extends TopLevel, @angular_template_toplevel {
-    /** Gets the expression in this top-level. */
-    Expr getExpression() { result = getChildStmt(0).(ExprStmt).getExpr() }
-
-    /** Gets the data flow node representing the initialization of the given variable in this scope. */
-    DataFlow::Node getVariableInit(string name) {
-      result = DataFlow::ssaDefinitionNode(SSA::implicitInit(getScope().getVariable(name)))
-    }
-
-    /** Gets a data flow node corresponding to a use of the given template variable within this top-level. */
-    DataFlow::SourceNode getAVariableUse(string name) {
-      result = getScope().getVariable(name).getAnAccess().flow()
-    }
-  }
+  class TemplateTopLevel = Templating::TemplateTopLevel;
 
   /** The RHS of a `templateUrl` property, seen as a path expression. */
   private class TemplateUrlPath extends PathExpr {
@@ -493,19 +458,10 @@ module Angular2 {
     }
   }
 
-  /**
-   * Gets an invocation of the pipe of the given name.
-   *
-   * For example, the call generated from `items | async` would be found by `getAPipeCall("async")`.
-   */
-  DataFlow::CallNode getAPipeCall(string name) {
-    result.getCalleeNode().asExpr().(PipeRefExpr).getName() = name
-  }
-
   private class BuiltinPipeStep extends TaintTracking::SharedTaintStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       exists(DataFlow::CallNode call, string name |
-        call = getAPipeCall(name) and
+        call = Templating::getAPipeCall(name) and
         succ = call
       |
         exists(int i | pred = call.getArgument(i) |

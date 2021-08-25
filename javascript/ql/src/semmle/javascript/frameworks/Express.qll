@@ -972,4 +972,20 @@ module Express {
             .getParameter(0)
     }
   }
+
+  /**
+   * A call to the Express `res.render()` method, seen as a template instantiation.
+   */
+  private class RenderCallAsTemplateInstantiation extends Templating::TemplateInstantiation::Range,
+    DataFlow::CallNode {
+    RenderCallAsTemplateInstantiation() {
+      this = any(ResponseSource res).ref().getAMethodCall("render")
+    }
+
+    override DataFlow::Node getTemplateFileNode() { result = getArgument(0) }
+
+    override DataFlow::Node getTemplateParamsNode() { result = getArgument(1) }
+
+    override DataFlow::SourceNode getOutput() { result = getCallback(2).getParameter(1) }
+  }
 }

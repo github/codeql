@@ -1268,6 +1268,22 @@ module DataFlow {
     override string toString() { result = variable.getName() }
   }
 
+  /** A data flow node representing the value plugged into a template tag. */
+  class TemplatePlaceholderTagNode extends Node, TTemplatePlaceholderTag {
+    /** Gets the template tag represented by this data flow node. */
+    Templating::TemplatePlaceholderTag getTag() { this = TTemplatePlaceholderTag(result) }
+
+    override BasicBlock getBasicBlock() { none() }
+
+    override predicate hasLocationInfo(
+      string filepath, int startline, int startcolumn, int endline, int endcolumn
+    ) {
+      getTag().getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    }
+
+    override string toString() { result = getTag().toString() }
+  }
+
   /**
    * INTERNAL. DO NOT USE.
    *
@@ -1664,6 +1680,9 @@ module DataFlow {
       or
       (e instanceof AwaitExpr or e instanceof DynamicImportExpr) and
       cause = "await"
+      or
+      e instanceof GeneratedCodeExpr and
+      cause = "eval" // we use 'eval' here to represent code generation more broadly
     )
     or
     nd instanceof TExceptionalInvocationReturnNode and cause = "call"

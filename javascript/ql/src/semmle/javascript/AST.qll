@@ -308,7 +308,7 @@ class CodeInAttribute extends TopLevel {
   CodeInAttribute() {
     this instanceof @event_handler or
     this instanceof @javascript_url or
-    this instanceof @angular_template_toplevel
+    this instanceof @template_toplevel
   }
 }
 

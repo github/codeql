@@ -25,6 +25,8 @@ class JsonStringifyCall extends DataFlow::CallNode {
       callee = DataFlow::moduleMember("util", "inspect") or
       callee = DataFlow::moduleImport(["pretty-format", "object-inspect"])
     )
+    or
+    this = Templating::getAPipeCall(["json", "dump"])
   }
 
   /**

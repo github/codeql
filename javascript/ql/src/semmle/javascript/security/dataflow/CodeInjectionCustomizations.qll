@@ -52,6 +52,73 @@ module CodeInjection {
   }
 
   /**
+   * A template tag occuring in JS code, viewed as a code injection sink.
+   */
+  class TemplateTagInScriptSink extends Sink {
+    TemplateTagInScriptSink() {
+      exists(Templating::TemplatePlaceholderTag tag |
+        this = tag.asDataFlowNode() and
+        tag.isEscapingInterpolation() // to avoid double reporting, raw interpolation is only flagged by the XSS query
+      |
+        // In an attribute, HTML entities are expanded prior to JS parsing, so the escaping performed by the
+        // templating engine has no effect against code injection.
+        tag.isInCodeAttribute()
+        or
+        // In a script tag, HTML entities are not expanded.
+        // To reduce noise, we filter out a common pattern where a template tag occurs in a string literal,
+        // since HTML escaping prevents breaking out of the string literal.
+        //
+        //    var foo = "<%= foo %>";
+        //
+        // However, we still flag the special case where multiple such strings occur on the same line, as injection can sometimes
+        // we obtained by injecting a backslash character at the end of the first one:
+        //
+        //    init("<%= foo %">, "<%= bar %>");
+        //
+        // For example, setting foo to `\` and bar to `, alert(1));//`, code injection is obtained.
+        tag.isInScriptTag() and
+        not tag.getEnclosingExpr() =
+          getLastStringWithPlaceholderOnLine(tag.getLocation().getFile(),
+            tag.getLocation().getStartLine())
+      )
+    }
+  }
+
+  /** Gets the last string literal containing a template placeholder on the given line. */
+  pragma[nomagic]
+  private StringLiteral getLastStringWithPlaceholderOnLine(File file, int line) {
+    result =
+      max(StringLiteral lit, Location loc |
+        loc = lit.getLocation() and
+        loc.getFile() = file and
+        loc.getStartLine() = line and
+        lit =
+          any(Templating::TemplatePlaceholderTag tag | tag.isEscapingInterpolation())
+              .getEnclosingExpr()
+      |
+        lit order by loc.getStartColumn()
+      )
+  }
+
+  /**
+   * A server-side template tag occurring in the context of another template language.
+   */
+  class TemplateTagInNestedTemplateContext extends Sink {
+    string templateType;
+
+    TemplateTagInNestedTemplateContext() {
+      exists(Templating::TemplatePlaceholderTag tag |
+        tag.isInNestedTemplateContext(templateType) and
+        this = tag.asDataFlowNode()
+      )
+    }
+
+    override string getMessageSuffix() {
+      result = "here and is interpreted by " + templateType + ", which may evaluate it as code"
+    }
+  }
+
+  /**
    * Gets a reference to a `<script />` tag created using `document.createElement`.
    */
   private DataFlow::SourceNode scriptTag(DataFlow::TypeTracker t) {

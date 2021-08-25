@@ -149,6 +149,7 @@ public class ExprKinds {
     exprKinds.put("ExternalModuleReference", 98);
     exprKinds.put("NonNullAssertion", 105);
     exprKinds.put("AngularPipeRef", 119);
+    exprKinds.put("GeneratedCodeExpr", 120);
   }
 
   private static final Map<IdContext, Integer> idKinds =

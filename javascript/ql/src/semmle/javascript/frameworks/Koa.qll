@@ -112,7 +112,7 @@ module Koa {
      */
     RouteHandler getRouteHandler() { result = rh }
 
-    predicate flowsTo(DataFlow::Node nd) { ref(DataFlow::TypeTracker::end()).flowsTo(nd) }
+    predicate flowsTo(DataFlow::Node nd) { ref().flowsTo(nd) }
 
     private DataFlow::SourceNode ref(DataFlow::TypeTracker t) {
       t.start() and
@@ -120,6 +120,9 @@ module Koa {
       or
       exists(DataFlow::TypeTracker t2 | result = ref(t2).track(t2, t))
     }
+
+    /** Gets a source node that refers to this context object. */
+    DataFlow::SourceNode ref() { result = ref(DataFlow::TypeTracker::end()) }
   }
 
   /**
@@ -423,5 +426,24 @@ module Koa {
     override Expr getUrlArgument() { result = getArgument(0) }
 
     override RouteHandler getRouteHandler() { result = rh }
+  }
+
+  /**
+   * A call to `ctx.render('file', { ... })`, seen as a template instantiation.
+   */
+  private class RenderCall extends Templating::TemplateInstantiation::Range, DataFlow::CallNode {
+    ContextSource ctx;
+
+    RenderCall() { this = ctx.ref().getAMethodCall("render") }
+
+    override DataFlow::SourceNode getOutput() { none() }
+
+    override DataFlow::Node getTemplateFileNode() { result = getArgument(0) }
+
+    override DataFlow::Node getTemplateParamsNode() {
+      result = getArgument(1)
+      or
+      result = ctx.ref().getAPropertyReference("state")
+    }
   }
 }
