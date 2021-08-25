@@ -10,6 +10,9 @@ private predicate initializedWithConstants(ArrayCreationExpr array) {
   not exists(array.getInit())
   or
   // creating a multidimensional array with an initializer like `{ new byte[8], new byte[16] }`
+  // This works around https://github.com/github/codeql/issues/6552 -- change me once there is
+  // a better way to distinguish nested initializers that create zero-filled arrays 
+  // (e.g. `new byte[1]`) from those with an initializer list (`new byte[] { 1 }` or just `{ 1 }`)
   array.getInit().getAnInit().getAChildExpr() instanceof IntegerLiteral
   or
   // creating an array wit an initializer like `new byte[] { 1, 2 }`
@@ -28,7 +31,7 @@ private class StaticByteArrayCreation extends ArrayCreationExpr {
   }
 }
 
-/** Defines a sub-set of expressions that update an array. */
+/** An expression that updates `array`. */
 private class ArrayUpdate extends Expr {
   Expr array;
 
