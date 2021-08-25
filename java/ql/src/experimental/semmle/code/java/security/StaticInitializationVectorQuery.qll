@@ -36,9 +36,9 @@ private class ArrayUpdate extends Expr {
   Expr array;
 
   ArrayUpdate() {
-    exists(Assignment assign, ArrayAccess arrayAccess | arrayAccess = assign.getDest() |
+    exists(Assignment assign |
       assign = this and
-      arrayAccess.getArray() = array and
+      assign.getDest().(ArrayAccess).getArray() = array and
       not assign.getSource() instanceof CompileTimeConstantExpr
     )
     or
