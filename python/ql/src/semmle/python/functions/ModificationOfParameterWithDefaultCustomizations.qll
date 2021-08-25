@@ -57,33 +57,51 @@ module ModificationOfParameterWithDefault {
     MutableDefaultValue() { nonEmpty = mutableDefaultValue(this.asCfgNode().(NameNode).getNode()) }
   }
 
-  predicate safe_method(string name) {
-    name = "count" or
-    name = "index" or
-    name = "copy" or
-    name = "get" or
-    name = "has_key" or
-    name = "items" or
-    name = "keys" or
-    name = "values" or
-    name = "iteritems" or
-    name = "iterkeys" or
-    name = "itervalues" or
-    name = "__contains__" or
-    name = "__getitem__" or
-    name = "__getattribute__"
+  /**
+   * A name of a list function that modifies the list.
+   * See https://docs.python.org/3/tutorial/datastructures.html#more-on-lists
+   */
+  string list_modifying_method() {
+    result in ["append", "extend", "insert", "remove", "pop", "clear", "sort", "reverse"]
   }
 
   /**
-   * A mutation is considered a flow sink.
+   * A name of a dict function that modifies the dict.
+   * See https://docs.python.org/3/library/stdtypes.html#dict
+   */
+  string dict_modifying_method() { result in ["clear", "pop", "popitem", "setdefault", "update"] }
+
+  /**
+   * A mutation of the default value is a flow sink.
+   *
+   * Syntactic constructs that modify a list are:
+   * - s[i] = x
+   * - s[i:j] = t
+   * - del s[i:j]
+   * - s[i:j:k] = t
+   * - del s[i:j:k]
+   * - s += t
+   * - s *= n
+   * See https://docs.python.org/3/library/stdtypes.html#mutable-sequence-types
+   *
+   * Syntactic constructs that modify a dictionary are:
+   * - d[key] = value
+   * - del d[key]
+   * - d |= other
+   * See https://docs.python.org/3/library/stdtypes.html#dict
+   *
+   * These are all covered by:
+   * - assignment to a subscript (includes slices)
+   * - deletion of a subscript
+   * - augmented assignment to the value
    */
   class Mutation extends Sink {
     Mutation() {
       exists(AugAssign a | a.getTarget().getAFlowNode() = this.asCfgNode())
       or
-      exists(Call c, Attribute a | c.getFunc() = a |
-        a.getObject().getAFlowNode() = this.asCfgNode() and
-        not safe_method(a.getName())
+      exists(DataFlow::CallCfgNode c, DataFlow::AttrRead a | c.getFunction() = a |
+        a.getObject() = this and
+        a.getAttributeName() in [list_modifying_method(), dict_modifying_method()]
       )
     }
   }
