@@ -58,6 +58,16 @@ module API {
     CallNode getACall() { result = getReturn().getAnImmediateUse() }
 
     /**
+     * Gets a call to the function represented by this API component,
+     * or a promisified version of the function.
+     */
+    CallNode getMaybePromisifiedCall() {
+      result = getACall()
+      or
+      result = Impl::getAPromisifiedInvocation(this, _, _)
+    }
+
+    /**
      * Gets a `new` call to the function represented by this API component.
      */
     NewNode getAnInstantiation() { result = getInstance().getAnImmediateUse() }
@@ -573,10 +583,10 @@ module API {
           ref = pred.getAnInvocation()
           or
           lbl = Label::promised() and
-          PromiseFlow::loadStep(pred, ref, Promises::valueProp())
+          PromiseFlow::loadStep(pred.getALocalUse(), ref, Promises::valueProp())
           or
           lbl = Label::promisedError() and
-          PromiseFlow::loadStep(pred, ref, Promises::errorProp())
+          PromiseFlow::loadStep(pred.getALocalUse(), ref, Promises::errorProp())
         )
         or
         exists(DataFlow::Node def, DataFlow::FunctionNode fn |
@@ -855,10 +865,9 @@ module API {
         succ = MkAsyncFuncResult(f)
       )
       or
-      exists(DataFlow::SourceNode src, int bound, DataFlow::InvokeNode call |
-        use(pred, src) and
+      exists(int bound, DataFlow::InvokeNode call |
         lbl = Label::parameter(bound + call.getNumArgument()) and
-        succ = MkSyntheticCallbackArg(src, bound, call)
+        call = getAPromisifiedInvocation(pred, bound, succ)
       )
     }
 
@@ -870,6 +879,18 @@ module API {
     /** Gets the shortest distance from the root to `nd` in the API graph. */
     cached
     int distanceFromRoot(TApiNode nd) = shortestDistances(MkRoot/0, edge/2)(_, nd, result)
+
+    /**
+     * Gets a call to a promisified function represented by `callee` where
+     * `bound` arguments have been bound.
+     */
+    cached
+    DataFlow::InvokeNode getAPromisifiedInvocation(TApiNode callee, int bound, TApiNode succ) {
+      exists(DataFlow::SourceNode src |
+        Impl::use(callee, src) and
+        succ = Impl::MkSyntheticCallbackArg(src, bound, result)
+      )
+    }
   }
 
   import Label as EdgeLabel
@@ -888,7 +909,8 @@ module API {
 
     InvokeNode() {
       this = callee.getReturn().getAnImmediateUse() or
-      this = callee.getInstance().getAnImmediateUse()
+      this = callee.getInstance().getAnImmediateUse() or
+      this = Impl::getAPromisifiedInvocation(callee, _, _)
     }
 
     /** Gets the API node for the `i`th parameter of this invocation. */
