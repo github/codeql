@@ -153,7 +153,8 @@ public class StaticInitializationVector {
         byte[] randomBytes = new byte[16];
         SecureRandom.getInstanceStrong().nextBytes(randomBytes);
 
-        byte[] iv = Arrays.copyOf(randomBytes, 16);
+        byte[] iv = new byte[16];
+        iv = Arrays.copyOf(randomBytes, 16);
 
         GCMParameterSpec ivSpec = new GCMParameterSpec(128, iv);
         SecretKeySpec keySpec = new SecretKeySpec(key, "AES");
