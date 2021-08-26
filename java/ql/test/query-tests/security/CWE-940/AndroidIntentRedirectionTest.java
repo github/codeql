@@ -56,6 +56,12 @@ public class AndroidIntentRedirectionTest extends Activity {
 
         try {
             {
+                // Delayed cast
+                Object obj = getIntent().getParcelableExtra("forward_intent");
+                Intent fwdIntent = (Intent) obj;
+                startActivity(fwdIntent); // $ hasAndroidIntentRedirection
+            }
+            {
                 Intent fwdIntent = new Intent();
                 fwdIntent.setClassName((Context) null, (String) intent.getExtra("className"));
                 startActivity(fwdIntent); // $ hasAndroidIntentRedirection
@@ -134,11 +140,6 @@ public class AndroidIntentRedirectionTest extends Activity {
             }
             {
                 Intent originalIntent = getIntent();
-                Intent fwdIntent = (Intent) originalIntent.getParcelableExtra("forward_intent");
-                startActivity(originalIntent); // Safe - not an Intent obtained from the Extras
-            }
-            {
-                Intent originalIntent = getIntent();
                 ComponentName cp = new ComponentName(originalIntent.getStringExtra("packageName"),
                         originalIntent.getStringExtra("className"));
                 Intent anotherIntent = new Intent();
@@ -146,10 +147,35 @@ public class AndroidIntentRedirectionTest extends Activity {
                 startActivity(originalIntent); // Safe - not a tainted Intent
             }
             {
-                // Delayed cast
-                Object obj = getIntent().getParcelableExtra("forward_intent");
-                Intent fwdIntent = (Intent) obj;
-                startActivity(fwdIntent); // $ hasAndroidIntentRedirection
+                Intent originalIntent = getIntent();
+                Intent fwdIntent = (Intent) originalIntent.getParcelableExtra("forward_intent");
+                if (originalIntent.getBooleanExtra("use_fwd_intent", false)) {
+                    startActivity(fwdIntent); // $ hasAndroidIntentRedirection
+                } else {
+                    startActivity(originalIntent); // Safe - not an Intent obtained from the Extras
+                }
+            }
+            {
+                Intent originalIntent = getIntent();
+                originalIntent.setClassName(originalIntent.getStringExtra("package_name"),
+                        originalIntent.getStringExtra("class_name"));
+                startActivity(originalIntent); // $ hasAndroidIntentRedirection
+            }
+            {
+                Intent originalIntent = getIntent();
+                originalIntent.setClassName("not_user_provided", "not_user_provided");
+                startActivity(originalIntent); // Safe - component changed but not tainted
+            }
+            {
+                Intent originalIntent = getIntent();
+                Intent fwdIntent;
+                if (originalIntent.getBooleanExtra("use_fwd_intent", false)) {
+                    fwdIntent = (Intent) originalIntent.getParcelableExtra("forward_intent");
+                } else {
+                    fwdIntent = originalIntent;
+                }
+                // Conditionally tainted sinks aren't supported currently
+                startActivity(fwdIntent); // $ MISSING: $hasAndroidIntentRedirection
             }
         } catch (Exception e) {
         }

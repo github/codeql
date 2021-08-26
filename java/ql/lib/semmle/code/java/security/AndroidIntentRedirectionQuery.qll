@@ -2,36 +2,18 @@
 
 import java
 import semmle.code.java.dataflow.FlowSources
+import semmle.code.java.dataflow.DataFlow3
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.TaintTracking2
 import semmle.code.java.security.AndroidIntentRedirection
 
 /**
- * Holds if taint may flow from `source` to `sink` for `IntentRedirectionConfiguration`.
- *
- * It ensures that `ChangeIntentComponent` is an intermediate step in the flow.
- */
-predicate hasIntentRedirectionFlowPath(DataFlow::PathNode source, DataFlow::PathNode sink) {
-  exists(IntentRedirectionConfiguration conf, DataFlow::PathNode intermediate |
-    intermediate.getNode().(ChangeIntentComponent).hasFlowFrom(source.getNode()) and
-    conf.hasFlowPath(intermediate, sink)
-  )
-}
-
-/**
  * A taint tracking configuration for tainted Intents being used to start Android components.
  */
-private class IntentRedirectionConfiguration extends TaintTracking::Configuration {
+class IntentRedirectionConfiguration extends TaintTracking::Configuration {
   IntentRedirectionConfiguration() { this = "IntentRedirectionConfiguration" }
 
-  override predicate isSource(DataFlow::Node source) {
-    exists(ChangeIntentComponent c |
-      c = source
-      or
-      // This is needed for PathGraph to be able to build the full flow
-      c.hasFlowFrom(source)
-    )
-  }
+  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof IntentRedirectionSink }
 
@@ -44,17 +26,48 @@ private class IntentRedirectionConfiguration extends TaintTracking::Configuratio
   }
 }
 
-/** An expression modifying an `Intent` component with tainted data. */
-private class ChangeIntentComponent extends DataFlow::Node {
-  DataFlow::Node src;
+/**
+ * A sanitizer for sinks that receive the original incoming Intent,
+ * since its component cannot be arbitrarily set.
+ */
+private class OriginalIntentSanitizer extends IntentRedirectionSanitizer {
+  OriginalIntentSanitizer() { any(SameIntentBeingRelaunchedConfiguration c).hasFlowTo(this) }
+}
 
-  ChangeIntentComponent() {
-    changesIntentComponent(this.asExpr()) and
-    exists(TaintedIntentComponentConf conf | conf.hasFlow(src, this))
+/**
+ * Data flow configuration used to discard incoming Intents
+ * flowing directly to sinks that start Android components.
+ */
+private class SameIntentBeingRelaunchedConfiguration extends DataFlow3::Configuration {
+  SameIntentBeingRelaunchedConfiguration() { this = "SameIntentBeingRelaunchedConfiguration" }
+
+  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+
+  override predicate isSink(DataFlow::Node sink) { sink instanceof IntentRedirectionSink }
+
+  override predicate isBarrier(DataFlow::Node barrier) {
+    // Don't discard the Intent if its original component is tainted
+    barrier instanceof IntentWithTaintedComponent
   }
 
-  /** Holds if `source` flows to `this`. */
-  predicate hasFlowFrom(DataFlow::Node source) { source = src }
+  override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+    // Intents being built with the copy constructor from the original Intent are discarded too
+    exists(ClassInstanceExpr cie |
+      cie.getConstructedType() instanceof TypeIntent and
+      node1.asExpr() = cie.getArgument(0) and
+      node2.asExpr() = cie
+    )
+  }
+}
+
+/** An `Intent` with a tainted component. */
+private class IntentWithTaintedComponent extends DataFlow::Node {
+  IntentWithTaintedComponent() {
+    exists(IntentSetComponent setExpr, TaintedIntentComponentConf conf |
+      setExpr.getQualifier() = this.asExpr() and
+      conf.hasFlowTo(DataFlow::exprNode(setExpr.getSink()))
+    )
+  }
 }
 
 /**
@@ -65,25 +78,8 @@ private class TaintedIntentComponentConf extends TaintTracking2::Configuration {
 
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  override predicate isSink(DataFlow::Node sink) { changesIntentComponent(sink.asExpr()) }
-}
-
-/** Holds if `expr` modifies the component of an `Intent`. */
-private predicate changesIntentComponent(Expr expr) {
-  any(IntentSetComponent isc).getSink() = expr
-  or
-  // obtaining an arbitrary Intent as a Parcelable extra
-  expr instanceof IntentGetParcelableExtra
-}
-
-/** A call to the method `Intent.getParcelableExtra`. */
-private class IntentGetParcelableExtra extends MethodAccess {
-  IntentGetParcelableExtra() {
-    exists(Method m |
-      this.getMethod() = m and
-      m.getDeclaringType() instanceof TypeIntent and
-      m.hasName("getParcelableExtra")
-    )
+  override predicate isSink(DataFlow::Node sink) {
+    any(IntentSetComponent setComponent).getSink() = sink.asExpr()
   }
 }
 
