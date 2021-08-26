@@ -3,4 +3,4 @@ version: 0.0.2
 suites: codeql-suites
 dependencies:
   codeql/ruby-all: ^0.0.2
-  codeql/suite-helpers: ^0.0.2
+  codeql/suite-helpers: 0.0.2-hotfix.1
