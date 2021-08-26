@@ -43,6 +43,6 @@ jobs:
       - name: Check DB upgrade scripts
         run: |
           echo >empty.trap
-          codeql/codeql dataset import -S ql/src/upgrades/initial/ruby.dbscheme testdb empty.trap
-          codeql/codeql dataset upgrade testdb --additional-packs ql/src/upgrades
-          diff -q testdb/ruby.dbscheme ql/src/ruby.dbscheme
+          codeql/codeql dataset import -S ql/lib/upgrades/initial/ruby.dbscheme testdb empty.trap
+          codeql/codeql dataset upgrade testdb --additional-packs ql/lib/upgrades
+          diff -q testdb/ruby.dbscheme ql/lib/ruby.dbscheme
