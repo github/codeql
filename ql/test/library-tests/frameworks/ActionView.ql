@@ -9,6 +9,4 @@ query predicate renderCalls(RenderCall c) { any() }
 
 query predicate renderToCalls(RenderToCall c) { any() }
 
-query predicate viewComponentClasses(ViewComponentClass cls) { any() }
-
 query predicate linkToCalls(LinkToCall c) { any() }

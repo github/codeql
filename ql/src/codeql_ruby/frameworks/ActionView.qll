@@ -7,9 +7,6 @@ private import codeql_ruby.ast.internal.Module
 private import ActionController
 
 predicate inActionViewContext(AstNode n) {
-  // Within a view component
-  n.getEnclosingModule() instanceof ViewComponentClass
-  or
   // Within a template
   // TODO: n.getLocation().getFile() instanceof ErbFile
   n.getLocation().getFile().getExtension() = "erb"
@@ -120,28 +117,6 @@ abstract class RenderToCall extends MethodCall {
 
 // A call to `render_to` from within a template or view component.
 private class ActionViewRenderToCall extends ActionViewContextCall, RenderToCall { }
-
-private class ViewComponentBaseAccess extends ConstantReadAccess {
-  ViewComponentBaseAccess() {
-    this.getName() = "Base" and
-    this.getScopeExpr().(ConstantAccess).getName() = "ViewComponent"
-  }
-}
-
-/**
- * A class extending `ViewComponent::Base`.
- */
-class ViewComponentClass extends ClassDeclaration {
-  ViewComponentClass() {
-    // class Foo < ViewComponent::Base
-    this.getSuperclassExpr() instanceof ViewComponentBaseAccess
-    or
-    // class Bar < Foo
-    exists(ViewComponentClass other |
-      other.getModule() = resolveScopeExpr(this.getSuperclassExpr())
-    )
-  }
-}
 
 /**
  * A call to the ActionView `link_to` helper method.

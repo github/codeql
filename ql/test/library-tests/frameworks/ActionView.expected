@@ -17,7 +17,5 @@ renderCalls
 | app/views/foo/bars/show.html.erb:31:5:31:89 | call to render |
 renderToCalls
 | app/controllers/foo/bars_controller.rb:10:16:10:97 | call to render_to_string |
-viewComponentClasses
-| app/components/DummyComponent.rb:1:1:2:3 | DummyComponent |
 linkToCalls
 | app/views/foo/bars/show.html.erb:33:5:33:41 | call to link_to |
