@@ -55,6 +55,7 @@ private class SameIntentBeingRelaunchedConfiguration extends DataFlow3::Configur
     exists(ClassInstanceExpr cie |
       cie.getConstructedType() instanceof TypeIntent and
       node1.asExpr() = cie.getArgument(0) and
+      node1.asExpr().getType() instanceof TypeIntent and
       node2.asExpr() = cie
     )
   }

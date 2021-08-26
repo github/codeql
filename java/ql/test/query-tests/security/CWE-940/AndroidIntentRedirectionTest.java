@@ -148,6 +148,11 @@ public class AndroidIntentRedirectionTest extends Activity {
             }
             {
                 Intent originalIntent = getIntent();
+                Intent anotherIntent = new Intent(originalIntent);
+                startActivity(anotherIntent); // Safe - copy constructor from original Intent
+            }
+            {
+                Intent originalIntent = getIntent();
                 Intent fwdIntent = (Intent) originalIntent.getParcelableExtra("forward_intent");
                 if (originalIntent.getBooleanExtra("use_fwd_intent", false)) {
                     startActivity(fwdIntent); // $ hasAndroidIntentRedirection
