@@ -3,7 +3,7 @@
 set -eu
 
 if [ "${CODEQL_EXTRACTOR_GO_EXTRACT_HTML:-yes}" != "no" ]; then
-  "$CODEQL_DIST/codeql" database index-files \
+  CODEQL_REDUCE_FILES_FOLDERS_RELATIONS=true "$CODEQL_DIST/codeql" database index-files \
                         --working-dir=. \
                         --include-extension=.htm \
                         --include-extension=.html \
