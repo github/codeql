@@ -11,7 +11,7 @@ private predicate initializedWithConstants(ArrayCreationExpr array) {
   or
   // creating a multidimensional array with an initializer like `{ new byte[8], new byte[16] }`
   // This works around https://github.com/github/codeql/issues/6552 -- change me once there is
-  // a better way to distinguish nested initializers that create zero-filled arrays 
+  // a better way to distinguish nested initializers that create zero-filled arrays
   // (e.g. `new byte[1]`) from those with an initializer list (`new byte[] { 1 }` or just `{ 1 }`)
   array.getInit().getAnInit().getAChildExpr() instanceof IntegerLiteral
   or
@@ -85,9 +85,7 @@ private class ArrayUpdateConfig extends TaintTracking2::Configuration {
 private class StaticInitializationVectorSource extends DataFlow::Node {
   StaticInitializationVectorSource() {
     exists(StaticByteArrayCreation array | array = this.asExpr() |
-      not exists(ArrayUpdate update, ArrayUpdateConfig config |
-        config.hasFlow(DataFlow2::exprNode(array), DataFlow2::exprNode(update.getArray()))
-      )
+      not exists(ArrayUpdateConfig config | config.hasFlow(DataFlow2::exprNode(array), _))
     )
   }
 }
