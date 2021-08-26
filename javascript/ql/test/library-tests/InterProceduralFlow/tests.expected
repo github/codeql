@@ -11,7 +11,10 @@ dataFlow
 | async.js:79:16:79:23 | "source" | async.js:80:14:80:36 | (await  ... ce))).p |
 | async.js:79:16:79:23 | "source" | async.js:92:15:92:30 | await (getP(o3)) |
 | async.js:96:18:96:25 | "source" | async.js:101:15:101:27 | await readP() |
-| call-apply.js:13:14:13:21 | "source" | call-apply.js:15:13:15:39 | foo1.ca ... ce, "") |
+| call-apply.js:18:14:18:21 | "source" | call-apply.js:20:13:20:39 | foo1.ca ... ce, "") |
+| call-apply.js:18:14:18:21 | "source" | call-apply.js:23:13:23:42 | foo1.ap ... e, ""]) |
+| call-apply.js:18:14:18:21 | "source" | call-apply.js:26:13:26:36 | foo1_ap ... e, ""]) |
+| call-apply.js:18:14:18:21 | "source" | call-apply.js:29:13:29:35 | foo1_ca ... e, ""]) |
 | callback.js:16:14:16:21 | "source" | callback.js:13:14:13:14 | x |
 | callback.js:17:15:17:23 | "source2" | callback.js:13:14:13:14 | x |
 | callback.js:27:15:27:23 | "source3" | callback.js:13:14:13:14 | x |
@@ -94,7 +97,11 @@ taintTracking
 | async.js:79:16:79:23 | "source" | async.js:80:14:80:36 | (await  ... ce))).p |
 | async.js:79:16:79:23 | "source" | async.js:92:15:92:30 | await (getP(o3)) |
 | async.js:96:18:96:25 | "source" | async.js:101:15:101:27 | await readP() |
-| call-apply.js:13:14:13:21 | "source" | call-apply.js:15:13:15:39 | foo1.ca ... ce, "") |
+| call-apply.js:18:14:18:21 | "source" | call-apply.js:20:13:20:39 | foo1.ca ... ce, "") |
+| call-apply.js:18:14:18:21 | "source" | call-apply.js:23:13:23:42 | foo1.ap ... e, ""]) |
+| call-apply.js:18:14:18:21 | "source" | call-apply.js:26:13:26:36 | foo1_ap ... e, ""]) |
+| call-apply.js:18:14:18:21 | "source" | call-apply.js:29:13:29:35 | foo1_ca ... e, ""]) |
+| call-apply.js:18:14:18:21 | "source" | call-apply.js:30:13:30:35 | foo1_ca ... ource]) |
 | callback.js:16:14:16:21 | "source" | callback.js:13:14:13:14 | x |
 | callback.js:17:15:17:23 | "source2" | callback.js:13:14:13:14 | x |
 | callback.js:27:15:27:23 | "source3" | callback.js:13:14:13:14 | x |
@@ -200,7 +207,10 @@ germanFlow
 | async.js:79:16:79:23 | "source" | async.js:80:14:80:36 | (await  ... ce))).p |
 | async.js:79:16:79:23 | "source" | async.js:92:15:92:30 | await (getP(o3)) |
 | async.js:96:18:96:25 | "source" | async.js:101:15:101:27 | await readP() |
-| call-apply.js:13:14:13:21 | "source" | call-apply.js:15:13:15:39 | foo1.ca ... ce, "") |
+| call-apply.js:18:14:18:21 | "source" | call-apply.js:20:13:20:39 | foo1.ca ... ce, "") |
+| call-apply.js:18:14:18:21 | "source" | call-apply.js:23:13:23:42 | foo1.ap ... e, ""]) |
+| call-apply.js:18:14:18:21 | "source" | call-apply.js:26:13:26:36 | foo1_ap ... e, ""]) |
+| call-apply.js:18:14:18:21 | "source" | call-apply.js:29:13:29:35 | foo1_ca ... e, ""]) |
 | callback.js:16:14:16:21 | "source" | callback.js:13:14:13:14 | x |
 | callback.js:17:15:17:23 | "source2" | callback.js:13:14:13:14 | x |
 | callback.js:27:15:27:23 | "source3" | callback.js:13:14:13:14 | x |

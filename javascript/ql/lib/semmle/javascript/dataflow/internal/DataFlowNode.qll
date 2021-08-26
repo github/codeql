@@ -31,4 +31,7 @@ newtype TNode =
   TExceptionalFunctionReturnNode(Function f) or
   TExceptionalInvocationReturnNode(InvokeExpr e) or
   TGlobalAccessPathRoot() or
-  TTemplatePlaceholderTag(Templating::TemplatePlaceholderTag tag)
+  TTemplatePlaceholderTag(Templating::TemplatePlaceholderTag tag) or
+  TApplyArgumentNode(MethodCallExpr ce, Function func, int i) {
+    exists(func.getParameter(i))
+  }

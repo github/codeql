@@ -1162,13 +1162,45 @@ module DataFlow {
     }
 
     /**
+     * A data flow node representing arguments of the `.apply` function call 
+     * to emulate a separate argument for each parameter of a reflective function call.
+     */
+    private class ApplyArgumentNode extends DataFlow::Node {
+      ExplicitMethodCallNode call;
+      Node arrayArgument;
+      int index;
+
+      ApplyArgumentNode() {
+        this = TApplyArgumentNode(
+          call.asExpr(), 
+          call.getReceiver().getABoundFunctionValue(_).getFunction(), 
+          index) and
+        arrayArgument = call.getArgument(1)
+      }
+
+      /** 
+       * Gets an explicit call of the `.apply` function call 
+       * that takes an argument represented by this data flow node. 
+       * */
+      ExplicitMethodCallNode getCall() { result = call }
+
+      /** Gets an argument index represented by this data flow node. */
+      int getIndex() { result = index }
+
+      override string toString() { result = arrayArgument.toString() + "[" + index.toString() + "]" }
+      
+      override predicate hasLocationInfo(
+        string filepath, int startline, int startcolumn, int endline, int endcolumn
+      ) {
+        arrayArgument.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+      }
+    }
+
+    /**
      * A data flow node representing a reflective function call.
      */
-    private class ReflectiveCallNodeDef extends CallNodeDef {
+    private abstract class ReflectiveCallNodeDef extends CallNodeDef {
       ExplicitMethodCallNode originalCall;
-      string kind;
-
-      ReflectiveCallNodeDef() { this = TReflectiveCallNode(originalCall.asExpr(), kind) }
 
       override InvokeExpr getInvokeExpr() { result = originalCall.getInvokeExpr() }
 
@@ -1179,25 +1211,65 @@ module DataFlow {
       override DataFlow::Node getCalleeNode() { result = originalCall.getReceiver() }
 
       override DataFlow::Node getReceiver() { result = originalCall.getArgument(0) }
+    }
+
+    /**
+     * A data flow node representing a `.call` reflective function call.
+     */
+    private class CallReflectiveCallNodeDef extends ReflectiveCallNodeDef {
+      CallReflectiveCallNodeDef() { this = TReflectiveCallNode(originalCall.asExpr(), "call") }
 
       override DataFlow::Node getArgument(int i) {
-        i >= 0 and kind = "call" and result = originalCall.getArgument(i + 1)
+        i >= 0 and result = originalCall.getArgument(i + 1)
       }
 
       override DataFlow::Node getAnArgument() {
-        kind = "call" and result = originalCall.getAnArgument() and result != getReceiver()
+        result = originalCall.getAnArgument() and 
+        result != getReceiver()
       }
 
       override DataFlow::Node getASpreadArgument() {
-        kind = "apply" and
-        result = originalCall.getArgument(1)
-        or
-        kind = "call" and
         result = originalCall.getASpreadArgument()
       }
 
       override int getNumArgument() {
-        result >= 0 and kind = "call" and result = originalCall.getNumArgument() - 1
+        result >= 0 and result = originalCall.getNumArgument() - 1
+      }
+    }
+
+    /**
+     * A data flow node representing a `.apply` reflective function call.
+     */
+    class ApplyReflectiveCallNodeDef extends ReflectiveCallNodeDef {
+      ApplyReflectiveCallNodeDef() { this = TReflectiveCallNode(originalCall.asExpr(), "apply") }
+
+      ApplyArgumentNode getApplyArgument(int i) {
+        result.getCall() = originalCall and 
+        result.getIndex() = i
+      }
+
+      override DataFlow::Node getArgument(int i) { none() }
+
+      override DataFlow::Node getAnArgument() { none() }
+
+      override DataFlow::Node getASpreadArgument() {
+        result = originalCall.getArgument(1)
+      }
+
+      override int getNumArgument() { none() }
+    }
+
+    /**
+     * A step modelling that a call of `.apply()` function with passing an array of arguments via 2nd parameter.
+     */
+    private class ApplyCallStep extends PreCallGraphStep {
+      override predicate loadStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+        exists(ApplyReflectiveCallNodeDef call, int i |
+          prop = DataFlow::PseudoProperties::arrayElement(i) and
+          not prop = DataFlow::PseudoProperties::arrayElement() and
+          pred = call.getASpreadArgument().getALocalSource() and
+          succ = call.getApplyArgument(i)
+        )
       }
     }
   }
