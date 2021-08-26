@@ -1,39 +1,55 @@
 edges
-| test.py:2:12:2:12 | ControlFlowNode for l | test.py:3:5:3:5 | ControlFlowNode for l |
-| test.py:13:13:13:13 | ControlFlowNode for l | test.py:14:5:14:5 | ControlFlowNode for l |
-| test.py:18:14:18:14 | ControlFlowNode for l | test.py:19:13:19:13 | ControlFlowNode for l |
-| test.py:19:13:19:13 | ControlFlowNode for l | test.py:13:13:13:13 | ControlFlowNode for l |
-| test.py:23:14:23:14 | ControlFlowNode for l | test.py:24:5:24:5 | ControlFlowNode for l |
-| test.py:52:17:52:17 | ControlFlowNode for d | test.py:53:5:53:5 | ControlFlowNode for d |
-| test.py:57:26:57:26 | ControlFlowNode for d | test.py:58:5:58:5 | ControlFlowNode for d |
-| test.py:62:35:62:35 | ControlFlowNode for d | test.py:63:5:63:5 | ControlFlowNode for d |
-| test.py:66:21:66:21 | ControlFlowNode for d | test.py:67:5:67:5 | ControlFlowNode for d |
-| test.py:71:26:71:26 | ControlFlowNode for d | test.py:72:21:72:21 | ControlFlowNode for d |
-| test.py:72:21:72:21 | ControlFlowNode for d | test.py:66:21:66:21 | ControlFlowNode for d |
+| test.py:17:15:17:15 | ControlFlowNode for l | test.py:18:5:18:5 | ControlFlowNode for l |
+| test.py:22:15:22:15 | ControlFlowNode for l | test.py:23:5:23:5 | ControlFlowNode for l |
+| test.py:27:12:27:12 | ControlFlowNode for l | test.py:28:5:28:5 | ControlFlowNode for l |
+| test.py:38:13:38:13 | ControlFlowNode for l | test.py:39:5:39:5 | ControlFlowNode for l |
+| test.py:43:14:43:14 | ControlFlowNode for l | test.py:44:13:44:13 | ControlFlowNode for l |
+| test.py:44:13:44:13 | ControlFlowNode for l | test.py:38:13:38:13 | ControlFlowNode for l |
+| test.py:48:14:48:14 | ControlFlowNode for l | test.py:49:5:49:5 | ControlFlowNode for l |
+| test.py:77:17:77:17 | ControlFlowNode for d | test.py:78:5:78:5 | ControlFlowNode for d |
+| test.py:82:26:82:26 | ControlFlowNode for d | test.py:83:5:83:5 | ControlFlowNode for d |
+| test.py:87:35:87:35 | ControlFlowNode for d | test.py:88:5:88:5 | ControlFlowNode for d |
+| test.py:91:21:91:21 | ControlFlowNode for d | test.py:92:5:92:5 | ControlFlowNode for d |
+| test.py:96:26:96:26 | ControlFlowNode for d | test.py:97:21:97:21 | ControlFlowNode for d |
+| test.py:97:21:97:21 | ControlFlowNode for d | test.py:91:21:91:21 | ControlFlowNode for d |
+| test.py:113:20:113:20 | ControlFlowNode for d | test.py:115:5:115:5 | ControlFlowNode for d |
+| test.py:119:29:119:29 | ControlFlowNode for d | test.py:121:5:121:5 | ControlFlowNode for d |
 nodes
-| test.py:2:12:2:12 | ControlFlowNode for l | semmle.label | ControlFlowNode for l |
-| test.py:3:5:3:5 | ControlFlowNode for l | semmle.label | ControlFlowNode for l |
-| test.py:13:13:13:13 | ControlFlowNode for l | semmle.label | ControlFlowNode for l |
-| test.py:14:5:14:5 | ControlFlowNode for l | semmle.label | ControlFlowNode for l |
-| test.py:18:14:18:14 | ControlFlowNode for l | semmle.label | ControlFlowNode for l |
-| test.py:19:13:19:13 | ControlFlowNode for l | semmle.label | ControlFlowNode for l |
-| test.py:23:14:23:14 | ControlFlowNode for l | semmle.label | ControlFlowNode for l |
-| test.py:24:5:24:5 | ControlFlowNode for l | semmle.label | ControlFlowNode for l |
-| test.py:52:17:52:17 | ControlFlowNode for d | semmle.label | ControlFlowNode for d |
-| test.py:53:5:53:5 | ControlFlowNode for d | semmle.label | ControlFlowNode for d |
-| test.py:57:26:57:26 | ControlFlowNode for d | semmle.label | ControlFlowNode for d |
-| test.py:58:5:58:5 | ControlFlowNode for d | semmle.label | ControlFlowNode for d |
-| test.py:62:35:62:35 | ControlFlowNode for d | semmle.label | ControlFlowNode for d |
-| test.py:63:5:63:5 | ControlFlowNode for d | semmle.label | ControlFlowNode for d |
-| test.py:66:21:66:21 | ControlFlowNode for d | semmle.label | ControlFlowNode for d |
-| test.py:67:5:67:5 | ControlFlowNode for d | semmle.label | ControlFlowNode for d |
-| test.py:71:26:71:26 | ControlFlowNode for d | semmle.label | ControlFlowNode for d |
-| test.py:72:21:72:21 | ControlFlowNode for d | semmle.label | ControlFlowNode for d |
+| test.py:17:15:17:15 | ControlFlowNode for l | semmle.label | ControlFlowNode for l |
+| test.py:18:5:18:5 | ControlFlowNode for l | semmle.label | ControlFlowNode for l |
+| test.py:22:15:22:15 | ControlFlowNode for l | semmle.label | ControlFlowNode for l |
+| test.py:23:5:23:5 | ControlFlowNode for l | semmle.label | ControlFlowNode for l |
+| test.py:27:12:27:12 | ControlFlowNode for l | semmle.label | ControlFlowNode for l |
+| test.py:28:5:28:5 | ControlFlowNode for l | semmle.label | ControlFlowNode for l |
+| test.py:38:13:38:13 | ControlFlowNode for l | semmle.label | ControlFlowNode for l |
+| test.py:39:5:39:5 | ControlFlowNode for l | semmle.label | ControlFlowNode for l |
+| test.py:43:14:43:14 | ControlFlowNode for l | semmle.label | ControlFlowNode for l |
+| test.py:44:13:44:13 | ControlFlowNode for l | semmle.label | ControlFlowNode for l |
+| test.py:48:14:48:14 | ControlFlowNode for l | semmle.label | ControlFlowNode for l |
+| test.py:49:5:49:5 | ControlFlowNode for l | semmle.label | ControlFlowNode for l |
+| test.py:77:17:77:17 | ControlFlowNode for d | semmle.label | ControlFlowNode for d |
+| test.py:78:5:78:5 | ControlFlowNode for d | semmle.label | ControlFlowNode for d |
+| test.py:82:26:82:26 | ControlFlowNode for d | semmle.label | ControlFlowNode for d |
+| test.py:83:5:83:5 | ControlFlowNode for d | semmle.label | ControlFlowNode for d |
+| test.py:87:35:87:35 | ControlFlowNode for d | semmle.label | ControlFlowNode for d |
+| test.py:88:5:88:5 | ControlFlowNode for d | semmle.label | ControlFlowNode for d |
+| test.py:91:21:91:21 | ControlFlowNode for d | semmle.label | ControlFlowNode for d |
+| test.py:92:5:92:5 | ControlFlowNode for d | semmle.label | ControlFlowNode for d |
+| test.py:96:26:96:26 | ControlFlowNode for d | semmle.label | ControlFlowNode for d |
+| test.py:97:21:97:21 | ControlFlowNode for d | semmle.label | ControlFlowNode for d |
+| test.py:113:20:113:20 | ControlFlowNode for d | semmle.label | ControlFlowNode for d |
+| test.py:115:5:115:5 | ControlFlowNode for d | semmle.label | ControlFlowNode for d |
+| test.py:119:29:119:29 | ControlFlowNode for d | semmle.label | ControlFlowNode for d |
+| test.py:121:5:121:5 | ControlFlowNode for d | semmle.label | ControlFlowNode for d |
 #select
-| test.py:3:5:3:5 | ControlFlowNode for l | test.py:2:12:2:12 | ControlFlowNode for l | test.py:3:5:3:5 | ControlFlowNode for l | $@ flows to here and is mutated. | test.py:2:12:2:12 | ControlFlowNode for l | Default value |
-| test.py:14:5:14:5 | ControlFlowNode for l | test.py:18:14:18:14 | ControlFlowNode for l | test.py:14:5:14:5 | ControlFlowNode for l | $@ flows to here and is mutated. | test.py:18:14:18:14 | ControlFlowNode for l | Default value |
-| test.py:24:5:24:5 | ControlFlowNode for l | test.py:23:14:23:14 | ControlFlowNode for l | test.py:24:5:24:5 | ControlFlowNode for l | $@ flows to here and is mutated. | test.py:23:14:23:14 | ControlFlowNode for l | Default value |
-| test.py:53:5:53:5 | ControlFlowNode for d | test.py:52:17:52:17 | ControlFlowNode for d | test.py:53:5:53:5 | ControlFlowNode for d | $@ flows to here and is mutated. | test.py:52:17:52:17 | ControlFlowNode for d | Default value |
-| test.py:58:5:58:5 | ControlFlowNode for d | test.py:57:26:57:26 | ControlFlowNode for d | test.py:58:5:58:5 | ControlFlowNode for d | $@ flows to here and is mutated. | test.py:57:26:57:26 | ControlFlowNode for d | Default value |
-| test.py:63:5:63:5 | ControlFlowNode for d | test.py:62:35:62:35 | ControlFlowNode for d | test.py:63:5:63:5 | ControlFlowNode for d | $@ flows to here and is mutated. | test.py:62:35:62:35 | ControlFlowNode for d | Default value |
-| test.py:67:5:67:5 | ControlFlowNode for d | test.py:71:26:71:26 | ControlFlowNode for d | test.py:67:5:67:5 | ControlFlowNode for d | $@ flows to here and is mutated. | test.py:71:26:71:26 | ControlFlowNode for d | Default value |
+| test.py:18:5:18:5 | ControlFlowNode for l | test.py:17:15:17:15 | ControlFlowNode for l | test.py:18:5:18:5 | ControlFlowNode for l | $@ flows to here and is mutated. | test.py:17:15:17:15 | ControlFlowNode for l | Default value |
+| test.py:23:5:23:5 | ControlFlowNode for l | test.py:22:15:22:15 | ControlFlowNode for l | test.py:23:5:23:5 | ControlFlowNode for l | $@ flows to here and is mutated. | test.py:22:15:22:15 | ControlFlowNode for l | Default value |
+| test.py:28:5:28:5 | ControlFlowNode for l | test.py:27:12:27:12 | ControlFlowNode for l | test.py:28:5:28:5 | ControlFlowNode for l | $@ flows to here and is mutated. | test.py:27:12:27:12 | ControlFlowNode for l | Default value |
+| test.py:39:5:39:5 | ControlFlowNode for l | test.py:43:14:43:14 | ControlFlowNode for l | test.py:39:5:39:5 | ControlFlowNode for l | $@ flows to here and is mutated. | test.py:43:14:43:14 | ControlFlowNode for l | Default value |
+| test.py:49:5:49:5 | ControlFlowNode for l | test.py:48:14:48:14 | ControlFlowNode for l | test.py:49:5:49:5 | ControlFlowNode for l | $@ flows to here and is mutated. | test.py:48:14:48:14 | ControlFlowNode for l | Default value |
+| test.py:78:5:78:5 | ControlFlowNode for d | test.py:77:17:77:17 | ControlFlowNode for d | test.py:78:5:78:5 | ControlFlowNode for d | $@ flows to here and is mutated. | test.py:77:17:77:17 | ControlFlowNode for d | Default value |
+| test.py:83:5:83:5 | ControlFlowNode for d | test.py:82:26:82:26 | ControlFlowNode for d | test.py:83:5:83:5 | ControlFlowNode for d | $@ flows to here and is mutated. | test.py:82:26:82:26 | ControlFlowNode for d | Default value |
+| test.py:88:5:88:5 | ControlFlowNode for d | test.py:87:35:87:35 | ControlFlowNode for d | test.py:88:5:88:5 | ControlFlowNode for d | $@ flows to here and is mutated. | test.py:87:35:87:35 | ControlFlowNode for d | Default value |
+| test.py:92:5:92:5 | ControlFlowNode for d | test.py:96:26:96:26 | ControlFlowNode for d | test.py:92:5:92:5 | ControlFlowNode for d | $@ flows to here and is mutated. | test.py:96:26:96:26 | ControlFlowNode for d | Default value |
+| test.py:115:5:115:5 | ControlFlowNode for d | test.py:113:20:113:20 | ControlFlowNode for d | test.py:115:5:115:5 | ControlFlowNode for d | $@ flows to here and is mutated. | test.py:113:20:113:20 | ControlFlowNode for d | Default value |
+| test.py:121:5:121:5 | ControlFlowNode for d | test.py:119:29:119:29 | ControlFlowNode for d | test.py:121:5:121:5 | ControlFlowNode for d | $@ flows to here and is mutated. | test.py:119:29:119:29 | ControlFlowNode for d | Default value |

@@ -1,5 +1,30 @@
 # Not OK
-def simple(l = []):
+def simple(l = [0]):
+    l[0] = 1  # FN
+    return l
+
+# Not OK
+def slice(l = [0]):
+    l[0:1] = 1  # FN
+    return l
+
+# Not OK
+def list_del(l = [0]):
+    del l[0]  # FN
+    return l
+
+# Not OK
+def append_op(l = []):
+    l += 1
+    return l
+
+# Not OK
+def repeat_op(l = [0]):
+    l *= 3
+    return l
+
+# Not OK
+def append(l = []):
     l.append(1)
     return l
 
@@ -78,3 +103,20 @@ def dict_includes(d = {}):
     x.update(d)
     x.update({'a': 1})
     return x
+
+# Not OK
+def dict_del(d = {'a': 1}):
+    del d['a']  # FN
+    return d
+
+# Not OK
+def dict_update_op(d = {}):
+    x = {'a': 1}
+    d |= x
+    return d
+
+# OK
+def dict_update_op_nochange(d = {}):
+    x = {}
+    d |= x  # FP
+    return d
