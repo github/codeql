@@ -204,7 +204,10 @@ private module CachedSteps {
   ) {
     calls(invk, f) and
     (
-      exists(int i | arg = invk.(DataFlow::InvokeNode).getArgument(i) or arg = invk.(DataFlow::Impl::ApplyReflectiveCallNodeDef).getApplyArgument(i) |
+      exists(int i |
+        arg = invk.(DataFlow::InvokeNode).getArgument(i) or
+        arg = invk.(DataFlow::Impl::ApplyReflectiveCallNodeDef).getApplyArgument(i)
+      |
         exists(Parameter p |
           f.getParameter(i) = p and
           not p.isRestParameter() and
