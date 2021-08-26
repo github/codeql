@@ -36,3 +36,9 @@ jobs:
         run: find ql "(" -name "*.ql" -or -name "*.qll" ")" -print0 | xargs -0 codeql/codeql query format --check-only
       - name: Check QL compilation
         run: codeql/codeql query compile --check-only --threads=4 --warnings=error --search-path "${{ github.workspace }}" "ql/src" "ql/examples"
+      - name: Check DB upgrade scripts
+        run: |
+          echo >empty.trap
+          codeql/codeql dataset import -S ql/src/upgrades/initial/ruby.dbscheme testdb empty.trap
+          codeql/codeql dataset upgrade testdb --additional-packs ql/src/upgrades
+          diff -q testdb/ruby.dbscheme ql/src/ruby.dbscheme
