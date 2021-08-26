@@ -6,7 +6,7 @@ import sys
 def upperFirst(string):
     return string[0].upper() + string[1:]
 
-with open('../ql/src/config/semmlecode.dbscheme', 'r') as f:
+with open('../ql/lib/config/semmlecode.dbscheme', 'r') as f:
     dbscheme = f.read()
 
 # Remove comments
