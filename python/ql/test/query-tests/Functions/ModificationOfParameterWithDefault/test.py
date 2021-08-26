@@ -1,31 +1,31 @@
 # Not OK
 def simple(l = [0]):
-    l[0] = 1  # FN
+    l[0] = 1  #$ MISSING: modification=l
     return l
 
 # Not OK
 def slice(l = [0]):
-    l[0:1] = 1  # FN
+    l[0:1] = 1  #$ MISSING: modification=l
     return l
 
 # Not OK
 def list_del(l = [0]):
-    del l[0]  # FN
+    del l[0]  #$ MISSING: modification=l
     return l
 
 # Not OK
 def append_op(l = []):
-    l += 1
+    l += 1  #$ modification=l
     return l
 
 # Not OK
 def repeat_op(l = [0]):
-    l *= 3
+    l *= 3  #$ modification=l
     return l
 
 # Not OK
 def append(l = []):
-    l.append(1)
+    l.append(1)  #$ modification=l
     return l
 
 # OK
@@ -36,7 +36,7 @@ def includes(l = []):
     return x
 
 def extends(l):
-    l.extend([1])
+    l.extend([1])  #$ modification=l
     return l
 
 # Not OK
@@ -46,17 +46,17 @@ def deferred(l = []):
 
 # Not OK
 def nonempty(l = [5]):
-    l.append(1)
+    l.append(1)  #$ modification=l
     return l
 
 # Not OK
 def dict(d = {}):
-    d['a'] = 1  # FN
+    d['a'] = 1  #$ MISSING: modification=d
     return d
 
 # Not OK
 def dict_nonempty(d = {'a': 1}):
-    d['a'] = 2  # FN
+    d['a'] = 2  #$ MISSING: modification=d
     return d
 
 # OK
@@ -65,7 +65,7 @@ def dict_nonempty_nochange(d = {'a': 1}):
     return d
 
 def modifies(d):
-    d['a'] = 1  # FN
+    d['a'] = 1  #$ MISSING: modification=d
     return d
 
 # Not OK
@@ -75,21 +75,21 @@ def dict_deferred(d = {}):
 
 # Not OK
 def dict_method(d = {}):
-    d.update({'a': 1})
+    d.update({'a': 1})  #$ modification=d
     return d
 
 # Not OK
 def dict_method_nonempty(d = {'a': 1}):
-    d.update({'a': 2})
+    d.update({'a': 2})  #$ modification=d
     return d
 
 # OK
 def dict_method_nonempty_nochange(d = {'a': 1}):
-    d.update({'a': 1})  # FP
+    d.update({'a': 1})  #$ SPURIOUS:modification=d
     return d
 
 def modifies_method(d):
-    d.update({'a': 1})
+    d.update({'a': 1})  #$ modification=d
     return d
 
 # Not OK
@@ -106,23 +106,23 @@ def dict_includes(d = {}):
 
 # Not OK
 def dict_del(d = {'a': 1}):
-    del d['a']  # FN
+    del d['a']  #$ MISSING: modification=d
     return d
 
 # Not OK
 def dict_update_op(d = {}):
     x = {'a': 1}
-    d |= x
+    d |= x  #$ modification=d
     return d
 
 # OK
 def dict_update_op_nochange(d = {}):
     x = {}
-    d |= x  # FP
+    d |= x  #$ SPURIOUS: modification=d
     return d
 
 # OK
 def sanitizer(l = []):
     if not l == []:
-        l.append(1)  # FP
+        l.append(1)  #$ SPURIOUS: modification=l
     return l
