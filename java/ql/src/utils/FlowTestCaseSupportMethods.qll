@@ -383,7 +383,7 @@ private class ArrayGenMethod extends GenMethod {
   ArrayGenMethod() { this = type.getName() + "genmethod" }
 
   override predicate appliesTo(Type t, Content c) {
-    t = type and
+    replaceTypeVariable(t.(Array).getElementType()) = type.getElementType() and
     c instanceof ArrayContent
   }
 
