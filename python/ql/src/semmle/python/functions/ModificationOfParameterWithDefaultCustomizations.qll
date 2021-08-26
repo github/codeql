@@ -97,8 +97,16 @@ module ModificationOfParameterWithDefault {
    */
   class Mutation extends Sink {
     Mutation() {
+      // assignment to a subscript (includes slices)
+      exists(DefinitionNode d | d.(SubscriptNode).getObject() = this.asCfgNode())
+      or
+      // deletion of a subscript
+      exists(DeletionNode d | d.getTarget().(SubscriptNode).getObject() = this.asCfgNode())
+      or
+      // augmented assignment to the value
       exists(AugAssign a | a.getTarget().getAFlowNode() = this.asCfgNode())
       or
+      // modifying function call
       exists(DataFlow::CallCfgNode c, DataFlow::AttrRead a | c.getFunction() = a |
         a.getObject() = this and
         a.getAttributeName() in [list_modifying_method(), dict_modifying_method()]

@@ -1,16 +1,16 @@
 # Not OK
 def simple(l = [0]):
-    l[0] = 1  #$ MISSING: modification=l
+    l[0] = 1  #$ modification=l
     return l
 
 # Not OK
 def slice(l = [0]):
-    l[0:1] = 1  #$ MISSING: modification=l
+    l[0:1] = 1  #$ modification=l
     return l
 
 # Not OK
 def list_del(l = [0]):
-    del l[0]  #$ MISSING: modification=l
+    del l[0]  #$ modification=l
     return l
 
 # Not OK
@@ -51,21 +51,21 @@ def nonempty(l = [5]):
 
 # Not OK
 def dict(d = {}):
-    d['a'] = 1  #$ MISSING: modification=d
+    d['a'] = 1  #$ modification=d
     return d
 
 # Not OK
 def dict_nonempty(d = {'a': 1}):
-    d['a'] = 2  #$ MISSING: modification=d
+    d['a'] = 2  #$ modification=d
     return d
 
 # OK
 def dict_nonempty_nochange(d = {'a': 1}):
-    d['a'] = 1
+    d['a'] = 1  #$ SPURIOUS: modification=d
     return d
 
 def modifies(d):
-    d['a'] = 1  #$ MISSING: modification=d
+    d['a'] = 1  #$ modification=d
     return d
 
 # Not OK
@@ -106,7 +106,7 @@ def dict_includes(d = {}):
 
 # Not OK
 def dict_del(d = {'a': 1}):
-    del d['a']  #$ MISSING: modification=d
+    del d['a']  #$ modification=d
     return d
 
 # Not OK
