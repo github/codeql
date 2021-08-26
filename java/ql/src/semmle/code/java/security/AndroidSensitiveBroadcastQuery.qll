@@ -119,4 +119,10 @@ class SensitiveBroadcastConfig extends TaintTracking::Configuration {
       setReceiverMa.getQualifier().(VarAccess).getVariable().getAnAccess() = node.asExpr()
     )
   }
+
+  override predicate allowImplicitRead(DataFlow::Node node, DataFlow::Content c) {
+    super.allowImplicitRead(node, c)
+    or
+    this.isSink(node)
+  }
 }
