@@ -156,7 +156,20 @@ class RedirectToCall extends ActionControllerContextCall {
 }
 
 /**
- * A method in an `ActionController` class that is accessible from within a view as a helper method.
+ * A method in an `ActionController` class that is accessible from within a
+ * Rails view as a helper method. For instance, in:
+ *
+ * ```rb
+ * class FooController < ActionController::Base
+ *   helper_method :logged_in?
+ *   def logged_in?
+ *     @current_user != nil
+ *   end
+ * end
+ * ```
+ *
+ * the `logged_in?` method is a helper method.
+ * See also https://api.rubyonrails.org/classes/AbstractController/Helpers/ClassMethods.html#method-i-helper_method
  */
 class ActionControllerHelperMethod extends Method {
   private ActionControllerControllerClass controllerClass;
