@@ -101,7 +101,7 @@ def eight():
     host = schema + "somethingon.theinternet.com"
     srv = Server(host, port=1337)
     conn = Connection(srv, "dn", "password")
-    conn.start_tls()  # !
+    conn.start_tls()
     conn.search("dn", "search_filter")
     return conn.response
 
