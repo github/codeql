@@ -167,7 +167,7 @@ module LDAPBind {
     abstract DataFlow::Node getPassword();
 
     /**
-     * Checks if the binding process use SSL.
+     * Holds if the binding process use SSL.
      */
     abstract predicate useSSL();
   }
@@ -195,7 +195,7 @@ class LDAPBind extends DataFlow::Node {
   DataFlow::Node getPassword() { result = range.getPassword() }
 
   /**
-   * Checks if the binding process use SSL.
+   * Holds if the binding process use SSL.
    */
   predicate useSSL() { range.useSSL() }
 }

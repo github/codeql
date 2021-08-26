@@ -7,6 +7,7 @@
  * @tags experimental
  *       security
  *       external/cwe/cwe-522
+ *       external/cwe/cwe-523
  */
 
 // determine precision above
