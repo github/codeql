@@ -21,6 +21,7 @@ public interface ServletResponse
     void setBufferSize(int p0);
     void setCharacterEncoding(String p0);
     void setContentLength(int p0);
+    void setContentLengthLong(long p0);
     void setContentType(String p0);
     void setLocale(Locale p0);
 }

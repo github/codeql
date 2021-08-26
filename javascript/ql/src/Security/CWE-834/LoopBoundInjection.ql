@@ -12,7 +12,7 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.LoopBoundInjection::LoopBoundInjection
+import semmle.javascript.security.dataflow.LoopBoundInjectionQuery
 import DataFlow::PathGraph
 
 from Configuration dataflow, DataFlow::PathNode source, DataFlow::PathNode sink

@@ -3,6 +3,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import java.net.URI;
 
 @Controller
 public class SpringUrlRedirect {
@@ -79,5 +83,52 @@ public class SpringUrlRedirect {
     @GetMapping("url11")
     public String good3(String status) {
         return "redirect:" + String.format("/stories/search/criteria?status=%s", status);
+    }
+
+    @GetMapping("url12")
+    public ResponseEntity<Void> bad9(String redirectUrl) {
+        return ResponseEntity.status(HttpStatus.FOUND)
+                .location(URI.create(redirectUrl))
+                .build();
+    }
+
+    @GetMapping("url13")
+    public ResponseEntity<Void> bad10(String redirectUrl) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setLocation(URI.create(redirectUrl));
+
+        return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER);
+    }
+
+    @GetMapping("url14")
+    public ResponseEntity<Void> bad11(String redirectUrl) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Location", redirectUrl);
+
+        return ResponseEntity.status(HttpStatus.SEE_OTHER).headers(httpHeaders).build();
+    }
+
+    @GetMapping("url15")
+    public ResponseEntity<Void> bad12(String redirectUrl) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Location", redirectUrl);
+
+        return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER);
+    }
+
+    @GetMapping("url16")
+    public ResponseEntity bad13(String redirectUrl) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Location", redirectUrl);
+
+        return new ResponseEntity<>("TestBody", httpHeaders, HttpStatus.SEE_OTHER);
+    }
+
+    @GetMapping("url17")
+    public ResponseEntity bad14(String redirectUrl) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setLocation(URI.create(redirectUrl));
+
+        return new ResponseEntity<>("TestBody", httpHeaders, HttpStatus.SEE_OTHER);
     }
 }
