@@ -50,27 +50,6 @@ abstract class FluentMethod extends ValuePreservingMethod {
   override predicate returnsValue(int arg) { arg = -1 }
 }
 
-private class StandardLibraryValuePreservingMethod extends ValuePreservingMethod {
-  int returnsArgNo;
-
-  StandardLibraryValuePreservingMethod() {
-    this.getDeclaringType().hasQualifiedName("java.util", "Objects") and
-    (
-      this.hasName(["requireNonNull", "requireNonNullElseGet"]) and returnsArgNo = 0
-      or
-      this.hasName("requireNonNullElse") and returnsArgNo = [0 .. this.getNumberOfParameters() - 1]
-      or
-      this.hasName("toString") and returnsArgNo = 1
-    )
-    or
-    this.getDeclaringType().getASourceSupertype*().hasQualifiedName("java.util", "Stack") and
-    this.hasName("push") and
-    returnsArgNo = 0
-  }
-
-  override predicate returnsValue(int argNo) { argNo = returnsArgNo }
-}
-
 /**
  * A unit class for adding additional taint steps.
  *
