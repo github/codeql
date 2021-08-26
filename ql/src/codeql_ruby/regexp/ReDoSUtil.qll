@@ -433,12 +433,7 @@ private module CharacterClasses {
     char = "0123456789".charAt(_)
     or
     clazz = "s" and
-    (
-      char = [" ", "\t", "\r", "\n"]
-      or
-      char = getARelevantChar() and
-      char.regexpMatch("\\u000b|\\u000c") // \v|\f (vertical tab | form feed)
-    )
+    char = [" ", "\t", "\r", "\n", 11.toUnicode(), 12.toUnicode()] // 11.toUnicode() = \v, 12.toUnicode() = \f'
     or
     clazz = "w" and
     char = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_".charAt(_)
