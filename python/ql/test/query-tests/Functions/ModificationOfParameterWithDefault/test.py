@@ -120,3 +120,9 @@ def dict_update_op_nochange(d = {}):
     x = {}
     d |= x  # FP
     return d
+
+# OK
+def sanitizer(l = []):
+    if not l == []:
+        l.append(1)  # FP
+    return l
