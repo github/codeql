@@ -30,5 +30,10 @@
     "CFG": [
         "codeql/csharp/ql/lib/semmle/code/csharp/controlflow/internal/ControlFlowGraphImplShared.qll",
         "ql/lib/codeql/ruby/controlflow/internal/ControlFlowGraphImplShared.qll"
+    ],
+    "ReDoS Polynomial Ruby/Python/JS": [
+        "codeql/javascript/ql/lib/semmle/javascript/security/performance/SuperlinearBackTracking.qll",
+        "codeql/python/ql/lib/semmle/python/security/performance/SuperlinearBackTracking.qll",
+        "ql/lib/codeql/ruby/regexp/SuperlinearBackTracking.qll"
     ]
 }
