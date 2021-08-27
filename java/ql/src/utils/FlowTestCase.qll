@@ -267,8 +267,12 @@ class TestCase extends TTestCase {
    * Returns the definition of a `newWith` method needed to set up the input or a `get` method needed to set up the output for this test.
    */
   SupportMethod getASupportMethod() {
-    result = SupportMethod::genMethodFor(this.getInputType(), input) or
-    result = SupportMethod::genMethodForContent(input.tail().drop(_)) or
+    exists(SummaryComponentStack s | s = input.drop(_) and s.tail() != baseInput |
+      result = SupportMethod::genMethodForContent(s)
+    ) or
+    exists(SummaryComponentStack s | s = input.drop(_) and s.tail() = baseInput |
+      result = SupportMethod::genMethodFor(this.getInputType(), s)
+    ) or
     result = SupportMethod::getMethodFor(this.getOutputType(), output) or
     result = SupportMethod::getMethodForContent(output.tail().drop(_))
   }
