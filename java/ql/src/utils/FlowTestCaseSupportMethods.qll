@@ -383,12 +383,12 @@ private class ArrayGenMethod extends GenMethod {
   ArrayGenMethod() { this = type.getName() + "genmethod" }
 
   override predicate appliesTo(Type t, Content c) {
-    replaceTypeVariable(t.(Array).getElementType()) = type.getElementType() and
+    replaceTypeVariable(t.(Array).getComponentType()) = type.getComponentType() and
     c instanceof ArrayContent
   }
 
   bindingset[arg]
   override string getCall(string arg) {
-    result = "{" + getConvertExprIfNotObject(type.getElementType()) + arg + "}"
+    result = "new " + getShortNameIfPossible(type) + "{" + getConvertExprIfNotObject(type.getComponentType()) + arg + "}"
   }
 }
