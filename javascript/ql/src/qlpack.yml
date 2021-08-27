@@ -5,3 +5,4 @@ extractor: javascript
 dependencies:
     codeql/javascript-all: ^0.0.2
     codeql/suite-helpers: ^0.0.2
+

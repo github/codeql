@@ -6,3 +6,4 @@ dependencies:
 suites: codeql-suites
 extractor: cpp
 defaultSuiteFile: codeql-suites/cpp-code-scanning.qls
+

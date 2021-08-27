@@ -6,3 +6,4 @@ dependencies:
 suites: codeql-suites
 extractor: python
 defaultSuiteFile: codeql-suites/python-code-scanning.qls
+
