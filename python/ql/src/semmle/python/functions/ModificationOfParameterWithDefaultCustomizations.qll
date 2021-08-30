@@ -139,6 +139,9 @@ module ModificationOfParameterWithDefault {
     boolean isInverted() { result = inverted }
   }
 
+  /**
+   * A check for the value being truthy or falsy can guard against modifying the default value.
+   */
   class IdentityGuard extends BarrierGuard {
     ControlFlowNode checked_node;
     boolean safe_branch;
@@ -149,7 +152,7 @@ module ModificationOfParameterWithDefault {
       exists(IdentityGuarded ig |
         this.getNode() = ig and
         checked_node = this and
-        // The raw guard is true if the value is non-empty
+        // The raw guard is true if the value is non-empty.
         // So we are safe either if we are looking for a non-empty value
         // or if we are looking for an empty value and the guard is inverted.
         safe_branch = ig.isInverted().booleanXor(nonEmpty)
