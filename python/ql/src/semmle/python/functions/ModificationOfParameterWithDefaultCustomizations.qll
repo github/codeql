@@ -16,7 +16,9 @@ module ModificationOfParameterWithDefault {
   /**
    * A data flow source for detecting modifications of a parameters default value.
    */
-  abstract class Source extends DataFlow::Node { }
+  abstract class Source extends DataFlow::Node {
+    abstract boolean isNonEmpty();
+  }
 
   /**
    * A data flow sink for detecting modifications of a parameters default value.
@@ -31,7 +33,9 @@ module ModificationOfParameterWithDefault {
   /**
    * A sanitizer guard for detecting modifications of a parameters default value.
    */
-  abstract class BarrierGuard extends DataFlow::BarrierGuard { }
+  abstract class BarrierGuard extends DataFlow::BarrierGuard {
+    abstract boolean blocksNonEmpty();
+  }
 
   /** Gets the truthiness (non emptyness) of the default of `p` if that value is mutable */
   private boolean mutableDefaultValue(Parameter p) {
@@ -55,6 +59,8 @@ module ModificationOfParameterWithDefault {
     boolean nonEmpty;
 
     MutableDefaultValue() { nonEmpty = mutableDefaultValue(this.asCfgNode().(NameNode).getNode()) }
+
+    override boolean isNonEmpty() { result = nonEmpty }
   }
 
   /**
@@ -112,5 +118,48 @@ module ModificationOfParameterWithDefault {
         a.getAttributeName() in [list_modifying_method(), dict_modifying_method()]
       )
     }
+  }
+
+  private class IdentityGuarded extends Expr {
+    boolean inverted;
+
+    IdentityGuarded() {
+      this = any(If i).getTest() and
+      inverted = false
+      or
+      exists(IdentityGuarded ig, UnaryExpr notExp |
+        notExp.getOp() instanceof Not and
+        ig = notExp and
+        notExp.getOperand() = this
+      |
+        inverted = ig.isInverted().booleanNot()
+      )
+    }
+
+    boolean isInverted() { result = inverted }
+  }
+
+  class IdentityGuard extends BarrierGuard {
+    ControlFlowNode checked_node;
+    boolean safe_branch;
+    boolean nonEmpty;
+
+    IdentityGuard() {
+      nonEmpty in [true, false] and
+      exists(IdentityGuarded ig |
+        this.getNode() = ig and
+        checked_node = this and
+        // The raw guard is true if the value is non-empty
+        // So we are safe either if we are looking for a non-empty value
+        // or if we are looking for an empty value and the guard is inverted.
+        safe_branch = ig.isInverted().booleanXor(nonEmpty)
+      )
+    }
+
+    override predicate checks(ControlFlowNode node, boolean branch) {
+      node = checked_node and branch = safe_branch
+    }
+
+    override boolean blocksNonEmpty() { result = nonEmpty }
   }
 }
