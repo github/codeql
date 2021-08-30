@@ -1,0 +1,16 @@
+| tst.py:4:20:4:43 | <script.*?>.*?<\\/script> | This regular expression does not match script end tags like </script >. |
+| tst.py:5:20:5:43 | <script.*?>.*?<\\/script> | This regular expression does not match script end tags like </script >. |
+| tst.py:9:20:9:30 | <!--.*--!?> | This regular expression does not match comments containing newlines. |
+| tst.py:10:20:10:53 | <script.*?>(.\|\\s)*?<\\/script[^>]*> | This regular expression matches <script></script>, but not <script \\n></script> |
+| tst.py:11:20:11:51 | <script[^>]*?>.*?<\\/script[^>]*> | This regular expression matches <script>...</script>, but not <script >...\\n</script> |
+| tst.py:12:20:12:58 | <script(\\s\|\\w\|=\|")*?>.*?<\\/script[^>]*> | This regular expression does not match script tags where the attribute uses single-quotes. |
+| tst.py:13:20:13:58 | <script(\\s\|\\w\|=\|')*?>.*?<\\/script[^>]*> | This regular expression does not match script tags where the attribute uses double-quotes. |
+| tst.py:14:20:14:62 | <script( \|\\n\|\\w\|=\|'\|")*?>.*?<\\/script[^>]*> | This regular expression does not match script tags where tabs are used between attributes. |
+| tst.py:15:20:15:48 | <script.*?>.*?<\\/script[^>]*> | This regular expression does not match upper case <SCRIPT> tags. |
+| tst.py:16:20:16:66 | <(script\|SCRIPT).*?>.*?<\\/(script\|SCRIPT)[^>]*> | This regular expression does not match mixed case <sCrIpT> tags. |
+| tst.py:17:20:17:53 | <script[^>]*?>[\\s\\S]*?<\\/script.*> | This regular expression does not match script end tags like </script\\t\\n bar>. |
+| tst.py:19:20:19:54 | <script\\b[^>]*>([\\s\\S]*?)<\\/script> | This regular expression does not match script end tags like </script >. |
+| tst.py:20:20:20:62 | <(?:!--([\\S\|\\s]*?)-->)\|([^\\/\\s>]+)[\\S\\s]*?> | Comments ending with --> are matched differently from comments ending with --!>. The first is matched with capture group 1 and comments ending with --!> are matched with capture group 2. |
+| tst.py:21:20:21:161 | <(?:(?:\\/([^>]+)>)\|(?:!--([\\S\|\\s]*?)-->)\|(?:([^\\/\\s>]+)((?:\\s+[\\w\\-:.]+(?:\\s*=\\s*?(?:(?:"[^"]*")\|(?:'[^']*')\|[^\\s"'\\/>]+))?)*)[\\S\\s]*?(\\/?)>)) | Comments ending with --> are matched differently from comments ending with --!>. The first is matched with capture group 2 and comments ending with --!> are matched with capture group 3, 4. |
+| tst.py:22:17:22:71 | (<[a-z\\/!$]("[^"]*"\|'[^']*'\|[^'">])*>\|<!(--.*?--\\s*)+>) | Comments ending with --> are matched differently from comments ending with --!>. The first is matched with capture group 3 and comments ending with --!> are matched with capture group 1. |
+| tst.py:23:20:23:263 | <(?:(?:!--([\\w\\W]*?)-->)\|(?:!\\[CDATA\\[([\\w\\W]*?)\\]\\]>)\|(?:!DOCTYPE([\\w\\W]*?)>)\|(?:\\?([^\\s\\/<>]+) ?([\\w\\W]*?)[?/]>)\|(?:\\/([A-Za-z][A-Za-z0-9\\-_\\:\\.]*)>)\|(?:([A-Za-z][A-Za-z0-9\\-_\\:\\.]*)((?:\\s+[^"'>]+(?:(?:"[^"]*")\|(?:'[^']*')\|[^>]*))*\|\\/\|\\s+)>)) | This regular expression only parses --> (capture group 1) and not --!> as a HTML comment end tag. |
