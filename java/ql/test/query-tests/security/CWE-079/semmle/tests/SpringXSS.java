@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.HtmlUtils;
 
 import java.util.Optional;
 
@@ -155,6 +156,11 @@ public class SpringXSS {
   @GetMapping(value = "/abc")
   public static String stringWithNoMediaType(String userControlled) {
     return userControlled; // $xss
+  }
+
+  @GetMapping(value = "/abc")
+  public static String sanitizedString(String userControlled) {
+    return HtmlUtils.htmlEscape(userControlled);
   }
 
 }

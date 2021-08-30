@@ -1659,7 +1659,7 @@ public class CFGExtractor {
 
     @Override
     public Void visit(AssignmentExpression nd, SuccessorInfo i) {
-      // `a &&= b` expands to `a || (a = b);`
+      // `a &&= b` expands to `a && (a = b);`
       // The CFG is a conditional assignment, so we go through the assignment `nd` last.
       if ("&&=".equals(nd.getOperator()) || "||=".equals(nd.getOperator()) || "??=".equals(nd.getOperator())) {
         if ("&&=".equals(nd.getOperator())) {
@@ -1673,7 +1673,7 @@ public class CFGExtractor {
           visitWithSuccessors(nd.getLeft(), union(First.of(nd.getRight()), i.getAllSuccessors()));
         }
         
-        visitWithSuccessors(nd.getRight(), First.of(nd)); // from right to assignment.
+        visitWithSuccessors(nd.getRight(), nd); // from right to assignment.
 
         writeSuccessors(nd, i.getGuardedSuccessors(nd));
       } else {

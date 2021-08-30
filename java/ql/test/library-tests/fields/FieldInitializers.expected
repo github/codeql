@@ -1,0 +1,6 @@
+| fields/FieldTest.java:4:19:4:19 | g | fields/FieldTest.java:4:23:4:26 | 2.3f |
+| fields/FieldTest.java:5:23:5:25 | obj | fields/FieldTest.java:5:29:5:32 | null |
+| fields/FieldTest.java:7:13:7:13 | x | fields/FieldTest.java:7:17:7:17 | 0 |
+| fields/FieldTest.java:8:13:8:13 | y | fields/FieldTest.java:8:17:8:21 | ...=... |
+| fields/FieldTest.java:12:20:12:20 | z | fields/FieldTest.java:12:24:12:24 | 0 |
+| fields/FieldTest.java:13:20:13:20 | w | fields/FieldTest.java:13:24:13:28 | ...=... |

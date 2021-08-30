@@ -3,10 +3,13 @@
 package javax.servlet;
 
 import java.io.OutputStream;
+import javax.servlet.WriteListener;
 
 abstract public class ServletOutputStream extends OutputStream
 {
     protected ServletOutputStream(){}
+    public abstract boolean isReady();
+    public abstract void setWriteListener(WriteListener p0);
     public void print(String p0){}
     public void print(boolean p0){}
     public void print(char p0){}
