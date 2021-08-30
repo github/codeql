@@ -15,9 +15,9 @@ Java framework & library support
    `Apache HttpComponents <https://hc.apache.org/>`_,"``org.apache.hc.core5.*``, ``org.apache.http``",5,136,28,,,3,,,,25
    `Google Guava <https://guava.dev/>`_,``com.google.common.*``,,175,6,,6,,,,,
    `JSON-java <https://github.com/stleary/JSON-java>`_,``org.json``,,236,,,,,,,,
-   Java Standard Library,``java.*``,3,371,30,13,,,7,,,10
+   Java Standard Library,``java.*``,3,375,30,13,,,7,,,10
    Java extensions,"``javax.*``, ``jakarta.*``",22,540,27,,,,,1,1,2
    `Spring <https://spring.io/>`_,``org.springframework.*``,29,469,91,,,,19,14,,29
    Others,"``com.esotericsoftware.kryo.io``, ``com.esotericsoftware.kryo5.io``, ``com.fasterxml.jackson.core``, ``com.fasterxml.jackson.databind``, ``com.opensymphony.xwork2.ognl``, ``com.unboundid.ldap.sdk``, ``groovy.lang``, ``groovy.util``, ``jodd.json``, ``ognl``, ``org.apache.commons.codec``, ``org.apache.commons.jexl2``, ``org.apache.commons.jexl3``, ``org.apache.commons.ognl``, ``org.apache.directory.ldap.client.api``, ``org.apache.ibatis.jdbc``, ``org.apache.shiro.jndi``, ``org.codehaus.groovy.control``, ``org.dom4j``, ``org.hibernate``, ``org.jooq``, ``org.mvel2``, ``org.xml.sax``, ``org.xmlpull.v1``, ``play.mvc``",7,25,146,,,,14,18,,
-   Totals,,84,3491,398,13,6,6,107,33,1,66
+   Totals,,84,3495,398,13,6,6,107,33,1,66
 
