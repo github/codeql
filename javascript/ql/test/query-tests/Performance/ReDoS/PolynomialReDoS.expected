@@ -11,6 +11,10 @@ nodes
 | lib/lib.js:7:19:7:22 | name |
 | lib/lib.js:8:13:8:16 | name |
 | lib/lib.js:8:13:8:16 | name |
+| lib/moduleLib/moduleLib.js:1:28:1:31 | name |
+| lib/moduleLib/moduleLib.js:1:28:1:31 | name |
+| lib/moduleLib/moduleLib.js:2:13:2:16 | name |
+| lib/moduleLib/moduleLib.js:2:13:2:16 | name |
 | lib/otherLib/js/src/index.js:1:28:1:31 | name |
 | lib/otherLib/js/src/index.js:1:28:1:31 | name |
 | lib/otherLib/js/src/index.js:2:13:2:16 | name |
@@ -174,6 +178,10 @@ edges
 | lib/lib.js:7:19:7:22 | name | lib/lib.js:8:13:8:16 | name |
 | lib/lib.js:7:19:7:22 | name | lib/lib.js:8:13:8:16 | name |
 | lib/lib.js:7:19:7:22 | name | lib/lib.js:8:13:8:16 | name |
+| lib/moduleLib/moduleLib.js:1:28:1:31 | name | lib/moduleLib/moduleLib.js:2:13:2:16 | name |
+| lib/moduleLib/moduleLib.js:1:28:1:31 | name | lib/moduleLib/moduleLib.js:2:13:2:16 | name |
+| lib/moduleLib/moduleLib.js:1:28:1:31 | name | lib/moduleLib/moduleLib.js:2:13:2:16 | name |
+| lib/moduleLib/moduleLib.js:1:28:1:31 | name | lib/moduleLib/moduleLib.js:2:13:2:16 | name |
 | lib/otherLib/js/src/index.js:1:28:1:31 | name | lib/otherLib/js/src/index.js:2:13:2:16 | name |
 | lib/otherLib/js/src/index.js:1:28:1:31 | name | lib/otherLib/js/src/index.js:2:13:2:16 | name |
 | lib/otherLib/js/src/index.js:1:28:1:31 | name | lib/otherLib/js/src/index.js:2:13:2:16 | name |
@@ -323,6 +331,7 @@ edges
 | lib/closure.js:4:5:4:17 | /u*o/.test(x) | lib/closure.js:3:21:3:21 | x | lib/closure.js:4:16:4:16 | x | This $@ that depends on $@ may run slow on strings with many repetitions of 'u'. | lib/closure.js:4:6:4:7 | u* | regular expression | lib/closure.js:3:21:3:21 | x | library input |
 | lib/lib.js:4:2:4:18 | regexp.test(name) | lib/lib.js:3:28:3:31 | name | lib/lib.js:4:14:4:17 | name | This $@ that depends on $@ may run slow on strings with many repetitions of 'a'. | lib/lib.js:1:15:1:16 | a* | regular expression | lib/lib.js:3:28:3:31 | name | library input |
 | lib/lib.js:8:2:8:17 | /f*g/.test(name) | lib/lib.js:7:19:7:22 | name | lib/lib.js:8:13:8:16 | name | This $@ that depends on $@ may run slow on strings with many repetitions of 'f'. | lib/lib.js:8:3:8:4 | f* | regular expression | lib/lib.js:7:19:7:22 | name | library input |
+| lib/moduleLib/moduleLib.js:2:2:2:17 | /a*b/.test(name) | lib/moduleLib/moduleLib.js:1:28:1:31 | name | lib/moduleLib/moduleLib.js:2:13:2:16 | name | This $@ that depends on $@ may run slow on strings with many repetitions of 'a'. | lib/moduleLib/moduleLib.js:2:3:2:4 | a* | regular expression | lib/moduleLib/moduleLib.js:1:28:1:31 | name | library input |
 | lib/otherLib/js/src/index.js:2:2:2:17 | /a*b/.test(name) | lib/otherLib/js/src/index.js:1:28:1:31 | name | lib/otherLib/js/src/index.js:2:13:2:16 | name | This $@ that depends on $@ may run slow on strings with many repetitions of 'a'. | lib/otherLib/js/src/index.js:2:3:2:4 | a* | regular expression | lib/otherLib/js/src/index.js:1:28:1:31 | name | library input |
 | lib/sublib/factory.js:13:13:13:28 | /f*g/.test(name) | lib/sublib/factory.js:12:26:12:29 | name | lib/sublib/factory.js:13:24:13:27 | name | This $@ that depends on $@ may run slow on strings with many repetitions of 'f'. | lib/sublib/factory.js:13:14:13:15 | f* | regular expression | lib/sublib/factory.js:12:26:12:29 | name | library input |
 | polynomial-redos.js:7:2:7:34 | tainted ... /g, '') | polynomial-redos.js:5:16:5:32 | req.query.tainted | polynomial-redos.js:7:2:7:8 | tainted | This $@ that depends on $@ may run slow on strings with many repetitions of ' '. | polynomial-redos.js:7:24:7:26 | \\s+ | regular expression | polynomial-redos.js:5:16:5:32 | req.query.tainted | a user-provided value |
