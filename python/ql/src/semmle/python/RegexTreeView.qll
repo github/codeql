@@ -22,7 +22,7 @@ newtype TRegExpParent =
     re.sequence(start, end) and
     exists(seqChild(re, start, end, 1)) // if a sequence does not have more than one element, it should be treated as that element instead.
   } or
-  /** An alternatio term */
+  /** An alternation term */
   TRegExpAlt(Regex re, int start, int end) {
     re.alternation(start, end) and
     exists(int part_end |
