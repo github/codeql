@@ -29,7 +29,7 @@ class CfgScope extends Scope {
  *
  * Only nodes that can be reached from an entry point are included in the CFG.
  */
-class CfgNode extends TCfgNode {
+class CfgNode extends TNode {
   /** Gets a textual representation of this control flow node. */
   string toString() { none() }
 

@@ -65,3 +65,7 @@ extractor:	$(FILES) $(BIN_FILES)
 	cp ql/lib/ruby.dbscheme extractor-pack/ruby.dbscheme
 	cp target/release/ruby-extractor$(EXE) extractor-pack/tools/$(CODEQL_PLATFORM)/extractor$(EXE)
 	cp target/release/ruby-autobuilder$(EXE) extractor-pack/tools/$(CODEQL_PLATFORM)/autobuilder$(EXE)
+
+test: extractor dbscheme
+	codeql pack install ql/test
+	codeql test run --check-databases --check-unused-labels --check-repeated-labels --check-redefined-labels --check-use-before-definition --search-path . --consistency-queries ql/consistency-queries ql/test
