@@ -1715,11 +1715,59 @@ private module Stage3 {
 
   private class LocalCc = Unit;
 
+  /** Holds if there is flow from `call` into `target` in the previous stage. */
+  pragma[nomagic]
+  private predicate prevStageFlowIn(DataFlowCall call, DataFlowCallable target, Configuration config) {
+    exists(ParamNodeEx p, ArgNodeEx arg, PrevStage::Ap ap, boolean allowsFieldFlow |
+      PrevStage::revFlow(p, _, _, ap, pragma[only_bind_into](config)) and
+      PrevStage::revFlow(arg, pragma[only_bind_into](config)) and
+      target = p.getEnclosingCallable() and
+      flowIntoCallNodeCand1(call, arg, p, allowsFieldFlow, config)
+    |
+      ap instanceof PrevStage::ApNil or allowsFieldFlow = true
+    )
+  }
+
+  /** Holds if `call` may benefit from all possible call contexts from the previous stage. */
+  pragma[nomagic]
+  private predicate prevStageUniversallyReduced(DataFlowCall call, Configuration config) {
+    exists(DataFlowCallable enclosing |
+      mayBenefitFromCallContextExt(call, enclosing) and
+      forall(DataFlowCall ctx | prevStageFlowIn(ctx, enclosing, config) |
+        reducedViableImplInCallContext(call, _, ctx)
+      )
+    )
+  }
+
+  /**
+   * Checks whether `call` can resolve to `c` in *some* call context reached
+   * in the previous stage.
+   *
+   * This is restricted to those calls for which all possible contexts make
+   * a difference.
+   */
+  pragma[nomagic]
+  private predicate prevStageCheckCallContextCall(
+    DataFlowCall call, DataFlowCallable c, Configuration config
+  ) {
+    prevStageUniversallyReduced(call, config) and
+    exists(DataFlowCallable enclosing, DataFlowCall ctx |
+      mayBenefitFromCallContextExt(call, enclosing) and
+      prevStageFlowIn(ctx, enclosing, config) and
+      c = prunedViableImplInCallContext(call, ctx)
+    )
+  }
+
   bindingset[call, c, outercc, config]
   private CcCall getCallContextCall(
     DataFlowCall call, DataFlowCallable c, Cc outercc, Configuration config
   ) {
-    any()
+    exists(result) and
+    if
+      prevStageUniversallyReduced(call, config) and
+      outercc = true
+    then prevStageCheckCallContextCall(call, c, config)
+    else any()
   }
 
   bindingset[call, c, innercc, config]

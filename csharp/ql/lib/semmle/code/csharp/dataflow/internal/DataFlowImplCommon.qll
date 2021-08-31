@@ -630,8 +630,8 @@ private module Cached {
      * Holds if the set of viable implementations that can be called by `call`
      * might be improved by knowing the call context.
      */
-    pragma[nomagic]
-    private predicate mayBenefitFromCallContextExt(DataFlowCall call, DataFlowCallable callable) {
+    cached
+    predicate mayBenefitFromCallContextExt(DataFlowCall call, DataFlowCallable callable) {
       mayBenefitFromCallContext(call, callable)
       or
       callEnclosingCallable(call, callable) and
