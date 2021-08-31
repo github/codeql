@@ -11,9 +11,9 @@
  */
 
 import ruby
-import codeql_ruby.ast.internal.Module
-import codeql_ruby.dataflow.SSA
-import codeql_ruby.dataflow.internal.DataFlowDispatch
+import codeql.ruby.ast.internal.Module
+import codeql.ruby.dataflow.SSA
+import codeql.ruby.dataflow.internal.DataFlowDispatch
 
 from DefLoc loc, Expr src, Expr target, string kind
 where
