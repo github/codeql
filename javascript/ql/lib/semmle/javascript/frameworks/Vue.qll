@@ -324,9 +324,7 @@ module Vue {
     }
 
     /** Gets an API node referring to an instance of this component. */
-    API::Node getInstance() {
-      result.getAnImmediateUse() = getABoundFunction().getReceiver()
-    }
+    API::Node getInstance() { result.getAnImmediateUse() = getABoundFunction().getReceiver() }
 
     /** Gets a data flow node referring to an instance of this component. */
     DataFlow::SourceNode getAnInstanceRef() { result = getInstance().getAnImmediateUse() }
