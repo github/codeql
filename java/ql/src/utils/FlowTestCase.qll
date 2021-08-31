@@ -44,7 +44,7 @@ private class CallableToTest extends Callable {
       summaryModel(namespace, type, subtypes, name, signature, ext, _, _, _) and
       this = interpretElement(namespace, type, subtypes, name, signature, ext) and
       this.isPublic() and
-      getRootType(this.getDeclaringType()).isPublic()
+      getRootType(this.getDeclaringType()).(RefType).isPublic()
     )
   }
 }

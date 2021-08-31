@@ -12,7 +12,7 @@ private import FlowTestCase
  */
 Type getRootSourceDeclaration(Type t) {
   if t instanceof RefType
-  then result = getRootType(replaceTypeVariable(t)).getSourceDeclaration()
+  then result = getRootType(replaceTypeVariable(t)).(RefType).getSourceDeclaration()
   else result = t
 }
 
@@ -77,7 +77,7 @@ predicate mayBeAmbiguous(Callable c) {
 /**
  * Returns the outermost type enclosing type `t` (which may be `t` itself).
  */
-RefType getRootType(RefType t) {
+Type getRootType(Type t) {
   if t instanceof NestedType
   then result = getRootType(t.(NestedType).getEnclosingType())
   else
@@ -95,9 +95,9 @@ string getShortNameIfPossible(Type t) {
   if t instanceof Array
   then result = getShortNameIfPossible(t.(Array).getComponentType()) + "[]"
   else (
-    getRootSourceDeclaration(t) = any(TestCase tc).getADesiredImport() and
     if t instanceof RefType
     then
+      getRootSourceDeclaration(t) = any(TestCase tc).getADesiredImport() and
       exists(RefType replaced, string nestedName |
         replaced = replaceTypeVariable(t).getSourceDeclaration() and
         nestedName = replaced.nestedName().replaceAll("$", ".")
