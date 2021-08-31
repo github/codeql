@@ -67,10 +67,7 @@ module SupportMethod {
 
   /** Gets a generator method for the type `t` and the content type of the head of the component stack `c`. */
   GenMethod genMethodFor(Type t, SummaryComponentStack c) {
-    result =
-      min(GenMethod g |
-        g = min(GenMethod g1 | g1.appliesTo(t, getContent(c.head())) | g1 order by g1.getPriority())
-      )
+    result = min(GenMethod g | g.appliesTo(t, getContent(c.head())) | g order by g.getPriority(), g)
   }
 
   /** Gets a getter method for the content type of the head of the component stack `c`. */
@@ -80,10 +77,7 @@ module SupportMethod {
 
   /** Gets a getter method for the type `t` and the content type of the head of the component stack `c`. */
   GetMethod getMethodFor(Type t, SummaryComponentStack c) {
-    result =
-      min(GetMethod g |
-        g = min(GetMethod g1 | g1.appliesTo(t, getContent(c.head())) | g1 order by g1.getPriority())
-      )
+    result = min(GetMethod g | g.appliesTo(t, getContent(c.head())) | g order by g.getPriority(), g)
   }
 }
 
