@@ -235,12 +235,10 @@ class ErbOutputDirective extends ErbDirective {
  * ```
  */
 class ErbExecutionDirective extends ErbDirective {
+  private Erb::Directive g;
+
   ErbExecutionDirective() {
-    not (
-      this instanceof ErbCommentDirective or
-      this instanceof ErbGraphqlDirective or
-      this instanceof ErbOutputDirective
-    )
+    this = TDirective(g)
   }
 
   final override string toString() { result = "<%" + this.getToken().toString() + "%>" }
