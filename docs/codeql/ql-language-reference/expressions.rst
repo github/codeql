@@ -201,9 +201,10 @@ based on the `Unicode value <https://en.wikipedia.org/wiki/List_of_Unicode_chara
 of each character.
 
 To specify a different order, follow ``<expression>`` with the keywords ``order by``, then
-the expression that specifies the order, and optionally the keyword ``asc`` or ``desc`` 
+one or more comma-separated expressions that specifies the order, and optionally the keyword ``asc`` or ``desc`` after each expression
 (to determine whether to order the expression in ascending or descending order). If you don't
-specify an ordering, it defaults to ``asc``.
+specify an ordering, it defaults to ``asc``. For example, ``order by o.getName() asc, o.getSize() desc``
+might be used to order some object by name, breaking ties by descending size.
 
 The following aggregates are available in QL:
 
@@ -229,11 +230,11 @@ The following aggregates are available in QL:
   In this case, ``<expression>`` must be of numeric type or of type ``string``.
     
   For example, the following aggregation returns the name of the ``.js`` file (or files) with the 
-  largest number of lines:
+  largest number of lines, using the number of lines of code to break ties:
 
   .. code-block:: ql
 
-      max(File f | f.getExtension() = "js" | f.getBaseName() order by f.getTotalNumberOfLines())
+      max(File f | f.getExtension() = "js" | f.getBaseName() order by f.getTotalNumberOfLines(), f.getNumberOfLinesOfCode())
 
   The following aggregation returns the minimum string ``s`` out of the three strings mentioned
   below, that is, the string that comes first in the lexicographic ordering of all the possible
