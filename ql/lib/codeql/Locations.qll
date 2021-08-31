@@ -52,6 +52,7 @@ class Location extends @location {
   }
 
   /** Holds if this location starts strictly before the specified location. */
+  pragma[inline]
   predicate strictlyBefore(Location other) {
     this.getStartLine() < other.getStartLine()
     or
