@@ -55,9 +55,9 @@ queries using:
 
    - qlpack: <qlpack-name>
 
-  The default suite of a query pack includes all of the common and recommended queries
-  inside of that suite. Not all query packs have a default suite. Those that do not
-  define a default suite will resolve all of the queries in all of their subdirectories.
+  The default suite of a query pack includes a recommended set of queries
+  inside of that query pack. Not all query packs have a default suite. If the given query pack does not
+  define a default suite, the `qlpack` instruction will resolve to all of the queries within the pack.
 
 .. pull-quote:: Note
 
@@ -130,7 +130,7 @@ To define a suite that selects all queries in the default suite of the
 ``codeql/cpp-queries`` QL pack, and then refines them to only include
 security queries, use::
 
-   - queries: codeql/cpp-queries
+   - qlpack: codeql/cpp-queries
    - include:
        tags contain: security
 
