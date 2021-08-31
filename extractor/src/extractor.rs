@@ -68,15 +68,6 @@ impl TrapWriter {
                 vec![
                     Arg::Label(file_label),
                     Arg::String(normalize_path(absolute_path)),
-                    Arg::String(match absolute_path.file_name() {
-                        None => "".to_owned(),
-                        Some(file_name) => format!("{}", file_name.to_string_lossy()),
-                    }),
-                    Arg::String(match absolute_path.extension() {
-                        None => "".to_owned(),
-                        Some(ext) => format!("{}", ext.to_string_lossy()),
-                    }),
-                    Arg::Int(1), // 1 = from source
                 ],
             );
             self.populate_parent_folders(file_label, absolute_path.parent());
@@ -102,10 +93,6 @@ impl TrapWriter {
                             vec![
                                 Arg::Label(folder_label),
                                 Arg::String(normalize_path(folder)),
-                                Arg::String(match folder.file_name() {
-                                    None => "".to_owned(),
-                                    Some(file_name) => format!("{}", file_name.to_string_lossy()),
-                                }),
                             ],
                         );
                         path = folder.parent();

@@ -155,7 +155,7 @@ abstract class Container extends @container {
 
 /** A folder. */
 class Folder extends Container, @folder {
-  override string getAbsolutePath() { folders(this, result, _) }
+  override string getAbsolutePath() { folders(this, result) }
 
   /** Gets the URL of this folder. */
   override string getURL() { result = "folder://" + getAbsolutePath() }
@@ -163,11 +163,11 @@ class Folder extends Container, @folder {
 
 /** A file. */
 class File extends Container, @file {
-  override string getAbsolutePath() { files(this, result, _, _, _) }
+  override string getAbsolutePath() { files(this, result) }
 
   /** Gets the URL of this file. */
   override string getURL() { result = "file://" + this.getAbsolutePath() + ":0:0:0:0" }
 
   /** Holds if this file was extracted from ordinary source code. */
-  predicate fromSource() { files(this, _, _, _, 1) }
+  predicate fromSource() { any() }
 }
