@@ -50,12 +50,11 @@ class Location extends @location {
       filepath = f.getAbsolutePath()
     )
   }
-}
 
-/** Holds if location `one` starts strictly before location `two` */
-pragma[inline]
-predicate strictlyBefore(Location one, Location two) {
-  one.getStartLine() < two.getStartLine()
-  or
-  one.getStartLine() = two.getStartLine() and one.getStartColumn() < two.getStartColumn()
+  /** Holds if this location starts strictly before the specified location. */
+  predicate strictlyBefore(Location other) {
+    this.getStartLine() < other.getStartLine()
+    or
+    this.getStartLine() = other.getStartLine() and this.getStartColumn() < other.getStartColumn()
+  }
 }

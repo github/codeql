@@ -143,7 +143,7 @@ class ErbDirective extends TDirectiveNode, ErbAstNode {
   Stmt getTerminalStmt() {
     result = this.getAChildStmt() and
     forall(Stmt s | s = this.getAChildStmt() and not s = result |
-      strictlyBefore(s.getLocation(), result.getLocation())
+      s.getLocation().strictlyBefore(result.getLocation())
     )
   }
 
