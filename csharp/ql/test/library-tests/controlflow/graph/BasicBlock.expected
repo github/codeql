@@ -677,7 +677,7 @@
 | Initializers.cs:8:5:8:16 | enter Initializers | Initializers.cs:8:5:8:16 | exit Initializers | 16 |
 | Initializers.cs:10:5:10:16 | enter Initializers | Initializers.cs:10:5:10:16 | exit Initializers | 16 |
 | Initializers.cs:12:10:12:10 | enter M | Initializers.cs:12:10:12:10 | exit M | 22 |
-| Initializers.cs:18:20:18:20 | 1 | Initializers.cs:18:16:18:20 | ... = ... | 2 |
+| Initializers.cs:18:16:18:16 | enter H | Initializers.cs:18:16:18:20 | ... = ... | 3 |
 | Initializers.cs:20:11:20:23 | enter NoConstructor | Initializers.cs:20:11:20:23 | exit NoConstructor | 9 |
 | Initializers.cs:31:9:31:11 | enter Sub | Initializers.cs:31:9:31:11 | exit Sub | 12 |
 | Initializers.cs:33:9:33:11 | enter Sub | Initializers.cs:33:9:33:11 | exit Sub | 9 |

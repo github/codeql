@@ -18,7 +18,7 @@ module Stages {
 
     cached
     private predicate forceCachingInSameStageRev() {
-      exists(SplitImpl si)
+      exists(Split s)
       or
       exists(SuccessorType st)
       or
