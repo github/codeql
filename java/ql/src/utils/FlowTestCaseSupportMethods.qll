@@ -371,6 +371,9 @@ private class MapGenValueMethod extends GenMethod {
   override string getCall(string arg) { result = "Map.of(null, " + arg + ")" }
 }
 
+/**
+ * Returns a cast to type `t` if `t` is not `java.lang.Object`, or an empty string otherwise.
+ */
 string getConvertExprIfNotObject(RefType t) {
   if t.hasQualifiedName("java.lang", "Object")
   then result = ""
