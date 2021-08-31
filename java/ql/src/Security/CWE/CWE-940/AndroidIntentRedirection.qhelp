@@ -11,7 +11,7 @@
         <p>If this is not possible, restrict either which apps can send Intents to the affected component, or which components can be started from it.</p>
     </recommendation>
     <example>
-        <p>The following snippet contains two examples.
+        <p>The following snippet contains three examples.
         In the first example, an arbitrary component can be started from the externally provided <code>forward_intent</code> Intent.
         In the second example, the destination component of the Intent is first checked to make sure it is safe.
         In the third example, the component that created the Intent is first checked to make sure it comes from a trusted origin.</p>
