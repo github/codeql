@@ -4,8 +4,8 @@ Creating CodeQL query suites
 ============================
 
 CodeQL query suites provide a way of selecting queries, based on their
-filename, location on disk or in a QL pack, or metadata properties. 
-Create query suites for the queries that you want to frequently use in 
+filename, location on disk or in a QL pack, or metadata properties.
+Create query suites for the queries that you want to frequently use in
 your CodeQL analyses.
 
 Query suites allow you to pass multiple queries to
@@ -19,7 +19,7 @@ suite definition have been executed, the result is a set of selected queries.
 .. pull-quote:: Note
 
    Any custom queries that you want to add to a query suite must be in a :doc:`QL
-   pack <about-ql-packs>` and contain the correct query metadata. 
+   pack <about-ql-packs>` and contain the correct query metadata.
    For more information, see
    ":doc:`Using custom queries with the CodeQL CLI <using-custom-queries-with-the-codeql-cli>`."
 
@@ -50,9 +50,14 @@ queries using:
    - queries: <path-to-subdirectory>
      from: <ql-pack-name>
 
-- A ``qlpack`` instruction---tells CodeQL to look for queries in a named QL pack::
+- A ``qlpack`` instruction---tells CodeQL to resolve queries in the default suite of the
+  named QL pack::
 
    - qlpack: <qlpack-name>
+
+  The default suite of a query pack includes all of the common and recommended queries
+  inside of that suite. Not all query packs have a default suite. Those that do not
+  define a default suite will resolve all of the queries in all of their subdirectories.
 
 .. pull-quote:: Note
 
@@ -73,7 +78,7 @@ Filtering the queries in a query suite
 After you have defined the initial set of queries to add to your suite by
 specifying ``query``, ``queries``, or ``qlpack`` instructions, you can add
 ``include`` and ``exclude`` instructions. These instructions define selection
-criteria based on specific properties: 
+criteria based on specific properties:
 
 - When you execute an ``include`` instruction on a set of queries, any
   queries that match your conditions are retained in the selection, and queries
@@ -99,12 +104,12 @@ For both instructions, the argument is a constraint block---that is, a YAML map
 representing the constraints. Each constraint is a map entry, where the key is
 typically a query metadata property. The value can be:
 
-- A single string. 
+- A single string.
 - A ``/``\ -enclosed `regular expression <https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/regex/Pattern.html>`__.
 - A list containing strings, regular expressions, or both.
 
 To match a constraint, a metadata value must match one of the strings or
-regular expressions. When there is more than one metadata key, each key must be matched. 
+regular expressions. When there is more than one metadata key, each key must be matched.
 For more information about query metadata properties, see ":ref:`Metadata for CodeQL queries
 <metadata-for-codeql-queries>`."
 
@@ -112,7 +117,7 @@ In addition to metadata tags, the keys in the constraint block can also be:
 
 - ``query filename``---matches on the last path component of the query file name.
 - ``query path``---matches on the path to the query file relative to its
-  enclosing QL pack. 
+  enclosing QL pack.
 - ``tags contain``---one of the given match strings must match
   one of the space-separated components of the value of the ``@tags`` metadata property.
 - ``tags contain all``---each of the given match strings must match one of the
@@ -120,6 +125,14 @@ In addition to metadata tags, the keys in the constraint block can also be:
 
 Examples
 ~~~~~~~~
+
+To define a suite that selects all queries in the default suite of the
+``codeql/cpp-queries`` QL pack, and then refines them to only include
+security queries, use::
+
+   - queries: codeql/cpp-queries
+   - include:
+       tags contain: security
 
 To define a suite that selects all queries with ``@kind problem``
 and ``@precision high`` from the ``my-custom-queries`` directory, use::
@@ -136,34 +149,35 @@ recommendation``, use::
    - queries: my-custom-queries
    - include:
        kind: problem
-   - exclude:    
+   - exclude:
        problem.severity: recommendation
 
 To create a suite that selects all queries with ``@tag security`` and
-``@problem.severity high`` or ``very-high`` from the ``codeql-cpp`` QL pack,
+``@problem.severity high`` or ``very-high`` from the ``codeql/cpp-queries`` QL pack,
 use::
 
-   - qlpack: codeql-cpp
-   - include: 
+   - queries: .
+     from: codeql/cpp-queries
+   - include:
        tags contain: security
-       problem.severity: 
+       problem.severity:
        - high
        - very-high
 
 Reusing existing query suite definitions
 -----------------------------------------
 
-Existing query suite definitions can be reused by specifying: 
+Existing query suite definitions can be reused by specifying:
 
 - An ``import`` instruction---adds the queries selected by a
   previously defined ``.qls`` file to the current suite::
-    
+
     - import: <path-to-query-suite>
 
   The path to the imported suite must be relative to the QL pack containing the
   current suite definition. If the imported query suite is in a different QL
   pack you can use::
-  
+
     - import: <path-to-query-suite>
       from: <ql-pack>
 
@@ -175,12 +189,12 @@ Existing query suite definitions can be reused by specifying:
   applied ``.qls`` file are executed as if they appear in place of ``apply``.
   Any ``include`` and ``exclude`` instructions from the applied suite also act on
   queries added by any earlier instructions::
-    
+
     - apply: <path-to-query-suite>
 
   The ``apply`` instruction can also be used to apply a set of reusable
   conditions, saved in a ``.yml`` file, to multiple query definitions. For more
-  information, see the `example <#example>`__ below. 
+  information, see the `example <#example>`__ below.
 
 - An ``eval`` instruction---performs the same function as an ``import``
   instruction, but takes a full suite definition as the argument, rather than the
@@ -236,7 +250,7 @@ instruction::
 This value is displayed when you run `codeql resolve queries
 <../manual/resolve-queries>`__, if the suite is added to a "well-known"
 directory. For more information, see "`Specifying well-known query suites
-<#specifying-well-known-query-suites>`__." 
+<#specifying-well-known-query-suites>`__."
 
 Saving a query suite
 --------------------
@@ -248,8 +262,8 @@ Specifying well-known query suites
 ----------------------------------
 
 You can use QL packs to declare directories that contain "well-known" query
-suites. You can use "well-known" query suites on the command line by referring 
-to their file name, 
+suites. You can use "well-known" query suites on the command line by referring
+to their file name,
 without providing their full path. This gives you a simple way of specifying a
 set of queries, without needing to search inside QL packs and distributions.
 To declare a directory that contains "well-known" query suites, add the directory
@@ -263,7 +277,7 @@ You can specify query suites on the command line for any command that accepts
 ``.qls`` files. For example, you can compile the queries selected by a suite
 definition using ``query compile``, or use the queries in an analysis using
 ``database analyze``. For more information about analyzing CodeQL databases, see
-":doc:`Analyzing databases with the CodeQL CLI <analyzing-databases-with-the-codeql-cli>`." 
+":doc:`Analyzing databases with the CodeQL CLI <analyzing-databases-with-the-codeql-cli>`."
 
 Viewing the query suites used on LGTM.com
 -----------------------------------------
