@@ -168,7 +168,19 @@ class InstanceVariableAccess extends VariableAccess, TInstanceVariableAccess {
   final override string getAPrimaryQlClass() { result = "InstanceVariableAccess" }
 }
 
+/** An access to an instance variable where the value is updated. */
+class InstanceVariableWriteAccess extends InstanceVariableAccess, VariableWriteAccess { }
+
+/** An access to an instance variable where the value is read. */
+class InstanceVariableReadAccess extends InstanceVariableAccess, VariableReadAccess { }
+
 /** An access to a class variable. */
 class ClassVariableAccess extends VariableAccess, TClassVariableAccess {
   final override string getAPrimaryQlClass() { result = "ClassVariableAccess" }
 }
+
+/** An access to a class variable where the value is updated. */
+class ClassVariableWriteAccess extends ClassVariableAccess, VariableWriteAccess { }
+
+/** An access to a class variable where the value is read. */
+class ClassVariableReadAccess extends ClassVariableAccess, VariableReadAccess { }
