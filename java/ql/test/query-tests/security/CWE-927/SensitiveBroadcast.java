@@ -11,7 +11,7 @@ class SensitiveBroadcast {
         intent.setAction("com.example.custom_action");
         intent.putExtra("token", token);
         intent.putExtra("refreshToken", refreshToken);
-        context.sendBroadcast(intent);
+        context.sendBroadcast(intent); // $ hasTaintFlow 
     }
 
     // BAD - Tests broadcast of sensitive user information with intent extra.
@@ -23,7 +23,7 @@ class SensitiveBroadcast {
         intent.setAction("com.example.custom_action");
         intent.putExtra("name", userName);
         intent.putExtra("pwd", password);
-        context.sendBroadcast(intent);
+        context.sendBroadcast(intent); // $ hasTaintFlow 
     }
 
     // BAD - Tests broadcast of email information with extra bundle.
@@ -35,7 +35,7 @@ class SensitiveBroadcast {
         Bundle bundle = new Bundle();
         bundle.putString("email", email);
         intent.putExtras(bundle);
-        context.sendBroadcast(intent);
+        context.sendBroadcast(intent); // $ hasTaintFlow 
     }    
 
     // BAD - Tests broadcast of sensitive user information with null permission.
@@ -49,7 +49,7 @@ class SensitiveBroadcast {
         userinfo.add(username);
         userinfo.add(password);
         intent.putStringArrayListExtra("userinfo", userinfo);
-        context.sendBroadcast(intent, null);
+        context.sendBroadcast(intent, null); // $ hasTaintFlow 
     }
 
     // GOOD - Tests broadcast of sensitive user information with permission using string literal.
@@ -72,7 +72,7 @@ class SensitiveBroadcast {
         intent.setAction("com.example.custom_action");
         intent.putExtra("ticket", ticket);
         String perm = "com.example.user_permission";
-        context.sendBroadcast(intent, perm);
+        context.sendBroadcast(intent, perm); // $ hasTaintFlow 
     }
 
     // GOOD - Tests broadcast of sensitive user information to a specific application.
@@ -95,7 +95,7 @@ class SensitiveBroadcast {
         Intent intent = new Intent();
         intent.setAction("com.example.custom_action");
         intent.putExtra("ticket", ticket);
-        context.sendBroadcastWithMultiplePermissions(intent, new String[]{});
+        context.sendBroadcastWithMultiplePermissions(intent, new String[]{}); // $ hasTaintFlow 
     }    
 
     // BAD - Tests broadcast of sensitive user information with multiple permissions using empty array initialization through a variable.
@@ -108,7 +108,7 @@ class SensitiveBroadcast {
         intent.putExtra("name", username);
         intent.putExtra("pwd", passcode);
         String[] perms = new String[0];
-        context.sendBroadcastWithMultiplePermissions(intent, perms);
+        context.sendBroadcastWithMultiplePermissions(intent, perms); // $ hasTaintFlow 
     }    
 
     // GOOD - Tests broadcast of sensitive user information with multiple permissions.
@@ -133,11 +133,11 @@ class SensitiveBroadcast {
         intent.setAction("com.example.custom_action");
         Bundle bundle = new Bundle();
         bundle.putString("name", username);
-        bundle.putString("pwd", passwd);
+        bundle.putString("pwd", passwd); 
         intent.putExtras(bundle);
         String[] perms = new String[0];
         String[] perms2 = perms;
-        context.sendBroadcastWithMultiplePermissions(intent, perms2);
+        context.sendBroadcastWithMultiplePermissions(intent, perms2); // $ hasTaintFlow 
     }    
 
     /** 
@@ -156,7 +156,7 @@ class SensitiveBroadcast {
         intent.getExtras().putString("pwd", password);
         String[] perms = new String[0];
         String[] perms2 = perms;
-        context.sendBroadcastWithMultiplePermissions(intent, perms2);
+        context.sendBroadcastWithMultiplePermissions(intent, perms2); // $ hasTaintFlow 
     }    
 
     // GOOD - Tests broadcast of sensitive user information with ordered broadcast.
