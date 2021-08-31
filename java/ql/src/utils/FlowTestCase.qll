@@ -269,11 +269,14 @@ class TestCase extends TTestCase {
   SupportMethod getASupportMethod() {
     exists(SummaryComponentStack s | s = input.drop(_) and s.tail() != baseInput |
       result = SupportMethod::genMethodForContent(s)
-    ) or
+    )
+    or
     exists(SummaryComponentStack s | s = input.drop(_) and s.tail() = baseInput |
       result = SupportMethod::genMethodFor(this.getInputType(), s)
-    ) or
-    result = SupportMethod::getMethodFor(this.getOutputType(), output) or
+    )
+    or
+    result = SupportMethod::getMethodFor(this.getOutputType(), output)
+    or
     result = SupportMethod::getMethodForContent(output.tail().drop(_))
   }
 

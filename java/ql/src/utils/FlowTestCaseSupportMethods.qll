@@ -389,6 +389,8 @@ private class ArrayGenMethod extends GenMethod {
 
   bindingset[arg]
   override string getCall(string arg) {
-    result = "new " + getShortNameIfPossible(type) + "{" + getConvertExprIfNotObject(type.getComponentType()) + arg + "}"
+    result =
+      "new " + getShortNameIfPossible(type) + "{" +
+        getConvertExprIfNotObject(type.getComponentType()) + arg + "}"
   }
 }
