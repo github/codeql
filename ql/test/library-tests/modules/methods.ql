@@ -1,5 +1,5 @@
 import ruby
-import codeql_ruby.ast.internal.Module as M
+import codeql.ruby.ast.internal.Module as M
 
 query MethodBase getMethod(Module m, string name) {
   result = M::ExposedForTestingOnly::getMethod(m, name)

@@ -1,27 +1,27 @@
 {
     "SSA": [
         "codeql/csharp/ql/src/semmle/code/csharp/dataflow/internal/SsaImplCommon.qll",
-        "ql/src/codeql_ruby/dataflow/internal/SsaImplCommon.qll"
+        "ql/lib/codeql/ruby/dataflow/internal/SsaImplCommon.qll"
     ],
     "DataFlow Common": [
         "codeql/csharp/ql/src/semmle/code/csharp/dataflow/internal/DataFlowImplCommon.qll",
-        "ql/src/codeql_ruby/dataflow/internal/DataFlowImplCommon.qll"
+        "ql/lib/codeql/ruby/dataflow/internal/DataFlowImplCommon.qll"
     ],
     "DataFlow": [
         "codeql/csharp/ql/src/semmle/code/csharp/dataflow/internal/DataFlowImpl.qll",
-        "ql/src/codeql_ruby/dataflow/internal/DataFlowImpl.qll"
+        "ql/lib/codeql/ruby/dataflow/internal/DataFlowImpl.qll"
     ],
     "DataFlow Consistency": [
         "codeql/csharp/ql/src/semmle/code/csharp/dataflow/internal/DataFlowImplConsistency.qll",
-        "ql/src/codeql_ruby/dataflow/internal/DataFlowImplConsistency.qll"
+        "ql/lib/codeql/ruby/dataflow/internal/DataFlowImplConsistency.qll"
     ],
     "TaintTracking": [
         "codeql/csharp/ql/src/semmle/code/csharp/dataflow/internal/tainttracking1/TaintTrackingImpl.qll",
-        "ql/src/codeql_ruby/dataflow/internal/tainttracking1/TaintTrackingImpl.qll"
+        "ql/lib/codeql/ruby/dataflow/internal/tainttracking1/TaintTrackingImpl.qll"
     ],
     "TypeTracker": [
         "codeql/python/ql/src/semmle/python/dataflow/new/internal/TypeTracker.qll",
-        "ql/src/codeql_ruby/typetracking/TypeTracker.qll"
+        "ql/lib/codeql/ruby/typetracking/TypeTracker.qll"
     ],
   "Inline Test Expectations": [
     "codeql/python/ql/test/TestUtilities/InlineExpectationsTest.qll",

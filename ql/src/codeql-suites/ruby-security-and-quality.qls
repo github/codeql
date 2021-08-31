@@ -1,4 +1,4 @@
 - description: Security-and-quality queries for Ruby
-- qlpack: codeql-ruby
+- queries: .
 - apply: security-and-quality-selectors.yml
-  from: codeql-suite-helpers
+  from: codeql/suite-helpers

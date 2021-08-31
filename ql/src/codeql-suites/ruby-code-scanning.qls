@@ -1,4 +1,5 @@
 - description: Standard Code Scanning queries for Ruby
-- qlpack: codeql-ruby
+- queries: .
 - apply: code-scanning-selectors.yml
-  from: codeql-suite-helpers
+  from: codeql/suite-helpers
+

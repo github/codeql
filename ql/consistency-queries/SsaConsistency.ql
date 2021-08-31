@@ -1,6 +1,6 @@
 import ruby
-import codeql_ruby.dataflow.SSA
-import codeql_ruby.controlflow.ControlFlowGraph
+import codeql.ruby.dataflow.SSA
+import codeql.ruby.controlflow.ControlFlowGraph
 
 query predicate nonUniqueDef(CfgNode read, Ssa::Definition def) {
   read = def.getARead() and

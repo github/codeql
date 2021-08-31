@@ -6,7 +6,7 @@
  */
 
 import ruby
-import codeql_ruby.Diagnostics
+import codeql.ruby.Diagnostics
 
 /** Gets the SARIF severity to associate an error. */
 int getSeverity() { result = 2 }

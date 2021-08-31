@@ -1,5 +1,5 @@
 import ruby
-import codeql_ruby.ast.internal.Module as M
+import codeql.ruby.ast.internal.Module as M
 
 query predicate constantAccess(ConstantAccess a, string kind, string name, string cls) {
   (

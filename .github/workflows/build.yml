@@ -47,17 +47,17 @@ jobs:
         run: cargo build --release
       - name: Generate dbscheme
         if: ${{ matrix.os == 'ubuntu-latest' }}
-        run: target/release/ruby-generator --dbscheme ql/src/ruby.dbscheme --library ql/src/codeql_ruby/ast/internal/TreeSitter.qll
+        run: target/release/ruby-generator --dbscheme ql/lib/ruby.dbscheme --library ql/lib/codeql/ruby/ast/internal/TreeSitter.qll
       - uses: actions/upload-artifact@v2
         if: ${{ matrix.os == 'ubuntu-latest' }}
         with:
           name: ruby.dbscheme
-          path: ql/src/ruby.dbscheme
+          path: ql/lib/ruby.dbscheme
       - uses: actions/upload-artifact@v2
         if: ${{ matrix.os == 'ubuntu-latest' }}
         with:
           name: TreeSitter.qll
-          path: ql/src/codeql_ruby/ast/internal/TreeSitter.qll
+          path: ql/lib/codeql/ruby/ast/internal/TreeSitter.qll
       - uses: actions/upload-artifact@v2
         with:
           name: extractor-${{ matrix.os }}
@@ -82,8 +82,10 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
       - name: Build Query Pack
         run: |
+          codeql/codeql pack create ql/lib --output target/packs
+          codeql/codeql pack install ql/src
           codeql/codeql pack create ql/src --output target/packs
-          PACK_FOLDER=$(readlink -f target/packs/github/codeql-ruby/*)
+          PACK_FOLDER=$(readlink -f target/packs/codeql/ruby-queries/*)
           codeql/codeql generate query-help --format=sarifv2.1.0 --output="${PACK_FOLDER}/rules.sarif" ql/src
           (cd ql/src; find queries \( -name '*.qhelp' -o -name '*.rb' -o -name '*.erb' \) -exec bash -c 'mkdir -p "'"${PACK_FOLDER}"'/$(dirname "{}")"' \; -exec cp "{}" "${PACK_FOLDER}/{}" \;)
       - name: Compile with previous CodeQL versions
@@ -126,7 +128,7 @@ jobs:
           path: osx64
       - run: |
           mkdir -p ruby
-          cp -r codeql-extractor.yml tools ql/src/ruby.dbscheme.stats ruby/
+          cp -r codeql-extractor.yml tools ql/lib/ruby.dbscheme.stats ruby/
           mkdir -p ruby/tools/{linux64,osx64,win64}
           cp linux64/ruby-autobuilder ruby/tools/linux64/autobuilder
           cp osx64/ruby-autobuilder ruby/tools/osx64/autobuilder
@@ -204,21 +206,15 @@ jobs:
           echo "| 2 |" > "test.expected"
           echo 'name: sample-tests
           version: 0.0.0
-          libraryPathDependencies:
-          - codeql-ruby
+          dependencies:
+            codeql/ruby-all: 0.0.1
           extractor: ruby
           tests: .
           ' > qlpack.yml
-          echo '- qlpack: codeql-ruby
-          - include:
-              kind:
-              - problem
-              - path-problem
-          ' > suite.qls
       - name: Run QL test
         shell: bash
         run: |
-          "${{ runner.temp }}/codeql/codeql" test run --search-path "${{ runner.temp }}/ruby-bundle" .
+          "${{ runner.temp }}/codeql/codeql" test run --search-path "${{ runner.temp }}/ruby-bundle" --additional-packs "${{ runner.temp }}/ruby-bundle" .
       - name: Create database
         shell: bash
         run: |
@@ -226,4 +222,4 @@ jobs:
       - name: Analyze database
         shell: bash
         run: |
-          "${{ runner.temp }}/codeql/codeql" database analyze --search-path "${{ runner.temp }}/ruby-bundle" --format=sarifv2.1.0 --output=out.sarif ../database suite.qls
+          "${{ runner.temp }}/codeql/codeql" database analyze --search-path "${{ runner.temp }}/ruby-bundle" --format=sarifv2.1.0 --output=out.sarif ../database ruby-code-scanning.qls
