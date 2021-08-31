@@ -72,7 +72,7 @@ class SensitiveBroadcast {
         intent.setAction("com.example.custom_action");
         intent.putExtra("ticket", ticket);
         String perm = "com.example.user_permission";
-        context.sendBroadcast(intent, perm); // $ hasTaintFlow 
+        context.sendBroadcast(intent, perm); 
     }
 
     // GOOD - Tests broadcast of sensitive user information to a specific application.
@@ -142,7 +142,6 @@ class SensitiveBroadcast {
 
     /** 
      * BAD - Tests broadcast of sensitive user information with multiple permissions using empty array initialization through two variables and `intent.getExtras().putString()`.
-     * Note this case of `getExtras().putString(...)` is not yet detected thus is beyond what the query is capable of.
      */ 
     public void sendBroadcast12(Context context) {
         String username = "test123";
