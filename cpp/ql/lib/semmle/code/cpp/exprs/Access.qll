@@ -9,7 +9,7 @@ import semmle.code.cpp.Enum
 private import semmle.code.cpp.dataflow.EscapesTree
 
 /**
- * A C/C++ access expression. This refers to a function, variable, or enum constant.
+ * A C/C++ access expression. This refers to a function (excluding function references in function call expressions), variable, or enum constant.
  */
 class Access extends Expr, NameQualifiableElement, @access {
   // As `@access` is a union type containing `@routineexpr` (which describes function accesses
