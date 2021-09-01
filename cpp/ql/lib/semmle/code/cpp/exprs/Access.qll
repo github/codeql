@@ -350,6 +350,15 @@ class PointerToFieldLiteral extends ImplicitThisFieldAccess {
  *   int (*myFunctionPointer)(int) = &myFunctionTarget;
  * }
  * ```
+ * This excludes function accesses in function call expressions.
+ * For example the access `myFunctionTarget` in `myFunction` in the following code:
+ * ```
+ * int myFunctionTarget(int);
+ *
+ * void myFunction() {
+ *   myFunctionTarget(1);
+ * }
+ * ```
  */
 class FunctionAccess extends Access, @routineexpr {
   FunctionAccess() { not iscall(underlyingElement(this), _) }
