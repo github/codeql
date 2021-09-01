@@ -258,6 +258,11 @@ class ClassDefinition extends @class_definition, ClassOrInterface, AST::ValueNod
   }
 
   override string getAPrimaryQlClass() { result = "ClassDefinition" }
+
+  /**
+   * Gets a static initializer of this class, if any.
+   */
+  BlockStmt getAStaticInitializerBlock() { result.getParent() = this }
 }
 
 /**
