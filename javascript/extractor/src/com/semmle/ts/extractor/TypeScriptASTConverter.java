@@ -632,6 +632,8 @@ public class TypeScriptASTConverter {
         return convertWithStatement(node, loc);
       case "YieldExpression":
         return convertYieldExpression(node, loc);
+      case "ClassStaticBlockDeclaration":
+        return convertStaticInitializerBlock(node, loc);
       default:
         throw new ParseError(
             "Unsupported TypeScript syntax " + kind, getSourceLocation(node).getStart());
@@ -864,6 +866,10 @@ public class TypeScriptASTConverter {
       default:
         return new BinaryExpression(loc, operator, left, right);
     }
+  }
+
+  private Node convertStaticInitializerBlock(JsonObject node, SourceLocation loc) throws ParseError {
+    return new BlockStatement(loc, convertChildren(node.get("body").getAsJsonObject(), "statements"));
   }
 
   private Node convertBlock(JsonObject node, SourceLocation loc) throws ParseError {
