@@ -186,13 +186,7 @@ private predicate isCanonicalTerm(RelevantRegExpTerm term, string str) {
  */
 string getCanonicalizationFlags(RegExpTerm root) {
   root.isRootTerm() and
-  (
-    RegExpFlags::isIgnoreCase(root) and
-    result = "i"
-    or
-    not RegExpFlags::isIgnoreCase(root) and
-    result = ""
-  )
+  (if RegExpFlags::isIgnoreCase(root) then result = "i" else result = "")
 }
 
 /**
@@ -207,7 +201,7 @@ private newtype TInputSymbol =
         not RegExpFlags::isIgnoreCase(cc.getRootTerm())
       ).getValue().charAt(_)
     or
-    // normalize to lower case if the regexp is case insensitive
+    // normalize everything to lower case if the regexp is case insensitive
     c =
       any(RegexpCharacterConstant cc, string char |
         cc instanceof RelevantRegExpTerm and
@@ -325,16 +319,16 @@ private module CharacterClasses {
     if RegExpFlags::isIgnoreCase(cc.getRootTerm())
     then
       // normalize everything to lower case if the regexp is case insensitive
-      exists(string c | hasChildThatMatchesIgnoringCasing(cc, c) | char = c.toLowerCase())
-    else hasChildThatMatchesIgnoringCasing(cc, char)
+      exists(string c | hasChildThatMatchesIgnoringCasingFlags(cc, c) | char = c.toLowerCase())
+    else hasChildThatMatchesIgnoringCasingFlags(cc, char)
   }
 
   /**
    * Holds if the character class `cc` has a child (constant or range) that matches `char`.
-   * Ignores whether the character class is inside a regular expression that ignores casing.
+   * Ignores whether the character class is inside a regular expression that has the ignore case flag.
    */
   pragma[noinline]
-  predicate hasChildThatMatchesIgnoringCasing(RegExpCharacterClass cc, string char) {
+  predicate hasChildThatMatchesIgnoringCasingFlags(RegExpCharacterClass cc, string char) {
     exists(getCanonicalCharClass(cc)) and
     exists(RegExpTerm child | child = cc.getAChild() |
       char = child.(RegexpCharacterConstant).getValue()
@@ -583,7 +577,7 @@ predicate delta(State q1, EdgeLabel lbl, State q2) {
       not RegExpFlags::isIgnoreCase(s.getRootTerm()) and
       lbl = Char(s.getValue().charAt(i))
       or
-      // normalizing to lower case if ignorecase flag is set
+      // normalize everything to lower case if the regexp is case insensitive
       RegExpFlags::isIgnoreCase(s.getRootTerm()) and
       exists(string c | c = s.getValue().charAt(i) | lbl = Char(c.toLowerCase()))
     ) and
