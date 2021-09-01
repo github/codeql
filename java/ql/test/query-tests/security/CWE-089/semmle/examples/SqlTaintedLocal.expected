@@ -5,7 +5,6 @@ edges
 | Test.java:29:30:29:42 | args : String[] | Test.java:42:57:42:62 | query2 |
 | Test.java:29:30:29:42 | args : String[] | Test.java:50:62:50:67 | query3 |
 | Test.java:29:30:29:42 | args : String[] | Test.java:58:19:58:26 | category : String |
-| Test.java:29:30:29:42 | args : String[] | Test.java:62:47:62:61 | querySbToString |
 | Test.java:29:30:29:42 | args : String[] | Test.java:70:40:70:44 | query |
 | Test.java:29:30:29:42 | args : String[] | Test.java:78:46:78:50 | query |
 | Test.java:58:4:58:10 | querySb [post update] : StringBuilder | Test.java:60:29:60:35 | querySb : StringBuilder |
