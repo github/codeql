@@ -70,6 +70,19 @@ private predicate completionIsValidForStmt(AstNode n, Completion c) {
   c = TReturnCompletion()
 }
 
+/**
+ * Holds if `c` happens in an exception-aware context, that is, it may be
+ * `rescue`d or `ensure`d. In such cases, we assume that the target of `c`
+ * may raise an exception (in addition to evaluating normally).
+ */
+private predicate mayRaise(Call c) {
+  exists(Trees::BodyStmtTree bst | c = bst.getBodyChild(_, true).getAChild*() |
+    exists(bst.getARescue())
+    or
+    exists(bst.getEnsure())
+  )
+}
+
 /** A completion of a statement or an expression. */
 abstract class Completion extends TCompletion {
   /** Holds if this completion is valid for node `n`. */
@@ -90,6 +103,9 @@ abstract class Completion extends TCompletion {
     this = TMatchingCompletion(_)
     or
     n = any(RescueModifierExpr parent).getBody() and this = TRaiseCompletion()
+    or
+    mayRaise(n) and
+    this = TRaiseCompletion()
     or
     not n instanceof NonReturningCall and
     not completionIsValidForStmt(n, _) and
