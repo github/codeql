@@ -69,7 +69,7 @@ assert scalar_result == "FOO"
 
 
 # exec_driver_sql
-result = conn.exec_driver_sql(raw_sql) # $ MISSING: getSql=raw_sql
+result = conn.exec_driver_sql(raw_sql) # $ getSql=raw_sql
 assert result.fetchall() == [("FOO",)]
 
 # construction by object
@@ -284,7 +284,7 @@ with engine.connect() as conn:
     result = conn.execute(statement=text_sql) # $ getSql=text_sql
     assert result.fetchall() == [("FOO",)]
 
-    result = conn.exec_driver_sql(raw_sql) # $ MISSING: getSql=raw_sql
+    result = conn.exec_driver_sql(raw_sql) # $ getSql=raw_sql
     assert result.fetchall() == [("FOO",)]
 
     raw_conn = conn.connection

@@ -196,6 +196,18 @@ private module SqlAlchemy {
   }
 
   /**
+   * A call to `exec_driver_sql` on a SQLAlchemy Connection.
+   * See
+   *  - https://docs.sqlalchemy.org/en/14/core/connections.html#sqlalchemy.engine.Connection.exec_driver_sql
+   *  - https://docs.sqlalchemy.org/en/14/core/future.html#sqlalchemy.future.Connection.exec_driver_sql
+   */
+  private class SqlAlchemyExecDriverSqlCall extends DataFlow::MethodCallNode, SqlExecution::Range {
+    SqlAlchemyExecDriverSqlCall() { this.calls(Connection::instance(), "exec_driver_sql") }
+
+    override DataFlow::Node getSql() { result in [this.getArg(0), this.getArgByName("statement")] }
+  }
+
+  /**
    * A call to `scalar` on a SQLAlchemy Engine, Connection, or Session.
    * See
    *  - https://docs.sqlalchemy.org/en/14/core/connections.html#sqlalchemy.engine.Engine.scalar
