@@ -187,11 +187,10 @@ private predicate isCanonicalTerm(RelevantRegExpTerm term, string str) {
 string getCanonicalizationFlags(RegExpTerm root) {
   root.isRootTerm() and
   (
-    RegExpFlags::isIgnoreCase(root) and
-    result = "i"
-    or
-    not RegExpFlags::isIgnoreCase(root) and
-    result = ""
+    if RegExpFlags::isIgnoreCase(root) then
+      result = "i"
+    else
+      result = ""
   )
 }
 
