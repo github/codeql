@@ -24,7 +24,7 @@ module Connect {
    * but support for other kinds of route handlers can be added by implementing
    * additional subclasses of this class.
    */
-  abstract class RouteHandler extends HTTP::Servers::StandardRouteHandler, NodeJSLib::RouteHandler,
+  abstract class RouteHandler extends NodeJSLib::RouteHandler,
     DataFlow::ValueNode {
     /**
      * Gets the parameter of kind `kind` of this route handler.
