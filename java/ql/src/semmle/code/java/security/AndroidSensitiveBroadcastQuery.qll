@@ -30,70 +30,72 @@ class SendBroadcastMethodAccess extends MethodAccess {
   }
 }
 
-private class NullArgFlowConfig extends DataFlow2::Configuration {
-  NullArgFlowConfig() { this = "Flow configuration with a null argument" }
-
-  override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof NullLiteral }
-
-  override predicate isSink(DataFlow::Node sink) {
-    exists(SendBroadcastMethodAccess ma | sink.asExpr() = ma.getAnArgument())
-  }
+private predicate isNullArg(Expr ex) {
+  exists(DataFlow::Node src, DataFlow::Node sink, SendBroadcastMethodAccess ma |
+    ex = ma.getAnArgument() and
+    sink.asExpr() = ex and
+    src.asExpr() instanceof NullLiteral
+  |
+    DataFlow::localFlow(src, sink)
+  )
 }
 
-private class EmptyArrayArgFlowConfig extends DataFlow3::Configuration {
-  EmptyArrayArgFlowConfig() { this = "Flow configuration with an empty array argument" }
-
-  override predicate isSource(DataFlow::Node src) {
+private predicate isEmptyArrayArg(Expr ex) {
+  exists(DataFlow::Node src, DataFlow::Node sink, SendBroadcastMethodAccess ma |
+    ex = ma.getAnArgument() and
+    sink.asExpr() = ex and
     src.asExpr().(ArrayCreationExpr).getFirstDimensionSize() = 0
-  }
-
-  override predicate isSink(DataFlow::Node sink) {
-    exists(SendBroadcastMethodAccess ma | sink.asExpr() = ma.getAnArgument())
-  }
+  |
+    DataFlow::localFlow(src, sink)
+  )
 }
 
 /**
  * Holds if a `sendBroadcast` call doesn't specify receiver permission.
  */
 predicate isSensitiveBroadcastSink(DataFlow::Node sink) {
-  exists(SendBroadcastMethodAccess ma |
+  exists(SendBroadcastMethodAccess ma, string name | ma.getMethod().hasName(name) |
     sink.asExpr() = ma.getAnArgument() and
     (
-      ma.getMethod().hasName("sendBroadcast") and
+      name = "sendBroadcast" and
       (
-        ma.getNumArgument() = 1 // sendBroadcast(Intent intent)
+        // sendBroadcast(Intent intent)
+        ma.getNumArgument() = 1
         or
         // sendBroadcast(Intent intent, String receiverPermission)
-        exists(NullArgFlowConfig conf | conf.hasFlow(_, DataFlow::exprNode(ma.getArgument(1))))
+        isNullArg(ma.getArgument(1))
       )
       or
-      ma.getMethod().hasName("sendBroadcastAsUser") and
+      name = "sendBroadcastAsUser" and
       (
-        ma.getNumArgument() = 2 or // sendBroadcastAsUser(Intent intent, UserHandle user)
-        exists(NullArgFlowConfig conf | conf.hasFlow(_, DataFlow::exprNode(ma.getArgument(2)))) // sendBroadcastAsUser(Intent intent, UserHandle user, String receiverPermission)
+        // sendBroadcastAsUser(Intent intent, UserHandle user)
+        ma.getNumArgument() = 2
+        or
+        // sendBroadcastAsUser(Intent intent, UserHandle user, String receiverPermission)
+        isNullArg(ma.getArgument(2))
       )
       or
-      ma.getMethod().hasName("sendBroadcastWithMultiplePermissions") and
-      exists(EmptyArrayArgFlowConfig config |
-        config.hasFlow(_, DataFlow::exprNode(ma.getArgument(1))) // sendBroadcastWithMultiplePermissions(Intent intent, String[] receiverPermissions)
-      )
+      // sendBroadcastWithMultiplePermissions(Intent intent, String[] receiverPermissions)
+      name = "sendBroadcastWithMultiplePermissions" and
+      isEmptyArrayArg(ma.getArgument(1))
       or
       // Method calls of `sendOrderedBroadcast` whose second argument is always `receiverPermission`
-      ma.getMethod().hasName("sendOrderedBroadcast") and
+      name = "sendOrderedBroadcast" and
       (
-        // sendOrderedBroadcast(Intent intent, String receiverPermission) or sendOrderedBroadcast(Intent intent, String receiverPermission, BroadcastReceiver resultReceiver, Handler scheduler, int initialCode, String initialData, Bundle initialExtras)
-        exists(NullArgFlowConfig conf | conf.hasFlow(_, DataFlow::exprNode(ma.getArgument(1)))) and
+        // sendOrderedBroadcast(Intent intent, String receiverPermission)
+        // sendOrderedBroadcast(Intent intent, String receiverPermission, BroadcastReceiver resultReceiver, Handler scheduler, int initialCode, String initialData, Bundle initialExtras)
+        isNullArg(ma.getArgument(1)) and
         ma.getNumArgument() <= 7
         or
         // sendOrderedBroadcast(Intent intent, String receiverPermission, String receiverAppOp, BroadcastReceiver resultReceiver, Handler scheduler, int initialCode, String initialData, Bundle initialExtras)
-        exists(NullArgFlowConfig conf | conf.hasFlow(_, DataFlow::exprNode(ma.getArgument(1)))) and
-        exists(NullArgFlowConfig conf | conf.hasFlow(_, DataFlow::exprNode(ma.getArgument(2)))) and
+        isNullArg(ma.getArgument(1)) and
+        isNullArg(ma.getArgument(2)) and
         ma.getNumArgument() = 8
       )
       or
-      // Method call of `sendOrderedBroadcastAsUser(Intent intent, UserHandle user, String receiverPermission, BroadcastReceiver resultReceiver, Handler scheduler, int initialCode, String initialData, Bundle initialExtras)`
-      ma.getMethod().hasName("sendOrderedBroadcastAsUser") and
-      exists(NullArgFlowConfig conf | conf.hasFlow(_, DataFlow::exprNode(ma.getArgument(2))))
+      // sendOrderedBroadcastAsUser(Intent intent, UserHandle user, String receiverPermission, BroadcastReceiver resultReceiver, Handler scheduler, int initialCode, String initialData, Bundle initialExtras)
+      name = "sendOrderedBroadcastAsUser" and
+      isNullArg(ma.getArgument(2))
     )
   )
 }
