@@ -26,6 +26,9 @@ class MethodBase extends Callable, BodyStmt, Scope, TMethodBase {
   /** Gets the name of this method. */
   string getName() { none() }
 
+  /** Holds if the name of this method is `name`. */
+  final predicate hasName(string name) { this.getName() = name }
+
   override AstNode getAChild(string pred) {
     result = Callable.super.getAChild(pred)
     or

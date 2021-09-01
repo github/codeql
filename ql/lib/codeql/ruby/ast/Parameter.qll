@@ -45,6 +45,9 @@ class NamedParameter extends Parameter, TNamedParameter {
   /** Gets the name of this parameter. */
   string getName() { none() }
 
+  /** Holds if the name of this parameter is `name`. */
+  final predicate hasName(string name) { this.getName() = name }
+
   /** Gets the variable introduced by this parameter. */
   LocalVariable getVariable() { none() }
 

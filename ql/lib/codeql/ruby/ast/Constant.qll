@@ -9,6 +9,9 @@ class ConstantAccess extends Expr, TConstantAccess {
   /** Gets the name of the constant being accessed. */
   string getName() { none() }
 
+  /** Holds if the name of the constant being accessed is `name`. */
+  final predicate hasName(string name) { this.getName() = name }
+
   /**
    * Gets the expression used in the access's scope resolution operation, if
    * any. In the following example, the result is the `Call` expression for

@@ -11,6 +11,9 @@ class Variable extends TVariable {
   /** Gets the name of this variable. */
   string getName() { none() }
 
+  /** Holds if the name of this variable is `name`. */
+  final predicate hasName(string name) { this.getName() = name }
+
   /** Gets a textual representation of this variable. */
   final string toString() { result = this.getName() }
 
