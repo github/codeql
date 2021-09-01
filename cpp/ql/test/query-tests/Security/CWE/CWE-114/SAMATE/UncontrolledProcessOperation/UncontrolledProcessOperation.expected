@@ -1,0 +1,30 @@
+edges
+| test.cpp:35:73:35:76 | *data | test.cpp:41:32:41:35 | (LPCSTR)... |
+| test.cpp:35:73:35:76 | *data | test.cpp:41:32:41:35 | data |
+| test.cpp:35:73:35:76 | *data | test.cpp:41:32:41:35 | data indirection |
+| test.cpp:35:73:35:76 | data | test.cpp:41:32:41:35 | (LPCSTR)... |
+| test.cpp:35:73:35:76 | data | test.cpp:41:32:41:35 | data |
+| test.cpp:35:73:35:76 | data | test.cpp:41:32:41:35 | data |
+| test.cpp:35:73:35:76 | data | test.cpp:41:32:41:35 | data indirection |
+| test.cpp:62:30:62:35 | call to getenv | test.cpp:71:17:71:22 | data |
+| test.cpp:62:30:62:35 | call to getenv | test.cpp:71:17:71:22 | data |
+| test.cpp:62:30:62:35 | call to getenv | test.cpp:71:24:71:27 | data indirection |
+| test.cpp:62:30:62:35 | call to getenv | test.cpp:71:24:71:27 | data indirection |
+| test.cpp:71:17:71:22 | data | test.cpp:35:73:35:76 | data |
+| test.cpp:71:24:71:27 | data indirection | test.cpp:35:73:35:76 | *data |
+nodes
+| test.cpp:35:73:35:76 | *data | semmle.label | *data |
+| test.cpp:35:73:35:76 | data | semmle.label | data |
+| test.cpp:41:32:41:35 | (LPCSTR)... | semmle.label | (LPCSTR)... |
+| test.cpp:41:32:41:35 | (LPCSTR)... | semmle.label | (LPCSTR)... |
+| test.cpp:41:32:41:35 | data | semmle.label | data |
+| test.cpp:41:32:41:35 | data | semmle.label | data |
+| test.cpp:41:32:41:35 | data | semmle.label | data |
+| test.cpp:41:32:41:35 | data indirection | semmle.label | data indirection |
+| test.cpp:41:32:41:35 | data indirection | semmle.label | data indirection |
+| test.cpp:62:30:62:35 | call to getenv | semmle.label | call to getenv |
+| test.cpp:62:30:62:35 | call to getenv | semmle.label | call to getenv |
+| test.cpp:71:17:71:22 | data | semmle.label | data |
+| test.cpp:71:24:71:27 | data indirection | semmle.label | data indirection |
+#select
+| test.cpp:41:32:41:35 | data | test.cpp:62:30:62:35 | call to getenv | test.cpp:41:32:41:35 | data | The value of this argument may come from $@ and is being passed to LoadLibraryA | test.cpp:62:30:62:35 | call to getenv | call to getenv |

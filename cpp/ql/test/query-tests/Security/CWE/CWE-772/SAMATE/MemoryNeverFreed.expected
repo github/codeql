@@ -1,0 +1,2 @@
+| tests.cpp:99:20:99:26 | new | This memory is never freed |
+| tests.cpp:164:24:164:29 | call to malloc | This memory is never freed |

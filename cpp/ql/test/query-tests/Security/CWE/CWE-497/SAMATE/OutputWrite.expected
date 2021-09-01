@@ -1,0 +1,7 @@
+| tests.c:35:9:35:14 | call to printf | tests.c:35:16:35:21 | %s\n |
+| tests.c:35:9:35:14 | call to printf | tests.c:35:24:35:27 | line |
+| tests.c:49:13:49:21 | call to printLine | tests.c:49:23:49:38 | fgets() failed |
+| tests.c:68:13:68:21 | call to printLine | tests.c:68:23:68:52 | User logged in successfully. |
+| tests.c:73:13:73:21 | call to printLine | tests.c:73:23:73:40 | Unable to login. |
+| tests.c:76:9:76:15 | call to fprintf | tests.c:76:25:76:67 | User attempted access with password: %s\n |
+| tests.c:76:9:76:15 | call to fprintf | tests.c:76:70:76:77 | password |

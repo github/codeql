@@ -1,0 +1,17 @@
+edges
+| test.c:93:46:93:69 | recv output argument | test.c:124:15:124:18 | data |
+| test.c:93:46:93:69 | recv output argument | test.c:124:15:124:18 | data |
+| test.c:93:46:93:69 | recv output argument | test.c:124:15:124:18 | data indirection |
+| test.c:93:55:93:68 | ... + ... | test.c:124:15:124:18 | data |
+| test.c:93:55:93:68 | ... + ... | test.c:124:15:124:18 | data |
+| test.c:93:55:93:68 | ... + ... | test.c:124:15:124:18 | data indirection |
+nodes
+| test.c:93:46:93:69 | recv output argument | semmle.label | recv output argument |
+| test.c:93:55:93:68 | ... + ... | semmle.label | ... + ... |
+| test.c:124:15:124:18 | data | semmle.label | data |
+| test.c:124:15:124:18 | data | semmle.label | data |
+| test.c:124:15:124:18 | data | semmle.label | data |
+| test.c:124:15:124:18 | data indirection | semmle.label | data indirection |
+| test.c:124:15:124:18 | data indirection | semmle.label | data indirection |
+#select
+| test.c:124:15:124:18 | data | test.c:93:55:93:68 | ... + ... | test.c:124:15:124:18 | data | The value of this argument may come from $@ and is being used as a formatting argument to badVaSink(data), which calls vsnprintf(format) | test.c:93:55:93:68 | ... + ... | recv |
