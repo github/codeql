@@ -20,26 +20,26 @@ print("v1.4")
 
 engine = sqlalchemy.create_engine("sqlite+pysqlite:///:memory:", echo=True)
 
-result = engine.execute(raw_sql) # $ MISSING: getSql=raw_sql
+result = engine.execute(raw_sql) # $ getSql=raw_sql
 assert result.fetchall() == [("FOO",)]
-result = engine.execute(statement=raw_sql) # $ MISSING: getSql=raw_sql
+result = engine.execute(statement=raw_sql) # $ getSql=raw_sql
 assert result.fetchall() == [("FOO",)]
-result = engine.execute(text_sql) # $ MISSING: getSql=text_sql
+result = engine.execute(text_sql) # $ getSql=text_sql
 assert result.fetchall() == [("FOO",)]
 
 scalar_result = engine.scalar(raw_sql) # $ getSql=raw_sql
 assert scalar_result == "FOO"
-scalar_result = engine.scalar(statement=raw_sql) # $ MISSING: getSql=raw_sql
+scalar_result = engine.scalar(statement=raw_sql) # $ getSql=raw_sql
 assert scalar_result == "FOO"
 
 # engine with custom execution options
 # see https://docs.sqlalchemy.org/en/14/core/connections.html#sqlalchemy.engine.Engine.execution_options
 engine_with_custom_exe_opts = engine.execution_options(foo=42)
-result = engine_with_custom_exe_opts.execute(raw_sql) # $ MISSING: getSql=raw_sql
+result = engine_with_custom_exe_opts.execute(raw_sql) # $ getSql=raw_sql
 assert result.fetchall() == [("FOO",)]
 
 even_more_opts = engine_with_custom_exe_opts.execution_options(bar=43)
-result = even_more_opts.execute(raw_sql) # $ MISSING: getSql=raw_sql
+result = even_more_opts.execute(raw_sql) # $ getSql=raw_sql
 assert result.fetchall() == [("FOO",)]
 
 # Connection see https://docs.sqlalchemy.org/en/14/core/connections.html#sqlalchemy.engine.Connection
@@ -48,23 +48,23 @@ conn: sqlalchemy.engine.base.Connection
 
 result = conn.execute(raw_sql) # $ getSql=raw_sql
 assert result.fetchall() == [("FOO",)]
-result = conn.execute(statement=raw_sql) # $ MISSING: getSql=raw_sql
+result = conn.execute(statement=raw_sql) # $ getSql=raw_sql
 assert result.fetchall() == [("FOO",)]
 
 result = conn.execute(text_sql) # $ getSql=text_sql
 assert result.fetchall() == [("FOO",)]
-result = conn.execute(statement=text_sql) # $ MISSING: getSql=text_sql
+result = conn.execute(statement=text_sql) # $ getSql=text_sql
 assert result.fetchall() == [("FOO",)]
 
 # scalar
-scalar_result = conn.scalar(raw_sql) # $ MISSING: getSql=raw_sql
+scalar_result = conn.scalar(raw_sql) # $ getSql=raw_sql
 assert scalar_result == "FOO"
-scalar_result = conn.scalar(object_=raw_sql) # $ MISSING: getSql=raw_sql
+scalar_result = conn.scalar(object_=raw_sql) # $ getSql=raw_sql
 assert scalar_result == "FOO"
 
-scalar_result = conn.scalar(text_sql) # $ MISSING: getSql=text_sql
+scalar_result = conn.scalar(text_sql) # $ getSql=text_sql
 assert scalar_result == "FOO"
-scalar_result = conn.scalar(object_=text_sql) # $ MISSING: getSql=text_sql
+scalar_result = conn.scalar(object_=text_sql) # $ getSql=text_sql
 assert scalar_result == "FOO"
 
 
@@ -74,12 +74,12 @@ assert result.fetchall() == [("FOO",)]
 
 # construction by object
 conn = sqlalchemy.engine.base.Connection(engine)
-result = conn.execute(raw_sql) # $ MISSING: getSql=raw_sql
+result = conn.execute(raw_sql) # $ getSql=raw_sql
 assert result.fetchall() == [("FOO",)]
 
 # branched connection
 branched_conn = conn.connect()
-result = branched_conn.execute(text_sql) # $ MISSING: getSql=text_sql
+result = branched_conn.execute(text_sql) # $ getSql=text_sql
 assert result.fetchall() == [("FOO",)]
 
 # raw connection
@@ -107,40 +107,40 @@ assert result.fetchall() == [("FOO",)]
 
 session = sqlalchemy.orm.Session(engine)
 
-result = session.execute(raw_sql) # $ MISSING: getSql=raw_sql
+result = session.execute(raw_sql) # $ getSql=raw_sql
 assert result.fetchall() == [("FOO",)]
-result = session.execute(statement=raw_sql) # $ MISSING: getSql=raw_sql
+result = session.execute(statement=raw_sql) # $ getSql=raw_sql
 assert result.fetchall() == [("FOO",)]
 
-result = session.execute(text_sql) # $ MISSING: getSql=text_sql
+result = session.execute(text_sql) # $ getSql=text_sql
 assert result.fetchall() == [("FOO",)]
-result = session.execute(statement=text_sql) # $ MISSING: getSql=text_sql
+result = session.execute(statement=text_sql) # $ getSql=text_sql
 assert result.fetchall() == [("FOO",)]
 
 # scalar
-scalar_result = session.scalar(raw_sql) # $ MISSING: getSql=raw_sql
+scalar_result = session.scalar(raw_sql) # $ getSql=raw_sql
 assert scalar_result == "FOO"
-scalar_result = session.scalar(statement=raw_sql) # $ MISSING: getSql=raw_sql
+scalar_result = session.scalar(statement=raw_sql) # $ getSql=raw_sql
 assert scalar_result == "FOO"
 
-scalar_result = session.scalar(text_sql) # $ MISSING: getSql=text_sql
+scalar_result = session.scalar(text_sql) # $ getSql=text_sql
 assert scalar_result == "FOO"
-scalar_result = session.scalar(statement=text_sql) # $ MISSING: getSql=text_sql
+scalar_result = session.scalar(statement=text_sql) # $ getSql=text_sql
 assert scalar_result == "FOO"
 
 # other ways to construct a session
 with sqlalchemy.orm.Session(engine) as session:
-    result = session.execute(raw_sql) # $ MISSING: getSql=raw_sql
+    result = session.execute(raw_sql) # $ getSql=raw_sql
     assert result.fetchall() == [("FOO",)]
 
 Session = sqlalchemy.orm.sessionmaker(engine)
 session = Session()
 
-result = session.execute(raw_sql) # $ MISSING: getSql=raw_sql
+result = session.execute(raw_sql) # $ getSql=raw_sql
 assert result.fetchall() == [("FOO",)]
 
 with Session() as session:
-    result = session.execute(raw_sql) # $ MISSING: getSql=raw_sql
+    result = session.execute(raw_sql) # $ getSql=raw_sql
     assert result.fetchall() == [("FOO",)]
 
 with Session.begin() as session:
@@ -255,12 +255,12 @@ future_engine = sqlalchemy.future.create_engine("sqlite+pysqlite:///:memory:", e
 
 # in 2.0 you are not allowed to execute things directly on the engine
 try:
-    engine.execute(raw_sql)
+    engine.execute(raw_sql) # $ SPURIOUS: getSql=raw_sql
     raise Exception("above not allowed in 2.0")
 except NotImplementedError:
     pass
 try:
-    engine.execute(text_sql)
+    engine.execute(text_sql) # $ SPURIOUS: getSql=text_sql
     raise Exception("above not allowed in 2.0")
 except NotImplementedError:
     pass
@@ -281,7 +281,7 @@ with engine.connect() as conn:
 
     result = conn.execute(text_sql) # $ getSql=text_sql
     assert result.fetchall() == [("FOO",)]
-    result = conn.execute(statement=text_sql) # $ MISSING: getSql=text_sql
+    result = conn.execute(statement=text_sql) # $ getSql=text_sql
     assert result.fetchall() == [("FOO",)]
 
     result = conn.exec_driver_sql(raw_sql) # $ MISSING: getSql=raw_sql
@@ -305,12 +305,12 @@ with engine.connect() as conn:
 
     # `scalar` is shorthand helper
     try:
-        conn.scalar(raw_sql)
+        conn.scalar(raw_sql) # $ SPURIOUS: getSql=raw_sql
     except sqlalchemy.exc.ObjectNotExecutableError:
         pass
-    scalar_result = conn.scalar(text_sql) # $ MISSING: getSql=text_sql
+    scalar_result = conn.scalar(text_sql) # $ getSql=text_sql
     assert scalar_result == "FOO"
-    scalar_result = conn.scalar(statement=text_sql) # $ MISSING: getSql=text_sql
+    scalar_result = conn.scalar(statement=text_sql) # $ getSql=text_sql
     assert scalar_result == "FOO"
 
     # This is a contrived example
@@ -324,7 +324,7 @@ with engine.connect() as conn:
     assert result.fetchall() == [("BAZ",)]
 
 with future_engine.connect() as conn:
-    result = conn.execute(text_sql) # $ MISSING: getSql=text_sql
+    result = conn.execute(text_sql) # $ getSql=text_sql
     assert result.fetchall() == [("FOO",)]
 
 # `begin` returns a new Connection object with a transaction begun.
@@ -335,7 +335,7 @@ with engine.begin() as conn:
 
 # construction by object
 conn = sqlalchemy.future.Connection(engine)
-result = conn.execute(text_sql) # $ MISSING: getSql=text_sql
+result = conn.execute(text_sql) # $ getSql=text_sql
 assert result.fetchall() == [("FOO",)]
 
 # raw_connection
@@ -352,25 +352,25 @@ cursor.close()
 # Session (2.0)
 session = sqlalchemy.orm.Session(engine, future=True)
 
-result = session.execute(raw_sql) # $ MISSING: getSql=raw_sql
+result = session.execute(raw_sql) # $ getSql=raw_sql
 assert result.fetchall() == [("FOO",)]
-result = session.execute(statement=raw_sql) # $ MISSING: getSql=raw_sql
+result = session.execute(statement=raw_sql) # $ getSql=raw_sql
 assert result.fetchall() == [("FOO",)]
 
-result = session.execute(text_sql) # $ MISSING: getSql=text_sql
+result = session.execute(text_sql) # $ getSql=text_sql
 assert result.fetchall() == [("FOO",)]
-result = session.execute(statement=text_sql) # $ MISSING: getSql=text_sql
+result = session.execute(statement=text_sql) # $ getSql=text_sql
 assert result.fetchall() == [("FOO",)]
 
 # scalar
-scalar_result = session.scalar(raw_sql) # $ MISSING: getSql=raw_sql
+scalar_result = session.scalar(raw_sql) # $ getSql=raw_sql
 assert scalar_result == "FOO"
-scalar_result = session.scalar(statement=raw_sql) # $ MISSING: getSql=raw_sql
+scalar_result = session.scalar(statement=raw_sql) # $ getSql=raw_sql
 assert scalar_result == "FOO"
 
-scalar_result = session.scalar(text_sql) # $ MISSING: getSql=text_sql
+scalar_result = session.scalar(text_sql) # $ getSql=text_sql
 assert scalar_result == "FOO"
-scalar_result = session.scalar(statement=text_sql) # $ MISSING: getSql=text_sql
+scalar_result = session.scalar(statement=text_sql) # $ getSql=text_sql
 assert scalar_result == "FOO"
 
 # Querying (2.0)
@@ -394,9 +394,9 @@ assert session.query(For20).all()[0].id == 20
 # see https://docs.sqlalchemy.org/en/14/orm/session_basics.html#querying-2-0-style
 
 statement = sqlalchemy.select(For20)
-result = session.execute(statement)
+result = session.execute(statement) # $ getSql=statement
 assert result.scalars().all()[0].id == 20
 
 statement = sqlalchemy.select(For20).where(For20.description == text_foo) # $ MISSING: getSql=text_foo
-result = session.execute(statement)
+result = session.execute(statement) # $ getSql=statement
 assert result.scalars().all() == []
