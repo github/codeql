@@ -144,7 +144,7 @@ with Session() as session:
     assert result.fetchall() == [("FOO",)]
 
 with Session.begin() as session:
-    result = session.execute(raw_sql) # $ MISSING: getSql=raw_sql
+    result = session.execute(raw_sql) # $ getSql=raw_sql
     assert result.fetchall() == [("FOO",)]
 
 # Querying (1.4)

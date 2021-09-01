@@ -202,6 +202,14 @@ private module SqlAlchemy {
               .getMember("sessionmaker")
               .getReturn()
               .getACall()
+        or
+        this =
+          API::moduleImport("sqlalchemy")
+              .getMember("orm")
+              .getMember("sessionmaker")
+              .getReturn()
+              .getMember("begin")
+              .getACall()
       }
     }
 
