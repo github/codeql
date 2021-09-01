@@ -111,6 +111,8 @@ private module SqlAlchemy {
         this.(DataFlow::MethodCallNode).calls(Engine::instance(), ["begin", "connect"])
         or
         this.(DataFlow::MethodCallNode).calls(instance(), "connect")
+        or
+        this.(DataFlow::MethodCallNode).calls(instance(), "execution_options")
       }
     }
 

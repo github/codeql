@@ -98,7 +98,7 @@ assert result.fetchall() == [("FOO",)]
 
 # connection with custom execution options
 conn_with_custom_exe_opts = conn.execution_options(bar=1337)
-result = conn_with_custom_exe_opts.execute(text_sql) # $ MISSING: getSql=text_sql
+result = conn_with_custom_exe_opts.execute(text_sql) # $ getSql=text_sql
 assert result.fetchall() == [("FOO",)]
 
 # Session -- is what you use to work with the ORM layer
@@ -300,7 +300,7 @@ with engine.connect() as conn:
 
     # connection with custom execution options
     conn_with_custom_exe_opts = conn.execution_options(bar=1337)
-    result = conn_with_custom_exe_opts.execute(text_sql) # $ MISSING: getSql=text_sql
+    result = conn_with_custom_exe_opts.execute(text_sql) # $ getSql=text_sql
     assert result.fetchall() == [("FOO",)]
 
     # `scalar` is shorthand helper
