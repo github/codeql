@@ -312,19 +312,6 @@ private module SqlAlchemy {
       )
     }
   }
-
-  /**
-   * Gets a reference to `sqlescapy.sqlescape`.
-   *
-   * See https://pypi.org/project/sqlescapy/
-   */
-  class SQLEscapySanitizerCall extends DataFlow::CallCfgNode, SQLEscape::Range {
-    SQLEscapySanitizerCall() {
-      this = API::moduleImport("sqlescapy").getMember("sqlescape").getACall()
-    }
-
-    override DataFlow::Node getAnInput() { result = this.getArg(0) }
-  }
 }
 
 private module OldModeling {
