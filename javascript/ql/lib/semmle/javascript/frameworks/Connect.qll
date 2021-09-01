@@ -24,8 +24,7 @@ module Connect {
    * but support for other kinds of route handlers can be added by implementing
    * additional subclasses of this class.
    */
-  abstract class RouteHandler extends NodeJSLib::RouteHandler,
-    DataFlow::ValueNode {
+  abstract class RouteHandler extends NodeJSLib::RouteHandler, DataFlow::ValueNode {
     /**
      * Gets the parameter of kind `kind` of this route handler.
      *
@@ -109,11 +108,13 @@ module Connect {
     override string getCredentialsKind() { result = kind }
   }
 
+  class RequestExpr = NodeJSLib::RequestExpr;
+
   /**
    * An access to a user-controlled Connect request input.
    */
   private class RequestInputAccess extends HTTP::RequestInputAccess {
-    NodeJSLib::RequestExpr request;
+    RequestExpr request;
     string kind;
 
     RequestInputAccess() {
