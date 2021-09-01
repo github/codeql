@@ -253,6 +253,11 @@ module API {
       /** A use of an API member at the node `nd`. */
       MkUse(DataFlow::Node nd) { use(_, _, nd) }
 
+    private string resolveTopLevel(ConstantReadAccess read) {
+      TResolved(result) = resolveScopeExpr(read) and
+      not result.matches("%::%")
+    }
+
     /**
      * Holds if `ref` is a use of a node that should have an incoming edge from `base` labeled
      * `lbl` in the API graph.
@@ -265,11 +270,10 @@ module API {
         lbl = Label::member(read.getName()) and
         read = access.getExpr()
       |
-        TResolved(name) = resolveScopeExpr(read) and
-        not name.matches("%::%")
+        name = resolveTopLevel(read)
         or
         name = read.getName() and
-        not exists(resolveScopeExpr(read)) and
+        not exists(resolveTopLevel(read)) and
         not exists(read.getScopeExpr())
       )
       or
@@ -288,7 +292,7 @@ module API {
         // lbl = `Whatever`
         // ref = `Rails::Whatever`
         exists(ExprNodes::ConstantAccessCfgNode c, DataFlow::Node node, ConstantReadAccess read |
-          not exists(resolveScopeExpr(read)) and
+          not exists(resolveTopLevel(read)) and
           pred.flowsTo(node) and
           node.asExpr() = c.getScopeExpr() and
           lbl = Label::member(read.getName()) and

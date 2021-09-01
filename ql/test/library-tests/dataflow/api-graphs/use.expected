@@ -1,2 +1,0 @@
-| test1.rb:31:1:31:5 | Outer | Unexpected result: use=getMember("Outer") |
-| test1.rb:31:18:31:78 | #$ use=getMember("Outer").getMember("Inner").getReturn("foo") | Missing result:use=getMember("Outer").getMember("Inner").getReturn("foo") |
