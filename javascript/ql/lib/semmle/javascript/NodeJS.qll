@@ -102,6 +102,7 @@ class NodeModule extends Module {
   override DataFlow::Node getABulkExportedNode() {
     exists(DataFlow::PropWrite write |
       write.getBase().asExpr() = getModuleVariable().getAnAccess() and
+      write.getPropertyName() = "exports" and
       result = write.getRhs()
     )
   }
