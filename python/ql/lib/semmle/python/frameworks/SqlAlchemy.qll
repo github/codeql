@@ -10,7 +10,6 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.ApiGraphs
 private import semmle.python.Concepts
-private import experimental.semmle.python.Concepts
 // This import is done like this to avoid importing the deprecated top-level things that
 // would pollute the namespace
 private import semmle.python.frameworks.PEP249::PEP249 as PEP249

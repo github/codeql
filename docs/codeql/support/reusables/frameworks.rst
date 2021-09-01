@@ -177,6 +177,7 @@ Python built-in support
    psycopg2, Database
    sqlite3, Database
    peewee, Database ORM
+   SQLAlchemy, Database ORM
    cryptography, Cryptography library
    pycryptodome, Cryptography library
    pycryptodomex, Cryptography library
