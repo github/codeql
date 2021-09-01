@@ -84,16 +84,16 @@ assert result.fetchall() == [("FOO",)]
 
 # raw connection
 raw_conn = conn.connection
-result = raw_conn.execute(raw_sql) # $ MISSING: getSql=raw_sql
+result = raw_conn.execute(raw_sql) # $ getSql=raw_sql
 assert result.fetchall() == [("FOO",)]
 
 cursor = raw_conn.cursor()
-cursor.execute(raw_sql) # $ MISSING: getSql=raw_sql
+cursor.execute(raw_sql) # $ getSql=raw_sql
 assert cursor.fetchall() == [("FOO",)]
 cursor.close()
 
 raw_conn = engine.raw_connection()
-result = raw_conn.execute(raw_sql) # $ MISSING: getSql=raw_sql
+result = raw_conn.execute(raw_sql) # $ getSql=raw_sql
 assert result.fetchall() == [("FOO",)]
 
 # connection with custom execution options
@@ -288,7 +288,7 @@ with engine.connect() as conn:
     assert result.fetchall() == [("FOO",)]
 
     raw_conn = conn.connection
-    result = raw_conn.execute(raw_sql) # $ MISSING: getSql=raw_sql
+    result = raw_conn.execute(raw_sql) # $ getSql=raw_sql
     assert result.fetchall() == [("FOO",)]
 
     # branching not allowed in 2.0
@@ -341,11 +341,11 @@ assert result.fetchall() == [("FOO",)]
 # raw_connection
 
 raw_conn = engine.raw_connection()
-result = raw_conn.execute(raw_sql) # $ MISSING: getSql=raw_sql
+result = raw_conn.execute(raw_sql) # $ getSql=raw_sql
 assert result.fetchall() == [("FOO",)]
 
 cursor = raw_conn.cursor()
-cursor.execute(raw_sql) # $ MISSING: getSql=raw_sql
+cursor.execute(raw_sql) # $ getSql=raw_sql
 assert cursor.fetchall() == [("FOO",)]
 cursor.close()
 

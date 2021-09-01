@@ -11,6 +11,9 @@ private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.ApiGraphs
 private import semmle.python.Concepts
 private import experimental.semmle.python.Concepts
+// This import is done like this to avoid importing the deprecated top-level things that
+// would pollute the namespace
+private import semmle.python.frameworks.PEP249::PEP249 as PEP249
 
 /**
  * Provides models for the `SQLAlchemy` PyPI package.
@@ -125,6 +128,43 @@ private module SqlAlchemy {
     }
 
     /** Gets a reference to an instance of a SQLAlchemy Connection. */
+    DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
+  }
+
+  /**
+   * Provides models for the underlying DB-API Connection of a SQLAlchemy Connection.
+   *
+   * See https://docs.sqlalchemy.org/en/14/core/connections.html#dbapi-connections.
+   */
+  module DBAPIConnection {
+    /**
+     * A source of instances of DB-API Connections, extend this class to model new instances.
+     *
+     * This can include instantiations of the class, return values from function
+     * calls, or a special parameter that will be set when functions are called by an external
+     * library.
+     *
+     * Use the predicate `DBAPIConnection::instance()` to get references to instances of DB-API Connections.
+     */
+    abstract class InstanceSource extends DataFlow::LocalSourceNode { }
+
+    private class DBAPIConnectionSources extends InstanceSource, PEP249::Connection::InstanceSource {
+      DBAPIConnectionSources() {
+        this.(DataFlow::MethodCallNode).calls(Engine::instance(), "raw_connection")
+        or
+        this.(DataFlow::AttrRead).accesses(Connection::instance(), "connection")
+      }
+    }
+
+    /** Gets a reference to an instance of DB-API Connections. */
+    private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
+      t.start() and
+      result instanceof InstanceSource
+      or
+      exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+    }
+
+    /** Gets a reference to an instance of DB-API Connections. */
     DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
   }
 
