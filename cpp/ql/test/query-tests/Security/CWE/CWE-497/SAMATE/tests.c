@@ -1,4 +1,4 @@
-// Semmle test cases for rule CWE-497
+// SAMATE Juliet test cases for rule CWE-497.
 
 // library functions etc
 typedef struct {} FILE;

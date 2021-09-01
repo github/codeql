@@ -1,6 +1,6 @@
 //semmle-extractor-options: --edg --target --edg win64
 
-// A selection of tests from the samate framework for rule CWE-78.
+// A selection of tests from the SAMATE Juliet framework for rule CWE-78.
 
 // library types, functions etc
 #define NULL (0)

@@ -1,4 +1,4 @@
-// External test cases for rule CWE-190.
+// Some SAMATE Juliet test cases for rule CWE-190.
 
 ///// Library functions //////
 

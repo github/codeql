@@ -1,4 +1,4 @@
-// Samate test cases for CWE-114
+// Some SAMATE Juliet test cases for CWE-114.
 
 typedef unsigned long size_t;
 typedef unsigned int BOOL;

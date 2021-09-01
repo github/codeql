@@ -1,6 +1,6 @@
 //semmle-extractor-options: --edg --target --edg win64
 
-// A sample of tests from the samate framework for rule CWE-119.
+// A sample of tests from the SAMATE Juliet framework for rule CWE-119.
 
 // library types, functions etc
 typedef unsigned long size_t;

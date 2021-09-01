@@ -1,4 +1,4 @@
-// Snippet from an external (samate) test case for rule CWE-122 / CWE-129
+// Snippet from a SAMATE Juliet test case for rule CWE-122 / CWE-129
 // CWE122_Heap_Based_Buffer_Overflow__c_CWE129_fgets_01.c
 
 typedef unsigned long size_t;

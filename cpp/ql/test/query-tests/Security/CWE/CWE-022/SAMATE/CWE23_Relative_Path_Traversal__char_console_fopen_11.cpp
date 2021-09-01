@@ -1,6 +1,6 @@
 /**
  * This test case is closely based on CWE23_Relative_Path_Traversal__char_console_fopen_11.cpp
- * from the SAMATE test suite.
+ * from the SAMATE Juliet test suite.
  */
 
 #define NULL (0)

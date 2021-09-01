@@ -3,29 +3,6 @@
 // Associated with CWE-134: Uncontrolled format string. http://cwe.mitre.org/data/definitions/134.html
 // Examples amended to have all function declarations inlined.
 
-/* TEMPLATE GENERATED TESTCASE FILE
-Filename: CWE134_Uncontrolled_Format_String__char_console_fprintf_01.c
-Label Definition File: CWE134_Uncontrolled_Format_String.label.xml
-Template File: sources-sinks-01.tmpl.c
-*/
-/*
- * @description
- * CWE: 134 Uncontrolled Format String
- * BadSource: console Read input from the console
- * GoodSource: Copy a fixed string into data
- * Sinks: fprintf
- *    GoodSink: fprintf with "%s" as the second argument and data as the third
- *    BadSink : fprintf with data as the second argument
- * Flow Variant: 01 Baseline
- *
- * */
-
-// Replaced with inlined functions
-//#include "std_testcase.h"
-//
-//#ifndef _WIN32
-//# include <wchar.h>
-//#endif
 #define NULL 0
 typedef unsigned long size_t;
 typedef struct {} FILE;

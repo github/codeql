@@ -1,4 +1,4 @@
-// Samate test case for rule DangerousUseOfCin.ql / CWE-676
+// SAMATE Juliet test case for rule DangerousUseOfCin.ql / CWE-676.
 
 // --- library types, functions etc ---
 

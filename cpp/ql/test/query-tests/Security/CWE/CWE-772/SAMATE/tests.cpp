@@ -1,4 +1,4 @@
-// Sample of samate tests for CWE-772.
+// Sample of SAMATE Juliet tests for CWE-772.
 
 // --- library types, functions etc ---
 
