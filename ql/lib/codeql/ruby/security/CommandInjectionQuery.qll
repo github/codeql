@@ -1,0 +1,27 @@
+/**
+ * Provides a taint tracking configuration for reasoning about
+ * command-injection vulnerabilities (CWE-078).
+ *
+ * Note, for performance reasons: only import this file if
+ * `CommandInjection::Configuration` is needed, otherwise
+ * `CommandInjectionCustomizations` should be imported instead.
+ */
+
+import ruby
+// import IndirectCommandArgument
+import codeql.ruby.TaintTracking
+import CommandInjectionCustomizations::CommandInjection
+import codeql.ruby.DataFlow
+
+/**
+ * A taint-tracking configuration for reasoning about command-injection vulnerabilities.
+ */
+class Configuration extends TaintTracking::Configuration {
+  Configuration() { this = "CommandInjection" }
+
+  override predicate isSource(DataFlow::Node source) { source instanceof Source }
+
+  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+
+  override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
+}
