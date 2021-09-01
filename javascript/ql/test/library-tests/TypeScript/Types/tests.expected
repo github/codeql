@@ -670,3 +670,6 @@ unionIndex
 | { stillMyUnion: true; } | 1 | MyUnion \| { yetAnotherType: true; } |
 | { stillMyUnion: true; } | 1 | { myUnion: true; } \| { stillMyUnion: true; } |
 | { yetAnotherType: true; } | 2 | MyUnion \| { yetAnotherType: true; } |
+getAStaticInitializerBlock
+| tst.ts:179:3:192:3 | class F ...    \\n  } | tst.ts:185:5:187:5 | static  ... ;\\n    } |
+| tst.ts:179:3:192:3 | class F ...    \\n  } | tst.ts:188:5:190:5 | static  ... ;\\n    } |
