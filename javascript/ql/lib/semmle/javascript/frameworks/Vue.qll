@@ -14,7 +14,11 @@ module Vue {
     override DataFlow::Node getARhs() { none() }
   }
 
-  /** A value exported from a `.vue` file. */
+  /**
+   * A value exported from a `.vue` file.
+   *
+   * This `EntryPoint` is used by `SingleFileComponent::getOwnOptions()`.
+   */
   private class VueExportEntryPoint extends API::EntryPoint {
     VueExportEntryPoint() { this = "VueExportEntryPoint" }
 
@@ -474,6 +478,8 @@ module Vue {
    *
    * Concretely, such an import receives the Vue component generated from the .vue file,
    * not the actual exports of the script tag in the file.
+   *
+   * This entry point is used in `SingleFileComponent::getComponentRef()`.
    */
   private class VueFileImportEntryPoint extends API::EntryPoint {
     VueFileImportEntryPoint() { this = "VueFileImportEntryPoint" }
