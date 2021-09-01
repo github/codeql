@@ -454,7 +454,7 @@ public class CFGExtractor {
 
     @Override
     public Node visit(ClassBody nd, Void v) {
-      for (MemberDefinition<?> m : nd.getBody()) {
+      for (Node m : nd.getBody()) {
         if (m instanceof MethodDefinition) {
           Node first = m.accept(this, v);
           if (first != null) return first;
@@ -1163,10 +1163,14 @@ public class CFGExtractor {
     private Map<Expression, AClass> constructor2Class = new LinkedHashMap<>();
 
     private Void visit(Node nd, AClass ac, SuccessorInfo i) {
-      for (MemberDefinition<?> m : ac.getBody().getBody())
-        if (m.isConstructor() && m.isConcrete()) constructor2Class.put(m.getValue(), ac);
+      for (Node m : ac.getBody().getBody()) {
+        if (m instanceof MemberDefinition) {
+          MemberDefinition md = (MemberDefinition) m;
+          if (md.isConstructor() && md.isConcrete()) constructor2Class.put(md.getValue(), ac);
+        }
+      }
       visitSequence(ac.getId(), ac.getSuperClass(), ac.getBody(), nd);
-      writeSuccessors(nd, visitSequence(getStaticFields(ac.getBody()), getDecoratorsOfClass(ac), i.getAllSuccessors()));
+      writeSuccessors(nd, visitSequence(getStaticInitializers(ac.getBody()), getDecoratorsOfClass(ac), i.getAllSuccessors()));
       return null;
     }
 
@@ -1203,15 +1207,18 @@ public class CFGExtractor {
       List<Node> staticDecorators = new ArrayList<>();
       List<Node> constructorParameterDecorators = new ArrayList<>();
       List<Node> classDecorators = (List<Node>)(List<?>)ac.getDecorators();
-      for (MemberDefinition<?> member : ac.getBody().getBody()) {
-        if (!member.isConcrete()) continue;
-        List<Node> decorators = getMemberDecorators(member);
-        if (member.isConstructor()) {
-          constructorParameterDecorators.addAll(decorators);
-        } else if (member.isStatic()) {
-          staticDecorators.addAll(decorators);
-        } else {
-          instanceDecorators.addAll(decorators);
+      for (Node memberNode : ac.getBody().getBody()) {
+        if (memberNode instanceof MemberDefinition) {
+          MemberDefinition<?> member = (MemberDefinition<?>) memberNode;
+          if (!member.isConcrete()) continue;
+          List<Node> decorators = getMemberDecorators(member);
+          if (member.isConstructor()) {
+            constructorParameterDecorators.addAll(decorators);
+          } else if (member.isStatic()) {
+            staticDecorators.addAll(decorators);
+          } else {
+            instanceDecorators.addAll(decorators);
+          }
         }
       }
       List<Node> result = new ArrayList<>();
@@ -1612,25 +1619,32 @@ public class CFGExtractor {
 
     private List<MemberDefinition<?>> getMethods(ClassBody nd) {
       List<MemberDefinition<?>> mds = new ArrayList<>();
-      for (MemberDefinition<?> md : nd.getBody()) {
-        if (md instanceof MethodDefinition) mds.add(md);
+      for (Node md : nd.getBody()) {
+        if (md instanceof MethodDefinition) mds.add((MemberDefinition<?>)md);
       }
       return mds;
     }
 
-    private List<MemberDefinition<?>> getStaticFields(ClassBody nd) {
-      List<MemberDefinition<?>> mds = new ArrayList<>();
-      for (MemberDefinition<?> md : nd.getBody()) {
-        if (md instanceof FieldDefinition && md.isStatic()) mds.add(md);
+    /**
+     * Gets the static fields, and static initializer blocks, from `nd`.
+     */
+    private List<Node> getStaticInitializers(ClassBody nd) {
+      List<Node> nodes = new ArrayList<>();
+      for (Node node : nd.getBody()) {
+        if (node instanceof FieldDefinition && ((FieldDefinition)node).isStatic()) nodes.add(node);
+        if (node instanceof BlockStatement) nodes.add(node);
       }
-      return mds;
+      return nodes;
     }
 
     private List<FieldDefinition> getConcreteInstanceFields(ClassBody nd) {
       List<FieldDefinition> fds = new ArrayList<>();
-      for (MemberDefinition<?> md : nd.getBody())
+      for (Node node : nd.getBody()) {
+        if (!(node instanceof MemberDefinition)) continue;
+        MemberDefinition<?> md = (MemberDefinition<?>)node;
         if (md instanceof FieldDefinition && !md.isStatic() && md.isConcrete())
           fds.add((FieldDefinition) md);
+      }
       return fds;
     }
 

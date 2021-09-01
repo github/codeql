@@ -247,6 +247,19 @@ getExprType
 | tst.ts:176:17:176:20 | data | Data |
 | tst.ts:176:17:176:27 | data["foo"] | boolean |
 | tst.ts:176:22:176:26 | "foo" | "foo" |
+| tst.ts:179:9:179:11 | Foo | Foo |
+| tst.ts:180:21:180:21 | 0 | 0 |
+| tst.ts:182:5:184:5 | get cou ... ;\\n    } | number |
+| tst.ts:182:9:182:13 | count | number |
+| tst.ts:183:16:183:18 | Foo | typeof Foo in tst.ts:132 |
+| tst.ts:183:16:183:25 | Foo.#count | number |
+| tst.ts:186:7:186:9 | Foo | typeof Foo in tst.ts:132 |
+| tst.ts:186:7:186:16 | Foo.#count | number |
+| tst.ts:186:7:186:21 | Foo.#count += 3 | number |
+| tst.ts:186:21:186:21 | 3 | 3 |
+| tst.ts:189:11:189:15 | count | number |
+| tst.ts:189:19:189:21 | Foo | typeof Foo in tst.ts:132 |
+| tst.ts:189:19:189:28 | Foo.#count | number |
 | type_alias.ts:3:5:3:5 | b | boolean |
 | type_alias.ts:7:5:7:5 | c | ValueOrArray<number> |
 | type_alias.ts:14:9:14:32 | [proper ... ]: Json | any |
@@ -309,6 +322,7 @@ getTypeDefinitionType
 | tst.ts:152:5:156:5 | interfa ... ;\\n    } | Colors |
 | tst.ts:165:5:167:5 | interfa ... ;\\n    } | Foo |
 | tst.ts:171:5:173:5 | interfa ... ;\\n    } | Data |
+| tst.ts:179:3:192:3 | class F ...    \\n  } | Foo |
 | type_alias.ts:1:1:1:17 | type B = boolean; | boolean |
 | type_alias.ts:5:1:5:50 | type Va ... ay<T>>; | ValueOrArray<T> |
 | type_alias.ts:9:1:15:13 | type Js ... Json[]; | Json |
@@ -551,6 +565,7 @@ referenceDefinition
 | EnumWithOneMember | type_definitions.ts:18:26:18:31 | member |
 | Foo | tst.ts:116:3:129:3 | class F ...   }\\n  } |
 | Foo | tst.ts:165:5:167:5 | interfa ... ;\\n    } |
+| Foo | tst.ts:179:3:192:3 | class F ...    \\n  } |
 | HasArea | tst.ts:58:1:60:1 | interfa ... mber;\\n} |
 | I<S> | type_definitions.ts:3:1:5:1 | interfa ... x: S;\\n} |
 | I<number> | type_definitions.ts:3:1:5:1 | interfa ... x: S;\\n} |

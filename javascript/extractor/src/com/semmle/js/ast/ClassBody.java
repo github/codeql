@@ -4,23 +4,23 @@ import java.util.List;
 
 /** The body of a {@linkplain ClassDeclaration} or {@linkplain ClassExpression}. */
 public class ClassBody extends Node {
-  private final List<MemberDefinition<?>> body;
+  private final List<Node> body; // either MemberDefintion or BlockStatement (static initialization blocks)
 
-  public ClassBody(SourceLocation loc, List<MemberDefinition<?>> body) {
+  public ClassBody(SourceLocation loc, List<Node> body) {
     super("ClassBody", loc);
     this.body = body;
   }
 
-  public List<MemberDefinition<?>> getBody() {
+  public List<Node> getBody() {
     return body;
   }
 
-  public void addMember(MemberDefinition<?> md) {
+  public void addMember(Node md) {
     body.add(md);
   }
 
   public MethodDefinition getConstructor() {
-    for (MemberDefinition<?> md : body) if (md.isConstructor()) return (MethodDefinition) md;
+    for (Node md : body) if (md instanceof MethodDefinition && ((MethodDefinition)md).isConstructor()) return (MethodDefinition) md;
     return null;
   }
 

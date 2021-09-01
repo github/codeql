@@ -175,4 +175,19 @@ module TS44 {
     const data: Data = {};
     const baz = data["foo"];
   }
+
+  class Foo {
+    static #count = 0;
+
+    get count() {
+        return Foo.#count;
+    }
+    static {
+      Foo.#count += 3;
+    }
+    static {
+      var count = Foo.#count;
+    }
+    
+  }
 }
