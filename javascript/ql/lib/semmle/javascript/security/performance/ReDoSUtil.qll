@@ -201,7 +201,7 @@ private newtype TInputSymbol =
         not RegExpFlags::isIgnoreCase(cc.getRootTerm())
       ).getValue().charAt(_)
     or
-    // normalize to lower case if the regexp is case insensitive
+    // normalize everything to lower case if the regexp is case insensitive
     c =
       any(RegexpCharacterConstant cc, string char |
         cc instanceof RelevantRegExpTerm and
@@ -577,7 +577,7 @@ predicate delta(State q1, EdgeLabel lbl, State q2) {
       not RegExpFlags::isIgnoreCase(s.getRootTerm()) and
       lbl = Char(s.getValue().charAt(i))
       or
-      // normalizing to lower case if ignorecase flag is set
+      // normalize everything to lower case if the regexp is case insensitive
       RegExpFlags::isIgnoreCase(s.getRootTerm()) and
       exists(string c | c = s.getValue().charAt(i) | lbl = Char(c.toLowerCase()))
     ) and
