@@ -201,7 +201,7 @@ based on the `Unicode value <https://en.wikipedia.org/wiki/List_of_Unicode_chara
 of each character.
 
 To specify a different order, follow ``<expression>`` with the keywords ``order by``, then
-one or more comma-separated expressions that specifies the order, and optionally the keyword ``asc`` or ``desc`` after each expression
+one or more comma-separated expressions that specify the order, and optionally the keyword ``asc`` or ``desc`` after each expression
 (to determine whether to order the expression in ascending or descending order). If you don't
 specify an ordering, it defaults to ``asc``. For example, ``order by o.getName() asc, o.getSize() desc``
 might be used to order some object by name, breaking ties by descending size.
