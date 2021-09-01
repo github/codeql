@@ -171,4 +171,6 @@ private DataFlow::Node getAnExportFromModule(Module mod) {
   result.analyze().getAValue() = mod.(AmdModule).getDefine().getAModuleExportsValue()
   or
   result = mod.getAnExportedValue(_)
+  or
+  result = mod.getABulkExportedNode()
 }
