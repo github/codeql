@@ -253,6 +253,11 @@ module API {
       /** A use of an API member at the node `nd`. */
       MkUse(DataFlow::Node nd) { use(_, _, nd) }
 
+    private string resolveTopLevel(ConstantReadAccess read) {
+      TResolved(result) = resolveScopeExpr(read) and
+      not result.matches("%::%")
+    }
+
     /**
      * Holds if `ref` is a use of a node that should have an incoming edge from `base` labeled
      * `lbl` in the API graph.
@@ -265,15 +270,14 @@ module API {
         lbl = Label::member(read.getName()) and
         read = access.getExpr()
       |
-        TResolved(name) = resolveScopeExpr(read) and
-        not name.matches("%::%")
+        name = resolveTopLevel(read)
         or
         name = read.getName() and
-        not exists(resolveScopeExpr(read)) and
+        not exists(resolveTopLevel(read)) and
         not exists(read.getScopeExpr())
       )
       or
-      exists(DataFlow::LocalSourceNode src, DataFlow::LocalSourceNode pred |
+      exists(ExprCfgNode node |
         // First, we find a predecessor of the node `ref` that we want to determine. The predecessor
         // is any node that is a type-tracked use of a data flow node (`src`), which is itself a
         // reference to the API node `base`. Thus, `pred` and `src` both represent uses of `base`.
@@ -281,25 +285,23 @@ module API {
         // Once we have identified the predecessor, we define its relation to the successor `ref` as
         // well as the label on the edge from `pred` to `ref`. This label describes the nature of
         // the relationship between `pred` and `ref`.
-        use(base, src) and pred = trackUseNode(src)
+        useExpr(node, base)
       |
         // // Referring to an attribute on a node that is a use of `base`:
         // pred = `Rails` part of `Rails::Whatever`
         // lbl = `Whatever`
         // ref = `Rails::Whatever`
-        exists(ExprNodes::ConstantAccessCfgNode c, DataFlow::Node node, ConstantReadAccess read |
-          not exists(resolveScopeExpr(read)) and
-          pred.flowsTo(node) and
-          node.asExpr() = c.getScopeExpr() and
+        exists(ExprNodes::ConstantAccessCfgNode c, ConstantReadAccess read |
+          not exists(resolveTopLevel(read)) and
+          node = c.getScopeExpr() and
           lbl = Label::member(read.getName()) and
           ref.asExpr() = c and
           read = c.getExpr()
         )
         or
         // Calling a method on a node that is a use of `base`
-        exists(ExprNodes::MethodCallCfgNode call, DataFlow::Node node, string name |
-          pred.flowsTo(node) and
-          node.asExpr() = call.getReceiver() and
+        exists(ExprNodes::MethodCallCfgNode call, string name |
+          node = call.getReceiver() and
           name = call.getExpr().getMethodName() and
           lbl = Label::return(name) and
           name != "new" and
@@ -307,13 +309,21 @@ module API {
         )
         or
         // Calling the `new` method on a node that is a use of `base`, which creates a new instance
-        exists(ExprNodes::MethodCallCfgNode call, DataFlow::Node node |
-          pred.flowsTo(node) and
-          node.asExpr() = call.getReceiver() and
+        exists(ExprNodes::MethodCallCfgNode call |
+          node = call.getReceiver() and
           lbl = Label::instance() and
           call.getExpr().getMethodName() = "new" and
           ref.asExpr() = call
         )
+      )
+    }
+
+    pragma[nomagic]
+    private predicate useExpr(ExprCfgNode node, TApiNode base) {
+      exists(DataFlow::LocalSourceNode src, DataFlow::LocalSourceNode pred |
+        use(base, src) and
+        pred = trackUseNode(src) and
+        pred.flowsTo(any(DataFlow::ExprNode n | n.getExprNode() = node))
       )
     }
 
@@ -328,7 +338,10 @@ module API {
      *
      * The flow from `src` to that node may be inter-procedural.
      */
-    private DataFlow::LocalSourceNode trackUseNode(DataFlow::LocalSourceNode src, TypeTracker t) {
+    private DataFlow::LocalSourceNode trackUseNode(DataFlow::Node src, TypeTracker t) {
+      // Declaring `src` to be a `SourceNode` currently causes a redundant check in the
+      // recursive case, so instead we check it explicitly here.
+      src instanceof DataFlow::LocalSourceNode and
       t.start() and
       use(_, src) and
       result = src
