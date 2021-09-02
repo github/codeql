@@ -1,2 +1,2 @@
-| tests.cpp:226:31:226:36 | call to malloc | The memory allocated here may not be released at $@. | tests.cpp:240:1:240:1 | return ... | this exit point |
-| tests.cpp:353:5:353:68 | ... = ... | The memory allocated here may not be released at $@. | tests.cpp:361:1:361:1 | return ... | this exit point |
+| tests.cpp:201:31:201:36 | call to malloc | The memory allocated here may not be released at $@. | tests.cpp:215:1:215:1 | return ... | this exit point |
+| tests.cpp:328:5:328:68 | ... = ... | The memory allocated here may not be released at $@. | tests.cpp:336:1:336:1 | return ... | this exit point |

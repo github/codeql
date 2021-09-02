@@ -1,1 +1,1 @@
-| tests.c:76:9:76:15 | call to fprintf | This operation exposes system data from $@. | tests.c:60:13:60:22 | call to LogonUserA | call to LogonUserA |
+| tests.c:71:9:71:15 | call to fprintf | This operation exposes system data from $@. | tests.c:55:13:55:22 | call to LogonUserA | call to LogonUserA |

@@ -5,6 +5,7 @@
 
 #define NULL (0)
 
+typedef unsigned long size_t;
 typedef size_t time_t;
 time_t time(time_t *timer);
 
@@ -128,4 +129,6 @@ static void goodG2B2()
             fclose(pFile);
         }
     }
+}
+
 }

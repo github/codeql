@@ -1,5 +1,3 @@
-//semmle-extractor-options: --edg --target --edg win64
-
 // A sample of tests from the SAMATE Juliet framework for rule CWE-119.
 
 // library types, functions etc

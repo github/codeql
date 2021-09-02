@@ -2,18 +2,30 @@
 
 // --- library types, functions etc ---
 
+typedef unsigned long size_t;
+
 namespace std
 {
-	// --- std::string ---
+	// --- std::istream ---
 
 	// std::char_traits
 	template<class CharT> class char_traits;
 
-	// --- std::istream ---
+	typedef size_t streamsize;
+
+	class ios_base {
+	public:
+		streamsize width(streamsize wide);
+	};
+
+	template <class charT, class traits = char_traits<charT> >
+	class basic_ios : public ios_base {
+	public:
+	};
 
 	// std::basic_istream
 	template <class charT, class traits = char_traits<charT> >
-	class basic_istream /*: virtual public basic_ios<charT,traits> - not needed for this test */ {
+	class basic_istream : virtual public basic_ios<charT,traits> {
 	};
 
 	// operator>> std::basic_istream -> char*

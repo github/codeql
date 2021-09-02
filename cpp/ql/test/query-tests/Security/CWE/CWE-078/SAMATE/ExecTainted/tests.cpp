@@ -6,7 +6,7 @@
 #define NULL (0)
 typedef unsigned long size_t;
 size_t strlen(const char *s);
-char *strncat(char *s1, const char *s2, size_t n);n);
+char *strncat(char *s1, const char *s2, size_t n);
 char *getenv(const char *name);
 int system(const char *string);
 void exit(int status);
