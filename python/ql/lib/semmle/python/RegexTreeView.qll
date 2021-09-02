@@ -458,9 +458,10 @@ class RegExpEscape extends RegExpNormalChar {
     or
     this.getUnescaped() = "t" and result = "\t"
     or
-    // TODO: Find a way to include a formfeed character
-    // this.getUnescaped() = "f" and result = ""
-    // or
+    this.getUnescaped() = "f" and result = 12.toUnicode()
+    or
+    this.getUnescaped() = "v" and result = 11.toUnicode()
+    or
     isUnicode() and
     result = getUnicode()
   }
