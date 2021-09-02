@@ -8,6 +8,7 @@ import java.nio.file.Files
 import java.nio.file.Paths
 import java.text.SimpleDateFormat
 import java.util.Date
+import java.util.Optional
 import kotlin.system.exitProcess
 import org.jetbrains.kotlin.backend.common.extensions.IrGenerationExtension
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
@@ -167,8 +168,8 @@ fun doFile(logger: Logger, trapDir: File, srcDir: File, declaration: IrFile) {
         val tw = TrapWriter(fileLabel, trapFileBW, declaration.fileEntry)
         val id: Label<DbFile> = tw.getLabelFor(fileLabel)
         tw.writeFiles(id, filePath, basename, extension, 0)
-        val fileExtractor = KotlinFileExtractor(logger, tw)
-        fileExtractor.extractFile(id, declaration)
+        val fileExtractor = KotlinFileExtractor(logger, tw, declaration)
+        fileExtractor.extractFile(id)
     }
 }
 
@@ -179,14 +180,16 @@ fun <T> fakeLabel(): Label<T> {
     return Label(0)
 }
 
-class KotlinFileExtractor(val logger: Logger, val tw: TrapWriter) {
-    fun extractFile(id: Label<DbFile>, f: IrFile) {
-        val pkg = f.fqName.asString()
+class KotlinFileExtractor(val logger: Logger, val tw: TrapWriter, val file: IrFile) {
+    val fileClass by lazy {
+        extractFileClass(file)
+    }
+
+    fun extractFile(id: Label<DbFile>) {
+        val pkg = file.fqName.asString()
         val pkgId = extractPackage(pkg)
         tw.writeCupackage(id, pkgId)
-        // TODO: This shouldn't really exist if there is nothing to go on it
-        val fileClass = extractFileClass(f)
-        f.declarations.map { extractDeclaration(it, fileClass) }
+        file.declarations.map { extractDeclaration(it, Optional.empty()) }
     }
 
   fun extractFileClass(f: IrFile): Label<out DbClass> {
@@ -233,11 +236,11 @@ class KotlinFileExtractor(val logger: Logger, val tw: TrapWriter) {
         return id
     }
 
-    fun extractDeclaration(declaration: IrDeclaration, parentid: Label<out DbReftype>) {
+    fun extractDeclaration(declaration: IrDeclaration, optParentid: Optional<Label<out DbReftype>>) {
         when (declaration) {
             is IrClass -> extractClass(declaration)
-            is IrFunction -> extractFunction(declaration, parentid)
-            is IrProperty -> extractProperty(declaration, parentid)
+            is IrFunction -> extractFunction(declaration, if (optParentid.isPresent()) optParentid.get() else fileClass)
+            is IrProperty -> extractProperty(declaration, if (optParentid.isPresent()) optParentid.get() else fileClass)
             else -> logger.warn("Unrecognised IrDeclaration: " + declaration.javaClass)
         }
     }
@@ -309,7 +312,7 @@ class KotlinFileExtractor(val logger: Logger, val tw: TrapWriter) {
         val pkgId = extractPackage(pkg)
         tw.writeClasses(id, cls, pkgId, id)
         tw.writeHasLocation(id, locId)
-        c.declarations.map { extractDeclaration(it, id) }
+        c.declarations.map { extractDeclaration(it, Optional.of(id)) }
         return id
     }
 
