@@ -1,10 +1,15 @@
 from flask import Flask, request
 import sqlalchemy
 import sqlalchemy.orm
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 engine = sqlalchemy.create_engine(...)
 Base = sqlalchemy.orm.declarative_base()
+
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite+pysqlite:///:memory:"
+db = SQLAlchemy(app)
+
 
 
 class User(Base):
@@ -41,3 +46,6 @@ def show_user(username):
     t6 = sqlalchemy.sql.expression.text(text=username)
     t7 = sqlalchemy.sql.expression.TextClause(username)
     t8 = sqlalchemy.sql.expression.TextClause(text=username)
+
+    t9 = db.text(username)
+    t10 = db.text(text=username)
