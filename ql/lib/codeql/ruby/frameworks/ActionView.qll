@@ -8,8 +8,7 @@ private import ActionController
 
 predicate inActionViewContext(AstNode n) {
   // Within a template
-  // TODO: n.getLocation().getFile() instanceof ErbFile
-  n.getLocation().getFile().getExtension() = "erb"
+  n.getLocation().getFile() instanceof ErbFile
 }
 
 /**
@@ -33,10 +32,7 @@ private class ActionViewContextCall extends MethodCall {
     inActionViewContext(this)
   }
 
-  predicate isInErbFile() {
-    // TODO: this.getLocation().getFile() instanceof ErbFile
-    this.getLocation().getFile().getExtension() = "erb"
-  }
+  predicate isInErbFile() { this.getLocation().getFile() instanceof ErbFile }
 }
 
 /** A call to the `raw` method to output a value without HTML escaping. */
@@ -95,8 +91,7 @@ abstract class RenderCall extends MethodCall {
   /**
    * Get the template file to be rendered by this call, if any.
    */
-  // TODO: parameter should be `ErbFile`
-  File getTemplateFile() { result.getAbsolutePath().matches(this.getTemplatePathPatterns()) }
+  ErbFile getTemplateFile() { result.getAbsolutePath().matches(this.getTemplatePathPatterns()) }
 
   /**
    * Get the local variables passed as context to the renderer

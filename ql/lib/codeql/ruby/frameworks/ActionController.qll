@@ -68,8 +68,7 @@ class ActionControllerActionMethod extends Method, HTTP::Server::RequestHandler:
    * corresponding template file at
    * `<sourcePrefix>app/views/<subpath>/<method_name>.html.erb`.
    */
-  // TODO: result should be `ErbFile`
-  File getDefaultTemplateFile() {
+  ErbFile getDefaultTemplateFile() {
     controllerTemplatesFolder(this.getControllerClass(), result.getParentContainer()) and
     result.getBaseName() = this.getName() + ".html.erb"
   }
@@ -194,8 +193,7 @@ class ActionControllerHelperMethod extends Method {
  * mapped to a controller class in `app/controllers/foo/bar/baz_controller.rb`,
  * if such a controller class exists.
  */
-// TODO: parameter should be `ErbFile`
-ActionControllerControllerClass getAssociatedControllerClass(File f) {
+ActionControllerControllerClass getAssociatedControllerClass(ErbFile f) {
   controllerTemplatesFolder(result, f.getParentContainer())
 }
 

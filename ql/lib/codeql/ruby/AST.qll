@@ -2,6 +2,7 @@ import codeql.Locations
 import ast.Call
 import ast.Control
 import ast.Constant
+import ast.Erb
 import ast.Expr
 import ast.Literal
 import ast.Method

@@ -100,14 +100,6 @@ private predicate scopeAssigns(Scope::Range scope, string name, Ruby::Identifier
   scope = scopeOf(i)
 }
 
-/** Holds if location `one` starts strictly before location `two` */
-pragma[inline]
-private predicate strictlyBefore(Location one, Location two) {
-  one.getStartLine() < two.getStartLine()
-  or
-  one.getStartLine() = two.getStartLine() and one.getStartColumn() < two.getStartColumn()
-}
-
 cached
 private module Cached {
   cached
@@ -296,7 +288,7 @@ private module Cached {
       name = access.getValue()
     |
       variable.getDeclaringScope() = scopeOf(access) and
-      not strictlyBefore(access.getLocation(), variable.getLocation()) and
+      not access.getLocation().strictlyBefore(variable.getLocation()) and
       // In case of overlapping parameter names, later parameters should not
       // be considered accesses to the first parameter
       if parameterAssignment(_, _, access)
@@ -366,7 +358,7 @@ private predicate inherits(Scope::Range scope, string name, Scope::Range outer) 
       or
       exists(Ruby::Identifier i |
         scopeAssigns(outer, name, i) and
-        strictlyBefore(i.getLocation(), scope.getLocation())
+        i.getLocation().strictlyBefore(scope.getLocation())
       )
     )
     or
