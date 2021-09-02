@@ -8,7 +8,6 @@
  */
 
 import ruby
-// import IndirectCommandArgument
 import codeql.ruby.TaintTracking
 import CommandInjectionCustomizations::CommandInjection
 import codeql.ruby.DataFlow

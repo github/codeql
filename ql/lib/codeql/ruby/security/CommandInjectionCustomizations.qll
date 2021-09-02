@@ -39,6 +39,6 @@ module CommandInjection {
    * A command argument to a function that initiates an operating system command.
    */
   class SystemCommandExecutionSink extends Sink, DataFlow::Node {
-    SystemCommandExecutionSink() { this instanceof SystemCommandExecution }
+    SystemCommandExecutionSink() { this = any(SystemCommandExecution c).getAnArgument() }
   }
 }
