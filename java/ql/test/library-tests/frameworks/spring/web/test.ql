@@ -25,6 +25,8 @@ class TaintFlowConf extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node n) {
     n.asExpr().(Argument).getCall().getCallee().hasName("sink")
   }
+
+  override int fieldFlowBranchLimit() { result = 10 }
 }
 
 class HasFlowTest extends InlineExpectationsTest {
