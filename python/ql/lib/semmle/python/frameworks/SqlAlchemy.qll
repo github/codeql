@@ -15,12 +15,14 @@ private import semmle.python.Concepts
 private import semmle.python.frameworks.PEP249::PEP249 as PEP249
 
 /**
+ * INTERNAL: Do not use.
+ *
  * Provides models for the `SQLAlchemy` PyPI package.
  * See
  *  - https://pypi.org/project/SQLAlchemy/
  *  - https://docs.sqlalchemy.org/en/14/index.html
  */
-private module SqlAlchemy {
+module SqlAlchemy {
   /**
    * Provides models for the `sqlalchemy.engine.Engine` and `sqlalchemy.future.Engine` classes.
    *
@@ -279,80 +281,62 @@ private module SqlAlchemy {
   }
 
   /**
-   * Additional taint-steps for `sqlalchemy.text()`
+   * Provides models for the `sqlalchemy.sql.expression.TextClause` class,
+   * which represents a textual SQL string directly.
    *
-   * See https://docs.sqlalchemy.org/en/14/core/sqlelement.html#sqlalchemy.sql.expression.text
-   * See https://docs.sqlalchemy.org/en/14/core/sqlelement.html#sqlalchemy.sql.expression.TextClause
-   */
-  class SqlAlchemyTextAdditionalTaintSteps extends TaintTracking::AdditionalTaintStep {
-    override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-      exists(DataFlow::CallCfgNode call |
-        (
-          call = API::moduleImport("sqlalchemy").getMember("text").getACall()
-          or
-          call = API::moduleImport("sqlalchemy").getMember("sql").getMember("text").getACall()
-          or
-          call =
-            API::moduleImport("sqlalchemy")
-                .getMember("sql")
-                .getMember("expression")
-                .getMember("text")
-                .getACall()
-          or
-          call =
-            API::moduleImport("sqlalchemy")
-                .getMember("sql")
-                .getMember("expression")
-                .getMember("TextClause")
-                .getACall()
-        ) and
-        nodeFrom in [call.getArg(0), call.getArgByName("text")] and
-        nodeTo = call
-      )
-    }
-  }
-}
-
-private module OldModeling {
-  /**
-   * Returns an instantization of a SqlAlchemy Session object.
-   * See https://docs.sqlalchemy.org/en/14/orm/session_api.html#sqlalchemy.orm.Session and
-   * https://docs.sqlalchemy.org/en/14/orm/session_api.html#sqlalchemy.orm.sessionmaker
-   */
-  private API::Node getSqlAlchemySessionInstance() {
-    result = API::moduleImport("sqlalchemy.orm").getMember("Session").getReturn() or
-    result = API::moduleImport("sqlalchemy.orm").getMember("sessionmaker").getReturn().getReturn()
-  }
-
-  /**
-   * Returns an instantization of a SqlAlchemy Query object.
-   * See https://docs.sqlalchemy.org/en/14/orm/query.html?highlight=query#sqlalchemy.orm.Query
-   */
-  private API::Node getSqlAlchemyQueryInstance() {
-    result = getSqlAlchemySessionInstance().getMember("query").getReturn()
-  }
-
-  /**
-   * A call on a Query object
-   * See https://docs.sqlalchemy.org/en/14/orm/query.html?highlight=query#sqlalchemy.orm.Query
-   */
-  private class SqlAlchemyQueryCall extends DataFlow::CallCfgNode, SqlExecution::Range {
-    SqlAlchemyQueryCall() {
-      this =
-        getSqlAlchemyQueryInstance()
-            .getMember(any(SqlAlchemyVulnerableMethodNames methodName))
-            .getACall()
-    }
-
-    override DataFlow::Node getSql() { result = this.getArg(0) }
-  }
-
-  /**
-   * This class represents a list of methods vulnerable to sql injection.
+   * ```py
+   * session.query(For14).filter_by(description=sqlalchemy.text(f"'{user_input}'")).all()
+   * ```
    *
-   * See https://github.com/jty-team/codeql/pull/2#issue-611592361
+   * Initially I wanted to add lots of additional taint steps for such that the normal
+   * SQL injection query would be able to find cases as the one above where an ORM query
+   * includes a TextClause that includes user-input directly... But that presented 2
+   * problems:
+   *
+   * - which part of the query construction above should be marked as SQL to fit our
+   *   `SqlExecution` concept. Nothing really fits this well, since all the SQL
+   *   execution happens under the hood.
+   * - This would require a LOT of modeling for these additional taint steps, since
+   *   there are many many constructs we would need to have models for. (see the 2
+   *   examples below)
+   *
+   * So instead we flag user-input to a TextClause with its' own query
+   * (`py/sqlalchemy-textclause-injection`). And so we don't highlight any parts of an
+   * ORM constructed query such as these as containing SQL, and don't need the additional
+   * taint steps either.
+   *
+   * See
+   * - https://docs.sqlalchemy.org/en/14/core/sqlelement.html#sqlalchemy.sql.expression.TextClause.
+   * - https://docs.sqlalchemy.org/en/14/core/sqlelement.html#sqlalchemy.sql.expression.text
    */
-  private class SqlAlchemyVulnerableMethodNames extends string {
-    SqlAlchemyVulnerableMethodNames() { this in ["filter", "filter_by", "group_by", "order_by"] }
+  module TextClause {
+    /**
+     * A construction of a `sqlalchemy.sql.expression.TextClause`, which represents a
+     * textual SQL string directly.
+     */
+    class TextClauseConstruction extends DataFlow::CallCfgNode {
+      TextClauseConstruction() {
+        this = API::moduleImport("sqlalchemy").getMember("text").getACall()
+        or
+        this = API::moduleImport("sqlalchemy").getMember("sql").getMember("text").getACall()
+        or
+        this =
+          API::moduleImport("sqlalchemy")
+              .getMember("sql")
+              .getMember("expression")
+              .getMember("text")
+              .getACall()
+        or
+        this =
+          API::moduleImport("sqlalchemy")
+              .getMember("sql")
+              .getMember("expression")
+              .getMember("TextClause")
+              .getACall()
+      }
+
+      /** Gets the argument that specifies the SQL text. */
+      DataFlow::Node getTextArg() { result in [this.getArg(0), this.getArgByName("text")] }
+    }
   }
 }

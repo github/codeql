@@ -1,0 +1,34 @@
+edges
+| test.py:18:15:18:22 | ControlFlowNode for username | test.py:22:28:22:87 | ControlFlowNode for Attribute() |
+| test.py:18:15:18:22 | ControlFlowNode for username | test.py:26:50:26:72 | ControlFlowNode for Attribute() |
+| test.py:18:15:18:22 | ControlFlowNode for username | test.py:36:26:36:33 | ControlFlowNode for username |
+| test.py:18:15:18:22 | ControlFlowNode for username | test.py:37:31:37:38 | ControlFlowNode for username |
+| test.py:18:15:18:22 | ControlFlowNode for username | test.py:38:30:38:37 | ControlFlowNode for username |
+| test.py:18:15:18:22 | ControlFlowNode for username | test.py:39:35:39:42 | ControlFlowNode for username |
+| test.py:18:15:18:22 | ControlFlowNode for username | test.py:40:41:40:48 | ControlFlowNode for username |
+| test.py:18:15:18:22 | ControlFlowNode for username | test.py:41:46:41:53 | ControlFlowNode for username |
+| test.py:18:15:18:22 | ControlFlowNode for username | test.py:42:47:42:54 | ControlFlowNode for username |
+| test.py:18:15:18:22 | ControlFlowNode for username | test.py:43:52:43:59 | ControlFlowNode for username |
+nodes
+| test.py:18:15:18:22 | ControlFlowNode for username | semmle.label | ControlFlowNode for username |
+| test.py:22:28:22:87 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test.py:26:50:26:72 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test.py:36:26:36:33 | ControlFlowNode for username | semmle.label | ControlFlowNode for username |
+| test.py:37:31:37:38 | ControlFlowNode for username | semmle.label | ControlFlowNode for username |
+| test.py:38:30:38:37 | ControlFlowNode for username | semmle.label | ControlFlowNode for username |
+| test.py:39:35:39:42 | ControlFlowNode for username | semmle.label | ControlFlowNode for username |
+| test.py:40:41:40:48 | ControlFlowNode for username | semmle.label | ControlFlowNode for username |
+| test.py:41:46:41:53 | ControlFlowNode for username | semmle.label | ControlFlowNode for username |
+| test.py:42:47:42:54 | ControlFlowNode for username | semmle.label | ControlFlowNode for username |
+| test.py:43:52:43:59 | ControlFlowNode for username | semmle.label | ControlFlowNode for username |
+#select
+| test.py:22:28:22:87 | ControlFlowNode for Attribute() | test.py:18:15:18:22 | ControlFlowNode for username | test.py:22:28:22:87 | ControlFlowNode for Attribute() | This SQLAlchemy TextClause depends on $@, which could lead to SQL injection. | test.py:18:15:18:22 | ControlFlowNode for username | a user-provided value |
+| test.py:26:50:26:72 | ControlFlowNode for Attribute() | test.py:18:15:18:22 | ControlFlowNode for username | test.py:26:50:26:72 | ControlFlowNode for Attribute() | This SQLAlchemy TextClause depends on $@, which could lead to SQL injection. | test.py:18:15:18:22 | ControlFlowNode for username | a user-provided value |
+| test.py:36:26:36:33 | ControlFlowNode for username | test.py:18:15:18:22 | ControlFlowNode for username | test.py:36:26:36:33 | ControlFlowNode for username | This SQLAlchemy TextClause depends on $@, which could lead to SQL injection. | test.py:18:15:18:22 | ControlFlowNode for username | a user-provided value |
+| test.py:37:31:37:38 | ControlFlowNode for username | test.py:18:15:18:22 | ControlFlowNode for username | test.py:37:31:37:38 | ControlFlowNode for username | This SQLAlchemy TextClause depends on $@, which could lead to SQL injection. | test.py:18:15:18:22 | ControlFlowNode for username | a user-provided value |
+| test.py:38:30:38:37 | ControlFlowNode for username | test.py:18:15:18:22 | ControlFlowNode for username | test.py:38:30:38:37 | ControlFlowNode for username | This SQLAlchemy TextClause depends on $@, which could lead to SQL injection. | test.py:18:15:18:22 | ControlFlowNode for username | a user-provided value |
+| test.py:39:35:39:42 | ControlFlowNode for username | test.py:18:15:18:22 | ControlFlowNode for username | test.py:39:35:39:42 | ControlFlowNode for username | This SQLAlchemy TextClause depends on $@, which could lead to SQL injection. | test.py:18:15:18:22 | ControlFlowNode for username | a user-provided value |
+| test.py:40:41:40:48 | ControlFlowNode for username | test.py:18:15:18:22 | ControlFlowNode for username | test.py:40:41:40:48 | ControlFlowNode for username | This SQLAlchemy TextClause depends on $@, which could lead to SQL injection. | test.py:18:15:18:22 | ControlFlowNode for username | a user-provided value |
+| test.py:41:46:41:53 | ControlFlowNode for username | test.py:18:15:18:22 | ControlFlowNode for username | test.py:41:46:41:53 | ControlFlowNode for username | This SQLAlchemy TextClause depends on $@, which could lead to SQL injection. | test.py:18:15:18:22 | ControlFlowNode for username | a user-provided value |
+| test.py:42:47:42:54 | ControlFlowNode for username | test.py:18:15:18:22 | ControlFlowNode for username | test.py:42:47:42:54 | ControlFlowNode for username | This SQLAlchemy TextClause depends on $@, which could lead to SQL injection. | test.py:18:15:18:22 | ControlFlowNode for username | a user-provided value |
+| test.py:43:52:43:59 | ControlFlowNode for username | test.py:18:15:18:22 | ControlFlowNode for username | test.py:43:52:43:59 | ControlFlowNode for username | This SQLAlchemy TextClause depends on $@, which could lead to SQL injection. | test.py:18:15:18:22 | ControlFlowNode for username | a user-provided value |

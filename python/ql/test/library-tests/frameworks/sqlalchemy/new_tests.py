@@ -189,57 +189,41 @@ text_foo = sqlalchemy.text("'FOO'")
 #
 # which is then called without any arguments
 assert session.query(For14).filter_by(description="'FOO'").all() == []
-query = session.query(For14).filter_by(description=text_foo) # $ MISSING: getSql=text_foo
+query = session.query(For14).filter_by(description=text_foo)
 assert query.all() == []
+
+# Initially I wanted to add lots of additional taint steps such that the normal SQL
+# injection query would find these cases where an ORM query includes a TextClause that
+# includes user-input directly... But that presented 2 problems:
+#
+# - which part of the query construction above should be marked as SQL to fit our
+#   `SqlExecution` concept. Nothing really fits this well, since all the SQL execution
+#   happens under the hood.
+# - This would require a LOT of modeling for these additional taint steps, since there
+#   are many many constructs we would need to have models for. (see the 2 examples below)
+#
+# So instead we flag user-input to a TextClause with its' own query. And so we don't
+# highlight any parts of an ORM constructed query such as these as containing SQL.
 
 # `filter` provides more general filtering
 # see https://docs.sqlalchemy.org/en/14/orm/tutorial.html#common-filter-operators
 # and https://docs.sqlalchemy.org/en/14/orm/query.html#sqlalchemy.orm.Query.filter
 assert session.query(For14).filter(For14.description == "'FOO'").all() == []
-query = session.query(For14).filter(For14.description == text_foo) # $ MISSING: getSql=text_foo
+query = session.query(For14).filter(For14.description == text_foo)
 assert query.all() == []
 
 assert session.query(For14).filter(For14.description.like("'FOO'")).all() == []
-query = session.query(For14).filter(For14.description.like(text_foo)) # $ MISSING: getSql=text_foo
+query = session.query(For14).filter(For14.description.like(text_foo))
 assert query.all() == []
 
-# `where` is alias for `filter`
-assert session.query(For14).where(For14.description == "'FOO'").all() == []
-query = session.query(For14).where(For14.description == text_foo) # $ MISSING: getSql=text_foo
-assert query.all() == []
-
-
-# not possible to do SQL injection on `.get`
-try:
-    session.query(For14).get(text_foo)
-except sqlalchemy.exc.InterfaceError:
-    pass
-
-# group_by
-assert session.query(For14).group_by(For14.description).all() != []
-query = session.query(For14).group_by(text_foo) # $ MISSING: getSql=text_foo
-assert query.all() != []
-
-# having (only used in connection with group_by)
-assert session.query(For14).group_by(For14.description).having(
-    sqlalchemy.func.count(For14.id) > 2
-).all() == []
-query = session.query(For14).group_by(For14.description).having(text_foo) # $ MISSING: getSql=text_foo
-assert query.all() == []
-
-# order_by
-assert session.query(For14).order_by(For14.description).all() != []
-query = session.query(For14).order_by(text_foo) # $ MISSING: getSql=text_foo
-assert query.all() != []
-
-# TODO: likewise, it should be possible to target the criterion for:
-# - `join` https://docs.sqlalchemy.org/en/14/orm/query.html#sqlalchemy.orm.Query.join
-# - `outerjoin` https://docs.sqlalchemy.org/en/14/orm/query.html#sqlalchemy.orm.Query.outerjoin
-
-# specifying session later on
-# see https://docs.sqlalchemy.org/en/14/orm/query.html#sqlalchemy.orm.Query.with_session
-query = sqlalchemy.orm.Query(For14).filter(For14.description == text_foo) # $ MISSING: getSql=text_foo
-assert query.with_session(session).all() == []
+# There are many other possibilities for ending up with SQL injection, including the
+# following (not an exhaustive list):
+# - `where` (alias for `filter`)
+# - `group_by`
+# - `having`
+# - `order_by`
+# - `join`
+# - `outerjoin`
 
 # ==============================================================================
 # v2.0
@@ -374,6 +358,8 @@ scalar_result = session.scalar(statement=text_sql) # $ getSql=text_sql
 assert scalar_result == "FOO"
 
 # Querying (2.0)
+# uses a slightly different style than 1.4 -- see note about not modeling
+# ORM query construction as SQL execution at the 1.4 query tests.
 
 class For20(Base):
     __tablename__ = "for20"
@@ -397,6 +383,6 @@ statement = sqlalchemy.select(For20)
 result = session.execute(statement) # $ getSql=statement
 assert result.scalars().all()[0].id == 20
 
-statement = sqlalchemy.select(For20).where(For20.description == text_foo) # $ MISSING: getSql=text_foo
+statement = sqlalchemy.select(For20).where(For20.description == text_foo)
 result = session.execute(statement) # $ getSql=statement
 assert result.scalars().all() == []

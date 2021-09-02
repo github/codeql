@@ -47,10 +47,10 @@ with engine.begin() as connection:
 
 # Injection requiring the text() taint-step
 t = text("some sql")
-session.query(User).filter(t)  # $ getSql=t
-session.query(User).group_by(User.id).having(t)  # $ getSql=User.id MISSING: getSql=t
-session.query(User).group_by(t).first()  # $ getSql=t
-session.query(User).order_by(t).first()  # $ getSql=t
+session.query(User).filter(t)
+session.query(User).group_by(User.id).having(t)
+session.query(User).group_by(t).first()
+session.query(User).order_by(t).first()
 
 query = select(User).where(User.name == t)  # $ MISSING: getSql=t
 with engine.connect() as conn:
