@@ -5,6 +5,7 @@ private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.ast.internal.Module
 private import ActionView
+private import codeql.ruby.frameworks.ActionDispatch
 
 private class ActionControllerBaseAccess extends ConstantReadAccess {
   ActionControllerBaseAccess() {
@@ -85,6 +86,16 @@ class ActionControllerActionMethod extends Method, HTTP::Server::RequestHandler:
   // not end at an explicit render or redirect
   /** Gets the controller class containing this method. */
   ActionControllerControllerClass getControllerClass() { result = controllerClass }
+
+  /**
+   * Gets a route to this handler, if one exists.
+   * May return multiple results.
+   */
+  ActionDispatch::Route getARoute() {
+    result.getController() + "_controller" =
+      ActionDispatch::underscore(namespaceDeclaration(controllerClass)) and
+    this.getName() = result.getAction()
+  }
 }
 
 // A method call with a `self` receiver from within a controller class

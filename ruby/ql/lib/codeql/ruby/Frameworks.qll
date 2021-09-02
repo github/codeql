@@ -12,3 +12,4 @@ private import codeql.ruby.frameworks.StandardLibrary
 private import codeql.ruby.frameworks.Files
 private import codeql.ruby.frameworks.HttpClients
 private import codeql.ruby.frameworks.XmlParsing
+private import codeql.ruby.frameworks.ActionDispatch
