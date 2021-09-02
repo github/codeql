@@ -78,7 +78,7 @@ To define a class, you write:
 #. The keyword ``class``. 
 #. The name of the class. This is an `identifier <https://codeql.github.com/docs/ql-language-reference/ql-language-specification/#identifiers>`_ 
    starting with an uppercase letter.
-#. The types to extend. 
+#. The base types that the class is derived from via `extends` and/or `instanceof`
 #. The :ref:`body of the class <class-bodies>`, enclosed in braces.
 
 For example:
@@ -112,6 +112,8 @@ the :ref:`class domain type <domain-types>`). A class inherits all member predic
 base types. 
 
 A class can extend multiple types. For more information, see ":ref:`multiple-inheritance`."
+Classes can also specialise other types without extending the class interface via `instanceof`,
+see ":ref:`instanceof-extensions`.".
 
 To be valid, a class:
   - Must not extend itself.
@@ -379,6 +381,57 @@ from ``OneTwoThree`` and ``int``.
    If a subclass inherits multiple definitions for the same predicate name, then it
    must :ref:`override <overriding-member-predicates>` those definitions to avoid ambiguity.
    :ref:`Super expressions <super>` are often useful in this situation.
+
+
+.. _instanceof-extensions:
+
+Non-extending subtypes
+======================
+
+Besides extending base types, classes can also declare `instanceof` relationships with other types.
+
+.. code-block:: ql
+    class Foo extends int {
+      Foo() { this in [1 .. 10] }
+
+      string foo_method() { result = "foo" }
+    }
+
+    class Bar extends int instanceof Foo {
+      string bar_method() { result = super.foo_method() }
+    }
+
+In this example, the characteristic predicate from `Foo` also applies to `Bar`.
+However, `foo_method` is not exposed in `Bar`, so the query `select any(Bar b).foo_method()`
+results in a compile time error. Note from the example that it is still possible to access
+methods from instanceof supertypes from within the specialising class with the `super` keyword.
+
+Crucially, the base class methods are not just hidden.
+Instead, the extension relationship is sewered.
+This has deep implications on method resolution when complex class hierarchies are involved.
+The following example demonstrates this.
+
+
+.. code-block:: ql
+    class Interface extends int {
+      Interface() { this in [1 .. 100] }
+      string foo() { result = "" }
+   }
+
+    class Foo extends Interface {
+      Foo() { this in [1 .. 10] }
+      override string foo() { result = "foo" }
+    }
+
+    class Bar extends Interface instanceof Foo {
+      override string foo() { result = "bar" }
+    }
+
+Here, the method `Bar::foo` does not override `Foo::foo`.
+Instead, it overrides only `Interface::foo`.
+This means that `select any(Foo b).foo()` yields only `foo`.
+Had `bar been defined as `extends Foo`, then `select any(Foo b).foo()` would yield `bar`.
+
 
 .. _character-types:
 .. _domain-types:
