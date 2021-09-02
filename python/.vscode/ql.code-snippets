@@ -180,8 +180,6 @@
             "",
             "  /** A direct instantiation of `${TM_SELECTED_TEXT}`. */",
             "  private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {",
-            "      override CallNode node;",
-            "",
             "      ClassInstantiation() { this = classRef().getACall() }",
             "  }",
             "",

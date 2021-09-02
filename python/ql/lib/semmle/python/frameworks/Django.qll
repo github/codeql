@@ -322,8 +322,6 @@ private module Django {
 
     /** A direct instantiation of `django.utils.datastructures.MultiValueDict`. */
     private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
-      override CallNode node;
-
       ClassInstantiation() { this = classRef().getACall() }
     }
 
