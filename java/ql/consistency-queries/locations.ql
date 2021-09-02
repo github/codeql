@@ -20,6 +20,7 @@ Location unusedLocation() {
   not exists(Top t | t.getLocation() = result) and
   not exists(XMLLocatable x | x.getLocation() = result) and
   not exists(ConfigLocatable c | c.getLocation() = result) and
+  not exists(@diagnostic d | diagnostics(d, _, _, _, _, result)) and
   not (result.getFile().getExtension() = "xml" and
        result.getStartLine() = 0 and
        result.getStartColumn() = 0 and
@@ -27,9 +28,9 @@ Location unusedLocation() {
        result.getEndColumn() = 0)
 }
 
-from Location l
-where l = badLocation()
-   or l = backwardsLocation()
-   or l = unusedLocation()
-select l
+from string reason, Location l
+where reason = "Bad location" and l = badLocation()
+   or reason = "Backwards location" and l = backwardsLocation()
+   or reason = "Unused location" and l = unusedLocation()
+select reason, l
 

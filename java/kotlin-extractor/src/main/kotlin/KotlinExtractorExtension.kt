@@ -28,17 +28,21 @@ import org.jetbrains.kotlin.ir.symbols.IrClassifierSymbol
 
 class KotlinExtractorExtension(private val tests: List<String>) : IrGenerationExtension {
     override fun generate(moduleFragment: IrModuleFragment, pluginContext: IrPluginContext) {
-        val logger = Logger()
-        logger.info("Extraction started")
         val trapDir = File(System.getenv("CODEQL_EXTRACTOR_JAVA_TRAP_DIR").takeUnless { it.isNullOrEmpty() } ?: "kotlin-extractor/trap")
-        trapDir.mkdirs()
-        val srcDir = File(System.getenv("CODEQL_EXTRACTOR_JAVA_SOURCE_ARCHIVE_DIR").takeUnless { it.isNullOrEmpty() } ?: "kotlin-extractor/src")
-        srcDir.mkdirs()
-        moduleFragment.files.map { doFile(logger, trapDir, srcDir, it) }
-        logger.printLimitedWarningCounts()
-        // We don't want the compiler to continue and generate class
-        // files etc, so we just exit when we are finished extracting.
-        logger.info("Extraction completed")
+        val invocationTrapDir = File("$trapDir/invocations")
+        invocationTrapDir.mkdirs()
+        val invocationTrapFile = File.createTempFile("kotlin.", ".trap", invocationTrapDir);
+        invocationTrapFile.bufferedWriter().use { invocationTrapFileBW ->
+            val logger = Logger(invocationTrapFileBW)
+            logger.info("Extraction started")
+            val srcDir = File(System.getenv("CODEQL_EXTRACTOR_JAVA_SOURCE_ARCHIVE_DIR").takeUnless { it.isNullOrEmpty() } ?: "kotlin-extractor/src")
+            srcDir.mkdirs()
+            moduleFragment.files.map { doFile(logger, trapDir, srcDir, it) }
+            logger.printLimitedWarningCounts()
+            // We don't want the compiler to continue and generate class
+            // files etc, so we just exit when we are finished extracting.
+            logger.info("Extraction completed")
+        }
         exitProcess(0)
     }
 }
@@ -49,7 +53,14 @@ class Label<T>(val name: Int) {
 
 fun escapeTrapString(str: String) = str.replace("\"", "\"\"")
 
-class Logger() {
+class Logger(val invocationTrapFileBW: BufferedWriter) {
+    private val unknownLocation by lazy {
+        invocationTrapFileBW.write("#noFile = *\n")
+        invocationTrapFileBW.write("#unknownLocation = *\n")
+        invocationTrapFileBW.write("files(#noFile, \"\", \"\", \"\", 0)\n")
+        invocationTrapFileBW.write("locations_default(#unknownLocation, #noFile, 0, 0, 0, 0)\n")
+        "#unknownLocation"
+    }
     private val warningCounts = mutableMapOf<String, Int>()
     private val warningLimit: Int
     init {
@@ -60,7 +71,9 @@ class Logger() {
     }
 
     fun info(msg: String) {
-        print("${timestamp()} $msg\n")
+        val fullMsg = "${timestamp()} $msg"
+        invocationTrapFileBW.write("// " + fullMsg.replace("\n", "\n//") + "\n")
+        println(fullMsg)
     }
     fun warn(msg: String) {
         val st = Exception().stackTrace
@@ -78,12 +91,17 @@ class Logger() {
                     else -> ""
                 }
             }
-        print("${timestamp()} Warning: $msg\n$suffix")
+        val fullMsg = "${timestamp()} Warning: $msg\n$suffix"
+        val severity = 8 // Pessimistically: "Severe extractor errors likely to affect multiple source files"
+        invocationTrapFileBW.write("diagnostics(*, $severity, \"\", \"${escapeTrapString(msg)}\", \"${escapeTrapString(fullMsg)}\", $unknownLocation)\n")
+        print(fullMsg)
     }
     fun printLimitedWarningCounts() {
         for((caller, count) in warningCounts) {
             if(count >= warningLimit) {
-                println("Total of $count warnings from $caller.")
+                val msg = "Total of $count warnings from $caller.\n"
+                invocationTrapFileBW.write("// $msg")
+                print(msg)
             }
         }
     }
@@ -152,6 +170,7 @@ class TrapWriter (
 
 fun doFile(logger: Logger, trapDir: File, srcDir: File, declaration: IrFile) {
     val filePath = declaration.path
+    logger.info("Extracting file $filePath")
     val file = File(filePath)
     val fileLabel = "@\"$filePath;sourcefile\""
     val basename = file.nameWithoutExtension
