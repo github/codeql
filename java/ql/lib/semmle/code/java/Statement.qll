@@ -787,24 +787,36 @@ class LocalVariableDeclStmt extends Stmt, @localvariabledeclstmt {
 }
 
 /** A statement that declares a local class or interface. */
-class LocalClassDeclStmt extends Stmt, @localclassdeclstmt {
-  /** Gets the local class declared by this statement. */
-  LocalClassOrInterface getLocalClass() { isLocalClass(result, this) }
+class LocalTypeDeclStmt extends Stmt, @localclassdeclstmt {
+  /** Gets the local type declared by this statement. */
+  LocalClassOrInterface getLocalType() { isLocalClass(result, this) }
+
+  /**
+   * DEPRECATED: Renamed `getLocalType` to reflect the fact that
+   * as of Java 16 interfaces can also be declared locally, not just classes.
+   */
+  deprecated LocalClassOrInterface getLocalClass() { result = this.getLocalType() }
 
   private string getDeclKeyword() {
-    result = "class" and this.getLocalClass() instanceof Class
+    result = "class" and this.getLocalType() instanceof Class
     or
-    result = "interface" and this.getLocalClass() instanceof Interface
+    result = "interface" and this.getLocalType() instanceof Interface
   }
 
-  override string pp() { result = this.getDeclKeyword() + " " + this.getLocalClass().toString() }
+  override string pp() { result = this.getDeclKeyword() + " " + this.getLocalType().toString() }
 
   override string toString() { result = this.getDeclKeyword() + " ..." }
 
-  override string getHalsteadID() { result = "LocalClassDeclStmt" }
+  override string getHalsteadID() { result = "LocalTypeDeclStmt" }
 
-  override string getAPrimaryQlClass() { result = "LocalClassDeclStmt" }
+  override string getAPrimaryQlClass() { result = "LocalTypeDeclStmt" }
 }
+
+/**
+ * DEPRECATED: Renamed `LocalTypeDeclStmt` to reflect the fact that
+ * as of Java 16 interfaces can also be declared locally, not just classes.
+ */
+deprecated class LocalClassDeclStmt = LocalTypeDeclStmt;
 
 /** An explicit `this(...)` constructor invocation. */
 class ThisConstructorInvocationStmt extends Stmt, ConstructorCall, @constructorinvocationstmt {

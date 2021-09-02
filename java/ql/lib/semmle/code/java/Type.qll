@@ -722,7 +722,13 @@ class LocalClassOrInterface extends NestedType, ClassOrInterface {
   LocalClassOrInterface() { this.isLocal() }
 
   /** Gets the statement that declares this local class. */
-  LocalClassDeclStmt getLocalClassDeclStmt() { isLocalClass(this, result) }
+  LocalTypeDeclStmt getLocalTypeDeclStmt() { isLocalClass(this, result) }
+
+  /**
+   * DEPRECATED: renamed `getLocalTypeDeclStmt` to reflect the fact that
+   * as of Java 16 interfaces can also be declared locally.
+   */
+  deprecated LocalTypeDeclStmt getLocalClassDeclStmt() { result = this.getLocalTypeDeclStmt() }
 
   override string getAPrimaryQlClass() { result = "LocalClassOrInterface" }
 }
@@ -839,7 +845,7 @@ class InnerClass extends NestedClass {
   predicate hasEnclosingInstance() {
     // JLS 15.9.2. Determining Enclosing Instances
     not this.(AnonymousClass).getClassInstanceExpr().isInStaticContext() and
-    not this.(LocalClass).getLocalClassDeclStmt().getEnclosingCallable().isStatic()
+    not this.(LocalClass).getLocalTypeDeclStmt().getEnclosingCallable().isStatic()
   }
 }
 

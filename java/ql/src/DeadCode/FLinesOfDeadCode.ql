@@ -38,7 +38,7 @@ where
             // class. We keep anonymous class counts, because anonymous classes are not reported
             // separately.
             sum(LocalClassOrInterface localClass |
-              localClass.getLocalClassDeclStmt().getEnclosingCallable() = deadMethod
+              localClass.getLocalTypeDeclStmt().getEnclosingCallable() = deadMethod
             |
               localClass.getNumberOfLinesOfCode()
             )
