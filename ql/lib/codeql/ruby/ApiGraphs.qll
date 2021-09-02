@@ -339,7 +339,7 @@ module API {
      * The flow from `src` to that node may be inter-procedural.
      */
     private DataFlow::LocalSourceNode trackUseNode(DataFlow::Node src, TypeTracker t) {
-      // Declaring `src` to be a `SourceNode` currently causes a redundant check in the
+      // Declaring `src` to be a `LocalSourceNode` currently causes a redundant check in the
       // recursive case, so instead we check it explicitly here.
       src instanceof DataFlow::LocalSourceNode and
       t.start() and
