@@ -9,6 +9,7 @@ The <code>TextClause</code> class in the <code>SQLAlchemy</code> PyPI package re
 a textual SQL string directly. If user-input is added to it without sufficient
 sanitization, a user may be able to run malicious database queries, since the
 <code>TextClause</code> is inserted directly into the final SQL.
+</p>
 </overview>
 
 <recommendation>
