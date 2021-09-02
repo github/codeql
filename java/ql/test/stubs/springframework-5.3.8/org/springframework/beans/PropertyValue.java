@@ -1,70 +1,25 @@
-/*
- * Copyright 2002-2019 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License. You may obtain a copy of the License at
- *
- * https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software distributed under the License
- * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
- * or implied. See the License for the specific language governing permissions and limitations under
- * the License.
- */
+// Generated automatically from org.springframework.beans.PropertyValue for testing purposes
 
 package org.springframework.beans;
 
 import java.io.Serializable;
-import org.springframework.lang.Nullable;
+import org.springframework.beans.BeanMetadataAttributeAccessor;
 
-public class PropertyValue implements Serializable {
-	public PropertyValue(String name, @Nullable Object value) {}
-
-	public PropertyValue(PropertyValue original) {}
-
-	public PropertyValue(PropertyValue original, @Nullable Object newValue) {}
-
-	public String getName() {
-		return null;
-	}
-
-	public Object getValue() {
-		return null;
-	}
-
-	public PropertyValue getOriginalPropertyValue() {
-		return null;
-	}
-
-	public void setOptional(boolean optional) {}
-
-	public boolean isOptional() {
-		return false;
-	}
-
-	public synchronized boolean isConverted() {
-		return false;
-	}
-
-	public synchronized void setConvertedValue(@Nullable Object value) {}
-
-	public synchronized Object getConvertedValue() {
-		return null;
-	}
-
-	@Override
-	public boolean equals(@Nullable Object other) {
-		return false;
-	}
-
-	@Override
-	public int hashCode() {
-		return 0;
-	}
-
-	@Override
-	public String toString() {
-		return null;
-	}
-
+public class PropertyValue extends BeanMetadataAttributeAccessor implements Serializable
+{
+    protected PropertyValue() {}
+    public Object getConvertedValue(){ return null; }
+    public Object getValue(){ return null; }
+    public PropertyValue getOriginalPropertyValue(){ return null; }
+    public PropertyValue(PropertyValue p0){}
+    public PropertyValue(PropertyValue p0, Object p1){}
+    public PropertyValue(String p0, Object p1){}
+    public String getName(){ return null; }
+    public String toString(){ return null; }
+    public boolean equals(Object p0){ return false; }
+    public boolean isConverted(){ return false; }
+    public boolean isOptional(){ return false; }
+    public int hashCode(){ return 0; }
+    public void setConvertedValue(Object p0){}
+    public void setOptional(boolean p0){}
 }

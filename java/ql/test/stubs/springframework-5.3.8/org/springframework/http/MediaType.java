@@ -62,33 +62,33 @@ public class MediaType extends MimeType implements Serializable
     public static MediaType asMediaType(MimeType p0){ return null; }
     public static MediaType parseMediaType(String p0){ return null; }
     public static MediaType valueOf(String p0){ return null; }
-    public static final String ALL_VALUE = "";
-    public static final String APPLICATION_ATOM_XML_VALUE = "";
-    public static final String APPLICATION_CBOR_VALUE = "";
-    public static final String APPLICATION_FORM_URLENCODED_VALUE = "";
-    public static final String APPLICATION_JSON_UTF8_VALUE = "";
-    public static final String APPLICATION_JSON_VALUE = "";
-    public static final String APPLICATION_NDJSON_VALUE = "";
-    public static final String APPLICATION_OCTET_STREAM_VALUE = "";
-    public static final String APPLICATION_PDF_VALUE = "";
-    public static final String APPLICATION_PROBLEM_JSON_UTF8_VALUE = "";
-    public static final String APPLICATION_PROBLEM_JSON_VALUE = "";
-    public static final String APPLICATION_PROBLEM_XML_VALUE = "";
-    public static final String APPLICATION_RSS_XML_VALUE = "";
-    public static final String APPLICATION_STREAM_JSON_VALUE = "";
-    public static final String APPLICATION_XHTML_XML_VALUE = "";
-    public static final String APPLICATION_XML_VALUE = "";
-    public static final String IMAGE_GIF_VALUE = "";
-    public static final String IMAGE_JPEG_VALUE = "";
-    public static final String IMAGE_PNG_VALUE = "";
-    public static final String MULTIPART_FORM_DATA_VALUE = "";
-    public static final String MULTIPART_MIXED_VALUE = "";
-    public static final String MULTIPART_RELATED_VALUE = "";
-    public static final String TEXT_EVENT_STREAM_VALUE = "";
-    public static final String TEXT_HTML_VALUE = "";
-    public static final String TEXT_MARKDOWN_VALUE = "";
-    public static final String TEXT_PLAIN_VALUE = "";
-    public static final String TEXT_XML_VALUE = "";
+    public static String ALL_VALUE = null;
+    public static String APPLICATION_ATOM_XML_VALUE = null;
+    public static String APPLICATION_CBOR_VALUE = null;
+    public static String APPLICATION_FORM_URLENCODED_VALUE = null;
+    public static String APPLICATION_JSON_UTF8_VALUE = null;
+    public static String APPLICATION_JSON_VALUE = null;
+    public static String APPLICATION_NDJSON_VALUE = null;
+    public static String APPLICATION_OCTET_STREAM_VALUE = null;
+    public static String APPLICATION_PDF_VALUE = null;
+    public static String APPLICATION_PROBLEM_JSON_UTF8_VALUE = null;
+    public static String APPLICATION_PROBLEM_JSON_VALUE = null;
+    public static String APPLICATION_PROBLEM_XML_VALUE = null;
+    public static String APPLICATION_RSS_XML_VALUE = null;
+    public static String APPLICATION_STREAM_JSON_VALUE = null;
+    public static String APPLICATION_XHTML_XML_VALUE = null;
+    public static String APPLICATION_XML_VALUE = null;
+    public static String IMAGE_GIF_VALUE = null;
+    public static String IMAGE_JPEG_VALUE = null;
+    public static String IMAGE_PNG_VALUE = null;
+    public static String MULTIPART_FORM_DATA_VALUE = null;
+    public static String MULTIPART_MIXED_VALUE = null;
+    public static String MULTIPART_RELATED_VALUE = null;
+    public static String TEXT_EVENT_STREAM_VALUE = null;
+    public static String TEXT_HTML_VALUE = null;
+    public static String TEXT_MARKDOWN_VALUE = null;
+    public static String TEXT_PLAIN_VALUE = null;
+    public static String TEXT_XML_VALUE = null;
     public static String toString(Collection<MediaType> p0){ return null; }
     public static void sortByQualityValue(List<MediaType> p0){}
     public static void sortBySpecificity(List<MediaType> p0){}
