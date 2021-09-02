@@ -406,8 +406,7 @@ However, `foo_method` is not exposed in `Bar`, so the query `select any(Bar b).f
 results in a compile time error. Note from the example that it is still possible to access
 methods from instanceof supertypes from within the specialising class with the `super` keyword.
 
-Crucially, the base class methods are not just hidden.
-Instead, the extension relationship is sewered.
+Crucially, the base class methods are not just hidden. The extension relationship is severed.
 This has deep implications on method resolution when complex class hierarchies are involved.
 The following example demonstrates this.
 
