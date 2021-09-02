@@ -63,11 +63,7 @@ class RegExpLiteral extends TRegExpLiteral, RegExpParent {
 
   predicate isIgnoreCase() { re.getAMode() = "IGNORECASE" }
 
-  string getFlags() {
-    not exists(re.getAMode()) and result = ""
-    or
-    result = strictconcat(string mode | mode = re.getAMode() | mode, " | ")
-  }
+  string getFlags() { result = concat(string mode | mode = re.getAMode() | mode, " | ") }
 
   override Regex getRegex() { result = re }
 
