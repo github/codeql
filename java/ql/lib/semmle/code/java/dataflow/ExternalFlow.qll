@@ -96,6 +96,7 @@ private module Frameworks {
   private import semmle.code.java.frameworks.spring.SpringValidation
   private import semmle.code.java.frameworks.spring.SpringWebClient
   private import semmle.code.java.frameworks.spring.SpringBeans
+  private import semmle.code.java.frameworks.spring.SpringWebMethod
   private import semmle.code.java.frameworks.spring.SpringWebMultipart
   private import semmle.code.java.frameworks.spring.SpringWebUtil
   private import semmle.code.java.security.ResponseSplitting
