@@ -61,6 +61,10 @@ class RegExpLiteral extends TRegExpLiteral, RegExpParent {
 
   predicate isDotAll() { re.getAMode() = "DOTALL" }
 
+  predicate isIgnoreCase() { re.getAMode() = "IGNORECASE" }
+
+  string getFlags() { result = concat(string mode | mode = re.getAMode() | mode, " | ") }
+
   override Regex getRegex() { result = re }
 
   string getPrimaryQLClass() { result = "RegExpLiteral" }
