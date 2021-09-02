@@ -116,12 +116,13 @@ class Logger(val invocationTrapFileBW: BufferedWriter) {
 
 class TrapWriter (
     val fileLabel: String,
-    val file: BufferedWriter,
-    val fileEntry: IrFileEntry
+    val bw: BufferedWriter,
+    val file: IrFile
 ) {
-    var nextId: Int = 100
+    private val fileEntry = file.fileEntry
+    private var nextId: Int = 100
     fun writeTrap(trap: String) {
-        file.write(trap)
+        bw.write(trap)
     }
     fun getLocation(startOffset: Int, endOffset: Int): Label<DbLocation> {
         val unknownLoc = startOffset == -1 && endOffset == -1
@@ -135,6 +136,18 @@ class TrapWriter (
         writeTrap("$id = @\"loc,{$fileId},$startLine,$startColumn,$endLine,$endColumn\"\n")
         writeLocations_default(id, fileId, startLine, startColumn, endLine, endColumn)
         return id
+    }
+    fun getLocationString(e: IrElement): String {
+        val path = file.path
+        if (e.startOffset == -1 && e.endOffset == -1) {
+            return "unknown location, while processing $path"
+        } else {
+            val startLine =   fileEntry.getLineNumber(e.startOffset) + 1
+            val startColumn = fileEntry.getColumnNumber(e.startOffset) + 1
+            val endLine =     fileEntry.getLineNumber(e.endOffset) + 1
+            val endColumn =   fileEntry.getColumnNumber(e.endOffset)
+            return "file://$path:$startLine:$startColumn:$endLine:$endColumn"
+        }
     }
     val labelMapping: MutableMap<String, Label<*>> = mutableMapOf<String, Label<*>>()
     fun <T> getExistingLabelFor(label: String): Label<T>? {
@@ -192,7 +205,7 @@ fun doFile(logger: Logger, trapDir: File, srcDir: File, declaration: IrFile) {
     val trapFileDir = trapFile.getParentFile()
     trapFileDir.mkdirs()
     trapFile.bufferedWriter().use { trapFileBW ->
-        val tw = TrapWriter(fileLabel, trapFileBW, declaration.fileEntry)
+        val tw = TrapWriter(fileLabel, trapFileBW, declaration)
         val id: Label<DbFile> = tw.getLabelFor(fileLabel)
         tw.writeFiles(id, filePath, basename, extension, 0)
         val fileExtractor = KotlinFileExtractor(logger, tw, declaration)
@@ -749,7 +762,7 @@ class KotlinFileExtractor(val logger: Logger, val tw: TrapWriter, val file: IrFi
                     }
                 }
             } else -> {
-                logger.warn("Unrecognised IrExpression: " + e.javaClass)
+                logger.warn("Unrecognised IrExpression: " + e.javaClass + " at " + tw.getLocationString(e))
             }
         }
     }
