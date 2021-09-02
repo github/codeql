@@ -129,8 +129,6 @@ private class IndirectType extends GeneratedType {
     or
     this = any(GeneratedType t).getSourceDeclaration()
     or
-    exists(GeneratedType t | this = t.(BoundedType).getATypeBound().getType())
-    or
     exists(GeneratedDeclaration decl |
       decl.(Member).getDeclaringType().getSourceDeclaration() = this
     )
@@ -138,8 +136,6 @@ private class IndirectType extends GeneratedType {
     this.(NestedType).getEnclosingType() instanceof GeneratedType
     or
     exists(NestedType nt | nt instanceof GeneratedType and this = nt.getEnclosingType())
-    or
-    this = any(GeneratedType a).(Array).getComponentType()
   }
 }
 
