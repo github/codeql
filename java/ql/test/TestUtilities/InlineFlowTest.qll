@@ -11,7 +11,7 @@ class DefaultValueFlowConf extends DataFlow::Configuration {
   }
 
   override predicate isSink(DataFlow::Node n) {
-    n.asExpr().(Argument).getCall().getCallee().hasName("sink")
+    exists(MethodAccess ma | ma.getMethod().hasName("sink") | n.asExpr() = ma.getAnArgument())
   }
 }
 
