@@ -9,7 +9,10 @@ abstract class ClassThree {
     abstract fun foo(arg: Int)
 }
 
-class ClassFour: ClassThree() {
+open class ClassFour: ClassThree() {
     override fun foo(arg: Int) {
     }
+}
+
+class ClassFive: ClassFour() {
 }

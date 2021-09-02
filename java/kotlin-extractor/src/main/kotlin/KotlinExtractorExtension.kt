@@ -312,6 +312,24 @@ class KotlinFileExtractor(val logger: Logger, val tw: TrapWriter, val file: IrFi
         val pkgId = extractPackage(pkg)
         tw.writeClasses(id, cls, pkgId, id)
         tw.writeHasLocation(id, locId)
+        for(t in c.superTypes) {
+            when(t) {
+                is IrSimpleType -> {
+                    when {
+                        t.classifier.owner is IrClass -> {
+                            val classifier: IrClassifierSymbol = t.classifier
+                            val tcls: IrClass = classifier.owner as IrClass
+                            val l = useClass(tcls)
+                            tw.writeExtendsReftype(id, l)
+                        } else -> {
+                            logger.warn("Unexpected simple type supertype: " + t.javaClass + ": " + t.render())
+                        }
+                    }
+                } else -> {
+                    logger.warn("Unexpected supertype: " + t.javaClass + ": " + t.render())
+                }
+            }
+        }
         c.declarations.map { extractDeclaration(it, Optional.of(id)) }
         return id
     }
