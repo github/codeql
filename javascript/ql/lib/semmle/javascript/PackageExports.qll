@@ -18,10 +18,28 @@ DataFlow::SourceNode getALibraryInputParameter() {
   |
     result = func.getParameter(any(int arg | arg >= bound))
     or
-    exists(DataFlow::PropRead read |
-      not read.getPropertyName() = "length" and
-      result = read and
-      read.getBase() = func.getFunction().getArgumentsVariable().getAnAccess().flow()
+    result = getAnArgumentsRead(func.getFunction())
+  )
+}
+
+private DataFlow::SourceNode getAnArgumentsRead(Function func) {
+  exists(DataFlow::PropRead read |
+    not read.getPropertyName() = "length" and
+    result = read
+  |
+    read.getBase() = func.getArgumentsVariable().getAnAccess().flow()
+    or
+    exists(DataFlow::MethodCallNode call |
+      call =
+        DataFlow::globalVarRef("Array")
+            .getAPropertyRead("prototype")
+            .getAPropertyRead("slice")
+            .getAMethodCall("call")
+      or
+      call = DataFlow::globalVarRef("Array").getAMethodCall("from")
+    |
+      call.getArgument(0) = func.getArgumentsVariable().getAnAccess().flow() and
+      call.flowsTo(read.getBase())
     )
   )
 }
