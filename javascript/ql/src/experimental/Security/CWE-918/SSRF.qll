@@ -20,7 +20,66 @@ class Configuration extends TaintTracking::Configuration {
     }
     override predicate isSanitizerGuard(TaintTracking::SanitizerGuardNode nd) {
         nd instanceof IntegerCheck or
-        nd instanceof ValidatorCheck
+        nd instanceof ValidatorCheck or
+        nd instanceof TernaryOperatorSanitizerGuard
+    }
+}
+
+/** TODO add comment */
+class TernaryOperatorSanitizerGuard extends TaintTracking::SanitizerGuardNode {
+    TaintTracking::SanitizerGuardNode originalGuard;
+
+    TernaryOperatorSanitizerGuard() {
+    exists(DataFlow::Node falseNode |
+        this.getAPredecessor+() = falseNode and 
+        falseNode.asExpr().(BooleanLiteral).mayHaveBooleanValue(false)
+    ) and
+    this.getAPredecessor+() = originalGuard and 
+    not this.asExpr() instanceof LogicalBinaryExpr
+    }
+
+    override predicate sanitizes(boolean outcome, Expr e) {
+    not this.asExpr() instanceof LogNotExpr and 
+    originalGuard.sanitizes(outcome, e) 
+    or
+    exists(boolean originalOutcome |
+        this.asExpr() instanceof LogNotExpr and
+        originalGuard.sanitizes(originalOutcome, e) and
+        (
+        originalOutcome = true and outcome = false 
+        or
+        originalOutcome = false and outcome = true
+        )
+    )
+    }
+}
+
+/** TODO add comment */
+class TernaryOperatorSanitizer extends RequestForgery::Sanitizer {
+    TernaryOperatorSanitizer() {
+    exists(
+        TaintTracking::SanitizerGuardNode guard, IfStmt ifStmt, DataFlow::Node taintedInput, boolean outcome,
+        Stmt r, DataFlow::Node falseNode
+    |
+        ifStmt.getCondition().flow().getAPredecessor+() = guard and 
+        ifStmt.getCondition().flow().getAPredecessor+() = falseNode and 
+        falseNode.asExpr().(BooleanLiteral).mayHaveBooleanValue(false) and 
+        not ifStmt.getCondition() instanceof LogicalBinaryExpr and 
+        guard.sanitizes(outcome, taintedInput.asExpr()) and 
+        (
+        outcome = true and r = ifStmt.getThen() and not ifStmt.getCondition() instanceof LogNotExpr
+        or
+        outcome = false and r = ifStmt.getElse() and not ifStmt.getCondition() instanceof LogNotExpr
+        or
+        outcome = false and r = ifStmt.getThen() and ifStmt.getCondition() instanceof LogNotExpr
+        or
+        outcome = true and r = ifStmt.getElse() and ifStmt.getCondition() instanceof LogNotExpr
+        ) and
+        r.getFirstControlFlowNode()
+            .getBasicBlock()
+            .(ReachableBasicBlock)
+            .dominates(this.getBasicBlock())
+    )
     }
 }
 
