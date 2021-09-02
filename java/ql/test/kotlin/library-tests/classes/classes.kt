@@ -16,3 +16,15 @@ open class ClassFour: ClassThree() {
 
 class ClassFive: ClassFour() {
 }
+
+interface IF1 {
+    fun funIF1() {}
+}
+
+interface IF2 {
+    fun funIF2() {}
+}
+
+class ClassSix: ClassFour(), IF1, IF2 {
+}
+

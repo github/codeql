@@ -882,7 +882,7 @@ javadocText(
 @classorarray = @class | @array;
 @type = @primitive | @reftype;
 @callable = @method | @constructor;
-@element = @file | @package | @primitive | @class | @interface | @method | @constructor | @modifier | @param | @exception | @field |
+@element = @file | @package | @primitive | @classorinterface | @method | @constructor | @modifier | @param | @exception | @field |
            @annotation | @boundedtype | @array | @localvar | @expr | @stmt | @import | @fielddecl;
 
 @modifiable = @member_modifiable| @param | @localvar ;
@@ -891,7 +891,7 @@ javadocText(
 
 @member = @method | @constructor | @field | @reftype ;
 
-@locatable = @file | @class | @interface | @fielddecl | @field | @constructor | @method | @param | @exception
+@locatable = @file | @classorinterface | @fielddecl | @field | @constructor | @method | @param | @exception
              | @boundedtype | @typebound | @array | @primitive
              | @import | @stmt | @expr | @whenbranch | @localvar | @javadoc | @javadocTag | @javadocText
              | @xmllocatable;

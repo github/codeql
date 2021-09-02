@@ -25,6 +25,7 @@ import org.jetbrains.kotlin.ir.expressions.*
 import org.jetbrains.kotlin.ir.expressions.IrStatementOrigin.*
 import org.jetbrains.kotlin.ir.IrStatement
 import org.jetbrains.kotlin.ir.symbols.IrClassifierSymbol
+import org.jetbrains.kotlin.descriptors.ClassKind
 
 class KotlinExtractorExtension(private val tests: List<String>) : IrGenerationExtension {
     override fun generate(moduleFragment: IrModuleFragment, pluginContext: IrPluginContext) {
@@ -315,13 +316,13 @@ class KotlinFileExtractor(val logger: Logger, val tw: TrapWriter, val file: IrFi
         return label
     }
 
-    fun addClassLabel(c: IrClass): Label<out DbClass> {
+    fun addClassLabel(c: IrClass): Label<out DbClassorinterface> {
         val label = getClassLabel(c)
-        val id: Label<DbClass> = tw.getLabelFor(label)
+        val id: Label<DbClassorinterface> = tw.getLabelFor(label)
         return id
     }
 
-    fun useClass(c: IrClass): Label<out DbClass> {
+    fun useClass(c: IrClass): Label<out DbClassorinterface> {
         if(c.name.asString() == "Any" || c.name.asString() == "Unit") {
             if(tw.getExistingLabelFor<DbClass>(getClassLabel(c)) == null) {
                 return extractClass(c)
@@ -330,13 +331,21 @@ class KotlinFileExtractor(val logger: Logger, val tw: TrapWriter, val file: IrFi
         return addClassLabel(c)
     }
 
-    fun extractClass(c: IrClass): Label<out DbClass> {
+    fun extractClass(c: IrClass): Label<out DbClassorinterface> {
         val id = addClassLabel(c)
         val locId = tw.getLocation(c.startOffset, c.endOffset)
         val pkg = c.packageFqName?.asString() ?: ""
         val cls = c.name.asString()
         val pkgId = extractPackage(pkg)
-        tw.writeClasses(id, cls, pkgId, id)
+        if(c.kind == ClassKind.INTERFACE) {
+            @Suppress("UNCHECKED_CAST")
+            val interfaceId = id as Label<out DbInterface>
+            tw.writeInterfaces(interfaceId, cls, pkgId, interfaceId)
+        } else {
+            @Suppress("UNCHECKED_CAST")
+            val classId = id as Label<out DbClass>
+            tw.writeClasses(classId, cls, pkgId, classId)
+        }
         tw.writeHasLocation(id, locId)
         for(t in c.superTypes) {
             when(t) {
