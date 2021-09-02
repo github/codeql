@@ -16910,7 +16910,7 @@
 </dependencies>
 </relation>
 <relation>
-<name>isLocalClass</name>
+<name>isLocalClassOrInterface</name>
 <cardinality>349</cardinality>
 <columnsizes>
 <e>

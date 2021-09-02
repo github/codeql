@@ -440,10 +440,10 @@ isAnonymClass(
   int parent: @classinstancexpr ref
 );
 
-#keyset[classid] #keyset[parent]
-isLocalClass(
-  int classid: @classorinterface ref,
-  int parent: @localclassdeclstmt ref
+#keyset[typeid] #keyset[parent]
+isLocalClassOrInterface(
+  int typeid: @classorinterface ref,
+  int parent: @localtypedeclstmt ref
 );
 
 isDefConstr(
@@ -526,7 +526,7 @@ case @stmt.kind of
 | 15 = @labeledstmt
 | 16 = @assertstmt
 | 17 = @localvariabledeclstmt
-| 18 = @localclassdeclstmt
+| 18 = @localtypedeclstmt
 | 19 = @constructorinvocationstmt
 | 20 = @superconstructorinvocationstmt
 | 21 = @case

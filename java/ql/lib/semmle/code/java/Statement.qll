@@ -787,9 +787,9 @@ class LocalVariableDeclStmt extends Stmt, @localvariabledeclstmt {
 }
 
 /** A statement that declares a local class or interface. */
-class LocalTypeDeclStmt extends Stmt, @localclassdeclstmt {
+class LocalTypeDeclStmt extends Stmt, @localtypedeclstmt {
   /** Gets the local type declared by this statement. */
-  LocalClassOrInterface getLocalType() { isLocalClass(result, this) }
+  LocalClassOrInterface getLocalType() { isLocalClassOrInterface(result, this) }
 
   /**
    * DEPRECATED: Renamed `getLocalType` to reflect the fact that

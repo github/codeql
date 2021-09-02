@@ -722,7 +722,7 @@ class LocalClassOrInterface extends NestedType, ClassOrInterface {
   LocalClassOrInterface() { this.isLocal() }
 
   /** Gets the statement that declares this local class. */
-  LocalTypeDeclStmt getLocalTypeDeclStmt() { isLocalClass(this, result) }
+  LocalTypeDeclStmt getLocalTypeDeclStmt() { isLocalClassOrInterface(this, result) }
 
   /**
    * DEPRECATED: renamed `getLocalTypeDeclStmt` to reflect the fact that
@@ -864,7 +864,7 @@ class Interface extends ClassOrInterface, @interface {
 /** A class or interface. */
 class ClassOrInterface extends RefType, @classorinterface {
   /** Holds if this class or interface is local. */
-  predicate isLocal() { isLocalClass(this, _) }
+  predicate isLocal() { isLocalClassOrInterface(this, _) }
 
   /** Holds if this class or interface is package protected, that is, neither public nor private nor protected. */
   predicate isPackageProtected() {
