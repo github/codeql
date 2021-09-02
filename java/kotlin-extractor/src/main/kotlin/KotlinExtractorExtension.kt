@@ -35,6 +35,7 @@ class KotlinExtractorExtension(private val tests: List<String>) : IrGenerationEx
         invocationTrapFile.bufferedWriter().use { invocationTrapFileBW ->
             val logger = Logger(invocationTrapFileBW)
             logger.info("Extraction started")
+            logger.flush()
             val srcDir = File(System.getenv("CODEQL_EXTRACTOR_JAVA_SOURCE_ARCHIVE_DIR").takeUnless { it.isNullOrEmpty() } ?: "kotlin-extractor/src")
             srcDir.mkdirs()
             moduleFragment.files.map { doFile(logger, trapDir, srcDir, it) }
@@ -42,6 +43,7 @@ class KotlinExtractorExtension(private val tests: List<String>) : IrGenerationEx
             // We don't want the compiler to continue and generate class
             // files etc, so we just exit when we are finished extracting.
             logger.info("Extraction completed")
+            logger.flush()
         }
         exitProcess(0)
     }
@@ -70,6 +72,10 @@ class Logger(val invocationTrapFileBW: BufferedWriter) {
         return "[${SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date())} K]"
     }
 
+    fun flush() {
+        invocationTrapFileBW.flush()
+        System.out.flush()
+    }
     fun info(msg: String) {
         val fullMsg = "${timestamp()} $msg"
         invocationTrapFileBW.write("// " + fullMsg.replace("\n", "\n//") + "\n")
@@ -171,6 +177,7 @@ class TrapWriter (
 fun doFile(logger: Logger, trapDir: File, srcDir: File, declaration: IrFile) {
     val filePath = declaration.path
     logger.info("Extracting file $filePath")
+    logger.flush()
     val file = File(filePath)
     val fileLabel = "@\"$filePath;sourcefile\""
     val basename = file.nameWithoutExtension
