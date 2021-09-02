@@ -319,7 +319,8 @@ module SqlAlchemy {
       DataFlow::Node getTextArg() { result in [this.getArg(0), this.getArgByName("text")] }
     }
 
-    class DefaultTextClauseConstruction extends TextClauseConstruction {
+    /** `TextClause` constructions from the `sqlalchemy` package. */
+    private class DefaultTextClauseConstruction extends TextClauseConstruction {
       DefaultTextClauseConstruction() {
         this = API::moduleImport("sqlalchemy").getMember("text").getACall()
         or
