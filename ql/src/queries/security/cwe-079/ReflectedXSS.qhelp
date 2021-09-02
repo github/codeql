@@ -1,59 +1,55 @@
 <!DOCTYPE qhelp PUBLIC
-  "-//Semmle//qhelp//EN"
-  "qhelp.dtd">
+ "-//Semmle//qhelp//EN"
+ "qhelp.dtd">
 <qhelp>
 
-<overview>
-<p>
-Directly writing user input (for example, an HTTP request parameter) to a webpage
-without properly sanitizing the input first, allows for a cross-site scripting
-vulnerability.
-</p>
-</overview>
+  <overview>
+    <p>
+      Directly writing user input (for example, an HTTP request parameter) to a webpage
+      without properly sanitizing the input first, allows for a cross-site scripting
+      vulnerability.
+    </p>
+  </overview>
 
-<recommendation>
-<p>
-To guard against cross-site scripting, consider escaping the input before
-writing user input to the page. In some frameworks, such as Rails, escaping will
-be performed implicitly and by default.
-</p>
-</recommendation>
+  <recommendation>
+    <p>
+      To guard against cross-site scripting, consider escaping the input before
+      writing user input to the page. In some frameworks, such as Rails, escaping will
+      be performed implicitly and by default.
+    </p>
 
-<example>
-<p>
-For instance, the following example is safe because the
-<code>params[:user_name]</code> content within the output tags will be
-automatically HTML escaped before being output.
-</p>
-<sample src="examples/safe.html.erb" />
-</example>
+    <p>
+      Care should be taken when using methods such as <code>html_safe</code> or
+      <code>raw</code>. These methods can be used to output a string without escaping
+      it. As such, they should only be used when the string has already been manually
+      escaped (for example, with the Rails <code>html_escape</code> method), or when
+      the content is otherwise guaranteed to be safe (such as a hard-coded string).
+    </p>
+  </recommendation>
 
-<recommendation>
-<p>
-Care should be taken when using methods such as <code>html_safe</code> or
-<code>raw</code>. These methods can be used to output a string without escaping
-it. As such, they should only be used when the string has already been manually
-escaped (for example, with the Rails <code>html_escape</code> method), or when
-the content is otherwise guaranteed to be safe (such as a hard-coded string).
-</p>
-</recommendation>
+  <example>
+    <p>
+      In the following example is safe because the
+      <code>params[:user_name]</code> content within the output tags will be
+      automatically HTML escaped before being output.
+    </p>
+    <sample src="examples/safe.html.erb" />
 
-<example>
-<p>
-The following example is unsafe because user-controlled input is output without
-escaping due to being marked as <code>html_safe</code>.
-</p>
-<sample src="examples/reflective_xss.html.erb" />
-</example>
+    <p>
+      However, the following example is unsafe because user-controlled input is
+      output without escaping due to being marked as <code>html_safe</code>.
+    </p>
+    <sample src="examples/reflective_xss.html.erb" />
+  </example>
 
-<references>
-<li>
-OWASP:
-<a href="https://cheatsheetseries.owasp.org/cheatsheets/Ruby_on_Rails_Cheat_Sheet.html#cross-site-scripting-xss">XSS
-Ruby on Rails Cheatsheet</a>.
-</li>
-<li>
-Wikipedia: <a href="http://en.wikipedia.org/wiki/Cross-site_scripting">Cross-site scripting</a>.
-</li>
-</references>
+  <references>
+    <li>
+      OWASP:
+      <a href="https://cheatsheetseries.owasp.org/cheatsheets/Ruby_on_Rails_Cheat_Sheet.html#cross-site-scripting-xss">XSS
+        Ruby on Rails Cheatsheet</a>.
+    </li>
+    <li>
+      Wikipedia: <a href="http://en.wikipedia.org/wiki/Cross-site_scripting">Cross-site scripting</a>.
+    </li>
+  </references>
 </qhelp>
