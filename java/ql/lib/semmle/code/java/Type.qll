@@ -856,12 +856,7 @@ class Interface extends ClassOrInterface, @interface {
 }
 
 /** A class or interface. */
-class ClassOrInterface extends RefType {
-  ClassOrInterface() {
-    this instanceof @class or
-    this instanceof @interface
-  }
-
+class ClassOrInterface extends RefType, @classorinterface {
   /** Holds if this class or interface is local. */
   predicate isLocal() { isLocalClass(this, _) }
 
