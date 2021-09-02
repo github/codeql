@@ -38,8 +38,7 @@ You can try to debug the potential problem by following the steps described belo
 Checking sources and sinks
 --------------------------
 
-Initially, you should make sure that the ``source`` and ``sink`` definitions contain what you expect. If either the ``source`` or ``sink`` is empty then there can never be any data flow. The easiest way to check this is using quick evaluation in CodeQL for VS Code. Select the text ``node instanceof MySource``, right-click, and choose "CodeQL: Quick Evaluation". This will evaluate the highlighted text, which in this case means the set of sources. For more information, see :ref:`Analyzing your projects <
-.. _running-a-specific-part-of-a-query-or-library>` in the CodeQL for VS Code help.
+Initially, you should make sure that the ``source`` and ``sink`` definitions contain what you expect. If either the ``source`` or ``sink`` is empty then there can never be any data flow. The easiest way to check this is using quick evaluation in CodeQL for VS Code. Select the text ``node instanceof MySource``, right-click, and choose "CodeQL: Quick Evaluation". This will evaluate the highlighted text, which in this case means the set of sources. For more information, see :ref:`Analyzing your projects <running-a-specific-part-of-a-query-or-library>` in the CodeQL for VS Code help.
 
 If both source and sink definitions look good then we will need to look for missing flow steps.
 
