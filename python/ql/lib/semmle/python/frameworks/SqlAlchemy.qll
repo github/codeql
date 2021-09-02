@@ -314,8 +314,13 @@ module SqlAlchemy {
      * A construction of a `sqlalchemy.sql.expression.TextClause`, which represents a
      * textual SQL string directly.
      */
-    class TextClauseConstruction extends DataFlow::CallCfgNode {
-      TextClauseConstruction() {
+    abstract class TextClauseConstruction extends DataFlow::CallCfgNode {
+      /** Gets the argument that specifies the SQL text. */
+      DataFlow::Node getTextArg() { result in [this.getArg(0), this.getArgByName("text")] }
+    }
+
+    class DefaultTextClauseConstruction extends TextClauseConstruction {
+      DefaultTextClauseConstruction() {
         this = API::moduleImport("sqlalchemy").getMember("text").getACall()
         or
         this = API::moduleImport("sqlalchemy").getMember("sql").getMember("text").getACall()
@@ -334,9 +339,6 @@ module SqlAlchemy {
               .getMember("TextClause")
               .getACall()
       }
-
-      /** Gets the argument that specifies the SQL text. */
-      DataFlow::Node getTextArg() { result in [this.getArg(0), this.getArgByName("text")] }
     }
   }
 }

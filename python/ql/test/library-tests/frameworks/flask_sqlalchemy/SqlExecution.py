@@ -19,27 +19,27 @@ assert str(type(db.text("Foo"))) == "<class 'sqlalchemy.sql.elements.TextClause'
 raw_sql = "SELECT 'Foo'"
 
 conn = db.engine.connect()
-result = conn.execute(raw_sql) # $ MISSING: getSql=raw_sql
+result = conn.execute(raw_sql) # $ getSql=raw_sql
 assert result.fetchall() == [("Foo",)]
 
 conn = db.get_engine().connect()
-result = conn.execute(raw_sql) # $ MISSING: getSql=raw_sql
+result = conn.execute(raw_sql) # $ getSql=raw_sql
 assert result.fetchall() == [("Foo",)]
 
-result = db.session.execute(raw_sql) # $ MISSING: getSql=raw_sql
+result = db.session.execute(raw_sql) # $ getSql=raw_sql
 assert result.fetchall() == [("Foo",)]
 
 Session = db.create_session(options={})
 session = Session()
-result = session.execute(raw_sql) # $ MISSING: getSql=raw_sql
+result = session.execute(raw_sql) # $ getSql=raw_sql
 assert result.fetchall() == [("Foo",)]
 
 Session = db.create_session(options={})
 with Session.begin() as session:
-    result = session.execute(raw_sql) # $ MISSING: getSql=raw_sql
+    result = session.execute(raw_sql) # $ getSql=raw_sql
     assert result.fetchall() == [("Foo",)]
 
-result = db.create_scoped_session().execute(raw_sql) # $ MISSING: getSql=raw_sql
+result = db.create_scoped_session().execute(raw_sql) # $ getSql=raw_sql
 assert result.fetchall() == [("Foo",)]
 
 
