@@ -24,7 +24,7 @@ A typical data-flow query looks like this:
     where config.hasFlowPath(source, sink)
     select sink.getNode(), source, sink, "Sink is reached from $@.", source.getNode(), "here"
 
-Or slightly simpler without path explanations:
+The same query can be slightly simplified by rewriting it without :ref:`path explanations <creating-path-queries>`:
 
 .. code-block:: ql
 
@@ -38,25 +38,26 @@ You can try to debug the potential problem by following the steps described belo
 Checking sources and sinks
 --------------------------
 
-As a first step, make sure that the source and sink definitions contain what you expect. If one of these is empty then there can never be any data flow. The easiest way to verify this is using quick evaluation in CodeQL for VS Code: Select the text ``node instanceof MySource``, right-click, and choose "CodeQL: Quick Evaluation". This will evaluate the highlighted text, which in this case means the set of sources.
+Initially, you should make sure that the ``source`` and ``sink`` definitions contain what you expect. If either the ``source`` or ``sink`` is empty then there can never be any data flow. The easiest way to check this is using quick evaluation in CodeQL for VS Code. Select the text ``node instanceof MySource``, right-click, and choose "CodeQL: Quick Evaluation". This will evaluate the highlighted text, which in this case means the set of sources. For more information, see :ref:`Analyzing your projects <
+.. _running-a-specific-part-of-a-query-or-library>` in the CodeQL for VS Code help.
 
 If both source and sink definitions look good then we will need to look for missing flow steps.
 
 ``fieldFlowBranchLimit``
 ------------------------
 
-Data-flow configurations contain a parameter called ``fieldFlowBranchLimit``. This is a slightly unfortunate, but currently necessary, performance trade-off, and a too low value can cause false negatives. It is worth a quick check to set this to a high value and see whether this causes the query to yield result. Try, for example, to add the following to your configuration:
+Data-flow configurations contain a parameter called ``fieldFlowBranchLimit``. If the value is set too high, you may experience performance degradation, but if it's too low you may miss results. When debugging data flow try setting ``fieldFlowBranchLimit`` to a high value and see whether your query generates more results. For example, try adding the following to your configuration:
 
 .. code-block:: ql
 
     override int fieldFlowBranchLimit() { result = 5000 }
 
-If there are still no results and performance did not degrade to complete uselessness, then it is best to leave this set to a high value while doing further debugging.
+If there are still no results and performance is still useable, then it is best to leave this set to a high value while doing further debugging.
 
 Partial flow
 ------------
 
-A naive next step could be to try changing the sink definition to ``any()``. This would mean that we would get a lot of flow to all the places that are reachable from the sources. While this approach makes sense and can work in some cases, you might find that it produces so many results that it's very hard to explore the findings, which can also dramatically affect query performance. More importantly, you might not even see all the partial flow paths. This is because the data-flow library tries very hard to prune impossible paths and, since field stores and reads must be evenly matched along a path, we will never see paths going through a store that fail to reach a corresponding read. This can make it hard to see where flow actually stops.
+A naive next step could be to change the ``sink`` definition to ``any()``. This would mean that we would get a lot of flow to all the places that are reachable from the ``source``\ s. While this approach may work in some cases, you might find that it produces so many results that it's very hard to explore the findings. It can can also dramatically affect query performance. More importantly, you might not even see all the partial flow paths. This is because the data-flow library tries very hard to prune impossible paths and, since field stores and reads must be evenly matched along a path, we will never see paths going through a store that fail to reach a corresponding read. This can make it hard to see where flow actually stops.
 
 To avoid these problems, a data-flow ``Configuration`` comes with a mechanism for exploring partial flow that tries to deal with these caveats. This is the ``Configuration.hasPartialFlow`` predicate:
 
@@ -87,9 +88,9 @@ As noted in the documentation for ``hasPartialFlow`` (for example, in the `CodeQ
 
 This defines the exploration radius within which ``hasPartialFlow`` returns results.
 
-It is also generally useful to focus on a single source at a time as the starting point for the flow exploration. This is most easily done by adding some ad-hoc restriction in the ``isSource`` predicate.
+It is also useful to focus on a single ``source`` at a time as the starting point for the flow exploration. This is most easily done by adding a temporary restriction in the ``isSource`` predicate.
 
-To do quick ad-hoc evaluations of partial flow it is often easiest to add a predicate to the query that is solely intended for quick evaluation (right-click the predicate name and choose "CodeQL: Quick Evaluation"). A good starting point is something like:
+To do quick evaluations of partial flow it is often easiest to add a predicate to the query that is solely intended for quick evaluation (right-click the predicate name and choose "CodeQL: Quick Evaluation"). A good starting point is something like:
 
 .. code-block:: ql
 
@@ -101,6 +102,16 @@ To do quick ad-hoc evaluations of partial flow it is often easiest to add a pred
       )
     }
 
-If you are focusing on a single source then the ``src`` column is of course superfluous, and you may of course also add other columns of interest based on ``n``, but including the enclosing callable and the distance to the source at the very least is generally recommended, as they can be useful columns to sort on to better inspect the results.
+If you are focusing on a single ``source`` then the ``src`` column is meaningless. You may of course also add other columns of interest based on ``n``, but including the enclosing callable and the distance to the source at the very least is generally recommended, as they can be useful columns to sort on to better inspect the results.
 
-A couple of advanced tips in order to focus the partial flow results: If flow travels a long distance following an expected path and the distance means that a lot of uninteresting flow gets included in the exploration radius then one can simply replace the source definition with a suitable node found along the way and restart the partial flow exploration from that point. Alternatively, creative use of barriers/sanitizers can be used to cut off flow paths that are uninteresting and thereby reduce the number of partial flow results to increase overview.
+
+If you see a large number of partial flow results, you can focus them in a couple of ways: 
+
+- If flow travels a long distance following an expected path, that can result in a lot of uninteresting flow being included in the exploration radius. To reduce the amount of uninteresting flow, you can replace the ``source`` definition with a suitable ``node`` that appears along the path and restart the partial flow exploration from that point. 
+- Creative use of barriers and sanitizers can be used to cut off flow paths that are uninteresting. This also reduces the number of partial flow results to explore while debugging.
+
+Further reading
+----------------
+
+- :ref:`About data flow analysis <about-data-flow-analysis>`
+- :ref:`Creating path queries <creating-path-queries>`
