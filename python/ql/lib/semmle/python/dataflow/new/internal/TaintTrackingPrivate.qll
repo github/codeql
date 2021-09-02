@@ -205,7 +205,8 @@ predicate copyStep(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeTo) {
 }
 
 /**
- * Holds if taint can flow from `nodeFrom` to `nodeTo` with a step related `await`.
+ * Holds if taint can flow from `nodeFrom` to `nodeTo` with an `await`-step,
+ * such that the whole expression `await x` is tainted if `x` is tainted.
  */
 predicate awaitStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
   nodeTo.asExpr().(Await).getValue() = nodeFrom.asExpr()
