@@ -544,7 +544,7 @@ private State before(RegExpTerm t) { result = Match(t, 0) }
 /**
  * Gets a state the NFA may be in after matching `t`.
  */
-State after(RegExpTerm t) {
+private State after(RegExpTerm t) {
   exists(RegExpAlt alt | t = alt.getAChild() | result = after(alt))
   or
   exists(RegExpSequence seq, int i | t = seq.getChild(i) |
@@ -673,7 +673,7 @@ RegExpRoot getRoot(RegExpTerm term) {
 /**
  * A state in the NFA.
  */
-newtype TState =
+private newtype TState =
   /**
    * A state representing that the NFA is about to match a term.
    * `i` is used to index into multi-char literals.
