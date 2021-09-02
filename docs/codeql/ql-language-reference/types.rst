@@ -382,7 +382,6 @@ from ``OneTwoThree`` and ``int``.
    must :ref:`override <overriding-member-predicates>` those definitions to avoid ambiguity.
    :ref:`Super expressions <super>` are often useful in this situation.
 
-
 .. _instanceof-extensions:
 
 Non-extending subtypes
@@ -391,6 +390,7 @@ Non-extending subtypes
 Besides extending base types, classes can also declare `instanceof` relationships with other types.
 
 .. code-block:: ql
+
     class Foo extends int {
       Foo() { this in [1 .. 10] }
 
@@ -410,8 +410,8 @@ Crucially, the base class methods are not just hidden. The extension relationshi
 This has deep implications on method resolution when complex class hierarchies are involved.
 The following example demonstrates this.
 
-
 .. code-block:: ql
+
     class Interface extends int {
       Interface() { this in [1 .. 100] }
       string foo() { result = "" }
@@ -430,7 +430,6 @@ Here, the method `Bar::foo` does not override `Foo::foo`.
 Instead, it overrides only `Interface::foo`.
 This means that `select any(Foo b).foo()` yields only `foo`.
 Had `bar been defined as `extends Foo`, then `select any(Foo b).foo()` would yield `bar`.
-
 
 .. _character-types:
 .. _domain-types:
