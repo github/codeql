@@ -124,6 +124,9 @@ class TrapWriter (
     fun writeTrap(trap: String) {
         bw.write(trap)
     }
+    fun getLocation(e: IrElement): Label<DbLocation> {
+        return getLocation(e.startOffset, e.endOffset)
+    }
     fun getLocation(startOffset: Int, endOffset: Int): Label<DbLocation> {
         val unknownLoc = startOffset == -1 && endOffset == -1
         val startLine =   if(unknownLoc) 0 else fileEntry.getLineNumber(startOffset) + 1
@@ -346,7 +349,7 @@ class KotlinFileExtractor(val logger: Logger, val tw: TrapWriter, val file: IrFi
 
     fun extractClass(c: IrClass): Label<out DbClassorinterface> {
         val id = addClassLabel(c)
-        val locId = tw.getLocation(c.startOffset, c.endOffset)
+        val locId = tw.getLocation(c)
         val pkg = c.packageFqName?.asString() ?: ""
         val cls = c.name.asString()
         val pkgId = extractPackage(pkg)
@@ -434,7 +437,7 @@ class KotlinFileExtractor(val logger: Logger, val tw: TrapWriter, val file: IrFi
 
     fun extractFunction(f: IrFunction, parentid: Label<out DbReftype>) {
         val id = useFunction(f)
-        val locId = tw.getLocation(f.startOffset, f.endOffset)
+        val locId = tw.getLocation(f)
         val signature = "TODO"
         val returnTypeId = useType(f.returnType)
         tw.writeMethods(id, f.name.asString(), signature, returnTypeId, parentid, id)
@@ -461,7 +464,7 @@ class KotlinFileExtractor(val logger: Logger, val tw: TrapWriter, val file: IrFi
             logger.warn("IrProperty without backing field")
         } else {
             val id = useProperty(p)
-            val locId = tw.getLocation(p.startOffset, p.endOffset)
+            val locId = tw.getLocation(p)
             val typeId = useType(bf.type)
             tw.writeFields(id, p.name.asString(), typeId, parentid, id)
             tw.writeHasLocation(id, locId)
@@ -477,7 +480,7 @@ class KotlinFileExtractor(val logger: Logger, val tw: TrapWriter, val file: IrFi
 
     fun extractBlockBody(b: IrBlockBody, callable: Label<out DbCallable>, parent: Label<out DbStmtparent>, idx: Int) {
         val id = tw.getFreshIdLabel<DbBlock>()
-        val locId = tw.getLocation(b.startOffset, b.endOffset)
+        val locId = tw.getLocation(b)
         tw.writeStmts_block(id, parent, idx, callable)
         tw.writeHasLocation(id, locId)
         for((sIdx, stmt) in b.statements.withIndex()) {
@@ -491,7 +494,7 @@ class KotlinFileExtractor(val logger: Logger, val tw: TrapWriter, val file: IrFi
 
     fun extractVariable(v: IrVariable, callable: Label<out DbCallable>) {
         val id = useVariable(v)
-        val locId = tw.getLocation(v.startOffset, v.endOffset)
+        val locId = tw.getLocation(v)
         val typeId = useType(v.type)
         val decId = tw.getFreshIdLabel<DbLocalvariabledeclexpr>()
         tw.writeLocalvars(id, v.name.asString(), typeId, decId)
@@ -538,77 +541,77 @@ class KotlinFileExtractor(val logger: Logger, val tw: TrapWriter, val file: IrFi
             c.origin == PLUS -> {
                 val id = tw.getFreshIdLabel<DbAddexpr>()
                 val typeId = useType(c.type)
-                val locId = tw.getLocation(c.startOffset, c.endOffset)
+                val locId = tw.getLocation(c)
                 tw.writeExprs_addexpr(id, typeId, parent, idx)
                 tw.writeHasLocation(id, locId)
                 id
             } c.origin == MINUS -> {
                 val id = tw.getFreshIdLabel<DbSubexpr>()
                 val typeId = useType(c.type)
-                val locId = tw.getLocation(c.startOffset, c.endOffset)
+                val locId = tw.getLocation(c)
                 tw.writeExprs_subexpr(id, typeId, parent, idx)
                 tw.writeHasLocation(id, locId)
                 id
             } c.origin == DIV -> {
                 val id = tw.getFreshIdLabel<DbDivexpr>()
                 val typeId = useType(c.type)
-                val locId = tw.getLocation(c.startOffset, c.endOffset)
+                val locId = tw.getLocation(c)
                 tw.writeExprs_divexpr(id, typeId, parent, idx)
                 tw.writeHasLocation(id, locId)
                 id
             } c.origin == PERC -> {
                 val id = tw.getFreshIdLabel<DbRemexpr>()
                 val typeId = useType(c.type)
-                val locId = tw.getLocation(c.startOffset, c.endOffset)
+                val locId = tw.getLocation(c)
                 tw.writeExprs_remexpr(id, typeId, parent, idx)
                 tw.writeHasLocation(id, locId)
                 id
             } c.origin == EQEQ -> {
                 val id = tw.getFreshIdLabel<DbEqexpr>()
                 val typeId = useType(c.type)
-                val locId = tw.getLocation(c.startOffset, c.endOffset)
+                val locId = tw.getLocation(c)
                 tw.writeExprs_eqexpr(id, typeId, parent, idx)
                 tw.writeHasLocation(id, locId)
                 id
             } c.origin == EXCLEQ -> {
                 val id = tw.getFreshIdLabel<DbNeexpr>()
                 val typeId = useType(c.type)
-                val locId = tw.getLocation(c.startOffset, c.endOffset)
+                val locId = tw.getLocation(c)
                 tw.writeExprs_neexpr(id, typeId, parent, idx)
                 tw.writeHasLocation(id, locId)
                 id
             } c.origin == LT -> {
                 val id = tw.getFreshIdLabel<DbLtexpr>()
                 val typeId = useType(c.type)
-                val locId = tw.getLocation(c.startOffset, c.endOffset)
+                val locId = tw.getLocation(c)
                 tw.writeExprs_ltexpr(id, typeId, parent, idx)
                 tw.writeHasLocation(id, locId)
                 id
             } c.origin == LTEQ -> {
                 val id = tw.getFreshIdLabel<DbLeexpr>()
                 val typeId = useType(c.type)
-                val locId = tw.getLocation(c.startOffset, c.endOffset)
+                val locId = tw.getLocation(c)
                 tw.writeExprs_leexpr(id, typeId, parent, idx)
                 tw.writeHasLocation(id, locId)
                 id
             } c.origin == GT -> {
                 val id = tw.getFreshIdLabel<DbGtexpr>()
                 val typeId = useType(c.type)
-                val locId = tw.getLocation(c.startOffset, c.endOffset)
+                val locId = tw.getLocation(c)
                 tw.writeExprs_gtexpr(id, typeId, parent, idx)
                 tw.writeHasLocation(id, locId)
                 id
             } c.origin == GTEQ -> {
                 val id = tw.getFreshIdLabel<DbGeexpr>()
                 val typeId = useType(c.type)
-                val locId = tw.getLocation(c.startOffset, c.endOffset)
+                val locId = tw.getLocation(c)
                 tw.writeExprs_geexpr(id, typeId, parent, idx)
                 tw.writeHasLocation(id, locId)
                 id
             } else -> {
                 val id = tw.getFreshIdLabel<DbMethodaccess>()
                 val typeId = useType(c.type)
-                val locId = tw.getLocation(c.startOffset, c.endOffset)
+                val locId = tw.getLocation(c)
                 val methodId = useFunction(c.symbol.owner)
                 tw.writeExprs_methodaccess(id, typeId, parent, idx)
                 tw.writeHasLocation(id, locId)
@@ -638,28 +641,28 @@ class KotlinFileExtractor(val logger: Logger, val tw: TrapWriter, val file: IrFi
                     is Int -> {
                         val id = tw.getFreshIdLabel<DbIntegerliteral>()
                         val typeId = useType(e.type)
-                        val locId = tw.getLocation(e.startOffset, e.endOffset)
+                        val locId = tw.getLocation(e)
                         tw.writeExprs_integerliteral(id, typeId, parent, idx)
                         tw.writeHasLocation(id, locId)
                         tw.writeNamestrings(v.toString(), v.toString(), id)
                     } is Boolean -> {
                         val id = tw.getFreshIdLabel<DbBooleanliteral>()
                         val typeId = useType(e.type)
-                        val locId = tw.getLocation(e.startOffset, e.endOffset)
+                        val locId = tw.getLocation(e)
                         tw.writeExprs_booleanliteral(id, typeId, parent, idx)
                         tw.writeHasLocation(id, locId)
                         tw.writeNamestrings(v.toString(), v.toString(), id)
                     } is Char -> {
                         val id = tw.getFreshIdLabel<DbCharacterliteral>()
                         val typeId = useType(e.type)
-                        val locId = tw.getLocation(e.startOffset, e.endOffset)
+                        val locId = tw.getLocation(e)
                         tw.writeExprs_characterliteral(id, typeId, parent, idx)
                         tw.writeHasLocation(id, locId)
                         tw.writeNamestrings(v.toString(), v.toString(), id)
                     } is String -> {
                         val id = tw.getFreshIdLabel<DbStringliteral>()
                         val typeId = useType(e.type)
-                        val locId = tw.getLocation(e.startOffset, e.endOffset)
+                        val locId = tw.getLocation(e)
                         tw.writeExprs_stringliteral(id, typeId, parent, idx)
                         tw.writeHasLocation(id, locId)
                         tw.writeNamestrings(v.toString(), v.toString(), id)
@@ -677,13 +680,13 @@ class KotlinFileExtractor(val logger: Logger, val tw: TrapWriter, val file: IrFi
                 if (owner is IrValueParameter && owner.index == -1) {
                     val id = tw.getFreshIdLabel<DbThisaccess>()
                     val typeId = useType(e.type)
-                    val locId = tw.getLocation(e.startOffset, e.endOffset)
+                    val locId = tw.getLocation(e)
                     tw.writeExprs_thisaccess(id, typeId, parent, idx)
                     tw.writeHasLocation(id, locId)
                 } else {
                     val id = tw.getFreshIdLabel<DbVaraccess>()
                     val typeId = useType(e.type)
-                    val locId = tw.getLocation(e.startOffset, e.endOffset)
+                    val locId = tw.getLocation(e)
                     tw.writeExprs_varaccess(id, typeId, parent, idx)
                     tw.writeHasLocation(id, locId)
 
@@ -694,7 +697,7 @@ class KotlinFileExtractor(val logger: Logger, val tw: TrapWriter, val file: IrFi
             is IrSetValue -> {
                 val id = tw.getFreshIdLabel<DbAssignexpr>()
                 val typeId = useType(e.type)
-                val locId = tw.getLocation(e.startOffset, e.endOffset)
+                val locId = tw.getLocation(e)
                 tw.writeExprs_assignexpr(id, typeId, parent, idx)
                 tw.writeHasLocation(id, locId)
 
@@ -709,13 +712,13 @@ class KotlinFileExtractor(val logger: Logger, val tw: TrapWriter, val file: IrFi
             }
             is IrReturn -> {
                 val id = tw.getFreshIdLabel<DbReturnstmt>()
-                val locId = tw.getLocation(e.startOffset, e.endOffset)
+                val locId = tw.getLocation(e)
                 tw.writeStmts_returnstmt(id, parent, idx, callable)
                 tw.writeHasLocation(id, locId)
                 extractExpression(e.value, callable, id, 0)
             } is IrContainerExpression -> {
                 val id = tw.getFreshIdLabel<DbBlock>()
-                val locId = tw.getLocation(e.startOffset, e.endOffset)
+                val locId = tw.getLocation(e)
                 tw.writeStmts_block(id, parent, idx, callable)
                 tw.writeHasLocation(id, locId)
                 e.statements.forEachIndexed { i, s ->
@@ -723,7 +726,7 @@ class KotlinFileExtractor(val logger: Logger, val tw: TrapWriter, val file: IrFi
                 }
             } is IrWhileLoop -> {
                 val id = tw.getFreshIdLabel<DbWhilestmt>()
-                val locId = tw.getLocation(e.startOffset, e.endOffset)
+                val locId = tw.getLocation(e)
                 tw.writeStmts_whilestmt(id, parent, idx, callable)
                 tw.writeHasLocation(id, locId)
                 extractExpression(e.condition, callable, id, 0)
@@ -733,7 +736,7 @@ class KotlinFileExtractor(val logger: Logger, val tw: TrapWriter, val file: IrFi
                 }
             } is IrDoWhileLoop -> {
                 val id = tw.getFreshIdLabel<DbDostmt>()
-                val locId = tw.getLocation(e.startOffset, e.endOffset)
+                val locId = tw.getLocation(e)
                 tw.writeStmts_dostmt(id, parent, idx, callable)
                 tw.writeHasLocation(id, locId)
                 extractExpression(e.condition, callable, id, 0)
@@ -744,7 +747,7 @@ class KotlinFileExtractor(val logger: Logger, val tw: TrapWriter, val file: IrFi
             } is IrWhen -> {
                 val id = tw.getFreshIdLabel<DbWhenexpr>()
                 val typeId = useType(e.type)
-                val locId = tw.getLocation(e.startOffset, e.endOffset)
+                val locId = tw.getLocation(e)
                 tw.writeExprs_whenexpr(id, typeId, parent, idx)
                 tw.writeHasLocation(id, locId)
                 if(e.origin == IF) {
@@ -752,7 +755,7 @@ class KotlinFileExtractor(val logger: Logger, val tw: TrapWriter, val file: IrFi
                 }
                 e.branches.forEachIndexed { i, b ->
                     val bId = tw.getFreshIdLabel<DbWhenbranch>()
-                    val bLocId = tw.getLocation(b.startOffset, b.endOffset)
+                    val bLocId = tw.getLocation(b)
                     tw.writeWhen_branch(bId, id, i)
                     tw.writeHasLocation(bId, bLocId)
                     extractExpression(b.condition, callable, bId, 0)
