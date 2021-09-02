@@ -58,9 +58,9 @@ type PkgInfo struct {
 	ModDir string // the module directory containing this package, empty if not a module
 }
 
-// GetPkgsInfo gets absolute directories of module and package root, where packages are denoted by `patterns`.
-// It passes the `go list` the flags specified by `flags`.
-// If `includingDeps`, all dependencies will also be included. see `go help list` for `-deps` flag
+// GetPkgsInfo gets the absolute module and package root directories for the packages matched by the
+// patterns `patterns`. It passes to `go list` the flags specified by `flags`.  If `includingDeps`
+// is true, all dependencies will also be included.
 func GetPkgsInfo(patterns []string, includingDeps bool, flags ...string) (map[string]*PkgInfo, error) {
 	// enable module mode so that we can find a module root if it exists, even if go module support is
 	// disabled by a build
