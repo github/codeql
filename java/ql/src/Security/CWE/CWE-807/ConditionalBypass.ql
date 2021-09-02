@@ -35,7 +35,7 @@ predicate conditionControlsMethod(MethodAccess m, Expr e) {
 class ConditionalBypassFlowConfig extends TaintTracking::Configuration {
   ConditionalBypassFlowConfig() { this = "ConditionalBypassFlowConfig" }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof UserInput }
+  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   override predicate isSink(DataFlow::Node sink) { conditionControlsMethod(_, sink.asExpr()) }
 }
