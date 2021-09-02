@@ -148,7 +148,14 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 
 	for _, pkg := range pkgs {
 		info := pkgInfos[pkg.PkgPath]
-		if info.PkgDir == "" {
+		if info == nil {
+			var err error
+			info, err = util.GetPkgInfo(pkg.PkgPath)
+			if err != nil {
+				log.Fatalf("Unable to get a source directory for input package %s: %s", pkg.PkgPath, err)
+			}
+		}
+		if info == nil || info.PkgDir == "" {
 			log.Fatalf("Unable to get a source directory for input package %s.", pkg.PkgPath)
 		}
 		wantedRoots[info.PkgDir] = true

@@ -114,6 +114,16 @@ func GetPkgsInfo(patterns []string, includingDeps bool, flags ...string) (map[st
 	return pkgInfoMapping, nil
 }
 
+// GetPkgsInfo gets the absolute module and package root directories for the package `pkg`, passing
+// the internal `go list` command the flags specified by `flags`.
+func GetPkgInfo(pkg string, flags ...string) (*PkgInfo, error) {
+	pkgInfos, err := GetPkgsInfo([]string{pkg}, false, flags...)
+	if err != nil {
+		return nil, err
+	}
+	return pkgInfos[pkg], nil
+}
+
 // DepErrors checks there are any errors resolving dependencies for `pkgpath`. It passes the `go
 // list` command the flags specified by `flags`.
 func DepErrors(pkgpath string, flags ...string) bool {
