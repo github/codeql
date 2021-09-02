@@ -169,7 +169,7 @@
 <v>223232</v>
 </e>
 <e>
-<k>@localclassdeclstmt</k>
+<k>@localtypedeclstmt</k>
 <v>349</v>
 </e>
 <e>
@@ -16914,7 +16914,7 @@
 <cardinality>349</cardinality>
 <columnsizes>
 <e>
-<k>classid</k>
+<k>typeid</k>
 <v>349</v>
 </e>
 <e>
