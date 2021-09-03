@@ -4,7 +4,7 @@
 <qhelp>
 <overview>
 <p>Code that passes user input directly to
-<code>Kernel#system</code>, <code>Kernel#exec</code>, or some other library
+<code>Kernel.system</code>, <code>Kernel.exec</code>, or some other library
 routine that executes a command, allows the user to execute malicious
 code.</p>
 
@@ -24,7 +24,7 @@ safe before using it.</p>
 <example>
 
 <p>The following example shows code that takes a shell script that can be changed
-maliciously by a user, and passes it straight to <code>Kernel#system</code>
+maliciously by a user, and passes it straight to <code>Kernel.system</code>
 without examining it first.</p>
 
 <sample src="examples/command_injection.rb" />
