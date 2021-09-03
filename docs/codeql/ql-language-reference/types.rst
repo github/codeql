@@ -78,7 +78,7 @@ To define a class, you write:
 #. The keyword ``class``. 
 #. The name of the class. This is an `identifier <https://codeql.github.com/docs/ql-language-reference/ql-language-specification/#identifiers>`_ 
    starting with an uppercase letter.
-#. The base types that the class is derived from via `extends` and/or `instanceof`
+#. The supertypes that the class is derived from via `extends` and/or `instanceof`
 #. The :ref:`body of the class <class-bodies>`, enclosed in braces.
 
 For example:
@@ -106,10 +106,10 @@ This defines a class ``OneTwoThree``, which contains the values ``1``, ``2``, an
 .. index:: extends
 
 ``OneTwoThree`` extends ``int``, that is, it is a subtype of ``int``. A class in QL must always
-extend at least one existing type. Those types are called the **base types** of the class. The 
-values of a class are contained within the intersection of the base types (that is, they are in
-the :ref:`class domain type <domain-types>`). A class inherits all member predicates from its
-base types. 
+have at least one supertype. Supertypes that are referenced with the `extends` keyword are called
+the **base types** of the class. The values of a class are contained within the intersection of
+the supertypes (that is, they are in the :ref:`class domain type <domain-types>`).
+A class inherits all member predicates from its base types.
 
 A class can extend multiple types. For more information, see ":ref:`multiple-inheritance`."
 Classes can also specialise other types without extending the class interface via `instanceof`,
@@ -230,7 +230,7 @@ Concrete classes
 
 The classes in the above examples are all **concrete** classes. They are defined by 
 restricting the values in a larger type. The values in a concrete class are precisely those
-values in the intersection of the base types that also satisfy the 
+values in the intersection of the supertypes that also satisfy the
 :ref:`characteristic predicate <characteristic-predicates>` of the class.
 
 .. _abstract-classes:
