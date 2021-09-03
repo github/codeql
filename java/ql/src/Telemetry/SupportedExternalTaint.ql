@@ -15,7 +15,7 @@ from ExternalAPI api
 where
   not api.isTestLibrary() and
   supportKind(api) = ["summary", "taint-preserving"]
-select api.asCSV(api) as csv,
+select api.asCsv(api) as csv,
   strictcount(Call c |
     c.getCallee() = api and
     not c.getFile() instanceof GeneratedFile
