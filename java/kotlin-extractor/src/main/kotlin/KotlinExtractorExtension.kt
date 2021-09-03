@@ -445,11 +445,23 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
                 val cls: IrClass = classifier.owner as IrClass
                 return useClass(cls)
             }
+            s.classifier.owner is IrTypeParameter -> {
+                return useTypeParameter(s.classifier.owner as IrTypeParameter)
+            }
             else -> {
                 logger.warn(Severity.ErrorSevere, "Unrecognised IrSimpleType: " + s.javaClass + ": " + s.render())
                 return fakeLabel()
             }
         }
+    }
+
+    fun getTypeParameterLabel(param: IrTypeParameter): String {
+        val parentLabel = useDeclarationParent(param.parent)
+        return "@\"typevar;{$parentLabel};${param.name}\""
+    }
+
+    fun useTypeParameter(param: IrTypeParameter): Label<out DbTypevariable> {
+        return tw.getLabelFor(getTypeParameterLabel(param))
     }
 
     fun getClassLabel(c: IrClass): String {
@@ -536,9 +548,18 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
         }
     }
 
+    fun erase (t: IrType): IrType {
+        if(t is IrSimpleType) {
+            if(t.classifier.owner is IrTypeParameter) {
+                return erase((t.classifier.owner as IrTypeParameter).superTypes.get(0))
+            }
+        }
+        return t
+    }
+
     fun useFunction(f: IrFunction): Label<out DbMethod> {
-        val paramTypeIds = f.valueParameters.joinToString() { "{${useType(it.type).toString()}}" }
-        val returnTypeId = useType(f.returnType)
+        val paramTypeIds = f.valueParameters.joinToString() { "{${useType(erase(it.type)).toString()}}" }
+        val returnTypeId = useType(erase(f.returnType))
         val parentId = useDeclarationParent(f.parent)
         val label = "@\"callable;{$parentId}.${f.name.asString()}($paramTypeIds){$returnTypeId}\""
         val id: Label<DbMethod> = tw.getLabelFor(label)
