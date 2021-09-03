@@ -156,8 +156,6 @@ import com.semmle.ts.ast.UnionTypeExpr;
 import com.semmle.util.collections.CollectionUtil;
 import com.semmle.util.data.IntList;
 
-import jdk.internal.org.objectweb.asm.commons.StaticInitMerger;
-
 /**
  * Utility class for converting a <a
  * href="https://github.com/Microsoft/TypeScript/wiki/Using-the-Compiler-API">TypeScript AST
