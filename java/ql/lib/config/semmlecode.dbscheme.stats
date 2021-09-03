@@ -16924,7 +16924,7 @@
 </columnsizes>
 <dependencies>
 <dep>
-<src>classid</src>
+<src>typeid</src>
 <trg>parent</trg>
 <val>
 <hist>
@@ -16941,7 +16941,7 @@
 </dep>
 <dep>
 <src>parent</src>
-<trg>classid</trg>
+<trg>typeid</trg>
 <val>
 <hist>
 <budget>12</budget>
