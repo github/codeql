@@ -11,6 +11,7 @@ import ruby
 import codeql.ruby.TaintTracking
 import CommandInjectionCustomizations::CommandInjection
 import codeql.ruby.DataFlow
+import codeql.ruby.dataflow.BarrierGuards
 
 /**
  * A taint-tracking configuration for reasoning about command-injection vulnerabilities.
@@ -23,4 +24,9 @@ class Configuration extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
   override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
+
+  override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
+    guard instanceof StringConstCompare or
+    guard instanceof StringConstArrayInclusionCall
+  }
 }
