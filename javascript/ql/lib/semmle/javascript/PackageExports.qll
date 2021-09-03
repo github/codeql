@@ -167,4 +167,6 @@ private DataFlow::Node getAnExportFromModule(Module mod) {
   result = mod.getAnExportedValue(_)
   or
   result = mod.getABulkExportedNode()
+  or
+  result.analyze().getAValue() = TAbstractModuleObject(mod)
 }
