@@ -630,14 +630,14 @@ newtype TTranslatedElement =
     // translated elements as no call can be both a `ConstructorCall` and an `AllocationExpr`.
     not expr instanceof AllocationExpr and
     (
-      exists(TTranslatedArgumentSideEffect(expr, _, _, _)) or
+      exists(TTranslatedArgumentExprSideEffect(expr, _, _, _)) or
       expr instanceof ConstructorCall
     )
   } or
   // The side effects of an allocation, i.e. `new`, `new[]` or `malloc`
   TTranslatedAllocationSideEffects(AllocationExpr expr) { not ignoreExpr(expr) } or
   // A precise side effect of an argument to a `Call`
-  TTranslatedArgumentSideEffect(Call call, Expr expr, int n, SideEffectOpcode opcode) {
+  TTranslatedArgumentExprSideEffect(Call call, Expr expr, int n, SideEffectOpcode opcode) {
     not ignoreExpr(expr) and
     not ignoreExpr(call) and
     (
@@ -646,6 +646,15 @@ newtype TTranslatedElement =
       n = -1 and expr = call.getQualifier().getFullyConverted()
     ) and
     opcode = getASideEffectOpcode(call, n)
+  } or
+  // Constructor calls lack a qualifier (`this`) expression, so we need to handle the side effects
+  // on `*this` without an `Expr`.
+  TTranslatedStructorQualifierSideEffect(Call call, SideEffectOpcode opcode) {
+    not ignoreExpr(call) and
+    // Don't bother with destructor calls for now, since we won't see very many of them in the IR
+    // until we start injecting implicit destructor calls.
+    call instanceof ConstructorCall and
+    opcode = getASideEffectOpcode(call, -1)
   }
 
 /**
