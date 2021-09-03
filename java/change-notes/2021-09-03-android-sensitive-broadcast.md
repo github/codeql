@@ -1,0 +1,2 @@
+lgtm,codescanning
+* The query "Broadcasting sensitive data to all Android applications" (`java/android/sensitive-broadcast`) has been promoted from experimental the main query pack. Its results will now appear by default. The query was originally [submitted as an experimental query by @luchua-bc.](https://github.com/github/codeql/pull/4512) 
