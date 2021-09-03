@@ -50,17 +50,14 @@ abstract class TranslatedCall extends TranslatedExpr {
     opcode instanceof Opcode::Call and
     resultType = getTypeForPRValue(getCallResultType())
     or
-    hasSideEffect() and
     tag = CallSideEffectTag() and
+    opcode = getCallSideEffectOpcode(expr) and
     (
-      if hasWriteSideEffect()
-      then (
-        opcode instanceof Opcode::CallSideEffect and
-        resultType = getUnknownType()
-      ) else (
-        opcode instanceof Opcode::CallReadSideEffect and
-        resultType = getVoidType()
-      )
+      opcode instanceof Opcode::CallSideEffect and
+      resultType = getUnknownType()
+      or
+      opcode instanceof Opcode::CallReadSideEffect and
+      resultType = getVoidType()
     )
   }
 
@@ -200,11 +197,7 @@ abstract class TranslatedCall extends TranslatedExpr {
    */
   abstract predicate hasArguments();
 
-  predicate hasReadSideEffect() { any() }
-
-  predicate hasWriteSideEffect() { any() }
-
-  private predicate hasSideEffect() { hasReadSideEffect() or hasWriteSideEffect() }
+  final private predicate hasSideEffect() { exists(getCallSideEffectOpcode(expr)) }
 
   override Instruction getPrimaryInstructionForSideEffect(InstructionTag tag) {
     hasSideEffect() and
@@ -323,14 +316,6 @@ class TranslatedFunctionCall extends TranslatedCallExpr, TranslatedDirectCall {
 
   override Function getInstructionFunction(InstructionTag tag) {
     tag = CallTargetTag() and result = expr.getTarget()
-  }
-
-  override predicate hasReadSideEffect() {
-    not expr.getTarget().(SideEffectFunction).hasOnlySpecificReadSideEffects()
-  }
-
-  override predicate hasWriteSideEffect() {
-    not expr.getTarget().(SideEffectFunction).hasOnlySpecificWriteSideEffects()
   }
 
   override Instruction getQualifierResult() {
