@@ -8,13 +8,8 @@
 import java
 
 /** A type that should be in the generated code. */
-abstract private class GeneratedType extends RefType {
+abstract private class GeneratedType extends ClassOrInterface {
   GeneratedType() {
-    (
-      this instanceof Interface
-      or
-      this instanceof Class
-    ) and
     not this instanceof AnonymousClass and
     not this instanceof LocalClass and
     not this.getPackage() instanceof ExcludedPackage
@@ -134,8 +129,6 @@ private class IndirectType extends GeneratedType {
     or
     this = any(GeneratedType t).getSourceDeclaration()
     or
-    exists(GeneratedType t | this = t.(BoundedType).getATypeBound().getType())
-    or
     exists(GeneratedDeclaration decl |
       decl.(Member).getDeclaringType().getSourceDeclaration() = this
     )
@@ -143,8 +136,6 @@ private class IndirectType extends GeneratedType {
     this.(NestedType).getEnclosingType() instanceof GeneratedType
     or
     exists(NestedType nt | nt instanceof GeneratedType and this = nt.getEnclosingType())
-    or
-    this = any(GeneratedType a).(Array).getComponentType()
   }
 }
 
@@ -156,6 +147,10 @@ private Type getAContainedType(Type t) {
   result = t
   or
   result = getAContainedType(t.(ParameterizedType).getATypeArgument())
+  or
+  result = getAContainedType(t.(Array).getElementType())
+  or
+  result = getAContainedType(t.(BoundedType).getATypeBound().getType())
 }
 
 /**
