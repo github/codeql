@@ -2,7 +2,7 @@
 <qhelp>
   <overview>
     <p>
-      <code>SharedPreferences</code> is an Android API that stores application preferences using simple sets of data values. Almost every Android application uses this API. It allows to easily save, alter, and retrieve the values stored in the user's profile. However, sensitive information should not be saved in cleartext. Otherwise it can be accessed by any process or user on rooted devices, or can be disclosed through chained vulnerabilities e.g. unexpected access to its private storage through exposed components. 
+      <code>SharedPreferences</code> is an Android API that stores application preferences using simple sets of data values. It allows to easily save, alter, and retrieve the values stored in the user's profile. However, sensitive information should not be saved in cleartext. Otherwise it can be accessed by any process or user in rooted devices, or can be disclosed through chained vulnerabilities, like unexpected access to the private storage through exposed components.
     </p>
   </overview>
 
@@ -24,10 +24,6 @@
   </example>
 
   <references>
-    <li>
-      CWE:
-      <a href="https://cwe.mitre.org/data/definitions/312.html">CWE-312: Cleartext Storage of Sensitive Information</a>
-    </li>
     <li>
       Android Developers:
       <a href="https://developer.android.com/topic/security/data">Work with data more securely</a>
