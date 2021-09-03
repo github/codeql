@@ -17,6 +17,7 @@ module ModificationOfParameterWithDefault {
    * A data flow source for detecting modifications of a parameters default value.
    */
   abstract class Source extends DataFlow::Node {
+    /** Result is true if the default value is non-empty for this source and false if not. */
     abstract boolean isNonEmpty();
   }
 
@@ -34,6 +35,7 @@ module ModificationOfParameterWithDefault {
    * A sanitizer guard for detecting modifications of a parameters default value.
    */
   abstract class BarrierGuard extends DataFlow::BarrierGuard {
+    /** Result is true if this guard blocks non-empty values and false if it blocks empty values. */
     abstract boolean blocksNonEmpty();
   }
 
@@ -120,7 +122,7 @@ module ModificationOfParameterWithDefault {
     }
   }
 
-  /** 
+  /**
    * An expression that is checked directly in an `if`, possibly with `not`, such as `if x:` or `if not x:`.
    */
   private class IdentityGuarded extends Expr {
@@ -139,7 +141,7 @@ module ModificationOfParameterWithDefault {
       )
     }
 
-    /** 
+    /**
      * Whether this guard has been inverted. For `if x:` the result is `false`, and for `if not x:` the result is `true`.
      */
     boolean isInverted() { result = inverted }
