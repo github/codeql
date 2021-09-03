@@ -902,6 +902,6 @@ public class NodeCopier implements Visitor<Void, INode> {
 
   @Override
   public INode visit(StaticInitializer nd, Void c) {
-    return new StaticInitializer(visit(nd.getLoc()), copy(nd.getBody()));
+    return new StaticInitializer(visit(nd.getLoc()), copy(nd.getValue()));
   }
 }

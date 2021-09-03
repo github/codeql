@@ -785,6 +785,6 @@ public class DefaultVisitor<C, R> implements Visitor<C, R> {
 
   @Override
   public R visit(StaticInitializer nd, C c) {
-    return visit((MemberDefinition<Expression>) nd, c);
+    return visit((MemberDefinition<BlockStatement>) nd, c);
   }
 }
