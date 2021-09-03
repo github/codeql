@@ -1,4 +1,4 @@
-| java.io;?;PrintStream;println;(Object) | 3 |
-| java.lang;?;Object;Object;() | 2 |
-| java.lang;?;String;length;() | 1 |
-| java.time;?;Duration;ofMillis;(long) | 1 |
+| java.io.PrintStream#println(Object) | 3 |
+| java.lang.Object#Object() | 2 |
+| java.lang.String#length() | 1 |
+| java.time.Duration#ofMillis(long) | 1 |

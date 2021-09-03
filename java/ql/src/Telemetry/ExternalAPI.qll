@@ -16,10 +16,10 @@ class ExternalAPI extends Callable {
   /**
    * Gets information about the external API in the form expected by the CSV modeling framework.
    */
-  string asCsv(ExternalAPI api) {
+  string asHumanReadbleString(ExternalAPI api) {
     result =
-      api.getDeclaringType().getPackage() + ";?;" + api.getDeclaringType().getSourceDeclaration() +
-        ";" + api.getName() + ";" + paramsString(api)
+      api.getDeclaringType().getPackage() + "." + api.getDeclaringType().getSourceDeclaration() +
+        "#" + api.getName() + paramsString(api)
   }
 
   /** Holds if this API is not yet supported by existing CodeQL libraries */
