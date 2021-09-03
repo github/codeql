@@ -53,7 +53,7 @@ module ModificationOfParameterWithDefault {
   }
 
   /**
-   * A source of remote user input, considered as a flow source.
+   * A mutable default value for a parameter, considered as a flow source.
    */
   class MutableDefaultValue extends Source {
     boolean nonEmpty;
@@ -120,6 +120,9 @@ module ModificationOfParameterWithDefault {
     }
   }
 
+  /** 
+   * An expression that is checked directly in an `if`, possibly with `not`, such as `if x:` or `if not x:`.
+   */
   private class IdentityGuarded extends Expr {
     boolean inverted;
 
@@ -136,6 +139,9 @@ module ModificationOfParameterWithDefault {
       )
     }
 
+    /** 
+     * Whether this guard has been inverted. For `if x:` the result is `false`, and for `if not x:` the result is `true`.
+     */
     boolean isInverted() { result = inverted }
   }
 

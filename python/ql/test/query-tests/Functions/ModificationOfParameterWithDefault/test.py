@@ -15,7 +15,7 @@ def list_del(l = [0]):
 
 # Not OK
 def append_op(l = []):
-    l += 1  #$ modification=l
+    l += [1, 2, 3]  #$ modification=l
     return l
 
 # Not OK
@@ -123,6 +123,6 @@ def dict_update_op_nochange(d = {}):
 
 # OK
 def sanitizer(l = []):
-    if not l == []:
+    if l:
         l.append(1)  #$ SPURIOUS: modification=l
     return l
