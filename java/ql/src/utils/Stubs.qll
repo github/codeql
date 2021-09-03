@@ -11,7 +11,7 @@ import java
 abstract private class GeneratedType extends ClassOrInterface {
   GeneratedType() {
     not this instanceof AnonymousClass and
-    not this instanceof LocalClass and
+    not this.isLocal() and
     not this.getPackage() instanceof ExcludedPackage
   }
 

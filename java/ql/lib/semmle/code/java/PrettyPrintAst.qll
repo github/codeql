@@ -877,8 +877,8 @@ private class PpLocalVariableDeclStmt extends PpAst, LocalVariableDeclStmt {
   }
 }
 
-private class PpLocalClassDeclStmt extends PpAst, LocalClassDeclStmt {
-  override PpAst getChild(int i) { i = 0 and result = this.getLocalClass() }
+private class PpLocalTypeDeclStmt extends PpAst, LocalTypeDeclStmt {
+  override PpAst getChild(int i) { i = 0 and result = this.getLocalType() }
 }
 
 /*
