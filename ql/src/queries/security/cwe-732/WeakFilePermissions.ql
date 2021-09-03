@@ -11,6 +11,7 @@
  */
 
 import ruby
+import codeql.ruby.Concepts
 import codeql.ruby.DataFlow
 import DataFlow::PathGraph
 import codeql.ruby.ApiGraphs
@@ -43,29 +44,6 @@ class PermissivePermissionsExpr extends Expr {
   }
 }
 
-/** A permissions argument of a call to a File/FileUtils method that may modify file permissions */
-class PermissionArgument extends DataFlow::Node {
-  private DataFlow::CallNode call;
-
-  PermissionArgument() {
-    exists(string methodName |
-      call = API::getTopLevelMember(["File", "FileUtils"]).getAMethodCall(methodName)
-    |
-      methodName in ["chmod", "chmod_R", "lchmod"] and this = call.getArgument(0)
-      or
-      methodName = "mkfifo" and this = call.getArgument(1)
-      or
-      methodName in ["new", "open"] and this = call.getArgument(2)
-      or
-      methodName in ["install", "makedirs", "mkdir", "mkdir_p", "mkpath"] and
-      this = call.getKeywordArgument("mode")
-      // TODO: defaults for optional args? This may depend on the umask
-    )
-  }
-
-  MethodCall getCall() { result = call.asExpr().getExpr() }
-}
-
 class PermissivePermissionsConfig extends DataFlow::Configuration {
   PermissivePermissionsConfig() { this = "PermissivePermissionsConfig" }
 
@@ -73,12 +51,14 @@ class PermissivePermissionsConfig extends DataFlow::Configuration {
     exists(PermissivePermissionsExpr ppe | source.asExpr().getExpr() = ppe)
   }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof PermissionArgument }
+  override predicate isSink(DataFlow::Node sink) {
+    exists(FileSystemPermissionModification mod | mod.getAPermissionNode() = sink)
+  }
 }
 
 from
   DataFlow::PathNode source, DataFlow::PathNode sink, PermissivePermissionsConfig conf,
-  PermissionArgument arg
-where conf.hasFlowPath(source, sink) and arg = sink.getNode()
-select source.getNode(), source, sink, "Overly permissive mask in $@ sets file to $@.",
-  arg.getCall(), arg.getCall().toString(), source.getNode(), source.getNode().toString()
+  FileSystemPermissionModification mod
+where conf.hasFlowPath(source, sink) and mod.getAPermissionNode() = sink.getNode()
+select source.getNode(), source, sink, "Overly permissive mask in $@ sets file to $@.", mod,
+  mod.toString(), source.getNode(), source.getNode().toString()

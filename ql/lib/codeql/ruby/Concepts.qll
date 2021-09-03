@@ -37,44 +37,106 @@ module SqlExecution {
 }
 
 /**
- * A data flow node that performs a file system access (read, write, copy, permissions, stats, etc).
+ * A data flow node that performs a file system access, including reading and writing data,
+ * creating and deleting files and folders, checking and updating permissions, and so on.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `FileSystemAccess::Range` instead.
  */
-abstract class FileSystemAccess extends DataFlow::Node {
+class FileSystemAccess extends DataFlow::Node {
+  FileSystemAccess::Range range;
+
+  FileSystemAccess() { this = range }
+
   /** Gets an argument to this file system access that is interpreted as a path. */
-  abstract DataFlow::Node getAPathArgument();
+  DataFlow::Node getAPathArgument() { result = range.getAPathArgument() }
+}
 
+/** Provides a class for modeling new file system access APIs. */
+module FileSystemAccess {
   /**
-   * Gets an argument to this file system access that is interpreted as a root folder
-   * in which the path arguments are constrained.
+   * A data-flow node that performs a file system access, including reading and writing data,
+   * creating and deleting files and folders, checking and updating permissions, and so on.
    *
-   * In other words, if a root argument is provided, the underlying file access does its own
-   * sanitization to prevent the path arguments from traversing outside the root folder.
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `FileSystemAccess` instead.
    */
-  DataFlow::Node getRootPathArgument() { none() }
-
-  /**
-   * Holds if this file system access will reject paths containing upward navigation
-   * segments (`../`).
-   *
-   * `argument` should refer to the relevant path argument or root path argument.
-   */
-  predicate isUpwardNavigationRejected(DataFlow::Node argument) { none() }
+  abstract class Range extends DataFlow::Node {
+    /** Gets an argument to this file system access that is interpreted as a path. */
+    abstract DataFlow::Node getAPathArgument();
+  }
 }
 
 /**
  * A data flow node that reads data from the file system.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `FileSystemReadAccess::Range` instead.
  */
-abstract class FileSystemReadAccess extends FileSystemAccess {
-  /** Gets a node that represents data from the file system. */
-  abstract DataFlow::Node getADataNode();
+class FileSystemReadAccess extends FileSystemAccess {
+  override FileSystemReadAccess::Range range;
+
+  /**
+   * Gets a node that represents data read from the file system access.
+   */
+  DataFlow::Node getADataNode() { result = range.getADataNode() }
 }
 
+/** Provides a class for modeling new file system reads. */
+module FileSystemReadAccess {
+  /**
+   * A data flow node that reads data from the file system.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `FileSystemReadAccess` instead.
+   */
+  abstract class Range extends FileSystemAccess::Range {
+    /**
+     * Gets a node that represents data read from the file system.
+     */
+    abstract DataFlow::Node getADataNode();
+  }
+}
+
+/**
+ * A data flow node that sets the permissions for one or more files.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `FileSystemPermissionModification::Range` instead.
+ */
+class FileSystemPermissionModification extends DataFlow::Node {
+  FileSystemPermissionModification::Range range;
+
+  FileSystemPermissionModification() { this = range }
+
+  /**
+   * Gets an argument to this permission modification that is interpreted as a
+   * set of permissions.
+   */
+  DataFlow::Node getAPermissionNode() { result = range.getAPermissionNode() }
+}
+
+/** Provides a class for modeling new file system permission modifications. */
+module FileSystemPermissionModification {
+  /**
+   * A data-flow node that sets permissions for a one or more files.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `FileSystemPermissionModification` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /**
+     * Gets an argument to this permission modification that is interpreted as a
+     * set of permissions.
+     */
+    abstract DataFlow::Node getAPermissionNode();
+  }
+}
 
 /**
  * A data flow node that contains a file name or an array of file names from the local file system.
  */
 abstract class FileNameSource extends DataFlow::Node { }
-
 
 /**
  * A data-flow node that escapes meta-characters, which could be used to prevent
