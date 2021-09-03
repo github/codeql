@@ -1165,7 +1165,7 @@ public class CFGExtractor {
 
     private Void visit(Node nd, AClass ac, SuccessorInfo i) {
       for (MemberDefinition<?> md : ac.getBody().getBody()) {
-        if (md.isConstructor() && md.isConcrete()) constructor2Class.put(md.getValue(), ac);
+        if (md.isConstructor() && md.isConcrete()) constructor2Class.put((Expression)md.getValue(), ac);
       }
       visitSequence(ac.getId(), ac.getSuperClass(), ac.getBody(), nd);
       writeSuccessors(nd, visitSequence(getStaticInitializers(ac.getBody()), getDecoratorsOfClass(ac), i.getAllSuccessors()));
@@ -1627,7 +1627,7 @@ public class CFGExtractor {
       List<Node> nodes = new ArrayList<>();
       for (MemberDefinition<?> node : nd.getBody()) {
         if (node instanceof FieldDefinition && ((FieldDefinition)node).isStatic()) nodes.add(node);
-        if (node instanceof StaticInitializer) nodes.add(((StaticInitializer)node).getBody());
+        if (node instanceof StaticInitializer) nodes.add(node.getValue());
       }
       return nodes;
     }

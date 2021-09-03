@@ -1646,11 +1646,6 @@ public class ASTExtractor {
         }
       }
 
-      if (nd instanceof StaticInitializer) {
-        StaticInitializer si = (StaticInitializer) nd;
-        visit(si.getBody(), methkey, 3, IdContext.VAR_BIND);
-      }
-
       if (nd instanceof FieldDefinition) {
         FieldDefinition field = (FieldDefinition) nd;
         if (field.isParameterField() && constructorKey != null) {
