@@ -96,6 +96,17 @@ predicate isSensitiveBroadcastSink(DataFlow::Node sink) {
       // sendOrderedBroadcastAsUser(Intent intent, UserHandle user, String receiverPermission, BroadcastReceiver resultReceiver, Handler scheduler, int initialCode, String initialData, Bundle initialExtras)
       name = "sendOrderedBroadcastAsUser" and
       isNullArg(ma.getArgument(2))
+      or
+      // sendStickyBroadcast(Intent intent)
+      // sendStickyBroadcast(Intent intent, Bundle options)
+      // sendStickyBroadcastAsUser(Intent intent, UserHandle user)
+      // sendStickyOrderedBroadcast(Intent intent, BroadcastReceiver resultReceiver, Handler scheduler, int initialCode, String initialData, Bundle initialExtras)
+      // sendStickyOrderedBroadcastAsUser(Intent intent, UserHandle user, BroadcastReceiver resultReceiver, Handler scheduler, int initialCode, String initialData, Bundle initialExtras)
+      name =
+        [
+          "sendStickyBroadcast", "sendStickyBroadcastAsUser", "sendStickyOrderedBroadcast",
+          "sendStickyOrderedBroadcastAsUser"
+        ]
     )
   )
 }
