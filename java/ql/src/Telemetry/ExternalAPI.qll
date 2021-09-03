@@ -10,7 +10,7 @@ private import semmle.code.java.dataflow.ExternalFlow
 class ExternalAPI extends Callable {
   ExternalAPI() { not this.fromSource() }
 
-  /** Holds true if this API is part of a common testing library or framework */
+  /** Holds if this API is part of a common testing library or framework */
   predicate isTestLibrary() { getDeclaringType() instanceof TestLibrary }
 
   /**
@@ -22,7 +22,7 @@ class ExternalAPI extends Callable {
         ";" + api.getName() + ";" + paramsString(api)
   }
 
-  /** Holds true if this API is not yet supported by existing CodeQL libraries */
+  /** Holds if this API is not yet supported by existing CodeQL libraries */
   predicate isSupported() { not supportKind(this) = "?" }
 
   /**

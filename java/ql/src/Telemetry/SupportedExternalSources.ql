@@ -17,7 +17,7 @@ where
   supportKind(api) = "source" and
   usages =
     strictcount(Call c |
-      c.getCallee() = api and
+      c.getCallee().getSourceDeclaration() = api and
       not c.getFile() instanceof GeneratedFile
     )
 select api.asCsv(api) as csv, usages order by usages desc

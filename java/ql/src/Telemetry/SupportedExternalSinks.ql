@@ -11,12 +11,13 @@ import APIUsage
 import ExternalAPI
 import semmle.code.java.GeneratedFiles
 
-from ExternalAPI api
+from ExternalAPI api, int usages
 where
   not api.isTestLibrary() and
-  supportKind(api) = "sink"
-select api.asCsv(api) as csv,
-  strictcount(Call c |
-    c.getCallee() = api and
-    not c.getFile() instanceof GeneratedFile
-  ) as Usages order by Usages desc
+  supportKind(api) = "sink" and
+  usages =
+    strictcount(Call c |
+      c.getCallee().getSourceDeclaration() = api and
+      not c.getFile() instanceof GeneratedFile
+    )
+select api.asCsv(api) as csv, usages order by usages desc
