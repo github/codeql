@@ -531,6 +531,7 @@ case @property.kind of
 | 7 = @enum_member
 | 8 = @proper_field
 | 9 = @parameter_field
+| 10 = @static_initializer
 ;
 
 @property_parent = @obj_expr | @object_pattern | @class_definition | @jsx_element | @interface_definition | @enum_declaration;

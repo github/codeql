@@ -4,18 +4,18 @@ import java.util.List;
 
 /** The body of a {@linkplain ClassDeclaration} or {@linkplain ClassExpression}. */
 public class ClassBody extends Node {
-  private final List<Node> body; // either MemberDefinition or BlockStatement (static initialization blocks)
+  private final List<MemberDefinition<?>> body;
 
-  public ClassBody(SourceLocation loc, List<Node> body) {
+  public ClassBody(SourceLocation loc, List<MemberDefinition<?>> body) {
     super("ClassBody", loc);
     this.body = body;
   }
 
-  public List<Node> getBody() {
+  public List<MemberDefinition<?>> getBody() {
     return body;
   }
 
-  public void addMember(Node md) {
+  public void addMember(MemberDefinition<?> md) {
     body.add(md);
   }
 
