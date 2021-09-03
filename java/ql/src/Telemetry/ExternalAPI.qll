@@ -1,8 +1,13 @@
 /** Provides classes and predicates related to handling APIs from external libraries. */
 
 private import java
-private import APIUsage
+private import semmle.code.java.dataflow.DataFlow
+private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.FlowSources
+private import semmle.code.java.dataflow.FlowSummary
+private import semmle.code.java.dataflow.internal.DataFlowPrivate
+private import semmle.code.java.dataflow.TaintTracking
 
 /**
  * An external API from either the Java Standard Library or a 3rd party library.
@@ -10,8 +15,16 @@ private import semmle.code.java.dataflow.ExternalFlow
 class ExternalAPI extends Callable {
   ExternalAPI() { not this.fromSource() }
 
+  /** Holds if this API is a candidate worth supporting */
+  predicate isWorthSupporting() { not isTestLibrary() and not isParameterlessConstructor() }
+
+  /** Holds if this API is is a constructor without parameters */
+  predicate isParameterlessConstructor() {
+    this instanceof Constructor and this.getNumberOfParameters() = 0
+  }
+
   /** Holds if this API is part of a common testing library or framework */
-  predicate isTestLibrary() { getDeclaringType() instanceof TestLibrary }
+  private predicate isTestLibrary() { getDeclaringType() instanceof TestLibrary }
 
   /**
    * Gets information about the external API in the form expected by the CSV modeling framework.
@@ -22,9 +35,6 @@ class ExternalAPI extends Callable {
         "#" + api.getName() + paramsString(api)
   }
 
-  /** Holds if this API is not yet supported by existing CodeQL libraries */
-  predicate isSupported() { not supportKind(this) = "?" }
-
   /**
    * Gets the jar file containing this API. Normalizes the Java Runtime to "rt.jar" despite the presence of modules.
    */
@@ -33,6 +43,39 @@ class ExternalAPI extends Callable {
   private string containerAsJar(Container container) {
     if container instanceof JarFile then result = container.getBaseName() else result = "rt.jar"
   }
+
+  /** Gets a node that is an input to a call to this API. */
+  private DataFlow::Node getAnInput() {
+    exists(Call call | call.getCallee().getSourceDeclaration() = this |
+      result.asExpr().(Argument).getCall() = call or
+      result.(ArgumentNode).getCall() = call
+    )
+  }
+
+  /** Gets a node that is an output from a call to this API. */
+  private DataFlow::Node getAnOutput() {
+    exists(Call call | call.getCallee().getSourceDeclaration() = this |
+      result.asExpr() = call or
+      result.(DataFlow::PostUpdateNode).getPreUpdateNode().(ArgumentNode).getCall() = call
+    )
+  }
+
+  /** Holds if this API has a supported summary. */
+  predicate hasSummary() {
+    this instanceof SummarizedCallable or
+    TaintTracking::localAdditionalTaintStep(this.getAnInput(), _)
+  }
+
+  /** Holds if this API is a known source. */
+  predicate isSource() {
+    this.getAnOutput() instanceof RemoteFlowSource or sourceNode(this.getAnOutput(), _)
+  }
+
+  /** Holds if this API is a known sink. */
+  predicate isSink() { sinkNode(this.getAnInput(), _) }
+
+  /** Holds if this API is supported by existing CodeQL libraries, that is, it is either a recognized source or sink or has a flow summary. */
+  predicate isSupported() { hasSummary() or isSource() or isSink() }
 }
 
 private class TestLibrary extends RefType {

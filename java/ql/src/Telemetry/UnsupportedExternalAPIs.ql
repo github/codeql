@@ -7,13 +7,12 @@
  */
 
 import java
-import APIUsage
 import ExternalAPI
 import semmle.code.java.GeneratedFiles
 
 from ExternalAPI api, int usages
 where
-  not api.isTestLibrary() and
+  api.isWorthSupporting() and
   not api.isSupported() and
   usages =
     strictcount(Call c |

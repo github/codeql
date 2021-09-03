@@ -7,14 +7,13 @@
  */
 
 import java
-import APIUsage
 import ExternalAPI
 import semmle.code.java.GeneratedFiles
 
 from ExternalAPI api, int usages
 where
-  not api.isTestLibrary() and
-  supportKind(api) = "source" and
+  api.isWorthSupporting() and
+  api.isSource() and
   usages =
     strictcount(Call c |
       c.getCallee().getSourceDeclaration() = api and
