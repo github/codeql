@@ -388,6 +388,8 @@ Non-extending subtypes
 ======================
 
 Besides extending base types, classes can also declare `instanceof` relationships with other types.
+Declaring a class as `instanceof Foo` is roughly equivalent to saying `this instanceof Foo` the charpred.
+The main differences are that you can call methods on Bar via `super` and you can get better optimisation.
 
 .. code-block:: ql
 
