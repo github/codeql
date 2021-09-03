@@ -407,7 +407,7 @@ void test_read_fread(int read_src, FILE *s)
 		char buffer[buffer_size];
 
 		read(read_src, buffer, buffer_size * sizeof(char));
-		strlen(buffer); // BAD [NOT DETECTED]
+		strlen(buffer); // BAD
 	}
 
 	{
@@ -422,7 +422,7 @@ void test_read_fread(int read_src, FILE *s)
 		char buffer[buffer_size];
 
 		fread(buffer, sizeof(char), buffer_size, s);
-		strlen(buffer); // BAD [NOT DETECTED]
+		strlen(buffer); // BAD
 	}
 
 	{
