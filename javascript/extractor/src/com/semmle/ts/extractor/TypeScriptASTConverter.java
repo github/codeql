@@ -82,6 +82,7 @@ import com.semmle.js.ast.SequenceExpression;
 import com.semmle.js.ast.SourceLocation;
 import com.semmle.js.ast.SpreadElement;
 import com.semmle.js.ast.Statement;
+import com.semmle.js.ast.StaticInitializer;
 import com.semmle.js.ast.Super;
 import com.semmle.js.ast.SwitchCase;
 import com.semmle.js.ast.SwitchStatement;
@@ -154,6 +155,8 @@ import com.semmle.ts.ast.UnaryTypeExpr;
 import com.semmle.ts.ast.UnionTypeExpr;
 import com.semmle.util.collections.CollectionUtil;
 import com.semmle.util.data.IntList;
+
+import jdk.internal.org.objectweb.asm.commons.StaticInitMerger;
 
 /**
  * Utility class for converting a <a
@@ -869,7 +872,8 @@ public class TypeScriptASTConverter {
   }
 
   private Node convertStaticInitializerBlock(JsonObject node, SourceLocation loc) throws ParseError {
-    return new BlockStatement(loc, convertChildren(node.get("body").getAsJsonObject(), "statements"));
+    BlockStatement body = new BlockStatement(loc, convertChildren(node.get("body").getAsJsonObject(), "statements"));
+    return new StaticInitializer(loc, body);
   }
 
   private Node convertBlock(JsonObject node, SourceLocation loc) throws ParseError {
