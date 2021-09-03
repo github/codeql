@@ -1,3 +1,5 @@
+/** Provides classes and predicates to work with File objects. */
+
 import java
 import semmle.code.java.dataflow.ExternalFlow
 

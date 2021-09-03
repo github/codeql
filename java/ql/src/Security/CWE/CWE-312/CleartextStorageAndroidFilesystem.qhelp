@@ -19,7 +19,7 @@
     <p>
       In the second and third examples, the code encrypts sensitive information before saving it to the filesystem.
     </p>
-    <sample src="CleartextStorageSharedPrefs.java" />
+    <sample src="CleartextStorageAndroidFilesystem.java" />
   </example>
 
   <references>
