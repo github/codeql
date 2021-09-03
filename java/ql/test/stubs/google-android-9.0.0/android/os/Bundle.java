@@ -12,6 +12,7 @@ import android.util.SizeF;
 import android.util.SparseArray;
 import java.io.Serializable;
 import java.util.ArrayList;
+<<<<<<< HEAD
 
 public class Bundle extends BaseBundle implements Cloneable, Parcelable
 {

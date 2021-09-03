@@ -14,13 +14,19 @@
 import java
 
 private string suspicious() {
-  result = ["%password%", "%passwd%", "%account%", "%accnt%", "%trusted%"]
+  result =
+    [
+      "%password%", "%passwd%", "pwd", "%account%", "%accnt%", "%trusted%", "%refresh%token%",
+      "%secret%token"
+    ]
 }
 
 private string nonSuspicious() {
   result = "%hashed%" or
   result = "%encrypted%" or
-  result = "%crypt%"
+  result = "%crypt%" or
+  result = "%create table%" or
+  result = "%drop table%"
 }
 
 /**

@@ -24,6 +24,14 @@ class TypeDatabaseUtils extends Class {
   TypeDatabaseUtils() { hasQualifiedName("android.database", "DatabaseUtils") }
 }
 
+class TypeSQLiteOpenHelper extends Class {
+  TypeSQLiteOpenHelper() { this.hasQualifiedName("android.database.sqlite", "SQLiteOpenHelper") }
+}
+
+class TypeSQLiteStatement extends Class {
+  TypeSQLiteStatement() { this.hasQualifiedName("android.database.sqlite", "SQLiteStatement") }
+}
+
 private class SQLiteSinkCsv extends SinkModelCsv {
   override predicate row(string row) {
     row =
