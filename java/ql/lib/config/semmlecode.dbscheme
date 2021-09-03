@@ -20,6 +20,10 @@ compilations(
     string cwd : string ref
 );
 
+compilation_started(
+    int id : @compilation ref
+)
+
 /**
  * The arguments that were passed to the extractor for a compiler
  * invocation. If `id` is for the compiler invocation

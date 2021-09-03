@@ -11,11 +11,11 @@ class KotlinExtractorCommandLineProcessor : CommandLineProcessor {
 
     override val pluginOptions = listOf(
         CliOption(
-            optionName = "testOption",
-            valueDescription = "A test option",
-            description = "For testing options",
-            required = false,
-            allowMultipleOccurrences = true
+            optionName = OPTION_INVOCATION_TRAP_FILE,
+            valueDescription = "Invocation TRAP file",
+            description = "Extractor will append invocation-related TRAP to this file",
+            required = true,
+            allowMultipleOccurrences = false
         )
     )
 
@@ -24,9 +24,10 @@ class KotlinExtractorCommandLineProcessor : CommandLineProcessor {
         value: String,
         configuration: CompilerConfiguration
     ) = when (option.optionName) {
-        "testOption" -> configuration.appendList(KEY_TEST, value)
+        "invocationTrapFile" -> configuration.put(KEY_INVOCATION_TRAP_FILE, value)
         else -> error("kotlin extractor: Bad option: ${option.optionName}")
     }
 }
 
-val KEY_TEST = CompilerConfigurationKey<List<String>>("kotlin extractor test")
+private val OPTION_INVOCATION_TRAP_FILE = "invocationTrapFile"
+val KEY_INVOCATION_TRAP_FILE = CompilerConfigurationKey<String>(OPTION_INVOCATION_TRAP_FILE)

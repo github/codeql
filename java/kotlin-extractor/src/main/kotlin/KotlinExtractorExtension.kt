@@ -2,6 +2,7 @@ package com.github.codeql
 
 import java.io.BufferedWriter
 import java.io.File
+import java.io.FileOutputStream
 import java.io.PrintWriter
 import java.io.StringWriter
 import java.nio.file.Files
@@ -27,13 +28,13 @@ import org.jetbrains.kotlin.ir.IrStatement
 import org.jetbrains.kotlin.ir.symbols.IrClassifierSymbol
 import org.jetbrains.kotlin.descriptors.ClassKind
 
-class KotlinExtractorExtension(private val tests: List<String>) : IrGenerationExtension {
+class KotlinExtractorExtension(private val invocationTrapFile: String) : IrGenerationExtension {
     override fun generate(moduleFragment: IrModuleFragment, pluginContext: IrPluginContext) {
+        // This default should be kept in sync with language-packs/java/tools/kotlin-extractor
         val trapDir = File(System.getenv("CODEQL_EXTRACTOR_JAVA_TRAP_DIR").takeUnless { it.isNullOrEmpty() } ?: "kotlin-extractor/trap")
-        val invocationTrapDir = File("$trapDir/invocations")
-        invocationTrapDir.mkdirs()
-        val invocationTrapFile = File.createTempFile("kotlin.", ".trap", invocationTrapDir);
-        invocationTrapFile.bufferedWriter().use { invocationTrapFileBW ->
+        FileOutputStream(File(invocationTrapFile), true).bufferedWriter().use { invocationTrapFileBW ->
+            invocationTrapFileBW.write("compilation_started(#compilation)\n")
+            invocationTrapFileBW.flush()
             val logger = Logger(invocationTrapFileBW)
             logger.info("Extraction started")
             logger.flush()
@@ -45,6 +46,8 @@ class KotlinExtractorExtension(private val tests: List<String>) : IrGenerationEx
             // files etc, so we just exit when we are finished extracting.
             logger.info("Extraction completed")
             logger.flush()
+            invocationTrapFileBW.write("compilation_finished(#compilation, 0.0, 0.0)\n")
+            invocationTrapFileBW.flush()
         }
         exitProcess(0)
     }
