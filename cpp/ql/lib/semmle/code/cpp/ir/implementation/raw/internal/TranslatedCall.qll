@@ -219,14 +219,11 @@ abstract class TranslatedSideEffects extends TranslatedElement {
 
   override TranslatedElement getChild(int i) {
     result =
-      rank[i + 1](TranslatedSideEffect tse, int isWrite, int index |
-        (
-          tse.getCall() = getExpr() and
-          tse.getArgumentIndex() = index and
-          if tse.isWrite() then isWrite = 1 else isWrite = 0
-        )
+      rank[i + 1](TranslatedSideEffect tse, int group, int indexInGroup |
+        tse.getPrimaryExpr() = getExpr() and
+        tse.sortOrder(group, indexInGroup)
       |
-        tse order by isWrite, index
+        tse order by group, indexInGroup
       )
   }
 
@@ -445,13 +442,73 @@ class TranslatedStructorCallSideEffects extends TranslatedCallSideEffects {
   }
 }
 
-class TranslatedSideEffect extends TranslatedElement, TTranslatedArgumentSideEffect {
+/** Returns the sort group index for argument read side effects. */
+private int argumentReadGroup() { result = 1 }
+
+/** Returns the sort group index for conservative call side effects. */
+private int callSideEffectGroup() {
+  result = 0 // Make this group first for now to preserve the existing ordering
+}
+
+/** Returns the sort group index for argument write side effects. */
+private int argumentWriteGroup() { result = 2 }
+
+/** Returns the sort group index for dynamic allocation side effects. */
+private int initializeAllocationGroup() { result = 3 }
+
+/**
+ * The IR translation of a single side effect of a call.
+ */
+abstract class TranslatedSideEffect extends TranslatedElement {
+  final override TranslatedElement getChild(int n) { none() }
+
+  final override Instruction getChildSuccessor(TranslatedElement child) { none() }
+
+  final override Instruction getFirstInstruction() { result = getInstruction(OnlyInstructionTag()) }
+
+  final override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType type) {
+    tag = OnlyInstructionTag() and
+    sideEffectInstruction(opcode, type)
+  }
+
+  final override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
+    result = getParent().getChildSuccessor(this) and
+    tag = OnlyInstructionTag() and
+    kind instanceof GotoEdge
+  }
+
+  /**
+   * Gets the expression that caused this side effect.
+   *
+   * All side effects with the same `getPrimaryExpr()` will appear in the same contiguous sequence
+   * in the IR.
+   */
+  abstract Expr getPrimaryExpr();
+
+  /**
+   * Gets the order in which this side effect should be sorted with respect to other side effects
+   * for the same expression.
+   *
+   * Side effects are sorted first by `group`, and then by `indexInGroup`.
+   */
+  abstract predicate sortOrder(int group, int indexInGroup);
+
+  /**
+   * Gets the opcode and result type for the side effect instruction.
+   */
+  abstract predicate sideEffectInstruction(Opcode opcode, CppType type);
+}
+
+/**
+ * The IR translation of a single argument side effect for a call.
+ */
+class TranslatedArgumentSideEffect extends TranslatedSideEffect, TTranslatedArgumentSideEffect {
   Call call;
   Expr arg;
   int index;
   SideEffectOpcode sideEffectOpcode;
 
-  TranslatedSideEffect() {
+  TranslatedArgumentSideEffect() {
     this = TTranslatedArgumentSideEffect(call, arg, index, sideEffectOpcode)
   }
 
@@ -459,9 +516,12 @@ class TranslatedSideEffect extends TranslatedElement, TTranslatedArgumentSideEff
 
   Expr getExpr() { result = arg }
 
-  Call getCall() { result = call }
+  override Call getPrimaryExpr() { result = call }
 
-  int getArgumentIndex() { result = index }
+  override predicate sortOrder(int group, int indexInGroup) {
+    indexInGroup = index and
+    if isWrite() then group = argumentWriteGroup() else group = argumentReadGroup()
+  }
 
   predicate isWrite() { sideEffectOpcode instanceof WriteSideEffectOpcode }
 
@@ -473,14 +533,7 @@ class TranslatedSideEffect extends TranslatedElement, TTranslatedArgumentSideEff
     result = "(read side effect for " + arg.toString() + ")"
   }
 
-  override TranslatedElement getChild(int n) { none() }
-
-  override Instruction getChildSuccessor(TranslatedElement child) { none() }
-
-  override Instruction getFirstInstruction() { result = getInstruction(OnlyInstructionTag()) }
-
-  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType type) {
-    tag = OnlyInstructionTag() and
+  override predicate sideEffectInstruction(Opcode opcode, CppType type) {
     opcode = sideEffectOpcode and
     (
       isWrite() and
@@ -503,12 +556,6 @@ class TranslatedSideEffect extends TranslatedElement, TTranslatedArgumentSideEff
       not isWrite() and
       type = getVoidType()
     )
-  }
-
-  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
-    result = getParent().getChildSuccessor(this) and
-    tag = OnlyInstructionTag() and
-    kind instanceof GotoEdge
   }
 
   override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
