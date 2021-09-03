@@ -6,7 +6,7 @@
  * @kind path-problem
  * @problem.severity warning
  * @precision medium
- * @id java/sensitive-broadcast
+ * @id java/android/sensitive-broadcast
  * @tags security
  *       external/cwe/cwe-927
  */
