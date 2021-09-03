@@ -12,7 +12,7 @@ Errors are printed to stderr. This script requires that 'git' and 'codeql' comma
 are on the PATH. It'll try to automatically set the CodeQL search path correctly,
 as long as you run the script from one of the following locations:
  - anywhere from within a clone of the CodeQL Git repo
- - from the parent directory of a clone of the CodeQL Git repo (assuming 'codeql' 
+ - from the parent directory of a clone of the CodeQL Git repo (assuming 'codeql'
    and 'codeql-go' directories both exist)
 """
 
@@ -27,14 +27,14 @@ def prefix_repo_nwo(filename):
     This function relies on `git` being available.
 
     For example:
-        /home/alice/git/ql/java/ql/src/MyQuery.ql  
+        /home/alice/git/ql/java/ql/src/MyQuery.ql
     becomes:
         github/codeql/java/ql/src/MyQuery.ql
-     
+
     If we can't detect a known NWO (e.g. github/codeql, github/codeql-go), the
     path will be truncated to the root of the git repo:
         ql/java/ql/src/MyQuery.ql
-    
+
     If the filename is not part of a Git repo, the return value is the
     same as the input value: the whole path.
     """
@@ -45,9 +45,9 @@ def prefix_repo_nwo(filename):
     except:
         # Not a Git repo
         return filename
-    
+
     git_toplevel_dir = git_toplevel_dir_subp.stdout.strip()
-    
+
     # Detect 'github/codeql' and 'github/codeql-go' repositories by checking the remote (it's a bit
     # of a hack but will work in most cases, as long as the remotes have 'codeql' and 'codeql-go'
     # in the URL
@@ -100,7 +100,7 @@ except Exception as e:
 #
 # (and assumes the codeql-go repo is in a similar location)
 codeql_search_path = "./codeql:./codeql-go:."   # will be extended further down
-    
+
 # Extend CodeQL search path by detecting root of the current Git repo (if any). This means that you
 # can run this script from any location within the CodeQL git repository.
 try:
@@ -116,7 +116,7 @@ except:
 # Create CSV writer and write CSV header to stdout
 csvwriter = csv.writer(sys.stdout)
 csvwriter.writerow([
-    "Query filename", "Suite", "Query name", "Query ID", 
+    "Query filename", "Suite", "Query name", "Query ID",
     "Kind", "Severity", "Precision", "Tags"
 ])
 
@@ -132,13 +132,13 @@ for lang in languages:
             print(
                 "Warning: couldn't find query pack '%s' for language '%s'. Do you have the right repositories in the right places (search path: '%s')?" % (pack, lang, codeql_search_path),
                 file=sys.stderr
-            ) 
+            )
             continue
 
         # Investigate metadata for every query by using 'codeql resolve metadata'
         for queryfile in queries_subp.stdout.strip().split("\n"):
             query_metadata_json = subprocess_run(["codeql","resolve","metadata",queryfile]).stdout.strip()
-            
+
             # Turn an absolute path to a query file into an nwo-prefixed path (e.g. github/codeql/java/ql/src/....)
             queryfile_nwo = prefix_repo_nwo(queryfile)
 
@@ -146,7 +146,7 @@ for lang in languages:
 
             # Python's CSV writer will automatically quote fields if necessary
             csvwriter.writerow([
-                queryfile_nwo, pack, 
+                queryfile_nwo, pack,
                 get_query_metadata('name', meta, queryfile_nwo),
                 get_query_metadata('id', meta, queryfile_nwo),
                 get_query_metadata('kind', meta, queryfile_nwo),
@@ -154,4 +154,3 @@ for lang in languages:
                 get_query_metadata('precision', meta, queryfile_nwo),
                 get_query_metadata('tags', meta, queryfile_nwo)
             ])
-            
