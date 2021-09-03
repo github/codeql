@@ -3,6 +3,7 @@ import json
 import csv
 import sys
 import os
+import argparse
 
 """
 This script collects CodeQL queries that are part of code scanning query packs
@@ -15,6 +16,15 @@ as long as you run the script from one of the following locations:
  - from the parent directory of a clone of the CodeQL Git repo (assuming 'codeql'
    and 'codeql-go' directories both exist)
 """
+
+parser = argparse.ArgumentParser(__name__)
+parser.add_argument(
+    "--ignore-missing-query-packs",
+    action="store_true",
+    help="Don't fail if a query pack can't be found",
+)
+arguments = parser.parse_args()
+assert hasattr(arguments, "ignore_missing_query_packs")
 
 # Define which languages and query packs to consider
 languages = [ "cpp", "csharp", "go", "java", "javascript", "python"]
@@ -129,11 +139,15 @@ for lang in languages:
         except Exception as e:
             # Resolving queries might go wrong if the github/codeql and github/codeql-go repositories are not
             # on the search path.
+            level = "Warning" if arguments.ignore_missing_query_packs else "Error"
             print(
-                "Warning: couldn't find query pack '%s' for language '%s'. Do you have the right repositories in the right places (search path: '%s')?" % (pack, lang, codeql_search_path),
+                "%s: couldn't find query pack '%s' for language '%s'. Do you have the right repositories in the right places (search path: '%s')?" % (level, pack, lang, codeql_search_path),
                 file=sys.stderr
             )
-            continue
+            if arguments.ignore_missing_query_packs:
+                continue
+            else:
+                sys.exit("You can use '--ignore-missing-query-packs' to ignore this error")
 
         # Investigate metadata for every query by using 'codeql resolve metadata'
         for queryfile in queries_subp.stdout.strip().split("\n"):
