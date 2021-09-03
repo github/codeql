@@ -23,7 +23,7 @@ module ClickhouseDriver {
    * `clickhouse_driver` implements PEP249,
    * providing ways to execute SQL statements against a database.
    */
-  class ClickHouseDriverPEP249 extends PEP249ModuleApiNode {
+  class ClickHouseDriverPEP249 extends PEP249::PEP249ModuleApiNode {
     ClickHouseDriverPEP249() { this = API::moduleImport("clickhouse_driver") }
   }
 

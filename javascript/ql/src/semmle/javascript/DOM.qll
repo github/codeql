@@ -291,10 +291,33 @@ module DOM {
      */
     abstract class Range extends DataFlow::Node { }
 
+    private predicate isDomElementType(ExternalType type) { isDomRootType(type.getASupertype*()) }
+
     private string getADomPropertyName() {
       exists(ExternalInstanceMemberDecl decl |
         result = decl.getName() and
-        isDomRootType(decl.getDeclaringType().getASupertype*())
+        isDomElementType(decl.getDeclaringType())
+      )
+    }
+
+    private predicate isDomElementTypeName(string name) {
+      exists(ExternalType type |
+        isDomElementType(type) and
+        name = type.getName()
+      )
+    }
+
+    /** Gets a method name which, if invoked on a DOM element (possibly of a specific subtype), returns a DOM element. */
+    private string getAMethodProducingDomElements() {
+      exists(ExternalInstanceMemberDecl decl |
+        result = decl.getName() and
+        isDomElementType(decl.getDeclaringType()) and
+        isDomElementTypeName(decl.getDocumentation()
+              .getATagByTitle("return")
+              .getType()
+              .getAnUnderlyingType()
+              .(JSDocNamedTypeExpr)
+              .getName())
       )
     }
 
@@ -339,6 +362,8 @@ module DOM {
         or
         this = domElementCollection()
         or
+        this = domValueRef().getAMethodCall(getAMethodProducingDomElements())
+        or
         this = forms()
         or
         // reading property `foo` - where a child has `name="foo"` - resolves to that child.
@@ -357,6 +382,13 @@ module DOM {
         exists(DataFlow::CallNode eachCall | eachCall = JQuery::objectRef().getAMethodCall("each") |
           this = DataFlow::thisNode(eachCall.getCallback(0).getFunction()) or
           this = eachCall.getABoundCallbackParameter(0, 1)
+        )
+        or
+        // A read of an array-element from a JQuery object. E.g. `$("#foo")[0]`
+        exists(DataFlow::PropRead read |
+          read = this and read = JQuery::objectRef().getAPropertyRead()
+        |
+          unique(InferredType t | t = read.getPropertyNameExpr().analyze().getAType()) = TTNumber()
         )
         or
         // A receiver node of an event handler on a DOM node

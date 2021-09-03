@@ -89,4 +89,10 @@
 	$("section h1").each(function(){
 		$("nav ul").append("<a href='#" + $(this).text().toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g,'') + "'>Section</a>"); // OK
 	});
+
+	$("#id").html($("#foo").find(".bla")[0].value); // NOT OK.
+
+	for (var i = 0; i < foo.length; i++) {
+		$("#id").html($("#foo").find(".bla")[i].value); // NOT OK.
+	}
 })();

@@ -11,7 +11,7 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.InsufficientPasswordHash::InsufficientPasswordHash
+import semmle.javascript.security.dataflow.InsufficientPasswordHashQuery
 import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink

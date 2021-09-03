@@ -8,7 +8,6 @@
 private import python
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
-private import semmle.python.frameworks.PEP249
 private import semmle.python.frameworks.ClickhouseDriver
 
 /**

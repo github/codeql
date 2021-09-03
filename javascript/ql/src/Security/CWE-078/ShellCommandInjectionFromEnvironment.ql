@@ -15,7 +15,7 @@
 
 import javascript
 import DataFlow::PathGraph
-import semmle.javascript.security.dataflow.ShellCommandInjectionFromEnvironment::ShellCommandInjectionFromEnvironment
+import semmle.javascript.security.dataflow.ShellCommandInjectionFromEnvironmentQuery
 
 from
   Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, DataFlow::Node highlight,

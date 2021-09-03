@@ -133,6 +133,11 @@ class Locatable extends @locatable {
   }
 
   /**
+   * Gets a comma-separated list of the names of the primary CodeQL classes to which this element belongs.
+   */
+  final string getPrimaryQlClasses() { result = concat(getAPrimaryQlClass(), ",") }
+
+  /**
    * Gets the primary QL class for the Locatable.
    */
   string getAPrimaryQlClass() { result = "???" }

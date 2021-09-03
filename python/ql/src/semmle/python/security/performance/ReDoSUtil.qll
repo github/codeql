@@ -72,6 +72,49 @@ private int ascii(string char) {
 }
 
 /**
+ * Holds if `t` matches at least an epsilon symbol.
+ *
+ * That is, this term does not restrict the language of the enclosing regular expression.
+ *
+ * This is implemented as an under-approximation, and this predicate does not hold for sub-patterns in particular.
+ */
+predicate matchesEpsilon(RegExpTerm t) {
+  t instanceof RegExpStar
+  or
+  t instanceof RegExpOpt
+  or
+  t.(RegExpRange).getLowerBound() = 0
+  or
+  exists(RegExpTerm child |
+    child = t.getAChild() and
+    matchesEpsilon(child)
+  |
+    t instanceof RegExpAlt or
+    t instanceof RegExpGroup or
+    t instanceof RegExpPlus or
+    t instanceof RegExpRange
+  )
+  or
+  matchesEpsilon(t.(RegExpBackRef).getGroup())
+  or
+  forex(RegExpTerm child | child = t.(RegExpSequence).getAChild() | matchesEpsilon(child))
+}
+
+/**
+ * A lookahead/lookbehind that matches the empty string.
+ */
+class EmptyPositiveSubPatttern extends RegExpSubPattern {
+  EmptyPositiveSubPatttern() {
+    (
+      this instanceof RegExpPositiveLookahead
+      or
+      this instanceof RegExpPositiveLookbehind
+    ) and
+    matchesEpsilon(this.getOperand())
+  }
+}
+
+/**
  * A branch in a disjunction that is the root node in a literal, or a literal
  * whose root node is not a disjunction.
  */
@@ -113,14 +156,21 @@ private class RegexpCharacterConstant extends RegExpConstant {
 }
 
 /**
+ * A regexp term that is relevant for this ReDoS analysis.
+ */
+class RelevantRegExpTerm extends RegExpTerm {
+  RelevantRegExpTerm() { getRoot(this).isRelevant() }
+}
+
+/**
  * Holds if `term` is the chosen canonical representative for all terms with string representation `str`.
  *
  * Using canonical representatives gives a huge performance boost when working with tuples containing multiple `InputSymbol`s.
  * The number of `InputSymbol`s is decreased by 3 orders of magnitude or more in some larger benchmarks.
  */
-private predicate isCanonicalTerm(RegExpTerm term, string str) {
+private predicate isCanonicalTerm(RelevantRegExpTerm term, string str) {
   term =
-    rank[1](RegExpTerm t, Location loc, File file |
+    min(RelevantRegExpTerm t, Location loc, File file |
       loc = t.getLocation() and
       file = t.getFile() and
       str = t.getRawValue()
@@ -135,15 +185,15 @@ private predicate isCanonicalTerm(RegExpTerm term, string str) {
 private newtype TInputSymbol =
   /** An input symbol corresponding to character `c`. */
   Char(string c) {
-    c = any(RegexpCharacterConstant cc | getRoot(cc).isRelevant()).getValue().charAt(_)
+    c = any(RegexpCharacterConstant cc | cc instanceof RelevantRegExpTerm).getValue().charAt(_)
   } or
   /**
    * An input symbol representing all characters matched by
    * a (non-universal) character class that has string representation `charClassString`.
    */
   CharClass(string charClassString) {
-    exists(RegExpTerm term | term.getRawValue() = charClassString | getRoot(term).isRelevant()) and
-    exists(RegExpTerm recc | isCanonicalTerm(recc, charClassString) |
+    exists(RelevantRegExpTerm term | term.getRawValue() = charClassString) and
+    exists(RelevantRegExpTerm recc | isCanonicalTerm(recc, charClassString) |
       recc instanceof RegExpCharacterClass and
       not recc.(RegExpCharacterClass).isUniversalClass()
       or
@@ -208,7 +258,7 @@ class InputSymbol extends TInputSymbol {
 /**
  * An abstract input symbol that represents a character class.
  */
-abstract private class CharacterClass extends InputSymbol {
+abstract class CharacterClass extends InputSymbol {
   /**
    * Gets a character that is relevant for intersection-tests involving this
    * character class.
@@ -550,6 +600,10 @@ predicate delta(State q1, EdgeLabel lbl, State q2) {
   exists(RegExpDollar dollar | q1 = before(dollar) |
     lbl = Epsilon() and q2 = Accept(getRoot(dollar))
   )
+  or
+  exists(EmptyPositiveSubPatttern empty | q1 = before(empty) |
+    lbl = Epsilon() and q2 = after(empty)
+  )
 }
 
 /**
@@ -579,13 +633,10 @@ RegExpRoot getRoot(RegExpTerm term) {
 }
 
 private newtype TState =
-  Match(RegExpTerm t, int i) {
-    getRoot(t).isRelevant() and
-    (
-      i = 0
-      or
-      exists(t.(RegexpCharacterConstant).getValue().charAt(i))
-    )
+  Match(RelevantRegExpTerm t, int i) {
+    i = 0
+    or
+    exists(t.(RegexpCharacterConstant).getValue().charAt(i))
   } or
   Accept(RegExpRoot l) { l.isRelevant() } or
   AcceptAnySuffix(RegExpRoot l) { l.isRelevant() }
