@@ -11,7 +11,6 @@ import ExternalAPI
 
 from int Usages, string jarname
 where
-  jarname = any(ExternalAPI api).jarContainer() and
   Usages =
     strictcount(Call c, ExternalAPI a |
       c.getCallee() = a and
