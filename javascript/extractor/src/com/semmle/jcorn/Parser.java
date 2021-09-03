@@ -3219,7 +3219,7 @@ public class Parser {
     Expression superClass = this.parseClassSuper();
     Position bodyStartLoc = this.startLoc;
     boolean hadConstructor = false;
-    List<Node> body = new ArrayList<>(); // TODO: The JS parser doesn't support static initializer blocks.
+    List<Node> body = new ArrayList<>();
     this.expect(TokenType.braceL);
     while (!this.eat(TokenType.braceR)) {
       if (this.eat(TokenType.semi)) continue;
