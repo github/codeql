@@ -8,6 +8,7 @@ private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.Concepts
 private import codeql.ruby.Frameworks
+private import codeql.ruby.ApiGraphs
 
 module CommandInjection {
   /**
@@ -38,7 +39,17 @@ module CommandInjection {
   /**
    * A command argument to a function that initiates an operating system command.
    */
-  class SystemCommandExecutionSink extends Sink, DataFlow::Node {
+  class SystemCommandExecutionSink extends Sink {
     SystemCommandExecutionSink() { this = any(SystemCommandExecution c).getAnArgument() }
+  }
+
+  /**
+   * A call to `Shellwords.escape` or `Shellwords.shellescape` sanitizes its input.
+   */
+  class ShellwordsEscapeAsSanitizer extends Sanitizer {
+    ShellwordsEscapeAsSanitizer() {
+      this = API::getTopLevelMember("Shellwords").getAMethodCall("escape") or
+      this = API::getTopLevelMember("Shellwords").getAMethodCall("shellescape")
+    }
   }
 }
