@@ -397,8 +397,8 @@ Besides extending base types, classes can also declare `instanceof` relationship
       string foo_method() { result = "foo" }
     }
 
-    class Bar extends int instanceof Foo {
-      string bar_method() { result = super.foo_method() }
+    class Bar instanceof Foo {
+      string toString() { result = super.foo_method() }
     }
 
 In this example, the characteristic predicate from `Foo` also applies to `Bar`.
