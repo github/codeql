@@ -122,8 +122,7 @@ abstract private class GeneratedType extends Type, GeneratedElement {
   private string stubComment() {
     result =
       "// Generated from `" + this.getQualifiedName() + "` in `" +
-        concat(Location l | l = this.getALocation() | l.toString(), "; " order by l.toString()) +
-        "`\n"
+        concat(this.getALocation().toString(), "; ") + "`\n"
   }
 
   /** Gets the entire C# stub code for this type. */
