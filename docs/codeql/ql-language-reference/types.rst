@@ -417,13 +417,13 @@ The following example demonstrates this.
 .. code-block:: ql
 
     class Interface extends int {
-      Interface() { this in [1 .. 100] }
+      Interface() { this in [1 .. 10] }
       string foo() { result = "" }
    }
 
-    class Foo extends Interface {
-      Foo() { this in [1 .. 10] }
-      override string foo() { result = "foo" }
+    class Foo extends int {
+      Foo() { this in [1 .. 5] }
+      string foo() { result = "foo" }
     }
 
     class Bar extends Interface instanceof Foo {
@@ -432,8 +432,8 @@ The following example demonstrates this.
 
 Here, the method `Bar::foo` does not override `Foo::foo`.
 Instead, it overrides only `Interface::foo`.
-This means that `select any(Foo b).foo()` yields only `foo`.
-Had `bar been defined as `extends Foo`, then `select any(Foo b).foo()` would yield `bar`.
+This means that `select any(Foo f).foo()` yields only `foo`.
+Had `Bar` been defined as `extends Foo`, then `select any(Foo b)` would yield `bar`.
 
 .. _character-types:
 .. _domain-types:
