@@ -1,3 +1,5 @@
+/** Provides classes and predicates for working with Android widgets. */
+
 import java
 import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.java.dataflow.FlowSources
