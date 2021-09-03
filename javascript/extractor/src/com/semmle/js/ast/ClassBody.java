@@ -4,7 +4,7 @@ import java.util.List;
 
 /** The body of a {@linkplain ClassDeclaration} or {@linkplain ClassExpression}. */
 public class ClassBody extends Node {
-  private final List<Node> body; // either MemberDefintion or BlockStatement (static initialization blocks)
+  private final List<Node> body; // either MemberDefinition or BlockStatement (static initialization blocks)
 
   public ClassBody(SourceLocation loc, List<Node> body) {
     super("ClassBody", loc);
