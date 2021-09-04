@@ -734,6 +734,7 @@ class StringLiteral extends Literal, @stringliteral {
 
 /** The null literal, written `null`. */
 class NullLiteral extends Literal, @nullliteral {
+  // Override these predicates because the inherited ones have no result
   override string getLiteral() { result = "null" }
 
   override string getValue() { result = "null" }
