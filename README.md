@@ -8,7 +8,8 @@ There is [extensive documentation](https://help.semmle.com/QL/learn-ql/) on gett
 You can use the [interactive query console](https://lgtm.com/help/lgtm/using-query-console) on LGTM.com or the [CodeQL for Visual Studio Code](https://help.semmle.com/codeql/codeql-for-vscode.html) extension to try out your queries on any open source project that's currently being analyzed.
 
 ## Contributing
-
+Pull requests are welcome.For major changes,please open an issue first to discuss what you would like to change.
+Please make sure to update tests as appropriate.
 We welcome contributions to our standard library and standard checks. Do you have an idea for a new check, or how to improve an existing query? Then please go ahead and open a pull request! Before you do, though, please take the time to read our [contributing guidelines](CONTRIBUTING.md). You can also consult our [style guides](https://github.com/github/codeql/tree/main/docs) to learn how to format your code for consistency and clarity, how to write query metadata, and how to write query help documentation for your query.
 
 ## License
@@ -17,7 +18,7 @@ The code in this repository is licensed under the [MIT License](LICENSE) by [Git
 
 ## Visual Studio Code integration
 
-If you use Visual Studio Code to work in this repository, there are a few integration features to make development easier.
+If you use Visual Studio Code to work in this repository, there are a few integration features to make development easier.I t also enables major effects on the project and makes the repo to look good and neat.
 
 ### CodeQL for Visual Studio Code
 
