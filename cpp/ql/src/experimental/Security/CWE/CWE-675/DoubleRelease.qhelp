@@ -12,7 +12,7 @@
 </recommendation>
 <example>
 <p>The following example demonstrates an erroneous and corrected use of descriptor deallocation.</p>
-<sample src="DoubleFree.c" />
+<sample src="DoubleRelease.c" />
 
 </example>
 <references>
