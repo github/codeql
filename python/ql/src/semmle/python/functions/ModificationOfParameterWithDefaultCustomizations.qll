@@ -32,12 +32,24 @@ module ModificationOfParameterWithDefault {
   abstract class Barrier extends DataFlow::Node { }
 
   /**
-   * A sanitizer guard for detecting modifications of a parameters default value.
+   * A sanitizer guard that does not let a truthy value flow to the true branch.
+   *
+   * Since guards with different behaviour cannot exist on the same node,
+   * we let all guards have the same behaviour, in the sense that they all check
+   * the true branch. Instead, we partition guards into those that block
+   * truthy values and those that block falsy values.
    */
-  abstract class BarrierGuard extends DataFlow::BarrierGuard {
-    /** Result is true if this guard blocks non-empty values and false if it blocks empty values. */
-    abstract boolean blocksNonEmpty();
-  }
+  abstract class BlocksTruthy extends DataFlow::BarrierGuard { }
+
+  /**
+   * A sanitizer guard that does not let a falsy value flow to the true branch.
+   *
+   * Since guards with different behaviour cannot exist on the same node,
+   * we let all guards have the same behaviour, in the sense that they all check
+   * the true branch. Instead, we partition guards into those that block
+   * truthy values and those that block falsy values.
+   */
+  abstract class BlocksFalsey extends DataFlow::BarrierGuard { }
 
   /** Gets the truthiness (non emptyness) of the default of `p` if that value is mutable */
   private boolean mutableDefaultValue(Parameter p) {
@@ -147,30 +159,46 @@ module ModificationOfParameterWithDefault {
     boolean isInverted() { result = inverted }
   }
 
-  /**
-   * A check for the value being truthy or falsy can guard against modifying the default value.
-   */
-  class IdentityGuard extends BarrierGuard {
-    ControlFlowNode checked_node;
-    boolean safe_branch;
-    boolean nonEmpty;
+  boolean isIdentityGuard(DataFlow::GuardNode guard, ControlFlowNode guarded) {
+    exists(IdentityGuarded ig |
+      ig instanceof Name and
+      // In `not l`, the `ControlFlowNode` for `l` is not an instance of `GuardNode`.
+      // TODO: This is slightly naive, we should change it when we have a proper guards library.
+      guard.getNode().getAChildNode*() = ig and
+      result = ig.isInverted() and
+      guarded.getNode() = ig
+    )
+  }
 
-    IdentityGuard() {
-      nonEmpty in [true, false] and
-      exists(IdentityGuarded ig |
-        this.getNode() = ig and
-        checked_node = this and
-        // The raw guard is true if the value is non-empty.
-        // So we are safe either if we are looking for a non-empty value
-        // or if we are looking for an empty value and the guard is inverted.
-        safe_branch = ig.isInverted().booleanXor(nonEmpty)
-      )
+  class BlocksTruthyGuard extends BlocksTruthy {
+    ControlFlowNode guarded;
+
+    BlocksTruthyGuard() {
+      // The raw guard is true if the value is non-empty.
+      // We wish to send truthy falues to the false branch,
+      // se we are looking for inverted guards.
+      isIdentityGuard(this, guarded) = true
     }
 
     override predicate checks(ControlFlowNode node, boolean branch) {
-      node = checked_node and branch = safe_branch
+      node = guarded and
+      branch = true
+    }
+  }
+
+  class BlocksFalseyGuard extends BlocksFalsey {
+    ControlFlowNode guarded;
+
+    BlocksFalseyGuard() {
+      // The raw guard is true if the value is non-empty.
+      // We wish to send falsy falues to the false branch,
+      // se we are looking for guards that are not inverted.
+      isIdentityGuard(this, guarded) = false
     }
 
-    override boolean blocksNonEmpty() { result = nonEmpty }
+    override predicate checks(ControlFlowNode node, boolean branch) {
+      node = guarded and
+      branch = true
+    }
   }
 }

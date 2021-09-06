@@ -124,11 +124,23 @@ def dict_update_op_nochange(d = {}):
 # OK
 def sanitizer(l = []):
     if l:
-        l.append(1)  #$ modification=l
+        l.append(1)
     return l
 
 # OK
 def sanitizer_negated(l = [1]):
     if not l:
-        l.append(1)  #$ SPURIOUS: modification=l
+        l.append(1)
+    return l
+
+# Not OK
+def sanitizer(l = []):
+    if not l:
+        l.append(1)  #$ modification=l
+    return l
+
+# Not OK
+def sanitizer_negated(l = [1]):
+    if l:
+        l.append(1)  #$ modification=l
     return l

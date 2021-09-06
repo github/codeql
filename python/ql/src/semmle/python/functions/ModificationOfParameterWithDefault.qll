@@ -19,21 +19,28 @@ module ModificationOfParameterWithDefault {
    * A data-flow configuration for detecting modifications of a parameters default value.
    */
   class Configuration extends DataFlow::Configuration {
-    boolean nonEmpty;
+    /** Record whether the default value being tracked is non-empty. */
+    boolean nonEmptyDefault;
 
     Configuration() {
-      nonEmpty in [true, false] and
-      this = "ModificationOfParameterWithDefault:" + nonEmpty.toString()
+      nonEmptyDefault in [true, false] and
+      this = "ModificationOfParameterWithDefault:" + nonEmptyDefault.toString()
     }
 
-    override predicate isSource(DataFlow::Node source) { source.(Source).isNonEmpty() = nonEmpty }
+    override predicate isSource(DataFlow::Node source) {
+      source.(Source).isNonEmpty() = nonEmptyDefault
+    }
 
     override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
     override predicate isBarrier(DataFlow::Node node) { node instanceof Barrier }
 
     override predicate isBarrierGuard(DataFlow::BarrierGuard guard) {
-      guard.(BarrierGuard).blocksNonEmpty() = nonEmpty
+      // if we are tracking a emmpty default, then we should not modify falsy values
+      nonEmptyDefault = false and guard instanceof BlocksFalsey
+      or
+      // if we are tracking a non-empty default, then we should not modify truthy values
+      nonEmptyDefault = true and guard instanceof BlocksTruthy
     }
   }
 }
