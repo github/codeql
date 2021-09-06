@@ -42,6 +42,7 @@ nodes
 | UrlRedirectCore.cs:53:32:53:45 | object creation of type Uri | semmle.label | object creation of type Uri |
 | UrlRedirectCore.cs:53:40:53:44 | access to parameter value : String | semmle.label | access to parameter value : String |
 | UrlRedirectCore.cs:56:31:56:35 | access to parameter value | semmle.label | access to parameter value |
+subpaths
 #select
 | UrlRedirect.cs:12:31:12:61 | access to indexer | UrlRedirect.cs:12:31:12:53 | access to property QueryString : NameValueCollection | UrlRedirect.cs:12:31:12:61 | access to indexer | Untrusted URL redirection due to $@. | UrlRedirect.cs:12:31:12:53 | access to property QueryString | user-provided value |
 | UrlRedirect.cs:37:44:37:74 | access to indexer | UrlRedirect.cs:37:44:37:66 | access to property QueryString : NameValueCollection | UrlRedirect.cs:37:44:37:74 | access to indexer | Untrusted URL redirection due to $@. | UrlRedirect.cs:37:44:37:66 | access to property QueryString | user-provided value |

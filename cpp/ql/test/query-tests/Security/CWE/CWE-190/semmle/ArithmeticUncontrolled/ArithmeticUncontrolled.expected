@@ -105,6 +105,7 @@ nodes
 | test.cpp:223:20:223:23 | call to rand | semmle.label | call to rand |
 | test.cpp:223:20:223:25 | (unsigned int)... | semmle.label | (unsigned int)... |
 | test.cpp:227:8:227:8 | x | semmle.label | x |
+subpaths
 #select
 | test.c:21:17:21:17 | r | test.c:18:13:18:16 | call to rand | test.c:21:17:21:17 | r | $@ flows to here and is used in arithmetic, potentially causing an overflow. | test.c:18:13:18:16 | call to rand | Uncontrolled value |
 | test.c:35:5:35:5 | r | test.c:34:13:34:18 | call to rand | test.c:35:5:35:5 | r | $@ flows to here and is used in arithmetic, potentially causing an overflow. | test.c:34:13:34:18 | call to rand | Uncontrolled value |
