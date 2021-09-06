@@ -3258,24 +3258,16 @@ class PathNode extends TPathNode {
   /** Gets the associated configuration. */
   Configuration getConfiguration() { none() }
 
-  private predicate isHidden() {
-    hiddenNode(this.(PathNodeImpl).getNodeEx().asNode()) and
-    not this.isSource() and
-    not this instanceof PathNodeSink
-    or
-    this.(PathNodeImpl).getNodeEx() instanceof TNodeImplicitRead
-  }
-
   private PathNode getASuccessorIfHidden() {
-    this.isHidden() and
+    this.(PathNodeImpl).isHidden() and
     result = this.(PathNodeImpl).getASuccessorImpl()
   }
 
   /** Gets a successor of this node, if any. */
   final PathNode getASuccessor() {
     result = this.(PathNodeImpl).getASuccessorImpl().getASuccessorIfHidden*() and
-    not this.isHidden() and
-    not result.isHidden()
+    not this.(PathNodeImpl).isHidden() and
+    not result.(PathNodeImpl).isHidden()
   }
 
   /** Holds if this node is a source. */
@@ -3286,6 +3278,14 @@ abstract private class PathNodeImpl extends PathNode {
   abstract PathNode getASuccessorImpl();
 
   abstract NodeEx getNodeEx();
+
+  predicate isHidden() {
+    hiddenNode(this.getNodeEx().asNode()) and
+    not this.isSource() and
+    not this instanceof PathNodeSink
+    or
+    this.getNodeEx() instanceof TNodeImplicitRead
+  }
 
   private string ppAp() {
     this instanceof PathNodeSink and result = ""
@@ -3674,7 +3674,8 @@ private module Subpaths {
       innercc = ret.getCallContext() and
       sc = ret.getSummaryCtx() and
       ret.getConfiguration() = unbindConf(getPathNodeConf(arg)) and
-      apout = ret.getAp()
+      apout = ret.getAp() and
+      not ret.isHidden()
     )
   }
 
@@ -3695,7 +3696,7 @@ private module Subpaths {
   }
 
   /**
-   * Holds if `n` can reach `ret` in a summarized subpath.
+   * Holds if `n` can reach a return node in a summarized subpath.
    */
   predicate retReach(PathNode n) {
     subpaths(_, _, n, _)
