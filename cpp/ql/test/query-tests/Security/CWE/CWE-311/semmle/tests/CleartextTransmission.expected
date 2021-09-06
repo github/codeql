@@ -1,0 +1,2 @@
+| test3.cpp:39:3:39:6 | call to recv | test3.cpp:39:15:39:22 | password |
+| test3.cpp:47:3:47:6 | call to recv | test3.cpp:47:15:47:22 | password |
