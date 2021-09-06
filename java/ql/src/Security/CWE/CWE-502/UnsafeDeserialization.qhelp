@@ -15,7 +15,7 @@ may have unforeseen effects, such as the execution of arbitrary code.
 <p>
 There are many different serialization frameworks.  This query currently
 supports Kryo, XmlDecoder, XStream, SnakeYaml, JYaml, JsonIO, YAMLBeans, HessianBurlap, Castor, Burlap,
-Jackson, Jabsorb and Java IO serialization through
+Jackson, Jabsorb, Jodd JSON and Java IO serialization through
 <code>ObjectInputStream</code>/<code>ObjectOutputStream</code>.
 </p>
 </overview>
@@ -104,6 +104,10 @@ Blog posts by the developer of Jackson libraries:
 <li>
 Jabsorb documentation on deserialization:
 <a href="https://github.com/Servoy/jabsorb/blob/master/src/org/jabsorb/">Jabsorb JSON Serializer</a>.
+</li>
+<li>
+Jodd JSON documentation on deserialization:
+<a href="https://json.jodd.org/parser">JoddJson Parser</a>.
 </li>
 </references>
 

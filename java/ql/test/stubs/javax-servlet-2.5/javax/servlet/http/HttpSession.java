@@ -8,7 +8,7 @@ import javax.servlet.http.HttpSessionContext;
 
 public interface HttpSession
 {
-    Enumeration getAttributeNames();
+    Enumeration<String> getAttributeNames();
     HttpSessionContext getSessionContext();
     Object getAttribute(String p0);
     Object getValue(String p0);

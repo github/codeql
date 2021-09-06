@@ -17,7 +17,7 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.PrototypePollutingAssignment::PrototypePollutingAssignment
+import semmle.javascript.security.dataflow.PrototypePollutingAssignmentQuery
 import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink

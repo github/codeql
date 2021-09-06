@@ -77,7 +77,7 @@ public class ScriptExtractor implements IExtractor {
     }
 
     ScopeManager scopeManager =
-        new ScopeManager(textualExtractor.getTrapwriter(), config.getEcmaVersion());
+        new ScopeManager(textualExtractor.getTrapwriter(), config.getEcmaVersion(), false);
     Label toplevelLabel = null;
     LoCInfo loc;
     try {

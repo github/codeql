@@ -114,25 +114,39 @@ namespace Semmle.Extraction.CIL.Entities
 
                     if (!body.LocalSignature.IsNil)
                     {
-                        var locals = Context.MdReader.GetStandaloneSignature(body.LocalSignature);
-                        var localVariableTypes = locals.DecodeLocalSignature(Context.TypeSignatureDecoder, this);
-
-                        this.locals = new LocalVariable[localVariableTypes.Length];
-
-                        for (var l = 0; l < this.locals.Length; ++l)
+                        var localVariableTypes = System.Collections.Immutable.ImmutableArray<Type>.Empty;
+                        var hasError = false;
+                        try
                         {
-                            var t = localVariableTypes[l];
-                            if (t is ByRefType brt)
+                            var locals = Context.MdReader.GetStandaloneSignature(body.LocalSignature);
+                            localVariableTypes = locals.DecodeLocalSignature(Context.TypeSignatureDecoder, this);
+                        }
+                        catch (System.BadImageFormatException exc)
+                        {
+                            Context.Extractor.Logger.Log(Util.Logging.Severity.Info,
+                                $"Could not decode locals in method {declaringType.GetQualifiedName()}.{name}. {exc}");
+                            hasError = true;
+                        }
+
+                        if (!hasError)
+                        {
+                            this.locals = new LocalVariable[localVariableTypes.Length];
+
+                            for (var l = 0; l < this.locals.Length; ++l)
                             {
-                                t = brt.ElementType;
-                                this.locals[l] = Context.Populate(new LocalVariable(Context, Implementation, l, t));
-                                yield return this.locals[l];
-                                yield return Tuples.cil_type_annotation(this.locals[l], TypeAnnotation.Ref);
-                            }
-                            else
-                            {
-                                this.locals[l] = Context.Populate(new LocalVariable(Context, Implementation, l, t));
-                                yield return this.locals[l];
+                                var t = localVariableTypes[l];
+                                if (t is ByRefType brt)
+                                {
+                                    t = brt.ElementType;
+                                    this.locals[l] = Context.Populate(new LocalVariable(Context, Implementation, l, t));
+                                    yield return this.locals[l];
+                                    yield return Tuples.cil_type_annotation(this.locals[l], TypeAnnotation.Ref);
+                                }
+                                else
+                                {
+                                    this.locals[l] = Context.Populate(new LocalVariable(Context, Implementation, l, t));
+                                    yield return this.locals[l];
+                                }
                             }
                         }
                     }
