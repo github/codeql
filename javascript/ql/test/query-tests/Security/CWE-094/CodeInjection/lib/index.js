@@ -9,3 +9,7 @@ export function unsafeGetter(obj, name) {
 export function safeAssignment(obj, value) {
     eval("obj.foo = " + JSON.stringify(value)); // OK
 }
+
+global.unsafeDeserialize = function (data) {
+  return eval("(" + data + ")"); // NOT OK
+}
