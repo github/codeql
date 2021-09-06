@@ -58,17 +58,17 @@ class MyHandler(BaseHTTPRequestHandler):
             self.headers, # $ tainted
             self.headers['Foo'], # $ tainted
             self.headers.get('Foo'), # $ tainted
-            self.headers.get_all('Foo'), # $ MISSING: tainted
-            self.headers.keys(), # $ MISSING: tainted
+            self.headers.get_all('Foo'), # $ tainted
+            self.headers.keys(), # $ tainted
             self.headers.values(), # $ tainted
             self.headers.items(), # $ tainted
-            self.headers.as_bytes(), # $ MISSING: tainted
-            self.headers.as_string(), # $ MISSING: tainted
+            self.headers.as_bytes(), # $ tainted
+            self.headers.as_string(), # $ tainted
             str(self.headers), # $ tainted
             bytes(self.headers), # $ tainted
 
             self.rfile, # $ tainted
-            self.rfile.read(), # $ MISSING: tainted
+            self.rfile.read(), # $ tainted
         )
 
         form = cgi.FieldStorage(

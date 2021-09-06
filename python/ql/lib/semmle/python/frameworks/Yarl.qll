@@ -9,6 +9,7 @@ private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
 private import semmle.python.frameworks.Multidict
+private import semmle.python.frameworks.internal.InstanceTaintStepsHelper
 
 /**
  * INTERNAL: Do not use.
@@ -52,10 +53,30 @@ module Yarl {
 
     /**
      * Taint propagation for `yarl.URL`.
-     *
-     * See https://yarl.readthedocs.io/en/stable/api.html#yarl.URL
      */
-    class YarlUrlAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+    private class InstanceTaintSteps extends InstanceTaintStepsHelper {
+      InstanceTaintSteps() { this = "yarl.URL" }
+
+      override DataFlow::Node getInstance() { result = instance() }
+
+      override string getAttributeName() {
+        result in [
+            "user", "raw_user", "password", "raw_password", "host", "raw_host", "port",
+            "explicit_port", "authority", "raw_authority", "path", "raw_path", "path_qs",
+            "raw_path_qs", "query_string", "raw_query_string", "fragment", "raw_fragment", "parts",
+            "raw_parts", "name", "raw_name", "query"
+          ]
+      }
+
+      override string getMethodName() { result in ["human_repr"] }
+
+      override string getAsyncMethodName() { none() }
+    }
+
+    /**
+     * Extra taint propagation for `yarl.URL`, not covered by `InstanceTaintSteps`.
+     */
+    private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
       override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
         // class instantiation
         exists(ClassInstantiation call |
@@ -63,51 +84,20 @@ module Yarl {
           nodeTo = call
         )
         or
-        // Methods
-        //
-        // TODO: When we have tools that make it easy, model these properly to handle
-        // `meth = obj.meth; meth()`. Until then, we'll use this more syntactic approach
-        // (since it allows us to at least capture the most common cases).
-        exists(DataFlow::AttrRead attr |
-          // methods (that replaces part of URL, taken as only arguments)
-          attr.getAttributeName() in [
+        // methods that give an altered URL. taint both from object, and form argument
+        // (to result of call)
+        exists(DataFlow::MethodCallNode call |
+          call.calls(instance(),
+            [
               "with_scheme", "with_user", "with_password", "with_host", "with_port", "with_path",
               "with_query", "with_query", "update_query", "update_query", "with_fragment",
               "with_name",
               // join is a bit different, but is still correct to add here :+1:
               "join"
-            ] and
-          (
-            // obj -> obj.meth()
-            nodeFrom = instance() and
-            attr.getObject() = nodeFrom and
-            nodeTo.(DataFlow::CallCfgNode).getFunction() = attr
-            or
-            // argument of obj.meth() -> obj.meth()
-            attr.getObject() = instance() and
-            nodeTo.(DataFlow::CallCfgNode).getFunction() = attr and
-            nodeFrom in [
-                nodeTo.(DataFlow::CallCfgNode).getArg(_),
-                nodeTo.(DataFlow::CallCfgNode).getArgByName(_)
-              ]
-          )
-          or
-          // other methods
-          nodeFrom = instance() and
-          attr.getObject() = nodeFrom and
-          attr.getAttributeName() in ["human_repr"] and
-          nodeTo.(DataFlow::CallCfgNode).getFunction() = attr
+            ]) and
+          nodeTo = call and
+          nodeFrom in [call.getObject(), call.getArg(_), call.getArgByName(_)]
         )
-        or
-        // Attributes
-        nodeFrom = instance() and
-        nodeTo.(DataFlow::AttrRead).getObject() = nodeFrom and
-        nodeTo.(DataFlow::AttrRead).getAttributeName() in [
-            "user", "raw_user", "password", "raw_password", "host", "raw_host", "port",
-            "explicit_port", "authority", "raw_authority", "path", "raw_path", "path_qs",
-            "raw_path_qs", "query_string", "raw_query_string", "fragment", "raw_fragment", "parts",
-            "raw_parts", "name", "raw_name", "query"
-          ]
       }
     }
 

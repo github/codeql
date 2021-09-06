@@ -10,12 +10,58 @@ private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
 private import semmle.python.regex
+private import semmle.python.frameworks.Stdlib
+private import semmle.python.frameworks.internal.InstanceTaintStepsHelper
 
 /**
  * Provides models for the `tornado` PyPI package.
  * See https://www.tornadoweb.org/en/stable/.
  */
 private module Tornado {
+  /**
+   * Provides models for the `tornado.httputil.HTTPHeaders` class
+   *
+   * See https://www.tornadoweb.org/en/stable/httputil.html#tornado.httputil.HTTPHeaders.
+   */
+  module HTTPHeaders {
+    /**
+     * A source of instances of `tornado.httputil.HTTPHeaders`, extend this class to model new instances.
+     *
+     * This can include instantiations of the class, return values from function
+     * calls, or a special parameter that will be set when functions are called by an external
+     * library.
+     *
+     * Use the predicate `HTTPHeaders::instance()` to get references to instances of `tornado.httputil.HTTPHeaders`.
+     */
+    abstract class InstanceSource extends DataFlow::LocalSourceNode { }
+
+    /** Gets a reference to an instance of `tornado.httputil.HTTPHeaders`. */
+    private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
+      t.start() and
+      result instanceof InstanceSource
+      or
+      exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+    }
+
+    /** Gets a reference to an instance of `tornado.httputil.HTTPHeaders`. */
+    DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
+
+    /**
+     * Taint propagation for `tornado.httputil.HTTPHeaders`.
+     */
+    private class InstanceTaintSteps extends InstanceTaintStepsHelper {
+      InstanceTaintSteps() { this = "tornado.httputil.HTTPHeaders" }
+
+      override DataFlow::Node getInstance() { result = instance() }
+
+      override string getAttributeName() { none() }
+
+      override string getMethodName() { result in ["get_list", "get_all"] }
+
+      override string getAsyncMethodName() { none() }
+    }
+  }
+
   // ---------------------------------------------------------------------------
   // tornado
   // ---------------------------------------------------------------------------
@@ -97,32 +143,6 @@ private module Tornado {
         /** Gets a reference to an instance of the `tornado.web.RequestHandler` class or any subclass. */
         DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
 
-        /** Gets a reference to one of the methods `get_argument`, `get_body_argument`, `get_query_argument`. */
-        private DataFlow::TypeTrackingNode argumentMethod(DataFlow::TypeTracker t) {
-          t.startInAttr(["get_argument", "get_body_argument", "get_query_argument"]) and
-          result = instance()
-          or
-          exists(DataFlow::TypeTracker t2 | result = argumentMethod(t2).track(t2, t))
-        }
-
-        /** Gets a reference to one of the methods `get_argument`, `get_body_argument`, `get_query_argument`. */
-        DataFlow::Node argumentMethod() {
-          argumentMethod(DataFlow::TypeTracker::end()).flowsTo(result)
-        }
-
-        /** Gets a reference to one of the methods `get_arguments`, `get_body_arguments`, `get_query_arguments`. */
-        private DataFlow::TypeTrackingNode argumentsMethod(DataFlow::TypeTracker t) {
-          t.startInAttr(["get_arguments", "get_body_arguments", "get_query_arguments"]) and
-          result = instance()
-          or
-          exists(DataFlow::TypeTracker t2 | result = argumentsMethod(t2).track(t2, t))
-        }
-
-        /** Gets a reference to one of the methods `get_arguments`, `get_body_arguments`, `get_query_arguments`. */
-        DataFlow::Node argumentsMethod() {
-          argumentsMethod(DataFlow::TypeTracker::end()).flowsTo(result)
-        }
-
         /** Gets a reference the `redirect` method. */
         private DataFlow::TypeTrackingNode redirectMethod(DataFlow::TypeTracker t) {
           t.startInAttr("redirect") and
@@ -147,30 +167,33 @@ private module Tornado {
         /** Gets a reference to the `write` method. */
         DataFlow::Node writeMethod() { writeMethod(DataFlow::TypeTracker::end()).flowsTo(result) }
 
-        private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
-          override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-            // Method access
-            nodeTo.(DataFlow::AttrRead).getObject() = nodeFrom and
-            nodeFrom = instance() and
-            nodeTo in [argumentMethod(), argumentsMethod()]
-            or
-            // Method call
-            nodeTo.asCfgNode().(CallNode).getFunction() = nodeFrom.asCfgNode() and
-            nodeFrom in [argumentMethod(), argumentsMethod()]
-            or
-            // Attributes
-            nodeFrom = instance() and
-            exists(DataFlow::AttrRead read | nodeTo = read and read.getObject() = nodeFrom |
-              read.getAttributeName() in [
-                  // List[str]
-                  "path_args",
-                  // Dict[str, str]
-                  "path_kwargs",
-                  // tornado.httputil.HTTPServerRequest
-                  "request"
-                ]
-            )
+        /**
+         * Taint propagation for `tornado.web.RequestHandler`.
+         */
+        private class InstanceTaintSteps extends InstanceTaintStepsHelper {
+          InstanceTaintSteps() { this = "tornado.web.RequestHandler" }
+
+          override DataFlow::Node getInstance() { result = instance() }
+
+          override string getAttributeName() {
+            result in [
+                // List[str]
+                "path_args",
+                // Dict[str, str]
+                "path_kwargs",
+                // tornado.httputil.HTTPServerRequest
+                "request"
+              ]
           }
+
+          override string getMethodName() {
+            result in [
+                "get_argument", "get_body_argument", "get_query_argument", "get_arguments",
+                "get_body_arguments", "get_query_arguments"
+              ]
+          }
+
+          override string getAsyncMethodName() { none() }
         }
 
         private class RequestAttrAccess extends tornado::httputil::HttpServerRequest::InstanceSource {
@@ -274,41 +297,53 @@ private module Tornado {
         /** Gets a reference to an instance of `tornado.httputil.HttpServerRequest`. */
         DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
 
-        /** Gets a reference to the `full_url` method. */
-        private DataFlow::TypeTrackingNode full_url(DataFlow::TypeTracker t) {
-          t.startInAttr("full_url") and
-          result = instance()
-          or
-          exists(DataFlow::TypeTracker t2 | result = full_url(t2).track(t2, t))
+        /**
+         * Taint propagation for `tornado.httputil.HttpServerRequest`.
+         */
+        private class InstanceTaintSteps extends InstanceTaintStepsHelper {
+          InstanceTaintSteps() { this = "tornado.httputil.HttpServerRequest" }
+
+          override DataFlow::Node getInstance() { result = instance() }
+
+          override string getAttributeName() {
+            result in [
+                // str / bytes
+                "uri", "path", "query", "remote_ip", "body",
+                // Dict[str, List[bytes]]
+                "arguments", "query_arguments", "body_arguments",
+                // dict-like, https://www.tornadoweb.org/en/stable/httputil.html#tornado.httputil.HTTPHeaders
+                "headers",
+                // Dict[str, http.cookies.Morsel]
+                "cookies"
+              ]
+          }
+
+          override string getMethodName() { result in ["full_url"] }
+
+          override string getAsyncMethodName() { none() }
         }
 
-        /** Gets a reference to the `full_url` method. */
-        DataFlow::Node full_url() { full_url(DataFlow::TypeTracker::end()).flowsTo(result) }
+        /** An `HTTPHeaders` instance that originates from a Tornado request. */
+        private class TornadoRequestHTTPHeadersInstances extends HTTPHeaders::InstanceSource {
+          TornadoRequestHTTPHeadersInstances() {
+            this.(DataFlow::AttrRead).accesses(instance(), "headers")
+          }
+        }
 
-        private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
-          override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-            // Method access
-            nodeTo.(DataFlow::AttrRead).getObject() = nodeFrom and
-            nodeFrom = instance() and
-            nodeTo in [full_url()]
-            or
-            // Method call
-            nodeTo.asCfgNode().(CallNode).getFunction() = nodeFrom.asCfgNode() and
-            nodeFrom in [full_url()]
-            or
-            // Attributes
-            nodeFrom = instance() and
-            exists(DataFlow::AttrRead read | nodeTo = read and read.getObject() = nodeFrom |
-              read.getAttributeName() in [
-                  // str / bytes
-                  "uri", "path", "query", "remote_ip", "body",
-                  // Dict[str, List[bytes]]
-                  "arguments", "query_arguments", "body_arguments",
-                  // dict-like, https://www.tornadoweb.org/en/stable/httputil.html#tornado.httputil.HTTPHeaders
-                  "headers",
-                  // Dict[str, http.cookies.Morsel]
-                  "cookies"
-                ]
+        /** An `Morsel` instance that originates from a Tornado request. */
+        private class TornadoRequestMorselInstances extends Stdlib::Morsel::InstanceSource {
+          TornadoRequestMorselInstances() {
+            // TODO: this currently only works in local-scope, since writing type-trackers for
+            // this is a little too much effort. Once API-graphs are available for more
+            // things, we can rewrite this.
+            //
+            // TODO: This approach for identifying member-access is very adhoc, and we should
+            // be able to do something more structured for providing modeling of the members
+            // of a container-object.
+            exists(DataFlow::AttrRead files | files.accesses(instance(), "cookies") |
+              this.asCfgNode().(SubscriptNode).getObject() = files.asCfgNode()
+              or
+              this.(DataFlow::MethodCallNode).calls(files, "get")
             )
           }
         }
