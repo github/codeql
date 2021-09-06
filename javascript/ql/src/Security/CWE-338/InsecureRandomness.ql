@@ -13,7 +13,7 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.InsecureRandomness::InsecureRandomness
+import semmle.javascript.security.dataflow.InsecureRandomnessQuery
 import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink

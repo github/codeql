@@ -1,2 +1,2 @@
-name: codeql-suite-helpers
-version: 0.0.0
+name: codeql/suite-helpers
+version: 0.0.2

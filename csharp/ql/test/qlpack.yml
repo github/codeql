@@ -1,5 +1,7 @@
 name: codeql-csharp-tests
 version: 0.0.0
-libraryPathDependencies: codeql-csharp
+dependencies:
+  codeql/csharp-all: ^0.0.2
+  codeql/csharp-queries: ^0.0.2
 extractor: csharp
 tests: .

@@ -1,3 +1,3 @@
 name: codeql-cpp-examples
 version: 0.0.0
-libraryPathDependencies: codeql-cpp
+libraryPathDependencies: codeql/cpp-all
