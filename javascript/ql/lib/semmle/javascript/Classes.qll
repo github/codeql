@@ -1145,6 +1145,9 @@ class ParameterField extends FieldDeclaration, @parameter_field {
  * A static initializer in a class.
  */
 class StaticInitializer extends MemberDefinition, @static_initializer {
+  /**
+   * Gets the body of the static initializer.
+   */
   BlockStmt getBody() { result.getParent() = this }
 
   override Expr getNameExpr() { none() }
