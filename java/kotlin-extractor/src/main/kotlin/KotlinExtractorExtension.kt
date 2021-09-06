@@ -195,16 +195,20 @@ class TrapWriter (
     }
 }
 
-private fun identical(f1: File, f2: File): Boolean {
+private fun equivalentTrap(f1: File, f2: File): Boolean {
     f1.bufferedReader().use { bw1 ->
         f2.bufferedReader().use { bw2 ->
             while(true) {
                 val l1 = bw1.readLine()
                 val l2 = bw2.readLine()
-                if (l1 != l2) {
-                    return false
-                } else if (l1 == null) {
+                if (l1 == null && l2 == null) {
                     return true
+                } else if (l1 == null || l2 == null) {
+                    return false
+                } else if (l1 != l2) {
+                    if (!l1.startsWith("//") || !l2.startsWith("//")) {
+                        return false
+                    }
                 }
             }
         }
@@ -242,7 +246,7 @@ fun doFile(invocationTrapFile: String, checkTrapIdentical: Boolean, logger: Logg
             fileExtractor.extractFile(id)
         }
         if (checkTrapIdentical && trapFile.exists()) {
-            if(identical(trapTmpFile, trapFile)) {
+            if(equivalentTrap(trapTmpFile, trapFile)) {
                 if(!trapTmpFile.delete()) {
                     logger.warn("Failed to delete $trapTmpFile")
                 }
