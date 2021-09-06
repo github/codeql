@@ -263,9 +263,13 @@ fun doFile(invocationTrapFile: String, checkTrapIdentical: Boolean, logger: Logg
 }
 
 fun <T> fakeLabel(): Label<T> {
-    val sw = StringWriter()
-    Exception().printStackTrace(PrintWriter(sw))
-    println("Fake label from:\n$sw")
+    if (true) {
+        println("Fake label")
+    } else {
+        val sw = StringWriter()
+        Exception().printStackTrace(PrintWriter(sw))
+        println("Fake label from:\n$sw")
+    }
     return Label(0)
 }
 
