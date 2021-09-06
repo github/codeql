@@ -52,26 +52,20 @@ class LocalVariable extends Variable, TLocalVariable {
 }
 
 /** A global variable. */
-class GlobalVariable extends VariableReal, TGlobalVariable {
-  override GlobalVariable::Range range;
-
+class GlobalVariable extends VariableReal, TGlobalVariable instanceof GlobalVariable::Range {
   final override GlobalVariableAccess getAnAccess() { result.getVariable() = this }
 }
 
 /** An instance variable. */
-class InstanceVariable extends VariableReal, TInstanceVariable {
-  override InstanceVariable::Range range;
-
+class InstanceVariable extends VariableReal, TInstanceVariable instanceof InstanceVariable::Range {
   /** Holds is this variable is a class instance variable. */
-  final predicate isClassInstanceVariable() { range.isClassInstanceVariable() }
+  final predicate isClassInstanceVariable() { super.isClassInstanceVariable() }
 
   final override InstanceVariableAccess getAnAccess() { result.getVariable() = this }
 }
 
 /** A class variable. */
-class ClassVariable extends VariableReal, TClassVariable {
-  override ClassVariable::Range range;
-
+class ClassVariable extends VariableReal, TClassVariable instanceof ClassVariable::Range {
   final override ClassVariableAccess getAnAccess() { result.getVariable() = this }
 }
 
