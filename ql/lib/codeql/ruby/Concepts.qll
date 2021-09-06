@@ -43,13 +43,9 @@ module SqlExecution {
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `FileSystemAccess::Range` instead.
  */
-class FileSystemAccess extends DataFlow::Node {
-  FileSystemAccess::Range range;
-
-  FileSystemAccess() { this = range }
-
+class FileSystemAccess extends DataFlow::Node instanceof FileSystemAccess::Range {
   /** Gets an argument to this file system access that is interpreted as a path. */
-  DataFlow::Node getAPathArgument() { result = range.getAPathArgument() }
+  DataFlow::Node getAPathArgument() { result = super.getAPathArgument() }
 }
 
 /** Provides a class for modeling new file system access APIs. */
@@ -73,13 +69,11 @@ module FileSystemAccess {
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `FileSystemReadAccess::Range` instead.
  */
-class FileSystemReadAccess extends FileSystemAccess {
-  override FileSystemReadAccess::Range range;
-
+class FileSystemReadAccess extends FileSystemAccess instanceof FileSystemReadAccess::Range {
   /**
    * Gets a node that represents data read from the file system access.
    */
-  DataFlow::Node getADataNode() { result = range.getADataNode() }
+  DataFlow::Node getADataNode() { result = FileSystemReadAccess::Range.super.getADataNode() }
 }
 
 /** Provides a class for modeling new file system reads. */
@@ -104,16 +98,12 @@ module FileSystemReadAccess {
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `FileSystemPermissionModification::Range` instead.
  */
-class FileSystemPermissionModification extends DataFlow::Node {
-  FileSystemPermissionModification::Range range;
-
-  FileSystemPermissionModification() { this = range }
-
+class FileSystemPermissionModification extends DataFlow::Node instanceof FileSystemPermissionModification::Range {
   /**
    * Gets an argument to this permission modification that is interpreted as a
    * set of permissions.
    */
-  DataFlow::Node getAPermissionNode() { result = range.getAPermissionNode() }
+  DataFlow::Node getAPermissionNode() { result = super.getAPermissionNode() }
 }
 
 /** Provides a class for modeling new file system permission modifications. */
