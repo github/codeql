@@ -32,10 +32,64 @@ public class StringLiterals {
 		\u0022\u0061\u0022, // "a"
 	};
 
+	String[] textBlocks = {
+		// trailing whitespaces after """ (will be ignored)
+		"""      	  
+		test "text" and escaped \u0022
+		""",
+		// Indentation tests
+		"""
+			indented
+		""",
+		"""
+	no indentation last line
+		""", // Line is blank, therefore not indented
+		"""
+	indentation last line
+		\s""", // Line is not blank therefore indented
+		"""
+			not-indented
+			""",
+		"""
+		indented
+	""",
+			"""
+		not-indented
+		""",
+		"""
+		    spaces (only single space is trimmed)
+			tab
+			""",
+		"""
+			end on same line""",
+		"""
+		trailing spaces ignored:  	 
+		not ignored: 	 \s
+		""",
+		"""
+		3 quotes:""\"""",
+		"""
+		line \
+		continuation \
+		""",
+		"""
+		Explicit line breaks:\n
+		\r\n
+		\r
+		""",
+		// Using Unicode escapes (which are handled during pre-processing)
+		// Currently not detected by StringLiteral.isTextBlock()
+		\uuu0022"\u0022
+		test
+		\u0022\uu0022",
+	};
+
 	// The concatenation (`+`) is not a string literal
 	String[] stringConcatenation = {
 		// CodeQL erroneously reports this as one literal, see https://github.com/github/codeql/issues/5469
 		"hello" + "world",
+		"""
+		hello""" + "world",
 		null + "a",
 		"a" + null,
 		"a" + 1,

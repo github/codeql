@@ -1,5 +1,7 @@
 import semmle.code.java.Expr
 
-from StringLiteral lit
-where lit.getFile().(CompilationUnit).fromSource()
-select lit, lit.getValue(), lit.getRepresentedString()
+from StringLiteral lit, string isTextBlock
+where
+  lit.getFile().(CompilationUnit).fromSource() and
+  if lit.isTextBlock() then isTextBlock = "text-block" else isTextBlock = ""
+select lit, lit.getValue(), lit.getRepresentedString(), isTextBlock

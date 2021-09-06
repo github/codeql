@@ -719,7 +719,15 @@ class CharacterLiteral extends Literal, @characterliteral {
   override string getAPrimaryQlClass() { result = "CharacterLiteral" }
 }
 
-/** A string literal. For example, `"hello world"`. */
+/**
+ * A string literal or text block (Java 15 feature). For example, `"hello world"`
+ * or
+ * ```java
+ * """
+ * Text with "quotes"
+ * """
+ * ```
+ */
 class StringLiteral extends Literal, @stringliteral {
   /**
    * Gets the literal string without the quotes.
