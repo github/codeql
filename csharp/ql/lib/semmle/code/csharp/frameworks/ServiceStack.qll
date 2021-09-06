@@ -241,36 +241,44 @@ private class ServiceStackSqlSinkModelCsv extends SinkModelCsv {
         "ServiceStack.OrmLite;OrmLiteWriteApi;false;ExecuteSql;(System.Data.IDbConnection,System.String,System.Object);;Argument[1];sql",
         "ServiceStack.OrmLite;OrmLiteWriteApi;false;ExecuteSql;(System.Data.IDbConnection,System.String,System.Collections.Generic.Dictionary<System.String,System.Object>);;Argument[1];sql",
         "ServiceStack.OrmLite;OrmLiteWriteApiAsync;false;ExecuteSqlAsync;(System.Data.IDbConnection,System.String,System.Threading.CancellationToken);;Argument[1];sql",
-        "ServiceStack.OrmLite;OrmLiteWriteApiAsync;false;ExecuteSqlAsync;(System.Data.IDbConnection,System.String,System.Object,System.Threading.CancellationToken);;Argument[1];sql",
+        "ServiceStack.OrmLite;OrmLiteWriteApiAsync;false;ExecuteSqlAsync;(System.Data.IDbConnection,System.String,System.Object,System.Threading.CancellationToken);;Argument[1];sql"
+      ]
+  }
+}
+
+private class ServiceStackCodeInjectionSinkModelCsv extends SinkModelCsv {
+  override predicate row(string row) {
+    row =
+      [
         // Redis API
-        "ServiceStack.Redis;IRedisClient;true;Custom;(System.Object[]);;Argument[0];sql",
-        "ServiceStack.Redis;IRedisClient;true;ExecCachedLua;(System.String,System.Func<System.String,T>);;Argument[0];sql",
-        "ServiceStack.Redis;IRedisClient;true;ExecLua;(System.String,System.String[],System.String[]);;Argument[0];sql",
-        "ServiceStack.Redis;IRedisClient;true;ExecLua;(System.String,System.String[]);;Argument[0];sql",
-        "ServiceStack.Redis;IRedisClient;true;ExecLuaAsInt;(System.String,System.String[],System.String[]);;Argument[0];sql",
-        "ServiceStack.Redis;IRedisClient;true;ExecLuaAsInt;(System.String,System.String[]);;Argument[0];sql",
-        "ServiceStack.Redis;IRedisClient;true;ExecLuaAsList;(System.String,System.String[],System.String[]);;Argument[0];sql",
-        "ServiceStack.Redis;IRedisClient;true;ExecLuaAsList;(System.String,System.String[]);;Argument[0];sql",
-        "ServiceStack.Redis;IRedisClient;true;ExecLuaAsString;(System.String,System.String[],System.String[]);;Argument[0];sql",
-        "ServiceStack.Redis;IRedisClient;true;ExecLuaAsString;(System.String,System.String[]);;Argument[0];sql",
-        "ServiceStack.Redis;IRedisClient;true;LoadLuaScript;(System.String);;Argument[0];sql",
+        "ServiceStack.Redis;IRedisClient;true;Custom;(System.Object[]);;Argument[0];code",
+        "ServiceStack.Redis;IRedisClient;true;ExecCachedLua;(System.String,System.Func<System.String,T>);;Argument[0];code",
+        "ServiceStack.Redis;IRedisClient;true;ExecLua;(System.String,System.String[],System.String[]);;Argument[0];code",
+        "ServiceStack.Redis;IRedisClient;true;ExecLua;(System.String,System.String[]);;Argument[0];code",
+        "ServiceStack.Redis;IRedisClient;true;ExecLuaAsInt;(System.String,System.String[],System.String[]);;Argument[0];code",
+        "ServiceStack.Redis;IRedisClient;true;ExecLuaAsInt;(System.String,System.String[]);;Argument[0];code",
+        "ServiceStack.Redis;IRedisClient;true;ExecLuaAsList;(System.String,System.String[],System.String[]);;Argument[0];code",
+        "ServiceStack.Redis;IRedisClient;true;ExecLuaAsList;(System.String,System.String[]);;Argument[0];code",
+        "ServiceStack.Redis;IRedisClient;true;ExecLuaAsString;(System.String,System.String[],System.String[]);;Argument[0];code",
+        "ServiceStack.Redis;IRedisClient;true;ExecLuaAsString;(System.String,System.String[]);;Argument[0];code",
+        "ServiceStack.Redis;IRedisClient;true;LoadLuaScript;(System.String);;Argument[0];code",
         // IRedisClientAsync
-        "ServiceStack.Redis;IRedisClientAsync;true;CustomAsync;(System.Object[]);;Argument[0];sql",
-        "ServiceStack.Redis;IRedisClientAsync;true;CustomAsync;(System.Object[],System.Threading.CancellationToken);;Element of Argument[0];sql",
-        "ServiceStack.Redis;IRedisClientAsync;true;ExecCachedLuaAsync;(System.String,System.Func<System.String,System.Threading.Tasks.ValueTask<T>>,System.Threading.CancellationToken);;Argument[0];sql",
-        "ServiceStack.Redis;IRedisClientAsync;true;ExecLuaAsync;(System.String,System.String[],System.String[],System.Threading.CancellationToken);;Argument[0];sql",
-        "ServiceStack.Redis;IRedisClientAsync;true;ExecLuaAsync;(System.String,System.String[],System.Threading.CancellationToken);;Argument[0];sql",
-        "ServiceStack.Redis;IRedisClientAsync;true;ExecLuaAsync;(System.String,System.String[]);;Argument[0];sql",
-        "ServiceStack.Redis;IRedisClientAsync;true;ExecLuaAsIntAsync;(System.String,System.String[],System.String[],System.Threading.CancellationToken);;Argument[0];sql",
-        "ServiceStack.Redis;IRedisClientAsync;true;ExecLuaAsIntAsync;(System.String,System.String[],System.Threading.CancellationToken);;Argument[0];sql",
-        "ServiceStack.Redis;IRedisClientAsync;true;ExecLuaAsIntAsync;(System.String,System.String[]);;Argument[0];sql",
-        "ServiceStack.Redis;IRedisClientAsync;true;ExecLuaAsStringAsync;(System.String,System.String[],System.String[],System.Threading.CancellationToken);;Argument[0];sql",
-        "ServiceStack.Redis;IRedisClientAsync;true;ExecLuaAsStringAsync;(System.String,System.String[],System.Threading.CancellationToken);;Argument[0];sql",
-        "ServiceStack.Redis;IRedisClientAsync;true;ExecLuaAsStringAsync;(System.String,System.String[]);;Argument[0];sql",
-        "ServiceStack.Redis;IRedisClientAsync;true;ExecLuaAsListAsync;(System.String,System.String[],System.String[],System.Threading.CancellationToken);;Argument[0];sql",
-        "ServiceStack.Redis;IRedisClientAsync;true;ExecLuaAsListAsync;(System.String,System.String[],System.Threading.CancellationToken);;Argument[0];sql",
-        "ServiceStack.Redis;IRedisClientAsync;true;ExecLuaAsListAsync;(System.String,System.String[]);;Argument[0];sql",
-        "ServiceStack.Redis;IRedisClientAsync;true;LoadLuaScriptAsync;(System.String,System.Threading.CancellationToken);;Argument[0];sql"
+        "ServiceStack.Redis;IRedisClientAsync;true;CustomAsync;(System.Object[]);;Argument[0];code",
+        "ServiceStack.Redis;IRedisClientAsync;true;CustomAsync;(System.Object[],System.Threading.CancellationToken);;Element of Argument[0];code",
+        "ServiceStack.Redis;IRedisClientAsync;true;ExecCachedLuaAsync;(System.String,System.Func<System.String,System.Threading.Tasks.ValueTask<T>>,System.Threading.CancellationToken);;Argument[0];code",
+        "ServiceStack.Redis;IRedisClientAsync;true;ExecLuaAsync;(System.String,System.String[],System.String[],System.Threading.CancellationToken);;Argument[0];code",
+        "ServiceStack.Redis;IRedisClientAsync;true;ExecLuaAsync;(System.String,System.String[],System.Threading.CancellationToken);;Argument[0];code",
+        "ServiceStack.Redis;IRedisClientAsync;true;ExecLuaAsync;(System.String,System.String[]);;Argument[0];code",
+        "ServiceStack.Redis;IRedisClientAsync;true;ExecLuaAsIntAsync;(System.String,System.String[],System.String[],System.Threading.CancellationToken);;Argument[0];code",
+        "ServiceStack.Redis;IRedisClientAsync;true;ExecLuaAsIntAsync;(System.String,System.String[],System.Threading.CancellationToken);;Argument[0];code",
+        "ServiceStack.Redis;IRedisClientAsync;true;ExecLuaAsIntAsync;(System.String,System.String[]);;Argument[0];code",
+        "ServiceStack.Redis;IRedisClientAsync;true;ExecLuaAsStringAsync;(System.String,System.String[],System.String[],System.Threading.CancellationToken);;Argument[0];code",
+        "ServiceStack.Redis;IRedisClientAsync;true;ExecLuaAsStringAsync;(System.String,System.String[],System.Threading.CancellationToken);;Argument[0];code",
+        "ServiceStack.Redis;IRedisClientAsync;true;ExecLuaAsStringAsync;(System.String,System.String[]);;Argument[0];code",
+        "ServiceStack.Redis;IRedisClientAsync;true;ExecLuaAsListAsync;(System.String,System.String[],System.String[],System.Threading.CancellationToken);;Argument[0];code",
+        "ServiceStack.Redis;IRedisClientAsync;true;ExecLuaAsListAsync;(System.String,System.String[],System.Threading.CancellationToken);;Argument[0];code",
+        "ServiceStack.Redis;IRedisClientAsync;true;ExecLuaAsListAsync;(System.String,System.String[]);;Argument[0];code",
+        "ServiceStack.Redis;IRedisClientAsync;true;LoadLuaScriptAsync;(System.String,System.Threading.CancellationToken);;Argument[0];code"
       ]
   }
 }
