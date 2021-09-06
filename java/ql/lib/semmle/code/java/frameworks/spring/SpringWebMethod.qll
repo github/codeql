@@ -13,7 +13,7 @@ private class FlowSummaries extends SummaryModelCsv {
         "org.springframework.web.method.support;UriComponentsContributor;true;contributeMethodArgument;;;Argument[1];Argument[2];taint",
         "org.springframework.web.method.support;UriComponentsContributor;true;contributeMethodArgument;;;Argument[1];Argument[3];taint",
         // InvocableHandlerMethod is not modeled as it is difficult to model method-like classes with CSV
-        // This is a very broad definition of data flow; there is a method `setRedirectModelScenario(boolean)` which is used to determine which of the `Default` and `Redirect` models are returned by `getModel`, and the methods that deal with attributes below are convenience methods for `.getMethod().*`.
+        // This is a very broad definition of data flow; there is a method `setRedirectModelScenario(boolean)` which is used to determine which of the `Default` and `Redirect` models are returned by `getModel`, and the methods that deal with attributes below are convenience methods for `.getModel().*`.
         "org.springframework.web.method.support;ModelAndViewContainer;false;getModel;;;SyntheticField[org.springframework.web.method.support.ModelAndViewContainer.Model] of Argument[-1];ReturnValue;value",
         "org.springframework.web.method.support;ModelAndViewContainer;false;getDefaultModel;;;SyntheticField[org.springframework.web.method.support.ModelAndViewContainer.Model] of Argument[-1];ReturnValue;value",
         "org.springframework.web.method.support;ModelAndViewContainer;false;setRedirectModel;;;Argument[0];SyntheticField[org.springframework.web.method.support.ModelAndViewContainer.Model] of Argument[-1];value",
