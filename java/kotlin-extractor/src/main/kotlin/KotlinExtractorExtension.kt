@@ -222,7 +222,11 @@ fun doFile(invocationTrapFile: String, checkTrapIdentical: Boolean, logger: Logg
     val dest = Paths.get("$srcDir/${declaration.path}")
     val destDir = dest.getParent()
     Files.createDirectories(destDir)
-    Files.copy(Paths.get(declaration.path), dest)
+    val srcTmpFile = File.createTempFile(dest.getFileName().toString() + ".", ".src.tmp", destDir.toFile())
+    val srcTmpOS = FileOutputStream(srcTmpFile)
+    Files.copy(Paths.get(declaration.path), srcTmpOS)
+    srcTmpOS.close()
+    srcTmpFile.renameTo(dest.toFile())
 
     val trapFile = File("$trapDir/$filePath.trap")
     val trapFileDir = trapFile.getParentFile()
