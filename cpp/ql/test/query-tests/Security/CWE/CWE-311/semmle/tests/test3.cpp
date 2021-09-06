@@ -17,11 +17,11 @@ void test_send(const char *password1, const char *password2, const char *passwor
 	{
 		LogonUserA(val(), val(), password1, val(), val(), val()); // proof `password1` is plaintext
 
-		send(val(), password1, strlen(password1), val()); // BAD: `password1` is sent plaintext (certainly) [NOT DETECTED]
+		send(val(), password1, strlen(password1), val()); // BAD: `password1` is sent plaintext (certainly)
 	}
 
 	{
-		send(val(), password2, strlen(password2), val()); // BAD: `password2` is sent plaintext (probably) [NOT DETECTED]
+		send(val(), password2, strlen(password2), val()); // BAD: `password2` is sent plaintext (probably)
 	}
 
 	{
@@ -67,7 +67,7 @@ void test_dataflow(const char *password1)
 	{
 		const char *ptr = password1;
 
-		send(val(), ptr, strlen(ptr), val()); // BAD: `password` is sent plaintext [NOT DETECTED]
+		send(val(), ptr, strlen(ptr), val()); // BAD: `password` is sent plaintext
 	}
 
 	{
