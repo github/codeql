@@ -913,7 +913,7 @@ private module Internal {
       result.(Operator).getFunctionName() = getName()
       or
       not result instanceof Operator and
-      result.getName() = getName()
+      result.getUndecoratedName() = getName()
     }
 
     // A callable is viable if the following conditions are all satisfied:
