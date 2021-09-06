@@ -6,6 +6,7 @@ import java.io.FileOutputStream
 import java.io.PrintWriter
 import java.io.StringWriter
 import java.nio.file.Files
+import java.nio.file.Path
 import java.nio.file.Paths
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -28,7 +29,7 @@ import org.jetbrains.kotlin.ir.IrStatement
 import org.jetbrains.kotlin.ir.symbols.IrClassifierSymbol
 import org.jetbrains.kotlin.descriptors.ClassKind
 
-class KotlinExtractorExtension(private val invocationTrapFile: String) : IrGenerationExtension {
+class KotlinExtractorExtension(private val invocationTrapFile: String, private val checkTrapIdentical: Boolean) : IrGenerationExtension {
     override fun generate(moduleFragment: IrModuleFragment, pluginContext: IrPluginContext) {
         // This default should be kept in sync with language-packs/java/tools/kotlin-extractor
         val trapDir = File(System.getenv("CODEQL_EXTRACTOR_JAVA_TRAP_DIR").takeUnless { it.isNullOrEmpty() } ?: "kotlin-extractor/trap")
@@ -40,7 +41,7 @@ class KotlinExtractorExtension(private val invocationTrapFile: String) : IrGener
             logger.flush()
             val srcDir = File(System.getenv("CODEQL_EXTRACTOR_JAVA_SOURCE_ARCHIVE_DIR").takeUnless { it.isNullOrEmpty() } ?: "kotlin-extractor/src")
             srcDir.mkdirs()
-            moduleFragment.files.map { doFile(logger, trapDir, srcDir, it) }
+            moduleFragment.files.map { doFile(checkTrapIdentical, logger, trapDir, srcDir, it) }
             logger.printLimitedWarningCounts()
             // We don't want the compiler to continue and generate class
             // files etc, so we just exit when we are finished extracting.
@@ -194,7 +195,23 @@ class TrapWriter (
     }
 }
 
-fun doFile(logger: Logger, trapDir: File, srcDir: File, declaration: IrFile) {
+private fun identical(f1: File, f2: File): Boolean {
+    f1.bufferedReader().use { bw1 ->
+        f2.bufferedReader().use { bw2 ->
+            while(true) {
+                val l1 = bw1.readLine()
+                val l2 = bw2.readLine()
+                if (l1 != l2) {
+                    return false
+                } else if (l1 == null) {
+                    return true
+                }
+            }
+        }
+    }
+}
+
+fun doFile(checkTrapIdentical: Boolean, logger: Logger, trapDir: File, srcDir: File, declaration: IrFile) {
     val filePath = declaration.path
     logger.info("Extracting file $filePath")
     logger.flush()
@@ -210,12 +227,33 @@ fun doFile(logger: Logger, trapDir: File, srcDir: File, declaration: IrFile) {
     val trapFile = File("$trapDir/$filePath.trap")
     val trapFileDir = trapFile.getParentFile()
     trapFileDir.mkdirs()
-    trapFile.bufferedWriter().use { trapFileBW ->
-        val tw = TrapWriter(fileLabel, trapFileBW, declaration)
-        val id: Label<DbFile> = tw.getLabelFor(fileLabel)
-        tw.writeFiles(id, filePath, basename, extension, 0)
-        val fileExtractor = KotlinFileExtractor(logger, tw, declaration)
-        fileExtractor.extractFile(id)
+    if (checkTrapIdentical || !trapFile.exists()) {
+        val trapTmpFile = File.createTempFile("$filePath.", ".trap.tmp", trapDir)
+        trapTmpFile.bufferedWriter().use { trapFileBW ->
+            val tw = TrapWriter(fileLabel, trapFileBW, declaration)
+            val id: Label<DbFile> = tw.getLabelFor(fileLabel)
+            tw.writeFiles(id, filePath, basename, extension, 0)
+            val fileExtractor = KotlinFileExtractor(logger, tw, declaration)
+            fileExtractor.extractFile(id)
+        }
+        if (checkTrapIdentical && trapFile.exists()) {
+            if(identical(trapTmpFile, trapFile)) {
+                if(!trapTmpFile.delete()) {
+                    logger.warn("Failed to delete $trapTmpFile")
+                }
+            } else {
+                val trapDifferentFile = File.createTempFile("$filePath.", ".trap.different", trapDir)
+                if(trapTmpFile.renameTo(trapDifferentFile)) {
+                    logger.warn("TRAP difference: $trapFile vs $trapDifferentFile")
+                } else {
+                    logger.warn("Failed to rename $trapTmpFile to $trapFile")
+                }
+            }
+        } else {
+            if(!trapTmpFile.renameTo(trapFile)) {
+                logger.warn("Failed to rename $trapTmpFile to $trapFile")
+            }
+        }
     }
 }
 
