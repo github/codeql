@@ -2,9 +2,9 @@
  * @kind graph
  */
 
-import codeql_ruby.AST
-import codeql_ruby.printAst
-import codeql_ruby.ast.internal.Synthesis
+import codeql.ruby.AST
+import codeql.ruby.printAst
+import codeql.ruby.ast.internal.Synthesis
 
 class DesugarPrintAstConfiguration extends PrintAstConfiguration {
   override predicate shouldPrintNode(AstNode n) {

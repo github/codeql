@@ -1,3 +1,3 @@
-import codeql_ruby.ast.Scope
+import codeql.ruby.ast.Scope
 
 select any(Scope x)

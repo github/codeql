@@ -22,3 +22,10 @@ foo::Bar::Baz #$ use=getMember("Foo").getMember("Bar").getMember("Baz")
 
 FooAlias = Foo #$ use=getMember("Foo")
 FooAlias::Bar::Baz #$ use=getMember("Foo").getMember("Bar").getMember("Baz")
+
+module Outer
+    module Inner
+    end
+end
+
+Outer::Inner.foo #$ use=getMember("Outer").getMember("Inner").getReturn("foo")

@@ -1,5 +1,5 @@
-import codeql_ruby.AST
-import codeql_ruby.ast.internal.Synthesis
+import codeql.ruby.AST
+import codeql.ruby.ast.internal.Synthesis
 
 query predicate missingParent(AstNode node, string cls) {
   not exists(node.getParent()) and

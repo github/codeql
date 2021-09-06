@@ -21,8 +21,8 @@ FILES=codeql-extractor.yml\
       tools/autobuild.sh\
       tools/qltest.sh\
       tools/autobuild.cmd\
-      ql/src/ruby.dbscheme.stats\
-      ql/src/ruby.dbscheme
+      ql/lib/ruby.dbscheme.stats\
+      ql/lib/ruby.dbscheme
 
 BIN_FILES=target/release/ruby-extractor$(EXE) target/release/ruby-autobuilder$(EXE)
 
@@ -30,7 +30,7 @@ extractor-common:
 	rm -rf build
 	mkdir build
 	mkdir build/codeql-extractor-ruby
-	cp codeql-extractor.yml ql/src/ruby.dbscheme ql/src/ruby.dbscheme.stats build/codeql-extractor-ruby
+	cp codeql-extractor.yml ql/lib/ruby.dbscheme ql/lib/ruby.dbscheme.stats build/codeql-extractor-ruby
 	cp -r tools build/codeql-extractor-ruby/
 
 .PHONY:	tools
@@ -45,8 +45,8 @@ target/release/%$(EXE):
 
 dbscheme:
 	cargo build --bin ruby-generator
-	cargo run -p ruby-generator -- --dbscheme ql/src/ruby.dbscheme --library ql/src/codeql_ruby/ast/internal/TreeSitter.qll
-	codeql query format -i ql/src/codeql_ruby/ast/internal/TreeSitter.qll
+	cargo run -p ruby-generator -- --dbscheme ql/lib/ruby.dbscheme --library ql/lib/codeql/ruby/ast/internal/TreeSitter.qll
+	codeql query format -i ql/lib/codeql/ruby/ast/internal/TreeSitter.qll
 
 .PHONY:	extractor
 extractor:	$(FILES) $(BIN_FILES)
@@ -61,7 +61,11 @@ extractor:	$(FILES) $(BIN_FILES)
 	cp tools/autobuild.sh extractor-pack/tools/autobuild.sh
 	cp tools/qltest.sh extractor-pack/tools/qltest.sh
 	cp tools/autobuild.cmd extractor-pack/tools/autobuild.cmd
-	cp ql/src/ruby.dbscheme.stats extractor-pack/ruby.dbscheme.stats
-	cp ql/src/ruby.dbscheme extractor-pack/ruby.dbscheme
+	cp ql/lib/ruby.dbscheme.stats extractor-pack/ruby.dbscheme.stats
+	cp ql/lib/ruby.dbscheme extractor-pack/ruby.dbscheme
 	cp target/release/ruby-extractor$(EXE) extractor-pack/tools/$(CODEQL_PLATFORM)/extractor$(EXE)
 	cp target/release/ruby-autobuilder$(EXE) extractor-pack/tools/$(CODEQL_PLATFORM)/autobuilder$(EXE)
+
+test: extractor dbscheme
+	codeql pack install ql/test
+	codeql test run --check-databases --check-unused-labels --check-repeated-labels --check-redefined-labels --check-use-before-definition --search-path . --consistency-queries ql/consistency-queries ql/test

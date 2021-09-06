@@ -31,8 +31,18 @@ jobs:
       - name: Build Extractor
         run: env "PATH=$PATH:${{ github.workspace }}/codeql" scripts/create-extractor-pack.sh
       - name: Run QL tests
-        run: codeql/codeql test run --check-databases --check-unused-labels --check-repeated-labels --check-redefined-labels --check-use-before-definition --search-path "${{ github.workspace }}" --consistency-queries ql/consistency-queries ql/test
+        run: |
+          codeql/codeql pack install ql/test
+          codeql/codeql test run --check-databases --check-unused-labels --check-repeated-labels --check-redefined-labels --check-use-before-definition --search-path "${{ github.workspace }}" --additional-packs "${HOME}/.codeql/packages/codeql/suite-helpers/0.0.1" --consistency-queries ql/consistency-queries ql/test
       - name: Check QL formatting
         run: find ql "(" -name "*.ql" -or -name "*.qll" ")" -print0 | xargs -0 codeql/codeql query format --check-only
       - name: Check QL compilation
-        run: codeql/codeql query compile --check-only --threads=4 --warnings=error --search-path "${{ github.workspace }}" "ql/src" "ql/examples"
+        run: |
+          codeql/codeql pack install ql/src
+          codeql/codeql query compile --check-only --threads=4 --warnings=error --search-path "${{ github.workspace }}" "ql/src" "ql/examples"
+      - name: Check DB upgrade scripts
+        run: |
+          echo >empty.trap
+          codeql/codeql dataset import -S ql/lib/upgrades/initial/ruby.dbscheme testdb empty.trap
+          codeql/codeql dataset upgrade testdb --additional-packs ql/lib/upgrades
+          diff -q testdb/ruby.dbscheme ql/lib/ruby.dbscheme

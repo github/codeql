@@ -182,6 +182,9 @@ break_ensure.rb:
 
 #   27| exit m3
 
+#   27| exit m3 (abnormal)
+#-----|  -> exit m3
+
 #   27| exit m3 (normal)
 #-----|  -> exit m3
 
@@ -194,6 +197,7 @@ break_ensure.rb:
 #   29| call to nil?
 #-----| false -> if ...
 #-----| true -> return
+#-----| raise -> [ensure: raise] elements
 
 #   29| elements
 #-----|  -> call to nil?
@@ -204,17 +208,26 @@ break_ensure.rb:
 #   32| ensure ...
 #-----|  -> self
 
+#   32| [ensure: raise] ensure ...
+#-----| raise -> exit m3 (abnormal)
+
 #   32| [ensure: return] ensure ...
 #-----| return -> exit m3 (normal)
 
 #   33| for ... in ...
 #-----|  -> ensure ...
 
+#   33| [ensure: raise] for ... in ...
+#-----|  -> [ensure: raise] ensure ...
+
 #   33| [ensure: return] for ... in ...
 #-----|  -> [ensure: return] ensure ...
 
 #   33| element
 #-----|  -> self
+
+#   33| [ensure: raise] element
+#-----|  -> [ensure: raise] self
 
 #   33| [ensure: return] element
 #-----|  -> [ensure: return] self
@@ -223,6 +236,10 @@ break_ensure.rb:
 #-----| empty -> for ... in ...
 #-----| non-empty -> element
 
+#   33| [ensure: raise] In
+#-----| empty -> [ensure: raise] for ... in ...
+#-----| non-empty -> [ensure: raise] element
+
 #   33| [ensure: return] In
 #-----| empty -> [ensure: return] for ... in ...
 #-----| non-empty -> [ensure: return] element
@@ -230,17 +247,26 @@ break_ensure.rb:
 #   33| elements
 #-----|  -> In
 
+#   33| [ensure: raise] elements
+#-----|  -> [ensure: raise] In
+
 #   33| [ensure: return] elements
 #-----|  -> [ensure: return] In
 
 #   33| do ...
 #-----|  -> In
 
+#   33| [ensure: raise] do ...
+#-----|  -> [ensure: raise] In
+
 #   33| [ensure: return] do ...
 #-----|  -> [ensure: return] In
 
 #   35| if ...
 #-----|  -> do ...
+
+#   35| [ensure: raise] if ...
+#-----|  -> [ensure: raise] do ...
 
 #   35| [ensure: return] if ...
 #-----|  -> [ensure: return] do ...
@@ -249,6 +275,10 @@ break_ensure.rb:
 #-----| true -> break
 #-----| false -> if ...
 
+#   35| [ensure: raise] ... > ...
+#-----| true -> [ensure: raise] break
+#-----| false -> [ensure: raise] if ...
+
 #   35| [ensure: return] ... > ...
 #-----| true -> [ensure: return] break
 #-----| false -> [ensure: return] if ...
@@ -256,11 +286,17 @@ break_ensure.rb:
 #   35| call to x
 #-----|  -> 0
 
+#   35| [ensure: raise] call to x
+#-----|  -> [ensure: raise] 0
+
 #   35| [ensure: return] call to x
 #-----|  -> [ensure: return] 0
 
 #   35| self
 #-----|  -> call to x
+
+#   35| [ensure: raise] self
+#-----|  -> [ensure: raise] call to x
 
 #   35| [ensure: return] self
 #-----|  -> [ensure: return] call to x
@@ -268,11 +304,17 @@ break_ensure.rb:
 #   35| 0
 #-----|  -> ... > ...
 
+#   35| [ensure: raise] 0
+#-----|  -> [ensure: raise] ... > ...
+
 #   35| [ensure: return] 0
 #-----|  -> [ensure: return] ... > ...
 
 #   36| break
 #-----| break -> for ... in ...
+
+#   36| [ensure: raise] break
+#-----| break -> [ensure: raise] for ... in ...
 
 #   36| [ensure: return] break
 #-----| break -> [ensure: return] for ... in ...
@@ -4213,6 +4255,7 @@ raise.rb:
 
 #   74| call to puts
 #-----|  -> self
+#-----| raise -> [ensure: raise] self
 
 #   74| self
 #-----|  -> "0 <= x <= 2"
@@ -4325,6 +4368,7 @@ raise.rb:
 
 #   87| call to puts
 #-----|  -> self
+#-----| raise -> [ensure: raise] self
 
 #   87| self
 #-----|  -> "0 <= x <= 2"
@@ -4402,6 +4446,7 @@ raise.rb:
 
 #   95| call to puts
 #-----|  -> x
+#-----| raise -> [ensure: raise] self
 
 #   95| self
 #-----|  -> "Begin m9"
@@ -4452,6 +4497,7 @@ raise.rb:
 
 #  102| call to puts
 #-----|  -> self
+#-----| raise -> [ensure: raise] self
 
 #  102| self
 #-----|  -> "0 <= x <= 2"
@@ -4470,12 +4516,15 @@ raise.rb:
 
 #  104| call to puts
 #-----|  -> b1
+#-----| raise -> [ensure: raise] self
 
 #  104| [ensure: raise] call to puts
 #-----|  -> [ensure: raise] b1
+#-----| raise -> [ensure: raise] self
 
 #  104| [ensure: return] call to puts
 #-----|  -> [ensure: return] b1
+#-----| raise -> [ensure: raise] self
 
 #  104| self
 #-----|  -> "outer ensure"
@@ -4563,21 +4612,27 @@ raise.rb:
 
 #  110| call to puts
 #-----|  -> ensure ...
+#-----| raise -> [ensure: raise] self
 
 #  110| [ensure(1): raise] call to puts
 #-----|  -> [ensure(1): raise] ensure ...
+#-----| raise -> [ensure: raise] self
 
 #  110| [ensure: raise] call to puts
 #-----|  -> [ensure: raise] ensure ...
+#-----| raise -> [ensure: raise] self
 
 #  110| [ensure: raise, ensure(1): raise] call to puts
 #-----|  -> [ensure: raise, ensure(1): raise] ensure ...
+#-----| raise -> [ensure: raise] self
 
 #  110| [ensure: return] call to puts
 #-----|  -> [ensure: return] ensure ...
+#-----| raise -> [ensure: raise] self
 
 #  110| [ensure: return, ensure(1): raise] call to puts
 #-----|  -> [ensure: return, ensure(1): raise] ensure ...
+#-----| raise -> [ensure: raise] self
 
 #  110| self
 #-----|  -> "inner ensure"
@@ -4617,6 +4672,7 @@ raise.rb:
 
 #  113| call to puts
 #-----|  -> self
+#-----| raise -> [ensure: raise] self
 
 #  113| self
 #-----|  -> "End m9"

@@ -8,8 +8,8 @@
  */
 
 private import codeql.IDEContextual
-private import codeql_ruby.AST
-private import codeql_ruby.printAst
+private import codeql.ruby.AST
+private import codeql.ruby.printAst
 
 /**
  * The source file to generate an AST from.

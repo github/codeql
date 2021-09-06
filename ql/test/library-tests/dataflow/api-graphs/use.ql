@@ -1,7 +1,7 @@
 import ruby
-import codeql_ruby.DataFlow
+import codeql.ruby.DataFlow
 import TestUtilities.InlineExpectationsTest
-import codeql_ruby.ApiGraphs
+import codeql.ruby.ApiGraphs
 
 class ApiUseTest extends InlineExpectationsTest {
   ApiUseTest() { this = "ApiUseTest" }

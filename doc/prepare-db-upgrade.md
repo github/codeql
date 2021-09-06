@@ -1,6 +1,6 @@
 # Upgrading the Ruby database schema
 
-The schema (`ql/src/ruby.dbscheme`) is automatically generated from tree-sitter's `node-types.json`. When the tree-sitter grammar changes, the database schema is likely to change as well, and we need to write an upgrade script. This document explains how to do that.
+The schema (`ql/lib/ruby.dbscheme`) is automatically generated from tree-sitter's `node-types.json`. When the tree-sitter grammar changes, the database schema is likely to change as well, and we need to write an upgrade script. This document explains how to do that.
 
 ## Process Overview
 
@@ -81,11 +81,11 @@ Upgrade scripts can be a little bit fiddly, so it's essential that you test them
 
 To create the upgrade directory manually, without using `scripts/prepare-db-upgrade.sh`:
 
-1. Get a hash of the old `.dbscheme` file, from just before your changes. You can do this by checking out the code prior to your changes and running `git hash-object ql/src/ruby.dbscheme`
+1. Get a hash of the old `.dbscheme` file, from just before your changes. You can do this by checking out the code prior to your changes and running `git hash-object ql/lib/ruby.dbscheme`
 
-2. Go back to your branch and create an upgrade directory with that hash as its name, for example: `mkdir ql/src/upgrades/454f1e15151422355049dc4f1f0486a03baeffef`
+2. Go back to your branch and create an upgrade directory with that hash as its name, for example: `mkdir ql/lib/upgrades/454f1e15151422355049dc4f1f0486a03baeffef`
 
 3. Copy the old `.dbscheme` file to that directory, using the name old.dbscheme.
-   `cp ql/src/ruby.dbscheme ql/src/upgrades/454f1e15151422355049dc4f1f0486a03baeffef/old.dbscheme`
+   `cp ql/lib/ruby.dbscheme ql/lib/upgrades/454f1e15151422355049dc4f1f0486a03baeffef/old.dbscheme`
 
 4. Put a copy of your new `.dbscheme` file in that directory and create an `upgrade.properties` file (as described above).

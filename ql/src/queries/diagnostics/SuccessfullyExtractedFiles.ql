@@ -7,7 +7,7 @@
  */
 
 import ruby
-import codeql_ruby.Diagnostics
+import codeql.ruby.Diagnostics
 
 from File f
 where

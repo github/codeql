@@ -1,0 +1,32 @@
+<%graphql
+  fragment Foo on Bar {
+    some {
+      queryText
+      moreProperties
+    }
+  }
+
+  fragment AnotherFragment on SomethingElse {
+    other {
+      things
+    }
+    here {
+      etc
+    }
+  }
+%>
+
+<%= "hello world" %>
+
+<%#= "this is commented out" %>
+
+<%# "this is also commented out" %>
+
+<% xs = "" %>
+<ul>
+  <% for x in ["foo", "bar", "baz"] do %>
+  <li><%= xs += x
+          xs
+          %></li>
+  <% end %>
+</ul>

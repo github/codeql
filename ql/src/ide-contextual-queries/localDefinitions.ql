@@ -8,7 +8,7 @@
  */
 
 import codeql.IDEContextual
-import codeql_ruby.AST
+import codeql.ruby.AST
 
 external string selectedSourceFile();
 

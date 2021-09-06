@@ -61,8 +61,8 @@ if [ $# -gt 0 ]; then
   usage 2 "Unrecognised operand: $1"
 fi
 
-scheme_file="ql/src/ruby.dbscheme"
-upgrade_root="ql/src/upgrades"
+scheme_file="ql/lib/ruby.dbscheme"
+upgrade_root="ql/lib/upgrades"
 
 check_hash_valid()
 {

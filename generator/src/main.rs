@@ -375,27 +375,6 @@ fn create_files_table<'a>() -> dbscheme::Entry<'a> {
                 ql_type: ql::Type::String,
                 ql_type_is_ref: true,
             },
-            dbscheme::Column {
-                db_type: dbscheme::DbColumnType::String,
-                name: "simple",
-                unique: false,
-                ql_type: ql::Type::String,
-                ql_type_is_ref: true,
-            },
-            dbscheme::Column {
-                db_type: dbscheme::DbColumnType::String,
-                name: "ext",
-                unique: false,
-                ql_type: ql::Type::String,
-                ql_type_is_ref: true,
-            },
-            dbscheme::Column {
-                db_type: dbscheme::DbColumnType::Int,
-                name: "fromSource",
-                unique: false,
-                ql_type: ql::Type::Int,
-                ql_type_is_ref: true,
-            },
         ],
     })
 }
@@ -414,13 +393,6 @@ fn create_folders_table<'a>() -> dbscheme::Entry<'a> {
             dbscheme::Column {
                 db_type: dbscheme::DbColumnType::String,
                 name: "name",
-                unique: false,
-                ql_type: ql::Type::String,
-                ql_type_is_ref: true,
-            },
-            dbscheme::Column {
-                db_type: dbscheme::DbColumnType::String,
-                name: "simple",
                 unique: false,
                 ql_type: ql::Type::String,
                 ql_type_is_ref: true,
