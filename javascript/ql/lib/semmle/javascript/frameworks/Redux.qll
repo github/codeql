@@ -56,9 +56,7 @@ module Redux {
   /**
    * Creation of a redux store, usually via a call to `createStore`.
    */
-  class StoreCreation extends DataFlow::SourceNode {
-    StoreCreation() { this instanceof StoreCreation::Range }
-
+  class StoreCreation extends DataFlow::SourceNode instanceof StoreCreation::Range {
     /** Gets a reference to the store. */
     DataFlow::SourceNode ref() { result = asApiNode().getAUse() }
 
@@ -66,7 +64,7 @@ module Redux {
     API::Node asApiNode() { result.getAnImmediateUse() = this }
 
     /** Gets the data flow node holding the root reducer for this store. */
-    DataFlow::Node getReducerArg() { result = this.(StoreCreation::Range).getReducerArg() }
+    DataFlow::Node getReducerArg() { result = super.getReducerArg() }
 
     /** Gets a data flow node referring to the root reducer. */
     DataFlow::SourceNode getAReducerSource() { result = getReducerArg().(ReducerArg).getASource() }
@@ -421,11 +419,9 @@ module Redux {
    * Some action creators dispatch the action to a store, while for others, the value is returned and it is simply assumed to be dispatched
    * at some point. We model all action creators as if they dispatch the action they create.
    */
-  class ActionCreator extends DataFlow::SourceNode {
-    ActionCreator() { this instanceof ActionCreator::Range }
-
+  class ActionCreator extends DataFlow::SourceNode instanceof ActionCreator::Range {
     /** Gets the `type` property of actions created by this action creator, if it is known. */
-    string getTypeTag() { result = this.(ActionCreator::Range).getTypeTag() }
+    string getTypeTag() { result = super.getTypeTag() }
 
     /**
      * Gets the middleware function that transforms arguments passed to this function into the
@@ -438,7 +434,7 @@ module Redux {
      * the action payload. Otherwise, the return value is the payload itself.
      */
     DataFlow::FunctionNode getMiddlewareFunction(boolean async) {
-      result = this.(ActionCreator::Range).getMiddlewareFunction(async)
+      result = super.getMiddlewareFunction(async)
     }
 
     /** Gets a data flow node referring to this action creator. */

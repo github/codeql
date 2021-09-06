@@ -8,18 +8,14 @@ import javascript
  * A call to a function that constructs a function composition `f(g(h(...)))` from a
  * series of functions `f, g, h, ...`.
  */
-class FunctionCompositionCall extends DataFlow::CallNode {
-  FunctionCompositionCall() { this instanceof FunctionCompositionCall::Range }
-
+class FunctionCompositionCall extends DataFlow::CallNode instanceof FunctionCompositionCall::Range {
   /**
    * Gets the `i`th function in the composition `f(g(h(...)))`, counting from left to right.
    *
    * Note that this is the opposite of the order in which the function are invoked,
    * that is, `g` occurs later than `f` in `f(g(...))` but is invoked before `f`.
    */
-  DataFlow::Node getOperandNode(int i) {
-    result = this.(FunctionCompositionCall::Range).getOperandNode(i)
-  }
+  DataFlow::Node getOperandNode(int i) { result = super.getOperandNode(i) }
 
   /** Gets a node holding one of the functions to be composed. */
   final DataFlow::Node getAnOperandNode() { result = getOperandNode(_) }
@@ -38,7 +34,7 @@ class FunctionCompositionCall extends DataFlow::CallNode {
   final DataFlow::FunctionNode getAnOperandFunction() { result = getOperandFunction(_) }
 
   /** Gets the number of functions being composed. */
-  int getNumOperand() { result = this.(FunctionCompositionCall::Range).getNumOperand() }
+  int getNumOperand() { result = super.getNumOperand() }
 }
 
 /**

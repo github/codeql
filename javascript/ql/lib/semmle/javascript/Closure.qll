@@ -8,15 +8,11 @@ module Closure {
   /**
    * A reference to a Closure namespace.
    */
-  class ClosureNamespaceRef extends DataFlow::Node {
-    ClosureNamespaceRef() { this instanceof ClosureNamespaceRef::Range }
-
+  class ClosureNamespaceRef extends DataFlow::Node instanceof ClosureNamespaceRef::Range {
     /**
      * Gets the namespace being referenced.
      */
-    string getClosureNamespace() {
-      result = this.(ClosureNamespaceRef::Range).getClosureNamespace()
-    }
+    string getClosureNamespace() { result = super.getClosureNamespace() }
   }
 
   module ClosureNamespaceRef {
@@ -36,8 +32,7 @@ module Closure {
   /**
    * A data flow node that returns the value of a closure namespace.
    */
-  class ClosureNamespaceAccess extends ClosureNamespaceRef {
-    ClosureNamespaceAccess() { this instanceof ClosureNamespaceAccess::Range }
+  class ClosureNamespaceAccess extends ClosureNamespaceRef instanceof ClosureNamespaceAccess::Range {
   }
 
   module ClosureNamespaceAccess {
