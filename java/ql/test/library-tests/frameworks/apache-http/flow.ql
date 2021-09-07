@@ -24,5 +24,7 @@ class Conf extends TaintTracking::Configuration {
 }
 
 class HasFlowTest extends InlineFlowTest {
+  override DataFlow::Configuration getValueFlowConfig() { none() }
+
   override DataFlow::Configuration getTaintFlowConfig() { result = any(Conf c) }
 }
