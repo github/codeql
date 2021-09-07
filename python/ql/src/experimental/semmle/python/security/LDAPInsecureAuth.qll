@@ -90,7 +90,7 @@ class LDAPStringVar extends BinaryExpr {
 }
 
 /**
- * A taint-tracking configuration for detecting LDAP injections.
+ * A taint-tracking configuration for detecting LDAP insecure authentications.
  */
 class LDAPInsecureAuthConfig extends TaintTracking::Configuration {
   LDAPInsecureAuthConfig() { this = "LDAPInsecureAuthConfig" }
