@@ -115,10 +115,7 @@ module ReflectedXSS {
       // `node2` appears in the rendered template file
       call.getTemplateFile() = node2.getLocation().getFile() and
       (
-        // ...node2 is a variable read
-        node2.asExpr().getExpr().(VariableReadAccess).getVariable().getName() = hashKey
-        or
-        // ...node2 is an element reference against `local_assigns`
+        // node2 is an element reference against `local_assigns`
         exists(
           CfgNodes::ExprNodes::ElementReferenceCfgNode refNode, DataFlow::Node argNode,
           CfgNodes::ExprNodes::StringlikeLiteralCfgNode strNode
