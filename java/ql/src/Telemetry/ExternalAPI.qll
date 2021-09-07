@@ -29,10 +29,10 @@ class ExternalAPI extends Callable {
   /**
    * Gets information about the external API in the form expected by the CSV modeling framework.
    */
-  string asHumanReadbleString(ExternalAPI api) {
+  string getApiName() {
     result =
-      api.getDeclaringType().getPackage() + "." + api.getDeclaringType().getSourceDeclaration() +
-        "#" + api.getName() + paramsString(api)
+      this.getDeclaringType().getPackage() + "." + this.getDeclaringType().getSourceDeclaration() +
+        "#" + this.getName() + paramsString(this)
   }
 
   /**

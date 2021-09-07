@@ -19,4 +19,4 @@ where
       c.getCallee().getSourceDeclaration() = api and
       not c.getFile() instanceof GeneratedFile
     )
-select api.asHumanReadbleString(api) as apiname, usages order by usages desc
+select api.getApiName() as apiname, usages order by usages desc
