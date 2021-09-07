@@ -122,13 +122,11 @@ private module LDAP {
             )
             or
             // ldap_connection.set_option(ldap.OPT_X_TLS_%s, True)
-            // ldap_connection.set_option(ldap.OPT_X_TLS_%s)
             exists(DataFlow::CallCfgNode setOption |
               setOption.getFunction().(DataFlow::AttrRead).getObject().getALocalSource() =
                 initialize and
               setOption.getFunction().(DataFlow::AttrRead).getAttributeName() = "set_option" and
-              setOption.getArg(0) =
-                ldap().getMember("OPT_X_TLS_" + ["ALLOW", "TRY", "DEMAND", "HARD"]).getAUse() and
+              setOption.getArg(0) = ldap().getMember("OPT_X_TLS_" + ["DEMAND", "HARD"]).getAUse() and
               not DataFlow::exprNode(any(False falseExpr))
                   .(DataFlow::LocalSourceNode)
                   .flowsTo(setOption.getArg(1))
