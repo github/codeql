@@ -63,7 +63,7 @@
 | Splitting.cs:9:15:9:15 | [b (line 3): false] access to local variable x |
 | Splitting.cs:9:15:9:15 | [b (line 3): true] access to local variable x |
 | Splitting.cs:11:19:11:19 | access to local variable x |
-| Splitting.cs:21:21:21:33 | call to method Return |
+| Splitting.cs:21:21:21:33 | call to method Return<String> |
 | Splitting.cs:32:15:32:15 | [b (line 24): false] access to local variable x |
 | Splitting.cs:32:15:32:15 | [b (line 24): true] access to local variable x |
 | Splitting.cs:34:19:34:19 | access to local variable x |

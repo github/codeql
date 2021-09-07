@@ -8,7 +8,11 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.Closeable;
+import java.nio.channels.FileChannel;
+import java.nio.channels.ReadableByteChannel;
+import java.nio.channels.WritableByteChannel;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.io.IOException;
 
 class TestIO {
@@ -16,6 +20,7 @@ class TestIO {
     String staint(){ return (String) taint(); }
     byte[] btaint() { return (byte[]) taint(); }
     InputStream itaint() { return (InputStream) taint(); }
+    ReadableByteChannel rbctaint() { return (ReadableByteChannel) taint(); }
     Reader rtaint() { return new InputStreamReader(itaint()); }
     Path ptaint() { return (Path) taint(); }
 
@@ -75,6 +80,16 @@ class TestIO {
     }
 
     void test3() throws IOException {
+        {
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            ByteStreams.copy(itaint(), out);
+            sink(out); // $numTaintFlow=1
+        }
+        {
+            WritableByteChannel out = FileChannel.open(Paths.get("/tmp/xyz"));
+            ByteStreams.copy(rbctaint(), out);
+            sink(out); // $numTaintFlow=1
+        }
         sink(ByteStreams.limit(itaint(), 1337)); // $numTaintFlow=1
         sink(ByteStreams.newDataInput(btaint())); // $numTaintFlow=1
         sink(ByteStreams.newDataInput(btaint(), 0)); // $numTaintFlow=1

@@ -70,7 +70,7 @@ nestedtypes.cs:
 #   65|         0: [ExprStmt] ...;
 #   65|           0: [MethodCall] call to method F
 #   65|             -1: [TypeAccess] access to type Inner<String>
-#   65|               -2: [TypeMention] Inner<String>
+#   65|               -2: [TypeMention] Inner<string>
 #   65|                 1: [TypeMention] string
 #   65|               -1: [TypeAccess] access to type Outer<>
 #   65|                 0: [TypeMention] Outer<T>
@@ -80,10 +80,10 @@ nestedtypes.cs:
 #   68|         1: [ExprStmt] ...;
 #   68|           0: [MethodCall] call to method F
 #   68|             -1: [TypeAccess] access to type Inner<String>
-#   68|               -2: [TypeMention] Inner<String>
+#   68|               -2: [TypeMention] Inner<string>
 #   68|                 1: [TypeMention] string
 #   68|               -1: [TypeAccess] access to type Outer<Int32>
-#   68|                 0: [TypeMention] Outer<Int32>
+#   68|                 0: [TypeMention] Outer<int>
 #   68|                   1: [TypeMention] int
 #   68|             0: [IntLiteral] 3
 #   68|             1: [StringLiteral] "abc"

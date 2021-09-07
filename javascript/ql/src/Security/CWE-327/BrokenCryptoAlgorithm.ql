@@ -11,7 +11,7 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.BrokenCryptoAlgorithm::BrokenCryptoAlgorithm
+import semmle.javascript.security.dataflow.BrokenCryptoAlgorithmQuery
 import semmle.javascript.security.SensitiveActions
 import DataFlow::PathGraph
 

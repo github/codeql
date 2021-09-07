@@ -364,3 +364,22 @@ var bad86 = /^((?:a{0,2|-)|\w\{\d,\d)+X$/;
 
 // GOOD: 
 var good42 = /^((?:a{0,2}|-)|\w\{\d,\d\})+X$/; 
+
+// GOOD
+var good43 = /("[^"]*?"|[^"\s]+)+(?=\s*|\s*$)/g;
+
+// BAD
+var bad87 = /("[^"]*?"|[^"\s]+)+(?=\s*|\s*$)X/g;
+var bad88 = /("[^"]*?"|[^"\s]+)+(?=X)/g;
+var bad89 = /(x*)+(?=$)/
+var bad90 = /(x*)+(?=$|y)/
+
+// GOOD - but we spuriously conclude that a rejecting suffix exists.
+var good44 = /([\s\S]*)+(?=$)/;
+var good45 = /([\s\S]*)+(?=$|y)/;
+
+var good46 = /(foo|FOO)*bar/;
+var bad91 = /(foo|FOO)*bar/i;
+
+var good47 = /([AB]|[ab])*C/;
+var bad92 = /([DE]|[de])*F/i;

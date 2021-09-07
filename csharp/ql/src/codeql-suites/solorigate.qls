@@ -1,4 +1,4 @@
 - description: Queries related to Solorigate
-- qlpack: codeql-csharp
+- queries: .
 - include:
     tags contain: solorigate

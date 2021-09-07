@@ -444,3 +444,25 @@ function mootools(){
 	new Element("div").setProperties({"html": source}); // NOT OK
 	new Element("div").appendHtml(source); // NOT OK
 }
+
+
+const Convert = require('ansi-to-html');
+const ansiToHtml = new Convert();
+
+function ansiToHTML() {
+  var source = document.location.search;
+
+  $("#foo").html(source); // NOT OK
+  $("#foo").html(ansiToHtml.toHtml(source)); // NOT OK
+}
+
+function domMethods() {
+	var source = document.location.search;
+
+  let table = document.getElementById('mytable');
+  table.innerHTML = source; // NOT OK
+  let row = table.insertRow(-1);
+  row.innerHTML = source; // NOT OK
+  let cell = row.insertCell();
+  cell.innerHTML = source; // NOT OK
+}
