@@ -136,8 +136,8 @@ module ReflectedXSS {
     or
     // instance variables in the controller
     exists(
-      ActionControllerActionMethod action, VariableReadAccess viewVarRead,
-      AssignExpr ae, VariableWriteAccess controllerVarWrite
+      ActionControllerActionMethod action, VariableReadAccess viewVarRead, AssignExpr ae,
+      VariableWriteAccess controllerVarWrite
     |
       viewVarRead = node2.asExpr().(CfgNodes::ExprNodes::VariableReadAccessCfgNode).getExpr() and
       action.getDefaultTemplateFile() = viewVarRead.getLocation().getFile() and
