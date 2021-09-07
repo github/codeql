@@ -1,5 +1,7 @@
-name: codeql-javascript
-version: 0.0.0
-dbscheme: semmlecode.javascript.dbscheme
+name: codeql/javascript-queries
+version: 0.0.3
 suites: codeql-suites
 extractor: javascript
+dependencies:
+    codeql/javascript-all: "*"
+    codeql/suite-helpers: "*"

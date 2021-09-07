@@ -1,2 +1,4 @@
-name: codeql-java-upgrades
+name: codeql/java-upgrades
 upgrades: .
+library: true
+version: 0.0.2

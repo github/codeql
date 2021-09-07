@@ -20,8 +20,8 @@ edges
 | Async.cs:43:14:43:30 | call to method ReturnTask [property Result] : String | Async.cs:43:14:43:37 | access to property Result |
 | Async.cs:43:25:43:29 | access to parameter input : String | Async.cs:43:14:43:30 | call to method ReturnTask [property Result] : String |
 | Async.cs:46:44:46:44 | x : String | Async.cs:48:32:48:32 | access to parameter x : String |
-| Async.cs:48:16:48:33 | call to method FromResult [property Result] : String | Async.cs:43:14:43:30 | call to method ReturnTask [property Result] : String |
-| Async.cs:48:32:48:32 | access to parameter x : String | Async.cs:48:16:48:33 | call to method FromResult [property Result] : String |
+| Async.cs:48:16:48:33 | call to method FromResult<String> [property Result] : String | Async.cs:43:14:43:30 | call to method ReturnTask [property Result] : String |
+| Async.cs:48:32:48:32 | access to parameter x : String | Async.cs:48:16:48:33 | call to method FromResult<String> [property Result] : String |
 | Async.cs:51:52:51:52 | x : String | Async.cs:51:58:51:58 | access to parameter x : String |
 | Async.cs:51:58:51:58 | access to parameter x : String | Async.cs:32:14:32:32 | call to method ReturnAwait2 [property Result] : String |
 nodes
@@ -50,7 +50,7 @@ nodes
 | Async.cs:43:14:43:37 | access to property Result | semmle.label | access to property Result |
 | Async.cs:43:25:43:29 | access to parameter input : String | semmle.label | access to parameter input : String |
 | Async.cs:46:44:46:44 | x : String | semmle.label | x : String |
-| Async.cs:48:16:48:33 | call to method FromResult [property Result] : String | semmle.label | call to method FromResult [property Result] : String |
+| Async.cs:48:16:48:33 | call to method FromResult<String> [property Result] : String | semmle.label | call to method FromResult<String> [property Result] : String |
 | Async.cs:48:32:48:32 | access to parameter x : String | semmle.label | access to parameter x : String |
 | Async.cs:51:52:51:52 | x : String | semmle.label | x : String |
 | Async.cs:51:58:51:58 | access to parameter x : String | semmle.label | access to parameter x : String |

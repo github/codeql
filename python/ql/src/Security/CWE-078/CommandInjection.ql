@@ -19,7 +19,7 @@ import python
 import semmle.python.security.dataflow.CommandInjection
 import DataFlow::PathGraph
 
-from CommandInjectionConfiguration config, DataFlow::PathNode source, DataFlow::PathNode sink
+from CommandInjection::Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "This command depends on $@.", source.getNode(),
   "a user-provided value"

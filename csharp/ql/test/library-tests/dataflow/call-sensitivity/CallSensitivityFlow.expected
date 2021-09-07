@@ -31,9 +31,12 @@ edges
 | CallSensitivityFlow.cs:162:34:162:34 | o : Object | CallSensitivityFlow.cs:164:14:164:14 | access to parameter o |
 | CallSensitivityFlow.cs:167:44:167:44 | o : Object | CallSensitivityFlow.cs:169:14:169:14 | access to parameter o : Object |
 | CallSensitivityFlow.cs:169:14:169:14 | access to parameter o : Object | CallSensitivityFlow.cs:162:34:162:34 | o : Object |
-| CallSensitivityFlow.cs:178:21:178:32 | object creation of type Object : Object | CallSensitivityFlow.cs:195:40:195:40 | o : Object |
-| CallSensitivityFlow.cs:181:21:181:32 | object creation of type Object : Object | CallSensitivityFlow.cs:167:44:167:44 | o : Object |
-| CallSensitivityFlow.cs:195:40:195:40 | o : Object | CallSensitivityFlow.cs:198:18:198:18 | access to parameter o |
+| CallSensitivityFlow.cs:172:37:172:48 | object creation of type Object : Object | CallSensitivityFlow.cs:174:45:174:53 | call to method MOut : Object |
+| CallSensitivityFlow.cs:174:45:174:53 | call to method MOut : Object | CallSensitivityFlow.cs:187:17:187:30 | call to method CallMOut : Object |
+| CallSensitivityFlow.cs:182:21:182:32 | object creation of type Object : Object | CallSensitivityFlow.cs:205:40:205:40 | o : Object |
+| CallSensitivityFlow.cs:185:21:185:32 | object creation of type Object : Object | CallSensitivityFlow.cs:167:44:167:44 | o : Object |
+| CallSensitivityFlow.cs:187:17:187:30 | call to method CallMOut : Object | CallSensitivityFlow.cs:188:14:188:14 | access to local variable o |
+| CallSensitivityFlow.cs:205:40:205:40 | o : Object | CallSensitivityFlow.cs:208:18:208:18 | access to parameter o |
 nodes
 | CallSensitivityFlow.cs:19:39:19:39 | o : Object | semmle.label | o : Object |
 | CallSensitivityFlow.cs:23:18:23:18 | access to parameter o | semmle.label | access to parameter o |
@@ -78,10 +81,14 @@ nodes
 | CallSensitivityFlow.cs:164:14:164:14 | access to parameter o | semmle.label | access to parameter o |
 | CallSensitivityFlow.cs:167:44:167:44 | o : Object | semmle.label | o : Object |
 | CallSensitivityFlow.cs:169:14:169:14 | access to parameter o : Object | semmle.label | access to parameter o : Object |
-| CallSensitivityFlow.cs:178:21:178:32 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
-| CallSensitivityFlow.cs:181:21:181:32 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
-| CallSensitivityFlow.cs:195:40:195:40 | o : Object | semmle.label | o : Object |
-| CallSensitivityFlow.cs:198:18:198:18 | access to parameter o | semmle.label | access to parameter o |
+| CallSensitivityFlow.cs:172:37:172:48 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
+| CallSensitivityFlow.cs:174:45:174:53 | call to method MOut : Object | semmle.label | call to method MOut : Object |
+| CallSensitivityFlow.cs:182:21:182:32 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
+| CallSensitivityFlow.cs:185:21:185:32 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
+| CallSensitivityFlow.cs:187:17:187:30 | call to method CallMOut : Object | semmle.label | call to method CallMOut : Object |
+| CallSensitivityFlow.cs:188:14:188:14 | access to local variable o | semmle.label | access to local variable o |
+| CallSensitivityFlow.cs:205:40:205:40 | o : Object | semmle.label | o : Object |
+| CallSensitivityFlow.cs:208:18:208:18 | access to parameter o | semmle.label | access to parameter o |
 #select
 | CallSensitivityFlow.cs:78:24:78:35 | object creation of type Object : Object | CallSensitivityFlow.cs:78:24:78:35 | object creation of type Object : Object | CallSensitivityFlow.cs:23:18:23:18 | access to parameter o | $@ | CallSensitivityFlow.cs:23:18:23:18 | access to parameter o | access to parameter o |
 | CallSensitivityFlow.cs:79:25:79:36 | object creation of type Object : Object | CallSensitivityFlow.cs:79:25:79:36 | object creation of type Object : Object | CallSensitivityFlow.cs:31:18:31:18 | access to parameter o | $@ | CallSensitivityFlow.cs:31:18:31:18 | access to parameter o | access to parameter o |
@@ -100,5 +107,6 @@ nodes
 | CallSensitivityFlow.cs:117:26:117:37 | object creation of type Object : Object | CallSensitivityFlow.cs:117:26:117:37 | object creation of type Object : Object | CallSensitivityFlow.cs:128:22:128:22 | access to parameter o | $@ | CallSensitivityFlow.cs:128:22:128:22 | access to parameter o | access to parameter o |
 | CallSensitivityFlow.cs:118:27:118:38 | object creation of type Object : Object | CallSensitivityFlow.cs:118:27:118:38 | object creation of type Object : Object | CallSensitivityFlow.cs:136:22:136:22 | access to parameter o | $@ | CallSensitivityFlow.cs:136:22:136:22 | access to parameter o | access to parameter o |
 | CallSensitivityFlow.cs:119:32:119:43 | object creation of type Object : Object | CallSensitivityFlow.cs:119:32:119:43 | object creation of type Object : Object | CallSensitivityFlow.cs:150:18:150:19 | access to local variable o3 | $@ | CallSensitivityFlow.cs:150:18:150:19 | access to local variable o3 | access to local variable o3 |
-| CallSensitivityFlow.cs:178:21:178:32 | object creation of type Object : Object | CallSensitivityFlow.cs:178:21:178:32 | object creation of type Object : Object | CallSensitivityFlow.cs:198:18:198:18 | access to parameter o | $@ | CallSensitivityFlow.cs:198:18:198:18 | access to parameter o | access to parameter o |
-| CallSensitivityFlow.cs:181:21:181:32 | object creation of type Object : Object | CallSensitivityFlow.cs:181:21:181:32 | object creation of type Object : Object | CallSensitivityFlow.cs:164:14:164:14 | access to parameter o | $@ | CallSensitivityFlow.cs:164:14:164:14 | access to parameter o | access to parameter o |
+| CallSensitivityFlow.cs:172:37:172:48 | object creation of type Object : Object | CallSensitivityFlow.cs:172:37:172:48 | object creation of type Object : Object | CallSensitivityFlow.cs:188:14:188:14 | access to local variable o | $@ | CallSensitivityFlow.cs:188:14:188:14 | access to local variable o | access to local variable o |
+| CallSensitivityFlow.cs:182:21:182:32 | object creation of type Object : Object | CallSensitivityFlow.cs:182:21:182:32 | object creation of type Object : Object | CallSensitivityFlow.cs:208:18:208:18 | access to parameter o | $@ | CallSensitivityFlow.cs:208:18:208:18 | access to parameter o | access to parameter o |
+| CallSensitivityFlow.cs:185:21:185:32 | object creation of type Object : Object | CallSensitivityFlow.cs:185:21:185:32 | object creation of type Object : Object | CallSensitivityFlow.cs:164:14:164:14 | access to parameter o | $@ | CallSensitivityFlow.cs:164:14:164:14 | access to parameter o | access to parameter o |

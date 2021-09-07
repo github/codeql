@@ -1,0 +1,57 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Directly pasting user input from the clipboard to a webpage
+without properly sanitizing the input first, allows for a cross-site scripting vulnerability.
+</p>
+</overview>
+
+<recommendation>
+<p>
+To guard against cross-site scripting, consider using contextual output encoding/escaping before
+writing user input to the page, or one of the other solutions that are mentioned in the
+references.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example shows a div element whose HTML content comes directly from the clipboard being written to the DOM,
+leaving the website vulnerable to cross-site scripting.
+</p>
+<sample src="examples/clipboard-xss-sample.js" />
+</example>
+
+<references>
+<li>
+OWASP:
+<a href="https://cheatsheetseries.owasp.org/cheatsheets/DOM_based_XSS_Prevention_Cheat_Sheet.html">DOM based
+XSS Prevention Cheat Sheet</a>.
+</li>
+<li>
+OWASP:
+<a href="https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html">XSS
+(Cross Site Scripting) Prevention Cheat Sheet</a>.
+</li>
+<li>
+OWASP
+<a href="https://www.owasp.org/index.php/DOM_Based_XSS">DOM Based XSS</a>.
+</li>
+<li>
+OWASP
+<a href="https://www.owasp.org/index.php/Types_of_Cross-Site_Scripting">Types of Cross-Site
+Scripting</a>.
+</li>
+<li>
+Wikipedia: <a href="http://en.wikipedia.org/wiki/Cross-site_scripting">Cross-site scripting</a>.
+</li>
+<li>
+Securitum:
+<a href="https://research.securitum.com/the-curious-case-of-copy-paste/">Clipboard security research</a>.
+</li>
+</references>
+</qhelp>

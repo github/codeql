@@ -14,7 +14,7 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.CleartextLogging::CleartextLogging
+import semmle.javascript.security.dataflow.CleartextLoggingQuery
 import DataFlow::PathGraph
 
 /**

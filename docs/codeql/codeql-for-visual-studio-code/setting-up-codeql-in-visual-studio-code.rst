@@ -54,7 +54,7 @@ There are two ways to do this:
 * More advanced, add the CodeQL libraries and queries to an existing workspace. For more information, see ":ref:`Updating an existing workspace for CodeQL <existing-workspace>`" below.
 
 .. pull-quote:: Note
-   
+
    For CLI users there is a third option: If you have followed the instructions in ":ref:`Getting started with the CodeQL CLI <getting-started-with-the-codeql-cli>`" to create a CodeQL directory (for example ``codeql-home``) containing the CodeQL libraries, you can open this directory in VS Code. This also gives the extension access to the CodeQL libraries.
 
 .. container:: toggle
@@ -65,11 +65,11 @@ There are two ways to do this:
 
    Your local version of the CodeQL queries and libraries should match your version of LGTM Enterprise. For example, if you
    use LGTM Enterprise 1.27, then you should clone the ``1.27.0`` branch of the `starter workspace <https://github.com/github/vscode-codeql-starter/>`__ (or the appropriate ``1.27.x`` branch, corresponding to each maintenance release).
-   
+
    This ensures that the queries and libraries you write in VS Code also work in the query console on LGTM Enterprise.
 
    If you prefer to add the CodeQL queries and libraries to an :ref:`existing workspace <existing-workspace>` instead of the starter workspace, then you should
-   clone the appropriate branch of the `general CodeQL repository <https://github.com/github/codeql>`__ and the 
+   clone the appropriate branch of the `general CodeQL repository <https://github.com/github/codeql>`__ and the
    `CodeQL repository for Go <https://github.com/github/codeql-go>`__ and add them to your workspace.
 
 .. _starter-workspace:
@@ -94,7 +94,7 @@ To use the starter workspace:
 
 Updating an existing workspace for CodeQL
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-You can add the CodeQL libraries to an existing workspace by making a local clone of the CodeQL repository directly: https://github.com/github/codeql. 
+You can add the CodeQL libraries to an existing workspace by making a local clone of the CodeQL repository directly: https://github.com/github/codeql.
 
 To make the standard libraries available in your workspace:
 
@@ -110,7 +110,7 @@ For example, to make a custom CodeQL folder called ``my-custom-cpp-pack`` depend
 
     name: my-custom-cpp-pack
     version: 0.0.0
-    libraryPathDependencies: codeql-cpp
+    libraryPathDependencies: codeql/cpp-all
 
 For more information about why you need to add a ``qlpack.yml`` file, see ":ref:`About QL packs <about-ql-packs>`."
 
