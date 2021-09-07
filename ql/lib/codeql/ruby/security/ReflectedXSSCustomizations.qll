@@ -83,7 +83,7 @@ module ReflectedXSS {
 
   /**
    * A argument to a call to the `link_to` method, which does not expect
-   * unsanitized user-input, considered as a flow sink a flow sink.
+   * unsanitized user-input, considered as a flow sink.
    */
   class LinkToCallArgumentAsSink extends Sink, ErbOutputMethodCallArgumentNode {
     LinkToCallArgumentAsSink() {
