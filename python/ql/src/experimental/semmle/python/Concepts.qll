@@ -171,8 +171,8 @@ module HeaderDeclaration {
 /**
  * A data-flow node that collects functions setting HTTP Headers.
  *
- * Extend this class to model new APIs. If you want to refine existing API models,
- * extend `HeaderDeclaration` instead.
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `HeaderDeclaration::Range` instead.
  */
 class HeaderDeclaration extends DataFlow::Node {
   HeaderDeclaration::Range range;
