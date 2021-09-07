@@ -12,18 +12,16 @@ data retrieval techniques may allow attackers to steal sensitive data. Denial of
 in this situation.
 </p>
 <p>
-There are many XML parsers for Python, and most of them are vulnerable to XXE because their default settings enable
-parsing of external entities. This query currently identifies vulnerable XML parsing from the following parsers: 
-<code>xml.etree.ElementTree.XMLParser</code>, <code>lxml.etree.XMLParser</code>, <code>lxml.etree.get_default_parser</code>,
-<code>xml.sax.make_parser</code>.
+Refer to the following links to check the details regarding how and which libraries are vulnerable:
+<li><a href="https://docs.python.org/3/library/xml.html#xml-vulnerabilities">Python 3</a>.</li>
+<li><a href="https://docs.python.org/2/library/xml.html#xml-vulnerabilities">Python 2</a>.</li>
 </p>
 </overview>
 
 <recommendation>
 <p>
-The best way to prevent XXE attacks is to disable the parsing of any Document Type Declarations (DTDs) in untrusted data.
-If this is not possible you should disable the parsing of external general entities and external parameter entities.
-This improves security but the code will still be at risk of denial of service and server side request forgery attacks.
+Use <a href="https://docs.python.org/3/library/xml.html#the-defusedxml-package">defusedxml</a>, a Python package aimed
+to prevent any potentially malicious operation.
 </p>
 </recommendation>
 
