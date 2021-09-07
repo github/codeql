@@ -7,6 +7,9 @@ class UsersController < ActionController::Base
         system(cmd)
         exec(cmd)
         %x(echo #{cmd})
+        result = <<`EOF`
+        #{cmd}
+EOF
 
         safe_cmd = Shellwords.escape(cmd)
         `echo #{safe_cmd}`

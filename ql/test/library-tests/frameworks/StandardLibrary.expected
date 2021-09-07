@@ -4,6 +4,8 @@ subshellLiteralExecutions
 | CommandExecution.rb:3:1:3:12 | `echo foo` |
 | CommandExecution.rb:4:1:4:12 | `echo foo` |
 | CommandExecution.rb:5:1:5:12 | `echo foo` |
+subshellHeredocExecutions
+| CommandExecution.rb:67:1:67:7 | <<`EOF` |
 kernelSystemCallExecutions
 | CommandExecution.rb:7:1:7:18 | call to system |
 | CommandExecution.rb:8:1:8:21 | call to system |

@@ -27,6 +27,25 @@ class SubshellLiteralExecution extends SystemCommandExecution::Range {
 }
 
 /**
+ * A system command executed via shell heredoc syntax.
+ * E.g.
+ * ```ruby
+ * <<`EOF`
+ * cat foo.text
+ * EOF
+ * ```
+ */
+class SubshellHeredocExecution extends SystemCommandExecution::Range {
+  HereDoc heredoc;
+
+  SubshellHeredocExecution() { this.asExpr().getExpr() = heredoc and heredoc.isSubShell() }
+
+  override DataFlow::Node getAnArgument() { result.asExpr().getExpr() = heredoc.getComponent(_) }
+
+  override predicate isShellInterpreted(DataFlow::Node arg) { arg = getAnArgument() }
+}
+
+/**
  * A system command executed via the `Kernel.system` method.
  * `Kernel.system` accepts three argument forms:
  * - A single string. If it contains no shell meta characters, keywords or builtins, it is executed directly in a subprocess.

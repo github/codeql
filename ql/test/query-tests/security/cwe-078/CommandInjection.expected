@@ -3,14 +3,17 @@ edges
 | CommandInjection.rb:5:15:5:20 | call to params :  | CommandInjection.rb:7:16:7:18 | cmd |
 | CommandInjection.rb:5:15:5:20 | call to params :  | CommandInjection.rb:8:14:8:16 | cmd |
 | CommandInjection.rb:5:15:5:20 | call to params :  | CommandInjection.rb:9:17:9:22 | #{...} |
+| CommandInjection.rb:5:15:5:20 | call to params :  | CommandInjection.rb:11:9:11:14 | #{...} |
 nodes
 | CommandInjection.rb:5:15:5:20 | call to params :  | semmle.label | call to params :  |
 | CommandInjection.rb:6:10:6:15 | #{...} | semmle.label | #{...} |
 | CommandInjection.rb:7:16:7:18 | cmd | semmle.label | cmd |
 | CommandInjection.rb:8:14:8:16 | cmd | semmle.label | cmd |
 | CommandInjection.rb:9:17:9:22 | #{...} | semmle.label | #{...} |
+| CommandInjection.rb:11:9:11:14 | #{...} | semmle.label | #{...} |
 #select
 | CommandInjection.rb:6:10:6:15 | #{...} | CommandInjection.rb:5:15:5:20 | call to params :  | CommandInjection.rb:6:10:6:15 | #{...} | This command depends on $@. | CommandInjection.rb:5:15:5:20 | call to params | a user-provided value |
 | CommandInjection.rb:7:16:7:18 | cmd | CommandInjection.rb:5:15:5:20 | call to params :  | CommandInjection.rb:7:16:7:18 | cmd | This command depends on $@. | CommandInjection.rb:5:15:5:20 | call to params | a user-provided value |
 | CommandInjection.rb:8:14:8:16 | cmd | CommandInjection.rb:5:15:5:20 | call to params :  | CommandInjection.rb:8:14:8:16 | cmd | This command depends on $@. | CommandInjection.rb:5:15:5:20 | call to params | a user-provided value |
 | CommandInjection.rb:9:17:9:22 | #{...} | CommandInjection.rb:5:15:5:20 | call to params :  | CommandInjection.rb:9:17:9:22 | #{...} | This command depends on $@. | CommandInjection.rb:5:15:5:20 | call to params | a user-provided value |
+| CommandInjection.rb:11:9:11:14 | #{...} | CommandInjection.rb:5:15:5:20 | call to params :  | CommandInjection.rb:11:9:11:14 | #{...} | This command depends on $@. | CommandInjection.rb:5:15:5:20 | call to params | a user-provided value |

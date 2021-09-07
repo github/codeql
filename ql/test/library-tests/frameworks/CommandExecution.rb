@@ -63,3 +63,7 @@ Open3.pipeline_r("echo foo")
 Open3.pipeline_w("echo foo")
 Open3.pipeline_start("echo foo")
 Open3.pipeline("echo foo")
+
+<<`EOF`
+echo foo
+EOF
