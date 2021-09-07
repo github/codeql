@@ -1,3 +1,42 @@
+/**
+ * Provides a simple base test for flow-related tests using inline expectations.
+ *
+ * Example for a test.ql:
+ * ```ql
+ * class HasFlowTest extends InlineFlowTest { }
+ * ```
+ *
+ * To declare expecations, you can use the $hasTaintFlow or $hasValueFlow comments within the test source files.
+ * Example of the corresponding test file, e.g. Test.java
+ * ```java
+ * public class Test {
+ *
+ * 	Object source() { return null; }
+ * 	String taint() { return null; }
+ * 	void sink(Object o) { }
+ *
+ * 	public void test() {
+ * 		Object s = source();
+ * 		sink(s); //$hasValueFlow
+ * 		String t = "foo" + taint();
+ * 		sink(t); //$hasTaintFlow
+ * 	}
+ *
+ * }
+ * ```
+ *
+ * If you're not interested in a specific flow type, you can disable either value or taint flow expectations as follows:
+ * ```ql
+ * class HasFlowTest extends InlineFlowTest {
+ *   override DataFlow::Configuration getTaintFlowConfig() { none() }
+ *
+ *   override DataFlow::Configuration getValueFlowConfig() { none() }
+ * }
+ * ```
+ *
+ * If you need more fine-grained tuning, consider implementing a test using `InlineExpectationsTest`.
+ */
+
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.java.dataflow.TaintTracking
