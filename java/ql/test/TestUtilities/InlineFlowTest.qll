@@ -7,24 +7,28 @@ class DefaultValueFlowConf extends DataFlow::Configuration {
   DefaultValueFlowConf() { this = "qltest:defaultValueFlowConf" }
 
   override predicate isSource(DataFlow::Node n) {
-    n.asExpr().(MethodAccess).getMethod().hasName("source")
+    n.asExpr().(MethodAccess).getMethod().getName() = ["source", "taint"]
   }
 
   override predicate isSink(DataFlow::Node n) {
     exists(MethodAccess ma | ma.getMethod().hasName("sink") | n.asExpr() = ma.getAnArgument())
   }
+
+  override int fieldFlowBranchLimit() { result = 1000 }
 }
 
 class DefaultTaintFlowConf extends TaintTracking::Configuration {
   DefaultTaintFlowConf() { this = "qltest:defaultTaintFlowConf" }
 
   override predicate isSource(DataFlow::Node n) {
-    n.asExpr().(MethodAccess).getMethod().hasName("source")
+    n.asExpr().(MethodAccess).getMethod().getName() = ["source", "taint"]
   }
 
   override predicate isSink(DataFlow::Node n) {
-    n.asExpr().(Argument).getCall().getCallee().hasName("sink")
+    exists(MethodAccess ma | ma.getMethod().hasName("sink") | n.asExpr() = ma.getAnArgument())
   }
+
+  override int fieldFlowBranchLimit() { result = 1000 }
 }
 
 class InlineFlowTest extends InlineExpectationsTest {
