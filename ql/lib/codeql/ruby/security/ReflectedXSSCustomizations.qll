@@ -139,15 +139,18 @@ module ReflectedXSS {
     // instance variables in the controller
     exists(
       ActionControllerActionMethod action, VariableReadAccess viewVarRead,
-      VariableWriteAccess controllerVarWrite
+      AssignExpr ae, VariableWriteAccess controllerVarWrite
     |
       viewVarRead = node2.asExpr().(CfgNodes::ExprNodes::VariableReadAccessCfgNode).getExpr() and
       action.getDefaultTemplateFile() = viewVarRead.getLocation().getFile() and
       controllerVarWrite.getVariable() instanceof InstanceVariable and
+      // match read to write on variable name
       viewVarRead.getVariable().getName() = controllerVarWrite.getVariable().getName() and
       // TODO: include only final assignment along a path
-      node1.asExpr().getExpr() = controllerVarWrite and
-      controllerVarWrite.getParent+() = action
+      // propagate taint from assignment RHS expr to variable read access in view
+      node1.asExpr().getExpr() = ae.getRightOperand() and
+      ae.getLeftOperand() = controllerVarWrite and
+      ae.getParent+() = action
     )
     or
     // flow from template into controller helper method

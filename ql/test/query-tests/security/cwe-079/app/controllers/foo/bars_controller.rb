@@ -17,6 +17,7 @@ class BarsController < ApplicationController
   def show
     @user_website = params[:website]
     dt = params[:text]
+    @instance_text = dt
     render "foo/bars/show", locals: { display_text: dt, safe_text: "hello" }
   end
 end
