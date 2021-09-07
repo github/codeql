@@ -318,16 +318,12 @@ module HTTP {
  * A data flow node that executes an operating system command,
  * for instance by spawning a new process.
  */
-class SystemCommandExecution extends DataFlow::Node {
-  SystemCommandExecution::Range range;
-
-  SystemCommandExecution() { this = range }
-
+class SystemCommandExecution extends DataFlow::Node instanceof SystemCommandExecution::Range {
   /** Holds if a shell interprets `arg`. */
-  predicate isShellInterpreted(DataFlow::Node arg) { range.isShellInterpreted(arg) }
+  predicate isShellInterpreted(DataFlow::Node arg) { super.isShellInterpreted(arg) }
 
   /** Gets an argument to this execution that specifies the command or an argument to it. */
-  DataFlow::Node getAnArgument() { result = range.getAnArgument() }
+  DataFlow::Node getAnArgument() { result = super.getAnArgument() }
 }
 
 module SystemCommandExecution {
