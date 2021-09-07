@@ -48,7 +48,8 @@ class SubshellHeredocExecution extends SystemCommandExecution::Range {
 /**
  * A system command executed via the `Kernel.system` method.
  * `Kernel.system` accepts three argument forms:
- * - A single string. If it contains no shell meta characters, keywords or builtins, it is executed directly in a subprocess.
+ * - A single string. If it contains no shell meta characters, keywords or
+ *   builtins, it is executed directly in a subprocess.
  *   Otherwise, it is executed in a subshell.
  *   ```ruby
  *   system("cat foo.txt | tail")
@@ -63,7 +64,8 @@ class SubshellHeredocExecution extends SystemCommandExecution::Range {
  *   ```ruby
  *   system(["cat", "cat"], "foo.txt")
  *   ```
- * In addition, `Kernel.system` accepts an optional environment hash as the first argument and and optional options hash as the last argument.
+ * In addition, `Kernel.system` accepts an optional environment hash as the
+ * first argument and an optional options hash as the last argument.
  * We don't yet distinguish between these arguments and the command arguments.
  * ```ruby
  * system({"FOO" => "BAR"}, "cat foo.txt | tail", {unsetenv_others: true})
@@ -110,11 +112,10 @@ class KernelExecCall extends SystemCommandExecution::Range {
     // `Kernel.exec` can be reached via `Kernel.exec`, `Process.exec` or just `exec`
     // (if there's no other method by the same name in scope).
     (
-      this = API::getTopLevelMember("Kernel").getAMethodCall("exec")
+      this = API::getTopLevelMember(["Kernel", "Process"]).getAMethodCall("exec")
       or
-      this = API::getTopLevelMember("Process").getAMethodCall("exec")
-      or
-      // we assume that if there's no obvious target for this method call, then it must refer to Kernel.exec.
+      // we assume that if there's no obvious target for this method call, then
+      // it must refer to Kernel.exec.
       not exists(DataFlowCallable method, DataFlowCall call |
         viableCallable(call) = method and call.getExpr() = methodCall
       )
@@ -131,7 +132,8 @@ class KernelExecCall extends SystemCommandExecution::Range {
 
 /**
  * A system command executed via the `Kernel.spawn` method.
- * `Kernel.spawn` takes the same argument forms as `Kernel.system`. See `KernelSystemCall` for details.
+ * `Kernel.spawn` takes the same argument forms as `Kernel.system`.
+ * See `KernelSystemCall` for details.
  * Ruby documentation: https://docs.ruby-lang.org/en/3.0.0/Kernel.html#method-i-spawn
  * TODO: document and handle the env and option arguments.
  * ```
@@ -147,9 +149,7 @@ class KernelSpawnCall extends SystemCommandExecution::Range {
     // `Kernel.spawn` can be reached via `Kernel.spawn`, `Process.spawn` or just `spawn`
     // (if there's no other method by the same name in scope).
     (
-      this = API::getTopLevelMember("Kernel").getAMethodCall("spawn")
-      or
-      this = API::getTopLevelMember("Process").getAMethodCall("spawn")
+      this = API::getTopLevelMember(["Kernel", "Process"]).getAMethodCall("spawn")
       or
       not exists(DataFlowCallable method, DataFlowCall call |
         viableCallable(call) = method and call.getExpr() = methodCall
@@ -170,13 +170,12 @@ class Open3Call extends SystemCommandExecution::Range {
 
   Open3Call() {
     this.asExpr().getExpr() = methodCall and
-    exists(string methodName |
-      methodName in [
-          "popen3", "popen2", "popen2e", "capture3", "capture2", "capture2e", "pipeline_rw",
-          "pipeline_r", "pipeline_w", "pipeline_start", "pipeline"
-        ] and
-      this = API::getTopLevelMember("Open3").getAMethodCall(methodName)
-    )
+    this =
+      API::getTopLevelMember("Open3")
+          .getAMethodCall([
+              "popen3", "popen2", "popen2e", "capture3", "capture2", "capture2e", "pipeline_rw",
+              "pipeline_r", "pipeline_w", "pipeline_start", "pipeline"
+            ])
   }
 
   override DataFlow::Node getAnArgument() { result.asExpr().getExpr() = methodCall.getAnArgument() }

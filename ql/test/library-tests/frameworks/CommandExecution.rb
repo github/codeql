@@ -67,3 +67,22 @@ Open3.pipeline("echo foo")
 <<`EOF`
 echo foo
 EOF
+
+module MockSystem
+  def system(*args)
+    args
+  end
+
+  def self.system(*args)
+    args
+  end
+end
+
+class Foo
+  include MockSystem
+
+  def run
+    system("ls")
+    MockSystem.system("ls")
+  end
+end
