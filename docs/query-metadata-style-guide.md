@@ -115,10 +115,11 @@ Alert queries (`@kind problem` or `path-problem`) support two further properties
   * `medium`
   * `high`
   * `very-high`
-* `@problem.severity`–defines the level of severity of the alert: 
+* `@problem.severity`–defines the level of severity of non-security alerts: 
   * `error`–an issue that is likely to cause incorrect program behavior, for example a crash or vulnerability.
   * `warning`–an issue that indicates a potential problem in the code, or makes the code fragile if another (unrelated) part of code is changed.
   * `recommendation`–an issue where the code behaves correctly, but it could be improved.
+* `@security-severity`-defines the level of severity, between 0.0 and 10.0, for queries with `@tags security`. For more information about calculating `@security-severity`, see the [GitHub changelog](https://github.blog/changelog/2021-07-19-codeql-code-scanning-new-severity-levels-for-security-alerts/).  
 
 The values of `@precision` and `@problem.severity` assigned to a query that is part of the standard set determine how the results are displayed by LGTM. See [About alerts](https://help.semmle.com/lgtm-enterprise/user/help/about-alerts.html) and [Alert interest](https://lgtm.com/help/lgtm/alert-interest) for further information. For information about using custom queries in LGTM on a 'per-project' basis, see [Writing custom queries to include in LGTM analysis](https://lgtm.com/help/lgtm/writing-custom-queries) and [About adding custom queries](https://help.semmle.com/lgtm-enterprise/admin/help/about-adding-custom-queries.html).
 
@@ -164,6 +165,8 @@ When you tag a query like this, the associated CWE pages from [MITRE.org](https:
 
 Code Scanning may use tags to identify queries with specific meanings across languages. Currently, there is only one such tag: `lines-of-code`. The sum of the results for queries with this tag that return a single number column ([example for JavaScript](https://github.com/github/codeql/blob/c47d680d65f09a851e41d4edad58ffa7486b5431/java/ql/src/Metrics/Summaries/LinesOfCode.ql)) is interpreted by Code Scanning as the lines of code under the source root present in the database. Each language should have exactly one query of this form.
 
+
+Maintainers are expected to add a `@security-severity` tag to security relevant queries that will be run on Code Scanning.  There is a documented internal process for generating these `@security-severity` values.
 
 ## QL area
 

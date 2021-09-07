@@ -37,9 +37,11 @@ namespace My.Qltest
 
             this.StepElementSetter(0);
 
-            var gen = new Generic<int>();
+            var gen = new Generic<int, int>();
             gen.StepGeneric(0);
             gen.StepGeneric2(false);
+
+            new Sub().StepOverride("string");
         }
 
         object StepArgRes(object x) { return null; }
@@ -68,11 +70,21 @@ namespace My.Qltest
 
         void StepElementSetter(int value) => throw null;
 
-        class Generic<T>
+        class Generic<T, U>
         {
             public T StepGeneric(T t) => throw null;
 
             public T StepGeneric2<S>(S s) => throw null;
+        }
+
+        class Base<T>
+        {
+            public virtual T StepOverride(T t) => throw null;
+        }
+
+        class Sub : Base<string>
+        {
+            public override string StepOverride(string i) => throw null;
         }
     }
 }

@@ -94,7 +94,7 @@ public interface MultipartFile extends InputStreamSource {
 	 * @throws IOException in case of access errors (if the temporary store fails)
 	 */
 	@Override
-	InputStream getInputStream() throws IOException;
+	InputStream getInputStream(); // throws IOException;
 
 	/**
 	 * Return a Resource representation of this MultipartFile. This can be used

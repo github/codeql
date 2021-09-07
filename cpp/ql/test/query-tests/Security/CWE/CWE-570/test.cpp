@@ -225,3 +225,11 @@ void good_new_catch_exception_in_conversion() {
     long* p = (long*) new int; // GOOD
   } catch(const std::bad_alloc&) { }
 }
+
+// The 'n' parameter is just to distinquish it from the overload further up in this file.
+void *operator new(std::size_t, int n, const std::nothrow_t &);
+
+void test_operator_new_without_exception_spec() {
+  int* p = new(42, std::nothrow) int; // GOOD
+  if(p == nullptr) {}
+}

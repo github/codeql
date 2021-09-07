@@ -74,8 +74,15 @@ private class RandS extends RandomFunction {
 
 predicate missingGuard(VariableAccess va, string effect) {
   exists(Operation op | op.getAnOperand() = va |
-    missingGuardAgainstUnderflow(op, va) and effect = "underflow"
+    // underflow - random numbers are usually non-negative, so underflow is
+    // only likely if the type is unsigned. Multiplication is also unlikely to
+    // cause underflow of a non-negative number.
+    missingGuardAgainstUnderflow(op, va) and
+    effect = "underflow" and
+    op.getUnspecifiedType().(IntegralType).isUnsigned() and
+    not op instanceof MulExpr
     or
+    // overflow
     missingGuardAgainstOverflow(op, va) and effect = "overflow"
   )
 }
@@ -108,6 +115,9 @@ class UncontrolledArithConfiguration extends TaintTracking::Configuration {
         op instanceof BitwiseAndExpr or
         op instanceof ComplementExpr
       ).getAnOperand*()
+    or
+    // block unintended flow to pointers
+    node.asExpr().getUnspecifiedType() instanceof PointerType
   }
 }
 

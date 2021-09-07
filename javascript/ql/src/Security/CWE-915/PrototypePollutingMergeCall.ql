@@ -17,7 +17,7 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.PrototypePollution::PrototypePollution
+import semmle.javascript.security.dataflow.PrototypePollutionQuery
 import DataFlow::PathGraph
 import semmle.javascript.dependencies.Dependencies
 
