@@ -126,10 +126,17 @@ void moreTests() {
     
     r = r * 100; // BAD
   }
+
   {
     int r = rand();
     
-    r *= 100; // BAD [NOT DETECTED]
+    r *= 100; // BAD
+  }
+
+  {
+    int r = rand();
+    int v = 100;
+    v *= r; // BAD
   }
 
   {
