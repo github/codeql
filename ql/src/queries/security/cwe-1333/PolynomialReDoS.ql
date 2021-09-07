@@ -15,7 +15,7 @@
 
 import DataFlow::PathGraph
 import codeql.ruby.DataFlow
-import codeql.ruby.regexp.PolynomialReDoS
+import codeql.ruby.regexp.PolynomialReDoSQuery
 import codeql.ruby.regexp.SuperlinearBackTracking
 
 from

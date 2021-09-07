@@ -1,10 +1,10 @@
 /**
- * Provides a taint tracking configuration for reasoning about
- * polynomial regular expression denial-of-service attacks.
+ * Provides a taint tracking configuration for reasoning about polynomial
+ * regular expression denial-of-service attacks.
  *
- * Note, for performance reasons: only import this file if
- * `PolynomialReDoS::Configuration` is needed, otherwise
- * `PolynomialReDoSCustomizations` should be imported instead.
+ * Note, for performance reasons: only import this file if `Configuration` is
+ * needed. Otherwise, `PolynomialReDoSCustomizations` should be imported
+ * instead.
  */
 
 private import codeql.ruby.DataFlow
