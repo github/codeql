@@ -79,6 +79,27 @@ pub fn create_ast_node_class<'a>(ast_node: &'a str, ast_node_parent: &'a str) ->
             Box::new(ql::Expression::String("???")),
         ),
     };
+    let get_primary_ql_classes = ql::Predicate {
+        qldoc: Some(
+            "Gets a comma-separated list of the names of the primary CodeQL \
+             classes to which this element belongs."
+                .to_owned(),
+        ),
+        name: "getPrimaryQlClasses",
+        overridden: false,
+        return_type: Some(ql::Type::String),
+        formal_parameters: vec![],
+        body: ql::Expression::Equals(
+            Box::new(ql::Expression::Var("result")),
+            Box::new(ql::Expression::Aggregate {
+                name: "concat",
+                vars: vec![],
+                range: None,
+                expr: Box::new(ql::Expression::Pred("getAPrimaryQlClass", vec![])),
+                second_expr: Some(Box::new(ql::Expression::String(","))),
+            }),
+        ),
+    };
     ql::Class {
         qldoc: Some(String::from("The base class for all AST nodes")),
         name: "AstNode",
@@ -92,6 +113,7 @@ pub fn create_ast_node_class<'a>(ast_node: &'a str, ast_node_parent: &'a str) ->
             get_parent_index,
             get_a_field_or_child,
             get_a_primary_ql_class,
+            get_primary_ql_classes,
         ],
     }
 }
@@ -410,15 +432,16 @@ fn create_field_getters<'a>(
                 })
                 .collect();
             (
-                ql::Expression::Aggregate(
-                    "exists",
-                    vec![ql::FormalParameter {
+                ql::Expression::Aggregate {
+                    name: "exists",
+                    vars: vec![ql::FormalParameter {
                         name: "value",
                         param_type: ql::Type::Int,
                     }],
-                    Box::new(get_value),
-                    Box::new(ql::Expression::Or(disjuncts)),
-                ),
+                    range: Some(Box::new(get_value)),
+                    expr: Box::new(ql::Expression::Or(disjuncts)),
+                    second_expr: None,
+                },
                 // Since the getter returns a string and not an AstNode, it won't be part of getAFieldOrChild:
                 None,
             )

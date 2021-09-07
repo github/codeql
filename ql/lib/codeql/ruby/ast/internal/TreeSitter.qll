@@ -26,6 +26,9 @@ module Ruby {
 
     /** Gets the name of the primary QL class for this element. */
     string getAPrimaryQlClass() { result = "???" }
+
+    /** Gets a comma-separated list of the names of the primary CodeQL classes to which this element belongs. */
+    string getPrimaryQlClasses() { result = concat(getAPrimaryQlClass(), ",") }
   }
 
   /** A token. */
@@ -1864,6 +1867,9 @@ module Erb {
 
     /** Gets the name of the primary QL class for this element. */
     string getAPrimaryQlClass() { result = "???" }
+
+    /** Gets a comma-separated list of the names of the primary CodeQL classes to which this element belongs. */
+    string getPrimaryQlClasses() { result = concat(getAPrimaryQlClass(), ",") }
   }
 
   /** A token. */

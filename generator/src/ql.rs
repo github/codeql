@@ -127,12 +127,13 @@ pub enum Expression<'a> {
     Or(Vec<Expression<'a>>),
     Equals(Box<Expression<'a>>, Box<Expression<'a>>),
     Dot(Box<Expression<'a>>, &'a str, Vec<Expression<'a>>),
-    Aggregate(
-        &'a str,
-        Vec<FormalParameter<'a>>,
-        Box<Expression<'a>>,
-        Box<Expression<'a>>,
-    ),
+    Aggregate {
+        name: &'a str,
+        vars: Vec<FormalParameter<'a>>,
+        range: Option<Box<Expression<'a>>>,
+        expr: Box<Expression<'a>>,
+        second_expr: Option<Box<Expression<'a>>>,
+    },
 }
 
 impl<'a> fmt::Display for Expression<'a> {
@@ -188,15 +189,31 @@ impl<'a> fmt::Display for Expression<'a> {
                 }
                 write!(f, ")")
             }
-            Expression::Aggregate(n, vars, range, term) => {
-                write!(f, "{}(", n)?;
-                for (index, var) in vars.iter().enumerate() {
-                    if index > 0 {
-                        write!(f, ", ")?;
+            Expression::Aggregate {
+                name,
+                vars,
+                range,
+                expr,
+                second_expr,
+            } => {
+                write!(f, "{}(", name)?;
+                if vars.len() > 0 {
+                    for (index, var) in vars.iter().enumerate() {
+                        if index > 0 {
+                            write!(f, ", ")?;
+                        }
+                        write!(f, "{}", var)?;
                     }
-                    write!(f, "{}", var)?;
+                    write!(f, " | ")?;
                 }
-                write!(f, " | {} | {})", range, term)
+                if let Some(range) = range {
+                    write!(f, "{} | ", range)?;
+                }
+                write!(f, "{}", expr)?;
+                if let Some(second_expr) = second_expr {
+                    write!(f, ", {}", second_expr)?;
+                }
+                write!(f, ")")
             }
         }
     }

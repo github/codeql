@@ -32,6 +32,12 @@ class AstNode extends TAstNode {
    */
   string getAPrimaryQlClass() { result = "???" }
 
+  /**
+   * Gets a comma-separated list of the names of the primary CodeQL classes to
+   * which this element belongs.
+   */
+  final string getPrimaryQlClasses() { result = concat(this.getAPrimaryQlClass(), ",") }
+
   /** Gets the enclosing module, if any. */
   ModuleBase getEnclosingModule() {
     exists(Scope::Range s |
