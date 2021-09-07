@@ -1,8 +1,8 @@
 import python
 import semmle.python.dataflow.new.DataFlow
 import TestUtilities.InlineExpectationsTest
-import experimental.dataflow.TestUtil.PrintNode
 import semmle.python.functions.ModificationOfParameterWithDefault
+private import semmle.python.dataflow.new.internal.PrintNode
 
 class ModificationOfParameterWithDefaultTest extends InlineExpectationsTest {
   ModificationOfParameterWithDefaultTest() { this = "ModificationOfParameterWithDefaultTest" }
