@@ -1,9 +1,3 @@
-/**
- * Provides default sources, sinks and sanitizers for detecting
- * "reflected server-side cross-site scripting"
- * vulnerabilities, as well as extension points for adding your own.
- */
-
 private import ruby
 private import codeql.ruby.DataFlow
 private import codeql.ruby.CFG
@@ -122,19 +116,16 @@ module ReflectedXSS {
       call.getTemplateFile() = node2.getLocation().getFile() and
       (
         // ...node2 is a variable read
-        exists(CfgNodes::ExprNodes::VariableReadAccessCfgNode readNode |
-          readNode = node2.asExpr() and
-          readNode.getExpr().getVariable().getName() = "@" + hashKey
-        )
+        node2.asExpr().getExpr().(VariableReadAccess).getVariable().getName() = hashKey
         or
-        // ...node2 is an element reference against `locals`
+        // ...node2 is an element reference against `local_assigns`
         exists(
           CfgNodes::ExprNodes::ElementReferenceCfgNode refNode, DataFlow::Node argNode,
           CfgNodes::ExprNodes::StringlikeLiteralCfgNode strNode
         |
           refNode = node2.asExpr() and
           argNode.asExpr() = refNode.getArgument(0) and
-          refNode.getReceiver().getExpr().(MethodCall).getMethodName() = "locals" and
+          refNode.getReceiver().getExpr().(MethodCall).getMethodName() = "local_assigns" and
           argNode.getALocalSource() = DataFlow::exprNode(strNode) and
           strNode.getExpr().getValueText() = hashKey
         )

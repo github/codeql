@@ -1,39 +1,36 @@
 <%# BAD: An instance variable rendered without escaping %>
 <a href="<%= raw user_website %>">website</a>
 
-<%# BAD: A local rendered raw as an instance variable %>
-<%= raw @display_text %>
-
 <%# BAD: A local rendered raw as a local variable %>
 <%= raw display_text %>
 
-<%# BAD: A local rendered raw via the locals hash %>
-<%= raw locals[:display_text] %>
+<%# BAD: A local rendered raw via the local_assigns hash %>
+<%= raw local_assigns[:display_text] %>
 
 <% key = :display_text %>
-<%# BAD: A local rendered raw via the locals hash %>
-<%= raw locals[key] %>
+<%# BAD: A local rendered raw via the locals_assigns hash %>
+<%= raw local_assigns[key] %>
 
 <ul>
 <% for key in [:display_text, :safe_text] do %>
   <%# BAD: A local rendered raw via the locals hash %>
   <%# TODO: we miss that `key` can take `:display_text` as a value here %>
-  <li><%= raw locals[key] %></li>
+  <li><%= raw local_assigns[key] %></li>
 <% end %>
 </ul>
 
-<%# GOOD: A local rendered with default escaping via the locals hash %>
-<%= @display_text %>
+<%# GOOD: A local rendered with default escaping via the local_assigns hash %>
+<%= local_assigns[display_text] %>
 
 <%# GOOD: default escaping of rendered text %>
 <%=
-  full_text = prefix + locals[:display_text]
+  full_text = prefix + local_assigns[:display_text]
   full_text
 %>
 
 <%# BAD: html_safe marks string as not requiring HTML escaping %>
 <%=
-  @display_text.html_safe
+  display_text.html_safe
 %>
 
 <%# BAD: html_safe marks string as not requiring HTML escaping %>
