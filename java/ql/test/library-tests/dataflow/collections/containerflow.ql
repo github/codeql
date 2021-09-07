@@ -1,8 +1,7 @@
 import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.ExternalFlow
-import TestUtilities.InlineExpectationsTest
-import DataFlow
+import TestUtilities.InlineFlowTest
 
 class SummaryModelTest extends SummaryModelCsv {
   override predicate row(string row) {
@@ -15,25 +14,6 @@ class SummaryModelTest extends SummaryModelCsv {
   }
 }
 
-class ContainerFlowConf extends Configuration {
-  ContainerFlowConf() { this = "qltest:ContainerFlowConf" }
-
-  override predicate isSource(Node n) { n.asExpr().(MethodAccess).getMethod().hasName("source") }
-
-  override predicate isSink(Node n) { n.asExpr().(Argument).getCall().getCallee().hasName("sink") }
-}
-
-class HasFlowTest extends InlineExpectationsTest {
-  HasFlowTest() { this = "HasFlowTest" }
-
-  override string getARelevantTag() { result = "hasValueFlow" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
-    tag = "hasValueFlow" and
-    exists(Node src, Node sink, ContainerFlowConf conf | conf.hasFlow(src, sink) |
-      sink.getLocation() = location and
-      element = sink.toString() and
-      value = ""
-    )
-  }
+class HasFlowTest extends InlineFlowTest {
+  override DataFlow::Configuration getTaintFlowConfig() { none() }
 }
