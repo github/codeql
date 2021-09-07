@@ -92,14 +92,14 @@ void test_read()
 		char password[256];
 		int fd = val();
 
-		read(fd, password, 256); // BAD: `password` is received plaintext [NOT DETECTED]
+		read(fd, password, 256); // BAD: `password` is received plaintext
 	}
 
 	{
 		char password[256];
 		int fd = STDIN_FILENO;
 
-		read(fd, password, 256); // GOOD: `password` is received from stdin, not a network socket
+		read(fd, password, 256); // GOOD: `password` is received from stdin, not a network socket [FALSE POSITIVE]
 	}
 }
 

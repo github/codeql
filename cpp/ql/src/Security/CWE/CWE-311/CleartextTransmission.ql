@@ -33,7 +33,10 @@ abstract class NetworkSendRecv extends FunctionCall {
  * note: functions such as `read` may be reading from a network source or a file. We could attempt to determine which, and sort results into `cpp/cleartext-transmission` and perhaps `cpp/cleartext-storage-file`. In practice it probably isn't very important which query reports a result as long as its reported exactly once.
  */
 class NetworkSend extends NetworkSendRecv {
-  NetworkSend() { this.getTarget().hasGlobalName("send") }
+  NetworkSend() {
+    this.getTarget()
+        .hasGlobalName(["send", "sendto", "sendmsg", "write", "writev", "pwritev", "pwritev2"])
+  }
 
   override Expr getDataExpr() { result = this.getArgument(1) }
 }
@@ -42,7 +45,12 @@ class NetworkSend extends NetworkSendRecv {
  * A function call that receives data over a network.
  */
 class NetworkRecv extends NetworkSendRecv {
-  NetworkRecv() { this.getTarget().hasGlobalName("recv") }
+  NetworkRecv() {
+    this.getTarget()
+        .hasGlobalName([
+            "recv", "recvfrom", "recvmsg", "read", "pread", "readv", "preadv", "preadv2"
+          ])
+  }
 
   override Expr getDataExpr() { result = this.getArgument(1) }
 }
