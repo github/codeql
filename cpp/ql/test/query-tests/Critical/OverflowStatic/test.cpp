@@ -52,7 +52,7 @@ void f3() {
     char buffer[5];
     for (i=0; i<10; i++) {
         if (i < 5) {
-            buffer[i] = 0; // GOOD [FALSE POSITIVE]
+            buffer[i] = 0; // GOOD
         }
     }
 }
