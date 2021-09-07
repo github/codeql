@@ -83,6 +83,7 @@ import com.semmle.js.ast.SequenceExpression;
 import com.semmle.js.ast.SourceLocation;
 import com.semmle.js.ast.SpreadElement;
 import com.semmle.js.ast.Statement;
+import com.semmle.js.ast.StaticInitializer;
 import com.semmle.js.ast.Super;
 import com.semmle.js.ast.SwitchCase;
 import com.semmle.js.ast.SwitchStatement;
@@ -3244,6 +3245,10 @@ public class Parser {
     PropertyInfo pi = new PropertyInfo(false, isGenerator, methodStartLoc);
     this.parsePropertyName(pi);
     boolean isStatic = isMaybeStatic && this.type != TokenType.parenL;
+    if (isStatic && this.type == TokenType.braceL) {
+      BlockStatement block = parseBlock(false);
+      return new StaticInitializer(block.getLoc(), block);
+    }
     if (isStatic) {
       if (isGenerator) this.unexpected();
       isGenerator = this.eat(TokenType.star);

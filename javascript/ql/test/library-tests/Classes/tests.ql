@@ -72,3 +72,5 @@ class Configuration extends DataFlow::Configuration {
 query predicate dataflow(DataFlow::Node pred, DataFlow::Node succ) {
   any(Configuration c).hasFlow(pred, succ)
 }
+
+query BlockStmt staticInitializer(ClassDefinition cd) { result = cd.getAStaticInitializerBlock() }
