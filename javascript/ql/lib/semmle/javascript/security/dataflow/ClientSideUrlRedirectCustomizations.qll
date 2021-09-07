@@ -120,6 +120,24 @@ module ClientSideUrlRedirect {
   }
 
   /**
+   * A call to `$("<a>", { href: sink })` or `$(...).attr("href", sink)`.
+   */
+  class JQueryHrefSink extends Sink {
+    JQueryHrefSink() {
+      exists(string prop | prop = DOM::getAPropertyNameInterpretedAsJavaScriptUrl() |
+        this = JQuery::dollarCall().getOptionArgument(1, prop)
+        or
+        exists(DataFlow::MethodCallNode call | call = JQuery::objectRef().getAMethodCall("attr") |
+          call.getArgument(0).mayHaveStringValue(prop) and
+          this = call.getArgument(1)
+          or
+          this = call.getOptionArgument(0, prop)
+        )
+      )
+    }
+  }
+
+  /**
    * An expression that may be interpreted as the URL of a script.
    */
   abstract class ScriptUrlSink extends Sink { }
