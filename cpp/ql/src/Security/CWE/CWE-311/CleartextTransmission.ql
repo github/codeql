@@ -22,6 +22,12 @@ import semmle.code.cpp.valuenumbering.GlobalValueNumbering
  */
 abstract class NetworkSendRecv extends FunctionCall {
   /**
+   * Gets the expression for the socket or similar object used for sending or
+   * receiving data.
+   */
+  abstract Expr getSocketExpr();
+
+  /**
    * Gets the expression for the buffer to be sent from / received into.
    */
   abstract Expr getDataExpr();
@@ -38,6 +44,8 @@ class NetworkSend extends NetworkSendRecv {
         .hasGlobalName(["send", "sendto", "sendmsg", "write", "writev", "pwritev", "pwritev2"])
   }
 
+  override Expr getSocketExpr() { result = this.getArgument(0) }
+
   override Expr getDataExpr() { result = this.getArgument(1) }
 }
 
@@ -52,9 +60,15 @@ class NetworkRecv extends NetworkSendRecv {
           ])
   }
 
+  override Expr getSocketExpr() { result = this.getArgument(0) }
+
   override Expr getDataExpr() { result = this.getArgument(1) }
 }
 
 from NetworkSendRecv transmission, SensitiveExpr e
-where DataFlow::localFlow(DataFlow::exprNode(e), DataFlow::exprNode(transmission.getDataExpr()))
+where
+  DataFlow::localFlow(DataFlow::exprNode(e), DataFlow::exprNode(transmission.getDataExpr())) and
+  not exists(Zero zero |
+    DataFlow::localFlow(DataFlow::exprNode(zero), DataFlow::exprNode(transmission.getSocketExpr()))
+  )
 select transmission, e

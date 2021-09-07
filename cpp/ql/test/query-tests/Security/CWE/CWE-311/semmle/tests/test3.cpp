@@ -99,7 +99,7 @@ void test_read()
 		char password[256];
 		int fd = STDIN_FILENO;
 
-		read(fd, password, 256); // GOOD: `password` is received from stdin, not a network socket [FALSE POSITIVE]
+		read(fd, password, 256); // GOOD: `password` is received from stdin, not a network socket
 	}
 }
 
