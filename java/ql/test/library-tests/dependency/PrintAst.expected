@@ -1,6 +1,6 @@
 dependency/A.java:
 #    0| [CompilationUnit] A
-#    3|   1: [Class] A
+#    3|   1: [Class,GenericType,ParameterizedType] A
 #-----|     -2: (Generic Parameters)
 #    3|       0: [TypeVariable] T
 #    6|   2: [Class] B

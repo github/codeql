@@ -149,6 +149,7 @@ private class StringBuilderVarExt extends StringBuilderVar {
   /**
    * Implements `StringBuilderVarExt.getNextAppendIncludingAssignmentChains+(prev)`.
    */
+  pragma[nomagic]
   StringBuilderAppend getSubsequentAppendIncludingAssignmentChains(
     StringBuilderConstructorOrAppend prev
   ) {

@@ -35,22 +35,6 @@ module SummaryComponent {
   /** Gets a summary component that represents the return value of a call. */
   SummaryComponent return() { result = return(any(NormalReturnKind rk)) }
 
-  /**
-   * Gets a summary component that represents the return value through the `i`th
-   * `out` argument of a call.
-   */
-  SummaryComponent outArgument(int i) {
-    result = return(any(OutReturnKind rk | rk.getPosition() = i))
-  }
-
-  /**
-   * Gets a summary component that represents the return value through the `i`th
-   * `ref` argument of a call.
-   */
-  SummaryComponent refArgument(int i) {
-    result = return(any(RefReturnKind rk | rk.getPosition() = i))
-  }
-
   /** Gets a summary component that represents a jump to `c`. */
   SummaryComponent jump(Callable c) {
     result =
@@ -87,18 +71,6 @@ module SummaryComponentStack {
 
   /** Gets a singleton stack representing the return value of a call. */
   SummaryComponentStack return() { result = singleton(SummaryComponent::return()) }
-
-  /**
-   * Gets a singleton stack representing the return value through the `i`th
-   * `out` argument of a call.
-   */
-  SummaryComponentStack outArgument(int i) { result = singleton(SummaryComponent::outArgument(i)) }
-
-  /**
-   * Gets a singleton stack representing the return value through the `i`th
-   * `ref` argument of a call.
-   */
-  SummaryComponentStack refArgument(int i) { result = singleton(SummaryComponent::refArgument(i)) }
 
   /** Gets a singleton stack representing a jump to `c`. */
   SummaryComponentStack jump(Callable c) { result = singleton(SummaryComponent::jump(c)) }

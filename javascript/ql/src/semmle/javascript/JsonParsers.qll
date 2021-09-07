@@ -26,6 +26,10 @@ private class PlainJsonParserCall extends JsonParserCall {
   PlainJsonParserCall() {
     exists(DataFlow::SourceNode callee | this = callee.getACall() |
       callee = DataFlow::globalVarRef("JSON").getAPropertyRead("parse") or
+      callee =
+        DataFlow::moduleMember(["json3", "json5", "flatted", "teleport-javascript", "json-cycle"],
+          "parse") or
+      callee = API::moduleImport("replicator").getInstance().getMember("decode").getAnImmediateUse() or
       callee = DataFlow::moduleImport("parse-json") or
       callee = DataFlow::moduleImport("json-parse-better-errors") or
       callee = DataFlow::moduleImport("json-safe-parse") or
@@ -73,4 +77,16 @@ private class JsonParserCallWithCallback extends JsonParserCall {
   override DataFlow::Node getInput() { result = getArgument(0) }
 
   override DataFlow::SourceNode getOutput() { result = getCallback(1).getParameter(1) }
+}
+
+/**
+ * A taint step through the `strip-json-comments` library.
+ */
+private class StripJsonCommentsStep extends TaintTracking::SharedTaintStep {
+  override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(API::CallNode call | call = API::moduleImport("strip-json-comments").getACall() |
+      pred = call.getArgument(0) and
+      succ = call
+    )
+  }
 }

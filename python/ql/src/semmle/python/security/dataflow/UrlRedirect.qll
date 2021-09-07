@@ -1,37 +1,42 @@
 /**
- * Provides a taint-tracking configuration for detecting URL redirection
- * vulnerabilities.
+ * Provides a taint-tracking configuration for detecting "URL redirection" vulnerabilities.
+ *
+ * Note, for performance reasons: only import this file if
+ * `UrlRedirect::Configuration` is needed, otherwise
+ * `UrlRedirectCustomizations` should be imported instead.
  */
 
-import python
+private import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
-import semmle.python.Concepts
-import semmle.python.dataflow.new.RemoteFlowSources
-import semmle.python.dataflow.new.BarrierGuards
 
 /**
- * A taint-tracking configuration for detecting URL redirection vulnerabilities.
+ * Provides a taint-tracking configuration for detecting "URL redirection" vulnerabilities.
  */
-class UrlRedirectConfiguration extends TaintTracking::Configuration {
-  UrlRedirectConfiguration() { this = "UrlRedirectConfiguration" }
+module UrlRedirect {
+  import UrlRedirectCustomizations::UrlRedirect
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  /**
+   * A taint-tracking configuration for detecting "URL redirection" vulnerabilities.
+   */
+  class Configuration extends TaintTracking::Configuration {
+    Configuration() { this = "UrlRedirect" }
 
-  override predicate isSink(DataFlow::Node sink) {
-    sink = any(HTTP::Server::HttpRedirectResponse e).getRedirectLocation()
-  }
+    override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-  override predicate isSanitizer(DataFlow::Node node) {
-    // Url redirection is a problem only if the user controls the prefix of the URL.
-    // TODO: This is a copy of the taint-sanitizer from the old points-to query, which doesn't
-    // cover formatting.
-    exists(BinaryExprNode string_concat | string_concat.getOp() instanceof Add |
-      string_concat.getRight() = node.asCfgNode()
-    )
-  }
+    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-  override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-    guard instanceof StringConstCompare
+    override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
+
+    override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
+      guard instanceof SanitizerGuard
+    }
   }
 }
+
+/**
+ * DEPRECATED: Don't extend this class for customization, since this will lead to bad
+ * performance, instead use the new `UrlRedirectCustomizations.qll` file, and extend
+ * its' classes.
+ */
+deprecated class UrlRedirectConfiguration = UrlRedirect::Configuration;

@@ -23,21 +23,7 @@ Node summaryNode(SummarizedCallable c, SummaryNodeState state) { result = getSum
 DataFlowCall summaryDataFlowCall(Node receiver) { none() }
 
 /** Gets the type of content `c`. */
-DataFlowType getContentType(Content c) {
-  result = getErasedRepr(c.(FieldContent).getField().getType())
-  or
-  c instanceof CollectionContent and
-  result instanceof TypeObject
-  or
-  c instanceof ArrayContent and
-  result instanceof TypeObject
-  or
-  c instanceof MapKeyContent and
-  result instanceof TypeObject
-  or
-  c instanceof MapValueContent and
-  result instanceof TypeObject
-}
+DataFlowType getContentType(Content c) { result = c.getType() }
 
 /** Gets the return type of kind `rk` for callable `c`. */
 DataFlowType getReturnType(SummarizedCallable c, ReturnKind rk) {
@@ -73,13 +59,7 @@ predicate summaryElement(DataFlowCallable c, string input, string output, string
 /** Gets the summary component for specification component `c`, if any. */
 bindingset[c]
 SummaryComponent interpretComponentSpecific(string c) {
-  c = "ArrayElement" and result = SummaryComponent::content(any(ArrayContent c0))
-  or
-  c = "Element" and result = SummaryComponent::content(any(CollectionContent c0))
-  or
-  c = "MapKey" and result = SummaryComponent::content(any(MapKeyContent c0))
-  or
-  c = "MapValue" and result = SummaryComponent::content(any(MapValueContent c0))
+  exists(Content content | parseContent(c, content) and result = SummaryComponent::content(content))
 }
 
 class SourceOrSinkElement = Top;

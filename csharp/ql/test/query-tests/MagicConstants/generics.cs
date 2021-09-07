@@ -1,4 +1,3 @@
-
 class GenericsTest
 {
     class C1 { }

@@ -83,56 +83,6 @@ private predicate instanceFieldAssign(Expr src, FieldAccess fa) {
   )
 }
 
-private newtype TContent =
-  TFieldContent(InstanceField f) or
-  TArrayContent() or
-  TCollectionContent() or
-  TMapKeyContent() or
-  TMapValueContent()
-
-/**
- * A reference contained in an object. Examples include instance fields, the
- * contents of a collection object, or the contents of an array.
- */
-class Content extends TContent {
-  /** Gets a textual representation of this element. */
-  abstract string toString();
-
-  predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
-    path = "" and sl = 0 and sc = 0 and el = 0 and ec = 0
-  }
-}
-
-class FieldContent extends Content, TFieldContent {
-  InstanceField f;
-
-  FieldContent() { this = TFieldContent(f) }
-
-  InstanceField getField() { result = f }
-
-  override string toString() { result = f.toString() }
-
-  override predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
-    f.getLocation().hasLocationInfo(path, sl, sc, el, ec)
-  }
-}
-
-class ArrayContent extends Content, TArrayContent {
-  override string toString() { result = "[]" }
-}
-
-class CollectionContent extends Content, TCollectionContent {
-  override string toString() { result = "<element>" }
-}
-
-class MapKeyContent extends Content, TMapKeyContent {
-  override string toString() { result = "<map.key>" }
-}
-
-class MapValueContent extends Content, TMapValueContent {
-  override string toString() { result = "<map.value>" }
-}
-
 /**
  * Holds if data can flow from `node1` to `node2` via an assignment to `f`.
  * Thus, `node2` references an object with a field `f` that contains the

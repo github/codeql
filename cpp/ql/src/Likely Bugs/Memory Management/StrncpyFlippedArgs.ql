@@ -4,7 +4,7 @@
  *              as the third argument may result in a buffer overflow.
  * @kind problem
  * @problem.severity warning
- * @security-severity 10.0
+ * @security-severity 9.3
  * @precision medium
  * @id cpp/bad-strncpy-size
  * @tags reliability

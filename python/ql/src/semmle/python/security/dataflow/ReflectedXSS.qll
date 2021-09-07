@@ -1,32 +1,42 @@
 /**
- * Provides a taint-tracking configuration for detecting reflected server-side
- * cross-site scripting vulnerabilities.
+ * Provides a taint-tracking configuration for detecting "reflected server-side cross-site scripting" vulnerabilities.
+ *
+ * Note, for performance reasons: only import this file if
+ * `ReflectedXSS::Configuration` is needed, otherwise
+ * `ReflectedXSSCustomizations` should be imported instead.
  */
 
-import python
+private import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
-import semmle.python.Concepts
-import semmle.python.dataflow.new.RemoteFlowSources
-import semmle.python.dataflow.new.BarrierGuards
 
 /**
- * A taint-tracking configuration for detecting reflected server-side cross-site
- * scripting vulnerabilities.
+ * Provides a taint-tracking configuration for detecting "reflected server-side cross-site scripting" vulnerabilities.
  */
-class ReflectedXssConfiguration extends TaintTracking::Configuration {
-  ReflectedXssConfiguration() { this = "ReflectedXssConfiguration" }
+module ReflectedXSS {
+  import ReflectedXSSCustomizations::ReflectedXSS
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  /**
+   * A taint-tracking configuration for detecting "reflected server-side cross-site scripting" vulnerabilities.
+   */
+  class Configuration extends TaintTracking::Configuration {
+    Configuration() { this = "ReflectedXSS" }
 
-  override predicate isSink(DataFlow::Node sink) {
-    exists(HTTP::Server::HttpResponse response |
-      response.getMimetype().toLowerCase() = "text/html" and
-      sink = response.getBody()
-    )
-  }
+    override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-  override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-    guard instanceof StringConstCompare
+    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+
+    override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
+
+    override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
+      guard instanceof SanitizerGuard
+    }
   }
 }
+
+/**
+ * DEPRECATED: Don't extend this class for customization, since this will lead to bad
+ * performance, instead use the new `ReflectedXSSCustomizations.qll` file, and extend
+ * its' classes.
+ */
+deprecated class ReflectedXssConfiguration = ReflectedXSS::Configuration;

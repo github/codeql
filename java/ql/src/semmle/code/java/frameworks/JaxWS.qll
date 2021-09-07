@@ -604,13 +604,13 @@ private class FormModel extends SummaryModelCsv {
     row =
       [
         "javax.ws.rs.core;Form;false;Form;;;MapKey of Argument[0];Argument[-1];taint",
-        "javax.ws.rs.core;Form;false;Form;;;MapValue of Argument[0];Argument[-1];taint",
+        "javax.ws.rs.core;Form;false;Form;;;Element of MapValue of Argument[0];Argument[-1];taint",
         "javax.ws.rs.core;Form;false;Form;;;Argument[0..1];Argument[-1];taint",
         "javax.ws.rs.core;Form;true;asMap;;;Argument[-1];ReturnValue;taint",
         "javax.ws.rs.core;Form;true;param;;;Argument[0..1];Argument[-1];taint",
         "javax.ws.rs.core;Form;true;param;;;Argument[-1];ReturnValue;value",
         "jakarta.ws.rs.core;Form;false;Form;;;MapKey of Argument[0];Argument[-1];taint",
-        "jakarta.ws.rs.core;Form;false;Form;;;MapValue of Argument[0];Argument[-1];taint",
+        "jakarta.ws.rs.core;Form;false;Form;;;Element of MapValue of Argument[0];Argument[-1];taint",
         "jakarta.ws.rs.core;Form;false;Form;;;Argument[0..1];Argument[-1];taint",
         "jakarta.ws.rs.core;Form;true;asMap;;;Argument[-1];ReturnValue;taint",
         "jakarta.ws.rs.core;Form;true;param;;;Argument[0..1];Argument[-1];taint",

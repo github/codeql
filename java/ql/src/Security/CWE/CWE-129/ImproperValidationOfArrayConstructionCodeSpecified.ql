@@ -4,7 +4,7 @@
  *              a construction of an array can lead to index out of bound exceptions.
  * @kind path-problem
  * @problem.severity recommendation
- * @security-severity 5.9
+ * @security-severity 8.8
  * @precision medium
  * @id java/improper-validation-of-array-construction-code-specified
  * @tags security

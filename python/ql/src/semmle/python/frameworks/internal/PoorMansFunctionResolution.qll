@@ -44,7 +44,7 @@ private Expr lastDecoratorCall(Function func) {
  * print(inst.my_method)
  * ```
  */
-private DataFlow::LocalSourceNode poorMansFunctionTracker(DataFlow::TypeTracker t, Function func) {
+private DataFlow::TypeTrackingNode poorMansFunctionTracker(DataFlow::TypeTracker t, Function func) {
   t.start() and
   (
     not exists(func.getADecorator()) and
