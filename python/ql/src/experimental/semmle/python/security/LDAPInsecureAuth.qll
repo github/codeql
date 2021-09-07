@@ -38,12 +38,8 @@ class LDAPPrivateHost extends StrConst {
 }
 
 predicate concatAndCompareAgainstFullHostRegex(LDAPSchema schema, StrConst host) {
-  schema instanceof LDAPSchema and
   not host instanceof LDAPPrivateHost and
-  exists(string full_host |
-    full_host = schema.(StrConst).getText() + host.(StrConst).getText() and
-    full_host.regexpMatch(getFullHostRegex())
-  )
+  (schema.getText() + host.getText()).regexpMatch(getFullHostRegex())
 }
 
 // "ldap://" + "somethingon.theinternet.com"
