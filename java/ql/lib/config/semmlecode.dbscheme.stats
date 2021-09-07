@@ -169,7 +169,7 @@
 <v>223232</v>
 </e>
 <e>
-<k>@localclassdeclstmt</k>
+<k>@localtypedeclstmt</k>
 <v>349</v>
 </e>
 <e>
@@ -16910,11 +16910,11 @@
 </dependencies>
 </relation>
 <relation>
-<name>isLocalClass</name>
+<name>isLocalClassOrInterface</name>
 <cardinality>349</cardinality>
 <columnsizes>
 <e>
-<k>classid</k>
+<k>typeid</k>
 <v>349</v>
 </e>
 <e>
@@ -16924,7 +16924,7 @@
 </columnsizes>
 <dependencies>
 <dep>
-<src>classid</src>
+<src>typeid</src>
 <trg>parent</trg>
 <val>
 <hist>
@@ -16941,7 +16941,7 @@
 </dep>
 <dep>
 <src>parent</src>
-<trg>classid</trg>
+<trg>typeid</trg>
 <val>
 <hist>
 <budget>12</budget>

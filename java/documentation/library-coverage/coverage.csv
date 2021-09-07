@@ -8,6 +8,7 @@ com.esotericsoftware.kryo5.io,,,1,,,,,,,,,,,,,,,,,,,1,
 com.fasterxml.jackson.core,,,1,,,,,,,,,,,,,,,,,,,1,
 com.fasterxml.jackson.databind,,,5,,,,,,,,,,,,,,,,,,,5,
 com.google.common.base,,,85,,,,,,,,,,,,,,,,,,,62,23
+com.google.common.cache,,,17,,,,,,,,,,,,,,,,,,,,17
 com.google.common.io,6,,73,,,,,,,,,,,,,,6,,,,,72,1
 com.opensymphony.xwork2.ognl,3,,,,,,,,,,,,3,,,,,,,,,,
 com.unboundid.ldap.sdk,17,,,,,,,,,,17,,,,,,,,,,,,
@@ -22,7 +23,7 @@ java.lang,,,3,,,,,,,,,,,,,,,,,,,1,2
 java.net,10,3,7,,,,,,,,,,,10,,,,,,,3,7,
 java.nio,10,,4,,10,,,,,,,,,,,,,,,,,4,
 java.sql,7,,,,,,,,,,,,,,,7,,,,,,,
-java.util,,,332,,,,,,,,,,,,,,,,,,,15,317
+java.util,,,336,,,,,,,,,,,,,,,,,,,15,321
 javax.json,,,123,,,,,,,,,,,,,,,,,,,100,23
 javax.management.remote,2,,,,,,,,,2,,,,,,,,,,,,,
 javax.naming,7,,,,,,,,,6,1,,,,,,,,,,,,
@@ -35,10 +36,11 @@ javax.ws.rs.core,3,,143,,,,1,,,,,,,,,,,2,,,,88,55
 javax.xml.transform.sax,,,4,,,,,,,,,,,,,,,,,,,4,
 javax.xml.transform.stream,,,2,,,,,,,,,,,,,,,,,,,2,
 javax.xml.xpath,3,,,,,,,,,,,,,,,,,,3,,,,
+jodd.json,,,10,,,,,,,,,,,,,,,,,,,,10
 ognl,6,,,,,,,,,,,,6,,,,,,,,,,
 org.apache.commons.codec,,,6,,,,,,,,,,,,,,,,,,,6,
-org.apache.commons.collections,,,99,,,,,,,,,,,,,,,,,,,4,95
-org.apache.commons.collections4,,,99,,,,,,,,,,,,,,,,,,,4,95
+org.apache.commons.collections,,,394,,,,,,,,,,,,,,,,,,,9,385
+org.apache.commons.collections4,,,394,,,,,,,,,,,,,,,,,,,9,385
 org.apache.commons.io,,,22,,,,,,,,,,,,,,,,,,,22,
 org.apache.commons.jexl2,15,,,,,,,,15,,,,,,,,,,,,,,
 org.apache.commons.jexl3,15,,,,,,,,15,,,,,,,,,,,,,,
@@ -74,6 +76,7 @@ org.springframework.web.client,13,3,,,,,,,,,,,,13,,,,,,,3,,
 org.springframework.web.context.request,,8,,,,,,,,,,,,,,,,,,,8,,
 org.springframework.web.multipart,,12,13,,,,,,,,,,,,,,,,,,12,13,
 org.springframework.web.reactive.function.client,2,,,,,,,,,,,,,2,,,,,,,,,
+org.springframework.web.util,,,163,,,,,,,,,,,,,,,,,,,138,25
 org.xml.sax,,,1,,,,,,,,,,,,,,,,,,,1,
 org.xmlpull.v1,,3,,,,,,,,,,,,,,,,,,,3,,
 play.mvc,,4,,,,,,,,,,,,,,,,,,,4,,

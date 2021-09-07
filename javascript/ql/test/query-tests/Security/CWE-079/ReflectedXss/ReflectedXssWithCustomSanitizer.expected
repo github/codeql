@@ -25,6 +25,8 @@
 | ReflectedXssGood3.js:139:12:139:27 | escapeHtml3(url) | Cross-site scripting vulnerability due to $@. | ReflectedXssGood3.js:135:15:135:27 | req.params.id | user-provided value |
 | formatting.js:6:14:6:47 | util.fo ... , evil) | Cross-site scripting vulnerability due to $@. | formatting.js:4:16:4:29 | req.query.evil | user-provided value |
 | formatting.js:7:14:7:53 | require ... , evil) | Cross-site scripting vulnerability due to $@. | formatting.js:4:16:4:29 | req.query.evil | user-provided value |
+| live-server.js:6:13:6:50 | `<html> ... /html>` | Cross-site scripting vulnerability due to $@. | live-server.js:4:21:4:27 | req.url | user-provided value |
+| live-server.js:12:13:12:50 | `<html> ... /html>` | Cross-site scripting vulnerability due to $@. | live-server.js:10:21:10:27 | req.url | user-provided value |
 | pages/Next.jsx:8:13:8:19 | req.url | Cross-site scripting vulnerability due to $@. | pages/Next.jsx:8:13:8:19 | req.url | user-provided value |
 | pages/Next.jsx:15:13:15:19 | req.url | Cross-site scripting vulnerability due to $@. | pages/Next.jsx:15:13:15:19 | req.url | user-provided value |
 | pages/api/myapi.js:2:14:2:20 | req.url | Cross-site scripting vulnerability due to $@. | pages/api/myapi.js:2:14:2:20 | req.url | user-provided value |

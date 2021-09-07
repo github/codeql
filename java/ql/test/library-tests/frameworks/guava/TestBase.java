@@ -75,7 +75,7 @@ class TestBase {
     }
 
     void test6() {
-        sink(Suppliers.memoize(Suppliers.memoizeWithExpiration(Suppliers.synchronizedSupplier(Suppliers.ofInstance(taint())), 3, TimeUnit.HOURS))); // $numTaintFlow=1
+        sink(Suppliers.memoize(Suppliers.memoizeWithExpiration(Suppliers.synchronizedSupplier(Suppliers.ofInstance(taint())), 3, TimeUnit.HOURS)).get()); // $numTaintFlow=1
     }
 
     void test7() {

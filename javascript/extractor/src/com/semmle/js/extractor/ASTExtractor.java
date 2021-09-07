@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.Stack;
+import java.util.regex.Matcher;
 
 import com.semmle.js.ast.AClass;
 import com.semmle.js.ast.AFunction;
@@ -45,6 +46,7 @@ import com.semmle.js.ast.ForOfStatement;
 import com.semmle.js.ast.ForStatement;
 import com.semmle.js.ast.FunctionDeclaration;
 import com.semmle.js.ast.FunctionExpression;
+import com.semmle.js.ast.GeneratedCodeExpr;
 import com.semmle.js.ast.IFunction;
 import com.semmle.js.ast.INode;
 import com.semmle.js.ast.IPattern;
@@ -172,7 +174,8 @@ public class ASTExtractor {
   private final RegExpExtractor regexpExtractor;
   private final ExtractorConfig config;
 
-  public ASTExtractor(ExtractorConfig config, LexicalExtractor lexicalExtractor, ScopeManager scopeManager) {
+  public ASTExtractor(
+      ExtractorConfig config, LexicalExtractor lexicalExtractor, ScopeManager scopeManager) {
     this.config = config;
     this.trapwriter = lexicalExtractor.getTrapwriter();
     this.locationManager = lexicalExtractor.getLocationManager();
@@ -180,22 +183,22 @@ public class ASTExtractor {
     this.scopeManager = scopeManager;
     this.lexicalExtractor = lexicalExtractor;
     this.regexpExtractor = new RegExpExtractor(trapwriter, locationManager);
-    this.toplevelLabel = makeTopLevelLabel(trapwriter, locationManager.getFileLabel(), locationManager.getStartLine(), locationManager.getStartColumn());
+    this.toplevelLabel =
+        makeTopLevelLabel(
+            trapwriter,
+            locationManager.getFileLabel(),
+            locationManager.getStartLine(),
+            locationManager.getStartColumn());
   }
 
   /**
    * Returns the label for the top-level starting at the given location.
-   * <p>
-   * May be used to refer to the top-level before it has been extracted.
+   *
+   * <p>May be used to refer to the top-level before it has been extracted.
    */
-  public static Label makeTopLevelLabel(TrapWriter trapWriter, Label fileLabel, int startLine, int startColumn) {
-    return trapWriter.globalID(
-        "script;{"
-            + fileLabel
-            + "},"
-            + startLine
-            + ','
-            + startColumn);
+  public static Label makeTopLevelLabel(
+      TrapWriter trapWriter, Label fileLabel, int startLine, int startColumn) {
+    return trapWriter.globalID("script;{" + fileLabel + "}," + startLine + ',' + startColumn);
   }
 
   public TrapWriter getTrapwriter() {
@@ -252,8 +255,8 @@ public class ASTExtractor {
     TYPE_LABEL,
 
     /**
-     * An identifier that refers to a variable from inside a type, i.e. the operand to a
-     * <code>typeof</code> type or left operand to an <code>is</code> type.
+     * An identifier that refers to a variable from inside a type, i.e. the operand to a <code>
+     * typeof</code> type or left operand to an <code>is</code> type.
      *
      * <p>This is generally treated as a type, except a variable binding will be emitted for it.
      */
@@ -271,16 +274,16 @@ public class ASTExtractor {
     /**
      * An identifier that occurs in a type-only import.
      *
-     * These may declare a type and/or a namespace, but for compatibility with our AST,
-     * must be emitted as a VarDecl (with no variable binding).
+     * <p>These may declare a type and/or a namespace, but for compatibility with our AST, must be
+     * emitted as a VarDecl (with no variable binding).
      */
     TYPE_ONLY_IMPORT,
 
     /**
      * An identifier that occurs in a type-only export.
      *
-     * These may refer to a type and/or a namespace, but for compatibility with our AST,
-     * must be emitted as an ExportVarAccess (with no variable binding).
+     * <p>These may refer to a type and/or a namespace, but for compatibility with our AST, must be
+     * emitted as an ExportVarAccess (with no variable binding).
      */
     TYPE_ONLY_EXPORT,
 
@@ -300,8 +303,8 @@ public class ASTExtractor {
     EXPORT,
 
     /**
-     * An identifier that occurs as a qualified name in a default export expression, such as
-     * <code>A</code> in <code>export default A.B</code>.
+     * An identifier that occurs as a qualified name in a default export expression, such as <code>A
+     * </code> in <code>export default A.B</code>.
      *
      * <p>This acts like {@link #EXPORT}, except it cannot refer to a type (i.e. it must be a
      * variable and/or a namespace).
@@ -312,8 +315,8 @@ public class ASTExtractor {
      * True if this occurs as part of a type annotation, i.e. it is {@link #TYPE_BIND} or {@link
      * #TYPE_DECL}, {@link #TYPE_LABEL}, {@link #VAR_IN_TYPE_BIND}, or {@link #NAMESPACE_BIND}.
      *
-     * <p>Does not hold for {@link #VAR_AND_TYPE_DECL}, {@link #TYPE_ONLY_IMPORT}, or @{link {@link #TYPE_ONLY_EXPORT}
-     * as these do not occur in type annotations.
+     * <p>Does not hold for {@link #VAR_AND_TYPE_DECL}, {@link #TYPE_ONLY_IMPORT}, or @{link {@link
+     * #TYPE_ONLY_EXPORT} as these do not occur in type annotations.
      */
     public boolean isInsideType() {
       return this == TYPE_BIND
@@ -569,6 +572,18 @@ public class ASTExtractor {
         regexpExtractor.extract(source.substring(1, source.lastIndexOf('/')), offsets, nd, false);
       } else if (nd.isStringLiteral() && !c.isInsideType() && nd.getRaw().length() < 1000) {
         regexpExtractor.extract(valueString, makeStringLiteralOffsets(nd.getRaw()), nd, true);
+
+        // Scan the string for template tags, if we're in a context where such tags are relevant.
+        if (scopeManager.isInTemplateFile()) {
+          Matcher m = TemplateEngines.TEMPLATE_TAGS.matcher(nd.getRaw());
+          int offset = nd.getLoc().getStart().getOffset();
+          while (m.find()) {
+            Label locationLbl =
+                TemplateEngines.makeLocation(
+                    lexicalExtractor.getTextualExtractor(), offset + m.start(), offset + m.end());
+            trapwriter.addTuple("expr_contains_template_tag_location", key, locationLbl);
+          }
+        }
       }
       return key;
     }
@@ -704,7 +719,8 @@ public class ASTExtractor {
                     + locationManager.getStartLine()
                     + ","
                     + locationManager.getStartColumn());
-        Scope moduleScope = scopeManager.enterScope(ScopeKind.MODULE, moduleScopeKey, toplevelLabel);
+        Scope moduleScope =
+            scopeManager.enterScope(ScopeKind.MODULE, moduleScopeKey, toplevelLabel);
         if (sourceType.hasNoGlobalScope()) {
           scopeManager.setImplicitVariableScope(moduleScope);
         }
@@ -732,7 +748,10 @@ public class ASTExtractor {
       visitAll(nd.getBody(), toplevelLabel);
 
       // Leave the local scope again.
-      if (sourceType.hasLocalScope()) scopeManager.leaveScope();
+      if (sourceType.hasLocalScope()) {
+        scopeManager.leaveScope();
+        scopeManager.resetImplicitVariableScope();
+      }
 
       contextManager.leaveContainer();
 
@@ -1159,13 +1178,11 @@ public class ASTExtractor {
       if (!nd.isComputed() && "template".equals(tryGetIdentifierName(nd.getKey()))) {
         extractStringValueAsHtml(nd.getValue(), valueLabel);
       }
-      
+
       return propkey;
     }
 
-    /**
-     * Extracts the string value of <code>expr</code> as an HTML snippet.
-     */
+    /** Extracts the string value of <code>expr</code> as an HTML snippet. */
     private void extractStringValueAsHtml(Expression expr, Label exprLabel) {
       TextualExtractor textualExtractor = lexicalExtractor.getTextualExtractor();
       if (textualExtractor.isSnippet()) {
@@ -1178,16 +1195,21 @@ public class ASTExtractor {
       String source = sourceAndOffset.fst();
       SourceLocation loc = expr.getLoc();
       Path originalFile = textualExtractor.getExtractedFile().toPath();
-      Path vfile = originalFile.resolveSibling(originalFile.getFileName().toString() + "." + loc.getStart().getLine() + "." + loc.getStart().getColumn() + ".html");
-      SourceMap sourceMap = textualExtractor.getSourceMap().offsetBy(loc.getStart().getOffset(), sourceAndOffset.snd());
-      TextualExtractor innerTextualExtractor = new TextualExtractor(
-          trapwriter,
-          locationManager,
-          source,
-          false,
-          getMetrics(),
-          vfile.toFile(),
-          sourceMap);
+      Path vfile =
+          originalFile.resolveSibling(
+              originalFile.getFileName().toString()
+                  + "."
+                  + loc.getStart().getLine()
+                  + "."
+                  + loc.getStart().getColumn()
+                  + ".html");
+      SourceMap sourceMap =
+          textualExtractor
+              .getSourceMap()
+              .offsetBy(loc.getStart().getOffset(), sourceAndOffset.snd());
+      TextualExtractor innerTextualExtractor =
+          new TextualExtractor(
+              trapwriter, locationManager, source, false, getMetrics(), vfile.toFile(), sourceMap);
       HTMLExtractor html = HTMLExtractor.forEmbeddedHtml(config);
       List<Label> rootNodes = html.extractEx(innerTextualExtractor).fst();
       int rootNodeIndex = 0;
@@ -1197,7 +1219,7 @@ public class ASTExtractor {
     }
 
     private String tryGetIdentifierName(Expression e) {
-      return e instanceof Identifier ? ((Identifier)e).getName() : null;
+      return e instanceof Identifier ? ((Identifier) e).getName() : null;
     }
 
     private Pair<String, OffsetTranslation> tryGetStringValueFromExpression(Expression e) {
@@ -1217,7 +1239,8 @@ public class ASTExtractor {
           return null;
         }
         TemplateElement element = lit.getQuasis().get(0);
-        return Pair.make((String) element.getCooked(), makeStringLiteralOffsets("`" + element.getRaw() + "`"));
+        return Pair.make(
+            (String) element.getCooked(), makeStringLiteralOffsets("`" + element.getRaw() + "`"));
       }
       return null;
     }
@@ -1662,9 +1685,9 @@ public class ASTExtractor {
       visit(nd.getDeclaration(), lbl, -1);
       visit(nd.getSource(), lbl, -2);
       IdContext childContext =
-          nd.hasSource() ? IdContext.LABEL :
-          nd.hasTypeKeyword() ? IdContext.TYPE_ONLY_EXPORT :
-          IdContext.EXPORT;
+          nd.hasSource()
+              ? IdContext.LABEL
+              : nd.hasTypeKeyword() ? IdContext.TYPE_ONLY_EXPORT : IdContext.EXPORT;
       visitAll(nd.getSpecifiers(), lbl, childContext, 0);
       if (nd.hasTypeKeyword()) {
         trapwriter.addTuple("has_type_keyword", lbl);
@@ -1684,7 +1707,10 @@ public class ASTExtractor {
     public Label visit(ImportDeclaration nd, Context c) {
       Label lbl = super.visit(nd, c);
       visit(nd.getSource(), lbl, -1);
-      IdContext childContext = nd.hasTypeKeyword() ? IdContext.TYPE_ONLY_IMPORT : IdContext.VAR_AND_TYPE_AND_NAMESPACE_DECL;
+      IdContext childContext =
+          nd.hasTypeKeyword()
+              ? IdContext.TYPE_ONLY_IMPORT
+              : IdContext.VAR_AND_TYPE_AND_NAMESPACE_DECL;
       visitAll(nd.getSpecifiers(), lbl, childContext, 0);
       emitNodeSymbol(nd, lbl);
       if (nd.hasTypeKeyword()) {
@@ -2215,6 +2241,18 @@ public class ASTExtractor {
     public Label visit(AngularPipeRef nd, Context c) {
       Label key = super.visit(nd, c);
       visit(nd.getIdentifier(), key, 0, IdContext.LABEL);
+      return key;
+    }
+
+    @Override
+    public Label visit(GeneratedCodeExpr nd, Context c) {
+      Label key = super.visit(nd, c);
+      Label templateLbl =
+          TemplateEngines.makeLocation(
+              lexicalExtractor.getTextualExtractor(),
+              nd.getLoc().getStart().getOffset(),
+              nd.getLoc().getEnd().getOffset());
+      trapwriter.addTuple("expr_contains_template_tag_location", key, templateLbl);
       return key;
     }
   }

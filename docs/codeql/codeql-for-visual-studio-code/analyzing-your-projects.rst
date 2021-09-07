@@ -129,12 +129,14 @@ To remove queries from the Query History view, select all the queries you want t
 Viewing query results
 -----------------------
 
-#. Click a query in the Query History view to display its results in the Results view. Alternatively, right-click the result to select a different view:
+#. Click a query in the Query History view to display its results in the Results view.
 
-   - To view the results in :ref:`SARIF format <sarif-output>`, right-click and select **View SARIF**.
-   - To view the results in :ref:`DIL format <dil>`, right-click and select **View DIL**.
+   .. pull-quote:: Note
 
-#. Use the dropdown menu in the Results view to choose which results to display, and in what form to display them, such as a formatted alert message or a table of raw results. The available output forms are specified by the format of the query and the metadata. For more information, see ":ref:`CodeQL queries <codeql-queries>`."
+      Depending on the query, you can also choose different views such as CSV, :ref:`SARIF <sarif-output>`, or :ref:`DIL format <dil>`. For example, to view the DIL format, right-click a result and select **View DIL**.
+      The available output views are determined by the format and the metadata of the query. For more information, see ":ref:`CodeQL queries <codeql-queries>`."
+
+#. Use the dropdown menu in the Results view to choose which results to display, and in what form to display them, such as a formatted alert message or a table of raw results.
 
 #. To sort the results by the entries in a particular column, click the column header.
 

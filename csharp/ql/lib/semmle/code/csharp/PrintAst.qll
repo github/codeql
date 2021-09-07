@@ -61,7 +61,7 @@ private predicate isNotNeeded(Element e) {
  * Retrieves the canonical QL class(es) for entity `el`
  */
 private string getQlClass(Element el) {
-  result = "[" + concat(el.getAPrimaryQlClass(), ",") + "] "
+  result = "[" + el.getPrimaryQlClasses() + "] "
   // Alternative implementation -- do not delete. It is useful for QL class discovery.
   // result = "["+ concat(el.getAQlClass(), ",") + "] "
 }

@@ -26,7 +26,7 @@ can use their own storage.</p>
 <p>Similarly replace calls to <code>localtime</code> with
 <code>localtime_r</code>, calls to <code>ctime</code> with
 <code>ctime_r</code> and calls to <code>asctime</code> with
-<code>asctime_r</code>.</p>
+<code>asctime_r</code> (if those functions exist on your platform).</p>
 
 </recommendation>
 <example>

@@ -40,12 +40,12 @@ class Member extends Element, Annotatable, Modifiable, @member {
 
   /**
    * Gets the immediately enclosing callable, if this member is declared in
-   * an anonymous or local class.
+   * an anonymous or local class or interface.
    */
   Callable getEnclosingCallable() {
-    exists(NestedClass nc | this.getDeclaringType() = nc |
-      nc.(AnonymousClass).getClassInstanceExpr().getEnclosingCallable() = result or
-      nc.(LocalClass).getLocalClassDeclStmt().getEnclosingCallable() = result
+    exists(NestedType nt | this.getDeclaringType() = nt |
+      nt.(AnonymousClass).getClassInstanceExpr().getEnclosingCallable() = result or
+      nt.(LocalClassOrInterface).getLocalTypeDeclStmt().getEnclosingCallable() = result
     )
   }
 }
@@ -600,12 +600,13 @@ class Field extends Member, ExprParent, @field, Variable {
 
   /** Gets the initializer expression of this field, if any. */
   override Expr getInitializer() {
-    exists(AssignExpr e, InitializerMethod im |
+    exists(AssignExpr e, InitializerMethod im, ExprStmt exprStmt |
       e.getDest() = this.getAnAccess() and
       e.getSource() = result and
-      pragma[only_bind_out](result).getEnclosingCallable() = im and
-      // This rules out updates in explicit initializer blocks as they are nested inside the compiler generated initializer blocks.
-      pragma[only_bind_out](e.getEnclosingStmt().getParent()) = pragma[only_bind_out](im.getBody())
+      exprStmt.getExpr() = e and
+      // This check also rules out assignments in explicit initializer blocks
+      // (CodeQL models explicit initializer blocks as BlockStmt in initializer methods)
+      exprStmt.getParent() = im.getBody()
     )
   }
 

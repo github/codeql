@@ -169,7 +169,7 @@ abstract private class GeneratedType extends Type, GeneratedElement {
               t = this.getAnInterestingBaseType() and
               (if t instanceof Class then i = 0 else i = 1)
             |
-              stubClassName(t), ", " order by i
+              stubClassName(t), ", " order by i, t.getQualifiedName()
             )
       else result = ""
   }
@@ -180,7 +180,7 @@ abstract private class GeneratedType extends Type, GeneratedElement {
       concat(GeneratedMember m |
         m = this.getAGeneratedMember(assembly)
       |
-        stubMember(m, assembly) order by m.getName()
+        stubMember(m, assembly) order by m.getQualifiedNameWithTypes()
       )
   }
 

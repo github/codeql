@@ -238,7 +238,7 @@ private module SsaImpl {
   /** Gets the definition point of a nested class in the parent scope. */
   private ControlFlowNode parentDef(NestedClass nc) {
     nc.(AnonymousClass).getClassInstanceExpr() = result or
-    nc.(LocalClass).getLocalClassDeclStmt() = result
+    nc.(LocalClass).getLocalTypeDeclStmt() = result
   }
 
   /**

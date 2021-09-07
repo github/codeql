@@ -377,3 +377,9 @@ var bad90 = /(x*)+(?=$|y)/
 // GOOD - but we spuriously conclude that a rejecting suffix exists.
 var good44 = /([\s\S]*)+(?=$)/;
 var good45 = /([\s\S]*)+(?=$|y)/;
+
+var good46 = /(foo|FOO)*bar/;
+var bad91 = /(foo|FOO)*bar/i;
+
+var good47 = /([AB]|[ab])*C/;
+var bad92 = /([DE]|[de])*F/i;

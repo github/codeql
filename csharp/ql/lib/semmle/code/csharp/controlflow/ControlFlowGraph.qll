@@ -183,7 +183,7 @@ module ControlFlow {
     }
 
     /** Gets a successor node of a given type, if any. */
-    Node getASuccessorByType(SuccessorType t) { result = getASuccessorByType(this, t) }
+    Node getASuccessorByType(SuccessorType t) { result = getASuccessor(this, t) }
 
     /** Gets an immediate successor, if any. */
     Node getASuccessor() { result = getASuccessorByType(_) }
@@ -255,9 +255,15 @@ module ControlFlow {
 
       override Callable getEnclosingCallable() { result = this.getCallable() }
 
-      override Location getLocation() { result = getCallable().getLocation() }
+      private Assignable getAssignable() { this = TEntryNode(result) }
 
-      override string toString() { result = "enter " + getCallable().toString() }
+      override Location getLocation() {
+        result in [this.getCallable().getLocation(), this.getAssignable().getLocation()]
+      }
+
+      override string toString() {
+        result = "enter " + [this.getCallable().toString(), this.getAssignable().toString()]
+      }
     }
 
     /** A node for a callable exit point, annotated with the type of exit. */
@@ -314,7 +320,7 @@ module ControlFlow {
      * different splits for the element.
      */
     class ElementNode extends Node, TElementNode {
-      private Splitting::Splits splits;
+      private Splits splits;
       private ControlFlowElement cfe;
 
       ElementNode() { this = TElementNode(cfe, splits) }

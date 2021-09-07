@@ -62,7 +62,7 @@ private class GuavaBaseCsv extends SummaryModelCsv {
         "com.google.common.base;Converter;true;apply;(Object);;Argument[0];ReturnValue;taint",
         "com.google.common.base;Converter;true;convert;(Object);;Argument[0];ReturnValue;taint",
         "com.google.common.base;Converter;true;convertAll;(Iterable);;Element of Argument[0];Element of ReturnValue;taint",
-        "com.google.common.base;Supplier;true;get;();;Argument[0];ReturnValue;taint",
+        "com.google.common.base;Supplier;true;get;();;Argument[-1];ReturnValue;taint",
         "com.google.common.base;Suppliers;false;ofInstance;(Object);;Argument[0];ReturnValue;taint",
         "com.google.common.base;Suppliers;false;memoize;(Supplier);;Argument[0];ReturnValue;taint",
         "com.google.common.base;Suppliers;false;memoizeWithExpiration;(Supplier,long,TimeUnit);;Argument[0];ReturnValue;taint",

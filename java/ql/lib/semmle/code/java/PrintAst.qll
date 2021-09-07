@@ -89,7 +89,7 @@ private predicate duplicateMetadata(Field f) {
  * Retrieves the canonical QL class(es) for entity `el`
  */
 private string getQlClass(Top el) {
-  result = "[" + concat(el.getAPrimaryQlClass(), ",") + "] "
+  result = "[" + el.getPrimaryQlClasses() + "] "
   // Alternative implementation -- do not delete. It is useful for QL class discovery.
   // result = "[" + concat(el.getAQlClass(), ",") + "] "
 }
@@ -303,18 +303,24 @@ final class ClassInstanceExprNode extends ExprStmtNode {
 }
 
 /**
- * A node representing a `LocalClassDeclStmt`.
+ * A node representing a `LocalTypeDeclStmt`.
  */
-final class LocalClassDeclStmtNode extends ExprStmtNode {
-  LocalClassDeclStmtNode() { element instanceof LocalClassDeclStmt }
+final class LocalTypeDeclStmtNode extends ExprStmtNode {
+  LocalTypeDeclStmtNode() { element instanceof LocalTypeDeclStmt }
 
   override ElementNode getChild(int childIndex) {
     result = super.getChild(childIndex)
     or
     childIndex = 0 and
-    result.getElement() = element.(LocalClassDeclStmt).getLocalClass()
+    result.getElement() = element.(LocalTypeDeclStmt).getLocalType()
   }
 }
+
+/**
+ * DEPRECATED: Renamed `LocalTypeDeclStmtNode` to reflect the fact that
+ * as of Java 16 interfaces can also be declared locally, not just classes.
+ */
+deprecated class LocalClassDeclStmtNode = LocalTypeDeclStmtNode;
 
 /**
  * A node representing a `ForStmt`.
