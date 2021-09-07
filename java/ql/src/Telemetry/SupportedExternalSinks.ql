@@ -12,7 +12,7 @@ import semmle.code.java.GeneratedFiles
 
 from ExternalAPI api, int usages
 where
-  api.isWorthSupporting() and
+  not api.isUninteresting() and
   api.isSink() and
   usages =
     strictcount(Call c |

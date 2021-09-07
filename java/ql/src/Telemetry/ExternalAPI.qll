@@ -16,7 +16,7 @@ class ExternalAPI extends Callable {
   ExternalAPI() { not this.fromSource() }
 
   /** Holds if this API is a candidate worth supporting */
-  predicate isWorthSupporting() { not isTestLibrary() and not isParameterlessConstructor() }
+  predicate isUninteresting() { isTestLibrary() or isParameterlessConstructor() }
 
   /** Holds if this API is is a constructor without parameters */
   predicate isParameterlessConstructor() {

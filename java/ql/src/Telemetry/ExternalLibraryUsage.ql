@@ -16,6 +16,6 @@ where
       c.getCallee() = a and
       not c.getFile() instanceof GeneratedFile and
       a.jarContainer() = jarname and
-      a.isWorthSupporting()
+      not a.isUninteresting()
     )
 select jarname, usages order by usages desc
