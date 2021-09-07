@@ -54,12 +54,10 @@ module ReflectedXSS {
   }
 
   /**
-   * A node on which `html_safe` has been called to mark it as not requiring
-   * HTML escaping, considered as a flow sink.
+   * An `html_safe` call marking the output as not requiring HTML escaping,
+   * considered as a flow sink.
    */
   class HtmlSafeCallAsSink extends Sink {
-    // TODO: extend this to track strings that have been marked as html_safe
-    // earlier in the control flow graph
     HtmlSafeCallAsSink() {
       exists(HtmlSafeCall c, ErbOutputDirective d |
         this.asExpr().getExpr() = c.getReceiver() and

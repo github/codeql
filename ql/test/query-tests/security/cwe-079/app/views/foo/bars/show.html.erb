@@ -41,13 +41,6 @@
   @instance_text.html_safe
 %>
 
-<%# BAD: html_safe marks string as not requiring HTML escaping %>
-<%# TODO: we miss that `@instance_text` is marked here %>
-<%=
-  @instance_text.html_safe
-  @instance_text
-%>
-
 <%= render partial: 'foo/bars/widget', locals: { display_text: "widget_" + display_text } %>
 
 <%# BAD: user_name is a helper method that returns unsanitized user-input %>
