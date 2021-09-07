@@ -185,7 +185,7 @@ class HeaderDeclaration extends DataFlow::Node {
   DataFlow::Node getNameArg() { result = range.getNameArg() }
 
   /**
-   * Gets the argument containing the header name.
+   * Gets the argument containing the header value.
    */
   DataFlow::Node getValueArg() { result = range.getValueArg() }
 }
