@@ -1,29 +1,26 @@
 package com.github.codeql
 
+import com.github.codeql.comments.CommentExtractor
+import org.jetbrains.kotlin.backend.common.extensions.IrGenerationExtension
+import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
+import org.jetbrains.kotlin.descriptors.ClassKind
+import org.jetbrains.kotlin.ir.IrElement
+import org.jetbrains.kotlin.ir.IrStatement
+import org.jetbrains.kotlin.ir.declarations.*
+import org.jetbrains.kotlin.ir.expressions.*
+import org.jetbrains.kotlin.ir.expressions.IrStatementOrigin.*
+import org.jetbrains.kotlin.ir.symbols.IrClassifierSymbol
+import org.jetbrains.kotlin.ir.types.*
+import org.jetbrains.kotlin.ir.util.packageFqName
+import org.jetbrains.kotlin.ir.util.render
 import java.io.File
 import java.io.FileOutputStream
 import java.io.PrintWriter
 import java.io.StringWriter
 import java.nio.file.Files
-import java.nio.file.Path
 import java.nio.file.Paths
-import java.util.Optional
+import java.util.*
 import kotlin.system.exitProcess
-import org.jetbrains.kotlin.backend.common.extensions.IrGenerationExtension
-import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
-import org.jetbrains.kotlin.ir.declarations.*
-import org.jetbrains.kotlin.ir.util.dump
-import org.jetbrains.kotlin.ir.util.IdSignature
-import org.jetbrains.kotlin.ir.util.packageFqName
-import org.jetbrains.kotlin.ir.util.render
-import org.jetbrains.kotlin.ir.visitors.IrElementVisitor
-import org.jetbrains.kotlin.ir.IrFileEntry
-import org.jetbrains.kotlin.ir.types.*
-import org.jetbrains.kotlin.ir.expressions.*
-import org.jetbrains.kotlin.ir.expressions.IrStatementOrigin.*
-import org.jetbrains.kotlin.ir.IrStatement
-import org.jetbrains.kotlin.ir.symbols.IrClassifierSymbol
-import org.jetbrains.kotlin.descriptors.ClassKind
 
 class KotlinExtractorExtension(private val invocationTrapFile: String, private val checkTrapIdentical: Boolean) : IrGenerationExtension {
     override fun generate(moduleFragment: IrModuleFragment, pluginContext: IrPluginContext) {
@@ -155,6 +152,9 @@ fun <T> fakeLabel(): Label<T> {
 }
 
 class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val file: IrFile) {
+
+    private val commentExtractor: CommentExtractor = CommentExtractor(logger, tw, file)
+
     val fileClass by lazy {
         extractFileClass(file)
     }
@@ -164,7 +164,10 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
         val pkgId = extractPackage(pkg)
         tw.writeCupackage(id, pkgId)
         file.declarations.map { extractDeclaration(it, Optional.empty()) }
+        commentExtractor.extract()
+        commentExtractor.bindCommentsToElement()
     }
+
 
   fun extractFileClass(f: IrFile): Label<out DbClass> {
       val fileName = f.fileEntry.name
@@ -291,6 +294,7 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
     }
 
     fun extractClass(c: IrClass): Label<out DbClassorinterface> {
+        commentExtractor.addPossibleCommentOwner(c)
         val id = addClassLabel(c)
         val locId = tw.getLocation(c)
         val pkg = c.packageFqName?.asString() ?: ""
@@ -388,6 +392,7 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
     }
 
     fun extractFunction(f: IrFunction, parentid: Label<out DbReftype>) {
+        commentExtractor.addPossibleCommentOwner(f)
         val id = useFunction(f)
         val locId = tw.getLocation(f)
         val signature = "TODO"
@@ -411,6 +416,7 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
     }
 
     fun extractProperty(p: IrProperty, parentid: Label<out DbReftype>) {
+        commentExtractor.addPossibleCommentOwner(p)
         val bf = p.backingField
         if(bf == null) {
             logger.warnElement(Severity.ErrorSevere, "IrProperty without backing field", p)
@@ -424,6 +430,7 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
     }
 
     fun extractBody(b: IrBody, callable: Label<out DbCallable>) {
+        commentExtractor.addPossibleCommentOwner(b)
         when(b) {
             is IrBlockBody -> extractBlockBody(b, callable, callable, 0)
             else -> logger.warnElement(Severity.ErrorSevere, "Unrecognised IrBody: " + b.javaClass, b)
@@ -460,6 +467,7 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
     }
 
     fun extractStatement(s: IrStatement, callable: Label<out DbCallable>, parent: Label<out DbStmtparent>, idx: Int) {
+        commentExtractor.addPossibleCommentOwner(s)
         when(s) {
             is IrExpression -> {
                 extractExpression(s, callable, parent, idx)
@@ -585,6 +593,7 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
     }
 
     fun extractExpression(e: IrExpression, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int) {
+        commentExtractor.addPossibleCommentOwner(e)
         when(e) {
             is IrCall -> extractCall(e, callable, parent, idx)
             is IrConst<*> -> {
