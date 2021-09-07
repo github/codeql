@@ -112,28 +112,41 @@ private predicate hasDefaultSideEffect(Call call, ParameterIndex i, boolean buff
 }
 
 /**
- * Gets the `SideEffectFunction` called by the specified expression.class, if known.
+ * A `Call` or `NewOrNewArrayExpr`.
  *
- * Thie will return a result only for `Call`, in which case it returns the target of the call, or
- * for `NewExpr` and `NewArrayExpr`, in which case it returns the allocator function called by the
- * expression.
+ * Both kinds of expression invoke a function as part of their evaluation. This class provides a
+ * way to treat both kinds of function similarly, and to get the invoked `Function`.
  */
-private SideEffectFunction getCallOrAllocationSideEffectFunction(Expr expr) {
-  result = expr.(Call).getTarget()
-  or
-  result = expr.(NewOrNewArrayExpr).getAllocator()
+class CallOrAllocationExpr extends Expr {
+  CallOrAllocationExpr() {
+    this instanceof Call
+    or
+    this instanceof NewOrNewArrayExpr
+  }
+
+  /** Gets the `Function` invoked by this expression, if known. */
+  final Function getTarget() {
+    result = this.(Call).getTarget()
+    or
+    result = this.(NewOrNewArrayExpr).getAllocator()
+  }
 }
 
 /**
  * Returns the side effect opcode, if any, that represents any side effects not specifically modeled
  * by an argument side effect.
  */
-Opcode getCallSideEffectOpcode(Expr expr) {
-  if not getCallOrAllocationSideEffectFunction(expr).hasOnlySpecificWriteSideEffects()
-  then result instanceof Opcode::CallSideEffect
-  else (
-    not getCallOrAllocationSideEffectFunction(expr).hasOnlySpecificReadSideEffects() and
-    result instanceof Opcode::CallReadSideEffect
+Opcode getCallSideEffectOpcode(CallOrAllocationExpr expr) {
+  not exists(expr.getTarget().(SideEffectFunction)) and result instanceof Opcode::CallSideEffect
+  or
+  exists(SideEffectFunction sideEffectFunction |
+    sideEffectFunction = expr.getTarget() and
+    if not sideEffectFunction.hasOnlySpecificWriteSideEffects()
+    then result instanceof Opcode::CallSideEffect
+    else (
+      not sideEffectFunction.hasOnlySpecificReadSideEffects() and
+      result instanceof Opcode::CallReadSideEffect
+    )
   )
 }
 
