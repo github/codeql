@@ -95,6 +95,7 @@ Java built-in support
    Guava, Utility and collections library
    Hibernate, Database
    iBatis / MyBatis, Database
+   Jackson, Serialization
    Java Persistence API (JPA), Database
    JDBC, Database
    Protobuf, Serialization
@@ -172,8 +173,10 @@ Python built-in support
    mysql-connector-python, Database
    mysql-connector, Database
    MySQL-python, Database
+   mysqlclient, Database
    psycopg2, Database
    sqlite3, Database
+   peewee, Database ORM
    cryptography, Cryptography library
    pycryptodome, Cryptography library
    pycryptodomex, Cryptography library

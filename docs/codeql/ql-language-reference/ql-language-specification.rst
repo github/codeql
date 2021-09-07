@@ -497,6 +497,7 @@ The following sequences of characters are keyword tokens:
    max
    min
    module
+   newtype
    none
    not
    or
@@ -514,6 +515,7 @@ The following sequences of characters are keyword tokens:
    then
    this
    true
+   unique
    where
 
 Operators

@@ -3,6 +3,8 @@
  * @description Sensitive cookies without the 'HttpOnly' flag set leaves session cookies vulnerable to
  *              an XSS attack.
  * @kind path-problem
+ * @problem.severity warning
+ * @precision medium
  * @id java/sensitive-cookie-not-httponly
  * @tags security
  *       external/cwe/cwe-1004

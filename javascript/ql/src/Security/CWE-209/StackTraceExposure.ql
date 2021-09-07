@@ -13,7 +13,7 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.StackTraceExposure::StackTraceExposure
+import semmle.javascript.security.dataflow.StackTraceExposureQuery
 import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink

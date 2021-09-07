@@ -777,4 +777,9 @@ public class DefaultVisitor<C, R> implements Visitor<C, R> {
   public R visit(XMLDotDotExpression nd, C c) {
     return visit((Expression) nd, c);
   }
+
+  @Override
+  public R visit(GeneratedCodeExpr nd, C c) {
+    return visit((Expression) nd, c);
+  }
 }

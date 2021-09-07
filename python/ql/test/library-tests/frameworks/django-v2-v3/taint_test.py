@@ -11,6 +11,9 @@ def test_taint(request: HttpRequest, foo, bar, baz=None):  # $requestHandler rou
     # Manually inspected all fields of the HttpRequest object
     # https://docs.djangoproject.com/en/3.0/ref/request-response/#httprequest-objects
 
+    import django.urls
+    django.urls.ResolverMatch
+
     ensure_tainted(
         request, # $ tainted
 
@@ -35,8 +38,8 @@ def test_taint(request: HttpRequest, foo, bar, baz=None):  # $requestHandler rou
         request.GET, # $ tainted
         request.GET["key"], # $ tainted
         request.GET.get("key"), # $ tainted
-        request.GET.getlist("key"), # $ MISSING: tainted
-        request.GET.getlist("key")[0], # $ MISSING: tainted
+        request.GET.getlist("key"), # $ tainted
+        request.GET.getlist("key")[0], # $ tainted
         request.GET.pop("key"), # $ tainted
         request.GET.pop("key")[0], # $ tainted
         # key
@@ -45,9 +48,10 @@ def test_taint(request: HttpRequest, foo, bar, baz=None):  # $requestHandler rou
         request.GET.popitem()[1], # $ tainted
         # values[0]
         request.GET.popitem()[1][0], # $ tainted
-        request.GET.dict(), # $ MISSING: tainted
-        request.GET.dict()["key"], # $ MISSING: tainted
-        request.GET.urlencode(), # $ MISSING: tainted
+        request.GET.lists(), # $ tainted
+        request.GET.dict(), # $ tainted
+        request.GET.dict()["key"], # $ tainted
+        request.GET.urlencode(), # $ tainted
 
         # django.http.QueryDict (same as above, did not duplicate tests)
         request.POST, # $ tainted
@@ -60,22 +64,23 @@ def test_taint(request: HttpRequest, foo, bar, baz=None):  # $requestHandler rou
         # MultiValueDict[str, UploadedFile]
         request.FILES, # $ tainted
         request.FILES["key"], # $ tainted
-        request.FILES["key"].content_type, # $ MISSING: tainted
-        request.FILES["key"].content_type_extra, # $ MISSING: tainted
-        request.FILES["key"].content_type_extra["key"], # $ MISSING: tainted
-        request.FILES["key"].charset, # $ MISSING: tainted
-        request.FILES["key"].name, # $ MISSING: tainted
-        request.FILES["key"].file, # $ MISSING: tainted
-        request.FILES["key"].file.read(), # $ MISSING: tainted
+        request.FILES["key"].content_type, # $ tainted
+        request.FILES["key"].content_type_extra, # $ tainted
+        request.FILES["key"].content_type_extra["key"], # $ tainted
+        request.FILES["key"].charset, # $ tainted
+        request.FILES["key"].name, # $ tainted
+        request.FILES["key"].file, # $ tainted
+        request.FILES["key"].file.read(), # $ tainted
 
         request.FILES.get("key"), # $ tainted
-        request.FILES.get("key").name, # $ MISSING: tainted
-        request.FILES.getlist("key"), # $ MISSING: tainted
-        request.FILES.getlist("key")[0], # $ MISSING: tainted
-        request.FILES.getlist("key")[0].name, # $ MISSING: tainted
-        request.FILES.dict(), # $ MISSING: tainted
-        request.FILES.dict()["key"], # $ MISSING: tainted
-        request.FILES.dict()["key"].name, # $ MISSING: tainted
+        request.FILES.get("key").name, # $ tainted
+        request.FILES.getlist("key"), # $ tainted
+        request.FILES.getlist("key")[0], # $ tainted
+        request.FILES.getlist("key")[0].name, # $ tainted
+        request.FILES.dict(), # $ tainted
+        request.FILES.dict()["key"], # $ tainted
+        request.FILES.dict()["key"].name, # $ tainted
+        request.FILES.dict().get("key").name, # $ tainted
 
         # Dict[str, Any]
         request.META, # $ tainted
@@ -89,21 +94,21 @@ def test_taint(request: HttpRequest, foo, bar, baz=None):  # $requestHandler rou
 
         # django.urls.ResolverMatch
         request.resolver_match, # $ tainted
-        request.resolver_match.args, # $ MISSING: tainted
-        request.resolver_match.args[0], # $ MISSING: tainted
-        request.resolver_match.kwargs, # $ MISSING: tainted
-        request.resolver_match.kwargs["key"], # $ MISSING: tainted
+        request.resolver_match.args, # $ tainted
+        request.resolver_match.args[0], # $ tainted
+        request.resolver_match.kwargs, # $ tainted
+        request.resolver_match.kwargs["key"], # $ tainted
 
-        request.get_full_path(), # $ MISSING: tainted
-        request.get_full_path_info(), # $ MISSING: tainted
+        request.get_full_path(), # $ tainted
+        request.get_full_path_info(), # $ tainted
         # build_absolute_uri handled below
         # get_signed_cookie handled below
 
-        request.read(), # $ MISSING: tainted
-        request.readline(), # $ MISSING: tainted
-        request.readlines(), # $ MISSING: tainted
-        request.readlines()[0], # $ MISSING: tainted
-        [line for line in request], # $ MISSING: tainted
+        request.read(), # $ tainted
+        request.readline(), # $ tainted
+        request.readlines(), # $ tainted
+        request.readlines()[0], # $ tainted
+        [line for line in request], # $ tainted
     )
 
     # django.urls.ResolverMatch also supports iterable unpacking
@@ -129,9 +134,9 @@ def test_taint(request: HttpRequest, foo, bar, baz=None):  # $requestHandler rou
     # build_absolute_uri
     ####################################
     ensure_tainted(
-        request.build_absolute_uri(), # $ MISSING: tainted
-        request.build_absolute_uri(request.GET["key"]), # $ MISSING: tainted
-        request.build_absolute_uri(location=request.GET["key"]), # $ MISSING: tainted
+        request.build_absolute_uri(), # $ tainted
+        request.build_absolute_uri(request.GET["key"]), # $ tainted
+        request.build_absolute_uri(location=request.GET["key"]), # $ tainted
     )
     ensure_not_tainted(
         request.build_absolute_uri("/hardcoded/"),
