@@ -2,12 +2,12 @@ import java.util.Formatter;
 import java.lang.StringBuilder;
 
 class A {
-    public static String taint() {
+    public static String source() {
         return "tainted";
     }
 
     public static void test1() {
-        String bad = taint(); // $ hasTaintFlow
+        String bad = source(); // $ hasTaintFlow
         String good = "hi";
 
         bad.formatted(good); // $ hasTaintFlow
@@ -18,7 +18,7 @@ class A {
     }
 
     public static void test2() {
-        String bad = taint();  // $ hasTaintFlow
+        String bad = source();  // $ hasTaintFlow
         Formatter f = new Formatter();
 
         f.toString();
@@ -27,7 +27,7 @@ class A {
     }
 
     public static void test3() {
-        String bad = taint();  // $ hasTaintFlow
+        String bad = source();  // $ hasTaintFlow
         StringBuilder sb = new StringBuilder();
         Formatter f = new Formatter(sb);
 
@@ -37,7 +37,7 @@ class A {
     }
 
     public static void test4() {
-        String bad = taint();  // $ hasTaintFlow
+        String bad = source();  // $ hasTaintFlow
         StringBuilder sb = new StringBuilder();
 
         sb.append(bad);  // $ hasTaintFlow

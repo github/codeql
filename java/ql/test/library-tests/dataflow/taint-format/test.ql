@@ -3,13 +3,7 @@ import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.TaintTracking
 import TestUtilities.InlineFlowTest
 
-class TaintFlowConf extends TaintTracking::Configuration {
-  TaintFlowConf() { this = "qltest:dataflow:format" }
-
-  override predicate isSource(DataFlow::Node n) {
-    n.asExpr().(MethodAccess).getMethod().hasName("taint")
-  }
-
+class TaintFlowConf extends DefaultTaintFlowConf {
   override predicate isSink(DataFlow::Node n) { n instanceof DataFlow::ExprNode }
 }
 
