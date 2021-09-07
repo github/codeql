@@ -115,9 +115,10 @@ private module LDAP {
           initialize = ldapInitialize().getACall() and
           (
             // ldap_connection.start_tls_s()
+            // see https://www.python-ldap.org/en/python-ldap-3.3.0/reference/ldap.html#ldap.LDAPObject.start_tls_s
             exists(DataFlow::AttrRead startTLS |
               startTLS.getObject().getALocalSource() = initialize and
-              startTLS.getAttributeName().matches("%start_tls%")
+              startTLS.getAttributeName() = "start_tls_s"
             )
             or
             // ldap_connection.set_option(ldap.OPT_X_TLS_%s, True)

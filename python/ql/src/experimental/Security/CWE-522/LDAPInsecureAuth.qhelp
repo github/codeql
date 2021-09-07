@@ -17,7 +17,7 @@ to be sent in cleartext making it easier for an attacker to intercept it.</p>
 
 <p>The first one sets <code>use_SSL</code> to true as a keyword argument whereas the second one fails to provide a value for it, so
 the default one is used (<code>False</code>).</p>
-<sample src="LDAPInsecureAuth.py" />
+<sample src="examples/LDAPInsecureAuth.py" />
 </example>
 
 </qhelp>

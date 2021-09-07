@@ -23,7 +23,8 @@ class LDAPFullHost extends StrConst {
     exists(string s |
       s = this.getText() and
       s.regexpMatch(getFullHostRegex()) and
-      not s.substring(7, s.length()).regexpMatch(getPrivateHostRegex()) // No need to check for ldaps, it would be SSL by default.
+      // check what comes after the `ldap://` prefix
+      not s.substring(7, s.length()).regexpMatch(getPrivateHostRegex())
     )
   }
 }
@@ -36,7 +37,7 @@ class LDAPPrivateHost extends StrConst {
   LDAPPrivateHost() { this.getText().regexpMatch(getPrivateHostRegex()) }
 }
 
-predicate concatAndCompareAgainstFullHostRegex(Expr schema, Expr host) {
+predicate concatAndCompareAgainstFullHostRegex(LDAPSchema schema, StrConst host) {
   schema instanceof LDAPSchema and
   not host instanceof LDAPPrivateHost and
   exists(string full_host |
@@ -96,6 +97,7 @@ class LDAPInsecureAuthConfig extends TaintTracking::Configuration {
 
   override predicate isSource(DataFlow::Node source) {
     source instanceof RemoteFlowSource or
+    source.asExpr() instanceof LDAPFullHost or
     source.asExpr() instanceof LDAPBothStrings or
     source.asExpr() instanceof LDAPBothVar or
     source.asExpr() instanceof LDAPVarString or

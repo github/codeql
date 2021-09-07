@@ -3,7 +3,7 @@
  * @description Python LDAP Insecure LDAP Authentication
  * @kind path-problem
  * @problem.severity error
- * @id python/insecure-ldap-auth
+ * @id py/insecure-ldap-auth
  * @tags experimental
  *       security
  *       external/cwe/cwe-522
