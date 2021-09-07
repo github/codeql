@@ -112,6 +112,23 @@ abstract class Module extends TopLevel {
   abstract DataFlow::Node getAnExportedValue(string name);
 
   /**
+   * Gets a value that is exported as the whole exports object of this module.
+   */
+  cached
+  DataFlow::Node getABulkExportedNode() { none() } // overridden in subclasses
+
+  /**
+   * Gets the ES2015 `default` export from this module, or for other types of modules,
+   * gets a bulk exported node.
+   *
+   * This can be used to determine which value a default-import will likely refer to,
+   * as the interaction between different module types is not standardized.
+   */
+  DataFlow::Node getDefaultOrBulkExport() {
+    result = [getAnExportedValue("default"), getABulkExportedNode()]
+  }
+
+  /**
    * Gets the root folder relative to which the given import path (which must
    * appear in this module) is resolved.
    *
