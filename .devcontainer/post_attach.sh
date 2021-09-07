@@ -3,7 +3,7 @@ set -xe
 
 echo "Check installed CodeQL version"
 CURRENT_CODEQL_BIN=$(readlink -e /usr/local/bin/codeql || echo "")
-LATEST=$(gh release list --repo https://github.com/github/codeql-cli-binaries | cut -f 1 | sort --version-sort | tail -1)
+LATEST=$(gh release list --repo https://github.com/github/codeql-cli-binaries | cut -f 1 | grep -v beta | sort --version-sort | tail -1)
 
 BASE_DIR=/home/vscode/codeql-binaries
 mkdir -p "${BASE_DIR}"

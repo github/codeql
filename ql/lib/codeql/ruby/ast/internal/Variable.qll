@@ -400,24 +400,22 @@ module LocalVariable {
   }
 }
 
-class VariableReal extends Variable, TVariableReal {
-  VariableReal::Range range;
+class VariableReal extends Variable, TVariableReal instanceof VariableReal::Range {
+  final override string getName() { result = VariableReal::Range.super.getName() }
 
-  VariableReal() { range = this }
+  final override Location getLocation() { result = VariableReal::Range.super.getLocation() }
 
-  final override string getName() { result = range.getName() }
-
-  final override Location getLocation() { result = range.getLocation() }
-
-  final override Scope getDeclaringScope() { toGenerated(result) = range.getDeclaringScope() }
+  final override Scope getDeclaringScope() {
+    toGenerated(result) = VariableReal::Range.super.getDeclaringScope()
+  }
 }
 
-class LocalVariableReal extends VariableReal, LocalVariable, TLocalVariableReal {
-  override LocalVariable::Range range;
-
+class LocalVariableReal extends VariableReal, LocalVariable, TLocalVariableReal instanceof LocalVariable::Range {
   final override LocalVariableAccessReal getAnAccess() { result.getVariable() = this }
 
-  final override VariableAccess getDefiningAccess() { result = range.getDefiningAccess() }
+  final override VariableAccess getDefiningAccess() {
+    result = LocalVariable::Range.super.getDefiningAccess()
+  }
 }
 
 class LocalVariableSynth extends LocalVariable, TLocalVariableSynth {

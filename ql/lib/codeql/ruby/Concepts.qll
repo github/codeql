@@ -16,13 +16,9 @@ private import codeql.ruby.dataflow.RemoteFlowSources
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `SqlExecution::Range` instead.
  */
-class SqlExecution extends DataFlow::Node {
-  SqlExecution::Range range;
-
-  SqlExecution() { this = range }
-
+class SqlExecution extends DataFlow::Node instanceof SqlExecution::Range {
   /** Gets the argument that specifies the SQL statements to be executed. */
-  DataFlow::Node getSql() { result = range.getSql() }
+  DataFlow::Node getSql() { result = super.getSql() }
 }
 
 /** Provides a class for modeling new SQL execution APIs. */
@@ -46,26 +42,23 @@ module SqlExecution {
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `Escaping::Range` instead.
  */
-class Escaping extends DataFlow::Node {
-  Escaping::Range range;
-
+class Escaping extends DataFlow::Node instanceof Escaping::Range {
   Escaping() {
-    this = range and
     // escapes that don't have _both_ input/output defined are not valid
-    exists(range.getAnInput()) and
-    exists(range.getOutput())
+    exists(super.getAnInput()) and
+    exists(super.getOutput())
   }
 
   /** Gets an input that will be escaped. */
-  DataFlow::Node getAnInput() { result = range.getAnInput() }
+  DataFlow::Node getAnInput() { result = super.getAnInput() }
 
   /** Gets the output that contains the escaped data. */
-  DataFlow::Node getOutput() { result = range.getOutput() }
+  DataFlow::Node getOutput() { result = super.getOutput() }
 
   /**
    * Gets the context that this function escapes for, such as `html`, or `url`.
    */
-  string getKind() { result = range.getKind() }
+  string getKind() { result = super.getKind() }
 }
 
 /** Provides a class for modeling new escaping APIs. */
@@ -103,7 +96,7 @@ module Escaping {
  * `<p>{}</p>`.
  */
 class HtmlEscaping extends Escaping {
-  HtmlEscaping() { range.getKind() = Escaping::getHtmlKind() }
+  HtmlEscaping() { super.getKind() = Escaping::getHtmlKind() }
 }
 
 /** Provides classes for modeling HTTP-related APIs. */
@@ -116,29 +109,25 @@ module HTTP {
      * Extend this class to refine existing API models. If you want to model new APIs,
      * extend `RouteSetup::Range` instead.
      */
-    class RouteSetup extends DataFlow::Node {
-      RouteSetup::Range range;
-
-      RouteSetup() { this = range }
-
+    class RouteSetup extends DataFlow::Node instanceof RouteSetup::Range {
       /** Gets the URL pattern for this route, if it can be statically determined. */
-      string getUrlPattern() { result = range.getUrlPattern() }
+      string getUrlPattern() { result = super.getUrlPattern() }
 
       /**
        * Gets a function that will handle incoming requests for this route, if any.
        *
        * NOTE: This will be modified in the near future to have a `RequestHandler` result, instead of a `Method`.
        */
-      Method getARequestHandler() { result = range.getARequestHandler() }
+      Method getARequestHandler() { result = super.getARequestHandler() }
 
       /**
        * Gets a parameter that will receive parts of the url when handling incoming
        * requests for this route, if any. These automatically become a `RemoteFlowSource`.
        */
-      Parameter getARoutedParameter() { result = range.getARoutedParameter() }
+      Parameter getARoutedParameter() { result = super.getARoutedParameter() }
 
       /** Gets a string that identifies the framework used for this route setup. */
-      string getFramework() { result = range.getFramework() }
+      string getFramework() { result = super.getFramework() }
     }
 
     /** Provides a class for modeling new HTTP routing APIs. */
@@ -185,19 +174,15 @@ module HTTP {
      * Extend this class to refine existing API models. If you want to model new APIs,
      * extend `RequestHandler::Range` instead.
      */
-    class RequestHandler extends Method {
-      RequestHandler::Range range;
-
-      RequestHandler() { this = range }
-
+    class RequestHandler extends Method instanceof RequestHandler::Range {
       /**
        * Gets a parameter that could receive parts of the url when handling incoming
        * requests, if any. These automatically become a `RemoteFlowSource`.
        */
-      Parameter getARoutedParameter() { result = range.getARoutedParameter() }
+      Parameter getARoutedParameter() { result = super.getARoutedParameter() }
 
       /** Gets a string that identifies the framework used for this route setup. */
-      string getFramework() { result = range.getFramework() }
+      string getFramework() { result = super.getFramework() }
     }
 
     /** Provides a class for modeling new HTTP request handlers. */
@@ -253,16 +238,12 @@ module HTTP {
      * Extend this class to refine existing API models. If you want to model new APIs,
      * extend `HttpResponse::Range` instead.
      */
-    class HttpResponse extends DataFlow::Node {
-      HttpResponse::Range range;
-
-      HttpResponse() { this = range }
-
+    class HttpResponse extends DataFlow::Node instanceof HttpResponse::Range {
       /** Gets the data-flow node that specifies the body of this HTTP response. */
-      DataFlow::Node getBody() { result = range.getBody() }
+      DataFlow::Node getBody() { result = super.getBody() }
 
       /** Gets the mimetype of this HTTP response, if it can be statically determined. */
-      string getMimetype() { result = range.getMimetype() }
+      string getMimetype() { result = super.getMimetype() }
     }
 
     /** Provides a class for modeling new HTTP response APIs. */
@@ -308,13 +289,9 @@ module HTTP {
      * Extend this class to refine existing API models. If you want to model new APIs,
      * extend `HttpRedirectResponse::Range` instead.
      */
-    class HttpRedirectResponse extends HttpResponse {
-      override HttpRedirectResponse::Range range;
-
-      HttpRedirectResponse() { this = range }
-
+    class HttpRedirectResponse extends HttpResponse instanceof HttpRedirectResponse::Range {
       /** Gets the data-flow node that specifies the location of this HTTP redirect response. */
-      DataFlow::Node getRedirectLocation() { result = range.getRedirectLocation() }
+      DataFlow::Node getRedirectLocation() { result = super.getRedirectLocation() }
     }
 
     /** Provides a class for modeling new HTTP redirect response APIs. */
