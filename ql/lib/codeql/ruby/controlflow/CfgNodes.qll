@@ -381,11 +381,25 @@ module ExprNodes {
     final override StringLiteral getExpr() { result = super.getExpr() }
   }
 
+  /** A control-flow node that wraps a `RegExpLiteral` AST expression. */
+  class RegExpLiteralCfgNode extends ExprCfgNode {
+    override RegExpLiteral e;
+
+    final override RegExpLiteral getExpr() { result = super.getExpr() }
+  }
+
   /** A control-flow node that wraps a `ComparisonOperation` AST expression. */
   class ComparisonOperationCfgNode extends BinaryOperationCfgNode {
     ComparisonOperationCfgNode() { e instanceof ComparisonOperation }
 
-    final override ComparisonOperation getExpr() { result = super.getExpr() }
+    override ComparisonOperation getExpr() { result = super.getExpr() }
+  }
+
+  /** A control-flow node that wraps a `RelationalOperation` AST expression. */
+  class RelationalOperationCfgNode extends ComparisonOperationCfgNode {
+    RelationalOperationCfgNode() { e instanceof RelationalOperation }
+
+    final override RelationalOperation getExpr() { result = super.getExpr() }
   }
 
   /** A control-flow node that wraps an `ElementReference` AST expression. */

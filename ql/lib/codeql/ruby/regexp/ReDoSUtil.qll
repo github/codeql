@@ -12,7 +12,7 @@
  * states that will cause backtracking (a rejecting suffix exists).
  */
 
-private import RegExpTreeView
+import RegExpTreeView
 private import codeql.Locations
 
 /**
