@@ -9,9 +9,7 @@ private import internal.Splitting
 private import internal.Completion
 
 /** An AST node with an associated control-flow graph. */
-class CfgScope extends Scope {
-  CfgScope() { this instanceof CfgScope::Range_ }
-
+class CfgScope extends Scope instanceof CfgScope::Range_ {
   /** Gets the CFG scope that this scope is nested under, if any. */
   final CfgScope getOuterCfgScope() {
     exists(AstNode parent |
