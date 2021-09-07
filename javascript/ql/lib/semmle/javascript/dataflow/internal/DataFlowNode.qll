@@ -32,4 +32,9 @@ newtype TNode =
   TExceptionalInvocationReturnNode(InvokeExpr e) or
   TGlobalAccessPathRoot() or
   TTemplatePlaceholderTag(Templating::TemplatePlaceholderTag tag) or
-  TApplyArgumentNode(MethodCallExpr ce, Function func, int i) { exists(func.getParameter(i)) }
+  TApplyArgumentNode(MethodCallExpr ce, int i) {
+    ce.getMethodName() = "apply" and i in [0 .. getMaxNumFunctionParameter()]
+  }
+
+cached
+int getMaxNumFunctionParameter() { result = max(Function f | | f.getNumParameter()) }

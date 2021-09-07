@@ -1171,9 +1171,7 @@ module DataFlow {
       int index;
 
       ApplyArgumentNode() {
-        this =
-          TApplyArgumentNode(call.asExpr(),
-            call.getReceiver().getABoundFunctionValue(_).getFunction(), index) and
+        this = TApplyArgumentNode(call.asExpr(), index) and
         arrayArgument = call.getArgument(1)
       }
 
