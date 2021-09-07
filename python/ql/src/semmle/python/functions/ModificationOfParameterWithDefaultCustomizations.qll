@@ -159,17 +159,26 @@ module ModificationOfParameterWithDefault {
     boolean isInverted() { result = inverted }
   }
 
+  /**
+   * Holds iff `guard` is checking the `Name` represented by `guarded` for truthyness.
+   * `result` is true if the check is inverted and false if it is not.
+   */
   boolean isIdentityGuard(DataFlow::GuardNode guard, ControlFlowNode guarded) {
     exists(IdentityGuarded ig |
       ig instanceof Name and
       // In `not l`, the `ControlFlowNode` for `l` is not an instance of `GuardNode`.
-      // TODO: This is slightly naive, we should change it when we have a proper guards library.
+      // TODO: This is slightly naive, not handling e.g. `l or cond` correctly.
+      // We should change it when we have a proper guards library.
       guard.getNode().getAChildNode*() = ig and
       result = ig.isInverted() and
       guarded.getNode() = ig
     )
   }
 
+  /**
+   * A sanitizer guard that does not let a truthy value flow to the true branch.
+   * Based on `isIdentityGuard`, so comes with the same caveats.
+   */
   class BlocksTruthyGuard extends BlocksTruthy {
     ControlFlowNode guarded;
 
@@ -186,6 +195,10 @@ module ModificationOfParameterWithDefault {
     }
   }
 
+  /**
+   * A sanitizer guard that does not let a falsy value flow to the true branch.
+   * Based on `isIdentityGuard`, so comes with the same caveats.
+   */
   class BlocksFalseyGuard extends BlocksFalsey {
     ControlFlowNode guarded;
 
