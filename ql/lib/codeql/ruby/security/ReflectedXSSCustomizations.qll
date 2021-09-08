@@ -101,26 +101,26 @@ module ReflectedXSS {
   class StringConstArrayInclusionCallAsSanitizerGuard extends SanitizerGuard,
     StringConstArrayInclusionCall { }
 
-    /**
-     * A `VariableWriteAccessCfgNode` that is not succeeded (locally) by another
-     * write to that variable.
-     */
-    private class FinalInstanceVarWrite extends CfgNodes::ExprNodes::InstanceVariableWriteAccessCfgNode {
-      private InstanceVariable var;
+  /**
+   * A `VariableWriteAccessCfgNode` that is not succeeded (locally) by another
+   * write to that variable.
+   */
+  private class FinalInstanceVarWrite extends CfgNodes::ExprNodes::InstanceVariableWriteAccessCfgNode {
+    private InstanceVariable var;
 
-      FinalInstanceVarWrite() {
-        var = this.getExpr().getVariable() and
-        not exists(CfgNodes::ExprNodes::InstanceVariableWriteAccessCfgNode succWrite |
-          succWrite.getExpr().getVariable() = var |
-          succWrite = this.getASuccessor+()
-        )
-      }
-
-      InstanceVariable getVariable() { result = var }
-
-      AssignExpr getAnAssignExpr() { result.getLeftOperand() = this.getExpr() }
+    FinalInstanceVarWrite() {
+      var = this.getExpr().getVariable() and
+      not exists(CfgNodes::ExprNodes::InstanceVariableWriteAccessCfgNode succWrite |
+        succWrite.getExpr().getVariable() = var
+      |
+        succWrite = this.getASuccessor+()
+      )
     }
 
+    InstanceVariable getVariable() { result = var }
+
+    AssignExpr getAnAssignExpr() { result.getLeftOperand() = this.getExpr() }
+  }
 
   /**
    * An additional step that is taint-preserving in the context of reflected XSS.
@@ -157,8 +157,8 @@ module ReflectedXSS {
     or
     // instance variables in the controller
     exists(
-      ActionControllerActionMethod action, VariableReadAccess viewVarRead,
-      AssignExpr ae, FinalInstanceVarWrite controllerVarWrite
+      ActionControllerActionMethod action, VariableReadAccess viewVarRead, AssignExpr ae,
+      FinalInstanceVarWrite controllerVarWrite
     |
       viewVarRead = node2.asExpr().(CfgNodes::ExprNodes::VariableReadAccessCfgNode).getExpr() and
       action.getDefaultTemplateFile() = viewVarRead.getLocation().getFile() and
