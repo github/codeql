@@ -58,11 +58,11 @@ Open3.popen2e("echo foo")
 Open3.capture3("echo foo")
 Open3.capture2("echo foo")
 Open3.capture2e("echo foo")
-Open3.pipeline_rw("echo foo")
-Open3.pipeline_r("echo foo")
-Open3.pipeline_w("echo foo")
-Open3.pipeline_start("echo foo")
-Open3.pipeline("echo foo")
+Open3.pipeline_rw("echo foo", "grep bar")
+Open3.pipeline_r("echo foo", "grep bar")
+Open3.pipeline_w("echo foo", "grep bar")
+Open3.pipeline_start("echo foo", "grep bar")
+Open3.pipeline("echo foo", "grep bar")
 
 <<`EOF`
 echo foo

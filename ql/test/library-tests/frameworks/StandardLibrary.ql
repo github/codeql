@@ -11,3 +11,5 @@ query predicate kernelExecCallExecutions(KernelExecCall c) { any() }
 query predicate kernelSpawnCallExecutions(KernelSpawnCall c) { any() }
 
 query predicate open3CallExecutions(Open3Call c) { any() }
+
+query predicate open3PipelineCallExecutions(Open3PipelineCall c) { any() }

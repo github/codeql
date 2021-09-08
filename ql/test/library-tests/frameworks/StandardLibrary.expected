@@ -52,8 +52,9 @@ open3CallExecutions
 | CommandExecution.rb:58:1:58:26 | call to capture3 |
 | CommandExecution.rb:59:1:59:26 | call to capture2 |
 | CommandExecution.rb:60:1:60:27 | call to capture2e |
-| CommandExecution.rb:61:1:61:29 | call to pipeline_rw |
-| CommandExecution.rb:62:1:62:28 | call to pipeline_r |
-| CommandExecution.rb:63:1:63:28 | call to pipeline_w |
-| CommandExecution.rb:64:1:64:32 | call to pipeline_start |
-| CommandExecution.rb:65:1:65:26 | call to pipeline |
+open3PipelineCallExecutions
+| CommandExecution.rb:61:1:61:41 | call to pipeline_rw |
+| CommandExecution.rb:62:1:62:40 | call to pipeline_r |
+| CommandExecution.rb:63:1:63:40 | call to pipeline_w |
+| CommandExecution.rb:64:1:64:44 | call to pipeline_start |
+| CommandExecution.rb:65:1:65:38 | call to pipeline |
