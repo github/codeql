@@ -69,6 +69,14 @@ class Configuration extends TaintTracking::Configuration {
       inlbl.isTaint() and
       outlbl instanceof ObjectPrototype
     )
+    or
+    DataFlow::localFieldStep(pred, succ) and inlbl = outlbl
+  }
+
+  // override to require that there is a path without unmatched return steps
+  override predicate hasFlowPath(DataFlow::SourcePathNode source, DataFlow::SinkPathNode sink) {
+    super.hasFlowPath(source, sink) and
+    DataFlow::hasPathWithoutUnmatchedReturn(source, sink)
   }
 
   override predicate isLabeledBarrier(DataFlow::Node node, DataFlow::FlowLabel lbl) {

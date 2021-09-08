@@ -41,3 +41,34 @@ module.exports.setWithArgs3 = function() {
   var value = args[2];
   obj[path[0]][path[1]] = value; // NOT OK
 }
+
+function id(s) {
+  return s;
+}
+
+module.exports.id = id;
+
+module.exports.notVulnerable = function () {
+  const path = id("x");
+  const value = id("y");
+  const obj = id("z");
+  return (obj[path[0]][path[1]] = value); // OK
+}
+
+class Foo {
+  constructor(o, s, v) {
+    this.obj = o;
+    this.path = s;
+    this.value = v;
+  }
+
+  doXss() {
+    // not called here, but still bad.
+    const obj = this.obj;
+    const path = this.path;
+    const value = this.value;
+    return (obj[path[0]][path[1]] = value); // NOT OK
+  }
+}
+
+module.exports.Foo = Foo;
