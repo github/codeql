@@ -3320,8 +3320,8 @@ private predicate directReach(PathNode n) {
 /** Holds if `n` can reach a sink or is used in a subpath. */
 private predicate reach(PathNode n) { directReach(n) or Subpaths::retReach(n) }
 
-/** Holds if `n1.getSucc() = n2` and `n2` can reach a sink or is used in a subpath. */
-private predicate pathSucc(PathNode n1, PathNode n2) { n1.getASuccessor() = n2 and reach(n2) }
+/** Holds if `n1.getASuccessor() = n2` and `n2` can reach a sink. */
+private predicate pathSucc(PathNode n1, PathNode n2) { n1.getASuccessor() = n2 and directReach(n2) }
 
 private predicate pathSuccPlus(PathNode n1, PathNode n2) = fastTC(pathSucc/2)(n1, n2)
 
@@ -3330,7 +3330,7 @@ private predicate pathSuccPlus(PathNode n1, PathNode n2) = fastTC(pathSucc/2)(n1
  */
 module PathGraph {
   /** Holds if `(a,b)` is an edge in the graph of data flow path explanations. */
-  query predicate edges(PathNode a, PathNode b) { pathSucc(a, b) }
+  query predicate edges(PathNode a, PathNode b) { a.getASuccessor() = b and reach(b) }
 
   /** Holds if `n` is a node in the graph of data flow path explanations. */
   query predicate nodes(PathNode n, string key, string val) {
