@@ -145,7 +145,12 @@ private class ActionViewRenderToCall extends ActionViewContextCall, RenderToCall
 class LinkToCall extends ActionViewContextCall {
   LinkToCall() { this.getMethodName() = "link_to" }
 
-  // TODO: the path can also be specified through other optional arguments
-  Expr getPathArgument() { result = this.getArgument(1) }
+  Expr getPathArgument() {
+    // When `link_to` is called with a block, it uses the first argument as the
+    // path, and otherwise the second argument.
+    exists(this.getBlock()) and result = this.getArgument(0)
+    or
+    not exists(this.getBlock()) and result = this.getArgument(1)
+  }
 }
 // TODO: model flow in/out of template files properly,
