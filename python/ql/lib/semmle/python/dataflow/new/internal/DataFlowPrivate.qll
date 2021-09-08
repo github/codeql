@@ -209,9 +209,6 @@ module EssaFlow {
       nodeTo = TKwOverflowNode(call, callable) and
       nodeFrom.asCfgNode() = call.getNode().getKwargs().getAFlowNode()
     )
-    or
-    // Default value for parameter flows to that parameter
-    defaultValueFlowStep(nodeFrom, nodeTo)
   }
 
   predicate useToNextUse(NameNode nodeFrom, NameNode nodeTo) {
@@ -872,6 +869,9 @@ predicate jumpStep(Node nodeFrom, Node nodeTo) {
     module_export(mv.getScope(), r.getAttributeName(), nodeFrom) and
     nodeTo = r
   )
+  or
+  // Default value for parameter flows to that parameter
+  defaultValueFlowStep(nodeFrom, nodeTo)
 }
 
 /**

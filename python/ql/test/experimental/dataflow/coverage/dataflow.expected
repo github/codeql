@@ -347,6 +347,12 @@ edges
 | test.py:686:43:686:48 | ControlFlowNode for SOURCE | test.py:686:3:686:52 | PosOverflowNode for iterate_star_args() [Tuple element at index 0] |
 | test.py:686:51:686:51 | ControlFlowNode for s | test.py:686:3:686:52 | PosOverflowNode for iterate_star_args() [Tuple element at index 1] |
 | test.py:757:16:757:21 | ControlFlowNode for SOURCE | test.py:760:10:760:36 | ControlFlowNode for return_from_inner_scope() |
+| test.py:795:35:795:35 | ControlFlowNode for x | test.py:796:10:796:10 | ControlFlowNode for x |
+| test.py:795:37:795:42 | ControlFlowNode for SOURCE | test.py:795:35:795:35 | ControlFlowNode for x |
+| test.py:795:48:795:48 | ControlFlowNode for y | test.py:797:10:797:10 | ControlFlowNode for y |
+| test.py:795:50:795:55 | ControlFlowNode for SOURCE | test.py:795:48:795:48 | ControlFlowNode for y |
+| test.py:795:61:795:61 | ControlFlowNode for z | test.py:798:10:798:10 | ControlFlowNode for z |
+| test.py:795:63:795:68 | ControlFlowNode for SOURCE | test.py:795:61:795:61 | ControlFlowNode for z |
 nodes
 | datamodel.py:38:6:38:17 | ControlFlowNode for f() | semmle.label | ControlFlowNode for f() |
 | datamodel.py:38:8:38:13 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
@@ -758,6 +764,15 @@ nodes
 | test.py:686:51:686:51 | ControlFlowNode for s | semmle.label | ControlFlowNode for s |
 | test.py:757:16:757:21 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
 | test.py:760:10:760:36 | ControlFlowNode for return_from_inner_scope() | semmle.label | ControlFlowNode for return_from_inner_scope() |
+| test.py:795:35:795:35 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
+| test.py:795:37:795:42 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:795:48:795:48 | ControlFlowNode for y | semmle.label | ControlFlowNode for y |
+| test.py:795:50:795:55 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:795:61:795:61 | ControlFlowNode for z | semmle.label | ControlFlowNode for z |
+| test.py:795:63:795:68 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:796:10:796:10 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
+| test.py:797:10:797:10 | ControlFlowNode for y | semmle.label | ControlFlowNode for y |
+| test.py:798:10:798:10 | ControlFlowNode for z | semmle.label | ControlFlowNode for z |
 #select
 | datamodel.py:38:6:38:17 | ControlFlowNode for f() | datamodel.py:38:8:38:13 | ControlFlowNode for SOURCE | datamodel.py:38:6:38:17 | ControlFlowNode for f() | Flow found |
 | datamodel.py:71:6:71:24 | ControlFlowNode for Attribute() | datamodel.py:71:15:71:20 | ControlFlowNode for SOURCE | datamodel.py:71:6:71:24 | ControlFlowNode for Attribute() | Flow found |
@@ -865,3 +880,6 @@ nodes
 | test.py:680:10:680:12 | ControlFlowNode for arg | test.py:685:7:685:12 | ControlFlowNode for SOURCE | test.py:680:10:680:12 | ControlFlowNode for arg | Flow found |
 | test.py:680:10:680:12 | ControlFlowNode for arg | test.py:686:43:686:48 | ControlFlowNode for SOURCE | test.py:680:10:680:12 | ControlFlowNode for arg | Flow found |
 | test.py:760:10:760:36 | ControlFlowNode for return_from_inner_scope() | test.py:757:16:757:21 | ControlFlowNode for SOURCE | test.py:760:10:760:36 | ControlFlowNode for return_from_inner_scope() | Flow found |
+| test.py:796:10:796:10 | ControlFlowNode for x | test.py:795:37:795:42 | ControlFlowNode for SOURCE | test.py:796:10:796:10 | ControlFlowNode for x | Flow found |
+| test.py:797:10:797:10 | ControlFlowNode for y | test.py:795:50:795:55 | ControlFlowNode for SOURCE | test.py:797:10:797:10 | ControlFlowNode for y | Flow found |
+| test.py:798:10:798:10 | ControlFlowNode for z | test.py:795:63:795:68 | ControlFlowNode for SOURCE | test.py:798:10:798:10 | ControlFlowNode for z | Flow found |
