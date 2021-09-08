@@ -5,7 +5,7 @@
 
   <overview>
     <p>
-      Directly writing user input (for example, an HTTP request parameter) to a webpage
+      Directly writing user input (for example, an HTTP request parameter) to a webpage,
       without properly sanitizing the input first, allows for a cross-site scripting
       vulnerability.
     </p>
@@ -19,9 +19,9 @@
     </p>
 
     <p>
-      Care should be taken when using methods such as <code>html_safe</code> or
-      <code>raw</code>. These methods can be used to output a string without escaping
-      it. As such, they should only be used when the string has already been manually
+      Take care when using methods such as <code>html_safe</code> or
+      <code>raw</code>. They can be used to emit a string without escaping
+      it, and should only be used when the string has already been manually
       escaped (for example, with the Rails <code>html_escape</code> method), or when
       the content is otherwise guaranteed to be safe (such as a hard-coded string).
     </p>
@@ -29,15 +29,15 @@
 
   <example>
     <p>
-      In the following example is safe because the
+      The following example is safe because the
       <code>params[:user_name]</code> content within the output tags will be
-      automatically HTML escaped before being output.
+      HTML-escaped automatically before being emitted.
     </p>
     <sample src="examples/safe.html.erb" />
 
     <p>
       However, the following example is unsafe because user-controlled input is
-      output without escaping due to being marked as <code>html_safe</code>.
+      output without escaping, since it is marked as <code>html_safe</code>.
     </p>
     <sample src="examples/reflective_xss.html.erb" />
   </example>
