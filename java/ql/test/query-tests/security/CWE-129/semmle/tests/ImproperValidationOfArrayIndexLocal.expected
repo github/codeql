@@ -3,5 +3,6 @@ edges
 nodes
 | Test.java:14:27:14:60 | getProperty(...) : String | semmle.label | getProperty(...) : String |
 | Test.java:19:34:19:38 | index | semmle.label | index |
+subpaths
 #select
 | Test.java:19:34:19:38 | index | Test.java:14:27:14:60 | getProperty(...) : String | Test.java:19:34:19:38 | index | $@ flows to here and is used as an index causing an ArrayIndexOutOfBoundsException. | Test.java:14:27:14:60 | getProperty(...) | User-provided value |

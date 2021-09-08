@@ -341,6 +341,7 @@ nodes
 | EntityFrameworkCore.cs:245:18:245:46 | access to property Addresses [element, property Street] : String | semmle.label | access to property Addresses [element, property Street] : String |
 | EntityFrameworkCore.cs:245:18:245:54 | call to method First<Address> [property Street] : String | semmle.label | call to method First<Address> [property Street] : String |
 | EntityFrameworkCore.cs:245:18:245:61 | access to property Street | semmle.label | access to property Street |
+subpaths
 #select
 | EntityFramework.cs:129:18:129:25 | access to property Title | EntityFramework.cs:124:25:124:33 | "tainted" : String | EntityFramework.cs:129:18:129:25 | access to property Title | $@ | EntityFramework.cs:124:25:124:33 | "tainted" : String | "tainted" : String |
 | EntityFramework.cs:204:18:204:41 | access to property Name | EntityFramework.cs:61:24:61:32 | "tainted" : String | EntityFramework.cs:204:18:204:41 | access to property Name | $@ | EntityFramework.cs:61:24:61:32 | "tainted" : String | "tainted" : String |
