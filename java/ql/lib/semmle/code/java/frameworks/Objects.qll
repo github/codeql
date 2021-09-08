@@ -12,7 +12,6 @@ private class ObjectsSummaryCsv extends SummaryModelCsv {
         "java.util;Objects;false;requireNonNullElse;;;Argument[0];ReturnValue;value",
         "java.util;Objects;false;requireNonNullElse;;;Argument[1];ReturnValue;value",
         "java.util;Objects;false;requireNonNullElseGet;;;Argument[0];ReturnValue;value",
-        "java.util;Objects;false;requireNonNullElseGet;;;Argument[1];ReturnValue;value",
         "java.util;Objects;false;toString;;;Argument[1];ReturnValue;value"
       ]
   }
