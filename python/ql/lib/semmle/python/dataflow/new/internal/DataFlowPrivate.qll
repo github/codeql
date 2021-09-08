@@ -245,6 +245,9 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
 /**
  * Holds if there is an Essa flow step from `nodeFrom` to `nodeTo` that does not switch between
  * local and global SSA variables.
+ *
+ * This predicate is currently empty, since `EssaFlow::essaFlowStep` never goes between `EssaNode`s.
+ * (It only starts in an `EssaNode` in a single case, namely `defToFirstUse` which ends in a `CfgNode`.)
  */
 private predicate localEssaStep(EssaNode nodeFrom, EssaNode nodeTo) {
   EssaFlow::essaFlowStep(nodeFrom, nodeTo) and
