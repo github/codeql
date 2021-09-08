@@ -59,7 +59,6 @@
 <% end %>
 
 <%# GOOD: @safe_foo is a hardcoded string here at runtime %>
-<%# TODO: we mistakenly flag this up due to overly broad flow through instance variables %>
 <%= @safe_foo.html_safe %>
 
 <%# GOOD: @html_escaped is manually escaped in the controller %>

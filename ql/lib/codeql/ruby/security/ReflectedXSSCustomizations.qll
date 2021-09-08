@@ -101,6 +101,27 @@ module ReflectedXSS {
   class StringConstArrayInclusionCallAsSanitizerGuard extends SanitizerGuard,
     StringConstArrayInclusionCall { }
 
+    /**
+     * A `VariableWriteAccessCfgNode` that is not succeeded (locally) by another
+     * write to that variable.
+     */
+    private class FinalInstanceVarWrite extends CfgNodes::ExprNodes::InstanceVariableWriteAccessCfgNode {
+      private InstanceVariable var;
+
+      FinalInstanceVarWrite() {
+        var = this.getExpr().getVariable() and
+        not exists(CfgNodes::ExprNodes::InstanceVariableWriteAccessCfgNode succWrite |
+          succWrite.getExpr().getVariable() = var |
+          succWrite = this.getASuccessor+()
+        )
+      }
+
+      InstanceVariable getVariable() { result = var }
+
+      AssignExpr getAnAssignExpr() { result.getLeftOperand() = this.getExpr() }
+    }
+
+
   /**
    * An additional step that is taint-preserving in the context of reflected XSS.
    */
@@ -136,17 +157,16 @@ module ReflectedXSS {
     or
     // instance variables in the controller
     exists(
-      ActionControllerActionMethod action, VariableReadAccess viewVarRead, AssignExpr ae,
-      InstanceVariableWriteAccess controllerVarWrite
+      ActionControllerActionMethod action, VariableReadAccess viewVarRead,
+      AssignExpr ae, FinalInstanceVarWrite controllerVarWrite
     |
       viewVarRead = node2.asExpr().(CfgNodes::ExprNodes::VariableReadAccessCfgNode).getExpr() and
       action.getDefaultTemplateFile() = viewVarRead.getLocation().getFile() and
       // match read to write on variable name
       viewVarRead.getVariable().getName() = controllerVarWrite.getVariable().getName() and
-      // TODO: include only final assignment along a path
       // propagate taint from assignment RHS expr to variable read access in view
+      ae = controllerVarWrite.getAnAssignExpr() and
       node1.asExpr().getExpr() = ae.getRightOperand() and
-      ae.getLeftOperand() = controllerVarWrite and
       ae.getParent+() = action
     )
     or

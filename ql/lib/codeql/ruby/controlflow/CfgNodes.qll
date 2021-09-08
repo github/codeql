@@ -355,6 +355,13 @@ module ExprNodes {
     final override VariableReadAccess getExpr() { result = ExprCfgNode.super.getExpr() }
   }
 
+  /** A control-flow node that wraps a `InstanceVariableWriteAccess` AST expression. */
+  class InstanceVariableWriteAccessCfgNode extends ExprCfgNode {
+    override InstanceVariableWriteAccess e;
+
+    final override InstanceVariableWriteAccess getExpr() { result = ExprCfgNode.super.getExpr() }
+  }
+
   /** A control-flow node that wraps a `StringInterpolationComponent` AST expression. */
   class StringInterpolationComponentCfgNode extends StmtSequenceCfgNode {
     StringInterpolationComponentCfgNode() { this.getNode() instanceof StringInterpolationComponent }
