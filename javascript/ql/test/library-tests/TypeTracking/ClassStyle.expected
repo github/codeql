@@ -39,6 +39,8 @@ test_Connection
 | tst.js:114:1:114:28 | getX({  ... on() }) |
 | tst.js:114:11:114:25 | getConnection() |
 | tst.js:118:12:118:26 | getConnection() |
+| tst.js:120:21:120:24 | conn |
+| tst.js:126:22:126:25 | conn |
 | tst_conflict.js:6:38:6:77 | api.cha ... ction() |
 test_DataCallback
 | client.js:3:28:3:34 | x => {} |

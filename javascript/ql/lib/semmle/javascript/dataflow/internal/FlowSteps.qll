@@ -450,6 +450,18 @@ private module CachedSteps {
     )
   }
 
+  /** Gets a function that flows to `parameter` via one or more parameter-passing steps. */
+  cached
+  DataFlow::FunctionNode getACallbackSource(DataFlow::ParameterNode parameter) {
+    Stages::TypeTracking::ref() and
+    callStep(result.getALocalUse(), parameter)
+    or
+    exists(DataFlow::ParameterNode mid |
+      callStep(mid.getALocalUse(), parameter) and
+      result = getACallbackSource(mid)
+    )
+  }
+
   /**
    * Holds if `f` may return `base`, which has a write of property `prop` with right-hand side `rhs`.
    */
