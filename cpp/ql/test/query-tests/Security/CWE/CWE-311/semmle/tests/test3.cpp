@@ -125,18 +125,18 @@ void test_interprocedural(const char *password1)
 	{
 		char password[256];
 
-		my_recv(password, 256); // BAD: `password` is received plaintext [NOT DETECTED]
+		my_recv(password, 256); // BAD: `password` is received plaintext [detected on line 108]
 	}
 
 	{
 		const char *ptr = id(password1);
 
-		send(val(), ptr, strlen(ptr), val()); // BAD: `password1` is sent plaintext [NOT DETECTED]
+		send(val(), ptr, strlen(ptr), val()); // BAD: `password1` is sent plaintext
 	}
 
 	{
 		char *data = get_global_str();
 
-		send(val(), data, strlen(data), val()); // BAD: `global_password` is sent plaintext [NOT DETECTED]
+		send(val(), data, strlen(data), val()); // BAD: `global_password` is sent plaintext
 	}
 }

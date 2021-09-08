@@ -5,7 +5,7 @@
  * @kind problem
  * @problem.severity warning
  * @security-severity 7.5 TODO
- * @precision high
+ * @precision high TODO
  * @id cpp/cleartext-transmission
  * @tags security
  *       external/cwe/cwe-319
@@ -13,9 +13,7 @@
 
 import cpp
 import semmle.code.cpp.security.SensitiveExprs
-import semmle.code.cpp.security.FileWrite
 import semmle.code.cpp.dataflow.DataFlow
-import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 
 /**
  * A function call that sends or receives data over a network.
@@ -65,10 +63,31 @@ class NetworkRecv extends NetworkSendRecv {
   override Expr getDataExpr() { result = this.getArgument(1) }
 }
 
-from NetworkSendRecv transmission, SensitiveExpr e
+/**
+ * Taint flow from a sensitive expression to a network operation with data
+ * tainted by that expression.
+ */
+class SensitiveSendRecvConfiguration extends DataFlow::Configuration {
+  SensitiveSendRecvConfiguration() { this = "SensitiveSendRecvConfiguration" }
+
+  override predicate isSource(DataFlow::Node source) { source.asExpr() instanceof SensitiveExpr }
+
+  override predicate isSink(DataFlow::Node sink) {
+    exists(NetworkSendRecv transmission |
+      sink.asExpr() = transmission.getDataExpr() and
+      not exists(Zero zero |
+        DataFlow::localFlow(DataFlow::exprNode(zero),
+          DataFlow::exprNode(transmission.getSocketExpr()))
+      )
+    )
+  }
+}
+
+from SensitiveSendRecvConfiguration config1, Expr source, Expr sink
 where
-  DataFlow::localFlow(DataFlow::exprNode(e), DataFlow::exprNode(transmission.getDataExpr())) and
-  not exists(Zero zero |
-    DataFlow::localFlow(DataFlow::exprNode(zero), DataFlow::exprNode(transmission.getSocketExpr()))
+  exists(DataFlow::PathNode sourceNode, DataFlow::PathNode sinkNode |
+    config1.hasFlowPath(sourceNode, sinkNode) and
+    source = sourceNode.getNode().asExpr() and
+    sink = sinkNode.getNode().asExpr()
   )
-select transmission, e
+select sink, source
