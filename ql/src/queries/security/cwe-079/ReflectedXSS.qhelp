@@ -13,9 +13,9 @@
 
   <recommendation>
     <p>
-      To guard against cross-site scripting, consider escaping the input before
-      writing user input to the page. In some frameworks, such as Rails, escaping will
-      be performed implicitly and by default.
+      To guard against cross-site scripting, escape user input before writing it
+      to the page. Some frameworks, such as Rails, perform this escaping
+      implicitly and by default.
     </p>
 
     <p>
