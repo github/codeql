@@ -25,6 +25,29 @@ private class ActionViewHtmlSafeCall extends HtmlSafeCall {
   ActionViewHtmlSafeCall() { inActionViewContext(this) }
 }
 
+/**
+ * A call to a method named "html_escape", "html_escape_once", or "h".
+ */
+abstract class HtmlEscapeCall extends MethodCall {
+  // "h" is aliased to "html_escape" in ActiveSupport
+  HtmlEscapeCall() { this.getMethodName() = ["html_escape", "html_escape_once", "h"] }
+}
+
+class RailsHtmlEscaping extends Escaping::Range, DataFlow::CallNode {
+  RailsHtmlEscaping() { this.asExpr().getExpr() instanceof HtmlEscapeCall }
+
+  override DataFlow::Node getAnInput() { result = this.getArgument(0) }
+
+  override DataFlow::Node getOutput() { result = this }
+
+  override string getKind() { result = Escaping::getHtmlKind() }
+}
+
+// A call to `html_escape` from within a template.
+private class ActionViewHtmlEscapeCall extends HtmlEscapeCall {
+  ActionViewHtmlEscapeCall() { inActionViewContext(this) }
+}
+
 // A call in a context where some commonly used `ActionView` methods are available.
 private class ActionViewContextCall extends MethodCall {
   ActionViewContextCall() {
