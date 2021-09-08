@@ -11,11 +11,13 @@ import semmle.code.xml.AndroidManifest
  */
 class AndroidComponent extends Class {
   AndroidComponent() {
-    this.getASupertype*().hasQualifiedName("android.app", "Activity") or
-    this.getASupertype*().hasQualifiedName("android.app", "Service") or
-    this.getASupertype*().hasQualifiedName("android.content", "BroadcastReceiver") or
-    this.getASupertype*().hasQualifiedName("android.content", "ContentProvider") or
-    this.getASupertype*().hasQualifiedName("android.content", "ContentResolver")
+    // The casts here are due to misoptimisation if they are missing
+    // but are not needed semantically.
+    this.(Class).getASupertype*().hasQualifiedName("android.app", "Activity") or
+    this.(Class).getASupertype*().hasQualifiedName("android.app", "Service") or
+    this.(Class).getASupertype*().hasQualifiedName("android.content", "BroadcastReceiver") or
+    this.(Class).getASupertype*().hasQualifiedName("android.content", "ContentProvider") or
+    this.(Class).getASupertype*().hasQualifiedName("android.content", "ContentResolver")
   }
 
   /** The XML element corresponding to this Android component. */

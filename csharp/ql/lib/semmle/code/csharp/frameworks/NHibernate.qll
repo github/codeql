@@ -29,13 +29,13 @@ module NHibernate {
     /** Gets a type parameter that specifies a mapped class. */
     TypeParameter getAMappedObjectTp() {
       exists(string methodName |
-        methodName = "Load"
+        methodName = "Load<>"
         or
-        methodName = "Merge"
+        methodName = "Merge<>"
         or
-        methodName = "Get"
+        methodName = "Get<>"
         or
-        methodName = "Query"
+        methodName = "Query<>"
       |
         result = this.getAMethod(methodName).(UnboundGenericMethod).getTypeParameter(0)
       )

@@ -125,7 +125,7 @@ private DeclarationWithAccessors getACompatibleInterfaceAccessor(DeclarationWith
 }
 
 private DeclarationWithAccessors getACompatibleInterfaceAccessorCandidate(DeclarationWithAccessors d) {
-  getACompatibleInterfaceAccessorAux(result, d.getDeclaringType(), d.getName()) and
+  getACompatibleInterfaceAccessorAux(result, d.getDeclaringType(), d.getUndecoratedName()) and
   not d instanceof Indexer and
   d.isPublic()
 }
@@ -135,7 +135,7 @@ private predicate getACompatibleInterfaceAccessorAux(
   DeclarationWithAccessors d, ValueOrRefType t, string name
 ) {
   t = getAPossibleImplementor(d.getDeclaringType()) and
-  name = d.getName()
+  name = d.getUndecoratedName()
 }
 
 /**
@@ -215,7 +215,7 @@ private Method getACompatibleInterfaceMethod(Method m) {
  * in a type that is a possible implementor type for the interface type.
  */
 private Method getAnInterfaceMethodCandidate(Method m) {
-  getAPotentialInterfaceMethodAux(result, m.getDeclaringType(), m.getName(),
+  getAPotentialInterfaceMethodAux(result, m.getDeclaringType(), m.getUndecoratedName(),
     m.getNumberOfParameters()) and
   m.isPublic()
 }
@@ -225,7 +225,7 @@ private predicate getAPotentialInterfaceMethodAux(
   Method m, ValueOrRefType t, string name, int params
 ) {
   t = getAPossibleImplementor(m.getDeclaringType()) and
-  name = m.getName() and
+  name = m.getUndecoratedName() and
   params = m.getNumberOfParameters()
 }
 

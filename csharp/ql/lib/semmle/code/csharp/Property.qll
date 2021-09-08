@@ -116,6 +116,8 @@ class DeclarationWithGetSetAccessors extends DeclarationWithAccessors, TopLevelE
 class Property extends DotNet::Property, DeclarationWithGetSetAccessors, @property {
   override string getName() { properties(this, result, _, _, _) }
 
+  override string getUndecoratedName() { properties(this, result, _, _, _) }
+
   override ValueOrRefType getDeclaringType() { properties(this, _, result, _, _) }
 
   override Type getType() { properties(this, _, _, getTypeRef(result), _) }
@@ -250,6 +252,8 @@ class Property extends DotNet::Property, DeclarationWithGetSetAccessors, @proper
  */
 class Indexer extends DeclarationWithGetSetAccessors, Parameterizable, @indexer {
   override string getName() { indexers(this, result, _, _, _) }
+
+  override string getUndecoratedName() { indexers(this, result, _, _, _) }
 
   /** Gets the dimension of this indexer, that is, its number of parameters. */
   int getDimension() { result = getNumberOfParameters() }
@@ -393,6 +397,8 @@ class Accessor extends Callable, Modifiable, Attributable, @callable_accessor {
 class Getter extends Accessor, @getter {
   override string getName() { result = "get" + "_" + getDeclaration().getName() }
 
+  override string getUndecoratedName() { result = "get" + "_" + getDeclaration().getName() }
+
   override Type getReturnType() { result = getDeclaration().getType() }
 
   /**
@@ -439,6 +445,8 @@ class Getter extends Accessor, @getter {
  */
 class Setter extends Accessor, @setter {
   override string getName() { result = "set" + "_" + getDeclaration().getName() }
+
+  override string getUndecoratedName() { result = "set" + "_" + getDeclaration().getName() }
 
   override Type getReturnType() {
     exists(this) and // needed to avoid compiler warning

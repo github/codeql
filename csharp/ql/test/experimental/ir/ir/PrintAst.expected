@@ -214,10 +214,10 @@ collections.cs:
 #   12|     4: [BlockStmt] {...}
 #   13|       0: [LocalVariableDeclStmt] ... ...;
 #   13|         0: [LocalVariableDeclAndInitExpr] Dictionary<Int32,MyClass> dict = ...
-#   13|           -1: [TypeMention] Dictionary<Int32, MyClass>
+#   13|           -1: [TypeMention] Dictionary<int, MyClass>
 #   13|           0: [LocalVariableAccess] access to local variable dict
 #   13|           1: [ObjectCreation] object creation of type Dictionary<Int32,MyClass>
-#   13|             -2: [TypeMention] Dictionary<Int32, MyClass>
+#   13|             -2: [TypeMention] Dictionary<int, MyClass>
 #   13|               1: [TypeMention] int
 #   13|               2: [TypeMention] MyClass
 #   14|             -1: [CollectionInitializer] { ..., ... }

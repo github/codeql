@@ -56,6 +56,7 @@ nodes
 | test_cryptography.py:23:17:23:28 | ControlFlowNode for get_password | semmle.label | ControlFlowNode for get_password |
 | test_cryptography.py:23:17:23:30 | ControlFlowNode for get_password() | semmle.label | ControlFlowNode for get_password() |
 | test_cryptography.py:27:19:27:27 | ControlFlowNode for dangerous | semmle.label | ControlFlowNode for dangerous |
+subpaths
 #select
 | test_cryptodome.py:8:19:8:27 | ControlFlowNode for dangerous | test_cryptodome.py:2:37:2:51 | ControlFlowNode for ImportMember | test_cryptodome.py:8:19:8:27 | ControlFlowNode for dangerous | $@ is used in a hashing algorithm (MD5) that is insecure. | test_cryptodome.py:2:37:2:51 | ControlFlowNode for ImportMember | Sensitive data (certificate) |
 | test_cryptodome.py:8:19:8:27 | ControlFlowNode for dangerous | test_cryptodome.py:6:17:6:33 | ControlFlowNode for get_certificate() | test_cryptodome.py:8:19:8:27 | ControlFlowNode for dangerous | $@ is used in a hashing algorithm (MD5) that is insecure. | test_cryptodome.py:6:17:6:33 | ControlFlowNode for get_certificate() | Sensitive data (certificate) |

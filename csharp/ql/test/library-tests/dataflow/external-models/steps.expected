@@ -9,7 +9,7 @@ summaryThroughStep
 | Steps.cs:23:13:23:25 | this access | Steps.cs:23:13:23:25 | call to method StepQualRes | false |
 | Steps.cs:26:13:26:31 | this access | Steps.cs:26:25:26:30 | [post] access to local variable argOut | false |
 | Steps.cs:41:29:41:29 | 0 | Steps.cs:41:13:41:30 | call to method StepGeneric | true |
-| Steps.cs:42:30:42:34 | false | Steps.cs:42:13:42:35 | call to method StepGeneric2 | true |
+| Steps.cs:42:30:42:34 | false | Steps.cs:42:13:42:35 | call to method StepGeneric2<Boolean> | true |
 | Steps.cs:44:36:44:43 | "string" | Steps.cs:44:13:44:44 | call to method StepOverride | true |
 summaryGetterStep
 | Steps.cs:28:13:28:16 | this access | Steps.cs:28:13:28:34 | call to method StepFieldGetter | Steps.cs:57:13:57:17 | field Field |

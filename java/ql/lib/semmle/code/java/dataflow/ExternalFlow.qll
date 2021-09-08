@@ -616,16 +616,21 @@ private predicate elementSpec(
   summaryModel(namespace, type, subtypes, name, signature, ext, _, _, _)
 }
 
+private predicate relevantCallable(Callable c) { elementSpec(_, _, _, c.getName(), _, _) }
+
 private string paramsStringPart(Callable c, int i) {
-  i = -1 and result = "("
-  or
-  exists(int n, string p | c.getParameterType(n).getErasure().toString() = p |
-    i = 2 * n and result = p
+  relevantCallable(c) and
+  (
+    i = -1 and result = "("
     or
-    i = 2 * n - 1 and result = "," and n != 0
+    exists(int n, string p | c.getParameterType(n).getErasure().toString() = p |
+      i = 2 * n and result = p
+      or
+      i = 2 * n - 1 and result = "," and n != 0
+    )
+    or
+    i = 2 * c.getNumberOfParameters() and result = ")"
   )
-  or
-  i = 2 * c.getNumberOfParameters() and result = ")"
 }
 
 private string paramsString(Callable c) {

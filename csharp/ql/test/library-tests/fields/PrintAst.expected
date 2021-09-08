@@ -78,11 +78,11 @@ fields.cs:
 #   41|                 0: [TypeMention] decimal
 #   42|         1: [LocalVariableDeclStmt] ... ...;
 #   42|           0: [LocalVariableDeclAndInitExpr] C<Int32> x1 = ...
-#   42|             -1: [TypeMention] C<Int32>
+#   42|             -1: [TypeMention] C<int>
 #   42|               1: [TypeMention] int
 #   42|             0: [LocalVariableAccess] access to local variable x1
 #   42|             1: [ObjectCreation] object creation of type C<Int32>
-#   42|               0: [TypeMention] C<Int32>
+#   42|               0: [TypeMention] C<int>
 #   42|                 1: [TypeMention] int
 #   43|         2: [ExprStmt] ...;
 #   43|           0: [MethodCall] call to method WriteLine
@@ -90,15 +90,15 @@ fields.cs:
 #   43|               0: [TypeMention] Console
 #   43|             0: [PropertyCall] access to property Count
 #   43|               -1: [TypeAccess] access to type C<Int32>
-#   43|                 0: [TypeMention] C<Int32>
+#   43|                 0: [TypeMention] C<int>
 #   43|                   1: [TypeMention] int
 #   44|         3: [LocalVariableDeclStmt] ... ...;
 #   44|           0: [LocalVariableDeclAndInitExpr] C<Double> x2 = ...
-#   44|             -1: [TypeMention] C<Double>
+#   44|             -1: [TypeMention] C<double>
 #   44|               1: [TypeMention] double
 #   44|             0: [LocalVariableAccess] access to local variable x2
 #   44|             1: [ObjectCreation] object creation of type C<Double>
-#   44|               0: [TypeMention] C<Double>
+#   44|               0: [TypeMention] C<double>
 #   44|                 1: [TypeMention] double
 #   45|         4: [ExprStmt] ...;
 #   45|           0: [MethodCall] call to method WriteLine
@@ -106,7 +106,7 @@ fields.cs:
 #   45|               0: [TypeMention] Console
 #   45|             0: [PropertyCall] access to property Count
 #   45|               -1: [TypeAccess] access to type C<Int32>
-#   45|                 0: [TypeMention] C<Int32>
+#   45|                 0: [TypeMention] C<int>
 #   45|                   1: [TypeMention] int
 #   50|   5: [Class] Color
 #   53|     5: [Field] Black

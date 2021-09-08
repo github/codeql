@@ -1,8 +1,16 @@
 edges
+| datamodel.py:35:7:35:7 | ControlFlowNode for a | datamodel.py:36:10:36:10 | ControlFlowNode for a |
+| datamodel.py:38:8:38:13 | ControlFlowNode for SOURCE | datamodel.py:35:7:35:7 | ControlFlowNode for a |
 | datamodel.py:38:8:38:13 | ControlFlowNode for SOURCE | datamodel.py:38:6:38:17 | ControlFlowNode for f() |
+| datamodel.py:44:22:44:22 | ControlFlowNode for x | datamodel.py:46:16:46:16 | ControlFlowNode for x |
+| datamodel.py:49:26:49:26 | ControlFlowNode for x | datamodel.py:50:16:50:16 | ControlFlowNode for x |
+| datamodel.py:71:15:71:20 | ControlFlowNode for SOURCE | datamodel.py:44:22:44:22 | ControlFlowNode for x |
 | datamodel.py:71:15:71:20 | ControlFlowNode for SOURCE | datamodel.py:71:6:71:24 | ControlFlowNode for Attribute() |
+| datamodel.py:72:18:72:23 | ControlFlowNode for SOURCE | datamodel.py:44:22:44:22 | ControlFlowNode for x |
 | datamodel.py:72:18:72:23 | ControlFlowNode for SOURCE | datamodel.py:72:6:72:27 | ControlFlowNode for Attribute() |
+| datamodel.py:80:20:80:25 | ControlFlowNode for SOURCE | datamodel.py:49:26:49:26 | ControlFlowNode for x |
 | datamodel.py:80:20:80:25 | ControlFlowNode for SOURCE | datamodel.py:80:6:80:26 | ControlFlowNode for Attribute() |
+| datamodel.py:81:20:81:25 | ControlFlowNode for SOURCE | datamodel.py:49:26:49:26 | ControlFlowNode for x |
 | datamodel.py:81:20:81:25 | ControlFlowNode for SOURCE | datamodel.py:81:6:81:26 | ControlFlowNode for Attribute() |
 | datamodel.py:152:5:152:8 | [post store] ControlFlowNode for self [Attribute b] | datamodel.py:155:14:155:25 | ControlFlowNode for Customized() [Attribute b] |
 | datamodel.py:152:14:152:19 | ControlFlowNode for SOURCE | datamodel.py:152:5:152:8 | [post store] ControlFlowNode for self [Attribute b] |
@@ -121,25 +129,49 @@ edges
 | test.py:353:11:353:16 | ControlFlowNode for SOURCE | test.py:353:10:353:17 | ControlFlowNode for List [List element] |
 | test.py:357:10:357:22 | ControlFlowNode for Dict [Dictionary element at key s] | test.py:357:10:357:27 | ControlFlowNode for Subscript |
 | test.py:357:16:357:21 | ControlFlowNode for SOURCE | test.py:357:10:357:22 | ControlFlowNode for Dict [Dictionary element at key s] |
+| test.py:375:15:375:15 | ControlFlowNode for b | test.py:376:12:376:12 | ControlFlowNode for b |
+| test.py:380:28:380:33 | ControlFlowNode for SOURCE | test.py:375:15:375:15 | ControlFlowNode for b |
 | test.py:380:28:380:33 | ControlFlowNode for SOURCE | test.py:380:10:380:34 | ControlFlowNode for second() |
+| test.py:388:30:388:35 | ControlFlowNode for SOURCE | test.py:375:15:375:15 | ControlFlowNode for b |
 | test.py:388:30:388:35 | ControlFlowNode for SOURCE | test.py:388:10:388:36 | ControlFlowNode for second() |
+| test.py:396:10:396:43 | KwUnpacked b | test.py:375:15:375:15 | ControlFlowNode for b |
 | test.py:396:10:396:43 | KwUnpacked b | test.py:396:10:396:43 | ControlFlowNode for second() |
 | test.py:396:30:396:42 | ControlFlowNode for Dict [Dictionary element at key b] | test.py:396:10:396:43 | KwUnpacked b |
 | test.py:396:36:396:41 | ControlFlowNode for SOURCE | test.py:396:30:396:42 | ControlFlowNode for Dict [Dictionary element at key b] |
+| test.py:399:21:399:21 | ControlFlowNode for b [Tuple element at index 0] | test.py:400:12:400:12 | ControlFlowNode for b [Tuple element at index 0] |
+| test.py:400:12:400:12 | ControlFlowNode for b [Tuple element at index 0] | test.py:400:12:400:15 | ControlFlowNode for Subscript |
+| test.py:404:10:404:39 | PosOverflowNode for f_extra_pos() [Tuple element at index 0] | test.py:399:21:399:21 | ControlFlowNode for b [Tuple element at index 0] |
 | test.py:404:10:404:39 | PosOverflowNode for f_extra_pos() [Tuple element at index 0] | test.py:404:10:404:39 | ControlFlowNode for f_extra_pos() |
 | test.py:404:33:404:38 | ControlFlowNode for SOURCE | test.py:404:10:404:39 | PosOverflowNode for f_extra_pos() [Tuple element at index 0] |
+| test.py:407:26:407:26 | ControlFlowNode for b [Dictionary element at key b] | test.py:408:12:408:12 | ControlFlowNode for b [Dictionary element at key b] |
+| test.py:408:12:408:12 | ControlFlowNode for b [Dictionary element at key b] | test.py:408:12:408:17 | ControlFlowNode for Subscript |
+| test.py:412:10:412:45 | KwOverflowNode for f_extra_keyword() [Dictionary element at key b] | test.py:407:26:407:26 | ControlFlowNode for b [Dictionary element at key b] |
 | test.py:412:10:412:45 | KwOverflowNode for f_extra_keyword() [Dictionary element at key b] | test.py:412:10:412:45 | ControlFlowNode for f_extra_keyword() |
 | test.py:412:39:412:44 | ControlFlowNode for SOURCE | test.py:412:10:412:45 | KwOverflowNode for f_extra_keyword() [Dictionary element at key b] |
 | test.py:433:10:433:15 | ControlFlowNode for SOURCE | test.py:433:10:433:38 | ControlFlowNode for IfExp |
 | test.py:441:34:441:39 | ControlFlowNode for SOURCE | test.py:441:10:441:39 | ControlFlowNode for IfExp |
+| test.py:462:11:462:11 | ControlFlowNode for x | test.py:463:16:463:16 | ControlFlowNode for x |
+| test.py:465:12:465:17 | ControlFlowNode for SOURCE | test.py:462:11:462:11 | ControlFlowNode for x |
 | test.py:465:12:465:17 | ControlFlowNode for SOURCE | test.py:465:10:465:18 | ControlFlowNode for f() |
+| test.py:469:19:469:19 | ControlFlowNode for b | test.py:470:16:470:16 | ControlFlowNode for b |
+| test.py:472:28:472:33 | ControlFlowNode for SOURCE | test.py:469:19:469:19 | ControlFlowNode for b |
 | test.py:472:28:472:33 | ControlFlowNode for SOURCE | test.py:472:10:472:34 | ControlFlowNode for second() |
+| test.py:483:19:483:19 | ControlFlowNode for b | test.py:484:16:484:16 | ControlFlowNode for b |
+| test.py:486:30:486:35 | ControlFlowNode for SOURCE | test.py:483:19:483:19 | ControlFlowNode for b |
 | test.py:486:30:486:35 | ControlFlowNode for SOURCE | test.py:486:10:486:36 | ControlFlowNode for second() |
+| test.py:497:19:497:19 | ControlFlowNode for b | test.py:498:16:498:16 | ControlFlowNode for b |
+| test.py:500:10:500:43 | KwUnpacked b | test.py:497:19:497:19 | ControlFlowNode for b |
 | test.py:500:10:500:43 | KwUnpacked b | test.py:500:10:500:43 | ControlFlowNode for second() |
 | test.py:500:30:500:42 | ControlFlowNode for Dict [Dictionary element at key b] | test.py:500:10:500:43 | KwUnpacked b |
 | test.py:500:36:500:41 | ControlFlowNode for SOURCE | test.py:500:30:500:42 | ControlFlowNode for Dict [Dictionary element at key b] |
+| test.py:504:30:504:30 | ControlFlowNode for b [Tuple element at index 0] | test.py:504:33:504:33 | ControlFlowNode for b [Tuple element at index 0] |
+| test.py:504:33:504:33 | ControlFlowNode for b [Tuple element at index 0] | test.py:504:33:504:36 | ControlFlowNode for Subscript |
+| test.py:505:10:505:39 | PosOverflowNode for f_extra_pos() [Tuple element at index 0] | test.py:504:30:504:30 | ControlFlowNode for b [Tuple element at index 0] |
 | test.py:505:10:505:39 | PosOverflowNode for f_extra_pos() [Tuple element at index 0] | test.py:505:10:505:39 | ControlFlowNode for f_extra_pos() |
 | test.py:505:33:505:38 | ControlFlowNode for SOURCE | test.py:505:10:505:39 | PosOverflowNode for f_extra_pos() [Tuple element at index 0] |
+| test.py:509:35:509:35 | ControlFlowNode for b [Dictionary element at key b] | test.py:509:38:509:38 | ControlFlowNode for b [Dictionary element at key b] |
+| test.py:509:38:509:38 | ControlFlowNode for b [Dictionary element at key b] | test.py:509:38:509:43 | ControlFlowNode for Subscript |
+| test.py:510:10:510:45 | KwOverflowNode for f_extra_keyword() [Dictionary element at key b] | test.py:509:35:509:35 | ControlFlowNode for b [Dictionary element at key b] |
 | test.py:510:10:510:45 | KwOverflowNode for f_extra_keyword() [Dictionary element at key b] | test.py:510:10:510:45 | ControlFlowNode for f_extra_keyword() |
 | test.py:510:39:510:44 | ControlFlowNode for SOURCE | test.py:510:10:510:45 | KwOverflowNode for f_extra_keyword() [Dictionary element at key b] |
 | test.py:522:9:522:14 | ControlFlowNode for SOURCE | test.py:524:10:524:10 | ControlFlowNode for a |
@@ -354,8 +386,14 @@ edges
 | test.py:795:61:795:61 | ControlFlowNode for z | test.py:798:10:798:10 | ControlFlowNode for z |
 | test.py:795:63:795:68 | ControlFlowNode for SOURCE | test.py:795:61:795:61 | ControlFlowNode for z |
 nodes
+| datamodel.py:35:7:35:7 | ControlFlowNode for a | semmle.label | ControlFlowNode for a |
+| datamodel.py:36:10:36:10 | ControlFlowNode for a | semmle.label | ControlFlowNode for a |
 | datamodel.py:38:6:38:17 | ControlFlowNode for f() | semmle.label | ControlFlowNode for f() |
 | datamodel.py:38:8:38:13 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| datamodel.py:44:22:44:22 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
+| datamodel.py:46:16:46:16 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
+| datamodel.py:49:26:49:26 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
+| datamodel.py:50:16:50:16 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
 | datamodel.py:71:6:71:24 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | datamodel.py:71:15:71:20 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
 | datamodel.py:72:6:72:27 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
@@ -507,6 +545,8 @@ nodes
 | test.py:357:10:357:22 | ControlFlowNode for Dict [Dictionary element at key s] | semmle.label | ControlFlowNode for Dict [Dictionary element at key s] |
 | test.py:357:10:357:27 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
 | test.py:357:16:357:21 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:375:15:375:15 | ControlFlowNode for b | semmle.label | ControlFlowNode for b |
+| test.py:376:12:376:12 | ControlFlowNode for b | semmle.label | ControlFlowNode for b |
 | test.py:380:10:380:34 | ControlFlowNode for second() | semmle.label | ControlFlowNode for second() |
 | test.py:380:28:380:33 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
 | test.py:388:10:388:36 | ControlFlowNode for second() | semmle.label | ControlFlowNode for second() |
@@ -515,9 +555,15 @@ nodes
 | test.py:396:10:396:43 | KwUnpacked b | semmle.label | KwUnpacked b |
 | test.py:396:30:396:42 | ControlFlowNode for Dict [Dictionary element at key b] | semmle.label | ControlFlowNode for Dict [Dictionary element at key b] |
 | test.py:396:36:396:41 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:399:21:399:21 | ControlFlowNode for b [Tuple element at index 0] | semmle.label | ControlFlowNode for b [Tuple element at index 0] |
+| test.py:400:12:400:12 | ControlFlowNode for b [Tuple element at index 0] | semmle.label | ControlFlowNode for b [Tuple element at index 0] |
+| test.py:400:12:400:15 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
 | test.py:404:10:404:39 | ControlFlowNode for f_extra_pos() | semmle.label | ControlFlowNode for f_extra_pos() |
 | test.py:404:10:404:39 | PosOverflowNode for f_extra_pos() [Tuple element at index 0] | semmle.label | PosOverflowNode for f_extra_pos() [Tuple element at index 0] |
 | test.py:404:33:404:38 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:407:26:407:26 | ControlFlowNode for b [Dictionary element at key b] | semmle.label | ControlFlowNode for b [Dictionary element at key b] |
+| test.py:408:12:408:12 | ControlFlowNode for b [Dictionary element at key b] | semmle.label | ControlFlowNode for b [Dictionary element at key b] |
+| test.py:408:12:408:17 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
 | test.py:412:10:412:45 | ControlFlowNode for f_extra_keyword() | semmle.label | ControlFlowNode for f_extra_keyword() |
 | test.py:412:10:412:45 | KwOverflowNode for f_extra_keyword() [Dictionary element at key b] | semmle.label | KwOverflowNode for f_extra_keyword() [Dictionary element at key b] |
 | test.py:412:39:412:44 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
@@ -525,19 +571,33 @@ nodes
 | test.py:433:10:433:38 | ControlFlowNode for IfExp | semmle.label | ControlFlowNode for IfExp |
 | test.py:441:10:441:39 | ControlFlowNode for IfExp | semmle.label | ControlFlowNode for IfExp |
 | test.py:441:34:441:39 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:462:11:462:11 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
+| test.py:463:16:463:16 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
 | test.py:465:10:465:18 | ControlFlowNode for f() | semmle.label | ControlFlowNode for f() |
 | test.py:465:12:465:17 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:469:19:469:19 | ControlFlowNode for b | semmle.label | ControlFlowNode for b |
+| test.py:470:16:470:16 | ControlFlowNode for b | semmle.label | ControlFlowNode for b |
 | test.py:472:10:472:34 | ControlFlowNode for second() | semmle.label | ControlFlowNode for second() |
 | test.py:472:28:472:33 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:483:19:483:19 | ControlFlowNode for b | semmle.label | ControlFlowNode for b |
+| test.py:484:16:484:16 | ControlFlowNode for b | semmle.label | ControlFlowNode for b |
 | test.py:486:10:486:36 | ControlFlowNode for second() | semmle.label | ControlFlowNode for second() |
 | test.py:486:30:486:35 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:497:19:497:19 | ControlFlowNode for b | semmle.label | ControlFlowNode for b |
+| test.py:498:16:498:16 | ControlFlowNode for b | semmle.label | ControlFlowNode for b |
 | test.py:500:10:500:43 | ControlFlowNode for second() | semmle.label | ControlFlowNode for second() |
 | test.py:500:10:500:43 | KwUnpacked b | semmle.label | KwUnpacked b |
 | test.py:500:30:500:42 | ControlFlowNode for Dict [Dictionary element at key b] | semmle.label | ControlFlowNode for Dict [Dictionary element at key b] |
 | test.py:500:36:500:41 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:504:30:504:30 | ControlFlowNode for b [Tuple element at index 0] | semmle.label | ControlFlowNode for b [Tuple element at index 0] |
+| test.py:504:33:504:33 | ControlFlowNode for b [Tuple element at index 0] | semmle.label | ControlFlowNode for b [Tuple element at index 0] |
+| test.py:504:33:504:36 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
 | test.py:505:10:505:39 | ControlFlowNode for f_extra_pos() | semmle.label | ControlFlowNode for f_extra_pos() |
 | test.py:505:10:505:39 | PosOverflowNode for f_extra_pos() [Tuple element at index 0] | semmle.label | PosOverflowNode for f_extra_pos() [Tuple element at index 0] |
 | test.py:505:33:505:38 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:509:35:509:35 | ControlFlowNode for b [Dictionary element at key b] | semmle.label | ControlFlowNode for b [Dictionary element at key b] |
+| test.py:509:38:509:38 | ControlFlowNode for b [Dictionary element at key b] | semmle.label | ControlFlowNode for b [Dictionary element at key b] |
+| test.py:509:38:509:43 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
 | test.py:510:10:510:45 | ControlFlowNode for f_extra_keyword() | semmle.label | ControlFlowNode for f_extra_keyword() |
 | test.py:510:10:510:45 | KwOverflowNode for f_extra_keyword() [Dictionary element at key b] | semmle.label | KwOverflowNode for f_extra_keyword() [Dictionary element at key b] |
 | test.py:510:39:510:44 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
@@ -773,6 +833,23 @@ nodes
 | test.py:796:10:796:10 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
 | test.py:797:10:797:10 | ControlFlowNode for y | semmle.label | ControlFlowNode for y |
 | test.py:798:10:798:10 | ControlFlowNode for z | semmle.label | ControlFlowNode for z |
+subpaths
+| datamodel.py:38:8:38:13 | ControlFlowNode for SOURCE | datamodel.py:35:7:35:7 | ControlFlowNode for a | datamodel.py:36:10:36:10 | ControlFlowNode for a | datamodel.py:38:6:38:17 | ControlFlowNode for f() |
+| datamodel.py:71:15:71:20 | ControlFlowNode for SOURCE | datamodel.py:44:22:44:22 | ControlFlowNode for x | datamodel.py:46:16:46:16 | ControlFlowNode for x | datamodel.py:71:6:71:24 | ControlFlowNode for Attribute() |
+| datamodel.py:72:18:72:23 | ControlFlowNode for SOURCE | datamodel.py:44:22:44:22 | ControlFlowNode for x | datamodel.py:46:16:46:16 | ControlFlowNode for x | datamodel.py:72:6:72:27 | ControlFlowNode for Attribute() |
+| datamodel.py:80:20:80:25 | ControlFlowNode for SOURCE | datamodel.py:49:26:49:26 | ControlFlowNode for x | datamodel.py:50:16:50:16 | ControlFlowNode for x | datamodel.py:80:6:80:26 | ControlFlowNode for Attribute() |
+| datamodel.py:81:20:81:25 | ControlFlowNode for SOURCE | datamodel.py:49:26:49:26 | ControlFlowNode for x | datamodel.py:50:16:50:16 | ControlFlowNode for x | datamodel.py:81:6:81:26 | ControlFlowNode for Attribute() |
+| test.py:380:28:380:33 | ControlFlowNode for SOURCE | test.py:375:15:375:15 | ControlFlowNode for b | test.py:376:12:376:12 | ControlFlowNode for b | test.py:380:10:380:34 | ControlFlowNode for second() |
+| test.py:388:30:388:35 | ControlFlowNode for SOURCE | test.py:375:15:375:15 | ControlFlowNode for b | test.py:376:12:376:12 | ControlFlowNode for b | test.py:388:10:388:36 | ControlFlowNode for second() |
+| test.py:396:10:396:43 | KwUnpacked b | test.py:375:15:375:15 | ControlFlowNode for b | test.py:376:12:376:12 | ControlFlowNode for b | test.py:396:10:396:43 | ControlFlowNode for second() |
+| test.py:404:10:404:39 | PosOverflowNode for f_extra_pos() [Tuple element at index 0] | test.py:399:21:399:21 | ControlFlowNode for b [Tuple element at index 0] | test.py:400:12:400:15 | ControlFlowNode for Subscript | test.py:404:10:404:39 | ControlFlowNode for f_extra_pos() |
+| test.py:412:10:412:45 | KwOverflowNode for f_extra_keyword() [Dictionary element at key b] | test.py:407:26:407:26 | ControlFlowNode for b [Dictionary element at key b] | test.py:408:12:408:17 | ControlFlowNode for Subscript | test.py:412:10:412:45 | ControlFlowNode for f_extra_keyword() |
+| test.py:465:12:465:17 | ControlFlowNode for SOURCE | test.py:462:11:462:11 | ControlFlowNode for x | test.py:463:16:463:16 | ControlFlowNode for x | test.py:465:10:465:18 | ControlFlowNode for f() |
+| test.py:472:28:472:33 | ControlFlowNode for SOURCE | test.py:469:19:469:19 | ControlFlowNode for b | test.py:470:16:470:16 | ControlFlowNode for b | test.py:472:10:472:34 | ControlFlowNode for second() |
+| test.py:486:30:486:35 | ControlFlowNode for SOURCE | test.py:483:19:483:19 | ControlFlowNode for b | test.py:484:16:484:16 | ControlFlowNode for b | test.py:486:10:486:36 | ControlFlowNode for second() |
+| test.py:500:10:500:43 | KwUnpacked b | test.py:497:19:497:19 | ControlFlowNode for b | test.py:498:16:498:16 | ControlFlowNode for b | test.py:500:10:500:43 | ControlFlowNode for second() |
+| test.py:505:10:505:39 | PosOverflowNode for f_extra_pos() [Tuple element at index 0] | test.py:504:30:504:30 | ControlFlowNode for b [Tuple element at index 0] | test.py:504:33:504:36 | ControlFlowNode for Subscript | test.py:505:10:505:39 | ControlFlowNode for f_extra_pos() |
+| test.py:510:10:510:45 | KwOverflowNode for f_extra_keyword() [Dictionary element at key b] | test.py:509:35:509:35 | ControlFlowNode for b [Dictionary element at key b] | test.py:509:38:509:43 | ControlFlowNode for Subscript | test.py:510:10:510:45 | ControlFlowNode for f_extra_keyword() |
 #select
 | datamodel.py:38:6:38:17 | ControlFlowNode for f() | datamodel.py:38:8:38:13 | ControlFlowNode for SOURCE | datamodel.py:38:6:38:17 | ControlFlowNode for f() | Flow found |
 | datamodel.py:71:6:71:24 | ControlFlowNode for Attribute() | datamodel.py:71:15:71:20 | ControlFlowNode for SOURCE | datamodel.py:71:6:71:24 | ControlFlowNode for Attribute() | Flow found |

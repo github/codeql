@@ -660,8 +660,8 @@
 | Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... | Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... | 1 |
 | Foreach.cs:20:22:20:22 | String x | Foreach.cs:21:11:21:11 | ; | 2 |
 | Foreach.cs:20:27:20:68 | ... ?? ... | Foreach.cs:20:27:20:68 | ... ?? ... | 1 |
-| Foreach.cs:20:29:20:38 | call to method ToArray | Foreach.cs:20:29:20:38 | call to method ToArray | 1 |
-| Foreach.cs:20:43:20:68 | call to method Empty | Foreach.cs:20:43:20:68 | call to method Empty | 1 |
+| Foreach.cs:20:29:20:38 | call to method ToArray<String> | Foreach.cs:20:29:20:38 | call to method ToArray<String> | 1 |
+| Foreach.cs:20:43:20:68 | call to method Empty<String> | Foreach.cs:20:43:20:68 | call to method Empty<String> | 1 |
 | Foreach.cs:24:10:24:11 | enter M4 | Foreach.cs:26:36:26:39 | access to parameter args | 3 |
 | Foreach.cs:24:10:24:11 | exit M4 (normal) | Foreach.cs:24:10:24:11 | exit M4 | 2 |
 | Foreach.cs:26:9:27:11 | foreach (... ... in ...) ... | Foreach.cs:26:9:27:11 | foreach (... ... in ...) ... | 1 |
@@ -715,7 +715,7 @@
 | LoopUnrolling.cs:61:17:61:37 | [b (line 55): true] ...; | LoopUnrolling.cs:62:17:62:17 | [b (line 55): true] access to parameter b | 5 |
 | LoopUnrolling.cs:62:13:63:37 | [b (line 55): false] if (...) ... | LoopUnrolling.cs:62:17:62:17 | [b (line 55): false] access to parameter b | 2 |
 | LoopUnrolling.cs:63:17:63:37 | [b (line 55): true] ...; | LoopUnrolling.cs:58:9:64:9 | [b (line 55): true] foreach (... ... in ...) ... | 4 |
-| LoopUnrolling.cs:67:10:67:11 | enter M8 | LoopUnrolling.cs:69:14:69:23 | call to method Any | 5 |
+| LoopUnrolling.cs:67:10:67:11 | enter M8 | LoopUnrolling.cs:69:14:69:23 | call to method Any<String> | 5 |
 | LoopUnrolling.cs:67:10:67:11 | exit M8 (normal) | LoopUnrolling.cs:67:10:67:11 | exit M8 | 2 |
 | LoopUnrolling.cs:69:13:69:23 | [false] !... | LoopUnrolling.cs:69:13:69:23 | [false] !... | 1 |
 | LoopUnrolling.cs:69:13:69:23 | [true] !... | LoopUnrolling.cs:69:13:69:23 | [true] !... | 1 |
@@ -1294,7 +1294,7 @@
 | cflow.cs:217:13:220:13 | if (...) ... | cflow.cs:217:17:217:32 | ... < ... | 6 |
 | cflow.cs:218:13:220:13 | {...} | cflow.cs:219:17:219:22 | break; | 2 |
 | cflow.cs:221:18:221:22 | this access | cflow.cs:221:18:221:34 | ... < ... | 5 |
-| cflow.cs:224:10:224:16 | enter Foreach | cflow.cs:226:27:226:64 | call to method Repeat | 5 |
+| cflow.cs:224:10:224:16 | enter Foreach | cflow.cs:226:27:226:64 | call to method Repeat<String> | 5 |
 | cflow.cs:224:10:224:16 | exit Foreach (normal) | cflow.cs:224:10:224:16 | exit Foreach | 2 |
 | cflow.cs:226:9:237:9 | foreach (... ... in ...) ... | cflow.cs:226:9:237:9 | foreach (... ... in ...) ... | 1 |
 | cflow.cs:226:22:226:22 | String x | cflow.cs:229:17:229:32 | ... > ... | 15 |
