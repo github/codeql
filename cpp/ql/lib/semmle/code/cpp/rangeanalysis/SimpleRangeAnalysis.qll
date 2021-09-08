@@ -1546,8 +1546,13 @@ private float getGuardedUpperBound(VariableAccess guardedAccess) {
     // node is attached to the block at the end of the edge and not on
     // the actual edge. It is therefore not possible to determine which
     // edge the guard phi node belongs to. The predicate below ensures
-    // that there is one predecessor, albeit somewhat conservative.
-    exists(unique(BasicBlock b | b = def.(BasicBlock).getAPredecessor())) and
+    // that any predecessor other than the guard block is dominated by the
+    // guard phi node.
+    forall(BasicBlock pred |
+      pred = def.(BasicBlock).getAPredecessor() and pred != guard.getBasicBlock()
+    |
+      bbDominates(def, pred)
+    ) and
     guardedAccess = def.getAUse(v) and
     result = max(float ub | upperBoundFromGuard(guard, guardVa, ub, branch))
   )
