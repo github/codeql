@@ -34,10 +34,7 @@ class Configuration extends TaintTracking::Configuration {
     // Concatenating with a string will in practice prevent the string `__proto__` from arising.
     exists(StringOps::ConcatenationRoot root | node = root |
       // Exclude the string coercion `"" + node` from this filter.
-      not (
-        strictcount(root.getALeaf()) = 2 and
-        root.getALeaf().getStringValue() = ""
-      )
+      not node.(StringOps::ConcatenationNode).isCoercion()
     )
   }
 
