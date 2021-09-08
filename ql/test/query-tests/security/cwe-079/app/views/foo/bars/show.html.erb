@@ -52,3 +52,21 @@
 
 <%# BAD: unsanitized user-input should not be passed to link_to as the URL %>
 <%= link_to "user website", params[:website] %>
+
+<%# BAD: unsanitized user-input should not be passed to link_to as the URL %>
+<%= link_to params[:website], class: "user-link" do %>
+  user website
+<% end %>
+
+<%# GOOD: @safe_foo is a hardcoded string here at runtime %>
+<%# TODO: we mistakenly flag this up due to overly broad flow through instance variables %>
+<%= @safe_foo.html_safe %>
+
+<%# GOOD: @html_escaped is manually escaped in the controller %>
+<%= @html_escaped.html_safe %>
+
+<%# GOOD: @html_escaped is manually escaped in the controller %>
+<%=
+  html_escaped_in_template = h params[:text]
+  html_escaped_in_template.html_safe
+%>
