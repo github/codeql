@@ -17,8 +17,15 @@ compilations(
      *   javac A.java B.java C.java
      */
     unique int id : @compilation,
-    string cwd : string ref
+    int kind: int ref,
+    string cwd : string ref,
+    string name : string ref
 );
+
+case @compilation.kind of
+   1  = @javacompilation
+|  2  = @kotlincompilation
+;
 
 compilation_started(
     int id : @compilation ref
