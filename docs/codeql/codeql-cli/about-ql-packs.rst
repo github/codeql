@@ -111,11 +111,11 @@ The following properties are supported in ``qlpack.yml`` files.
             codeql/cpp-all: ^0.0.2
 
      - Packs that define CodeQL package dependencies on other packs
-     - A map from pack references to the semantic version range that is compatible with this pack.
+     - A map from pack references to the semantic version range that is compatible with this pack. Supported from CLI version v2.6.0 and onwards.
    * - ``defaultSuiteFile``
      - ``defaultSuiteFile: cpp-code-scanning.qls``
      - Packs that export a set of default queries to run
-     - The path to a query suite file containing all of the queries that are run by default when this pack is passed to the ``codeql database analyze` command.
+     - The path to a query suite file containing all of the queries that are run by default when this pack is passed to the ``codeql database analyze`` command. Supported from CLI version v2.6.0 and onwards.
 
 .. _custom-ql-packs:
 
@@ -183,11 +183,11 @@ Each of the languages in the CodeQL repository has four main QL packs:
   used by the language, and CodeQL libraries, and queries at ``ql/<language>/ql/lib``
 - Core query pack for the language that includes the default queries for the language, along
   with their query suites at ``ql/<language>/ql/src``
-- Tests for the core language libraries and queries pack at ``ql/<language>/ql/test``
+- Tests for the core language libraries and queries at ``ql/<language>/ql/test``
 - Upgrade scripts for the language at ``ql/<language>/upgrades``
 
 Core library pack
-~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~
 
 The ``qlpack.yml`` file for a core library pack uses the following properties:
 ``name``, ``version``, ``dbscheme``.
@@ -207,7 +207,7 @@ contains:
     codeql/cpp-upgrades: "*"
 
 Core query pack
-~~~~~~~~~~~~
+~~~~~~~~~~~~~~~
 
 The ``qlpack.yml`` file for a core query pack uses the following properties:
 ``name``, ``version``, ``suites``, ``defaultSuiteFile``, ``dependencies`` .
@@ -230,7 +230,7 @@ Tests for the core QL pack
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The ``qlpack.yml`` file for the tests for the core QL packs use the following
-properties: ``name``, ``version``, and ``libraryPathDependencies``.
+properties: ``name``, ``version``, and ``dependencies``.
 The ``dependencies`` always specifies the core QL pack.
 
 For example, the ``qlpack.yml`` file for `C/C++ analysis tests
@@ -245,8 +245,6 @@ contains:
     codeql/cpp-all: "*"
     codeql/cpp-queries: "*"
 
-Notice that, unlike the example QL pack for custom tests, this file does not define
-an ``extractor`` or ``tests`` property. These properties have been added to
 the QL pack file since the release of CodeQL CLI 2.0.1.
 They haven't been added yet to ensure compatibility for LGTM Enterprise users.
 After the next release of LGTM Enterprise, these files can be updated.
