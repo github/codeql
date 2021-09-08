@@ -110,6 +110,7 @@ class Annotatable extends Element {
   }
 
   /** Gets an annotation that applies to this element. */
+  cached
   Annotation getAnAnnotation() { result.getAnnotatedElement() = this }
 
   /**
