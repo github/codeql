@@ -37,7 +37,7 @@
 
     <p>
       However, the following example is unsafe because user-controlled input is
-      output without escaping, since it is marked as <code>html_safe</code>.
+      emitted without escaping, since it is marked as <code>html_safe</code>.
     </p>
     <sample src="examples/reflective_xss.html.erb" />
   </example>
