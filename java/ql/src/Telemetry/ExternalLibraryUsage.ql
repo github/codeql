@@ -13,7 +13,7 @@ from int usages, string jarname
 where
   usages =
     strictcount(Call c, ExternalAPI a |
-      c.getCallee() = a and
+      c.getCallee().getSourceDeclaration() = a and
       not c.getFile() instanceof GeneratedFile and
       a.jarContainer() = jarname and
       not a.isUninteresting()

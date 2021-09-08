@@ -15,7 +15,7 @@ private import semmle.code.java.dataflow.TaintTracking
 class ExternalAPI extends Callable {
   ExternalAPI() { not this.fromSource() }
 
-  /** Holds if this API is a candidate worth supporting */
+  /** Holds if this API is not worth supporting */
   predicate isUninteresting() { isTestLibrary() or isParameterlessConstructor() }
 
   /** Holds if this API is is a constructor without parameters */
