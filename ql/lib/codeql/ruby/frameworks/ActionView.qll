@@ -20,7 +20,7 @@ abstract class HtmlSafeCall extends MethodCall {
   HtmlSafeCall() { this.getMethodName() = "html_safe" }
 }
 
-// A call to `html_safe` from within a template or view component.
+// A call to `html_safe` from within a template.
 private class ActionViewHtmlSafeCall extends HtmlSafeCall {
   ActionViewHtmlSafeCall() { inActionViewContext(this) }
 }
@@ -40,7 +40,7 @@ class RawCall extends ActionViewContextCall {
   RawCall() { this.getMethodName() = "raw" }
 }
 
-// A call to the `params` method within the context of a template or view component.
+// A call to the `params` method within the context of a template.
 private class ActionViewParamsCall extends ActionViewContextCall, ParamsCall { }
 
 /**
@@ -100,7 +100,7 @@ abstract class RenderCall extends MethodCall {
   // TODO: implicit renders in controller actions
 }
 
-// A call to the `render` method within the context of a template or view component.
+// A call to the `render` method within the context of a template.
 private class ActionViewRenderCall extends RenderCall, ActionViewContextCall { }
 
 /**
@@ -110,7 +110,7 @@ abstract class RenderToCall extends MethodCall {
   RenderToCall() { this.getMethodName() = ["render_to_body", "render_to_string"] }
 }
 
-// A call to `render_to` from within a template or view component.
+// A call to `render_to` from within a template.
 private class ActionViewRenderToCall extends ActionViewContextCall, RenderToCall { }
 
 /**
