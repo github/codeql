@@ -245,9 +245,6 @@ contains:
     codeql/cpp-all: "*"
     codeql/cpp-queries: "*"
 
-the QL pack file since the release of CodeQL CLI 2.0.1.
-They haven't been added yet to ensure compatibility for LGTM Enterprise users.
-After the next release of LGTM Enterprise, these files can be updated.
 
 .. _upgrade-ql-packs:
 
