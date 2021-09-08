@@ -5,4 +5,9 @@ class UserController < ActionController::Base
     object = JSON.parse params[:json]
     # ...
   end
+
+  def safe_yaml_example
+    object = YAML.safe_load params[:yaml]
+    # ...
+  end
 end

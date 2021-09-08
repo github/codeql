@@ -27,8 +27,9 @@ are capable of deserializing to arbitrary objects, this is inherently unsafe.
 </p>
 <sample src="examples/UnsafeDeserializationBad.rb"/>
 <p>
-Using <code>YAML.parse</code> instead, with the default options, removes the
-vulnerability.
+Using <code>JSON.parse</code> and <code>YAML.safe_load</code> instead, as in the
+following example, removes the vulnerability. Note that there is no safe way to
+deserialize untrusted data using <code>Marshal</code>.
 </p>
 <sample src="examples/UnsafeDeserializationGood.rb"/>
 </example>

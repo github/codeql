@@ -38,4 +38,10 @@ class UsersController < ActionController::Base
     yaml_data = params[:key]
     object = YAML.load yaml_data
   end
+
+  # GOOD
+  def route6
+    yaml_data = params[:key]
+    object = YAML.safe_load yaml_data
+  end
 end
