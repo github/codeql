@@ -1544,7 +1544,7 @@ private float getGuardedUpperBound(VariableAccess guardedAccess) {
     // more than one predecessor, the guard phi node could originate
     // from one of the predecessors. This is because the guard phi
     // node is attached to the block at the end of the edge and not on
-    // the actual edge. It is therefore possible to determine which
+    // the actual edge. It is therefore not possible to determine which
     // edge the guard phi node belongs to. The predicate below ensures
     // that there is one predecessor, albeit somewhat conservative.
     exists(unique(BasicBlock b | b = def.(BasicBlock).getAPredecessor())) and
