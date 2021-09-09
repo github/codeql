@@ -1,0 +1,2 @@
+| barrier-guards.rb:3:4:3:15 | ... == ... | barrier-guards.rb:4:15:4:17 | foo | barrier-guards.rb:3:4:3:6 | foo | true |
+| barrier-guards.rb:9:4:9:24 | call to include? | barrier-guards.rb:10:15:10:17 | foo | barrier-guards.rb:9:21:9:23 | foo | true |

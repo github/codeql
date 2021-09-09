@@ -32,7 +32,7 @@ class StringConstCompare extends DataFlow::BarrierGuard,
     )
   }
 
-  override DataFlow::Node getAGuardedNode() { result.asExpr() = checkedNode }
+  override predicate checks(CfgNode expr, boolean branch) { expr = checkedNode and branch = true }
 }
 
 /**
@@ -64,5 +64,5 @@ class StringConstArrayInclusionCall extends DataFlow::BarrierGuard,
     )
   }
 
-  override DataFlow::Node getAGuardedNode() { result.asExpr() = checkedNode }
+  override predicate checks(CfgNode expr, boolean branch) { expr = checkedNode and branch = true }
 }
