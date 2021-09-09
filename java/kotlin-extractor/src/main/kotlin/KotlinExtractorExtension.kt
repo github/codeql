@@ -74,15 +74,6 @@ class StarLabel<T>(): Label<T> {
 fun escapeTrapString(str: String) = str.replace("\"", "\"\"")
 
 class Logger(val tw: TrapWriter) {
-    private val unknownLocation by lazy {
-        val noFile: Label<DbFile> = StringLabel("noFile")
-        val loc: Label<DbLocation> = StringLabel("unknownLocation")
-        tw.writeTrap("$noFile = *\n")
-        tw.writeTrap("$loc = *\n")
-        tw.writeFiles(noFile, "", "", "", 0)
-        tw.writeLocations_default(loc, noFile, 0, 0, 0, 0)
-        loc
-    }
     private val warningCounts = mutableMapOf<String, Int>()
     private val warningLimit: Int
     init {
@@ -119,7 +110,7 @@ class Logger(val tw: TrapWriter) {
             }
         val fullMsg = "${timestamp()} Warning: $msg\n$suffix"
         val severity = 8 // Pessimistically: "Severe extractor errors likely to affect multiple source files"
-        tw.writeDiagnostics(StarLabel(), severity, "", msg, fullMsg, unknownLocation)
+        tw.writeDiagnostics(StarLabel(), severity, "", msg, fullMsg, tw.unknownLocation)
         print(fullMsg)
     }
     fun printLimitedWarningCounts() {
@@ -134,50 +125,12 @@ class Logger(val tw: TrapWriter) {
 }
 
 open class TrapWriter (val bw: BufferedWriter) {
-    fun writeTrap(trap: String) {
-        bw.write(trap)
-    }
-    fun flush() {
-        bw.flush()
-    }
-}
+    protected var nextId: Int = 100
 
-class FileTrapWriter (
-    bw: BufferedWriter,
-    val fileLabel: String,
-    val file: IrFile
-): TrapWriter (bw) {
-    private var nextId: Int = 100
-    private val fileEntry = file.fileEntry
+    fun <T> getFreshLabel(): Label<T> {
+        return IntLabel(nextId++)
+    }
 
-    fun getLocation(e: IrElement): Label<DbLocation> {
-        return getLocation(e.startOffset, e.endOffset)
-    }
-    fun getLocation(startOffset: Int, endOffset: Int): Label<DbLocation> {
-        val unknownLoc = startOffset == -1 && endOffset == -1
-        val startLine =   if(unknownLoc) 0 else fileEntry.getLineNumber(startOffset) + 1
-        val startColumn = if(unknownLoc) 0 else fileEntry.getColumnNumber(startOffset) + 1
-        val endLine =     if(unknownLoc) 0 else fileEntry.getLineNumber(endOffset) + 1
-        val endColumn =   if(unknownLoc) 0 else fileEntry.getColumnNumber(endOffset)
-        val id: Label<DbLocation> = getFreshLabel()
-        // TODO: This isn't right for UnknownLocation
-        val fileId: Label<DbFile> = getLabelFor(fileLabel)
-        writeTrap("$id = @\"loc,{$fileId},$startLine,$startColumn,$endLine,$endColumn\"\n")
-        writeLocations_default(id, fileId, startLine, startColumn, endLine, endColumn)
-        return id
-    }
-    fun getLocationString(e: IrElement): String {
-        val path = file.path
-        if (e.startOffset == -1 && e.endOffset == -1) {
-            return "unknown location, while processing $path"
-        } else {
-            val startLine =   fileEntry.getLineNumber(e.startOffset) + 1
-            val startColumn = fileEntry.getColumnNumber(e.startOffset) + 1
-            val endLine =     fileEntry.getLineNumber(e.endOffset) + 1
-            val endColumn =   fileEntry.getColumnNumber(e.endOffset)
-            return "file://$path:$startLine:$startColumn:$endLine:$endColumn"
-        }
-    }
     val labelMapping: MutableMap<String, Label<*>> = mutableMapOf<String, Label<*>>()
     fun <T> getExistingLabelFor(label: String): Label<T>? {
         @Suppress("UNCHECKED_CAST")
@@ -195,6 +148,63 @@ class FileTrapWriter (
             return maybeId
         }
     }
+
+    fun getLocation(fileId: Label<DbFile>, startLine: Int, startColumn: Int, endLine: Int, endColumn: Int): Label<DbLocation> {
+        return getLabelFor("@\"loc,{$fileId},$startLine,$startColumn,$endLine,$endColumn\"") {
+            writeLocations_default(it, fileId, startLine, startColumn, endLine, endColumn)
+        }
+    }
+
+    protected val unknownFileId: Label<DbFile> by lazy {
+        val unknownFileLabel = "@\";sourcefile\""
+        getLabelFor(unknownFileLabel, {
+            writeFiles(it, "", "", "", 0)
+        })
+    }
+
+    val unknownLocation: Label<DbLocation> by lazy {
+        getLocation(unknownFileId, 0, 0, 0, 0)
+    }
+
+    fun writeTrap(trap: String) {
+        bw.write(trap)
+    }
+    fun flush() {
+        bw.flush()
+    }
+}
+
+class FileTrapWriter (
+    bw: BufferedWriter,
+    val fileLabel: String,
+    val file: IrFile
+): TrapWriter (bw) {
+    private val fileEntry = file.fileEntry
+
+    fun getLocation(e: IrElement): Label<DbLocation> {
+        return getLocation(e.startOffset, e.endOffset)
+    }
+    fun getLocation(startOffset: Int, endOffset: Int): Label<DbLocation> {
+        val unknownLoc = startOffset == -1 && endOffset == -1
+        val startLine =   if(unknownLoc) 0 else fileEntry.getLineNumber(startOffset) + 1
+        val startColumn = if(unknownLoc) 0 else fileEntry.getColumnNumber(startOffset) + 1
+        val endLine =     if(unknownLoc) 0 else fileEntry.getLineNumber(endOffset) + 1
+        val endColumn =   if(unknownLoc) 0 else fileEntry.getColumnNumber(endOffset)
+        val fileId: Label<DbFile> = if (unknownLoc) unknownFileId else getLabelFor(fileLabel)
+        return getLocation(fileId, startLine, startColumn, endLine, endColumn)
+    }
+    fun getLocationString(e: IrElement): String {
+        val path = file.path
+        if (e.startOffset == -1 && e.endOffset == -1) {
+            return "unknown location, while processing $path"
+        } else {
+            val startLine =   fileEntry.getLineNumber(e.startOffset) + 1
+            val startColumn = fileEntry.getColumnNumber(e.startOffset) + 1
+            val endLine =     fileEntry.getLineNumber(e.endOffset) + 1
+            val endColumn =   fileEntry.getColumnNumber(e.endOffset)
+            return "file://$path:$startLine:$startColumn:$endLine:$endColumn"
+        }
+    }
     val variableLabelMapping: MutableMap<IrVariable, Label<out DbLocalvar>> = mutableMapOf<IrVariable, Label<out DbLocalvar>>()
     fun <T> getVariableLabelFor(v: IrVariable): Label<out DbLocalvar> {
         val maybeId = variableLabelMapping.get(v)
@@ -206,9 +216,6 @@ class FileTrapWriter (
         } else {
             return maybeId
         }
-    }
-    fun <T> getFreshLabel(): Label<T> {
-        return IntLabel(nextId++)
     }
     fun <T> getFreshIdLabel(): Label<T> {
         val label = IntLabel<T>(nextId++)
