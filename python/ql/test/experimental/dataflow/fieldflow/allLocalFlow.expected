@@ -2,6 +2,7 @@
 | examples.py:0:0:0:0 | GSSA Variable SOURCE | examples.py:27:15:27:20 | ControlFlowNode for SOURCE |
 | examples.py:0:0:0:0 | GSSA Variable object | examples.py:6:13:6:18 | ControlFlowNode for object |
 | examples.py:6:1:6:20 | ControlFlowNode for ClassExpr | examples.py:6:7:6:11 | GSSA Variable MyObj |
+| examples.py:6:7:6:11 | ControlFlowNode for MyObj | examples.py:0:0:0:0 | ModuleVariableNode for Global Variable MyObj in Module examples |
 | examples.py:6:7:6:11 | GSSA Variable MyObj | examples.py:25:9:25:13 | ControlFlowNode for MyObj |
 | examples.py:6:13:6:18 | ControlFlowNode for object | examples.py:11:17:11:22 | ControlFlowNode for object |
 | examples.py:7:5:7:28 | ControlFlowNode for FunctionExpr | examples.py:7:9:7:16 | SSA variable __init__ |
@@ -67,8 +68,10 @@
 | examples.py:55:5:55:5 | SSA variable a | examples.py:56:12:56:12 | ControlFlowNode for a |
 | examples.py:55:9:55:15 | ControlFlowNode for Attribute | examples.py:55:5:55:5 | SSA variable a |
 | test.py:2:13:2:26 | ControlFlowNode for Str | test.py:2:1:2:9 | GSSA Variable NONSOURCE |
+| test.py:3:1:3:6 | ControlFlowNode for SOURCE | test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test |
 | test.py:3:10:3:17 | ControlFlowNode for Str | test.py:3:1:3:6 | GSSA Variable SOURCE |
 | test.py:6:1:6:17 | ControlFlowNode for FunctionExpr | test.py:6:5:6:13 | GSSA Variable is_source |
+| test.py:6:5:6:13 | ControlFlowNode for is_source | test.py:0:0:0:0 | ModuleVariableNode for Global Variable is_source in Module test |
 | test.py:6:15:6:15 | ControlFlowNode for x | test.py:6:15:6:15 | SSA variable x |
 | test.py:6:15:6:15 | SSA variable x | test.py:7:12:7:12 | ControlFlowNode for x |
 | test.py:7:12:7:12 | ControlFlowNode for x | test.py:7:29:7:29 | ControlFlowNode for x |
@@ -77,17 +80,20 @@
 | test.py:7:58:7:58 | ControlFlowNode for x | test.py:7:71:7:71 | ControlFlowNode for x |
 | test.py:10:1:10:12 | ControlFlowNode for FunctionExpr | test.py:10:5:10:8 | GSSA Variable SINK |
 | test.py:10:1:10:12 | GSSA Variable is_source | test.py:11:8:11:16 | ControlFlowNode for is_source |
+| test.py:10:5:10:8 | ControlFlowNode for SINK | test.py:0:0:0:0 | ModuleVariableNode for Global Variable SINK in Module test |
 | test.py:10:10:10:10 | ControlFlowNode for x | test.py:10:10:10:10 | SSA variable x |
 | test.py:10:10:10:10 | SSA variable x | test.py:11:18:11:18 | ControlFlowNode for x |
 | test.py:11:18:11:18 | ControlFlowNode for x | test.py:14:34:14:34 | ControlFlowNode for x |
 | test.py:11:18:11:18 | [post arg] ControlFlowNode for x | test.py:14:34:14:34 | ControlFlowNode for x |
 | test.py:17:1:17:14 | ControlFlowNode for FunctionExpr | test.py:17:5:17:10 | GSSA Variable SINK_F |
 | test.py:17:1:17:14 | GSSA Variable is_source | test.py:18:8:18:16 | ControlFlowNode for is_source |
+| test.py:17:5:17:10 | ControlFlowNode for SINK_F | test.py:0:0:0:0 | ModuleVariableNode for Global Variable SINK_F in Module test |
 | test.py:17:12:17:12 | ControlFlowNode for x | test.py:17:12:17:12 | SSA variable x |
 | test.py:17:12:17:12 | SSA variable x | test.py:18:18:18:18 | ControlFlowNode for x |
 | test.py:18:18:18:18 | ControlFlowNode for x | test.py:19:34:19:34 | ControlFlowNode for x |
 | test.py:18:18:18:18 | [post arg] ControlFlowNode for x | test.py:19:34:19:34 | ControlFlowNode for x |
 | test.py:25:1:25:20 | ControlFlowNode for ClassExpr | test.py:25:7:25:11 | GSSA Variable MyObj |
+| test.py:25:7:25:11 | ControlFlowNode for MyObj | test.py:0:0:0:0 | ModuleVariableNode for Global Variable MyObj in Module test |
 | test.py:25:13:25:18 | ControlFlowNode for object | test.py:33:17:33:22 | ControlFlowNode for object |
 | test.py:26:5:26:28 | ControlFlowNode for FunctionExpr | test.py:26:9:26:16 | SSA variable __init__ |
 | test.py:26:18:26:21 | ControlFlowNode for self | test.py:26:18:26:21 | SSA variable self |
@@ -100,6 +106,7 @@
 | test.py:29:22:29:24 | ControlFlowNode for foo | test.py:29:22:29:24 | SSA variable foo |
 | test.py:29:22:29:24 | SSA variable foo | test.py:30:20:30:22 | ControlFlowNode for foo |
 | test.py:33:1:33:24 | ControlFlowNode for ClassExpr | test.py:33:7:33:15 | GSSA Variable NestedObj |
+| test.py:33:7:33:15 | ControlFlowNode for NestedObj | test.py:0:0:0:0 | ModuleVariableNode for Global Variable NestedObj in Module test |
 | test.py:34:5:34:23 | ControlFlowNode for FunctionExpr | test.py:34:9:34:16 | SSA variable __init__ |
 | test.py:34:5:34:23 | GSSA Variable MyObj | test.py:35:20:35:24 | ControlFlowNode for MyObj |
 | test.py:34:18:34:21 | ControlFlowNode for self | test.py:34:18:34:21 | SSA variable self |
@@ -109,6 +116,7 @@
 | test.py:37:16:37:19 | SSA variable self | test.py:38:16:38:19 | ControlFlowNode for self |
 | test.py:41:1:41:19 | ControlFlowNode for FunctionExpr | test.py:41:5:41:10 | GSSA Variable setFoo |
 | test.py:41:1:41:19 | GSSA Variable SINK_F | test.py:42:5:42:10 | ControlFlowNode for SINK_F |
+| test.py:41:5:41:10 | ControlFlowNode for setFoo | test.py:0:0:0:0 | ModuleVariableNode for Global Variable setFoo in Module test |
 | test.py:41:12:41:14 | ControlFlowNode for obj | test.py:41:12:41:14 | SSA variable obj |
 | test.py:41:12:41:14 | SSA variable obj | test.py:42:12:42:14 | ControlFlowNode for obj |
 | test.py:41:17:41:17 | ControlFlowNode for x | test.py:41:17:41:17 | SSA variable x |
@@ -166,6 +174,7 @@
 | test.py:86:11:86:27 | ControlFlowNode for MyObj() | test.py:86:5:86:7 | SSA variable obj |
 | test.py:90:1:90:30 | ControlFlowNode for FunctionExpr | test.py:90:5:90:26 | GSSA Variable fields_with_local_flow |
 | test.py:90:1:90:30 | GSSA Variable MyObj | test.py:91:11:91:15 | ControlFlowNode for MyObj |
+| test.py:90:5:90:26 | ControlFlowNode for fields_with_local_flow | test.py:0:0:0:0 | ModuleVariableNode for Global Variable fields_with_local_flow in Module test |
 | test.py:90:28:90:28 | ControlFlowNode for x | test.py:90:28:90:28 | SSA variable x |
 | test.py:90:28:90:28 | SSA variable x | test.py:91:17:91:17 | ControlFlowNode for x |
 | test.py:91:5:91:7 | SSA variable obj | test.py:92:9:92:11 | ControlFlowNode for obj |

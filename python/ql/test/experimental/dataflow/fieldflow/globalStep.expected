@@ -42,6 +42,8 @@
 | examples.py:6:1:6:20 | ControlFlowNode for ClassExpr | examples.py:25:9:25:13 | ControlFlowNode for MyObj |
 | examples.py:6:1:6:20 | ControlFlowNode for ClassExpr | examples.py:49:7:49:11 | ControlFlowNode for MyObj |
 | examples.py:6:1:6:20 | ControlFlowNode for ClassExpr | examples.py:49:7:49:11 | ControlFlowNode for MyObj |
+| examples.py:6:7:6:11 | ControlFlowNode for MyObj | examples.py:0:0:0:0 | ModuleVariableNode for Global Variable MyObj in Module examples |
+| examples.py:6:7:6:11 | ControlFlowNode for MyObj | examples.py:0:0:0:0 | ModuleVariableNode for Global Variable MyObj in Module examples |
 | examples.py:6:7:6:11 | GSSA Variable MyObj | examples.py:0:0:0:0 | ModuleVariableNode for Global Variable MyObj in Module examples |
 | examples.py:6:7:6:11 | GSSA Variable MyObj | examples.py:0:0:0:0 | ModuleVariableNode for Global Variable MyObj in Module examples |
 | examples.py:6:7:6:11 | GSSA Variable MyObj | examples.py:25:9:25:13 | ControlFlowNode for MyObj |
@@ -534,12 +536,16 @@
 | test.py:0:0:0:0 | ModuleVariableNode for Global Variable setFoo in Module test | test.py:49:5:49:10 | ControlFlowNode for setFoo |
 | test.py:2:13:2:26 | ControlFlowNode for Str | test.py:2:1:2:9 | GSSA Variable NONSOURCE |
 | test.py:2:13:2:26 | ControlFlowNode for Str | test.py:2:1:2:9 | GSSA Variable NONSOURCE |
+| test.py:3:1:3:6 | ControlFlowNode for SOURCE | test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test |
+| test.py:3:1:3:6 | ControlFlowNode for SOURCE | test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test |
 | test.py:3:1:3:6 | GSSA Variable SOURCE | test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test |
 | test.py:3:1:3:6 | GSSA Variable SOURCE | test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test |
 | test.py:3:10:3:17 | ControlFlowNode for Str | test.py:3:1:3:6 | GSSA Variable SOURCE |
 | test.py:3:10:3:17 | ControlFlowNode for Str | test.py:3:1:3:6 | GSSA Variable SOURCE |
 | test.py:6:1:6:17 | ControlFlowNode for FunctionExpr | test.py:6:5:6:13 | GSSA Variable is_source |
 | test.py:6:1:6:17 | ControlFlowNode for FunctionExpr | test.py:6:5:6:13 | GSSA Variable is_source |
+| test.py:6:5:6:13 | ControlFlowNode for is_source | test.py:0:0:0:0 | ModuleVariableNode for Global Variable is_source in Module test |
+| test.py:6:5:6:13 | ControlFlowNode for is_source | test.py:0:0:0:0 | ModuleVariableNode for Global Variable is_source in Module test |
 | test.py:6:5:6:13 | GSSA Variable is_source | test.py:0:0:0:0 | ModuleVariableNode for Global Variable is_source in Module test |
 | test.py:6:5:6:13 | GSSA Variable is_source | test.py:0:0:0:0 | ModuleVariableNode for Global Variable is_source in Module test |
 | test.py:6:15:6:15 | ControlFlowNode for x | test.py:6:15:6:15 | SSA variable x |
@@ -634,6 +640,8 @@
 | test.py:10:1:10:12 | ControlFlowNode for FunctionExpr | test.py:10:5:10:8 | GSSA Variable SINK |
 | test.py:10:1:10:12 | GSSA Variable is_source | test.py:11:8:11:16 | ControlFlowNode for is_source |
 | test.py:10:1:10:12 | GSSA Variable is_source | test.py:11:8:11:16 | ControlFlowNode for is_source |
+| test.py:10:5:10:8 | ControlFlowNode for SINK | test.py:0:0:0:0 | ModuleVariableNode for Global Variable SINK in Module test |
+| test.py:10:5:10:8 | ControlFlowNode for SINK | test.py:0:0:0:0 | ModuleVariableNode for Global Variable SINK in Module test |
 | test.py:10:5:10:8 | GSSA Variable SINK | test.py:0:0:0:0 | ModuleVariableNode for Global Variable SINK in Module test |
 | test.py:10:5:10:8 | GSSA Variable SINK | test.py:0:0:0:0 | ModuleVariableNode for Global Variable SINK in Module test |
 | test.py:10:10:10:10 | ControlFlowNode for x | test.py:10:10:10:10 | SSA variable x |
@@ -684,6 +692,8 @@
 | test.py:17:1:17:14 | ControlFlowNode for FunctionExpr | test.py:17:5:17:10 | GSSA Variable SINK_F |
 | test.py:17:1:17:14 | GSSA Variable is_source | test.py:18:8:18:16 | ControlFlowNode for is_source |
 | test.py:17:1:17:14 | GSSA Variable is_source | test.py:18:8:18:16 | ControlFlowNode for is_source |
+| test.py:17:5:17:10 | ControlFlowNode for SINK_F | test.py:0:0:0:0 | ModuleVariableNode for Global Variable SINK_F in Module test |
+| test.py:17:5:17:10 | ControlFlowNode for SINK_F | test.py:0:0:0:0 | ModuleVariableNode for Global Variable SINK_F in Module test |
 | test.py:17:5:17:10 | GSSA Variable SINK_F | test.py:0:0:0:0 | ModuleVariableNode for Global Variable SINK_F in Module test |
 | test.py:17:5:17:10 | GSSA Variable SINK_F | test.py:0:0:0:0 | ModuleVariableNode for Global Variable SINK_F in Module test |
 | test.py:17:12:17:12 | ControlFlowNode for x | test.py:17:12:17:12 | SSA variable x |
@@ -722,6 +732,8 @@
 | test.py:19:34:19:34 | [post arg] ControlFlowNode for x | test.py:42:12:42:18 | [post arg] ControlFlowNode for Attribute |
 | test.py:25:1:25:20 | ControlFlowNode for ClassExpr | test.py:25:7:25:11 | GSSA Variable MyObj |
 | test.py:25:1:25:20 | ControlFlowNode for ClassExpr | test.py:25:7:25:11 | GSSA Variable MyObj |
+| test.py:25:7:25:11 | ControlFlowNode for MyObj | test.py:0:0:0:0 | ModuleVariableNode for Global Variable MyObj in Module test |
+| test.py:25:7:25:11 | ControlFlowNode for MyObj | test.py:0:0:0:0 | ModuleVariableNode for Global Variable MyObj in Module test |
 | test.py:25:7:25:11 | GSSA Variable MyObj | test.py:0:0:0:0 | ModuleVariableNode for Global Variable MyObj in Module test |
 | test.py:25:7:25:11 | GSSA Variable MyObj | test.py:0:0:0:0 | ModuleVariableNode for Global Variable MyObj in Module test |
 | test.py:25:13:25:18 | ControlFlowNode for object | test.py:33:17:33:22 | ControlFlowNode for object |
@@ -805,6 +817,8 @@
 | test.py:30:20:30:22 | ControlFlowNode for foo | test.py:30:9:30:12 | [post store] ControlFlowNode for self [Attribute foo] |
 | test.py:33:1:33:24 | ControlFlowNode for ClassExpr | test.py:33:7:33:15 | GSSA Variable NestedObj |
 | test.py:33:1:33:24 | ControlFlowNode for ClassExpr | test.py:33:7:33:15 | GSSA Variable NestedObj |
+| test.py:33:7:33:15 | ControlFlowNode for NestedObj | test.py:0:0:0:0 | ModuleVariableNode for Global Variable NestedObj in Module test |
+| test.py:33:7:33:15 | ControlFlowNode for NestedObj | test.py:0:0:0:0 | ModuleVariableNode for Global Variable NestedObj in Module test |
 | test.py:33:7:33:15 | GSSA Variable NestedObj | test.py:0:0:0:0 | ModuleVariableNode for Global Variable NestedObj in Module test |
 | test.py:33:7:33:15 | GSSA Variable NestedObj | test.py:0:0:0:0 | ModuleVariableNode for Global Variable NestedObj in Module test |
 | test.py:34:5:34:23 | ControlFlowNode for FunctionExpr | test.py:34:9:34:16 | SSA variable __init__ |
@@ -865,6 +879,8 @@
 | test.py:41:1:41:19 | ControlFlowNode for FunctionExpr | test.py:41:5:41:10 | GSSA Variable setFoo |
 | test.py:41:1:41:19 | GSSA Variable SINK_F | test.py:42:5:42:10 | ControlFlowNode for SINK_F |
 | test.py:41:1:41:19 | GSSA Variable SINK_F | test.py:42:5:42:10 | ControlFlowNode for SINK_F |
+| test.py:41:5:41:10 | ControlFlowNode for setFoo | test.py:0:0:0:0 | ModuleVariableNode for Global Variable setFoo in Module test |
+| test.py:41:5:41:10 | ControlFlowNode for setFoo | test.py:0:0:0:0 | ModuleVariableNode for Global Variable setFoo in Module test |
 | test.py:41:5:41:10 | GSSA Variable setFoo | test.py:0:0:0:0 | ModuleVariableNode for Global Variable setFoo in Module test |
 | test.py:41:5:41:10 | GSSA Variable setFoo | test.py:0:0:0:0 | ModuleVariableNode for Global Variable setFoo in Module test |
 | test.py:41:12:41:14 | ControlFlowNode for obj | test.py:41:12:41:14 | SSA variable obj |
@@ -1191,6 +1207,8 @@
 | test.py:90:1:90:30 | ControlFlowNode for FunctionExpr | test.py:90:5:90:26 | GSSA Variable fields_with_local_flow |
 | test.py:90:1:90:30 | GSSA Variable MyObj | test.py:91:11:91:15 | ControlFlowNode for MyObj |
 | test.py:90:1:90:30 | GSSA Variable MyObj | test.py:91:11:91:15 | ControlFlowNode for MyObj |
+| test.py:90:5:90:26 | ControlFlowNode for fields_with_local_flow | test.py:0:0:0:0 | ModuleVariableNode for Global Variable fields_with_local_flow in Module test |
+| test.py:90:5:90:26 | ControlFlowNode for fields_with_local_flow | test.py:0:0:0:0 | ModuleVariableNode for Global Variable fields_with_local_flow in Module test |
 | test.py:90:5:90:26 | GSSA Variable fields_with_local_flow | test.py:0:0:0:0 | ModuleVariableNode for Global Variable fields_with_local_flow in Module test |
 | test.py:90:5:90:26 | GSSA Variable fields_with_local_flow | test.py:0:0:0:0 | ModuleVariableNode for Global Variable fields_with_local_flow in Module test |
 | test.py:90:28:90:28 | ControlFlowNode for x | test.py:90:28:90:28 | SSA variable x |

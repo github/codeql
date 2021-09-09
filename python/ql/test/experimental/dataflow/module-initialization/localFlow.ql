@@ -5,6 +5,7 @@ import semmle.python.dataflow.new.DataFlow
 pragma[inline]
 predicate inCodebase(DataFlow::Node node) { exists(node.getLocation().getFile().getRelativePath()) }
 
+pragma[inline]
 predicate isTopLevel(DataFlow::Node node) { node.getScope() instanceof Module }
 
 predicate inFocus(DataFlow::Node node) {
