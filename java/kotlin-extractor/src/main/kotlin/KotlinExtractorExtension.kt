@@ -135,7 +135,7 @@ open class Logger(val logCounter: LogCounter, open val tw: TrapWriter) {
             }
         val ts = timestamp()
         tw.writeDiagnostics(StarLabel(), severity.sev, "", msg, "$ts $msg\n$suffix", locationId)
-        val locStr = if (locationString == null) "" else "At " + locationString
+        val locStr = if (locationString == null) "" else "At " + locationString + ": "
         print("$ts Warning: $locStr$msg\n$suffix")
     }
     fun printLimitedWarningCounts() {
