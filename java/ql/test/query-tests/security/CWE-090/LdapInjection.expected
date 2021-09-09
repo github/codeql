@@ -174,6 +174,7 @@ nodes
 | LdapInjection.java:338:14:338:14 | s | semmle.label | s |
 | LdapInjection.java:342:30:342:72 | aBadDNSearchRequestGet : String | semmle.label | aBadDNSearchRequestGet : String |
 | LdapInjection.java:346:14:346:24 | getBase(...) | semmle.label | getBase(...) |
+subpaths
 #select
 | LdapInjection.java:47:16:47:35 | ... + ... | LdapInjection.java:45:55:45:81 | jBadDN : String | LdapInjection.java:47:16:47:35 | ... + ... | LDAP query might include code from $@. | LdapInjection.java:45:55:45:81 | jBadDN | this user input |
 | LdapInjection.java:47:38:47:57 | ... + ... | LdapInjection.java:45:28:45:52 | jBad : String | LdapInjection.java:47:38:47:57 | ... + ... | LDAP query might include code from $@. | LdapInjection.java:45:28:45:52 | jBad | this user input |

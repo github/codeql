@@ -9,6 +9,7 @@ private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
+private import semmle.python.frameworks.internal.InstanceTaintStepsHelper
 
 /**
  * Provides models for the `twisted` PyPI package.
@@ -110,6 +111,31 @@ private module Twisted {
 
     /** Gets a reference to an instance of `twisted.web.server.Request`. */
     DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
+
+    /**
+     * Taint propagation for `twisted.web.server.Request`.
+     */
+    private class InstanceTaintSteps extends InstanceTaintStepsHelper {
+      InstanceTaintSteps() { this = "twisted.web.server.Request" }
+
+      override DataFlow::Node getInstance() { result = instance() }
+
+      override string getAttributeName() {
+        result in [
+            "uri", "path", "prepath", "postpath", "content", "args", "received_cookies",
+            "requestHeaders", "user", "password", "host"
+          ]
+      }
+
+      override string getMethodName() {
+        result in [
+            "getCookie", "getHeader", "getAllHeaders", "getUser", "getPassword", "getHost",
+            "getRequestHostname"
+          ]
+      }
+
+      override string getAsyncMethodName() { none() }
+    }
   }
 
   /**
@@ -123,36 +149,6 @@ private module Twisted {
     }
 
     override string getSourceType() { result = "twisted.web.server.Request" }
-  }
-
-  /**
-   * Taint propagation for `twisted.web.server.Request`.
-   */
-  private class TwistedRequestAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
-    override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-      // Methods
-      //
-      // TODO: When we have tools that make it easy, model these properly to handle
-      // `meth = obj.meth; meth()`. Until then, we'll use this more syntactic approach
-      // (since it allows us to at least capture the most common cases).
-      nodeFrom = Request::instance() and
-      exists(DataFlow::AttrRead attr | attr.getObject() = nodeFrom |
-        // normal (non-async) methods
-        attr.getAttributeName() in [
-            "getCookie", "getHeader", "getAllHeaders", "getUser", "getPassword", "getHost",
-            "getRequestHostname"
-          ] and
-        nodeTo.(DataFlow::CallCfgNode).getFunction() = attr
-      )
-      or
-      // Attributes
-      nodeFrom = Request::instance() and
-      nodeTo.(DataFlow::AttrRead).getObject() = nodeFrom and
-      nodeTo.(DataFlow::AttrRead).getAttributeName() in [
-          "uri", "path", "prepath", "postpath", "content", "args", "received_cookies",
-          "requestHeaders", "user", "password", "host"
-        ]
-    }
   }
 
   /**
@@ -198,17 +194,8 @@ private module Twisted {
    *
    * See https://twistedmatrix.com/documents/21.2.0/api/twisted.web.server.Request.html#write
    */
-  class TwistedRequestWriteCall extends HTTP::Server::HttpResponse::Range, DataFlow::CallCfgNode {
-    TwistedRequestWriteCall() {
-      // TODO: When we have tools that make it easy, model these properly to handle
-      // `meth = obj.meth; meth()`. Until then, we'll use this more syntactic approach
-      // (since it allows us to at least capture the most common cases).
-      exists(DataFlow::AttrRead read |
-        this.getFunction() = read and
-        read.getObject() = Request::instance() and
-        read.getAttributeName() = "write"
-      )
-    }
+  class TwistedRequestWriteCall extends HTTP::Server::HttpResponse::Range, DataFlow::MethodCallNode {
+    TwistedRequestWriteCall() { this.calls(Request::instance(), "write") }
 
     override DataFlow::Node getBody() {
       result.asCfgNode() in [node.getArg(0), node.getArgByName("data")]
@@ -225,17 +212,8 @@ private module Twisted {
    * See https://twistedmatrix.com/documents/21.2.0/api/twisted.web.http.Request.html#redirect
    */
   class TwistedRequestRedirectCall extends HTTP::Server::HttpRedirectResponse::Range,
-    DataFlow::CallCfgNode {
-    TwistedRequestRedirectCall() {
-      // TODO: When we have tools that make it easy, model these properly to handle
-      // `meth = obj.meth; meth()`. Until then, we'll use this more syntactic approach
-      // (since it allows us to at least capture the most common cases).
-      exists(DataFlow::AttrRead read |
-        this.getFunction() = read and
-        read.getObject() = Request::instance() and
-        read.getAttributeName() = "redirect"
-      )
-    }
+    DataFlow::MethodCallNode {
+    TwistedRequestRedirectCall() { this.calls(Request::instance(), "redirect") }
 
     override DataFlow::Node getBody() { none() }
 

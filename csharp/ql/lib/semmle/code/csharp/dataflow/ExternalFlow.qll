@@ -252,11 +252,11 @@ module CsvValidation {
       not namespace.regexpMatch("[a-zA-Z0-9_\\.]+") and
       msg = "Dubious namespace \"" + namespace + "\" in " + pred + " model."
       or
-      not type.regexpMatch("[a-zA-Z0-9_<>\\.\\+]+") and
+      not type.regexpMatch("[a-zA-Z0-9_<>,\\+]+") and
       msg = "Dubious type \"" + type + "\" in " + pred + " model."
       or
-      not name.regexpMatch("[a-zA-Z0-9_]*") and
-      msg = "Dubious name \"" + name + "\" in " + pred + " model."
+      not name.regexpMatch("[a-zA-Z0-9_<>,]*") and
+      msg = "Dubious member name \"" + name + "\" in " + pred + " model."
       or
       not signature.regexpMatch("|\\([a-zA-Z0-9_<>\\.\\+,\\[\\]]*\\)") and
       msg = "Dubious signature \"" + signature + "\" in " + pred + " model."

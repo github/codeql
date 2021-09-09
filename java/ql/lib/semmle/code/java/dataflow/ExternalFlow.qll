@@ -629,9 +629,13 @@ private string paramsStringPart(Callable c, int i) {
   i = 2 * c.getNumberOfParameters() and result = ")"
 }
 
-private string paramsString(Callable c) {
-  result = concat(int i | | paramsStringPart(c, i) order by i)
-}
+/**
+ * Gets a parenthesized string containing all parameter types of this callable, separated by a comma.
+ *
+ * Returns the empty string if the callable has no parameters.
+ * Parameter types are represented by their type erasure.
+ */
+string paramsString(Callable c) { result = concat(int i | | paramsStringPart(c, i) order by i) }
 
 private Element interpretElement0(
   string namespace, string type, boolean subtypes, string name, string signature

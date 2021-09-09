@@ -313,6 +313,19 @@ class AmdModule extends Module {
       name = pwn.getPropertyName()
     )
   }
+
+  override DataFlow::Node getABulkExportedNode() {
+    // Assigned to `module.exports` via the factory's `module` parameter
+    exists(AbstractModuleObject m, DataFlow::PropWrite write |
+      m.getModule() = this and
+      write.getPropertyName() = "exports" and
+      write.getBase().analyze().getAValue() = m and
+      result = write.getRhs()
+    )
+    or
+    // Returned from factory function
+    result = getDefine().getModuleExpr().flow()
+  }
 }
 
 /**

@@ -36,6 +36,7 @@ nodes
 | Test.java:213:26:213:38 | args : String[] | semmle.label | args : String[] |
 | Test.java:214:11:214:14 | args : String[] | semmle.label | args : String[] |
 | Test.java:218:14:218:17 | args : String[] | semmle.label | args : String[] |
+subpaths
 #select
 | Mongo.java:17:45:17:67 | parse(...) | Mongo.java:10:29:10:41 | args : String[] | Mongo.java:17:45:17:67 | parse(...) | Query might include code from $@. | Mongo.java:10:29:10:41 | args | this user input |
 | Mongo.java:21:49:21:52 | json | Mongo.java:10:29:10:41 | args : String[] | Mongo.java:21:49:21:52 | json | Query might include code from $@. | Mongo.java:10:29:10:41 | args | this user input |

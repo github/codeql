@@ -11,7 +11,7 @@ module SystemLinq {
   class Namespace extends csharp::Namespace {
     Namespace() {
       this.getParentNamespace() instanceof System::SystemNamespace and
-      this.hasName("Linq")
+      this.hasUndecoratedName("Linq")
     }
   }
 
@@ -25,9 +25,9 @@ module SystemLinq {
     SystemLinqEnumerableClass() { this.hasName("Enumerable") }
 
     /** Gets a `Count()` method. */
-    csharp::ExtensionMethod getACountMethod() { result = this.getAMethod("Count") }
+    csharp::ExtensionMethod getACountMethod() { result = this.getAMethod("Count<>") }
 
     /** Gets an `Any()` method. */
-    csharp::ExtensionMethod getAnAnyMethod() { result = this.getAMethod("Any") }
+    csharp::ExtensionMethod getAnAnyMethod() { result = this.getAMethod("Any<>") }
   }
 }

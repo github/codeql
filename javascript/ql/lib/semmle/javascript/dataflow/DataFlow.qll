@@ -1591,7 +1591,7 @@ module DataFlow {
    */
   predicate localFieldStep(DataFlow::Node pred, DataFlow::Node succ) {
     exists(ClassNode cls, string prop |
-      pred = cls.getAReceiverNode().getAPropertyWrite(prop).getRhs() or
+      pred = cls.getADirectSuperClass*().getAReceiverNode().getAPropertyWrite(prop).getRhs() or
       pred = cls.getInstanceMethod(prop)
     |
       succ = cls.getAReceiverNode().getAPropertyRead(prop)

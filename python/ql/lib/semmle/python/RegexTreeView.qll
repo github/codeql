@@ -7,6 +7,10 @@ private import semmle.python.regex
  * An element containing a regular expression term, that is, either
  * a string literal (parsed as a regular expression)
  * or another regular expression term.
+ *
+ * For sequences and alternations, we require at least one child.
+ * Otherwise, we wish to represent the term differently.
+ * This avoids multiple representations of the same term.
  */
 newtype TRegExpParent =
   /** A string literal used as a regular expression */
@@ -14,9 +18,18 @@ newtype TRegExpParent =
   /** A quantified term */
   TRegExpQuantifier(Regex re, int start, int end) { re.qualifiedItem(start, end, _, _) } or
   /** A sequence term */
-  TRegExpSequence(Regex re, int start, int end) { re.sequence(start, end) } or
-  /** An alternatio term */
-  TRegExpAlt(Regex re, int start, int end) { re.alternation(start, end) } or
+  TRegExpSequence(Regex re, int start, int end) {
+    re.sequence(start, end) and
+    exists(seqChild(re, start, end, 1)) // if a sequence does not have more than one element, it should be treated as that element instead.
+  } or
+  /** An alternation term */
+  TRegExpAlt(Regex re, int start, int end) {
+    re.alternation(start, end) and
+    exists(int part_end |
+      re.alternationOption(start, end, start, part_end) and
+      part_end < end
+    ) // if an alternation does not have more than one element, it should be treated as that element instead.
+  } or
   /** A character class term */
   TRegExpCharacterClass(Regex re, int start, int end) { re.charSet(start, end) } or
   /** A character range term */
@@ -61,6 +74,10 @@ class RegExpLiteral extends TRegExpLiteral, RegExpParent {
 
   predicate isDotAll() { re.getAMode() = "DOTALL" }
 
+  predicate isIgnoreCase() { re.getAMode() = "IGNORECASE" }
+
+  string getFlags() { result = concat(string mode | mode = re.getAMode() | mode, " | ") }
+
   override Regex getRegex() { result = re }
 
   string getPrimaryQLClass() { result = "RegExpLiteral" }
@@ -89,8 +106,7 @@ class RegExpTerm extends RegExpParent {
     or
     this = TRegExpQuantifier(re, start, end)
     or
-    this = TRegExpSequence(re, start, end) and
-    exists(seqChild(re, start, end, 1)) // if a sequence does not have more than one element, it should be treated as that element instead.
+    this = TRegExpSequence(re, start, end)
     or
     this = TRegExpSpecialChar(re, start, end)
   }
@@ -337,10 +353,7 @@ class RegExpRange extends RegExpQuantifier {
  * This is a sequence with the elements `(ECMA|Java)` and `Script`.
  */
 class RegExpSequence extends RegExpTerm, TRegExpSequence {
-  RegExpSequence() {
-    this = TRegExpSequence(re, start, end) and
-    exists(seqChild(re, start, end, 1)) // if a sequence does not have more than one element, it should be treated as that element instead.
-  }
+  RegExpSequence() { this = TRegExpSequence(re, start, end) }
 
   override RegExpTerm getChild(int i) { result = seqChild(re, start, end, i) }
 

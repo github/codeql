@@ -50,6 +50,7 @@ nodes
 | InsecureBasicAuth.java:145:21:145:28 | protocol : String | semmle.label | protocol : String |
 | InsecureBasicAuth.java:146:28:146:67 | (...)... : URLConnection | semmle.label | (...)... : URLConnection |
 | InsecureBasicAuth.java:149:3:149:6 | conn | semmle.label | conn |
+subpaths
 #select
 | InsecureBasicAuth.java:28:3:28:6 | post | InsecureBasicAuth.java:20:39:20:52 | ... + ... : String | InsecureBasicAuth.java:28:3:28:6 | post | Insecure basic authentication from $@. | InsecureBasicAuth.java:20:39:20:52 | ... + ... | HTTP url |
 | InsecureBasicAuth.java:38:3:38:5 | get | InsecureBasicAuth.java:35:19:35:64 | "http://www.example.com:8000/payment/retrieve" : String | InsecureBasicAuth.java:38:3:38:5 | get | Insecure basic authentication from $@. | InsecureBasicAuth.java:35:19:35:64 | "http://www.example.com:8000/payment/retrieve" | HTTP url |

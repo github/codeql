@@ -41,6 +41,7 @@ nodes
 | JakartaExpressionInjection.java:89:13:89:13 | e | semmle.label | e |
 | JakartaExpressionInjection.java:95:24:95:33 | expression : String | semmle.label | expression : String |
 | JakartaExpressionInjection.java:99:13:99:13 | e | semmle.label | e |
+subpaths
 #select
 | JakartaExpressionInjection.java:34:28:34:37 | expression | JakartaExpressionInjection.java:23:25:23:47 | getInputStream(...) : InputStream | JakartaExpressionInjection.java:34:28:34:37 | expression | Jakarta Expression Language injection from $@. | JakartaExpressionInjection.java:23:25:23:47 | getInputStream(...) | this user input |
 | JakartaExpressionInjection.java:42:32:42:41 | expression | JakartaExpressionInjection.java:23:25:23:47 | getInputStream(...) : InputStream | JakartaExpressionInjection.java:42:32:42:41 | expression | Jakarta Expression Language injection from $@. | JakartaExpressionInjection.java:23:25:23:47 | getInputStream(...) | this user input |

@@ -30,7 +30,7 @@ module XssThroughDom {
   /**
    * Gets a DOM property name that could store user-controlled data.
    */
-  string unsafeDomPropertyName() { result = ["innerText", "textContent", "value", "name"] }
+  string unsafeDomPropertyName() { result = ["innerText", "textContent", "value", "name", "src"] }
 
   /**
    * A source for text from the DOM from a JQuery method call.

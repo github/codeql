@@ -24,7 +24,8 @@ except re.error:
 
 re.compile(r'[^A-Z]') #$ charRange=2:3-4:5
 
-re.compile(r'[\0-\09]') #$ charRange=1:3-4:7
+re.compile(r'[\0-\09]') #$ charRange=1:3-4:6
+re.compile(r'[\0-\07]') #$ charRange=1:3-4:7
 
 re.compile(r'[\0123-5]') #$ charRange=5:6-7:8
 

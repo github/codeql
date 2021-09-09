@@ -196,6 +196,7 @@ nodes
 | classes.py:860:15:860:18 | ControlFlowNode for self | semmle.label | ControlFlowNode for self |
 | classes.py:866:5:866:11 | SSA variable with_or | semmle.label | SSA variable with_or |
 | classes.py:868:5:868:11 | ControlFlowNode for with_or | semmle.label | ControlFlowNode for with_or |
+subpaths
 #select
 | argumentPassing.py:89:22:89:25 | ControlFlowNode for arg1 | argumentPassing.py:89:22:89:25 | ControlFlowNode for arg1 | argumentPassing.py:75:11:75:11 | ControlFlowNode for a | Flow found |
 | argumentPassing.py:94:22:94:25 | ControlFlowNode for arg1 | argumentPassing.py:94:22:94:25 | ControlFlowNode for arg1 | argumentPassing.py:75:11:75:11 | ControlFlowNode for a | Flow found |

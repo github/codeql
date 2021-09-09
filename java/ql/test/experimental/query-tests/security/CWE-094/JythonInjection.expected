@@ -15,6 +15,7 @@ nodes
 | JythonInjection.java:106:61:106:64 | code : String | semmle.label | code : String |
 | JythonInjection.java:106:61:106:75 | getBytes(...) | semmle.label | getBytes(...) |
 | JythonInjection.java:131:40:131:63 | getInputStream(...) | semmle.label | getInputStream(...) |
+subpaths
 #select
 | JythonInjection.java:36:13:36:34 | exec(...) | JythonInjection.java:28:23:28:50 | getParameter(...) : String | JythonInjection.java:36:30:36:33 | code | Jython evaluate $@. | JythonInjection.java:28:23:28:50 | getParameter(...) | user input |
 | JythonInjection.java:58:27:58:48 | eval(...) | JythonInjection.java:53:23:53:50 | getParameter(...) : String | JythonInjection.java:58:44:58:47 | code | Jython evaluate $@. | JythonInjection.java:53:23:53:50 | getParameter(...) | user input |

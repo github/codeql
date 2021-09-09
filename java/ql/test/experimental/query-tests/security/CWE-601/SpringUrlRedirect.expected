@@ -79,6 +79,7 @@ nodes
 | SpringUrlRedirect.java:130:33:130:55 | create(...) : URI | semmle.label | create(...) : URI |
 | SpringUrlRedirect.java:130:44:130:54 | redirectUrl : String | semmle.label | redirectUrl : String |
 | SpringUrlRedirect.java:132:49:132:59 | httpHeaders | semmle.label | httpHeaders |
+subpaths
 #select
 | SpringUrlRedirect.java:19:19:19:29 | redirectUrl | SpringUrlRedirect.java:17:30:17:47 | redirectUrl : String | SpringUrlRedirect.java:19:19:19:29 | redirectUrl | Potentially untrusted URL redirection due to $@. | SpringUrlRedirect.java:17:30:17:47 | redirectUrl | user-provided value |
 | SpringUrlRedirect.java:25:36:25:46 | redirectUrl | SpringUrlRedirect.java:24:24:24:41 | redirectUrl : String | SpringUrlRedirect.java:25:36:25:46 | redirectUrl | Potentially untrusted URL redirection due to $@. | SpringUrlRedirect.java:24:24:24:41 | redirectUrl | user-provided value |

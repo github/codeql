@@ -8,7 +8,7 @@ private import semmle.code.csharp.dataflow.ExternalFlow
 class SystemNamespace extends Namespace {
   SystemNamespace() {
     this.getParentNamespace() instanceof GlobalNamespace and
-    this.hasName("System")
+    this.hasUndecoratedName("System")
   }
 }
 
@@ -404,7 +404,7 @@ class SystemStringClass extends StringType {
   /** Gets a `Concat(...)` method. */
   Method getConcatMethod() {
     result.getDeclaringType() = this and
-    result.hasName("Concat") and
+    result.hasUndecoratedName("Concat") and
     result.getReturnType() instanceof StringType
   }
 
@@ -420,7 +420,7 @@ class SystemStringClass extends StringType {
   /** Gets a `Join(...)` method. */
   Method getJoinMethod() {
     result.getDeclaringType() = this and
-    result.hasName("Join") and
+    result.hasUndecoratedName("Join") and
     result.getNumberOfParameters() > 1 and
     result.getReturnType() instanceof StringType
   }
