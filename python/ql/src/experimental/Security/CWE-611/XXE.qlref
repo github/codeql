@@ -16,6 +16,11 @@ Refer to the following links to check the details regarding how and which librar
 <li><a href="https://docs.python.org/3/library/xml.html#xml-vulnerabilities">Python 3</a>.</li>
 <li><a href="https://docs.python.org/2/library/xml.html#xml-vulnerabilities">Python 2</a>.</li>
 </p>
+<p>
+This query currently identifies vulnerable XML parsing from the following parsers: 
+<code>xml.etree.ElementTree.XMLParser</code>, <code>lxml.etree.XMLParser</code>, <code>lxml.etree.get_default_parser</code>,
+<code>xml.sax.make_parser</code>.
+</p>
 </overview>
 
 <recommendation>
