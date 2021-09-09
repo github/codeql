@@ -679,3 +679,13 @@ void guard_with_exit(int x, int y) {
   // The RangeSsa will place guardPhy on `out(y)`, and consequently there is no
   // frontier phi node at out(y).
 }
+
+void test(int x) {
+  if (x >= 10) {
+    return;
+  }
+  // The basic below has two predecessors.
+label:
+  out(x);
+  goto label;
+}
