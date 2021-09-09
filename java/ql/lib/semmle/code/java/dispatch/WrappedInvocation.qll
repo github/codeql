@@ -6,37 +6,6 @@
 import java
 import VirtualDispatch
 
-private string getAPublicObjectMethodSignature() {
-  exists(Method m |
-    m.getDeclaringType() instanceof TypeObject and
-    m.isPublic() and
-    result = m.getSignature()
-  )
-}
-
-private Method getAPotentialRunMethod(Interface i) {
-  i.inherits(result) and
-  result.isPublic() and
-  not result.getSignature() = getAPublicObjectMethodSignature()
-}
-
-/**
- * A functional interface is an interface that has just one abstract method
- * (aside from the methods of Object), and thus represents a single function
- * contract.
- *
- * See JLS 9.8, Functional Interfaces.
- */
-class FunctionalInterface extends Interface {
-  FunctionalInterface() {
-    1 = strictcount(getAPotentialRunMethod(this)) and
-    not exists(Method m | this.inherits(m) and m.isDefault())
-  }
-
-  /** Gets the single method of this interface. */
-  Method getRunMethod() { getAPotentialRunMethod(this).getSourceDeclaration() = result }
-}
-
 /**
  * Holds if `m` might invoke `runmethod` through a functional interface on the
  * `n`th parameter.
