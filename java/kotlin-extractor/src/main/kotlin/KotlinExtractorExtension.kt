@@ -34,17 +34,19 @@ class KotlinExtractorExtension(private val invocationTrapFile: String, private v
         // This default should be kept in sync with language-packs/java/tools/kotlin-extractor
         val trapDir = File(System.getenv("CODEQL_EXTRACTOR_JAVA_TRAP_DIR").takeUnless { it.isNullOrEmpty() } ?: "kotlin-extractor/trap")
         FileOutputStream(File(invocationTrapFile), true).bufferedWriter().use { invocationTrapFileBW ->
-            val tw = TrapWriter(invocationTrapFileBW)
+            val lm = TrapLabelManager()
+            val tw = TrapWriter(lm, invocationTrapFileBW)
             // The python wrapper has already defined #compilation = *
             val compilation: Label<DbCompilation> = StringLabel("compilation")
             tw.writeCompilation_started(compilation)
             tw.flush()
-            val logger = Logger(tw)
+            val logCounter = LogCounter()
+            val logger = Logger(logCounter, tw)
             logger.info("Extraction started")
             logger.flush()
             val srcDir = File(System.getenv("CODEQL_EXTRACTOR_JAVA_SOURCE_ARCHIVE_DIR").takeUnless { it.isNullOrEmpty() } ?: "kotlin-extractor/src")
             srcDir.mkdirs()
-            moduleFragment.files.map { doFile(invocationTrapFile, checkTrapIdentical, logger, trapDir, srcDir, it) }
+            moduleFragment.files.map { doFile(invocationTrapFile, lm, invocationTrapFileBW, checkTrapIdentical, logCounter, trapDir, srcDir, it) }
             logger.printLimitedWarningCounts()
             // We don't want the compiler to continue and generate class
             // files etc, so we just exit when we are finished extracting.
@@ -73,12 +75,31 @@ class StarLabel<T>(): Label<T> {
 
 fun escapeTrapString(str: String) = str.replace("\"", "\"\"")
 
-class Logger(val tw: TrapWriter) {
-    private val warningCounts = mutableMapOf<String, Int>()
-    private val warningLimit: Int
+class LogCounter() {
+    public val warningCounts = mutableMapOf<String, Int>()
+    public val warningLimit: Int
     init {
         warningLimit = System.getenv("CODEQL_EXTRACTOR_KOTLIN_WARNING_LIMIT")?.toIntOrNull() ?: 100
     }
+}
+
+enum class Severity(val sev: Int) {
+    WarnLow(1),
+    Warn(2),
+    WarnHigh(3),
+    /** Minor extractor errors, with minimal impact on analysis. */
+    ErrorLow(4),
+    /** Most extractor errors, with local impact on analysis. */
+    Error(5),
+    /** Javac errors. */
+    ErrorHigh(6),
+    /** Severe extractor errors affecting a single source file. */
+    ErrorSevere(7),
+    /** Severe extractor errors likely to affect multiple source files. */
+    ErrorGlobal(8)
+}
+
+open class Logger(val logCounter: LogCounter, open val tw: TrapWriter) {
     private fun timestamp(): String {
         return "[${SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date())} K]"
     }
@@ -92,30 +113,30 @@ class Logger(val tw: TrapWriter) {
         tw.writeTrap("// " + fullMsg.replace("\n", "\n//") + "\n")
         println(fullMsg)
     }
-    fun warn(msg: String) {
+    fun warn(severity: Severity, msg: String, locationString: String? = null, locationId: Label<DbLocation> = tw.unknownLocation) {
         val st = Exception().stackTrace
         val suffix =
             if(st.size < 2) {
                 "    Missing caller information.\n"
             } else {
                 val caller = st[1].toString()
-                val count = warningCounts.getOrDefault(caller, 0) + 1
-                warningCounts[caller] = count
+                val count = logCounter.warningCounts.getOrDefault(caller, 0) + 1
+                logCounter.warningCounts[caller] = count
                 when {
-                    warningLimit <= 0 -> ""
-                    count == warningLimit -> "    Limit reached for warnings from $caller.\n"
-                    count > warningLimit -> return
+                    logCounter.warningLimit <= 0 -> ""
+                    count == logCounter.warningLimit -> "    Limit reached for warnings from $caller.\n"
+                    count > logCounter.warningLimit -> return
                     else -> ""
                 }
             }
-        val fullMsg = "${timestamp()} Warning: $msg\n$suffix"
-        val severity = 8 // Pessimistically: "Severe extractor errors likely to affect multiple source files"
-        tw.writeDiagnostics(StarLabel(), severity, "", msg, fullMsg, tw.unknownLocation)
-        print(fullMsg)
+        val ts = timestamp()
+        tw.writeDiagnostics(StarLabel(), severity.sev, "", msg, "$ts $msg\n$suffix", locationId)
+        val locStr = if (locationString == null) "" else "At " + locationString
+        print("$ts Warning: $locStr$msg\n$suffix")
     }
     fun printLimitedWarningCounts() {
-        for((caller, count) in warningCounts) {
-            if(count >= warningLimit) {
+        for((caller, count) in logCounter.warningCounts) {
+            if(count >= logCounter.warningLimit) {
                 val msg = "Total of $count warnings from $caller.\n"
                 tw.writeTrap("// $msg")
                 print(msg)
@@ -124,23 +145,38 @@ class Logger(val tw: TrapWriter) {
     }
 }
 
-open class TrapWriter (val bw: BufferedWriter) {
-    protected var nextId: Int = 100
+class FileLogger(logCounter: LogCounter, override val tw: FileTrapWriter): Logger(logCounter, tw) {
+    private fun timestamp(): String {
+        return "[${SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date())} K]"
+    }
+
+    fun warnElement(severity: Severity, msg: String, element: IrElement) {
+        val locationString = tw.getLocationString(element)
+        val locationId = tw.getLocation(element)
+        warn(severity, msg, locationString, locationId)
+    }
+}
+
+class TrapLabelManager {
+    public var nextId: Int = 100
 
     fun <T> getFreshLabel(): Label<T> {
         return IntLabel(nextId++)
     }
 
     val labelMapping: MutableMap<String, Label<*>> = mutableMapOf<String, Label<*>>()
+}
+
+open class TrapWriter (val lm: TrapLabelManager, val bw: BufferedWriter) {
     fun <T> getExistingLabelFor(label: String): Label<T>? {
         @Suppress("UNCHECKED_CAST")
-        return labelMapping.get(label) as Label<T>?
+        return lm.labelMapping.get(label) as Label<T>?
     }
     fun <T> getLabelFor(label: String, initialise: (Label<T>) -> Unit = {}): Label<T> {
         val maybeId: Label<T>? = getExistingLabelFor(label)
         if(maybeId == null) {
-            val id: Label<T> = getFreshLabel()
-            labelMapping.put(label, id)
+            val id: Label<T> = lm.getFreshLabel()
+            lm.labelMapping.put(label, id)
             writeTrap("$id = $label\n")
             initialise(id)
             return id
@@ -175,10 +211,11 @@ open class TrapWriter (val bw: BufferedWriter) {
 }
 
 class FileTrapWriter (
+    lm: TrapLabelManager,
     bw: BufferedWriter,
     val fileLabel: String,
     val file: IrFile
-): TrapWriter (bw) {
+): TrapWriter (lm, bw) {
     private val fileEntry = file.fileEntry
 
     fun getLocation(e: IrElement): Label<DbLocation> {
@@ -209,7 +246,7 @@ class FileTrapWriter (
     fun <T> getVariableLabelFor(v: IrVariable): Label<out DbLocalvar> {
         val maybeId = variableLabelMapping.get(v)
         if(maybeId == null) {
-            val id = getFreshLabel<DbLocalvar>()
+            val id = lm.getFreshLabel<DbLocalvar>()
             variableLabelMapping.put(v, id)
             writeTrap("$id = *\n")
             return id
@@ -218,7 +255,7 @@ class FileTrapWriter (
         }
     }
     fun <T> getFreshIdLabel(): Label<T> {
-        val label = IntLabel<T>(nextId++)
+        val label = IntLabel<T>(lm.nextId++)
         writeTrap("$label = *\n")
         return label
     }
@@ -244,12 +281,14 @@ private fun equivalentTrap(f1: File, f2: File): Boolean {
     }
 }
 
-fun doFile(invocationTrapFile: String, checkTrapIdentical: Boolean, logger: Logger, trapDir: File, srcDir: File, declaration: IrFile) {
+fun doFile(invocationTrapFile: String, trapLabelManager: TrapLabelManager, invocationTrapFileBW: BufferedWriter, checkTrapIdentical: Boolean, logCounter: LogCounter, trapDir: File, srcDir: File, declaration: IrFile) {
     val filePath = declaration.path
+    val fileLabel = "@\"$filePath;sourcefile\""
+    val fileTrapWriter = FileTrapWriter(trapLabelManager, invocationTrapFileBW, fileLabel, declaration)
+    val logger = FileLogger(logCounter, fileTrapWriter)
     logger.info("Extracting file $filePath")
     logger.flush()
     val file = File(filePath)
-    val fileLabel = "@\"$filePath;sourcefile\""
     val basename = file.nameWithoutExtension
     val extension = file.extension
     val dest = Paths.get("$srcDir/${declaration.path}")
@@ -268,7 +307,7 @@ fun doFile(invocationTrapFile: String, checkTrapIdentical: Boolean, logger: Logg
         val trapTmpFile = File.createTempFile("$filePath.", ".trap.tmp", trapFileDir)
         trapTmpFile.bufferedWriter().use { trapFileBW ->
             trapFileBW.write("// Generated by invocation ${invocationTrapFile.replace("\n", "\n//    ")}\n")
-            val tw = FileTrapWriter(trapFileBW, fileLabel, declaration)
+            val tw = FileTrapWriter(TrapLabelManager(), trapFileBW, fileLabel, declaration)
             val id: Label<DbFile> = tw.getLabelFor(fileLabel)
             tw.writeFiles(id, filePath, basename, extension, 0)
             val fileExtractor = KotlinFileExtractor(logger, tw, declaration)
@@ -277,19 +316,19 @@ fun doFile(invocationTrapFile: String, checkTrapIdentical: Boolean, logger: Logg
         if (checkTrapIdentical && trapFile.exists()) {
             if(equivalentTrap(trapTmpFile, trapFile)) {
                 if(!trapTmpFile.delete()) {
-                    logger.warn("Failed to delete $trapTmpFile")
+                    logger.warn(Severity.WarnLow, "Failed to delete $trapTmpFile")
                 }
             } else {
                 val trapDifferentFile = File.createTempFile("$filePath.", ".trap.different", trapDir)
                 if(trapTmpFile.renameTo(trapDifferentFile)) {
-                    logger.warn("TRAP difference: $trapFile vs $trapDifferentFile")
+                    logger.warn(Severity.Warn, "TRAP difference: $trapFile vs $trapDifferentFile")
                 } else {
-                    logger.warn("Failed to rename $trapTmpFile to $trapFile")
+                    logger.warn(Severity.WarnLow, "Failed to rename $trapTmpFile to $trapFile")
                 }
             }
         } else {
             if(!trapTmpFile.renameTo(trapFile)) {
-                logger.warn("Failed to rename $trapTmpFile to $trapFile")
+                logger.warn(Severity.WarnLow, "Failed to rename $trapTmpFile to $trapFile")
             }
         }
     }
@@ -306,7 +345,7 @@ fun <T> fakeLabel(): Label<T> {
     return IntLabel(0)
 }
 
-class KotlinFileExtractor(val logger: Logger, val tw: FileTrapWriter, val file: IrFile) {
+class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val file: IrFile) {
     val fileClass by lazy {
         extractFileClass(file)
     }
@@ -367,7 +406,7 @@ class KotlinFileExtractor(val logger: Logger, val tw: FileTrapWriter, val file: 
             is IrClass -> extractClass(declaration)
             is IrFunction -> extractFunction(declaration, if (optParentid.isPresent()) optParentid.get() else fileClass)
             is IrProperty -> extractProperty(declaration, if (optParentid.isPresent()) optParentid.get() else fileClass)
-            else -> logger.warn("Unrecognised IrDeclaration: " + declaration.javaClass)
+            else -> logger.warnElement(Severity.ErrorSevere, "Unrecognised IrDeclaration: " + declaration.javaClass, declaration)
         }
     }
 
@@ -384,7 +423,7 @@ class KotlinFileExtractor(val logger: Logger, val tw: FileTrapWriter, val file: 
             s.isInt() -> return primitiveType("int")
             s.isLong() -> return primitiveType("long")
             s.isUByte() || s.isUShort() || s.isUInt() || s.isULong() -> {
-                logger.warn("Unhandled unsigned type")
+                logger.warn(Severity.ErrorSevere, "Unhandled unsigned type")
                 return fakeLabel()
             }
 
@@ -401,7 +440,7 @@ class KotlinFileExtractor(val logger: Logger, val tw: FileTrapWriter, val file: 
                 return useClass(cls)
             }
             else -> {
-                logger.warn("Unrecognised IrSimpleType: " + s.javaClass + ": " + s.render())
+                logger.warn(Severity.ErrorSevere, "Unrecognised IrSimpleType: " + s.javaClass + ": " + s.render())
                 return fakeLabel()
             }
         }
@@ -456,11 +495,11 @@ class KotlinFileExtractor(val logger: Logger, val tw: FileTrapWriter, val file: 
                             val l = useClass(tcls)
                             tw.writeExtendsReftype(id, l)
                         } else -> {
-                            logger.warn("Unexpected simple type supertype: " + t.javaClass + ": " + t.render())
+                            logger.warn(Severity.ErrorSevere, "Unexpected simple type supertype: " + t.javaClass + ": " + t.render())
                         }
                     }
                 } else -> {
-                    logger.warn("Unexpected supertype: " + t.javaClass + ": " + t.render())
+                    logger.warn(Severity.ErrorSevere, "Unexpected supertype: " + t.javaClass + ": " + t.render())
                 }
             }
         }
@@ -473,7 +512,7 @@ class KotlinFileExtractor(val logger: Logger, val tw: FileTrapWriter, val file: 
             is IrSimpleType -> return useSimpleType(t)
             is IrClass -> return useClass(t)
             else -> {
-                logger.warn("Unrecognised IrType: " + t.javaClass)
+                logger.warn(Severity.ErrorSevere, "Unrecognised IrType: " + t.javaClass)
                 return fakeLabel()
             }
         }
@@ -485,7 +524,7 @@ class KotlinFileExtractor(val logger: Logger, val tw: FileTrapWriter, val file: 
             is IrClass -> return useClass(dp)
             is IrFunction -> return useFunction(dp)
             else -> {
-                logger.warn("Unrecognised IrDeclarationParent: " + dp.javaClass)
+                logger.warnElement(Severity.ErrorSevere, "Unrecognised IrDeclarationParent: " + dp.javaClass, dp)
                 return fakeLabel()
             }
         }
@@ -544,7 +583,7 @@ class KotlinFileExtractor(val logger: Logger, val tw: FileTrapWriter, val file: 
     fun extractProperty(p: IrProperty, parentid: Label<out DbReftype>) {
         val bf = p.backingField
         if(bf == null) {
-            logger.warn("IrProperty without backing field")
+            logger.warnElement(Severity.ErrorSevere, "IrProperty without backing field", p)
         } else {
             val id = useProperty(p)
             val locId = tw.getLocation(p)
@@ -557,7 +596,7 @@ class KotlinFileExtractor(val logger: Logger, val tw: FileTrapWriter, val file: 
     fun extractBody(b: IrBody, callable: Label<out DbCallable>) {
         when(b) {
             is IrBlockBody -> extractBlockBody(b, callable, callable, 0)
-            else -> logger.warn("Unrecognised IrBody: " + b.javaClass)
+            else -> logger.warnElement(Severity.ErrorSevere, "Unrecognised IrBody: " + b.javaClass, b)
         }
     }
 
@@ -599,7 +638,7 @@ class KotlinFileExtractor(val logger: Logger, val tw: FileTrapWriter, val file: 
                 extractVariable(s, callable)
             }
             else -> {
-                logger.warn("Unrecognised IrStatement: " + s.javaClass)
+                logger.warnElement(Severity.ErrorSevere, "Unrecognised IrStatement: " + s.javaClass, s)
             }
         }
     }
@@ -613,7 +652,7 @@ class KotlinFileExtractor(val logger: Logger, val tw: FileTrapWriter, val file: 
                 return useVariable(d)
             }
             else -> {
-                logger.warn("Unrecognised IrValueDeclaration: " + d.javaClass)
+                logger.warnElement(Severity.ErrorSevere, "Unrecognised IrValueDeclaration: " + d.javaClass, d)
                 return fakeLabel()
             }
         }
@@ -751,9 +790,9 @@ class KotlinFileExtractor(val logger: Logger, val tw: FileTrapWriter, val file: 
                         tw.writeNamestrings(v.toString(), v.toString(), id)
                     } else -> {
                         if(v == null) {
-                            logger.warn("Unrecognised IrConst: null value")
+                            logger.warnElement(Severity.ErrorSevere, "Unrecognised IrConst: null value", e)
                         } else {
-                            logger.warn("Unrecognised IrConst: " + v.javaClass)
+                            logger.warnElement(Severity.ErrorSevere, "Unrecognised IrConst: " + v.javaClass, e)
                         }
                     }
                 }
@@ -848,7 +887,7 @@ class KotlinFileExtractor(val logger: Logger, val tw: FileTrapWriter, val file: 
                     }
                 }
             } else -> {
-                logger.warn("Unrecognised IrExpression: " + e.javaClass + " at " + tw.getLocationString(e))
+                logger.warnElement(Severity.ErrorSevere, "Unrecognised IrExpression: " + e.javaClass, e)
             }
         }
     }
