@@ -8,6 +8,7 @@ private import FlowSummaryImpl as FlowSummaryImpl
 private import semmle.code.csharp.dataflow.FlowSummary
 private import semmle.code.csharp.dataflow.ExternalFlow
 private import semmle.code.csharp.dispatch.Dispatch
+private import semmle.code.csharp.dispatch.RuntimeCallable
 private import semmle.code.csharp.frameworks.system.Collections
 private import semmle.code.csharp.frameworks.system.collections.Generic
 
@@ -275,6 +276,10 @@ class NonDelegateDataFlowCall extends DataFlowCall, TNonDelegateCall {
 
   override DataFlowCallable getARuntimeTarget() {
     result = getCallableForDataFlow(dc.getADynamicTarget())
+    or
+    result = dc.getAStaticTarget().getUnboundDeclaration() and
+    summarizedCallable(result) and
+    not result instanceof RuntimeCallable
   }
 
   override ControlFlow::Nodes::ElementNode getControlFlowNode() { result = cfn }

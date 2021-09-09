@@ -234,10 +234,10 @@ abstract class BusinessInterface extends Interface {
   abstract SessionEJB getAnEJB();
 
   /** Holds if this business interface is declared local. */
-  abstract predicate isLocal();
+  abstract predicate isDeclaredLocal();
 
   /** Holds if this business interface is declared remote. */
-  abstract predicate isRemote();
+  abstract predicate isDeclaredRemote();
 }
 
 /**
@@ -259,14 +259,14 @@ class XmlSpecifiedBusinessInterface extends BusinessInterface {
     )
   }
 
-  override predicate isLocal() {
+  override predicate isDeclaredLocal() {
     exists(EjbJarXMLFile f |
       this.getQualifiedName() =
         f.getASessionElement().getABusinessLocalElement().getACharactersSet().getCharacters()
     )
   }
 
-  override predicate isRemote() {
+  override predicate isDeclaredRemote() {
     exists(EjbJarXMLFile f |
       this.getQualifiedName() =
         f.getASessionElement().getABusinessRemoteElement().getACharactersSet().getCharacters()
@@ -295,9 +295,9 @@ class AnnotatedBusinessInterface extends BusinessInterface {
     result.getAnAnnotation().(BusinessInterfaceAnnotation).getANamedType() = this
   }
 
-  override predicate isLocal() { this instanceof LocalAnnotatedBusinessInterface }
+  override predicate isDeclaredLocal() { this instanceof LocalAnnotatedBusinessInterface }
 
-  override predicate isRemote() { this instanceof RemoteAnnotatedBusinessInterface }
+  override predicate isDeclaredRemote() { this instanceof RemoteAnnotatedBusinessInterface }
 }
 
 /**
@@ -540,7 +540,7 @@ class XmlSpecifiedLocalHomeInterface extends LegacyEjbLocalHomeInterface {
 class RemoteInterface extends Interface {
   RemoteInterface() {
     this instanceof RemoteAnnotatedBusinessInterface or
-    this.(XmlSpecifiedBusinessInterface).isRemote() or
+    this.(XmlSpecifiedBusinessInterface).isDeclaredRemote() or
     exists(SessionEJB ejb | this = ejb.getARemoteInterface())
   }
 

@@ -243,6 +243,8 @@ class Method extends Callable, Virtualizable, Attributable, @method {
   /** Gets the name of this method. */
   override string getName() { methods(this, result, _, _, _) }
 
+  override string getUndecoratedName() { methods(this, result, _, _, _) }
+
   override ValueOrRefType getDeclaringType() { methods(this, _, result, _, _) }
 
   override Type getReturnType() { methods(this, _, _, getTypeRef(result), _) }
@@ -447,6 +449,8 @@ class Operator extends Callable, Member, Attributable, @operator {
   string getAssemblyName() { operators(this, result, _, _, _, _) }
 
   override string getName() { operators(this, _, result, _, _, _) }
+
+  override string getUndecoratedName() { operators(this, _, result, _, _, _) }
 
   /**
    * Gets the metadata name of the operator, such as `op_implicit` or `op_RightShift`.
@@ -988,6 +992,8 @@ class ExplicitConversionOperator extends ConversionOperator {
  */
 class LocalFunction extends Callable, Modifiable, Attributable, @local_function {
   override string getName() { local_functions(this, result, _, _) }
+
+  override string getUndecoratedName() { local_functions(this, result, _, _) }
 
   override LocalFunction getUnboundDeclaration() { local_functions(this, _, _, result) }
 

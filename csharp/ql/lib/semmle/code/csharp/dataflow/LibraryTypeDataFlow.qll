@@ -772,7 +772,7 @@ class SystemTextStringBuilderFlow extends LibraryTypeDataFlow, SystemTextStringB
     CallableFlowSource source, AccessPath sourceAp, CallableFlowSink sink, AccessPath sinkAp,
     SourceDeclarationMethod m, boolean preservesValue
   ) {
-    exists(string name | m = this.getAMethod(name) |
+    exists(string name | m = this.getAMethod() and m.hasUndecoratedName(name) |
       name = "ToString" and
       source = TCallableFlowSourceQualifier() and
       sourceAp = AccessPath::element() and
@@ -916,7 +916,8 @@ class IEnumerableFlow extends LibraryTypeDataFlow, RefType {
       or
       exists(string name, int arity |
         arity = c.getNumberOfParameters() and
-        c = this.getAMethod(name)
+        c = this.getAMethod() and
+        c.getUndecoratedName() = name
       |
         name = "Add" and
         arity = 1 and
@@ -964,7 +965,9 @@ class IEnumerableFlow extends LibraryTypeDataFlow, RefType {
     SourceDeclarationMethod m
   ) {
     m.(ExtensionMethod).getExtendedType().getUnboundDeclaration() = this and
-    exists(string name, int arity | name = m.getName() and arity = m.getNumberOfParameters() |
+    exists(string name, int arity |
+      name = m.getUndecoratedName() and arity = m.getNumberOfParameters()
+    |
       name = "Aggregate" and
       (
         arity = 2 and
@@ -1464,7 +1467,7 @@ class IEnumerableFlow extends LibraryTypeDataFlow, RefType {
 
   private SourceDeclarationMethod getFind() {
     exists(string name |
-      name = result.getName() and
+      name = result.getUndecoratedName() and
       result.getDeclaringType() = this.getABaseType*()
     |
       name.regexpMatch("Find(All|Last)?")
@@ -1496,7 +1499,7 @@ class ICollectionFlow extends LibraryTypeDataFlow, RefType {
   ) {
     preservesValue = true and
     exists(string name, int arity |
-      name = c.getName() and
+      name = c.getUndecoratedName() and
       arity = c.getNumberOfParameters() and
       c = this.getAMethod()
     |
@@ -1834,7 +1837,7 @@ class SystemTupleFlow extends LibraryTypeDataFlow, ValueOrRefType {
       or
       c =
         any(ExtensionMethod m |
-          m.hasName("Deconstruct") and
+          m.hasUndecoratedName("Deconstruct") and
           this = m.getExtendedType().getUnboundDeclaration() and
           exists(int i |
             m.getParameter(i).isOut() and
@@ -1889,7 +1892,7 @@ class SystemThreadingTasksTaskFlow extends LibraryTypeDataFlow, SystemThreadingT
   ) {
     m.getDeclaringType() = this and
     (
-      m.hasName("ContinueWith") and
+      m.getName().regexpMatch("ContinueWith(<>)?") and
       sourceAp = AccessPath::empty() and
       (
         // flow from supplied state to supplied delegate
@@ -1916,13 +1919,13 @@ class SystemThreadingTasksTaskFlow extends LibraryTypeDataFlow, SystemThreadingT
         )
       )
       or
-      m.hasName("FromResult") and
+      m.hasName("FromResult<>") and
       source = TCallableFlowSourceArg(0) and
       sourceAp = AccessPath::empty() and
       sink = TCallableFlowSinkReturn() and
       sinkAp = AccessPath::property(any(SystemThreadingTasksTaskTClass c).getResultProperty())
       or
-      m.hasName("Run") and
+      m.getName().regexpMatch("Run(<>)?") and
       m.getReturnType() = any(SystemThreadingTasksTaskTClass c).getAConstructedGeneric() and
       m.(UnboundGenericMethod).getNumberOfTypeParameters() = 1 and
       source = TCallableFlowSourceDelegateArg(0) and
@@ -1930,7 +1933,7 @@ class SystemThreadingTasksTaskFlow extends LibraryTypeDataFlow, SystemThreadingT
       sink = TCallableFlowSinkReturn() and
       sinkAp = AccessPath::property(any(SystemThreadingTasksTaskTClass c).getResultProperty())
       or
-      m.getName().regexpMatch("WhenAll|WhenAny") and
+      m.getName().regexpMatch("WhenAll(<>)?|WhenAny(<>)?") and
       m.getReturnType() = any(SystemThreadingTasksTaskTClass c).getAConstructedGeneric() and
       m.(UnboundGenericMethod).getNumberOfTypeParameters() = 1 and
       source = getFlowSourceArg(m, _, _) and
@@ -1999,7 +2002,7 @@ class SystemThreadingTasksTaskTFlow extends LibraryTypeDataFlow, SystemThreading
     SourceDeclarationMethod m
   ) {
     m.getDeclaringType() = this and
-    m.hasName("ContinueWith") and
+    m.getName().regexpMatch("ContinueWith(<>)?") and
     (
       exists(ConstructedDelegateType delegate, int i, int j |
         m.getParameter(i).getType() = delegate and
@@ -2115,7 +2118,7 @@ class SystemThreadingTasksFactoryFlow extends LibraryTypeDataFlow {
   ) {
     m.getDeclaringType() = this and
     (
-      m.getName().regexpMatch("ContinueWhen(All|Any)") and
+      m.getUndecoratedName().regexpMatch("ContinueWhen(All|Any)") and
       (
         // flow into supplied function
         exists(ConstructedDelegateType delegate, ArrayType at, int i, int j, int k |
@@ -2144,7 +2147,7 @@ class SystemThreadingTasksFactoryFlow extends LibraryTypeDataFlow {
         )
       )
       or
-      m.hasName("StartNew") and
+      m.hasUndecoratedName("StartNew") and
       (
         // flow from supplied state to supplied delegate
         exists(ConstructedDelegateType delegate, int i, int j, int k |

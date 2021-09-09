@@ -42,6 +42,7 @@ nodes
 | ZipSlipBad.cs:9:31:9:73 | call to method Combine : String | semmle.label | call to method Combine : String |
 | ZipSlipBad.cs:9:59:9:72 | access to property FullName : String | semmle.label | access to property FullName : String |
 | ZipSlipBad.cs:10:29:10:40 | access to local variable destFileName | semmle.label | access to local variable destFileName |
+subpaths
 #select
 | ZipSlip.cs:15:52:15:65 | access to property FullName | ZipSlip.cs:15:52:15:65 | access to property FullName : String | ZipSlip.cs:31:41:31:52 | access to local variable destFilePath | Unsanitized archive entry, which may contain '..', is used in a $@. | ZipSlip.cs:31:41:31:52 | access to local variable destFilePath | file system operation |
 | ZipSlip.cs:15:52:15:65 | access to property FullName | ZipSlip.cs:15:52:15:65 | access to property FullName : String | ZipSlip.cs:35:45:35:56 | access to local variable destFilePath | Unsanitized archive entry, which may contain '..', is used in a $@. | ZipSlip.cs:35:45:35:56 | access to local variable destFilePath | file system operation |

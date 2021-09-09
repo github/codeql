@@ -44,7 +44,7 @@ class SystemDiagnosticsContractsContractClass extends SystemDiagnosticsContracts
   /** Gets a `Requires(bool, ...)` method. */
   Method getARequiresMethod() {
     result.getDeclaringType() = this and
-    result.hasName("Requires") and
+    result.hasUndecoratedName("Requires") and
     result.getParameter(0).getType() instanceof BoolType and
     result.getReturnType() instanceof VoidType
   }

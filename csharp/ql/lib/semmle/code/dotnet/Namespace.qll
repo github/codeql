@@ -34,6 +34,11 @@ class Namespace extends Declaration, @namespace {
 
   /** Holds if this is the global namespace. */
   final predicate isGlobalNamespace() { getName() = "" }
+
+  /** Gets the simple name of this namespace, for example `IO` in `System.IO`. */
+  final override string getName() { namespaces(this, result) }
+
+  final override string getUndecoratedName() { namespaces(this, result) }
 }
 
 /** The global namespace. */

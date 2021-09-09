@@ -81,6 +81,8 @@ class Method extends DotNet::Callable, Element, Member, TypeContainer, DataFlowN
 
   override string getName() { cil_method(this, result, _, _) }
 
+  override string getUndecoratedName() { result = getName() }
+
   override string toString() { result = this.getName() }
 
   override Type getDeclaringType() { cil_method(this, _, result, _) }

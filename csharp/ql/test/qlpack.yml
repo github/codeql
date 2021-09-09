@@ -1,7 +1,7 @@
 name: codeql-csharp-tests
-version: 0.0.0
+version: 0.0.2
 dependencies:
-  codeql/csharp-all: ^0.0.2
-  codeql/csharp-queries: ^0.0.2
+  codeql/csharp-all: "*"
+  codeql/csharp-queries: "*"
 extractor: csharp
 tests: .

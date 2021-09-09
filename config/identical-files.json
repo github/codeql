@@ -21,17 +21,17 @@
     "csharp/ql/lib/semmle/code/csharp/dataflow/internal/DataFlowImpl3.qll",
     "csharp/ql/lib/semmle/code/csharp/dataflow/internal/DataFlowImpl4.qll",
     "csharp/ql/lib/semmle/code/csharp/dataflow/internal/DataFlowImpl5.qll",
-    "python/ql/src/semmle/python/dataflow/new/internal/DataFlowImpl.qll",
-    "python/ql/src/semmle/python/dataflow/new/internal/DataFlowImpl2.qll",
-    "python/ql/src/semmle/python/dataflow/new/internal/DataFlowImpl3.qll",
-    "python/ql/src/semmle/python/dataflow/new/internal/DataFlowImpl4.qll"
+    "python/ql/lib/semmle/python/dataflow/new/internal/DataFlowImpl.qll",
+    "python/ql/lib/semmle/python/dataflow/new/internal/DataFlowImpl2.qll",
+    "python/ql/lib/semmle/python/dataflow/new/internal/DataFlowImpl3.qll",
+    "python/ql/lib/semmle/python/dataflow/new/internal/DataFlowImpl4.qll"
   ],
   "DataFlow Java/C++/C#/Python Common": [
     "java/ql/lib/semmle/code/java/dataflow/internal/DataFlowImplCommon.qll",
     "cpp/ql/lib/semmle/code/cpp/dataflow/internal/DataFlowImplCommon.qll",
     "cpp/ql/lib/semmle/code/cpp/ir/dataflow/internal/DataFlowImplCommon.qll",
     "csharp/ql/lib/semmle/code/csharp/dataflow/internal/DataFlowImplCommon.qll",
-    "python/ql/src/semmle/python/dataflow/new/internal/DataFlowImplCommon.qll"
+    "python/ql/lib/semmle/python/dataflow/new/internal/DataFlowImplCommon.qll"
   ],
   "TaintTracking::Configuration Java/C++/C#/Python": [
     "cpp/ql/lib/semmle/code/cpp/dataflow/internal/tainttracking1/TaintTrackingImpl.qll",
@@ -46,17 +46,17 @@
     "csharp/ql/lib/semmle/code/csharp/dataflow/internal/tainttracking5/TaintTrackingImpl.qll",
     "java/ql/lib/semmle/code/java/dataflow/internal/tainttracking1/TaintTrackingImpl.qll",
     "java/ql/lib/semmle/code/java/dataflow/internal/tainttracking2/TaintTrackingImpl.qll",
-    "python/ql/src/semmle/python/dataflow/new/internal/tainttracking1/TaintTrackingImpl.qll",
-    "python/ql/src/semmle/python/dataflow/new/internal/tainttracking2/TaintTrackingImpl.qll",
-    "python/ql/src/semmle/python/dataflow/new/internal/tainttracking3/TaintTrackingImpl.qll",
-    "python/ql/src/semmle/python/dataflow/new/internal/tainttracking4/TaintTrackingImpl.qll"
+    "python/ql/lib/semmle/python/dataflow/new/internal/tainttracking1/TaintTrackingImpl.qll",
+    "python/ql/lib/semmle/python/dataflow/new/internal/tainttracking2/TaintTrackingImpl.qll",
+    "python/ql/lib/semmle/python/dataflow/new/internal/tainttracking3/TaintTrackingImpl.qll",
+    "python/ql/lib/semmle/python/dataflow/new/internal/tainttracking4/TaintTrackingImpl.qll"
   ],
   "DataFlow Java/C++/C#/Python Consistency checks": [
     "java/ql/lib/semmle/code/java/dataflow/internal/DataFlowImplConsistency.qll",
     "cpp/ql/lib/semmle/code/cpp/dataflow/internal/DataFlowImplConsistency.qll",
     "cpp/ql/lib/semmle/code/cpp/ir/dataflow/internal/DataFlowImplConsistency.qll",
     "csharp/ql/lib/semmle/code/csharp/dataflow/internal/DataFlowImplConsistency.qll",
-    "python/ql/src/semmle/python/dataflow/new/internal/DataFlowImplConsistency.qll"
+    "python/ql/lib/semmle/python/dataflow/new/internal/DataFlowImplConsistency.qll"
   ],
   "DataFlow Java/C# Flow Summaries": [
     "java/ql/lib/semmle/code/java/dataflow/internal/FlowSummaryImpl.qll",
@@ -382,8 +382,8 @@
     "cpp/ql/lib/semmle/code/cpp/XML.qll",
     "csharp/ql/lib/semmle/code/csharp/XML.qll",
     "java/ql/lib/semmle/code/xml/XML.qll",
-    "javascript/ql/src/semmle/javascript/XML.qll",
-    "python/ql/src/semmle/python/xml/XML.qll"
+    "javascript/ql/lib/semmle/javascript/XML.qll",
+    "python/ql/lib/semmle/python/xml/XML.qll"
   ],
   "DuplicationProblems.inc.qhelp": [
     "cpp/ql/src/Metrics/Files/DuplicationProblems.inc.qhelp",
@@ -443,23 +443,23 @@
     "csharp/ql/lib/semmle/code/cil/internal/SsaImplCommon.qll"
   ],
   "CryptoAlgorithms Python/JS": [
-    "javascript/ql/src/semmle/javascript/security/CryptoAlgorithms.qll",
-    "python/ql/src/semmle/python/concepts/CryptoAlgorithms.qll"
+    "javascript/ql/lib/semmle/javascript/security/CryptoAlgorithms.qll",
+    "python/ql/lib/semmle/python/concepts/CryptoAlgorithms.qll"
   ],
   "SensitiveDataHeuristics Python/JS": [
-    "javascript/ql/src/semmle/javascript/security/internal/SensitiveDataHeuristics.qll",
-    "python/ql/src/semmle/python/security/internal/SensitiveDataHeuristics.qll"
+    "javascript/ql/lib/semmle/javascript/security/internal/SensitiveDataHeuristics.qll",
+    "python/ql/lib/semmle/python/security/internal/SensitiveDataHeuristics.qll"
   ],
   "ReDoS Util Python/JS": [
-    "javascript/ql/src/semmle/javascript/security/performance/ReDoSUtil.qll",
-    "python/ql/src/semmle/python/security/performance/ReDoSUtil.qll"
+    "javascript/ql/lib/semmle/javascript/security/performance/ReDoSUtil.qll",
+    "python/ql/lib/semmle/python/security/performance/ReDoSUtil.qll"
   ],
   "ReDoS Exponential Python/JS": [
-    "javascript/ql/src/semmle/javascript/security/performance/ExponentialBackTracking.qll",
-    "python/ql/src/semmle/python/security/performance/ExponentialBackTracking.qll"
+    "javascript/ql/lib/semmle/javascript/security/performance/ExponentialBackTracking.qll",
+    "python/ql/lib/semmle/python/security/performance/ExponentialBackTracking.qll"
   ],
   "ReDoS Polynomial Python/JS": [
-    "javascript/ql/src/semmle/javascript/security/performance/SuperlinearBackTracking.qll",
-    "python/ql/src/semmle/python/security/performance/SuperlinearBackTracking.qll"
+    "javascript/ql/lib/semmle/javascript/security/performance/SuperlinearBackTracking.qll",
+    "python/ql/lib/semmle/python/security/performance/SuperlinearBackTracking.qll"
   ]
 }
