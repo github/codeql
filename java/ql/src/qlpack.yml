@@ -3,5 +3,5 @@ version: 0.0.2
 suites: codeql-suites
 extractor: java
 dependencies:
-    codeql/java-all: ^0.0.2
-    codeql/suite-helpers: ^0.0.2
+    codeql/java-all: "*"
+    codeql/suite-helpers: "*"

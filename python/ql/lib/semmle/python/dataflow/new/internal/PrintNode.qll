@@ -1,6 +1,20 @@
-import python
-import semmle.python.dataflow.new.DataFlow
+/**
+ * INTERNAL: Do not use.
+ *
+ * Provides helper predicates for pretty-printing `DataFlow::Node`s.
+ *
+ * Since these have not been performance optimized, please only use them for
+ * debug-queries or in tests.
+ */
 
+private import python
+private import semmle.python.dataflow.new.DataFlow
+
+/**
+ * INTERNAL: Do not use.
+ *
+ * Gets the pretty-printed version of the Expr `e`.
+ */
 string prettyExpr(Expr e) {
   not e instanceof Num and
   not e instanceof StrConst and
@@ -27,7 +41,9 @@ string prettyExpr(Expr e) {
 }
 
 /**
- * Gets pretty-printed version of the DataFlow::Node `node`
+ * INTERNAL: Do not use.
+ *
+ * Gets the pretty-printed version of the DataFlow::Node `node`
  */
 bindingset[node]
 string prettyNode(DataFlow::Node node) {
@@ -35,7 +51,9 @@ string prettyNode(DataFlow::Node node) {
 }
 
 /**
- * Gets pretty-printed version of the DataFlow::Node `node`, that is suitable for use
+ * INTERNAL: Do not use.
+ *
+ * Gets the pretty-printed version of the DataFlow::Node `node`, that is suitable for use
  * with `TestUtilities.InlineExpectationsTest` (that is, no spaces unless required).
  */
 bindingset[node]

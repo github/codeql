@@ -10,9 +10,173 @@ private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
 private import semmle.python.frameworks.PEP249
+private import semmle.python.frameworks.internal.InstanceTaintStepsHelper
 
 /** Provides models for the Python standard library. */
-private module Stdlib {
+module Stdlib {
+  /**
+   * Provides models for file-like objects,
+   * mostly to define standard set of extra taint-steps.
+   *
+   * See
+   * - https://docs.python.org/3.9/glossary.html#term-file-like-object
+   * - https://docs.python.org/3.9/library/io.html#io.IOBase
+   */
+  module FileLikeObject {
+    /**
+     * A source of a file-like object, extend this class to model new instances.
+     *
+     * This can include instantiations of the class, return values from function
+     * calls, or a special parameter that will be set when functions are called by an external
+     * library.
+     *
+     * Use the predicate `like::instance()` to get references to instances of `file.like`.
+     */
+    abstract class InstanceSource extends DataFlow::LocalSourceNode { }
+
+    /** Gets a reference to a file-like object. */
+    private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
+      t.start() and
+      result instanceof InstanceSource
+      or
+      exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+    }
+
+    /** Gets a reference to a file-like object. */
+    DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
+
+    /**
+     * Taint propagation for file-like objects.
+     */
+    private class InstanceTaintSteps extends InstanceTaintStepsHelper {
+      InstanceTaintSteps() { this = "<file-like object>" }
+
+      override DataFlow::Node getInstance() { result = instance() }
+
+      override string getAttributeName() { none() }
+
+      override string getMethodName() { result in ["read", "readline", "readlines"] }
+
+      override string getAsyncMethodName() { none() }
+    }
+
+    /**
+     * Extra taint propagation for file-like objects, not covered by `InstanceTaintSteps`.",
+     */
+    private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+      override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+        // taint-propagation back to instance from `foo.write(tainted_data)`
+        exists(DataFlow::AttrRead write, DataFlow::CallCfgNode call, DataFlow::Node instance_ |
+          instance_ = instance() and
+          write.accesses(instance_, "write")
+        |
+          nodeTo.(DataFlow::PostUpdateNode).getPreUpdateNode() = instance_ and
+          call.getFunction() = write and
+          nodeFrom = call.getArg(0)
+        )
+      }
+    }
+  }
+
+  /**
+   * Provides models for the `http.client.HTTPMessage` class
+   *
+   * Has no official docs, but see
+   * https://github.com/python/cpython/blob/64f54b7ccd49764b0304e076bfd79b5482988f53/Lib/http/client.py#L175
+   * and https://docs.python.org/3.9/library/email.compat32-message.html#email.message.Message
+   */
+  module HTTPMessage {
+    /**
+     * A source of instances of `http.client.HTTPMessage`, extend this class to model new instances.
+     *
+     * This can include instantiations of the class, return values from function
+     * calls, or a special parameter that will be set when functions are called by an external
+     * library.
+     *
+     * Use the predicate `HTTPMessage::instance()` to get references to instances of `http.client.HTTPMessage`.
+     */
+    abstract class InstanceSource extends DataFlow::LocalSourceNode { }
+
+    /** Gets a reference to an instance of `http.client.HTTPMessage`. */
+    private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
+      t.start() and
+      result instanceof InstanceSource
+      or
+      exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+    }
+
+    /** Gets a reference to an instance of `http.client.HTTPMessage`. */
+    DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
+
+    /**
+     * Taint propagation for `http.client.HTTPMessage`.
+     */
+    private class InstanceTaintSteps extends InstanceTaintStepsHelper {
+      InstanceTaintSteps() { this = "http.client.HTTPMessage" }
+
+      override DataFlow::Node getInstance() { result = instance() }
+
+      override string getAttributeName() { none() }
+
+      override string getMethodName() { result in ["get_all", "as_bytes", "as_string", "keys"] }
+
+      override string getAsyncMethodName() { none() }
+    }
+  }
+
+  /**
+   * Provides models for the `http.cookies.Morsel` class
+   *
+   * See https://docs.python.org/3.9/library/http.cookies.html#http.cookies.Morsel.
+   */
+  module Morsel {
+    /**
+     * A source of instances of `http.cookies.Morsel`, extend this class to model new instances.
+     *
+     * This can include instantiations of the class, return values from function
+     * calls, or a special parameter that will be set when functions are called by an external
+     * library.
+     *
+     * Use the predicate `Morsel::instance()` to get references to instances of `http.cookies.Morsel`.
+     */
+    abstract class InstanceSource extends DataFlow::LocalSourceNode { }
+
+    /** Gets a reference to an instance of `http.cookies.Morsel`. */
+    private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
+      t.start() and
+      result instanceof InstanceSource
+      or
+      exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+    }
+
+    /** Gets a reference to an instance of `http.cookies.Morsel`. */
+    DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
+
+    /**
+     * Taint propagation for `http.cookies.Morsel`.
+     */
+    private class InstanceTaintSteps extends InstanceTaintStepsHelper {
+      InstanceTaintSteps() { this = "http.cookies.Morsel" }
+
+      override DataFlow::Node getInstance() { result = instance() }
+
+      override string getAttributeName() { result in ["key", "value", "coded_value"] }
+
+      override string getMethodName() { result in ["output", "js_output"] }
+
+      override string getAsyncMethodName() { none() }
+    }
+  }
+}
+
+/**
+ * Provides models for the Python standard library.
+ *
+ * This module is marked private as exposing it means committing to 1-year deprecation
+ * policy, and the code is not in a polished enough state that we want to do so -- at
+ * least not without having convincing use-cases for it :)
+ */
+private module StdlibPrivate {
   // ---------------------------------------------------------------------------
   // os
   // ---------------------------------------------------------------------------
@@ -395,7 +559,8 @@ private module Stdlib {
    * A call to the builtin `open` function.
    * See https://docs.python.org/3/library/functions.html#open
    */
-  private class OpenCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+  private class OpenCall extends FileSystemAccess::Range, Stdlib::FileLikeObject::InstanceSource,
+    DataFlow::CallCfgNode {
     OpenCall() { this = getOpenFunctionRef().getACall() }
 
     override DataFlow::Node getAPathArgument() {
@@ -911,6 +1076,20 @@ private module Stdlib {
       }
     }
 
+    /** An `HTTPMessage` instance that originates from a `BaseHTTPRequestHandler` instance. */
+    private class BaseHTTPRequestHandlerHeadersInstances extends Stdlib::HTTPMessage::InstanceSource {
+      BaseHTTPRequestHandlerHeadersInstances() {
+        this.(DataFlow::AttrRead).accesses(instance(), "headers")
+      }
+    }
+
+    /** A file-like object that originates from a `BaseHTTPRequestHandler` instance. */
+    private class BaseHTTPRequestHandlerFileLikeObjectInstances extends Stdlib::FileLikeObject::InstanceSource {
+      BaseHTTPRequestHandlerFileLikeObjectInstances() {
+        this.(DataFlow::AttrRead).accesses(instance(), "rfile")
+      }
+    }
+
     /**
      * The entry-point for handling a request with a `BaseHTTPRequestHandler` subclass.
      *
@@ -1081,7 +1260,7 @@ private module Stdlib {
   }
 
   /** A call to the `open` method on a `pathlib.Path` instance. */
-  private class PathLibOpenCall extends PathlibFileAccess {
+  private class PathLibOpenCall extends PathlibFileAccess, Stdlib::FileLikeObject::InstanceSource {
     PathLibOpenCall() { attrbuteName = "open" }
   }
 

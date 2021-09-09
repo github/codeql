@@ -164,11 +164,9 @@ private DataFlow::Node getAValueExportedByPackage() {
  * Gets an exported node from the module `mod`.
  */
 private DataFlow::Node getAnExportFromModule(Module mod) {
-  result.analyze().getAValue() = mod.(NodeModule).getAModuleExportsValue()
-  or
-  result = mod.(Closure::ClosureModule).getExportsVariable().getAnAssignedExpr().flow()
-  or
-  result.analyze().getAValue() = mod.(AmdModule).getDefine().getAModuleExportsValue()
-  or
   result = mod.getAnExportedValue(_)
+  or
+  result = mod.getABulkExportedNode()
+  or
+  result.analyze().getAValue() = TAbstractModuleObject(mod)
 }

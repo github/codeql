@@ -2,7 +2,7 @@ import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.Concepts
 import TestUtilities.InlineExpectationsTest
-import experimental.dataflow.TestUtil.PrintNode
+private import semmle.python.dataflow.new.internal.PrintNode
 
 class SystemCommandExecutionTest extends InlineExpectationsTest {
   SystemCommandExecutionTest() { this = "SystemCommandExecutionTest" }

@@ -15,6 +15,7 @@ nodes
 | test.py:37:11:37:24 | ControlFlowNode for get_password() | semmle.label | ControlFlowNode for get_password() |
 | test.py:39:22:39:35 | ControlFlowNode for get_password() | semmle.label | ControlFlowNode for get_password() |
 | test.py:40:22:40:35 | ControlFlowNode for get_password() | semmle.label | ControlFlowNode for get_password() |
+subpaths
 #select
 | test.py:20:48:20:55 | ControlFlowNode for password | test.py:19:16:19:29 | ControlFlowNode for get_password() | test.py:20:48:20:55 | ControlFlowNode for password | $@ is logged here. | test.py:19:16:19:29 | ControlFlowNode for get_password() | Sensitive data (password) |
 | test.py:22:58:22:65 | ControlFlowNode for password | test.py:19:16:19:29 | ControlFlowNode for get_password() | test.py:22:58:22:65 | ControlFlowNode for password | $@ is logged here. | test.py:19:16:19:29 | ControlFlowNode for get_password() | Sensitive data (password) |

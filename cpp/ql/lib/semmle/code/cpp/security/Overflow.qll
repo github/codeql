@@ -41,7 +41,8 @@ private predicate stmtDominates(Stmt dominator, Stmt dominated) {
 }
 
 /**
- * Holds if the value of `use` is guarded to be less than something.
+ * Holds if the value of `use` is guarded to be less than something, and `e`
+ * is in code controlled by that guard (where the guard condition held).
  */
 pragma[nomagic]
 predicate guardedLesser(Operation e, Expr use) {
@@ -67,7 +68,8 @@ predicate guardedLesser(Operation e, Expr use) {
 }
 
 /**
- * Holds if the value of `use` is guarded to be greater than something.
+ * Holds if the value of `use` is guarded to be greater than something, and `e`
+ * is in code controlled by that guard (where the guard condition held).
  */
 pragma[nomagic]
 predicate guardedGreater(Operation e, Expr use) {
@@ -120,6 +122,10 @@ predicate missingGuardAgainstOverflow(Operation e, VariableAccess use) {
     // overflow possible if large or small
     e instanceof MulExpr and
     not (guardedLesser(e, varUse(v)) and guardedGreater(e, varUse(v)))
+    or
+    // overflow possible if large or small
+    e instanceof AssignMulExpr and
+    not (guardedLesser(e, varUse(v)) and guardedGreater(e, varUse(v)))
   )
 }
 
@@ -146,6 +152,10 @@ predicate missingGuardAgainstUnderflow(Operation e, VariableAccess use) {
     or
     // underflow possible if large or small
     e instanceof MulExpr and
+    not (guardedLesser(e, varUse(v)) and guardedGreater(e, varUse(v)))
+    or
+    // underflow possible if large or small
+    e instanceof AssignMulExpr and
     not (guardedLesser(e, varUse(v)) and guardedGreater(e, varUse(v)))
   )
 }

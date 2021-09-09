@@ -3,5 +3,5 @@ version: 0.0.2
 suites: codeql-suites
 extractor: csharp
 dependencies:
-  codeql/csharp-all: ^0.0.2
-  codeql/suite-helpers: ^0.0.2
+  codeql/csharp-all: "*"
+  codeql/suite-helpers: "*"

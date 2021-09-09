@@ -42,6 +42,7 @@ nodes
 | SpelInjection.java:77:13:77:14 | in : InputStream | semmle.label | in : InputStream |
 | SpelInjection.java:77:21:77:25 | bytes [post update] : byte[] | semmle.label | bytes [post update] : byte[] |
 | SpelInjection.java:83:5:83:14 | expression | semmle.label | expression |
+subpaths
 #select
 | SpelInjection.java:23:5:23:14 | expression | SpelInjection.java:15:22:15:44 | getInputStream(...) : InputStream | SpelInjection.java:23:5:23:14 | expression | SpEL injection from $@. | SpelInjection.java:15:22:15:44 | getInputStream(...) | this user input |
 | SpelInjection.java:34:5:34:14 | expression | SpelInjection.java:27:22:27:44 | getInputStream(...) : InputStream | SpelInjection.java:34:5:34:14 | expression | SpEL injection from $@. | SpelInjection.java:27:22:27:44 | getInputStream(...) | this user input |

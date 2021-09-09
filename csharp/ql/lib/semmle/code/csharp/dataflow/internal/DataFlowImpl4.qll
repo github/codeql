@@ -3258,24 +3258,16 @@ class PathNode extends TPathNode {
   /** Gets the associated configuration. */
   Configuration getConfiguration() { none() }
 
-  private predicate isHidden() {
-    hiddenNode(this.(PathNodeImpl).getNodeEx().asNode()) and
-    not this.isSource() and
-    not this instanceof PathNodeSink
-    or
-    this.(PathNodeImpl).getNodeEx() instanceof TNodeImplicitRead
-  }
-
   private PathNode getASuccessorIfHidden() {
-    this.isHidden() and
+    this.(PathNodeImpl).isHidden() and
     result = this.(PathNodeImpl).getASuccessorImpl()
   }
 
   /** Gets a successor of this node, if any. */
   final PathNode getASuccessor() {
     result = this.(PathNodeImpl).getASuccessorImpl().getASuccessorIfHidden*() and
-    not this.isHidden() and
-    not result.isHidden()
+    not this.(PathNodeImpl).isHidden() and
+    not result.(PathNodeImpl).isHidden()
   }
 
   /** Holds if this node is a source. */
@@ -3286,6 +3278,14 @@ abstract private class PathNodeImpl extends PathNode {
   abstract PathNode getASuccessorImpl();
 
   abstract NodeEx getNodeEx();
+
+  predicate isHidden() {
+    hiddenNode(this.getNodeEx().asNode()) and
+    not this.isSource() and
+    not this instanceof PathNodeSink
+    or
+    this.getNodeEx() instanceof TNodeImplicitRead
+  }
 
   private string ppAp() {
     this instanceof PathNodeSink and result = ""
@@ -3313,10 +3313,15 @@ abstract private class PathNodeImpl extends PathNode {
 }
 
 /** Holds if `n` can reach a sink. */
-private predicate reach(PathNode n) { n instanceof PathNodeSink or reach(n.getASuccessor()) }
+private predicate directReach(PathNode n) {
+  n instanceof PathNodeSink or directReach(n.getASuccessor())
+}
 
-/** Holds if `n1.getSucc() = n2` and `n2` can reach a sink. */
-private predicate pathSucc(PathNode n1, PathNode n2) { n1.getASuccessor() = n2 and reach(n2) }
+/** Holds if `n` can reach a sink or is used in a subpath. */
+private predicate reach(PathNode n) { directReach(n) or Subpaths::retReach(n) }
+
+/** Holds if `n1.getASuccessor() = n2` and `n2` can reach a sink. */
+private predicate pathSucc(PathNode n1, PathNode n2) { n1.getASuccessor() = n2 and directReach(n2) }
 
 private predicate pathSuccPlus(PathNode n1, PathNode n2) = fastTC(pathSucc/2)(n1, n2)
 
@@ -3325,12 +3330,14 @@ private predicate pathSuccPlus(PathNode n1, PathNode n2) = fastTC(pathSucc/2)(n1
  */
 module PathGraph {
   /** Holds if `(a,b)` is an edge in the graph of data flow path explanations. */
-  query predicate edges(PathNode a, PathNode b) { pathSucc(a, b) }
+  query predicate edges(PathNode a, PathNode b) { a.getASuccessor() = b and reach(b) }
 
   /** Holds if `n` is a node in the graph of data flow path explanations. */
   query predicate nodes(PathNode n, string key, string val) {
     reach(n) and key = "semmle.label" and val = n.toString()
   }
+
+  query predicate subpaths = Subpaths::subpaths/4;
 }
 
 /**
@@ -3620,6 +3627,86 @@ private predicate pathThroughCallable(PathNodeMid mid, NodeEx out, CallContext c
     pathThroughCallable0(call, mid, kind, cc, ap, apa) and
     out = getAnOutNodeFlow(kind, call, apa, unbindConf(mid.getConfiguration()))
   )
+}
+
+private module Subpaths {
+  /**
+   * Holds if `(arg, par, ret, out)` forms a subpath-tuple and `ret` is determined by
+   * `kind`, `sc`, `apout`, and `innercc`.
+   */
+  pragma[nomagic]
+  private predicate subpaths01(
+    PathNode arg, ParamNodeEx par, SummaryCtxSome sc, CallContext innercc, ReturnKindExt kind,
+    NodeEx out, AccessPath apout
+  ) {
+    pathThroughCallable(arg, out, _, apout) and
+    pathIntoCallable(arg, par, _, innercc, sc, _) and
+    paramFlowsThrough(kind, innercc, sc, apout, _, unbindConf(arg.getConfiguration()))
+  }
+
+  /**
+   * Holds if `(arg, par, ret, out)` forms a subpath-tuple and `ret` is determined by
+   * `kind`, `sc`, `apout`, and `innercc`.
+   */
+  pragma[nomagic]
+  private predicate subpaths02(
+    PathNode arg, ParamNodeEx par, SummaryCtxSome sc, CallContext innercc, ReturnKindExt kind,
+    NodeEx out, AccessPath apout
+  ) {
+    subpaths01(arg, par, sc, innercc, kind, out, apout) and
+    out.asNode() = kind.getAnOutNode(_)
+  }
+
+  pragma[nomagic]
+  private Configuration getPathNodeConf(PathNode n) { result = n.getConfiguration() }
+
+  /**
+   * Holds if `(arg, par, ret, out)` forms a subpath-tuple.
+   */
+  pragma[nomagic]
+  private predicate subpaths03(
+    PathNode arg, ParamNodeEx par, PathNodeMid ret, NodeEx out, AccessPath apout
+  ) {
+    exists(SummaryCtxSome sc, CallContext innercc, ReturnKindExt kind, RetNodeEx retnode |
+      subpaths02(arg, par, sc, innercc, kind, out, apout) and
+      ret.getNodeEx() = retnode and
+      kind = retnode.getKind() and
+      innercc = ret.getCallContext() and
+      sc = ret.getSummaryCtx() and
+      ret.getConfiguration() = unbindConf(getPathNodeConf(arg)) and
+      apout = ret.getAp() and
+      not ret.isHidden()
+    )
+  }
+
+  /**
+   * Holds if `(arg, par, ret, out)` forms a subpath-tuple, that is, flow through
+   * a subpath between `par` and `ret` with the connecting edges `arg -> par` and
+   * `ret -> out` is summarized as the edge `arg -> out`.
+   */
+  predicate subpaths(PathNode arg, PathNodeImpl par, PathNodeMid ret, PathNodeMid out) {
+    exists(ParamNodeEx p, NodeEx o, AccessPath apout |
+      arg.getASuccessor() = par and
+      arg.getASuccessor() = out and
+      subpaths03(arg, p, ret, o, apout) and
+      par.getNodeEx() = p and
+      out.getNodeEx() = o and
+      out.getAp() = apout
+    )
+  }
+
+  /**
+   * Holds if `n` can reach a return node in a summarized subpath.
+   */
+  predicate retReach(PathNode n) {
+    subpaths(_, _, n, _)
+    or
+    exists(PathNode mid |
+      retReach(mid) and
+      n.getASuccessor() = mid and
+      not subpaths(_, mid, _, _)
+    )
+  }
 }
 
 /**
