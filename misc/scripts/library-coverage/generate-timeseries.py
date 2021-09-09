@@ -103,7 +103,8 @@ for lang in settings.languages:
             "file_total": file_total,
             "file_packages": file_packages,
             "csvwriter_total": csvwriter_total,
-            "csvwriter_packages": csvwriter_packages
+            "csvwriter_packages": csvwriter_packages,
+            "last_row": (None, None, None)
         }
 
 try:
@@ -142,15 +143,20 @@ try:
                 frameworks: fr.FrameworkCollection = language_utils[lang]["frameworks"]
                 csvwriter_total = language_utils[lang]["csvwriter_total"]
                 csvwriter_packages = language_utils[lang]["csvwriter_packages"]
+                last_row = language_utils[lang]["last_row"]
 
                 packages = get_packages(config, ".")
 
-                csvwriter_total.writerow([
-                    current_sha,
-                    current_date,
-                    packages.get_part_count("source"),
-                    packages.get_part_count("sink"),
-                    packages.get_part_count("summary")])
+                new_row = (packages.get_part_count("source"),
+                           packages.get_part_count("sink"),
+                           packages.get_part_count("summary"))
+
+                if last_row != new_row:
+                    csvwriter_total.writerow([
+                        current_sha,
+                        current_date,
+                        new_row[0], new_row[1], new_row[2]])
+                    language_utils[lang]["last_row"] = new_row
 
                 matched_packages = set()
 
