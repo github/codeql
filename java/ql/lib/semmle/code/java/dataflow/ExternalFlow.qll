@@ -616,26 +616,25 @@ private predicate elementSpec(
   summaryModel(namespace, type, subtypes, name, signature, ext, _, _, _)
 }
 
-private predicate relevantCallable(Callable c) { elementSpec(_, _, _, c.getName(), _, _) }
-
 private string paramsStringPart(Callable c, int i) {
-  relevantCallable(c) and
-  (
-    i = -1 and result = "("
+  i = -1 and result = "("
+  or
+  exists(int n, string p | c.getParameterType(n).getErasure().toString() = p |
+    i = 2 * n and result = p
     or
-    exists(int n, string p | c.getParameterType(n).getErasure().toString() = p |
-      i = 2 * n and result = p
-      or
-      i = 2 * n - 1 and result = "," and n != 0
-    )
-    or
-    i = 2 * c.getNumberOfParameters() and result = ")"
+    i = 2 * n - 1 and result = "," and n != 0
   )
+  or
+  i = 2 * c.getNumberOfParameters() and result = ")"
 }
 
-private string paramsString(Callable c) {
-  result = concat(int i | | paramsStringPart(c, i) order by i)
-}
+/**
+ * Gets a parenthesized string containing all parameter types of this callable, separated by a comma.
+ *
+ * Returns the empty string if the callable has no parameters.
+ * Parameter types are represented by their type erasure.
+ */
+string paramsString(Callable c) { result = concat(int i | | paramsStringPart(c, i) order by i) }
 
 private Element interpretElement0(
   string namespace, string type, boolean subtypes, string name, string signature
