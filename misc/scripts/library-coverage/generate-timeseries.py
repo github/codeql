@@ -41,14 +41,15 @@ class Git:
         return (parent_sha, parent_date)
 
 
-def get_packages(lang, query, search_path):
+def get_packages(config, search_path):
     try:
-        db = "empty_" + lang
-        ql_output = "output-" + lang + ".csv"
+        db = "empty_" + config.lang
+        ql_output = "output-" + config.lang + ".csv"
         if os.path.isdir(db):
             shutil.rmtree(db)
-        utils.create_empty_database(lang, ".java", db)
-        utils.run_codeql_query(query, db, ql_output, search_path)
+        utils.create_empty_database(
+            config.lang, config.ext, db, config.dbscheme)
+        utils.run_codeql_query(config.ql_path, db, ql_output, search_path)
 
         return pack.PackageCollection(ql_output)
     except:
@@ -71,9 +72,9 @@ else:
 
 configs = [
     utils.LanguageConfig(
-        "java", "Java", ".java", "java/ql/src/meta/frameworks/Coverage.ql"),
+        "java", "Java", ".java", "java/ql/src/meta/frameworks/Coverage.ql", ["java/ql/lib/config/semmlecode.dbscheme", "java/ql/src/config/semmlecode.dbscheme"]),
     utils.LanguageConfig(
-        "csharp", "C#", ".cs", "csharp/ql/src/meta/frameworks/Coverage.ql")
+        "csharp", "C#", ".cs", "csharp/ql/src/meta/frameworks/Coverage.ql", ["csharp/ql/lib/semmlecode.csharp.dbscheme", "csharp/ql/src/semmlecode.csharp.dbscheme"])
 ]
 
 output_prefix = "framework-coverage-timeseries-"
@@ -142,7 +143,7 @@ try:
                 csvwriter_total = language_utils[lang]["csvwriter_total"]
                 csvwriter_packages = language_utils[lang]["csvwriter_packages"]
 
-                packages = get_packages(lang, config.ql_path, ".")
+                packages = get_packages(config, ".")
 
                 csvwriter_total.writerow([
                     current_sha,
