@@ -165,7 +165,7 @@ try:
                     framework: fr.Framework = framework
 
                     row = [current_sha, current_date,
-                           framework.name, framework.package_pattern]
+                           framework.name, ", ".join(sorted(framework.package_pattern.split(" ")))]
 
                     sources = 0
                     sinks = 0
