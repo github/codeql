@@ -166,7 +166,7 @@ pub fn extract(
     parser.set_language(language).unwrap();
     parser.set_included_ranges(&ranges).unwrap();
     let tree = parser.parse(&source, None).expect("Failed to parse file");
-    &trap_writer.comment(format!("Auto-generated TRAP file for {}", path.display()));
+    trap_writer.comment(format!("Auto-generated TRAP file for {}", path.display()));
     let file_label = &trap_writer.populate_file(path);
     let mut visitor = Visitor {
         source: &source,

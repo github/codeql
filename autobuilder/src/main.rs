@@ -13,7 +13,7 @@ fn main() -> std::io::Result<()> {
     };
     let codeql: PathBuf = [&dist, codeql].iter().collect();
     let mut cmd = Command::new(codeql);
-    &cmd.arg("database")
+    cmd.arg("database")
         .arg("index-files")
         .arg("--include-extension=.rb")
         .arg("--include-extension=.erb")
@@ -27,9 +27,9 @@ fn main() -> std::io::Result<()> {
         .split("\n")
     {
         if line.starts_with("include:") {
-            &cmd.arg("--include").arg(&line[8..]);
+            cmd.arg("--include").arg(&line[8..]);
         } else if line.starts_with("exclude:") {
-            &cmd.arg("--exclude").arg(&line[8..]);
+            cmd.arg("--exclude").arg(&line[8..]);
         }
     }
     let exit = &cmd.spawn()?.wait()?;
