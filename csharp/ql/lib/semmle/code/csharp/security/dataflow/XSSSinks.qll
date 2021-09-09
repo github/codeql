@@ -10,6 +10,7 @@ private import semmle.code.csharp.frameworks.system.web.UI
 private import semmle.code.csharp.security.dataflow.flowsinks.Html
 private import semmle.code.csharp.security.dataflow.flowsinks.Remote
 private import semmle.code.csharp.dataflow.ExternalFlow
+private import semmle.code.csharp.frameworks.ServiceStack::XSS
 
 /**
  * A data flow sink for cross-site scripting (XSS) vulnerabilities.
