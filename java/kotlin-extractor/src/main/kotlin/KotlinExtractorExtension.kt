@@ -34,9 +34,12 @@ class KotlinExtractorExtension(private val invocationTrapFile: String, private v
         // This default should be kept in sync with language-packs/java/tools/kotlin-extractor
         val trapDir = File(System.getenv("CODEQL_EXTRACTOR_JAVA_TRAP_DIR").takeUnless { it.isNullOrEmpty() } ?: "kotlin-extractor/trap")
         FileOutputStream(File(invocationTrapFile), true).bufferedWriter().use { invocationTrapFileBW ->
-            invocationTrapFileBW.write("compilation_started(#compilation)\n")
-            invocationTrapFileBW.flush()
-            val logger = Logger(invocationTrapFileBW)
+            val tw = TrapWriter(invocationTrapFileBW)
+            // The python wrapper has already defined #compilation = *
+            val compilation: Label<DbCompilation> = StringLabel("compilation")
+            tw.writeCompilation_started(compilation)
+            tw.flush()
+            val logger = Logger(tw)
             logger.info("Extraction started")
             logger.flush()
             val srcDir = File(System.getenv("CODEQL_EXTRACTOR_JAVA_SOURCE_ARCHIVE_DIR").takeUnless { it.isNullOrEmpty() } ?: "kotlin-extractor/src")
@@ -47,26 +50,38 @@ class KotlinExtractorExtension(private val invocationTrapFile: String, private v
             // files etc, so we just exit when we are finished extracting.
             logger.info("Extraction completed")
             logger.flush()
-            invocationTrapFileBW.write("compilation_finished(#compilation, 0.0, 0.0)\n")
-            invocationTrapFileBW.flush()
+            tw.writeCompilation_finished(compilation, 0.0, 0.0)
+            tw.flush()
         }
         exitProcess(0)
     }
 }
 
-class Label<T>(val name: Int) {
+interface Label<T>
+
+class IntLabel<T>(val name: Int): Label<T> {
     override fun toString(): String = "#$name"
+}
+
+class StringLabel<T>(val name: String): Label<T> {
+    override fun toString(): String = "#$name"
+}
+
+class StarLabel<T>(): Label<T> {
+    override fun toString(): String = "*"
 }
 
 fun escapeTrapString(str: String) = str.replace("\"", "\"\"")
 
-class Logger(val invocationTrapFileBW: BufferedWriter) {
+class Logger(val tw: TrapWriter) {
     private val unknownLocation by lazy {
-        invocationTrapFileBW.write("#noFile = *\n")
-        invocationTrapFileBW.write("#unknownLocation = *\n")
-        invocationTrapFileBW.write("files(#noFile, \"\", \"\", \"\", 0)\n")
-        invocationTrapFileBW.write("locations_default(#unknownLocation, #noFile, 0, 0, 0, 0)\n")
-        "#unknownLocation"
+        val noFile: Label<DbFile> = StringLabel("noFile")
+        val loc: Label<DbLocation> = StringLabel("unknownLocation")
+        tw.writeTrap("$noFile = *\n")
+        tw.writeTrap("$loc = *\n")
+        tw.writeFiles(noFile, "", "", "", 0)
+        tw.writeLocations_default(loc, noFile, 0, 0, 0, 0)
+        loc
     }
     private val warningCounts = mutableMapOf<String, Int>()
     private val warningLimit: Int
@@ -78,12 +93,12 @@ class Logger(val invocationTrapFileBW: BufferedWriter) {
     }
 
     fun flush() {
-        invocationTrapFileBW.flush()
+        tw.flush()
         System.out.flush()
     }
     fun info(msg: String) {
         val fullMsg = "${timestamp()} $msg"
-        invocationTrapFileBW.write("// " + fullMsg.replace("\n", "\n//") + "\n")
+        tw.writeTrap("// " + fullMsg.replace("\n", "\n//") + "\n")
         println(fullMsg)
     }
     fun warn(msg: String) {
@@ -104,30 +119,37 @@ class Logger(val invocationTrapFileBW: BufferedWriter) {
             }
         val fullMsg = "${timestamp()} Warning: $msg\n$suffix"
         val severity = 8 // Pessimistically: "Severe extractor errors likely to affect multiple source files"
-        invocationTrapFileBW.write("diagnostics(*, $severity, \"\", \"${escapeTrapString(msg)}\", \"${escapeTrapString(fullMsg)}\", $unknownLocation)\n")
+        tw.writeDiagnostics(StarLabel(), severity, "", msg, fullMsg, unknownLocation)
         print(fullMsg)
     }
     fun printLimitedWarningCounts() {
         for((caller, count) in warningCounts) {
             if(count >= warningLimit) {
                 val msg = "Total of $count warnings from $caller.\n"
-                invocationTrapFileBW.write("// $msg")
+                tw.writeTrap("// $msg")
                 print(msg)
             }
         }
     }
 }
 
-class TrapWriter (
-    val fileLabel: String,
-    val bw: BufferedWriter,
-    val file: IrFile
-) {
-    private val fileEntry = file.fileEntry
-    private var nextId: Int = 100
+open class TrapWriter (val bw: BufferedWriter) {
     fun writeTrap(trap: String) {
         bw.write(trap)
     }
+    fun flush() {
+        bw.flush()
+    }
+}
+
+class FileTrapWriter (
+    bw: BufferedWriter,
+    val fileLabel: String,
+    val file: IrFile
+): TrapWriter (bw) {
+    private var nextId: Int = 100
+    private val fileEntry = file.fileEntry
+
     fun getLocation(e: IrElement): Label<DbLocation> {
         return getLocation(e.startOffset, e.endOffset)
     }
@@ -186,10 +208,10 @@ class TrapWriter (
         }
     }
     fun <T> getFreshLabel(): Label<T> {
-        return Label(nextId++)
+        return IntLabel(nextId++)
     }
     fun <T> getFreshIdLabel(): Label<T> {
-        val label = Label<T>(nextId++)
+        val label = IntLabel<T>(nextId++)
         writeTrap("$label = *\n")
         return label
     }
@@ -239,7 +261,7 @@ fun doFile(invocationTrapFile: String, checkTrapIdentical: Boolean, logger: Logg
         val trapTmpFile = File.createTempFile("$filePath.", ".trap.tmp", trapFileDir)
         trapTmpFile.bufferedWriter().use { trapFileBW ->
             trapFileBW.write("// Generated by invocation ${invocationTrapFile.replace("\n", "\n//    ")}\n")
-            val tw = TrapWriter(fileLabel, trapFileBW, declaration)
+            val tw = FileTrapWriter(trapFileBW, fileLabel, declaration)
             val id: Label<DbFile> = tw.getLabelFor(fileLabel)
             tw.writeFiles(id, filePath, basename, extension, 0)
             val fileExtractor = KotlinFileExtractor(logger, tw, declaration)
@@ -274,10 +296,10 @@ fun <T> fakeLabel(): Label<T> {
         Exception().printStackTrace(PrintWriter(sw))
         println("Fake label from:\n$sw")
     }
-    return Label(0)
+    return IntLabel(0)
 }
 
-class KotlinFileExtractor(val logger: Logger, val tw: TrapWriter, val file: IrFile) {
+class KotlinFileExtractor(val logger: Logger, val tw: FileTrapWriter, val file: IrFile) {
     val fileClass by lazy {
         extractFileClass(file)
     }
