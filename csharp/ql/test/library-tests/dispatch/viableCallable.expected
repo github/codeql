@@ -251,3 +251,5 @@
 | ViableCallable.cs:419:9:419:21 | call to method M<String> | M<> | A4 |
 | ViableCallable.cs:423:9:423:21 | call to method M<String> | M<> | A4 |
 | ViableCallable.cs:423:9:423:21 | call to method M<String> | M<> | A5 |
+| ViableCallable.cs:478:9:478:14 | call to method M1 | M1 | C18 |
+| ViableCallable.cs:481:9:481:14 | call to method M2 | M2 | I2 |
