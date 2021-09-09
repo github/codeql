@@ -93,9 +93,6 @@ select sink, "SQL Injection"
 - `node1` adding flow from Qualifier (Editable)
 - `node2` is the return of the method
 As alternative, we can just check all flows from a source:
-  // String CheckName = username.getText().toString();
-  //                  \----methodAccess------------/
-  //                  \--- qualifier---/ \-method--/	
 
 
 ```codeql
@@ -122,6 +119,10 @@ select sink, source, sink, "SQL Injection"
 
 Note that this stops at the source -- so we start expanding there via
 ```codeql
+
+  // String CheckName = username.getText().toString();
+  //                  \----methodAccess------------/
+  //                  \--- qualifier---/ \-method--/	
 
 
     override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
