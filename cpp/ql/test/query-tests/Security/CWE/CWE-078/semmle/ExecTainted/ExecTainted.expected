@@ -14,7 +14,6 @@ edges
 | test.cpp:22:45:22:52 | userName indirection | test.cpp:22:13:22:20 | sprintf output argument |
 | test.cpp:22:45:22:52 | userName indirection | test.cpp:22:13:22:20 | sprintf output argument |
 | test.cpp:22:45:22:52 | userName indirection | test.cpp:22:13:22:20 | sprintf output argument |
-| test.cpp:31:13:31:20 | sprintf output argument | test.cpp:32:12:32:19 | command2 indirection |
 | test.cpp:38:17:38:22 | call to getenv | test.cpp:38:17:38:22 | Store |
 | test.cpp:38:17:38:22 | call to getenv | test.cpp:41:20:41:24 | (const char *)... |
 | test.cpp:38:17:38:22 | call to getenv | test.cpp:41:20:41:24 | envCC |
@@ -46,7 +45,6 @@ edges
 | test.cpp:71:9:71:15 | fread output argument | test.cpp:73:11:73:17 | command indirection |
 | test.cpp:71:9:71:15 | fread output argument | test.cpp:74:10:74:16 | (const char *)... |
 | test.cpp:71:9:71:15 | fread output argument | test.cpp:74:10:74:16 | command indirection |
-| test.cpp:73:11:73:17 | strncat output argument | test.cpp:74:10:74:16 | command indirection |
 | test.cpp:82:9:82:16 | (void *)... | test.cpp:82:9:82:16 | filename indirection |
 | test.cpp:82:9:82:16 | fread output argument | test.cpp:84:20:84:27 | (const char *)... |
 | test.cpp:82:9:82:16 | fread output argument | test.cpp:84:20:84:27 | filename indirection |
@@ -150,9 +148,6 @@ edges
 | test.cpp:162:11:162:14 | call to atoi | test.cpp:166:44:166:48 | temp2 indirection |
 | test.cpp:162:11:162:14 | call to atoi | test.cpp:168:10:168:16 | (const char *)... |
 | test.cpp:162:11:162:14 | call to atoi | test.cpp:168:10:168:16 | command indirection |
-| test.cpp:166:13:166:19 | sprintf output argument | test.cpp:168:10:168:16 | command indirection |
-| test.cpp:166:44:166:48 | temp2 indirection | test.cpp:166:13:166:19 | sprintf output argument |
-| test.cpp:166:44:166:48 | temp2 indirection | test.cpp:166:13:166:19 | sprintf output argument |
 nodes
 | test.cpp:16:20:16:23 | argv | semmle.label | argv |
 | test.cpp:16:20:16:23 | argv | semmle.label | argv |
@@ -169,8 +164,6 @@ nodes
 | test.cpp:29:45:29:52 | (const char *)... | semmle.label | (const char *)... |
 | test.cpp:29:45:29:52 | userName | semmle.label | userName |
 | test.cpp:29:45:29:52 | userName indirection | semmle.label | userName indirection |
-| test.cpp:31:13:31:20 | sprintf output argument | semmle.label | sprintf output argument |
-| test.cpp:32:12:32:19 | command2 indirection | semmle.label | command2 indirection |
 | test.cpp:38:17:38:22 | Store | semmle.label | Store |
 | test.cpp:38:17:38:22 | call to getenv | semmle.label | call to getenv |
 | test.cpp:38:17:38:22 | call to getenv | semmle.label | call to getenv |
@@ -210,9 +203,7 @@ nodes
 | test.cpp:71:9:71:15 | fread output argument | semmle.label | fread output argument |
 | test.cpp:73:11:73:17 | array to pointer conversion | semmle.label | array to pointer conversion |
 | test.cpp:73:11:73:17 | command indirection | semmle.label | command indirection |
-| test.cpp:73:11:73:17 | strncat output argument | semmle.label | strncat output argument |
 | test.cpp:74:10:74:16 | (const char *)... | semmle.label | (const char *)... |
-| test.cpp:74:10:74:16 | command indirection | semmle.label | command indirection |
 | test.cpp:74:10:74:16 | command indirection | semmle.label | command indirection |
 | test.cpp:82:9:82:16 | (void *)... | semmle.label | (void *)... |
 | test.cpp:82:9:82:16 | (void *)... | semmle.label | (void *)... |
@@ -338,12 +329,11 @@ nodes
 | test.cpp:162:16:162:19 | array to pointer conversion | semmle.label | array to pointer conversion |
 | test.cpp:162:16:162:19 | temp indirection | semmle.label | temp indirection |
 | test.cpp:165:24:165:24 | x | semmle.label | x |
-| test.cpp:166:13:166:19 | sprintf output argument | semmle.label | sprintf output argument |
 | test.cpp:166:44:166:48 | array to pointer conversion | semmle.label | array to pointer conversion |
 | test.cpp:166:44:166:48 | temp2 indirection | semmle.label | temp2 indirection |
 | test.cpp:168:10:168:16 | (const char *)... | semmle.label | (const char *)... |
 | test.cpp:168:10:168:16 | command indirection | semmle.label | command indirection |
-| test.cpp:168:10:168:16 | command indirection | semmle.label | command indirection |
+subpaths
 #select
 | test.cpp:23:12:23:19 | command1 | test.cpp:16:20:16:23 | argv | test.cpp:23:12:23:19 | command1 indirection | This argument to an OS command is derived from $@, dangerously concatenated into $@, and then passed to system(string) | test.cpp:16:20:16:23 | argv | user input (a command-line argument) | test.cpp:22:13:22:20 | sprintf output argument | sprintf output argument |
 | test.cpp:51:10:51:16 | command | test.cpp:47:21:47:26 | call to getenv | test.cpp:51:10:51:16 | command indirection | This argument to an OS command is derived from $@, dangerously concatenated into $@, and then passed to system(string) | test.cpp:47:21:47:26 | call to getenv | user input (an environment variable) | test.cpp:50:11:50:17 | sprintf output argument | sprintf output argument |

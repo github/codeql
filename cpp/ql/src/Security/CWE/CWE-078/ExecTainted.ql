@@ -66,7 +66,6 @@ predicate interestingConcatenation(DataFlow::Node fst, DataFlow::Node snd) {
   )
 }
 
-// TODO: maybe we can drop this?
 class TaintToConcatenationConfiguration extends TaintTracking::Configuration {
   TaintToConcatenationConfiguration() { this = "TaintToConcatenationConfiguration" }
 
@@ -135,6 +134,10 @@ module StitchedPathGraph {
       )
     }
 
+    DataFlow::PathNode getPathNode1() { this = TPathNode1(result) }
+
+    DataFlow2::PathNode getPathNode2() { this = TPathNode2(result) }
+
     predicate hasLocationInfo(
       string filepath, int startline, int startcolumn, int endline, int endcolumn
     ) {
@@ -182,6 +185,18 @@ module StitchedPathGraph {
       mpn = TPathNode2(n) and
       DataFlow2::PathGraph::nodes(n, key, val)
     )
+  }
+
+  query predicate subpaths(
+    MergedPathNode arg, MergedPathNode par, MergedPathNode ret, MergedPathNode out
+  ) {
+    // just forward subpaths from the underlying libraries. This might be slightly awkward when
+    // the concatenation is deep in a call chain.
+    DataFlow::PathGraph::subpaths(arg.getPathNode1(), par.getPathNode1(), ret.getPathNode1(),
+      out.getPathNode1())
+    or
+    DataFlow2::PathGraph::subpaths(arg.getPathNode2(), par.getPathNode2(), ret.getPathNode2(),
+      out.getPathNode2())
   }
 }
 
