@@ -40,7 +40,7 @@ module CommandInjection {
    * A command argument to a function that initiates an operating system command.
    */
   class SystemCommandExecutionSink extends Sink {
-    SystemCommandExecutionSink() { this = any(SystemCommandExecution c).getAnArgument() }
+    SystemCommandExecutionSink() { exists(SystemCommandExecution c | c.isShellInterpreted(this)) }
   }
 
   /**

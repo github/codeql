@@ -6,6 +6,7 @@ class UsersController < ActionController::Base
         cmd = params[:cmd]
         `#{cmd}`
         system(cmd)
+        system("echo", cmd)
         exec(cmd)
         %x(echo #{cmd})
         result = <<`EOF`
