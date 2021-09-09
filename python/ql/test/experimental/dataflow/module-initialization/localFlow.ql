@@ -1,21 +1,40 @@
 // This query should be more focused yet.
 import python
-import semmle.python.dataflow.new.DataFlow
+import experimental.dataflow.TestUtil.FlowTest
+private import semmle.python.dataflow.new.internal.PrintNode
+private import semmle.python.dataflow.new.internal.DataFlowPrivate as DP
 
-pragma[inline]
-predicate inCodebase(DataFlow::Node node) { exists(node.getLocation().getFile().getRelativePath()) }
+class ImportTimeLocalFlowTest extends InlineExpectationsTest {
+  ImportTimeLocalFlowTest() { this = "ImportTimeLocalFlowTest" }
 
-pragma[inline]
-predicate isTopLevel(DataFlow::Node node) { node.getScope() instanceof Module }
+  override string getARelevantTag() { result = "importTimeFlow" }
 
-predicate inFocus(DataFlow::Node node) {
-  isTopLevel(node) and
-  inCodebase(node)
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(DataFlow::Node nodeFrom, DataFlow::ModuleVariableNode nodeTo |
+      DP::importTimeLocalFlowStep(nodeFrom, nodeTo)
+    |
+      nodeFrom.getLocation().getFile().getBaseName() = "multiphase.py" and
+      location = nodeFrom.getLocation() and
+      tag = "importTimeFlow" and
+      value = "\"" + prettyNode(nodeTo).replaceAll("\"", "'") + "\"" and
+      element = nodeTo.toString()
+    )
+  }
 }
 
-from DataFlow::Node nodeFrom, DataFlow::Node nodeTo
-where
-  inFocus(nodeFrom) and
-  inFocus(nodeTo) and
-  DataFlow::localFlowStep(nodeFrom, nodeTo)
-select nodeFrom, nodeTo
+class RuntimeLocalFlowTest extends FlowTest {
+  RuntimeLocalFlowTest() { this = "RuntimeLocalFlowTest" }
+
+  override string flowTag() { result = "runtimFlow" }
+
+  override predicate relevantFlow(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    nodeFrom.getLocation().getFile().getBaseName() = "multiphase.py" and
+    // results are displayed next to `nodeTo`, so we need a line to write on
+    nodeTo.getLocation().getStartLine() > 0 and
+    (
+      nodeFrom instanceof DataFlow::ModuleVariableNode or
+      nodeTo instanceof DataFlow::ModuleVariableNode
+    ) and
+    DP::runtimeJumpStep(nodeFrom, nodeTo)
+  }
+}
