@@ -177,6 +177,10 @@ module Closure {
         )
       )
     }
+
+    override DataFlow::Node getABulkExportedNode() {
+      result = getExportsVariable().getAnAssignedExpr().flow()
+    }
   }
 
   /**

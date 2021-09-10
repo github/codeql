@@ -121,6 +121,7 @@ nodes
 | classes.py:858:22:858:26 | ControlFlowNode for other | semmle.label | ControlFlowNode for other |
 | classes.py:859:15:859:19 | ControlFlowNode for other | semmle.label | ControlFlowNode for other |
 | classes.py:868:15:868:18 | ControlFlowNode for arg2 | semmle.label | ControlFlowNode for arg2 |
+subpaths
 #select
 | argumentPassing.py:94:28:94:31 | ControlFlowNode for arg2 | argumentPassing.py:94:28:94:31 | ControlFlowNode for arg2 | argumentPassing.py:76:11:76:11 | ControlFlowNode for b | Flow found |
 | argumentPassing.py:104:25:104:28 | ControlFlowNode for arg2 | argumentPassing.py:104:25:104:28 | ControlFlowNode for arg2 | argumentPassing.py:99:11:99:11 | ControlFlowNode for b | Flow found |

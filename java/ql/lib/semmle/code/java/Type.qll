@@ -874,6 +874,44 @@ class ClassOrInterface extends RefType, @classorinterface {
   }
 }
 
+private string getAPublicObjectMethodSignature() {
+  exists(Method m |
+    m.getDeclaringType() instanceof TypeObject and
+    m.isPublic() and
+    result = m.getSignature()
+  )
+}
+
+private Method getAnAbstractMethod(Interface interface) {
+  interface.inherits(result) and
+  result.isAbstract() and
+  // JLS 9.8, ignore Object methods
+  not result.getSignature() = getAPublicObjectMethodSignature() and
+  // Make sure that there is no other non-abstract method
+  // (e.g. `default`) which overrides the abstract one
+  not exists(Method m |
+    interface.inherits(m) and
+    not m.isAbstract() and
+    m.overrides(result)
+  )
+}
+
+/**
+ * A functional interface is an interface that has just one abstract method
+ * (aside from the methods of Object), and thus represents a single function
+ * contract.
+ *
+ * See JLS 9.8, Functional Interfaces.
+ */
+class FunctionalInterface extends Interface {
+  Method run;
+
+  FunctionalInterface() { run = unique(Method r | r = getAnAbstractMethod(this)) }
+
+  /** Gets the single abstract method of this interface. */
+  Method getRunMethod() { result = run }
+}
+
 /**
  * A primitive type.
  *

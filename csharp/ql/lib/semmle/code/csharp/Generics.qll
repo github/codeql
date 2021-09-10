@@ -47,6 +47,18 @@ class UnboundGeneric extends DotNet::UnboundGeneric, Generic {
   }
 }
 
+/** Gets the type parameters as a comma-separated string. */
+language[monotonicAggregates]
+private string getTypeParametersToString(UnboundGeneric ug) {
+  result =
+    strictconcat(Type t, int i | t = ug.getTypeParameter(i) | t.toStringWithTypes(), ", " order by i)
+}
+
+/** Gets a string of `N` commas where `N + 1` is the number of type parameters of this unbound generic. */
+private string getTypeParameterCommas(UnboundGeneric ug) {
+  result = strictconcat(int i | exists(ug.getTypeParameter(i)) | "", ",")
+}
+
 /**
  * A constructed generic.
  *
@@ -70,6 +82,26 @@ class ConstructedGeneric extends DotNet::ConstructedGeneric, Generic {
 
   /** Gets the annotated type of type argument `i`. */
   final AnnotatedType getAnnotatedTypeArgument(int i) { result.appliesToTypeArgument(this, i) }
+}
+
+/** Gets the type arguments as a comma-separated string. */
+language[monotonicAggregates]
+private string getTypeArgumentsToString(ConstructedGeneric cg) {
+  result =
+    strictconcat(Type t, int i | t = cg.getTypeArgument(i) | t.toStringWithTypes(), ", " order by i)
+}
+
+/** Gets the concatenation of the `getName()` of type arguments. */
+language[monotonicAggregates]
+private string getTypeArgumentsNames(ConstructedGeneric cg) {
+  result = strictconcat(Type t, int i | t = cg.getTypeArgument(i) | t.getName(), "," order by i)
+}
+
+/** Gets the concatenation of the `getQualifiedName()` of type arguments. */
+language[monotonicAggregates]
+private string getTypeArgumentsQualifiedNames(ConstructedGeneric cg) {
+  result =
+    strictconcat(Type t, int i | t = cg.getTypeArgument(i) | t.getQualifiedName(), "," order by i)
 }
 
 /**
@@ -111,20 +143,16 @@ class UnboundGenericType extends ValueOrRefType, UnboundGeneric {
 
   final override Type getChild(int n) { result = getTypeParameter(n) }
 
-  private string getTypeParameterCommas() {
-    result = strictconcat(int i | exists(this.getTypeParameter(i)) | "", ",")
-  }
-
   override string toStringWithTypes() {
-    result = this.getUndecoratedName() + "<" + this.typeParametersToString() + ">"
+    result = this.getUndecoratedName() + "<" + getTypeParametersToString(this) + ">"
   }
 
   final override string getName() {
-    result = this.getUndecoratedName() + "<" + this.getTypeParameterCommas() + ">"
+    result = this.getUndecoratedName() + "<" + getTypeParameterCommas(this) + ">"
   }
 
   final override predicate hasQualifiedName(string qualifier, string name) {
-    exists(string name0 | name = name0 + "<" + this.getTypeParameterCommas() + ">" |
+    exists(string name0 | name = name0 + "<" + getTypeParameterCommas(this) + ">" |
       exists(string enclosing |
         this.getDeclaringType().hasQualifiedName(qualifier, enclosing) and
         name0 = enclosing + "+" + this.getUndecoratedName()
@@ -348,8 +376,8 @@ class UnboundGenericDelegateType extends DelegateType, UnboundGenericType {
 
   override string toStringWithTypes() {
     result =
-      getUndecoratedName() + "<" + this.typeParametersToString() + ">(" + parameterTypesToString() +
-        ")"
+      getUndecoratedName() + "<" + getTypeParametersToString(this) + ">(" + parameterTypesToString()
+        + ")"
   }
 }
 
@@ -378,37 +406,16 @@ class ConstructedType extends ValueOrRefType, ConstructedGeneric {
 
   final override Type getChild(int n) { result = getTypeArgument(n) }
 
-  language[monotonicAggregates]
-  private string getTypeArgumentsString() {
-    result =
-      strictconcat(Type t, int i | t = this.getTypeArgument(i) | t.toString(), ", " order by i)
-  }
-
-  language[monotonicAggregates]
-  private string getTypeArgumentsNames() {
-    result = strictconcat(Type t, int i | t = this.getTypeArgument(i) | t.getName(), "," order by i)
-  }
-
-  language[monotonicAggregates]
-  private string getTypeArgumentsQualifiedNames() {
-    result =
-      strictconcat(Type t, int i |
-        t = this.getTypeArgument(i)
-      |
-        t.getQualifiedName(), "," order by i
-      )
-  }
-
   final override string toStringWithTypes() {
-    result = this.getUndecoratedName() + "<" + this.getTypeArgumentsString() + ">"
+    result = this.getUndecoratedName() + "<" + getTypeArgumentsToString(this) + ">"
   }
 
   final override string getName() {
-    result = this.getUndecoratedName() + "<" + this.getTypeArgumentsNames() + ">"
+    result = this.getUndecoratedName() + "<" + getTypeArgumentsNames(this) + ">"
   }
 
   final override predicate hasQualifiedName(string qualifier, string name) {
-    exists(string name0 | name = name0 + "<" + this.getTypeArgumentsQualifiedNames() + ">" |
+    exists(string name0 | name = name0 + "<" + getTypeArgumentsQualifiedNames(this) + ">" |
       exists(string enclosing |
         this.getDeclaringType().hasQualifiedName(qualifier, enclosing) and
         name0 = enclosing + "+" + this.getUndecoratedName()
@@ -535,8 +542,15 @@ class UnboundGenericMethod extends Method, UnboundGeneric {
 
   override string toStringWithTypes() {
     result =
-      getName() + "<" + this.typeParametersToString() + ">" + "(" + parameterTypesToString() + ")"
+      getUndecoratedName() + "<" + getTypeParametersToString(this) + ">" + "(" +
+        parameterTypesToString() + ")"
   }
+
+  final override string getName() {
+    result = getUndecoratedName() + "<" + getTypeParameterCommas(this) + ">"
+  }
+
+  final override string getUndecoratedName() { methods(this, result, _, _, _) }
 }
 
 /**
@@ -566,12 +580,24 @@ class ConstructedMethod extends Method, ConstructedGeneric {
 
   override string toStringWithTypes() {
     result =
-      getName() + "<" + this.typeArgumentsToString() + ">" + "(" + parameterTypesToString() + ")"
+      getUndecoratedName() + "<" + getTypeArgumentsToString(this) + ">" + "(" +
+        parameterTypesToString() + ")"
   }
 
   override UnboundGenericMethod getUnboundDeclaration() {
     result = Method.super.getUnboundDeclaration()
   }
+
+  final override string getName() {
+    result = getUndecoratedName() + "<" + getTypeArgumentsNames(this) + ">"
+  }
+
+  override predicate hasQualifiedName(string qualifier, string name) {
+    qualifier = getDeclaringType().getQualifiedName() and
+    name = getUndecoratedName() + "<" + getTypeArgumentsQualifiedNames(this) + ">"
+  }
+
+  final override string getUndecoratedName() { methods(this, result, _, _, _) }
 }
 
 /**

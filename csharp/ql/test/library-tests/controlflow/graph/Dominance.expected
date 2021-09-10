@@ -2423,8 +2423,8 @@ dominance
 | Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... | Foreach.cs:18:10:18:11 | exit M3 (normal) |
 | Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... | Foreach.cs:20:22:20:22 | String x |
 | Foreach.cs:20:22:20:22 | String x | Foreach.cs:21:11:21:11 | ; |
-| Foreach.cs:20:27:20:27 | access to parameter e | Foreach.cs:20:29:20:38 | call to method ToArray |
-| Foreach.cs:20:27:20:27 | access to parameter e | Foreach.cs:20:43:20:68 | call to method Empty |
+| Foreach.cs:20:27:20:27 | access to parameter e | Foreach.cs:20:29:20:38 | call to method ToArray<String> |
+| Foreach.cs:20:27:20:27 | access to parameter e | Foreach.cs:20:43:20:68 | call to method Empty<String> |
 | Foreach.cs:20:27:20:68 | ... ?? ... | Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... |
 | Foreach.cs:24:10:24:11 | enter M4 | Foreach.cs:25:5:28:5 | {...} |
 | Foreach.cs:24:10:24:11 | exit M4 (normal) | Foreach.cs:24:10:24:11 | exit M4 |
@@ -2797,9 +2797,9 @@ dominance
 | LoopUnrolling.cs:69:9:70:19 | if (...) ... | LoopUnrolling.cs:69:14:69:17 | access to parameter args |
 | LoopUnrolling.cs:69:13:69:23 | [false] !... | LoopUnrolling.cs:71:9:71:21 | ...; |
 | LoopUnrolling.cs:69:13:69:23 | [true] !... | LoopUnrolling.cs:70:13:70:19 | return ...; |
-| LoopUnrolling.cs:69:14:69:17 | access to parameter args | LoopUnrolling.cs:69:14:69:23 | call to method Any |
-| LoopUnrolling.cs:69:14:69:23 | call to method Any | LoopUnrolling.cs:69:13:69:23 | [false] !... |
-| LoopUnrolling.cs:69:14:69:23 | call to method Any | LoopUnrolling.cs:69:13:69:23 | [true] !... |
+| LoopUnrolling.cs:69:14:69:17 | access to parameter args | LoopUnrolling.cs:69:14:69:23 | call to method Any<String> |
+| LoopUnrolling.cs:69:14:69:23 | call to method Any<String> | LoopUnrolling.cs:69:13:69:23 | [false] !... |
+| LoopUnrolling.cs:69:14:69:23 | call to method Any<String> | LoopUnrolling.cs:69:13:69:23 | [true] !... |
 | LoopUnrolling.cs:71:9:71:12 | access to parameter args | LoopUnrolling.cs:71:9:71:20 | call to method Clear |
 | LoopUnrolling.cs:71:9:71:20 | call to method Clear | LoopUnrolling.cs:72:29:72:32 | access to parameter args |
 | LoopUnrolling.cs:71:9:71:21 | ...; | LoopUnrolling.cs:71:9:71:12 | access to parameter args |
@@ -4197,9 +4197,9 @@ dominance
 | cflow.cs:226:9:237:9 | foreach (... ... in ...) ... | cflow.cs:224:10:224:16 | exit Foreach (normal) |
 | cflow.cs:226:9:237:9 | foreach (... ... in ...) ... | cflow.cs:226:22:226:22 | String x |
 | cflow.cs:226:22:226:22 | String x | cflow.cs:227:9:237:9 | {...} |
-| cflow.cs:226:27:226:64 | call to method Repeat | cflow.cs:226:9:237:9 | foreach (... ... in ...) ... |
+| cflow.cs:226:27:226:64 | call to method Repeat<String> | cflow.cs:226:9:237:9 | foreach (... ... in ...) ... |
 | cflow.cs:226:57:226:59 | "a" | cflow.cs:226:62:226:63 | 10 |
-| cflow.cs:226:62:226:63 | 10 | cflow.cs:226:27:226:64 | call to method Repeat |
+| cflow.cs:226:62:226:63 | 10 | cflow.cs:226:27:226:64 | call to method Repeat<String> |
 | cflow.cs:227:9:237:9 | {...} | cflow.cs:228:13:228:23 | ...; |
 | cflow.cs:228:13:228:17 | access to field Field | cflow.cs:228:22:228:22 | access to local variable x |
 | cflow.cs:228:13:228:17 | this access | cflow.cs:228:13:228:17 | access to field Field |
@@ -6550,8 +6550,8 @@ postDominance
 | Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... | Foreach.cs:20:27:20:68 | ... ?? ... |
 | Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... | Foreach.cs:21:11:21:11 | ; |
 | Foreach.cs:20:27:20:27 | access to parameter e | Foreach.cs:19:5:22:5 | {...} |
-| Foreach.cs:20:27:20:68 | ... ?? ... | Foreach.cs:20:29:20:38 | call to method ToArray |
-| Foreach.cs:20:27:20:68 | ... ?? ... | Foreach.cs:20:43:20:68 | call to method Empty |
+| Foreach.cs:20:27:20:68 | ... ?? ... | Foreach.cs:20:29:20:38 | call to method ToArray<String> |
+| Foreach.cs:20:27:20:68 | ... ?? ... | Foreach.cs:20:43:20:68 | call to method Empty<String> |
 | Foreach.cs:21:11:21:11 | ; | Foreach.cs:20:22:20:22 | String x |
 | Foreach.cs:24:10:24:11 | exit M4 | Foreach.cs:24:10:24:11 | exit M4 (normal) |
 | Foreach.cs:24:10:24:11 | exit M4 (normal) | Foreach.cs:26:9:27:11 | foreach (... ... in ...) ... |
@@ -6922,7 +6922,7 @@ postDominance
 | LoopUnrolling.cs:68:5:74:5 | {...} | LoopUnrolling.cs:67:10:67:11 | enter M8 |
 | LoopUnrolling.cs:69:9:70:19 | if (...) ... | LoopUnrolling.cs:68:5:74:5 | {...} |
 | LoopUnrolling.cs:69:14:69:17 | access to parameter args | LoopUnrolling.cs:69:9:70:19 | if (...) ... |
-| LoopUnrolling.cs:69:14:69:23 | call to method Any | LoopUnrolling.cs:69:14:69:17 | access to parameter args |
+| LoopUnrolling.cs:69:14:69:23 | call to method Any<String> | LoopUnrolling.cs:69:14:69:17 | access to parameter args |
 | LoopUnrolling.cs:70:13:70:19 | return ...; | LoopUnrolling.cs:69:13:69:23 | [true] !... |
 | LoopUnrolling.cs:71:9:71:12 | access to parameter args | LoopUnrolling.cs:71:9:71:21 | ...; |
 | LoopUnrolling.cs:71:9:71:20 | call to method Clear | LoopUnrolling.cs:71:9:71:12 | access to parameter args |
@@ -8251,9 +8251,9 @@ postDominance
 | cflow.cs:224:10:224:16 | exit Foreach (normal) | cflow.cs:226:9:237:9 | foreach (... ... in ...) ... |
 | cflow.cs:224:10:224:16 | exit Foreach (normal) | cflow.cs:235:17:235:22 | break; |
 | cflow.cs:225:5:238:5 | {...} | cflow.cs:224:10:224:16 | enter Foreach |
-| cflow.cs:226:9:237:9 | foreach (... ... in ...) ... | cflow.cs:226:27:226:64 | call to method Repeat |
+| cflow.cs:226:9:237:9 | foreach (... ... in ...) ... | cflow.cs:226:27:226:64 | call to method Repeat<String> |
 | cflow.cs:226:9:237:9 | foreach (... ... in ...) ... | cflow.cs:231:17:231:25 | continue; |
-| cflow.cs:226:27:226:64 | call to method Repeat | cflow.cs:226:62:226:63 | 10 |
+| cflow.cs:226:27:226:64 | call to method Repeat<String> | cflow.cs:226:62:226:63 | 10 |
 | cflow.cs:226:57:226:59 | "a" | cflow.cs:225:5:238:5 | {...} |
 | cflow.cs:226:62:226:63 | 10 | cflow.cs:226:57:226:59 | "a" |
 | cflow.cs:227:9:237:9 | {...} | cflow.cs:226:22:226:22 | String x |
@@ -11233,8 +11233,8 @@ blockDominance
 | Foreach.cs:18:10:18:11 | enter M3 | Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... |
 | Foreach.cs:18:10:18:11 | enter M3 | Foreach.cs:20:22:20:22 | String x |
 | Foreach.cs:18:10:18:11 | enter M3 | Foreach.cs:20:27:20:68 | ... ?? ... |
-| Foreach.cs:18:10:18:11 | enter M3 | Foreach.cs:20:29:20:38 | call to method ToArray |
-| Foreach.cs:18:10:18:11 | enter M3 | Foreach.cs:20:43:20:68 | call to method Empty |
+| Foreach.cs:18:10:18:11 | enter M3 | Foreach.cs:20:29:20:38 | call to method ToArray<String> |
+| Foreach.cs:18:10:18:11 | enter M3 | Foreach.cs:20:43:20:68 | call to method Empty<String> |
 | Foreach.cs:18:10:18:11 | exit M3 (normal) | Foreach.cs:18:10:18:11 | exit M3 (normal) |
 | Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... | Foreach.cs:18:10:18:11 | exit M3 (normal) |
 | Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... | Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... |
@@ -11244,8 +11244,8 @@ blockDominance
 | Foreach.cs:20:27:20:68 | ... ?? ... | Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... |
 | Foreach.cs:20:27:20:68 | ... ?? ... | Foreach.cs:20:22:20:22 | String x |
 | Foreach.cs:20:27:20:68 | ... ?? ... | Foreach.cs:20:27:20:68 | ... ?? ... |
-| Foreach.cs:20:29:20:38 | call to method ToArray | Foreach.cs:20:29:20:38 | call to method ToArray |
-| Foreach.cs:20:43:20:68 | call to method Empty | Foreach.cs:20:43:20:68 | call to method Empty |
+| Foreach.cs:20:29:20:38 | call to method ToArray<String> | Foreach.cs:20:29:20:38 | call to method ToArray<String> |
+| Foreach.cs:20:43:20:68 | call to method Empty<String> | Foreach.cs:20:43:20:68 | call to method Empty<String> |
 | Foreach.cs:24:10:24:11 | enter M4 | Foreach.cs:24:10:24:11 | enter M4 |
 | Foreach.cs:24:10:24:11 | enter M4 | Foreach.cs:24:10:24:11 | exit M4 (normal) |
 | Foreach.cs:24:10:24:11 | enter M4 | Foreach.cs:26:9:27:11 | foreach (... ... in ...) ... |
@@ -14823,21 +14823,21 @@ postBlockDominance
 | Foreach.cs:18:10:18:11 | exit M3 (normal) | Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... |
 | Foreach.cs:18:10:18:11 | exit M3 (normal) | Foreach.cs:20:22:20:22 | String x |
 | Foreach.cs:18:10:18:11 | exit M3 (normal) | Foreach.cs:20:27:20:68 | ... ?? ... |
-| Foreach.cs:18:10:18:11 | exit M3 (normal) | Foreach.cs:20:29:20:38 | call to method ToArray |
-| Foreach.cs:18:10:18:11 | exit M3 (normal) | Foreach.cs:20:43:20:68 | call to method Empty |
+| Foreach.cs:18:10:18:11 | exit M3 (normal) | Foreach.cs:20:29:20:38 | call to method ToArray<String> |
+| Foreach.cs:18:10:18:11 | exit M3 (normal) | Foreach.cs:20:43:20:68 | call to method Empty<String> |
 | Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... | Foreach.cs:18:10:18:11 | enter M3 |
 | Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... | Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... |
 | Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... | Foreach.cs:20:22:20:22 | String x |
 | Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... | Foreach.cs:20:27:20:68 | ... ?? ... |
-| Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... | Foreach.cs:20:29:20:38 | call to method ToArray |
-| Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... | Foreach.cs:20:43:20:68 | call to method Empty |
+| Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... | Foreach.cs:20:29:20:38 | call to method ToArray<String> |
+| Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... | Foreach.cs:20:43:20:68 | call to method Empty<String> |
 | Foreach.cs:20:22:20:22 | String x | Foreach.cs:20:22:20:22 | String x |
 | Foreach.cs:20:27:20:68 | ... ?? ... | Foreach.cs:18:10:18:11 | enter M3 |
 | Foreach.cs:20:27:20:68 | ... ?? ... | Foreach.cs:20:27:20:68 | ... ?? ... |
-| Foreach.cs:20:27:20:68 | ... ?? ... | Foreach.cs:20:29:20:38 | call to method ToArray |
-| Foreach.cs:20:27:20:68 | ... ?? ... | Foreach.cs:20:43:20:68 | call to method Empty |
-| Foreach.cs:20:29:20:38 | call to method ToArray | Foreach.cs:20:29:20:38 | call to method ToArray |
-| Foreach.cs:20:43:20:68 | call to method Empty | Foreach.cs:20:43:20:68 | call to method Empty |
+| Foreach.cs:20:27:20:68 | ... ?? ... | Foreach.cs:20:29:20:38 | call to method ToArray<String> |
+| Foreach.cs:20:27:20:68 | ... ?? ... | Foreach.cs:20:43:20:68 | call to method Empty<String> |
+| Foreach.cs:20:29:20:38 | call to method ToArray<String> | Foreach.cs:20:29:20:38 | call to method ToArray<String> |
+| Foreach.cs:20:43:20:68 | call to method Empty<String> | Foreach.cs:20:43:20:68 | call to method Empty<String> |
 | Foreach.cs:24:10:24:11 | enter M4 | Foreach.cs:24:10:24:11 | enter M4 |
 | Foreach.cs:24:10:24:11 | exit M4 (normal) | Foreach.cs:24:10:24:11 | enter M4 |
 | Foreach.cs:24:10:24:11 | exit M4 (normal) | Foreach.cs:24:10:24:11 | exit M4 (normal) |

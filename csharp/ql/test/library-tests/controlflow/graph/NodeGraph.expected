@@ -7985,14 +7985,14 @@ Foreach.cs:
 #-----|  -> foreach (... ... in ...) ...
 
 #   20| access to parameter e
-#-----| non-null -> call to method ToArray
-#-----| null -> call to method Empty
+#-----| non-null -> call to method ToArray<String>
+#-----| null -> call to method Empty<String>
 
-#   20| call to method ToArray
+#   20| call to method ToArray<String>
 #-----| non-null -> ... ?? ...
-#-----| null -> call to method Empty
+#-----| null -> call to method Empty<String>
 
-#   20| call to method Empty
+#   20| call to method Empty<String>
 #-----|  -> ... ?? ...
 
 #   21| ;
@@ -9173,12 +9173,12 @@ LoopUnrolling.cs:
 #   69| [true] !...
 #-----| true -> return ...;
 
-#   69| call to method Any
+#   69| call to method Any<String>
 #-----| true -> [false] !...
 #-----| false -> [true] !...
 
 #   69| access to parameter args
-#-----|  -> call to method Any
+#-----|  -> call to method Any<String>
 
 #   70| return ...;
 #-----| return -> exit M8 (normal)
@@ -14023,14 +14023,14 @@ cflow.cs:
 #  226| String x
 #-----|  -> {...}
 
-#  226| call to method Repeat
+#  226| call to method Repeat<String>
 #-----|  -> foreach (... ... in ...) ...
 
 #  226| "a"
 #-----|  -> 10
 
 #  226| 10
-#-----|  -> call to method Repeat
+#-----|  -> call to method Repeat<String>
 
 #  227| {...}
 #-----|  -> ...;

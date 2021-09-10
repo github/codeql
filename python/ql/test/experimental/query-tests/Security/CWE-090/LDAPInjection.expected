@@ -80,6 +80,7 @@ nodes
 | ldap_bad.py:48:21:48:44 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
 | ldap_bad.py:55:9:55:10 | ControlFlowNode for dn | semmle.label | ControlFlowNode for dn |
 | ldap_bad.py:55:43:55:55 | ControlFlowNode for search_filter | semmle.label | ControlFlowNode for search_filter |
+subpaths
 #select
 | ldap3_bad.py:21:17:21:18 | ControlFlowNode for dn | ldap3_bad.py:13:17:13:23 | ControlFlowNode for request | ldap3_bad.py:21:17:21:18 | ControlFlowNode for dn | $@ LDAP query parameter comes from $@. | ldap3_bad.py:21:17:21:18 | ControlFlowNode for dn | This | ldap3_bad.py:13:17:13:23 | ControlFlowNode for request | a user-provided value |
 | ldap3_bad.py:21:21:21:33 | ControlFlowNode for search_filter | ldap3_bad.py:13:17:13:23 | ControlFlowNode for request | ldap3_bad.py:21:21:21:33 | ControlFlowNode for search_filter | $@ LDAP query parameter comes from $@. | ldap3_bad.py:21:21:21:33 | ControlFlowNode for search_filter | This | ldap3_bad.py:13:17:13:23 | ControlFlowNode for request | a user-provided value |

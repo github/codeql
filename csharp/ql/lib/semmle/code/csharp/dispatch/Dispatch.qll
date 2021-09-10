@@ -508,7 +508,7 @@ private module Internal {
     override RuntimeCallable getADynamicTarget() {
       result = getAViableInherited()
       or
-      result = getAViableOverrider() and strictcount(getAViableOverrider()) < 1000
+      result = getAViableOverrider()
       or
       // Simple case: target method cannot be overridden
       result = getAStaticTarget() and
@@ -913,7 +913,7 @@ private module Internal {
       result.(Operator).getFunctionName() = getName()
       or
       not result instanceof Operator and
-      result.getName() = getName()
+      result.getUndecoratedName() = getName()
     }
 
     // A callable is viable if the following conditions are all satisfied:

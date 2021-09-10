@@ -95,6 +95,7 @@ nodes
 | XsltInjection.java:108:5:108:46 | load(...) | semmle.label | load(...) |
 | XsltInjection.java:109:5:109:49 | load(...) | semmle.label | load(...) |
 | XsltInjection.java:110:5:110:50 | load(...) | semmle.label | load(...) |
+subpaths
 #select
 | XsltInjection.java:31:5:31:59 | newTransformer(...) | XsltInjection.java:30:44:30:66 | getInputStream(...) : InputStream | XsltInjection.java:31:5:31:59 | newTransformer(...) | XSLT transformation might include stylesheet from $@. | XsltInjection.java:30:44:30:66 | getInputStream(...) | this user input |
 | XsltInjection.java:36:5:36:74 | newTransformer(...) | XsltInjection.java:35:66:35:88 | getInputStream(...) : InputStream | XsltInjection.java:36:5:36:74 | newTransformer(...) | XSLT transformation might include stylesheet from $@. | XsltInjection.java:35:66:35:88 | getInputStream(...) | this user input |
