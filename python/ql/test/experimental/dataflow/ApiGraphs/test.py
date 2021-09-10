@@ -74,12 +74,6 @@ def f():
     change_foo()
     sink(foo) #$ use=moduleImport("danger").getMember("SOURCE")
 
-# Star imports
-
-from unknown import * #$ use=moduleImport("unknown")
-
-hello() #$ MISSING: use=moduleImport("unknown").getMember("hello").getReturn()
-
 
 # Subclasses
 
