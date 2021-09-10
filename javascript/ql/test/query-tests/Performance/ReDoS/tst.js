@@ -262,10 +262,10 @@ var bad61 = /(thisisagoddamnlongstringforstresstestingthequery|this\w+query)*-/
 // GOOD
 var good27 = /(thisisagoddamnlongstringforstresstestingthequery|imanotherbutunrelatedstringcomparedtotheotherstring)*-/
 
-// GOOD (but false positive caused by the extractor converting all four unpaired surrogates to \uFFFD)
+// GOOD
 var good28 = /foo([\uDC66\uDC67]|[\uDC68\uDC69])*foo/
 
-// GOOD (but false positive caused by the extractor converting all four unpaired surrogates to \uFFFD)
+// GOOD
 var good29 = /foo((\uDC66|\uDC67)|(\uDC68|\uDC69))*foo/
 
 // NOT GOOD (but cannot currently construct a prefix)

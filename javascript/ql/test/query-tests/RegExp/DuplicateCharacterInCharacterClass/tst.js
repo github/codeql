@@ -1,6 +1,6 @@
 /[foo]/;
 /[a-zc]/;
-/[\uDC3A\uDC3C]/; // False positive caused by the extractor converting both unpaired surrogates to \uFFFD
+/[\uDC3A\uDC3C]/;
 /[??]/;
 /[\u003F\u003f]/;
 /[\u003F?]/;
