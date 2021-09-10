@@ -142,9 +142,8 @@ class RangeSsaDefinition extends ControlFlowNodeBase {
       // below excludes definitions which can only reach guard phi
       // nodes by going through the corresponding guard.
       not exists(VariableAccess access |
-        v = access.getTarget() and
         pred.contains(access) and
-        this.isGuardPhi(access, _, _)
+        this.isGuardPhi(v, access, _, _)
       )
     )
   }

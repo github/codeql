@@ -433,10 +433,7 @@ private predicate exprDependsOnDef(Expr e, RangeSsaDefinition srcDef, StackVaria
 private predicate phiDependsOnDef(
   RangeSsaDefinition phi, StackVariable v, RangeSsaDefinition srcDef, StackVariable srcVar
 ) {
-  exists(VariableAccess access, Expr guard |
-    access = v.getAnAccess() and
-    phi.isGuardPhi(access, guard, _)
-  |
+  exists(VariableAccess access, Expr guard | phi.isGuardPhi(v, access, guard, _) |
     exprDependsOnDef(guard.(ComparisonOperation).getAnOperand(), srcDef, srcVar) or
     exprDependsOnDef(access, srcDef, srcVar)
   )
@@ -1204,8 +1201,7 @@ private float boolConversionUpperBound(Expr expr) {
  */
 private float getPhiLowerBounds(StackVariable v, RangeSsaDefinition phi) {
   exists(VariableAccess access, Expr guard, boolean branch, float defLB, float guardLB |
-    access = v.getAnAccess() and
-    phi.isGuardPhi(access, guard, branch) and
+    phi.isGuardPhi(v, access, guard, branch) and
     lowerBoundFromGuard(guard, access, guardLB, branch) and
     defLB = getFullyConvertedLowerBounds(access)
   |
@@ -1230,8 +1226,7 @@ private float getPhiLowerBounds(StackVariable v, RangeSsaDefinition phi) {
 /** See comment for `getPhiLowerBounds`, above. */
 private float getPhiUpperBounds(StackVariable v, RangeSsaDefinition phi) {
   exists(VariableAccess access, Expr guard, boolean branch, float defUB, float guardUB |
-    access = v.getAnAccess() and
-    phi.isGuardPhi(access, guard, branch) and
+    phi.isGuardPhi(v, access, guard, branch) and
     upperBoundFromGuard(guard, access, guardUB, branch) and
     defUB = getFullyConvertedUpperBounds(access)
   |
@@ -1493,8 +1488,7 @@ private predicate isNEPhi(
   exists(
     ComparisonOperation cmp, boolean branch, Expr linearExpr, Expr rExpr, float p, float q, float r
   |
-    access.getTarget() = v and
-    phi.isGuardPhi(access, cmp, branch) and
+    phi.isGuardPhi(v, access, cmp, branch) and
     eqOpWithSwapAndNegate(cmp, linearExpr, rExpr, false, branch) and
     v.getUnspecifiedType() instanceof IntegralOrEnumType and // Float `!=` is too imprecise
     r = getValue(rExpr).toFloat() and
@@ -1503,8 +1497,7 @@ private predicate isNEPhi(
   )
   or
   exists(Expr op, boolean branch, Expr linearExpr, float p, float q |
-    access.getTarget() = v and
-    phi.isGuardPhi(access, op, branch) and
+    phi.isGuardPhi(v, access, op, branch) and
     eqZeroWithNegate(op, linearExpr, false, branch) and
     v.getUnspecifiedType() instanceof IntegralOrEnumType and // Float `!` is too imprecise
     linearAccess(linearExpr, access, p, q) and
@@ -1524,8 +1517,7 @@ private predicate isUnsupportedGuardPhi(Variable v, RangeSsaDefinition phi, Vari
     or
     eqZeroWithNegate(cmp, _, false, branch)
   |
-    access.getTarget() = v and
-    phi.isGuardPhi(access, cmp, branch) and
+    phi.isGuardPhi(v, access, cmp, branch) and
     not isNEPhi(v, phi, access, _)
   )
 }
