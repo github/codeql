@@ -34,20 +34,26 @@ module ModificationOfParameterWithDefault {
   /**
    * A sanitizer guard that does not let a truthy value flow to the true branch.
    *
+   * Implementation note:
    * Since guards with different behaviour cannot exist on the same node,
    * we let all guards have the same behaviour, in the sense that they all check
    * the true branch. Instead, we partition guards into those that block
    * truthy values and those that block falsy values.
+   *
+   * If you extend this class, make sure that your barrier checks the true branch.
    */
   abstract class BlocksTruthy extends DataFlow::BarrierGuard { }
 
   /**
    * A sanitizer guard that does not let a falsy value flow to the true branch.
    *
+   * Implementation note:
    * Since guards with different behaviour cannot exist on the same node,
    * we let all guards have the same behaviour, in the sense that they all check
    * the true branch. Instead, we partition guards into those that block
    * truthy values and those that block falsy values.
+   *
+   * If you extend this class, make sure that your barrier checks the true branch.
    */
   abstract class BlocksFalsey extends DataFlow::BarrierGuard { }
 
@@ -135,78 +141,40 @@ module ModificationOfParameterWithDefault {
   }
 
   /**
-   * An expression that is checked directly in an `if`, possibly with `not`, such as `if x:` or `if not x:`.
-   */
-  private class IdentityGuarded extends Expr {
-    boolean inverted;
-
-    IdentityGuarded() {
-      this = any(If i).getTest() and
-      inverted = false
-      or
-      exists(IdentityGuarded ig, UnaryExpr notExp |
-        notExp.getOp() instanceof Not and
-        ig = notExp and
-        notExp.getOperand() = this
-      |
-        inverted = ig.isInverted().booleanNot()
-      )
-    }
-
-    /**
-     * Whether this guard has been inverted. For `if x:` the result is `false`, and for `if not x:` the result is `true`.
-     */
-    boolean isInverted() { result = inverted }
-  }
-
-  /**
-   * Holds iff `guard` is checking the `Name` represented by `guarded` for truthyness.
-   * `result` is true if the check is inverted and false if it is not.
-   */
-  boolean isIdentityGuard(DataFlow::GuardNode guard, ControlFlowNode guarded) {
-    exists(IdentityGuarded ig |
-      ig instanceof Name and
-      // In `not l`, the `ControlFlowNode` for `l` is not an instance of `GuardNode`.
-      // TODO: This is slightly naive, not handling e.g. `l or cond` correctly.
-      // We should change it when we have a proper guards library.
-      guard.getNode().getAChildNode*() = ig and
-      result = ig.isInverted() and
-      guarded.getNode() = ig
-    )
-  }
-
-  /**
-   * A sanitizer guard that does not let a truthy value flow to the true branch.
-   * Based on `isIdentityGuard`, so comes with the same caveats.
+   * A simple sanitizer guard that does not let a truthy value flow to the true branch.
+   *
+   * Blocks flow of `x` in the true branch in the example below.
+   * ```py
+   * if x:
+   *     x.append(42)
+   * ```
    */
   class BlocksTruthyGuard extends BlocksTruthy {
     ControlFlowNode guarded;
 
-    BlocksTruthyGuard() {
-      // The raw guard is true if the value is non-empty.
-      // We wish to send truthy falues to the false branch,
-      // se we are looking for inverted guards.
-      isIdentityGuard(this, guarded) = true
-    }
+    BlocksTruthyGuard() { this instanceof NameNode }
 
     override predicate checks(ControlFlowNode node, boolean branch) {
-      node = guarded and
+      node = this and
       branch = true
     }
   }
 
   /**
-   * A sanitizer guard that does not let a falsy value flow to the true branch.
-   * Based on `isIdentityGuard`, so comes with the same caveats.
+   * A simple sanitizer guard that does not let a truthy value flow to the true branch.
+   *
+   * Blocks flow of `x` in the true branch in the example below.
+   * ```py
+   * if not x:
+   *     x.append(42)
+   * ```
    */
   class BlocksFalseyGuard extends BlocksFalsey {
-    ControlFlowNode guarded;
+    NameNode guarded;
 
     BlocksFalseyGuard() {
-      // The raw guard is true if the value is non-empty.
-      // We wish to send falsy falues to the false branch,
-      // se we are looking for guards that are not inverted.
-      isIdentityGuard(this, guarded) = false
+      this.(UnaryExprNode).getNode().getOp() instanceof Not and
+      guarded = this.(UnaryExprNode).getOperand()
     }
 
     override predicate checks(ControlFlowNode node, boolean branch) {
