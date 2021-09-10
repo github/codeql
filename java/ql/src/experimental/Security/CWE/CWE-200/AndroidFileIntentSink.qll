@@ -19,24 +19,30 @@ class AsyncTask extends RefType {
   AsyncTask() { this.hasQualifiedName("android.os", "AsyncTask") }
 }
 
+/** The method that executes `AsyncTask` of Android. */
+abstract class ExecuteAsyncTaskMethod extends Method {
+  /** Returns index of the parameter that is tainted. */
+  abstract int getParamIndex();
+}
+
 /** The `execute` method of Android `AsyncTask`. */
-class AsyncTaskExecuteMethod extends Method {
+class AsyncTaskExecuteMethod extends ExecuteAsyncTaskMethod {
   AsyncTaskExecuteMethod() {
     this.getDeclaringType().getSourceDeclaration().getASourceSupertype*() instanceof AsyncTask and
     this.getName() = "execute"
   }
 
-  int getParamIndex() { result = 0 }
+  override int getParamIndex() { result = 0 }
 }
 
 /** The `executeOnExecutor` method of Android `AsyncTask`. */
-class AsyncTaskExecuteOnExecutorMethod extends Method {
+class AsyncTaskExecuteOnExecutorMethod extends ExecuteAsyncTaskMethod {
   AsyncTaskExecuteOnExecutorMethod() {
     this.getDeclaringType().getSourceDeclaration().getASourceSupertype*() instanceof AsyncTask and
     this.getName() = "executeOnExecutor"
   }
 
-  int getParamIndex() { result = 1 }
+  override int getParamIndex() { result = 1 }
 }
 
 /** The `doInBackground` method of Android `AsyncTask`. */

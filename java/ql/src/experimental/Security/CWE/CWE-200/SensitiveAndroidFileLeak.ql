@@ -3,7 +3,7 @@
  * @description Getting file intent from user input without path validation could leak arbitrary
  *              Android configuration file and sensitive user data.
  * @kind path-problem
- * @id java/sensitive_android_file_leak
+ * @id java/sensitive-android-file-leak
  * @tags security
  *       external/cwe/cwe-200
  */
@@ -13,6 +13,19 @@ import AndroidFileIntentSink
 import AndroidFileIntentSource
 import DataFlow2::PathGraph
 import semmle.code.java.dataflow.TaintTracking2
+
+private class StartsWithSanitizer extends DataFlow2::BarrierGuard {
+  StartsWithSanitizer() { this.(MethodAccess).getMethod().hasName("startsWith") }
+
+  override predicate checks(Expr e, boolean branch) {
+    e =
+      [
+        this.(MethodAccess).getQualifier(),
+        this.(MethodAccess).getQualifier().(MethodAccess).getQualifier()
+      ] and
+    branch = false
+  }
+}
 
 class AndroidFileLeakConfig extends TaintTracking2::Configuration {
   AndroidFileLeakConfig() { this = "AndroidFileLeakConfig" }
@@ -38,37 +51,23 @@ class AndroidFileLeakConfig extends TaintTracking2::Configuration {
     exists(MethodAccess aema, AsyncTaskRunInBackgroundMethod arm |
       // fileAsyncTask.execute(params) will invoke doInBackground(params) of FileAsyncTask
       aema.getQualifier().getType() = arm.getDeclaringType() and
-      (
-        aema.getMethod() instanceof AsyncTaskExecuteMethod and
-        prev.asExpr() = aema.getArgument(0)
-        or
-        aema.getMethod() instanceof AsyncTaskExecuteOnExecutorMethod and
-        prev.asExpr() = aema.getArgument(1)
-      ) and
-      succ.asExpr() = arm.getParameter(0).getAnAccess()
+      aema.getMethod() instanceof ExecuteAsyncTaskMethod and
+      prev.asExpr() = aema.getArgument(aema.getMethod().(ExecuteAsyncTaskMethod).getParamIndex()) and
+      succ.asParameter() = arm.getParameter(0)
     )
     or
     exists(MethodAccess csma, ServiceOnStartCommandMethod ssm, ClassInstanceExpr ce |
       csma.getMethod() instanceof ContextStartServiceMethod and
       ce.getConstructedType() instanceof TypeIntent and // Intent intent = new Intent(context, FileUploader.class);
-      ce.getArgument(1).getType().(ParameterizedType).getTypeArgument(0) = ssm.getDeclaringType() and
+      ce.getArgument(1).(TypeLiteral).getReferencedType() = ssm.getDeclaringType() and
       DataFlow2::localExprFlow(ce, csma.getArgument(0)) and // context.startService(intent);
       prev.asExpr() = csma.getArgument(0) and
-      succ.asExpr() = ssm.getParameter(0).getAnAccess() // public int onStartCommand(Intent intent, int flags, int startId) {...} in FileUploader
+      succ.asParameter() = ssm.getParameter(0) // public int onStartCommand(Intent intent, int flags, int startId) {...} in FileUploader
     )
   }
 
-  override predicate isSanitizer(DataFlow2::Node node) {
-    exists(
-      MethodAccess startsWith // "startsWith" path check
-    |
-      startsWith.getMethod().hasName("startsWith") and
-      (
-        DataFlow2::localExprFlow(node.asExpr(), startsWith.getQualifier()) or
-        DataFlow2::localExprFlow(node.asExpr(),
-          startsWith.getQualifier().(MethodAccess).getQualifier())
-      )
-    )
+  override predicate isSanitizerGuard(DataFlow2::BarrierGuard guard) {
+    guard instanceof StartsWithSanitizer
   }
 }
 

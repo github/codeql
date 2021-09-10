@@ -15,7 +15,7 @@ class StartActivityForResultMethod extends Method {
 /** Android class instance of `GET_CONTENT` intent. */
 class GetContentIntent extends ClassInstanceExpr {
   GetContentIntent() {
-    this.getConstructedType().getASupertype*() instanceof TypeIntent and
+    this.getConstructedType() instanceof TypeIntent and
     this.getArgument(0).(CompileTimeConstantExpr).getStringValue() =
       "android.intent.action.GET_CONTENT"
     or
