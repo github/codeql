@@ -20,7 +20,7 @@ public class ClassBody extends Node {
   }
 
   public MethodDefinition getConstructor() {
-    for (Node md : body) if (md instanceof MethodDefinition && ((MethodDefinition)md).isConstructor()) return (MethodDefinition) md;
+    for (MemberDefinition<?> md : body) if (md.isConstructor()) return (MethodDefinition) md;
     return null;
   }
 

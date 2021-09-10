@@ -3219,7 +3219,7 @@ public class Parser {
     Expression superClass = this.parseClassSuper();
     Position bodyStartLoc = this.startLoc;
     boolean hadConstructor = false;
-    List<MemberDefinition<?>> body = new ArrayList<>();
+    List<MemberDefinition<?>> body = new ArrayList<MemberDefinition<?>>();
     this.expect(TokenType.braceL);
     while (!this.eat(TokenType.braceR)) {
       if (this.eat(TokenType.semi)) continue;
