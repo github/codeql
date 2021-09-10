@@ -825,9 +825,7 @@ module NodeJSLib {
    * A data flow node that is an HTTP or HTTPS client request made by a Node.js application,
    * for example `http.request(url)`.
    */
-  class NodeJSClientRequest extends ClientRequest {
-    NodeJSClientRequest() { this instanceof NodeJSClientRequest::Range }
-  }
+  class NodeJSClientRequest extends ClientRequest instanceof NodeJSClientRequest::Range { }
 
   module NodeJSClientRequest {
     /**
