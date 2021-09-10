@@ -950,7 +950,11 @@ class TransformerFactoryConfig extends TransformerConfig {
   }
 }
 
-private class SafeTransformerFactoryFlowConfig extends DataFlow3::Configuration {
+/**
+ * A dataflow configuration that identifies `TransformerFactory` and `SAXTransformerFactory`
+ * instances that have been safely configured.
+ */
+class SafeTransformerFactoryFlowConfig extends DataFlow3::Configuration {
   SafeTransformerFactoryFlowConfig() { this = "XmlParsers::SafeTransformerFactoryFlowConfig" }
 
   override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof SafeTransformerFactory }
