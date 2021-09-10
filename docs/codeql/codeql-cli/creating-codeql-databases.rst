@@ -228,6 +228,113 @@ commands that you can specify for compiled languages.
   This command runs a custom script that contains all of the commands required
   to build the project.
 
+Using indirect build tracing
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If the CodeQL CLI autobuilders for compiled languages do not work with your CI workflow and you cannot specify
+build commands, you can use indirect build tracing to create a CodeQL database. To use indirect build tracing, your CI system must be able to set custom environment variables for each build action.
+
+CodeQL databases are created with indirect build tracing when you run the following command from the checkout root of your project:
+
+::
+
+  codeql database init ... --begin-tracing <database>
+
+You must specify:
+
+- ``<database>``: a path to the new database to be created. This directory will
+  be created when you execute the command---you cannot specify an existing
+  directory. 
+- ``--begin-tracing``: creates scripts that can be used to set up an environment in which build commands will be traced.
+
+You may specify other options for the ``codeql database init`` command as normal.
+
+.. pull-quote:: Note
+
+    If you are on Windows, set either ``--trace-process-level <number>`` or ``--trace-process-name <parent process name>`` so that the option points to the parent CI process.
+
+
+The ``codeql database init`` command will output a message:
+  ```
+  Created skeleton <database>. This in-progress database is ready to be populated by an extractor.
+  In order to initialise tracing, some environment variables need to be set in the shell your build will run in.
+  A number of scripts to do this have been created in <database>/temp/tracingEnvironment.
+  Please run one of these scripts before invoking your build command.
+
+  Based on your operating system, we recommend you run: ...
+  ```
+
+The ``codeql database init`` command will produce files in ``<database>/temp/tracingEnvironment`` containing environment variables and their values for CodeQL to trace subsequent build steps. These files are named ``start-tracing.{json,sh,bat,ps1}``. Use one of these files with your CI system's mechanism for setting environment variables for future steps. You can:
+
+* Read the JSON file, process it, and print out environment variables in the format expected by your CI system. For example, Azure DevOps expects ``echo "##vso[task.setvariable variable=NAME]VALUE"``.
+* Or source the ``sh/bat/ps1`` script so that its variables go into your shell environment.
+
+Build your code and then run the command ``codeql database finalize <database>``.
+
+You can optionally clean up the environment variables by following the same process as with the ``--begin-tracing`` scripts, except now with ``--end-tracing`` scripts in the same directory.
+
+Once you have created a CodeQL database using indirect build tracing, you can work with it like any other CodeQL database. For example, analyze the database, and upload the results if using Code Scanning.
+
+Example of creating a CodeQL database using indirect build tracing
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The following example shows how you could use indirect build tracing in an Azure DevOps pipeline to create a CodeQL database::
+
+   steps:
+       # Download the CodeQL CLI and query packs...
+       # Check out the repository ...
+
+       # Tasks prior to executing the build, e.g. restore NuGet dependencies...
+
+       # Initialize the CodeQL database.
+       # In this example, the CodeQL CLI has been downloaded and placed on the PATH.
+       # If no language is specified, a GitHub Apps or personal access token must be passed through stdin
+       # to autodetect the language.
+       - task: CmdLine@1
+          displayName: Initialize CodeQL database
+         inputs:
+             # Assumes the source code is checked out to the current working directory.
+             # Creates a database at `<current working directory>/db`
+             script: "codeql database init --language csharp --trace-process-level 3 --source-root --begin-tracing db"
+
+       # Read the generated environment variables and values,
+       # and set them so they are available for subsequent commands
+       # in the build pipeline. This is done in PowerShell in this example.
+       - task: PowerShell@1
+          displayName: Set CodeQL environment variables
+          inputs:
+             targetType: inline
+             script: >
+                $json = Get-Content $(System.DefaultWorkingDirectory)/db/temp/tracingEnvironment/start-tracing.json | ConvertFrom-Json
+                $json.PSObject.Properties | ForEach-Object {
+                    $template = "##vso[task.setvariable variable="
+                    $template += $_.Name
+                    $template += "]"
+                    $template += $_.Value
+                    echo "$template"
+                }
+
+       # Execute the pre-defined build step. Note the `msbuildArgs` variable.
+       - task: VSBuild@1
+           inputs:
+             solution: '**/*.sln'
+             # Disable MSBuild shared compilation for C# builds.
+             msbuildArgs: /p:OutDir=$(Build.ArtifactStagingDirectory) /p:UseSharedCompilation=false
+             platform: Any CPU
+             configuration: Release
+             # Execute a clean build, in order to remove any existing build artifacts prior to the build.
+             clean: True
+          displayName: Visual Studio Build
+
+       - task: CmdLine@2
+          displayName: Finalize CodeQL database
+          inputs:
+             script: 'codeql database finalize db'
+
+       # Other tasks go here,
+       # e.g. `codeql database analyze`
+       # and `codeql github upload-results` ...
+
 Obtaining databases from LGTM.com
 ---------------------------------
 
