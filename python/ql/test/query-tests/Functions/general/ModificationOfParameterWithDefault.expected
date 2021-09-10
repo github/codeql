@@ -32,6 +32,7 @@ nodes
 | functions_test.py:193:28:193:28 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
 | functions_test.py:195:18:195:18 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
 | functions_test.py:196:28:196:28 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
+subpaths
 #select
 | functions_test.py:40:5:40:5 | ControlFlowNode for x | functions_test.py:39:9:39:9 | ControlFlowNode for x | functions_test.py:40:5:40:5 | ControlFlowNode for x | $@ flows to here and is mutated. | functions_test.py:39:9:39:9 | ControlFlowNode for x | Default value |
 | functions_test.py:134:5:134:5 | ControlFlowNode for x | functions_test.py:133:15:133:15 | ControlFlowNode for x | functions_test.py:134:5:134:5 | ControlFlowNode for x | $@ flows to here and is mutated. | functions_test.py:133:15:133:15 | ControlFlowNode for x | Default value |
