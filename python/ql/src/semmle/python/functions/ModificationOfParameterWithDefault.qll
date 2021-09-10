@@ -33,16 +33,14 @@ module ModificationOfParameterWithDefault {
 
     override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-    override predicate isBarrier(DataFlow::Node node) { node instanceof Barrier }
-
-    override predicate isBarrierGuard(DataFlow::BarrierGuard guard) {
-      // if we are tracking a empty default, then it is ok to modify truthy values,
+    override predicate isBarrier(DataFlow::Node node) {
+      // if we are tracking a non-empty default, then it is ok to modify empty values,
       // so our tracking ends at those.
-      nonEmptyDefault = false and guard instanceof BlocksTruthy
+      nonEmptyDefault = true and node instanceof MustBeEmpty
       or
-      // if we are tracking a non-empty default, then it is ok to modify falsy values,
+      // if we are tracking a empty default, then it is ok to modify non-empty values,
       // so our tracking ends at those.
-      nonEmptyDefault = true and guard instanceof BlocksFalsey
+      nonEmptyDefault = false and node instanceof MustBeNonEmpty
     }
   }
 }

@@ -139,12 +139,12 @@ def sanitizer(l = []):
     if not l:
         l.append(1)  #$ modification=l
     else:
-        l.append(1)  #$ SPURIOUS: modification=l
+        l.append(1)
     return l
 
 def sanitizer_negated(l = [1]):
     if l:
         l.append(1)  #$ modification=l
     else:
-        l.append(1)  #$ SPURIOUS: modification=l
+        l.append(1)
     return l

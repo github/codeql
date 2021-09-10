@@ -14,7 +14,8 @@ private import semmle.python.dataflow.new.BarrierGuards
  */
 module ModificationOfParameterWithDefault {
   /**
-   * A data flow source for detecting modifications of a parameters default value.
+   * A data flow source for detecting modifications of a parameters default value,
+   * that is a default value for some parameter.
    */
   abstract class Source extends DataFlow::Node {
     /** Result is true if the default value is non-empty for this source and false if not. */
@@ -22,40 +23,36 @@ module ModificationOfParameterWithDefault {
   }
 
   /**
-   * A data flow sink for detecting modifications of a parameters default value.
+   * A data flow sink for detecting modifications of a parameters default value,
+   * that is a node representing a modification.
    */
   abstract class Sink extends DataFlow::Node { }
 
   /**
-   * A sanitizer for detecting modifications of a parameters default value.
+   * A sanitizer for detecting modifications of a parameters default value
+   * should determine if the node (which is perhaps about to be modified)
+   * can be the default value or not.
+   *
+   * In this query we do not track the default value exactly, but rather wheter
+   * it is empty or not (see `Source`).
+   *
+   * This is the extension point for determining that a node must be empty and
+   * therefor is allowed to be modified if the tracked default value is non-empty.
    */
-  abstract class Barrier extends DataFlow::Node { }
+  abstract class MustBeEmpty extends DataFlow::Node { }
 
   /**
-   * A sanitizer guard that does not let a truthy value flow to the true branch.
+   * A sanitizer for detecting modifications of a parameters default value
+   * should determine if the node (which is perhaps about to be modified)
+   * can be the default value or not.
    *
-   * Implementation note:
-   * Since guards with different behaviour cannot exist on the same node,
-   * we let all guards have the same behaviour, in the sense that they all check
-   * the true branch. Instead, we partition guards into those that block
-   * truthy values and those that block falsy values.
+   * In this query we do not track the default value exactly, but rather wheter
+   * it is empty or not (see `Source`).
    *
-   * If you extend this class, make sure that your barrier checks the true branch.
+   * This is the extension point for determining that a node must be non-empty
+   * and therefor is allowed to be modified if the tracked default value is empty.
    */
-  abstract class BlocksTruthy extends DataFlow::BarrierGuard { }
-
-  /**
-   * A sanitizer guard that does not let a falsy value flow to the true branch.
-   *
-   * Implementation note:
-   * Since guards with different behaviour cannot exist on the same node,
-   * we let all guards have the same behaviour, in the sense that they all check
-   * the true branch. Instead, we partition guards into those that block
-   * truthy values and those that block falsy values.
-   *
-   * If you extend this class, make sure that your barrier checks the true branch.
-   */
-  abstract class BlocksFalsey extends DataFlow::BarrierGuard { }
+  abstract class MustBeNonEmpty extends DataFlow::Node { }
 
   /** Gets the truthiness (non emptyness) of the default of `p` if that value is mutable */
   private boolean mutableDefaultValue(Parameter p) {
@@ -140,46 +137,48 @@ module ModificationOfParameterWithDefault {
     }
   }
 
+  // This to reimplement some of the functionality of the DataFlow::BarrierGuard
+  private import semmle.python.essa.SsaCompute
+
   /**
-   * A simple sanitizer guard that does not let a truthy value flow to the true branch.
+   * Simple detection of truthy and falsey values.
    *
-   * Blocks flow of `x` in the true branch in the example below.
-   * ```py
-   * if x:
-   *     x.append(42)
-   * ```
+   * It handles the cases `if x` and `if not x`.
    */
-  class BlocksTruthyGuard extends BlocksTruthy {
-    ControlFlowNode guarded;
+  private class MustBe extends DataFlow::Node {
+    DataFlow::GuardNode guard;
+    NameNode guarded;
+    boolean branch;
+    boolean truthy;
 
-    BlocksTruthyGuard() { this instanceof NameNode }
-
-    override predicate checks(ControlFlowNode node, boolean branch) {
-      node = this and
-      branch = true
+    MustBe() {
+      (
+        // case: if x
+        guard = guarded and
+        branch = truthy
+        or
+        // case: if not x
+        guard.(UnaryExprNode).getNode().getOp() instanceof Not and
+        guarded = guard.(UnaryExprNode).getOperand() and
+        branch = truthy.booleanNot()
+      ) and
+      // guard controls this
+      guard.controlsBlock(this.asCfgNode().getBasicBlock(), branch) and
+      // there is a definition tying the guarded value to this
+      exists(EssaDefinition def |
+        AdjacentUses::useOfDef(def, this.asCfgNode()) and
+        AdjacentUses::useOfDef(def, guarded)
+      )
     }
   }
 
-  /**
-   * A simple sanitizer guard that does not let a truthy value flow to the true branch.
-   *
-   * Blocks flow of `x` in the true branch in the example below.
-   * ```py
-   * if not x:
-   *     x.append(42)
-   * ```
-   */
-  class BlocksFalseyGuard extends BlocksFalsey {
-    NameNode guarded;
+  /** Simple guard detecting truthy values. */
+  private class MustBeTruthy extends MustBe, MustBeNonEmpty {
+    MustBeTruthy() { truthy = true }
+  }
 
-    BlocksFalseyGuard() {
-      this.(UnaryExprNode).getNode().getOp() instanceof Not and
-      guarded = this.(UnaryExprNode).getOperand()
-    }
-
-    override predicate checks(ControlFlowNode node, boolean branch) {
-      node = guarded and
-      branch = true
-    }
+  /** Simple guard detecting falsey values. */
+  private class MustBeFalsey extends MustBe, MustBeEmpty {
+    MustBeFalsey() { truthy = false }
   }
 }
