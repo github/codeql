@@ -1,4 +1,5 @@
 | tst.js:1:4:1:4 | o | Character 'o' is repeated $@ in the same character class. | tst.js:1:5:1:5 | o | here |
+| tst.js:3:3:3:8 | \\uDC3A | Character '\\uDC3A' is repeated $@ in the same character class. | tst.js:3:9:3:14 | \\uDC3C | here |
 | tst.js:4:3:4:3 | ? | Character '?' is repeated $@ in the same character class. | tst.js:4:4:4:4 | ? | here |
 | tst.js:5:3:5:8 | \\u003F | Character '\\u003F' is repeated $@ in the same character class. | tst.js:5:9:5:14 | \\u003f | here |
 | tst.js:6:3:6:8 | \\u003F | Character '\\u003F' is repeated $@ in the same character class. | tst.js:6:9:6:9 | ? | here |

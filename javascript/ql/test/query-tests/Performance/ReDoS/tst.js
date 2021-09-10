@@ -262,10 +262,10 @@ var bad61 = /(thisisagoddamnlongstringforstresstestingthequery|this\w+query)*-/
 // GOOD
 var good27 = /(thisisagoddamnlongstringforstresstestingthequery|imanotherbutunrelatedstringcomparedtotheotherstring)*-/
 
-// GOOD
+// GOOD (but false positive caused by the extractor converting all four unpaired surrogates to \uFFFD)
 var good28 = /foo([\uDC66\uDC67]|[\uDC68\uDC69])*foo/
 
-// GOOD
+// GOOD (but false positive caused by the extractor converting all four unpaired surrogates to \uFFFD)
 var good29 = /foo((\uDC66|\uDC67)|(\uDC68|\uDC69))*foo/
 
 // NOT GOOD (but cannot currently construct a prefix)
@@ -304,10 +304,10 @@ var bad66 = /^ab(c+)+$/;
 // NOT GOOD
 var bad67 = /(\d(\s+)*){20}/;
 
-// GOOD - but we spuriously conclude that a rejecting suffix exists. 
+// GOOD - but we spuriously conclude that a rejecting suffix exists.
 var good36 = /(([^/]|X)+)(\/[^]*)*$/;
 
-// GOOD - but we spuriously conclude that a rejecting suffix exists. 
+// GOOD - but we spuriously conclude that a rejecting suffix exists.
 var good37 = /^((x([^Y]+)?)*(Y|$))/;
 
 // NOT GOOD
@@ -331,7 +331,7 @@ var bad72 = /(c?a?)*b/;
 // NOT GOOD
 var bad73 = /(?:a|a?)+b/;
 
-// NOT GOOD - but not detected. 
+// NOT GOOD - but not detected.
 var bad74 = /(a?b?)*$/;
 
 // NOT GOOD
@@ -357,13 +357,13 @@ var good40 = /(a|b)+/;
 var good41 = /(?:[\s;,"'<>(){}|[\]@=+*]|:(?![/\\]))+/;
 
 // NOT GOOD
-var bad83 = /^((?:a{|-)|\w\{)+X$/; 
-var bad84 = /^((?:a{0|-)|\w\{\d)+X$/; 
-var bad85 = /^((?:a{0,|-)|\w\{\d,)+X$/; 
-var bad86 = /^((?:a{0,2|-)|\w\{\d,\d)+X$/; 
+var bad83 = /^((?:a{|-)|\w\{)+X$/;
+var bad84 = /^((?:a{0|-)|\w\{\d)+X$/;
+var bad85 = /^((?:a{0,|-)|\w\{\d,)+X$/;
+var bad86 = /^((?:a{0,2|-)|\w\{\d,\d)+X$/;
 
-// GOOD: 
-var good42 = /^((?:a{0,2}|-)|\w\{\d,\d\})+X$/; 
+// GOOD:
+var good42 = /^((?:a{0,2}|-)|\w\{\d,\d\})+X$/;
 
 // GOOD
 var good43 = /("[^"]*?"|[^"\s]+)+(?=\s*|\s*$)/g;
