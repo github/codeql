@@ -391,7 +391,7 @@ predicate literalInsteadOfConstant(
   exists(string context |
     canUseFieldInsteadOfLiteral(constField, magicLiteral, context) and
     message =
-      "Literal value '" + magicLiteral.getValue() + "' used " + " in a call to " + context +
+      "Literal value '" + magicLiteral.getLiteral() + "' used " + " in a call to " + context +
         "; consider using the defined constant $@." and
     linkText = constField.getName() and
     (
