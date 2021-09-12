@@ -116,6 +116,7 @@ private module LDAP {
       override predicate useSSL() {
         // use initialize to correlate `this` and so avoid FP in several instances
         exists(DataFlow::CallCfgNode initialize |
+          // ldap.set_option(ldap.OPT_X_TLS_%s)
           ldap().getMember("set_option").getACall().getArg(_) instanceof LDAPSSLOptions
           or
           this.getFunction().(DataFlow::AttrRead).getObject().getALocalSource() = initialize and
