@@ -32,7 +32,15 @@ private module FastApi {
    * See https://fastapi.tiangolo.com/tutorial/first-steps/#define-a-path-operation-decorator
    */
   private class FastApiRouteSetup extends HTTP::Server::RouteSetup::Range, DataFlow::CallCfgNode {
-    FastApiRouteSetup() { this = App::instance().getMember(any(HTTP::httpVerbLower())).getACall() }
+    FastApiRouteSetup() {
+      exists(string routeAddingMethod |
+        routeAddingMethod = HTTP::httpVerbLower()
+        or
+        routeAddingMethod = "api_route"
+      |
+        this = App::instance().getMember(routeAddingMethod).getACall()
+      )
+    }
 
     override Parameter getARoutedParameter() {
       // this will need to be refined a bit, since you can add special parameters to

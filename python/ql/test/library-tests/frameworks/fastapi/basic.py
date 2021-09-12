@@ -52,8 +52,9 @@ async def create_item(item: Item): # $ requestHandler routedParameter=item
 async def create_item2(item1: Item, item2: Item): # $ requestHandler routedParameter=item1 routedParameter=item2
     return (item1, item2) # $ HttpResponse
 
-
-
+@app.api_route("/baz/{baz_id}", methods=["GET"]) # $ routeSetup="/baz/{baz_id}"
+async def get_baz(baz_id: int): # $ requestHandler routedParameter=baz_id
+    return {"baz_id2": baz_id} # $ HttpResponse
 
 # Docs:
 # see https://fastapi.tiangolo.com/tutorial/path-params/
@@ -69,5 +70,3 @@ async def create_item2(item1: Item, item2: Item): # $ requestHandler routedParam
 #
 # - https://fastapi.tiangolo.com/tutorial/middleware/
 # - https://fastapi.tiangolo.com/tutorial/encoder/
-#
-# - `app.route()`
