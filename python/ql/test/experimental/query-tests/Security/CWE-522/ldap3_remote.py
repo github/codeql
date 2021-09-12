@@ -13,7 +13,7 @@ full_host = "ldap://somethingon.theinternet.com"
 
 @app.route("/one")
 def one():
-    srv = Server("ldap://somethingon.theinternet.com", port=1337, True)
+    srv = Server("ldap://somethingon.theinternet.com", 1337, True)
     conn = Connection(srv, "dn", "password")
     conn.search("dn", "search_filter")
     return conn.response

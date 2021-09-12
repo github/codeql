@@ -54,7 +54,7 @@ def one_bad():
 @app.route("/one_bad_2")
 def one_bad_2():
     ldap_connection_4 = ldap.initialize(schema + remote_host)
-    ldap_connection_4.set_option(ldap.OPT_X_TLS_NEVER)
+    ldap_connection_4.set_option(ldap.OPT_X_TLS_NEVER, True)
     ldap_connection_4.simple_bind_s('', '')
     user = ldap_connection_4.search_s(
         "dn", ldap.SCOPE_SUBTREE, "search_filter")

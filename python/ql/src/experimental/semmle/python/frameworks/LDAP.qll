@@ -88,6 +88,11 @@ private module LDAP {
       result.(DataFlow::AttrRead).getAttributeName() instanceof LDAP2BindMethods
     }
 
+    /**List of SSL-demanding options */
+    private class LDAPSSLOptions extends DataFlow::Node {
+      LDAPSSLOptions() { this = ldap().getMember("OPT_X_TLS_" + ["DEMAND", "HARD"]).getAUse() }
+    }
+
     /**
      * A class to find `ldap` methods binding a connection.
      *
@@ -111,6 +116,8 @@ private module LDAP {
       override predicate useSSL() {
         // use initialize to correlate `this` and so avoid FP in several instances
         exists(DataFlow::CallCfgNode initialize |
+          ldap().getMember("set_option").getACall().getArg(_) instanceof LDAPSSLOptions
+          or
           this.getFunction().(DataFlow::AttrRead).getObject().getALocalSource() = initialize and
           initialize = ldapInitialize().getACall() and
           (
@@ -126,7 +133,7 @@ private module LDAP {
               setOption.getFunction().(DataFlow::AttrRead).getObject().getALocalSource() =
                 initialize and
               setOption.getFunction().(DataFlow::AttrRead).getAttributeName() = "set_option" and
-              setOption.getArg(0) = ldap().getMember("OPT_X_TLS_" + ["DEMAND", "HARD"]).getAUse() and
+              setOption.getArg(0) instanceof LDAPSSLOptions and
               not DataFlow::exprNode(any(False falseExpr))
                   .(DataFlow::LocalSourceNode)
                   .flowsTo(setOption.getArg(1))
