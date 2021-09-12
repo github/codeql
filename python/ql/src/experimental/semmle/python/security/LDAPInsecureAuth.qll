@@ -8,7 +8,7 @@ import semmle.python.dataflow.new.TaintTracking
 import semmle.python.dataflow.new.RemoteFlowSources
 import experimental.semmle.python.Concepts
 
-string getFullHostRegex() { result = "(?i)ldap://[\\[a-zA-Z0-9].*" }
+string getFullHostRegex() { result = "(?i)ldap://.+" }
 
 string getSchemaRegex() { result = "(?i)ldap(://)?" }
 
