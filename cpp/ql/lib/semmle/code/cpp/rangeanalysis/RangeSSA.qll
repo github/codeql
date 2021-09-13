@@ -97,7 +97,7 @@ class RangeSsaDefinition extends ControlFlowNodeBase {
    * If this definition is a phi node corresponding to a guard,
    * then return the variable access and the guard.
    */
-  predicate isGuardPhi(VariableAccess va, Expr guard, boolean branch) {
+  deprecated predicate isGuardPhi(VariableAccess va, Expr guard, boolean branch) {
     guard_defn(va, guard, this, branch)
   }
 
