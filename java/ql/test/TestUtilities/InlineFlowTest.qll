@@ -3,7 +3,8 @@
  *
  * Example for a test.ql:
  * ```ql
- * class HasFlowTest extends InlineFlowTest { }
+ * import java
+ * import TestUtilities.InlineFlowTest
  * ```
  *
  * To declare expecations, you can use the $hasTaintFlow or $hasValueFlow comments within the test source files.

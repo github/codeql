@@ -10,5 +10,3 @@ class SummaryModelTest extends SummaryModelCsv {
       ]
   }
 }
-
-class HasFlowTest extends InlineFlowTest { }
