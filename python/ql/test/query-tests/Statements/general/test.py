@@ -104,10 +104,10 @@ def modification_of_locals():
     return x
 
 
-
-
-
-
+globals()['foo'] = 42 # OK
+# in module-level scope `locals() == globals()`
+# FP report from https://github.com/github/codeql/issues/6674
+locals()['foo'] = 43 # technically OK
 
 
 #C-style things
