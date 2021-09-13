@@ -185,15 +185,13 @@ module ReflectedXSS {
     // flow out of controller helper method into template
     exists(
       ErbFile template, ActionControllerHelperMethod helperMethod,
-      CfgNodes::ExprNodes::MethodCallCfgNode helperMethodCall, ReturnStmt ret
+      CfgNodes::ExprNodes::MethodCallCfgNode helperMethodCall
     |
       template = node2.getLocation().getFile() and
       helperMethod.getName() = helperMethodCall.getExpr().getMethodName() and
       helperMethod.getControllerClass() = getAssociatedControllerClass(template) and
       // `node1` is a returned value
-      // TODO: we don't pick up implicit returns with this approach
-      node1.asExpr().getExpr().getParent() = ret and
-      ret.getParent+() = helperMethod and
+      DataFlow::nodeReturnedFrom(node1, helperMethod) and
       node2.asExpr() = helperMethodCall
     )
   }

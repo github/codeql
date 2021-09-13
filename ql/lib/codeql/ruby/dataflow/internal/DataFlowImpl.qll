@@ -4552,3 +4552,13 @@ private predicate revPartialFlow(
   sink.isRevSink() and
   node.getASuccessor+() = sink
 }
+
+/**
+ * Holds if `n` is a return node from callable `c`.
+ */
+predicate nodeReturnedFrom(ReturnNodeExt n, DataFlowCallable c) {
+  exists(RetNodeEx ret |
+    n = ret.asNode() and
+    c = ret.getReturnPosition().getCallable()
+  )
+}
