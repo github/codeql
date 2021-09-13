@@ -72,6 +72,18 @@ class Compilation extends @compilation {
 
   /**
    * Gets the total amount of CPU time spent processing all the files in the
+   * compiler.
+   */
+  float getCompilerCpuSeconds() { compilation_compiler_times(this, result, _) }
+
+  /**
+   * Gets the total amount of elapsed time while processing all the files in
+   * the compiler.
+   */
+  float getCompilerElapsedSeconds() { compilation_compiler_times(this, _, result) }
+
+  /**
+   * Gets the total amount of CPU time spent processing all the files in the
    * front-end and extractor.
    */
   float getTotalCpuSeconds() { compilation_finished(this, result, _) }

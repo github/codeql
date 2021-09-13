@@ -27,6 +27,7 @@ import org.jetbrains.kotlin.descriptors.ClassKind
 
 class KotlinExtractorExtension(private val invocationTrapFile: String, private val checkTrapIdentical: Boolean) : IrGenerationExtension {
     override fun generate(moduleFragment: IrModuleFragment, pluginContext: IrPluginContext) {
+        val startTimeMs = System.currentTimeMillis()
         // This default should be kept in sync with language-packs/java/tools/kotlin-extractor
         val trapDir = File(System.getenv("CODEQL_EXTRACTOR_JAVA_TRAP_DIR").takeUnless { it.isNullOrEmpty() } ?: "kotlin-extractor/trap")
         FileOutputStream(File(invocationTrapFile), true).bufferedWriter().use { invocationTrapFileBW ->
@@ -52,7 +53,8 @@ class KotlinExtractorExtension(private val invocationTrapFile: String, private v
             // files etc, so we just exit when we are finished extracting.
             logger.info("Extraction completed")
             logger.flush()
-            tw.writeCompilation_finished(compilation, 0.0, 0.0)
+            val compilationTimeMs = System.currentTimeMillis() - startTimeMs
+            tw.writeCompilation_finished(compilation, -1.0, compilationTimeMs.toDouble() / 1000)
             tw.flush()
         }
         exitProcess(0)

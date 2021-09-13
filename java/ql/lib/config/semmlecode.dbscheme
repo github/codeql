@@ -117,6 +117,17 @@ diagnostic_for(
 );
 
 /**
+ * The `cpu_seconds` and `elapsed_seconds` are the CPU time and elapsed
+ * time (respectively) that the original compilation (not the extraction)
+ * took for compiler invocation `id`.
+ */
+compilation_compiler_times(
+    unique int id : @compilation ref,
+    float cpu_seconds : float ref,
+    float elapsed_seconds : float ref
+);
+
+/**
  * If extraction was successful, then `cpu_seconds` and
  * `elapsed_seconds` are the CPU time and elapsed time (respectively)
  * that extraction took for compiler invocation `id`.
