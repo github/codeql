@@ -1,22 +1,31 @@
 foo = "foo"
 
 if foo == "foo"
-    do_true foo
+    foo
 else
-    do_false foo
+    foo
 end
 
 if ["foo"].include?(foo)
-    do_true foo
+    foo
 else
-    do_false foo
+    foo
 end
 
 if foo != "foo"
-    do_true foo
+    foo
 else
-    do_false foo
+    foo
 end
 
-do_default foo
+unless foo == "foo"
+    foo
+else
+    foo
+end
 
+unless foo != "foo"
+    foo
+end
+
+foo
