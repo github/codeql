@@ -61,9 +61,7 @@ private class AndroidIntentDataModel extends SummaryModelCsv {
         "android.net;Uri;true;getPathSegments;;;Argument[-1];ReturnValue;taint",
         "android.net;Uri;true;getQuery;;;Argument[-1];ReturnValue;taint",
         "android.net;Uri;true;getQueryParameter;;;Argument[-1];ReturnValue;taint",
-        "android.net;Uri;true;getQueryParameters;;;Argument[-1];ReturnValue;taint",
-        "android.os;AsyncTask;true;execute;;;Argument[0];ReturnValue;taint",
-        "android.os;AsyncTask;true;doInBackground;;;Argument[0];ReturnValue;taint"
+        "android.net;Uri;true;getQueryParameters;;;Argument[-1];ReturnValue;taint"
       ]
   }
 }
