@@ -28,16 +28,11 @@ void f(void) {
 }
 
 void* malloc(long unsigned int);
-typedef struct {
-    char len;
-    char buf[1];
-} var_buf;
-
 void test_buffer_sentinal() {
-  var_buf *b = malloc(10); // len(buf.buffer) effectively 8
+  struct { char len; char buf[1]; } *b = malloc(10); // len(buf.buffer) effectively 8
   b->buf[0] = 0; // GOOD
-  b->buf[7] = 0; // GOOD [FALSE POSITIVE]
-  b->buf[8] = 0; // BAD
+  b->buf[7] = 0; // GOOD
+  b->buf[8] = 0; // BAD [NOT DETECTED]
 }
 
 union u {
@@ -65,6 +60,11 @@ void union_test2() {
   u.ptr[sizeof(u)-1] = 0; // GOOD
   u.ptr[sizeof(u)] = 0; // BAD
 }
+
+typedef struct {
+    char len;
+    char buf[1];
+} var_buf;
 
 void test_alloc() {
   // Special case of taking sizeof without any addition or multiplications
