@@ -144,6 +144,7 @@ nodes
 | Tuples.cs:89:24:89:37 | "taint source" : String | semmle.label | "taint source" : String |
 | Tuples.cs:90:14:90:14 | access to local variable r [property i] : String | semmle.label | access to local variable r [property i] : String |
 | Tuples.cs:90:14:90:16 | access to property i | semmle.label | access to property i |
+subpaths
 #select
 | Tuples.cs:7:21:7:34 | "taint source" : String | Tuples.cs:7:21:7:34 | "taint source" : String | Tuples.cs:9:14:9:14 | access to local variable a | $@ | Tuples.cs:9:14:9:14 | access to local variable a | access to local variable a |
 | Tuples.cs:7:21:7:34 | "taint source" : String | Tuples.cs:7:21:7:34 | "taint source" : String | Tuples.cs:14:14:14:14 | access to local variable a | $@ | Tuples.cs:14:14:14:14 | access to local variable a | access to local variable a |

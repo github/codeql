@@ -9,6 +9,7 @@ nodes
 | sql_injection.py:24:38:24:95 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
 | sql_injection.py:25:26:25:83 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
 | sql_injection.py:26:28:26:85 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+subpaths
 #select
 | sql_injection.py:21:24:21:77 | ControlFlowNode for BinaryExpr | sql_injection.py:14:15:14:22 | ControlFlowNode for username | sql_injection.py:21:24:21:77 | ControlFlowNode for BinaryExpr | This SQL query depends on $@. | sql_injection.py:14:15:14:22 | ControlFlowNode for username | a user-provided value |
 | sql_injection.py:24:38:24:95 | ControlFlowNode for BinaryExpr | sql_injection.py:14:15:14:22 | ControlFlowNode for username | sql_injection.py:24:38:24:95 | ControlFlowNode for BinaryExpr | This SQL query depends on $@. | sql_injection.py:14:15:14:22 | ControlFlowNode for username | a user-provided value |

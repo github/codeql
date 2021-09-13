@@ -95,10 +95,19 @@ class RangeSsaDefinition extends ControlFlowNodeBase {
 
   /**
    * If this definition is a phi node corresponding to a guard,
-   * then return the variable and the guard.
+   * then return the variable access and the guard.
    */
-  predicate isGuardPhi(VariableAccess v, Expr guard, boolean branch) {
-    guard_defn(v, guard, this, branch)
+  predicate isGuardPhi(VariableAccess va, Expr guard, boolean branch) {
+    guard_defn(va, guard, this, branch)
+  }
+
+  /**
+   * If this definition is a phi node corresponding to a guard,
+   * then return the variable guarded, the variable access and the guard.
+   */
+  predicate isGuardPhi(StackVariable v, VariableAccess va, Expr guard, boolean branch) {
+    guard_defn(va, guard, this, branch) and
+    va.getTarget() = v
   }
 
   /** Gets the primary location of this definition. */

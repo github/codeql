@@ -147,8 +147,6 @@ private predicate localAdditionalTaintExprStep(Expr src, Expr sink) {
   or
   comparisonStep(src, sink)
   or
-  stringBuilderStep(src, sink)
-  or
   serializationStep(src, sink)
   or
   formatStep(src, sink)
@@ -389,15 +387,6 @@ private predicate comparisonStep(Expr tracked, Expr sink) {
     )
   |
     other.isCompileTimeConstant() or other instanceof NullLiteral
-  )
-}
-
-/** Flow through a `StringBuilder`. */
-private predicate stringBuilderStep(Expr tracked, Expr sink) {
-  exists(StringBuilderVar sbvar, MethodAccess input, int arg |
-    input = sbvar.getAnInput(arg) and
-    tracked = input.getArgument(arg) and
-    sink = sbvar.getToStringCall()
   )
 }
 

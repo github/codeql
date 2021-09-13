@@ -180,7 +180,9 @@ abstract private class GeneratedType extends Type, GeneratedElement {
       concat(GeneratedMember m |
         m = this.getAGeneratedMember(assembly)
       |
-        stubMember(m, assembly) order by m.getQualifiedNameWithTypes()
+        stubMember(m, assembly)
+        order by
+          m.getQualifiedNameWithTypes(), stubExplicitImplementation(m)
       )
   }
 

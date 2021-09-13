@@ -264,11 +264,11 @@ bad61 = re.compile(r'''(thisisagoddamnlongstringforstresstestingthequery|this\w+
 # GOOD
 good27 = re.compile(r'''(thisisagoddamnlongstringforstresstestingthequery|imanotherbutunrelatedstringcomparedtotheotherstring)*-''')
 
-# GOOD
-good28 = re.compile(r'''foo([\uDC66\uDC67]|[\uDC68\uDC69])*foo''')
+# GOOD (but false positive caused by the extractor converting all four unpaired surrogates to \uFFFD)
+good28 = re.compile('''foo([\uDC66\uDC67]|[\uDC68\uDC69])*foo''')
 
-# GOOD
-good29 = re.compile(r'''foo((\uDC66|\uDC67)|(\uDC68|\uDC69))*foo''')
+# GOOD (but false positive caused by the extractor converting all four unpaired surrogates to \uFFFD)
+good29 = re.compile('''foo((\uDC66|\uDC67)|(\uDC68|\uDC69))*foo''')
 
 # NOT GOOD (but cannot currently construct a prefix)
 bad62 = re.compile(r'''a{2,3}(b+)+X''')

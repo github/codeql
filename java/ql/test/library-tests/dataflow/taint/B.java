@@ -46,6 +46,9 @@ public class B {
     // tainted - tokenized string
     String token = new StringTokenizer(badEscape).nextToken();
     sink(token);
+    // tainted - fluent concatenation
+    String fluentConcat = "".concat("str").concat(token).concat("bar");
+    sink(fluentConcat);
 
     // not tainted
     String safe = notTainty(complex);
