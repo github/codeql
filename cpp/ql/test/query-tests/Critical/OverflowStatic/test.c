@@ -48,21 +48,21 @@ union u {
 void union_test() {
   union u u;
   u.ptr[0] = 0; // GOOD
-  u.ptr[sizeof(u)-1] = 0; // GOOD [FALSE POSITIVE]
+  u.ptr[sizeof(u)-1] = 0; // GOOD
   u.ptr[sizeof(u)] = 0; // BAD
 }
 
 void test_struct_union() {
   struct { union u u; } v;
   v.u.ptr[0] = 0; // GOOD
-  v.u.ptr[sizeof(union u)-1] = 0; // GOOD [FALSE POSITIVE]
+  v.u.ptr[sizeof(union u)-1] = 0; // GOOD
   v.u.ptr[sizeof(union u)] = 0; // BAD
 }
 
 void union_test2() {
   union { char ptr[1]; unsigned long value; } u;
   u.ptr[0] = 0; // GOOD
-  u.ptr[sizeof(u)-1] = 0; // GOOD [FALSE POSITIVE]
+  u.ptr[sizeof(u)-1] = 0; // GOOD
   u.ptr[sizeof(u)] = 0; // BAD
 }
 

@@ -28,7 +28,8 @@ predicate memberMayBeVarSize(Class c, MemberVariable v) {
     i = max(int j | c.getCanonicalMember(j) instanceof Field | j) and
     v = c.getCanonicalMember(i) and
     // v is an array of size at most 1
-    v.getUnspecifiedType().(ArrayType).getArraySize() <= 1
+    v.getUnspecifiedType().(ArrayType).getArraySize() <= 1 and
+    not c instanceof Union
   ) and
   // If the size is taken, then arithmetic is performed on the result at least once
   (
@@ -59,6 +60,10 @@ int getBufferSize(Expr bufferExpr, Element why) {
     result = bufferVar.getUnspecifiedType().(ArrayType).getSize() and
     why = bufferVar and
     not memberMayBeVarSize(_, bufferVar) and
+    not exists(Union bufferType |
+      bufferType.getAMemberVariable() = why and
+      bufferVar.getUnspecifiedType().(ArrayType).getSize() <= 1
+    ) and
     not result = 0 // zero sized arrays are likely to have special usage, for example
     or
     // behaving a bit like a 'union' overlapping other fields.
@@ -79,6 +84,13 @@ int getBufferSize(Expr bufferExpr, Element why) {
       parentPtr = bufferExpr.(VariableAccess).getQualifier() and
       parentPtr.getTarget().getUnspecifiedType().(PointerType).getBaseType() = parentClass and
       result = getBufferSize(parentPtr, _) + bufferVar.getType().getSize() - parentClass.getSize()
+    )
+    or
+    exists(Union bufferType |
+      bufferType.getAMemberVariable() = why and
+      why = bufferVar and
+      bufferVar.getUnspecifiedType().(ArrayType).getSize() <= 1 and
+      result = bufferType.getSize()
     )
   )
   or
