@@ -3,6 +3,7 @@
  */
 
 import java
+import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.xml.AndroidManifest
 
 /**
@@ -77,5 +78,73 @@ class AndroidContentProvider extends ExportableAndroidComponent {
 class AndroidContentResolver extends AndroidComponent {
   AndroidContentResolver() {
     this.getASupertype*().hasQualifiedName("android.content", "ContentResolver")
+  }
+}
+
+private class UriModel extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "android.net;Uri;true;buildUpon;;;Argument[-1];ReturnValue;taint",
+        "android.net;Uri;false;decode;;;Argument[0];ReturnValue;taint",
+        "android.net;Uri;false;encode;;;Argument[0];ReturnValue;taint",
+        "android.net;Uri;false;fromFile;;;Argument[0];ReturnValue;taint",
+        "android.net;Uri;false;fromParts;;;Argument[0..2];ReturnValue;taint",
+        "android.net;Uri;true;getAuthority;;;Argument[-1];ReturnValue;taint",
+        "android.net;Uri;true;getEncodedAuthority;;;Argument[-1];ReturnValue;taint",
+        "android.net;Uri;true;getEncodedFragment;;;Argument[-1];ReturnValue;taint",
+        "android.net;Uri;true;getEncodedPath;;;Argument[-1];ReturnValue;taint",
+        "android.net;Uri;true;getEncodedQuery;;;Argument[-1];ReturnValue;taint",
+        "android.net;Uri;true;getEncodedSchemeSpecificPart;;;Argument[-1];ReturnValue;taint",
+        "android.net;Uri;true;getEncodedUserInfo;;;Argument[-1];ReturnValue;taint",
+        "android.net;Uri;true;getFragment;;;Argument[-1];ReturnValue;taint",
+        "android.net;Uri;true;getHost;;;Argument[-1];ReturnValue;taint",
+        "android.net;Uri;true;getLastPathSegment;;;Argument[-1];ReturnValue;taint",
+        "android.net;Uri;true;getPath;;;Argument[-1];ReturnValue;taint",
+        "android.net;Uri;true;getPathSegments;;;Argument[-1];ReturnValue;taint",
+        "android.net;Uri;true;getQuery;;;Argument[-1];ReturnValue;taint",
+        "android.net;Uri;true;getQueryParameter;;;Argument[-1];ReturnValue;taint",
+        "android.net;Uri;true;getQueryParameterNames;;;Argument[-1];ReturnValue;taint",
+        "android.net;Uri;true;getQueryParameters;;;Argument[-1];ReturnValue;taint",
+        "android.net;Uri;true;getScheme;;;Argument[-1];ReturnValue;taint",
+        "android.net;Uri;true;getSchemeSpecificPart;;;Argument[-1];ReturnValue;taint",
+        "android.net;Uri;true;getUserInfo;;;Argument[-1];ReturnValue;taint",
+        "android.net;Uri;true;normalizeScheme;;;Argument[-1];ReturnValue;taint",
+        "android.net;Uri;false;parse;;;Argument[0];ReturnValue;taint",
+        "android.net;Uri;true;toString;;;Argument[-1];ReturnValue;taint",
+        "android.net;Uri;false;withAppendedPath;;;Argument[0..1];ReturnValue;taint",
+        "android.net;Uri;false;writeToParcel;;;Argument[1];Argument[0];taint",
+        "android.net;Uri$Builder;true;appendEncodedPath;;;Argument[0];Argument[-1];taint",
+        "android.net;Uri$Builder;true;appendEncodedPath;;;Argument[-1];ReturnValue;value",
+        "android.net;Uri$Builder;true;appendPath;;;Argument[0];Argument[-1];taint",
+        "android.net;Uri$Builder;true;appendPath;;;Argument[-1];ReturnValue;value",
+        "android.net;Uri$Builder;true;appendQueryParameter;;;Argument[0..1];Argument[-1];taint",
+        "android.net;Uri$Builder;true;appendQueryParameter;;;Argument[-1];ReturnValue;value",
+        "android.net;Uri$Builder;true;authority;;;Argument[0];Argument[-1];taint",
+        "android.net;Uri$Builder;true;authority;;;Argument[-1];ReturnValue;value",
+        "android.net;Uri$Builder;true;build;;;Argument[-1];ReturnValue;taint",
+        "android.net;Uri$Builder;true;clearQuery;;;Argument[-1];ReturnValue;value",
+        "android.net;Uri$Builder;true;encodedAuthority;;;Argument[0];Argument[-1];taint",
+        "android.net;Uri$Builder;true;encodedAuthority;;;Argument[-1];ReturnValue;value",
+        "android.net;Uri$Builder;true;encodedFragment;;;Argument[0];Argument[-1];taint",
+        "android.net;Uri$Builder;true;encodedFragment;;;Argument[-1];ReturnValue;value",
+        "android.net;Uri$Builder;true;encodedOpaquePart;;;Argument[0];Argument[-1];taint",
+        "android.net;Uri$Builder;true;encodedOpaquePart;;;Argument[-1];ReturnValue;value",
+        "android.net;Uri$Builder;true;encodedPath;;;Argument[0];Argument[-1];taint",
+        "android.net;Uri$Builder;true;encodedPath;;;Argument[-1];ReturnValue;value",
+        "android.net;Uri$Builder;true;encodedQuery;;;Argument[0];Argument[-1];taint",
+        "android.net;Uri$Builder;true;encodedQuery;;;Argument[-1];ReturnValue;value",
+        "android.net;Uri$Builder;true;fragment;;;Argument[0];Argument[-1];taint",
+        "android.net;Uri$Builder;true;fragment;;;Argument[-1];ReturnValue;value",
+        "android.net;Uri$Builder;true;opaquePart;;;Argument[0];Argument[-1];taint",
+        "android.net;Uri$Builder;true;opaquePart;;;Argument[-1];ReturnValue;value",
+        "android.net;Uri$Builder;true;path;;;Argument[0];Argument[-1];taint",
+        "android.net;Uri$Builder;true;path;;;Argument[-1];ReturnValue;value",
+        "android.net;Uri$Builder;true;query;;;Argument[0];Argument[-1];taint",
+        "android.net;Uri$Builder;true;query;;;Argument[-1];ReturnValue;value",
+        "android.net;Uri$Builder;true;scheme;;;Argument[0];Argument[-1];taint",
+        "android.net;Uri$Builder;true;scheme;;;Argument[-1];ReturnValue;value",
+        "android.net;Uri$Builder;true;toString;;;Argument[-1];ReturnValue;taint"
+      ]
   }
 }
