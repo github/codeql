@@ -356,6 +356,41 @@ module SqlExecution {
 }
 
 /**
+ * A data-flow node that executes a regular expression.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `RegexExecution::Range` instead.
+ */
+class RegexExecution extends DataFlow::Node {
+  RegexExecution::Range range;
+
+  RegexExecution() { this = range }
+
+  /** Gets the data flow node for the regex being compiled by this node. */
+  DataFlow::Node getRegexNode() { result = range.getRegexNode() }
+
+  /** Gets a dataflow node for the string to be searched or matched against. */
+  DataFlow::Node getString() { result = range.getString() }
+}
+
+/** Provides classes for modeling new regular-expression execution APIs. */
+module RegexExecution {
+  /**
+   * A data-flow node that executes a regular expression.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `RegexExecution` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /** Gets the data flow node for the regex being compiled by this node. */
+    abstract DataFlow::Node getRegexNode();
+
+    /** Gets a dataflow node for the string to be searched or matched against. */
+    abstract DataFlow::Node getString();
+  }
+}
+
+/**
  * A data-flow node that escapes meta-characters, which could be used to prevent
  * injection attacks.
  *
@@ -411,6 +446,9 @@ module Escaping {
 
   /** Gets the escape-kind for escaping a string so it can safely be included in HTML. */
   string getHtmlKind() { result = "html" }
+
+  /** Gets the escape-kind for escaping a string so it can safely be included in HTML. */
+  string getRegexKind() { result = "regex" }
   // TODO: If adding an XML kind, update the modeling of the `MarkupSafe` PyPI package.
   //
   // Technically it claims to escape for both HTML and XML, but for now we don't have
@@ -425,6 +463,14 @@ module Escaping {
  */
 class HtmlEscaping extends Escaping {
   HtmlEscaping() { range.getKind() = Escaping::getHtmlKind() }
+}
+
+/**
+ * An escape of a string so it can be safely included in
+ * the body of a regex.
+ */
+class RegexEscaping extends Escaping {
+  RegexEscaping() { range.getKind() = Escaping::getRegexKind() }
 }
 
 /** Provides classes for modeling HTTP-related APIs. */

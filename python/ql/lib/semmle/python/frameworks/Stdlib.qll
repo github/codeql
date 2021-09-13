@@ -1498,6 +1498,158 @@ private module StdlibPrivate {
 }
 
 // ---------------------------------------------------------------------------
+// re
+// ---------------------------------------------------------------------------
+/**
+ * List of methods in the `re` module immediately executing a regular expression.
+ *
+ * See https://docs.python.org/3/library/re.html#module-contents
+ */
+private class RegexExecutionMethod extends string {
+  RegexExecutionMethod() {
+    this in ["match", "fullmatch", "search", "split", "findall", "finditer", "sub", "subn"]
+  }
+}
+
+/** Gets the index of the argument representing the string to be searched by a regex. */
+int stringArg(RegexExecutionMethod method) {
+  method in ["match", "fullmatch", "search", "split", "findall", "finditer"] and
+  result = 1
+  or
+  method in ["sub", "subn"] and
+  result = 2
+}
+
+/**
+ * A a call to a method from the `re` module immediately executing a regular expression.
+ *
+ * See `RegexExecutionMethods`
+ */
+private class DirectRegex extends DataFlow::CallCfgNode, RegexExecution::Range {
+  RegexExecutionMethod method;
+
+  DirectRegex() { this = API::moduleImport("re").getMember(method).getACall() }
+
+  override DataFlow::Node getRegexNode() {
+    result in [this.getArg(0), this.getArgByName("pattern")]
+  }
+
+  override DataFlow::Node getString() {
+    result in [this.getArg(stringArg(method)), this.getArgByName("string")]
+  }
+}
+
+/** Helper module for tracking compiled regexes. */
+private module CompiledRegexes {
+  private import semmle.python.dataflow.new.DataFlow2
+  private import semmle.python.RegexTreeView
+
+  // TODO: This module should be refactored once API graphs are more expressinve.
+  /** A configuration for finding uses of compiled regexes. */
+  class RegexDefinitionConfiguration extends DataFlow2::Configuration {
+    RegexDefinitionConfiguration() { this = "RegexDefinitionConfiguration" }
+
+    override predicate isSource(DataFlow::Node source) { source instanceof RegexDefinitonSource }
+
+    override predicate isSink(DataFlow::Node sink) { sink instanceof RegexDefinitionSink }
+  }
+
+  /** A regex compilation. */
+  class RegexDefinitonSource extends DataFlow::CallCfgNode {
+    DataFlow::Node regexNode;
+
+    RegexDefinitonSource() {
+      this = API::moduleImport("re").getMember("compile").getACall() and
+      regexNode in [this.getArg(0), this.getArgByName("pattern")]
+    }
+
+    /** Gets the data flow node for the regex being compiled by this node. */
+    DataFlow::Node getRegexNode() { result = regexNode }
+  }
+
+  /** A use of a compiled regex. */
+  class RegexDefinitionSink extends DataFlow::Node {
+    RegexExecutionMethod method;
+    DataFlow::CallCfgNode executingCall;
+
+    RegexDefinitionSink() {
+      executingCall =
+        API::moduleImport("re").getMember("compile").getReturn().getMember(method).getACall() and
+      this = executingCall.getFunction().(DataFlow::AttrRead).getObject()
+    }
+
+    /** Gets the method used to execute the regex. */
+    RegexExecutionMethod getMethod() { result = method }
+
+    /** Gets the data flow node for the executing call. */
+    DataFlow::CallCfgNode getExecutingCall() { result = executingCall }
+  }
+}
+
+private import CompiledRegexes
+
+/**
+ * A call on compiled regular expression (obtained via `re.compile`) executing a
+ * regular expression.
+ *
+ * Given the following example:
+ *
+ * ```py
+ * pattern = re.compile(input)
+ * pattern.match(s)
+ * ```
+ *
+ * This class will identify that `re.compile` compiles `input` and afterwards
+ * executes `re`'s `match`. As a result, `this` will refer to `pattern.match(s)`
+ * and `this.getRegexNode()` will return the node for `input` (`re.compile`'s first argument).
+ *
+ *
+ * See `RegexExecutionMethods`
+ *
+ * See https://docs.python.org/3/library/re.html#regular-expression-objects
+ */
+private class CompiledRegex extends DataFlow::CallCfgNode, RegexExecution {
+  DataFlow::Node regexNode;
+  RegexExecutionMethod method;
+
+  CompiledRegex() {
+    exists(
+      RegexDefinitionConfiguration conf, RegexDefinitonSource source, RegexDefinitionSink sink
+    |
+      conf.hasFlow(source, sink) and
+      regexNode = source.getRegexNode() and
+      method = sink.getMethod() and
+      this = sink.getExecutingCall()
+    )
+  }
+
+  override DataFlow::Node getRegexNode() { result = regexNode }
+
+  override DataFlow::Node getString() {
+    result in [this.getArg(stringArg(method) - 1), this.getArgByName("string")]
+  }
+}
+
+/**
+ * A call to 're.escape'.
+ * See https://docs.python.org/3/library/re.html#re.escape
+ */
+private class ReEscapeCall extends Escaping::Range, DataFlow::CallCfgNode {
+  DataFlow::Node regexNode;
+
+  ReEscapeCall() {
+    this = API::moduleImport("re").getMember("escape").getACall() and
+    regexNode in [this.getArg(0), this.getArgByName("pattern")]
+  }
+
+  override DataFlow::Node getAnInput() { result = regexNode }
+
+  override DataFlow::Node getOutput() { result = this }
+
+  override string getKind() { result = Escaping::getRegexKind() }
+}
+
+// ---------------------------------------------------------------------------
 // OTHER
 // ---------------------------------------------------------------------------
 /**
