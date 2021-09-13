@@ -151,7 +151,7 @@ predicate simpleLocalFlowStep(Node node1, Node node2) {
     ma.getCallee().getSourceDeclaration() = m and m.returnsValue(argNo)
   |
     node2.asExpr() = ma and
-    node1.(ArgumentNode).argumentOf(ma, argNo)
+    node1.(ArgumentNode).argumentOf(any(DataFlowCall c | c.asCall() = ma), argNo)
   )
   or
   FlowSummaryImpl::Private::Steps::summaryLocalStep(node1, node2, true)
