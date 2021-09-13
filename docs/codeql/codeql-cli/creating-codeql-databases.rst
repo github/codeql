@@ -324,7 +324,20 @@ The following example shows how you could use indirect build tracing in an Azure
              clean: True
           displayName: Visual Studio Build
 
-      # End build tracing.
+       # Read and set the generated environment variables to end build tracing. This is done in PowerShell in this example.
+       - task: PowerShell@1
+          displayName: Set CodeQL environment variables
+          inputs:
+             targetType: inline
+             script: >
+                $json = Get-Content $(System.DefaultWorkingDirectory)/db/temp/tracingEnvironment/end-tracing.json | ConvertFrom-Json
+                $json.PSObject.Properties | ForEach-Object {
+                    $template = "##vso[task.setvariable variable="
+                    $template += $_.Name
+                    $template += "]"
+                    $template += $_.Value
+                    echo "$template"
+                }
 
        - task: CmdLine@2
           displayName: Finalize CodeQL database
