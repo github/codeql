@@ -41,9 +41,12 @@ project = u'Supported languages and frameworks for LGTM Enterprise'
 
 # The version info for this project, if different from version and release in main conf.py file.
 # The short X.Y version.
-version = u'1.27'
-# The full version, including alpha/beta/rc tags.
-release = u'1.27'
+
+# LGTM Enterprise release
+release = u'1.28'
+
+# CodeQL CLI version used by LGTM Enterprise release
+version = u'2.5.9'
 
 # -- Project-specifc options for HTML output ----------------------------------------------
 
