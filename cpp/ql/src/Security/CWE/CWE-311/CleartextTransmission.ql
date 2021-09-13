@@ -13,7 +13,7 @@
 
 import cpp
 import semmle.code.cpp.security.SensitiveExprs
-import semmle.code.cpp.dataflow.DataFlow
+import semmle.code.cpp.dataflow.TaintTracking
 import DataFlow::PathGraph
 
 /**
@@ -68,7 +68,7 @@ class NetworkRecv extends NetworkSendRecv {
  * Taint flow from a sensitive expression to a network operation with data
  * tainted by that expression.
  */
-class SensitiveSendRecvConfiguration extends DataFlow::Configuration {
+class SensitiveSendRecvConfiguration extends TaintTracking::Configuration {
   SensitiveSendRecvConfiguration() { this = "SensitiveSendRecvConfiguration" }
 
   override predicate isSource(DataFlow::Node source) { source.asExpr() instanceof SensitiveExpr }

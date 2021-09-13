@@ -150,6 +150,6 @@ void test_taint(const char *password)
 
 		strncpy(buffer, password, 16);
 		buffer[15] = 0;
-		send(val(), buffer, 16, val()); // BAD: `password` is (partially) sent plaintext [NOT DETECTED]
+		send(val(), buffer, 16, val()); // BAD: `password` is (partially) sent plaintext
 	}
 }
