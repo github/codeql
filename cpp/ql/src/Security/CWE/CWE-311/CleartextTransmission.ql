@@ -2,7 +2,7 @@
  * @name Cleartext transmission of sensitive information
  * @description Transmitting sensitive information across a network in
  *              cleartext can expose it to an attacker.
- * @kind problem
+ * @kind path-problem
  * @problem.severity warning
  * @security-severity 7.5 TODO
  * @precision high TODO
@@ -14,6 +14,7 @@
 import cpp
 import semmle.code.cpp.security.SensitiveExprs
 import semmle.code.cpp.dataflow.DataFlow
+import DataFlow::PathGraph
 
 /**
  * A function call that sends or receives data over a network.
@@ -83,11 +84,19 @@ class SensitiveSendRecvConfiguration extends DataFlow::Configuration {
   }
 }
 
-from SensitiveSendRecvConfiguration config1, Expr source, Expr sink
+from
+  SensitiveSendRecvConfiguration config, DataFlow::PathNode source, DataFlow::PathNode sink,
+  NetworkSendRecv transmission, string msg
 where
-  exists(DataFlow::PathNode sourceNode, DataFlow::PathNode sinkNode |
-    config1.hasFlowPath(sourceNode, sinkNode) and
-    source = sourceNode.getNode().asExpr() and
-    sink = sinkNode.getNode().asExpr()
-  )
-select sink, source
+  config.hasFlowPath(source, sink) and
+  sink.getNode().asExpr() = transmission.getDataExpr() and
+  if transmission instanceof NetworkSend
+  then
+    msg =
+      "This operation transmits '" + sink.toString() +
+        "', which may contain unencrypted sensitive data from $@"
+  else
+    msg =
+      "This operation receives into '" + sink.toString() +
+        "', which may put unencrypted sensitive data into $@"
+select transmission, source, sink, msg, source, source.getNode().asExpr().toString()
