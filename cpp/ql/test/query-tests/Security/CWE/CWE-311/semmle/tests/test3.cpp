@@ -140,3 +140,16 @@ void test_interprocedural(const char *password1)
 		send(val(), data, strlen(data), val()); // BAD: `global_password` is sent plaintext
 	}
 }
+
+char *strncpy(char *s1, const char *s2, size_t n);
+
+void test_taint(const char *password)
+{
+	{
+		char buffer[16];
+
+		strncpy(buffer, password, 16);
+		buffer[15] = 0;
+		send(val(), buffer, 16, val()); // BAD: `password` is (partially) sent plaintext [NOT DETECTED]
+	}
+}
