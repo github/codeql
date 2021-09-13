@@ -231,12 +231,16 @@ numlines(
 
 files(
   unique int id: @file,
-  string name: string ref
+  string name: string ref,
+  string simple: string ref,
+  string ext: string ref,
+  int fromSource: int ref // deprecated
 );
 
 folders(
   unique int id: @folder,
-  string name: string ref
+  string name: string ref,
+  string simple: string ref
 );
 
 @container = @folder | @file
