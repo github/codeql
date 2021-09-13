@@ -4,8 +4,8 @@
  *              cleartext can expose it to an attacker.
  * @kind path-problem
  * @problem.severity warning
- * @security-severity 7.5 TODO
- * @precision high TODO
+ * @security-severity 7.5
+ * @precision medium
  * @id cpp/cleartext-transmission
  * @tags security
  *       external/cwe/cwe-319
