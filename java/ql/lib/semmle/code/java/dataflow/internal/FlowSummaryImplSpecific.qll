@@ -20,7 +20,7 @@ predicate parameterPosition(int i) { i in [-1 .. any(Parameter p).getPosition()]
 Node summaryNode(SummarizedCallable c, SummaryNodeState state) { result = getSummaryNode(c, state) }
 
 /** Gets the synthesized data-flow call for `receiver`. */
-DataFlowCall summaryDataFlowCall(Node receiver) { result.(SummaryCall).getReceiver() = receiver }
+SummaryCall summaryDataFlowCall(Node receiver) { result.getReceiver() = receiver }
 
 /** Gets the type of content `c`. */
 DataFlowType getContentType(Content c) { result = c.getType() }
