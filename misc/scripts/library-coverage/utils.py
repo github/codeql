@@ -8,7 +8,16 @@ import sys
 def subprocess_run(cmd):
     """Runs a command through subprocess.run, with a few tweaks. Raises an Exception if exit code != 0."""
     print(shlex.join(cmd))
-    return subprocess.run(cmd, capture_output=True, text=True, env=os.environ.copy(), check=True)
+    try:
+        ret = subprocess.run(cmd, capture_output=True,
+                             text=True, env=os.environ.copy(), check=True)
+        if (ret.stdout):
+            print(ret.stdout)
+        return ret
+    except subprocess.CalledProcessError as e:
+        if (e.stderr):
+            print(e.stderr)
+        raise e
 
 
 def subprocess_check_output(cmd):
