@@ -6,7 +6,7 @@ class UsersController < ActionController::Base
         cmd = params[:cmd]
         `#{cmd}`
         system(cmd)
-        system("echo", cmd)
+        system("echo", cmd) # OK, because cmd is not shell interpreted
         exec(cmd)
         %x(echo #{cmd})
         result = <<`EOF`
@@ -29,6 +29,7 @@ EOF
         # Open3 methods
         Open3.capture2("echo #{cmd}")
         Open3.pipeline("cat foo.txt", "grep #{cmd}")
+        Open3.pipeline(["echo", cmd], "tail") # OK, because cmd is not shell interpreted
     end
 
     def show

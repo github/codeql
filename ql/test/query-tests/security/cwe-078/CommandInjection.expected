@@ -7,7 +7,7 @@ edges
 | CommandInjection.rb:6:15:6:20 | call to params :  | CommandInjection.rb:26:19:26:24 | #{...} |
 | CommandInjection.rb:6:15:6:20 | call to params :  | CommandInjection.rb:30:24:30:36 | "echo #{...}" |
 | CommandInjection.rb:6:15:6:20 | call to params :  | CommandInjection.rb:31:39:31:51 | "grep #{...}" |
-| CommandInjection.rb:42:15:42:20 | call to params :  | CommandInjection.rb:46:24:46:36 | "echo #{...}" |
+| CommandInjection.rb:43:15:43:20 | call to params :  | CommandInjection.rb:47:24:47:36 | "echo #{...}" |
 nodes
 | CommandInjection.rb:6:15:6:20 | call to params :  | semmle.label | call to params :  |
 | CommandInjection.rb:7:10:7:15 | #{...} | semmle.label | #{...} |
@@ -18,8 +18,8 @@ nodes
 | CommandInjection.rb:26:19:26:24 | #{...} | semmle.label | #{...} |
 | CommandInjection.rb:30:24:30:36 | "echo #{...}" | semmle.label | "echo #{...}" |
 | CommandInjection.rb:31:39:31:51 | "grep #{...}" | semmle.label | "grep #{...}" |
-| CommandInjection.rb:42:15:42:20 | call to params :  | semmle.label | call to params :  |
-| CommandInjection.rb:46:24:46:36 | "echo #{...}" | semmle.label | "echo #{...}" |
+| CommandInjection.rb:43:15:43:20 | call to params :  | semmle.label | call to params :  |
+| CommandInjection.rb:47:24:47:36 | "echo #{...}" | semmle.label | "echo #{...}" |
 #select
 | CommandInjection.rb:7:10:7:15 | #{...} | CommandInjection.rb:6:15:6:20 | call to params :  | CommandInjection.rb:7:10:7:15 | #{...} | This command depends on $@. | CommandInjection.rb:6:15:6:20 | call to params | a user-provided value |
 | CommandInjection.rb:8:16:8:18 | cmd | CommandInjection.rb:6:15:6:20 | call to params :  | CommandInjection.rb:8:16:8:18 | cmd | This command depends on $@. | CommandInjection.rb:6:15:6:20 | call to params | a user-provided value |
@@ -29,4 +29,4 @@ nodes
 | CommandInjection.rb:26:19:26:24 | #{...} | CommandInjection.rb:6:15:6:20 | call to params :  | CommandInjection.rb:26:19:26:24 | #{...} | This command depends on $@. | CommandInjection.rb:6:15:6:20 | call to params | a user-provided value |
 | CommandInjection.rb:30:24:30:36 | "echo #{...}" | CommandInjection.rb:6:15:6:20 | call to params :  | CommandInjection.rb:30:24:30:36 | "echo #{...}" | This command depends on $@. | CommandInjection.rb:6:15:6:20 | call to params | a user-provided value |
 | CommandInjection.rb:31:39:31:51 | "grep #{...}" | CommandInjection.rb:6:15:6:20 | call to params :  | CommandInjection.rb:31:39:31:51 | "grep #{...}" | This command depends on $@. | CommandInjection.rb:6:15:6:20 | call to params | a user-provided value |
-| CommandInjection.rb:46:24:46:36 | "echo #{...}" | CommandInjection.rb:42:15:42:20 | call to params :  | CommandInjection.rb:46:24:46:36 | "echo #{...}" | This command depends on $@. | CommandInjection.rb:42:15:42:20 | call to params | a user-provided value |
+| CommandInjection.rb:47:24:47:36 | "echo #{...}" | CommandInjection.rb:43:15:43:20 | call to params :  | CommandInjection.rb:47:24:47:36 | "echo #{...}" | This command depends on $@. | CommandInjection.rb:43:15:43:20 | call to params | a user-provided value |
