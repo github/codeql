@@ -20,11 +20,21 @@ numlines(int element_id: @sourceline ref,
          int num_comment: int ref
         );
  
+ 
+/*
+  fromSource(0) = unknown,
+  fromSource(1) = from source,
+  fromSource(2) = from library
+*/
 files(unique int id: @file,
-      varchar(900) name: string ref);
+      varchar(900) name: string ref,
+      varchar(900) simple: string ref,
+      varchar(900) ext: string ref,
+      int fromSource: int ref);
  
 folders(unique int id: @folder,
-        varchar(900) name: string ref);
+        varchar(900) name: string ref,
+        varchar(900) simple: string ref);
  
  
 @container = @folder | @file ;

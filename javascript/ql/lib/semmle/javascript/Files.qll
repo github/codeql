@@ -156,7 +156,7 @@ abstract class Container extends @container {
 
 /** A folder. */
 class Folder extends Container, @folder {
-  override string getAbsolutePath() { folders(this, result, _) }
+  override string getAbsolutePath() { folders(this, result) }
 
   /** Gets the file or subfolder in this folder that has the given `name`, if any. */
   Container getChildContainer(string name) {
@@ -203,7 +203,7 @@ class File extends Container, @file {
    */
   Location getLocation() { hasLocation(this, result) }
 
-  override string getAbsolutePath() { files(this, result, _, _, _) }
+  override string getAbsolutePath() { files(this, result) }
 
   /** Gets the number of lines in this file. */
   int getNumberOfLines() { result = sum(int loc | numlines(this, loc, _, _) | loc) }
