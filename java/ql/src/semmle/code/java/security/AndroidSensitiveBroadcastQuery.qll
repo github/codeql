@@ -55,7 +55,7 @@ private predicate isEmptyArrayArg(Expr ex) {
  */
 private predicate isSensitiveBroadcastSink(DataFlow::Node sink) {
   exists(SendBroadcastMethodAccess ma, string name | ma.getMethod().hasName(name) |
-    sink.asExpr() = ma.getArgument(0) and
+    sink.asExpr() = ma.getAnArgument() and
     (
       name = "sendBroadcast" and
       (
