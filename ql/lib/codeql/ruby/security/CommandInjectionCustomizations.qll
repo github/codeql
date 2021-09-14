@@ -48,8 +48,7 @@ module CommandInjection {
    */
   class ShellwordsEscapeAsSanitizer extends Sanitizer {
     ShellwordsEscapeAsSanitizer() {
-      this = API::getTopLevelMember("Shellwords").getAMethodCall("escape") or
-      this = API::getTopLevelMember("Shellwords").getAMethodCall("shellescape")
+      this = API::getTopLevelMember("Shellwords").getAMethodCall(["escape", "shellescape"])
     }
   }
 }

@@ -13,8 +13,11 @@ class UsersController < ActionController::Base
         #{cmd}
 EOF
 
-        safe_cmd = Shellwords.escape(cmd)
-        `echo #{safe_cmd}`
+        safe_cmd_1 = Shellwords.escape(cmd)
+        `echo #{safe_cmd_1}`
+
+        safe_cmd_2 = Shellwords.shellescape(cmd)
+        `echo #{safe_cmd_2}`
 
         if cmd == "some constant"
             `echo #{cmd}`

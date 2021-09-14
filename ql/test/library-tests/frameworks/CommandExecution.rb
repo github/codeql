@@ -86,3 +86,5 @@ class Foo
     MockSystem.system("ls")
   end
 end
+
+UnknownModule.system("ls")
