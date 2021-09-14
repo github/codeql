@@ -12,7 +12,7 @@ import semmle.code.java.security.SensitiveActions
 private string getAndroidSensitiveInfoRegex() { result = "(?i).*(email|phone|ticket).*" }
 
 /** Finds variables that hold sensitive information judging by their names. */
-class SensitiveInfoExpr extends Expr {
+private class SensitiveInfoExpr extends Expr {
   SensitiveInfoExpr() {
     exists(Variable v | this = v.getAnAccess() |
       v.getName().regexpMatch([getCommonSensitiveInfoRegex(), getAndroidSensitiveInfoRegex()])
@@ -23,7 +23,7 @@ class SensitiveInfoExpr extends Expr {
 /**
  * A method access of the `Context.sendBroadcast` family.
  */
-class SendBroadcastMethodAccess extends MethodAccess {
+private class SendBroadcastMethodAccess extends MethodAccess {
   SendBroadcastMethodAccess() {
     this.getMethod().getDeclaringType().getASourceSupertype*() instanceof TypeContext and
     this.getMethod().getName().matches("send%Broadcast%")
@@ -53,7 +53,7 @@ private predicate isEmptyArrayArg(Expr ex) {
 /**
  * Holds if a `sendBroadcast` call doesn't specify receiver permission.
  */
-predicate isSensitiveBroadcastSink(DataFlow::Node sink) {
+private predicate isSensitiveBroadcastSink(DataFlow::Node sink) {
   exists(SendBroadcastMethodAccess ma, string name | ma.getMethod().hasName(name) |
     sink.asExpr() = ma.getAnArgument() and
     (
