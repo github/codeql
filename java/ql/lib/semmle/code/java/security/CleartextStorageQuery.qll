@@ -25,8 +25,7 @@ class SensitiveSource extends Expr {
   }
 
   /** Holds if this source flows to the `sink`. */
-  cached
-  predicate flowsToCached(Expr sink) {
+  predicate flowsTo(Expr sink) {
     exists(SensitiveSourceFlowConfig conf |
       conf.hasFlow(DataFlow::exprNode(this), DataFlow::exprNode(sink))
     )

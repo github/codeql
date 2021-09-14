@@ -17,6 +17,6 @@ from SensitiveSource data, Cookie s, Expr input, Expr store
 where
   input = s.getAnInput() and
   store = s.getAStore() and
-  data.flowsToCached(input)
+  data.flowsTo(input)
 select store, "Cookie $@ containing $@ is stored here. Data was added $@.", s, s.toString(), data,
   "sensitive data", input, "here"

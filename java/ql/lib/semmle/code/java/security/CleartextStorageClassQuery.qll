@@ -35,7 +35,7 @@ private class Serializable extends ClassStore {
     not this instanceof Properties and
     // restrict attention to tainted instances
     exists(SensitiveSource data |
-      data.flowsToCached(getInstanceInput(_, this.getConstructor().getDeclaringType()))
+      data.flowsTo(getInstanceInput(_, this.getConstructor().getDeclaringType()))
     )
   }
 
