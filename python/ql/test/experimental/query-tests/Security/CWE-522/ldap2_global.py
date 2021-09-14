@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 # SSL through ldap global variable option
 
-ldap.set_option(ldap.OPT_X_TLS_DEMAND)
+ldap.set_option(ldap.OPT_X_TLS_NEVER)
 
 
 @app.route("/one")
