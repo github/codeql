@@ -8,7 +8,7 @@
  * @precision medium
  * @id java/incorrect-url-verification
  * @tags security
- *       external/cwe-939
+ *       external/cwe/cwe-939
  */
 
 import java
