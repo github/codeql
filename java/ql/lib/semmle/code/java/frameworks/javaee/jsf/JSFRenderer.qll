@@ -21,9 +21,6 @@ private class ExternalContextSource extends SourceModelCsv {
           "faces.context;ExternalContext;true;getRequestParameterNames;();;ReturnValue;remote",
           "faces.context;ExternalContext;true;getRequestParameterValuesMap;();;ReturnValue;remote",
           "faces.context;ExternalContext;true;getRequestPathInfo;();;ReturnValue;remote",
-          "faces.context;ExternalContext;true;getResource;(String);;ReturnValue;remote",
-          "faces.context;ExternalContext;true;getResourceAsStream;(String);;ReturnValue;remote",
-          "faces.context;ExternalContext;true;getResourcePaths;(String);;ReturnValue;remote",
           "faces.context;ExternalContext;true;getRequestCookieMap;();;ReturnValue;remote",
           "faces.context;ExternalContext;true;getRequestHeaderMap;();;ReturnValue;remote",
           "faces.context;ExternalContext;true;getRequestHeaderValuesMap;();;ReturnValue;remote"
