@@ -160,22 +160,6 @@ class Content extends TContent {
 }
 
 /**
- * A node that controls whether other nodes are evaluated.
- */
-class GuardNode extends CfgNodes::ExprCfgNode {
-  ConditionBlock conditionBlock;
-
-  GuardNode() { this = conditionBlock.getLastNode() }
-
-  /** Holds if this guard controls block `b` upon evaluating to `branch`. */
-  predicate controlsBlock(BasicBlock bb, boolean branch) {
-    exists(SuccessorTypes::BooleanSuccessor s | s.getValue() = branch |
-      conditionBlock.controls(bb, s)
-    )
-  }
-}
-
-/**
  * A guard that validates some expression.
  *
  * To use this in a configuration, extend the class and provide a
@@ -184,7 +168,18 @@ class GuardNode extends CfgNodes::ExprCfgNode {
  *
  * It is important that all extending classes in scope are disjoint.
  */
-abstract class BarrierGuard extends GuardNode {
+abstract class BarrierGuard extends CfgNodes::ExprCfgNode {
+  private ConditionBlock conditionBlock;
+
+  BarrierGuard() { this = conditionBlock.getLastNode() }
+
+  /** Holds if this guard controls block `b` upon evaluating to `branch`. */
+  private predicate controlsBlock(BasicBlock bb, boolean branch) {
+    exists(SuccessorTypes::BooleanSuccessor s | s.getValue() = branch |
+      conditionBlock.controls(bb, s)
+    )
+  }
+
   /**
    * Holds if this guard validates `expr` upon evaluating to `branch`.
    * For example, the following code validates `foo` when the condition

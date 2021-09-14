@@ -26,6 +26,8 @@ end
 
 unless foo != "foo"
     foo
+else
+    foo
 end
 
 foo
