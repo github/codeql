@@ -15,7 +15,10 @@ predicate conditionControlsMethod(MethodAccess ma, Expr e) {
   exists(ConditionBlock cb, SensitiveExecutionMethod m, boolean cond |
     ma.getMethod() = m and
     cb.controls(ma.getBasicBlock(), cond) and
-    not cb.controls(m.getAReference().getBasicBlock(), cond.booleanNot()) and
+    not cb.controls(any(SensitiveExecutionMethod sem).getAReference().getBasicBlock(),
+      cond.booleanNot()) and
+    not cb.controls(any(ThrowStmt t).getBasicBlock(), _) and
+    not cb.controls(any(ReturnStmt r).getBasicBlock(), _) and
     e = cb.getCondition()
   )
 }

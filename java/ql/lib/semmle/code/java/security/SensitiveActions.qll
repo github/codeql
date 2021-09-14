@@ -80,17 +80,12 @@ abstract class SensitiveExecutionMethod extends Method { }
 class AuthMethod extends SensitiveExecutionMethod {
   AuthMethod() {
     exists(string s | s = this.getName().toLowerCase() |
-      (
-        s.matches("%login%") or
-        s.matches("%auth%")
-      ) and
-      not (
-        s.matches("get%") or
-        s.matches("set%") or
-        s.matches("parse%") or
-        s.matches("%loginfo%")
-      )
-    )
+      s.matches(["%login%", "%auth%"]) and
+      not s.matches([
+          "get%", "set%", "parse%", "%loginfo%", "remove%", "clean%", "%unauth%", "%author%"
+        ])
+    ) and
+    not this.getDeclaringType().getASupertype*() instanceof TypeException
   }
 }
 
