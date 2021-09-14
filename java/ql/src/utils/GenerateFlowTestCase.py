@@ -212,7 +212,6 @@ with open(resultQl, "w") as f:
         f.write(", ".join('"%s"' %
                           modelSpecRow[0].strip() for modelSpecRow in supportModelRows))
         copyfile("testModelsFooter.qlfrag", f)
-    copyfile("testFooter.qlfrag", f)
 
 # Make an empty .expected file, since this is an inline-exectations test
 with open(os.path.join(sys.argv[3], "test.expected"), "w"):
