@@ -16,7 +16,8 @@ groovy.lang,26,,,,,26,,,,,,,,,,,,,,,,,
 groovy.util,5,,,,,5,,,,,,,,,,,,,,,,,
 jakarta.json,,,123,,,,,,,,,,,,,,,,,,,100,23
 jakarta.ws.rs.client,1,,,,,,,,,,,,,1,,,,,,,,,
-jakarta.ws.rs.core,2,,143,,,,,,,,,,,,,,,2,,,,88,55
+jakarta.ws.rs.container,,9,,,,,,,,,,,,,,,,,,,9,,
+jakarta.ws.rs.core,2,,149,,,,,,,,,,,,,,,2,,,,94,55
 java.beans,,,1,,,,,,,,,,,,,,,,,,,1,
 java.io,3,,27,,3,,,,,,,,,,,,,,,,,26,1
 java.lang,,,45,,,,,,,,,,,,,,,,,,,39,6
@@ -32,7 +33,8 @@ javax.script,1,,,,,,,,,,,1,,,,,,,,,,,
 javax.servlet,4,21,2,,,,3,1,,,,,,,,,,,,,21,2,
 javax.validation,1,1,,1,,,,,,,,,,,,,,,,,1,,
 javax.ws.rs.client,1,,,,,,,,,,,,,1,,,,,,,,,
-javax.ws.rs.core,3,,143,,,,1,,,,,,,,,,,2,,,,88,55
+javax.ws.rs.container,,9,,,,,,,,,,,,,,,,,,,9,,
+javax.ws.rs.core,3,,149,,,,1,,,,,,,,,,,2,,,,94,55
 javax.xml.transform.sax,,,4,,,,,,,,,,,,,,,,,,,4,
 javax.xml.transform.stream,,,2,,,,,,,,,,,,,,,,,,,2,
 javax.xml.xpath,3,,,,,,,,,,,,,,,,,,3,,,,
