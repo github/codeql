@@ -594,13 +594,13 @@ class RegExpDot extends RegExpSpecialChar {
 }
 
 class RegExpDollar extends RegExpSpecialChar {
-  RegExpDollar() { this.getChar() = "$" }
+  RegExpDollar() { this.getChar() = ["$", "\\Z", "\\z"] }
 
   override string getAPrimaryQlClass() { result = "RegExpDollar" }
 }
 
 class RegExpCaret extends RegExpSpecialChar {
-  RegExpCaret() { this.getChar() = "^" }
+  RegExpCaret() { this.getChar() = ["^", "\\A"] }
 
   override string getAPrimaryQlClass() { result = "RegExpCaret" }
 }

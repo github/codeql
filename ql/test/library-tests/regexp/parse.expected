@@ -146,10 +146,10 @@ regexp.rb:
 
 #   19| [RegExpConstant, RegExpNormalChar] _
 
-#   20| [RegExpConstant, RegExpEscape] \A
+#   20| [RegExpCaret] \A
 
 #   20| [RegExpSequence] \A[+-]?\d+
-#-----| 0 -> [RegExpConstant, RegExpEscape] \A
+#-----| 0 -> [RegExpCaret] \A
 #-----| 1 -> [RegExpOpt] [+-]?
 #-----| 2 -> [RegExpPlus] \d+
 
