@@ -55,7 +55,7 @@ private predicate isEmptyArrayArg(Expr ex) {
  */
 private predicate isSensitiveBroadcastSink(DataFlow::Node sink) {
   exists(SendBroadcastMethodAccess ma, string name | ma.getMethod().hasName(name) |
-    sink.asExpr() = ma.getAnArgument() and
+    sink.asExpr() = ma.getArgument(0) and
     (
       name = "sendBroadcast" and
       (
@@ -85,7 +85,7 @@ private predicate isSensitiveBroadcastSink(DataFlow::Node sink) {
         // sendOrderedBroadcast(Intent intent, String receiverPermission)
         // sendOrderedBroadcast(Intent intent, String receiverPermission, BroadcastReceiver resultReceiver, Handler scheduler, int initialCode, String initialData, Bundle initialExtras)
         isNullArg(ma.getArgument(1)) and
-        ma.getNumArgument() <= 7
+        ma.getNumArgument() = [2, 7]
         or
         // sendOrderedBroadcast(Intent intent, String receiverPermission, String receiverAppOp, BroadcastReceiver resultReceiver, Handler scheduler, int initialCode, String initialData, Bundle initialExtras)
         isNullArg(ma.getArgument(1)) and
