@@ -13,16 +13,16 @@
 
 // determine precision above
 import python
+private import semmle.python.Concepts
 import semmle.python.security.injection.RegexInjection
 import DataFlow::PathGraph
 
 from
   RegexInjection::Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink,
-  RegexInjection::Sink regexInjectionSink
+  RegexExecution regexExecution
 where
   config.hasFlowPath(source, sink) and
-  regexInjectionSink = sink.getNode()
+  regexExecution = sink.getNode().(RegexInjection::Sink).getRegexExecution()
 select sink.getNode(), source, sink,
-  "$@ regular expression is constructed from a $@ and executed by $@.",
-  regexInjectionSink.getRegexNode(), "This", source.getNode(), "user-provided value",
-  regexInjectionSink, regexInjectionSink.getName()
+  "$@ regular expression is constructed from a $@ and executed by $@.", sink.getNode(), "This",
+  source.getNode(), "user-provided value", regexExecution, regexExecution.getName()

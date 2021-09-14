@@ -25,7 +25,14 @@ module RegexInjection {
    * A sink for "regular expression injection" vulnerabilities is the execution of a regular expression.
    * If you have a custom way to execute regular expressions, you can extend `RegexExecution::Range`.
    */
-  class Sink extends RegexExecution { }
+  class Sink extends DataFlow::Node {
+    RegexExecution regexExecution;
+
+    Sink() { this = regexExecution.getRegexNode() }
+
+    /** Gets the call that executes the regular expression marked by this sink. */
+    RegexExecution getRegexExecution() { result = regexExecution }
+  }
 
   /**
    * A sanitizer for "regular expression injection" vulnerabilities.
