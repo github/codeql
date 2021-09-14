@@ -5,13 +5,13 @@
  *              exponential time on certain inputs.
  * @kind path-problem
  * @problem.severity error
+ * @precision high
  * @id py/regex-injection
  * @tags security
  *       external/cwe/cwe-730
  *       external/cwe/cwe-400
  */
 
-// determine precision above
 import python
 private import semmle.python.Concepts
 import semmle.python.security.injection.RegexInjection
