@@ -10,6 +10,13 @@
 | A.java:10:22:10:28 | taint(...) | A.java:17:9:17:105 | format(...) |
 | A.java:10:22:10:28 | taint(...) | A.java:17:9:17:105 | new ..[] { .. } |
 | A.java:10:22:10:28 | taint(...) | A.java:17:102:17:104 | bad |
+| A.java:10:22:10:28 | taint(...) | file:///modules/java.base/java/lang/String.class:0:0:0:0 | [summary] read: [] of argument 0 in formatted |
+| A.java:10:22:10:28 | taint(...) | file:///modules/java.base/java/lang/String.class:0:0:0:0 | [summary] read: [] of argument 1 in format |
+| A.java:10:22:10:28 | taint(...) | file:///modules/java.base/java/lang/String.class:0:0:0:0 | [summary] to write: return (return) in format |
+| A.java:10:22:10:28 | taint(...) | file:///modules/java.base/java/lang/String.class:0:0:0:0 | [summary] to write: return (return) in formatted |
+| A.java:10:22:10:28 | taint(...) | file:///modules/java.base/java/lang/String.class:0:0:0:0 | parameter this |
+| A.java:10:22:10:28 | taint(...) | file://:0:0:0:0 | p0 |
+| A.java:10:22:10:28 | taint(...) | file://:0:0:0:0 | p1 |
 | A.java:21:22:21:28 | taint(...) | A.java:21:22:21:28 | taint(...) |
 | A.java:21:22:21:28 | taint(...) | A.java:25:9:25:9 | f [post update] |
 | A.java:21:22:21:28 | taint(...) | A.java:25:9:25:27 | format(...) |
@@ -26,6 +33,8 @@
 | A.java:30:22:30:28 | taint(...) | A.java:35:24:35:26 | bad |
 | A.java:30:22:30:28 | taint(...) | A.java:36:9:36:10 | sb |
 | A.java:30:22:30:28 | taint(...) | A.java:36:9:36:21 | toString(...) |
+| A.java:30:22:30:28 | taint(...) | file:///modules/java.base/java/lang/StringBuilder.class:0:0:0:0 | [summary] to write: return (return) in toString |
+| A.java:30:22:30:28 | taint(...) | file:///modules/java.base/java/lang/StringBuilder.class:0:0:0:0 | parameter this |
 | A.java:40:22:40:28 | taint(...) | A.java:40:22:40:28 | taint(...) |
 | A.java:40:22:40:28 | taint(...) | A.java:43:9:43:10 | sb [post update] |
 | A.java:40:22:40:28 | taint(...) | A.java:43:9:43:22 | append(...) |
@@ -34,3 +43,7 @@
 | A.java:40:22:40:28 | taint(...) | A.java:45:9:45:38 | format(...) |
 | A.java:40:22:40:28 | taint(...) | A.java:45:9:45:49 | toString(...) |
 | A.java:40:22:40:28 | taint(...) | A.java:45:23:45:24 | sb |
+| A.java:40:22:40:28 | taint(...) | file:///modules/java.base/java/lang/StringBuilder.class:0:0:0:0 | [summary] to write: argument -1 in append |
+| A.java:40:22:40:28 | taint(...) | file:///modules/java.base/java/lang/StringBuilder.class:0:0:0:0 | [summary] to write: return (return) in append |
+| A.java:40:22:40:28 | taint(...) | file:///modules/java.base/java/lang/StringBuilder.class:0:0:0:0 | parameter this |
+| A.java:40:22:40:28 | taint(...) | file://:0:0:0:0 | p0 |

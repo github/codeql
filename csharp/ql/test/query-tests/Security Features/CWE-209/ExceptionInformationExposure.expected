@@ -9,6 +9,7 @@ nodes
 | ExceptionInformationExposure.cs:40:28:40:40 | access to property StackTrace | semmle.label | access to property StackTrace |
 | ExceptionInformationExposure.cs:41:28:41:40 | call to method ToString | semmle.label | call to method ToString |
 | ExceptionInformationExposure.cs:47:28:47:55 | call to method ToString | semmle.label | call to method ToString |
+subpaths
 #select
 | ExceptionInformationExposure.cs:19:32:19:44 | call to method ToString | ExceptionInformationExposure.cs:19:32:19:44 | call to method ToString | ExceptionInformationExposure.cs:19:32:19:44 | call to method ToString | Exception information from $@ flows to here, and is exposed to the user. | ExceptionInformationExposure.cs:19:32:19:44 | call to method ToString | call to method ToString |
 | ExceptionInformationExposure.cs:21:32:21:33 | access to local variable ex | ExceptionInformationExposure.cs:19:32:19:33 | access to local variable ex : Exception | ExceptionInformationExposure.cs:21:32:21:33 | access to local variable ex | Exception information from $@ flows to here, and is exposed to the user. | ExceptionInformationExposure.cs:19:32:19:33 | access to local variable ex | access to local variable ex : Exception |

@@ -90,6 +90,7 @@ nodes
 | InsecureTrustManagerTest.java:414:33:414:81 | {...} [[]] : InsecureTrustManager | semmle.label | {...} [[]] : InsecureTrustManager |
 | InsecureTrustManagerTest.java:414:54:414:79 | new InsecureTrustManager(...) : InsecureTrustManager | semmle.label | new InsecureTrustManager(...) : InsecureTrustManager |
 | InsecureTrustManagerTest.java:415:22:415:33 | trustManager | semmle.label | trustManager |
+subpaths
 #select
 | InsecureTrustManagerTest.java:122:22:122:33 | trustManager | InsecureTrustManagerTest.java:121:54:121:79 | new InsecureTrustManager(...) : InsecureTrustManager | InsecureTrustManagerTest.java:122:22:122:33 | trustManager | $@ that is defined $@ and trusts any certificate, is used here. | InsecureTrustManagerTest.java:121:54:121:79 | new InsecureTrustManager(...) : InsecureTrustManager | This trustmanager | InsecureTrustManagerTest.java:35:23:35:42 | InsecureTrustManager | here |
 | InsecureTrustManagerTest.java:152:23:152:34 | trustManager | InsecureTrustManagerTest.java:151:55:151:80 | new InsecureTrustManager(...) : InsecureTrustManager | InsecureTrustManagerTest.java:152:23:152:34 | trustManager | $@ that is defined $@ and trusts any certificate, is used here. | InsecureTrustManagerTest.java:151:55:151:80 | new InsecureTrustManager(...) : InsecureTrustManager | This trustmanager | InsecureTrustManagerTest.java:35:23:35:42 | InsecureTrustManager | here |

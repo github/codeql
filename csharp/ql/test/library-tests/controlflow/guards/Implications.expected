@@ -184,8 +184,8 @@
 | Collections.cs:36:13:36:29 | ... != ... | false | Collections.cs:36:13:36:16 | access to parameter args | non-empty |
 | Collections.cs:37:13:37:28 | ... > ... | true | Collections.cs:37:13:37:16 | access to parameter args | non-empty |
 | Collections.cs:39:13:39:29 | ... >= ... | true | Collections.cs:39:13:39:16 | access to parameter args | non-empty |
-| Collections.cs:44:17:44:26 | call to method Any | false | Collections.cs:44:17:44:20 | access to parameter args | empty |
-| Collections.cs:44:17:44:26 | call to method Any | true | Collections.cs:44:17:44:20 | access to parameter args | non-empty |
+| Collections.cs:44:17:44:26 | call to method Any<String> | false | Collections.cs:44:17:44:20 | access to parameter args | empty |
+| Collections.cs:44:17:44:26 | call to method Any<String> | true | Collections.cs:44:17:44:20 | access to parameter args | non-empty |
 | Collections.cs:49:13:49:27 | ... == ... | false | Collections.cs:49:13:49:16 | access to parameter args | non-empty |
 | Collections.cs:49:13:49:27 | ... == ... | true | Collections.cs:49:13:49:16 | access to parameter args | empty |
 | Collections.cs:55:13:55:13 | access to local variable x | empty | Collections.cs:54:13:54:42 | array creation of type String[] | empty |
@@ -196,21 +196,21 @@
 | Collections.cs:57:13:57:13 | access to local variable x | non-empty | Collections.cs:56:13:56:25 | array creation of type String[] | non-empty |
 | Collections.cs:57:13:57:13 | access to local variable x | non-null | Collections.cs:56:13:56:25 | array creation of type String[] | non-null |
 | Collections.cs:57:13:57:13 | access to local variable x | null | Collections.cs:56:13:56:25 | array creation of type String[] | null |
-| Collections.cs:63:9:63:9 | access to local variable x | empty | Collections.cs:62:17:62:55 | call to method ToList | empty |
-| Collections.cs:63:9:63:9 | access to local variable x | non-empty | Collections.cs:62:17:62:55 | call to method ToList | non-empty |
-| Collections.cs:63:9:63:9 | access to local variable x | non-null | Collections.cs:62:17:62:55 | call to method ToList | non-null |
-| Collections.cs:63:9:63:9 | access to local variable x | null | Collections.cs:62:17:62:55 | call to method ToList | null |
-| Collections.cs:64:13:64:13 | access to local variable x | non-null | Collections.cs:62:17:62:55 | call to method ToList | non-null |
-| Collections.cs:64:13:64:13 | access to local variable x | null | Collections.cs:62:17:62:55 | call to method ToList | null |
+| Collections.cs:63:9:63:9 | access to local variable x | empty | Collections.cs:62:17:62:55 | call to method ToList<String> | empty |
+| Collections.cs:63:9:63:9 | access to local variable x | non-empty | Collections.cs:62:17:62:55 | call to method ToList<String> | non-empty |
+| Collections.cs:63:9:63:9 | access to local variable x | non-null | Collections.cs:62:17:62:55 | call to method ToList<String> | non-null |
+| Collections.cs:63:9:63:9 | access to local variable x | null | Collections.cs:62:17:62:55 | call to method ToList<String> | null |
+| Collections.cs:64:13:64:13 | access to local variable x | non-null | Collections.cs:62:17:62:55 | call to method ToList<String> | non-null |
+| Collections.cs:64:13:64:13 | access to local variable x | null | Collections.cs:62:17:62:55 | call to method ToList<String> | null |
 | Collections.cs:64:13:64:24 | ... == ... | false | Collections.cs:64:13:64:13 | access to local variable x | non-empty |
 | Collections.cs:64:13:64:24 | ... == ... | true | Collections.cs:64:13:64:13 | access to local variable x | empty |
-| Collections.cs:66:13:66:13 | access to local variable x | non-null | Collections.cs:62:17:62:55 | call to method ToList | non-null |
-| Collections.cs:66:13:66:13 | access to local variable x | null | Collections.cs:62:17:62:55 | call to method ToList | null |
-| Collections.cs:67:13:67:13 | access to local variable x | non-null | Collections.cs:62:17:62:55 | call to method ToList | non-null |
-| Collections.cs:67:13:67:13 | access to local variable x | null | Collections.cs:62:17:62:55 | call to method ToList | null |
+| Collections.cs:66:13:66:13 | access to local variable x | non-null | Collections.cs:62:17:62:55 | call to method ToList<String> | non-null |
+| Collections.cs:66:13:66:13 | access to local variable x | null | Collections.cs:62:17:62:55 | call to method ToList<String> | null |
+| Collections.cs:67:13:67:13 | access to local variable x | non-null | Collections.cs:62:17:62:55 | call to method ToList<String> | non-null |
+| Collections.cs:67:13:67:13 | access to local variable x | null | Collections.cs:62:17:62:55 | call to method ToList<String> | null |
 | Collections.cs:73:35:73:41 | ... == ... | true | Collections.cs:73:35:73:35 | access to parameter s | non-null |
 | Collections.cs:73:35:73:41 | ... == ... | true | Collections.cs:73:40:73:41 | "" | non-null |
-| Collections.cs:74:17:74:33 | call to method Any | true | Collections.cs:74:17:74:20 | access to parameter args | non-empty |
+| Collections.cs:74:17:74:33 | call to method Any<String> | true | Collections.cs:74:17:74:20 | access to parameter args | non-empty |
 | Collections.cs:75:13:75:36 | ... == ... | false | Collections.cs:75:13:75:16 | access to parameter args | non-empty |
 | Collections.cs:76:13:76:36 | ... == ... | true | Collections.cs:76:13:76:16 | access to parameter args | non-empty |
 | Collections.cs:77:13:77:36 | ... != ... | true | Collections.cs:77:13:77:16 | access to parameter args | non-empty |

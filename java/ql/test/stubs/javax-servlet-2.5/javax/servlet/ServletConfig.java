@@ -7,7 +7,7 @@ import javax.servlet.ServletContext;
 
 public interface ServletConfig
 {
-    Enumeration getInitParameterNames();
+    Enumeration<String> getInitParameterNames();
     ServletContext getServletContext();
     String getInitParameter(String p0);
     String getServletName();

@@ -10,7 +10,7 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.ExternalAPIUsedWithUntrustedData::ExternalAPIUsedWithUntrustedData
+import semmle.javascript.security.dataflow.ExternalAPIUsedWithUntrustedDataQuery
 import DataFlow::PathGraph
 
 from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
