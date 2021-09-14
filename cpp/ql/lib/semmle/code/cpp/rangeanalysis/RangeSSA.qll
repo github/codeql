@@ -94,6 +94,7 @@ class RangeSsaDefinition extends ControlFlowNodeBase {
   predicate isPhiNode(StackVariable v) { exists(RangeSSA x | x.phi_node(v, this.(BasicBlock))) }
 
   /**
+   * DEPRECATED: Use isGuardPhi/4 instead
    * If this definition is a phi node corresponding to a guard,
    * then return the variable access and the guard.
    */
