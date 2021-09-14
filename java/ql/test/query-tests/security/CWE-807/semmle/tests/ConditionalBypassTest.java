@@ -57,7 +57,6 @@ class ConditionalBypassTest {
 		if (adminCookie.getValue() == "false")
 			login(user, password);
 		else {
-			// do something else
 			login(user, password);
 		}
 	}
@@ -69,17 +68,19 @@ class ConditionalBypassTest {
 			login(user, password);
 		else {
 			// do something else
+			doIt();
 		}
 		login(user, password);
 	}
 
 	public static void test3(String user, String password) {
 		Cookie adminCookie = getCookies()[0];
+		// BAD: login may not happen
 		if (adminCookie.getValue() == "false") // $ hasConditionalBypassTest
 			login(user, password);
 		else {
 			// do something else
-			// BAD: login may not happen
+			doIt();
 		}
 		return;
 	}
@@ -95,6 +96,37 @@ class ConditionalBypassTest {
 		// do other things
 		login(user, password);
 		return;
+	}
+
+	public static void test5(String user, String password) throws Exception {
+		Cookie adminCookie = getCookies()[0];
+		// GOOD: exit with Exception if condition is not met
+		if (adminCookie.getValue() == "false") {
+			throw new Exception();
+		}
+
+		login(user, password);
+	}
+
+	public static void test6(String user, String password) {
+		Cookie adminCookie = getCookies()[0];
+		// GOOD: exit with return if condition is not met
+		if (adminCookie.getValue() == "false") {
+			return;
+		}
+
+		login(user, password);
+	}
+
+	public static void test7(String user, String password) {
+		Cookie adminCookie = getCookies()[0];
+		// FALSE NEGATIVE: login is bypasseable
+		if (adminCookie.getValue() == "false") { // $ MISSING: $ hasConditionalBypassTest
+			login(user, password);
+			return;
+		} else {
+			doIt();
+		}
 	}
 
 	public static void login(String user, String password) {
