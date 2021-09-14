@@ -45,7 +45,7 @@ of what jQuery itself can do
 - So let's go back to our source definition - we care when a property is assigned. The property is on `$fn` and there's some value that is assigned to it that might flow into `fn`
 
 ### Question 2 
-- get `.getAPropertySource` is not longer looking for `$.fn` but instead finding values that are assigned to it 
+- get `.getAPropertySource` is not longer looking for `$.fn` but instead finding values that are assigned to one of its properties
 - We want some node that is assigned to a property of fn and we dont care what that property is as long as it is a property 
 - Navigate to `.getAPropertySource` and read through implementation - `result.flowsTo(getAPropertyWrite()` flows to is local data flow. It flows to a place that is a PropertyWrite on the right hand side. PropertyWrite is an assignment and we want the right hand side of that assignment 
 
