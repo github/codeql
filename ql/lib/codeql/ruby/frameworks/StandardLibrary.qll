@@ -6,6 +6,63 @@ private import codeql.ruby.dataflow.internal.DataFlowDispatch
 private import codeql.ruby.dataflow.internal.DataFlowImplCommon
 
 /**
+ * The `Kernel` module is included by the `Object` class, so its methods are available
+ * in every Ruby object. In addition, its module methods can be called by
+ * providing a specific receiver as in `Kernel.exit`.
+ */
+class KernelMethodCall extends MethodCall {
+  KernelMethodCall() {
+    this = API::getTopLevelMember("Kernel").getAMethodCall(_).asExpr().getExpr()
+    or
+    // we assume that if there's no obvious target for this method call
+    // and the method name matches a Kernel method, then it is a Kernel method call.
+    // TODO: ApiGraphs should ideally handle this case
+    not exists(DataFlowCallable method, DataFlowCall call |
+      viableCallable(call) = method and call.getExpr() = this
+    ) and
+    (
+      this.getReceiver() instanceof Self and isPrivateKernelMethod(this.getMethodName())
+      or
+      isPublicKernelMethod(this.getMethodName())
+    )
+  }
+}
+
+/**
+ * Public methods in the `Kernel` module. These can be invoked on any object via the usual dot syntax.
+ * ```ruby
+ * arr = []
+ * arr.send("push", 5) # => [5]
+ * ```
+ */
+private predicate isPublicKernelMethod(string method) {
+  method in ["class", "clone", "frozen?", "tap", "then", "yield_self", "send"]
+}
+
+/**
+ * Private methods in the `Kernel` module.
+ * These can be be invoked on `self`, on `Kernel`, or using a low-level primitive like `send` or `instance_eval`.
+ * ```ruby
+ * puts "hello world"
+ * Kernel.puts "hello world"
+ * 5.instance_eval { puts "hello world" }
+ * 5.send("puts", "hello world")
+ * ```
+ */
+private predicate isPrivateKernelMethod(string method) {
+  method in [
+      "Array", "Complex", "Float", "Hash", "Integer", "Rational", "String", "__callee__", "__dir__",
+      "__method__", "`", "abort", "at_exit", "autoload", "autoload?", "binding", "block_given?",
+      "callcc", "caller", "caller_locations", "catch", "chomp", "chop", "eval", "exec", "exit",
+      "exit!", "fail", "fork", "format", "gets", "global_variables", "gsub", "iterator?", "lambda",
+      "load", "local_variables", "loop", "open", "p", "pp", "print", "printf", "proc", "putc",
+      "puts", "raise", "rand", "readline", "readlines", "require", "require_relative", "select",
+      "set_trace_func", "sleep", "spawn", "sprintf", "srand", "sub", "syscall", "system", "test",
+      "throw", "trace_var", "trap", "untrace_var", "warn"
+    ]
+}
+
+/**
  * A system command executed via subshell literal syntax.
  * E.g.
  * ```ruby
@@ -73,21 +130,11 @@ class SubshellHeredocExecution extends SystemCommandExecution::Range {
  * Ruby documentation: https://docs.ruby-lang.org/en/3.0.0/Kernel.html#method-i-system
  */
 class KernelSystemCall extends SystemCommandExecution::Range {
-  MethodCall methodCall;
+  KernelMethodCall methodCall;
 
   KernelSystemCall() {
     methodCall.getMethodName() = "system" and
-    this.asExpr().getExpr() = methodCall and
-    // `Kernel.system` can be reached via `Kernel.system` or just `system`
-    // (if there's no other method by the same name in scope).
-    (
-      this = API::getTopLevelMember("Kernel").getAMethodCall("system")
-      or
-      // we assume that if there's no obvious target for this method call, then it must refer to Kernel.system.
-      not exists(DataFlowCallable method, DataFlowCall call |
-        viableCallable(call) = method and call.getExpr() = methodCall
-      )
-    )
+    this.asExpr().getExpr() = methodCall
   }
 
   override DataFlow::Node getAnArgument() { result.asExpr().getExpr() = methodCall.getAnArgument() }
@@ -104,22 +151,11 @@ class KernelSystemCall extends SystemCommandExecution::Range {
  * Ruby documentation: https://docs.ruby-lang.org/en/3.0.0/Kernel.html#method-i-exec
  */
 class KernelExecCall extends SystemCommandExecution::Range {
-  MethodCall methodCall;
+  KernelMethodCall methodCall;
 
   KernelExecCall() {
     methodCall.getMethodName() = "exec" and
-    this.asExpr().getExpr() = methodCall and
-    // `Kernel.exec` can be reached via `Kernel.exec`, `Process.exec` or just `exec`
-    // (if there's no other method by the same name in scope).
-    (
-      this = API::getTopLevelMember(["Kernel", "Process"]).getAMethodCall("exec")
-      or
-      // we assume that if there's no obvious target for this method call, then
-      // it must refer to Kernel.exec.
-      not exists(DataFlowCallable method, DataFlowCall call |
-        viableCallable(call) = method and call.getExpr() = methodCall
-      )
-    )
+    this.asExpr().getExpr() = methodCall
   }
 
   override DataFlow::Node getAnArgument() { result.asExpr().getExpr() = methodCall.getAnArgument() }
@@ -141,20 +177,11 @@ class KernelExecCall extends SystemCommandExecution::Range {
  * ```
  */
 class KernelSpawnCall extends SystemCommandExecution::Range {
-  MethodCall methodCall;
+  KernelMethodCall methodCall;
 
   KernelSpawnCall() {
     methodCall.getMethodName() = "spawn" and
-    this.asExpr().getExpr() = methodCall and
-    // `Kernel.spawn` can be reached via `Kernel.spawn`, `Process.spawn` or just `spawn`
-    // (if there's no other method by the same name in scope).
-    (
-      this = API::getTopLevelMember(["Kernel", "Process"]).getAMethodCall("spawn")
-      or
-      not exists(DataFlowCallable method, DataFlowCall call |
-        viableCallable(call) = method and call.getExpr() = methodCall
-      )
-    )
+    this.asExpr().getExpr() = methodCall
   }
 
   override DataFlow::Node getAnArgument() { result.asExpr().getExpr() = methodCall.getAnArgument() }
