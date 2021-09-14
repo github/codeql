@@ -88,7 +88,7 @@ private class EncryptedValueFlowConfig extends DataFlow4::Configuration {
     src.asExpr() instanceof EncryptedSensitiveMethodAccess
   }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof CleartextStorageSink }
+  override predicate isSink(DataFlow::Node sink) { sink.asExpr() instanceof SensitiveExpr }
 }
 
 /** A taint step for `EditText.toString` in Android. */
