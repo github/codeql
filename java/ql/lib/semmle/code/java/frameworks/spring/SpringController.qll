@@ -131,7 +131,7 @@ class SpringRequestMappingMethod extends SpringControllerMethod {
   /** Gets a request mapping parameter. */
   SpringRequestMappingParameter getARequestParameter() { result = getAParameter() }
 
-  /** Gets the "produces" @RequestMapping annotation value, if present. */
+  /** Gets the "produces" @RequestMapping annotation value, if present. If an array is specified, gets the array. */
   Expr getProducesExpr() {
     result = requestMappingAnnotation.getValue("produces")
     or
@@ -139,7 +139,7 @@ class SpringRequestMappingMethod extends SpringControllerMethod {
     result = getProducesExpr(this.getDeclaringType())
   }
 
-  /** Gets the "produces" @RequestMapping annotation value, if present. */
+  /** Gets a "produces" @RequestMapping annotation value. If an array is specified, gets a member of the array. */
   Expr getAProducesExpr() {
     result = this.getProducesExpr() and not result instanceof ArrayInit
     or
