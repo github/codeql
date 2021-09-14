@@ -145,7 +145,7 @@ private class DefaultGetMethod extends GetMethod {
 
   DefaultGetMethod() { this = "DefaultGet" + contentToken(c) }
 
-  string getName() { result = "get" + contentToken(c) }
+  string getName() { result = "get" + contentToken(c) + "Default" }
 
   override int getPriority() { result = 999 }
 
@@ -159,12 +159,12 @@ private class DefaultGetMethod extends GetMethod {
   override string getCall(string arg) { result = this.getName() + "(" + arg + ")" }
 
   override string getDefinition() {
-    result = "Object get" + contentToken(c) + "(Object container) { return null; }"
+    result = "Object get" + contentToken(c) + "Default(Object container) { return null; }"
   }
 
   override string getCsvModel() {
     result =
-      "generatedtest;Test;false;" + this.getName() + ";;;" +
+      "generatedtest;Test;false;" + this.getName() + ";(Object);;" +
         getComponentSpec(SummaryComponent::content(c)) + " of Argument[0];ReturnValue;value"
   }
 }
@@ -285,7 +285,7 @@ private class DefaultGenMethod extends GenMethod {
 
   DefaultGenMethod() { this = "DefaultGen" + contentToken(c) }
 
-  string getName() { result = "newWith" + contentToken(c) }
+  string getName() { result = "newWith" + contentToken(c) + "Default" }
 
   override int getPriority() { result = 999 }
 
@@ -299,12 +299,12 @@ private class DefaultGenMethod extends GenMethod {
   override string getCall(string arg) { result = this.getName() + "(" + arg + ")" }
 
   override string getDefinition() {
-    result = "Object newWith" + contentToken(c) + "(Object element) { return null; }"
+    result = "Object newWith" + contentToken(c) + "Default(Object element) { return null; }"
   }
 
   override string getCsvModel() {
     result =
-      "generatedtest;Test;false;" + this.getName() + ";;;Argument[0];" +
+      "generatedtest;Test;false;" + this.getName() + ";(Object);;Argument[0];" +
         getComponentSpec(SummaryComponent::content(c)) + " of ReturnValue;value"
   }
 }
