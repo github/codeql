@@ -33,18 +33,18 @@ predicate memberMayBeVarSize(Class c, MemberVariable v) {
   ) and
   // If the size is taken, then arithmetic is performed on the result at least once
   (
+    // `sizeof(c)` is not taken
     not exists(SizeofOperator so |
-      // `sizeof(c)` is taken
       so.(SizeofTypeOperator).getTypeOperand().getUnspecifiedType() = c or
       so.(SizeofExprOperator).getExprOperand().getUnspecifiedType() = c
     )
     or
+    // or `sizeof(c)` is taken
     exists(SizeofOperator so |
-      // `sizeof(c)` is taken
       so.(SizeofTypeOperator).getTypeOperand().getUnspecifiedType() = c or
       so.(SizeofExprOperator).getExprOperand().getUnspecifiedType() = c
     |
-      // arithmetic is performed on the result
+      // and arithmetic is performed on the result
       so.getParent*() instanceof AddExpr
     )
   )
