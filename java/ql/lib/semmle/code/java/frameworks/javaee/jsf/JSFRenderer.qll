@@ -15,28 +15,19 @@ class FacesContext extends RefType {
 private class ExternalContextSource extends SourceModelCsv {
   override predicate row(string row) {
     row =
-      [
-        "javax.faces.context;ExternalContext;true;getRequestParameterMap;();;ReturnValue;remote",
-        "javax.faces.context;ExternalContext;true;getRequestParameterNames;();;ReturnValue;remote",
-        "javax.faces.context;ExternalContext;true;getRequestParameterValuesMap;();;ReturnValue;remote",
-        "javax.faces.context;ExternalContext;true;getRequestPathInfo;();;ReturnValue;remote",
-        "javax.faces.context;ExternalContext;true;getResource;(String);;ReturnValue;remote",
-        "javax.faces.context;ExternalContext;true;getResourceAsStream;(String);;ReturnValue;remote",
-        "javax.faces.context;ExternalContext;true;getResourcePaths;(String);;ReturnValue;remote",
-        "javax.faces.context;ExternalContext;true;getRequestCookieMap;();;ReturnValue;remote",
-        "javax.faces.context;ExternalContext;true;getRequestHeaderMap;();;ReturnValue;remote",
-        "javax.faces.context;ExternalContext;true;getRequestHeaderValuesMap;();;ReturnValue;remote",
-        "jakarta.faces.context;ExternalContext;true;getRequestParameterMap;();;ReturnValue;remote",
-        "jakarta.faces.context;ExternalContext;true;getRequestParameterNames;();;ReturnValue;remote",
-        "jakarta.faces.context;ExternalContext;true;getRequestParameterValuesMap;();;ReturnValue;remote",
-        "jakarta.faces.context;ExternalContext;true;getRequestPathInfo;();;ReturnValue;remote",
-        "jakarta.faces.context;ExternalContext;true;getResource;(String);;ReturnValue;remote",
-        "jakarta.faces.context;ExternalContext;true;getResourceAsStream;(String);;ReturnValue;remote",
-        "jakarta.faces.context;ExternalContext;true;getResourcePaths;(String);;ReturnValue;remote",
-        "jakarta.faces.context;ExternalContext;true;getRequestCookieMap;();;ReturnValue;remote",
-        "jakarta.faces.context;ExternalContext;true;getRequestHeaderMap;();;ReturnValue;remote",
-        "jakarta.faces.context;ExternalContext;true;getRequestHeaderValuesMap;();;ReturnValue;remote"
-      ]
+      ["javax.", "jakarta."] +
+        [
+          "faces.context;ExternalContext;true;getRequestParameterMap;();;ReturnValue;remote",
+          "faces.context;ExternalContext;true;getRequestParameterNames;();;ReturnValue;remote",
+          "faces.context;ExternalContext;true;getRequestParameterValuesMap;();;ReturnValue;remote",
+          "faces.context;ExternalContext;true;getRequestPathInfo;();;ReturnValue;remote",
+          "faces.context;ExternalContext;true;getResource;(String);;ReturnValue;remote",
+          "faces.context;ExternalContext;true;getResourceAsStream;(String);;ReturnValue;remote",
+          "faces.context;ExternalContext;true;getResourcePaths;(String);;ReturnValue;remote",
+          "faces.context;ExternalContext;true;getRequestCookieMap;();;ReturnValue;remote",
+          "faces.context;ExternalContext;true;getRequestHeaderMap;();;ReturnValue;remote",
+          "faces.context;ExternalContext;true;getRequestHeaderValuesMap;();;ReturnValue;remote"
+        ]
   }
 }
 
