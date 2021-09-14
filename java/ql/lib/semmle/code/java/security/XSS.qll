@@ -41,7 +41,7 @@ private class DefaultXssSink extends XssSink {
   DefaultXssSink() {
     sinkNode(this, "xss")
     or
-    exists(ServletWriterSourceToWritingMethodFlowConfig writer, MethodAccess ma |
+    exists(XssVulnerableWriterSourceToWritingMethodFlowConfig writer, MethodAccess ma |
       ma.getMethod() instanceof WritingMethod and
       writer.hasFlowToExpr(ma.getQualifier()) and
       this.asExpr() = ma.getArgument(_)
@@ -88,12 +88,6 @@ private class DefaultXssSink extends XssSink {
         returnType instanceof RawClass
       )
     )
-    or
-    exists(FacesWriterSourceToWritingMethodFlowConfig writer, MethodAccess ma |
-      ma.getMethod() instanceof WritingMethod and
-      writer.hasFlowToExpr(ma.getQualifier()) and
-      this.asExpr() = ma.getArgument(_)
-    )
   }
 }
 
@@ -108,12 +102,12 @@ private class DefaultXSSSanitizer extends XssSanitizer {
 }
 
 /** A configuration that tracks data from a servlet writer to an output method. */
-private class ServletWriterSourceToWritingMethodFlowConfig extends TaintTracking2::Configuration {
-  ServletWriterSourceToWritingMethodFlowConfig() {
-    this = "XSS::ServletWriterSourceToWritingMethodFlowConfig"
+private class XssVulnerableWriterSourceToWritingMethodFlowConfig extends TaintTracking2::Configuration {
+  XssVulnerableWriterSourceToWritingMethodFlowConfig() {
+    this = "XSS::XssVulnerableWriterSourceToWritingMethodFlowConfig"
   }
 
-  override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof ServletWriterSource }
+  override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof XssVulnerableWriterSource }
 
   override predicate isSink(DataFlow::Node sink) {
     exists(MethodAccess ma |
@@ -135,9 +129,9 @@ private class WritingMethod extends Method {
   }
 }
 
-/** An output stream or writer that writes to a servlet response. */
-class ServletWriterSource extends MethodAccess {
-  ServletWriterSource() {
+/** An output stream or writer that writes to a servlet, JSP or JSF response. */
+class XssVulnerableWriterSource extends MethodAccess {
+  XssVulnerableWriterSource() {
     this.getMethod() instanceof ServletResponseGetWriterMethod
     or
     this.getMethod() instanceof ServletResponseGetOutputStreamMethod
@@ -146,6 +140,10 @@ class ServletWriterSource extends MethodAccess {
       m.getDeclaringType().getQualifiedName() = "javax.servlet.jsp.JspContext" and
       m.getName() = "getOut"
     )
+    or
+    this.getMethod() instanceof FacesGetResponseWriterMethod
+    or
+    this.getMethod() instanceof FacesGetResponseStreamMethod
   }
 }
 
@@ -165,27 +163,3 @@ predicate isXssVulnerableContentType(string s) {
  */
 bindingset[s]
 predicate isXssSafeContentType(string s) { not isXssVulnerableContentType(s) }
-
-/** An output stream or writer that writes to a JSF response. */
-class FacesWriterSource extends MethodAccess {
-  FacesWriterSource() {
-    this.getMethod() instanceof FacesGetResponseWriterMethod
-    or
-    this.getMethod() instanceof FacesGetResponseStreamMethod
-  }
-}
-
-/** A configuration that tracks data from a JSF writer to an output method. */
-private class FacesWriterSourceToWritingMethodFlowConfig extends TaintTracking2::Configuration {
-  FacesWriterSourceToWritingMethodFlowConfig() {
-    this = "XSS::FacesWriterSourceToWritingMethodFlowConfig"
-  }
-
-  override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof FacesWriterSource }
-
-  override predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma |
-      sink.asExpr() = ma.getQualifier() and ma.getMethod() instanceof WritingMethod
-    )
-  }
-}
