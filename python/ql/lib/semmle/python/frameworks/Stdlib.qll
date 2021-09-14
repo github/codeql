@@ -1537,16 +1537,19 @@ private class DirectRegex extends DataFlow::CallCfgNode, RegexExecution::Range {
   override DataFlow::Node getString() {
     result in [this.getArg(stringArg(method)), this.getArgByName("string")]
   }
+
+  override string getName() { result = "re." + method }
 }
 
 /** Helper module for tracking compiled regexes. */
 private module CompiledRegexes {
-  private import semmle.python.dataflow.new.DataFlow2
+  private import semmle.python.dataflow.new.DataFlow4
   private import semmle.python.RegexTreeView
 
-  // TODO: This module should be refactored once API graphs are more expressinve.
+  // TODO: This module should be refactored once API graphs are more expressive.
+  // For now it uses data flow, so we pick the verion with least change of collision (4) .
   /** A configuration for finding uses of compiled regexes. */
-  class RegexDefinitionConfiguration extends DataFlow2::Configuration {
+  class RegexDefinitionConfiguration extends DataFlow4::Configuration {
     RegexDefinitionConfiguration() { this = "RegexDefinitionConfiguration" }
 
     override predicate isSource(DataFlow::Node source) { source instanceof RegexDefinitonSource }
@@ -1608,7 +1611,7 @@ private import CompiledRegexes
  *
  * See https://docs.python.org/3/library/re.html#regular-expression-objects
  */
-private class CompiledRegex extends DataFlow::CallCfgNode, RegexExecution {
+private class CompiledRegex extends DataFlow::CallCfgNode, RegexExecution::Range {
   DataFlow::Node regexNode;
   RegexExecutionMethod method;
 
@@ -1628,6 +1631,8 @@ private class CompiledRegex extends DataFlow::CallCfgNode, RegexExecution {
   override DataFlow::Node getString() {
     result in [this.getArg(stringArg(method) - 1), this.getArgByName("string")]
   }
+
+  override string getName() { result = "re." + method }
 }
 
 /**

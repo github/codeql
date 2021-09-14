@@ -371,6 +371,12 @@ class RegexExecution extends DataFlow::Node {
 
   /** Gets a dataflow node for the string to be searched or matched against. */
   DataFlow::Node getString() { result = range.getString() }
+
+  /**
+   * Gets the name of this regex execution, typically the name of an executing method.
+   * This is used for nice alert messages and should include the module if possible.
+   */
+  string getName() { result = range.getName() }
 }
 
 /** Provides classes for modeling new regular-expression execution APIs. */
@@ -387,6 +393,12 @@ module RegexExecution {
 
     /** Gets a dataflow node for the string to be searched or matched against. */
     abstract DataFlow::Node getString();
+
+    /**
+     * Gets the name of this regex execution, typically the name of an executing method.
+     * This is used for nice alert messages and should include the module if possible.
+     */
+    abstract string getName();
   }
 }
 
