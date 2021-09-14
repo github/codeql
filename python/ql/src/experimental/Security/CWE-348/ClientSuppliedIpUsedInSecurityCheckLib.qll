@@ -123,13 +123,9 @@ private class CompareSink extends ClientSuppliedIpUsedInSecurityCheckSink {
       (
         compare.getLeft() = this.asExpr()
         or
-        compare.getComparator(0) = this.asExpr()
+        compare.getComparator(0) = this.asExpr() and
+        not compare.getLeft().(StrConst).getText() in ["%", ","]
       )
-    )
-    or
-    exists(Call call |
-      call.getFunc().(Attribute).getName() = "add" and
-      call.getArg(0) = this.asExpr()
     )
   }
 }

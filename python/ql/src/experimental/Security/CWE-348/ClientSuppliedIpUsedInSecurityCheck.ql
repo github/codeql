@@ -13,6 +13,7 @@
 import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
+import semmle.python.ApiGraphs
 import ClientSuppliedIpUsedInSecurityCheckLib
 import DataFlow::PathGraph
 
@@ -28,6 +29,14 @@ class ClientSuppliedIpUsedInSecurityCheckConfig extends TaintTracking::Configura
 
   override predicate isSink(DataFlow::Node sink) {
     sink instanceof ClientSuppliedIpUsedInSecurityCheckSink
+  }
+
+  override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(DataFlow::CallCfgNode ccn |
+      ccn = API::moduleImport("netaddr").getMember("IPAddress").getACall() and
+      ccn.getArg(0) = pred and
+      ccn = succ
+    )
   }
 
   override predicate isSanitizer(DataFlow::Node node) {
