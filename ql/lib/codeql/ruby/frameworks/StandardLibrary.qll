@@ -243,3 +243,39 @@ class Open3PipelineCall extends SystemCommandExecution::Range {
     arg.asExpr().getExpr() = methodCall.getAnArgument()
   }
 }
+
+/**
+ * A call to `Kernel.eval`, which executes its argument as Ruby code.
+ * ```ruby
+ * a = 1
+ * Kernel.eval("a = 2")
+ * a # => 2
+ * ```
+ */
+class EvalCallCodeExecution extends CodeExecution::Range {
+  KernelMethodCall methodCall;
+
+  EvalCallCodeExecution() {
+    this.asExpr().getExpr() = methodCall and methodCall.getMethodName() = "eval"
+  }
+
+  override DataFlow::Node getCode() { result.asExpr().getExpr() = methodCall.getAnArgument() }
+}
+
+/**
+ * A call to `Kernel#send`, which executes its arguments as a Ruby method call.
+ * ```ruby
+ * arr = []
+ * arr.send("push", 1)
+ * arr # => [1]
+ * ```
+ */
+class SendCallCodeExecution extends CodeExecution::Range {
+  KernelMethodCall methodCall;
+
+  SendCallCodeExecution() {
+    this.asExpr().getExpr() = methodCall and methodCall.getMethodName() = "send"
+  }
+
+  override DataFlow::Node getCode() { result.asExpr().getExpr() = methodCall.getAnArgument() }
+}
