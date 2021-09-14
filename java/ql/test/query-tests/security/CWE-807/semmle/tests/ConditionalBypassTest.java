@@ -29,9 +29,9 @@ class ConditionalBypassTest {
 		if (adminCookie.getValue().equals("false")) // $ hasConditionalBypassTest
 			login(user, password);
 
-		// FALSE POSITIVES: both methods are conditionally executed, but they probably
+		// GOOD: both methods are conditionally executed, but they probably
 		// both perform the security-critical action
-		if (adminCookie.getValue() == "false") { // $ SPURIOUS: $ hasConditionalBypassTest
+		if (adminCookie.getValue() == "false") { // Safe
 			login(user, password);
 		} else {
 			reCheckAuth(user, password);
@@ -80,8 +80,8 @@ class ConditionalBypassTest {
 		else {
 			// do something else
 			// BAD: login may not happen
-			return;
 		}
+		return;
 	}
 
 	public static void test4(String user, String password) {
