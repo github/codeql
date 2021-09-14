@@ -17,7 +17,7 @@ import semmle.python.ApiGraphs
 import semmle.python.frameworks.Flask
 
 /** Gets a reference to a truthy literal. */
-private DataFlow::LocalSourceNode truthyLiteral(DataFlow::TypeTracker t) {
+private DataFlow::TypeTrackingNode truthyLiteral(DataFlow::TypeTracker t) {
   t.start() and
   result.asExpr().(ImmutableLiteral).booleanValue() = true
   or

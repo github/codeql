@@ -1,0 +1,2 @@
+| test.cpp:410:10:410:15 | buffer | $@ flows to here and may not be null terminated. | test.cpp:409:18:409:23 | buffer | User-provided value |
+| test.cpp:425:10:425:15 | buffer | $@ flows to here and may not be null terminated. | test.cpp:424:9:424:14 | buffer | User-provided value |

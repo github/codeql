@@ -16,7 +16,7 @@
 
 import javascript
 import DataFlow::PathGraph
-import semmle.javascript.security.dataflow.IndirectCommandInjection::IndirectCommandInjection
+import semmle.javascript.security.dataflow.IndirectCommandInjectionQuery
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, DataFlow::Node highlight
 where

@@ -11,7 +11,7 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.FileAccessToHttp::FileAccessToHttp
+import semmle.javascript.security.dataflow.FileAccessToHttpQuery
 import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink

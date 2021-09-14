@@ -497,6 +497,7 @@ The following sequences of characters are keyword tokens:
    max
    min
    module
+   newtype
    none
    not
    or
@@ -514,6 +515,7 @@ The following sequences of characters are keyword tokens:
    then
    this
    true
+   unique
    where
 
 Operators
@@ -1773,6 +1775,8 @@ The following built-in predicates are members of type ``int``:
 | ``bitShiftRightSigned`` | int         | int            | The result is the signed bitwise right shift of the receiver by the argument, modulo 32.                       |
 +-------------------------+-------------+----------------+----------------------------------------------------------------------------------------------------------------+
 | ``toString``            | string      |                | The result is the decimal representation of the number as a string.                                            |
++-------------------------+-------------+----------------+----------------------------------------------------------------------------------------------------------------+
+| ``toUnicode``           | string      |                | The result is the unicode character for the receiver seen as a unicode code point.                             |
 +-------------------------+-------------+----------------+----------------------------------------------------------------------------------------------------------------+
 
 The leftmost bit after ``bitShiftRightSigned`` depends on sign extension, whereas after ``bitShiftRight`` it is zero.

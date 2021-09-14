@@ -1,0 +1,25 @@
+edges
+| test.py:23:25:23:25 | SSA variable e | test.py:24:16:24:16 | ControlFlowNode for e |
+| test.py:31:25:31:25 | SSA variable e | test.py:32:16:32:30 | ControlFlowNode for Attribute |
+| test.py:49:15:49:36 | ControlFlowNode for Attribute() | test.py:50:29:50:31 | ControlFlowNode for err |
+| test.py:50:29:50:31 | ControlFlowNode for err | test.py:50:16:50:32 | ControlFlowNode for format_error() |
+| test.py:50:29:50:31 | ControlFlowNode for err | test.py:52:18:52:20 | ControlFlowNode for msg |
+| test.py:52:18:52:20 | ControlFlowNode for msg | test.py:53:12:53:27 | ControlFlowNode for BinaryExpr |
+nodes
+| test.py:16:16:16:37 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test.py:23:25:23:25 | SSA variable e | semmle.label | SSA variable e |
+| test.py:24:16:24:16 | ControlFlowNode for e | semmle.label | ControlFlowNode for e |
+| test.py:31:25:31:25 | SSA variable e | semmle.label | SSA variable e |
+| test.py:32:16:32:30 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| test.py:49:15:49:36 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test.py:50:16:50:32 | ControlFlowNode for format_error() | semmle.label | ControlFlowNode for format_error() |
+| test.py:50:29:50:31 | ControlFlowNode for err | semmle.label | ControlFlowNode for err |
+| test.py:52:18:52:20 | ControlFlowNode for msg | semmle.label | ControlFlowNode for msg |
+| test.py:53:12:53:27 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+subpaths
+| test.py:50:29:50:31 | ControlFlowNode for err | test.py:52:18:52:20 | ControlFlowNode for msg | test.py:53:12:53:27 | ControlFlowNode for BinaryExpr | test.py:50:16:50:32 | ControlFlowNode for format_error() |
+#select
+| test.py:16:16:16:37 | ControlFlowNode for Attribute() | test.py:16:16:16:37 | ControlFlowNode for Attribute() | test.py:16:16:16:37 | ControlFlowNode for Attribute() | $@ may be exposed to an external user | test.py:16:16:16:37 | ControlFlowNode for Attribute() | Error information |
+| test.py:24:16:24:16 | ControlFlowNode for e | test.py:23:25:23:25 | SSA variable e | test.py:24:16:24:16 | ControlFlowNode for e | $@ may be exposed to an external user | test.py:23:25:23:25 | SSA variable e | Error information |
+| test.py:32:16:32:30 | ControlFlowNode for Attribute | test.py:31:25:31:25 | SSA variable e | test.py:32:16:32:30 | ControlFlowNode for Attribute | $@ may be exposed to an external user | test.py:31:25:31:25 | SSA variable e | Error information |
+| test.py:50:16:50:32 | ControlFlowNode for format_error() | test.py:49:15:49:36 | ControlFlowNode for Attribute() | test.py:50:16:50:32 | ControlFlowNode for format_error() | $@ may be exposed to an external user | test.py:49:15:49:36 | ControlFlowNode for Attribute() | Error information |

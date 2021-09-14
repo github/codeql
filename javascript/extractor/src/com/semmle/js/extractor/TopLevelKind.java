@@ -8,7 +8,7 @@ public enum TopLevelKind {
   INLINE_SCRIPT(1),
   EVENT_HANDLER(2),
   JAVASCRIPT_URL(3),
-  ANGULAR_TEMPLATE(4);
+  ANGULAR_STYLE_TEMPLATE(4);
   
   private int value;
   

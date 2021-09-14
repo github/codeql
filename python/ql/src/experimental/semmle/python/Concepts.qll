@@ -146,3 +146,124 @@ class LDAPEscape extends DataFlow::Node {
    */
   DataFlow::Node getAnInput() { result = range.getAnInput() }
 }
+
+/** Provides classes for modeling LDAP bind-related APIs. */
+module LDAPBind {
+  /**
+   * A data-flow node that collects methods binding a LDAP connection.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `LDAPBind` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /**
+     * Gets the argument containing the binding expression.
+     */
+    abstract DataFlow::Node getPassword();
+  }
+}
+
+/**
+ * A data-flow node that collects methods binding a LDAP connection.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `LDAPBind::Range` instead.
+ */
+class LDAPBind extends DataFlow::Node {
+  LDAPBind::Range range;
+
+  LDAPBind() { this = range }
+
+  DataFlow::Node getPassword() { result = range.getPassword() }
+}
+
+/** Provides classes for modeling SQL sanitization libraries. */
+module SQLEscape {
+  /**
+   * A data-flow node that collects functions that escape SQL statements.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `SQLEscape` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /**
+     * Gets the argument containing the raw SQL statement.
+     */
+    abstract DataFlow::Node getAnInput();
+  }
+}
+
+/**
+ * A data-flow node that collects functions escaping SQL statements.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `SQLEscape::Range` instead.
+ */
+class SQLEscape extends DataFlow::Node {
+  SQLEscape::Range range;
+
+  SQLEscape() { this = range }
+
+  /**
+   * Gets the argument containing the raw SQL statement.
+   */
+  DataFlow::Node getAnInput() { result = range.getAnInput() }
+}
+
+/** Provides a class for modeling NoSQL execution APIs. */
+module NoSQLQuery {
+  /**
+   * A data-flow node that executes NoSQL queries.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `NoSQLQuery` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /** Gets the argument that specifies the NoSQL query to be executed. */
+    abstract DataFlow::Node getQuery();
+  }
+}
+
+/**
+ * A data-flow node that executes NoSQL queries.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `NoSQLQuery::Range` instead.
+ */
+class NoSQLQuery extends DataFlow::Node {
+  NoSQLQuery::Range range;
+
+  NoSQLQuery() { this = range }
+
+  /** Gets the argument that specifies the NoSQL query to be executed. */
+  DataFlow::Node getQuery() { result = range.getQuery() }
+}
+
+/** Provides classes for modeling NoSQL sanitization-related APIs. */
+module NoSQLSanitizer {
+  /**
+   * A data-flow node that collects functions sanitizing NoSQL queries.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `NoSQLSanitizer` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /** Gets the argument that specifies the NoSQL query to be sanitized. */
+    abstract DataFlow::Node getAnInput();
+  }
+}
+
+/**
+ * A data-flow node that collects functions sanitizing NoSQL queries.
+ *
+ * Extend this class to model new APIs. If you want to refine existing API models,
+ * extend `NoSQLSanitizer::Range` instead.
+ */
+class NoSQLSanitizer extends DataFlow::Node {
+  NoSQLSanitizer::Range range;
+
+  NoSQLSanitizer() { this = range }
+
+  /** Gets the argument that specifies the NoSQL query to be sanitized. */
+  DataFlow::Node getAnInput() { result = range.getAnInput() }
+}

@@ -1,4 +1,3 @@
-
 namespace System.CodeDom.Compiler
 {
     class GeneratedCodeAttribute : Attribute

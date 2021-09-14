@@ -30,11 +30,6 @@ class InsecureLdapUrlLiteral extends StringLiteral {
   }
 }
 
-/** The interface `javax.naming.Context`. */
-class TypeNamingContext extends Interface {
-  TypeNamingContext() { this.hasQualifiedName("javax.naming", "Context") }
-}
-
 /** The class `java.util.Hashtable`. */
 class TypeHashtable extends Class {
   TypeHashtable() { this.getSourceDeclaration().hasQualifiedName("java.util", "Hashtable") }

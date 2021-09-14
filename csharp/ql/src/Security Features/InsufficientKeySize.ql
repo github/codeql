@@ -7,7 +7,7 @@
  * @precision high
  * @id cs/insufficient-key-size
  * @tags security
- *       external/cwe/cwe-327
+ *       external/cwe/cwe-326
  */
 
 import csharp

@@ -17,7 +17,7 @@ import python
 import semmle.python.security.dataflow.StackTraceExposure
 import DataFlow::PathGraph
 
-from StackTraceExposureConfiguration config, DataFlow::PathNode source, DataFlow::PathNode sink
+from StackTraceExposure::Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "$@ may be exposed to an external user", source.getNode(),
   "Error information"

@@ -45,5 +45,3 @@ class C<T1, T2, T3, T4, T5, T6>
         x1 = x15; // not a boxing conversion
     }
 }
-
-// semmle-extractor-options: /r:System.Dynamic.Runtime.dll /r:System.Linq.Expressions.dll

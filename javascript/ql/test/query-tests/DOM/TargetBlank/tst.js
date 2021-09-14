@@ -63,3 +63,6 @@ function f() {
 <a href="{{url_for('foo.html', 'foo')}}" target="_blank">Example</a>;
 <a href="{{ url_for('foo.html', 'foo')}}" target="_blank">Example</a>;
 <a href="{{ 	url_for('foo.html', 'foo')}}" target="_blank">Example</a>;
+
+// OK, nunjucks template
+<a href="{{ url('foo', query={bla}) }}" target="_blank">Example</a>

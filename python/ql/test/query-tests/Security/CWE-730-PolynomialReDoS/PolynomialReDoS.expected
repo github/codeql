@@ -1,0 +1,13 @@
+edges
+| test.py:7:12:7:18 | ControlFlowNode for request | test.py:7:12:7:23 | ControlFlowNode for Attribute |
+| test.py:7:12:7:23 | ControlFlowNode for Attribute | test.py:8:30:8:33 | ControlFlowNode for text |
+| test.py:7:12:7:23 | ControlFlowNode for Attribute | test.py:9:32:9:35 | ControlFlowNode for text |
+nodes
+| test.py:7:12:7:18 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| test.py:7:12:7:23 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| test.py:8:30:8:33 | ControlFlowNode for text | semmle.label | ControlFlowNode for text |
+| test.py:9:32:9:35 | ControlFlowNode for text | semmle.label | ControlFlowNode for text |
+subpaths
+#select
+| test.py:8:30:8:33 | ControlFlowNode for text | test.py:7:12:7:18 | ControlFlowNode for request | test.py:8:30:8:33 | ControlFlowNode for text | This $@ that depends on $@ may run slow on strings with many repetitions of ' '. | test.py:8:21:8:23 | \\s+ | regular expression | test.py:7:12:7:18 | ControlFlowNode for request | a user-provided value |
+| test.py:9:32:9:35 | ControlFlowNode for text | test.py:7:12:7:18 | ControlFlowNode for request | test.py:9:32:9:35 | ControlFlowNode for text | This $@ that depends on $@ may run slow on strings with many repetitions of '99'. | test.py:9:27:9:29 | \\d+ | regular expression | test.py:7:12:7:18 | ControlFlowNode for request | a user-provided value |
