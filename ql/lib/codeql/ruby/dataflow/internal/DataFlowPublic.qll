@@ -3,6 +3,7 @@ private import DataFlowDispatch
 private import DataFlowPrivate
 private import codeql.ruby.CFG
 private import codeql.ruby.typetracking.TypeTracker
+private import codeql.ruby.dataflow.SSA
 
 /**
  * An element, viewed as a node in a data flow graph. Either an expression
@@ -160,7 +161,45 @@ class Content extends TContent {
 
 /**
  * A guard that validates some expression.
+ *
+ * To use this in a configuration, extend the class and provide a
+ * characteristic predicate precisely specifying the guard, and override
+ * `checks` to specify what is being validated and in which branch.
+ *
+ * It is important that all extending classes in scope are disjoint.
  */
 abstract class BarrierGuard extends CfgNodes::ExprCfgNode {
-  Node getAGuardedNode() { none() }
+  private ConditionBlock conditionBlock;
+
+  BarrierGuard() { this = conditionBlock.getLastNode() }
+
+  /** Holds if this guard controls block `b` upon evaluating to `branch`. */
+  private predicate controlsBlock(BasicBlock bb, boolean branch) {
+    exists(SuccessorTypes::BooleanSuccessor s | s.getValue() = branch |
+      conditionBlock.controls(bb, s)
+    )
+  }
+
+  /**
+   * Holds if this guard validates `expr` upon evaluating to `branch`.
+   * For example, the following code validates `foo` when the condition
+   * `foo == "foo"` is true.
+   * ```ruby
+   * if foo == "foo"
+   *   do_something
+   *  else
+   *   do_something_else
+   * end
+   * ```
+   */
+  abstract predicate checks(CfgNode expr, boolean branch);
+
+  final Node getAGuardedNode() {
+    exists(boolean branch, CfgNodes::ExprCfgNode testedNode, Ssa::Definition def |
+      def.getARead() = testedNode and
+      def.getARead() = result.asExpr() and
+      this.checks(testedNode, branch) and
+      this.controlsBlock(result.asExpr().getBasicBlock(), branch)
+    )
+  }
 }

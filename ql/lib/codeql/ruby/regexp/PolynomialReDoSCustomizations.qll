@@ -124,6 +124,8 @@ module PolynomialReDoS {
       )
     }
 
-    override DataFlow::Node getAGuardedNode() { result = input }
+    override predicate checks(CfgNode node, boolean branch) {
+      node = input.asExpr() and branch = true
+    }
   }
 }

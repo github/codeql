@@ -71,8 +71,15 @@ class BarController < ApplicationController
   def safe_paths
     dir = params[:order]
     # GOOD: barrier guard prevents taint flow
-    dir = "DESC" unless dir == "ASC"
-    User.order("name #{dir}")
+    if dir == "ASC"
+      User.order("name #{dir}")
+    else
+      dir = "DESC"
+      User.order("name #{dir}")
+    end
+    # TODO: a more idiomatic form of this guard is the following:
+    #     dir = "DESC" unless dir == "ASC"
+    # but our taint tracking can't (yet) handle that properly
 
     name = params[:user_name]
     # GOOD: barrier guard prevents taint flow

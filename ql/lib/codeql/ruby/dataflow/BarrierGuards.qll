@@ -20,11 +20,16 @@ private import codeql.ruby.CFG
 class StringConstCompare extends DataFlow::BarrierGuard,
   CfgNodes::ExprNodes::ComparisonOperationCfgNode {
   private CfgNode checkedNode;
+  // The value of the condition that results in the node being validated.
+  private boolean checkedBranch;
 
   StringConstCompare() {
     exists(CfgNodes::ExprNodes::StringLiteralCfgNode strLitNode |
-      this.getExpr() instanceof EqExpr or
-      this.getExpr() instanceof CaseEqExpr
+      this.getExpr() instanceof EqExpr and checkedBranch = true
+      or
+      this.getExpr() instanceof CaseEqExpr and checkedBranch = true
+      or
+      this.getExpr() instanceof NEExpr and checkedBranch = false
     |
       this.getLeftOperand() = strLitNode and this.getRightOperand() = checkedNode
       or
@@ -32,7 +37,9 @@ class StringConstCompare extends DataFlow::BarrierGuard,
     )
   }
 
-  override DataFlow::Node getAGuardedNode() { result.asExpr() = checkedNode }
+  override predicate checks(CfgNode expr, boolean branch) {
+    expr = checkedNode and branch = checkedBranch
+  }
 }
 
 /**
@@ -64,5 +71,5 @@ class StringConstArrayInclusionCall extends DataFlow::BarrierGuard,
     )
   }
 
-  override DataFlow::Node getAGuardedNode() { result.asExpr() = checkedNode }
+  override predicate checks(CfgNode expr, boolean branch) { expr = checkedNode and branch = true }
 }
