@@ -2,10 +2,12 @@ import java.io.IOException;
 import java.util.Map;
 
 import javax.faces.component.UIComponent;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.FacesRenderer;
 import javax.faces.render.Renderer;
+import javax.servlet.http.Cookie;
 
 @FacesRenderer(componentFamily = "", rendererType = "")
 public class JsfXSS extends Renderer
@@ -49,5 +51,19 @@ public class JsfXSS extends Renderer
         writer.write("});");
         writer.write("})();");
         writer.write("</script>");
+    }
+
+    public void testAllSources(FacesContext facesContext) throws IOException
+    {
+        ExternalContext ec = facesContext.getExternalContext();
+        ResponseWriter writer = facesContext.getResponseWriter();
+        writer.write(ec.getRequestParameterMap().keySet().iterator().next()); // $xss
+        writer.write(ec.getRequestParameterNames().next()); // $xss
+        writer.write(ec.getRequestParameterValuesMap().get("someKey")[0]); // $xss
+        writer.write(ec.getRequestParameterValuesMap().keySet().iterator().next()); // $xss
+        writer.write(ec.getRequestPathInfo()); // $xss
+        writer.write(((Cookie)ec.getRequestCookieMap().get("someKey")).getName()); // $xss
+        writer.write(ec.getRequestHeaderMap().get("someKey")); // $xss
+        writer.write(ec.getRequestHeaderValuesMap().get("someKey")[0]); // $xss
     }
 }
