@@ -107,7 +107,9 @@ private class XssVulnerableWriterSourceToWritingMethodFlowConfig extends TaintTr
     this = "XSS::XssVulnerableWriterSourceToWritingMethodFlowConfig"
   }
 
-  override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof XssVulnerableWriterSource }
+  override predicate isSource(DataFlow::Node src) {
+    src.asExpr() instanceof XssVulnerableWriterSource
+  }
 
   override predicate isSink(DataFlow::Node sink) {
     exists(MethodAccess ma |
