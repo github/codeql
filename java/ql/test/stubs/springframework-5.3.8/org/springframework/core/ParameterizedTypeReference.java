@@ -1,27 +1,15 @@
+// Generated automatically from org.springframework.core.ParameterizedTypeReference for testing purposes
+
 package org.springframework.core;
 
-public abstract class ParameterizedTypeReference<T> {
-    public java.lang.reflect.Type getType() {
-        return null;
-    }
+import java.lang.reflect.Type;
 
-    public boolean equals(java.lang.Object other) {
-        return false;
-    }
-
-    public int hashCode() {
-        return 0;
-    }
-
-    public java.lang.String toString() {
-        return null;
-    }
-
-    public static <T> org.springframework.core.ParameterizedTypeReference<T> forType(java.lang.reflect.Type type) {
-        return null;
-    }
-
-    private static java.lang.Class<?> findParameterizedTypeReferenceSubclass(java.lang.Class<?> child) {
-        return null;
-    }
+abstract public class ParameterizedTypeReference<T>
+{
+    protected ParameterizedTypeReference(){}
+    public String toString(){ return null; }
+    public Type getType(){ return null; }
+    public boolean equals(Object p0){ return false; }
+    public int hashCode(){ return 0; }
+    public static <T> ParameterizedTypeReference<T> forType(Type p0){ return null; }
 }
