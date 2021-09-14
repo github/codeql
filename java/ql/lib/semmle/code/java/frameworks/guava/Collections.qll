@@ -454,7 +454,7 @@ private class GuavaCollectCsv extends SummaryModelCsv {
         "com.google.common.collect;Multisets;false;difference;(Multiset,Multiset);;Element of Argument[0];Element of ReturnValue;value",
         "com.google.common.collect;Multisets;false;filter;(Multiset,Predicate);;Element of Argument[0];Element of ReturnValue;value",
         "com.google.common.collect;Multisets;false;immutableEntry;(Object,int);;Argument[0];Element of ReturnValue;value",
-        "com.google.common.collect;Mulisets;false;intersection;(Muliset,Muliset);;Element of Argument[0..1];Element of ReturnValue;value",
+        "com.google.common.collect;Multisets;false;intersection;(Multiset,Multiset);;Element of Argument[0..1];Element of ReturnValue;value",
         "com.google.common.collect;Multisets;false;sum;(Multiset,Multiset);;Element of Argument[0..1];Element of ReturnValue;value",
         "com.google.common.collect;Multisets;false;union;(Multiset,Multiset);;Element of Argument[0..1];Element of ReturnValue;value",
         "com.google.common.collect;Multisets;false;unmodifiableMultiset;(Multiset);;Element of Argument[0];Element of ReturnValue;value",
