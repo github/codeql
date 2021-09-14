@@ -145,8 +145,7 @@ private class SpringHttpFlowStep extends SummaryModelCsv {
 }
 
 private predicate specifiesContentType(SpringRequestMappingMethod method) {
-  method.getProducesExpr().(ArrayInit).getSize() != 0 or
-  not method.getProducesExpr() instanceof ArrayInit
+  exists(method.getAProducesExpr())
 }
 
 private class SpringXssSink extends XSS::XssSink {
