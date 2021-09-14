@@ -201,6 +201,22 @@ private class IteratorGetMethod extends GetMethod {
   override string getCall(string arg) { result = "getElement(" + arg + ")" }
 }
 
+private class EnumerationGetMethod extends GetMethod {
+  EnumerationGetMethod() { this = "enumerationgetmethod" }
+
+  override predicate appliesTo(Type t, Content c) {
+    t.(RefType).getASourceSupertype*().hasQualifiedName("java.util", "Enumeration") and
+    c instanceof CollectionContent
+  }
+
+  override string getDefinition() {
+    result = "<T> T getElement(Enumeration<T> it) { return it.nextElement(); }"
+  }
+
+  bindingset[arg]
+  override string getCall(string arg) { result = "getElement(" + arg + ")" }
+}
+
 private class OptionalGetMethod extends GetMethod {
   OptionalGetMethod() { this = "optionalgetmethod" }
 
@@ -215,8 +231,8 @@ private class OptionalGetMethod extends GetMethod {
   override string getCall(string arg) { result = "getElement(" + arg + ")" }
 }
 
-private class MapGetKeyMethod extends GetMethod {
-  MapGetKeyMethod() { this = "mapgetkeymethod" }
+private class MapGetKeytMethod extends GetMethod {
+  MapGetKeytMethod() { this = "mapgetkeymethod" }
 
   override predicate appliesTo(Type t, Content c) {
     t.(RefType).getASourceSupertype*().hasQualifiedName("java.util", "Map") and
@@ -231,8 +247,20 @@ private class MapGetKeyMethod extends GetMethod {
   override string getCall(string arg) { result = "getMapKey(" + arg + ")" }
 }
 
-private class MapValueGetMethod extends GetMethod {
-  MapValueGetMethod() { this = "MapValueGetMethod" }
+private class MapEntryGetKeyMethod extends GetMethod {
+  MapEntryGetKeyMethod() { this = "mapentrygetkeymethod" }
+
+  override predicate appliesTo(Type t, Content c) {
+    t.(RefType).getASourceSupertype*().hasQualifiedName("java.util", "Map$Entry") and
+    c instanceof MapKeyContent
+  }
+
+  bindingset[arg]
+  override string getCall(string arg) { result = arg + ".getKey()" }
+}
+
+private class MapGetValueMethod extends GetMethod {
+  MapGetValueMethod() { this = "MapGetValueMethod" }
 
   override predicate appliesTo(Type t, Content c) {
     t.(RefType).getASourceSupertype*().hasQualifiedName("java.util", "Map") and
@@ -245,6 +273,18 @@ private class MapValueGetMethod extends GetMethod {
 
   bindingset[arg]
   override string getCall(string arg) { result = "getMapValue(" + arg + ")" }
+}
+
+private class MapEntryGetValueMethod extends GetMethod {
+  MapEntryGetValueMethod() { this = "mapentrygetvaluemethod" }
+
+  override predicate appliesTo(Type t, Content c) {
+    t.(RefType).getASourceSupertype*().hasQualifiedName("java.util", "Map$Entry") and
+    c instanceof MapValueContent
+  }
+
+  bindingset[arg]
+  override string getCall(string arg) { result = arg + ".getValue()" }
 }
 
 private class ArrayGetMethod extends GetMethod {
@@ -314,7 +354,8 @@ private class ListGenMethod extends GenMethod {
 
   override predicate appliesTo(Type t, Content c) {
     exists(GenericType list | list.hasQualifiedName("java.util", "List") |
-      t = list or list.getAParameterizedType().getASupertype*() = t
+      t.getErasure() = list.getASourceSupertype*().getErasure() or // cover things like Iterable and Collection
+      list.getAParameterizedType().getASupertype*() = t
     ) and
     c instanceof CollectionContent
   }
@@ -327,8 +368,8 @@ private class OptionalGenMethod extends GenMethod {
   OptionalGenMethod() { this = "optionalgenmethod" }
 
   override predicate appliesTo(Type t, Content c) {
-    exists(GenericType list | list.hasQualifiedName("java.util", "List") |
-      list.getAParameterizedType().getASupertype*() = t
+    exists(GenericType op | op.hasQualifiedName("java.util", "Optional") |
+      op.getAParameterizedType().getASupertype*() = t
     ) and
     c instanceof CollectionContent
   }
@@ -351,6 +392,25 @@ private class MapGenKeyMethod extends GenMethod {
   override string getCall(string arg) { result = "Map.of(" + arg + ", null)" }
 }
 
+private class MapEntryGenKeyMethod extends GenMethod {
+  MapEntryGenKeyMethod() { this = "mapentrygenkeymethod" }
+
+  override predicate appliesTo(Type t, Content c) {
+    exists(GenericType map | map.hasQualifiedName("java.util", "Map$Entry") |
+      map.getAParameterizedType().getASupertype*() = t
+    ) and
+    c instanceof MapKeyContent
+  }
+
+  override string getDefinition() {
+    result =
+      "<K> Map.Entry<K,?> newEntryWithMapKey(K key) { return Map.of(key, null).entrySet().iterator().next(); }"
+  }
+
+  bindingset[arg]
+  override string getCall(string arg) { result = "newEntryWithMapKey(" + arg + ")" }
+}
+
 private class MapGenValueMethod extends GenMethod {
   MapGenValueMethod() { this = "mapvaluegenmethod" }
 
@@ -363,6 +423,25 @@ private class MapGenValueMethod extends GenMethod {
 
   bindingset[arg]
   override string getCall(string arg) { result = "Map.of(null, " + arg + ")" }
+}
+
+private class MapEntryGenValueMethod extends GenMethod {
+  MapEntryGenValueMethod() { this = "mapentrygenvaluemethod" }
+
+  override predicate appliesTo(Type t, Content c) {
+    exists(GenericType map | map.hasQualifiedName("java.util", "Map$Entry") |
+      map.getAParameterizedType().getASupertype*() = t
+    ) and
+    c instanceof MapValueContent
+  }
+
+  override string getDefinition() {
+    result =
+      "<V> Map.Entry<?,V> newEntryWithMapValue(V value) { return Map.of(null, value).entrySet().iterator().next(); }"
+  }
+
+  bindingset[arg]
+  override string getCall(string arg) { result = "newEntryWithMapValue(" + arg + ")" }
 }
 
 /**
