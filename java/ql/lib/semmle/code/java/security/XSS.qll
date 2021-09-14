@@ -5,6 +5,7 @@ import semmle.code.java.frameworks.Servlets
 import semmle.code.java.frameworks.android.WebView
 import semmle.code.java.frameworks.spring.SpringController
 import semmle.code.java.frameworks.spring.SpringHttp
+import semmle.code.java.frameworks.javaee.jsf.JSFRenderer
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.TaintTracking2
 import semmle.code.java.dataflow.ExternalFlow
@@ -40,7 +41,7 @@ private class DefaultXssSink extends XssSink {
   DefaultXssSink() {
     sinkNode(this, "xss")
     or
-    exists(ServletWriterSourceToWritingMethodFlowConfig writer, MethodAccess ma |
+    exists(XssVulnerableWriterSourceToWritingMethodFlowConfig writer, MethodAccess ma |
       ma.getMethod() instanceof WritingMethod and
       writer.hasFlowToExpr(ma.getQualifier()) and
       this.asExpr() = ma.getArgument(_)
@@ -101,12 +102,14 @@ private class DefaultXSSSanitizer extends XssSanitizer {
 }
 
 /** A configuration that tracks data from a servlet writer to an output method. */
-private class ServletWriterSourceToWritingMethodFlowConfig extends TaintTracking2::Configuration {
-  ServletWriterSourceToWritingMethodFlowConfig() {
-    this = "XSS::ServletWriterSourceToWritingMethodFlowConfig"
+private class XssVulnerableWriterSourceToWritingMethodFlowConfig extends TaintTracking2::Configuration {
+  XssVulnerableWriterSourceToWritingMethodFlowConfig() {
+    this = "XSS::XssVulnerableWriterSourceToWritingMethodFlowConfig"
   }
 
-  override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof ServletWriterSource }
+  override predicate isSource(DataFlow::Node src) {
+    src.asExpr() instanceof XssVulnerableWriterSource
+  }
 
   override predicate isSink(DataFlow::Node sink) {
     exists(MethodAccess ma |
@@ -128,9 +131,9 @@ private class WritingMethod extends Method {
   }
 }
 
-/** An output stream or writer that writes to a servlet response. */
-class ServletWriterSource extends MethodAccess {
-  ServletWriterSource() {
+/** An output stream or writer that writes to a servlet, JSP or JSF response. */
+class XssVulnerableWriterSource extends MethodAccess {
+  XssVulnerableWriterSource() {
     this.getMethod() instanceof ServletResponseGetWriterMethod
     or
     this.getMethod() instanceof ServletResponseGetOutputStreamMethod
@@ -139,8 +142,17 @@ class ServletWriterSource extends MethodAccess {
       m.getDeclaringType().getQualifiedName() = "javax.servlet.jsp.JspContext" and
       m.getName() = "getOut"
     )
+    or
+    this.getMethod() instanceof FacesGetResponseWriterMethod
+    or
+    this.getMethod() instanceof FacesGetResponseStreamMethod
   }
 }
+
+/**
+ * DEPRECATED: Use `XssVulnerableWriterSource` instead.
+ */
+deprecated class ServletWriterSource = XssVulnerableWriterSource;
 
 /**
  * Holds if `s` is an HTTP Content-Type vulnerable to XSS.

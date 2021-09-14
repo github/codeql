@@ -84,6 +84,7 @@ private module Frameworks {
   private import semmle.code.java.frameworks.Flexjson
   private import semmle.code.java.frameworks.guava.Guava
   private import semmle.code.java.frameworks.jackson.JacksonSerializability
+  private import semmle.code.java.frameworks.javaee.jsf.JSFRenderer
   private import semmle.code.java.frameworks.JavaxJson
   private import semmle.code.java.frameworks.JaxWS
   private import semmle.code.java.frameworks.JoddJson
