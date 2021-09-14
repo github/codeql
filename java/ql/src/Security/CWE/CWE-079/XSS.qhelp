@@ -24,15 +24,6 @@ leaving the website vulnerable to cross-site scripting.</p>
 <sample src="XSS.java" />
 
 </example>
-
-<example>
-
-<p>The following example shows the page parameter being written directly to a custom JSF renderer
-of UI components, which leaves the website vulnerable to cross-site scripting.</p>
-
-<sample src="JsfXSS.java" />
-
-</example>
 <references>
 
 
