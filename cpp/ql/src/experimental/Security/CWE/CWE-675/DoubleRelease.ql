@@ -158,7 +158,6 @@ predicate closeWithoutChangeBefore(FunctionCall fc) {
 /** Holds, if a sequential call of the specified functions is possible, via a higher-level function call. */
 predicate callInOtherFunctions(FunctionCall fc, FunctionCall fc1) {
   exists(FunctionCall fec1, FunctionCall fec2 |
-    //  fec1.getTarget() != fec2.getTarget() and
     fc.getEnclosingFunction() != fc1.getEnclosingFunction() and
     fec1 = fc.getEnclosingFunction().getACallToThisFunction() and
     fec2 = fc1.getEnclosingFunction().getACallToThisFunction() and
@@ -201,10 +200,12 @@ where
   not exists(CallMayNotReturn fctmp | fctmp = fc.getASuccessor*()) and
   not exists(IfStmt ifs | ifs.getCondition().getAChild*() = fc) and
   (
+    // detecting a repeated call situation within one function
     closeReturn(fc) and
     closeWithoutChangeBefore(fc1) and
     callInOtherFunctions(fc, fc1)
     or
+	// detection of repeated call in different functions
     interDoubleCloseFunctions(fc, fc1)
   ) and
   similarArguments(fc, fc1)
