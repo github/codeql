@@ -32,7 +32,7 @@ class CallMayNotReturn extends FunctionCall {
 
 /** Holds if there are no assignment expressions to the function argument. */
 pragma[inline]
-predicate checkChangeVariable(FunctionCall fc0, FunctionCall fc1, FunctionCall fc2) {
+predicate checkChangeVariable(FunctionCall fc0, ControlFlowNode fc1, ControlFlowNode fc2) {
   not exists(Expr exptmp |
     (
       exptmp = fc0.getArgument(0).(VariableAccess).getTarget().getAnAssignedValue() or
@@ -76,83 +76,13 @@ predicate checkChangeVariable(FunctionCall fc0, FunctionCall fc1, FunctionCall f
 /** Holds if the underlying expression is a call to the close function. Provided that the function parameter does not change after the call. */
 predicate closeReturn(FunctionCall fc) {
   fcloseCall(fc, _) and
-  not exists(Expr exptmp |
-    (
-      exptmp = fc.getArgument(0).(VariableAccess).getTarget().getAnAssignedValue() or
-      exptmp.(AddressOfExpr).getOperand() =
-        fc.getArgument(0).(VariableAccess).getTarget().getAnAccess()
-    ) and
-    exptmp = fc.getASuccessor*()
-  ) and
-  (
-    (
-      not fc.getArgument(0) instanceof PointerFieldAccess and
-      not fc.getArgument(0) instanceof ValueFieldAccess
-      or
-      fc.getArgument(0).(VariableAccess).getQualifier() instanceof ThisExpr
-    )
-    or
-    not exists(Expr exptmp |
-      (
-        exptmp =
-          fc.getArgument(0)
-              .(VariableAccess)
-              .getQualifier()
-              .(VariableAccess)
-              .getTarget()
-              .getAnAssignedValue() or
-        exptmp.(AddressOfExpr).getOperand() =
-          fc.getArgument(0)
-              .(VariableAccess)
-              .getQualifier()
-              .(VariableAccess)
-              .getTarget()
-              .getAnAccess()
-      ) and
-      exptmp = fc.getASuccessor*()
-    )
-  )
+  checkChangeVariable(fc, fc, fc.getEnclosingFunction())
 }
 
 /** Holds if the underlying expression is a call to the close function. Provided that the function parameter does not change before the call. */
 predicate closeWithoutChangeBefore(FunctionCall fc) {
   fcloseCall(fc, _) and
-  not exists(Expr exptmp |
-    (
-      exptmp = fc.getArgument(0).(VariableAccess).getTarget().getAnAssignedValue() or
-      exptmp.(AddressOfExpr).getOperand() =
-        fc.getArgument(0).(VariableAccess).getTarget().getAnAccess()
-    ) and
-    exptmp = fc.getAPredecessor*()
-  ) and
-  (
-    (
-      not fc.getArgument(0) instanceof PointerFieldAccess and
-      not fc.getArgument(0) instanceof ValueFieldAccess
-      or
-      fc.getArgument(0).(VariableAccess).getQualifier() instanceof ThisExpr
-    )
-    or
-    not exists(Expr exptmp |
-      (
-        exptmp =
-          fc.getArgument(0)
-              .(VariableAccess)
-              .getQualifier()
-              .(VariableAccess)
-              .getTarget()
-              .getAnAssignedValue() or
-        exptmp.(AddressOfExpr).getOperand() =
-          fc.getArgument(0)
-              .(VariableAccess)
-              .getQualifier()
-              .(VariableAccess)
-              .getTarget()
-              .getAnAccess()
-      ) and
-      exptmp = fc.getAPredecessor*()
-    )
-  )
+  checkChangeVariable(fc, fc.getEnclosingFunction().getEntryPoint(), fc)
 }
 
 /** Holds, if a sequential call of the specified functions is possible, via a higher-level function call. */
@@ -205,7 +135,7 @@ where
     closeWithoutChangeBefore(fc1) and
     callInOtherFunctions(fc, fc1)
     or
-	// detection of repeated call in different functions
+    // detection of repeated call in different functions
     interDoubleCloseFunctions(fc, fc1)
   ) and
   similarArguments(fc, fc1)
