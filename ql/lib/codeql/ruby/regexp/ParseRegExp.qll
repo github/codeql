@@ -671,15 +671,18 @@ class RegExp extends AST::RegExpLiteral {
   }
 
   predicate multiples(int start, int end, string lower, string upper) {
-    this.getChar(start) = "{" and
-    this.getChar(end - 1) = "}" and
-    exists(string inner | inner = this.getText().substring(start + 1, end - 1) |
-      inner.regexpMatch("[0-9]+") and
+    exists(string text, string match, string inner |
+      text = this.getText() and
+      end = start + match.length() and
+      inner = match.substring(1, match.length() - 1)
+    |
+      match = text.regexpFind("\\{[0-9]+\\}", _, start) and
       lower = inner and
       upper = lower
       or
-      inner.regexpMatch("[0-9]*,[0-9]*") and
-      exists(int commaIndex | commaIndex = inner.indexOf(",") |
+      match = text.regexpFind("\\{[0-9]*,[0-9]*\\}", _, start) and
+      exists(int commaIndex |
+        commaIndex = inner.indexOf(",") and
         lower = inner.prefix(commaIndex) and
         upper = inner.suffix(commaIndex + 1)
       )
