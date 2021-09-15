@@ -103,4 +103,22 @@ predicate isSqlInjection(DataFlow::Node node, XMLElement xmle) {
     xmle.getTextValue().trim().matches("%${%") and
     mc.getArgument(i) = node.asExpr()
   )
+  or
+  // MyBatis Mapper method string type sql injection vulnerabilities.
+  // e.g. MyBatis Mapper method: `void test(String name);` and MyBatis Mapper XML file:`select id,name from test where name like '%${value}%'`
+  exists(MyBatisMapperSqlOperation mbmxe, MyBatisMapperSql mbms, MethodAccess mc |
+    mbmxe.getMapperMethod() = mc.getMethod()
+  |
+    (
+      mbmxe.getAChild*() = xmle
+      or
+      mbmxe.getInclude().getRefid() = mbms.getId() and
+      mbms.getAChild*() = xmle
+    ) and
+    mc.getMethod().getAParamType() instanceof TypeString and
+    mc.getMethod().getNumberOfParameters() = 1 and
+    not mc.getMethod().getAParameter().hasAnnotation() and
+    xmle.getTextValue().trim().matches("%${%") and
+    mc.getAnArgument() = node.asExpr()
+  )
 }
