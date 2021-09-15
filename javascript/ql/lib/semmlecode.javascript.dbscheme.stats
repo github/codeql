@@ -774,6 +774,10 @@
 <v>2693</v>
 </e>
 <e>
+<k>@static_initializer</k>
+<v>100</v>
+</e>
+<e>
 <k>@local_type_access</k>
 <v>25491</v>
 </e>
