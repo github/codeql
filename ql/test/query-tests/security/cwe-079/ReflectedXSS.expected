@@ -44,6 +44,7 @@ nodes
 | app/views/foo/bars/show.html.erb:54:29:54:44 | ...[...] | semmle.label | ...[...] |
 | app/views/foo/bars/show.html.erb:57:13:57:18 | call to params :  | semmle.label | call to params :  |
 | app/views/foo/bars/show.html.erb:57:13:57:28 | ...[...] | semmle.label | ...[...] |
+subpaths
 #select
 | app/views/foo/bars/_widget.html.erb:5:9:5:20 | call to display_text | app/controllers/foo/bars_controller.rb:18:10:18:15 | call to params :  | app/views/foo/bars/_widget.html.erb:5:9:5:20 | call to display_text | Cross-site scripting vulnerability due to $@. | app/controllers/foo/bars_controller.rb:18:10:18:15 | call to params | a user-provided value |
 | app/views/foo/bars/_widget.html.erb:8:9:8:36 | ...[...] | app/controllers/foo/bars_controller.rb:18:10:18:15 | call to params :  | app/views/foo/bars/_widget.html.erb:8:9:8:36 | ...[...] | Cross-site scripting vulnerability due to $@. | app/controllers/foo/bars_controller.rb:18:10:18:15 | call to params | a user-provided value |
