@@ -146,7 +146,7 @@ stmt_containers (unique int stmt: @stmt ref,
 jump_targets (unique int jump: @stmt ref,
        int target: @stmt ref);
 
-@stmt_parent = @stmt | @toplevel | @function_expr | @arrow_function_expr | @static_initializer;
+@stmt_parent = @stmt | @toplevel | @function_expr | @arrow_function_expr;
 @stmt_container = @toplevel | @function | @namespace_declaration | @external_module_declaration | @global_augmentation_declaration;
 
 case @stmt.kind of

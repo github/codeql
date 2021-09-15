@@ -9,7 +9,7 @@ import java.util.List;
  * <p>A member definition has a name and an optional initial value, whose type is given by the type
  * parameter {@code V}.
  */
-public abstract class MemberDefinition<V extends Expression> extends Node {
+public abstract class MemberDefinition<V extends Node> extends Node {
   /** A bitmask of flags defined in {@linkplain DeclarationFlags}. */
   private final int flags;
 
@@ -21,7 +21,7 @@ public abstract class MemberDefinition<V extends Expression> extends Node {
    */
   private final Expression key;
 
-  /** The initial value of the member. */
+  /** The initial value / initializer of the member. */
   private final V value;
 
   /** The decorators applied to this member, if any. */
