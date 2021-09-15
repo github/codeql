@@ -1,5 +1,5 @@
 /**
- * @name unsinged to signed used in pointer arithmetic
+ * @name unsigned to signed used in pointer arithmetic
  * @description finds unsigned to signed conversions used in pointer arithmetic, potentially causing an out-of-bound access
  * @id cpp/sign-conversion-pointer-arithmetic
  * @kind problem
