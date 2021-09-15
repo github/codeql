@@ -1,5 +1,5 @@
 package com.github.codeql.comments
 
-enum class CommentType {
-    SingleLine, Block, Doc
+enum class CommentType(val value: Int) {
+    SingleLine(1), Block(2), Doc(3)
 }

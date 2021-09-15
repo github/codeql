@@ -1,128 +1,27 @@
 package com.github.codeql.comments
 
-import com.github.codeql.FileLogger
-import com.github.codeql.Logger
-import com.github.codeql.Severity
-import com.github.codeql.TrapWriter
+import com.github.codeql.*
+import com.github.codeql.utils.IrVisitorLookup
 import com.intellij.psi.PsiComment
 import com.intellij.psi.PsiElement
-import org.jetbrains.kotlin.backend.common.psi.PsiSourceManager
 import org.jetbrains.kotlin.backend.jvm.ir.getKtFile
 import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.declarations.IrFile
 import org.jetbrains.kotlin.ir.declarations.path
-import org.jetbrains.kotlin.ir.util.dump
 import org.jetbrains.kotlin.kdoc.psi.api.KDoc
 import org.jetbrains.kotlin.lexer.KtTokens
-import org.jetbrains.kotlin.psi.KtDeclaration
 import org.jetbrains.kotlin.psi.KtVisitor
-import org.jetbrains.kotlin.psi.findDocComment.findDocComment
 import org.jetbrains.kotlin.psi.psiUtil.endOffset
 import org.jetbrains.kotlin.psi.psiUtil.startOffset
 import org.jetbrains.kotlin.utils.addToStdlib.cast
 
-class CommentExtractor(private val logger: FileLogger, private val tw: TrapWriter, private val file: IrFile) {
+class CommentExtractor(private val logger: FileLogger, private val tw: FileTrapWriter, private val file: IrFile, private val fileExtractor: KotlinFileExtractor) {
     private val ktFile = file.getKtFile()
-
-    private val comments = mutableListOf<Comment>()
-    private val elements = mutableListOf<IrElement>()
 
     init {
         if (ktFile == null) {
             logger.warn(Severity.Warn, "Comments are not being processed in ${file.path}.")
         }
-    }
-
-    fun addPossibleCommentOwner(elem: IrElement) {
-        if (ktFile == null) {
-            return
-        }
-
-        if (elem.startOffset == -1 || elem.endOffset == -1) {
-            logger.info("Skipping element with negative offsets: ${elem.dump()}")
-            return
-        }
-
-
-        val psiElement = PsiSourceManager.findPsiElement(elem, file)
-        if (psiElement != null) {
-            println("PSI: $psiElement for ${elem.dump()}")
-            if (psiElement is KtDeclaration) {
-                val docComment = findDocComment(psiElement)
-                if (docComment != null) {
-                    println("doc comment: ${docComment.text}")
-                }
-            }
-        }
-
-        elements.add(elem)
-    }
-
-    /**
-     * Match comments to program elements.
-     */
-    fun bindCommentsToElement() {
-        if (comments.isEmpty()) {
-            return
-        }
-
-        comments.sortBy { it.startOffset }
-        elements.sortBy { it.startOffset }
-
-        var commentIndex: Int = 0
-        var elementIndex: Int = 0
-        val elementStack: ElementStack = ElementStack()
-
-        while (elementIndex < elements.size) {
-            val nextElement = elements[elementIndex]
-            val commentsForElement = mutableListOf<Comment>()
-            while (commentIndex < comments.size &&
-                    comments[commentIndex].endOffset < nextElement.startOffset) {
-
-                commentsForElement.add(comments[commentIndex])
-                commentIndex++
-            }
-
-            bindCommentsToElements(commentsForElement, elementStack, nextElement)
-
-            elementStack.push(nextElement)
-
-            elementIndex++
-        }
-
-        // Comments after last element
-        val commentsForElement = mutableListOf<Comment>()
-        while (commentIndex < comments.size) {
-
-            commentsForElement.add(comments[commentIndex])
-            commentIndex++
-        }
-
-        bindCommentsToElements(commentsForElement, elementStack, null)
-    }
-
-    /**
-     * Bind selected comments to elements. Elements are selected from the element stack or from the next element.
-     */
-    private fun bindCommentsToElements(
-        commentsForElement: Collection<Comment>,
-        elementStack: ElementStack,
-        nextElement: IrElement?
-    ) {
-        if (commentsForElement.any()) {
-            for (comment in commentsForElement) {
-                println("Comment: $comment")
-                val parent = elementStack.findParent(comment.getLocation())
-                println("parent: ${parent?.dump()}")
-                val before = elementStack.findBefore(comment.getLocation())
-                println("before: ${before?.dump()}")
-                val after = elementStack.findAfter(comment.getLocation(), nextElement)
-                println("after: ${after?.dump()}")
-                // todo: best match
-            }
-        }
-
-        // todo write matches to DB: tw.writeHasJavadoc()
     }
 
     fun extract() {
@@ -138,10 +37,6 @@ class CommentExtractor(private val logger: FileLogger, private val tw: TrapWrite
                 }
 
                 private fun visitCommentElement(comment: PsiComment) {
-                    // val loc = tw.getLocation(comment.startOffset, comment.endOffset)
-                    // val id: Label<DbJavadoc> = tw.getLabelFor(";comment")
-                    // tw.writeJavadoc(id)
-
                     val type: CommentType = when (comment.tokenType) {
                         KtTokens.EOL_COMMENT -> {
                             CommentType.SingleLine
@@ -158,19 +53,67 @@ class CommentExtractor(private val logger: FileLogger, private val tw: TrapWrite
                         }
                     }
 
-                    if (comment.tokenType == KtTokens.DOC_COMMENT)
-                    {
-                        val kdoc = comment.cast<KDoc>()
-                        for (sec in kdoc.getAllSections())
-                            println("section content: ${sec.getContent()}")
+                    val commentLabel = tw.getFreshIdLabel<Label<*>>()
+                    tw.writeTrap("// kt_comment($commentLabel,${type.value},${escapeTrapString(comment.text)})\n")
+                    val locId = tw.getLocation(comment.startOffset, comment.endOffset)
+                    tw.writeHasLocation(commentLabel as Label<out DbLocatable>, locId)
 
+                    if (comment.tokenType == KtTokens.DOC_COMMENT) {
+                        val kdoc = comment.cast<KDoc>()
+                        for (sec in kdoc.getAllSections()) {
+                            val commentSectionLabel = tw.getFreshIdLabel<Label<*>>()
+                            tw.writeTrap("// kt_comment_section($commentSectionLabel,$commentLabel,${escapeTrapString(sec.getContent())})\n")
+                            if (sec.name != null) {
+                                tw.writeTrap("// kt_comment_section_name($commentSectionLabel,${sec.name}})\n")
+                            }
+                            if (sec.getSubjectName() != null) {
+                                tw.writeTrap("// kt_comment_section_subject_name($commentSectionLabel,${sec.getSubjectName()}})\n")
+                            }
+                        }
                     }
 
-                    comments.add(Comment(comment.text, comment.startOffset, comment.endOffset, type))
-                    // todo:
-                    // - store each comment in the DB
-                    // - do further processing on Doc comments (extract @tag text, @tag name text, @tag[name] text)
+                    val owner = getCommentOwner(comment)
+                    val elements = mutableListOf<IrElement>()
+                    file.accept(IrVisitorLookup(owner, file), elements)
+
+                    for (owner in elements) {
+                        val label = fileExtractor.getLabel(owner)
+                        if (label == null) {
+                            logger.warn(Severity.Warn, "Couldn't get label for element: $owner")
+                            continue
+                        }
+                        if (label == "*") {
+                            logger.info("Skipping fresh entity label for element: $owner")
+                            continue
+                        }
+                        val existingLabel = tw.getExistingLabelFor<Label<*>>(label)
+                        if (existingLabel == null) {
+                            logger.warn(Severity.Warn, "Couldn't get existing label for $label")
+                            continue
+                        }
+
+                        tw.writeTrap("// kt_comment_owner($commentLabel,$existingLabel)\n")
+                    }
+                }
+
+                private fun getCommentOwner(comment: PsiComment) : PsiElement {
+                    if (comment.tokenType == KtTokens.DOC_COMMENT) {
+                        if (comment is KDoc) {
+                            if (comment.owner == null) {
+                                logger.warn(Severity.Warn, "Couldn't get owner of KDoc, using parent instead")
+                                return comment.parent
+                            } else {
+                                return comment.owner!!
+                            }
+                        } else {
+                            logger.warn(Severity.Warn, "Unexpected comment type with DocComment token type")
+                            return comment.parent
+                        }
+                    } else {
+                        return comment.parent
+                    }
                 }
             })
     }
 }
+

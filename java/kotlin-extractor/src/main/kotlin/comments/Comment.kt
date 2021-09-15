@@ -1,6 +1,7 @@
 package com.github.codeql.comments
 
-import com.github.codeql.Location
+import utils.Location
+
 
 data class Comment(val rawText: String, val startOffset: Int, val endOffset: Int, val type: CommentType){
     fun getLocation() : Location {

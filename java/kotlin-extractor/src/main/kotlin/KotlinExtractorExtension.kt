@@ -153,7 +153,7 @@ fun <T> fakeLabel(): Label<T> {
 
 class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val file: IrFile) {
 
-    private val commentExtractor: CommentExtractor = CommentExtractor(logger, tw, file)
+    private val commentExtractor: CommentExtractor = CommentExtractor(logger, tw, file, this)
 
     val fileClass by lazy {
         extractFileClass(file)
@@ -165,7 +165,6 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
         tw.writeCupackage(id, pkgId)
         file.declarations.map { extractDeclaration(it, Optional.empty()) }
         commentExtractor.extract()
-        commentExtractor.bindCommentsToElement()
     }
 
 
@@ -261,7 +260,27 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
         }
     }
 
-    fun getTypeParameterLabel(param: IrTypeParameter): String {
+    fun getLabel(element: IrElement) : String? {
+        when (element) {
+            is IrFile -> return "@\"${element.path};sourcefile\"" // todo: remove copy-pasted code
+            is IrClass -> return getClassLabel(element)
+            is IrTypeParameter -> return getTypeParameterLabel(element)
+            is IrFunction -> return getFunctionLabel(element)
+            is IrValueParameter -> return getValueParameterLabel(element)
+            is IrProperty -> return getPropertyLabel(element)
+
+            // Fresh entities:
+            is IrBody -> return "*"
+            is IrExpression -> return "*"
+
+            // todo:
+            is IrField -> return null
+            // todo add others:
+            else -> return null
+        }
+    }
+
+    private fun getTypeParameterLabel(param: IrTypeParameter): String {
         val parentLabel = useDeclarationParent(param.parent)
         return "@\"typevar;{$parentLabel};${param.name}\""
     }
@@ -270,7 +289,7 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
         return tw.getLabelFor(getTypeParameterLabel(param))
     }
 
-    fun getClassLabel(c: IrClass): String {
+    private fun getClassLabel(c: IrClass): String {
         val pkg = c.packageFqName?.asString() ?: ""
         val cls = c.name.asString()
         val qualClassName = if (pkg.isEmpty()) cls else "$pkg.$cls"
@@ -294,7 +313,6 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
     }
 
     fun extractClass(c: IrClass): Label<out DbClassorinterface> {
-        commentExtractor.addPossibleCommentOwner(c)
         val id = addClassLabel(c)
         val locId = tw.getLocation(c)
         val pkg = c.packageFqName?.asString() ?: ""
@@ -364,20 +382,30 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
         return t
     }
 
-    fun useFunction(f: IrFunction): Label<out DbMethod> {
+    private fun getFunctionLabel(f: IrFunction) : String {
         val paramTypeIds = f.valueParameters.joinToString() { "{${useType(erase(it.type)).toString()}}" }
         val returnTypeId = useType(erase(f.returnType))
         val parentId = useDeclarationParent(f.parent)
         val label = "@\"callable;{$parentId}.${f.name.asString()}($paramTypeIds){$returnTypeId}\""
+        return label
+    }
+
+    fun useFunction(f: IrFunction): Label<out DbMethod> {
+        val label = getFunctionLabel(f)
         val id: Label<DbMethod> = tw.getLabelFor(label)
         return id
     }
 
-    fun useValueParameter(vp: IrValueParameter): Label<out DbParam> {
+    private fun getValueParameterLabel(vp: IrValueParameter) : String {
         @Suppress("UNCHECKED_CAST")
         val parentId: Label<out DbMethod> = useDeclarationParent(vp.parent) as Label<out DbMethod>
         val idx = vp.index
         val label = "@\"params;{$parentId};$idx\""
+        return label
+    }
+
+    fun useValueParameter(vp: IrValueParameter): Label<out DbParam> {
+        val label = getValueParameterLabel(vp)
         val id = tw.getLabelFor<DbParam>(label)
         return id
     }
@@ -392,7 +420,6 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
     }
 
     fun extractFunction(f: IrFunction, parentid: Label<out DbReftype>) {
-        commentExtractor.addPossibleCommentOwner(f)
         val id = useFunction(f)
         val locId = tw.getLocation(f)
         val signature = "TODO"
@@ -408,15 +435,19 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
         }
     }
 
-    fun useProperty(p: IrProperty): Label<out DbField> {
+    private fun getPropertyLabel(p: IrProperty) : String {
         val parentId = useDeclarationParent(p.parent)
         val label = "@\"field;{$parentId};${p.name.asString()}\""
+        return label
+    }
+
+    fun useProperty(p: IrProperty): Label<out DbField> {
+        var label = getPropertyLabel(p)
         val id: Label<DbField> = tw.getLabelFor(label)
         return id
     }
 
     fun extractProperty(p: IrProperty, parentid: Label<out DbReftype>) {
-        commentExtractor.addPossibleCommentOwner(p)
         val bf = p.backingField
         if(bf == null) {
             logger.warnElement(Severity.ErrorSevere, "IrProperty without backing field", p)
@@ -430,7 +461,6 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
     }
 
     fun extractBody(b: IrBody, callable: Label<out DbCallable>) {
-        commentExtractor.addPossibleCommentOwner(b)
         when(b) {
             is IrBlockBody -> extractBlockBody(b, callable, callable, 0)
             else -> logger.warnElement(Severity.ErrorSevere, "Unrecognised IrBody: " + b.javaClass, b)
@@ -467,7 +497,6 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
     }
 
     fun extractStatement(s: IrStatement, callable: Label<out DbCallable>, parent: Label<out DbStmtparent>, idx: Int) {
-        commentExtractor.addPossibleCommentOwner(s)
         when(s) {
             is IrExpression -> {
                 extractExpression(s, callable, parent, idx)
@@ -593,7 +622,6 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
     }
 
     fun extractExpression(e: IrExpression, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int) {
-        commentExtractor.addPossibleCommentOwner(e)
         when(e) {
             is IrCall -> extractCall(e, callable, parent, idx)
             is IrConst<*> -> {
