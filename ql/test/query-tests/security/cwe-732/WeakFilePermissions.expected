@@ -16,6 +16,7 @@ nodes
 | FilePermissions.rb:51:19:51:29 | "u=rwx,o+r" | semmle.label | "u=rwx,o+r" |
 | FilePermissions.rb:53:19:53:24 | "a+rw" | semmle.label | "a+rw" |
 | FilePermissions.rb:57:16:57:19 | 0755 | semmle.label | 0755 |
+subpaths
 #select
 | FilePermissions.rb:4:19:4:22 | 0222 | FilePermissions.rb:4:19:4:22 | 0222 | FilePermissions.rb:4:19:4:22 | 0222 | Overly permissive mask in $@ sets file to $@. | FilePermissions.rb:4:3:4:32 | call to chmod | call to chmod | FilePermissions.rb:4:19:4:22 | 0222 | 0222 |
 | FilePermissions.rb:5:19:5:22 | 0622 | FilePermissions.rb:5:19:5:22 | 0622 | FilePermissions.rb:5:19:5:22 | 0622 | Overly permissive mask in $@ sets file to $@. | FilePermissions.rb:5:3:5:32 | call to chmod | call to chmod | FilePermissions.rb:5:19:5:22 | 0622 | 0622 |
