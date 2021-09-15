@@ -11,7 +11,7 @@ Setup
 
 For this example you should download:
 
-- `CodeQL for Visual Studio Code <https://help.semmle.com/codeql/codeql-for-vscode/procedures/setting-up.html>`__
+- `CodeQL for Visual Studio Code <https://codeql.github.com/docs/codeql-for-visual-studio-code/setting-up-codeql-in-visual-studio-code/>`__
 - `ChakraCore database <https://downloads.lgtm.com/snapshots/cpp/microsoft/chakracore/ChakraCore-revision-2017-April-12--18-13-26.zip>`__
 
 .. note::
@@ -149,7 +149,7 @@ Let’s look for overflow guards of the form ``v + b < v``, using the classes
     - a ``RelationalOperation``: the overflow comparison check.
     - a ``Variable``: used as an argument to both the addition and comparison.
 
-  - The ``where`` part of the query ties these three variables together using `predicates <https://help.semmle.com/QL/ql-handbook/predicates.html>`__ defined in the `standard CodeQL for C/C++ library <https://codeql.github.com/codeql-standard-libraries/cpp/>`__.
+  - The ``where`` part of the query ties these three variables together using `predicates <https://codeql.github.com/docs/ql-language-reference/predicates/>`__ defined in the `standard CodeQL for C/C++ library <https://codeql.github.com/codeql-standard-libraries/cpp/>`__.
 
 CodeQL query: bad overflow guards
 =================================

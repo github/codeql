@@ -13,7 +13,7 @@ Setup
 
 For this example you should download:
 
-- `CodeQL for Visual Studio Code <https://help.semmle.com/codeql/codeql-for-vscode/procedures/setting-up.html>`__
+- `CodeQL for Visual Studio Code <https://codeql.github.com/docs/codeql-for-visual-studio-code/setting-up-codeql-in-visual-studio-code/>`__
 - `ChakraCore database <https://downloads.lgtm.com/snapshots/cpp/microsoft/chakracore/ChakraCore-revision-2017-April-12--18-13-26.zip>`__
 
 .. note::
@@ -222,7 +222,7 @@ A ``GuardCondition`` is a ``Boolean`` condition that controls one or more basic 
 Further materials
 =================
 
-- CodeQL for C/C++: https://help.semmle.com/QL/learn-ql/ql/cpp/ql-for-cpp.html 
+- CodeQL for C/C++: https://codeql.github.com/docs/codeql-language-guides/codeql-for-cpp/ 
 - API reference: https://codeql.github.com/codeql-standard-libraries/cpp 
 
 .. rst-class:: end-slide
