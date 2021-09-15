@@ -144,23 +144,20 @@ module ModificationOfParameterWithDefault {
    * A data-flow node that is known to be either truthy or falsey.
    *
    * It handles the cases `if x` and `if not x`.
-   * 
+   *
    * For example, in the following code, `this` will be the `x` that is printed,
    * which we will know is truthy:
-   * 
+   *
    * ```py
    * if x:
    *     print(x)
    * ```
    */
   private class MustBe extends DataFlow::Node {
-    DataFlow::GuardNode guard;
-    NameNode guarded;
-    boolean branch;
     boolean truthy;
 
     MustBe() {
-      (
+      exists(DataFlow::GuardNode guard, NameNode guarded, boolean branch |
         // case: if x
         guard = guarded and
         branch = truthy
@@ -169,13 +166,14 @@ module ModificationOfParameterWithDefault {
         guard.(UnaryExprNode).getNode().getOp() instanceof Not and
         guarded = guard.(UnaryExprNode).getOperand() and
         branch = truthy.booleanNot()
-      ) and
-      // guard controls this
-      guard.controlsBlock(this.asCfgNode().getBasicBlock(), branch) and
-      // there is a definition tying the guarded value to this
-      exists(EssaDefinition def |
-        AdjacentUses::useOfDef(def, this.asCfgNode()) and
-        AdjacentUses::useOfDef(def, guarded)
+      |
+        // guard controls this
+        guard.controlsBlock(this.asCfgNode().getBasicBlock(), branch) and
+        // there is a definition tying the guarded value to this
+        exists(EssaDefinition def |
+          AdjacentUses::useOfDef(def, this.asCfgNode()) and
+          AdjacentUses::useOfDef(def, guarded)
+        )
       )
     }
   }
