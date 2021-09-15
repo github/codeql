@@ -52,11 +52,20 @@ class UriCreation extends Call {
   /**
    * Gets the host argument of the newly created URI. In the case where the
    * host is specified separately, this is only the host. In the case where the
-   * uri is parsed from an input string, such as in
+   * URI is parsed from an input string, such as in
    * `URI("http://foo.com/mypath")`, this is the entire argument passed in,
    * that is `"http://foo.com/mypath"`.
    */
-  Expr getHostArg() { none() }
+  abstract Expr getHostArg();
+
+  /**
+   * Gets the scheme argument of the newly created URI. In the case where the
+   * scheme is specified separately, this is only the scheme. In the case where the
+   * URI is parsed from an input string, such as in
+   * `URI("http://foo.com/mypath")`, this is the entire argument passed in,
+   * that is `"http://foo.com/mypath"`.
+   */
+  abstract Expr getSchemeArg();
 }
 
 /** A `java.net.URI` constructor call. */
@@ -74,6 +83,8 @@ class UriConstructorCall extends ClassInstanceExpr, UriCreation {
     //    String fragment)
     result = this.getArgument(2) and this.getNumArgument() = 7
   }
+
+  override Expr getSchemeArg() { result = this.getArgument(0) }
 }
 
 /** A call to `java.net.URI::create`. */
@@ -81,6 +92,8 @@ class UriCreate extends UriCreation {
   UriCreate() { this.getCallee().hasName("create") }
 
   override Expr getHostArg() { result = this.getArgument(0) }
+
+  override Expr getSchemeArg() { result = this.getArgument(0) }
 }
 
 /** A `java.net.URL` constructor call. */
@@ -105,7 +118,7 @@ class UrlConstructorCall extends ClassInstanceExpr {
   }
 
   /** Gets the argument that corresponds to the protocol of the URL. */
-  Expr protocolArg() {
+  Expr getProtocolArg() {
     // In all cases except where the first parameter is a URL, the argument
     // containing the protocol is the first one, otherwise it is the second.
     if this.getConstructor().getParameterType(0) instanceof TypeUrl

@@ -11,54 +11,10 @@
  */
 
 import java
-import semmle.code.java.dataflow.TaintTracking
-import semmle.code.java.frameworks.Networking
+import semmle.code.java.security.HttpsUrlsQuery
 import DataFlow::PathGraph
-private import semmle.code.java.dataflow.ExternalFlow
 
-class HttpString extends StringLiteral {
-  HttpString() {
-    // Avoid matching "https" here.
-    exists(string s | this.getRepresentedString() = s |
-      (
-        // Either the literal "http", ...
-        s = "http"
-        or
-        // ... or the beginning of a http URL.
-        s.matches("http://%")
-      ) and
-      not s.matches("%/localhost%")
-    )
-  }
-}
-
-class HttpStringToUrlOpenMethodFlowConfig extends TaintTracking::Configuration {
-  HttpStringToUrlOpenMethodFlowConfig() { this = "HttpsUrls::HttpStringToUrlOpenMethodFlowConfig" }
-
-  override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof HttpString }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof UrlOpenSink }
-
-  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
-    exists(UrlConstructorCall u |
-      node1.asExpr() = u.protocolArg() and
-      node2.asExpr() = u
-    )
-  }
-
-  override predicate isSanitizer(DataFlow::Node node) {
-    node.getType() instanceof PrimitiveType or node.getType() instanceof BoxedType
-  }
-}
-
-/**
- * A sink that represents a URL opening method call, such as a call to `java.net.URL.openConnection()`.
- */
-private class UrlOpenSink extends DataFlow::Node {
-  UrlOpenSink() { sinkNode(this, "open-url") }
-}
-
-from DataFlow::PathNode source, DataFlow::PathNode sink, MethodAccess m, HttpString s
+from DataFlow::PathNode source, DataFlow::PathNode sink, MethodAccess m, HttpStringLiteral s
 where
   source.getNode().asExpr() = s and
   sink.getNode().asExpr() = m.getQualifier() and
