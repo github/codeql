@@ -38,6 +38,7 @@ nodes
 | ActiveRecordInjection.rb:68:21:68:33 | ... + ... | semmle.label | ... + ... |
 | ActiveRecordInjection.rb:101:22:101:27 | call to params :  | semmle.label | call to params :  |
 | ActiveRecordInjection.rb:101:22:101:45 | ...[...] :  | semmle.label | ...[...] :  |
+subpaths
 #select
 | ActiveRecordInjection.rb:10:33:10:67 | "name='#{...}' and pass='#{...}'" | ActiveRecordInjection.rb:56:23:56:28 | call to params :  | ActiveRecordInjection.rb:10:33:10:67 | "name='#{...}' and pass='#{...}'" | This SQL query depends on $@. | ActiveRecordInjection.rb:56:23:56:28 | call to params | a user-provided value |
 | ActiveRecordInjection.rb:10:33:10:67 | "name='#{...}' and pass='#{...}'" | ActiveRecordInjection.rb:56:38:56:43 | call to params :  | ActiveRecordInjection.rb:10:33:10:67 | "name='#{...}' and pass='#{...}'" | This SQL query depends on $@. | ActiveRecordInjection.rb:56:38:56:43 | call to params | a user-provided value |
