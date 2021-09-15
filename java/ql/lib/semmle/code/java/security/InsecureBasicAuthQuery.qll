@@ -1,6 +1,7 @@
 /** Provides taint tracking configurations to be used in Insecure Basic Authentication queries. */
 
 import java
+import semmle.code.java.security.HttpsUrls
 import semmle.code.java.security.InsecureBasicAuth
 import semmle.code.java.dataflow.TaintTracking
 
@@ -16,6 +17,6 @@ class BasicAuthFlowConfig extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) { sink instanceof InsecureBasicAuthSink }
 
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
-    any(InsecureBasicAuthAdditionalTaintStep c).step(node1, node2)
+    any(HttpUrlsAdditionalTaintStep c).step(node1, node2)
   }
 }
