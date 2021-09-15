@@ -104,58 +104,6 @@ predicate isReturnedWithError(Node node) {
 predicate localFlowStep(Node nodeFrom, Node nodeTo) { simpleLocalFlowStep(nodeFrom, nodeTo) }
 
 /**
- * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local
- * (intra-procedural) step, not taking function models into account.
- */
-private predicate basicLocalFlowStep(Node nodeFrom, Node nodeTo) {
-  // Instruction -> Instruction
-  exists(Expr pred, Expr succ |
-    succ.(LogicalBinaryExpr).getAnOperand() = pred or
-    succ.(ConversionExpr).getOperand() = pred
-  |
-    nodeFrom = exprNode(pred) and
-    nodeTo = exprNode(succ)
-  )
-  or
-  // Type assertion: if in the context `checked, ok := e.(*Type)` (in which
-  // case tuple-extraction instructions exist), flow from `e` to `e.(*Type)[0]`;
-  // otherwise flow from `e` to `e.(*Type)`.
-  exists(IR::Instruction evalAssert, TypeAssertExpr assert |
-    nodeFrom.asExpr() = assert.getExpr() and
-    evalAssert = IR::evalExprInstruction(assert) and
-    if exists(IR::extractTupleElement(evalAssert, _))
-    then nodeTo.asInstruction() = IR::extractTupleElement(evalAssert, 0)
-    else nodeTo.asInstruction() = evalAssert
-  )
-  or
-  // Instruction -> SSA
-  exists(IR::Instruction pred, SsaExplicitDefinition succ |
-    succ.getRhs() = pred and
-    nodeFrom = instructionNode(pred) and
-    nodeTo = ssaNode(succ)
-  )
-  or
-  // SSA -> SSA
-  exists(SsaDefinition pred, SsaDefinition succ |
-    succ.(SsaVariableCapture).getSourceVariable() = pred.(SsaExplicitDefinition).getSourceVariable() or
-    succ.(SsaPseudoDefinition).getAnInput() = pred
-  |
-    nodeFrom = ssaNode(pred) and
-    nodeTo = ssaNode(succ)
-  )
-  or
-  // SSA -> Instruction
-  exists(SsaDefinition pred, IR::Instruction succ |
-    succ = pred.getVariable().getAUse() and
-    nodeFrom = ssaNode(pred) and
-    nodeTo = instructionNode(succ)
-  )
-  or
-  // GlobalFunctionNode -> use
-  nodeFrom = any(GlobalFunctionNode fn | fn.getFunction() = nodeTo.asExpr().(FunctionName).getTarget())
-}
-
-/**
  * INTERNAL: do not use.
  *
  * This is the local flow predicate that's used as a building block in global

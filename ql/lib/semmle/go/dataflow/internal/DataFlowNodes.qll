@@ -560,7 +560,7 @@ module Public {
         preupd = this.(SsaNode).getAUse()
         or
         preupd = this and
-        not DataFlow::basicLocalFlowStep(_, this)
+        not basicLocalFlowStep(_, this)
       )
     }
 
