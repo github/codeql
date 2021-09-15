@@ -17,8 +17,8 @@ predicate conditionControlsMethod(MethodAccess ma, Expr e) {
     cb.controls(ma.getBasicBlock(), cond) and
     not cb.controls(any(SensitiveExecutionMethod sem).getAReference().getBasicBlock(),
       cond.booleanNot()) and
-    not cb.controls(any(ThrowStmt t).getBasicBlock(), _) and
-    not cb.controls(any(ReturnStmt r).getBasicBlock(), _) and
+    not cb.controls(any(ThrowStmt t).getBasicBlock(), cond.booleanNot()) and
+    not cb.controls(any(ReturnStmt r).getBasicBlock(), cond.booleanNot()) and
     e = cb.getCondition()
   )
 }

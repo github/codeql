@@ -120,8 +120,8 @@ class ConditionalBypassTest {
 
 	public static void test7(String user, String password) {
 		Cookie adminCookie = getCookies()[0];
-		// FALSE NEGATIVE: login is bypasseable
-		if (adminCookie.getValue() == "false") { // $ MISSING: $ hasConditionalBypassTest
+		// BAD: login is bypasseable
+		if (adminCookie.getValue() == "false") { // $ hasConditionalBypassTest
 			login(user, password);
 			return;
 		} else {
