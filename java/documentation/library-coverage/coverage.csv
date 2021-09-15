@@ -12,8 +12,10 @@ com.google.common.cache,,,17,,,,,,,,,,,,,,,,,,,,17
 com.google.common.io,6,,73,,,,,,,,,,,,,,6,,,,,72,1
 com.opensymphony.xwork2.ognl,3,,,,,,,,,,,,3,,,,,,,,,,
 com.unboundid.ldap.sdk,17,,,,,,,,,,17,,,,,,,,,,,,
+flexjson,,,1,,,,,,,,,,,,,,,,,,,,1
 groovy.lang,26,,,,,26,,,,,,,,,,,,,,,,,
 groovy.util,5,,,,,5,,,,,,,,,,,,,,,,,
+jakarta.faces.context,2,7,,,,,,,,,,,,,,,,,,2,7,,
 jakarta.json,,,123,,,,,,,,,,,,,,,,,,,100,23
 jakarta.ws.rs.client,1,,,,,,,,,,,,,1,,,,,,,,,
 jakarta.ws.rs.container,,9,,,,,,,,,,,,,,,,,,,9,,
@@ -25,6 +27,7 @@ java.net,10,3,7,,,,,,,,,,,10,,,,,,,3,7,
 java.nio,10,,4,,10,,,,,,,,,,,,,,,,,4,
 java.sql,7,,,,,,,,,,,,,,,7,,,,,,,
 java.util,,,337,,,,,,,,,,,,,,,,,,,15,322
+javax.faces.context,2,7,,,,,,,,,,,,,,,,,,2,7,,
 javax.json,,,123,,,,,,,,,,,,,,,,,,,100,23
 javax.management.remote,2,,,,,,,,,2,,,,,,,,,,,,,
 javax.naming,7,,,,,,,,,6,1,,,,,,,,,,,,
