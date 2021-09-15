@@ -6,6 +6,8 @@ import DataFlowNodes::Private
 private newtype TReturnKind =
   MkReturnKind(int i) { exists(SignatureType st | exists(st.getResultType(i))) }
 
+ReturnKind getReturnKind(int i) { result = MkReturnKind(i) }
+
 /**
  * A return kind. A return kind describes how a value can be returned
  * from a callable. For Go, this is either a return of a single value

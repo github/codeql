@@ -13,10 +13,10 @@ private newtype TNode =
 /** Nodes intended for only use inside the data-flow libraries. */
 module Private {
   /** A data flow node that represents returning a value from a function. */
-  class ReturnNode extends ResultNode {
+  class ReturnNode extends Public::ResultNode {
     ReturnKind kind;
 
-    ReturnNode() { kind = MkReturnKind(i) }
+    ReturnNode() { kind = getReturnKind(i) }
 
     /** Gets the kind of this returned value. */
     ReturnKind getKind() { result = kind }
@@ -159,7 +159,7 @@ module Public {
     /**
      * Gets a data-flow node to which data may flow from this node in one (intra-procedural) step.
      */
-    Node getASuccessor() { localFlowStep(this, result) }
+    Node getASuccessor() { DataFlow::localFlowStep(this, result) }
 
     /**
      * Gets a data-flow node from which data may flow to this node in one (intra-procedural) step.
@@ -216,10 +216,10 @@ module Public {
     SsaNode() { this = MkSsaNode(ssa) }
 
     /** Gets the node whose value is stored in this SSA variable, if any. */
-    Node getInit() { result = instructionNode(ssa.(SsaExplicitDefinition).getRhs()) }
+    Node getInit() { result = DataFlow::instructionNode(ssa.(SsaExplicitDefinition).getRhs()) }
 
     /** Gets a use of this SSA variable. */
-    InstructionNode getAUse() { result = instructionNode(ssa.getVariable().getAUse()) }
+    InstructionNode getAUse() { result = DataFlow::instructionNode(ssa.getVariable().getAUse()) }
 
     /** Gets the program variable corresponding to this SSA variable. */
     SsaSourceVariable getSourceVariable() { result = ssa.getSourceVariable() }
@@ -319,13 +319,13 @@ module Public {
 
     GlobalFunctionNode() { this = MkGlobalFunctionNode(func) }
 
-    override ParameterNode getParameter(int i) { result = parameterNode(func.getParameter(i)) }
+    override ParameterNode getParameter(int i) { result = DataFlow::parameterNode(func.getParameter(i)) }
 
     override string getName() { result = func.getName() }
 
     override Function getFunction() { result = func }
 
-    override ReceiverNode getReceiver() { result = receiverNode(func.(Method).getReceiver()) }
+    override ReceiverNode getReceiver() { result = DataFlow::receiverNode(func.(Method).getReceiver()) }
 
     override string getNodeKind() { result = "function " + func.getName() }
 
@@ -346,7 +346,7 @@ module Public {
   class FuncLitNode extends FunctionNode::Range, ExprNode {
     override FuncLit expr;
 
-    override ParameterNode getParameter(int i) { result = parameterNode(expr.getParameter(i)) }
+    override ParameterNode getParameter(int i) { result = DataFlow::parameterNode(expr.getParameter(i)) }
 
     override string getName() { none() }
 
@@ -407,7 +407,7 @@ module Public {
     string getCalleeName() { result = expr.getTarget().getName() or result = expr.getCalleeName() }
 
     /** Gets the data flow node specifying the function to be called. */
-    Node getCalleeNode() { result = exprNode(expr.getCalleeExpr()) }
+    Node getCalleeNode() { result = DataFlow::exprNode(expr.getCalleeExpr()) }
 
     /** Gets the underlying call. */
     CallExpr getCall() { result = this.getExpr() }
@@ -424,9 +424,9 @@ module Public {
      */
     Node getArgument(int i) {
       if expr.getArgument(0).getType() instanceof TupleType
-      then result = extractTupleElement(exprNode(expr.getArgument(0)), i)
+      then result = DataFlow::extractTupleElement(DataFlow::exprNode(expr.getArgument(0)), i)
       else
-        result = rank[i + 1](Expr arg, int j | arg = expr.getArgument(j) | exprNode(arg) order by j)
+        result = rank[i + 1](Expr arg, int j | arg = expr.getArgument(j) | DataFlow::exprNode(arg) order by j)
     }
 
     /** Gets the data flow node corresponding to an argument of this call. */
@@ -446,7 +446,7 @@ module Public {
     Node getResult(int i) {
       i = 0 and result = this.getResult()
       or
-      result = extractTupleElement(this, i)
+      result = DataFlow::extractTupleElement(this, i)
     }
 
     /**
@@ -560,7 +560,7 @@ module Public {
         preupd = this.(SsaNode).getAUse()
         or
         preupd = this and
-        not basicLocalFlowStep(_, this)
+        not DataFlow::basicLocalFlowStep(_, this)
       )
     }
 
@@ -715,7 +715,7 @@ module Public {
     override IR::ComponentReadInstruction insn;
 
     /** Gets the data-flow node representing the base from which the field or element is read. */
-    Node getBase() { result = instructionNode(insn.getBase()) }
+    Node getBase() { result = DataFlow::instructionNode(insn.getBase()) }
   }
 
   /**
@@ -725,7 +725,7 @@ module Public {
     override IR::ElementReadInstruction insn;
 
     /** Gets the data-flow node representing the index of the element being read. */
-    Node getIndex() { result = instructionNode(insn.getIndex()) }
+    Node getIndex() { result = DataFlow::instructionNode(insn.getIndex()) }
 
     /** Holds if this data-flow node reads element `index` of `base`. */
     predicate reads(Node base, Node index) { this.readsElement(base, index) }
@@ -739,16 +739,16 @@ module Public {
     override IR::SliceInstruction insn;
 
     /** Gets the base of this slice node. */
-    Node getBase() { result = instructionNode(insn.getBase()) }
+    Node getBase() { result = DataFlow::instructionNode(insn.getBase()) }
 
     /** Gets the lower bound of this slice node. */
-    Node getLow() { result = instructionNode(insn.getLow()) }
+    Node getLow() { result = DataFlow::instructionNode(insn.getLow()) }
 
     /** Gets the upper bound of this slice node. */
-    Node getHigh() { result = instructionNode(insn.getHigh()) }
+    Node getHigh() { result = DataFlow::instructionNode(insn.getHigh()) }
 
     /** Gets the maximum of this slice node. */
-    Node getMax() { result = instructionNode(insn.getMax()) }
+    Node getMax() { result = DataFlow::instructionNode(insn.getMax()) }
   }
 
   /**
@@ -761,24 +761,24 @@ module Public {
 
     BinaryOperationNode() {
       exists(BinaryExpr bin | bin = this.asExpr() |
-        left = exprNode(bin.getLeftOperand()) and
-        right = exprNode(bin.getRightOperand()) and
+        left = DataFlow::exprNode(bin.getLeftOperand()) and
+        right = DataFlow::exprNode(bin.getRightOperand()) and
         op = bin.getOperator()
       )
       or
       exists(IR::EvalCompoundAssignRhsInstruction rhs, CompoundAssignStmt assgn, string o |
         rhs = this.asInstruction() and assgn = rhs.getAssignment() and o = assgn.getOperator()
       |
-        left = exprNode(assgn.getLhs()) and
-        right = exprNode(assgn.getRhs()) and
+        left = DataFlow::exprNode(assgn.getLhs()) and
+        right = DataFlow::exprNode(assgn.getRhs()) and
         op = o.substring(0, o.length() - 1)
       )
       or
       exists(IR::EvalIncDecRhsInstruction rhs, IncDecStmt ids |
         rhs = this.asInstruction() and ids = rhs.getStmt()
       |
-        left = exprNode(ids.getOperand()) and
-        right = instructionNode(any(IR::EvalImplicitOneInstruction one | one.getStmt() = ids)) and
+        left = DataFlow::exprNode(ids.getOperand()) and
+        right = DataFlow::instructionNode(any(IR::EvalImplicitOneInstruction one | one.getStmt() = ids)) and
         op = ids.getOperator().charAt(0)
       )
     }
@@ -827,11 +827,11 @@ module Public {
 
     /** Gets the operand of this operation. */
     Node getOperand() {
-      result = exprNode(this.asExpr().(UnaryExpr).getOperand())
+      result = DataFlow::exprNode(this.asExpr().(UnaryExpr).getOperand())
       or
-      result = exprNode(this.asExpr().(StarExpr).getBase())
+      result = DataFlow::exprNode(this.asExpr().(StarExpr).getBase())
       or
-      result = exprNode(insn.(IR::EvalImplicitDerefInstruction).getOperand())
+      result = DataFlow::exprNode(insn.(IR::EvalImplicitDerefInstruction).getOperand())
     }
 
     /** Gets the operator of this operation. */
@@ -886,7 +886,7 @@ module Public {
     override IR::MethodReadInstruction insn;
 
     /** Gets the receiver node on which the method is referenced. */
-    Node getReceiver() { result = instructionNode(insn.getReceiver()) }
+    Node getReceiver() { result = DataFlow::instructionNode(insn.getReceiver()) }
 
     /** Gets the method this node refers to. */
     Method getMethod() { result = insn.getMethod() }
@@ -904,13 +904,13 @@ module Public {
     /** Holds if this comparison evaluates to `outcome` iff `lesser <= greater + bias`. */
     predicate leq(boolean outcome, Node lesser, Node greater, int bias) {
       outcome = true and
-      lesser = exprNode(expr.getLesserOperand()) and
-      greater = exprNode(expr.getGreaterOperand()) and
+      lesser = DataFlow::exprNode(expr.getLesserOperand()) and
+      greater = DataFlow::exprNode(expr.getGreaterOperand()) and
       (if expr.isStrict() then bias = -1 else bias = 0)
       or
       outcome = false and
-      lesser = exprNode(expr.getGreaterOperand()) and
-      greater = exprNode(expr.getLesserOperand()) and
+      lesser = DataFlow::exprNode(expr.getGreaterOperand()) and
+      greater = DataFlow::exprNode(expr.getLesserOperand()) and
       (if expr.isStrict() then bias = 0 else bias = -1)
     }
   }

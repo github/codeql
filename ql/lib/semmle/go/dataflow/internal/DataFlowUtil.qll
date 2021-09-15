@@ -51,7 +51,7 @@ abstract class FunctionModel extends Function {
 /**
  * Gets the `Node` corresponding to `insn`.
  */
-InstructionNode instructionNode(IR::Instruction insn) { result = MkInstructionNode(insn) }
+InstructionNode instructionNode(IR::Instruction insn) { result.asInstruction() = insn }
 
 /**
  * Gets the `Node` corresponding to `e`.
@@ -131,8 +131,8 @@ private predicate basicLocalFlowStep(Node nodeFrom, Node nodeTo) {
   // Instruction -> SSA
   exists(IR::Instruction pred, SsaExplicitDefinition succ |
     succ.getRhs() = pred and
-    nodeFrom = MkInstructionNode(pred) and
-    nodeTo = MkSsaNode(succ)
+    nodeFrom = instructionNode(pred) and
+    nodeTo = ssaNode(succ)
   )
   or
   // SSA -> SSA
@@ -140,19 +140,19 @@ private predicate basicLocalFlowStep(Node nodeFrom, Node nodeTo) {
     succ.(SsaVariableCapture).getSourceVariable() = pred.(SsaExplicitDefinition).getSourceVariable() or
     succ.(SsaPseudoDefinition).getAnInput() = pred
   |
-    nodeFrom = MkSsaNode(pred) and
-    nodeTo = MkSsaNode(succ)
+    nodeFrom = ssaNode(pred) and
+    nodeTo = ssaNode(succ)
   )
   or
   // SSA -> Instruction
   exists(SsaDefinition pred, IR::Instruction succ |
     succ = pred.getVariable().getAUse() and
-    nodeFrom = MkSsaNode(pred) and
-    nodeTo = MkInstructionNode(succ)
+    nodeFrom = ssaNode(pred) and
+    nodeTo = instructionNode(succ)
   )
   or
   // GlobalFunctionNode -> use
-  nodeFrom = MkGlobalFunctionNode(nodeTo.asExpr().(FunctionName).getTarget())
+  nodeFrom = any(GlobalFunctionNode fn | fn.getFunction() = nodeTo.asExpr().(FunctionName).getTarget())
 }
 
 /**
