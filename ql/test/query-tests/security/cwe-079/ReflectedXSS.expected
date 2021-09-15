@@ -1,6 +1,6 @@
 edges
-| app/controllers/foo/bars_controller.rb:9:5:9:29 | return :  | app/views/foo/bars/show.html.erb:47:5:47:13 | call to user_name |
-| app/controllers/foo/bars_controller.rb:9:12:9:17 | call to params :  | app/controllers/foo/bars_controller.rb:9:5:9:29 | return :  |
+| app/controllers/foo/bars_controller.rb:9:12:9:17 | call to params :  | app/controllers/foo/bars_controller.rb:9:12:9:29 | ...[...] :  |
+| app/controllers/foo/bars_controller.rb:9:12:9:29 | ...[...] :  | app/views/foo/bars/show.html.erb:47:5:47:13 | call to user_name |
 | app/controllers/foo/bars_controller.rb:13:5:13:37 | ... = ... :  | app/views/foo/bars/show.html.erb:51:5:51:18 | call to user_name_memo |
 | app/controllers/foo/bars_controller.rb:13:20:13:25 | call to params :  | app/controllers/foo/bars_controller.rb:13:5:13:37 | ... = ... :  |
 | app/controllers/foo/bars_controller.rb:17:21:17:26 | call to params :  | app/controllers/foo/bars_controller.rb:17:21:17:36 | ...[...] :  |
@@ -19,8 +19,8 @@ edges
 | app/views/foo/bars/show.html.erb:54:29:54:34 | call to params :  | app/views/foo/bars/show.html.erb:54:29:54:44 | ...[...] |
 | app/views/foo/bars/show.html.erb:57:13:57:18 | call to params :  | app/views/foo/bars/show.html.erb:57:13:57:28 | ...[...] |
 nodes
-| app/controllers/foo/bars_controller.rb:9:5:9:29 | return :  | semmle.label | return :  |
 | app/controllers/foo/bars_controller.rb:9:12:9:17 | call to params :  | semmle.label | call to params :  |
+| app/controllers/foo/bars_controller.rb:9:12:9:29 | ...[...] :  | semmle.label | ...[...] :  |
 | app/controllers/foo/bars_controller.rb:13:5:13:37 | ... = ... :  | semmle.label | ... = ... :  |
 | app/controllers/foo/bars_controller.rb:13:20:13:25 | call to params :  | semmle.label | call to params :  |
 | app/controllers/foo/bars_controller.rb:17:21:17:26 | call to params :  | semmle.label | call to params :  |

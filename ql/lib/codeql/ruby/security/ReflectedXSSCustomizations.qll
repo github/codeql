@@ -7,6 +7,7 @@ private import codeql.ruby.frameworks.ActionController
 private import codeql.ruby.frameworks.ActionView
 private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.dataflow.BarrierGuards
+import codeql.ruby.dataflow.internal.DataFlowDispatch
 private import codeql.ruby.typetracking.TypeTracker
 
 /**
@@ -190,8 +191,9 @@ module ReflectedXSS {
       template = node2.getLocation().getFile() and
       helperMethod.getName() = helperMethodCall.getExpr().getMethodName() and
       helperMethod.getControllerClass() = getAssociatedControllerClass(template) and
-      // `node1` is a returned value
-      DataFlow::nodeReturnedFrom(node1, helperMethod) and
+      // `node1` is an expr node that may be returned by the helper method
+      exprNodeReturnedFrom(node1, helperMethod) and
+      // `node2` is a call to the helper method
       node2.asExpr() = helperMethodCall
     )
   }

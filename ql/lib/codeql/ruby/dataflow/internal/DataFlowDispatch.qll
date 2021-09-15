@@ -314,3 +314,16 @@ predicate mayBenefitFromCallContext(DataFlowCall call, Callable c) { none() }
  * restricted to those `call`s for which a context might make a difference.
  */
 DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) { none() }
+
+/**
+ * Holds if `e` is an `ExprNode` that may be returned by a call to `c`.
+ */
+predicate exprNodeReturnedFrom(DataFlow::ExprNode e, DataFlowCallable c) {
+  exists(ReturnNode r |
+    r.getEnclosingCallable() = c and
+    (
+      r.(ExplicitReturnNode).getReturningNode().getReturnedValueNode() = e.asExpr() or
+      r.(ExprReturnNode) = e
+    )
+  )
+}
