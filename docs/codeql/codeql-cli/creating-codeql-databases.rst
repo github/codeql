@@ -265,9 +265,9 @@ The ``codeql database init`` command will output a message::
 The ``codeql database init`` command creates ``<database>/temp/tracingEnvironment`` with files that contain environment variables and values that will enable CodeQL to trace a sequence of build steps. These files are named ``start-tracing.{json,sh,bat,ps1}``. Use one of these files with your CI system's mechanism for setting environment variables for future steps. You can:
 
 * Read the JSON file, process it, and print out environment variables in the format expected by your CI system. For example, Azure DevOps expects ``echo "##vso[task.setvariable variable=NAME]VALUE"``.
-* Or source the appropriate ``start-tracing`` script to set the CodeQL variables in the shell environment of the CI system.
+* Or, if your CI system persists the environment,  source the appropriate ``start-tracing`` script to set the CodeQL variables in the shell environment of the CI system.
 
-Build your code and then run the command ``codeql database finalize <database>``. Optionally, after building the code, unset the environment variables using an ``end-tracing.{json,sh,bat,ps1}`` script from the directory where the ``start-tracing`` scripts are stored.
+Build your code; optionally, unset the environment variables using an ``end-tracing.{json,sh,bat,ps1}`` script from the directory where the ``start-tracing`` scripts are stored; and then run the command ``codeql database finalize <database>``.
 
 Once you have created a CodeQL database using indirect build tracing, you can work with it like any other CodeQL database. For example, analyze the database, and upload the results to GitHub if you use code scanning.
 
@@ -292,7 +292,7 @@ The following example shows how you could use indirect build tracing in an Azure
              # Assumes the source code is checked out to the current working directory.
              # Creates a database at `<current working directory>/db`.
              # Running on Windows, so specifies a trace process level.
-             script: "codeql database init --language csharp --trace-process-level 3 --source-root --begin-tracing db"
+             script: "codeql database init --language csharp --trace-process-name Agent.Worker.exe --source-root . --begin-tracing db"
 
        # Read the generated environment variables and values,
        # and set them so they are available for subsequent commands
@@ -325,7 +325,7 @@ The following example shows how you could use indirect build tracing in an Azure
 
        # Read and set the generated environment variables to end build tracing. This is done in PowerShell in this example.
        - task: PowerShell@1
-          displayName: Set CodeQL environment variables
+          displayName: Clear CodeQL environment variables
           inputs:
              targetType: inline
              script: >
