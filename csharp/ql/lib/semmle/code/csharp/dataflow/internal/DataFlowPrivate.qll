@@ -1772,6 +1772,13 @@ predicate compatibleTypes(DataFlowType t1, DataFlowType t2) {
 }
 
 /**
+ * Holds if `c1` and `c2` are compatible, that is, whether data stored into
+ * `c1` can be read out of `c2`.
+ */
+pragma[inline]
+predicate compatibleContents(Content c1, Content c2) { c1 = c2 }
+
+/**
  * A node associated with an object after an operation that might have
  * changed its state.
  *
