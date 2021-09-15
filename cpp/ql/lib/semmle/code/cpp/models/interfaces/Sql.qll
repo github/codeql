@@ -13,7 +13,7 @@ private import cpp
  */
 abstract class SqlSink extends Function {
   /**
-   * Holds if `input` to this function represents data that is passed to an SQL server.
+   * Holds if `input` to this function represents SQL code to be executed.
    */
   abstract predicate getAnSqlParameter(FunctionInput input);
 }
