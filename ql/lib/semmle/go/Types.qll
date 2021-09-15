@@ -553,6 +553,11 @@ class InterfaceType extends @interfacetype, CompositeType {
   override string toString() { result = "interface type" }
 }
 
+/** An empty interface type. */
+class EmptyInterfaceType extends InterfaceType {
+  EmptyInterfaceType() { not this.hasMethod(_, _) }
+}
+
 /** A tuple type. */
 class TupleType extends @tupletype, CompositeType {
   /** Gets the `i`th component type of this tuple type. */
