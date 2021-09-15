@@ -77,4 +77,8 @@
   <select id="good1" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select id,name from test where id = ${id}
   </select>
+
+  <select id="good2" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select id,name from test where name = #{name}
+  </select>
 </mapper>

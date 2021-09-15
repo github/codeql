@@ -25,4 +25,6 @@ public interface SqlInjectionMapper {
 	void bad8(String[] params);
 
 	List<Test> good1(Integer id);
+
+	List<Test> good2(String name);
 }

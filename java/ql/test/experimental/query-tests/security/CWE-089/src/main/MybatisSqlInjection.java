@@ -54,13 +54,19 @@ public class MybatisSqlInjection {
 	}
 
 	@RequestMapping(value = "msi8", method = RequestMethod.POST, produces = "application/json")
-	public void bad7(@RequestBody String[] params) {
+	public void bad8(@RequestBody String[] params) {
 		mybatisSqlInjectionService.bad8(params);
 	}
 
 	@GetMapping(value = "good1")
 	public List<Test> good1(Integer id) {
 		List<Test> result = mybatisSqlInjectionService.good1(id);
+		return result;
+	}
+
+	@GetMapping(value = "good2")
+	public List<Test> good2(String name) {
+		List<Test> result = mybatisSqlInjectionService.good2(name);
 		return result;
 	}
 }

@@ -15,6 +15,8 @@ edges
 | MybatisSqlInjection.java:53:35:53:40 | params : List | MybatisSqlInjectionService.java:39:19:39:37 | params : List |
 | MybatisSqlInjection.java:57:19:57:46 | params : String[] | MybatisSqlInjection.java:58:35:58:40 | params : String[] |
 | MybatisSqlInjection.java:58:35:58:40 | params : String[] | MybatisSqlInjectionService.java:43:19:43:33 | params : String[] |
+| MybatisSqlInjection.java:68:26:68:36 | name : String | MybatisSqlInjection.java:69:56:69:59 | name : String |
+| MybatisSqlInjection.java:69:56:69:59 | name : String | MybatisSqlInjectionService.java:52:26:52:36 | name : String |
 | MybatisSqlInjectionService.java:12:25:12:35 | name : String | MybatisSqlInjectionService.java:13:47:13:50 | name |
 | MybatisSqlInjectionService.java:17:25:17:35 | name : String | MybatisSqlInjectionService.java:18:47:18:50 | name |
 | MybatisSqlInjectionService.java:22:25:22:33 | test : Test | MybatisSqlInjectionService.java:23:47:23:50 | test |
@@ -23,6 +25,7 @@ edges
 | MybatisSqlInjectionService.java:35:19:35:44 | params : Map | MybatisSqlInjectionService.java:36:27:36:32 | params |
 | MybatisSqlInjectionService.java:39:19:39:37 | params : List | MybatisSqlInjectionService.java:40:27:40:32 | params |
 | MybatisSqlInjectionService.java:43:19:43:33 | params : String[] | MybatisSqlInjectionService.java:44:27:44:32 | params |
+| MybatisSqlInjectionService.java:52:26:52:36 | name : String | MybatisSqlInjectionService.java:53:48:53:51 | name |
 nodes
 | MybatisSqlInjection.java:19:25:19:49 | name : String | semmle.label | name : String |
 | MybatisSqlInjection.java:20:55:20:58 | name : String | semmle.label | name : String |
@@ -40,6 +43,8 @@ nodes
 | MybatisSqlInjection.java:53:35:53:40 | params : List | semmle.label | params : List |
 | MybatisSqlInjection.java:57:19:57:46 | params : String[] | semmle.label | params : String[] |
 | MybatisSqlInjection.java:58:35:58:40 | params : String[] | semmle.label | params : String[] |
+| MybatisSqlInjection.java:68:26:68:36 | name : String | semmle.label | name : String |
+| MybatisSqlInjection.java:69:56:69:59 | name : String | semmle.label | name : String |
 | MybatisSqlInjectionService.java:12:25:12:35 | name : String | semmle.label | name : String |
 | MybatisSqlInjectionService.java:13:47:13:50 | name | semmle.label | name |
 | MybatisSqlInjectionService.java:17:25:17:35 | name : String | semmle.label | name : String |
@@ -56,6 +61,8 @@ nodes
 | MybatisSqlInjectionService.java:40:27:40:32 | params | semmle.label | params |
 | MybatisSqlInjectionService.java:43:19:43:33 | params : String[] | semmle.label | params : String[] |
 | MybatisSqlInjectionService.java:44:27:44:32 | params | semmle.label | params |
+| MybatisSqlInjectionService.java:52:26:52:36 | name : String | semmle.label | name : String |
+| MybatisSqlInjectionService.java:53:48:53:51 | name | semmle.label | name |
 #select
 | MybatisSqlInjectionService.java:13:47:13:50 | name | MybatisSqlInjection.java:19:25:19:49 | name : String | MybatisSqlInjectionService.java:13:47:13:50 | name | MyBatis Mapper XML sql injection might include code from $@ to $@. | MybatisSqlInjection.java:19:25:19:49 | name | this user input | SqlInjectionMapper.xml:23:3:25:12 | select | this sql operation |
 | MybatisSqlInjectionService.java:18:47:18:50 | name | MybatisSqlInjection.java:25:25:25:49 | name : String | MybatisSqlInjectionService.java:18:47:18:50 | name | MyBatis Mapper XML sql injection might include code from $@ to $@. | MybatisSqlInjection.java:25:25:25:49 | name | this user input | SqlInjectionMapper.xml:27:3:29:12 | select | this sql operation |
