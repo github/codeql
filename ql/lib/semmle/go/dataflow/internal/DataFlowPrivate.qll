@@ -1,6 +1,7 @@
 private import go
 private import DataFlowUtil
 private import DataFlowImplCommon
+import DataFlowNodes::Private
 
 private newtype TReturnKind =
   MkReturnKind(int i) { exists(SignatureType st | exists(st.getResultType(i))) }
@@ -13,27 +14,6 @@ private newtype TReturnKind =
 class ReturnKind extends TReturnKind {
   /** Gets a textual representation of this return kind. */
   string toString() { exists(int i | this = MkReturnKind(i) | result = "return[" + i + "]") }
-}
-
-/** A data flow node that represents returning a value from a function. */
-class ReturnNode extends ResultNode {
-  ReturnKind kind;
-
-  ReturnNode() { kind = MkReturnKind(i) }
-
-  /** Gets the kind of this returned value. */
-  ReturnKind getKind() { result = kind }
-}
-
-/** A data flow node that represents the output of a call. */
-class OutNode extends DataFlow::Node {
-  DataFlow::CallNode call;
-  int i;
-
-  OutNode() { this = call.getResult(i) }
-
-  /** Gets the underlying call. */
-  DataFlowCall getCall() { result = call.asExpr() }
 }
 
 /**
