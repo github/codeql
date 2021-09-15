@@ -380,8 +380,11 @@ private predicate read(NodeEx node1, Content c, NodeEx node2, Configuration conf
 private predicate store(
   NodeEx node1, TypedContent tc, NodeEx node2, DataFlowType contentType, Configuration config
 ) {
-  store(node1.asNode(), tc, node2.asNode(), contentType) and
-  read(_, tc.getContent(), _, config)
+  exists(Content c |
+    store(node1.asNode(), tc, node2.asNode(), contentType) and
+    read(_, c, _, config) and
+    compatibleContents(tc.getContent(), c)
+  )
 }
 
 pragma[nomagic]
@@ -480,9 +483,10 @@ private module Stage1 {
 
   pragma[nomagic]
   private predicate fwdFlowRead(Content c, NodeEx node, Cc cc, Configuration config) {
-    exists(NodeEx mid |
+    exists(NodeEx mid, Content c0 |
       fwdFlow(mid, cc, config) and
-      read(mid, c, node, config)
+      read(mid, c0, node, config) and
+      compatibleContents(c, c0)
     )
   }
 
@@ -580,9 +584,10 @@ private module Stage1 {
     )
     or
     // read
-    exists(NodeEx mid, Content c |
-      read(node, c, mid, config) and
-      fwdFlowConsCand(c, pragma[only_bind_into](config)) and
+    exists(NodeEx mid, Content c1, Content c2 |
+      read(node, c1, mid, config) and
+      fwdFlowConsCand(c2, pragma[only_bind_into](config)) and
+      compatibleContents(c2, c1) and
       revFlow(mid, toReturn, pragma[only_bind_into](config))
     )
     or
@@ -608,9 +613,10 @@ private module Stage1 {
    */
   pragma[nomagic]
   private predicate revFlowConsCand(Content c, Configuration config) {
-    exists(NodeEx mid, NodeEx node |
+    exists(NodeEx mid, NodeEx node, Content c0 |
       fwdFlow(node, pragma[only_bind_into](config)) and
-      read(node, c, mid, config) and
+      read(node, c0, mid, config) and
+      compatibleContents(c, c0) and
       fwdFlowConsCand(c, pragma[only_bind_into](config)) and
       revFlow(pragma[only_bind_into](mid), _, pragma[only_bind_into](config))
     )
@@ -703,9 +709,12 @@ private module Stage1 {
 
   pragma[nomagic]
   predicate readStepCand(NodeEx n1, Content c, NodeEx n2, Configuration config) {
-    revFlowIsReadAndStored(c, pragma[only_bind_into](config)) and
-    revFlow(n2, pragma[only_bind_into](config)) and
-    read(n1, c, n2, pragma[only_bind_into](config))
+    exists(Content c0 |
+      revFlowIsReadAndStored(c, pragma[only_bind_into](config)) and
+      revFlow(n2, pragma[only_bind_into](config)) and
+      read(n1, c0, n2, pragma[only_bind_into](config)) and
+      compatibleContents(c, c0)
+    )
   }
 
   pragma[nomagic]

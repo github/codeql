@@ -435,6 +435,13 @@ predicate compatibleTypes(IRType t1, IRType t2) {
   any() // stub implementation
 }
 
+/**
+ * Holds if `c1` and `c2` are compatible, that is, whether data stored into
+ * `c1` can be read out of `c2`.
+ */
+pragma[inline]
+predicate compatibleContents(Content c1, Content c2) { c1 = c2 }
+
 private predicate suppressUnusedNode(Node n) { any() }
 
 //////////////////////////////////////////////////////////////////////////////
