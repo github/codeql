@@ -923,28 +923,29 @@ private module Stage2 {
 
   ApOption apSome(Ap ap) { result = TBooleanSome(ap) }
 
-  class Cc = boolean;
+  class Cc = CallContext;
 
-  class CcCall extends Cc {
-    CcCall() { this = true }
+  class CcCall = CallContextCall;
 
-    /** Holds if this call context may be `call`. */
-    predicate matchesCall(DataFlowCall call) { any() }
-  }
+  class CcNoCall = CallContextNoCall;
 
-  class CcNoCall extends Cc {
-    CcNoCall() { this = false }
-  }
-
-  Cc ccNone() { result = false }
+  Cc ccNone() { result instanceof CallContextAny }
 
   private class LocalCc = Unit;
 
   bindingset[call, c, outercc]
-  private CcCall getCallContextCall(DataFlowCall call, DataFlowCallable c, Cc outercc) { any() }
+  private CcCall getCallContextCall(DataFlowCall call, DataFlowCallable c, Cc outercc) {
+    checkCallContextCall(outercc, call, c) and
+    if recordDataFlowCallSiteDispatch(call, c)
+    then result = TSpecificCall(call)
+    else result = TSomeCall()
+  }
 
   bindingset[call, c, innercc]
-  private CcNoCall getCallContextReturn(DataFlowCallable c, DataFlowCall call, Cc innercc) { any() }
+  private CcNoCall getCallContextReturn(DataFlowCallable c, DataFlowCall call, Cc innercc) {
+    checkCallContextReturn(innercc, c, call) and
+    if reducedViableImplInReturn(c, call) then result = TReturn(c, call) else result = ccNone()
+  }
 
   bindingset[node, cc, config]
   private LocalCc getLocalCc(NodeEx node, Cc cc, Configuration config) { any() }
@@ -1172,7 +1173,8 @@ private module Stage2 {
       fwdFlow(out, pragma[only_bind_into](cc), pragma[only_bind_into](argAp), ap,
         pragma[only_bind_into](config)) and
       fwdFlowOutFromArg(call, out, argAp0, ap, config) and
-      fwdFlowIsEntered(call, pragma[only_bind_into](cc), pragma[only_bind_into](argAp), argAp0,
+      fwdFlowIsEntered(pragma[only_bind_into](call), pragma[only_bind_into](cc),
+        pragma[only_bind_into](argAp), pragma[only_bind_into](argAp0),
         pragma[only_bind_into](config))
     )
   }
@@ -1860,7 +1862,8 @@ private module Stage3 {
       fwdFlow(out, pragma[only_bind_into](cc), pragma[only_bind_into](argAp), ap,
         pragma[only_bind_into](config)) and
       fwdFlowOutFromArg(call, out, argAp0, ap, config) and
-      fwdFlowIsEntered(call, pragma[only_bind_into](cc), pragma[only_bind_into](argAp), argAp0,
+      fwdFlowIsEntered(pragma[only_bind_into](call), pragma[only_bind_into](cc),
+        pragma[only_bind_into](argAp), pragma[only_bind_into](argAp0),
         pragma[only_bind_into](config))
     )
   }
@@ -2117,7 +2120,7 @@ private module Stage3 {
 private predicate flowCandSummaryCtx(NodeEx node, AccessPathFront argApf, Configuration config) {
   exists(AccessPathFront apf |
     Stage3::revFlow(node, true, _, apf, config) and
-    Stage3::fwdFlow(node, true, TAccessPathFrontSome(argApf), apf, config)
+    Stage3::fwdFlow(node, any(Stage3::CcCall ccc), TAccessPathFrontSome(argApf), apf, config)
   )
 }
 
@@ -2618,7 +2621,8 @@ private module Stage4 {
       fwdFlow(out, pragma[only_bind_into](cc), pragma[only_bind_into](argAp), ap,
         pragma[only_bind_into](config)) and
       fwdFlowOutFromArg(call, out, argAp0, ap, config) and
-      fwdFlowIsEntered(call, pragma[only_bind_into](cc), pragma[only_bind_into](argAp), argAp0,
+      fwdFlowIsEntered(pragma[only_bind_into](call), pragma[only_bind_into](cc),
+        pragma[only_bind_into](argAp), pragma[only_bind_into](argAp0),
         pragma[only_bind_into](config))
     )
   }
@@ -3686,8 +3690,8 @@ private module Subpaths {
    */
   predicate subpaths(PathNode arg, PathNodeImpl par, PathNodeMid ret, PathNodeMid out) {
     exists(ParamNodeEx p, NodeEx o, AccessPath apout |
-      arg.getASuccessor() = par and
-      arg.getASuccessor() = out and
+      pragma[only_bind_into](arg).getASuccessor() = par and
+      pragma[only_bind_into](arg).getASuccessor() = out and
       subpaths03(arg, p, ret, o, apout) and
       par.getNodeEx() = p and
       out.getNodeEx() = o and

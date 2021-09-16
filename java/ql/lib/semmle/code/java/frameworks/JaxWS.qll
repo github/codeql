@@ -340,13 +340,8 @@ private class JaxRSXssSink extends XssSink {
 private class JaxRsUrlRedirectSink extends SinkModelCsv {
   override predicate row(string row) {
     row =
-      [
-        //`namespace; type; subtypes; name; signature; ext; input; kind`
-        "javax.ws.rs.core;Response;true;seeOther;;;Argument[0];url-redirect",
-        "javax.ws.rs.core;Response;true;temporaryRedirect;;;Argument[0];url-redirect",
-        "jakarta.ws.rs.core;Response;true;seeOther;;;Argument[0];url-redirect",
-        "jakarta.ws.rs.core;Response;true;temporaryRedirect;;;Argument[0];url-redirect"
-      ]
+      ["javax", "jakarta"] + ".ws.rs.core;Response;true;" + ["seeOther", "temporaryRedirect"] +
+        ";;;Argument[0];url-redirect"
   }
 }
 
@@ -358,14 +353,8 @@ private class JaxRsUrlRedirectSink extends SinkModelCsv {
 private class ResponseModel extends SummaryModelCsv {
   override predicate row(string row) {
     row =
-      [
-        "javax.ws.rs.core;Response;false;accepted;;;Argument[0];ReturnValue;taint",
-        "javax.ws.rs.core;Response;false;fromResponse;;;Argument[0];ReturnValue;taint",
-        "javax.ws.rs.core;Response;false;ok;;;Argument[0];ReturnValue;taint",
-        "jakarta.ws.rs.core;Response;false;accepted;;;Argument[0];ReturnValue;taint",
-        "jakarta.ws.rs.core;Response;false;fromResponse;;;Argument[0];ReturnValue;taint",
-        "jakarta.ws.rs.core;Response;false;ok;;;Argument[0];ReturnValue;taint"
-      ]
+      ["javax", "jakarta"] + ".ws.rs.core;Response;false;" + ["accepted", "fromResponse", "ok"] +
+        ";;;Argument[0];ReturnValue;taint"
   }
 }
 
@@ -379,52 +368,19 @@ private class ResponseModel extends SummaryModelCsv {
 private class ResponseBuilderModel extends SummaryModelCsv {
   override predicate row(string row) {
     row =
-      [
-        "javax.ws.rs.core;Response$ResponseBuilder;true;build;;;Argument[-1];ReturnValue;taint",
-        "javax.ws.rs.core;Response$ResponseBuilder;true;entity;;;Argument[0];Argument[-1];taint",
-        "javax.ws.rs.core;Response$ResponseBuilder;true;allow;;;Argument[-1];ReturnValue;value",
-        "javax.ws.rs.core;Response$ResponseBuilder;true;cacheControl;;;Argument[-1];ReturnValue;value",
-        "javax.ws.rs.core;Response$ResponseBuilder;true;clone;;;Argument[-1];ReturnValue;taint",
-        "javax.ws.rs.core;Response$ResponseBuilder;true;contentLocation;;;Argument[-1];ReturnValue;value",
-        "javax.ws.rs.core;Response$ResponseBuilder;true;cookie;;;Argument[-1];ReturnValue;value",
-        "javax.ws.rs.core;Response$ResponseBuilder;true;encoding;;;Argument[-1];ReturnValue;value",
-        "javax.ws.rs.core;Response$ResponseBuilder;true;entity;;;Argument[-1];ReturnValue;value",
-        "javax.ws.rs.core;Response$ResponseBuilder;true;expires;;;Argument[-1];ReturnValue;value",
-        "javax.ws.rs.core;Response$ResponseBuilder;true;header;;;Argument[-1];ReturnValue;value",
-        "javax.ws.rs.core;Response$ResponseBuilder;true;language;;;Argument[-1];ReturnValue;value",
-        "javax.ws.rs.core;Response$ResponseBuilder;true;lastModified;;;Argument[-1];ReturnValue;value",
-        "javax.ws.rs.core;Response$ResponseBuilder;true;link;;;Argument[-1];ReturnValue;value",
-        "javax.ws.rs.core;Response$ResponseBuilder;true;links;;;Argument[-1];ReturnValue;value",
-        "javax.ws.rs.core;Response$ResponseBuilder;true;location;;;Argument[-1];ReturnValue;value",
-        "javax.ws.rs.core;Response$ResponseBuilder;true;replaceAll;;;Argument[-1];ReturnValue;value",
-        "javax.ws.rs.core;Response$ResponseBuilder;true;status;;;Argument[-1];ReturnValue;value",
-        "javax.ws.rs.core;Response$ResponseBuilder;true;tag;;;Argument[-1];ReturnValue;value",
-        "javax.ws.rs.core;Response$ResponseBuilder;true;type;;;Argument[-1];ReturnValue;value",
-        "javax.ws.rs.core;Response$ResponseBuilder;true;variant;;;Argument[-1];ReturnValue;value",
-        "javax.ws.rs.core;Response$ResponseBuilder;true;variants;;;Argument[-1];ReturnValue;value",
-        "jakarta.ws.rs.core;Response$ResponseBuilder;true;build;;;Argument[-1];ReturnValue;taint",
-        "jakarta.ws.rs.core;Response$ResponseBuilder;true;entity;;;Argument[0];Argument[-1];taint",
-        "jakarta.ws.rs.core;Response$ResponseBuilder;true;allow;;;Argument[-1];ReturnValue;value",
-        "jakarta.ws.rs.core;Response$ResponseBuilder;true;cacheControl;;;Argument[-1];ReturnValue;value",
-        "jakarta.ws.rs.core;Response$ResponseBuilder;true;clone;;;Argument[-1];ReturnValue;taint",
-        "jakarta.ws.rs.core;Response$ResponseBuilder;true;contentLocation;;;Argument[-1];ReturnValue;value",
-        "jakarta.ws.rs.core;Response$ResponseBuilder;true;cookie;;;Argument[-1];ReturnValue;value",
-        "jakarta.ws.rs.core;Response$ResponseBuilder;true;encoding;;;Argument[-1];ReturnValue;value",
-        "jakarta.ws.rs.core;Response$ResponseBuilder;true;entity;;;Argument[-1];ReturnValue;value",
-        "jakarta.ws.rs.core;Response$ResponseBuilder;true;expires;;;Argument[-1];ReturnValue;value",
-        "jakarta.ws.rs.core;Response$ResponseBuilder;true;header;;;Argument[-1];ReturnValue;value",
-        "jakarta.ws.rs.core;Response$ResponseBuilder;true;language;;;Argument[-1];ReturnValue;value",
-        "jakarta.ws.rs.core;Response$ResponseBuilder;true;lastModified;;;Argument[-1];ReturnValue;value",
-        "jakarta.ws.rs.core;Response$ResponseBuilder;true;link;;;Argument[-1];ReturnValue;value",
-        "jakarta.ws.rs.core;Response$ResponseBuilder;true;links;;;Argument[-1];ReturnValue;value",
-        "jakarta.ws.rs.core;Response$ResponseBuilder;true;location;;;Argument[-1];ReturnValue;value",
-        "jakarta.ws.rs.core;Response$ResponseBuilder;true;replaceAll;;;Argument[-1];ReturnValue;value",
-        "jakarta.ws.rs.core;Response$ResponseBuilder;true;status;;;Argument[-1];ReturnValue;value",
-        "jakarta.ws.rs.core;Response$ResponseBuilder;true;tag;;;Argument[-1];ReturnValue;value",
-        "jakarta.ws.rs.core;Response$ResponseBuilder;true;type;;;Argument[-1];ReturnValue;value",
-        "jakarta.ws.rs.core;Response$ResponseBuilder;true;variant;;;Argument[-1];ReturnValue;value",
-        "jakarta.ws.rs.core;Response$ResponseBuilder;true;variants;;;Argument[-1];ReturnValue;value"
-      ]
+      ["javax", "jakarta"] + ".ws.rs.core;Response$ResponseBuilder;true;" +
+        [
+          "allow", "cacheControl", "contentLocation", "cookie", "encoding", "entity", "expires",
+          "header", "language", "lastModified", "link", "links", "location", "replaceAll", "status",
+          "tag", "type", "variant", "variants"
+        ] + ";;;Argument[-1];ReturnValue;value"
+    or
+    row =
+      ["javax", "jakarta"] + ".ws.rs.core;Response$ResponseBuilder;true;" +
+        [
+          "build;;;Argument[-1];ReturnValue;taint", "entity;;;Argument[0];Argument[-1];taint",
+          "clone;;;Argument[-1];ReturnValue;taint"
+        ]
   }
 }
 
@@ -436,24 +392,11 @@ private class ResponseBuilderModel extends SummaryModelCsv {
 private class HttpHeadersModel extends SummaryModelCsv {
   override predicate row(string row) {
     row =
-      [
-        "javax.ws.rs.core;HttpHeaders;true;getAcceptableLanguages;;;Argument[-1];ReturnValue;taint",
-        "javax.ws.rs.core;HttpHeaders;true;getAcceptableMediaTypes;;;Argument[-1];ReturnValue;taint",
-        "javax.ws.rs.core;HttpHeaders;true;getCookies;;;Argument[-1];ReturnValue;taint",
-        "javax.ws.rs.core;HttpHeaders;true;getHeaderString;;;Argument[-1];ReturnValue;taint",
-        "javax.ws.rs.core;HttpHeaders;true;getLanguage;;;Argument[-1];ReturnValue;taint",
-        "javax.ws.rs.core;HttpHeaders;true;getMediaType;;;Argument[-1];ReturnValue;taint",
-        "javax.ws.rs.core;HttpHeaders;true;getRequestHeader;;;Argument[-1];ReturnValue;taint",
-        "javax.ws.rs.core;HttpHeaders;true;getRequestHeaders;;;Argument[-1];ReturnValue;taint",
-        "jakarta.ws.rs.core;HttpHeaders;true;getAcceptableLanguages;;;Argument[-1];ReturnValue;taint",
-        "jakarta.ws.rs.core;HttpHeaders;true;getAcceptableMediaTypes;;;Argument[-1];ReturnValue;taint",
-        "jakarta.ws.rs.core;HttpHeaders;true;getCookies;;;Argument[-1];ReturnValue;taint",
-        "jakarta.ws.rs.core;HttpHeaders;true;getHeaderString;;;Argument[-1];ReturnValue;taint",
-        "jakarta.ws.rs.core;HttpHeaders;true;getLanguage;;;Argument[-1];ReturnValue;taint",
-        "jakarta.ws.rs.core;HttpHeaders;true;getMediaType;;;Argument[-1];ReturnValue;taint",
-        "jakarta.ws.rs.core;HttpHeaders;true;getRequestHeader;;;Argument[-1];ReturnValue;taint",
-        "jakarta.ws.rs.core;HttpHeaders;true;getRequestHeaders;;;Argument[-1];ReturnValue;taint"
-      ]
+      ["javax", "jakarta"] + ".ws.rs.core;HttpHeaders;true;" +
+        [
+          "getAcceptableLanguages", "getAcceptableMediaTypes", "getCookies", "getHeaderString",
+          "getLanguage", "getMediaType", "getRequestHeader", "getRequestHeaders"
+        ] + ";;;Argument[-1];ReturnValue;taint"
   }
 }
 
@@ -463,28 +406,19 @@ private class HttpHeadersModel extends SummaryModelCsv {
 private class MultivaluedMapModel extends SummaryModelCsv {
   override predicate row(string row) {
     row =
-      [
-        "javax.ws.rs.core;MultivaluedMap;true;add;;;Argument[0];MapKey of Argument[-1];value",
-        "javax.ws.rs.core;MultivaluedMap;true;add;;;Argument[1];Element of MapValue of Argument[-1];value",
-        "javax.ws.rs.core;MultivaluedMap;true;addAll;;;Argument[0];MapKey of Argument[-1];value",
-        "javax.ws.rs.core;MultivaluedMap;true;addAll;(Object,List);;Element of Argument[1];Element of MapValue of Argument[-1];value",
-        "javax.ws.rs.core;MultivaluedMap;true;addAll;(Object,Object[]);;ArrayElement of Argument[1];Element of MapValue of Argument[-1];value",
-        "javax.ws.rs.core;MultivaluedMap;true;addFirst;;;Argument[0];MapKey of Argument[-1];value",
-        "javax.ws.rs.core;MultivaluedMap;true;addFirst;;;Argument[1];Element of MapValue of Argument[-1];value",
-        "javax.ws.rs.core;MultivaluedMap;true;getFirst;;;Element of MapValue of Argument[-1];ReturnValue;value",
-        "javax.ws.rs.core;MultivaluedMap;true;putSingle;;;Argument[0];MapKey of Argument[-1];value",
-        "javax.ws.rs.core;MultivaluedMap;true;putSingle;;;Argument[1];Element of MapValue of Argument[-1];value",
-        "jakarta.ws.rs.core;MultivaluedMap;true;add;;;Argument[0];MapKey of Argument[-1];value",
-        "jakarta.ws.rs.core;MultivaluedMap;true;add;;;Argument[1];Element of MapValue of Argument[-1];value",
-        "jakarta.ws.rs.core;MultivaluedMap;true;addAll;;;Argument[0];MapKey of Argument[-1];value",
-        "jakarta.ws.rs.core;MultivaluedMap;true;addAll;(Object,List);;Element of Argument[1];Element of MapValue of Argument[-1];value",
-        "jakarta.ws.rs.core;MultivaluedMap;true;addAll;(Object,Object[]);;ArrayElement of Argument[1];Element of MapValue of Argument[-1];value",
-        "jakarta.ws.rs.core;MultivaluedMap;true;addFirst;;;Argument[0];MapKey of Argument[-1];value",
-        "jakarta.ws.rs.core;MultivaluedMap;true;addFirst;;;Argument[1];Element of MapValue of Argument[-1];value",
-        "jakarta.ws.rs.core;MultivaluedMap;true;getFirst;;;Element of MapValue of Argument[-1];ReturnValue;value",
-        "jakarta.ws.rs.core;MultivaluedMap;true;putSingle;;;Argument[0];MapKey of Argument[-1];value",
-        "jakarta.ws.rs.core;MultivaluedMap;true;putSingle;;;Argument[1];Element of MapValue of Argument[-1];value"
-      ]
+      ["javax", "jakarta"] + ".ws.rs.core;MultivaluedMap;true;" +
+        [
+          "add;;;Argument[0];MapKey of Argument[-1];value",
+          "add;;;Argument[1];Element of MapValue of Argument[-1];value",
+          "addAll;;;Argument[0];MapKey of Argument[-1];value",
+          "addAll;(Object,List);;Element of Argument[1];Element of MapValue of Argument[-1];value",
+          "addAll;(Object,Object[]);;ArrayElement of Argument[1];Element of MapValue of Argument[-1];value",
+          "addFirst;;;Argument[0];MapKey of Argument[-1];value",
+          "addFirst;;;Argument[1];Element of MapValue of Argument[-1];value",
+          "getFirst;;;Element of MapValue of Argument[-1];ReturnValue;value",
+          "putSingle;;;Argument[0];MapKey of Argument[-1];value",
+          "putSingle;;;Argument[1];Element of MapValue of Argument[-1];value"
+        ]
   }
 }
 
@@ -494,12 +428,11 @@ private class MultivaluedMapModel extends SummaryModelCsv {
 private class AbstractMultivaluedMapModel extends SummaryModelCsv {
   override predicate row(string row) {
     row =
-      [
-        "javax.ws.rs.core;AbstractMultivaluedMap;false;AbstractMultivaluedMap;;;MapKey of Argument[0];MapKey of Argument[-1];value",
-        "javax.ws.rs.core;AbstractMultivaluedMap;false;AbstractMultivaluedMap;;;MapValue of Argument[0];MapValue of Argument[-1];value",
-        "jakarta.ws.rs.core;AbstractMultivaluedMap;false;AbstractMultivaluedMap;;;MapKey of Argument[0];MapKey of Argument[-1];value",
-        "jakarta.ws.rs.core;AbstractMultivaluedMap;false;AbstractMultivaluedMap;;;MapValue of Argument[0];MapValue of Argument[-1];value"
-      ]
+      ["javax", "jakarta"] + ".ws.rs.core;AbstractMultivaluedMap;false;AbstractMultivaluedMap;;;" +
+        [
+          "MapKey of Argument[0];MapKey of Argument[-1];value",
+          "MapValue of Argument[0];MapValue of Argument[-1];value"
+        ]
   }
 }
 
@@ -509,16 +442,13 @@ private class AbstractMultivaluedMapModel extends SummaryModelCsv {
 private class MultivaluedHashMapModel extends SummaryModelCsv {
   override predicate row(string row) {
     row =
-      [
-        "javax.ws.rs.core;MultivaluedHashMap;false;MultivaluedHashMap;(Map);;MapKey of Argument[0];MapKey of Argument[-1];value",
-        "javax.ws.rs.core;MultivaluedHashMap;false;MultivaluedHashMap;(Map);;MapValue of Argument[0];Element of MapValue of Argument[-1];value",
-        "javax.ws.rs.core;MultivaluedHashMap;false;MultivaluedHashMap;(MultivaluedMap);;MapKey of Argument[0];MapKey of Argument[-1];value",
-        "javax.ws.rs.core;MultivaluedHashMap;false;MultivaluedHashMap;(MultivaluedMap);;MapValue of Argument[0];MapValue of Argument[-1];value",
-        "jakarta.ws.rs.core;MultivaluedHashMap;false;MultivaluedHashMap;(Map);;MapKey of Argument[0];MapKey of Argument[-1];value",
-        "jakarta.ws.rs.core;MultivaluedHashMap;false;MultivaluedHashMap;(Map);;MapValue of Argument[0];Element of MapValue of Argument[-1];value",
-        "jakarta.ws.rs.core;MultivaluedHashMap;false;MultivaluedHashMap;(MultivaluedMap);;MapKey of Argument[0];MapKey of Argument[-1];value",
-        "jakarta.ws.rs.core;MultivaluedHashMap;false;MultivaluedHashMap;(MultivaluedMap);;MapValue of Argument[0];MapValue of Argument[-1];value"
-      ]
+      ["javax", "jakarta"] + ".ws.rs.core;MultivaluedHashMap;false;MultivaluedHashMap;" +
+        [
+          "(Map);;MapKey of Argument[0];MapKey of Argument[-1];value",
+          "(Map);;MapValue of Argument[0];Element of MapValue of Argument[-1];value",
+          "(MultivaluedMap);;MapKey of Argument[0];MapKey of Argument[-1];value",
+          "(MultivaluedMap);;MapValue of Argument[0];MapValue of Argument[-1];value"
+        ]
   }
 }
 
@@ -528,12 +458,8 @@ private class MultivaluedHashMapModel extends SummaryModelCsv {
 private class PathSegmentModel extends SummaryModelCsv {
   override predicate row(string row) {
     row =
-      [
-        "javax.ws.rs.core;PathSegment;true;getMatrixParameters;;;Argument[-1];ReturnValue;taint",
-        "javax.ws.rs.core;PathSegment;true;getPath;;;Argument[-1];ReturnValue;taint",
-        "jakarta.ws.rs.core;PathSegment;true;getMatrixParameters;;;Argument[-1];ReturnValue;taint",
-        "jakarta.ws.rs.core;PathSegment;true;getPath;;;Argument[-1];ReturnValue;taint"
-      ]
+      ["javax", "jakarta"] + ".ws.rs.core;PathSegment;true;" + ["getMatrixParameters", "getPath"] +
+        ";;;Argument[-1];ReturnValue;taint"
   }
 }
 
@@ -543,18 +469,19 @@ private class PathSegmentModel extends SummaryModelCsv {
 private class UriInfoModel extends SummaryModelCsv {
   override predicate row(string row) {
     row =
-      [
-        "javax.ws.rs.core;UriInfo;true;getPathParameters;;;Argument[-1];ReturnValue;taint",
-        "javax.ws.rs.core;UriInfo;true;getPathSegments;;;Argument[-1];ReturnValue;taint",
-        "javax.ws.rs.core;UriInfo;true;getQueryParameters;;;Argument[-1];ReturnValue;taint",
-        "javax.ws.rs.core;UriInfo;true;getRequestUri;;;Argument[-1];ReturnValue;taint",
-        "javax.ws.rs.core;UriInfo;true;getRequestUriBuilder;;;Argument[-1];ReturnValue;taint",
-        "jakarta.ws.rs.core;UriInfo;true;getPathParameters;;;Argument[-1];ReturnValue;taint",
-        "jakarta.ws.rs.core;UriInfo;true;getPathSegments;;;Argument[-1];ReturnValue;taint",
-        "jakarta.ws.rs.core;UriInfo;true;getQueryParameters;;;Argument[-1];ReturnValue;taint",
-        "jakarta.ws.rs.core;UriInfo;true;getRequestUri;;;Argument[-1];ReturnValue;taint",
-        "jakarta.ws.rs.core;UriInfo;true;getRequestUriBuilder;;;Argument[-1];ReturnValue;taint"
-      ]
+      ["javax", "jakarta"] + ".ws.rs.core;UriInfo;true;" +
+        [
+          "getAbsolutePath;;;Argument[-1];ReturnValue;taint",
+          "getAbsolutePathBuilder;;;Argument[-1];ReturnValue;taint",
+          "getPath;;;Argument[-1];ReturnValue;taint",
+          "getPathParameters;;;Argument[-1];ReturnValue;taint",
+          "getPathSegments;;;Argument[-1];ReturnValue;taint",
+          "getQueryParameters;;;Argument[-1];ReturnValue;taint",
+          "getRequestUri;;;Argument[-1];ReturnValue;taint",
+          "getRequestUriBuilder;;;Argument[-1];ReturnValue;taint",
+          "relativize;;;Argument[0];ReturnValue;taint", "resolve;;;Argument[-1];ReturnValue;taint",
+          "resolve;;;Argument[0];ReturnValue;taint"
+        ]
   }
 }
 
@@ -564,24 +491,17 @@ private class UriInfoModel extends SummaryModelCsv {
 private class CookieModel extends SummaryModelCsv {
   override predicate row(string row) {
     row =
-      [
-        "javax.ws.rs.core;Cookie;true;getDomain;;;Argument[-1];ReturnValue;taint",
-        "javax.ws.rs.core;Cookie;true;getName;;;Argument[-1];ReturnValue;taint",
-        "javax.ws.rs.core;Cookie;true;getPath;;;Argument[-1];ReturnValue;taint",
-        "javax.ws.rs.core;Cookie;true;getValue;;;Argument[-1];ReturnValue;taint",
-        "javax.ws.rs.core;Cookie;true;getVersion;;;Argument[-1];ReturnValue;taint",
-        "javax.ws.rs.core;Cookie;true;toString;;;Argument[-1];ReturnValue;taint",
-        "javax.ws.rs.core;Cookie;false;Cookie;;;Argument[0..4];Argument[-1];taint",
-        "javax.ws.rs.core;Cookie;false;valueOf;;;Argument[0];ReturnValue;taint",
-        "jakarta.ws.rs.core;Cookie;true;getDomain;;;Argument[-1];ReturnValue;taint",
-        "jakarta.ws.rs.core;Cookie;true;getName;;;Argument[-1];ReturnValue;taint",
-        "jakarta.ws.rs.core;Cookie;true;getPath;;;Argument[-1];ReturnValue;taint",
-        "jakarta.ws.rs.core;Cookie;true;getValue;;;Argument[-1];ReturnValue;taint",
-        "jakarta.ws.rs.core;Cookie;true;getVersion;;;Argument[-1];ReturnValue;taint",
-        "jakarta.ws.rs.core;Cookie;true;toString;;;Argument[-1];ReturnValue;taint",
-        "jakarta.ws.rs.core;Cookie;false;Cookie;;;Argument[0..4];Argument[-1];taint",
-        "jakarta.ws.rs.core;Cookie;false;valueOf;;;Argument[0];ReturnValue;taint"
-      ]
+      ["javax", "jakarta"] + ".ws.rs.core;Cookie;" +
+        [
+          "true;getDomain;;;Argument[-1];ReturnValue;taint",
+          "true;getName;;;Argument[-1];ReturnValue;taint",
+          "true;getPath;;;Argument[-1];ReturnValue;taint",
+          "true;getValue;;;Argument[-1];ReturnValue;taint",
+          "true;getVersion;;;Argument[-1];ReturnValue;taint",
+          "true;toString;;;Argument[-1];ReturnValue;taint",
+          "false;Cookie;;;Argument[0..4];Argument[-1];taint",
+          "false;valueOf;;;Argument[0];ReturnValue;taint"
+        ]
   }
 }
 
@@ -591,20 +511,15 @@ private class CookieModel extends SummaryModelCsv {
 private class NewCookieModel extends SummaryModelCsv {
   override predicate row(string row) {
     row =
-      [
-        "javax.ws.rs.core;NewCookie;true;getComment;;;Argument[-1];ReturnValue;taint",
-        "javax.ws.rs.core;NewCookie;true;getExpiry;;;Argument[-1];ReturnValue;taint",
-        "javax.ws.rs.core;NewCookie;true;getMaxAge;;;Argument[-1];ReturnValue;taint",
-        "javax.ws.rs.core;NewCookie;true;toCookie;;;Argument[-1];ReturnValue;taint",
-        "javax.ws.rs.core;NewCookie;false;NewCookie;;;Argument[0..9];Argument[-1];taint",
-        "javax.ws.rs.core;NewCookie;false;valueOf;;;Argument[0];ReturnValue;taint",
-        "jakarta.ws.rs.core;NewCookie;true;getComment;;;Argument[-1];ReturnValue;taint",
-        "jakarta.ws.rs.core;NewCookie;true;getExpiry;;;Argument[-1];ReturnValue;taint",
-        "jakarta.ws.rs.core;NewCookie;true;getMaxAge;;;Argument[-1];ReturnValue;taint",
-        "jakarta.ws.rs.core;NewCookie;true;toCookie;;;Argument[-1];ReturnValue;taint",
-        "jakarta.ws.rs.core;NewCookie;false;NewCookie;;;Argument[0..9];Argument[-1];taint",
-        "jakarta.ws.rs.core;NewCookie;false;valueOf;;;Argument[0];ReturnValue;taint"
-      ]
+      ["javax", "jakarta"] + ".ws.rs.core;NewCookie;" +
+        [
+          "true;getComment;;;Argument[-1];ReturnValue;taint",
+          "true;getExpiry;;;Argument[-1];ReturnValue;taint",
+          "true;getMaxAge;;;Argument[-1];ReturnValue;taint",
+          "true;toCookie;;;Argument[-1];ReturnValue;taint",
+          "false;NewCookie;;;Argument[0..9];Argument[-1];taint",
+          "false;valueOf;;;Argument[0];ReturnValue;taint"
+        ]
   }
 }
 
@@ -614,20 +529,15 @@ private class NewCookieModel extends SummaryModelCsv {
 private class FormModel extends SummaryModelCsv {
   override predicate row(string row) {
     row =
-      [
-        "javax.ws.rs.core;Form;false;Form;;;MapKey of Argument[0];Argument[-1];taint",
-        "javax.ws.rs.core;Form;false;Form;;;Element of MapValue of Argument[0];Argument[-1];taint",
-        "javax.ws.rs.core;Form;false;Form;;;Argument[0..1];Argument[-1];taint",
-        "javax.ws.rs.core;Form;true;asMap;;;Argument[-1];ReturnValue;taint",
-        "javax.ws.rs.core;Form;true;param;;;Argument[0..1];Argument[-1];taint",
-        "javax.ws.rs.core;Form;true;param;;;Argument[-1];ReturnValue;value",
-        "jakarta.ws.rs.core;Form;false;Form;;;MapKey of Argument[0];Argument[-1];taint",
-        "jakarta.ws.rs.core;Form;false;Form;;;Element of MapValue of Argument[0];Argument[-1];taint",
-        "jakarta.ws.rs.core;Form;false;Form;;;Argument[0..1];Argument[-1];taint",
-        "jakarta.ws.rs.core;Form;true;asMap;;;Argument[-1];ReturnValue;taint",
-        "jakarta.ws.rs.core;Form;true;param;;;Argument[0..1];Argument[-1];taint",
-        "jakarta.ws.rs.core;Form;true;param;;;Argument[-1];ReturnValue;value"
-      ]
+      ["javax", "jakarta"] + ".ws.rs.core;Form;" +
+        [
+          "false;Form;;;MapKey of Argument[0];Argument[-1];taint",
+          "false;Form;;;Element of MapValue of Argument[0];Argument[-1];taint",
+          "false;Form;;;Argument[0..1];Argument[-1];taint",
+          "true;asMap;;;Argument[-1];ReturnValue;taint",
+          "true;param;;;Argument[0..1];Argument[-1];taint",
+          "true;param;;;Argument[-1];ReturnValue;value"
+        ]
   }
 }
 
@@ -637,12 +547,11 @@ private class FormModel extends SummaryModelCsv {
 private class GenericEntityModel extends SummaryModelCsv {
   override predicate row(string row) {
     row =
-      [
-        "javax.ws.rs.core;GenericEntity;false;GenericEntity;;;Argument[0];Argument[-1];taint",
-        "javax.ws.rs.core;GenericEntity;true;getEntity;;;Argument[-1];ReturnValue;taint",
-        "jakarta.ws.rs.core;GenericEntity;false;GenericEntity;;;Argument[0];Argument[-1];taint",
-        "jakarta.ws.rs.core;GenericEntity;true;getEntity;;;Argument[-1];ReturnValue;taint"
-      ]
+      ["javax", "jakarta"] + ".ws.rs.core;GenericEntity;" +
+        [
+          "false;GenericEntity;;;Argument[0];Argument[-1];taint",
+          "true;getEntity;;;Argument[-1];ReturnValue;taint"
+        ]
   }
 }
 
@@ -653,20 +562,15 @@ private class GenericEntityModel extends SummaryModelCsv {
 private class MediaTypeModel extends SummaryModelCsv {
   override predicate row(string row) {
     row =
-      [
-        "javax.ws.rs.core;MediaType;false;MediaType;;;Argument[0..2];Argument[-1];taint",
-        "javax.ws.rs.core;MediaType;true;getParameters;;;Argument[-1];ReturnValue;taint",
-        "javax.ws.rs.core;MediaType;true;getSubtype;;;Argument[-1];ReturnValue;taint",
-        "javax.ws.rs.core;MediaType;true;getType;;;Argument[-1];ReturnValue;taint",
-        "javax.ws.rs.core;MediaType;false;valueOf;;;Argument[0];ReturnValue;taint",
-        "javax.ws.rs.core;MediaType;true;withCharset;;;Argument[-1];ReturnValue;taint",
-        "jakarta.ws.rs.core;MediaType;false;MediaType;;;Argument[0..2];Argument[-1];taint",
-        "jakarta.ws.rs.core;MediaType;true;getParameters;;;Argument[-1];ReturnValue;taint",
-        "jakarta.ws.rs.core;MediaType;true;getSubtype;;;Argument[-1];ReturnValue;taint",
-        "jakarta.ws.rs.core;MediaType;true;getType;;;Argument[-1];ReturnValue;taint",
-        "jakarta.ws.rs.core;MediaType;false;valueOf;;;Argument[0];ReturnValue;taint",
-        "jakarta.ws.rs.core;MediaType;true;withCharset;;;Argument[-1];ReturnValue;taint"
-      ]
+      ["javax", "jakarta"] + ".ws.rs.core;MediaType;" +
+        [
+          "false;MediaType;;;Argument[0..2];Argument[-1];taint",
+          "true;getParameters;;;Argument[-1];ReturnValue;taint",
+          "true;getSubtype;;;Argument[-1];ReturnValue;taint",
+          "true;getType;;;Argument[-1];ReturnValue;taint",
+          "false;valueOf;;;Argument[0];ReturnValue;taint",
+          "true;withCharset;;;Argument[-1];ReturnValue;taint"
+        ]
   }
 }
 
@@ -676,136 +580,72 @@ private class MediaTypeModel extends SummaryModelCsv {
 private class UriBuilderModel extends SummaryModelCsv {
   override predicate row(string row) {
     row =
-      [
-        "javax.ws.rs.core;UriBuilder;true;build;;;ArrayElement of Argument[0];ReturnValue;taint",
-        "javax.ws.rs.core;UriBuilder;true;build;;;Argument[-1];ReturnValue;taint",
-        "javax.ws.rs.core;UriBuilder;true;buildFromEncoded;;;ArrayElement of Argument[0];ReturnValue;taint",
-        "javax.ws.rs.core;UriBuilder;true;buildFromEncoded;;;Argument[-1];ReturnValue;taint",
-        "javax.ws.rs.core;UriBuilder;true;buildFromEncodedMap;;;MapKey of Argument[0];ReturnValue;taint",
-        "javax.ws.rs.core;UriBuilder;true;buildFromEncodedMap;;;MapValue of Argument[0];ReturnValue;taint",
-        "javax.ws.rs.core;UriBuilder;true;buildFromEncodedMap;;;Argument[-1];ReturnValue;taint",
-        "javax.ws.rs.core;UriBuilder;true;buildFromMap;;;MapKey of Argument[0];ReturnValue;taint",
-        "javax.ws.rs.core;UriBuilder;true;buildFromMap;;;MapValue of Argument[0];ReturnValue;taint",
-        "javax.ws.rs.core;UriBuilder;true;buildFromMap;;;Argument[-1];ReturnValue;taint",
-        "javax.ws.rs.core;UriBuilder;true;clone;;;Argument[-1];ReturnValue;taint",
-        "javax.ws.rs.core;UriBuilder;true;fragment;;;Argument[0];ReturnValue;taint",
-        "javax.ws.rs.core;UriBuilder;true;fragment;;;Argument[-1];ReturnValue;value",
-        "javax.ws.rs.core;UriBuilder;false;fromLink;;;Argument[0];ReturnValue;taint",
-        "javax.ws.rs.core;UriBuilder;false;fromPath;;;Argument[0];ReturnValue;taint",
-        "javax.ws.rs.core;UriBuilder;false;fromUri;;;Argument[0];ReturnValue;taint",
-        "javax.ws.rs.core;UriBuilder;true;host;;;Argument[0];ReturnValue;taint",
-        "javax.ws.rs.core;UriBuilder;true;host;;;Argument[-1];ReturnValue;value",
-        "javax.ws.rs.core;UriBuilder;true;matrixParam;;;Argument[0];ReturnValue;taint",
-        "javax.ws.rs.core;UriBuilder;true;matrixParam;;;ArrayElement of Argument[1];ReturnValue;taint",
-        "javax.ws.rs.core;UriBuilder;true;matrixParam;;;Argument[-1];ReturnValue;value",
-        "javax.ws.rs.core;UriBuilder;true;path;;;Argument[0..1];ReturnValue;taint",
-        "javax.ws.rs.core;UriBuilder;true;path;;;Argument[-1];ReturnValue;value",
-        "javax.ws.rs.core;UriBuilder;true;queryParam;;;Argument[0];ReturnValue;taint",
-        "javax.ws.rs.core;UriBuilder;true;queryParam;;;ArrayElement of Argument[1];ReturnValue;taint",
-        "javax.ws.rs.core;UriBuilder;true;queryParam;;;Argument[-1];ReturnValue;value",
-        "javax.ws.rs.core;UriBuilder;true;replaceMatrix;;;Argument[0];ReturnValue;taint",
-        "javax.ws.rs.core;UriBuilder;true;replaceMatrix;;;Argument[-1];ReturnValue;value",
-        "javax.ws.rs.core;UriBuilder;true;replaceMatrixParam;;;Argument[0];ReturnValue;taint",
-        "javax.ws.rs.core;UriBuilder;true;replaceMatrixParam;;;ArrayElement of Argument[1];ReturnValue;taint",
-        "javax.ws.rs.core;UriBuilder;true;replaceMatrixParam;;;Argument[-1];ReturnValue;value",
-        "javax.ws.rs.core;UriBuilder;true;replacePath;;;Argument[0];ReturnValue;taint",
-        "javax.ws.rs.core;UriBuilder;true;replacePath;;;Argument[-1];ReturnValue;value",
-        "javax.ws.rs.core;UriBuilder;true;replaceQuery;;;Argument[0];ReturnValue;taint",
-        "javax.ws.rs.core;UriBuilder;true;replaceQuery;;;Argument[-1];ReturnValue;value",
-        "javax.ws.rs.core;UriBuilder;true;replaceQueryParam;;;Argument[0];ReturnValue;taint",
-        "javax.ws.rs.core;UriBuilder;true;replaceQueryParam;;;ArrayElement of Argument[1];ReturnValue;taint",
-        "javax.ws.rs.core;UriBuilder;true;replaceQueryParam;;;Argument[-1];ReturnValue;value",
-        "javax.ws.rs.core;UriBuilder;true;resolveTemplate;;;Argument[0..2];ReturnValue;taint",
-        "javax.ws.rs.core;UriBuilder;true;resolveTemplate;;;Argument[-1];ReturnValue;value",
-        "javax.ws.rs.core;UriBuilder;true;resolveTemplateFromEncoded;;;Argument[0..1];ReturnValue;taint",
-        "javax.ws.rs.core;UriBuilder;true;resolveTemplateFromEncoded;;;Argument[-1];ReturnValue;value",
-        "javax.ws.rs.core;UriBuilder;true;resolveTemplates;;;MapKey of Argument[0];ReturnValue;taint",
-        "javax.ws.rs.core;UriBuilder;true;resolveTemplates;;;MapValue of Argument[0];ReturnValue;taint",
-        "javax.ws.rs.core;UriBuilder;true;resolveTemplates;;;Argument[-1];ReturnValue;value",
-        "javax.ws.rs.core;UriBuilder;true;resolveTemplatesFromEncoded;;;MapKey of Argument[0];ReturnValue;taint",
-        "javax.ws.rs.core;UriBuilder;true;resolveTemplatesFromEncoded;;;MapValue of Argument[0];ReturnValue;taint",
-        "javax.ws.rs.core;UriBuilder;true;resolveTemplatesFromEncoded;;;Argument[-1];ReturnValue;value",
-        "javax.ws.rs.core;UriBuilder;true;scheme;;;Argument[0];ReturnValue;taint",
-        "javax.ws.rs.core;UriBuilder;true;scheme;;;Argument[-1];ReturnValue;value",
-        "javax.ws.rs.core;UriBuilder;true;schemeSpecificPart;;;Argument[0];ReturnValue;taint",
-        "javax.ws.rs.core;UriBuilder;true;schemeSpecificPart;;;Argument[-1];ReturnValue;value",
-        "javax.ws.rs.core;UriBuilder;true;segment;;;ArrayElement of Argument[0];ReturnValue;taint",
-        "javax.ws.rs.core;UriBuilder;true;segment;;;Argument[-1];ReturnValue;value",
-        "javax.ws.rs.core;UriBuilder;true;toTemplate;;;Argument[-1];ReturnValue;taint",
-        "javax.ws.rs.core;UriBuilder;true;uri;;;Argument[0];ReturnValue;taint",
-        "javax.ws.rs.core;UriBuilder;true;uri;;;Argument[-1];ReturnValue;value",
-        "javax.ws.rs.core;UriBuilder;true;userInfo;;;Argument[0];ReturnValue;taint",
-        "javax.ws.rs.core;UriBuilder;true;userInfo;;;Argument[-1];ReturnValue;value",
-        "jakarta.ws.rs.core;UriBuilder;true;build;;;ArrayElement of Argument[0];ReturnValue;taint",
-        "jakarta.ws.rs.core;UriBuilder;true;build;;;Argument[-1];ReturnValue;taint",
-        "jakarta.ws.rs.core;UriBuilder;true;buildFromEncoded;;;ArrayElement of Argument[0];ReturnValue;taint",
-        "jakarta.ws.rs.core;UriBuilder;true;buildFromEncoded;;;Argument[-1];ReturnValue;taint",
-        "jakarta.ws.rs.core;UriBuilder;true;buildFromEncodedMap;;;MapKey of Argument[0];ReturnValue;taint",
-        "jakarta.ws.rs.core;UriBuilder;true;buildFromEncodedMap;;;MapValue of Argument[0];ReturnValue;taint",
-        "jakarta.ws.rs.core;UriBuilder;true;buildFromEncodedMap;;;Argument[-1];ReturnValue;taint",
-        "jakarta.ws.rs.core;UriBuilder;true;buildFromMap;;;MapKey of Argument[0];ReturnValue;taint",
-        "jakarta.ws.rs.core;UriBuilder;true;buildFromMap;;;MapValue of Argument[0];ReturnValue;taint",
-        "jakarta.ws.rs.core;UriBuilder;true;buildFromMap;;;Argument[-1];ReturnValue;taint",
-        "jakarta.ws.rs.core;UriBuilder;true;clone;;;Argument[-1];ReturnValue;taint",
-        "jakarta.ws.rs.core;UriBuilder;true;fragment;;;Argument[0];ReturnValue;taint",
-        "jakarta.ws.rs.core;UriBuilder;true;fragment;;;Argument[-1];ReturnValue;value",
-        "jakarta.ws.rs.core;UriBuilder;false;fromLink;;;Argument[0];ReturnValue;taint",
-        "jakarta.ws.rs.core;UriBuilder;false;fromPath;;;Argument[0];ReturnValue;taint",
-        "jakarta.ws.rs.core;UriBuilder;false;fromUri;;;Argument[0];ReturnValue;taint",
-        "jakarta.ws.rs.core;UriBuilder;true;host;;;Argument[0];ReturnValue;taint",
-        "jakarta.ws.rs.core;UriBuilder;true;host;;;Argument[-1];ReturnValue;value",
-        "jakarta.ws.rs.core;UriBuilder;true;matrixParam;;;Argument[0];ReturnValue;taint",
-        "jakarta.ws.rs.core;UriBuilder;true;matrixParam;;;ArrayElement of Argument[1];ReturnValue;taint",
-        "jakarta.ws.rs.core;UriBuilder;true;matrixParam;;;Argument[-1];ReturnValue;value",
-        "jakarta.ws.rs.core;UriBuilder;true;path;;;Argument[0..1];ReturnValue;taint",
-        "jakarta.ws.rs.core;UriBuilder;true;path;;;Argument[-1];ReturnValue;value",
-        "jakarta.ws.rs.core;UriBuilder;true;queryParam;;;Argument[0];ReturnValue;taint",
-        "jakarta.ws.rs.core;UriBuilder;true;queryParam;;;ArrayElement of Argument[1];ReturnValue;taint",
-        "jakarta.ws.rs.core;UriBuilder;true;queryParam;;;Argument[-1];ReturnValue;value",
-        "jakarta.ws.rs.core;UriBuilder;true;replaceMatrix;;;Argument[0];ReturnValue;taint",
-        "jakarta.ws.rs.core;UriBuilder;true;replaceMatrix;;;Argument[-1];ReturnValue;value",
-        "jakarta.ws.rs.core;UriBuilder;true;replaceMatrixParam;;;Argument[0];ReturnValue;taint",
-        "jakarta.ws.rs.core;UriBuilder;true;replaceMatrixParam;;;ArrayElement of Argument[1];ReturnValue;taint",
-        "jakarta.ws.rs.core;UriBuilder;true;replaceMatrixParam;;;Argument[-1];ReturnValue;value",
-        "jakarta.ws.rs.core;UriBuilder;true;replacePath;;;Argument[0];ReturnValue;taint",
-        "jakarta.ws.rs.core;UriBuilder;true;replacePath;;;Argument[-1];ReturnValue;value",
-        "jakarta.ws.rs.core;UriBuilder;true;replaceQuery;;;Argument[0];ReturnValue;taint",
-        "jakarta.ws.rs.core;UriBuilder;true;replaceQuery;;;Argument[-1];ReturnValue;value",
-        "jakarta.ws.rs.core;UriBuilder;true;replaceQueryParam;;;Argument[0];ReturnValue;taint",
-        "jakarta.ws.rs.core;UriBuilder;true;replaceQueryParam;;;ArrayElement of Argument[1];ReturnValue;taint",
-        "jakarta.ws.rs.core;UriBuilder;true;replaceQueryParam;;;Argument[-1];ReturnValue;value",
-        "jakarta.ws.rs.core;UriBuilder;true;resolveTemplate;;;Argument[0..2];ReturnValue;taint",
-        "jakarta.ws.rs.core;UriBuilder;true;resolveTemplate;;;Argument[-1];ReturnValue;value",
-        "jakarta.ws.rs.core;UriBuilder;true;resolveTemplateFromEncoded;;;Argument[0..1];ReturnValue;taint",
-        "jakarta.ws.rs.core;UriBuilder;true;resolveTemplateFromEncoded;;;Argument[-1];ReturnValue;value",
-        "jakarta.ws.rs.core;UriBuilder;true;resolveTemplates;;;MapKey of Argument[0];ReturnValue;taint",
-        "jakarta.ws.rs.core;UriBuilder;true;resolveTemplates;;;MapValue of Argument[0];ReturnValue;taint",
-        "jakarta.ws.rs.core;UriBuilder;true;resolveTemplates;;;Argument[-1];ReturnValue;value",
-        "jakarta.ws.rs.core;UriBuilder;true;resolveTemplatesFromEncoded;;;MapKey of Argument[0];ReturnValue;taint",
-        "jakarta.ws.rs.core;UriBuilder;true;resolveTemplatesFromEncoded;;;MapValue of Argument[0];ReturnValue;taint",
-        "jakarta.ws.rs.core;UriBuilder;true;resolveTemplatesFromEncoded;;;Argument[-1];ReturnValue;value",
-        "jakarta.ws.rs.core;UriBuilder;true;scheme;;;Argument[0];ReturnValue;taint",
-        "jakarta.ws.rs.core;UriBuilder;true;scheme;;;Argument[-1];ReturnValue;value",
-        "jakarta.ws.rs.core;UriBuilder;true;schemeSpecificPart;;;Argument[0];ReturnValue;taint",
-        "jakarta.ws.rs.core;UriBuilder;true;schemeSpecificPart;;;Argument[-1];ReturnValue;value",
-        "jakarta.ws.rs.core;UriBuilder;true;segment;;;ArrayElement of Argument[0];ReturnValue;taint",
-        "jakarta.ws.rs.core;UriBuilder;true;segment;;;Argument[-1];ReturnValue;value",
-        "jakarta.ws.rs.core;UriBuilder;true;toTemplate;;;Argument[-1];ReturnValue;taint",
-        "jakarta.ws.rs.core;UriBuilder;true;uri;;;Argument[0];ReturnValue;taint",
-        "jakarta.ws.rs.core;UriBuilder;true;uri;;;Argument[-1];ReturnValue;value",
-        "jakarta.ws.rs.core;UriBuilder;true;userInfo;;;Argument[0];ReturnValue;taint",
-        "jakarta.ws.rs.core;UriBuilder;true;userInfo;;;Argument[-1];ReturnValue;value"
-      ]
+      ["javax", "jakarta"] + ".ws.rs.core;UriBuilder;" +
+        [
+          "true;build;;;ArrayElement of Argument[0];ReturnValue;taint",
+          "true;build;;;Argument[-1];ReturnValue;taint",
+          "true;buildFromEncoded;;;ArrayElement of Argument[0];ReturnValue;taint",
+          "true;buildFromEncoded;;;Argument[-1];ReturnValue;taint",
+          "true;buildFromEncodedMap;;;MapKey of Argument[0];ReturnValue;taint",
+          "true;buildFromEncodedMap;;;MapValue of Argument[0];ReturnValue;taint",
+          "true;buildFromEncodedMap;;;Argument[-1];ReturnValue;taint",
+          "true;buildFromMap;;;MapKey of Argument[0];ReturnValue;taint",
+          "true;buildFromMap;;;MapValue of Argument[0];ReturnValue;taint",
+          "true;buildFromMap;;;Argument[-1];ReturnValue;taint",
+          "true;clone;;;Argument[-1];ReturnValue;taint",
+          "true;fragment;;;Argument[0];ReturnValue;taint",
+          "true;fragment;;;Argument[-1];ReturnValue;value",
+          "false;fromLink;;;Argument[0];ReturnValue;taint",
+          "false;fromPath;;;Argument[0];ReturnValue;taint",
+          "false;fromUri;;;Argument[0];ReturnValue;taint",
+          "true;host;;;Argument[0];ReturnValue;taint", "true;host;;;Argument[-1];ReturnValue;value",
+          "true;matrixParam;;;Argument[0];ReturnValue;taint",
+          "true;matrixParam;;;ArrayElement of Argument[1];ReturnValue;taint",
+          "true;matrixParam;;;Argument[-1];ReturnValue;value",
+          "true;path;;;Argument[0..1];ReturnValue;taint",
+          "true;path;;;Argument[-1];ReturnValue;value",
+          "true;queryParam;;;Argument[0];ReturnValue;taint",
+          "true;queryParam;;;ArrayElement of Argument[1];ReturnValue;taint",
+          "true;queryParam;;;Argument[-1];ReturnValue;value",
+          "true;replaceMatrix;;;Argument[0];ReturnValue;taint",
+          "true;replaceMatrix;;;Argument[-1];ReturnValue;value",
+          "true;replaceMatrixParam;;;Argument[0];ReturnValue;taint",
+          "true;replaceMatrixParam;;;ArrayElement of Argument[1];ReturnValue;taint",
+          "true;replaceMatrixParam;;;Argument[-1];ReturnValue;value",
+          "true;replacePath;;;Argument[0];ReturnValue;taint",
+          "true;replacePath;;;Argument[-1];ReturnValue;value",
+          "true;replaceQuery;;;Argument[0];ReturnValue;taint",
+          "true;replaceQuery;;;Argument[-1];ReturnValue;value",
+          "true;replaceQueryParam;;;Argument[0];ReturnValue;taint",
+          "true;replaceQueryParam;;;ArrayElement of Argument[1];ReturnValue;taint",
+          "true;replaceQueryParam;;;Argument[-1];ReturnValue;value",
+          "true;resolveTemplate;;;Argument[0..2];ReturnValue;taint",
+          "true;resolveTemplate;;;Argument[-1];ReturnValue;value",
+          "true;resolveTemplateFromEncoded;;;Argument[0..1];ReturnValue;taint",
+          "true;resolveTemplateFromEncoded;;;Argument[-1];ReturnValue;value",
+          "true;resolveTemplates;;;MapKey of Argument[0];ReturnValue;taint",
+          "true;resolveTemplates;;;MapValue of Argument[0];ReturnValue;taint",
+          "true;resolveTemplates;;;Argument[-1];ReturnValue;value",
+          "true;resolveTemplatesFromEncoded;;;MapKey of Argument[0];ReturnValue;taint",
+          "true;resolveTemplatesFromEncoded;;;MapValue of Argument[0];ReturnValue;taint",
+          "true;resolveTemplatesFromEncoded;;;Argument[-1];ReturnValue;value",
+          "true;scheme;;;Argument[0];ReturnValue;taint",
+          "true;scheme;;;Argument[-1];ReturnValue;value",
+          "true;schemeSpecificPart;;;Argument[0];ReturnValue;taint",
+          "true;schemeSpecificPart;;;Argument[-1];ReturnValue;value",
+          "true;segment;;;ArrayElement of Argument[0];ReturnValue;taint",
+          "true;segment;;;Argument[-1];ReturnValue;value",
+          "true;toTemplate;;;Argument[-1];ReturnValue;taint",
+          "true;uri;;;Argument[0];ReturnValue;taint", "true;uri;;;Argument[-1];ReturnValue;value",
+          "true;userInfo;;;Argument[0];ReturnValue;taint",
+          "true;userInfo;;;Argument[-1];ReturnValue;value"
+        ]
   }
 }
 
 private class JaxRsUrlOpenSink extends SinkModelCsv {
   override predicate row(string row) {
-    row =
-      [
-        "javax.ws.rs.client;Client;true;target;;;Argument[0];open-url",
-        "jakarta.ws.rs.client;Client;true;target;;;Argument[0];open-url"
-      ]
+    row = ["javax", "jakarta"] + ".ws.rs.client;Client;true;target;;;Argument[0];open-url"
   }
 }
 
@@ -953,5 +793,19 @@ private class VulnerableEntity extends XssSinkBarrier {
         ) and
         ma.getMethod().hasName("ok")
       ).getArgument(0)
+  }
+}
+
+/**
+ * Model sources stemming from `ContainerRequestContext`.
+ */
+private class ContainerRequestContextModel extends SourceModelCsv {
+  override predicate row(string s) {
+    s =
+      ["javax", "jakarta"] + ".ws.rs.container;ContainerRequestContext;true;" +
+        [
+          "getAcceptableLanguages", "getAcceptableMediaTypes", "getCookies", "getEntityStream",
+          "getHeaders", "getHeaderString", "getLanguage", "getMediaType", "getUriInfo"
+        ] + ";;;ReturnValue;remote"
   }
 }

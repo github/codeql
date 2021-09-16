@@ -153,6 +153,12 @@ class ExceptStmt extends ExceptStmt_ {
   override Stmt getASubStatement() { result = this.getAStmt() }
 
   override Stmt getLastStatement() { result = this.getBody().getLastItem().getLastStatement() }
+
+  override Expr getType() {
+    result = super.getType() and not result instanceof Tuple
+    or
+    result = super.getType().(Tuple).getAnElt()
+  }
 }
 
 /** An assert statement, such as `assert a == b, "A is not equal to b"` */

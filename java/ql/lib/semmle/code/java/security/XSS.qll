@@ -5,6 +5,7 @@ import semmle.code.java.frameworks.Servlets
 import semmle.code.java.frameworks.android.WebView
 import semmle.code.java.frameworks.spring.SpringController
 import semmle.code.java.frameworks.spring.SpringHttp
+import semmle.code.java.frameworks.javaee.jsf.JSFRenderer
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.TaintTracking2
 import semmle.code.java.dataflow.ExternalFlow
@@ -40,52 +41,10 @@ private class DefaultXssSink extends XssSink {
   DefaultXssSink() {
     sinkNode(this, "xss")
     or
-    exists(ServletWriterSourceToWritingMethodFlowConfig writer, MethodAccess ma |
+    exists(XssVulnerableWriterSourceToWritingMethodFlowConfig writer, MethodAccess ma |
       ma.getMethod() instanceof WritingMethod and
       writer.hasFlowToExpr(ma.getQualifier()) and
       this.asExpr() = ma.getArgument(_)
-    )
-    or
-    exists(SpringRequestMappingMethod requestMappingMethod, ReturnStmt rs |
-      requestMappingMethod = rs.getEnclosingCallable() and
-      this.asExpr() = rs.getResult() and
-      (
-        not exists(requestMappingMethod.getProduces()) or
-        requestMappingMethod.getProduces().matches("text/%")
-      )
-    |
-      // If a Spring request mapping method is either annotated with @ResponseBody (or equivalent),
-      // or returns a HttpEntity or sub-type, then the return value of the method is converted into
-      // a HTTP reponse using a HttpMessageConverter implementation. The implementation is chosen
-      // based on the return type of the method, and the Accept header of the request.
-      //
-      // By default, the only message converter which produces a response which is vulnerable to
-      // XSS is the StringHttpMessageConverter, which "Accept"s all text/* content types, including
-      // text/html. Therefore, if a browser request includes "text/html" in the "Accept" header,
-      // any String returned will be converted into a text/html response.
-      requestMappingMethod.isResponseBody() and
-      requestMappingMethod.getReturnType() instanceof TypeString
-      or
-      exists(Type returnType |
-        // A return type of HttpEntity<T> or ResponseEntity<T> represents an HTTP response with both
-        // a body and a set of headers. The body is subject to the same HttpMessageConverter
-        // process as above.
-        returnType = requestMappingMethod.getReturnType() and
-        (
-          returnType instanceof SpringHttpEntity
-          or
-          returnType instanceof SpringResponseEntity
-        )
-      |
-        // The type argument, representing the type of the body, is type String
-        returnType.(ParameterizedClass).getTypeArgument(0) instanceof TypeString
-        or
-        // Return type is a Raw class, which means no static type information on the body. In this
-        // case we will still treat this as an XSS sink, but rely on our taint flow steps for
-        // HttpEntity/ResponseEntity to only pass taint into those instances if the body type was
-        // String.
-        returnType instanceof RawClass
-      )
     )
   }
 }
@@ -101,12 +60,14 @@ private class DefaultXSSSanitizer extends XssSanitizer {
 }
 
 /** A configuration that tracks data from a servlet writer to an output method. */
-private class ServletWriterSourceToWritingMethodFlowConfig extends TaintTracking2::Configuration {
-  ServletWriterSourceToWritingMethodFlowConfig() {
-    this = "XSS::ServletWriterSourceToWritingMethodFlowConfig"
+private class XssVulnerableWriterSourceToWritingMethodFlowConfig extends TaintTracking2::Configuration {
+  XssVulnerableWriterSourceToWritingMethodFlowConfig() {
+    this = "XSS::XssVulnerableWriterSourceToWritingMethodFlowConfig"
   }
 
-  override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof ServletWriterSource }
+  override predicate isSource(DataFlow::Node src) {
+    src.asExpr() instanceof XssVulnerableWriterSource
+  }
 
   override predicate isSink(DataFlow::Node sink) {
     exists(MethodAccess ma |
@@ -128,9 +89,9 @@ private class WritingMethod extends Method {
   }
 }
 
-/** An output stream or writer that writes to a servlet response. */
-class ServletWriterSource extends MethodAccess {
-  ServletWriterSource() {
+/** An output stream or writer that writes to a servlet, JSP or JSF response. */
+class XssVulnerableWriterSource extends MethodAccess {
+  XssVulnerableWriterSource() {
     this.getMethod() instanceof ServletResponseGetWriterMethod
     or
     this.getMethod() instanceof ServletResponseGetOutputStreamMethod
@@ -139,8 +100,17 @@ class ServletWriterSource extends MethodAccess {
       m.getDeclaringType().getQualifiedName() = "javax.servlet.jsp.JspContext" and
       m.getName() = "getOut"
     )
+    or
+    this.getMethod() instanceof FacesGetResponseWriterMethod
+    or
+    this.getMethod() instanceof FacesGetResponseStreamMethod
   }
 }
+
+/**
+ * DEPRECATED: Use `XssVulnerableWriterSource` instead.
+ */
+deprecated class ServletWriterSource = XssVulnerableWriterSource;
 
 /**
  * Holds if `s` is an HTTP Content-Type vulnerable to XSS.

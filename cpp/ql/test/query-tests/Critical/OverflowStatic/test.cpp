@@ -46,3 +46,13 @@ void f2(char *src)
 	ptr = &(buffer[1]);
 	memcpy(ptr, src, 100); // BAD [NOT DETECTED]
 }
+
+void f3() {
+    int i;
+    char buffer[5];
+    for (i=0; i<10; i++) {
+        if (i < 5) {
+            buffer[i] = 0; // GOOD
+        }
+    }
+}

@@ -947,7 +947,7 @@ private predicate exploratoryFlowStep(
   isAdditionalLoadStoreStep(pred, succ, _, _, cfg) or
   // the following three disjuncts taken together over-approximate flow through
   // higher-order calls
-  callback(pred, succ) or
+  exploratoryCallbackStep(pred, succ) or
   succ = pred.(DataFlow::FunctionNode).getAParameter() or
   exploratoryBoundInvokeStep(pred, succ)
 }

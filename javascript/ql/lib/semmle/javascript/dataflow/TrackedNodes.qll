@@ -154,7 +154,7 @@ private module NodeTracking {
       or
       basicLoadStep(mid, nd, _)
       or
-      callback(mid, nd)
+      exploratoryCallbackStep(mid, nd)
       or
       nd = mid.(DataFlow::FunctionNode).getAParameter()
     )

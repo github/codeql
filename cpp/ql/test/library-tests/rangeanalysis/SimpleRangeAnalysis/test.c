@@ -664,3 +664,28 @@ void test_mod(int s) {
   int s2 = s % 5;
   out(s2); // -4 .. 4
 }
+
+void exit(int);
+void guard_with_exit(int x, int y) {
+  if (x) {
+    if (y != 0) {
+      exit(0);
+    }
+  }
+  out(y); // ..
+
+  // This test ensures that we correctly identify
+  // that the upper bound for y is max_int when calling `out(y)`.
+  // The RangeSsa will place guardPhy on `out(y)`, and consequently there is no
+  // frontier phi node at out(y).
+}
+
+void test(int x) {
+  if (x >= 10) {
+    return;
+  }
+  // The basic below has two predecessors.
+label:
+  out(x);
+  goto label;
+}

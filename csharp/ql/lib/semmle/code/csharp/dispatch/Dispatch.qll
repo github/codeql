@@ -508,7 +508,7 @@ private module Internal {
     override RuntimeCallable getADynamicTarget() {
       result = getAViableInherited()
       or
-      result = getAViableOverrider() and strictcount(getAViableOverrider()) < 1000
+      result = getAViableOverrider()
       or
       // Simple case: target method cannot be overridden
       result = getAStaticTarget() and

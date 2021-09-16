@@ -469,3 +469,5 @@
 | ViableCallable.cs:455:9:455:30 | call to method M2<T> | C17.M2<T>(Func<T>) |
 | ViableCallable.cs:461:9:461:30 | call to method M2<T> | C16<T,System.Int32>.M2<T>(Func<T>) |
 | ViableCallable.cs:461:9:461:30 | call to method M2<T> | C17.M2<T>(Func<T>) |
+| ViableCallable.cs:478:9:478:14 | call to method M1 | C18.M1() |
+| ViableCallable.cs:481:9:481:14 | call to method M2 | I2.M2() |

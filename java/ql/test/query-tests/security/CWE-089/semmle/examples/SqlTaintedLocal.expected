@@ -4,9 +4,13 @@ edges
 | Test.java:29:30:29:42 | args : String[] | Test.java:36:47:36:52 | query1 |
 | Test.java:29:30:29:42 | args : String[] | Test.java:42:57:42:62 | query2 |
 | Test.java:29:30:29:42 | args : String[] | Test.java:50:62:50:67 | query3 |
-| Test.java:29:30:29:42 | args : String[] | Test.java:62:47:62:61 | querySbToString |
+| Test.java:29:30:29:42 | args : String[] | Test.java:58:19:58:26 | category : String |
 | Test.java:29:30:29:42 | args : String[] | Test.java:70:40:70:44 | query |
 | Test.java:29:30:29:42 | args : String[] | Test.java:78:46:78:50 | query |
+| Test.java:58:4:58:10 | querySb [post update] : StringBuilder | Test.java:60:29:60:35 | querySb : StringBuilder |
+| Test.java:58:19:58:26 | category : String | Test.java:58:4:58:10 | querySb [post update] : StringBuilder |
+| Test.java:60:29:60:35 | querySb : StringBuilder | Test.java:60:29:60:46 | toString(...) : String |
+| Test.java:60:29:60:46 | toString(...) : String | Test.java:62:47:62:61 | querySbToString |
 | Test.java:183:33:183:45 | args : String[] | Test.java:209:47:209:68 | queryWithUserTableName |
 | Test.java:213:26:213:38 | args : String[] | Test.java:214:11:214:14 | args : String[] |
 | Test.java:213:26:213:38 | args : String[] | Test.java:218:14:218:17 | args : String[] |
@@ -20,6 +24,10 @@ nodes
 | Test.java:36:47:36:52 | query1 | semmle.label | query1 |
 | Test.java:42:57:42:62 | query2 | semmle.label | query2 |
 | Test.java:50:62:50:67 | query3 | semmle.label | query3 |
+| Test.java:58:4:58:10 | querySb [post update] : StringBuilder | semmle.label | querySb [post update] : StringBuilder |
+| Test.java:58:19:58:26 | category : String | semmle.label | category : String |
+| Test.java:60:29:60:35 | querySb : StringBuilder | semmle.label | querySb : StringBuilder |
+| Test.java:60:29:60:46 | toString(...) : String | semmle.label | toString(...) : String |
 | Test.java:62:47:62:61 | querySbToString | semmle.label | querySbToString |
 | Test.java:70:40:70:44 | query | semmle.label | query |
 | Test.java:78:46:78:50 | query | semmle.label | query |

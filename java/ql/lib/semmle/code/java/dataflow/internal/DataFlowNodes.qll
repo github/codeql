@@ -326,12 +326,14 @@ module Private {
      * The instance argument is considered to have index `-1`.
      */
     predicate argumentOf(DataFlowCall call, int pos) {
-      exists(Argument arg | this.asExpr() = arg | call = arg.getCall() and pos = arg.getPosition())
+      exists(Argument arg | this.asExpr() = arg |
+        call.asCall() = arg.getCall() and pos = arg.getPosition()
+      )
       or
-      call = this.(ImplicitVarargsArray).getCall() and
-      pos = call.getCallee().getNumberOfParameters() - 1
+      call.asCall() = this.(ImplicitVarargsArray).getCall() and
+      pos = call.asCall().getCallee().getNumberOfParameters() - 1
       or
-      pos = -1 and this = getInstanceArgument(call)
+      pos = -1 and this = getInstanceArgument(call.asCall())
       or
       this.(SummaryNode).isArgumentOf(call, pos)
     }
@@ -361,7 +363,7 @@ module Private {
 
     /** Gets the underlying call. */
     DataFlowCall getCall() {
-      result = this.asExpr()
+      result.asCall() = this.asExpr()
       or
       this.(SummaryNode).isOut(result)
     }
