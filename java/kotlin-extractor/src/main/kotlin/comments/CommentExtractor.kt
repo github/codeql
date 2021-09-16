@@ -88,15 +88,7 @@ class CommentExtractor(private val fileExtractor: KotlinFileExtractor) {
                     file.accept(IrVisitorLookup(ownerPsi, file), owners)
 
                     for (ownerIr in owners) {
-                        val label = fileExtractor.getLabel(ownerIr)
-                        if (label == null) {
-                            logger.warn(Severity.Warn, "Couldn't get label for element: $ownerIr")
-                            continue
-                        }
-                        if (label == "*") {
-                            logger.info("Skipping fresh entity label for element: $ownerIr")
-                            continue
-                        }
+                        val label = fileExtractor.getLabel(ownerIr) ?: continue
                         val existingLabel = tw.getExistingLabelFor<DbTop>(label)
                         if (existingLabel == null) {
                             logger.warn(Severity.Warn, "Couldn't get existing label for $label")

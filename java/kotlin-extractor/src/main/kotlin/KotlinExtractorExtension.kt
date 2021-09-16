@@ -256,6 +256,8 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
         }
     }
 
+
+
     fun getLabel(element: IrElement) : String? {
         when (element) {
             is IrFile -> return "@\"${element.path};sourcefile\"" // todo: remove copy-pasted code
@@ -266,13 +268,14 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
             is IrProperty -> return getPropertyLabel(element)
 
             // Fresh entities:
-            is IrBody -> return "*"
-            is IrExpression -> return "*"
+            is IrBody -> return null
+            is IrExpression -> return null
 
-            // todo:
-            is IrField -> return null
             // todo add others:
-            else -> return null
+            else -> {
+                logger.warnElement(Severity.ErrorSevere, "Unhandled element type: ${element::class}", element)
+                return null
+            }
         }
     }
 
