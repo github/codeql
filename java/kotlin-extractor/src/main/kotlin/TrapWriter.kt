@@ -44,7 +44,7 @@ open class TrapWriter (val lm: TrapLabelManager, val bw: BufferedWriter) {
     protected val unknownFileId: Label<DbFile> by lazy {
         val unknownFileLabel = "@\";sourcefile\""
         getLabelFor(unknownFileLabel, {
-            writeFiles(it, "", "", "", 0)
+            writeFiles(it, "")
         })
     }
 
@@ -69,11 +69,8 @@ class FileTrapWriter (
     val fileId = {
         val filePath = irFile.path
         val fileLabel = "@\"$filePath;sourcefile\""
-        val file = File(filePath)
-        val basename = file.nameWithoutExtension
-        val extension = file.extension
         val id: Label<DbFile> = getLabelFor(fileLabel)
-        writeFiles(id, filePath, basename, extension, 0)
+        writeFiles(id, filePath)
         id
     }()
 
