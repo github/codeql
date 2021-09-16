@@ -59,3 +59,8 @@ class Location extends @location {
     this.getStartLine() = other.getStartLine() and this.getStartColumn() < other.getStartColumn()
   }
 }
+
+/** An entity representing an empty location. */
+class EmptyLocation extends Location {
+  EmptyLocation() { this.hasLocationInfo("", 0, 0, 0, 0) }
+}
