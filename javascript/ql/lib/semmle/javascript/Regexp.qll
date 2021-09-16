@@ -258,8 +258,8 @@ class RegExpConstant extends RegExpTerm, @regexp_constant {
 class RegExpCharEscape extends RegExpEscape, RegExpConstant, @regexp_char_escape {
   override predicate isCharacter() {
     not (
-      // unencodable characters are represented as '?' in the database
-      getValue() = "?" and
+      // unencodable characters are represented as '?' or \uFFFD in the database
+      getValue() = ["?", 65533.toUnicode()] and
       exists(string s | s = toString().toLowerCase() |
         // only Unicode escapes give rise to unencodable characters
         s.matches("\\\\u%") and

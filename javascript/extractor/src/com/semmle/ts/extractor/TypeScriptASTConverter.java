@@ -82,6 +82,7 @@ import com.semmle.js.ast.SequenceExpression;
 import com.semmle.js.ast.SourceLocation;
 import com.semmle.js.ast.SpreadElement;
 import com.semmle.js.ast.Statement;
+import com.semmle.js.ast.StaticInitializer;
 import com.semmle.js.ast.Super;
 import com.semmle.js.ast.SwitchCase;
 import com.semmle.js.ast.SwitchStatement;
@@ -632,6 +633,8 @@ public class TypeScriptASTConverter {
         return convertWithStatement(node, loc);
       case "YieldExpression":
         return convertYieldExpression(node, loc);
+      case "ClassStaticBlockDeclaration":
+        return convertStaticInitializerBlock(node, loc);
       default:
         throw new ParseError(
             "Unsupported TypeScript syntax " + kind, getSourceLocation(node).getStart());
@@ -864,6 +867,11 @@ public class TypeScriptASTConverter {
       default:
         return new BinaryExpression(loc, operator, left, right);
     }
+  }
+
+  private Node convertStaticInitializerBlock(JsonObject node, SourceLocation loc) throws ParseError {
+    BlockStatement body = new BlockStatement(loc, convertChildren(node.get("body").getAsJsonObject(), "statements"));
+    return new StaticInitializer(loc, body);
   }
 
   private Node convertBlock(JsonObject node, SourceLocation loc) throws ParseError {

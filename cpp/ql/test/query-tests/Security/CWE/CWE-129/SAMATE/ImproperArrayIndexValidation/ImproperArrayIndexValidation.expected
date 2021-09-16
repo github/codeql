@@ -1,0 +1,1 @@
+| CWE122_Heap_Based_Buffer_Overflow__c_CWE129_fgets_01.c:52:20:52:23 | data | $@ flows to here and is used in an array indexing expression, potentially causing an invalid access. | CWE122_Heap_Based_Buffer_Overflow__c_CWE129_fgets_01.c:30:19:30:29 | inputBuffer | User-provided value |

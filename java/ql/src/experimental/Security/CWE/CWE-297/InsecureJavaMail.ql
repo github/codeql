@@ -8,7 +8,7 @@
  * @precision medium
  * @id java/insecure-smtp-ssl
  * @tags security
- *       external/cwe-297
+ *       external/cwe/cwe-297
  */
 
 import java
