@@ -916,7 +916,7 @@ javadocText(
 @locatable = @file | @classorinterface | @fielddecl | @field | @constructor | @method | @param | @exception
              | @boundedtype | @typebound | @array | @primitive
              | @import | @stmt | @expr | @whenbranch | @localvar | @javadoc | @javadocTag | @javadocText
-             | @xmllocatable;
+             | @xmllocatable | @ktcomment;
 
 @top = @element | @locatable | @folder;
 
@@ -1019,3 +1019,31 @@ configLocations(
 );
 
 @configLocatable = @config | @configName | @configValue;
+
+ktComments(
+  unique int id: @ktcomment,
+  int kind: int ref,
+  string text : string ref
+)
+
+ktCommentSections(
+  unique int id: @ktcommentsection,
+  int comment: @ktcomment ref,
+  string content : string ref
+)
+
+ktCommentSectionNames(
+  unique int id: @ktcommentsection ref,
+  string name : string ref
+)
+
+ktCommentSectionSubjectNames(
+  unique int id: @ktcommentsection ref,
+  string subjectname : string ref
+)
+
+#keyset[id, owner]
+ktCommentOwner(
+  int id: @ktcomment ref,
+  int owner: @top ref
+)

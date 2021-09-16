@@ -152,9 +152,6 @@ fun <T> fakeLabel(): Label<T> {
 }
 
 class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val file: IrFile) {
-
-    private val commentExtractor: CommentExtractor = CommentExtractor(logger, tw, file, this)
-
     val fileClass by lazy {
         extractFileClass(file)
     }
@@ -164,9 +161,8 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
         val pkgId = extractPackage(pkg)
         tw.writeCupackage(id, pkgId)
         file.declarations.map { extractDeclaration(it, Optional.empty()) }
-        commentExtractor.extract()
+        CommentExtractor(this).extract()
     }
-
 
   fun extractFileClass(f: IrFile): Label<out DbClass> {
       val fileName = f.fileEntry.name
