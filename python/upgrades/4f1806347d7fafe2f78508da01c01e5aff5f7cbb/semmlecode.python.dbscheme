@@ -120,7 +120,6 @@ svnchurn(
         Python dbscheme
 ****************************/
 
-/* fromSource is ignored */
 files(unique int id: @file,
       varchar(900) name: string ref);
 
