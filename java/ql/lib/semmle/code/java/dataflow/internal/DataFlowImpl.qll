@@ -3690,8 +3690,8 @@ private module Subpaths {
    */
   predicate subpaths(PathNode arg, PathNodeImpl par, PathNodeMid ret, PathNodeMid out) {
     exists(ParamNodeEx p, NodeEx o, AccessPath apout |
-      arg.getASuccessor() = par and
-      arg.getASuccessor() = out and
+      pragma[only_bind_into](arg).getASuccessor() = par and
+      pragma[only_bind_into](arg).getASuccessor() = out and
       subpaths03(arg, p, ret, o, apout) and
       par.getNodeEx() = p and
       out.getNodeEx() = o and
