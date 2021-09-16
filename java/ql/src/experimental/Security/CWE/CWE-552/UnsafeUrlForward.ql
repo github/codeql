@@ -1,6 +1,6 @@
 /**
  * @name Unsafe url forward from remote source
- * @description URL forward based on unvalidated user-input 
+ * @description URL forward based on unvalidated user-input
  *              may cause file information disclosure.
  * @kind path-problem
  * @problem.severity error
@@ -18,7 +18,16 @@ import DataFlow::PathGraph
 class UnsafeUrlForwardFlowConfig extends TaintTracking::Configuration {
   UnsafeUrlForwardFlowConfig() { this = "UnsafeUrlForwardFlowConfig" }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  override predicate isSource(DataFlow::Node source) {
+    source instanceof RemoteFlowSource and
+    not exists(MethodAccess ma |
+      ma.getMethod().getName() in ["getRequestURI", "getRequestURL", "getPathInfo"] and
+      ma.getMethod()
+          .getDeclaringType()
+          .getASupertype*()
+          .hasQualifiedName("javax.servlet.http", "HttpServletRequest")
+    )
+  }
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof UnsafeUrlForwardSink }
 
@@ -30,10 +39,23 @@ class UnsafeUrlForwardFlowConfig extends TaintTracking::Configuration {
     exists(AddExpr ae |
       ae.getRightOperand() = node.asExpr() and
       (
-        not ae.getLeftOperand().(CompileTimeConstantExpr).getStringValue().matches("/WEB-INF/%")
-        and
+        not ae.getLeftOperand().(CompileTimeConstantExpr).getStringValue().matches("/WEB-INF/%") and
         not ae.getLeftOperand().(CompileTimeConstantExpr).getStringValue() = "forward:"
       )
+    )
+    or
+    exists(MethodAccess ma, int i |
+      ma.getMethod().hasName("format") and
+      ma.getMethod().getDeclaringType() instanceof TypeString and
+      ma.getArgument(0).(CompileTimeConstantExpr).getStringValue() = "redirect:" and
+      ma.getArgument(i) = node.asExpr() and
+      i != 0
+    )
+    or
+    exists(StringBuilderAppendCall ma1, StringBuilderAppendCall ma2 |
+      DataFlow2::localExprFlow(ma1.getQualifier(), ma2.getQualifier()) and
+      ma1.getArgument(0).(CompileTimeConstantExpr).getStringValue() = "redirect:" and
+      ma2.getArgument(0) = node.asExpr()
     )
   }
 }

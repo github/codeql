@@ -3,6 +3,14 @@ import DataFlow
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.frameworks.Servlets
 
+/** A call to `StringBuilder.append` method. */
+class StringBuilderAppendCall extends MethodAccess {
+  StringBuilderAppendCall() {
+    this.getMethod().hasName("append") and
+    this.getMethod().getDeclaringType() instanceof StringBuildingType
+  }
+}
+
 /**
  * A concatenate expression using the string `forward:` on the left.
  *
@@ -19,10 +27,8 @@ class ForwardBuilderExpr extends AddExpr {
  *
  * E.g: `StringBuilder.append("forward:")`
  */
-class ForwardAppendCall extends MethodAccess {
+class ForwardAppendCall extends StringBuilderAppendCall {
   ForwardAppendCall() {
-    this.getMethod().hasName("append") and
-    this.getMethod().getDeclaringType() instanceof StringBuildingType and
     this.getArgument(0).(CompileTimeConstantExpr).getStringValue() = "forward:"
   }
 }
