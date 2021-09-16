@@ -129,57 +129,74 @@ fn main() -> std::io::Result<()> {
         node_types::read_node_types_str("erb", tree_sitter_embedded_template::NODE_TYPES)?;
     let lines: std::io::Result<Vec<String>> = std::io::BufReader::new(file_list).lines().collect();
     let lines = lines?;
-    lines.par_iter().try_for_each(|line| {
-        let path = PathBuf::from(line).canonicalize()?;
-        let trap_file = path_for(&trap_dir, &path, trap_compression.extension());
-        let src_archive_file = path_for(&src_archive_dir, &path, "");
-        let mut source = std::fs::read(&path)?;
-        let code_ranges;
-        let mut trap_writer = extractor::new_trap_writer();
-        if path.extension().map_or(false, |x| x == "erb") {
-            tracing::info!("scanning: {}", path.display());
+    lines
+        .par_iter()
+        .try_for_each(|line| {
+            let path = PathBuf::from(line).canonicalize()?;
+            let src_archive_file = path_for(&src_archive_dir, &path, "");
+            let mut source = std::fs::read(&path)?;
+            let code_ranges;
+            let mut trap_writer = extractor::new_trap_writer();
+            if path.extension().map_or(false, |x| x == "erb") {
+                tracing::info!("scanning: {}", path.display());
+                extractor::extract(
+                    erb,
+                    "erb",
+                    &erb_schema,
+                    &mut trap_writer,
+                    &path,
+                    &source,
+                    &[],
+                )?;
+
+                let (ranges, line_breaks) = scan_erb(erb, &source);
+                for i in line_breaks {
+                    if i < source.len() {
+                        source[i] = b'\n';
+                    }
+                }
+                code_ranges = ranges;
+            } else {
+                code_ranges = vec![];
+            }
             extractor::extract(
-                erb,
-                "erb",
-                &erb_schema,
+                language,
+                "ruby",
+                &schema,
                 &mut trap_writer,
                 &path,
                 &source,
-                &[],
+                &code_ranges,
             )?;
+            std::fs::create_dir_all(&src_archive_file.parent().unwrap())?;
+            std::fs::copy(&path, &src_archive_file)?;
+            write_trap(&trap_dir, path, trap_writer, &trap_compression)
+        })
+        .expect("failed to extract files");
 
-            let (ranges, line_breaks) = scan_erb(erb, &source);
-            for i in line_breaks {
-                if i < source.len() {
-                    source[i] = b'\n';
-                }
-            }
-            code_ranges = ranges;
-        } else {
-            code_ranges = vec![];
+    let path = PathBuf::from("extras");
+    let mut trap_writer = extractor::new_trap_writer();
+    &trap_writer.populate_empty_location();
+    write_trap(&trap_dir, path, trap_writer, &trap_compression)
+}
+
+fn write_trap(
+    trap_dir: &PathBuf,
+    path: PathBuf,
+    trap_writer: extractor::TrapWriter,
+    trap_compression: &TrapCompression,
+) -> std::io::Result<()> {
+    let trap_file = path_for(&trap_dir, &path, trap_compression.extension());
+    std::fs::create_dir_all(&trap_file.parent().unwrap())?;
+    let trap_file = std::fs::File::create(&trap_file)?;
+    let mut trap_file = BufWriter::new(trap_file);
+    match trap_compression {
+        TrapCompression::None => trap_writer.output(&mut trap_file),
+        TrapCompression::Gzip => {
+            let mut compressed_writer = GzEncoder::new(trap_file, flate2::Compression::fast());
+            trap_writer.output(&mut compressed_writer)
         }
-        extractor::extract(
-            language,
-            "ruby",
-            &schema,
-            &mut trap_writer,
-            &path,
-            &source,
-            &code_ranges,
-        )?;
-        std::fs::create_dir_all(&src_archive_file.parent().unwrap())?;
-        std::fs::copy(&path, &src_archive_file)?;
-        std::fs::create_dir_all(&trap_file.parent().unwrap())?;
-        let trap_file = std::fs::File::create(&trap_file)?;
-        let mut trap_file = BufWriter::new(trap_file);
-        match trap_compression {
-            TrapCompression::None => trap_writer.output(&mut trap_file),
-            TrapCompression::Gzip => {
-                let mut compressed_writer = GzEncoder::new(trap_file, flate2::Compression::fast());
-                trap_writer.output(&mut compressed_writer)
-            }
-        }
-    })
+    }
 }
 
 fn scan_erb(erb: Language, source: &std::vec::Vec<u8>) -> (Vec<Range>, Vec<usize>) {

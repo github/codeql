@@ -75,6 +75,22 @@ impl TrapWriter {
         file_label
     }
 
+    fn populate_empty_file(&mut self) -> Label {
+        let (file_label, fresh) = self.global_id("empty;sourcefile");
+        if fresh {
+            self.add_tuple(
+                "files",
+                vec![Arg::Label(file_label), Arg::String("".to_string())],
+            );
+        }
+        file_label
+    }
+
+    pub fn populate_empty_location(&mut self) {
+        let file_label = self.populate_empty_file();
+        self.location(file_label, 0, 0, 0, 0);
+    }
+
     fn populate_parent_folders(&mut self, child_label: Label, path: Option<&Path>) {
         let mut path = path;
         let mut child_label = child_label;
