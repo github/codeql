@@ -47,7 +47,7 @@ import sys
 import os
 
 def setup(sphinx):
-    sys.path.insert(0, os.path.abspath('docs/codeql'))
+    sys.path.insert(0, os.path.join(os.path.dirname( __file__ ), '..'))
     from qllexer import QLLexer
     sphinx.add_lexer("ql", QLLexer())
 

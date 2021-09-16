@@ -16,7 +16,7 @@ For this example you should download:
 
 .. note::
 
-   For the examples in this presentation, we will be analyzing `ChakraCore <https://github.com/microsoft/ChakraCore>`__.
+   For the examples in this presentation, we will be analyzing `ChakraCore <https://github.com/Chakra-Core/ChakraCore/>`__.
 
    You can query the project in `the query console <https://lgtm.com/query/project:2034240708/lang:cpp/>`__ on LGTM.com.
 
@@ -229,4 +229,4 @@ The final query
 .. literalinclude:: ../query-examples/cpp/bad-overflow-guard-3.ql
    :language: ql
 
-This query finds a single result in our historic database, which was `a genuine bug in ChakraCore <https://github.com/Microsoft/ChakraCore/commit/2500e1cdc12cb35af73d5c8c9b85656aba6bab4d>`__.
+This query finds a single result in our historic database, which was `a genuine bug in ChakraCore <https://github.com/Chakra-Core/ChakraCore//commit/2500e1cdc12cb35af73d5c8c9b85656aba6bab4d>`__.

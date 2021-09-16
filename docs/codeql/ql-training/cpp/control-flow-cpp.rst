@@ -18,7 +18,7 @@ For this example you should download:
 
 .. note::
 
-   For the examples in this presentation, we will be analyzing `ChakraCore <https://github.com/microsoft/ChakraCore>`__.
+   For the examples in this presentation, we will be analyzing `ChakraCore <https://github.com/Chakra-Core/ChakraCore/>`__.
 
    You can query the project in `the query console <https://lgtm.com/query/project:2034240708/lang:cpp/>`__ on LGTM.com.
 
