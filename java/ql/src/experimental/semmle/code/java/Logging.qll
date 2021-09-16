@@ -30,12 +30,7 @@ class LoggingCall extends MethodAccess {
     or
     exists(RefType t, Method m | t.hasQualifiedName("android.util", "Log") |
       (
-        m.hasName("d") or
-        m.hasName("e") or
-        m.hasName("i") or
-        m.hasName("v") or
-        m.hasName("w") or
-        m.hasName("wtf")
+        m.hasName(["d", "e", "i", "v", "w", "wtf"])
       ) and
       (
         m.getDeclaringType().getASourceSupertype*() = t or
