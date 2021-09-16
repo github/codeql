@@ -1,0 +1,18 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Finding for function calls for which wrapper functions exist.</p>
+
+</overview>
+
+<example>
+<p>The following example demonstrates fallacious and fixed methods of using wrapper functions.</p>
+<sample src="FindWrapperFunctions.cpp" />
+
+</example>
+<references>
+
+</references>
+</qhelp>
