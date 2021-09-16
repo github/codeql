@@ -452,50 +452,6 @@ fn create_locations_default_table<'a>() -> dbscheme::Entry<'a> {
     })
 }
 
-fn create_sourceline_union<'a>() -> dbscheme::Entry<'a> {
-    dbscheme::Entry::Union(dbscheme::Union {
-        name: "sourceline",
-        members: vec!["file"].into_iter().collect(),
-    })
-}
-
-fn create_numlines_table<'a>() -> dbscheme::Entry<'a> {
-    dbscheme::Entry::Table(dbscheme::Table {
-        name: "numlines",
-        columns: vec![
-            dbscheme::Column {
-                unique: false,
-                db_type: dbscheme::DbColumnType::Int,
-                name: "element_id",
-                ql_type: ql::Type::AtType("sourceline"),
-                ql_type_is_ref: true,
-            },
-            dbscheme::Column {
-                unique: false,
-                db_type: dbscheme::DbColumnType::Int,
-                name: "num_lines",
-                ql_type: ql::Type::Int,
-                ql_type_is_ref: true,
-            },
-            dbscheme::Column {
-                unique: false,
-                db_type: dbscheme::DbColumnType::Int,
-                name: "num_code",
-                ql_type: ql::Type::Int,
-                ql_type_is_ref: true,
-            },
-            dbscheme::Column {
-                unique: false,
-                db_type: dbscheme::DbColumnType::Int,
-                name: "num_comment",
-                ql_type: ql::Type::Int,
-                ql_type_is_ref: true,
-            },
-        ],
-        keysets: None,
-    })
-}
-
 fn create_container_union<'a>() -> dbscheme::Entry<'a> {
     dbscheme::Entry::Union(dbscheme::Union {
         name: "container",
@@ -649,8 +605,6 @@ fn main() -> std::io::Result<()> {
         &[
             create_location_union(),
             create_locations_default_table(),
-            create_sourceline_union(),
-            create_numlines_table(),
             create_files_table(),
             create_folders_table(),
             create_container_union(),

@@ -12,15 +12,6 @@ locations_default(
   int end_column: int ref
 );
 
-@sourceline = @file
-
-numlines(
-  int element_id: @sourceline ref,
-  int num_lines: int ref,
-  int num_code: int ref,
-  int num_comment: int ref
-);
-
 files(
   unique int id: @file,
   string name: string ref
