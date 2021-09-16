@@ -129,12 +129,41 @@ class ConditionalBypassTest {
 		}
 	}
 
+	public static void test8(String user, String password) {
+		Cookie adminCookie = getCookies()[0];
+		{
+			// BAD: login may not happen
+			if (adminCookie.getValue() == "false") // $ hasConditionalBypassTest
+				authorize(user, password);
+			else {
+				// do something else
+				doIt();
+			}
+		}
+		{
+			// obtainAuthor is not sensitive, so this is safe
+			if (adminCookie.getValue() == "false")
+				obtainAuthor();
+			else {
+				doIt();
+			}
+		}
+	}
+
 	public static void login(String user, String password) {
 		// login
 	}
 
 	public static void reCheckAuth(String user, String password) {
 		// login
+	}
+
+	public static void authorize(String user, String password) {
+		// login
+	}
+
+	public static String obtainAuthor() {
+		return "";
 	}
 
 	public static Cookie[] getCookies() {
