@@ -11,11 +11,15 @@ edges
 | Nokogiri.rb:3:15:3:20 | call to params :  | Nokogiri.rb:6:26:6:32 | content |
 | Nokogiri.rb:3:15:3:20 | call to params :  | Nokogiri.rb:7:26:7:32 | content |
 | Nokogiri.rb:3:15:3:20 | call to params :  | Nokogiri.rb:8:26:8:32 | content |
+| Nokogiri.rb:3:15:3:20 | call to params :  | Nokogiri.rb:9:26:9:32 | content |
 | Nokogiri.rb:3:15:3:20 | call to params :  | Nokogiri.rb:11:26:11:32 | content |
 | Nokogiri.rb:3:15:3:20 | call to params :  | Nokogiri.rb:12:26:12:32 | content |
-| Nokogiri.rb:3:15:3:20 | call to params :  | Nokogiri.rb:14:26:14:32 | content |
+| Nokogiri.rb:3:15:3:20 | call to params :  | Nokogiri.rb:15:26:15:32 | content |
 | Nokogiri.rb:3:15:3:20 | call to params :  | Nokogiri.rb:16:26:16:32 | content |
+| Nokogiri.rb:3:15:3:20 | call to params :  | Nokogiri.rb:18:26:18:32 | content |
 | Nokogiri.rb:3:15:3:20 | call to params :  | Nokogiri.rb:19:26:19:32 | content |
+| Nokogiri.rb:3:15:3:20 | call to params :  | Nokogiri.rb:22:26:22:32 | content |
+| Nokogiri.rb:3:15:3:20 | call to params :  | Nokogiri.rb:25:26:25:32 | content |
 nodes
 | LibXmlRuby.rb:3:15:3:20 | call to params :  | semmle.label | call to params :  |
 | LibXmlRuby.rb:4:34:4:40 | content | semmle.label | content |
@@ -31,11 +35,15 @@ nodes
 | Nokogiri.rb:6:26:6:32 | content | semmle.label | content |
 | Nokogiri.rb:7:26:7:32 | content | semmle.label | content |
 | Nokogiri.rb:8:26:8:32 | content | semmle.label | content |
+| Nokogiri.rb:9:26:9:32 | content | semmle.label | content |
 | Nokogiri.rb:11:26:11:32 | content | semmle.label | content |
 | Nokogiri.rb:12:26:12:32 | content | semmle.label | content |
-| Nokogiri.rb:14:26:14:32 | content | semmle.label | content |
+| Nokogiri.rb:15:26:15:32 | content | semmle.label | content |
 | Nokogiri.rb:16:26:16:32 | content | semmle.label | content |
+| Nokogiri.rb:18:26:18:32 | content | semmle.label | content |
 | Nokogiri.rb:19:26:19:32 | content | semmle.label | content |
+| Nokogiri.rb:22:26:22:32 | content | semmle.label | content |
+| Nokogiri.rb:25:26:25:32 | content | semmle.label | content |
 subpaths
 #select
 | LibXmlRuby.rb:4:34:4:40 | content | LibXmlRuby.rb:3:15:3:20 | call to params :  | LibXmlRuby.rb:4:34:4:40 | content | Unsafe parsing of XML file from $@. | LibXmlRuby.rb:3:15:3:20 | call to params | user input |
@@ -50,8 +58,12 @@ subpaths
 | Nokogiri.rb:6:26:6:32 | content | Nokogiri.rb:3:15:3:20 | call to params :  | Nokogiri.rb:6:26:6:32 | content | Unsafe parsing of XML file from $@. | Nokogiri.rb:3:15:3:20 | call to params | user input |
 | Nokogiri.rb:7:26:7:32 | content | Nokogiri.rb:3:15:3:20 | call to params :  | Nokogiri.rb:7:26:7:32 | content | Unsafe parsing of XML file from $@. | Nokogiri.rb:3:15:3:20 | call to params | user input |
 | Nokogiri.rb:8:26:8:32 | content | Nokogiri.rb:3:15:3:20 | call to params :  | Nokogiri.rb:8:26:8:32 | content | Unsafe parsing of XML file from $@. | Nokogiri.rb:3:15:3:20 | call to params | user input |
+| Nokogiri.rb:9:26:9:32 | content | Nokogiri.rb:3:15:3:20 | call to params :  | Nokogiri.rb:9:26:9:32 | content | Unsafe parsing of XML file from $@. | Nokogiri.rb:3:15:3:20 | call to params | user input |
 | Nokogiri.rb:11:26:11:32 | content | Nokogiri.rb:3:15:3:20 | call to params :  | Nokogiri.rb:11:26:11:32 | content | Unsafe parsing of XML file from $@. | Nokogiri.rb:3:15:3:20 | call to params | user input |
 | Nokogiri.rb:12:26:12:32 | content | Nokogiri.rb:3:15:3:20 | call to params :  | Nokogiri.rb:12:26:12:32 | content | Unsafe parsing of XML file from $@. | Nokogiri.rb:3:15:3:20 | call to params | user input |
-| Nokogiri.rb:14:26:14:32 | content | Nokogiri.rb:3:15:3:20 | call to params :  | Nokogiri.rb:14:26:14:32 | content | Unsafe parsing of XML file from $@. | Nokogiri.rb:3:15:3:20 | call to params | user input |
+| Nokogiri.rb:15:26:15:32 | content | Nokogiri.rb:3:15:3:20 | call to params :  | Nokogiri.rb:15:26:15:32 | content | Unsafe parsing of XML file from $@. | Nokogiri.rb:3:15:3:20 | call to params | user input |
 | Nokogiri.rb:16:26:16:32 | content | Nokogiri.rb:3:15:3:20 | call to params :  | Nokogiri.rb:16:26:16:32 | content | Unsafe parsing of XML file from $@. | Nokogiri.rb:3:15:3:20 | call to params | user input |
+| Nokogiri.rb:18:26:18:32 | content | Nokogiri.rb:3:15:3:20 | call to params :  | Nokogiri.rb:18:26:18:32 | content | Unsafe parsing of XML file from $@. | Nokogiri.rb:3:15:3:20 | call to params | user input |
 | Nokogiri.rb:19:26:19:32 | content | Nokogiri.rb:3:15:3:20 | call to params :  | Nokogiri.rb:19:26:19:32 | content | Unsafe parsing of XML file from $@. | Nokogiri.rb:3:15:3:20 | call to params | user input |
+| Nokogiri.rb:22:26:22:32 | content | Nokogiri.rb:3:15:3:20 | call to params :  | Nokogiri.rb:22:26:22:32 | content | Unsafe parsing of XML file from $@. | Nokogiri.rb:3:15:3:20 | call to params | user input |
+| Nokogiri.rb:25:26:25:32 | content | Nokogiri.rb:3:15:3:20 | call to params :  | Nokogiri.rb:25:26:25:32 | content | Unsafe parsing of XML file from $@. | Nokogiri.rb:3:15:3:20 | call to params | user input |

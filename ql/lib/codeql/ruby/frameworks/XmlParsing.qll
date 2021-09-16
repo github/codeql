@@ -22,7 +22,8 @@ private class NokogiriXmlParserCall extends XmlParserCall::Range, DataFlow::Call
   override DataFlow::Node getInput() { result = this.getArgument(0) }
 
   override predicate externalEntitiesEnabled() {
-    this.getArgument(3) = trackNoEnt()
+    this.getArgument(3) =
+      [trackEnableFeature(TNOENT()), trackEnableFeature(TDTDLOAD()), trackDisableFeature(TNONET())]
     or
     this.asExpr()
         .getExpr()
@@ -31,7 +32,7 @@ private class NokogiriXmlParserCall extends XmlParserCall::Range, DataFlow::Call
         .getAStmt()
         .getAChild*()
         .(MethodCall)
-        .getMethodName() = "noent"
+        .getMethodName() = ["noent", "nononet"]
   }
 }
 
@@ -49,41 +50,95 @@ private class LibXmlRubyXmlParserCall extends XmlParserCall::Range, DataFlow::Ca
     exists(Pair pair |
       pair = this.getArgument(1).asExpr().getExpr().(HashLiteral).getAKeyValuePair() and
       pair.getKey().(Literal).getValueText() = "options" and
-      trackNoEnt().asExpr().getExpr() = pair.getValue()
+      pair.getValue() =
+        [
+          trackEnableFeature(TNOENT()), trackEnableFeature(TDTDLOAD()),
+          trackDisableFeature(TNONET())
+        ].asExpr().getExpr()
     )
   }
 }
 
-private DataFlow::LocalSourceNode trackNoEnt(TypeTracker t) {
+private newtype TFeature =
+  TNOENT() or
+  TNONET() or
+  TDTDLOAD()
+
+class Feature extends TFeature {
+  abstract int getValue();
+
+  string toString() { result = getConstantName() }
+
+  abstract string getConstantName();
+}
+
+private class FeatureNOENT extends Feature, TNOENT {
+  override int getValue() { result = 2 }
+
+  override string getConstantName() { result = "NOENT" }
+}
+
+private class FeatureNONET extends Feature, TNONET {
+  override int getValue() { result = 2048 }
+
+  override string getConstantName() { result = "NONET" }
+}
+
+private class FeatureDTDLOAD extends Feature, TDTDLOAD {
+  override int getValue() { result = 4 }
+
+  override string getConstantName() { result = "DTDLOAD" }
+}
+
+private DataFlow::LocalSourceNode trackFeature(Feature f, boolean enable, TypeTracker t) {
   t.start() and
   (
-    result.asExpr().getExpr().(IntegerLiteral).getValue().bitAnd(2) = 2
+    result.asExpr().getExpr().(IntegerLiteral).getValue().bitAnd(f.getValue()) = f.getValue() and
+    enable = true
     or
+    enable = true and
     result =
       API::getTopLevelMember("Nokogiri")
           .getMember("XML")
           .getMember("ParseOptions")
-          .getMember("NOENT")
+          .getMember(f.getConstantName())
           .getAUse()
     or
+    enable = true and
     result =
       [API::getTopLevelMember("LibXML").getMember("XML"), API::getTopLevelMember("XML")]
           .getMember("Options")
-          .getMember("NOENT")
+          .getMember(f.getConstantName())
           .getAUse()
     or
-    result.asExpr().getExpr() instanceof BitwiseOrExpr and
-    result.asExpr().(CfgNodes::ExprNodes::OperationCfgNode).getAnOperand() = trackNoEnt().asExpr()
+    (
+      result.asExpr().getExpr() instanceof BitwiseOrExpr or
+      result.asExpr().getExpr() instanceof AssignBitwiseOrExpr or
+      result.asExpr().getExpr() instanceof BitwiseAndExpr or
+      result.asExpr().getExpr() instanceof AssignBitwiseAndExpr
+    ) and
+    result.asExpr().(CfgNodes::ExprNodes::OperationCfgNode).getAnOperand() =
+      trackFeature(f, enable).asExpr()
+    or
+    result.asExpr().getExpr() instanceof ComplementExpr and
+    result.asExpr().(CfgNodes::ExprNodes::OperationCfgNode).getAnOperand() =
+      trackFeature(f, enable.booleanNot()).asExpr()
     or
     result =
       API::getTopLevelMember("Nokogiri")
           .getMember("XML")
           .getMember("ParseOptions")
           .getAnInstantiation() and
-    result.asExpr().(CfgNodes::ExprNodes::CallCfgNode).getArgument(0) = trackNoEnt().asExpr()
+    result.asExpr().(CfgNodes::ExprNodes::CallCfgNode).getArgument(0) =
+      trackFeature(f, enable).asExpr()
     or
     exists(CfgNodes::ExprNodes::CallCfgNode call |
-      call.getExpr().(MethodCall).getMethodName() = "noent" and
+      enable = true and
+      call.getExpr().(MethodCall).getMethodName() = f.getConstantName().toLowerCase()
+      or
+      enable = false and
+      call.getExpr().(MethodCall).getMethodName() = "no" + f.getConstantName().toLowerCase()
+    |
       (
         result.asExpr() = call
         or
@@ -92,12 +147,18 @@ private DataFlow::LocalSourceNode trackNoEnt(TypeTracker t) {
     )
     or
     exists(CfgNodes::ExprNodes::CallCfgNode call |
-      trackNoEnt().asExpr() = call.getReceiver() and
+      trackFeature(f, enable).asExpr() = call.getReceiver() and
       result.asExpr() = call
     )
   )
   or
-  exists(TypeTracker t2 | result = trackNoEnt(t2).track(t2, t))
+  exists(TypeTracker t2 | result = trackFeature(f, enable, t2).track(t2, t))
 }
 
-private DataFlow::Node trackNoEnt() { trackNoEnt(TypeTracker::end()).flowsTo(result) }
+private DataFlow::Node trackFeature(Feature f, boolean enable) {
+  trackFeature(f, enable, TypeTracker::end()).flowsTo(result)
+}
+
+private DataFlow::Node trackEnableFeature(Feature f) { result = trackFeature(f, true) }
+
+private DataFlow::Node trackDisableFeature(Feature f) { result = trackFeature(f, false) }
