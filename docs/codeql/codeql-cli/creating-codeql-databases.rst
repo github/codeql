@@ -284,8 +284,6 @@ The following example shows how you could use indirect build tracing in an Azure
 
        # Initialize the CodeQL database.
        # In this example, the CodeQL CLI has been downloaded and placed on the PATH.
-       # If no language is specified, a GitHub Apps or personal access token must be passed through stdin.
-       # to autodetect the language.
        - task: CmdLine@1
           displayName: Initialize CodeQL database
          inputs:
