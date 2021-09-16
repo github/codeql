@@ -18,14 +18,30 @@ class LoggingCall extends MethodAccess {
       t.hasQualifiedName("org.scijava.log", "Logger") or
       t.hasQualifiedName("com.google.common.flogger", "LoggingApi") or
       t.hasQualifiedName("java.lang", "System$Logger") or
-      t.hasQualifiedName("java.util.logging", "Logger") or
-      t.hasQualifiedName("android.util", "Log")
+      t.hasQualifiedName("java.util.logging", "Logger")
     |
       (
         m.getDeclaringType().getASourceSupertype*() = t or
         m.getDeclaringType().extendsOrImplements*(t)
       ) and
       m.getReturnType() instanceof VoidType and
+      this = m.getAReference()
+    )
+    or
+    exists(RefType t, Method m | t.hasQualifiedName("android.util", "Log") |
+      (
+        m.hasName("d") or
+        m.hasName("e") or
+        m.hasName("i") or
+        m.hasName("v") or
+        m.hasName("w") or
+        m.hasName("wtf")
+      ) and
+      (
+        m.getDeclaringType().getASourceSupertype*() = t or
+        m.getDeclaringType().extendsOrImplements*(t)
+      ) and
+      m.getReturnType() instanceof IntegralType and
       this = m.getAReference()
     )
   }
