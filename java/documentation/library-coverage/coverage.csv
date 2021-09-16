@@ -1,6 +1,7 @@
 package,sink,source,summary,sink:bean-validation,sink:create-file,sink:groovy,sink:header-splitting,sink:information-leak,sink:jexl,sink:jndi-injection,sink:ldap,sink:mvel,sink:ognl-injection,sink:open-url,sink:set-hostname-verifier,sink:sql,sink:url-open-stream,sink:url-redirect,sink:xpath,sink:xss,source:remote,summary:taint,summary:value
 android.content,8,,4,,,,,,,,,,,,,8,,,,,,4,
 android.database,59,,30,,,,,,,,,,,,,59,,,,,,30,
+android.net,,,60,,,,,,,,,,,,,,,,,,,45,15
 android.util,,16,,,,,,,,,,,,,,,,,,,16,,
 android.webkit,3,2,,,,,,,,,,,,,,,,,,3,2,,
 com.esotericsoftware.kryo.io,,,1,,,,,,,,,,,,,,,,,,,1,
@@ -22,7 +23,7 @@ jakarta.ws.rs.container,,9,,,,,,,,,,,,,,,,,,,9,,
 jakarta.ws.rs.core,2,,149,,,,,,,,,,,,,,,2,,,,94,55
 java.beans,,,1,,,,,,,,,,,,,,,,,,,1,
 java.io,3,,27,,3,,,,,,,,,,,,,,,,,26,1
-java.lang,,,45,,,,,,,,,,,,,,,,,,,39,6
+java.lang,,,47,,,,,,,,,,,,,,,,,,,41,6
 java.net,10,3,7,,,,,,,,,,,10,,,,,,,3,7,
 java.nio,10,,4,,10,,,,,,,,,,,,,,,,,4,
 java.sql,7,,,,,,,,,,,,,,,7,,,,,,,
