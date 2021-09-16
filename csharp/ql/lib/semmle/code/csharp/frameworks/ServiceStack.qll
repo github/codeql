@@ -12,7 +12,7 @@ private import semmle.code.csharp.dataflow.ExternalFlow
 private class ServiceClass extends Class {
   ServiceClass() {
     this.getBaseClass+().hasQualifiedName("ServiceStack", "Service") or
-    this.getABaseInterface+().hasQualifiedName("ServiceStack", "IService")
+    this.getABaseType*().getABaseInterface().hasQualifiedName("ServiceStack", "IService")
   }
 
   /** Get a method that handles incoming requests */
@@ -26,7 +26,9 @@ private class ServiceClass extends Class {
 
 /** Top-level Request DTO types */
 private class RequestDTO extends Class {
-  RequestDTO() { this.getABaseInterface+().hasQualifiedName("ServiceStack", "IReturn") }
+  RequestDTO() {
+    this.getABaseType*().getABaseInterface().hasQualifiedName("ServiceStack", "IReturn")
+  }
 }
 
 /** Flow sources for the ServiceStack framework */
@@ -308,14 +310,7 @@ module XSS {
       exists(ServiceClass service, Method m, Expr e |
         service.getARequestMethod() = m and
         this.asExpr() = e and
-        (
-          exists(ReturnStmt r |
-            e = r.getExpr() and
-            r.getEnclosingCallable() = m
-          )
-          or
-          e = m.getExpressionBody()
-        ) and
+        m.canReturn(e) and
         (
           e.getType() instanceof StringType or
           e.getType().hasQualifiedName("ServiceStack", "HttpResult")
