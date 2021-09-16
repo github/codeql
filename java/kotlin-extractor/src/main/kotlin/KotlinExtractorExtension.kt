@@ -360,6 +360,9 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
             }
         }
         c.declarations.map { extractDeclaration(it, Optional.of(id)) }
+        if (c.thisReceiver != null) {
+            logger.warnElement(Severity.ErrorSevere, "'thisReceiver' is not extracted", c)
+        }
         return id
     }
 
@@ -445,6 +448,14 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
         }
         f.valueParameters.forEachIndexed { i, vp ->
             extractValueParameter(vp, id, i)
+        }
+
+        if (f.dispatchReceiverParameter != null) {
+            extractValueParameter(f.dispatchReceiverParameter!!, id, -1)
+        }
+
+        if (f.extensionReceiverParameter != null) {
+            extractValueParameter(f.extensionReceiverParameter!!, id, -1)
         }
     }
 
