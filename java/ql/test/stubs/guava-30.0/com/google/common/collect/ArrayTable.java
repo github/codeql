@@ -30,7 +30,7 @@ public class ArrayTable<R, C, V> extends AbstractTable<R, C, V> implements Seria
     public V put(R p0, C p1, V p2){ return null; }
     public V remove(Object p0, Object p1){ return null; }
     public V set(int p0, int p1, V p2){ return null; }
-    public V[] toArray(Class<V> p0){ return null; }
+    public V[][] toArray(Class<V> p0){ return null; }
     public boolean contains(Object p0, Object p1){ return false; }
     public boolean containsColumn(Object p0){ return false; }
     public boolean containsRow(Object p0){ return false; }
