@@ -326,63 +326,63 @@ module NetHttp {
     FunctionOutput outp;
 
     MethodModels() {
-      // signature: func (Header).Add(key string, value string)
+      // signature: func (Header) Add(key string, value string)
       hasQualifiedName("net/http", "Header", "Add") and
       (inp.isParameter(_) and outp.isReceiver())
       or
-      // signature: func (Header).Clone() Header
+      // signature: func (Header) Clone() Header
       hasQualifiedName("net/http", "Header", "Clone") and
       (inp.isReceiver() and outp.isResult())
       or
-      // signature: func (Header).Get(key string) string
+      // signature: func (Header) Get(key string) string
       hasQualifiedName("net/http", "Header", "Get") and
       (inp.isReceiver() and outp.isResult())
       or
-      // signature: func (Header).Set(key string, value string)
+      // signature: func (Header) Set(key string, value string)
       hasQualifiedName("net/http", "Header", "Set") and
       (inp.isParameter(_) and outp.isReceiver())
       or
-      // signature: func (Header).Values(key string) []string
+      // signature: func (Header) Values(key string) []string
       hasQualifiedName("net/http", "Header", "Values") and
       (inp.isReceiver() and outp.isResult())
       or
-      // signature: func (Header).Write(w io.Writer) error
+      // signature: func (Header) Write(w io.Writer) error
       hasQualifiedName("net/http", "Header", "Write") and
       (inp.isReceiver() and outp.isParameter(0))
       or
-      // signature: func (Header).WriteSubset(w io.Writer, exclude map[string]bool) error
+      // signature: func (Header) WriteSubset(w io.Writer, exclude map[string]bool) error
       hasQualifiedName("net/http", "Header", "WriteSubset") and
       (inp.isReceiver() and outp.isParameter(0))
       or
-      // signature: func (*Request).AddCookie(c *Cookie)
+      // signature: func (*Request) AddCookie(c *Cookie)
       hasQualifiedName("net/http", "Request", "AddCookie") and
       (inp.isParameter(0) and outp.isReceiver())
       or
-      // signature: func (*Request).Clone(ctx context.Context) *Request
+      // signature: func (*Request) Clone(ctx context.Context) *Request
       hasQualifiedName("net/http", "Request", "Clone") and
       (inp.isReceiver() and outp.isResult())
       or
-      // signature: func (*Request).Write(w io.Writer) error
+      // signature: func (*Request) Write(w io.Writer) error
       hasQualifiedName("net/http", "Request", "Write") and
       (inp.isReceiver() and outp.isParameter(0))
       or
-      // signature: func (*Request).WriteProxy(w io.Writer) error
+      // signature: func (*Request) WriteProxy(w io.Writer) error
       hasQualifiedName("net/http", "Request", "WriteProxy") and
       (inp.isReceiver() and outp.isParameter(0))
       or
-      // signature: func (*Response).Write(w io.Writer) error
+      // signature: func (*Response) Write(w io.Writer) error
       hasQualifiedName("net/http", "Response", "Write") and
       (inp.isReceiver() and outp.isParameter(0))
       or
-      // signature: func (*Transport).Clone() *Transport
+      // signature: func (*Transport) Clone() *Transport
       hasQualifiedName("net/http", "Transport", "Clone") and
       (inp.isReceiver() and outp.isResult())
       or
-      // signature: func (Hijacker).Hijack() (net.Conn, *bufio.ReadWriter, error)
+      // signature: func (Hijacker) Hijack() (net.Conn, *bufio.ReadWriter, error)
       implements("net/http", "Hijacker", "Hijack") and
       (inp.isReceiver() and outp.isResult([0, 1]))
       or
-      // signature: func (ResponseWriter).Write([]byte) (int, error)
+      // signature: func (ResponseWriter) Write([]byte) (int, error)
       implements("net/http", "ResponseWriter", "Write") and
       (inp.isParameter(0) and outp.isReceiver())
     }

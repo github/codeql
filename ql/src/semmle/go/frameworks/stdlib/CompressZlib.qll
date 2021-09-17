@@ -42,11 +42,11 @@ module CompressZlib {
     FunctionOutput outp;
 
     MethodModels() {
-      // signature: func (*Writer).Reset(w io.Writer)
+      // signature: func (*Writer) Reset(w io.Writer)
       hasQualifiedName("compress/zlib", "Writer", "Reset") and
       (inp.isReceiver() and outp.isParameter(0))
       or
-      // signature: func (Resetter).Reset(r io.Reader, dict []byte) error
+      // signature: func (Resetter) Reset(r io.Reader, dict []byte) error
       implements("compress/zlib", "Resetter", "Reset") and
       (inp.isParameter(0) and outp.isReceiver())
     }

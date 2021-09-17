@@ -1,3 +1,4 @@
+//go:build (amd64 || arm64 || arm64be || ppc64 || ppc64le || mips64 || mips64le || s390x || sparc64) && gc && go1.4
 // +build amd64 arm64 arm64be ppc64 ppc64le mips64 mips64le s390x sparc64
 // +build gc
 // +build go1.4

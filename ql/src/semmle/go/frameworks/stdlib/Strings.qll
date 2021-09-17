@@ -142,15 +142,15 @@ module Strings {
     FunctionOutput outp;
 
     MethodModels() {
-      // signature: func (*Reader).Reset(s string)
+      // signature: func (*Reader) Reset(s string)
       hasQualifiedName("strings", "Reader", "Reset") and
       (inp.isParameter(0) and outp.isReceiver())
       or
-      // signature: func (*Replacer).Replace(s string) string
+      // signature: func (*Replacer) Replace(s string) string
       hasQualifiedName("strings", "Replacer", "Replace") and
       (inp.isParameter(0) and outp.isResult())
       or
-      // signature: func (*Replacer).WriteString(w io.Writer, s string) (n int, err error)
+      // signature: func (*Replacer) WriteString(w io.Writer, s string) (n int, err error)
       hasQualifiedName("strings", "Replacer", "WriteString") and
       (inp.isParameter(1) and outp.isParameter(0))
     }

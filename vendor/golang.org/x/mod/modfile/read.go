@@ -194,12 +194,15 @@ func (x *FileSyntax) updateLine(line *Line, tokens ...string) {
 	line.Token = tokens
 }
 
-func (x *FileSyntax) removeLine(line *Line) {
+// markRemoved modifies line so that it (and its end-of-line comment, if any)
+// will be dropped by (*FileSyntax).Cleanup.
+func (line *Line) markRemoved() {
 	line.Token = nil
+	line.Comments.Suffix = nil
 }
 
 // Cleanup cleans up the file syntax x after any edit operations.
-// To avoid quadratic behavior, removeLine marks the line as dead
+// To avoid quadratic behavior, (*Line).markRemoved marks the line as dead
 // by setting line.Token = nil but does not remove it from the slice
 // in which it appears. After edits have all been indicated,
 // calling Cleanup cleans out the dead lines.
@@ -477,9 +480,17 @@ func (in *input) startToken() {
 
 // endToken marks the end of an input token.
 // It records the actual token string in tok.text.
+// A single trailing newline (LF or CRLF) will be removed from comment tokens.
 func (in *input) endToken(kind tokenKind) {
 	in.token.kind = kind
 	text := string(in.tokenStart[:len(in.tokenStart)-len(in.remaining)])
+	if kind.isComment() {
+		if strings.HasSuffix(text, "\r\n") {
+			text = text[:len(text)-2]
+		} else {
+			text = strings.TrimSuffix(text, "\n")
+		}
+	}
 	in.token.text = text
 	in.token.endPos = in.pos
 }

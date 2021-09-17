@@ -224,3 +224,33 @@ module Gorm {
     result = package(["github.com/jinzhu/gorm", "github.com/go-gorm/gorm", "gorm.io/gorm"], "")
   }
 }
+
+/**
+ * Provides classes for working with the [XORM](https://xorm.io/) package.
+ */
+module Xorm {
+  /** Gets the package name for Xorm. */
+  string packagePath() { result = package(["xorm.io/xorm", "github.com/go-xorm/xorm"], "") }
+
+  /** A model for sinks of XORM. */
+  private class XormSink extends SQL::QueryString::Range {
+    XormSink() {
+      exists(Method meth, string type, string name, int n |
+        meth.hasQualifiedName(Xorm::packagePath(), type, name) and
+        this = meth.getACall().getArgument(n) and
+        type = ["Engine", "Session"]
+      |
+        name =
+          [
+            "Query", "Exec", "QueryString", "QueryInterface", "SQL", "Where", "And", "Or", "Alias",
+            "NotIn", "In", "Select", "SetExpr", "OrderBy", "Having", "GroupBy"
+          ] and
+        n = 0
+        or
+        name = ["SumInt", "Sum", "Sums", "SumsInt"] and n = 1
+        or
+        name = "Join" and n = [0, 1, 2]
+      )
+    }
+  }
+}

@@ -133,9 +133,9 @@ locations_default(unique int id: @location_default, int file: @file ref, int beg
 
 numlines(int element_id: @sourceline ref, int num_lines: int ref, int num_code: int ref, int num_comment: int ref);
 
-files(unique int id: @file, string name: string ref, string simple: string ref, string ext: string ref, int fromSource: int ref);
+files(unique int id: @file, string name: string ref);
 
-folders(unique int id: @folder, string name: string ref, string simple: string ref);
+folders(unique int id: @folder, string name: string ref);
 
 containerparent(int parent: @container ref, unique int child: @container ref);
 

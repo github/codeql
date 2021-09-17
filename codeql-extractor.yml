@@ -6,6 +6,8 @@ pull_request_triggers:
   - "**/glide.yaml"
   - "**/Gopkg.toml"
 column_kind: "utf8"
+extra_env_vars:
+  CODEQL_REDUCE_FILES_FOLDERS_RELATIONS: "true"
 file_types:
   - name: go
     display_name: Go

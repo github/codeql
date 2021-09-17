@@ -25,46 +25,46 @@ private module CleverGo {
       |
         receiverName = "Context" and
         (
-          // signature: func (*Context).BasicAuth() (username string, password string, ok bool)
+          // signature: func (*Context) BasicAuth() (username string, password string, ok bool)
           methodName = "BasicAuth" and
           out.isResult([0, 1])
           or
-          // signature: func (*Context).Decode(v interface{}) (err error)
+          // signature: func (*Context) Decode(v interface{}) (err error)
           methodName = "Decode" and
           out.isParameter(0)
           or
-          // signature: func (*Context).DefaultQuery(key string, defaultVlue string) string
+          // signature: func (*Context) DefaultQuery(key string, defaultVlue string) string
           methodName = "DefaultQuery" and
           out.isResult()
           or
-          // signature: func (*Context).FormValue(key string) string
+          // signature: func (*Context) FormValue(key string) string
           methodName = "FormValue" and
           out.isResult()
           or
-          // signature: func (*Context).GetHeader(name string) string
+          // signature: func (*Context) GetHeader(name string) string
           methodName = "GetHeader" and
           out.isResult()
           or
-          // signature: func (*Context).PostFormValue(key string) string
+          // signature: func (*Context) PostFormValue(key string) string
           methodName = "PostFormValue" and
           out.isResult()
           or
-          // signature: func (*Context).QueryParam(key string) string
+          // signature: func (*Context) QueryParam(key string) string
           methodName = "QueryParam" and
           out.isResult()
           or
-          // signature: func (*Context).QueryParams() net/url.Values
+          // signature: func (*Context) QueryParams() net/url.Values
           methodName = "QueryParams" and
           out.isResult()
           or
-          // signature: func (*Context).QueryString() string
+          // signature: func (*Context) QueryString() string
           methodName = "QueryString" and
           out.isResult()
         )
         or
         receiverName = "Params" and
         (
-          // signature: func (Params).String(name string) string
+          // signature: func (Params) String(name string) string
           methodName = "String" and
           out.isResult()
         )
@@ -77,7 +77,7 @@ private module CleverGo {
       |
         interfaceName = "Decoder" and
         (
-          // signature: func (Decoder).Decode(req *net/http.Request, v interface{}) error
+          // signature: func (Decoder) Decode(req *net/http.Request, v interface{}) error
           methodName = "Decode" and
           out.isParameter(1)
         )
@@ -135,31 +135,31 @@ private module CleverGo {
       // Taint-tracking models for package: clevergo.tech/clevergo@v0.5.2
       (
         // Receiver type: Application
-        // signature: func (*Application).RouteURL(name string, args ...string) (*net/url.URL, error)
+        // signature: func (*Application) RouteURL(name string, args ...string) (*net/url.URL, error)
         this.hasQualifiedName(packagePath(), "Application", "RouteURL") and
         inp.isParameter(_) and
         out.isResult(0)
         or
         // Receiver type: Context
-        // signature: func (*Context).Context() context.Context
+        // signature: func (*Context) Context() context.Context
         this.hasQualifiedName(packagePath(), "Context", "Context") and
         inp.isReceiver() and
         out.isResult()
         or
         // Receiver type: Params
-        // signature: func (Params).String(name string) string
+        // signature: func (Params) String(name string) string
         this.hasQualifiedName(packagePath(), "Params", "String") and
         inp.isReceiver() and
         out.isResult()
         or
         // Receiver interface: Decoder
-        // signature: func (Decoder).Decode(req *net/http.Request, v interface{}) error
+        // signature: func (Decoder) Decode(req *net/http.Request, v interface{}) error
         this.implements(packagePath(), "Decoder", "Decode") and
         inp.isParameter(0) and
         out.isParameter(1)
         or
         // Receiver interface: Renderer
-        // signature: func (Renderer).Render(w io.Writer, name string, data interface{}, c *Context) error
+        // signature: func (Renderer) Render(w io.Writer, name string, data interface{}, c *Context) error
         this.implements(packagePath(), "Renderer", "Render") and
         inp.isParameter(2) and
         out.isParameter(0)
@@ -183,7 +183,7 @@ private module CleverGo {
       package = packagePath() and
       // Receiver type: Context
       (
-        // signature: func (*Context).Redirect(code int, url string) error
+        // signature: func (*Context) Redirect(code int, url string) error
         this = any(Method m | m.hasQualifiedName(package, "Context", "Redirect")).getACall() and
         urlNode = this.getArgument(1)
       )
@@ -227,72 +227,72 @@ private module CleverGo {
         // Receiver type: Context
         receiverName = "Context" and
         (
-          // signature: func (*Context).Error(code int, msg string) error
+          // signature: func (*Context) Error(code int, msg string) error
           methodName = "Error" and
           bodyNode = bodySetterCall.getArgument(1) and
           contentTypeString = "text/plain"
           or
-          // signature: func (*Context).HTML(code int, html string) error
+          // signature: func (*Context) HTML(code int, html string) error
           methodName = "HTML" and
           bodyNode = bodySetterCall.getArgument(1) and
           contentTypeString = "text/html"
           or
-          // signature: func (*Context).HTMLBlob(code int, bs []byte) error
+          // signature: func (*Context) HTMLBlob(code int, bs []byte) error
           methodName = "HTMLBlob" and
           bodyNode = bodySetterCall.getArgument(1) and
           contentTypeString = "text/html"
           or
-          // signature: func (*Context).JSON(code int, data interface{}) error
+          // signature: func (*Context) JSON(code int, data interface{}) error
           methodName = "JSON" and
           bodyNode = bodySetterCall.getArgument(1) and
           contentTypeString = "application/json"
           or
-          // signature: func (*Context).JSONBlob(code int, bs []byte) error
+          // signature: func (*Context) JSONBlob(code int, bs []byte) error
           methodName = "JSONBlob" and
           bodyNode = bodySetterCall.getArgument(1) and
           contentTypeString = "application/json"
           or
-          // signature: func (*Context).JSONP(code int, data interface{}) error
+          // signature: func (*Context) JSONP(code int, data interface{}) error
           methodName = "JSONP" and
           bodyNode = bodySetterCall.getArgument(1) and
           contentTypeString = "application/javascript"
           or
-          // signature: func (*Context).JSONPBlob(code int, bs []byte) error
+          // signature: func (*Context) JSONPBlob(code int, bs []byte) error
           methodName = "JSONPBlob" and
           bodyNode = bodySetterCall.getArgument(1) and
           contentTypeString = "application/javascript"
           or
-          // signature: func (*Context).JSONPCallback(code int, callback string, data interface{}) error
+          // signature: func (*Context) JSONPCallback(code int, callback string, data interface{}) error
           methodName = "JSONPCallback" and
           bodyNode = bodySetterCall.getArgument(2) and
           contentTypeString = "application/javascript"
           or
-          // signature: func (*Context).JSONPCallbackBlob(code int, callback string, bs []byte) (err error)
+          // signature: func (*Context) JSONPCallbackBlob(code int, callback string, bs []byte) (err error)
           methodName = "JSONPCallbackBlob" and
           bodyNode = bodySetterCall.getArgument(2) and
           contentTypeString = "application/javascript"
           or
-          // signature: func (*Context).String(code int, s string) error
+          // signature: func (*Context) String(code int, s string) error
           methodName = "String" and
           bodyNode = bodySetterCall.getArgument(1) and
           contentTypeString = "text/plain"
           or
-          // signature: func (*Context).StringBlob(code int, bs []byte) error
+          // signature: func (*Context) StringBlob(code int, bs []byte) error
           methodName = "StringBlob" and
           bodyNode = bodySetterCall.getArgument(1) and
           contentTypeString = "text/plain"
           or
-          // signature: func (*Context).Stringf(code int, format string, a ...interface{}) error
+          // signature: func (*Context) Stringf(code int, format string, a ...interface{}) error
           methodName = "Stringf" and
           bodyNode = bodySetterCall.getArgument([1, any(int i | i >= 2)]) and
           contentTypeString = "text/plain"
           or
-          // signature: func (*Context).XML(code int, data interface{}) error
+          // signature: func (*Context) XML(code int, data interface{}) error
           methodName = "XML" and
           bodyNode = bodySetterCall.getArgument(1) and
           contentTypeString = "text/xml"
           or
-          // signature: func (*Context).XMLBlob(code int, bs []byte) error
+          // signature: func (*Context) XMLBlob(code int, bs []byte) error
           methodName = "XMLBlob" and
           bodyNode = bodySetterCall.getArgument(1) and
           contentTypeString = "text/xml"
@@ -335,12 +335,12 @@ private module CleverGo {
         // Receiver type: Context
         receiverName = "Context" and
         (
-          // signature: func (*Context).Blob(code int, contentType string, bs []byte) (err error)
+          // signature: func (*Context) Blob(code int, contentType string, bs []byte) (err error)
           methodName = "Blob" and
           bodyNode = bodySetterCall.getArgument(2) and
           contentTypeNode = bodySetterCall.getArgument(1)
           or
-          // signature: func (*Context).Emit(code int, contentType string, body string) (err error)
+          // signature: func (*Context) Emit(code int, contentType string, body string) (err error)
           methodName = "Emit" and
           bodyNode = bodySetterCall.getArgument(2) and
           contentTypeNode = bodySetterCall.getArgument(1)
@@ -378,11 +378,11 @@ private module CleverGo {
         // Receiver type: Context
         receiverName = "Context" and
         (
-          // signature: func (*Context).Write(data []byte) (int, error)
+          // signature: func (*Context) Write(data []byte) (int, error)
           methodName = "Write" and
           bodyNode = bodySetterCall.getArgument(0)
           or
-          // signature: func (*Context).WriteString(data string) (int, error)
+          // signature: func (*Context) WriteString(data string) (int, error)
           methodName = "WriteString" and
           bodyNode = bodySetterCall.getArgument(0)
         )
@@ -425,7 +425,7 @@ private module CleverGo {
         // Receiver type: Context
         receiverName = "Context" and
         (
-          // signature: func (*Context).SetHeader(key string, value string)
+          // signature: func (*Context) SetHeader(key string, value string)
           methodName = "SetHeader" and
           headerNameNode = headerSetterCall.getArgument(0) and
           headerValueNode = headerSetterCall.getArgument(1)
@@ -471,19 +471,19 @@ private module CleverGo {
         // Receiver type: Context
         receiverName = "Context" and
         (
-          // signature: func (*Context).SetContentTypeHTML()
+          // signature: func (*Context) SetContentTypeHTML()
           methodName = "SetContentTypeHTML" and
           valueString = "text/html"
           or
-          // signature: func (*Context).SetContentTypeJSON()
+          // signature: func (*Context) SetContentTypeJSON()
           methodName = "SetContentTypeJSON" and
           valueString = "application/json"
           or
-          // signature: func (*Context).SetContentTypeText()
+          // signature: func (*Context) SetContentTypeText()
           methodName = "SetContentTypeText" and
           valueString = "text/plain"
           or
-          // signature: func (*Context).SetContentTypeXML()
+          // signature: func (*Context) SetContentTypeXML()
           methodName = "SetContentTypeXML" and
           valueString = "text/xml"
         )
@@ -526,7 +526,7 @@ private module CleverGo {
         // Receiver type: Context
         receiverName = "Context" and
         (
-          // signature: func (*Context).SetContentType(v string)
+          // signature: func (*Context) SetContentType(v string)
           methodName = "SetContentType" and
           valueNode = setterCall.getArgument(0)
         )

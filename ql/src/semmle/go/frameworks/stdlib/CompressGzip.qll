@@ -34,11 +34,11 @@ module CompressGzip {
     FunctionOutput outp;
 
     MethodModels() {
-      // signature: func (*Reader).Reset(r io.Reader) error
+      // signature: func (*Reader) Reset(r io.Reader) error
       hasQualifiedName("compress/gzip", "Reader", "Reset") and
       (inp.isParameter(0) and outp.isReceiver())
       or
-      // signature: func (*Writer).Reset(w io.Writer)
+      // signature: func (*Writer) Reset(w io.Writer)
       hasQualifiedName("compress/gzip", "Writer", "Reset") and
       (inp.isReceiver() and outp.isParameter(0))
     }

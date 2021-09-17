@@ -26,7 +26,7 @@ module TextTabwriter {
     FunctionOutput outp;
 
     MethodModels() {
-      // signature: func (*Writer).Init(output io.Writer, minwidth int, tabwidth int, padding int, padchar byte, flags uint) *Writer
+      // signature: func (*Writer) Init(output io.Writer, minwidth int, tabwidth int, padding int, padchar byte, flags uint) *Writer
       hasQualifiedName("text/tabwriter", "Writer", "Init") and
       (
         (inp.isReceiver() or inp.isResult()) and

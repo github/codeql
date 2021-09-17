@@ -30,19 +30,19 @@ module EncodingCsv {
     FunctionOutput outp;
 
     MethodModels() {
-      // signature: func (*Reader).Read() (record []string, err error)
+      // signature: func (*Reader) Read() (record []string, err error)
       hasQualifiedName("encoding/csv", "Reader", "Read") and
       (inp.isReceiver() and outp.isResult(0))
       or
-      // signature: func (*Reader).ReadAll() (records [][]string, err error)
+      // signature: func (*Reader) ReadAll() (records [][]string, err error)
       hasQualifiedName("encoding/csv", "Reader", "ReadAll") and
       (inp.isReceiver() and outp.isResult(0))
       or
-      // signature: func (*Writer).Write(record []string) error
+      // signature: func (*Writer) Write(record []string) error
       hasQualifiedName("encoding/csv", "Writer", "Write") and
       (inp.isParameter(0) and outp.isReceiver())
       or
-      // signature: func (*Writer).WriteAll(records [][]string) error
+      // signature: func (*Writer) WriteAll(records [][]string) error
       hasQualifiedName("encoding/csv", "Writer", "WriteAll") and
       (inp.isParameter(0) and outp.isReceiver())
     }

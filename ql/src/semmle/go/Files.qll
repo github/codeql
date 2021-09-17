@@ -155,7 +155,7 @@ abstract class Container extends @container {
 
 /** A folder. */
 class Folder extends Container, @folder {
-  override string getAbsolutePath() { folders(this, result, _) }
+  override string getAbsolutePath() { folders(this, result) }
 
   /** Gets the file or subfolder in this folder that has the given `name`, if any. */
   Container getChildContainer(string name) {
@@ -182,7 +182,7 @@ class ExtractedOrExternalFile extends Container, @file, Documentable, ExprParent
   DeclParent, ScopeNode {
   override Location getLocation() { has_location(this, result) }
 
-  override string getAbsolutePath() { files(this, result, _, _, _) }
+  override string getAbsolutePath() { files(this, result) }
 
   /** Gets the number of lines in this file. */
   int getNumberOfLines() { numlines(this, result, _, _) }
@@ -222,6 +222,8 @@ class ExtractedOrExternalFile extends Container, @file, Documentable, ExprParent
     exists(BuildConstraintComment bcc | this = bcc.getFile() |
       forex(string disjunct | disjunct = bcc.getADisjunct() |
         disjunct.splitAt(",").(Architecture).getBitSize() = bitSize
+        or
+        disjunct.splitAt("/").(Architecture).getBitSize() = bitSize
       )
     )
   }

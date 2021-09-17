@@ -68,11 +68,11 @@ module HtmlTemplate {
     FunctionOutput outp;
 
     MethodModels() {
-      // signature: func (*Template).Execute(wr io.Writer, data interface{}) error
+      // signature: func (*Template) Execute(wr io.Writer, data interface{}) error
       hasQualifiedName("html/template", "Template", "Execute") and
       (inp.isParameter(1) and outp.isParameter(0))
       or
-      // signature: func (*Template).ExecuteTemplate(wr io.Writer, name string, data interface{}) error
+      // signature: func (*Template) ExecuteTemplate(wr io.Writer, name string, data interface{}) error
       hasQualifiedName("html/template", "Template", "ExecuteTemplate") and
       (inp.isParameter(2) and outp.isParameter(0))
     }

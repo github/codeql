@@ -1,6 +1,8 @@
 @echo off
 SETLOCAL EnableDelayedExpansion
 
+SET CODEQL_REDUCE_FILES_FOLDERS_RELATIONS=true
+
 if NOT "%CODEQL_EXTRACTOR_GO_EXTRACT_HTML%"=="no" (
   type NUL && "%CODEQL_DIST%/codeql.exe" database index-files ^
                         --working-dir=. ^

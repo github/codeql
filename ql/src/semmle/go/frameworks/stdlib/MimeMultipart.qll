@@ -30,43 +30,43 @@ module MimeMultipart {
     FunctionOutput outp;
 
     MethodModels() {
-      // signature: func (*FileHeader).Open() (File, error)
+      // signature: func (*FileHeader) Open() (File, error)
       hasQualifiedName("mime/multipart", "FileHeader", "Open") and
       (inp.isReceiver() and outp.isResult(0))
       or
-      // signature: func (*Part).FileName() string
+      // signature: func (*Part) FileName() string
       hasQualifiedName("mime/multipart", "Part", "FileName") and
       (inp.isReceiver() and outp.isResult(0))
       or
-      // signature: func (*Part).FormName() string
+      // signature: func (*Part) FormName() string
       hasQualifiedName("mime/multipart", "Part", "FormName") and
       (inp.isReceiver() and outp.isResult(0))
       or
-      // signature: func (*Reader).NextPart() (*Part, error)
+      // signature: func (*Reader) NextPart() (*Part, error)
       hasQualifiedName("mime/multipart", "Reader", "NextPart") and
       (inp.isReceiver() and outp.isResult(0))
       or
-      // signature: func (*Reader).NextRawPart() (*Part, error)
+      // signature: func (*Reader) NextRawPart() (*Part, error)
       hasQualifiedName("mime/multipart", "Reader", "NextRawPart") and
       (inp.isReceiver() and outp.isResult(0))
       or
-      // signature: func (*Reader).ReadForm(maxMemory int64) (*Form, error)
+      // signature: func (*Reader) ReadForm(maxMemory int64) (*Form, error)
       hasQualifiedName("mime/multipart", "Reader", "ReadForm") and
       (inp.isReceiver() and outp.isResult(0))
       or
-      // signature: func (*Writer).CreateFormField(fieldname string) (io.Writer, error)
+      // signature: func (*Writer) CreateFormField(fieldname string) (io.Writer, error)
       hasQualifiedName("mime/multipart", "Writer", "CreateFormField") and
       (inp.isResult(0) and outp.isReceiver())
       or
-      // signature: func (*Writer).CreateFormFile(fieldname string, filename string) (io.Writer, error)
+      // signature: func (*Writer) CreateFormFile(fieldname string, filename string) (io.Writer, error)
       hasQualifiedName("mime/multipart", "Writer", "CreateFormFile") and
       (inp.isResult(0) and outp.isReceiver())
       or
-      // signature: func (*Writer).CreatePart(header net/textproto.MIMEHeader) (io.Writer, error)
+      // signature: func (*Writer) CreatePart(header net/textproto.MIMEHeader) (io.Writer, error)
       hasQualifiedName("mime/multipart", "Writer", "CreatePart") and
       (inp.isResult(0) and outp.isReceiver())
       or
-      // signature: func (*Writer).WriteField(fieldname string, value string) error
+      // signature: func (*Writer) WriteField(fieldname string, value string) error
       hasQualifiedName("mime/multipart", "Writer", "WriteField") and
       (inp.isParameter(_) and outp.isReceiver())
     }

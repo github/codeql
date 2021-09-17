@@ -30,15 +30,15 @@ module Mime {
     FunctionOutput outp;
 
     MethodModels() {
-      // signature: func (*WordDecoder).Decode(word string) (string, error)
+      // signature: func (*WordDecoder) Decode(word string) (string, error)
       hasQualifiedName("mime", "WordDecoder", "Decode") and
       (inp.isParameter(0) and outp.isResult(0))
       or
-      // signature: func (*WordDecoder).DecodeHeader(header string) (string, error)
+      // signature: func (*WordDecoder) DecodeHeader(header string) (string, error)
       hasQualifiedName("mime", "WordDecoder", "DecodeHeader") and
       (inp.isParameter(0) and outp.isResult(0))
       or
-      // signature: func (WordEncoder).Encode(charset string, s string) string
+      // signature: func (WordEncoder) Encode(charset string, s string) string
       hasQualifiedName("mime", "WordEncoder", "Encode") and
       (inp.isParameter(1) and outp.isResult())
     }
