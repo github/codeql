@@ -20,7 +20,9 @@ private module log {
    * See https://docs.python.org/3/library/logging.html#logger-objects
    */
   private class LogOutputMethods extends string {
-    LogOutputMethods() { this in ["info", "error", "warn", "warning", "debug", "critical"] }
+    LogOutputMethods() {
+      this in ["info", "error", "warn", "warning", "debug", "critical", "exception", "log"]
+    }
   }
 
   /**
@@ -33,7 +35,13 @@ private module log {
       this = API::moduleImport("logging").getMember(any(LogOutputMethods m)).getACall()
     }
 
-    override DataFlow::Node getAnInput() { result = this.getArg(_) }
+    override DataFlow::Node getAnInput() {
+      this.getFunction().(DataFlow::AttrRead).getAttributeName() != "log" and
+      result = this.getArg(0)
+      or
+      this.getFunction().(DataFlow::AttrRead).getAttributeName() = "log" and
+      result = this.getArg(1)
+    }
   }
 
   /**
@@ -51,7 +59,13 @@ private module log {
             .getACall()
     }
 
-    override DataFlow::Node getAnInput() { result = this.getArg(_) }
+    override DataFlow::Node getAnInput() {
+      this.getFunction().(DataFlow::AttrRead).getAttributeName() != "log" and
+      result = this.getArg(0)
+      or
+      this.getFunction().(DataFlow::AttrRead).getAttributeName() = "log" and
+      result = this.getArg(1)
+    }
   }
 
   /**
@@ -68,7 +82,13 @@ private module log {
             .getACall()
     }
 
-    override DataFlow::Node getAnInput() { result = this.getArg(_) }
+    override DataFlow::Node getAnInput() {
+      this.getFunction().(DataFlow::AttrRead).getAttributeName() != "log" and
+      result = this.getArg(0)
+      or
+      this.getFunction().(DataFlow::AttrRead).getAttributeName() = "log" and
+      result = this.getArg(1)
+    }
   }
 
   /**
@@ -87,6 +107,12 @@ private module log {
             .getACall()
     }
 
-    override DataFlow::Node getAnInput() { result = this.getArg(_) }
+    override DataFlow::Node getAnInput() {
+      this.getFunction().(DataFlow::AttrRead).getAttributeName() != "log" and
+      result = this.getArg(0)
+      or
+      this.getFunction().(DataFlow::AttrRead).getAttributeName() = "log" and
+      result = this.getArg(1)
+    }
   }
 }
