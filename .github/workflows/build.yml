@@ -203,7 +203,7 @@ jobs:
         shell: bash
         run: |
           echo "import ruby select count(File f)" > "test.ql"
-          echo "| 2 |" > "test.expected"
+          echo "| 3 |" > "test.expected"
           echo 'name: sample-tests
           version: 0.0.0
           dependencies:

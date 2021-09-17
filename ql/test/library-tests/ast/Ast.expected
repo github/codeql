@@ -1,3 +1,32 @@
+gems/Gemfile:
+#    1| [Toplevel] Gemfile
+#    1|   getStmt: [MethodCall] call to source
+#    1|     getReceiver: [Self] self
+#    1|     getArgument: [StringLiteral] "https://rubygems.org"
+#    1|       getComponent: [StringTextComponent] https://rubygems.org
+#    3|   getStmt: [MethodCall] call to gem
+#    3|     getReceiver: [Self] self
+#    3|     getArgument: [StringLiteral] "foo_gem"
+#    3|       getComponent: [StringTextComponent] foo_gem
+#    3|     getArgument: [StringLiteral] "~> 2.0"
+#    3|       getComponent: [StringTextComponent] ~> 2.0
+#    5|   getStmt: [MethodCall] call to source
+#    5|     getReceiver: [Self] self
+#    5|     getArgument: [StringLiteral] "https://gems.example.com"
+#    5|       getComponent: [StringTextComponent] https://gems.example.com
+#    5|     getBlock: [DoBlock] do ... end
+#    6|       getStmt: [MethodCall] call to gem
+#    6|         getReceiver: [Self] self
+#    6|         getArgument: [StringLiteral] "my_gem"
+#    6|           getComponent: [StringTextComponent] my_gem
+#    6|         getArgument: [StringLiteral] "1.0"
+#    6|           getComponent: [StringTextComponent] 1.0
+#    7|       getStmt: [MethodCall] call to gem
+#    7|         getReceiver: [Self] self
+#    7|         getArgument: [StringLiteral] "another_gem"
+#    7|           getComponent: [StringTextComponent] another_gem
+#    7|         getArgument: [StringLiteral] "3.1.4"
+#    7|           getComponent: [StringTextComponent] 3.1.4
 calls/calls.rb:
 #    1| [Toplevel] calls.rb
 #    2|   getStmt: [MethodCall] call to foo
@@ -2080,6 +2109,65 @@ erb/template.html.erb:
 #   28|         getAnOperand/getLeftOperand: [LocalVariableAccess] xs
 #   28|         getAnOperand/getRightOperand: [LocalVariableAccess] x
 #   29|       getStmt: [LocalVariableAccess] xs
+gems/test.gemspec:
+#    1| [Toplevel] test.gemspec
+#    1|   getStmt: [MethodCall] call to new
+#    1|     getReceiver: [ConstantReadAccess] Specification
+#    1|       getScopeExpr: [ConstantReadAccess] Gem
+#    1|     getBlock: [DoBlock] do ... end
+#    1|       getParameter: [SimpleParameter] s
+#    1|         getDefiningAccess: [LocalVariableAccess] s
+#    2|       getStmt: [AssignExpr] ... = ...
+#    2|         getAnOperand/getLeftOperand: [MethodCall] call to name
+#    2|           getReceiver: [LocalVariableAccess] s
+#    2|         getAnOperand/getRightOperand: [StringLiteral] "test"
+#    2|           getComponent: [StringTextComponent] test
+#    3|       getStmt: [AssignExpr] ... = ...
+#    3|         getAnOperand/getLeftOperand: [MethodCall] call to version
+#    3|           getReceiver: [LocalVariableAccess] s
+#    3|         getAnOperand/getRightOperand: [StringLiteral] "0.0.0"
+#    3|           getComponent: [StringTextComponent] 0.0.0
+#    4|       getStmt: [AssignExpr] ... = ...
+#    4|         getAnOperand/getLeftOperand: [MethodCall] call to summary
+#    4|           getReceiver: [LocalVariableAccess] s
+#    4|         getAnOperand/getRightOperand: [StringLiteral] "foo!"
+#    4|           getComponent: [StringTextComponent] foo!
+#    5|       getStmt: [AssignExpr] ... = ...
+#    5|         getAnOperand/getLeftOperand: [MethodCall] call to description
+#    5|           getReceiver: [LocalVariableAccess] s
+#    5|         getAnOperand/getRightOperand: [StringLiteral] "A test"
+#    5|           getComponent: [StringTextComponent] A test
+#    6|       getStmt: [AssignExpr] ... = ...
+#    6|         getAnOperand/getLeftOperand: [MethodCall] call to authors
+#    6|           getReceiver: [LocalVariableAccess] s
+#    6|         getAnOperand/getRightOperand: [ArrayLiteral] [...]
+#    6|           getElement: [StringLiteral] "Mona Lisa"
+#    6|             getComponent: [StringTextComponent] Mona Lisa
+#    7|       getStmt: [AssignExpr] ... = ...
+#    7|         getAnOperand/getLeftOperand: [MethodCall] call to email
+#    7|           getReceiver: [LocalVariableAccess] s
+#    7|         getAnOperand/getRightOperand: [StringLiteral] "mona@example.com"
+#    7|           getComponent: [StringTextComponent] mona@example.com
+#    8|       getStmt: [AssignExpr] ... = ...
+#    8|         getAnOperand/getLeftOperand: [MethodCall] call to files
+#    8|           getReceiver: [LocalVariableAccess] s
+#    8|         getAnOperand/getRightOperand: [ArrayLiteral] [...]
+#    8|           getElement: [StringLiteral] "lib/test.rb"
+#    8|             getComponent: [StringTextComponent] lib/test.rb
+#    9|       getStmt: [AssignExpr] ... = ...
+#    9|         getAnOperand/getLeftOperand: [MethodCall] call to homepage
+#    9|           getReceiver: [LocalVariableAccess] s
+#    9|         getAnOperand/getRightOperand: [StringLiteral] "https://github.com/github/cod..."
+#    9|           getComponent: [StringTextComponent] https://github.com/github/codeql-ruby
+gems/lib/test.rb:
+#    1| [Toplevel] test.rb
+#    1|   getStmt: [ClassDeclaration] Foo
+#    2|     getStmt: [SingletonMethod] greet
+#    2|       getObject: [Self] self
+#    3|       getStmt: [MethodCall] call to puts
+#    3|         getReceiver: [Self] self
+#    3|         getArgument: [StringLiteral] "Hello"
+#    3|           getComponent: [StringTextComponent] Hello
 modules/toplevel.rb:
 #    1| [Toplevel] toplevel.rb
 #    1|   getStmt: [MethodCall] call to puts
