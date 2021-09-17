@@ -9,9 +9,9 @@ import go
  * Provides a taint-tracking configuration for reasoning about request forgery
  * (SSRF) vulnerabilities.
  */
-module SSRF {
+module ServerSideRequestForgery {
   import semmle.go.frameworks.Gin
-  import SSRF.validator
+  import validator
   import semmle.go.security.UrlConcatenation
   import semmle.go.dataflow.barrierguardutil.RegexpCheck
   import semmle.go.dataflow.Properties

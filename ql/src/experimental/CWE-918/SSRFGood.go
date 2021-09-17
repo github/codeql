@@ -5,7 +5,7 @@ import (
 	"github.com/go-playground/validator"
 )
 
-func handler(w http.ResponseWriter, req *http.Request) {
+func goodHandler(w http.ResponseWriter, req *http.Request) {
 	validate := validator.New()
 	target := req.FormValue("target")
 	if validate.Var(target, "alphanum")
