@@ -33,7 +33,10 @@ class FooController < ActionController::Base
 
     # GOOD - guarded by a string length check
     if name.length < 1024
-	name.gsub regex, ''
+      name.gsub regex, ''
     end
+
+    # GOOD - regex does not suffer from polynomial backtracking (regression test)
+    params[:foo] =~ /\A[bc].*\Z/
   end
 end

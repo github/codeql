@@ -388,10 +388,17 @@ class RegExp extends AST::RegExpLiteral {
 
   predicate specialCharacter(int start, int end, string char) {
     this.character(start, end) and
-    end = start + 1 and
-    char = this.getChar(start) and
-    (char = "$" or char = "^" or char = ".") and
-    not this.inCharSet(start)
+    not this.inCharSet(start) and
+    (
+      end = start + 1 and
+      char = this.getChar(start) and
+      (char = "$" or char = "^" or char = ".")
+      or
+      end = start + 2 and
+      this.escapingChar(start) and
+      char = this.getText().substring(start, end) and
+      char = ["\\A", "\\Z", "\\z"]
+    )
   }
 
   /** Whether the text in the range `start,end` is a group */
@@ -808,10 +815,8 @@ class RegExp extends AST::RegExpLiteral {
       or
       this.qualifiedItem(x, start, true, _)
       or
-      this.specialCharacter(x, start, "^")
-      or
-      // \A matches the start of the string
-      x = start - 2 and this.escapingChar(x) and this.getChar(x + 1) = "A"
+      // ^ and \A match the start of the string
+      this.specialCharacter(x, start, ["^", "\\A"])
     )
     or
     exists(int y | this.firstPart(start, y) |
@@ -836,9 +841,8 @@ class RegExp extends AST::RegExpLiteral {
       or
       this.qualifiedItem(end, y, true, _)
       or
-      this.specialCharacter(end, y, "$")
-      or
-      y = end + 2 and this.escapingChar(end) and this.getChar(end + 1) = "Z"
+      // $, \Z, and \z match the end of the string.
+      this.specialCharacter(end, y, ["$", "\\Z", "\\z"])
     )
     or
     exists(int x |
