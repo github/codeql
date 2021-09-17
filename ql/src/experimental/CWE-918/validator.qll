@@ -88,8 +88,10 @@ private class BindErrorCheck extends DataFlow::BarrierGuard, DataFlow::EqualityT
         bindFunction
             .(Method)
             .hasQualifiedName("github.com/gin-gonic/gin", "Context",
-              ["BindJSON", "MustBindWith", "BindWith", "Bind", "ShouldBind", "ShouldBindBodyWith",
-                  "ShouldBindJSON", "ShouldBindWith"]) and
+              [
+                "BindJSON", "MustBindWith", "BindWith", "Bind", "ShouldBind", "ShouldBindBodyWith",
+                "ShouldBindJSON", "ShouldBindWith"
+              ]) and
         safeKey = "binding"
         or
         //Validator Struct

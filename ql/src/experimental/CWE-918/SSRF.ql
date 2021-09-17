@@ -13,8 +13,8 @@ import SSRF
 import DataFlow::PathGraph
 
 from
-  ServerSideRequestForgery::Configuration cfg, DataFlow::PathNode source,
-  DataFlow::PathNode sink, DataFlow::Node request
+  ServerSideRequestForgery::Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink,
+  DataFlow::Node request
 where
   cfg.hasFlowPath(source, sink) and
   request = sink.getNode().(ServerSideRequestForgery::Sink).getARequest()

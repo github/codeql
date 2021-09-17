@@ -137,7 +137,7 @@ module ServerSideRequestForgery {
     DataFlow::Node url;
 
     EqualityAsSanitizerGuard() {
-      exists(this.getAnOperand().getStringValue()) and 
+      exists(this.getAnOperand().getStringValue()) and
       url = this.getAnOperand()
     }
 
@@ -161,12 +161,12 @@ module ServerSideRequestForgery {
    * the binding function to run some validations for that field. If these binding functions returns
    * no error, then we consider these fields safe for SSRF.
    */
-  class BodySanitizer extends Sanitizer, BodyTagSanitizer {}
+  class BodySanitizer extends Sanitizer, BodyTagSanitizer { }
 
   /**
-   * The method Var of package validator is a sanitizer guard only if the check 
+   * The method Var of package validator is a sanitizer guard only if the check
    * of the error binding exists, and the tag to check is one of "alpha", "alphanum", "alphaunicode", "alphanumunicode", "number", "numeric".
    */
-  class ValidatorAsSanitizer extends SanitizerGuard, ValidatorVarCheck {}
+  class ValidatorAsSanitizer extends SanitizerGuard, ValidatorVarCheck { }
   //#endregion
 }
