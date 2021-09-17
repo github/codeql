@@ -17,7 +17,7 @@ module Gvn {
   string getNameNested(Type t) {
     if not t instanceof NestedType or t.(NestedType).getDeclaringType() instanceof GenericType
     then result = t.getName()
-    else result = getNameNested(t.(NestedType).getDeclaringType()) + "." + t.getName()
+    else result = getNameNested(t.(NestedType).getDeclaringType()) + "+" + t.getName()
   }
 
   /**
