@@ -11,7 +11,7 @@ Setup
 
 For this example you should download:
 
-- `CodeQL for Visual Studio Code <https://help.semmle.com/codeql/codeql-for-vscode/procedures/setting-up.html>`__
+- `CodeQL for Visual Studio Code <https://codeql.github.com/docs/codeql-for-visual-studio-code/setting-up-codeql-in-visual-studio-code/>`__
 - `VIVO Vitro database <http://downloads.lgtm.com/snapshots/java/vivo-project/Vitro/vivo-project_Vitro_java-srcVersion_47ae42c01954432c3c3b92d5d163551ce367f510-dist_odasa-lgtm-2019-04-23-7ceff95-linux64.zip>`__
 
 .. note::
@@ -84,7 +84,7 @@ Let’s start by looking for calls to methods with names of the form ``sparql*Qu
     - a ``MethodAccess``: the call to a SPARQL query method
     - a ``Method``: the SPARQL query method.
   
-  - The ``where`` part of the query ties these variables together using `predicates <https://help.semmle.com/QL/ql-handbook/predicates.html>`__ defined in the `standard CodeQL library for Java <https://codeql.github.com/codeql-standard-libraries/java/>`__.
+  - The ``where`` part of the query ties these variables together using `predicates <https://codeql.github.com/docs/ql-language-reference/predicates/>`__ defined in the `standard CodeQL library for Java <https://codeql.github.com/codeql-standard-libraries/java/>`__.
 
 CodeQL query: find string concatenation
 =======================================
