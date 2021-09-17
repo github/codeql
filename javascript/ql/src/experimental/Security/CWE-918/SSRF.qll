@@ -25,33 +25,17 @@ class Configuration extends TaintTracking::Configuration {
   }
 }
 
-/** TODO add comment */
-class TernaryOperatorSanitizerGuard extends TaintTracking::SanitizerGuardNode {
-  TaintTracking::SanitizerGuardNode originalGuard;
-
-  TernaryOperatorSanitizerGuard() {
-    this.getAPredecessor+().asExpr().(BooleanLiteral).mayHaveBooleanValue(false) and
-    this.getAPredecessor+() = originalGuard and
-    not this.asExpr() instanceof LogicalBinaryExpr
-  }
-
-  override predicate sanitizes(boolean outcome, Expr e) {
-    not this.asExpr() instanceof LogNotExpr and
-    originalGuard.sanitizes(outcome, e)
-    or
-    exists(boolean originalOutcome |
-      this.asExpr() instanceof LogNotExpr and
-      originalGuard.sanitizes(originalOutcome, e) and
-      (
-        originalOutcome = true and outcome = false
-        or
-        originalOutcome = false and outcome = true
-      )
-    )
-  }
-}
-
-/** TODO add comment */
+/**
+ * This sanitizers models the next example:
+ * let valid = req.params.id ? Number.isInteger(req.params.id) : false
+ * if (valid) { sink(req.params.id) }
+ *
+ * This sanitizer models this way of using ternary operators,
+ * when the sanitizer guard is used as any of the branches
+ * instead of being used as the condition.
+ *
+ * This sanitizer sanitize the corresponding if statement branch.
+ */
 class TernaryOperatorSanitizer extends RequestForgery::Sanitizer {
   TernaryOperatorSanitizer() {
     exists(
@@ -76,6 +60,45 @@ class TernaryOperatorSanitizer extends RequestForgery::Sanitizer {
           .getBasicBlock()
           .(ReachableBasicBlock)
           .dominates(this.getBasicBlock())
+    )
+  }
+}
+
+/**
+ * This sanitizer guard is another way of modeling the example from above
+ * In this case:
+ * let valid = req.params.id ? Number.isInteger(req.params.id) : false
+ * if (!valid) { return }
+ * sink(req.params.id)
+ *
+ * The previous sanitizer is not enough,
+ * because we are sanitizing the entire if statement branch
+ * but we need to sanitize the use of this variable from now on.
+ *
+ * Thats why we model this sanitizer guard which says that
+ * the result of the ternary operator execution is a sanitizer guard.
+ */
+class TernaryOperatorSanitizerGuard extends TaintTracking::SanitizerGuardNode {
+  TaintTracking::SanitizerGuardNode originalGuard;
+
+  TernaryOperatorSanitizerGuard() {
+    this.getAPredecessor+().asExpr().(BooleanLiteral).mayHaveBooleanValue(false) and
+    this.getAPredecessor+() = originalGuard and
+    not this.asExpr() instanceof LogicalBinaryExpr
+  }
+
+  override predicate sanitizes(boolean outcome, Expr e) {
+    not this.asExpr() instanceof LogNotExpr and
+    originalGuard.sanitizes(outcome, e)
+    or
+    exists(boolean originalOutcome |
+      this.asExpr() instanceof LogNotExpr and
+      originalGuard.sanitizes(originalOutcome, e) and
+      (
+        originalOutcome = true and outcome = false
+        or
+        originalOutcome = false and outcome = true
+      )
     )
   }
 }
