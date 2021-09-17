@@ -364,6 +364,34 @@ private class ListGenMethod extends GenMethod {
   override string getCall(string arg) { result = "List.of(" + arg + ")" }
 }
 
+private class SetGenMethod extends GenMethod {
+  SetGenMethod() { this = "SetGenMethod" }
+
+  override predicate appliesTo(Type t, Content c) {
+    exists(GenericType set | set.hasQualifiedName("java.util", "Set") |
+      t.getErasure() = set.getErasure()
+    ) and
+    c instanceof CollectionContent
+  }
+
+  bindingset[arg]
+  override string getCall(string arg) { result = "Set.of(" + arg + ")" }
+}
+
+private class IteratorGenMethod extends GenMethod {
+  IteratorGenMethod() { this = "IteratorGenMethod" }
+
+  override predicate appliesTo(Type t, Content c) {
+    exists(GenericType set | set.hasQualifiedName("java.util", "Iterator") |
+      t.getErasure() = set.getErasure()
+    ) and
+    c instanceof CollectionContent
+  }
+
+  bindingset[arg]
+  override string getCall(string arg) { result = "List.of(" + arg + ").iterator()" }
+}
+
 private class OptionalGenMethod extends GenMethod {
   OptionalGenMethod() { this = "optionalgenmethod" }
 
