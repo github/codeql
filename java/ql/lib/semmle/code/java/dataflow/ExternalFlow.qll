@@ -638,6 +638,7 @@ private string paramsStringPart(Callable c, int i) {
  * Returns the empty string if the callable has no parameters.
  * Parameter types are represented by their type erasure.
  */
+cached
 string paramsString(Callable c) { result = concat(int i | | paramsStringPart(c, i) order by i) }
 
 private Element interpretElement0(
