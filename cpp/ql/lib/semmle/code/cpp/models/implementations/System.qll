@@ -1,5 +1,4 @@
 import cpp
-import semmle.code.cpp.security.FunctionWithWrappers
 import semmle.code.cpp.models.interfaces.SideEffect
 import semmle.code.cpp.models.interfaces.Alias
 import semmle.code.cpp.models.interfaces.CommandExecution
