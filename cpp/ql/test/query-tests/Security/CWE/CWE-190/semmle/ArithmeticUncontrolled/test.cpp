@@ -42,8 +42,8 @@ int rand(int min, int max);
 unsigned rand(int max);
 
 void test_with_bounded_randomness() {
-  int r = rand(0, 10);
-  r++; // GOOD
+	int r = rand(0, 10);
+	r++; // GOOD
 
 	unsigned unsigned_r = rand(10);
 	unsigned_r++; // GOOD
@@ -55,6 +55,14 @@ int test_remainder_subtract()
 	int y = x % 100; // y <= x
 
 	return x - y; // GOOD (as y <= x)
+}
+
+unsigned int test_remainder_subtract_unsigned()
+{
+	unsigned int x = rand();
+	unsigned int y = x % 100; // y <= x
+
+	return x - y; // GOOD (as y <= x) [FALSE POSITIVE]
 }
 
 typedef unsigned long size_t;
@@ -124,6 +132,20 @@ int test_conditional_assignment_2()
 	return y * 10; // GOOD (as y <= 100)
 }
 
+int test_conditional_assignment_3()
+{
+	int x = rand();
+	int y = 100;
+	int c = 10;
+
+	if (x < y)
+	{
+		y = x;
+	}
+	
+	return y * c; // GOOD (as y <= 100) [FALSE POSITIVE]
+}
+
 int test_underflow()
 {
 	int x = rand();
@@ -159,5 +181,49 @@ void test_float()
 		int x = rand();
 		float y = x / 10.0f; // GOOD
 		int z = (int)y * 5; // GOOD
+	}
+}
+
+void test_if_const_bounded()
+{
+	int x = rand();
+	int y = rand();
+	int c = 10;
+
+	if (x < 1000)
+	{
+		x = x * 2; // GOOD
+		x = x * c; // GOOD [FALSE POSITIVE]
+	} else {
+		x = x * 2; // BAD
+		x = x * c; // BAD
+	}
+
+	if (y > 1000)
+	{
+		y = y * 2; // BAD
+		y = y * c; // BAD
+	} else {
+		y = y * 2; // GOOD
+		y = y * c; // GOOD [FALSE POSITIVE]
+	}
+}
+
+void test_mod_limit()
+{
+	{
+		int x = rand();
+		int y = 100;
+		int z;
+
+		z = (x + y) % 1000; // BAD
+	}
+
+	{
+		unsigned int x = rand();
+		unsigned int y = 100;
+		unsigned int z;
+
+		z = (x + y) % 1000; // DUBIOUS (this could overflow but the result is controlled) [REPORTED]
 	}
 }

@@ -175,6 +175,91 @@ getExprType
 | tst.ts:126:7:126:22 | this.#someMethod | () => number |
 | tst.ts:126:7:126:24 | this.#someMethod() | number |
 | tst.ts:127:14:127:28 | this.#someValue | number |
+| tst.ts:132:8:132:11 | TS44 | typeof TS44 in library-tests/TypeScript/Types/tst.ts |
+| tst.ts:133:12:133:14 | foo | (arg: unknown) => void |
+| tst.ts:133:16:133:18 | arg | unknown |
+| tst.ts:134:11:134:21 | argIsString | boolean |
+| tst.ts:134:25:134:34 | typeof arg | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
+| tst.ts:134:25:134:47 | typeof  ... string" | boolean |
+| tst.ts:134:32:134:34 | arg | unknown |
+| tst.ts:134:40:134:47 | "string" | "string" |
+| tst.ts:135:9:135:19 | argIsString | boolean |
+| tst.ts:136:15:136:19 | upper | string |
+| tst.ts:136:23:136:25 | arg | string |
+| tst.ts:136:23:136:37 | arg.toUpperCase | () => string |
+| tst.ts:136:23:136:39 | arg.toUpperCase() | string |
+| tst.ts:136:27:136:37 | toUpperCase | () => string |
+| tst.ts:141:11:141:14 | kind | "circle" |
+| tst.ts:141:27:141:32 | radius | number |
+| tst.ts:142:11:142:14 | kind | "square" |
+| tst.ts:142:27:142:36 | sideLength | number |
+| tst.ts:144:12:144:15 | side | (shape: Shape) => number |
+| tst.ts:144:17:144:21 | shape | Shape |
+| tst.ts:145:15:145:18 | kind | "circle" \| "square" |
+| tst.ts:145:15:145:18 | kind | "circle" \| "square" |
+| tst.ts:145:24:145:28 | shape | Shape |
+| tst.ts:147:11:147:14 | kind | "circle" \| "square" |
+| tst.ts:147:11:147:27 | kind === "circle" | boolean |
+| tst.ts:147:20:147:27 | "circle" | "circle" |
+| tst.ts:147:39:147:43 | shape | { kind: "circle"; radius: number; } |
+| tst.ts:147:39:147:50 | shape.radius | number |
+| tst.ts:147:45:147:50 | radius | number |
+| tst.ts:148:21:148:25 | shape | { kind: "square"; sideLength: number; } |
+| tst.ts:148:21:148:36 | shape.sideLength | number |
+| tst.ts:148:27:148:36 | sideLength | number |
+| tst.ts:151:12:151:22 | symbolIndex | () => void |
+| tst.ts:153:7:153:28 | [sym: s ... number; | any |
+| tst.ts:153:8:153:10 | sym | symbol |
+| tst.ts:154:7:154:28 | [key: s ... string; | any |
+| tst.ts:154:8:154:10 | key | string |
+| tst.ts:155:7:155:29 | [num: n ... oolean; | any |
+| tst.ts:155:8:155:10 | num | number |
+| tst.ts:158:9:158:14 | colors | Colors |
+| tst.ts:158:26:158:27 | {} | Colors |
+| tst.ts:159:11:159:13 | red | number |
+| tst.ts:159:17:159:22 | colors | Colors |
+| tst.ts:159:17:159:37 | colors[ ... "red")] | number |
+| tst.ts:159:24:159:29 | Symbol | SymbolConstructor |
+| tst.ts:159:24:159:36 | Symbol("red") | symbol |
+| tst.ts:159:31:159:35 | "red" | "red" |
+| tst.ts:160:11:160:15 | green | string |
+| tst.ts:160:19:160:24 | colors | Colors |
+| tst.ts:160:19:160:33 | colors["green"] | string |
+| tst.ts:160:26:160:32 | "green" | "green" |
+| tst.ts:161:11:161:14 | blue | boolean |
+| tst.ts:161:18:161:23 | colors | Colors |
+| tst.ts:161:18:161:26 | colors[2] | boolean |
+| tst.ts:161:25:161:25 | 2 | 2 |
+| tst.ts:164:12:164:29 | stringPatternIndex | () => void |
+| tst.ts:166:7:166:37 | [key: ` ... number; | any |
+| tst.ts:168:9:168:11 | bla | Foo |
+| tst.ts:168:21:168:22 | {} | Foo |
+| tst.ts:169:11:169:13 | bar | number |
+| tst.ts:169:17:169:19 | bla | Foo |
+| tst.ts:169:17:169:28 | bla[`foo-1`] | number |
+| tst.ts:169:21:169:27 | `foo-1` | "foo-1" |
+| tst.ts:169:21:169:27 | `foo-1` | "foo-1" |
+| tst.ts:172:7:172:42 | [optNam ... oolean; | any |
+| tst.ts:172:8:172:14 | optName | string \| symbol |
+| tst.ts:175:11:175:14 | data | Data |
+| tst.ts:175:24:175:25 | {} | Data |
+| tst.ts:176:11:176:13 | baz | boolean |
+| tst.ts:176:17:176:20 | data | Data |
+| tst.ts:176:17:176:27 | data["foo"] | boolean |
+| tst.ts:176:22:176:26 | "foo" | "foo" |
+| tst.ts:179:9:179:11 | Foo | Foo |
+| tst.ts:180:21:180:21 | 0 | 0 |
+| tst.ts:182:5:184:5 | get cou ... ;\\n    } | number |
+| tst.ts:182:9:182:13 | count | number |
+| tst.ts:183:16:183:18 | Foo | typeof Foo in tst.ts:132 |
+| tst.ts:183:16:183:25 | Foo.#count | number |
+| tst.ts:186:7:186:9 | Foo | typeof Foo in tst.ts:132 |
+| tst.ts:186:7:186:16 | Foo.#count | number |
+| tst.ts:186:7:186:21 | Foo.#count += 3 | number |
+| tst.ts:186:21:186:21 | 3 | 3 |
+| tst.ts:189:11:189:15 | count | number |
+| tst.ts:189:19:189:21 | Foo | typeof Foo in tst.ts:132 |
+| tst.ts:189:19:189:28 | Foo.#count | number |
 | type_alias.ts:3:5:3:5 | b | boolean |
 | type_alias.ts:7:5:7:5 | c | ValueOrArray<number> |
 | type_alias.ts:14:9:14:32 | [proper ... ]: Json | any |
@@ -233,6 +318,11 @@ getTypeDefinitionType
 | tst.ts:91:3:95:3 | class S ...   }\\n  } | Super |
 | tst.ts:97:3:101:3 | class S ...   }\\n  } | Sub |
 | tst.ts:116:3:129:3 | class F ...   }\\n  } | Foo |
+| tst.ts:140:3:142:47 | type Sh ... mber }; | Shape |
+| tst.ts:152:5:156:5 | interfa ... ;\\n    } | Colors |
+| tst.ts:165:5:167:5 | interfa ... ;\\n    } | Foo |
+| tst.ts:171:5:173:5 | interfa ... ;\\n    } | Data |
+| tst.ts:179:3:192:3 | class F ...    \\n  } | Foo |
 | type_alias.ts:1:1:1:17 | type B = boolean; | boolean |
 | type_alias.ts:5:1:5:50 | type Va ... ay<T>>; | ValueOrArray<T> |
 | type_alias.ts:9:1:15:13 | type Js ... Json[]; | Json |
@@ -369,6 +459,36 @@ getTypeExprType
 | tst.ts:111:29:111:32 | -2-3 | any |
 | tst.ts:117:20:117:25 | number | number |
 | tst.ts:121:23:121:28 | number | number |
+| tst.ts:133:21:133:27 | unknown | unknown |
+| tst.ts:140:8:140:12 | Shape | Shape |
+| tst.ts:141:7:142:46 | \| { kin ... umber } | { kind: "circle"; radius: number; } \| { kind: "... |
+| tst.ts:141:9:141:42 | { kind: ... umber } | { kind: "circle"; radius: number; } |
+| tst.ts:141:17:141:24 | "circle" | "circle" |
+| tst.ts:141:35:141:40 | number | number |
+| tst.ts:142:9:142:46 | { kind: ... umber } | { kind: "square"; sideLength: number; } |
+| tst.ts:142:17:142:24 | "square" | "square" |
+| tst.ts:142:39:142:44 | number | number |
+| tst.ts:144:24:144:28 | Shape | Shape |
+| tst.ts:144:32:144:37 | number | number |
+| tst.ts:152:15:152:20 | Colors | Colors |
+| tst.ts:153:13:153:18 | symbol | symbol |
+| tst.ts:153:22:153:27 | number | number |
+| tst.ts:154:13:154:18 | string | string |
+| tst.ts:154:22:154:27 | string | string |
+| tst.ts:155:13:155:18 | number | number |
+| tst.ts:155:22:155:28 | boolean | boolean |
+| tst.ts:158:17:158:22 | Colors | Colors |
+| tst.ts:165:15:165:17 | Foo | Foo |
+| tst.ts:166:14:166:17 | foo- | any |
+| tst.ts:166:20:166:25 | number | number |
+| tst.ts:166:31:166:36 | number | number |
+| tst.ts:168:15:168:17 | Foo | Foo |
+| tst.ts:171:15:171:18 | Data | Data |
+| tst.ts:172:17:172:22 | string | string |
+| tst.ts:172:17:172:31 | string \| symbol | string \| symbol |
+| tst.ts:172:26:172:31 | symbol | symbol |
+| tst.ts:172:35:172:41 | boolean | boolean |
+| tst.ts:175:17:175:20 | Data | Data |
 | type_alias.ts:1:6:1:6 | B | boolean |
 | type_alias.ts:1:10:1:16 | boolean | boolean |
 | type_alias.ts:3:8:3:8 | B | boolean |
@@ -439,9 +559,13 @@ referenceDefinition
 | Color.blue | type_definitions.ts:14:15:14:18 | blue |
 | Color.green | type_definitions.ts:14:8:14:12 | green |
 | Color.red | type_definitions.ts:14:3:14:5 | red |
+| Colors | tst.ts:152:5:156:5 | interfa ... ;\\n    } |
+| Data | tst.ts:171:5:173:5 | interfa ... ;\\n    } |
 | E | type_definition_objects.ts:6:8:6:16 | enum E {} |
 | EnumWithOneMember | type_definitions.ts:18:26:18:31 | member |
 | Foo | tst.ts:116:3:129:3 | class F ...   }\\n  } |
+| Foo | tst.ts:165:5:167:5 | interfa ... ;\\n    } |
+| Foo | tst.ts:179:3:192:3 | class F ...    \\n  } |
 | HasArea | tst.ts:58:1:60:1 | interfa ... mber;\\n} |
 | I<S> | type_definitions.ts:3:1:5:1 | interfa ... x: S;\\n} |
 | I<number> | type_definitions.ts:3:1:5:1 | interfa ... x: S;\\n} |
@@ -449,6 +573,7 @@ referenceDefinition
 | MyUnion | tst.ts:65:1:65:54 | type My ...  true}; |
 | MyUnion2 | tst.ts:68:1:68:49 | type My ...  true}; |
 | NonAbstractDummy | tst.ts:54:1:56:1 | interfa ... mber;\\n} |
+| Shape | tst.ts:140:3:142:47 | type Sh ... mber }; |
 | Sub | tst.ts:97:3:101:3 | class S ...   }\\n  } |
 | Super | tst.ts:91:3:95:3 | class S ...   }\\n  } |
 | Super | tst.ts:91:3:95:3 | class S ...   }\\n  } |
@@ -490,6 +615,8 @@ unknownType
 | tst.ts:40:5:40:15 | unknownType | unknown |
 | tst.ts:47:8:47:8 | e | unknown |
 | tst.ts:48:14:48:14 | e | unknown |
+| tst.ts:133:16:133:18 | arg | unknown |
+| tst.ts:134:32:134:34 | arg | unknown |
 abstractSignature
 | (): HasArea |
 | new (): HasArea |
@@ -498,9 +625,11 @@ unionIndex
 | 2 | 1 | 1 \| 2 |
 | "bigint" | 2 | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
 | "boolean" | 3 | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
+| "circle" | 0 | "circle" \| "square" |
 | "function" | 7 | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
 | "number" | 1 | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
 | "object" | 6 | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
+| "square" | 1 | "circle" \| "square" |
 | "string" | 0 | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
 | "symbol" | 4 | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
 | "undefined" | 5 | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
@@ -524,7 +653,9 @@ unionIndex
 | string | 0 | string \| number \| boolean |
 | string | 0 | string \| number \| boolean \| { [property: string... |
 | string | 0 | string \| number \| true |
+| string | 0 | string \| symbol |
 | string | 0 | string \| { [key: string]: any; } |
+| symbol | 1 | string \| symbol |
 | true | 1 | boolean |
 | true | 2 | string \| number \| true |
 | true | 3 | string \| number \| boolean |
@@ -532,8 +663,13 @@ unionIndex
 | { [key: string]: any; } | 1 | string \| { [key: string]: any; } |
 | { [key: string]: any; } | 2 | VirtualNode \| { [key: string]: any; } |
 | { [property: string]: Json; } | 4 | string \| number \| boolean \| { [property: string... |
+| { kind: "circle"; radius: number; } | 0 | { kind: "circle"; radius: number; } \| { kind: "... |
+| { kind: "square"; sideLength: number; } | 1 | { kind: "circle"; radius: number; } \| { kind: "... |
 | { myUnion: true; } | 0 | MyUnion \| { yetAnotherType: true; } |
 | { myUnion: true; } | 0 | { myUnion: true; } \| { stillMyUnion: true; } |
 | { stillMyUnion: true; } | 1 | MyUnion \| { yetAnotherType: true; } |
 | { stillMyUnion: true; } | 1 | { myUnion: true; } \| { stillMyUnion: true; } |
 | { yetAnotherType: true; } | 2 | MyUnion \| { yetAnotherType: true; } |
+getAStaticInitializerBlock
+| tst.ts:179:3:192:3 | class F ...    \\n  } | tst.ts:185:5:187:5 | static  ... ;\\n    } |
+| tst.ts:179:3:192:3 | class F ...    \\n  } | tst.ts:188:5:190:5 | static  ... ;\\n    } |

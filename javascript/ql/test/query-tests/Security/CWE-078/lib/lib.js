@@ -489,3 +489,14 @@ module.exports.myCommand = function (myCommand) {
 	let cmd = `cd ${cwd} ; ${myCommand}`; // OK - the parameter name suggests that it is purposely a shell command.
 	cp.exec(cmd);
 }
+
+(function () {
+	var MyThing = {
+		cp: require('child_process')
+	};
+
+	module.exports.myIndirectThing = function (name) {
+		MyThing.cp.exec("rm -rf " + name); // NOT OK
+	}
+});
+  

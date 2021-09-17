@@ -15,7 +15,8 @@ may have unforeseen effects, such as the execution of arbitrary code.
 <p>
 There are many different serialization frameworks.  This query currently
 supports Kryo, XmlDecoder, XStream, SnakeYaml, JYaml, JsonIO, YAMLBeans, HessianBurlap, Castor, Burlap,
-Jackson and Java IO serialization through <code>ObjectInputStream</code>/<code>ObjectOutputStream</code>.
+Jackson, Jabsorb, Jodd JSON, Flexjson and Java IO serialization through
+<code>ObjectInputStream</code>/<code>ObjectOutputStream</code>.
 </p>
 </overview>
 
@@ -99,6 +100,18 @@ Research by Moritz Bechler:
 Blog posts by the developer of Jackson libraries:
 <a href="https://cowtowncoder.medium.com/on-jackson-cves-dont-panic-here-is-what-you-need-to-know-54cd0d6e8062">On Jackson CVEs: Don’t Panic — Here is what you need to know</a>
 <a href="https://cowtowncoder.medium.com/jackson-2-10-safe-default-typing-2d018f0ce2ba">Jackson 2.10: Safe Default Typing</a>
+</li>
+<li>
+Jabsorb documentation on deserialization:
+<a href="https://github.com/Servoy/jabsorb/blob/master/src/org/jabsorb/">Jabsorb JSON Serializer</a>.
+</li>
+<li>
+Jodd JSON documentation on deserialization:
+<a href="https://json.jodd.org/parser">JoddJson Parser</a>.
+</li>
+<li>
+RCE in Flexjson:
+<a href="https://codewhitesec.blogspot.com/2020/03/liferay-portal-json-vulns.html">Flexjson deserialization</a>.
 </li>
 </references>
 

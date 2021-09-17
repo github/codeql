@@ -127,7 +127,7 @@ queryDir = os.path.join(workDir, "query")
 os.makedirs(queryDir)
 qlFile = os.path.join(queryDir, "gen.ql")
 with open(os.path.join(queryDir, "qlpack.yml"), "w") as f:
-    f.write("name: test-generation-query\nversion: 0.0.0\nlibraryPathDependencies: codeql-java")
+    f.write("name: test-generation-query\nversion: 0.0.0\nlibraryPathDependencies: codeql/java-queries")
 with open(qlFile, "w") as f:
     f.write(
         "import java\nimport utils.GenerateFlowTestCase\n\nclass GenRow extends TargetSummaryModelCsv {\n\n\toverride predicate row(string r) {\n\t\tr = [\n")
@@ -212,7 +212,6 @@ with open(resultQl, "w") as f:
         f.write(", ".join('"%s"' %
                           modelSpecRow[0].strip() for modelSpecRow in supportModelRows))
         copyfile("testModelsFooter.qlfrag", f)
-    copyfile("testFooter.qlfrag", f)
 
 # Make an empty .expected file, since this is an inline-exectations test
 with open(os.path.join(sys.argv[3], "test.expected"), "w"):
