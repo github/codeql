@@ -88,6 +88,7 @@ private module Frameworks {
   private import semmle.code.csharp.security.dataflow.flowsinks.Html
   private import semmle.code.csharp.frameworks.System
   private import semmle.code.csharp.security.dataflow.XSSSinks
+  private import semmle.code.csharp.frameworks.ServiceStack
 }
 
 /**
