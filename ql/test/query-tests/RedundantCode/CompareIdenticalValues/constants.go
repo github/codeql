@@ -1,4 +1,5 @@
-// +build linux, amd64
+//go:build (linux && ignore) || amd64
+// +build linux,ignore amd64
 
 package main
 

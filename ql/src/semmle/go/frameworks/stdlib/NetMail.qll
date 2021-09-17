@@ -34,15 +34,15 @@ module NetMail {
     FunctionOutput outp;
 
     MethodModels() {
-      // signature: func (*AddressParser).Parse(address string) (*Address, error)
+      // signature: func (*AddressParser) Parse(address string) (*Address, error)
       hasQualifiedName("net/mail", "AddressParser", "Parse") and
       (inp.isParameter(0) and outp.isResult(0))
       or
-      // signature: func (*AddressParser).ParseList(list string) ([]*Address, error)
+      // signature: func (*AddressParser) ParseList(list string) ([]*Address, error)
       hasQualifiedName("net/mail", "AddressParser", "ParseList") and
       (inp.isParameter(0) and outp.isResult(0))
       or
-      // signature: func (Header).Get(key string) string
+      // signature: func (Header) Get(key string) string
       hasQualifiedName("net/mail", "Header", "Get") and
       (inp.isReceiver() and outp.isResult())
     }

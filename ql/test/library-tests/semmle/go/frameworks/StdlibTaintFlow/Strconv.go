@@ -46,6 +46,12 @@ func TaintStepTest_StrconvQuote_B0I0O0(sourceCQL interface{}) interface{} {
 	return intoString584
 }
 
+func TaintStepTest_StrconvQuotedPrefix_B0I0O0(sourceCQL interface{}) interface{} {
+	fromString417 := sourceCQL.(string)
+	intoString584, _ := strconv.QuotedPrefix(fromString417)
+	return intoString584
+}
+
 func TaintStepTest_StrconvQuoteToASCII_B0I0O0(sourceCQL interface{}) interface{} {
 	fromString991 := sourceCQL.(string)
 	intoString881 := strconv.QuoteToASCII(fromString991)

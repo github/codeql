@@ -26,11 +26,11 @@ module EncodingBase64 {
     FunctionOutput outp;
 
     MethodModels() {
-      // signature: func (*Encoding).Decode(dst []byte, src []byte) (n int, err error)
+      // signature: func (*Encoding) Decode(dst []byte, src []byte) (n int, err error)
       hasQualifiedName("encoding/base64", "Encoding", "Decode") and
       (inp.isParameter(1) and outp.isParameter(0))
       or
-      // signature: func (*Encoding).DecodeString(s string) ([]byte, error)
+      // signature: func (*Encoding) DecodeString(s string) ([]byte, error)
       hasQualifiedName("encoding/base64", "Encoding", "DecodeString") and
       (inp.isParameter(0) and outp.isResult(0))
     }

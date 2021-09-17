@@ -1,0 +1,32 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>A deferred statement in a loop will not execute until the end of the function. This can lead to unintentionally holding resources open, like file handles or database transactions.</p>
+</overview>
+<recommendation>
+
+<p>Either run the deferred function manually, or create a subroutine that contains the defer.</p>
+
+</recommendation>
+<example>
+
+<p>In the example below, the files opened in the loop are not closed until the end of the function:</p>
+
+<sample src="DeferInLoop.go" />
+
+<p>The corrected version puts the loop body into a function.</p>
+
+<sample src="DeferInLoopGood.go" />
+
+</example>
+<references>
+
+<li>
+  <a href="https://golang.org/ref/spec#Defer_statements">Defer statements</a>.
+</li>
+
+</references>
+</qhelp>

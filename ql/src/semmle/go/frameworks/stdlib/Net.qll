@@ -54,15 +54,15 @@ module Net {
     FunctionOutput outp;
 
     MethodModels() {
-      // signature: func (*IPConn).ReadFromIP(b []byte) (int, *IPAddr, error)
+      // signature: func (*IPConn) ReadFromIP(b []byte) (int, *IPAddr, error)
       hasQualifiedName("net", "IPConn", "ReadFromIP") and
       (inp.isReceiver() and outp.isParameter(0))
       or
-      // signature: func (*IPConn).ReadMsgIP(b []byte, oob []byte) (n int, oobn int, flags int, addr *IPAddr, err error)
+      // signature: func (*IPConn) ReadMsgIP(b []byte, oob []byte) (n int, oobn int, flags int, addr *IPAddr, err error)
       hasQualifiedName("net", "IPConn", "ReadMsgIP") and
       (inp.isReceiver() and outp.isParameter(_))
       or
-      // signature: func (*IPConn).SyscallConn() (syscall.RawConn, error)
+      // signature: func (*IPConn) SyscallConn() (syscall.RawConn, error)
       hasQualifiedName("net", "IPConn", "SyscallConn") and
       (
         inp.isReceiver() and outp.isResult(0)
@@ -70,15 +70,15 @@ module Net {
         inp.isResult(0) and outp.isReceiver()
       )
       or
-      // signature: func (*IPConn).WriteMsgIP(b []byte, oob []byte, addr *IPAddr) (n int, oobn int, err error)
+      // signature: func (*IPConn) WriteMsgIP(b []byte, oob []byte, addr *IPAddr) (n int, oobn int, err error)
       hasQualifiedName("net", "IPConn", "WriteMsgIP") and
       (inp.isParameter([0, 1]) and outp.isReceiver())
       or
-      // signature: func (*IPConn).WriteToIP(b []byte, addr *IPAddr) (int, error)
+      // signature: func (*IPConn) WriteToIP(b []byte, addr *IPAddr) (int, error)
       hasQualifiedName("net", "IPConn", "WriteToIP") and
       (inp.isParameter(0) and outp.isReceiver())
       or
-      // signature: func (*TCPConn).SyscallConn() (syscall.RawConn, error)
+      // signature: func (*TCPConn) SyscallConn() (syscall.RawConn, error)
       hasQualifiedName("net", "TCPConn", "SyscallConn") and
       (
         inp.isReceiver() and outp.isResult(0)
@@ -86,7 +86,7 @@ module Net {
         inp.isResult(0) and outp.isReceiver()
       )
       or
-      // signature: func (*TCPListener).File() (f *os.File, err error)
+      // signature: func (*TCPListener) File() (f *os.File, err error)
       hasQualifiedName("net", "TCPListener", "File") and
       (
         inp.isReceiver() and outp.isResult(0)
@@ -94,7 +94,7 @@ module Net {
         inp.isResult(0) and outp.isReceiver()
       )
       or
-      // signature: func (*TCPListener).SyscallConn() (syscall.RawConn, error)
+      // signature: func (*TCPListener) SyscallConn() (syscall.RawConn, error)
       hasQualifiedName("net", "TCPListener", "SyscallConn") and
       (
         inp.isReceiver() and outp.isResult(0)
@@ -102,15 +102,15 @@ module Net {
         inp.isResult(0) and outp.isReceiver()
       )
       or
-      // signature: func (*UDPConn).ReadFromUDP(b []byte) (int, *UDPAddr, error)
+      // signature: func (*UDPConn) ReadFromUDP(b []byte) (int, *UDPAddr, error)
       hasQualifiedName("net", "UDPConn", "ReadFromUDP") and
       (inp.isReceiver() and outp.isParameter(0))
       or
-      // signature: func (*UDPConn).ReadMsgUDP(b []byte, oob []byte) (n int, oobn int, flags int, addr *UDPAddr, err error)
+      // signature: func (*UDPConn) ReadMsgUDP(b []byte, oob []byte) (n int, oobn int, flags int, addr *UDPAddr, err error)
       hasQualifiedName("net", "UDPConn", "ReadMsgUDP") and
       (inp.isReceiver() and outp.isParameter(_))
       or
-      // signature: func (*UDPConn).SyscallConn() (syscall.RawConn, error)
+      // signature: func (*UDPConn) SyscallConn() (syscall.RawConn, error)
       hasQualifiedName("net", "UDPConn", "SyscallConn") and
       (
         inp.isReceiver() and outp.isResult(0)
@@ -118,23 +118,23 @@ module Net {
         inp.isResult(0) and outp.isReceiver()
       )
       or
-      // signature: func (*UDPConn).WriteMsgUDP(b []byte, oob []byte, addr *UDPAddr) (n int, oobn int, err error)
+      // signature: func (*UDPConn) WriteMsgUDP(b []byte, oob []byte, addr *UDPAddr) (n int, oobn int, err error)
       hasQualifiedName("net", "UDPConn", "WriteMsgUDP") and
       (inp.isParameter([0, 1]) and outp.isReceiver())
       or
-      // signature: func (*UDPConn).WriteToUDP(b []byte, addr *UDPAddr) (int, error)
+      // signature: func (*UDPConn) WriteToUDP(b []byte, addr *UDPAddr) (int, error)
       hasQualifiedName("net", "UDPConn", "WriteToUDP") and
       (inp.isParameter(0) and outp.isReceiver())
       or
-      // signature: func (*UnixConn).ReadFromUnix(b []byte) (int, *UnixAddr, error)
+      // signature: func (*UnixConn) ReadFromUnix(b []byte) (int, *UnixAddr, error)
       hasQualifiedName("net", "UnixConn", "ReadFromUnix") and
       (inp.isReceiver() and outp.isParameter(0))
       or
-      // signature: func (*UnixConn).ReadMsgUnix(b []byte, oob []byte) (n int, oobn int, flags int, addr *UnixAddr, err error)
+      // signature: func (*UnixConn) ReadMsgUnix(b []byte, oob []byte) (n int, oobn int, flags int, addr *UnixAddr, err error)
       hasQualifiedName("net", "UnixConn", "ReadMsgUnix") and
       (inp.isReceiver() and outp.isParameter(_))
       or
-      // signature: func (*UnixConn).SyscallConn() (syscall.RawConn, error)
+      // signature: func (*UnixConn) SyscallConn() (syscall.RawConn, error)
       hasQualifiedName("net", "UnixConn", "SyscallConn") and
       (
         inp.isReceiver() and outp.isResult(0)
@@ -142,15 +142,15 @@ module Net {
         inp.isResult(0) and outp.isReceiver()
       )
       or
-      // signature: func (*UnixConn).WriteMsgUnix(b []byte, oob []byte, addr *UnixAddr) (n int, oobn int, err error)
+      // signature: func (*UnixConn) WriteMsgUnix(b []byte, oob []byte, addr *UnixAddr) (n int, oobn int, err error)
       hasQualifiedName("net", "UnixConn", "WriteMsgUnix") and
       (inp.isParameter([0, 1]) and outp.isReceiver())
       or
-      // signature: func (*UnixConn).WriteToUnix(b []byte, addr *UnixAddr) (int, error)
+      // signature: func (*UnixConn) WriteToUnix(b []byte, addr *UnixAddr) (int, error)
       hasQualifiedName("net", "UnixConn", "WriteToUnix") and
       (inp.isParameter(0) and outp.isReceiver())
       or
-      // signature: func (*UnixListener).File() (f *os.File, err error)
+      // signature: func (*UnixListener) File() (f *os.File, err error)
       hasQualifiedName("net", "UnixListener", "File") and
       (
         inp.isReceiver() and outp.isResult(0)
@@ -158,7 +158,7 @@ module Net {
         inp.isResult(0) and outp.isReceiver()
       )
       or
-      // signature: func (*UnixListener).SyscallConn() (syscall.RawConn, error)
+      // signature: func (*UnixListener) SyscallConn() (syscall.RawConn, error)
       hasQualifiedName("net", "UnixListener", "SyscallConn") and
       (
         inp.isReceiver() and outp.isResult(0)
@@ -166,23 +166,23 @@ module Net {
         inp.isResult(0) and outp.isReceiver()
       )
       or
-      // signature: func (Conn).Read(b []byte) (n int, err error)
+      // signature: func (Conn) Read(b []byte) (n int, err error)
       implements("net", "Conn", "Read") and
       (inp.isReceiver() and outp.isParameter(0))
       or
-      // signature: func (PacketConn).ReadFrom(p []byte) (n int, addr Addr, err error)
+      // signature: func (PacketConn) ReadFrom(p []byte) (n int, addr Addr, err error)
       implements("net", "PacketConn", "ReadFrom") and
       (inp.isReceiver() and outp.isParameter(0))
       or
-      // signature: func (Addr).String() string
+      // signature: func (Addr) String() string
       implements("net", "Addr", "String") and
       (inp.isReceiver() and outp.isResult())
       or
-      // signature: func (Conn).Write(b []byte) (n int, err error)
+      // signature: func (Conn) Write(b []byte) (n int, err error)
       implements("net", "Conn", "Write") and
       (inp.isParameter(0) and outp.isReceiver())
       or
-      // signature: func (PacketConn).WriteTo(p []byte, addr Addr) (n int, err error)
+      // signature: func (PacketConn) WriteTo(p []byte, addr Addr) (n int, err error)
       implements("net", "PacketConn", "WriteTo") and
       (inp.isParameter(0) and outp.isReceiver())
     }

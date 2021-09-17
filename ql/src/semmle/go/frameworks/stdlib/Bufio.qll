@@ -79,39 +79,39 @@ module Bufio {
     FunctionOutput outp;
 
     MethodModels() {
-      // signature: func (*Reader).Peek(n int) ([]byte, error)
+      // signature: func (*Reader) Peek(n int) ([]byte, error)
       hasQualifiedName("bufio", "Reader", "Peek") and
       (inp.isReceiver() and outp.isResult(0))
       or
-      // signature: func (*Reader).ReadBytes(delim byte) ([]byte, error)
+      // signature: func (*Reader) ReadBytes(delim byte) ([]byte, error)
       hasQualifiedName("bufio", "Reader", "ReadBytes") and
       (inp.isReceiver() and outp.isResult(0))
       or
-      // signature: func (*Reader).ReadLine() (line []byte, isPrefix bool, err error)
+      // signature: func (*Reader) ReadLine() (line []byte, isPrefix bool, err error)
       hasQualifiedName("bufio", "Reader", "ReadLine") and
       (inp.isReceiver() and outp.isResult(0))
       or
-      // signature: func (*Reader).ReadSlice(delim byte) (line []byte, err error)
+      // signature: func (*Reader) ReadSlice(delim byte) (line []byte, err error)
       hasQualifiedName("bufio", "Reader", "ReadSlice") and
       (inp.isReceiver() and outp.isResult(0))
       or
-      // signature: func (*Reader).ReadString(delim byte) (string, error)
+      // signature: func (*Reader) ReadString(delim byte) (string, error)
       hasQualifiedName("bufio", "Reader", "ReadString") and
       (inp.isReceiver() and outp.isResult(0))
       or
-      // signature: func (*Reader).Reset(r io.Reader)
+      // signature: func (*Reader) Reset(r io.Reader)
       hasQualifiedName("bufio", "Reader", "Reset") and
       (inp.isParameter(0) and outp.isReceiver())
       or
-      // signature: func (*Scanner).Bytes() []byte
+      // signature: func (*Scanner) Bytes() []byte
       hasQualifiedName("bufio", "Scanner", "Bytes") and
       (inp.isReceiver() and outp.isResult())
       or
-      // signature: func (*Scanner).Text() string
+      // signature: func (*Scanner) Text() string
       hasQualifiedName("bufio", "Scanner", "Text") and
       (inp.isReceiver() and outp.isResult())
       or
-      // signature: func (*Writer).Reset(w io.Writer)
+      // signature: func (*Writer) Reset(w io.Writer)
       hasQualifiedName("bufio", "Writer", "Reset") and
       (inp.isReceiver() and outp.isParameter(0))
     }

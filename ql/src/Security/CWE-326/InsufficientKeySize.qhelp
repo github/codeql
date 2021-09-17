@@ -1,0 +1,50 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+     <overview>
+          <p>
+               Incorrect uses of encryption algorithms may result in sensitive data exposure,
+               key leakage, broken authentication, insecure session, and spoofing attacks.
+          </p>
+
+     </overview>
+     <recommendation>
+
+          <p>
+               Ensure that you use a strong key with a recommended bit size.
+               For RSA encryption the minimum size is 2048 bits.
+          </p>
+
+     </recommendation>
+     <example>
+
+          <p>
+               The following code uses RSA encryption with insufficient key size.
+          </p>
+
+          <sample src="InsufficientKeySizeBad.go" />
+
+          <p>
+               In the example below, the key size is set to 2048 bits.
+          </p>
+
+          <sample src="InsufficientKeySizeGood.go" />
+
+     </example>
+
+     <references>
+          <li>OWASP: <a
+          href="https://cheatsheetseries.owasp.org/cheatsheets/Cryptographic_Storage_Cheat_Sheet.html">Cryptographic Storage Cheat Sheet</a>.
+          </li>
+          <li>Wikipedia: <a
+          href="https://en.wikipedia.org/wiki/Strong_cryptography#Cryptographically_strong_algorithms">Cryptographically Strong Algorithms</a>.
+          </li>
+          <li>Wikipedia: <a
+          href="https://en.wikipedia.org/wiki/Strong_cryptography#Examples">Strong Cryptography Examples</a>.
+          </li>
+          <li>NIST, FIPS 140 Annex a: <a href="http://csrc.nist.gov/publications/fips/fips140-2/fips1402annexa.pdf"> Approved Security Functions</a>.</li>
+          <li>NIST, SP 800-131A: <a href="http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-131Ar1.pdf"> Transitions: Recommendation for Transitioning the Use of Cryptographic Algorithms and Key Lengths</a>.</li>
+     </references>
+
+</qhelp>

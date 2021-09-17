@@ -40,10 +40,31 @@ func TaintStepTest_ArchiveZipFileOpen_B0I0O0(sourceCQL interface{}) interface{} 
 	return intoReadCloser483
 }
 
+func TaintStepTest_ArchiveZipFileOpenRaw_B0I0O0(sourceCQL interface{}) interface{} {
+	fromFile127 := sourceCQL.(zip.File)
+	intoReadCloser483, _ := fromFile127.OpenRaw()
+	return intoReadCloser483
+}
+
+func TaintStepTest_ArchiveZipWriterCopy_B0I0O0(sourceCQL interface{}) interface{} {
+	fromFile127 := sourceCQL.(*zip.File)
+	var intoWriter982 zip.Writer
+	intoWriter982.Copy(fromFile127)
+	return intoWriter982
+}
+
 func TaintStepTest_ArchiveZipWriterCreate_B0I0O0(sourceCQL interface{}) interface{} {
 	fromWriter989 := sourceCQL.(io.Writer)
 	var intoWriter982 zip.Writer
 	intermediateCQL, _ := intoWriter982.Create("")
+	link(fromWriter989, intermediateCQL)
+	return intoWriter982
+}
+
+func TaintStepTest_ArchiveZipWriterCreateRaw_B0I0O0(sourceCQL interface{}) interface{} {
+	fromWriter989 := sourceCQL.(io.Writer)
+	var intoWriter982 zip.Writer
+	intermediateCQL, _ := intoWriter982.CreateRaw(nil)
 	link(fromWriter989, intermediateCQL)
 	return intoWriter982
 }

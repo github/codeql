@@ -137,23 +137,23 @@ module Fmt {
     FunctionOutput outp;
 
     MethodModels() {
-      // signature: func (GoStringer).GoString() string
+      // signature: func (GoStringer) GoString() string
       implements("fmt", "GoStringer", "GoString") and
       (inp.isReceiver() and outp.isResult())
       or
-      // signature: func (ScanState).Read(buf []byte) (n int, err error)
+      // signature: func (ScanState) Read(buf []byte) (n int, err error)
       implements("fmt", "ScanState", "Read") and
       (inp.isReceiver() and outp.isParameter(0))
       or
-      // signature: func (Stringer).String() string
+      // signature: func (Stringer) String() string
       implements("fmt", "Stringer", "String") and
       (inp.isReceiver() and outp.isResult())
       or
-      // signature: func (ScanState).Token(skipSpace bool, f func(rune) bool) (token []byte, err error)
+      // signature: func (ScanState) Token(skipSpace bool, f func(rune) bool) (token []byte, err error)
       implements("fmt", "ScanState", "Token") and
       (inp.isReceiver() and outp.isResult(0))
       or
-      // signature: func (State).Write(b []byte) (n int, err error)
+      // signature: func (State) Write(b []byte) (n int, err error)
       this.implements("fmt", "State", "Write") and
       (inp.isParameter(0) and outp.isReceiver())
     }

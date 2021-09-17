@@ -16,6 +16,10 @@ module IoFs {
     FunctionOutput outp;
 
     FunctionModels() {
+      //signature: func FileInfoToDirEntry(info FileInfo) DirEntry
+      this.hasQualifiedName(packagePath(), "FileInfoToDirEntry") and
+      (inp.isParameter(0) and outp.isResult())
+      or
       //signature: func Glob(fsys FS, pattern string) (matches []string, err error)
       this.hasQualifiedName(packagePath(), "Glob") and
       (inp.isParameter(0) and outp.isResult(0))
@@ -60,35 +64,35 @@ module IoFs {
     FunctionOutput outp;
 
     MethodModels() {
-      //signature: func (DirEntry).Name() string
+      //signature: func (DirEntry) Name() string
       this.implements(packagePath(), "DirEntry", "Name") and
       (inp.isReceiver() and outp.isResult())
       or
-      //signature: func (DirEntry).Info() (FileInfo, error)
+      //signature: func (DirEntry) Info() (FileInfo, error)
       this.implements(packagePath(), "DirEntry", "Info") and
       (inp.isReceiver() and outp.isResult(0))
       or
-      //signature: func (FS).Open(name string) (File, error)
+      //signature: func (FS) Open(name string) (File, error)
       this.implements(packagePath(), "FS", "Open") and
       (inp.isReceiver() and outp.isResult(0))
       or
-      //signature: func (GlobFS).Glob(pattern string) ([]string, error)
+      //signature: func (GlobFS) Glob(pattern string) ([]string, error)
       this.implements(packagePath(), "GlobFS", "Glob") and
       (inp.isReceiver() and outp.isResult(0))
       or
-      //signature: func (ReadDirFS).ReadDir(name string) ([]DirEntry, error)
+      //signature: func (ReadDirFS) ReadDir(name string) ([]DirEntry, error)
       this.implements(packagePath(), "ReadDirFS", "ReadDir") and
       (inp.isReceiver() and outp.isResult(0))
       or
-      //signature: func (ReadFileFS).ReadFile(name string) ([]byte, error)
+      //signature: func (ReadFileFS) ReadFile(name string) ([]byte, error)
       this.implements(packagePath(), "ReadFileFS", "ReadFile") and
       (inp.isReceiver() and outp.isResult(0))
       or
-      //signature: func (SubFS).Sub(dir string) (FS, error)
+      //signature: func (SubFS) Sub(dir string) (FS, error)
       this.implements(packagePath(), "SubFS", "Sub") and
       (inp.isReceiver() and outp.isResult(0))
       or
-      //signature: func (File).Read([]byte) (int, error)
+      //signature: func (File) Read([]byte) (int, error)
       this.implements(packagePath(), "File", "Read") and
       (inp.isReceiver() and outp.isParameter(0))
     }
