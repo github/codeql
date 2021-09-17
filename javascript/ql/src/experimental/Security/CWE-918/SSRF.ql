@@ -14,5 +14,6 @@ import SSRF
 import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, DataFlow::Node request
-where cfg.hasFlowPath(source, sink) and request = sink.getNode().(RequestForgery::Sink).getARequest()
+where
+  cfg.hasFlowPath(source, sink) and request = sink.getNode().(RequestForgery::Sink).getARequest()
 select sink, source, sink, "The URL of this request depends on a user-provided value"
