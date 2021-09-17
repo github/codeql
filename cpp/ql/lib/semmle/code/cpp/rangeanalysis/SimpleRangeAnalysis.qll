@@ -1530,6 +1530,29 @@ private predicate isUnsupportedGuardPhi(Variable v, RangeSsaDefinition phi, Vari
   )
 }
 
+/**
+ * Gets the upper bound of the expression, if the expression is guarded.
+ * An upper bound can only be found, if a guard phi node can be found, and the
+ * expression has only one immediate predecessor.
+ */
+private float getGuardedUpperBound(VariableAccess guardedAccess) {
+  exists(
+    RangeSsaDefinition def, StackVariable v, VariableAccess guardVa, Expr guard, boolean branch
+  |
+    def.isGuardPhi(v, guardVa, guard, branch) and
+    // If the basic block for the variable access being examined has
+    // more than one predecessor, the guard phi node could originate
+    // from one of the predecessors. This is because the guard phi
+    // node is attached to the block at the end of the edge and not on
+    // the actual edge. It is therefore not possible to determine which
+    // edge the guard phi node belongs to. The predicate below ensures
+    // that there is one predecessor, albeit somewhat conservative.
+    exists(unique(BasicBlock b | b = def.(BasicBlock).getAPredecessor())) and
+    guardedAccess = def.getAUse(v) and
+    result = max(float ub | upperBoundFromGuard(guard, guardVa, ub, branch))
+  )
+}
+
 cached
 private module SimpleRangeAnalysisCached {
   /**
@@ -1565,9 +1588,9 @@ private module SimpleRangeAnalysisCached {
    */
   cached
   float upperBound(Expr expr) {
-    // Combine the upper bounds returned by getTruncatedUpperBounds into a
-    // single maximum value.
-    result = max(float ub | ub = getTruncatedUpperBounds(expr) | ub)
+    // Combine the upper bounds returned by getTruncatedUpperBounds and
+    // getGuardedUpperBound into a single maximum value
+    result = min([max(getTruncatedUpperBounds(expr)), getGuardedUpperBound(expr)])
   }
 
   /**

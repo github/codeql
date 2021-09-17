@@ -7,7 +7,7 @@
  * @precision high
  * @id java/jshell-injection
  * @tags security
- *       external/cwe-094
+ *       external/cwe/cwe-094
  */
 
 import java

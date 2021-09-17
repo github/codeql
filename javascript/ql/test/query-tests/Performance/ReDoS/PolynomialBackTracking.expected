@@ -503,3 +503,7 @@
 | tst.js:375:15:375:16 | x* | Strings with many repetitions of 'x' can start matching anywhere after the start of the preceeding (x*)+(?=$\|y) |
 | tst.js:378:16:378:22 | [\\s\\S]* | Strings with many repetitions of 'a' can start matching anywhere after the start of the preceeding ([\\s\\S]*)+(?=$) |
 | tst.js:379:16:379:22 | [\\s\\S]* | Strings with many repetitions of 'a' can start matching anywhere after the start of the preceeding ([\\s\\S]*)+(?=$\|y) |
+| tst.js:381:15:381:24 | (foo\|FOO)* | Strings with many repetitions of 'FOO' can start matching anywhere after the start of the preceeding (foo\|FOO)*bar |
+| tst.js:382:14:382:23 | (foo\|FOO)* | Strings with many repetitions of 'foo' can start matching anywhere after the start of the preceeding (foo\|FOO)*bar |
+| tst.js:384:15:384:26 | ([AB]\|[ab])* | Strings with many repetitions of 'A' can start matching anywhere after the start of the preceeding ([AB]\|[ab])*C |
+| tst.js:385:14:385:25 | ([DE]\|[de])* | Strings with many repetitions of 'd' can start matching anywhere after the start of the preceeding ([DE]\|[de])*F |

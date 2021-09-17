@@ -110,6 +110,7 @@ class Annotatable extends Element {
   }
 
   /** Gets an annotation that applies to this element. */
+  cached
   Annotation getAnAnnotation() { result.getAnnotatedElement() = this }
 
   /**
@@ -117,11 +118,7 @@ class Annotatable extends Element {
    * annotation attached to it for the specified `category`.
    */
   predicate suppressesWarningsAbout(string category) {
-    exists(string withQuotes |
-      withQuotes = getAnAnnotation().(SuppressWarningsAnnotation).getASuppressedWarning()
-    |
-      category = withQuotes.substring(1, withQuotes.length() - 1)
-    )
+    category = getAnAnnotation().(SuppressWarningsAnnotation).getASuppressedWarning()
     or
     this.(Member).getDeclaringType().suppressesWarningsAbout(category)
     or

@@ -80,8 +80,6 @@ class Callable extends Parameterizable, @dotnet_callable {
     not exists(this.getReturnType()) and result = "System.Void"
   }
 
-  override string getUndecoratedName() { result = getName() }
-
   /** Gets the return type of this callable. */
   Type getReturnType() { none() }
 }

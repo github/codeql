@@ -19,6 +19,8 @@ private import TypeRef
 class Event extends DeclarationWithAccessors, @event {
   override string getName() { events(this, result, _, _, _) }
 
+  override string getUndecoratedName() { events(this, result, _, _, _) }
+
   override ValueOrRefType getDeclaringType() { events(this, _, result, _, _) }
 
   override DelegateType getType() { events(this, _, _, getTypeRef(result), _) }
@@ -111,6 +113,8 @@ class EventAccessor extends Accessor, @event_accessor {
 class AddEventAccessor extends EventAccessor, @add_event_accessor {
   override string getName() { result = "add" + "_" + getDeclaration().getName() }
 
+  override string getUndecoratedName() { result = "add" + "_" + getDeclaration().getName() }
+
   override string getAPrimaryQlClass() { result = "AddEventAccessor" }
 }
 
@@ -129,6 +133,8 @@ class AddEventAccessor extends EventAccessor, @add_event_accessor {
  */
 class RemoveEventAccessor extends EventAccessor, @remove_event_accessor {
   override string getName() { result = "remove" + "_" + getDeclaration().getName() }
+
+  override string getUndecoratedName() { result = "remove" + "_" + getDeclaration().getName() }
 
   override string getAPrimaryQlClass() { result = "RemoveEventAccessor" }
 }

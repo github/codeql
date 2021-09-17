@@ -304,10 +304,10 @@ var bad66 = /^ab(c+)+$/;
 // NOT GOOD
 var bad67 = /(\d(\s+)*){20}/;
 
-// GOOD - but we spuriously conclude that a rejecting suffix exists. 
+// GOOD - but we spuriously conclude that a rejecting suffix exists.
 var good36 = /(([^/]|X)+)(\/[^]*)*$/;
 
-// GOOD - but we spuriously conclude that a rejecting suffix exists. 
+// GOOD - but we spuriously conclude that a rejecting suffix exists.
 var good37 = /^((x([^Y]+)?)*(Y|$))/;
 
 // NOT GOOD
@@ -331,7 +331,7 @@ var bad72 = /(c?a?)*b/;
 // NOT GOOD
 var bad73 = /(?:a|a?)+b/;
 
-// NOT GOOD - but not detected. 
+// NOT GOOD - but not detected.
 var bad74 = /(a?b?)*$/;
 
 // NOT GOOD
@@ -357,13 +357,13 @@ var good40 = /(a|b)+/;
 var good41 = /(?:[\s;,"'<>(){}|[\]@=+*]|:(?![/\\]))+/;
 
 // NOT GOOD
-var bad83 = /^((?:a{|-)|\w\{)+X$/; 
-var bad84 = /^((?:a{0|-)|\w\{\d)+X$/; 
-var bad85 = /^((?:a{0,|-)|\w\{\d,)+X$/; 
-var bad86 = /^((?:a{0,2|-)|\w\{\d,\d)+X$/; 
+var bad83 = /^((?:a{|-)|\w\{)+X$/;
+var bad84 = /^((?:a{0|-)|\w\{\d)+X$/;
+var bad85 = /^((?:a{0,|-)|\w\{\d,)+X$/;
+var bad86 = /^((?:a{0,2|-)|\w\{\d,\d)+X$/;
 
-// GOOD: 
-var good42 = /^((?:a{0,2}|-)|\w\{\d,\d\})+X$/; 
+// GOOD:
+var good42 = /^((?:a{0,2}|-)|\w\{\d,\d\})+X$/;
 
 // GOOD
 var good43 = /("[^"]*?"|[^"\s]+)+(?=\s*|\s*$)/g;
@@ -377,3 +377,9 @@ var bad90 = /(x*)+(?=$|y)/
 // GOOD - but we spuriously conclude that a rejecting suffix exists.
 var good44 = /([\s\S]*)+(?=$)/;
 var good45 = /([\s\S]*)+(?=$|y)/;
+
+var good46 = /(foo|FOO)*bar/;
+var bad91 = /(foo|FOO)*bar/i;
+
+var good47 = /([AB]|[ab])*C/;
+var bad92 = /([DE]|[de])*F/i;

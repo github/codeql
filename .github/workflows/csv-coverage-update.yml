@@ -8,7 +8,7 @@ on:
 jobs:
   update:
     name: Update framework coverage report
-    if: github.event.repository.fork == false
+    if: github.repository == 'github/codeql'
     runs-on: ubuntu-latest
 
     steps:

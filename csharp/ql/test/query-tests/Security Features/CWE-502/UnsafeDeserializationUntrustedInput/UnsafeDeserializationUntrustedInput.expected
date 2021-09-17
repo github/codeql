@@ -45,6 +45,7 @@ nodes
 | XmlSerializerUntrustedInputBad.cs:13:48:13:80 | call to method GetBytes : Byte[] | semmle.label | call to method GetBytes : Byte[] |
 | XmlSerializerUntrustedInputBad.cs:13:71:13:74 | access to parameter data : TextBox | semmle.label | access to parameter data : TextBox |
 | XmlSerializerUntrustedInputBad.cs:13:71:13:79 | access to property Text : String | semmle.label | access to property Text : String |
+subpaths
 #select
 | BinaryFormatterUntrustedInputBad.cs:12:31:12:84 | object creation of type MemoryStream | BinaryFormatterUntrustedInputBad.cs:12:71:12:77 | access to parameter textBox : TextBox | BinaryFormatterUntrustedInputBad.cs:12:31:12:84 | object creation of type MemoryStream | $@ flows to unsafe deserializer. | BinaryFormatterUntrustedInputBad.cs:12:71:12:77 | access to parameter textBox : TextBox | User-provided data |
 | DataContractJsonSerializerUntrustedInputBad.cs:13:30:13:80 | object creation of type MemoryStream | DataContractJsonSerializerUntrustedInputBad.cs:13:70:13:73 | access to parameter data : TextBox | DataContractJsonSerializerUntrustedInputBad.cs:13:30:13:80 | object creation of type MemoryStream | $@ flows to unsafe deserializer. | DataContractJsonSerializerUntrustedInputBad.cs:13:70:13:73 | access to parameter data : TextBox | User-provided data |

@@ -11,11 +11,11 @@
 | data.cs:30:13:30:26 | access to local variable customerReader |
 | data.cs:30:13:30:34 | call to method Close |
 | entity.cs:31:29:31:82 | DbRawSqlQuery<Blog> blogs = ... |
-| entity.cs:31:37:31:82 | call to method SqlQuery |
+| entity.cs:31:37:31:82 | call to method SqlQuery<Blog> |
 | entity.cs:32:30:32:34 | access to local variable blogs |
 | entity.cs:35:31:35:34 | access to local variable blog |
 | entity.cs:35:31:35:39 | access to property Name |
 | entity.cs:38:31:38:93 | DbRawSqlQuery<String> blogNames = ... |
-| entity.cs:38:43:38:93 | call to method SqlQuery |
+| entity.cs:38:43:38:93 | call to method SqlQuery<String> |
 | entity.cs:39:34:39:42 | access to local variable blogNames |
 | entity.cs:42:31:42:38 | access to local variable blogName |

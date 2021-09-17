@@ -100,7 +100,7 @@ private predicate isPassword(string p) {
 
 /** Holds if the expression `expr` uses an element with the name `name`. */
 private predicate expressionHasName(Expr expr, string name) {
-  name = expr.(MethodCall).getTarget().getName()
+  name = expr.(MethodCall).getTarget().getUndecoratedName()
   or
   name = expr.(MethodCall).getAnArgument().getValue()
   or
@@ -122,7 +122,7 @@ abstract class SensitiveExpr extends Expr { }
 /** A method access that might produce sensitive data. */
 class SensitiveMethodAccess extends SensitiveExpr, MethodCall {
   SensitiveMethodAccess() {
-    this.getTarget() instanceof SensitiveDataMethod
+    this.getTarget().getUnboundDeclaration() instanceof SensitiveDataMethod
     or
     // This is particularly to pick up methods with an argument like "password", which
     // may indicate a lookup.
@@ -194,5 +194,7 @@ class SendingMethod extends SensitiveExecutionMethod {
 
 /** A call to a method that sends data, and so should not be run conditionally on user input. */
 class SensitiveExecutionMethodCall extends MethodCall {
-  SensitiveExecutionMethodCall() { this.getTarget() instanceof SensitiveExecutionMethod }
+  SensitiveExecutionMethodCall() {
+    this.getTarget().getUnboundDeclaration() instanceof SensitiveExecutionMethod
+  }
 }

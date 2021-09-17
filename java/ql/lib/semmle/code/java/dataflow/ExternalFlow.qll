@@ -81,14 +81,17 @@ private module Frameworks {
   private import semmle.code.java.frameworks.ApacheHttp
   private import semmle.code.java.frameworks.apache.Collections
   private import semmle.code.java.frameworks.apache.Lang
+  private import semmle.code.java.frameworks.Flexjson
   private import semmle.code.java.frameworks.guava.Guava
   private import semmle.code.java.frameworks.jackson.JacksonSerializability
+  private import semmle.code.java.frameworks.javaee.jsf.JSFRenderer
   private import semmle.code.java.frameworks.JavaxJson
   private import semmle.code.java.frameworks.JaxWS
   private import semmle.code.java.frameworks.JoddJson
   private import semmle.code.java.frameworks.JsonJava
   private import semmle.code.java.frameworks.Objects
   private import semmle.code.java.frameworks.Optional
+  private import semmle.code.java.frameworks.Strings
   private import semmle.code.java.frameworks.spring.SpringCache
   private import semmle.code.java.frameworks.spring.SpringHttp
   private import semmle.code.java.frameworks.spring.SpringUtil
@@ -107,6 +110,7 @@ private module Frameworks {
   private import semmle.code.java.security.MvelInjection
   private import semmle.code.java.security.OgnlInjection
   private import semmle.code.java.security.XPath
+  private import semmle.code.java.frameworks.android.Android
   private import semmle.code.java.frameworks.android.SQLite
   private import semmle.code.java.frameworks.Jdbc
   private import semmle.code.java.frameworks.SpringJdbc
@@ -628,9 +632,13 @@ private string paramsStringPart(Callable c, int i) {
   i = 2 * c.getNumberOfParameters() and result = ")"
 }
 
-private string paramsString(Callable c) {
-  result = concat(int i | | paramsStringPart(c, i) order by i)
-}
+/**
+ * Gets a parenthesized string containing all parameter types of this callable, separated by a comma.
+ *
+ * Returns the empty string if the callable has no parameters.
+ * Parameter types are represented by their type erasure.
+ */
+string paramsString(Callable c) { result = concat(int i | | paramsStringPart(c, i) order by i) }
 
 private Element interpretElement0(
   string namespace, string type, boolean subtypes, string name, string signature

@@ -40,12 +40,12 @@ class Member extends Element, Annotatable, Modifiable, @member {
 
   /**
    * Gets the immediately enclosing callable, if this member is declared in
-   * an anonymous or local class.
+   * an anonymous or local class or interface.
    */
   Callable getEnclosingCallable() {
-    exists(NestedClass nc | this.getDeclaringType() = nc |
-      nc.(AnonymousClass).getClassInstanceExpr().getEnclosingCallable() = result or
-      nc.(LocalClass).getLocalClassDeclStmt().getEnclosingCallable() = result
+    exists(NestedType nt | this.getDeclaringType() = nt |
+      nt.(AnonymousClass).getClassInstanceExpr().getEnclosingCallable() = result or
+      nt.(LocalClassOrInterface).getLocalTypeDeclStmt().getEnclosingCallable() = result
     )
   }
 }

@@ -67,7 +67,7 @@ private predicate conditionControlsCall(
   exists(ControlFlow::SuccessorTypes::BooleanSuccessor s | cond = s.getValue() |
     conditionControlsCall0(call, e, s)
   ) and
-  def = call.getTarget()
+  def = call.getTarget().getUnboundDeclaration()
 }
 
 /**

@@ -7,10 +7,10 @@ private import semmle.code.java.dispatch.VirtualDispatch as VirtualDispatch
 
 private module DispatchImpl {
   /** Gets a viable implementation of the target of the given `Call`. */
-  Callable viableCallable(Call c) {
-    result = VirtualDispatch::viableCallable(c)
+  DataFlowCallable viableCallable(DataFlowCall c) {
+    result = VirtualDispatch::viableCallable(c.asCall())
     or
-    result.(SummarizedCallable) = c.getCallee().getSourceDeclaration()
+    result.(SummarizedCallable) = c.asCall().getCallee().getSourceDeclaration()
   }
 
   /**
@@ -45,7 +45,7 @@ private module DispatchImpl {
   private predicate relevantContext(Call ctx, int i) {
     exists(Callable c |
       mayBenefitFromCallContext(_, c, i) and
-      c = viableCallable(ctx)
+      c = VirtualDispatch::viableCallable(ctx)
     )
   }
 
@@ -88,24 +88,25 @@ private module DispatchImpl {
   }
 
   /**
-   * Holds if the set of viable implementations that can be called by `ma`
+   * Holds if the set of viable implementations that can be called by `call`
    * might be improved by knowing the call context. This is the case if the
    * qualifier is a parameter of the enclosing callable `c`.
    */
-  predicate mayBenefitFromCallContext(MethodAccess ma, Callable c) {
-    mayBenefitFromCallContext(ma, c, _)
+  predicate mayBenefitFromCallContext(DataFlowCall call, DataFlowCallable c) {
+    mayBenefitFromCallContext(call.asCall(), c, _)
   }
 
   /**
-   * Gets a viable dispatch target of `ma` in the context `ctx`. This is
-   * restricted to those `ma`s for which a context might make a difference.
+   * Gets a viable dispatch target of `call` in the context `ctx`. This is
+   * restricted to those `call`s for which a context might make a difference.
    */
-  Method viableImplInCallContext(MethodAccess ma, Call ctx) {
-    result = viableCallable(ma) and
-    exists(int i, Callable c, Method def, RefType t, boolean exact |
+  Method viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) {
+    result = viableCallable(call) and
+    exists(int i, Callable c, Method def, RefType t, boolean exact, MethodAccess ma |
+      ma = call.asCall() and
       mayBenefitFromCallContext(ma, c, i) and
       c = viableCallable(ctx) and
-      contextArgHasType(ctx, i, t, exact) and
+      contextArgHasType(ctx.asCall(), i, t, exact) and
       ma.getMethod().getSourceDeclaration() = def
     |
       exact = true and result = VirtualDispatch::exactMethodImpl(def, t.getSourceDeclaration())
