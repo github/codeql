@@ -20,9 +20,32 @@ abstract class HtmlSafeCall extends MethodCall {
   HtmlSafeCall() { this.getMethodName() = "html_safe" }
 }
 
-// A call to `html_safe` from within a template or view component.
+// A call to `html_safe` from within a template.
 private class ActionViewHtmlSafeCall extends HtmlSafeCall {
   ActionViewHtmlSafeCall() { inActionViewContext(this) }
+}
+
+/**
+ * A call to a method named "html_escape", "html_escape_once", or "h".
+ */
+abstract class HtmlEscapeCall extends MethodCall {
+  // "h" is aliased to "html_escape" in ActiveSupport
+  HtmlEscapeCall() { this.getMethodName() = ["html_escape", "html_escape_once", "h"] }
+}
+
+class RailsHtmlEscaping extends Escaping::Range, DataFlow::CallNode {
+  RailsHtmlEscaping() { this.asExpr().getExpr() instanceof HtmlEscapeCall }
+
+  override DataFlow::Node getAnInput() { result = this.getArgument(0) }
+
+  override DataFlow::Node getOutput() { result = this }
+
+  override string getKind() { result = Escaping::getHtmlKind() }
+}
+
+// A call to `html_escape` from within a template.
+private class ActionViewHtmlEscapeCall extends HtmlEscapeCall {
+  ActionViewHtmlEscapeCall() { inActionViewContext(this) }
 }
 
 // A call in a context where some commonly used `ActionView` methods are available.
@@ -40,7 +63,7 @@ class RawCall extends ActionViewContextCall {
   RawCall() { this.getMethodName() = "raw" }
 }
 
-// A call to the `params` method within the context of a template or view component.
+// A call to the `params` method within the context of a template.
 private class ActionViewParamsCall extends ActionViewContextCall, ParamsCall { }
 
 /**
@@ -100,7 +123,7 @@ abstract class RenderCall extends MethodCall {
   // TODO: implicit renders in controller actions
 }
 
-// A call to the `render` method within the context of a template or view component.
+// A call to the `render` method within the context of a template.
 private class ActionViewRenderCall extends RenderCall, ActionViewContextCall { }
 
 /**
@@ -110,7 +133,7 @@ abstract class RenderToCall extends MethodCall {
   RenderToCall() { this.getMethodName() = ["render_to_body", "render_to_string"] }
 }
 
-// A call to `render_to` from within a template or view component.
+// A call to `render_to` from within a template.
 private class ActionViewRenderToCall extends ActionViewContextCall, RenderToCall { }
 
 /**
@@ -122,7 +145,12 @@ private class ActionViewRenderToCall extends ActionViewContextCall, RenderToCall
 class LinkToCall extends ActionViewContextCall {
   LinkToCall() { this.getMethodName() = "link_to" }
 
-  // TODO: the path can also be specified through other optional arguments
-  Expr getPathArgument() { result = this.getArgument(1) }
+  Expr getPathArgument() {
+    // When `link_to` is called with a block, it uses the first argument as the
+    // path, and otherwise the second argument.
+    exists(this.getBlock()) and result = this.getArgument(0)
+    or
+    not exists(this.getBlock()) and result = this.getArgument(1)
+  }
 }
 // TODO: model flow in/out of template files properly,

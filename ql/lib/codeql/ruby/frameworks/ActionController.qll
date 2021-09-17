@@ -134,6 +134,13 @@ private class ActionControllerHtmlSafeCall extends HtmlSafeCall {
   }
 }
 
+// A call to `html_escape` from within a controller.
+private class ActionControllerHtmlEscapeCall extends HtmlEscapeCall {
+  ActionControllerHtmlEscapeCall() {
+    this.getEnclosingModule() instanceof ActionControllerControllerClass
+  }
+}
+
 /**
  * A call to the `redirect_to` method, used in an action to redirect to a
  * specific URL/path or to a different action in this controller.
