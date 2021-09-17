@@ -30,10 +30,7 @@ class TernaryOperatorSanitizerGuard extends TaintTracking::SanitizerGuardNode {
   TaintTracking::SanitizerGuardNode originalGuard;
 
   TernaryOperatorSanitizerGuard() {
-    exists(DataFlow::Node falseNode |
-      this.getAPredecessor+() = falseNode and
-      falseNode.asExpr().(BooleanLiteral).mayHaveBooleanValue(false)
-    ) and
+    this.getAPredecessor+().asExpr().(BooleanLiteral).mayHaveBooleanValue(false) and
     this.getAPredecessor+() = originalGuard and
     not this.asExpr() instanceof LogicalBinaryExpr
   }
