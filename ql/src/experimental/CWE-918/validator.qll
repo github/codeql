@@ -5,7 +5,7 @@ import semmle.go.dataflow.Properties
  * Only these tags are safe to build an URL
  */
 private predicate isValidTag(string tag) {
-  tag in ["alpha", "alphanum", "alphaunicode", "alphanumunicode", "number", "numeric"]
+  tag in ["alpha", "alphanum", "alphaunicode", "alphanumunicode", "number", "numeric", "uuid"]
 }
 
 /**
