@@ -129,8 +129,7 @@ private predicate javaApiCallablePasswordParam(string s) {
   s = "sun.tools.jconsole.ProxyClient;ProxyClient(String, int, String, String);3" or
   s = "sun.tools.jconsole.ProxyClient;getProxyClient(String, int, String, String);3" or
   s = "sun.tools.jconsole.ProxyClient;getProxyClient(String, String, String);2" or
-  s = "sun.tools.jconsole.ProxyClient;getCacheKey(String, int, String, String);3" or
-  s = "com.amazonaws.auth.BasicAWSCredentials;BasicAWSCredentials(String, String);1"
+  s = "sun.tools.jconsole.ProxyClient;getCacheKey(String, int, String, String);3"
 }
 
 /**
@@ -202,7 +201,6 @@ private predicate javaApiCallableUsernameParam(string s) {
   s = "sun.tools.jconsole.ProxyClient;getConnectionName(String, String);1" or
   s = "sun.tools.jconsole.ProxyClient;getProxyClient(String, int, String, String);2" or
   s = "sun.tools.jconsole.ProxyClient;getConnectionName(String, int, String);2" or
-  s = "com.amazonaws.auth.BasicAWSCredentials;BasicAWSCredentials(String, String);0"
 }
 
 /**
@@ -510,5 +508,61 @@ private predicate otherApiCallableCredentialParam(string s) {
   s =
     "org.springframework.security.core.userdetails.User;User(String, String, boolean, boolean, boolean, boolean, Collection<? extends GrantedAuthority>);0" or
   s =
-    "org.springframework.security.core.userdetails.User;User(String, String, boolean, boolean, boolean, boolean, Collection<? extends GrantedAuthority>);1"
+    "org.springframework.security.core.userdetails.User;User(String, String, boolean, boolean, boolean, boolean, Collection<? extends GrantedAuthority>);1" or
+  //AWS
+  s = "com.amazonaws.auth.BasicAWSCredentials;BasicAWSCredentials(String, String);0" or
+  s = "com.amazonaws.auth.BasicAWSCredentials;BasicAWSCredentials(String, String);1" or
+  //SSH
+  //  Username
+  s = "com.jcraft.jsch.JSch;getSession(String, String, int);0" or
+  s = "com.jcraft.jsch.JSch;getSession(String, String);0" or
+  s = "ch.ethz.ssh2.Connection;authenticateWithPassword(String, String);0" or
+  s = "org.apache.sshd.client.SshClient;connect(String, String, int);0" or
+  s = "org.apache.sshd.client.SshClient;connect(String, SocketAddress);0" or
+  s = "net.schmizz.sshj.SSHClient;authPassword(String, char[]);0" or
+  s = "net.schmizz.sshj.SSHClient;authPassword(String, String);0" or
+  s = "com.sshtools.j2ssh.authentication.SshAuthenticationClient;setUsername(String);0" or
+  s = "com.sshtools.j2ssh.authentication.PasswordAuthenticationClient;setUsername(String);0" or
+  s = "com.trilead.ssh2.Connection;authenticateWithPassword(String, String);0" or
+  s = "com.trilead.ssh2.Connection;authenticateWithDSA(String, String, String);0" or
+  s = "com.trilead.ssh2.Connection;authenticateWithNone(String);0" or
+  s = "com.trilead.ssh2.Connection;getRemainingAuthMethods(String);0" or
+  s = "com.trilead.ssh2.Connection;isAuthMethodAvailable(String, String);0" or
+  s = "com.trilead.ssh2.Connection;authenticateWithPublicKey(String, char[], String);0" or
+  s = "com.trilead.ssh2.Connection;authenticateWithPublicKey(String, File, String);0" or
+  //  Password
+  s = "com.jcraft.jsch.Session;setPassword(byte[]);0" or
+  s = "com.jcraft.jsch.Session;setPassword(String);0" or
+  s = "ch.ethz.ssh2.Connection;authenticateWithPassword(String, String);1" or
+  s = "org.apache.sshd.client.session.AbstractClientSession;addPasswordIdentity(String);0" or
+  s = "net.schmizz.sshj.SSHClient;authPassword(String, char[]);1" or
+  s = "net.schmizz.sshj.SSHClient;authPassword(String, String);1" or
+  s = "com.sshtools.j2ssh.authentication.PasswordAuthenticationClient;setPassword(String);0" or
+  s = "com.trilead.ssh2.Connection;authenticateWithPassword(String, String);1" or
+  s = "com.trilead.ssh2.Connection;authenticateWithDSA(String, String, String);2" or
+  s = "com.trilead.ssh2.Connection;authenticateWithPublicKey(String, char[], String);2" or
+  s = "com.trilead.ssh2.Connection;authenticateWithPublicKey(String, File, String);2" or
+  //  Key
+  s = "com.trilead.ssh2.Connection;authenticateWithDSA(String, String, String);1" or
+  s = "com.trilead.ssh2.Connection;authenticateWithPublicKey(String, char[], String);1" or
+  //FTP
+  //  Username
+  s = "org.apache.commons.net.ftp.FTPClient;login(String, String);0" or
+  s = "org.apache.commons.net.ftp.FTPClient;login(String, String, String);0" or
+  //  Password
+  s = "org.apache.commons.net.ftp.FTPClient;login(String, String);1" or
+  s = "org.apache.commons.net.ftp.FTPClient;login(String, String, String);1" or
+  //MongoDB
+  //  Username
+  s = "com.mongodb.MongoCredential;createCredential(String, String, char[]);0" or
+  s = "com.mongodb.MongoCredential;createMongoCRCredential(String, String, char[]);0" or
+  s = "com.mongodb.MongoCredential;createPlainCredential(String, String, char[]);0" or
+  s = "com.mongodb.MongoCredential;createScramSha1Credential(String, String, char[]);0" or
+  s = "com.mongodb.MongoCredential;createGSSAPICredential(String);0" or
+  s = "com.mongodb.MongoCredential;createMongoX509Credential(String);0" or
+  //  Password
+  s = "com.mongodb.MongoCredential;createCredential(String, String, char[]);2" or
+  s = "com.mongodb.MongoCredential;createMongoCRCredential(String, String, char[]);2" or
+  s = "com.mongodb.MongoCredential;createPlainCredential(String, String, char[]);2" or
+  s = "com.mongodb.MongoCredential;createScramSha1Credential(String, String, char[]);2"
 }
