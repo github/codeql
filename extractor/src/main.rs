@@ -40,8 +40,8 @@ impl TrapCompression {
 
     fn extension(&self) -> &str {
         match self {
-            TrapCompression::None => ".trap",
-            TrapCompression::Gzip => ".trap.gz",
+            TrapCompression::None => "trap",
+            TrapCompression::Gzip => "trap.gz",
         }
     }
 }
@@ -267,12 +267,16 @@ fn path_for(dir: &Path, path: &Path, ext: &str) -> PathBuf {
             }
         }
     }
-    if let Some(x) = result.extension() {
-        let mut new_ext = x.to_os_string();
-        new_ext.push(ext);
-        result.set_extension(new_ext);
-    } else {
-        result.set_extension(ext);
+    match result.extension() {
+        Some(x) => {
+            let mut new_ext = x.to_os_string();
+            new_ext.push(".");
+            new_ext.push(ext);
+            result.set_extension(new_ext);
+        }
+        None => {
+            result.set_extension(ext);
+        }
     }
     result
 }
