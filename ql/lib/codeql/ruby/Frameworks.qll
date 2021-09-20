@@ -5,3 +5,4 @@
 private import codeql.ruby.frameworks.ActionController
 private import codeql.ruby.frameworks.ActiveRecord
 private import codeql.ruby.frameworks.ActionView
+private import codeql.ruby.frameworks.StandardLibrary
