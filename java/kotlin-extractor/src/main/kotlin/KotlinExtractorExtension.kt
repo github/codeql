@@ -212,6 +212,13 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
         when (declaration) {
             is IrClass -> extractClass(declaration)
             is IrFunction -> extractFunction(declaration, if (optParentid.isPresent()) optParentid.get() else fileClass)
+            is IrAnonymousInitializer -> {
+                // todo: how do we want to represent this?
+                // there could be multiple 'init' blocks inside a declaration.
+                // We could add a generated 'init' method, with all the statements inside the blocks.
+                // In Kotlin/JVM, the statements inside 'init' blocks get copied to the default constructor, or if there's no default then to all of them.
+                logger.warnElement(Severity.ErrorSevere, "Todo: handle IrAnonymousInitializer", declaration)
+            }
             is IrProperty -> extractProperty(declaration, if (optParentid.isPresent()) optParentid.get() else fileClass)
             else -> logger.warnElement(Severity.ErrorSevere, "Unrecognised IrDeclaration: " + declaration.javaClass, declaration)
         }
@@ -669,6 +676,13 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
 
     fun extractExpression(e: IrExpression, callable: Label<out DbCallable>, irCallable: IrFunction, parent: Label<out DbExprparent>, idx: Int) {
         when(e) {
+            is IrInstanceInitializerCall -> {
+                // todo: how do we want to handle this?
+                // In Kotlin/JVM, this seems like a no-op.
+                if (e.classSymbol.owner.declarations.any { it is IrAnonymousInitializer }) {
+                    // we could add a call to a generated 'init' function.
+                }
+            }
             is IrDelegatingConstructorCall -> {
                 val delegatingClass = e.symbol.owner.parent as IrClass
                 val currentClass = (irCallable as IrDeclaration).parent as IrClass
