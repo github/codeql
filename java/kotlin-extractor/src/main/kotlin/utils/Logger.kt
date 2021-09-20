@@ -42,13 +42,13 @@ open class Logger(val logCounter: LogCounter, open val tw: TrapWriter) {
         tw.writeTrap("// " + fullMsg.replace("\n", "\n//") + "\n")
         println(fullMsg)
     }
-    fun warn(severity: Severity, msg: String, locationString: String? = null, locationId: Label<DbLocation> = tw.unknownLocation) {
+    fun warn(severity: Severity, msg: String, locationString: String? = null, locationId: Label<DbLocation> = tw.unknownLocation, stackIndex: Int = 1) {
         val st = Exception().stackTrace
         val suffix =
-            if(st.size < 2) {
+            if(st.size < stackIndex + 1) {
                 "    Missing caller information.\n"
             } else {
-                val caller = st[1].toString()
+                val caller = st[stackIndex].toString()
                 val count = logCounter.warningCounts.getOrDefault(caller, 0) + 1
                 logCounter.warningCounts[caller] = count
                 when {
@@ -79,9 +79,9 @@ class FileLogger(logCounter: LogCounter, override val tw: FileTrapWriter): Logge
         return "[${SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date())} K]"
     }
 
-    fun warnElement(severity: Severity, msg: String, element: IrElement) {
+    fun warnElement(severity: Severity, msg: String, element: IrElement, stackIndex: Int = 2) {
         val locationString = tw.getLocationString(element)
         val locationId = tw.getLocation(element)
-        warn(severity, msg, locationString, locationId)
+        warn(severity, msg, locationString, locationId, stackIndex)
     }
 }
