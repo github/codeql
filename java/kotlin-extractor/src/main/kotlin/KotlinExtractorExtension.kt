@@ -653,7 +653,7 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
         val dr = c.dispatchReceiver
         val offset = if(dr == null) 0 else 1
         if(dr != null) {
-            extractExpression(dr, callable, exprId, 0)
+            extractExpression(dr, callable, exprId, 0) // todo: should this be at index -1 instead?
         }
         for(i in 0 until c.valueArgumentsCount) {
             val arg = c.getValueArgument(i)
@@ -661,12 +661,35 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
                 extractExpression(arg, callable, exprId, i + offset)
             }
         }
+
+        // todo: type arguments at index -2, -3, ...
     }
 
     private val loopIdMap: MutableMap<IrLoop, Label<out DbKtloopstmt>> = mutableMapOf()
 
     fun extractExpression(e: IrExpression, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int) {
         when(e) {
+            is IrConstructorCall -> {
+                val id = tw.getFreshIdLabel<DbNewexpr>()
+                val typeId = useType(e.type)
+                val locId = tw.getLocation(e)
+                val methodId = useFunction(e.symbol.owner)
+                tw.writeExprs_newexpr(id, typeId, parent, idx)
+                tw.writeHasLocation(id, locId)
+                tw.writeCallableBinding(id, methodId)
+                for (i in 0 until e.valueArgumentsCount) {
+                    val arg = e.getValueArgument(i)
+                    if (arg != null) {
+                        extractExpression(arg, callable, id, i)
+                    }
+                }
+                val dr = e.dispatchReceiver
+                if (dr != null) {
+                    extractExpression(dr, callable, id, -3)
+                }
+
+                // todo: type arguments at index -4, -5, ...
+            }
             is IrCall -> extractCall(e, callable, parent, idx)
             is IrConst<*> -> {
                 val v = e.value
