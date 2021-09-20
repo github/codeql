@@ -1,0 +1,18 @@
+edges
+| ThreadResourceAbuse.java:15:25:15:57 | getParameter(...) : String | ThreadResourceAbuse.java:18:28:18:36 | delayTime : Number |
+| ThreadResourceAbuse.java:18:28:18:36 | delayTime : Number | ThreadResourceAbuse.java:62:18:62:25 | waitTime |
+| ThreadResourceAbuse.java:25:25:25:73 | getInitParameter(...) : String | ThreadResourceAbuse.java:28:28:28:36 | delayTime : Number |
+| ThreadResourceAbuse.java:28:28:28:36 | delayTime : Number | ThreadResourceAbuse.java:62:18:62:25 | waitTime |
+| ThreadResourceAbuse.java:97:27:97:43 | getValue(...) : String | ThreadResourceAbuse.java:100:34:100:42 | delayTime |
+nodes
+| ThreadResourceAbuse.java:15:25:15:57 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| ThreadResourceAbuse.java:18:28:18:36 | delayTime : Number | semmle.label | delayTime : Number |
+| ThreadResourceAbuse.java:25:25:25:73 | getInitParameter(...) : String | semmle.label | getInitParameter(...) : String |
+| ThreadResourceAbuse.java:28:28:28:36 | delayTime : Number | semmle.label | delayTime : Number |
+| ThreadResourceAbuse.java:62:18:62:25 | waitTime | semmle.label | waitTime |
+| ThreadResourceAbuse.java:97:27:97:43 | getValue(...) : String | semmle.label | getValue(...) : String |
+| ThreadResourceAbuse.java:100:34:100:42 | delayTime | semmle.label | delayTime |
+#select
+| ThreadResourceAbuse.java:62:18:62:25 | waitTime | ThreadResourceAbuse.java:15:25:15:57 | getParameter(...) : String | ThreadResourceAbuse.java:62:18:62:25 | waitTime | Vulnerability of uncontrolled resource consumption due to $@. | ThreadResourceAbuse.java:15:25:15:57 | getParameter(...) | user-provided value |
+| ThreadResourceAbuse.java:62:18:62:25 | waitTime | ThreadResourceAbuse.java:25:25:25:73 | getInitParameter(...) : String | ThreadResourceAbuse.java:62:18:62:25 | waitTime | Vulnerability of uncontrolled resource consumption due to $@. | ThreadResourceAbuse.java:25:25:25:73 | getInitParameter(...) | user-provided value |
+| ThreadResourceAbuse.java:100:34:100:42 | delayTime | ThreadResourceAbuse.java:97:27:97:43 | getValue(...) : String | ThreadResourceAbuse.java:100:34:100:42 | delayTime | Vulnerability of uncontrolled resource consumption due to $@. | ThreadResourceAbuse.java:97:27:97:43 | getValue(...) | user-provided value |

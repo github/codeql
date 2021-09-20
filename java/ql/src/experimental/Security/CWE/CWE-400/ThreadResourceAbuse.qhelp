@@ -1,0 +1,39 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p><code>Thread.sleep</code> method is used to pause the execution of current thread for specified
+time. When it is used to keep several relevant tasks in synchronization and the sleep time is 
+user-controlled data, especially in the web application context, it can be abused to cause all
+of a server's threads to sleep, leading to denial of service.</p>
+</overview>
+
+<recommendation>
+<p>To guard against this attack, consider specifying an upper range of allowed sleep time or adopting
+the producer/consumer design pattern with <code>Thread.wait</code> method to avoid performance 
+problems or even resource exhaustion.</p>
+</recommendation>
+
+<example>
+<p>The following example shows the bad situation and the good situation respectively. In bad situation,
+a thread is spawned with the sleep time directly from user input. In good situation, an upper range 
+check on maximum allowed sleep time is enforced.</p>
+<sample src="ThreadResourceAbuse.java" />
+</example>
+
+<references>
+<li>
+snyk:
+<a href="https://snyk.io/vuln/SNYK-JAVA-COMGOOGLECODEGWTUPLOAD-569506">Denial of Service (DoS)
+Affecting com.googlecode.gwtupload:gwtupload artifact</a>.
+</li>
+<li>
+gwtupload
+<a href="https://github.com/manolo/gwtupload/issues/33">[Fix DOS issue] Updating the 
+AbstractUploadListener.java file</a>.
+</li>
+</references>
+</qhelp>
