@@ -21,13 +21,8 @@ jobs:
            git diff --name-only --diff-filter=ACMRT HEAD~1 HEAD | grep .inc.qhelp$ | xargs -d '\n' -rn1 basename | xargs -d '\n' -rn1 git grep -l) |
            sort -u | xargs -d '\n' -n1 printf "'%s' "
 
-      - name: Fetch CodeQL
-        run: |
-          LATEST=$(gh release list --repo https://github.com/github/codeql-cli-binaries | cut -f 1 | grep -v beta | sort --version-sort | tail -1)
-          gh release download --repo https://github.com/github/codeql-cli-binaries --pattern codeql-linux64.zip "$LATEST"
-          unzip -q codeql-linux64.zip
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
+      - uses: ./.github/actions/fetch-codeql
+
       - name: QHelp preview
         if: ${{ steps.changes.outputs.qhelp_files }}
         run: |

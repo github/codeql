@@ -14,32 +14,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Fetch CodeQL
-        run: |
-          LATEST=$(gh release list --repo https://github.com/github/codeql-cli-binaries | cut -f 1 | grep -v beta | sort --version-sort | tail -1)
-          gh release download --repo https://github.com/github/codeql-cli-binaries --pattern codeql-linux64.zip "$LATEST"
-          unzip -q codeql-linux64.zip
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-      - uses: actions/cache@v2
-        with:
-          path: |
-            ~/.cargo/registry
-            ~/.cargo/git
-            target
-          key: ${{ runner.os }}-qltest-cargo-${{ hashFiles('**/Cargo.lock') }}
-      - name: Build Extractor
-        run: env "PATH=$PATH:${{ github.workspace }}/codeql" scripts/create-extractor-pack.sh
+      - uses: ./.github/actions/fetch-codeql
+      - uses: ./.github/actions/create-extractor-pack
       - name: Run QL tests
         run: |
           codeql/codeql pack install ql/test
           codeql/codeql test run --check-databases --check-unused-labels --check-repeated-labels --check-redefined-labels --check-use-before-definition --search-path "${{ github.workspace }}" --additional-packs "${HOME}/.codeql/packages/codeql/suite-helpers/0.0.1" --consistency-queries ql/consistency-queries ql/test
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
       - name: Check QL formatting
         run: find ql "(" -name "*.ql" -or -name "*.qll" ")" -print0 | xargs -0 codeql/codeql query format --check-only
       - name: Check QL compilation
         run: |
           codeql/codeql pack install ql/src
           codeql/codeql query compile --check-only --threads=4 --warnings=error --search-path "${{ github.workspace }}" "ql/src" "ql/examples"
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
       - name: Check DB upgrade scripts
         run: |
           echo >empty.trap
