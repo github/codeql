@@ -34,10 +34,10 @@ module Ruby {
   /** A token. */
   class Token extends @ruby_token, AstNode {
     /** Gets the value of this token. */
-    string getValue() { ruby_tokeninfo(this, _, _, _, result, _) }
+    string getValue() { ruby_tokeninfo(this, _, _, result, _) }
 
     /** Gets the location of this token. */
-    override Location getLocation() { ruby_tokeninfo(this, _, _, _, _, result) }
+    override Location getLocation() { ruby_tokeninfo(this, _, _, _, result) }
 
     /** Gets a string representation of this element. */
     override string toString() { result = getValue() }
@@ -1875,10 +1875,10 @@ module Erb {
   /** A token. */
   class Token extends @erb_token, AstNode {
     /** Gets the value of this token. */
-    string getValue() { erb_tokeninfo(this, _, _, _, result, _) }
+    string getValue() { erb_tokeninfo(this, _, _, result, _) }
 
     /** Gets the location of this token. */
-    override Location getLocation() { erb_tokeninfo(this, _, _, _, _, result) }
+    override Location getLocation() { erb_tokeninfo(this, _, _, _, result) }
 
     /** Gets a string representation of this element. */
     override string toString() { result = getValue() }

@@ -1206,7 +1206,6 @@ ruby_tokeninfo(
   unique int id: @ruby_token,
   int kind: int ref,
   int file: @file ref,
-  int idx: int ref,
   string value: string ref,
   int loc: @location ref
 );
@@ -1294,7 +1293,6 @@ erb_tokeninfo(
   unique int id: @erb_token,
   int kind: int ref,
   int file: @file ref,
-  int idx: int ref,
   string value: string ref,
   int loc: @location ref
 );
