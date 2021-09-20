@@ -294,7 +294,7 @@ predicate isUnreachableInCall(Node n, DataFlowCall call) {
     Guard guard
   |
     // get constant bool argument and parameter for this call
-    viableParamArg(call, paramNode, arg) and
+    viableParamArg(call, pragma[only_bind_into](paramNode), arg) and
     // get the ssa variable definition for this parameter
     param.isParameterDefinition(paramNode.getParameter()) and
     // which is used in a guard
@@ -302,7 +302,7 @@ predicate isUnreachableInCall(Node n, DataFlowCall call) {
     // which controls `n` with the opposite value of `arg`
     guard
         .controls(n.asExpr().getBasicBlock(),
-          pragma[only_bind_out](arg.getBooleanValue()).booleanNot())
+          pragma[only_bind_into](pragma[only_bind_out](arg.getBooleanValue()).booleanNot()))
   )
 }
 
