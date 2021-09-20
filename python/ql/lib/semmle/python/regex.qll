@@ -462,6 +462,7 @@ abstract class RegexString extends Expr {
   /** Gets the number of the group in start,end */
   int getGroupNumber(int start, int end) {
     this.group(start, end) and
+    not this.non_capturing_group_start(start, _) and
     result =
       count(int i | this.group(i, _) and i < start and not this.non_capturing_group_start(i, _)) + 1
   }
