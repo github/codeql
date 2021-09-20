@@ -1205,7 +1205,6 @@ ruby_yield_def(
 ruby_tokeninfo(
   unique int id: @ruby_token,
   int kind: int ref,
-  int file: @file ref,
   string value: string ref,
   int loc: @location ref
 );
@@ -1292,7 +1291,6 @@ erb_template_def(
 erb_tokeninfo(
   unique int id: @erb_token,
   int kind: int ref,
-  int file: @file ref,
   string value: string ref,
   int loc: @location ref
 );

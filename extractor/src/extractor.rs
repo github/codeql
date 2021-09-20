@@ -422,7 +422,6 @@ impl Visitor<'_> {
                     vec![
                         Arg::Label(id),
                         Arg::Int(*kind_id),
-                        Arg::Label(self.file_label),
                         sliced_source_arg(self.source, node),
                         Arg::Label(loc),
                     ],
