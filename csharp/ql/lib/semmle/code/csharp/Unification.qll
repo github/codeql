@@ -485,7 +485,7 @@ module Gvn {
     }
 
     /**
-     * Holds if GVNs `t1` and `t2` can be unified. That is, is it possible to
+     * Holds if GVNs `t1` and `t2` can be unified. That is, it is possible to
      * replace all type parameters in `t1` and `t2` with some GVNs (possibly
      * type parameters themselves) to make the two substituted terms equal.
      */
@@ -493,7 +493,7 @@ module Gvn {
     predicate unifiable(ConstructedGvnType t1, ConstructedGvnType t2) { unifiable(t1, t2, _) }
 
     /**
-     * Holds if GVN `t1` subsumes GVN `t2`. That is, is it possible to replace all
+     * Holds if GVN `t1` subsumes GVN `t2`. That is, it is possible to replace all
      * type parameters in `t1` with some GVNs (possibly type parameters themselves)
      * to make the two substituted terms equal.
      */
