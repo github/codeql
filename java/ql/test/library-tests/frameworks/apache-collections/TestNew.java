@@ -92,7 +92,6 @@ import org.apache.commons.collections4.iterators.UnmodifiableListIterator;
 import org.apache.commons.collections4.iterators.UnmodifiableMapIterator;
 import org.apache.commons.collections4.iterators.UnmodifiableOrderedMapIterator;
 import org.apache.commons.collections4.iterators.ZippingIterator;
-import org.apache.commons.collections4.keyvalue.K;
 import org.apache.commons.collections4.keyvalue.MultiKey;
 import org.apache.commons.collections4.list.AbstractLinkedList;
 import org.apache.commons.collections4.list.CursorableLinkedList;
@@ -1751,7 +1750,7 @@ public class TestNew {
 		{
 			// "org.apache.commons.collections4.map;DefaultedMap;true;defaultedMap;;;MapKey of Argument[0];MapKey of ReturnValue;value"
 			Map out = null;
-			Map in = (Map)Map.of(source(), null);
+			Map<Object,String> in = (Map)Map.of(source(), null);
 			out = DefaultedMap.defaultedMap(in, (Transformer)null);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
@@ -1765,14 +1764,14 @@ public class TestNew {
 		{
 			// "org.apache.commons.collections4.map;DefaultedMap;true;defaultedMap;;;MapKey of Argument[0];MapKey of ReturnValue;value"
 			DefaultedMap out = null;
-			Map in = (Map)Map.of(source(), null);
+			Map<Object,String> in = (Map)Map.of(source(), null);
 			out = DefaultedMap.defaultedMap(in, (Factory)null);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4.map;DefaultedMap;true;defaultedMap;;;MapValue of Argument[0];MapValue of ReturnValue;value"
 			Map out = null;
-			Map in = (Map)Map.of(null, source());
+			Map<Object,String> in = (Map)Map.of(null, source());
 			out = DefaultedMap.defaultedMap(in, (Transformer)null);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
@@ -1786,7 +1785,7 @@ public class TestNew {
 		{
 			// "org.apache.commons.collections4.map;DefaultedMap;true;defaultedMap;;;MapValue of Argument[0];MapValue of ReturnValue;value"
 			DefaultedMap out = null;
-			Map in = (Map)Map.of(null, source());
+			Map<Object,String> in = (Map)Map.of(null, source());
 			out = DefaultedMap.defaultedMap(in, (Factory)null);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
