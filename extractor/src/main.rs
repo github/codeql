@@ -176,7 +176,7 @@ fn main() -> std::io::Result<()> {
 
     let path = PathBuf::from("extras");
     let mut trap_writer = extractor::new_trap_writer();
-    &trap_writer.populate_empty_location();
+    trap_writer.populate_empty_location();
     write_trap(&trap_dir, path, trap_writer, &trap_compression)
 }
 
