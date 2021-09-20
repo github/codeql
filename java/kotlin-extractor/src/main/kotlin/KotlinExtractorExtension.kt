@@ -716,13 +716,33 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
 
                 extractExpression(e.value, callable, id, 1)
             }
+            is IrThrow -> {
+                val id = tw.getFreshIdLabel<DbThrowstmt>()
+                val locId = tw.getLocation(e)
+                tw.writeStmts_throwstmt(id, parent, idx, callable)
+                tw.writeHasLocation(id, locId)
+                extractExpression(e.value, callable, id, 0)
+            }
+            is IrBreak -> {
+                val id = tw.getFreshIdLabel<DbBreakstmt>()
+                val locId = tw.getLocation(e)
+                tw.writeStmts_breakstmt(id, parent, idx, callable)
+                tw.writeHasLocation(id, locId)
+            }
+            is IrContinue -> {
+                val id = tw.getFreshIdLabel<DbContinuestmt>()
+                val locId = tw.getLocation(e)
+                tw.writeStmts_continuestmt(id, parent, idx, callable)
+                tw.writeHasLocation(id, locId)
+            }
             is IrReturn -> {
                 val id = tw.getFreshIdLabel<DbReturnstmt>()
                 val locId = tw.getLocation(e)
                 tw.writeStmts_returnstmt(id, parent, idx, callable)
                 tw.writeHasLocation(id, locId)
                 extractExpression(e.value, callable, id, 0)
-            } is IrContainerExpression -> {
+            }
+            is IrContainerExpression -> {
                 val id = tw.getFreshIdLabel<DbBlock>()
                 val locId = tw.getLocation(e)
                 tw.writeStmts_block(id, parent, idx, callable)
@@ -730,7 +750,8 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
                 e.statements.forEachIndexed { i, s ->
                     extractStatement(s, callable, id, i)
                 }
-            } is IrWhileLoop -> {
+            }
+            is IrWhileLoop -> {
                 val id = tw.getFreshIdLabel<DbWhilestmt>()
                 val locId = tw.getLocation(e)
                 tw.writeStmts_whilestmt(id, parent, idx, callable)
@@ -740,7 +761,8 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
                 if(body != null) {
                     extractExpression(body, callable, id, 1)
                 }
-            } is IrDoWhileLoop -> {
+            }
+            is IrDoWhileLoop -> {
                 val id = tw.getFreshIdLabel<DbDostmt>()
                 val locId = tw.getLocation(e)
                 tw.writeStmts_dostmt(id, parent, idx, callable)
@@ -750,7 +772,8 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
                 if(body != null) {
                     extractExpression(body, callable, id, 1)
                 }
-            } is IrWhen -> {
+            }
+            is IrWhen -> {
                 val id = tw.getFreshIdLabel<DbWhenexpr>()
                 val typeId = useType(e.type)
                 val locId = tw.getLocation(e)
