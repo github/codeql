@@ -761,7 +761,16 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
                         tw.writeWhen_branch_else(bId)
                     }
                 }
-            } else -> {
+            }
+            is IrGetClass -> {
+                val id = tw.getFreshIdLabel<DbGetclassexpr>()
+                val locId = tw.getLocation(e)
+                val typeId = useType(e.type)
+                tw.writeExprs_getclassexpr(id, typeId, parent, idx)
+                tw.writeHasLocation(id, locId)
+                extractExpression(e.argument, callable, id, 0)
+            }
+            else -> {
                 logger.warnElement(Severity.ErrorSevere, "Unrecognised IrExpression: " + e.javaClass, e)
             }
         }

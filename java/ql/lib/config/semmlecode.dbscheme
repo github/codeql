@@ -654,6 +654,7 @@ case @expr.kind of
 | 73  = @switchexpr
 | 74  = @errorexpr
 | 75  = @whenexpr
+| 76  = @getclassexpr
 ;
 
 /** Holds if this `when` expression was written as an `if` expression. */
