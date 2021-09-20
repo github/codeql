@@ -285,14 +285,14 @@ public class TestNew {
 			// "org.apache.commons.collections4.bidimap;AbstractSortedBidiMapDecorator;true;AbstractSortedBidiMapDecorator;;;MapKey of Argument[0];MapKey of Argument[-1];value"
 			AbstractSortedBidiMapDecorator out = null;
 			SortedBidiMap in = (SortedBidiMap)newWithMapKey(source());
-			out = new AbstractSortedBidiMapDecorator(in);
+			out = new MyAbstractSortedBidiMapDecorator(in);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4.bidimap;AbstractSortedBidiMapDecorator;true;AbstractSortedBidiMapDecorator;;;MapValue of Argument[0];MapValue of Argument[-1];value"
 			AbstractSortedBidiMapDecorator out = null;
 			SortedBidiMap in = (SortedBidiMap)newWithMapValue(source());
-			out = new AbstractSortedBidiMapDecorator(in);
+			out = new MyAbstractSortedBidiMapDecorator(in);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
@@ -1575,28 +1575,28 @@ public class TestNew {
 			// "org.apache.commons.collections4.map;AbstractOrderedMapDecorator;true;AbstractOrderedMapDecorator;(OrderedMap);;MapKey of Argument[0];MapKey of Argument[-1];value"
 			AbstractOrderedMapDecorator out = null;
 			OrderedMap in = (OrderedMap)newWithMapKey(source());
-			out = new AbstractOrderedMapDecorator(in);
+			out = new MyAbstractOrderedMapDecorator(in);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4.map;AbstractOrderedMapDecorator;true;AbstractOrderedMapDecorator;(OrderedMap);;MapValue of Argument[0];MapValue of Argument[-1];value"
 			AbstractOrderedMapDecorator out = null;
 			OrderedMap in = (OrderedMap)newWithMapValue(source());
-			out = new AbstractOrderedMapDecorator(in);
+			out = new MyAbstractOrderedMapDecorator(in);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4.map;AbstractSortedMapDecorator;true;AbstractSortedMapDecorator;(SortedMap);;MapKey of Argument[0];MapKey of Argument[-1];value"
 			AbstractSortedMapDecorator out = null;
 			SortedMap in = (SortedMap)newWithMapKey(source());
-			out = new AbstractSortedMapDecorator(in);
+			out = new MyAbstractSortedMapDecorator(in);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4.map;AbstractSortedMapDecorator;true;AbstractSortedMapDecorator;(SortedMap);;MapValue of Argument[0];MapValue of Argument[-1];value"
 			AbstractSortedMapDecorator out = null;
 			SortedMap in = (SortedMap)newWithMapValue(source());
-			out = new AbstractSortedMapDecorator(in);
+			out = new MyAbstractSortedMapDecorator(in);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
@@ -3126,6 +3126,24 @@ public class TestNew {
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 
+	}
+
+	class MyAbstractSortedBidiMapDecorator<K, V> extends AbstractSortedBidiMapDecorator<K, V> {
+		public MyAbstractSortedBidiMapDecorator(final SortedBidiMap<K, V> map) {
+			super(map);
+		}
+	}
+
+	class MyAbstractOrderedMapDecorator<K, V> extends AbstractOrderedMapDecorator<K, V> {
+		public MyAbstractOrderedMapDecorator(final OrderedMap<K, V> map) {
+			super(map);
+		}
+	}
+
+	class MyAbstractSortedMapDecorator<K, V> extends AbstractSortedMapDecorator<K, V> {
+		public MyAbstractSortedMapDecorator(final SortedMap<K, V> map) {
+			super(map);
+		}
 	}
 
 }
