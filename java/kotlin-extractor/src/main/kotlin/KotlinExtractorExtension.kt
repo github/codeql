@@ -654,12 +654,16 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
                         tw.writeExprs_stringliteral(id, typeId, parent, idx)
                         tw.writeHasLocation(id, locId)
                         tw.writeNamestrings(v.toString(), v.toString(), id)
-                    } else -> {
-                        if(v == null) {
-                            logger.warnElement(Severity.ErrorSevere, "Unrecognised IrConst: null value", e)
-                        } else {
-                            logger.warnElement(Severity.ErrorSevere, "Unrecognised IrConst: " + v.javaClass, e)
-                        }
+                    }
+                    null -> {
+                        val id = tw.getFreshIdLabel<DbNullliteral>()
+                        val typeId = useType(e.type) // class;kotlin.Nothing
+                        val locId = tw.getLocation(e)
+                        tw.writeExprs_nullliteral(id, typeId, parent, idx)
+                        tw.writeHasLocation(id, locId)
+                    }
+                    else -> {
+                        logger.warnElement(Severity.ErrorSevere, "Unrecognised IrConst: " + v.javaClass, e)
                     }
                 }
             }
