@@ -367,6 +367,10 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
             @Suppress("UNCHECKED_CAST")
             val classId = id as Label<out DbClass>
             tw.writeClasses(classId, cls, pkgId, classId)
+
+            if (c.kind == ClassKind.ENUM_CLASS) {
+                tw.writeIsEnumType(classId)
+            }
         }
         return id
     }
