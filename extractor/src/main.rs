@@ -267,15 +267,17 @@ fn path_for(dir: &Path, path: &Path, ext: &str) -> PathBuf {
             }
         }
     }
-    match result.extension() {
-        Some(x) => {
-            let mut new_ext = x.to_os_string();
-            new_ext.push(".");
-            new_ext.push(ext);
-            result.set_extension(new_ext);
-        }
-        None => {
-            result.set_extension(ext);
+    if !ext.is_empty() {
+        match result.extension() {
+            Some(x) => {
+                let mut new_ext = x.to_os_string();
+                new_ext.push(".");
+                new_ext.push(ext);
+                result.set_extension(new_ext);
+            }
+            None => {
+                result.set_extension(ext);
+            }
         }
     }
     result
