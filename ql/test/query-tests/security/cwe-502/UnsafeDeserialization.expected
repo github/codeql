@@ -15,6 +15,7 @@ nodes
 | UnsafeDeserialization.rb:27:27:27:35 | json_data | semmle.label | json_data |
 | UnsafeDeserialization.rb:38:17:38:22 | call to params :  | semmle.label | call to params :  |
 | UnsafeDeserialization.rb:39:24:39:32 | yaml_data | semmle.label | yaml_data |
+subpaths
 #select
 | UnsafeDeserialization.rb:9:27:9:41 | serialized_data | UnsafeDeserialization.rb:8:39:8:44 | call to params :  | UnsafeDeserialization.rb:9:27:9:41 | serialized_data | Unsafe deserialization of $@. | UnsafeDeserialization.rb:8:39:8:44 | call to params | user input |
 | UnsafeDeserialization.rb:15:30:15:44 | serialized_data | UnsafeDeserialization.rb:14:39:14:44 | call to params :  | UnsafeDeserialization.rb:15:30:15:44 | serialized_data | Unsafe deserialization of $@. | UnsafeDeserialization.rb:14:39:14:44 | call to params | user input |
