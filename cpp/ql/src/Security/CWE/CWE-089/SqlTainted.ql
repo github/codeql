@@ -34,10 +34,10 @@ class Configuration extends TaintTrackingConfiguration {
     or
     e.getUnspecifiedType() instanceof IntegralType
     or
-    exists(SqlBarrier sqlFunc, int arg, FunctionInput input |
-      e = sqlFunc.getACallToThisFunction().getArgument(arg) and
+    exists(SqlEscapeFunction sql, int arg, FunctionInput input |
+      e = sql.getACallToThisFunction().getArgument(arg) and
       input.isParameterDeref(arg) and
-      sqlFunc.getAnEscapedParameter(input, _)
+      sql.escapesSqlArgument(input, _)
     )
   }
 }

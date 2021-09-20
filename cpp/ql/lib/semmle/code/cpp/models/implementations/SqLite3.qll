@@ -1,8 +1,8 @@
 private import semmle.code.cpp.models.interfaces.Sql
 private import semmle.code.cpp.models.interfaces.FunctionInputsAndOutputs
 
-private class SqLite3Sink extends SqlSink {
-  SqLite3Sink() { this.hasName("sqlite3_exec") }
+private class SqLite3ExecutionFunction extends SqlExecutionFunction {
+  SqLite3ExecutionFunction() { this.hasName("sqlite3_exec") }
 
-  override predicate getAnSqlParameter(FunctionInput input) { input.isParameterDeref(1) }
+  override predicate hasSqlArgument(FunctionInput input) { input.isParameterDeref(1) }
 }

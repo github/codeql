@@ -35,10 +35,10 @@ class SecurityOptions extends string {
    * An argument to a function that is passed to a SQL server.
    */
   predicate sqlArgument(string function, int arg) {
-    exists(FunctionInput input, SqlSink sqlSink |
-      sqlSink.hasName(function) and
+    exists(FunctionInput input, SqlExecutionFunction sql |
+      sql.hasName(function) and
       input.isParameterDeref(arg) and
-      sqlSink.getAnSqlParameter(input)
+      sql.hasSqlArgument(input)
     )
   }
 

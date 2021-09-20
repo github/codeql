@@ -45,8 +45,8 @@ private predicate pqxxEscapeArgument(string function, int arg) {
   function in ["esc", "esc_raw", "quote", "quote_raw", "quote_name", "quote_table", "esc_like"]
 }
 
-private class PostgreSqlSink extends SqlSink {
-  PostgreSqlSink() {
+private class PostgreSqlExecutionFunction extends SqlExecutionFunction {
+  PostgreSqlExecutionFunction() {
     exists(Class c |
       this.getDeclaringType() = c and
       // transaction exec and connection prepare variations
@@ -60,7 +60,7 @@ private class PostgreSqlSink extends SqlSink {
     )
   }
 
-  override predicate getAnSqlParameter(FunctionInput input) {
+  override predicate hasSqlArgument(FunctionInput input) {
     exists(int argIndex |
       pqxxTransactionSqlArgument(this.getName(), argIndex)
       or
@@ -71,8 +71,8 @@ private class PostgreSqlSink extends SqlSink {
   }
 }
 
-private class PostgreSqlBarrier extends SqlBarrier {
-  PostgreSqlBarrier() {
+private class PostgreSqlEscapeFunction extends SqlEscapeFunction {
+  PostgreSqlEscapeFunction() {
     exists(Class c |
       this.getDeclaringType() = c and
       // transaction and connection escape functions
@@ -84,7 +84,7 @@ private class PostgreSqlBarrier extends SqlBarrier {
     )
   }
 
-  override predicate getAnEscapedParameter(FunctionInput input, FunctionOutput output) {
+  override predicate escapesSqlArgument(FunctionInput input, FunctionOutput output) {
     exists(int argIndex |
       input.isParameterDeref(argIndex) and
       output.isReturnValueDeref()
