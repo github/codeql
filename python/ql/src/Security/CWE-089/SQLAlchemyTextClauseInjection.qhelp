@@ -40,7 +40,7 @@ to a SQL injection attack.
 
 <p>
 In the third case, the query is built fully using the ORM models, so in the end, the
-user-supplied input will passed passed to the database using query parameters. The
+user-supplied input will be passed to the database using query parameters. The
 database connector library will take care of escaping and inserting quotes as needed.
 </p>
 
