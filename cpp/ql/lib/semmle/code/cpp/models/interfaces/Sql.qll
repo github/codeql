@@ -1,6 +1,6 @@
 /**
  * Provides abstract classes for modeling functions that execute and escape SQL query strings.
- * To use this QL library, create a QL class extending `SqlExecutionFunction` or `SqlEscapeFunction`
+ * To extend this QL library, create a QL class extending `SqlExecutionFunction` or `SqlEscapeFunction`
  * with a characteristic predicate that selects the function or set of functions you are modeling.
  * Within that class, override the predicates provided by the class to match the way a
  * parameter flows into the function and, in the case of `SqlEscapeFunction`, out of the function.
@@ -21,10 +21,10 @@ abstract class SqlExecutionFunction extends Function {
 /**
  * An abstract class that represents a function that escapes an SQL query string.
  */
-abstract class SqlEscapeFunction extends Function {
+abstract class SqlBarrierFunction extends Function {
   /**
-   * Holds if the `output` escapes the SQL input `input` such that is it safe to pass to
+   * Holds if the `output` is a barrier to the SQL input `input` such that is it safe to pass to
    * an `SqlExecutionFunction`.
    */
-  abstract predicate escapesSqlArgument(FunctionInput input, FunctionOutput output);
+  abstract predicate barrierSqlArgument(FunctionInput input, FunctionOutput output);
 }

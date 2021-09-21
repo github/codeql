@@ -71,8 +71,8 @@ private class PostgreSqlExecutionFunction extends SqlExecutionFunction {
   }
 }
 
-private class PostgreSqlEscapeFunction extends SqlEscapeFunction {
-  PostgreSqlEscapeFunction() {
+private class PostgreSqlBarrierFunction extends SqlBarrierFunction {
+  PostgreSqlBarrierFunction() {
     exists(Class c |
       this.getDeclaringType() = c and
       // transaction and connection escape functions
@@ -84,7 +84,7 @@ private class PostgreSqlEscapeFunction extends SqlEscapeFunction {
     )
   }
 
-  override predicate escapesSqlArgument(FunctionInput input, FunctionOutput output) {
+  override predicate barrierSqlArgument(FunctionInput input, FunctionOutput output) {
     exists(int argIndex |
       input.isParameterDeref(argIndex) and
       output.isReturnValueDeref() and
