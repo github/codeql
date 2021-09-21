@@ -10,6 +10,7 @@
  */
 
 import cpp
+import semmle.code.cpp.commons.Exclusions
 
 class OneLineStmt extends Stmt {
   OneLineStmt() {
@@ -34,5 +35,8 @@ where
       other.onLine(f, line) and toMin = other.getLocation().getStartColumn()
     |
       toMin
-    )
+    ) and
+  // Exclude statements that are from invocations of system-header macros.
+  // Example: FD_ISSET from glibc.
+  not isFromSystemMacroDefinition(o)
 select o, "This line contains " + cnt + " statements; only one is allowed."
