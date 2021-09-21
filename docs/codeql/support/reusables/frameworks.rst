@@ -176,7 +176,9 @@ Python built-in support
    mysqlclient, Database
    psycopg2, Database
    sqlite3, Database
+   Flask-SQLAlchemy, Database ORM
    peewee, Database ORM
+   SQLAlchemy, Database ORM
    cryptography, Cryptography library
    pycryptodome, Cryptography library
    pycryptodomex, Cryptography library

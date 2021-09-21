@@ -1,0 +1,53 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+The <code>TextClause</code> class in the <code>SQLAlchemy</code> PyPI package represents
+a textual SQL string directly. If user-input is added to it without sufficient
+sanitization, a user may be able to run malicious database queries, since the
+<code>TextClause</code> is inserted directly into the final SQL.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Don't allow user-input to be added to a <code>TextClause</code>, instead construct your
+full query with constructs from the ORM, or use query parameters for user-input.
+</p>
+</recommendation>
+
+<example>
+<p>
+In the following snippet, a user is fetched from the database using three
+different queries.
+</p>
+
+<p>
+In the first case, the final query string is built by directly including a user-supplied
+input. The parameter may include quote characters, so this code is vulnerable to a SQL
+injection attack.
+</p>
+
+<p>
+In the second case, the query is built using ORM models, but part of it is using a
+<code>TextClause</code> directly including a user-supplied input. Since the
+<code>TextClause</code> is inserted directly into the final SQL, this code is vulnerable
+to a SQL injection attack.
+</p>
+
+<p>
+In the third case, the query is built fully using the ORM models, so in the end, the
+user-supplied input will be passed to the database using query parameters. The
+database connector library will take care of escaping and inserting quotes as needed.
+</p>
+
+<sample src="examples/sqlalchemy_textclause_injection.py" />
+</example>
+
+<references>
+<li><a href="https://docs.sqlalchemy.org/en/14/core/sqlelement.html#sqlalchemy.sql.expression.text.params.text">Official documentation of the text parameter</a>.</li>
+</references>
+</qhelp>
