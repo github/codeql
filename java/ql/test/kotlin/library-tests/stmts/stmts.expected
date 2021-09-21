@@ -1,16 +1,16 @@
-| stmts.kt:2:41:20:1 | { ... } |
-| stmts.kt:3:15:4:5 | { ... } |
-| stmts.kt:4:22:5:5 | { ... } |
-| stmts.kt:5:12:6:5 | { ... } |
-| stmts.kt:7:5:8:16 | while (...) |
-| stmts.kt:8:9:8:16 | return ... |
-| stmts.kt:9:5:11:5 | while (...) |
-| stmts.kt:9:18:11:5 | { ... } |
-| stmts.kt:10:9:10:16 | return ... |
-| stmts.kt:12:5:14:18 | do ... while (...) |
-| stmts.kt:12:5:14:18 | { ... } |
-| stmts.kt:12:8:14:5 | { ... } |
-| stmts.kt:13:9:13:16 | return ... |
-| stmts.kt:17:35:17:43 | { ... } |
-| stmts.kt:17:50:17:58 | { ... } |
-| stmts.kt:19:5:19:16 | return ... |
+| stmts.kt:2:41:20:1 | { ... } | BlockStmt |
+| stmts.kt:3:15:4:5 | { ... } | BlockStmt |
+| stmts.kt:4:22:5:5 | { ... } | BlockStmt |
+| stmts.kt:5:12:6:5 | { ... } | BlockStmt |
+| stmts.kt:7:5:8:16 | while (...) | WhileStmt |
+| stmts.kt:8:9:8:16 | return ... | ReturnStmt |
+| stmts.kt:9:5:11:5 | while (...) | WhileStmt |
+| stmts.kt:9:18:11:5 | { ... } | BlockStmt |
+| stmts.kt:10:9:10:16 | return ... | ReturnStmt |
+| stmts.kt:12:5:14:18 | do ... while (...) | DoStmt |
+| stmts.kt:12:5:14:18 | { ... } | BlockStmt |
+| stmts.kt:12:8:14:5 | { ... } | BlockStmt |
+| stmts.kt:13:9:13:16 | return ... | ReturnStmt |
+| stmts.kt:17:35:17:43 | { ... } | BlockStmt |
+| stmts.kt:17:50:17:58 | { ... } | BlockStmt |
+| stmts.kt:19:5:19:16 | return ... | ReturnStmt |
