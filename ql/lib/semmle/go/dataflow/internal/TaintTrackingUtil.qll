@@ -3,6 +3,7 @@
  */
 
 private import go
+private import FlowSummaryImpl as FlowSummaryImpl
 
 /**
  * Holds if taint can flow from `src` to `sink` in zero or more
@@ -23,7 +24,38 @@ predicate localExprTaint(Expr src, Expr sink) {
  */
 predicate localTaintStep(DataFlow::Node src, DataFlow::Node sink) {
   DataFlow::localFlowStep(src, sink) or
-  localAdditionalTaintStep(src, sink)
+  localAdditionalTaintStep(src, sink) or
+  // Simple flow through library code is included in the exposed local
+  // step relation, even though flow is technically inter-procedural
+  FlowSummaryImpl::Private::Steps::summaryThroughStep(src, sink, false)
+}
+
+private Type getElementType(Type container) {
+  result = container.(ArrayType).getElementType() or
+  result = container.(SliceType).getElementType() or
+  result = container.(ChanType).getElementType() or
+  result = container.(MapType).getValueType()
+}
+
+/**
+ * Holds if default `TaintTracking::Configuration`s should allow implicit reads
+ * of `c` at sinks and inputs to additional taint steps.
+ */
+bindingset[node]
+predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::Content c) {
+  exists(Type container |
+    node instanceof DataFlow::ArgumentNode and
+    getElementType*(node.getType()) = container
+  |
+    container instanceof ArrayType and
+    c instanceof DataFlow::ArrayContent
+    or
+    container instanceof PointerType and
+    c instanceof DataFlow::PointerContent
+    or
+    container instanceof MapType and
+    c instanceof DataFlow::MapValueContent
+  )
 }
 
 private newtype TUnit = TMkUnit()
@@ -61,7 +93,8 @@ predicate localAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
   stringConcatStep(pred, succ) or
   sliceStep(pred, succ) or
   any(FunctionModel fm).taintStep(pred, succ) or
-  any(AdditionalTaintStep a).step(pred, succ)
+  any(AdditionalTaintStep a).step(pred, succ) or
+  FlowSummaryImpl::Private::Steps::summaryLocalStep(pred, succ, false)
 }
 
 /**

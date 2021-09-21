@@ -1,6 +1,7 @@
 private import go
 private import DataFlowUtil
 private import DataFlowImplCommon
+private import FlowSummaryImpl as FlowSummaryImpl
 import DataFlowNodes::Private
 
 private newtype TReturnKind =
@@ -14,8 +15,15 @@ ReturnKind getReturnKind(int i) { result = MkReturnKind(i) }
  * or of one of multiple values.
  */
 class ReturnKind extends TReturnKind {
+  int i;
+
+  ReturnKind() { this = MkReturnKind(i) }
+
+  /** Gets the index of this return value. */
+  int getIndex() { result = i }
+
   /** Gets a textual representation of this return kind. */
-  string toString() { exists(int i | this = MkReturnKind(i) | result = "return[" + i + "]") }
+  string toString() { result = "return[" + i + "]" }
 }
 
 /**
@@ -95,49 +103,6 @@ predicate jumpStep(Node n1, Node n2) {
   )
 }
 
-private newtype TContent =
-  TFieldContent(Field f) or
-  TCollectionContent() or
-  TArrayContent() or
-  TPointerContent(PointerType p)
-
-/**
- * A reference contained in an object. Examples include instance fields, the
- * contents of a collection object, the contents of an array or pointer.
- */
-class Content extends TContent {
-  /** Gets a textual representation of this element. */
-  abstract string toString();
-
-  predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
-    path = "" and sl = 0 and sc = 0 and el = 0 and ec = 0
-  }
-}
-
-private class FieldContent extends Content, TFieldContent {
-  Field f;
-
-  FieldContent() { this = TFieldContent(f) }
-
-  override string toString() { result = f.toString() }
-
-  override predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
-    f.getDeclaration().hasLocationInfo(path, sl, sc, el, ec)
-  }
-}
-
-private class CollectionContent extends Content, TCollectionContent {
-  override string toString() { result = "collection" }
-}
-
-private class ArrayContent extends Content, TArrayContent {
-  override string toString() { result = "array" }
-}
-
-private class PointerContent extends Content, TPointerContent {
-  override string toString() { result = "pointer" }
-}
-
 /**
  * Holds if data can flow from `node1` to `node2` via an assignment to `c`.
  * Thus, `node2` references an object with a field `f` that contains the
@@ -149,15 +114,17 @@ predicate storeStep(Node node1, Content c, PostUpdateNode node2) {
   exists(Write w, Field f, DataFlow::Node base, DataFlow::Node rhs | w.writesField(base, f, rhs) |
     node1 = rhs and
     node2.getPreUpdateNode() = base and
-    c = TFieldContent(f)
+    c = any(DataFlow::FieldContent fc | fc.getField() = f)
     or
     node1 = base and
     node2.getPreUpdateNode() = node1.(PointerDereferenceNode).getOperand() and
-    c = TPointerContent(node2.getType())
+    c = any(DataFlow::PointerContent pc | pc.getPointerType() = node2.getType())
   )
   or
   node1 = node2.(AddressOperationNode).getOperand() and
-  c = TPointerContent(node2.getType())
+  c = any(DataFlow::PointerContent pc | pc.getPointerType() = node2.getType())
+  or
+  FlowSummaryImpl::Private::Steps::summaryStoreStep(node1, c, node2)
 }
 
 /**
@@ -167,24 +134,35 @@ predicate storeStep(Node node1, Content c, PostUpdateNode node2) {
  */
 predicate readStep(Node node1, Content f, Node node2) {
   node1 = node2.(PointerDereferenceNode).getOperand() and
-  f = TPointerContent(node1.getType())
+  f =  any(DataFlow::PointerContent pc | pc.getPointerType() = node1.getType())
   or
   exists(FieldReadNode read |
     node2 = read and
     node1 = read.getBase() and
-    f = TFieldContent(read.getField())
+    f = any(DataFlow::FieldContent fc | fc.getField() = read.getField())
   )
+  or
+  FlowSummaryImpl::Private::Steps::summaryReadStep(node1, f, node2)
 }
 
 /**
  * Holds if values stored inside content `c` are cleared at node `n`.
  */
 predicate clearsContent(Node n, Content c) {
-  none() // stub implementation
+  // note for review: Java clears content in the pre-update node if there is a storeStep into a post-update node;
+  //   I assume that's not compatible with our current post-update node implementation?
+  c instanceof FieldContent and
+  FlowSummaryImpl::Private::Steps::summaryStoresIntoArg(c, n)
+  or
+  FlowSummaryImpl::Private::Steps::summaryClearsContent(n, c)
 }
 
 /** Gets the type of `n` used for type pruning. */
-DataFlowType getNodeType(Node n) { result = n.getType() }
+DataFlowType getNodeType(Node n) {
+  result = n.getType()
+  or
+  result = FlowSummaryImpl::Private::summaryNodeType(n)
+}
 
 /** Gets a string representation of a type returned by `getNodeType()`. */
 string ppReprType(Type t) { result = t.toString() }

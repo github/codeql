@@ -8,7 +8,10 @@ cached
 private newtype TNode =
   MkInstructionNode(IR::Instruction insn) or
   MkSsaNode(SsaDefinition ssa) or
-  MkGlobalFunctionNode(Function f)
+  MkGlobalFunctionNode(Function f) or
+  MkSummaryInternalNode(SummarizedCallable c, FlowSummaryImpl::Private::SummaryNodeState state) {
+    FlowSummaryImpl::Private::summaryNodeRange(c, state)
+  }
 
 /** Nodes intended for only use inside the data-flow libraries. */
 module Private {
@@ -31,6 +34,36 @@ module Private {
 
     /** Gets the underlying call. */
     DataFlowCall getCall() { result = call.asExpr() }
+  }
+
+  /**
+   * A data-flow node used to model flow summaries.
+   */
+  class SummaryNode extends Node, MkSummaryInternalNode {
+    private SummarizedCallable c;
+    private FlowSummaryImpl::Private::SummaryNodeState state;
+
+    SummaryNode() { this = MkSummaryInternalNode(c, state) }
+
+    override predicate hasLocationInfo(string fp, int sl, int sc, int el, int ec) { c.hasLocationInfo(fp, sl, sc, el, ec) }
+
+    override string toString() { result = "[summary] " + state + " in " + c }
+
+    /** Holds if this summary node is the `i`th argument of `call`. */
+    predicate isArgumentOf(DataFlowCall call, int i) {
+      FlowSummaryImpl::Private::summaryArgumentNode(call, this, i)
+    }
+
+    /** Holds if this summary node is a return node. */
+    predicate isReturn() { FlowSummaryImpl::Private::summaryReturnNode(this, _) }
+
+    /** Holds if this summary node is an out node for `call`. */
+    predicate isOut(DataFlowCall call) { FlowSummaryImpl::Private::summaryOutNode(call, this, _) }
+  }
+
+  /** Gets the summary node corresponding to the callable `c` and state `state`. */
+  SummaryNode getSummaryNode(SummarizedCallable c, FlowSummaryImpl::Private::SummaryNodeState state) {
+    result = MkSummaryInternalNode(c, state)
   }
 }
 
@@ -540,10 +573,17 @@ module Public {
    * to the value before the update with the exception of `ClassInstanceExpr`,
    * which represents the value after the constructor has run.
    */
-  class PostUpdateNode extends Node {
+  abstract class PostUpdateNode extends Node {
+    /**
+     * Gets the node before the state update.
+     */
+    abstract Node getPreUpdateNode();
+  }
+
+  private class DefaultPostUpdateNode extends PostUpdateNode {
     Node preupd;
 
-    PostUpdateNode() {
+    DefaultPostUpdateNode() {
       (
         preupd instanceof AddressOperationNode
         or
@@ -564,10 +604,7 @@ module Public {
       )
     }
 
-    /**
-     * Gets the node before the state update.
-     */
-    Node getPreUpdateNode() { result = preupd }
+    override Node getPreUpdateNode() { result = preupd }
   }
 
   /**
@@ -983,3 +1020,11 @@ module Public {
 
 private import Private
 private import Public
+
+class SummaryPostUpdateNode extends SummaryNode, PostUpdateNode {
+  private Node pre;
+
+  SummaryPostUpdateNode() { FlowSummaryImpl::Private::summaryPostUpdateNode(this, pre) }
+
+  override Node getPreUpdateNode() { result = pre }
+}

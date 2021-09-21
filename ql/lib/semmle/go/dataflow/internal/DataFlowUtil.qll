@@ -4,7 +4,9 @@
 
 import go
 import semmle.go.dataflow.FunctionInputsAndOutputs
+private import semmle.go.dataflow.ExternalFlow
 private import DataFlowPrivate
+private import FlowSummaryImpl as FlowSummaryImpl
 import DataFlowNodes::Public
 
 /**
@@ -101,7 +103,13 @@ predicate isReturnedWithError(Node node) {
  * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local
  * (intra-procedural) step.
  */
-predicate localFlowStep(Node nodeFrom, Node nodeTo) { simpleLocalFlowStep(nodeFrom, nodeTo) }
+predicate localFlowStep(Node nodeFrom, Node nodeTo) {
+  simpleLocalFlowStep(nodeFrom, nodeTo)
+  or
+  // Simple flow through library code is included in the exposed local
+  // step relation, even though flow is technically inter-procedural
+  FlowSummaryImpl::Private::Steps::summaryThroughStep(nodeFrom, nodeTo, true)
+}
 
 /**
  * INTERNAL: do not use.
@@ -115,6 +123,8 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   or
   // step through function model
   any(FunctionModel m).flowStep(nodeFrom, nodeTo)
+  or
+  FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, true)
 }
 
 /**
@@ -122,6 +132,104 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
  * (intra-procedural) steps.
  */
 predicate localFlow(Node source, Node sink) { localFlowStep*(source, sink) }
+
+
+private newtype TContent =
+  TFieldContent(Field f) or
+  TCollectionContent() or
+  TArrayContent() or
+  TPointerContent(PointerType p) or
+  TMapKeyContent() or
+  TMapValueContent() or
+  TSyntheticFieldContent(SyntheticField s)
+
+/**
+ * A reference contained in an object. Examples include instance fields, the
+ * contents of a collection object, the contents of an array or pointer.
+ */
+class Content extends TContent {
+  /** Gets the type of the contained data for the purpose of type pruning. */
+  DataFlowType getType() { result instanceof EmptyInterfaceType }
+
+  /** Gets a textual representation of this element. */
+  abstract string toString();
+
+  /**
+   * Holds if this element is at the specified location.
+   * The location spans column `startcolumn` of line `startline` to
+   * column `endcolumn` of line `endline` in file `filepath`.
+   * For more information, see
+   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+   */
+  predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
+    path = "" and sl = 0 and sc = 0 and el = 0 and ec = 0
+  }
+}
+
+/** A reference through a field. */
+class FieldContent extends Content, TFieldContent {
+  Field f;
+
+  FieldContent() { this = TFieldContent(f) }
+
+  /** Gets the field associated with this `FieldContent`. */
+  Field getField() { result = f }
+
+  override DataFlowType getType() { result = f.getType() }
+
+  override string toString() { result = f.toString() }
+
+  override predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
+    f.getDeclaration().hasLocationInfo(path, sl, sc, el, ec)
+  }
+}
+
+/** A reference through the contents of some collection-like container. */
+class CollectionContent extends Content, TCollectionContent {
+  override string toString() { result = "collection" }
+}
+
+/** A reference through an array. */
+class ArrayContent extends Content, TArrayContent {
+  override string toString() { result = "array" }
+}
+
+/** A reference through a pointer. */
+class PointerContent extends Content, TPointerContent {
+  PointerType t;
+
+  PointerContent() { this = TPointerContent(t) }
+
+  /** Gets the pointer type that containers with this content must have. */
+  PointerType getPointerType() { result = t }
+
+  override DataFlowType getType() { result = t.getBaseType() }
+
+  override string toString() { result = "pointer" }
+}
+
+/** A reference through a map key. */
+class MapKeyContent extends Content, TMapKeyContent {
+  override string toString() { result = "map.key" }
+}
+
+/** A reference through a map value. */
+class MapValueContent extends Content, TMapValueContent {
+  override string toString() { result = "map.value" }
+}
+
+class SyntheticFieldContent extends Content, TSyntheticFieldContent {
+  SyntheticField s;
+
+  SyntheticFieldContent() { this = TSyntheticFieldContent(s) }
+
+  /** Gets the field associated with this `SyntheticFieldContent`. */
+  SyntheticField getField() { result = s }
+
+  override DataFlowType getType() { result = s.getType() }
+
+  override string toString() { result = s.toString() }
+}
 
 /**
  * A guard that validates some expression.
