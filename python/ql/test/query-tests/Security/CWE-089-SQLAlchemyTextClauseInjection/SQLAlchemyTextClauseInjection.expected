@@ -25,6 +25,7 @@ nodes
 | test.py:48:52:48:59 | ControlFlowNode for username | semmle.label | ControlFlowNode for username |
 | test.py:50:18:50:25 | ControlFlowNode for username | semmle.label | ControlFlowNode for username |
 | test.py:51:24:51:31 | ControlFlowNode for username | semmle.label | ControlFlowNode for username |
+subpaths
 #select
 | test.py:27:28:27:87 | ControlFlowNode for Attribute() | test.py:23:15:23:22 | ControlFlowNode for username | test.py:27:28:27:87 | ControlFlowNode for Attribute() | This SQLAlchemy TextClause depends on $@, which could lead to SQL injection. | test.py:23:15:23:22 | ControlFlowNode for username | a user-provided value |
 | test.py:31:50:31:72 | ControlFlowNode for Attribute() | test.py:23:15:23:22 | ControlFlowNode for username | test.py:31:50:31:72 | ControlFlowNode for Attribute() | This SQLAlchemy TextClause depends on $@, which could lead to SQL injection. | test.py:23:15:23:22 | ControlFlowNode for username | a user-provided value |
