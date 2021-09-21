@@ -41,12 +41,15 @@
 | exprs.kt:46:12:46:14 | 123 | IntegerLiteral |
 | exprs.kt:46:12:46:20 | ... + ... | AddExpr |
 | exprs.kt:46:18:46:20 | 456 | IntegerLiteral |
+| exprs.kt:50:13:50:16 | true | BooleanLiteral |
+| exprs.kt:50:13:50:23 | ::class | ClassExpr |
 | file://:0:0:0:0 | b1 | LocalVariableDeclExpr |
 | file://:0:0:0:0 | b2 | LocalVariableDeclExpr |
 | file://:0:0:0:0 | b6 | LocalVariableDeclExpr |
 | file://:0:0:0:0 | b7 | LocalVariableDeclExpr |
 | file://:0:0:0:0 | b8 | LocalVariableDeclExpr |
 | file://:0:0:0:0 | c | LocalVariableDeclExpr |
+| file://:0:0:0:0 | d | LocalVariableDeclExpr |
 | file://:0:0:0:0 | i1 | LocalVariableDeclExpr |
 | file://:0:0:0:0 | i2 | LocalVariableDeclExpr |
 | file://:0:0:0:0 | i3 | LocalVariableDeclExpr |

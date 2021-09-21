@@ -46,3 +46,6 @@ TODO
     return 123 + 456
 }
 
+fun getClass() {
+    val d = true::class
+}
