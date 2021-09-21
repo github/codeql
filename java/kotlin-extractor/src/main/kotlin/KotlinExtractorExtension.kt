@@ -241,6 +241,9 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
 
             s.isChar() -> return primitiveType("char")
             s.isString() -> return primitiveType("string") // TODO: Wrong
+
+            s.isNothing() -> return primitiveType("<nulltype>")
+
             s.classifier.owner is IrClass -> {
                 val classifier: IrClassifierSymbol = s.classifier
                 val cls: IrClass = classifier.owner as IrClass
