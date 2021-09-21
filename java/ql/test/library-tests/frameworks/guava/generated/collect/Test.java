@@ -118,13 +118,6 @@ public class Test {
 	<V> V getMapValue(Map<?,V> map) { return map.get(null); }
 	<V> V getMapValue(Multimap<?,V> map) { return map.values().iterator().next(); }
 	<V> V getMapValue(Table<?,?,V> t) { return t.values().iterator().next(); }
-	Object getElementDefault(Object container) { return null; }
-	Object getMapDifference_leftDefault(Object container) { return null; }
-	Object getMapDifference_rightDefault(Object container) { return null; }
-	Object getMapKeyDefault(Object container) { return null; }
-	Object getMapValueDefault(Object container) { return null; }
-	Object getTable_columnKeyDefault(Object container) { return null; }
-	Object getTable_rowKeyDefault(Object container) { return null; }
 	Object newWithElementDefault(Object element) { return null; }
 	Object newWithMapKeyDefault(Object element) { return null; }
 	Object newWithMapValueDefault(Object element) { return null; }
@@ -276,14 +269,14 @@ public class Test {
 		{
 			// "com.google.common.collect;ClassToInstanceMap;true;getInstance;(Class);;MapValue of Argument[-1];ReturnValue;value"
 			Object out = null;
-			ImmutableClassToInstanceMap in = (ImmutableClassToInstanceMap)newWithMapValueDefault(source());
+			ImmutableClassToInstanceMap in = (ImmutableClassToInstanceMap)ImmutableClassToInstanceMap.of(null, source());
 			out = in.getInstance(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ClassToInstanceMap;true;getInstance;(Class);;MapValue of Argument[-1];ReturnValue;value"
 			Object out = null;
-			ClassToInstanceMap in = (ClassToInstanceMap)newWithMapValueDefault(source());
+			ClassToInstanceMap in = (ClassToInstanceMap)ImmutableClassToInstanceMap.of(null, source());
 			out = in.getInstance(null);
 			sink(out); // $ hasValueFlow
 		}
@@ -318,14 +311,14 @@ public class Test {
 		{
 			// "com.google.common.collect;ClassToInstanceMap;true;putInstance;(Class,Object);;MapValue of Argument[-1];ReturnValue;value"
 			Object out = null;
-			ImmutableClassToInstanceMap in = (ImmutableClassToInstanceMap)newWithMapValueDefault(source());
+			ImmutableClassToInstanceMap in = (ImmutableClassToInstanceMap)ImmutableClassToInstanceMap.of(null, source());
 			out = in.putInstance(null, null);
 			sink(out); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ClassToInstanceMap;true;putInstance;(Class,Object);;MapValue of Argument[-1];ReturnValue;value"
 			Object out = null;
-			ClassToInstanceMap in = (ClassToInstanceMap)newWithMapValueDefault(source());
+			ClassToInstanceMap in = (ClassToInstanceMap)ImmutableClassToInstanceMap.of(null, source());
 			out = in.putInstance(null, null);
 			sink(out); // $ hasValueFlow
 		}
@@ -338,24 +331,24 @@ public class Test {
 		}
 		{
 			// "com.google.common.collect;Collections2;false;orderedPermutations;(Iterable);;Element of Argument[0];Element of Element of ReturnValue;value"
-			Collection out = null;
+			Collection<List> out = null;
 			Iterable in = (Iterable)List.of(source());
 			out = Collections2.orderedPermutations(in);
-			sink(getElementDefault(getElement(out))); // $ hasValueFlow
+			sink(getElement(getElement(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Collections2;false;orderedPermutations;(Iterable,Comparator);;Element of Argument[0];Element of Element of ReturnValue;value"
-			Collection out = null;
+			Collection<List> out = null;
 			Iterable in = (Iterable)List.of(source());
 			out = Collections2.orderedPermutations(in, null);
-			sink(getElementDefault(getElement(out))); // $ hasValueFlow
+			sink(getElement(getElement(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Collections2;false;permutations;(Collection);;Element of Argument[0];Element of Element of ReturnValue;value"
-			Collection out = null;
+			Collection<List> out = null;
 			Collection in = (Collection)List.of(source());
 			out = Collections2.permutations(in);
-			sink(getElementDefault(getElement(out))); // $ hasValueFlow
+			sink(getElement(getElement(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ConcurrentHashMultiset;true;create;(Iterable);;Element of Argument[0];Element of ReturnValue;value"
@@ -2068,42 +2061,42 @@ public class Test {
 		{
 			// "com.google.common.collect;ImmutableMap$Builder;true;putAll;(Iterable);;MapKey of Element of Argument[0];MapKey of Argument[-1];value"
 			ImmutableSortedMap.Builder out = null;
-			Iterable in = (Iterable)List.of(newWithMapKeyDefault(source()));
+			Iterable in = (Iterable)List.of(newEntryWithMapKey(source()));
 			out.putAll(in);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableMap$Builder;true;putAll;(Iterable);;MapKey of Element of Argument[0];MapKey of Argument[-1];value"
 			ImmutableMap.Builder out = null;
-			Iterable in = (Iterable)List.of(newWithMapKeyDefault(source()));
+			Iterable in = (Iterable)List.of(newEntryWithMapKey(source()));
 			out.putAll(in);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableMap$Builder;true;putAll;(Iterable);;MapKey of Element of Argument[0];MapKey of Argument[-1];value"
 			ImmutableBiMap.Builder out = null;
-			Iterable in = (Iterable)List.of(newWithMapKeyDefault(source()));
+			Iterable in = (Iterable)List.of(newEntryWithMapKey(source()));
 			out.putAll(in);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableMap$Builder;true;putAll;(Iterable);;MapValue of Element of Argument[0];MapValue of Argument[-1];value"
 			ImmutableSortedMap.Builder out = null;
-			Iterable in = (Iterable)List.of(newWithMapValueDefault(source()));
+			Iterable in = (Iterable)List.of(newEntryWithMapValue(source()));
 			out.putAll(in);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableMap$Builder;true;putAll;(Iterable);;MapValue of Element of Argument[0];MapValue of Argument[-1];value"
 			ImmutableMap.Builder out = null;
-			Iterable in = (Iterable)List.of(newWithMapValueDefault(source()));
+			Iterable in = (Iterable)List.of(newEntryWithMapValue(source()));
 			out.putAll(in);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableMap$Builder;true;putAll;(Iterable);;MapValue of Element of Argument[0];MapValue of Argument[-1];value"
 			ImmutableBiMap.Builder out = null;
-			Iterable in = (Iterable)List.of(newWithMapValueDefault(source()));
+			Iterable in = (Iterable)List.of(newEntryWithMapValue(source()));
 			out.putAll(in);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
@@ -2194,14 +2187,14 @@ public class Test {
 		{
 			// "com.google.common.collect;ImmutableMap;true;copyOf;(Iterable);;MapKey of Element of Argument[0];MapKey of ReturnValue;value"
 			ImmutableMap out = null;
-			Iterable in = (Iterable)List.of(newWithMapKeyDefault(source()));
+			Iterable in = (Iterable)List.of(newEntryWithMapKey(source()));
 			out = ImmutableMap.copyOf(in);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableMap;true;copyOf;(Iterable);;MapValue of Element of Argument[0];MapValue of ReturnValue;value"
 			ImmutableMap out = null;
-			Iterable in = (Iterable)List.of(newWithMapValueDefault(source()));
+			Iterable in = (Iterable)List.of(newEntryWithMapValue(source()));
 			out = ImmutableMap.copyOf(in);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
@@ -2642,42 +2635,42 @@ public class Test {
 		{
 			// "com.google.common.collect;ImmutableMultimap$Builder;true;putAll;(Iterable);;MapKey of Element of Argument[0];MapKey of Argument[-1];value"
 			ImmutableSetMultimap.Builder out = null;
-			Iterable in = (Iterable)List.of(newWithMapKeyDefault(source()));
+			Iterable in = (Iterable)List.of(newEntryWithMapKey(source()));
 			out.putAll(in);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableMultimap$Builder;true;putAll;(Iterable);;MapKey of Element of Argument[0];MapKey of Argument[-1];value"
 			ImmutableMultimap.Builder out = null;
-			Iterable in = (Iterable)List.of(newWithMapKeyDefault(source()));
+			Iterable in = (Iterable)List.of(newEntryWithMapKey(source()));
 			out.putAll(in);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableMultimap$Builder;true;putAll;(Iterable);;MapKey of Element of Argument[0];MapKey of Argument[-1];value"
 			ImmutableListMultimap.Builder out = null;
-			Iterable in = (Iterable)List.of(newWithMapKeyDefault(source()));
+			Iterable in = (Iterable)List.of(newEntryWithMapKey(source()));
 			out.putAll(in);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableMultimap$Builder;true;putAll;(Iterable);;MapValue of Element of Argument[0];MapValue of Argument[-1];value"
 			ImmutableSetMultimap.Builder out = null;
-			Iterable in = (Iterable)List.of(newWithMapValueDefault(source()));
+			Iterable in = (Iterable)List.of(newEntryWithMapValue(source()));
 			out.putAll(in);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableMultimap$Builder;true;putAll;(Iterable);;MapValue of Element of Argument[0];MapValue of Argument[-1];value"
 			ImmutableMultimap.Builder out = null;
-			Iterable in = (Iterable)List.of(newWithMapValueDefault(source()));
+			Iterable in = (Iterable)List.of(newEntryWithMapValue(source()));
 			out.putAll(in);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableMultimap$Builder;true;putAll;(Iterable);;MapValue of Element of Argument[0];MapValue of Argument[-1];value"
 			ImmutableListMultimap.Builder out = null;
-			Iterable in = (Iterable)List.of(newWithMapValueDefault(source()));
+			Iterable in = (Iterable)List.of(newEntryWithMapValue(source()));
 			out.putAll(in);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
@@ -2894,14 +2887,14 @@ public class Test {
 		{
 			// "com.google.common.collect;ImmutableMultimap;true;copyOf;(Iterable);;MapKey of Element of Argument[0];MapKey of ReturnValue;value"
 			ImmutableMultimap out = null;
-			Iterable in = (Iterable)List.of(newWithMapKeyDefault(source()));
+			Iterable in = (Iterable)List.of(newEntryWithMapKey(source()));
 			out = ImmutableMultimap.copyOf(in);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableMultimap;true;copyOf;(Iterable);;MapValue of Element of Argument[0];MapValue of ReturnValue;value"
 			ImmutableMultimap out = null;
-			Iterable in = (Iterable)List.of(newWithMapValueDefault(source()));
+			Iterable in = (Iterable)List.of(newEntryWithMapValue(source()));
 			out = ImmutableMultimap.copyOf(in);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
@@ -3783,28 +3776,28 @@ public class Test {
 		{
 			// "com.google.common.collect;ImmutableSortedMap;true;copyOf;(Iterable);;MapKey of Element of Argument[0];MapKey of ReturnValue;value"
 			ImmutableSortedMap out = null;
-			Iterable in = (Iterable)List.of(newWithMapKeyDefault(source()));
+			Iterable in = (Iterable)List.of(newEntryWithMapKey(source()));
 			out = ImmutableSortedMap.copyOf(in);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSortedMap;true;copyOf;(Iterable);;MapValue of Element of Argument[0];MapValue of ReturnValue;value"
 			ImmutableSortedMap out = null;
-			Iterable in = (Iterable)List.of(newWithMapValueDefault(source()));
+			Iterable in = (Iterable)List.of(newEntryWithMapValue(source()));
 			out = ImmutableSortedMap.copyOf(in);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSortedMap;true;copyOf;(Iterable,Comparator);;MapKey of Element of Argument[0];MapKey of ReturnValue;value"
 			ImmutableSortedMap out = null;
-			Iterable in = (Iterable)List.of(newWithMapKeyDefault(source()));
+			Iterable in = (Iterable)List.of(newEntryWithMapKey(source()));
 			out = ImmutableSortedMap.copyOf(in, (Comparator)null);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableSortedMap;true;copyOf;(Iterable,Comparator);;MapValue of Element of Argument[0];MapValue of ReturnValue;value"
 			ImmutableSortedMap out = null;
-			Iterable in = (Iterable)List.of(newWithMapValueDefault(source()));
+			Iterable in = (Iterable)List.of(newEntryWithMapValue(source()));
 			out = ImmutableSortedMap.copyOf(in, (Comparator)null);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
@@ -3846,7 +3839,7 @@ public class Test {
 		{
 			// "com.google.common.collect;ImmutableSortedMap;true;copyOfSorted;(SortedMap);;MapValue of Argument[0];MapValue of ReturnValue;value"
 			ImmutableSortedMap out = null;
-			SortedMap in = (SortedMap)ImmutableSortedMap.of(null, (Comparable)source());
+			SortedMap in = (SortedMap)ImmutableSortedMap.of((Comparable)null, source());
 			out = ImmutableSortedMap.copyOfSorted(in);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
@@ -4637,7 +4630,7 @@ public class Test {
 		{
 			// "com.google.common.collect;Iterables;false;concat;(Iterable);;Element of Element of Argument[0];Element of ReturnValue;value"
 			Iterable out = null;
-			Iterable in = (Iterable)List.of(newWithElementDefault(source()));
+			Iterable in = (Iterable)List.of(List.of(source()));
 			out = Iterables.concat(in);
 			sink(getElement(out)); // $ hasValueFlow
 		}
@@ -4707,7 +4700,7 @@ public class Test {
 		{
 			// "com.google.common.collect;Iterables;false;concat;(Iterable[]);;Element of ArrayElement of Argument[0];Element of ReturnValue;value"
 			Iterable out = null;
-			Iterable[] in = (Iterable[])new Iterable[]{(Iterable)newWithElementDefault(source())};
+			Iterable[] in = (Iterable[])new Iterable[]{(Iterable)List.of(source())};
 			out = Iterables.concat(in);
 			sink(getElement(out)); // $ hasValueFlow
 		}
@@ -4840,23 +4833,23 @@ public class Test {
 		{
 			// "com.google.common.collect;Iterables;false;mergeSorted;(Iterable,Comparator);;Element of Element of Argument[0];Element of ReturnValue;value"
 			Iterable out = null;
-			Iterable in = (Iterable)List.of(newWithElementDefault(source()));
+			Iterable in = (Iterable)List.of(List.of(source()));
 			out = Iterables.mergeSorted(in, null);
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterables;false;paddedPartition;(Iterable,int);;Element of Argument[0];Element of Element of ReturnValue;value"
-			Iterable out = null;
+			Iterable<List> out = null;
 			Iterable in = (Iterable)List.of(source());
 			out = Iterables.paddedPartition(in, 0);
-			sink(getElementDefault(getElement(out))); // $ hasValueFlow
+			sink(getElement(getElement(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterables;false;partition;(Iterable,int);;Element of Argument[0];Element of Element of ReturnValue;value"
-			Iterable out = null;
+			Iterable<List> out = null;
 			Iterable in = (Iterable)List.of(source());
 			out = Iterables.partition(in, 0);
-			sink(getElementDefault(getElement(out))); // $ hasValueFlow
+			sink(getElement(getElement(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterables;false;skip;(Iterable,int);;Element of Argument[0];Element of ReturnValue;value"
@@ -4917,7 +4910,7 @@ public class Test {
 		{
 			// "com.google.common.collect;Iterators;false;concat;(Iterator);;Element of Element of Argument[0];Element of ReturnValue;value"
 			Iterator out = null;
-			Iterator in = (Iterator)List.of(newWithElementDefault(source())).iterator();
+			Iterator in = (Iterator)List.of(List.of(source()).iterator()).iterator();
 			out = Iterators.concat(in);
 			sink(getElement(out)); // $ hasValueFlow
 		}
@@ -4987,7 +4980,7 @@ public class Test {
 		{
 			// "com.google.common.collect;Iterators;false;concat;(Iterator[]);;Element of ArrayElement of Argument[0];Element of ReturnValue;value"
 			Iterator out = null;
-			Iterator[] in = (Iterator[])new Iterator[]{(Iterator)newWithElementDefault(source())};
+			Iterator[] in = (Iterator[])new Iterator[]{(Iterator)List.of(source()).iterator()};
 			out = Iterators.concat(in);
 			sink(getElement(out)); // $ hasValueFlow
 		}
@@ -5148,23 +5141,23 @@ public class Test {
 		{
 			// "com.google.common.collect;Iterators;false;mergeSorted;(Iterable,Comparator);;Element of Element of Argument[0];Element of ReturnValue;value"
 			UnmodifiableIterator out = null;
-			Iterable in = (Iterable)List.of(newWithElementDefault(source()));
+			Iterable in = (Iterable)List.of(List.of(source()).iterator());
 			out = Iterators.mergeSorted(in, null);
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterators;false;paddedPartition;(Iterator,int);;Element of Argument[0];Element of Element of ReturnValue;value"
-			UnmodifiableIterator out = null;
+			UnmodifiableIterator<List> out = null;
 			Iterator in = (Iterator)List.of(source()).iterator();
 			out = Iterators.paddedPartition(in, 0);
-			sink(getElementDefault(getElement(out))); // $ hasValueFlow
+			sink(getElement(getElement(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterators;false;partition;(Iterator,int);;Element of Argument[0];Element of Element of ReturnValue;value"
-			UnmodifiableIterator out = null;
+			UnmodifiableIterator<List> out = null;
 			Iterator in = (Iterator)List.of(source()).iterator();
 			out = Iterators.partition(in, 0);
-			sink(getElementDefault(getElement(out))); // $ hasValueFlow
+			sink(getElement(getElement(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Iterators;false;peekingIterator;(Iterator);;Element of Argument[0];Element of ReturnValue;value"
@@ -5176,7 +5169,7 @@ public class Test {
 		{
 			// "com.google.common.collect;Iterators;false;peekingIterator;(PeekingIterator);;Element of Argument[0];Element of ReturnValue;value"
 			PeekingIterator out = null;
-			PeekingIterator in = (PeekingIterator)newWithElementDefault(source());
+			PeekingIterator in = (PeekingIterator)Iterators.peekingIterator(List.of(source()).iterator());
 			out = Iterators.peekingIterator(in);
 			sink(getElement(out)); // $ hasValueFlow
 		}
@@ -5211,7 +5204,7 @@ public class Test {
 		{
 			// "com.google.common.collect;Iterators;false;unmodifiableIterator;(UnmodifiableIterator);;Element of Argument[0];Element of ReturnValue;value"
 			UnmodifiableIterator out = null;
-			UnmodifiableIterator in = (UnmodifiableIterator)newWithElementDefault(source());
+			UnmodifiableIterator in = (UnmodifiableIterator)Iterators.unmodifiableIterator(List.of(source()).iterator());
 			out = Iterators.unmodifiableIterator(in);
 			sink(getElement(out)); // $ hasValueFlow
 		}
@@ -5287,17 +5280,17 @@ public class Test {
 		}
 		{
 			// "com.google.common.collect;Lists;false;cartesianProduct;(List);;Element of Element of Argument[0];Element of Element of ReturnValue;value"
-			List out = null;
-			List in = (List)List.of(newWithElementDefault(source()));
+			List<List> out = null;
+			List in = (List)List.of(List.of(source()));
 			out = Lists.cartesianProduct(in);
-			sink(getElementDefault(getElement(out))); // $ hasValueFlow
+			sink(getElement(getElement(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Lists;false;cartesianProduct;(List[]);;Element of ArrayElement of Argument[0];Element of Element of ReturnValue;value"
-			List out = null;
-			List[] in = (List[])new List[]{(List)newWithElementDefault(source())};
+			List<List> out = null;
+			List[] in = (List[])new List[]{(List)List.of(source())};
 			out = Lists.cartesianProduct(in);
-			sink(getElementDefault(getElement(out))); // $ hasValueFlow
+			sink(getElement(getElement(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Lists;false;charactersOf;(CharSequence);;Argument[0];Element of ReturnValue;taint"
@@ -5350,10 +5343,10 @@ public class Test {
 		}
 		{
 			// "com.google.common.collect;Lists;false;partition;(List,int);;Element of Argument[0];Element of Element of ReturnValue;value"
-			List out = null;
+			List<List> out = null;
 			List in = (List)List.of(source());
 			out = Lists.partition(in, 0);
-			sink(getElementDefault(getElement(out))); // $ hasValueFlow
+			sink(getElement(getElement(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Lists;false;reverse;(List);;Element of Argument[0];Element of ReturnValue;value"
@@ -5379,168 +5372,168 @@ public class Test {
 		{
 			// "com.google.common.collect;MapDifference;true;entriesDiffering;();;MapKey of SyntheticField[com.google.common.collect.MapDifference.left] of Argument[-1];MapKey of ReturnValue;value"
 			SortedMap out = null;
-			SortedMapDifference in = (SortedMapDifference)Maps.difference((SortedMap)newWithMapKeyDefault(source()), null);
+			SortedMapDifference in = (SortedMapDifference)Maps.difference(ImmutableSortedMap.of((Comparable)source(), null), null);
 			out = in.entriesDiffering();
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;MapDifference;true;entriesDiffering;();;MapKey of SyntheticField[com.google.common.collect.MapDifference.left] of Argument[-1];MapKey of ReturnValue;value"
 			Map out = null;
-			MapDifference in = (MapDifference)Maps.difference((Map)newWithMapKeyDefault(source()), null);
+			MapDifference in = (MapDifference)Maps.difference(Map.of(source(), null), null);
 			out = in.entriesDiffering();
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;MapDifference;true;entriesDiffering;();;MapKey of SyntheticField[com.google.common.collect.MapDifference.right] of Argument[-1];MapKey of ReturnValue;value"
 			SortedMap out = null;
-			SortedMapDifference in = (SortedMapDifference)Maps.difference(null, (SortedMap)newWithMapKeyDefault(source()));
+			SortedMapDifference in = (SortedMapDifference)Maps.difference(null, ImmutableSortedMap.of((Comparable)source(), null));
 			out = in.entriesDiffering();
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;MapDifference;true;entriesDiffering;();;MapKey of SyntheticField[com.google.common.collect.MapDifference.right] of Argument[-1];MapKey of ReturnValue;value"
 			Map out = null;
-			MapDifference in = (MapDifference)Maps.difference(null, (Map)newWithMapKeyDefault(source()));
+			MapDifference in = (MapDifference)Maps.difference(null, Map.of(source(), null));
 			out = in.entriesDiffering();
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;MapDifference;true;entriesDiffering;();;MapValue of SyntheticField[com.google.common.collect.MapDifference.left] of Argument[-1];SyntheticField[com.google.common.collect.MapDifference.left] of MapValue of ReturnValue;value"
-			SortedMap out = null;
-			SortedMapDifference in = (SortedMapDifference)Maps.difference((SortedMap)newWithMapValueDefault(source()), null);
+			SortedMap<Object,MapDifference.ValueDifference> out = null;
+			SortedMapDifference in = (SortedMapDifference)Maps.difference(ImmutableSortedMap.of((Comparable)null, source()), null);
 			out = in.entriesDiffering();
-			sink(getMapDifference_leftDefault(getMapValue(out))); // $ hasValueFlow
+			sink(getMapValue(out).leftValue()); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;MapDifference;true;entriesDiffering;();;MapValue of SyntheticField[com.google.common.collect.MapDifference.left] of Argument[-1];SyntheticField[com.google.common.collect.MapDifference.left] of MapValue of ReturnValue;value"
-			Map out = null;
-			MapDifference in = (MapDifference)Maps.difference((Map)newWithMapValueDefault(source()), null);
+			Map<Object,MapDifference.ValueDifference> out = null;
+			MapDifference in = (MapDifference)Maps.difference(Map.of(null, source()), null);
 			out = in.entriesDiffering();
-			sink(getMapDifference_leftDefault(getMapValue(out))); // $ hasValueFlow
+			sink(getMapValue(out).leftValue()); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;MapDifference;true;entriesDiffering;();;MapValue of SyntheticField[com.google.common.collect.MapDifference.right] of Argument[-1];SyntheticField[com.google.common.collect.MapDifference.right] of MapValue of ReturnValue;value"
-			SortedMap out = null;
-			SortedMapDifference in = (SortedMapDifference)Maps.difference(null, (SortedMap)newWithMapValueDefault(source()));
+			SortedMap<Object,MapDifference.ValueDifference> out = null;
+			SortedMapDifference in = (SortedMapDifference)Maps.difference(null, ImmutableSortedMap.of((Comparable)null, source()));
 			out = in.entriesDiffering();
-			sink(getMapDifference_rightDefault(getMapValue(out))); // $ hasValueFlow
+			sink(getMapValue(out).rightValue()); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;MapDifference;true;entriesDiffering;();;MapValue of SyntheticField[com.google.common.collect.MapDifference.right] of Argument[-1];SyntheticField[com.google.common.collect.MapDifference.right] of MapValue of ReturnValue;value"
-			Map out = null;
-			MapDifference in = (MapDifference)Maps.difference(null, (Map)newWithMapValueDefault(source()));
+			Map<Object,MapDifference.ValueDifference> out = null;
+			MapDifference in = (MapDifference)Maps.difference(null, Map.of(null, source()));
 			out = in.entriesDiffering();
-			sink(getMapDifference_rightDefault(getMapValue(out))); // $ hasValueFlow
+			sink(getMapValue(out).rightValue()); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;MapDifference;true;entriesInCommon;();;MapKey of SyntheticField[com.google.common.collect.MapDifference.left] of Argument[-1];MapKey of ReturnValue;value"
 			SortedMap out = null;
-			SortedMapDifference in = (SortedMapDifference)Maps.difference((SortedMap)newWithMapKeyDefault(source()), null);
+			SortedMapDifference in = (SortedMapDifference)Maps.difference(ImmutableSortedMap.of((Comparable)source(), null), null);
 			out = in.entriesInCommon();
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;MapDifference;true;entriesInCommon;();;MapKey of SyntheticField[com.google.common.collect.MapDifference.left] of Argument[-1];MapKey of ReturnValue;value"
 			Map out = null;
-			MapDifference in = (MapDifference)Maps.difference((Map)newWithMapKeyDefault(source()), null);
+			MapDifference in = (MapDifference)Maps.difference(Map.of(source(), null), null);
 			out = in.entriesInCommon();
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;MapDifference;true;entriesInCommon;();;MapKey of SyntheticField[com.google.common.collect.MapDifference.right] of Argument[-1];MapKey of ReturnValue;value"
 			SortedMap out = null;
-			SortedMapDifference in = (SortedMapDifference)Maps.difference(null, (SortedMap)newWithMapKeyDefault(source()));
+			SortedMapDifference in = (SortedMapDifference)Maps.difference(null, ImmutableSortedMap.of((Comparable)source(), null));
 			out = in.entriesInCommon();
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;MapDifference;true;entriesInCommon;();;MapKey of SyntheticField[com.google.common.collect.MapDifference.right] of Argument[-1];MapKey of ReturnValue;value"
 			Map out = null;
-			MapDifference in = (MapDifference)Maps.difference(null, (Map)newWithMapKeyDefault(source()));
+			MapDifference in = (MapDifference)Maps.difference(null, Map.of(source(), null));
 			out = in.entriesInCommon();
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;MapDifference;true;entriesInCommon;();;MapValue of SyntheticField[com.google.common.collect.MapDifference.left] of Argument[-1];MapValue of ReturnValue;value"
 			SortedMap out = null;
-			SortedMapDifference in = (SortedMapDifference)Maps.difference((SortedMap)newWithMapValueDefault(source()), null);
+			SortedMapDifference in = (SortedMapDifference)Maps.difference(ImmutableSortedMap.of((Comparable)null, source()), null);
 			out = in.entriesInCommon();
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;MapDifference;true;entriesInCommon;();;MapValue of SyntheticField[com.google.common.collect.MapDifference.left] of Argument[-1];MapValue of ReturnValue;value"
 			Map out = null;
-			MapDifference in = (MapDifference)Maps.difference((Map)newWithMapValueDefault(source()), null);
+			MapDifference in = (MapDifference)Maps.difference(Map.of(null, source()), null);
 			out = in.entriesInCommon();
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;MapDifference;true;entriesInCommon;();;MapValue of SyntheticField[com.google.common.collect.MapDifference.right] of Argument[-1];MapValue of ReturnValue;value"
 			SortedMap out = null;
-			SortedMapDifference in = (SortedMapDifference)Maps.difference(null, (SortedMap)newWithMapValueDefault(source()));
+			SortedMapDifference in = (SortedMapDifference)Maps.difference(null, ImmutableSortedMap.of((Comparable)null, source()));
 			out = in.entriesInCommon();
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;MapDifference;true;entriesInCommon;();;MapValue of SyntheticField[com.google.common.collect.MapDifference.right] of Argument[-1];MapValue of ReturnValue;value"
 			Map out = null;
-			MapDifference in = (MapDifference)Maps.difference(null, (Map)newWithMapValueDefault(source()));
+			MapDifference in = (MapDifference)Maps.difference(null, Map.of(null, source()));
 			out = in.entriesInCommon();
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;MapDifference;true;entriesOnlyOnLeft;();;MapKey of SyntheticField[com.google.common.collect.MapDifference.left] of Argument[-1];MapKey of ReturnValue;value"
 			SortedMap out = null;
-			SortedMapDifference in = (SortedMapDifference)Maps.difference((SortedMap)newWithMapKeyDefault(source()), null);
+			SortedMapDifference in = (SortedMapDifference)Maps.difference(ImmutableSortedMap.of((Comparable)source(), null), null);
 			out = in.entriesOnlyOnLeft();
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;MapDifference;true;entriesOnlyOnLeft;();;MapKey of SyntheticField[com.google.common.collect.MapDifference.left] of Argument[-1];MapKey of ReturnValue;value"
 			Map out = null;
-			MapDifference in = (MapDifference)Maps.difference((Map)newWithMapKeyDefault(source()), null);
+			MapDifference in = (MapDifference)Maps.difference(Map.of(source(), null), null);
 			out = in.entriesOnlyOnLeft();
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;MapDifference;true;entriesOnlyOnLeft;();;MapValue of SyntheticField[com.google.common.collect.MapDifference.left] of Argument[-1];MapValue of ReturnValue;value"
 			SortedMap out = null;
-			SortedMapDifference in = (SortedMapDifference)Maps.difference((SortedMap)newWithMapValueDefault(source()), null);
+			SortedMapDifference in = (SortedMapDifference)Maps.difference(ImmutableSortedMap.of((Comparable)null, source()), null);
 			out = in.entriesOnlyOnLeft();
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;MapDifference;true;entriesOnlyOnLeft;();;MapValue of SyntheticField[com.google.common.collect.MapDifference.left] of Argument[-1];MapValue of ReturnValue;value"
 			Map out = null;
-			MapDifference in = (MapDifference)Maps.difference((Map)newWithMapValueDefault(source()), null);
+			MapDifference in = (MapDifference)Maps.difference(Map.of(null, source()), null);
 			out = in.entriesOnlyOnLeft();
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;MapDifference;true;entriesOnlyOnRight;();;MapKey of SyntheticField[com.google.common.collect.MapDifference.right] of Argument[-1];MapKey of ReturnValue;value"
 			SortedMap out = null;
-			SortedMapDifference in = (SortedMapDifference)Maps.difference(null, (SortedMap)newWithMapKeyDefault(source()));
+			SortedMapDifference in = (SortedMapDifference)Maps.difference(null, ImmutableSortedMap.of((Comparable)source(),null));
 			out = in.entriesOnlyOnRight();
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;MapDifference;true;entriesOnlyOnRight;();;MapKey of SyntheticField[com.google.common.collect.MapDifference.right] of Argument[-1];MapKey of ReturnValue;value"
 			Map out = null;
-			MapDifference in = (MapDifference)Maps.difference(null, (Map)newWithMapKeyDefault(source()));
+			MapDifference in = (MapDifference)Maps.difference(null, Map.of(source(), null));
 			out = in.entriesOnlyOnRight();
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;MapDifference;true;entriesOnlyOnRight;();;MapValue of SyntheticField[com.google.common.collect.MapDifference.right] of Argument[-1];MapValue of ReturnValue;value"
 			SortedMap out = null;
-			SortedMapDifference in = (SortedMapDifference)Maps.difference(null, (SortedMap)newWithMapValueDefault(source()));
+			SortedMapDifference in = (SortedMapDifference)Maps.difference(null, ImmutableSortedMap.of((Comparable)null, source()));
 			out = in.entriesOnlyOnRight();
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;MapDifference;true;entriesOnlyOnRight;();;MapValue of SyntheticField[com.google.common.collect.MapDifference.right] of Argument[-1];MapValue of ReturnValue;value"
 			Map out = null;
-			MapDifference in = (MapDifference)Maps.difference(null, (Map)newWithMapValueDefault(source()));
+			MapDifference in = (MapDifference)Maps.difference(null, Map.of(null, source()));
 			out = in.entriesOnlyOnRight();
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
@@ -5570,84 +5563,84 @@ public class Test {
 			MapDifference out = null;
 			Map in = (Map)Map.of(source(), null);
 			out = Maps.difference(in, (Map)null);
-			sink(getMapKeyDefault(out.entriesOnlyOnLeft())); // $ hasValueFlow
+			sink(getMapKey(out.entriesOnlyOnLeft())); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Maps;false;difference;(Map,Map);;MapKey of Argument[1];MapKey of SyntheticField[com.google.common.collect.MapDifference.right] of ReturnValue;value"
 			MapDifference out = null;
 			Map in = (Map)Map.of(source(), null);
 			out = Maps.difference((Map)null, in);
-			sink(getMapKeyDefault(out.entriesOnlyOnRight())); // $ hasValueFlow
+			sink(getMapKey(out.entriesOnlyOnRight())); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Maps;false;difference;(Map,Map);;MapValue of Argument[0];MapValue of SyntheticField[com.google.common.collect.MapDifference.left] of ReturnValue;value"
 			MapDifference out = null;
 			Map in = (Map)Map.of(null, source());
 			out = Maps.difference(in, (Map)null);
-			sink(getMapValueDefault(out.entriesOnlyOnLeft())); // $ hasValueFlow
+			sink(getMapValue(out.entriesOnlyOnLeft())); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Maps;false;difference;(Map,Map);;MapValue of Argument[1];MapValue of SyntheticField[com.google.common.collect.MapDifference.right] of ReturnValue;value"
 			MapDifference out = null;
 			Map in = (Map)Map.of(null, source());
 			out = Maps.difference((Map)null, in);
-			sink(getMapValueDefault(out.entriesOnlyOnRight())); // $ hasValueFlow
+			sink(getMapValue(out.entriesOnlyOnRight())); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Maps;false;difference;(Map,Map,Equivalence);;MapKey of Argument[0];MapKey of SyntheticField[com.google.common.collect.MapDifference.left] of ReturnValue;value"
 			MapDifference out = null;
 			Map in = (Map)Map.of(source(), null);
 			out = Maps.difference(in, null, null);
-			sink(getMapKeyDefault(out.entriesOnlyOnLeft())); // $ hasValueFlow
+			sink(getMapKey(out.entriesOnlyOnLeft())); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Maps;false;difference;(Map,Map,Equivalence);;MapKey of Argument[1];MapKey of SyntheticField[com.google.common.collect.MapDifference.right] of ReturnValue;value"
 			MapDifference out = null;
 			Map in = (Map)Map.of(source(), null);
 			out = Maps.difference(null, in, null);
-			sink(getMapKeyDefault(out.entriesOnlyOnRight())); // $ hasValueFlow
+			sink(getMapKey(out.entriesOnlyOnRight())); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Maps;false;difference;(Map,Map,Equivalence);;MapValue of Argument[0];MapValue of SyntheticField[com.google.common.collect.MapDifference.left] of ReturnValue;value"
 			MapDifference out = null;
 			Map in = (Map)Map.of(null, source());
 			out = Maps.difference(in, null, null);
-			sink(getMapValueDefault(out.entriesOnlyOnLeft())); // $ hasValueFlow
+			sink(getMapValue(out.entriesOnlyOnLeft())); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Maps;false;difference;(Map,Map,Equivalence);;MapValue of Argument[1];MapValue of SyntheticField[com.google.common.collect.MapDifference.right] of ReturnValue;value"
 			MapDifference out = null;
 			Map in = (Map)Map.of(null, source());
 			out = Maps.difference(null, in, null);
-			sink(getMapValueDefault(out.entriesOnlyOnRight())); // $ hasValueFlow
+			sink(getMapValue(out.entriesOnlyOnRight())); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Maps;false;difference;(SortedMap,Map);;MapKey of Argument[0];MapKey of SyntheticField[com.google.common.collect.MapDifference.left] of ReturnValue;value"
 			SortedMapDifference out = null;
 			SortedMap in = (SortedMap)ImmutableSortedMap.of((Comparable)source(), null);
 			out = Maps.difference(in, (Map)null);
-			sink(getMapKeyDefault(out.entriesOnlyOnLeft())); // $ hasValueFlow
+			sink(getMapKey(out.entriesOnlyOnLeft())); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Maps;false;difference;(SortedMap,Map);;MapKey of Argument[1];MapKey of SyntheticField[com.google.common.collect.MapDifference.right] of ReturnValue;value"
 			SortedMapDifference out = null;
 			Map in = (Map)Map.of(source(), null);
 			out = Maps.difference((SortedMap)null, in);
-			sink(getMapKeyDefault(out.entriesOnlyOnRight())); // $ hasValueFlow
+			sink(getMapKey(out.entriesOnlyOnRight())); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Maps;false;difference;(SortedMap,Map);;MapValue of Argument[0];MapValue of SyntheticField[com.google.common.collect.MapDifference.left] of ReturnValue;value"
 			SortedMapDifference out = null;
-			SortedMap in = (SortedMap)ImmutableSortedMap.of(null, (Comparable)source());
+			SortedMap in = (SortedMap)ImmutableSortedMap.of((Comparable)null, source());
 			out = Maps.difference(in, (Map)null);
-			sink(getMapValueDefault(out.entriesOnlyOnLeft())); // $ hasValueFlow
+			sink(getMapValue(out.entriesOnlyOnLeft())); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Maps;false;difference;(SortedMap,Map);;MapValue of Argument[1];MapValue of SyntheticField[com.google.common.collect.MapDifference.right] of ReturnValue;value"
 			SortedMapDifference out = null;
 			Map in = (Map)Map.of(null, source());
 			out = Maps.difference((SortedMap)null, in);
-			sink(getMapValueDefault(out.entriesOnlyOnRight())); // $ hasValueFlow
+			sink(getMapValue(out.entriesOnlyOnRight())); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Maps;false;filterEntries;;;MapKey of Argument[0];MapKey of ReturnValue;value"
@@ -5813,7 +5806,7 @@ public class Test {
 		{
 			// "com.google.common.collect;Maps;false;newTreeMap;(SortedMap);;MapValue of Argument[0];MapValue of ReturnValue;value"
 			TreeMap out = null;
-			SortedMap in = (SortedMap)ImmutableSortedMap.of(null, (Comparable)source());
+			SortedMap in = (SortedMap)ImmutableSortedMap.of((Comparable)null, source());
 			out = Maps.newTreeMap(in);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
@@ -5827,7 +5820,7 @@ public class Test {
 		{
 			// "com.google.common.collect;Maps;false;subMap;(NavigableMap,Range);;MapValue of Argument[0];MapValue of ReturnValue;value"
 			NavigableMap out = null;
-			NavigableMap in = (NavigableMap)ImmutableSortedMap.of(null, (Comparable)source());
+			NavigableMap in = (NavigableMap)ImmutableSortedMap.of((Comparable)null, source());
 			out = Maps.subMap(in, null);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
@@ -5855,7 +5848,7 @@ public class Test {
 		{
 			// "com.google.common.collect;Maps;false;synchronizedNavigableMap;(NavigableMap);;MapValue of Argument[0];MapValue of ReturnValue;value"
 			NavigableMap out = null;
-			NavigableMap in = (NavigableMap)ImmutableSortedMap.of(null, (Comparable)source());
+			NavigableMap in = (NavigableMap)ImmutableSortedMap.of((Comparable)null, source());
 			out = Maps.synchronizedNavigableMap(in);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
@@ -5932,7 +5925,7 @@ public class Test {
 		{
 			// "com.google.common.collect;Maps;false;unmodifiableNavigableMap;(NavigableMap);;MapValue of Argument[0];MapValue of ReturnValue;value"
 			NavigableMap out = null;
-			NavigableMap in = (NavigableMap)ImmutableSortedMap.of(null, (Comparable)source());
+			NavigableMap in = (NavigableMap)ImmutableSortedMap.of((Comparable)null, source());
 			out = Maps.unmodifiableNavigableMap(in);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
@@ -5980,129 +5973,129 @@ public class Test {
 		}
 		{
 			// "com.google.common.collect;Multimap;true;asMap;();;MapValue of Argument[-1];Element of MapValue of ReturnValue;value"
-			NavigableMap out = null;
+			NavigableMap<Object,Collection> out = null;
 			TreeMultimap in = (TreeMultimap)TreeMultimap.create(ImmutableMultimap.of(null, (Comparable)source()));
 			out = in.asMap();
-			sink(getElementDefault(getMapValue(out))); // $ hasValueFlow
+			sink(getElement(getMapValue(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multimap;true;asMap;();;MapValue of Argument[-1];Element of MapValue of ReturnValue;value"
-			Map out = null;
+			Map<Object,Collection> out = null;
 			SortedSetMultimap in = (SortedSetMultimap)TreeMultimap.create(ImmutableMultimap.of(null, (Comparable)source()));
 			out = in.asMap();
-			sink(getElementDefault(getMapValue(out))); // $ hasValueFlow
+			sink(getElement(getMapValue(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multimap;true;asMap;();;MapValue of Argument[-1];Element of MapValue of ReturnValue;value"
-			Map out = null;
+			Map<Object,Collection> out = null;
 			SetMultimap in = (SetMultimap)ImmutableSetMultimap.of(null, source());
 			out = in.asMap();
-			sink(getElementDefault(getMapValue(out))); // $ hasValueFlow
+			sink(getElement(getMapValue(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multimap;true;asMap;();;MapValue of Argument[-1];Element of MapValue of ReturnValue;value"
-			Map out = null;
+			Map<Object,Collection> out = null;
 			Multimap in = (Multimap)ImmutableMultimap.of(null, source());
 			out = in.asMap();
-			sink(getElementDefault(getMapValue(out))); // $ hasValueFlow
+			sink(getElement(getMapValue(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multimap;true;asMap;();;MapValue of Argument[-1];Element of MapValue of ReturnValue;value"
-			Map out = null;
+			Map<Object,Collection> out = null;
 			ListMultimap in = (ListMultimap)ImmutableListMultimap.of(null, source());
 			out = in.asMap();
-			sink(getElementDefault(getMapValue(out))); // $ hasValueFlow
+			sink(getElement(getMapValue(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multimap;true;asMap;();;MapValue of Argument[-1];Element of MapValue of ReturnValue;value"
-			ImmutableMap out = null;
+			ImmutableMap<Object,Collection> out = null;
 			ImmutableMultimap in = (ImmutableMultimap)ImmutableMultimap.of(null, source());
 			out = in.asMap();
-			sink(getElementDefault(getMapValue(out))); // $ hasValueFlow
+			sink(getElement(getMapValue(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multimap;true;entries;();;MapKey of Argument[-1];MapKey of Element of ReturnValue;value"
-			Set out = null;
+			Set<Map.Entry> out = null;
 			SetMultimap in = (SetMultimap)ImmutableSetMultimap.of(source(), null);
 			out = in.entries();
-			sink(getMapKeyDefault(getElement(out))); // $ hasValueFlow
+			sink(getElement(out).getKey()); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multimap;true;entries;();;MapKey of Argument[-1];MapKey of Element of ReturnValue;value"
-			Set out = null;
+			Set<Map.Entry> out = null;
 			LinkedHashMultimap in = (LinkedHashMultimap)LinkedHashMultimap.create(ImmutableMultimap.of(source(), null));
 			out = in.entries();
-			sink(getMapKeyDefault(getElement(out))); // $ hasValueFlow
+			sink(getElement(out).getKey()); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multimap;true;entries;();;MapKey of Argument[-1];MapKey of Element of ReturnValue;value"
-			List out = null;
+			List<Map.Entry> out = null;
 			LinkedListMultimap in = (LinkedListMultimap)LinkedListMultimap.create(ImmutableMultimap.of(source(), null));
 			out = in.entries();
-			sink(getMapKeyDefault(getElement(out))); // $ hasValueFlow
+			sink(getElement(out).getKey()); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multimap;true;entries;();;MapKey of Argument[-1];MapKey of Element of ReturnValue;value"
-			ImmutableSet out = null;
+			ImmutableSet<Map.Entry> out = null;
 			ImmutableSetMultimap in = (ImmutableSetMultimap)ImmutableSetMultimap.of(source(), null);
 			out = in.entries();
-			sink(getMapKeyDefault(getElement(out))); // $ hasValueFlow
+			sink(getElement(out).getKey()); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multimap;true;entries;();;MapKey of Argument[-1];MapKey of Element of ReturnValue;value"
-			ImmutableCollection out = null;
+			ImmutableCollection<Map.Entry> out = null;
 			ImmutableMultimap in = (ImmutableMultimap)ImmutableMultimap.of(source(), null);
 			out = in.entries();
-			sink(getMapKeyDefault(getElement(out))); // $ hasValueFlow
+			sink(getElement(out).getKey()); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multimap;true;entries;();;MapKey of Argument[-1];MapKey of Element of ReturnValue;value"
-			Collection out = null;
+			Collection<Map.Entry> out = null;
 			Multimap in = (Multimap)ImmutableMultimap.of(source(), null);
 			out = in.entries();
-			sink(getMapKeyDefault(getElement(out))); // $ hasValueFlow
+			sink(getElement(out).getKey()); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multimap;true;entries;();;MapValue of Argument[-1];MapValue of Element of ReturnValue;value"
-			Set out = null;
+			Set<Map.Entry> out = null;
 			SetMultimap in = (SetMultimap)ImmutableSetMultimap.of(null, source());
 			out = in.entries();
-			sink(getMapValueDefault(getElement(out))); // $ hasValueFlow
+			sink(getElement(out).getValue()); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multimap;true;entries;();;MapValue of Argument[-1];MapValue of Element of ReturnValue;value"
-			Set out = null;
+			Set<Map.Entry> out = null;
 			LinkedHashMultimap in = (LinkedHashMultimap)LinkedHashMultimap.create(ImmutableMultimap.of(null, source()));
 			out = in.entries();
-			sink(getMapValueDefault(getElement(out))); // $ hasValueFlow
+			sink(getElement(out).getValue()); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multimap;true;entries;();;MapValue of Argument[-1];MapValue of Element of ReturnValue;value"
-			List out = null;
+			List<Map.Entry> out = null;
 			LinkedListMultimap in = (LinkedListMultimap)LinkedListMultimap.create(ImmutableMultimap.of(null, source()));
 			out = in.entries();
-			sink(getMapValueDefault(getElement(out))); // $ hasValueFlow
+			sink(getElement(out).getValue()); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multimap;true;entries;();;MapValue of Argument[-1];MapValue of Element of ReturnValue;value"
-			ImmutableSet out = null;
+			ImmutableSet<Map.Entry> out = null;
 			ImmutableSetMultimap in = (ImmutableSetMultimap)ImmutableSetMultimap.of(null, source());
 			out = in.entries();
-			sink(getMapValueDefault(getElement(out))); // $ hasValueFlow
+			sink(getElement(out).getValue()); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multimap;true;entries;();;MapValue of Argument[-1];MapValue of Element of ReturnValue;value"
-			ImmutableCollection out = null;
+			ImmutableCollection<Map.Entry> out = null;
 			ImmutableMultimap in = (ImmutableMultimap)ImmutableMultimap.of(null, source());
 			out = in.entries();
-			sink(getMapValueDefault(getElement(out))); // $ hasValueFlow
+			sink(getElement(out).getValue()); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multimap;true;entries;();;MapValue of Argument[-1];MapValue of Element of ReturnValue;value"
-			Collection out = null;
+			Collection<Map.Entry> out = null;
 			Multimap in = (Multimap)ImmutableMultimap.of(null, source());
 			out = in.entries();
-			sink(getMapValueDefault(getElement(out))); // $ hasValueFlow
+			sink(getElement(out).getValue()); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multimap;true;get;(Object);;MapValue of Argument[-1];Element of ReturnValue;value"
@@ -6589,10 +6582,10 @@ public class Test {
 		}
 		{
 			// "com.google.common.collect;Multimaps;false;asMap;(ListMultimap);;MapValue of Argument[0];Element of MapValue of ReturnValue;value"
-			Map out = null;
+			Map<Object,Collection> out = null;
 			ListMultimap in = (ListMultimap)ImmutableListMultimap.of(null, source());
 			out = Multimaps.asMap(in);
-			sink(getElementDefault(getMapValue(out))); // $ hasValueFlow
+			sink(getElement(getMapValue(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multimaps;false;asMap;(Multimap);;MapKey of Argument[0];MapKey of ReturnValue;value"
@@ -6603,10 +6596,10 @@ public class Test {
 		}
 		{
 			// "com.google.common.collect;Multimaps;false;asMap;(Multimap);;MapValue of Argument[0];Element of MapValue of ReturnValue;value"
-			Map out = null;
+			Map<Object,Collection> out = null;
 			Multimap in = (Multimap)ImmutableMultimap.of(null, source());
 			out = Multimaps.asMap(in);
-			sink(getElementDefault(getMapValue(out))); // $ hasValueFlow
+			sink(getElement(getMapValue(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multimaps;false;asMap;(SetMultimap);;MapKey of Argument[0];MapKey of ReturnValue;value"
@@ -6617,10 +6610,10 @@ public class Test {
 		}
 		{
 			// "com.google.common.collect;Multimaps;false;asMap;(SetMultimap);;MapValue of Argument[0];Element of MapValue of ReturnValue;value"
-			Map out = null;
+			Map<Object,Collection> out = null;
 			SetMultimap in = (SetMultimap)ImmutableSetMultimap.of(null, source());
 			out = Multimaps.asMap(in);
-			sink(getElementDefault(getMapValue(out))); // $ hasValueFlow
+			sink(getElement(getMapValue(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multimaps;false;asMap;(SortedSetMultimap);;MapKey of Argument[0];MapKey of ReturnValue;value"
@@ -6631,10 +6624,10 @@ public class Test {
 		}
 		{
 			// "com.google.common.collect;Multimaps;false;asMap;(SortedSetMultimap);;MapValue of Argument[0];Element of MapValue of ReturnValue;value"
-			Map out = null;
+			Map<Object,Collection> out = null;
 			SortedSetMultimap in = (SortedSetMultimap)TreeMultimap.create(ImmutableMultimap.of(null, (Comparable)source()));
 			out = Multimaps.asMap(in);
-			sink(getElementDefault(getMapValue(out))); // $ hasValueFlow
+			sink(getElement(getMapValue(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multimaps;false;filterEntries;(Multimap,Predicate);;MapKey of Argument[0];MapKey of ReturnValue;value"
@@ -7045,7 +7038,7 @@ public class Test {
 		{
 			// "com.google.common.collect;Multiset;true;elementSet;();;Element of Argument[-1];Element of ReturnValue;value"
 			ImmutableSortedSet out = null;
-			ImmutableSortedMultiset in = (ImmutableSortedMultiset)ImmutableSortedMultiset.of(source());
+			ImmutableSortedMultiset in = (ImmutableSortedMultiset)ImmutableSortedMultiset.of((Comparable)source());
 			out = in.elementSet();
 			sink(getElement(out)); // $ hasValueFlow
 		}
@@ -7058,24 +7051,24 @@ public class Test {
 		}
 		{
 			// "com.google.common.collect;Multiset;true;entrySet;();;Element of Argument[-1];Element of Element of ReturnValue;value"
-			Set out = null;
+			Set<Multiset.Entry> out = null;
 			SortedMultiset in = (SortedMultiset)ImmutableSortedMultiset.of((Comparable)source());
 			out = in.entrySet();
-			sink(getElementDefault(getElement(out))); // $ hasValueFlow
+			sink(getElement(out).getElement()); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multiset;true;entrySet;();;Element of Argument[-1];Element of Element of ReturnValue;value"
-			Set out = null;
+			Set<Multiset.Entry> out = null;
 			Multiset in = (Multiset)ImmutableMultiset.of(source());
 			out = in.entrySet();
-			sink(getElementDefault(getElement(out))); // $ hasValueFlow
+			sink(getElement(out).getElement()); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multiset;true;entrySet;();;Element of Argument[-1];Element of Element of ReturnValue;value"
-			ImmutableSet out = null;
+			ImmutableSet<Multiset.Entry> out = null;
 			ImmutableMultiset in = (ImmutableMultiset)ImmutableMultiset.of(source());
 			out = in.entrySet();
-			sink(getElementDefault(getElement(out))); // $ hasValueFlow
+			sink(getElement(out).getElement()); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multiset;true;setCount;(Object,int);;Argument[0];Element of Argument[-1];value"
@@ -7366,24 +7359,24 @@ public class Test {
 		}
 		{
 			// "com.google.common.collect;Sets;false;cartesianProduct;(List);;Element of Element of Argument[0];Element of Element of ReturnValue;value"
-			Set out = null;
-			List in = (List)List.of(newWithElementDefault(source()));
+			Set<List> out = null;
+			List in = (List)List.of(Set.of(source()));
 			out = Sets.cartesianProduct(in);
-			sink(getElementDefault(getElement(out))); // $ hasValueFlow
+			sink(getElement(getElement(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Sets;false;cartesianProduct;(Set[]);;Element of ArrayElement of Argument[0];Element of Element of ReturnValue;value"
-			Set out = null;
-			Set[] in = (Set[])new Set[]{(Set)newWithElementDefault(source())};
+			Set<List> out = null;
+			Set[] in = (Set[])new Set[]{Set.of(source())};
 			out = Sets.cartesianProduct(in);
-			sink(getElementDefault(getElement(out))); // $ hasValueFlow
+			sink(getElement(getElement(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Sets;false;combinations;(Set,int);;Element of Argument[0];Element of Element of ReturnValue;value"
-			Set out = null;
+			Set<Set> out = null;
 			Set in = (Set)Set.of(source());
 			out = Sets.combinations(in, 0);
-			sink(getElementDefault(getElement(out))); // $ hasValueFlow
+			sink(getElement(getElement(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Sets;false;difference;(Set,Set);;Element of Argument[0];Element of ReturnValue;value"
@@ -7485,10 +7478,10 @@ public class Test {
 		}
 		{
 			// "com.google.common.collect;Sets;false;powerSet;(Set);;Element of Argument[0];Element of Element of ReturnValue;value"
-			Set out = null;
+			Set<Set> out = null;
 			Set in = (Set)Set.of(source());
 			out = Sets.powerSet(in);
-			sink(getElementDefault(getElement(out))); // $ hasValueFlow
+			sink(getElement(getElement(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Sets;false;subSet;(NavigableSet,Range);;Element of Argument[0];Element of ReturnValue;value"
@@ -7562,66 +7555,66 @@ public class Test {
 		}
 		{
 			// "com.google.common.collect;Table;true;cellSet;();;MapValue of Argument[-1];MapValue of Element of ReturnValue;value"
-			Set out = null;
+			Set<Table.Cell> out = null;
 			Table in = (Table)newTable(null, null, source());
 			out = in.cellSet();
-			sink(getMapValueDefault(getElement(out))); // $ hasValueFlow
+			sink(getElement(out).getValue()); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;cellSet;();;MapValue of Argument[-1];MapValue of Element of ReturnValue;value"
-			Set out = null;
+			Set<Table.Cell> out = null;
 			ArrayTable in = (ArrayTable)ArrayTable.create(ImmutableTable.of(null, null, source()));
 			out = in.cellSet();
-			sink(getMapValueDefault(getElement(out))); // $ hasValueFlow
+			sink(getElement(out).getValue()); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;cellSet;();;MapValue of Argument[-1];MapValue of Element of ReturnValue;value"
-			ImmutableSet out = null;
+			ImmutableSet<Table.Cell> out = null;
 			ImmutableTable in = (ImmutableTable)ImmutableTable.of(null, null, source());
 			out = in.cellSet();
-			sink(getMapValueDefault(getElement(out))); // $ hasValueFlow
+			sink(getElement(out).getValue()); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;cellSet;();;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[-1];SyntheticField[com.google.common.collect.Table.columnKey] of Element of ReturnValue;value"
-			Set out = null;
+			Set<Table.Cell> out = null;
 			Table in = (Table)newTable(null, source(), null);
 			out = in.cellSet();
-			sink(getTable_columnKeyDefault(getElement(out))); // $ hasValueFlow
+			sink(getElement(out).getColumnKey()); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;cellSet;();;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[-1];SyntheticField[com.google.common.collect.Table.columnKey] of Element of ReturnValue;value"
-			Set out = null;
+			Set<Table.Cell> out = null;
 			ArrayTable in = (ArrayTable)ArrayTable.create(ImmutableTable.of(null, source(), null));
 			out = in.cellSet();
-			sink(getTable_columnKeyDefault(getElement(out))); // $ hasValueFlow
+			sink(getElement(out).getColumnKey()); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;cellSet;();;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[-1];SyntheticField[com.google.common.collect.Table.columnKey] of Element of ReturnValue;value"
-			ImmutableSet out = null;
+			ImmutableSet<Table.Cell> out = null;
 			ImmutableTable in = (ImmutableTable)ImmutableTable.of(null, source(), null);
 			out = in.cellSet();
-			sink(getTable_columnKeyDefault(getElement(out))); // $ hasValueFlow
+			sink(getElement(out).getColumnKey()); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;cellSet;();;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[-1];SyntheticField[com.google.common.collect.Table.rowKey] of Element of ReturnValue;value"
-			Set out = null;
+			Set<Table.Cell> out = null;
 			Table in = (Table)newTable(source(), null, null);
 			out = in.cellSet();
-			sink(getTable_rowKeyDefault(getElement(out))); // $ hasValueFlow
+			sink(getElement(out).getRowKey()); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;cellSet;();;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[-1];SyntheticField[com.google.common.collect.Table.rowKey] of Element of ReturnValue;value"
-			Set out = null;
+			Set<Table.Cell> out = null;
 			ArrayTable in = (ArrayTable)ArrayTable.create(ImmutableTable.of(source(), null, null));
 			out = in.cellSet();
-			sink(getTable_rowKeyDefault(getElement(out))); // $ hasValueFlow
+			sink(getElement(out).getRowKey()); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;cellSet;();;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[-1];SyntheticField[com.google.common.collect.Table.rowKey] of Element of ReturnValue;value"
-			ImmutableSet out = null;
+			ImmutableSet<Table.Cell> out = null;
 			ImmutableTable in = (ImmutableTable)ImmutableTable.of(source(), null, null);
 			out = in.cellSet();
-			sink(getTable_rowKeyDefault(getElement(out))); // $ hasValueFlow
+			sink(getElement(out).getRowKey()); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;column;(Object);;MapValue of Argument[-1];MapValue of ReturnValue;value"
@@ -7688,24 +7681,24 @@ public class Test {
 		}
 		{
 			// "com.google.common.collect;Table;true;columnMap;();;MapValue of Argument[-1];MapValue of MapValue of ReturnValue;value"
-			Map out = null;
+			Map<Object,Map> out = null;
 			Table in = (Table)newTable(null, null, source());
 			out = in.columnMap();
-			sink(getMapValueDefault(getMapValue(out))); // $ hasValueFlow
+			sink(getMapValue(getMapValue(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;columnMap;();;MapValue of Argument[-1];MapValue of MapValue of ReturnValue;value"
-			Map out = null;
+			Map<Object,Map> out = null;
 			ArrayTable in = (ArrayTable)ArrayTable.create(ImmutableTable.of(null, null, source()));
 			out = in.columnMap();
-			sink(getMapValueDefault(getMapValue(out))); // $ hasValueFlow
+			sink(getMapValue(getMapValue(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;columnMap;();;MapValue of Argument[-1];MapValue of MapValue of ReturnValue;value"
-			ImmutableMap out = null;
+			ImmutableMap<Object,Map> out = null;
 			ImmutableTable in = (ImmutableTable)ImmutableTable.of(null, null, source());
 			out = in.columnMap();
-			sink(getMapValueDefault(getMapValue(out))); // $ hasValueFlow
+			sink(getMapValue(getMapValue(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;columnMap;();;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[-1];MapKey of ReturnValue;value"
@@ -7730,24 +7723,24 @@ public class Test {
 		}
 		{
 			// "com.google.common.collect;Table;true;columnMap;();;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[-1];MapKey of MapValue of ReturnValue;value"
-			Map out = null;
+			Map<Object,Map> out = null;
 			Table in = (Table)newTable(source(), null, null);
 			out = in.columnMap();
-			sink(getMapKeyDefault(getMapValue(out))); // $ hasValueFlow
+			sink(getMapKey(getMapValue(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;columnMap;();;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[-1];MapKey of MapValue of ReturnValue;value"
-			Map out = null;
+			Map<Object,Map> out = null;
 			ArrayTable in = (ArrayTable)ArrayTable.create(ImmutableTable.of(source(), null, null));
 			out = in.columnMap();
-			sink(getMapKeyDefault(getMapValue(out))); // $ hasValueFlow
+			sink(getMapKey(getMapValue(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;columnMap;();;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[-1];MapKey of MapValue of ReturnValue;value"
-			ImmutableMap out = null;
+			ImmutableMap<Object,Map> out = null;
 			ImmutableTable in = (ImmutableTable)ImmutableTable.of(source(), null, null);
 			out = in.columnMap();
-			sink(getMapKeyDefault(getMapValue(out))); // $ hasValueFlow
+			sink(getMapKey(getMapValue(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;get;(Object,Object);;MapValue of Argument[-1];ReturnValue;value"
@@ -7759,7 +7752,7 @@ public class Test {
 		{
 			// "com.google.common.collect;Table;true;get;(Object,Object);;MapValue of Argument[-1];ReturnValue;value"
 			Object out = null;
-			HashBasedTable in = (HashBasedTable)newWithMapValueDefault(source());
+			HashBasedTable in = (HashBasedTable)HashBasedTable.create(ImmutableTable.of(null, null, source()));
 			out = in.get(null, null);
 			sink(out); // $ hasValueFlow
 		}
@@ -7913,7 +7906,7 @@ public class Test {
 		{
 			// "com.google.common.collect;Table;true;remove;(Object,Object);;MapValue of Argument[-1];ReturnValue;value"
 			Object out = null;
-			HashBasedTable in = (HashBasedTable)newWithMapValueDefault(source());
+			HashBasedTable in = (HashBasedTable)HashBasedTable.create(ImmutableTable.of(null, null, source()));
 			out = in.remove(null, null);
 			sink(out); // $ hasValueFlow
 		}
@@ -8017,73 +8010,73 @@ public class Test {
 		}
 		{
 			// "com.google.common.collect;Table;true;rowMap;();;MapValue of Argument[-1];MapValue of MapValue of ReturnValue;value"
-			SortedMap out = null;
+			SortedMap<Object,Map> out = null;
 			TreeBasedTable in = (TreeBasedTable)newTable(null, null, source());
 			out = in.rowMap();
-			sink(getMapValueDefault(getMapValue(out))); // $ hasValueFlow
+			sink(getMapValue(getMapValue(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;rowMap;();;MapValue of Argument[-1];MapValue of MapValue of ReturnValue;value"
-			SortedMap out = null;
+			SortedMap<Object,Map> out = null;
 			RowSortedTable in = (RowSortedTable)newTable(null, null, source());
 			out = in.rowMap();
-			sink(getMapValueDefault(getMapValue(out))); // $ hasValueFlow
+			sink(getMapValue(getMapValue(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;rowMap;();;MapValue of Argument[-1];MapValue of MapValue of ReturnValue;value"
-			Map out = null;
+			Map<Object,Map> out = null;
 			Table in = (Table)newTable(null, null, source());
 			out = in.rowMap();
-			sink(getMapValueDefault(getMapValue(out))); // $ hasValueFlow
+			sink(getMapValue(getMapValue(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;rowMap;();;MapValue of Argument[-1];MapValue of MapValue of ReturnValue;value"
-			Map out = null;
+			Map<Object,Map> out = null;
 			ArrayTable in = (ArrayTable)ArrayTable.create(ImmutableTable.of(null, null, source()));
 			out = in.rowMap();
-			sink(getMapValueDefault(getMapValue(out))); // $ hasValueFlow
+			sink(getMapValue(getMapValue(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;rowMap;();;MapValue of Argument[-1];MapValue of MapValue of ReturnValue;value"
-			ImmutableMap out = null;
+			ImmutableMap<Object,Map> out = null;
 			ImmutableTable in = (ImmutableTable)ImmutableTable.of(null, null, source());
 			out = in.rowMap();
-			sink(getMapValueDefault(getMapValue(out))); // $ hasValueFlow
+			sink(getMapValue(getMapValue(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;rowMap;();;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[-1];MapKey of MapValue of ReturnValue;value"
-			SortedMap out = null;
+			SortedMap<Object,Map> out = null;
 			TreeBasedTable in = (TreeBasedTable)newTable(null, source(), null);
 			out = in.rowMap();
-			sink(getMapKeyDefault(getMapValue(out))); // $ hasValueFlow
+			sink(getMapKey(getMapValue(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;rowMap;();;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[-1];MapKey of MapValue of ReturnValue;value"
-			SortedMap out = null;
+			SortedMap<Object,Map> out = null;
 			RowSortedTable in = (RowSortedTable)newTable(null, source(), null);
 			out = in.rowMap();
-			sink(getMapKeyDefault(getMapValue(out))); // $ hasValueFlow
+			sink(getMapKey(getMapValue(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;rowMap;();;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[-1];MapKey of MapValue of ReturnValue;value"
-			Map out = null;
+			Map<Object,Map> out = null;
 			Table in = (Table)newTable(null, source(), null);
 			out = in.rowMap();
-			sink(getMapKeyDefault(getMapValue(out))); // $ hasValueFlow
+			sink(getMapKey(getMapValue(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;rowMap;();;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[-1];MapKey of MapValue of ReturnValue;value"
-			Map out = null;
+			Map<Object,Map> out = null;
 			ArrayTable in = (ArrayTable)ArrayTable.create(ImmutableTable.of(null, source(), null));
 			out = in.rowMap();
-			sink(getMapKeyDefault(getMapValue(out))); // $ hasValueFlow
+			sink(getMapKey(getMapValue(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;rowMap;();;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[-1];MapKey of MapValue of ReturnValue;value"
-			ImmutableMap out = null;
+			ImmutableMap<Object,Map> out = null;
 			ImmutableTable in = (ImmutableTable)ImmutableTable.of(null, source(), null);
 			out = in.rowMap();
-			sink(getMapKeyDefault(getMapValue(out))); // $ hasValueFlow
+			sink(getMapKey(getMapValue(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;rowMap;();;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[-1];MapKey of ReturnValue;value"
@@ -8172,14 +8165,14 @@ public class Test {
 		{
 			// "com.google.common.collect;Tables;false;newCustomTable;(Map,Supplier);;MapKey of MapValue of Argument[0];SyntheticField[com.google.common.collect.Table.columnKey] of ReturnValue;value"
 			Table out = null;
-			Map in = (Map)Map.of(null, newWithMapKeyDefault(source()));
+			Map in = (Map)Map.of(null, Map.of(source(), null));
 			out = Tables.newCustomTable(in, null);
 			sink(getTable_columnKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Tables;false;newCustomTable;(Map,Supplier);;MapValue of MapValue of Argument[0];MapValue of ReturnValue;value"
 			Table out = null;
-			Map in = (Map)Map.of(null, newWithMapValueDefault(source()));
+			Map in = (Map)Map.of(null, Map.of(null, source()));
 			out = Tables.newCustomTable(in, null);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
