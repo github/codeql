@@ -1,8 +1,8 @@
 /**
- * @name Find Wrapper Functions
- * @description --Finding for function calls for which wrapper functions exist.
+ * @name Missed opportunity to call wrapper function
+ * @description If a wrapper function is defined for a given function, any call to the given function should be via the wrapper function.
  * @kind problem
- * @id cpp/find-wrapper-functions
+ * @id cpp/call-to-function-without-wrapper
  * @problem.severity warning
  * @precision medium
  * @tags correctness
@@ -137,4 +137,4 @@ where
     fc.getEnclosingFunction() != fn and
     fc.getEnclosingFunction().getMetrics().getNumberOfCalls() > fn.getMetrics().getNumberOfCalls()
   )
-select fc, "consider changing the call to $@", fn, fn.getName()
+select fc, "Consider changing the call to $@", fn, fn.getName()
