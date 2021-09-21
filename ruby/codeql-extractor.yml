@@ -11,8 +11,17 @@ file_types:
   - name: ruby
     display_name: Ruby files
     extensions:
-       - .rb
+      - .rb
   - name: erb
     display_name: Ruby templates
     extensions:
-       - .erb
+      - .erb
+options:
+  trap_compression:
+    title: Controls compression for the TRAP files written by the extractor.
+    description: >
+      This option is only intended for use in debugging the extractor. Accepted
+      values are 'gzip' (the default, to write gzip-compressed TRAP) and 'none'
+      (to write uncompressed TRAP).
+    type: string
+    pattern: "^(none|gzip)$"

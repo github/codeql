@@ -92,18 +92,19 @@ fn main() -> std::io::Result<()> {
             "threads"
         }
     );
-    let trap_compression = match trap::Compression::from_env("CODEQL_RUBY_TRAP_COMPRESSION") {
-        Ok(x) => x,
-        Err(e) => {
-            main_thread_logger.write(
-                main_thread_logger
-                    .new_entry("configuration-error", "Configuration error")
-                    .message("{}; using gzip.", &[diagnostics::MessageArg::Code(&e)])
-                    .severity(diagnostics::Severity::Warning),
-            );
-            trap::Compression::Gzip
-        }
-    };
+    let trap_compression =
+        match trap::Compression::from_env("CODEQL_EXTRACTOR_RUBY_OPTION_TRAP_COMPRESSION") {
+            Ok(x) => x,
+            Err(e) => {
+                main_thread_logger.write(
+                    main_thread_logger
+                        .new_entry("configuration-error", "Configuration error")
+                        .message("{}; using gzip.", &[diagnostics::MessageArg::Code(&e)])
+                        .severity(diagnostics::Severity::Warning),
+                );
+                trap::Compression::Gzip
+            }
+        };
     drop(main_thread_logger);
     rayon::ThreadPoolBuilder::new()
         .num_threads(num_threads)
