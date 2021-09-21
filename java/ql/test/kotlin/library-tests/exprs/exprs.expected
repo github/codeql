@@ -35,9 +35,12 @@
 | exprs.kt:37:13:37:15 | x |
 | exprs.kt:38:16:38:25 | string lit |
 | exprs.kt:39:25:39:37 | string " lit |
-| exprs.kt:43:12:43:14 | 123 |
-| exprs.kt:43:12:43:20 | ... + ... |
-| exprs.kt:43:18:43:20 | 456 |
+| exprs.kt:43:25:43:34 | string lit |
+| exprs.kt:44:26:44:35 | string lit |
+| exprs.kt:45:25:45:28 | null |
+| exprs.kt:46:12:46:14 | 123 |
+| exprs.kt:46:12:46:20 | ... + ... |
+| exprs.kt:46:18:46:20 | 456 |
 | file://:0:0:0:0 | b1 |
 | file://:0:0:0:0 | b2 |
 | file://:0:0:0:0 | b6 |
@@ -56,4 +59,7 @@
 | file://:0:0:0:0 | i17 |
 | file://:0:0:0:0 | i18 |
 | file://:0:0:0:0 | str |
+| file://:0:0:0:0 | str1 |
+| file://:0:0:0:0 | str2 |
+| file://:0:0:0:0 | str3 |
 | file://:0:0:0:0 | strWithQuote |

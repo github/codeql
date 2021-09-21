@@ -40,6 +40,9 @@ TODO
     val b6 = i1 is Int
     val b7 = i1 !is Int
     val b8 = b7 as Boolean
+    val str1: String = "string lit"
+    val str2: String? = "string lit"
+    val str3: String? = null
     return 123 + 456
 }
 
