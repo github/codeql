@@ -19,7 +19,7 @@ abstract class SqlExecutionFunction extends Function {
 }
 
 /**
- * An abstract class that represents a function that escapes an SQL query string.
+ * An abstract class that represents a function that is a barrier to an SQL query string.
  */
 abstract class SqlBarrierFunction extends Function {
   /**
