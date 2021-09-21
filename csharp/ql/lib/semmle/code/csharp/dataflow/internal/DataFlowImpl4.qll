@@ -3643,9 +3643,10 @@ private module Subpaths {
     PathNode arg, ParamNodeEx par, SummaryCtxSome sc, CallContext innercc, ReturnKindExt kind,
     NodeEx out, AccessPath apout
   ) {
-    pathThroughCallable(arg, out, _, apout) and
+    pathThroughCallable(arg, out, _, pragma[only_bind_into](apout)) and
     pathIntoCallable(arg, par, _, innercc, sc, _) and
-    paramFlowsThrough(kind, innercc, sc, apout, _, unbindConf(arg.getConfiguration()))
+    paramFlowsThrough(kind, innercc, sc, pragma[only_bind_into](apout), _,
+      unbindConf(arg.getConfiguration()))
   }
 
   /**
