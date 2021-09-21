@@ -114,7 +114,7 @@ class InterpretNode extends TInterpretNode {
   /** Gets the target of this call, if any. */
   Ident getCallTarget() {
     exists(Function f | f = this.asCall().getNode().(DataFlow::CallNode).getTarget() |
-    result = f.getDeclaration()
+      result = f.getDeclaration()
     )
   }
 

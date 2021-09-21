@@ -78,17 +78,11 @@ private module Frameworks {
   // no frameworks currently modeled
 }
 
-private predicate sourceModelCsv(string row) {
-  none()
-}
+private predicate sourceModelCsv(string row) { none() }
 
-private predicate sinkModelCsv(string row) {
-  none()
-}
+private predicate sinkModelCsv(string row) { none() }
 
-private predicate summaryModelCsv(string row) {
-  none()
-}
+private predicate summaryModelCsv(string row) { none() }
 
 /**
  * A unit class for adding additional source model rows.

@@ -45,7 +45,9 @@ module Private {
 
     SummaryNode() { this = MkSummaryInternalNode(c, state) }
 
-    override predicate hasLocationInfo(string fp, int sl, int sc, int el, int ec) { c.hasLocationInfo(fp, sl, sc, el, ec) }
+    override predicate hasLocationInfo(string fp, int sl, int sc, int el, int ec) {
+      c.hasLocationInfo(fp, sl, sc, el, ec)
+    }
 
     override string toString() { result = "[summary] " + state + " in " + c }
 
@@ -352,13 +354,17 @@ module Public {
 
     GlobalFunctionNode() { this = MkGlobalFunctionNode(func) }
 
-    override ParameterNode getParameter(int i) { result = DataFlow::parameterNode(func.getParameter(i)) }
+    override ParameterNode getParameter(int i) {
+      result = DataFlow::parameterNode(func.getParameter(i))
+    }
 
     override string getName() { result = func.getName() }
 
     override Function getFunction() { result = func }
 
-    override ReceiverNode getReceiver() { result = DataFlow::receiverNode(func.(Method).getReceiver()) }
+    override ReceiverNode getReceiver() {
+      result = DataFlow::receiverNode(func.(Method).getReceiver())
+    }
 
     override string getNodeKind() { result = "function " + func.getName() }
 
@@ -379,7 +385,9 @@ module Public {
   class FuncLitNode extends FunctionNode::Range, ExprNode {
     override FuncLit expr;
 
-    override ParameterNode getParameter(int i) { result = DataFlow::parameterNode(expr.getParameter(i)) }
+    override ParameterNode getParameter(int i) {
+      result = DataFlow::parameterNode(expr.getParameter(i))
+    }
 
     override string getName() { none() }
 
@@ -459,7 +467,12 @@ module Public {
       if expr.getArgument(0).getType() instanceof TupleType
       then result = DataFlow::extractTupleElement(DataFlow::exprNode(expr.getArgument(0)), i)
       else
-        result = rank[i + 1](Expr arg, int j | arg = expr.getArgument(j) | DataFlow::exprNode(arg) order by j)
+        result =
+          rank[i + 1](Expr arg, int j |
+            arg = expr.getArgument(j)
+          |
+            DataFlow::exprNode(arg) order by j
+          )
     }
 
     /** Gets the data flow node corresponding to an argument of this call. */
@@ -815,7 +828,8 @@ module Public {
         rhs = this.asInstruction() and ids = rhs.getStmt()
       |
         left = DataFlow::exprNode(ids.getOperand()) and
-        right = DataFlow::instructionNode(any(IR::EvalImplicitOneInstruction one | one.getStmt() = ids)) and
+        right =
+          DataFlow::instructionNode(any(IR::EvalImplicitOneInstruction one | one.getStmt() = ids)) and
         op = ids.getOperator().charAt(0)
       )
     }

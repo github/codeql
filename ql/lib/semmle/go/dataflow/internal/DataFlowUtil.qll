@@ -133,7 +133,6 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
  */
 predicate localFlow(Node source, Node sink) { localFlowStep*(source, sink) }
 
-
 private newtype TContent =
   TFieldContent(Field f) or
   TCollectionContent() or

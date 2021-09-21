@@ -85,9 +85,9 @@ predicate basicLocalFlowStep(Node nodeFrom, Node nodeTo) {
   )
   or
   // GlobalFunctionNode -> use
-  nodeFrom = any(GlobalFunctionNode fn | fn.getFunction() = nodeTo.asExpr().(FunctionName).getTarget())
+  nodeFrom =
+    any(GlobalFunctionNode fn | fn.getFunction() = nodeTo.asExpr().(FunctionName).getTarget())
 }
-
 
 /**
  * Holds if data can flow from `node1` to `node2` in a way that loses the
@@ -134,7 +134,7 @@ predicate storeStep(Node node1, Content c, PostUpdateNode node2) {
  */
 predicate readStep(Node node1, Content f, Node node2) {
   node1 = node2.(PointerDereferenceNode).getOperand() and
-  f =  any(DataFlow::PointerContent pc | pc.getPointerType() = node1.getType())
+  f = any(DataFlow::PointerContent pc | pc.getPointerType() = node1.getType())
   or
   exists(FieldReadNode read |
     node2 = read and
