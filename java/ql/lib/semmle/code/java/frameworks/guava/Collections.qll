@@ -290,6 +290,9 @@ private class GuavaCollectCsv extends SummaryModelCsv {
         "com.google.common.collect;TreeBasedTable;true;create;(TreeBasedTable);;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[0];SyntheticField[com.google.common.collect.Table.rowKey] of ReturnValue;value",
         "com.google.common.collect;TreeBasedTable;true;create;(TreeBasedTable);;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[0];SyntheticField[com.google.common.collect.Table.columnKey] of ReturnValue;value",
         "com.google.common.collect;TreeBasedTable;true;create;(TreeBasedTable);;MapValue of Argument[0];MapValue of ReturnValue;value",
+        "com.google.common.collect;ArrayTable;true;create;(Table);;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[0];SyntheticField[com.google.common.collect.Table.rowKey] of ReturnValue;value",
+        "com.google.common.collect;ArrayTable;true;create;(Table);;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[0];SyntheticField[com.google.common.collect.Table.columnKey] of ReturnValue;value",
+        "com.google.common.collect;ArrayTable;true;create;(Table);;MapValue of Argument[0];MapValue of ReturnValue;value",
         "com.google.common.collect;ArrayTable;true;create;(Iterable,Iterable);;Element of Argument[0];SyntheticField[com.google.common.collect.Table.rowKey] of ReturnValue;value",
         "com.google.common.collect;ArrayTable;true;create;(Iterable,Iterable);;Element of Argument[1];SyntheticField[com.google.common.collect.Table.columnKey] of ReturnValue;value",
         // Utility classes (a few methods depending on lambda flow are not included)

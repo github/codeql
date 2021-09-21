@@ -162,6 +162,27 @@ public class Test {
 			sink(getTable_columnKey(out)); // $ hasValueFlow
 		}
 		{
+			// "com.google.common.collect;ArrayTable;true;create;(Table);;MapValue of Argument[0];MapValue of ReturnValue;value"
+			ArrayTable out = null;
+			Table in = (Table)ArrayTable.create(ImmutableTable.of(null, null, source()));
+			out = ArrayTable.create(in);
+			sink(getMapValue(out)); // $ hasValueFlow
+		}
+		{
+			// "com.google.common.collect;ArrayTable;true;create;(Table);;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[0];SyntheticField[com.google.common.collect.Table.columnKey] of ReturnValue;value"
+			ArrayTable out = null;
+			Table in = (Table)ArrayTable.create(ImmutableTable.of(null, source(), null));
+			out = ArrayTable.create(in);
+			sink(getTable_columnKey(out)); // $ hasValueFlow
+		}
+		{
+			// "com.google.common.collect;ArrayTable;true;create;(Table);;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[0];SyntheticField[com.google.common.collect.Table.rowKey] of ReturnValue;value"
+			ArrayTable out = null;
+			Table in = (Table)ArrayTable.create(ImmutableTable.of(source(), null, null));
+			out = ArrayTable.create(in);
+			sink(getTable_rowKey(out)); // $ hasValueFlow
+		}
+		{
 			// "com.google.common.collect;BiMap;true;forcePut;(Object,Object);;Argument[0];MapKey of Argument[-1];value"
 			ImmutableBiMap out = null;
 			Object in = (Object)source();
