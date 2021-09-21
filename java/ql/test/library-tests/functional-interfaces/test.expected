@@ -1,0 +1,3 @@
+| Test.java:3:13:3:22 | Functional |
+| Test.java:11:13:11:34 | FunctionalWithDefaults |
+| Test.java:21:13:21:39 | FunctionalWithObjectMethods |

@@ -24,17 +24,6 @@ abstract class UnboundGeneric extends Generic {
 
   /** Gets the total number of type parameters. */
   int getNumberOfTypeParameters() { result = count(int i | exists(this.getTypeParameter(i))) }
-
-  /** Gets the type parameters as a comma-separated string. */
-  language[monotonicAggregates]
-  string typeParametersToString() {
-    result =
-      concat(int i |
-        exists(this.getTypeParameter(i))
-      |
-        this.getTypeParameter(i).toStringWithTypes(), ", " order by i
-      )
-  }
 }
 
 /** A constructed generic. */
@@ -53,17 +42,6 @@ abstract class ConstructedGeneric extends Generic {
 
   /** Gets the total number of type arguments. */
   int getNumberOfTypeArguments() { result = count(int i | exists(this.getTypeArgument(i))) }
-
-  /** Gets the type arguments as a comma-separated string. */
-  language[monotonicAggregates]
-  string typeArgumentsToString() {
-    result =
-      concat(int i |
-        exists(this.getTypeArgument(i))
-      |
-        this.getTypeArgument(i).toStringWithTypes(), ", " order by i
-      )
-  }
 }
 
 /**

@@ -34,6 +34,7 @@ nodes
 | test.cpp:88:21:88:22 | d2 | semmle.label | d2 |
 | test.cpp:95:21:95:21 | d | semmle.label | d |
 | test.cpp:96:21:96:23 | dss | semmle.label | dss |
+subpaths
 #select
 | test.cpp:27:2:27:2 | b | test.cpp:57:19:57:19 | d | test.cpp:27:2:27:2 | b | Pointer arithmetic here may be done with the wrong type because of the cast $@. | test.cpp:57:19:57:19 | d | here |
 | test.cpp:27:2:27:2 | b | test.cpp:74:19:74:21 | dss | test.cpp:27:2:27:2 | b | Pointer arithmetic here may be done with the wrong type because of the cast $@. | test.cpp:74:19:74:21 | dss | here |

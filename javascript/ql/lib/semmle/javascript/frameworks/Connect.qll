@@ -24,7 +24,7 @@ module Connect {
    * but support for other kinds of route handlers can be added by implementing
    * additional subclasses of this class.
    */
-  abstract class RouteHandler extends HTTP::Servers::StandardRouteHandler, DataFlow::ValueNode {
+  abstract class RouteHandler extends NodeJSLib::RouteHandler, DataFlow::ValueNode {
     /**
      * Gets the parameter of kind `kind` of this route handler.
      *
@@ -35,12 +35,12 @@ module Connect {
     /**
      * Gets the parameter of the route handler that contains the request object.
      */
-    Parameter getRequestParameter() { result = getRouteHandlerParameter("request") }
+    override Parameter getRequestParameter() { result = getRouteHandlerParameter("request") }
 
     /**
      * Gets the parameter of the route handler that contains the response object.
      */
-    Parameter getResponseParameter() { result = getRouteHandlerParameter("response") }
+    override Parameter getResponseParameter() { result = getRouteHandlerParameter("response") }
   }
 
   /**
@@ -54,50 +54,6 @@ module Connect {
     override Parameter getRouteHandlerParameter(string kind) {
       result = getRouteHandlerParameter(astNode, kind)
     }
-  }
-
-  /**
-   * A Connect response source, that is, the response parameter of a
-   * route handler.
-   */
-  private class ResponseSource extends HTTP::Servers::ResponseSource {
-    RouteHandler rh;
-
-    ResponseSource() { this = DataFlow::parameterNode(rh.getResponseParameter()) }
-
-    /**
-     * Gets the route handler that provides this response.
-     */
-    override RouteHandler getRouteHandler() { result = rh }
-  }
-
-  /**
-   * A Connect request source, that is, the request parameter of a
-   * route handler.
-   */
-  private class RequestSource extends HTTP::Servers::RequestSource {
-    RouteHandler rh;
-
-    RequestSource() { this = DataFlow::parameterNode(rh.getRequestParameter()) }
-
-    /**
-     * Gets the route handler that handles this request.
-     */
-    override RouteHandler getRouteHandler() { result = rh }
-  }
-
-  /**
-   * A Node.js HTTP response provided by Connect.
-   */
-  class ResponseExpr extends NodeJSLib::ResponseExpr {
-    ResponseExpr() { src instanceof ResponseSource }
-  }
-
-  /**
-   * A Node.js HTTP request provided by Connect.
-   */
-  class RequestExpr extends NodeJSLib::RequestExpr {
-    RequestExpr() { src instanceof RequestSource }
   }
 
   /**
@@ -152,6 +108,8 @@ module Connect {
     override string getCredentialsKind() { result = kind }
   }
 
+  class RequestExpr = NodeJSLib::RequestExpr;
+
   /**
    * An access to a user-controlled Connect request input.
    */
@@ -160,6 +118,7 @@ module Connect {
     string kind;
 
     RequestInputAccess() {
+      request.getRouteHandler() instanceof StandardRouteHandler and
       exists(PropAccess cookies |
         // `req.cookies.get(<name>)`
         kind = "cookie" and
@@ -171,34 +130,5 @@ module Connect {
     override RouteHandler getRouteHandler() { result = request.getRouteHandler() }
 
     override string getKind() { result = kind }
-  }
-
-  /**
-   * A function that flows to a route setup.
-   */
-  private class TrackedRouteHandlerCandidateWithSetup extends RouteHandler,
-    HTTP::Servers::StandardRouteHandler, DataFlow::FunctionNode {
-    TrackedRouteHandlerCandidateWithSetup() { this = any(RouteSetup s).getARouteHandler() }
-
-    override Parameter getRouteHandlerParameter(string kind) {
-      result = getRouteHandlerParameter(astNode, kind)
-    }
-  }
-
-  /**
-   * A call that looks like a route setup on a Connect server.
-   *
-   * For example, this could be the call `router.use(handler)` where
-   * it is unknown if `router` is a Connect router.
-   */
-  class RouteSetupCandidate extends HTTP::RouteSetupCandidate, DataFlow::MethodCallNode {
-    DataFlow::ValueNode routeHandlerArg;
-
-    RouteSetupCandidate() {
-      getMethodName() = "use" and
-      routeHandlerArg = getAnArgument()
-    }
-
-    override DataFlow::ValueNode getARouteHandlerArg() { result = routeHandlerArg }
   }
 }

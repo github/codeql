@@ -34,6 +34,7 @@ nodes
 | XSSAspNetCore.cs:72:51:72:65 | access to property Headers : IHeaderDictionary | semmle.label | access to property Headers : IHeaderDictionary |
 | XSSAspNetCore.cs:72:51:72:72 | access to indexer : StringValues | semmle.label | access to indexer : StringValues |
 | XSSAspNetCore.cs:72:51:72:72 | call to operator implicit conversion | semmle.label | call to operator implicit conversion |
+subpaths
 #select
 | XSSAspNet.cs:26:30:26:34 | access to local variable sayHi | XSSAspNet.cs:19:25:19:43 | access to property QueryString : NameValueCollection | XSSAspNet.cs:26:30:26:34 | access to local variable sayHi | $@ flows to here and is written to HTML or JavaScript: System.Web.WebPages.WebPage.WriteLiteral() method. | XSSAspNet.cs:19:25:19:43 | access to property QueryString : NameValueCollection | User-provided value |
 | XSSAspNet.cs:36:40:36:44 | access to local variable sayHi | XSSAspNet.cs:19:25:19:43 | access to property QueryString : NameValueCollection | XSSAspNet.cs:36:40:36:44 | access to local variable sayHi | $@ flows to here and is written to HTML or JavaScript: System.Web.WebPages.WebPage.WriteLiteralTo() method. | XSSAspNet.cs:19:25:19:43 | access to property QueryString : NameValueCollection | User-provided value |

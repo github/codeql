@@ -1,9 +1,7 @@
 import python
 
 /** A file */
-class File extends Container {
-  File() { files(this, _, _, _, _) }
-
+class File extends Container, @file {
   /** DEPRECATED: Use `getAbsolutePath` instead. */
   deprecated override string getName() { result = this.getAbsolutePath() }
 
@@ -34,9 +32,7 @@ class File extends Container {
   }
 
   /** Gets a short name for this file (just the file name) */
-  string getShortName() {
-    exists(string simple, string ext | files(this, _, simple, ext, _) | result = simple + ext)
-  }
+  string getShortName() { result = this.getBaseName() }
 
   private int lastLine() {
     result = max(int i | exists(Location l | l.getFile() = this and l.getEndLine() = i))
@@ -55,7 +51,7 @@ class File extends Container {
     )
   }
 
-  override string getAbsolutePath() { files(this, result, _, _, _) }
+  override string getAbsolutePath() { files(this, result) }
 
   /** Gets the URL of this file. */
   override string getURL() { result = "file://" + this.getAbsolutePath() + ":0:0:0:0" }
@@ -118,14 +114,9 @@ private predicate occupied_line(File f, int n) {
 }
 
 /** A folder (directory) */
-class Folder extends Container {
-  Folder() { folders(this, _, _) }
-
+class Folder extends Container, @folder {
   /** DEPRECATED: Use `getAbsolutePath` instead. */
   deprecated override string getName() { result = this.getAbsolutePath() }
-
-  /** DEPRECATED: Use `getBaseName` instead. */
-  deprecated string getSimple() { folders(this, _, result) }
 
   /**
    * Holds if this element is at the specified location.
@@ -144,7 +135,7 @@ class Folder extends Container {
     endcolumn = 0
   }
 
-  override string getAbsolutePath() { folders(this, result, _) }
+  override string getAbsolutePath() { folders(this, result) }
 
   /** Gets the URL of this folder. */
   override string getURL() { result = "folder://" + this.getAbsolutePath() }

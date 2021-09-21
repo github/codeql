@@ -10,6 +10,7 @@ private import Conversion
 private import dotnet
 private import semmle.code.csharp.metrics.Coupling
 private import TypeRef
+private import semmle.code.csharp.frameworks.System
 
 /**
  * A type.
@@ -407,9 +408,11 @@ class VoidType extends DotNet::ValueOrRefType, Type, @void_type {
     name = "Void"
   }
 
-  override string getUndecoratedName() { result = "Void" }
+  final override string getName() { result = "Void" }
 
-  override Namespace getDeclaringNamespace() { result.hasQualifiedName("System") }
+  final override string getUndecoratedName() { result = "Void" }
+
+  override SystemNamespace getDeclaringNamespace() { any() }
 }
 
 /**
@@ -441,7 +444,7 @@ class SimpleType extends ValueType, @simple_type {
   /** Gets the maximum integral value of this type, if any. */
   int maxValue() { none() }
 
-  override Namespace getDeclaringNamespace() { result.hasQualifiedName("System") }
+  override SystemNamespace getDeclaringNamespace() { any() }
 }
 
 /**
@@ -1020,7 +1023,9 @@ class PointerType extends DotNet::PointerType, Type, @pointer_type {
 
   override Type getChild(int n) { result = getReferentType() and n = 0 }
 
-  override string getName() { types(this, _, result) }
+  final override string getName() { types(this, _, result) }
+
+  final override string getUndecoratedName() { result = getReferentType().getUndecoratedName() }
 
   override Location getALocation() { result = getReferentType().getALocation() }
 

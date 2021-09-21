@@ -786,19 +786,37 @@ class LocalVariableDeclStmt extends Stmt, @localvariabledeclstmt {
   override string getAPrimaryQlClass() { result = "LocalVariableDeclStmt" }
 }
 
-/** A statement that declares a local class. */
-class LocalClassDeclStmt extends Stmt, @localclassdeclstmt {
-  /** Gets the local class declared by this statement. */
-  LocalClass getLocalClass() { isLocalClass(result, this) }
+/** A statement that declares a local class or interface. */
+class LocalTypeDeclStmt extends Stmt, @localtypedeclstmt {
+  /** Gets the local type declared by this statement. */
+  LocalClassOrInterface getLocalType() { isLocalClassOrInterface(result, this) }
 
-  override string pp() { result = "class " + this.getLocalClass().toString() }
+  /**
+   * DEPRECATED: Renamed `getLocalType` to reflect the fact that
+   * as of Java 16 interfaces can also be declared locally, not just classes.
+   */
+  deprecated LocalClassOrInterface getLocalClass() { result = this.getLocalType() }
 
-  override string toString() { result = "class ..." }
+  private string getDeclKeyword() {
+    result = "class" and this.getLocalType() instanceof Class
+    or
+    result = "interface" and this.getLocalType() instanceof Interface
+  }
 
-  override string getHalsteadID() { result = "LocalClassDeclStmt" }
+  override string pp() { result = this.getDeclKeyword() + " " + this.getLocalType().toString() }
 
-  override string getAPrimaryQlClass() { result = "LocalClassDeclStmt" }
+  override string toString() { result = this.getDeclKeyword() + " ..." }
+
+  override string getHalsteadID() { result = "LocalTypeDeclStmt" }
+
+  override string getAPrimaryQlClass() { result = "LocalTypeDeclStmt" }
 }
+
+/**
+ * DEPRECATED: Renamed `LocalTypeDeclStmt` to reflect the fact that
+ * as of Java 16 interfaces can also be declared locally, not just classes.
+ */
+deprecated class LocalClassDeclStmt = LocalTypeDeclStmt;
 
 /** An explicit `this(...)` constructor invocation. */
 class ThisConstructorInvocationStmt extends Stmt, ConstructorCall, @constructorinvocationstmt {

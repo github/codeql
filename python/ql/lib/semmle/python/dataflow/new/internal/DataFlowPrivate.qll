@@ -869,6 +869,9 @@ predicate jumpStep(Node nodeFrom, Node nodeTo) {
     module_export(mv.getScope(), r.getAttributeName(), nodeFrom) and
     nodeTo = r
   )
+  or
+  // Default value for parameter flows to that parameter
+  defaultValueFlowStep(nodeFrom, nodeTo)
 }
 
 /**
@@ -1030,6 +1033,19 @@ predicate kwOverflowStoreStep(CfgNode nodeFrom, DictionaryElementContent c, Node
     nodeFrom.asCfgNode() = getKeywordOverflowArg(call, callable, key) and
     nodeTo = TKwOverflowNode(call, callable) and
     c.getKey() = key
+  )
+}
+
+predicate defaultValueFlowStep(CfgNode nodeFrom, CfgNode nodeTo) {
+  exists(Function f, Parameter p, ParameterDefinition def |
+    // `getArgByName` supports, unlike `getAnArg`, keyword-only parameters
+    p = f.getArgByName(_) and
+    nodeFrom.asExpr() = p.getDefault() and
+    // The following expresses
+    // nodeTo.(ParameterNode).getParameter() = p
+    // without non-monotonic recursion
+    def.getParameter() = p and
+    nodeTo.getNode() = def.getDefiningNode()
   )
 }
 

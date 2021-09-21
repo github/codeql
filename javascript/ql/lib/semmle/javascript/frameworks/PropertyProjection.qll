@@ -14,20 +14,16 @@ import javascript
  * To model additional APIs, extend `PropertyProjection::Range` and implement its abstract member
  * predicates.
  */
-class PropertyProjection extends DataFlow::CallNode {
-  PropertyProjection::Range self;
-
-  PropertyProjection() { this = self }
-
+class PropertyProjection extends DataFlow::CallNode instanceof PropertyProjection::Range {
   /**
    * Gets the argument for the object to project properties from, such as `o` in `_.get(o, 'a.b')`.
    */
-  DataFlow::Node getObject() { result = self.getObject() }
+  DataFlow::Node getObject() { result = super.getObject() }
 
   /**
    * Gets an argument that selects the properties to project, such as `'a.b'` in `_.get(o, 'a.b')`.
    */
-  DataFlow::Node getASelector() { result = self.getASelector() }
+  DataFlow::Node getASelector() { result = super.getASelector() }
 
   /**
    * Holds if this call returns the value of a single projected property, as opposed to an object that can contain multiple projected properties.
@@ -36,7 +32,7 @@ class PropertyProjection extends DataFlow::CallNode {
    * - This predicate holds for `_.get({a: 'b'}, 'a')`, which returns `'b'`,
    * - This predicate does not hold for `_.pick({a: 'b', c: 'd'}}, 'a')`, which returns `{a: 'b'}`,
    */
-  predicate isSingletonProjection() { self.isSingletonProjection() }
+  predicate isSingletonProjection() { super.isSingletonProjection() }
 }
 
 module PropertyProjection {

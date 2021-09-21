@@ -29,7 +29,7 @@ private import semmle.javascript.frameworks.ConnectExpressShared::ConnectExpress
 /**
  * A route handler that should be rate-limited.
  */
-abstract class ExpensiveRouteHandler extends HTTP::RouteHandler {
+abstract class ExpensiveRouteHandler extends DataFlow::Node {
   Express::RouteHandler impl;
 
   ExpensiveRouteHandler() { this = impl }
@@ -42,10 +42,6 @@ abstract class ExpensiveRouteHandler extends HTTP::RouteHandler {
    * `referenceLabel` are ignored and should be bound to dummy values.
    */
   abstract predicate explain(string explanation, DataFlow::Node reference, string referenceLabel);
-
-  override HTTP::HeaderDefinition getAResponseHeader(string name) {
-    result = impl.getAResponseHeader(name)
-  }
 }
 
 /**

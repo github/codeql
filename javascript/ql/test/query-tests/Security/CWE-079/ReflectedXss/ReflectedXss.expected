@@ -118,6 +118,18 @@ nodes
 | formatting.js:7:14:7:53 | require ... , evil) |
 | formatting.js:7:14:7:53 | require ... , evil) |
 | formatting.js:7:49:7:52 | evil |
+| live-server.js:4:11:4:27 | tainted |
+| live-server.js:4:21:4:27 | req.url |
+| live-server.js:4:21:4:27 | req.url |
+| live-server.js:6:13:6:50 | `<html> ... /html>` |
+| live-server.js:6:13:6:50 | `<html> ... /html>` |
+| live-server.js:6:28:6:34 | tainted |
+| live-server.js:10:11:10:27 | tainted |
+| live-server.js:10:21:10:27 | req.url |
+| live-server.js:10:21:10:27 | req.url |
+| live-server.js:12:13:12:50 | `<html> ... /html>` |
+| live-server.js:12:13:12:50 | `<html> ... /html>` |
+| live-server.js:12:28:12:34 | tainted |
 | pages/Next.jsx:8:13:8:19 | req.url |
 | pages/Next.jsx:8:13:8:19 | req.url |
 | pages/Next.jsx:8:13:8:19 | req.url |
@@ -325,6 +337,16 @@ edges
 | formatting.js:6:43:6:46 | evil | formatting.js:6:14:6:47 | util.fo ... , evil) |
 | formatting.js:7:49:7:52 | evil | formatting.js:7:14:7:53 | require ... , evil) |
 | formatting.js:7:49:7:52 | evil | formatting.js:7:14:7:53 | require ... , evil) |
+| live-server.js:4:11:4:27 | tainted | live-server.js:6:28:6:34 | tainted |
+| live-server.js:4:21:4:27 | req.url | live-server.js:4:11:4:27 | tainted |
+| live-server.js:4:21:4:27 | req.url | live-server.js:4:11:4:27 | tainted |
+| live-server.js:6:28:6:34 | tainted | live-server.js:6:13:6:50 | `<html> ... /html>` |
+| live-server.js:6:28:6:34 | tainted | live-server.js:6:13:6:50 | `<html> ... /html>` |
+| live-server.js:10:11:10:27 | tainted | live-server.js:12:28:12:34 | tainted |
+| live-server.js:10:21:10:27 | req.url | live-server.js:10:11:10:27 | tainted |
+| live-server.js:10:21:10:27 | req.url | live-server.js:10:11:10:27 | tainted |
+| live-server.js:12:28:12:34 | tainted | live-server.js:12:13:12:50 | `<html> ... /html>` |
+| live-server.js:12:28:12:34 | tainted | live-server.js:12:13:12:50 | `<html> ... /html>` |
 | pages/Next.jsx:8:13:8:19 | req.url | pages/Next.jsx:8:13:8:19 | req.url |
 | pages/Next.jsx:15:13:15:19 | req.url | pages/Next.jsx:15:13:15:19 | req.url |
 | pages/api/myapi.js:2:14:2:20 | req.url | pages/api/myapi.js:2:14:2:20 | req.url |
@@ -442,6 +464,8 @@ edges
 | etherpad.js:11:12:11:19 | response | etherpad.js:9:16:9:30 | req.query.jsonp | etherpad.js:11:12:11:19 | response | Cross-site scripting vulnerability due to $@. | etherpad.js:9:16:9:30 | req.query.jsonp | user-provided value |
 | formatting.js:6:14:6:47 | util.fo ... , evil) | formatting.js:4:16:4:29 | req.query.evil | formatting.js:6:14:6:47 | util.fo ... , evil) | Cross-site scripting vulnerability due to $@. | formatting.js:4:16:4:29 | req.query.evil | user-provided value |
 | formatting.js:7:14:7:53 | require ... , evil) | formatting.js:4:16:4:29 | req.query.evil | formatting.js:7:14:7:53 | require ... , evil) | Cross-site scripting vulnerability due to $@. | formatting.js:4:16:4:29 | req.query.evil | user-provided value |
+| live-server.js:6:13:6:50 | `<html> ... /html>` | live-server.js:4:21:4:27 | req.url | live-server.js:6:13:6:50 | `<html> ... /html>` | Cross-site scripting vulnerability due to $@. | live-server.js:4:21:4:27 | req.url | user-provided value |
+| live-server.js:12:13:12:50 | `<html> ... /html>` | live-server.js:10:21:10:27 | req.url | live-server.js:12:13:12:50 | `<html> ... /html>` | Cross-site scripting vulnerability due to $@. | live-server.js:10:21:10:27 | req.url | user-provided value |
 | pages/Next.jsx:8:13:8:19 | req.url | pages/Next.jsx:8:13:8:19 | req.url | pages/Next.jsx:8:13:8:19 | req.url | Cross-site scripting vulnerability due to $@. | pages/Next.jsx:8:13:8:19 | req.url | user-provided value |
 | pages/Next.jsx:15:13:15:19 | req.url | pages/Next.jsx:15:13:15:19 | req.url | pages/Next.jsx:15:13:15:19 | req.url | Cross-site scripting vulnerability due to $@. | pages/Next.jsx:15:13:15:19 | req.url | user-provided value |
 | pages/api/myapi.js:2:14:2:20 | req.url | pages/api/myapi.js:2:14:2:20 | req.url | pages/api/myapi.js:2:14:2:20 | req.url | Cross-site scripting vulnerability due to $@. | pages/api/myapi.js:2:14:2:20 | req.url | user-provided value |

@@ -456,7 +456,7 @@ private module ControlFlowGraphImpl {
       or
       this instanceof EmptyStmt
       or
-      this instanceof LocalClassDeclStmt
+      this instanceof LocalTypeDeclStmt
       or
       this instanceof AssertStmt
     }

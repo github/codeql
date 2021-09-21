@@ -1,0 +1,3 @@
+semmle-extractor-options: ${testdir}/../../../resources/stubs/System.Data.cs
+semmle-extractor-options: ${testdir}/../../../resources/stubs/_frameworks/Microsoft.NETCore.App/System.ComponentModel.cs
+semmle-extractor-options: /r:System.ComponentModel.TypeConverter.dll /r:System.Data.Common.dll

@@ -28,7 +28,7 @@ namespace Semmle.Extraction.CIL.Entities
                     yield return parentFolder;
                     yield return Tuples.containerparent(parentFolder, this);
                 }
-                yield return Tuples.folders(this, transformedPath.Value, transformedPath.NameWithoutExtension);
+                yield return Tuples.folders(this, transformedPath.Value);
             }
         }
 
