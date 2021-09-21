@@ -5,21 +5,223 @@
 private import ruby
 private import codeql.ruby.Concepts
 private import codeql.ruby.ApiGraphs
+private import codeql.ruby.DataFlow
+private import codeql.ruby.frameworks.StandardLibrary
+
+private DataFlow::Node ioInstanceInstantiation() {
+  result = API::getTopLevelMember("IO").getAnInstantiation() or
+  result = API::getTopLevelMember("IO").getAMethodCall(["for_fd", "open", "try_convert"])
+}
+
+private DataFlow::Node ioInstance() {
+  result = ioInstanceInstantiation()
+  or
+  exists(DataFlow::Node inst |
+    inst = ioInstance() and
+    inst.(DataFlow::LocalSourceNode).flowsTo(result)
+  )
+}
+
+// Match some simple cases where a path argument specifies a shell command to
+// be executed. For example, the `"|date"` argument in `IO.read("|date")`, which
+// will execute a shell command and read its output rather than reading from the
+// filesystem.
+private predicate pathArgSpawnsSubprocess(Expr arg) {
+  arg.(StringlikeLiteral).getValueText().charAt(0) = "|"
+}
+
+private DataFlow::Node fileInstanceInstantiation() {
+  result = API::getTopLevelMember("File").getAnInstantiation()
+  or
+  result = API::getTopLevelMember("File").getAMethodCall("open")
+  or
+  // Calls to `Kernel.open` can yield `File` instances
+  exists(KernelMethodCall c |
+    c = result.asExpr().getExpr() and
+    c.getMethodName() = "open" and
+    // Assume that calls that don't invoke shell commands will instead open
+    // a file.
+    not pathArgSpawnsSubprocess(c.getArgument(0))
+  )
+}
+
+private DataFlow::Node fileInstance() {
+  result = fileInstanceInstantiation()
+  or
+  exists(DataFlow::Node inst |
+    inst = fileInstance() and
+    inst.(DataFlow::LocalSourceNode).flowsTo(result)
+  )
+}
+
+private string ioFileReaderClassMethodName() {
+  result = ["binread", "foreach", "read", "readlines", "try_convert"]
+}
+
+private string ioFileReaderInstanceMethodName() {
+  result =
+    [
+      "getbyte", "getc", "gets", "pread", "read", "read_nonblock", "readbyte", "readchar",
+      "readline", "readlines", "readpartial", "sysread"
+    ]
+}
+
+private string ioFileReaderMethodName(boolean classMethodCall) {
+  classMethodCall = true and result = ioFileReaderClassMethodName()
+  or
+  classMethodCall = false and result = ioFileReaderInstanceMethodName()
+}
 
 /**
- * Classes and predicates for modelling the `File` module from the standard
- * library.
+ * Classes and predicates for modelling the core `IO` module.
  */
-private module File {
-  private class FileModuleReader extends FileSystemReadAccess::Range, DataFlow::CallNode {
-    FileModuleReader() { this = API::getTopLevelMember("File").getAMethodCall(["new", "open"]) }
-
-    override DataFlow::Node getAPathArgument() { result = this.getArgument(0) }
-
-    override DataFlow::Node getADataNode() { result = this }
+module IO {
+  /**
+   * An instance of the `IO` class, for example in
+   *
+   * ```rb
+   * rand = IO.new(IO.sysopen("/dev/random", "r"), "r")
+   * rand_data = rand.read(32)
+   * ```
+   *
+   * there are 3 `IOInstance`s - the call to `IO.new`, the assignment
+   * `rand = ...`, and the read access to `rand` on the second line.
+   */
+  class IOInstance extends DataFlow::Node {
+    IOInstance() {
+      this = ioInstance() or
+      this = fileInstance()
+    }
   }
 
-  private class FileModuleFilenameSource extends FileNameSource {
+  // "Direct" `IO` instances, i.e. cases where there is no more specific
+  // subtype such as `File`
+  private class IOInstanceStrict extends IOInstance {
+    IOInstanceStrict() { this = ioInstance() }
+  }
+
+  /**
+   * A `DataFlow::CallNode` that reads data using the `IO` class. For example,
+   * the `IO.read call in:
+   *
+   * ```rb
+   * IO.read("|date")
+   * ```
+   *
+   * returns the output of the `date` shell command, invoked as a subprocess.
+   *
+   * This class includes reads both from shell commands and reads from the
+   * filesystem. For working with filesystem accesses specifically, see
+   * `IOFileReader` or the `FileSystemReadAccess` concept.
+   */
+  class IOReader extends DataFlow::CallNode {
+    private boolean classMethodCall;
+    private string api;
+
+    IOReader() {
+      // Class methods
+      api = ["File", "IO"] and
+      classMethodCall = true and
+      this = API::getTopLevelMember(api).getAMethodCall(ioFileReaderMethodName(classMethodCall))
+      or
+      // IO instance methods
+      classMethodCall = false and
+      api = "IO" and
+      exists(IOInstanceStrict ii |
+        this.getReceiver() = ii and
+        this.asExpr().getExpr().(MethodCall).getMethodName() =
+          ioFileReaderMethodName(classMethodCall)
+      )
+      or
+      // File instance methods
+      classMethodCall = false and
+      api = "File" and
+      exists(File::FileInstance fi |
+        this.getReceiver() = fi and
+        this.asExpr().getExpr().(MethodCall).getMethodName() =
+          ioFileReaderMethodName(classMethodCall)
+      )
+      // TODO: enumeration style methods such as `each`, `foreach`, etc.
+    }
+
+    /**
+     * Returns the most specific core class used for this read, `IO` or `File`
+     */
+    string getAPI() { result = api }
+
+    predicate isClassMethodCall() { classMethodCall = true }
+  }
+
+  /**
+   * A `DataFlow::CallNode` that reads data from the filesystem using the `IO`
+   * class. For example, the `IO.read call in:
+   *
+   * ```rb
+   * IO.read("foo.txt")
+   * ```
+   *
+   * reads the file `foo.txt` and returns its contents as a string.
+   */
+  class IOFileReader extends IOReader, FileSystemReadAccess::Range {
+    IOFileReader() {
+      this.getAPI() = "File"
+      or
+      this.isClassMethodCall() and
+      // Assume that calls that don't invoke shell commands will instead
+      // read from a file.
+      not pathArgSpawnsSubprocess(this.getArgument(0).asExpr().getExpr())
+    }
+
+    // TODO: can we infer a path argument for instance method calls?
+    // e.g. by tracing back to the instantiation of that instance
+    override DataFlow::Node getAPathArgument() {
+      result = this.getArgument(0) and this.isClassMethodCall()
+    }
+
+    // This class represents calls that return data
+    override DataFlow::Node getADataNode() { result = this }
+  }
+}
+
+/**
+ * Classes and predicates for modelling the core `File` module.
+ *
+ * Because `File` is a subclass of `IO`, all `FileInstance`s and
+ * `FileModuleReader`s are also `IOInstance`s and `IOModuleReader`s
+ * respectively.
+ */
+module File {
+  /**
+   * An instance of the `File` class, for example in
+   *
+   * ```rb
+   * f = File.new("foo.txt")
+   * puts f.read()
+   * ```
+   *
+   * there are 3 `FileInstance`s - the call to `File.new`, the assignment
+   * `f = ...`, and the read access to `f` on the second line.
+   */
+  class FileInstance extends IO::IOInstance {
+    FileInstance() { this = fileInstance() }
+  }
+
+  /**
+   * A read using the `File` module, e.g. the `f.read` call in
+   *
+   * ```rb
+   *   f = File.new("foo.txt")
+   *   puts f.read()
+   * ```
+   */
+  class FileModuleReader extends IO::IOFileReader {
+    FileModuleReader() { this.getAPI() = "File" }
+  }
+
+  /**
+   * A call to a File method that may return one or more filenames.
+   */
+  class FileModuleFilenameSource extends FileNameSource, DataFlow::CallNode {
     FileModuleFilenameSource() {
       // Class methods
       this =
@@ -28,6 +230,12 @@ private module File {
                 "absolute_path", "basename", "expand_path", "join", "path", "readlink",
                 "realdirpath", "realpath"
               ])
+      or
+      // Instance methods
+      exists(FileInstance fi |
+        this.getReceiver() = fi and
+        this.asExpr().getExpr().(MethodCall).getMethodName() = ["path", "to_path"]
+      )
     }
   }
 
@@ -50,12 +258,19 @@ private module File {
   }
 }
 
-private module FileUtils {
-  private class FileUtilsFilenameSource extends FileNameSource {
+/**
+ * Classes and predicates for modelling the `FileUtils` module from the standard
+ * library.
+ */
+module FileUtils {
+  /**
+   * A call to a FileUtils method that may return one or more filenames.
+   */
+  class FileUtilsFilenameSource extends FileNameSource {
     FileUtilsFilenameSource() {
       // Note that many methods in FileUtils accept a `noop` option that will
       // perform a dry run of the command. This means that, for instance, `rm`
-      // and similar methods may not actually delete/unlink a file.
+      // and similar methods may not actually delete/unlink a file when called.
       this =
         API::getTopLevelMember("FileUtils")
             .getAMethodCall([
@@ -85,5 +300,3 @@ private module FileUtils {
     override DataFlow::Node getAPermissionNode() { result = permissionArg }
   }
 }
-
-private module IO { }
