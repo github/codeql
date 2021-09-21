@@ -14,9 +14,7 @@ class SummaryModelTest extends SummaryModelCsv {
         "generatedtest;Test;false;getMapValueDefault;(Object);;MapValue of Argument[0];ReturnValue;value",
         "generatedtest;Test;false;getTable_rowKeyDefault;(Object);;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[0];ReturnValue;value",
         "generatedtest;Test;false;getTable_columnKeyDefault;(Object);;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[0];ReturnValue;value",
-        "generatedtest;Test;false;newWithMapDifference_leftDefault;(Object);;Argument[0];SyntheticField[com.google.common.collect.MapDifference.left] of ReturnValue;value",
         "generatedtest;Test;false;getMapDifference_leftDefault;(Object);;SyntheticField[com.google.common.collect.MapDifference.left] of Argument[0];ReturnValue;value",
-        "generatedtest;Test;false;newWithMapDifference_rightDefault;(Object);;Argument[0];SyntheticField[com.google.common.collect.MapDifference.right] of ReturnValue;value",
         "generatedtest;Test;false;getMapDifference_rightDefault;(Object);;SyntheticField[com.google.common.collect.MapDifference.right] of Argument[0];ReturnValue;value"
       ]
   }

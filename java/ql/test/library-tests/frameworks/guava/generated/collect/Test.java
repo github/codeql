@@ -111,6 +111,7 @@ public class Test {
 	<T> T getElement(Iterator<T> it) { return it.next(); }
 	<T> T getElement(Optional<T> o) { return o.get(); }
 	<V> Map.Entry<?,V> newEntryWithMapValue(V value) { return Map.of(null, value).entrySet().iterator().next(); }
+	<V> MapDifference.ValueDifference newMapValueDifference(V l, V r) { return Maps.difference(Map.of(null, l), Map.of(null, r)).entriesDiffering().get(null); }
 	<V> V getMapValue(ImmutableMap.Builder<?,V> b) { return getMapValue(b.build()); }
 	<V> V getMapValue(ImmutableMultimap.Builder<?,V> b) { return getMapValue(b.build()); }
 	<V> V getMapValue(ImmutableTable.Builder<?,?,V> b) { return getMapValue(b.build()); }
@@ -125,8 +126,6 @@ public class Test {
 	Object getTable_columnKeyDefault(Object container) { return null; }
 	Object getTable_rowKeyDefault(Object container) { return null; }
 	Object newWithElementDefault(Object element) { return null; }
-	Object newWithMapDifference_leftDefault(Object element) { return null; }
-	Object newWithMapDifference_rightDefault(Object element) { return null; }
 	Object newWithMapKeyDefault(Object element) { return null; }
 	Object newWithMapValueDefault(Object element) { return null; }
 	Object source() { return null; }
@@ -5345,182 +5344,182 @@ public class Test {
 		{
 			// "com.google.common.collect;MapDifference$ValueDifference;true;leftValue;();;SyntheticField[com.google.common.collect.MapDifference.left] of Argument[-1];ReturnValue;value"
 			Object out = null;
-			MapDifference.ValueDifference in = (MapDifference.ValueDifference)newWithMapDifference_leftDefault(source());
+			MapDifference.ValueDifference in = (MapDifference.ValueDifference)newMapValueDifference(source(), null);
 			out = in.leftValue();
 			sink(out); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;MapDifference$ValueDifference;true;rightValue;();;SyntheticField[com.google.common.collect.MapDifference.right] of Argument[-1];ReturnValue;value"
 			Object out = null;
-			MapDifference.ValueDifference in = (MapDifference.ValueDifference)newWithMapDifference_rightDefault(source());
+			MapDifference.ValueDifference in = (MapDifference.ValueDifference)newMapValueDifference(null, source());
 			out = in.rightValue();
 			sink(out); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;MapDifference;true;entriesDiffering;();;MapKey of SyntheticField[com.google.common.collect.MapDifference.left] of Argument[-1];MapKey of ReturnValue;value"
 			SortedMap out = null;
-			SortedMapDifference in = (SortedMapDifference)newWithMapDifference_leftDefault(newWithMapKeyDefault(source()));
+			SortedMapDifference in = (SortedMapDifference)Maps.difference((SortedMap)newWithMapKeyDefault(source()), null);
 			out = in.entriesDiffering();
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;MapDifference;true;entriesDiffering;();;MapKey of SyntheticField[com.google.common.collect.MapDifference.left] of Argument[-1];MapKey of ReturnValue;value"
 			Map out = null;
-			MapDifference in = (MapDifference)newWithMapDifference_leftDefault(newWithMapKeyDefault(source()));
+			MapDifference in = (MapDifference)Maps.difference((Map)newWithMapKeyDefault(source()), null);
 			out = in.entriesDiffering();
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;MapDifference;true;entriesDiffering;();;MapKey of SyntheticField[com.google.common.collect.MapDifference.right] of Argument[-1];MapKey of ReturnValue;value"
 			SortedMap out = null;
-			SortedMapDifference in = (SortedMapDifference)newWithMapDifference_rightDefault(newWithMapKeyDefault(source()));
+			SortedMapDifference in = (SortedMapDifference)Maps.difference(null, (SortedMap)newWithMapKeyDefault(source()));
 			out = in.entriesDiffering();
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;MapDifference;true;entriesDiffering;();;MapKey of SyntheticField[com.google.common.collect.MapDifference.right] of Argument[-1];MapKey of ReturnValue;value"
 			Map out = null;
-			MapDifference in = (MapDifference)newWithMapDifference_rightDefault(newWithMapKeyDefault(source()));
+			MapDifference in = (MapDifference)Maps.difference(null, (Map)newWithMapKeyDefault(source()));
 			out = in.entriesDiffering();
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;MapDifference;true;entriesDiffering;();;MapValue of SyntheticField[com.google.common.collect.MapDifference.left] of Argument[-1];SyntheticField[com.google.common.collect.MapDifference.left] of MapValue of ReturnValue;value"
 			SortedMap out = null;
-			SortedMapDifference in = (SortedMapDifference)newWithMapDifference_leftDefault(newWithMapValueDefault(source()));
+			SortedMapDifference in = (SortedMapDifference)Maps.difference((SortedMap)newWithMapValueDefault(source()), null);
 			out = in.entriesDiffering();
 			sink(getMapDifference_leftDefault(getMapValue(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;MapDifference;true;entriesDiffering;();;MapValue of SyntheticField[com.google.common.collect.MapDifference.left] of Argument[-1];SyntheticField[com.google.common.collect.MapDifference.left] of MapValue of ReturnValue;value"
 			Map out = null;
-			MapDifference in = (MapDifference)newWithMapDifference_leftDefault(newWithMapValueDefault(source()));
+			MapDifference in = (MapDifference)Maps.difference((Map)newWithMapValueDefault(source()), null);
 			out = in.entriesDiffering();
 			sink(getMapDifference_leftDefault(getMapValue(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;MapDifference;true;entriesDiffering;();;MapValue of SyntheticField[com.google.common.collect.MapDifference.right] of Argument[-1];SyntheticField[com.google.common.collect.MapDifference.right] of MapValue of ReturnValue;value"
 			SortedMap out = null;
-			SortedMapDifference in = (SortedMapDifference)newWithMapDifference_rightDefault(newWithMapValueDefault(source()));
+			SortedMapDifference in = (SortedMapDifference)Maps.difference(null, (SortedMap)newWithMapValueDefault(source()));
 			out = in.entriesDiffering();
 			sink(getMapDifference_rightDefault(getMapValue(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;MapDifference;true;entriesDiffering;();;MapValue of SyntheticField[com.google.common.collect.MapDifference.right] of Argument[-1];SyntheticField[com.google.common.collect.MapDifference.right] of MapValue of ReturnValue;value"
 			Map out = null;
-			MapDifference in = (MapDifference)newWithMapDifference_rightDefault(newWithMapValueDefault(source()));
+			MapDifference in = (MapDifference)Maps.difference(null, (Map)newWithMapValueDefault(source()));
 			out = in.entriesDiffering();
 			sink(getMapDifference_rightDefault(getMapValue(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;MapDifference;true;entriesInCommon;();;MapKey of SyntheticField[com.google.common.collect.MapDifference.left] of Argument[-1];MapKey of ReturnValue;value"
 			SortedMap out = null;
-			SortedMapDifference in = (SortedMapDifference)newWithMapDifference_leftDefault(newWithMapKeyDefault(source()));
+			SortedMapDifference in = (SortedMapDifference)Maps.difference((SortedMap)newWithMapKeyDefault(source()), null);
 			out = in.entriesInCommon();
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;MapDifference;true;entriesInCommon;();;MapKey of SyntheticField[com.google.common.collect.MapDifference.left] of Argument[-1];MapKey of ReturnValue;value"
 			Map out = null;
-			MapDifference in = (MapDifference)newWithMapDifference_leftDefault(newWithMapKeyDefault(source()));
+			MapDifference in = (MapDifference)Maps.difference((Map)newWithMapKeyDefault(source()), null);
 			out = in.entriesInCommon();
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;MapDifference;true;entriesInCommon;();;MapKey of SyntheticField[com.google.common.collect.MapDifference.right] of Argument[-1];MapKey of ReturnValue;value"
 			SortedMap out = null;
-			SortedMapDifference in = (SortedMapDifference)newWithMapDifference_rightDefault(newWithMapKeyDefault(source()));
+			SortedMapDifference in = (SortedMapDifference)Maps.difference(null, (SortedMap)newWithMapKeyDefault(source()));
 			out = in.entriesInCommon();
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;MapDifference;true;entriesInCommon;();;MapKey of SyntheticField[com.google.common.collect.MapDifference.right] of Argument[-1];MapKey of ReturnValue;value"
 			Map out = null;
-			MapDifference in = (MapDifference)newWithMapDifference_rightDefault(newWithMapKeyDefault(source()));
+			MapDifference in = (MapDifference)Maps.difference(null, (Map)newWithMapKeyDefault(source()));
 			out = in.entriesInCommon();
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;MapDifference;true;entriesInCommon;();;MapValue of SyntheticField[com.google.common.collect.MapDifference.left] of Argument[-1];MapValue of ReturnValue;value"
 			SortedMap out = null;
-			SortedMapDifference in = (SortedMapDifference)newWithMapDifference_leftDefault(newWithMapValueDefault(source()));
+			SortedMapDifference in = (SortedMapDifference)Maps.difference((SortedMap)newWithMapValueDefault(source()), null);
 			out = in.entriesInCommon();
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;MapDifference;true;entriesInCommon;();;MapValue of SyntheticField[com.google.common.collect.MapDifference.left] of Argument[-1];MapValue of ReturnValue;value"
 			Map out = null;
-			MapDifference in = (MapDifference)newWithMapDifference_leftDefault(newWithMapValueDefault(source()));
+			MapDifference in = (MapDifference)Maps.difference((Map)newWithMapValueDefault(source()), null);
 			out = in.entriesInCommon();
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;MapDifference;true;entriesInCommon;();;MapValue of SyntheticField[com.google.common.collect.MapDifference.right] of Argument[-1];MapValue of ReturnValue;value"
 			SortedMap out = null;
-			SortedMapDifference in = (SortedMapDifference)newWithMapDifference_rightDefault(newWithMapValueDefault(source()));
+			SortedMapDifference in = (SortedMapDifference)Maps.difference(null, (SortedMap)newWithMapValueDefault(source()));
 			out = in.entriesInCommon();
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;MapDifference;true;entriesInCommon;();;MapValue of SyntheticField[com.google.common.collect.MapDifference.right] of Argument[-1];MapValue of ReturnValue;value"
 			Map out = null;
-			MapDifference in = (MapDifference)newWithMapDifference_rightDefault(newWithMapValueDefault(source()));
+			MapDifference in = (MapDifference)Maps.difference(null, (Map)newWithMapValueDefault(source()));
 			out = in.entriesInCommon();
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;MapDifference;true;entriesOnlyOnLeft;();;MapKey of SyntheticField[com.google.common.collect.MapDifference.left] of Argument[-1];MapKey of ReturnValue;value"
 			SortedMap out = null;
-			SortedMapDifference in = (SortedMapDifference)newWithMapDifference_leftDefault(newWithMapKeyDefault(source()));
+			SortedMapDifference in = (SortedMapDifference)Maps.difference((SortedMap)newWithMapKeyDefault(source()), null);
 			out = in.entriesOnlyOnLeft();
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;MapDifference;true;entriesOnlyOnLeft;();;MapKey of SyntheticField[com.google.common.collect.MapDifference.left] of Argument[-1];MapKey of ReturnValue;value"
 			Map out = null;
-			MapDifference in = (MapDifference)newWithMapDifference_leftDefault(newWithMapKeyDefault(source()));
+			MapDifference in = (MapDifference)Maps.difference((Map)newWithMapKeyDefault(source()), null);
 			out = in.entriesOnlyOnLeft();
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;MapDifference;true;entriesOnlyOnLeft;();;MapValue of SyntheticField[com.google.common.collect.MapDifference.left] of Argument[-1];MapValue of ReturnValue;value"
 			SortedMap out = null;
-			SortedMapDifference in = (SortedMapDifference)newWithMapDifference_leftDefault(newWithMapValueDefault(source()));
+			SortedMapDifference in = (SortedMapDifference)Maps.difference((SortedMap)newWithMapValueDefault(source()), null);
 			out = in.entriesOnlyOnLeft();
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;MapDifference;true;entriesOnlyOnLeft;();;MapValue of SyntheticField[com.google.common.collect.MapDifference.left] of Argument[-1];MapValue of ReturnValue;value"
 			Map out = null;
-			MapDifference in = (MapDifference)newWithMapDifference_leftDefault(newWithMapValueDefault(source()));
+			MapDifference in = (MapDifference)Maps.difference((Map)newWithMapValueDefault(source()), null);
 			out = in.entriesOnlyOnLeft();
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;MapDifference;true;entriesOnlyOnRight;();;MapKey of SyntheticField[com.google.common.collect.MapDifference.right] of Argument[-1];MapKey of ReturnValue;value"
 			SortedMap out = null;
-			SortedMapDifference in = (SortedMapDifference)newWithMapDifference_rightDefault(newWithMapKeyDefault(source()));
+			SortedMapDifference in = (SortedMapDifference)Maps.difference(null, (SortedMap)newWithMapKeyDefault(source()));
 			out = in.entriesOnlyOnRight();
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;MapDifference;true;entriesOnlyOnRight;();;MapKey of SyntheticField[com.google.common.collect.MapDifference.right] of Argument[-1];MapKey of ReturnValue;value"
 			Map out = null;
-			MapDifference in = (MapDifference)newWithMapDifference_rightDefault(newWithMapKeyDefault(source()));
+			MapDifference in = (MapDifference)Maps.difference(null, (Map)newWithMapKeyDefault(source()));
 			out = in.entriesOnlyOnRight();
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;MapDifference;true;entriesOnlyOnRight;();;MapValue of SyntheticField[com.google.common.collect.MapDifference.right] of Argument[-1];MapValue of ReturnValue;value"
 			SortedMap out = null;
-			SortedMapDifference in = (SortedMapDifference)newWithMapDifference_rightDefault(newWithMapValueDefault(source()));
+			SortedMapDifference in = (SortedMapDifference)Maps.difference(null, (SortedMap)newWithMapValueDefault(source()));
 			out = in.entriesOnlyOnRight();
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;MapDifference;true;entriesOnlyOnRight;();;MapValue of SyntheticField[com.google.common.collect.MapDifference.right] of Argument[-1];MapValue of ReturnValue;value"
 			Map out = null;
-			MapDifference in = (MapDifference)newWithMapDifference_rightDefault(newWithMapValueDefault(source()));
+			MapDifference in = (MapDifference)Maps.difference(null, (Map)newWithMapValueDefault(source()));
 			out = in.entriesOnlyOnRight();
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
