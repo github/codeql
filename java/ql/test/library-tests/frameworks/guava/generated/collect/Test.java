@@ -99,6 +99,8 @@ public class Test {
 	<K> K getMapKey(Map<K,?> map) { return map.keySet().iterator().next(); }
 	<K> K getMapKey(Multimap<K,?> map) { return map.keySet().iterator().next(); }
 	<K> Map.Entry<K,?> newEntryWithMapKey(K key) { return Map.of(key, null).entrySet().iterator().next(); }
+	<R,C,V> Table.Cell<R,C,V> newTableCell(R row, C column, V value) { return getElement(ImmutableTable.of(row, column, value).cellSet()); }
+	<R,C,V> TreeBasedTable<R,C,V> newTable(R row, C column, V value) { TreeBasedTable t = TreeBasedTable.create(null, null); t.put(row, column, value); return t; }
 	<R> R getTable_rowKey(ImmutableTable.Builder<R,?,?> b) { return getTable_rowKey(b.build()); }
 	<R> R getTable_rowKey(Table<R,?,?> t) { return t.rowKeySet().iterator().next(); }
 	<T> Multiset.Entry<T> newEntryWithElement(T el) { return getElement(ImmutableMultiset.of(el).entrySet()); }
@@ -127,8 +129,6 @@ public class Test {
 	Object newWithMapDifference_rightDefault(Object element) { return null; }
 	Object newWithMapKeyDefault(Object element) { return null; }
 	Object newWithMapValueDefault(Object element) { return null; }
-	Object newWithTable_columnKeyDefault(Object element) { return null; }
-	Object newWithTable_rowKeyDefault(Object element) { return null; }
 	Object source() { return null; }
 	void sink(Object o) { }
 
@@ -347,21 +347,21 @@ public class Test {
 		{
 			// "com.google.common.collect;HashBasedTable;true;create;(Table);;MapValue of Argument[0];MapValue of ReturnValue;value"
 			HashBasedTable out = null;
-			Table in = (Table)newWithMapValueDefault(source());
+			Table in = (Table)newTable(null, null, source());
 			out = HashBasedTable.create(in);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;HashBasedTable;true;create;(Table);;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[0];SyntheticField[com.google.common.collect.Table.columnKey] of ReturnValue;value"
 			HashBasedTable out = null;
-			Table in = (Table)newWithTable_columnKeyDefault(source());
+			Table in = (Table)newTable(null, source(), null);
 			out = HashBasedTable.create(in);
 			sink(getTable_columnKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;HashBasedTable;true;create;(Table);;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[0];SyntheticField[com.google.common.collect.Table.rowKey] of ReturnValue;value"
 			HashBasedTable out = null;
-			Table in = (Table)newWithTable_rowKeyDefault(source());
+			Table in = (Table)newTable(source(), null, null);
 			out = HashBasedTable.create(in);
 			sink(getTable_rowKey(out)); // $ hasValueFlow
 		}
@@ -4449,21 +4449,21 @@ public class Test {
 		{
 			// "com.google.common.collect;ImmutableTable$Builder;true;build;();;MapValue of Argument[-1];MapValue of ReturnValue;value"
 			ImmutableTable out = null;
-			ImmutableTable.Builder in = (ImmutableTable.Builder)newWithMapValueDefault(source());
+			ImmutableTable.Builder in = (ImmutableTable.Builder)ImmutableTable.builder().put(null, null, source());
 			out = in.build();
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableTable$Builder;true;build;();;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[-1];SyntheticField[com.google.common.collect.Table.columnKey] of ReturnValue;value"
 			ImmutableTable out = null;
-			ImmutableTable.Builder in = (ImmutableTable.Builder)newWithTable_columnKeyDefault(source());
+			ImmutableTable.Builder in = (ImmutableTable.Builder)ImmutableTable.builder().put(null, source(), null);
 			out = in.build();
 			sink(getTable_columnKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableTable$Builder;true;build;();;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[-1];SyntheticField[com.google.common.collect.Table.rowKey] of ReturnValue;value"
 			ImmutableTable out = null;
-			ImmutableTable.Builder in = (ImmutableTable.Builder)newWithTable_rowKeyDefault(source());
+			ImmutableTable.Builder in = (ImmutableTable.Builder)ImmutableTable.builder().put(source(), null, null);
 			out = in.build();
 			sink(getTable_rowKey(out)); // $ hasValueFlow
 		}
@@ -4491,21 +4491,21 @@ public class Test {
 		{
 			// "com.google.common.collect;ImmutableTable$Builder;true;put;(Cell);;MapValue of Argument[0];MapValue of Argument[-1];value"
 			ImmutableTable.Builder out = null;
-			Table.Cell in = (Table.Cell)newWithMapValueDefault(source());
+			Table.Cell in = (Table.Cell)newTableCell(null, null, source());
 			out.put(in);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableTable$Builder;true;put;(Cell);;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[0];SyntheticField[com.google.common.collect.Table.columnKey] of Argument[-1];value"
 			ImmutableTable.Builder out = null;
-			Table.Cell in = (Table.Cell)newWithTable_columnKeyDefault(source());
+			Table.Cell in = (Table.Cell)newTableCell(null, source(), null);
 			out.put(in);
 			sink(getTable_columnKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableTable$Builder;true;put;(Cell);;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[0];SyntheticField[com.google.common.collect.Table.rowKey] of Argument[-1];value"
 			ImmutableTable.Builder out = null;
-			Table.Cell in = (Table.Cell)newWithTable_rowKeyDefault(source());
+			Table.Cell in = (Table.Cell)newTableCell(source(), null, null);
 			out.put(in);
 			sink(getTable_rowKey(out)); // $ hasValueFlow
 		}
@@ -4547,42 +4547,42 @@ public class Test {
 		{
 			// "com.google.common.collect;ImmutableTable$Builder;true;putAll;(Table);;MapValue of Argument[0];MapValue of Argument[-1];value"
 			ImmutableTable.Builder out = null;
-			Table in = (Table)newWithMapValueDefault(source());
+			Table in = (Table)ImmutableTable.of(null, null, source());
 			out.putAll(in);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableTable$Builder;true;putAll;(Table);;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[0];SyntheticField[com.google.common.collect.Table.columnKey] of Argument[-1];value"
 			ImmutableTable.Builder out = null;
-			Table in = (Table)newWithTable_columnKeyDefault(source());
+			Table in = (Table)ImmutableTable.of(null, source(), null);
 			out.putAll(in);
 			sink(getTable_columnKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableTable$Builder;true;putAll;(Table);;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[0];SyntheticField[com.google.common.collect.Table.rowKey] of Argument[-1];value"
 			ImmutableTable.Builder out = null;
-			Table in = (Table)newWithTable_rowKeyDefault(source());
+			Table in = (Table)ImmutableTable.of(source(), null, null);
 			out.putAll(in);
 			sink(getTable_rowKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableTable;true;copyOf;(Table);;MapValue of Argument[0];MapValue of ReturnValue;value"
 			ImmutableTable out = null;
-			Table in = (Table)newWithMapValueDefault(source());
+			Table in = (Table)ImmutableTable.of(null, null, source());
 			out = ImmutableTable.copyOf(in);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableTable;true;copyOf;(Table);;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[0];SyntheticField[com.google.common.collect.Table.columnKey] of ReturnValue;value"
 			ImmutableTable out = null;
-			Table in = (Table)newWithTable_columnKeyDefault(source());
+			Table in = (Table)ImmutableTable.of(null, source(), null);
 			out = ImmutableTable.copyOf(in);
 			sink(getTable_columnKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableTable;true;copyOf;(Table);;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[0];SyntheticField[com.google.common.collect.Table.rowKey] of ReturnValue;value"
 			ImmutableTable out = null;
-			Table in = (Table)newWithTable_rowKeyDefault(source());
+			Table in = (Table)ImmutableTable.of(source(), null, null);
 			out = ImmutableTable.copyOf(in);
 			sink(getTable_rowKey(out)); // $ hasValueFlow
 		}
@@ -7522,217 +7522,217 @@ public class Test {
 		{
 			// "com.google.common.collect;Table$Cell;true;getColumnKey;();;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[-1];ReturnValue;value"
 			Object out = null;
-			Table.Cell in = (Table.Cell)newWithTable_columnKeyDefault(source());
+			Table.Cell in = (Table.Cell)newTableCell(null, source(), null);
 			out = in.getColumnKey();
 			sink(out); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table$Cell;true;getRowKey;();;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[-1];ReturnValue;value"
 			Object out = null;
-			Table.Cell in = (Table.Cell)newWithTable_rowKeyDefault(source());
+			Table.Cell in = (Table.Cell)newTableCell(source(), null, null);
 			out = in.getRowKey();
 			sink(out); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table$Cell;true;getValue;();;MapValue of Argument[-1];ReturnValue;value"
 			Object out = null;
-			Table.Cell in = (Table.Cell)newWithMapValueDefault(source());
+			Table.Cell in = (Table.Cell)newTableCell(null, null, source());
 			out = in.getValue();
 			sink(out); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;cellSet;();;MapValue of Argument[-1];MapValue of Element of ReturnValue;value"
 			Set out = null;
-			Table in = (Table)newWithMapValueDefault(source());
+			Table in = (Table)newTable(null, null, source());
 			out = in.cellSet();
 			sink(getMapValueDefault(getElement(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;cellSet;();;MapValue of Argument[-1];MapValue of Element of ReturnValue;value"
 			Set out = null;
-			ArrayTable in = (ArrayTable)newWithMapValueDefault(source());
+			ArrayTable in = (ArrayTable)ArrayTable.create(ImmutableTable.of(null, null, source()));
 			out = in.cellSet();
 			sink(getMapValueDefault(getElement(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;cellSet;();;MapValue of Argument[-1];MapValue of Element of ReturnValue;value"
 			ImmutableSet out = null;
-			ImmutableTable in = (ImmutableTable)newWithMapValueDefault(source());
+			ImmutableTable in = (ImmutableTable)ImmutableTable.of(null, null, source());
 			out = in.cellSet();
 			sink(getMapValueDefault(getElement(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;cellSet;();;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[-1];SyntheticField[com.google.common.collect.Table.columnKey] of Element of ReturnValue;value"
 			Set out = null;
-			Table in = (Table)newWithTable_columnKeyDefault(source());
+			Table in = (Table)newTable(null, source(), null);
 			out = in.cellSet();
 			sink(getTable_columnKeyDefault(getElement(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;cellSet;();;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[-1];SyntheticField[com.google.common.collect.Table.columnKey] of Element of ReturnValue;value"
 			Set out = null;
-			ArrayTable in = (ArrayTable)newWithTable_columnKeyDefault(source());
+			ArrayTable in = (ArrayTable)ArrayTable.create(ImmutableTable.of(null, source(), null));
 			out = in.cellSet();
 			sink(getTable_columnKeyDefault(getElement(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;cellSet;();;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[-1];SyntheticField[com.google.common.collect.Table.columnKey] of Element of ReturnValue;value"
 			ImmutableSet out = null;
-			ImmutableTable in = (ImmutableTable)newWithTable_columnKeyDefault(source());
+			ImmutableTable in = (ImmutableTable)ImmutableTable.of(null, source(), null);
 			out = in.cellSet();
 			sink(getTable_columnKeyDefault(getElement(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;cellSet;();;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[-1];SyntheticField[com.google.common.collect.Table.rowKey] of Element of ReturnValue;value"
 			Set out = null;
-			Table in = (Table)newWithTable_rowKeyDefault(source());
+			Table in = (Table)newTable(source(), null, null);
 			out = in.cellSet();
 			sink(getTable_rowKeyDefault(getElement(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;cellSet;();;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[-1];SyntheticField[com.google.common.collect.Table.rowKey] of Element of ReturnValue;value"
 			Set out = null;
-			ArrayTable in = (ArrayTable)newWithTable_rowKeyDefault(source());
+			ArrayTable in = (ArrayTable)ArrayTable.create(ImmutableTable.of(source(), null, null));
 			out = in.cellSet();
 			sink(getTable_rowKeyDefault(getElement(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;cellSet;();;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[-1];SyntheticField[com.google.common.collect.Table.rowKey] of Element of ReturnValue;value"
 			ImmutableSet out = null;
-			ImmutableTable in = (ImmutableTable)newWithTable_rowKeyDefault(source());
+			ImmutableTable in = (ImmutableTable)ImmutableTable.of(source(), null, null);
 			out = in.cellSet();
 			sink(getTable_rowKeyDefault(getElement(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;column;(Object);;MapValue of Argument[-1];MapValue of ReturnValue;value"
 			Map out = null;
-			Table in = (Table)newWithMapValueDefault(source());
+			Table in = (Table)newTable(null, null, source());
 			out = in.column(null);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;column;(Object);;MapValue of Argument[-1];MapValue of ReturnValue;value"
 			Map out = null;
-			ArrayTable in = (ArrayTable)newWithMapValueDefault(source());
+			ArrayTable in = (ArrayTable)ArrayTable.create(ImmutableTable.of(null, null, source()));
 			out = in.column(null);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;column;(Object);;MapValue of Argument[-1];MapValue of ReturnValue;value"
 			ImmutableMap out = null;
-			ImmutableTable in = (ImmutableTable)newWithMapValueDefault(source());
+			ImmutableTable in = (ImmutableTable)ImmutableTable.of(null, null, source());
 			out = in.column(null);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;column;(Object);;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[-1];MapKey of ReturnValue;value"
 			Map out = null;
-			Table in = (Table)newWithTable_rowKeyDefault(source());
+			Table in = (Table)newTable(source(), null, null);
 			out = in.column(null);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;column;(Object);;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[-1];MapKey of ReturnValue;value"
 			Map out = null;
-			ArrayTable in = (ArrayTable)newWithTable_rowKeyDefault(source());
+			ArrayTable in = (ArrayTable)ArrayTable.create(ImmutableTable.of(source(), null, null));
 			out = in.column(null);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;column;(Object);;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[-1];MapKey of ReturnValue;value"
 			ImmutableMap out = null;
-			ImmutableTable in = (ImmutableTable)newWithTable_rowKeyDefault(source());
+			ImmutableTable in = (ImmutableTable)ImmutableTable.of(source(), null, null);
 			out = in.column(null);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;columnKeySet;();;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[-1];Element of ReturnValue;value"
 			Set out = null;
-			Table in = (Table)newWithTable_columnKeyDefault(source());
+			Table in = (Table)newTable(null, source(), null);
 			out = in.columnKeySet();
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;columnKeySet;();;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[-1];Element of ReturnValue;value"
 			ImmutableSet out = null;
-			ImmutableTable in = (ImmutableTable)newWithTable_columnKeyDefault(source());
+			ImmutableTable in = (ImmutableTable)ImmutableTable.of(null, source(), null);
 			out = in.columnKeySet();
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;columnKeySet;();;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[-1];Element of ReturnValue;value"
 			ImmutableSet out = null;
-			ArrayTable in = (ArrayTable)newWithTable_columnKeyDefault(source());
+			ArrayTable in = (ArrayTable)ArrayTable.create(ImmutableTable.of(null, source(), null));
 			out = in.columnKeySet();
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;columnMap;();;MapValue of Argument[-1];MapValue of MapValue of ReturnValue;value"
 			Map out = null;
-			Table in = (Table)newWithMapValueDefault(source());
+			Table in = (Table)newTable(null, null, source());
 			out = in.columnMap();
 			sink(getMapValueDefault(getMapValue(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;columnMap;();;MapValue of Argument[-1];MapValue of MapValue of ReturnValue;value"
 			Map out = null;
-			ArrayTable in = (ArrayTable)newWithMapValueDefault(source());
+			ArrayTable in = (ArrayTable)ArrayTable.create(ImmutableTable.of(null, null, source()));
 			out = in.columnMap();
 			sink(getMapValueDefault(getMapValue(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;columnMap;();;MapValue of Argument[-1];MapValue of MapValue of ReturnValue;value"
 			ImmutableMap out = null;
-			ImmutableTable in = (ImmutableTable)newWithMapValueDefault(source());
+			ImmutableTable in = (ImmutableTable)ImmutableTable.of(null, null, source());
 			out = in.columnMap();
 			sink(getMapValueDefault(getMapValue(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;columnMap;();;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[-1];MapKey of ReturnValue;value"
 			Map out = null;
-			Table in = (Table)newWithTable_columnKeyDefault(source());
+			Table in = (Table)newTable(null, source(), null);
 			out = in.columnMap();
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;columnMap;();;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[-1];MapKey of ReturnValue;value"
 			Map out = null;
-			ArrayTable in = (ArrayTable)newWithTable_columnKeyDefault(source());
+			ArrayTable in = (ArrayTable)ArrayTable.create(ImmutableTable.of(null, source(), null));
 			out = in.columnMap();
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;columnMap;();;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[-1];MapKey of ReturnValue;value"
 			ImmutableMap out = null;
-			ImmutableTable in = (ImmutableTable)newWithTable_columnKeyDefault(source());
+			ImmutableTable in = (ImmutableTable)ImmutableTable.of(null, source(), null);
 			out = in.columnMap();
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;columnMap;();;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[-1];MapKey of MapValue of ReturnValue;value"
 			Map out = null;
-			Table in = (Table)newWithTable_rowKeyDefault(source());
+			Table in = (Table)newTable(source(), null, null);
 			out = in.columnMap();
 			sink(getMapKeyDefault(getMapValue(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;columnMap;();;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[-1];MapKey of MapValue of ReturnValue;value"
 			Map out = null;
-			ArrayTable in = (ArrayTable)newWithTable_rowKeyDefault(source());
+			ArrayTable in = (ArrayTable)ArrayTable.create(ImmutableTable.of(source(), null, null));
 			out = in.columnMap();
 			sink(getMapKeyDefault(getMapValue(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;columnMap;();;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[-1];MapKey of MapValue of ReturnValue;value"
 			ImmutableMap out = null;
-			ImmutableTable in = (ImmutableTable)newWithTable_rowKeyDefault(source());
+			ImmutableTable in = (ImmutableTable)ImmutableTable.of(source(), null, null);
 			out = in.columnMap();
 			sink(getMapKeyDefault(getMapValue(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;get;(Object,Object);;MapValue of Argument[-1];ReturnValue;value"
 			Object out = null;
-			Table in = (Table)newWithMapValueDefault(source());
+			Table in = (Table)newTable(null, null, source());
 			out = in.get(null, null);
 			sink(out); // $ hasValueFlow
 		}
@@ -7746,7 +7746,7 @@ public class Test {
 		{
 			// "com.google.common.collect;Table;true;get;(Object,Object);;MapValue of Argument[-1];ReturnValue;value"
 			Object out = null;
-			ArrayTable in = (ArrayTable)newWithMapValueDefault(source());
+			ArrayTable in = (ArrayTable)ArrayTable.create(ImmutableTable.of(null, null, source()));
 			out = in.get(null, null);
 			sink(out); // $ hasValueFlow
 		}
@@ -7816,77 +7816,77 @@ public class Test {
 		{
 			// "com.google.common.collect;Table;true;putAll;(Table);;MapValue of Argument[0];MapValue of Argument[-1];value"
 			Table out = null;
-			Table in = (Table)newWithMapValueDefault(source());
+			Table in = (Table)newTable(null, null, source());
 			out.putAll(in);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;putAll;(Table);;MapValue of Argument[0];MapValue of Argument[-1];value"
 			ImmutableTable out = null;
-			Table in = (Table)newWithMapValueDefault(source());
+			Table in = (Table)ImmutableTable.of(null, null, source());
 			out.putAll(in);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;putAll;(Table);;MapValue of Argument[0];MapValue of Argument[-1];value"
 			ArrayTable out = null;
-			Table in = (Table)newWithMapValueDefault(source());
+			Table in = (Table)ArrayTable.create(ImmutableTable.of(null, null, source()));
 			out.putAll(in);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;putAll;(Table);;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[0];SyntheticField[com.google.common.collect.Table.columnKey] of Argument[-1];value"
 			Table out = null;
-			Table in = (Table)newWithTable_columnKeyDefault(source());
+			Table in = (Table)newTable(null, source(), null);
 			out.putAll(in);
 			sink(getTable_columnKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;putAll;(Table);;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[0];SyntheticField[com.google.common.collect.Table.columnKey] of Argument[-1];value"
 			ImmutableTable out = null;
-			Table in = (Table)newWithTable_columnKeyDefault(source());
+			Table in = (Table)ImmutableTable.of(null, source(), null);
 			out.putAll(in);
 			sink(getTable_columnKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;putAll;(Table);;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[0];SyntheticField[com.google.common.collect.Table.columnKey] of Argument[-1];value"
 			ArrayTable out = null;
-			Table in = (Table)newWithTable_columnKeyDefault(source());
+			Table in = (Table)ArrayTable.create(ImmutableTable.of(null, source(), null));
 			out.putAll(in);
 			sink(getTable_columnKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;putAll;(Table);;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[0];SyntheticField[com.google.common.collect.Table.rowKey] of Argument[-1];value"
 			Table out = null;
-			Table in = (Table)newWithTable_rowKeyDefault(source());
+			Table in = (Table)newTable(source(), null, null);
 			out.putAll(in);
 			sink(getTable_rowKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;putAll;(Table);;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[0];SyntheticField[com.google.common.collect.Table.rowKey] of Argument[-1];value"
 			ImmutableTable out = null;
-			Table in = (Table)newWithTable_rowKeyDefault(source());
+			Table in = (Table)ImmutableTable.of(source(), null, null);
 			out.putAll(in);
 			sink(getTable_rowKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;putAll;(Table);;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[0];SyntheticField[com.google.common.collect.Table.rowKey] of Argument[-1];value"
 			ArrayTable out = null;
-			Table in = (Table)newWithTable_rowKeyDefault(source());
+			Table in = (Table)ArrayTable.create(ImmutableTable.of(source(), null, null));
 			out.putAll(in);
 			sink(getTable_rowKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;remove;(Object,Object);;MapValue of Argument[-1];ReturnValue;value"
 			Object out = null;
-			Table in = (Table)newWithMapValueDefault(source());
+			Table in = (Table)newTable(null, null, source());
 			out = in.remove(null, null);
 			sink(out); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;remove;(Object,Object);;MapValue of Argument[-1];ReturnValue;value"
 			Object out = null;
-			ImmutableTable in = (ImmutableTable)newWithMapValueDefault(source());
+			ImmutableTable in = (ImmutableTable)ImmutableTable.of(null, null, source());
 			out = in.remove(null, null);
 			sink(out); // $ hasValueFlow
 		}
@@ -7900,224 +7900,224 @@ public class Test {
 		{
 			// "com.google.common.collect;Table;true;remove;(Object,Object);;MapValue of Argument[-1];ReturnValue;value"
 			Object out = null;
-			ArrayTable in = (ArrayTable)newWithMapValueDefault(source());
+			ArrayTable in = (ArrayTable)ArrayTable.create(ImmutableTable.of(null, null, source()));
 			out = in.remove(null, null);
 			sink(out); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;row;(Object);;MapValue of Argument[-1];MapValue of ReturnValue;value"
 			SortedMap out = null;
-			TreeBasedTable in = (TreeBasedTable)newWithMapValueDefault(source());
+			TreeBasedTable in = (TreeBasedTable)newTable(null, null, source());
 			out = in.row(null);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;row;(Object);;MapValue of Argument[-1];MapValue of ReturnValue;value"
 			Map out = null;
-			Table in = (Table)newWithMapValueDefault(source());
+			Table in = (Table)newTable(null, null, source());
 			out = in.row(null);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;row;(Object);;MapValue of Argument[-1];MapValue of ReturnValue;value"
 			Map out = null;
-			ArrayTable in = (ArrayTable)newWithMapValueDefault(source());
+			ArrayTable in = (ArrayTable)ArrayTable.create(ImmutableTable.of(null, null, source()));
 			out = in.row(null);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;row;(Object);;MapValue of Argument[-1];MapValue of ReturnValue;value"
 			ImmutableMap out = null;
-			ImmutableTable in = (ImmutableTable)newWithMapValueDefault(source());
+			ImmutableTable in = (ImmutableTable)ImmutableTable.of(null, null, source());
 			out = in.row(null);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;row;(Object);;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[-1];MapKey of ReturnValue;value"
 			SortedMap out = null;
-			TreeBasedTable in = (TreeBasedTable)newWithTable_columnKeyDefault(source());
+			TreeBasedTable in = (TreeBasedTable)newTable(null, source(), null);
 			out = in.row(null);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;row;(Object);;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[-1];MapKey of ReturnValue;value"
 			Map out = null;
-			Table in = (Table)newWithTable_columnKeyDefault(source());
+			Table in = (Table)newTable(null, source(), null);
 			out = in.row(null);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;row;(Object);;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[-1];MapKey of ReturnValue;value"
 			Map out = null;
-			ArrayTable in = (ArrayTable)newWithTable_columnKeyDefault(source());
+			ArrayTable in = (ArrayTable)ArrayTable.create(ImmutableTable.of(null, source(), null));
 			out = in.row(null);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;row;(Object);;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[-1];MapKey of ReturnValue;value"
 			ImmutableMap out = null;
-			ImmutableTable in = (ImmutableTable)newWithTable_columnKeyDefault(source());
+			ImmutableTable in = (ImmutableTable)ImmutableTable.of(null, source(), null);
 			out = in.row(null);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;rowKeySet;();;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[-1];Element of ReturnValue;value"
 			SortedSet out = null;
-			TreeBasedTable in = (TreeBasedTable)newWithTable_rowKeyDefault(source());
+			TreeBasedTable in = (TreeBasedTable)newTable(source(), null, null);
 			out = in.rowKeySet();
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;rowKeySet;();;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[-1];Element of ReturnValue;value"
 			SortedSet out = null;
-			RowSortedTable in = (RowSortedTable)newWithTable_rowKeyDefault(source());
+			RowSortedTable in = (RowSortedTable)newTable(source(), null, null);
 			out = in.rowKeySet();
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;rowKeySet;();;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[-1];Element of ReturnValue;value"
 			Set out = null;
-			Table in = (Table)newWithTable_rowKeyDefault(source());
+			Table in = (Table)newTable(source(), null, null);
 			out = in.rowKeySet();
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;rowKeySet;();;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[-1];Element of ReturnValue;value"
 			ImmutableSet out = null;
-			ImmutableTable in = (ImmutableTable)newWithTable_rowKeyDefault(source());
+			ImmutableTable in = (ImmutableTable)ImmutableTable.of(source(), null, null);
 			out = in.rowKeySet();
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;rowKeySet;();;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[-1];Element of ReturnValue;value"
 			ImmutableSet out = null;
-			ArrayTable in = (ArrayTable)newWithTable_rowKeyDefault(source());
+			ArrayTable in = (ArrayTable)ArrayTable.create(ImmutableTable.of(source(), null, null));
 			out = in.rowKeySet();
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;rowMap;();;MapValue of Argument[-1];MapValue of MapValue of ReturnValue;value"
 			SortedMap out = null;
-			TreeBasedTable in = (TreeBasedTable)newWithMapValueDefault(source());
+			TreeBasedTable in = (TreeBasedTable)newTable(null, null, source());
 			out = in.rowMap();
 			sink(getMapValueDefault(getMapValue(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;rowMap;();;MapValue of Argument[-1];MapValue of MapValue of ReturnValue;value"
 			SortedMap out = null;
-			RowSortedTable in = (RowSortedTable)newWithMapValueDefault(source());
+			RowSortedTable in = (RowSortedTable)newTable(null, null, source());
 			out = in.rowMap();
 			sink(getMapValueDefault(getMapValue(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;rowMap;();;MapValue of Argument[-1];MapValue of MapValue of ReturnValue;value"
 			Map out = null;
-			Table in = (Table)newWithMapValueDefault(source());
+			Table in = (Table)newTable(null, null, source());
 			out = in.rowMap();
 			sink(getMapValueDefault(getMapValue(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;rowMap;();;MapValue of Argument[-1];MapValue of MapValue of ReturnValue;value"
 			Map out = null;
-			ArrayTable in = (ArrayTable)newWithMapValueDefault(source());
+			ArrayTable in = (ArrayTable)ArrayTable.create(ImmutableTable.of(null, null, source()));
 			out = in.rowMap();
 			sink(getMapValueDefault(getMapValue(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;rowMap;();;MapValue of Argument[-1];MapValue of MapValue of ReturnValue;value"
 			ImmutableMap out = null;
-			ImmutableTable in = (ImmutableTable)newWithMapValueDefault(source());
+			ImmutableTable in = (ImmutableTable)ImmutableTable.of(null, null, source());
 			out = in.rowMap();
 			sink(getMapValueDefault(getMapValue(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;rowMap;();;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[-1];MapKey of MapValue of ReturnValue;value"
 			SortedMap out = null;
-			TreeBasedTable in = (TreeBasedTable)newWithTable_columnKeyDefault(source());
+			TreeBasedTable in = (TreeBasedTable)newTable(null, source(), null);
 			out = in.rowMap();
 			sink(getMapKeyDefault(getMapValue(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;rowMap;();;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[-1];MapKey of MapValue of ReturnValue;value"
 			SortedMap out = null;
-			RowSortedTable in = (RowSortedTable)newWithTable_columnKeyDefault(source());
+			RowSortedTable in = (RowSortedTable)newTable(null, source(), null);
 			out = in.rowMap();
 			sink(getMapKeyDefault(getMapValue(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;rowMap;();;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[-1];MapKey of MapValue of ReturnValue;value"
 			Map out = null;
-			Table in = (Table)newWithTable_columnKeyDefault(source());
+			Table in = (Table)newTable(null, source(), null);
 			out = in.rowMap();
 			sink(getMapKeyDefault(getMapValue(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;rowMap;();;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[-1];MapKey of MapValue of ReturnValue;value"
 			Map out = null;
-			ArrayTable in = (ArrayTable)newWithTable_columnKeyDefault(source());
+			ArrayTable in = (ArrayTable)ArrayTable.create(ImmutableTable.of(null, source(), null));
 			out = in.rowMap();
 			sink(getMapKeyDefault(getMapValue(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;rowMap;();;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[-1];MapKey of MapValue of ReturnValue;value"
 			ImmutableMap out = null;
-			ImmutableTable in = (ImmutableTable)newWithTable_columnKeyDefault(source());
+			ImmutableTable in = (ImmutableTable)ImmutableTable.of(null, source(), null);
 			out = in.rowMap();
 			sink(getMapKeyDefault(getMapValue(out))); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;rowMap;();;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[-1];MapKey of ReturnValue;value"
 			SortedMap out = null;
-			TreeBasedTable in = (TreeBasedTable)newWithTable_rowKeyDefault(source());
+			TreeBasedTable in = (TreeBasedTable)newTable(source(), null, null);
 			out = in.rowMap();
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;rowMap;();;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[-1];MapKey of ReturnValue;value"
 			SortedMap out = null;
-			RowSortedTable in = (RowSortedTable)newWithTable_rowKeyDefault(source());
+			RowSortedTable in = (RowSortedTable)newTable(source(), null, null);
 			out = in.rowMap();
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;rowMap;();;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[-1];MapKey of ReturnValue;value"
 			Map out = null;
-			Table in = (Table)newWithTable_rowKeyDefault(source());
+			Table in = (Table)newTable(source(), null, null);
 			out = in.rowMap();
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;rowMap;();;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[-1];MapKey of ReturnValue;value"
 			Map out = null;
-			ArrayTable in = (ArrayTable)newWithTable_rowKeyDefault(source());
+			ArrayTable in = (ArrayTable)ArrayTable.create(ImmutableTable.of(source(), null, null));
 			out = in.rowMap();
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;rowMap;();;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[-1];MapKey of ReturnValue;value"
 			ImmutableMap out = null;
-			ImmutableTable in = (ImmutableTable)newWithTable_rowKeyDefault(source());
+			ImmutableTable in = (ImmutableTable)ImmutableTable.of(source(), null, null);
 			out = in.rowMap();
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;values;();;MapValue of Argument[-1];Element of ReturnValue;value"
 			ImmutableCollection out = null;
-			ImmutableTable in = (ImmutableTable)newWithMapValueDefault(source());
+			ImmutableTable in = (ImmutableTable)ImmutableTable.of(null, null, source());
 			out = in.values();
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;values;();;MapValue of Argument[-1];Element of ReturnValue;value"
 			Collection out = null;
-			Table in = (Table)newWithMapValueDefault(source());
+			Table in = (Table)newTable(null, null, source());
 			out = in.values();
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Table;true;values;();;MapValue of Argument[-1];Element of ReturnValue;value"
 			Collection out = null;
-			ArrayTable in = (ArrayTable)newWithMapValueDefault(source());
+			ArrayTable in = (ArrayTable)ArrayTable.create(ImmutableTable.of(null, null, source()));
 			out = in.values();
 			sink(getElement(out)); // $ hasValueFlow
 		}
@@ -8166,119 +8166,119 @@ public class Test {
 		{
 			// "com.google.common.collect;Tables;false;synchronizedTable;(Table);;MapValue of Argument[0];MapValue of ReturnValue;value"
 			Table out = null;
-			Table in = (Table)newWithMapValueDefault(source());
+			Table in = (Table)newTable(null, null, source());
 			out = Tables.synchronizedTable(in);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Tables;false;synchronizedTable;(Table);;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[0];SyntheticField[com.google.common.collect.Table.columnKey] of ReturnValue;value"
 			Table out = null;
-			Table in = (Table)newWithTable_columnKeyDefault(source());
+			Table in = (Table)newTable(null, source(), null);
 			out = Tables.synchronizedTable(in);
 			sink(getTable_columnKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Tables;false;synchronizedTable;(Table);;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[0];SyntheticField[com.google.common.collect.Table.rowKey] of ReturnValue;value"
 			Table out = null;
-			Table in = (Table)newWithTable_rowKeyDefault(source());
+			Table in = (Table)newTable(source(), null, null);
 			out = Tables.synchronizedTable(in);
 			sink(getTable_rowKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Tables;false;transformValues;(Table,Function);;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[0];SyntheticField[com.google.common.collect.Table.columnKey] of ReturnValue;value"
 			Table out = null;
-			Table in = (Table)newWithTable_columnKeyDefault(source());
+			Table in = (Table)newTable(null, source(), null);
 			out = Tables.transformValues(in, null);
 			sink(getTable_columnKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Tables;false;transformValues;(Table,Function);;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[0];SyntheticField[com.google.common.collect.Table.rowKey] of ReturnValue;value"
 			Table out = null;
-			Table in = (Table)newWithTable_rowKeyDefault(source());
+			Table in = (Table)newTable(source(), null, null);
 			out = Tables.transformValues(in, null);
 			sink(getTable_rowKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Tables;false;transpose;(Table);;MapValue of Argument[0];MapValue of ReturnValue;value"
 			Table out = null;
-			Table in = (Table)newWithMapValueDefault(source());
+			Table in = (Table)newTable(null, null, source());
 			out = Tables.transpose(in);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Tables;false;transpose;(Table);;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[0];SyntheticField[com.google.common.collect.Table.rowKey] of ReturnValue;value"
 			Table out = null;
-			Table in = (Table)newWithTable_columnKeyDefault(source());
+			Table in = (Table)newTable(null, source(), null);
 			out = Tables.transpose(in);
 			sink(getTable_rowKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Tables;false;transpose;(Table);;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[0];SyntheticField[com.google.common.collect.Table.columnKey] of ReturnValue;value"
 			Table out = null;
-			Table in = (Table)newWithTable_rowKeyDefault(source());
+			Table in = (Table)newTable(source(), null, null);
 			out = Tables.transpose(in);
 			sink(getTable_columnKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Tables;false;unmodifiableRowSortedTable;(RowSortedTable);;MapValue of Argument[0];MapValue of ReturnValue;value"
 			RowSortedTable out = null;
-			RowSortedTable in = (RowSortedTable)newWithMapValueDefault(source());
+			RowSortedTable in = (RowSortedTable)newTable(null, null, source());
 			out = Tables.unmodifiableRowSortedTable(in);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Tables;false;unmodifiableRowSortedTable;(RowSortedTable);;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[0];SyntheticField[com.google.common.collect.Table.columnKey] of ReturnValue;value"
 			RowSortedTable out = null;
-			RowSortedTable in = (RowSortedTable)newWithTable_columnKeyDefault(source());
+			RowSortedTable in = (RowSortedTable)newTable(null, source(), null);
 			out = Tables.unmodifiableRowSortedTable(in);
 			sink(getTable_columnKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Tables;false;unmodifiableRowSortedTable;(RowSortedTable);;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[0];SyntheticField[com.google.common.collect.Table.rowKey] of ReturnValue;value"
 			RowSortedTable out = null;
-			RowSortedTable in = (RowSortedTable)newWithTable_rowKeyDefault(source());
+			RowSortedTable in = (RowSortedTable)newTable(source(), null, null);
 			out = Tables.unmodifiableRowSortedTable(in);
 			sink(getTable_rowKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Tables;false;unmodifiableTable;(Table);;MapValue of Argument[0];MapValue of ReturnValue;value"
 			Table out = null;
-			Table in = (Table)newWithMapValueDefault(source());
+			Table in = (Table)newTable(null, null, source());
 			out = Tables.unmodifiableTable(in);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Tables;false;unmodifiableTable;(Table);;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[0];SyntheticField[com.google.common.collect.Table.columnKey] of ReturnValue;value"
 			Table out = null;
-			Table in = (Table)newWithTable_columnKeyDefault(source());
+			Table in = (Table)newTable(null, source(), null);
 			out = Tables.unmodifiableTable(in);
 			sink(getTable_columnKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Tables;false;unmodifiableTable;(Table);;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[0];SyntheticField[com.google.common.collect.Table.rowKey] of ReturnValue;value"
 			Table out = null;
-			Table in = (Table)newWithTable_rowKeyDefault(source());
+			Table in = (Table)newTable(source(), null, null);
 			out = Tables.unmodifiableTable(in);
 			sink(getTable_rowKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;TreeBasedTable;true;create;(TreeBasedTable);;MapValue of Argument[0];MapValue of ReturnValue;value"
 			TreeBasedTable out = null;
-			TreeBasedTable in = (TreeBasedTable)newWithMapValueDefault(source());
+			TreeBasedTable in = (TreeBasedTable)newTable(null, null, source());
 			out = TreeBasedTable.create(in);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;TreeBasedTable;true;create;(TreeBasedTable);;SyntheticField[com.google.common.collect.Table.columnKey] of Argument[0];SyntheticField[com.google.common.collect.Table.columnKey] of ReturnValue;value"
 			TreeBasedTable out = null;
-			TreeBasedTable in = (TreeBasedTable)newWithTable_columnKeyDefault(source());
+			TreeBasedTable in = (TreeBasedTable)newTable(null, source(), null);
 			out = TreeBasedTable.create(in);
 			sink(getTable_columnKey(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.common.collect;TreeBasedTable;true;create;(TreeBasedTable);;SyntheticField[com.google.common.collect.Table.rowKey] of Argument[0];SyntheticField[com.google.common.collect.Table.rowKey] of ReturnValue;value"
 			TreeBasedTable out = null;
-			TreeBasedTable in = (TreeBasedTable)newWithTable_rowKeyDefault(source());
+			TreeBasedTable in = (TreeBasedTable)newTable(source(), null, null);
 			out = TreeBasedTable.create(in);
 			sink(getTable_rowKey(out)); // $ hasValueFlow
 		}
