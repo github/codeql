@@ -18,6 +18,8 @@ module SummaryComponent {
 
   predicate argument = SC::argument/1;
 
+  predicate content = SC::content/1;
+
   /** Gets a summary component that represents a qualifier. */
   SummaryComponent qualifier() { result = argument(-1) }
 

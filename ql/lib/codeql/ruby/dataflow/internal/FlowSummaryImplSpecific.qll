@@ -63,37 +63,51 @@ predicate sourceElement(AstNode n, string output, string kind) { none() }
  */
 predicate sinkElement(AstNode n, string input, string kind) { none() }
 
-/** Gets the summary component for specification component `c`, if any. */
+/**
+ * Gets the summary component for specification component `c`, if any.
+ *
+ * This covers all the Ruby-specific components of a flow summary, and
+ * is currently restricted to `"BlockArgument"`.
+ */
 SummaryComponent interpretComponentSpecific(string c) {
   c = "BlockArgument" and
   result = FlowSummary::SummaryComponent::block()
 }
 
-class SourceOrSinkElement = AstNode;
-
 /** Gets the return kind corresponding to specification `"ReturnValue"`. */
 NormalReturnKind getReturnValueKind() { any() }
 
-/** An entity used to interpret a source/sink specification. */
-class InterpretNode extends AstNode {
-  /** Gets the element that this node corresponds to, if any. */
-  SourceOrSinkElement asElement() { none() }
+/**
+ * All definitions in this module are required by the shared implementation
+ * (for source/sink interpretation), but they are unused for Ruby, where
+ * we rely on API graphs instead.
+ */
+private module UnusedSourceSinkInterpretation {
+  class SourceOrSinkElement = AstNode;
 
-  /** Gets the data-flow node that this node corresponds to, if any. */
-  Node asNode() { none() }
+  /** An entity used to interpret a source/sink specification. */
+  class InterpretNode extends AstNode {
+    /** Gets the element that this node corresponds to, if any. */
+    SourceOrSinkElement asElement() { none() }
 
-  /** Gets the call that this node corresponds to, if any. */
-  DataFlowCall asCall() { none() }
+    /** Gets the data-flow node that this node corresponds to, if any. */
+    Node asNode() { none() }
 
-  /** Gets the callable that this node corresponds to, if any. */
-  DataFlowCallable asCallable() { none() }
+    /** Gets the call that this node corresponds to, if any. */
+    DataFlowCall asCall() { none() }
 
-  /** Gets the target of this call, if any. */
-  Callable getCallTarget() { none() }
+    /** Gets the callable that this node corresponds to, if any. */
+    DataFlowCallable asCallable() { none() }
+
+    /** Gets the target of this call, if any. */
+    Callable getCallTarget() { none() }
+  }
+
+  /** Provides additional sink specification logic. */
+  predicate interpretOutputSpecific(string c, InterpretNode mid, InterpretNode node) { none() }
+
+  /** Provides additional source specification logic. */
+  predicate interpretInputSpecific(string c, InterpretNode mid, InterpretNode node) { none() }
 }
 
-/** Provides additional sink specification logic required for attributes. */
-predicate interpretOutputSpecific(string c, InterpretNode mid, InterpretNode node) { none() }
-
-/** Provides additional sink specification logic required for attributes. */
-predicate interpretInputSpecific(string c, InterpretNode mid, InterpretNode n) { none() }
+import UnusedSourceSinkInterpretation
