@@ -21,6 +21,10 @@ TODO
     val propChar: Char = 'c'
     val propString: String = "str"
 
+    val propNullableString: String? = "str"
+
+    val propNullableNothing: Nothing? = null
+
 /*
 TODO
     val propArray: Array<Int> = arrayOf(1, 2, 3)
