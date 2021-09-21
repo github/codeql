@@ -404,6 +404,49 @@ module HTTP {
       }
     }
   }
+
+  /** Provides classes for modeling HTTP clients. */
+  module Client {
+    /**
+     * A method call that makes an outgoing HTTP request.
+     *
+     * Extend this class to refine existing API models. If you want to model new APIs,
+     * extend `Request::Range` instead.
+     */
+    class Request extends MethodCall instanceof Request::Range {
+      /** Gets a node which returns the body of the response */
+      DataFlow::Node getResponseBody() { result = super.getResponseBody() }
+
+      /** Gets a string that identifies the framework used for this request. */
+      string getFramework() { result = super.getFramework() }
+    }
+
+    /** Provides a class for modeling new HTTP requests. */
+    module Request {
+      /**
+       * A method call that makes an outgoing HTTP request.
+       *
+       * Extend this class to model new APIs. If you want to refine existing API models,
+       * extend `Request` instead.
+       */
+      abstract class Range extends MethodCall {
+        /** Gets a node which returns the body of the response */
+        abstract DataFlow::Node getResponseBody();
+
+        /** Gets a string that identifies the framework used for this request. */
+        abstract string getFramework();
+      }
+    }
+
+    /** The response body from an outgoing HTTP request, considered as a remote flow source */
+    private class RequestResponseBody extends RemoteFlowSource::Range, DataFlow::Node {
+      Request request;
+
+      RequestResponseBody() { this = request.getResponseBody() }
+
+      override string getSourceType() { result = request.getFramework() }
+    }
+  }
 }
 
 /**
