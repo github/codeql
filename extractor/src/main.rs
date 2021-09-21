@@ -124,6 +124,10 @@ fn main() -> std::io::Result<()> {
 
     let language = tree_sitter_ruby::language();
     let erb = tree_sitter_embedded_template::language();
+    // Look up tree-sitter kind ids now, to avoid string comparisons when scanning ERB files.
+    let erb_directive_id = erb.id_for_node_kind("directive", true);
+    let erb_output_directive_id = erb.id_for_node_kind("output_directive", true);
+    let erb_code_id = erb.id_for_node_kind("code", true);
     let schema = node_types::read_node_types_str("ruby", tree_sitter_ruby::NODE_TYPES)?;
     let erb_schema =
         node_types::read_node_types_str("erb", tree_sitter_embedded_template::NODE_TYPES)?;
@@ -149,7 +153,13 @@ fn main() -> std::io::Result<()> {
                     &[],
                 )?;
 
-                let (ranges, line_breaks) = scan_erb(erb, &source);
+                let (ranges, line_breaks) = scan_erb(
+                    erb,
+                    &source,
+                    erb_directive_id,
+                    erb_output_directive_id,
+                    erb_code_id,
+                );
                 for i in line_breaks {
                     if i < source.len() {
                         source[i] = b'\n';
@@ -199,7 +209,13 @@ fn write_trap(
     }
 }
 
-fn scan_erb(erb: Language, source: &std::vec::Vec<u8>) -> (Vec<Range>, Vec<usize>) {
+fn scan_erb(
+    erb: Language,
+    source: &Vec<u8>,
+    directive_id: u16,
+    output_directive_id: u16,
+    code_id: u16,
+) -> (Vec<Range>, Vec<usize>) {
     let mut parser = Parser::new();
     parser.set_language(erb).unwrap();
     let tree = parser.parse(&source, None).expect("Failed to parse file");
@@ -207,10 +223,10 @@ fn scan_erb(erb: Language, source: &std::vec::Vec<u8>) -> (Vec<Range>, Vec<usize
     let mut line_breaks = vec![];
 
     for n in tree.root_node().children(&mut tree.walk()) {
-        let kind = n.kind();
-        if kind == "directive" || kind == "output_directive" {
+        let kind_id = n.kind_id();
+        if kind_id == directive_id || kind_id == output_directive_id {
             for c in n.children(&mut tree.walk()) {
-                if c.kind() == "code" {
+                if c.kind_id() == code_id {
                     let mut range = c.range();
                     if range.end_byte < source.len() {
                         line_breaks.push(range.end_byte);
