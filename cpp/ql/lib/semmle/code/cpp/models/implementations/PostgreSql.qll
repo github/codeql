@@ -87,7 +87,8 @@ private class PostgreSqlEscapeFunction extends SqlEscapeFunction {
   override predicate escapesSqlArgument(FunctionInput input, FunctionOutput output) {
     exists(int argIndex |
       input.isParameterDeref(argIndex) and
-      output.isReturnValueDeref()
+      output.isReturnValueDeref() and
+      pqxxEscapeArgument(this.getName(), argIndex)
     )
   }
 }
