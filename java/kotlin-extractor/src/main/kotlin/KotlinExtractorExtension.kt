@@ -308,7 +308,8 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
     }
 
     fun useClass(c: IrClass): Label<out DbClassorinterface> {
-        if(c.name.asString() == "Any" || c.name.asString() == "Unit") {
+        // todo: fix this
+        if (c.origin == IrDeclarationOrigin.IR_EXTERNAL_DECLARATION_STUB) {
             if(tw.getExistingLabelFor<DbClass>(getClassLabel(c)) == null) {
                 return extractClass(c)
             }
