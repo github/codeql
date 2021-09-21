@@ -2,8 +2,6 @@ private import codeql.ruby.AST
 private import codeql.ruby.Concepts
 private import codeql.ruby.DataFlow
 private import codeql.ruby.ApiGraphs
-private import codeql.ruby.dataflow.internal.DataFlowDispatch
-private import codeql.ruby.dataflow.internal.DataFlowImplCommon
 
 /**
  * The `Kernel` module is included by the `Object` class, so its methods are available
@@ -17,9 +15,7 @@ class KernelMethodCall extends MethodCall {
     // we assume that if there's no obvious target for this method call
     // and the method name matches a Kernel method, then it is a Kernel method call.
     // TODO: ApiGraphs should ideally handle this case
-    not exists(DataFlowCallable method, DataFlowCall call |
-      viableCallable(call) = method and call.getExpr() = this
-    ) and
+    not exists(this.(Call).getATarget()) and
     (
       this.getReceiver() instanceof Self and isPrivateKernelMethod(this.getMethodName())
       or
