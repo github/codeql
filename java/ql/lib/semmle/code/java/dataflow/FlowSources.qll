@@ -247,3 +247,17 @@ class ExportedAndroidIntentInput extends RemoteFlowSource, AndroidIntentInput {
 
   override string getSourceType() { result = "Exported Android intent source" }
 }
+
+/** A parameter of an entry-point method declared in a `ContentProvider` class. */
+class AndroidContentProviderInput extends DataFlow::Node {
+  AndroidContentProvider declaringType;
+
+  AndroidContentProviderInput() { sourceNode(this, "contentprovider") }
+}
+
+/** A parameter of an entry-point method declared in an exported `ContentProvider` class. */
+class ExportedAndroidContentProviderInput extends RemoteFlowSource, AndroidContentProviderInput {
+  ExportedAndroidContentProviderInput() { declaringType.isExported() }
+
+  override string getSourceType() { result = "Exported Android content provider source" }
+}
