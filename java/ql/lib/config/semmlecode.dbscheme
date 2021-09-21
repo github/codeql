@@ -1048,3 +1048,14 @@ ktCommentOwner(
   int id: @ktcomment ref,
   int owner: @top ref
 )
+
+@breakcontinuestmt = @breakstmt
+                   | @continuestmt;
+
+@ktloopstmt = @whilestmt
+            | @dostmt;
+
+ktBreakContinueTarget(
+  unique int id: @breakcontinuestmt ref,
+  int target: @ktloopstmt ref
+)

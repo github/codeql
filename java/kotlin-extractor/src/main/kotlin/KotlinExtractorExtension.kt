@@ -634,6 +634,8 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
         }
     }
 
+    private val loopIdMap: MutableMap<IrLoop, Label<out DbKtloopstmt>> = mutableMapOf()
+
     fun extractExpression(e: IrExpression, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int) {
         when(e) {
             is IrCall -> extractCall(e, callable, parent, idx)
@@ -725,15 +727,13 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
             }
             is IrBreak -> {
                 val id = tw.getFreshIdLabel<DbBreakstmt>()
-                val locId = tw.getLocation(e)
                 tw.writeStmts_breakstmt(id, parent, idx, callable)
-                tw.writeHasLocation(id, locId)
+                extractBreakContinue(e, id)
             }
             is IrContinue -> {
                 val id = tw.getFreshIdLabel<DbContinuestmt>()
-                val locId = tw.getLocation(e)
                 tw.writeStmts_continuestmt(id, parent, idx, callable)
-                tw.writeHasLocation(id, locId)
+                extractBreakContinue(e, id)
             }
             is IrReturn -> {
                 val id = tw.getFreshIdLabel<DbReturnstmt>()
@@ -753,6 +753,7 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
             }
             is IrWhileLoop -> {
                 val id = tw.getFreshIdLabel<DbWhilestmt>()
+                loopIdMap[e] = id
                 val locId = tw.getLocation(e)
                 tw.writeStmts_whilestmt(id, parent, idx, callable)
                 tw.writeHasLocation(id, locId)
@@ -761,9 +762,11 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
                 if(body != null) {
                     extractExpression(body, callable, id, 1)
                 }
+                loopIdMap.remove(e)
             }
             is IrDoWhileLoop -> {
                 val id = tw.getFreshIdLabel<DbDostmt>()
+                loopIdMap[e] = id
                 val locId = tw.getLocation(e)
                 tw.writeStmts_dostmt(id, parent, idx, callable)
                 tw.writeHasLocation(id, locId)
@@ -772,6 +775,7 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
                 if(body != null) {
                     extractExpression(body, callable, id, 1)
                 }
+                loopIdMap.remove(e)
             }
             is IrWhen -> {
                 val id = tw.getFreshIdLabel<DbWhenexpr>()
@@ -806,6 +810,28 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
                 logger.warnElement(Severity.ErrorSevere, "Unrecognised IrExpression: " + e.javaClass, e)
             }
         }
+    }
+
+    private fun extractBreakContinue(
+        e: IrBreakContinue,
+        id: Label<out DbBreakcontinuestmt>
+    ) {
+        val locId = tw.getLocation(e)
+        @Suppress("UNCHECKED_CAST")
+        tw.writeHasLocation(id as Label<out DbLocatable>, locId)
+        val label = e.label
+        if (label != null) {
+            @Suppress("UNCHECKED_CAST")
+            tw.writeNamestrings(label, "", id as Label<out DbNamedexprorstmt>)
+        }
+
+        val loopId = loopIdMap[e.loop]
+        if (loopId == null) {
+            logger.warnElement(Severity.ErrorSevere, "Missing break/continue target", e)
+            return
+        }
+
+        tw.writeKtBreakContinueTarget(id, loopId)
     }
 }
 
