@@ -26,8 +26,6 @@ class Configuration extends TaintTracking::Configuration {
   }
 
   override predicate isAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink) {
-    // jQuery plugins tend to be implemented as classes that store data in fields initialized by the constructor.
-    DataFlow::localFieldStep(src, sink) or
     aliasPropertyPresenceStep(src, sink)
   }
 
