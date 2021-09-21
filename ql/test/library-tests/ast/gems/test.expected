@@ -15,9 +15,11 @@
 | test.gemspec:5:3:5:15 | call to description= |
 | test.gemspec:6:3:6:11 | call to authors |
 | test.gemspec:6:3:6:11 | call to authors= |
+| test.gemspec:6:19:6:31 | call to [] |
 | test.gemspec:7:3:7:9 | call to email |
 | test.gemspec:7:3:7:9 | call to email= |
 | test.gemspec:8:3:8:9 | call to files |
 | test.gemspec:8:3:8:9 | call to files= |
+| test.gemspec:8:19:8:33 | call to [] |
 | test.gemspec:9:3:9:12 | call to homepage |
 | test.gemspec:9:3:9:12 | call to homepage= |

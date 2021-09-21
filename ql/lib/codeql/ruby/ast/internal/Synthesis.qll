@@ -35,7 +35,8 @@ newtype SynthKind =
   SplatExprKind() or
   StmtSequenceKind() or
   SelfKind() or
-  SubExprKind()
+  SubExprKind() or
+  ConstantReadAccessKind(string value) { any(Synthesis s).constantReadAccess(value) }
 
 /**
  * An AST child.
@@ -76,6 +77,11 @@ class Synthesis extends TSynthesis {
    * Holds if a method call to `name` with arity `arity` is needed.
    */
   predicate methodCall(string name, boolean setter, int arity) { none() }
+
+  /**
+   * Holds if a constant read access of `name` is needed.
+   */
+  predicate constantReadAccess(string name) { none() }
 
   /**
    * Holds if `n` should be excluded from `ControlFlowTree` in the CFG construction.
@@ -373,7 +379,7 @@ private module AssignOperationDesugar {
    * x += y
    * ```
    *
-   * desguars to
+   * desugars to
    *
    * ```rb
    * x = x + y
@@ -503,7 +509,7 @@ private module AssignOperationDesugar {
    * foo[bar] += y
    * ```
    *
-   * desguars to
+   * desugars to
    *
    * ```rb
    * __synth__0 = foo;
@@ -702,7 +708,7 @@ private module CompoundAssignDesugar {
    * ```rb
    * x, *y, z = w
    * ```
-   * desguars to
+   * desugars to
    *
    * ```rb
    * __synth__0 = *w;
@@ -743,5 +749,49 @@ private module CompoundAssignDesugar {
     final override predicate excludeFromControlFlowTree(AstNode n) {
       n = any(TupleAssignExpr tae).getTuplePattern()
     }
+  }
+}
+
+private module ArrayLiteralDesugar {
+  pragma[nomagic]
+  private predicate arrayLiteralSynthesis(AstNode parent, int i, Child child) {
+    exists(ArrayLiteral al |
+      parent = al and
+      i = -1 and
+      child = SynthChild(MethodCallKind("[]", false, al.getNumberOfElements() + 1))
+      or
+      exists(AstNode mc | mc = TMethodCallSynth(al, -1, _, _, _) |
+        parent = mc and
+        i = 0 and
+        child = SynthChild(ConstantReadAccessKind("::Array"))
+        or
+        parent = mc and
+        child = RealChild(al.getElement(i - 1))
+      )
+    )
+  }
+
+  /**
+   * ```rb
+   * [1, 2, 3]
+   * ```
+   * desugars to
+   *
+   * ```rb
+   * ::Array.[](1, 2, 3)
+   * ```
+   */
+  private class CompoundAssignSynthesis extends Synthesis {
+    final override predicate child(AstNode parent, int i, Child child) {
+      arrayLiteralSynthesis(parent, i, child)
+    }
+
+    final override predicate methodCall(string name, boolean setter, int arity) {
+      name = "[]" and
+      setter = false and
+      arity = any(ArrayLiteral al).getNumberOfElements() + 1
+    }
+
+    final override predicate constantReadAccess(string name) { name = "::Array" }
   }
 }

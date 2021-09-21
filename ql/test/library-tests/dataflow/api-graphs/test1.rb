@@ -12,7 +12,7 @@ end
 Unknown.new.run #$ use=getMember("Unknown").instance.getReturn("run")
 Foo::Bar::Baz #$ use=getMember("Foo").getMember("Bar").getMember("Baz")
 
-Const = [1, 2, 3]
+Const = [1, 2, 3] #$ use=getMember("Array").getReturn("[]")
 Const.each do |c| #$ use=getMember("Const").getReturn("each")
     puts c
 end

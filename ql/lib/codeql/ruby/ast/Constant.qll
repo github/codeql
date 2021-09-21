@@ -70,6 +70,20 @@ private class ScopeResolutionConstantAccess extends ConstantAccess, TScopeResolu
   final override predicate hasGlobalScope() { not exists(g.getScope()) }
 }
 
+private class ConstantReadAccessSynth extends ConstantAccess, TConstantReadAccessSynth {
+  private string value;
+
+  ConstantReadAccessSynth() { this = TConstantReadAccessSynth(_, _, value) }
+
+  final override string getName() {
+    if this.hasGlobalScope() then result = value.suffix(2) else result = value
+  }
+
+  final override Expr getScopeExpr() { synthChild(this, 0, result) }
+
+  final override predicate hasGlobalScope() { value.matches("::%") }
+}
+
 /**
  * A use (read) of a constant.
  *
@@ -92,6 +106,8 @@ class ConstantReadAccess extends ConstantAccess {
     or
     // `X` in `X ||= 10` is considered both a read and a write
     this = any(AssignOperation a).getLeftOperand()
+    or
+    this instanceof TConstantReadAccessSynth
   }
 
   /**

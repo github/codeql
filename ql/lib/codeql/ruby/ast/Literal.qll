@@ -678,13 +678,13 @@ class ArrayLiteral extends Literal, TArrayLiteral {
   final override string getAPrimaryQlClass() { result = "ArrayLiteral" }
 
   /** Gets the `n`th element in this array literal. */
-  Expr getElement(int n) { none() }
+  final Expr getElement(int n) { result = this.(ArrayLiteralImpl).getElementImpl(n) }
 
   /** Gets an element in this array literal. */
   final Expr getAnElement() { result = this.getElement(_) }
 
   /** Gets the number of elements in this array literal. */
-  final int getNumberOfElements() { result = count(this.getAnElement()) }
+  final int getNumberOfElements() { result = this.(ArrayLiteralImpl).getNumberOfElementsImpl() }
 
   final override AstNode getAChild(string pred) {
     result = super.getAChild(pred)
@@ -693,32 +693,44 @@ class ArrayLiteral extends Literal, TArrayLiteral {
   }
 }
 
-private class RegularArrayLiteral extends ArrayLiteral, TRegularArrayLiteral {
+abstract private class ArrayLiteralImpl extends ArrayLiteral {
+  abstract Expr getElementImpl(int n);
+
+  abstract int getNumberOfElementsImpl();
+}
+
+private class RegularArrayLiteral extends ArrayLiteralImpl, TRegularArrayLiteral {
   private Ruby::Array g;
 
   RegularArrayLiteral() { this = TRegularArrayLiteral(g) }
 
-  final override Expr getElement(int i) { toGenerated(result) = g.getChild(i) }
+  final override Expr getElementImpl(int i) { toGenerated(result) = g.getChild(i) }
+
+  final override int getNumberOfElementsImpl() { result = count(g.getChild(_)) }
 
   final override string toString() { result = "[...]" }
 }
 
-private class StringArrayLiteral extends ArrayLiteral, TStringArrayLiteral {
+private class StringArrayLiteral extends ArrayLiteralImpl, TStringArrayLiteral {
   private Ruby::StringArray g;
 
   StringArrayLiteral() { this = TStringArrayLiteral(g) }
 
-  final override Expr getElement(int i) { toGenerated(result) = g.getChild(i) }
+  final override Expr getElementImpl(int i) { toGenerated(result) = g.getChild(i) }
+
+  final override int getNumberOfElementsImpl() { result = count(g.getChild(_)) }
 
   final override string toString() { result = "%w(...)" }
 }
 
-private class SymbolArrayLiteral extends ArrayLiteral, TSymbolArrayLiteral {
+private class SymbolArrayLiteral extends ArrayLiteralImpl, TSymbolArrayLiteral {
   private Ruby::SymbolArray g;
 
   SymbolArrayLiteral() { this = TSymbolArrayLiteral(g) }
 
-  final override Expr getElement(int i) { toGenerated(result) = g.getChild(i) }
+  final override Expr getElementImpl(int i) { toGenerated(result) = g.getChild(i) }
+
+  final override int getNumberOfElementsImpl() { result = count(g.getChild(_)) }
 
   final override string toString() { result = "%i(...)" }
 }

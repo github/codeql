@@ -135,7 +135,14 @@ private DataFlow::LocalSourceNode trackInstance(Module tp, TypeTracker t) {
     or
     result.asExpr().getExpr() instanceof StringlikeLiteral and tp = TResolved("String")
     or
-    result.asExpr().getExpr() instanceof ArrayLiteral and tp = TResolved("Array")
+    exists(ConstantReadAccess array, MethodCall mc |
+      result.asExpr().getExpr() = mc and
+      mc.getMethodName() = "[]" and
+      mc.getReceiver() = array and
+      array.getName() = "Array" and
+      array.hasGlobalScope() and
+      tp = TResolved("Array")
+    )
     or
     result.asExpr().getExpr() instanceof HashLiteral and tp = TResolved("Hash")
     or
