@@ -17,7 +17,7 @@
 
 import cpp
 import PrintfLike
-private import TaintTracking
+private import semmle.code.cpp.ir.dataflow.internal.ResolveCall
 
 bindingset[index]
 private string toCause(Function func, int index) {

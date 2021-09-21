@@ -4,7 +4,7 @@ private import semmle.code.cpp.ir.dataflow.DataFlow
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowUtil
 private import semmle.code.cpp.ir.dataflow.DataFlow3
 private import semmle.code.cpp.ir.IR
-private import semmle.code.cpp.ir.dataflow.internal.DataFlowDispatch as Dispatch
+private import semmle.code.cpp.ir.dataflow.internal.ResolveCall
 private import semmle.code.cpp.controlflow.IRGuards
 private import semmle.code.cpp.models.interfaces.Taint
 private import semmle.code.cpp.models.interfaces.DataFlow
@@ -354,20 +354,6 @@ predicate taintedIncludingGlobalVars(Expr source, Element tainted, string global
  * ```
  */
 GlobalOrNamespaceVariable globalVarFromId(string id) { id = result.getQualifiedName() }
-
-/**
- * Resolve potential target function(s) for `call`.
- *
- * If `call` is a call through a function pointer (`ExprCall`) or
- * targets a virtual method, simple data flow analysis is performed
- * in order to identify target(s).
- */
-Function resolveCall(Call call) {
-  exists(CallInstruction callInstruction |
-    callInstruction.getAST() = call and
-    result = Dispatch::viableCallable(callInstruction)
-  )
-}
 
 /**
  * Provides definitions for augmenting source/sink pairs with data-flow paths
