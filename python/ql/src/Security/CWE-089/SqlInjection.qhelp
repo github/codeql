@@ -12,7 +12,7 @@ may be able to run malicious database queries.
 
 <p>
 This also includes using the <code>TextClause</code> class in the
-<a href="https://pypi.org/project/SQLAlchemy/"><code>SQLAlchemy</code></a> PyPI package,
+<code><a href="https://pypi.org/project/SQLAlchemy/">SQLAlchemy</a></code> PyPI package,
 which is used to represent a literal SQL fragment and is inserted directly into the
 final SQL when used in a query built using the ORM.
 </p>
