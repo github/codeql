@@ -43,3 +43,16 @@
 | stmts.kt:19:12:19:12 | x | VarAccess |
 | stmts.kt:19:12:19:16 | ... + ... | AddExpr |
 | stmts.kt:19:16:19:16 | y | VarAccess |
+| stmts.kt:23:18:23:18 | x | VarAccess |
+| stmts.kt:23:18:23:24 | ... < ... | LTExpr |
+| stmts.kt:23:22:23:24 | 100 | IntegerLiteral |
+| stmts.kt:25:13:25:33 | when ... | WhenExpr |
+| stmts.kt:25:17:25:17 | x | VarAccess |
+| stmts.kt:25:17:25:21 | ... > ... | GTExpr |
+| stmts.kt:25:21:25:21 | y | VarAccess |
+| stmts.kt:26:18:26:18 | y | VarAccess |
+| stmts.kt:26:18:26:24 | ... > ... | GTExpr |
+| stmts.kt:26:22:26:24 | 100 | IntegerLiteral |
+| stmts.kt:28:11:28:11 | x | VarAccess |
+| stmts.kt:28:11:28:15 | ... > ... | GTExpr |
+| stmts.kt:28:15:28:15 | y | VarAccess |

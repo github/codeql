@@ -19,3 +19,12 @@ fun topLevelMethod(x: Int, y: Int): Int {
     return x + y
 }
 
+fun loops(x: Int, y: Int) {
+    loop@ while (x < 100) {
+        do  {
+            if (x > y) break@loop
+        } while (y > 100)
+    }
+    while(x > y)
+        continue
+}

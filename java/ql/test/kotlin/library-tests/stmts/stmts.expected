@@ -14,3 +14,12 @@
 | stmts.kt:17:35:17:43 | { ... } | BlockStmt |
 | stmts.kt:17:50:17:58 | { ... } | BlockStmt |
 | stmts.kt:19:5:19:16 | return ... | ReturnStmt |
+| stmts.kt:22:27:30:1 | { ... } | BlockStmt |
+| stmts.kt:23:11:27:5 | while (...) | WhileStmt |
+| stmts.kt:23:27:27:5 | { ... } | BlockStmt |
+| stmts.kt:24:9:26:25 | do ... while (...) | DoStmt |
+| stmts.kt:24:9:26:25 | { ... } | BlockStmt |
+| stmts.kt:24:13:26:9 | { ... } | BlockStmt |
+| stmts.kt:25:24:25:33 | break | BreakStmt |
+| stmts.kt:28:5:29:16 | while (...) | WhileStmt |
+| stmts.kt:29:9:29:16 | continue | ContinueStmt |
