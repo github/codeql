@@ -96,7 +96,7 @@ abstract class SummarizedCallable extends LibraryCallable {
    * but uses an external (string) representation of the input and output stacks.
    */
   pragma[nomagic]
-  predicate propagatesFlowExt(string input, string output, string kind) { none() }
+  predicate propagatesFlowExt(string input, string output, boolean preservesValue) { none() }
 
   /**
    * Holds if values stored inside `content` are cleared on objects passed as

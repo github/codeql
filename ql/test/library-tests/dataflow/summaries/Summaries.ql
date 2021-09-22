@@ -18,10 +18,10 @@ private class SummarizedCallableIdentity extends SummarizedCallable {
 
   override MethodCall getACall() { result.getMethodName() = this }
 
-  override predicate propagatesFlowExt(string input, string output, string kind) {
+  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
     input = "Argument[0]" and
     output = "ReturnValue" and
-    kind = "value"
+    preservesValue = true
   }
 }
 
@@ -30,14 +30,14 @@ private class SummarizedCallableApplyBlock extends SummarizedCallable {
 
   override MethodCall getACall() { result.getMethodName() = this }
 
-  override predicate propagatesFlowExt(string input, string output, string kind) {
+  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
     input = "Argument[0]" and
     output = "Parameter[0] of BlockArgument" and
-    kind = "value"
+    preservesValue = true
     or
     input = "ReturnValue of BlockArgument" and
     output = "ReturnValue" and
-    kind = "value"
+    preservesValue = true
   }
 }
 
@@ -46,14 +46,14 @@ private class SummarizedCallableApplyLambda extends SummarizedCallable {
 
   override MethodCall getACall() { result.getMethodName() = this }
 
-  override predicate propagatesFlowExt(string input, string output, string kind) {
+  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
     input = "Argument[1]" and
     output = "Parameter[0] of Argument[0]" and
-    kind = "value"
+    preservesValue = true
     or
     input = "ReturnValue of Argument[0]" and
     output = "ReturnValue" and
-    kind = "value"
+    preservesValue = true
   }
 }
 

@@ -45,9 +45,10 @@ DataFlowType getCallbackReturnType(DataFlowType t, ReturnKind rk) { any() }
  * `input`, output specification `output`, and kind `kind`.
  */
 predicate summaryElement(DataFlowCallable c, string input, string output, string kind) {
-  exists(FlowSummary::SummarizedCallable sc |
-    sc.propagatesFlowExt(input, output, kind) and
-    c.asLibraryCallable() = sc
+  exists(FlowSummary::SummarizedCallable sc, boolean preservesValue |
+    sc.propagatesFlowExt(input, output, preservesValue) and
+    c.asLibraryCallable() = sc and
+    if preservesValue = true then kind = "value" else kind = "taint"
   )
 }
 
