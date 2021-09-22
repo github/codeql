@@ -3,3 +3,4 @@
  */
 
 private import codeql.ruby.frameworks.http_clients.NetHTTP
+private import codeql.ruby.frameworks.http_clients.Excon
