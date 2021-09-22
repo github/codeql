@@ -202,8 +202,8 @@ assert query.all() == []
 # - This would require a LOT of modeling for these additional taint steps, since there
 #   are many many constructs we would need to have models for. (see the 2 examples below)
 #
-# So instead we flag user-input to a TextClause with its' own query. And so we don't
-# highlight any parts of an ORM constructed query such as these as containing SQL.
+# So instead we extended the SQL injection query to include TextClause construction as a
+# sink directly.
 
 # `filter` provides more general filtering
 # see https://docs.sqlalchemy.org/en/14/orm/tutorial.html#common-filter-operators
