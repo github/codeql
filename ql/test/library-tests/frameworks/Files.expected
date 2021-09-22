@@ -34,6 +34,8 @@ ioInstances
 | Files.rb:23:19:23:33 | call to open |
 | Files.rb:24:1:24:40 | ... = ... |
 | Files.rb:24:19:24:40 | call to open |
+| Files.rb:35:1:35:56 | ... = ... |
+| Files.rb:35:13:35:56 | call to open |
 fileReaders
 | Files.rb:7:13:7:32 | call to readlines |
 ioReaders

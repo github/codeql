@@ -30,3 +30,6 @@ foo_text = IO.read("foo.txt")
 
 # `IO.read("|date")` does not read from a file
 date = IO.read("|date")
+
+# `rand_open` is an `IO` instance
+rand_open = IO.open(IO.sysopen("/dev/random", "r"), "r")
