@@ -8,29 +8,27 @@ private import internal.Operation
  *
  * This is the QL root class for all operations.
  */
-class Operation extends Expr, TOperation {
+class Operation extends Expr instanceof OperationImpl {
   /** Gets the operator of this operation. */
-  string getOperator() { none() }
+  final string getOperator() { result = super.getOperatorImpl() }
 
   /** Gets an operand of this operation. */
-  Expr getAnOperand() { none() }
+  final Expr getAnOperand() { result = super.getAnOperandImpl() }
 
   override AstNode getAChild(string pred) {
-    result = super.getAChild(pred)
+    result = Expr.super.getAChild(pred)
     or
     pred = "getAnOperand" and result = this.getAnOperand()
   }
 }
 
 /** A unary operation. */
-class UnaryOperation extends Operation, TUnaryOperation {
+class UnaryOperation extends Operation, MethodCall instanceof UnaryOperationImpl {
   /** Gets the operand of this unary operation. */
-  Expr getOperand() { none() }
-
-  final override Expr getAnOperand() { result = this.getOperand() }
+  final Expr getOperand() { result = super.getOperandImpl() }
 
   final override AstNode getAChild(string pred) {
-    result = super.getAChild(pred)
+    result = Operation.super.getAChild(pred)
     or
     pred = "getOperand" and result = this.getOperand()
   }
@@ -38,18 +36,8 @@ class UnaryOperation extends Operation, TUnaryOperation {
   final override string toString() { result = this.getOperator() + " ..." }
 }
 
-private class UnaryOperationGenerated extends UnaryOperation, TUnaryOperation {
-  private Ruby::Unary g;
-
-  UnaryOperationGenerated() { g = toGenerated(this) }
-
-  final override Expr getOperand() { toGenerated(result) = g.getOperand() }
-
-  final override string getOperator() { result = g.getOperator() }
-}
-
 /** A unary logical operation. */
-class UnaryLogicalOperation extends UnaryOperationGenerated, TUnaryLogicalOperation { }
+class UnaryLogicalOperation extends UnaryOperation, TUnaryLogicalOperation { }
 
 /**
  * A logical NOT operation, using either `!` or `not`.
@@ -63,7 +51,7 @@ class NotExpr extends UnaryLogicalOperation, TNotExpr {
 }
 
 /** A unary arithmetic operation. */
-class UnaryArithmeticOperation extends UnaryOperationGenerated, TUnaryArithmeticOperation { }
+class UnaryArithmeticOperation extends UnaryOperation, TUnaryArithmeticOperation { }
 
 /**
  * A unary plus expression.
@@ -92,10 +80,6 @@ class UnaryMinusExpr extends UnaryArithmeticOperation, TUnaryMinusExpr {
  * ```
  */
 class SplatExpr extends UnaryOperation, TSplatExpr {
-  final override Expr getOperand() { result = this.(SplatExprImpl).getOperandImpl() }
-
-  final override string getOperator() { result = "*" }
-
   final override string getAPrimaryQlClass() { result = "SplatExpr" }
 }
 
@@ -109,10 +93,6 @@ class HashSplatExpr extends UnaryOperation, THashSplatExpr {
   private Ruby::HashSplatArgument g;
 
   HashSplatExpr() { this = THashSplatExpr(g) }
-
-  final override Expr getOperand() { toGenerated(result) = g.getChild() }
-
-  final override string getOperator() { result = "**" }
 
   final override string getAPrimaryQlClass() { result = "HashSplatExpr" }
 }
@@ -141,15 +121,11 @@ class DefinedExpr extends UnaryOperation, TDefinedExpr {
 }
 
 /** A binary operation. */
-class BinaryOperation extends Operation, TBinaryOperation {
-  final override Expr getAnOperand() {
-    result = this.getLeftOperand() or result = this.getRightOperand()
-  }
-
+class BinaryOperation extends Operation, MethodCall instanceof BinaryOperationImpl {
   final override string toString() { result = "... " + this.getOperator() + " ..." }
 
   override AstNode getAChild(string pred) {
-    result = super.getAChild(pred)
+    result = Operation.super.getAChild(pred)
     or
     pred = "getLeftOperand" and result = this.getLeftOperand()
     or
@@ -157,28 +133,10 @@ class BinaryOperation extends Operation, TBinaryOperation {
   }
 
   /** Gets the left operand of this binary operation. */
-  Stmt getLeftOperand() { none() }
+  final Stmt getLeftOperand() { result = super.getLeftOperandImpl() }
 
   /** Gets the right operand of this binary operation. */
-  Stmt getRightOperand() { none() }
-}
-
-private class BinaryOperationReal extends BinaryOperation {
-  private Ruby::Binary g;
-
-  BinaryOperationReal() { g = toGenerated(this) }
-
-  final override string getOperator() { result = g.getOperator() }
-
-  final override Stmt getLeftOperand() { toGenerated(result) = g.getLeft() }
-
-  final override Stmt getRightOperand() { toGenerated(result) = g.getRight() }
-}
-
-abstract private class BinaryOperationSynth extends BinaryOperation {
-  final override Stmt getLeftOperand() { synthChild(this, 0, result) }
-
-  final override Stmt getRightOperand() { synthChild(this, 1, result) }
+  final Stmt getRightOperand() { result = super.getRightOperandImpl() }
 }
 
 /**
@@ -196,10 +154,6 @@ class AddExpr extends BinaryArithmeticOperation, TAddExpr {
   final override string getAPrimaryQlClass() { result = "AddExpr" }
 }
 
-private class AddExprSynth extends AddExpr, BinaryOperationSynth, TAddExprSynth {
-  final override string getOperator() { result = "+" }
-}
-
 /**
  * A subtract expression.
  * ```rb
@@ -208,10 +162,6 @@ private class AddExprSynth extends AddExpr, BinaryOperationSynth, TAddExprSynth 
  */
 class SubExpr extends BinaryArithmeticOperation, TSubExpr {
   final override string getAPrimaryQlClass() { result = "SubExpr" }
-}
-
-private class SubExprSynth extends SubExpr, BinaryOperationSynth, TSubExprSynth {
-  final override string getOperator() { result = "-" }
 }
 
 /**
@@ -224,10 +174,6 @@ class MulExpr extends BinaryArithmeticOperation, TMulExpr {
   final override string getAPrimaryQlClass() { result = "MulExpr" }
 }
 
-private class MulExprSynth extends MulExpr, BinaryOperationSynth, TMulExprSynth {
-  final override string getOperator() { result = "*" }
-}
-
 /**
  * A divide expression.
  * ```rb
@@ -236,10 +182,6 @@ private class MulExprSynth extends MulExpr, BinaryOperationSynth, TMulExprSynth 
  */
 class DivExpr extends BinaryArithmeticOperation, TDivExpr {
   final override string getAPrimaryQlClass() { result = "DivExpr" }
-}
-
-private class DivExprSynth extends DivExpr, BinaryOperationSynth, TDivExprSynth {
-  final override string getOperator() { result = "/" }
 }
 
 /**
@@ -252,10 +194,6 @@ class ModuloExpr extends BinaryArithmeticOperation, TModuloExpr {
   final override string getAPrimaryQlClass() { result = "ModuloExpr" }
 }
 
-private class ModuloExprSynth extends ModuloExpr, BinaryOperationSynth, TModuloExprSynth {
-  final override string getOperator() { result = "%" }
-}
-
 /**
  * An exponent expression.
  * ```rb
@@ -264,10 +202,6 @@ private class ModuloExprSynth extends ModuloExpr, BinaryOperationSynth, TModuloE
  */
 class ExponentExpr extends BinaryArithmeticOperation, TExponentExpr {
   final override string getAPrimaryQlClass() { result = "ExponentExpr" }
-}
-
-private class ExponentExprSynth extends ExponentExpr, BinaryOperationSynth, TExponentExprSynth {
-  final override string getOperator() { result = "**" }
 }
 
 /**
@@ -286,10 +220,6 @@ class LogicalAndExpr extends BinaryLogicalOperation, TLogicalAndExpr {
   final override string getAPrimaryQlClass() { result = "LogicalAndExpr" }
 }
 
-private class LogicalAndExprSynth extends LogicalAndExpr, BinaryOperationSynth, TLogicalAndExprSynth {
-  final override string getOperator() { result = "&&" }
-}
-
 /**
  * A logical OR operation, using either `or` or `||`.
  * ```rb
@@ -299,10 +229,6 @@ private class LogicalAndExprSynth extends LogicalAndExpr, BinaryOperationSynth, 
  */
 class LogicalOrExpr extends BinaryLogicalOperation, TLogicalOrExpr {
   final override string getAPrimaryQlClass() { result = "LogicalOrExpr" }
-}
-
-private class LogicalOrExprSynth extends LogicalOrExpr, BinaryOperationSynth, TLogicalOrExprSynth {
-  final override string getOperator() { result = "||" }
 }
 
 /**
@@ -320,10 +246,6 @@ class LShiftExpr extends BinaryBitwiseOperation, TLShiftExpr {
   final override string getAPrimaryQlClass() { result = "LShiftExpr" }
 }
 
-private class LShiftExprSynth extends LShiftExpr, BinaryOperationSynth, TLShiftExprSynth {
-  final override string getOperator() { result = "<<" }
-}
-
 /**
  * A right-shift operation.
  * ```rb
@@ -332,10 +254,6 @@ private class LShiftExprSynth extends LShiftExpr, BinaryOperationSynth, TLShiftE
  */
 class RShiftExpr extends BinaryBitwiseOperation, TRShiftExpr {
   final override string getAPrimaryQlClass() { result = "RShiftExpr" }
-}
-
-private class RShiftExprSynth extends RShiftExpr, BinaryOperationSynth, TRShiftExprSynth {
-  final override string getOperator() { result = ">>" }
 }
 
 /**
@@ -348,10 +266,6 @@ class BitwiseAndExpr extends BinaryBitwiseOperation, TBitwiseAndExpr {
   final override string getAPrimaryQlClass() { result = "BitwiseAndExpr" }
 }
 
-private class BitwiseAndSynthExpr extends BitwiseAndExpr, BinaryOperationSynth, TBitwiseAndExprSynth {
-  final override string getOperator() { result = "&" }
-}
-
 /**
  * A bitwise OR operation.
  * ```rb
@@ -362,10 +276,6 @@ class BitwiseOrExpr extends BinaryBitwiseOperation, TBitwiseOrExpr {
   final override string getAPrimaryQlClass() { result = "BitwiseOrExpr" }
 }
 
-private class BitwiseOrSynthExpr extends BitwiseOrExpr, BinaryOperationSynth, TBitwiseOrExprSynth {
-  final override string getOperator() { result = "|" }
-}
-
 /**
  * An XOR (exclusive OR) operation.
  * ```rb
@@ -374,10 +284,6 @@ private class BitwiseOrSynthExpr extends BitwiseOrExpr, BinaryOperationSynth, TB
  */
 class BitwiseXorExpr extends BinaryBitwiseOperation, TBitwiseXorExpr {
   final override string getAPrimaryQlClass() { result = "BitwiseXorExpr" }
-}
-
-private class BitwiseXorSynthExpr extends BitwiseXorExpr, BinaryOperationSynth, TBitwiseXorExprSynth {
-  final override string getOperator() { result = "^" }
 }
 
 /**
@@ -531,21 +437,17 @@ class NoRegExpMatchExpr extends BinaryOperation, TNoRegExpMatchExpr {
  *
  * This is a QL base class for all assignments.
  */
-class Assignment extends Operation, TAssignment {
+class Assignment extends Operation instanceof AssignmentImpl {
   /** Gets the left hand side of this assignment. */
-  final Pattern getLeftOperand() { result = this.(AssignmentImpl).getLeftOperandImpl() }
+  final Pattern getLeftOperand() { result = super.getLeftOperandImpl() }
 
   /** Gets the right hand side of this assignment. */
-  final Expr getRightOperand() { result = this.(AssignmentImpl).getRightOperandImpl() }
-
-  final override Expr getAnOperand() {
-    result = this.getLeftOperand() or result = this.getRightOperand()
-  }
+  final Expr getRightOperand() { result = super.getRightOperandImpl() }
 
   final override string toString() { result = "... " + this.getOperator() + " ..." }
 
   override AstNode getAChild(string pred) {
-    result = super.getAChild(pred)
+    result = Operation.super.getAChild(pred)
     or
     pred = "getLeftOperand" and result = getLeftOperand()
     or
@@ -560,21 +462,13 @@ class Assignment extends Operation, TAssignment {
  * ```
  */
 class AssignExpr extends Assignment, TAssignExpr {
-  final override string getOperator() { result = "=" }
-
   final override string getAPrimaryQlClass() { result = "AssignExpr" }
 }
 
 /**
  * A binary assignment operation other than `=`.
  */
-class AssignOperation extends Assignment, TAssignOperation {
-  Ruby::OperatorAssignment g;
-
-  AssignOperation() { g = toGenerated(this) }
-
-  final override string getOperator() { result = g.getOperator() }
-}
+class AssignOperation extends Assignment instanceof AssignOperationImpl { }
 
 /**
  * An arithmetic assignment operation: `+=`, `-=`, `*=`, `/=`, `**=`, and `%=`.

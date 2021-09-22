@@ -97,13 +97,19 @@ unresolvedCall
 | calls.rb:42:9:42:24 | call to singleton_m |
 | calls.rb:48:1:48:13 | call to singleton_m |
 | calls.rb:59:1:59:13 | call to singleton_m |
+| calls.rb:112:11:112:25 | ... < ... |
+| calls.rb:114:11:114:12 | ... + ... |
 | calls.rb:129:1:129:13 | call to [] |
 | calls.rb:129:48:129:59 | call to capitalize |
 | calls.rb:131:1:131:7 | call to [] |
 | calls.rb:133:1:133:7 | call to [] |
 | calls.rb:133:28:133:39 | call to capitalize |
 | calls.rb:135:1:135:8 | call to [] |
+| calls.rb:135:4:135:5 | - ... |
 | calls.rb:135:32:135:36 | call to abs |
+| hello.rb:20:16:20:26 | ... + ... |
+| hello.rb:20:16:20:34 | ... + ... |
+| hello.rb:20:16:20:40 | ... + ... |
 | private.rb:24:1:24:14 | call to private1 |
 | private.rb:25:1:25:14 | call to private2 |
 | private.rb:26:1:26:14 | call to private3 |
