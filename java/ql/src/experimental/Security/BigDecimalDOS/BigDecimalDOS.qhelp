@@ -1,0 +1,42 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>Directly incorporating user input into an BigDecimal Operation Function without validating the input
+can facilitate DOS attacks. In these attacks, the server
+will consume a lot of computing resources, A typical scenario is that the CPU usage rises to close to 100%.
+This issue often occurs in scenarios that require scientific computing, such as e-commerce platforms and electronic payments.
+</p>
+
+</overview>
+<recommendation>
+
+<p>To guard against BigDecimal DOS attacks, you should avoid putting user-provided input
+directly into a BigDecimal Method(like: add(), subtract()). Instead, In some e-commerce payment scenarios, 
+we should verify the size of the incoming number. For example, under normal circumstances, 
+the number representing money will not contain "e".</p>
+
+</recommendation>
+<example>
+
+<p>The following example shows an BigDecimal parameter being used directly pass
+to BigDecimal Method(like: add(), subtract()) without validating the input, which facilitates DOS attacks.
+It also shows how to remedy the problem by validating the user input against a known fixed string.
+</p>
+
+<sample src="BigDecimalDOS.java" />
+
+</example>
+<references>
+  <li>
+    <a href="https://www.cuijianxiong.top/2021/03/30/%E6%9A%B4%E5%8A%9B%E7%9A%84%E6%94%BB%E5%87%BBDos/">暴力的攻击-Dos</a>
+  </li>
+  <li>
+    <a href="https://mp.weixin.qq.com/s/4YX7XA34fShdCpGawO-Q_Q">BigDecimal DOS</a>
+  </li>
+
+</references>
+</qhelp>
