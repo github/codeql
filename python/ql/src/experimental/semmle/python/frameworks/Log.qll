@@ -37,10 +37,10 @@ private module log {
 
     override DataFlow::Node getAnInput() {
       this.getFunction().(DataFlow::AttrRead).getAttributeName() != "log" and
-      result = this.getArg(0)
+      result in [this.getArg(_), this.getArgByName(_) ] // this includes the arg named "msg"
       or
       this.getFunction().(DataFlow::AttrRead).getAttributeName() = "log" and
-      result = this.getArg(1)
+      result in [this.getArg(any(int i | i > 0)), this.getArgByName(any(string s | s != "level"))]
     }
   }
 
@@ -61,10 +61,10 @@ private module log {
 
     override DataFlow::Node getAnInput() {
       this.getFunction().(DataFlow::AttrRead).getAttributeName() != "log" and
-      result = this.getArg(0)
+      result in [this.getArg(_), this.getArgByName(_) ] // this includes the arg named "msg"
       or
       this.getFunction().(DataFlow::AttrRead).getAttributeName() = "log" and
-      result = this.getArg(1)
+      result in [this.getArg(any(int i | i > 0)), this.getArgByName(any(string s | s != "level"))]
     }
   }
 
@@ -84,10 +84,10 @@ private module log {
 
     override DataFlow::Node getAnInput() {
       this.getFunction().(DataFlow::AttrRead).getAttributeName() != "log" and
-      result = this.getArg(0)
+      result in [this.getArg(_), this.getArgByName(_) ] // this includes the arg named "msg"
       or
       this.getFunction().(DataFlow::AttrRead).getAttributeName() = "log" and
-      result = this.getArg(1)
+      result in [this.getArg(any(int i | i > 0)), this.getArgByName(any(string s | s != "level"))]
     }
   }
 
@@ -109,10 +109,10 @@ private module log {
 
     override DataFlow::Node getAnInput() {
       this.getFunction().(DataFlow::AttrRead).getAttributeName() != "log" and
-      result = this.getArg(0)
+      result in [this.getArg(_), this.getArgByName(_) ] // this includes the arg named "msg"
       or
       this.getFunction().(DataFlow::AttrRead).getAttributeName() = "log" and
-      result = this.getArg(1)
+      result in [this.getArg(any(int i | i > 0)), this.getArgByName(any(string s | s != "level"))]
     }
   }
 }
