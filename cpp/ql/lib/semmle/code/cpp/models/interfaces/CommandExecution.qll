@@ -12,7 +12,7 @@ import FunctionInputsAndOutputs
 import semmle.code.cpp.models.Models
 
 /**
- * A function, such as `exec` or `popen` that starts a new process by 
+ * A function, such as `exec` or `popen` that starts a new process by
  * interpreting a string as a shell command.
  */
 abstract class CommandExecutionFunction extends Function {
