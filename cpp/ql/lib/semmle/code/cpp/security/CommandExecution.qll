@@ -6,7 +6,10 @@ import semmle.code.cpp.models.interfaces.SideEffect
 import semmle.code.cpp.models.interfaces.Alias
 import semmle.code.cpp.models.interfaces.CommandExecution
 
-class WrappedSystemFunction extends FunctionWithWrappers instanceof CommandExecutionFunction {
+/**
+ * A function for running a command using a command interpreter.
+ */
+class SystemFunction extends FunctionWithWrappers instanceof CommandExecutionFunction {
   override predicate interestingArg(int arg) {
     exists(FunctionInput input |
       this.(CommandExecutionFunction).hasCommandArgument(input) and
@@ -160,7 +163,7 @@ predicate shellCommandPreface(string cmd, string flag) {
  */
 predicate shellCommand(Expr command, string callChain) {
   // A call to a function like system()
-  exists(WrappedSystemFunction systemFunction |
+  exists(SystemFunction systemFunction |
     systemFunction.outermostWrapperFunctionCall(command, callChain)
   )
   or
