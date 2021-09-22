@@ -4865,13 +4865,13 @@ public class Test {
 			out = Iterables.toArray(in, (Class)null);
 			sink(getArrayElement(out)); // $ hasValueFlow
 		}
-		{
-			// "com.google.common.collect;Iterables;false;toString;(Iterable);;Element of Argument[0];ReturnValue;taint"
-			String out = null;
-			Iterable in = (Iterable)List.of(source());
-			out = Iterables.toString(in);
-			sink(out); // $ hasTaintFlow
-		}
+		// {
+		// 	// "com.google.common.collect;Iterables;false;toString;(Iterable);;Element of Argument[0];ReturnValue;taint"
+		// 	String out = null;
+		// 	Iterable in = (Iterable)List.of(source());
+		// 	out = Iterables.toString(in);
+		// 	sink(out); // $ hasTaintFlow
+		// }
 		{
 			// "com.google.common.collect;Iterables;false;tryFind;(Iterable,Predicate);;Element of Argument[0];Element of ReturnValue;value"
 			Optional out = null;
