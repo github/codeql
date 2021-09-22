@@ -1856,12 +1856,12 @@ class InitializeDynamicAllocationInstruction extends SideEffectInstruction {
   }
 
   /**
-   * Gets the address of the allocation this instruction is initializing.
+   * Gets the operand of the allocation this instruction is initializing.
    */
   final AddressOperand getAllocationAddressOperand() { result = getAnOperand() }
 
   /**
-   * Gets the operand for the allocation this instruction is initializing.
+   * Gets the address for the allocation this instruction is initializing.
    */
   final Instruction getAllocationAddress() { result = getAllocationAddressOperand().getDef() }
 }
