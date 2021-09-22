@@ -300,10 +300,9 @@ module SqlAlchemy {
    *   there are many many constructs we would need to have models for. (see the 2
    *   examples below)
    *
-   * So instead we flag user-input to a TextClause with its' own query
-   * (`py/sqlalchemy-textclause-injection`). And so we don't highlight any parts of an
-   * ORM constructed query such as these as containing SQL, and don't need the additional
-   * taint steps either.
+   * So instead we extended the SQL injection query to include TextClause construction
+   * as a sink. And so we don't highlight any parts of an ORM constructed query such as
+   * these as containing SQL, and don't need the additional taint steps either.
    *
    * See
    * - https://docs.sqlalchemy.org/en/14/core/sqlelement.html#sqlalchemy.sql.expression.TextClause.
