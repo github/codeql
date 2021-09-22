@@ -125,4 +125,10 @@ app.use(function(req, res) {
 	})();
 
 	tainted.match(/(https?:\/\/[^\s]+)/gm); // OK
+
+	var modified = tainted.replace(/a/g, "b");
+	modified.replace(/cc+D/g, "b"); // NOT OK
+	
+	var modified2 = tainted.replace(/a|b|c|\d/g, "e");
+	modified2.replace(/ff+G/g, "b"); // NOT OK
 });

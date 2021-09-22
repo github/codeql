@@ -95,13 +95,26 @@ module PolynomialReDoS {
       this.(StringReplaceCall).isGlobal() and
       // not lone char classes - they don't remove any repeated pattern.
       not exists(RegExpTerm root | root = this.(StringReplaceCall).getRegExp().getRoot() |
-        root instanceof RegExpCharacterClass
-        or
-        root instanceof RegExpCharacterClassEscape
+        isCharClassLike(root)
       )
       or
       this.(DataFlow::MethodCallNode).getMethodName() = StringOps::substringMethodName()
     }
+  }
+
+  /**
+   * Holds if `term` matches a set of strings of length 1.
+   */
+  predicate isCharClassLike(RegExpTerm term) {
+    term instanceof RegExpCharacterClass
+    or
+    term instanceof RegExpCharacterClassEscape
+    or
+    term.(RegExpConstant).getValue().length() = 1
+    or
+    exists(RegExpAlt alt | term = alt |
+      forall(RegExpTerm choice | choice = alt.getAlternative() | isCharClassLike(choice))
+    )
   }
 
   /**
