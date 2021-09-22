@@ -5,65 +5,48 @@ private import codeql.ruby.ApiGraphs
 private import codeql.ruby.dataflow.internal.DataFlowPublic
 
 /**
- * A shortcut for uses of Net::HTTP
- */
-private API::Node netHTTP() { result = API::getTopLevelMember("Net").getMember("HTTP") }
-
-/**
- * A call that returns the response body of a `Net::HTTP` request as a String.
+ * A `Net::HTTP` call which initiates an HTTP request.
  * ```ruby
+ * Net::HTTP.get("http://example.com/")
+ * Net::HTTP.post("http://example.com/", "some_data")
  * req = Net::HTTP.new("example.com")
  * response = req.get("/")
- * body = response.body
  * ```
  */
-private class NetHTTPRequestResponseBody extends CallNode {
-  DataFlow::CallNode requestCall;
+class NetHTTPRequest extends HTTP::Client::Request::Range {
+  private DataFlow::CallNode request;
+  private DataFlow::Node responseBody;
 
-  NetHTTPRequestResponseBody() {
-    exists(string methodName, API::Node requestCallNode |
-      requestCall = requestCallNode.getAnImmediateUse()
+  NetHTTPRequest() {
+    exists(API::Node requestNode, string method |
+      request = requestNode.getAnImmediateUse() and
+      this = request.asExpr().getExpr()
     |
       // Net::HTTP.get(...)
-      methodName = "get" and
-      requestCallNode = netHTTP().getReturn(methodName) and
-      this = requestCall
+      method = "get" and
+      requestNode = API::getTopLevelMember("Net").getMember("HTTP").getReturn(method) and
+      responseBody = request
       or
       // Net::HTTP.post(...).body
-      methodName in ["post", "post_form"] and
-      requestCallNode = netHTTP().getReturn(methodName) and
-      this = requestCallNode.getAMethodCall(["body", "read_body", "entity"])
+      method in ["post", "post_form"] and
+      requestNode = API::getTopLevelMember("Net").getMember("HTTP").getReturn(method) and
+      responseBody = requestNode.getAMethodCall(["body", "read_body", "entity"])
       or
       // Net::HTTP.new(..).get(..).body
-      methodName in [
+      method in [
           "get", "get2", "request_get", "head", "head2", "request_head", "delete", "put", "patch",
           "post", "post2", "request_post", "request"
         ] and
-      requestCallNode = netHTTP().getInstance().getReturn(methodName) and
-      this = requestCallNode.getAMethodCall(["body", "read_body", "entity"])
+      requestNode = API::getTopLevelMember("Net").getMember("HTTP").getInstance().getReturn(method) and
+      responseBody = requestNode.getAMethodCall(["body", "read_body", "entity"])
     )
   }
-
-  /**
-   * Gets the node representing the method call that initiates the request.
-   * This may be different from the node which returns the response body.
-   */
-  DataFlow::Node getRequestCall() { result = requestCall }
 
   /**
    * Gets the node representing the URL of the request.
    * Currently unused, but may be useful in future, e.g. to filter out certain requests.
    */
-  DataFlow::Node getURLArgument() { result = requestCall.getArgument(0) }
-}
-
-/**
- * A `Net::HTTP` call which initiates an HTTP request.
- */
-class NetHTTPRequest extends HTTP::Client::Request::Range {
-  private NetHTTPRequestResponseBody responseBody;
-
-  NetHTTPRequest() { this = responseBody.getRequestCall().asExpr().getExpr() }
+  DataFlow::Node getURLArgument() { result = request.getArgument(0) }
 
   override DataFlow::Node getResponseBody() { result = responseBody }
 
