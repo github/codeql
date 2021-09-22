@@ -1160,18 +1160,18 @@ private predicate reachableFromInput(
 }
 
 /**
- * Holds if there is a level step from `mid` to `nd` under `cfg` that can be appended
- * to a path represented by `oldSummary` yielding a path represented by `summary`.
+ * Holds if there is a level step from `pred` to `succ` under `cfg` that can be appended
+ * to a path represented by `oldSummary` yielding a path represented by `newSummary`.
  */
-pragma[noopt]
+pragma[noinline]
 private predicate appendStep(
-  DataFlow::Node mid, DataFlow::Configuration cfg, PathSummary oldSummary, DataFlow::Node nd,
-  PathSummary summary
+  DataFlow::Node pred, DataFlow::Configuration cfg, PathSummary oldSummary, DataFlow::Node succ,
+  PathSummary newSummary
 ) {
   exists(PathSummary stepSummary |
-    flowStep(mid, cfg, nd, stepSummary) and
+    flowStep(pred, cfg, succ, stepSummary) and
     stepSummary.isLevel() and
-    summary = oldSummary.append(stepSummary)
+    newSummary = oldSummary.append(stepSummary)
   )
 }
 
@@ -1317,13 +1317,6 @@ private predicate reachesReturn(
   summary = PathSummary::level() and
   callInputStep(f, _, _, _, _) // check that a relevant result can exist.
   or
-  reachesReturnRec(f, read, cfg, summary)
-}
-
-pragma[noopt]
-private predicate reachesReturnRec(
-  Function f, DataFlow::Node read, DataFlow::Configuration cfg, PathSummary summary
-) {
   exists(DataFlow::Node mid, PathSummary oldSummary, PathSummary newSummary |
     flowStep(read, cfg, mid, oldSummary) and
     reachesReturn(f, mid, cfg, newSummary) and
@@ -1614,7 +1607,6 @@ private predicate flowIntoHigherOrderCall(
  * Holds if there is a flow step from `pred` to `succ` described by `summary`
  * under configuration `cfg`.
  */
-pragma[noinline]
 private predicate flowStep(
   DataFlow::Node pred, DataFlow::Configuration cfg, DataFlow::Node succ, PathSummary summary
 ) {
