@@ -1598,7 +1598,7 @@ module DataFlow {
       pred = cls.getADirectSuperClass*().getAReceiverNode().getAPropertyWrite(prop).getRhs()
       or
       // add support for writes on nested properties
-      pred = cls.getADirectSuperClass*().getAReceiverNode().getAPropertyRead(prop) and
+      pred = cls.getAReceiverNode().getAPropertyRead(prop) and
       pred = any(DataFlow::PropRef ref).getBase()
       or
       pred = cls.getInstanceMethod(prop)
