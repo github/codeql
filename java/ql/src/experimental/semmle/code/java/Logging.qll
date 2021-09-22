@@ -31,7 +31,6 @@ class LoggingCall extends MethodAccess {
     exists(RefType t, Method m | t.hasQualifiedName("android.util", "Log") |
       m.hasName(["d", "e", "i", "v", "w", "wtf"]) and
       m.getDeclaringType() = t and
-      m.getReturnType() instanceof IntegralType and
       this = m.getAReference()
     )
   }
