@@ -17,7 +17,7 @@
 
 import cpp
 import PrintfLike
-private import semmle.code.cpp.ir.dataflow.internal.ResolveCall
+private import semmle.code.cpp.ir.dataflow.ResolveCall
 
 bindingset[index]
 private string toCause(Function func, int index) {

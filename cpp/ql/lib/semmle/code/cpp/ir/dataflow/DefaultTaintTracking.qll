@@ -4,7 +4,7 @@ private import semmle.code.cpp.ir.dataflow.DataFlow
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowUtil
 private import semmle.code.cpp.ir.dataflow.DataFlow3
 private import semmle.code.cpp.ir.IR
-private import semmle.code.cpp.ir.dataflow.internal.ResolveCall
+private import semmle.code.cpp.ir.dataflow.ResolveCall
 private import semmle.code.cpp.controlflow.IRGuards
 private import semmle.code.cpp.models.interfaces.Taint
 private import semmle.code.cpp.models.interfaces.DataFlow
