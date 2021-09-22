@@ -1,38 +1,16 @@
 edges
-| tests.cpp:33:34:33:39 | call to getenv | tests.cpp:33:34:33:39 | Store |
-| tests.cpp:33:34:33:39 | call to getenv | tests.cpp:35:17:35:27 | environment |
-| tests.cpp:33:34:33:39 | call to getenv | tests.cpp:38:39:38:49 | (const char *)... |
-| tests.cpp:33:34:33:39 | call to getenv | tests.cpp:38:39:38:49 | environment |
 | tests.cpp:33:34:33:39 | call to getenv | tests.cpp:38:39:38:49 | environment indirection |
-| tests.cpp:33:34:33:39 | call to getenv | tests.cpp:38:39:38:49 | environment indirection |
-| tests.cpp:33:34:33:39 | call to getenv | tests.cpp:42:5:42:16 | Phi |
 | tests.cpp:38:25:38:36 | strncat output argument | tests.cpp:42:5:42:16 | Phi |
 | tests.cpp:38:39:38:49 | environment indirection | tests.cpp:38:25:38:36 | strncat output argument |
 | tests.cpp:38:39:38:49 | environment indirection | tests.cpp:38:25:38:36 | strncat output argument |
-| tests.cpp:38:39:38:49 | environment indirection | tests.cpp:38:25:38:36 | strncat output argument |
-| tests.cpp:38:39:38:49 | environment indirection | tests.cpp:38:25:38:36 | strncat output argument |
 | tests.cpp:42:5:42:16 | Phi | tests.cpp:51:22:51:25 | badSource output argument |
-| tests.cpp:42:5:42:16 | Phi | tests.cpp:51:22:51:25 | badSource output argument |
-| tests.cpp:51:22:51:25 | badSource output argument | tests.cpp:53:16:53:19 | (const char *)... |
-| tests.cpp:51:22:51:25 | badSource output argument | tests.cpp:53:16:53:19 | data indirection |
 | tests.cpp:51:22:51:25 | badSource output argument | tests.cpp:53:16:53:19 | data indirection |
 nodes
-| tests.cpp:33:34:33:39 | Store | semmle.label | Store |
 | tests.cpp:33:34:33:39 | call to getenv | semmle.label | call to getenv |
-| tests.cpp:33:34:33:39 | call to getenv | semmle.label | call to getenv |
-| tests.cpp:33:34:33:39 | call to getenv | semmle.label | call to getenv |
-| tests.cpp:35:17:35:27 | environment | semmle.label | environment |
 | tests.cpp:38:25:38:36 | strncat output argument | semmle.label | strncat output argument |
-| tests.cpp:38:39:38:49 | (const char *)... | semmle.label | (const char *)... |
-| tests.cpp:38:39:38:49 | environment | semmle.label | environment |
-| tests.cpp:38:39:38:49 | environment indirection | semmle.label | environment indirection |
 | tests.cpp:38:39:38:49 | environment indirection | semmle.label | environment indirection |
 | tests.cpp:42:5:42:16 | Phi | semmle.label | Phi |
-| tests.cpp:42:5:42:16 | Phi | semmle.label | Phi |
 | tests.cpp:51:22:51:25 | badSource output argument | semmle.label | badSource output argument |
-| tests.cpp:51:22:51:25 | badSource output argument | semmle.label | badSource output argument |
-| tests.cpp:53:16:53:19 | (const char *)... | semmle.label | (const char *)... |
-| tests.cpp:53:16:53:19 | data indirection | semmle.label | data indirection |
 | tests.cpp:53:16:53:19 | data indirection | semmle.label | data indirection |
 subpaths
 #select
