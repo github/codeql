@@ -165,7 +165,6 @@ namespace Semmle.Autobuild.Shared
             {
                 if (environment is not null)
                     environment.ForEach(kvp => pi.Environment[kvp.Key] = kvp.Value);
-                pi.Environment["CODEQL_REDUCE_FILES_FOLDERS_RELATIONS"] = "true";
             }
             return pi;
         }
