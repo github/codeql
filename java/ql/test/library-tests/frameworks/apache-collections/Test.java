@@ -138,7 +138,6 @@ public class Test {
 	MyAbstractMapEntry newMAMEWithMapValue(Object element) { return new MyAbstractMapEntry(null,element); }
 	MyAbstractMapEntryDecorator newMAMEDWithMapValue(Object element) { return new MyAbstractMapEntryDecorator(newMAMEWithMapValue(element)); }
 	MultiValueMap newMVMWithMapValue(Object element) { MultiValueMap m = new MultiValueMap(); m.put(null,element); return m; }
-	MultiMap newMMWithMapValue(Object element) { MultiMap m = new MultiValueMap(); m.put(null,element); return m; }
 	ArrayListValuedHashMap newALVHMWithMapValue(Object element) { ArrayListValuedHashMap m = new ArrayListValuedHashMap(); m.put(null,element); return m; }
 	HashSetValuedHashMap newHSVHMWithMapValue(Object element) { HashSetValuedHashMap m = new HashSetValuedHashMap(); m.put(null,element); return m; }
 	OrderedMapIterator newOMIWithMapValue(Object element) { LinkedMap m = new LinkedMap(); m.put(null,element); return m.mapIterator(); }
@@ -1839,7 +1838,7 @@ public class Test {
 		{
 			// "org.apache.commons.collections4;Get;true;get;;;MapValue of Argument[-1];ReturnValue;value"
 			Object out = null;
-			MultiMap in = newMMWithMapValue((String)source());
+			MultiMap in = newMVMWithMapValue((String)source());
 			out = in.get(null);
 			sink(out); // $ hasValueFlow
 		}
@@ -1874,7 +1873,7 @@ public class Test {
 		{
 			// "org.apache.commons.collections4;Get;true;remove;(Object);;MapValue of Argument[-1];ReturnValue;value"
 			Object out = null;
-			MultiMap in = newMMWithMapValue((String)source());
+			MultiMap in = newMVMWithMapValue((String)source());
 			out = in.remove(null);
 			sink(out); // $ hasValueFlow
 		}
@@ -1909,7 +1908,7 @@ public class Test {
 		{
 			// "org.apache.commons.collections4;Get;true;values;();;MapValue of Argument[-1];Element of ReturnValue;value"
 			Collection out = null;
-			MultiMap in = newMMWithMapValue((String)source());
+			MultiMap in = newMVMWithMapValue((String)source());
 			out = in.values();
 			sink(getElement(out)); // $ hasValueFlow
 		}
@@ -2889,7 +2888,7 @@ public class Test {
 		{
 			// "org.apache.commons.collections4;MultiMap;true;get;;;Element of MapValue of Argument[-1];Element of ReturnValue;value"
 			Collection out = null;
-			MultiMap in = newMMWithMapValue((String)source());
+			MultiMap in = newMVMWithMapValue((String)source());
 			out = (Collection)in.get(null);
 			sink(getElement(out)); // $ hasValueFlow
 		}
@@ -2931,7 +2930,7 @@ public class Test {
 		{
 			// "org.apache.commons.collections4;MultiMap;true;values;;;Element of MapValue of Argument[-1];Element of ReturnValue;value"
 			Collection out = null;
-			MultiMap in = newMMWithMapValue((String)source());
+			MultiMap in = newMVMWithMapValue((String)source());
 			out = in.values();
 			sink(getElement(out)); // $ hasValueFlow
 		}
@@ -3344,7 +3343,7 @@ public class Test {
 		{
 			// "org.apache.commons.collections4;Put;true;put;;;MapValue of Argument[-1];ReturnValue;value"
 			Object out = null;
-			MultiMap in = newMMWithMapValue((String)source());
+			MultiMap in = newMVMWithMapValue((String)source());
 			out = in.put(null, null);
 			sink(out); // $ hasValueFlow
 		}
