@@ -11,6 +11,7 @@ nodes
 | test.go:21:21:21:36 | "hello\\\\\\aworld" | semmle.label | "hello\\\\\\aworld" |
 | test.go:22:21:22:34 | "hello\\bworld" | semmle.label | "hello\\bworld" |
 | test.go:23:21:23:36 | "hello\\\\\\bworld" | semmle.label | "hello\\\\\\bworld" |
+subpaths
 #select
 | SuspiciousCharacterInRegexp.go:6:34:6:55 | "\\bforbidden.host.org" | SuspiciousCharacterInRegexp.go:6:34:6:55 | "\\bforbidden.host.org" | SuspiciousCharacterInRegexp.go:6:34:6:55 | "\\bforbidden.host.org" | $@ used $@ contains a literal backspace \\b; did you mean \\\\b, a word boundary? | SuspiciousCharacterInRegexp.go:6:34:6:55 | "\\bforbidden.host.org" | A regular expression | SuspiciousCharacterInRegexp.go:6:34:6:55 | "\\bforbidden.host.org" | here |
 | test.go:7:21:7:24 | "\\a" | test.go:7:21:7:24 | "\\a" | test.go:7:21:7:24 | "\\a" | $@ used $@ contains the bell character \\a; did you mean \\\\a, the Vim alphabetic character class (use [[:alpha:]] instead) or \\\\A, the beginning of text? | test.go:7:21:7:24 | "\\a" | A regular expression | test.go:7:21:7:24 | "\\a" | here |

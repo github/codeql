@@ -73,6 +73,7 @@ nodes
 | test.go:148:31:148:36 | reader | semmle.label | reader |
 | test.go:162:11:162:32 | call to Param : string | semmle.label | call to Param : string |
 | test.go:163:23:163:35 | type conversion | semmle.label | type conversion |
+subpaths
 #select
 | test.go:14:16:14:20 | param | test.go:13:11:13:32 | call to Param : string | test.go:14:16:14:20 | param | Cross-site scripting vulnerability due to $@. | test.go:13:11:13:32 | call to Param | user-provided value | test.go:0:0:0:0 | test.go |  |
 | test.go:20:16:20:20 | param | test.go:19:11:19:27 | call to ParamValues : slice type | test.go:20:16:20:20 | param | Cross-site scripting vulnerability due to $@. | test.go:19:11:19:27 | call to ParamValues | user-provided value | test.go:0:0:0:0 | test.go |  |

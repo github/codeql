@@ -189,6 +189,7 @@ nodes
 | test.go:302:15:302:36 | call to GetString : string | semmle.label | call to GetString : string |
 | test.go:304:21:304:48 | type assertion | semmle.label | type assertion |
 | test.go:305:21:305:52 | type assertion | semmle.label | type assertion |
+subpaths
 #select
 | test.go:28:13:28:30 | type conversion | test.go:26:6:26:10 | definition of bound : bindMe | test.go:28:13:28:30 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:26:6:26:10 | definition of bound | user-provided value | test.go:0:0:0:0 | test.go |  |
 | test.go:29:13:29:27 | type conversion | test.go:26:6:26:10 | definition of bound : bindMe | test.go:29:13:29:27 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:26:6:26:10 | definition of bound | user-provided value | test.go:0:0:0:0 | test.go |  |

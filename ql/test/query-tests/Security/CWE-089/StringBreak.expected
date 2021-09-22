@@ -3,5 +3,6 @@ edges
 nodes
 | StringBreak.go:10:2:10:40 | ... := ...[0] : slice type | semmle.label | ... := ...[0] : slice type |
 | StringBreak.go:14:47:14:57 | versionJSON | semmle.label | versionJSON |
+subpaths
 #select
 | StringBreak.go:14:47:14:57 | versionJSON | StringBreak.go:10:2:10:40 | ... := ...[0] : slice type | StringBreak.go:14:47:14:57 | versionJSON | If this $@ contains a single quote, it could break out of the enclosing quotes. | StringBreak.go:10:2:10:40 | ... := ...[0] | JSON value |

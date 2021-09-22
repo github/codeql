@@ -53,6 +53,7 @@ nodes
 | new-tests.go:88:11:88:46 | ...+... | semmle.label | ...+... |
 | new-tests.go:95:18:95:45 | call to URLParam : string | semmle.label | call to URLParam : string |
 | new-tests.go:96:11:96:46 | ...+... | semmle.label | ...+... |
+subpaths
 #select
 | builtin.go:22:12:22:63 | call to Get | builtin.go:19:12:19:34 | call to FormValue : string | builtin.go:22:21:22:62 | ...+... | The URL of this request depends on a user-provided value |
 | builtin.go:88:12:88:53 | call to Dial | builtin.go:83:21:83:31 | call to Referer : string | builtin.go:88:27:88:40 | untrustedInput | The URL of this request depends on a user-provided value |

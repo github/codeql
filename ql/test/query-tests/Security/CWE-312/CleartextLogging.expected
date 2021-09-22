@@ -78,6 +78,7 @@ nodes
 | passwords.go:127:14:127:19 | config [y] : string | semmle.label | config [y] : string |
 | passwords.go:127:14:127:21 | selection of y | semmle.label | selection of y |
 | util.go:16:9:16:18 | selection of password : string | semmle.label | selection of password : string |
+subpaths
 #select
 | klog.go:22:15:22:20 | header | klog.go:20:30:20:37 | selection of Header : Header | klog.go:22:15:22:20 | header | Sensitive data returned by $@ is logged here. | klog.go:20:30:20:37 | selection of Header | HTTP request headers |
 | klog.go:28:13:28:41 | call to Get | klog.go:28:13:28:20 | selection of Header : Header | klog.go:28:13:28:41 | call to Get | Sensitive data returned by $@ is logged here. | klog.go:28:13:28:20 | selection of Header | HTTP request headers |

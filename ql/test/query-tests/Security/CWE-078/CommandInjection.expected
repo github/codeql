@@ -48,6 +48,7 @@ nodes
 | SanitizingDoubleDash.go:144:24:144:31 | arrayLit | semmle.label | arrayLit |
 | SanitizingDoubleDash.go:148:30:148:36 | tainted | semmle.label | tainted |
 | SanitizingDoubleDash.go:152:24:152:30 | tainted | semmle.label | tainted |
+subpaths
 #select
 | CommandInjection.go:10:22:10:28 | cmdName | CommandInjection.go:9:13:9:19 | selection of URL : pointer type | CommandInjection.go:10:22:10:28 | cmdName | This command depends on $@. | CommandInjection.go:9:13:9:19 | selection of URL | a user-provided value |
 | GitSubcommands.go:12:31:12:37 | tainted | GitSubcommands.go:10:13:10:19 | selection of URL : pointer type | GitSubcommands.go:12:31:12:37 | tainted | This command depends on $@. | GitSubcommands.go:10:13:10:19 | selection of URL | a user-provided value |

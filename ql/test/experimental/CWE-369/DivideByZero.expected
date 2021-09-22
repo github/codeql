@@ -22,6 +22,7 @@ nodes
 | DivideByZero.go:54:12:54:16 | selection of URL : pointer type | semmle.label | selection of URL : pointer type |
 | DivideByZero.go:55:11:55:24 | type conversion : uint8 | semmle.label | type conversion : uint8 |
 | DivideByZero.go:57:17:57:21 | value | semmle.label | value |
+subpaths
 #select
 | DivideByZero.go:12:16:12:20 | value | DivideByZero.go:10:12:10:16 | selection of URL : pointer type | DivideByZero.go:12:16:12:20 | value | Variable $@ might be zero leading to a division-by-zero panic. | DivideByZero.go:12:16:12:20 | value | value |
 | DivideByZero.go:19:16:19:20 | value | DivideByZero.go:17:12:17:16 | selection of URL : pointer type | DivideByZero.go:19:16:19:20 | value | Variable $@ might be zero leading to a division-by-zero panic. | DivideByZero.go:19:16:19:20 | value | value |

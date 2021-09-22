@@ -294,6 +294,7 @@ nodes
 | HTMLTemplateEscapingPassthrough.go:91:38:91:46 | converted | semmle.label | converted |
 | HTMLTemplateEscapingPassthrough.go:91:38:91:46 | converted | semmle.label | converted |
 | HTMLTemplateEscapingPassthrough.go:91:38:91:46 | converted | semmle.label | converted |
+subpaths
 #select
 | HTMLTemplateEscapingPassthrough.go:29:39:29:39 | a | HTMLTemplateEscapingPassthrough.go:28:26:28:40 | call to UserAgent : string | HTMLTemplateEscapingPassthrough.go:29:39:29:39 | a | Data from an $@ will not be auto-escaped because it was $@ to template.HTML | HTMLTemplateEscapingPassthrough.go:28:26:28:40 | call to UserAgent | untrusted source | HTMLTemplateEscapingPassthrough.go:28:12:28:41 | type conversion | converted |
 | HTMLTemplateEscapingPassthrough.go:35:40:35:40 | a | HTMLTemplateEscapingPassthrough.go:34:23:34:37 | call to UserAgent : string | HTMLTemplateEscapingPassthrough.go:35:40:35:40 | a | Data from an $@ will not be auto-escaped because it was $@ to template.HTML | HTMLTemplateEscapingPassthrough.go:34:23:34:37 | call to UserAgent | untrusted source | HTMLTemplateEscapingPassthrough.go:34:9:34:38 | type conversion | converted |

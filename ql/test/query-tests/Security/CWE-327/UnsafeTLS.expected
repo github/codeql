@@ -136,6 +136,7 @@ nodes
 | UnsafeTLS.go:450:6:450:48 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 : uint16 | semmle.label | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 : uint16 |
 | UnsafeTLS.go:456:19:458:5 | slice literal | semmle.label | slice literal |
 | UnsafeTLS.go:457:6:457:48 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 : uint16 | semmle.label | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 : uint16 |
+subpaths
 #select
 | UnsafeTLS.go:21:23:21:23 | 0 | UnsafeTLS.go:21:23:21:23 | 0 | UnsafeTLS.go:21:23:21:23 | 0 | Using lowest TLS version for MinVersion. |
 | UnsafeTLS.go:30:16:30:16 | 0 | UnsafeTLS.go:30:16:30:16 | 0 | UnsafeTLS.go:30:16:30:16 | 0 | Using lowest TLS version for MinVersion. |

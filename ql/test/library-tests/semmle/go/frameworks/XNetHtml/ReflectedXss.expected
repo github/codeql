@@ -52,6 +52,7 @@ nodes
 | test.go:35:15:35:30 | call to Text | semmle.label | call to Text |
 | test.go:36:15:36:44 | type conversion | semmle.label | type conversion |
 | test.go:36:22:36:38 | call to Token : Token | semmle.label | call to Token : Token |
+subpaths
 #select
 | test.go:14:15:14:55 | type conversion | test.go:10:2:10:42 | ... := ...[0] : pointer type | test.go:14:15:14:55 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:10:2:10:42 | ... := ...[0] | user-provided value | test.go:0:0:0:0 | test.go |  |
 | test.go:17:15:17:31 | type conversion | test.go:16:24:16:35 | selection of Body : ReadCloser | test.go:17:15:17:31 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:16:24:16:35 | selection of Body | user-provided value | test.go:0:0:0:0 | test.go |  |
