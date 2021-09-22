@@ -69,6 +69,20 @@ class Foo {
     const value = this.value;
     return (obj[path[0]][path[1]] = value); // NOT OK
   }
+
+  safe() {
+    const obj = this.obj;
+    obj[path[0]] = this.value; // OK
+  }
 }
 
 module.exports.Foo = Foo;
+
+module.exports.delete = function() {
+  var obj = arguments[0];
+  var path = arguments[1];
+  delete obj[path[0]]; // OK
+  var prop = arguments[2];
+  var proto = obj[path[0]];
+  delete proto[prop]; // NOT
+}

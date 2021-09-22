@@ -49,6 +49,8 @@ module PrototypePollutingAssignment {
       this = any(DataFlow::PropWrite write).getBase()
       or
       this = any(ExtendCall c).getDestinationOperand()
+      or
+      this = any(DeleteExpr del).getOperand().flow().(DataFlow::PropRef).getBase()
     }
 
     override DataFlow::FlowLabel getAFlowLabel() { result instanceof ObjectPrototype }
