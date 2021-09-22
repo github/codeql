@@ -242,7 +242,7 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
             s.isChar() -> return primitiveType("char")
             s.isString() -> return primitiveType("string") // TODO: Wrong
 
-            s.isNullable() -> return useType(s.makeNotNull()) // TODO: Wrong
+            s.isNullable() && s.hasQuestionMark -> return useType(s.makeNotNull()) // TODO: Wrong
 
             s.isNothing() -> return primitiveType("<nulltype>")
 
