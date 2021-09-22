@@ -23,6 +23,18 @@ private module FastApi {
     API::Node instance() { result = API::moduleImport("fastapi").getMember("FastAPI").getReturn() }
   }
 
+  /**
+   * Provides models for the `fastapi.APIRouter` class
+   *
+   * See https://fastapi.tiangolo.com/tutorial/bigger-applications/.
+   */
+  module APIRouter {
+    /** Gets a reference to an instance of `fastapi.APIRouter`. */
+    API::Node instance() {
+      result = API::moduleImport("fastapi").getMember("APIRouter").getReturn()
+    }
+  }
+
   // ---------------------------------------------------------------------------
   // routing modeling
   // ---------------------------------------------------------------------------
@@ -39,6 +51,8 @@ private module FastApi {
         routeAddingMethod = "api_route"
       |
         this = App::instance().getMember(routeAddingMethod).getACall()
+        or
+        this = APIRouter::instance().getMember(routeAddingMethod).getACall()
       )
     }
 
