@@ -52,7 +52,11 @@ predicate summaryElement(DataFlowCallable c, string input, string output, string
     string namespace, string type, boolean subtypes, string name, string signature, string ext
   |
     summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind) and
-    c = interpretElement(namespace, type, subtypes, name, signature, ext)
+    c =
+      interpretElement(namespace, type, subtypes, name, signature, ext)
+          .asEntity()
+          .(Function)
+          .getFuncDecl()
   )
 }
 
@@ -62,7 +66,24 @@ SummaryComponent interpretComponentSpecific(string c) {
   exists(Content content | parseContent(c, content) and result = SummaryComponent::content(content))
 }
 
-class SourceOrSinkElement = AstNode;
+private newtype TSourceOrSinkElement =
+  TEntityElement(Entity e) or
+  TAstElement(AstNode n)
+
+class SourceOrSinkElement extends TSourceOrSinkElement {
+  Entity asEntity() { this = TEntityElement(result) }
+
+  AstNode asAstNode() { this = TAstElement(result) }
+
+  string toString() {
+    result = "element representing " + [this.asEntity().toString(), this.asAstNode().toString()]
+  }
+
+  predicate hasLocationInfo(string fp, int sl, int sc, int el, int ec) {
+    this.asEntity().hasLocationInfo(fp, sl, sc, el, ec) or
+    this.asAstNode().hasLocationInfo(fp, sl, sc, el, ec)
+  }
+}
 
 /**
  * Holds if an external source specification exists for `e` with output specification
@@ -106,16 +127,14 @@ class InterpretNode extends TInterpretNode {
   Node asNode() { this = TNode(result) }
 
   /** Gets the call that this node corresponds to, if any. */
-  DataFlowCall asCall() { result = this.asElement() }
+  DataFlowCall asCall() { result = this.asElement().asAstNode() }
 
   /** Gets the callable that this node corresponds to, if any. */
-  DataFlowCallable asCallable() { result = this.asElement() }
+  DataFlowCallable asCallable() { result = this.asElement().asEntity().(Function).getFuncDecl() }
 
   /** Gets the target of this call, if any. */
-  Ident getCallTarget() {
-    exists(Function f | f = this.asCall().getNode().(DataFlow::CallNode).getTarget() |
-      result = f.getDeclaration()
-    )
+  SourceOrSinkElement getCallTarget() {
+    result.asEntity() = this.asCall().getNode().(DataFlow::CallNode).getTarget()
   }
 
   /** Gets a textual representation of this node. */
@@ -136,15 +155,15 @@ class InterpretNode extends TInterpretNode {
 /** Provides additional sink specification logic required for annotations. */
 pragma[inline]
 predicate interpretOutputSpecific(string c, InterpretNode mid, InterpretNode node) {
-  exists(Node n, AstNode ast |
+  exists(Node n, SourceOrSinkElement e |
     n = node.asNode() and
-    ast = mid.asElement()
+    e = mid.asElement()
   |
     (c = "Parameter" or c = "") and
-    node.asNode().asParameter().getDeclaration() = ast
+    node.asNode().asParameter() = e.asEntity()
     or
     c = "" and
-    n.(DataFlow::FieldReadNode).getField().getDeclaration() = ast
+    n.(DataFlow::FieldReadNode).getField() = e.asEntity()
   )
 }
 
@@ -153,7 +172,7 @@ pragma[inline]
 predicate interpretInputSpecific(string c, InterpretNode mid, InterpretNode n) {
   exists(DataFlow::Write fw, Field f |
     c = "" and
-    f.getDeclaration() = mid.asElement() and
+    f = mid.asElement().asEntity() and
     fw.writesField(_, f, n.asNode())
   )
 }

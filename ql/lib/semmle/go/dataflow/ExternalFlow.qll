@@ -356,23 +356,23 @@ private string paramsStringPart(Function f, int i) {
 string paramsString(Function f) { result = concat(int i | | paramsStringPart(f, i) order by i) }
 
 /** Gets the source/sink/summary element corresponding to the supplied parameters. */
-AstNode interpretElement(
+SourceOrSinkElement interpretElement(
   string pkg, string type, boolean subtypes, string name, string signature, string ext
 ) {
   elementSpec(pkg, type, subtypes, name, signature, ext) and
   // Go does not need to distinguish functions with signature
   signature = "" and
   (
-    exists(Field f | f.hasQualifiedName(pkg, type, name) | result = f.getDeclaration())
+    exists(Field f | f.hasQualifiedName(pkg, type, name) | result.asEntity() = f)
     or
     exists(Method m | m.hasQualifiedName(pkg, type, name) |
-      result = m.getFuncDecl()
+      result.asEntity() = m
       or
-      subtypes = true and result.(FuncDecl).getFunction().(Method).implements(m)
+      subtypes = true and result.asEntity().(Method).implements(m)
     )
     or
     type = "" and
-    exists(Entity e | e.hasQualifiedName(pkg, name) | result = e.getDeclaration())
+    exists(Entity e | e.hasQualifiedName(pkg, name) | result.asEntity() = e)
   )
 }
 
