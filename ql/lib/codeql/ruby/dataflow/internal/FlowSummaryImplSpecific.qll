@@ -53,18 +53,6 @@ predicate summaryElement(DataFlowCallable c, string input, string output, string
 }
 
 /**
- * Holds if an external source specification exists for `e` with output specification
- * `output` and kind `kind`.
- */
-predicate sourceElement(AstNode n, string output, string kind) { none() }
-
-/**
- * Holds if an external sink specification exists for `n` with input specification
- * `input` and kind `kind`.
- */
-predicate sinkElement(AstNode n, string input, string kind) { none() }
-
-/**
  * Gets the summary component for specification component `c`, if any.
  *
  * This covers all the Ruby-specific components of a flow summary, and
@@ -84,6 +72,18 @@ NormalReturnKind getReturnValueKind() { any() }
  * we rely on API graphs instead.
  */
 private module UnusedSourceSinkInterpretation {
+  /**
+   * Holds if an external source specification exists for `e` with output specification
+   * `output` and kind `kind`.
+   */
+  predicate sourceElement(AstNode n, string output, string kind) { none() }
+
+  /**
+   * Holds if an external sink specification exists for `n` with input specification
+   * `input` and kind `kind`.
+   */
+  predicate sinkElement(AstNode n, string input, string kind) { none() }
+
   class SourceOrSinkElement = AstNode;
 
   /** An entity used to interpret a source/sink specification. */
