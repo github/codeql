@@ -73,7 +73,7 @@ private string ioFileReaderMethodName(boolean classMethodCall) {
 }
 
 /**
- * Classes and predicates for modelling the core `IO` module.
+ * Classes and predicates for modeling the core `IO` module.
  */
 module IO {
   /**
@@ -184,7 +184,7 @@ module IO {
 }
 
 /**
- * Classes and predicates for modelling the core `File` module.
+ * Classes and predicates for modeling the core `File` module.
  *
  * Because `File` is a subclass of `IO`, all `FileInstance`s and
  * `FileModuleReader`s are also `IOInstance`s and `IOModuleReader`s
@@ -219,7 +219,7 @@ module File {
   }
 
   /**
-   * A call to a File method that may return one or more filenames.
+   * A call to a `File` method that may return one or more filenames.
    */
   class FileModuleFilenameSource extends FileNameSource, DataFlow::CallNode {
     FileModuleFilenameSource() {
@@ -259,7 +259,7 @@ module File {
 }
 
 /**
- * Classes and predicates for modelling the `FileUtils` module from the standard
+ * Classes and predicates for modeling the `FileUtils` module from the standard
  * library.
  */
 module FileUtils {
