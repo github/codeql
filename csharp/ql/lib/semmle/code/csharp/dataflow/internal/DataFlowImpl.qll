@@ -3643,9 +3643,10 @@ private module Subpaths {
     PathNode arg, ParamNodeEx par, SummaryCtxSome sc, CallContext innercc, ReturnKindExt kind,
     NodeEx out, AccessPath apout
   ) {
-    pathThroughCallable(arg, out, _, apout) and
+    pathThroughCallable(arg, out, _, pragma[only_bind_into](apout)) and
     pathIntoCallable(arg, par, _, innercc, sc, _) and
-    paramFlowsThrough(kind, innercc, sc, apout, _, unbindConf(arg.getConfiguration()))
+    paramFlowsThrough(kind, innercc, sc, pragma[only_bind_into](apout), _,
+      unbindConf(arg.getConfiguration()))
   }
 
   /**
@@ -3690,8 +3691,8 @@ private module Subpaths {
    */
   predicate subpaths(PathNode arg, PathNodeImpl par, PathNodeMid ret, PathNodeMid out) {
     exists(ParamNodeEx p, NodeEx o, AccessPath apout |
-      arg.getASuccessor() = par and
-      arg.getASuccessor() = out and
+      pragma[only_bind_into](arg).getASuccessor() = par and
+      pragma[only_bind_into](arg).getASuccessor() = out and
       subpaths03(arg, p, ret, o, apout) and
       par.getNodeEx() = p and
       out.getNodeEx() = o and

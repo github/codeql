@@ -168,7 +168,7 @@ string getInsecureAlgorithmRegex() {
 string getASecureAlgorithmName() {
   result =
     [
-      "RSA", "SHA256", "SHA512", "CCM", "GCM", "AES([^a-zA-Z](?!ECB|CBC/PKCS[57]Padding)).*",
+      "RSA", "SHA256", "SHA512", "CCM", "GCM", "AES(?![^a-zA-Z](ECB|CBC/PKCS[57]Padding))",
       "Blowfish", "ECIES"
     ]
 }
