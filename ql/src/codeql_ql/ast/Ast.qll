@@ -1065,6 +1065,8 @@ class String extends Literal {
 
   override string getAPrimaryQlClass() { result = "String" }
 
+  override PrimitiveType getType() { result.getName() = "string" }
+
   /** Gets the string value of this literal. */
   string getValue() {
     exists(string raw | raw = lit.getChild().(Generated::String).getValue() |
@@ -1079,6 +1081,8 @@ class Integer extends Literal {
 
   override string getAPrimaryQlClass() { result = "Integer" }
 
+  override PrimitiveType getType() { result.getName() = "int" }
+
   /** Gets the integer value of this literal. */
   int getValue() { result = lit.getChild().(Generated::Integer).getValue().toInt() }
 }
@@ -1088,6 +1092,8 @@ class Float extends Literal {
   Float() { lit.getChild() instanceof Generated::Float }
 
   override string getAPrimaryQlClass() { result = "Float" }
+
+  override PrimitiveType getType() { result.getName() = "float" }
 
   /** Gets the float value of this literal. */
   float getValue() { result = lit.getChild().(Generated::Float).getValue().toFloat() }
@@ -1104,6 +1110,8 @@ class Boolean extends Literal {
 
   /** Holds if the value is `false` */
   predicate isFalse() { bool.getChild() instanceof Generated::False }
+
+  override PrimitiveType getType() { result.getName() = "boolean" }
 
   override string getAPrimaryQlClass() { result = "Boolean" }
 }
@@ -1384,11 +1392,17 @@ class HigherOrderFormula extends THigherOrderFormula, Formula {
   }
 }
 
+class Aggregate extends TAggregate, Expr {
+  string getKind() { none() }
+
+  Generated::Aggregate getAggregate() { none() }
+}
+
 /**
  * An aggregate containing an expression.
  * E.g. `min(getAPredicate().getArity())`.
  */
-class ExprAggregate extends TExprAggregate, Expr {
+class ExprAggregate extends TExprAggregate, Aggregate {
   Generated::Aggregate agg;
   Generated::ExprAggregateBody body;
   string kind;
@@ -1403,7 +1417,9 @@ class ExprAggregate extends TExprAggregate, Expr {
    * Gets the kind of aggregate.
    * E.g. for `min(foo())` the result is "min".
    */
-  string getKind() { result = kind }
+  override string getKind() { result = kind }
+
+  override Generated::Aggregate getAggregate() { result = agg }
 
   /**
    * Gets the ith "as" expression of this aggregate, if any.
@@ -1449,13 +1465,13 @@ class ExprAggregate extends TExprAggregate, Expr {
 }
 
 /** An aggregate expression, such as `count` or `sum`. */
-class Aggregate extends TAggregate, Expr {
+class FullAggregate extends TFullAggregate, Aggregate {
   Generated::Aggregate agg;
   string kind;
   Generated::FullAggregateBody body;
 
-  Aggregate() {
-    this = TAggregate(agg) and
+  FullAggregate() {
+    this = TFullAggregate(agg) and
     kind = agg.getChild(0).(Generated::AggId).getValue() and
     body = agg.getChild(_)
   }
@@ -1464,7 +1480,9 @@ class Aggregate extends TAggregate, Expr {
    * Gets the kind of aggregate.
    * E.g. for `min(int i | foo(i))` the result is "foo".
    */
-  string getKind() { result = kind }
+  override string getKind() { result = kind }
+
+  override Generated::Aggregate getAggregate() { result = agg }
 
   /** Gets the ith declared argument of this quantifier. */
   VarDecl getArgument(int i) { toGenerated(result) = body.getChild(i) }
@@ -1494,18 +1512,18 @@ class Aggregate extends TAggregate, Expr {
     result = body.getOrderBys().getChild(i).getChild(1).(Generated::Direction).getValue()
   }
 
-  override string getAPrimaryQlClass() { result = "Aggregate[" + kind + "]" }
+  override string getAPrimaryQlClass() { kind != "rank" and result = "FullAggregate[" + kind + "]" }
 
   override Type getType() {
     exists(PrimitiveType prim | prim = result |
-      kind.regexpMatch("(strict)?count|sum|min|max|rank") and
+      kind.regexpMatch("(strict)?(count|sum|min|max|rank)") and
       result.getName() = "int"
       or
       kind.regexpMatch("(strict)?concat") and
       result.getName() = "string"
     )
     or
-    kind = ["any", "min", "max"] and
+    kind = ["any", "min", "max", "unique"] and
     not exists(getExpr(_)) and
     result = getArgument(0).getTypeExpr().getResolvedType()
     or
@@ -1532,14 +1550,14 @@ class Aggregate extends TAggregate, Expr {
  * A "rank" expression, such as `rank[4](int i | i = [5 .. 15] | i)`.
  */
 class Rank extends Aggregate {
-  Rank() { kind = "rank" }
+  Rank() { this.getKind() = "rank" }
 
   override string getAPrimaryQlClass() { result = "Rank" }
 
   /**
    * The `i` in `rank[i]( | | )`.
    */
-  Expr getRankExpr() { toGenerated(result) = agg.getChild(1) }
+  Expr getRankExpr() { toGenerated(result) = this.getAggregate().getChild(1) }
 
   override AstNode getAChild(string pred) {
     result = super.getAChild(pred)
@@ -1704,6 +1722,8 @@ class ExprAnnotation extends TExprAnnotation, Expr {
    */
   Expr getExpression() { toGenerated(result) = expr_anno.getChild() }
 
+  override Type getType() { result = this.getExpression().getType() }
+
   override string getAPrimaryQlClass() { result = "ExprAnnotation" }
 
   override AstNode getAChild(string pred) {
@@ -1743,6 +1763,27 @@ class AddSubExpr extends TAddSubExpr, BinOpExpr {
 
   /** Gets the operator of the binary expression. */
   FunctionSymbol getOperator() { result = operator }
+
+  override PrimitiveType getType() {
+    // Both operands are the same type
+    result = this.getLeftOperand().getType() and
+    result = this.getRightOperand().getType()
+    or
+    // Both operands are subtypes of `int`
+    result.getName() = "int" and
+    result = this.getLeftOperand().getType().getASuperType*() and
+    result = this.getRightOperand().getType().getASuperType*()
+    or
+    // Coercion to from `int` to `float`
+    exists(PrimitiveType i | result.getName() = "float" and i.getName() = "int" |
+      this.getAnOperand().getType() = result and
+      this.getAnOperand().getType().getASuperType*() = i
+    )
+    or
+    // Coercion to `string`
+    result.getName() = "string" and
+    this.getAnOperand().getType() = result
+  }
 
   override AstNode getAChild(string pred) {
     result = super.getAChild(pred)
@@ -1791,6 +1832,23 @@ class MulDivModExpr extends TMulDivModExpr, BinOpExpr {
 
   /** Gets the operator of the binary expression. */
   FunctionSymbol getOperator() { result = operator }
+
+  override PrimitiveType getType() {
+    // Both operands are of the same type
+    this.getLeftOperand().getType() = result and
+    this.getRightOperand().getType() = result
+    or
+    // Both operands are subtypes of `int`
+    result.getName() = "int" and
+    result = this.getLeftOperand().getType().getASuperType*() and
+    result = this.getRightOperand().getType().getASuperType*()
+    or
+    // Coercion from `int` to `float`
+    exists(PrimitiveType i | result.getName() = "float" and i.getName() = "int" |
+      this.getAnOperand().getType() = result and
+      this.getAnOperand().getType().getASuperType*() = i
+    )
+  }
 
   override AstNode getAChild(string pred) {
     result = super.getAChild(pred)
@@ -1846,6 +1904,8 @@ class Range extends TRange, Expr {
    */
   Expr getHighEndpoint() { toGenerated(result) = range.getUpper() }
 
+  override PrimitiveType getType() { result.getName() = "int" }
+
   override string getAPrimaryQlClass() { result = "Range" }
 
   override AstNode getAChild(string pred) {
@@ -1870,6 +1930,8 @@ class Set extends TSet, Expr {
    */
   Expr getElement(int i) { toGenerated(result) = set.getChild(i) }
 
+  override Type getType() { result = this.getElement(0).getType() }
+
   override string getAPrimaryQlClass() { result = "Set" }
 
   override AstNode getAChild(string pred) {
@@ -1891,6 +1953,8 @@ class UnaryExpr extends TUnaryExpr, Expr {
   /** Gets the operator of the unary expression as a string. */
   FunctionSymbol getOperator() { result = unaryexpr.getChild(0).toString() }
 
+  override Type getType() { result = this.getOperand().getType() }
+
   override string getAPrimaryQlClass() { result = "UnaryExpr" }
 
   override AstNode getAChild(string pred) {
@@ -1905,6 +1969,8 @@ class DontCare extends TDontCare, Expr {
   Generated::Underscore dontcare;
 
   DontCare() { this = TDontCare(dontcare) }
+
+  override DontCareType getType() { any() }
 
   override string getAPrimaryQlClass() { result = "DontCare" }
 }

@@ -234,14 +234,20 @@ private class BuiltinMember extends BuiltinPredicate, TBuiltinMember {
 module PredConsistency {
   query predicate noResolvePredicateExpr(PredicateExpr pe) {
     not resolvePredicateExpr(pe, _) and
-    not pe.getLocation().getFile().getAbsolutePath().regexpMatch(".*/(test|examples)/.*")
+    not pe.getLocation()
+        .getFile()
+        .getAbsolutePath()
+        .regexpMatch(".*/(test|examples|ql-training|recorded-call-graph-metrics)/.*")
   }
 
   query predicate noResolveCall(Call c) {
     not resolveCall(c, _) and
     not c instanceof NoneCall and
     not c instanceof AnyCall and
-    not c.getLocation().getFile().getAbsolutePath().regexpMatch(".*/(test|examples)/.*")
+    not c.getLocation()
+        .getFile()
+        .getAbsolutePath()
+        .regexpMatch(".*/(test|examples|ql-training|recorded-call-graph-metrics)/.*")
   }
 
   query predicate multipleResolvePredicateExpr(PredicateExpr pe, int c, ClasslessPredicate p) {
