@@ -13,7 +13,7 @@ of a server's threads to sleep, leading to denial of service.</p>
 
 <recommendation>
 <p>To guard against this attack, consider specifying an upper range of allowed sleep time or adopting
-the producer/consumer design pattern with <code>Thread.wait</code> method to avoid performance 
+the producer/consumer design pattern with <code>Object.wait</code> method to avoid performance 
 problems or even resource exhaustion.</p>
 </recommendation>
 
@@ -28,12 +28,17 @@ check on maximum allowed sleep time is enforced.</p>
 <li>
 snyk:
 <a href="https://snyk.io/vuln/SNYK-JAVA-COMGOOGLECODEGWTUPLOAD-569506">Denial of Service (DoS)
-Affecting com.googlecode.gwtupload:gwtupload artifact</a>.
+in com.googlecode.gwtupload:gwtupload</a>.
 </li>
 <li>
-gwtupload
+gwtupload:
 <a href="https://github.com/manolo/gwtupload/issues/33">[Fix DOS issue] Updating the 
 AbstractUploadListener.java file</a>.
+</li>
+<li>
+The blog of a gypsy engineer:
+<a href="https://blog.gypsyengineer.com/en/security/cve-2019-17555-dos-via-retry-after-header-in-apache-olingo.html">
+CVE-2019-17555: DoS via Retry-After header in Apache Olingo</a>.
 </li>
 </references>
 </qhelp>
