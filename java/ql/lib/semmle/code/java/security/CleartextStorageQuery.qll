@@ -17,13 +17,7 @@ class CleartextStorageAdditionalTaintStep extends Unit {
 }
 
 /** Class for expressions that may represent 'sensitive' information */
-class SensitiveSource extends Expr {
-  SensitiveSource() {
-    // SensitiveExpr is abstract, this lets us inherit from it without
-    // being a technical subclass
-    this instanceof SensitiveExpr
-  }
-
+class SensitiveSource extends Expr instanceof SensitiveExpr {
   /** Holds if this source flows to the `sink`. */
   predicate flowsTo(Expr sink) {
     exists(SensitiveSourceFlowConfig conf |
