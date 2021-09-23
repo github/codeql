@@ -138,34 +138,6 @@ fun doFile(invocationTrapFile: String, fileTrapWriter: FileTrapWriter, checkTrap
             }
         }
     }
-
-    private fun extractConstructorCall(
-        e: IrFunctionAccessExpression,
-        parent: Label<out DbExprparent>,
-        idx: Int,
-        callable: Label<out DbCallable>,
-        irCallable: IrFunction
-    ) {
-        val id = tw.getFreshIdLabel<DbNewexpr>()
-        val typeId = useType(e.type)
-        val locId = tw.getLocation(e)
-        val methodId = useFunction(e.symbol.owner)
-        tw.writeExprs_newexpr(id, typeId, parent, idx)
-        tw.writeHasLocation(id, locId)
-        tw.writeCallableBinding(id, methodId)
-        for (i in 0 until e.valueArgumentsCount) {
-            val arg = e.getValueArgument(i)
-            if (arg != null) {
-                extractExpression(arg, callable, irCallable, id, i)
-            }
-        }
-        val dr = e.dispatchReceiver
-        if (dr != null) {
-            extractExpression(dr, callable, irCallable, id, -3)
-        }
-
-        // todo: type arguments at index -4, -5, ...
-    }
 }
 
 fun <T> fakeLabel(): Label<T> {
@@ -702,6 +674,34 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
         }
 
         // todo: type arguments at index -2, -3, ...
+    }
+
+    private fun extractConstructorCall(
+        e: IrFunctionAccessExpression,
+        parent: Label<out DbExprparent>,
+        idx: Int,
+        callable: Label<out DbCallable>,
+        irCallable: IrFunction
+    ) {
+        val id = tw.getFreshIdLabel<DbNewexpr>()
+        val typeId = useType(e.type)
+        val locId = tw.getLocation(e)
+        val methodId = useFunction(e.symbol.owner)
+        tw.writeExprs_newexpr(id, typeId, parent, idx)
+        tw.writeHasLocation(id, locId)
+        tw.writeCallableBinding(id, methodId)
+        for (i in 0 until e.valueArgumentsCount) {
+            val arg = e.getValueArgument(i)
+            if (arg != null) {
+                extractExpression(arg, callable, irCallable, id, i)
+            }
+        }
+        val dr = e.dispatchReceiver
+        if (dr != null) {
+            extractExpression(dr, callable, irCallable, id, -3)
+        }
+
+        // todo: type arguments at index -4, -5, ...
     }
 
     private val loopIdMap: MutableMap<IrLoop, Label<out DbKtloopstmt>> = mutableMapOf()
