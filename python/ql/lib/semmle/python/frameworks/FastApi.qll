@@ -61,7 +61,9 @@ private module FastApi {
       // your request handler functions that are used to pass in the response. There
       // might be other special cases as well, but as a start this is not too far off
       // the mark.
-      result = this.getARequestHandler().getArgByName(_)
+      result = this.getARequestHandler().getArgByName(_) and
+      // type-annotated with `Response`
+      not any(Response::RequestHandlerParam src).asExpr() = result
     }
 
     override DataFlow::Node getUrlPatternArg() {
@@ -76,6 +78,93 @@ private module FastApi {
   // ---------------------------------------------------------------------------
   // Response modeling
   // ---------------------------------------------------------------------------
+  /**
+   * Provides models for the `fastapi.Response` class
+   */
+  module Response {
+    /** Gets a reference to the `fastapi.Response` class. */
+    private API::Node classRef() { result = API::moduleImport("fastapi").getMember("Response") }
+
+    /**
+     * A source of instances of `fastapi.Response`, extend this class to model new instances.
+     *
+     * This can include instantiations of the class, return values from function
+     * calls, or a special parameter that will be set when functions are called by an external
+     * library.
+     *
+     * Use the predicate `Response::instance()` to get references to instances of `fastapi.Response`.
+     */
+    abstract class InstanceSource extends DataFlow::LocalSourceNode { }
+
+    /** A direct instantiation of `fastapi.Response`. */
+    private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
+      ClassInstantiation() { this = classRef().getACall() }
+    }
+
+    /**
+     * INTERNAL: Do not use.
+     *
+     * A parameter to a FastAPI request-handler that has a `fastapi.Response`
+     * type-annotation.
+     */
+    class RequestHandlerParam extends InstanceSource, DataFlow::ParameterNode {
+      RequestHandlerParam() {
+        this.getParameter().getAnnotation() = classRef().getAUse().asExpr() and
+        any(FastApiRouteSetup rs).getARequestHandler().getArgByName(_) = this.getParameter()
+      }
+    }
+
+    /** Gets a reference to an instance of `fastapi.Response`. */
+    private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
+      t.start() and
+      result instanceof InstanceSource
+      or
+      exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+    }
+
+    /** Gets a reference to an instance of `fastapi.Response`. */
+    DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
+
+    /**
+     * A call to `set_cookie` on a FastAPI Response.
+     */
+    private class SetCookieCall extends HTTP::Server::CookieWrite::Range, DataFlow::MethodCallNode {
+      SetCookieCall() { this.calls(instance(), "set_cookie") }
+
+      override DataFlow::Node getHeaderArg() { none() }
+
+      override DataFlow::Node getNameArg() { result in [this.getArg(0), this.getArgByName("key")] }
+
+      override DataFlow::Node getValueArg() {
+        result in [this.getArg(1), this.getArgByName("value")]
+      }
+    }
+
+    /**
+     * A call to `append` on a `headers` of a FastAPI Response, with the `Set-Cookie`
+     * header-key.
+     */
+    private class HeadersAppendCookie extends HTTP::Server::CookieWrite::Range,
+      DataFlow::MethodCallNode {
+      HeadersAppendCookie() {
+        exists(DataFlow::AttrRead headers, DataFlow::Node keyArg |
+          headers.accesses(instance(), "headers") and
+          this.calls(headers, "append") and
+          keyArg in [this.getArg(0), this.getArgByName("key")] and
+          keyArg.getALocalSource().asExpr().(StrConst).getText().toLowerCase() = "set-cookie"
+        )
+      }
+
+      override DataFlow::Node getHeaderArg() {
+        result in [this.getArg(1), this.getArgByName("value")]
+      }
+
+      override DataFlow::Node getNameArg() { none() }
+
+      override DataFlow::Node getValueArg() { none() }
+    }
+  }
+
   /**
    * Implicit response from returns of FastAPI request handlers
    */
