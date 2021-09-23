@@ -196,6 +196,32 @@ private module StdlibPrivate {
   }
 
   /**
+   * A call to `os.path.exists` or `os.path.lexists` will check if a file exists on the file system.
+   * The `os.path` module offers e number of methods for checking if a file exists and/or has certain
+   * properties, leading to a file system access.
+   * (Although, on some platforms, the check may return `false` due to missing permissions.)
+   * See:
+   *  - https://docs.python.org/3/library/os.path.html#os.path.exists
+   *  - https://docs.python.org/3/library/os.path.html#os.path.lexists
+   *  - https://docs.python.org/3/library/os.path.html#os.path.isfile
+   *  - https://docs.python.org/3/library/os.path.html#os.path.isdir
+   *  - https://docs.python.org/3/library/os.path.html#os.path.islink
+   *  - https://docs.python.org/3/library/os.path.html#os.path.ismount
+   */
+  private class OsPathProbingCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    OsPathProbingCall() {
+      this =
+        os::path()
+            .getMember(["exists", "lexists", "isfile", "isdir", "islink", "ismount"])
+            .getACall()
+    }
+
+    override DataFlow::Node getAPathArgument() {
+      result in [this.getArg(0), this.getArgByName("path")]
+    }
+  }
+
+  /**
    * A call to `os.path.normpath`.
    * See https://docs.python.org/3/library/os.path.html#os.path.normpath
    */
