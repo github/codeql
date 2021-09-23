@@ -6,7 +6,6 @@ edges
 | ldap3_remote.py:138:21:138:32 | ControlFlowNode for Attribute | ldap3_remote.py:138:21:138:40 | ControlFlowNode for Subscript |
 | ldap3_remote.py:138:21:138:40 | ControlFlowNode for Subscript | ldap3_remote.py:139:18:139:21 | ControlFlowNode for host |
 nodes
-| ldap2_global.py:15:41:15:76 | ControlFlowNode for Str | semmle.label | ControlFlowNode for Str |
 | ldap2_remote.py:45:41:45:60 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
 | ldap2_remote.py:56:41:56:60 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
 | ldap3_remote.py:101:12:101:49 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
@@ -21,7 +20,6 @@ nodes
 | ldap3_remote.py:139:18:139:21 | ControlFlowNode for host | semmle.label | ControlFlowNode for host |
 subpaths
 #select
-| ldap2_global.py:15:41:15:76 | ControlFlowNode for Str | ldap2_global.py:15:41:15:76 | ControlFlowNode for Str | ldap2_global.py:15:41:15:76 | ControlFlowNode for Str | $@ is authenticated insecurely. | ldap2_global.py:15:41:15:76 | ControlFlowNode for Str | This LDAP host |
 | ldap2_remote.py:45:41:45:60 | ControlFlowNode for BinaryExpr | ldap2_remote.py:45:41:45:60 | ControlFlowNode for BinaryExpr | ldap2_remote.py:45:41:45:60 | ControlFlowNode for BinaryExpr | $@ is authenticated insecurely. | ldap2_remote.py:45:41:45:60 | ControlFlowNode for BinaryExpr | This LDAP host |
 | ldap2_remote.py:56:41:56:60 | ControlFlowNode for BinaryExpr | ldap2_remote.py:56:41:56:60 | ControlFlowNode for BinaryExpr | ldap2_remote.py:56:41:56:60 | ControlFlowNode for BinaryExpr | $@ is authenticated insecurely. | ldap2_remote.py:56:41:56:60 | ControlFlowNode for BinaryExpr | This LDAP host |
 | ldap3_remote.py:102:18:102:21 | ControlFlowNode for host | ldap3_remote.py:101:12:101:49 | ControlFlowNode for BinaryExpr | ldap3_remote.py:102:18:102:21 | ControlFlowNode for host | $@ is authenticated insecurely. | ldap3_remote.py:102:18:102:21 | ControlFlowNode for host | This LDAP host |
