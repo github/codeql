@@ -1,0 +1,10 @@
+edges
+| CodeInjection.rb:3:12:3:17 | call to params :  | CodeInjection.rb:6:10:6:13 | code |
+nodes
+| CodeInjection.rb:3:12:3:17 | call to params :  | semmle.label | call to params :  |
+| CodeInjection.rb:6:10:6:13 | code | semmle.label | code |
+| CodeInjection.rb:9:10:9:15 | call to params | semmle.label | call to params |
+subpaths
+#select
+| CodeInjection.rb:6:10:6:13 | code | CodeInjection.rb:3:12:3:17 | call to params :  | CodeInjection.rb:6:10:6:13 | code | This code execution depends on $@. | CodeInjection.rb:3:12:3:17 | call to params | a user-provided value |
+| CodeInjection.rb:9:10:9:15 | call to params | CodeInjection.rb:9:10:9:15 | call to params | CodeInjection.rb:9:10:9:15 | call to params | This code execution depends on $@. | CodeInjection.rb:9:10:9:15 | call to params | a user-provided value |

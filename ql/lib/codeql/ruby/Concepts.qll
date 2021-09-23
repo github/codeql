@@ -461,6 +461,7 @@ class SystemCommandExecution extends DataFlow::Node instanceof SystemCommandExec
   DataFlow::Node getAnArgument() { result = super.getAnArgument() }
 }
 
+/** Provides a class for modeling new operating system command APIs. */
 module SystemCommandExecution {
   /**
    * A data flow node that executes an operating system command, for instance by spawning a new
@@ -475,5 +476,30 @@ module SystemCommandExecution {
 
     /** Holds if a shell interprets `arg`. */
     predicate isShellInterpreted(DataFlow::Node arg) { none() }
+  }
+}
+
+/**
+ * A data-flow node that dynamically executes Ruby code.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `CodeExecution::Range` instead.
+ */
+class CodeExecution extends DataFlow::Node instanceof CodeExecution::Range {
+  /** Gets the argument that specifies the code to be executed. */
+  DataFlow::Node getCode() { result = super.getCode() }
+}
+
+/** Provides a class for modeling new dynamic code execution APIs. */
+module CodeExecution {
+  /**
+   * A data-flow node that dynamically executes Ruby code.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `CodeExecution` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /** Gets the argument that specifies the code to be executed. */
+    abstract DataFlow::Node getCode();
   }
 }
