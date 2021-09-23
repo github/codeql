@@ -4,6 +4,7 @@ private import DataFlowPrivate
 private import codeql.ruby.CFG
 private import codeql.ruby.typetracking.TypeTracker
 private import codeql.ruby.dataflow.SSA
+private import FlowSummaryImpl as FlowSummaryImpl
 
 /**
  * An element, viewed as a node in a data flow graph. Either an expression
@@ -24,7 +25,7 @@ class Node extends TNode {
   // TODO: cache
   final Location getLocation() { result = this.(NodeImpl).getLocationImpl() }
 
-  final DataFlowCallable getEnclosingCallable() { result = this.(NodeImpl).getCfgScope() }
+  DataFlowCallable getEnclosingCallable() { result = TCfgScope(this.(NodeImpl).getCfgScope()) }
 
   /**
    * Holds if this element is at the specified location.
@@ -89,14 +90,14 @@ class ParameterNode extends Node, TParameterNode {
    * Holds if this node is the parameter of callable `c` at the specified
    * (zero-based) position.
    */
-  predicate isParameterOf(Callable c, int i) { none() }
+  predicate isParameterOf(DataFlowCallable c, int i) { none() }
 }
 
 /**
  * A data-flow node that is a source of local flow.
  */
 class LocalSourceNode extends Node {
-  LocalSourceNode() { not simpleLocalFlowStep+(any(ExprNode n), this) }
+  LocalSourceNode() { isLocalSourceNode(this) }
 
   /** Holds if this `LocalSourceNode` can flow to `nodeTo` in one or more local flow steps. */
   pragma[inline]
@@ -131,7 +132,17 @@ ExprNode exprNode(CfgNodes::ExprCfgNode e) { result.getExprNode() = e }
  */
 ParameterNode parameterNode(Parameter p) { result.getParameter() = p }
 
-predicate localFlowStep = simpleLocalFlowStep/2;
+/**
+ * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local
+ * (intra-procedural) step.
+ */
+predicate localFlowStep(Node nodeFrom, Node nodeTo) {
+  simpleLocalFlowStep(nodeFrom, nodeTo)
+  or
+  // Simple flow through library code is included in the exposed local
+  // step relation, even though flow is technically inter-procedural
+  FlowSummaryImpl::Private::Steps::summaryThroughStep(nodeFrom, nodeTo, true)
+}
 
 /**
  * Holds if data flows from `source` to `sink` in zero or more local

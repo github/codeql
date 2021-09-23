@@ -2,8 +2,9 @@ private import ruby
 private import codeql.ruby.CFG
 private import DataFlowPrivate
 private import codeql.ruby.typetracking.TypeTracker
-private import codeql.ruby.dataflow.internal.DataFlowPublic as DataFlow
 private import codeql.ruby.ast.internal.Module
+private import FlowSummaryImpl as FlowSummaryImpl
+private import codeql.ruby.dataflow.FlowSummary
 
 newtype TReturnKind =
   TNormalReturnKind() or
@@ -39,56 +40,154 @@ class BreakReturnKind extends ReturnKind, TBreakReturnKind {
   override string toString() { result = "break" }
 }
 
-class DataFlowCallable = CfgScope;
+/** A callable defined in library code, identified by a unique string. */
+abstract class LibraryCallable extends string {
+  bindingset[this]
+  LibraryCallable() { any() }
 
-class DataFlowCall extends CfgNodes::ExprNodes::CallCfgNode {
-  DataFlowCallable getEnclosingCallable() { result = this.getScope() }
+  /** Gets a call to this library callable. */
+  abstract Call getACall();
+}
 
-  pragma[nomagic]
-  private predicate methodCall(DataFlow::LocalSourceNode sourceNode, string method) {
-    exists(DataFlow::Node nodeTo |
-      method = this.getExpr().(MethodCall).getMethodName() and
-      nodeTo.asExpr() = this.getReceiver() and
-      sourceNode.flowsTo(nodeTo)
-    )
-  }
+/**
+ * A callable. This includes callables from source code, as well as callables
+ * defined in library code.
+ */
+class DataFlowCallable extends TDataFlowCallable {
+  /** Gets the underlying source code callable, if any. */
+  Callable asCallable() { this = TCfgScope(result) }
 
-  private Block yieldCall() {
-    this.getExpr() instanceof YieldCall and
-    exists(BlockParameterNode node |
-      node = trackBlock(result) and
-      node.getMethod() = this.getExpr().getEnclosingMethod()
-    )
-  }
+  /** Gets the underlying library callable, if any. */
+  LibraryCallable asLibraryCallable() { this = TLibraryCallable(result) }
 
-  pragma[nomagic]
-  private predicate superCall(Module superClass, string method) {
-    this.getExpr() instanceof SuperCall and
-    exists(Module tp |
-      tp = this.getExpr().getEnclosingModule().getModule() and
-      superClass = tp.getSuperClass() and
-      method = this.getExpr().getEnclosingMethod().getName()
-    )
-  }
+  /** Gets a textual representation of this callable. */
+  string toString() { result = [this.asCallable().toString(), this.asLibraryCallable()] }
 
-  pragma[nomagic]
-  private predicate instanceMethodCall(Module tp, string method) {
-    exists(DataFlow::LocalSourceNode sourceNode |
-      this.methodCall(sourceNode, method) and
-      sourceNode = trackInstance(tp)
-    )
-  }
+  /** Gets the location of this callable. */
+  Location getLocation() { result = this.asCallable().getLocation() }
+}
+
+/**
+ * A call. This includes calls from source code, as well as call(back)s
+ * inside library callables with a flow summary.
+ */
+class DataFlowCall extends TDataFlowCall {
+  /** Gets the enclosing callable. */
+  DataFlowCallable getEnclosingCallable() { none() }
+
+  /** Gets the underlying source code call, if any. */
+  CfgNodes::ExprNodes::CallCfgNode asCall() { none() }
+
+  /** Gets a textual representation of this call. */
+  string toString() { none() }
+
+  /** Gets the location of this call. */
+  Location getLocation() { none() }
+}
+
+/**
+ * A synthesized call inside a callable with a flow summary.
+ *
+ * For example, in
+ * ```rb
+ * ints.each do |i|
+ *   puts i
+ * end
+ * ```
+ *
+ * there is a call to the block argument inside `each`.
+ */
+class SummaryCall extends DataFlowCall, TSummaryCall {
+  private FlowSummaryImpl::Public::SummarizedCallable c;
+  private DataFlow::Node receiver;
+
+  SummaryCall() { this = TSummaryCall(c, receiver) }
+
+  /** Gets the data flow node that this call targets. */
+  DataFlow::Node getReceiver() { result = receiver }
+
+  override DataFlowCallable getEnclosingCallable() { result = c }
+
+  override string toString() { result = "[summary] call to " + receiver + " in " + c }
+
+  override Location getLocation() { result = c.getLocation() }
+}
+
+private class NormalCall extends DataFlowCall, TNormalCall {
+  private CfgNodes::ExprNodes::CallCfgNode c;
+
+  NormalCall() { this = TNormalCall(c) }
+
+  override CfgNodes::ExprNodes::CallCfgNode asCall() { result = c }
+
+  override DataFlowCallable getEnclosingCallable() { result = TCfgScope(c.getScope()) }
+
+  override string toString() { result = c.toString() }
+
+  override Location getLocation() { result = c.getLocation() }
+}
+
+pragma[nomagic]
+private predicate methodCall(
+  CfgNodes::ExprNodes::CallCfgNode call, DataFlow::LocalSourceNode sourceNode, string method
+) {
+  exists(DataFlow::Node nodeTo |
+    method = call.getExpr().(MethodCall).getMethodName() and
+    nodeTo.asExpr() = call.getReceiver() and
+    sourceNode.flowsTo(nodeTo)
+  )
+}
+
+private Block yieldCall(CfgNodes::ExprNodes::CallCfgNode call) {
+  call.getExpr() instanceof YieldCall and
+  exists(BlockParameterNode node |
+    node = trackBlock(result) and
+    node.getMethod() = call.getExpr().getEnclosingMethod()
+  )
+}
+
+pragma[nomagic]
+private predicate superCall(CfgNodes::ExprNodes::CallCfgNode call, Module superClass, string method) {
+  call.getExpr() instanceof SuperCall and
+  exists(Module tp |
+    tp = call.getExpr().getEnclosingModule().getModule() and
+    superClass = tp.getSuperClass() and
+    method = call.getExpr().getEnclosingMethod().getName()
+  )
+}
+
+pragma[nomagic]
+private predicate instanceMethodCall(CfgNodes::ExprNodes::CallCfgNode call, Module tp, string method) {
+  exists(DataFlow::LocalSourceNode sourceNode |
+    methodCall(call, sourceNode, method) and
+    sourceNode = trackInstance(tp)
+  )
+}
+
+cached
+private module Cached {
+  cached
+  newtype TDataFlowCallable =
+    TCfgScope(CfgScope scope) or
+    TLibraryCallable(LibraryCallable callable)
 
   cached
-  DataFlowCallable getTarget() {
+  newtype TDataFlowCall =
+    TNormalCall(CfgNodes::ExprNodes::CallCfgNode c) or
+    TSummaryCall(FlowSummaryImpl::Public::SummarizedCallable c, DataFlow::Node receiver) {
+      FlowSummaryImpl::Private::summaryCallbackRange(c, receiver)
+    }
+
+  cached
+  CfgScope getTarget(CfgNodes::ExprNodes::CallCfgNode call) {
     exists(string method |
       exists(Module tp |
-        this.instanceMethodCall(tp, method) and
+        instanceMethodCall(call, tp, method) and
         result = lookupMethod(tp, method) and
         if result.(Method).isPrivate()
         then
           exists(Self self |
-            self = this.getReceiver().getExpr() and
+            self = call.getReceiver().getExpr() and
             pragma[only_bind_out](self.getEnclosingModule().getModule().getSuperClass*()) =
               pragma[only_bind_out](result.getEnclosingModule().getModule())
           ) and
@@ -96,25 +195,27 @@ class DataFlowCall extends CfgNodes::ExprNodes::CallCfgNode {
           // This may remove some plausible targets, but also removes a lot of
           // implausible targets
           if result.getEnclosingModule() instanceof Toplevel
-          then result.getFile() = this.getFile()
+          then result.getFile() = call.getFile()
           else any()
         else any()
       )
       or
       exists(DataFlow::LocalSourceNode sourceNode |
-        this.methodCall(sourceNode, method) and
+        methodCall(call, sourceNode, method) and
         sourceNode = trackSingletonMethod(result, method)
       )
     )
     or
     exists(Module superClass, string method |
-      this.superCall(superClass, method) and
+      superCall(call, superClass, method) and
       result = lookupMethod(superClass, method)
     )
     or
-    result = this.yieldCall()
+    result = yieldCall(call)
   }
 }
+
+import Cached
 
 private DataFlow::LocalSourceNode trackInstance(Module tp, TypeTracker t) {
   t.start() and
@@ -297,8 +398,13 @@ private DataFlow::LocalSourceNode trackModule(Module tp) {
 
 /** Gets a viable run-time target for the call `call`. */
 DataFlowCallable viableCallable(DataFlowCall call) {
-  result = call.getTarget() and
-  not call.getExpr() instanceof YieldCall // handled by `lambdaCreation`/`lambdaCall`
+  result = TCfgScope(getTarget(call.asCall())) and
+  not call.asCall().getExpr() instanceof YieldCall // handled by `lambdaCreation`/`lambdaCall`
+  or
+  exists(LibraryCallable callable |
+    result = TLibraryCallable(callable) and
+    call.asCall().getExpr() = callable.getACall()
+  )
 }
 
 /**
@@ -307,7 +413,7 @@ DataFlowCallable viableCallable(DataFlowCall call) {
  * qualifier accesses a parameter of the enclosing callable `c` (including
  * the implicit `self` parameter).
  */
-predicate mayBenefitFromCallContext(DataFlowCall call, Callable c) { none() }
+predicate mayBenefitFromCallContext(DataFlowCall call, DataFlowCallable c) { none() }
 
 /**
  * Gets a viable dispatch target of `call` in the context `ctx`. This is
@@ -318,9 +424,9 @@ DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) { 
 /**
  * Holds if `e` is an `ExprNode` that may be returned by a call to `c`.
  */
-predicate exprNodeReturnedFrom(DataFlow::ExprNode e, DataFlowCallable c) {
+predicate exprNodeReturnedFrom(DataFlow::ExprNode e, Callable c) {
   exists(ReturnNode r |
-    r.getEnclosingCallable() = c and
+    r.getEnclosingCallable().asCallable() = c and
     (
       r.(ExplicitReturnNode).getReturningNode().getReturnedValueNode() = e.asExpr() or
       r.(ExprReturnNode) = e

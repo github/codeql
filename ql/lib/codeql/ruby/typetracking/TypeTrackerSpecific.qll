@@ -1,10 +1,11 @@
 private import codeql.ruby.AST as AST
+private import codeql.ruby.CFG as CFG
+private import CFG::CfgNodes
 private import codeql.ruby.dataflow.internal.DataFlowImplCommon as DataFlowImplCommon
 private import codeql.ruby.dataflow.internal.DataFlowPublic as DataFlowPublic
 private import codeql.ruby.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 private import codeql.ruby.dataflow.internal.DataFlowDispatch as DataFlowDispatch
 private import codeql.ruby.dataflow.internal.SsaImpl as SsaImpl
-private import codeql.ruby.controlflow.CfgNodes
 
 class Node = DataFlowPublic::Node;
 
@@ -22,19 +23,31 @@ predicate jumpStep = DataFlowPrivate::jumpStep/2;
  */
 string getPossibleContentName() { result = getSetterCallAttributeName(_) }
 
-/** Holds if `nodeFrom` steps to `nodeTo` by being passed as a parameter in a call. */
+/**
+ * Holds if `nodeFrom` steps to `nodeTo` by being passed as a parameter in a call.
+ *
+ * Flow into summarized library methods is not included, as that will lead to negative
+ * recursion (or, at best, terrible performance), since identifying calls to library
+ * methods is done using API graphs (which uses type tracking).
+ */
 predicate callStep(DataFlowPrivate::ArgumentNode nodeFrom, DataFlowPublic::ParameterNode nodeTo) {
-  exists(DataFlowDispatch::DataFlowCall call, DataFlowDispatch::DataFlowCallable callable, int i |
-    call.getTarget() = callable and
-    nodeFrom.argumentOf(call, i) and
-    nodeTo.isParameterOf(callable, i)
+  exists(ExprNodes::CallCfgNode call, CFG::CfgScope callable, int i |
+    DataFlowDispatch::getTarget(call) = callable and
+    nodeFrom.sourceArgumentOf(call, i) and
+    nodeTo.(DataFlowPrivate::ParameterNodeImpl).isSourceParameterOf(callable, i)
   )
 }
 
-/** Holds if `nodeFrom` steps to `nodeTo` by being returned from a call. */
+/**
+ * Holds if `nodeFrom` steps to `nodeTo` by being returned from a call.
+ *
+ * Flow out of summarized library methods is not included, as that will lead to negative
+ * recursion (or, at best, terrible performance), since identifying calls to library
+ * methods is done using API graphs (which uses type tracking).
+ */
 predicate returnStep(DataFlowPrivate::ReturnNode nodeFrom, Node nodeTo) {
-  exists(DataFlowDispatch::DataFlowCall call |
-    DataFlowImplCommon::getNodeEnclosingCallable(nodeFrom) = call.getTarget() and
+  exists(ExprNodes::CallCfgNode call |
+    nodeFrom.(DataFlowPrivate::NodeImpl).getCfgScope() = DataFlowDispatch::getTarget(call) and
     nodeTo.asExpr().getNode() = call.getNode()
   )
 }

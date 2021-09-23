@@ -15,6 +15,10 @@
         "codeql/csharp/ql/lib/semmle/code/csharp/dataflow/internal/DataFlowImplConsistency.qll",
         "ql/lib/codeql/ruby/dataflow/internal/DataFlowImplConsistency.qll"
     ],
+    "DataFlow Summaries": [
+        "codeql/csharp/ql/lib/semmle/code/csharp/dataflow/internal/FlowSummaryImpl.qll",
+        "ql/lib/codeql/ruby/dataflow/internal/FlowSummaryImpl.qll"
+    ],
     "TaintTracking": [
         "codeql/csharp/ql/lib/semmle/code/csharp/dataflow/internal/tainttracking1/TaintTrackingImpl.qll",
         "ql/lib/codeql/ruby/dataflow/internal/tainttracking1/TaintTrackingImpl.qll"
