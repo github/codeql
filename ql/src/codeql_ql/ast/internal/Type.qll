@@ -33,7 +33,7 @@ class Type extends TType {
 
   /**
    * Gets a supertype of this type. This follows the user-visible type heirarchy,
-   * and doesn't include internal types like thecharacteristic and domain types of classes.
+   * and doesn't include internal types like the characteristic and domain types of classes.
    */
   Type getASuperType() { none() }
 
@@ -325,7 +325,10 @@ private predicate defines(FileOrModule m, string name, Type t, boolean public) {
 module TyConsistency {
   query predicate noResolve(TypeExpr te) {
     not resolveTypeExpr(te, _) and
-    not te.getLocation().getFile().getAbsolutePath().regexpMatch(".*/(test|examples)/.*")
+    not te.getLocation()
+        .getFile()
+        .getAbsolutePath()
+        .regexpMatch(".*/(test|examples|ql-training|recorded-call-graph-metrics)/.*")
   }
 
   query predicate multipleResolve(TypeExpr te, int c, Type t) {
@@ -336,7 +339,10 @@ module TyConsistency {
 
   query predicate varDefNoType(VarDef def) {
     not exists(def.getType()) and
-    not def.getLocation().getFile().getAbsolutePath().regexpMatch(".*/(test|examples)/.*")
+    not def.getLocation()
+        .getFile()
+        .getAbsolutePath()
+        .regexpMatch(".*/(test|examples|ql-training|recorded-call-graph-metrics)/.*")
   }
 
   query predicate exprNoType(Expr e) {
@@ -345,6 +351,10 @@ module TyConsistency {
       p = e.(Call).getTarget() and
       not exists(p.getReturnType())
     ) and
-    not e.getLocation().getFile().getAbsolutePath().regexpMatch(".*/(test|examples)/.*")
+    not e instanceof Formula and
+    not e.getLocation()
+        .getFile()
+        .getAbsolutePath()
+        .regexpMatch(".*/(test|examples|ql-training|recorded-call-graph-metrics)/.*")
   }
 }

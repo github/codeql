@@ -135,8 +135,8 @@ nodes
 | Foo.qll:22:3:22:16 | ComparisonFormula | semmle.order | 66 |
 | Foo.qll:22:5:22:5 | ComparisonOp | semmle.label | [ComparisonOp] ComparisonOp |
 | Foo.qll:22:5:22:5 | ComparisonOp | semmle.order | 68 |
-| Foo.qll:22:7:22:16 | Aggregate[any] | semmle.label | [Aggregate[any]] Aggregate[any] |
-| Foo.qll:22:7:22:16 | Aggregate[any] | semmle.order | 69 |
+| Foo.qll:22:7:22:16 | FullAggregate[any] | semmle.label | [FullAggregate[any]] FullAggregate[any] |
+| Foo.qll:22:7:22:16 | FullAggregate[any] | semmle.order | 69 |
 | Foo.qll:22:11:22:13 | TypeExpr | semmle.label | [TypeExpr] TypeExpr |
 | Foo.qll:22:11:22:13 | TypeExpr | semmle.order | 70 |
 | Foo.qll:22:11:22:15 | f | semmle.label | [VarDecl] f |
@@ -312,10 +312,10 @@ edges
 | Foo.qll:22:3:22:16 | ComparisonFormula | Foo.qll:22:3:22:3 | f | semmle.order | 66 |
 | Foo.qll:22:3:22:16 | ComparisonFormula | Foo.qll:22:5:22:5 | ComparisonOp | semmle.label | getOperator() |
 | Foo.qll:22:3:22:16 | ComparisonFormula | Foo.qll:22:5:22:5 | ComparisonOp | semmle.order | 68 |
-| Foo.qll:22:3:22:16 | ComparisonFormula | Foo.qll:22:7:22:16 | Aggregate[any] | semmle.label | getRightOperand() |
-| Foo.qll:22:3:22:16 | ComparisonFormula | Foo.qll:22:7:22:16 | Aggregate[any] | semmle.order | 69 |
-| Foo.qll:22:7:22:16 | Aggregate[any] | Foo.qll:22:11:22:15 | f | semmle.label | getArgument(_) |
-| Foo.qll:22:7:22:16 | Aggregate[any] | Foo.qll:22:11:22:15 | f | semmle.order | 70 |
+| Foo.qll:22:3:22:16 | ComparisonFormula | Foo.qll:22:7:22:16 | FullAggregate[any] | semmle.label | getRightOperand() |
+| Foo.qll:22:3:22:16 | ComparisonFormula | Foo.qll:22:7:22:16 | FullAggregate[any] | semmle.order | 69 |
+| Foo.qll:22:7:22:16 | FullAggregate[any] | Foo.qll:22:11:22:15 | f | semmle.label | getArgument(_) |
+| Foo.qll:22:7:22:16 | FullAggregate[any] | Foo.qll:22:11:22:15 | f | semmle.order | 70 |
 | Foo.qll:22:11:22:15 | f | Foo.qll:22:11:22:13 | TypeExpr | semmle.label | getTypeExpr() |
 | Foo.qll:22:11:22:15 | f | Foo.qll:22:11:22:13 | TypeExpr | semmle.order | 70 |
 | Foo.qll:24:3:24:23 | ComparisonFormula | Foo.qll:24:3:24:3 | Integer | semmle.label | getLeftOperand() |

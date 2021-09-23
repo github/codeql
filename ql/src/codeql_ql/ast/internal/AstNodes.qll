@@ -21,7 +21,9 @@ newtype TAstNode =
   TComparisonFormula(Generated::CompTerm comp) or
   TComparisonOp(Generated::Compop op) or
   TQuantifier(Generated::Quantified quant) or
-  TAggregate(Generated::Aggregate agg) { agg.getChild(_) instanceof Generated::FullAggregateBody } or
+  TFullAggregate(Generated::Aggregate agg) {
+    agg.getChild(_) instanceof Generated::FullAggregateBody
+  } or
   TExprAggregate(Generated::Aggregate agg) {
     agg.getChild(_) instanceof Generated::ExprAggregateBody
   } or
@@ -63,9 +65,11 @@ class TFormula =
 
 class TBinOpExpr = TAddSubExpr or TMulDivModExpr;
 
+class TAggregate = TFullAggregate or TExprAggregate;
+
 class TExpr =
-  TBinOpExpr or TLiteral or TAggregate or TExprAggregate or TIdentifier or TInlineCast or TCall or
-      TUnaryExpr or TExprAnnotation or TDontCare or TRange or TSet or TAsExpr or TSuper;
+  TBinOpExpr or TLiteral or TAggregate or TIdentifier or TInlineCast or TCall or TUnaryExpr or
+      TExprAnnotation or TDontCare or TRange or TSet or TAsExpr or TSuper;
 
 class TCall = TPredicateCall or TMemberCall or TNoneCall or TAnyCall;
 
@@ -77,7 +81,7 @@ private Generated::AstNode toGeneratedFormula(AST::AstNode n) {
   n = TComparisonFormula(result) or
   n = TComparisonOp(result) or
   n = TQuantifier(result) or
-  n = TAggregate(result) or
+  n = TFullAggregate(result) or
   n = TIdentifier(result) or
   n = TNegation(result) or
   n = TIfFormula(result) or
@@ -94,7 +98,7 @@ private Generated::AstNode toGeneratedExpr(AST::AstNode n) {
   n = TSet(result) or
   n = TExprAnnotation(result) or
   n = TLiteral(result) or
-  n = TAggregate(result) or
+  n = TFullAggregate(result) or
   n = TExprAggregate(result) or
   n = TIdentifier(result) or
   n = TUnaryExpr(result) or
