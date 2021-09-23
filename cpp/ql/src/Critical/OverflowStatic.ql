@@ -130,7 +130,9 @@ predicate outOfBounds(BufferAccess bufaccess, string msg) {
     (
       access > size
       or
-      access = size and not exists(AddressOfExpr addof | bufaccess = addof.getOperand())
+      access = size and
+      not exists(AddressOfExpr addof | bufaccess = addof.getOperand()) and
+      not exists(BuiltInOperationBuiltInOffsetOf offsetof | offsetof.getAChild() = bufaccess)
     ) and
     msg =
       "Potential buffer-overflow: '" + buf + "' has size " + size.toString() + " but '" + buf + "[" +
