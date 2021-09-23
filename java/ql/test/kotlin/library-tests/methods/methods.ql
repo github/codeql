@@ -1,5 +1,5 @@
 import java
 
-from Method m
-select m
+query predicate methods(Method m) { any() }
 
+query predicate extensions(ExtensionMethod m, Type t) { m.getExtendedType() = t }

@@ -462,6 +462,8 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
         val extReceiver = f.extensionReceiverParameter
         if (extReceiver != null) {
             extractValueParameter(extReceiver, id, index--)
+
+            tw.writeKtExtensionFunctions(id)
         }
 
         val dispReceiver = f.dispatchReceiverParameter

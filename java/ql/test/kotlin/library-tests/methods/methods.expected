@@ -1,3 +1,4 @@
+methods
 | methods2.kt:4:1:5:1 | fooBarTopLevelMethod |
 | methods2.kt:7:1:10:1 | <init> |
 | methods2.kt:7:1:10:1 | equals |
@@ -17,3 +18,6 @@
 | methods.kt:5:1:13:1 | toString |
 | methods.kt:6:5:7:5 | classMethod |
 | methods.kt:9:5:12:5 | anotherClassMethod |
+extensions
+| methods3.kt:3:1:3:39 | fooBarTopLevelMethod | file://:0:0:0:0 | int |
+| methods3.kt:6:5:6:43 | fooBarTopLevelMethod | file://:0:0:0:0 | int |
