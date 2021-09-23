@@ -1,5 +1,6 @@
 require 'json'
 require 'yaml'
+require 'oj'
 
 class UserController < ActionController::Base
   def marshal_example
@@ -15,6 +16,11 @@ class UserController < ActionController::Base
 
   def yaml_example
     object = YAML.load params[:yaml]
+    # ...
+  end
+
+  def oj_example
+    object = Oj.load params[:json]
     # ...
   end
 end

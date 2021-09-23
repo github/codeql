@@ -67,6 +67,119 @@ module UnsafeDeserialization {
     }
   }
 
+  private string getAKnownOjModeName(boolean isSafe) {
+    result = ["compat", "custom", "json", "null", "rails", "strict", "wab"] and isSafe = true
+    or
+    result = "object" and isSafe = false
+  }
+
+  private predicate isOjModePair(Pair p, string modeValue) {
+    p.getKey().(SymbolLiteral).getValueText() = "mode" and
+    exists(DataFlow::LocalSourceNode symbolLiteral, DataFlow::Node value |
+      symbolLiteral.asExpr().getExpr().(SymbolLiteral).getValueText() = modeValue and
+      symbolLiteral.flowsTo(value) and
+      value.asExpr().getExpr() = p.getValue()
+    )
+  }
+
+  /**
+   * A node representing a hash that contains the key `:mode`.
+   */
+  private class OjOptionsHashWithModeKey extends DataFlow::Node {
+    private string modeValue;
+
+    OjOptionsHashWithModeKey() {
+      exists(DataFlow::LocalSourceNode options |
+        options.flowsTo(this) and
+        isOjModePair(options.asExpr().getExpr().(HashLiteral).getAKeyValuePair(), modeValue)
+      )
+    }
+
+    /**
+     * Holds if this hash node contains a `:mode` key whose value is one known
+     * to be `isSafe` with untrusted data.
+     */
+    predicate hasKnownMode(boolean isSafe) { modeValue = getAKnownOjModeName(isSafe) }
+
+    /**
+     * Holds if this hash node contains a `:mode` key whose value is one of the
+     * `Oj` modes known to be safe to use with untrusted data.
+     */
+    predicate hasSafeMode() { this.hasKnownMode(true) }
+
+    /**
+     * Holds if this hash node contains a `:mode` key whose value is one of the
+     * `Oj` modes known to be unsafe to use with untrusted data.
+     */
+    predicate hasUnsafeMode() { this.hasKnownMode(false) }
+  }
+
+  /**
+   * A call node that sets `Oj.default_options`.
+   *
+   * ```rb
+   * Oj.default_options = { allow_blank: true, mode: :compat }
+   * ```
+   */
+  private class SetOjDefaultOptionsCall extends DataFlow::CallNode {
+    SetOjDefaultOptionsCall() {
+      this = API::getTopLevelMember("Oj").getAMethodCall("default_options=")
+    }
+
+    /**
+     * Gets the value being assigned to `Oj.default_options`.
+     */
+    DataFlow::Node getValue() {
+      result.asExpr() =
+        this.getArgument(0).asExpr().(CfgNodes::ExprNodes::AssignExprCfgNode).getRhs()
+    }
+  }
+
+  /**
+   * A call to `Oj.load`.
+   */
+  private class OjLoadCall extends DataFlow::CallNode {
+    OjLoadCall() { this = API::getTopLevelMember("Oj").getAMethodCall("load") }
+
+    /**
+     * Holds if this call to `Oj.load` includes an explicit options hash
+     * argument that sets the mode to one that is known to be `isSafe`.
+     */
+    predicate hasExplicitKnownMode(boolean isSafe) {
+      exists(DataFlow::Node arg, int i | i >= 1 and arg = this.getArgument(i) |
+        arg.(OjOptionsHashWithModeKey).hasKnownMode(isSafe)
+        or
+        isOjModePair(arg.asExpr().getExpr(), getAKnownOjModeName(isSafe))
+      )
+    }
+  }
+
+  /**
+   * An argument in a call to `Oj.load` where the mode is `:object` (which is
+   * the default), considered a sink for unsafe deserialization.
+   */
+  class UnsafeOjLoadArgument extends Sink {
+    UnsafeOjLoadArgument() {
+      exists(OjLoadCall ojLoad |
+        this = ojLoad.getArgument(0) and
+        // Exclude calls that explicitly pass a safe mode option.
+        not ojLoad.hasExplicitKnownMode(true) and
+        (
+          // Sinks to include:
+          // - Calls with an explicit, unsafe mode option.
+          ojLoad.hasExplicitKnownMode(false)
+          or
+          // - Calls with no explicit mode option, unless there exists a call
+          // anywhere to set the default options to a known safe mode.
+          not ojLoad.hasExplicitKnownMode(_) and
+          not exists(SetOjDefaultOptionsCall setOpts |
+            setOpts.getValue().(OjOptionsHashWithModeKey).hasSafeMode()
+          )
+        )
+      )
+    }
+  }
+
   /**
    * `Base64.decode64` propagates taint from its argument to its return value.
    */
