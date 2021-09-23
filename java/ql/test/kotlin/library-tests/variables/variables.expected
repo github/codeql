@@ -24,3 +24,15 @@
 | variables.kt:20:5:22:5 | <this> | variables.kt:16:1:34:1 | C2 | file://:0:0:0:0 | <none> |
 | variables.kt:23:5:33:5 | <this> | variables.kt:16:1:34:1 | C2 | file://:0:0:0:0 | <none> |
 | variables.kt:23:9:23:10 | <this> | variables.kt:12:1:15:1 | C1 | file://:0:0:0:0 | <none> |
+| variables.kt:36:1:45:1 | <this> | file://:0:0:0:0 | Any | file://:0:0:0:0 | <none> |
+| variables.kt:36:1:45:1 | <this> | file://:0:0:0:0 | Any | file://:0:0:0:0 | <none> |
+| variables.kt:36:1:45:1 | <this> | file://:0:0:0:0 | Any | file://:0:0:0:0 | <none> |
+| variables.kt:36:1:45:1 | other | file://:0:0:0:0 | Any | file://:0:0:0:0 | <none> |
+| variables.kt:37:5:37:15 | <this> | variables.kt:36:1:45:1 | C3 | file://:0:0:0:0 | <none> |
+| variables.kt:38:5:44:5 | <this> | file://:0:0:0:0 | Any | file://:0:0:0:0 | <none> |
+| variables.kt:38:5:44:5 | <this> | file://:0:0:0:0 | Any | file://:0:0:0:0 | <none> |
+| variables.kt:38:5:44:5 | <this> | file://:0:0:0:0 | Any | file://:0:0:0:0 | <none> |
+| variables.kt:38:5:44:5 | <this> | variables.kt:36:1:45:1 | C3 | file://:0:0:0:0 | <none> |
+| variables.kt:38:11:44:5 | other | file://:0:0:0:0 | Any | file://:0:0:0:0 | <none> |
+| variables.kt:39:9:39:19 | <this> | variables.kt:38:5:44:5 | C4 | file://:0:0:0:0 | <none> |
+| variables.kt:40:9:43:9 | <this> | variables.kt:38:5:44:5 | C4 | file://:0:0:0:0 | <none> |

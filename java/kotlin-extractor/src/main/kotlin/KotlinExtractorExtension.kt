@@ -413,19 +413,31 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
         @Suppress("UNCHECKED_CAST")
         val parentId: Label<out DbMethod> = useDeclarationParent(vp.parent) as Label<out DbMethod>
         var idx = vp.index
-        if (isQualifiedThis(vp)) {
+        if (isQualifiedThisFunction(vp)) {
             idx = -2
         }
         val label = "@\"params;{$parentId};$idx\""
         return label
     }
 
-    private fun isQualifiedThis(vp: IrValueParameter) : Boolean {
+    private fun isQualifiedThis(vp: IrValueParameter): Boolean {
+        return isQualifiedThisFunction(vp) ||
+               isQualifiedThisClass(vp)
+    }
+
+    private fun isQualifiedThisFunction(vp: IrValueParameter): Boolean {
         val parent = vp.parent
         return vp.index == -1 &&
-                parent is IrFunction &&
-                parent.dispatchReceiverParameter == vp &&
-                parent.extensionReceiverParameter != null
+               parent is IrFunction &&
+               parent.dispatchReceiverParameter == vp &&
+               parent.extensionReceiverParameter != null
+    }
+
+    private fun isQualifiedThisClass(vp: IrValueParameter): Boolean {
+        val parent = vp.parent
+        return vp.index == -1 &&
+               parent is IrClass &&
+               parent.thisReceiver == vp
     }
 
     fun useValueParameter(vp: IrValueParameter): Label<out DbParam> {

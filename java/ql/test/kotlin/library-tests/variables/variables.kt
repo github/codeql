@@ -32,3 +32,14 @@ class C2 (val o:C1) {
         this@C2.f3() // dispatchReceiverParameter
     }
 }
+
+class C3 {
+    fun f0() {}
+    inner class C4 {
+        fun f0() {}
+        fun f1() {
+            this.f0()
+            this@C3.f0()
+        }
+    }
+}
