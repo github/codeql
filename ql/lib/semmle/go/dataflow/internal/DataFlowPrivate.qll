@@ -184,7 +184,55 @@ class CastNode extends ExprNode {
   override ConversionExpr expr;
 }
 
-class DataFlowCallable = FuncDef;
+private newtype TCallable =
+  TFunctionCallable(Function f) or
+  TFuncLitCallable(FuncLit l)
+
+/**
+ * A data-flow callable.
+ *
+ * This is either a `Function` or a `FuncLit`, because of limitations of both
+ * `Function` and `FuncDef`:
+ *   - `Function` is an entity, and therefore does not include function literals, and
+ *   - `FuncDef` is an AST node, and so is not extracted for functions from external libraries.
+ */
+class DataFlowCallable extends TCallable {
+  /** Gets a textual representation of this callable. */
+  string toString() { result = [this.asFunction().toString(), this.asFuncLit().toString()] }
+
+  /** Gets this callable as a function, if it is one. */
+  Function asFunction() { this = TFunctionCallable(result) }
+
+  /** Gets this callable as a function literal, if it is one. */
+  FuncLit asFuncLit() { this = TFuncLitCallable(result) }
+
+  /** Gets this function's definition, if it exists. */
+  FuncDef getFuncDef() { result = [this.asFuncLit().(FuncDef), this.asFunction().getFuncDecl()] }
+
+  /** Gets the type of this callable. */
+  SignatureType getType() {
+    result = this.asFunction().getType() or
+    result = this.asFuncLit().getType()
+  }
+
+  /** Gets the name of this callable. */
+  string getName() {
+    result = this.asFunction().getName() or
+    result = this.asFuncLit().getName()
+  }
+
+  /**
+   * Holds if this element is at the specified location.
+   * The location spans column `sc` of line `sl` to
+   * column `ec` of line `el` in file `fp`.
+   * For more information, see
+   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+   */
+  predicate hasLocationInfo(string fp, int sl, int sc, int el, int ec) {
+    this.asFunction().hasLocationInfo(fp, sl, sc, el, ec) or
+    this.asFuncLit().hasLocationInfo(fp, sl, sc, el, ec)
+  }
+}
 
 class DataFlowExpr = Expr;
 
@@ -207,7 +255,7 @@ class DataFlowCall extends Expr {
   ExprNode getNode() { result = call }
 
   /** Gets the enclosing callable of this call. */
-  DataFlowCallable getEnclosingCallable() { result = this.getEnclosingFunction() }
+  DataFlowCallable getEnclosingCallable() { result.getFuncDef() = this.getEnclosingFunction() }
 }
 
 /** Holds if `e` is an expression that always has the same Boolean value `val`. */

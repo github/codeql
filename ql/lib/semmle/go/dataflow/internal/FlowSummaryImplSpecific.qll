@@ -52,11 +52,7 @@ predicate summaryElement(DataFlowCallable c, string input, string output, string
     string namespace, string type, boolean subtypes, string name, string signature, string ext
   |
     summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind) and
-    c =
-      interpretElement(namespace, type, subtypes, name, signature, ext)
-          .asEntity()
-          .(Function)
-          .getFuncDecl()
+    c.asFunction() = interpretElement(namespace, type, subtypes, name, signature, ext).asEntity()
   )
 }
 
@@ -130,7 +126,11 @@ class InterpretNode extends TInterpretNode {
   DataFlowCall asCall() { result = this.asElement().asAstNode() }
 
   /** Gets the callable that this node corresponds to, if any. */
-  DataFlowCallable asCallable() { result = this.asElement().asEntity().(Function).getFuncDecl() }
+  DataFlowCallable asCallable() {
+    result.asFunction() = this.asElement().asEntity()
+    or
+    result.asFuncLit() = this.asElement().asAstNode()
+  }
 
   /** Gets the target of this call, if any. */
   SourceOrSinkElement getCallTarget() {
