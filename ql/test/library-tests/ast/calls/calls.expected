@@ -12,6 +12,8 @@ callsWithArguments
 | calls.rb:36:3:36:16 | yield ... | (none) | 1 | calls.rb:36:14:36:16 | 200 |
 | calls.rb:54:1:54:14 | call to some_func | some_func | 0 | calls.rb:54:11:54:13 | call to foo |
 | calls.rb:55:1:55:17 | call to some_func | some_func | 0 | calls.rb:55:11:55:16 | call to foo |
+| calls.rb:58:1:58:5 | call to [] | [] | 0 | calls.rb:58:2:58:4 | call to foo |
+| calls.rb:59:1:59:8 | call to [] | [] | 0 | calls.rb:59:2:59:7 | call to foo |
 | calls.rb:234:1:234:8 | ...[...] | [] | 0 | calls.rb:234:5:234:7 | call to bar |
 | calls.rb:235:1:235:14 | ...[...] | [] | 0 | calls.rb:235:8:235:13 | call to bar |
 | calls.rb:266:1:266:9 | call to foo | foo | 0 | calls.rb:266:5:266:8 | &... |
@@ -43,11 +45,18 @@ callsWithArguments
 | calls.rb:316:22:316:27 | call to [] | [] | 0 | calls.rb:316:22:316:27 | -1 |
 | calls.rb:316:22:316:27 | call to []= | []= | 0 | calls.rb:316:26:316:26 | 4 |
 | calls.rb:316:22:316:27 | call to []= | []= | 1 | calls.rb:316:22:316:27 | ... = ... |
+| calls.rb:316:31:316:42 | call to [] | [] | 0 | calls.rb:316:32:316:32 | 1 |
+| calls.rb:316:31:316:42 | call to [] | [] | 1 | calls.rb:316:35:316:35 | 2 |
+| calls.rb:316:31:316:42 | call to [] | [] | 2 | calls.rb:316:38:316:38 | 3 |
+| calls.rb:316:31:316:42 | call to [] | [] | 3 | calls.rb:316:41:316:41 | 4 |
 | calls.rb:317:1:317:1 | call to [] | [] | 0 | calls.rb:317:1:317:1 | 0 |
 | calls.rb:317:5:317:10 | ...[...] | [] | 0 | calls.rb:317:9:317:9 | 5 |
 | calls.rb:317:5:317:10 | call to [] | [] | 0 | calls.rb:317:5:317:10 | _ .. _ |
 | calls.rb:317:5:317:10 | call to []= | []= | 0 | calls.rb:317:9:317:9 | 5 |
 | calls.rb:317:5:317:10 | call to []= | []= | 1 | calls.rb:317:5:317:10 | ... = ... |
+| calls.rb:317:14:317:22 | call to [] | [] | 0 | calls.rb:317:15:317:15 | 1 |
+| calls.rb:317:14:317:22 | call to [] | [] | 1 | calls.rb:317:18:317:18 | 2 |
+| calls.rb:317:14:317:22 | call to [] | [] | 2 | calls.rb:317:21:317:21 | 3 |
 | calls.rb:318:1:318:10 | call to count= | count= | 1 | calls.rb:318:12:318:13 | __synth__1 |
 | calls.rb:319:1:319:6 | ...[...] | [] | 0 | calls.rb:319:5:319:5 | 0 |
 | calls.rb:319:1:319:6 | call to [] | [] | 0 | calls.rb:319:5:319:5 | __synth__1 |
@@ -80,7 +89,9 @@ callsWithReceiver
 | calls.rb:54:11:54:13 | call to foo | calls.rb:54:11:54:13 | self |
 | calls.rb:55:1:55:17 | call to some_func | calls.rb:55:1:55:17 | self |
 | calls.rb:55:11:55:16 | call to foo | calls.rb:55:11:55:11 | X |
+| calls.rb:58:1:58:5 | call to [] | calls.rb:58:1:58:5 | Array |
 | calls.rb:58:2:58:4 | call to foo | calls.rb:58:2:58:4 | self |
+| calls.rb:59:1:59:8 | call to [] | calls.rb:59:1:59:8 | Array |
 | calls.rb:59:2:59:7 | call to foo | calls.rb:59:2:59:2 | X |
 | calls.rb:62:8:62:10 | call to foo | calls.rb:62:8:62:10 | self |
 | calls.rb:63:8:63:13 | call to foo | calls.rb:63:8:63:8 | X |
@@ -246,11 +257,13 @@ callsWithReceiver
 | calls.rb:316:22:316:27 | ...[...] | calls.rb:316:22:316:24 | call to foo |
 | calls.rb:316:22:316:27 | call to [] | calls.rb:316:22:316:27 | __synth__0 |
 | calls.rb:316:22:316:27 | call to []= | calls.rb:316:22:316:24 | call to foo |
+| calls.rb:316:31:316:42 | call to [] | calls.rb:316:31:316:42 | Array |
 | calls.rb:317:1:317:1 | call to [] | calls.rb:317:1:317:1 | __synth__0 |
 | calls.rb:317:5:317:7 | call to foo | calls.rb:317:5:317:7 | self |
 | calls.rb:317:5:317:10 | ...[...] | calls.rb:317:5:317:7 | call to foo |
 | calls.rb:317:5:317:10 | call to [] | calls.rb:317:5:317:10 | __synth__0 |
 | calls.rb:317:5:317:10 | call to []= | calls.rb:317:5:317:7 | call to foo |
+| calls.rb:317:14:317:22 | call to [] | calls.rb:317:14:317:22 | Array |
 | calls.rb:318:1:318:10 | call to count | calls.rb:318:1:318:4 | __synth__0 |
 | calls.rb:318:1:318:10 | call to count | calls.rb:318:1:318:4 | self |
 | calls.rb:318:1:318:10 | call to count= | calls.rb:318:1:318:4 | __synth__0 |

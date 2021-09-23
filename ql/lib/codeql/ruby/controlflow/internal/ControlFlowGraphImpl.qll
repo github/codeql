@@ -130,10 +130,6 @@ module Trees {
     }
   }
 
-  private class ArrayLiteralTree extends StandardPostOrderTree, ArrayLiteral {
-    final override ControlFlowTree getChildElement(int i) { result = this.getElement(i) }
-  }
-
   private class AssignExprTree extends StandardPostOrderTree, AssignExpr {
     AssignExprTree() {
       exists(Expr left | left = this.getLeftOperand() |

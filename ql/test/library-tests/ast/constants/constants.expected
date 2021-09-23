@@ -17,6 +17,7 @@ constantAccess
 | constants.rb:17:49:17:55 | ModuleA | read | ModuleA | ConstantReadAccess |
 | constants.rb:17:49:17:64 | CONST_B | read | CONST_B | ConstantReadAccess |
 | constants.rb:20:5:20:9 | Names | write | Names | ConstantAssignment |
+| constants.rb:20:13:20:37 | Array | read | Array | ConstantReadAccess |
 | constants.rb:22:5:22:9 | Names | read | Names | ConstantReadAccess |
 | constants.rb:23:18:23:25 | GREETING | read | GREETING | ConstantReadAccess |
 | constants.rb:31:1:32:3 | ClassD | write | ClassD | ClassDeclaration |

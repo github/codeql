@@ -107,6 +107,9 @@ private module Cached {
     } or
     TComplementExpr(Ruby::Unary g) { g instanceof @ruby_unary_tilde } or
     TComplexLiteral(Ruby::Complex g) or
+    TConstantReadAccessSynth(AST::AstNode parent, int i, string value) {
+      mkSynthChild(ConstantReadAccessKind(value), parent, i)
+    } or
     TDefinedExpr(Ruby::Unary g) { g instanceof @ruby_unary_definedquestion } or
     TDelimitedSymbolLiteral(Ruby::DelimitedSymbol g) or
     TDestructuredLeftAssignment(Ruby::DestructuredLeftAssignment g) {
@@ -439,6 +442,8 @@ private module Cached {
     or
     result = TClassVariableAccessSynth(parent, i, _)
     or
+    result = TConstantReadAccessSynth(parent, i, _)
+    or
     result = TDivExprSynth(parent, i)
     or
     result = TExponentExprSynth(parent, i)
@@ -526,7 +531,8 @@ class TMethodCall =
 
 class TSuperCall = TTokenSuperCall or TRegularSuperCall;
 
-class TConstantAccess = TTokenConstantAccess or TScopeResolutionConstantAccess or TNamespace;
+class TConstantAccess =
+  TTokenConstantAccess or TScopeResolutionConstantAccess or TNamespace or TConstantReadAccessSynth;
 
 class TControlExpr = TConditionalExpr or TCaseExpr or TLoop;
 
