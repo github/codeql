@@ -629,6 +629,22 @@ module Private {
       )
     }
 
+    /** Holds if specification component `c` parses as return value `n`. */
+    predicate parseReturn(string c, int n) {
+      specSplit(_, c, _) and
+      (
+        c = "ReturnValue" and n = 0
+        or
+        c.regexpCapture("ReturnValue\\[([-0-9]+)\\]", 1).toInt() = n
+        or
+        exists(int n1, int n2 |
+          c.regexpCapture("ReturnValue\\[([-0-9]+)\\.\\.([0-9]+)\\]", 1).toInt() = n1 and
+          c.regexpCapture("ReturnValue\\[([-0-9]+)\\.\\.([0-9]+)\\]", 2).toInt() = n2 and
+          n = [n1 .. n2]
+        )
+      )
+    }
+
     private SummaryComponent interpretComponent(string c) {
       specSplit(_, c, _) and
       (
@@ -636,7 +652,9 @@ module Private {
         or
         exists(int pos | parseParam(c, pos) and result = SummaryComponent::parameter(pos))
         or
-        c = "ReturnValue" and result = SummaryComponent::return(getReturnValueKind())
+        exists(int pos |
+          parseReturn(c, pos) and result = SummaryComponent::return(getReturnKind(pos))
+        )
         or
         result = interpretComponentSpecific(c)
       )
@@ -711,7 +729,8 @@ module Private {
     private predicate outputNeedsReference(string c) {
       c = "Argument" or
       parseArg(c, _) or
-      c = "ReturnValue"
+      c = "ReturnValue" or
+      parseReturn(c, _)
     }
 
     private predicate sourceElementRef(InterpretNode ref, string output, string kind) {
@@ -751,8 +770,13 @@ module Private {
           c = "Parameter" or parseParam(c, pos)
         )
         or
-        c = "ReturnValue" and
-        node.asNode() = getAnOutNodeExt(mid.asCall(), TValueReturn(getReturnValueKind()))
+        exists(int pos |
+          node.asNode() = getAnOutNodeExt(mid.asCall(), TValueReturn(getReturnKind(pos)))
+        |
+          c = "ReturnValue" and pos = 0
+          or
+          parseReturn(c, pos)
+        )
         or
         interpretOutputSpecific(c, mid, node)
       )
@@ -771,10 +795,14 @@ module Private {
           c = "Argument" or parseArg(c, pos)
         )
         or
-        exists(ReturnNodeExt ret |
-          c = "ReturnValue" and
+        exists(int pos, ReturnNodeExt ret |
+          (
+            c = "ReturnValue" and pos = 0
+            or
+            parseReturn(c, pos)
+          ) and
           ret = node.asNode() and
-          ret.getKind().(ValueReturnKind).getKind() = getReturnValueKind() and
+          ret.getKind().(ValueReturnKind).getKind() = getReturnKind(pos) and
           mid.asCallable() = getNodeEnclosingCallable(ret)
         )
         or
