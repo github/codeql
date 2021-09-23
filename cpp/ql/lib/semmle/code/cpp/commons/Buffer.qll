@@ -10,44 +10,11 @@ import semmle.code.cpp.dataflow.DataFlow
  *   char data[1]; // v
  * };
  * ```
- * This requires that `v` is an array of size 0 or 1, and `v` is the last member of `c`.
- * In addition, if the size of the structure is taken, there must be at least one instance
- * where a `c` pointer is allocated with additional space.
- * For example, holds for `c` if it occurs as
- * ```
- * malloc(sizeof(c) + 100 * sizeof(char))
- * ```
- * but not if it only ever occurs as
- * ```
- * malloc(sizeof(c))
- * ```
+ * This requires that `v` is an array of size 0 or 1.
  */
 predicate memberMayBeVarSize(Class c, MemberVariable v) {
-  exists(int i |
-    // `v` is the last field in `c`
-    i = max(int j | c.getCanonicalMember(j) instanceof Field | j) and
-    v = c.getCanonicalMember(i) and
-    // v is an array of size at most 1
-    v.getUnspecifiedType().(ArrayType).getArraySize() <= 1 and
-    not c instanceof Union
-  ) and
-  // If the size is taken, then arithmetic is performed on the result at least once
-  (
-    // `sizeof(c)` is not taken
-    not exists(SizeofOperator so |
-      so.(SizeofTypeOperator).getTypeOperand().getUnspecifiedType() = c or
-      so.(SizeofExprOperator).getExprOperand().getUnspecifiedType() = c
-    )
-    or
-    // or `sizeof(c)` is taken
-    exists(SizeofOperator so |
-      so.(SizeofTypeOperator).getTypeOperand().getUnspecifiedType() = c or
-      so.(SizeofExprOperator).getExprOperand().getUnspecifiedType() = c
-    |
-      // and arithmetic is performed on the result
-      so.getParent*() instanceof AddExpr
-    )
-  )
+  c = v.getDeclaringType() and
+  v.getUnspecifiedType().(ArrayType).getArraySize() <= 1
 }
 
 /**
@@ -60,10 +27,6 @@ int getBufferSize(Expr bufferExpr, Element why) {
     result = bufferVar.getUnspecifiedType().(ArrayType).getSize() and
     why = bufferVar and
     not memberMayBeVarSize(_, bufferVar) and
-    not exists(Union bufferType |
-      bufferType.getAMemberVariable() = why and
-      bufferVar.getUnspecifiedType().(ArrayType).getSize() <= 1
-    ) and
     not result = 0 // zero sized arrays are likely to have special usage, for example
     or
     // behaving a bit like a 'union' overlapping other fields.
@@ -84,13 +47,6 @@ int getBufferSize(Expr bufferExpr, Element why) {
       parentPtr = bufferExpr.(VariableAccess).getQualifier() and
       parentPtr.getTarget().getUnspecifiedType().(PointerType).getBaseType() = parentClass and
       result = getBufferSize(parentPtr, _) + bufferVar.getType().getSize() - parentClass.getSize()
-    )
-    or
-    exists(Union bufferType |
-      bufferType.getAMemberVariable() = why and
-      why = bufferVar and
-      bufferVar.getUnspecifiedType().(ArrayType).getSize() <= 1 and
-      result = bufferType.getSize()
     )
   )
   or
