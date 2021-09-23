@@ -413,8 +413,9 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
         @Suppress("UNCHECKED_CAST")
         val parentId: Label<out DbMethod> = useDeclarationParent(vp.parent) as Label<out DbMethod>
         var idx = vp.index
-        if (isQualifiedThisFunction(vp)) {
-            idx = -2
+        if (idx < 0) {
+            // We're not extracting this and this@TYPE parameters of functions:
+            logger.warnElement(Severity.ErrorSevere, "Unexpected negative index for parameter", vp)
         }
         val label = "@\"params;{$parentId};$idx\""
         return label
@@ -470,17 +471,10 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
             extractValueParameter(vp, id, i)
         }
 
-        var index = -1
         val extReceiver = f.extensionReceiverParameter
         if (extReceiver != null) {
-            extractValueParameter(extReceiver, id, index--)
-
-            tw.writeKtExtensionFunctions(id)
-        }
-
-        val dispReceiver = f.dispatchReceiverParameter
-        if (dispReceiver != null) {
-            extractValueParameter(dispReceiver, id, index)
+            val extendedType = useType(extReceiver.type)
+            tw.writeKtExtensionFunctions(id, extendedType)
         }
     }
 

@@ -673,10 +673,12 @@ class InstanceField extends Field {
 
 /** A Kotlin extension function. */
 class ExtensionMethod extends Method {
-  ExtensionMethod() { ktExtensionFunctions(this) }
+  Type extendedType;
+
+  ExtensionMethod() { ktExtensionFunctions(this, extendedType) }
 
   /** Gets the type being extended by this method. */
-  Type getExtendedType() { result = getParameter(-1).getType() }
+  Type getExtendedType() { result = extendedType }
 
   override string getAPrimaryQlClass() { result = "ExtensionMethod" }
 }
