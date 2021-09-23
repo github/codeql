@@ -6,6 +6,7 @@
  * @problem.severity warning
  * @precision medium
  * @tags correctness
+ *       maintainability
  *       security
  *       external/cwe/cwe-1041
  */
@@ -48,7 +49,7 @@ predicate conditionsOutsideWrapper(FunctionCall fcp) {
   not exists(ExprCall ectmp | fcp = ectmp.getAnArgument().getAChild*())
 }
 
-/** Holds if the conditions for a call within the wrapper function are met. */
+/** Held if the conditions for calling `fcp` inside the `fnp` wrapper function are met. */
 pragma[inline]
 predicate conditionsInsideWrapper(FunctionCall fcp, Function fnp) {
   not exists(FunctionCall fctmp2 |
@@ -60,7 +61,7 @@ predicate conditionsInsideWrapper(FunctionCall fcp, Function fnp) {
   fnp.getNumberOfParameters() > 0 and
   // the call arguments must be passed through the arguments of the wrapper function
   forall(int i | i in [0 .. fcp.getNumberOfArguments() - 1] |
-    fcp.getArgument(i).(VariableAccess).getTarget() = fnp.getAParameter().getAnAccess().getTarget()
+    globalValueNumber(fcp.getArgument(i)) = globalValueNumber(fnp.getAParameter().getAnAccess())
   ) and
   // there should be no more than one required call inside the wrapper function
   not exists(FunctionCall fctmp |
@@ -119,8 +120,8 @@ predicate conditionsForWrapper(FunctionCall fcp, Function fnp) {
     forall(int i | i in [0 .. fnp.getNumberOfParameters() - 1] |
       fnp.getParameter(i).getAnAccess().getTarget() =
         fcp.getAnArgument().(VariableAccess).getTarget() or
-      fnp.getParameter(i).getType() instanceof Class or
-      fnp.getParameter(i).getType().(ReferenceType).getBaseType() instanceof Class or
+      fnp.getParameter(i).getUnspecifiedType() instanceof Class or
+      fnp.getParameter(i).getUnspecifiedType().(ReferenceType).getBaseType() instanceof Class or
       fnp.getParameter(i).getAnAccess().getTarget() =
         fctmp.getAnArgument().(VariableAccess).getTarget()
     )
