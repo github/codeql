@@ -66,11 +66,15 @@ private newtype TSourceOrSinkElement =
   TEntityElement(Entity e) or
   TAstElement(AstNode n)
 
+/** An element representable by CSV modeling. */
 class SourceOrSinkElement extends TSourceOrSinkElement {
+  /** Gets this source or sink element as an entity, if it is one. */
   Entity asEntity() { this = TEntityElement(result) }
 
+  /** Gets this source or sink element as an AST node, if it is one. */
   AstNode asAstNode() { this = TAstElement(result) }
 
+  /** Gets a textual representation of this source or sink element. */
   string toString() {
     result = "element representing " + [this.asEntity().toString(), this.asAstNode().toString()]
   }
