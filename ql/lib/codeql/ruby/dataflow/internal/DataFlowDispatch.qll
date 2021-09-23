@@ -57,7 +57,7 @@ class DataFlowCallable extends TDataFlowCallable {
   /** Gets the underlying source code callable, if any. */
   Callable asCallable() { this = TCfgScope(result) }
 
-  /** Get the underlying library callable, if any. */
+  /** Gets the underlying library callable, if any. */
   LibraryCallable asLibraryCallable() { this = TLibraryCallable(result) }
 
   /** Gets a textual representation of this callable. */

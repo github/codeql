@@ -87,7 +87,7 @@ abstract class SummarizedCallable extends LibraryCallable {
   /**
    * Same as
    *
-   * ```rb
+   * ```ql
    * propagatesFlow(
    *   SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
    * )
@@ -106,10 +106,10 @@ abstract class SummarizedCallable extends LibraryCallable {
   predicate clearsContent(int i, DataFlow::Content content) { none() }
 }
 
-private class SummarizedCallableAdaptor extends Impl::Public::SummarizedCallable {
+private class SummarizedCallableAdapter extends Impl::Public::SummarizedCallable {
   private SummarizedCallable sc;
 
-  SummarizedCallableAdaptor() { this = TLibraryCallable(sc) }
+  SummarizedCallableAdapter() { this = TLibraryCallable(sc) }
 
   final override predicate propagatesFlow(
     SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
