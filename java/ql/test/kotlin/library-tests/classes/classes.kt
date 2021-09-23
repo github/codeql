@@ -25,6 +25,7 @@ interface IF2 {
     fun funIF2() {}
 }
 
-class ClassSix: ClassFour(), IF1, IF2 {
+class ClassSix(): ClassFour(), IF1, IF2 {
+    constructor(i: Int): this(){ }
 }
 

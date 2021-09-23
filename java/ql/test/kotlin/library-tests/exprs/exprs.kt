@@ -49,3 +49,7 @@ TODO
 fun getClass() {
     val d = true::class
 }
+
+class C(val n: Int) {
+    fun foo(): C { return C(42) }
+}
