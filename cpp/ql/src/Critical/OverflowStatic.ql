@@ -55,6 +55,8 @@ predicate overflowOffsetInLoop(BufferAccess bufaccess, string msg) {
     loop.counter().getAnAccess() = bufaccess.getArrayOffset() and
     // Ensure that we don't have an upper bound on the array index that's less than the buffer size.
     not upperBound(bufaccess.getArrayOffset().getFullyConverted()) < bufaccess.bufferSize() and
+    // The upper bounds analysis must not have been widended
+    not upperBoundMayBeWidened(bufaccess.getArrayOffset().getFullyConverted()) and
     msg =
       "Potential buffer-overflow: counter '" + loop.counter().toString() + "' <= " +
         loop.limit().toString() + " but '" + bufaccess.buffer().getName() + "' has " +

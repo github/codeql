@@ -1593,6 +1593,14 @@ private module SimpleRangeAnalysisCached {
     result = min([max(getTruncatedUpperBounds(expr)), getGuardedUpperBound(expr)])
   }
 
+  /** Holds if `expr` may have been widened */
+  cached
+  predicate upperBoundMayBeWidened(Expr e) {
+    isRecursiveExpr(e) and
+    // Corresponds to taking max on the RHS
+    not getGuardedUpperBound(e) < getTruncatedUpperBounds(e)
+  }
+
   /**
    * Holds if `expr` has a provably empty range. For example:
    *
