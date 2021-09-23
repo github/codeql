@@ -1,3 +1,5 @@
+| file://:0:0:0:0 | equals | file://:0:0:0:0 | other | 0 |
+| file://:0:0:0:0 | equals | file://:0:0:0:0 | other | 0 |
 | methods2.kt:4:1:5:1 | fooBarTopLevelMethod | methods2.kt:4:26:4:31 | x | 0 |
 | methods2.kt:4:1:5:1 | fooBarTopLevelMethod | methods2.kt:4:34:4:39 | y | 1 |
 | methods2.kt:7:1:10:1 | equals | methods2.kt:7:1:10:1 | other | 0 |

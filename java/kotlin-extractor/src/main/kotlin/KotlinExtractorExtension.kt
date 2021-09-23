@@ -318,15 +318,13 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
         if (c.origin == IrDeclarationOrigin.IR_EXTERNAL_DECLARATION_STUB ||
             c.origin == IrDeclarationOrigin.IR_EXTERNAL_JAVA_DECLARATION_STUB) {
             if(tw.getExistingLabelFor<DbClass>(getClassLabel(c)) == null) {
-                return extractExternalClass(c)
+                return extractClass(c)
             }
         }
         return addClassLabel(c)
     }
 
-    fun extractExternalClass(c: IrClass): Label<out DbClassorinterface> {
-        // todo: fix this.
-        // temporarily only extract the class or interface without any members.
+    fun extractClass(c: IrClass): Label<out DbClassorinterface> {
         val id = addClassLabel(c)
         val pkg = c.packageFqName?.asString() ?: ""
         val cls = c.name.asString()
@@ -344,11 +342,6 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
                 tw.writeIsEnumType(classId)
             }
         }
-        return id
-    }
-
-    fun extractClass(c: IrClass): Label<out DbClassorinterface> {
-        val id = extractExternalClass(c)
         val locId = tw.getLocation(c)
         tw.writeHasLocation(id, locId)
         for(t in c.superTypes) {

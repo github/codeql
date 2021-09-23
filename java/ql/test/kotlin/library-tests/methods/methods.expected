@@ -1,4 +1,11 @@
 methods
+| file://:0:0:0:0 | <init> |
+| file://:0:0:0:0 | equals |
+| file://:0:0:0:0 | equals |
+| file://:0:0:0:0 | hashCode |
+| file://:0:0:0:0 | hashCode |
+| file://:0:0:0:0 | toString |
+| file://:0:0:0:0 | toString |
 | methods2.kt:4:1:5:1 | fooBarTopLevelMethod |
 | methods2.kt:7:1:10:1 | <init> |
 | methods2.kt:7:1:10:1 | equals |

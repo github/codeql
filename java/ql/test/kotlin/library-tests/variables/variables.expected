@@ -1,3 +1,5 @@
+| file://:0:0:0:0 | other | file://:0:0:0:0 | Any | file://:0:0:0:0 | <none> |
+| file://:0:0:0:0 | other | file://:0:0:0:0 | Any | file://:0:0:0:0 | <none> |
 | variables.kt:2:1:8:1 | other | file://:0:0:0:0 | Any | file://:0:0:0:0 | <none> |
 | variables.kt:3:5:3:21 | prop | file://:0:0:0:0 | int | file://:0:0:0:0 | <none> |
 | variables.kt:5:20:5:29 | param | file://:0:0:0:0 | int | file://:0:0:0:0 | <none> |
