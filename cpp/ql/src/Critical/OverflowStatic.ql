@@ -134,7 +134,7 @@ predicate outOfBounds(BufferAccess bufaccess, string msg) {
     ) and
     msg =
       "Potential buffer-overflow: '" + buf + "' has size " + size.toString() + " but '" + buf + "[" +
-        access.toString() + "]' is accessed here."
+        access.toString() + "]' may be accessed here."
   )
 }
 
