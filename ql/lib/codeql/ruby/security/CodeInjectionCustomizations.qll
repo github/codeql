@@ -35,6 +35,6 @@ module CodeInjection {
    * A call that evaluates its arguments as Ruby code, considered as a flow sink.
    */
   class CodeExecutionAsSink extends Sink {
-    CodeExecutionAsSink() { exists(CodeExecution c | this = c.getCode()) }
+    CodeExecutionAsSink() { this = any(CodeExecution c).getCode() }
   }
 }

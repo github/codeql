@@ -5,7 +5,6 @@
  * otherwise `CodeInjectionCustomizations` should be imported instead.
  */
 
-private import ruby
 import codeql.ruby.DataFlow::DataFlow::PathGraph
 import codeql.ruby.DataFlow
 import codeql.ruby.TaintTracking
