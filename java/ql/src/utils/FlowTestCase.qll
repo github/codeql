@@ -257,9 +257,15 @@ class TestCase extends TTestCase {
       if componentStack = baseOutput
       then result = "out"
       else
-        result =
-          SupportMethod::getMethodForContent(componentStack)
-              .getCall(this.getOutput(componentStack.tail()))
+        if componentStack.tail() = baseOutput
+        then
+          result =
+            SupportMethod::getMethodFor(this.getOutputType(), componentStack)
+                .getCall(this.getOutput(componentStack.tail()))
+        else
+          result =
+            SupportMethod::getMethodForContent(componentStack)
+                .getCall(this.getOutput(componentStack.tail()))
     )
   }
 
