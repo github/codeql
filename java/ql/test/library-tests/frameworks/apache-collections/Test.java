@@ -821,11 +821,11 @@ public class Test {
 		{
 			// Note it is tricky to get this to compile - the compiler thinks it is ambiguous
 			// which overload it should choose unless you put the generic types in correctly
-			// "org.apache.commons.collections4;MapUtils;true;populateMap;(MultiMap,Iterable,Transformer);;Element of Argument[1];MapValue of Argument[0];value"
+			// "org.apache.commons.collections4;MapUtils;true;populateMap;(MultiMap,Iterable,Transformer);;Element of Argument[1];Element of MapValue of Argument[0];value"
 			MultiMap<Integer, String> out = null;
 			Iterable<String> in = newVectorWithElement((String)source());
 			MapUtils.populateMap(out, in, (Transformer<String, Integer>)null);
-			sink(getMapValue(out)); // $ hasValueFlow
+			sink(getElement((Collection)getMapValue(out))); // $ hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MapUtils;true;predicatedMap;;;MapKey of Argument[0];MapKey of ReturnValue;value"

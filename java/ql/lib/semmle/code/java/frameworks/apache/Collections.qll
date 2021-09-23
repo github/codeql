@@ -792,7 +792,7 @@ private class ApacheMapUtilsModel extends SummaryModelCsv {
           ";MapUtils;true;orderedMap;;;MapKey of Argument[0];MapKey of ReturnValue;value",
           ";MapUtils;true;orderedMap;;;MapValue of Argument[0];MapValue of ReturnValue;value",
           ";MapUtils;true;populateMap;(Map,Iterable,Transformer);;Element of Argument[1];MapValue of Argument[0];value",
-          ";MapUtils;true;populateMap;(MultiMap,Iterable,Transformer);;Element of Argument[1];MapValue of Argument[0];value",
+          ";MapUtils;true;populateMap;(MultiMap,Iterable,Transformer);;Element of Argument[1];Element of MapValue of Argument[0];value",
           ";MapUtils;true;predicatedMap;;;MapKey of Argument[0];MapKey of ReturnValue;value",
           ";MapUtils;true;predicatedMap;;;MapValue of Argument[0];MapValue of ReturnValue;value",
           ";MapUtils;true;predicatedSortedMap;;;MapKey of Argument[0];MapKey of ReturnValue;value",
