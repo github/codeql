@@ -95,7 +95,7 @@ class CommentExtractor(private val fileExtractor: KotlinFileExtractor) {
                             continue
                         }
 
-                        tw.writeKtCommentOwner(commentLabel, existingLabel)
+                        tw.writeKtCommentOwners(commentLabel, existingLabel)
                     }
                 }
 

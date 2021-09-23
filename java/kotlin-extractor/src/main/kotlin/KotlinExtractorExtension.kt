@@ -865,7 +865,7 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
             return
         }
 
-        tw.writeKtBreakContinueTarget(id, loopId)
+        tw.writeKtBreakContinueTargets(id, loopId)
     }
 }
 

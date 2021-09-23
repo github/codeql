@@ -1044,7 +1044,7 @@ ktCommentSectionSubjectNames(
 )
 
 #keyset[id, owner]
-ktCommentOwner(
+ktCommentOwners(
   int id: @ktcomment ref,
   int owner: @top ref
 )
@@ -1055,7 +1055,7 @@ ktCommentOwner(
 @ktloopstmt = @whilestmt
             | @dostmt;
 
-ktBreakContinueTarget(
+ktBreakContinueTargets(
   unique int id: @breakcontinuestmt ref,
   int target: @ktloopstmt ref
 )

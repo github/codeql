@@ -900,7 +900,7 @@ class KtLoopStmt extends Stmt, @ktloopstmt {
 abstract class KtBreakContinueStmt extends Stmt, @breakcontinuestmt {
   KtLoopStmt loop;
 
-  KtBreakContinueStmt() { ktBreakContinueTarget(this, loop) }
+  KtBreakContinueStmt() { ktBreakContinueTargets(this, loop) }
 
   /** Gets the target loop statement of this `break`. */
   KtLoopStmt getLoopStmt() { result = loop }
