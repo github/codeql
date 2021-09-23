@@ -16,6 +16,7 @@ import java
 from Field f, Class dateFormat
 where
   f.isStatic() and
+  (f.isPublic() or f.isProtected()) and
   dateFormat.hasQualifiedName("java.text", "DateFormat") and
   f.getType().(RefType).hasSupertype*(dateFormat) and
   exists(MethodAccess m | m.getQualifier().(VarAccess).getVariable() = f)
