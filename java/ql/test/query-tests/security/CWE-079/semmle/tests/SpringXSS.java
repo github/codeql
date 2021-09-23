@@ -28,11 +28,11 @@ public class SpringXSS {
     }
     else {
       if(chainDirectly) {
-        return builder.contentType(MediaType.APPLICATION_JSON).body(userControlled); // $SPURIOUS: xss
+        return builder.contentType(MediaType.APPLICATION_JSON).body(userControlled);
       }
       else {
         ResponseEntity.BodyBuilder builder2 = builder.contentType(MediaType.APPLICATION_JSON);
-        return builder2.body(userControlled); // $SPURIOUS: xss
+        return builder2.body(userControlled);
       }
     }
 
@@ -60,7 +60,7 @@ public class SpringXSS {
 
   @GetMapping(value = "/xyz", produces = MediaType.TEXT_HTML_VALUE)
   public static ResponseEntity<String> methodContentTypeUnsafe(String userControlled) {
-    return ResponseEntity.ok(userControlled); // $MISSING: xss
+    return ResponseEntity.ok(userControlled); // $xss
   }
 
   @GetMapping(value = "/xyz", produces = "text/html")
@@ -75,7 +75,7 @@ public class SpringXSS {
 
   @GetMapping(value = "/xyz", produces = MediaType.APPLICATION_JSON_VALUE)
   public static ResponseEntity<String> methodContentTypeSafeOverriddenWithUnsafe(String userControlled) {
-    return ResponseEntity.ok().contentType(MediaType.TEXT_HTML).body(userControlled); // $MISSING: xss
+    return ResponseEntity.ok().contentType(MediaType.TEXT_HTML).body(userControlled); // $xss
   }
 
   @GetMapping(value = "/xyz", produces = MediaType.TEXT_HTML_VALUE)
@@ -105,12 +105,12 @@ public class SpringXSS {
   private static class ClassContentTypeSafe {
     @GetMapping(value = "/abc")
     public ResponseEntity<String> test(String userControlled) {
-      return ResponseEntity.ok(userControlled); // $SPURIOUS: xss
+      return ResponseEntity.ok(userControlled);
     }
 
     @GetMapping(value = "/abc")
     public String testDirectReturn(String userControlled) {
-      return userControlled; // $SPURIOUS: xss
+      return userControlled;
     }
 
     @GetMapping(value = "/xyz", produces = {"text/html"})
@@ -139,12 +139,12 @@ public class SpringXSS {
 
     @GetMapping(value = "/xyz", produces = {"application/json"})
     public ResponseEntity<String> overridesWithSafe(String userControlled) {
-      return ResponseEntity.ok(userControlled); // $SPURIOUS: xss
+      return ResponseEntity.ok(userControlled);
     }
 
     @GetMapping(value = "/abc")
     public ResponseEntity<String> overridesWithSafe2(String userControlled) {
-      return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(userControlled); // $SPURIOUS: xss
+      return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(userControlled);
     }
   }
 

@@ -161,8 +161,6 @@ void useVarStruct34(varStruct5 *vs5) {
   varStruct5 *vs5b = (varStruct5 *)malloc(sizeof(*vs5));
   varStruct6 *vs6 = (varStruct6 *)malloc(offsetof(varStruct6, arr) + 9); // establish varStruct6 as variable size
   varStruct7 *vs7 = (varStruct7 *)malloc(sizeForVarStruct7(9)); // establish varStruct7 as variable size
-  varStruct8 *vs8a = (varStruct8 *)malloc(sizeof(varStruct8) + 9); // establish varStruct8 as variable size
-  varStruct8 *vs8b = (varStruct8 *)malloc(sizeof(varStruct8));
   varStruct9 *vs9 = (varStruct9 *)malloc(__builtin_offsetof(varStruct9, arr) + 9); // establish varStruct9 as variable size
 }
 

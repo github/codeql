@@ -186,24 +186,21 @@ private predicate trivialIntValue(string s) {
   exists(string pos | trivialPositiveIntValue(pos) and s = "-" + pos)
 }
 
-private predicate intTrivial(Literal lit) {
-  exists(string v | trivialIntValue(v) and v = lit.getLiteral())
+private predicate intTrivial(IntegerLiteral lit) {
+  // Remove all `_` from literal, if any (e.g. `1_000_000`)
+  exists(string v | trivialIntValue(v) and v = lit.getLiteral().replaceAll("_", ""))
 }
 
-private predicate longTrivial(Literal lit) {
-  exists(string v | trivialIntValue(v) and v + "L" = lit.getLiteral())
+private predicate longTrivial(LongLiteral lit) {
+  exists(string v |
+    trivialIntValue(v) and
+    // Remove all `_` from literal, if any (e.g. `1_000_000L`)
+    v + ["l", "L"] = lit.getLiteral().replaceAll("_", "")
+  )
 }
 
 private predicate powerOfTen(float f) {
-  f = 10 or
-  f = 100 or
-  f = 1000 or
-  f = 10000 or
-  f = 100000 or
-  f = 1000000 or
-  f = 10000000 or
-  f = 100000000 or
-  f = 1000000000
+  f = [10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000]
 }
 
 private predicate floatTrivial(Literal lit) {
@@ -244,7 +241,7 @@ private predicate literalIsConstantInitializer(Literal literal, Field f) {
 }
 
 private predicate nonTrivialValue(string value, Literal literal, string context) {
-  value = literal.getLiteral() and
+  value = literal.getValue() and
   not trivial(literal) and
   not literalIsConstantInitializer(literal, _) and
   not literal.getParent*() instanceof ArrayInit and
@@ -259,7 +256,7 @@ private predicate valueOccurrenceCount(string value, int n, string context) {
 
 private predicate occurenceCount(Literal lit, string value, int n, string context) {
   valueOccurrenceCount(value, n, context) and
-  value = lit.getLiteral() and
+  value = lit.getValue() and
   nonTrivialValue(_, lit, context)
 }
 
@@ -296,14 +293,7 @@ private predicate firstOccurrence(Literal lit, string value, string context, int
   )
 }
 
-predicate isNumber(Literal lit) {
-  lit.getType().getName() = "char" or
-  lit.getType().getName() = "short" or
-  lit.getType().getName() = "int" or
-  lit.getType().getName() = "long" or
-  lit.getType().getName() = "float" or
-  lit.getType().getName() = "double"
-}
+predicate isNumber(Literal lit) { lit.getType() instanceof NumericOrCharType }
 
 predicate magicConstant(Literal e, string msg) {
   exists(string value, int n, string context |
@@ -320,7 +310,7 @@ predicate magicConstant(Literal e, string msg) {
 
 private predicate relevantField(Field f, string value) {
   exists(Literal lit |
-    not trivial(lit) and value = lit.getLiteral() and literalIsConstantInitializer(lit, f)
+    not trivial(lit) and value = lit.getValue() and literalIsConstantInitializer(lit, f)
   )
 }
 
@@ -344,7 +334,7 @@ private predicate candidateConstantForLiteral(
   exists(Literal initLiteral |
     literalIsConstantInitializer(initLiteral, constField) and
     exists(string value |
-      value = initLiteral.getLiteral() and
+      value = initLiteral.getValue() and
       nonTrivialValue(value, magicLiteral, context) and
       fieldUsedInContext(constField, context)
     ) and

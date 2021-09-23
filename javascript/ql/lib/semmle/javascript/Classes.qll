@@ -258,6 +258,13 @@ class ClassDefinition extends @class_definition, ClassOrInterface, AST::ValueNod
   }
 
   override string getAPrimaryQlClass() { result = "ClassDefinition" }
+
+  /**
+   * Gets a static initializer of this class, if any.
+   */
+  BlockStmt getAStaticInitializerBlock() {
+    exists(StaticInitializer init | init.getDeclaringClass() = this | result = init.getBody())
+  }
 }
 
 /**
@@ -1132,6 +1139,18 @@ class ParameterField extends FieldDeclaration, @parameter_field {
   override Expr getNameExpr() { result = getParameter() }
 
   override TypeAnnotation getTypeAnnotation() { result = getParameter().getTypeAnnotation() }
+}
+
+/**
+ * A static initializer in a class.
+ */
+class StaticInitializer extends MemberDefinition, @static_initializer {
+  /**
+   * Gets the body of the static initializer.
+   */
+  BlockStmt getBody() { result.getParent() = this }
+
+  override Expr getNameExpr() { none() }
 }
 
 /**

@@ -653,6 +653,8 @@ class DefinitionNode extends ControlFlowNode {
   DefinitionNode() {
     exists(Assign a | a.getATarget().getAFlowNode() = this)
     or
+    exists(AnnAssign a | a.getTarget().getAFlowNode() = this and exists(a.getValue()))
+    or
     exists(Alias a | a.getAsname().getAFlowNode() = this)
     or
     augstore(_, this)
@@ -794,6 +796,9 @@ class IterableNode extends ControlFlowNode {
 private AstNode assigned_value(Expr lhs) {
   /* lhs = result */
   exists(Assign a | a.getATarget() = lhs and result = a.getValue())
+  or
+  /* lhs : annotation = result */
+  exists(AnnAssign a | a.getTarget() = lhs and result = a.getValue())
   or
   /* import result as lhs */
   exists(Alias a | a.getAsname() = lhs and result = a.getValue())
