@@ -1613,13 +1613,40 @@ module DataFlow {
     succ = cls.getAReceiverNode().getAPropertyRead(prop)
   }
 
+  // split into many smaller steps, because that helps performance A LOT!
   private class LocalFieldStep extends DataFlow::SharedFlowStep {
-    override predicate loadStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
-      localFieldLoadStep(_, pred, succ, prop)
+    /*
+     * override predicate loadStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+     *      exists(ClassNode cls |
+     *        pred = cls.getConstructor().getReceiver() and
+     *        succ = cls.getAReceiverNode().getAPropertyRead(prop)
+     *      )
+     *    }
+     */
+
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(ClassNode cls |
+        pred = cls.getConstructor().getReceiver() and
+        succ = cls.getAReceiverNode()
+      )
+      or
+      exists(ClassNode cls |
+        pred = cls.getADirectSuperClass().getConstructor().getReceiver() and
+        succ = cls.getConstructor().getReceiver()
+      )
     }
 
     override predicate storeStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
-      localFieldStoreStep(_, pred, succ, prop)
+      exists(ClassNode cls |
+        (
+          pred = cls.getAReceiverNode().getAPropertyWrite(prop).getRhs()
+          or
+          // add support for writes on nested properties
+          pred = cls.getAReceiverNode().getAPropertyRead(prop) and
+          pred = any(DataFlow::PropRef ref).getBase()
+        ) and
+        succ = cls.getConstructor().getReceiver()
+      )
     }
   }
 
