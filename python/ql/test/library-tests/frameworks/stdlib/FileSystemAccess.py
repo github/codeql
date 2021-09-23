@@ -27,3 +27,10 @@ def through_function(open_file):
     open_file.write("foo") # $ fileWriteData="foo" getAPathArgument="path"
 
 through_function(f)
+
+from os import path
+path.exists("filepath")  # $ MISSING: getAPathArgument="filepath"
+path.isfile("filepath")  # $ MISSING: getAPathArgument="filepath"
+path.isdir("filepath")  # $ MISSING: getAPathArgument="filepath"
+path.islink("filepath")  # $ MISSING: getAPathArgument="filepath"
+path.ismount("filepath")  # $ MISSING: getAPathArgument="filepath"
