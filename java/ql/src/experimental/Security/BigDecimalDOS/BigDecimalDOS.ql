@@ -1,7 +1,7 @@
 /**
  * @id java/BigDecimalDOS
  * @name Java-BigDecimal-DOS-Vulnerability
- * @description When user-controllable data is pass to the relevant Methods in BigDecimal, it may cause DOS issues when computing resources are limited. This issue is common in business scenarios such as e-commerce platforms.
+ * @description When user-controllable data is passed to the relevant methods in BigDecimal, it may cause DOS issues when computing resources are limited. This issue is common in business scenarios such as e-commerce platforms.
  * @kind path-problem
  * @problem.severity error
  */
