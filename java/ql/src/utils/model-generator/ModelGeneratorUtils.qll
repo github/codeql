@@ -17,15 +17,29 @@ string asValueModel(Callable api, string input, string output) {
 bindingset[input, output, kind]
 string asSummaryModel(Callable api, string input, string output, string kind) {
   result =
+    asPartialModel(api) + input + ";" //
+      + output + ";" //
+      + kind + ";" //
+}
+
+bindingset[input, kind]
+string asSinkModel(Callable api, string input, string kind) {
+  result =
+    asPartialModel(api) + input + ";" //
+      + kind + ";" //
+}
+
+/**
+ * Computes the first 6 columns for CSV rows.
+ */
+private string asPartialModel(Callable api) {
+  result =
     api.getCompilationUnit().getPackage().getName() + ";" //
       + api.getDeclaringType().nestedName() + ";" //
       + isExtensible(api.getDeclaringType()).toString() + ";" //
       + api.getName() + ";" //
       + paramsString(api) + ";" //
       + /* ext + */ ";" //
-      + input + ";" //
-      + output + ";" //
-      + kind + ";" //
 }
 
 string parameterAccess(Parameter p) {
