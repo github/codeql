@@ -10,6 +10,7 @@ com.fasterxml.jackson.core,,,1,,,,,,,,,,,,,,,,,,,1,
 com.fasterxml.jackson.databind,,,5,,,,,,,,,,,,,,,,,,,5,
 com.google.common.base,,,85,,,,,,,,,,,,,,,,,,,62,23
 com.google.common.cache,,,17,,,,,,,,,,,,,,,,,,,,17
+com.google.common.collect,,,553,,,,,,,,,,,,,,,,,,,2,551
 com.google.common.io,6,,73,,,,,,,,,,,,,,6,,,,,72,1
 com.opensymphony.xwork2.ognl,3,,,,,,,,,,,,3,,,,,,,,,,
 com.unboundid.ldap.sdk,17,,,,,,,,,,17,,,,,,,,,,,,
