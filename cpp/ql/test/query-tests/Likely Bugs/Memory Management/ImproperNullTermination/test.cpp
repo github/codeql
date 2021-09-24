@@ -433,3 +433,36 @@ void test_read_fread(int read_src, FILE *s)
 		strlen(buffer); // GOOD
 	}
 }
+
+int printf(const char *format, ...);
+
+void test_printf(char *str)
+{
+	{
+		char buffer[1024];
+
+		printf(buffer, ""); // BAD
+	}
+
+	{
+		char buffer[1024];
+
+		printf("%s", buffer); // BAD [NOT DETECTED]
+	}
+
+	{
+		size_t len = strlen(str);
+		char *copied_str = (char *)malloc(len);
+
+		memcpy(copied_str, str, len);
+		printf("%s", copied_str); // BAD [NOT DETECTED]
+	}
+
+	{
+		size_t len = strlen(str);
+		char *copied_str = (char *)malloc(len + 1);
+
+		memcpy(copied_str, str, len + 1);
+		printf("%s", copied_str); // GOOD
+	}
+}
