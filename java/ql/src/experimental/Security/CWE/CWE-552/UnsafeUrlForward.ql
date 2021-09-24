@@ -15,6 +15,18 @@ import UnsafeUrlForward
 import semmle.code.java.dataflow.FlowSources
 import DataFlow::PathGraph
 
+private class StartsWithSanitizer extends DataFlow::BarrierGuard {
+  StartsWithSanitizer() {
+    this.(MethodAccess).getMethod().hasName("startsWith") and
+    this.(MethodAccess).getMethod().getDeclaringType() instanceof TypeString and
+    this.(MethodAccess).getMethod().getNumberOfParameters() = 1
+  }
+
+  override predicate checks(Expr e, boolean branch) {
+    e = this.(MethodAccess).getQualifier() and branch = true
+  }
+}
+
 class UnsafeUrlForwardFlowConfig extends TaintTracking::Configuration {
   UnsafeUrlForwardFlowConfig() { this = "UnsafeUrlForwardFlowConfig" }
 
@@ -25,39 +37,18 @@ class UnsafeUrlForwardFlowConfig extends TaintTracking::Configuration {
       ma.getMethod()
           .getDeclaringType()
           .getASupertype*()
-          .hasQualifiedName("javax.servlet.http", "HttpServletRequest")
+          .hasQualifiedName("javax.servlet.http", "HttpServletRequest") and
+      ma = source.asExpr()
     )
   }
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof UnsafeUrlForwardSink }
 
-  override predicate isSanitizer(DataFlow::Node node) {
-    node.getType() instanceof BoxedType
-    or
-    node.getType() instanceof PrimitiveType
-    or
-    exists(AddExpr ae |
-      ae.getRightOperand() = node.asExpr() and
-      (
-        not ae.getLeftOperand().(CompileTimeConstantExpr).getStringValue().matches("/WEB-INF/%") and
-        not ae.getLeftOperand().(CompileTimeConstantExpr).getStringValue() = "forward:"
-      )
-    )
-    or
-    exists(MethodAccess ma, int i |
-      ma.getMethod().hasName("format") and
-      ma.getMethod().getDeclaringType() instanceof TypeString and
-      ma.getArgument(0).(CompileTimeConstantExpr).getStringValue() = "redirect:" and
-      ma.getArgument(i) = node.asExpr() and
-      i != 0
-    )
-    or
-    exists(StringBuilderAppendCall ma1, StringBuilderAppendCall ma2 |
-      DataFlow2::localExprFlow(ma1.getQualifier(), ma2.getQualifier()) and
-      ma1.getArgument(0).(CompileTimeConstantExpr).getStringValue() = "redirect:" and
-      ma2.getArgument(0) = node.asExpr()
-    )
+  override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
+    guard instanceof StartsWithSanitizer
   }
+
+  override predicate isSanitizer(DataFlow::Node node) { node instanceof UnsafeUrlForwardSanitizer }
 }
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, UnsafeUrlForwardFlowConfig conf
