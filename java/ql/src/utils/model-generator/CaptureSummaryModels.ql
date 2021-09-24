@@ -12,6 +12,8 @@ import semmle.code.java.dataflow.internal.DataFlowImplCommon
 string captureFlow(Callable api) {
   result = captureQualifierFlow(api) or
   result = captureParameterFlowToReturnValue(api) or
+  result = captureFieldFlowIn(api) or
+  result = captureParameterToParameterFlow(api) or
   // TODO: merge next two?
   result = captureFieldFlowOut(api) or
   result = captureFieldFlowIntoParam(api)
@@ -46,6 +48,36 @@ string captureFieldFlowIntoParam(Callable api) {
     result =
       asTaintModel(api, "Argument[-1]",
         parameterAccess(pn.getPreUpdateNode().asExpr().(VarAccess).getVariable()))
+  )
+}
+
+class FieldAssignment extends AssignExpr {
+  FieldAssignment() { exists(Field f | f.getAnAccess() = this.getDest()) }
+}
+
+class ParameterToFieldConfig extends TaintTracking::Configuration {
+  ParameterToFieldConfig() { this = "ParameterToFieldConfig" }
+
+  override predicate isSource(DataFlow::Node source) {
+    not source.asParameter().getType() instanceof PrimitiveType
+  }
+
+  override predicate isSink(DataFlow::Node sink) {
+    exists(FieldAssignment a |
+      a.getSource().getAChildExpr() = sink.asExpr() or a.getSource() = sink.asExpr()
+    )
+  }
+}
+
+string captureFieldFlowIn(Callable api) {
+  exists(DataFlow::ParameterNode source, DataFlow::ExprNode sink, ParameterToFieldConfig config |
+    sink.asExpr().getEnclosingCallable().getDeclaringType() =
+      source.asParameter().getCallable().getDeclaringType() and
+    config.hasFlow(source, sink) and
+    source.asParameter().getCallable() = api
+  |
+    result =
+      asTaintModel(api, "Argument[" + source.asParameter().getPosition() + "]", "Argument[-1]")
   )
 }
 
@@ -84,6 +116,18 @@ string captureParameterFlowToReturnValue(Callable api) {
     paramFlowToReturnValueExists(p)
   |
     result = asTaintModel(api, parameterAccess(p), "ReturnValue")
+  )
+}
+
+string captureParameterToParameterFlow(Callable api) {
+  exists(DataFlow::ParameterNode source, DataFlow::PostUpdateNode sink |
+    source.getEnclosingCallable() = api and
+    sink.getPreUpdateNode().asExpr() = api.getAParameter().getAnAccess() and
+    TaintTracking::localTaint(source, sink)
+  |
+    result =
+      asTaintModel(api, parameterAccess(source.asParameter()),
+        parameterAccess(sink.getPreUpdateNode().asExpr().(VarAccess).getVariable().(Parameter)))
   )
 }
 
