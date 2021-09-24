@@ -53,15 +53,15 @@ module XpathInjection {
   API::Node libxml2parseFile() { result = API::moduleImport("libxml2").getMember("parseFile") }
 
   /**
-   * A Sink representing an argument to `etree.XPath` or `etree.ETXpath` call.
+   * A Sink representing an argument to `etree.XPath` or `etree.ETXPath` call.
    *
    *    from lxml import etree
    *    root = etree.XML("<xmlContent>")
    *    find_text = etree.XPath("`sink`")
-   *    find_text = etree.ETXpath("`sink`")
+   *    find_text = etree.ETXPath("`sink`")
    */
   private class EtreeXpathArgument extends Sink {
-    EtreeXpathArgument() { this = etree().getMember(["XPath", "ETXpath"]).getACall().getArg(0) }
+    EtreeXpathArgument() { this = etree().getMember(["XPath", "ETXPath"]).getACall().getArg(0) }
   }
 
   /**
