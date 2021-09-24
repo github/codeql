@@ -1856,7 +1856,7 @@ class InitializeDynamicAllocationInstruction extends SideEffectInstruction {
   }
 
   /**
-   * Gets the operand of the allocation this instruction is initializing.
+   * Gets the operand that represents the address of the allocation this instruction is initializing.
    */
   final AddressOperand getAllocationAddressOperand() { result = getAnOperand() }
 
