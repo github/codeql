@@ -1549,7 +1549,8 @@ private float getGuardedUpperBound(VariableAccess guardedAccess) {
     // that there is one predecessor, albeit somewhat conservative.
     exists(unique(BasicBlock b | b = def.(BasicBlock).getAPredecessor())) and
     guardedAccess = def.getAUse(v) and
-    result = max(float ub | upperBoundFromGuard(guard, guardVa, ub, branch))
+    result = max(float ub | upperBoundFromGuard(guard, guardVa, ub, branch)) and
+    not exists(Expr e | e = guard.getAChild+() | convertedExprMightOverflow(e))
   )
 }
 
