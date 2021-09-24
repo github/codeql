@@ -23,7 +23,7 @@ the number representing money will not contain "e".</p>
 <example>
 
 <p>The following example shows a BigDecimal parameter being directly passed
-to BigDecimal Method(like: add(), subtract()) without validating the input, which facilitates DOS attacks.
+to a BigDecimal method (like: add(), subtract()) without validating the input, which facilitates DOS attacks.
 It also shows how to remedy the problem by validating the user input against a known fixed string.
 </p>
 
