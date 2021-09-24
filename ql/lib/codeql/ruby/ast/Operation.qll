@@ -30,6 +30,8 @@ class UnaryOperation extends Operation, MethodCall instanceof UnaryOperationImpl
   final override AstNode getAChild(string pred) {
     result = Operation.super.getAChild(pred)
     or
+    result = MethodCall.super.getAChild(pred)
+    or
     pred = "getOperand" and result = this.getOperand()
   }
 
@@ -126,6 +128,8 @@ class BinaryOperation extends Operation, MethodCall instanceof BinaryOperationIm
 
   override AstNode getAChild(string pred) {
     result = Operation.super.getAChild(pred)
+    or
+    result = MethodCall.super.getAChild(pred)
     or
     pred = "getLeftOperand" and result = this.getLeftOperand()
     or
