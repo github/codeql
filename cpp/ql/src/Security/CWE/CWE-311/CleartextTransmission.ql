@@ -14,6 +14,7 @@
 import cpp
 import semmle.code.cpp.security.SensitiveExprs
 import semmle.code.cpp.dataflow.TaintTracking
+import semmle.code.cpp.models.interfaces.FlowSource
 import DataFlow::PathGraph
 
 /**
@@ -38,30 +39,38 @@ abstract class NetworkSendRecv extends FunctionCall {
  * note: functions such as `write` may be writing to a network source or a file. We could attempt to determine which, and sort results into `cpp/cleartext-transmission` and perhaps `cpp/cleartext-storage-file`. In practice it usually isn't very important which query reports a result as long as its reported exactly once.
  */
 class NetworkSend extends NetworkSendRecv {
-  NetworkSend() {
-    this.getTarget()
-        .hasGlobalName(["send", "sendto", "sendmsg", "write", "writev", "pwritev", "pwritev2"])
-  }
+  RemoteFlowSinkFunction target;
+
+  NetworkSend() { target = this.getTarget() }
 
   override Expr getSocketExpr() { result = this.getArgument(0) }
 
-  override Expr getDataExpr() { result = this.getArgument(1) }
+  override Expr getDataExpr() {
+    exists(FunctionInput input, int arg |
+      target.hasRemoteFlowSink(input, _) and
+      input.isParameterDeref(arg) and
+      result = this.getArgument(arg)
+    )
+  }
 }
 
 /**
  * A function call that receives data over a network.
  */
 class NetworkRecv extends NetworkSendRecv {
-  NetworkRecv() {
-    this.getTarget()
-        .hasGlobalName([
-            "recv", "recvfrom", "recvmsg", "read", "pread", "readv", "preadv", "preadv2"
-          ])
-  }
+  RemoteFlowSourceFunction target;
+
+  NetworkRecv() { target = this.getTarget() }
 
   override Expr getSocketExpr() { result = this.getArgument(0) }
 
-  override Expr getDataExpr() { result = this.getArgument(1) }
+  override Expr getDataExpr() {
+    exists(FunctionOutput output, int arg |
+      target.hasRemoteFlowSource(output, _) and
+      output.isParameterDeref(arg) and
+      result = this.getArgument(arg)
+    )
+  }
 }
 
 /**
@@ -76,7 +85,6 @@ class SensitiveSendRecvConfiguration extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) {
     exists(NetworkSendRecv transmission |
       sink.asExpr() = transmission.getDataExpr() and
-
       // a zero file descriptor is standard input, which is not interesting for this query.
       not exists(Zero zero |
         DataFlow::localFlow(DataFlow::exprNode(zero),
