@@ -71,6 +71,7 @@ edges
 | ifs.c:123:8:123:11 | argv | ifs.c:124:9:124:10 | i9 |
 | ifs.c:123:8:123:11 | argv | ifs.c:124:9:124:10 | i9 indirection |
 | ifs.c:123:8:123:11 | argv | ifs.c:124:9:124:10 | i9 indirection |
+subpaths
 nodes
 | ifs.c:61:8:61:11 | argv | semmle.label | argv |
 | ifs.c:61:8:61:11 | argv | semmle.label | argv |
