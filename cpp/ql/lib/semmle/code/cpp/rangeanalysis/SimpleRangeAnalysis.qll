@@ -1550,7 +1550,7 @@ private float getGuardedUpperBound(VariableAccess guardedAccess) {
     exists(unique(BasicBlock b | b = def.(BasicBlock).getAPredecessor())) and
     guardedAccess = def.getAUse(v) and
     result = max(float ub | upperBoundFromGuard(guard, guardVa, ub, branch)) and
-    not exists(Expr e | e = guard.getAChild+() | convertedExprMightOverflow(e))
+    not convertedExprMightOverflow(guard.getAChild+())
   )
 }
 
