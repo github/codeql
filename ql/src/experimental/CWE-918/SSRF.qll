@@ -16,7 +16,6 @@ module ServerSideRequestForgery {
   import semmle.go.dataflow.barrierguardutil.RegexpCheck
   import semmle.go.dataflow.Properties
 
-  //#region config
   /**
    * A taint-tracking configuration for reasoning about request forgery.
    */
@@ -49,8 +48,6 @@ module ServerSideRequestForgery {
     }
   }
 
-  //#endregion
-  //#region abstract classes
   /** A data flow source for request forgery vulnerabilities. */
   abstract class Source extends DataFlow::Node { }
 
@@ -77,15 +74,11 @@ module ServerSideRequestForgery {
    */
   abstract class SanitizerGuard extends DataFlow::BarrierGuard { }
 
-  //#endregion
-  //#region source
   /**
    * An user controlled input, considered as a flow source for request forgery.
    */
   class UntrustedFlowAsSource extends Source, UntrustedFlowSource { }
 
-  //#endregion
-  //#region sink
   /**
    * The URL of an HTTP request, viewed as a sink for request forgery.
    */
@@ -112,8 +105,6 @@ module ServerSideRequestForgery {
     override string getKind() { result = "WebSocket URL" }
   }
 
-  //#endregion
-  //#region sanitizers
   /**
    * Result value of prepending a string that prevents any value from controlling the
    * host of a URL.
@@ -168,5 +159,4 @@ module ServerSideRequestForgery {
    * of the error binding exists, and the tag to check is one of "alpha", "alphanum", "alphaunicode", "alphanumunicode", "number", "numeric".
    */
   class ValidatorAsSanitizer extends SanitizerGuard, ValidatorVarCheck { }
-  //#endregion
 }

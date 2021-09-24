@@ -46,9 +46,6 @@ func handler1(w http.ResponseWriter, req *http.Request) {
 
 func test() {
 
-	// #region x net
-
-	// x net websocket Dial good
 	http.HandleFunc("/ex0", func(w http.ResponseWriter, r *http.Request) {
 		untrustedInput := r.Referer()
 
@@ -109,10 +106,6 @@ func test() {
 		fmt.Printf("Received: %s.\n", msg[:n])
 	})
 
-	// #endregion
-
-	// #region gorilla
-
 	// gorilla websocket Dialer.Dial bad
 	http.HandleFunc("/ex6", func(w http.ResponseWriter, r *http.Request) {
 		untrustedInput := r.Referer()
@@ -148,7 +141,6 @@ func test() {
 			dialer.DialContext(context.TODO(), untrustedInput, r.Header) //OK
 		}
 	})
-	// #endregion
 
 	log.Println(http.ListenAndServe(":80", nil))
 
