@@ -855,7 +855,7 @@ regexpterm (unique int id: @regexpterm,
         int idx: int ref,
         varchar(900) tostring: string ref);
         
-@regexpparent = @regexpterm | @regexp_literal | @string_literal | @add_expr;
+@regexpparent = @regexpterm | @regexp_literal | @string_literal;
 
 case @regexpterm.kind of
    0 = @regexp_alt

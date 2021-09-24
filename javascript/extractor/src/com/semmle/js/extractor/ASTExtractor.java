@@ -3,6 +3,8 @@ package com.semmle.js.extractor;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.Stack;
@@ -163,6 +165,9 @@ import com.semmle.util.locations.OffsetTranslation;
 import com.semmle.util.locations.SourceMap;
 import com.semmle.util.trap.TrapWriter;
 import com.semmle.util.trap.TrapWriter.Label;
+
+import com.semmle.util.files.FileLineOffsetCache;
+
 
 /** Extractor for AST-based information; invoked by the {@link JSExtractor}. */
 public class ASTExtractor {
@@ -567,12 +572,17 @@ public class ASTExtractor {
       String valueString = nd.getStringValue();
 
       trapwriter.addTuple("literals", valueString, source, key);
+      Position start = nd.getLoc().getStart();
+      com.semmle.util.locations.Position startPos = new com.semmle.util.locations.Position(start.getLine(), start.getColumn(), start.getOffset());
+      
       if (nd.isRegExp()) {
         OffsetTranslation offsets = new OffsetTranslation();
         offsets.set(0, 1); // skip the initial '/'
-        regexpExtractor.extract(source.substring(1, source.lastIndexOf('/')), offsets, nd, false);
+        SourceMap sourceMap = SourceMap.legacyWithStartPos(SourceMap.fromString(nd.getRaw()).offsetBy(0, offsets), startPos);
+        regexpExtractor.extract(source.substring(1, source.lastIndexOf('/')), sourceMap, nd, false);
       } else if (nd.isStringLiteral() && !c.isInsideType() && nd.getRaw().length() < 1000) {
-        regexpExtractor.extract(valueString, makeStringLiteralOffsets(nd.getRaw()), nd, true);
+        SourceMap sourceMap = SourceMap.legacyWithStartPos(SourceMap.fromString(nd.getRaw()).offsetBy(0, makeStringLiteralOffsets(nd.getRaw())), startPos);
+        regexpExtractor.extract(valueString, sourceMap, nd, true);
 
         // Scan the string for template tags, if we're in a context where such tags are relevant.
         if (scopeManager.isInTemplateFile()) {
@@ -591,6 +601,48 @@ public class ASTExtractor {
 
     private boolean isOctalDigit(char ch) {
       return '0' <= ch && ch <= '7';
+    }
+
+    private String getStringConcatResult(Expression exp) {
+      if (exp instanceof BinaryExpression) {
+        BinaryExpression be = (BinaryExpression) exp;
+        if (be.getOperator().equals("+")) {
+          String left = getStringConcatResult(be.getLeft());
+          String right = getStringConcatResult(be.getRight());
+          if (left != null && right != null) {
+            return left + right;
+          }
+        }
+      } else if (exp instanceof Literal) {
+        Literal lit = (Literal) exp;
+        if (!lit.isStringLiteral()) {
+          return null;
+        }
+        return lit.getStringValue();
+      }
+      return null;
+    }
+
+    private OffsetTranslation computeStringConcatOffset(Expression exp) {
+      if (exp instanceof Literal && ((Literal)exp).isStringLiteral()) {
+        String raw = ((Literal) exp).getRaw();
+        return makeStringLiteralOffsets(raw); 
+      }
+
+      if (exp instanceof BinaryExpression) {
+        BinaryExpression be = (BinaryExpression) exp;
+        OffsetTranslation left = computeStringConcatOffset(be.getLeft());
+        OffsetTranslation right = computeStringConcatOffset(be.getRight());
+        
+        if (left == null || right == null) {
+          return null;
+        }
+        int delta = be.getRight().getLoc().getStart().getOffset() - be.getLeft().getLoc().getStart().getOffset();
+        int offset = getStringConcatResult(be.getLeft()).length();
+        return left.append(right, offset, delta);
+      }
+
+      return null;
     }
 
     /**
@@ -786,11 +838,31 @@ public class ASTExtractor {
       return key;
     }
 
+    // set to determine which BinaryExpression has been extracted as regexp
+    private Set<Expression> extractedAsRegexp = new HashSet<>();
+
     @Override
     public Label visit(BinaryExpression nd, Context c) {
       Label key = super.visit(nd, c);
+      extractedAsRegexp.add(nd.getLeft());
+      extractedAsRegexp.add(nd.getRight());
       visit(nd.getLeft(), key, 0);
       visit(nd.getRight(), key, 1);
+      if (extractedAsRegexp.contains(nd)) {
+        return key;
+      }
+      String rawString = getStringConcatResult(nd);
+      if (rawString == null) {
+        return key;
+      }
+      if (rawString.length() > 1000 && !rawString.trim().isEmpty()) {
+        return key;
+      }
+      OffsetTranslation offsets = computeStringConcatOffset(nd);
+      Position start = nd.getLoc().getStart();
+      com.semmle.util.locations.Position startPos = new com.semmle.util.locations.Position(start.getLine(), start.getColumn(), start.getOffset());
+      SourceMap sourceMap = SourceMap.legacyWithStartPos(SourceMap.fromString(nd.getLoc().getSource()).offsetBy(0, offsets), startPos);
+      regexpExtractor.extract(rawString, sourceMap, nd, true);
       return key;
     }
 

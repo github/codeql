@@ -183,3 +183,8 @@
 | tst.js:385:14:385:25 | ([DE]\|[de])* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'd'. |
 | tst.js:387:27:387:33 | (a\|aa)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'aa'. |
 | tst.js:388:14:388:20 | (a\|aa)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'aa'. |
+| tst.js:391:6:394:6 | (a\|aa)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'aa'. |
+| tst.js:398:7:399:5 | (c\|cc)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'cc'. |
+| tst.js:399:7:400:5 | (d\|dd)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'dd'. |
+| tst.js:400:7:401:2 | (e\|ee)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'ee'. |
+| tst.js:404:6:405:8 | (g\|gg)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'gg'. |
