@@ -2062,7 +2062,7 @@ The complete grammar for QL is as follows:
 
    exprs ::= expr ("," expr)*
 
-   alias := qldoc? annotations "predicate" literalId "=" predicateRef "/" int ";"
+   alias ::= qldoc? annotations "predicate" literalId "=" predicateRef "/" int ";"
          |  qldoc? annotations "class" classname "=" type ";"
          |  qldoc? annotations "module" modulename "=" moduleId ";"
          
