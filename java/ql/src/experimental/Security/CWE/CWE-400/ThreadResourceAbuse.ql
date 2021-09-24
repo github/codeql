@@ -63,16 +63,26 @@ class ThreadResourceAbuse extends TaintTracking::Configuration {
 
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
     exists(
-      Method rm, ClassInstanceExpr ce, Argument arg, FieldAccess fa // thread.start() invokes the run() method of thread implementation
+      Method rm, ClassInstanceExpr ce, Argument arg, Parameter p, FieldAccess fa, int i // thread.start() invokes the run() method of thread implementation
     |
       rm.hasName("run") and
       ce.getConstructedType().getSourceDeclaration() = rm.getSourceDeclaration().getDeclaringType() and
       ce.getConstructedType().getASupertype*().hasQualifiedName("java.lang", "Runnable") and
-      ce.getAnArgument() = arg and
-      fa = rm.getAnAccessedField().getAnAccess() and
-      arg.getType() = fa.getField().getType() and
+      ce.getArgument(i) = arg and
+      ce.getConstructor().getParameter(i) = p and
+      fa.getEnclosingCallable() = rm and
+      DataFlow::localExprFlow(p.getAnAccess(), fa.getField().getAnAssignedValue()) and
       node1.asExpr() = arg and
       node2.asExpr() = fa
+    )
+  }
+
+  override predicate isSanitizer(DataFlow::Node node) {
+    exists(
+      MethodAccess ma // Math.min(sleepTime, MAX_INTERVAL)
+    |
+      ma.getMethod().hasQualifiedName("java.lang", "Math", "min") and
+      node.asExpr() = ma.getAnArgument()
     )
   }
 

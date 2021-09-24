@@ -4,6 +4,17 @@ import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.ExternalFlow
 
+/** `java.lang.Math` data model for value comparison in the new CSV format. */
+private class MathCompDataModel extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "java.lang;Math;false;min;;;Argument[0..1];ReturnValue;taint",
+        "java.lang;Math;false;max;;;Argument[0..1];ReturnValue;taint"
+      ]
+  }
+}
+
 /** Thread pause data model in the new CSV format. */
 private class PauseThreadDataModel extends SinkModelCsv {
   override predicate row(string row) {

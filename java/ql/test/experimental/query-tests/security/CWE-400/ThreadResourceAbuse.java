@@ -150,7 +150,7 @@ public class ThreadResourceAbuse extends HttpServlet {
 		}
 	}
 
-	int parseReplyAfter(String value) {
+	int parseRetryAfter(String value) {
 		if (value == null || value.isEmpty()) {
 			return DEFAULT_RETRY_AFTER;
 		}
@@ -183,7 +183,7 @@ public class ThreadResourceAbuse extends HttpServlet {
 	protected void doHead3(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// Get thread pause time from request header
 		String header = request.getHeader("Retry-After");
-		int retryAfter = parseReplyAfter(header);
+		int retryAfter = parseRetryAfter(header);
 
 		try {
 			// GOOD: wait for retry-after with input validation
