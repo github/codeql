@@ -18,14 +18,7 @@ class BigDecimalDOSConfig extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) {
     exists(Method method, MethodAccess call |
       method.getDeclaringType().hasQualifiedName("java.math", "BigDecimal") and
-      method.hasName("subtract") and
-      call.getMethod() = method and
-      sink.asExpr() = call.getArgument(0)
-    )
-    or
-    exists(Method method, MethodAccess call |
-      method.getDeclaringType().hasQualifiedName("java.math", "BigDecimal") and
-      method.hasName("add") and
+      method.hasName(["add", "subtract"]) and
       call.getMethod() = method and
       sink.asExpr() = call.getArgument(0)
     )
