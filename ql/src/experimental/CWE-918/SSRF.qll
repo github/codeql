@@ -152,11 +152,22 @@ module ServerSideRequestForgery {
    * the binding function to run some validations for that field. If these binding functions returns
    * no error, then we consider these fields safe for SSRF.
    */
-  class BodySanitizer extends Sanitizer, BodyTagSanitizer { }
+  class BodySanitizer extends Sanitizer { 
+    BodySanitizer(){
+      this instanceof BodyTagSanitizer
+    }
+  }
 
   /**
    * The method Var of package validator is a sanitizer guard only if the check
    * of the error binding exists, and the tag to check is one of "alpha", "alphanum", "alphaunicode", "alphanumunicode", "number", "numeric".
    */
-  class ValidatorAsSanitizer extends SanitizerGuard, ValidatorVarCheck { }
+  class ValidatorAsSanitizer extends SanitizerGuard { 
+    ValidatorAsSanitizer(){
+      this instanceof ValidatorVarCheck
+    }
+    override predicate checks(Expr e, boolean branch) {
+      this.checks(e, branch)
+    }
+  }
 }
