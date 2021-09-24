@@ -11,7 +11,10 @@ import semmle.code.java.dataflow.internal.DataFlowImplCommon
 
 string captureFlow(Callable api) {
   result = captureQualifierFlow(api) or
-  result = captureParameterFlowToReturnValue(api)
+  result = captureParameterFlowToReturnValue(api) or
+  // TODO: merge next two?
+  result = captureFieldFlowOut(api) or
+  result = captureFieldFlowIntoParam(api)
 }
 
 string captureQualifierFlow(Callable api) {
@@ -20,6 +23,30 @@ string captureQualifierFlow(Callable api) {
     rtn.getResult() instanceof ThisAccess
   ) and
   result = asValueModel(api, "Argument[-1]", "ReturnValue")
+}
+
+string captureFieldFlowOut(Callable api) {
+  exists(FieldAccess fa, ReturnStmt rtn |
+    not (fa.getField().isStatic() and fa.getField().isFinal()) and
+    rtn.getEnclosingCallable() = api and
+    not api.getReturnType() instanceof PrimitiveType and
+    not api.getDeclaringType() instanceof EnumType and
+    TaintTracking::localTaint(DataFlow::exprNode(fa), DataFlow::exprNode(rtn.getResult()))
+  |
+    result = asTaintModel(api, "Argument[-1]", "ReturnValue")
+  )
+}
+
+string captureFieldFlowIntoParam(Callable api) {
+  exists(FieldAccess fa, DataFlow::PostUpdateNode pn |
+    not (fa.getField().isStatic() and fa.getField().isFinal()) and
+    pn.getPreUpdateNode().asExpr() = api.getAParameter().getAnAccess() and
+    TaintTracking::localTaint(DataFlow::exprNode(fa), pn)
+  |
+    result =
+      asTaintModel(api, "Argument[-1]",
+        parameterAccess(pn.getPreUpdateNode().asExpr().(VarAccess).getVariable()))
+  )
 }
 
 class ParameterToReturnValueTaintConfig extends TaintTracking::Configuration {
