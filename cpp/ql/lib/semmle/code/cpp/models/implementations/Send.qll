@@ -60,4 +60,8 @@ private class Send extends AliasFunction, ArrayFunction, SideEffectFunction, Rem
   override predicate hasRemoteFlowSink(FunctionInput input, string description) {
     input.isParameterDeref(1) and description = "Buffer sent by " + this.getName()
   }
+
+  override predicate hasSocketInput(FunctionInput input) {
+    input.isParameter(0)
+  }
 }

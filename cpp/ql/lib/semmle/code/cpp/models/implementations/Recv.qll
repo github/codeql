@@ -85,4 +85,8 @@ private class Recv extends AliasFunction, ArrayFunction, SideEffectFunction,
     ) and
     description = "Buffer read by " + this.getName()
   }
+
+  override predicate hasSocketInput(FunctionInput input) {
+    input.isParameter(0)
+  }
 }

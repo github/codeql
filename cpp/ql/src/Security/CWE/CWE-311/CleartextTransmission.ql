@@ -43,7 +43,13 @@ class NetworkSend extends NetworkSendRecv {
 
   NetworkSend() { target = this.getTarget() }
 
-  override Expr getSocketExpr() { result = this.getArgument(0) }
+  override Expr getSocketExpr() {
+    exists(FunctionInput input, int arg |
+      target.hasSocketInput(input) and
+      input.isParameter(arg) and
+      result = this.getArgument(arg)
+    )
+  }
 
   override Expr getDataExpr() {
     exists(FunctionInput input, int arg |
@@ -62,7 +68,13 @@ class NetworkRecv extends NetworkSendRecv {
 
   NetworkRecv() { target = this.getTarget() }
 
-  override Expr getSocketExpr() { result = this.getArgument(0) }
+  override Expr getSocketExpr() {
+    exists(FunctionInput input, int arg |
+      target.hasSocketInput(input) and
+      input.isParameter(arg) and
+      result = this.getArgument(arg)
+    )
+  }
 
   override Expr getDataExpr() {
     exists(FunctionOutput output, int arg |
@@ -85,7 +97,7 @@ class SensitiveSendRecvConfiguration extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) {
     exists(NetworkSendRecv transmission |
       sink.asExpr() = transmission.getDataExpr() and
-      // a zero file descriptor is standard input, which is not interesting for this query.
+      // a zero socket descriptor is standard input, which is not interesting for this query.
       not exists(Zero zero |
         DataFlow::localFlow(DataFlow::exprNode(zero),
           DataFlow::exprNode(transmission.getSocketExpr()))
