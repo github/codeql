@@ -710,7 +710,7 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
             }
             is IrDelegatingConstructorCall -> {
                 val delegatingClass = e.symbol.owner.parent as IrClass
-                val currentClass = (irCallable as IrDeclaration).parent as IrClass
+                val currentClass = irCallable.parent as IrClass
 
                 val id: Label<out DbStmt>
                 val callable = useFunction(irCallable)
