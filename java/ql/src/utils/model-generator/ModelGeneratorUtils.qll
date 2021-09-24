@@ -1,5 +1,6 @@
 import java
 import semmle.code.java.dataflow.ExternalFlow
+import semmle.code.java.dataflow.internal.ContainerFlow
 
 string isExtensible(RefType ref) { if ref.isFinal() then result = "false" else result = "true" }
 
@@ -25,4 +26,13 @@ string asSummaryModel(Callable api, string input, string output, string kind) {
       + input + ";" //
       + output + ";" //
       + kind + ";" //
+}
+
+string parameterAccess(Parameter p) {
+  if p.getType() instanceof Array
+  then result = "ArrayElement of Argument[" + p.getPosition() + "]"
+  else
+    if p.getType() instanceof ContainerType
+    then result = "Element of Argument[" + p.getPosition() + "]"
+    else result = "Argument[" + p.getPosition() + "]"
 }

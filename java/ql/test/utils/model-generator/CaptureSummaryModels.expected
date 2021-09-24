@@ -2,3 +2,12 @@
 | p;FluentAPI;false;returnsThis;(String);;Argument[-1];ReturnValue;value; |
 | p;InnerClasses$CaptureMe;true;yesCm;(String);;Argument[0];ReturnValue;taint; |
 | p;InnerClasses;true;yes;(String);;Argument[0];ReturnValue;taint; |
+| p;ParamFlow;true;addTo;(String,List);;Argument[0];Element of Argument[1];taint; |
+| p;ParamFlow;true;returnArrayElement;(String[]);;ArrayElement of Argument[0];ReturnValue;taint; |
+| p;ParamFlow;true;returnCollectionElement;(List);;Element of Argument[0];ReturnValue;taint; |
+| p;ParamFlow;true;returnIterableElement;(Iterable);;Element of Argument[0];ReturnValue;taint; |
+| p;ParamFlow;true;returnIteratorElement;(Iterator);;Element of Argument[0];ReturnValue;taint; |
+| p;ParamFlow;true;returnMultipleParameters;(String,String);;Argument[0];ReturnValue;taint; |
+| p;ParamFlow;true;returnMultipleParameters;(String,String);;Argument[1];ReturnValue;taint; |
+| p;ParamFlow;true;returnVarArgElement;(String[]);;ArrayElement of Argument[0];ReturnValue;taint; |
+| p;ParamFlow;true;returnsInput;(String);;Argument[0];ReturnValue;taint; |
