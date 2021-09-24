@@ -16,13 +16,15 @@ class NokogiriXXE < ApplicationController
     Nokogiri::XML::parse(content, nil, nil, (Nokogiri::XML::ParseOptions.new 0).noent)
 
     Nokogiri::XML::parse(content) { |x| x.noent }
-    Nokogiri::XML::parse(content) { |x| x.nononet }
+    Nokogiri::XML::parse(content) { |x| x.nononet } #FAIL
     Nokogiri::XML::parse(content) { |x| x.nodtdload } # OK
 
     Nokogiri::XML::parse(content) { |x| x.nonet.noent.nodtdload }
 
-    Nokogiri::XML::parse(content, nil, nil, 1) # OK
+    Nokogiri::XML::parse(content, nil, nil, 2048) # OK
     Nokogiri::XML::parse(content, nil, nil, 3)
     Nokogiri::XML::parse(content) { |x| x.nonet.nodtdload } # OK
+    Nokogiri::XML::parse(content, nil, nil, Nokogiri::XML::ParseOptions::NOENT & ~Nokogiri::XML::ParseOptions::NOBLANKS)
+    Nokogiri::XML::parse(content, nil, nil, ~Nokogiri::XML::ParseOptions::NONET | Nokogiri::XML::ParseOptions::NOBLANKS)
 
 end

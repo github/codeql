@@ -11,6 +11,6 @@ class LibXmlRubyXXE < ApplicationController
     XML::Document.string(content, { options: 2 })
     XML::Parser.string(content, { options: 2 })
 
-    LibXML::XML::Parser.file(content, { options: 1 }) # OK
+    LibXML::XML::Parser.file(content, { options: 2048 }) # OK
 
 end

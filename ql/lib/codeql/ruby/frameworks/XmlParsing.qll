@@ -90,40 +90,69 @@ private class FeatureDTDLOAD extends Feature, TDTDLOAD {
   override string getConstantName() { result = "DTDLOAD" }
 }
 
+private API::Node parseOptionsModule() {
+  result = API::getTopLevelMember("Nokogiri").getMember("XML").getMember("ParseOptions")
+  or
+  result = API::getTopLevelMember("LibXML").getMember("XML").getMember("Options")
+  or
+  result = API::getTopLevelMember("XML").getMember("Options")
+}
+
 private DataFlow::LocalSourceNode trackFeature(Feature f, boolean enable, TypeTracker t) {
   t.start() and
   (
-    result.asExpr().getExpr().(IntegerLiteral).getValue().bitAnd(f.getValue()) = f.getValue() and
-    enable = true
+    // An integer literal with the feature-bit enabled/disabled
+    exists(int bitValue |
+      bitValue = result.asExpr().getExpr().(IntegerLiteral).getValue().bitAnd(f.getValue())
+    |
+      if bitValue = 0 then enable = false else enable = true
+    )
     or
+    // Use of a constant f
     enable = true and
-    result =
-      API::getTopLevelMember("Nokogiri")
-          .getMember("XML")
-          .getMember("ParseOptions")
-          .getMember(f.getConstantName())
-          .getAUse()
+    result = parseOptionsModule().getMember(f.getConstantName()).getAUse()
     or
-    enable = true and
-    result =
-      [API::getTopLevelMember("LibXML").getMember("XML"), API::getTopLevelMember("XML")]
-          .getMember("Options")
-          .getMember(f.getConstantName())
-          .getAUse()
+    // If a feature is enabled in any of the operands of the `|` and `|=` operators
+    // then the feature is also enabled in the result of the operators.
+    exists(CfgNodes::ExprNodes::OperationCfgNode operation |
+      operation = result.asExpr().(CfgNodes::ExprNodes::OperationCfgNode) and
+      (
+        operation.getExpr() instanceof BitwiseOrExpr or
+        operation.getExpr() instanceof AssignBitwiseOrExpr
+      )
+    |
+      enable = true and
+      operation.getAnOperand() = trackFeature(f, true).asExpr()
+      or
+      enable = false and
+      operation.getAnOperand() = trackFeature(f, false).asExpr() and
+      forall(DataFlow::Node n | n.asExpr() = operation.getAnOperand() | n != trackFeature(f, true))
+    )
     or
-    (
-      result.asExpr().getExpr() instanceof BitwiseOrExpr or
-      result.asExpr().getExpr() instanceof AssignBitwiseOrExpr or
-      result.asExpr().getExpr() instanceof BitwiseAndExpr or
-      result.asExpr().getExpr() instanceof AssignBitwiseAndExpr
-    ) and
-    result.asExpr().(CfgNodes::ExprNodes::OperationCfgNode).getAnOperand() =
-      trackFeature(f, enable).asExpr()
+    // If a feature is disabled in any of the operands of the `&` and `&=` operators
+    // then the feature is also disabled in the result of the operators.
+    exists(CfgNodes::ExprNodes::OperationCfgNode operation |
+      operation = result.asExpr().(CfgNodes::ExprNodes::OperationCfgNode) and
+      (
+        operation.getExpr() instanceof BitwiseAndExpr or
+        operation.getExpr() instanceof AssignBitwiseAndExpr
+      )
+    |
+      enable = false and
+      operation.getAnOperand() = trackFeature(f, false).asExpr()
+      or
+      enable = true and
+      operation.getAnOperand() = trackFeature(f, true).asExpr() and
+      forall(DataFlow::Node n | n.asExpr() = operation.getAnOperand() | n != trackFeature(f, false))
+    )
     or
+    // The complement operator toggles a feature from enabled to disabled and vice-versa
     result.asExpr().getExpr() instanceof ComplementExpr and
     result.asExpr().(CfgNodes::ExprNodes::OperationCfgNode).getAnOperand() =
       trackFeature(f, enable.booleanNot()).asExpr()
     or
+    // Nokogiri has a ParseOptions class that is a wrapper around the bit-fields and
+    // provides methods for querying and updating the fields.
     result =
       API::getTopLevelMember("Nokogiri")
           .getMember("XML")
@@ -132,6 +161,9 @@ private DataFlow::LocalSourceNode trackFeature(Feature f, boolean enable, TypeTr
     result.asExpr().(CfgNodes::ExprNodes::CallCfgNode).getArgument(0) =
       trackFeature(f, enable).asExpr()
     or
+    // The Nokogiri ParseOptions class has methods for setting/unsetting features.
+    // The method names are the lowercase variants of the constant names, with a "no"
+    // prefix for unsetting a feature.
     exists(CfgNodes::ExprNodes::CallCfgNode call |
       enable = true and
       call.getExpr().(MethodCall).getMethodName() = f.getConstantName().toLowerCase()
@@ -140,15 +172,12 @@ private DataFlow::LocalSourceNode trackFeature(Feature f, boolean enable, TypeTr
       call.getExpr().(MethodCall).getMethodName() = "no" + f.getConstantName().toLowerCase()
     |
       (
-        result.asExpr() = call
-        or
+        // these methods update the receiver
         result.flowsTo(any(DataFlow::Node n | n.asExpr() = call.getReceiver()))
+        or
+        // in addition they return the (updated) receiver to allow chaining calls.
+        result.asExpr() = call
       )
-    )
-    or
-    exists(CfgNodes::ExprNodes::CallCfgNode call |
-      trackFeature(f, enable).asExpr() = call.getReceiver() and
-      result.asExpr() = call
     )
   )
   or
