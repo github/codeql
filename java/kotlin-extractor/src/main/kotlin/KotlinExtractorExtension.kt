@@ -851,12 +851,10 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
         id: Label<out DbBreakcontinuestmt>
     ) {
         val locId = tw.getLocation(e)
-        @Suppress("UNCHECKED_CAST")
-        tw.writeHasLocation(id as Label<out DbLocatable>, locId)
+        tw.writeHasLocation(id, locId)
         val label = e.label
         if (label != null) {
-            @Suppress("UNCHECKED_CAST")
-            tw.writeNamestrings(label, "", id as Label<out DbNamedexprorstmt>)
+            tw.writeNamestrings(label, "", id)
         }
 
         val loopId = loopIdMap[e.loop]
