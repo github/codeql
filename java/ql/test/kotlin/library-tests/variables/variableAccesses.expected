@@ -1,4 +1,7 @@
 varAcc
+| variables.kt:3:5:3:21 | prop |
+| variables.kt:16:11:16:18 | o |
+| variables.kt:16:11:16:18 | o |
 instAcc
 | variables.kt:21:11:21:15 | this |
 | variables.kt:24:9:24:8 | this |

@@ -469,20 +469,70 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
         tw.writeParamName(id, vp.name.asString())
     }
 
-    private fun extractObjectInitializerFunction(c: IrClass, parentid: Label<out DbReftype>) {
-        var methodLabel = getFunctionLabel(c, "<obinit>", listOf(), pluginContext.irBuiltIns.unitType)
-        val methodId = tw.getLabelFor<DbMethod>(methodLabel)
+    private fun extractObjectInitializerFunction(c: IrClass, parentId: Label<out DbReftype>) {
+        if (c.origin == IrDeclarationOrigin.IR_EXTERNAL_DECLARATION_STUB ||
+            c.origin == IrDeclarationOrigin.IR_EXTERNAL_JAVA_DECLARATION_STUB) {
+            return
+        }
+
+        // add method:
+        var obinitLabel = getFunctionLabel(c, "<obinit>", listOf(), pluginContext.irBuiltIns.unitType)
+        val obinitId = tw.getLabelFor<DbMethod>(obinitLabel)
         val signature = "TODO"
         val returnTypeId = useType(pluginContext.irBuiltIns.unitType)
-        tw.writeMethods(methodId, "<obinit>", signature, returnTypeId, parentid, methodId)
+        tw.writeMethods(obinitId, "<obinit>", signature, returnTypeId, parentId, obinitId)
 
         val locId = tw.getLocation(c)
-        tw.writeHasLocation(methodId, locId)
+        tw.writeHasLocation(obinitId, locId)
 
-        // todo add body with non-static field initializers, and init blocks
+        // add body:
+        val blockId = tw.getFreshIdLabel<DbBlock>()
+        tw.writeStmts_block(blockId, obinitId, 0, obinitId)
+        tw.writeHasLocation(blockId, locId)
+
+        // body content with field initializers and init blocks
+        var idx = 0
+        for (decl in c.declarations) {
+            when (decl) {
+                is IrProperty -> {
+                    val backingField = decl.backingField
+                    val initializer = backingField?.initializer
+
+                    if (backingField == null || backingField.isStatic || initializer == null) {
+                        continue
+                    }
+
+                    val assignmentId = tw.getFreshIdLabel<DbAssignexpr>()
+                    val typeId = useType(initializer.expression.type)
+                    val locId = tw.getLocation(decl)
+                    tw.writeExprs_assignexpr(assignmentId, typeId, blockId, idx++)
+                    tw.writeHasLocation(assignmentId, locId)
+
+                    val lhsId = tw.getFreshIdLabel<DbVaraccess>()
+                    val lhsTypeId = useType(backingField.type)
+                    tw.writeExprs_varaccess(lhsId, lhsTypeId, assignmentId, 0)
+                    tw.writeHasLocation(lhsId, locId)
+                    val vId = useProperty(decl) // todo: fix this. We should be assigning the field, and not the property
+                    tw.writeVariableBinding(lhsId, vId)
+
+                    extractExpression(initializer.expression, obinitId, assignmentId, 1)
+                }
+                is IrAnonymousInitializer -> {
+                    if (decl.isStatic) {
+                        continue
+                    }
+
+                    for (stmt in decl.body.statements) {
+                        extractStatement(stmt, obinitId, blockId, idx++)
+                    }
+                }
+                else -> continue
+            }
+        }
     }
 
     fun extractFunction(f: IrFunction, parentid: Label<out DbReftype>) {
+        currentFunction = f
         val id = useFunction(f)
         val locId = tw.getLocation(f)
         val signature = "TODO"
@@ -491,7 +541,7 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
         tw.writeHasLocation(id, locId)
         val body = f.body
         if(body != null) {
-            extractBody(body, id, f)
+            extractBody(body, id)
         }
         f.valueParameters.forEachIndexed { i, vp ->
             extractValueParameter(vp, id, i)
@@ -502,6 +552,7 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
             val extendedType = useType(extReceiver.type)
             tw.writeKtExtensionFunctions(id, extendedType)
         }
+        currentFunction = null
     }
 
     private fun getPropertyLabel(p: IrProperty) : String {
@@ -529,20 +580,20 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
         }
     }
 
-    fun extractBody(b: IrBody, callable: Label<out DbCallable>, irCallable: IrFunction) {
+    fun extractBody(b: IrBody, callable: Label<out DbCallable>) {
         when(b) {
-            is IrBlockBody -> extractBlockBody(b, callable, irCallable, callable, 0)
+            is IrBlockBody -> extractBlockBody(b, callable, callable, 0)
             else -> logger.warnElement(Severity.ErrorSevere, "Unrecognised IrBody: " + b.javaClass, b)
         }
     }
 
-    fun extractBlockBody(b: IrBlockBody, callable: Label<out DbCallable>, irCallable: IrFunction, parent: Label<out DbStmtparent>, idx: Int) {
+    fun extractBlockBody(b: IrBlockBody, callable: Label<out DbCallable>, parent: Label<out DbStmtparent>, idx: Int) {
         val id = tw.getFreshIdLabel<DbBlock>()
         val locId = tw.getLocation(b)
         tw.writeStmts_block(id, parent, idx, callable)
         tw.writeHasLocation(id, locId)
         for((sIdx, stmt) in b.statements.withIndex()) {
-            extractStatement(stmt, irCallable, id, sIdx)
+            extractStatement(stmt, callable, id, sIdx)
         }
     }
 
@@ -550,7 +601,7 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
         return tw.getVariableLabelFor<DbLocalvar>(v)
     }
 
-    fun extractVariable(v: IrVariable, irCallable: IrFunction) {
+    fun extractVariable(v: IrVariable, callable: Label<out DbCallable>) {
         val id = useVariable(v)
         val locId = tw.getLocation(v)
         val typeId = useType(v.type)
@@ -561,17 +612,17 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
         tw.writeHasLocation(id, locId)
         val i = v.initializer
         if(i != null) {
-            extractExpression(i, irCallable, decId, 0)
+            extractExpression(i, callable, decId, 0)
         }
     }
 
-    fun extractStatement(s: IrStatement, irCallable: IrFunction, parent: Label<out DbStmtparent>, idx: Int) {
+    fun extractStatement(s: IrStatement, callable: Label<out DbCallable>, parent: Label<out DbStmtparent>, idx: Int) {
         when(s) {
             is IrExpression -> {
-                extractExpression(s, irCallable, parent, idx)
+                extractExpression(s, callable, parent, idx)
             }
             is IrVariable -> {
-                extractVariable(s, irCallable)
+                extractVariable(s, callable)
             }
             else -> {
                 logger.warnElement(Severity.ErrorSevere, "Unrecognised IrStatement: " + s.javaClass, s)
@@ -594,7 +645,7 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
         }
     }
 
-    fun extractCall(c: IrCall, irCallable: IrFunction, parent: Label<out DbExprparent>, idx: Int) {
+    fun extractCall(c: IrCall, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int) {
         val exprId: Label<out DbExpr> = when {
             c.origin == PLUS -> {
                 val id = tw.getFreshIdLabel<DbAddexpr>()
@@ -680,12 +731,12 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
         val dr = c.dispatchReceiver
         val offset = if(dr == null) 0 else 1
         if(dr != null) {
-            extractExpression(dr, irCallable, exprId, 0) // todo: should this be at index -1 instead?
+            extractExpression(dr, callable, exprId, 0) // todo: should this be at index -1 instead?
         }
         for(i in 0 until c.valueArgumentsCount) {
             val arg = c.getValueArgument(i)
             if(arg != null) {
-                extractExpression(arg, irCallable, exprId, i + offset)
+                extractExpression(arg, callable, exprId, i + offset)
             }
         }
 
@@ -696,7 +747,7 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
         e: IrFunctionAccessExpression,
         parent: Label<out DbExprparent>,
         idx: Int,
-        irCallable: IrFunction
+        callable: Label<out DbCallable>
     ) {
         val id = tw.getFreshIdLabel<DbNewexpr>()
         val typeId = useType(e.type)
@@ -708,12 +759,12 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
         for (i in 0 until e.valueArgumentsCount) {
             val arg = e.getValueArgument(i)
             if (arg != null) {
-                extractExpression(arg, irCallable, id, i)
+                extractExpression(arg, callable, id, i)
             }
         }
         val dr = e.dispatchReceiver
         if (dr != null) {
-            extractExpression(dr, irCallable, id, -3)
+            extractExpression(dr, callable, id, -3)
         }
 
         // todo: type arguments at index -4, -5, ...
@@ -721,10 +772,17 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
 
     private val loopIdMap: MutableMap<IrLoop, Label<out DbKtloopstmt>> = mutableMapOf()
 
-    fun extractExpression(e: IrExpression, irCallable: IrFunction, parent: Label<out DbExprparent>, idx: Int) {
-        val callableLabel = useFunction(irCallable)
+    private var currentFunction: IrFunction? = null
+
+    fun extractExpression(e: IrExpression, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int) {
         when(e) {
             is IrInstanceInitializerCall -> {
+                val irCallable = currentFunction
+                if (irCallable == null) {
+                    logger.warnElement(Severity.ErrorSevere, "Current function is not set", e)
+                    return
+                }
+
                 if (irCallable is IrConstructor && irCallable.isPrimary) {
                     // Todo add parameter to field assignments
                 }
@@ -740,11 +798,16 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
                 tw.writeCallableBinding(id, methodId)
             }
             is IrDelegatingConstructorCall -> {
+                val irCallable = currentFunction
+                if (irCallable == null) {
+                    logger.warnElement(Severity.ErrorSevere, "Current function is not set", e)
+                    return
+                }
+
                 val delegatingClass = e.symbol.owner.parent as IrClass
                 val currentClass = irCallable.parent as IrClass
 
                 val id: Label<out DbStmt>
-                val callable = useFunction(irCallable)
                 if (delegatingClass != currentClass) {
                     id = tw.getFreshIdLabel<DbSuperconstructorinvocationstmt>()
                     tw.writeStmts_superconstructorinvocationstmt(id, parent, idx, callable)
@@ -762,23 +825,23 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
                 for (i in 0 until e.valueArgumentsCount) {
                     val arg = e.getValueArgument(i)
                     if (arg != null) {
-                        extractExpression(arg, irCallable, id, i)
+                        extractExpression(arg, callable, id, i)
                     }
                 }
                 val dr = e.dispatchReceiver
                 if (dr != null) {
-                    extractExpression(dr, irCallable, id, -1)
+                    extractExpression(dr, callable, id, -1)
                 }
 
                 // todo: type arguments at index -2, -3, ...
             }
             is IrConstructorCall -> {
-                extractConstructorCall(e, parent, idx, irCallable)
+                extractConstructorCall(e, parent, idx, callable)
             }
             is IrEnumConstructorCall -> {
-                extractConstructorCall(e, parent, idx, irCallable)
+                extractConstructorCall(e, parent, idx, callable)
             }
-            is IrCall -> extractCall(e, irCallable, parent, idx)
+            is IrCall -> extractCall(e, callable, parent, idx)
             is IrConst<*> -> {
                 val v = e.value
                 when(v) {
@@ -860,51 +923,51 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
                 val vId = useValueDeclaration(e.symbol.owner)
                 tw.writeVariableBinding(lhsId, vId)
 
-                extractExpression(e.value, irCallable, id, 1)
+                extractExpression(e.value, callable, id, 1)
             }
             is IrThrow -> {
                 val id = tw.getFreshIdLabel<DbThrowstmt>()
                 val locId = tw.getLocation(e)
-                tw.writeStmts_throwstmt(id, parent, idx, callableLabel)
+                tw.writeStmts_throwstmt(id, parent, idx, callable)
                 tw.writeHasLocation(id, locId)
-                extractExpression(e.value, irCallable, id, 0)
+                extractExpression(e.value, callable, id, 0)
             }
             is IrBreak -> {
                 val id = tw.getFreshIdLabel<DbBreakstmt>()
-                tw.writeStmts_breakstmt(id, parent, idx, callableLabel)
+                tw.writeStmts_breakstmt(id, parent, idx, callable)
                 extractBreakContinue(e, id)
             }
             is IrContinue -> {
                 val id = tw.getFreshIdLabel<DbContinuestmt>()
-                tw.writeStmts_continuestmt(id, parent, idx, callableLabel)
+                tw.writeStmts_continuestmt(id, parent, idx, callable)
                 extractBreakContinue(e, id)
             }
             is IrReturn -> {
                 val id = tw.getFreshIdLabel<DbReturnstmt>()
                 val locId = tw.getLocation(e)
-                tw.writeStmts_returnstmt(id, parent, idx, callableLabel)
+                tw.writeStmts_returnstmt(id, parent, idx, callable)
                 tw.writeHasLocation(id, locId)
-                extractExpression(e.value, irCallable, id, 0)
+                extractExpression(e.value, callable, id, 0)
             }
             is IrContainerExpression -> {
                 val id = tw.getFreshIdLabel<DbBlock>()
                 val locId = tw.getLocation(e)
-                tw.writeStmts_block(id, parent, idx, callableLabel)
+                tw.writeStmts_block(id, parent, idx, callable)
                 tw.writeHasLocation(id, locId)
                 e.statements.forEachIndexed { i, s ->
-                    extractStatement(s, irCallable, id, i)
+                    extractStatement(s, callable, id, i)
                 }
             }
             is IrWhileLoop -> {
                 val id = tw.getFreshIdLabel<DbWhilestmt>()
                 loopIdMap[e] = id
                 val locId = tw.getLocation(e)
-                tw.writeStmts_whilestmt(id, parent, idx, callableLabel)
+                tw.writeStmts_whilestmt(id, parent, idx, callable)
                 tw.writeHasLocation(id, locId)
-                extractExpression(e.condition, irCallable, id, 0)
+                extractExpression(e.condition, callable, id, 0)
                 val body = e.body
                 if(body != null) {
-                    extractExpression(body, irCallable, id, 1)
+                    extractExpression(body, callable, id, 1)
                 }
                 loopIdMap.remove(e)
             }
@@ -912,12 +975,12 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
                 val id = tw.getFreshIdLabel<DbDostmt>()
                 loopIdMap[e] = id
                 val locId = tw.getLocation(e)
-                tw.writeStmts_dostmt(id, parent, idx, callableLabel)
+                tw.writeStmts_dostmt(id, parent, idx, callable)
                 tw.writeHasLocation(id, locId)
-                extractExpression(e.condition, irCallable, id, 0)
+                extractExpression(e.condition, callable, id, 0)
                 val body = e.body
                 if(body != null) {
-                    extractExpression(body, irCallable, id, 1)
+                    extractExpression(body, callable, id, 1)
                 }
                 loopIdMap.remove(e)
             }
@@ -935,8 +998,8 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
                     val bLocId = tw.getLocation(b)
                     tw.writeWhen_branch(bId, id, i)
                     tw.writeHasLocation(bId, bLocId)
-                    extractExpression(b.condition, irCallable, bId, 0)
-                    extractExpression(b.result, irCallable, bId, 1)
+                    extractExpression(b.condition, callable, bId, 0)
+                    extractExpression(b.result, callable, bId, 1)
                     if(b is IrElseBranch) {
                         tw.writeWhen_branch_else(bId)
                     }
@@ -948,7 +1011,7 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
                 val typeId = useType(e.type)
                 tw.writeExprs_getclassexpr(id, typeId, parent, idx)
                 tw.writeHasLocation(id, locId)
-                extractExpression(e.argument, irCallable, id, 0)
+                extractExpression(e.argument, callable, id, 0)
             }
             else -> {
                 logger.warnElement(Severity.ErrorSevere, "Unrecognised IrExpression: " + e.javaClass, e)

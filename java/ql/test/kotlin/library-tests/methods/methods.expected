@@ -1,7 +1,5 @@
 methods
 | file://:0:0:0:0 | <init> |
-| file://:0:0:0:0 | <obinit> |
-| file://:0:0:0:0 | <obinit> |
 | file://:0:0:0:0 | equals |
 | file://:0:0:0:0 | equals |
 | file://:0:0:0:0 | hashCode |

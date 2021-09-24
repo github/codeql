@@ -44,6 +44,9 @@
 | exprs.kt:50:13:50:16 | true | BooleanLiteral |
 | exprs.kt:50:13:50:23 | ::class | ClassExpr |
 | exprs.kt:53:1:55:1 | <obinit>(...) | MethodAccess |
+| exprs.kt:53:9:53:18 | ...=... | AssignExpr |
+| exprs.kt:53:9:53:18 | n | VarAccess |
+| exprs.kt:53:9:53:18 | n | VarAccess |
 | exprs.kt:54:27:54:31 | (no string representation) | ClassInstanceExpr |
 | exprs.kt:54:29:54:30 | 42 | IntegerLiteral |
 | file://:0:0:0:0 | b1 | LocalVariableDeclExpr |

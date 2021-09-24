@@ -4,5 +4,7 @@
 | classes.kt:12:1:15:1 | ClassFour |
 | classes.kt:17:1:18:1 | ClassFive |
 | classes.kt:28:1:30:1 | ClassSix |
+| classes.kt:34:1:47:1 | ClassSeven |
 | file://:0:0:0:0 | Any |
+| file://:0:0:0:0 | ClassesKt |
 | file://:0:0:0:0 | Unit |
