@@ -7,7 +7,7 @@
 <overview>
 <p>Directly incorporating user input into an BigDecimal Operation Function without validating the input
 can facilitate DOS attacks. In these attacks, the server
-will consume a lot of computing resources, A typical scenario is that the CPU usage rises to close to 100%.
+will consume a lot of computing resources. A typical scenario is that the CPU usage rises to close to 100%.
 This issue often occurs in scenarios that require scientific computing, such as e-commerce platforms and electronic payments.
 </p>
 
