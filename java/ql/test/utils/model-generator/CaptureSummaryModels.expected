@@ -1,1 +1,2 @@
+| p;FinalClass;false;returnsInput;(String);;Argument[0];ReturnValue;taint; |
 | p;FluentAPI;false;returnsThis;(String);;Argument[-1];ReturnValue;value; |
