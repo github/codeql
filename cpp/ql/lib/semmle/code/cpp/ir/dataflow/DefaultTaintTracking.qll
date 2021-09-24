@@ -550,6 +550,10 @@ module TaintedWithPath {
     )
   }
 
+  /**
+   * Holds if there is flow from `arg` to `out` across a call that can by summarized by the flow
+   * from `par` to `ret` within it, in the graph of data flow path explanations.
+   */
   query predicate subpaths(PathNode arg, PathNode par, PathNode ret, PathNode out) {
     DataFlow3::PathGraph::subpaths(arg.(WrapPathNode).inner(), par.(WrapPathNode).inner(),
       ret.(WrapPathNode).inner(), out.(WrapPathNode).inner())
