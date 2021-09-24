@@ -550,6 +550,39 @@ module TaintedWithPath {
     )
   }
 
+  /**
+   * Holds if there is flow from `arg` to `out` across a call that can by summarized by the flow
+   * from `par` to `ret` within it, in the graph of data flow path explanations.
+   */
+  query predicate subpaths(PathNode arg, PathNode par, PathNode ret, PathNode out) {
+    DataFlow3::PathGraph::subpaths(arg.(WrapPathNode).inner(), par.(WrapPathNode).inner(),
+      ret.(WrapPathNode).inner(), out.(WrapPathNode).inner())
+    or
+    // To avoid showing trivial-looking steps, we _replace_ the last node instead
+    // of adding an edge out of it.
+    exists(WrapPathNode sinkNode |
+      DataFlow3::PathGraph::subpaths(arg.(WrapPathNode).inner(), par.(WrapPathNode).inner(),
+        ret.(WrapPathNode).inner(), sinkNode.inner()) and
+      out.(FinalPathNode).inner() = adjustedSink(sinkNode.inner().getNode())
+    )
+    or
+    // Same for the first node
+    exists(WrapPathNode sourceNode |
+      DataFlow3::PathGraph::subpaths(sourceNode.inner(), par.(WrapPathNode).inner(),
+        ret.(WrapPathNode).inner(), out.(WrapPathNode).inner()) and
+      sourceNode.inner().getNode() = getNodeForExpr(arg.(InitialPathNode).inner())
+    )
+    or
+    // Finally, handle the case where the path goes directly from a source to a
+    // sink, meaning that they both need to be translated.
+    exists(WrapPathNode sinkNode, WrapPathNode sourceNode |
+      DataFlow3::PathGraph::subpaths(sourceNode.inner(), par.(WrapPathNode).inner(),
+        ret.(WrapPathNode).inner(), sinkNode.inner()) and
+      sourceNode.inner().getNode() = getNodeForExpr(arg.(InitialPathNode).inner()) and
+      out.(FinalPathNode).inner() = adjustedSink(sinkNode.inner().getNode())
+    )
+  }
+
   /** Holds if `n` is a node in the graph of data flow path explanations. */
   query predicate nodes(PathNode n, string key, string val) {
     key = "semmle.label" and val = n.toString()
