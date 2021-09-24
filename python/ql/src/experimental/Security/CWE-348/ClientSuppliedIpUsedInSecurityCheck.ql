@@ -27,9 +27,7 @@ class ClientSuppliedIpUsedInSecurityCheckConfig extends TaintTracking::Configura
     source instanceof ClientSuppliedIpUsedInSecurityCheck
   }
 
-  override predicate isSink(DataFlow::Node sink) {
-    sink instanceof ClientSuppliedIpUsedInSecurityCheckSink
-  }
+  override predicate isSink(DataFlow::Node sink) { sink instanceof PossibleSecurityCheck }
 
   override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
     exists(DataFlow::CallCfgNode ccn |

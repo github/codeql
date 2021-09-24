@@ -14,55 +14,60 @@ abstract class ClientSuppliedIpUsedInSecurityCheck extends DataFlow::CallCfgNode
 
 private class FlaskClientSuppliedIpUsedInSecurityCheck extends ClientSuppliedIpUsedInSecurityCheck {
   FlaskClientSuppliedIpUsedInSecurityCheck() {
-    this =
-      API::moduleImport("flask")
-          .getMember("request")
-          .getMember("headers")
-          .getMember(["get", "get_all", "getlist"])
-          .getACall() and
-    this.getArg(0).asCfgNode().getNode().(StrConst).getText().toLowerCase() =
-      clientIpParameterName()
+    exists(RemoteFlowSource rfs, DataFlow::AttrRead get |
+      rfs.getSourceType() = "flask.request" and this.getFunction() = get
+    |
+      // `get` is a call to request.headers.get or request.headers.get_all or request.headers.getlist
+      // request.headers
+      get.getObject()
+          .(DataFlow::AttrRead)
+          // request
+          .getObject()
+          .getALocalSource() = rfs and
+      get.getAttributeName() in ["get", "get_all", "getlist"] and
+      get.getObject().(DataFlow::AttrRead).getAttributeName() = "headers" and
+      this.getArg(0).asExpr().(StrConst).getText().toLowerCase() = clientIpParameterName()
+    )
   }
 }
 
 private class DjangoClientSuppliedIpUsedInSecurityCheck extends ClientSuppliedIpUsedInSecurityCheck {
   DjangoClientSuppliedIpUsedInSecurityCheck() {
-    exists(RemoteFlowSource rfs, DataFlow::LocalSourceNode lsn |
-      rfs.getSourceType() = "django.http.request.HttpRequest" and rfs.asCfgNode() = lsn.asCfgNode()
+    exists(RemoteFlowSource rfs, DataFlow::AttrRead get |
+      rfs.getSourceType() = "django.http.request.HttpRequest" and this.getFunction() = get
     |
-      lsn.flowsTo(DataFlow::exprNode(this.getFunction()
-              .asExpr()
-              .(Attribute)
-              .getObject()
-              .(Attribute)
-              .getObject())) and
-      this.getFunction().asExpr().(Attribute).getName() = "get" and
-      this.getFunction().asExpr().(Attribute).getObject().(Attribute).getName() in [
-          "headers", "META"
-        ] and
-      this.getArg(0).asCfgNode().getNode().(StrConst).getText().toLowerCase() =
-        clientIpParameterName()
+      // `get` is a call to request.headers.get or request.META.get
+      // request.headers
+      get.getObject()
+          .(DataFlow::AttrRead)
+          // request
+          .getObject()
+          .getALocalSource() = rfs and
+      get.getAttributeName() = "get" and
+      get.getObject().(DataFlow::AttrRead).getAttributeName() in ["headers", "META"] and
+      this.getArg(0).asExpr().(StrConst).getText().toLowerCase() = clientIpParameterName()
     )
   }
 }
 
 private class TornadoClientSuppliedIpUsedInSecurityCheck extends ClientSuppliedIpUsedInSecurityCheck {
   TornadoClientSuppliedIpUsedInSecurityCheck() {
-    exists(RemoteFlowSource rfs, DataFlow::LocalSourceNode lsn |
-      rfs.getSourceType() = "tornado.web.RequestHandler" and rfs.asCfgNode() = lsn.asCfgNode()
+    exists(RemoteFlowSource rfs, DataFlow::AttrRead get |
+      rfs.getSourceType() = "tornado.web.RequestHandler" and this.getFunction() = get
     |
-      lsn.flowsTo(DataFlow::exprNode(this.getFunction()
-              .asExpr()
-              .(Attribute)
-              .getObject()
-              .(Attribute)
-              .getObject()
-              .(Attribute)
-              .getObject())) and
-      this.getFunction().asExpr().(Attribute).getName() in ["get", "get_list"] and
-      this.getFunction().asExpr().(Attribute).getObject().(Attribute).getName() = "headers" and
-      this.getArg(0).asCfgNode().getNode().(StrConst).getText().toLowerCase() =
-        clientIpParameterName()
+      // `get` is a call to `rfs`.request.headers.get
+      // `rfs`.request.headers
+      get.getObject()
+          .(DataFlow::AttrRead)
+          // `rfs`.request
+          .getObject()
+          .(DataFlow::AttrRead)
+          // `rfs`
+          .getObject()
+          .getALocalSource() = rfs and
+      get.getAttributeName() in ["get", "get_list"] and
+      get.getObject().(DataFlow::AttrRead).getAttributeName() = "headers" and
+      this.getArg(0).asExpr().(StrConst).getText().toLowerCase() = clientIpParameterName()
     )
   }
 }
@@ -77,11 +82,11 @@ private string clientIpParameterName() {
 }
 
 /** A data flow sink for ip address forgery vulnerabilities. */
-abstract class ClientSuppliedIpUsedInSecurityCheckSink extends DataFlow::Node { }
+abstract class PossibleSecurityCheck extends DataFlow::Node { }
 
 /** A data flow sink for sql operation. */
-private class SqlOperationSink extends ClientSuppliedIpUsedInSecurityCheckSink {
-  SqlOperationSink() { this = any(SqlExecution e).getSql() }
+private class SqlOperationAsSecurityCheck extends PossibleSecurityCheck {
+  SqlOperationAsSecurityCheck() { this = any(SqlExecution e).getSql() }
 }
 
 /**
@@ -90,7 +95,7 @@ private class SqlOperationSink extends ClientSuppliedIpUsedInSecurityCheckSink {
  * For example: `if not ipAddr.startswith('192.168.') : ...` determine whether the client ip starts
  * with `192.168.`, and the program can be deceived by forging the ip address.
  */
-private class CompareSink extends ClientSuppliedIpUsedInSecurityCheckSink {
+private class CompareSink extends PossibleSecurityCheck {
   CompareSink() {
     exists(Call call |
       call.getFunc().(Attribute).getName() = "startswith" and
