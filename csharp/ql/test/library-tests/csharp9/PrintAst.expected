@@ -50,7 +50,7 @@ AnonymousObjectCreation.cs:
 #   24|     4: [BlockStmt] {...}
 #   25|       0: [LocalVariableDeclStmt] ... ...;
 #   25|         0: [LocalVariableDeclAndInitExpr] List<Int32> list = ...
-#   25|           -1: [TypeMention] List<Int32>
+#   25|           -1: [TypeMention] List<int>
 #   25|             1: [TypeMention] int
 #   25|           0: [LocalVariableAccess] access to local variable list
 #   25|           1: [ObjectCreation] object creation of type List<Int32>
@@ -139,7 +139,7 @@ Discard.cs:
 #    6|     4: [BlockStmt] {...}
 #    7|       0: [LocalVariableDeclStmt] ... ...;
 #    7|         0: [LocalVariableDeclAndInitExpr] Func<Int32,Int32,Int32> i = ...
-#    7|           -1: [TypeMention] Func<Int32, Int32, Int32>
+#    7|           -1: [TypeMention] Func<int, int, int>
 #    7|             1: [TypeMention] int
 #    7|             2: [TypeMention] int
 #    7|             3: [TypeMention] int
@@ -183,7 +183,7 @@ Discard.cs:
 #   10|                 0: [IntLiteral] 0
 ForeachExtension.cs:
 #    6| [Class] Extensions
-#    8|   4: [ExtensionMethod] GetEnumerator
+#    8|   4: [ExtensionMethod] GetEnumerator<>
 #    8|     -1: [TypeMention] IEnumerator<T>
 #    8|       1: [TypeMention] T
 #-----|     1: (Type parameters)
@@ -193,7 +193,7 @@ ForeachExtension.cs:
 #    8|         -1: [TypeMention] IEnumerator<T>
 #    8|           1: [TypeMention] T
 #    8|     4: [ParameterAccess] access to parameter enumerator
-#    9|   6: [ExtensionMethod] GetAsyncEnumerator
+#    9|   6: [ExtensionMethod] GetAsyncEnumerator<>
 #    9|     -1: [TypeMention] IAsyncEnumerator<T>
 #    9|       1: [TypeMention] T
 #-----|     1: (Type parameters)
@@ -204,7 +204,7 @@ ForeachExtension.cs:
 #    9|           1: [TypeMention] T
 #    9|     4: [ParameterAccess] access to parameter enumerator
 #   10|   8: [ExtensionMethod] GetEnumerator
-#   10|     -1: [TypeMention] IEnumerator<Int32>
+#   10|     -1: [TypeMention] IEnumerator<int>
 #   10|       1: [TypeMention] int
 #-----|     2: (Parameters)
 #   10|       0: [Parameter] count
@@ -229,7 +229,7 @@ ForeachExtension.cs:
 #   22|     4: [BlockStmt] {...}
 #   23|       0: [LocalVariableDeclStmt] ... ...;
 #   23|         0: [LocalVariableDeclAndInitExpr] IEnumerator<Int32> enumerator1 = ...
-#   23|           -1: [TypeMention] IEnumerator<Int32>
+#   23|           -1: [TypeMention] IEnumerator<int>
 #   23|             1: [TypeMention] int
 #   23|           0: [LocalVariableAccess] access to local variable enumerator1
 #   23|           1: [MethodCall] call to method GetEnumerator
@@ -245,7 +245,7 @@ ForeachExtension.cs:
 #   25|         2: [BlockStmt] {...}
 #   28|       2: [LocalVariableDeclStmt] ... ...;
 #   28|         0: [LocalVariableDeclAndInitExpr] IAsyncEnumerator<Int32> enumerator2 = ...
-#   28|           -1: [TypeMention] IAsyncEnumerator<Int32>
+#   28|           -1: [TypeMention] IAsyncEnumerator<int>
 #   28|             1: [TypeMention] int
 #   28|           0: [LocalVariableAccess] access to local variable enumerator2
 #   28|           1: [MethodCall] call to method GetAsyncEnumerator
@@ -271,7 +271,7 @@ ForeachExtension.cs:
 #   37|             2: [IntLiteral] 3
 #   38|         2: [BlockStmt] {...}
 #   42|   6: [Method] GetAsyncEnumerator
-#   42|     -1: [TypeMention] IAsyncEnumerator<Int32>
+#   42|     -1: [TypeMention] IAsyncEnumerator<int>
 #   42|       1: [TypeMention] int
 #   43|     4: [BlockStmt] {...}
 #   44|       0: [YieldReturnStmt] yield return ...;
@@ -317,7 +317,7 @@ FunctionPointer.cs:
 #   17|               -1: [ParameterAccess] access to parameter f
 #   17|               0: [LocalVariableAccess] access to local variable i
 #   17|               1: [LocalVariableAccess,LocalVariableDeclExpr] Object o
-#   20|     8: [Method] M2
+#   20|     8: [Method] M2<>
 #   20|       -1: [TypeMention] Void
 #-----|       1: (Type parameters)
 #   20|         0: [TypeParameter] T
@@ -358,7 +358,7 @@ FunctionPointer.cs:
 #   29|                 0: [LocalVariableAccess] access to local variable i
 #   29|                 1: [LocalVariableAccess,LocalVariableDeclExpr] Object o
 #   29|                 2: [LocalVariableAccess] access to local variable i
-#   32|     10: [Method] M4
+#   32|     10: [Method] M4<>
 #   32|       -1: [TypeMention] Void
 #-----|       1: (Type parameters)
 #   32|         0: [TypeParameter] T
@@ -529,7 +529,7 @@ LambdaModifier.cs:
 #    8|         0: [LocalFunction] m
 #-----|           2: (Parameters)
 #    8|             0: [Parameter] f
-#    8|               -1: [TypeMention] Func<Int32, Int32>
+#    8|               -1: [TypeMention] Func<int, int>
 #    8|                 1: [TypeMention] int
 #    8|                 2: [TypeMention] int
 #    8|           4: [BlockStmt] {...}
@@ -1320,11 +1320,11 @@ TargetType.cs:
 #   26|               1: [NullLiteral] null
 #   28|       8: [LocalVariableDeclStmt] ... ...;
 #   28|         0: [LocalVariableDeclAndInitExpr] IEnumerable<Int32> xs0 = ...
-#   28|           -1: [TypeMention] IEnumerable<Int32>
+#   28|           -1: [TypeMention] IEnumerable<int>
 #   28|             1: [TypeMention] int
 #   28|           0: [LocalVariableAccess] access to local variable xs0
 #   28|           1: [ObjectCreation] object creation of type List<Int32>
-#   28|             -2: [TypeMention] List<Int32>
+#   28|             -2: [TypeMention] List<int>
 #   28|               1: [TypeMention] int
 #   28|             -1: [CollectionInitializer] { ..., ... }
 #   28|               0: [ElementInitializer] call to method Add
@@ -1333,7 +1333,7 @@ TargetType.cs:
 #   28|                 0: [IntLiteral] 1
 #   29|       9: [LocalVariableDeclStmt] ... ...;
 #   29|         0: [LocalVariableDeclAndInitExpr] IEnumerable<Int32> xs1 = ...
-#   29|           -1: [TypeMention] IEnumerable<Int32>
+#   29|           -1: [TypeMention] IEnumerable<int>
 #   29|             1: [TypeMention] int
 #   29|           0: [LocalVariableAccess] access to local variable xs1
 #   29|           1: [ArrayCreation] array creation of type Int32[]
@@ -1344,7 +1344,7 @@ TargetType.cs:
 #   29|               1: [IntLiteral] 3
 #   31|       10: [LocalVariableDeclStmt] ... ...;
 #   31|         0: [LocalVariableDeclAndInitExpr] IEnumerable<Int32> xs2 = ...
-#   31|           -1: [TypeMention] IEnumerable<Int32>
+#   31|           -1: [TypeMention] IEnumerable<int>
 #   31|             1: [TypeMention] int
 #   31|           0: [LocalVariableAccess] access to local variable xs2
 #   31|           1: [ConditionalExpr] ... ? ... : ...
@@ -1352,7 +1352,7 @@ TargetType.cs:
 #   31|               0: [LocalVariableAccess] access to local variable x2
 #   31|               1: [ConstantPatternExpr,NullLiteral] null
 #   32|             1: [ObjectCreation] object creation of type List<Int32>
-#   32|               -2: [TypeMention] List<Int32>
+#   32|               -2: [TypeMention] List<int>
 #   32|                 1: [TypeMention] int
 #   32|               -1: [CollectionInitializer] { ..., ... }
 #   32|                 0: [ElementInitializer] call to method Add
@@ -1386,14 +1386,14 @@ TargetType.cs:
 TypeParameterNullability.cs:
 #    1| [Interface] I1
 #    3| [Class] A2
-#    5|   5: [Method] F1
+#    5|   5: [Method] F1<>
 #    5|     -1: [TypeMention] Void
 #-----|     1: (Type parameters)
 #    5|       0: [TypeParameter] T
 #-----|     2: (Parameters)
 #    5|       0: [Parameter] t
 #    5|     4: [BlockStmt] {...}
-#    6|   6: [Method] F2
+#    6|   6: [Method] F2<>
 #    6|     -1: [TypeMention] Void
 #-----|     1: (Type parameters)
 #    6|       0: [TypeParameter] T
@@ -1402,28 +1402,28 @@ TypeParameterNullability.cs:
 #    6|         -1: [TypeMention] T?
 #    6|           1: [TypeMention] T
 #    6|     4: [BlockStmt] {...}
-#    7|   7: [Method] F3
+#    7|   7: [Method] F3<>
 #    7|     -1: [TypeMention] Void
 #-----|     1: (Type parameters)
 #    7|       0: [TypeParameter] T
 #-----|     2: (Parameters)
 #    7|       0: [Parameter] t
 #    7|     4: [BlockStmt] {...}
-#    8|   8: [Method] F4
+#    8|   8: [Method] F4<>
 #    8|     -1: [TypeMention] Void
 #-----|     1: (Type parameters)
 #    8|       0: [TypeParameter] T
 #-----|     2: (Parameters)
 #    8|       0: [Parameter] t
 #    8|     4: [BlockStmt] {...}
-#    9|   9: [Method] F5
+#    9|   9: [Method] F5<>
 #    9|     -1: [TypeMention] Void
 #-----|     1: (Type parameters)
 #    9|       0: [TypeParameter] T
 #-----|     2: (Parameters)
 #    9|       0: [Parameter] t
 #    9|     4: [BlockStmt] {...}
-#   10|   10: [Method] F6
+#   10|   10: [Method] F6<>
 #   10|     -1: [TypeMention] Void
 #-----|     1: (Type parameters)
 #   10|       0: [TypeParameter] T
@@ -1435,14 +1435,14 @@ TypeParameterNullability.cs:
 #   13| [Class] B2
 #-----|   3: (Base types)
 #   13|     0: [TypeMention] A2
-#   15|   5: [Method] F1
+#   15|   5: [Method] F1<>
 #   15|     -1: [TypeMention] Void
 #-----|     1: (Type parameters)
 #   15|       0: [TypeParameter] T
 #-----|     2: (Parameters)
 #   15|       0: [Parameter] t
 #   15|     4: [BlockStmt] {...}
-#   16|   6: [Method] F2
+#   16|   6: [Method] F2<>
 #   16|     -1: [TypeMention] Void
 #-----|     1: (Type parameters)
 #   16|       0: [TypeParameter] T
@@ -1451,21 +1451,21 @@ TypeParameterNullability.cs:
 #   16|         -1: [TypeMention] T?
 #   16|           1: [TypeMention] T
 #   16|     4: [BlockStmt] {...}
-#   17|   7: [Method] F3
+#   17|   7: [Method] F3<>
 #   17|     -1: [TypeMention] Void
 #-----|     1: (Type parameters)
 #   17|       0: [TypeParameter] T
 #-----|     2: (Parameters)
 #   17|       0: [Parameter] t
 #   17|     4: [BlockStmt] {...}
-#   18|   8: [Method] F4
+#   18|   8: [Method] F4<>
 #   18|     -1: [TypeMention] Void
 #-----|     1: (Type parameters)
 #   18|       0: [TypeParameter] T
 #-----|     2: (Parameters)
 #   18|       0: [Parameter] t
 #   18|     4: [BlockStmt] {...}
-#   19|   9: [Method] F6
+#   19|   9: [Method] F6<>
 #   19|     -1: [TypeMention] Void
 #-----|     1: (Type parameters)
 #   19|       0: [TypeParameter] T
@@ -1477,7 +1477,7 @@ TypeParameterNullability.cs:
 #   22| [Class] B3
 #-----|   3: (Base types)
 #   22|     0: [TypeMention] A2
-#   24|   5: [Method] F2
+#   24|   5: [Method] F2<>
 #   24|     -1: [TypeMention] Void
 #-----|     1: (Type parameters)
 #   24|       0: [TypeParameter] T

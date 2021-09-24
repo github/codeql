@@ -2,6 +2,7 @@ import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TypeTracker
 import TestUtilities.InlineExpectationsTest
+import semmle.python.ApiGraphs
 
 // -----------------------------------------------------------------------------
 // tracked
@@ -119,7 +120,7 @@ class TrackedSelfTest extends InlineExpectationsTest {
 /** Gets a reference to `foo` (fictive module). */
 private DataFlow::TypeTrackingNode foo(DataFlow::TypeTracker t) {
   t.start() and
-  result = DataFlow::importNode("foo")
+  result = API::moduleImport("foo").getAUse()
   or
   exists(DataFlow::TypeTracker t2 | result = foo(t2).track(t2, t))
 }
@@ -130,7 +131,7 @@ DataFlow::Node foo() { foo(DataFlow::TypeTracker::end()).flowsTo(result) }
 /** Gets a reference to `foo.bar` (fictive module). */
 private DataFlow::TypeTrackingNode foo_bar(DataFlow::TypeTracker t) {
   t.start() and
-  result = DataFlow::importNode("foo.bar")
+  result = API::moduleImport("foo.bar").getAUse()
   or
   t.startInAttr("bar") and
   result = foo()
@@ -144,7 +145,7 @@ DataFlow::Node foo_bar() { foo_bar(DataFlow::TypeTracker::end()).flowsTo(result)
 /** Gets a reference to `foo.bar.baz` (fictive attribute on `foo.bar` module). */
 private DataFlow::TypeTrackingNode foo_bar_baz(DataFlow::TypeTracker t) {
   t.start() and
-  result = DataFlow::importNode("foo.bar.baz")
+  result = API::moduleImport("foo.bar.baz").getAUse()
   or
   t.startInAttr("baz") and
   result = foo_bar()

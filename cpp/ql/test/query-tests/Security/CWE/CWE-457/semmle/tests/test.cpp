@@ -326,7 +326,7 @@ int test28() {
 		a = false;
 		c = false;
 	}
-	return val; // GOOD
+	return val; // GOOD [FALSE POSITIVE]
 }
 
 int test29() {

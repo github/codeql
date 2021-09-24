@@ -127,7 +127,9 @@ predicate potentiallyStatic(InnerClass c) {
     forall(InnerClass superOfNested | superOfNested = nested.getASourceSupertype+() |
       potentiallyStatic(superOfNested)
     )
-  )
+  ) and
+  // JUnit Nested test classes are required to be non-static.
+  not c.hasAnnotation("org.junit.jupiter.api", "Nested")
 }
 
 /**

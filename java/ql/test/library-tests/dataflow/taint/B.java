@@ -34,12 +34,21 @@ public class B {
     // tainted - data preserving constructors
     String constructed = new String(complex);
     sink(constructed);
+    // tainted - data preserving method
+    String valueOf = String.valueOf(complex.toCharArray());
+    sink(valueOf);
+    // tainted - data preserving method
+    String valueOfSubstring = String.valueOf(complex.toCharArray(), 0, 1);
+    sink(valueOfSubstring);
     // tainted - unsafe escape
     String badEscape = constructed.replaceAll("(<script>)", "");
     sink(badEscape);
     // tainted - tokenized string
     String token = new StringTokenizer(badEscape).nextToken();
     sink(token);
+    // tainted - fluent concatenation
+    String fluentConcat = "".concat("str").concat(token).concat("bar");
+    sink(fluentConcat);
 
     // not tainted
     String safe = notTainty(complex);
@@ -49,7 +58,11 @@ public class B {
     // non-whitelisted constructors don't pass taint
     StringWrapper herring = new StringWrapper(complex);
     sink(herring);
+    // toString does not pass taint yet 
+    String valueOfObject = String.valueOf(args);
+    sink(valueOfObject);
 
+    
     // tainted equality check with constant
     boolean cond = "foo" == s;
     sink(cond);
@@ -90,6 +103,11 @@ public class B {
     sink(replAll);
     String replFirst = "some constant".replaceFirst(" ", s);
     sink(replFirst);
+    char[] chars = new char[10];
+    s.getChars(0, 1, chars, 0);
+    sink(chars);
+    String translated = s.translateEscapes();
+    sink(translated);
 
     ByteArrayOutputStream baos = null;
     ObjectOutput oos = null;

@@ -9,7 +9,7 @@
  * @precision medium
  * @id java/server-directory-listing
  * @tags security
- *       external/cwe-548
+ *       external/cwe/cwe-548
  */
 
 import java

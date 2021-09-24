@@ -125,9 +125,9 @@ predicate missedWhereOpportunity(ForeachStmt fes, IfStmt is) {
 class AnyCall extends MethodCall {
   AnyCall() {
     exists(Method m |
-      m = getTarget() and
+      m = getTarget().getUnboundDeclaration() and
       isEnumerableType(m.getDeclaringType()) and
-      m.hasName("Any")
+      m.hasName("Any<>")
     )
   }
 }
@@ -136,9 +136,9 @@ class AnyCall extends MethodCall {
 class CountCall extends MethodCall {
   CountCall() {
     exists(Method m |
-      m = getTarget() and
+      m = getTarget().getUnboundDeclaration() and
       isEnumerableType(m.getDeclaringType()) and
-      m.hasName("Count")
+      m.hasName("Count<>")
     )
   }
 }
@@ -152,9 +152,9 @@ class IEnumerableSequence extends Variable {
 class SelectCall extends ExtensionMethodCall {
   SelectCall() {
     exists(Method m |
-      m = getTarget() and
+      m = getTarget().getUnboundDeclaration() and
       isEnumerableType(m.getDeclaringType()) and
-      m.hasName("Select")
+      m.hasName("Select<,>")
     )
   }
 

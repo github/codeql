@@ -14,7 +14,7 @@ import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
 import semmle.python.dataflow.new.RemoteFlowSources
 import TestUtilities.InlineExpectationsTest
-import experimental.dataflow.TestUtil.PrintNode
+private import semmle.python.dataflow.new.internal.PrintNode
 
 DataFlow::Node shouldBeTainted() {
   exists(DataFlow::CallCfgNode call |

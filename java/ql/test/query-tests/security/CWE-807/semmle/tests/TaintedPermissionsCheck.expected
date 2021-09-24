@@ -1,7 +1,8 @@
 edges
-| Test.java:17:26:17:38 | args : String[] | Test.java:50:26:50:64 | ... + ... |
+| TaintedPermissionsCheckTest.java:12:19:12:48 | getParameter(...) : String | TaintedPermissionsCheckTest.java:15:27:15:53 | ... + ... |
 nodes
-| Test.java:17:26:17:38 | args : String[] | semmle.label | args : String[] |
-| Test.java:50:26:50:64 | ... + ... | semmle.label | ... + ... |
+| TaintedPermissionsCheckTest.java:12:19:12:48 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| TaintedPermissionsCheckTest.java:15:27:15:53 | ... + ... | semmle.label | ... + ... |
+subpaths
 #select
-| Test.java:50:6:50:65 | isPermitted(...) | Test.java:17:26:17:38 | args : String[] | Test.java:50:26:50:64 | ... + ... | Permissions check uses user-controlled $@. | Test.java:17:26:17:38 | args | data |
+| TaintedPermissionsCheckTest.java:15:7:15:54 | isPermitted(...) | TaintedPermissionsCheckTest.java:12:19:12:48 | getParameter(...) : String | TaintedPermissionsCheckTest.java:15:27:15:53 | ... + ... | Permissions check uses user-controlled $@. | TaintedPermissionsCheckTest.java:12:19:12:48 | getParameter(...) | data |

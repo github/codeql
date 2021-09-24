@@ -1,0 +1,26 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Double release of the descriptor can lead to a crash of the program. Requires the attention of developers.</p>
+
+</overview>
+<recommendation>
+<p>We recommend that you exclude situations of possible double release.</p>
+
+</recommendation>
+<example>
+<p>The following example demonstrates an erroneous and corrected use of descriptor deallocation.</p>
+<sample src="DoubleRelease.c" />
+
+</example>
+<references>
+
+<li>
+  CERT C Coding Standard:
+  <a href="https://wiki.sei.cmu.edu/confluence/display/c/FIO46-C.+Do+not+access+a+closed+file">FIO46-C. Do not access a closed file</a>.
+</li>
+
+</references>
+</qhelp>

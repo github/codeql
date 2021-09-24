@@ -15,6 +15,6 @@
 | literals/Literals.java:130:3:130:13 | "\\u1234567" | \u1234567 | \u1234567 |
 | literals/Literals.java:131:3:131:18 | "\\uaBcDeF\\u0aB1" | \uabcdeF\u0ab1 | \uabcdeF\u0ab1 |
 | literals/Literals.java:132:3:132:16 | "\\uD800\\uDC00" | \ud800\udc00 | \ud800\udc00 |
-| literals/Literals.java:134:3:134:10 | "\\uD800" | ? | ? |
-| literals/Literals.java:135:3:135:10 | "\\uDC00" | ? | ? |
-| literals/Literals.java:136:3:136:31 | "hello\\uD800hello\\uDC00world" | hello?hello?world | hello?hello?world |
+| literals/Literals.java:134:3:134:10 | "\\uD800" | \ufffd | \ufffd |
+| literals/Literals.java:135:3:135:10 | "\\uDC00" | \ufffd | \ufffd |
+| literals/Literals.java:136:3:136:31 | "hello\\uD800hello\\uDC00world" | hello\ufffdhello\ufffdworld | hello\ufffdhello\ufffdworld |
