@@ -27,5 +27,5 @@ class BigDecimalDOSConfig extends TaintTracking::Configuration {
 
 from BigDecimalDOSConfig config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
-select source.getNode(), source, sink, "Potential Java BigDecimal DOS Issue due to $@.",
+select source.getNode(), source, sink, "Potential Java BigDecimal DOS issue due to $@.",
   source.getNode(), "a user-provided value"
