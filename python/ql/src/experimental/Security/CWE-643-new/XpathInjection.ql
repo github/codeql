@@ -18,6 +18,7 @@ private import semmle.python.ApiGraphs
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.BarrierGuards
 import XpathInjection::XpathInjection
+import DataFlow::PathGraph
 
 class XpathInjectionConfiguration extends TaintTracking::Configuration {
   XpathInjectionConfiguration() { this = "PathNotNormalizedConfiguration" }
@@ -25,12 +26,8 @@ class XpathInjectionConfiguration extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-  // override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
-  //   exists(AdditionalFlowStep af | af.isAdditionalTaintStep(node1, node2))
-  // }
 }
 
 from XpathInjectionConfiguration config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
-select sink, source, sink, "This Xpath query depends on $@.", source,
-  "a user-provided value"
+select sink, source, sink, "This Xpath query depends on $@.", source, "a user-provided value"
