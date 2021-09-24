@@ -447,7 +447,7 @@ void test_printf(char *str)
 	{
 		char buffer[1024];
 
-		printf("%s", buffer); // BAD [NOT DETECTED]
+		printf("%s", buffer); // BAD
 	}
 
 	{
