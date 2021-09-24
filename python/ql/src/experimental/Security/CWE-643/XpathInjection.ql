@@ -5,7 +5,7 @@
  * @kind path-problem
  * @problem.severity error
  * @precision high
- * @id py/xpath-injection-new
+ * @id py/xpath-injection
  * @tags security
  *       external/cwe/cwe-643
  */
