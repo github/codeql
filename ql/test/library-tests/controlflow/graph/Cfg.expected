@@ -42,6 +42,7 @@ break_ensure.rb:
 
 #    3| ... > ...
 #-----| true -> break
+#-----| raise -> for ... in ...
 #-----| false -> if ...
 
 #    3| element
@@ -114,6 +115,7 @@ break_ensure.rb:
 #   16| ... > ...
 #-----| true -> break
 #-----| false -> if ...
+#-----| raise -> [ensure: raise] elements
 
 #   16| element
 #-----|  -> 0
@@ -130,11 +132,17 @@ break_ensure.rb:
 #   19| [ensure: break] ensure ...
 #-----| break -> for ... in ...
 
+#   19| [ensure: raise] ensure ...
+#-----| raise -> for ... in ...
+
 #   20| if ...
 #-----|  -> ensure ...
 
 #   20| [ensure: break] if ...
 #-----|  -> [ensure: break] ensure ...
+
+#   20| [ensure: raise] if ...
+#-----|  -> [ensure: raise] ensure ...
 
 #   20| call to nil?
 #-----| false -> if ...
@@ -144,11 +152,18 @@ break_ensure.rb:
 #-----| false -> [ensure: break] if ...
 #-----| true -> [ensure: break] self
 
+#   20| [ensure: raise] call to nil?
+#-----| false -> [ensure: raise] if ...
+#-----| true -> [ensure: raise] self
+
 #   20| elements
 #-----|  -> call to nil?
 
 #   20| [ensure: break] elements
 #-----|  -> [ensure: break] call to nil?
+
+#   20| [ensure: raise] elements
+#-----|  -> [ensure: raise] call to nil?
 
 #   20| then ...
 #-----|  -> if ...
@@ -156,11 +171,17 @@ break_ensure.rb:
 #   20| [ensure: break] then ...
 #-----|  -> [ensure: break] if ...
 
+#   20| [ensure: raise] then ...
+#-----|  -> [ensure: raise] if ...
+
 #   21| call to puts
 #-----|  -> then ...
 
 #   21| [ensure: break] call to puts
 #-----|  -> [ensure: break] then ...
+
+#   21| [ensure: raise] call to puts
+#-----|  -> [ensure: raise] then ...
 
 #   21| self
 #-----|  -> "elements nil"
@@ -168,11 +189,17 @@ break_ensure.rb:
 #   21| [ensure: break] self
 #-----|  -> [ensure: break] "elements nil"
 
+#   21| [ensure: raise] self
+#-----|  -> [ensure: raise] "elements nil"
+
 #   21| "elements nil"
 #-----|  -> call to puts
 
 #   21| [ensure: break] "elements nil"
 #-----|  -> [ensure: break] call to puts
+
+#   21| [ensure: raise] "elements nil"
+#-----|  -> [ensure: raise] call to puts
 
 #   27| enter m3
 #-----|  -> elements
@@ -363,6 +390,7 @@ break_ensure.rb:
 
 #   47| ... > ...
 #-----| false -> if ...
+#-----| raise -> [ensure: raise] element
 #-----| true -> self
 
 #   47| element
@@ -1109,11 +1137,11 @@ cfg.rb:
 #   62| call to []
 #-----|  -> * ...
 
-#   62| 1
-#-----|  -> call to []
-
 #   62| ...
 #-----|  -> ...
+
+#   62| 1
+#-----|  -> call to []
 
 #   62| __synth__0
 #-----|  -> 1
@@ -2752,11 +2780,11 @@ desugar.rb:
 #   22| call to []
 #-----|  -> ... = ...
 
-#   22| -1
-#-----|  -> call to []
-
 #   22| ...
 #-----|  -> ...
+
+#   22| -1
+#-----|  -> call to []
 
 #   22| __synth__0
 #-----|  -> -1
@@ -2832,11 +2860,11 @@ desugar.rb:
 #   26| call to []
 #-----|  -> * ...
 
-#   26| 1
-#-----|  -> call to []
-
 #   26| ...
 #-----|  -> ...
+
+#   26| 1
+#-----|  -> call to []
 
 #   26| __synth__0
 #-----|  -> 1
@@ -4254,6 +4282,7 @@ raise.rb:
 #   69| ... > ...
 #-----| false -> x
 #-----| true -> self
+#-----| raise -> [ensure: raise] self
 
 #   69| x
 #-----|  -> 2
@@ -4276,6 +4305,7 @@ raise.rb:
 #   71| ... < ...
 #-----| false -> elsif ...
 #-----| true -> "x < 0"
+#-----| raise -> [ensure: raise] self
 
 #   71| x
 #-----|  -> 0
@@ -4367,6 +4397,7 @@ raise.rb:
 #   82| ... > ...
 #-----| false -> x
 #-----| true -> self
+#-----| raise -> [ensure: raise] self
 
 #   82| x
 #-----|  -> 2
@@ -4389,6 +4420,7 @@ raise.rb:
 #   84| ... < ...
 #-----| false -> elsif ...
 #-----| true -> "x < 0"
+#-----| raise -> [ensure: raise] self
 
 #   84| x
 #-----|  -> 0
@@ -4496,6 +4528,7 @@ raise.rb:
 #   97| ... > ...
 #-----| false -> x
 #-----| true -> self
+#-----| raise -> [ensure: raise] self
 
 #   97| x
 #-----|  -> 2
@@ -4518,6 +4551,7 @@ raise.rb:
 #   99| ... < ...
 #-----| false -> elsif ...
 #-----| true -> "x < 0"
+#-----| raise -> [ensure: raise] self
 
 #   99| x
 #-----|  -> 0

@@ -48,16 +48,16 @@ calls/calls.rb:
 #   17|       getParameter: [SimpleParameter] x
 #   17|         getDefiningAccess: [LocalVariableAccess] x
 #   17|       getStmt: [AddExpr] ... + ...
-#   17|         getAnOperand/getLeftOperand: [LocalVariableAccess] x
-#   17|         getAnOperand/getRightOperand: [IntegerLiteral] 1
+#   17|         getAnOperand/getLeftOperand/getReceiver: [LocalVariableAccess] x
+#   17|         getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 1
 #   20|   getStmt: [MethodCall] call to foo
 #   20|     getReceiver: [Self] self
 #   20|     getBlock: [DoBlock] do ... end
 #   20|       getParameter: [SimpleParameter] x
 #   20|         getDefiningAccess: [LocalVariableAccess] x
 #   21|       getStmt: [AddExpr] ... + ...
-#   21|         getAnOperand/getLeftOperand: [LocalVariableAccess] x
-#   21|         getAnOperand/getRightOperand: [IntegerLiteral] 1
+#   21|         getAnOperand/getLeftOperand/getReceiver: [LocalVariableAccess] x
+#   21|         getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 1
 #   25|   getStmt: [MethodCall] call to bar
 #   25|     getReceiver: [IntegerLiteral] 123
 #   25|     getArgument: [StringLiteral] "foo"
@@ -66,8 +66,8 @@ calls/calls.rb:
 #   25|       getParameter: [SimpleParameter] x
 #   25|         getDefiningAccess: [LocalVariableAccess] x
 #   26|       getStmt: [AddExpr] ... + ...
-#   26|         getAnOperand/getLeftOperand: [LocalVariableAccess] x
-#   26|         getAnOperand/getRightOperand: [IntegerLiteral] 1
+#   26|         getAnOperand/getLeftOperand/getReceiver: [LocalVariableAccess] x
+#   26|         getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 1
 #   30|   getStmt: [Method] method_that_yields
 #   31|     getStmt: [YieldCall] yield ...
 #   35|   getStmt: [Method] another_method_that_yields
@@ -137,15 +137,15 @@ calls/calls.rb:
 #   82|     getStmt: [MethodCall] call to bar
 #   82|       getReceiver: [ConstantReadAccess] X
 #   85|   getStmt: [AddExpr] ... + ...
-#   85|     getAnOperand/getLeftOperand: [MethodCall] call to foo
+#   85|     getAnOperand/getLeftOperand/getReceiver: [MethodCall] call to foo
 #   85|       getReceiver: [Self] self
-#   85|     getAnOperand/getRightOperand: [MethodCall] call to bar
+#   85|     getAnOperand/getArgument/getRightOperand: [MethodCall] call to bar
 #   85|       getReceiver: [ConstantReadAccess] X
 #   88|   getStmt: [NotExpr] ! ...
-#   88|     getAnOperand/getOperand: [MethodCall] call to foo
+#   88|     getAnOperand/getOperand/getReceiver: [MethodCall] call to foo
 #   88|       getReceiver: [Self] self
 #   89|   getStmt: [ComplementExpr] ~ ...
-#   89|     getAnOperand/getOperand: [MethodCall] call to bar
+#   89|     getAnOperand/getOperand/getReceiver: [MethodCall] call to bar
 #   89|       getReceiver: [ConstantReadAccess] X
 #   92|   getStmt: [MethodCall] call to foo
 #   92|     getReceiver: [Self] self
@@ -462,22 +462,22 @@ calls/calls.rb:
 #  270|   getStmt: [MethodCall] call to foo
 #  270|     getReceiver: [Self] self
 #  270|     getArgument: [SplatExpr] * ...
-#  270|       getAnOperand/getOperand: [MethodCall] call to bar
+#  270|       getAnOperand/getOperand/getReceiver: [MethodCall] call to bar
 #  270|         getReceiver: [Self] self
 #  271|   getStmt: [MethodCall] call to foo
 #  271|     getReceiver: [Self] self
 #  271|     getArgument: [SplatExpr] * ...
-#  271|       getAnOperand/getOperand: [MethodCall] call to bar
+#  271|       getAnOperand/getOperand/getReceiver: [MethodCall] call to bar
 #  271|         getReceiver: [ConstantReadAccess] X
 #  274|   getStmt: [MethodCall] call to foo
 #  274|     getReceiver: [Self] self
 #  274|     getArgument: [HashSplatExpr] ** ...
-#  274|       getAnOperand/getOperand: [MethodCall] call to bar
+#  274|       getAnOperand/getOperand/getReceiver: [MethodCall] call to bar
 #  274|         getReceiver: [Self] self
 #  275|   getStmt: [MethodCall] call to foo
 #  275|     getReceiver: [Self] self
 #  275|     getArgument: [HashSplatExpr] ** ...
-#  275|       getAnOperand/getOperand: [MethodCall] call to bar
+#  275|       getAnOperand/getOperand/getReceiver: [MethodCall] call to bar
 #  275|         getReceiver: [ConstantReadAccess] X
 #  278|   getStmt: [MethodCall] call to foo
 #  278|     getReceiver: [Self] self
@@ -507,15 +507,15 @@ calls/calls.rb:
 #  290|           getParameter: [SimpleParameter] x
 #  290|             getDefiningAccess: [LocalVariableAccess] x
 #  290|           getStmt: [AddExpr] ... + ...
-#  290|             getAnOperand/getLeftOperand: [LocalVariableAccess] x
-#  290|             getAnOperand/getRightOperand: [IntegerLiteral] 1
+#  290|             getAnOperand/getLeftOperand/getReceiver: [LocalVariableAccess] x
+#  290|             getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 1
 #  291|       getStmt: [SuperCall] call to super
 #  291|         getBlock: [DoBlock] do ... end
 #  291|           getParameter: [SimpleParameter] x
 #  291|             getDefiningAccess: [LocalVariableAccess] x
 #  291|           getStmt: [MulExpr] ... * ...
-#  291|             getAnOperand/getLeftOperand: [LocalVariableAccess] x
-#  291|             getAnOperand/getRightOperand: [IntegerLiteral] 2
+#  291|             getAnOperand/getLeftOperand/getReceiver: [LocalVariableAccess] x
+#  291|             getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 2
 #  292|       getStmt: [SuperCall] call to super
 #  292|         getArgument: [IntegerLiteral] 4
 #  292|         getArgument: [IntegerLiteral] 5
@@ -523,8 +523,8 @@ calls/calls.rb:
 #  292|           getParameter: [SimpleParameter] x
 #  292|             getDefiningAccess: [LocalVariableAccess] x
 #  292|           getStmt: [AddExpr] ... + ...
-#  292|             getAnOperand/getLeftOperand: [LocalVariableAccess] x
-#  292|             getAnOperand/getRightOperand: [IntegerLiteral] 100
+#  292|             getAnOperand/getLeftOperand/getReceiver: [LocalVariableAccess] x
+#  292|             getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 100
 #  293|       getStmt: [SuperCall] call to super
 #  293|         getArgument: [IntegerLiteral] 6
 #  293|         getArgument: [IntegerLiteral] 7
@@ -532,8 +532,8 @@ calls/calls.rb:
 #  293|           getParameter: [SimpleParameter] x
 #  293|             getDefiningAccess: [LocalVariableAccess] x
 #  293|           getStmt: [AddExpr] ... + ...
-#  293|             getAnOperand/getLeftOperand: [LocalVariableAccess] x
-#  293|             getAnOperand/getRightOperand: [IntegerLiteral] 200
+#  293|             getAnOperand/getLeftOperand/getReceiver: [LocalVariableAccess] x
+#  293|             getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 200
 #  301|   getStmt: [ClassDeclaration] AnotherClass
 #  302|     getStmt: [Method] another_method
 #  303|       getStmt: [MethodCall] call to super
@@ -606,10 +606,10 @@ calls/calls.rb:
 #  320|         getReceiver: [MethodCall] call to foo
 #  320|           getReceiver: [Self] self
 #  320|       getArgument: [AddExpr] ... + ...
-#  320|         getAnOperand/getLeftOperand: [MethodCall] call to boo
+#  320|         getAnOperand/getLeftOperand/getReceiver: [MethodCall] call to boo
 #  320|           getReceiver: [MethodCall] call to foo
 #  320|             getReceiver: [Self] self
-#  320|         getAnOperand/getRightOperand: [IntegerLiteral] 1
+#  320|         getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 1
 #  320|     getAnOperand/getRightOperand: [IntegerLiteral] 2
 control/cases.rb:
 #    1| [Toplevel] cases.rb
@@ -641,20 +641,20 @@ control/cases.rb:
 #   18|   getStmt: [CaseExpr] case ...
 #   19|     getBranch: [WhenExpr] when ...
 #   19|       getPattern: [GTExpr] ... > ...
-#   19|         getAnOperand/getGreaterOperand/getLeftOperand: [LocalVariableAccess] a
-#   19|         getAnOperand/getLesserOperand/getRightOperand: [LocalVariableAccess] b
+#   19|         getAnOperand/getGreaterOperand/getLeftOperand/getReceiver: [LocalVariableAccess] a
+#   19|         getAnOperand/getArgument/getLesserOperand/getRightOperand: [LocalVariableAccess] b
 #   19|       getBody: [StmtSequence] then ...
 #   19|         getStmt: [IntegerLiteral] 10
 #   20|     getBranch: [WhenExpr] when ...
 #   20|       getPattern: [EqExpr] ... == ...
-#   20|         getAnOperand/getLeftOperand: [LocalVariableAccess] a
-#   20|         getAnOperand/getRightOperand: [LocalVariableAccess] b
+#   20|         getAnOperand/getLeftOperand/getReceiver: [LocalVariableAccess] a
+#   20|         getAnOperand/getArgument/getRightOperand: [LocalVariableAccess] b
 #   20|       getBody: [StmtSequence] then ...
 #   20|         getStmt: [IntegerLiteral] 20
 #   21|     getBranch: [WhenExpr] when ...
 #   21|       getPattern: [LTExpr] ... < ...
-#   21|         getAnOperand/getLeftOperand/getLesserOperand: [LocalVariableAccess] a
-#   21|         getAnOperand/getGreaterOperand/getRightOperand: [LocalVariableAccess] b
+#   21|         getAnOperand/getLeftOperand/getLesserOperand/getReceiver: [LocalVariableAccess] a
+#   21|         getAnOperand/getArgument/getGreaterOperand/getRightOperand: [LocalVariableAccess] b
 #   21|       getBody: [StmtSequence] then ...
 #   21|         getStmt: [IntegerLiteral] 30
 modules/classes.rb:
@@ -695,8 +695,8 @@ modules/classes.rb:
 #   41|     getValue: [LocalVariableAccess] x
 #   42|     getStmt: [Method] length
 #   43|       getStmt: [MulExpr] ... * ...
-#   43|         getAnOperand/getLeftOperand: [IntegerLiteral] 100
-#   43|         getAnOperand/getRightOperand: [SuperCall] call to super
+#   43|         getAnOperand/getLeftOperand/getReceiver: [IntegerLiteral] 100
+#   43|         getAnOperand/getArgument/getRightOperand: [SuperCall] call to super
 #   46|     getStmt: [Method] wibble
 #   47|       getStmt: [MethodCall] call to puts
 #   47|         getReceiver: [Self] self
@@ -730,60 +730,60 @@ control/conditionals.rb:
 #    7|     getAnOperand/getRightOperand: [IntegerLiteral] 0
 #   10|   getStmt: [IfExpr] if ...
 #   10|     getCondition: [GTExpr] ... > ...
-#   10|       getAnOperand/getGreaterOperand/getLeftOperand: [LocalVariableAccess] a
-#   10|       getAnOperand/getLesserOperand/getRightOperand: [LocalVariableAccess] b
+#   10|       getAnOperand/getGreaterOperand/getLeftOperand/getReceiver: [LocalVariableAccess] a
+#   10|       getAnOperand/getArgument/getLesserOperand/getRightOperand: [LocalVariableAccess] b
 #   10|     getBranch/getThen: [StmtSequence] then ...
 #   11|       getStmt: [LocalVariableAccess] c
 #   15|   getStmt: [IfExpr] if ...
 #   15|     getCondition: [EqExpr] ... == ...
-#   15|       getAnOperand/getLeftOperand: [LocalVariableAccess] a
-#   15|       getAnOperand/getRightOperand: [LocalVariableAccess] b
+#   15|       getAnOperand/getLeftOperand/getReceiver: [LocalVariableAccess] a
+#   15|       getAnOperand/getArgument/getRightOperand: [LocalVariableAccess] b
 #   15|     getBranch/getThen: [StmtSequence] then ...
 #   16|       getStmt: [LocalVariableAccess] c
 #   17|     getBranch/getElse: [StmtSequence] else ...
 #   18|       getStmt: [LocalVariableAccess] d
 #   22|   getStmt: [IfExpr] if ...
 #   22|     getCondition: [EqExpr] ... == ...
-#   22|       getAnOperand/getLeftOperand: [LocalVariableAccess] a
-#   22|       getAnOperand/getRightOperand: [IntegerLiteral] 0
+#   22|       getAnOperand/getLeftOperand/getReceiver: [LocalVariableAccess] a
+#   22|       getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 0
 #   22|     getBranch/getThen: [StmtSequence] then ...
 #   23|       getStmt: [LocalVariableAccess] c
 #   24|     getBranch/getElse: [IfExpr] elsif ...
 #   24|       getCondition: [EqExpr] ... == ...
-#   24|         getAnOperand/getLeftOperand: [LocalVariableAccess] a
-#   24|         getAnOperand/getRightOperand: [IntegerLiteral] 1
+#   24|         getAnOperand/getLeftOperand/getReceiver: [LocalVariableAccess] a
+#   24|         getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 1
 #   24|       getBranch/getThen: [StmtSequence] then ...
 #   25|         getStmt: [LocalVariableAccess] d
 #   26|       getBranch/getElse: [IfExpr] elsif ...
 #   26|         getCondition: [EqExpr] ... == ...
-#   26|           getAnOperand/getLeftOperand: [LocalVariableAccess] a
-#   26|           getAnOperand/getRightOperand: [IntegerLiteral] 2
+#   26|           getAnOperand/getLeftOperand/getReceiver: [LocalVariableAccess] a
+#   26|           getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 2
 #   26|         getBranch/getThen: [StmtSequence] then ...
 #   27|           getStmt: [LocalVariableAccess] e
 #   28|         getBranch/getElse: [StmtSequence] else ...
 #   29|           getStmt: [LocalVariableAccess] f
 #   33|   getStmt: [IfExpr] if ...
 #   33|     getCondition: [EqExpr] ... == ...
-#   33|       getAnOperand/getLeftOperand: [LocalVariableAccess] a
-#   33|       getAnOperand/getRightOperand: [IntegerLiteral] 0
+#   33|       getAnOperand/getLeftOperand/getReceiver: [LocalVariableAccess] a
+#   33|       getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 0
 #   33|     getBranch/getThen: [StmtSequence] then ...
 #   34|       getStmt: [LocalVariableAccess] b
 #   35|     getBranch/getElse: [IfExpr] elsif ...
 #   35|       getCondition: [EqExpr] ... == ...
-#   35|         getAnOperand/getLeftOperand: [LocalVariableAccess] a
-#   35|         getAnOperand/getRightOperand: [IntegerLiteral] 1
+#   35|         getAnOperand/getLeftOperand/getReceiver: [LocalVariableAccess] a
+#   35|         getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 1
 #   35|       getBranch/getThen: [StmtSequence] then ...
 #   36|         getStmt: [LocalVariableAccess] c
 #   40|   getStmt: [UnlessExpr] unless ...
 #   40|     getCondition: [GTExpr] ... > ...
-#   40|       getAnOperand/getGreaterOperand/getLeftOperand: [LocalVariableAccess] a
-#   40|       getAnOperand/getLesserOperand/getRightOperand: [LocalVariableAccess] b
+#   40|       getAnOperand/getGreaterOperand/getLeftOperand/getReceiver: [LocalVariableAccess] a
+#   40|       getAnOperand/getArgument/getLesserOperand/getRightOperand: [LocalVariableAccess] b
 #   40|     getBranch/getThen: [StmtSequence] then ...
 #   41|       getStmt: [LocalVariableAccess] c
 #   45|   getStmt: [UnlessExpr] unless ...
 #   45|     getCondition: [EqExpr] ... == ...
-#   45|       getAnOperand/getLeftOperand: [LocalVariableAccess] a
-#   45|       getAnOperand/getRightOperand: [LocalVariableAccess] b
+#   45|       getAnOperand/getLeftOperand/getReceiver: [LocalVariableAccess] a
+#   45|       getAnOperand/getArgument/getRightOperand: [LocalVariableAccess] b
 #   45|     getBranch/getThen: [StmtSequence] then ...
 #   46|       getStmt: [LocalVariableAccess] c
 #   47|     getBranch/getElse: [StmtSequence] else ...
@@ -793,38 +793,38 @@ control/conditionals.rb:
 #   52|       getAnOperand/getLeftOperand: [LocalVariableAccess] a
 #   52|       getAnOperand/getRightOperand: [LocalVariableAccess] b
 #   52|     getCondition: [GTExpr] ... > ...
-#   52|       getAnOperand/getGreaterOperand/getLeftOperand: [LocalVariableAccess] c
-#   52|       getAnOperand/getLesserOperand/getRightOperand: [LocalVariableAccess] d
+#   52|       getAnOperand/getGreaterOperand/getLeftOperand/getReceiver: [LocalVariableAccess] c
+#   52|       getAnOperand/getArgument/getLesserOperand/getRightOperand: [LocalVariableAccess] d
 #   55|   getStmt: [UnlessModifierExpr] ... unless ...
 #   55|     getBody/getBranch: [AssignExpr] ... = ...
 #   55|       getAnOperand/getLeftOperand: [LocalVariableAccess] a
 #   55|       getAnOperand/getRightOperand: [LocalVariableAccess] b
 #   55|     getCondition: [LTExpr] ... < ...
-#   55|       getAnOperand/getLeftOperand/getLesserOperand: [LocalVariableAccess] c
-#   55|       getAnOperand/getGreaterOperand/getRightOperand: [LocalVariableAccess] d
+#   55|       getAnOperand/getLeftOperand/getLesserOperand/getReceiver: [LocalVariableAccess] c
+#   55|       getAnOperand/getArgument/getGreaterOperand/getRightOperand: [LocalVariableAccess] d
 #   58|   getStmt: [AssignExpr] ... = ...
 #   58|     getAnOperand/getLeftOperand: [LocalVariableAccess] a
 #   58|     getAnOperand/getRightOperand: [TernaryIfExpr] ... ? ... : ...
 #   58|       getCondition: [GTExpr] ... > ...
-#   58|         getAnOperand/getGreaterOperand/getLeftOperand: [LocalVariableAccess] b
-#   58|         getAnOperand/getLesserOperand/getRightOperand: [LocalVariableAccess] c
+#   58|         getAnOperand/getGreaterOperand/getLeftOperand/getReceiver: [LocalVariableAccess] b
+#   58|         getAnOperand/getArgument/getLesserOperand/getRightOperand: [LocalVariableAccess] c
 #   58|       getBranch/getThen: [AddExpr] ... + ...
-#   58|         getAnOperand/getLeftOperand: [LocalVariableAccess] d
-#   58|         getAnOperand/getRightOperand: [IntegerLiteral] 1
+#   58|         getAnOperand/getLeftOperand/getReceiver: [LocalVariableAccess] d
+#   58|         getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 1
 #   58|       getBranch/getElse: [SubExpr] ... - ...
-#   58|         getAnOperand/getLeftOperand: [LocalVariableAccess] e
-#   58|         getAnOperand/getRightOperand: [IntegerLiteral] 2
+#   58|         getAnOperand/getLeftOperand/getReceiver: [LocalVariableAccess] e
+#   58|         getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 2
 #   61|   getStmt: [IfExpr] if ...
 #   61|     getCondition: [GTExpr] ... > ...
-#   61|       getAnOperand/getGreaterOperand/getLeftOperand: [LocalVariableAccess] a
-#   61|       getAnOperand/getLesserOperand/getRightOperand: [LocalVariableAccess] b
+#   61|       getAnOperand/getGreaterOperand/getLeftOperand/getReceiver: [LocalVariableAccess] a
+#   61|       getAnOperand/getArgument/getLesserOperand/getRightOperand: [LocalVariableAccess] b
 #   61|     getBranch/getThen: [StmtSequence] then ...
 #   62|       getStmt: [LocalVariableAccess] c
 #   63|     getBranch/getElse: [StmtSequence] else ...
 #   67|   getStmt: [IfExpr] if ...
 #   67|     getCondition: [GTExpr] ... > ...
-#   67|       getAnOperand/getGreaterOperand/getLeftOperand: [LocalVariableAccess] a
-#   67|       getAnOperand/getLesserOperand/getRightOperand: [LocalVariableAccess] b
+#   67|       getAnOperand/getGreaterOperand/getLeftOperand/getReceiver: [LocalVariableAccess] a
+#   67|       getAnOperand/getArgument/getLesserOperand/getRightOperand: [LocalVariableAccess] b
 #   67|     getBranch/getThen: [StmtSequence] then ...
 #   68|     getBranch/getElse: [StmtSequence] else ...
 #   69|       getStmt: [LocalVariableAccess] c
@@ -850,13 +850,13 @@ constants/constants.rb:
 #   17|   getStmt: [AssignExpr] ... = ...
 #   17|     getAnOperand/getLeftOperand: [ConstantAssignment] GREETING
 #   17|     getAnOperand/getRightOperand: [AddExpr] ... + ...
-#   17|       getAnOperand/getLeftOperand: [AddExpr] ... + ...
-#   17|         getAnOperand/getLeftOperand: [StringLiteral] "Hello"
+#   17|       getAnOperand/getLeftOperand/getReceiver: [AddExpr] ... + ...
+#   17|         getAnOperand/getLeftOperand/getReceiver: [StringLiteral] "Hello"
 #   17|           getComponent: [StringTextComponent] Hello
-#   17|         getAnOperand/getRightOperand: [ConstantReadAccess] CONST_A
+#   17|         getAnOperand/getArgument/getRightOperand: [ConstantReadAccess] CONST_A
 #   17|           getScopeExpr: [ConstantReadAccess] ClassA
 #   17|             getScopeExpr: [ConstantReadAccess] ModuleA
-#   17|       getAnOperand/getRightOperand: [ConstantReadAccess] CONST_B
+#   17|       getAnOperand/getArgument/getRightOperand: [ConstantReadAccess] CONST_B
 #   17|         getScopeExpr: [ConstantReadAccess] ModuleA
 #   19|   getStmt: [Method] foo
 #   20|     getStmt: [AssignExpr] ... = ...
@@ -963,14 +963,14 @@ literals/literals.rb:
 #   58|     getComponent: [StringTextComponent] 2 + 2 = 
 #   58|     getComponent: [StringInterpolationComponent] #{...}
 #   58|       getStmt: [AddExpr] ... + ...
-#   58|         getAnOperand/getLeftOperand: [IntegerLiteral] 2
-#   58|         getAnOperand/getRightOperand: [IntegerLiteral] 2
+#   58|         getAnOperand/getLeftOperand/getReceiver: [IntegerLiteral] 2
+#   58|         getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 2
 #   59|   getStmt: [StringLiteral] "3 + 4 = #{...}"
 #   59|     getComponent: [StringTextComponent] 3 + 4 = 
 #   59|     getComponent: [StringInterpolationComponent] #{...}
 #   59|       getStmt: [AddExpr] ... + ...
-#   59|         getAnOperand/getLeftOperand: [IntegerLiteral] 3
-#   59|         getAnOperand/getRightOperand: [IntegerLiteral] 4
+#   59|         getAnOperand/getLeftOperand/getReceiver: [IntegerLiteral] 3
+#   59|         getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 4
 #   60|   getStmt: [StringLiteral] "2 + 2 = #{ 2 + 2 }"
 #   60|     getComponent: [StringTextComponent] 2 + 2 = #{ 2 + 2 }
 #   61|   getStmt: [StringLiteral] "3 + 4 = #{ 3 + 4 }"
@@ -996,8 +996,8 @@ literals/literals.rb:
 #   64|       getComponent: [StringTextComponent] bar
 #   64|       getComponent: [StringInterpolationComponent] #{...}
 #   64|         getStmt: [MulExpr] ... * ...
-#   64|           getAnOperand/getLeftOperand: [IntegerLiteral] 1
-#   64|           getAnOperand/getRightOperand: [IntegerLiteral] 1
+#   64|           getAnOperand/getLeftOperand/getReceiver: [IntegerLiteral] 1
+#   64|           getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 1
 #   64|     getString: [StringLiteral] "baz"
 #   64|       getComponent: [StringTextComponent] baz
 #   65|   getStmt: [StringLiteral] "foo #{...} qux"
@@ -1007,8 +1007,8 @@ literals/literals.rb:
 #   65|         getComponent: [StringTextComponent] bar 
 #   65|         getComponent: [StringInterpolationComponent] #{...}
 #   65|           getStmt: [AddExpr] ... + ...
-#   65|             getAnOperand/getLeftOperand: [IntegerLiteral] 2
-#   65|             getAnOperand/getRightOperand: [IntegerLiteral] 3
+#   65|             getAnOperand/getLeftOperand/getReceiver: [IntegerLiteral] 2
+#   65|             getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 3
 #   65|         getComponent: [StringTextComponent]  baz
 #   65|     getComponent: [StringTextComponent]  qux
 #   66|   getStmt: [StringLiteral] "foo #{...}"
@@ -1017,8 +1017,8 @@ literals/literals.rb:
 #   66|       getStmt: [MethodCall] call to blah
 #   66|         getReceiver: [Self] self
 #   66|       getStmt: [AddExpr] ... + ...
-#   66|         getAnOperand/getLeftOperand: [IntegerLiteral] 1
-#   66|         getAnOperand/getRightOperand: [IntegerLiteral] 9
+#   66|         getAnOperand/getLeftOperand/getReceiver: [IntegerLiteral] 1
+#   66|         getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 9
 #   69|   getStmt: [CharacterLiteral] ?x
 #   70|   getStmt: [CharacterLiteral] ?\n
 #   71|   getStmt: [CharacterLiteral] ?\s
@@ -1047,8 +1047,8 @@ literals/literals.rb:
 #   87|     getComponent: [StringTextComponent] foo_
 #   87|     getComponent: [StringInterpolationComponent] #{...}
 #   87|       getStmt: [AddExpr] ... + ...
-#   87|         getAnOperand/getLeftOperand: [IntegerLiteral] 2
-#   87|         getAnOperand/getRightOperand: [IntegerLiteral] 2
+#   87|         getAnOperand/getLeftOperand/getReceiver: [IntegerLiteral] 2
+#   87|         getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 2
 #   88|   getStmt: [SymbolLiteral] :"foo_#{ 1 + 1 }"
 #   88|     getComponent: [StringTextComponent] foo_#{ 1 + 1 }
 #   89|   getStmt: [SymbolLiteral] :"foo_#{ 3 - 2 }"
@@ -1062,8 +1062,8 @@ literals/literals.rb:
 #   94|     getElement: [IntegerLiteral] 4
 #   94|     getElement: [IntegerLiteral] 5
 #   94|     getElement: [DivExpr] ... / ...
-#   94|       getAnOperand/getLeftOperand: [IntegerLiteral] 12
-#   94|       getAnOperand/getRightOperand: [IntegerLiteral] 2
+#   94|       getAnOperand/getLeftOperand/getReceiver: [IntegerLiteral] 12
+#   94|       getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 2
 #   95|   getStmt: [ArrayLiteral] [...]
 #   95|     getElement: [IntegerLiteral] 7
 #   95|     getElement: [ArrayLiteral] [...]
@@ -1091,8 +1091,8 @@ literals/literals.rb:
 #  101|       getComponent: [StringTextComponent] bar
 #  101|       getComponent: [StringInterpolationComponent] #{...}
 #  101|         getStmt: [AddExpr] ... + ...
-#  101|           getAnOperand/getLeftOperand: [IntegerLiteral] 1
-#  101|           getAnOperand/getRightOperand: [IntegerLiteral] 1
+#  101|           getAnOperand/getLeftOperand/getReceiver: [IntegerLiteral] 1
+#  101|           getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 1
 #  101|     getElement: [StringLiteral] "baz"
 #  101|       getComponent: [StringTextComponent] baz
 #  102|   getStmt: [ArrayLiteral] %w(...)
@@ -1124,8 +1124,8 @@ literals/literals.rb:
 #  108|       getComponent: [StringTextComponent] bar
 #  108|       getComponent: [StringInterpolationComponent] #{...}
 #  108|         getStmt: [AddExpr] ... + ...
-#  108|           getAnOperand/getLeftOperand: [IntegerLiteral] 2
-#  108|           getAnOperand/getRightOperand: [IntegerLiteral] 4
+#  108|           getAnOperand/getLeftOperand/getReceiver: [IntegerLiteral] 2
+#  108|           getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 4
 #  108|     getElement: [SymbolLiteral] :"baz"
 #  108|       getComponent: [StringTextComponent] baz
 #  109|   getStmt: [ArrayLiteral] %i(...)
@@ -1160,7 +1160,7 @@ literals/literals.rb:
 #  114|       getKey: [SymbolLiteral] :foo
 #  114|       getValue: [IntegerLiteral] 7
 #  114|     getElement: [HashSplatExpr] ** ...
-#  114|       getAnOperand/getOperand: [MethodCall] call to bar
+#  114|       getAnOperand/getOperand/getReceiver: [MethodCall] call to bar
 #  114|         getReceiver: [Self] self
 #  117|   getStmt: [ParenthesizedExpr] ( ... )
 #  117|     getStmt: [RangeLiteral] _ .. _
@@ -1179,8 +1179,8 @@ literals/literals.rb:
 #  120|       getBegin: [MethodCall] call to start
 #  120|         getReceiver: [Self] self
 #  120|       getEnd: [AddExpr] ... + ...
-#  120|         getAnOperand/getLeftOperand: [IntegerLiteral] 2
-#  120|         getAnOperand/getRightOperand: [IntegerLiteral] 3
+#  120|         getAnOperand/getLeftOperand/getReceiver: [IntegerLiteral] 2
+#  120|         getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 3
 #  121|   getStmt: [ParenthesizedExpr] ( ... )
 #  121|     getStmt: [RangeLiteral] _ .. _
 #  121|       getBegin: [IntegerLiteral] 1
@@ -1189,9 +1189,9 @@ literals/literals.rb:
 #  122|       getEnd: [IntegerLiteral] 1
 #  123|   getStmt: [ParenthesizedExpr] ( ... )
 #  123|     getStmt: [SubExpr] ... - ...
-#  123|       getAnOperand/getLeftOperand: [RangeLiteral] _ .. _
+#  123|       getAnOperand/getLeftOperand/getReceiver: [RangeLiteral] _ .. _
 #  123|         getBegin: [IntegerLiteral] 0
-#  123|       getAnOperand/getRightOperand: [IntegerLiteral] 1
+#  123|       getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 1
 #  126|   getStmt: [SubshellLiteral] `ls -l`
 #  126|     getComponent: [StringTextComponent] ls -l
 #  127|   getStmt: [SubshellLiteral] `ls -l`
@@ -1200,14 +1200,14 @@ literals/literals.rb:
 #  128|     getComponent: [StringTextComponent] du -d 
 #  128|     getComponent: [StringInterpolationComponent] #{...}
 #  128|       getStmt: [AddExpr] ... + ...
-#  128|         getAnOperand/getLeftOperand: [IntegerLiteral] 1
-#  128|         getAnOperand/getRightOperand: [IntegerLiteral] 1
+#  128|         getAnOperand/getLeftOperand/getReceiver: [IntegerLiteral] 1
+#  128|         getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 1
 #  129|   getStmt: [SubshellLiteral] `du -d #{...}`
 #  129|     getComponent: [StringTextComponent] du -d 
 #  129|     getComponent: [StringInterpolationComponent] #{...}
 #  129|       getStmt: [SubExpr] ... - ...
-#  129|         getAnOperand/getLeftOperand: [IntegerLiteral] 5
-#  129|         getAnOperand/getRightOperand: [IntegerLiteral] 4
+#  129|         getAnOperand/getLeftOperand/getReceiver: [IntegerLiteral] 5
+#  129|         getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 4
 #  132|   getStmt: [RegExpLiteral] //
 #  133|   getStmt: [RegExpLiteral] /foo/
 #  133|     getParsed: [RegExpSequence] foo
@@ -1240,8 +1240,8 @@ literals/literals.rb:
 #  136|     getComponent: [StringTextComponent] foo
 #  136|     getComponent: [StringInterpolationComponent] #{...}
 #  136|       getStmt: [AddExpr] ... + ...
-#  136|         getAnOperand/getLeftOperand: [IntegerLiteral] 1
-#  136|         getAnOperand/getRightOperand: [IntegerLiteral] 1
+#  136|         getAnOperand/getLeftOperand/getReceiver: [IntegerLiteral] 1
+#  136|         getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 1
 #  136|     getComponent: [StringTextComponent] bar
 #  137|   getStmt: [RegExpLiteral] /foo/
 #  137|     getParsed: [RegExpSequence] foo
@@ -1281,8 +1281,8 @@ literals/literals.rb:
 #  142|     getComponent: [StringTextComponent] foo
 #  142|     getComponent: [StringInterpolationComponent] #{...}
 #  142|       getStmt: [AddExpr] ... + ...
-#  142|         getAnOperand/getLeftOperand: [IntegerLiteral] 1
-#  142|         getAnOperand/getRightOperand: [IntegerLiteral] 1
+#  142|         getAnOperand/getLeftOperand/getReceiver: [IntegerLiteral] 1
+#  142|         getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 1
 #  142|     getComponent: [StringTextComponent] bar
 #  143|   getStmt: [RegExpLiteral] /foo/
 #  143|     getParsed: [RegExpSequence] foo
@@ -1443,8 +1443,8 @@ control/loops.rb:
 #   31|       getStmt: [BreakStmt] break
 #   35|   getStmt: [WhileExpr] while ...
 #   35|     getCondition: [LTExpr] ... < ...
-#   35|       getAnOperand/getLeftOperand/getLesserOperand: [LocalVariableAccess] x
-#   35|       getAnOperand/getGreaterOperand/getRightOperand: [LocalVariableAccess] y
+#   35|       getAnOperand/getLeftOperand/getLesserOperand/getReceiver: [LocalVariableAccess] x
+#   35|       getAnOperand/getArgument/getGreaterOperand/getRightOperand: [LocalVariableAccess] y
 #   35|     getBody: [StmtSequence] do ...
 #   36|       getStmt: [AssignAddExpr] ... += ...
 #   36|         getAnOperand/getLeftOperand: [LocalVariableAccess] x
@@ -1455,8 +1455,8 @@ control/loops.rb:
 #   38|       getStmt: [NextStmt] next
 #   42|   getStmt: [WhileExpr] while ...
 #   42|     getCondition: [LTExpr] ... < ...
-#   42|       getAnOperand/getLeftOperand/getLesserOperand: [LocalVariableAccess] x
-#   42|       getAnOperand/getGreaterOperand/getRightOperand: [LocalVariableAccess] y
+#   42|       getAnOperand/getLeftOperand/getLesserOperand/getReceiver: [LocalVariableAccess] x
+#   42|       getAnOperand/getArgument/getGreaterOperand/getRightOperand: [LocalVariableAccess] y
 #   42|     getBody: [StmtSequence] do ...
 #   43|       getStmt: [AssignAddExpr] ... += ...
 #   43|         getAnOperand/getLeftOperand: [LocalVariableAccess] x
@@ -1469,12 +1469,12 @@ control/loops.rb:
 #   48|       getAnOperand/getLeftOperand: [LocalVariableAccess] x
 #   48|       getAnOperand/getRightOperand: [IntegerLiteral] 1
 #   48|     getCondition: [GEExpr] ... >= ...
-#   48|       getAnOperand/getGreaterOperand/getLeftOperand: [LocalVariableAccess] y
-#   48|       getAnOperand/getLesserOperand/getRightOperand: [LocalVariableAccess] x
+#   48|       getAnOperand/getGreaterOperand/getLeftOperand/getReceiver: [LocalVariableAccess] y
+#   48|       getAnOperand/getArgument/getLesserOperand/getRightOperand: [LocalVariableAccess] x
 #   51|   getStmt: [UntilExpr] until ...
 #   51|     getCondition: [EqExpr] ... == ...
-#   51|       getAnOperand/getLeftOperand: [LocalVariableAccess] x
-#   51|       getAnOperand/getRightOperand: [LocalVariableAccess] y
+#   51|       getAnOperand/getLeftOperand/getReceiver: [LocalVariableAccess] x
+#   51|       getAnOperand/getArgument/getRightOperand: [LocalVariableAccess] y
 #   51|     getBody: [StmtSequence] do ...
 #   52|       getStmt: [AssignAddExpr] ... += ...
 #   52|         getAnOperand/getLeftOperand: [LocalVariableAccess] x
@@ -1484,8 +1484,8 @@ control/loops.rb:
 #   53|         getAnOperand/getRightOperand: [IntegerLiteral] 1
 #   57|   getStmt: [UntilExpr] until ...
 #   57|     getCondition: [GTExpr] ... > ...
-#   57|       getAnOperand/getGreaterOperand/getLeftOperand: [LocalVariableAccess] x
-#   57|       getAnOperand/getLesserOperand/getRightOperand: [LocalVariableAccess] y
+#   57|       getAnOperand/getGreaterOperand/getLeftOperand/getReceiver: [LocalVariableAccess] x
+#   57|       getAnOperand/getArgument/getLesserOperand/getRightOperand: [LocalVariableAccess] y
 #   57|     getBody: [StmtSequence] do ...
 #   58|       getStmt: [AssignAddExpr] ... += ...
 #   58|         getAnOperand/getLeftOperand: [LocalVariableAccess] x
@@ -1498,12 +1498,12 @@ control/loops.rb:
 #   63|       getAnOperand/getLeftOperand: [LocalVariableAccess] x
 #   63|       getAnOperand/getRightOperand: [IntegerLiteral] 1
 #   63|     getCondition: [EqExpr] ... == ...
-#   63|       getAnOperand/getLeftOperand: [LocalVariableAccess] x
-#   63|       getAnOperand/getRightOperand: [IntegerLiteral] 0
+#   63|       getAnOperand/getLeftOperand/getReceiver: [LocalVariableAccess] x
+#   63|       getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 0
 #   66|   getStmt: [WhileExpr] while ...
 #   66|     getCondition: [LTExpr] ... < ...
-#   66|       getAnOperand/getLeftOperand/getLesserOperand: [LocalVariableAccess] x
-#   66|       getAnOperand/getGreaterOperand/getRightOperand: [LocalVariableAccess] y
+#   66|       getAnOperand/getLeftOperand/getLesserOperand/getReceiver: [LocalVariableAccess] x
+#   66|       getAnOperand/getArgument/getGreaterOperand/getRightOperand: [LocalVariableAccess] y
 #   66|     getBody: [StmtSequence] do ...
 misc/misc.erb:
 #    2| [Toplevel] misc.erb
@@ -1713,29 +1713,29 @@ operations/operations.rb:
 #   20|     getAnOperand/getLeftOperand: [LocalVariableAccess] z
 #   20|     getAnOperand/getRightOperand: [IntegerLiteral] 0
 #   23|   getStmt: [NotExpr] ! ...
-#   23|     getAnOperand/getOperand: [LocalVariableAccess] a
+#   23|     getAnOperand/getOperand/getReceiver: [LocalVariableAccess] a
 #   24|   getStmt: [NotExpr] not ...
-#   24|     getAnOperand/getOperand: [LocalVariableAccess] b
+#   24|     getAnOperand/getOperand/getReceiver: [LocalVariableAccess] b
 #   25|   getStmt: [UnaryPlusExpr] + ...
-#   25|     getAnOperand/getOperand: [IntegerLiteral] 14
+#   25|     getAnOperand/getOperand/getReceiver: [IntegerLiteral] 14
 #   26|   getStmt: [UnaryMinusExpr] - ...
-#   26|     getAnOperand/getOperand: [IntegerLiteral] 7
+#   26|     getAnOperand/getOperand/getReceiver: [IntegerLiteral] 7
 #   27|   getStmt: [ComplementExpr] ~ ...
-#   27|     getAnOperand/getOperand: [LocalVariableAccess] x
+#   27|     getAnOperand/getOperand/getReceiver: [LocalVariableAccess] x
 #   28|   getStmt: [DefinedExpr] defined? ...
-#   28|     getAnOperand/getOperand: [LocalVariableAccess] foo
+#   28|     getAnOperand/getOperand/getReceiver: [LocalVariableAccess] foo
 #   29|   getStmt: [Method] foo
 #   29|     getStmt: [ReturnStmt] return
 #   29|       getValue: [ArgumentList] ..., ...
 #   29|         getElement: [IntegerLiteral] 1
 #   29|         getElement: [SplatExpr] * ...
-#   29|           getAnOperand/getOperand: [ArrayLiteral] [...]
+#   29|           getAnOperand/getOperand/getReceiver: [ArrayLiteral] [...]
 #   29|             getElement: [IntegerLiteral] 2
 #   29|         getElement: [Pair] Pair
 #   29|           getKey: [SymbolLiteral] :a
 #   29|           getValue: [IntegerLiteral] 3
 #   29|         getElement: [HashSplatExpr] ** ...
-#   29|           getAnOperand/getOperand: [HashLiteral] {...}
+#   29|           getAnOperand/getOperand/getReceiver: [HashLiteral] {...}
 #   29|             getElement: [Pair] Pair
 #   29|               getKey: [SymbolLiteral] :b
 #   29|               getValue: [IntegerLiteral] 4
@@ -1743,77 +1743,77 @@ operations/operations.rb:
 #   29|               getKey: [SymbolLiteral] :c
 #   29|               getValue: [IntegerLiteral] 5
 #   32|   getStmt: [AddExpr] ... + ...
-#   32|     getAnOperand/getLeftOperand: [LocalVariableAccess] w
-#   32|     getAnOperand/getRightOperand: [IntegerLiteral] 234
+#   32|     getAnOperand/getLeftOperand/getReceiver: [LocalVariableAccess] w
+#   32|     getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 234
 #   33|   getStmt: [SubExpr] ... - ...
-#   33|     getAnOperand/getLeftOperand: [LocalVariableAccess] x
-#   33|     getAnOperand/getRightOperand: [IntegerLiteral] 17
+#   33|     getAnOperand/getLeftOperand/getReceiver: [LocalVariableAccess] x
+#   33|     getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 17
 #   34|   getStmt: [MulExpr] ... * ...
-#   34|     getAnOperand/getLeftOperand: [LocalVariableAccess] y
-#   34|     getAnOperand/getRightOperand: [IntegerLiteral] 10
+#   34|     getAnOperand/getLeftOperand/getReceiver: [LocalVariableAccess] y
+#   34|     getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 10
 #   35|   getStmt: [DivExpr] ... / ...
-#   35|     getAnOperand/getLeftOperand: [LocalVariableAccess] z
-#   35|     getAnOperand/getRightOperand: [IntegerLiteral] 2
+#   35|     getAnOperand/getLeftOperand/getReceiver: [LocalVariableAccess] z
+#   35|     getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 2
 #   36|   getStmt: [ModuloExpr] ... % ...
-#   36|     getAnOperand/getLeftOperand: [LocalVariableAccess] num
-#   36|     getAnOperand/getRightOperand: [IntegerLiteral] 2
+#   36|     getAnOperand/getLeftOperand/getReceiver: [LocalVariableAccess] num
+#   36|     getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 2
 #   37|   getStmt: [ExponentExpr] ... ** ...
-#   37|     getAnOperand/getLeftOperand: [LocalVariableAccess] base
-#   37|     getAnOperand/getRightOperand: [LocalVariableAccess] power
+#   37|     getAnOperand/getLeftOperand/getReceiver: [LocalVariableAccess] base
+#   37|     getAnOperand/getArgument/getRightOperand: [LocalVariableAccess] power
 #   40|   getStmt: [LogicalAndExpr] ... && ...
-#   40|     getAnOperand/getLeftOperand: [LocalVariableAccess] foo
-#   40|     getAnOperand/getRightOperand: [LocalVariableAccess] bar
+#   40|     getAnOperand/getLeftOperand/getReceiver: [LocalVariableAccess] foo
+#   40|     getAnOperand/getArgument/getRightOperand: [LocalVariableAccess] bar
 #   41|   getStmt: [LogicalAndExpr] ... and ...
-#   41|     getAnOperand/getLeftOperand: [LocalVariableAccess] baz
-#   41|     getAnOperand/getRightOperand: [LocalVariableAccess] qux
+#   41|     getAnOperand/getLeftOperand/getReceiver: [LocalVariableAccess] baz
+#   41|     getAnOperand/getArgument/getRightOperand: [LocalVariableAccess] qux
 #   42|   getStmt: [LogicalOrExpr] ... or ...
-#   42|     getAnOperand/getLeftOperand: [LocalVariableAccess] a
-#   42|     getAnOperand/getRightOperand: [LocalVariableAccess] b
+#   42|     getAnOperand/getLeftOperand/getReceiver: [LocalVariableAccess] a
+#   42|     getAnOperand/getArgument/getRightOperand: [LocalVariableAccess] b
 #   43|   getStmt: [LogicalOrExpr] ... || ...
-#   43|     getAnOperand/getLeftOperand: [LocalVariableAccess] x
-#   43|     getAnOperand/getRightOperand: [LocalVariableAccess] y
+#   43|     getAnOperand/getLeftOperand/getReceiver: [LocalVariableAccess] x
+#   43|     getAnOperand/getArgument/getRightOperand: [LocalVariableAccess] y
 #   46|   getStmt: [LShiftExpr] ... << ...
-#   46|     getAnOperand/getLeftOperand: [LocalVariableAccess] x
-#   46|     getAnOperand/getRightOperand: [IntegerLiteral] 3
+#   46|     getAnOperand/getLeftOperand/getReceiver: [LocalVariableAccess] x
+#   46|     getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 3
 #   47|   getStmt: [RShiftExpr] ... >> ...
-#   47|     getAnOperand/getLeftOperand: [LocalVariableAccess] y
-#   47|     getAnOperand/getRightOperand: [IntegerLiteral] 16
+#   47|     getAnOperand/getLeftOperand/getReceiver: [LocalVariableAccess] y
+#   47|     getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 16
 #   48|   getStmt: [BitwiseAndExpr] ... & ...
-#   48|     getAnOperand/getLeftOperand: [LocalVariableAccess] foo
-#   48|     getAnOperand/getRightOperand: [IntegerLiteral] 0xff
+#   48|     getAnOperand/getLeftOperand/getReceiver: [LocalVariableAccess] foo
+#   48|     getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 0xff
 #   49|   getStmt: [BitwiseOrExpr] ... | ...
-#   49|     getAnOperand/getLeftOperand: [LocalVariableAccess] bar
-#   49|     getAnOperand/getRightOperand: [IntegerLiteral] 0x02
+#   49|     getAnOperand/getLeftOperand/getReceiver: [LocalVariableAccess] bar
+#   49|     getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 0x02
 #   50|   getStmt: [BitwiseXorExpr] ... ^ ...
-#   50|     getAnOperand/getLeftOperand: [LocalVariableAccess] baz
-#   50|     getAnOperand/getRightOperand: [LocalVariableAccess] qux
+#   50|     getAnOperand/getLeftOperand/getReceiver: [LocalVariableAccess] baz
+#   50|     getAnOperand/getArgument/getRightOperand: [LocalVariableAccess] qux
 #   53|   getStmt: [EqExpr] ... == ...
-#   53|     getAnOperand/getLeftOperand: [LocalVariableAccess] x
-#   53|     getAnOperand/getRightOperand: [LocalVariableAccess] y
+#   53|     getAnOperand/getLeftOperand/getReceiver: [LocalVariableAccess] x
+#   53|     getAnOperand/getArgument/getRightOperand: [LocalVariableAccess] y
 #   54|   getStmt: [NEExpr] ... != ...
-#   54|     getAnOperand/getLeftOperand: [LocalVariableAccess] a
-#   54|     getAnOperand/getRightOperand: [IntegerLiteral] 123
+#   54|     getAnOperand/getLeftOperand/getReceiver: [LocalVariableAccess] a
+#   54|     getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 123
 #   55|   getStmt: [CaseEqExpr] ... === ...
-#   55|     getAnOperand/getLeftOperand: [LocalVariableAccess] m
-#   55|     getAnOperand/getRightOperand: [LocalVariableAccess] n
+#   55|     getAnOperand/getLeftOperand/getReceiver: [LocalVariableAccess] m
+#   55|     getAnOperand/getArgument/getRightOperand: [LocalVariableAccess] n
 #   58|   getStmt: [GTExpr] ... > ...
-#   58|     getAnOperand/getGreaterOperand/getLeftOperand: [LocalVariableAccess] x
-#   58|     getAnOperand/getLesserOperand/getRightOperand: [IntegerLiteral] 0
+#   58|     getAnOperand/getGreaterOperand/getLeftOperand/getReceiver: [LocalVariableAccess] x
+#   58|     getAnOperand/getArgument/getLesserOperand/getRightOperand: [IntegerLiteral] 0
 #   59|   getStmt: [GEExpr] ... >= ...
-#   59|     getAnOperand/getGreaterOperand/getLeftOperand: [LocalVariableAccess] y
-#   59|     getAnOperand/getLesserOperand/getRightOperand: [IntegerLiteral] 100
+#   59|     getAnOperand/getGreaterOperand/getLeftOperand/getReceiver: [LocalVariableAccess] y
+#   59|     getAnOperand/getArgument/getLesserOperand/getRightOperand: [IntegerLiteral] 100
 #   60|   getStmt: [LTExpr] ... < ...
-#   60|     getAnOperand/getLeftOperand/getLesserOperand: [LocalVariableAccess] a
-#   60|     getAnOperand/getGreaterOperand/getRightOperand: [LocalVariableAccess] b
+#   60|     getAnOperand/getLeftOperand/getLesserOperand/getReceiver: [LocalVariableAccess] a
+#   60|     getAnOperand/getArgument/getGreaterOperand/getRightOperand: [LocalVariableAccess] b
 #   61|   getStmt: [LEExpr] ... <= ...
-#   61|     getAnOperand/getLeftOperand/getLesserOperand: [IntegerLiteral] 7
-#   61|     getAnOperand/getGreaterOperand/getRightOperand: [LocalVariableAccess] foo
+#   61|     getAnOperand/getLeftOperand/getLesserOperand/getReceiver: [IntegerLiteral] 7
+#   61|     getAnOperand/getArgument/getGreaterOperand/getRightOperand: [LocalVariableAccess] foo
 #   64|   getStmt: [SpaceshipExpr] ... <=> ...
-#   64|     getAnOperand/getLeftOperand: [LocalVariableAccess] a
-#   64|     getAnOperand/getRightOperand: [LocalVariableAccess] b
+#   64|     getAnOperand/getLeftOperand/getReceiver: [LocalVariableAccess] a
+#   64|     getAnOperand/getArgument/getRightOperand: [LocalVariableAccess] b
 #   65|   getStmt: [RegExpMatchExpr] ... =~ ...
-#   65|     getAnOperand/getLeftOperand: [LocalVariableAccess] name
-#   65|     getAnOperand/getRightOperand: [RegExpLiteral] /foo.*/
+#   65|     getAnOperand/getLeftOperand/getReceiver: [LocalVariableAccess] name
+#   65|     getAnOperand/getArgument/getRightOperand: [RegExpLiteral] /foo.*/
 #   65|       getParsed: [RegExpSequence] foo.*
 #   65|         0: [RegExpConstant, RegExpNormalChar] f
 #   65|         1: [RegExpConstant, RegExpNormalChar] o
@@ -1822,8 +1822,8 @@ operations/operations.rb:
 #   65|           0: [RegExpDot] .
 #   65|       getComponent: [StringTextComponent] foo.*
 #   66|   getStmt: [NoRegExpMatchExpr] ... !~ ...
-#   66|     getAnOperand/getLeftOperand: [LocalVariableAccess] handle
-#   66|     getAnOperand/getRightOperand: [RegExpLiteral] /.*bar/
+#   66|     getAnOperand/getLeftOperand/getReceiver: [LocalVariableAccess] handle
+#   66|     getAnOperand/getArgument/getRightOperand: [RegExpLiteral] /.*bar/
 #   66|       getParsed: [RegExpSequence] .*bar
 #   66|         0: [RegExpStar] .*
 #   66|           0: [RegExpDot] .
@@ -1924,8 +1924,8 @@ params/params.rb:
 #   14|       getParameter: [SimpleParameter] bar
 #   14|         getDefiningAccess: [LocalVariableAccess] bar
 #   14|       getStmt: [AddExpr] ... + ...
-#   14|         getAnOperand/getLeftOperand: [LocalVariableAccess] foo
-#   14|         getAnOperand/getRightOperand: [LocalVariableAccess] bar
+#   14|         getAnOperand/getLeftOperand/getReceiver: [LocalVariableAccess] foo
+#   14|         getAnOperand/getArgument/getRightOperand: [LocalVariableAccess] bar
 #   17|   getStmt: [Method] destructured_method_param
 #   17|     getParameter: [TuplePatternParameter] (..., ...)
 #   17|       getElement: [LocalVariableAccess] a
@@ -1943,8 +1943,8 @@ params/params.rb:
 #   22|       getStmt: [MethodCall] call to puts
 #   22|         getReceiver: [Self] self
 #   22|         getArgument: [AddExpr] ... + ...
-#   22|           getAnOperand/getLeftOperand: [LocalVariableAccess] a
-#   22|           getAnOperand/getRightOperand: [LocalVariableAccess] b
+#   22|           getAnOperand/getLeftOperand/getReceiver: [LocalVariableAccess] a
+#   22|           getAnOperand/getArgument/getRightOperand: [LocalVariableAccess] b
 #   25|   getStmt: [AssignExpr] ... = ...
 #   25|     getAnOperand/getLeftOperand: [LocalVariableAccess] sum_four_values
 #   25|     getAnOperand/getRightOperand: [Lambda] -> { ... }
@@ -1955,12 +1955,12 @@ params/params.rb:
 #   25|         getElement: [LocalVariableAccess] third
 #   25|         getElement: [LocalVariableAccess] fourth
 #   26|       getStmt: [AddExpr] ... + ...
-#   26|         getAnOperand/getLeftOperand: [AddExpr] ... + ...
-#   26|           getAnOperand/getLeftOperand: [AddExpr] ... + ...
-#   26|             getAnOperand/getLeftOperand: [LocalVariableAccess] first
-#   26|             getAnOperand/getRightOperand: [LocalVariableAccess] second
-#   26|           getAnOperand/getRightOperand: [LocalVariableAccess] third
-#   26|         getAnOperand/getRightOperand: [LocalVariableAccess] fourth
+#   26|         getAnOperand/getLeftOperand/getReceiver: [AddExpr] ... + ...
+#   26|           getAnOperand/getLeftOperand/getReceiver: [AddExpr] ... + ...
+#   26|             getAnOperand/getLeftOperand/getReceiver: [LocalVariableAccess] first
+#   26|             getAnOperand/getArgument/getRightOperand: [LocalVariableAccess] second
+#   26|           getAnOperand/getArgument/getRightOperand: [LocalVariableAccess] third
+#   26|         getAnOperand/getArgument/getRightOperand: [LocalVariableAccess] fourth
 #   30|   getStmt: [Method] method_with_splat
 #   30|     getParameter: [SimpleParameter] wibble
 #   30|       getDefiningAccess: [LocalVariableAccess] wibble
@@ -1995,10 +1995,10 @@ params/params.rb:
 #   41|       getDefiningAccess: [LocalVariableAccess] bar
 #   41|       getDefaultValue: [IntegerLiteral] 7
 #   42|     getStmt: [AddExpr] ... + ...
-#   42|       getAnOperand/getLeftOperand: [AddExpr] ... + ...
-#   42|         getAnOperand/getLeftOperand: [LocalVariableAccess] x
-#   42|         getAnOperand/getRightOperand: [LocalVariableAccess] foo
-#   42|       getAnOperand/getRightOperand: [LocalVariableAccess] bar
+#   42|       getAnOperand/getLeftOperand/getReceiver: [AddExpr] ... + ...
+#   42|         getAnOperand/getLeftOperand/getReceiver: [LocalVariableAccess] x
+#   42|         getAnOperand/getArgument/getRightOperand: [LocalVariableAccess] foo
+#   42|       getAnOperand/getArgument/getRightOperand: [LocalVariableAccess] bar
 #   46|   getStmt: [Method] use_block_with_keyword
 #   46|     getParameter: [BlockParameter] &block
 #   46|       getDefiningAccess: [LocalVariableAccess] block
@@ -2021,8 +2021,8 @@ params/params.rb:
 #   49|         getDefiningAccess: [LocalVariableAccess] yy
 #   49|         getDefaultValue: [IntegerLiteral] 100
 #   50|       getStmt: [AddExpr] ... + ...
-#   50|         getAnOperand/getLeftOperand: [LocalVariableAccess] xx
-#   50|         getAnOperand/getRightOperand: [LocalVariableAccess] yy
+#   50|         getAnOperand/getLeftOperand/getReceiver: [LocalVariableAccess] xx
+#   50|         getAnOperand/getArgument/getRightOperand: [LocalVariableAccess] yy
 #   53|   getStmt: [AssignExpr] ... = ...
 #   53|     getAnOperand/getLeftOperand: [LocalVariableAccess] lambda_with_keyword_params
 #   53|     getAnOperand/getRightOperand: [Lambda] -> { ... }
@@ -2034,10 +2034,10 @@ params/params.rb:
 #   53|         getDefiningAccess: [LocalVariableAccess] z
 #   53|         getDefaultValue: [IntegerLiteral] 3
 #   54|       getStmt: [AddExpr] ... + ...
-#   54|         getAnOperand/getLeftOperand: [AddExpr] ... + ...
-#   54|           getAnOperand/getLeftOperand: [LocalVariableAccess] x
-#   54|           getAnOperand/getRightOperand: [LocalVariableAccess] y
-#   54|         getAnOperand/getRightOperand: [LocalVariableAccess] z
+#   54|         getAnOperand/getLeftOperand/getReceiver: [AddExpr] ... + ...
+#   54|           getAnOperand/getLeftOperand/getReceiver: [LocalVariableAccess] x
+#   54|           getAnOperand/getArgument/getRightOperand: [LocalVariableAccess] y
+#   54|         getAnOperand/getArgument/getRightOperand: [LocalVariableAccess] z
 #   58|   getStmt: [Method] method_with_optional_params
 #   58|     getParameter: [SimpleParameter] val1
 #   58|       getDefiningAccess: [LocalVariableAccess] val1
@@ -2083,10 +2083,10 @@ params/params.rb:
 #   70|         getDefiningAccess: [LocalVariableAccess] c
 #   70|         getDefaultValue: [IntegerLiteral] 20
 #   70|       getStmt: [AddExpr] ... + ...
-#   70|         getAnOperand/getLeftOperand: [AddExpr] ... + ...
-#   70|           getAnOperand/getLeftOperand: [LocalVariableAccess] a
-#   70|           getAnOperand/getRightOperand: [LocalVariableAccess] b
-#   70|         getAnOperand/getRightOperand: [LocalVariableAccess] c
+#   70|         getAnOperand/getLeftOperand/getReceiver: [AddExpr] ... + ...
+#   70|           getAnOperand/getLeftOperand/getReceiver: [LocalVariableAccess] a
+#   70|           getAnOperand/getArgument/getRightOperand: [LocalVariableAccess] b
+#   70|         getAnOperand/getArgument/getRightOperand: [LocalVariableAccess] c
 erb/template.html.erb:
 #   19| [Toplevel] template.html.erb
 #   19|   getStmt: [StringLiteral] "hello world"

@@ -527,7 +527,7 @@ class TCall = TMethodCall or TYieldCall;
 
 class TMethodCall =
   TMethodCallSynth or TIdentifierMethodCall or TScopeResolutionMethodCall or TRegularMethodCall or
-      TElementReference or TSuperCall;
+      TElementReference or TSuperCall or TUnaryOperation or TBinaryOperation;
 
 class TSuperCall = TTokenSuperCall or TRegularSuperCall;
 

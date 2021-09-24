@@ -153,17 +153,6 @@ module Trees {
     final override predicate propagatesAbnormal(AstNode child) { none() }
   }
 
-  private class BinaryOperationTree extends StandardPostOrderTree, BinaryOperation {
-    // Logical AND and OR are handled separately
-    BinaryOperationTree() { not this instanceof BinaryLogicalOperation }
-
-    final override ControlFlowTree getChildElement(int i) {
-      result = this.getLeftOperand() and i = 0
-      or
-      result = this.getRightOperand() and i = 1
-    }
-  }
-
   private class BlockArgumentTree extends StandardPostOrderTree, BlockArgument {
     final override ControlFlowTree getChildElement(int i) { result = this.getValue() and i = 0 }
   }
@@ -393,6 +382,12 @@ module Trees {
   }
 
   private class CallTree extends StandardPostOrderTree, Call {
+    CallTree() {
+      // Logical operations are handled separately
+      not this instanceof UnaryLogicalOperation and
+      not this instanceof BinaryLogicalOperation
+    }
+
     override ControlFlowTree getChildElement(int i) { result = this.getArgument(i) }
   }
 
@@ -1085,13 +1080,6 @@ module Trees {
 
   private class TuplePatternTree extends StandardPostOrderTree, TuplePattern {
     final override ControlFlowTree getChildElement(int i) { result = this.getElement(i) }
-  }
-
-  private class UnaryOperationTree extends StandardPostOrderTree, UnaryOperation {
-    // Logical NOT is handled separately
-    UnaryOperationTree() { not this instanceof NotExpr }
-
-    final override ControlFlowTree getChildElement(int i) { result = this.getOperand() and i = 0 }
   }
 
   private class UndefStmtTree extends StandardPreOrderTree, UndefStmt {
