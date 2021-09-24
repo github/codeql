@@ -217,7 +217,6 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
         }
     }
 
-    @Suppress("UNUSED_PARAMETER")
     fun useSimpleType(s: IrSimpleType): Label<out DbType> {
         fun primitiveType(name: String): Label<DbPrimitive> {
             return tw.getLabelFor("@\"type;$name\"", {
