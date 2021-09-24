@@ -282,13 +282,13 @@ private module Cached {
   }
 
   cached
-  predicate access(Ruby::Identifier access, VariableReal::Range variable) {
+  predicate access(Ruby::Identifier access, VariableReal variable) {
     exists(string name |
-      variable.getName() = name and
+      variable.getNameImpl() = name and
       name = access.getValue()
     |
-      variable.getDeclaringScope() = scopeOf(access) and
-      not access.getLocation().strictlyBefore(variable.getLocation()) and
+      variable.getDeclaringScopeImpl() = scopeOf(access) and
+      not access.getLocation().strictlyBefore(variable.getLocationImpl()) and
       // In case of overlapping parameter names, later parameters should not
       // be considered accesses to the first parameter
       if parameterAssignment(_, _, access)
@@ -296,7 +296,7 @@ private module Cached {
       else any()
       or
       exists(Scope::Range declScope |
-        variable.getDeclaringScope() = declScope and
+        variable.getDeclaringScopeImpl() = declScope and
         inherits(scopeOf(access), name, declScope)
       )
     )
@@ -366,126 +366,117 @@ private predicate inherits(Scope::Range scope, string name, Scope::Range outer) 
   )
 }
 
-class TVariableReal = TGlobalVariable or TClassVariable or TInstanceVariable or TLocalVariableReal;
+abstract class VariableImpl extends TVariable {
+  abstract string getNameImpl();
 
-module VariableReal {
-  class Range extends TVariableReal {
-    abstract string getName();
+  final string toString() { result = this.getNameImpl() }
 
-    string toString() { result = this.getName() }
-
-    abstract Location getLocation();
-
-    abstract Scope::Range getDeclaringScope();
-  }
+  abstract Location getLocationImpl();
 }
+
+class TVariableReal = TGlobalVariable or TClassVariable or TInstanceVariable or TLocalVariableReal;
 
 class TLocalVariable = TLocalVariableReal or TLocalVariableSynth;
 
-module LocalVariable {
-  class Range extends VariableReal::Range, TLocalVariableReal {
-    private Scope::Range scope;
-    private string name;
-    private Ruby::Identifier i;
+/**
+ * This class only exists to avoid negative recursion warnings. Ideally,
+ * we would use `VariableImpl` directly, but that results in incorrect
+ * negative recursion warnings. Adding new root-defs for the predicates
+ * below works around this.
+ */
+abstract class VariableReal extends TVariableReal {
+  abstract string getNameImpl();
 
-    Range() { this = TLocalVariableReal(scope, name, i) }
+  abstract Location getLocationImpl();
 
-    final override string getName() { result = name }
+  abstract Scope::Range getDeclaringScopeImpl();
 
-    final override Location getLocation() { result = i.getLocation() }
-
-    final override Scope::Range getDeclaringScope() { result = scope }
-
-    final VariableAccess getDefiningAccess() { toGenerated(result) = i }
-  }
+  final string toString() { result = this.getNameImpl() }
 }
 
-class VariableReal extends Variable, TVariableReal instanceof VariableReal::Range {
-  final override string getName() { result = VariableReal::Range.super.getName() }
+// Convert extensions of `VariableReal` into extensions of `VariableImpl`
+private class VariableRealAdapter extends VariableImpl, TVariableReal instanceof VariableReal {
+  final override string getNameImpl() { result = VariableReal.super.getNameImpl() }
 
-  final override Location getLocation() { result = VariableReal::Range.super.getLocation() }
-
-  final override Scope getDeclaringScope() {
-    toGenerated(result) = VariableReal::Range.super.getDeclaringScope()
-  }
+  final override Location getLocationImpl() { result = VariableReal.super.getLocationImpl() }
 }
 
-class LocalVariableReal extends VariableReal, LocalVariable, TLocalVariableReal instanceof LocalVariable::Range {
-  final override LocalVariableAccessReal getAnAccess() { result.getVariable() = this }
+class LocalVariableReal extends VariableReal, TLocalVariableReal {
+  private Scope::Range scope;
+  private string name;
+  private Ruby::Identifier i;
 
-  final override VariableAccess getDefiningAccess() {
-    result = LocalVariable::Range.super.getDefiningAccess()
-  }
+  LocalVariableReal() { this = TLocalVariableReal(scope, name, i) }
+
+  final override string getNameImpl() { result = name }
+
+  final override Location getLocationImpl() { result = i.getLocation() }
+
+  final override Scope::Range getDeclaringScopeImpl() { result = scope }
+
+  final VariableAccess getDefiningAccessImpl() { toGenerated(result) = i }
 }
 
-class LocalVariableSynth extends LocalVariable, TLocalVariableSynth {
+class LocalVariableSynth extends VariableImpl, TLocalVariableSynth {
   private AstNode n;
   private int i;
 
   LocalVariableSynth() { this = TLocalVariableSynth(n, i) }
 
-  final override string getName() {
+  final override string getNameImpl() {
     exists(int level | level = desugarLevel(n) |
       if level > 0 then result = "__synth__" + i + "__" + level else result = "__synth__" + i
     )
   }
 
-  final override Location getLocation() { result = n.getLocation() }
-
-  final override Scope getDeclaringScope() { none() } // not relevant for synthesized variables
+  final override Location getLocationImpl() { result = n.getLocation() }
 }
 
-module GlobalVariable {
-  class Range extends VariableReal::Range, TGlobalVariable {
-    private string name;
+class GlobalVariableImpl extends VariableReal, TGlobalVariable {
+  private string name;
 
-    Range() { this = TGlobalVariable(name) }
+  GlobalVariableImpl() { this = TGlobalVariable(name) }
 
-    final override string getName() { result = name }
+  final override string getNameImpl() { result = name }
 
-    final override Location getLocation() { none() }
+  final override Location getLocationImpl() { none() }
 
-    final override Scope::Range getDeclaringScope() { none() }
-  }
+  final override Scope::Range getDeclaringScopeImpl() { none() }
 }
 
-module InstanceVariable {
-  class Range extends VariableReal::Range, TInstanceVariable {
-    private ModuleBase::Range scope;
-    private boolean instance;
-    private string name;
-    private Ruby::AstNode decl;
+class InstanceVariableImpl extends VariableReal, TInstanceVariable {
+  private ModuleBase::Range scope;
+  private boolean instance;
+  private string name;
+  private Ruby::AstNode decl;
 
-    Range() { this = TInstanceVariable(scope, name, instance, decl) }
+  InstanceVariableImpl() { this = TInstanceVariable(scope, name, instance, decl) }
 
-    final override string getName() { result = name }
+  final override string getNameImpl() { result = name }
 
-    final predicate isClassInstanceVariable() { instance = false }
+  final predicate isClassInstanceVariable() { instance = false }
 
-    final override Location getLocation() { result = decl.getLocation() }
+  final override Location getLocationImpl() { result = decl.getLocation() }
 
-    final override Scope::Range getDeclaringScope() { result = scope }
-  }
+  final override Scope::Range getDeclaringScopeImpl() { result = scope }
 }
 
-module ClassVariable {
-  class Range extends VariableReal::Range, TClassVariable {
-    private ModuleBase::Range scope;
-    private string name;
-    private Ruby::AstNode decl;
+class ClassVariableImpl extends VariableReal, TClassVariable {
+  private ModuleBase::Range scope;
+  private string name;
+  private Ruby::AstNode decl;
 
-    Range() { this = TClassVariable(scope, name, decl) }
+  ClassVariableImpl() { this = TClassVariable(scope, name, decl) }
 
-    final override string getName() { result = name }
+  final override string getNameImpl() { result = name }
 
-    final override Location getLocation() { result = decl.getLocation() }
+  final override Location getLocationImpl() { result = decl.getLocation() }
 
-    final override Scope::Range getDeclaringScope() { result = scope }
-  }
+  final override Scope::Range getDeclaringScopeImpl() { result = scope }
 }
 
-abstract class VariableAccessImpl extends VariableAccess {
-  abstract Variable getVariableImpl();
+abstract class VariableAccessImpl extends Expr, TVariableAccess {
+  abstract VariableImpl getVariableImpl();
 }
 
 module LocalVariableAccess {
@@ -505,8 +496,9 @@ class TVariableAccessReal =
   TLocalVariableAccessReal or TGlobalVariableAccess or TInstanceVariableAccess or
       TClassVariableAccess;
 
-private class LocalVariableAccessReal extends VariableAccessImpl, LocalVariableAccess,
-  TLocalVariableAccessReal {
+abstract class LocalVariableAccessImpl extends VariableAccessImpl, TLocalVariableAccess { }
+
+private class LocalVariableAccessReal extends LocalVariableAccessImpl, TLocalVariableAccessReal {
   private Ruby::Identifier g;
   private LocalVariable v;
 
@@ -517,8 +509,7 @@ private class LocalVariableAccessReal extends VariableAccessImpl, LocalVariableA
   final override string toString() { result = g.getValue() }
 }
 
-private class LocalVariableAccessSynth extends VariableAccessImpl, LocalVariableAccess,
-  TLocalVariableAccessSynth {
+private class LocalVariableAccessSynth extends LocalVariableAccessImpl, TLocalVariableAccessSynth {
   private LocalVariable v;
 
   LocalVariableAccessSynth() { this = TLocalVariableAccessSynth(_, _, v) }
@@ -529,11 +520,12 @@ private class LocalVariableAccessSynth extends VariableAccessImpl, LocalVariable
 }
 
 module GlobalVariableAccess {
-  predicate range(Ruby::GlobalVariable n, GlobalVariable v) { n.getValue() = v.getName() }
+  predicate range(Ruby::GlobalVariable n, GlobalVariableImpl v) { n.getValue() = v.getNameImpl() }
 }
 
-private class GlobalVariableAccessReal extends GlobalVariableAccess, VariableAccessImpl,
-  TGlobalVariableAccessReal {
+abstract class GlobalVariableAccessImpl extends VariableAccessImpl, TGlobalVariableAccess { }
+
+private class GlobalVariableAccessReal extends GlobalVariableAccessImpl, TGlobalVariableAccessReal {
   private Ruby::GlobalVariable g;
   private GlobalVariable v;
 
@@ -544,8 +536,7 @@ private class GlobalVariableAccessReal extends GlobalVariableAccess, VariableAcc
   final override string toString() { result = g.getValue() }
 }
 
-private class GlobalVariableAccessSynth extends GlobalVariableAccess, VariableAccessImpl,
-  TGlobalVariableAccessSynth {
+private class GlobalVariableAccessSynth extends GlobalVariableAccessImpl, TGlobalVariableAccessSynth {
   private GlobalVariable v;
 
   GlobalVariableAccessSynth() { this = TGlobalVariableAccessSynth(_, _, v) }
@@ -559,7 +550,9 @@ module InstanceVariableAccess {
   predicate range(Ruby::InstanceVariable n, InstanceVariable v) { instanceVariableAccess(n, v) }
 }
 
-private class InstanceVariableAccessReal extends InstanceVariableAccess, VariableAccessImpl,
+abstract class InstanceVariableAccessImpl extends VariableAccessImpl, TInstanceVariableAccess { }
+
+private class InstanceVariableAccessReal extends InstanceVariableAccessImpl,
   TInstanceVariableAccessReal {
   private Ruby::InstanceVariable g;
   private InstanceVariable v;
@@ -571,7 +564,7 @@ private class InstanceVariableAccessReal extends InstanceVariableAccess, Variabl
   final override string toString() { result = g.getValue() }
 }
 
-private class InstanceVariableAccessSynth extends InstanceVariableAccess, VariableAccessImpl,
+private class InstanceVariableAccessSynth extends InstanceVariableAccessImpl,
   TInstanceVariableAccessSynth {
   private InstanceVariable v;
 
@@ -586,8 +579,9 @@ module ClassVariableAccess {
   predicate range(Ruby::ClassVariable n, ClassVariable v) { classVariableAccess(n, v) }
 }
 
-private class ClassVariableAccessReal extends ClassVariableAccess, VariableAccessImpl,
-  TClassVariableAccessReal {
+abstract class ClassVariableAccessRealImpl extends VariableAccessImpl, TClassVariableAccess { }
+
+private class ClassVariableAccessReal extends ClassVariableAccessRealImpl, TClassVariableAccessReal {
   private Ruby::ClassVariable g;
   private ClassVariable v;
 
@@ -598,7 +592,7 @@ private class ClassVariableAccessReal extends ClassVariableAccess, VariableAcces
   final override string toString() { result = g.getValue() }
 }
 
-private class ClassVariableAccessSynth extends ClassVariableAccess, VariableAccessImpl,
+private class ClassVariableAccessSynth extends ClassVariableAccessRealImpl,
   TClassVariableAccessSynth {
   private ClassVariable v;
 

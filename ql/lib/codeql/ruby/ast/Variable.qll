@@ -7,9 +7,9 @@ private import internal.TreeSitter
 private import internal.Variable
 
 /** A variable declared in a scope. */
-class Variable extends TVariable {
+class Variable instanceof VariableImpl {
   /** Gets the name of this variable. */
-  string getName() { none() }
+  final string getName() { result = super.getNameImpl() }
 
   /** Holds if the name of this variable is `name`. */
   final predicate hasName(string name) { this.getName() = name }
@@ -18,10 +18,12 @@ class Variable extends TVariable {
   final string toString() { result = this.getName() }
 
   /** Gets the location of this variable. */
-  Location getLocation() { none() }
+  final Location getLocation() { result = super.getLocationImpl() }
 
   /** Gets the scope this variable is declared in. */
-  Scope getDeclaringScope() { none() }
+  final Scope getDeclaringScope() {
+    toGenerated(result) = this.(VariableReal).getDeclaringScopeImpl()
+  }
 
   /** Gets an access to this variable. */
   VariableAccess getAnAccess() { result.getVariable() = this }
@@ -29,10 +31,10 @@ class Variable extends TVariable {
 
 /** A local variable. */
 class LocalVariable extends Variable, TLocalVariable {
-  override LocalVariableAccess getAnAccess() { none() }
+  override LocalVariableAccess getAnAccess() { result.getVariable() = this }
 
   /** Gets the access where this local variable is first introduced. */
-  VariableAccess getDefiningAccess() { none() }
+  VariableAccess getDefiningAccess() { result = this.(LocalVariableReal).getDefiningAccessImpl() }
 
   /**
    * Holds if this variable is captured. For example in
@@ -52,12 +54,12 @@ class LocalVariable extends Variable, TLocalVariable {
 }
 
 /** A global variable. */
-class GlobalVariable extends VariableReal, TGlobalVariable instanceof GlobalVariable::Range {
+class GlobalVariable extends Variable instanceof GlobalVariableImpl {
   final override GlobalVariableAccess getAnAccess() { result.getVariable() = this }
 }
 
 /** An instance variable. */
-class InstanceVariable extends VariableReal, TInstanceVariable instanceof InstanceVariable::Range {
+class InstanceVariable extends Variable instanceof InstanceVariableImpl {
   /** Holds is this variable is a class instance variable. */
   final predicate isClassInstanceVariable() { super.isClassInstanceVariable() }
 
@@ -65,14 +67,14 @@ class InstanceVariable extends VariableReal, TInstanceVariable instanceof Instan
 }
 
 /** A class variable. */
-class ClassVariable extends VariableReal, TClassVariable instanceof ClassVariable::Range {
+class ClassVariable extends Variable instanceof ClassVariableImpl {
   final override ClassVariableAccess getAnAccess() { result.getVariable() = this }
 }
 
 /** An access to a variable. */
-class VariableAccess extends Expr, TVariableAccess {
+class VariableAccess extends Expr instanceof VariableAccessImpl {
   /** Gets the variable this identifier refers to. */
-  final Variable getVariable() { result = this.(VariableAccessImpl).getVariableImpl() }
+  final Variable getVariable() { result = super.getVariableImpl() }
 
   /**
    * Holds if this access is a write access belonging to the explicit
@@ -106,6 +108,8 @@ class VariableAccess extends Expr, TVariableAccess {
    * as is the first access to `e`.
    */
   predicate isImplicitWrite() { implicitWriteAccess(toGenerated(this)) }
+
+  final override string toString() { result = VariableAccessImpl.super.toString() }
 }
 
 /** An access to a variable where the value is updated. */
@@ -122,7 +126,7 @@ class VariableReadAccess extends VariableAccess {
 }
 
 /** An access to a local variable. */
-class LocalVariableAccess extends VariableAccess, TLocalVariableAccess {
+class LocalVariableAccess extends VariableAccess instanceof LocalVariableAccessImpl {
   final override string getAPrimaryQlClass() { result = "LocalVariableAccess" }
 
   /**
@@ -150,7 +154,7 @@ class LocalVariableWriteAccess extends LocalVariableAccess, VariableWriteAccess 
 class LocalVariableReadAccess extends LocalVariableAccess, VariableReadAccess { }
 
 /** An access to a global variable. */
-class GlobalVariableAccess extends VariableAccess, TGlobalVariableAccess {
+class GlobalVariableAccess extends VariableAccess instanceof GlobalVariableAccessImpl {
   final override string getAPrimaryQlClass() { result = "GlobalVariableAccess" }
 }
 
@@ -161,7 +165,7 @@ class GlobalVariableWriteAccess extends GlobalVariableAccess, VariableWriteAcces
 class GlobalVariableReadAccess extends GlobalVariableAccess, VariableReadAccess { }
 
 /** An access to an instance variable. */
-class InstanceVariableAccess extends VariableAccess, TInstanceVariableAccess {
+class InstanceVariableAccess extends VariableAccess instanceof InstanceVariableAccessImpl {
   final override string getAPrimaryQlClass() { result = "InstanceVariableAccess" }
 }
 
@@ -172,7 +176,7 @@ class InstanceVariableWriteAccess extends InstanceVariableAccess, VariableWriteA
 class InstanceVariableReadAccess extends InstanceVariableAccess, VariableReadAccess { }
 
 /** An access to a class variable. */
-class ClassVariableAccess extends VariableAccess, TClassVariableAccess {
+class ClassVariableAccess extends VariableAccess instanceof ClassVariableAccessRealImpl {
   final override string getAPrimaryQlClass() { result = "ClassVariableAccess" }
 }
 

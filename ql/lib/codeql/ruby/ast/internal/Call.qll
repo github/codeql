@@ -12,7 +12,7 @@ predicate isScopeResolutionMethodCall(Ruby::ScopeResolution g, Ruby::Identifier 
   not exists(Ruby::Call c | c.getMethod() = g)
 }
 
-abstract class CallImpl extends Call {
+abstract class CallImpl extends Expr, TCall {
   abstract AstNode getArgumentImpl(int n);
 
   /**
@@ -27,10 +27,12 @@ abstract class CallImpl extends Call {
   abstract int getNumberOfArgumentsImpl();
 }
 
-abstract class MethodCallImpl extends CallImpl, MethodCall {
+abstract class MethodCallImpl extends CallImpl, TMethodCall {
   abstract AstNode getReceiverImpl();
 
   abstract string getMethodNameImpl();
+
+  abstract Block getBlockImpl();
 }
 
 class MethodCallSynth extends MethodCallImpl, TMethodCallSynth {
@@ -47,6 +49,8 @@ class MethodCallSynth extends MethodCallImpl, TMethodCallSynth {
   final override AstNode getArgumentImpl(int n) { synthChild(this, n + 1, result) and n >= 0 }
 
   final override int getNumberOfArgumentsImpl() { this = TMethodCallSynth(_, _, _, _, result) }
+
+  final override Block getBlockImpl() { none() }
 }
 
 class IdentifierMethodCall extends MethodCallImpl, TIdentifierMethodCall {
@@ -61,6 +65,8 @@ class IdentifierMethodCall extends MethodCallImpl, TIdentifierMethodCall {
   final override Expr getArgumentImpl(int n) { none() }
 
   final override int getNumberOfArgumentsImpl() { result = 0 }
+
+  final override Block getBlockImpl() { none() }
 }
 
 class ScopeResolutionMethodCall extends MethodCallImpl, TScopeResolutionMethodCall {
@@ -76,6 +82,8 @@ class ScopeResolutionMethodCall extends MethodCallImpl, TScopeResolutionMethodCa
   final override Expr getArgumentImpl(int n) { none() }
 
   final override int getNumberOfArgumentsImpl() { result = 0 }
+
+  final override Block getBlockImpl() { none() }
 }
 
 class RegularMethodCall extends MethodCallImpl, TRegularMethodCall {
@@ -114,7 +122,7 @@ class RegularMethodCall extends MethodCallImpl, TRegularMethodCall {
       count(g.getArguments().getChild(_)) + count(g.getMethod().(Ruby::ArgumentList).getChild(_))
   }
 
-  final override Block getBlock() { toGenerated(result) = g.getBlock() }
+  final override Block getBlockImpl() { toGenerated(result) = g.getBlock() }
 }
 
 class ElementReferenceImpl extends MethodCallImpl, TElementReference {
@@ -129,9 +137,13 @@ class ElementReferenceImpl extends MethodCallImpl, TElementReference {
   final override int getNumberOfArgumentsImpl() { result = count(g.getChild(_)) }
 
   final override string getMethodNameImpl() { result = "[]" }
+
+  final override Block getBlockImpl() { none() }
 }
 
-class TokenSuperCall extends SuperCall, MethodCallImpl, TTokenSuperCall {
+abstract class SuperCallImpl extends MethodCallImpl, TSuperCall { }
+
+class TokenSuperCall extends SuperCallImpl, TTokenSuperCall {
   private Ruby::Super g;
 
   TokenSuperCall() { this = TTokenSuperCall(g) }
@@ -143,9 +155,11 @@ class TokenSuperCall extends SuperCall, MethodCallImpl, TTokenSuperCall {
   final override Expr getArgumentImpl(int n) { none() }
 
   final override int getNumberOfArgumentsImpl() { result = 0 }
+
+  final override Block getBlockImpl() { none() }
 }
 
-class RegularSuperCall extends SuperCall, MethodCallImpl, TRegularSuperCall {
+class RegularSuperCall extends SuperCallImpl, TRegularSuperCall {
   private Ruby::Call g;
 
   RegularSuperCall() { this = TRegularSuperCall(g) }
@@ -158,10 +172,14 @@ class RegularSuperCall extends SuperCall, MethodCallImpl, TRegularSuperCall {
 
   final override int getNumberOfArgumentsImpl() { result = count(g.getArguments().getChild(_)) }
 
-  final override Block getBlock() { toGenerated(result) = g.getBlock() }
+  final override Block getBlockImpl() { toGenerated(result) = g.getBlock() }
 }
 
-class YieldCallImpl extends CallImpl, YieldCall {
+class YieldCallImpl extends CallImpl, TYieldCall {
+  Ruby::Yield g;
+
+  YieldCallImpl() { this = TYieldCall(g) }
+
   final override Expr getArgumentImpl(int n) { toGenerated(result) = g.getChild().getChild(n) }
 
   final override int getNumberOfArgumentsImpl() { result = count(g.getChild().getChild(_)) }
