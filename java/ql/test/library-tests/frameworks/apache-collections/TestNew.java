@@ -28,6 +28,9 @@ import java.util.TreeSet;
 import java.util.Vector;
 import org.apache.commons.collections4.ArrayStack;
 import org.apache.commons.collections4.Bag;
+import org.apache.commons.collections4.bag.AbstractBagDecorator;
+import org.apache.commons.collections4.bag.AbstractMapBag;
+import org.apache.commons.collections4.bag.AbstractSortedBagDecorator;
 import org.apache.commons.collections4.bag.CollectionBag;
 import org.apache.commons.collections4.bag.CollectionSortedBag;
 import org.apache.commons.collections4.bag.HashBag;
@@ -42,6 +45,9 @@ import org.apache.commons.collections4.bag.UnmodifiableBag;
 import org.apache.commons.collections4.bag.UnmodifiableSortedBag;
 import org.apache.commons.collections4.BagUtils;
 import org.apache.commons.collections4.BidiMap;
+import org.apache.commons.collections4.bidimap.AbstractBidiMapDecorator;
+import org.apache.commons.collections4.bidimap.AbstractDualBidiMap;
+import org.apache.commons.collections4.bidimap.AbstractOrderedBidiMapDecorator;
 import org.apache.commons.collections4.bidimap.AbstractSortedBidiMapDecorator;
 import org.apache.commons.collections4.bidimap.DualHashBidiMap;
 import org.apache.commons.collections4.bidimap.DualLinkedHashBidiMap;
@@ -51,6 +57,7 @@ import org.apache.commons.collections4.bidimap.UnmodifiableBidiMap;
 import org.apache.commons.collections4.bidimap.UnmodifiableOrderedBidiMap;
 import org.apache.commons.collections4.bidimap.UnmodifiableSortedBidiMap;
 import org.apache.commons.collections4.BoundedCollection;
+import org.apache.commons.collections4.collection.AbstractCollectionDecorator;
 import org.apache.commons.collections4.collection.CompositeCollection;
 import org.apache.commons.collections4.collection.IndexedCollection;
 import org.apache.commons.collections4.collection.PredicatedCollection;
@@ -67,9 +74,11 @@ import org.apache.commons.collections4.IterableGet;
 import org.apache.commons.collections4.IterableMap;
 import org.apache.commons.collections4.IterableSortedMap;
 import org.apache.commons.collections4.IterableUtils;
+import org.apache.commons.collections4.iterators.AbstractIteratorDecorator;
 import org.apache.commons.collections4.iterators.AbstractListIteratorDecorator;
 import org.apache.commons.collections4.iterators.AbstractMapIteratorDecorator;
 import org.apache.commons.collections4.iterators.AbstractOrderedMapIteratorDecorator;
+import org.apache.commons.collections4.iterators.AbstractUntypedIteratorDecorator;
 import org.apache.commons.collections4.iterators.ArrayIterator;
 import org.apache.commons.collections4.iterators.ArrayListIterator;
 import org.apache.commons.collections4.iterators.BoundedIterator;
@@ -109,6 +118,8 @@ import org.apache.commons.collections4.keyvalue.MultiKey;
 import org.apache.commons.collections4.keyvalue.TiedMapEntry;
 import org.apache.commons.collections4.keyvalue.UnmodifiableMapEntry;
 import org.apache.commons.collections4.list.AbstractLinkedList;
+import org.apache.commons.collections4.list.AbstractListDecorator;
+import org.apache.commons.collections4.list.AbstractSerializableListDecorator;
 import org.apache.commons.collections4.list.CursorableLinkedList;
 import org.apache.commons.collections4.list.FixedSizeList;
 import org.apache.commons.collections4.list.GrowthList;
@@ -122,6 +133,7 @@ import org.apache.commons.collections4.list.UnmodifiableList;
 import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.collections4.ListValuedMap;
 import org.apache.commons.collections4.map.AbstractHashedMap;
+import org.apache.commons.collections4.map.AbstractLinkedMap;
 import org.apache.commons.collections4.map.AbstractIterableMap;
 import org.apache.commons.collections4.map.AbstractMapDecorator;
 import org.apache.commons.collections4.map.AbstractOrderedMapDecorator;
@@ -182,6 +194,9 @@ import org.apache.commons.collections4.queue.UnmodifiableQueue;
 import org.apache.commons.collections4.QueueUtils;
 import org.apache.commons.collections4.ResettableIterator;
 import org.apache.commons.collections4.ResettableListIterator;
+import org.apache.commons.collections4.set.AbstractNavigableSetDecorator;
+import org.apache.commons.collections4.set.AbstractSetDecorator;
+import org.apache.commons.collections4.set.AbstractSortedSetDecorator;
 import org.apache.commons.collections4.set.CompositeSet;
 import org.apache.commons.collections4.set.ListOrderedSet;
 import org.apache.commons.collections4.set.MapBackedSet;
@@ -270,7 +285,7 @@ public class TestNew {
 	<K> SortedMap<K,String> newTreeMapWithMapKey(K key) { SortedMap<K,String> m = new TreeMap<>(); m.put(key,null); return m; }
 	<K> TiedMapEntry<K,String> newTMEWithMapKey(K key) { return new TiedMapEntry<K,String>(new TreeMap<K,String>(),key); }
 	<K extends Comparable<K>> TreeBidiMap<K,String> newTreeBidiMapWithMapKey(K key) { TreeBidiMap<K,String> m = new TreeBidiMap<>(); m.put(key,null); return m; }
-	Trie<String,String> newTrieWithMapKey(String key) { Trie<String,String> m = new PatriciaTrie<String>(); m.put(key,null); return m; }
+	PatriciaTrie<Object> newPatriciaTrieWithMapKey(String key) { PatriciaTrie<Object> m = new PatriciaTrie<>(); m.put(key,null); return m; }
 
 	<V> ArrayListValuedHashMap<String,V> newALVHMWithMapValue(V value) { ArrayListValuedHashMap<String,V> m = new ArrayListValuedHashMap<>(); m.put(null,value); return m; }
 	<V> DefaultKeyValue<String,V> newDKVWithMapValue(V value) { return new DefaultKeyValue<String,V>(null,value); }
@@ -289,7 +304,7 @@ public class TestNew {
 	<V> SortedMap<String,V> newTreeMapWithMapValue(V value) { SortedMap<String,V> m = new TreeMap<>(); m.put(null,value); return m; }
 	<V> TiedMapEntry<String,V> newTMEWithMapValue(V value) { return new TiedMapEntry<String,V>(newTreeMapWithMapValue(value),null); }
 	<V extends Comparable<V>> TreeBidiMap<String,V> newTreeBidiMapWithMapValue(V value) { TreeBidiMap<String,V> m = new TreeBidiMap<>(); m.put(null,value); return m; }
-	<V> Trie<String,V> newTrieWithMapValue(V value) { Trie<String,V> m = new PatriciaTrie<>(); m.put(null,value); return m; }
+	<V> PatriciaTrie<V> newPatriciaTrieWithMapValue(V value) { PatriciaTrie<V> m = new PatriciaTrie<>(); m.put(null,value); return m; }
 	<V> UnmodifiableMapEntry<String,V> newUMEWithMapValue(V value) { return new UnmodifiableMapEntry<String,V>(null,value); }
 
 	Object source() { return null; }
@@ -297,6 +312,34 @@ public class TestNew {
 
 	public void test() throws Exception {
 
+		{
+			// "org.apache.commons.collections4.bag;AbstractBagDecorator;true;AbstractBagDecorator;;;Element of Argument[0];Element of Argument[-1];value"
+			AbstractBagDecorator out = null;
+			Bag in = newTreeBagWithElement((String)source());
+			out = new MyAbstractBagDecorator(in);
+			sink(getElement(out)); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4.bag;AbstractMapBag;true;AbstractMapBag;;;MapKey of Argument[0];Element of Argument[-1];value"
+			AbstractMapBag out = null;
+			Map in = Map.of((String)source(), null);
+			out = new MyAbstractMapBag(in);
+			sink(getElement(out)); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4.bag;AbstractMapBag;true;getMap;;;Element of Argument[-1];MapKey of ReturnValue;value"
+			Map out = null;
+			MyAbstractMapBag in = new MyAbstractMapBag(Map.of((String)source(), null));
+			out = in.myGetMap();
+			sink(getMapKey(out)); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4.bag;AbstractSortedBagDecorator;true;AbstractSortedBagDecorator;;;Element of Argument[0];Element of Argument[-1];value"
+			AbstractSortedBagDecorator out = null;
+			SortedBag in = newTreeBagWithElement((String)source());
+			out = new MyAbstractSortedBagDecorator(in);
+			sink(getElement(out)); // $ hasValueFlow
+		}
 		{
 			// "org.apache.commons.collections4.bag;CollectionBag;true;CollectionBag;;;Element of Argument[0];Element of Argument[-1];value"
 			CollectionBag out = null;
@@ -394,6 +437,76 @@ public class TestNew {
 			SortedBag in = newTreeBagWithElement((String)source());
 			out = UnmodifiableSortedBag.unmodifiableSortedBag(in);
 			sink(getElement(out)); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4.bidimap;AbstractBidiMapDecorator;true;AbstractBidiMapDecorator;;;MapKey of Argument[0];MapKey of Argument[-1];value"
+			AbstractBidiMapDecorator out = null;
+			BidiMap in = newDualTreeBidiMapWithMapKey((String)source());
+			out = new MyAbstractBidiMapDecorator(in);
+			sink(getMapKey(out)); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4.bidimap;AbstractBidiMapDecorator;true;AbstractBidiMapDecorator;;;MapValue of Argument[0];MapValue of Argument[-1];value"
+			AbstractBidiMapDecorator out = null;
+			BidiMap in = newDualTreeBidiMapWithMapValue((String)source());
+			out = new MyAbstractBidiMapDecorator(in);
+			sink(getMapValue(out)); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4.bidimap;AbstractDualBidiMap;true;AbstractDualBidiMap;;;MapKey of Argument[0];MapKey of Argument[-1];value"
+			AbstractDualBidiMap out = null;
+			BidiMap in = newDualTreeBidiMapWithMapKey((String)source());
+			out = new MyAbstractDualBidiMap(in, null, null);
+			sink(getMapKey(out)); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4.bidimap;AbstractDualBidiMap;true;AbstractDualBidiMap;;;MapKey of Argument[1];MapValue of Argument[-1];value"
+			AbstractDualBidiMap out = null;
+			BidiMap in = newDualTreeBidiMapWithMapKey((String)source());
+			out = new MyAbstractDualBidiMap(null, in, null);
+			sink(getMapValue(out)); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4.bidimap;AbstractDualBidiMap;true;AbstractDualBidiMap;;;MapKey of Argument[2];MapValue of Argument[-1];value"
+			AbstractDualBidiMap out = null;
+			BidiMap in = newDualTreeBidiMapWithMapKey((String)source());
+			out = new MyAbstractDualBidiMap(null, null, in);
+			sink(getMapValue(out)); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4.bidimap;AbstractDualBidiMap;true;AbstractDualBidiMap;;;MapValue of Argument[0];MapValue of Argument[-1];value"
+			AbstractDualBidiMap out = null;
+			BidiMap in = newDualTreeBidiMapWithMapValue((String)source());
+			out = new MyAbstractDualBidiMap(in, null, null);
+			sink(getMapValue(out)); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4.bidimap;AbstractDualBidiMap;true;AbstractDualBidiMap;;;MapValue of Argument[1];MapKey of Argument[-1];value"
+			AbstractDualBidiMap out = null;
+			BidiMap in = newDualTreeBidiMapWithMapValue((String)source());
+			out = new MyAbstractDualBidiMap(null, in, null);
+			sink(getMapKey(out)); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4.bidimap;AbstractDualBidiMap;true;AbstractDualBidiMap;;;MapValue of Argument[2];MapKey of Argument[-1];value"
+			AbstractDualBidiMap out = null;
+			BidiMap in = newDualTreeBidiMapWithMapValue((String)source());
+			out = new MyAbstractDualBidiMap(null, null, in);
+			sink(getMapKey(out)); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4.bidimap;AbstractOrderedBidiMapDecorator;true;AbstractOrderedBidiMapDecorator;;;MapKey of Argument[0];MapKey of Argument[-1];value"
+			AbstractOrderedBidiMapDecorator out = null;
+			OrderedBidiMap in = newDualTreeBidiMapWithMapKey((String)source());
+			out = new MyAbstractOrderedBidiMapDecorator(in);
+			sink(getMapKey(out)); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4.bidimap;AbstractOrderedBidiMapDecorator;true;AbstractOrderedBidiMapDecorator;;;MapValue of Argument[0];MapValue of Argument[-1];value"
+			AbstractOrderedBidiMapDecorator out = null;
+			OrderedBidiMap in = newDualTreeBidiMapWithMapValue((String)source());
+			out = new MyAbstractOrderedBidiMapDecorator(in);
+			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4.bidimap;AbstractSortedBidiMapDecorator;true;AbstractSortedBidiMapDecorator;;;MapKey of Argument[0];MapKey of Argument[-1];value"
@@ -548,6 +661,27 @@ public class TestNew {
 			SortedBidiMap in = newDualTreeBidiMapWithMapValue((String)source());
 			out = UnmodifiableSortedBidiMap.unmodifiableSortedBidiMap(in);
 			sink(getMapValue(out)); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4.collection;AbstractCollectionDecorator;true;AbstractCollectionDecorator;;;Element of Argument[0];Element of Argument[-1];value"
+			AbstractCollectionDecorator out = null;
+			Collection in = newTreeBagWithElement((String)source());
+			out = new MyAbstractCollectionDecorator(in);
+			sink(getElement(out)); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4.collection;AbstractCollectionDecorator;true;decorated;;;Element of Argument[-1];Element of ReturnValue;value"
+			Collection out = null;
+			MyAbstractCollectionDecorator in = new MyAbstractCollectionDecorator(newTreeBagWithElement((String)source()));
+			out = in.myDecorated();
+			sink(getElement(out)); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4.collection;AbstractCollectionDecorator;true;setCollection;;;Element of Argument[0];Element of Argument[-1];value"
+			MyAbstractCollectionDecorator out = null;
+			Collection in = newTreeBagWithElement((String)source());
+			out.mySetCollection(in);
+			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4.collection;CompositeCollection$CollectionMutator;true;add;;;Argument[2];Element of Argument[0];value"
@@ -860,39 +994,95 @@ public class TestNew {
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
+			// "org.apache.commons.collections4.iterators;AbstractIteratorDecorator;true;AbstractIteratorDecorator;;;Element of Argument[0];Element of Argument[-1];value"
+			AbstractIteratorDecorator out = null;
+			Iterator in = newListIteratorWithElement((String)source());
+			out = new MyAbstractIteratorDecorator(in);
+			sink(getElement(out)); // $ hasValueFlow
+		}
+		{
 			// "org.apache.commons.collections4.iterators;AbstractListIteratorDecorator;true;AbstractListIteratorDecorator;;;Element of Argument[0];Element of Argument[-1];value"
 			AbstractListIteratorDecorator out = null;
 			ListIterator in = newListIteratorWithElement((String)source());
-			out = new AbstractListIteratorDecorator(in);
+			out = new MyAbstractListIteratorDecorator(in);
+			sink(getElement(out)); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4.iterators;AbstractListIteratorDecorator;true;getListIterator;;;Element of Argument[-1];Element of ReturnValue;value"
+			ListIterator out = null;
+			MyAbstractListIteratorDecorator in = new MyAbstractListIteratorDecorator(newListIteratorWithElement((String)source()));
+			out = in.myGetListIterator();
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4.iterators;AbstractMapIteratorDecorator;true;AbstractMapIteratorDecorator;;;Element of Argument[0];Element of Argument[-1];value"
 			AbstractMapIteratorDecorator out = null;
 			MapIterator in = newLinkedMapWithMapKey((String)source()).mapIterator();
-			out = new AbstractMapIteratorDecorator(in);
+			out = new MyAbstractMapIteratorDecorator(in);
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4.iterators;AbstractMapIteratorDecorator;true;AbstractMapIteratorDecorator;;;MapValue of Argument[0];MapValue of Argument[-1];value"
 			AbstractMapIteratorDecorator out = null;
 			MapIterator in = newLinkedMapWithMapValue((String)source()).mapIterator();
-			out = new AbstractMapIteratorDecorator(in);
+			out = new MyAbstractMapIteratorDecorator(in);
+			sink(getMapValue(out)); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4.iterators;AbstractMapIteratorDecorator;true;getMapIterator;;;Element of Argument[-1];Element of ReturnValue;value"
+			MapIterator out = null;
+			MyAbstractMapIteratorDecorator in = new MyAbstractMapIteratorDecorator(newLinkedMapWithMapKey((String)source()).mapIterator());
+			out = in.myGetMapIterator();
+			sink(getElement(out)); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4.iterators;AbstractMapIteratorDecorator;true;getMapIterator;;;MapValue of Argument[-1];MapValue of ReturnValue;value"
+			MapIterator out = null;
+			MyAbstractMapIteratorDecorator in = new MyAbstractMapIteratorDecorator(newLinkedMapWithMapValue((String)source()).mapIterator());
+			out = in.myGetMapIterator();
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4.iterators;AbstractOrderedMapIteratorDecorator;true;AbstractOrderedMapIteratorDecorator;;;Element of Argument[0];Element of Argument[-1];value"
 			AbstractOrderedMapIteratorDecorator out = null;
 			OrderedMapIterator in = newListOrderedMapWithMapKey((String)source()).mapIterator();
-			out = new AbstractOrderedMapIteratorDecorator(in);
+			out = new MyAbstractOrderedMapIteratorDecorator(in);
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4.iterators;AbstractOrderedMapIteratorDecorator;true;AbstractOrderedMapIteratorDecorator;;;MapValue of Argument[0];MapValue of Argument[-1];value"
 			AbstractOrderedMapIteratorDecorator out = null;
 			OrderedMapIterator in = newListOrderedMapWithMapValue((String)source()).mapIterator();
-			out = new AbstractOrderedMapIteratorDecorator(in);
+			out = new MyAbstractOrderedMapIteratorDecorator(in);
 			sink(getMapValue(out)); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4.iterators;AbstractOrderedMapIteratorDecorator;true;getOrderedMapIterator;;;Element of Argument[-1];Element of ReturnValue;value"
+			OrderedMapIterator out = null;
+			MyAbstractOrderedMapIteratorDecorator in = new MyAbstractOrderedMapIteratorDecorator(newListOrderedMapWithMapKey((String)source()).mapIterator());
+			out = in.myGetOrderedMapIterator();
+			sink(getElement(out)); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4.iterators;AbstractOrderedMapIteratorDecorator;true;getOrderedMapIterator;;;MapValue of Argument[-1];MapValue of ReturnValue;value"
+			OrderedMapIterator out = null;
+			MyAbstractOrderedMapIteratorDecorator in = new MyAbstractOrderedMapIteratorDecorator(newListOrderedMapWithMapValue((String)source()).mapIterator());
+			out = in.myGetOrderedMapIterator();
+			sink(getMapValue(out)); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4.iterators;AbstractUntypedIteratorDecorator;true;AbstractUntypedIteratorDecorator;;;Element of Argument[0];Element of Argument[-1];value"
+			AbstractUntypedIteratorDecorator out = null;
+			Iterator in = newListIteratorWithElement((String)source());
+			out = new MyAbstractUntypedIteratorDecorator(in);
+			sink(getElement(out)); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4.iterators;AbstractUntypedIteratorDecorator;true;getIterator;;;Element of Argument[-1];Element of ReturnValue;value"
+			Iterator out = null;
+			MyAbstractUntypedIteratorDecorator in = new MyAbstractUntypedIteratorDecorator(newListIteratorWithElement((String)source()));
+			out = in.myGetIterator();
+			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4.iterators;ArrayIterator;true;ArrayIterator;;;ArrayElement of Argument[0];Element of Argument[-1];value"
@@ -1539,6 +1729,13 @@ public class TestNew {
 			sink(getArrayElement(out)); // $ hasValueFlow
 		}
 		{
+			// "org.apache.commons.collections4.list;AbstractLinkedList;true;AbstractLinkedList;;;Element of Argument[0];Element of Argument[-1];value"
+			AbstractLinkedList out = null;
+			Collection in = newTreeBagWithElement((String)source());
+			out = new MyAbstractLinkedList(in);
+			sink(getElement(out)); // $ hasValueFlow
+		}
+		{
 			// "org.apache.commons.collections4.list;AbstractLinkedList;true;addFirst;;;Argument[0];Element of Argument[-1];value"
 			AbstractLinkedList out = null;
 			Object in = (Object)source();
@@ -1579,6 +1776,20 @@ public class TestNew {
 			AbstractLinkedList in = newCursorableLinkedListWithElement((String)source());
 			out = in.removeLast();
 			sink(out); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4.list;AbstractListDecorator;true;AbstractListDecorator;;;Element of Argument[0];Element of Argument[-1];value"
+			AbstractListDecorator out = null;
+			List in = (List)List.of((String)source());
+			out = new MyAbstractListDecorator(in);
+			sink(getElement(out)); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4.list;AbstractSerializableListDecorator;true;AbstractSerializableListDecorator;;;Element of Argument[0];Element of Argument[-1];value"
+			AbstractSerializableListDecorator out = null;
+			List in = (List)List.of((String)source());
+			out = new MyAbstractSerializableListDecorator(in);
+			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4.list;CursorableLinkedList;true;CursorableLinkedList;;;Element of Argument[0];Element of Argument[-1];value"
@@ -1684,6 +1895,62 @@ public class TestNew {
 			List in = (List)List.of((String)source());
 			out = UnmodifiableList.unmodifiableList(in);
 			sink(getElement(out)); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4.map;AbstractHashedMap;true;AbstractHashedMap;(Map);;MapKey of Argument[0];MapKey of Argument[-1];value"
+			AbstractHashedMap out = null;
+			Map in = Map.of((String)source(), null);
+			out = new MyAbstractHashedMap(in);
+			sink(getMapKey(out)); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4.map;AbstractHashedMap;true;AbstractHashedMap;(Map);;MapValue of Argument[0];MapValue of Argument[-1];value"
+			AbstractHashedMap out = null;
+			Map in = Map.of(null, (String)source());
+			out = new MyAbstractHashedMap(in);
+			sink(getMapValue(out)); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4.map;AbstractLinkedMap;true;AbstractLinkedMap;(Map);;MapKey of Argument[0];MapKey of Argument[-1];value"
+			AbstractLinkedMap out = null;
+			Map in = Map.of((String)source(), null);
+			out = new MyAbstractLinkedMap(in);
+			sink(getMapKey(out)); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4.map;AbstractLinkedMap;true;AbstractLinkedMap;(Map);;MapValue of Argument[0];MapValue of Argument[-1];value"
+			AbstractLinkedMap out = null;
+			Map in = Map.of(null, (String)source());
+			out = new MyAbstractLinkedMap(in);
+			sink(getMapValue(out)); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4.map;AbstractMapDecorator;true;AbstractMapDecorator;(Map);;MapKey of Argument[0];MapKey of Argument[-1];value"
+			AbstractMapDecorator out = null;
+			Map in = Map.of((String)source(), null);
+			out = new MyAbstractMapDecorator(in);
+			sink(getMapKey(out)); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4.map;AbstractMapDecorator;true;AbstractMapDecorator;(Map);;MapValue of Argument[0];MapValue of Argument[-1];value"
+			AbstractMapDecorator out = null;
+			Map in = Map.of(null, (String)source());
+			out = new MyAbstractMapDecorator(in);
+			sink(getMapValue(out)); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4.map;AbstractMapDecorator;true;decorated;;;MapKey of Argument[-1];MapKey of ReturnValue;value"
+			Map out = null;
+			MyAbstractMapDecorator in = new MyAbstractMapDecorator(Map.of((String)source(), null));
+			out = in.myDecorated();
+			sink(getMapKey(out)); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4.map;AbstractMapDecorator;true;decorated;;;MapValue of Argument[-1];MapValue of ReturnValue;value"
+			Map out = null;
+			MyAbstractMapDecorator in = new MyAbstractMapDecorator(Map.of(null, (String)source()));
+			out = in.myDecorated();
+			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4.map;AbstractOrderedMapDecorator;true;AbstractOrderedMapDecorator;(OrderedMap);;MapKey of Argument[0];MapKey of Argument[-1];value"
@@ -2977,6 +3244,27 @@ public class TestNew {
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
+			// "org.apache.commons.collections4.set;AbstractNavigableSetDecorator;true;AbstractNavigableSetDecorator;;;Element of Argument[0];Element of Argument[-1];value"
+			AbstractNavigableSetDecorator out = null;
+			NavigableSet in = newTreeSetWithElement((String)source());
+			out = new MyAbstractNavigableSetDecorator(in);
+			sink(getElement(out)); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4.set;AbstractSetDecorator;true;AbstractSetDecorator;;;Element of Argument[0];Element of Argument[-1];value"
+			AbstractSetDecorator out = null;
+			Set in = newListOrderedSetWithElement((String)source());
+			out = new MyAbstractSetDecorator(in);
+			sink(getElement(out)); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4.set;AbstractSortedSetDecorator;true;AbstractSortedSetDecorator;;;Element of Argument[0];Element of Argument[-1];value"
+			AbstractSortedSetDecorator out = null;
+			Set in = newListOrderedSetWithElement((String)source());
+			out = new MyAbstractSortedSetDecorator(in);
+			sink(getElement(out)); // $ hasValueFlow
+		}
+		{
 			// "org.apache.commons.collections4.set;CompositeSet$SetMutator;true;add;;;Argument[2];Element of Argument[0];value"
 			CompositeSet out = null;
 			Object in = (Object)source();
@@ -3226,16 +3514,44 @@ public class TestNew {
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
+			// "org.apache.commons.collections4.trie;AbstractPatriciaTrie;true;select;;;MapKey of Argument[-1];MapKey of ReturnValue;value"
+			PatriciaTrie<Object> in = newPatriciaTrieWithMapKey((String)source());
+			Map.Entry<String,Object> out = null;
+			out = in.select(null);
+			sink(getMapKeyFromEntry(out)); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4.trie;AbstractPatriciaTrie;true;select;;;MapValue of Argument[-1];MapValue of ReturnValue;value"
+			PatriciaTrie<String> in = newPatriciaTrieWithMapValue((String)source());
+			Map.Entry<String,String> out = null;
+			out = in.select(null);
+			sink(getMapValueFromEntry(out)); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4.trie;AbstractPatriciaTrie;true;selectKey;;;MapKey of Argument[-1];ReturnValue;value"
+			PatriciaTrie<Object> in = newPatriciaTrieWithMapKey((String)source());
+			String out = null;
+			out = in.selectKey(null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4.trie;AbstractPatriciaTrie;true;selectValue;;;MapValue of Argument[-1];ReturnValue;value"
+			PatriciaTrie<String> in = newPatriciaTrieWithMapValue((String)source());
+			String out = null;
+			out = in.selectValue(null);
+			sink(out); // $ hasValueFlow
+		}
+		{
 			// "org.apache.commons.collections4.trie;UnmodifiableTrie;true;unmodifiableTrie;;;MapKey of Argument[0];MapKey of ReturnValue;value"
 			Trie out = null;
-			Trie in = newTrieWithMapKey((String)source());
+			Trie in = newPatriciaTrieWithMapKey((String)source());
 			out = UnmodifiableTrie.unmodifiableTrie(in);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4.trie;UnmodifiableTrie;true;unmodifiableTrie;;;MapValue of Argument[0];MapValue of ReturnValue;value"
 			Trie out = null;
-			Trie in = newTrieWithMapValue((String)source());
+			Trie in = newPatriciaTrieWithMapValue((String)source());
 			out = UnmodifiableTrie.unmodifiableTrie(in);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
@@ -3300,6 +3616,163 @@ public class TestNew {
 	class MyAbstractSortedMapDecorator<K, V> extends AbstractSortedMapDecorator<K, V> {
 		public MyAbstractSortedMapDecorator(final SortedMap<K, V> map) {
 			super(map);
+		}
+	}
+
+	class MyAbstractBagDecorator<E> extends AbstractBagDecorator<E> {
+		public MyAbstractBagDecorator(final Bag<E> bag) {
+			super(bag);
+		}
+	}
+
+	class MyAbstractMapBag<E> extends AbstractMapBag<E> {
+		public MyAbstractMapBag(final Map<E, MutableInteger> map) {
+			super(map);
+		}
+		public Map<E, MutableInteger> myGetMap() {
+			return super.getMap();
+		}
+	}
+
+	class MyAbstractSortedBagDecorator<E> extends AbstractSortedBagDecorator<E> {
+		public MyAbstractSortedBagDecorator(final SortedBag<E> bag) {
+			super(bag);
+		}
+	}
+
+	class MyAbstractBidiMapDecorator<K,V> extends AbstractBidiMapDecorator<K,V> {
+		public MyAbstractBidiMapDecorator(final BidiMap<K, V> map) {
+			super(map);
+		}
+	}
+
+	class MyAbstractDualBidiMap<K,V> extends AbstractDualBidiMap<K,V> {
+		public MyAbstractDualBidiMap(final Map<K, V> normalMap, final Map<V, K> reverseMap) {
+			super(normalMap, reverseMap);
+		}
+		public MyAbstractDualBidiMap(final Map<K, V> normalMap, final Map<V, K> reverseMap, final BidiMap<V, K> inverseBidiMap) {
+			super(normalMap, reverseMap, inverseBidiMap);
+		}
+		protected BidiMap<V, K> createBidiMap(Map<V, K> normalMap, Map<K, V> reverseMap, BidiMap<K, V> inverseMap) {
+			return null;
+		}
+	}
+
+	class MyAbstractOrderedBidiMapDecorator<K,V> extends AbstractOrderedBidiMapDecorator<K,V> {
+		public MyAbstractOrderedBidiMapDecorator(final OrderedBidiMap<K, V> map) {
+			super(map);
+		}
+	}
+
+	class MyAbstractCollectionDecorator<E> extends AbstractCollectionDecorator<E> {
+		public MyAbstractCollectionDecorator(final Collection<E> coll) {
+			super(coll);
+		}
+		public Collection<E> myDecorated() {
+			return super.decorated();
+		}
+		public void mySetCollection(final Collection<E> coll) {
+			super.setCollection(coll);
+		}
+	}
+
+	class MyAbstractIteratorDecorator<E> extends AbstractIteratorDecorator<E> {
+		public MyAbstractIteratorDecorator(final Iterator<E> iterator) {
+			super(iterator);
+		}
+	}
+
+	class MyAbstractListIteratorDecorator<E> extends AbstractListIteratorDecorator<E> {
+		public MyAbstractListIteratorDecorator(final ListIterator<E> iterator) {
+			super(iterator);
+		}
+		public ListIterator<E> myGetListIterator() {
+			return super.getListIterator();
+		}
+	}
+
+	class MyAbstractMapIteratorDecorator<K,V> extends AbstractMapIteratorDecorator<K,V> {
+		public MyAbstractMapIteratorDecorator(final MapIterator<K, V> iterator) {
+			super(iterator);
+		}
+		public MapIterator<K, V> myGetMapIterator() {
+			return super.getMapIterator();
+		}
+	}
+
+	class MyAbstractOrderedMapIteratorDecorator<K,V> extends AbstractOrderedMapIteratorDecorator<K,V> {
+		public MyAbstractOrderedMapIteratorDecorator(final OrderedMapIterator<K, V> iterator) {
+			super(iterator);
+		}
+		public OrderedMapIterator<K, V> myGetOrderedMapIterator() {
+			return super.getOrderedMapIterator();
+		}
+	}
+
+	class MyAbstractUntypedIteratorDecorator<I,O> extends AbstractUntypedIteratorDecorator<I,O> {
+		public MyAbstractUntypedIteratorDecorator(final Iterator<I> iterator) {
+			super(iterator);
+		}
+		public Iterator<I> myGetIterator() {
+			return super.getIterator();
+		}
+		public O next() { return null; }
+	}
+
+	class MyAbstractLinkedList<E> extends AbstractLinkedList<E> {
+		public MyAbstractLinkedList(final Collection<? extends E> coll) {
+			super(coll);
+		}
+	}
+
+	class MyAbstractListDecorator<E> extends AbstractListDecorator<E> {
+		public MyAbstractListDecorator(final List<E> list) {
+			super(list);
+		}
+	}
+
+	class MyAbstractSerializableListDecorator<E> extends AbstractSerializableListDecorator<E> {
+		public MyAbstractSerializableListDecorator(final List<E> list) {
+			super(list);
+		}
+	}
+
+	class MyAbstractHashedMap<K,V> extends AbstractHashedMap<K,V> {
+		public MyAbstractHashedMap(final Map<? extends K, ? extends V> map) {
+			super(map);
+		}
+	}
+
+	class MyAbstractLinkedMap<K,V> extends AbstractLinkedMap<K,V> {
+		public MyAbstractLinkedMap(final Map<? extends K, ? extends V> map) {
+			super(map);
+		}
+	}
+
+	class MyAbstractMapDecorator<K,V> extends AbstractMapDecorator<K,V> {
+		public MyAbstractMapDecorator(final Map<K, V> map) {
+			super(map);
+		}
+		public Map<K, V> myDecorated() {
+			return super.decorated();
+		}
+	}
+
+	class MyAbstractNavigableSetDecorator<E> extends AbstractNavigableSetDecorator<E> {
+		public MyAbstractNavigableSetDecorator(final NavigableSet<E> set) {
+			super(set);
+		}
+	}
+
+	class MyAbstractSetDecorator<E> extends AbstractSetDecorator<E> {
+		public MyAbstractSetDecorator(final Set<E> set) {
+			super(set);
+		}
+	}
+
+	class MyAbstractSortedSetDecorator<E> extends AbstractSortedSetDecorator<E> {
+		public MyAbstractSortedSetDecorator(final Set<E> set) {
+			super(set);
 		}
 	}
 
