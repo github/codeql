@@ -40,11 +40,14 @@ class InitParameterInput extends LocalUserInput {
 }
 
 private class LessThanSanitizer extends DataFlow::BarrierGuard {
-  LessThanSanitizer() { this instanceof LTExpr }
+  LessThanSanitizer() { this instanceof ComparisonExpr }
 
   override predicate checks(Expr e, boolean branch) {
-    e = this.(LTExpr).getLeftOperand() and
+    e = this.(ComparisonExpr).getLesserOperand() and
     branch = true
+    or
+    e = this.(ComparisonExpr).getGreaterOperand() and
+    branch = false
   }
 }
 
@@ -59,13 +62,11 @@ class ThreadResourceAbuse extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) { sink instanceof PauseThreadSink }
 
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
-    exists(ConditionalExpr ce | ce.getAChildExpr() = node1.asExpr() and ce = node2.asExpr()) // request.getParameter("nodelay") != null ? 0 : sleepTime
-    or
     exists(
       Method rm, ClassInstanceExpr ce, Argument arg, FieldAccess fa // thread.start() invokes the run() method of thread implementation
     |
       rm.hasName("run") and
-      ce.getConstructedType() = rm.getSourceDeclaration().getDeclaringType() and
+      ce.getConstructedType().getSourceDeclaration() = rm.getSourceDeclaration().getDeclaringType() and
       ce.getConstructedType().getASupertype*().hasQualifiedName("java.lang", "Runnable") and
       ce.getAnArgument() = arg and
       fa = rm.getAnAccessedField().getAnAccess() and

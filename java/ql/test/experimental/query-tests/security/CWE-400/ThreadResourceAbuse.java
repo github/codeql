@@ -10,11 +10,23 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class ThreadResourceAbuse extends HttpServlet {
+	static final int DEFAULT_RETRY_AFTER = 5*1000;
+	static final int MAX_RETRY_AFTER = 10*1000;
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// Get thread pause time from request parameter
 		String delayTimeStr = request.getParameter("DelayTime");
 		try {
 			int delayTime = Integer.valueOf(delayTimeStr);
+			new UncheckedSyncAction(delayTime).start();
+		} catch (NumberFormatException e) {
+		}
+	}
+
+	protected void doGet2(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// Get thread pause time from request parameter
+		try {
+			int delayTime = request.getParameter("nodelay") != null ? 0 : Integer.valueOf(request.getParameter("DelayTime"));
 			new UncheckedSyncAction(delayTime).start();
 		} catch (NumberFormatException e) {
 		}
@@ -78,11 +90,43 @@ public class ThreadResourceAbuse extends HttpServlet {
 		public void run() {
 			try {
 				if (waitTime > 0 && waitTime < 5000) {
-				Thread.sleep(waitTime);
-				// Do other updates
+					Thread.sleep(waitTime);
+					// Do other updates
+				}
+			} catch (InterruptedException e) {
 			}
-		  } catch (InterruptedException e) {
-		  }
+		}
+	}
+
+	class CheckedSyncAction2 extends Thread {
+		int waitTime;
+
+		public CheckedSyncAction2(int waitTime) {
+			this.waitTime = waitTime;
+		}
+
+		// GOOD: enforce an upper limit on wait time
+		@Override
+		public void run() {
+			try {
+				if (waitTime >= 5000) {
+					// No action
+				} else {
+					Thread.sleep(waitTime);
+				}
+				// Do other updates
+			} catch (InterruptedException e) {
+			}
+		}
+	}
+
+	protected void doPost2(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// Get thread pause time from init container parameter
+		String delayTimeStr = getServletContext().getInitParameter("DelayTime");
+		try {
+			int delayTime = Integer.valueOf(delayTimeStr);
+			new CheckedSyncAction2(delayTime).start();
+		} catch (NumberFormatException e) {
 		}
 	}
 
@@ -103,6 +147,49 @@ public class ThreadResourceAbuse extends HttpServlet {
 				} catch (InterruptedException ie) {
 				}
 			}
+		}
+	}
+
+	int parseReplyAfter(String value) {
+		if (value == null || value.isEmpty()) {
+			return DEFAULT_RETRY_AFTER;
+		}
+
+		try {
+			int n = Integer.parseInt(value);
+			if (n < 0) {
+				return DEFAULT_RETRY_AFTER;
+			}
+
+			return Math.min(n, MAX_RETRY_AFTER);
+		} catch (NumberFormatException e) {
+			return DEFAULT_RETRY_AFTER;
+		}
+	}
+
+	protected void doHead2(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// Get thread pause time from request header
+		String header = request.getHeader("Retry-After");
+		int retryAfter = Integer.parseInt(header);
+
+		try {
+			// BAD: wait for retry-after without input validation
+			Thread.sleep(retryAfter);
+		} catch (InterruptedException ignore) {
+			// ignore
+		}
+	}
+
+	protected void doHead3(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// Get thread pause time from request header
+		String header = request.getHeader("Retry-After");
+		int retryAfter = parseReplyAfter(header);
+
+		try {
+			// GOOD: wait for retry-after with input validation
+			Thread.sleep(retryAfter);
+		} catch (InterruptedException ignore) {
+			// ignore
 		}
 	}
 }

@@ -26,7 +26,7 @@ check on maximum allowed sleep time is enforced.</p>
 
 <references>
 <li>
-snyk:
+Snyk:
 <a href="https://snyk.io/vuln/SNYK-JAVA-COMGOOGLECODEGWTUPLOAD-569506">Denial of Service (DoS)
 in com.googlecode.gwtupload:gwtupload</a>.
 </li>
