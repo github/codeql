@@ -1,3 +1,6 @@
+| methods2.kt:7:1:10:1 | <obinit>(...) | MethodAccess |
+| methods3.kt:5:1:7:1 | <obinit>(...) | MethodAccess |
+| methods.kt:5:1:13:1 | <obinit>(...) | MethodAccess |
 | methods.kt:10:9:10:25 | classMethod(...) | MethodAccess |
 | methods.kt:10:9:10:25 | this | ThisAccess |
 | methods.kt:10:21:10:21 | a | VarAccess |

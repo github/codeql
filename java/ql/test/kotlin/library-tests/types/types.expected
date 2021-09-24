@@ -1,5 +1,6 @@
 | file://:0:0:0:0 | <nulltype> | NullType |
 | file://:0:0:0:0 | Any | Class |
+| file://:0:0:0:0 | Unit | Class |
 | file://:0:0:0:0 | boolean | PrimitiveType |
 | file://:0:0:0:0 | byte | PrimitiveType |
 | file://:0:0:0:0 | char | PrimitiveType |
