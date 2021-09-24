@@ -1,2 +1,4 @@
 | p;FinalClass;false;returnsInput;(String);;Argument[0];ReturnValue;taint; |
 | p;FluentAPI;false;returnsThis;(String);;Argument[-1];ReturnValue;value; |
+| p;InnerClasses$CaptureMe;true;yesCm;(String);;Argument[0];ReturnValue;taint; |
+| p;InnerClasses;true;yes;(String);;Argument[0];ReturnValue;taint; |
