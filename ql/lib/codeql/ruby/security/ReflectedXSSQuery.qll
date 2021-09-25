@@ -3,7 +3,7 @@
  *
  * Note, for performance reasons: only import this file if
  * `ReflectedXSS::Configuration` is needed, otherwise
- * `ReflectedXSSCustomizations` should be imported instead.
+ * `XSS::ReflectedXSS` should be imported instead.
  */
 
 private import ruby
@@ -14,7 +14,7 @@ import codeql.ruby.TaintTracking
  * Provides a taint-tracking configuration for detecting "reflected server-side cross-site scripting" vulnerabilities.
  */
 module ReflectedXSS {
-  import ReflectedXSSCustomizations::ReflectedXSS
+  import XSS::ReflectedXSS
 
   /**
    * A taint-tracking configuration for detecting "reflected server-side cross-site scripting" vulnerabilities.
