@@ -9,3 +9,4 @@ private import codeql.ruby.frameworks.http_clients.RestClient
 private import codeql.ruby.frameworks.http_clients.HTTParty
 private import codeql.ruby.frameworks.http_clients.HTTPClient
 private import codeql.ruby.frameworks.http_clients.OpenURI
+private import codeql.ruby.frameworks.http_clients.Typhoeus
