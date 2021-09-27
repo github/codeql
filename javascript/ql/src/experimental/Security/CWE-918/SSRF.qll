@@ -14,8 +14,22 @@ class Configuration extends TaintTracking::Configuration {
     node instanceof RequestForgery::Sanitizer
   }
 
+  private predicate hasSanitizingSubstring(DataFlow::Node nd) {
+    nd.getStringValue().regexpMatch(".*[?#].*")
+    or
+    hasSanitizingSubstring(StringConcatenation::getAnOperand(nd))
+    or
+    hasSanitizingSubstring(nd.getAPredecessor())
+  }
+  
+  private predicate strictSanitizingPrefixEdge(DataFlow::Node source, DataFlow::Node sink) {
+    exists(DataFlow::Node operator, int n |
+      StringConcatenation::taintStep(source, sink, operator, n) and
+      hasSanitizingSubstring(StringConcatenation::getOperand(operator, [0 .. n - 1]))
+    )
+  }
   override predicate isSanitizerEdge(DataFlow::Node source, DataFlow::Node sink) {
-    sanitizingPrefixEdge(source, sink)
+    strictSanitizingPrefixEdge(source, sink)
   }
 
   override predicate isSanitizerGuard(TaintTracking::SanitizerGuardNode nd) {
