@@ -41,6 +41,9 @@ app.get('/check-with-axios', req => {
     axios.get('test.com/' + req.query.tainted) // OK
   }
 
+  let baseURL = require('config').base
+  axios.get(`${baseURL}${req.query.tainted}`); // SSRF
+
   if(!isValidInput(req.query.tainted)) {
     return;
   }
