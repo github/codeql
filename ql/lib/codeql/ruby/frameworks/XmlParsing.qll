@@ -98,6 +98,13 @@ private API::Node parseOptionsModule() {
   result = API::getTopLevelMember("XML").getMember("Options")
 }
 
+private predicate bitWiseAndOr(CfgNodes::ExprNodes::OperationCfgNode operation) {
+  operation.getExpr() instanceof BitwiseAndExpr or
+  operation.getExpr() instanceof AssignBitwiseAndExpr or
+  operation.getExpr() instanceof BitwiseOrExpr or
+  operation.getExpr() instanceof AssignBitwiseOrExpr
+}
+
 private DataFlow::LocalSourceNode trackFeature(Feature f, boolean enable, TypeTracker t) {
   t.start() and
   (
@@ -112,38 +119,14 @@ private DataFlow::LocalSourceNode trackFeature(Feature f, boolean enable, TypeTr
     enable = true and
     result = parseOptionsModule().getMember(f.getConstantName()).getAUse()
     or
-    // If a feature is enabled in any of the operands of the `|` and `|=` operators
-    // then the feature is also enabled in the result of the operators.
+    // Treat `&`, `&=`, `|` and `|=` operators as if they preserve the on/off states
+    // of their operands. This is an overapproximation but likely to work well in practice
+    // because it makes little sense to explicitly set a feature to both `on` and `off` in the
+    // same code.
     exists(CfgNodes::ExprNodes::OperationCfgNode operation |
+      bitWiseAndOr(operation) and
       operation = result.asExpr().(CfgNodes::ExprNodes::OperationCfgNode) and
-      (
-        operation.getExpr() instanceof BitwiseOrExpr or
-        operation.getExpr() instanceof AssignBitwiseOrExpr
-      )
-    |
-      enable = true and
-      operation.getAnOperand() = trackFeature(f, true).asExpr()
-      or
-      enable = false and
-      operation.getAnOperand() = trackFeature(f, false).asExpr() and
-      forall(DataFlow::Node n | n.asExpr() = operation.getAnOperand() | n != trackFeature(f, true))
-    )
-    or
-    // If a feature is disabled in any of the operands of the `&` and `&=` operators
-    // then the feature is also disabled in the result of the operators.
-    exists(CfgNodes::ExprNodes::OperationCfgNode operation |
-      operation = result.asExpr().(CfgNodes::ExprNodes::OperationCfgNode) and
-      (
-        operation.getExpr() instanceof BitwiseAndExpr or
-        operation.getExpr() instanceof AssignBitwiseAndExpr
-      )
-    |
-      enable = false and
-      operation.getAnOperand() = trackFeature(f, false).asExpr()
-      or
-      enable = true and
-      operation.getAnOperand() = trackFeature(f, true).asExpr() and
-      forall(DataFlow::Node n | n.asExpr() = operation.getAnOperand() | n != trackFeature(f, false))
+      operation.getAnOperand() = trackFeature(f, enable).asExpr()
     )
     or
     // The complement operator toggles a feature from enabled to disabled and vice-versa
