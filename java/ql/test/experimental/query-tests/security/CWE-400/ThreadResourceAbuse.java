@@ -33,7 +33,7 @@ public class ThreadResourceAbuse extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// Get thread pause time from init container parameter
+		// Get thread pause time from init container parameter (not detected because LocalUserInput tends to add a lot of FP)
 		String delayTimeStr = getServletContext().getInitParameter("DelayTime");
 		try {
 			int delayTime = Integer.valueOf(delayTimeStr);

@@ -9,8 +9,8 @@ private class MathCompDataModel extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
-        "java.lang;Math;false;min;;;Argument[0..1];ReturnValue;taint",
-        "java.lang;Math;false;max;;;Argument[0..1];ReturnValue;taint"
+        "java.lang;Math;false;min;;;Argument[0..1];ReturnValue;value",
+        "java.lang;Math;false;max;;;Argument[0..1];ReturnValue;value"
       ]
   }
 }
