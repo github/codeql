@@ -25,7 +25,7 @@ When you have selected a presentation, use |arrow-r| and |arrow-l| to navigate b
 Press **p** to view the additional notes on slides that have an information icon |info| in the top right corner, and press **f** to enter full-screen mode.
 
 The presentations contain a number of query examples.
-We recommend that you download `CodeQL for Visual Studio Code <https://help.semmle.com/codeql/codeql-for-vscode/procedures/setting-up.html>`__ and add the example database for each presentation so that you can find the bugs mentioned in the slides. 
+We recommend that you download `CodeQL for Visual Studio Code <https://codeql.github.com/docs/codeql-for-visual-studio-code/>`__ and add the example database for each presentation so that you can find the bugs mentioned in the slides. 
 
 
 .. pull-quote:: 
@@ -39,23 +39,23 @@ We recommend that you download `CodeQL for Visual Studio Code <https://help.semm
 CodeQL and variant analysis for C/C++
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-- `Introduction to variant analysis: CodeQL for C/C++ <https://help.semmle.com/QL/ql-training/cpp/intro-ql-cpp.html>`__–an introduction to variant analysis and CodeQL for C/C++ programmers.
-- `Example: Bad overflow guard <https://help.semmle.com/QL/ql-training/cpp/bad-overflow-guard.html>`__–an example of iterative query development to find bad overflow guards in a C++ project.
-- `Program representation: CodeQL for C/C++ <https://help.semmle.com/QL/ql-training/cpp/program-representation-cpp.html>`__–information on how CodeQL analysis represents C/C++ programs. 
-- `Introduction to local data flow <https://help.semmle.com/QL/ql-training/cpp/data-flow-cpp.html>`__–an introduction to analyzing local data flow in C/C++ using CodeQL, including an example demonstrating how to develop a query to find a real CVE.
-- `Exercise: snprintf overflow <https://help.semmle.com/QL/ql-training/cpp/snprintf.html>`__–an example demonstrating how to develop a data flow query.
-- `Introduction to global data flow <https://help.semmle.com/QL/ql-training/cpp/global-data-flow-cpp.html>`__–an introduction to analyzing global data flow in C/C++ using CodeQL.
-- `Analyzing control flow: CodeQL for C/C++  <https://help.semmle.com/QL/ql-training/cpp/control-flow-cpp.html>`__–an introduction to analyzing control flow in C/C++ using CodeQL.
+- `Introduction to variant analysis: CodeQL for C/C++ <../../QL/ql-training/cpp/intro-ql-cpp.html>`__–an introduction to variant analysis and CodeQL for C/C++ programmers.
+- `Example: Bad overflow guard <../../QL/ql-training/cpp/bad-overflow-guard.html>`__–an example of iterative query development to find bad overflow guards in a C++ project.
+- `Program representation: CodeQL for C/C++ <../../QL/ql-training/cpp/program-representation-cpp.html>`__–information on how CodeQL analysis represents C/C++ programs. 
+- `Introduction to local data flow <../../QL/ql-training/cpp/data-flow-cpp.html>`__–an introduction to analyzing local data flow in C/C++ using CodeQL, including an example demonstrating how to develop a query to find a real CVE.
+- `Exercise: snprintf overflow <../../QL/ql-training/cpp/snprintf.html>`__–an example demonstrating how to develop a data flow query.
+- `Introduction to global data flow <../../QL/ql-training/cpp/global-data-flow-cpp.html>`__–an introduction to analyzing global data flow in C/C++ using CodeQL.
+- `Analyzing control flow: CodeQL for C/C++  <../../QL/ql-training/cpp/control-flow-cpp.html>`__–an introduction to analyzing control flow in C/C++ using CodeQL.
 
 CodeQL and variant analysis for Java
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-- `Introduction to variant analysis: CodeQL for Java <https://help.semmle.com/QL/ql-training/java/intro-ql-java.html>`__–an introduction to variant analysis and CodeQL for Java programmers.
-- `Example: Query injection <https://help.semmle.com/QL/ql-training/java/query-injection-java.html>`__–an example of iterative query development to find unsanitized SPARQL injections in a Java project.
-- `Program representation: CodeQL for Java <https://help.semmle.com/QL/ql-training/java/program-representation-java.html>`__–information on how CodeQL analysis represents Java programs. 
-- `Introduction to local data flow <https://help.semmle.com/QL/ql-training/java/data-flow-java.html>`__–an introduction to analyzing local data flow in Java using CodeQL, including an example demonstrating how to develop a query to find a real CVE.
-- `Exercise: Apache Struts <https://help.semmle.com/QL/ql-training/java/apache-struts-java.html>`__–an example demonstrating how to develop a data flow query.
-- `Introduction to global data flow <https://help.semmle.com/QL/ql-training/java/global-data-flow-java.html>`__–an introduction to analyzing global data flow in Java using CodeQL.
+- `Introduction to variant analysis: CodeQL for Java <../../QL/ql-training/java/intro-ql-java.html>`__–an introduction to variant analysis and CodeQL for Java programmers.
+- `Example: Query injection <../../QL/ql-training/java/query-injection-java.html>`__–an example of iterative query development to find unsanitized SPARQL injections in a Java project.
+- `Program representation: CodeQL for Java <../../QL/ql-training/java/program-representation-java.html>`__–information on how CodeQL analysis represents Java programs. 
+- `Introduction to local data flow <../../QL/ql-training/java/data-flow-java.html>`__–an introduction to analyzing local data flow in Java using CodeQL, including an example demonstrating how to develop a query to find a real CVE.
+- `Exercise: Apache Struts <../../QL/ql-training/java/apache-struts-java.html>`__–an example demonstrating how to develop a data flow query.
+- `Introduction to global data flow <../../QL/ql-training/java/global-data-flow-java.html>`__–an introduction to analyzing global data flow in Java using CodeQL.
 
 Further reading
 ~~~~~~~~~~~~~~~
