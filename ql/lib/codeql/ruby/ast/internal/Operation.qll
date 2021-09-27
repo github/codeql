@@ -21,6 +21,8 @@ abstract class UnaryOperationImpl extends OperationImpl, MethodCallImpl, TUnaryO
   final override Expr getArgumentImpl(int n) { none() }
 
   final override int getNumberOfArgumentsImpl() { result = 0 }
+
+  final override Block getBlockImpl() { none() }
 }
 
 class UnaryOperationGenerated extends UnaryOperationImpl {
@@ -77,6 +79,8 @@ abstract class BinaryOperationImpl extends OperationImpl, MethodCallImpl, TBinar
   final override Expr getArgumentImpl(int n) { n = 0 and result = this.getRightOperandImpl() }
 
   final override int getNumberOfArgumentsImpl() { result = 1 }
+
+  final override Block getBlockImpl() { none() }
 }
 
 class BinaryOperationReal extends BinaryOperationImpl {
