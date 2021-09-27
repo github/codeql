@@ -5,12 +5,12 @@ async def test_connection():
     conn = await asyncpg.connect()
 
     try:
-        await conn.copy_from_query("sql", output="filepath")  # $ MISSING: getSql="sql" getAPathArgument="filepath"
-        await conn.execute("sql")  # $ MISSING: getSql="sql"
-        await conn.executemany("sql")  # $ MISSING: getSql="sql"
-        await conn.fetch("sql")  # $ MISSING: getSql="sql"
-        await conn.fetchrow("sql")  # $ MISSING: getSql="sql"
-        await conn.fetchval("sql")  # $ MISSING: getSql="sql"
+        await conn.copy_from_query("sql", output="filepath")  # $ getSql="sql" MISSING: getAPathArgument="filepath"
+        await conn.execute("sql")  # $ getSql="sql"
+        await conn.executemany("sql")  # $ getSql="sql"
+        await conn.fetch("sql")  # $ getSql="sql"
+        await conn.fetchrow("sql")  # $ getSql="sql"
+        await conn.fetchval("sql")  # $ getSql="sql"
 
     finally:
         await conn.close()
@@ -20,11 +20,11 @@ async def test_prepared_statement():
     conn = await asyncpg.connect()
 
     try:
-        pstmt = await conn.prepare('psql')
-        pstmt.executemany()  # $ MISSING: getSql="psql"
-        pstmt.fetch()  # $ MISSING: getSql="psql"
-        pstmt.fetchrow()  # $ MISSING: getSql="psql"
-        pstmt.fetchval()  # $ MISSING: getSql="psql"
+        pstmt = await conn.prepare("psql")
+        pstmt.executemany()  # $ getSql="psql"
+        pstmt.fetch()  # $ getSql="psql"
+        pstmt.fetchrow()  # $ getSql="psql"
+        pstmt.fetchval()  # $ getSql="psql"
 
     finally:
         await conn.close()
@@ -36,11 +36,11 @@ async def test_cursor():
 
     try:
         async with conn.transaction():
-            cursor = await conn.cursor("sql")  # $ MISSING: getSql="sql"
+            cursor = await conn.cursor("sql")  # $ getSql="sql"
             await cursor.fetch()
 
-            pstmt = await conn.prepare('psql')
-            pcursor = await pstmt.cursor()  # $ MISSING: getSql="psql"
+            pstmt = await conn.prepare("psql")
+            pcursor = await pstmt.cursor()  # $ getSql="psql"
             await pcursor.fetch()
 
             async for record in conn.cursor("sql"):  # $ MISSING: getSql="sql"
@@ -50,10 +50,10 @@ async def test_cursor():
                 pass
 
             cursor_factory = conn.cursor("sql")
-            cursor = await cursor_factory  # $ MISSING: getSql="sql"
+            cursor = await cursor_factory  # $ getSql="sql"
 
             pcursor_factory = pstmt.cursor()
-            pcursor = await pcursor_factory  # $ MISSING: getSql="psql"
+            pcursor = await pcursor_factory  # $ getSql="psql"
 
     finally:
         await conn.close()
@@ -62,19 +62,19 @@ async def test_connection_pool():
     pool = await asyncpg.create_pool()
 
     try:
-        await pool.copy_from_query("sql", output="filepath")  # $ MISSING: getSql="sql" getAPathArgument="filepath"
-        await pool.execute("sql")  # $ MISSING: getSql="sql"
-        await pool.executemany("sql")  # $ MISSING: getSql="sql"
-        await pool.fetch("sql")  # $ MISSING: getSql="sql"
-        await pool.fetchrow("sql")  # $ MISSING: getSql="sql"
-        await pool.fetchval("sql")  # $ MISSING: getSql="sql"
+        await pool.copy_from_query("sql", output="filepath")  # $ getSql="sql" MISSING: getAPathArgument="filepath"
+        await pool.execute("sql")  # $ getSql="sql"
+        await pool.executemany("sql")  # $ getSql="sql"
+        await pool.fetch("sql")  # $ getSql="sql"
+        await pool.fetchrow("sql")  # $ getSql="sql"
+        await pool.fetchval("sql")  # $ getSql="sql"
 
         async with pool.acquire() as conn:
             await conn.execute("sql")  # $ MISSING: getSql="sql"
 
         conn = await pool.acquire()
         try:
-            await conn.fetch("sql")  # $ MISSING: getSql="sql"
+            await conn.fetch("sql")  # $ getSql="sql"
         finally:
             await pool.release(conn)
 
