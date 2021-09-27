@@ -1,0 +1,31 @@
+comments
+| comments.kt:1:1:1:25 | /** Kdoc with no owner */ | /** Kdoc with no owner */ |
+| comments.kt:4:1:11:3 | /**\n * A group of *members*.\n *\n * This class has no useful logic; it's just a documentation example.\n *\n * @property name the name of this group.\n * @constructor Creates an empty group.\n */ | /**\n * A group of *members*.\n *\n * This class has no useful logic; it's just a documentation example.\n *\n * @property name the name of this group.\n * @constructor Creates an empty group.\n */ |
+| comments.kt:13:5:16:7 | /**\n     * Adds a [member] to this group.\n     * @return the new size of the group.\n     */ | /**\n     * Adds a [member] to this group.\n     * @return the new size of the group.\n     */ |
+| comments.kt:18:9:18:25 | // A line comment | // A line comment |
+| comments.kt:22:5:24:6 | /*\n    A block comment\n    */ | /*\n    A block comment\n    */ |
+commentOwners
+| comments.kt:4:1:11:3 | /**\n * A group of *members*.\n *\n * This class has no useful logic; it's just a documentation example.\n *\n * @property name the name of this group.\n * @constructor Creates an empty group.\n */ | comments.kt:12:1:25:1 | <init> |
+| comments.kt:4:1:11:3 | /**\n * A group of *members*.\n *\n * This class has no useful logic; it's just a documentation example.\n *\n * @property name the name of this group.\n * @constructor Creates an empty group.\n */ | comments.kt:12:1:25:1 | Group |
+| comments.kt:4:1:11:3 | /**\n * A group of *members*.\n *\n * This class has no useful logic; it's just a documentation example.\n *\n * @property name the name of this group.\n * @constructor Creates an empty group.\n */ | comments.kt:12:1:25:1 | equals |
+| comments.kt:4:1:11:3 | /**\n * A group of *members*.\n *\n * This class has no useful logic; it's just a documentation example.\n *\n * @property name the name of this group.\n * @constructor Creates an empty group.\n */ | comments.kt:12:1:25:1 | hashCode |
+| comments.kt:4:1:11:3 | /**\n * A group of *members*.\n *\n * This class has no useful logic; it's just a documentation example.\n *\n * @property name the name of this group.\n * @constructor Creates an empty group.\n */ | comments.kt:12:1:25:1 | other |
+| comments.kt:4:1:11:3 | /**\n * A group of *members*.\n *\n * This class has no useful logic; it's just a documentation example.\n *\n * @property name the name of this group.\n * @constructor Creates an empty group.\n */ | comments.kt:12:1:25:1 | toString |
+| comments.kt:13:5:16:7 | /**\n     * Adds a [member] to this group.\n     * @return the new size of the group.\n     */ | comments.kt:17:5:20:5 | add |
+commentSections
+| comments.kt:1:1:1:25 | /** Kdoc with no owner */ | Kdoc with no owner |
+| comments.kt:4:1:11:3 | /**\n * A group of *members*.\n *\n * This class has no useful logic; it's just a documentation example.\n *\n * @property name the name of this group.\n * @constructor Creates an empty group.\n */ | A group of *members*.\n\nThis class has no useful logic; it's just a documentation example.\n\n |
+| comments.kt:4:1:11:3 | /**\n * A group of *members*.\n *\n * This class has no useful logic; it's just a documentation example.\n *\n * @property name the name of this group.\n * @constructor Creates an empty group.\n */ | Creates an empty group. |
+| comments.kt:4:1:11:3 | /**\n * A group of *members*.\n *\n * This class has no useful logic; it's just a documentation example.\n *\n * @property name the name of this group.\n * @constructor Creates an empty group.\n */ | the name of this group. |
+| comments.kt:13:5:16:7 | /**\n     * Adds a [member] to this group.\n     * @return the new size of the group.\n     */ | Adds a [member] to this group.\n |
+commentSectionContents
+| A group of *members*.\n\nThis class has no useful logic; it's just a documentation example.\n\n | A group of *members*.\n\nThis class has no useful logic; it's just a documentation example.\n\n |
+| Adds a [member] to this group.\n | Adds a [member] to this group.\n |
+| Creates an empty group. | Creates an empty group. |
+| Kdoc with no owner | Kdoc with no owner |
+| the name of this group. | the name of this group. |
+commentSectionNames
+| Creates an empty group. | constructor |
+| the name of this group. | property |
+commentSectionSubjectNames
+| the name of this group. | name |
