@@ -169,7 +169,7 @@ class KernelExecCall extends SystemCommandExecution::Range {
  * Ruby documentation: https://docs.ruby-lang.org/en/3.0.0/Kernel.html#method-i-spawn
  * TODO: document and handle the env and option arguments.
  * ```
- * spawn([env,] command... [,options]) → pid
+ * spawn([env,] command... [,options]) -> pid
  * ```
  */
 class KernelSpawnCall extends SystemCommandExecution::Range {
