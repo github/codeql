@@ -38,11 +38,24 @@ private module Asyncpg {
     override DataFlow::Node getSql() { result in [this.getArg(0), this.getArgByName(queryArg)] }
   }
 
+  /**
+   * Holds if `result` is the result of awaiting `n`.
+   */
   pragma[inline]
   DataFlow::Node awaited(DataFlow::Node n) {
     exists(Await await |
       result.asExpr() = await and
       await.getValue() = n.asExpr()
+    )
+    or
+    exists(AsyncFor asyncFor |
+      result.asExpr() = asyncFor.getTarget() and
+      asyncFor.getIter() = n.asExpr()
+    )
+    or
+    exists(AsyncWith asyncWith |
+      result.asExpr() = asyncWith.getContextExpr() and
+      asyncWith.getOptionalVars() = n.asExpr()
     )
   }
 

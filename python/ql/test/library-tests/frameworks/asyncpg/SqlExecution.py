@@ -43,10 +43,10 @@ async def test_cursor():
             pcursor = await pstmt.cursor()  # $ getSql="psql"
             await pcursor.fetch()
 
-            async for record in conn.cursor("sql"):  # $ MISSING: getSql="sql"
+            async for record in conn.cursor("sql"):  # $ getSql="sql"
                 pass
 
-            async for record in pstmt.cursor():  # $ MISSING: getSql="psql"
+            async for record in pstmt.cursor():  # $ getSql="psql"
                 pass
 
             cursor_factory = conn.cursor("sql")
