@@ -105,7 +105,6 @@ predicate basicStoreStep(Node nodeFrom, DataFlowPublic::LocalSourceNode nodeTo, 
  */
 private string getSetterCallAttributeName(AST::SetterMethodCall call) {
   // TODO: this should be exposed in `SetterMethodCall`
-  not call instanceof AST::ElementReference and
   exists(string setterName |
     setterName = call.getMethodName() and result = setterName.prefix(setterName.length() - 1)
   )

@@ -123,7 +123,7 @@ class MethodCall extends Call, TMethodCall {
  * a[0] = 10
  * ```
  */
-class SetterMethodCall extends MethodCall {
+class SetterMethodCall extends MethodCall, TMethodCallSynth {
   SetterMethodCall() { this = TMethodCallSynth(_, _, _, true, _) }
 
   final override string getAPrimaryQlClass() { result = "SetterMethodCall" }
