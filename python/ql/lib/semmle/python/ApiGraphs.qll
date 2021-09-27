@@ -486,6 +486,40 @@ module API {
     }
 
     /**
+     * Holds if `result` is the result of awaiting `awaitedValue`.
+     */
+    cached
+    DataFlow::Node awaited(DataFlow::Node awaitedValue) {
+      // `await` x
+      // - `awaitedValue` is `x`
+      // - `result` is `await x`
+      exists(Await await |
+        result.asExpr() = await and
+        await.getValue() = awaitedValue.asExpr()
+      )
+      or
+      // `async for x in l`
+      // - `awaitedValue` is `l`
+      // - `result` is `l` (should perhaps be `x`)
+      exists(AsyncFor asyncFor |
+        result.asExpr() = asyncFor.getTarget() and
+        // Morally, we should perhaps use asyncFor.getIter() = awaitedValue.asExpr()
+        // but that does not work.
+        asyncFor.getTarget() = awaitedValue.asExpr()
+      )
+      or
+      // `async with x as y`
+      // - `awaitedValue` is `x`
+      // - `result` is `x` (should probably be `y`)
+      exists(AsyncWith asyncWith |
+        result.asExpr() = asyncWith.getContextExpr() and
+        // Morally, we should perhaps use asyncWith.getOptionalVars() = awaitedValue.asExpr()
+        // but that does not work.
+        asyncWith.getContextExpr() = awaitedValue.asExpr()
+      )
+    }
+
+    /**
      * Holds if `ref` is a use of a node that should have an incoming edge from `base` labeled
      * `lbl` in the API graph.
      */
@@ -516,10 +550,9 @@ module API {
         )
         or
         // awaiting
-        exists(Await await, DataFlow::Node awaitedValue |
+        exists(DataFlow::Node awaitedValue |
           lbl = Label::await() and
-          ref.asExpr() = await and
-          await.getValue() = awaitedValue.asExpr() and
+          ref = awaited(awaitedValue) and
           pred.flowsTo(awaitedValue)
         )
       )

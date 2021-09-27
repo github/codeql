@@ -70,7 +70,7 @@ async def test_connection_pool():
         await pool.fetchval("sql")  # $ getSql="sql"
 
         async with pool.acquire() as conn:
-            await conn.execute("sql")  # $ MISSING: getSql="sql"
+            await conn.execute("sql")  # $ getSql="sql"
 
         conn = await pool.acquire()
         try:
@@ -82,13 +82,13 @@ async def test_connection_pool():
         await pool.close()
 
     async with asyncpg.create_pool() as pool:
-        await pool.execute("sql")  # $ MISSING: getSql="sql"
+        await pool.execute("sql")  # $ getSql="sql"
 
         async with pool.acquire() as conn:
-            await conn.execute("sql")  # $ MISSING: getSql="sql"
+            await conn.execute("sql")  # $ getSql="sql"
 
         conn = await pool.acquire()
         try:
-            await conn.fetch("sql")  # $ MISSING: getSql="sql"
+            await conn.fetch("sql")  # $ getSql="sql"
         finally:
             await pool.release(conn)

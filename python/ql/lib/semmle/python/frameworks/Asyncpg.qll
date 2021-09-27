@@ -43,16 +43,25 @@ private module Asyncpg {
    */
   pragma[inline]
   DataFlow::Node awaited(DataFlow::Node n) {
+    // `await` x
+    // - `awaitedValue` is `x`
+    // - `result` is `await x`
     exists(Await await |
       result.asExpr() = await and
       await.getValue() = n.asExpr()
     )
     or
+    // `async for x in l`
+    // - `awaitedValue` is `l`
+    // - `result` is `x`
     exists(AsyncFor asyncFor |
       result.asExpr() = asyncFor.getTarget() and
       asyncFor.getIter() = n.asExpr()
     )
     or
+    // `async with x as y`
+    // - `awaitedValue` is `x`
+    // - `result` is `y`
     exists(AsyncWith asyncWith |
       result.asExpr() = asyncWith.getContextExpr() and
       asyncWith.getOptionalVars() = n.asExpr()
