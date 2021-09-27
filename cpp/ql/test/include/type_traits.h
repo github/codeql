@@ -1,6 +1,8 @@
 #if !defined(CODEQL_TYPE_TRAITS_H)
 #define CODEQL_TYPE_TRAITS_H
 
+typedef unsigned long size_t;
+
 namespace std {
     template<class T>
     struct remove_const { typedef T type; };
