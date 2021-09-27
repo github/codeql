@@ -1920,7 +1920,7 @@ public class Test {
 		{
 			// "org.apache.commons.collections4;Get;true;entrySet;;;MapKey of Argument[-1];MapKey of Element of ReturnValue;value"
 			Set<Map.Entry> out = null;
-			Get in = newTrieWithMapKey((String)source());
+			Get in = newPatriciaTrieWithMapKey((String)source());
 			out = in.entrySet();
 			sink(getMapKeyFromEntry(getElement(out))); // $ hasValueFlow
 		}
@@ -1941,7 +1941,7 @@ public class Test {
 		{
 			// "org.apache.commons.collections4;Get;true;entrySet;;;MapValue of Argument[-1];MapValue of Element of ReturnValue;value"
 			Set<Map.Entry> out = null;
-			Get in = newTrieWithMapValue((String)source());
+			Get in = newPatriciaTrieWithMapValue((String)source());
 			out = in.entrySet();
 			sink(getMapValueFromEntry(getElement(out))); // $ hasValueFlow
 		}
@@ -1962,7 +1962,7 @@ public class Test {
 		{
 			// "org.apache.commons.collections4;Get;true;get;;;MapValue of Argument[-1];ReturnValue;value"
 			Object out = null;
-			Get in = newTrieWithMapValue((String)source());
+			Get in = newPatriciaTrieWithMapValue((String)source());
 			out = in.get(null);
 			sink(out); // $ hasValueFlow
 		}
@@ -1976,7 +1976,7 @@ public class Test {
 		{
 			// "org.apache.commons.collections4;Get;true;keySet;();;MapKey of Argument[-1];Element of ReturnValue;value"
 			Set out = null;
-			Get in = newTrieWithMapKey((String)source());
+			Get in = newPatriciaTrieWithMapKey((String)source());
 			out = in.keySet();
 			sink(getElement(out)); // $ hasValueFlow
 		}
@@ -1997,7 +1997,7 @@ public class Test {
 		{
 			// "org.apache.commons.collections4;Get;true;remove;(Object);;MapValue of Argument[-1];ReturnValue;value"
 			Object out = null;
-			Get in = newTrieWithMapValue((String)source());
+			Get in = newPatriciaTrieWithMapValue((String)source());
 			out = in.remove(null);
 			sink(out); // $ hasValueFlow
 		}
@@ -2032,7 +2032,7 @@ public class Test {
 		{
 			// "org.apache.commons.collections4;Get;true;values;();;MapValue of Argument[-1];Element of ReturnValue;value"
 			Collection out = null;
-			Get in = newTrieWithMapValue((String)source());
+			Get in = newPatriciaTrieWithMapValue((String)source());
 			out = in.values();
 			sink(getElement(out)); // $ hasValueFlow
 		}
@@ -3768,28 +3768,28 @@ public class Test {
 		{
 			// "org.apache.commons.collections4;Trie;true;prefixMap;;;MapKey of Argument[-1];MapKey of ReturnValue;value"
 			SortedMap out = null;
-			Trie in = newTrieWithMapKey((String)source());
+			Trie in = newPatriciaTrieWithMapKey((String)source());
 			out = in.prefixMap(null);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;Trie;true;prefixMap;;;MapValue of Argument[-1];MapValue of ReturnValue;value"
 			SortedMap out = null;
-			Trie in = newTrieWithMapValue((String)source());
+			Trie in = newPatriciaTrieWithMapValue((String)source());
 			out = in.prefixMap(null);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;TrieUtils;true;unmodifiableTrie;;;MapKey of Argument[0];MapKey of ReturnValue;value"
 			Trie out = null;
-			Trie in = newTrieWithMapKey((String)source());
+			Trie in = newPatriciaTrieWithMapKey((String)source());
 			out = TrieUtils.unmodifiableTrie(in);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;TrieUtils;true;unmodifiableTrie;;;MapValue of Argument[0];MapValue of ReturnValue;value"
 			Trie out = null;
-			Trie in = newTrieWithMapValue((String)source());
+			Trie in = newPatriciaTrieWithMapValue((String)source());
 			out = TrieUtils.unmodifiableTrie(in);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
