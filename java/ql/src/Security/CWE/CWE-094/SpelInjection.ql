@@ -11,9 +11,10 @@
  */
 
 import java
-import SpelInjectionLib
+import semmle.code.java.security.SpelInjectionQuery
+import semmle.code.java.dataflow.DataFlow
 import DataFlow::PathGraph
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, ExpressionInjectionConfig conf
+from DataFlow::PathNode source, DataFlow::PathNode sink, SpelInjectionConfig conf
 where conf.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "SpEL injection from $@.", source.getNode(), "this user input"

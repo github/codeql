@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2014 the original author or authors.
+ * Copyright 2002-2017 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -12,15 +12,21 @@
  * the License.
  */
 
-package org.springframework.expression.spel.standard;
+package org.springframework.expression;
 
-import org.springframework.expression.ParseException;
-import org.springframework.expression.common.TemplateAwareExpressionParser;
+import org.springframework.lang.Nullable;
 
-public class SpelExpressionParser extends TemplateAwareExpressionParser {
-    public SpelExpressionParser() {}
+public class ParseException extends ExpressionException {
+	public ParseException(@Nullable String expressionString, int position, String message) {
+		super(expressionString, message);
+	}
 
-    public SpelExpression parseRaw(String expressionString) throws ParseException {
-        return null;
-    }
+	public ParseException(int position, String message, Throwable cause) {
+		super(message, cause);
+	}
+
+	public ParseException(int position, String message) {
+		super(message);
+	}
+
 }

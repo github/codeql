@@ -4,7 +4,7 @@
 <overview>
 <p>
 The Spring Expression Language (SpEL) is a powerful expression language
-provided by Spring Framework. The language offers many features
+provided by the Spring Framework. The language offers many features
 including invocation of methods available in the JVM.
 If a SpEL expression is built using attacker-controlled data, 
 and then evaluated in a powerful context,
@@ -31,7 +31,7 @@ that doesn't allow arbitrary method invocation.
 <example>
 <p>
 The following example uses untrusted data to build a SpEL expression
-and then runs it in the default powerfull context.
+and then runs it in the default powerful context.
 </p>
 <sample src="UnsafeSpelExpressionEvaluation.java" />
 
