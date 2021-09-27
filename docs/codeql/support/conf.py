@@ -69,9 +69,9 @@ html_theme_options = {'font_size': '16px',
                       'body_text': '#333', 
                       'link': '#2F1695',
                       'link_hover': '#2F1695',
-                      'font_family': 'Inter,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Segoe UI Symbol;',
                       'show_powered_by': False,
                       'nosidebar':True,
+                      'head_font_family': '-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji"',
                       }
 
 html_favicon = '../images/site/favicon.ico'
