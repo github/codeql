@@ -190,7 +190,6 @@ pub fn extract(
         // TODO: should we handle path strings that are not valid UTF8 better?
         path: format!("{}", path.display()),
         file_label: *file_label,
-        token_counter: 0,
         toplevel_child_counter: 0,
         stack: Vec::new(),
         language_prefix,
@@ -300,8 +299,6 @@ struct Visitor<'a> {
     source: &'a Vec<u8>,
     /// A TrapWriter to accumulate trap entries
     trap_writer: &'a mut TrapWriter,
-    /// A counter for tokens
-    token_counter: usize,
     /// A counter for top-level child nodes
     toplevel_child_counter: usize,
     /// Language prefix
@@ -425,13 +422,10 @@ impl Visitor<'_> {
                     vec![
                         Arg::Label(id),
                         Arg::Int(*kind_id),
-                        Arg::Label(self.file_label),
-                        Arg::Int(self.token_counter),
                         sliced_source_arg(self.source, node),
                         Arg::Label(loc),
                     ],
                 );
-                self.token_counter += 1;
             }
             EntryKind::Table {
                 fields,

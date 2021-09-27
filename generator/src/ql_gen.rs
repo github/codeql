@@ -119,14 +119,14 @@ pub fn create_ast_node_class<'a>(ast_node: &'a str, ast_node_parent: &'a str) ->
 }
 
 pub fn create_token_class<'a>(token_type: &'a str, tokeninfo: &'a str) -> ql::Class<'a> {
-    let tokeninfo_arity = 6;
+    let tokeninfo_arity = 4;
     let get_value = ql::Predicate {
         qldoc: Some(String::from("Gets the value of this token.")),
         name: "getValue",
         overridden: false,
         return_type: Some(ql::Type::String),
         formal_parameters: vec![],
-        body: create_get_field_expr_for_column_storage("result", tokeninfo, 3, tokeninfo_arity),
+        body: create_get_field_expr_for_column_storage("result", tokeninfo, 1, tokeninfo_arity),
     };
     let get_location = ql::Predicate {
         qldoc: Some(String::from("Gets the location of this token.")),
@@ -134,7 +134,7 @@ pub fn create_token_class<'a>(token_type: &'a str, tokeninfo: &'a str) -> ql::Cl
         overridden: true,
         return_type: Some(ql::Type::Normal("Location")),
         formal_parameters: vec![],
-        body: create_get_field_expr_for_column_storage("result", tokeninfo, 4, tokeninfo_arity),
+        body: create_get_field_expr_for_column_storage("result", tokeninfo, 2, tokeninfo_arity),
     };
     let to_string = ql::Predicate {
         qldoc: Some(String::from(

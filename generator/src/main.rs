@@ -307,20 +307,6 @@ fn create_tokeninfo<'a>(name: &'a str, type_name: &'a str) -> dbscheme::Table<'a
             },
             dbscheme::Column {
                 unique: false,
-                db_type: dbscheme::DbColumnType::Int,
-                name: "file",
-                ql_type: ql::Type::AtType("file"),
-                ql_type_is_ref: true,
-            },
-            dbscheme::Column {
-                unique: false,
-                db_type: dbscheme::DbColumnType::Int,
-                name: "idx",
-                ql_type: ql::Type::Int,
-                ql_type_is_ref: true,
-            },
-            dbscheme::Column {
-                unique: false,
                 db_type: dbscheme::DbColumnType::String,
                 name: "value",
                 ql_type: ql::Type::String,
