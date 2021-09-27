@@ -8,6 +8,4 @@ class ProviderTaintFlowConf extends DefaultTaintFlowConf {
 
 class ProviderInlineFlowTest extends InlineFlowTest {
   override DataFlow::Configuration getValueFlowConfig() { none() }
-
-  override DataFlow::Configuration getTaintFlowConfig() { result instanceof ProviderTaintFlowConf }
 }

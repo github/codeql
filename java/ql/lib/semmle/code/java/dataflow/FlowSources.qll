@@ -252,7 +252,10 @@ class ExportedAndroidIntentInput extends RemoteFlowSource, AndroidIntentInput {
 class AndroidContentProviderInput extends DataFlow::Node {
   AndroidContentProvider declaringType;
 
-  AndroidContentProviderInput() { sourceNode(this, "contentprovider") }
+  AndroidContentProviderInput() {
+    sourceNode(this, "contentprovider") and
+    this.asParameter().getCallable().getDeclaringType() = declaringType
+  }
 }
 
 /** A parameter of an entry-point method declared in an exported `ContentProvider` class. */

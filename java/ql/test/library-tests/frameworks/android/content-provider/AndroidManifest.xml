@@ -27,5 +27,10 @@
             android:name=".Test"
             android:authority="com.example.myapp.Test"
             android:exported="true" />
+
+        <provider
+            android:name=".Safe"
+            android:authority="com.example.myapp.Safe"
+            android:exported="false" />
     </application>
 </manifest>
