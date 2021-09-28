@@ -1,4 +1,4 @@
-package utils
+package com.github.codeql.utils
 
 import com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.ir.IrElement

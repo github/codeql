@@ -5,7 +5,6 @@ import org.jetbrains.kotlin.backend.common.psi.PsiSourceManager
 import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.declarations.IrFile
 import org.jetbrains.kotlin.ir.visitors.IrElementVisitor
-import utils.getLocation
 
 class IrVisitorLookup(private val psi: PsiElement, private val file: IrFile) :
     IrElementVisitor<Unit, MutableCollection<IrElement>> {
