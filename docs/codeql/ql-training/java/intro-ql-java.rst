@@ -11,7 +11,7 @@ Setup
 
 For this example you should download:
 
-- `CodeQL for Visual Studio Code <https://help.semmle.com/codeql/codeql-for-vscode/procedures/setting-up.html>`__
+- `CodeQL for Visual Studio Code <https://codeql.github.com/docs/codeql-for-visual-studio-code/setting-up-codeql-in-visual-studio-code/>`__
 - `Apache Struts database <https://downloads.lgtm.com/snapshots/java/apache/struts/apache-struts-7fd1622-CVE-2018-11776.zip>`__
 
 .. note::
@@ -68,7 +68,7 @@ A simple CodeQL query
 
    We are going to write a simple query which finds “if statements” with empty “then” blocks, so we can highlight the results like those on the previous slide. The query can be run in the `query console on LGTM <https://lgtm.com/query>`__, or in your `IDE <https://lgtm.com/help/lgtm/running-queries-ide>`__.
 
-   A `query <https://help.semmle.com/QL/ql-handbook/queries.html>`__ consists of a “select” clause that indicates what results should be returned. Typically it will also provide a “from” clause to declare some variables, and a “where” clause to state conditions over those variables. For more information on the structure of query files (including links to useful topics in the `QL language reference <https://help.semmle.com/QL/ql-handbook/index.html>`__), see `About CodeQL queries <https://help.semmle.com/QL/learn-ql/ql/writing-queries/introduction-to-queries.html>`__.
+   A `query <https://codeql.github.com/docs/ql-language-reference/queries/>`__ consists of a “select” clause that indicates what results should be returned. Typically it will also provide a “from” clause to declare some variables, and a “where” clause to state conditions over those variables. For more information on the structure of query files (including links to useful topics in the `QL language reference <https://codeql.github.com/docs/ql-language-reference/>`__), see `About CodeQL queries <https://codeql.github.com/docs/writing-codeql-queries/about-codeql-queries/>`__.
 
    In our example here, the first line of the query imports the `CodeQL library for Java <https://codeql.github.com/codeql-standard-libraries/java/>`__, which defines concepts like ``IfStmt`` and ``Block``.
    The query proper starts by declaring two variables–ifStmt and block. These variables represent sets of values in the database, according to the type of each of the variables. For example, ``ifStmt`` has the type ``IfStmt``, which means it represents the set of all if statements in the program.
@@ -107,9 +107,9 @@ Each query library also implicitly defines a module.
 
   Queries are always contained in query files with the file extension ``.ql``. 
   
-  Parts of queries can be lifted into `library files <https://help.semmle.com/QL/ql-handbook/modules.html#library-modules>`__ with the extension ``.qll``. Definitions within such libraries can be brought into scope using “import” statements, and similarly QLL files can import each other’s definitions using “import” statements.
+  Parts of queries can be lifted into `library files <https://codeql.github.com/docs/ql-language-reference/modules/#library-modules>`__ with the extension ``.qll``. Definitions within such libraries can be brought into scope using “import” statements, and similarly QLL files can import each other’s definitions using “import” statements.
 
-  Logic can be encapsulated as user-defined `predicates <https://help.semmle.com/QL/ql-handbook/predicates.html>`__ and `classes <https://help.semmle.com/QL/ql-handbook/types.html#classes>`__, and organized into `modules <https://help.semmle.com/QL/ql-handbook/modules.html>`__. Each QLL file implicitly defines a module, but QL and QLL files can also contain explicit module definitions, as we will see later.
+  Logic can be encapsulated as user-defined `predicates <https://codeql.github.com/docs/ql-language-reference/predicates/>`__ and `classes <https://codeql.github.com/docs/ql-language-reference/types/#classes>`__, and organized into `modules <https://codeql.github.com/docs/ql-language-reference/modules/>`__. Each QLL file implicitly defines a module, but QL and QLL files can also contain explicit module definitions, as we will see later.
 
 Predicates
 ==========
@@ -130,7 +130,7 @@ A predicate allows you to pull out and name parts of a query.
 
 .. note::
 
-   A `predicate <https://help.semmle.com/QL/ql-handbook/predicates.html>`__ takes zero or more parameters, and its body is a condition on those parameters. The predicate may (or may not) hold. Predicates may also be `recursive <https://help.semmle.com/QL/ql-handbook/predicates.html#recursive-predicates>`__, simply by referring to themselves (directly or indirectly).
+   A `predicate <https://codeql.github.com/docs/ql-language-reference/predicates/>`__ takes zero or more parameters, and its body is a condition on those parameters. The predicate may (or may not) hold. Predicates may also be `recursive <https://codeql.github.com/docs/ql-language-reference/predicates/#recursive-predicates>`__, simply by referring to themselves (directly or indirectly).
 
    You can imagine a predicate to be a self-contained from-where-select statement, that produces an intermediate relation, or table. In this case, the ``isEmpty`` predicate will be the set of all blocks which are empty.
 
@@ -154,7 +154,7 @@ Member predicates are inherited and can be overridden.
 
 .. note::
 
-  `Classes <https://help.semmle.com/QL/ql-handbook/types.html#classes>`__ model sets of values from the database. A class has one or more supertypes, and inherits `member predicates <https://help.semmle.com/QL/ql-handbook/types.html#member-predicates>`__ (methods) from each of them. Each value in a class must be in every supertype, but additional conditions can be stated in a so-called **characteristic predicate**, which looks a bit like a zero-argument constructor.
+  `Classes <https://codeql.github.com/docs/ql-language-reference/types/#classes>`__ model sets of values from the database. A class has one or more supertypes, and inherits `member predicates <https://codeql.github.com/docs/ql-language-reference/types/#member-predicates>`__ (methods) from each of them. Each value in a class must be in every supertype, but additional conditions can be stated in a so-called **characteristic predicate**, which looks a bit like a zero-argument constructor.
 
   In the example, declaring a variable “EmptyBlock e” will allow it to range over only those blocks that have zero statements.
 
