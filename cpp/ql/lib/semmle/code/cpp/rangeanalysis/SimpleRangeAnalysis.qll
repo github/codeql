@@ -1597,7 +1597,8 @@ private module SimpleRangeAnalysisCached {
   cached
   predicate upperBoundMayBeWidened(Expr e) {
     isRecursiveExpr(e) and
-    // Corresponds to taking max on the RHS
+    // Widening is not a problem if the post-analysis in `getGuardedUpperBound` has overridden the widening.
+    // Note that the RHS of `<` may be multi-valued.
     not getGuardedUpperBound(e) < getTruncatedUpperBounds(e)
   }
 
