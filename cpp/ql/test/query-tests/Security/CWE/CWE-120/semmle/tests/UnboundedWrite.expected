@@ -49,6 +49,7 @@ edges
 | tests.c:34:10:34:13 | argv | tests.c:34:10:34:16 | access to array |
 | tests.c:34:10:34:13 | argv | tests.c:34:10:34:16 | access to array indirection |
 | tests.c:34:10:34:13 | argv | tests.c:34:10:34:16 | access to array indirection |
+subpaths
 nodes
 | tests.c:28:22:28:25 | argv | semmle.label | argv |
 | tests.c:28:22:28:25 | argv | semmle.label | argv |

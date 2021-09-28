@@ -689,3 +689,12 @@ label:
   out(x);
   goto label;
 }
+
+void test_overflow() {
+  const int x = 2147483647; // 2^31-1
+  const int y = 256;
+  if ((x + y) <= 512) {
+    out(x);
+    out(y);
+  }
+}

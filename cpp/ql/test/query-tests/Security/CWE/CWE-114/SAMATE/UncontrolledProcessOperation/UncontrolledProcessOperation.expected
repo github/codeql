@@ -12,6 +12,7 @@ edges
 | test.cpp:64:30:64:35 | call to getenv | test.cpp:73:24:73:27 | data indirection |
 | test.cpp:73:17:73:22 | data | test.cpp:37:73:37:76 | data |
 | test.cpp:73:24:73:27 | data indirection | test.cpp:37:73:37:76 | *data |
+subpaths
 nodes
 | test.cpp:37:73:37:76 | *data | semmle.label | *data |
 | test.cpp:37:73:37:76 | data | semmle.label | data |

@@ -16,8 +16,8 @@ Java framework & library support
    `Google Guava <https://guava.dev/>`_,``com.google.common.*``,,728,6,,6,,,,,
    `JSON-java <https://github.com/stleary/JSON-java>`_,``org.json``,,236,,,,,,,,
    Java Standard Library,``java.*``,3,423,30,13,,,7,,,10
-   Java extensions,"``javax.*``, ``jakarta.*``",54,552,31,,,4,,1,1,2
+   Java extensions,"``javax.*``, ``jakarta.*``",54,552,32,,,4,,1,1,2
    `Spring <https://spring.io/>`_,``org.springframework.*``,29,469,91,,,,19,14,,29
-   Others,"``com.esotericsoftware.kryo.io``, ``com.esotericsoftware.kryo5.io``, ``com.fasterxml.jackson.core``, ``com.fasterxml.jackson.databind``, ``com.opensymphony.xwork2.ognl``, ``com.unboundid.ldap.sdk``, ``flexjson``, ``groovy.lang``, ``groovy.util``, ``jodd.json``, ``ognl``, ``org.apache.commons.codec``, ``org.apache.commons.jexl2``, ``org.apache.commons.jexl3``, ``org.apache.commons.ognl``, ``org.apache.directory.ldap.client.api``, ``org.apache.ibatis.jdbc``, ``org.apache.shiro.jndi``, ``org.codehaus.groovy.control``, ``org.dom4j``, ``org.hibernate``, ``org.jooq``, ``org.mvel2``, ``org.xml.sax``, ``org.xmlpull.v1``, ``play.mvc``",7,26,146,,,,14,18,,
-   Totals,,116,4169,402,13,6,10,107,33,1,66
+   Others,"``com.esotericsoftware.kryo.io``, ``com.esotericsoftware.kryo5.io``, ``com.fasterxml.jackson.core``, ``com.fasterxml.jackson.databind``, ``com.opensymphony.xwork2.ognl``, ``com.unboundid.ldap.sdk``, ``flexjson``, ``groovy.lang``, ``groovy.util``, ``jodd.json``, ``net.sf.saxon.s9api``, ``ognl``, ``org.apache.commons.codec``, ``org.apache.commons.jexl2``, ``org.apache.commons.jexl3``, ``org.apache.commons.ognl``, ``org.apache.directory.ldap.client.api``, ``org.apache.ibatis.jdbc``, ``org.apache.shiro.jndi``, ``org.codehaus.groovy.control``, ``org.dom4j``, ``org.hibernate``, ``org.jooq``, ``org.mvel2``, ``org.xml.sax``, ``org.xmlpull.v1``, ``play.mvc``",7,26,151,,,,14,18,,
+   Totals,,116,4169,408,13,6,10,107,33,1,66
 

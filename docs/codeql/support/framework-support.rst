@@ -1,7 +1,7 @@
 Frameworks and libraries
 ########################
 
-The libraries and queries in version |version| have been explicitly checked against the libraries and frameworks listed below.
+LGTM Enterprise |release| includes CodeQL CLI |version|. The CodeQL libraries and queries used by this version of LGTM Enterprise have been explicitly checked against the libraries and frameworks listed below.
 
 .. pull-quote::
 

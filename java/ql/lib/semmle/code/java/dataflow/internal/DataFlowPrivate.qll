@@ -326,18 +326,24 @@ class LambdaCallKind = Method; // the "apply" method in the functional interface
 
 /** Holds if `creation` is an expression that creates a lambda of kind `kind` for `c`. */
 predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c) {
-  exists(FunctionalExpr func, FunctionalInterface interface |
+  exists(ClassInstanceExpr func, Interface t, FunctionalInterface interface |
     creation.asExpr() = func and
-    func.asMethod() = c and
-    func.getType().(RefType).getSourceDeclaration() = interface and
-    kind = interface.getRunMethod()
+    func.getAnonymousClass().getAMethod() = c and
+    func.getConstructedType().extendsOrImplements+(t) and
+    t.getSourceDeclaration() = interface and
+    c.(Method).overridesOrInstantiates+(pragma[only_bind_into](kind)) and
+    pragma[only_bind_into](kind) = interface.getRunMethod().getSourceDeclaration()
   )
 }
 
 /** Holds if `call` is a lambda call of kind `kind` where `receiver` is the lambda expression. */
 predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
   receiver = call.(SummaryCall).getReceiver() and
-  getNodeDataFlowType(receiver).getSourceDeclaration().(FunctionalInterface).getRunMethod() = kind
+  getNodeDataFlowType(receiver)
+      .getSourceDeclaration()
+      .(FunctionalInterface)
+      .getRunMethod()
+      .getSourceDeclaration() = kind
 }
 
 /** Extra data-flow steps needed for lambda flow analysis. */
