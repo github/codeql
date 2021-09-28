@@ -51,6 +51,7 @@ edges
 | funcsLocal.c:41:18:41:20 | i61 | funcsLocal.c:42:9:42:10 | (const char *)... |
 | funcsLocal.c:41:18:41:20 | i61 | funcsLocal.c:42:9:42:10 | i6 |
 | funcsLocal.c:41:18:41:20 | i61 | funcsLocal.c:42:9:42:10 | i6 indirection |
+subpaths
 nodes
 | funcsLocal.c:16:8:16:9 | fread output argument | semmle.label | fread output argument |
 | funcsLocal.c:16:8:16:9 | i1 | semmle.label | i1 |

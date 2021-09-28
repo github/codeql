@@ -13,6 +13,7 @@ edges
 | test.cpp:43:27:43:30 | argv | test.cpp:43:27:43:33 | access to array |
 | test.cpp:43:27:43:30 | argv | test.cpp:43:27:43:33 | access to array indirection |
 | test.cpp:43:27:43:30 | argv | test.cpp:43:27:43:33 | access to array indirection |
+subpaths
 nodes
 | test.c:15:20:15:23 | argv | semmle.label | argv |
 | test.c:15:20:15:23 | argv | semmle.label | argv |

@@ -48,6 +48,8 @@ public class A {
     return null;
   }
 
+  public interface Producer1Consumer3<E> extends Producer1<E[]>, Consumer3<E[]> { }
+
   static Object source(int i) { return null; }
 
   static void sink(Object o) { }
@@ -71,7 +73,7 @@ public class A {
 
     applyConsumer1(source(4), new Consumer1() {
       @Override public void eat(Object o) {
-        sink(o); // $ MISSING: flow=4
+        sink(o); // $ flow=4
       }
     });
 
@@ -96,5 +98,16 @@ public class A {
     sink(applyConverter1((Integer)source(9), i -> i)); // $ flow=9
 
     sink(applyConverter1((Integer)source(10), i -> new int[]{i})[0]); // $ flow=10
+
+    Producer1Consumer3<Integer> pc = new Producer1Consumer3<Integer>() {
+      @Override public Integer[] make() {
+        return new Integer[] { (Integer)source(11) };
+      }
+      @Override public void eat(Integer[] xs) {
+        sink(xs[0]); // $ flow=12
+      }
+    };
+    applyConsumer3(new Integer[] { (Integer)source(12) }, pc);
+    sink(applyProducer1(pc)[0]); // $ flow=11
   }
 }

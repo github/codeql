@@ -726,6 +726,9 @@ class StringLiteral extends Literal, @stringliteral {
    */
   string getRepresentedString() { result = getValue() }
 
+  /** Holds if this string literal is a text block (`""" ... """`). */
+  predicate isTextBlock() { getLiteral().matches("\"\"\"%") }
+
   override string getAPrimaryQlClass() { result = "StringLiteral" }
 }
 
