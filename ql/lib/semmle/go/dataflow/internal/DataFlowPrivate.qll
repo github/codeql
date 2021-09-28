@@ -200,6 +200,12 @@ class DataFlowCallable extends TCallable {
   /** Gets a textual representation of this callable. */
   string toString() { result = [this.asFunction().toString(), this.asFuncLit().toString()] }
 
+  FunctionNode asFunctionNode() {
+    this.asFunction() = result.getFunction()
+    or
+    this.asFuncLit() = result.asExpr()
+  }
+
   /** Gets this callable as a function, if it is one. */
   Function asFunction() { this = TFunctionCallable(result) }
 
