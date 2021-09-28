@@ -39,7 +39,7 @@ private module RegexpMatching {
     }
 
     /**
-     * Holds if `regexp` matches `str`, where `str` is either in the `test` or `testWithGroups` predicate.
+     * Holds if this RegExp matches `str`, where `str` is either in the `test` or `testWithGroups` predicate.
      */
     final predicate matches(string str) {
       exists(State state | state = getAState(this, str.length() - 1, str, _) |
