@@ -92,7 +92,13 @@ module Public {
     ControlFlow::Root getRoot() { none() } // overridden in subclasses
 
     /** INTERNAL: Use `getRoot()` instead. */
-    DataFlowCallable getEnclosingCallable() { result.getFuncDef() = this.getRoot() }
+    DataFlowCallable getEnclosingCallable() {
+      result.getFuncDef() = this.getRoot()
+      or
+      this = MkSummarizedParameterNode(result, _)
+      or
+      this = MkSummaryInternalNode(result, _)
+    }
 
     /** Gets the type of this node. */
     Type getType() { none() } // overridden in subclasses
