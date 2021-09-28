@@ -5,8 +5,8 @@
 
 <overview>
 <p>
-Parsing general HTML using regular expressions is impossible, however it is possible to match
-single HTML tags. However, if the regexp is not written well it might be easy 
+It is possible to match some single HTML tags using regular expressions (parsing general HTML using 
+regular expressions is impossible). However, if the regexp is not written well it might be easy 
 to circumvent the regexp, which can lead to XSS or other security issues.
 </p>
 <p>
@@ -25,14 +25,13 @@ likely to handle corner cases correctly than a custom implementation.
 
 <example>
 <p>
-For example, assume we want to write a function that filters out all <code>&lt;script&gt;</code> tags.
-Such a function might be written like below: 
+The following example attempts to filters out all <code>&lt;script&gt;</code> tags.
 </p>
 
 <sample src="examples/BadTagFilter.py" />
 
 <p>
-This sanitizer does not filter out all <code>&lt;script&gt;</code> tags. 
+The above sanitizer does not filter out all <code>&lt;script&gt;</code> tags. 
 Browsers will not only accept <code>&lt;/script&gt;</code> as script end tags, but also tags such as <code>&lt;/script foo="bar"&gt;</code> even though it is a parser error.
 This means that an attack string such as <code>&lt;script&gt;alert(1)&lt;/script foo="bar"&gt;</code> will not be filtered by 
 the function, but <code>alert(1)</code> will be executed by a browser if the string is rendered as HTML.
