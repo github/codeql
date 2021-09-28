@@ -102,6 +102,8 @@ private class {0}{1}Csv extends {2} {{
     }}
 }}
 """
+    if rows.strip() == "":
+        return ""
     return classTemplate.format(shortname.capitalize(), kind.capitalize(), superclass, rows)
 
 
@@ -111,6 +113,8 @@ summaryCsv = asCsvModel("SummaryModelCsv", "summary", summaryRows)
 sinkRows = runQuery("sink models", "CaptureSinkModels.ql")
 sinkCsv = asCsvModel("SinkModelCsv", "sinks", sinkRows)
 
+sourceRows = runQuery("source models", "CaptureSourceModels.ql")
+sourceCsv = asCsvModel("SourceModelCsv", "sources", sourceRows)
 
 qllTemplate = """
 /** Definitions of taint steps in the {0} framework */
@@ -120,12 +124,16 @@ private import semmle.code.java.dataflow.ExternalFlow
 
 {1}
 {2}
+{3}
 
 """
 
 
-qllContents = qllTemplate.format(shortname, summaryCsv, sinkCsv)
+qllContents = qllTemplate.format(shortname, summaryCsv, sinkCsv, sourceCsv)
 
 
 with open(frameworkTarget, "w") as frameworkQll:
     frameworkQll.write(qllContents)
+
+print("")
+print("CSV model written to " + frameworkTarget)

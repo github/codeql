@@ -33,5 +33,5 @@ string captureSink(Callable api) {
 from Callable api, string sink
 where
   sink = captureSink(api) and
-  not api.getCompilationUnit().getFile().getAbsolutePath().matches("%src/test/%")
+  not isInTestFile(api)
 select sink order by sink

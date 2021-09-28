@@ -29,6 +29,13 @@ string asSinkModel(Callable api, string input, string kind) {
       + kind + ";" //
 }
 
+bindingset[output, kind]
+string asSourceModel(Callable api, string output, string kind) {
+  result =
+    asPartialModel(api) + output + ";" //
+      + kind + ";" //
+}
+
 /**
  * Computes the first 6 columns for CSV rows.
  */
@@ -49,4 +56,9 @@ string parameterAccess(Parameter p) {
     if p.getType() instanceof ContainerType
     then result = "Element of Argument[" + p.getPosition() + "]"
     else result = "Argument[" + p.getPosition() + "]"
+}
+
+predicate isInTestFile(Callable api) {
+  api.getCompilationUnit().getFile().getAbsolutePath().matches("%src/test/%") or
+  api.getCompilationUnit().getFile().getAbsolutePath().matches("%src/guava-tests/%")
 }

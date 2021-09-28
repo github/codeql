@@ -140,8 +140,7 @@ class TargetAPI extends Callable {
     this.isPublic() and
     this.fromSource() and
     this.getDeclaringType().isPublic() and
-    not this.getCompilationUnit().getFile().getAbsolutePath().matches("%src/test/%") and
-    not this.getCompilationUnit().getFile().getAbsolutePath().matches("%src/guava-tests/%")
+    not isInTestFile(this)
   }
 }
 

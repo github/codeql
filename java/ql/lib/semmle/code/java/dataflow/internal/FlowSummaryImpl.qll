@@ -889,10 +889,17 @@ module Private {
      * model.
      */
     predicate isSourceNode(InterpretNode node, string kind) {
-      exists(InterpretNode ref, string output |
-        sourceElementRef(ref, output, kind) and
-        interpretOutput(output, 0, ref, node)
-      )
+      exists(InterpretNode ref, string output | isSourceNode(ref, node, output, kind))
+    }
+
+    // TODO: I wonder if this is actually the interface we want to expose.
+    predicate isSourceNode(InterpretNode node, string output, string kind) {
+      exists(InterpretNode ref | isSourceNode(ref, node, output, kind))
+    }
+
+    predicate isSourceNode(InterpretNode ref, InterpretNode node, string output, string kind) {
+      sourceElementRef(ref, output, kind) and
+      interpretOutput(output, 0, ref, node)
     }
 
     /**
