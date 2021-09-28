@@ -3,6 +3,13 @@
  */
 
 import go
+private import semmle.go.dataflow.ExternalFlow
+
+private class FlowSummaries extends SummaryModelCsv {
+  override predicate row(string row) {
+    row = ["archive/tar;;true;FileInfoHeader;;;Argument[0];ReturnValue[0];taint"]
+  }
+}
 
 /** Provides models of commonly used functions in the `archive/tar` package. */
 module ArchiveTar {
@@ -11,10 +18,6 @@ module ArchiveTar {
     FunctionOutput outp;
 
     FunctionModels() {
-      // signature: func FileInfoHeader(fi os.FileInfo, link string) (*Header, error)
-      hasQualifiedName("archive/tar", "FileInfoHeader") and
-      (inp.isParameter(0) and outp.isResult(0))
-      or
       // signature: func NewReader(r io.Reader) *Reader
       hasQualifiedName("archive/tar", "NewReader") and
       (inp.isParameter(0) and outp.isResult())

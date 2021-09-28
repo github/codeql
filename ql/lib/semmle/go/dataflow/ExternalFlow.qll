@@ -75,7 +75,7 @@ private import FlowSummary
  * ensuring that they are visible to the taint tracking / data flow library.
  */
 private module Frameworks {
-  // no frameworks currently modeled
+  private import semmle.go.frameworks.Stdlib
 }
 
 private predicate sourceModelCsv(string row) { none() }
