@@ -186,7 +186,9 @@ module Private {
     TArgumentSummaryComponent(int i) { parameterPosition(i) } or
     TReturnSummaryComponent(ReturnKind rk)
 
-  private TSummaryComponent thisParam() { result = TParameterSummaryComponent(instanceParameterPosition()) }
+  private TSummaryComponent thisParam() {
+    result = TParameterSummaryComponent(instanceParameterPosition())
+  }
 
   newtype TSummaryComponentStack =
     TSingletonSummaryComponentStack(SummaryComponent c) or
