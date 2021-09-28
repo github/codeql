@@ -17,11 +17,11 @@ private import codeql.ruby.ApiGraphs
  * TODO: pipelining, streaming responses
  * https://github.com/excon/excon/blob/master/README.md
  */
-class ExconHTTPRequest extends HTTP::Client::Request::Range {
+class ExconHttpRequest extends HTTP::Client::Request::Range {
   DataFlow::Node request;
   DataFlow::CallNode responseBody;
 
-  ExconHTTPRequest() {
+  ExconHttpRequest() {
     exists(API::Node requestNode | request = requestNode.getAnImmediateUse() |
       requestNode =
         [

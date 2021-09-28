@@ -9,11 +9,11 @@ private import codeql.ruby.ApiGraphs
  * HTTPClient.get_content("http://example.com")
  * ```
  */
-class HTTPClientRequest extends HTTP::Client::Request::Range {
+class HttpClientRequest extends HTTP::Client::Request::Range {
   DataFlow::Node request;
   DataFlow::CallNode responseBody;
 
-  HTTPClientRequest() {
+  HttpClientRequest() {
     exists(API::Node requestNode, string method |
       request = requestNode.getAnImmediateUse() and
       method in [

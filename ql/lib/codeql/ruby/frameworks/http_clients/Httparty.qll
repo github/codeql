@@ -16,11 +16,11 @@ private import codeql.ruby.ApiGraphs
  * MyClass.new("http://example.com")
  * ```
  */
-class HTTPartyRequest extends HTTP::Client::Request::Range {
+class HttpartyRequest extends HTTP::Client::Request::Range {
   DataFlow::Node request;
   DataFlow::CallNode responseBody;
 
-  HTTPartyRequest() {
+  HttpartyRequest() {
     exists(API::Node requestNode | request = requestNode.getAnImmediateUse() |
       requestNode =
         API::getTopLevelMember("HTTParty")

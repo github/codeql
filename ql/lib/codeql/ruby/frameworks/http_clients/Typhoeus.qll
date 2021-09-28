@@ -8,11 +8,11 @@ private import codeql.ruby.ApiGraphs
  * Typhoeus.get("http://example.com").body
  * ```
  */
-class TyphoeusHTTPRequest extends HTTP::Client::Request::Range {
+class TyphoeusHttpRequest extends HTTP::Client::Request::Range {
   DataFlow::Node request;
   DataFlow::CallNode responseBody;
 
-  TyphoeusHTTPRequest() {
+  TyphoeusHttpRequest() {
     exists(API::Node requestNode | request = requestNode.getAnImmediateUse() |
       requestNode =
         API::getTopLevelMember("Typhoeus")
