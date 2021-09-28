@@ -599,10 +599,23 @@ class AssignURShiftExpr extends AssignOp, @assignurshiftexpr {
 
 /** A common super-class to represent constant literals. */
 class Literal extends Expr, @literal {
-  /** Gets a string representation of this literal. */
+  /**
+   * Gets a string representation of this literal as it appeared
+   * in the source code.
+   *
+   * **Important:** Unless a query explicitly wants to check how
+   * a literal was written in the source code, the predicate
+   * `getValue()` (or value predicates of subclasses) should be
+   * used instead. For example for the integer literal `0x7fff_ffff`
+   * the result of `getLiteral()` would be `0x7fff_ffff`, while
+   * the result of `getValue()` would be `2147483647`.
+   */
   string getLiteral() { namestrings(result, _, this) }
 
-  /** Gets a string representation of the value of this literal. */
+  /**
+   * Gets a string representation of the value this literal
+   * represents.
+   */
   string getValue() { namestrings(_, result, this) }
 
   /** Gets a printable representation of this expression. */
@@ -619,9 +632,9 @@ class Literal extends Expr, @literal {
 class BooleanLiteral extends Literal, @booleanliteral {
   /** Gets the boolean representation of this literal. */
   boolean getBooleanValue() {
-    result = true and getLiteral() = "true"
+    result = true and getValue() = "true"
     or
-    result = false and getLiteral() = "false"
+    result = false and getValue() = "false"
   }
 
   override string getAPrimaryQlClass() { result = "BooleanLiteral" }
@@ -712,6 +725,9 @@ class StringLiteral extends Literal, @stringliteral {
    * Gets the literal string without the quotes.
    */
   string getRepresentedString() { result = getValue() }
+
+  /** Holds if this string literal is a text block (`""" ... """`). */
+  predicate isTextBlock() { getLiteral().matches("\"\"\"%") }
 
   override string getAPrimaryQlClass() { result = "StringLiteral" }
 }

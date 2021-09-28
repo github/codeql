@@ -7,7 +7,7 @@
  * @precision medium
  * @id java/sensitiveinfo-in-logfile
  * @tags security
- *       external/cwe-532
+ *       external/cwe/cwe-532
  */
 
 import java

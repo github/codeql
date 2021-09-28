@@ -80,4 +80,4 @@
 | var_size_struct.cpp:99:3:99:8 | call to memset | This 'memset' operation accesses 129 bytes but the $@ is only 128 bytes. | var_size_struct.cpp:92:8:92:10 | str | destination buffer |
 | var_size_struct.cpp:101:3:101:8 | call to memset | This 'memset' operation accesses 129 bytes but the $@ is only 128 bytes. | var_size_struct.cpp:92:8:92:10 | str | destination buffer |
 | var_size_struct.cpp:103:3:103:9 | call to strncpy | This 'strncpy' operation may access 129 bytes but the $@ is only 128 bytes. | var_size_struct.cpp:92:8:92:10 | str | destination buffer |
-| var_size_struct.cpp:171:3:171:8 | call to memset | This 'memset' operation accesses 100 bytes but the $@ is only 1 byte. | var_size_struct.cpp:125:17:125:19 | arr | destination buffer |
+| var_size_struct.cpp:169:3:169:8 | call to memset | This 'memset' operation accesses 100 bytes but the $@ is only 1 byte. | var_size_struct.cpp:125:17:125:19 | arr | destination buffer |

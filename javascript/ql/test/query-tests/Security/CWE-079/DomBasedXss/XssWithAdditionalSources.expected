@@ -91,6 +91,20 @@ nodes
 | classnames.js:15:47:15:63 | clsx(window.name) |
 | classnames.js:15:52:15:62 | window.name |
 | classnames.js:15:52:15:62 | window.name |
+| clipboard.ts:8:11:8:51 | html |
+| clipboard.ts:8:18:8:51 | clipboa ... /html') |
+| clipboard.ts:8:18:8:51 | clipboa ... /html') |
+| clipboard.ts:15:25:15:28 | html |
+| clipboard.ts:15:25:15:28 | html |
+| clipboard.ts:24:23:24:58 | e.clipb ... /html') |
+| clipboard.ts:24:23:24:58 | e.clipb ... /html') |
+| clipboard.ts:24:23:24:58 | e.clipb ... /html') |
+| clipboard.ts:29:19:29:54 | e.clipb ... /html') |
+| clipboard.ts:29:19:29:54 | e.clipb ... /html') |
+| clipboard.ts:29:19:29:54 | e.clipb ... /html') |
+| clipboard.ts:33:19:33:68 | e.origi ... /html') |
+| clipboard.ts:33:19:33:68 | e.origi ... /html') |
+| clipboard.ts:33:19:33:68 | e.origi ... /html') |
 | d3.js:4:12:4:22 | window.name |
 | d3.js:4:12:4:22 | window.name |
 | d3.js:11:15:11:24 | getTaint() |
@@ -875,6 +889,13 @@ edges
 | classnames.js:15:47:15:63 | clsx(window.name) | classnames.js:15:31:15:78 | `<span  ... <span>` |
 | classnames.js:15:52:15:62 | window.name | classnames.js:15:47:15:63 | clsx(window.name) |
 | classnames.js:15:52:15:62 | window.name | classnames.js:15:47:15:63 | clsx(window.name) |
+| clipboard.ts:8:11:8:51 | html | clipboard.ts:15:25:15:28 | html |
+| clipboard.ts:8:11:8:51 | html | clipboard.ts:15:25:15:28 | html |
+| clipboard.ts:8:18:8:51 | clipboa ... /html') | clipboard.ts:8:11:8:51 | html |
+| clipboard.ts:8:18:8:51 | clipboa ... /html') | clipboard.ts:8:11:8:51 | html |
+| clipboard.ts:24:23:24:58 | e.clipb ... /html') | clipboard.ts:24:23:24:58 | e.clipb ... /html') |
+| clipboard.ts:29:19:29:54 | e.clipb ... /html') | clipboard.ts:29:19:29:54 | e.clipb ... /html') |
+| clipboard.ts:33:19:33:68 | e.origi ... /html') | clipboard.ts:33:19:33:68 | e.origi ... /html') |
 | d3.js:4:12:4:22 | window.name | d3.js:11:15:11:24 | getTaint() |
 | d3.js:4:12:4:22 | window.name | d3.js:11:15:11:24 | getTaint() |
 | d3.js:4:12:4:22 | window.name | d3.js:11:15:11:24 | getTaint() |

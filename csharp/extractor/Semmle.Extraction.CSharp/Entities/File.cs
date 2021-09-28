@@ -17,7 +17,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void Populate(TextWriter trapFile)
         {
-            trapFile.files(this, TransformedPath.Value, TransformedPath.NameWithoutExtension, TransformedPath.Extension);
+            trapFile.files(this, TransformedPath.Value);
 
             if (TransformedPath.ParentDirectory is PathTransformer.ITransformedPath dir)
                 trapFile.containerparent(Extraction.Entities.Folder.Create(Context, dir), this);

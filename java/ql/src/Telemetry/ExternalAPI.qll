@@ -48,7 +48,7 @@ class ExternalAPI extends Callable {
   private DataFlow::Node getAnInput() {
     exists(Call call | call.getCallee().getSourceDeclaration() = this |
       result.asExpr().(Argument).getCall() = call or
-      result.(ArgumentNode).getCall() = call
+      result.(ArgumentNode).getCall().asCall() = call
     )
   }
 
@@ -56,7 +56,7 @@ class ExternalAPI extends Callable {
   private DataFlow::Node getAnOutput() {
     exists(Call call | call.getCallee().getSourceDeclaration() = this |
       result.asExpr() = call or
-      result.(DataFlow::PostUpdateNode).getPreUpdateNode().(ArgumentNode).getCall() = call
+      result.(DataFlow::PostUpdateNode).getPreUpdateNode().(ArgumentNode).getCall().asCall() = call
     )
   }
 

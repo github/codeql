@@ -103,6 +103,11 @@ public class B {
     sink(replAll);
     String replFirst = "some constant".replaceFirst(" ", s);
     sink(replFirst);
+    char[] chars = new char[10];
+    s.getChars(0, 1, chars, 0);
+    sink(chars);
+    String translated = s.translateEscapes();
+    sink(translated);
 
     ByteArrayOutputStream baos = null;
     ObjectOutput oos = null;

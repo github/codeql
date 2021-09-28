@@ -424,13 +424,8 @@ module API {
      * a value in the module `m`.
      */
     private predicate possible_builtin_defined_in_module(string name, Module m) {
-      exists(NameNode n |
-        not exists(LocalVariable v | n.defines(v)) and
-        n.isStore() and
-        name = n.getId() and
-        name = getBuiltInName() and
-        m = n.getEnclosingModule()
-      )
+      global_name_defined_in_module(name, m) and
+      name = getBuiltInName()
     }
 
     /**
@@ -443,6 +438,51 @@ module API {
       name = n.getId() and
       name = getBuiltInName() and
       m = n.getEnclosingModule()
+    }
+
+    /**
+     * Holds if `n` is an access of a variable called `name` (which is _not_ the name of a
+     * built-in, and which is _not_ a global defined in the enclosing module) inside the scope `s`.
+     */
+    private predicate name_possibly_defined_in_import_star(NameNode n, string name, Scope s) {
+      n.isLoad() and
+      name = n.getId() and
+      // Not already defined in an enclosing scope.
+      not exists(LocalVariable v |
+        v.getId() = name and v.getScope() = n.getScope().getEnclosingScope*()
+      ) and
+      not name = getBuiltInName() and
+      s = n.getScope().getEnclosingScope*() and
+      exists(potential_import_star_base(s)) and
+      not global_name_defined_in_module(name, n.getEnclosingModule())
+    }
+
+    /** Holds if a global variable called `name` is assigned a value in the module `m`. */
+    private predicate global_name_defined_in_module(string name, Module m) {
+      exists(NameNode n |
+        not exists(LocalVariable v | n.defines(v)) and
+        n.isStore() and
+        name = n.getId() and
+        m = n.getEnclosingModule()
+      )
+    }
+
+    /**
+     * Gets the API graph node for all modules imported with `from ... import *` inside the scope `s`.
+     *
+     * For example, given
+     *
+     * `from foo.bar import *`
+     *
+     * this would be the API graph node with the path
+     *
+     * `moduleImport("foo").getMember("bar")`
+     */
+    private TApiNode potential_import_star_base(Scope s) {
+      exists(DataFlow::Node ref |
+        ref.asCfgNode() = any(ImportStarNode n | n.getScope() = s).getModule() and
+        use(result, ref)
+      )
     }
 
     /**
@@ -487,6 +527,15 @@ module API {
       // Built-ins, treated as members of the module `builtins`
       base = MkModuleImport("builtins") and
       lbl = Label::member(any(string name | ref = likely_builtin(name)))
+      or
+      // Unknown variables that may belong to a module imported with `import *`
+      exists(Scope s |
+        base = potential_import_star_base(s) and
+        lbl =
+          Label::member(any(string name |
+              name_possibly_defined_in_import_star(ref.asCfgNode(), name, s)
+            ))
+      )
     }
 
     /**
