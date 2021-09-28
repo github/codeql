@@ -1,0 +1,3 @@
+- `CodeQL queries for Ruby <https://github.com/github/codeql-ruby/tree/main/ql/src>`__
+- `Example queries for Ruby <https://github.com/github/codeql-ruby/tree/main/ql/examples>`__
+- `CodeQL library reference for Ruby <https://codeql.github.com/codeql-standard-libraries/ruby/>`__
