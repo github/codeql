@@ -83,7 +83,7 @@ module Public {
     ControlFlow::Root getRoot() { none() } // overridden in subclasses
 
     /** INTERNAL: Use `getRoot()` instead. */
-    FuncDef getEnclosingCallable() { result = this.getRoot() }
+    DataFlowCallable getEnclosingCallable() { result.getFuncDef() = this.getRoot() }
 
     /** Gets the type of this node. */
     Type getType() { none() } // overridden in subclasses
@@ -430,16 +430,16 @@ module Public {
      * For virtual calls, we look up possible targets in all types that implement the receiver
      * interface type.
      */
-    FuncDef getACallee() {
-      result = this.getTarget().(DeclaredFunction).getFuncDecl()
+    DataFlowCallable getACallee() {
+      result.asFunction() = this.getTarget()
       or
       exists(DataFlow::Node calleeSource | calleeSource = this.getACalleeSource() |
-        result = calleeSource.asExpr()
+        result.asFuncLit() = calleeSource.asExpr()
         or
         exists(Method declared, Method actual |
           calleeSource = declared.getARead() and
           actual.implements(declared) and
-          result = actual.(DeclaredFunction).getFuncDecl()
+          result.asFunction() = actual
         )
       )
     }
@@ -518,8 +518,6 @@ module Public {
     MethodCallNode() { expr.getTarget() instanceof Method }
 
     override Method getTarget() { result = expr.getTarget() }
-
-    override MethodDecl getACallee() { result = super.getACallee() }
   }
 
   /** A representation of a parameter initialization. */

@@ -135,7 +135,7 @@ class FuncDef extends @funcdef, StmtParent, ExprParent {
   /**
    * Gets a call to this function.
    */
-  DataFlow::CallNode getACall() { result.getACallee() = this }
+  DataFlow::CallNode getACall() { result.getACallee().getFuncDef() = this }
 
   /** Holds if this function is variadic. */
   predicate isVariadic() { this.getType().isVariadic() }
