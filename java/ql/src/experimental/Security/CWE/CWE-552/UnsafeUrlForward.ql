@@ -13,6 +13,7 @@
 import java
 import UnsafeUrlForward
 import semmle.code.java.dataflow.FlowSources
+import semmle.code.java.frameworks.Servlets
 import DataFlow::PathGraph
 
 private class StartsWithSanitizer extends DataFlow::BarrierGuard {
@@ -32,12 +33,12 @@ class UnsafeUrlForwardFlowConfig extends TaintTracking::Configuration {
 
   override predicate isSource(DataFlow::Node source) {
     source instanceof RemoteFlowSource and
-    not exists(MethodAccess ma |
-      ma.getMethod().getName() in ["getRequestURI", "getRequestURL", "getPathInfo"] and
-      ma.getMethod()
-          .getDeclaringType()
-          .getASupertype*()
-          .hasQualifiedName("javax.servlet.http", "HttpServletRequest") and
+    not exists(MethodAccess ma, Method m | ma.getMethod() = m |
+      (
+        m instanceof HttpServletRequestGetRequestURIMethod or
+        m instanceof HttpServletRequestGetRequestURLMethod or
+        m instanceof HttpServletRequestGetPathMethod
+      ) and
       ma = source.asExpr()
     )
   }

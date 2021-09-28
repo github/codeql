@@ -2,6 +2,7 @@ import java
 import DataFlow
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.frameworks.Servlets
+import semmle.code.java.frameworks.spring.SpringWeb
 
 /** A sanitizer for unsafe url forward vulnerabilities. */
 abstract class UnsafeUrlForwardSanitizer extends DataFlow::Node { }
@@ -144,7 +145,7 @@ private class UnsafeUrlForwardSanitizedExpr extends Expr {
 /**
  * A concatenate expression using the string `forward:` on the left.
  *
- * E.g: `"forward:" + url`
+ * For example, `"forward:" + url`.
  */
 private class ForwardBuilderExpr extends AddExpr {
   ForwardBuilderExpr() {
@@ -155,7 +156,7 @@ private class ForwardBuilderExpr extends AddExpr {
 /**
  * A call to `StringBuilder.append` or `StringBuffer.append` method, and the parameter value is `"forward:"`.
  *
- * E.g: `StringBuilder.append("forward:")`
+ * For example, `StringBuilder.append("forward:")`.
  */
 private class ForwardAppendCall extends StringBuilderAppend {
   ForwardAppendCall() {
@@ -191,7 +192,7 @@ private class SpringUrlForwardSink extends UnsafeUrlForwardSink {
     )
     or
     exists(ClassInstanceExpr cie |
-      cie.getConstructedType().hasQualifiedName("org.springframework.web.servlet", "ModelAndView") and
+      cie.getConstructedType() instanceof ModelAndView and
       (
         exists(ForwardBuilderExpr rbe |
           rbe = cie.getArgument(0) and rbe.getRightOperand() = this.asExpr()
@@ -201,12 +202,6 @@ private class SpringUrlForwardSink extends UnsafeUrlForwardSink {
       )
     )
     or
-    exists(MethodAccess ma |
-      ma.getMethod().hasName("setViewName") and
-      ma.getMethod()
-          .getDeclaringType()
-          .hasQualifiedName("org.springframework.web.servlet", "ModelAndView") and
-      ma.getArgument(0) = this.asExpr()
-    )
+    exists(SpringModelAndViewSetViewNameCall smavsvnc | smavsvnc.getArgument(0) = this.asExpr())
   }
 }
