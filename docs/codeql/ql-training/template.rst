@@ -159,7 +159,7 @@ Specify the language to apply syntax highlighting and the lines of the fragment 
 Further details
 ===============
 
-- For more information on writing in reStructuredText, see http://docutils.sourceforge.net/rst.html.
+- For more information on writing in reStructuredText, see https://docutils.sourceforge.io/rst.html.
 
 - For more information on Sphinx, see https://www.sphinx-doc.org.
 

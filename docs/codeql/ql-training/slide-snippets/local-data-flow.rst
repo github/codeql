@@ -112,7 +112,7 @@ So all references will need to be qualified (that is, ``DataFlow::Node``)
   A **module** is a way of organizing QL code by grouping together related predicates, classes, and (sub-)modules. They can be either explicitly declared or implicit. A query library implicitly declares a module with the same name as the QLL file.
 
   For further information on libraries and modules in QL, see the chapter on `Modules <https://codeql.github.com/docs/ql-language-reference/modules/>`__ in the QL language reference.
-  For further information on importing QL libraries and modules, see the chapter on `Name resolution <>`__ in the QL language reference.
+  For further information on importing QL libraries and modules, see the chapter on `Name resolution <https://codeql.github.com/docs/ql-language-reference/name-resolution/>`__ in the QL language reference.
 
 Data flow graph
 ===============
