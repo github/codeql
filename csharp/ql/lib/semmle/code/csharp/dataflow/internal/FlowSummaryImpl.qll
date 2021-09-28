@@ -186,10 +186,15 @@ module Private {
     TArgumentSummaryComponent(int i) { parameterPosition(i) } or
     TReturnSummaryComponent(ReturnKind rk)
 
+  private TSummaryComponent thisParam() { result = TParameterSummaryComponent(instanceParameterPosition()) }
+
   newtype TSummaryComponentStack =
     TSingletonSummaryComponentStack(SummaryComponent c) or
     TConsSummaryComponentStack(SummaryComponent head, SummaryComponentStack tail) {
       tail.(RequiredSummaryComponentStack).required(head)
+      or
+      tail.(RequiredSummaryComponentStack).required(TParameterSummaryComponent(_)) and
+      head = thisParam()
     }
 
   pragma[nomagic]
@@ -198,21 +203,63 @@ module Private {
     boolean preservesValue
   ) {
     c.propagatesFlow(input, output, preservesValue)
+    or
+    // observe side effects of callbacks on input arguments
+    c.propagatesFlow(output, input, preservesValue) and
+    preservesValue = true and
+    isCallbackParameter(input) and
+    isContentOfArgument(output)
+    or
+    // flow from the receiver of a callback into the instance-parameter
+    exists(SummaryComponentStack s, SummaryComponentStack callbackRef |
+      c.propagatesFlow(s, _, _) or c.propagatesFlow(_, s, _)
+    |
+      callbackRef = s.drop(_) and
+      (isCallbackParameter(callbackRef) or callbackRef.head() = TReturnSummaryComponent(_)) and
+      input = callbackRef.tail() and
+      output = TConsSummaryComponentStack(thisParam(), input) and
+      preservesValue = true
+    )
+  }
+
+  private predicate isCallbackParameter(SummaryComponentStack s) {
+    s.head() = TParameterSummaryComponent(_) and exists(s.tail())
+  }
+
+  private predicate isContentOfArgument(SummaryComponentStack s) {
+    s.head() = TContentSummaryComponent(_) and isContentOfArgument(s.tail())
+    or
+    s = TSingletonSummaryComponentStack(TArgumentSummaryComponent(_))
+  }
+
+  private predicate outputState(SummarizedCallable c, SummaryComponentStack s) {
+    summary(c, _, s, _)
+    or
+    exists(SummaryComponentStack out |
+      outputState(c, out) and
+      out.head() = TContentSummaryComponent(_) and
+      s = out.tail()
+    )
+    or
+    // Add the argument node corresponding to the requested post-update node
+    inputState(c, s) and isCallbackParameter(s)
+  }
+
+  private predicate inputState(SummarizedCallable c, SummaryComponentStack s) {
+    summary(c, s, _, _)
+    or
+    exists(SummaryComponentStack inp | inputState(c, inp) and s = inp.tail())
+    or
+    exists(SummaryComponentStack out |
+      outputState(c, out) and
+      out.head() = TParameterSummaryComponent(_) and
+      s = out.tail()
+    )
   }
 
   private newtype TSummaryNodeState =
-    TSummaryNodeInputState(SummaryComponentStack s) {
-      exists(SummaryComponentStack input |
-        summary(_, input, _, _) and
-        s = input.drop(_)
-      )
-    } or
-    TSummaryNodeOutputState(SummaryComponentStack s) {
-      exists(SummaryComponentStack output |
-        summary(_, _, output, _) and
-        s = output.drop(_)
-      )
-    }
+    TSummaryNodeInputState(SummaryComponentStack s) { inputState(_, s) } or
+    TSummaryNodeOutputState(SummaryComponentStack s) { outputState(_, s) }
 
   /**
    * A state used to break up (complex) flow summaries into atomic flow steps.
@@ -238,20 +285,14 @@ module Private {
     pragma[nomagic]
     predicate isInputState(SummarizedCallable c, SummaryComponentStack s) {
       this = TSummaryNodeInputState(s) and
-      exists(SummaryComponentStack input |
-        summary(c, input, _, _) and
-        s = input.drop(_)
-      )
+      inputState(c, s)
     }
 
     /** Holds if this state is a valid output state for `c`. */
     pragma[nomagic]
     predicate isOutputState(SummarizedCallable c, SummaryComponentStack s) {
       this = TSummaryNodeOutputState(s) and
-      exists(SummaryComponentStack output |
-        summary(c, _, output, _) and
-        s = output.drop(_)
-      )
+      outputState(c, s)
     }
 
     /** Gets a textual representation of this state. */
@@ -331,19 +372,12 @@ module Private {
     receiver = summaryNodeInputState(c, s.drop(1))
   }
 
-  private Node pre(Node post) {
-    summaryPostUpdateNode(post, result)
-    or
-    not summaryPostUpdateNode(post, _) and
-    result = post
-  }
-
   private predicate callbackInput(
     SummarizedCallable c, SummaryComponentStack s, Node receiver, int i
   ) {
     any(SummaryNodeState state).isOutputState(c, s) and
     s.head() = TParameterSummaryComponent(i) and
-    receiver = pre(summaryNodeOutputState(c, s.drop(1)))
+    receiver = summaryNodeInputState(c, s.drop(1))
   }
 
   /** Holds if a call targeting `receiver` should be synthesized inside `c`. */
@@ -395,7 +429,7 @@ module Private {
         or
         exists(int i | head = TParameterSummaryComponent(i) |
           result =
-            getCallbackParameterType(getNodeType(summaryNodeOutputState(pragma[only_bind_out](c),
+            getCallbackParameterType(getNodeType(summaryNodeInputState(pragma[only_bind_out](c),
                   s.drop(1))), i)
         )
       )
@@ -421,10 +455,16 @@ module Private {
   }
 
   /** Holds if summary node `post` is a post-update node with pre-update node `pre`. */
-  predicate summaryPostUpdateNode(Node post, ParamNode pre) {
+  predicate summaryPostUpdateNode(Node post, Node pre) {
     exists(SummarizedCallable c, int i |
       isParameterPostUpdate(post, c, i) and
-      pre.isParameterOf(c, i)
+      pre.(ParamNode).isParameterOf(c, i)
+    )
+    or
+    exists(SummarizedCallable callable, SummaryComponentStack s |
+      callbackInput(callable, s, _, _) and
+      pre = summaryNodeOutputState(callable, s) and
+      post = summaryNodeInputState(callable, s)
     )
   }
 
@@ -462,7 +502,11 @@ module Private {
       // for `StringBuilder.append(x)` with a specified value flow from qualifier to
       // return value and taint flow from argument 0 to the qualifier, then this
       // allows us to infer taint flow from argument 0 to the return value.
-      summaryPostUpdateNode(pred, succ) and preservesValue = true
+      succ instanceof ParamNode and summaryPostUpdateNode(pred, succ) and preservesValue = true
+      or
+      // Similarly we would like to chain together summaries where values get passed
+      // into callbacks along the way.
+      pred instanceof ArgNode and summaryPostUpdateNode(succ, pred) and preservesValue = true
     }
 
     /**
