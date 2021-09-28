@@ -296,7 +296,7 @@ private ControlFlow::ConditionGuardNode getAFalsifiedGuard(DataFlowCall call) {
     // get constant bool argument and parameter for this call
     viableParamArg(call, param, arg) and
     // which is used in a guard controlling `n` with the opposite value of `arg`
-    result.ensures(param.getAUse(), arg.getBooleanValue().booleanNot())
+    result.ensures(param.(SsaParameterNode).getAUse(), arg.getBooleanValue().booleanNot())
   )
 }
 

@@ -9,6 +9,15 @@ private newtype TNode =
   MkInstructionNode(IR::Instruction insn) or
   MkSsaNode(SsaDefinition ssa) or
   MkGlobalFunctionNode(Function f) or
+  MkSummarizedParameterNode(DataFlowCallable c, int i) {
+    not exists(c.getFuncDef()) and
+    c instanceof SummarizedCallable and
+    (
+      i in [0 .. c.getType().getNumParameter() - 1]
+      or
+      c.asFunction() instanceof Method and i = -1
+    )
+  } or
   MkSummaryInternalNode(SummarizedCallable c, FlowSummaryImpl::Private::SummaryNodeState state) {
     FlowSummaryImpl::Private::summaryNodeRange(c, state)
   }
@@ -521,21 +530,54 @@ module Public {
   }
 
   /** A representation of a parameter initialization. */
-  class ParameterNode extends SsaNode {
+  abstract class ParameterNode extends DataFlow::Node {
+    /** Holds if this node initializes the `i`th parameter of `fd`. */
+    abstract predicate isParameterOf(DataFlowCallable c, int i);
+  }
+
+  class SummarizedParameterNode extends ParameterNode, MkSummarizedParameterNode {
+    DataFlowCallable c;
+    int i;
+
+    SummarizedParameterNode() { this = MkSummarizedParameterNode(c, i) }
+
+    // There are no AST representations of summarized parameter nodes
+    override ControlFlow::Root getRoot() { none() }
+
+    override string getNodeKind() { result = "external parameter node" }
+
+    override Type getType() {
+      result = c.getType().getParameterType(i)
+      or
+      i = -1 and result = c.asFunction().(Method).getReceiverType()
+    }
+
+    override predicate isParameterOf(DataFlowCallable call, int idx) { c = call and i = idx }
+
+    override string toString() { result = "parameter " + i + " of " + c.toString() }
+
+    override predicate hasLocationInfo(string fp, int sl, int sc, int el, int ec) {
+      c.hasLocationInfo(fp, sl, sc, el, ec)
+    }
+  }
+
+  /** A representation of a parameter initialization, defined in source via an SSA node. */
+  class SsaParameterNode extends ParameterNode, SsaNode {
     override SsaExplicitDefinition ssa;
     Parameter parm;
 
-    ParameterNode() { ssa.getInstruction() = IR::initParamInstruction(parm) }
+    SsaParameterNode() { ssa.getInstruction() = IR::initParamInstruction(parm) }
 
     /** Gets the parameter this node initializes. */
     override Parameter asParameter() { result = parm }
 
-    /** Holds if this node initializes the `i`th parameter of `fd`. */
-    predicate isParameterOf(FuncDef fd, int i) { parm.isParameterOf(fd, i) }
+    override predicate isParameterOf(DataFlowCallable c, int i) {
+      parm.isParameterOf(c.getFuncDef(), i)
+    }
   }
 
   /** A representation of a receiver initialization. */
-  class ReceiverNode extends ParameterNode {
+  class ReceiverNode extends SsaParameterNode {
     override ReceiverVariable parm;
 
     /** Gets the receiver variable this node initializes. */
