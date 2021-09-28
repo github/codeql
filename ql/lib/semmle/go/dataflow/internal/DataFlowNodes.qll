@@ -25,10 +25,14 @@ private newtype TNode =
 /** Nodes intended for only use inside the data-flow libraries. */
 module Private {
   /** A data flow node that represents returning a value from a function. */
-  class ReturnNode extends Public::ResultNode {
+  class ReturnNode extends Node {
     ReturnKind kind;
 
-    ReturnNode() { kind = getReturnKind(i) }
+    ReturnNode() {
+      this.(Public::ResultNode).getIndex() = kind.getIndex()
+      or
+      this.(SummaryNode).isReturn(kind)
+    }
 
     /** Gets the kind of this returned value. */
     ReturnKind getKind() { result = kind }
@@ -66,7 +70,7 @@ module Private {
     }
 
     /** Holds if this summary node is a return node. */
-    predicate isReturn() { FlowSummaryImpl::Private::summaryReturnNode(this, _) }
+    predicate isReturn(ReturnKind kind) { FlowSummaryImpl::Private::summaryReturnNode(this, kind) }
 
     /** Holds if this summary node is an out node for `call`. */
     predicate isOut(DataFlowCall call) { FlowSummaryImpl::Private::summaryOutNode(call, this, _) }
