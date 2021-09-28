@@ -254,7 +254,7 @@ class AndroidContentProviderInput extends DataFlow::Node {
 
   AndroidContentProviderInput() {
     sourceNode(this, "contentprovider") and
-    this.asParameter().getCallable().getDeclaringType() = declaringType
+    this.getEnclosingCallable().getDeclaringType() = declaringType
   }
 }
 
