@@ -23,7 +23,7 @@ import DataFlow::PathGraph
 abstract class NetworkSendRecv extends FunctionCall {
   /**
    * Gets the expression for the socket or similar object used for sending or
-   * receiving data.
+   * receiving data (if any).
    */
   abstract Expr getSocketExpr();
 
