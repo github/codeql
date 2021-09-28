@@ -95,6 +95,9 @@ private class ContainerFlowSummaries extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
+        "java.lang;Object;true;clone;;;MapKey of Argument[-1];MapKey of ReturnValue;value",
+        "java.lang;Object;true;clone;;;MapValue of Argument[-1];MapValue of ReturnValue;value",
+        "java.lang;Object;true;clone;;;Element of Argument[-1];Element of ReturnValue;value",
         "java.util;Map$Entry;true;getKey;;;MapKey of Argument[-1];ReturnValue;value",
         "java.util;Map$Entry;true;getValue;;;MapValue of Argument[-1];ReturnValue;value",
         "java.util;Map$Entry;true;setValue;;;MapValue of Argument[-1];ReturnValue;value",
