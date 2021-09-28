@@ -42,29 +42,31 @@ private module Asyncpg {
    * Holds if `result` is the result of awaiting `n`.
    */
   pragma[inline]
-  DataFlow::Node awaited(DataFlow::Node n) {
+  DataFlow::Node awaited(DataFlow::Node awaitedValue) {
     // `await` x
     // - `awaitedValue` is `x`
     // - `result` is `await x`
     exists(Await await |
       result.asExpr() = await and
-      await.getValue() = n.asExpr()
+      await.getValue() = awaitedValue.asExpr()
     )
     or
     // `async for x in l`
-    // - `awaitedValue` is `l`
-    // - `result` is `x`
-    exists(AsyncFor asyncFor |
+    // - `awaitedValue` is local source of `l`
+    // - `result` is `l`
+    exists(AsyncFor asyncFor, DataFlow::Node awaited |
       result.asExpr() = asyncFor.getTarget() and
-      asyncFor.getIter() = n.asExpr()
+      asyncFor.getIter() = awaited.asExpr() and
+      awaited.getALocalSource() = awaitedValue
     )
     or
     // `async with x as y`
-    // - `awaitedValue` is `x`
-    // - `result` is `y`
-    exists(AsyncWith asyncWith |
+    // - `awaitedValue` is local source of `x`
+    // - `result` is `x`
+    exists(AsyncWith asyncWith, DataFlow::Node awaited |
       result.asExpr() = asyncWith.getContextExpr() and
-      asyncWith.getOptionalVars() = n.asExpr()
+      asyncWith.getOptionalVars() = awaited.asExpr() and
+      awaited.getALocalSource() = awaitedValue
     )
   }
 
