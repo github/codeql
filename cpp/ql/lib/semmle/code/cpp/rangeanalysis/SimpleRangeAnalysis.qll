@@ -1593,7 +1593,7 @@ private module SimpleRangeAnalysisCached {
     result = min([max(getTruncatedUpperBounds(expr)), getGuardedUpperBound(expr)])
   }
 
-  /** Holds if `expr` may have been widened */
+  /** Holds if the upper bound of `expr` may have been widened. This means the the upper bound is in practice likely to be overly wide. */
   cached
   predicate upperBoundMayBeWidened(Expr e) {
     isRecursiveExpr(e) and
