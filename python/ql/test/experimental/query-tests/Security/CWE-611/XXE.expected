@@ -70,6 +70,7 @@ nodes
 | xml_sax_make_parser.py:71:19:71:30 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
 | xml_sax_make_parser.py:71:19:71:45 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
 | xml_sax_make_parser.py:75:34:75:54 | ControlFlowNode for StringIO() | semmle.label | ControlFlowNode for StringIO() |
+subpaths
 #select
 | general.py:20:34:20:44 | ControlFlowNode for xml_content | general.py:18:19:18:25 | ControlFlowNode for request | general.py:20:34:20:44 | ControlFlowNode for xml_content | $@ XML input is constructed from a $@ and isn't secured against XML External Entities abuse | general.py:20:34:20:44 | ControlFlowNode for xml_content | This | general.py:18:19:18:25 | ControlFlowNode for request | user-provided value |
 | general.py:27:27:27:37 | ControlFlowNode for xml_content | general.py:25:19:25:25 | ControlFlowNode for request | general.py:27:27:27:37 | ControlFlowNode for xml_content | $@ XML input is constructed from a $@ and isn't secured against XML External Entities abuse | general.py:27:27:27:37 | ControlFlowNode for xml_content | This | general.py:25:19:25:25 | ControlFlowNode for request | user-provided value |
