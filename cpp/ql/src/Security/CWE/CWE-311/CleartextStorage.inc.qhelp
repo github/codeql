@@ -9,7 +9,7 @@ storage.</p>
 </overview>
 <recommendation>
 
-<p>Ensure that sensitive information is always encrypted before being stored or transmitted, especially before writing to a file.
+<p>Ensure that sensitive information is always encrypted before being stored to a file or transmitted over the network.
 It may be wise to encrypt information before it is put into a buffer that may be readable in memory.</p>
 
 <p>In general, decrypt sensitive information only at the point where it is necessary for it to be used in
