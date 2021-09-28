@@ -15,6 +15,9 @@
     - security
 - include:
     kind:
+    - diagnostic
+- include:
+    kind:
     - metric
     tags contain:
     - summary

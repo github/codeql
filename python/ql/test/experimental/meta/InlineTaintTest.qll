@@ -14,7 +14,7 @@ import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
 import semmle.python.dataflow.new.RemoteFlowSources
 import TestUtilities.InlineExpectationsTest
-import experimental.dataflow.TestUtil.PrintNode
+private import semmle.python.dataflow.new.internal.PrintNode
 
 DataFlow::Node shouldBeTainted() {
   exists(DataFlow::CallCfgNode call |
@@ -58,7 +58,7 @@ class InlineTaintTest extends InlineExpectationsTest {
     exists(DataFlow::Node sink |
       any(TestTaintTrackingConfiguration config).hasFlow(_, sink) and
       location = sink.getLocation() and
-      element = prettyExp(sink.asExpr()) and
+      element = prettyExpr(sink.asExpr()) and
       value = "" and
       tag = "tainted"
     )
@@ -84,7 +84,7 @@ query predicate untaintedArgumentToEnsureTaintedNotMarkedAsMissing(
   error = "ERROR, you should add `# $ MISSING: tainted` annotation" and
   exists(DataFlow::Node sink |
     sink = shouldBeTainted() and
-    element = prettyExp(sink.asExpr()) and
+    element = prettyExpr(sink.asExpr()) and
     not any(TestTaintTrackingConfiguration config).hasFlow(_, sink) and
     location = sink.getLocation() and
     not exists(FalseNegativeExpectation missingResult |

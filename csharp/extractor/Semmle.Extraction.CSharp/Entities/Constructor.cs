@@ -47,7 +47,10 @@ namespace Semmle.Extraction.CSharp.Entities
                     var baseType = Symbol.ContainingType.BaseType;
                     if (baseType is null)
                     {
-                        Context.ModelError(Symbol, "Unable to resolve base type in implicit constructor initializer");
+                        if (Symbol.ContainingType.SpecialType != SpecialType.System_Object)
+                        {
+                            Context.ModelError(Symbol, "Unable to resolve base type in implicit constructor initializer");
+                        }
                         return;
                     }
 
@@ -144,8 +147,17 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        public override void WriteId(TextWriter trapFile)
+        public override void WriteId(EscapingTextWriter trapFile)
         {
+            if (!SymbolEqualityComparer.Default.Equals(Symbol, Symbol.OriginalDefinition))
+            {
+                trapFile.WriteSubId(ContainingType!);
+                trapFile.Write(".");
+                trapFile.WriteSubId(OriginalDefinition);
+                trapFile.Write(";constructor");
+                return;
+            }
+
             if (Symbol.IsStatic)
                 trapFile.Write("static");
             trapFile.WriteSubId(ContainingType!);

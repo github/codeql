@@ -4,3 +4,5 @@
 
 private import experimental.semmle.python.frameworks.Stdlib
 private import experimental.semmle.python.frameworks.XML
+private import experimental.semmle.python.frameworks.LDAP
+private import experimental.semmle.python.frameworks.NoSQL

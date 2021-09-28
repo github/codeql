@@ -660,8 +660,8 @@
 | Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... | Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... | 1 |
 | Foreach.cs:20:22:20:22 | String x | Foreach.cs:21:11:21:11 | ; | 2 |
 | Foreach.cs:20:27:20:68 | ... ?? ... | Foreach.cs:20:27:20:68 | ... ?? ... | 1 |
-| Foreach.cs:20:29:20:38 | call to method ToArray | Foreach.cs:20:29:20:38 | call to method ToArray | 1 |
-| Foreach.cs:20:43:20:68 | call to method Empty | Foreach.cs:20:43:20:68 | call to method Empty | 1 |
+| Foreach.cs:20:29:20:38 | call to method ToArray<String> | Foreach.cs:20:29:20:38 | call to method ToArray<String> | 1 |
+| Foreach.cs:20:43:20:68 | call to method Empty<String> | Foreach.cs:20:43:20:68 | call to method Empty<String> | 1 |
 | Foreach.cs:24:10:24:11 | enter M4 | Foreach.cs:26:36:26:39 | access to parameter args | 3 |
 | Foreach.cs:24:10:24:11 | exit M4 (normal) | Foreach.cs:24:10:24:11 | exit M4 | 2 |
 | Foreach.cs:26:9:27:11 | foreach (... ... in ...) ... | Foreach.cs:26:9:27:11 | foreach (... ... in ...) ... | 1 |
@@ -677,7 +677,7 @@
 | Initializers.cs:8:5:8:16 | enter Initializers | Initializers.cs:8:5:8:16 | exit Initializers | 16 |
 | Initializers.cs:10:5:10:16 | enter Initializers | Initializers.cs:10:5:10:16 | exit Initializers | 16 |
 | Initializers.cs:12:10:12:10 | enter M | Initializers.cs:12:10:12:10 | exit M | 22 |
-| Initializers.cs:18:20:18:20 | 1 | Initializers.cs:18:16:18:20 | ... = ... | 2 |
+| Initializers.cs:18:16:18:16 | enter H | Initializers.cs:18:16:18:20 | ... = ... | 3 |
 | Initializers.cs:20:11:20:23 | enter NoConstructor | Initializers.cs:20:11:20:23 | exit NoConstructor | 9 |
 | Initializers.cs:31:9:31:11 | enter Sub | Initializers.cs:31:9:31:11 | exit Sub | 12 |
 | Initializers.cs:33:9:33:11 | enter Sub | Initializers.cs:33:9:33:11 | exit Sub | 9 |
@@ -715,7 +715,7 @@
 | LoopUnrolling.cs:61:17:61:37 | [b (line 55): true] ...; | LoopUnrolling.cs:62:17:62:17 | [b (line 55): true] access to parameter b | 5 |
 | LoopUnrolling.cs:62:13:63:37 | [b (line 55): false] if (...) ... | LoopUnrolling.cs:62:17:62:17 | [b (line 55): false] access to parameter b | 2 |
 | LoopUnrolling.cs:63:17:63:37 | [b (line 55): true] ...; | LoopUnrolling.cs:58:9:64:9 | [b (line 55): true] foreach (... ... in ...) ... | 4 |
-| LoopUnrolling.cs:67:10:67:11 | enter M8 | LoopUnrolling.cs:69:14:69:23 | call to method Any | 5 |
+| LoopUnrolling.cs:67:10:67:11 | enter M8 | LoopUnrolling.cs:69:14:69:23 | call to method Any<String> | 5 |
 | LoopUnrolling.cs:67:10:67:11 | exit M8 (normal) | LoopUnrolling.cs:67:10:67:11 | exit M8 | 2 |
 | LoopUnrolling.cs:69:13:69:23 | [false] !... | LoopUnrolling.cs:69:13:69:23 | [false] !... | 1 |
 | LoopUnrolling.cs:69:13:69:23 | [true] !... | LoopUnrolling.cs:69:13:69:23 | [true] !... | 1 |
@@ -752,7 +752,6 @@
 | MultiImplementationA.cs:8:16:8:16 | exit M | MultiImplementationB.cs:5:16:5:16 | exit M | 1 |
 | MultiImplementationA.cs:8:29:8:32 | null | MultiImplementationA.cs:8:16:8:16 | exit M (abnormal) | 3 |
 | MultiImplementationA.cs:8:29:8:32 | null | MultiImplementationB.cs:5:16:5:16 | exit M (abnormal) | 3 |
-| MultiImplementationA.cs:13:16:13:16 | this access | MultiImplementationA.cs:13:16:13:20 | ... = ... | 3 |
 | MultiImplementationA.cs:14:31:14:31 | access to parameter i | MultiImplementationA.cs:14:31:14:31 | exit get_Item (normal) | 2 |
 | MultiImplementationA.cs:14:31:14:31 | access to parameter i | MultiImplementationB.cs:12:31:12:40 | exit get_Item (normal) | 2 |
 | MultiImplementationA.cs:14:31:14:31 | enter get_Item | MultiImplementationA.cs:14:31:14:31 | enter get_Item | 1 |
@@ -776,19 +775,17 @@
 | MultiImplementationA.cs:16:17:16:18 | exit M1 (normal) | MultiImplementationB.cs:14:17:14:18 | exit M1 | 2 |
 | MultiImplementationA.cs:17:5:19:5 | {...} | MultiImplementationA.cs:18:9:18:22 | M2(...) | 2 |
 | MultiImplementationA.cs:18:9:18:22 | enter M2 | MultiImplementationA.cs:18:9:18:22 | exit M2 | 4 |
-| MultiImplementationA.cs:20:12:20:13 | call to constructor Object | MultiImplementationA.cs:20:12:20:13 | call to constructor Object | 1 |
+| MultiImplementationA.cs:20:12:20:13 | call to constructor Object | MultiImplementationA.cs:20:12:20:13 | exit C2 (normal) | 14 |
+| MultiImplementationA.cs:20:12:20:13 | call to constructor Object | MultiImplementationB.cs:18:12:18:13 | exit C2 (normal) | 14 |
 | MultiImplementationA.cs:20:12:20:13 | enter C2 | MultiImplementationA.cs:20:12:20:13 | enter C2 | 1 |
 | MultiImplementationA.cs:20:12:20:13 | enter C2 | MultiImplementationB.cs:18:12:18:13 | enter C2 | 1 |
 | MultiImplementationA.cs:20:12:20:13 | exit C2 | MultiImplementationA.cs:20:12:20:13 | exit C2 | 1 |
 | MultiImplementationA.cs:20:12:20:13 | exit C2 | MultiImplementationB.cs:18:12:18:13 | exit C2 | 1 |
-| MultiImplementationA.cs:20:22:20:31 | {...} | MultiImplementationA.cs:20:12:20:13 | exit C2 (normal) | 6 |
-| MultiImplementationA.cs:20:22:20:31 | {...} | MultiImplementationB.cs:18:12:18:13 | exit C2 (normal) | 6 |
 | MultiImplementationA.cs:21:12:21:13 | enter C2 | MultiImplementationA.cs:21:12:21:13 | enter C2 | 1 |
 | MultiImplementationA.cs:21:12:21:13 | enter C2 | MultiImplementationB.cs:19:12:19:13 | enter C2 | 1 |
 | MultiImplementationA.cs:21:12:21:13 | exit C2 (normal) | MultiImplementationA.cs:21:12:21:13 | exit C2 | 2 |
 | MultiImplementationA.cs:21:12:21:13 | exit C2 (normal) | MultiImplementationB.cs:19:12:19:13 | exit C2 | 2 |
-| MultiImplementationA.cs:21:24:21:24 | 0 | MultiImplementationA.cs:21:19:21:22 | call to constructor C2 | 2 |
-| MultiImplementationA.cs:21:27:21:29 | {...} | MultiImplementationA.cs:21:27:21:29 | {...} | 1 |
+| MultiImplementationA.cs:21:24:21:24 | 0 | MultiImplementationA.cs:21:27:21:29 | {...} | 3 |
 | MultiImplementationA.cs:22:6:22:7 | enter ~C2 | MultiImplementationA.cs:22:6:22:7 | enter ~C2 | 1 |
 | MultiImplementationA.cs:22:6:22:7 | enter ~C2 | MultiImplementationB.cs:20:6:20:7 | enter ~C2 | 1 |
 | MultiImplementationA.cs:22:6:22:7 | exit ~C2 | MultiImplementationA.cs:22:6:22:7 | exit ~C2 | 1 |
@@ -801,7 +798,6 @@
 | MultiImplementationA.cs:23:28:23:35 | exit implicit conversion | MultiImplementationB.cs:21:28:21:35 | exit implicit conversion | 1 |
 | MultiImplementationA.cs:23:50:23:53 | null | MultiImplementationA.cs:23:28:23:35 | exit implicit conversion (normal) | 2 |
 | MultiImplementationA.cs:23:50:23:53 | null | MultiImplementationB.cs:21:28:21:35 | exit implicit conversion (normal) | 2 |
-| MultiImplementationA.cs:24:16:24:16 | this access | MultiImplementationA.cs:24:32:24:34 | ... = ... | 4 |
 | MultiImplementationA.cs:30:21:30:23 | enter get_P3 | MultiImplementationA.cs:30:21:30:23 | exit get_P3 | 5 |
 | MultiImplementationA.cs:30:21:30:23 | enter get_P3 | MultiImplementationB.cs:27:21:27:23 | exit get_P3 | 5 |
 | MultiImplementationA.cs:36:9:36:10 | enter M1 | MultiImplementationA.cs:36:9:36:10 | enter M1 | 1 |
@@ -835,7 +831,6 @@
 | MultiImplementationB.cs:5:16:5:16 | exit M | MultiImplementationB.cs:5:16:5:16 | exit M | 1 |
 | MultiImplementationB.cs:5:23:5:23 | 2 | MultiImplementationA.cs:8:16:8:16 | exit M (normal) | 2 |
 | MultiImplementationB.cs:5:23:5:23 | 2 | MultiImplementationB.cs:5:16:5:16 | exit M (normal) | 2 |
-| MultiImplementationB.cs:11:16:11:16 | this access | MultiImplementationB.cs:11:16:11:20 | ... = ... | 3 |
 | MultiImplementationB.cs:12:31:12:40 | enter get_Item | MultiImplementationA.cs:14:31:14:31 | enter get_Item | 1 |
 | MultiImplementationB.cs:12:31:12:40 | enter get_Item | MultiImplementationB.cs:12:31:12:40 | enter get_Item | 1 |
 | MultiImplementationB.cs:12:31:12:40 | exit get_Item | MultiImplementationA.cs:14:31:14:31 | exit get_Item | 1 |
@@ -859,19 +854,17 @@
 | MultiImplementationB.cs:14:17:14:18 | exit M1 (normal) | MultiImplementationB.cs:14:17:14:18 | exit M1 | 2 |
 | MultiImplementationB.cs:15:5:17:5 | {...} | MultiImplementationB.cs:16:9:16:31 | M2(...) | 2 |
 | MultiImplementationB.cs:16:9:16:31 | enter M2 | MultiImplementationB.cs:16:9:16:31 | exit M2 | 5 |
-| MultiImplementationB.cs:18:12:18:13 | call to constructor Object | MultiImplementationB.cs:18:12:18:13 | call to constructor Object | 1 |
+| MultiImplementationB.cs:18:12:18:13 | call to constructor Object | MultiImplementationA.cs:20:12:20:13 | exit C2 (abnormal) | 12 |
+| MultiImplementationB.cs:18:12:18:13 | call to constructor Object | MultiImplementationB.cs:18:12:18:13 | exit C2 (abnormal) | 12 |
 | MultiImplementationB.cs:18:12:18:13 | enter C2 | MultiImplementationA.cs:20:12:20:13 | enter C2 | 1 |
 | MultiImplementationB.cs:18:12:18:13 | enter C2 | MultiImplementationB.cs:18:12:18:13 | enter C2 | 1 |
 | MultiImplementationB.cs:18:12:18:13 | exit C2 | MultiImplementationA.cs:20:12:20:13 | exit C2 | 1 |
 | MultiImplementationB.cs:18:12:18:13 | exit C2 | MultiImplementationB.cs:18:12:18:13 | exit C2 | 1 |
-| MultiImplementationB.cs:18:22:18:36 | {...} | MultiImplementationA.cs:20:12:20:13 | exit C2 (abnormal) | 4 |
-| MultiImplementationB.cs:18:22:18:36 | {...} | MultiImplementationB.cs:18:12:18:13 | exit C2 (abnormal) | 4 |
 | MultiImplementationB.cs:19:12:19:13 | enter C2 | MultiImplementationA.cs:21:12:21:13 | enter C2 | 1 |
 | MultiImplementationB.cs:19:12:19:13 | enter C2 | MultiImplementationB.cs:19:12:19:13 | enter C2 | 1 |
 | MultiImplementationB.cs:19:12:19:13 | exit C2 (normal) | MultiImplementationA.cs:21:12:21:13 | exit C2 | 2 |
 | MultiImplementationB.cs:19:12:19:13 | exit C2 (normal) | MultiImplementationB.cs:19:12:19:13 | exit C2 | 2 |
-| MultiImplementationB.cs:19:24:19:24 | 1 | MultiImplementationB.cs:19:19:19:22 | call to constructor C2 | 2 |
-| MultiImplementationB.cs:19:27:19:29 | {...} | MultiImplementationB.cs:19:27:19:29 | {...} | 1 |
+| MultiImplementationB.cs:19:24:19:24 | 1 | MultiImplementationB.cs:19:27:19:29 | {...} | 3 |
 | MultiImplementationB.cs:20:6:20:7 | enter ~C2 | MultiImplementationA.cs:22:6:22:7 | enter ~C2 | 1 |
 | MultiImplementationB.cs:20:6:20:7 | enter ~C2 | MultiImplementationB.cs:20:6:20:7 | enter ~C2 | 1 |
 | MultiImplementationB.cs:20:6:20:7 | exit ~C2 | MultiImplementationA.cs:22:6:22:7 | exit ~C2 | 1 |
@@ -884,7 +877,6 @@
 | MultiImplementationB.cs:21:28:21:35 | exit implicit conversion | MultiImplementationB.cs:21:28:21:35 | exit implicit conversion | 1 |
 | MultiImplementationB.cs:21:56:21:59 | null | MultiImplementationA.cs:23:28:23:35 | exit implicit conversion (abnormal) | 3 |
 | MultiImplementationB.cs:21:56:21:59 | null | MultiImplementationB.cs:21:28:21:35 | exit implicit conversion (abnormal) | 3 |
-| MultiImplementationB.cs:22:16:22:16 | this access | MultiImplementationB.cs:22:32:22:34 | ... = ... | 4 |
 | MultiImplementationB.cs:27:21:27:23 | enter get_P3 | MultiImplementationA.cs:30:21:30:23 | exit get_P3 | 5 |
 | MultiImplementationB.cs:27:21:27:23 | enter get_P3 | MultiImplementationB.cs:27:21:27:23 | exit get_P3 | 5 |
 | MultiImplementationB.cs:32:9:32:10 | enter M1 | MultiImplementationA.cs:36:9:36:10 | enter M1 | 1 |
@@ -930,6 +922,8 @@
 | NullCoalescing.cs:15:31:15:31 | 0 | NullCoalescing.cs:16:17:16:18 | "" | 5 |
 | NullCoalescing.cs:16:17:16:25 | ... ?? ... | NullCoalescing.cs:17:13:17:19 | (...) ... | 5 |
 | NullCoalescing.cs:17:13:17:24 | ... ?? ... | NullCoalescing.cs:13:10:13:11 | exit M6 | 4 |
+| PartialImplementationA.cs:3:12:3:18 | enter Partial | PartialImplementationA.cs:3:12:3:18 | exit Partial | 12 |
+| PartialImplementationB.cs:4:12:4:18 | enter Partial | PartialImplementationB.cs:4:12:4:18 | exit Partial | 12 |
 | Patterns.cs:5:10:5:11 | enter M1 | Patterns.cs:8:18:8:23 | Int32 i1 | 8 |
 | Patterns.cs:8:13:8:23 | [false] ... is ... | Patterns.cs:8:13:8:23 | [false] ... is ... | 1 |
 | Patterns.cs:8:13:8:23 | [true] ... is ... | Patterns.cs:8:13:8:23 | [true] ... is ... | 1 |
@@ -1300,7 +1294,7 @@
 | cflow.cs:217:13:220:13 | if (...) ... | cflow.cs:217:17:217:32 | ... < ... | 6 |
 | cflow.cs:218:13:220:13 | {...} | cflow.cs:219:17:219:22 | break; | 2 |
 | cflow.cs:221:18:221:22 | this access | cflow.cs:221:18:221:34 | ... < ... | 5 |
-| cflow.cs:224:10:224:16 | enter Foreach | cflow.cs:226:27:226:64 | call to method Repeat | 5 |
+| cflow.cs:224:10:224:16 | enter Foreach | cflow.cs:226:27:226:64 | call to method Repeat<String> | 5 |
 | cflow.cs:224:10:224:16 | exit Foreach (normal) | cflow.cs:224:10:224:16 | exit Foreach | 2 |
 | cflow.cs:226:9:237:9 | foreach (... ... in ...) ... | cflow.cs:226:9:237:9 | foreach (... ... in ...) ... | 1 |
 | cflow.cs:226:22:226:22 | String x | cflow.cs:229:17:229:32 | ... > ... | 15 |

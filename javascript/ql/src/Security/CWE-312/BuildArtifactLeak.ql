@@ -4,6 +4,7 @@
  *              expose it to an attacker.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 7.5
  * @precision high
  * @id js/build-artifact-leak
  * @tags security
@@ -13,7 +14,7 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.BuildArtifactLeak::BuildArtifactLeak
+import semmle.javascript.security.dataflow.BuildArtifactLeakQuery
 import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink

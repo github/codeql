@@ -4,6 +4,7 @@
  *              link type 'noopener' or 'noreferrer' are a potential security risk.
  * @kind problem
  * @problem.severity warning
+ * @security-severity 6.5
  * @id js/unsafe-external-link
  * @tags maintainability
  *       security
@@ -42,8 +43,8 @@ predicate hasDynamicHrefHostAttributeValue(DOM::ElementDefinition elem) {
       url.regexpMatch(Templating::getDelimiterMatchingRegexpWithPrefix("[^?#]*")) and
       // ... that does not start with a fixed host or a relative path (common formats)
       not url.regexpMatch("(?i)((https?:)?//)?[-a-z0-9.]*/.*") and
-      // .. that is not a call to `url_for` in a Flask application
-      not url.regexpMatch("\\{\\{\\s*url_for.*")
+      // .. that is not a call to `url_for` in a Flask / nunjucks application
+      not url.regexpMatch("\\{\\{\\s*url(_for)?\\(.+\\).*")
     )
   )
 }

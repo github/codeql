@@ -92,10 +92,10 @@ definitions.cs:
 #   45|             1: [CastExpr] (...) ...
 #   45|               1: [IntLiteral] 2
 #   47|         10: [ExprStmt] ...;
-#   47|           0: [MethodCall] call to method GenericFn
+#   47|           0: [MethodCall] call to method GenericFn<Int32>
 #   47|             0: [IntLiteral] 1
 #   48|         11: [ExprStmt] ...;
-#   48|           0: [MethodCall] call to method GenericFn
+#   48|           0: [MethodCall] call to method GenericFn<Int32>
 #   48|             -1: [ThisAccess] this access
 #   48|             0: [IntLiteral] 2
 #   51|         12: [ExprStmt] ...;
@@ -156,11 +156,11 @@ definitions.cs:
 #   64|             1: [NullLiteral] null
 #   67|         20: [LocalVariableDeclStmt] ... ...;
 #   67|           0: [LocalVariableDeclAndInitExpr] Action<Int32> m1 = ...
-#   67|             -1: [TypeMention] Action<Int32>
+#   67|             -1: [TypeMention] Action<int>
 #   67|               1: [TypeMention] int
 #   67|             0: [LocalVariableAccess] access to local variable m1
 #   67|             1: [ImplicitDelegateCreation] delegate creation of type Action<Int32>
-#   67|               0: [MethodAccess] access to method GenericFn
+#   67|               0: [MethodAccess] access to method GenericFn<Int32>
 #   70|     8: [Method] VariableTypeUse
 #   70|       -1: [TypeMention] Void
 #-----|       2: (Parameters)
@@ -172,7 +172,7 @@ definitions.cs:
 #   72|             -1: [TypeMention] C1
 #   72|             0: [LocalVariableAccess] access to local variable c2
 #   72|             1: [NullLiteral] null
-#   75|     9: [Method] GenericFn
+#   75|     9: [Method] GenericFn<>
 #   75|       -1: [TypeMention] Void
 #-----|       1: (Type parameters)
 #   75|         0: [TypeParameter] T
@@ -250,7 +250,7 @@ definitions.cs:
 #  108|           0: [DelegateCall] delegate call
 #  108|             -1: [EventAccess,EventCall] access to event Click
 #  112|   6: [Interface] I1
-#  114|     4: [Method] M2
+#  114|     4: [Method] M2<>
 #  114|       -1: [TypeMention] Void
 #-----|       1: (Type parameters)
 #  114|         0: [TypeParameter] T
@@ -259,7 +259,7 @@ definitions.cs:
 #  117|       0: [TypeParameter] T
 #  119|   8: [Interface] I3
 #-----|     3: (Base types)
-#  119|       1: [TypeMention] I2<Object>
+#  119|       1: [TypeMention] I2<object>
 #  119|         1: [TypeMention] object
 #  121|   9: [Class] B<>
 #-----|     1: (Type parameters)
@@ -275,7 +275,7 @@ definitions.cs:
 #  125|         0: [ExprStmt] ...;
 #  125|           0: [MethodCall] call to method M
 #  125|             -1: [BaseAccess] base access
-#  128|     6: [Method] M2
+#  128|     6: [Method] M2<>
 #  128|       -1: [TypeMention] Void
 #  128|       -1: [TypeMention] I1
 #-----|       1: (Type parameters)

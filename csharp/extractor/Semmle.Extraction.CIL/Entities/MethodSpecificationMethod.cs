@@ -26,7 +26,7 @@ namespace Semmle.Extraction.CIL.Entities
             unboundMethod = (Method)Context.CreateGeneric(gc, ms.Method);
         }
 
-        public override void WriteId(TextWriter trapFile)
+        public override void WriteId(EscapingTextWriter trapFile)
         {
             unboundMethod.WriteId(trapFile);
             trapFile.Write('<');

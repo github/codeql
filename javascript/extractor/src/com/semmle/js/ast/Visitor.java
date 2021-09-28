@@ -313,4 +313,8 @@ public interface Visitor<C, R> {
   public R visit(XMLQualifiedIdentifier nd, C c);
 
   public R visit(XMLDotDotExpression nd, C c);
+
+  public R visit(GeneratedCodeExpr generatedCodeExpr, C c);
+
+  public R visit(StaticInitializer nd, C c);
 }

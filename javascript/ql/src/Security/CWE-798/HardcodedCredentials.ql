@@ -4,6 +4,7 @@
  *              to gain unauthorized access.
  * @kind path-problem
  * @problem.severity warning
+ * @security-severity 9.8
  * @precision high
  * @id js/hardcoded-credentials
  * @tags security
@@ -13,7 +14,7 @@
  */
 
 import javascript
-private import semmle.javascript.security.dataflow.HardcodedCredentials::HardcodedCredentials
+import semmle.javascript.security.dataflow.HardcodedCredentialsQuery
 import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, string value
@@ -27,6 +28,9 @@ where
       not (
         sink.getNode().(Sink).(DefaultCredentialsSink).getKind() = "password" and
         PasswordHeuristics::isDummyPassword(val)
+        or
+        sink.getNode().(Sink).getKind() = "authorization header" and
+        PasswordHeuristics::isDummyAuthHeader(val)
       ) and
       value = "The hard-coded value \"" + val + "\""
     )

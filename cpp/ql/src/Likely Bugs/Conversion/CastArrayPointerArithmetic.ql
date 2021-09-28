@@ -6,6 +6,7 @@
  *              use the width of the base type, leading to misaligned reads.
  * @kind path-problem
  * @problem.severity warning
+ * @security-severity 9.3
  * @precision high
  * @id cpp/upcast-array-pointer-arithmetic
  * @tags correctness

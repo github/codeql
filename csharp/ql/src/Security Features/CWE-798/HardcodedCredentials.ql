@@ -3,6 +3,7 @@
  * @description Credentials are hard coded in the source code of the application.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 9.8
  * @precision high
  * @id cs/hardcoded-credentials
  * @tags security
@@ -12,7 +13,7 @@
  */
 
 import csharp
-import semmle.code.csharp.security.dataflow.HardcodedCredentials::HardcodedCredentials
+import semmle.code.csharp.security.dataflow.HardcodedCredentialsQuery
 import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 
 from

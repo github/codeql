@@ -21,7 +21,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override bool NeedsPopulation => true;
 
-        public override void WriteId(TextWriter trapFile)
+        public override void WriteId(EscapingTextWriter trapFile)
         {
             trapFile.WriteSubId(Context.CreateLocation(Symbol.Location));
             trapFile.Write(";commentblock");
@@ -42,7 +42,5 @@ namespace Semmle.Extraction.CSharp.Entities
 
             public override CommentBlock Create(Context cx, Comments.CommentBlock init) => new CommentBlock(cx, init);
         }
-
-        public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NoLabel;
     }
 }

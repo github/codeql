@@ -4,6 +4,7 @@
  *              unauthorized persons.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 6.5
  * @precision high
  * @id cs/exposure-of-sensitive-information
  * @tags security
@@ -11,7 +12,7 @@
  */
 
 import csharp
-import semmle.code.csharp.security.dataflow.ExposureOfPrivateInformation::ExposureOfPrivateInformation
+import semmle.code.csharp.security.dataflow.ExposureOfPrivateInformationQuery
 import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 
 from TaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink

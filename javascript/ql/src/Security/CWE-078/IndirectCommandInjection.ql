@@ -5,6 +5,7 @@
  *              command-line injection vulnerabilities.
  * @kind path-problem
  * @problem.severity warning
+ * @security-severity 9.8
  * @precision medium
  * @id js/indirect-command-line-injection
  * @tags correctness
@@ -15,7 +16,7 @@
 
 import javascript
 import DataFlow::PathGraph
-import semmle.javascript.security.dataflow.IndirectCommandInjection::IndirectCommandInjection
+import semmle.javascript.security.dataflow.IndirectCommandInjectionQuery
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, DataFlow::Node highlight
 where

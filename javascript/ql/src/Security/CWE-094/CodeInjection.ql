@@ -4,6 +4,7 @@
  *              code execution.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 6.1
  * @precision high
  * @id js/code-injection
  * @tags security
@@ -13,7 +14,7 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.CodeInjection::CodeInjection
+import semmle.javascript.security.dataflow.CodeInjectionQuery
 import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink

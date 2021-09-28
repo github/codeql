@@ -1,31 +1,7 @@
-preBasicBlockConsistency
 nonUniqueSetRepresentation
 breakInvariant2
 breakInvariant3
 breakInvariant4
 breakInvariant5
 multipleSuccessors
-| MultiImplementationA.cs:13:16:13:20 | ... = ... | successor | MultiImplementationA.cs:13:16:13:16 | this access |
-| MultiImplementationA.cs:13:16:13:20 | ... = ... | successor | MultiImplementationA.cs:24:16:24:16 | this access |
-| MultiImplementationA.cs:13:16:13:20 | ... = ... | successor | MultiImplementationB.cs:11:16:11:16 | this access |
-| MultiImplementationA.cs:13:16:13:20 | ... = ... | successor | MultiImplementationB.cs:22:16:22:16 | this access |
-| MultiImplementationA.cs:20:12:20:13 | call to constructor Object | successor | MultiImplementationA.cs:13:16:13:16 | this access |
-| MultiImplementationA.cs:20:12:20:13 | call to constructor Object | successor | MultiImplementationB.cs:11:16:11:16 | this access |
-| MultiImplementationA.cs:21:19:21:22 | call to constructor C2 | successor | MultiImplementationA.cs:21:27:21:29 | {...} |
-| MultiImplementationA.cs:21:19:21:22 | call to constructor C2 | successor | MultiImplementationB.cs:19:27:19:29 | {...} |
-| MultiImplementationA.cs:24:32:24:34 | ... = ... | successor | MultiImplementationA.cs:20:22:20:31 | {...} |
-| MultiImplementationA.cs:24:32:24:34 | ... = ... | successor | MultiImplementationA.cs:24:16:24:16 | this access |
-| MultiImplementationA.cs:24:32:24:34 | ... = ... | successor | MultiImplementationB.cs:18:22:18:36 | {...} |
-| MultiImplementationA.cs:24:32:24:34 | ... = ... | successor | MultiImplementationB.cs:22:16:22:16 | this access |
-| MultiImplementationB.cs:11:16:11:20 | ... = ... | successor | MultiImplementationA.cs:13:16:13:16 | this access |
-| MultiImplementationB.cs:11:16:11:20 | ... = ... | successor | MultiImplementationA.cs:24:16:24:16 | this access |
-| MultiImplementationB.cs:11:16:11:20 | ... = ... | successor | MultiImplementationB.cs:11:16:11:16 | this access |
-| MultiImplementationB.cs:11:16:11:20 | ... = ... | successor | MultiImplementationB.cs:22:16:22:16 | this access |
-| MultiImplementationB.cs:18:12:18:13 | call to constructor Object | successor | MultiImplementationA.cs:13:16:13:16 | this access |
-| MultiImplementationB.cs:18:12:18:13 | call to constructor Object | successor | MultiImplementationB.cs:11:16:11:16 | this access |
-| MultiImplementationB.cs:19:19:19:22 | call to constructor C2 | successor | MultiImplementationA.cs:21:27:21:29 | {...} |
-| MultiImplementationB.cs:19:19:19:22 | call to constructor C2 | successor | MultiImplementationB.cs:19:27:19:29 | {...} |
-| MultiImplementationB.cs:22:32:22:34 | ... = ... | successor | MultiImplementationA.cs:20:22:20:31 | {...} |
-| MultiImplementationB.cs:22:32:22:34 | ... = ... | successor | MultiImplementationA.cs:24:16:24:16 | this access |
-| MultiImplementationB.cs:22:32:22:34 | ... = ... | successor | MultiImplementationB.cs:18:22:18:36 | {...} |
-| MultiImplementationB.cs:22:32:22:34 | ... = ... | successor | MultiImplementationB.cs:22:16:22:16 | this access |
+preBasicBlockConsistency

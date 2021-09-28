@@ -4,6 +4,7 @@
  *              opens up for potential man-in-the-middle attacks.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 8.1
  * @precision high
  * @id js/insecure-download
  * @tags security
@@ -11,7 +12,7 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.InsecureDownload::InsecureDownload
+import semmle.javascript.security.dataflow.InsecureDownloadQuery
 import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink

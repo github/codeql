@@ -1,50 +1,37 @@
-/*
- * Copyright (C) 2008 The Guava Authors
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Generated automatically from com.google.common.collect.ImmutableCollection for testing purposes
 
 package com.google.common.collect;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.UnmodifiableIterator;
 import java.io.Serializable;
 import java.util.AbstractCollection;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Spliterator;
+import java.util.function.Predicate;
 
-public abstract class ImmutableCollection<E> extends AbstractCollection<E> implements Serializable {
-  ImmutableCollection() {}
-  
-  public ImmutableList<E> asList() {
-    return null;
-  }
-
-  public abstract static class Builder<E> {
-    Builder() {}
-
-    public abstract Builder<E> add(E element);
-
-    public Builder<E> add(E... elements) {
-      return null;
+abstract public class ImmutableCollection<E> extends AbstractCollection<E> implements Serializable
+{
+    abstract static public class Builder<E>
+    {
+        public ImmutableCollection.Builder<E> add(E... p0){ return null; }
+        public ImmutableCollection.Builder<E> addAll(Iterable<? extends E> p0){ return null; }
+        public ImmutableCollection.Builder<E> addAll(Iterator<? extends E> p0){ return null; }
+        public abstract ImmutableCollection.Builder<E> add(E p0);
+        public abstract ImmutableCollection<E> build();
     }
-
-    public Builder<E> addAll(Iterable<? extends E> elements) {
-      return null;
-    }
-
-    public Builder<E> addAll(Iterator<? extends E> elements) {
-      return null;
-    }
-
-    public abstract ImmutableCollection<E> build();
-  }
+    public ImmutableList<E> asList(){ return null; }
+    public Spliterator<E> spliterator(){ return null; }
+    public abstract UnmodifiableIterator<E> iterator();
+    public abstract boolean contains(Object p0);
+    public final <T> T[] toArray(T[] p0){ return null; }
+    public final Object[] toArray(){ return null; }
+    public final boolean add(E p0){ return false; }
+    public final boolean addAll(Collection<? extends E> p0){ return false; }
+    public final boolean remove(Object p0){ return false; }
+    public final boolean removeAll(Collection<? extends Object> p0){ return false; }
+    public final boolean removeIf(Predicate<? super E> p0){ return false; }
+    public final boolean retainAll(Collection<? extends Object> p0){ return false; }
+    public final void clear(){}
 }

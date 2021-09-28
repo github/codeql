@@ -3,6 +3,7 @@
  * @description Storing sensitive information in cleartext can expose it to an attacker.
  * @kind problem
  * @problem.severity recommendation
+ * @security-severity 7.5
  * @precision medium
  * @id java/cleartext-storage-in-class
  * @tags security
@@ -11,15 +12,12 @@
  */
 
 import java
-import SensitiveStorage
+import semmle.code.java.security.CleartextStorageClassQuery
 
 from SensitiveSource data, ClassStore s, Expr input, Expr store
 where
   input = s.getAnInput() and
   store = s.getAStore() and
-  data.flowsToCached(input) and
-  // Exclude results in test code.
-  not testMethod(store.getEnclosingCallable()) and
-  not testMethod(data.getEnclosingCallable())
+  data.flowsTo(input)
 select store, "Storable class $@ containing $@ is stored here. Data was added $@.", s, s.toString(),
   data, "sensitive data", input, "here"

@@ -3,6 +3,7 @@
  * @description Accessing paths influenced by users can allow an attacker to access unexpected resources.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 7.5
  * @precision high
  * @id cs/path-injection
  * @tags security
@@ -14,7 +15,7 @@
  */
 
 import csharp
-import semmle.code.csharp.security.dataflow.TaintedPath::TaintedPath
+import semmle.code.csharp.security.dataflow.TaintedPathQuery
 import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 
 from TaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink

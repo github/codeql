@@ -2287,10 +2287,10 @@
 | Foreach.cs:20:27:20:27 | access to parameter e | Foreach.cs:20:27:20:27 | access to parameter e | non-null |
 | Foreach.cs:20:27:20:27 | access to parameter e | Foreach.cs:20:27:20:27 | access to parameter e | null |
 | Foreach.cs:20:27:20:68 | ... ?? ... | Foreach.cs:20:27:20:68 | ... ?? ... | normal |
-| Foreach.cs:20:29:20:38 | call to method ToArray | Foreach.cs:20:27:20:27 | access to parameter e | null |
-| Foreach.cs:20:29:20:38 | call to method ToArray | Foreach.cs:20:29:20:38 | call to method ToArray | non-null |
-| Foreach.cs:20:29:20:38 | call to method ToArray | Foreach.cs:20:29:20:38 | call to method ToArray | null |
-| Foreach.cs:20:43:20:68 | call to method Empty | Foreach.cs:20:43:20:68 | call to method Empty | normal |
+| Foreach.cs:20:29:20:38 | call to method ToArray<String> | Foreach.cs:20:27:20:27 | access to parameter e | null |
+| Foreach.cs:20:29:20:38 | call to method ToArray<String> | Foreach.cs:20:29:20:38 | call to method ToArray<String> | non-null |
+| Foreach.cs:20:29:20:38 | call to method ToArray<String> | Foreach.cs:20:29:20:38 | call to method ToArray<String> | null |
+| Foreach.cs:20:43:20:68 | call to method Empty<String> | Foreach.cs:20:43:20:68 | call to method Empty<String> | normal |
 | Foreach.cs:21:11:21:11 | ; | Foreach.cs:21:11:21:11 | ; | normal |
 | Foreach.cs:25:5:28:5 | {...} | Foreach.cs:26:9:27:11 | foreach (... ... in ...) ... | empty |
 | Foreach.cs:26:9:27:11 | foreach (... ... in ...) ... | Foreach.cs:26:9:27:11 | foreach (... ... in ...) ... | empty |
@@ -2626,8 +2626,8 @@
 | LoopUnrolling.cs:69:13:69:23 | !... | LoopUnrolling.cs:69:13:69:23 | !... | false |
 | LoopUnrolling.cs:69:13:69:23 | !... | LoopUnrolling.cs:69:13:69:23 | !... | true |
 | LoopUnrolling.cs:69:14:69:17 | access to parameter args | LoopUnrolling.cs:69:14:69:17 | access to parameter args | normal |
-| LoopUnrolling.cs:69:14:69:23 | call to method Any | LoopUnrolling.cs:69:14:69:23 | call to method Any | false |
-| LoopUnrolling.cs:69:14:69:23 | call to method Any | LoopUnrolling.cs:69:14:69:23 | call to method Any | true |
+| LoopUnrolling.cs:69:14:69:23 | call to method Any<String> | LoopUnrolling.cs:69:14:69:23 | call to method Any<String> | false |
+| LoopUnrolling.cs:69:14:69:23 | call to method Any<String> | LoopUnrolling.cs:69:14:69:23 | call to method Any<String> | true |
 | LoopUnrolling.cs:70:13:70:19 | return ...; | LoopUnrolling.cs:70:13:70:19 | return ...; | return |
 | LoopUnrolling.cs:71:9:71:12 | access to parameter args | LoopUnrolling.cs:71:9:71:12 | access to parameter args | normal |
 | LoopUnrolling.cs:71:9:71:20 | call to method Clear | LoopUnrolling.cs:71:9:71:20 | call to method Clear | normal |
@@ -2826,6 +2826,18 @@
 | NullCoalescing.cs:17:13:17:24 | ... ?? ... | NullCoalescing.cs:17:13:17:24 | ... ?? ... | normal |
 | NullCoalescing.cs:17:19:17:19 | access to parameter i | NullCoalescing.cs:17:19:17:19 | access to parameter i | normal |
 | NullCoalescing.cs:17:24:17:24 | 1 | NullCoalescing.cs:17:24:17:24 | 1 | normal |
+| PartialImplementationA.cs:3:12:3:18 | call to constructor Object | PartialImplementationA.cs:3:12:3:18 | call to constructor Object | normal |
+| PartialImplementationA.cs:3:27:3:29 | {...} | PartialImplementationA.cs:3:27:3:29 | {...} | normal |
+| PartialImplementationB.cs:3:16:3:16 | access to field F | PartialImplementationB.cs:3:16:3:16 | this access | normal |
+| PartialImplementationB.cs:3:16:3:16 | this access | PartialImplementationB.cs:3:16:3:16 | this access | normal |
+| PartialImplementationB.cs:3:16:3:20 | ... = ... | PartialImplementationB.cs:3:16:3:20 | ... = ... | normal |
+| PartialImplementationB.cs:3:20:3:20 | 0 | PartialImplementationB.cs:3:20:3:20 | 0 | normal |
+| PartialImplementationB.cs:4:12:4:18 | call to constructor Object | PartialImplementationB.cs:4:12:4:18 | call to constructor Object | normal |
+| PartialImplementationB.cs:4:22:4:24 | {...} | PartialImplementationB.cs:4:22:4:24 | {...} | normal |
+| PartialImplementationB.cs:5:16:5:16 | access to property P | PartialImplementationB.cs:5:16:5:16 | this access | normal |
+| PartialImplementationB.cs:5:16:5:16 | this access | PartialImplementationB.cs:5:16:5:16 | this access | normal |
+| PartialImplementationB.cs:5:32:5:34 | ... = ... | PartialImplementationB.cs:5:32:5:34 | ... = ... | normal |
+| PartialImplementationB.cs:5:34:5:34 | 0 | PartialImplementationB.cs:5:34:5:34 | 0 | normal |
 | Patterns.cs:6:5:43:5 | {...} | Patterns.cs:40:17:40:17 | access to local variable o | normal |
 | Patterns.cs:7:9:7:24 | ... ...; | Patterns.cs:7:16:7:23 | Object o = ... | normal |
 | Patterns.cs:7:16:7:23 | Object o = ... | Patterns.cs:7:16:7:23 | Object o = ... | normal |
@@ -4141,7 +4153,7 @@
 | cflow.cs:226:9:237:9 | foreach (... ... in ...) ... | cflow.cs:226:9:237:9 | foreach (... ... in ...) ... | empty |
 | cflow.cs:226:9:237:9 | foreach (... ... in ...) ... | cflow.cs:235:17:235:22 | break; | normal [break] (0) |
 | cflow.cs:226:22:226:22 | String x | cflow.cs:226:22:226:22 | String x | normal |
-| cflow.cs:226:27:226:64 | call to method Repeat | cflow.cs:226:27:226:64 | call to method Repeat | normal |
+| cflow.cs:226:27:226:64 | call to method Repeat<String> | cflow.cs:226:27:226:64 | call to method Repeat<String> | normal |
 | cflow.cs:226:57:226:59 | "a" | cflow.cs:226:57:226:59 | "a" | normal |
 | cflow.cs:226:62:226:63 | 10 | cflow.cs:226:62:226:63 | 10 | normal |
 | cflow.cs:227:9:237:9 | {...} | cflow.cs:231:17:231:25 | continue; | continue |

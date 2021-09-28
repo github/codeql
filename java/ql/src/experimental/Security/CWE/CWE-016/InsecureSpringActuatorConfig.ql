@@ -3,9 +3,11 @@
  * @description Exposed Spring Boot Actuator through configuration files without declarative or procedural
  *              security enforcement leads to information leak or even remote code execution.
  * @kind problem
+ * @problem.severity error
+ * @precision high
  * @id java/insecure-spring-actuator-config
  * @tags security
- *       external/cwe-016
+ *       external/cwe/cwe-016
  */
 
 /*

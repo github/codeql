@@ -8,14 +8,14 @@ namespace Semmle.Extraction.Entities
 
         public override void Populate(TextWriter trapFile)
         {
-            trapFile.folders(this, Symbol.Value, Symbol.NameWithoutExtension);
+            trapFile.folders(this, Symbol.Value);
             if (Symbol.ParentDirectory is PathTransformer.ITransformedPath parent)
                 trapFile.containerparent(Create(Context, parent), this);
         }
 
         public override bool NeedsPopulation => true;
 
-        public override void WriteId(System.IO.TextWriter trapFile)
+        public override void WriteId(EscapingTextWriter trapFile)
         {
             trapFile.Write(Symbol.DatabaseId);
             trapFile.Write(";folder");
@@ -32,8 +32,6 @@ namespace Semmle.Extraction.Entities
 
             public override Folder Create(Context cx, PathTransformer.ITransformedPath init) => new Folder(cx, init);
         }
-
-        public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NoLabel;
 
         public override int GetHashCode() => Symbol.GetHashCode();
 

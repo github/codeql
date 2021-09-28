@@ -1,0 +1,8 @@
+| cstd_types.cpp:39:15:39:16 | l8 | CTypedefType, Int_least8_t, MinimumWidthIntegralType |
+| cstd_types.cpp:40:15:40:17 | l16 | CTypedefType, Int_least16_t, MinimumWidthIntegralType |
+| cstd_types.cpp:41:15:41:17 | l32 | CTypedefType, Int_least32_t, MinimumWidthIntegralType |
+| cstd_types.cpp:42:15:42:17 | l64 | CTypedefType, Int_least64_t, MinimumWidthIntegralType |
+| cstd_types.cpp:43:15:43:17 | ul8 | CTypedefType, MinimumWidthIntegralType, UInt_least8_t |
+| cstd_types.cpp:44:16:44:19 | ul16 | CTypedefType, MinimumWidthIntegralType, UInt_least16_t |
+| cstd_types.cpp:45:16:45:19 | ul32 | CTypedefType, MinimumWidthIntegralType, UInt_least32_t |
+| cstd_types.cpp:46:16:46:19 | ul64 | CTypedefType, MinimumWidthIntegralType, UInt_least64_t |

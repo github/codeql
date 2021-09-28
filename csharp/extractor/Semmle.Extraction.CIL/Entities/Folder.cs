@@ -12,7 +12,7 @@ namespace Semmle.Extraction.CIL.Entities
             this.transformedPath = path;
         }
 
-        public override void WriteId(TextWriter trapFile)
+        public override void WriteId(EscapingTextWriter trapFile)
         {
             trapFile.Write(transformedPath.DatabaseId);
             trapFile.Write(";folder");
@@ -28,7 +28,7 @@ namespace Semmle.Extraction.CIL.Entities
                     yield return parentFolder;
                     yield return Tuples.containerparent(parentFolder, this);
                 }
-                yield return Tuples.folders(this, transformedPath.Value, transformedPath.NameWithoutExtension);
+                yield return Tuples.folders(this, transformedPath.Value);
             }
         }
 

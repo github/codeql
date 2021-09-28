@@ -10,7 +10,7 @@ namespace Semmle.Extraction.CSharp.Entities
         private Event(Context cx, IEventSymbol init)
             : base(cx, init) { }
 
-        public override void WriteId(TextWriter trapFile)
+        public override void WriteId(EscapingTextWriter trapFile)
         {
             trapFile.WriteSubId(ContainingType!);
             trapFile.Write('.');
@@ -71,7 +71,5 @@ namespace Semmle.Extraction.CSharp.Entities
 
             public override Event Create(Context cx, IEventSymbol init) => new Event(cx, init);
         }
-
-        public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NoLabel;
     }
 }

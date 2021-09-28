@@ -20,7 +20,7 @@ namespace Semmle.Util
         public static (string, string, string, string) Split(this string self, int index0, int index1, int index2)
         {
             var split = self.Split(new[] { index0, index1, index2 });
-            return (split[0], split[1], split[2], split[4]);
+            return (split[0], split[1], split[2], split[3]);
         }
 
         private static List<string> Split(this string self, params int[] indices)

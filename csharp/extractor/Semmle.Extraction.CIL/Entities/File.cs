@@ -14,7 +14,7 @@ namespace Semmle.Extraction.CIL.Entities
             TransformedPath = Context.Extractor.PathTransformer.Transform(OriginalPath);
         }
 
-        public override void WriteId(TextWriter trapFile)
+        public override void WriteId(EscapingTextWriter trapFile)
         {
             trapFile.Write(TransformedPath.DatabaseId);
             trapFile.Write(";sourcefile");
@@ -37,7 +37,7 @@ namespace Semmle.Extraction.CIL.Entities
                     yield return parent;
                     yield return Tuples.containerparent(parent, this);
                 }
-                yield return Tuples.files(this, TransformedPath.Value, TransformedPath.NameWithoutExtension, TransformedPath.Extension);
+                yield return Tuples.files(this, TransformedPath.Value);
             }
         }
     }

@@ -4,6 +4,7 @@
  *              can lead to a cross-site scripting vulnerability.
  * @kind path-problem
  * @problem.severity warning
+ * @security-severity 6.1
  * @precision high
  * @id js/xss-through-dom
  * @tags security
@@ -12,7 +13,7 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.XssThroughDom::XssThroughDom
+import semmle.javascript.security.dataflow.XssThroughDomQuery
 import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink

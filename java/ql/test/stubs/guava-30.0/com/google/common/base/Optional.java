@@ -1,77 +1,31 @@
-/*
- * Copyright (C) 2011 The Guava Authors
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License. You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software distributed under the License
- * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
- * or implied. See the License for the specific language governing permissions and limitations under
- * the License.
- */
+// Generated automatically from com.google.common.base.Optional for testing purposes, and manually adjusted.
 
 package com.google.common.base;
+
+import com.google.common.base.Function;
+import com.google.common.base.Supplier;
 import java.io.Serializable;
 import java.util.Set;
-import org.checkerframework.checker.nullness.qual.Nullable;
 
-public abstract class Optional<T> implements Serializable {
-  public static <T> Optional<T> absent() {
-    return null;
-  }
-
-  public static <T> Optional<T> of(T reference) {
-    return null;
-  }
-
-  public static <T> Optional<T> fromNullable(@Nullable T nullableReference) {
-    return null;
-  }
-
-  public static <T> @Nullable Optional<T> fromJavaUtil(
-      java.util.Optional<T> javaUtilOptional) {
-    return null;
-  }
-
-  public static <T> java.util.Optional<T> toJavaUtil(
-      @Nullable Optional<T> googleOptional) {
-    return null;
-  }
-
-  public java.util.Optional<T> toJavaUtil() {
-    return null;
-  }
-
-  public abstract boolean isPresent();
-
-  public abstract T get();
-
-  public abstract T or(T defaultValue);
-
-  public abstract Optional<T> or(Optional<? extends T> secondChoice);
-
-  public abstract T or(Supplier<? extends T> supplier);
-
-  public abstract @Nullable T orNull();
-
-  public abstract Set<T> asSet();
-
-  public abstract <V> Optional<V> transform(Function<? super T, V> function);
-
-  @Override
-  public abstract boolean equals(@Nullable Object object);
-
-  @Override
-  public abstract int hashCode();
-
-  @Override
-  public abstract String toString();
-
-  public static <T> Iterable<T> presentInstances(
-      final Iterable<? extends Optional<? extends T>> optionals) {
-    return null;
-  }
-
+abstract public class Optional<T> implements Serializable
+{
+    Optional(){}
+    public java.util.Optional<T> toJavaUtil(){ return null; }
+    public abstract <V> Optional<V> transform(Function<? super T, V> p0);
+    public abstract Optional<T> or(Optional<? extends T> p0);
+    public abstract Set<T> asSet();
+    public abstract String toString();
+    public abstract T get();
+    public abstract T or(Supplier<? extends T> p0);
+    public abstract T or(T p0);
+    public abstract T orNull();
+    public abstract boolean equals(Object p0);
+    public abstract boolean isPresent();
+    public abstract int hashCode();
+    public static <T> Iterable<T> presentInstances(Iterable<? extends Optional<? extends T>> p0){ return null; }
+    public static <T> Optional<T> absent(){ return null; }
+    public static <T> Optional<T> fromJavaUtil(java.util.Optional<T> p0){ return null; }
+    public static <T> Optional<T> fromNullable(T p0){ return null; }
+    public static <T> Optional<T> of(T p0){ return null; }
+    public static <T> java.util.Optional<T> toJavaUtil(Optional<T> p0){ return null; }
 }

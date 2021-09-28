@@ -371,3 +371,12 @@ app.get('/yet-another-prefix2', (req, res) => {
     return requestPath.indexOf(rootPath) === 0;
   }
 });
+
+import slash from 'slash';
+app.get('/slash-stuff', (req, res) => {
+  let path = req.query.path;
+
+  fs.readFileSync(path); // NOT OK
+
+  fs.readFileSync(slash(path)); // NOT OK
+});

@@ -4,6 +4,7 @@
  *              malicious SQL code by the user.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 8.8
  * @precision high
  * @id py/sql-injection
  * @tags security
@@ -15,7 +16,7 @@ import python
 import semmle.python.security.dataflow.SqlInjection
 import DataFlow::PathGraph
 
-from SQLInjectionConfiguration config, DataFlow::PathNode source, DataFlow::PathNode sink
+from SqlInjection::Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "This SQL query depends on $@.", source.getNode(),
   "a user-provided value"

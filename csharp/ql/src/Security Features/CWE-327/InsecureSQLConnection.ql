@@ -4,6 +4,7 @@
  * @kind path-problem
  * @id cs/insecure-sql-connection
  * @problem.severity error
+ * @security-severity 7.5
  * @precision medium
  * @tags security
  *       external/cwe/cwe-327
@@ -13,9 +14,9 @@ import csharp
 import DataFlow::PathGraph
 
 /**
- * A `DataFlow::Configuration` for tracking `Strings passed to SqlConnectionStringBuilder` instances.
+ * A data flow configuration for tracking strings passed to `SqlConnection[StringBuilder]` instances.
  */
-class TaintTrackingConfiguration extends TaintTracking::Configuration {
+class TaintTrackingConfiguration extends DataFlow::Configuration {
   TaintTrackingConfiguration() { this = "TaintTrackingConfiguration" }
 
   override predicate isSource(DataFlow::Node source) {

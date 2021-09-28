@@ -2,7 +2,6 @@ using System;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Extraction.CSharp.Entities.Expressions;
-using Semmle.Extraction.Entities;
 using Semmle.Extraction.Kinds;
 using System.IO;
 using System.Linq;
@@ -21,7 +20,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         private Type Type => type.Value;
 
-        public override void WriteId(TextWriter trapFile)
+        public override void WriteId(EscapingTextWriter trapFile)
         {
             trapFile.WriteSubId(Type);
             trapFile.Write(" ");

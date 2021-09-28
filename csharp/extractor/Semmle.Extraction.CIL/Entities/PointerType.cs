@@ -11,6 +11,14 @@ namespace Semmle.Extraction.CIL.Entities
         public PointerType(Context cx, Type pointee) : base(cx)
         {
             this.pointee = pointee;
+
+            if (pointee is ModifiedType mt)
+            {
+                cx.Extractor.Logger.Log(
+                    Util.Logging.Severity.Info,
+                    $"Pointer to modified type {pointee.GetQualifiedName()} is changed to {mt.Unmodified.GetQualifiedName()}");
+                this.pointee = mt.Unmodified;
+            }
         }
 
         public override bool Equals(object? obj)
@@ -20,7 +28,7 @@ namespace Semmle.Extraction.CIL.Entities
 
         public override int GetHashCode() => HashCode.Combine(pointee, nameof(PointerType));
 
-        public override void WriteId(TextWriter trapFile, bool inContext)
+        public override void WriteId(EscapingTextWriter trapFile, bool inContext)
         {
             pointee.WriteId(trapFile, inContext);
             trapFile.Write('*');

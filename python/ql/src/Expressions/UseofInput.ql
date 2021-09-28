@@ -4,18 +4,22 @@
  * @kind problem
  * @tags security
  *       correctness
+ *       security/cwe/cwe-94
+ *       security/cwe/cwe-95
  * @problem.severity error
+ * @security-severity 9.8
  * @sub-severity high
  * @precision high
  * @id py/use-of-input
  */
 
 import python
+import semmle.python.dataflow.new.DataFlow
+import semmle.python.ApiGraphs
 
-from CallNode call, Context context, ControlFlowNode func
+from DataFlow::CallCfgNode call
 where
-  context.getAVersion().includes(2, _) and
-  call.getFunction() = func and
-  func.pointsTo(context, Value::named("input"), _) and
-  not func.pointsTo(context, Value::named("raw_input"), _)
+  major_version() = 2 and
+  call = API::builtin("input").getACall() and
+  call != API::builtin("raw_input").getACall()
 select call, "The unsafe built-in function 'input' is used in Python 2."

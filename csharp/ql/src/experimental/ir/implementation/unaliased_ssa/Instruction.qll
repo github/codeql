@@ -1856,12 +1856,12 @@ class InitializeDynamicAllocationInstruction extends SideEffectInstruction {
   }
 
   /**
-   * Gets the address of the allocation this instruction is initializing.
+   * Gets the operand that represents the address of the allocation this instruction is initializing.
    */
   final AddressOperand getAllocationAddressOperand() { result = getAnOperand() }
 
   /**
-   * Gets the operand for the allocation this instruction is initializing.
+   * Gets the address for the allocation this instruction is initializing.
    */
   final Instruction getAllocationAddress() { result = getAllocationAddressOperand().getDef() }
 }
@@ -1994,6 +1994,14 @@ class PhiInstruction extends Instruction {
    */
   pragma[noinline]
   final Instruction getAnInput() { result = this.getAnInputOperand().getDef() }
+
+  /**
+   * Gets the input operand representing the value that flows from the specified predecessor block.
+   */
+  final PhiInputOperand getInputOperand(IRBlock predecessorBlock) {
+    result = this.getAnOperand() and
+    result.getPredecessorBlock() = predecessorBlock
+  }
 }
 
 /**

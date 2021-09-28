@@ -6,13 +6,14 @@
  * @kind path-problem
  * @id js/zipslip
  * @problem.severity error
+ * @security-severity 7.5
  * @precision high
  * @tags security
  *       external/cwe/cwe-022
  */
 
 import javascript
-import semmle.javascript.security.dataflow.ZipSlip::ZipSlip
+import semmle.javascript.security.dataflow.ZipSlipQuery
 import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink

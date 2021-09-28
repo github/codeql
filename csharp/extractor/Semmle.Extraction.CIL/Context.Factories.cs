@@ -36,7 +36,7 @@ namespace Semmle.Extraction.CIL
                         c.Extract(this);
                 });
 #if DEBUG_LABELS
-                using var writer = new StringWriter();
+                using var writer = new EscapingTextWriter();
                 e.WriteId(writer);
                 var id = writer.ToString();
 

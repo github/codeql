@@ -5,6 +5,7 @@
  *              be generated.
  * @kind path-problem
  * @problem.severity warning
+ * @security-severity 7.8
  * @precision high
  * @id cs/insecure-randomness
  * @tags security
@@ -58,6 +59,13 @@ module Random {
       this.getExpr() =
         any(MethodCall mc |
           mc.getQualifier().getType().(RefType).hasQualifiedName("System", "Random")
+          or
+          // by using `% 87` on a `byte`, `System.Web.Security.Membership.GeneratePassword` has a bias
+          mc.getQualifier()
+              .getType()
+              .(RefType)
+              .hasQualifiedName("System.Web.Security", "Membership") and
+          mc.getTarget().hasName("GeneratePassword")
         )
     }
   }

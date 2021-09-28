@@ -4,6 +4,7 @@
  *              malicious changes in the PATH environment variable.
  * @kind problem
  * @problem.severity warning
+ * @security-severity 9.8
  * @precision medium
  * @id java/relative-path-command
  * @tags security

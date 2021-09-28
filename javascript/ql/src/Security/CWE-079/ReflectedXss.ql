@@ -4,6 +4,7 @@
  *              a cross-site scripting vulnerability.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 6.1
  * @precision high
  * @id js/reflected-xss
  * @tags security
@@ -12,7 +13,7 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.ReflectedXss::ReflectedXss
+import semmle.javascript.security.dataflow.ReflectedXssQuery
 import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink

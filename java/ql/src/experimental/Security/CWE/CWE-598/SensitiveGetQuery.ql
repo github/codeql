@@ -6,7 +6,7 @@
  * @precision medium
  * @id java/sensitive-query-with-get
  * @tags security
- *       external/cwe-598
+ *       external/cwe/cwe-598
  */
 
 import java

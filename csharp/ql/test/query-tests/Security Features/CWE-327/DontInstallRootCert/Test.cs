@@ -1,5 +1,3 @@
-// semmle-extractor-options: /r:System.Security.Cryptography.X509Certificates.dll
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
