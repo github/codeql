@@ -1,1 +1,0 @@
-(process && "renderer" === process.type ? require("electron").remote.require : require)("https");

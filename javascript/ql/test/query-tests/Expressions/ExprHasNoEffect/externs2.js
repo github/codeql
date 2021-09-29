@@ -1,5 +1,0 @@
-/**
- * @externs
- */
-
-Math.PI;

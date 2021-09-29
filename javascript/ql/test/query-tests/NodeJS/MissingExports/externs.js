@@ -1,2 +1,0 @@
-/** @externs */
-function alert(msg) {}

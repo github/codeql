@@ -1,6 +1,0 @@
-{
-    "name": "bound-args",
-    "dependencies": {
-        "foo": "*"
-    }
-}

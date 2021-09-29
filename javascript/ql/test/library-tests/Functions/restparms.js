@@ -1,2 +1,0 @@
-function r(x, ...ys) {
-}

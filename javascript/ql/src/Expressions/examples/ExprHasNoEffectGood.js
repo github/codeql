@@ -1,1 +1,0 @@
-void(elem.parentNode.selectedIndex);

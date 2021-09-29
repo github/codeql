@@ -1,2 +1,0 @@
-io(); 
-io.connect("/messages");

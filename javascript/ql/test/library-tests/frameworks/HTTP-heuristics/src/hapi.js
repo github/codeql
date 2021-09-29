@@ -1,1 +1,0 @@
-function handler(request, h){}

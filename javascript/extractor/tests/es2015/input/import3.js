@@ -1,1 +1,0 @@
-import { y as z } from 'foo';

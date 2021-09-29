@@ -1,3 +1,0 @@
-{
-  "password": "super secret"
-}

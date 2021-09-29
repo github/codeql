@@ -1,2 +1,0 @@
-function f() {}
-function g() {}

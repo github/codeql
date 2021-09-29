@@ -1,1 +1,0 @@
-checkJSON(angular.fromJson(input));

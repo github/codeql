@@ -1,2 +1,0 @@
-<TS language="whatever">
-</TS>

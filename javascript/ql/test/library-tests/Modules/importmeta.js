@@ -1,1 +1,0 @@
-var foo = new URL('../cli.svg', import.meta.url).pathname;

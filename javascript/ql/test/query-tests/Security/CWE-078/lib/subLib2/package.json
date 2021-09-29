@@ -1,9 +1,0 @@
-{
-  "name": "my-sub-lib2",
-  "version": "0.0.7",
-  "files": [
-    "special-file.js",
-    "compiled-file.js",
-    "compiled-file"
-  ]
-}

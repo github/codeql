@@ -1,4 +1,0 @@
-- description: Security-extended queries for JavaScript
-- queries: .
-- apply: security-extended-selectors.yml
-  from: codeql/suite-helpers

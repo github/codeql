@@ -1,3 +1,0 @@
-import testUtilities.ConsistencyChecking
-import semmle.javascript.security.dataflow.ReflectedXss
-import semmle.javascript.security.dataflow.ServerSideUrlRedirect

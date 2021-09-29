@@ -1,4 +1,0 @@
-- description: Security-and-quality queries for JavaScript
-- queries: .
-- apply: security-and-quality-selectors.yml
-  from: codeql/suite-helpers

@@ -1,4 +1,0 @@
-name: codeql/javascript-upgrades
-upgrades: .
-library: true
-version: 0.0.3

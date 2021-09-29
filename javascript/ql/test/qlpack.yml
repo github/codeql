@@ -1,7 +1,0 @@
-name: codeql/javascript-tests
-version: 0.0.3
-dependencies:
-  codeql/javascript-all: "*"
-  codeql/javascript-queries: "*"
-extractor: javascript
-tests: .

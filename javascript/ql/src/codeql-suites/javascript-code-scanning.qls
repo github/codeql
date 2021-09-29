@@ -1,4 +1,0 @@
-- description: Standard Code Scanning queries for JavaScript
-- queries: .
-- apply: code-scanning-selectors.yml
-  from: codeql/suite-helpers

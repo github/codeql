@@ -1,1 +1,0 @@
-const loc = dist < 10 ? "here" : "there";

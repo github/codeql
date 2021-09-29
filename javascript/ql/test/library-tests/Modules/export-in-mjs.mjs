@@ -1,1 +1,0 @@
-export var exported_from_mjs = 42;

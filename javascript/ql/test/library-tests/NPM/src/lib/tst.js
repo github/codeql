@@ -1,3 +1,0 @@
-alert("world");
-
-require("process");

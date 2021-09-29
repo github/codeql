@@ -1,1 +1,0 @@
-var f = (viewable: ViewToken): ?ViewToken => {};

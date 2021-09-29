@@ -1,6 +1,0 @@
-{
-  "globals": {
-     "aWritableGlobal": true,
-     "aNonWritableGlobal": false
-  }
-}

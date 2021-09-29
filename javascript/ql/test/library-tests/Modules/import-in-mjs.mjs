@@ -1,1 +1,0 @@
-import exported_from_mjs from 'export-in-mjs';

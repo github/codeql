@@ -1,1 +1,0 @@
-const answer = 42;
