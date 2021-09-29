@@ -58,6 +58,10 @@ class FooController < ActionController::Base
     User.where.not("user.id = '#{params[:id]}'")
 
     User.authenticate(params[:name], params[:pass])
+
+    # BAD: executes `SELECT "users".* FROM "users" WHERE (id = '#{params[:id]}')` LIMIT 1
+    # where `params[:id]` is unsanitized
+    User.find_or_initialize_by("id = '#{params[:id]}'")
   end
 end
 
