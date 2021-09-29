@@ -361,6 +361,12 @@ private predicate excludedMember(Member m) {
   m.(Method).getDeclaringType() instanceof EnumType and
   m.hasName(["values", "valueOf"]) and
   m.isStatic()
+  or
+  exists(Parameter p |
+    p = m.(Method).getAParameter() and
+    p.getType().fromSource() and
+    not p.getType().(RefType).isPublic()
+  )
 }
 
 private string stubMember(Member m) {
