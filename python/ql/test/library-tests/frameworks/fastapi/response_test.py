@@ -37,14 +37,14 @@ class MyXmlResponse(fastapi.responses.Response):
 
 
 @app.get("/response_parameter_custom_type", response_class=MyXmlResponse) # $ routeSetup="/response_parameter_custom_type"
-async def response_parameter_custom_type(response: MyXmlResponse): # $ requestHandler SPURIOUS: routedParameter=response
+async def response_parameter_custom_type(response: MyXmlResponse): # $ requestHandler
     # NOTE: This is a contrived example of using a wrong annotation for the response
     # parameter. It will be passed a `fastapi.responses.Response` value when handling an
     # incoming request, so NOT a `MyXmlResponse` value. Cookies/Headers are still
     # propagated to the final response though.
     print(type(response))
     assert type(response) == fastapi.responses.Response
-    response.set_cookie("key", "value") # $ MISSING: CookieWrite CookieName="key" CookieValue="value"
+    response.set_cookie("key", "value") # $ CookieWrite CookieName="key" CookieValue="value"
     response.headers["Custom-Response-Type"] = "yes, but only after function has run"
     xml_data = "<foo>FOO</foo>"
     return xml_data # $ HttpResponse responseBody=xml_data SPURIOUS: mimetype=application/json MISSING: mimetype=application/xml
@@ -60,8 +60,8 @@ async def response_parameter_custom_type(response: MyXmlResponse): # $ requestHa
 @app.get("/direct_response") # $ routeSetup="/direct_response"
 async def direct_response(): # $ requestHandler
     xml_data = "<foo>FOO</foo>"
-    resp = fastapi.responses.Response(xml_data, 200, None, "application/xml") # $ MISSING: HttpResponse mimetype=application/xml responseBody=xml_data
-    resp = fastapi.responses.Response(content=xml_data, media_type="application/xml") # $ MISSING: HttpResponse mimetype=application/xml responseBody=xml_data
+    resp = fastapi.responses.Response(xml_data, 200, None, "application/xml") # $ HttpResponse mimetype=application/xml responseBody=xml_data
+    resp = fastapi.responses.Response(content=xml_data, media_type="application/xml") # $ HttpResponse mimetype=application/xml responseBody=xml_data
     return resp # $ SPURIOUS: HttpResponse mimetype=application/json responseBody=resp
 
 
@@ -74,7 +74,7 @@ async def direct_response2(): # $ requestHandler
 @app.get("/my_xml_response") # $ routeSetup="/my_xml_response"
 async def my_xml_response(): # $ requestHandler
     xml_data = "<foo>FOO</foo>"
-    resp = MyXmlResponse(content=xml_data) # $ MISSING: HttpResponse mimetype=application/xml responseBody=xml_data
+    resp = MyXmlResponse(content=xml_data) # $ HttpResponse mimetype=application/xml responseBody=xml_data
     return resp # $ SPURIOUS: HttpResponse mimetype=application/json responseBody=resp
 
 
@@ -87,7 +87,7 @@ async def my_xml_response2(): # $ requestHandler
 @app.get("/html_response") # $ routeSetup="/html_response"
 async def html_response(): # $ requestHandler
     hello_world = "<h1>Hello World!</h1>"
-    resp =  fastapi.responses.HTMLResponse(hello_world) # $ MISSING: HttpResponse mimetype=text/html responseBody=hello_world
+    resp =  fastapi.responses.HTMLResponse(hello_world) # $ HttpResponse mimetype=text/html responseBody=hello_world
     return resp # $ SPURIOUS: HttpResponse mimetype=application/json responseBody=resp
 
 
@@ -100,7 +100,7 @@ async def html_response2(): # $ requestHandler
 @app.get("/redirect") # $ routeSetup="/redirect"
 async def redirect(): # $ requestHandler
     next = "https://www.example.com"
-    resp = fastapi.responses.RedirectResponse(next) # $ MISSING: HttpResponse HttpRedirectResponse redirectLocation=next
+    resp = fastapi.responses.RedirectResponse(next) # $ HttpResponse HttpRedirectResponse redirectLocation=next
     return resp # $ SPURIOUS: HttpResponse mimetype=application/json responseBody=resp
 
 
@@ -121,7 +121,7 @@ async def streaming_response(): # $ requestHandler
         await asyncio.sleep(0.5)
         yield b"!"
 
-    resp = fastapi.responses.StreamingResponse(content()) # $ MISSING: HttpResponse responseBody=content()
+    resp = fastapi.responses.StreamingResponse(content()) # $ HttpResponse responseBody=content()
     return resp # $ SPURIOUS: HttpResponse mimetype=application/json responseBody=resp
 
 
@@ -136,7 +136,7 @@ async def file_response(): # $ requestHandler
 
     # We don't really have any good QL modeling of passing a file-path, whose content
     # will be returned as part of the response... so will leave this as a TODO for now.
-    resp = fastapi.responses.FileResponse(__file__) # $ MISSING: HttpResponse
+    resp = fastapi.responses.FileResponse(__file__) # $ HttpResponse
     return resp # $ SPURIOUS: HttpResponse mimetype=application/json responseBody=resp
 
 

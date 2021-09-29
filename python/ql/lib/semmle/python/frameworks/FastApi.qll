@@ -79,14 +79,80 @@ private module FastApi {
   // Response modeling
   // ---------------------------------------------------------------------------
   /**
-   * Provides models for the `fastapi.Response` class
+   * Provides models for the `fastapi.Response` class and subclasses.
+   *
+   * See https://fastapi.tiangolo.com/advanced/custom-response/#response.
    */
   module Response {
-    /** Gets a reference to the `fastapi.Response` class. */
-    private API::Node classRef() { result = API::moduleImport("fastapi").getMember("Response") }
+    /**
+     * Gets the `API::Node` for the manually modeled response classes called `name`.
+     */
+    private API::Node getModeledResponseClass(string name) {
+      name = "Response" and
+      result = API::moduleImport("fastapi").getMember("Response")
+      or
+      // see https://github.com/tiangolo/fastapi/blob/master/fastapi/responses.py
+      name in [
+          "Response", "HTMLResponse", "PlainTextResponse", "JSONResponse", "UJSONResponse",
+          "ORJSONResponse", "RedirectResponse", "StreamingResponse", "FileResponse"
+        ] and
+      result = API::moduleImport("fastapi").getMember("responses").getMember(name)
+    }
 
     /**
-     * A source of instances of `fastapi.Response`, extend this class to model new instances.
+     * Gets the default MIME type for a FastAPI response class (defined with the
+     * `media_type` class-attribute).
+     *
+     * Also models user-defined classes and tries to take inheritance into account.
+     *
+     * TODO: build easy way to solve problems like this, like we used to have the
+     * `ClassValue.lookup` predicate.
+     */
+    private string getDefaultMimeType(API::Node responseClass) {
+      exists(string name | responseClass = getModeledResponseClass(name) |
+        // no defaults for these.
+        name in ["Response", "RedirectResponse", "StreamingResponse"] and
+        none()
+        or
+        // For `FileResponse` the code will guess what mimetype
+        // to use, or fall back to "text/plain", but claiming that all responses will
+        // have "text/plain" per default is also highly inaccurate, so just going to not
+        // do anything about this.
+        name = "FileResponse" and
+        none()
+        or
+        name = "HTMLResponse" and
+        result = "text/html"
+        or
+        name = "PlainTextResponse" and
+        result = "text/plain"
+        or
+        name in ["JSONResponse", "UJSONResponse", "ORJSONResponse"] and
+        result = "application/json"
+      )
+      or
+      // user-defined subclasses
+      exists(Class cls, API::Node base |
+        cls.getABase() = base.getAUse().asExpr() and
+        // since we _know_ that the base has an API Node, that means there is a subclass
+        // edge leading to the `ClassExpr` for the class.
+        responseClass.getAnImmediateUse().asExpr().(ClassExpr) = cls.getParent()
+      |
+        exists(Assign assign | assign = cls.getAStmt() |
+          assign.getATarget().(Name).getId() = "media_type" and
+          result = assign.getValue().(StrConst).getText()
+        )
+        or
+        // TODO: this should use a proper MRO calculation instead
+        not exists(Assign assign | assign = cls.getAStmt() |
+          assign.getATarget().(Name).getId() = "media_type"
+        ) and
+        result = getDefaultMimeType(base)
+      )
+    }
+
+    /**
+     * A source of instances of `fastapi.Response` and its' subclasses, extend this class to model new instances.
      *
      * This can include instantiations of the class, return values from function
      * calls, or a special parameter that will be set when functions are called by an external
@@ -96,9 +162,41 @@ private module FastApi {
      */
     abstract class InstanceSource extends DataFlow::LocalSourceNode { }
 
-    /** A direct instantiation of `fastapi.Response`. */
-    private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
-      ClassInstantiation() { this = classRef().getACall() }
+    /** A direct instantiation of a response class. */
+    private class ResponseInstantiation extends InstanceSource, HTTP::Server::HttpResponse::Range,
+      DataFlow::CallCfgNode {
+      API::Node baseApiNode;
+      API::Node responseClass;
+
+      ResponseInstantiation() {
+        baseApiNode = getModeledResponseClass(_) and
+        responseClass = baseApiNode.getASubclass*() and
+        this = responseClass.getACall()
+      }
+
+      override DataFlow::Node getBody() {
+        not baseApiNode = getModeledResponseClass(["RedirectResponse", "FileResponse"]) and
+        result in [this.getArg(0), this.getArgByName("content")]
+      }
+
+      override DataFlow::Node getMimetypeOrContentTypeArg() {
+        not baseApiNode = getModeledResponseClass("RedirectResponse") and
+        result in [this.getArg(3), this.getArgByName("media_type")]
+      }
+
+      override string getMimetypeDefault() { result = getDefaultMimeType(responseClass) }
+    }
+
+    /**
+     * A direct instantiation of a redirect response.
+     */
+    private class RedirectResponseInstantiation extends ResponseInstantiation,
+      HTTP::Server::HttpRedirectResponse::Range {
+      RedirectResponseInstantiation() { baseApiNode = getModeledResponseClass("RedirectResponse") }
+
+      override DataFlow::Node getRedirectLocation() {
+        result in [this.getArg(0), this.getArgByName("url")]
+      }
     }
 
     /**
@@ -109,7 +207,8 @@ private module FastApi {
      */
     class RequestHandlerParam extends InstanceSource, DataFlow::ParameterNode {
       RequestHandlerParam() {
-        this.getParameter().getAnnotation() = classRef().getAUse().asExpr() and
+        this.getParameter().getAnnotation() =
+          getModeledResponseClass(_).getASubclass*().getAUse().asExpr() and
         any(FastApiRouteSetup rs).getARequestHandler().getArgByName(_) = this.getParameter()
       }
     }
