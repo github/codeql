@@ -73,6 +73,9 @@ private module FastApi {
     override Function getARequestHandler() { result.getADecorator().getAFlowNode() = node }
 
     override string getFramework() { result = "FastAPI" }
+
+    /** Gets the argument specifying the response class to use, if any. */
+    DataFlow::Node getResponseClassArg() { result = this.getArgByName("response_class") }
   }
 
   // ---------------------------------------------------------------------------
@@ -200,6 +203,65 @@ private module FastApi {
     }
 
     /**
+     * An implicit response from a return of FastAPI request handler.
+     */
+    private class FastApiRequestHandlerReturn extends HTTP::Server::HttpResponse::Range,
+      DataFlow::CfgNode {
+      FastApiRouteSetup routeSetup;
+
+      FastApiRequestHandlerReturn() {
+        node = routeSetup.getARequestHandler().getAReturnValueFlowNode()
+      }
+
+      override DataFlow::Node getBody() { result = this }
+
+      override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
+
+      override string getMimetypeDefault() {
+        exists(API::Node responseClass |
+          responseClass.getAUse() = routeSetup.getResponseClassArg() and
+          result = getDefaultMimeType(responseClass)
+        )
+        or
+        not exists(routeSetup.getResponseClassArg()) and
+        result = "application/json"
+      }
+    }
+
+    /**
+     * An implicit response from a return of FastAPI request handler, that has
+     * `response_class` set to a `FileResponse`.
+     */
+    private class FastApiRequestHandlerFileResponseReturn extends FastApiRequestHandlerReturn {
+      FastApiRequestHandlerFileResponseReturn() {
+        exists(API::Node responseClass |
+          responseClass.getAUse() = routeSetup.getResponseClassArg() and
+          responseClass = getModeledResponseClass("FileResponse").getASubclass*()
+        )
+      }
+
+      override DataFlow::Node getBody() { none() }
+    }
+
+    /**
+     * An implicit response from a return of FastAPI request handler, that has
+     * `response_class` set to a `RedirectResponse`.
+     */
+    private class FastApiRequestHandlerRedirectReturn extends FastApiRequestHandlerReturn,
+      HTTP::Server::HttpRedirectResponse::Range {
+      FastApiRequestHandlerRedirectReturn() {
+        exists(API::Node responseClass |
+          responseClass.getAUse() = routeSetup.getResponseClassArg() and
+          responseClass = getModeledResponseClass("RedirectResponse").getASubclass*()
+        )
+      }
+
+      override DataFlow::Node getBody() { none() }
+
+      override DataFlow::Node getRedirectLocation() { result = this }
+    }
+
+    /**
      * INTERNAL: Do not use.
      *
      * A parameter to a FastAPI request-handler that has a `fastapi.Response`
@@ -262,24 +324,5 @@ private module FastApi {
 
       override DataFlow::Node getValueArg() { none() }
     }
-  }
-
-  /**
-   * Implicit response from returns of FastAPI request handlers
-   */
-  private class FastApiRequestHandlerReturn extends HTTP::Server::HttpResponse::Range,
-    DataFlow::CfgNode {
-    FastApiRequestHandlerReturn() {
-      exists(Function requestHandler |
-        requestHandler = any(FastApiRouteSetup rs).getARequestHandler() and
-        node = requestHandler.getAReturnValueFlowNode()
-      )
-    }
-
-    override DataFlow::Node getBody() { result = this }
-
-    override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
-
-    override string getMimetypeDefault() { result = "application/json" }
   }
 }
