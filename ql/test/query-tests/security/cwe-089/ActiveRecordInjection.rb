@@ -34,6 +34,10 @@ class FooController < ActionController::Base
     # where `params[:column]` is unsanitized
     User.calculate(:average, params[:column])
 
+    # BAD: executes `SELECT MAX(#{params[:column]}) FROM "users"`
+    # where `params[:column]` is unsanitized
+    User.maximum(params[:column])
+
     # BAD: executes `DELETE FROM "users" WHERE (id = '#{params[:id]}')`
     # where `params[:id]` is unsanitized
     User.delete_all("id = '#{params[:id]}'")
