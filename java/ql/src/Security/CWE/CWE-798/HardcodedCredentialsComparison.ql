@@ -11,7 +11,7 @@
  */
 
 import java
-import HardcodedCredentials
+import semmle.code.java.security.HardcodedCredentials
 
 class EqualsAccess extends MethodAccess {
   EqualsAccess() { getMethod() instanceof EqualsMethod }

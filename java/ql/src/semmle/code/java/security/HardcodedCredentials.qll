@@ -1,5 +1,8 @@
+/** Provides classes to analyze the use of hardcoded credentials. */
+
 import java
-import SensitiveApi
+import semmle.code.java.dataflow.DataFlow
+import CredentialReceivingApi
 
 /**
  * An array creation expression of type `byte[]` with
@@ -37,10 +40,8 @@ class HardcodedExpr extends Expr {
   }
 }
 
-/**
- * An argument to a sensitive call, expected to contain credentials.
- */
-abstract class CredentialsSink extends Expr {
+/** An argument to a sensitive call, expected to contain credentials. */
+abstract class CredentialsSink extends DataFlow::Expr {
   Call getSurroundingCall() { this = result.getAnArgument() }
 }
 
@@ -63,24 +64,26 @@ class CredentialsApiSink extends CredentialsSink {
   }
 }
 
-/**
- * A variable whose name indicates that it may hold a password.
- */
-class PasswordVariable extends Variable {
-  PasswordVariable() {
+/** A variable that holds a password. */
+abstract class PasswordVariable extends Variable { }
+
+/** A variable whose name indicates that it may hold a password. */
+private class ByNamePasswordVariable extends PasswordVariable {
+  ByNamePasswordVariable() {
     getName().regexpMatch("(?i)(encrypted|old|new)?pass(wd|word|code|phrase)(chars|value)?")
   }
 }
 
-/**
- * A variable whose name indicates that it may hold a user name.
- */
-class UsernameVariable extends Variable {
-  UsernameVariable() { getName().regexpMatch("(?i)(user|username)") }
+/** A variable that holds a username. */
+abstract class UsernameVariable extends Variable { }
+
+/** A variable whose name indicates that it may hold a username. */
+private class ByNameUsernameVariable extends UsernameVariable {
+  ByNameUsernameVariable() { getName().regexpMatch("(?i)(user|username)") }
 }
 
 /**
- * An argument to a call, where the parameter name corresponding
+ * An argument to a call, where the parameter corresponding
  * to the argument indicates that it may contain credentials.
  */
 class CredentialsSourceSink extends CredentialsSink {
