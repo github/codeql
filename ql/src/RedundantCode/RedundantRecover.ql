@@ -20,7 +20,7 @@ predicate isDeferred(DataFlow::CallNode call) {
 from DataFlow::CallNode recoverCall, FuncDef f, string msg
 where
   recoverCall.getTarget() = Builtin::recover() and
-  f = recoverCall.getEnclosingCallable() and
+  f = recoverCall.getEnclosingCallable().getFuncDef() and
   (
     isDeferred(recoverCall) and
     msg = "Deferred calls to 'recover' have no effect."
