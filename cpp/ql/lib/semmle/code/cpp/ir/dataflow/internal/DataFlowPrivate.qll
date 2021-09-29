@@ -507,3 +507,6 @@ predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) { no
 
 /** Extra data-flow steps needed for lambda flow analysis. */
 predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) { none() }
+
+/** Holds if flow is allowed to pass into `p` and back out again. */
+predicate allowFlowThroughParameter(ParameterNode p) { none() }

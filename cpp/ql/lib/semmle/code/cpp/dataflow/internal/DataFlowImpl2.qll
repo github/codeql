@@ -252,6 +252,8 @@ private class RetNodeEx extends NodeEx {
   ReturnPosition getReturnPosition() { result = getReturnPosition(this.asNode()) }
 
   ReturnKindExt getKind() { result = this.asNode().(ReturnNodeExt).getKind() }
+
+  predicate allowFlowThroughParameter() { allowFlowThroughParameterCached(this.asNode()) }
 }
 
 private predicate inBarrier(NodeEx node, Configuration config) {
@@ -725,12 +727,16 @@ private module Stage1 {
   /** Holds if flow may return from `callable`. */
   pragma[nomagic]
   private predicate returnFlowCallableNodeCand(
-    DataFlowCallable callable, ReturnKindExt kind, Configuration config
+    DataFlowCallable callable, ReturnKindExt kind, boolean allowFlowThroughParameter,
+    Configuration config
   ) {
     exists(RetNodeEx ret |
       throughFlowNodeCand(ret, config) and
       callable = ret.getEnclosingCallable() and
-      kind = ret.getKind()
+      kind = ret.getKind() and
+      if ret.allowFlowThroughParameter()
+      then allowFlowThroughParameter = true
+      else allowFlowThroughParameter = false
     )
   }
 
@@ -739,13 +745,16 @@ private module Stage1 {
    * candidate for the origin of a summary.
    */
   predicate parameterMayFlowThrough(ParamNodeEx p, DataFlowCallable c, Ap ap, Configuration config) {
-    exists(ReturnKindExt kind |
+    exists(ReturnKindExt kind, boolean allowFlowThroughParameter |
       throughFlowNodeCand(p, config) and
-      returnFlowCallableNodeCand(c, kind, config) and
+      returnFlowCallableNodeCand(c, kind, allowFlowThroughParameter, config) and
       p.getEnclosingCallable() = c and
-      exists(ap) and
-      // we don't expect a parameter to return stored in itself
-      not kind.(ParamUpdateReturnKind).getPosition() = p.getPosition()
+      (
+        if kind.(ParamUpdateReturnKind).getPosition() = p.getPosition()
+        then allowFlowThroughParameter = true
+        else any()
+      ) and
+      exists(ap)
     )
   }
 
@@ -1394,8 +1403,11 @@ private module Stage2 {
       fwdFlow(ret, any(CcCall ccc), apSome(ap), ap0, config) and
       kind = ret.getKind() and
       p.getPosition() = pos and
-      // we don't expect a parameter to return stored in itself
-      not kind.(ParamUpdateReturnKind).getPosition() = pos
+      (
+        if kind.(ParamUpdateReturnKind).getPosition() = p.getPosition()
+        then ret.allowFlowThroughParameter()
+        else any()
+      )
     )
   }
 
@@ -2083,8 +2095,11 @@ private module Stage3 {
       fwdFlow(ret, any(CcCall ccc), apSome(ap), ap0, config) and
       kind = ret.getKind() and
       p.getPosition() = pos and
-      // we don't expect a parameter to return stored in itself
-      not kind.(ParamUpdateReturnKind).getPosition() = pos
+      (
+        if kind.(ParamUpdateReturnKind).getPosition() = p.getPosition()
+        then ret.allowFlowThroughParameter()
+        else any()
+      )
     )
   }
 
@@ -2843,8 +2858,11 @@ private module Stage4 {
       fwdFlow(ret, any(CcCall ccc), apSome(ap), ap0, config) and
       kind = ret.getKind() and
       p.getPosition() = pos and
-      // we don't expect a parameter to return stored in itself
-      not kind.(ParamUpdateReturnKind).getPosition() = pos
+      (
+        if kind.(ParamUpdateReturnKind).getPosition() = p.getPosition()
+        then ret.allowFlowThroughParameter()
+        else any()
+      )
     )
   }
 
@@ -2916,6 +2934,8 @@ private class SummaryCtxSome extends SummaryCtx, TSummaryCtxSome {
   SummaryCtxSome() { this = TSummaryCtxSome(p, ap) }
 
   int getParameterPos() { p.isParameterOf(_, result) }
+
+  ParameterNode getParameterNode() { result = p.asNode() }
 
   override string toString() { result = p + ": " + ap }
 
@@ -3617,7 +3637,11 @@ private predicate paramFlowsThrough(
     ap = mid.getAp() and
     apa = ap.getApprox() and
     pos = sc.getParameterPos() and
-    not kind.(ParamUpdateReturnKind).getPosition() = pos
+    (
+      if kind.(ParamUpdateReturnKind).getPosition() = pos
+      then ret.allowFlowThroughParameter()
+      else any()
+    )
   )
 }
 

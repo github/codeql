@@ -802,6 +802,9 @@ private module Cached {
   }
 
   cached
+  predicate allowFlowThroughParameterCached(Node ret) { allowFlowThroughParameter(ret) }
+
+  cached
   newtype TCallContext =
     TAnyCallContext() or
     TSpecificCall(DataFlowCall call) { recordDataFlowCallSite(call, _) } or

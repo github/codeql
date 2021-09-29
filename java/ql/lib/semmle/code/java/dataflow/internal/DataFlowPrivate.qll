@@ -369,3 +369,11 @@ predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
 
 /** Extra data-flow steps needed for lambda flow analysis. */
 predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) { none() }
+
+/**
+ * Holds if flow is allowed to pass from a parameter `p`, to return
+ * node `ret`, and back out to `p`.
+ */
+predicate allowFlowThroughParameter(ReturnNodeExt ret) {
+  FlowSummaryImpl::Private::summaryAllowFlowThroughParameter(ret)
+}
