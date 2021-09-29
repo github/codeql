@@ -7,4 +7,4 @@ private import codeql.ruby.frameworks.ActiveRecord
 private import codeql.ruby.frameworks.ActionView
 private import codeql.ruby.frameworks.StandardLibrary
 private import codeql.ruby.frameworks.Files
-private import codeql.ruby.frameworks.HTTPClients
+private import codeql.ruby.frameworks.HttpClients

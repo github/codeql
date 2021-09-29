@@ -13,11 +13,11 @@ private import codeql.ruby.dataflow.internal.DataFlowPublic
  * response = req.get("/")
  * ```
  */
-class NetHTTPRequest extends HTTP::Client::Request::Range {
+class NetHttpRequest extends HTTP::Client::Request::Range {
   private DataFlow::CallNode request;
   private DataFlow::Node responseBody;
 
-  NetHTTPRequest() {
+  NetHttpRequest() {
     exists(API::Node requestNode, string method |
       request = requestNode.getAnImmediateUse() and
       this = request.asExpr().getExpr()

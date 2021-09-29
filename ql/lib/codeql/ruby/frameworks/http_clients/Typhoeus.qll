@@ -3,21 +3,20 @@ private import codeql.ruby.Concepts
 private import codeql.ruby.ApiGraphs
 
 /**
- * A call that makes an HTTP request using `RestClient`.
+ * A call that makes an HTTP request using `Typhoeus`.
  * ```ruby
- * RestClient.get("http://example.com").body
+ * Typhoeus.get("http://example.com").body
  * ```
  */
-class RestClientHttpRequest extends HTTP::Client::Request::Range {
+class TyphoeusHttpRequest extends HTTP::Client::Request::Range {
   DataFlow::Node request;
   DataFlow::CallNode responseBody;
 
-  RestClientHttpRequest() {
-    exists(API::Node requestNode |
+  TyphoeusHttpRequest() {
+    exists(API::Node requestNode | request = requestNode.getAnImmediateUse() |
       requestNode =
-        API::getTopLevelMember("RestClient")
+        API::getTopLevelMember("Typhoeus")
             .getReturn(["get", "head", "delete", "options", "post", "put", "patch"]) and
-      request = requestNode.getAnImmediateUse() and
       responseBody = requestNode.getAMethodCall("body") and
       this = request.asExpr().getExpr()
     )
@@ -25,5 +24,5 @@ class RestClientHttpRequest extends HTTP::Client::Request::Range {
 
   override DataFlow::Node getResponseBody() { result = responseBody }
 
-  override string getFramework() { result = "RestClient" }
+  override string getFramework() { result = "Typhoeus" }
 }
