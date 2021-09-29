@@ -139,11 +139,7 @@ predicate readStep(Node node1, Content f, Node node2) {
  */
 predicate clearsContent(Node n, Content c) {
   c instanceof FieldContent and
-  (
-    n = any(PostUpdateNode pun | storeStep(_, c, pun)).getPreUpdateNode()
-    or
-    FlowSummaryImpl::Private::Steps::summaryStoresIntoArg(c, n)
-  )
+  n = any(PostUpdateNode pun | storeStep(_, c, pun)).getPreUpdateNode()
   or
   FlowSummaryImpl::Private::Steps::summaryClearsContent(n, c)
 }
