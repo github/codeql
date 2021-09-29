@@ -1,6 +1,7 @@
 # see https://fastapi.tiangolo.com/advanced/response-cookies/
 
 from fastapi import FastAPI, Response
+import fastapi.responses
 import asyncio
 
 app = FastAPI()
@@ -31,12 +32,29 @@ async def response_parameter_no_type(response): # $ requestHandler routedParamet
     return {"message": "response as parameter"} # $ HttpResponse mimetype=application/json responseBody=Dict
 
 
+class MyXmlResponse(fastapi.responses.Response):
+    media_type = "application/xml"
+
+
+@app.get("/response_parameter_custom_type", response_class=MyXmlResponse) # $ routeSetup="/response_parameter_custom_type"
+async def response_parameter_custom_type(response: MyXmlResponse): # $ requestHandler SPURIOUS: routedParameter=response
+    # NOTE: This is a contrived example of using a wrong annotation for the response
+    # parameter. It will be passed a `fastapi.responses.Response` value when handling an
+    # incoming request, so NOT a `MyXmlResponse` value. Cookies/Headers are still
+    # propagated to the final response though.
+    print(type(response))
+    assert type(response) == fastapi.responses.Response
+    response.set_cookie("key", "value") # $ MISSING: CookieWrite CookieName="key" CookieValue="value"
+    response.headers["Custom-Response-Type"] = "yes, but only after function has run"
+    xml_data = "<foo>FOO</foo>"
+    return xml_data # $ HttpResponse responseBody=xml_data SPURIOUS: mimetype=application/json MISSING: mimetype=application/xml
+
+
 # Direct response construction
 
 # see https://fastapi.tiangolo.com/advanced/response-directly/
 # see https://fastapi.tiangolo.com/advanced/custom-response/
 
-import fastapi.responses
 
 
 @app.get("/direct_response") # $ routeSetup="/direct_response"
@@ -51,10 +69,6 @@ async def direct_response(): # $ requestHandler
 async def direct_response2(): # $ requestHandler
     xml_data = "<foo>FOO</foo>"
     return xml_data # $ HttpResponse responseBody=xml_data SPURIOUS: mimetype=application/json
-
-
-class MyXmlResponse(fastapi.responses.Response):
-    media_type = "application/xml"
 
 
 @app.get("/my_xml_response") # $ routeSetup="/my_xml_response"
