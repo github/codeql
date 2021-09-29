@@ -68,8 +68,8 @@ private Expr sqlFragmentArgument(MethodCall call) {
     (
       methodName =
         [
-          "delete_all", "destroy_all", "exists?", "find_by", "find_by_sql", "from", "group",
-          "having", "joins", "lock", "not", "order", "pluck", "where"
+          "delete_by", "destroy_by", "exists?", "find_by", "find_by_sql", "from", "group", "having",
+          "joins", "lock", "not", "order", "pluck", "where"
         ] and
       result = call.getArgument(0)
       or

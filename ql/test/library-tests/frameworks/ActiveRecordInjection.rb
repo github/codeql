@@ -17,10 +17,10 @@ class User < ApplicationRecord
 end
 
 class Admin < User
-  def self.delete_all(condition = nil)
-    # BAD: `delete_all` overrides an ActiveRecord method, but doesn't perform
+  def self.delete_by(condition = nil)
+    # BAD: `delete_by` overrides an ActiveRecord method, but doesn't perform
     # any validation before passing its arguments on to another ActiveRecord method
-    destroy_all(condition)
+    destroy_by(condition)
   end
 end
 
@@ -36,11 +36,11 @@ class FooController < ActionController::Base
 
     # BAD: executes `DELETE FROM "users" WHERE (id = '#{params[:id]}')`
     # where `params[:id]` is unsanitized
-    User.delete_all("id = '#{params[:id]}'")
+    User.delete_by("id = '#{params[:id]}'")
 
     # BAD: executes `SELECT "users".* FROM "users" WHERE (id = '#{params[:id]}')`
     # where `params[:id]` is unsanitized
-    User.destroy_all(["id = '#{params[:id]}'"])
+    User.destroy_by(["id = '#{params[:id]}'"])
 
     # BAD: executes `SELECT "users".* FROM "users" WHERE id BETWEEN '#{params[:min_id]}' AND 100000`
     # where `params[:min_id]` is unsanitized
@@ -65,7 +65,7 @@ class BarController < ApplicationController
 
     # BAD: executes `DELETE FROM "users" WHERE (id = #{uid})`
     # where `uid` is unsantized
-    User.delete_all("id " + uidEq)
+    User.delete_by("id " + uidEq)
   end
 
   def safe_paths
@@ -91,6 +91,6 @@ end
 
 class BazController < BarController
   def yet_another_handler
-    Admin.delete_all(params[:admin_condition])
+    Admin.delete_by(params[:admin_condition])
   end
 end
