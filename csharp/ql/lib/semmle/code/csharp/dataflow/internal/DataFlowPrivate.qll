@@ -311,6 +311,18 @@ module LocalFlow {
   }
 
   /**
+   * Holds if there is a local use-use flow step from `nodeFrom` to `nodeTo`
+   * involving SSA definition `def`.
+   */
+  predicate localSsaFlowStepUseUse(Ssa::Definition def, Node nodeFrom, Node nodeTo) {
+    exists(ControlFlow::Node cfnFrom, ControlFlow::Node cfnTo |
+      SsaImpl::adjacentReadPairSameVar(def, cfnFrom, cfnTo) and
+      nodeTo = TExprNode(cfnTo) and
+      nodeFrom = TExprNode(cfnFrom)
+    )
+  }
+
+  /**
    * Holds if there is a local flow step from `nodeFrom` to `nodeTo` involving
    * SSA definition `def.
    */
@@ -322,14 +334,7 @@ module LocalFlow {
     )
     or
     // Flow from read to next read
-    exists(ControlFlow::Node cfnFrom, ControlFlow::Node cfnTo |
-      SsaImpl::adjacentReadPairSameVar(def, cfnFrom, cfnTo) and
-      nodeTo = TExprNode(cfnTo)
-    |
-      nodeFrom = TExprNode(cfnFrom)
-      or
-      cfnFrom = nodeFrom.(PostUpdateNode).getPreUpdateNode().getControlFlowNode()
-    )
+    localSsaFlowStepUseUse(def, nodeFrom.(PostUpdateNode).getPreUpdateNode(), nodeTo)
     or
     // Flow into phi node
     exists(Ssa::PhiNode phi |
@@ -398,6 +403,12 @@ module LocalFlow {
  */
 predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   LocalFlow::localFlowStepCommon(nodeFrom, nodeTo)
+  or
+  exists(Ssa::Definition def |
+    LocalFlow::localSsaFlowStepUseUse(def, nodeFrom, nodeTo) and
+    not FlowSummaryImpl::Private::Steps::summaryClearsContentArg(nodeFrom, _) and
+    not LocalFlow::usesInstanceField(def)
+  )
   or
   LocalFlow::localFlowCapturedVarStep(nodeFrom, nodeTo)
   or
@@ -715,6 +726,8 @@ private module Cached {
   cached
   predicate localFlowStepImpl(Node nodeFrom, Node nodeTo) {
     LocalFlow::localFlowStepCommon(nodeFrom, nodeTo)
+    or
+    LocalFlow::localSsaFlowStepUseUse(_, nodeFrom, nodeTo)
     or
     exists(Ssa::Definition def |
       LocalFlow::localSsaFlowStep(def, nodeFrom, nodeTo) and
@@ -1691,9 +1704,6 @@ predicate clearsContent(Node n, Content c) {
   or
   fieldOrPropertyStore(_, c, _, n.(ObjectInitializerNode).getInitializer(), false)
   or
-  FlowSummaryImpl::Private::Steps::summaryStoresIntoArg(c, n) and
-  not c instanceof ElementContent
-  or
   FlowSummaryImpl::Private::Steps::summaryClearsContent(n, c)
   or
   exists(WithExpr we, ObjectInitializer oi, FieldOrProperty f |
@@ -2002,4 +2012,12 @@ predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preserves
     nodeTo.asExpr().(EventRead).getTarget() = aee.getTarget() and
     preservesValue = false
   )
+}
+
+/**
+ * Holds if flow is allowed to pass from a parameter `p`, to return
+ * node `ret`, and back out to `p`.
+ */
+predicate allowFlowThroughParameter(ReturnNodeExt ret) {
+  FlowSummaryImpl::Private::summaryAllowFlowThroughParameter(ret)
 }
