@@ -72,9 +72,7 @@ module InsecureRandomness {
    */
   class PasswordFnSink extends Sink {
     PasswordFnSink() {
-      this.getEnclosingCallable()
-          .getName()
-          .regexpMatch("(?i).*(gen(erate)?|salt|make|mk)Password.*")
+      this.getRoot().(FuncDef).getName().regexpMatch("(?i).*(gen(erate)?|salt|make|mk)Password.*")
     }
 
     override string getKind() { result = "a password-related function" }
