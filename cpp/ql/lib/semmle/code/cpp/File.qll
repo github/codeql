@@ -38,7 +38,7 @@ class Container extends Locatable, @container {
    * DEPRECATED: Use `getLocation` instead.
    * Gets a URL representing the location of this container.
    *
-   * For more information see [Providing URLs](https://help.semmle.com/QL/learn-ql/ql/locations.html#providing-urls).
+   * For more information see [Providing URLs](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/#providing-urls).
    */
   deprecated string getURL() { none() } // overridden by subclasses
 

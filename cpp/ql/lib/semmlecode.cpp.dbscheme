@@ -245,7 +245,7 @@ svnchurn(
  * The location spans column `startcolumn` of line `startline` to
  * column `endcolumn` of line `endline` in file `file`.
  * For more information, see
- * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+ * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
  */
 locations_default(
     /** The location of an element that is not an expression or a statement. */
@@ -262,7 +262,7 @@ locations_default(
  * The location spans column `startcolumn` of line `startline` to
  * column `endcolumn` of line `endline` in file `file`.
  * For more information, see
- * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+ * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
  */
 locations_stmt(
     /** The location of a statement. */
@@ -279,7 +279,7 @@ locations_stmt(
  * The location spans column `startcolumn` of line `startline` to
  * column `endcolumn` of line `endline` in file `file`.
  * For more information, see
- * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+ * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
  */
 locations_expr(
     /** The location of an expression. */
