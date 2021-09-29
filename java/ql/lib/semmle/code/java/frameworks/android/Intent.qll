@@ -127,7 +127,7 @@ private class IntentBundleFlowSteps extends SummaryModelCsv {
         "android.os;Bundle;true;putShortArray;;;Argument[0];MapKey of Argument[-1];value",
         "android.os;Bundle;true;putSize;;;Argument[0];MapKey of Argument[-1];value",
         "android.os;Bundle;true;putSizeF;;;Argument[0];MapKey of Argument[-1];value",
-        "android.os;Bundle;true;putSparceParcelableArray;;;Argument[0];MapKey of Argument[-1];value",
+        "android.os;Bundle;true;putSparseParcelableArray;;;Argument[0];MapKey of Argument[-1];value",
         "android.os;Bundle;true;putSparseParcelableArray;;;Argument[1];MapValue of Argument[-1];value",
         "android.os;Bundle;true;putStringArrayList;;;Argument[0];MapKey of Argument[-1];value",
         "android.os;Bundle;true;putStringArrayList;;;Argument[1];MapValue of Argument[-1];value",
