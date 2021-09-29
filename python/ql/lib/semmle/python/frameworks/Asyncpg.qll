@@ -38,6 +38,24 @@ private module Asyncpg {
     override DataFlow::Node getSql() { result in [this.getArg(0), this.getArgByName(queryArg)] }
   }
 
+  private string fileAccessMethodName(string pathArg) {
+    result in ["copy_from_query", "copy_from_table"] and
+    pathArg = "output"
+    or
+    result = "copy_to_table" and
+    pathArg = "source"
+  }
+
+  class FileAccessOnConnection extends FileSystemAccess::Range, DataFlow::MethodCallNode {
+    string pathArg;
+
+    FileAccessOnConnection() {
+      this.calls([connectionPool().getAUse(), connection().getAUse()], fileAccessMethodName(pathArg))
+    }
+
+    override DataFlow::Node getAPathArgument() { result in [this.getArgByName(pathArg)] }
+  }
+
   /**
    * Holds if `result` is the result of awaiting `n`.
    */

@@ -5,7 +5,7 @@ async def test_connection():
     conn = await asyncpg.connect()
 
     try:
-        await conn.copy_from_query("sql", output="filepath")  # $ getSql="sql" MISSING: getAPathArgument="filepath"
+        await conn.copy_from_query("sql", output="filepath")  # $ getSql="sql" getAPathArgument="filepath"
         await conn.execute("sql")  # $ getSql="sql"
         await conn.executemany("sql")  # $ getSql="sql"
         await conn.fetch("sql")  # $ getSql="sql"
@@ -62,7 +62,7 @@ async def test_connection_pool():
     pool = await asyncpg.create_pool()
 
     try:
-        await pool.copy_from_query("sql", output="filepath")  # $ getSql="sql" MISSING: getAPathArgument="filepath"
+        await pool.copy_from_query("sql", output="filepath")  # $ getSql="sql" getAPathArgument="filepath"
         await pool.execute("sql")  # $ getSql="sql"
         await pool.executemany("sql")  # $ getSql="sql"
         await pool.fetch("sql")  # $ getSql="sql"
