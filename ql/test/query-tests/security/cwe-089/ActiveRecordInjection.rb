@@ -62,6 +62,24 @@ class FooController < ActionController::Base
     # BAD: executes `SELECT "users".* FROM "users" WHERE (id = '#{params[:id]}')` LIMIT 1
     # where `params[:id]` is unsanitized
     User.find_or_initialize_by("id = '#{params[:id]}'")
+
+    user = User.first
+    # BAD: executes `SELECT "users".* FROM "users" WHERE id = 1 LIMIT 1 #{params[:lock]}`
+    # where `params[:lock]` is unsanitized
+    user.reload(lock: params[:lock])
+
+    # BAD: executes `SELECT #{params[:column]} FROM "users"`
+    # where `params[:column]` is unsanitized
+    User.select(params[:column])
+    User.reselect(params[:column])
+
+    # BAD: executes `SELECT "users".* FROM "users" WHERE (#{params[:condition]})`
+    # where `params[:condition]` is unsanitized
+    User.rewhere(params[:condition])
+
+    # BAD: executes `UPDATE "users" SET #{params[:fields]}`
+    # where `params[:fields]` is unsanitized
+    User.update_all(params[:fields])
   end
 end
 

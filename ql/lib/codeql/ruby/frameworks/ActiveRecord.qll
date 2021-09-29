@@ -70,7 +70,8 @@ private Expr sqlFragmentArgument(MethodCall call) {
         [
           "delete_by", "destroy_by", "exists?", "find_by", "find_by!", "find_or_create_by",
           "find_or_create_by!", "find_or_initialize_by", "find_by_sql", "from", "group", "having",
-          "joins", "lock", "not", "order", "pluck", "where"
+          "joins", "lock", "not", "order", "pluck", "where", "rewhere", "select", "reselect",
+          "update_all"
         ] and
       result = call.getArgument(0)
       or
@@ -82,6 +83,9 @@ private Expr sqlFragmentArgument(MethodCall call) {
       // This format was supported until Rails 2.3.8
       methodName = ["all", "find", "first", "last"] and
       result = call.getKeywordArgument("conditions")
+      or
+      methodName = "reload" and
+      result = call.getKeywordArgument("lock")
     )
   )
 }
@@ -122,7 +126,6 @@ class PotentiallyUnsafeSqlExecutingMethodCall extends ActiveRecordModelClassMeth
   // The SQL fragment argument itself
   private Expr sqlFragmentExpr;
 
-  // TODO: `find` with `lock:` option also takes an SQL fragment
   PotentiallyUnsafeSqlExecutingMethodCall() {
     exists(Expr arg |
       arg = sqlFragmentArgument(this) and
