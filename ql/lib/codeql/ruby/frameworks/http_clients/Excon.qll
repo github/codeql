@@ -18,29 +18,113 @@ private import codeql.ruby.ApiGraphs
  * https://github.com/excon/excon/blob/master/README.md
  */
 class ExconHttpRequest extends HTTP::Client::Request::Range {
-  DataFlow::Node request;
-  DataFlow::CallNode responseBody;
+  DataFlow::Node requestUse;
+  API::Node requestNode;
+  API::Node connectionNode;
 
   ExconHttpRequest() {
-    exists(API::Node requestNode | request = requestNode.getAnImmediateUse() |
-      requestNode =
-        [
-          // one-off requests
-          API::getTopLevelMember("Excon"),
-          // connection re-use
-          API::getTopLevelMember("Excon").getInstance()
-        ]
-            .getReturn([
-                // Excon#request exists but Excon.request doesn't.
-                // This shouldn't be a problem - in real code the latter would raise NoMethodError anyway.
-                "get", "head", "delete", "options", "post", "put", "patch", "trace", "request"
-              ]) and
-      responseBody = requestNode.getAMethodCall("body") and
-      this = request.asExpr().getExpr()
+    requestUse = requestNode.getAnImmediateUse() and
+    connectionNode =
+      [
+        // one-off requests
+        API::getTopLevelMember("Excon"),
+        // connection re-use
+        API::getTopLevelMember("Excon").getInstance(),
+        API::getTopLevelMember("Excon").getMember("Connection").getInstance()
+      ] and
+    requestNode =
+      connectionNode
+          .getReturn([
+              // Excon#request exists but Excon.request doesn't.
+              // This shouldn't be a problem - in real code the latter would raise NoMethodError anyway.
+              "get", "head", "delete", "options", "post", "put", "patch", "trace", "request"
+            ]) and
+    this = requestUse.asExpr().getExpr()
+  }
+
+  override DataFlow::Node getResponseBody() { result = requestNode.getAMethodCall("body") }
+
+  override predicate disablesCertificateValidation(DataFlow::Node disablingNode) {
+    // Check for `ssl_verify_peer: false` in the options hash.
+    exists(DataFlow::Node arg, int i |
+      i > 0 and arg = connectionNode.getAUse().(DataFlow::CallNode).getArgument(i)
+    |
+      argSetsVerifyPeer(arg, false, disablingNode)
+    )
+    or
+    // Or we see a call to `Excon.defaults[:ssl_verify_peer] = false` before the
+    // request, and no `ssl_verify_peer: true` in the explicit options hash for
+    // the request call.
+    exists(DataFlow::CallNode disableCall |
+      setsDefaultVerification(disableCall, false) and
+      disableCall.asExpr().getASuccessor+() = requestUse.asExpr() and
+      disablingNode = disableCall and
+      not exists(DataFlow::Node arg, int i |
+        i > 0 and arg = connectionNode.getAUse().(DataFlow::CallNode).getArgument(i)
+      |
+        argSetsVerifyPeer(arg, true, _)
+      )
     )
   }
 
-  override DataFlow::Node getResponseBody() { result = responseBody }
-
   override string getFramework() { result = "Excon" }
+}
+
+/**
+ * Holds if `arg` represents an options hash that contains the key
+ * `:ssl_verify_peer` with `value`, where `kvNode` is the data-flow node for
+ * this key-value pair.
+ */
+predicate argSetsVerifyPeer(DataFlow::Node arg, boolean value, DataFlow::Node kvNode) {
+  // Either passed as an individual key:value argument, e.g.:
+  // Excon.get(..., ssl_verify_peer: false)
+  isSslVerifyPeerPair(arg.asExpr().getExpr(), value) and
+  kvNode = arg
+  or
+  // Or as a single hash argument, e.g.:
+  // Excon.get(..., { ssl_verify_peer: false, ... })
+  exists(DataFlow::LocalSourceNode optionsNode, Pair p |
+    p = optionsNode.asExpr().getExpr().(HashLiteral).getAKeyValuePair() and
+    isSslVerifyPeerPair(p, value) and
+    optionsNode.flowsTo(arg) and
+    kvNode.asExpr().getExpr() = p
+  )
+}
+
+/**
+ * Holds if `callNode` sets `Excon.defaults[:ssl_verify_peer]` or
+ * `Excon.ssl_verify_peer` to `value`.
+ */
+private predicate setsDefaultVerification(DataFlow::CallNode callNode, boolean value) {
+  callNode = API::getTopLevelMember("Excon").getReturn("defaults").getAMethodCall("[]=") and
+  isSslVerifyPeerLiteral(callNode.getArgument(0)) and
+  hasBooleanValue(callNode.getArgument(1), value)
+  or
+  callNode = API::getTopLevelMember("Excon").getAMethodCall("ssl_verify_peer=") and
+  hasBooleanValue(callNode.getArgument(0), value)
+}
+
+private predicate isSslVerifyPeerLiteral(DataFlow::Node node) {
+  exists(DataFlow::LocalSourceNode literal |
+    literal.asExpr().getExpr().(SymbolLiteral).getValueText() = "ssl_verify_peer" and
+    literal.flowsTo(node)
+  )
+}
+
+/** Holds if `node` can contain `value`. */
+private predicate hasBooleanValue(DataFlow::Node node, boolean value) {
+  exists(DataFlow::LocalSourceNode literal |
+    literal.asExpr().getExpr().(BooleanLiteral).getValue() = value and
+    literal.flowsTo(node)
+  )
+}
+
+/** Holds if `p` is the pair `ssl_verify_peer: <value>`. */
+private predicate isSslVerifyPeerPair(Pair p, boolean value) {
+  exists(DataFlow::Node key, DataFlow::Node valueNode |
+    key.asExpr().getExpr() = p.getKey() and valueNode.asExpr().getExpr() = p.getValue()
+  |
+    isSslVerifyPeerLiteral(key) and
+    hasBooleanValue(valueNode, value)
+  )
 }

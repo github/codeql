@@ -419,6 +419,15 @@ module HTTP {
 
       /** Gets a string that identifies the framework used for this request. */
       string getFramework() { result = super.getFramework() }
+
+      /**
+       * Holds if this request is made using a mode that disables SSL/TLS
+       * certificate validation, where `disablingNode` represents the point at
+       * which the validation was disabled.
+       */
+      predicate disablesCertificateValidation(DataFlow::Node disablingNode) {
+        super.disablesCertificateValidation(disablingNode)
+      }
     }
 
     /** Provides a class for modeling new HTTP requests. */
@@ -435,6 +444,13 @@ module HTTP {
 
         /** Gets a string that identifies the framework used for this request. */
         abstract string getFramework();
+
+        /**
+         * Holds if this request is made using a mode that disables SSL/TLS
+         * certificate validation, where `disablingNode` represents the point at
+         * which the validation was disabled.
+         */
+        abstract predicate disablesCertificateValidation(DataFlow::Node disablingNode);
       }
     }
 
