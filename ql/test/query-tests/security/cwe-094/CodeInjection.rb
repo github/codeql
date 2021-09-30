@@ -10,6 +10,15 @@ class UsersController < ActionController::Base
 
     # GOOD
     Foo.new.bar(code)
+
+    # BAD
+    Foo.class_eval(code)
+
+    # BAD
+    Foo.module_eval(code)
+
+    # GOOD
+    Bar.class_eval(code)
   end
 
   def update
@@ -25,5 +34,11 @@ class Foo
 
   def bar(x)
     eval(x)
+  end
+end
+
+class Bar
+  def self.class_eval(x)
+    true
   end
 end
