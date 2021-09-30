@@ -131,8 +131,7 @@ predicate isFromMacroDefinition(Element e) { isFromMacroInvocation(e, _) }
  * definition is outside the source directory of the database.
  *
  * If the system macro is invoked through a non-system macro, then this
- * predicate does not hold. That's a limitation of how macros are represented
- * in the database.
+ * predicate does not hold.
  *
  * See also `isFromMacroDefinition`.
  */
