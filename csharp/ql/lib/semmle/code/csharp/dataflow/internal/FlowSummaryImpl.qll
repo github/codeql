@@ -504,13 +504,31 @@ module Private {
   }
 
   /**
+   * Holds if `input` and `output` are the endpoints in the compilation of
+   * a flow summary for `c`.
+   */
+  private predicate endpoints(SummarizedCallable c, Node input, Node output) {
+    exists(SummaryComponentStack inputContents, SummaryComponentStack outputContents |
+      summary(c, inputContents, outputContents, _) and
+      input = summaryNodeInputState(c, inputContents.drop(inputContents.length() - 1)) and
+      output = summaryNodeOutputState(c, outputContents.drop(outputContents.length() - 1))
+    )
+  }
+
+  /**
    * Holds if flow is allowed to pass from parameter `p`, to a return
    * node, and back out to `p`.
    */
   predicate summaryAllowParameterReturnInSelf(ParamNode p) {
-    exists(SummarizedCallable c, int i |
-      c.clearsContent(i, _) and
-      p.isParameterOf(c, i)
+    exists(SummarizedCallable c, int i | p.isParameterOf(c, i) |
+      c.clearsContent(i, _)
+      or
+      exists(Node input, Node output, SummaryComponentStack stack |
+        endpoints(c, input, output) and
+        stack = SummaryComponentStack::singleton(SummaryComponent::argument(i)) and
+        input = summaryNodeInputState(_, stack) and
+        output = summaryNodeOutputState(_, stack)
+      )
     )
   }
 
@@ -542,6 +560,7 @@ module Private {
       // allows us to infer taint flow from argument 0 to the return value.
       succ instanceof ParamNode and
       summaryPostUpdateNode(pred, succ) and
+      not endpoints(_, succ, pred) and
       preservesValue = true
       or
       // Similarly we would like to chain together summaries where values get passed
