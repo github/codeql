@@ -33,9 +33,13 @@ class ImplicitPendingIntentStartConf extends TaintTracking::Configuration {
   }
 
   override predicate allowImplicitRead(DataFlow::Node node, DataFlow::Content c) {
-    super.allowImplicitRead(node, c) or
-    this.isSink(node) or
-    this.isAdditionalTaintStep(node, _)
+    super.allowImplicitRead(node, c)
+    or
+    this.isSink(node) and
+    allowIntentExtrasImplicitRead(node, c)
+    or
+    this.isAdditionalTaintStep(node, _) and
+    c.(DataFlow::FieldContent).getType() instanceof PendingIntent
   }
 }
 
@@ -78,6 +82,13 @@ private class ImplicitPendingIntentConf extends DataFlow2::Configuration {
   override predicate isBarrier(DataFlow::Node barrier) {
     barrier instanceof ExplicitIntentSanitizer
   }
+
+  override predicate allowImplicitRead(DataFlow::Node node, DataFlow::Content c) {
+    // Allow implicit reads of Intent arrays for sinks like getStartActivities
+    isSink(node) and
+    node.getType().(Array).getElementType() instanceof TypeIntent and
+    c instanceof DataFlow::ArrayContent
+  }
 }
 
 private class PendingIntentSink extends DataFlow::Node {
@@ -86,24 +97,29 @@ private class PendingIntentSink extends DataFlow::Node {
 
 private class MutablePendingIntentSink extends PendingIntentSink {
   MutablePendingIntentSink() {
-    exists(Argument flagArgument |
-      flagArgument = this.asExpr().(Argument).getCall().getArgument(3)
-    |
+    exists(Argument flagArg | flagArg = this.asExpr().(Argument).getCall().getArgument(3) |
       // API < 31, PendingIntents are mutable by default
-      not TaintTracking::localExprTaint(getPendingIntentFlagAccess("FLAG_IMMUTABLE"), flagArgument)
+      not TaintTracking::localExprTaint(any(ImmutablePendingIntentFlag flag).getAnAccess(), flagArg)
       or
       // API >= 31, PendingIntents need to explicitly set mutability
-      TaintTracking::localExprTaint(getPendingIntentFlagAccess("FLAG_MUTABLE"), flagArgument)
+      TaintTracking::localExprTaint(any(MutablePendingIntentFlag flag).getAnAccess(), flagArg)
     )
   }
 }
 
-private Expr getPendingIntentFlagAccess(string flagName) {
-  exists(Field f |
-    f.getDeclaringType() instanceof PendingIntent and
-    f.isPublic() and
-    f.isFinal() and
-    f.hasName(flagName) and
-    f.getAnAccess() = result
-  )
+private class PendingIntentFlag extends Field {
+  PendingIntentFlag() {
+    this.getDeclaringType() instanceof PendingIntent and
+    this.isPublic() and
+    this.isFinal() and
+    this.getName().matches("FLAG_%")
+  }
+}
+
+private class ImmutablePendingIntentFlag extends PendingIntentFlag {
+  ImmutablePendingIntentFlag() { this.hasName("FLAG_IMMUTABLE") }
+}
+
+private class MutablePendingIntentFlag extends PendingIntentFlag {
+  MutablePendingIntentFlag() { this.hasName("FLAG_MUTABLE") }
 }

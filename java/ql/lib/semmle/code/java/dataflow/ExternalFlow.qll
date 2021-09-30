@@ -698,7 +698,7 @@ class SyntheticField extends string {
 
 private predicate parseSynthField(string c, string f) {
   specSplit(_, c, _) and
-  c.regexpCapture("SyntheticField\\[([.a-zA-Z0-9]+)\\]", 1) = f
+  c.regexpCapture("SyntheticField\\[([.a-zA-Z0-9$]+)\\]", 1) = f
 }
 
 /** Holds if the specification component parses as a `Content`. */

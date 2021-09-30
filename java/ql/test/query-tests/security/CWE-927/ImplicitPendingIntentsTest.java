@@ -2,7 +2,10 @@ package com.example.test;
 
 import java.io.FileNotFoundException;
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
@@ -19,7 +22,8 @@ import androidx.slice.core.SliceHints.ImageMode;
 
 public class ImplicitPendingIntentsTest {
 
-    public static void test(Context ctx) throws PendingIntent.CanceledException {
+    public static void testPendingIntentAsAnExtra(Context ctx)
+            throws PendingIntent.CanceledException {
         {
             Intent baseIntent = new Intent();
             PendingIntent pi = PendingIntent.getActivity(ctx, 0, baseIntent, 0);
@@ -32,6 +36,63 @@ public class ImplicitPendingIntentsTest {
 
             fwdIntent.setPackage("a.safe.package"); // Sanitizer
             ctx.startActivity(fwdIntent); // Safe
+        }
+
+        {
+            Intent baseIntent = new Intent();
+            PendingIntent pi = PendingIntent.getActivityAsUser(ctx, 0, baseIntent, 0, null, null);
+            Intent fwdIntent = new Intent();
+            fwdIntent.putExtra("fwdIntent", pi);
+            ctx.startActivity(fwdIntent); // $hasTaintFlow
+        }
+
+        {
+            Intent baseIntent = new Intent();
+            PendingIntent pi = PendingIntent.getActivities(ctx, 0, new Intent[] {baseIntent}, 0);
+            Intent fwdIntent = new Intent();
+            fwdIntent.putExtra("fwdIntent", pi);
+            ctx.startActivity(fwdIntent); // $hasTaintFlow
+        }
+
+        {
+            Intent baseIntent = new Intent();
+            PendingIntent pi = PendingIntent.getActivitiesAsUser(ctx, 0, new Intent[] {baseIntent},
+                    0, null, null);
+            Intent fwdIntent = new Intent();
+            fwdIntent.putExtra("fwdIntent", pi);
+            ctx.startActivity(fwdIntent); // $hasTaintFlow
+        }
+
+        {
+            Intent baseIntent = new Intent();
+            PendingIntent pi = PendingIntent.getBroadcast(ctx, 0, baseIntent, 0);
+            Intent fwdIntent = new Intent();
+            fwdIntent.putExtra("fwdIntent", pi);
+            ctx.sendBroadcast(fwdIntent); // $hasTaintFlow
+        }
+
+        {
+            Intent baseIntent = new Intent();
+            PendingIntent pi = PendingIntent.getBroadcastAsUser(ctx, 0, baseIntent, 0, null);
+            Intent fwdIntent = new Intent();
+            fwdIntent.putExtra("fwdIntent", pi);
+            ctx.sendBroadcast(fwdIntent); // $hasTaintFlow
+        }
+
+        {
+            Intent baseIntent = new Intent();
+            PendingIntent pi = PendingIntent.getService(ctx, 0, baseIntent, 0);
+            Intent fwdIntent = new Intent();
+            fwdIntent.putExtra("fwdIntent", pi);
+            ctx.startActivity(fwdIntent); // $hasTaintFlow
+        }
+
+        {
+            Intent baseIntent = new Intent();
+            PendingIntent pi = PendingIntent.getForegroundService(ctx, 0, baseIntent, 0);
+            Intent fwdIntent = new Intent();
+            fwdIntent.putExtra("fwdIntent", pi);
+            ctx.startActivity(fwdIntent); // $hasTaintFlow
         }
 
         {
@@ -84,6 +145,51 @@ public class ImplicitPendingIntentsTest {
             Intent fwdIntent = new Intent();
             fwdIntent.putExtra("fwdIntent", pi);
             ctx.startActivity(fwdIntent); // $ SPURIOUS: $ hasTaintFlow
+        }
+    }
+
+    public static void testPendingIntentInANotification(Context ctx)
+            throws PendingIntent.CanceledException {
+
+        {
+            Intent baseIntent = new Intent();
+            PendingIntent pi = PendingIntent.getActivity(ctx, 0, baseIntent, 0);
+            Notification.Action.Builder aBuilder = new Notification.Action.Builder(0, "", pi);
+            Notification.Builder nBuilder =
+                    new Notification.Builder(ctx).addAction(aBuilder.build());
+            Notification notification = nBuilder.build();
+            NotificationManager nManager = new NotificationManager();
+            nManager.notifyAsPackage("targetPackage", "tag", 0, notification); // $hasTaintFlow
+            nManager.notify(0, notification); // $hasTaintFlow
+            nManager.notifyAsUser("", 0, notification, null); // $hasTaintFlow
+        }
+        {
+            Intent baseIntent = new Intent();
+            PendingIntent pi =
+                    PendingIntent.getActivity(ctx, 0, baseIntent, PendingIntent.FLAG_IMMUTABLE); // Sanitizer
+            Notification.Action.Builder aBuilder = new Notification.Action.Builder(0, "", pi);
+            Notification.Builder nBuilder =
+                    new Notification.Builder(ctx).addAction(aBuilder.build());
+            Notification notification = nBuilder.build();
+            NotificationManager nManager = new NotificationManager();
+            nManager.notify(0, notification); // Safe
+        }
+        {
+            // Even though pi1 is vulnerable, it's wrapped in fwdIntent,
+            // from which pi2 (safe) is created. Since only system apps can extract an Intent
+            // from a PendingIntent (via android.permission.GET_INTENT_SENDER_INTENT),
+            // the attacker has no way of accessing fwdIntent, and thus pi1.
+            Intent baseIntent = new Intent();
+            PendingIntent pi1 = PendingIntent.getActivity(ctx, 0, baseIntent, 0);
+            Intent fwdIntent = new Intent();
+            fwdIntent.putExtra("fwdIntent", pi1);
+            PendingIntent pi2 =
+                    PendingIntent.getActivity(ctx, 0, fwdIntent, PendingIntent.FLAG_IMMUTABLE);
+            Notification.Action action = new Notification.Action(0, "", pi2);
+            Notification.Builder nBuilder = new Notification.Builder(ctx).addAction(action);
+            Notification notification = nBuilder.build();
+            NotificationManager noMan = new NotificationManager();
+            noMan.notify(0, notification); // Safe
         }
 
     }
