@@ -58,18 +58,17 @@ module SqlInjection {
     }
   }
 
+  import semmle.javascript.security.IncompleteBlacklistSanitizer as IncompleteBlacklistSanitizer
+
   /**
-   * A call to a function whose name suggests that it escapes LDAP search query parameter.
+   * A chain of replace calls that replaces all unsafe chars for ldap injection.
+   * For simplicity it's used as a sanitizer for all of `js/sql-injection`.
    */
-  class FilterOrDNSanitizationCall extends Sanitizer, DataFlow::CallNode {
-    // TODO: remove, or use something else? (AdhocWhitelistSanitizer?)
-    FilterOrDNSanitizationCall() {
-      exists(string sanitize, string input |
-        sanitize = "(?:escape|saniti[sz]e|validate|filter)" and
-        input = "[Ii]nput?"
-      |
-        this.getCalleeName()
-            .regexpMatch("(?i)(" + sanitize + input + ")" + "|(" + input + sanitize + ")")
+  class LDAPStringSanitizer extends Sanitizer,
+    IncompleteBlacklistSanitizer::StringReplaceCallSequence {
+    LDAPStringSanitizer() {
+      forall(string char | char = ["*", "(", ")", "\\", "/"] |
+        this.getAMember().getAReplacedString() = char
       )
     }
   }

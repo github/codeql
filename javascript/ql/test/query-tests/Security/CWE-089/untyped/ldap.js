@@ -36,7 +36,7 @@ const server = http.createServer((req, res) => {
   // GOOD
   client.search(
     "o=example",
-    {
+    { // OK
       filter: `(|(name=${sanitizeInput(username)})(username=${sanitizeInput(
         username
       )}))`,
