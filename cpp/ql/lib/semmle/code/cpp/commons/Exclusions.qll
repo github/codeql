@@ -123,15 +123,13 @@ private predicate isFromMacroInvocation(Element e, MacroInvocation mi) {
  *   M(y + 1);
  * ```
  */
-predicate isFromMacroDefinition(Element e) {
-  isFromMacroInvocation(e, _)
-}
+predicate isFromMacroDefinition(Element e) { isFromMacroInvocation(e, _) }
 
 /**
  * Holds if `e` is completely or partially from a _system macro_ definition, as
  * opposed to being passed in as an argument. A system macro is a macro whose
  * definition is outside the source directory of the database.
- * 
+ *
  * If the system macro is invoked through a non-system macro, then this
  * predicate does not hold. That's a limitation of how macros are represented
  * in the database.
