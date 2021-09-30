@@ -13,7 +13,7 @@ import com.intellij.openapi.vfs.VirtualFile
 
 // Taken from Kotlin's interpreter/Utils.kt function 'internalName'
 // Translates class names into their JLS section 13.1 binary name
-fun getClassBinaryName(that: IrClass): String {
+fun getIrClassBinaryName(that: IrClass): String {
   val internalName = StringBuilder(that.name.asString())
   generateSequence(that as? IrDeclarationParent) { (it as? IrDeclaration)?.parent }
       .drop(1)
@@ -53,5 +53,5 @@ fun getIrClassBinaryPath(irClass: IrClass): String {
   // If a class location is known, replace the JAR delimiter !/:
   return getRawIrClassBinaryPath(irClass)?.replaceFirst("!/", "/")
   // Otherwise, make up a fake location:
-    ?: "/!unknown-binary-location/${getClassBinaryName(irClass).replace(".", "/")}.class"
+    ?: "/!unknown-binary-location/${getIrClassBinaryName(irClass).replace(".", "/")}.class"
 }

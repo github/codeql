@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 
 import com.github.codeql.Logger;
 import com.github.codeql.Severity;
-import static com.github.codeql.ClassNamesKt.getIrClassBinaryPath;
+import static com.github.codeql.ClassNamesKt.getIrClassBinaryName;
 import static com.github.codeql.ClassNamesKt.getIrClassVirtualFile;
 
 import org.jetbrains.kotlin.ir.declarations.IrClass;
@@ -212,7 +212,7 @@ public class OdasaOutput {
 	private final Map<String, String> memberTrapPaths = new LinkedHashMap<String, String>();
 	private static final Pattern dots = Pattern.compile(".", Pattern.LITERAL);
 	private String trapFilePathForClass(IrClass sym) {
-		String classId = getIrClassBinaryPath(sym);
+		String classId = getIrClassBinaryName(sym);
 		// TODO: Reinstate this?
 		//if (getTrackClassOrigins())
 		//  classId += "-" + StringDigestor.digest(sym.getSourceFileId());
