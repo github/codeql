@@ -6,7 +6,10 @@ import org.jetbrains.kotlin.ir.declarations.IrDeclarationParent
 import org.jetbrains.kotlin.ir.declarations.IrPackageFragment
 import org.jetbrains.kotlin.load.java.sources.JavaSourceElement
 import org.jetbrains.kotlin.load.java.structure.impl.classFiles.BinaryJavaClass
+import org.jetbrains.kotlin.load.kotlin.VirtualFileKotlinClass
 import org.jetbrains.kotlin.load.kotlin.KotlinJvmBinarySourceElement
+
+import com.intellij.openapi.vfs.VirtualFile
 
 // Taken from Kotlin's interpreter/Utils.kt function 'internalName'
 // Translates class names into their JLS section 13.1 binary name
@@ -23,20 +26,27 @@ fun getClassBinaryName(that: IrClass): String {
   return internalName.toString()
 }
 
+fun getIrClassVirtualFile(irClass: IrClass): VirtualFile? {
+    val cSource = irClass.source
+    when(cSource) {
+        is JavaSourceElement -> {
+            val element = cSource.javaElement
+            when(element) {
+                is BinaryJavaClass -> return element.virtualFile
+            }
+        }
+        is KotlinJvmBinarySourceElement -> {
+            val binaryClass = cSource.binaryClass
+            when(binaryClass) {
+                is VirtualFileKotlinClass -> return binaryClass.file
+            }
+        }
+    }
+    return null
+}
+
 fun getRawIrClassBinaryPath(irClass: IrClass): String? {
-  val cSource = irClass.source
-  when(cSource) {
-      is JavaSourceElement -> {
-          val element = cSource.javaElement
-          when(element) {
-              is BinaryJavaClass -> return element.virtualFile.getPath()
-          }
-      }
-      is KotlinJvmBinarySourceElement -> {
-          return cSource.binaryClass.location
-      }
-  }
-  return null
+  return getIrClassVirtualFile(irClass)?.getPath()
 }
 
 fun getIrClassBinaryPath(irClass: IrClass): String {

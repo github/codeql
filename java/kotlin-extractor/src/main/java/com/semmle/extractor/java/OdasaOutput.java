@@ -12,8 +12,15 @@ import java.util.regex.Pattern;
 import com.github.codeql.Logger;
 import com.github.codeql.Severity;
 import static com.github.codeql.ClassNamesKt.getIrClassBinaryPath;
+import static com.github.codeql.ClassNamesKt.getIrClassVirtualFile;
 
 import org.jetbrains.kotlin.ir.declarations.IrClass;
+
+import com.intellij.openapi.vfs.VirtualFile;
+
+import org.jetbrains.org.objectweb.asm.ClassVisitor;
+import org.jetbrains.org.objectweb.asm.ClassReader;
+import org.jetbrains.org.objectweb.asm.Opcodes;
 
 import com.semmle.util.concurrent.LockDirectory;
 import com.semmle.util.concurrent.LockDirectory.LockingMode;
@@ -500,7 +507,25 @@ public class OdasaOutput {
 					tcv.lastModified < lastModified);
 		}
 		private static TrapClassVersion fromSymbol(IrClass sym) {
-			return new TrapClassVersion(100, 101, 102);
+			VirtualFile vf = getIrClassVirtualFile(sym);
+			if(vf == null)
+				return new TrapClassVersion(0, 0, 0);
+
+			final int[] versionStore = new int[1];
+
+			try {
+				ClassVisitor versionGetter = new ClassVisitor(Opcodes.ASM7) {
+					public void visit​(int version, int access, java.lang.String name, java.lang.String signature, java.lang.String superName, java.lang.String[] interfaces) {
+						versionStore[0] = version;
+					}
+				};
+				(new ClassReader(vf.contentsToByteArray())).accept(versionGetter, ClassReader.SKIP_CODE | ClassReader.SKIP_DEBUG | ClassReader.SKIP_FRAMES);
+
+				return new TrapClassVersion(versionStore[0] & 0xffff, versionStore[0] >> 16, vf.getTimeStamp());
+			}
+			catch(IOException e) {
+				return new TrapClassVersion(0, 0, 0);
+			}
 		}
 		private boolean isValid() {
 			return majorVersion>=0 && minorVersion>=0;
