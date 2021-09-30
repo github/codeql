@@ -10,8 +10,8 @@ import java.nio.file.Path;
 
 public class Sinks {
     
-    public Path copyFileToDirectory(final Path sourceFile, final Path targetDirectory, final CopyOption... copyOptions) throws IOException {
-        return Files.copy(sourceFile, targetDirectory.resolve(sourceFile.getFileName()), copyOptions);
+    public Path copyFileToDirectory(final Path sourceFile, final Path targetFile, final CopyOption... copyOptions) throws IOException {
+        return Files.copy(sourceFile, targetFile, copyOptions);
     }
 
     public String readUrl(final URL url, Charset encoding) throws IOException {
