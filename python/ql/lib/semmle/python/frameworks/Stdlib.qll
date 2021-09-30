@@ -1525,7 +1525,7 @@ int stringArg(RegexExecutionMethod method) {
  *
  * See `RegexExecutionMethods`
  */
-private class DirectRegex extends DataFlow::CallCfgNode, RegexExecution::Range {
+private class DirectRegexExecution extends DataFlow::CallCfgNode, RegexExecution::Range {
   RegexExecutionMethod method;
 
   DirectRegex() { this = API::moduleImport("re").getMember(method).getACall() }
@@ -1611,7 +1611,7 @@ private import CompiledRegexes
  *
  * See https://docs.python.org/3/library/re.html#regular-expression-objects
  */
-private class CompiledRegex extends DataFlow::CallCfgNode, RegexExecution::Range {
+private class CompiledRegexExecution extends DataFlow::CallCfgNode, RegexExecution::Range {
   DataFlow::Node regexNode;
   RegexExecutionMethod method;
 
@@ -1640,14 +1640,13 @@ private class CompiledRegex extends DataFlow::CallCfgNode, RegexExecution::Range
  * See https://docs.python.org/3/library/re.html#re.escape
  */
 private class ReEscapeCall extends Escaping::Range, DataFlow::CallCfgNode {
-  DataFlow::Node regexNode;
-
   ReEscapeCall() {
-    this = API::moduleImport("re").getMember("escape").getACall() and
-    regexNode in [this.getArg(0), this.getArgByName("pattern")]
+    this = API::moduleImport("re").getMember("escape").getACall()
   }
 
-  override DataFlow::Node getAnInput() { result = regexNode }
+  override DataFlow::Node getAnInput() { 
+    result in [this.getArg(0), this.getArgByName("pattern")]
+  }
 
   override DataFlow::Node getOutput() { result = this }
 
