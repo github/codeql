@@ -78,13 +78,19 @@ class FileTrapWriter (
         return getLocation(e.startOffset, e.endOffset)
     }
     fun getLocation(startOffset: Int, endOffset: Int): Label<DbLocation> {
+        // If the compiler doesn't have a location, then start and end are both -1
         val unknownLoc = startOffset == -1 && endOffset == -1
+        // If this is the location for a compiler-generated element, then it will
+        // be a zero-width location. QL doesn't support these, so we translate it
+        // into a one-width location.
+        val zeroWidthLoc = !unknownLoc && startOffset == endOffset
         val startLine =   if(unknownLoc) 0 else fileEntry.getLineNumber(startOffset) + 1
         val startColumn = if(unknownLoc) 0 else fileEntry.getColumnNumber(startOffset) + 1
         val endLine =     if(unknownLoc) 0 else fileEntry.getLineNumber(endOffset) + 1
         val endColumn =   if(unknownLoc) 0 else fileEntry.getColumnNumber(endOffset)
+        val endColumn2 =  if(zeroWidthLoc) endColumn + 1 else endColumn
         val locFileId: Label<DbFile> = if (unknownLoc) unknownFileId else fileId
-        return getLocation(locFileId, startLine, startColumn, endLine, endColumn)
+        return getLocation(locFileId, startLine, startColumn, endLine, endColumn2)
     }
     fun getLocationString(e: IrElement): String {
         val path = irFile.path
