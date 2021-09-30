@@ -47,6 +47,13 @@ private class StreamModel extends SummaryModelCsv {
         "java.util.stream;Stream;false;limit;(long);;Element of Argument[-1];Element of ReturnValue;value",
         "java.util.stream;Stream;false;map;(Function);;Element of Argument[-1];Parameter[0] of Argument[0];value",
         "java.util.stream;Stream;false;map;(Function);;ReturnValue of Argument[0];Element of ReturnValue;value",
+        // Missing for mapMulti(BiConsumer) (not currently supported):
+        // Argument[0] of Parameter[1] of Argument[0] -> Element of Parameter[1] of Argument[0]
+        // Element of Parameter[1] of Argument[0] -> Element of ReturnValue
+        "java.util.stream;Stream;false;mapMulti;(BiConsumer);;Element of Argument[-1];Parameter[0] of Argument[0];value",
+        "java.util.stream;Stream;false;mapMultiToDouble;(BiConsumer);;Element of Argument[-1];Parameter[0] of Argument[0];value",
+        "java.util.stream;Stream;false;mapMultiToInt;(BiConsumer);;Element of Argument[-1];Parameter[0] of Argument[0];value",
+        "java.util.stream;Stream;false;mapMultiToLong;(BiConsumer);;Element of Argument[-1];Parameter[0] of Argument[0];value",
         "java.util.stream;Stream;false;mapToDouble;(ToDoubleFunction);;Element of Argument[-1];Parameter[0] of Argument[0];value",
         "java.util.stream;Stream;false;mapToInt;(ToIntFunction);;Element of Argument[-1];Parameter[0] of Argument[0];value",
         "java.util.stream;Stream;false;mapToLong;(ToLongFunction);;Element of Argument[-1];Parameter[0] of Argument[0];value",
@@ -81,7 +88,8 @@ private class StreamModel extends SummaryModelCsv {
         "java.util.stream;Stream;false;sorted;(Comparator);;Element of Argument[-1];Parameter[0..1] of Argument[0];value",
         "java.util.stream;Stream;false;takeWhile;(Predicate);;Element of Argument[-1];Parameter[0] of Argument[0];value",
         "java.util.stream;Stream;false;takeWhile;(Predicate);;Element of Argument[-1];Element of ReturnValue;value",
-        "java.util.stream;Stream;false;toArray;;;Element of Argument[-1];ArrayElement of ReturnValue;value"
+        "java.util.stream;Stream;false;toArray;;;Element of Argument[-1];ArrayElement of ReturnValue;value",
+        "java.util.stream;Stream;false;toList;();;Element of Argument[-1];Element of ReturnValue;value"
       ]
   }
 }
