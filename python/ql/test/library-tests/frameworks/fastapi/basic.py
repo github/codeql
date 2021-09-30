@@ -59,12 +59,8 @@ async def get_baz(baz_id: int): # $ requestHandler routedParameter=baz_id
 # Docs:
 # see https://fastapi.tiangolo.com/tutorial/path-params/
 
-# More stuff that we should support:
+# Things we should look at supporting:
 # - https://fastapi.tiangolo.com/tutorial/dependencies/
-# - Extra taint-steps for files
-#   - https://fastapi.tiangolo.com/tutorial/request-files/
-#   - https://fastapi.tiangolo.com/tutorial/request-files/#uploadfile
 # - https://fastapi.tiangolo.com/tutorial/background-tasks/
-#
 # - https://fastapi.tiangolo.com/tutorial/middleware/
 # - https://fastapi.tiangolo.com/tutorial/encoder/
