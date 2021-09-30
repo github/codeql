@@ -4,6 +4,9 @@
 
 import javascript
 
+/**
+ * A module providing sinks and sanitizers for LDAP injection.
+ */
 module LDAPjs {
   /** Gets a reference to the ldapjs library. */
   API::Node ldapjs() { result = API::moduleImport("ldapjs") }
@@ -20,6 +23,7 @@ module LDAPjs {
       this = ldapClient().getMember(methodName).getACall()
     }
 
+    /** Gets the name of the LDAPjs Client API method. */
     string getMethodName() { result = methodName }
   }
 
