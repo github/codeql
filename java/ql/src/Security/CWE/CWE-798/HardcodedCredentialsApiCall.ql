@@ -14,7 +14,6 @@ import java
 import semmle.code.java.dataflow.DataFlow
 import HardcodedCredentials
 import DataFlow::PathGraph
-import semmle.code.java.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 
 class HardcodedCredentialApiCallConfiguration extends DataFlow::Configuration {
   HardcodedCredentialApiCallConfiguration() { this = "HardcodedCredentialApiCallConfiguration" }
