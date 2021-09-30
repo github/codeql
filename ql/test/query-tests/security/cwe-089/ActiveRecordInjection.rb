@@ -42,19 +42,19 @@ class FooController < ActionController::Base
     # where `params[:id]` is unsanitized
     User.delete_by("id = '#{params[:id]}'")
 
-
-
-
-
+    # BAD: executes `DELETE FROM "users" WHERE (id = '#{params[:id]}')`
+    # where `params[:id]` is unsanitized
+    # (in Rails < 4.0)
+    User.delete_all("id = '#{params[:id]}'")
 
     # BAD: executes `SELECT "users".* FROM "users" WHERE (id = '#{params[:id]}')`
     # where `params[:id]` is unsanitized
     User.destroy_by(["id = '#{params[:id]}'"])
 
-
-
-
-
+    # BAD: executes `SELECT "users".* FROM "users" WHERE (id = '#{params[:id]}')`
+    # where `params[:id]` is unsanitized
+    # (in Rails < 4.0)
+    User.destroy_all(["id = '#{params[:id]}'"])
 
     # BAD: executes `SELECT "users".* FROM "users" WHERE id BETWEEN '#{params[:min_id]}' AND 100000`
     # where `params[:min_id]` is unsanitized
