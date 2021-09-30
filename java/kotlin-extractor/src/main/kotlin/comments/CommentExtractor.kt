@@ -13,7 +13,7 @@ import org.jetbrains.kotlin.psi.KtVisitor
 import org.jetbrains.kotlin.psi.psiUtil.endOffset
 import org.jetbrains.kotlin.psi.psiUtil.startOffset
 
-class CommentExtractor(private val fileExtractor: KotlinFileExtractor) {
+class CommentExtractor(private val fileExtractor: KotlinSourceFileExtractor) {
     private val file = fileExtractor.file
     private val tw = fileExtractor.tw
     private val logger = fileExtractor.logger
@@ -109,4 +109,3 @@ class CommentExtractor(private val fileExtractor: KotlinFileExtractor) {
             })
     }
 }
-

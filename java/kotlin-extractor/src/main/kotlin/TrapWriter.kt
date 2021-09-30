@@ -3,6 +3,7 @@ package com.github.codeql
 import java.io.BufferedWriter
 import java.io.File
 import org.jetbrains.kotlin.ir.IrElement
+import org.jetbrains.kotlin.ir.IrFileEntry
 import org.jetbrains.kotlin.ir.declarations.path
 import org.jetbrains.kotlin.ir.declarations.IrFile
 import org.jetbrains.kotlin.ir.declarations.IrVariable
@@ -60,14 +61,42 @@ open class TrapWriter (val lm: TrapLabelManager, val bw: BufferedWriter) {
     }
 }
 
-class FileTrapWriter (
+abstract class SourceOffsetResolver {
+    abstract fun getLineNumber(offset: Int): Int
+    abstract fun getColumnNumber(offset: Int): Int
+}
+
+class FileSourceOffsetResolver(val fileEntry: IrFileEntry) : SourceOffsetResolver() {
+    override fun getLineNumber(offset: Int) = fileEntry.getLineNumber(offset)
+    override fun getColumnNumber(offset: Int) = fileEntry.getLineNumber(offset)
+}
+
+object NullSourceOffsetResolver : SourceOffsetResolver() {
+    override fun getLineNumber(offset: Int) = 0
+    override fun getColumnNumber(offset: Int) = 0
+}
+
+class SourceFileTrapWriter (
     lm: TrapLabelManager,
     bw: BufferedWriter,
-    val irFile: IrFile
+    irFile: IrFile) :
+    FileTrapWriter(lm, bw, irFile.path, FileSourceOffsetResolver(irFile.fileEntry)) {
+}
+
+class ClassFileTrapWriter (
+    lm: TrapLabelManager,
+    bw: BufferedWriter,
+    filePath: String) :
+    FileTrapWriter(lm, bw, filePath, NullSourceOffsetResolver) {
+}
+
+open class FileTrapWriter (
+    lm: TrapLabelManager,
+    bw: BufferedWriter,
+    val filePath: String,
+    val sourceOffsetResolver: SourceOffsetResolver
 ): TrapWriter (lm, bw) {
-    private val fileEntry = irFile.fileEntry
     val fileId = {
-        val filePath = irFile.path
         val fileLabel = "@\"$filePath;sourcefile\""
         val id: Label<DbFile> = getLabelFor(fileLabel)
         writeFiles(id, filePath)
@@ -87,24 +116,23 @@ class FileTrapWriter (
         // be a zero-width location. QL doesn't support these, so we translate it
         // into a one-width location.
         val zeroWidthLoc = !unknownLoc && startOffset == endOffset
-        val startLine =   if(unknownLoc) 0 else fileEntry.getLineNumber(startOffset) + 1
-        val startColumn = if(unknownLoc) 0 else fileEntry.getColumnNumber(startOffset) + 1
-        val endLine =     if(unknownLoc) 0 else fileEntry.getLineNumber(endOffset) + 1
-        val endColumn =   if(unknownLoc) 0 else fileEntry.getColumnNumber(endOffset)
+        val startLine =   if(unknownLoc) 0 else sourceOffsetResolver.getLineNumber(startOffset) + 1
+        val startColumn = if(unknownLoc) 0 else sourceOffsetResolver.getColumnNumber(startOffset) + 1
+        val endLine =     if(unknownLoc) 0 else sourceOffsetResolver.getLineNumber(endOffset) + 1
+        val endColumn =   if(unknownLoc) 0 else sourceOffsetResolver.getColumnNumber(endOffset)
         val endColumn2 =  if(zeroWidthLoc) endColumn + 1 else endColumn
         val locFileId: Label<DbFile> = if (unknownLoc) unknownFileId else fileId
         return getLocation(locFileId, startLine, startColumn, endLine, endColumn2)
     }
     fun getLocationString(e: IrElement): String {
-        val path = irFile.path
         if (e.startOffset == -1 && e.endOffset == -1) {
-            return "unknown location, while processing $path"
+            return "unknown location, while processing $filePath"
         } else {
-            val startLine =   fileEntry.getLineNumber(e.startOffset) + 1
-            val startColumn = fileEntry.getColumnNumber(e.startOffset) + 1
-            val endLine =     fileEntry.getLineNumber(e.endOffset) + 1
-            val endColumn =   fileEntry.getColumnNumber(e.endOffset)
-            return "file://$path:$startLine:$startColumn:$endLine:$endColumn"
+            val startLine =   sourceOffsetResolver.getLineNumber(e.startOffset) + 1
+            val startColumn = sourceOffsetResolver.getColumnNumber(e.startOffset) + 1
+            val endLine =     sourceOffsetResolver.getLineNumber(e.endOffset) + 1
+            val endColumn =   sourceOffsetResolver.getColumnNumber(e.endOffset)
+            return "file://$filePath:$startLine:$startColumn:$endLine:$endColumn"
         }
     }
     val variableLabelMapping: MutableMap<IrVariable, Label<out DbLocalvar>> = mutableMapOf<IrVariable, Label<out DbLocalvar>>()

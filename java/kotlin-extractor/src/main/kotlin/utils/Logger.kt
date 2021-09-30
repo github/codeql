@@ -42,6 +42,15 @@ open class Logger(val logCounter: LogCounter, open val tw: TrapWriter) {
         tw.writeTrap("// " + fullMsg.replace("\n", "\n//") + "\n")
         println(fullMsg)
     }
+    fun trace(msg: String) {
+        info(msg)
+    }
+    fun debug(msg: String) {
+        info(msg)
+    }
+    fun trace(msg: String, exn: Exception) {
+        info(msg + " // " + exn)
+    }
     fun warn(severity: Severity, msg: String, locationString: String? = null, locationId: Label<DbLocation> = tw.unknownLocation, stackIndex: Int = 2) {
         val st = Exception().stackTrace
         val suffix =
@@ -62,6 +71,18 @@ open class Logger(val logCounter: LogCounter, open val tw: TrapWriter) {
         tw.writeDiagnostics(StarLabel(), severity.sev, "", msg, "$ts $msg\n$suffix", locationId)
         val locStr = if (locationString == null) "" else "At " + locationString + ": "
         print("$ts Warning: $locStr$msg\n$suffix")
+    }
+    fun warn(msg: String, exn: Exception) {
+        warn(Severity.Warn, msg + " // " + exn)
+    }
+    fun warn(msg: String) {
+        warn(Severity.Warn, msg)
+    }
+    fun error(msg: String) {
+        warn(Severity.Error, msg)
+    }
+    fun error(msg: String, exn: Exception) {
+        error(msg + " // " + exn)
     }
     fun printLimitedWarningCounts() {
         for((caller, count) in logCounter.warningCounts) {
