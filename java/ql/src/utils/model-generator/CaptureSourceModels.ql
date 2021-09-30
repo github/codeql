@@ -33,7 +33,7 @@ predicate specificSourceNode(DataFlow::Node node, string output, string kind) {
   exists(InterpretNode n | Private::External::isSourceNode(n, output, kind) and n.asNode() = node)
 }
 
-string captureSink(Callable api) {
+string captureSource(Callable api) {
   exists(
     DataFlow::Node src, DataFlow::Node sink, FromSourceConfiguration config, string kind,
     string output
@@ -47,6 +47,6 @@ string captureSink(Callable api) {
 
 from Callable api, string sink
 where
-  sink = captureSink(api) and
+  sink = captureSource(api) and
   not isInTestFile(api)
 select sink order by sink

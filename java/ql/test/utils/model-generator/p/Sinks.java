@@ -14,7 +14,6 @@ public class Sinks {
         return Files.copy(sourceFile, targetDirectory.resolve(sourceFile.getFileName()), copyOptions);
     }
 
-    // TODO: not detected
     public String readUrl(final URL url, Charset encoding) throws IOException {
         try (InputStream in = url.openStream()) {
             byte[] bytes = in.readAllBytes();

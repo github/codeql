@@ -1,1 +1,3 @@
 | p;Sinks;true;copyFileToDirectory;(Path,Path,CopyOption[]);;Argument[1];create-file; |
+| p;Sinks;true;readUrl;(URL,Charset);;url;open-url; |
+| p;Sources;true;readUrl;(URL);;url;open-url; |
