@@ -22,10 +22,10 @@ const server = http.createServer((req, res) => {
   let username = q.query.username;
 
   var opts1 = {
-    filter: `(|(name=${username})(username=${username}))`, // NOT OK
+    filter: `(|(name=${username})(username=${username}))`,
   };
 
-  client.search("o=example", opts1, function (err, res) {});
+  client.search("o=example", opts1, function (err, res) {}); // NOT OK
 
   client.search(
     "o=example",
@@ -59,6 +59,11 @@ const server = http.createServer((req, res) => {
   });
 
   client.search("o=example", { filter: f }, function (err, res) {});
+
+  const parsedFilter = ldap.parseFilter(
+    `(|(name=${username})(username=${username}))`
+  );
+  client.search("o=example", { filter: parsedFilter }, function (err, res) {}); // NOT OK
 });
 
 server.listen(389, () => {});

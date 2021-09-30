@@ -43,27 +43,14 @@ module SqlInjection {
   }
 
   /**
-   * An LDAP filter for an API call that executes an operation against the LDAP server.
+   * An LDAPjs sink.
    */
-  class LdapjsSearchFilterAsSink extends Sink {
-    // TODO: As taint-step?
-    /*
-     *    override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
-     *      exists(LdapjsParseFilter filter |
-     *        pred = filter.getArgument(0) and
-     *        succ = filter
-     *      )
-     *    }
-     */
-
-    LdapjsSearchFilterAsSink() { this instanceof Ldapjs::LdapjsSearchFilter }
-  }
-
-  /**
-   * An LDAP DN argument for an API call that executes an operation against the LDAP server.
-   */
-  class LdapjsDNArgumentAsSink extends Sink {
-    LdapjsDNArgumentAsSink() { this instanceof Ldapjs::LdapjsDNArgument }
+  class LdapJSSink extends Sink {
+    LdapJSSink() {
+      this instanceof Ldapjs::LdapjsDNArgument
+      or
+      this = any(Ldapjs::LdapjsSearchOptions opt).getARhs()
+    }
   }
 
   /**
