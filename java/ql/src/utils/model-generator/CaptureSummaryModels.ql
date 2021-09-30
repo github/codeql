@@ -1,22 +1,21 @@
 /**
- * @name TBD
- * @description TBD
- * @id TBD
+ * @name Capture summary models.
+ * @description Finds applicable summary models to be used by other queries.
+ * @id java/utils/model-generator/summary-models
  */
 
 import java
 import ModelGeneratorUtils
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.internal.DataFlowImplCommon
+import semmle.code.java.dataflow.internal.DataFlowNodes
 
 string captureFlow(Callable api) {
   result = captureQualifierFlow(api) or
   result = captureParameterFlowToReturnValue(api) or
   result = captureFieldFlowIn(api) or
   result = captureParameterToParameterFlow(api) or
-  // TODO: merge next two?
-  result = captureFieldFlowOut(api) or
-  result = captureFieldFlowIntoParam(api)
+  result = captureFieldFlow(api)
 }
 
 string captureQualifierFlow(Callable api) {
@@ -27,28 +26,22 @@ string captureQualifierFlow(Callable api) {
   result = asValueModel(api, "Argument[-1]", "ReturnValue")
 }
 
-string captureFieldFlowOut(Callable api) {
-  exists(FieldAccess fa, ReturnStmt rtn |
+string captureFieldFlow(Callable api) {
+  exists(FieldAccess fa, ReturnNodeExt postUpdate |
     not (fa.getField().isStatic() and fa.getField().isFinal()) and
-    rtn.getEnclosingCallable() = api and
+    postUpdate.getEnclosingCallable() = api and
     not api.getReturnType() instanceof PrimitiveType and
     not api.getDeclaringType() instanceof EnumType and
-    TaintTracking::localTaint(DataFlow::exprNode(fa), DataFlow::exprNode(rtn.getResult()))
+    TaintTracking::localTaint(DataFlow::exprNode(fa), postUpdate)
   |
-    result = asTaintModel(api, "Argument[-1]", "ReturnValue")
+    result = asTaintModel(api, "Argument[-1]", asOutput(api, postUpdate))
   )
 }
 
-string captureFieldFlowIntoParam(Callable api) {
-  exists(FieldAccess fa, DataFlow::PostUpdateNode pn |
-    not (fa.getField().isStatic() and fa.getField().isFinal()) and
-    pn.getPreUpdateNode().asExpr() = api.getAParameter().getAnAccess() and
-    TaintTracking::localTaint(DataFlow::exprNode(fa), pn)
-  |
-    result =
-      asTaintModel(api, "Argument[-1]",
-        parameterAccess(pn.getPreUpdateNode().asExpr().(VarAccess).getVariable()))
-  )
+string asOutput(Callable api, ReturnNodeExt node) {
+  if node.getKind() instanceof ValueReturnKind
+  then result = "ReturnValue"
+  else result = parameterAccess(api.getParameter(node.getKind().(ParamUpdateReturnKind).getPosition()))
 }
 
 class FieldAssignment extends AssignExpr {
@@ -102,7 +95,6 @@ class ParameterToReturnValueTaintConfig extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) { sink instanceof ReturnNodeExt }
 }
 
-// TODO: rtn -> Node as ReturnNodeExt is also PostUpdateNode, might be able to merge with p2p flow
 predicate paramFlowToReturnValueExists(Parameter p) {
   exists(ParameterToReturnValueTaintConfig config, ReturnStmt rtn |
     rtn.getEnclosingCallable() = p.getCallable() and
@@ -131,10 +123,10 @@ string captureParameterToParameterFlow(Callable api) {
   )
 }
 
-// TODO: handle cases like Ticker
 // TODO: "com.google.common.base;Converter;true;convertAll;(Iterable);;Element of Argument[0];Element of ReturnValue;taint",
 // TODO: infer interface from multiple implementations? e.g. UriComponentsContributor
 // TODO: distinguish between taint and value flows. If we find a value flow, omit the taint flow
+// TODO: merge param->return value with param->parameter flow?
 class TargetAPI extends Callable {
   TargetAPI() {
     this.isPublic() and
