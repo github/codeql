@@ -64,6 +64,8 @@ const server = http.createServer((req, res) => {
     `(|(name=${username})(username=${username}))`
   );
   client.search("o=example", { filter: parsedFilter }, function (err, res) {}); // NOT OK
+
+  const dn = ldap.parseDN(`cn=${username}`, function (err, dn) {}); // NOT OK
 });
 
 server.listen(389, () => {});

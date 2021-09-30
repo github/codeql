@@ -52,6 +52,9 @@ module SqlInjection {
       or
       // A search options object, which contains a filter and a baseDN.
       this = any(LDAPjs::SearchOptions opt).getARhs()
+      or
+      // A call to "parseDN", which parses a DN from a string.
+      this = LDAPjs::ldapjs().getMember("parseDN").getACall().getArgument(0)
     }
   }
 
