@@ -2624,4 +2624,8 @@ public class Intent implements Parcelable, Cloneable {
     public Intent addCategory(String category) {
         return null;
     }
+    
+    public Intent setClass(Context packageContext, Class<?> cls) {
+        return null;
+    }
 }
