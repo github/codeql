@@ -99,6 +99,7 @@ import semmle.javascript.frameworks.History
 import semmle.javascript.frameworks.Immutable
 import semmle.javascript.frameworks.Knex
 import semmle.javascript.frameworks.LazyCache
+import semmle.javascript.frameworks.Ldapjs
 import semmle.javascript.frameworks.LodashUnderscore
 import semmle.javascript.frameworks.Logging
 import semmle.javascript.frameworks.HttpFrameworks

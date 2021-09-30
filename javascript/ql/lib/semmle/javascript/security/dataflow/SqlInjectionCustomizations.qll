@@ -41,4 +41,44 @@ module SqlInjection {
   class GraphqlInjectionSink extends Sink {
     GraphqlInjectionSink() { this instanceof GraphQL::GraphQLString }
   }
+
+  /**
+   * An LDAP filter for an API call that executes an operation against the LDAP server.
+   */
+  class LdapjsSearchFilterAsSink extends Sink {
+    // TODO: As taint-step?
+    /*
+     *    override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+     *      exists(LdapjsParseFilter filter |
+     *        pred = filter.getArgument(0) and
+     *        succ = filter
+     *      )
+     *    }
+     */
+
+    LdapjsSearchFilterAsSink() { this instanceof Ldapjs::LdapjsSearchFilter }
+  }
+
+  /**
+   * An LDAP DN argument for an API call that executes an operation against the LDAP server.
+   */
+  class LdapjsDNArgumentAsSink extends Sink {
+    LdapjsDNArgumentAsSink() { this instanceof Ldapjs::LdapjsDNArgument }
+  }
+
+  /**
+   * A call to a function whose name suggests that it escapes LDAP search query parameter.
+   */
+  class FilterOrDNSanitizationCall extends Sanitizer, DataFlow::CallNode {
+    // TODO: remove, or use something else? (AdhocWhitelistSanitizer?)
+    FilterOrDNSanitizationCall() {
+      exists(string sanitize, string input |
+        sanitize = "(?:escape|saniti[sz]e|validate|filter)" and
+        input = "[Ii]nput?"
+      |
+        this.getCalleeName()
+            .regexpMatch("(?i)(" + sanitize + input + ")" + "|(" + input + sanitize + ")")
+      )
+    }
+  }
 }
