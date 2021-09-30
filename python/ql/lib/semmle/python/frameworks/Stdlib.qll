@@ -1544,7 +1544,7 @@ private module StdlibPrivate {
     private import semmle.python.RegexTreeView
 
     // TODO: This module should be refactored once API graphs are more expressive.
-    // For now it uses data flow, so we pick the verison with least chance of collision (4) .
+    // For now it uses data flow, so we pick the version with least chance of collision (4) .
     /** A configuration for finding uses of compiled regexes. */
     class RegexDefinitionConfiguration extends DataFlow4::Configuration {
       RegexDefinitionConfiguration() { this = "RegexDefinitionConfiguration" }
