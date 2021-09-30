@@ -58,6 +58,7 @@ class Function extends Function_, Scope, AstNode {
   /** Gets the name of the nth argument (for simple arguments) */
   string getArgName(int index) { result = this.getArg(index).(Name).getId() }
 
+  /** Gets the parameter of this function with the name `name`. */
   Parameter getArgByName(string name) {
     (
       result = this.getAnArg()
