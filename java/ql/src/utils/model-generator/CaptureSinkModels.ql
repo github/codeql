@@ -28,7 +28,7 @@ class PropagateToSinkConfiguration extends TaintTracking::Configuration {
 string asInputArgument(Expr source) {
   result = "Argument[" + source.(Argument).getPosition() + "]"
   or
-  result = source.(VarAccess).getVariable().toString()
+  result = "Argument[" + source.(VarAccess).getVariable().(Parameter).getPosition() + "]"
 }
 
 string captureSink(Callable api) {
