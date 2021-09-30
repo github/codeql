@@ -2,13 +2,11 @@
 
 package android.content.pm;
 
+import java.util.UUID;
 import android.content.Context;
-import android.content.pm.PackageItemInfo;
-import android.content.pm.PackageManager;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Printer;
-import java.util.UUID;
 
 public class ApplicationInfo extends PackageItemInfo implements Parcelable
 {

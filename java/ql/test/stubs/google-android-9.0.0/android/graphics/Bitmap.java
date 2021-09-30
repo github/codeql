@@ -2,18 +2,12 @@
 
 package android.graphics;
 
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.ColorSpace;
-import android.graphics.Matrix;
-import android.graphics.Paint;
-import android.graphics.Picture;
+import java.io.OutputStream;
+import java.nio.Buffer;
 import android.hardware.HardwareBuffer;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.DisplayMetrics;
-import java.io.OutputStream;
-import java.nio.Buffer;
 
 public class Bitmap implements Parcelable
 {

@@ -79,6 +79,7 @@ private module Frameworks {
   private import internal.ContainerFlow
   private import semmle.code.java.frameworks.android.Android
   private import semmle.code.java.frameworks.android.Intent
+  private import semmle.code.java.frameworks.android.Notifications
   private import semmle.code.java.frameworks.android.Slice
   private import semmle.code.java.frameworks.android.SQLite
   private import semmle.code.java.frameworks.android.XssSinks
@@ -694,7 +695,7 @@ class SyntheticField extends string {
 
 private predicate parseSynthField(string c, string f) {
   specSplit(_, c, _) and
-  c.regexpCapture("SyntheticField\\[([.a-zA-Z0-9]+)\\]", 1) = f
+  c.regexpCapture("SyntheticField\\[([.a-zA-Z0-9$]+)\\]", 1) = f
 }
 
 /** Holds if the specification component parses as a `Content`. */
