@@ -116,6 +116,7 @@ private module Frameworks {
   private import semmle.code.java.security.ResponseSplitting
   private import semmle.code.java.security.InformationLeak
   private import semmle.code.java.security.GroovyInjection
+  private import semmle.code.java.security.ImplicitPendingIntents
   private import semmle.code.java.security.JexlInjectionSinkModels
   private import semmle.code.java.security.JndiInjection
   private import semmle.code.java.security.LdapInjection

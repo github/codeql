@@ -87,6 +87,11 @@ class AndroidBundle extends Class {
   AndroidBundle() { this.getASupertype*().hasQualifiedName("android.os", "BaseBundle") }
 }
 
+/** The class `android.app.PendingIntent`. */
+class PendingIntent extends Class {
+  PendingIntent() { this.hasQualifiedName("android.app", "PendingIntent") }
+}
+
 /** An `Intent` that explicitly sets a destination component. */
 class ExplicitIntent extends Expr {
   ExplicitIntent() {
