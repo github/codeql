@@ -104,7 +104,7 @@ private class {0}{1}Csv extends {2} {{
 """
     if rows.strip() == "":
         return ""
-    return classTemplate.format(shortname.capitalize(), kind.capitalize(), superclass, rows)
+    return classTemplate.format(shortname[0].upper() + shortname[1:], kind.capitalize(), superclass, rows)
 
 
 summaryRows = runQuery("summary models", "CaptureSummaryModels.ql")
