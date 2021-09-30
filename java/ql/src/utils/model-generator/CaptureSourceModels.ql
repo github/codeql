@@ -12,6 +12,7 @@ private import semmle.code.java.dataflow.ExternalFlow
 private import ModelGeneratorUtils
 private import semmle.code.java.dataflow.internal.FlowSummaryImplSpecific
 private import semmle.code.java.dataflow.internal.FlowSummaryImpl
+private import semmle.code.java.dataflow.internal.DataFlowImplCommon
 
 class FromSourceConfiguration extends TaintTracking::Configuration {
   FromSourceConfiguration() { this = "FromSourceConfiguration" }
@@ -20,6 +21,7 @@ class FromSourceConfiguration extends TaintTracking::Configuration {
 
   override predicate isSink(DataFlow::Node sink) {
     exists(Callable c |
+      sink instanceof ReturnNodeExt and
       sink.asExpr().getEnclosingCallable() = c and
       c.isPublic() and
       c.fromSource()
