@@ -12,10 +12,7 @@ class KernelMethodCall extends MethodCall {
   KernelMethodCall() {
     this = API::getTopLevelMember("Kernel").getAMethodCall(_).asExpr().getExpr()
     or
-    // we assume that if there's no obvious target for this method call
-    // and the method name matches a Kernel method, then it is a Kernel method call.
-    // TODO: ApiGraphs should ideally handle this case
-    not exists(this.(Call).getATarget()) and
+    this instanceof UnknownMethodCall and
     (
       this.getReceiver() instanceof Self and isPrivateKernelMethod(this.getMethodName())
       or
@@ -56,6 +53,45 @@ private predicate isPrivateKernelMethod(string method) {
       "set_trace_func", "sleep", "spawn", "sprintf", "srand", "sub", "syscall", "system", "test",
       "throw", "trace_var", "trap", "untrace_var", "warn"
     ]
+}
+
+/**
+ * Instance methods on `BasicObject`, which are available to all classes.
+ */
+class BasicObjectInstanceMethodCall extends UnknownMethodCall {
+  BasicObjectInstanceMethodCall() {
+    this.getMethodName() in [
+        "equal?", "instance_eval", "instance_exec", "method_missing", "singleton_method_added",
+        "singleton_method_removed", "singleton_method_undefined"
+      ]
+  }
+}
+
+/**
+ * Instance methods on `Object`, which are available to all classes except `BasicObject`.
+ */
+class ObjectInstanceMethodCall extends UnknownMethodCall {
+  ObjectInstanceMethodCall() {
+    this.getMethodName() in [
+        "!~", "<=>", "===", "=~", "callable_methods", "define_singleton_method", "display",
+        "do_until", "do_while", "dup", "enum_for", "eql?", "extend", "f", "freeze", "h", "hash",
+        "inspect", "instance_of?", "instance_variable_defined?", "instance_variable_get",
+        "instance_variable_set", "instance_variables", "is_a?", "itself", "kind_of?",
+        "matching_methods", "method", "method_missing", "methods", "nil?", "object_id",
+        "private_methods", "protected_methods", "public_method", "public_methods", "public_send",
+        "remove_instance_variable", "respond_to?", "respond_to_missing?", "send",
+        "shortest_abbreviation", "singleton_class", "singleton_method", "singleton_methods",
+        "taint", "tainted?", "to_enum", "to_s", "trust", "untaint", "untrust", "untrusted?"
+      ]
+  }
+}
+
+/**
+ * Method calls which have no known target.
+ * These will typically be calls to methods inherited from a superclass.
+ */
+class UnknownMethodCall extends MethodCall {
+  UnknownMethodCall() { not exists(this.(Call).getATarget()) }
 }
 
 /**
@@ -271,6 +307,45 @@ class SendCallCodeExecution extends CodeExecution::Range {
 
   SendCallCodeExecution() {
     this.asExpr().getExpr() = methodCall and methodCall.getMethodName() = "send"
+  }
+
+  override DataFlow::Node getCode() { result.asExpr().getExpr() = methodCall.getAnArgument() }
+}
+
+/**
+ * A call to `BasicObject#instance_eval`, which executes its argument as Ruby code.
+ */
+class InstanceEvalCallCodeExecution extends CodeExecution::Range {
+  BasicObjectInstanceMethodCall methodCall;
+
+  InstanceEvalCallCodeExecution() {
+    this.asExpr().getExpr() = methodCall and methodCall.getMethodName() = "instance_eval"
+  }
+
+  override DataFlow::Node getCode() { result.asExpr().getExpr() = methodCall.getAnArgument() }
+}
+
+/**
+ * A call to `Module#class_eval`, which executes its argument as Ruby code.
+ */
+class ClassEvalCallCodeExecution extends CodeExecution::Range {
+  UnknownMethodCall methodCall;
+
+  ClassEvalCallCodeExecution() {
+    this.asExpr().getExpr() = methodCall and methodCall.getMethodName() = "class_eval"
+  }
+
+  override DataFlow::Node getCode() { result.asExpr().getExpr() = methodCall.getAnArgument() }
+}
+
+/**
+ * A call to `Module#module_eval`, which executes its argument as Ruby code.
+ */
+class ModuleEvalCallCodeExecution extends CodeExecution::Range {
+  UnknownMethodCall methodCall;
+
+  ModuleEvalCallCodeExecution() {
+    this.asExpr().getExpr() = methodCall and methodCall.getMethodName() = "module_eval"
   }
 
   override DataFlow::Node getCode() { result.asExpr().getExpr() = methodCall.getAnArgument() }
