@@ -47,9 +47,11 @@ module SqlInjection {
    */
   class LdapJSSink extends Sink {
     LdapJSSink() {
-      this instanceof Ldapjs::LdapjsDNArgument
+      // A distinguished name (DN) used in a call to the client API.
+      this = any(LDAPjs::ClientCall call).getArgument(0)
       or
-      this = any(Ldapjs::LdapjsSearchOptions opt).getARhs()
+      // A search options object, which contains a filter and a baseDN.
+      this = any(LDAPjs::SearchOptions opt).getARhs()
     }
   }
 
