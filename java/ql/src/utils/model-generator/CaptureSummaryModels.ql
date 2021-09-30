@@ -41,7 +41,8 @@ string captureFieldFlow(Callable api) {
 string asOutput(Callable api, ReturnNodeExt node) {
   if node.getKind() instanceof ValueReturnKind
   then result = "ReturnValue"
-  else result = parameterAccess(api.getParameter(node.getKind().(ParamUpdateReturnKind).getPosition()))
+  else
+    result = parameterAccess(api.getParameter(node.getKind().(ParamUpdateReturnKind).getPosition()))
 }
 
 class FieldAssignment extends AssignExpr {

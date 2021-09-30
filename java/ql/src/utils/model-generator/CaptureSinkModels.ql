@@ -1,3 +1,9 @@
+/**
+ * @name Capture sink models.
+ * @description Finds public methods that act as sinks as they flow into a a known sink.
+ * @id java/utils/model-generator/sink-models
+ */
+
 import java
 import Telemetry.ExternalAPI
 import semmle.code.java.dataflow.DataFlow
@@ -5,8 +11,8 @@ import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.ExternalFlow
 import ModelGeneratorUtils
 
-class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "public methods calling sinks" }
+class PropagateToSinkConfiguration extends TaintTracking::Configuration {
+  PropagateToSinkConfiguration() { this = "public methods calling sinks" }
 
   override predicate isSource(DataFlow::Node source) {
     exists(MethodAccess ma |
@@ -22,7 +28,7 @@ class Configuration extends TaintTracking::Configuration {
 string asInputArgument(Expr source) { result = "Argument[" + source.(Argument).getPosition() + "]" }
 
 string captureSink(Callable api) {
-  exists(DataFlow::Node src, DataFlow::Node sink, Configuration config, string kind |
+  exists(DataFlow::Node src, DataFlow::Node sink, PropagateToSinkConfiguration config, string kind |
     config.hasFlow(src, sink) and
     sinkNode(sink, kind) and
     api = src.asExpr().getEnclosingCallable() and
