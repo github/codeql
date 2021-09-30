@@ -1495,162 +1495,158 @@ private module StdlibPrivate {
       result = this.getArg(any(int i | i >= msgIndex))
     }
   }
-}
 
-// ---------------------------------------------------------------------------
-// re
-// ---------------------------------------------------------------------------
-/**
- * List of methods in the `re` module immediately executing a regular expression.
- *
- * See https://docs.python.org/3/library/re.html#module-contents
- */
-private class RegexExecutionMethod extends string {
-  RegexExecutionMethod() {
-    this in ["match", "fullmatch", "search", "split", "findall", "finditer", "sub", "subn"]
-  }
-}
-
-/** Gets the index of the argument representing the string to be searched by a regex. */
-int stringArg(RegexExecutionMethod method) {
-  method in ["match", "fullmatch", "search", "split", "findall", "finditer"] and
-  result = 1
-  or
-  method in ["sub", "subn"] and
-  result = 2
-}
-
-/**
- * A a call to a method from the `re` module immediately executing a regular expression.
- *
- * See `RegexExecutionMethods`
- */
-private class DirectRegexExecution extends DataFlow::CallCfgNode, RegexExecution::Range {
-  RegexExecutionMethod method;
-
-  DirectRegex() { this = API::moduleImport("re").getMember(method).getACall() }
-
-  override DataFlow::Node getRegexNode() {
-    result in [this.getArg(0), this.getArgByName("pattern")]
-  }
-
-  override DataFlow::Node getString() {
-    result in [this.getArg(stringArg(method)), this.getArgByName("string")]
-  }
-
-  override string getName() { result = "re." + method }
-}
-
-/** Helper module for tracking compiled regexes. */
-private module CompiledRegexes {
-  private import semmle.python.dataflow.new.DataFlow4
-  private import semmle.python.RegexTreeView
-
-  // TODO: This module should be refactored once API graphs are more expressive.
-  // For now it uses data flow, so we pick the verion with least change of collision (4) .
-  /** A configuration for finding uses of compiled regexes. */
-  class RegexDefinitionConfiguration extends DataFlow4::Configuration {
-    RegexDefinitionConfiguration() { this = "RegexDefinitionConfiguration" }
-
-    override predicate isSource(DataFlow::Node source) { source instanceof RegexDefinitonSource }
-
-    override predicate isSink(DataFlow::Node sink) { sink instanceof RegexDefinitionSink }
-  }
-
-  /** A regex compilation. */
-  class RegexDefinitonSource extends DataFlow::CallCfgNode {
-    DataFlow::Node regexNode;
-
-    RegexDefinitonSource() {
-      this = API::moduleImport("re").getMember("compile").getACall() and
-      regexNode in [this.getArg(0), this.getArgByName("pattern")]
+  // ---------------------------------------------------------------------------
+  // re
+  // ---------------------------------------------------------------------------
+  /**
+   * List of methods in the `re` module immediately executing a regular expression.
+   *
+   * See https://docs.python.org/3/library/re.html#module-contents
+   */
+  private class RegexExecutionMethod extends string {
+    RegexExecutionMethod() {
+      this in ["match", "fullmatch", "search", "split", "findall", "finditer", "sub", "subn"]
     }
-
-    /** Gets the data flow node for the regex being compiled by this node. */
-    DataFlow::Node getRegexNode() { result = regexNode }
   }
 
-  /** A use of a compiled regex. */
-  class RegexDefinitionSink extends DataFlow::Node {
+  /** Gets the index of the argument representing the string to be searched by a regex. */
+  int getStringArgIndex(RegexExecutionMethod method) {
+    method in ["match", "fullmatch", "search", "split", "findall", "finditer"] and
+    result = 1
+    or
+    method in ["sub", "subn"] and
+    result = 2
+  }
+
+  /**
+   * A a call to a method from the `re` module immediately executing a regular expression.
+   *
+   * See `RegexExecutionMethods`
+   */
+  private class DirectRegexExecution extends DataFlow::CallCfgNode, RegexExecution::Range {
     RegexExecutionMethod method;
-    DataFlow::CallCfgNode executingCall;
 
-    RegexDefinitionSink() {
-      executingCall =
-        API::moduleImport("re").getMember("compile").getReturn().getMember(method).getACall() and
-      this = executingCall.getFunction().(DataFlow::AttrRead).getObject()
+    DirectRegexExecution() { this = API::moduleImport("re").getMember(method).getACall() }
+
+    override DataFlow::Node getRegex() { result in [this.getArg(0), this.getArgByName("pattern")] }
+
+    override DataFlow::Node getString() {
+      result in [this.getArg(getStringArgIndex(method)), this.getArgByName("string")]
     }
 
-    /** Gets the method used to execute the regex. */
-    RegexExecutionMethod getMethod() { result = method }
-
-    /** Gets the data flow node for the executing call. */
-    DataFlow::CallCfgNode getExecutingCall() { result = executingCall }
-  }
-}
-
-private import CompiledRegexes
-
-/**
- * A call on compiled regular expression (obtained via `re.compile`) executing a
- * regular expression.
- *
- * Given the following example:
- *
- * ```py
- * pattern = re.compile(input)
- * pattern.match(s)
- * ```
- *
- * This class will identify that `re.compile` compiles `input` and afterwards
- * executes `re`'s `match`. As a result, `this` will refer to `pattern.match(s)`
- * and `this.getRegexNode()` will return the node for `input` (`re.compile`'s first argument).
- *
- *
- * See `RegexExecutionMethods`
- *
- * See https://docs.python.org/3/library/re.html#regular-expression-objects
- */
-private class CompiledRegexExecution extends DataFlow::CallCfgNode, RegexExecution::Range {
-  DataFlow::Node regexNode;
-  RegexExecutionMethod method;
-
-  CompiledRegex() {
-    exists(
-      RegexDefinitionConfiguration conf, RegexDefinitonSource source, RegexDefinitionSink sink
-    |
-      conf.hasFlow(source, sink) and
-      regexNode = source.getRegexNode() and
-      method = sink.getMethod() and
-      this = sink.getExecutingCall()
-    )
+    override string getName() { result = "re." + method }
   }
 
-  override DataFlow::Node getRegexNode() { result = regexNode }
+  /** Helper module for tracking compiled regexes. */
+  private module CompiledRegexes {
+    private import semmle.python.dataflow.new.DataFlow4
+    private import semmle.python.RegexTreeView
 
-  override DataFlow::Node getString() {
-    result in [this.getArg(stringArg(method) - 1), this.getArgByName("string")]
+    // TODO: This module should be refactored once API graphs are more expressive.
+    // For now it uses data flow, so we pick the verion with least change of collision (4) .
+    /** A configuration for finding uses of compiled regexes. */
+    class RegexDefinitionConfiguration extends DataFlow4::Configuration {
+      RegexDefinitionConfiguration() { this = "RegexDefinitionConfiguration" }
+
+      override predicate isSource(DataFlow::Node source) { source instanceof RegexDefinitonSource }
+
+      override predicate isSink(DataFlow::Node sink) { sink instanceof RegexDefinitionSink }
+    }
+
+    /** A regex compilation. */
+    class RegexDefinitonSource extends DataFlow::CallCfgNode {
+      DataFlow::Node regexNode;
+
+      RegexDefinitonSource() {
+        this = API::moduleImport("re").getMember("compile").getACall() and
+        regexNode in [this.getArg(0), this.getArgByName("pattern")]
+      }
+
+      /** Gets the data flow node for the regex being compiled by this node. */
+      DataFlow::Node getRegexNode() { result = regexNode }
+    }
+
+    /** A use of a compiled regex. */
+    class RegexDefinitionSink extends DataFlow::Node {
+      RegexExecutionMethod method;
+      DataFlow::CallCfgNode executingCall;
+
+      RegexDefinitionSink() {
+        executingCall =
+          API::moduleImport("re").getMember("compile").getReturn().getMember(method).getACall() and
+        this = executingCall.getFunction().(DataFlow::AttrRead).getObject()
+      }
+
+      /** Gets the method used to execute the regex. */
+      RegexExecutionMethod getMethod() { result = method }
+
+      /** Gets the data flow node for the executing call. */
+      DataFlow::CallCfgNode getExecutingCall() { result = executingCall }
+    }
   }
 
-  override string getName() { result = "re." + method }
-}
+  private import CompiledRegexes
 
-/**
- * A call to 're.escape'.
- * See https://docs.python.org/3/library/re.html#re.escape
- */
-private class ReEscapeCall extends Escaping::Range, DataFlow::CallCfgNode {
-  ReEscapeCall() {
-    this = API::moduleImport("re").getMember("escape").getACall()
+  /**
+   * A call on compiled regular expression (obtained via `re.compile`) executing a
+   * regular expression.
+   *
+   * Given the following example:
+   *
+   * ```py
+   * pattern = re.compile(input)
+   * pattern.match(s)
+   * ```
+   *
+   * This class will identify that `re.compile` compiles `input` and afterwards
+   * executes `re`'s `match`. As a result, `this` will refer to `pattern.match(s)`
+   * and `this.getRegexNode()` will return the node for `input` (`re.compile`'s first argument).
+   *
+   *
+   * See `RegexExecutionMethods`
+   *
+   * See https://docs.python.org/3/library/re.html#regular-expression-objects
+   */
+  private class CompiledRegexExecution extends DataFlow::CallCfgNode, RegexExecution::Range {
+    DataFlow::Node regexNode;
+    RegexExecutionMethod method;
+
+    CompiledRegexExecution() {
+      exists(
+        RegexDefinitionConfiguration conf, RegexDefinitonSource source, RegexDefinitionSink sink
+      |
+        conf.hasFlow(source, sink) and
+        regexNode = source.getRegexNode() and
+        method = sink.getMethod() and
+        this = sink.getExecutingCall()
+      )
+    }
+
+    override DataFlow::Node getRegex() { result = regexNode }
+
+    override DataFlow::Node getString() {
+      result in [this.getArg(getStringArgIndex(method) - 1), this.getArgByName("string")]
+    }
+
+    override string getName() { result = "re." + method }
   }
 
-  override DataFlow::Node getAnInput() { 
-    result in [this.getArg(0), this.getArgByName("pattern")]
+  /**
+   * A call to 're.escape'.
+   * See https://docs.python.org/3/library/re.html#re.escape
+   */
+  private class ReEscapeCall extends Escaping::Range, DataFlow::CallCfgNode {
+    ReEscapeCall() { this = API::moduleImport("re").getMember("escape").getACall() }
+
+    override DataFlow::Node getAnInput() {
+      result in [this.getArg(0), this.getArgByName("pattern")]
+    }
+
+    override DataFlow::Node getOutput() { result = this }
+
+    override string getKind() { result = Escaping::getRegexKind() }
   }
-
-  override DataFlow::Node getOutput() { result = this }
-
-  override string getKind() { result = Escaping::getRegexKind() }
 }
 
 // ---------------------------------------------------------------------------

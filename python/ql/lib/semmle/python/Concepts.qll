@@ -388,8 +388,8 @@ module RegexExecution {
    * extend `RegexExecution` instead.
    */
   abstract class Range extends DataFlow::Node {
-    /** Gets the data flow node for the regex being compiled by this node. */
-    abstract DataFlow::Node getRegexNode();
+    /** Gets the data flow node for the regex being executed by this node. */
+    abstract DataFlow::Node getRegex();
 
     /** Gets a dataflow node for the string to be searched or matched against. */
     abstract DataFlow::Node getString();
