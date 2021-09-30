@@ -309,6 +309,8 @@ private predicate summaryModelCsv(string row) {
       "java.util;Base64$Decoder;false;decode;(ByteBuffer);;Argument[0];ReturnValue;taint",
       "java.util;Base64$Decoder;false;decode;(String);;Argument[0];ReturnValue;taint",
       "java.util;Base64$Decoder;false;wrap;(InputStream);;Argument[0];ReturnValue;taint",
+      "cn.hutool.core.codec;Base64;true;decode;;;Argument[0];ReturnValue;taint",
+      "org.apache.shiro.codec;Base64;false;decode;(String);;Argument[0];ReturnValue;taint",
       "org.apache.commons.codec;Encoder;true;encode;(Object);;Argument[0];ReturnValue;taint",
       "org.apache.commons.codec;Decoder;true;decode;(Object);;Argument[0];ReturnValue;taint",
       "org.apache.commons.codec;BinaryEncoder;true;encode;(byte[]);;Argument[0];ReturnValue;taint",

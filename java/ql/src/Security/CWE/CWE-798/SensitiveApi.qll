@@ -513,5 +513,6 @@ private predicate otherApiCallableCredentialParam(string s) {
   s = "com.amazonaws.auth.BasicAWSCredentials;BasicAWSCredentials(String, String);1" or
   s = "com.azure.identity.UsernamePasswordCredentialBuilder;username(String);0" or
   s = "com.azure.identity.UsernamePasswordCredentialBuilder;password(String);0" or
-  s = "com.azure.identity.ClientSecretCredentialBuilder;clientSecret(String);0"
+  s = "com.azure.identity.ClientSecretCredentialBuilder;clientSecret(String);0" or
+  s = "org.apache.shiro.mgt.AbstractRememberMeManager;setCipherKey(byte[]);0"
 }
