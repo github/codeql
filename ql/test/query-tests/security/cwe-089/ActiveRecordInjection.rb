@@ -17,10 +17,10 @@ class User < ApplicationRecord
 end
 
 class Admin < User
-  def self.delete_all(condition = nil)
-    # BAD: `delete_all` overrides an ActiveRecord method, but doesn't perform
+  def self.delete_by(condition = nil)
+    # BAD: `delete_by overrides an ActiveRecord method, but doesn't perform
     # any validation before passing its arguments on to another ActiveRecord method
-    destroy_all(condition)
+    destroy_by(condition)
   end
 end
 
@@ -34,12 +34,26 @@ class FooController < ActionController::Base
     # where `params[:column]` is unsanitized
     User.calculate(:average, params[:column])
 
+    # BAD: executes `SELECT MAX(#{params[:column]}) FROM "users"`
+    # where `params[:column]` is unsanitized
+    User.maximum(params[:column])
+
     # BAD: executes `DELETE FROM "users" WHERE (id = '#{params[:id]}')`
     # where `params[:id]` is unsanitized
+    User.delete_by("id = '#{params[:id]}'")
+
+    # BAD: executes `DELETE FROM "users" WHERE (id = '#{params[:id]}')`
+    # where `params[:id]` is unsanitized
+    # (in Rails < 4.0)
     User.delete_all("id = '#{params[:id]}'")
 
     # BAD: executes `SELECT "users".* FROM "users" WHERE (id = '#{params[:id]}')`
     # where `params[:id]` is unsanitized
+    User.destroy_by(["id = '#{params[:id]}'"])
+
+    # BAD: executes `SELECT "users".* FROM "users" WHERE (id = '#{params[:id]}')`
+    # where `params[:id]` is unsanitized
+    # (in Rails < 4.0)
     User.destroy_all(["id = '#{params[:id]}'"])
 
     # BAD: executes `SELECT "users".* FROM "users" WHERE id BETWEEN '#{params[:min_id]}' AND 100000`
@@ -54,6 +68,28 @@ class FooController < ActionController::Base
     User.where.not("user.id = '#{params[:id]}'")
 
     User.authenticate(params[:name], params[:pass])
+
+    # BAD: executes `SELECT "users".* FROM "users" WHERE (id = '#{params[:id]}')` LIMIT 1
+    # where `params[:id]` is unsanitized
+    User.find_or_initialize_by("id = '#{params[:id]}'")
+
+    user = User.first
+    # BAD: executes `SELECT "users".* FROM "users" WHERE id = 1 LIMIT 1 #{params[:lock]}`
+    # where `params[:lock]` is unsanitized
+    user.reload(lock: params[:lock])
+
+    # BAD: executes `SELECT #{params[:column]} FROM "users"`
+    # where `params[:column]` is unsanitized
+    User.select(params[:column])
+    User.reselect(params[:column])
+
+    # BAD: executes `SELECT "users".* FROM "users" WHERE (#{params[:condition]})`
+    # where `params[:condition]` is unsanitized
+    User.rewhere(params[:condition])
+
+    # BAD: executes `UPDATE "users" SET #{params[:fields]}`
+    # where `params[:fields]` is unsanitized
+    User.update_all(params[:fields])
   end
 end
 
@@ -65,7 +101,7 @@ class BarController < ApplicationController
 
     # BAD: executes `DELETE FROM "users" WHERE (id = #{uid})`
     # where `uid` is unsantized
-    User.delete_all("id " + uidEq)
+    User.delete_by("id " + uidEq)
   end
 
   def safe_paths
@@ -98,6 +134,6 @@ end
 
 class BazController < BarController
   def yet_another_handler
-    Admin.delete_all(params[:admin_condition])
+    Admin.delete_by(params[:admin_condition])
   end
 end

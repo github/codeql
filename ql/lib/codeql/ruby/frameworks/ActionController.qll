@@ -28,7 +28,7 @@ private class ApplicationControllerAccess extends ConstantReadAccess {
  * class FooController < ActionController::Base
  *   def delete_handler
  *     uid = params[:id]
- *     User.delete_all("id = ?", uid)
+ *     User.delete_by("id = ?", uid)
  *   end
  * end
  * ```
