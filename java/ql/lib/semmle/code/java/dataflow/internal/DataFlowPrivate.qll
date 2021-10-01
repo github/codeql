@@ -312,7 +312,9 @@ int accessPathLimit() { result = 5 }
  * Holds if accesspaths with `c` at their head always should be tracked at high
  * precision. This disables adaptive accesspath precision for such accesspaths.
  */
-predicate forceHighPrecision(Content c) { c instanceof ArrayContent or c instanceof CollectionContent }
+predicate forceHighPrecision(Content c) {
+  c instanceof ArrayContent or c instanceof CollectionContent
+}
 
 /**
  * Holds if `n` does not require a `PostUpdateNode` as it either cannot be
