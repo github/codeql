@@ -503,3 +503,38 @@ module CodeExecution {
     abstract DataFlow::Node getCode();
   }
 }
+
+/**
+ * A data-flow node that parses XML content.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `XmlParserCall::Range` instead.
+ */
+class XmlParserCall extends DataFlow::Node {
+  XmlParserCall::Range range;
+
+  XmlParserCall() { this = range }
+
+  /** Gets the argument that specifies the XML content to be parsed. */
+  DataFlow::Node getInput() { result = range.getInput() }
+
+  /** Holds if this XML parser call is configured to process external entities */
+  predicate externalEntitiesEnabled() { range.externalEntitiesEnabled() }
+}
+
+/** Provides a class for modeling new XML parsing APIs. */
+module XmlParserCall {
+  /**
+   * A data-flow node that parses XML content.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `class XmlParserCall` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /** Gets the argument that specifies the XML content to be parsed. */
+    abstract DataFlow::Node getInput();
+
+    /** Holds if this XML parser call is configured to process external entities */
+    abstract predicate externalEntitiesEnabled();
+  }
+}
