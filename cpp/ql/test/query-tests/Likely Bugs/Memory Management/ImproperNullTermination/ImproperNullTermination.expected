@@ -26,4 +26,3 @@
 | test.cpp:421:19:421:25 | buffer2 | Variable $@ may not be null terminated. | test.cpp:419:8:419:14 | buffer2 | buffer2 |
 | test.cpp:448:17:448:22 | buffer | Variable $@ may not be null terminated. | test.cpp:446:8:446:13 | buffer | buffer |
 | test.cpp:454:18:454:23 | buffer | Variable $@ may not be null terminated. | test.cpp:452:8:452:13 | buffer | buffer |
-| test.cpp:502:10:502:18 | after_ptr | Variable $@ may not be null terminated. | test.cpp:497:9:497:17 | after_ptr | after_ptr |

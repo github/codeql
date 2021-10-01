@@ -499,6 +499,6 @@ void test_strtol()
 
 		strcpy(buffer, "123abc");
 		num = strtol("123abc", &after_ptr, 10);
-		strlen(after_ptr); // GOOD [FALSE POSITIVE]
+		strlen(after_ptr); // GOOD
 	}
 }
