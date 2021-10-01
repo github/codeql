@@ -11,6 +11,7 @@
  *       security
  *       external/cwe/cwe-078
  *       external/cwe/cwe-088
+ *       external/cwe/cwe-073
  */
 
 import ruby
