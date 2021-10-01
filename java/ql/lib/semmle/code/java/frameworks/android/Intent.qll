@@ -79,6 +79,15 @@ private class IntentBundleFlowSteps extends SummaryModelCsv {
         "android.os;BaseBundle;true;putString;;;Argument[1];MapValue of Argument[-1];value",
         "android.os;BaseBundle;true;putStringArray;;;Argument[0];MapKey of Argument[-1];value",
         "android.os;BaseBundle;true;putStringArray;;;Argument[1];MapValue of Argument[-1];value",
+        "android.os;Bundle;false;Bundle;(Bundle);;MapKey of Argument[0];MapKey of Argument[-1];value",
+        "android.os;Bundle;false;Bundle;(Bundle);;MapValue of Argument[0];MapValue of Argument[-1];value",
+        "android.os;Bundle;false;Bundle;(PersistableBundle);;MapKey of Argument[0];MapKey of Argument[-1];value",
+        "android.os;Bundle;false;Bundle;(PersistableBundle);;MapValue of Argument[0];MapValue of Argument[-1];value",
+        "android.os;Bundle;true;clone;();;MapKey of Argument[-1];MapKey of ReturnValue;value",
+        "android.os;Bundle;true;clone;();;MapValue of Argument[-1];MapValue of ReturnValue;value",
+        // model for Bundle.deepCopy is not fully precise, as some map values aren't copied by value
+        "android.os;Bundle;true;deepCopy;();;MapKey of Argument[-1];MapKey of ReturnValue;value",
+        "android.os;Bundle;true;deepCopy;();;MapValue of Argument[-1];MapValue of ReturnValue;value",
         "android.os;Bundle;true;getBinder;(String);;MapValue of Argument[-1];ReturnValue;value",
         "android.os;Bundle;true;getBundle;(String);;MapValue of Argument[-1];ReturnValue;value",
         "android.os;Bundle;true;getByteArray;(String);;MapValue of Argument[-1];ReturnValue;value",
@@ -133,6 +142,11 @@ private class IntentBundleFlowSteps extends SummaryModelCsv {
         "android.os;Bundle;true;putStringArrayList;;;Argument[1];MapValue of Argument[-1];value",
         "android.os;Bundle;true;readFromParcel;;;Argument[0];MapKey of Argument[-1];taint",
         "android.os;Bundle;true;readFromParcel;;;Argument[0];MapValue of Argument[-1];taint",
+        // currently only the Extras part of the intent is fully modelled
+        "android.content;Intent;true;addCategory;;;Argument[-1];ReturnValue;value",
+        "android.content;Intent;true;addFlags;;;Argument[-1];ReturnValue;value",
+        "android.content;Intent;false;Intent;(Intent);;MapKey of SyntheticField[android.content.Intent.extras] of Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[-1];value",
+        "android.content;Intent;false;Intent;(Intent);;MapValue of SyntheticField[android.content.Intent.extras] of Argument[0];MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];value",
         "android.content;Intent;true;getExtras;();;SyntheticField[android.content.Intent.extras] of Argument[-1];ReturnValue;value",
         "android.content;Intent;true;getBundleExtra;(String);;MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];ReturnValue;value",
         "android.content;Intent;true;getByteArrayExtra;(String);;MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];ReturnValue;value",
@@ -172,7 +186,20 @@ private class IntentBundleFlowSteps extends SummaryModelCsv {
         "android.content;Intent;true;replaceExtras;(Bundle);;Argument[-1];ReturnValue;value",
         "android.content;Intent;true;replaceExtras;(Intent);;MapKey of SyntheticField[android.content.Intent.extras] of Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[-1];value",
         "android.content;Intent;true;replaceExtras;(Intent);;MapValue of SyntheticField[android.content.Intent.extras] of Argument[0];MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];value",
-        "android.content;Intent;true;replaceExtras;(Intent);;Argument[-1];ReturnValue;value"
+        "android.content;Intent;true;replaceExtras;(Intent);;Argument[-1];ReturnValue;value",
+        "android.content;Intent;true;setAction;;;Argument[-1];ReturnValue;value",
+        "android.content;Intent;true;setClass;;;Argument[-1];ReturnValue;value",
+        "android.content;Intent;true;setClassName;;;Argument[-1];ReturnValue;value",
+        "android.content;Intent;true;setComponent;;;Argument[-1];ReturnValue;value",
+        "android.content;Intent;true;setData;;;Argument[-1];ReturnValue;value",
+        "android.content;Intent;true;setDataAndNormalize;;;Argument[-1];ReturnValue;value",
+        "android.content;Intent;true;setDataAndType;;;Argument[-1];ReturnValue;value",
+        "android.content;Intent;true;setDataAndTypeAndNormalize;;;Argument[-1];ReturnValue;value",
+        "android.content;Intent;true;setFlags;;;Argument[-1];ReturnValue;value",
+        "android.content;Intent;true;setIdentifier;;;Argument[-1];ReturnValue;value",
+        "android.content;Intent;true;setPackage;;;Argument[-1];ReturnValue;value",
+        "android.content;Intent;true;setType;;;Argument[-1];ReturnValue;value",
+        "android.content;Intent;true;setTypeAndNormalize;;;Argument[-1];ReturnValue;value"
       ]
   }
 }

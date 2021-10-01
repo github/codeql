@@ -14,6 +14,8 @@
 | IntentSources.java:16:20:16:30 | getIntent(...) | IntentSources.java:16:20:16:52 | getStringExtra(...) |
 | IntentSources.java:16:20:16:30 | getIntent(...) | IntentSources.java:17:29:17:35 | trouble |
 | IntentSources.java:23:20:23:30 | getIntent(...) | ../../../stubs/google-android-9.0.0/android/content/Intent.java:1358:19:1358:27 | parameter this |
+| IntentSources.java:23:20:23:30 | getIntent(...) | ../../../stubs/google-android-9.0.0/android/os/BaseBundle.java:600:19:600:27 | [summary] read: <map.value> of argument -1 in getString |
+| IntentSources.java:23:20:23:30 | getIntent(...) | ../../../stubs/google-android-9.0.0/android/os/BaseBundle.java:600:19:600:27 | [summary] to write: return (return) in getString |
 | IntentSources.java:23:20:23:30 | getIntent(...) | ../../../stubs/google-android-9.0.0/android/os/BaseBundle.java:600:19:600:27 | parameter this |
 | IntentSources.java:23:20:23:30 | getIntent(...) | IntentSources.java:23:20:23:30 | getIntent(...) |
 | IntentSources.java:23:20:23:30 | getIntent(...) | IntentSources.java:23:20:23:42 | getExtras(...) |
