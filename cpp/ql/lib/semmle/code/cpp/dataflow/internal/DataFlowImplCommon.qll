@@ -1236,6 +1236,13 @@ class TypedContent extends MkTypedContent {
 
   /** Gets a textual representation of this content. */
   string toString() { result = c.toString() }
+
+  /**
+   * Holds if accesspaths with this `TypedContent` at their head always should
+   * be tracked at high precision. This disables adaptive accesspath precision
+   * for such accesspaths.
+   */
+  predicate forceHighPrecision() { forceHighPrecision(c) }
 }
 
 /**
