@@ -6,6 +6,7 @@ size_t strlen(const char *s);
 char *strcpy(char *s1, const char *s2);
 char *strcat(char *s1, const char *s2);
 char *strdup(const char *s1);
+
 void *malloc(size_t size);
 void *memset(void *s, int c, size_t n);
 void *memcpy(void *s1, const void *s2, size_t n);
@@ -226,6 +227,7 @@ void doNothing(char *data) { };
 void doNothing2(const char *data);
 void clearBuffer(char *data, size_t size);
 
+
 void test_strcat()
 {
 	{
@@ -318,6 +320,13 @@ void test_strcat()
 		clearBuffer(buffer, 1024);
 		strcat(buffer, "content"); // GOOD
 	}
+
+
+
+
+
+
+
 }
 
 void test_strlen(bool cond1, bool cond2)
@@ -354,6 +363,53 @@ void test_strlen(bool cond1, bool cond2)
 		if (cond2)
 			strlen(buffer); // BAD
 	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
 
 void test_strcpy()
