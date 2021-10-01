@@ -53,7 +53,8 @@ class ParameterToFieldConfig extends TaintTracking::Configuration {
   ParameterToFieldConfig() { this = "ParameterToFieldConfig" }
 
   override predicate isSource(DataFlow::Node source) {
-    not source.asParameter().getType() instanceof PrimitiveType
+    source instanceof DataFlow::ParameterNode and
+    not source.getType() instanceof PrimitiveType
   }
 
   override predicate isSink(DataFlow::Node sink) {
@@ -77,17 +78,13 @@ class ParameterToReturnValueTaintConfig extends TaintTracking::Configuration {
   ParameterToReturnValueTaintConfig() { this = "ParameterToReturnValueTaintConfig" }
 
   override predicate isSource(DataFlow::Node source) {
-    exists(Parameter p, Callable api |
-      p = source.asParameter() and
-      api = p.getCallable() and
-      (
-        not api.getReturnType() instanceof PrimitiveType and
-        not p.getType() instanceof PrimitiveType
-      ) and
-      (
-        not api.getReturnType() instanceof TypeClass and
-        not p.getType() instanceof TypeClass
-      )
+    exists(Callable api |
+      source instanceof DataFlow::ParameterNode and
+      api = source.asParameter().getCallable() and
+      not api.getReturnType() instanceof PrimitiveType and
+      not api.getReturnType() instanceof TypeClass and
+      not source.asParameter().getType() instanceof PrimitiveType and
+      not source.asParameter().getType() instanceof TypeClass
     )
   }
 
