@@ -123,7 +123,7 @@ public class OdasaOutput {
 	 * Trap sets and dependencies.
 	 */
 
-	private void writeTrapSet() {
+	public void writeTrapSet() {
 		trapsCreated.save(trapSetFor(currentSourceFile).toPath());
 	}
 
@@ -294,6 +294,7 @@ public class OdasaOutput {
 			throw new CatastrophicError("OdasaOutput only supports writing to compressed trap files");
 		String relative = FileUtil.relativePath(trapFile, currentSpecFileEntry.getTrapFolder());
 		trapFile.getParentFile().mkdirs();
+		trapsCreated.addTrap(relative);
 		return concurrentWriter(trapFile, relative, log, sym);
 	}
 

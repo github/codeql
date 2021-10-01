@@ -202,6 +202,7 @@ class ExternalClassExtractor(val logger: FileLogger, val sourceFilePath: String,
                 }
             }
         } while (!externalClassWorkList.isEmpty());
+        output.writeTrapSet()
     }
 
 }
