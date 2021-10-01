@@ -7,18 +7,28 @@ import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.xml.AndroidManifest
 
 /**
+ * Gets a transitive superType avoiding magic optimisation
+ */
+pragma[nomagic]
+private RefType getASuperTypePlus(RefType t) { result = t.getASupertype+() }
+
+/**
+ * Gets a reflexive/transitive superType avoiding magic optimisation
+ */
+pragma[inline]
+private RefType getASuperTypeStar(RefType t) { result = getASuperTypePlus(t) or result = t }
+
+/**
  * An Android component. That is, either an activity, a service,
  * a broadcast receiver, or a content provider.
  */
 class AndroidComponent extends Class {
   AndroidComponent() {
-    // The casts here are due to misoptimisation if they are missing
-    // but are not needed semantically.
-    this.(Class).getASupertype*().hasQualifiedName("android.app", "Activity") or
-    this.(Class).getASupertype*().hasQualifiedName("android.app", "Service") or
-    this.(Class).getASupertype*().hasQualifiedName("android.content", "BroadcastReceiver") or
-    this.(Class).getASupertype*().hasQualifiedName("android.content", "ContentProvider") or
-    this.(Class).getASupertype*().hasQualifiedName("android.content", "ContentResolver")
+    getASuperTypeStar(this).hasQualifiedName("android.app", "Activity") or
+    getASuperTypeStar(this).hasQualifiedName("android.app", "Service") or
+    getASuperTypeStar(this).hasQualifiedName("android.content", "BroadcastReceiver") or
+    getASuperTypeStar(this).hasQualifiedName("android.content", "ContentProvider") or
+    getASuperTypeStar(this).hasQualifiedName("android.content", "ContentResolver")
   }
 
   /** The XML element corresponding to this Android component. */
@@ -52,25 +62,25 @@ class ExportableAndroidComponent extends AndroidComponent {
 
 /** An Android activity. */
 class AndroidActivity extends ExportableAndroidComponent {
-  AndroidActivity() { this.getASupertype*().hasQualifiedName("android.app", "Activity") }
+  AndroidActivity() { getASuperTypeStar(this).hasQualifiedName("android.app", "Activity") }
 }
 
 /** An Android service. */
 class AndroidService extends ExportableAndroidComponent {
-  AndroidService() { this.getASupertype*().hasQualifiedName("android.app", "Service") }
+  AndroidService() { getASuperTypeStar(this).hasQualifiedName("android.app", "Service") }
 }
 
 /** An Android broadcast receiver. */
 class AndroidBroadcastReceiver extends ExportableAndroidComponent {
   AndroidBroadcastReceiver() {
-    this.getASupertype*().hasQualifiedName("android.content", "BroadcastReceiver")
+    getASuperTypeStar(this).hasQualifiedName("android.content", "BroadcastReceiver")
   }
 }
 
 /** An Android content provider. */
 class AndroidContentProvider extends ExportableAndroidComponent {
   AndroidContentProvider() {
-    this.getASupertype*().hasQualifiedName("android.content", "ContentProvider")
+    getASuperTypeStar(this).hasQualifiedName("android.content", "ContentProvider")
   }
 
   /**
@@ -85,7 +95,7 @@ class AndroidContentProvider extends ExportableAndroidComponent {
 /** An Android content resolver. */
 class AndroidContentResolver extends AndroidComponent {
   AndroidContentResolver() {
-    this.getASupertype*().hasQualifiedName("android.content", "ContentResolver")
+    getASuperTypeStar(this).hasQualifiedName("android.content", "ContentResolver")
   }
 }
 
