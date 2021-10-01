@@ -61,7 +61,5 @@ private class Send extends AliasFunction, ArrayFunction, SideEffectFunction, Rem
     input.isParameterDeref(1) and description = "Buffer sent by " + this.getName()
   }
 
-  override predicate hasSocketInput(FunctionInput input) {
-    input.isParameter(0)
-  }
+  override predicate hasSocketInput(FunctionInput input) { input.isParameter(0) }
 }
