@@ -25,6 +25,11 @@ private class NokogiriXmlParserCall extends XmlParserCall::Range, DataFlow::Call
     this.getArgument(3) =
       [trackEnableFeature(TNOENT()), trackEnableFeature(TDTDLOAD()), trackDisableFeature(TNONET())]
     or
+    // calls to methods that enable/disable features in a block argument passed to this parser call.
+    // For example:
+    // ```ruby
+    // doc.parse(...) { |options| options.nononet; options.noent }
+    // ```
     this.asExpr()
         .getExpr()
         .(MethodCall)
@@ -32,7 +37,7 @@ private class NokogiriXmlParserCall extends XmlParserCall::Range, DataFlow::Call
         .getAStmt()
         .getAChild*()
         .(MethodCall)
-        .getMethodName() = ["noent", "nononet"]
+        .getMethodName() = ["noent", "dtdload", "nononet"]
   }
 }
 
