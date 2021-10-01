@@ -1918,6 +1918,12 @@ private predicate viableConstantBooleanParamArg(
 
 int accessPathLimit() { result = 5 }
 
+/**
+ * Holds if accesspaths with `c` at their head always should be tracked at high
+ * precision. This disables adaptive accesspath precision for such accesspaths.
+ */
+predicate forceHighPrecision(Content c) { c instanceof ElementContent }
+
 /** The unit type. */
 private newtype TUnit = TMkUnit()
 
