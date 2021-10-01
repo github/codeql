@@ -65,7 +65,9 @@ predicate mayAddNullTerminator(Expr e, VariableAccess va) {
     exists(AsmStmt s | s.getEnclosingFunction() = f)
     or
     // function where the relevant parameter is returned (leaking it)
-    exists(ReturnStmt rs | rs.getEnclosingFunction() = f and rs.getExpr().getAChild*() = f.getParameter(i).getAnAccess())
+    exists(ReturnStmt rs |
+      rs.getEnclosingFunction() = f and rs.getExpr().getAChild*() = f.getParameter(i).getAnAccess()
+    )
   )
   or
   // Call without target (e.g., function pointer call)
