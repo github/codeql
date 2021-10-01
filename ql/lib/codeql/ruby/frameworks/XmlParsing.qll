@@ -93,9 +93,10 @@ private class FeatureDTDLOAD extends Feature, TDTDLOAD {
 private API::Node parseOptionsModule() {
   result = API::getTopLevelMember("Nokogiri").getMember("XML").getMember("ParseOptions")
   or
-  result = API::getTopLevelMember("LibXML").getMember("XML").getMember("Options")
+  result =
+    API::getTopLevelMember("LibXML").getMember("XML").getMember("Parser").getMember("Options")
   or
-  result = API::getTopLevelMember("XML").getMember("Options")
+  result = API::getTopLevelMember("XML").getMember("Parser").getMember("Options")
 }
 
 private predicate bitWiseAndOr(CfgNodes::ExprNodes::OperationCfgNode operation) {
