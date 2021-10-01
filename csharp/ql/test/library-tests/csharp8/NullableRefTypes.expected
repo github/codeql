@@ -299,7 +299,7 @@ expressionTypes
 | NullableRefTypes.cs:93:21:93:28 | "source" | string! |
 | NullableRefTypes.cs:94:13:94:13 | access to local variable y | string? |
 | NullableRefTypes.cs:94:13:94:25 | String y = ... | string? |
-| NullableRefTypes.cs:94:17:94:17 | access to local variable x | string! |
+| NullableRefTypes.cs:94:17:94:17 | access to local variable x | string? |
 | NullableRefTypes.cs:94:17:94:25 | ... ?? ... | string? |
 | NullableRefTypes.cs:94:22:94:25 | null | null |
 | NullableRefTypes.cs:95:16:95:16 | access to local variable z | string! |
