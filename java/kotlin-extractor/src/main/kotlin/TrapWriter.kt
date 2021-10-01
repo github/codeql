@@ -8,6 +8,8 @@ import org.jetbrains.kotlin.ir.declarations.path
 import org.jetbrains.kotlin.ir.declarations.IrFile
 import org.jetbrains.kotlin.ir.declarations.IrVariable
 
+import com.semmle.extractor.java.PopulateFile
+
 class TrapLabelManager {
     public var nextId: Int = 100
 
@@ -23,6 +25,7 @@ open class TrapWriter (val lm: TrapLabelManager, val bw: BufferedWriter) {
         @Suppress("UNCHECKED_CAST")
         return lm.labelMapping.get(label) as Label<T>?
     }
+    @JvmOverloads
     fun <T> getLabelFor(label: String, initialise: (Label<T>) -> Unit = {}): Label<T> {
         val maybeId: Label<T>? = getExistingLabelFor(label)
         if(maybeId == null) {
@@ -96,12 +99,14 @@ open class FileTrapWriter (
     val filePath: String,
     val sourceOffsetResolver: SourceOffsetResolver
 ): TrapWriter (lm, bw) {
-    val fileId = {
-        val fileLabel = "@\"$filePath;sourcefile\""
-        val id: Label<DbFile> = getLabelFor(fileLabel)
-        writeFiles(id, filePath)
-        id
-    }()
+    val populateFile = PopulateFile(this)
+    val splitFilePath = filePath.split("!/")
+    val fileId =
+        (if(splitFilePath.size == 1)
+            populateFile.populateFile(File(filePath))
+         else
+            populateFile.relativeFileId(File(splitFilePath.get(0)), splitFilePath.get(1))
+        ) as Label<DbFile>
 
     fun getLocation(e: IrElement): Label<DbLocation> {
         return getLocation(e.startOffset, e.endOffset)

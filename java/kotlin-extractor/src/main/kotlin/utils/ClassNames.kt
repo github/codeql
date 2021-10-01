@@ -50,8 +50,7 @@ fun getRawIrClassBinaryPath(irClass: IrClass): String? {
 }
 
 fun getIrClassBinaryPath(irClass: IrClass): String {
-  // If a class location is known, replace the JAR delimiter !/:
-  return getRawIrClassBinaryPath(irClass)?.replaceFirst("!/", "/")
+  return getRawIrClassBinaryPath(irClass)
   // Otherwise, make up a fake location:
     ?: "/!unknown-binary-location/${getIrClassBinaryName(irClass).replace(".", "/")}.class"
 }

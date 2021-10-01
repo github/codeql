@@ -7,8 +7,9 @@ import java.util.Map;
 import com.github.codeql.Label;
 import com.github.codeql.TrapWriter;
 import com.github.codeql.KotlinExtractorDbSchemeKt;
-import com.semmle.util.trap.pathtransformers.PathTransformer;
+import com.semmle.util.exception.CatastrophicError;
 import com.semmle.util.files.FileUtil;
+import com.semmle.util.trap.pathtransformers.PathTransformer;
 
 public class PopulateFile {
 
@@ -99,6 +100,38 @@ public class PopulateFile {
     Label parentLabel = addFolderTuple(FileUtil.normalisePath(parent.getPath()));
     populateParents(parent, parentLabel);
 		KotlinExtractorDbSchemeKt.writeContainerparent(tw, parentLabel, label);
+	}
+
+	public Label relativeFileId(File jarFile, String pathWithinJar) {
+		if (pathWithinJar.contains("\\"))
+			throw new CatastrophicError("Invalid jar path: '" + pathWithinJar + "' should not contain '\\'.");
+
+		Label jarFileId = this.populateFile(jarFile);
+		Label jarFileLocation = tw.getLocation(jarFileId,0,0,0,0);
+		KotlinExtractorDbSchemeKt.writeHasLocation(tw, jarFileId, jarFileLocation);
+
+		String databasePath = transformer.fileAsDatabaseString(jarFile);
+		StringBuilder fullName = new StringBuilder(databasePath);
+		String[] split = pathWithinJar.split("/");
+		Label current = jarFileId;
+		for (int i = 0; i < split.length; i++) {
+			String shortName = split[i];
+
+			fullName.append("/");
+			fullName.append(shortName);
+			Label fileId = tw.getLabelFor("@\"" + fullName + ";jarFile" + "\"");
+
+			boolean file = i == split.length - 1;
+			if (file) {
+				KotlinExtractorDbSchemeKt.writeFiles(tw, fileId, fullName.toString());
+			} else {
+				KotlinExtractorDbSchemeKt.writeFolders(tw, fileId, fullName.toString());
+			}
+			KotlinExtractorDbSchemeKt.writeContainerparent(tw, current, fileId);
+			current = fileId;
+		}
+
+		return current;
 	}
 
 }
