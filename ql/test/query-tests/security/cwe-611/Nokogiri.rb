@@ -10,7 +10,7 @@ class NokogiriXXE < ApplicationController
     Nokogiri::XML::parse(content, nil, nil, ~Nokogiri::XML::ParseOptions::NOENT) #OK
     Nokogiri::XML::parse(content, nil, nil, ~Nokogiri::XML::ParseOptions::NONET)
     Nokogiri::XML::parse(content, nil, nil, Nokogiri::XML::ParseOptions.new 2)
-    options = Nokogiri::XML::ParseOptions.new 0
+    options = Nokogiri::XML::ParseOptions.new 2048
     options.noent
     Nokogiri::XML::parse(content, nil, nil, options)
     Nokogiri::XML::parse(content, nil, nil, (Nokogiri::XML::ParseOptions.new 0).noent)
