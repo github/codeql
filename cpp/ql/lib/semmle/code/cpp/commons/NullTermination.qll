@@ -54,7 +54,7 @@ predicate mayAddNullTerminator(Expr e, VariableAccess va) {
     not functionArgumentMustBeNullTerminated(f, i) and
     c.getAnArgumentSubExpr(i) = va
   |
-    not f.hasEntryPoint() and not functionArgumentMustBeNullTerminated(f, i)
+    not f.hasEntryPoint()
     or
     mayAddNullTerminator(_, f.getParameter(i).getAnAccess())
     or
