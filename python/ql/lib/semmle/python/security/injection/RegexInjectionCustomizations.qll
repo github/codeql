@@ -28,7 +28,7 @@ module RegexInjection {
   class Sink extends DataFlow::Node {
     RegexExecution regexExecution;
 
-    Sink() { this = regexExecution.getRegexNode() }
+    Sink() { this = regexExecution.getRegex() }
 
     /** Gets the call that executes the regular expression marked by this sink. */
     RegexExecution getRegexExecution() { result = regexExecution }

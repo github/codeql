@@ -61,7 +61,7 @@ module PolynomialReDoS {
 
     RegexExecutionAsSink() {
       exists(RegexExecution re |
-        re.getRegexNode().asExpr() = t.getRegex() and
+        re.getRegex().asExpr() = t.getRegex() and
         this = re.getString()
       ) and
       t.isRootTerm()
