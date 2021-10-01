@@ -53,15 +53,15 @@ void test_stringstream_string(int amount)
 	sink(ss7); // $ SPURIOUS: ast,ir
 
 	sink(ss8.put('a'));
-	sink(ss9.put(ns_char::source())); // $ ast MISSING: ir
-	sink(ss10.put('a').put(ns_char::source()).put('z')); // $ ast MISSING: ir
+	sink(ss9.put(ns_char::source())); // $ ast,ir
+	sink(ss10.put('a').put(ns_char::source()).put('z')); // $ ast,ir
 	sink(ss8);
 	sink(ss9); // $ ast,ir
 	sink(ss10); // $ ast MISSING: ir
 
 	sink(ss11.write("begin", 5));
-	sink(ss12.write(source(), 5)); // $ ast MISSING: ir
-	sink(ss13.write("begin", 5).write(source(), amount).write("end", 3)); // $ ast MISSING: ir
+	sink(ss12.write(source(), 5)); // $ ast,ir
+	sink(ss13.write("begin", 5).write(source(), amount).write("end", 3)); // $ ast,ir
 	sink(ss11);
 	sink(ss12); // $ ast,ir
 	sink(ss13); // $ ast MISSING: ir
@@ -73,7 +73,7 @@ void test_stringstream_int(int source)
 	int v1 = 0, v2 = 0;
 
 	sink(ss1 << 1234);
-	sink(ss2 << source); // $ ast MISSING: ir
+	sink(ss2 << source); // $ ast,ir
 	sink(ss1 >> v1);
 	sink(ss2 >> v2); // $ ast,ir
 
@@ -97,7 +97,7 @@ void test_stringstream_constructors()
 	std::stringstream ss6;
 
 	sink(ss5 = std::stringstream("abc"));
-	sink(ss6 = std::stringstream(source())); // $ ast MISSING: ir
+	sink(ss6 = std::stringstream(source())); // $ ast,ir
 
 	sink(ss1);
 	sink(ss2); // $ ast,ir
@@ -193,7 +193,7 @@ void test_stringstream_putback()
 	sink(ss.get());
 	sink(ss.putback('b'));
 	sink(ss.get());
-	sink(ss.putback(ns_char::source())); // $ ast MISSING: ir
+	sink(ss.putback(ns_char::source())); // $ ast,ir
 	sink(ss.get()); // $ ast,ir
 }
 
@@ -263,6 +263,6 @@ void test_chaining()
 	sink(b1); // $ ast,ir
 	sink(b2); // $ ast,ir
 
-	sink(ss2.write("abc", 3).flush().write(source(), 3).flush().write("xyz", 3)); // $ ast MISSING: ir
+	sink(ss2.write("abc", 3).flush().write(source(), 3).flush().write("xyz", 3)); // $ ast,ir
 	sink(ss2); // $ ast MISSING: ir
 }
