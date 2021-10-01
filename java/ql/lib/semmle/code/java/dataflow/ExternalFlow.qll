@@ -574,7 +574,7 @@ module CsvValidation {
         not (part = "Argument" and pred = "sink") and
         not parseArg(part, _)
         or
-        specSplit(input, part, _) and
+        part = specLast(input) and
         parseParam(part, _)
       ) and
       msg = "Unrecognized input specification \"" + part + "\" in " + pred + " model."
