@@ -253,6 +253,21 @@ class FormattingFunctionCall extends Expr {
     // format arguments must be known
     exists(getTarget().(FormattingFunction).getFirstFormatArgumentIndex())
   }
+
+  /**
+   * Gets the argument, if any, to which the output is written. If `isStream` is
+   * `true`, the output argument is a stream (that is, this call behaves like
+   * `fprintf`). If `isStream` is `false`, the output argument is a buffer (that
+   * is, this call behaves like `sprintf`)
+   */
+  Expr getOutputArgument(boolean isStream) {
+    result =
+      this.(Call)
+          .getArgument(this.(Call)
+                .getTarget()
+                .(FormattingFunction)
+                .getOutputParameterIndex(isStream))
+  }
 }
 
 /**
