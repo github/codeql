@@ -45,7 +45,8 @@ private DataFlow::Node getAValueExportedByPackage() {
   |
     result = callee.getAPropertyRead("prototype").getAPropertyWrite(publicPropertyName()).getRhs()
     or
-    result = callee.(DataFlow::ClassNode).getInstanceMethod(publicPropertyName())
+    result = callee.(DataFlow::ClassNode).getInstanceMethod(publicPropertyName()) and
+    not isPrivateMethodDeclaration(result)
   )
   or
   result = getAValueExportedByPackage().getALocalSource()
@@ -65,7 +66,10 @@ private DataFlow::Node getAValueExportedByPackage() {
   //   static baz() {} // <- result
   //   constructor() {} // <- result
   // };
-  exists(DataFlow::ClassNode cla | cla = getAValueExportedByPackage() |
+  exists(DataFlow::ClassNode cla |
+    cla = getAValueExportedByPackage() and
+    not isPrivateMethodDeclaration(result)
+  |
     result = cla.getInstanceMethod(publicPropertyName()) or
     result = cla.getStaticMethod(publicPropertyName()) or
     result = cla.getConstructor()
@@ -184,4 +188,18 @@ private DataFlow::Node getAnExportFromModule(Module mod) {
 bindingset[result]
 private string publicPropertyName() {
   result.regexpMatch("[a-zA-Z0-9].*")
+}
+
+/**
+ * Holds if the given function is part of a private (or protected) method declaration.
+ */
+private predicate isPrivateMethodDeclaration(DataFlow::FunctionNode func) {
+  exists(MethodDeclaration decl |
+    decl.getBody() = func.getFunction() and
+    (
+      decl.isPrivate()
+      or
+      decl.isProtected()
+    )
+  )
 }
