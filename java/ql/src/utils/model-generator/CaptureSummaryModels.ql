@@ -58,7 +58,7 @@ class ParameterToFieldConfig extends TaintTracking::Configuration {
 
   override predicate isSink(DataFlow::Node sink) {
     exists(FieldAssignment a |
-      a.getSource().getAChildExpr() = sink.asExpr() or a.getSource() = sink.asExpr()
+      a.getSource() = sink.asExpr()
     )
   }
 }
