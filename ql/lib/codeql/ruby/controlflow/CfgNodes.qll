@@ -2,6 +2,7 @@
 
 private import codeql.ruby.AST
 private import codeql.ruby.controlflow.BasicBlocks
+private import codeql.ruby.dataflow.SSA
 private import ControlFlowGraph
 private import internal.ControlFlowGraphImpl
 private import internal.Splitting
@@ -98,6 +99,16 @@ class ExprCfgNode extends AstCfgNode {
 
   /** Gets the underlying expression. */
   Expr getExpr() { result = e }
+
+  private ExprCfgNode getSource() {
+    exists(Ssa::WriteDefinition def |
+      def.assigns(result) and
+      this = def.getARead()
+    )
+  }
+
+  /** Gets the textual (constant) value of this expression, if any. */
+  string getValueText() { result = this.getSource().getValueText() }
 }
 
 /** A control-flow node that wraps a return-like statement. */
@@ -164,7 +175,19 @@ abstract private class ExprChildMapping extends Expr {
 
 /** Provides classes for control-flow nodes that wrap AST expressions. */
 module ExprNodes {
-  // TODO: Add more classes
+  private class LiteralChildMapping extends ExprChildMapping, Literal {
+    override predicate relevantChild(Expr e) { none() }
+  }
+
+  /** A control-flow node that wraps an `ArrayLiteral` AST expression. */
+  class LiteralCfgNode extends ExprCfgNode {
+    override LiteralChildMapping e;
+
+    override Literal getExpr() { result = super.getExpr() }
+
+    override string getValueText() { result = e.getValueText() }
+  }
+
   private class AssignExprChildMapping extends ExprChildMapping, AssignExpr {
     override predicate relevantChild(Expr e) { e = this.getAnOperand() }
   }
@@ -209,6 +232,49 @@ module ExprNodes {
 
     /** Gets the right operand of this binary operation. */
     final ExprCfgNode getRightOperand() { e.hasCfgChild(bo.getRightOperand(), this, result) }
+
+    final override string getValueText() {
+      exists(string left, string right, string op |
+        left = this.getLeftOperand().getValueText() and
+        right = this.getRightOperand().getValueText() and
+        op = this.getExpr().getOperator()
+      |
+        op = "+" and
+        (
+          result = (left.toInt() + right.toInt()).toString()
+          or
+          not (exists(left.toInt()) and exists(right.toInt())) and
+          result = (left.toFloat() + right.toFloat()).toString()
+          or
+          not (exists(left.toFloat()) and exists(right.toFloat())) and
+          result = left + right
+        )
+        or
+        op = "-" and
+        (
+          result = (left.toInt() - right.toInt()).toString()
+          or
+          not (exists(left.toInt()) and exists(right.toInt())) and
+          result = (left.toFloat() - right.toFloat()).toString()
+        )
+        or
+        op = "*" and
+        (
+          result = (left.toInt() * right.toInt()).toString()
+          or
+          not (exists(left.toInt()) and exists(right.toInt())) and
+          result = (left.toFloat() * right.toFloat()).toString()
+        )
+        or
+        op = "/" and
+        (
+          result = (left.toInt() / right.toInt()).toString()
+          or
+          not (exists(left.toInt()) and exists(right.toInt())) and
+          result = (left.toFloat() / right.toFloat()).toString()
+        )
+      )
+    }
   }
 
   private class BlockArgumentChildMapping extends ExprChildMapping, BlockArgument {

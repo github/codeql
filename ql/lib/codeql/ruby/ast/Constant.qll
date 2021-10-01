@@ -139,6 +139,8 @@ class ConstantReadAccess extends ConstantAccess {
     result = lookupConst(resolveScopeExpr(this.getScopeExpr()), this.getName())
   }
 
+  override string getValueText() { result = this.getValue().getValueText() }
+
   final override string getAPrimaryQlClass() { result = "ConstantReadAccess" }
 }
 
