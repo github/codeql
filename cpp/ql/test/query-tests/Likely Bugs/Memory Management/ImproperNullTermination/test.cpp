@@ -325,7 +325,7 @@ void test_strcat()
 		char buffer[1024];
 
 		clearBuffer(id(buffer), 1024);
-		strcat(buffer, "content"); // GOOD [FALSE POSITIVE]
+		strcat(buffer, "content"); // GOOD
 	}
 }
 

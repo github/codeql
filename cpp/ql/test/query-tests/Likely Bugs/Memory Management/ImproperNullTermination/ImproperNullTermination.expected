@@ -17,7 +17,6 @@
 | test.cpp:285:10:285:15 | buffer | Variable $@ may not be null terminated. | test.cpp:282:8:282:13 | buffer | buffer |
 | test.cpp:302:10:302:16 | buffer2 | Variable $@ may not be null terminated. | test.cpp:297:8:297:14 | buffer2 | buffer2 |
 | test.cpp:314:10:314:15 | buffer | Variable $@ may not be null terminated. | test.cpp:310:8:310:13 | buffer | buffer |
-| test.cpp:328:10:328:15 | buffer | Variable $@ may not be null terminated. | test.cpp:325:8:325:13 | buffer | buffer |
 | test.cpp:336:18:336:23 | buffer | Variable $@ may not be null terminated. | test.cpp:335:8:335:13 | buffer | buffer |
 | test.cpp:355:11:355:16 | buffer | Variable $@ may not be null terminated. | test.cpp:350:8:350:13 | buffer | buffer |
 | test.cpp:364:11:364:16 | buffer | Variable $@ may not be null terminated. | test.cpp:359:8:359:13 | buffer | buffer |

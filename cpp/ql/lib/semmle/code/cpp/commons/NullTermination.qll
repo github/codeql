@@ -45,22 +45,27 @@ predicate mayAddNullTerminator(Expr e, VariableAccess va) {
     ae.getRValue().getAChild*() = va
   )
   or
-  // Function call: library function, varargs function, function
-  // containing assembler code, or function where the relevant
-  // parameter is potentially added a null terminator.
+  // Function calls...
   exists(Call c, Function f, int i |
     e = c and
     f = c.getTarget() and
     not functionArgumentMustBeNullTerminated(f, i) and
     c.getAnArgumentSubExpr(i) = va
   |
+    // library function
     not f.hasEntryPoint()
     or
+    // function where the relevant parameter is potentially added a null terminator
     mayAddNullTerminator(_, f.getParameter(i).getAnAccess())
     or
+    // varargs function
     f.isVarargs() and i >= f.getNumberOfParameters()
     or
+    // function containing assembler code
     exists(AsmStmt s | s.getEnclosingFunction() = f)
+    or
+    // function where the relevant parameter is returned (leaking it)
+    exists(ReturnStmt rs | rs.getEnclosingFunction() = f and rs.getExpr().getAChild*() = f.getParameter(i).getAnAccess())
   )
   or
   // Call without target (e.g., function pointer call)
