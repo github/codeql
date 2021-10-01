@@ -22,6 +22,7 @@ import java.io.StringWriter
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.util.*
+import java.util.zip.GZIPOutputStream
 import com.intellij.openapi.vfs.StandardFileSystems
 import com.semmle.extractor.java.OdasaOutput
 import com.semmle.extractor.java.OdasaOutput.TrapFileManager
@@ -193,7 +194,7 @@ class ExternalClassExtractor(val logger: FileLogger, val sourceFilePath: String,
                             logger.info("Skipping extracting class ${irClass.name}")
                             return
                         }
-                        manager.getFile().bufferedWriter().use { trapFileBW ->
+                        GZIPOutputStream(manager.getFile().outputStream()).bufferedWriter().use { trapFileBW ->
                             val tw = ClassFileTrapWriter(TrapLabelManager(), trapFileBW, getIrClassBinaryPath(irClass))
                             val fileExtractor = KotlinFileExtractor(logger, tw, manager, this, pluginContext)
                             fileExtractor.extractClassSource(irClass)

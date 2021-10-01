@@ -184,18 +184,18 @@ public class OdasaOutput {
 			return null;
 		return FileUtil.appendAbsolutePath(
 				currentSpecFileEntry.getTrapFolder(),
-				JARS_DIR + "/" + PathTransformer.std().fileAsDatabaseString(jarFile) + ".trap");
+				JARS_DIR + "/" + PathTransformer.std().fileAsDatabaseString(jarFile) + ".trap.gz");
 	}
 
 	private File getTrapFileForModule(String moduleName) {
 		return FileUtil.appendAbsolutePath(
 				currentSpecFileEntry.getTrapFolder(),
-				MODULES_DIR + "/" + moduleName + ".trap");
+				MODULES_DIR + "/" + moduleName + ".trap.gz");
 	}
 
 	private File trapFileFor(File file) {
 		return FileUtil.appendAbsolutePath(currentSpecFileEntry.getTrapFolder(),
-				PathTransformer.std().fileAsDatabaseString(file) + ".trap");
+				PathTransformer.std().fileAsDatabaseString(file) + ".trap.gz");
 	}
 
 	private File getTrapFileForClassFile(IrClass sym) {
@@ -221,7 +221,7 @@ public class OdasaOutput {
 			result = CLASSES_DIR + "/" +
 					dots.matcher(classId).replaceAll("/") +
 					".members" +
-					".trap";
+					".trap.gz";
 			memberTrapPaths.put(classId, result);
 		}
 		return result;
@@ -235,10 +235,10 @@ public class OdasaOutput {
 		File trap = trapFileForClass(sym);
 		if (trap.exists()) {
 			trap.delete();
-			File depFile = new File(trap.getParentFile(), trap.getName().replace(".trap", ".dep"));
+			File depFile = new File(trap.getParentFile(), trap.getName().replace(".trap.gz", ".dep"));
 			if (depFile.exists())
 				depFile.delete();
-			File metadataFile = new File(trap.getParentFile(), trap.getName().replace(".trap", ".metadata"));
+			File metadataFile = new File(trap.getParentFile(), trap.getName().replace(".trap.gz", ".metadata"));
 			if (metadataFile.exists())
 				metadataFile.delete();
 		}
@@ -290,7 +290,7 @@ public class OdasaOutput {
 	}
 
 	private TrapFileManager trapWriter(File trapFile, IrClass sym) {
-		if (!trapFile.getName().endsWith(".trap"))
+		if (!trapFile.getName().endsWith(".trap.gz"))
 			throw new CatastrophicError("OdasaOutput only supports writing to compressed trap files");
 		String relative = FileUtil.relativePath(trapFile, currentSpecFileEntry.getTrapFolder());
 		trapFile.getParentFile().mkdirs();
@@ -328,7 +328,7 @@ public class OdasaOutput {
 			writeTrapDependencies(trapDependenciesForClass);
 			// Record major/minor version information for extracted class files.
 			// This is subsequently used to determine whether to re-extract (a newer version of) the same class.
-			File metadataFile = new File(trapFile.getAbsolutePath().replace(".trap", ".metadata"));
+			File metadataFile = new File(trapFile.getAbsolutePath().replace(".trap.gz", ".metadata"));
 			try {
 				Map<String, String> versionMap = new LinkedHashMap<>();
 				TrapClassVersion tcv = TrapClassVersion.fromSymbol(sym);
@@ -341,7 +341,7 @@ public class OdasaOutput {
 			}
 		}
 		private void writeTrapDependencies(TrapDependencies trapDependencies) {
-			String dep = trapDependencies.trapFile().replace(".trap", ".dep");
+			String dep = trapDependencies.trapFile().replace(".trap.gz", ".dep");
 			trapDependencies.save(
 					currentSpecFileEntry.getTrapFolder().toPath().resolve(dep));
 		}
@@ -541,7 +541,7 @@ public class OdasaOutput {
 		int majorVersion = 0;
 		int minorVersion = 0;
 		long lastModified = 0;
-		File metadataFile = new File(trap.getAbsolutePath().replace(".trap", ".metadata"));
+		File metadataFile = new File(trap.getAbsolutePath().replace(".trap.gz", ".metadata"));
 		if (metadataFile.exists()) {
 			Map<String,String> metadataMap = FileUtil.readPropertiesCSV(metadataFile);
 			try {
