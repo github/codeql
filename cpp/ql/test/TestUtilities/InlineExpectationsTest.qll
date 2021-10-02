@@ -60,8 +60,8 @@
  *
  * Example:
  * ```cpp
- * int i = x + 5;  // $const=5
- * int j = y + (7 - 3)  // $const=7 const=3 const=4  // The result of the subtraction is a constant.
+ * int i = x + 5;  // $ const=5
+ * int j = y + (7 - 3)  // $ const=7 const=3 const=4  // The result of the subtraction is a constant.
  * ```
  *
  * For tests that contain known missing and spurious results, it is possible to further
