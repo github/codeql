@@ -27,13 +27,24 @@ predicate flowStep(Expr decl, Expr init) {
   decl.(CastExpr).getExpr() = init
 }
 
+predicate isDefaultValueLiteral(Literal l, Type t) {
+  t instanceof RefType and l instanceof NullLiteral
+  or
+  // Checking here for primitive suffices to make sure that literals below are valid default
+  t instanceof PrimitiveType and
+  (
+    l.(BooleanLiteral).getBooleanValue() = false or
+    l.(CharacterLiteral).getValue() = 0.toUnicode() or
+    l.(DoubleLiteral).getDoubleValue() = 0 or
+    l.(FloatingPointLiteral).getFloatValue() = 0 or
+    l.(IntegerLiteral).getIntValue() = 0 or
+    l.(LongLiteral).getValue() = "0"
+  )
+}
+
 predicate excludedInit(Type t, Expr decl) {
   exists(Expr init | flowStep(decl, init) |
-    // The `null` literal for reference types.
-    t instanceof RefType and init instanceof NullLiteral
-    or
-    // The default value for primitive types.
-    init = t.(PrimitiveType).getADefaultValue()
+    isDefaultValueLiteral(init, t)
     or
     // The expression `-1` for integral types.
     t instanceof IntegralType and minusOne(init)

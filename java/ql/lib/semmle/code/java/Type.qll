@@ -947,6 +947,10 @@ class PrimitiveType extends Type, @primitive {
   }
 
   /**
+   * DEPRECATED: This predicate will be removed in a future version because
+   * its behavior is misleading and it does not find all literals with default
+   * value, see [GitHub issue #6615](https://github.com/github/codeql/issues/6615).
+   *
    * Gets a default value for this primitive type, as assigned by the compiler
    * for variables that are declared but not initialized explicitly.
    * Typically zero for numeric and character types and `false` for `boolean`.
@@ -955,7 +959,7 @@ class PrimitiveType extends Type, @primitive {
    * considered to be default values of all other numeric types, even if they
    * require an explicit cast.
    */
-  Literal getADefaultValue() {
+  deprecated Literal getADefaultValue() {
     getName() = "boolean" and result.getLiteral() = "false"
     or
     getName() = "char" and
