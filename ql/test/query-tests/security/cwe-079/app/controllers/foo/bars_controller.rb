@@ -22,10 +22,4 @@ class BarsController < ApplicationController
     @html_escaped = ERB::Util.html_escape(params[:text])
     render "foo/bars/show", locals: { display_text: dt, safe_text: "hello" }
   end
-
-  def show_stored
-    dt = File.read("foo.txt")
-    @instance_text = dt
-    render "foo/bars/show", locals: { display_text: dt, safe_text: "hello" }
-  end
 end
