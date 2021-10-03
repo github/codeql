@@ -11,4 +11,8 @@ query predicate potentiallyUnsafeSqlExecutingMethodCall(PotentiallyUnsafeSqlExec
   any()
 }
 
-query predicate activeRecordModelInstantiations(ActiveRecordModelInstantiation i, ActiveRecordModelClass cls) { i.getClass() = cls }
+query predicate activeRecordModelInstantiations(
+  ActiveRecordModelInstantiation i, ActiveRecordModelClass cls
+) {
+  i.getClass() = cls
+}
