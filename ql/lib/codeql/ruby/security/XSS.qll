@@ -10,7 +10,6 @@ private import codeql.ruby.Concepts
 private import codeql.ruby.Frameworks
 private import codeql.ruby.frameworks.ActionController
 private import codeql.ruby.frameworks.ActionView
-private import codeql.ruby.frameworks.ActiveRecord
 private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.dataflow.BarrierGuards
 private import codeql.ruby.dataflow.internal.DataFlowDispatch
@@ -246,10 +245,7 @@ private module OrmTracking {
   class Configuration extends DataFlow2::Configuration {
     Configuration() { this = "OrmTracking" }
 
-    // TODO: abstract to ORMFinderCall concept
-    override predicate isSource(DataFlow2::Node source) {
-      source instanceof ActiveRecordModelInstantiation
-    }
+    override predicate isSource(DataFlow2::Node source) { source instanceof OrmInstantiation }
 
     // Select any call node and narrow down later
     override predicate isSink(DataFlow2::Node sink) { sink instanceof DataFlow2::CallNode }
@@ -291,12 +287,11 @@ module StoredXSS {
 
   predicate isAdditionalXSSTaintStep = Shared::isAdditionalXSSFlowStep/2;
 
-  private class ActiveRecordModelFieldAccessAsSource extends Source {
-    ActiveRecordModelFieldAccessAsSource() {
+  private class OrmFieldAsSource extends Source {
+    OrmFieldAsSource() {
       exists(OrmTracking::Configuration subConfig, DataFlow2::Node subSrc |
         subConfig.hasFlow(subSrc, this) and
-        activeRecordMethodMayAccessField(subSrc.(ActiveRecordModelInstantiation).getClass(),
-          this.asExpr().getExpr())
+        subSrc.(OrmInstantiation).methodCallMayAccessField(this.asExpr().getExpr())
       )
     }
   }

@@ -43,6 +43,26 @@ class ActiveRecordModelClass extends ClassDeclaration {
       other.getModule() = resolveScopeExpr(this.getSuperclassExpr())
     )
   }
+
+  /**
+   * Returns true if `call` may refer to a method that returns a database value
+   * if invoked against an instance of this class.
+   */
+  predicate methodCallMayAccessField(MethodCall call) {
+    not (
+      // Methods whose names can be hardcoded
+      isCallToBuiltInMethod(call)
+      or
+      // Methods defined in the ActiveRecord model class that do not return database fields
+      exists(Method m | m = this.getMethod(call.getMethodName()) |
+        forall(DataFlow::Node returned, ActiveRecordInstanceMethodCall c |
+          exprNodeReturnedFrom(returned, m) and c.flowsTo(returned)
+        |
+          not this.methodCallMayAccessField(returned.asExpr().getExpr())
+        )
+      )
+    )
+  }
 }
 
 /** A class method call whose receiver is an `ActiveRecordModelClass`. */
@@ -181,8 +201,12 @@ private string constantQualifiedName(ConstantWriteAccess w) {
 /**
  * A node that may evaluate to one or more `ActiveRecordModelClass` instances.
  */
-abstract class ActiveRecordModelInstantiation extends DataFlow::Node {
+abstract class ActiveRecordModelInstantiation extends OrmInstantiation::Range {
   abstract ActiveRecordModelClass getClass();
+
+  override predicate methodCallMayAccessField(MethodCall call) {
+    this.getClass().methodCallMayAccessField(call)
+  }
 }
 
 // Names of class methods on ActiveRecord models that may return one or more
@@ -277,24 +301,4 @@ private predicate isCallToBuiltInMethod(MethodCall c) {
   c.getMethodName() = activeRecordPersistenceInstanceMethodName() or
   c instanceof BasicObjectInstanceMethodCall or
   c instanceof ObjectInstanceMethodCall
-}
-
-/**
- * Returns true if `call` may refer to a method that returns a database value
- * if invoked against a `sourceClass` instance.
- */
-predicate activeRecordMethodMayAccessField(ActiveRecordModelClass sourceClass, MethodCall call) {
-  not (
-    // Methods whose names can be hardcoded
-    isCallToBuiltInMethod(call)
-    or
-    // Methods defined in `sourceClass` that do not return database fields
-    exists(Method m | m = sourceClass.getMethod(call.getMethodName()) |
-      forall(DataFlow::Node returned, ActiveRecordInstanceMethodCall c |
-        exprNodeReturnedFrom(returned, m) and c.flowsTo(returned)
-      |
-        not activeRecordMethodMayAccessField(sourceClass, returned.asExpr().getExpr())
-      )
-    )
-  )
 }
