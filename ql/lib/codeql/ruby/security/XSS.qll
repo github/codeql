@@ -4,11 +4,13 @@
 
 private import ruby
 private import codeql.ruby.DataFlow
+private import codeql.ruby.DataFlow2
 private import codeql.ruby.CFG
 private import codeql.ruby.Concepts
 private import codeql.ruby.Frameworks
 private import codeql.ruby.frameworks.ActionController
 private import codeql.ruby.frameworks.ActionView
+private import codeql.ruby.frameworks.ActiveRecord
 private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.dataflow.BarrierGuards
 private import codeql.ruby.dataflow.internal.DataFlowDispatch
@@ -122,9 +124,9 @@ private module Shared {
   }
 
   /**
-   * An additional step that is taint-preserving in the context of reflected XSS.
+   * An additional step that is preserves dataflow in the context of reflected XSS.
    */
-  predicate isAdditionalXSSTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+  predicate isAdditionalXSSFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     // node1 is a `locals` argument to a render call...
     exists(RenderCall call, Pair kvPair, string hashKey |
       call.getLocals().getAKeyValuePair() = kvPair and
@@ -229,7 +231,7 @@ module ReflectedXSS {
   }
 
   // Consider all arbitrary XSS taint steps to be reflected XSS taint steps
-  predicate isAdditionalXSSTaintStep = Shared::isAdditionalXSSTaintStep/2;
+  predicate isAdditionalXSSTaintStep = Shared::isAdditionalXSSFlowStep/2;
 
   /**
    * A source of remote user input, considered as a flow source.
@@ -237,11 +239,30 @@ module ReflectedXSS {
   class RemoteFlowSourceAsSource extends Source, RemoteFlowSource { }
 }
 
-/**
- * Provides default sources, sinks and sanitizers for detecting
- * "stored server-side cross-site scripting" vulnerabilities, as well as
- * extension points for adding your own.
- */
+private module OrmTracking {
+  /**
+   * A data flow configuration to track flow from finder calls to field accesses.
+   */
+  class Configuration extends DataFlow2::Configuration {
+    Configuration() { this = "OrmTracking" }
+
+    // TODO: abstract to ORMFinderCall concept
+    override predicate isSource(DataFlow2::Node source) {
+      source instanceof ActiveRecordModelInstantiation
+    }
+
+    // Select any call node and narrow down later
+    override predicate isSink(DataFlow2::Node sink) { sink instanceof DataFlow2::CallNode }
+
+    override predicate isAdditionalFlowStep(DataFlow2::Node node1, DataFlow2::Node node2) {
+      Shared::isAdditionalXSSFlowStep(node1, node2)
+      or
+      // Propagate flow through arbitrary method calls
+      node2.(DataFlow2::CallNode).getReceiver() = node1
+    }
+  }
+}
+
 module StoredXSS {
   /** A data flow source for stored XSS vulnerabilities. */
   abstract class Source extends Shared::Source { }
@@ -268,11 +289,19 @@ module StoredXSS {
     }
   }
 
-  // Consider all arbitrary XSS taint steps to be stored XSS taint steps
-  predicate isAdditionalXSSTaintStep = Shared::isAdditionalXSSTaintStep/2;
+  predicate isAdditionalXSSTaintStep = Shared::isAdditionalXSSFlowStep/2;
+
+  private class ActiveRecordModelFieldAccessAsSource extends Source {
+    ActiveRecordModelFieldAccessAsSource() {
+      exists(OrmTracking::Configuration subConfig, DataFlow2::Node subSrc |
+        subConfig.hasFlow(subSrc, this) and
+        activeRecordMethodMayAccessField(subSrc.(ActiveRecordModelInstantiation).getClass(),
+          this.asExpr().getExpr())
+      )
+    }
+  }
 
   /** A file read, considered as a flow source for stored XSS. */
-  class FileSystemReadAccessAsSource extends Source instanceof FileSystemReadAccess { }
+  private class FileSystemReadAccessAsSource extends Source instanceof FileSystemReadAccess { }
   // TODO: Consider `FileNameSource` flowing to script tag `src` attributes and similar
-  // TODO: ORM database reads as sources
 }
