@@ -504,14 +504,14 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
 
                     val assignmentId = tw.getFreshIdLabel<DbAssignexpr>()
                     val typeId = useType(initializer.expression.type)
-                    val locId = tw.getLocation(decl)
+                    val declLocId = tw.getLocation(decl)
                     tw.writeExprs_assignexpr(assignmentId, typeId, blockId, idx++)
-                    tw.writeHasLocation(assignmentId, locId)
+                    tw.writeHasLocation(assignmentId, declLocId)
 
                     val lhsId = tw.getFreshIdLabel<DbVaraccess>()
                     val lhsTypeId = useType(backingField.type)
                     tw.writeExprs_varaccess(lhsId, lhsTypeId, assignmentId, 0)
-                    tw.writeHasLocation(lhsId, locId)
+                    tw.writeHasLocation(lhsId, declLocId)
                     val vId = useProperty(decl) // todo: fix this. We should be assigning the field, and not the property
                     tw.writeVariableBinding(lhsId, vId)
 
