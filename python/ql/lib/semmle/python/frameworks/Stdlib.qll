@@ -243,6 +243,52 @@ private module StdlibPrivate {
     }
   }
 
+  // Functions with non-standard arguments:
+  // - os.path.join(path, *paths)
+  // - os.path.relpath(path, start=os.curdir)
+  // Functions that need summaries:
+  // - os.path.commonpath(paths): takes a sequence
+  // - os.path.commonprefix(list): takes a list argument
+  // - os.path.splitdrive: retunrs a tuple
+  // - os.path.splittext: returns a tuple
+  private string pathComputation() {
+    result in [
+        "abspath", "basename", "commonpath", "dirname", "expanduser", "expandvars", "join",
+        "normcase", "normpath", "realpath", "relpath", "split"
+      ]
+  }
+
+  /**
+   * The `os.path` module offers a number of methods for computing new paths from existing paths.
+   * These should all propagate taint.
+   */
+  private class OsPathComputation extends DataFlow::CallCfgNode {
+    string methodName;
+
+    OsPathComputation() {
+      methodName = pathComputation() and
+      this = os::path().getMember(methodName).getACall()
+    }
+
+    DataFlow::Node getPathArg() {
+      result in [this.getArg(0), this.getArgByName("path")]
+      or
+      methodName = "join" and result = this.getArg(_)
+      or
+      methodName = "relpath" and result in [this.getArg(1), this.getArgByName("start")]
+    }
+  }
+
+  /** An additional taint step for path computations. */
+  private class OsPathComputationAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+    override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+      exists(OsPathComputation call |
+        nodeTo = call and
+        nodeFrom = call.getPathArg()
+      )
+    }
+  }
+
   /**
    * A call to `os.path.normpath`.
    * See https://docs.python.org/3/library/os.path.html#os.path.normpath
@@ -251,16 +297,6 @@ private module StdlibPrivate {
     OsPathNormpathCall() { this = os::path().getMember("normpath").getACall() }
 
     DataFlow::Node getPathArg() { result in [this.getArg(0), this.getArgByName("path")] }
-  }
-
-  /** An additional taint step for calls to `os.path.normpath` */
-  private class OsPathNormpathCallAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
-    override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-      exists(OsPathNormpathCall call |
-        nodeTo = call and
-        nodeFrom = call.getPathArg()
-      )
-    }
   }
 
   /**
@@ -273,16 +309,6 @@ private module StdlibPrivate {
     DataFlow::Node getPathArg() { result in [this.getArg(0), this.getArgByName("path")] }
   }
 
-  /** An additional taint step for calls to `os.path.abspath` */
-  private class OsPathAbspathCallAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
-    override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-      exists(OsPathAbspathCall call |
-        nodeTo = call and
-        nodeFrom = call.getPathArg()
-      )
-    }
-  }
-
   /**
    * A call to `os.path.realpath`.
    * See https://docs.python.org/3/library/os.path.html#os.path.realpath
@@ -291,16 +317,6 @@ private module StdlibPrivate {
     OsPathRealpathCall() { this = os::path().getMember("realpath").getACall() }
 
     DataFlow::Node getPathArg() { result in [this.getArg(0), this.getArgByName("path")] }
-  }
-
-  /** An additional taint step for calls to `os.path.realpath` */
-  private class OsPathRealpathCallAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
-    override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-      exists(OsPathRealpathCall call |
-        nodeTo = call and
-        nodeFrom = call.getPathArg()
-      )
-    }
   }
 
   /**
