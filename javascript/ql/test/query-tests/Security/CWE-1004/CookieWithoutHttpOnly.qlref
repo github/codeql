@@ -1,1 +1,1 @@
-experimental/Security/CWE-1004/CookieWithoutHttpOnly.ql
+Security/CWE-1004/CookieWithoutHttpOnly.ql

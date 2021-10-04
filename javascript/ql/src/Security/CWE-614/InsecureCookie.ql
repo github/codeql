@@ -11,7 +11,7 @@
  */
 
 import javascript
-import experimental.semmle.javascript.security.InsecureCookie::Cookie as ExperimentalCookie
+import experimental.semmle.javascript.security.InsecureCookie::Cookie as ExperimentalCookie // TODO: Remove
 
 from DataFlow::Node node
 where
