@@ -2,10 +2,8 @@
 
 import java
 private import semmle.code.java.dataflow.ExternalFlow
-private import semmle.code.java.dataflow.TaintTracking
-private import semmle.code.java.frameworks.android.Intent
 
-private class PendingIntentModels extends SinkModelCsv {
+private class PendingIntentCreationModels extends SinkModelCsv {
   override predicate row(string row) {
     row =
       [
@@ -13,6 +11,16 @@ private class PendingIntentModels extends SinkModelCsv {
         "android.app;PendingIntent;false;getActivities;;;Argument[2];pending-intent",
         "android.app;PendingIntent;false;getBroadcast;;;Argument[2];pending-intent",
         "android.app;PendingIntent;false;getService;;;Argument[2];pending-intent"
+      ]
+  }
+}
+
+private class PendingIntentSentSinkModels extends SinkModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "androidx.slice;SliceProvider;true;onBindSlice;;;ReturnValue;pending-intent-sent",
+        "androidx.slice;SliceProvider;true;onCreatePermissionRequest;;;ReturnValue;pending-intent-sent"
       ]
   }
 }

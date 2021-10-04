@@ -17,16 +17,7 @@ class ImplicitPendingIntentStartConf extends TaintTracking::Configuration {
     source.asExpr() instanceof ImplicitPendingIntentCreation
   }
 
-  override predicate isSink(DataFlow::Node sink) {
-    sink instanceof IntentStartSink and
-    // startService can't actually start implicit intents since API 21
-    not exists(MethodAccess ma, Method m |
-      ma.getMethod() = m and
-      m.getDeclaringType().getASupertype*() instanceof TypeContext and
-      m.hasName("startService") and
-      sink.asExpr() = ma.getArgument(0)
-    )
-  }
+  override predicate isSink(DataFlow::Node sink) { sink instanceof SendPendingIntent }
 
   override predicate isSanitizer(DataFlow::Node sanitizer) {
     sanitizer instanceof ExplicitIntentSanitizer
@@ -49,8 +40,19 @@ private class ImplicitPendingIntentCreation extends Expr {
   }
 }
 
-private class IntentStartSink extends DataFlow::Node {
-  IntentStartSink() { sinkNode(this, "intent-start") }
+private class SendPendingIntent extends DataFlow::Node {
+  SendPendingIntent() {
+    sinkNode(this, "intent-start") and
+    // startService can't actually start implicit intents since API 21
+    not exists(MethodAccess ma, Method m |
+      ma.getMethod() = m and
+      m.getDeclaringType().getASupertype*() instanceof TypeContext and
+      m.hasName("startService") and
+      this.asExpr() = ma.getArgument(0)
+    )
+    or
+    sinkNode(this, "pending-intent-sent")
+  }
 }
 
 private class ImplicitPendingIntentConf extends DataFlow2::Configuration {
