@@ -1,5 +1,7 @@
 package my.callback.qltest;
 
+import java.util.*;
+
 public class A {
   public interface Consumer1 {
     void eat(Object o);
@@ -28,6 +30,20 @@ public class A {
     // con.eat(x);
   }
 
+  static <T> T applyConsumer3_ret_postup(Consumer3<T> con) {
+    // summary:
+    // x = new T();
+    // con.eat(x);
+    // return x;
+    return null;
+  }
+
+  static <T> void forEach(T[] xs, Consumer3<T> con) {
+    // summary:
+    // x = xs[..];
+    // con.eat(x);
+  }
+
   public interface Producer1<T> {
     T make();
   }
@@ -35,6 +51,14 @@ public class A {
   static <T> T applyProducer1(Producer1<T> prod) {
     // summary:
     // return prod.make();
+    return null;
+  }
+
+  static <T> T produceConsume(Producer1<T> prod, Consumer3<T> con) {
+    // summary:
+    // x = prod.make();
+    // con.eat(x);
+    // return x;
     return null;
   }
 
@@ -109,5 +133,40 @@ public class A {
     };
     applyConsumer3(new Integer[] { (Integer)source(12) }, pc);
     sink(applyProducer1(pc)[0]); // $ flow=11
+
+    Integer res = applyProducer1(new Producer1<Integer>() {
+      private Integer ii = (Integer)source(13);
+      @Override public Integer make() {
+        return this.ii;
+      }
+    });
+    sink(res); // $ flow=13
+
+    ArrayList<Object> list = new ArrayList<>();
+    applyConsumer3(list, l -> l.add(source(14)));
+    sink(list.get(0)); // $ flow=14
+
+    Consumer3<ArrayList<Object>> tainter = l -> l.add(source(15));
+    sink(applyConsumer3_ret_postup(tainter).get(0)); // $ flow=15
+
+    forEach(new Object[] {source(16)}, x -> sink(x)); // $ flow=16
+
+    // Spurious flow from 17 is reasonable as it would likely
+    // also occur if the lambda body was inlined in a for loop.
+    // It occurs from the combination of being able to observe
+    // the side-effect of the callback on the other argument and
+    // being able to chain summaries that update/read arguments,
+    // e.g. fluent apis.
+    // Spurious flow from 18 is due to not matching call targets
+    // in a return-from-call-to-enter-call flow sequence.
+    forEach(new Object[2][], xs -> { sink(xs[0]); xs[0] = source(17); }); // $ SPURIOUS: flow=17 flow=18
+
+    Object[][] xss = new Object[][] { { null } };
+    forEach(xss, x -> {x[0] = source(18);});
+    sink(xss[0][0]); // $ flow=18
+
+    Object res2 = produceConsume(() -> source(19), A::sink); // $ flow=19
+    sink(res2); // $ flow=19
   }
+
 }
