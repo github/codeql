@@ -3,6 +3,7 @@
  */
 
 import go
+private import semmle.go.dataflow.ExternalFlow as ExternalFlow
 
 /**
  * A source of data that is controlled by an untrusted user.
@@ -25,4 +26,8 @@ module UntrustedFlowSource {
    * extend `UntrustedFlowSource` instead.
    */
   abstract class Range extends DataFlow::Node { }
+
+  class CsvRemoteSource extends Range {
+    CsvRemoteSource() { ExternalFlow::sourceNode(this, "remote") }
+  }
 }
