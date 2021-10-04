@@ -460,10 +460,17 @@ public static class AnonymousVariable
             count++;
         return count;
     }
+}
 
-    public static void Using()
+public static class Using
+{
+    public static void M()
     {
-        using var x = new System.IO.FileStream("", System.IO.FileMode.Open); // BAD
+        using var x = new System.IO.FileStream("", System.IO.FileMode.Open); // GOOD
         using var _ = new System.IO.FileStream("", System.IO.FileMode.Open); // GOOD
+
+        using (var y = new System.IO.FileStream("", System.IO.FileMode.Open)) // BAD
+        {
+        }
     }
 }

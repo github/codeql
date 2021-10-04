@@ -73,11 +73,7 @@ predicate mayEscape(LocalVariable v) {
 class RelevantDefinition extends AssignableDefinition {
   RelevantDefinition() {
     this.(AssignableDefinitions::AssignmentDefinition).getAssignment() =
-      any(Assignment a |
-        if a = any(UsingStmt us).getAVariableDeclExpr()
-        then not a.getTargetVariable().hasName("_")
-        else any()
-      )
+      any(Assignment a | not a = any(UsingDeclStmt uds).getAVariableDeclExpr())
     or
     this instanceof AssignableDefinitions::MutationDefinition
     or
