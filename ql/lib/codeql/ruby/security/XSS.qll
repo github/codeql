@@ -123,7 +123,7 @@ private module Shared {
   }
 
   /**
-   * An additional step that is preserves dataflow in the context of reflected XSS.
+   * An additional step that is preserves dataflow in the context of XSS.
    */
   predicate isAdditionalXSSFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     // node1 is a `locals` argument to a render call...
@@ -229,7 +229,9 @@ module ReflectedXSS {
     }
   }
 
-  // Consider all arbitrary XSS taint steps to be reflected XSS taint steps
+  /**
+   * An additional step that is preserves dataflow in the context of reflected XSS.
+   */
   predicate isAdditionalXSSTaintStep = Shared::isAdditionalXSSFlowStep/2;
 
   /**
@@ -238,7 +240,7 @@ module ReflectedXSS {
   class RemoteFlowSourceAsSource extends Source, RemoteFlowSource { }
 }
 
-private module OrmTracking {
+module OrmTracking {
   /**
    * A data flow configuration to track flow from finder calls to field accesses.
    */
@@ -285,13 +287,17 @@ module StoredXSS {
     }
   }
 
+  /**
+   * An additional step that is preserves dataflow in the context of stored XSS.
+   */
   predicate isAdditionalXSSTaintStep = Shared::isAdditionalXSSFlowStep/2;
 
-  private class OrmFieldAsSource extends Source {
+  private class OrmFieldAsSource extends Source instanceof DataFlow2::CallNode {
     OrmFieldAsSource() {
-      exists(OrmTracking::Configuration subConfig, DataFlow2::Node subSrc |
+      exists(OrmTracking::Configuration subConfig, DataFlow2::CallNode subSrc, MethodCall call |
         subConfig.hasFlow(subSrc, this) and
-        subSrc.(OrmInstantiation).methodCallMayAccessField(this.asExpr().getExpr())
+        call = this.asExpr().getExpr() and
+        subSrc.(OrmInstantiation).methodCallMayAccessField(call.getMethodName())
       )
     }
   }

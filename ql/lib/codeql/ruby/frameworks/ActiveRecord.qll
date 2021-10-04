@@ -21,6 +21,25 @@ private class ApplicationRecordAccess extends ConstantReadAccess {
   ApplicationRecordAccess() { this.getName() = "ApplicationRecord" }
 }
 
+/// See https://api.rubyonrails.org/classes/ActiveRecord/Persistence.html
+private string activeRecordPersistenceInstanceMethodName() {
+  result =
+    [
+      "becomes", "becomes!", "decrement", "decrement!", "delete", "delete!", "destroy", "destroy!",
+      "destroyed?", "increment", "increment!", "new_record?", "persisted?",
+      "previously_new_record?", "reload", "save", "save!", "toggle", "toggle!", "touch", "update",
+      "update!", "update_attribute", "update_column", "update_columns"
+    ]
+}
+
+// Methods with these names are defined for all active record model instances,
+// so they are unlikely to refer to a database field.
+private predicate isBuiltInMethodForActiveRecordModelInstance(string methodName) {
+  methodName = activeRecordPersistenceInstanceMethodName() or
+  methodName = basicObjectInstanceMethodName() or
+  methodName = objectInstanceMethodName()
+}
+
 /**
  * A `ClassDeclaration` for a class that extends `ActiveRecord::Base`. For example,
  *
@@ -52,11 +71,14 @@ class ActiveRecordModelClass extends ClassDeclaration {
     // There is a value that can be returned by this method which may include field data
     exists(DataFlow::Node returned, ActiveRecordInstanceMethodCall cNode, MethodCall c |
       exprNodeReturnedFrom(returned, result) and cNode.flowsTo(returned) and c = cNode.asExpr().getExpr() |
-      // The referenced method is not built-in, and
-      not isCallToBuiltInMethod(c) and (
-        // There is no matching method definition in the class, or
+      // The referenced method is not built-in, and...
+      not isBuiltInMethodForActiveRecordModelInstance(c.getMethodName()) and (
+        // TODO: this would be more accurate if we also checked methods defined in
+        // super classes and mixins
+
+        // ...There is no matching method definition in the class, or...
         not exists(cNode.getInstance().getClass().getMethod(c.getMethodName())) or
-        // The called method can access a field
+        // ...the called method can access a field
         c.getATarget() = cNode.getInstance().getClass().methodMayAccessField()
       )
     )
@@ -202,18 +224,17 @@ private string constantQualifiedName(ConstantWriteAccess w) {
 abstract class ActiveRecordModelInstantiation extends OrmInstantiation::Range, DataFlow::LocalSourceNode {
   abstract ActiveRecordModelClass getClass();
 
-  override predicate methodCallMayAccessField(MethodCall call) {
-    // The method is not a built-in
-    not isCallToBuiltInMethod(call) and (
-      // There is no matching method definition in the class, or
-      not exists(this.getClass().getMethod(call.getMethodName())) or
-      // The called method can access a field
+  bindingset[methodName]
+  override predicate methodCallMayAccessField(string methodName) {
+    // The method is not a built-in, and...
+    not isBuiltInMethodForActiveRecordModelInstance(methodName) and (
+      // ...There is no matching method definition in the class, or...
+      not exists(this.getClass().getMethod(methodName)) or
+      // ...the called method can access a field.
       exists(Method m |
         m = this.getClass().methodMayAccessField() |
-        // TODO: this may be too broad - we haven't limited the call target
-        // It's likely that the call graph isn't sufficient here, as resolution
-        // e.g. from ActionView views won't catch everything
-        m.getName() = call.getMethodName()
+        // We rely on matching by name here as the call graph might not have
+        m.getName() = methodName
       )
     )
   }
@@ -298,20 +319,4 @@ private class ActiveRecordInstanceMethodCall extends DataFlow::CallNode {
   private ActiveRecordInstance instance;
   ActiveRecordInstanceMethodCall() { this.getReceiver() = instance }
   ActiveRecordInstance getInstance() { result = instance }
-}
-
-private string activeRecordPersistenceInstanceMethodName() {
-  result =
-    [
-      "becomes", "becomes!", "decrement", "decrement!", "delete", "delete!", "destroy", "destroy!",
-      "destroyed?", "increment", "increment!", "new_record?", "persisted?",
-      "previously_new_record?", "reload", "save", "save!", "toggle", "toggle!", "touch", "update",
-      "update!", "update_attribute", "update_column", "update_columns"
-    ]
-}
-
-private predicate isCallToBuiltInMethod(MethodCall c) {
-  c.getMethodName() = activeRecordPersistenceInstanceMethodName() or
-  c instanceof BasicObjectInstanceMethodCall or
-  c instanceof ObjectInstanceMethodCall
 }

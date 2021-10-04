@@ -546,8 +546,9 @@ module XmlParserCall {
  * extend `OrmInstantiation::Range` instead.
  */
 class OrmInstantiation extends DataFlow::Node instanceof OrmInstantiation::Range {
-  /** Holds if `call` may return a field of this ORM object. */
-  predicate methodCallMayAccessField(MethodCall call) { super.methodCallMayAccessField(call) }
+  /** Holds if a call to `methodName` on this instance may return a field of this ORM object. */
+  bindingset[methodName]
+  predicate methodCallMayAccessField(string methodName) { super.methodCallMayAccessField(methodName) }
 }
 
 /** Provides a class for modeling new ORM object instantiation APIs. */
@@ -559,7 +560,8 @@ module OrmInstantiation {
    * extend `OrmInstantiation` instead.
    */
   abstract class Range extends DataFlow::Node {
-    /** Holds if `call` may return a field of this ORM object. */
-    abstract predicate methodCallMayAccessField(MethodCall call);
+    /** Holds if a call to `methodName` on this instance may return a field of this ORM object. */
+    bindingset[methodName]
+    abstract predicate methodCallMayAccessField(string methodName);
   }
 }
