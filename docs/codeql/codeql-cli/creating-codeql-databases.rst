@@ -221,6 +221,23 @@ commands that you can specify for compiled languages.
 
      codeql database create java-database --language=java --command='ant -f build.xml'
 
+- Project built using Bazel::
+
+     # Navigate to the Bazel workspace.
+
+     # Stop all running Bazel server processes.
+     bazel shutdown
+
+     # Remove cached objects before building.
+     bazel clean --expunge
+
+     # Build using the following Bazel flags, to help CodeQL detect the build:
+     # `--spawn_strategy=local`: build locally, instead of using a distributed build
+     # `--nouse_action_cache`: turn off build caching, which might prevent recompilation of source code
+     # `--noremote_accept_cached`, `--noremote_upload_local_results`: avoid using a remote cache
+     codeql database create new-database --language=<language> \
+       --command='bazel build --spawn_strategy=local --nouse_action_cache --noremote_accept_cached --noremote_upload_local_results //path/to/package:target'
+
 - Project built using a custom build script::
 
      codeql database create new-database --language=<language> --command='./scripts/build.sh'
