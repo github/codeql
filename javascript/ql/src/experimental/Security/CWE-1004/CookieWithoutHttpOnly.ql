@@ -13,8 +13,15 @@
  */
 
 import javascript
-import experimental.semmle.javascript.security.InsecureCookie::Cookie
+import experimental.semmle.javascript.security.InsecureCookie::Cookie as ExperimentalCookie
 
-from CookieWrite cookie
-where cookie.isSensitive() and not cookie.isHttpOnly()
-select cookie, "Cookie attribute 'HttpOnly' is not set to true for this sensitive cookie."
+from DataFlow::Node node
+where
+  exists(ExperimentalCookie::CookieWrite cookie | cookie = node |
+    cookie.isSensitive() and not cookie.isHttpOnly()
+  )
+  or
+  exists(CookieWrites::CookieWrite cookie | cookie = node |
+    cookie.isSensitive() and not cookie.isHttpOnly()
+  )
+select node, "Cookie attribute 'HttpOnly' is not set to true for this sensitive cookie."

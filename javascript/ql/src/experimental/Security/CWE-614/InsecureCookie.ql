@@ -11,8 +11,11 @@
  */
 
 import javascript
-import experimental.semmle.javascript.security.InsecureCookie::Cookie
+import experimental.semmle.javascript.security.InsecureCookie::Cookie as ExperimentalCookie
 
-from CookieWrite cookie
-where not cookie.isSecure()
-select cookie, "Cookie is added to response without the 'secure' flag being set to true"
+from DataFlow::Node node
+where
+  exists(ExperimentalCookie::CookieWrite cookie | cookie = node | not cookie.isSecure())
+  or
+  exists(CookieWrites::CookieWrite cookie | cookie = node | not cookie.isSecure())
+select node, "Cookie is added to response without the 'secure' flag being set to true"

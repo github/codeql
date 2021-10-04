@@ -5,6 +5,31 @@
 import javascript
 
 /**
+ * Classes and predicates for reasoning about writes to cookies.
+ */
+module CookieWrites {
+  /**
+   * A write to a cookie.
+   */
+  abstract class CookieWrite extends DataFlow::Node {
+    /**
+     * Holds if this cookie is secure, i.e. only transmitted over SSL.
+     */
+    abstract predicate isSecure();
+
+    /**
+     * Holds if this cookie is HttpOnly, i.e. not accessible by JavaScript.
+     */
+    abstract predicate isHttpOnly();
+
+    /**
+     * Holds if the cookie is likely an authentication cookie or otherwise sensitive.
+     */
+    abstract predicate isSensitive();
+  }
+}
+
+/**
  * A model of the `js-cookie` library (https://github.com/js-cookie/js-cookie).
  */
 private module JsCookie {
@@ -26,6 +51,7 @@ private module JsCookie {
   }
 
   class WriteAccess extends PersistentWriteAccess, DataFlow::CallNode {
+    // TODO: CookieWrite
     WriteAccess() { this = libMemberCall("set") }
 
     string getKey() { getArgument(0).mayHaveStringValue(result) }
@@ -54,6 +80,7 @@ private module BrowserCookies {
   }
 
   class WriteAccess extends PersistentWriteAccess, DataFlow::CallNode {
+    // TODO: CookieWrite
     WriteAccess() { this = libMemberCall("set") }
 
     string getKey() { getArgument(0).mayHaveStringValue(result) }
@@ -82,6 +109,7 @@ private module LibCookie {
   }
 
   class WriteAccess extends PersistentWriteAccess, DataFlow::CallNode {
+    // TODO: CookieWrite
     WriteAccess() { this = libMemberCall("serialize") }
 
     string getKey() { getArgument(0).mayHaveStringValue(result) }
