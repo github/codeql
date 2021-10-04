@@ -1,3 +1,5 @@
+/** Provides classes and predicates related to `androidx.slice`. */
+
 import java
 private import semmle.code.java.dataflow.ExternalFlow
 
