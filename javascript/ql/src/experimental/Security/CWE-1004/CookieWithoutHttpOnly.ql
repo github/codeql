@@ -15,6 +15,6 @@
 import javascript
 import experimental.semmle.javascript.security.InsecureCookie::Cookie
 
-from Cookie cookie
-where cookie.isAuthNotHttpOnly()
+from CookieWrite cookie
+where cookie.isSensitive() and not cookie.isHttpOnly()
 select cookie, "Cookie attribute 'HttpOnly' is not set to true for this sensitive cookie."

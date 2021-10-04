@@ -5,7 +5,12 @@
  */
 
 import javascript
+private import semmle.javascript.security.SensitiveActions
 
+// TODO: Move this entire file into stdlib.
+// TODO: make "session", "auth", a sensitive name.
+// TODO: Have helper predicate that selects the relevant Sensitive Classifications.
+// TODO: Look for more cookie libraries.
 module Cookie {
   /**
    * `secure` property of the cookie options.
@@ -18,70 +23,32 @@ module Cookie {
   string httpOnlyFlag() { result = "httpOnly" }
 
   /**
-   * Abstract class to represent different cases of insecure cookie settings.
+   * A write to a cookie.
    */
-  abstract class Cookie extends DataFlow::Node {
+  abstract class CookieWrite extends DataFlow::Node {
     /**
-     * Gets the name of the middleware/library used to set the cookie.
-     */
-    abstract string getKind();
-
-    /**
-     * Gets the options used to set this cookie, if any.
-     */
-    abstract DataFlow::Node getCookieOptionsArgument();
-
-    /**
-     * Holds if this cookie is secure.
+     * Holds if this cookie is secure, i.e. only transmitted over SSL.
      */
     abstract predicate isSecure();
 
     /**
-     * Holds if this cookie is HttpOnly.
+     * Holds if this cookie is HttpOnly, i.e. not accessible by JavaScript.
      */
     abstract predicate isHttpOnly();
 
     /**
-     * Holds if the cookie is authentication sensitive and lacks HttpOnly.
+     * Holds if the cookie is likely an authentication cookie or otherwise sensitive.
      */
-    abstract predicate isAuthNotHttpOnly();
-  }
-
-  /**
-   * Holds if the expression is a variable with a sensitive name.
-   */
-  private predicate isAuthVariable(DataFlow::Node expr) {
-    exists(string val |
-      (
-        val = expr.getStringValue() or
-        val = expr.asExpr().(VarAccess).getName() or
-        val = expr.(DataFlow::PropRead).getPropertyName()
-      ) and
-      regexpMatchAuth(val)
-    )
-    or
-    isAuthVariable(expr.getAPredecessor())
-  }
-
-  /**
-   * Holds if `val` looks related to authentication, without being an anti-forgery token.
-   */
-  bindingset[val]
-  private predicate regexpMatchAuth(string val) {
-    val.regexpMatch("(?i).*(session|login|token|user|auth|credential).*") and
-    not val.regexpMatch("(?i).*(xsrf|csrf|forgery).*")
+    abstract predicate isSensitive();
   }
 
   /**
    * A cookie set using the `express` module `cookie-session` (https://github.com/expressjs/cookie-session).
    */
-  class InsecureCookieSession extends ExpressLibraries::CookieSession::MiddlewareInstance, Cookie {
-    override string getKind() { result = "cookie-session" }
-
-    override DataFlow::SourceNode getCookieOptionsArgument() { result.flowsTo(getArgument(0)) }
-
+  class InsecureCookieSession extends ExpressLibraries::CookieSession::MiddlewareInstance,
+    CookieWrite {
     private DataFlow::Node getCookieFlagValue(string flag) {
-      result = this.getCookieOptionsArgument().getAPropertyWrite(flag).getRhs()
+      result = this.getOptionArgument(0, flag)
     }
 
     override predicate isSecure() {
@@ -90,8 +57,8 @@ module Cookie {
       not getCookieFlagValue(secureFlag()).mayHaveBooleanValue(false)
     }
 
-    override predicate isAuthNotHttpOnly() {
-      not isHttpOnly() // It is a session cookie, likely auth sensitive
+    override predicate isSensitive() {
+      any() // It is a session cookie, likely auth sensitive
     }
 
     override predicate isHttpOnly() {
@@ -105,13 +72,9 @@ module Cookie {
    * A cookie set using the `express` module `express-session` (https://github.com/expressjs/session).
    */
   class InsecureExpressSessionCookie extends ExpressLibraries::ExpressSession::MiddlewareInstance,
-    Cookie {
-    override string getKind() { result = "express-session" }
-
-    override DataFlow::SourceNode getCookieOptionsArgument() { result = this.getOption("cookie") }
-
+    CookieWrite {
     private DataFlow::Node getCookieFlagValue(string flag) {
-      result = this.getCookieOptionsArgument().getAPropertyWrite(flag).getRhs()
+      result = this.getOption("cookie").getALocalSource().getAPropertyWrite(flag).getRhs()
     }
 
     override predicate isSecure() {
@@ -122,8 +85,8 @@ module Cookie {
       getCookieFlagValue(secureFlag()).mayHaveStringValue("auto")
     }
 
-    override predicate isAuthNotHttpOnly() {
-      not isHttpOnly() // It is a session cookie, likely auth sensitive
+    override predicate isSensitive() {
+      any() // It is a session cookie, likely auth sensitive
     }
 
     override predicate isHttpOnly() {
@@ -137,17 +100,11 @@ module Cookie {
   /**
    * A cookie set using `response.cookie` from `express` module (https://expressjs.com/en/api.html#res.cookie).
    */
-  class InsecureExpressCookieResponse extends Cookie, DataFlow::MethodCallNode {
+  class InsecureExpressCookieResponse extends CookieWrite, DataFlow::MethodCallNode {
     InsecureExpressCookieResponse() { this.calls(any(Express::ResponseExpr r).flow(), "cookie") }
 
-    override string getKind() { result = "response.cookie" }
-
-    override DataFlow::SourceNode getCookieOptionsArgument() {
-      result = this.getLastArgument().getALocalSource()
-    }
-
     private DataFlow::Node getCookieFlagValue(string flag) {
-      result = this.getCookieOptionsArgument().getAPropertyWrite(flag).getRhs()
+      result = this.getOptionArgument(this.getNumArgument() - 1, flag)
     }
 
     override predicate isSecure() {
@@ -156,9 +113,12 @@ module Cookie {
       getCookieFlagValue(secureFlag()).mayHaveBooleanValue(true)
     }
 
-    override predicate isAuthNotHttpOnly() {
-      isAuthVariable(this.getArgument(0)) and
-      not isHttpOnly()
+    override predicate isSensitive() {
+      HeuristicNames::nameIndicatesSensitiveData(any(string s |
+          this.getArgument(0).mayHaveStringValue(s)
+        ), _)
+      or
+      this.getArgument(0).asExpr() instanceof SensitiveExpr
     }
 
     override predicate isHttpOnly() {
@@ -168,101 +128,56 @@ module Cookie {
     }
   }
 
-  private class AttributeToSetCookieHeaderTrackingConfig extends TaintTracking::Configuration {
-    AttributeToSetCookieHeaderTrackingConfig() { this = "AttributeToSetCookieHeaderTrackingConfig" }
-
-    override predicate isSource(DataFlow::Node source) {
-      exists(string s | source.mayHaveStringValue(s))
-    }
-
-    override predicate isSink(DataFlow::Node sink) { sink.asExpr() instanceof TemplateLiteral }
-  }
-
-  private class SensitiveNameToSetCookieHeaderTrackingConfig extends TaintTracking::Configuration {
-    SensitiveNameToSetCookieHeaderTrackingConfig() {
-      this = "SensitiveNameToSetCookieHeaderTrackingConfig"
-    }
-
-    override predicate isSource(DataFlow::Node source) { isAuthVariable(source) }
-
-    override predicate isSink(DataFlow::Node sink) { sink.asExpr() instanceof TemplateLiteral }
-  }
-
   /**
    * A cookie set using `Set-Cookie` header of an `HTTP` response.
    * (https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie).
    * In case an array is passed `setHeader("Set-Cookie", [...]` it sets multiple cookies.
    * Each array element has its own attributes.
    */
-  class InsecureSetCookieHeader extends Cookie {
+  class InsecureSetCookieHeader extends CookieWrite {
     InsecureSetCookieHeader() {
-      this.asExpr() = any(HTTP::SetCookieHeader setCookie).getHeaderArgument()
-    }
-
-    override string getKind() { result = "set-cookie header" }
-
-    override DataFlow::Node getCookieOptionsArgument() {
-      if this.asExpr() instanceof ArrayExpr
-      then result.asExpr() = this.asExpr().(ArrayExpr).getAnElement()
-      else result.asExpr() = this.asExpr()
+      this.asExpr() = any(HTTP::SetCookieHeader setCookie).getHeaderArgument() and
+      not this instanceof DataFlow::ArrayCreationNode
+      or
+      this =
+        any(HTTP::SetCookieHeader setCookie)
+            .getHeaderArgument()
+            .flow()
+            .(DataFlow::ArrayCreationNode)
+            .getAnElement()
     }
 
     /**
      * A cookie is secure if the `secure` flag is specified in the cookie definition.
      * The default is `false`.
      */
-    override predicate isSecure() { allHaveCookieAttribute("secure") }
+    override predicate isSecure() { hasCookieAttribute("secure") }
 
     /**
      * A cookie is httpOnly if the `httpOnly` flag is specified in the cookie definition.
      * The default is `false`.
      */
-    override predicate isHttpOnly() { allHaveCookieAttribute(httpOnlyFlag()) }
+    override predicate isHttpOnly() { hasCookieAttribute(httpOnlyFlag()) }
 
     /**
-     * The predicate holds only if all elements have the specified attribute.
+     * The predicate holds only if any element have the specified attribute.
      */
     bindingset[attribute]
-    private predicate allHaveCookieAttribute(string attribute) {
-      forall(DataFlow::Node n | n = getCookieOptionsArgument() |
-        exists(string s |
-          n.mayHaveStringValue(s) and
-          hasCookieAttribute(s, attribute)
-        )
-        or
-        exists(AttributeToSetCookieHeaderTrackingConfig cfg, DataFlow::Node source |
-          cfg.hasFlow(source, n) and
-          exists(string attr |
-            source.mayHaveStringValue(attr) and
-            attr.regexpMatch("(?i).*\\b" + attribute + "\\b.*")
-          )
-        )
+    private predicate hasCookieAttribute(string attribute) {
+      exists(string s |
+        this.mayHaveStringValue(s) and
+        hasCookieAttribute(s, attribute)
       )
     }
 
     /**
-     * The predicate holds only if any element has a sensitive name and
-     * doesn't have the `httpOnly` flag.
+     * The predicate holds only if any element has a sensitive name.
      */
-    override predicate isAuthNotHttpOnly() {
-      exists(DataFlow::Node n | n = getCookieOptionsArgument() |
-        exists(string s |
-          n.mayHaveStringValue(s) and
-          (
-            not hasCookieAttribute(s, httpOnlyFlag()) and
-            regexpMatchAuth(getCookieName(s))
-          )
-        )
-        or
-        not exists(AttributeToSetCookieHeaderTrackingConfig cfg, DataFlow::Node source |
-          cfg.hasFlow(source, n) and
-          exists(string attr |
-            source.mayHaveStringValue(attr) and
-            attr.regexpMatch("(?i).*\\b" + httpOnlyFlag() + "\\b.*")
-          )
-        ) and
-        exists(SensitiveNameToSetCookieHeaderTrackingConfig cfg | cfg.hasFlow(_, n))
-      )
+    override predicate isSensitive() {
+      HeuristicNames::nameIndicatesSensitiveData(getCookieName([
+            any(string s | this.mayHaveStringValue(s)),
+            this.(StringOps::ConcatenationRoot).getConstantStringParts()
+          ]), _)
     }
 
     /**
@@ -271,7 +186,9 @@ module Cookie {
      * `<cookie-name>=<cookie-value>; Domain=<domain-value>; Secure; HttpOnly`
      */
     bindingset[s]
-    private string getCookieName(string s) { result = s.regexpCapture("\\s*([^=\\s]*)\\s*=.*", 1) }
+    private string getCookieName(string s) {
+      result = s.regexpCapture("\\s*\\b([^=\\s]*)\\b\\s*=.*", 1)
+    }
 
     /**
      * Holds if the `Set-Cookie` header value contains the specified attribute
@@ -284,14 +201,14 @@ module Cookie {
      */
     bindingset[s, attribute]
     private predicate hasCookieAttribute(string s, string attribute) {
-      s.regexpMatch("(?i).*;\\s*" + attribute + "\\s*;?.*$")
+      s.regexpMatch("(?i).*;\\s*" + attribute + "\\b\\s*;?.*$")
     }
   }
 
   /**
    * A cookie set using `js-cookie` library (https://github.com/js-cookie/js-cookie).
    */
-  class InsecureJsCookie extends Cookie {
+  class InsecureJsCookie extends CookieWrite {
     InsecureJsCookie() {
       this =
         [
@@ -301,9 +218,7 @@ module Cookie {
         ].getAMemberCall("set")
     }
 
-    override string getKind() { result = "js-cookie" }
-
-    override DataFlow::SourceNode getCookieOptionsArgument() {
+    DataFlow::SourceNode getCookieOptionsArgument() {
       result = this.(DataFlow::CallNode).getAnArgument().getALocalSource()
     }
 
@@ -316,7 +231,7 @@ module Cookie {
       getCookieFlagValue(secureFlag()).mayHaveBooleanValue(true)
     }
 
-    override predicate isAuthNotHttpOnly() { none() }
+    override predicate isSensitive() { none() }
 
     override predicate isHttpOnly() { none() } // js-cookie is browser side library and doesn't support HttpOnly
   }

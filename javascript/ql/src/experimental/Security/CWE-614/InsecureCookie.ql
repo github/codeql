@@ -13,6 +13,6 @@
 import javascript
 import experimental.semmle.javascript.security.InsecureCookie::Cookie
 
-from Cookie cookie
+from CookieWrite cookie
 where not cookie.isSecure()
 select cookie, "Cookie is added to response without the 'secure' flag being set to true"
