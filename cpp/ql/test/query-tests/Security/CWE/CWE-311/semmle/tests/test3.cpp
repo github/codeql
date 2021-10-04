@@ -2,6 +2,8 @@
 typedef unsigned long size_t;
 #define STDIN_FILENO (0)
 
+
+
 size_t strlen(const char *s);
 
 void send(int fd, const void *buf, size_t bufLen, int d);
@@ -31,6 +33,10 @@ void test_send(const char *password1, const char *password2, const char *passwor
 	{
 		send(val(), message, strlen(message), val()); // GOOD: `message` is not a password
 	}
+
+
+
+
 }
 
 void test_receive()
@@ -125,7 +131,7 @@ void test_interprocedural(const char *password1)
 	{
 		char password[256];
 
-		my_recv(password, 256); // BAD: `password` is received plaintext [detected on line 108]
+		my_recv(password, 256); // BAD: `password` is received plaintext [detected in `my_recv`]
 	}
 
 	{
