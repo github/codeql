@@ -222,9 +222,7 @@ private module StdlibPrivate {
                 // these check if the file exists
                 "exists", "lexists", "isfile", "isdir", "islink", "ismount",
                 // these raise errors if the file does not exist
-                "getatime", "getmtime", "getctime", "getsize",
-                // this will resolve symlinks
-                "realpath"
+                "getatime", "getmtime", "getctime", "getsize"
               ])
             .getACall()
     }
