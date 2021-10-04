@@ -1,4 +1,4 @@
-class NumericLiterals {    
+class NumericLiterals {
 	void negativeLiterals() {
 		float f = -1f;
 		double d = -1d;
