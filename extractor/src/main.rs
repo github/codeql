@@ -2,7 +2,6 @@ mod extractor;
 
 extern crate num_cpus;
 
-use clap;
 use flate2::write::GzEncoder;
 use rayon::prelude::*;
 use std::fs;
@@ -57,7 +56,7 @@ impl TrapCompression {
  * (minimum of 1). If unspecified, should be considered as set to -1."
  */
 fn num_codeql_threads() -> usize {
-    let threads_str = std::env::var("CODEQL_THREADS").unwrap_or("-1".to_owned());
+    let threads_str = std::env::var("CODEQL_THREADS").unwrap_or_else(|_| "-1".to_owned());
     match threads_str.parse::<i32>() {
         Ok(num) if num <= 0 => {
             let reduction = -num as usize;
@@ -191,12 +190,12 @@ fn main() -> std::io::Result<()> {
 }
 
 fn write_trap(
-    trap_dir: &PathBuf,
+    trap_dir: &Path,
     path: PathBuf,
     trap_writer: extractor::TrapWriter,
     trap_compression: &TrapCompression,
 ) -> std::io::Result<()> {
-    let trap_file = path_for(&trap_dir, &path, trap_compression.extension());
+    let trap_file = path_for(trap_dir, &path, trap_compression.extension());
     std::fs::create_dir_all(&trap_file.parent().unwrap())?;
     let trap_file = std::fs::File::create(&trap_file)?;
     let mut trap_file = BufWriter::new(trap_file);
@@ -211,7 +210,7 @@ fn write_trap(
 
 fn scan_erb(
     erb: Language,
-    source: &Vec<u8>,
+    source: &[u8],
     directive_id: u16,
     output_directive_id: u16,
     code_id: u16,
@@ -238,7 +237,7 @@ fn scan_erb(
             }
         }
     }
-    if result.len() == 0 {
+    if result.is_empty() {
         let root = tree.root_node();
         // Add an empty range at the end of the file
         result.push(Range {

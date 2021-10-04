@@ -26,12 +26,12 @@ fn main() -> std::io::Result<()> {
 
     for line in env::var("LGTM_INDEX_FILTERS")
         .unwrap_or_default()
-        .split("\n")
+        .split('\n')
     {
-        if line.starts_with("include:") {
-            cmd.arg("--include").arg(&line[8..]);
-        } else if line.starts_with("exclude:") {
-            cmd.arg("--exclude").arg(&line[8..]);
+        if let Some(stripped) = line.strip_prefix("include:") {
+            cmd.arg("--include").arg(stripped);
+        } else if let Some(stripped) = line.strip_prefix("exclude:") {
+            cmd.arg("--exclude").arg(stripped);
         }
     }
     let exit = &cmd.spawn()?.wait()?;
