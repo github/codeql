@@ -113,6 +113,7 @@ private module Frameworks {
   private import semmle.code.java.security.XPath
   private import semmle.code.java.security.XsltInjection
   private import semmle.code.java.frameworks.android.Android
+  private import semmle.code.java.frameworks.android.Slice
   private import semmle.code.java.frameworks.android.SQLite
   private import semmle.code.java.frameworks.Jdbc
   private import semmle.code.java.frameworks.SpringJdbc
