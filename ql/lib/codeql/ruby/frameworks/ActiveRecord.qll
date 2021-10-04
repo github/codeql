@@ -45,21 +45,19 @@ class ActiveRecordModelClass extends ClassDeclaration {
   }
 
   /**
-   * Returns true if `call` may refer to a method that returns a database value
-   * if invoked against an instance of this class.
-   */
-  predicate methodCallMayAccessField(MethodCall call) {
-    not (
-      // Methods whose names can be hardcoded
-      isCallToBuiltInMethod(call)
-      or
-      // Methods defined in the ActiveRecord model class that do not return database fields
-      exists(Method m | m = this.getMethod(call.getMethodName()) |
-        forall(DataFlow::Node returned, ActiveRecordInstanceMethodCall c |
-          exprNodeReturnedFrom(returned, m) and c.flowsTo(returned)
-        |
-          not this.methodCallMayAccessField(returned.asExpr().getExpr())
-        )
+   * Gets methods defined in this class that may access a field from the database.
+  */
+  Method methodMayAccessField() {
+    result = this.getAMethod() and
+    // There is a value that can be returned by this method which may include field data
+    exists(DataFlow::Node returned, ActiveRecordInstanceMethodCall cNode, MethodCall c |
+      exprNodeReturnedFrom(returned, result) and cNode.flowsTo(returned) and c = cNode.asExpr().getExpr() |
+      // The referenced method is not built-in, and
+      not isCallToBuiltInMethod(c) and (
+        // There is no matching method definition in the class, or
+        not exists(cNode.getInstance().getClass().getMethod(c.getMethodName())) or
+        // The called method can access a field
+        c.getATarget() = cNode.getInstance().getClass().methodMayAccessField()
       )
     )
   }
@@ -201,11 +199,23 @@ private string constantQualifiedName(ConstantWriteAccess w) {
 /**
  * A node that may evaluate to one or more `ActiveRecordModelClass` instances.
  */
-abstract class ActiveRecordModelInstantiation extends OrmInstantiation::Range {
+abstract class ActiveRecordModelInstantiation extends OrmInstantiation::Range, DataFlow::LocalSourceNode {
   abstract ActiveRecordModelClass getClass();
 
   override predicate methodCallMayAccessField(MethodCall call) {
-    this.getClass().methodCallMayAccessField(call)
+    // The method is not a built-in
+    not isCallToBuiltInMethod(call) and (
+      // There is no matching method definition in the class, or
+      not exists(this.getClass().getMethod(call.getMethodName())) or
+      // The called method can access a field
+      exists(Method m |
+        m = this.getClass().methodMayAccessField() |
+        // TODO: this may be too broad - we haven't limited the call target
+        // It's likely that the call graph isn't sufficient here, as resolution
+        // e.g. from ActionView views won't catch everything
+        m.getName() = call.getMethodName()
+      )
+    )
   }
 }
 
@@ -260,8 +270,7 @@ private class ActiveRecordModelFinderCall extends ActiveRecordModelInstantiation
 }
 
 // A `self` reference that may resolve to an active record model object
-private class ActiveRecordModelClassSelfReference extends ActiveRecordModelInstantiation,
-  DataFlow::LocalSourceNode {
+private class ActiveRecordModelClassSelfReference extends ActiveRecordModelInstantiation {
   private ActiveRecordModelClass cls;
 
   ActiveRecordModelClassSelfReference() {
@@ -276,15 +285,19 @@ private class ActiveRecordModelClassSelfReference extends ActiveRecordModelInsta
 }
 
 // A (locally tracked) active record model object
-private DataFlow::Node activeRecordModelInstance() {
-  result instanceof ActiveRecordModelInstantiation
-  or
-  exists(ActiveRecordModelInstantiation inst | inst.(DataFlow::LocalSourceNode).flowsTo(result))
+private class ActiveRecordInstance extends DataFlow::Node {
+  private ActiveRecordModelInstantiation instantiation;
+
+  ActiveRecordInstance() { this = instantiation or instantiation.flowsTo(this) }
+
+  ActiveRecordModelClass getClass() { result = instantiation.getClass() }
 }
 
 // A call whose receiver may be an active record model object
 private class ActiveRecordInstanceMethodCall extends DataFlow::CallNode {
-  ActiveRecordInstanceMethodCall() { this.getReceiver() = activeRecordModelInstance() }
+  private ActiveRecordInstance instance;
+  ActiveRecordInstanceMethodCall() { this.getReceiver() = instance }
+  ActiveRecordInstance getInstance() { result = instance }
 }
 
 private string activeRecordPersistenceInstanceMethodName() {
