@@ -302,6 +302,21 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
         return tw.getLabelFor(getTypeParameterLabel(param))
     }
 
+    private fun extractTypeParameter(tp: IrTypeParameter, optParentid: Optional<Label<out DbTypeorcallable>>) {
+        val id = useTypeParameter(tp)
+
+        if (!optParentid.isPresent) {
+            logger.warnElement(Severity.ErrorSevere, "Couldn't find expected parent of type parameter.", tp)
+            return
+        }
+
+        tw.writeTypeVars(id, tp.name.asString(), tp.index, 0, optParentid.get())
+        val locId = tw.getLocation(tp)
+        tw.writeHasLocation(id, locId)
+
+        // todo: add type bounds
+    }
+
     private fun getClassLabel(c: IrClass): String {
         val pkg = c.packageFqName?.asString() ?: ""
         val cls = c.name.asString()
@@ -365,6 +380,9 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
                 }
             }
         }
+
+        c.typeParameters.map { extractTypeParameter(it, Optional.of(id)) }
+
         c.declarations.map { extractDeclaration(it, Optional.of(id)) }
 
         extractObjectInitializerFunction(c, id)
@@ -552,6 +570,9 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
             val extendedType = useType(extReceiver.type)
             tw.writeKtExtensionFunctions(id, extendedType)
         }
+
+        f.typeParameters.map { extractTypeParameter(it, Optional.of(id)) }
+
         currentFunction = null
     }
 

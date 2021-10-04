@@ -1,0 +1,5 @@
+genericType
+| generics.kt:7:10:7:10 | T | generics.kt:7:1:10:1 | C1 |
+genericFunction
+| generics.kt:3:6:3:6 | S | generics.kt:3:1:5:1 | f |
+| generics.kt:9:10:9:10 | U | generics.kt:9:5:9:23 | f2 |
