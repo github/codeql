@@ -52,7 +52,8 @@ private DataFlow::Node getAValueExportedByPackage() {
   result = getAValueExportedByPackage().getALocalSource()
   or
   // Nested property reads.
-  result = getAValueExportedByPackage().(DataFlow::SourceNode).getAPropertyReference(publicPropertyName())
+  result =
+    getAValueExportedByPackage().(DataFlow::SourceNode).getAPropertyReference(publicPropertyName())
   or
   // module.exports.foo = require("./other-module.js");
   exists(Module mod |
@@ -186,9 +187,7 @@ private DataFlow::Node getAnExportFromModule(Module mod) {
  * This only allows properties whose first character is a letter or number.
  */
 bindingset[result]
-private string publicPropertyName() {
-  result.regexpMatch("[a-zA-Z0-9].*")
-}
+private string publicPropertyName() { result.regexpMatch("[a-zA-Z0-9].*") }
 
 /**
  * Holds if the given function is part of a private (or protected) method declaration.
