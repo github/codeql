@@ -16,6 +16,9 @@ private module FlowSummaries {
 /** Holds is `i` is a valid parameter position. */
 predicate parameterPosition(int i) { i in [-1 .. any(Parameter p).getPosition()] }
 
+/** Gets the parameter position of the instance parameter. */
+int instanceParameterPosition() { result = -1 }
+
 /** Gets the synthesized summary data-flow node for the given values. */
 Node summaryNode(SummarizedCallable c, SummaryNodeState state) { result = getSummaryNode(c, state) }
 
@@ -37,6 +40,8 @@ DataFlowType getReturnType(SummarizedCallable c, ReturnKind rk) {
  */
 DataFlowType getCallbackParameterType(DataFlowType t, int i) {
   result = getErasedRepr(t.(FunctionalInterface).getRunMethod().getParameterType(i))
+  or
+  result = getErasedRepr(t.(FunctionalInterface)) and i = -1
 }
 
 /**

@@ -252,8 +252,6 @@ Miscellaneous
 +=====================================+====================+============================================================================+
 | ``(int) f``                         | CastExpr_          |                                                                            |
 +-------------------------------------+--------------------+----------------------------------------------------------------------------+
-| ``(23 + 42)``                       | ParExpr_           |                                                                            |
-+-------------------------------------+--------------------+----------------------------------------------------------------------------+
 | ``o instanceof String``             | InstanceOfExpr_    |                                                                            |
 +-------------------------------------+--------------------+----------------------------------------------------------------------------+
 | `Expr`_ ``?`` `Expr`_ ``:`` `Expr`_ | ConditionalExpr_   |                                                                            |
@@ -378,7 +376,6 @@ Further reading
 .. _WildcardTypeAccess: https://codeql.github.com/codeql-standard-libraries/java/semmle/code/java/Expr.qll/type.Expr$WildcardTypeAccess.html
 .. _FieldAccess: https://codeql.github.com/codeql-standard-libraries/java/semmle/code/java/Expr.qll/type.Expr$FieldAccess.html
 .. _CastExpr: https://codeql.github.com/codeql-standard-libraries/java/semmle/code/java/Expr.qll/type.Expr$CastExpr.html
-.. _ParExpr: https://codeql.github.com/codeql-standard-libraries/java/semmle/code/java/Expr.qll/type.Expr$ParExpr.html
 .. _InstanceOfExpr: https://codeql.github.com/codeql-standard-libraries/java/semmle/code/java/Expr.qll/type.Expr$InstanceOfExpr.html
 .. _ConditionalExpr: https://codeql.github.com/codeql-standard-libraries/java/semmle/code/java/Expr.qll/type.Expr$ConditionalExpr.html
 .. _TypeLiteral: https://codeql.github.com/codeql-standard-libraries/java/semmle/code/java/Expr.qll/type.Expr$TypeLiteral.html

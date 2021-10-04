@@ -13,7 +13,7 @@ class File extends Container, @file {
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
-   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
@@ -123,7 +123,7 @@ class Folder extends Container, @folder {
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
-   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
@@ -323,7 +323,7 @@ abstract class Container extends @container {
   /**
    * Gets a URL representing the location of this container.
    *
-   * For more information see [Providing URLs](https://help.semmle.com/QL/learn-ql/ql/locations.html#providing-urls).
+   * For more information see [Providing URLs](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/#providing-urls).
    */
   abstract string getURL();
 
@@ -429,7 +429,7 @@ class Location extends @location {
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
-   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
@@ -457,7 +457,7 @@ class Line extends @py_line {
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
-   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
