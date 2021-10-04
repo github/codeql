@@ -19,30 +19,20 @@ class AsyncTask extends RefType {
   AsyncTask() { this.hasQualifiedName("android.os", "AsyncTask") }
 }
 
-/** The method that executes `AsyncTask` of Android. */
-abstract class ExecuteAsyncTaskMethod extends Method {
-  /** Returns index of the parameter that is tainted. */
-  abstract int getParamIndex();
-}
+/** The `execute` or `executeOnExecutor` method of Android `AsyncTask`. */
+class ExecuteAsyncTaskMethod extends Method {
+  int paramIndex;
 
-/** The `execute` method of Android `AsyncTask`. */
-class AsyncTaskExecuteMethod extends ExecuteAsyncTaskMethod {
-  AsyncTaskExecuteMethod() {
+  ExecuteAsyncTaskMethod() {
     this.getDeclaringType().getSourceDeclaration().getASourceSupertype*() instanceof AsyncTask and
-    this.getName() = "execute"
+    (
+      this.getName() = "execute" and paramIndex = 0
+      or
+      this.getName() = "executeOnExecutor" and paramIndex = 1
+    )
   }
 
-  override int getParamIndex() { result = 0 }
-}
-
-/** The `executeOnExecutor` method of Android `AsyncTask`. */
-class AsyncTaskExecuteOnExecutorMethod extends ExecuteAsyncTaskMethod {
-  AsyncTaskExecuteOnExecutorMethod() {
-    this.getDeclaringType().getSourceDeclaration().getASourceSupertype*() instanceof AsyncTask and
-    this.getName() = "executeOnExecutor"
-  }
-
-  override int getParamIndex() { result = 1 }
+  int getParamIndex() { result = paramIndex }
 }
 
 /** The `doInBackground` method of Android `AsyncTask`. */

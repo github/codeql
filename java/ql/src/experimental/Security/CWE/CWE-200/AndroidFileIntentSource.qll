@@ -2,6 +2,7 @@
 
 import java
 import semmle.code.java.dataflow.FlowSources
+import semmle.code.java.dataflow.TaintTracking2
 import semmle.code.java.frameworks.android.Android
 
 /** The `startActivityForResult` method of Android `Activity`. */
@@ -67,14 +68,14 @@ private class AndroidIntentDataModel extends SummaryModelCsv {
 }
 
 /** Taint configuration for getting content intent. */
-class GetContentIntentConfig extends TaintTracking::Configuration {
+class GetContentIntentConfig extends TaintTracking2::Configuration {
   GetContentIntentConfig() { this = "GetContentIntentConfig" }
 
-  override predicate isSource(DataFlow::Node src) {
+  override predicate isSource(DataFlow2::Node src) {
     exists(GetContentIntent gi | src.asExpr() = gi)
   }
 
-  override predicate isSink(DataFlow::Node sink) {
+  override predicate isSink(DataFlow2::Node sink) {
     exists(MethodAccess ma |
       ma.getMethod() instanceof StartActivityForResultMethod and sink.asExpr() = ma.getArgument(0)
     )
