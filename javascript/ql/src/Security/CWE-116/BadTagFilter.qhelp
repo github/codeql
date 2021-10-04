@@ -6,13 +6,13 @@
 <overview>
 <p>
 It is possible to match some single HTML tags using regular expressions (parsing general HTML using 
-regular expressions is impossible). However, if the regexp is not written well it might be easy 
-to circumvent the regexp, which can lead to XSS or other security issues.
+regular expressions is impossible). However, if the regular expression is not written well it might 
+be possible to circumvent it, which can lead to cross-site scripting or other security issues.
 </p>
 <p>
-Many of these mistakes are caused by browsers having very forgiving HTML parsers: 
-Browsers will often render invalid HTML with parser errors. 
-Regular expressions that attempt to match HTML must recognize tags containing these parser errors.
+Some of these mistakes are caused by browsers having very forgiving HTML parsers, and
+will often render invalid HTML containing syntax errors. 
+Regular expressions that attempt to match HTML should also recognize tags containing such syntax errors.
 </p>
 </overview>
 
@@ -34,7 +34,7 @@ The following example attempts to filters out all <code>&lt;script&gt;</code> ta
 The above sanitizer does not filter out all <code>&lt;script&gt;</code> tags. 
 Browsers will not only accept <code>&lt;/script&gt;</code> as script end tags, but also tags such as <code>&lt;/script foo="bar"&gt;</code> even though it is a parser error.
 This means that an attack string such as <code>&lt;script&gt;alert(1)&lt;/script foo="bar"&gt;</code> will not be filtered by 
-the function, but <code>alert(1)</code> will be executed by a browser if the string is rendered as HTML.
+the function, and <code>alert(1)</code> will be executed by a browser if the string is rendered as HTML.
 </p>
 
 <p>

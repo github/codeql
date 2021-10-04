@@ -153,7 +153,7 @@ private module RegexpMatching {
   private State getAStateThatReachesAccept(
     MatchedRegExp reg, int i, string str, boolean ignorePrefix
   ) {
-    // base base, reaches an accepting state from the last state in `getAState(..)`
+    // base case, reaches an accepting state from the last state in `getAState(..)`
     reg.testWithGroups(str, ignorePrefix) and
     i = str.length() - 1 and
     result = getAState(reg, i, str, ignorePrefix) and
