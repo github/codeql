@@ -170,7 +170,7 @@ void test_decrypt()
 	{
 		char password[256];
 
-		recv(val(), password, 256, val()); // GOOD: password is encrypted [FALSE POSITIVE]
+		recv(val(), password, 256, val()); // GOOD: password is encrypted
 
 		decrypt_inplace(password); // proof that `password` was in fact encrypted
 	}
@@ -178,7 +178,7 @@ void test_decrypt()
 	{
 		char password[256];
 
-		recv(val(), password, 256, val()); // GOOD: password is encrypted [FALSE POSITIVE]
+		recv(val(), password, 256, val()); // GOOD: password is encrypted
 		password[255] = 0;
 
 		decrypt_inplace(password); // proof that `password` was in fact encrypted
@@ -188,7 +188,7 @@ void test_decrypt()
 		char password[256];
 		char *password_ptr;
 
-		recv(val(), password, 256, val()); // GOOD: password is encrypted [FALSE POSITIVE]
+		recv(val(), password, 256, val()); // GOOD: password is encrypted
 
 		password_ptr = rtn_decrypt(password); // proof that `password` was in fact encrypted
 	}
@@ -198,7 +198,7 @@ void test_decrypt()
 
 		encrypt_inplace(password); // proof that `password` is in fact encrypted
 
-		send(val(), password, strlen(password), val()); // GOOD: password is encrypted [FALSE POSITIVE]
+		send(val(), password, strlen(password), val()); // GOOD: password is encrypted
 	}
 
 	{
@@ -207,7 +207,7 @@ void test_decrypt()
 		encrypt_inplace(password); // proof that `password` is in fact encrypted
 		password[255] = 0;
 
-		send(val(), password, strlen(password), val()); // GOOD: password is encrypted [FALSE POSITIVE]
+		send(val(), password, strlen(password), val()); // GOOD: password is encrypted
 	}
 
 	{
@@ -216,7 +216,7 @@ void test_decrypt()
 
 		password_ptr = rtn_encrypt(password); // proof that `password` is in fact encrypted
 
-		send(val(), password_ptr, strlen(password_ptr), val()); // GOOD: password is encrypted [FALSE POSITIVE]
+		send(val(), password_ptr, strlen(password_ptr), val()); // GOOD: password is encrypted
 	}
 }
 
