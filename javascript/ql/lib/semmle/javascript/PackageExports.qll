@@ -30,7 +30,11 @@ private DataFlow::Node getAValueExportedByPackage() {
     getAnExportFromModule(any(PackageJSON pack | exists(pack.getPackageName())).getMainModule())
   or
   // module.exports.bar.baz = result;
-  result = getAValueExportedByPackage().(DataFlow::PropWrite).getRhs()
+  exists(DataFlow::PropWrite write |
+    write = getAValueExportedByPackage() and
+    write.getPropertyName() = publicPropertyName() and
+    result = write.getRhs()
+  )
   or
   // class Foo {
   //   bar() {} // <- result
@@ -39,15 +43,17 @@ private DataFlow::Node getAValueExportedByPackage() {
   exists(DataFlow::SourceNode callee |
     callee = getAValueExportedByPackage().(DataFlow::NewNode).getCalleeNode().getALocalSource()
   |
-    result = callee.getAPropertyRead("prototype").getAPropertyWrite().getRhs()
+    result = callee.getAPropertyRead("prototype").getAPropertyWrite(publicPropertyName()).getRhs()
     or
-    result = callee.(DataFlow::ClassNode).getAnInstanceMethod()
+    result = callee.(DataFlow::ClassNode).getInstanceMethod(publicPropertyName()) and
+    not isPrivateMethodDeclaration(result)
   )
   or
   result = getAValueExportedByPackage().getALocalSource()
   or
   // Nested property reads.
-  result = getAValueExportedByPackage().(DataFlow::SourceNode).getAPropertyReference()
+  result =
+    getAValueExportedByPackage().(DataFlow::SourceNode).getAPropertyReference(publicPropertyName())
   or
   // module.exports.foo = require("./other-module.js");
   exists(Module mod |
@@ -61,9 +67,12 @@ private DataFlow::Node getAValueExportedByPackage() {
   //   static baz() {} // <- result
   //   constructor() {} // <- result
   // };
-  exists(DataFlow::ClassNode cla | cla = getAValueExportedByPackage() |
-    result = cla.getAnInstanceMethod() or
-    result = cla.getAStaticMethod() or
+  exists(DataFlow::ClassNode cla |
+    cla = getAValueExportedByPackage() and
+    not isPrivateMethodDeclaration(result)
+  |
+    result = cla.getInstanceMethod(publicPropertyName()) or
+    result = cla.getStaticMethod(publicPropertyName()) or
     result = cla.getConstructor()
   )
   or
@@ -120,7 +129,8 @@ private DataFlow::Node getAValueExportedByPackage() {
   or
   // Object.defineProperty
   exists(CallToObjectDefineProperty call |
-    [call, call.getBaseObject()] = getAValueExportedByPackage()
+    [call, call.getBaseObject()] = getAValueExportedByPackage() and
+    call.getPropertyName() = publicPropertyName()
   |
     result = call.getPropertyDescriptor().getALocalSource().getAPropertyReference("value")
     or
@@ -164,9 +174,31 @@ private DataFlow::Node getAValueExportedByPackage() {
  * Gets an exported node from the module `mod`.
  */
 private DataFlow::Node getAnExportFromModule(Module mod) {
-  result = mod.getAnExportedValue(_)
+  result = mod.getAnExportedValue(publicPropertyName())
   or
   result = mod.getABulkExportedNode()
   or
   result.analyze().getAValue() = TAbstractModuleObject(mod)
+}
+
+/**
+ * Gets a property name that we consider to be public.
+ *
+ * This only allows properties whose first character is a letter or number.
+ */
+bindingset[result]
+private string publicPropertyName() { result.regexpMatch("[a-zA-Z0-9].*") }
+
+/**
+ * Holds if the given function is part of a private (or protected) method declaration.
+ */
+private predicate isPrivateMethodDeclaration(DataFlow::FunctionNode func) {
+  exists(MethodDeclaration decl |
+    decl.getBody() = func.getFunction() and
+    (
+      decl.isPrivate()
+      or
+      decl.isProtected()
+    )
+  )
 }
