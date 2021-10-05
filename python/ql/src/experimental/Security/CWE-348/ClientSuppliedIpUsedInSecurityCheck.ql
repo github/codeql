@@ -39,10 +39,9 @@ class ClientSuppliedIpUsedInSecurityCheckConfig extends TaintTracking::Configura
 
   override predicate isSanitizer(DataFlow::Node node) {
     exists(Subscript ss |
-      not ss.getIndex().(IntegerLiteral).getText() = "0" and
       ss.getObject().(Call).getFunc().(Attribute).getName() = "split" and
-      ss.getObject().(Call).getArg(0).(StrConst).getText() = "," and
-      ss.getObject().(Call).getFunc().(Attribute).getObject() = node.asExpr()
+      ss.getObject().(Call).getAnArg().(StrConst).getText() = "," and
+      ss = node.asExpr()
     )
   }
 }
