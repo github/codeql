@@ -240,7 +240,7 @@ module ReflectedXSS {
   class RemoteFlowSourceAsSource extends Source, RemoteFlowSource { }
 }
 
-module OrmTracking {
+private module OrmTracking {
   /**
    * A data flow configuration to track flow from finder calls to field accesses.
    */
@@ -257,6 +257,9 @@ module OrmTracking {
       or
       // Propagate flow through arbitrary method calls
       node2.(DataFlow2::CallNode).getReceiver() = node1
+      or
+      // Propagate flow through "or" expressions `or`/`||`
+      node2.asExpr().getExpr().(LogicalOrExpr).getAnOperand() = node1.asExpr().getExpr()
     }
   }
 }
