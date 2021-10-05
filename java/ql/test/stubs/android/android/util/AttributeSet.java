@@ -1,74 +1,31 @@
-/*
- * Copyright (C) 2006 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Generated automatically from android.util.AttributeSet for testing purposes
 
 package android.util;
 
-public interface AttributeSet {
-    public int getAttributeCount();
 
-    default String getAttributeNamespace (int index) {
-      return null;
-    }
-
-    public String getAttributeName(int index);
-
-    public String getAttributeValue(int index);
-
-    public String getAttributeValue(String namespace, String name);
-
-    public String getPositionDescription();
-
-    public int getAttributeNameResource(int index);
-
-    public int getAttributeListValue(String namespace, String attribute,
-                                     String[] options, int defaultValue);
-
-    public boolean getAttributeBooleanValue(String namespace, String attribute,
-                                            boolean defaultValue);
-
-    public int getAttributeResourceValue(String namespace, String attribute,
-                                         int defaultValue);
-
-    public int getAttributeIntValue(String namespace, String attribute,
-                                    int defaultValue);
-
-    public int getAttributeUnsignedIntValue(String namespace, String attribute,
-                                            int defaultValue);
-
-    public float getAttributeFloatValue(String namespace, String attribute,
-                                        float defaultValue);
-
-    public int getAttributeListValue(int index, String[] options, int defaultValue);
-
-    public boolean getAttributeBooleanValue(int index, boolean defaultValue);
-
-    public int getAttributeResourceValue(int index, int defaultValue);
-
-    public int getAttributeIntValue(int index, int defaultValue);
-
-    public int getAttributeUnsignedIntValue(int index, int defaultValue);
-
-    public float getAttributeFloatValue(int index, float defaultValue);
-
-    public String getIdAttribute();
-
-    public String getClassAttribute();
-
-    public int getIdAttributeResourceValue(int defaultValue);
-
-    public int getStyleAttribute();
-
+public interface AttributeSet
+{
+    String getAttributeName(int p0);
+    String getAttributeValue(String p0, String p1);
+    String getAttributeValue(int p0);
+    String getClassAttribute();
+    String getIdAttribute();
+    String getPositionDescription();
+    boolean getAttributeBooleanValue(String p0, String p1, boolean p2);
+    boolean getAttributeBooleanValue(int p0, boolean p1);
+    default String getAttributeNamespace(int p0){ return null; }
+    float getAttributeFloatValue(String p0, String p1, float p2);
+    float getAttributeFloatValue(int p0, float p1);
+    int getAttributeCount();
+    int getAttributeIntValue(String p0, String p1, int p2);
+    int getAttributeIntValue(int p0, int p1);
+    int getAttributeListValue(String p0, String p1, String[] p2, int p3);
+    int getAttributeListValue(int p0, String[] p1, int p2);
+    int getAttributeNameResource(int p0);
+    int getAttributeResourceValue(String p0, String p1, int p2);
+    int getAttributeResourceValue(int p0, int p1);
+    int getAttributeUnsignedIntValue(String p0, String p1, int p2);
+    int getAttributeUnsignedIntValue(int p0, int p1);
+    int getIdAttributeResourceValue(int p0);
+    int getStyleAttribute();
 }
