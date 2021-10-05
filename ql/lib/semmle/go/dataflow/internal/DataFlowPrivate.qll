@@ -1,6 +1,7 @@
 private import go
 private import DataFlowUtil
 private import DataFlowImplCommon
+private import ContainerFlow
 private import FlowSummaryImpl as FlowSummaryImpl
 import DataFlowNodes::Private
 
@@ -125,6 +126,8 @@ predicate storeStep(Node node1, Content c, PostUpdateNode node2) {
   c = any(DataFlow::PointerContent pc | pc.getPointerType() = node2.getType())
   or
   FlowSummaryImpl::Private::Steps::summaryStoreStep(node1, c, node2)
+  or
+  containerStoreStep(node1, node2, c)
 }
 
 /**
@@ -143,6 +146,8 @@ predicate readStep(Node node1, Content f, Node node2) {
   )
   or
   FlowSummaryImpl::Private::Steps::summaryReadStep(node1, f, node2)
+  or
+  containerReadStep(node1, node2, f)
 }
 
 /**
