@@ -15,9 +15,10 @@ class InsecureJavaMailTest extends InlineExpectationsTest {
       value = ""
     |
       ma.getMethod() instanceof MailSessionGetInstanceMethod and
-      isInsecureMailPropertyConfig(ma.getArgument(0))
+      isInsecureMailPropertyConfig(ma.getArgument(0).(VarAccess).getVariable())
       or
-      enablesEmailSsl(ma) and not hasSslCertificateCheck(ma.getQualifier())
+      enablesEmailSsl(ma) and
+      not hasSslCertificateCheck(ma.getQualifier().(VarAccess).getVariable())
     )
   }
 }

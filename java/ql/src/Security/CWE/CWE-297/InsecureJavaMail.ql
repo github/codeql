@@ -5,6 +5,7 @@
  *              makes the session susceptible to a man-in-the-middle attack.
  * @kind problem
  * @problem.severity warning
+ * @security-severity 5.9
  * @precision medium
  * @id java/insecure-smtp-ssl
  * @tags security
@@ -17,7 +18,7 @@ import semmle.code.java.security.Mail
 from MethodAccess ma
 where
   ma.getMethod() instanceof MailSessionGetInstanceMethod and
-  isInsecureMailPropertyConfig(ma.getArgument(0))
+  isInsecureMailPropertyConfig(ma.getArgument(0).(VarAccess).getVariable())
   or
-  enablesEmailSsl(ma) and not hasSslCertificateCheck(ma.getQualifier())
+  enablesEmailSsl(ma) and not hasSslCertificateCheck(ma.getQualifier().(VarAccess).getVariable())
 select ma, "Java mailing has insecure SSL configuration"
