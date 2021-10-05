@@ -8,19 +8,17 @@ Please note that this project is released with a [Contributor Code of Conduct](C
 
 ## Building and testing
 
+See [Developer information](docs/HOWTO.md) for information on building the Ruby extractor. There is no need to rebuild the extractor if you are only developing queries.
+
 1. Install the CodeQL CLI as described in [Getting started with the CodeQL CLI](https://codeql.github.com/docs/codeql-cli/getting-started-with-the-codeql-cli/).
 
 2. Ensure that `<extraction-root>/codeql` is in your `PATH`.
 
-3. Clone this repository into `<extraction-root>/codeql-go` and change to this directory.
+3. Clone this repository into `<extraction-root>/codeql-ruby` and change to this directory.
 
-4. To build, run `make`.
+4. To run all tests in a directory and its subdirectories, run `codeql test run <directory>`, for example `codeql test run ql/test/query-tests/security`.
 
-5. To run the full test suite, run `make test`. This will take approximately one hour.
-
-6. To run all tests in a directory and its subdirectories, run `codeql test run <directory>`, for example `codeql test run ql/test/query-tests/Security`.
-
-7. To run an individual test, run `codeql test run <filename>`, where `<filename>` is a `.ql` or `.qlref` file, for example `codeql test run ql/test/query-tests/Security/CWE-020/MissingRegexpAnchor/MissingRegexpAnchor.qlref`.
+6. To run an individual test, run `codeql test run <filename>`, where `<filename>` is a `.ql` or `.qlref` file, for example `codeql test run ql/test/query-tests/security/cwe-078/CommandInjection.qlref`.
 
 ## Adding a new query
 
@@ -29,7 +27,7 @@ Follow the steps below to help other users understand what your query does, and 
 
 1. **Consult the documentation for query writers**
 
-   There is lots of useful documentation to help you write CodeQL queries, ranging from information about query file structure to language-specific tutorials. For more information on the documentation available, see [Writing QL queries](https://help.semmle.com/QL/learn-ql/writing-queries/writing-queries.html) on [help.semmle.com](https://help.semmle.com).
+   There is lots of useful documentation to help you write CodeQL queries, ranging from information about query file structure to language-specific tutorials. For more information on the documentation available, see [Writing CodeQL queries](https://codeql.github.com/docs/writing-codeql-queries/) and the [CodeQL documentation](https://codeql.github.com/docs).
 
 2. **Format your code correctly**
 
@@ -45,7 +43,7 @@ Follow the steps below to help other users understand what your query does, and 
 4. **Make sure the `select` statement is compatible with the query type**
 
    The `select` statement of your query must be compatible with the query type (determined by the `@kind` metadata property) for alert or path results to be displayed correctly in LGTM and Visual Studio Code.
-   For more information on `select` statement format, see [Introduction to query files](https://help.semmle.com/QL/learn-ql/writing-queries/introduction-to-queries.html#select-clause) on help.semmle.com.
+   For more information on `select` statement format, see [About CodeQL queries](https://codeql.github.com/docs/writing-codeql-queries/about-codeql-queries/#select-clause) on the [CodeQL documentation](https://codeql.github.com/docs) site.
 
 5. **Write a query help file**
 
