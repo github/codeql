@@ -23,10 +23,19 @@ class ImplicitPendingIntentStartConf extends TaintTracking::Configuration {
     sanitizer instanceof ExplicitIntentSanitizer
   }
 
+  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+    exists(Field f |
+      f.getType() instanceof PendingIntent and
+      node1.(DataFlow::PostUpdateNode).getPreUpdateNode() =
+        DataFlow::getFieldQualifier(f.getAnAccess().(FieldWrite)) and
+      node2.asExpr().(FieldRead).getField() = f
+    )
+  }
+
   override predicate allowImplicitRead(DataFlow::Node node, DataFlow::Content c) {
-    super.allowImplicitRead(node, c)
-    or
-    this.isSink(node)
+    super.allowImplicitRead(node, c) or
+    this.isSink(node) or
+    this.isAdditionalTaintStep(node, _)
   }
 }
 

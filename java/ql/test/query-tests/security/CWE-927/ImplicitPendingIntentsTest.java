@@ -90,6 +90,8 @@ public class ImplicitPendingIntentsTest {
 
     static class TestSliceProvider extends SliceProvider {
 
+        private PendingIntent mPendingIntent;
+
         @Override
         public Slice onBindSlice(Uri sliceUri) {
             if (sliceUri.getAuthority().equals("1")) {
@@ -110,7 +112,7 @@ public class ImplicitPendingIntentsTest {
                         .setPrimaryAction(activityAction));
                 return listBuilder.build(); // Safe
 
-            } else {
+            } else if (sliceUri.getAuthority().equals("3")) {
                 Intent baseIntent = new Intent();
                 PendingIntent pi = PendingIntent.getActivity(getContext(), 0, baseIntent,
                         PendingIntent.FLAG_IMMUTABLE); // Sanitizer
@@ -119,6 +121,14 @@ public class ImplicitPendingIntentsTest {
                 listBuilder.addRow(new ListBuilder.RowBuilder().setTitle("Title")
                         .setPrimaryAction(activityAction));
                 return listBuilder.build(); // Safe
+
+            } else {
+                // Testing implicit field read flows:
+                // mPendingIntent is set in onCreateSliceProvider
+                SliceAction action = SliceAction.createDeeplink(mPendingIntent, null, 0, "");
+                ListBuilder listBuilder = new ListBuilder(getContext(), sliceUri, 0);
+                listBuilder.addRow(new ListBuilder.RowBuilder(sliceUri).setPrimaryAction(action));
+                return listBuilder.build(); // $hasTaintFlow
             }
         }
 
@@ -136,11 +146,16 @@ public class ImplicitPendingIntentsTest {
             }
         }
 
-        // Implementations needed for compilation
         @Override
         public boolean onCreateSliceProvider() {
+            // Testing implicit field read flows:
+            // mPendingIntent is used in onBindSlice
+            Intent baseIntent = new Intent();
+            mPendingIntent = PendingIntent.getActivity(getContext(), 0, baseIntent, 0);
             return true;
         }
+
+        // Implementations needed for compilation
 
         @Override
         public AssetFileDescriptor openTypedAssetFile(Uri uri, String mimeTypeFilter, Bundle opts,
