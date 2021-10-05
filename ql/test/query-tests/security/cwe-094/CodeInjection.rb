@@ -8,6 +8,9 @@ class UsersController < ActionController::Base
     # BAD
     eval(params)
 
+    # GOOD - user input is in second argument, which is not evaluated as Ruby code
+    send(:sanitize, params[:code])
+
     # GOOD
     Foo.new.bar(code)
 
@@ -24,6 +27,12 @@ class UsersController < ActionController::Base
   def update
     # GOOD
     eval("foo")
+  end
+
+  private
+
+  def sanitize(code)
+    true
   end
 end
 

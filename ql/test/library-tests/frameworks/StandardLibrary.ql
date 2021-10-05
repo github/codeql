@@ -1,4 +1,5 @@
 import codeql.ruby.frameworks.StandardLibrary
+import codeql.ruby.DataFlow
 
 query predicate subshellLiteralExecutions(SubshellLiteralExecution e) { any() }
 
@@ -14,6 +15,18 @@ query predicate open3CallExecutions(Open3Call c) { any() }
 
 query predicate open3PipelineCallExecutions(Open3PipelineCall c) { any() }
 
-query predicate evalCallCodeExecutions(EvalCallCodeExecution e) { any() }
+query DataFlow::Node evalCallCodeExecutions(EvalCallCodeExecution e) { result = e.getCode() }
 
-query predicate sendCallCodeExecutions(SendCallCodeExecution e) { any() }
+query DataFlow::Node sendCallCodeExecutions(SendCallCodeExecution e) { result = e.getCode() }
+
+query DataFlow::Node instanceEvalCallCodeExecutions(InstanceEvalCallCodeExecution e) {
+  result = e.getCode()
+}
+
+query DataFlow::Node classEvalCallCodeExecutions(ClassEvalCallCodeExecution e) {
+  result = e.getCode()
+}
+
+query DataFlow::Node moduleEvalCallCodeExecutions(ModuleEvalCallCodeExecution e) {
+  result = e.getCode()
+}
