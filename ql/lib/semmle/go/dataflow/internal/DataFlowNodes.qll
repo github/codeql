@@ -1080,6 +1080,32 @@ module Public {
     /** Gets the data-flow node representing the base from which the element is read. */
     DataFlow::Node getBase() { result = base }
   }
+
+  /**
+   * A data-flow node representing an index of an array, map, slice or string defined from `range` statement.
+   *
+   * Example: in `i, _ := range y { ... }`, this represents the `Node` that extracts the index from the
+   * range statement, which will flow to `x`.
+   */
+  class RangeIndexNode extends Node {
+    DataFlow::Node base;
+
+    RangeIndexNode() {
+      exists(IR::ExtractTupleElementInstruction extract |
+        this.asInstruction() = extract and
+        extract.extractsElement(_, 0) and
+        extract.getBase().(IR::GetNextEntryInstruction).getDomain() = base.asInstruction()
+      )
+      or
+      not exists(IR::ExtractTupleElementInstruction extract |
+        extract.getBase() = this.asInstruction()
+      ) and
+      base.asInstruction() = this.asInstruction().(IR::GetNextEntryInstruction).getDomain()
+    }
+
+    /** Gets the data-flow node representing the base from which the element is read. */
+    DataFlow::Node getBase() { result = base }
+  }
 }
 
 private import Private
