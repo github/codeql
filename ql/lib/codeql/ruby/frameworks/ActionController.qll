@@ -69,7 +69,7 @@ class ActionControllerActionMethod extends Method, HTTP::Server::RequestHandler:
    * `<sourcePrefix>app/views/<subpath>/<method_name>.html.erb`.
    */
   ErbFile getDefaultTemplateFile() {
-    controllerTemplatesFolder(this.getControllerClass(), result.getParentContainer()) and
+    controllerTemplateFile(this.getControllerClass(), result) and
     result.getBaseName() = this.getName() + ".html.erb"
   }
 
@@ -220,25 +220,40 @@ class ActionControllerHelperMethod extends Method {
  * if such a controller class exists.
  */
 ActionControllerControllerClass getAssociatedControllerClass(ErbFile f) {
-  controllerTemplatesFolder(result, f.getParentContainer())
+  // There is a direct mapping from template file to controller class
+  controllerTemplateFile(result, f)
+  or
+  // The template `f` is a partial, and it is rendered from within another
+  // template file, `fp`. In this case, `f` inherits the associated
+  // controller classes from `fp`.
+  f.isPartial() and
+  exists(RenderCall r, ErbFile fp |
+    r.getLocation().getFile() = fp and
+    r.getTemplateFile() = f and
+    result = getAssociatedControllerClass(fp)
+  )
 }
 
+// TODO: improve layout support, e.g. for `layout` method
+// https://guides.rubyonrails.org/layouts_and_rendering.html
 /**
- * Holds if `templatesFolder` is in the correct location to contain template
- * files "belonging" to the given `ActionControllerControllerClass`, according
- * to Rails conventions.
+ * Holds if `templatesFile` is a viable file "belonging" to the given
+ * `ActionControllerControllerClass`, according to Rails conventions.
  *
- * In particular, this means that an action method in `cls` will by default
- * render a correspondingly named template file within `templatesFolder`.
+ * This handles mappings between controllers in `app/controllers/`, and
+ * templates in `app/views/` and `app/views/layouts/`.
  */
-predicate controllerTemplatesFolder(ActionControllerControllerClass cls, Folder templatesFolder) {
+predicate controllerTemplateFile(ActionControllerControllerClass cls, ErbFile templateFile) {
   exists(string templatesPath, string sourcePrefix, string subPath, string controllerPath |
     controllerPath = cls.getLocation().getFile().getRelativePath() and
-    templatesPath = templatesFolder.getRelativePath() and
+    templatesPath = templateFile.getParentContainer().getRelativePath() and
     // `sourcePrefix` is either a prefix path ending in a slash, or empty if
     // the rails app is at the source root
     sourcePrefix = [controllerPath.regexpCapture("^(.*/)app/controllers/(?:.*?)/(?:[^/]*)$", 1), ""] and
     controllerPath = sourcePrefix + "app/controllers/" + subPath + "_controller.rb" and
-    templatesPath = sourcePrefix + "app/views/" + subPath
+    (
+      templatesPath = sourcePrefix + "app/views/" + subPath or
+      templateFile.getRelativePath().matches(sourcePrefix + "app/views/layouts/" + subPath + "%")
+    )
   )
 }
