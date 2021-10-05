@@ -120,7 +120,7 @@ predicate hasLocalSource(Node sink, Node source) {
   or
   exists(Node mid |
     hasLocalSource(mid, source) and
-    simpleLocalFlowStep(mid, sink)
+    simpleLocalFlowStepCommon(mid, sink)
   )
 }
 
@@ -137,7 +137,7 @@ ParameterNode parameterNode(Parameter p) { result.getParameter() = p }
  * (intra-procedural) step.
  */
 predicate localFlowStep(Node nodeFrom, Node nodeTo) {
-  simpleLocalFlowStep(nodeFrom, nodeTo)
+  simpleLocalFlowStepCommon(nodeFrom, nodeTo)
   or
   // Simple flow through library code is included in the exposed local
   // step relation, even though flow is technically inter-procedural

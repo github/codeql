@@ -45,11 +45,18 @@ predicate callStep(DataFlowPrivate::ArgumentNode nodeFrom, DataFlowPublic::Param
  * recursion (or, at best, terrible performance), since identifying calls to library
  * methods is done using API graphs (which uses type tracking).
  */
-predicate returnStep(DataFlowPrivate::ReturnNode nodeFrom, Node nodeTo) {
+predicate returnStep(Node nodeFrom, Node nodeTo) {
   exists(ExprNodes::CallCfgNode call |
+    nodeFrom instanceof DataFlowPrivate::ReturnNode and
     nodeFrom.(DataFlowPrivate::NodeImpl).getCfgScope() = DataFlowDispatch::getTarget(call) and
     nodeTo.asExpr().getNode() = call.getNode()
   )
+  or
+  // In normal data-flow, this will be a local flow step. But for type tracking
+  // we model it as a returning flow step, in order to avoid computing a potential
+  // self-cross product of all calls to a function that returns one of its parameters
+  // (only to later filter that flow out using `TypeTracker::append`).
+  nodeTo.(DataFlowPrivate::SynthReturnNode).getAnInput() = nodeFrom
 }
 
 /**

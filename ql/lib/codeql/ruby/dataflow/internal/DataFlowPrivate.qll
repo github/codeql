@@ -48,7 +48,7 @@ module LocalFlow {
 
   /**
    * Holds if there is a local flow step from `nodeFrom` to `nodeTo` involving
-   * SSA definition `def.
+   * SSA definition `def`.
    */
   predicate localSsaFlowStep(Ssa::Definition def, Node nodeFrom, Node nodeTo) {
     // Flow from parameter into SSA definition
@@ -114,6 +114,12 @@ private module Cached {
   newtype TNode =
     TExprNode(CfgNodes::ExprCfgNode n) or
     TReturningNode(CfgNodes::ReturningCfgNode n) or
+    TSynthReturnNode(CfgScope scope, ReturnKind kind) {
+      exists(ReturningNode ret |
+        ret.(NodeImpl).getCfgScope() = scope and
+        ret.getKind() = kind
+      )
+    } or
     TSsaDefinitionNode(Ssa::Definition def) or
     TNormalParameterNode(Parameter p) { not p instanceof BlockParameter } or
     TSelfParameterNode(MethodBase m) or
@@ -140,14 +146,12 @@ private module Cached {
     TNormalParameterNode or TBlockParameterNode or TSelfParameterNode or TSummaryParameterNode;
 
   /**
-   * This is the local flow predicate that is used as a building block in global
-   * data flow. It excludes SSA flow through instance fields, as flow through fields
-   * is handled by the global data-flow library, but includes various other steps
-   * that are only relevant for global flow.
+   * This is the local flow predicate that is shared between local data flow
+   * and global data flow.
    */
   cached
-  predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
-    exists(Ssa::Definition def | LocalFlow::localSsaFlowStep(def, nodeFrom, nodeTo))
+  predicate simpleLocalFlowStepCommon(Node nodeFrom, Node nodeTo) {
+    LocalFlow::localSsaFlowStep(_, nodeFrom, nodeTo)
     or
     nodeTo.(ParameterNode).getParameter().(OptionalParameter).getDefaultValue() =
       nodeFrom.asExpr().getExpr()
@@ -186,12 +190,39 @@ private module Cached {
         ) and
         nodeFrom.asExpr() = for.getValue()
       )
+  }
+
+  /**
+   * This is the local flow predicate that is used as a building block in global
+   * data flow. It excludes SSA flow through instance fields, as flow through fields
+   * is handled by the global data-flow library, but includes various other steps
+   * that are only relevant for global flow.
+   */
+  cached
+  predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
+    simpleLocalFlowStepCommon(nodeFrom, nodeTo)
+    or
+    nodeTo.(SynthReturnNode).getAnInput() = nodeFrom
     or
     FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, true)
   }
 
   cached
-  predicate isLocalSourceNode(Node n) { not simpleLocalFlowStep+(any(ExprNode e), n) }
+  predicate isLocalSourceNode(Node n) {
+    n instanceof ParameterNode
+    or
+    // This case should not be needed once we have proper use-use flow
+    // for `self`. At that point, the `self`s returned by `trackInstance`
+    // in `DataFlowDispatch.qll` should refer to the post-update node,
+    // and we can remove this case.
+    n instanceof SelfArgumentNode
+    or
+    not simpleLocalFlowStepCommon+(any(Node e |
+        e instanceof ExprNode
+        or
+        e instanceof ParameterNode
+      ), n)
+  }
 
   cached
   newtype TContent = TTodoContent() // stub
@@ -208,6 +239,8 @@ predicate nodeIsHidden(Node n) {
   n instanceof SummaryNode
   or
   n instanceof SummaryParameterNode
+  or
+  n instanceof SynthReturnNode
 }
 
 /** An SSA definition, viewed as a node in a data flow graph. */
@@ -234,7 +267,7 @@ class SsaDefinitionNode extends NodeImpl, TSsaDefinitionNode {
  * `ControlFlow::Node`s.
  */
 class ReturningStatementNode extends NodeImpl, TReturningNode {
-  private CfgNodes::ReturningCfgNode n;
+  CfgNodes::ReturningCfgNode n;
 
   ReturningStatementNode() { this = TReturningNode(n) }
 
@@ -436,6 +469,12 @@ private module ArgumentNodes {
 
 import ArgumentNodes
 
+/** A data-flow node that represents a value syntactically returned by a callable. */
+abstract class ReturningNode extends Node {
+  /** Gets the kind of this return node. */
+  abstract ReturnKind getKind();
+}
+
 /** A data-flow node that represents a value returned by a callable. */
 abstract class ReturnNode extends Node {
   /** Gets the kind of this return node. */
@@ -463,11 +502,9 @@ private module ReturnNodes {
    * A data-flow node that represents an expression returned by a callable,
    * either using an explict `return` statement or as the expression of a method body.
    */
-  class ExplicitReturnNode extends ReturnNode, ReturningStatementNode {
-    private CfgNodes::ReturningCfgNode n;
-
+  class ExplicitReturnNode extends ReturningNode, ReturningStatementNode {
     ExplicitReturnNode() {
-      isValid(this.getReturningNode()) and
+      isValid(n) and
       n.getASuccessor().(CfgNodes::AnnotatedExitNode).isNormal() and
       n.getScope() instanceof Callable
     }
@@ -479,13 +516,41 @@ private module ReturnNodes {
     }
   }
 
-  class ExprReturnNode extends ReturnNode, ExprNode {
+  class ExprReturnNode extends ReturningNode, ExprNode {
     ExprReturnNode() {
       this.getExprNode().getASuccessor().(CfgNodes::AnnotatedExitNode).isNormal() and
       this.(NodeImpl).getCfgScope() instanceof Callable
     }
 
     override ReturnKind getKind() { result instanceof NormalReturnKind }
+  }
+
+  /**
+   * A synthetic data-flow node for joining flow from different syntactic
+   * returns into a single node.
+   *
+   * This node only exists to avoid computing the product of a large fan-in
+   * with a large fan-out.
+   */
+  class SynthReturnNode extends NodeImpl, ReturnNode, TSynthReturnNode {
+    private CfgScope scope;
+    private ReturnKind kind;
+
+    SynthReturnNode() { this = TSynthReturnNode(scope, kind) }
+
+    /** Get a syntactic return node that flows into this synthetic node. */
+    ReturningNode getAnInput() {
+      result.(NodeImpl).getCfgScope() = scope and
+      result.getKind() = kind
+    }
+
+    override ReturnKind getKind() { result = kind }
+
+    override CfgScope getCfgScope() { result = scope }
+
+    override Location getLocationImpl() { result = scope.getLocation() }
+
+    override string toStringImpl() { result = "return " + kind + " in " + scope }
   }
 
   private class SummaryReturnNode extends SummaryNode, ReturnNode {
@@ -631,7 +696,7 @@ private import PostUpdateNodes
 
 /** A node that performs a type cast. */
 class CastNode extends Node {
-  CastNode() { none() }
+  CastNode() { this instanceof ReturningNode }
 }
 
 class DataFlowExpr = CfgNodes::ExprCfgNode;
