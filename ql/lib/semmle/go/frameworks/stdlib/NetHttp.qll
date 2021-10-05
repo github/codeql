@@ -3,6 +3,23 @@
  */
 
 import go
+private import semmle.go.dataflow.ExternalFlow
+
+private class FlowSources extends SourceModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "net/http;Request;true;Cookie;;;ReturnValue[0];remote",
+        "net/http;Request;true;Cookies;;;ArrayElement of ReturnValue;remote",
+        "net/http;Request;true;FormFile;;;ReturnValue[0..1];remote",
+        "net/http;Request;true;FormValue;;;ReturnValue;remote",
+        "net/http;Request;true;MultipartReader;;;ReturnValue[0];remote",
+        "net/http;Request;true;PostFormValue;;;ReturnValue;remote",
+        "net/http;Request;true;Referer;;;ReturnValue;remote",
+        "net/http;Request;true;UserAgent;;;ReturnValue;remote"
+      ]
+  }
+}
 
 /** Provides models of commonly used functions in the `net/http` package. */
 module NetHttp {
@@ -19,24 +36,6 @@ module NetHttp {
         fieldName = "Header" or
         fieldName = "Trailer" or
         fieldName = "URL"
-      )
-    }
-  }
-
-  private class UserControlledRequestMethod extends UntrustedFlowSource::Range {
-    UserControlledRequestMethod() {
-      exists(DataFlow::MethodCallNode callNode, string methName, int resultIdx |
-        callNode.getTarget().hasQualifiedName("net/http", "Request", methName) and
-        this = callNode.getResult(resultIdx)
-      |
-        methName =
-          [
-            "Cookie", "Cookies", "FormValue", "MultipartReader", "PostFormValue", "Referer",
-            "UserAgent"
-          ] and
-        resultIdx = 0
-        or
-        methName = "FormFile" and resultIdx = [0, 1]
       )
     }
   }
