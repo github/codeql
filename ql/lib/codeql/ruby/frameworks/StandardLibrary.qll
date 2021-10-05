@@ -277,7 +277,7 @@ class Open3PipelineCall extends SystemCommandExecution::Range {
 }
 
 /**
- * A call to `Kernel.eval`, which executes its argument as Ruby code.
+ * A call to `Kernel.eval`, which executes its first argument as Ruby code.
  * ```ruby
  * a = 1
  * Kernel.eval("a = 2")
@@ -291,11 +291,11 @@ class EvalCallCodeExecution extends CodeExecution::Range {
     this.asExpr().getExpr() = methodCall and methodCall.getMethodName() = "eval"
   }
 
-  override DataFlow::Node getCode() { result.asExpr().getExpr() = methodCall.getAnArgument() }
+  override DataFlow::Node getCode() { result.asExpr().getExpr() = methodCall.getArgument(0) }
 }
 
 /**
- * A call to `Kernel#send`, which executes its arguments as a Ruby method call.
+ * A call to `Kernel#send`, which executes its first argument as a Ruby method call.
  * ```ruby
  * arr = []
  * arr.send("push", 1)
@@ -309,11 +309,11 @@ class SendCallCodeExecution extends CodeExecution::Range {
     this.asExpr().getExpr() = methodCall and methodCall.getMethodName() = "send"
   }
 
-  override DataFlow::Node getCode() { result.asExpr().getExpr() = methodCall.getAnArgument() }
+  override DataFlow::Node getCode() { result.asExpr().getExpr() = methodCall.getArgument(0) }
 }
 
 /**
- * A call to `BasicObject#instance_eval`, which executes its argument as Ruby code.
+ * A call to `BasicObject#instance_eval`, which executes its first argument as Ruby code.
  */
 class InstanceEvalCallCodeExecution extends CodeExecution::Range {
   BasicObjectInstanceMethodCall methodCall;
@@ -322,11 +322,11 @@ class InstanceEvalCallCodeExecution extends CodeExecution::Range {
     this.asExpr().getExpr() = methodCall and methodCall.getMethodName() = "instance_eval"
   }
 
-  override DataFlow::Node getCode() { result.asExpr().getExpr() = methodCall.getAnArgument() }
+  override DataFlow::Node getCode() { result.asExpr().getExpr() = methodCall.getArgument(0) }
 }
 
 /**
- * A call to `Module#class_eval`, which executes its argument as Ruby code.
+ * A call to `Module#class_eval`, which executes its first argument as Ruby code.
  */
 class ClassEvalCallCodeExecution extends CodeExecution::Range {
   UnknownMethodCall methodCall;
@@ -335,11 +335,11 @@ class ClassEvalCallCodeExecution extends CodeExecution::Range {
     this.asExpr().getExpr() = methodCall and methodCall.getMethodName() = "class_eval"
   }
 
-  override DataFlow::Node getCode() { result.asExpr().getExpr() = methodCall.getAnArgument() }
+  override DataFlow::Node getCode() { result.asExpr().getExpr() = methodCall.getArgument(0) }
 }
 
 /**
- * A call to `Module#module_eval`, which executes its argument as Ruby code.
+ * A call to `Module#module_eval`, which executes its first argument as Ruby code.
  */
 class ModuleEvalCallCodeExecution extends CodeExecution::Range {
   UnknownMethodCall methodCall;
@@ -348,5 +348,5 @@ class ModuleEvalCallCodeExecution extends CodeExecution::Range {
     this.asExpr().getExpr() = methodCall and methodCall.getMethodName() = "module_eval"
   }
 
-  override DataFlow::Node getCode() { result.asExpr().getExpr() = methodCall.getAnArgument() }
+  override DataFlow::Node getCode() { result.asExpr().getExpr() = methodCall.getArgument(0) }
 }
