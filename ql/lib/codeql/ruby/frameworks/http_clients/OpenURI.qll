@@ -26,7 +26,7 @@ class OpenURIRequest extends HTTP::Client::Request::Range {
     or
     // Kernel.open("http://example.com").read
     // open("http://example.com").read
-    this instanceof KernelMethodCall and
+    request instanceof KernelMethodCall and
     this.getMethodName() = "open" and
     request.asExpr().getExpr() = this and
     responseBody.asExpr().getExpr().(MethodCall).getMethodName() in ["read", "readlines"] and

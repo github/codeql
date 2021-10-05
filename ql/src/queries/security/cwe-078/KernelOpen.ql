@@ -25,7 +25,7 @@ import DataFlow::PathGraph
 /**
  * Method calls that have a suggested replacement.
  */
-abstract class Replacement extends MethodCall {
+abstract class Replacement extends DataFlow::CallNode {
   abstract string getFrom();
 
   abstract string getTo();
@@ -39,8 +39,8 @@ class KernelOpenCall extends KernelMethodCall, Replacement {
   override string getTo() { result = "File.open" }
 }
 
-class IOReadCall extends MethodCall, Replacement {
-  IOReadCall() { this = API::getTopLevelMember("IO").getAMethodCall("read").asExpr().getExpr() }
+class IOReadCall extends DataFlow::CallNode, Replacement {
+  IOReadCall() { this = API::getTopLevelMember("IO").getAMethodCall("read") }
 
   override string getFrom() { result = "IO.read" }
 
@@ -53,9 +53,9 @@ class Configuration extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(KernelOpenCall c | c.getArgument(0) = sink.asExpr().getExpr())
+    exists(KernelOpenCall c | c.getArgument(0) = sink)
     or
-    exists(IOReadCall c | c.getArgument(0) = sink.asExpr().getExpr())
+    exists(IOReadCall c | c.getArgument(0) = sink)
   }
 
   override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
@@ -66,11 +66,11 @@ class Configuration extends TaintTracking::Configuration {
 
 from
   Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink,
-  DataFlow::Node sourceNode, MethodCall call
+  DataFlow::Node sourceNode, DataFlow::CallNode call
 where
   config.hasFlowPath(source, sink) and
   sourceNode = source.getNode() and
-  call.getArgument(0) = sink.getNode().asExpr().getExpr()
+  call.asExpr().getExpr().(MethodCall).getArgument(0) = sink.getNode().asExpr().getExpr()
 select sink.getNode(), source, sink,
   "This call to " + call.(Replacement).getFrom() +
     " depends on a user-provided value. Replace it with " + call.(Replacement).getTo() + "."

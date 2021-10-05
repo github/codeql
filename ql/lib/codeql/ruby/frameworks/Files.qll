@@ -36,13 +36,10 @@ private DataFlow::Node fileInstanceInstantiation() {
   result = API::getTopLevelMember("File").getAMethodCall("open")
   or
   // Calls to `Kernel.open` can yield `File` instances
-  exists(KernelMethodCall c |
-    c = result.asExpr().getExpr() and
-    c.getMethodName() = "open" and
-    // Assume that calls that don't invoke shell commands will instead open
-    // a file.
-    not pathArgSpawnsSubprocess(c.getArgument(0))
-  )
+  result.(KernelMethodCall).getMethodName() = "open" and
+  // Assume that calls that don't invoke shell commands will instead open
+  // a file.
+  not pathArgSpawnsSubprocess(result.(KernelMethodCall).getArgument(0).asExpr().getExpr())
 }
 
 private DataFlow::Node fileInstance() {
