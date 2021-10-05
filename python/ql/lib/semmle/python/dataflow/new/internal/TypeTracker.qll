@@ -69,7 +69,10 @@ private module Cached {
    */
   cached
   predicate stepCall(TypeTrackingNode nodeFrom, TypeTrackingNode nodeTo, StepSummary summary) {
-    exists(Node mid | nodeFrom.flowsTo(mid) and smallstepCall(mid, nodeTo, summary))
+    exists(Node mid | nodeFrom.flowsTo(mid) and smallstepCall(mid, nodeTo, summary)) and
+    // performance tweak: if the source is a parameter, then flow will always originate
+    // from a call, so we can cut away returning flow
+    if nodeFrom instanceof ParameterNode then summary != ReturnStep() else any()
   }
 }
 

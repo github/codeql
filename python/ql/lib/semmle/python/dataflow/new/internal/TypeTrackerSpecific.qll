@@ -10,6 +10,8 @@ class Node = DataFlowPublic::Node;
 
 class TypeTrackingNode = DataFlowPublic::TypeTrackingNode;
 
+class ParameterNode = DataFlowPublic::ParameterNode;
+
 predicate simpleLocalFlowStep = DataFlowPrivate::simpleLocalFlowStep/2;
 
 predicate jumpStep = DataFlowPrivate::jumpStep/2;
