@@ -55,5 +55,6 @@ actionControllerHelperMethods
 getAssociatedControllerClasses
 | app/controllers/foo/bars_controller.rb:1:1:20:3 | BarsController | app/views/foo/bars/_widget.html.erb:0:0:0:0 | app/views/foo/bars/_widget.html.erb |
 | app/controllers/foo/bars_controller.rb:1:1:20:3 | BarsController | app/views/foo/bars/show.html.erb:0:0:0:0 | app/views/foo/bars/show.html.erb |
-controllerTemplatesFolders
-| app/controllers/foo/bars_controller.rb:1:1:20:3 | BarsController | folder://app/views/foo/bars | app/views/foo/bars |
+controllerTemplateFiles
+| app/controllers/foo/bars_controller.rb:1:1:20:3 | BarsController | app/views/foo/bars/_widget.html.erb:0:0:0:0 | app/views/foo/bars/_widget.html.erb |
+| app/controllers/foo/bars_controller.rb:1:1:20:3 | BarsController | app/views/foo/bars/show.html.erb:0:0:0:0 | app/views/foo/bars/show.html.erb |
