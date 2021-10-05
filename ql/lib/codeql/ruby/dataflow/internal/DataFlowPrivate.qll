@@ -46,18 +46,19 @@ module LocalFlow {
     )
   }
 
+  /** Gets the SSA definition node corresponding to parameter `p`. */
+  SsaDefinitionNode getParameterDefNode(NamedParameter p) {
+    exists(BasicBlock bb, int i |
+      bb.getNode(i).getNode() = p.getDefiningAccess() and
+      result.getDefinition().definesAt(_, bb, i)
+    )
+  }
+
   /**
    * Holds if there is a local flow step from `nodeFrom` to `nodeTo` involving
    * SSA definition `def`.
    */
   predicate localSsaFlowStep(Ssa::Definition def, Node nodeFrom, Node nodeTo) {
-    // Flow from parameter into SSA definition
-    exists(BasicBlock bb, int i |
-      bb.getNode(i).getNode() =
-        nodeFrom.(ParameterNode).getParameter().(NamedParameter).getDefiningAccess() and
-      nodeTo.(SsaDefinitionNode).getDefinition().definesAt(_, bb, i)
-    )
-    or
     // Flow from assignment into SSA definition
     def.(Ssa::WriteDefinition).assigns(nodeFrom.asExpr()) and
     nodeTo.(SsaDefinitionNode).getDefinition() = def
@@ -145,19 +146,14 @@ private module Cached {
   class TParameterNode =
     TNormalParameterNode or TBlockParameterNode or TSelfParameterNode or TSummaryParameterNode;
 
-  /**
-   * This is the local flow predicate that is shared between local data flow
-   * and global data flow.
-   */
-  cached
-  predicate simpleLocalFlowStepCommon(Node nodeFrom, Node nodeTo) {
+  private predicate defaultValueFlow(NamedParameter p, ExprNode e) {
+    p.(OptionalParameter).getDefaultValue() = e.getExprNode().getExpr()
+    or
+    p.(KeywordParameter).getDefaultValue() = e.getExprNode().getExpr()
+  }
+
+  private predicate localFlowStepCommon(Node nodeFrom, Node nodeTo) {
     LocalFlow::localSsaFlowStep(_, nodeFrom, nodeTo)
-    or
-    nodeTo.(ParameterNode).getParameter().(OptionalParameter).getDefaultValue() =
-      nodeFrom.asExpr().getExpr()
-    or
-    nodeTo.(ParameterNode).getParameter().(KeywordParameter).getDefaultValue() =
-      nodeFrom.asExpr().getExpr()
     or
     nodeFrom.(SelfParameterNode).getMethod() = nodeTo.asExpr().getExpr().getEnclosingCallable() and
     nodeTo.asExpr().getExpr() instanceof Self
@@ -194,17 +190,44 @@ private module Cached {
 
   /**
    * This is the local flow predicate that is used as a building block in global
-   * data flow. It excludes SSA flow through instance fields, as flow through fields
-   * is handled by the global data-flow library, but includes various other steps
-   * that are only relevant for global flow.
+   * data flow.
    */
   cached
   predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
-    simpleLocalFlowStepCommon(nodeFrom, nodeTo)
+    localFlowStepCommon(nodeFrom, nodeTo)
+    or
+    defaultValueFlow(nodeTo.(ParameterNode).getParameter(), nodeFrom)
+    or
+    nodeTo = LocalFlow::getParameterDefNode(nodeFrom.(ParameterNode).getParameter())
     or
     nodeTo.(SynthReturnNode).getAnInput() = nodeFrom
     or
     FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, true)
+  }
+
+  /** This is the local flow predicate that is exposed. */
+  cached
+  predicate localFlowStepImpl(Node nodeFrom, Node nodeTo) {
+    localFlowStepCommon(nodeFrom, nodeTo)
+    or
+    defaultValueFlow(nodeTo.(ParameterNode).getParameter(), nodeFrom)
+    or
+    nodeTo = LocalFlow::getParameterDefNode(nodeFrom.(ParameterNode).getParameter())
+    or
+    // Simple flow through library code is included in the exposed local
+    // step relation, even though flow is technically inter-procedural
+    FlowSummaryImpl::Private::Steps::summaryThroughStep(nodeFrom, nodeTo, true)
+  }
+
+  /** This is the local flow predicate that is used in type tracking. */
+  cached
+  predicate localFlowStepTypeTracker(Node nodeFrom, Node nodeTo) {
+    localFlowStepCommon(nodeFrom, nodeTo)
+    or
+    exists(NamedParameter p |
+      defaultValueFlow(p, nodeFrom) and
+      nodeTo = LocalFlow::getParameterDefNode(p)
+    )
   }
 
   cached
@@ -217,7 +240,7 @@ private module Cached {
     // and we can remove this case.
     n instanceof SelfArgumentNode
     or
-    not simpleLocalFlowStepCommon+(any(Node e |
+    not localFlowStepTypeTracker+(any(Node e |
         e instanceof ExprNode
         or
         e instanceof ParameterNode
@@ -538,7 +561,7 @@ private module ReturnNodes {
 
     SynthReturnNode() { this = TSynthReturnNode(scope, kind) }
 
-    /** Get a syntactic return node that flows into this synthetic node. */
+    /** Gets a syntactic return node that flows into this synthetic node. */
     ReturningNode getAnInput() {
       result.(NodeImpl).getCfgScope() = scope and
       result.getKind() = kind
