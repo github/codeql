@@ -65,19 +65,23 @@ class ActiveRecordModelClass extends ClassDeclaration {
 
   /**
    * Gets methods defined in this class that may access a field from the database.
-  */
+   */
   Method methodMayAccessField() {
     result = this.getAMethod() and
     // There is a value that can be returned by this method which may include field data
     exists(DataFlow::Node returned, ActiveRecordInstanceMethodCall cNode, MethodCall c |
-      exprNodeReturnedFrom(returned, result) and cNode.flowsTo(returned) and c = cNode.asExpr().getExpr() |
+      exprNodeReturnedFrom(returned, result) and
+      cNode.flowsTo(returned) and
+      c = cNode.asExpr().getExpr()
+    |
       // The referenced method is not built-in, and...
-      not isBuiltInMethodForActiveRecordModelInstance(c.getMethodName()) and (
+      not isBuiltInMethodForActiveRecordModelInstance(c.getMethodName()) and
+      (
         // TODO: this would be more accurate if we also checked methods defined in
         // super classes and mixins
-
         // ...There is no matching method definition in the class, or...
-        not exists(cNode.getInstance().getClass().getMethod(c.getMethodName())) or
+        not exists(cNode.getInstance().getClass().getMethod(c.getMethodName()))
+        or
         // ...the called method can access a field
         c.getATarget() = cNode.getInstance().getClass().methodMayAccessField()
       )
@@ -221,18 +225,20 @@ private string constantQualifiedName(ConstantWriteAccess w) {
 /**
  * A node that may evaluate to one or more `ActiveRecordModelClass` instances.
  */
-abstract class ActiveRecordModelInstantiation extends OrmInstantiation::Range, DataFlow::LocalSourceNode {
+abstract class ActiveRecordModelInstantiation extends OrmInstantiation::Range,
+  DataFlow::LocalSourceNode {
   abstract ActiveRecordModelClass getClass();
 
   bindingset[methodName]
   override predicate methodCallMayAccessField(string methodName) {
     // The method is not a built-in, and...
-    not isBuiltInMethodForActiveRecordModelInstance(methodName) and (
+    not isBuiltInMethodForActiveRecordModelInstance(methodName) and
+    (
       // ...There is no matching method definition in the class, or...
-      not exists(this.getClass().getMethod(methodName)) or
+      not exists(this.getClass().getMethod(methodName))
+      or
       // ...the called method can access a field.
-      exists(Method m |
-        m = this.getClass().methodMayAccessField() |
+      exists(Method m | m = this.getClass().methodMayAccessField() |
         // We rely on matching by name here as the call graph might not have
         m.getName() = methodName
       )
@@ -317,6 +323,8 @@ private class ActiveRecordInstance extends DataFlow::Node {
 // A call whose receiver may be an active record model object
 private class ActiveRecordInstanceMethodCall extends DataFlow::CallNode {
   private ActiveRecordInstance instance;
+
   ActiveRecordInstanceMethodCall() { this.getReceiver() = instance }
+
   ActiveRecordInstance getInstance() { result = instance }
 }
