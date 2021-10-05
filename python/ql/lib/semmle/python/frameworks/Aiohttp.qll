@@ -440,7 +440,7 @@ module AiohttpWebModel {
    * handler is invoked.
    */
   class AiohttpRequestHandlerRequestParam extends Request::InstanceSource, RemoteFlowSource::Range,
-    DataFlow::ParameterNode {
+    DataFlow::SourceParameterNode {
     AiohttpRequestHandlerRequestParam() {
       exists(Function requestHandler |
         requestHandler = any(AiohttpCoroutineRouteSetup setup).getARequestHandler() and

@@ -3,6 +3,7 @@ private import DataFlowPublic
 import semmle.python.SpecialMethods
 private import semmle.python.essa.SsaCompute
 private import semmle.python.dataflow.new.internal.ImportStar
+private import FlowSummaryImpl as FlowSummaryImpl
 
 /** Gets the callable in which this node occurs. */
 DataFlowCallable nodeGetEnclosingCallable(Node n) { result = n.getEnclosingCallable() }
@@ -14,7 +15,7 @@ class ParameterPosition extends int {
 
 /** An argument position represented by an integer. */
 class ArgumentPosition extends int {
-  ArgumentPosition() { exists(any(DataFlowCall c).getArg(this)) }
+  ArgumentPosition() { exists(any(DataFlowSourceCall c).getArg(this)) }
 }
 
 /** Holds if arguments at position `apos` match parameters at position `ppos`. */
@@ -172,6 +173,52 @@ module syntheticPostUpdateNode {
 
 import syntheticPostUpdateNode
 
+/** A parameter for a library callable with a flow summary. */
+class SummaryParameterNode extends ParameterNode, TSummaryParameterNode {
+  private FlowSummaryImpl::Public::SummarizedCallable sc;
+  private int pos;
+
+  SummaryParameterNode() { this = TSummaryParameterNode(sc, pos) }
+
+  override predicate isParameterOf(DataFlowCallable c, int i) { sc = c and i = pos }
+
+  override DataFlowCallable getEnclosingCallable() { result = sc }
+}
+
+/** A data-flow node used to model flow summaries. */
+private class SummaryNode extends Node, TSummaryNode {
+  private FlowSummaryImpl::Public::SummarizedCallable c;
+  private FlowSummaryImpl::Private::SummaryNodeState state;
+
+  SummaryNode() { this = TSummaryNode(c, state) }
+
+  override DataFlowCallable getEnclosingCallable() { result = c }
+}
+
+private class SummaryReturnNode extends SummaryNode, ReturnNode {
+  private ReturnKind rk;
+
+  SummaryReturnNode() { FlowSummaryImpl::Private::summaryReturnNode(this, rk) }
+
+  override ReturnKind getKind() { result = rk }
+}
+
+private class SummaryArgumentNode extends SummaryNode, ArgumentNode {
+  SummaryArgumentNode() { FlowSummaryImpl::Private::summaryArgumentNode(_, this, _) }
+
+  override predicate argumentOf(DataFlowCall call, int pos) {
+    FlowSummaryImpl::Private::summaryArgumentNode(call, this, pos)
+  }
+}
+
+private class SummaryPostUpdateNode extends SummaryNode, PostUpdateNode {
+  private Node pre;
+
+  SummaryPostUpdateNode() { FlowSummaryImpl::Private::summaryPostUpdateNode(this, pre) }
+
+  override Node getPreUpdateNode() { result = pre }
+}
+
 class DataFlowExpr = Expr;
 
 /**
@@ -257,6 +304,8 @@ module EssaFlow {
       nodeTo = TKwOverflowNode(call, callable) and
       nodeFrom.asCfgNode() = call.getNode().getKwargs().getAFlowNode()
     )
+    or
+    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, true)
   }
 
   predicate useToNextUse(NameNode nodeFrom, NameNode nodeTo) {
@@ -418,7 +467,7 @@ module ArgumentPassing {
    * Used to limit the size of predicates.
    */
   predicate connects(CallNode call, CallableValue callable) {
-    exists(DataFlowCall c |
+    exists(DataFlowSourceCall c |
       call = c.getNode() and
       callable = c.getCallable().getCallableValue()
     )
@@ -590,6 +639,15 @@ module ArgumentPassing {
 
 import ArgumentPassing
 
+/** A callable defined in library code, identified by a unique string. */
+abstract class LibraryCallable extends string {
+  bindingset[this]
+  LibraryCallable() { any() }
+
+  /** Gets a call to this library callable. */
+  abstract Call getACall();
+}
+
 /**
  * IPA type for DataFlowCallable.
  *
@@ -604,27 +662,32 @@ newtype TDataFlowCallable =
     callable instanceof ClassValue
   } or
   TLambda(Function lambda) { lambda.isLambda() } or
-  TModule(Module m)
+  TModule(Module m) or
+  TLibraryCallable(LibraryCallable callable)
 
 /** Represents a callable. */
-abstract class DataFlowCallable extends TDataFlowCallable {
+class DataFlowCallable extends TDataFlowCallable {
   /** Gets a textual representation of this element. */
-  abstract string toString();
+  string toString() { result = "DataFlowCallable" }
 
   /** Gets a call to this callable. */
-  abstract CallNode getACall();
+  CallNode getACall() { none() }
 
   /** Gets the scope of this callable */
-  abstract Scope getScope();
+  Scope getScope() { none() }
 
   /** Gets the specified parameter of this callable */
-  abstract NameNode getParameter(int n);
+  NameNode getParameter(int n) { none() }
 
   /** Gets the name of this callable. */
-  abstract string getName();
+  string getName() { none() }
 
   /** Gets a callable value for this callable, if one exists. */
-  abstract CallableValue getCallableValue();
+  CallableValue getCallableValue() { none() }
+
+  Location getLocation() { none() }
+
+  LibraryCallable asLibraryCallable() { none() }
 }
 
 /** A class representing a callable value. */
@@ -705,12 +768,27 @@ newtype TDataFlowCall =
   /** Bound methods need to make room for the explicit self parameter */
   TMethodCall(CallNode call) { call = any(FunctionValue f).getAMethodCall() } or
   TClassCall(CallNode call) { call = any(ClassValue c).getACall() } or
-  TSpecialCall(SpecialMethodCallNode special)
+  TSpecialCall(SpecialMethodCallNode special) or
+  TSummaryCall(FlowSummaryImpl::Public::SummarizedCallable c, Node receiver) {
+    FlowSummaryImpl::Private::summaryCallbackRange(c, receiver)
+  }
+
+class TDataFlowSourceCall = TFunctionCall or TMethodCall or TClassCall or TSpecialCall;
 
 /** Represents a call. */
 abstract class DataFlowCall extends TDataFlowCall {
   /** Gets a textual representation of this element. */
   abstract string toString();
+
+  /** Gets the enclosing callable of this call. */
+  abstract DataFlowCallable getEnclosingCallable();
+
+  /** Gets the location of this dataflow call. */
+  abstract Location getLocation();
+}
+
+abstract class DataFlowSourceCall extends DataFlowCall, TDataFlowSourceCall {
+  final override Location getLocation() { result = this.getNode().getLocation() }
 
   /** Get the callable to which this call goes. */
   abstract DataFlowCallable getCallable();
@@ -723,12 +801,6 @@ abstract class DataFlowCall extends TDataFlowCall {
 
   /** Get the control flow node representing this call. */
   abstract ControlFlowNode getNode();
-
-  /** Gets the enclosing callable of this call. */
-  abstract DataFlowCallable getEnclosingCallable();
-
-  /** Gets the location of this dataflow call. */
-  Location getLocation() { result = this.getNode().getLocation() }
 }
 
 /**
@@ -737,7 +809,7 @@ abstract class DataFlowCall extends TDataFlowCall {
  * Bound method calls and class calls insert an argument for the explicit
  * `self` parameter, and special method calls have special argument passing.
  */
-class FunctionCall extends DataFlowCall, TFunctionCall {
+class FunctionCall extends DataFlowSourceCall, TFunctionCall {
   CallNode call;
   DataFlowCallable callable;
 
@@ -761,7 +833,7 @@ class FunctionCall extends DataFlowCall, TFunctionCall {
  * Represents a call to a bound method call.
  * The node representing the instance is inserted as argument to the `self` parameter.
  */
-class MethodCall extends DataFlowCall, TMethodCall {
+class MethodCall extends DataFlowSourceCall, TMethodCall {
   CallNode call;
   FunctionValue bm;
 
@@ -793,7 +865,7 @@ class MethodCall extends DataFlowCall, TMethodCall {
  * That makes the call node be the post-update node holding the value of the object
  * after the constructor has run.
  */
-class ClassCall extends DataFlowCall, TClassCall {
+class ClassCall extends DataFlowSourceCall, TClassCall {
   CallNode call;
   ClassValue c;
 
@@ -820,7 +892,7 @@ class ClassCall extends DataFlowCall, TClassCall {
 }
 
 /** Represents a call to a special method. */
-class SpecialCall extends DataFlowCall, TSpecialCall {
+class SpecialCall extends DataFlowSourceCall, TSpecialCall {
   SpecialMethodCallNode special;
 
   SpecialCall() { this = TSpecialCall(special) }
@@ -840,8 +912,34 @@ class SpecialCall extends DataFlowCall, TSpecialCall {
   }
 }
 
+/**
+ * A synthesized call inside a callable with a flow summary.
+ *
+ * For example, in
+ * ```python
+ * map(lambda x: x + 1, [1, 2, 3])
+ * ```
+ *
+ * there is a call to the lambda argument inside `map`.
+ */
+class SummaryCall extends DataFlowCall, TSummaryCall {
+  private FlowSummaryImpl::Public::SummarizedCallable c;
+  private Node receiver;
+
+  SummaryCall() { this = TSummaryCall(c, receiver) }
+
+  /** Gets the data flow node that this call targets. */
+  Node getReceiver() { result = receiver }
+
+  override DataFlowCallable getEnclosingCallable() { result = c }
+
+  override string toString() { result = "[summary] call to " + receiver + " in " + c }
+
+  override Location getLocation() { result = c.getLocation() }
+}
+
 /** Gets a viable run-time target for the call `call`. */
-DataFlowCallable viableCallable(DataFlowCall call) { result = call.getCallable() }
+DataFlowCallable viableCallable(DataFlowSourceCall call) { result = call.getCallable() }
 
 private newtype TReturnKind = TNormalReturnKind()
 
@@ -854,15 +952,19 @@ class ReturnKind extends TReturnKind {
   string toString() { result = "return" }
 }
 
+abstract class ReturnNode extends Node {
+  /** Gets the kind of this return node. */
+  ReturnKind getKind() { any() }
+}
+
 /** A data flow node that represents a value returned by a callable. */
-class ReturnNode extends CfgNode {
+class ReturnSourceNode extends ReturnNode, CfgNode {
   Return ret;
 
   // See `TaintTrackingImplementation::returnFlowStep`
-  ReturnNode() { node = ret.getValue().getAFlowNode() }
+  ReturnSourceNode() { node = ret.getValue().getAFlowNode() }
 
-  /** Gets the kind of this return node. */
-  ReturnKind getKind() { any() }
+  override ReturnKind getKind() { any() }
 }
 
 /** A data flow node that represents the output of a call. */
@@ -874,7 +976,7 @@ class OutNode extends CfgNode {
  * Gets a node that can read the value returned from `call` with return kind
  * `kind`.
  */
-OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
+OutNode getAnOutNode(DataFlowSourceCall call, ReturnKind kind) {
   call.getNode() = result.getNode() and
   kind = TNormalReturnKind()
 }
@@ -986,6 +1088,8 @@ predicate storeStep(Node nodeFrom, Content c, Node nodeTo) {
   kwOverflowStoreStep(nodeFrom, c, nodeTo)
   or
   matchStoreStep(nodeFrom, c, nodeTo)
+  or
+  FlowSummaryImpl::Private::Steps::summaryStoreStep(nodeFrom, c, nodeTo)
 }
 
 /** Data flows from an element of a list to the list. */
@@ -1137,6 +1241,8 @@ predicate readStep(Node nodeFrom, Content c, Node nodeTo) {
   attributeReadStep(nodeFrom, c, nodeTo)
   or
   kwUnpackReadStep(nodeFrom, c, nodeTo)
+  or
+  FlowSummaryImpl::Private::Steps::summaryReadStep(nodeFrom, c, nodeTo)
 }
 
 /** Data flows from a sequence to a subscript of the sequence. */
@@ -1962,6 +2068,8 @@ predicate kwOverflowClearStep(Node n, Content c) {
     n = TKwOverflowNode(call, callable) and
     c.(DictionaryElementContent).getKey() = name
   )
+  or
+  FlowSummaryImpl::Private::Steps::summaryClearsContent(n, c)
 }
 
 /**
@@ -2008,7 +2116,11 @@ int accessPathLimit() { result = 5 }
 predicate forceHighPrecision(Content c) { none() }
 
 /** Holds if `n` should be hidden from path explanations. */
-predicate nodeIsHidden(Node n) { none() }
+predicate nodeIsHidden(Node n) {
+  n instanceof SummaryNode
+  or
+  n instanceof SummaryParameterNode
+}
 
 class LambdaCallKind = Unit;
 
@@ -2016,7 +2128,11 @@ class LambdaCallKind = Unit;
 predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c) { none() }
 
 /** Holds if `call` is a lambda call of kind `kind` where `receiver` is the lambda expression. */
-predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) { none() }
+predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
+  // receiver = call.(SummaryCall).getReceiver() and
+  // kind = kind
+  none()
+}
 
 /** Extra data-flow steps needed for lambda flow analysis. */
 predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) { none() }

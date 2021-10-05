@@ -183,7 +183,7 @@ private module RestFramework {
    * request handler is invoked.
    */
   private class RestFrameworkRequestHandlerRequestParam extends Request::InstanceSource,
-    RemoteFlowSource::Range, DataFlow::ParameterNode {
+    RemoteFlowSource::Range, DataFlow::SourceParameterNode {
     RestFrameworkRequestHandlerRequestParam() {
       // rest_framework.views.APIView subclass
       exists(RestFrameworkApiViewClass vc |

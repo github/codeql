@@ -4,12 +4,19 @@
 
 private import DataFlowPrivate
 import DataFlowPublic
+private import FlowSummaryImpl as FlowSummaryImpl
 
 /**
  * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local
  * (intra-procedural) step.
  */
-predicate localFlowStep(Node nodeFrom, Node nodeTo) { simpleLocalFlowStep(nodeFrom, nodeTo) }
+predicate localFlowStep(Node nodeFrom, Node nodeTo) {
+  simpleLocalFlowStep(nodeFrom, nodeTo)
+  or
+  // Simple flow through library code is included in the exposed local
+  // step relation, even though flow is technically inter-procedural
+  FlowSummaryImpl::Private::Steps::summaryThroughStep(nodeFrom, nodeTo, true)
+}
 
 /**
  * Holds if data flows from `source` to `sink` in zero or more local

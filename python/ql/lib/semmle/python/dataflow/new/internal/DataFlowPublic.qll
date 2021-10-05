@@ -9,6 +9,7 @@ import Attributes
 import LocalSources
 private import semmle.python.essa.SsaCompute
 private import semmle.python.dataflow.new.internal.ImportStar
+private import FlowSummaryImpl as FlowSummaryImpl
 
 /**
  * IPA type for data flow nodes.
@@ -87,7 +88,15 @@ newtype TNode =
   /**
    * A synthetic node representing element content in a star pattern.
    */
-  TStarPatternElementNode(MatchStarPattern target)
+  TStarPatternElementNode(MatchStarPattern target) or
+  TSummaryNode(
+    FlowSummaryImpl::Public::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNodeState state
+  ) {
+    FlowSummaryImpl::Private::summaryNodeRange(c, state)
+  } or
+  TSummaryParameterNode(FlowSummaryImpl::Public::SummarizedCallable c, int i) {
+    FlowSummaryImpl::Private::summaryParameterNodeRange(c, i)
+  }
 
 /** Helper for `Node::getEnclosingCallable`. */
 private DataFlowCallable getCallableScope(Scope s) {
@@ -252,14 +261,23 @@ class ExprNode extends CfgNode {
 /** Gets a node corresponding to expression `e`. */
 ExprNode exprNode(DataFlowExpr e) { result.getNode().getNode() = e }
 
+abstract class ParameterNode extends Node {
+  /**
+   * Holds if this node is the parameter of callable `c` at the
+   * (zero-based) index `i`.
+   */
+  abstract predicate isParameterOf(DataFlowCallable c, int i);
+}
+
 /**
  * The value of a parameter at function entry, viewed as a node in a data
  * flow graph.
  */
-class ParameterNode extends CfgNode, LocalSourceNode {
+class SourceParameterNode extends ParameterNode, CfgNode {
+  //, LocalSourceNode {
   ParameterDefinition def;
 
-  ParameterNode() {
+  SourceParameterNode() {
     node = def.getDefiningNode() and
     // Disregard parameters that we cannot resolve
     // TODO: Make this unnecessary
@@ -270,7 +288,7 @@ class ParameterNode extends CfgNode, LocalSourceNode {
    * Holds if this node is the parameter of callable `c` at the
    * (zero-based) index `i`.
    */
-  predicate isParameterOf(DataFlowCallable c, int i) { node = c.getParameter(i) }
+  override predicate isParameterOf(DataFlowCallable c, int i) { node = c.getParameter(i) }
 
   override DataFlowCallable getEnclosingCallable() { this.isParameterOf(result, _) }
 
@@ -279,14 +297,21 @@ class ParameterNode extends CfgNode, LocalSourceNode {
 }
 
 /** Gets a node corresponding to parameter `p`. */
-ParameterNode parameterNode(Parameter p) { result.getParameter() = p }
+SourceParameterNode parameterNode(Parameter p) { result.getParameter() = p }
 
 /** A data flow node that represents a call argument. */
-class ArgumentNode extends Node {
-  ArgumentNode() { this = any(DataFlowCall c).getArg(_) }
-
+abstract class ArgumentNode extends Node {
   /** Holds if this argument occurs at the given position in the given call. */
-  predicate argumentOf(DataFlowCall call, int pos) { this = call.getArg(pos) }
+  abstract predicate argumentOf(DataFlowCall call, int pos);
+}
+
+/** A data flow node that represents a call argument. */
+class ArgumentSourceNode extends ArgumentNode {
+  ArgumentSourceNode() { this = any(DataFlowSourceCall c).getArg(_) }
+
+  override predicate argumentOf(DataFlowCall call, int pos) {
+    this = call.(DataFlowSourceCall).getArg(pos)
+  }
 
   /** Gets the call in which this node is an argument. */
   final DataFlowCall getCall() { this.argumentOf(result, _) }
