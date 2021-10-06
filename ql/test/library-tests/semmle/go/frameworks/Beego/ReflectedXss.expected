@@ -1,8 +1,10 @@
 edges
 | test.go:26:6:26:10 | definition of bound : bindMe | test.go:28:13:28:30 | type conversion |
+| test.go:26:6:26:10 | definition of bound : bindMe | test.go:28:20:28:26 | selection of a : slice type |
 | test.go:26:6:26:10 | definition of bound : bindMe | test.go:29:13:29:27 | type conversion |
 | test.go:26:6:26:10 | definition of bound : bindMe | test.go:30:13:30:29 | type conversion |
 | test.go:26:6:26:10 | definition of bound : bindMe | test.go:30:20:30:26 | selection of c : subBindMe |
+| test.go:28:20:28:26 | selection of a : slice type | test.go:28:13:28:30 | type conversion |
 | test.go:30:20:30:26 | selection of c : subBindMe | test.go:30:13:30:29 | type conversion |
 | test.go:35:20:35:42 | call to Cookie : string | test.go:35:13:35:43 | type conversion |
 | test.go:40:20:40:31 | call to Data : map type | test.go:40:13:40:52 | type conversion |
@@ -33,8 +35,13 @@ edges
 | test.go:217:21:217:22 | implicit dereference : FileHeader | test.go:217:21:217:22 | implicit dereference : FileHeader |
 | test.go:221:2:221:40 | ... := ...[0] : slice type | test.go:222:14:222:38 | type conversion |
 | test.go:221:2:221:40 | ... := ...[0] : slice type | test.go:222:21:222:28 | implicit dereference : FileHeader |
+| test.go:221:2:221:40 | ... := ...[0] : slice type | test.go:222:21:222:28 | index expression : pointer type |
 | test.go:222:21:222:28 | implicit dereference : FileHeader | test.go:222:14:222:38 | type conversion |
 | test.go:222:21:222:28 | implicit dereference : FileHeader | test.go:222:21:222:28 | implicit dereference : FileHeader |
+| test.go:222:21:222:28 | implicit dereference : FileHeader | test.go:222:21:222:28 | index expression : pointer type |
+| test.go:222:21:222:28 | index expression : pointer type | test.go:222:14:222:38 | type conversion |
+| test.go:222:21:222:28 | index expression : pointer type | test.go:222:21:222:28 | implicit dereference : FileHeader |
+| test.go:222:21:222:28 | index expression : pointer type | test.go:222:21:222:28 | index expression : pointer type |
 | test.go:224:7:224:28 | call to GetString : string | test.go:225:14:225:22 | type conversion |
 | test.go:227:8:227:35 | call to GetStrings : slice type | test.go:228:14:228:26 | type conversion |
 | test.go:230:9:230:17 | call to Input : Values | test.go:231:14:231:27 | type conversion |
@@ -44,52 +51,100 @@ edges
 | test.go:263:62:263:83 | call to GetCookie : string | test.go:263:55:263:84 | type conversion |
 | test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:276:21:276:61 | call to GetDisplayString |
 | test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:276:44:276:51 | implicit dereference : FileHeader |
+| test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:276:44:276:51 | index expression : pointer type |
+| test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:277:21:277:53 | call to SliceChunk : slice type |
+| test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:277:21:277:56 | index expression : slice type |
 | test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:277:21:277:83 | implicit dereference : FileHeader |
 | test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:277:21:277:92 | selection of Filename |
+| test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:278:21:278:60 | call to SliceDiff : slice type |
 | test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:278:21:278:87 | implicit dereference : FileHeader |
 | test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:278:21:278:96 | selection of Filename |
+| test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:283:3:285:44 | call to SliceFilter : slice type |
 | test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:283:3:285:71 | implicit dereference : FileHeader |
 | test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:283:3:285:80 | selection of Filename |
+| test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:286:21:286:65 | call to SliceIntersect : slice type |
 | test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:286:21:286:92 | implicit dereference : FileHeader |
 | test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:286:21:286:101 | selection of Filename |
+| test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:287:21:287:65 | call to SliceIntersect : slice type |
 | test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:287:21:287:92 | implicit dereference : FileHeader |
 | test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:287:21:287:101 | selection of Filename |
+| test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:288:21:288:61 | call to SliceMerge : slice type |
 | test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:288:21:288:88 | implicit dereference : FileHeader |
 | test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:288:21:288:97 | selection of Filename |
+| test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:289:21:289:61 | call to SliceMerge : slice type |
 | test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:289:21:289:88 | implicit dereference : FileHeader |
 | test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:289:21:289:97 | selection of Filename |
+| test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:290:21:290:66 | call to SlicePad : slice type |
 | test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:290:21:290:93 | implicit dereference : FileHeader |
 | test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:290:21:290:102 | selection of Filename |
+| test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:291:21:291:66 | call to SlicePad : slice type |
 | test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:291:21:291:93 | implicit dereference : FileHeader |
 | test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:291:21:291:102 | selection of Filename |
 | test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:292:21:292:73 | implicit dereference : FileHeader |
 | test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:292:21:292:82 | selection of Filename |
+| test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:294:21:294:97 | call to SliceReduce : slice type |
 | test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:294:21:294:124 | implicit dereference : FileHeader |
 | test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:294:21:294:133 | selection of Filename |
+| test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:295:21:295:52 | call to SliceShuffle : slice type |
 | test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:295:21:295:79 | implicit dereference : FileHeader |
 | test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:295:21:295:88 | selection of Filename |
+| test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:296:21:296:51 | call to SliceUnique : slice type |
 | test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:296:21:296:78 | implicit dereference : FileHeader |
 | test.go:268:2:268:40 | ... := ...[0] : slice type | test.go:296:21:296:87 | selection of Filename |
 | test.go:276:44:276:51 | implicit dereference : FileHeader | test.go:276:21:276:61 | call to GetDisplayString |
 | test.go:276:44:276:51 | implicit dereference : FileHeader | test.go:276:44:276:51 | implicit dereference : FileHeader |
+| test.go:276:44:276:51 | implicit dereference : FileHeader | test.go:276:44:276:51 | index expression : pointer type |
+| test.go:276:44:276:51 | index expression : pointer type | test.go:276:21:276:61 | call to GetDisplayString |
+| test.go:276:44:276:51 | index expression : pointer type | test.go:276:44:276:51 | implicit dereference : FileHeader |
+| test.go:276:44:276:51 | index expression : pointer type | test.go:276:44:276:51 | index expression : pointer type |
+| test.go:277:21:277:53 | call to SliceChunk : slice type | test.go:277:21:277:56 | index expression : slice type |
+| test.go:277:21:277:53 | call to SliceChunk : slice type | test.go:277:21:277:83 | implicit dereference : FileHeader |
+| test.go:277:21:277:53 | call to SliceChunk : slice type | test.go:277:21:277:92 | selection of Filename |
+| test.go:277:21:277:56 | index expression : slice type | test.go:277:21:277:83 | implicit dereference : FileHeader |
+| test.go:277:21:277:56 | index expression : slice type | test.go:277:21:277:92 | selection of Filename |
 | test.go:277:21:277:83 | implicit dereference : FileHeader | test.go:277:21:277:92 | selection of Filename |
+| test.go:278:21:278:60 | call to SliceDiff : slice type | test.go:278:21:278:87 | implicit dereference : FileHeader |
+| test.go:278:21:278:60 | call to SliceDiff : slice type | test.go:278:21:278:96 | selection of Filename |
 | test.go:278:21:278:87 | implicit dereference : FileHeader | test.go:278:21:278:96 | selection of Filename |
+| test.go:283:3:285:44 | call to SliceFilter : slice type | test.go:283:3:285:71 | implicit dereference : FileHeader |
+| test.go:283:3:285:44 | call to SliceFilter : slice type | test.go:283:3:285:80 | selection of Filename |
 | test.go:283:3:285:71 | implicit dereference : FileHeader | test.go:283:3:285:80 | selection of Filename |
+| test.go:286:21:286:65 | call to SliceIntersect : slice type | test.go:286:21:286:92 | implicit dereference : FileHeader |
+| test.go:286:21:286:65 | call to SliceIntersect : slice type | test.go:286:21:286:101 | selection of Filename |
 | test.go:286:21:286:92 | implicit dereference : FileHeader | test.go:286:21:286:101 | selection of Filename |
+| test.go:287:21:287:65 | call to SliceIntersect : slice type | test.go:287:21:287:92 | implicit dereference : FileHeader |
+| test.go:287:21:287:65 | call to SliceIntersect : slice type | test.go:287:21:287:101 | selection of Filename |
 | test.go:287:21:287:92 | implicit dereference : FileHeader | test.go:287:21:287:101 | selection of Filename |
+| test.go:288:21:288:61 | call to SliceMerge : slice type | test.go:288:21:288:88 | implicit dereference : FileHeader |
+| test.go:288:21:288:61 | call to SliceMerge : slice type | test.go:288:21:288:97 | selection of Filename |
 | test.go:288:21:288:88 | implicit dereference : FileHeader | test.go:288:21:288:97 | selection of Filename |
+| test.go:289:21:289:61 | call to SliceMerge : slice type | test.go:289:21:289:88 | implicit dereference : FileHeader |
+| test.go:289:21:289:61 | call to SliceMerge : slice type | test.go:289:21:289:97 | selection of Filename |
 | test.go:289:21:289:88 | implicit dereference : FileHeader | test.go:289:21:289:97 | selection of Filename |
+| test.go:290:21:290:66 | call to SlicePad : slice type | test.go:290:21:290:93 | implicit dereference : FileHeader |
+| test.go:290:21:290:66 | call to SlicePad : slice type | test.go:290:21:290:102 | selection of Filename |
 | test.go:290:21:290:93 | implicit dereference : FileHeader | test.go:290:21:290:102 | selection of Filename |
+| test.go:291:21:291:66 | call to SlicePad : slice type | test.go:291:21:291:93 | implicit dereference : FileHeader |
+| test.go:291:21:291:66 | call to SlicePad : slice type | test.go:291:21:291:102 | selection of Filename |
 | test.go:291:21:291:93 | implicit dereference : FileHeader | test.go:291:21:291:102 | selection of Filename |
 | test.go:292:21:292:73 | implicit dereference : FileHeader | test.go:292:21:292:82 | selection of Filename |
+| test.go:294:21:294:97 | call to SliceReduce : slice type | test.go:294:21:294:124 | implicit dereference : FileHeader |
+| test.go:294:21:294:97 | call to SliceReduce : slice type | test.go:294:21:294:133 | selection of Filename |
 | test.go:294:21:294:124 | implicit dereference : FileHeader | test.go:294:21:294:133 | selection of Filename |
+| test.go:295:21:295:52 | call to SliceShuffle : slice type | test.go:295:21:295:79 | implicit dereference : FileHeader |
+| test.go:295:21:295:52 | call to SliceShuffle : slice type | test.go:295:21:295:88 | selection of Filename |
 | test.go:295:21:295:79 | implicit dereference : FileHeader | test.go:295:21:295:88 | selection of Filename |
+| test.go:296:21:296:51 | call to SliceUnique : slice type | test.go:296:21:296:78 | implicit dereference : FileHeader |
+| test.go:296:21:296:51 | call to SliceUnique : slice type | test.go:296:21:296:87 | selection of Filename |
 | test.go:296:21:296:78 | implicit dereference : FileHeader | test.go:296:21:296:87 | selection of Filename |
 | test.go:302:15:302:36 | call to GetString : string | test.go:304:21:304:48 | type assertion |
+| test.go:302:15:302:36 | call to GetString : string | test.go:305:21:305:32 | call to Items : map type |
 | test.go:302:15:302:36 | call to GetString : string | test.go:305:21:305:52 | type assertion |
+| test.go:305:21:305:32 | call to Items : map type | test.go:305:21:305:52 | type assertion |
 nodes
 | test.go:26:6:26:10 | definition of bound : bindMe | semmle.label | definition of bound : bindMe |
 | test.go:28:13:28:30 | type conversion | semmle.label | type conversion |
+| test.go:28:20:28:26 | selection of a : slice type | semmle.label | selection of a : slice type |
 | test.go:29:13:29:27 | type conversion | semmle.label | type conversion |
 | test.go:30:13:30:29 | type conversion | semmle.label | type conversion |
 | test.go:30:20:30:26 | selection of c : subBindMe | semmle.label | selection of c : subBindMe |
@@ -141,6 +196,7 @@ nodes
 | test.go:221:2:221:40 | ... := ...[0] : slice type | semmle.label | ... := ...[0] : slice type |
 | test.go:222:14:222:38 | type conversion | semmle.label | type conversion |
 | test.go:222:21:222:28 | implicit dereference : FileHeader | semmle.label | implicit dereference : FileHeader |
+| test.go:222:21:222:28 | index expression : pointer type | semmle.label | index expression : pointer type |
 | test.go:224:7:224:28 | call to GetString : string | semmle.label | call to GetString : string |
 | test.go:225:14:225:22 | type conversion | semmle.label | type conversion |
 | test.go:227:8:227:35 | call to GetStrings : slice type | semmle.label | call to GetStrings : slice type |
@@ -160,34 +216,49 @@ nodes
 | test.go:268:2:268:40 | ... := ...[0] : slice type | semmle.label | ... := ...[0] : slice type |
 | test.go:276:21:276:61 | call to GetDisplayString | semmle.label | call to GetDisplayString |
 | test.go:276:44:276:51 | implicit dereference : FileHeader | semmle.label | implicit dereference : FileHeader |
+| test.go:276:44:276:51 | index expression : pointer type | semmle.label | index expression : pointer type |
+| test.go:277:21:277:53 | call to SliceChunk : slice type | semmle.label | call to SliceChunk : slice type |
+| test.go:277:21:277:56 | index expression : slice type | semmle.label | index expression : slice type |
 | test.go:277:21:277:83 | implicit dereference : FileHeader | semmle.label | implicit dereference : FileHeader |
 | test.go:277:21:277:92 | selection of Filename | semmle.label | selection of Filename |
+| test.go:278:21:278:60 | call to SliceDiff : slice type | semmle.label | call to SliceDiff : slice type |
 | test.go:278:21:278:87 | implicit dereference : FileHeader | semmle.label | implicit dereference : FileHeader |
 | test.go:278:21:278:96 | selection of Filename | semmle.label | selection of Filename |
+| test.go:283:3:285:44 | call to SliceFilter : slice type | semmle.label | call to SliceFilter : slice type |
 | test.go:283:3:285:71 | implicit dereference : FileHeader | semmle.label | implicit dereference : FileHeader |
 | test.go:283:3:285:80 | selection of Filename | semmle.label | selection of Filename |
+| test.go:286:21:286:65 | call to SliceIntersect : slice type | semmle.label | call to SliceIntersect : slice type |
 | test.go:286:21:286:92 | implicit dereference : FileHeader | semmle.label | implicit dereference : FileHeader |
 | test.go:286:21:286:101 | selection of Filename | semmle.label | selection of Filename |
+| test.go:287:21:287:65 | call to SliceIntersect : slice type | semmle.label | call to SliceIntersect : slice type |
 | test.go:287:21:287:92 | implicit dereference : FileHeader | semmle.label | implicit dereference : FileHeader |
 | test.go:287:21:287:101 | selection of Filename | semmle.label | selection of Filename |
+| test.go:288:21:288:61 | call to SliceMerge : slice type | semmle.label | call to SliceMerge : slice type |
 | test.go:288:21:288:88 | implicit dereference : FileHeader | semmle.label | implicit dereference : FileHeader |
 | test.go:288:21:288:97 | selection of Filename | semmle.label | selection of Filename |
+| test.go:289:21:289:61 | call to SliceMerge : slice type | semmle.label | call to SliceMerge : slice type |
 | test.go:289:21:289:88 | implicit dereference : FileHeader | semmle.label | implicit dereference : FileHeader |
 | test.go:289:21:289:97 | selection of Filename | semmle.label | selection of Filename |
+| test.go:290:21:290:66 | call to SlicePad : slice type | semmle.label | call to SlicePad : slice type |
 | test.go:290:21:290:93 | implicit dereference : FileHeader | semmle.label | implicit dereference : FileHeader |
 | test.go:290:21:290:102 | selection of Filename | semmle.label | selection of Filename |
+| test.go:291:21:291:66 | call to SlicePad : slice type | semmle.label | call to SlicePad : slice type |
 | test.go:291:21:291:93 | implicit dereference : FileHeader | semmle.label | implicit dereference : FileHeader |
 | test.go:291:21:291:102 | selection of Filename | semmle.label | selection of Filename |
 | test.go:292:21:292:73 | implicit dereference : FileHeader | semmle.label | implicit dereference : FileHeader |
 | test.go:292:21:292:82 | selection of Filename | semmle.label | selection of Filename |
+| test.go:294:21:294:97 | call to SliceReduce : slice type | semmle.label | call to SliceReduce : slice type |
 | test.go:294:21:294:124 | implicit dereference : FileHeader | semmle.label | implicit dereference : FileHeader |
 | test.go:294:21:294:133 | selection of Filename | semmle.label | selection of Filename |
+| test.go:295:21:295:52 | call to SliceShuffle : slice type | semmle.label | call to SliceShuffle : slice type |
 | test.go:295:21:295:79 | implicit dereference : FileHeader | semmle.label | implicit dereference : FileHeader |
 | test.go:295:21:295:88 | selection of Filename | semmle.label | selection of Filename |
+| test.go:296:21:296:51 | call to SliceUnique : slice type | semmle.label | call to SliceUnique : slice type |
 | test.go:296:21:296:78 | implicit dereference : FileHeader | semmle.label | implicit dereference : FileHeader |
 | test.go:296:21:296:87 | selection of Filename | semmle.label | selection of Filename |
 | test.go:302:15:302:36 | call to GetString : string | semmle.label | call to GetString : string |
 | test.go:304:21:304:48 | type assertion | semmle.label | type assertion |
+| test.go:305:21:305:32 | call to Items : map type | semmle.label | call to Items : map type |
 | test.go:305:21:305:52 | type assertion | semmle.label | type assertion |
 subpaths
 #select
