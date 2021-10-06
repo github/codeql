@@ -21,12 +21,6 @@ module SummaryComponent {
 
   predicate content = SC::content/1;
 
-  /** Gets a summary component that represents a qualifier. */
-  SummaryComponent qualifier() { result = argument(-1) }
-
-  /** Gets a summary component that represents a block argument. */
-  SummaryComponent block() { result = argument(-2) }
-
   /** Gets a summary component that represents the return value of a call. */
   SummaryComponent return() { result = SC::return(any(ReturnKind rk)) }
 }
@@ -42,12 +36,6 @@ module SummaryComponentStack {
   predicate push = SCS::push/2;
 
   predicate argument = SCS::argument/1;
-
-  /** Gets a singleton stack representing a qualifier. */
-  SummaryComponentStack qualifier() { result = singleton(SummaryComponent::qualifier()) }
-
-  /** Gets a singleton stack representing a block argument. */
-  SummaryComponentStack block() { result = singleton(SummaryComponent::block()) }
 
   /** Gets a singleton stack representing the return value of a call. */
   SummaryComponentStack return() { result = singleton(SummaryComponent::return()) }

@@ -58,12 +58,12 @@ predicate summaryElement(DataFlowCallable c, string input, string output, string
 /**
  * Gets the summary component for specification component `c`, if any.
  *
- * This covers all the Ruby-specific components of a flow summary, and
- * is currently restricted to `"BlockArgument"`.
+ * This covers all the Python-specific components of a flow summary, and
+ * is currently empty.
  */
 SummaryComponent interpretComponentSpecific(string c) {
-  c = "BlockArgument" and
-  result = FlowSummary::SummaryComponent::block()
+  // If c is ListElement, result = appropriate Content
+  none()
 }
 
 /** Gets the return kind corresponding to specification `"ReturnValue"`. */
