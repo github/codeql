@@ -1,19 +1,19 @@
-| test_cookie-session.js:12:9:16:2 | session ...  BAD\\n}) | Cookie attribute 'HttpOnly' is not set to true for this sensitive cookie. |
-| test_cookie-session.js:30:9:30:21 | session(sess) | Cookie attribute 'HttpOnly' is not set to true for this sensitive cookie. |
-| test_cookie-session.js:39:9:39:22 | session(sess2) | Cookie attribute 'HttpOnly' is not set to true for this sensitive cookie. |
-| test_cookie-session.js:48:9:48:22 | session(sess3) | Cookie attribute 'HttpOnly' is not set to true for this sensitive cookie. |
-| test_cookie-session.js:52:9:56:2 | session ...  BAD\\n}) | Cookie attribute 'HttpOnly' is not set to true for this sensitive cookie. |
-| test_express-session.js:11:9:15:2 | session ...  BAD\\n}) | Cookie attribute 'HttpOnly' is not set to true for this sensitive cookie. |
-| test_express-session.js:28:9:32:2 | session ... tter\\n}) | Cookie attribute 'HttpOnly' is not set to true for this sensitive cookie. |
-| test_httpserver.js:7:37:7:51 | "authKey=ninja" | Cookie attribute 'HttpOnly' is not set to true for this sensitive cookie. |
-| test_httpserver.js:27:38:27:52 | "authKey=ninja" | Cookie attribute 'HttpOnly' is not set to true for this sensitive cookie. |
-| test_httpserver.js:87:37:87:59 | `authKe ... {attr}` | Cookie attribute 'HttpOnly' is not set to true for this sensitive cookie. |
-| test_responseCookie.js:15:5:20:10 | res.coo ...      }) | Cookie attribute 'HttpOnly' is not set to true for this sensitive cookie. |
-| test_responseCookie.js:25:5:28:10 | res.coo ...      }) | Cookie attribute 'HttpOnly' is not set to true for this sensitive cookie. |
-| test_responseCookie.js:48:5:48:43 | res.coo ... ptions) | Cookie attribute 'HttpOnly' is not set to true for this sensitive cookie. |
-| test_responseCookie.js:56:5:56:43 | res.coo ... ptions) | Cookie attribute 'HttpOnly' is not set to true for this sensitive cookie. |
-| test_responseCookie.js:65:5:65:43 | res.coo ... ptions) | Cookie attribute 'HttpOnly' is not set to true for this sensitive cookie. |
-| test_responseCookie.js:84:5:84:43 | res.coo ... ptions) | Cookie attribute 'HttpOnly' is not set to true for this sensitive cookie. |
-| test_responseCookie.js:95:5:95:41 | res.coo ... ptions) | Cookie attribute 'HttpOnly' is not set to true for this sensitive cookie. |
-| test_responseCookie.js:106:5:106:43 | res.coo ... ptions) | Cookie attribute 'HttpOnly' is not set to true for this sensitive cookie. |
-| test_responseCookie.js:117:5:117:40 | res.coo ... ptions) | Cookie attribute 'HttpOnly' is not set to true for this sensitive cookie. |
+| tst-httpOnly.js:11:9:15:2 | session ...  BAD\\n}) | Cookie attribute 'HttpOnly' is not set to true for this sensitive cookie. |
+| tst-httpOnly.js:29:9:29:21 | session(sess) | Cookie attribute 'HttpOnly' is not set to true for this sensitive cookie. |
+| tst-httpOnly.js:38:9:38:22 | session(sess2) | Cookie attribute 'HttpOnly' is not set to true for this sensitive cookie. |
+| tst-httpOnly.js:47:9:47:22 | session(sess3) | Cookie attribute 'HttpOnly' is not set to true for this sensitive cookie. |
+| tst-httpOnly.js:51:9:55:2 | session ...  BAD\\n}) | Cookie attribute 'HttpOnly' is not set to true for this sensitive cookie. |
+| tst-httpOnly.js:68:5:73:10 | res.coo ...      }) | Cookie attribute 'HttpOnly' is not set to true for this sensitive cookie. |
+| tst-httpOnly.js:78:5:81:10 | res.coo ...      }) | Cookie attribute 'HttpOnly' is not set to true for this sensitive cookie. |
+| tst-httpOnly.js:101:5:101:43 | res.coo ... ptions) | Cookie attribute 'HttpOnly' is not set to true for this sensitive cookie. |
+| tst-httpOnly.js:109:5:109:43 | res.coo ... ptions) | Cookie attribute 'HttpOnly' is not set to true for this sensitive cookie. |
+| tst-httpOnly.js:118:5:118:43 | res.coo ... ptions) | Cookie attribute 'HttpOnly' is not set to true for this sensitive cookie. |
+| tst-httpOnly.js:137:5:137:43 | res.coo ... ptions) | Cookie attribute 'HttpOnly' is not set to true for this sensitive cookie. |
+| tst-httpOnly.js:148:5:148:41 | res.coo ... ptions) | Cookie attribute 'HttpOnly' is not set to true for this sensitive cookie. |
+| tst-httpOnly.js:159:5:159:43 | res.coo ... ptions) | Cookie attribute 'HttpOnly' is not set to true for this sensitive cookie. |
+| tst-httpOnly.js:170:5:170:40 | res.coo ... ptions) | Cookie attribute 'HttpOnly' is not set to true for this sensitive cookie. |
+| tst-httpOnly.js:209:37:209:51 | "authKey=ninja" | Cookie attribute 'HttpOnly' is not set to true for this sensitive cookie. |
+| tst-httpOnly.js:229:38:229:52 | "authKey=ninja" | Cookie attribute 'HttpOnly' is not set to true for this sensitive cookie. |
+| tst-httpOnly.js:289:37:289:59 | `authKe ... {attr}` | Cookie attribute 'HttpOnly' is not set to true for this sensitive cookie. |
+| tst-httpOnly.js:303:9:307:2 | session ...  BAD\\n}) | Cookie attribute 'HttpOnly' is not set to true for this sensitive cookie. |
+| tst-httpOnly.js:320:9:324:2 | session ... tter\\n}) | Cookie attribute 'HttpOnly' is not set to true for this sensitive cookie. |

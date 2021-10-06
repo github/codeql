@@ -16,7 +16,6 @@ import javascript
 
 from DataFlow::Node node
 where
-  // TODO: Only for sensitive cookies? (e.g. auth cookies)
   // TODO: Give all descriptions, qlhelp, qldocs, an overhaul. Consider precisions, severity, cwes.
   exists(CookieWrites::CookieWrite cookie | cookie = node |
     cookie.isSensitive() and not cookie.isHttpOnly()
