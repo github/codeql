@@ -95,6 +95,8 @@ private module Frameworks {
   private import semmle.code.java.frameworks.Optional
   private import semmle.code.java.frameworks.Stream
   private import semmle.code.java.frameworks.Strings
+  private import semmle.code.java.frameworks.ratpack.Ratpack
+  private import semmle.code.java.frameworks.ratpack.RatpackExec
   private import semmle.code.java.frameworks.spring.SpringCache
   private import semmle.code.java.frameworks.spring.SpringHttp
   private import semmle.code.java.frameworks.spring.SpringUtil

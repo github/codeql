@@ -29,7 +29,8 @@ private class RatpackHttpSource extends SourceModelCsv {
     row =
       ["ratpack.handling;", "ratpack.core.handling;"] + "Context;true;parse;" +
         [
-          "(java.lang.Class);", "(com.google.common.reflect.TypeToken);", "(java.lang.Class,java.lang.Object);",
+          "(java.lang.Class);", "(com.google.common.reflect.TypeToken);",
+          "(java.lang.Class,java.lang.Object);",
           "(com.google.common.reflect.TypeToken,java.lang.Object);", "(ratpack.core.parse.Parse);",
           "(ratpack.parse.Parse);"
         ] + ";ReturnValue;remote"
@@ -74,8 +75,8 @@ private class RatpackModel extends SummaryModelCsv {
     row =
       ["ratpack.util;", "ratpack.func;"] +
         [
-          "MultiValueMap;true;getAll;;;Argument[-1];ReturnValue;taint",
-          "MultiValueMap;true;asMultimap;;;Argument[-1];ReturnValue;taint"
+          "MultiValueMap;true;getAll;;;Element of Argument[-1];ReturnValue;value",
+          "MultiValueMap;true;asMultimap;;;Element of Argument[-1];ReturnValue;value"
         ]
   }
 }

@@ -36,6 +36,7 @@ class Resource {
 
     void test2(Context ctx, OutputStream os) {
         ctx.getRequest().getBody().then(td -> {
+            sink(td); //$hasTaintFlow
             sink(td.getText()); //$hasTaintFlow
             sink(td.getBuffer()); //$hasTaintFlow
             sink(td.getBytes()); //$hasTaintFlow
@@ -53,6 +54,12 @@ class Resource {
 
     void test3(Context ctx) {
         sink(ctx.getRequest().getBody().map(TypedData::getText)); //$hasTaintFlow
+        Promise<String> mapResult = ctx.getRequest().getBody().map(b -> {
+            sink(b); //$hasTaintFlow
+            sink(b.getText()); //$hasTaintFlow
+            return b.getText();
+        });
+        sink(mapResult); //$hasTaintFlow
         ctx.getRequest().getBody().map(TypedData::getText).then(this::sink); //$hasTaintFlow
         ctx
             .getRequest()

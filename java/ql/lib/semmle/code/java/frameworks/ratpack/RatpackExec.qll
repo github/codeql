@@ -1,6 +1,7 @@
 import java
 private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.dataflow.FlowSteps
+private import semmle.code.java.dataflow.ExternalFlow
 
 /** A reference type that extends a parameterization the Promise type. */
 private class RatpackPromise extends RefType {
@@ -8,6 +9,21 @@ private class RatpackPromise extends RefType {
     getSourceDeclaration().getASourceSupertype*().hasQualifiedName("ratpack.exec", "Promise")
   }
 }
+
+/** 
+ * Ratpack methods that propagate user-supplied data as tainted.
+ */
+private class RatpackExecModel extends SummaryModelCsv {
+  override predicate row(string row) {
+    //"namespace;type;overrides;name;signature;ext;inputspec;outputspec;kind",
+    row = [
+      "ratpack.exec;Promise;true;map;;;Element of Argument[-1];Parameter[0] of Argument[0];value",
+      "ratpack.exec;Promise;true;map;;;ReturnValue of Argument[0];Element of ReturnValue;value",
+      "ratpack.exec;Promise;true;then;;;Element of Argument[-1];Parameter[0] of Argument[0];value"
+    ] 
+  }
+}
+
 
 private class RatpackPromiseValueMethod extends Method, TaintPreservingCallable {
   RatpackPromiseValueMethod() { isStatic() and hasName("value") }
@@ -54,7 +70,7 @@ abstract private class SimpleFluentLambdaMethod extends FluentLambdaMethod {
 private class RatpackPromiseMapMethod extends SimpleFluentLambdaMethod {
   RatpackPromiseMapMethod() {
     getDeclaringType() instanceof RatpackPromise and
-    hasName(["map", "blockingMap"]) // "flatMap" & "apply" cause false positives. Wait for fluent lambda support.
+    hasName(["blockingMap"]) // "flatMap" & "apply" cause false positives. Wait for fluent lambda support.
   }
 
   override predicate consumesTaint(int lambdaArg) { lambdaArg = 0 }
@@ -92,14 +108,14 @@ private class RatpackPromiseMapErrorMethod extends FluentLambdaMethod {
   override predicate doesReturnTaint(int arg) { arg = getNumberOfParameters() - 1 }
 }
 
-private class RatpackPromiseThenMethod extends SimpleFluentLambdaMethod {
-  RatpackPromiseThenMethod() {
-    getDeclaringType() instanceof RatpackPromise and
-    hasName("then")
-  }
+// private class RatpackPromiseThenMethod extends SimpleFluentLambdaMethod {
+//   RatpackPromiseThenMethod() {
+//     getDeclaringType() instanceof RatpackPromise and
+//     hasName("then")
+//   }
 
-  override predicate consumesTaint(int lambdaArg) { lambdaArg = 0 }
-}
+//   override predicate consumesTaint(int lambdaArg) { lambdaArg = 0 }
+// }
 
 private class RatpackPromiseFluentMethod extends FluentMethod, FluentLambdaMethod {
   RatpackPromiseFluentMethod() {
