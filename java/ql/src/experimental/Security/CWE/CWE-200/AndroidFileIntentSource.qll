@@ -28,45 +28,6 @@ class GetContentIntent extends ClassInstanceExpr {
   }
 }
 
-/** Android intent data model in the new CSV format. */
-private class AndroidIntentDataModel extends SummaryModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        "android.content;Intent;true;addCategory;;;Argument[-1];ReturnValue;taint",
-        "android.content;Intent;true;addFlags;;;Argument[-1];ReturnValue;taint",
-        "android.content;Intent;true;createChooser;;;Argument[0];ReturnValue;taint",
-        "android.content;Intent;true;getData;;;Argument[-1];ReturnValue;taint",
-        "android.content;Intent;true;getDataString;;;Argument[-1];ReturnValue;taint",
-        "android.content;Intent;true;getExtras;;;Argument[-1];ReturnValue;taint",
-        "android.content;Intent;true;getIntent;;;Argument[-1];ReturnValue;taint",
-        "android.content;Intent;true;get" +
-          [
-            "ParcelableArray", "ParcelableArrayList", "Parcelable", "Serializable", "StringArray",
-            "StringArrayList", "String"
-          ] + "Extra;;;Argument[-1..1];ReturnValue;taint",
-        "android.content;Intent;true;put" +
-          [
-            "", "CharSequenceArrayList", "IntegerArrayList", "ParcelableArrayList",
-            "StringArrayList"
-          ] + "Extra;;;Argument[1];Argument[-1];taint",
-        "android.content;Intent;true;putExtras;;;Argument[1];Argument[-1];taint",
-        "android.content;Intent;true;setData;;;Argument[0];ReturnValue;taint",
-        "android.content;Intent;true;setDataAndType;;;Argument[-1];ReturnValue;taint",
-        "android.content;Intent;true;setFlags;;;Argument[-1];ReturnValue;taint",
-        "android.content;Intent;true;setType;;;Argument[-1];ReturnValue;taint",
-        "android.net;Uri;true;getEncodedPath;;;Argument[-1];ReturnValue;taint",
-        "android.net;Uri;true;getEncodedQuery;;;Argument[-1];ReturnValue;taint",
-        "android.net;Uri;true;getLastPathSegment;;;Argument[-1];ReturnValue;taint",
-        "android.net;Uri;true;getPath;;;Argument[-1];ReturnValue;taint",
-        "android.net;Uri;true;getPathSegments;;;Argument[-1];ReturnValue;taint",
-        "android.net;Uri;true;getQuery;;;Argument[-1];ReturnValue;taint",
-        "android.net;Uri;true;getQueryParameter;;;Argument[-1];ReturnValue;taint",
-        "android.net;Uri;true;getQueryParameters;;;Argument[-1];ReturnValue;taint"
-      ]
-  }
-}
-
 /** Taint configuration for getting content intent. */
 class GetContentIntentConfig extends TaintTracking2::Configuration {
   GetContentIntentConfig() { this = "GetContentIntentConfig" }
@@ -78,6 +39,19 @@ class GetContentIntentConfig extends TaintTracking2::Configuration {
   override predicate isSink(DataFlow2::Node sink) {
     exists(MethodAccess ma |
       ma.getMethod() instanceof StartActivityForResultMethod and sink.asExpr() = ma.getArgument(0)
+    )
+  }
+
+  override predicate allowImplicitRead(DataFlow::Node node, DataFlow::Content content) {
+    super.allowImplicitRead(node, content)
+    or
+    // Allow the wrapped intent created by Intent.getChooser to be consumed
+    // by at the sink:
+    isSink(node) and
+    (
+      content.(DataFlow::SyntheticFieldContent).getField() = "android.content.Intent.extras"
+      or
+      content instanceof DataFlow::MapValueContent
     )
   }
 }
