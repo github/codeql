@@ -42,6 +42,18 @@ private class SummarizedCallableApplyLambda extends SummarizedCallable {
   }
 }
 
+private class SummarizedCallableReversed extends SummarizedCallable {
+  SummarizedCallableReversed() { this = "reversed" }
+
+  override Call getACall() { result.getFunc().(Name).getId() = this }
+
+  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    input = "ListElement of Argument[0]" and
+    output = "ListElement of ReturnValue" and
+    preservesValue = true
+  }
+}
+
 private class SummarizedCallableMap extends SummarizedCallable {
   SummarizedCallableMap() { this = "map" }
 

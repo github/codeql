@@ -1,20 +1,27 @@
+# Simple summary
 tainted = identity("taint")
 sink(tainted)
 
-tainted2 = apply_lambda(lambda x: x + 1, tainted)
-sink(tainted2)
+# Lambda summary
+tainted_lambda = apply_lambda(lambda x: x + 1, tainted)
+sink(tainted_lambda)
 
+# Collection summaries
+tainted_list = reversed([tainted])
+sink(tainted_list[0])
+
+# Complex summaries
 def add_colon(x):
     return x + ":"
 
-tainted3 = map(add_colon, [tainted, tainted2])
-sink(tainted3[0])
+tainted_mapped = map(add_colon, [tainted])
+sink(tainted_mapped[0])
 
 def explicit_identity(x):
     return x
 
-tainted4 = map(explicit_identity, [tainted, tainted2])
-sink(tainted4[0])
+tainted_mapped_explicit = map(explicit_identity, [tainted])
+sink(tainted_mapped_explicit[0])
 
-tainted5 = map(identity, [tainted, tainted2])
-sink(tainted5[0])
+tainted_mapped_summary = map(identity, [tainted])
+sink(tainted_mapped_summary[0])
