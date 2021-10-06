@@ -8,6 +8,7 @@ edges
 | FileService.java:25:42:25:50 | localPath : String | FileService.java:25:13:25:51 | makeParamsToExecute(...) [[]] : String |
 | FileService.java:40:41:40:55 | params : Object[] | FileService.java:44:33:44:52 | (...)... : Object |
 | FileService.java:44:33:44:52 | (...)... : Object | FileService.java:45:53:45:59 | ...[...] |
+| LeakFileActivity2.java:15:13:15:18 | intent : Intent | LeakFileActivity2.java:16:26:16:31 | intent : Intent |
 | LeakFileActivity2.java:16:26:16:31 | intent : Intent | FileService.java:20:31:20:43 | intent : Intent |
 | LeakFileActivity.java:14:35:14:38 | data : Intent | LeakFileActivity.java:18:40:18:59 | contentIntent : Intent |
 | LeakFileActivity.java:18:40:18:59 | contentIntent : Intent | LeakFileActivity.java:19:31:19:43 | contentIntent : Intent |
@@ -24,6 +25,7 @@ nodes
 | FileService.java:40:41:40:55 | params : Object[] | semmle.label | params : Object[] |
 | FileService.java:44:33:44:52 | (...)... : Object | semmle.label | (...)... : Object |
 | FileService.java:45:53:45:59 | ...[...] | semmle.label | ...[...] |
+| LeakFileActivity2.java:15:13:15:18 | intent : Intent | semmle.label | intent : Intent |
 | LeakFileActivity2.java:16:26:16:31 | intent : Intent | semmle.label | intent : Intent |
 | LeakFileActivity.java:14:35:14:38 | data : Intent | semmle.label | data : Intent |
 | LeakFileActivity.java:18:40:18:59 | contentIntent : Intent | semmle.label | contentIntent : Intent |
@@ -32,5 +34,6 @@ nodes
 | LeakFileActivity.java:21:58:21:72 | streamsToUpload : Uri | semmle.label | streamsToUpload : Uri |
 | LeakFileActivity.java:21:58:21:82 | getPath(...) | semmle.label | getPath(...) |
 #select
+| FileService.java:45:53:45:59 | ...[...] | LeakFileActivity2.java:15:13:15:18 | intent : Intent | FileService.java:45:53:45:59 | ...[...] | Leaking arbitrary Android file from $@. | LeakFileActivity2.java:15:13:15:18 | intent | this user input |
 | FileService.java:45:53:45:59 | ...[...] | LeakFileActivity2.java:16:26:16:31 | intent : Intent | FileService.java:45:53:45:59 | ...[...] | Leaking arbitrary Android file from $@. | LeakFileActivity2.java:16:26:16:31 | intent | this user input |
 | LeakFileActivity.java:21:58:21:82 | getPath(...) | LeakFileActivity.java:14:35:14:38 | data : Intent | LeakFileActivity.java:21:58:21:82 | getPath(...) | Leaking arbitrary Android file from $@. | LeakFileActivity.java:14:35:14:38 | data | this user input |
