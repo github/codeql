@@ -6,6 +6,10 @@ edges
 | FileService.java:25:13:25:51 | makeParamsToExecute(...) : Object[] | FileService.java:40:41:40:55 | params : Object[] |
 | FileService.java:25:13:25:51 | makeParamsToExecute(...) [[]] : String | FileService.java:25:13:25:51 | makeParamsToExecute(...) : Object[] |
 | FileService.java:25:42:25:50 | localPath : String | FileService.java:25:13:25:51 | makeParamsToExecute(...) [[]] : String |
+| FileService.java:25:42:25:50 | localPath : String | FileService.java:32:13:32:28 | sourceUri : String |
+| FileService.java:32:13:32:28 | sourceUri : String | FileService.java:35:17:35:25 | sourceUri : String |
+| FileService.java:34:20:36:13 | {...} [[]] : String | FileService.java:34:20:36:13 | new Object[] [[]] : String |
+| FileService.java:35:17:35:25 | sourceUri : String | FileService.java:34:20:36:13 | {...} [[]] : String |
 | FileService.java:40:41:40:55 | params : Object[] | FileService.java:44:33:44:52 | (...)... : Object |
 | FileService.java:44:33:44:52 | (...)... : Object | FileService.java:45:53:45:59 | ...[...] |
 | LeakFileActivity2.java:15:13:15:18 | intent : Intent | LeakFileActivity2.java:16:26:16:31 | intent : Intent |
@@ -22,6 +26,10 @@ nodes
 | FileService.java:25:13:25:51 | makeParamsToExecute(...) : Object[] | semmle.label | makeParamsToExecute(...) : Object[] |
 | FileService.java:25:13:25:51 | makeParamsToExecute(...) [[]] : String | semmle.label | makeParamsToExecute(...) [[]] : String |
 | FileService.java:25:42:25:50 | localPath : String | semmle.label | localPath : String |
+| FileService.java:32:13:32:28 | sourceUri : String | semmle.label | sourceUri : String |
+| FileService.java:34:20:36:13 | new Object[] [[]] : String | semmle.label | new Object[] [[]] : String |
+| FileService.java:34:20:36:13 | {...} [[]] : String | semmle.label | {...} [[]] : String |
+| FileService.java:35:17:35:25 | sourceUri : String | semmle.label | sourceUri : String |
 | FileService.java:40:41:40:55 | params : Object[] | semmle.label | params : Object[] |
 | FileService.java:44:33:44:52 | (...)... : Object | semmle.label | (...)... : Object |
 | FileService.java:45:53:45:59 | ...[...] | semmle.label | ...[...] |
@@ -33,6 +41,8 @@ nodes
 | LeakFileActivity.java:19:31:19:53 | getData(...) : Uri | semmle.label | getData(...) : Uri |
 | LeakFileActivity.java:21:58:21:72 | streamsToUpload : Uri | semmle.label | streamsToUpload : Uri |
 | LeakFileActivity.java:21:58:21:82 | getPath(...) | semmle.label | getPath(...) |
+subpaths
+| FileService.java:25:42:25:50 | localPath : String | FileService.java:32:13:32:28 | sourceUri : String | FileService.java:34:20:36:13 | new Object[] [[]] : String | FileService.java:25:13:25:51 | makeParamsToExecute(...) [[]] : String |
 #select
 | FileService.java:45:53:45:59 | ...[...] | LeakFileActivity2.java:15:13:15:18 | intent : Intent | FileService.java:45:53:45:59 | ...[...] | Leaking arbitrary Android file from $@. | LeakFileActivity2.java:15:13:15:18 | intent | this user input |
 | FileService.java:45:53:45:59 | ...[...] | LeakFileActivity2.java:16:26:16:31 | intent : Intent | FileService.java:45:53:45:59 | ...[...] | Leaking arbitrary Android file from $@. | LeakFileActivity2.java:16:26:16:31 | intent | this user input |
