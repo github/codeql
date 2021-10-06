@@ -53,13 +53,16 @@ class Resource {
     }
 
     void test3(Context ctx) {
-        sink(ctx.getRequest().getBody().map(TypedData::getText)); //$hasTaintFlow
-        Promise<String> mapResult = ctx.getRequest().getBody().map(b -> {
+        ctx.getRequest().getBody().map(TypedData::getText).then(s -> {
+            sink(s); //$hasTaintFlow
+        });
+        ctx.getRequest().getBody().map(b -> {
             sink(b); //$hasTaintFlow
             sink(b.getText()); //$hasTaintFlow
             return b.getText();
+        }).then(t -> {
+            sink(t); //$hasTaintFlow
         });
-        sink(mapResult); //$hasTaintFlow
         ctx.getRequest().getBody().map(TypedData::getText).then(this::sink); //$hasTaintFlow
         ctx
             .getRequest()
@@ -72,7 +75,9 @@ class Resource {
     void test4() {
         String tainted = taint();
         Promise.value(tainted);
-        sink(Promise.value(tainted)); //$hasTaintFlow
+        Promise
+            .value(tainted)
+            .then(this::sink); //$hasTaintFlow
         Promise
             .value(tainted)
             .map(a -> a)
@@ -188,15 +193,14 @@ class Resource {
             .then(value -> {
                 sink(value); //$hasTaintFlow
             });
-        // Waiting for support for lambda data flow
-        // Promise
-        //     .value("potato")
-        //     .flatMapError(RuntimeException.class, exception -> {
-        //         return Promise.value(taint());
-        //     })
-        //     .then(value -> {
-        //         sink(value); //$hasTaintFlow
-        //     });
+        Promise
+            .value("potato")
+            .flatMapError(RuntimeException.class, exception -> {
+                return Promise.value(taint());
+            })
+            .then(value -> {
+                sink(value); //$hasTaintFlow
+            });
     }
 
     void test9() {
@@ -212,6 +216,12 @@ class Resource {
             .map(Resource::identity)
             .then(value -> {
                 sink(value); // no taints flow
+            });
+        Promise
+            .value(tainted)
+            .flatMap(v -> Promise.value(v))
+            .then(value -> {
+                sink(value); //$hasTaintFlow
             });
     }
 
@@ -232,6 +242,52 @@ class Resource {
             .map(a -> a)
             .then(value -> {
                 sink(value); // no taints flow
+            });
+    }
+
+    void test11() {
+        String tainted = taint();
+        Promise
+            .sync(() -> tainted)
+            .mapIf(v -> {
+                sink(v); //$hasTaintFlow
+                return true;
+            }, v -> {
+                sink(v); //$hasTaintFlow
+                return v;
+            })
+            .then(value -> {
+                sink(value); //$hasTaintFlow
+            });
+        Promise
+            .sync(() -> tainted)
+            .mapIf(v -> {
+                sink(v); //$hasTaintFlow
+                return true;
+            }, vTrue -> {
+                sink(vTrue); //$hasTaintFlow
+                return vTrue;
+            }, vFalse -> {
+                sink(vFalse); //$hasTaintFlow
+                return vFalse;
+            })
+            .then(value -> {
+                sink(value); //$hasTaintFlow
+            });
+        Promise
+            .sync(() -> tainted)
+            .mapIf(v -> {
+                sink(v); //$hasTaintFlow
+                return true;
+            }, vTrue -> {
+                sink(vTrue); //$hasTaintFlow
+                return "potato";
+            }, vFalse -> {
+                sink(vFalse); //$hasTaintFlow
+                return "potato";
+            })
+            .then(value -> {
+                sink(value); // no tainted flow
             });
     }
     

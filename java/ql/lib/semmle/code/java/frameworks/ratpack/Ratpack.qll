@@ -75,8 +75,9 @@ private class RatpackModel extends SummaryModelCsv {
     row =
       ["ratpack.util;", "ratpack.func;"] +
         [
-          "MultiValueMap;true;getAll;;;Element of Argument[-1];ReturnValue;value",
-          "MultiValueMap;true;asMultimap;;;Element of Argument[-1];ReturnValue;value"
+          "MultiValueMap;true;getAll;;;MapKey of Argument[-1];MapKey of ReturnValue;value",
+          "MultiValueMap;true;getAll;;;MapValue of Argument[-1];Element of MapValue of ReturnValue;value",
+          "MultiValueMap;true;asMultimap;;;Element of Argument[-1];Element of ReturnValue;value"
         ]
   }
 }

@@ -3,6 +3,52 @@ private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.dataflow.FlowSteps
 private import semmle.code.java.dataflow.ExternalFlow
 
+/**
+ * Ratpack methods that propagate user-supplied data as tainted.
+ */
+private class RatpackExecModel extends SummaryModelCsv {
+  override predicate row(string row) {
+    //"namespace;type;overrides;name;signature;ext;inputspec;outputspec;kind",
+    row =
+      ["ratpack.exec;Promise;true;"] +
+        [
+          // `Promise` creation methods
+          "value;;;Argument[0];Element of ReturnValue;value",
+          "flatten;;;Element of ReturnValue of Argument[0];Element of ReturnValue;value",
+          "sync;;;ReturnValue of Argument[0];Element of ReturnValue;value",
+          // `Promise` value transformation methods
+          "map;;;Element of Argument[-1];Parameter[0] of Argument[0];value",
+          "map;;;ReturnValue of Argument[0];Element of ReturnValue;value",
+          "blockingMap;;;Element of Argument[-1];Parameter[0] of Argument[0];value",
+          "blockingMap;;;ReturnValue of Argument[0];Element of ReturnValue;value",
+          "mapError;;;ReturnValue of Argument[0];Element of ReturnValue;value",
+          // `Promise` termination method
+          "then;;;Element of Argument[-1];Parameter[0] of Argument[0];value",
+          // 'next' accesses qualfier the 'Promise' value and also returns the qualifier
+          "next;;;Element of Argument[-1];Parameter[0] of Argument[0];value",
+          "next;;;Argument[-1];ReturnValue;value",
+          // 'cacheIf' accesses qualfier the 'Promise' value and also returns the qualifier
+          "cacheIf;;;Element of Argument[-1];Parameter[0] of Argument[0];value",
+          "cacheIf;;;Argument[-1];ReturnValue;value",
+          // 'route' accesses qualfier the 'Promise' value, and conditionally returns the qualifier or
+          // the result of the second argument
+          "route;;;Element of Argument[-1];Parameter[0] of Argument[0];value",
+          "route;;;Element of Argument[-1];Parameter[0] of Argument[1];value",
+          "route;;;Argument[-1];ReturnValue;value",
+          // `flatMap` type methods return their returned `Promise`
+          "flatMap;;;Element of Argument[-1];Parameter[0] of Argument[0];value",
+          "flatMap;;;Element of ReturnValue of Argument[0];Element of ReturnValue;value",
+          "flatMapError;;;Element of ReturnValue of Argument[0];Element of ReturnValue;value",
+          // `mapIf` methods conditionally map their values, or return themselves
+          "mapIf;;;Element of Argument[-1];Parameter[0] of Argument[0];value",
+          "mapIf;;;Element of Argument[-1];Parameter[0] of Argument[1];value",
+          "mapIf;;;Element of Argument[-1];Parameter[0] of Argument[2];value",
+          "mapIf;;;ReturnValue of Argument[1];Element of ReturnValue;value",
+          "mapIf;;;ReturnValue of Argument[2];Element of ReturnValue;value"
+        ]
+  }
+}
+
 /** A reference type that extends a parameterization the Promise type. */
 private class RatpackPromise extends RefType {
   RatpackPromise() {
@@ -10,167 +56,18 @@ private class RatpackPromise extends RefType {
   }
 }
 
-/** 
- * Ratpack methods that propagate user-supplied data as tainted.
- */
-private class RatpackExecModel extends SummaryModelCsv {
-  override predicate row(string row) {
-    //"namespace;type;overrides;name;signature;ext;inputspec;outputspec;kind",
-    row = [
-      "ratpack.exec;Promise;true;map;;;Element of Argument[-1];Parameter[0] of Argument[0];value",
-      "ratpack.exec;Promise;true;map;;;ReturnValue of Argument[0];Element of ReturnValue;value",
-      "ratpack.exec;Promise;true;then;;;Element of Argument[-1];Parameter[0] of Argument[0];value"
-    ] 
-  }
-}
-
-
-private class RatpackPromiseValueMethod extends Method, TaintPreservingCallable {
-  RatpackPromiseValueMethod() { isStatic() and hasName("value") }
-
-  override predicate returnsTaintFrom(int arg) { arg = 0 }
-}
-
-abstract private class FluentLambdaMethod extends Method {
-  /**
-   * Holds if this lambda consumes taint from the quaifier when `lambdaArg`
-   * for `methodArg` is tainted.
-   * Eg. `tainted.map(stillTainted -> ..)`
-   */
-  abstract predicate consumesTaint(int methodArg, int lambdaArg);
-
-  /**
-   * Holds if the lambda passed at the given `arg` position produces taint
-   * that taints the result of this method.
-   * Eg. `var tainted = CompletableFuture.supplyAsync(() -> taint());`
-   */
-  predicate doesReturnTaint(int arg) { none() }
-}
-
-private class RatpackPromiseProviderMethod extends Method, FluentLambdaMethod {
-  RatpackPromiseProviderMethod() { isStatic() and hasName(["flatten", "sync"]) }
-
-  override predicate consumesTaint(int methodArg, int lambdaArg) { none() }
-
-  override predicate doesReturnTaint(int arg) { arg = 0 }
-}
-
-abstract private class SimpleFluentLambdaMethod extends FluentLambdaMethod {
-  override predicate consumesTaint(int methodArg, int lambdaArg) {
-    methodArg = 0 and consumesTaint(lambdaArg)
-  }
-
-  /**
-   * Holds if this lambda consumes taint from the quaifier when `arg` is tainted.
-   * Eg. `tainted.map(stillTainted -> ..)`
-   */
-  abstract predicate consumesTaint(int lambdaArg);
-}
-
-private class RatpackPromiseMapMethod extends SimpleFluentLambdaMethod {
-  RatpackPromiseMapMethod() {
-    getDeclaringType() instanceof RatpackPromise and
-    hasName(["blockingMap"]) // "flatMap" & "apply" cause false positives. Wait for fluent lambda support.
-  }
-
-  override predicate consumesTaint(int lambdaArg) { lambdaArg = 0 }
-
-  override predicate doesReturnTaint(int arg) { arg = 0 }
-}
-
 /**
- * Represents the `mapIf` method.
- *
- * `<O> Promise<O> mapIf(Predicate<T> predicate, Function<T, O> onTrue, Function<T, O> onFalse)`
+ * Ratpack `Promise` method that will return `this`.
  */
-private class RatpackPromiseMapIfMethod extends FluentLambdaMethod {
-  RatpackPromiseMapIfMethod() {
-    getDeclaringType() instanceof RatpackPromise and
-    hasName(["mapIf"]) and // "flatMapIf" causes false positives. Wait for fluent lambda support.
-    getNumberOfParameters() = 3
-  }
-
-  override predicate consumesTaint(int methodArg, int lambdaArg) {
-    methodArg = [1, 2, 3] and lambdaArg = 0
-  }
-
-  override predicate doesReturnTaint(int arg) { arg = [1, 2] }
-}
-
-private class RatpackPromiseMapErrorMethod extends FluentLambdaMethod {
-  RatpackPromiseMapErrorMethod() {
-    getDeclaringType() instanceof RatpackPromise and
-    hasName(["mapError"]) // "flatMapError" causes false positives. Wait for fluent lambda support.
-  }
-
-  override predicate consumesTaint(int methodArg, int lambdaArg) { none() }
-
-  override predicate doesReturnTaint(int arg) { arg = getNumberOfParameters() - 1 }
-}
-
-// private class RatpackPromiseThenMethod extends SimpleFluentLambdaMethod {
-//   RatpackPromiseThenMethod() {
-//     getDeclaringType() instanceof RatpackPromise and
-//     hasName("then")
-//   }
-
-//   override predicate consumesTaint(int lambdaArg) { lambdaArg = 0 }
-// }
-
-private class RatpackPromiseFluentMethod extends FluentMethod, FluentLambdaMethod {
+private class RatpackPromiseFluentMethod extends FluentMethod {
   RatpackPromiseFluentMethod() {
     getDeclaringType() instanceof RatpackPromise and
     not isStatic() and
+    // It's generally safe to assume that if the return type exactly matches the declaring type, `this` will be returned.
     exists(ParameterizedType t |
       t instanceof RatpackPromise and
       t = getDeclaringType() and
       t = getReturnType()
     )
-  }
-
-  override predicate consumesTaint(int methodArg, int lambdaArg) {
-    hasName(["next"]) and methodArg = 0 and lambdaArg = 0
-    or
-    hasName(["cacheIf"]) and methodArg = 0 and lambdaArg = 0
-    or
-    hasName(["route"]) and methodArg = [0, 1] and lambdaArg = 0
-  }
-
-  override predicate doesReturnTaint(int arg) { none() } // "flatMapIf" causes false positives. Wait for fluent lambda support.
-}
-
-/**
- * Holds if the method access qualifier `node1` has dataflow to the functional expression parameter `node2`.
- */
-private predicate stepIntoLambda(DataFlow::Node node1, DataFlow::Node node2) {
-  exists(MethodAccess ma, FluentLambdaMethod flm, int methodArg, int lambdaArg |
-    flm.consumesTaint(methodArg, lambdaArg)
-  |
-    ma.getMethod() = flm and
-    node1.asExpr() = ma.getQualifier() and
-    ma.getArgument(methodArg).(FunctionalExpr).asMethod().getParameter(lambdaArg) =
-      node2.asParameter()
-  )
-}
-
-/**
- * Holds if the return statement result of the functional expression `node1` has dataflow to the
- * method access result `node2`.
- */
-private predicate stepOutOfLambda(DataFlow::Node node1, DataFlow::Node node2) {
-  exists(FluentLambdaMethod flm, MethodAccess ma, FunctionalExpr fe, int arg |
-    flm.doesReturnTaint(arg)
-  |
-    fe.asMethod().getBody().getAStmt().(ReturnStmt).getResult() = node1.asExpr() and
-    ma.getMethod() = flm and
-    node2.asExpr() = ma and
-    ma.getArgument(arg) = fe
-  )
-}
-
-private class RatpackPromiseTaintPreservingStep extends AdditionalTaintStep {
-  override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
-    stepIntoLambda(node1, node2) or
-    stepOutOfLambda(node1, node2)
   }
 }

@@ -74,6 +74,14 @@ public interface Promise<T> {
     return null;
   }
 
+  default Promise<T> mapIf(Predicate<? super T> predicate, Function<? super T, ? extends T> transformer) {
+    return null;
+  }
+
+  default <O> Promise<O> mapIf(Predicate<? super T> predicate, Function<? super T, ? extends O> onTrue, Function<? super T, ? extends O> onFalse) {
+    return null;
+  }
+
   default Promise<T> mapError(Function<? super Throwable, ? extends T> transformer) {
     return null;
   }
