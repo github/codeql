@@ -1,9 +1,16 @@
 edges
 | summaries.py:2:11:2:27 | ControlFlowNode for identity() | summaries.py:3:6:3:12 | ControlFlowNode for tainted |
 | summaries.py:2:11:2:27 | ControlFlowNode for identity() | summaries.py:6:48:6:54 | ControlFlowNode for tainted |
+| summaries.py:2:11:2:27 | ControlFlowNode for identity() | summaries.py:10:25:10:33 | ControlFlowNode for List |
+| summaries.py:2:11:2:27 | ControlFlowNode for identity() | summaries.py:10:26:10:32 | ControlFlowNode for tainted |
 | summaries.py:2:20:2:26 | ControlFlowNode for Str | summaries.py:2:11:2:27 | ControlFlowNode for identity() |
 | summaries.py:6:18:6:55 | ControlFlowNode for apply_lambda() | summaries.py:7:6:7:19 | ControlFlowNode for tainted_lambda |
 | summaries.py:6:48:6:54 | ControlFlowNode for tainted | summaries.py:6:18:6:55 | ControlFlowNode for apply_lambda() |
+| summaries.py:10:16:10:34 | ControlFlowNode for reversed() [List element] | summaries.py:11:6:11:17 | ControlFlowNode for tainted_list [List element] |
+| summaries.py:10:25:10:33 | ControlFlowNode for List | summaries.py:11:6:11:20 | ControlFlowNode for Subscript |
+| summaries.py:10:25:10:33 | ControlFlowNode for List [List element] | summaries.py:10:16:10:34 | ControlFlowNode for reversed() [List element] |
+| summaries.py:10:26:10:32 | ControlFlowNode for tainted | summaries.py:10:25:10:33 | ControlFlowNode for List [List element] |
+| summaries.py:11:6:11:17 | ControlFlowNode for tainted_list [List element] | summaries.py:11:6:11:20 | ControlFlowNode for Subscript |
 nodes
 | summaries.py:2:11:2:27 | ControlFlowNode for identity() | semmle.label | ControlFlowNode for identity() |
 | summaries.py:2:20:2:26 | ControlFlowNode for Str | semmle.label | ControlFlowNode for Str |
@@ -11,8 +18,15 @@ nodes
 | summaries.py:6:18:6:55 | ControlFlowNode for apply_lambda() | semmle.label | ControlFlowNode for apply_lambda() |
 | summaries.py:6:48:6:54 | ControlFlowNode for tainted | semmle.label | ControlFlowNode for tainted |
 | summaries.py:7:6:7:19 | ControlFlowNode for tainted_lambda | semmle.label | ControlFlowNode for tainted_lambda |
+| summaries.py:10:16:10:34 | ControlFlowNode for reversed() [List element] | semmle.label | ControlFlowNode for reversed() [List element] |
+| summaries.py:10:25:10:33 | ControlFlowNode for List | semmle.label | ControlFlowNode for List |
+| summaries.py:10:25:10:33 | ControlFlowNode for List [List element] | semmle.label | ControlFlowNode for List [List element] |
+| summaries.py:10:26:10:32 | ControlFlowNode for tainted | semmle.label | ControlFlowNode for tainted |
+| summaries.py:11:6:11:17 | ControlFlowNode for tainted_list [List element] | semmle.label | ControlFlowNode for tainted_list [List element] |
+| summaries.py:11:6:11:20 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
 subpaths
 invalidSpecComponent
 #select
 | summaries.py:3:6:3:12 | ControlFlowNode for tainted | summaries.py:2:20:2:26 | ControlFlowNode for Str | summaries.py:3:6:3:12 | ControlFlowNode for tainted | $@ | summaries.py:2:20:2:26 | ControlFlowNode for Str | ControlFlowNode for Str |
 | summaries.py:7:6:7:19 | ControlFlowNode for tainted_lambda | summaries.py:2:20:2:26 | ControlFlowNode for Str | summaries.py:7:6:7:19 | ControlFlowNode for tainted_lambda | $@ | summaries.py:2:20:2:26 | ControlFlowNode for Str | ControlFlowNode for Str |
+| summaries.py:11:6:11:20 | ControlFlowNode for Subscript | summaries.py:2:20:2:26 | ControlFlowNode for Str | summaries.py:11:6:11:20 | ControlFlowNode for Subscript | $@ | summaries.py:2:20:2:26 | ControlFlowNode for Str | ControlFlowNode for Str |
