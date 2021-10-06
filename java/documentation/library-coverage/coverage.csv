@@ -1,7 +1,8 @@
 package,sink,source,summary,sink:bean-validation,sink:create-file,sink:groovy,sink:header-splitting,sink:information-leak,sink:jexl,sink:jndi-injection,sink:ldap,sink:mvel,sink:ognl-injection,sink:open-url,sink:set-hostname-verifier,sink:sql,sink:url-open-stream,sink:url-redirect,sink:xpath,sink:xslt,sink:xss,source:contentprovider,source:remote,summary:taint,summary:value
-android.content,8,27,4,,,,,,,,,,,,,8,,,,,,27,,4,
+android.content,8,27,61,,,,,,,,,,,,,8,,,,,,27,,4,57
 android.database,59,,30,,,,,,,,,,,,,59,,,,,,,,30,
 android.net,,,60,,,,,,,,,,,,,,,,,,,,,45,15
+android.os,,,82,,,,,,,,,,,,,,,,,,,,,2,80
 android.util,,16,,,,,,,,,,,,,,,,,,,,,16,,
 android.webkit,3,2,,,,,,,,,,,,,,,,,,,3,,2,,
 cn.hutool.core.codec,,,1,,,,,,,,,,,,,,,,,,,,,1,
