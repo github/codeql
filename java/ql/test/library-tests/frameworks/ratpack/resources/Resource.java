@@ -233,6 +233,26 @@ class Resource {
         String tainted = taint();
         Promise
             .value(tainted)
+            .apply(Resource::promiseIdentity)
+            .then(value -> {
+                sink(value); //$hasTaintFlow
+            });
+        Promise
+            .value("potato")
+            .apply(Resource::promiseIdentity)
+            .then(value -> {
+                sink(value); // no taints flow
+            });
+    }
+    
+    public static Promise<String> promiseIdentity(Promise<String> input) {
+        return input.map(i -> i);
+    }
+
+    void test11() {
+        String tainted = taint();
+        Promise
+            .value(tainted)
             .map(a -> a)
             .then(value -> {
                 sink(value); //$hasTaintFlow
@@ -245,7 +265,7 @@ class Resource {
             });
     }
 
-    void test11() {
+    void test12() {
         String tainted = taint();
         Promise
             .sync(() -> tainted)

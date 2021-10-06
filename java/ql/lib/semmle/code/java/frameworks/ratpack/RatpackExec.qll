@@ -22,6 +22,9 @@ private class RatpackExecModel extends SummaryModelCsv {
           "blockingMap;;;Element of Argument[-1];Parameter[0] of Argument[0];value",
           "blockingMap;;;ReturnValue of Argument[0];Element of ReturnValue;value",
           "mapError;;;ReturnValue of Argument[0];Element of ReturnValue;value",
+          // `apply` passes the qualifier to the function as the first argument
+          "apply;;;Element of Argument[-1];Element of Parameter[0] of Argument[0];value",
+          "apply;;;Element of ReturnValue of Argument[0];Element of ReturnValue;value",
           // `Promise` termination method
           "then;;;Element of Argument[-1];Parameter[0] of Argument[0];value",
           // 'next' accesses qualfier the 'Promise' value and also returns the qualifier
