@@ -62,8 +62,8 @@ predicate summaryElement(DataFlowCallable c, string input, string output, string
  * is currently empty.
  */
 SummaryComponent interpretComponentSpecific(string c) {
-  // If c is ListElement, result = appropriate Content
-  none()
+  c = "ListElement" and
+  result = FlowSummary::SummaryComponent::listElement()
 }
 
 /** Gets the return kind corresponding to specification `"ReturnValue"`. */

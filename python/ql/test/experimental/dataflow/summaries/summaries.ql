@@ -49,11 +49,11 @@ private class SummarizedCallableMap extends SummarizedCallable {
 
   override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
     input = "ListElement of Argument[1]" and
-    output = "ListElement of Parameter[0] of Argument[0]" and
+    output = "Parameter[0] of Argument[0]" and
     preservesValue = true
     or
     input = "ReturnValue of Argument[0]" and
-    output = "ReturnValue" and
+    output = "ListElement of ReturnValue" and
     preservesValue = true
   }
 }
@@ -69,13 +69,6 @@ class Conf extends TaintTracking::Configuration {
       mc.getAnArg() = sink.asExpr()
     )
   }
-}
-
-predicate propagates(
-  SummarizedCallable sc, SummaryComponentStack input, SummaryComponentStack output,
-  boolean preservesValue
-) {
-  sc.propagatesFlow(input, output, preservesValue)
 }
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, Conf conf

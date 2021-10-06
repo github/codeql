@@ -730,6 +730,8 @@ class DataFlowLambda extends DataFlowCallable, TLambda {
   override FunctionValue getCallableValue() {
     result.getOrigin().getNode() = lambda.getDefinition()
   }
+
+  Expr getDefinition() { result = lambda.getDefinition() }
 }
 
 /** A class representing the scope in which a `ModuleVariableNode` appears. */
@@ -801,7 +803,7 @@ newtype TDataFlowCall =
 class TDataFlowSourceCall =
   TFunctionCall or TMethodCall or TClassCall or TSpecialCall or TLibraryCall;
 
-/** Represents a call. */
+/** Represents a call, including inside a summary. */
 abstract class DataFlowCall extends TDataFlowCall {
   /** Gets a textual representation of this element. */
   abstract string toString();
@@ -813,6 +815,7 @@ abstract class DataFlowCall extends TDataFlowCall {
   abstract Location getLocation();
 }
 
+/** Represents a call present in the source text. */
 abstract class DataFlowSourceCall extends DataFlowCall, TDataFlowSourceCall {
   final override Location getLocation() { result = this.getNode().getLocation() }
 
@@ -1018,19 +1021,42 @@ class ReturnSourceNode extends ReturnNode, CfgNode {
   override ReturnKind getKind() { any() }
 }
 
-/** A data flow node that represents the output of a call. */
-class OutNode extends CfgNode {
-  OutNode() { node instanceof CallNode }
+/** A data-flow node that represents the output of a call. */
+abstract class OutNode extends Node {
+  /** Gets the underlying call, where this node is a corresponding output of kind `kind`. */
+  abstract DataFlowCall getCall(ReturnKind kind);
+}
+
+private module OutNodes {
+  /**
+   * A data-flow node that reads a value returned directly by a callable,
+   * either via a call or a `yield` of a block.
+   */
+  class ExprOutNode extends OutNode, ExprNode {
+    private DataFlowCall call;
+
+    ExprOutNode() { call.(DataFlowSourceCall).getNode().getNode() = this.asExpr() }
+
+    override DataFlowCall getCall(ReturnKind kind) {
+      result = call and
+      kind = kind
+    }
+  }
+
+  private class SummaryOutNode extends SummaryNode, OutNode {
+    SummaryOutNode() { FlowSummaryImpl::Private::summaryOutNode(_, this, _) }
+
+    override DataFlowCall getCall(ReturnKind kind) {
+      FlowSummaryImpl::Private::summaryOutNode(result, this, kind)
+    }
+  }
 }
 
 /**
  * Gets a node that can read the value returned from `call` with return kind
  * `kind`.
  */
-OutNode getAnOutNode(DataFlowSourceCall call, ReturnKind kind) {
-  call.getNode() = result.getNode() and
-  kind = TNormalReturnKind()
-}
+OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) { call = result.getCall(kind) }
 
 //--------
 // Type pruning
@@ -2176,13 +2202,15 @@ predicate nodeIsHidden(Node n) {
 class LambdaCallKind = Unit;
 
 /** Holds if `creation` is an expression that creates a lambda of kind `kind` for `c`. */
-predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c) { none() }
+predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c) {
+  kind = kind and
+  creation.asExpr() = c.(DataFlowLambda).getDefinition()
+}
 
 /** Holds if `call` is a lambda call of kind `kind` where `receiver` is the lambda expression. */
 predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
-  // receiver = call.(SummaryCall).getReceiver() and
-  // kind = kind
-  none()
+  receiver = call.(SummaryCall).getReceiver() and
+  kind = kind
 }
 
 /** Extra data-flow steps needed for lambda flow analysis. */
