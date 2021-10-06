@@ -32,7 +32,7 @@ class AndroidFileLeakConfig extends TaintTracking::Configuration {
   AndroidFileLeakConfig() { this = "AndroidFileLeakConfig" }
 
   /**
-   * Holds if `src` is a read of some Intent-typed method argument guarded by a check like
+   * Holds if `src` is a read of some Intent-typed variable guarded by a check like
    * `requestCode == REQUEST_CODE__SELECT_CONTENT_FROM_APPS`, where `requestCode` is the first
    * argument to `Activity.onActivityResult` and `REQUEST_CODE__SELECT_CONTENT_FROM_APPS` is
    * any request code in a call to `startActivityForResult(intent, code)`.
