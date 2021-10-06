@@ -12,7 +12,10 @@
 
 import javascript
 
+// TODO: Rename to ClearTextCookie?
 from DataFlow::Node node
-// TODO: Only for sensitive cookies? (e.g. auth cookies)
-where exists(CookieWrites::CookieWrite cookie | cookie = node | not cookie.isSecure())
+where
+  exists(CookieWrites::CookieWrite cookie | cookie = node |
+    cookie.isSensitive() and not cookie.isSecure()
+  )
 select node, "Cookie is added to response without the 'secure' flag being set to true"

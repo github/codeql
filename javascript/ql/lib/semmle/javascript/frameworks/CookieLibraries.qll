@@ -73,7 +73,11 @@ private module JsCookie {
       this.getOptionArgument(2, CookieWrites::secure()).mayHaveBooleanValue(true)
     }
 
-    override predicate isSensitive() { none() } // TODO: Maybe it can be sensitive?
+    override predicate isSensitive() {
+      HeuristicNames::nameIndicatesSensitiveData(any(string s |
+          this.getArgument(0).mayHaveStringValue(s)
+        ), _)
+    }
 
     override predicate isHttpOnly() { none() } // js-cookie is browser side library and doesn't support HttpOnly
   }

@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 
 app.get('/a', function (req, res, next) {
-    res.cookie('name', 'value',
+    res.cookie('authkey', 'value',
         {
             maxAge: 9000000000,
             httpOnly: true,
@@ -17,7 +17,7 @@ app.get('/b', function (req, res, next) {
         httpOnly: true,
         secure: false // NOT OK
     }
-    res.cookie('name', 'value', options);
+    res.cookie('authKey', 'value', options);
     res.end('ok')
 })
 
@@ -32,8 +32,8 @@ app.get('/c', function (req, res, next) {
 })
 
 const js_cookie = require('js-cookie')
-js_cookie.set('key', 'value', { secure: false }); // NOT OK
-js_cookie.set('key', 'value', { secure: true }); // OK
+js_cookie.set('authKey', 'value', { secure: false }); // NOT OK
+js_cookie.set('authKey', 'value', { secure: true }); // OK
 
 const http = require('http');
 
@@ -41,7 +41,7 @@ function test1() {
     const server = http.createServer((req, res) => {
         res.setHeader('Content-Type', 'text/html');
         // BAD
-        res.setHeader("Set-Cookie", "type=ninja");
+        res.setHeader("Set-Cookie", "authKey=ninja");
         res.writeHead(200, { 'Content-Type': 'text/plain' });
         res.end('ok');
     });
@@ -60,8 +60,8 @@ function test2() {
 function test3() {
     const server = http.createServer((req, res) => {
         res.setHeader('Content-Type', 'text/html');
-        // BAD
-        res.setHeader("Set-Cookie", ["type=ninja", "language=javascript"]);
+        // BAD (and good, TODO: Move to separate lines)
+        res.setHeader("Set-Cookie", ["authKey=ninja", "language=javascript"]);
         res.writeHead(200, { 'Content-Type': 'text/plain' });
         res.end('ok');
     });
@@ -90,8 +90,8 @@ function test5() {
 function test6() {
     const server = http.createServer((req, res) => {
         res.setHeader('Content-Type', 'text/html');
-        // BAD
-        res.setHeader("Set-Cookie", ["type=ninja; secure", "language=javascript"]);
+        // BAD (and good. TODO: Move to separate lines)
+        res.setHeader("Set-Cookie", ["type=ninja; secure", "authKey=foo"]);
         res.writeHead(200, { 'Content-Type': 'text/plain' });
         res.end('ok');
     });
