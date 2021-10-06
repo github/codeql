@@ -46,15 +46,29 @@ class TyphoeusHttpRequest extends HTTP::Client::Request::Range {
   override string getFramework() { result = "Typhoeus" }
 }
 
-// Holds if `p` is the pair `ssl_verifypeer: false`.
+/** Holds if `p` is the pair `ssl_verifypeer: false`. */
 private predicate isSslVerifyPeerFalsePair(Pair p) {
-  p.getKey().(SymbolLiteral).getValueText() = "ssl_verifypeer" and
-  exists(DataFlow::LocalSourceNode literal, DataFlow::Node value |
-    (
-      literal.asExpr().getExpr().(BooleanLiteral).isFalse() or
-      literal.asExpr().getExpr().(IntegerLiteral).getValue() = 0
-    ) and
-    literal.flowsTo(value) and
+  exists(DataFlow::Node key, DataFlow::Node value |
+    key.asExpr().getExpr() = p.getKey() and
     value.asExpr().getExpr() = p.getValue()
+  |
+    isSslVerifyPeerLiteral(key) and
+    isFalse(value)
+  )
+}
+
+/** Holds if `node` represents the symbol literal `verify` or `verify_peer`. */
+private predicate isSslVerifyPeerLiteral(DataFlow::Node node) {
+  exists(DataFlow::LocalSourceNode literal |
+    literal.asExpr().getExpr().(SymbolLiteral).getValueText() = "ssl_verifypeer" and
+    literal.flowsTo(node)
+  )
+}
+
+/** Holds if `node` can contain the Boolean value `false`. */
+private predicate isFalse(DataFlow::Node node) {
+  exists(DataFlow::LocalSourceNode literal |
+    literal.asExpr().getExpr().(BooleanLiteral).isFalse() and
+    literal.flowsTo(node)
   )
 }

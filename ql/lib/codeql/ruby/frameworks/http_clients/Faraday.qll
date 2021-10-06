@@ -71,11 +71,16 @@ private predicate isSslOptionsPairDisablingValidation(Pair p) {
   exists(DataFlow::Node key, DataFlow::Node value |
     key.asExpr().getExpr() = p.getKey() and value.asExpr().getExpr() = p.getValue()
   |
-    exists(DataFlow::LocalSourceNode literal |
-      literal.asExpr().getExpr().(SymbolLiteral).getValueText() = "ssl" and
-      literal.flowsTo(key)
-    ) and
+    isSymbolLiteral(key, "ssl") and
     (isHashWithVerifyFalse(value) or isHashWithVerifyModeNone(value))
+  )
+}
+
+/** Holds if `node` represents the symbol literal with the given `valueText`. */
+private predicate isSymbolLiteral(DataFlow::Node node, string valueText) {
+  exists(DataFlow::LocalSourceNode literal |
+    literal.asExpr().getExpr().(SymbolLiteral).getValueText() = valueText and
+    literal.flowsTo(node)
   )
 }
 
@@ -109,10 +114,7 @@ private predicate isVerifyModeNonePair(Pair p) {
   exists(DataFlow::Node key, DataFlow::Node value |
     key.asExpr().getExpr() = p.getKey() and value.asExpr().getExpr() = p.getValue()
   |
-    exists(DataFlow::LocalSourceNode literal |
-      literal.asExpr().getExpr().(SymbolLiteral).getValueText() = "verify_mode" and
-      literal.flowsTo(key)
-    ) and
+    isSymbolLiteral(key, "verify_mode") and
     value = API::getTopLevelMember("OpenSSL").getMember("SSL").getMember("VERIFY_NONE").getAUse()
   )
 }
@@ -124,21 +126,15 @@ private predicate isVerifyFalsePair(Pair p) {
   exists(DataFlow::Node key, DataFlow::Node value |
     key.asExpr().getExpr() = p.getKey() and value.asExpr().getExpr() = p.getValue()
   |
-    exists(DataFlow::LocalSourceNode literal |
-      literal.asExpr().getExpr().(SymbolLiteral).getValueText() = "verify" and
-      literal.flowsTo(key)
-    ) and
-    isFalsey(value)
+    isSymbolLiteral(key, "verify") and
+    isFalse(value)
   )
 }
 
-/** Holds if `node` contains `0` or `false`. */
-private predicate isFalsey(DataFlow::Node node) {
+/** Holds if `node` can contain the Boolean value `false`. */
+private predicate isFalse(DataFlow::Node node) {
   exists(DataFlow::LocalSourceNode literal |
-    (
-      literal.asExpr().getExpr().(BooleanLiteral).isFalse() or
-      literal.asExpr().getExpr().(IntegerLiteral).getValue() = 0
-    ) and
+    literal.asExpr().getExpr().(BooleanLiteral).isFalse() and
     literal.flowsTo(node)
   )
 }

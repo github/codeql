@@ -74,13 +74,10 @@ private predicate isVerifyLiteral(DataFlow::Node node) {
   )
 }
 
-/** Holds if `node` contains `0` or `false`. */
-private predicate isFalsey(DataFlow::Node node) {
+/** Holds if `node` can contain the Boolean value `false`. */
+private predicate isFalse(DataFlow::Node node) {
   exists(DataFlow::LocalSourceNode literal |
-    (
-      literal.asExpr().getExpr().(BooleanLiteral).isFalse() or
-      literal.asExpr().getExpr().(IntegerLiteral).getValue() = 0
-    ) and
+    literal.asExpr().getExpr().(BooleanLiteral).isFalse() and
     literal.flowsTo(node)
   )
 }
@@ -93,6 +90,6 @@ private predicate isVerifyFalsePair(Pair p) {
     key.asExpr().getExpr() = p.getKey() and value.asExpr().getExpr() = p.getValue()
   |
     isVerifyLiteral(key) and
-    isFalsey(value)
+    isFalse(value)
   )
 }
