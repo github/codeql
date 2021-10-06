@@ -63,11 +63,17 @@ class ActiveRecordModelClass extends ClassDeclaration {
     )
   }
 
+  // Gets the class declaration for this class and all of its super classes
+  private ModuleBase getAllClassDeclarations() {
+    result = this.getModule().getSuperClass*().getADeclaration()
+  }
+
   /**
    * Gets methods defined in this class that may access a field from the database.
    */
   Method methodMayAccessField() {
-    result = this.getAMethod() and
+    // It's a method on this class or one of its super classes
+    result = this.getAllClassDeclarations().getAMethod() and
     // There is a value that can be returned by this method which may include field data
     exists(DataFlow::Node returned, ActiveRecordInstanceMethodCall cNode, MethodCall c |
       exprNodeReturnedFrom(returned, result) and
@@ -77,10 +83,10 @@ class ActiveRecordModelClass extends ClassDeclaration {
       // The referenced method is not built-in, and...
       not isBuiltInMethodForActiveRecordModelInstance(c.getMethodName()) and
       (
-        // TODO: this would be more accurate if we also checked methods defined in
-        // super classes and mixins
-        // ...There is no matching method definition in the class, or...
-        not exists(cNode.getInstance().getClass().getMethod(c.getMethodName()))
+        // ...The receiver does not have a matching method definition, or...
+        not exists(
+          cNode.getInstance().getClass().getAllClassDeclarations().getMethod(c.getMethodName())
+        )
         or
         // ...the called method can access a field
         c.getATarget() = cNode.getInstance().getClass().methodMayAccessField()
