@@ -154,3 +154,16 @@ app.use(session({
     path: 'foo/bar',
     expires: expiryDate
 }))
+
+http.createServer((req, res) => {
+    res.setHeader('Content-Type', 'text/html');
+    res.setHeader("Set-Cookie", `authKey=${makeAuthkey()}`); // NOT OK
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    res.end('ok');
+});
+
+http.createServer((req, res) => {
+    res.setHeader("Set-Cookie", `authKey=${makeAuthkey()}; secure; httpOnly`); // OK
+    res.writeHead(200, { 'Content-Type': 'text/html' });
+    res.end('<h2>Hello world</h2>');
+});
