@@ -322,3 +322,13 @@ app.use(session({
     keys: ['key1', 'key2'],
     cookie: { httpOnly: false } // BAD, It is a session cookie, name doesn't matter
 }))
+
+const http = require('http');
+function test10() {
+    const server = http.createServer((req, res) => {
+        res.setHeader('Content-Type', 'text/html');
+        res.setHeader("Set-Cookie", "sessionKey=" + makeSessionKey()); // BAD
+        res.writeHead(200, { 'Content-Type': 'text/plain' });
+        res.end('ok');
+    });
+}

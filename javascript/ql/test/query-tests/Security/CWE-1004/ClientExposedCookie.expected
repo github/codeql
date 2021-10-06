@@ -17,3 +17,4 @@
 | tst-httpOnly.js:289:37:289:59 | `authKe ... {attr}` | Sensitive server cookie is missing 'httpOnly' flag. |
 | tst-httpOnly.js:303:9:307:2 | session ...  BAD\\n}) | Sensitive server cookie is missing 'httpOnly' flag. |
 | tst-httpOnly.js:320:9:324:2 | session ... tter\\n}) | Sensitive server cookie is missing 'httpOnly' flag. |
+| tst-httpOnly.js:330:37:330:68 | "sessio ... onKey() | Sensitive server cookie is missing 'httpOnly' flag. |
