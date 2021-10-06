@@ -59,7 +59,6 @@ module CookieWrites {
 /**
  * A model of the `js-cookie` library (https://github.com/js-cookie/js-cookie).
  */
-// TODO: Writes to document.cookie.
 private module JsCookie {
   /**
    * Gets a function call that invokes method `name` of the `js-cookie` library.
@@ -118,13 +117,27 @@ private module BrowserCookies {
     }
   }
 
-  class WriteAccess extends PersistentWriteAccess, DataFlow::CallNode {
-    // TODO: CookieWrite
+  class WriteAccess extends PersistentWriteAccess, DataFlow::CallNode,
+    CookieWrites::ClientSideCookieWrite {
     WriteAccess() { this = libMemberCall("set") }
 
     string getKey() { getArgument(0).mayHaveStringValue(result) }
 
     override DataFlow::Node getValue() { result = getArgument(1) }
+
+    override predicate isSecure() {
+      // A cookie is secure if there are cookie options with the `secure` flag set to `true`.
+      this.getOptionArgument(2, CookieWrites::secure()).mayHaveBooleanValue(true)
+      or
+      // or, an explicit default has been set
+      exists(DataFlow::moduleMember("browser-cookies", "defaults").getAPropertyWrite("secure"))
+    }
+
+    override predicate isSensitive() {
+      HeuristicNames::nameIndicatesSensitiveData(any(string s |
+          this.getArgument(0).mayHaveStringValue(s)
+        ), _)
+    }
   }
 }
 
@@ -147,13 +160,24 @@ private module LibCookie {
     override PersistentWriteAccess getAWrite() { key = result.(WriteAccess).getKey() }
   }
 
-  class WriteAccess extends PersistentWriteAccess, DataFlow::CallNode {
-    // TODO: CookieWrite
+  class WriteAccess extends PersistentWriteAccess, DataFlow::CallNode,
+    CookieWrites::ClientSideCookieWrite {
     WriteAccess() { this = libMemberCall("serialize") }
 
     string getKey() { getArgument(0).mayHaveStringValue(result) }
 
     override DataFlow::Node getValue() { result = getArgument(1) }
+
+    override predicate isSecure() {
+      // A cookie is secure if there are cookie options with the `secure` flag set to `true`.
+      this.getOptionArgument(2, CookieWrites::secure()).mayHaveBooleanValue(true)
+    }
+
+    override predicate isSensitive() {
+      HeuristicNames::nameIndicatesSensitiveData(any(string s |
+          this.getArgument(0).mayHaveStringValue(s)
+        ), _)
+    }
   }
 }
 
@@ -286,28 +310,56 @@ private class HTTPCookieWrite extends CookieWrites::CookieWrite {
   override predicate isSensitive() {
     HeuristicNames::nameIndicatesSensitiveData(getCookieName(header), _)
   }
+}
 
-  /**
-   * Gets cookie name from a `Set-Cookie` header value.
-   * The header value always starts with `<cookie-name>=<cookie-value>` optionally followed by attributes:
-   * `<cookie-name>=<cookie-value>; Domain=<domain-value>; Secure; HttpOnly`
-   */
-  bindingset[s]
-  private string getCookieName(string s) {
-    result = s.regexpCapture("\\s*\\b([^=\\s]*)\\b\\s*=.*", 1)
+/**
+ * Gets cookie name from a `Set-Cookie` header value.
+ * The header value always starts with `<cookie-name>=<cookie-value>` optionally followed by attributes:
+ * `<cookie-name>=<cookie-value>; Domain=<domain-value>; Secure; HttpOnly`
+ */
+bindingset[s]
+private string getCookieName(string s) {
+  result = s.regexpCapture("\\s*\\b([^=\\s]*)\\b\\s*=.*", 1)
+}
+
+/**
+ * Holds if the `Set-Cookie` header value contains the specified attribute
+ * 1. The attribute is case insensitive
+ * 2. It always starts with a pair `<cookie-name>=<cookie-value>`.
+ *    If the attribute is present there must be `;` after the pair.
+ *    Other attributes like `Domain=`, `Path=`, etc. may come after the pair:
+ *    `<cookie-name>=<cookie-value>; Domain=<domain-value>; Secure; HttpOnly`
+ * See `https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie`
+ */
+bindingset[s, attribute]
+private predicate hasCookieAttribute(string s, string attribute) {
+  s.regexpMatch("(?i).*;\\s*" + attribute + "\\b\\s*;?.*$")
+}
+
+/**
+ * A write to `document.cookie`.
+ */
+private class DocumentCookieWrite extends CookieWrites::ClientSideCookieWrite {
+  string cookie;
+
+  DocumentCookieWrite() {
+    exists(DataFlow::PropWrite write | this = write |
+      write = DOM::documentRef().getAPropertyWrite("cookie") and
+      cookie =
+        [
+          any(string s | write.getRhs().mayHaveStringValue(s)),
+          write.getRhs().(StringOps::ConcatenationRoot).getConstantStringParts()
+        ]
+    )
   }
 
-  /**
-   * Holds if the `Set-Cookie` header value contains the specified attribute
-   * 1. The attribute is case insensitive
-   * 2. It always starts with a pair `<cookie-name>=<cookie-value>`.
-   *    If the attribute is present there must be `;` after the pair.
-   *    Other attributes like `Domain=`, `Path=`, etc. may come after the pair:
-   *    `<cookie-name>=<cookie-value>; Domain=<domain-value>; Secure; HttpOnly`
-   * See `https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie`
-   */
-  bindingset[s, attribute]
-  private predicate hasCookieAttribute(string s, string attribute) {
-    s.regexpMatch("(?i).*;\\s*" + attribute + "\\b\\s*;?.*$")
+  override predicate isSecure() {
+    // A cookie is secure if the `secure` flag is specified in the cookie definition.
+    // The default is `false`.
+    hasCookieAttribute(cookie, CookieWrites::secure())
+  }
+
+  override predicate isSensitive() {
+    HeuristicNames::nameIndicatesSensitiveData(getCookieName(cookie), _)
   }
 }

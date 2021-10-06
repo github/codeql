@@ -167,3 +167,18 @@ http.createServer((req, res) => {
     res.writeHead(200, { 'Content-Type': 'text/html' });
     res.end('<h2>Hello world</h2>');
 });
+
+function clientCookies() {
+    document.cookie = `authKey=${makeAuthkey()}; secure`; // OK
+    document.cookie = `authKey=${makeAuthkey()}`; // NOT OK
+
+    var cookies = require('browser-cookies');
+    
+    cookies.set('authKey', makeAuthkey()); // NOT OK
+    cookies.set('authKey', makeAuthkey(), { secure: true, expires: 7 }); // OK
+
+    const cookie = require('cookie');
+
+    cookie.serialize('authKey', makeAuthkey()); // NOT OK
+    cookie.serialize('authKey', makeAuthkey(), { secure: true, expires: 7 }); // OK
+}
