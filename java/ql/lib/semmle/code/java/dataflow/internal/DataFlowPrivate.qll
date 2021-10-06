@@ -337,7 +337,11 @@ predicate isImmutableOrUnobservable(Node n) {
 }
 
 /** Holds if `n` should be hidden from path explanations. */
-predicate nodeIsHidden(Node n) { n instanceof SummaryNode }
+predicate nodeIsHidden(Node n) {
+  n instanceof SummaryNode
+  or
+  n.(ParameterNode).isParameterOf(any(SummarizedCallable c), _)
+}
 
 class LambdaCallKind = Method; // the "apply" method in the functional interface
 
