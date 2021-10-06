@@ -2,6 +2,8 @@ package generatedtest;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentSender;
+import android.net.Uri;
 import android.os.BaseBundle;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -21,10 +23,12 @@ public class Test {
 	String getMapKey(BaseBundle b) { return b.keySet().iterator().next(); }
 	Object getMapValue(BaseBundle b) { return null; }
 	Intent newWithIntent_extras(Bundle b) { return null; }
+	Intent newWithIntent_data(Uri data) { return new Intent("title", data); }
 	Bundle newBundleWithMapKey(String k) { Bundle b = new Bundle(); b.putInt(k, 0); return b; }
 	PersistableBundle newPersistableBundleWithMapKey(String k) { PersistableBundle b = new PersistableBundle(); b.putInt(k, 0); return b; }
 	Bundle newBundleWithMapValue(Object element) { return null; }
 	PersistableBundle newPersistableBundleWithMapValue(Object element) { return null; }
+	Uri getData(Intent intent) { return intent.getData(); }
 	<T> T source() { return null; }
 	void sink(Object o) { }
 
@@ -45,6 +49,20 @@ public class Test {
 			sink(getMapValue(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
+			// "android.content;Intent;false;Intent;(String,Uri);;Argument[1];SyntheticField[android.content.Intent.data] of Argument[-1];value"
+			Intent out = null;
+			Uri in = (Uri)source();
+			out = new Intent(null, in);
+			sink(getData(out)); // $ hasValueFlow
+		}
+		{
+			// "android.content;Intent;false;Intent;(String,Uri,Context,Class);;Argument[1];SyntheticField[android.content.Intent.data] of Argument[-1];value"
+			Intent out = null;
+			Uri in = (Uri)source();
+			out = new Intent(null, in, null, null);
+			sink(getData(out)); // $ hasValueFlow
+		}
+		{
 			// "android.content;Intent;true;addCategory;;;Argument[-1];ReturnValue;value"
 			Intent out = null;
 			Intent in = (Intent)source();
@@ -57,6 +75,27 @@ public class Test {
 			Intent in = (Intent)source();
 			out = in.addFlags(0);
 			sink(out); // $ hasValueFlow
+		}
+		{
+			// "android.content;Intent;false;createChooser;;;Argument[0..2];MapValue of SyntheticField[android.content.Intent.extras] of ReturnValue;value"
+			Intent out = null;
+			CharSequence in = (CharSequence)source();
+			out = Intent.createChooser(null, in, null);
+			sink(getMapValue(getIntent_extras(out))); // $ hasValueFlow
+		}
+		{
+			// "android.content;Intent;false;createChooser;;;Argument[0..2];MapValue of SyntheticField[android.content.Intent.extras] of ReturnValue;value"
+			Intent out = null;
+			IntentSender in = (IntentSender)source();
+			out = Intent.createChooser(null, null, in);
+			sink(getMapValue(getIntent_extras(out))); // $ hasValueFlow
+		}
+		{
+			// "android.content;Intent;false;createChooser;;;Argument[0..2];MapValue of SyntheticField[android.content.Intent.extras] of ReturnValue;value"
+			Intent out = null;
+			Intent in = (Intent)source();
+			out = Intent.createChooser(in, null, null);
+			sink(getMapValue(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
 			// "android.content;Intent;true;getBundleExtra;(String);;MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];ReturnValue;value"
@@ -101,11 +140,39 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
+			// "android.content;Intent;true;getData;;;SyntheticField[android.content.Intent.data] of Argument[-1];ReturnValue;value"
+			Uri out = null;
+			Intent in = (Intent)newWithIntent_data(source());
+			out = in.getData();
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "android.content;Intent;true;getDataString;;;SyntheticField[android.content.Intent.data] of Argument[-1];ReturnValue;taint"
+			String out = null;
+			Intent in = (Intent)newWithIntent_data(source());
+			out = in.getDataString();
+			sink(out); // $ hasTaintFlow
+		}
+		{
 			// "android.content;Intent;true;getExtras;();;SyntheticField[android.content.Intent.extras] of Argument[-1];ReturnValue;value"
 			Bundle out = null;
 			Intent in = (Intent)newWithIntent_extras(source());
 			out = in.getExtras();
 			sink(out); // $ hasValueFlow
+		}
+		{
+			// "android.content;Intent;false;getIntent;;;Argument[0];SyntheticField[android.content.Intent.data] of Argument[-1];taint"
+			Intent out = null;
+			String in = (String)source();
+			out = Intent.getIntent(in);
+			sink(out.getData()); // $ hasTaintFlow
+		}
+		{
+			// "android.content;Intent;false;getIntentOld;;;Argument[0];SyntheticField[android.content.Intent.data] of Argument[-1];taint"
+			Intent out = null;
+			String in = (String)source();
+			out = Intent.getIntentOld(in);
+			sink(out.getData()); // $ hasTaintFlow
 		}
 		{
 			// "android.content;Intent;true;getParcelableArrayExtra;(String);;MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];ReturnValue;value"
@@ -155,6 +222,13 @@ public class Test {
 			Intent in = (Intent)newWithIntent_extras(newBundleWithMapValue(source()));
 			out = in.getStringExtra(null);
 			sink(out); // $ hasValueFlow
+		}
+		{
+			// "android.content;Intent;false;parseUri;;;Argument[0];SyntheticField[android.content.Intent.data] of Argument[-1];taint"
+			Intent out = null;
+			String in = (String)source();
+			out = Intent.parseUri(in, 0);
+			sink(out.getData()); // $ hasTaintFlow
 		}
 		{
 			// "android.content;Intent;true;putCharSequenceArrayListExtra;;;Argument[-1];ReturnValue;value"
@@ -862,6 +936,34 @@ public class Test {
 			Intent in = (Intent)source();
 			out = in.setData(null);
 			sink(out); // $ hasValueFlow
+		}
+		{
+			// "android.content;Intent;true;setData;;;Argument[0];SyntheticField[android.content.Intent.data] of Argument[-1];value",
+			Uri in = (Uri)source();
+			Intent instance = new Intent();
+			instance.setData(in);
+			sink(instance.getData()); // $ hasValueFlow
+		}
+		{
+			// "android.content;Intent;true;setDataAndNormalize;;;Argument[0];SyntheticField[android.content.Intent.data] of Argument[-1];value",
+			Uri in = (Uri)source();
+			Intent instance = new Intent();
+			instance.setDataAndNormalize(in);
+			sink(instance.getData()); // $ hasValueFlow
+		}
+		{
+			// "android.content;Intent;true;setDataAndType;;;Argument[0];SyntheticField[android.content.Intent.data] of Argument[-1];value",
+			Uri in = (Uri)source();
+			Intent instance = new Intent();
+			instance.setDataAndType(in, null);
+			sink(instance.getData()); // $ hasValueFlow
+		}
+		{
+			// "android.content;Intent;true;setDataAndTypeAndNormalize;;;Argument[0];SyntheticField[android.content.Intent.data] of Argument[-1];value",
+			Uri in = (Uri)source();
+			Intent instance = new Intent();
+			instance.setDataAndTypeAndNormalize(in, null);
+			sink(instance.getData()); // $ hasValueFlow
 		}
 		{
 			// "android.content;Intent;true;setDataAndNormalize;;;Argument[-1];ReturnValue;value"
