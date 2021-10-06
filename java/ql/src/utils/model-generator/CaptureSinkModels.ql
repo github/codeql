@@ -12,10 +12,10 @@ import semmle.code.java.dataflow.ExternalFlow
 import ModelGeneratorUtils
 
 class PropagateToSinkConfiguration extends TaintTracking::Configuration {
-  PropagateToSinkConfiguration() { this = "public methods calling sinks" }
+  PropagateToSinkConfiguration() { this = "parameters on public api flowing into sinks" }
 
   override predicate isSource(DataFlow::Node source) {
-    source.asParameter().getCallable().isPublic()
+    source instanceof DataFlow::ParameterNode and source.asParameter().getCallable().isPublic() and source.asParameter().getCallable().getDeclaringType().isPublic()
   }
 
   override predicate isSink(DataFlow::Node sink) { sinkNode(sink, _) }
@@ -29,7 +29,7 @@ string captureSink(Callable api) {
   exists(DataFlow::Node src, DataFlow::Node sink, PropagateToSinkConfiguration config, string kind |
     config.hasFlow(src, sink) and
     sinkNode(sink, kind) and
-    api = src.asParameter().getCallable() and
+    api = src.getEnclosingCallable() and
     result = asSinkModel(api, asInputArgument(src), kind)
   )
 }

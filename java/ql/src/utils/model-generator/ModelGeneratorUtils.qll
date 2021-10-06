@@ -60,5 +60,6 @@ string parameterAccess(Parameter p) {
 
 predicate isInTestFile(Callable api) {
   api.getCompilationUnit().getFile().getAbsolutePath().matches("%src/test/%") or
-  api.getCompilationUnit().getFile().getAbsolutePath().matches("%src/guava-tests/%")
+  api.getCompilationUnit().getFile().getAbsolutePath().matches("%/guava-tests/%") or
+  api.getCompilationUnit().getFile().getAbsolutePath().matches("%/guava-testlib/%")
 }
