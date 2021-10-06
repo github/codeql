@@ -24,9 +24,25 @@ module CookieWrites {
 
     /**
      * Holds if the cookie is likely an authentication cookie or otherwise sensitive.
-     * Can never hold for client-side cookies. TODO: Or can it...?
+     * Can never hold for client-side cookies.
      */
     abstract predicate isSensitive();
+
+    /**
+     * Holds if the cookie write happens on a server, that is `httpOnly` flag is relevant.
+     */
+    predicate isServerSide() {
+      any() // holds by default. Client-side cookie writes should extend ClientSideCookieWrite.
+    }
+  }
+
+  /**
+   * A client-side write to a cookie.
+   */
+  abstract class ClientSideCookieWrite extends CookieWrite {
+    final override predicate isHttpOnly() { none() }
+
+    final override predicate isServerSide() { none() }
   }
 
   /**
@@ -43,6 +59,7 @@ module CookieWrites {
 /**
  * A model of the `js-cookie` library (https://github.com/js-cookie/js-cookie).
  */
+// TODO: Writes to document.cookie.
 private module JsCookie {
   /**
    * Gets a function call that invokes method `name` of the `js-cookie` library.
@@ -61,7 +78,8 @@ private module JsCookie {
     }
   }
 
-  class WriteAccess extends PersistentWriteAccess, DataFlow::CallNode, CookieWrites::CookieWrite {
+  class WriteAccess extends PersistentWriteAccess, DataFlow::CallNode,
+    CookieWrites::ClientSideCookieWrite {
     WriteAccess() { this = libMemberCall("set") }
 
     string getKey() { getArgument(0).mayHaveStringValue(result) }
@@ -78,8 +96,6 @@ private module JsCookie {
           this.getArgument(0).mayHaveStringValue(s)
         ), _)
     }
-
-    override predicate isHttpOnly() { none() } // js-cookie is browser side library and doesn't support HttpOnly
   }
 }
 
