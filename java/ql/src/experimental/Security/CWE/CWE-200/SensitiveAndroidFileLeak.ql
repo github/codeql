@@ -1,6 +1,6 @@
 /**
  * @name Leaking sensitive Android file
- * @description Getting file intent from user input without path validation could leak arbitrary
+ * @description Using a path specified in an Android Intent without validation could leak arbitrary
  *              Android configuration file and sensitive user data.
  * @kind path-problem
  * @id java/sensitive-android-file-leak
@@ -35,18 +35,17 @@ class AndroidFileLeakConfig extends TaintTracking::Configuration {
 
   /**
    * Holds if `src` is a read of some Intent-typed variable guarded by a check like
-   * `requestCode == REQUEST_CODE__SELECT_CONTENT_FROM_APPS`, where `requestCode` is the first
-   * argument to `Activity.onActivityResult` and `REQUEST_CODE__SELECT_CONTENT_FROM_APPS` is
-   * any request code in a call to `startActivityForResult(intent, code)`.
+   * `requestCode == someCode`, where `requestCode` is the first
+   * argument to `Activity.onActivityResult` and `someCode` is
+   * any request code used in a call to `startActivityForResult(intent, someCode)`.
    */
   override predicate isSource(DataFlow::Node src) {
     exists(
-      AndroidActivityResultInput ai, AndroidFileIntentInput fi, ConditionBlock cb, EQExpr ee,
-      CompileTimeConstantExpr cc, VarAccess intentVar
+      OnActivityForResultMethod oafr, ConditionBlock cb, CompileTimeConstantExpr cc,
+      VarAccess intentVar
     |
-      cb.getCondition() = ee and
-      ee.hasOperands(ai.getRequestCodeVar(), cc) and
-      cc.getIntValue() = fi.getRequestCode() and
+      cb.getCondition().(EQExpr).hasOperands(oafr.getParameter(0).getAnAccess(), cc) and
+      cc.getIntValue() = any(AndroidFileIntentInput fi).getRequestCode() and
       intentVar.getType() instanceof TypeIntent and
       cb.controls(intentVar.getBasicBlock(), true) and
       src.asExpr() = intentVar

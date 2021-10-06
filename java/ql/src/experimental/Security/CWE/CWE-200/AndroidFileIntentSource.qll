@@ -5,7 +5,7 @@ import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking2
 import semmle.code.java.frameworks.android.Android
 
-/** The `startActivityForResult` method of Android `Activity`. */
+/** The `startActivityForResult` method of Android's `Activity` class. */
 class StartActivityForResultMethod extends Method {
   StartActivityForResultMethod() {
     this.getDeclaringType().getASupertype*() instanceof AndroidActivity and
@@ -13,7 +13,7 @@ class StartActivityForResultMethod extends Method {
   }
 }
 
-/** Android class instance of `GET_CONTENT` intent. */
+/** An instance of `android.content.Intent` constructed passing `GET_CONTENT` to the constructor. */
 class GetContentIntent extends ClassInstanceExpr {
   GetContentIntent() {
     this.getConstructedType() instanceof TypeIntent and
@@ -28,7 +28,7 @@ class GetContentIntent extends ClassInstanceExpr {
   }
 }
 
-/** Taint configuration for getting content intent. */
+/** Taint configuration that identifies `GET_CONTENT` `Intent` instances passed to `startActivityForResult`. */
 class GetContentIntentConfig extends TaintTracking2::Configuration {
   GetContentIntentConfig() { this = "GetContentIntentConfig" }
 
@@ -56,8 +56,8 @@ class GetContentIntentConfig extends TaintTracking2::Configuration {
   }
 }
 
-/** Android `Intent` input to request file loading. */
-class AndroidFileIntentInput extends LocalUserInput {
+/** A `GET_CONTENT` `Intent` instances that is passed to `startActivityForResult`. */
+class AndroidFileIntentInput extends DataFlow::Node {
   MethodAccess ma;
 
   AndroidFileIntentInput() {
@@ -68,7 +68,7 @@ class AndroidFileIntentInput extends LocalUserInput {
     )
   }
 
-  /** The request code identifying a specific intent, which is to be matched in `onActivityResult()`. */
+  /** The request code passed to `startActivityForResult`, which is to be matched in `onActivityResult()`. */
   int getRequestCode() { result = ma.getArgument(1).(CompileTimeConstantExpr).getIntValue() }
 }
 
@@ -78,14 +78,4 @@ class OnActivityForResultMethod extends Method {
     this.getDeclaringType().getASupertype*() instanceof AndroidActivity and
     this.getName() = "onActivityResult"
   }
-}
-
-/** Input of Android activity result from the same application or another application. */
-class AndroidActivityResultInput extends DataFlow::Node {
-  OnActivityForResultMethod m;
-
-  AndroidActivityResultInput() { this.asExpr() = m.getParameter(2).getAnAccess() }
-
-  /** The request code matching a specific intent request. */
-  VarAccess getRequestCodeVar() { result = m.getParameter(0).getAnAccess() }
 }

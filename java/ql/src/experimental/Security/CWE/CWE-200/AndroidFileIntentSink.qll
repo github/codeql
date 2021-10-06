@@ -19,7 +19,7 @@ class AsyncTask extends RefType {
   AsyncTask() { this.hasQualifiedName("android.os", "AsyncTask") }
 }
 
-/** The `execute` or `executeOnExecutor` method of Android `AsyncTask`. */
+/** The `execute` or `executeOnExecutor` method of Android's `AsyncTask` class. */
 class ExecuteAsyncTaskMethod extends Method {
   int paramIndex;
 
@@ -35,7 +35,7 @@ class ExecuteAsyncTaskMethod extends Method {
   int getParamIndex() { result = paramIndex }
 }
 
-/** The `doInBackground` method of Android `AsyncTask`. */
+/** The `doInBackground` method of Android's `AsyncTask` class. */
 class AsyncTaskRunInBackgroundMethod extends Method {
   AsyncTaskRunInBackgroundMethod() {
     this.getDeclaringType().getSourceDeclaration().getASourceSupertype*() instanceof AsyncTask and
@@ -43,7 +43,7 @@ class AsyncTaskRunInBackgroundMethod extends Method {
   }
 }
 
-/** The service start method of Android context. */
+/** The service start method of Android's `Context` class. */
 class ContextStartServiceMethod extends Method {
   ContextStartServiceMethod() {
     this.getName() = ["startService", "startForegroundService"] and
@@ -51,7 +51,7 @@ class ContextStartServiceMethod extends Method {
   }
 }
 
-/** The `onStartCommand` method of Android service. */
+/** The `onStartCommand` method of Android's `Service` class. */
 class ServiceOnStartCommandMethod extends Method {
   ServiceOnStartCommandMethod() {
     this.hasName("onStartCommand") and
