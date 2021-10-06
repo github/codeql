@@ -3286,11 +3286,6 @@ class PathNode extends TPathNode {
   /** Gets the associated configuration. */
   Configuration getConfiguration() { none() }
 
-  private PathNode getASuccessorIfHidden() {
-    this.(PathNodeImpl).isHidden() and
-    result = this.(PathNodeImpl).getASuccessorImpl()
-  }
-
   /** Gets a successor of this node, if any. */
   final PathNode getASuccessor() {
     result = this.(PathNodeImpl).getASuccessorImpl().getASuccessorIfHidden*() and
@@ -3303,7 +3298,7 @@ class PathNode extends TPathNode {
 }
 
 abstract private class PathNodeImpl extends PathNode {
-  abstract PathNode getASuccessorImpl();
+  abstract PathNodeImpl getASuccessorImpl();
 
   abstract NodeEx getNodeEx();
 
@@ -3313,6 +3308,36 @@ abstract private class PathNodeImpl extends PathNode {
     not this instanceof PathNodeSink
     or
     this.getNodeEx() instanceof TNodeImplicitRead
+  }
+
+  PathNodeImpl getASuccessorIfHidden() {
+    this.isHidden() and
+    result = this.getASuccessorImpl()
+  }
+
+  PathNodeImpl getAPredecessorIfHidden() {
+    this.isHidden() and
+    result.getASuccessorImpl() = this
+  }
+
+  /**
+   * Gets a transitive successor of this node (or the node itself), which
+   * is reached from this non-hidden node, using a restricted successor
+   * relation where the target is hidden.
+   */
+  PathNodeImpl getASuccRepr() {
+    result.getAPredecessorIfHidden*() = this and
+    not this.isHidden()
+  }
+
+  /**
+   * Gets a transitive predecessor of this node (or the node itself), which
+   * is reached from this non-hidden node, using a restricted predecessor
+   * relation where the target is hidden.
+   */
+  PathNodeImpl getAPredRepr() {
+    result.getASuccessorIfHidden*() = this and
+    not this.isHidden()
   }
 
   private string ppAp() {
@@ -3436,7 +3461,7 @@ private class PathNodeSink extends PathNodeImpl, TPathNodeSink {
 
   override Configuration getConfiguration() { result = config }
 
-  override PathNode getASuccessorImpl() { none() }
+  override PathNodeImpl getASuccessorImpl() { none() }
 
   override predicate isSource() { sourceNode(node, config) }
 }
@@ -3676,13 +3701,14 @@ private module Subpaths {
    */
   pragma[nomagic]
   private predicate subpaths01(
-    PathNode arg, ParamNodeEx par, SummaryCtxSome sc, CallContext innercc, ReturnKindExt kind,
+    PathNodeImpl arg, ParamNodeEx par, SummaryCtxSome sc, CallContext innercc, ReturnKindExt kind,
     NodeEx out, AccessPath apout
   ) {
     exists(Configuration config |
       pathThroughCallable(arg, out, _, pragma[only_bind_into](apout)) and
       pathIntoCallable(arg, par, _, innercc, sc, _, config) and
-      paramFlowsThrough(kind, innercc, sc, pragma[only_bind_into](apout), _, unbindConf(config))
+      paramFlowsThrough(kind, innercc, sc, pragma[only_bind_into](apout), _, unbindConf(config)) and
+      not arg.isHidden()
     )
   }
 
@@ -3716,8 +3742,20 @@ private module Subpaths {
       innercc = ret.getCallContext() and
       sc = ret.getSummaryCtx() and
       ret.getConfiguration() = unbindConf(getPathNodeConf(arg)) and
-      apout = ret.getAp() and
-      not ret.isHidden()
+      apout = ret.getAp()
+    )
+  }
+
+  pragma[nomagic]
+  private predicate subpaths04(PathNodeImpl arg, PathNodeImpl par, PathNodeMid ret, PathNodeMid out) {
+    exists(ParamNodeEx p, NodeEx o, AccessPath apout |
+      pragma[only_bind_into](arg).getASuccessor() = par and
+      pragma[only_bind_into](arg).getASuccessor() = out and
+      subpaths03(arg, p, ret.getASuccRepr(), o, apout) and
+      par.getAPredRepr().getNodeEx() = p and
+      out.getNodeEx() = o and
+      out.getAp() = apout and
+      not out.isHidden()
     )
   }
 
@@ -3726,15 +3764,9 @@ private module Subpaths {
    * a subpath between `par` and `ret` with the connecting edges `arg -> par` and
    * `ret -> out` is summarized as the edge `arg -> out`.
    */
-  predicate subpaths(PathNode arg, PathNodeImpl par, PathNodeMid ret, PathNodeMid out) {
-    exists(ParamNodeEx p, NodeEx o, AccessPath apout |
-      pragma[only_bind_into](arg).getASuccessor() = par and
-      pragma[only_bind_into](arg).getASuccessor() = out and
-      subpaths03(arg, p, ret, o, apout) and
-      par.getNodeEx() = p and
-      out.getNodeEx() = o and
-      out.getAp() = apout
-    )
+  predicate subpaths(PathNodeImpl arg, PathNodeImpl par, PathNodeMid ret, PathNodeMid out) {
+    subpaths04(arg, par, ret, out) and
+    par.getASuccessor*() = ret
   }
 
   /**
