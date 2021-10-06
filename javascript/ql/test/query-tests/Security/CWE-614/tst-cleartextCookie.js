@@ -60,8 +60,10 @@ function test2() {
 function test3() {
     const server = http.createServer((req, res) => {
         res.setHeader('Content-Type', 'text/html');
-        // BAD (and good, TODO: Move to separate lines)
-        res.setHeader("Set-Cookie", ["authKey=ninja", "language=javascript"]);
+        res.setHeader("Set-Cookie", [
+            "authKey=ninja", // NOT OK
+            "language=javascript" // OK
+            ]);
         res.writeHead(200, { 'Content-Type': 'text/plain' });
         res.end('ok');
     });
@@ -90,8 +92,10 @@ function test5() {
 function test6() {
     const server = http.createServer((req, res) => {
         res.setHeader('Content-Type', 'text/html');
-        // BAD (and good. TODO: Move to separate lines)
-        res.setHeader("Set-Cookie", ["type=ninja; secure", "authKey=foo"]);
+        res.setHeader("Set-Cookie", [
+            "type=ninja; secure", // OK 
+            "authKey=foo" // NOT OK
+        ]);
         res.writeHead(200, { 'Content-Type': 'text/plain' });
         res.end('ok');
     });
