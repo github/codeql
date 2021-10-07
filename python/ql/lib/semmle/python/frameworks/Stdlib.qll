@@ -429,6 +429,22 @@ private module StdlibPrivate {
   // marshal
   // ---------------------------------------------------------------------------
   /**
+   * A call to `marshal.load`
+   * See https://docs.python.org/3/library/marshal.html#marshal.load
+   */
+  private class MarshalLoadCall extends Decoding::Range, DataFlow::CallCfgNode {
+    MarshalLoadCall() { this = API::moduleImport("marshal").getMember("load").getACall() }
+
+    override predicate mayExecuteInput() { any() }
+
+    override DataFlow::Node getAnInput() { result = this.getArg(0) }
+
+    override DataFlow::Node getOutput() { result = this }
+
+    override string getFormat() { result = "marshal" }
+  }
+
+  /**
    * A call to `marshal.loads`
    * See https://docs.python.org/3/library/marshal.html#marshal.loads
    */
