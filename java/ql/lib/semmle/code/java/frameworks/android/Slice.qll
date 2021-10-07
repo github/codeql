@@ -1,39 +1,46 @@
 /** Provides classes and predicates related to `androidx.slice`. */
 
 import java
+private import semmle.code.java.dataflow.DataFlow
+private import semmle.code.java.dataflow.FlowSteps
 private import semmle.code.java.dataflow.ExternalFlow
+
+private class SliceActionsInheritTaint extends DataFlow::SyntheticFieldContent,
+  TaintInheritingContent {
+  SliceActionsInheritTaint() { this.getField().matches("androidx.slice.Slice.action") }
+}
 
 private class SliceBuildersSummaryModels extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
-        "androidx.slice.builders;ListBuilder;false;addAction;;;Argument[0];Argument[-1];taint",
-        "androidx.slice.builders;ListBuilder;false;addGridRow;;;Argument[0];Argument[-1];taint",
-        "androidx.slice.builders;ListBuilder;false;addInputRange;;;Argument[0];Argument[-1];taint",
-        "androidx.slice.builders;ListBuilder;false;addRange;;;Argument[0];Argument[-1];taint",
-        "androidx.slice.builders;ListBuilder;false;addRating;;;Argument[0];Argument[-1];taint",
-        "androidx.slice.builders;ListBuilder;false;addRow;;;Argument[0];Argument[-1];taint",
-        "androidx.slice.builders;ListBuilder;false;addSelection;;;Argument[0];Argument[-1];taint",
-        "androidx.slice.builders;ListBuilder;false;setHeader;;;Argument[0];Argument[-1];taint",
-        "androidx.slice.builders;ListBuilder;false;setSeeMoreAction;;;Argument[0];Argument[-1];taint",
-        "androidx.slice.builders;ListBuilder;true;setSeeMoreRow;;;Argument[0];Argument[-1];taint",
-        "androidx.slice.builders;ListBuilder;true;build;;;Argument[-1];ReturnValue;taint",
-        "androidx.slice.builders;ListBuilder$HeaderBuilder;false;setPrimaryAction;;;Argument[0];Argument[-1];taint",
-        "androidx.slice.builders;ListBuilder$InputRangeBuilder;false;addEndItem;;;Argument[0];Argument[-1];taint",
-        "androidx.slice.builders;ListBuilder$InputRangeBuilder;false;setInputAction;(PendingIntent);;Argument[0];Argument[-1];taint",
-        "androidx.slice.builders;ListBuilder$InputRangeBuilder;false;setPrimaryAction;;;Argument[0];Argument[-1];taint",
-        "androidx.slice.builders;ListBuilder$RangeBuilder;false;setPrimaryAction;;;Argument[0];Argument[-1];taint",
-        "androidx.slice.builders;ListBuilder$RatingBuilder;false;setInputAction;(PendingIntent);;Argument[0];Argument[-1];taint",
-        "androidx.slice.builders;ListBuilder$RatingBuilder;false;setPrimaryAction;;;Argument[0];Argument[-1];taint",
-        "androidx.slice.builders;ListBuilder$RowBuilder;false;addEndItem;(SliceAction,boolean);;Argument[0];Argument[-1];taint",
-        "androidx.slice.builders;ListBuilder$RowBuilder;false;addEndItem;(SliceAction);;Argument[0];Argument[-1];taint",
-        "androidx.slice.builders;ListBuilder$RowBuilder;false;setPrimaryAction;;;Argument[0];Argument[-1];taint",
-        "androidx.slice.builders;ListBuilder$RowBuilder;false;setTitleItem;(SliceAction,boolean);;Argument[0];Argument[-1];taint",
-        "androidx.slice.builders;ListBuilder$RowBuilder;false;setTitleItem;(SliceAction);;Argument[0];Argument[-1];taint",
-        "androidx.slice.builders;SliceAction;false;create;(PendingIntent,IconCompat,int,CharSequence);;Argument[0];ReturnValue;taint",
-        "androidx.slice.builders;SliceAction;false;createDeeplink;(PendingIntent,IconCompat,int,CharSequence);;Argument[0];ReturnValue;taint",
-        "androidx.slice.builders;SliceAction;false;createToggle;(PendingIntent,CharSequence,boolean);;Argument[0];ReturnValue;taint",
-        "androidx.slice.builders;SliceAction;false;getAction;;;Argument[-1];ReturnValue;taint",
+        "androidx.slice.builders;ListBuilder;true;addAction;;;SyntheticField[androidx.slice.Slice.action] of Argument[0];SyntheticField[androidx.slice.Slice.action] of Argument[-1];taint",
+        "androidx.slice.builders;ListBuilder;true;addGridRow;;;SyntheticField[androidx.slice.Slice.action] of Argument[0];SyntheticField[androidx.slice.Slice.action] of Argument[-1];taint",
+        "androidx.slice.builders;ListBuilder;true;addInputRange;;;SyntheticField[androidx.slice.Slice.action] of Argument[0];SyntheticField[androidx.slice.Slice.action] of Argument[-1];taint",
+        "androidx.slice.builders;ListBuilder;true;addRange;;;SyntheticField[androidx.slice.Slice.action] of Argument[0];SyntheticField[androidx.slice.Slice.action] of Argument[-1];taint",
+        "androidx.slice.builders;ListBuilder;true;addRating;;;SyntheticField[androidx.slice.Slice.action] of Argument[0];SyntheticField[androidx.slice.Slice.action] of Argument[-1];taint",
+        "androidx.slice.builders;ListBuilder;true;addRow;;;SyntheticField[androidx.slice.Slice.action] of Argument[0];SyntheticField[androidx.slice.Slice.action] of Argument[-1];taint",
+        "androidx.slice.builders;ListBuilder;true;addSelection;;;SyntheticField[androidx.slice.Slice.action] of Argument[0];SyntheticField[androidx.slice.Slice.action] of Argument[-1];taint",
+        "androidx.slice.builders;ListBuilder;true;setHeader;;;SyntheticField[androidx.slice.Slice.action] of Argument[0];SyntheticField[androidx.slice.Slice.action] of Argument[-1];taint",
+        "androidx.slice.builders;ListBuilder;true;setSeeMoreAction;(PendingIntent);;Argument[0];SyntheticField[androidx.slice.Slice.action] of Argument[-1];taint",
+        "androidx.slice.builders;ListBuilder;true;setSeeMoreRow;;;SyntheticField[androidx.slice.Slice.action] of Argument[0];SyntheticField[androidx.slice.Slice.action] of Argument[-1];taint",
+        "androidx.slice.builders;ListBuilder;true;build;;;SyntheticField[androidx.slice.Slice.action] of Argument[-1];ReturnValue;taint",
+        "androidx.slice.builders;ListBuilder$HeaderBuilder;true;setPrimaryAction;;;SyntheticField[androidx.slice.Slice.action] of Argument[0];SyntheticField[androidx.slice.Slice.action] of Argument[-1];taint",
+        "androidx.slice.builders;ListBuilder$InputRangeBuilder;true;addEndItem;;;SyntheticField[androidx.slice.Slice.action] of Argument[0];SyntheticField[androidx.slice.Slice.action] of Argument[-1];taint",
+        "androidx.slice.builders;ListBuilder$InputRangeBuilder;true;setInputAction;(PendingIntent);;Argument[0];SyntheticField[androidx.slice.Slice.action] of Argument[-1];taint",
+        "androidx.slice.builders;ListBuilder$InputRangeBuilder;true;setPrimaryAction;;;SyntheticField[androidx.slice.Slice.action] of Argument[0];SyntheticField[androidx.slice.Slice.action] of Argument[-1];taint",
+        "androidx.slice.builders;ListBuilder$RangeBuilder;true;setPrimaryAction;;;SyntheticField[androidx.slice.Slice.action] of Argument[0];SyntheticField[androidx.slice.Slice.action] of Argument[-1];taint",
+        "androidx.slice.builders;ListBuilder$RatingBuilder;true;setInputAction;(PendingIntent);;Argument[0];SyntheticField[androidx.slice.Slice.action] of Argument[-1];taint",
+        "androidx.slice.builders;ListBuilder$RatingBuilder;true;setPrimaryAction;;;SyntheticField[androidx.slice.Slice.action] of Argument[0];SyntheticField[androidx.slice.Slice.action] of Argument[-1];taint",
+        "androidx.slice.builders;ListBuilder$RowBuilder;true;addEndItem;(SliceAction,boolean);;SyntheticField[androidx.slice.Slice.action] of Argument[0];SyntheticField[androidx.slice.Slice.action] of Argument[-1];taint",
+        "androidx.slice.builders;ListBuilder$RowBuilder;true;addEndItem;(SliceAction);;SyntheticField[androidx.slice.Slice.action] of Argument[0];SyntheticField[androidx.slice.Slice.action] of Argument[-1];taint",
+        "androidx.slice.builders;ListBuilder$RowBuilder;true;setPrimaryAction;;;SyntheticField[androidx.slice.Slice.action] of Argument[0];SyntheticField[androidx.slice.Slice.action] of Argument[-1];taint",
+        "androidx.slice.builders;ListBuilder$RowBuilder;true;setTitleItem;(SliceAction,boolean);;SyntheticField[androidx.slice.Slice.action] of Argument[0];SyntheticField[androidx.slice.Slice.action] of Argument[-1];taint",
+        "androidx.slice.builders;ListBuilder$RowBuilder;true;setTitleItem;(SliceAction);;SyntheticField[androidx.slice.Slice.action] of Argument[0];SyntheticField[androidx.slice.Slice.action] of Argument[-1];taint",
+        "androidx.slice.builders;SliceAction;true;create;(PendingIntent,IconCompat,int,CharSequence);;Argument[0];SyntheticField[androidx.slice.Slice.action] of ReturnValue;taint",
+        "androidx.slice.builders;SliceAction;true;createDeeplink;(PendingIntent,IconCompat,int,CharSequence);;Argument[0];SyntheticField[androidx.slice.Slice.action] of ReturnValue;taint",
+        "androidx.slice.builders;SliceAction;true;createToggle;(PendingIntent,CharSequence,boolean);;Argument[0];SyntheticField[androidx.slice.Slice.action] of ReturnValue;taint",
+        "androidx.slice.builders;SliceAction;true;getAction;;;SyntheticField[androidx.slice.Slice.action] of Argument[-1];ReturnValue;taint",
         // Fluent models
         "androidx.slice.builders;ListBuilder;true;" +
           [
