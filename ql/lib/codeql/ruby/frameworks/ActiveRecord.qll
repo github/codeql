@@ -296,10 +296,6 @@ private class ActiveRecordModelFinderCall extends ActiveRecordModelInstantiation
   }
 
   final override ActiveRecordModelClass getClass() { result = cls }
-
-  string getConstantQualifiedClassName() { result = constantQualifiedName(cls) }
-
-  Expr getUltimateReceiver() { result = recv }
 }
 
 // A `self` reference that may resolve to an active record model object
