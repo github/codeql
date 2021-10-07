@@ -5,7 +5,6 @@
 import java
 import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.xml.AndroidManifest
-private import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * Gets a transitive superType avoiding magic optimisation
