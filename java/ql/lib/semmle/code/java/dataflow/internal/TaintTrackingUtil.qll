@@ -83,7 +83,11 @@ private module Cached {
       not sink.getTypeBound() instanceof PrimitiveType and
       not sink.getTypeBound() instanceof BoxedType and
       not sink.getTypeBound() instanceof NumberType and
-      containerContent(f)
+      (
+        containerContent(f)
+        or
+        f instanceof TaintInheritingContent
+      )
     )
     or
     FlowSummaryImpl::Private::Steps::summaryLocalStep(src, sink, false)
