@@ -795,14 +795,14 @@ fn limit_string(string: &str, max_size: usize) -> &str {
     if string.len() <= max_size {
         return string;
     }
-    let p = string.as_ptr();
+    let p = string.as_bytes();
     let mut index = max_size;
     // We want to clip the string at [max_size]; however, the character at that position
     // may span several bytes. We need to find the first byte of the character. In UTF-8
     // encoded data any byte that matches the bit pattern 10XXXXXX is not a start byte.
     // Therefore we decrement the index as long as there are bytes matching this pattern.
     // This ensures we cut the string at the border between one character and another.
-    while index > 0 && unsafe { (*p.add(index) & 0b11000000) == 0b10000000 } {
+    while index > 0 && (p[index] & 0b11000000) == 0b10000000 {
         index -= 1;
     }
     &string[0..index]
