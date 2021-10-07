@@ -39,3 +39,7 @@ Passwords::KnownPasswords.new.include?("kdW/xVhiv6y1fQQNevDpUaq+2rfPKfh+teE/45zS
 
 # Call to unrelated method with same name (should not be flagged)
 "foobar".include?("foo")
+
+def default_cred(username = "user@test.com", password = "abcdef123456")
+  username
+end

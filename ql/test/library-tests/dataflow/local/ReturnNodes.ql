@@ -1,4 +1,4 @@
 import ruby
 import codeql.ruby.dataflow.internal.DataFlowPrivate
 
-select any(ReturnNode node)
+select any(ReturningNode node)
