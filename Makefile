@@ -76,7 +76,7 @@ tools-win64: $(addsuffix .exe,$(addprefix tools/win64/,$(BINARIES)))
 $(addsuffix .exe,$(addprefix tools/win64/,$(BINARIES))):
 	env GOOS=windows GOARCH=amd64 go build -mod=vendor -o $@ ./extractor/cli/$(basename $(@F))
 
-.PHONY: extractor-common extractor extractor-full
+.PHONY: extractor-common extractor extractor-full install-deps
 extractor-common: codeql-extractor.yml LICENSE ql/lib/go.dbscheme \
 	tools/tokenizer.jar $(CODEQL_TOOLS)
 	rm -rf $(EXTRACTOR_PACK_OUT)
