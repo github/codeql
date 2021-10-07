@@ -55,3 +55,16 @@ constantValue
 | constants.rb:39:6:39:31 | MAX_SIZE | constants.rb:37:30:37:33 | 1024 |
 | constants.rb:41:6:41:13 | GREETING | constants.rb:17:12:17:64 | ... + ... |
 | constants.rb:42:6:42:15 | GREETING | constants.rb:17:12:17:64 | ... + ... |
+constantWriteAccessQualifiedName
+| constants.rb:1:1:15:3 | ModuleA | ModuleA |
+| constants.rb:2:5:4:7 | ClassA | ModuleA::ClassA |
+| constants.rb:3:9:3:15 | CONST_A | ModuleA::ClassA::CONST_A |
+| constants.rb:6:5:6:11 | CONST_B | ModuleA::CONST_B |
+| constants.rb:8:5:14:7 | ModuleB | ModuleA::ModuleB |
+| constants.rb:9:9:10:11 | ClassB | ModuleA::ModuleB::ClassB |
+| constants.rb:12:9:13:11 | ClassC | ModuleA::ModuleB::ClassC |
+| constants.rb:17:1:17:8 | GREETING | GREETING |
+| constants.rb:20:5:20:9 | Names | Names |
+| constants.rb:31:1:32:3 | ClassD | ClassD |
+| constants.rb:34:1:35:3 | ModuleC | ModuleC |
+| constants.rb:37:1:37:26 | MAX_SIZE | MAX_SIZE |

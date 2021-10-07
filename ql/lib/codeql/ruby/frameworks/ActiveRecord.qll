@@ -216,18 +216,6 @@ class ActiveRecordSqlExecutionRange extends SqlExecution::Range {
 
 // TODO: model `ActiveRecord` sanitizers
 // https://api.rubyonrails.org/classes/ActiveRecord/Sanitization/ClassMethods.html
-// TODO: factor this out
-private string constantQualifiedName(ConstantWriteAccess w) {
-  /* get the qualified name for the parent module, then append w */
-  exists(ConstantWriteAccess parent | parent = w.getEnclosingModule() |
-    result = constantQualifiedName(parent) + "::" + w.getName()
-  )
-  or
-  /* base case - there's no parent module */
-  not exists(ConstantWriteAccess parent | parent = w.getEnclosingModule()) and
-  result = w.getName()
-}
-
 /**
  * A node that may evaluate to one or more `ActiveRecordModelClass` instances.
  */
@@ -290,7 +278,7 @@ private class ActiveRecordModelFinderCall extends ActiveRecordModelInstantiation
   ActiveRecordModelFinderCall() {
     call = this.asExpr().getExpr() and
     recv = getUltimateReceiver(call) and
-    resolveConstant(recv) = constantQualifiedName(cls) and
+    resolveConstant(recv) = cls.getQualifiedName() and
     call.getMethodName() = finderMethodName()
   }
 
