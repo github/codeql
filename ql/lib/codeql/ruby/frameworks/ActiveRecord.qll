@@ -71,7 +71,7 @@ class ActiveRecordModelClass extends ClassDeclaration {
   /**
    * Gets methods defined in this class that may access a field from the database.
    */
-  Method methodMayAccessField() {
+  Method getAPotentialFieldAccessMethod() {
     // It's a method on this class or one of its super classes
     result = this.getAllClassDeclarations().getAMethod() and
     // There is a value that can be returned by this method which may include field data
@@ -89,7 +89,7 @@ class ActiveRecordModelClass extends ClassDeclaration {
         )
         or
         // ...the called method can access a field
-        c.getATarget() = cNode.getInstance().getClass().methodMayAccessField()
+        c.getATarget() = cNode.getInstance().getClass().getAPotentialFieldAccessMethod()
       )
     )
   }
@@ -244,7 +244,7 @@ abstract class ActiveRecordModelInstantiation extends OrmInstantiation::Range,
       not exists(this.getClass().getMethod(methodName))
       or
       // ...the called method can access a field.
-      exists(Method m | m = this.getClass().methodMayAccessField() |
+      exists(Method m | m = this.getClass().getAPotentialFieldAccessMethod() |
         m.getName() = methodName
       )
     )
