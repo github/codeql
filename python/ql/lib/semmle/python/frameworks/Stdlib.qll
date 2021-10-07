@@ -459,7 +459,7 @@ private module StdlibPrivate {
 
     override predicate mayExecuteInput() { any() }
 
-    override DataFlow::Node getAnInput() { result = this.getArg(0) }
+    override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("data")] }
 
     override DataFlow::Node getOutput() { result = this }
 

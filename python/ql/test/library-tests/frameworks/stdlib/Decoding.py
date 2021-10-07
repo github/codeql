@@ -7,7 +7,7 @@ pickle.load(file_)  # $ MISSING: decodeInput=file_ decodeOutput=pickle.load(..) 
 pickle.load(file=file_)  # $ MISSING: decodeInput=file_ decodeOutput=pickle.load(..) decodeFormat=pickle decodeMayExecuteInput
 pickle.loads(payload)  # $ decodeInput=payload decodeOutput=pickle.loads(..) decodeFormat=pickle decodeMayExecuteInput
 # using this keyword argument is disallowed from Python 3.9
-pickle.loads(data=payload)  # $ decodeOutput=pickle.loads(..) decodeFormat=pickle decodeMayExecuteInput MISSING: decodeInput=payload
+pickle.loads(data=payload)  # $ decodeInput=payload decodeOutput=pickle.loads(..) decodeFormat=pickle decodeMayExecuteInput
 
 marshal.load(file_)  # $ MISSING: decodeInput=file_ decodeOutput=marshal.load(..) decodeFormat=marshal decodeMayExecuteInput
 marshal.loads(payload)  # $ decodeInput=payload decodeOutput=marshal.loads(..) decodeFormat=marshal decodeMayExecuteInput
