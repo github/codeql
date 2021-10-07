@@ -447,23 +447,15 @@ private module StdlibPrivate {
   // ---------------------------------------------------------------------------
   // pickle
   // ---------------------------------------------------------------------------
-  /** Gets a reference to the `pickle` module. */
-  DataFlow::Node pickle() { result = API::moduleImport(["pickle", "cPickle", "_pickle"]).getAUse() }
-
-  /** Provides models for the `pickle` module. */
-  module pickle {
-    /** Gets a reference to the `pickle.loads` function. */
-    DataFlow::Node loads() {
-      result = API::moduleImport(["pickle", "cPickle", "_pickle"]).getMember("loads").getAUse()
-    }
-  }
+  /** Gets a reference to any of the `pickle` modules. */
+  API::Node pickle() { result = API::moduleImport(["pickle", "cPickle", "_pickle"]) }
 
   /**
    * A call to `pickle.loads`
    * See https://docs.python.org/3/library/pickle.html#pickle.loads
    */
   private class PickleLoadsCall extends Decoding::Range, DataFlow::CallCfgNode {
-    PickleLoadsCall() { this.getFunction() = pickle::loads() }
+    PickleLoadsCall() { this = pickle().getMember("loads").getACall() }
 
     override predicate mayExecuteInput() { any() }
 
