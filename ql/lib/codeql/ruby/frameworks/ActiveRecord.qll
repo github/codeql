@@ -245,7 +245,6 @@ abstract class ActiveRecordModelInstantiation extends OrmInstantiation::Range,
       or
       // ...the called method can access a field.
       exists(Method m | m = this.getClass().methodMayAccessField() |
-        // We rely on matching by name here as the call graph might not have
         m.getName() = methodName
       )
     )
