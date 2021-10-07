@@ -29,8 +29,9 @@ private module MongoDB {
   private API::Node getAMongoClient() {
     result = API::moduleImport("mongodb").getMember("MongoClient")
     or
-    result = getAMongoDbCallback().getParameter(1) and
-    not result.getAnImmediateUse().(DataFlow::ParameterNode).getName() = "db" // mongodb v2 provides a `Db` here
+    // The callback parameter is either a MongoClient or Db depending on the mongodb package version,
+    // but we just model it as both.
+    result = getAMongoDbCallback().getParameter(1)
   }
 
   /** Gets an API-graph node that refers to a `connect` callback. */
@@ -44,8 +45,9 @@ private module MongoDB {
   private API::Node getAMongoDb() {
     result = getAMongoClient().getMember("db").getReturn()
     or
-    result = getAMongoDbCallback().getParameter(1) and
-    not result.getAnImmediateUse().(DataFlow::ParameterNode).getName() = "client" // mongodb v3 provides a `Mongoclient` here
+    // The callback parameter is either a MongoClient or Db depending on the mongodb package version,
+    // but we just model it as both.
+    result = getAMongoDbCallback().getParameter(1)
   }
 
   /** Gets a data flow node referring to a MongoDB collection. */
