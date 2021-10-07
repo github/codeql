@@ -398,6 +398,15 @@ private module Gvn {
       )
     }
 
+    pragma[noinline]
+    private predicate toStringPart(int i, int j) {
+      exists(Unification::GenericType t, int children |
+        t = this.getConstructedGenericDeclaringTypeAt(i) and
+        children = t.getNumberOfArgumentsSelf() and
+        if children = 0 then j = 0 else j in [0 .. 2 * children]
+      )
+    }
+
     language[monotonicAggregates]
     string toString() {
       this.isFullyConstructed() and
@@ -406,11 +415,7 @@ private module Gvn {
         or
         result =
           strictconcat(int i, int j |
-            exists(Unification::GenericType t, int children |
-              t = this.getConstructedGenericDeclaringTypeAt(i) and
-              children = t.getNumberOfArgumentsSelf() and
-              if children = 0 then j = 0 else j in [0 .. 2 * children]
-            )
+            this.toStringPart(i, j)
           |
             this.toStringConstructedPart(i, j) order by i desc, j
           )
