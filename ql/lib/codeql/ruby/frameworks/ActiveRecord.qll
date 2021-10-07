@@ -262,7 +262,7 @@ private string finderMethodName() {
         "fifth", "find", "find_by", "find_or_initialize_by", "find_or_create_by", "first",
         "forty_two", "fourth", "last", "second", "second_to_last", "take", "third", "third_to_last"
       ] and
-    (result = baseName or result = baseName + "!")
+    result = baseName + ["", "!"]
   )
   or
   result = "new"
