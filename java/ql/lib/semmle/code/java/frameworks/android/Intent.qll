@@ -36,25 +36,6 @@ class ContextStartActivityMethod extends Method {
   }
 }
 
-class IntentGetExtraMethod extends Method, TaintPreservingCallable {
-  IntentGetExtraMethod() {
-    (getName().regexpMatch("get\\w+Extra") or hasName("getExtras")) and
-    getDeclaringType() instanceof TypeIntent
-  }
-
-  override predicate returnsTaintFrom(int arg) { arg = -1 }
-}
-
-/** A getter on `android.os.BaseBundle` or `android.os.Bundle`. */
-class BundleGetterMethod extends Method, TaintPreservingCallable {
-  BundleGetterMethod() {
-    getDeclaringType().hasQualifiedName("android.os", ["BaseBundle", "Bundle"]) and
-    getName().matches("get%")
-  }
-
-  override predicate returnsTaintFrom(int arg) { arg = -1 }
-}
-
 /**
  * Specifies that if an `Intent` is tainted, then so are its synthetic fields.
  */
