@@ -96,6 +96,12 @@ module HTTP {
     predicate isSafe() {
       this = ["GET", "HEAD", "OPTIONS", "PRI", "PROPFIND", "REPORT", "SEARCH", "TRACE"]
     }
+
+    /**
+     * Holds if this kind of HTTP request should not generally be considered free of side effects,
+     * such as for `POST` or `PUT` requests.
+     */
+    predicate isUnsafe() { not isSafe() }
   }
 
   /**
