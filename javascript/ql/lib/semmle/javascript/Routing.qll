@@ -419,6 +419,8 @@ module Routing {
         or
         HTTP::routeHandlerStep(result, this)
         or
+        RouteHandlerTrackingStep::step(result, this)
+        or
         exists(string prop |
           StepSummary::smallstep(result, getSourceProp(prop).getALocalUse(), StoreStep(prop))
         )
@@ -493,6 +495,22 @@ module Routing {
       ImpliedArrayRoute() { this instanceof ValueNode::UseSite }
 
       override DataFlow::Node getArgumentNode(int n) { result = getElement(n) }
+    }
+  }
+
+  /**
+   * An edge that should be used for tracking route handler definitions to their use-sites.
+   *
+   * This may be subclassed by framework models to contribute additional steps.
+   */
+  class RouteHandlerTrackingStep extends Unit {
+    /** Holds if route handlers should be propagated along the edge `pred -> succ`. */
+    predicate step(DataFlow::Node pred, DataFlow::Node succ) { none() }
+  }
+
+  private module RouteHandlerTrackingStep {
+    predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      any(RouteHandlerTrackingStep s).step(pred, succ)
     }
   }
 

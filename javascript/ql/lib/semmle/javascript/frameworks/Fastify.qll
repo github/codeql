@@ -404,4 +404,14 @@ module Fastify {
       )
     }
   }
+
+  private class RouteHandlerTracking extends Routing::RouteHandlerTrackingStep {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(DataFlow::CallNode call |
+        call = DataFlow::moduleImport("fastify-plugin") and
+        pred = call.getArgument(0) and
+        succ = call
+      )
+    }
+  }
 }
