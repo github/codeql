@@ -5,7 +5,7 @@ comments
 | comments.kt:18:9:18:25 | // A line comment | // A line comment |
 | comments.kt:22:5:24:6 | /*\n    A block comment\n    */ | /*\n    A block comment\n    */ |
 commentOwners
-| comments.kt:4:1:11:3 | /**\n * A group of *members*.\n *\n * This class has no useful logic; it's just a documentation example.\n *\n * @property name the name of this group.\n * @constructor Creates an empty group.\n */ | comments.kt:12:1:25:1 | <init> |
+| comments.kt:4:1:11:3 | /**\n * A group of *members*.\n *\n * This class has no useful logic; it's just a documentation example.\n *\n * @property name the name of this group.\n * @constructor Creates an empty group.\n */ | comments.kt:12:1:25:1 | Group |
 | comments.kt:4:1:11:3 | /**\n * A group of *members*.\n *\n * This class has no useful logic; it's just a documentation example.\n *\n * @property name the name of this group.\n * @constructor Creates an empty group.\n */ | comments.kt:12:1:25:1 | Group |
 | comments.kt:4:1:11:3 | /**\n * A group of *members*.\n *\n * This class has no useful logic; it's just a documentation example.\n *\n * @property name the name of this group.\n * @constructor Creates an empty group.\n */ | comments.kt:12:1:25:1 | equals |
 | comments.kt:4:1:11:3 | /**\n * A group of *members*.\n *\n * This class has no useful logic; it's just a documentation example.\n *\n * @property name the name of this group.\n * @constructor Creates an empty group.\n */ | comments.kt:12:1:25:1 | hashCode |

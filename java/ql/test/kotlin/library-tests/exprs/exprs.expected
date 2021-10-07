@@ -47,7 +47,7 @@
 | exprs.kt:53:9:53:18 | ...=... | AssignExpr |
 | exprs.kt:53:9:53:18 | n | VarAccess |
 | exprs.kt:53:9:53:18 | n | VarAccess |
-| exprs.kt:54:27:54:31 | (no string representation) | ClassInstanceExpr |
+| exprs.kt:54:27:54:31 | new C(...) | ClassInstanceExpr |
 | exprs.kt:54:29:54:30 | 42 | IntegerLiteral |
 | file://:0:0:0:0 | b1 | LocalVariableDeclExpr |
 | file://:0:0:0:0 | b2 | LocalVariableDeclExpr |

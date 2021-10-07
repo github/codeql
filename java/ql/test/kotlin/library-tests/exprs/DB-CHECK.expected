@@ -1,0 +1,5 @@
+[VALUE_NOT_IN_TYPE] predicate typeArgs(@reftype argumentid, int pos, @typeorcallable parentid): Value 55 of field argumentid is not in type @reftype. The value is however in the following types: @primitive. Appears in tuple (55,0,189)
+	Relevant element: argumentid=55
+		Full ID for 55: @"type;boolean"
+	Relevant element: parentid=189
+		Full ID for 189: @"class;kotlin.reflect.KClass;(55)". The ID may expand to @"class;kotlin.reflect.KClass;{@"type;boolean"}"

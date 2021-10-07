@@ -12,3 +12,7 @@ query predicate genericFunction(GenericCallable c, TypeVariable tv, int i) {
 }
 
 query predicate genericCall(GenericCall c, TypeVariable tv, Type t) { c.getATypeArgument(tv) = t }
+
+query predicate genericCtor(ClassInstanceExpr c, int i, Type ta) {
+  c.getTypeArgument(i).getType() = ta
+}

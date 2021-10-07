@@ -27,3 +27,11 @@ genericCall
 | generics.kt:27:17:27:22 | f2(...) | generics.kt:15:10:15:10 | U | file://:0:0:0:0 | string |
 | generics.kt:30:17:30:21 | f2(...) | generics.kt:15:10:15:10 | U | file://:0:0:0:0 | int |
 | generics.kt:32:8:32:12 | f4(...) | generics.kt:21:10:21:10 | P | file://:0:0:0:0 | int |
+genericCtor
+| generics.kt:16:16:16:26 | new C1(...) | 0 | generics.kt:15:10:15:10 | U |
+| generics.kt:16:16:16:26 | new C1(...) | 1 | generics.kt:15:10:15:10 | U |
+| generics.kt:25:14:25:28 | new C1(...) | 0 | file://:0:0:0:0 | int |
+| generics.kt:25:14:25:28 | new C1(...) | 1 | file://:0:0:0:0 | int |
+| generics.kt:28:14:28:32 | new C1(...) | 0 | file://:0:0:0:0 | string |
+| generics.kt:28:14:28:32 | new C1(...) | 1 | file://:0:0:0:0 | int |
+| generics.kt:33:21:33:29 | new C0(...) | 0 | file://:0:0:0:0 | int |

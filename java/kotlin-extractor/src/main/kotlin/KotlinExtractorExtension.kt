@@ -11,7 +11,9 @@ import org.jetbrains.kotlin.ir.expressions.*
 import org.jetbrains.kotlin.ir.expressions.IrStatementOrigin.*
 import org.jetbrains.kotlin.ir.symbols.IrClassSymbol
 import org.jetbrains.kotlin.ir.symbols.IrClassifierSymbol
+import org.jetbrains.kotlin.ir.symbols.IrConstructorSymbol
 import org.jetbrains.kotlin.ir.types.*
+import org.jetbrains.kotlin.ir.util.dumpKotlinLike
 import org.jetbrains.kotlin.ir.util.packageFqName
 import org.jetbrains.kotlin.ir.util.render
 import java.io.File
@@ -499,9 +501,9 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
         return label
     }
 
-    fun useFunction(f: IrFunction): Label<out DbMethod> {
+    fun <T: DbCallable> useFunction(f: IrFunction): Label<out T> {
         val label = getFunctionLabel(f)
-        val id: Label<DbMethod> = tw.getLabelFor(label)
+        val id: Label<T> = tw.getLabelFor(label)
         return id
     }
 
@@ -543,7 +545,7 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
         return id
     }
 
-    fun extractValueParameter(vp: IrValueParameter, parent: Label<out DbMethod>, idx: Int) {
+    fun extractValueParameter(vp: IrValueParameter, parent: Label<out DbCallable>, idx: Int) {
         val id = useValueParameter(vp)
         val typeId = useType(vp.type)
         val locId = tw.getLocation(vp.startOffset, vp.endOffset)
@@ -616,11 +618,26 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
 
     fun extractFunction(f: IrFunction, parentid: Label<out DbReftype>) {
         currentFunction = f
-        val id = useFunction(f)
+
         val locId = tw.getLocation(f)
         val signature = "TODO"
         val returnTypeId = useType(f.returnType)
-        tw.writeMethods(id, f.name.asString(), signature, returnTypeId, parentid, id)
+
+        val id: Label<out DbCallable>
+        if (f.symbol is IrConstructorSymbol) {
+            id = useFunction<DbConstructor>(f)
+            tw.writeConstrs(id, f.returnType.classFqName?.shortName()?.asString() ?: f.name.asString(), signature, returnTypeId, parentid, id)
+        } else {
+            id = useFunction<DbMethod>(f)
+            tw.writeMethods(id, f.name.asString(), signature, returnTypeId, parentid, id)
+
+            val extReceiver = f.extensionReceiverParameter
+            if (extReceiver != null) {
+                val extendedType = useType(extReceiver.type)
+                tw.writeKtExtensionFunctions(id, extendedType)
+            }
+        }
+
         tw.writeHasLocation(id, locId)
         val body = f.body
         if(body != null) {
@@ -628,12 +645,6 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
         }
         f.valueParameters.forEachIndexed { i, vp ->
             extractValueParameter(vp, id, i)
-        }
-
-        val extReceiver = f.extensionReceiverParameter
-        if (extReceiver != null) {
-            val extendedType = useType(extReceiver.type)
-            tw.writeKtExtensionFunctions(id, extendedType)
         }
 
         f.typeParameters.map { extractTypeParameter(it, Optional.of(id)) }
@@ -807,18 +818,13 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
                 val id = tw.getFreshIdLabel<DbMethodaccess>()
                 val typeId = useType(c.type)
                 val locId = tw.getLocation(c)
-                val methodId = useFunction(c.symbol.owner)
+                val methodId = useFunction<DbMethod>(c.symbol.owner)
                 tw.writeExprs_methodaccess(id, typeId, parent, idx)
                 tw.writeHasLocation(id, locId)
                 tw.writeCallableBinding(id, methodId)
 
                 // type arguments at index -2, -3, ...
-                for (argIdx in 0 until c.typeArgumentsCount) {
-                    val arg = c.getTypeArgument(argIdx)!!
-                    val argTypeId = useType(arg)
-                    val argId = tw.getFreshIdLabel<DbUnannotatedtypeaccess>()
-                    tw.writeExprs_unannotatedtypeaccess(argId, argTypeId, id,argIdx * -1 - 2)
-                }
+                extractTypeArguments(c, id, -2, true)
                 id
             }
         }
@@ -834,6 +840,21 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
         }
     }
 
+    private fun extractTypeArguments(
+        c: IrFunctionAccessExpression,
+        id: Label<out DbExprparent>,
+        startIndex: Int = 0,
+        reverse: Boolean = false
+    ) {
+        for (argIdx in 0 until c.typeArgumentsCount) {
+            val arg = c.getTypeArgument(argIdx)!!
+            val argTypeId = useType(arg)
+            val argId = tw.getFreshIdLabel<DbUnannotatedtypeaccess>()
+            val mul = if (reverse) -1 else 1
+            tw.writeExprs_unannotatedtypeaccess(argId, argTypeId, id, argIdx * mul + startIndex)
+        }
+    }
+
     private fun extractConstructorCall(
         e: IrFunctionAccessExpression,
         parent: Label<out DbExprparent>,
@@ -843,7 +864,7 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
         val id = tw.getFreshIdLabel<DbNewexpr>()
         val typeId = useType(e.type)
         val locId = tw.getLocation(e)
-        val methodId = useFunction(e.symbol.owner)
+        val methodId = useFunction<DbConstructor>(e.symbol.owner)
         tw.writeExprs_newexpr(id, typeId, parent, idx)
         tw.writeHasLocation(id, locId)
         tw.writeCallableBinding(id, methodId)
@@ -855,10 +876,14 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
         }
         val dr = e.dispatchReceiver
         if (dr != null) {
-            extractExpression(dr, callable, id, -3)
+            extractExpression(dr, callable, id, -2)
         }
 
-        // todo: type arguments at index -4, -5, ...
+        if (e.typeArgumentsCount > 0) {
+            val typeAccessId = tw.getFreshIdLabel<DbUnannotatedtypeaccess>()
+            tw.writeExprs_unannotatedtypeaccess(typeAccessId, typeId, id, -3)
+            extractTypeArguments(e, typeAccessId)
+        }
     }
 
     private val loopIdMap: MutableMap<IrLoop, Label<out DbKtloopstmt>> = mutableMapOf()
@@ -908,7 +933,7 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
                 }
 
                 val locId = tw.getLocation(e)
-                val methodId = useFunction(e.symbol.owner)
+                val methodId = useFunction<DbConstructor>(e.symbol.owner)
 
                 tw.writeHasLocation(id, locId)
                 @Suppress("UNCHECKED_CAST")
