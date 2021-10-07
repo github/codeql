@@ -69,15 +69,19 @@ private class RatpackModel extends SummaryModelCsv {
       ["ratpack.handling;", "ratpack.core.handling;"] +
         [
           "Context;true;parse;(ratpack.http.TypedData,ratpack.parse.Parse);;Argument[0];ReturnValue;taint",
-          "Context;true;parse;(ratpack.core.http.TypedData,ratpack.core.parse.Parse);;Argument[0];ReturnValue;taint"
+          "Context;true;parse;(ratpack.core.http.TypedData,ratpack.core.parse.Parse);;Argument[0];ReturnValue;taint",
+          "Context;true;parse;(ratpack.core.http.TypedData,ratpack.core.parse.Parse);;Argument[0];MapKey of ReturnValue;taint",
+          "Context;true;parse;(ratpack.core.http.TypedData,ratpack.core.parse.Parse);;Argument[0];MapValue of ReturnValue;taint"
         ]
     or
     row =
       ["ratpack.util;", "ratpack.func;"] +
         [
           "MultiValueMap;true;getAll;;;MapKey of Argument[-1];MapKey of ReturnValue;value",
-          "MultiValueMap;true;getAll;;;MapValue of Argument[-1];Element of MapValue of ReturnValue;value",
-          "MultiValueMap;true;asMultimap;;;Element of Argument[-1];Element of ReturnValue;value"
+          "MultiValueMap;true;getAll;();;MapValue of Argument[-1];Element of MapValue of ReturnValue;value",
+          "MultiValueMap;true;getAll;(Object);;MapValue of Argument[-1];Element of ReturnValue;value",
+          "MultiValueMap;true;asMultimap;;;MapKey of Argument[-1];MapKey of ReturnValue;value",
+          "MultiValueMap;true;asMultimap;;;MapValue of Argument[-1];Element of MapValue of ReturnValue;value"
         ]
   }
 }

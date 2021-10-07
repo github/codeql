@@ -1,10 +1,14 @@
+/**
+ * Provides classes and predicates related to `ratpack.exec.*`.
+ */
+
 import java
 private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.dataflow.FlowSteps
 private import semmle.code.java.dataflow.ExternalFlow
 
 /**
- * Ratpack methods that propagate user-supplied data as tainted.
+ * Model for Ratpack `Promise` methods.
  */
 private class RatpackExecModel extends SummaryModelCsv {
   override predicate row(string row) {
@@ -21,7 +25,7 @@ private class RatpackExecModel extends SummaryModelCsv {
           "map;;;ReturnValue of Argument[0];Element of ReturnValue;value",
           "blockingMap;;;Element of Argument[-1];Parameter[0] of Argument[0];value",
           "blockingMap;;;ReturnValue of Argument[0];Element of ReturnValue;value",
-          "mapError;;;ReturnValue of Argument[0];Element of ReturnValue;value",
+          "mapError;;;ReturnValue of Argument[1];Element of ReturnValue;value",
           // `apply` passes the qualifier to the function as the first argument
           "apply;;;Element of Argument[-1];Element of Parameter[0] of Argument[0];value",
           "apply;;;Element of ReturnValue of Argument[0];Element of ReturnValue;value",
@@ -41,7 +45,7 @@ private class RatpackExecModel extends SummaryModelCsv {
           // `flatMap` type methods return their returned `Promise`
           "flatMap;;;Element of Argument[-1];Parameter[0] of Argument[0];value",
           "flatMap;;;Element of ReturnValue of Argument[0];Element of ReturnValue;value",
-          "flatMapError;;;Element of ReturnValue of Argument[0];Element of ReturnValue;value",
+          "flatMapError;;;Element of ReturnValue of Argument[1];Element of ReturnValue;value",
           // `mapIf` methods conditionally map their values, or return themselves
           "mapIf;;;Element of Argument[-1];Parameter[0] of Argument[0];value",
           "mapIf;;;Element of Argument[-1];Parameter[0] of Argument[1];value",

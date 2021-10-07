@@ -98,8 +98,11 @@ class Resource {
                 sink(form.file("questionable_file").getFileName()); //$hasTaintFlow
                 sink(form.files("questionable_files")); //$hasTaintFlow
                 sink(form.files()); //$hasTaintFlow
-                sink(form.asMultimap()); //$hasTaintFlow
-                sink(form.asMultimap().asMap()); //$hasTaintFlow
+                sink(form.get("questionable_parameter")); //$hasTaintFlow
+                sink(form.getAll().get("questionable_parameter").get(0)); //$hasTaintFlow
+                sink(form.getAll("questionable_parameter").get(0)); //$hasTaintFlow
+                sink(form.asMultimap().get("questionable_parameter")); //$hasTaintFlow // fails!
+                sink(form.asMultimap().asMap()); //$hasTaintFlow // fails!
             });
     }
 
