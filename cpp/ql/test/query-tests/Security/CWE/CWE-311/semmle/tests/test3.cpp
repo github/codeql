@@ -1,8 +1,8 @@
 
 typedef unsigned long size_t;
 #define STDIN_FILENO (0)
-
-
+#define STDOUT_FILENO (1)
+int stdout_fileno = STDOUT_FILENO;
 
 size_t strlen(const char *s);
 
@@ -34,9 +34,9 @@ void test_send(const char *password1, const char *password2, const char *passwor
 		send(val(), message, strlen(message), val()); // GOOD: `message` is not a password
 	}
 
-
-
-
+	{
+		send(stdout_fileno, password2, strlen(password2), val()); // GOOD: `password2` is sent to stdout, not a network socket (this may be an issue but is not within the scope of the `cpp/cleartext-transmission` query) [FALSE POSITIVE]
+	}
 }
 
 void test_receive()
@@ -158,4 +158,86 @@ void test_taint(const char *password)
 		buffer[15] = 0;
 		send(val(), buffer, 16, val()); // BAD: `password` is (partially) sent plaintext
 	}
+}
+
+void encrypt_inplace(char *buffer);
+void decrypt_inplace(char *buffer);
+char *rtn_encrypt(const char *buffer);
+char *rtn_decrypt(const char *buffer);
+
+void test_decrypt()
+{
+	{
+		char password[256];
+
+		recv(val(), password, 256, val()); // GOOD: password is encrypted [FALSE POSITIVE]
+
+		decrypt_inplace(password); // proof that `password` was in fact encrypted
+	}
+
+	{
+		char password[256];
+
+		recv(val(), password, 256, val()); // GOOD: password is encrypted [FALSE POSITIVE]
+		password[255] = 0;
+
+		decrypt_inplace(password); // proof that `password` was in fact encrypted
+	}
+
+	{
+		char password[256];
+		char *password_ptr;
+
+		recv(val(), password, 256, val()); // GOOD: password is encrypted [FALSE POSITIVE]
+
+		password_ptr = rtn_decrypt(password); // proof that `password` was in fact encrypted
+	}
+
+	{
+		char password[256];
+
+		encrypt_inplace(password); // proof that `password` is in fact encrypted
+
+		send(val(), password, strlen(password), val()); // GOOD: password is encrypted [FALSE POSITIVE]
+	}
+
+	{
+		char password[256];
+
+		encrypt_inplace(password); // proof that `password` is in fact encrypted
+		password[255] = 0;
+
+		send(val(), password, strlen(password), val()); // GOOD: password is encrypted [FALSE POSITIVE]
+	}
+
+	{
+		char password[256];
+		char *password_ptr;
+
+		password_ptr = rtn_encrypt(password); // proof that `password` is in fact encrypted
+
+		send(val(), password_ptr, strlen(password_ptr), val()); // GOOD: password is encrypted [FALSE POSITIVE]
+	}
+}
+
+int get_socket(int from);
+
+void test_more_stdio(const char *password)
+{
+	send(get_socket(1), password, 128, val()); // GOOD: `getsocket(1)` is probably standard output [FALSE POSITIVE]
+	send(get_socket(val()), password, 128, val()); // BAD
+}
+
+typedef struct {} FILE;
+char *fgets(char *s, int n, FILE *stream);
+
+FILE *get_stdstream(int index);
+#define STDIN_STREAM (get_stdstream(0))
+
+void test_fgets(FILE *stream)
+{
+	char password[128];
+
+	fgets(password, 128, stream); // BAD
+	fgets(password, 128, STDIN_STREAM); // GOOD: `STDIN_STREAM` is probably standard input [FALSE POSITIVE]
 }
