@@ -1238,7 +1238,7 @@ class TypedContent extends MkTypedContent {
   string toString() { result = c.toString() }
 
   /**
-   * Holds if accesspaths with this `TypedContent` at their head always should
+   * Holds if access paths with this `TypedContent` at their head always should
    * be tracked at high precision. This disables adaptive accesspath precision
    * for such accesspaths.
    */
