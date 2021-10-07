@@ -234,6 +234,12 @@ module HTTP {
     or
     // references to class methods
     succ = CallGraph::callgraphStep(pred, DataFlow::TypeTracker::end())
+    or
+    exists(DataFlow::CallNode call |
+      call = DataFlow::moduleImport("fastify-plugin") and
+      pred = call.getArgument(0) and
+      succ = call
+    )
   }
 
   /**

@@ -23,6 +23,47 @@ module Fastify {
     }
   }
 
+  /** Gets a data flow node referring to a fastify server. */
+  private DataFlow::SourceNode server(DataFlow::SourceNode creation, DataFlow::TypeTracker t) {
+    t.start() and
+    result = DataFlow::moduleImport("fastify").getAnInvocation() and
+    creation = result
+    or
+    // server.register((serverAlias) => ..., { options })
+    t.start() and
+    result = pluginCallback(creation).(DataFlow::FunctionNode).getParameter(0)
+    or
+    exists(DataFlow::TypeTracker t2 | result = server(creation, t2).track(t2, t))
+  }
+
+  /** Gets a data flow node referring to the given fastify server instance. */
+  DataFlow::SourceNode server(DataFlow::SourceNode creation) {
+    result = server(creation, DataFlow::TypeTracker::end())
+  }
+
+  /** Gets a data flow node referring to a fastify server. */
+  DataFlow::SourceNode server() { result = server(_) }
+
+  private DataFlow::SourceNode pluginCallback(
+    DataFlow::SourceNode creation, DataFlow::TypeBackTracker t
+  ) {
+    t.start() and
+    result = server(creation).getAMethodCall("register").getArgument(0).getALocalSource()
+    or
+    exists(DataFlow::TypeBackTracker t2 | result = pluginCallback(creation, t2).backtrack(t2, t))
+  }
+
+  /** Gets a data flow node being used as a Fastify plugin. */
+  private DataFlow::SourceNode pluginCallback(DataFlow::SourceNode creation) {
+    result = pluginCallback(creation, DataFlow::TypeBackTracker::end())
+  }
+
+  private class RouterDef extends Routing::Router::Range {
+    RouterDef() { exists(server(this)) }
+
+    override DataFlow::SourceNode getAReference() { result = server(this) }
+  }
+
   /**
    * A function used as a Fastify route handler.
    *
@@ -110,19 +151,66 @@ module Fastify {
     override Expr getServer() { result = server }
 
     /** Gets an argument that represents a route handler being registered. */
-    private DataFlow::Node getARouteHandlerExpr() {
+    DataFlow::Node getARouteHandlerExpr() {
       if methodName = "route"
       then
-        result =
-          this.flow()
-              .(DataFlow::MethodCallNode)
-              .getOptionArgument(0,
-                [
-                  "onRequest", "preParsing", "preValidation", "preHandler", "preSerialization",
-                  "onSend", "onResponse", "handler"
-                ])
-      else result = this.getLastArgument().flow()
+        result = this.flow().(DataFlow::MethodCallNode).getOptionArgument(0, getNthHandlerName(_))
+      else result = getLastArgument().flow()
     }
+  }
+
+  private class ShorthandRoutingTreeSetup extends Routing::RouteSetup::MethodCall {
+    ShorthandRoutingTreeSetup() {
+      this.asExpr() instanceof RouteSetup and
+      not this.getMethodName() = "route"
+    }
+
+    override string getRelativePath() { result = this.getArgument(0).getStringValue() }
+
+    override HTTP::RequestMethodName getHttpMethod() { result = this.getMethodName().toUpperCase() }
+  }
+
+  /** Gets the name of the `n`th handler function that can be installed a route setup, in order of execution. */
+  private string getNthHandlerName(int n) {
+    result =
+      "onRequest,preParsing,preValidation,preHandler,handler,preSerialization,onSend,onResponse"
+          .splitAt(",", n)
+  }
+
+  private class FullRoutingTreeSetup extends Routing::RouteSetup::MethodCall {
+    FullRoutingTreeSetup() {
+      asExpr() instanceof RouteSetup and
+      getMethodName() = "route"
+    }
+
+    override string getRelativePath() { result = getOptionArgument(0, "url").getStringValue() }
+
+    override HTTP::RequestMethodName getHttpMethod() {
+      result = getOptionArgument(0, "method").getStringValue().toUpperCase()
+    }
+
+    private DataFlow::Node getRawChild(int n) {
+      result = getOptionArgument(0, getNthHandlerName(n))
+    }
+
+    override DataFlow::Node getChildNode(int n) {
+      result = getRawChild(rank[n + 1](int k | exists(getRawChild(k))))
+    }
+  }
+
+  private class PluginRegistration extends Routing::RouteSetup::MethodCall {
+    ServerDefinition server;
+
+    PluginRegistration() {
+      server.flowsTo(this.getReceiver().asExpr()) and
+      getMethodName() = "register"
+    }
+
+    override HTTP::RequestMethodName getHttpMethod() {
+      result = getOptionArgument(1, "method").getStringValue().toUpperCase()
+    }
+
+    override string getRelativePath() { result = getOptionArgument(1, "prefix").getStringValue() }
   }
 
   /**
@@ -302,5 +390,18 @@ module Fastify {
     override DataFlow::Node getTemplateFileNode() { result = this.getArgument(0) }
 
     override DataFlow::Node getTemplateParamsNode() { result = this.getArgument(1) }
+  }
+
+  private class FastifyCookieMiddleware extends HTTP::CookieMiddlewareInstance {
+    FastifyCookieMiddleware() {
+      this = DataFlow::moduleImport(["fastify-cookie", "fastify-session", "fastify-secure-session"])
+    }
+
+    override DataFlow::Node getASecretKey() {
+      exists(PluginRegistration registration |
+        this = registration.getArgument(0).getALocalSource() and
+        result = registration.getOptionArgument(1, "secret")
+      )
+    }
   }
 }
