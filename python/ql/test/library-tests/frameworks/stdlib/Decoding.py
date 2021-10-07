@@ -3,8 +3,8 @@ import marshal
 import shelve
 import base64
 
-pickle.load(file_)  # $ MISSING: decodeInput=file_ decodeOutput=pickle.load(..) decodeFormat=pickle decodeMayExecuteInput
-pickle.load(file=file_)  # $ MISSING: decodeInput=file_ decodeOutput=pickle.load(..) decodeFormat=pickle decodeMayExecuteInput
+pickle.load(file_)  # $ decodeInput=file_ decodeOutput=pickle.load(..) decodeFormat=pickle decodeMayExecuteInput
+pickle.load(file=file_)  # $ decodeInput=file_ decodeOutput=pickle.load(..) decodeFormat=pickle decodeMayExecuteInput
 pickle.loads(payload)  # $ decodeInput=payload decodeOutput=pickle.loads(..) decodeFormat=pickle decodeMayExecuteInput
 # using this keyword argument is disallowed from Python 3.9
 pickle.loads(data=payload)  # $ decodeInput=payload decodeOutput=pickle.loads(..) decodeFormat=pickle decodeMayExecuteInput

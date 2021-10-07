@@ -451,6 +451,22 @@ private module StdlibPrivate {
   API::Node pickle() { result = API::moduleImport(["pickle", "cPickle", "_pickle"]) }
 
   /**
+   * A call to `pickle.load`
+   * See https://docs.python.org/3/library/pickle.html#pickle.load
+   */
+  private class PickleLoadCall extends Decoding::Range, DataFlow::CallCfgNode {
+    PickleLoadCall() { this = pickle().getMember("load").getACall() }
+
+    override predicate mayExecuteInput() { any() }
+
+    override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("file")] }
+
+    override DataFlow::Node getOutput() { result = this }
+
+    override string getFormat() { result = "pickle" }
+  }
+
+  /**
    * A call to `pickle.loads`
    * See https://docs.python.org/3/library/pickle.html#pickle.loads
    */
