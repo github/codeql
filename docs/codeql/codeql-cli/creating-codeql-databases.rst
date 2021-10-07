@@ -225,10 +225,8 @@ commands that you can specify for compiled languages.
 
      # Navigate to the Bazel workspace.
 
-     # Stop all running Bazel server processes.
-     bazel shutdown
-
-     # Remove cached objects before building.
+     # Before building, remove cached objects
+     # and stop all running Bazel server processes.
      bazel clean --expunge
 
      # Build using the following Bazel flags, to help CodeQL detect the build:
@@ -237,6 +235,11 @@ commands that you can specify for compiled languages.
      # `--noremote_accept_cached`, `--noremote_upload_local_results`: avoid using a remote cache
      codeql database create new-database --language=<language> \
        --command='bazel build --spawn_strategy=local --nouse_action_cache --noremote_accept_cached --noremote_upload_local_results //path/to/package:target'
+
+     # After building, stop all running Bazel server processes.
+     # This ensures future build commands start in a clean Bazel server process
+     # without CodeQL attached.
+     bazel shutdown
 
 - Project built using a custom build script::
 
