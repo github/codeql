@@ -58,7 +58,7 @@ app2.get('/:path', bruteforce.prevent, expensiveHandler1); // OK
 
 // rate limiting using express-limiter
 var app3 = express();
-var limiter = require('express-limiter')(app3);
+require('express-limiter')(app3)({ method: 'get', path: '/' });
 app3.get('/:path', expensiveHandler1); // OK
 
 express().get('/:path', function(req, res) { verifyUser(req); });  // NOT OK

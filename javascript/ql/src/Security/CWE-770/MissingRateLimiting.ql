@@ -4,7 +4,7 @@
  *              restricting the rate at which operations can be carried out is vulnerable
  *              to denial-of-service attacks.
  * @kind problem
- * @problem.severity error
+ * @problem.severity warning
  * @security-severity 7.5
  * @precision high
  * @id js/missing-rate-limiting
@@ -18,12 +18,13 @@ import javascript
 import semmle.javascript.security.dataflow.MissingRateLimiting
 import semmle.javascript.RestrictedLocations
 
+// TODO: Previously we used (FirstLineOf) here, but that doesn't work anymore.
 from
-  ExpensiveRouteHandler r, Express::RouteHandlerExpr rhe, string explanation,
-  DataFlow::Node reference, string referenceLabel
+  Routing::Node useSite, ExpensiveRouteHandler r, string explanation, DataFlow::Node reference,
+  string referenceLabel
 where
-  r = rhe.getBody() and
+  useSite = Routing::getNode(r).getAUseSite() and
   r.explain(explanation, reference, referenceLabel) and
-  not rhe instanceof RateLimitedRouteHandlerExpr
-select rhe.(FirstLineOf), "This route handler " + explanation + ", but is not rate-limited.",
-  reference, referenceLabel
+  not useSite.isGuardedByNode(any(RateLimitingMiddleware m).getRoutingNode())
+select useSite, "This route handler " + explanation + ", but is not rate-limited.", reference,
+  referenceLabel
