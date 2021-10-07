@@ -16,8 +16,7 @@ else
     exit 1
 fi
 
-codeql pack install --mode ${LOCK_MODE} "${GO_ROOT}/ql/lib"
-codeql pack install --mode ${LOCK_MODE} "${GO_ROOT}/ql/src"
-codeql pack install --mode ${LOCK_MODE} "${GO_ROOT}/ql/test"
-codeql pack install --mode ${LOCK_MODE} "${GO_ROOT}/ql/examples"
-codeql pack install --mode ${LOCK_MODE} "${GO_ROOT}/upgrades"
+for d in ql/lib ql/src ql/test ql/examples upgrades
+do
+    codeql pack install --mode ${LOCK_MODE} "${GO_ROOT}/${d}"
+done
