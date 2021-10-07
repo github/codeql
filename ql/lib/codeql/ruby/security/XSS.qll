@@ -291,7 +291,7 @@ module StoredXSS {
   }
 
   /**
-   * An additional step that is preserves dataflow in the context of stored XSS.
+   * An additional step that preserves dataflow in the context of stored XSS.
    */
   predicate isAdditionalXSSTaintStep = Shared::isAdditionalXSSFlowStep/2;
 
