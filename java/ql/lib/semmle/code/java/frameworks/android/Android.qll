@@ -219,25 +219,8 @@ class CreateFromParcelMethod extends Method {
   }
 }
 
-private class TaintPropagationModels extends SummaryModelCsv {
+private class ParcelPropagationModels extends SummaryModelCsv {
   override predicate row(string s) {
-    // BaseBundle getters. These are also modelled on Bundle because BaseBundle was factored out of Bundle
-    // in Android 5.0; before that these methods were declared directly on Bundle.
-    s =
-      "android.os;" + ["BaseBundle", "Bundle"] + ";true;get" +
-        ["Boolean", "Double", "Int", "Long", "String"] + ["", "Array"] +
-        ";;;Argument[-1];ReturnValue;taint"
-    or
-    // Bundle getters
-    s =
-      "android.os;Bundle;true;get" +
-        [
-          "Binder", "Bundle", "Byte", "ByteArray", "Char", "CharArray", "CharSequence",
-          "CharSequenceArray", "CharSequenceArrayList", "Float", "FloatArray", "IntegerArrayList",
-          "Parcelable", "ParcelableArray", "ParcelableArrayList", "Serializable", "Short",
-          "ShortArray", "Size", "SizeF", "SparseParcelableArray", "StringArrayList"
-        ] + ";;;Argument[-1];ReturnValue;taint"
-    or
     // Parcel readers that return their value
     s =
       "android.os;Parcel;false;read" +

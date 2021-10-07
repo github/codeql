@@ -80,7 +80,6 @@ private module Frameworks {
   private import semmle.code.java.frameworks.android.Android
   private import semmle.code.java.frameworks.android.Intent
   private import semmle.code.java.frameworks.android.XssSinks
-  private import semmle.code.java.frameworks.android.Intent
   private import semmle.code.java.frameworks.ApacheHttp
   private import semmle.code.java.frameworks.apache.Collections
   private import semmle.code.java.frameworks.apache.Lang
