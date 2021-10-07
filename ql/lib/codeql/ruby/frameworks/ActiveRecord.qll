@@ -253,7 +253,7 @@ abstract class ActiveRecordModelInstantiation extends OrmInstantiation::Range,
 }
 
 // Names of class methods on ActiveRecord models that may return one or more
-// instance of that model. This also includes the `initialize` method.
+// instances of that model. This also includes the `initialize` method.
 // See https://api.rubyonrails.org/classes/ActiveRecord/FinderMethods.html
 private string finderMethodName() {
   exists(string baseName |
