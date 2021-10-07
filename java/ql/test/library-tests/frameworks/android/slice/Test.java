@@ -735,11 +735,11 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.slice.builders;ListBuilder;false;setSeeMoreRow;;;Argument[0];Argument[-1];value"
+			// "androidx.slice.builders;ListBuilder;false;setSeeMoreRow;;;Argument[0];Argument[-1];taint"
 			ListBuilder out = null;
 			ListBuilder.RowBuilder in = (ListBuilder.RowBuilder) source();
 			out.setSeeMoreRow(in);
-			sink(out); // $ hasValueFlow
+			sink(out); // $ hasTaintFlow
 		}
 		{
 			// "androidx.slice.builders;SliceAction;false;create;(PendingIntent,IconCompat,int,CharSequence);;Argument[0];ReturnValue;taint"
