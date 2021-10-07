@@ -17,4 +17,4 @@ import codeql.ruby.DataFlow
 
 from HTTP::Client::Request request, DataFlow::Node disablingNode
 where request.disablesCertificateValidation(disablingNode)
-select request, "This request $@.", disablingNode, "does not validate certificates"
+select request, "This request may run with $@.", disablingNode, "certificate validation disabled"
