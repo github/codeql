@@ -14,8 +14,6 @@ import semmle.code.java.controlflow.Guards
 import AndroidFileIntentSink
 import AndroidFileIntentSource
 import DataFlow::PathGraph
-// For readStep, to implement `isAdditionalTaintStep`
-private import semmle.code.java.dataflow.internal.DataFlowPrivate
 
 private class StartsWithSanitizer extends DataFlow::BarrierGuard {
   StartsWithSanitizer() { this.(MethodAccess).getMethod().hasName("startsWith") }
@@ -73,11 +71,6 @@ class AndroidFileLeakConfig extends TaintTracking::Configuration {
       prev.asExpr() = csma.getArgument(0) and
       succ.asParameter() = ssm.getParameter(0) // public int onStartCommand(Intent intent, int flags, int startId) {...} in FileUploader
     )
-    or
-    // When a whole Intent is tainted (e.g., due to this Configuration's source), treat its fields as tainted
-    readStep(prev,
-      any(DataFlow::SyntheticFieldContent c | c.getField().matches("android.content.Intent.%")),
-      succ)
   }
 
   override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {

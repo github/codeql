@@ -1,4 +1,5 @@
 import java
+private import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.FlowSteps
 import semmle.code.java.dataflow.ExternalFlow
 
@@ -52,6 +53,14 @@ class BundleGetterMethod extends Method, TaintPreservingCallable {
   }
 
   override predicate returnsTaintFrom(int arg) { arg = -1 }
+}
+
+/**
+ * Specifies that if an `Intent` is tainted, then so are its synthetic fields.
+ */
+private class IntentFieldsInheritTaint extends DataFlow::SyntheticFieldContent,
+  TaintInheritingContent {
+  IntentFieldsInheritTaint() { this.getField().matches("android.content.Intent.%") }
 }
 
 private class IntentBundleFlowSteps extends SummaryModelCsv {
