@@ -8,20 +8,27 @@ private import codeql.ruby.ApiGraphs
  * in every Ruby object. In addition, its module methods can be called by
  * providing a specific receiver as in `Kernel.exit`.
  */
-class KernelMethodCall extends MethodCall {
+class KernelMethodCall extends DataFlow::CallNode {
+  private MethodCall methodCall;
+
   KernelMethodCall() {
-    this = API::getTopLevelMember("Kernel").getAMethodCall(_).asExpr().getExpr()
-    or
-    // we assume that if there's no obvious target for this method call
-    // and the method name matches a Kernel method, then it is a Kernel method call.
-    // TODO: ApiGraphs should ideally handle this case
-    not exists(this.(Call).getATarget()) and
+    methodCall = this.asExpr().getExpr() and
     (
-      this.getReceiver() instanceof Self and isPrivateKernelMethod(this.getMethodName())
+      this = API::getTopLevelMember("Kernel").getAMethodCall(_)
       or
-      isPublicKernelMethod(this.getMethodName())
+      methodCall instanceof UnknownMethodCall and
+      (
+        this.getReceiver().asExpr().getExpr() instanceof Self and
+        isPrivateKernelMethod(methodCall.getMethodName())
+        or
+        isPublicKernelMethod(methodCall.getMethodName())
+      )
     )
   }
+
+  string getMethodName() { result = methodCall.getMethodName() }
+
+  int getNumberOfArguments() { result = methodCall.getNumberOfArguments() }
 }
 
 /**
@@ -56,6 +63,45 @@ private predicate isPrivateKernelMethod(string method) {
       "set_trace_func", "sleep", "spawn", "sprintf", "srand", "sub", "syscall", "system", "test",
       "throw", "trace_var", "trap", "untrace_var", "warn"
     ]
+}
+
+/**
+ * Instance methods on `BasicObject`, which are available to all classes.
+ */
+class BasicObjectInstanceMethodCall extends UnknownMethodCall {
+  BasicObjectInstanceMethodCall() {
+    this.getMethodName() in [
+        "equal?", "instance_eval", "instance_exec", "method_missing", "singleton_method_added",
+        "singleton_method_removed", "singleton_method_undefined"
+      ]
+  }
+}
+
+/**
+ * Instance methods on `Object`, which are available to all classes except `BasicObject`.
+ */
+class ObjectInstanceMethodCall extends UnknownMethodCall {
+  ObjectInstanceMethodCall() {
+    this.getMethodName() in [
+        "!~", "<=>", "===", "=~", "callable_methods", "define_singleton_method", "display",
+        "do_until", "do_while", "dup", "enum_for", "eql?", "extend", "f", "freeze", "h", "hash",
+        "inspect", "instance_of?", "instance_variable_defined?", "instance_variable_get",
+        "instance_variable_set", "instance_variables", "is_a?", "itself", "kind_of?",
+        "matching_methods", "method", "method_missing", "methods", "nil?", "object_id",
+        "private_methods", "protected_methods", "public_method", "public_methods", "public_send",
+        "remove_instance_variable", "respond_to?", "respond_to_missing?", "send",
+        "shortest_abbreviation", "singleton_class", "singleton_method", "singleton_methods",
+        "taint", "tainted?", "to_enum", "to_s", "trust", "untaint", "untrust", "untrusted?"
+      ]
+  }
+}
+
+/**
+ * Method calls which have no known target.
+ * These will typically be calls to methods inherited from a superclass.
+ */
+class UnknownMethodCall extends MethodCall {
+  UnknownMethodCall() { not exists(this.(Call).getATarget()) }
 }
 
 /**
@@ -125,19 +171,14 @@ class SubshellHeredocExecution extends SystemCommandExecution::Range {
  * ```
  * Ruby documentation: https://docs.ruby-lang.org/en/3.0.0/Kernel.html#method-i-system
  */
-class KernelSystemCall extends SystemCommandExecution::Range {
-  KernelMethodCall methodCall;
+class KernelSystemCall extends SystemCommandExecution::Range, KernelMethodCall {
+  KernelSystemCall() { this.getMethodName() = "system" }
 
-  KernelSystemCall() {
-    methodCall.getMethodName() = "system" and
-    this.asExpr().getExpr() = methodCall
-  }
-
-  override DataFlow::Node getAnArgument() { result.asExpr().getExpr() = methodCall.getAnArgument() }
+  override DataFlow::Node getAnArgument() { result = this.getArgument(_) }
 
   override predicate isShellInterpreted(DataFlow::Node arg) {
     // Kernel.system invokes a subshell if you provide a single string as argument
-    methodCall.getNumberOfArguments() = 1 and arg.asExpr().getExpr() = methodCall.getAnArgument()
+    this.getNumberOfArguments() = 1 and arg = getAnArgument()
   }
 }
 
@@ -146,19 +187,14 @@ class KernelSystemCall extends SystemCommandExecution::Range {
  * `Kernel.exec` takes the same argument forms as `Kernel.system`. See `KernelSystemCall` for details.
  * Ruby documentation: https://docs.ruby-lang.org/en/3.0.0/Kernel.html#method-i-exec
  */
-class KernelExecCall extends SystemCommandExecution::Range {
-  KernelMethodCall methodCall;
+class KernelExecCall extends SystemCommandExecution::Range, KernelMethodCall {
+  KernelExecCall() { this.getMethodName() = "exec" }
 
-  KernelExecCall() {
-    methodCall.getMethodName() = "exec" and
-    this.asExpr().getExpr() = methodCall
-  }
-
-  override DataFlow::Node getAnArgument() { result.asExpr().getExpr() = methodCall.getAnArgument() }
+  override DataFlow::Node getAnArgument() { result = this.getArgument(_) }
 
   override predicate isShellInterpreted(DataFlow::Node arg) {
     // Kernel.exec invokes a subshell if you provide a single string as argument
-    methodCall.getNumberOfArguments() = 1 and arg.asExpr().getExpr() = methodCall.getAnArgument()
+    this.getNumberOfArguments() = 1 and arg = getAnArgument()
   }
 }
 
@@ -169,22 +205,17 @@ class KernelExecCall extends SystemCommandExecution::Range {
  * Ruby documentation: https://docs.ruby-lang.org/en/3.0.0/Kernel.html#method-i-spawn
  * TODO: document and handle the env and option arguments.
  * ```
- * spawn([env,] command... [,options]) → pid
+ * spawn([env,] command... [,options]) -> pid
  * ```
  */
-class KernelSpawnCall extends SystemCommandExecution::Range {
-  KernelMethodCall methodCall;
+class KernelSpawnCall extends SystemCommandExecution::Range, KernelMethodCall {
+  KernelSpawnCall() { this.getMethodName() = "spawn" }
 
-  KernelSpawnCall() {
-    methodCall.getMethodName() = "spawn" and
-    this.asExpr().getExpr() = methodCall
-  }
-
-  override DataFlow::Node getAnArgument() { result.asExpr().getExpr() = methodCall.getAnArgument() }
+  override DataFlow::Node getAnArgument() { result = this.getArgument(_) }
 
   override predicate isShellInterpreted(DataFlow::Node arg) {
     // Kernel.spawn invokes a subshell if you provide a single string as argument
-    methodCall.getNumberOfArguments() = 1 and arg.asExpr().getExpr() = methodCall.getAnArgument()
+    this.getNumberOfArguments() = 1 and arg = getAnArgument()
   }
 }
 
@@ -241,37 +272,62 @@ class Open3PipelineCall extends SystemCommandExecution::Range {
 }
 
 /**
- * A call to `Kernel.eval`, which executes its argument as Ruby code.
+ * A call to `Kernel.eval`, which executes its first argument as Ruby code.
  * ```ruby
  * a = 1
  * Kernel.eval("a = 2")
  * a # => 2
  * ```
  */
-class EvalCallCodeExecution extends CodeExecution::Range {
-  KernelMethodCall methodCall;
+class EvalCallCodeExecution extends CodeExecution::Range, KernelMethodCall {
+  EvalCallCodeExecution() { this.getMethodName() = "eval" }
 
-  EvalCallCodeExecution() {
-    this.asExpr().getExpr() = methodCall and methodCall.getMethodName() = "eval"
-  }
-
-  override DataFlow::Node getCode() { result.asExpr().getExpr() = methodCall.getAnArgument() }
+  override DataFlow::Node getCode() { result = this.getArgument(0) }
 }
 
 /**
- * A call to `Kernel#send`, which executes its arguments as a Ruby method call.
+ * A call to `Kernel#send`, which executes its first argument as a Ruby method call.
  * ```ruby
  * arr = []
  * arr.send("push", 1)
  * arr # => [1]
  * ```
  */
-class SendCallCodeExecution extends CodeExecution::Range {
-  KernelMethodCall methodCall;
+class SendCallCodeExecution extends CodeExecution::Range, KernelMethodCall {
+  SendCallCodeExecution() { this.getMethodName() = "send" }
 
-  SendCallCodeExecution() {
-    this.asExpr().getExpr() = methodCall and methodCall.getMethodName() = "send"
+  override DataFlow::Node getCode() { result = this.getArgument(0) }
+}
+
+/**
+ * A call to `BasicObject#instance_eval`, which executes its first argument as Ruby code.
+ */
+class InstanceEvalCallCodeExecution extends CodeExecution::Range, DataFlow::CallNode {
+  InstanceEvalCallCodeExecution() {
+    this.asExpr().getExpr().(UnknownMethodCall).getMethodName() = "instance_eval"
   }
 
-  override DataFlow::Node getCode() { result.asExpr().getExpr() = methodCall.getAnArgument() }
+  override DataFlow::Node getCode() { result = this.getArgument(0) }
+}
+
+/**
+ * A call to `Module#class_eval`, which executes its first argument as Ruby code.
+ */
+class ClassEvalCallCodeExecution extends CodeExecution::Range, DataFlow::CallNode {
+  ClassEvalCallCodeExecution() {
+    this.asExpr().getExpr().(UnknownMethodCall).getMethodName() = "class_eval"
+  }
+
+  override DataFlow::Node getCode() { result = this.getArgument(0) }
+}
+
+/**
+ * A call to `Module#module_eval`, which executes its first argument as Ruby code.
+ */
+class ModuleEvalCallCodeExecution extends CodeExecution::Range, DataFlow::CallNode {
+  ModuleEvalCallCodeExecution() {
+    this.asExpr().getExpr().(UnknownMethodCall).getMethodName() = "module_eval"
+  }
+
+  override DataFlow::Node getCode() { result = this.getArgument(0) }
 }

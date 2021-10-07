@@ -1,4 +1,5 @@
 private import codeql.ruby.AST
+private import codeql.ruby.CFG
 private import internal.AST
 private import internal.TreeSitter
 
@@ -7,7 +8,12 @@ private import internal.TreeSitter
  *
  * This is the root QL class for all expressions.
  */
-class Expr extends Stmt, TExpr { }
+class Expr extends Stmt, TExpr {
+  /** Gets the textual (constant) value of this expression, if any. */
+  string getValueText() {
+    forex(CfgNodes::ExprCfgNode n | n = this.getAControlFlowNode() | result = n.getValueText())
+  }
+}
 
 /**
  * A reference to the current object. For example:

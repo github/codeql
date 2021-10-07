@@ -13,11 +13,11 @@ private import codeql.ruby.ApiGraphs
  * connection.get("/").body
  * ```
  */
-class FaradayHTTPRequest extends HTTP::Client::Request::Range {
+class FaradayHttpRequest extends HTTP::Client::Request::Range {
   DataFlow::Node request;
   DataFlow::CallNode responseBody;
 
-  FaradayHTTPRequest() {
+  FaradayHttpRequest() {
     exists(API::Node requestNode |
       requestNode =
         [

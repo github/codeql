@@ -68,10 +68,10 @@ impl<'a> fmt::Display for Table<'a> {
                 }
                 write!(f, "{}", key)?;
             }
-            write!(f, "]\n")?;
+            writeln!(f, "]")?;
         }
 
-        write!(f, "{}(\n", self.name)?;
+        writeln!(f, "{}(", self.name)?;
         for (column_index, column) in self.columns.iter().enumerate() {
             write!(f, "  ")?;
             if column.unique {
@@ -92,7 +92,7 @@ impl<'a> fmt::Display for Table<'a> {
             if column_index + 1 != self.columns.len() {
                 write!(f, ",")?;
             }
-            write!(f, "\n")?;
+            writeln!(f)?;
         }
         write!(f, ");")?;
 

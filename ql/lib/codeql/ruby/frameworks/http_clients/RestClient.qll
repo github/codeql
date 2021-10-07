@@ -8,11 +8,11 @@ private import codeql.ruby.ApiGraphs
  * RestClient.get("http://example.com").body
  * ```
  */
-class RestClientHTTPRequest extends HTTP::Client::Request::Range {
+class RestClientHttpRequest extends HTTP::Client::Request::Range {
   DataFlow::Node request;
   DataFlow::CallNode responseBody;
 
-  RestClientHTTPRequest() {
+  RestClientHttpRequest() {
     exists(API::Node requestNode |
       requestNode =
         API::getTopLevelMember("RestClient")

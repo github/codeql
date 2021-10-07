@@ -180,38 +180,42 @@ private module Cached {
 
   cached
   CfgScope getTarget(CfgNodes::ExprNodes::CallCfgNode call) {
-    exists(string method |
-      exists(Module tp |
-        instanceMethodCall(call, tp, method) and
-        result = lookupMethod(tp, method) and
-        if result.(Method).isPrivate()
-        then
-          exists(Self self |
-            self = call.getReceiver().getExpr() and
-            pragma[only_bind_out](self.getEnclosingModule().getModule().getSuperClass*()) =
-              pragma[only_bind_out](result.getEnclosingModule().getModule())
-          ) and
-          // For now, we restrict the scope of top-level declarations to their file.
-          // This may remove some plausible targets, but also removes a lot of
-          // implausible targets
-          if result.getEnclosingModule() instanceof Toplevel
-          then result.getFile() = call.getFile()
+    // Temporarily disable operation resolution (due to bad performance)
+    not call.getExpr() instanceof Operation and
+    (
+      exists(string method |
+        exists(Module tp |
+          instanceMethodCall(call, tp, method) and
+          result = lookupMethod(tp, method) and
+          if result.(Method).isPrivate()
+          then
+            exists(Self self |
+              self = call.getReceiver().getExpr() and
+              pragma[only_bind_out](self.getEnclosingModule().getModule().getSuperClass*()) =
+                pragma[only_bind_out](result.getEnclosingModule().getModule())
+            ) and
+            // For now, we restrict the scope of top-level declarations to their file.
+            // This may remove some plausible targets, but also removes a lot of
+            // implausible targets
+            if result.getEnclosingModule() instanceof Toplevel
+            then result.getFile() = call.getFile()
+            else any()
           else any()
-        else any()
+        )
+        or
+        exists(DataFlow::LocalSourceNode sourceNode |
+          methodCall(call, sourceNode, method) and
+          sourceNode = trackSingletonMethod(result, method)
+        )
       )
       or
-      exists(DataFlow::LocalSourceNode sourceNode |
-        methodCall(call, sourceNode, method) and
-        sourceNode = trackSingletonMethod(result, method)
+      exists(Module superClass, string method |
+        superCall(call, superClass, method) and
+        result = lookupMethod(superClass, method)
       )
+      or
+      result = yieldCall(call)
     )
-    or
-    exists(Module superClass, string method |
-      superCall(call, superClass, method) and
-      result = lookupMethod(superClass, method)
-    )
-    or
-    result = yieldCall(call)
   }
 }
 
@@ -432,7 +436,7 @@ DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) { 
  * Holds if `e` is an `ExprNode` that may be returned by a call to `c`.
  */
 predicate exprNodeReturnedFrom(DataFlow::ExprNode e, Callable c) {
-  exists(ReturnNode r |
+  exists(ReturningNode r |
     r.getEnclosingCallable().asCallable() = c and
     (
       r.(ExplicitReturnNode).getReturningNode().getReturnedValueNode() = e.asExpr() or

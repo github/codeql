@@ -16,7 +16,7 @@ class Literal extends Expr, TLiteral {
    * For complex literals, such as arrays, hashes, and strings with
    * interpolations, this predicate has no result.
    */
-  string getValueText() { none() }
+  override string getValueText() { none() }
 }
 
 /**

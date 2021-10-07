@@ -43,15 +43,15 @@ impl<'a> fmt::Display for Class<'a> {
             }
             write!(f, "{}", supertype)?;
         }
-        write!(f, " {{ \n")?;
+        writeln!(f, " {{ ")?;
 
         if let Some(charpred) = &self.characteristic_predicate {
-            write!(
+            writeln!(
                 f,
-                "  {}\n",
+                "  {}",
                 Predicate {
                     qldoc: None,
-                    name: self.name.clone(),
+                    name: self.name,
                     overridden: false,
                     return_type: None,
                     formal_parameters: vec![],
@@ -61,7 +61,7 @@ impl<'a> fmt::Display for Class<'a> {
         }
 
         for predicate in &self.predicates {
-            write!(f, "  {}\n", predicate)?;
+            writeln!(f, "  {}", predicate)?;
         }
 
         write!(f, "}}")?;
@@ -82,9 +82,9 @@ impl<'a> fmt::Display for Module<'a> {
         if let Some(qldoc) = &self.qldoc {
             write!(f, "/** {} */", qldoc)?;
         }
-        write!(f, "module {} {{ \n", self.name)?;
+        writeln!(f, "module {} {{ ", self.name)?;
         for decl in &self.body {
-            write!(f, "  {}\n", decl)?;
+            writeln!(f, "  {}", decl)?;
         }
         write!(f, "}}")?;
         Ok(())
@@ -100,7 +100,7 @@ pub enum Type<'a> {
     String,
 
     /// A database type that will need to be referred to with an `@` prefix.
-    AtType(&'a str),
+    At(&'a str),
 
     /// A user-defined type.
     Normal(&'a str),
@@ -112,7 +112,7 @@ impl<'a> fmt::Display for Type<'a> {
             Type::Int => write!(f, "int"),
             Type::String => write!(f, "string"),
             Type::Normal(name) => write!(f, "{}", name),
-            Type::AtType(name) => write!(f, "@{}", name),
+            Type::At(name) => write!(f, "@{}", name),
         }
     }
 }
@@ -197,7 +197,7 @@ impl<'a> fmt::Display for Expression<'a> {
                 second_expr,
             } => {
                 write!(f, "{}(", name)?;
-                if vars.len() > 0 {
+                if !vars.is_empty() {
                     for (index, var) in vars.iter().enumerate() {
                         if index > 0 {
                             write!(f, ", ")?;

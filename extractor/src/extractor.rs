@@ -165,7 +165,7 @@ pub fn extract(
     schema: &NodeTypeMap,
     trap_writer: &mut TrapWriter,
     path: &Path,
-    source: &Vec<u8>,
+    source: &[u8],
     ranges: &[Range],
 ) -> std::io::Result<()> {
     let span = span!(
@@ -180,17 +180,16 @@ pub fn extract(
 
     let mut parser = Parser::new();
     parser.set_language(language).unwrap();
-    parser.set_included_ranges(&ranges).unwrap();
+    parser.set_included_ranges(ranges).unwrap();
     let tree = parser.parse(&source, None).expect("Failed to parse file");
     trap_writer.comment(format!("Auto-generated TRAP file for {}", path.display()));
     let file_label = &trap_writer.populate_file(path);
     let mut visitor = Visitor {
-        source: &source,
-        trap_writer: trap_writer,
+        source,
+        trap_writer,
         // TODO: should we handle path strings that are not valid UTF8 better?
         path: format!("{}", path.display()),
         file_label: *file_label,
-        token_counter: 0,
         toplevel_child_counter: 0,
         stack: Vec::new(),
         language_prefix,
@@ -206,15 +205,7 @@ pub fn extract(
 /// HTML entities.
 fn escape_key<'a, S: Into<Cow<'a, str>>>(key: S) -> Cow<'a, str> {
     fn needs_escaping(c: char) -> bool {
-        match c {
-            '&' => true,
-            '{' => true,
-            '}' => true,
-            '"' => true,
-            '@' => true,
-            '#' => true,
-            _ => false,
-        }
+        matches!(c, '&' | '{' | '}' | '"' | '@' | '#')
     }
 
     let key = key.into();
@@ -297,11 +288,9 @@ struct Visitor<'a> {
     /// source file.
     file_label: Label,
     /// The source code as a UTF-8 byte array
-    source: &'a Vec<u8>,
+    source: &'a [u8],
     /// A TrapWriter to accumulate trap entries
     trap_writer: &'a mut TrapWriter,
-    /// A counter for tokens
-    token_counter: usize,
     /// A counter for top-level child nodes
     toplevel_child_counter: usize,
     /// Language prefix
@@ -345,7 +334,7 @@ impl Visitor<'_> {
         full_error_message: String,
         node: Node,
     ) {
-        let (start_line, start_column, end_line, end_column) = location_for(&self.source, node);
+        let (start_line, start_column, end_line, end_column) = location_for(self.source, node);
         let loc = self.trap_writer.location(
             self.file_label,
             start_line,
@@ -376,7 +365,7 @@ impl Visitor<'_> {
         let id = self.trap_writer.fresh_id();
 
         self.stack.push((id, 0, Vec::new()));
-        return true;
+        true
     }
 
     fn leave_node(&mut self, field_name: Option<&'static str>, node: Node) {
@@ -384,7 +373,7 @@ impl Visitor<'_> {
             return;
         }
         let (id, _, child_nodes) = self.stack.pop().expect("Vistor: empty stack");
-        let (start_line, start_column, end_line, end_column) = location_for(&self.source, node);
+        let (start_line, start_column, end_line, end_column) = location_for(self.source, node);
         let loc = self.trap_writer.location(
             self.file_label,
             start_line,
@@ -425,13 +414,10 @@ impl Visitor<'_> {
                     vec![
                         Arg::Label(id),
                         Arg::Int(*kind_id),
-                        Arg::Label(self.file_label),
-                        Arg::Int(self.token_counter),
                         sliced_source_arg(self.source, node),
                         Arg::Label(loc),
                     ],
                 );
-                self.token_counter += 1;
             }
             EntryKind::Table {
                 fields,
@@ -446,11 +432,10 @@ impl Visitor<'_> {
                             Arg::Int(parent_index),
                         ],
                     );
-                    let mut all_args = Vec::new();
-                    all_args.push(Arg::Label(id));
+                    let mut all_args = vec![Arg::Label(id)];
                     all_args.extend(args);
                     all_args.push(Arg::Label(loc));
-                    self.trap_writer.add_tuple(&table_name, all_args);
+                    self.trap_writer.add_tuple(table_name, all_args);
                 }
             }
             _ => {
@@ -485,8 +470,8 @@ impl Visitor<'_> {
     fn complex_node(
         &mut self,
         node: &Node,
-        fields: &Vec<Field>,
-        child_nodes: &Vec<ChildNode>,
+        fields: &[Field],
+        child_nodes: &[ChildNode],
         parent_id: Label,
     ) -> Option<Vec<Arg>> {
         let mut map: Map<&Option<String>, (&Field, Vec<Arg>)> = Map::new();
@@ -523,22 +508,20 @@ impl Visitor<'_> {
                     );
                     self.record_parse_error_for_node(error_message, full_error_message, *node);
                 }
-            } else {
-                if child_node.field_name.is_some() || child_node.type_name.named {
-                    let error_message = format!(
-                        "value for unknown field: {}::{} and type {:?}",
-                        node.kind(),
-                        &child_node.field_name.unwrap_or("child"),
-                        &child_node.type_name
-                    );
-                    let full_error_message = format!(
-                        "{}:{}: {}",
-                        &self.path,
-                        node.start_position().row + 1,
-                        error_message
-                    );
-                    self.record_parse_error_for_node(error_message, full_error_message, *node);
-                }
+            } else if child_node.field_name.is_some() || child_node.type_name.named {
+                let error_message = format!(
+                    "value for unknown field: {}::{} and type {:?}",
+                    node.kind(),
+                    &child_node.field_name.unwrap_or("child"),
+                    &child_node.type_name
+                );
+                let full_error_message = format!(
+                    "{}:{}: {}",
+                    &self.path,
+                    node.start_position().row + 1,
+                    error_message
+                );
+                self.record_parse_error_for_node(error_message, full_error_message, *node);
             }
         }
         let mut args = Vec::new();
@@ -586,13 +569,12 @@ impl Visitor<'_> {
                             );
                             break;
                         }
-                        let mut args = Vec::new();
-                        args.push(Arg::Label(parent_id));
+                        let mut args = vec![Arg::Label(parent_id)];
                         if *has_index {
                             args.push(Arg::Int(index))
                         }
                         args.push(child_value.clone());
-                        self.trap_writer.add_tuple(&table_name, args);
+                        self.trap_writer.add_tuple(table_name, args);
                     }
                 }
             }
@@ -610,13 +592,10 @@ impl Visitor<'_> {
                 if tp == single_type {
                     return true;
                 }
-                match &self.schema.get(single_type).unwrap().kind {
-                    EntryKind::Union { members } => {
-                        if self.type_matches_set(tp, members) {
-                            return true;
-                        }
+                if let EntryKind::Union { members } = &self.schema.get(single_type).unwrap().kind {
+                    if self.type_matches_set(tp, members) {
+                        return true;
                     }
-                    _ => {}
                 }
             }
             node_types::FieldTypeInfo::Multiple { types, .. } => {
@@ -646,7 +625,7 @@ impl Visitor<'_> {
 }
 
 // Emit a slice of a source file as an Arg.
-fn sliced_source_arg(source: &Vec<u8>, n: Node) -> Arg {
+fn sliced_source_arg(source: &[u8], n: Node) -> Arg {
     let range = n.byte_range();
     Arg::String(String::from_utf8_lossy(&source[range.start..range.end]).into_owned())
 }
@@ -654,7 +633,7 @@ fn sliced_source_arg(source: &Vec<u8>, n: Node) -> Arg {
 // Emit a pair of `TrapEntry`s for the provided node, appropriately calibrated.
 // The first is the location and label definition, and the second is the
 // 'Located' entry.
-fn location_for<'a>(source: &Vec<u8>, n: Node) -> (usize, usize, usize, usize) {
+fn location_for(source: &[u8], n: Node) -> (usize, usize, usize, usize) {
     // Tree-sitter row, column values are 0-based while CodeQL starts
     // counting at 1. In addition Tree-sitter's row and column for the
     // end position are exclusive while CodeQL's end positions are inclusive.
@@ -812,18 +791,18 @@ impl fmt::Display for Arg {
 /// the string is sliced at the provided limit. If there is a multi-byte character
 /// at the limit then the returned slice will be slightly shorter than the limit to
 /// avoid splitting that multi-byte character.
-fn limit_string(string: &String, max_size: usize) -> &str {
+fn limit_string(string: &str, max_size: usize) -> &str {
     if string.len() <= max_size {
         return string;
     }
-    let p = string.as_ptr();
+    let p = string.as_bytes();
     let mut index = max_size;
     // We want to clip the string at [max_size]; however, the character at that position
     // may span several bytes. We need to find the first byte of the character. In UTF-8
     // encoded data any byte that matches the bit pattern 10XXXXXX is not a start byte.
     // Therefore we decrement the index as long as there are bytes matching this pattern.
     // This ensures we cut the string at the border between one character and another.
-    while index > 0 && unsafe { (*p.offset(index as isize) & 0b11000000) == 0b10000000 } {
+    while index > 0 && (p[index] & 0b11000000) == 0b10000000 {
         index -= 1;
     }
     &string[0..index]

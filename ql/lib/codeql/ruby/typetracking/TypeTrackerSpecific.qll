@@ -11,7 +11,7 @@ class Node = DataFlowPublic::Node;
 
 class TypeTrackingNode = DataFlowPublic::LocalSourceNode;
 
-predicate simpleLocalFlowStep = DataFlowPrivate::simpleLocalFlowStep/2;
+predicate simpleLocalFlowStep = DataFlowPrivate::localFlowStepTypeTracker/2;
 
 predicate jumpStep = DataFlowPrivate::jumpStep/2;
 
@@ -30,12 +30,21 @@ string getPossibleContentName() { result = getSetterCallAttributeName(_) }
  * recursion (or, at best, terrible performance), since identifying calls to library
  * methods is done using API graphs (which uses type tracking).
  */
-predicate callStep(DataFlowPrivate::ArgumentNode nodeFrom, DataFlowPublic::ParameterNode nodeTo) {
+predicate callStep(Node nodeFrom, Node nodeTo) {
   exists(ExprNodes::CallCfgNode call, CFG::CfgScope callable, int i |
     DataFlowDispatch::getTarget(call) = callable and
-    nodeFrom.sourceArgumentOf(call, i) and
+    nodeFrom.(DataFlowPrivate::ArgumentNode).sourceArgumentOf(call, i) and
     nodeTo.(DataFlowPrivate::ParameterNodeImpl).isSourceParameterOf(callable, i)
   )
+  or
+  // In normal data-flow, this will be a local flow step. But for type tracking
+  // we model it as a call step, in order to avoid computing a potential
+  // self-cross product of all calls to a function that returns one of its parameters
+  // (only to later filter that flow out using `TypeTracker::append`).
+  nodeTo =
+    DataFlowPrivate::LocalFlow::getParameterDefNode(nodeFrom
+          .(DataFlowPublic::ParameterNode)
+          .getParameter())
 }
 
 /**
@@ -45,11 +54,18 @@ predicate callStep(DataFlowPrivate::ArgumentNode nodeFrom, DataFlowPublic::Param
  * recursion (or, at best, terrible performance), since identifying calls to library
  * methods is done using API graphs (which uses type tracking).
  */
-predicate returnStep(DataFlowPrivate::ReturnNode nodeFrom, Node nodeTo) {
+predicate returnStep(Node nodeFrom, Node nodeTo) {
   exists(ExprNodes::CallCfgNode call |
+    nodeFrom instanceof DataFlowPrivate::ReturnNode and
     nodeFrom.(DataFlowPrivate::NodeImpl).getCfgScope() = DataFlowDispatch::getTarget(call) and
     nodeTo.asExpr().getNode() = call.getNode()
   )
+  or
+  // In normal data-flow, this will be a local flow step. But for type tracking
+  // we model it as a returning flow step, in order to avoid computing a potential
+  // self-cross product of all calls to a function that returns one of its parameters
+  // (only to later filter that flow out using `TypeTracker::append`).
+  nodeTo.(DataFlowPrivate::SynthReturnNode).getAnInput() = nodeFrom
 }
 
 /**
@@ -105,7 +121,6 @@ predicate basicStoreStep(Node nodeFrom, DataFlowPublic::LocalSourceNode nodeTo, 
  */
 private string getSetterCallAttributeName(AST::SetterMethodCall call) {
   // TODO: this should be exposed in `SetterMethodCall`
-  not call instanceof AST::ElementReference and
   exists(string setterName |
     setterName = call.getMethodName() and result = setterName.prefix(setterName.length() - 1)
   )

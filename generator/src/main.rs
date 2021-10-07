@@ -3,7 +3,6 @@ mod language;
 mod ql;
 mod ql_gen;
 
-use clap;
 use language::Language;
 use std::collections::BTreeMap as Map;
 use std::collections::BTreeSet as Set;
@@ -33,7 +32,7 @@ fn make_field_type<'a>(
                 .map(|t| nodes.get(t).unwrap().dbscheme_name.as_str())
                 .collect();
             (
-                ql::Type::AtType(&dbscheme_union),
+                ql::Type::At(dbscheme_union),
                 Some(dbscheme::Entry::Union(dbscheme::Union {
                     name: dbscheme_union,
                     members,
@@ -41,14 +40,14 @@ fn make_field_type<'a>(
             )
         }
         node_types::FieldTypeInfo::Single(t) => {
-            let dbscheme_name = &nodes.get(&t).unwrap().dbscheme_name;
-            (ql::Type::AtType(dbscheme_name), None)
+            let dbscheme_name = &nodes.get(t).unwrap().dbscheme_name;
+            (ql::Type::At(dbscheme_name), None)
         }
         node_types::FieldTypeInfo::ReservedWordInt(int_mapping) => {
             // The field will be an `int` in the db, and we add a case split to
             // create other db types for each integer value.
             let mut branches: Vec<(usize, &'a str)> = Vec::new();
-            for (_, (value, name)) in int_mapping {
+            for (value, name) in int_mapping.values() {
                 branches.push((*value, name));
             }
             let case = dbscheme::Entry::Case(dbscheme::Case {
@@ -74,12 +73,12 @@ fn add_field_for_table_storage<'a>(
     let parent_name = &nodes.get(&field.parent).unwrap().dbscheme_name;
     // This field can appear zero or multiple times, so put
     // it in an auxiliary table.
-    let (field_ql_type, field_type_entry) = make_field_type(parent_name, &field, nodes);
+    let (field_ql_type, field_type_entry) = make_field_type(parent_name, field, nodes);
     let parent_column = dbscheme::Column {
         unique: !has_index,
         db_type: dbscheme::DbColumnType::Int,
-        name: &parent_name,
-        ql_type: ql::Type::AtType(&parent_name),
+        name: parent_name,
+        ql_type: ql::Type::At(parent_name),
         ql_type_is_ref: true,
     };
     let index_column = dbscheme::Column {
@@ -97,7 +96,7 @@ fn add_field_for_table_storage<'a>(
         ql_type_is_ref: true,
     };
     let field_table = dbscheme::Table {
-        name: &table_name,
+        name: table_name,
         columns: if has_index {
             vec![parent_column, index_column, field_column]
         } else {
@@ -106,7 +105,7 @@ fn add_field_for_table_storage<'a>(
         // In addition to the field being unique, the combination of
         // parent+index is unique, so add a keyset for them.
         keysets: if has_index {
-            Some(vec![&parent_name, "index"])
+            Some(vec![parent_name, "index"])
         } else {
             None
         },
@@ -122,7 +121,7 @@ fn add_field_for_column_storage<'a>(
 ) -> (dbscheme::Column<'a>, Option<dbscheme::Entry<'a>>) {
     // This field must appear exactly once, so we add it as
     // a column to the main table for the node type.
-    let (field_ql_type, field_type_entry) = make_field_type(parent_name, &field, nodes);
+    let (field_ql_type, field_type_entry) = make_field_type(parent_name, field, nodes);
     (
         dbscheme::Column {
             unique: false,
@@ -142,9 +141,9 @@ fn add_field_for_column_storage<'a>(
 /// 2. A set of names of the members of the `<lang>_ast_node` union.
 /// 3. A map where the keys are the dbscheme names for token kinds, and the
 /// values are their integer representations.
-fn convert_nodes<'a>(
-    nodes: &'a node_types::NodeTypeMap,
-) -> (Vec<dbscheme::Entry<'a>>, Set<&'a str>, Map<&'a str, usize>) {
+fn convert_nodes(
+    nodes: &node_types::NodeTypeMap,
+) -> (Vec<dbscheme::Entry>, Set<&str>, Map<&str, usize>) {
     let mut entries: Vec<dbscheme::Entry> = Vec::new();
     let mut ast_node_members: Set<&str> = Set::new();
     let token_kinds: Map<&str, usize> = nodes
@@ -156,7 +155,7 @@ fn convert_nodes<'a>(
             _ => None,
         })
         .collect();
-    for (_, node) in nodes {
+    for node in nodes.values() {
         match &node.kind {
             node_types::EntryKind::Union { members: n_members } => {
                 // It's a tree-sitter supertype node, for which we create a union
@@ -173,12 +172,12 @@ fn convert_nodes<'a>(
             node_types::EntryKind::Table { name, fields } => {
                 // It's a product type, defined by a table.
                 let mut main_table = dbscheme::Table {
-                    name: &name,
+                    name,
                     columns: vec![dbscheme::Column {
                         db_type: dbscheme::DbColumnType::Int,
                         name: "id",
                         unique: true,
-                        ql_type: ql::Type::AtType(&node.dbscheme_name),
+                        ql_type: ql::Type::At(&node.dbscheme_name),
                         ql_type_is_ref: false,
                     }],
                     keysets: None,
@@ -238,7 +237,7 @@ fn convert_nodes<'a>(
                     unique: false,
                     db_type: dbscheme::DbColumnType::Int,
                     name: "loc",
-                    ql_type: ql::Type::AtType("location"),
+                    ql_type: ql::Type::At("location"),
                     ql_type_is_ref: true,
                 });
 
@@ -264,14 +263,14 @@ fn create_ast_node_parent_table<'a>(name: &'a str, ast_node_name: &'a str) -> db
                 db_type: dbscheme::DbColumnType::Int,
                 name: "child",
                 unique: false,
-                ql_type: ql::Type::AtType(ast_node_name),
+                ql_type: ql::Type::At(ast_node_name),
                 ql_type_is_ref: true,
             },
             dbscheme::Column {
                 db_type: dbscheme::DbColumnType::Int,
                 name: "parent",
                 unique: false,
-                ql_type: ql::Type::AtType(name),
+                ql_type: ql::Type::At(name),
                 ql_type_is_ref: true,
             },
             dbscheme::Column {
@@ -295,27 +294,13 @@ fn create_tokeninfo<'a>(name: &'a str, type_name: &'a str) -> dbscheme::Table<'a
                 db_type: dbscheme::DbColumnType::Int,
                 name: "id",
                 unique: true,
-                ql_type: ql::Type::AtType(type_name),
+                ql_type: ql::Type::At(type_name),
                 ql_type_is_ref: false,
             },
             dbscheme::Column {
                 unique: false,
                 db_type: dbscheme::DbColumnType::Int,
                 name: "kind",
-                ql_type: ql::Type::Int,
-                ql_type_is_ref: true,
-            },
-            dbscheme::Column {
-                unique: false,
-                db_type: dbscheme::DbColumnType::Int,
-                name: "file",
-                ql_type: ql::Type::AtType("file"),
-                ql_type_is_ref: true,
-            },
-            dbscheme::Column {
-                unique: false,
-                db_type: dbscheme::DbColumnType::Int,
-                name: "idx",
                 ql_type: ql::Type::Int,
                 ql_type_is_ref: true,
             },
@@ -330,7 +315,7 @@ fn create_tokeninfo<'a>(name: &'a str, type_name: &'a str) -> dbscheme::Table<'a
                 unique: false,
                 db_type: dbscheme::DbColumnType::Int,
                 name: "loc",
-                ql_type: ql::Type::AtType("location"),
+                ql_type: ql::Type::At("location"),
                 ql_type_is_ref: true,
             },
         ],
@@ -343,9 +328,9 @@ fn create_token_case<'a>(name: &'a str, token_kinds: Map<&'a str, usize>) -> dbs
         .map(|(&name, kind_id)| (*kind_id, name))
         .collect();
     dbscheme::Case {
-        name: name,
+        name,
         column: "kind",
-        branches: branches,
+        branches,
     }
 }
 
@@ -365,7 +350,7 @@ fn create_files_table<'a>() -> dbscheme::Entry<'a> {
                 unique: true,
                 db_type: dbscheme::DbColumnType::Int,
                 name: "id",
-                ql_type: ql::Type::AtType("file"),
+                ql_type: ql::Type::At("file"),
                 ql_type_is_ref: false,
             },
             dbscheme::Column {
@@ -387,7 +372,7 @@ fn create_folders_table<'a>() -> dbscheme::Entry<'a> {
                 unique: true,
                 db_type: dbscheme::DbColumnType::Int,
                 name: "id",
-                ql_type: ql::Type::AtType("folder"),
+                ql_type: ql::Type::At("folder"),
                 ql_type_is_ref: false,
             },
             dbscheme::Column {
@@ -410,14 +395,14 @@ fn create_locations_default_table<'a>() -> dbscheme::Entry<'a> {
                 unique: true,
                 db_type: dbscheme::DbColumnType::Int,
                 name: "id",
-                ql_type: ql::Type::AtType("location_default"),
+                ql_type: ql::Type::At("location_default"),
                 ql_type_is_ref: false,
             },
             dbscheme::Column {
                 unique: false,
                 db_type: dbscheme::DbColumnType::Int,
                 name: "file",
-                ql_type: ql::Type::AtType("file"),
+                ql_type: ql::Type::At("file"),
                 ql_type_is_ref: true,
             },
             dbscheme::Column {
@@ -467,14 +452,14 @@ fn create_containerparent_table<'a>() -> dbscheme::Entry<'a> {
                 unique: false,
                 db_type: dbscheme::DbColumnType::Int,
                 name: "parent",
-                ql_type: ql::Type::AtType("container"),
+                ql_type: ql::Type::At("container"),
                 ql_type_is_ref: true,
             },
             dbscheme::Column {
                 unique: true,
                 db_type: dbscheme::DbColumnType::Int,
                 name: "child",
-                ql_type: ql::Type::AtType("container"),
+                ql_type: ql::Type::At("container"),
                 ql_type_is_ref: true,
             },
         ],
@@ -505,7 +490,7 @@ fn create_diagnostics<'a>() -> (dbscheme::Case<'a>, dbscheme::Table<'a>) {
                 unique: true,
                 db_type: dbscheme::DbColumnType::Int,
                 name: "id",
-                ql_type: ql::Type::AtType("diagnostic"),
+                ql_type: ql::Type::At("diagnostic"),
                 ql_type_is_ref: false,
             },
             dbscheme::Column {
@@ -540,7 +525,7 @@ fn create_diagnostics<'a>() -> (dbscheme::Case<'a>, dbscheme::Table<'a>) {
                 unique: false,
                 db_type: dbscheme::DbColumnType::Int,
                 name: "location",
-                ql_type: ql::Type::AtType("location_default"),
+                ql_type: ql::Type::At("location_default"),
                 ql_type_is_ref: true,
             },
         ],
@@ -639,7 +624,7 @@ fn main() -> std::io::Result<()> {
         let token_name = format!("{}_token", &prefix);
         let tokeninfo_name = format!("{}_tokeninfo", &prefix);
         let reserved_word_name = format!("{}_reserved_word", &prefix);
-        let nodes = node_types::read_node_types_str(&prefix, &language.node_types)?;
+        let nodes = node_types::read_node_types_str(&prefix, language.node_types)?;
         let (dbscheme_entries, mut ast_node_members, token_kinds) = convert_nodes(&nodes);
         ast_node_members.insert(&token_name);
         dbscheme::write(&mut dbscheme_writer, &dbscheme_entries)?;

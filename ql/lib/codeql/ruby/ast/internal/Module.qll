@@ -220,7 +220,7 @@ private string resolveScopeExpr(ConstantReadAccess c, int priority) {
   )
 }
 
-pragma[noinline]
+pragma[nomagic]
 private string resolveScopeExprConstantReadAccess(ConstantReadAccess c, int priority, string name) {
   result = resolveScopeExpr(c.getScopeExpr(), priority) and
   name = c.getName()

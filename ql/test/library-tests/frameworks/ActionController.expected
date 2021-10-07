@@ -13,8 +13,8 @@ actionControllerActionMethods
 | app/controllers/foo/bars_controller.rb:15:3:19:5 | show |
 paramsCalls
 | ActiveRecordInjection.rb:35:30:35:35 | call to params |
-| ActiveRecordInjection.rb:39:30:39:35 | call to params |
-| ActiveRecordInjection.rb:43:32:43:37 | call to params |
+| ActiveRecordInjection.rb:39:29:39:34 | call to params |
+| ActiveRecordInjection.rb:43:31:43:36 | call to params |
 | ActiveRecordInjection.rb:48:21:48:26 | call to params |
 | ActiveRecordInjection.rb:54:34:54:39 | call to params |
 | ActiveRecordInjection.rb:56:23:56:28 | call to params |
@@ -24,7 +24,7 @@ paramsCalls
 | ActiveRecordInjection.rb:77:12:77:17 | call to params |
 | ActiveRecordInjection.rb:83:12:83:17 | call to params |
 | ActiveRecordInjection.rb:88:15:88:20 | call to params |
-| ActiveRecordInjection.rb:94:22:94:27 | call to params |
+| ActiveRecordInjection.rb:94:21:94:26 | call to params |
 | app/controllers/foo/bars_controller.rb:8:21:8:26 | call to params |
 | app/controllers/foo/bars_controller.rb:9:10:9:15 | call to params |
 | app/controllers/foo/bars_controller.rb:16:21:16:26 | call to params |
@@ -32,8 +32,8 @@ paramsCalls
 | app/views/foo/bars/show.html.erb:5:9:5:14 | call to params |
 paramsSources
 | ActiveRecordInjection.rb:35:30:35:35 | call to params |
-| ActiveRecordInjection.rb:39:30:39:35 | call to params |
-| ActiveRecordInjection.rb:43:32:43:37 | call to params |
+| ActiveRecordInjection.rb:39:29:39:34 | call to params |
+| ActiveRecordInjection.rb:43:31:43:36 | call to params |
 | ActiveRecordInjection.rb:48:21:48:26 | call to params |
 | ActiveRecordInjection.rb:54:34:54:39 | call to params |
 | ActiveRecordInjection.rb:56:23:56:28 | call to params |
@@ -43,7 +43,7 @@ paramsSources
 | ActiveRecordInjection.rb:77:12:77:17 | call to params |
 | ActiveRecordInjection.rb:83:12:83:17 | call to params |
 | ActiveRecordInjection.rb:88:15:88:20 | call to params |
-| ActiveRecordInjection.rb:94:22:94:27 | call to params |
+| ActiveRecordInjection.rb:94:21:94:26 | call to params |
 | app/controllers/foo/bars_controller.rb:8:21:8:26 | call to params |
 | app/controllers/foo/bars_controller.rb:9:10:9:15 | call to params |
 | app/controllers/foo/bars_controller.rb:16:21:16:26 | call to params |

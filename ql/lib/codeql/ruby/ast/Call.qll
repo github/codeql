@@ -8,7 +8,7 @@ private import codeql.ruby.dataflow.internal.DataFlowImplCommon
 /**
  * A call.
  */
-class Call extends Expr, TCall {
+class Call extends Expr instanceof CallImpl {
   override string getAPrimaryQlClass() { result = "Call" }
 
   /**
@@ -23,7 +23,7 @@ class Call extends Expr, TCall {
    * yield 0, bar: 1
    * ```
    */
-  final Expr getArgument(int n) { result = this.(CallImpl).getArgumentImpl(n) }
+  final Expr getArgument(int n) { result = super.getArgumentImpl(n) }
 
   /**
    * Gets an argument of this method call.
@@ -49,7 +49,7 @@ class Call extends Expr, TCall {
   /**
    * Gets the number of arguments of this method call.
    */
-  final int getNumberOfArguments() { result = this.(CallImpl).getNumberOfArgumentsImpl() }
+  final int getNumberOfArguments() { result = super.getNumberOfArgumentsImpl() }
 
   /** Gets a potential target of this call, if any. */
   final Callable getATarget() {
@@ -59,7 +59,7 @@ class Call extends Expr, TCall {
   }
 
   override AstNode getAChild(string pred) {
-    result = super.getAChild(pred)
+    result = Expr.super.getAChild(pred)
     or
     pred = "getArgument" and result = this.getArgument(_)
   }
@@ -68,7 +68,7 @@ class Call extends Expr, TCall {
 /**
  * A method call.
  */
-class MethodCall extends Call, TMethodCall {
+class MethodCall extends Call instanceof MethodCallImpl {
   override string getAPrimaryQlClass() { result = "MethodCall" }
 
   /**
@@ -84,7 +84,7 @@ class MethodCall extends Call, TMethodCall {
    * the call to `qux` is the `Expr` for `Baz`; for the call to `corge` there
    * is no result.
    */
-  final Expr getReceiver() { result = this.(MethodCallImpl).getReceiverImpl() }
+  final Expr getReceiver() { result = super.getReceiverImpl() }
 
   /**
    * Gets the name of the method being called. For example, in:
@@ -95,7 +95,7 @@ class MethodCall extends Call, TMethodCall {
    *
    * the result is `"bar"`.
    */
-  final string getMethodName() { result = this.(MethodCallImpl).getMethodNameImpl() }
+  final string getMethodName() { result = super.getMethodNameImpl() }
 
   /**
    * Gets the block of this method call, if any.
@@ -103,12 +103,12 @@ class MethodCall extends Call, TMethodCall {
    * foo.each { |x| puts x }
    * ```
    */
-  Block getBlock() { none() }
+  final Block getBlock() { result = super.getBlockImpl() }
 
   override string toString() { result = "call to " + this.getMethodName() }
 
   override AstNode getAChild(string pred) {
-    result = super.getAChild(pred)
+    result = Call.super.getAChild(pred)
     or
     pred = "getReceiver" and result = this.getReceiver()
     or
@@ -123,7 +123,7 @@ class MethodCall extends Call, TMethodCall {
  * a[0] = 10
  * ```
  */
-class SetterMethodCall extends MethodCall {
+class SetterMethodCall extends MethodCall, TMethodCallSynth {
   SetterMethodCall() { this = TMethodCallSynth(_, _, _, true, _) }
 
   final override string getAPrimaryQlClass() { result = "SetterMethodCall" }
@@ -135,7 +135,7 @@ class SetterMethodCall extends MethodCall {
  * a[0]
  * ```
  */
-class ElementReference extends MethodCall, TElementReference {
+class ElementReference extends MethodCall instanceof ElementReferenceImpl {
   final override string getAPrimaryQlClass() { result = "ElementReference" }
 
   final override string toString() { result = "...[...]" }
@@ -147,11 +147,7 @@ class ElementReference extends MethodCall, TElementReference {
  * yield x, y
  * ```
  */
-class YieldCall extends Call, TYieldCall {
-  Ruby::Yield g;
-
-  YieldCall() { this = TYieldCall(g) }
-
+class YieldCall extends Call instanceof YieldCallImpl {
   final override string getAPrimaryQlClass() { result = "YieldCall" }
 
   final override string toString() { result = "yield ..." }
@@ -167,7 +163,7 @@ class YieldCall extends Call, TYieldCall {
  * end
  * ```
  */
-class SuperCall extends MethodCall, TSuperCall {
+class SuperCall extends MethodCall instanceof SuperCallImpl {
   final override string getAPrimaryQlClass() { result = "SuperCall" }
 }
 
