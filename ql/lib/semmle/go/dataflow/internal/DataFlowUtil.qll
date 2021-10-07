@@ -52,7 +52,7 @@ class Node extends TNode {
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
-   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
@@ -1219,7 +1219,7 @@ abstract class BarrierGuard extends Node {
         // Case: a function like "return someBarrierGuard(arg)"
         // or "return !someBarrierGuard(arg) && otherCond(...)"
         exists(boolean outcome |
-          not exists(DataFlow::Node otherRet | otherRet = outp.getEntryNode(fd) | otherRet != ret) and
+          ret = getUniqueOutputNode(fd, outp) and
           this.checks(arg.asExpr(), outcome) and
           // This predicate's contract is (p holds of ret ==> arg is checked),
           // (and we have (this has outcome ==> arg is checked))
@@ -1234,7 +1234,7 @@ abstract class BarrierGuard extends Node {
           Function f2, FunctionInput inp2, FunctionOutput outp2, CallNode c,
           DataFlow::Property outpProp
         |
-          not exists(DataFlow::Node otherRet | otherRet = outp.getEntryNode(fd) | otherRet != ret) and
+          ret = getUniqueOutputNode(fd, outp) and
           this.guardingFunction(f2, inp2, outp2, outpProp) and
           c = f2.getACall() and
           arg = inp2.getNode(c) and
@@ -1250,6 +1250,10 @@ abstract class BarrierGuard extends Node {
       )
     )
   }
+}
+
+DataFlow::Node getUniqueOutputNode(FuncDecl fd, FunctionOutput outp) {
+  result = unique(DataFlow::Node n | n = outp.getEntryNode(fd) | n)
 }
 
 /**
