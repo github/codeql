@@ -342,9 +342,11 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
     ): Label<out DbReftype> {
         when (arg) {
             is IrStarProjection -> {
-                // todo handle this
-                logger.warnElement(Severity.ErrorSevere, "Star is not yet handled.", reportOn)
-                return fakeLabel()
+                val wildcardLabel = "@\"wildcard;\""
+                val wildcardId: Label<DbWildcard> = tw.getLabelFor(wildcardLabel)
+                tw.writeWildcards(wildcardId, "*", 1)
+                tw.writeHasLocation(wildcardId, tw.getLocation(-1, -1))
+                return wildcardId
             }
             is IrTypeProjection -> {
                 return useType(arg.type) as Label<out DbReftype>

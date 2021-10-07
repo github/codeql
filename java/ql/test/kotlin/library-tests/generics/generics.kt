@@ -30,4 +30,5 @@ fun m() {
     val x2 = c2.f2(3)
     val c3 = C2()
     c3.f4(5)
+    val c4: C0<*> = C0<Int>()
 }

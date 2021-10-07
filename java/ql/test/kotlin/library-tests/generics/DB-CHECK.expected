@@ -3,6 +3,11 @@
 		Full ID for 11: @"type;int"
 	Relevant element: parentid=132
 		Full ID for 132: @"class;foo.bar.C1;(11);(11)". The ID may expand to @"class;foo.bar.C1;{@"type;int"};{@"type;int"}"
+[VALUE_NOT_IN_TYPE] predicate typeArgs(@reftype argumentid, int pos, @typeorcallable parentid): Value 11 of field argumentid is not in type @reftype. The value is however in the following types: @primitive. Appears in tuple (11,0,197)
+	Relevant element: argumentid=11
+		Full ID for 11: @"type;int"
+	Relevant element: parentid=197
+		Full ID for 197: @"class;foo.bar.C0;(11)". The ID may expand to @"class;foo.bar.C0;{@"type;int"}"
 [VALUE_NOT_IN_TYPE] predicate typeArgs(@reftype argumentid, int pos, @typeorcallable parentid): Value 11 of field argumentid is not in type @reftype. The value is however in the following types: @primitive. Appears in tuple (11,1,132)
 	Relevant element: argumentid=11
 		Full ID for 11: @"type;int"
@@ -23,8 +28,4 @@
 		Full ID for 13: @"type;string"
 	Relevant element: parentid=157
 		Full ID for 157: @"class;foo.bar.C1;(13);(11)". The ID may expand to @"class;foo.bar.C1;{@"type;string"};{@"type;int"}"
-[VALUE_NOT_IN_TYPE] predicate typeArgs(@reftype argumentid, int pos, @typeorcallable parentid): Value 13 of field argumentid is not in type @reftype. The value is however in the following types: @primitive. Appears in tuple (13,1,146)
-	Relevant element: argumentid=13
-		Full ID for 13: @"type;string"
-	Relevant element: parentid=146
-		Full ID for 146: @"class;foo.bar.C1;(13);(13)". The ID may expand to @"class;foo.bar.C1;{@"type;string"};{@"type;string"}"
+[VALUE_NOT_IN_TYPE] predicate typeArgs(@reftype argumentid, int pos, @typeorcallable parentid): More errors, not displayed. There are 7 values of field argumentid that are not in type @reftype for a relation of size 12
