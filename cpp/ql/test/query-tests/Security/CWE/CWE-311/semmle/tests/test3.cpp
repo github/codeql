@@ -35,7 +35,7 @@ void test_send(const char *password1, const char *password2, const char *passwor
 	}
 
 	{
-		send(stdout_fileno, password2, strlen(password2), val()); // GOOD: `password2` is sent to stdout, not a network socket (this may be an issue but is not within the scope of the `cpp/cleartext-transmission` query) [FALSE POSITIVE]
+		send(stdout_fileno, password2, strlen(password2), val()); // GOOD: `password2` is sent to stdout, not a network socket (this may be an issue but is not within the scope of the `cpp/cleartext-transmission` query)
 	}
 }
 

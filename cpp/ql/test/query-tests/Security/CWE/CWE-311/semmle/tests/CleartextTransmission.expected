@@ -196,7 +196,6 @@ subpaths
 #select
 | test3.cpp:22:3:22:6 | call to send | test3.cpp:22:15:22:23 | password1 | test3.cpp:22:15:22:23 | password1 | This operation transmits 'password1', which may contain unencrypted sensitive data from $@ | test3.cpp:22:15:22:23 | password1 | password1 |
 | test3.cpp:26:3:26:6 | call to send | test3.cpp:26:15:26:23 | password2 | test3.cpp:26:15:26:23 | password2 | This operation transmits 'password2', which may contain unencrypted sensitive data from $@ | test3.cpp:26:15:26:23 | password2 | password2 |
-| test3.cpp:38:3:38:6 | call to send | test3.cpp:38:23:38:31 | password2 | test3.cpp:38:23:38:31 | password2 | This operation transmits 'password2', which may contain unencrypted sensitive data from $@ | test3.cpp:38:23:38:31 | password2 | password2 |
 | test3.cpp:47:3:47:6 | call to recv | test3.cpp:47:15:47:22 | password | test3.cpp:47:15:47:22 | password | This operation receives into 'password', which may put unencrypted sensitive data into $@ | test3.cpp:47:15:47:22 | password | password |
 | test3.cpp:55:3:55:6 | call to recv | test3.cpp:55:15:55:22 | password | test3.cpp:55:15:55:22 | password | This operation receives into 'password', which may put unencrypted sensitive data into $@ | test3.cpp:55:15:55:22 | password | password |
 | test3.cpp:76:3:76:6 | call to send | test3.cpp:74:21:74:29 | password1 | test3.cpp:76:15:76:17 | ptr | This operation transmits 'ptr', which may contain unencrypted sensitive data from $@ | test3.cpp:74:21:74:29 | password1 | password1 |

@@ -36,13 +36,23 @@ abstract class NetworkSendRecv extends FunctionCall {
   abstract Expr getDataExpr();
 
   /**
-   * Holds if any socket used by this call could be a true network socket.
-   * A zero socket descriptor is standard input, which is not a network
-   * operation.
+   * Holds if the socket used by this call could be a true network socket (or
+   * if no socket is specified). A constant value is likely to indicate standard
+   * input, standard output or a similar non-network socket.
    */
   predicate checkSocket() {
-    not exists(Zero zero |
-      DataFlow::localFlow(DataFlow::exprNode(zero), DataFlow::exprNode(getSocketExpr()))
+    not exists(GVN g |
+      g = globalValueNumber(getSocketExpr()) and
+      (
+        // literal constant
+        globalValueNumber(any(Literal l)) = g
+        or
+        // variable (such as a global) initialized to a literal constant
+        exists(Variable v |
+          v.getInitializer().getExpr() instanceof Literal and
+          g = globalValueNumber(v.getAnAccess())
+        )
+      )
     )
   }
 }
