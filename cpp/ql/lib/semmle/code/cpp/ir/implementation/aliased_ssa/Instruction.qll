@@ -821,7 +821,7 @@ class ReturnIndirectionInstruction extends VariableInstruction {
  *
  * There are several different copy instructions, depending on the source and destination of the
  * copy operation:
- * - `CopyInstruction` - Copies a register operand to a register result.
+ * - `CopyValueInstruction` - Copies a register operand to a register result.
  * - `LoadInstruction` - Copies a memory operand to a register result.
  * - `StoreInstruction` - Copies a register operand to a memory result.
  */
