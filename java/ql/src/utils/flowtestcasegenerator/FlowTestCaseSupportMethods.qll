@@ -217,6 +217,22 @@ private class EnumerationGetMethod extends GetMethod {
   override string getCall(string arg) { result = "getElement(" + arg + ")" }
 }
 
+private class StreamGetMethod extends GetMethod {
+  StreamGetMethod() { this = "streamgetmethod" }
+
+  override predicate appliesTo(Type t, Content c) {
+    t.(RefType).getASourceSupertype*().hasQualifiedName("java.util.stream", "BaseStream") and
+    c instanceof CollectionContent
+  }
+
+  override string getDefinition() {
+    result = "<T> T getElement(BaseStream<T,?> s) { return s.iterator().next(); }"
+  }
+
+  bindingset[arg]
+  override string getCall(string arg) { result = "getElement(" + arg + ")" }
+}
+
 private class OptionalGetMethod extends GetMethod {
   OptionalGetMethod() { this = "optionalgetmethod" }
 
@@ -390,6 +406,20 @@ private class IteratorGenMethod extends GenMethod {
 
   bindingset[arg]
   override string getCall(string arg) { result = "List.of(" + arg + ").iterator()" }
+}
+
+private class StreamGenMethod extends GenMethod {
+  StreamGenMethod() { this = "streamgenmethod" }
+
+  override predicate appliesTo(Type t, Content c) {
+    exists(GenericType op | op.hasQualifiedName("java.util.stream", ["BaseStream", "Stream"]) |
+      op.getAParameterizedType().getASupertype*() = t
+    ) and
+    c instanceof CollectionContent
+  }
+
+  bindingset[arg]
+  override string getCall(string arg) { result = "Stream.of(" + arg + ")" }
 }
 
 private class OptionalGenMethod extends GenMethod {
