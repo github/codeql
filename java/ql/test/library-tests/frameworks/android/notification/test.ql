@@ -1,4 +1,5 @@
 import java
+import semmle.code.java.frameworks.android.Intent
 import TestUtilities.InlineFlowTest
 
 class SummaryModelTest extends SummaryModelCsv {
@@ -6,9 +7,18 @@ class SummaryModelTest extends SummaryModelCsv {
     row =
       [
         //"package;type;overrides;name;signature;ext;inputspec;outputspec;kind",
-        "generatedtest;Test;false;getMapKeyDefault;(Bundle);;MapKey of Argument[0];ReturnValue;value",
-        "generatedtest;Test;false;newActionBuilderWithExtras;(Bundle);;Argument[0];SyntheticField[android.app.NotificationActionBuilder.extras] of ReturnValue;value",
-        "generatedtest;Test;false;newBuilderWithExtras;(Bundle);;Argument[0];SyntheticField[android.app.NotificationBuilder.extras] of ReturnValue;value"
+        "generatedtest;Test;false;getMapKeyDefault;(Bundle);;MapKey of Argument[0];ReturnValue;value"
       ]
+  }
+}
+
+class NotificationsTaintFlowConf extends DefaultTaintFlowConf {
+  override predicate allowImplicitRead(DataFlow::Node node, DataFlow::Content c) {
+    super.allowImplicitRead(node, c)
+    or
+    isSink(node) and
+    c.(DataFlow::SyntheticFieldContent).getField() = "android.app.Notification.action"
+    or
+    allowIntentExtrasImplicitRead(node, c)
   }
 }
