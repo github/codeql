@@ -14,21 +14,21 @@ def is_source(x):  #$ importTimeFlow="ModuleVariableNode for Global Variable is_
 
 
 def SINK(x):  #$ importTimeFlow="ModuleVariableNode for Global Variable SINK in Module multiphase"
-    if is_source(x):  #$ runtimFlow="ModuleVariableNode for Global Variable is_source in Module multiphase, l:-17 -> is_source"
-        print("OK")  #$ runtimFlow="ModuleVariableNode for Global Variable print in Module multiphase, l:-18 -> print"
+    if is_source(x):  #$ runtimeFlow="ModuleVariableNode for Global Variable is_source in Module multiphase, l:-17 -> is_source"
+        print("OK")  #$ runtimeFlow="ModuleVariableNode for Global Variable print in Module multiphase, l:-18 -> print"
     else:
-        print("Unexpected flow", x)  #$ runtimFlow="ModuleVariableNode for Global Variable print in Module multiphase, l:-20 -> print"
+        print("Unexpected flow", x)  #$ runtimeFlow="ModuleVariableNode for Global Variable print in Module multiphase, l:-20 -> print"
 
 
 def SINK_F(x):
-    if is_source(x):  #$ runtimFlow="ModuleVariableNode for Global Variable is_source in Module multiphase, l:-24 -> is_source"
-        print("Unexpected flow", x)  #$ runtimFlow="ModuleVariableNode for Global Variable print in Module multiphase, l:-25 -> print"
+    if is_source(x):  #$ runtimeFlow="ModuleVariableNode for Global Variable is_source in Module multiphase, l:-24 -> is_source"
+        print("Unexpected flow", x)  #$ runtimeFlow="ModuleVariableNode for Global Variable print in Module multiphase, l:-25 -> print"
     else:
-        print("OK")  #$ runtimFlow="ModuleVariableNode for Global Variable print in Module multiphase, l:-27 -> print"
+        print("OK")  #$ runtimeFlow="ModuleVariableNode for Global Variable print in Module multiphase, l:-27 -> print"
 
 def set_foo():  #$ importTimeFlow="ModuleVariableNode for Global Variable set_foo in Module multiphase"
     global foo
-    foo = SOURCE  #$ runtimFlow="ModuleVariableNode for Global Variable SOURCE in Module multiphase, l:-31 -> SOURCE" MISSING:importTimeFlow="ModuleVariableNode for Global Variable foo in Module multiphase"
+    foo = SOURCE  #$ runtimeFlow="ModuleVariableNode for Global Variable SOURCE in Module multiphase, l:-31 -> SOURCE" MISSING:importTimeFlow="ModuleVariableNode for Global Variable foo in Module multiphase"
 
 foo = NONSOURCE  #$ importTimeFlow="ModuleVariableNode for Global Variable foo in Module multiphase"
 set_foo()
@@ -36,7 +36,7 @@ set_foo()
 @expects(2)
 def test_phases():
     global foo
-    SINK(foo)  #$ runtimFlow="ModuleVariableNode for Global Variable SINK in Module multiphase, l:-39 -> SINK" runtimFlow="ModuleVariableNode for Global Variable foo in Module multiphase, l:-39 -> foo"
-    foo = NONSOURCE  #$ runtimFlow="ModuleVariableNode for Global Variable NONSOURCE in Module multiphase, l:-40 -> NONSOURCE"
-    set_foo()  #$ runtimFlow="ModuleVariableNode for Global Variable set_foo in Module multiphase, l:-41 -> set_foo"
-    SINK(foo)  #$ runtimFlow="ModuleVariableNode for Global Variable SINK in Module multiphase, l:-42 -> SINK" runtimFlow="ModuleVariableNode for Global Variable foo in Module multiphase, l:-42 -> foo"
+    SINK(foo)  #$ runtimeFlow="ModuleVariableNode for Global Variable SINK in Module multiphase, l:-39 -> SINK" runtimeFlow="ModuleVariableNode for Global Variable foo in Module multiphase, l:-39 -> foo"
+    foo = NONSOURCE  #$ runtimeFlow="ModuleVariableNode for Global Variable NONSOURCE in Module multiphase, l:-40 -> NONSOURCE"
+    set_foo()  #$ runtimeFlow="ModuleVariableNode for Global Variable set_foo in Module multiphase, l:-41 -> set_foo"
+    SINK(foo)  #$ runtimeFlow="ModuleVariableNode for Global Variable SINK in Module multiphase, l:-42 -> SINK" runtimeFlow="ModuleVariableNode for Global Variable foo in Module multiphase, l:-42 -> foo"
