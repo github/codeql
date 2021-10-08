@@ -14,5 +14,10 @@
 </example>
 <references>
 
+<li>
+  CERT C Coding Standard:
+  <a href="https://wiki.sei.cmu.edu/confluence/display/java/JNI00-J.+Define+wrappers+around+native+methods">JNI00-J. Define wrappers around native methods</a>.
+</li>
+
 </references>
 </qhelp>
