@@ -74,7 +74,7 @@ module UnsafeDeserialization {
   }
 
   private predicate isOjModePair(Pair p, string modeValue) {
-    p.getKey().(SymbolLiteral).getValueText() = "mode" and
+    p.getKey().getValueText() = "mode" and
     exists(DataFlow::LocalSourceNode symbolLiteral, DataFlow::Node value |
       symbolLiteral.asExpr().getExpr().(SymbolLiteral).getValueText() = modeValue and
       symbolLiteral.flowsTo(value) and
