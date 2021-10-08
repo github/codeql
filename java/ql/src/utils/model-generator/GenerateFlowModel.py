@@ -1,12 +1,9 @@
 #!/usr/bin/python3
 
-import errno
 import json
 import os
 import os.path
-import re
 import shlex
-import shutil
 import subprocess
 import sys
 import tempfile

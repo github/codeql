@@ -9,6 +9,7 @@ import ModelGeneratorUtils
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.internal.DataFlowImplCommon
 import semmle.code.java.dataflow.internal.DataFlowNodes
+import ModelGeneratorUtils
 
 string captureFlow(Callable api) {
   result = captureQualifierFlow(api) or
@@ -123,15 +124,6 @@ string captureParameterToParameterFlow(Callable api) {
 // TODO: infer interface from multiple implementations? e.g. UriComponentsContributor
 // TODO: distinguish between taint and value flows. If we find a value flow, omit the taint flow
 // TODO: merge param->return value with param->parameter flow?
-class TargetAPI extends Callable {
-  TargetAPI() {
-    this.isPublic() and
-    this.fromSource() and
-    this.getDeclaringType().isPublic() and
-    not isInTestFile(this)
-  }
-}
-
 from TargetAPI api, string flow
 where flow = captureFlow(api)
 select flow order by flow

@@ -47,8 +47,7 @@ string captureSource(Callable api) {
   )
 }
 
-from Callable api, string sink
+from TargetAPI api, string sink
 where
-  sink = captureSource(api) and
-  not isInTestFile(api)
+  sink = captureSource(api) 
 select sink order by sink

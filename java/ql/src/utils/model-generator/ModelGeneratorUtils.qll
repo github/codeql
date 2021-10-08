@@ -2,7 +2,32 @@ import java
 import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.java.dataflow.internal.ContainerFlow
 
-string isExtensible(RefType ref) { if ref.isFinal() then result = "false" else result = "true" }
+class TargetAPI extends Callable {
+  TargetAPI() {
+    this.isPublic() and
+    this.fromSource() and
+    this.getDeclaringType().isPublic() and
+    isRelevantForModels(this)
+  }
+  
+}
+
+private string isExtensible(RefType ref) { if ref.isFinal() then result = "false" else result = "true" }
+
+predicate isRelevantForModels(Callable api) {
+  not isInTestFile(api.getCompilationUnit().getFile()) and
+  not isJdkInternal(api.getCompilationUnit())
+}
+
+private predicate isInTestFile(File file) {
+  file.getAbsolutePath().matches("%src/test/%") or
+  file.getAbsolutePath().matches("%/guava-tests/%") or
+  file.getAbsolutePath().matches("%/guava-testlib/%")
+}
+
+private predicate isJdkInternal(CompilationUnit cu) {
+  cu.getPackage().getName().matches("com.sun") or cu.getPackage().getName().matches("sun") or cu.getPackage().getName().matches("")
+}
 
 bindingset[input, output]
 string asTaintModel(Callable api, string input, string output) {
@@ -56,10 +81,4 @@ string parameterAccess(Parameter p) {
     if p.getType() instanceof ContainerType
     then result = "Element of Argument[" + p.getPosition() + "]"
     else result = "Argument[" + p.getPosition() + "]"
-}
-
-predicate isInTestFile(Callable api) {
-  api.getCompilationUnit().getFile().getAbsolutePath().matches("%src/test/%") or
-  api.getCompilationUnit().getFile().getAbsolutePath().matches("%/guava-tests/%") or
-  api.getCompilationUnit().getFile().getAbsolutePath().matches("%/guava-testlib/%")
 }

@@ -17,10 +17,11 @@ class PropagateToSinkConfiguration extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node source) {
     source instanceof DataFlow::ParameterNode and
     source.asParameter().getCallable().isPublic() and
-    source.asParameter().getCallable().getDeclaringType().isPublic()
+    source.asParameter().getCallable().getDeclaringType().isPublic() and
+    isRelevantForModels(source.getEnclosingCallable())
   }
 
-  override predicate isSink(DataFlow::Node sink) { sinkNode(sink, _) }
+  override predicate isSink(DataFlow::Node sink) { sinkNode(sink, _)}
 }
 
 string asInputArgument(DataFlow::Node source) {
@@ -36,8 +37,7 @@ string captureSink(Callable api) {
   )
 }
 
-from Callable api, string sink
+from TargetAPI api, string sink
 where
-  sink = captureSink(api) and
-  not isInTestFile(api)
+  sink = captureSink(api)
 select sink order by sink
