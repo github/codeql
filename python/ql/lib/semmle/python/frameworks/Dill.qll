@@ -24,7 +24,7 @@ private module Dill {
 
     override predicate mayExecuteInput() { any() }
 
-    override DataFlow::Node getAnInput() { result = this.getArg(0) }
+    override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("str")] }
 
     override DataFlow::Node getOutput() { result = this }
 
