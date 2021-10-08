@@ -428,7 +428,7 @@ module Public {
    */
   private DataFlow::Node getACalleeSource(DataFlow::CallNode cn) {
     result = cn.getCalleeNode() or
-    result.getASuccessor() = getACalleeSource(cn)
+    basicLocalFlowStep(result, getACalleeSource(cn))
   }
 
   /** A data flow node that represents a call. */

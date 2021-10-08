@@ -15,7 +15,9 @@ private predicate isInterfaceCallReceiver(
 
 /** Gets a data-flow node that may flow into the receiver value of `call`, which is an interface value. */
 private DataFlow::Node getInterfaceCallReceiverSource(DataFlow::CallNode call) {
-  isInterfaceCallReceiver(call, result.getASuccessor*(), _, _)
+  exists(DataFlow::Node succ | basicLocalFlowStep*(result, succ) |
+    isInterfaceCallReceiver(call, succ, _, _)
+  )
 }
 
 /** Gets the type of `nd`, which must be a valid type and not an interface type. */
@@ -37,7 +39,7 @@ private predicate isConcreteValue(DataFlow::Node nd) {
   (
     exists(getConcreteType(nd))
     or
-    forex(DataFlow::Node pred | pred = nd.getAPredecessor() | isConcreteValue(pred))
+    forex(DataFlow::Node pred | basicLocalFlowStep(pred, nd) | isConcreteValue(pred))
   )
 }
 
