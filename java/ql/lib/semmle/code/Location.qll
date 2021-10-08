@@ -24,7 +24,7 @@ predicate hasName(Element e, string name) {
   or
   packages(e, name)
   or
-  files(e, _, name, _, _)
+  name = e.(File).getStem()
   or
   paramName(e, name)
   or
@@ -58,7 +58,7 @@ class Top extends @top {
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
-   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
@@ -168,18 +168,10 @@ class Location extends @location {
 
   /** Gets a string representation containing the file and range for this location. */
   string toString() {
-    exists(File f, int startLine, int startCol, int endLine, int endCol |
-      locations_default(this, f, startLine, startCol, endLine, endCol)
+    exists(string filepath, int startLine, int startCol, int endLine, int endCol |
+      this.hasLocationInfo(filepath, startLine, startCol, endLine, endCol)
     |
-      if endLine = startLine
-      then
-        result =
-          f.toString() + ":" + startLine.toString() + "[" + startCol.toString() + "-" +
-            endCol.toString() + "]"
-      else
-        result =
-          f.toString() + ":" + startLine.toString() + "[" + startCol.toString() + "]-" +
-            endLine.toString() + "[" + endCol.toString() + "]"
+      toUrl(filepath, startLine, startCol, endLine, endCol, result)
     )
   }
 
@@ -188,7 +180,7 @@ class Location extends @location {
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
-   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn

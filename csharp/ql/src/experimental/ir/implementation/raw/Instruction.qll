@@ -821,7 +821,7 @@ class ReturnIndirectionInstruction extends VariableInstruction {
  *
  * There are several different copy instructions, depending on the source and destination of the
  * copy operation:
- * - `CopyInstruction` - Copies a register operand to a register result.
+ * - `CopyValueInstruction` - Copies a register operand to a register result.
  * - `LoadInstruction` - Copies a memory operand to a register result.
  * - `StoreInstruction` - Copies a register operand to a memory result.
  */
@@ -1856,12 +1856,12 @@ class InitializeDynamicAllocationInstruction extends SideEffectInstruction {
   }
 
   /**
-   * Gets the address of the allocation this instruction is initializing.
+   * Gets the operand that represents the address of the allocation this instruction is initializing.
    */
   final AddressOperand getAllocationAddressOperand() { result = getAnOperand() }
 
   /**
-   * Gets the operand for the allocation this instruction is initializing.
+   * Gets the address for the allocation this instruction is initializing.
    */
   final Instruction getAllocationAddress() { result = getAllocationAddressOperand().getDef() }
 }

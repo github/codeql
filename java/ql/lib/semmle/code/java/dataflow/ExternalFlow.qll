@@ -78,17 +78,21 @@ private import FlowSummary
 private module Frameworks {
   private import internal.ContainerFlow
   private import semmle.code.java.frameworks.android.XssSinks
+  private import semmle.code.java.frameworks.android.Intent
   private import semmle.code.java.frameworks.ApacheHttp
   private import semmle.code.java.frameworks.apache.Collections
   private import semmle.code.java.frameworks.apache.Lang
+  private import semmle.code.java.frameworks.Flexjson
   private import semmle.code.java.frameworks.guava.Guava
   private import semmle.code.java.frameworks.jackson.JacksonSerializability
+  private import semmle.code.java.frameworks.javaee.jsf.JSFRenderer
   private import semmle.code.java.frameworks.JavaxJson
   private import semmle.code.java.frameworks.JaxWS
   private import semmle.code.java.frameworks.JoddJson
   private import semmle.code.java.frameworks.JsonJava
   private import semmle.code.java.frameworks.Objects
   private import semmle.code.java.frameworks.Optional
+  private import semmle.code.java.frameworks.Strings
   private import semmle.code.java.frameworks.spring.SpringCache
   private import semmle.code.java.frameworks.spring.SpringHttp
   private import semmle.code.java.frameworks.spring.SpringUtil
@@ -107,6 +111,8 @@ private module Frameworks {
   private import semmle.code.java.security.MvelInjection
   private import semmle.code.java.security.OgnlInjection
   private import semmle.code.java.security.XPath
+  private import semmle.code.java.security.XsltInjection
+  private import semmle.code.java.frameworks.android.Android
   private import semmle.code.java.frameworks.android.SQLite
   private import semmle.code.java.frameworks.Jdbc
   private import semmle.code.java.frameworks.SpringJdbc
@@ -304,6 +310,8 @@ private predicate summaryModelCsv(string row) {
       "java.util;Base64$Decoder;false;decode;(ByteBuffer);;Argument[0];ReturnValue;taint",
       "java.util;Base64$Decoder;false;decode;(String);;Argument[0];ReturnValue;taint",
       "java.util;Base64$Decoder;false;wrap;(InputStream);;Argument[0];ReturnValue;taint",
+      "cn.hutool.core.codec;Base64;true;decode;;;Argument[0];ReturnValue;taint",
+      "org.apache.shiro.codec;Base64;false;decode;(String);;Argument[0];ReturnValue;taint",
       "org.apache.commons.codec;Encoder;true;encode;(Object);;Argument[0];ReturnValue;taint",
       "org.apache.commons.codec;Decoder;true;decode;(Object);;Argument[0];ReturnValue;taint",
       "org.apache.commons.codec;BinaryEncoder;true;encode;(byte[]);;Argument[0];ReturnValue;taint",
@@ -628,9 +636,14 @@ private string paramsStringPart(Callable c, int i) {
   i = 2 * c.getNumberOfParameters() and result = ")"
 }
 
-private string paramsString(Callable c) {
-  result = concat(int i | | paramsStringPart(c, i) order by i)
-}
+/**
+ * Gets a parenthesized string containing all parameter types of this callable, separated by a comma.
+ *
+ * Returns the empty string if the callable has no parameters.
+ * Parameter types are represented by their type erasure.
+ */
+cached
+string paramsString(Callable c) { result = concat(int i | | paramsStringPart(c, i) order by i) }
 
 private Element interpretElement0(
   string namespace, string type, boolean subtypes, string name, string signature

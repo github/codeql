@@ -33,17 +33,11 @@ When you run ``database analyze``, it:
 
 You can analyze a database by running the following command::
 
-   codeql database analyze <database> <queries> --format=<format> --output=<output>
+   codeql database analyze <database> --format=<format> --output=<output> <queries>
 
 You must specify:
 
 - ``<database>``: the path to the CodeQL database you want to analyze.
-
-- ``<queries>``: the queries to run over your database. You can
-  list one or more individual query files, specify a directory that will be
-  searched recursively for query files, or name a query suite that defines a
-  particular set of queries. For more information, see the :ref:`examples
-  <database-analyze-examples>` below.
 
 - ``--format``: the format of the results file generated during analysis. A
   number of different formats are supported, including CSV, :ref:`SARIF
@@ -55,6 +49,13 @@ You must specify:
 - ``--output``: the output path of the results file generated during analysis.
 
 You can also specify:
+
+- ``<queries>``: the queries to run over your database. You can
+  list one or more individual query files, specify a directory that will be
+  searched recursively for query files, or name a query suite that defines a
+  particular set of queries. If omitted, the default query suite for the language
+  of the database being analyzed will be usedFor more information, see the
+  :ref:`examples <database-analyze-examples>` below.
 
 - ``--sarif-category``: an identifying category for the results. Used when
   you want to upload more than one set of results for a commit.

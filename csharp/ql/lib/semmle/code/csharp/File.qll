@@ -33,7 +33,7 @@ class Container extends @container {
   /**
    * Gets a URL representing the location of this container.
    *
-   * For more information see [Providing URLs](https://help.semmle.com/QL/learn-ql/ql/locations.html#providing-urls).
+   * For more information see [Providing URLs](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/#providing-urls).
    */
   string getURL() { none() }
 
@@ -171,14 +171,14 @@ class Container extends @container {
 
 /** A folder. */
 class Folder extends Container, @folder {
-  override string getAbsolutePath() { folders(this, result, _) }
+  override string getAbsolutePath() { folders(this, result) }
 
   override string getURL() { result = "folder://" + getAbsolutePath() }
 }
 
 /** A file. */
 class File extends Container, @file {
-  override string getAbsolutePath() { files(this, result, _, _, _) }
+  override string getAbsolutePath() { files(this, result) }
 
   /** Gets the number of lines in this file. */
   int getNumberOfLines() { numlines(this, result, _, _) }
@@ -192,7 +192,7 @@ class File extends Container, @file {
   override string getURL() { result = "file://" + this.getAbsolutePath() + ":0:0:0:0" }
 
   /** Holds if this file contains source code. */
-  predicate fromSource() { files(this, _, _, "cs", _) }
+  predicate fromSource() { this.getExtension() = "cs" }
 
   /** Holds if this file is a library. */
   predicate fromLibrary() {

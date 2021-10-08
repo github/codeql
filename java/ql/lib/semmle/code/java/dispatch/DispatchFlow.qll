@@ -142,8 +142,8 @@ private predicate viableParamCand(Call call, int i, ParameterNode p) {
  * Holds if `arg` is a possible argument to `p` taking virtual dispatch into account.
  */
 private predicate viableArgParamCand(ArgumentNode arg, ParameterNode p) {
-  exists(int i, Call call |
-    viableParamCand(call, i, p) and
+  exists(int i, DataFlowCall call |
+    viableParamCand(call.asCall(), i, p) and
     arg.argumentOf(call, i)
   )
 }

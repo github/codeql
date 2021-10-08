@@ -84,36 +84,6 @@ abstract class TaintPreservingCallable extends Callable {
   predicate transfersTaint(int src, int sink) { none() }
 }
 
-private class StringTaintPreservingMethod extends TaintPreservingCallable {
-  StringTaintPreservingMethod() {
-    this.getDeclaringType() instanceof TypeString and
-    (
-      this.hasName([
-          "concat", "copyValueOf", "endsWith", "format", "formatted", "getBytes", "indent",
-          "intern", "join", "repeat", "split", "strip", "stripIndent", "stripLeading",
-          "stripTrailing", "substring", "toCharArray", "toLowerCase", "toString", "toUpperCase",
-          "trim"
-        ])
-      or
-      this.hasName("valueOf") and this.getParameterType(0) instanceof Array
-    )
-  }
-
-  override predicate returnsTaintFrom(int arg) {
-    arg = -1 and not this.isStatic()
-    or
-    this.hasName(["concat", "copyValueOf", "valueOf"]) and arg = 0
-    or
-    this.hasName(["format", "formatted", "join"]) and arg = [0 .. getNumberOfParameters()]
-  }
-}
-
-private class StringTaintPreservingConstructor extends Constructor, TaintPreservingCallable {
-  StringTaintPreservingConstructor() { this.getDeclaringType() instanceof TypeString }
-
-  override predicate returnsTaintFrom(int arg) { arg = 0 }
-}
-
 private class NumberTaintPreservingCallable extends TaintPreservingCallable {
   int argument;
 
@@ -134,45 +104,18 @@ private class NumberTaintPreservingCallable extends TaintPreservingCallable {
   override predicate returnsTaintFrom(int arg) { arg = argument }
 }
 
-/** Holds for the types `StringBuilder`, `StringBuffer`, and `StringWriter`. */
-private predicate stringBuilderType(RefType t) {
-  t instanceof StringBuildingType or
-  t.hasQualifiedName("java.io", "StringWriter")
-}
-
-private class StringBuilderTaintPreservingCallable extends TaintPreservingCallable {
-  StringBuilderTaintPreservingCallable() {
-    exists(Method m |
-      this.(Method).overrides*(m) and
-      stringBuilderType(m.getDeclaringType()) and
-      m.hasName(["append", "insert", "replace", "toString", "write"])
-    )
-    or
-    this.(Constructor).getParameterType(0) instanceof RefType and
-    stringBuilderType(this.getDeclaringType())
-  }
-
-  override predicate returnsTaintFrom(int arg) {
-    arg = -1 and
-    not this instanceof Constructor
-    or
-    this instanceof Constructor and arg = 0
-    or
-    this.hasName("append") and arg = 0
-    or
-    this.hasName("insert") and arg = 1
-    or
-    this.hasName("replace") and arg = 2
-  }
-
-  override predicate transfersTaint(int src, int sink) {
-    returnsTaintFrom(src) and
-    sink = -1 and
-    src != -1 and
-    not this instanceof Constructor
-    or
-    this.hasName("write") and
-    src = 0 and
-    sink = -1
-  }
-}
+/**
+ * A `Content` that should be implicitly regarded as tainted whenever an object with such `Content`
+ * is itself tainted.
+ *
+ * For example, if we had a type `class Container { Contained field; }`, then by default a tainted
+ * `Container` and a `Container` with a tainted `Contained` stored in its `field` are distinct.
+ *
+ * If `any(DataFlow::FieldContent fc | fc.getField().hasQualifiedName("Container", "field"))` was
+ * included in this type however, then a tainted `Container` would imply that its `field` is also
+ * tainted (but not vice versa).
+ *
+ * Note that `TaintTracking::Configuration` applies this behaviour by default to array, collection,
+ * map-key and map-value content, so that e.g. a tainted `Map` is assumed to have tainted keys and values.
+ */
+abstract class TaintInheritingContent extends DataFlow::Content { }

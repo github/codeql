@@ -7,7 +7,7 @@
  * @precision high
  * @id java/insecure-spring-actuator-config
  * @tags security
- *       external/cwe-016
+ *       external/cwe/cwe-016
  */
 
 /*

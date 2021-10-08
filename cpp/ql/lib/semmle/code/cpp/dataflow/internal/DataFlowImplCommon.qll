@@ -786,13 +786,18 @@ private module Cached {
   }
 
   /**
-   * Holds if the call context `call` either improves virtual dispatch in
-   * `callable` or if it allows us to prune unreachable nodes in `callable`.
+   * Holds if the call context `call` improves virtual dispatch in `callable`.
    */
   cached
-  predicate recordDataFlowCallSite(DataFlowCall call, DataFlowCallable callable) {
+  predicate recordDataFlowCallSiteDispatch(DataFlowCall call, DataFlowCallable callable) {
     reducedViableImplInCallContext(_, callable, call)
-    or
+  }
+
+  /**
+   * Holds if the call context `call` allows us to prune unreachable nodes in `callable`.
+   */
+  cached
+  predicate recordDataFlowCallSiteUnreachable(DataFlowCall call, DataFlowCallable callable) {
     exists(Node n | getNodeEnclosingCallable(n) = callable | isUnreachableInCallCached(n, call))
   }
 
@@ -844,6 +849,15 @@ private module Cached {
   newtype TAccessPathFrontOption =
     TAccessPathFrontNone() or
     TAccessPathFrontSome(AccessPathFront apf)
+}
+
+/**
+ * Holds if the call context `call` either improves virtual dispatch in
+ * `callable` or if it allows us to prune unreachable nodes in `callable`.
+ */
+predicate recordDataFlowCallSite(DataFlowCall call, DataFlowCallable callable) {
+  recordDataFlowCallSiteDispatch(call, callable) or
+  recordDataFlowCallSiteUnreachable(call, callable)
 }
 
 /**
@@ -1222,6 +1236,13 @@ class TypedContent extends MkTypedContent {
 
   /** Gets a textual representation of this content. */
   string toString() { result = c.toString() }
+
+  /**
+   * Holds if access paths with this `TypedContent` at their head always should
+   * be tracked at high precision. This disables adaptive access path precision
+   * for such access paths.
+   */
+  predicate forceHighPrecision() { forceHighPrecision(c) }
 }
 
 /**

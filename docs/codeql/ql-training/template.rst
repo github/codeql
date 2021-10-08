@@ -36,7 +36,7 @@ Setup
 
 For this example you should download:
 
-- `CodeQL for Visual Studio Code <https://help.semmle.com/codeql/codeql-for-vscode/procedures/setting-up.html>`__
+- `CodeQL for Visual Studio Code <https://codeql.github.com/docs/codeql-for-visual-studio-code/setting-up-codeql-in-visual-studio-code/>`__
 - A CodeQL database
 
 .. note::
@@ -159,7 +159,7 @@ Specify the language to apply syntax highlighting and the lines of the fragment 
 Further details
 ===============
 
-- For more information on writing in reStructuredText, see http://docutils.sourceforge.net/rst.html.
+- For more information on writing in reStructuredText, see https://docutils.sourceforge.io/rst.html.
 
 - For more information on Sphinx, see https://www.sphinx-doc.org.
 

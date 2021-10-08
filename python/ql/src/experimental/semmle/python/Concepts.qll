@@ -157,9 +157,19 @@ module LDAPBind {
    */
   abstract class Range extends DataFlow::Node {
     /**
+     * Gets the argument containing the binding host.
+     */
+    abstract DataFlow::Node getHost();
+
+    /**
      * Gets the argument containing the binding expression.
      */
     abstract DataFlow::Node getPassword();
+
+    /**
+     * Holds if the binding process use SSL.
+     */
+    abstract predicate useSSL();
   }
 }
 
@@ -174,7 +184,20 @@ class LDAPBind extends DataFlow::Node {
 
   LDAPBind() { this = range }
 
+  /**
+   * Gets the argument containing the binding host.
+   */
+  DataFlow::Node getHost() { result = range.getHost() }
+
+  /**
+   * Gets the argument containing the binding expression.
+   */
   DataFlow::Node getPassword() { result = range.getPassword() }
+
+  /**
+   * Holds if the binding process use SSL.
+   */
+  predicate useSSL() { range.useSSL() }
 }
 
 /** Provides classes for modeling SQL sanitization libraries. */

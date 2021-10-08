@@ -9,6 +9,7 @@ class ConditionBlock extends BasicBlock {
   }
 
   /** Basic blocks controlled by this condition, i.e. those BBs for which the condition is testIsTrue */
+  pragma[nomagic]
   predicate controls(BasicBlock controlled, boolean testIsTrue) {
     /*
      * For this block to control the block 'controlled' with 'testIsTrue' the following must be true:

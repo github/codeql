@@ -6,6 +6,7 @@ nodes
 | CodeInjection.cs:29:64:29:67 | access to local variable code | semmle.label | access to local variable code |
 | CodeInjection.cs:40:36:40:39 | access to local variable code | semmle.label | access to local variable code |
 | CodeInjection.cs:56:36:56:44 | access to property Text | semmle.label | access to property Text |
+subpaths
 #select
 | CodeInjection.cs:29:64:29:67 | access to local variable code | CodeInjection.cs:23:23:23:45 | access to property QueryString : NameValueCollection | CodeInjection.cs:29:64:29:67 | access to local variable code | $@ flows to here and is compiled as code. | CodeInjection.cs:23:23:23:45 | access to property QueryString | User-provided value |
 | CodeInjection.cs:40:36:40:39 | access to local variable code | CodeInjection.cs:23:23:23:45 | access to property QueryString : NameValueCollection | CodeInjection.cs:40:36:40:39 | access to local variable code | $@ flows to here and is compiled as code. | CodeInjection.cs:23:23:23:45 | access to property QueryString | User-provided value |

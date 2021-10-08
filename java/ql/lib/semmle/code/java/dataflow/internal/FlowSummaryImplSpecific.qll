@@ -16,11 +16,14 @@ private module FlowSummaries {
 /** Holds is `i` is a valid parameter position. */
 predicate parameterPosition(int i) { i in [-1 .. any(Parameter p).getPosition()] }
 
+/** Gets the parameter position of the instance parameter. */
+int instanceParameterPosition() { result = -1 }
+
 /** Gets the synthesized summary data-flow node for the given values. */
 Node summaryNode(SummarizedCallable c, SummaryNodeState state) { result = getSummaryNode(c, state) }
 
 /** Gets the synthesized data-flow call for `receiver`. */
-DataFlowCall summaryDataFlowCall(Node receiver) { none() }
+SummaryCall summaryDataFlowCall(Node receiver) { result.getReceiver() = receiver }
 
 /** Gets the type of content `c`. */
 DataFlowType getContentType(Content c) { result = c.getType() }
@@ -35,13 +38,20 @@ DataFlowType getReturnType(SummarizedCallable c, ReturnKind rk) {
  * Gets the type of the `i`th parameter in a synthesized call that targets a
  * callback of type `t`.
  */
-DataFlowType getCallbackParameterType(DataFlowType t, int i) { none() }
+DataFlowType getCallbackParameterType(DataFlowType t, int i) {
+  result = getErasedRepr(t.(FunctionalInterface).getRunMethod().getParameterType(i))
+  or
+  result = getErasedRepr(t.(FunctionalInterface)) and i = -1
+}
 
 /**
  * Gets the return type of kind `rk` in a synthesized call that targets a
  * callback of type `t`.
  */
-DataFlowType getCallbackReturnType(DataFlowType t, ReturnKind rk) { none() }
+DataFlowType getCallbackReturnType(DataFlowType t, ReturnKind rk) {
+  result = getErasedRepr(t.(FunctionalInterface).getRunMethod().getReturnType()) and
+  exists(rk)
+}
 
 /**
  * Holds if an external flow summary exists for `c` with input specification
@@ -106,13 +116,13 @@ class InterpretNode extends TInterpretNode {
   Node asNode() { this = TNode(result) }
 
   /** Gets the call that this node corresponds to, if any. */
-  DataFlowCall asCall() { result = this.asElement() }
+  DataFlowCall asCall() { result.asCall() = this.asElement() }
 
   /** Gets the callable that this node corresponds to, if any. */
   DataFlowCallable asCallable() { result = this.asElement() }
 
   /** Gets the target of this call, if any. */
-  Callable getCallTarget() { result = this.asCall().getCallee().getSourceDeclaration() }
+  Callable getCallTarget() { result = this.asCall().asCall().getCallee().getSourceDeclaration() }
 
   /** Gets a textual representation of this node. */
   string toString() {

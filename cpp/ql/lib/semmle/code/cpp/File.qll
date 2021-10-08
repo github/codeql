@@ -38,7 +38,7 @@ class Container extends Locatable, @container {
    * DEPRECATED: Use `getLocation` instead.
    * Gets a URL representing the location of this container.
    *
-   * For more information see [Providing URLs](https://help.semmle.com/QL/learn-ql/ql/locations.html#providing-urls).
+   * For more information see [Providing URLs](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/#providing-urls).
    */
   deprecated string getURL() { none() } // overridden by subclasses
 
@@ -171,7 +171,7 @@ class Container extends Locatable, @container {
  * To get the full path, use `getAbsolutePath`.
  */
 class Folder extends Container, @folder {
-  override string getAbsolutePath() { folders(underlyingElement(this), result, _) }
+  override string getAbsolutePath() { folders(underlyingElement(this), result) }
 
   override Location getLocation() {
     result.getContainer() = this and
@@ -190,7 +190,7 @@ class Folder extends Container, @folder {
    * DEPRECATED: use `getAbsolutePath` instead.
    * Gets the name of this folder.
    */
-  deprecated string getName() { folders(underlyingElement(this), result, _) }
+  deprecated string getName() { folders(underlyingElement(this), result) }
 
   /**
    * DEPRECATED: use `getAbsolutePath` instead.
@@ -208,17 +208,7 @@ class Folder extends Container, @folder {
    * DEPRECATED: use `getBaseName` instead.
    * Gets the last part of the folder name.
    */
-  deprecated string getShortName() {
-    exists(string longnameRaw, string longname |
-      folders(underlyingElement(this), _, longnameRaw) and
-      longname = longnameRaw.replaceAll("\\", "/")
-    |
-      exists(int index |
-        result = longname.splitAt("/", index) and
-        not exists(longname.splitAt("/", index + 1))
-      )
-    )
-  }
+  deprecated string getShortName() { result = this.getBaseName() }
 
   /**
    * DEPRECATED: use `getParentContainer` instead.
@@ -242,7 +232,7 @@ class Folder extends Container, @folder {
  * `getStem` and `getExtension`. To get the full path, use `getAbsolutePath`.
  */
 class File extends Container, @file {
-  override string getAbsolutePath() { files(underlyingElement(this), result, _, _, _) }
+  override string getAbsolutePath() { files(underlyingElement(this), result) }
 
   override string toString() { result = Container.super.toString() }
 
@@ -336,7 +326,13 @@ class File extends Container, @file {
    * for example, for "file.tar.gz", this predicate will have the result
    * "tar.gz", while `getExtension` will have the result "gz".
    */
-  string getExtensions() { files(underlyingElement(this), _, _, result, _) }
+  string getExtensions() {
+    exists(string name, int firstDotPos |
+      name = this.getBaseName() and
+      firstDotPos = min([name.indexOf("."), name.length() - 1]) and
+      result = name.suffix(firstDotPos + 1)
+    )
+  }
 
   /**
    * Gets the short name of this file, that is, the prefix of its base name up
@@ -351,7 +347,16 @@ class File extends Container, @file {
    * for example, for "file.tar.gz", this predicate will have the result
    * "file", while `getStem` will have the result "file.tar".
    */
-  string getShortName() { files(underlyingElement(this), _, result, _, _) }
+  string getShortName() {
+    exists(string name, int firstDotPos |
+      name = this.getBaseName() and
+      firstDotPos = min([name.indexOf("."), name.length()]) and
+      result = name.prefix(firstDotPos)
+    )
+    or
+    this.getAbsolutePath() = "" and
+    result = ""
+  }
 }
 
 /**

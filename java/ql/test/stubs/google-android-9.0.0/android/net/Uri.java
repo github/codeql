@@ -541,4 +541,152 @@ public abstract class Uri implements Parcelable, Comparable<Uri> {
     public boolean isPathPrefixMatch(Uri prefix) {
         return false;
     }
+
+    public Builder buildUpon() { return null; }
+
+    /**
+     * Helper class for building or manipulating URI references. Not safe for
+     * concurrent use.
+     *
+     * <p>An absolute hierarchical URI reference follows the pattern:
+     * {@code <scheme>://<authority><absolute path>?<query>#<fragment>}
+     *
+     * <p>Relative URI references (which are always hierarchical) follow one
+     * of two patterns: {@code <relative or absolute path>?<query>#<fragment>}
+     * or {@code //<authority><absolute path>?<query>#<fragment>}
+     *
+     * <p>An opaque URI follows this pattern:
+     * {@code <scheme>:<opaque part>#<fragment>}
+     *
+     * <p>Use {@link Uri#buildUpon()} to obtain a builder representing an existing URI.
+     */
+    public static final class Builder {
+        /**
+         * Constructs a new Builder.
+         */
+        public Builder() {}
+        /**
+         * Sets the scheme.
+         *
+         * @param scheme name or {@code null} if this is a relative Uri
+         */
+        public Builder scheme(String scheme) {
+            return null;
+        }
+        /**
+         * Encodes and sets the given opaque scheme-specific-part.
+         *
+         * @param opaquePart decoded opaque part
+         */
+        public Builder opaquePart(String opaquePart) {
+            return null;
+        }
+        /**
+         * Sets the previously encoded opaque scheme-specific-part.
+         *
+         * @param opaquePart encoded opaque part
+         */
+        public Builder encodedOpaquePart(String opaquePart) {
+            return null;
+        }
+        /**
+         * Encodes and sets the authority.
+         */
+        public Builder authority(String authority) {
+            return null;
+        }
+        /**
+         * Sets the previously encoded authority.
+         */
+        public Builder encodedAuthority(String authority) {
+            return null;
+        }
+        /**
+         * Sets the path. Leaves '/' characters intact but encodes others as
+         * necessary.
+         *
+         * <p>If the path is not null and doesn't start with a '/', and if
+         * you specify a scheme and/or authority, the builder will prepend the
+         * given path with a '/'.
+         */
+        public Builder path(String path) {
+            return null;
+        }
+        /**
+         * Sets the previously encoded path.
+         *
+         * <p>If the path is not null and doesn't start with a '/', and if
+         * you specify a scheme and/or authority, the builder will prepend the
+         * given path with a '/'.
+         */
+        public Builder encodedPath(String path) {
+            return null;
+        }
+        /**
+         * Encodes the given segment and appends it to the path.
+         */
+        public Builder appendPath(String newSegment) {
+            return null;
+        }
+        /**
+         * Appends the given segment to the path.
+         */
+        public Builder appendEncodedPath(String newSegment) {
+            return null;
+        }
+        /**
+         * Encodes and sets the query.
+         */
+        public Builder query(String query) {
+            return null;
+        }
+        /**
+         * Sets the previously encoded query.
+         */
+        public Builder encodedQuery(String query) {
+            return null;
+        }
+        /**
+         * Encodes and sets the fragment.
+         */
+        public Builder fragment(String fragment) {
+            return null;
+        }
+        /**
+         * Sets the previously encoded fragment.
+         */
+        public Builder encodedFragment(String fragment) {
+            return null;
+        }
+        /**
+         * Encodes the key and value and then appends the parameter to the
+         * query string.
+         *
+         * @param key which will be encoded
+         * @param value which will be encoded
+         */
+        public Builder appendQueryParameter(String key, String value) {
+            return null;
+        }
+        /**
+         * Clears the the previously set query.
+         */
+        public Builder clearQuery() {
+          return null;
+        }
+        /**
+         * Constructs a Uri with the current attributes.
+         *
+         * @throws UnsupportedOperationException if the URI is opaque and the
+         *  scheme is null
+         */
+        public Uri build() {
+          return null;
+        }
+        @Override
+        public String toString() {
+            return null;
+        }
+    }
+
 }

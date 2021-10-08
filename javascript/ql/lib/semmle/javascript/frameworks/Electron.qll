@@ -182,7 +182,7 @@ module Electron {
    * A Node.js-style HTTP or HTTPS request made using an Electron module.
    */
   class ElectronClientRequest extends NodeJSLib::NodeJSClientRequest {
-    override ElectronClientRequest::Range self;
+    ElectronClientRequest() { this instanceof ElectronClientRequest::Range }
   }
 
   module ElectronClientRequest {

@@ -33,7 +33,7 @@ class Container extends @container, Top {
   /**
    * Gets a URL representing the location of this container.
    *
-   * For more information see [Providing URLs](https://help.semmle.com/QL/learn-ql/ql/locations.html#providing-urls).
+   * For more information see [Providing URLs](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/#providing-urls).
    */
   abstract string getURL();
 
@@ -157,7 +157,7 @@ class Container extends @container, Top {
 
 /** A folder. */
 class Folder extends Container, @folder {
-  override string getAbsolutePath() { folders(this, result, _) }
+  override string getAbsolutePath() { folders(this, result) }
 
   /** Gets the URL of this folder. */
   override string getURL() { result = "folder://" + getAbsolutePath() }
@@ -171,7 +171,7 @@ class Folder extends Container, @folder {
  * Note that `File` extends `Container` as it may be a `jar` file.
  */
 class File extends Container, @file {
-  override string getAbsolutePath() { files(this, result, _, _, _) }
+  override string getAbsolutePath() { files(this, result) }
 
   /** Gets the URL of this file. */
   override string getURL() { result = "file://" + this.getAbsolutePath() + ":0:0:0:0" }

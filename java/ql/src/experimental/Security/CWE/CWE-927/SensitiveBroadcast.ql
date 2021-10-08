@@ -8,7 +8,7 @@
  * @precision medium
  * @id java/sensitive-broadcast
  * @tags security
- *       external/cwe-927
+ *       external/cwe/cwe-927
  */
 
 import java

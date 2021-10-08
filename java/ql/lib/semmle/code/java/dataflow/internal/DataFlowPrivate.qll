@@ -5,6 +5,7 @@ private import DataFlowDispatch
 private import semmle.code.java.controlflow.Guards
 private import semmle.code.java.dataflow.SSA
 private import ContainerFlow
+private import semmle.code.java.dataflow.FlowSummary
 private import FlowSummaryImpl as FlowSummaryImpl
 import DataFlowNodes::Private
 
@@ -24,7 +25,7 @@ class ReturnKind extends TReturnKind {
  * `kind`.
  */
 OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
-  result = call.getNode() and
+  result.getCall() = call and
   kind = TNormalReturnKind()
 }
 
@@ -214,9 +215,55 @@ class DataFlowExpr = Expr;
 
 class DataFlowType = RefType;
 
-class DataFlowCall extends Call {
-  /** Gets the data flow node corresponding to this call. */
-  ExprNode getNode() { result.getExpr() = this }
+private newtype TDataFlowCall =
+  TCall(Call c) or
+  TSummaryCall(SummarizedCallable c, Node receiver) {
+    FlowSummaryImpl::Private::summaryCallbackRange(c, receiver)
+  }
+
+/** A call relevant for data flow. Includes both source calls and synthesized calls. */
+class DataFlowCall extends TDataFlowCall {
+  /** Gets the source (non-synthesized) call this corresponds to, if any. */
+  Call asCall() { this = TCall(result) }
+
+  /** Gets the enclosing callable of this call. */
+  abstract DataFlowCallable getEnclosingCallable();
+
+  /** Gets a textual representation of this call. */
+  abstract string toString();
+
+  /** Gets the location of this call. */
+  abstract Location getLocation();
+}
+
+/** A source call, that is, a `Call`. */
+class SrcCall extends DataFlowCall, TCall {
+  Call call;
+
+  SrcCall() { this = TCall(call) }
+
+  override DataFlowCallable getEnclosingCallable() { result = call.getEnclosingCallable() }
+
+  override string toString() { result = call.toString() }
+
+  override Location getLocation() { result = call.getLocation() }
+}
+
+/** A synthesized call inside a `SummarizedCallable`. */
+class SummaryCall extends DataFlowCall, TSummaryCall {
+  private SummarizedCallable c;
+  private Node receiver;
+
+  SummaryCall() { this = TSummaryCall(c, receiver) }
+
+  /** Gets the data flow node that this call targets. */
+  Node getReceiver() { result = receiver }
+
+  override DataFlowCallable getEnclosingCallable() { result = c }
+
+  override string toString() { result = "[summary] call to " + receiver + " in " + c }
+
+  override Location getLocation() { result = c.getLocation() }
 }
 
 /** Holds if `e` is an expression that always has the same Boolean value `val`. */
@@ -247,7 +294,7 @@ predicate isUnreachableInCall(Node n, DataFlowCall call) {
     Guard guard
   |
     // get constant bool argument and parameter for this call
-    viableParamArg(call, paramNode, arg) and
+    viableParamArg(call, pragma[only_bind_into](paramNode), arg) and
     // get the ssa variable definition for this parameter
     param.isParameterDefinition(paramNode.getParameter()) and
     // which is used in a guard
@@ -255,11 +302,19 @@ predicate isUnreachableInCall(Node n, DataFlowCall call) {
     // which controls `n` with the opposite value of `arg`
     guard
         .controls(n.asExpr().getBasicBlock(),
-          pragma[only_bind_out](arg.getBooleanValue()).booleanNot())
+          pragma[only_bind_into](pragma[only_bind_out](arg.getBooleanValue()).booleanNot()))
   )
 }
 
 int accessPathLimit() { result = 5 }
+
+/**
+ * Holds if access paths with `c` at their head always should be tracked at high
+ * precision. This disables adaptive access path precision for such access paths.
+ */
+predicate forceHighPrecision(Content c) {
+  c instanceof ArrayContent or c instanceof CollectionContent
+}
 
 /**
  * Holds if `n` does not require a `PostUpdateNode` as it either cannot be
@@ -275,13 +330,29 @@ predicate isImmutableOrUnobservable(Node n) {
 /** Holds if `n` should be hidden from path explanations. */
 predicate nodeIsHidden(Node n) { n instanceof SummaryNode }
 
-class LambdaCallKind = Unit;
+class LambdaCallKind = Method; // the "apply" method in the functional interface
 
 /** Holds if `creation` is an expression that creates a lambda of kind `kind` for `c`. */
-predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c) { none() }
+predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c) {
+  exists(ClassInstanceExpr func, Interface t, FunctionalInterface interface |
+    creation.asExpr() = func and
+    func.getAnonymousClass().getAMethod() = c and
+    func.getConstructedType().extendsOrImplements+(t) and
+    t.getSourceDeclaration() = interface and
+    c.(Method).overridesOrInstantiates+(pragma[only_bind_into](kind)) and
+    pragma[only_bind_into](kind) = interface.getRunMethod().getSourceDeclaration()
+  )
+}
 
 /** Holds if `call` is a lambda call of kind `kind` where `receiver` is the lambda expression. */
-predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) { none() }
+predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
+  receiver = call.(SummaryCall).getReceiver() and
+  getNodeDataFlowType(receiver)
+      .getSourceDeclaration()
+      .(FunctionalInterface)
+      .getRunMethod()
+      .getSourceDeclaration() = kind
+}
 
 /** Extra data-flow steps needed for lambda flow analysis. */
 predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) { none() }

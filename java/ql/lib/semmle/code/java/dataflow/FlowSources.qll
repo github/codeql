@@ -25,6 +25,7 @@ import semmle.code.java.frameworks.spring.SpringWebClient
 import semmle.code.java.frameworks.Guice
 import semmle.code.java.frameworks.struts.StrutsActions
 import semmle.code.java.frameworks.Thrift
+import semmle.code.java.frameworks.javaee.jsf.JSFRenderer
 private import semmle.code.java.dataflow.ExternalFlow
 
 /** A data flow source of remote user input. */
@@ -245,4 +246,21 @@ class ExportedAndroidIntentInput extends RemoteFlowSource, AndroidIntentInput {
   ExportedAndroidIntentInput() { receiverType.(ExportableAndroidComponent).isExported() }
 
   override string getSourceType() { result = "Exported Android intent source" }
+}
+
+/** A parameter of an entry-point method declared in a `ContentProvider` class. */
+class AndroidContentProviderInput extends DataFlow::Node {
+  AndroidContentProvider declaringType;
+
+  AndroidContentProviderInput() {
+    sourceNode(this, "contentprovider") and
+    this.getEnclosingCallable().getDeclaringType() = declaringType
+  }
+}
+
+/** A parameter of an entry-point method declared in an exported `ContentProvider` class. */
+class ExportedAndroidContentProviderInput extends RemoteFlowSource, AndroidContentProviderInput {
+  ExportedAndroidContentProviderInput() { declaringType.isExported() }
+
+  override string getSourceType() { result = "Exported Android content provider source" }
 }

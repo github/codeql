@@ -18,6 +18,10 @@ predicate localFlowStep(Node nodeFrom, Node nodeTo) { simpleLocalFlowStep(nodeFr
 predicate localFlow(Node source, Node sink) { localFlowStep*(source, sink) }
 
 /**
+ * DEPRECATED. Use the API graphs library (`semmle.python.ApiGraphs`) instead.
+ *
+ * For a drop-in replacement, use `API::moduleImport(name).getAUse()`.
+ *
  * Gets a `Node` that refers to the module referenced by `name`.
  * Note that for the statement `import pkg.mod`, the new variable introduced is `pkg` that is a
  * reference to the module `pkg`.
@@ -37,7 +41,7 @@ predicate localFlow(Node source, Node sink) { localFlowStep*(source, sink) }
  *   `mypkg/foo.py` but the variable `foo` containing `42` -- however, `import mypkg.foo` will always cause `mypkg.foo`
  *   to refer to the module.
  */
-Node importNode(string name) {
+deprecated Node importNode(string name) {
   exists(Variable var, Import imp, Alias alias |
     alias = imp.getAName() and
     alias.getAsname() = var.getAStore() and

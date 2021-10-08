@@ -724,6 +724,511 @@ import java.util.Set;
 public class Intent implements Parcelable, Cloneable {
 
     /**
+     *  Activity Action: Start as a main entry point, does not expect to
+     *  receive data.
+     *  <p>Input: nothing
+     *  <p>Output: nothing
+     */
+    public static final String ACTION_MAIN = "android.intent.action.MAIN";
+
+    /**
+     * Activity Action: Display the data to the user.  This is the most common
+     * action performed on data -- it is the generic action you can use on
+     * a piece of data to get the most reasonable thing to occur.  For example,
+     * when used on a contacts entry it will view the entry; when used on a
+     * mailto: URI it will bring up a compose window filled with the information
+     * supplied by the URI; when used with a tel: URI it will invoke the
+     * dialer.
+     * <p>Input: {@link #getData} is URI from which to retrieve data.
+     * <p>Output: nothing.
+     */
+    public static final String ACTION_VIEW = "android.intent.action.VIEW";
+
+    /**
+     * A synonym for {@link #ACTION_VIEW}, the "standard" action that is
+     * performed on a piece of data.
+     */
+    public static final String ACTION_DEFAULT = ACTION_VIEW;
+
+    /**
+     * Used to indicate that some piece of data should be attached to some other
+     * place.  For example, image data could be attached to a contact.  It is up
+     * to the recipient to decide where the data should be attached; the intent
+     * does not specify the ultimate destination.
+     * <p>Input: {@link #getData} is URI of data to be attached.
+     * <p>Output: nothing.
+     */
+    public static final String ACTION_ATTACH_DATA = "android.intent.action.ATTACH_DATA";
+
+    /**
+     * Activity Action: Provide explicit editable access to the given data.
+     * <p>Input: {@link #getData} is URI of data to be edited.
+     * <p>Output: nothing.
+     */
+    public static final String ACTION_EDIT = "android.intent.action.EDIT";
+
+    /**
+     * Activity Action: Pick an existing item, or insert a new item, and then edit it.
+     * <p>Input: {@link #getType} is the desired MIME type of the item to create or edit.
+     * The extras can contain type specific data to pass through to the editing/creating
+     * activity.
+     * <p>Output: The URI of the item that was picked.  This must be a content:
+     * URI so that any receiver can access it.
+     */
+    public static final String ACTION_INSERT_OR_EDIT = "android.intent.action.INSERT_OR_EDIT";
+
+    /**
+     * Activity Action: Pick an item from the data, returning what was selected.
+     * <p>Input: {@link #getData} is URI containing a directory of data
+     * (vnd.android.cursor.dir/*) from which to pick an item.
+     * <p>Output: The URI of the item that was picked.
+     */
+    public static final String ACTION_PICK = "android.intent.action.PICK";
+
+    /**
+     * Activity Action: Creates a shortcut.
+     * <p>Input: Nothing.</p>
+     * <p>Output: An Intent representing the shortcut. The intent must contain three
+     * extras: SHORTCUT_INTENT (value: Intent), SHORTCUT_NAME (value: String),
+     * and SHORTCUT_ICON (value: Bitmap) or SHORTCUT_ICON_RESOURCE
+     * (value: ShortcutIconResource).</p>
+     *
+     * @see #EXTRA_SHORTCUT_INTENT
+     * @see #EXTRA_SHORTCUT_NAME
+     * @see #EXTRA_SHORTCUT_ICON
+     * @see #EXTRA_SHORTCUT_ICON_RESOURCE
+     * @see android.content.Intent.ShortcutIconResource
+     */
+    public static final String ACTION_CREATE_SHORTCUT = "android.intent.action.CREATE_SHORTCUT";
+
+    /**
+     * Activity Action: Display an activity chooser, allowing the user to pick
+     * what they want to before proceeding.  This can be used as an alternative
+     * to the standard activity picker that is displayed by the system when
+     * you try to start an activity with multiple possible matches, with these
+     * differences in behavior:
+     * <ul>
+     * <li>You can specify the title that will appear in the activity chooser.
+     * <li>The user does not have the option to make one of the matching
+     * activities a preferred activity, and all possible activities will
+     * always be shown even if one of them is currently marked as the
+     * preferred activity.
+     * </ul>
+     * <p>
+     * This action should be used when the user will naturally expect to
+     * select an activity in order to proceed.  An example if when not to use
+     * it is when the user clicks on a "mailto:" link.  They would naturally
+     * expect to go directly to their mail app, so startActivity() should be
+     * called directly: it will
+     * either launch the current preferred app, or put up a dialog allowing the
+     * user to pick an app to use and optionally marking that as preferred.
+     * <p>
+     * In contrast, if the user is selecting a menu item to send a picture
+     * they are viewing to someone else, there are many different things they
+     * may want to do at this point: send it through e-mail, upload it to a
+     * web service, etc.  In this case the CHOOSER action should be used, to
+     * always present to the user a list of the things they can do, with a
+     * nice title given by the caller such as "Send this photo with:".
+     * <p>
+     * As a convenience, an Intent of this form can be created with the
+     * {@link #createChooser} function.
+     * <p>Input: No data should be specified.  get*Extra must have
+     * a {@link #EXTRA_INTENT} field containing the Intent being executed,
+     * and can optionally have a {@link #EXTRA_TITLE} field containing the
+     * title text to display in the chooser.
+     * <p>Output: Depends on the protocol of {@link #EXTRA_INTENT}.
+     */
+    public static final String ACTION_CHOOSER = "android.intent.action.CHOOSER";
+
+    /**
+     * Convenience function for creating a {@link #ACTION_CHOOSER} Intent.
+     *
+     * @param target The Intent that the user will be selecting an activity
+     * to perform.
+     * @param title Optional title that will be displayed in the chooser.
+     * @return Return a new Intent object that you can hand to
+     * {@link Context#startActivity(Intent) Context.startActivity()} and
+     * related methods.
+     */
+    public static Intent createChooser(Intent target, CharSequence title) {
+        return null;
+    }
+
+    /**
+     * Activity Action: Allow the user to select a particular kind of data and
+     * return it.  This is different than {@link #ACTION_PICK} in that here we
+     * just say what kind of data is desired, not a URI of existing data from
+     * which the user can pick.  A ACTION_GET_CONTENT could allow the user to
+     * create the data as it runs (for example taking a picture or recording a
+     * sound), let them browse over the web and download the desired data,
+     * etc.
+     * <p>
+     * There are two main ways to use this action: if you want a specific kind
+     * of data, such as a person contact, you set the MIME type to the kind of
+     * data you want and launch it with {@link Context#startActivity(Intent)}.
+     * The system will then launch the best application to select that kind
+     * of data for you.
+     * <p>
+     * You may also be interested in any of a set of types of content the user
+     * can pick.  For example, an e-mail application that wants to allow the
+     * user to add an attachment to an e-mail message can use this action to
+     * bring up a list of all of the types of content the user can attach.
+     * <p>
+     * In this case, you should wrap the GET_CONTENT intent with a chooser
+     * (through {@link #createChooser}), which will give the proper interface
+     * for the user to pick how to send your data and allow you to specify
+     * a prompt indicating what they are doing.  You will usually specify a
+     * broad MIME type (such as image/* or {@literal *}/*), resulting in a
+     * broad range of content types the user can select from.
+     * <p>
+     * When using such a broad GET_CONTENT action, it is often desirable to
+     * only pick from data that can be represented as a stream.  This is
+     * accomplished by requiring the {@link #CATEGORY_OPENABLE} in the Intent.
+     * <p>
+     * Callers can optionally specify {@link #EXTRA_LOCAL_ONLY} to request that
+     * the launched content chooser only returns results representing data that
+     * is locally available on the device.  For example, if this extra is set
+     * to true then an image picker should not show any pictures that are available
+     * from a remote server but not already on the local device (thus requiring
+     * they be downloaded when opened).
+     * <p>
+     * Input: {@link #getType} is the desired MIME type to retrieve.  Note
+     * that no URI is supplied in the intent, as there are no constraints on
+     * where the returned data originally comes from.  You may also include the
+     * {@link #CATEGORY_OPENABLE} if you can only accept data that can be
+     * opened as a stream.  You may use {@link #EXTRA_LOCAL_ONLY} to limit content
+     * selection to local data.
+     * <p>
+     * Output: The URI of the item that was picked.  This must be a content:
+     * URI so that any receiver can access it.
+     */
+    public static final String ACTION_GET_CONTENT = "android.intent.action.GET_CONTENT";
+
+    /**
+     * Activity Action: Dial a number as specified by the data.  This shows a
+     * UI with the number being dialed, allowing the user to explicitly
+     * initiate the call.
+     * <p>Input: If nothing, an empty dialer is started; else {@link #getData}
+     * is URI of a phone number to be dialed or a tel: URI of an explicit phone
+     * number.
+     * <p>Output: nothing.
+     */
+    public static final String ACTION_DIAL = "android.intent.action.DIAL";
+
+    /**
+     * Activity Action: Perform a call to someone specified by the data.
+     * <p>Input: If nothing, an empty dialer is started; else {@link #getData}
+     * is URI of a phone number to be dialed or a tel: URI of an explicit phone
+     * number.
+     * <p>Output: nothing.
+     *
+     * <p>Note: there will be restrictions on which applications can initiate a
+     * call; most applications should use the {@link #ACTION_DIAL}.
+     * <p>Note: this Intent <strong>cannot</strong> be used to call emergency
+     * numbers.  Applications can <strong>dial</strong> emergency numbers using
+     * {@link #ACTION_DIAL}, however.
+     */
+    public static final String ACTION_CALL = "android.intent.action.CALL";
+
+    /**
+     * Activity Action: Perform a call to an emergency number specified by the
+     * data.
+     * <p>Input: {@link #getData} is URI of a phone number to be dialed or a
+     * tel: URI of an explicit phone number.
+     * <p>Output: nothing.
+     * @hide
+     */
+    public static final String ACTION_CALL_EMERGENCY = "android.intent.action.CALL_EMERGENCY";
+
+    /**
+     * Activity action: Perform a call to any number (emergency or not)
+     * specified by the data.
+     * <p>Input: {@link #getData} is URI of a phone number to be dialed or a
+     * tel: URI of an explicit phone number.
+     * <p>Output: nothing.
+     * @hide
+     */
+    public static final String ACTION_CALL_PRIVILEGED = "android.intent.action.CALL_PRIVILEGED";
+
+    /**
+     * Activity Action: Send a message to someone specified by the data.
+     * <p>Input: {@link #getData} is URI describing the target.
+     * <p>Output: nothing.
+     */
+    public static final String ACTION_SENDTO = "android.intent.action.SENDTO";
+
+    /**
+     * Activity Action: Deliver some data to someone else.  Who the data is
+     * being delivered to is not specified; it is up to the receiver of this
+     * action to ask the user where the data should be sent.
+     * <p>
+     * When launching a SEND intent, you should usually wrap it in a chooser
+     * (through {@link #createChooser}), which will give the proper interface
+     * for the user to pick how to send your data and allow you to specify
+     * a prompt indicating what they are doing.
+     * <p>
+     * Input: {@link #getType} is the MIME type of the data being sent.
+     * get*Extra can have either a {@link #EXTRA_TEXT}
+     * or {@link #EXTRA_STREAM} field, containing the data to be sent.  If
+     * using EXTRA_TEXT, the MIME type should be "text/plain"; otherwise it
+     * should be the MIME type of the data in EXTRA_STREAM.  Use {@literal *}/*
+     * if the MIME type is unknown (this will only allow senders that can
+     * handle generic data streams).
+     * <p>
+     * Optional standard extras, which may be interpreted by some recipients as
+     * appropriate, are: {@link #EXTRA_EMAIL}, {@link #EXTRA_CC},
+     * {@link #EXTRA_BCC}, {@link #EXTRA_SUBJECT}.
+     * <p>
+     * Output: nothing.
+     */
+    public static final String ACTION_SEND = "android.intent.action.SEND";
+
+    /**
+     * Activity Action: Deliver multiple data to someone else.
+     * <p>
+     * Like ACTION_SEND, except the data is multiple.
+     * <p>
+     * Input: {@link #getType} is the MIME type of the data being sent.
+     * get*ArrayListExtra can have either a {@link #EXTRA_TEXT} or {@link
+     * #EXTRA_STREAM} field, containing the data to be sent.
+     * <p>
+     * Multiple types are supported, and receivers should handle mixed types
+     * whenever possible. The right way for the receiver to check them is to
+     * use the content resolver on each URI. The intent sender should try to
+     * put the most concrete mime type in the intent type, but it can fall
+     * back to {@literal <type>/*} or {@literal *}/* as needed.
+     * <p>
+     * e.g. if you are sending image/jpg and image/jpg, the intent's type can
+     * be image/jpg, but if you are sending image/jpg and image/png, then the
+     * intent's type should be image/*.
+     * <p>
+     * Optional standard extras, which may be interpreted by some recipients as
+     * appropriate, are: {@link #EXTRA_EMAIL}, {@link #EXTRA_CC},
+     * {@link #EXTRA_BCC}, {@link #EXTRA_SUBJECT}.
+     * <p>
+     * Output: nothing.
+     */
+    public static final String ACTION_SEND_MULTIPLE = "android.intent.action.SEND_MULTIPLE";
+
+    /**
+     * Activity Action: Handle an incoming phone call.
+     * <p>Input: nothing.
+     * <p>Output: nothing.
+     */
+    public static final String ACTION_ANSWER = "android.intent.action.ANSWER";
+
+    /**
+     * Activity Action: Insert an empty item into the given container.
+     * <p>Input: {@link #getData} is URI of the directory (vnd.android.cursor.dir/*)
+     * in which to place the data.
+     * <p>Output: URI of the new data that was created.
+     */
+    public static final String ACTION_INSERT = "android.intent.action.INSERT";
+
+    /**
+     * Activity Action: Create a new item in the given container, initializing it
+     * from the current contents of the clipboard.
+     * <p>Input: {@link #getData} is URI of the directory (vnd.android.cursor.dir/*)
+     * in which to place the data.
+     * <p>Output: URI of the new data that was created.
+     */
+    public static final String ACTION_PASTE = "android.intent.action.PASTE";
+
+    /**
+     * Activity Action: Delete the given data from its container.
+     * <p>Input: {@link #getData} is URI of data to be deleted.
+     * <p>Output: nothing.
+     */
+    public static final String ACTION_DELETE = "android.intent.action.DELETE";
+    /**
+     * Activity Action: Run the data, whatever that means.
+     * <p>Input: ?  (Note: this is currently specific to the test harness.)
+     * <p>Output: nothing.
+     */
+    public static final String ACTION_RUN = "android.intent.action.RUN";
+
+    /**
+     * Activity Action: Perform a data synchronization.
+     * <p>Input: ?
+     * <p>Output: ?
+     */
+    public static final String ACTION_SYNC = "android.intent.action.SYNC";
+
+    /**
+     * Activity Action: Pick an activity given an intent, returning the class
+     * selected.
+     * <p>Input: get*Extra field {@link #EXTRA_INTENT} is an Intent
+     * used with {@link PackageManager#queryIntentActivities} to determine the
+     * set of activities from which to pick.
+     * <p>Output: Class name of the activity that was selected.
+     */
+    public static final String ACTION_PICK_ACTIVITY = "android.intent.action.PICK_ACTIVITY";
+
+    /**
+     * Activity Action: Perform a search.
+     * <p>Input: {@link android.app.SearchManager#QUERY getStringExtra(SearchManager.QUERY)}
+     * is the text to search for.  If empty, simply
+     * enter your search results Activity with the search UI activated.
+     * <p>Output: nothing.
+     */
+    public static final String ACTION_SEARCH = "android.intent.action.SEARCH";
+
+    /**
+     * Activity Action: Start the platform-defined tutorial
+     * <p>Input: {@link android.app.SearchManager#QUERY getStringExtra(SearchManager.QUERY)}
+     * is the text to search for.  If empty, simply
+     * enter your search results Activity with the search UI activated.
+     * <p>Output: nothing.
+     */
+    public static final String ACTION_SYSTEM_TUTORIAL = "android.intent.action.SYSTEM_TUTORIAL";
+
+    /**
+     * Activity Action: Perform a web search.
+     * <p>
+     * Input: {@link android.app.SearchManager#QUERY
+     * getStringExtra(SearchManager.QUERY)} is the text to search for. If it is
+     * a url starts with http or https, the site will be opened. If it is plain
+     * text, Google search will be applied.
+     * <p>
+     * Output: nothing.
+     */
+    public static final String ACTION_WEB_SEARCH = "android.intent.action.WEB_SEARCH";
+
+    /**
+     * Activity Action: List all available applications
+     * <p>Input: Nothing.
+     * <p>Output: nothing.
+     */
+    public static final String ACTION_ALL_APPS = "android.intent.action.ALL_APPS";
+
+    /**
+     * Activity Action: Show settings for choosing wallpaper
+     * <p>Input: Nothing.
+     * <p>Output: Nothing.
+     */
+    public static final String ACTION_SET_WALLPAPER = "android.intent.action.SET_WALLPAPER";
+
+    /**
+     * Activity Action: Show activity for reporting a bug.
+     * <p>Input: Nothing.
+     * <p>Output: Nothing.
+     */
+    public static final String ACTION_BUG_REPORT = "android.intent.action.BUG_REPORT";
+
+    /**
+     *  Activity Action: Main entry point for factory tests.  Only used when
+     *  the device is booting in factory test node.  The implementing package
+     *  must be installed in the system image.
+     *  <p>Input: nothing
+     *  <p>Output: nothing
+     */
+    public static final String ACTION_FACTORY_TEST = "android.intent.action.FACTORY_TEST";
+
+    /**
+     * Activity Action: The user pressed the "call" button to go to the dialer
+     * or other appropriate UI for placing a call.
+     * <p>Input: Nothing.
+     * <p>Output: Nothing.
+     */
+     public static final String ACTION_CALL_BUTTON = "android.intent.action.CALL_BUTTON";
+
+     /**
+     * Activity Action: Start Voice Command.
+     * <p>Input: Nothing.
+     * <p>Output: Nothing.
+     */
+    public static final String ACTION_VOICE_COMMAND = "android.intent.action.VOICE_COMMAND";
+
+    /**
+     * Activity Action: Start action associated with long pressing on the
+     * search key.
+     * <p>Input: Nothing.
+     * <p>Output: Nothing.
+     */
+    public static final String ACTION_SEARCH_LONG_PRESS = "android.intent.action.SEARCH_LONG_PRESS";
+
+    /**
+     * Activity Action: The user pressed the "Report" button in the crash/ANR dialog.
+     * This intent is delivered to the package which installed the application, usually
+     * Google Play.
+     * <p>Input: No data is specified. The bug report is passed in using
+     * an {@link #EXTRA_BUG_REPORT} field.
+     * <p>Output: Nothing.
+     *
+     * @see #EXTRA_BUG_REPORT
+     */
+    public static final String ACTION_APP_ERROR = "android.intent.action.APP_ERROR";
+
+    /**
+     * Activity Action: Show power usage information to the user.
+     * <p>Input: Nothing.
+     * <p>Output: Nothing.
+     */
+    public static final String ACTION_POWER_USAGE_SUMMARY = "android.intent.action.POWER_USAGE_SUMMARY";
+
+    /**
+     * Activity Action: Setup wizard to launch after a platform update.  This
+     * activity should have a string meta-data field associated with it,
+     * {@link #METADATA_SETUP_VERSION}, which defines the current version of
+     * the platform for setup.  The activity will be launched only if
+     * {@link android.provider.Settings.Secure#LAST_SETUP_SHOWN} is not the
+     * same value.
+     * <p>Input: Nothing.
+     * <p>Output: Nothing.
+     * @hide
+     */
+    public static final String ACTION_UPGRADE_SETUP = "android.intent.action.UPGRADE_SETUP";
+
+    /**
+     * Activity Action: Show settings for managing network data usage of a
+     * specific application. Applications should define an activity that offers
+     * options to control data usage.
+     */
+    public static final String ACTION_MANAGE_NETWORK_USAGE =
+            "android.intent.action.MANAGE_NETWORK_USAGE";
+
+    /**
+     * Activity Action: Launch application installer.
+     * <p>
+     * Input: The data must be a content: or file: URI at which the application
+     * can be retrieved.  You can optionally supply
+     * {@link #EXTRA_INSTALLER_PACKAGE_NAME}, {@link #EXTRA_NOT_UNKNOWN_SOURCE},
+     * {@link #EXTRA_ALLOW_REPLACE}, and {@link #EXTRA_RETURN_RESULT}.
+     * <p>
+     * Output: If {@link #EXTRA_RETURN_RESULT}, returns whether the install
+     * succeeded.
+     *
+     * @see #EXTRA_INSTALLER_PACKAGE_NAME
+     * @see #EXTRA_NOT_UNKNOWN_SOURCE
+     * @see #EXTRA_RETURN_RESULT
+     */
+    public static final String ACTION_INSTALL_PACKAGE = "android.intent.action.INSTALL_PACKAGE";
+
+    /**
+     * Used as a boolean extra field with {@link #ACTION_INSTALL_PACKAGE} to install a
+     * package.  Tells the installer UI to skip the confirmation with the user
+     * if the .apk is replacing an existing one.
+     */
+    public static final String EXTRA_ALLOW_REPLACE
+            = "android.intent.extra.ALLOW_REPLACE";
+
+    /**
+     * Extra used to indicate that an intent can allow the user to select and return multiple items.
+     * This is a boolean extra; the default is false. If true, an implementation is allowed to present
+     * the user with a UI where they can pick multiple items that are all returned to the caller.
+     * When this happens, they should be returned as the getClipData() part of the result Intent.
+     */
+    public static final String EXTRA_ALLOW_MULTIPLE
+            = "android.intent.extra.ALLOW_MULTIPLE";
+
+    /**
+     * Used to indicate that a GET_CONTENT intent only wants URIs that can be opened with
+     * ContentResolver.openInputStream. Openable URIs must support the columns in OpenableColumns
+     * when queried, though it is allowable for those columns to be blank.
+     */
+    public static final String CATEGORY_OPENABLE = "android.intent.category.OPENABLE";
+
+    /**
      * Create an empty intent.
      */
     public Intent() {
@@ -1408,6 +1913,35 @@ public class Intent implements Parcelable, Cloneable {
     }
 
     /**
+     * Set an explicit MIME data type.
+     *
+     * <p>This is used to create intents that only specify a type and not data,
+     * for example to indicate the type of data to return.
+     *
+     * <p>This method automatically clears any data that was
+     * previously set (for example by {@link #setData}).
+     *
+     * <p><em>Note: MIME type matching in the Android framework is
+     * case-sensitive, unlike formal RFC MIME types.  As a result,
+     * you should always write your MIME types with lower case letters,
+     * or use {@link #normalizeMimeType} or {@link #setTypeAndNormalize}
+     * to ensure that it is converted to lower case.</em>
+     *
+     * @param type The MIME type of the data being handled by this intent.
+     *
+     * @return Returns the same Intent object, for chaining multiple calls
+     * into a single statement.
+     *
+     * @see #getType
+     * @see #setTypeAndNormalize
+     * @see #setDataAndType
+     * @see #normalizeMimeType
+     */
+    public Intent setType(String type) {
+        return null;
+    }
+
+    /**
      * Add extended data to the intent. The name must include a package prefix, for
      * example the app com.android.contacts would use names like
      * "com.android.contacts.ShowAll".
@@ -2071,4 +2605,23 @@ public class Intent implements Parcelable, Cloneable {
         return null;
     }
 
+    /**
+     * Add a new category to the intent.  Categories provide additional detail
+     * about the action the intent performs.  When resolving an intent, only
+     * activities that provide <em>all</em> of the requested categories will be
+     * used.
+     *
+     * @param category The desired category.  This can be either one of the
+     *               predefined Intent categories, or a custom category in your own
+     *               namespace.
+     *
+     * @return Returns the same Intent object, for chaining multiple calls
+     * into a single statement.
+     *
+     * @see #hasCategory
+     * @see #removeCategory
+     */
+    public Intent addCategory(String category) {
+        return null;
+    }
 }

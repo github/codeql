@@ -415,10 +415,10 @@ void test_unordered_map()
 	sink(m30["abc"]);
 	sink(m31.try_emplace("abc", source(), 2)); // $ ast,ir
 	sink(m31); // $ ast,ir
-	sink(m31["abc"]); // $ ast MISSING: ir
+	sink(m31["abc"]); // $ ast,ir
 	sink(m32.try_emplace("abc", 1, source())); // $ ast,ir
 	sink(m32); // $ ast,ir
-	sink(m32["abc"]); // $ ast MISSING: ir
+	sink(m32["abc"]); // $ ast,ir
 
 	// additional emplace test cases
 	std::unordered_map<char *, char *> m33;

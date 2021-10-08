@@ -779,23 +779,15 @@ class NestedType extends RefType {
     getEnclosingType().isStrictfp()
   }
 
-  /**
-   * Holds if this nested type is static.
-   *
-   * A nested type is static either if it is explicitly declared as such
-   * using the modifier `static`, or if it is implicitly static
-   * because one of the following holds:
-   *
-   * - it is a member type of an interface,
-   * - it is a member interface, or
-   * - it is a nested enum type.
-   *
-   * See JLS v8, section 8.5.1 (Static Member Type Declarations),
-   * section 8.9 (Enums) and section 9.5 (Member Type Declarations).
-   */
   override predicate isStatic() {
     super.isStatic()
     or
+    /*
+     * Note: The following is most likely redundant because `isStatic()` of the superclass
+     * holds for implicitly static types, but keep the special casing below for now to be
+     * on the safe side
+     */
+
     // JLS 8.5.1: A member interface is implicitly static.
     this instanceof Interface
     or
@@ -872,6 +864,44 @@ class ClassOrInterface extends RefType, @classorinterface {
     not isProtected() and
     not isPublic()
   }
+}
+
+private string getAPublicObjectMethodSignature() {
+  exists(Method m |
+    m.getDeclaringType() instanceof TypeObject and
+    m.isPublic() and
+    result = m.getSignature()
+  )
+}
+
+private Method getAnAbstractMethod(Interface interface) {
+  interface.inherits(result) and
+  result.isAbstract() and
+  // JLS 9.8, ignore Object methods
+  not result.getSignature() = getAPublicObjectMethodSignature() and
+  // Make sure that there is no other non-abstract method
+  // (e.g. `default`) which overrides the abstract one
+  not exists(Method m |
+    interface.inherits(m) and
+    not m.isAbstract() and
+    m.overrides(result)
+  )
+}
+
+/**
+ * A functional interface is an interface that has just one abstract method
+ * (aside from the methods of Object), and thus represents a single function
+ * contract.
+ *
+ * See JLS 9.8, Functional Interfaces.
+ */
+class FunctionalInterface extends Interface {
+  Method run;
+
+  FunctionalInterface() { run = unique(Method r | r = getAnAbstractMethod(this)) }
+
+  /** Gets the single abstract method of this interface. */
+  Method getRunMethod() { result = run }
 }
 
 /**

@@ -4,10 +4,11 @@
  *              property can cause indefinite looping.
  * @kind path-problem
  * @problem.severity warning
- * @security-severity 6.5
+ * @security-severity 7.5
  * @id js/loop-bound-injection
  * @tags security
  *       external/cwe/cwe-834
+ *       external/cwe/cwe-730
  * @precision high
  */
 
