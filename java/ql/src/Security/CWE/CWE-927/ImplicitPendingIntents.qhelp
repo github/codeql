@@ -10,13 +10,18 @@
   the application that created it, and with its same privileges.</p>
 <p>If a <code>PendingIntent</code> is configured to be mutable, the fields of its internal Intent can be changed by the
   receiving application if they were not previously set. This means that a mutable <code>PendingIntent</code> that has 
-  not defined a destination component (that is, an implicit <code>PendingIntent</code>) can be directed to any component
-  by the receiving application, and execute an arbitrary action with the privileges of the application that created it.</p>
-<p>If an implicit <code>PendingIntent</code> is wrapped and sent as an extra of an Intent that can be intercepted (that
-  is, again, an implicit Intent), any malicious application could obtain the <code>PendingIntent</code>, modify the 
-  underlying Intent with an arbitrary destination component, and execute the desired action with elevated privileges. 
-  This could give the malicious application access to private components of the victim application, or the ability to 
-  perform actions without having the necessary permissions.</p>
+  not defined a destination component (that is, an implicit <code>PendingIntent</code>) can be altered to execute an 
+  arbitrary action with the privileges of the application that created it.</p>
+<p>If an implicit PendingIntent is obtainable by a malicious application by any of the following means:</p>
+<ul>
+  <li>It is wrapped and sent as an extra of another implicit Intent</li>
+  <li>It is sent as the action of a Slide</li>
+  <li>It is sent as the action of a Notification</li>
+</ul>
+<p></p>
+<p>the attacker could modify the underlying Intent and execute an arbitrary action with elevated privileges. 
+  This could give the malicious application access to private components of the victim application, 
+  or the ability to perform actions without having the necessary permissions.</p>
 </overview>
 
 <recommendation>

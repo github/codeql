@@ -1,8 +1,8 @@
 /**
  * @name Use of implicit Pending Intents
- * @description Implicit and mutable PendingIntents being wrapped and sent in another implicit
- *              Intent may provide access to internal components of the application or cause other
- *              unintended effects.
+ * @description Implicit and mutable PendingIntents being sent to an unspecified third party
+ *              component may provide access to internal components of the application or cause
+ *              other unintended effects.
  * @kind path-problem
  * @problem.severity error
  * @security-severity 8.2
