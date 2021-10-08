@@ -25,7 +25,7 @@ class ImportTimeLocalFlowTest extends InlineExpectationsTest {
 class RuntimeLocalFlowTest extends FlowTest {
   RuntimeLocalFlowTest() { this = "RuntimeLocalFlowTest" }
 
-  override string flowTag() { result = "runtimFlow" }
+  override string flowTag() { result = "runtimeFlow" }
 
   override predicate relevantFlow(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     nodeFrom.getLocation().getFile().getBaseName() = "multiphase.py" and
