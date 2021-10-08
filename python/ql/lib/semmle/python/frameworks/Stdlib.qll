@@ -498,6 +498,22 @@ private module StdlibPrivate {
     override string getFormat() { result = "pickle" }
   }
 
+  /**
+   * A construction of a `pickle.Unpickler`
+   * See https://docs.python.org/3/library/pickle.html#pickle.Unpickler
+   */
+  private class PickleUnpicklerCall extends Decoding::Range, DataFlow::CallCfgNode {
+    PickleUnpicklerCall() { this = pickle().getMember("Unpickler").getACall() }
+
+    override predicate mayExecuteInput() { any() }
+
+    override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("file")] }
+
+    override DataFlow::Node getOutput() { result = this.getAMethodCall("load") }
+
+    override string getFormat() { result = "pickle" }
+  }
+
   // ---------------------------------------------------------------------------
   // shelve
   // ---------------------------------------------------------------------------

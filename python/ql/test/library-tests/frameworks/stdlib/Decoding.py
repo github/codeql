@@ -9,6 +9,14 @@ pickle.loads(payload)  # $ decodeInput=payload decodeOutput=pickle.loads(..) dec
 # using this keyword argument is disallowed from Python 3.9
 pickle.loads(data=payload)  # $ decodeInput=payload decodeOutput=pickle.loads(..) decodeFormat=pickle decodeMayExecuteInput
 
+# We don't really have a good way to model a decode happening over multiple statements
+# like this. Since the important bit for `py/unsafe-deserialization` is the input, that
+# is the main focus. We do a best effort to model the output though (but that will only
+# work in local scope).
+unpickler = pickle.Unpickler(file_) # $ decodeInput=file_ decodeFormat=pickle decodeMayExecuteInput
+unpickler.load() # $ decodeOutput=unpickler.load()
+unpickler = pickle.Unpickler(file=file_) # $ decodeInput=file_ decodeFormat=pickle decodeMayExecuteInput
+
 marshal.load(file_)  # $ decodeInput=file_ decodeOutput=marshal.load(..) decodeFormat=marshal decodeMayExecuteInput
 marshal.loads(payload)  # $ decodeInput=payload decodeOutput=marshal.loads(..) decodeFormat=marshal decodeMayExecuteInput
 
