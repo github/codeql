@@ -15,8 +15,8 @@ marshal.loads(payload)  # $ decodeInput=payload decodeOutput=marshal.loads(..) d
 
 # if the file opened has been controlled by an attacker, this can lead to code
 # execution. (underlying file format is pickle)
-shelve.open(filepath)  # $ MISSING: decodeInput=filepath decodeOutput=shelve.open(..) decodeFormat=pickle decodeMayExecuteInput getAPathArgument=filepath
-shelve.open(filename=filepath)  # $ MISSING: decodeInput=filepath decodeOutput=shelve.open(..) decodeFormat=pickle decodeMayExecuteInput getAPathArgument=filepath
+shelve.open(filepath)  # $ decodeInput=filepath decodeOutput=shelve.open(..) decodeFormat=pickle decodeMayExecuteInput getAPathArgument=filepath
+shelve.open(filename=filepath)  # $ decodeInput=filepath decodeOutput=shelve.open(..) decodeFormat=pickle decodeMayExecuteInput getAPathArgument=filepath
 
 # TODO: These tests should be merged with python/ql/test/experimental/dataflow/tainttracking/defaultAdditionalTaintStep/test_string.py
 base64.b64decode(payload)  # $ decodeInput=payload decodeOutput=base64.b64decode(..) decodeFormat=Base64

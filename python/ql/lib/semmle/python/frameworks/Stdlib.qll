@@ -499,6 +499,42 @@ private module StdlibPrivate {
   }
 
   // ---------------------------------------------------------------------------
+  // shelve
+  // ---------------------------------------------------------------------------
+  /**
+   * A call to `shelve.open`
+   * See https://docs.python.org/3/library/shelve.html#shelve.open
+   *
+   * Claiming there is decoding of the input to `shelve.open` is a bit questionable, since
+   * it's not the filename, but the contents of the file that is decoded.
+   *
+   * However, we definitely want to be able to alert if a user is able to control what
+   * file is used, since that can lead to code execution (even if that file is free of
+   * path injection).
+   *
+   * So right now the best way we have of modeling this seems to be to treat the filename
+   * argument as being deserialized...
+   */
+  private class ShelveOpenCall extends Decoding::Range, FileSystemAccess::Range,
+    DataFlow::CallCfgNode {
+    ShelveOpenCall() { this = API::moduleImport("shelve").getMember("open").getACall() }
+
+    override predicate mayExecuteInput() { any() }
+
+    override DataFlow::Node getAnInput() {
+      result in [this.getArg(0), this.getArgByName("filename")]
+    }
+
+    override DataFlow::Node getAPathArgument() {
+      result in [this.getArg(0), this.getArgByName("filename")]
+    }
+
+    override DataFlow::Node getOutput() { result = this }
+
+    override string getFormat() { result = "pickle" }
+  }
+
+  // ---------------------------------------------------------------------------
   // popen2
   // ---------------------------------------------------------------------------
   /** Gets a reference to the `popen2` module (only available in Python 2). */
