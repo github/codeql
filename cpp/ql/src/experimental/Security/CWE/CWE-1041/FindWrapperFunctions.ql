@@ -49,7 +49,7 @@ predicate conditionsOutsideWrapper(FunctionCall fcp) {
   not exists(ExprCall ectmp | fcp = ectmp.getAnArgument().getAChild*())
 }
 
-/** Held if the conditions for calling `fcp` inside the `fnp` wrapper function are met. */
+/** Holds if the conditions for calling `fcp` inside the `fnp` wrapper function are met. */
 pragma[inline]
 predicate conditionsInsideWrapper(FunctionCall fcp, Function fnp) {
   not exists(FunctionCall fctmp2 |
