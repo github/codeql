@@ -4,18 +4,18 @@ genericType
 | generics.kt:13:1:18:1 | C1 | generics.kt:13:13:13:13 | W | 1 |
 parameterizedType
 | generics.kt:11:1:11:19 | C0 | generics.kt:11:1:11:19 | C0 | 0 | file://:0:0:0:0 | * |
-| generics.kt:11:1:11:19 | C0 | generics.kt:11:1:11:19 | C0 | 0 | file://:0:0:0:0 | int |
+| generics.kt:11:1:11:19 | C0 | generics.kt:11:1:11:19 | C0 | 0 | file://:0:0:0:0 | Int |
 | generics.kt:11:1:11:19 | C0 | generics.kt:11:1:11:19 | C0 | 0 | generics.kt:7:6:7:6 | S |
 | generics.kt:11:1:11:19 | C0 | generics.kt:11:1:11:19 | C0 | 0 | generics.kt:11:15:11:15 | V |
 | generics.kt:11:1:11:19 | C0 | generics.kt:11:1:11:19 | C0 | 0 | generics.kt:13:13:13:13 | W |
-| generics.kt:13:1:18:1 | C1 | generics.kt:13:1:18:1 | C1 | 0 | file://:0:0:0:0 | int |
-| generics.kt:13:1:18:1 | C1 | generics.kt:13:1:18:1 | C1 | 0 | file://:0:0:0:0 | string |
-| generics.kt:13:1:18:1 | C1 | generics.kt:13:1:18:1 | C1 | 0 | file://:0:0:0:0 | string |
+| generics.kt:13:1:18:1 | C1 | generics.kt:13:1:18:1 | C1 | 0 | file://:0:0:0:0 | Int |
+| generics.kt:13:1:18:1 | C1 | generics.kt:13:1:18:1 | C1 | 0 | file://:0:0:0:0 | String |
+| generics.kt:13:1:18:1 | C1 | generics.kt:13:1:18:1 | C1 | 0 | file://:0:0:0:0 | String |
 | generics.kt:13:1:18:1 | C1 | generics.kt:13:1:18:1 | C1 | 0 | generics.kt:13:10:13:10 | T |
 | generics.kt:13:1:18:1 | C1 | generics.kt:13:1:18:1 | C1 | 0 | generics.kt:15:10:15:10 | U |
-| generics.kt:13:1:18:1 | C1 | generics.kt:13:1:18:1 | C1 | 1 | file://:0:0:0:0 | int |
-| generics.kt:13:1:18:1 | C1 | generics.kt:13:1:18:1 | C1 | 1 | file://:0:0:0:0 | int |
-| generics.kt:13:1:18:1 | C1 | generics.kt:13:1:18:1 | C1 | 1 | file://:0:0:0:0 | string |
+| generics.kt:13:1:18:1 | C1 | generics.kt:13:1:18:1 | C1 | 1 | file://:0:0:0:0 | Int |
+| generics.kt:13:1:18:1 | C1 | generics.kt:13:1:18:1 | C1 | 1 | file://:0:0:0:0 | Int |
+| generics.kt:13:1:18:1 | C1 | generics.kt:13:1:18:1 | C1 | 1 | file://:0:0:0:0 | String |
 | generics.kt:13:1:18:1 | C1 | generics.kt:13:1:18:1 | C1 | 1 | generics.kt:13:13:13:13 | W |
 | generics.kt:13:1:18:1 | C1 | generics.kt:13:1:18:1 | C1 | 1 | generics.kt:15:10:15:10 | U |
 genericFunction

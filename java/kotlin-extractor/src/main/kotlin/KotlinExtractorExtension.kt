@@ -15,6 +15,7 @@ import org.jetbrains.kotlin.ir.symbols.IrConstructorSymbol
 import org.jetbrains.kotlin.ir.types.*
 import org.jetbrains.kotlin.ir.util.dumpKotlinLike
 import org.jetbrains.kotlin.ir.util.packageFqName
+import org.jetbrains.kotlin.ir.util.parentAsClass
 import org.jetbrains.kotlin.ir.util.render
 import java.io.File
 import java.io.FileOutputStream
@@ -170,7 +171,7 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
         val pkg = file.fqName.asString()
         val pkgId = extractPackage(pkg)
         tw.writeCupackage(id, pkgId)
-        file.declarations.map { extractDeclaration(it, Optional.empty()) }
+        file.declarations.map { extractDeclaration(it) }
         CommentExtractor(this).extract()
     }
 
@@ -218,25 +219,33 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
         return id
     }
 
-    fun extractDeclaration(declaration: IrDeclaration, optParentid: Optional<Label<out DbReftype>>) {
+    fun extractDeclaration(declaration: IrDeclaration) {
         when (declaration) {
             is IrClass -> useClass(declaration, listOf())
-            is IrFunction -> extractFunction(declaration, if (optParentid.isPresent()) optParentid.get() else fileClass)
+            is IrFunction -> extractFunction(declaration)
             is IrAnonymousInitializer -> {
                 // Leaving this intentionally empty. init blocks are extracted during class extraction.
             }
-            is IrProperty -> extractProperty(declaration, if (optParentid.isPresent()) optParentid.get() else fileClass)
+            is IrProperty -> extractProperty(declaration)
             else -> logger.warnElement(Severity.ErrorSevere, "Unrecognised IrDeclaration: " + declaration.javaClass, declaration)
         }
     }
 
-    fun useSimpleType(s: IrSimpleType): Label<out DbType> {
+    fun useSimpleType(s: IrSimpleType, canReturnPrimitiveTypes: Boolean): Label<out DbType> {
         fun primitiveType(name: String): Label<DbPrimitive> {
             return tw.getLabelFor("@\"type;$name\"", {
                 tw.writePrimitives(it, name)
             })
         }
         when {
+            // temporary fix for type parameters types that would otherwise be primitive types
+            !canReturnPrimitiveTypes && (s.isPrimitiveType() || s.isUnsignedType() || s.isString()) -> {
+                val classifier: IrClassifierSymbol = s.classifier
+                val cls: IrClass = classifier.owner as IrClass
+
+                return useClass(cls, s.arguments)
+            }
+
             s.isByte() -> return primitiveType("byte")
             s.isShort() -> return primitiveType("short")
             s.isInt() -> return primitiveType("int")
@@ -254,9 +263,17 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
             s.isChar() -> return primitiveType("char")
             s.isString() -> return primitiveType("string") // TODO: Wrong
 
-            s.isNullable() && s.hasQuestionMark -> return useType(s.makeNotNull()) // TODO: Wrong
+            s.isNullable() && s.hasQuestionMark -> return useType(s.makeNotNull(), canReturnPrimitiveTypes) // TODO: Wrong
 
             s.isNothing() -> return primitiveType("<nulltype>")
+
+            s.isArray() && s.arguments.isNotEmpty() -> {
+                // todo: fix this, this is only a dummy implementation to let the tests pass
+                val elementType = useType(s.getArrayElementType(pluginContext.irBuiltIns))
+                val id = tw.getLabelFor<DbArray>("@\"array;1;{$elementType}\"")
+                tw.writeArrays(id, "ARRAY", elementType, 1, elementType)
+                return id
+            }
 
             s.classifier.owner is IrClass -> {
                 val classifier: IrClassifierSymbol = s.classifier
@@ -303,22 +320,29 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
     }
 
     fun useTypeParameter(param: IrTypeParameter): Label<out DbTypevariable> {
-        return tw.getLabelFor(getTypeParameterLabel(param))
+        val l = getTypeParameterLabel(param)
+        return tw.getExistingLabelFor(l) ?: extractTypeParameter(param)
     }
 
-    private fun extractTypeParameter(tp: IrTypeParameter, optParentid: Optional<Label<out DbTypeorcallable>>) {
-        val id = useTypeParameter(tp)
+    private fun extractTypeParameter(tp: IrTypeParameter): Label<out DbTypevariable> {
+        val id = tw.getLabelFor<DbTypevariable>(getTypeParameterLabel(tp))
 
-        if (!optParentid.isPresent) {
-            logger.warnElement(Severity.ErrorSevere, "Couldn't find expected parent of type parameter.", tp)
-            return
+        val parentId: Label<out DbTypeorcallable> = when (val parent = tp.parent) {
+            is IrFunction -> useFunction(parent)
+            is IrClass -> useClass(parent, listOf())
+            else -> {
+                logger.warnElement(Severity.ErrorSevere, "Unexpected type parameter parent", tp)
+                fakeLabel()
+            }
         }
 
-        tw.writeTypeVars(id, tp.name.asString(), tp.index, 0, optParentid.get())
+        tw.writeTypeVars(id, tp.name.asString(), tp.index, 0, parentId)
         val locId = tw.getLocation(tp)
         tw.writeHasLocation(id, locId)
 
         // todo: add type bounds
+
+        return id
     }
 
     private fun getClassLabel(c: IrClass, typeArgs: List<IrTypeArgument>): String {
@@ -351,7 +375,7 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
                 return wildcardId
             }
             is IrTypeProjection -> {
-                return useType(arg.type) as Label<out DbReftype>
+                return useType(arg.type, false) as Label<out DbReftype>
             }
             else -> {
                 logger.warnElement(Severity.ErrorSevere, "Unexpected type argument.", reportOn)
@@ -441,9 +465,9 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
             val unbound = useClass(c, listOf())
             tw.writeErasure(id, unbound)
         } else {
-            c.typeParameters.map { extractTypeParameter(it, Optional.of(id)) }
+            c.typeParameters.map { extractTypeParameter(it) }
 
-            c.declarations.map { extractDeclaration(it, Optional.of(id)) }
+            c.declarations.map { extractDeclaration(it) }
 
             extractObjectInitializerFunction(c, id)
         }
@@ -451,9 +475,9 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
         return id
     }
 
-    fun useType(t: IrType): Label<out DbType> {
+    fun useType(t: IrType, canReturnPrimitiveTypes: Boolean = true): Label<out DbType> {
         when(t) {
-            is IrSimpleType -> return useSimpleType(t)
+            is IrSimpleType -> return useSimpleType(t, canReturnPrimitiveTypes)
             is IrClass -> return useClass(t, listOf())
             else -> {
                 logger.warn(Severity.ErrorSevere, "Unrecognised IrType: " + t.javaClass)
@@ -480,6 +504,13 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
             val owner = classifier.owner
             if(owner is IrTypeParameter) {
                 return erase(owner.superTypes.get(0))
+            }
+
+            // todo: fix this:
+            if (t.makeNotNull().isArray()) {
+                val elementType = t.getArrayElementType(pluginContext.irBuiltIns)
+                val erasedElementType = erase(elementType)
+                return (classifier as IrClassSymbol).typeWith(erasedElementType)
             }
 
             if (owner is IrClass) {
@@ -616,20 +647,22 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
         }
     }
 
-    fun extractFunction(f: IrFunction, parentid: Label<out DbReftype>) {
+    fun extractFunction(f: IrFunction) {
         currentFunction = f
 
         val locId = tw.getLocation(f)
         val signature = "TODO"
         val returnTypeId = useType(f.returnType)
 
+        val parentId = if (f.parent is IrClass ) useClass(f.parent as IrClass, listOf()) else fileClass
+
         val id: Label<out DbCallable>
         if (f.symbol is IrConstructorSymbol) {
             id = useFunction<DbConstructor>(f)
-            tw.writeConstrs(id, f.returnType.classFqName?.shortName()?.asString() ?: f.name.asString(), signature, returnTypeId, parentid, id)
+            tw.writeConstrs(id, f.returnType.classFqName?.shortName()?.asString() ?: f.name.asString(), signature, returnTypeId, parentId, id)
         } else {
             id = useFunction<DbMethod>(f)
-            tw.writeMethods(id, f.name.asString(), signature, returnTypeId, parentid, id)
+            tw.writeMethods(id, f.name.asString(), signature, returnTypeId, parentId, id)
 
             val extReceiver = f.extensionReceiverParameter
             if (extReceiver != null) {
@@ -647,7 +680,7 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
             extractValueParameter(vp, id, i)
         }
 
-        f.typeParameters.map { extractTypeParameter(it, Optional.of(id)) }
+        f.typeParameters.map { extractTypeParameter(it) }
 
         currentFunction = null
     }
@@ -664,7 +697,7 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
         return id
     }
 
-    fun extractProperty(p: IrProperty, parentid: Label<out DbReftype>) {
+    fun extractProperty(p: IrProperty) {
         val bf = p.backingField
         if(bf == null) {
             logger.warnElement(Severity.ErrorSevere, "IrProperty without backing field", p)
@@ -672,7 +705,8 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
             val id = useProperty(p)
             val locId = tw.getLocation(p)
             val typeId = useType(bf.type)
-            tw.writeFields(id, p.name.asString(), typeId, parentid, id)
+            val parentId = if (p.parent is IrClass ) useClass(p.parent as IrClass, listOf()) else fileClass
+            tw.writeFields(id, p.name.asString(), typeId, parentId, id)
             tw.writeHasLocation(id, locId)
         }
     }
