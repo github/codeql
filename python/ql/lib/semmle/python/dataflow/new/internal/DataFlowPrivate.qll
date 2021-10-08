@@ -317,6 +317,57 @@ module EssaFlow {
   predicate defToFirstUse(EssaVariable var, NameNode nodeTo) {
     AdjacentUses::firstUse(var.getDefinition(), nodeTo)
   }
+
+  predicate essaFlowStepTT(TSimpleNode nodeFrom, TSimpleNode nodeTo) {
+    // Definition
+    //   `x = f(42)`
+    //   nodeFrom is `f(42)`, cfg node
+    //   nodeTo is `x`, essa var
+    nodeFrom.(CfgNode).getNode() =
+      nodeTo.(EssaNode).getVar().getDefinition().(AssignmentDefinition).getValue()
+    or
+    // With definition
+    //   `with f(42) as x:`
+    //   nodeFrom is `f(42)`, cfg node
+    //   nodeTo is `x`, essa var
+    exists(With with, ControlFlowNode contextManager, ControlFlowNode var |
+      nodeFrom.(CfgNode).getNode() = contextManager and
+      nodeTo.(EssaNode).getVar().getDefinition().(WithDefinition).getDefiningNode() = var and
+      // see `with_flow` in `python/ql/src/semmle/python/dataflow/Implementation.qll`
+      with.getContextExpr() = contextManager.getNode() and
+      with.getOptionalVars() = var.getNode() and
+      contextManager.strictlyDominates(var)
+    )
+    or
+    // Parameter definition
+    //   `def foo(x):`
+    //   nodeFrom is `x`, cfgNode
+    //   nodeTo is `x`, essa var
+    exists(ParameterDefinition pd |
+      nodeFrom.(CfgNode).getNode() = pd.getDefiningNode() and
+      nodeTo.(EssaNode).getVar() = pd.getVariable()
+    )
+    or
+    // First use after definition
+    //   `y = 42`
+    //   `x = f(y)`
+    //   nodeFrom is `y` on first line, essa var
+    //   nodeTo is `y` on second line, cfg node
+    defToFirstUse(nodeFrom.(EssaNode).getVar(), nodeTo.(CfgNode).getNode())
+    or
+    // Next use after use
+    //   `x = f(y)`
+    //   `z = y + 1`
+    //   nodeFrom is 'y' on first line, cfg node
+    //   nodeTo is `y` on second line, cfg node
+    useToNextUse(nodeFrom.(CfgNode).getNode(), nodeTo.(CfgNode).getNode())
+    or
+    // If expressions
+    nodeFrom.(CfgNode).getNode() = nodeTo.(CfgNode).getNode().(IfExprNode).getAnOperand()
+    or
+    // Flow inside an unpacking assignment
+    iterableUnpackingFlowStep(nodeFrom, nodeTo)
+  }
 }
 
 //--------
@@ -339,6 +390,11 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
       runtimeLocalFlowStep(node, nodeTo)
     )
   )
+}
+
+/** This does not include summary steps. */
+predicate simpleLocalFlowStepForTypeTracking(TSimpleNode nodeFrom, TSimpleNode nodeTo) {
+  EssaFlow::essaFlowStepTT(nodeFrom, nodeTo)
 }
 
 /**
@@ -1586,9 +1642,9 @@ module IterableUnpacking {
    * Step 1a
    * Data flows from `iterable` to `TIterableSequence(sequence)`
    */
-  predicate iterableUnpackingAssignmentFlowStep(Node nodeFrom, Node nodeTo) {
+  predicate iterableUnpackingAssignmentFlowStep(TSimpleNode nodeFrom, TSimpleNode nodeTo) {
     exists(AssignmentTarget target |
-      nodeFrom.asExpr() = target.getValue() and
+      nodeFrom.(CfgNode).getNode().getNode() = target.getValue() and
       nodeTo = TIterableSequenceNode(target)
     )
   }
@@ -1614,10 +1670,10 @@ module IterableUnpacking {
    * Step 2
    * Data flows from `TIterableSequence(sequence)` to `sequence`
    */
-  predicate iterableUnpackingTupleFlowStep(Node nodeFrom, Node nodeTo) {
+  predicate iterableUnpackingTupleFlowStep(TSimpleNode nodeFrom, TSimpleNode nodeTo) {
     exists(UnpackingAssignmentSequenceTarget target |
       nodeFrom = TIterableSequenceNode(target) and
-      nodeTo.asCfgNode() = target
+      nodeTo.(CfgNode).getNode() = target
     )
   }
 
@@ -1733,7 +1789,7 @@ module IterableUnpacking {
   }
 
   /** All flow steps associated with unpacking assignment. */
-  predicate iterableUnpackingFlowStep(Node nodeFrom, Node nodeTo) {
+  predicate iterableUnpackingFlowStep(TSimpleNode nodeFrom, TSimpleNode nodeTo) {
     iterableUnpackingAssignmentFlowStep(nodeFrom, nodeTo)
     or
     iterableUnpackingTupleFlowStep(nodeFrom, nodeTo)
