@@ -6,6 +6,9 @@ sink(tainted)
 tainted_lambda = apply_lambda(lambda x: x + 1, tainted)
 sink(tainted_lambda)
 
+untainted_lambda = apply_lambda(lambda x: 1, tainted)
+sink(tainted_lambda) # should not see flow
+
 # Collection summaries
 tainted_list = reversed([tainted])
 sink(tainted_list[0])
