@@ -199,6 +199,58 @@ void test2_10(int dir, const char *path, int arg)
 	// ...
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // --- open -> stat ---
 
 void test3_1(const char *path, int arg)
