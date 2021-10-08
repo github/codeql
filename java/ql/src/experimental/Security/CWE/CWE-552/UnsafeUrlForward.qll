@@ -3,6 +3,7 @@ import DataFlow
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.frameworks.Servlets
 import semmle.code.java.frameworks.spring.SpringWeb
+import semmle.code.java.security.RequestForgery
 
 /** A sanitizer for unsafe url forward vulnerabilities. */
 abstract class UnsafeUrlForwardSanitizer extends DataFlow::Node { }
@@ -30,88 +31,6 @@ private Expr getAUnsafeUrlForwardSanitizingPrefix() {
   result instanceof UnsafeUrlForwardSanitizingConstantPrefix
   or
   result.(AddExpr).getAnOperand() = getAUnsafeUrlForwardSanitizingPrefix()
-}
-
-/** A call to `StringBuilder.append` method. */
-class StringBuilderAppend extends MethodAccess {
-  StringBuilderAppend() {
-    this.getMethod().getDeclaringType() instanceof StringBuildingType and
-    this.getMethod().hasName("append")
-  }
-}
-
-private Expr getQualifier(Expr e) { result = e.(MethodAccess).getQualifier() }
-
-/**
- * An extension of `StringBuilderVar` that also accounts for strings appended in StringBuilder/Buffer's constructor
- * and in `append` calls chained onto the constructor call.
- *
- * The original `StringBuilderVar` doesn't care about these because it is designed to model taint, and
- * in taint rules terms these are not needed, as the connection between construction, appends and the
- * eventual `toString` is more obvious.
- */
-private class StringBuilderVarExt extends StringBuilderVar {
-  /**
-   * Returns a first assignment after this StringBuilderVar is first assigned.
-   *
-   * For example, for `StringBuilder sbv = new StringBuilder("1").append("2"); sbv.append("3").append("4");`
-   * this returns the append of `"3"`.
-   */
-  private StringBuilderAppend getAFirstAppendAfterAssignment() {
-    result = this.getAnAppend() and not result = this.getNextAppend(_)
-  }
-
-  /**
-   * Gets the next `append` after `prev`, where `prev` is, perhaps after some more `append` or other
-   * chained calls, assigned to this `StringBuilderVar`.
-   */
-  private StringBuilderAppend getNextAssignmentChainedAppend(StringBuilderConstructorOrAppend prev) {
-    getQualifier*(result) = this.getAnAssignedValue() and
-    result.getQualifier() = prev
-  }
-
-  /**
-   * Get a constructor call or `append` call that contributes a string to this string builder.
-   */
-  StringBuilderConstructorOrAppend getAConstructorOrAppend() {
-    exists(this.getNextAssignmentChainedAppend(result)) or
-    result = this.getAnAssignedValue() or
-    result = this.getAnAppend()
-  }
-
-  /**
-   * Like `StringBuilderVar.getNextAppend`, except including appends and constructors directly
-   * assigned to this `StringBuilderVar`.
-   */
-  private StringBuilderAppend getNextAppendIncludingAssignmentChains(
-    StringBuilderConstructorOrAppend prev
-  ) {
-    result = getNextAssignmentChainedAppend(prev)
-    or
-    prev = this.getAnAssignedValue() and
-    result = this.getAFirstAppendAfterAssignment()
-    or
-    result = this.getNextAppend(prev)
-  }
-
-  /**
-   * Implements `StringBuilderVarExt.getNextAppendIncludingAssignmentChains+(prev)`.
-   */
-  pragma[nomagic]
-  StringBuilderAppend getSubsequentAppendIncludingAssignmentChains(
-    StringBuilderConstructorOrAppend prev
-  ) {
-    result = this.getNextAppendIncludingAssignmentChains(prev) or
-    result =
-      this.getSubsequentAppendIncludingAssignmentChains(this.getNextAppendIncludingAssignmentChains(prev))
-  }
-}
-
-private class StringBuilderConstructorOrAppend extends Call {
-  StringBuilderConstructorOrAppend() {
-    this instanceof StringBuilderAppend or
-    this.(ClassInstanceExpr).getConstructedType() instanceof StringBuildingType
-  }
 }
 
 private class UnsafeUrlForwardSanitizedExpr extends Expr {

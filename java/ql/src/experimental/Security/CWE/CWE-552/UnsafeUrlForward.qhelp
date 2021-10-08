@@ -17,8 +17,7 @@
 <example>
 
 <p>The following examples show the bad case and the good case respectively.
-In <code>bad1</code> method and <code>bad2</code> method and <code>bad3</code> method and 
-<code>bad4</code> method and <code>bad5</code> method and <code>bad6</code> method, shows an HTTP request parameter being used directly in a URL forward
+The <code>bad</code> methods show an HTTP request parameter being used directly in a URL forward
 without validating the input, which may cause file leakage. In <code>good1</code> method, 
 ordinary forwarding requests are shown, which will not cause file leakage.
 </p>

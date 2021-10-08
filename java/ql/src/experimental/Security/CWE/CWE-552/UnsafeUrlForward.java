@@ -15,36 +15,7 @@ public class UnsafeUrlForward {
 	}
 
 	@GetMapping("/bad2")
-	public ModelAndView bad2(String url) {
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName(url);
-		return modelAndView;
-	}
-
-	@GetMapping("/bad3")
-	public String bad3(String url) {
-		return "forward:" + url + "/swagger-ui/index.html";
-	}
-
-	@GetMapping("/bad4")
-	public ModelAndView bad4(String url) {
-		ModelAndView modelAndView = new ModelAndView("forward:" + url);
-		return modelAndView;
-	}
-
-	@GetMapping("/bad5")
-	public void bad5(String url, HttpServletRequest request, HttpServletResponse response) {
-		try {
-			request.getRequestDispatcher(url).include(request, response);
-		} catch (ServletException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	@GetMapping("/bad6")
-	public void bad6(String url, HttpServletRequest request, HttpServletResponse response) {
+	public void bad2(String url, HttpServletRequest request, HttpServletResponse response) {
 		try {
 			request.getRequestDispatcher("/WEB-INF/jsp/" + url + ".jsp").include(request, response);
 		} catch (ServletException e) {
