@@ -30,7 +30,7 @@ DataFlowType getContentType(Content c) { result = c.getType() }
 
 /** Gets the return type of kind `rk` for callable `c`. */
 DataFlowType getReturnType(SummarizedCallable c, ReturnKind rk) {
-  result = getErasedRepr(c.getReturnType()) and
+  result = getErasedRepr(c.asCallable().getReturnType()) and
   exists(rk)
 }
 
@@ -62,7 +62,7 @@ predicate summaryElement(DataFlowCallable c, string input, string output, string
     string namespace, string type, boolean subtypes, string name, string signature, string ext
   |
     summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind) and
-    c = interpretElement(namespace, type, subtypes, name, signature, ext)
+    c.asCallable() = interpretElement(namespace, type, subtypes, name, signature, ext)
   )
 }
 
@@ -119,7 +119,7 @@ class InterpretNode extends TInterpretNode {
   DataFlowCall asCall() { result.asCall() = this.asElement() }
 
   /** Gets the callable that this node corresponds to, if any. */
-  DataFlowCallable asCallable() { result = this.asElement() }
+  DataFlowCallable asCallable() { result.asCallable() = this.asElement() }
 
   /** Gets the target of this call, if any. */
   Callable getCallTarget() { result = this.asCall().asCall().getCallee().getSourceDeclaration() }
