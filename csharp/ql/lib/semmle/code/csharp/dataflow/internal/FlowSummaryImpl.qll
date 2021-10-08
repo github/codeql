@@ -870,4 +870,96 @@ module Private {
       )
     }
   }
+
+  /**
+   * Provides query predicates for rendering the generated data flow graph for
+   * a summarized callable.
+   *
+   * Import this module into a `.ql` file of `@kind graph` to render the graph.
+   * The graph is restricted to callables from `RelevantSummarizedCallable`.
+   */
+  module RenderSummarizedCallable {
+    /** A summarized callable to include in the graph. */
+    abstract class RelevantSummarizedCallable extends SummarizedCallable { }
+
+    private newtype TNodeOrCall =
+      MkNode(Node n) {
+        exists(RelevantSummarizedCallable c |
+          n = summaryNode(c, _)
+          or
+          n.(ParamNode).isParameterOf(c, _)
+        )
+      } or
+      MkCall(DataFlowCall call) {
+        call = summaryDataFlowCall(_) and
+        call.getEnclosingCallable() instanceof RelevantSummarizedCallable
+      }
+
+    private class NodeOrCall extends TNodeOrCall {
+      Node asNode() { this = MkNode(result) }
+
+      DataFlowCall asCall() { this = MkCall(result) }
+
+      string toString() {
+        result = this.asNode().toString()
+        or
+        result = this.asCall().toString()
+      }
+
+      /**
+       * Holds if this element is at the specified location.
+       * The location spans column `startcolumn` of line `startline` to
+       * column `endcolumn` of line `endline` in file `filepath`.
+       * For more information, see
+       * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
+       */
+      predicate hasLocationInfo(
+        string filepath, int startline, int startcolumn, int endline, int endcolumn
+      ) {
+        this.asNode().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+        or
+        this.asCall().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+      }
+    }
+
+    query predicate nodes(NodeOrCall n, string key, string val) {
+      key = "semmle.label" and val = n.toString()
+    }
+
+    private predicate edgesComponent(NodeOrCall a, NodeOrCall b, string value) {
+      exists(boolean preservesValue |
+        Private::Steps::summaryLocalStep(a.asNode(), b.asNode(), preservesValue) and
+        if preservesValue = true then value = "value" else value = "taint"
+      )
+      or
+      exists(Content c |
+        Private::Steps::summaryReadStep(a.asNode(), c, b.asNode()) and
+        value = "read (" + c + ")"
+        or
+        Private::Steps::summaryStoreStep(a.asNode(), c, b.asNode()) and
+        value = "store (" + c + ")"
+        or
+        Private::Steps::summaryClearsContent(a.asNode(), c) and
+        b = a and
+        value = "clear (" + c + ")"
+      )
+      or
+      summaryPostUpdateNode(b.asNode(), a.asNode()) and
+      value = "post-update"
+      or
+      b.asCall() = summaryDataFlowCall(a.asNode()) and
+      value = "receiver"
+      or
+      exists(int i |
+        summaryArgumentNode(b.asCall(), a.asNode(), i) and
+        value = "argument (" + i + ")"
+      )
+    }
+
+    query predicate edges(NodeOrCall a, NodeOrCall b, string key, string value) {
+      key = "semmle.label" and
+      edgesComponent(a, b, _) and
+      value = strictconcat(string s | edgesComponent(a, b, s) | s, " / ")
+    }
+  }
 }
