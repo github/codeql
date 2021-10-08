@@ -48,6 +48,5 @@ string captureSource(Callable api) {
 }
 
 from TargetAPI api, string sink
-where
-  sink = captureSource(api) 
+where sink = captureSource(api)
 select sink order by sink

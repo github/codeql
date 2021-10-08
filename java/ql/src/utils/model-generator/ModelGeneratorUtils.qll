@@ -9,10 +9,11 @@ class TargetAPI extends Callable {
     this.getDeclaringType().isPublic() and
     isRelevantForModels(this)
   }
-  
 }
 
-private string isExtensible(RefType ref) { if ref.isFinal() then result = "false" else result = "true" }
+private string isExtensible(RefType ref) {
+  if ref.isFinal() then result = "false" else result = "true"
+}
 
 predicate isRelevantForModels(Callable api) {
   not isInTestFile(api.getCompilationUnit().getFile()) and
@@ -26,7 +27,9 @@ private predicate isInTestFile(File file) {
 }
 
 private predicate isJdkInternal(CompilationUnit cu) {
-  cu.getPackage().getName().matches("com.sun") or cu.getPackage().getName().matches("sun") or cu.getPackage().getName().matches("")
+  cu.getPackage().getName().matches("com.sun") or
+  cu.getPackage().getName().matches("sun") or
+  cu.getPackage().getName().matches("")
 }
 
 bindingset[input, output]

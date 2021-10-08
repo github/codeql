@@ -21,7 +21,7 @@ class PropagateToSinkConfiguration extends TaintTracking::Configuration {
     isRelevantForModels(source.getEnclosingCallable())
   }
 
-  override predicate isSink(DataFlow::Node sink) { sinkNode(sink, _)}
+  override predicate isSink(DataFlow::Node sink) { sinkNode(sink, _) }
 }
 
 string asInputArgument(DataFlow::Node source) {
@@ -38,6 +38,5 @@ string captureSink(Callable api) {
 }
 
 from TargetAPI api, string sink
-where
-  sink = captureSink(api)
+where sink = captureSink(api)
 select sink order by sink
