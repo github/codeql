@@ -30,7 +30,12 @@ private class PendingIntentSentSinkModels extends SinkModelCsv {
         "android.app;NotificationManager;true;notify;(int,Notification);;Argument[1];pending-intent-sent",
         "android.app;NotificationManager;true;notify;(String,int,Notification);;Argument[2];pending-intent-sent",
         "android.app;NotificationManager;true;notifyAsPackage;(String,String,int,Notification);;Argument[3];pending-intent-sent",
-        "android.app;NotificationManager;true;notifyAsUser;(String,int,Notification,UserHandle);;Argument[2];pending-intent-sent"
+        "android.app;NotificationManager;true;notifyAsUser;(String,int,Notification,UserHandle);;Argument[2];pending-intent-sent",
+        "android.app;PendingIntent;false;send;(Context,int,Intent,OnFinished,Handler,String,Bundle);;Argument[2];pending-intent-sent",
+        "android.app;PendingIntent;false;send;(Context,int,Intent,OnFinished,Handler,String);;Argument[2];pending-intent-sent",
+        "android.app;PendingIntent;false;send;(Context,int,Intent,OnFinished,Handler);;Argument[2];pending-intent-sent",
+        "android.app;PendingIntent;false;send;(Context,int,Intent);;Argument[2];pending-intent-sent",
+        "android.app;Activity;true;setResult;(int,Intent);;Argument[1];pending-intent-sent"
       ]
   }
 }
@@ -40,6 +45,8 @@ private class DefaultIntentRedirectionSinkModel extends SinkModelCsv {
   override predicate row(string row) {
     row =
       [
+        "android.app;Activity;true;bindService;;;Argument[0];intent-start",
+        "android.app;Activity;true;bindServiceAsUser;;;Argument[0];intent-start",
         "android.app;Activity;true;startActivityAsCaller;;;Argument[0];intent-start",
         "android.app;Activity;true;startActivityForResult;(Intent,int);;Argument[0];intent-start",
         "android.app;Activity;true;startActivityForResult;(Intent,int,Bundle);;Argument[0];intent-start",

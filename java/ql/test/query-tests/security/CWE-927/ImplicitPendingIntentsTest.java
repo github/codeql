@@ -148,6 +148,20 @@ public class ImplicitPendingIntentsTest {
         }
     }
 
+    public static void testPendingIntentWrappedInAnotherPendingIntent(Context ctx,
+            PendingIntent other) throws PendingIntent.CanceledException {
+        {
+            Intent baseIntent = new Intent();
+            PendingIntent pi = PendingIntent.getActivity(ctx, 0, baseIntent, 0);
+            Intent fwdIntent = new Intent();
+            fwdIntent.putExtra("fwdIntent", pi);
+            other.send(ctx, 0, fwdIntent); // $hasTaintFlow
+            other.send(ctx, 0, fwdIntent, null, null); // $hasTaintFlow
+            other.send(ctx, 0, fwdIntent, null, null, null); // $hasTaintFlow
+            other.send(ctx, 0, fwdIntent, null, null, null, null); // $hasTaintFlow
+        }
+    }
+
     public static void testPendingIntentInANotification(Context ctx)
             throws PendingIntent.CanceledException {
 
@@ -192,6 +206,17 @@ public class ImplicitPendingIntentsTest {
             noMan.notify(0, notification); // Safe
         }
 
+    }
+
+    static class TestActivity extends Activity {
+        @Override
+        public void onCreate(Bundle bundle) {
+            Intent baseIntent = new Intent();
+            PendingIntent pi = PendingIntent.getActivity(null, 0, baseIntent, 0);
+            Intent fwdIntent = new Intent();
+            fwdIntent.putExtra("fwdIntent", pi);
+            setResult(0, fwdIntent); // $hasTaintFlow
+        }
     }
 
     static class TestSliceProvider extends SliceProvider {

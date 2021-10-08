@@ -60,11 +60,11 @@ private class ImplicitPendingIntentCreation extends Expr {
 private class SendPendingIntent extends DataFlow::Node {
   SendPendingIntent() {
     sinkNode(this, "intent-start") and
-    // startService can't actually start implicit intents since API 21
+    // implicit intents can't be started as services since API 21
     not exists(MethodAccess ma, Method m |
       ma.getMethod() = m and
       m.getDeclaringType().getASupertype*() instanceof TypeContext and
-      m.getName().matches("start%Service%") and
+      m.getName().matches(["start%Service%", "bindService%"]) and
       this.asExpr() = ma.getArgument(0)
     )
     or
