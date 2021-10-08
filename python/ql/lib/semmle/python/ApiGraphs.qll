@@ -350,9 +350,9 @@ module API {
      *
      * Ignores relative imports, such as `from ..foo.bar import baz`.
      */
-    private predicate imports(DataFlow::Node imp, string name) {
+    private predicate imports(DataFlow::CfgNode imp, string name) {
       exists(ImportExprNode iexpr |
-        imp.asCfgNode() = iexpr and
+        imp.getNode() = iexpr and
         not iexpr.getNode().isRelative() and
         name = iexpr.getNode().getImportedModuleName()
       )
@@ -407,8 +407,11 @@ module API {
         or
         // Subclassing a node
         lbl = Label::subclass() and
-        exists(DataFlow::Node superclass | pred.flowsTo(superclass) |
-          ref.asExpr().(ClassExpr).getABase() = superclass.asExpr()
+        exists(DataFlow::CfgNode superclass, DataFlow::ControlFlowNode cfgNode |
+          pred.flowsTo(superclass)
+        |
+          ref = DataFlow::TCfgNode(cfgNode) and
+          cfgNode.getNode().(ClassExpr).getABase() = superclass.getNode().getNode()
         )
         or
         // awaiting
@@ -424,7 +427,8 @@ module API {
       lbl = Label::member(any(string name | ref = Builtins::likelyBuiltin(name)))
       or
       // Unknown variables that may belong to a module imported with `import *`
-      exists(Scope s |
+      exists(Scope s, DataFlow::ControlFlowNode cfgNode |
+        ref = DataFlow::TCfgNode(cfgNode) and
         base = potential_import_star_base(s) and
         lbl =
           Label::member(any(string name |
@@ -474,7 +478,7 @@ module API {
     cached
     DataFlow::LocalSourceNode trackUseNode(DataFlow::LocalSourceNode src) {
       result = trackUseNode(src, DataFlow::TypeTracker::end()) and
-      not result instanceof DataFlow::ModuleVariableNode
+      result instanceof DataFlow::CfgNode
     }
 
     /**
