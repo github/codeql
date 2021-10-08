@@ -310,7 +310,7 @@ int accessPathLimit() { result = 5 }
 
 /**
  * Holds if access paths with `c` at their head always should be tracked at high
- * precision. This disables adaptive accesspath precision for such accesspaths.
+ * precision. This disables adaptive access path precision for such access paths.
  */
 predicate forceHighPrecision(Content c) {
   c instanceof ArrayContent or c instanceof CollectionContent

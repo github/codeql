@@ -1239,8 +1239,8 @@ class TypedContent extends MkTypedContent {
 
   /**
    * Holds if access paths with this `TypedContent` at their head always should
-   * be tracked at high precision. This disables adaptive accesspath precision
-   * for such accesspaths.
+   * be tracked at high precision. This disables adaptive access path precision
+   * for such access paths.
    */
   predicate forceHighPrecision() { forceHighPrecision(c) }
 }
