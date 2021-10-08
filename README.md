@@ -1,47 +1,50 @@
 # Ruby analysis support for CodeQL
 
-Under development.
+This open-source repository contains the extractor, CodeQL libraries, and queries that power Ruby
+support in [LGTM](https://lgtm.com) and the other CodeQL products that [GitHub](https://github.com)
+makes available to its customers worldwide.
 
-## Building the tools from source
+It contains two major components:
+  - an extractor, written in Rust, that parses Ruby source code and converts it into a database
+    that can be queried using CodeQL.
+  - static analysis libraries and queries written in [CodeQL](https://codeql.github.com/docs/) that can be
+    used to analyze such a database to find coding mistakes or security vulnerabilities.
 
-[Install Rust](https://www.rust-lang.org/tools/install), then run:
+The goal of this project is to provide comprehensive static analysis support for Ruby in CodeQL.
 
-```bash
-cargo build --release
-```
+For the queries and libraries that power CodeQL support for other languages, visit [the CodeQL
+repository](https://github.com/github/codeql).
 
-## Generating the database schema and QL library
+## Installation
 
-The generated `ql/lib/ruby.dbscheme` and `ql/lib/codeql/ruby/ast/internal/TreeSitter.qll` files are included in the repository, but they can be re-generated as follows:
+Simply clone this repository. There are no external dependencies.
 
-```bash
-# Run the generator
-cargo run --release -p ruby-generator -- --dbscheme ql/lib/ruby.dbscheme --library ql/lib/codeql/ruby/ast/internal/TreeSitter.qll
-# Then auto-format the QL library
-codeql query format -i ql/lib/codeql/ruby/ast/internal/TreeSitter.qll
-```
+If you want to use the CodeQL extension for Visual Studio Code, import this repository into your VS
+Code workspace.
 
-## Building a CodeQL database for a Ruby program
+## Usage
 
-First, get an extractor pack. There are two options:
+To analyze a Ruby codebase, either use the [CodeQL command-line
+interface](https://codeql.github.com/docs/codeql-cli/) to create a database yourself, or
+download a pre-built database from [LGTM.com](https://lgtm.com/). You can then run any of the
+queries contained in this repository either on the command line or using the VS Code extension.
 
-1. Either download the latest `codeql-ruby-pack` from Actions and unzip it twice, or
-2. Run `scripts/create-extractor-pack.sh` (Linux/Mac) or `scripts\create-extractor-pack.ps1` (Windows PowerShell) and the pack will be created in the `extractor-pack` directory.
+Note that the [lgtm.com](https://github.com/github/codeql-ruby/tree/lgtm.com) branch of this
+repository corresponds to the version of the queries that is currently deployed on LGTM.com.
+The [main](https://github.com/github/codeql-ruby/tree/main) branch may contain changes that
+have not been deployed yet, so you may need to upgrade databases downloaded from [LGTM.com](https://lgtm.com) before
+running queries on them.
 
-Then run
+## Contributions
 
-```bash
-codeql database create <database-path> -l ruby -s <project-source-path> --search-path <extractor-pack-path>
-```
+Contributions are welcome! Please see our [contribution guidelines](CONTRIBUTING.md) and our
+[code of conduct](CODE_OF_CONDUCT.md) for details on how to participate in our community.
 
-## Running qltests
+## Licensing
 
-Run
+The code in this repository is licensed under the [MIT license](LICENSE).
 
-```bash
-codeql test run <test-path> --search-path <repository-root-path>
-```
+## Resources
 
-## Writing database upgrade scripts
-
-See [this guide](doc/prepare-db-upgrade.md).
+- [Writing CodeQL queries](https://codeql.github.com/docs/writing-codeql-queries/)
+- [CodeQL documentation](https://codeql.github.com/docs/)
