@@ -426,12 +426,12 @@ def test_call_extra_keyword_flow():
 
 def test_or(x = False):
     # if we don't know the value of the lhs, we should always add flow
-    SINK(x or SOURCE) #$ MISSING: flow="SOURCE -> BoolExp"
+    SINK(x or SOURCE) #$ flow="SOURCE -> BoolExpr"
 
 
 def test_and(x = True):
     # if we don't know the value of the lhs, we should always add flow
-    SINK(x and SOURCE) #$ MISSING: flow="SOURCE -> BoolExp"
+    SINK(x and SOURCE) #$ flow="SOURCE -> BoolExpr"
 
 
 # 6.12. Assignment expressions
