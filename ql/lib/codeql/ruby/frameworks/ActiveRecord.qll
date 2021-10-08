@@ -2,7 +2,10 @@ private import codeql.ruby.AST
 private import codeql.ruby.Concepts
 private import codeql.ruby.controlflow.CfgNodes
 private import codeql.ruby.DataFlow
+private import codeql.ruby.dataflow.internal.DataFlowDispatch
 private import codeql.ruby.ast.internal.Module
+private import codeql.ruby.ApiGraphs
+private import codeql.ruby.frameworks.StandardLibrary
 
 private class ActiveRecordBaseAccess extends ConstantReadAccess {
   ActiveRecordBaseAccess() {
@@ -16,6 +19,25 @@ private class ActiveRecordBaseAccess extends ConstantReadAccess {
 // is not in the database
 private class ApplicationRecordAccess extends ConstantReadAccess {
   ApplicationRecordAccess() { this.getName() = "ApplicationRecord" }
+}
+
+/// See https://api.rubyonrails.org/classes/ActiveRecord/Persistence.html
+private string activeRecordPersistenceInstanceMethodName() {
+  result =
+    [
+      "becomes", "becomes!", "decrement", "decrement!", "delete", "delete!", "destroy", "destroy!",
+      "destroyed?", "increment", "increment!", "new_record?", "persisted?",
+      "previously_new_record?", "reload", "save", "save!", "toggle", "toggle!", "touch", "update",
+      "update!", "update_attribute", "update_column", "update_columns"
+    ]
+}
+
+// Methods with these names are defined for all active record model instances,
+// so they are unlikely to refer to a database field.
+private predicate isBuiltInMethodForActiveRecordModelInstance(string methodName) {
+  methodName = activeRecordPersistenceInstanceMethodName() or
+  methodName = basicObjectInstanceMethodName() or
+  methodName = objectInstanceMethodName()
 }
 
 /**
@@ -38,6 +60,37 @@ class ActiveRecordModelClass extends ClassDeclaration {
     // class Bar < Foo
     exists(ActiveRecordModelClass other |
       other.getModule() = resolveScopeExpr(this.getSuperclassExpr())
+    )
+  }
+
+  // Gets the class declaration for this class and all of its super classes
+  private ModuleBase getAllClassDeclarations() {
+    result = this.getModule().getSuperClass*().getADeclaration()
+  }
+
+  /**
+   * Gets methods defined in this class that may access a field from the database.
+   */
+  Method getAPotentialFieldAccessMethod() {
+    // It's a method on this class or one of its super classes
+    result = this.getAllClassDeclarations().getAMethod() and
+    // There is a value that can be returned by this method which may include field data
+    exists(DataFlow::Node returned, ActiveRecordInstanceMethodCall cNode, MethodCall c |
+      exprNodeReturnedFrom(returned, result) and
+      cNode.flowsTo(returned) and
+      c = cNode.asExpr().getExpr()
+    |
+      // The referenced method is not built-in, and...
+      not isBuiltInMethodForActiveRecordModelInstance(c.getMethodName()) and
+      (
+        // ...The receiver does not have a matching method definition, or...
+        not exists(
+          cNode.getInstance().getClass().getAllClassDeclarations().getMethod(c.getMethodName())
+        )
+        or
+        // ...the called method can access a field
+        c.getATarget() = cNode.getInstance().getClass().getAPotentialFieldAccessMethod()
+      )
     )
   }
 }
@@ -160,5 +213,107 @@ class ActiveRecordSqlExecutionRange extends SqlExecution::Range {
 
   override DataFlow::Node getSql() { result = this }
 }
+
 // TODO: model `ActiveRecord` sanitizers
 // https://api.rubyonrails.org/classes/ActiveRecord/Sanitization/ClassMethods.html
+/**
+ * A node that may evaluate to one or more `ActiveRecordModelClass` instances.
+ */
+abstract class ActiveRecordModelInstantiation extends OrmInstantiation::Range,
+  DataFlow::LocalSourceNode {
+  abstract ActiveRecordModelClass getClass();
+
+  bindingset[methodName]
+  override predicate methodCallMayAccessField(string methodName) {
+    // The method is not a built-in, and...
+    not isBuiltInMethodForActiveRecordModelInstance(methodName) and
+    (
+      // ...There is no matching method definition in the class, or...
+      not exists(this.getClass().getMethod(methodName))
+      or
+      // ...the called method can access a field.
+      exists(Method m | m = this.getClass().getAPotentialFieldAccessMethod() |
+        m.getName() = methodName
+      )
+    )
+  }
+}
+
+// Names of class methods on ActiveRecord models that may return one or more
+// instances of that model. This also includes the `initialize` method.
+// See https://api.rubyonrails.org/classes/ActiveRecord/FinderMethods.html
+private string finderMethodName() {
+  exists(string baseName |
+    baseName =
+      [
+        "fifth", "find", "find_by", "find_or_initialize_by", "find_or_create_by", "first",
+        "forty_two", "fourth", "last", "second", "second_to_last", "take", "third", "third_to_last"
+      ] and
+    result = baseName + ["", "!"]
+  )
+  or
+  result = "new"
+}
+
+// Gets the "final" receiver in a chain of method calls.
+// For example, in `Foo.bar`, this would give the `Foo` access, and in
+// `foo.bar.baz("arg")` it would give the `foo` variable access
+private Expr getUltimateReceiver(MethodCall call) {
+  exists(Expr recv |
+    recv = call.getReceiver() and
+    (
+      result = getUltimateReceiver(recv)
+      or
+      not recv instanceof MethodCall and result = recv
+    )
+  )
+}
+
+// A call to `find`, `where`, etc. that may return active record model object(s)
+private class ActiveRecordModelFinderCall extends ActiveRecordModelInstantiation, DataFlow::CallNode {
+  private MethodCall call;
+  private ActiveRecordModelClass cls;
+  private Expr recv;
+
+  ActiveRecordModelFinderCall() {
+    call = this.asExpr().getExpr() and
+    recv = getUltimateReceiver(call) and
+    resolveConstant(recv) = cls.getQualifiedName() and
+    call.getMethodName() = finderMethodName()
+  }
+
+  final override ActiveRecordModelClass getClass() { result = cls }
+}
+
+// A `self` reference that may resolve to an active record model object
+private class ActiveRecordModelClassSelfReference extends ActiveRecordModelInstantiation {
+  private ActiveRecordModelClass cls;
+
+  ActiveRecordModelClassSelfReference() {
+    exists(Self s |
+      s.getEnclosingModule() = cls and
+      s.getEnclosingMethod() = cls.getAMethod() and
+      s = this.asExpr().getExpr()
+    )
+  }
+
+  final override ActiveRecordModelClass getClass() { result = cls }
+}
+
+// A (locally tracked) active record model object
+private class ActiveRecordInstance extends DataFlow::Node {
+  private ActiveRecordModelInstantiation instantiation;
+
+  ActiveRecordInstance() { this = instantiation or instantiation.flowsTo(this) }
+
+  ActiveRecordModelClass getClass() { result = instantiation.getClass() }
+}
+
+// A call whose receiver may be an active record model object
+private class ActiveRecordInstanceMethodCall extends DataFlow::CallNode {
+  private ActiveRecordInstance instance;
+
+  ActiveRecordInstanceMethodCall() { this.getReceiver() = instance }
+
+  ActiveRecordInstance getInstance() { result = instance }
+}

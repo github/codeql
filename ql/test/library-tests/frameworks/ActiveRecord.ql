@@ -10,3 +10,9 @@ query predicate activeRecordModelClassMethodCalls(ActiveRecordModelClassMethodCa
 query predicate potentiallyUnsafeSqlExecutingMethodCall(PotentiallyUnsafeSqlExecutingMethodCall call) {
   any()
 }
+
+query predicate activeRecordModelInstantiations(
+  ActiveRecordModelInstantiation i, ActiveRecordModelClass cls
+) {
+  i.getClass() = cls
+}

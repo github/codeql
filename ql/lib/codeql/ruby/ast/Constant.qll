@@ -166,6 +166,35 @@ class ConstantWriteAccess extends ConstantAccess {
   }
 
   override string getAPrimaryQlClass() { result = "ConstantWriteAccess" }
+
+  /**
+   * Gets the fully qualified name for this constant, based on the context in
+   * which it is defined.
+   *
+   *  For example, given
+   *  ```rb
+   *  module Foo
+   *    module Bar
+   *      class Baz
+   *      end
+   *    end
+   *    CONST_A = "a"
+   *  end
+   *  ```
+   *
+   * the constant `Baz` has the fully qualified name `Foo::Bar::Baz`, and
+   * `CONST_A` has the fully qualified name `Foo::CONST_A`.
+   */
+  string getQualifiedName() {
+    /* get the qualified name for the parent module, then append w */
+    exists(ConstantWriteAccess parent | parent = this.getEnclosingModule() |
+      result = parent.getQualifiedName() + "::" + this.getName()
+    )
+    or
+    /* base case - there's no parent module */
+    not exists(ConstantWriteAccess parent | parent = this.getEnclosingModule()) and
+    result = this.getName()
+  }
 }
 
 /**

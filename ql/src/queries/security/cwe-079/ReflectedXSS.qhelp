@@ -33,13 +33,13 @@
       <code>params[:user_name]</code> content within the output tags will be
       HTML-escaped automatically before being emitted.
     </p>
-    <sample src="examples/safe.html.erb" />
+    <sample src="examples/reflected_xss_safe.html.erb" />
 
     <p>
       However, the following example is unsafe because user-controlled input is
       emitted without escaping, since it is marked as <code>html_safe</code>.
     </p>
-    <sample src="examples/reflective_xss.html.erb" />
+    <sample src="examples/reflected_xss_unsafe.html.erb" />
   </example>
 
   <references>

@@ -18,6 +18,6 @@ query predicate getAssociatedControllerClasses(ActionControllerControllerClass c
   cls = getAssociatedControllerClass(f)
 }
 
-query predicate controllerTemplatesFolders(ActionControllerControllerClass cls, Folder f) {
-  controllerTemplatesFolder(cls, f)
+query predicate controllerTemplateFiles(ActionControllerControllerClass cls, ErbFile templateFile) {
+  controllerTemplateFile(cls, templateFile)
 }

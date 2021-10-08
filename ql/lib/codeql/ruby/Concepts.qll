@@ -538,3 +538,32 @@ module XmlParserCall {
     abstract predicate externalEntitiesEnabled();
   }
 }
+
+/**
+ * A data-flow node that may represent a database object in an ORM system.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `OrmInstantiation::Range` instead.
+ */
+class OrmInstantiation extends DataFlow::Node instanceof OrmInstantiation::Range {
+  /** Holds if a call to `methodName` on this instance may return a field of this ORM object. */
+  bindingset[methodName]
+  predicate methodCallMayAccessField(string methodName) {
+    super.methodCallMayAccessField(methodName)
+  }
+}
+
+/** Provides a class for modeling new ORM object instantiation APIs. */
+module OrmInstantiation {
+  /**
+   * A data-flow node that may represent a database object in an ORM system.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `OrmInstantiation` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /** Holds if a call to `methodName` on this instance may return a field of this ORM object. */
+    bindingset[methodName]
+    abstract predicate methodCallMayAccessField(string methodName);
+  }
+}

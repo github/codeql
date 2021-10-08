@@ -1,5 +1,10 @@
+/**
+ * Provides classes and predicates used by the XSS queries.
+ */
+
 private import ruby
 private import codeql.ruby.DataFlow
+private import codeql.ruby.DataFlow2
 private import codeql.ruby.CFG
 private import codeql.ruby.Concepts
 private import codeql.ruby.Frameworks
@@ -7,39 +12,33 @@ private import codeql.ruby.frameworks.ActionController
 private import codeql.ruby.frameworks.ActionView
 private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.dataflow.BarrierGuards
-import codeql.ruby.dataflow.internal.DataFlowDispatch
-private import codeql.ruby.typetracking.TypeTracker
+private import codeql.ruby.dataflow.internal.DataFlowDispatch
 
 /**
  * Provides default sources, sinks and sanitizers for detecting
- * "reflected server-side cross-site scripting"
- * vulnerabilities, as well as extension points for adding your own.
+ * "server-side cross-site scripting" vulnerabilities, as well as
+ * extension points for adding your own.
  */
-module ReflectedXSS {
+private module Shared {
   /**
-   * A data flow source for "reflected server-side cross-site scripting" vulnerabilities.
+   * A data flow source for "server-side cross-site scripting" vulnerabilities.
    */
   abstract class Source extends DataFlow::Node { }
 
   /**
-   * A data flow sink for "reflected server-side cross-site scripting" vulnerabilities.
+   * A data flow sink for "server-side cross-site scripting" vulnerabilities.
    */
   abstract class Sink extends DataFlow::Node { }
 
   /**
-   * A sanitizer for "reflected server-side cross-site scripting" vulnerabilities.
+   * A sanitizer for "server-side cross-site scripting" vulnerabilities.
    */
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**
-   * A sanitizer guard for "reflected server-side cross-site scripting" vulnerabilities.
+   * A sanitizer guard for "server-side cross-site scripting" vulnerabilities.
    */
   abstract class SanitizerGuard extends DataFlow::BarrierGuard { }
-
-  /**
-   * A source of remote user input, considered as a flow source.
-   */
-  class RemoteFlowSourceAsSource extends Source, RemoteFlowSource { }
 
   private class ErbOutputMethodCallArgumentNode extends DataFlow::Node {
     private MethodCall call;
@@ -124,9 +123,9 @@ module ReflectedXSS {
   }
 
   /**
-   * An additional step that is taint-preserving in the context of reflected XSS.
+   * An additional step that is preserves dataflow in the context of XSS.
    */
-  predicate isAdditionalXSSTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+  predicate isAdditionalXSSFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     // node1 is a `locals` argument to a render call...
     exists(RenderCall call, Pair kvPair, string hashKey |
       call.getLocals().getAKeyValuePair() = kvPair and
@@ -197,4 +196,116 @@ module ReflectedXSS {
       node2.asExpr() = helperMethodCall
     )
   }
+}
+
+/**
+ * Provides default sources, sinks and sanitizers for detecting
+ * "reflected cross-site scripting" vulnerabilities, as well as
+ * extension points for adding your own.
+ */
+module ReflectedXSS {
+  /** A data flow source for stored XSS vulnerabilities. */
+  abstract class Source extends Shared::Source { }
+
+  /** A data flow sink for stored XSS vulnerabilities. */
+  abstract class Sink extends Shared::Sink { }
+
+  /** A sanitizer for stored XSS vulnerabilities. */
+  abstract class Sanitizer extends Shared::Sanitizer { }
+
+  /** A sanitizer guard for stored XSS vulnerabilities. */
+  abstract class SanitizerGuard extends Shared::SanitizerGuard { }
+
+  // Consider all arbitrary XSS sinks to be reflected XSS sinks
+  private class AnySink extends Sink instanceof Shared::Sink { }
+
+  // Consider all arbitrary XSS sanitizers to be reflected XSS sanitizers
+  private class AnySanitizer extends Sanitizer instanceof Shared::Sanitizer { }
+
+  // Consider all arbitrary XSS sanitizer guards to be reflected XSS sanitizer guards
+  private class AnySanitizerGuard extends SanitizerGuard instanceof Shared::SanitizerGuard {
+    override predicate checks(CfgNode expr, boolean branch) {
+      Shared::SanitizerGuard.super.checks(expr, branch)
+    }
+  }
+
+  /**
+   * An additional step that is preserves dataflow in the context of reflected XSS.
+   */
+  predicate isAdditionalXSSTaintStep = Shared::isAdditionalXSSFlowStep/2;
+
+  /**
+   * A source of remote user input, considered as a flow source.
+   */
+  class RemoteFlowSourceAsSource extends Source, RemoteFlowSource { }
+}
+
+private module OrmTracking {
+  /**
+   * A data flow configuration to track flow from finder calls to field accesses.
+   */
+  class Configuration extends DataFlow2::Configuration {
+    Configuration() { this = "OrmTracking" }
+
+    override predicate isSource(DataFlow2::Node source) { source instanceof OrmInstantiation }
+
+    // Select any call node and narrow down later
+    override predicate isSink(DataFlow2::Node sink) { sink instanceof DataFlow2::CallNode }
+
+    override predicate isAdditionalFlowStep(DataFlow2::Node node1, DataFlow2::Node node2) {
+      Shared::isAdditionalXSSFlowStep(node1, node2)
+      or
+      // Propagate flow through arbitrary method calls
+      node2.(DataFlow2::CallNode).getReceiver() = node1
+      or
+      // Propagate flow through "or" expressions `or`/`||`
+      node2.asExpr().getExpr().(LogicalOrExpr).getAnOperand() = node1.asExpr().getExpr()
+    }
+  }
+}
+
+module StoredXSS {
+  /** A data flow source for stored XSS vulnerabilities. */
+  abstract class Source extends Shared::Source { }
+
+  /** A data flow sink for stored XSS vulnerabilities. */
+  abstract class Sink extends Shared::Sink { }
+
+  /** A sanitizer for stored XSS vulnerabilities. */
+  abstract class Sanitizer extends Shared::Sanitizer { }
+
+  /** A sanitizer guard for stored XSS vulnerabilities. */
+  abstract class SanitizerGuard extends Shared::SanitizerGuard { }
+
+  // Consider all arbitrary XSS sinks to be stored XSS sinks
+  private class AnySink extends Sink instanceof Shared::Sink { }
+
+  // Consider all arbitrary XSS sanitizers to be stored XSS sanitizers
+  private class AnySanitizer extends Sanitizer instanceof Shared::Sanitizer { }
+
+  // Consider all arbitrary XSS sanitizer guards to be stored XSS sanitizer guards
+  private class AnySanitizerGuard extends SanitizerGuard instanceof Shared::SanitizerGuard {
+    override predicate checks(CfgNode expr, boolean branch) {
+      Shared::SanitizerGuard.super.checks(expr, branch)
+    }
+  }
+
+  /**
+   * An additional step that preserves dataflow in the context of stored XSS.
+   */
+  predicate isAdditionalXSSTaintStep = Shared::isAdditionalXSSFlowStep/2;
+
+  private class OrmFieldAsSource extends Source instanceof DataFlow2::CallNode {
+    OrmFieldAsSource() {
+      exists(OrmTracking::Configuration subConfig, DataFlow2::CallNode subSrc, MethodCall call |
+        subConfig.hasFlow(subSrc, this) and
+        call = this.asExpr().getExpr() and
+        subSrc.(OrmInstantiation).methodCallMayAccessField(call.getMethodName())
+      )
+    }
+  }
+
+  /** A file read, considered as a flow source for stored XSS. */
+  private class FileSystemReadAccessAsSource extends Source instanceof FileSystemReadAccess { }
+  // TODO: Consider `FileNameSource` flowing to script tag `src` attributes and similar
 }

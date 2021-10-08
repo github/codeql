@@ -66,32 +66,6 @@ newtype DefLoc =
   }
 
 /**
- * Gets the fully qualified name for a constant, based on the context in which it is defined.
- *
- *  For example, given
- *  ```ruby
- *  module Foo
- *    module Bar
- *      class Baz
- *      end
- *    end
- *  end
- *  ```
- *
- *  the constant `Baz` has the fully qualified name `Foo::Bar::Baz`.
- */
-string constantQualifiedName(ConstantWriteAccess w) {
-  /* get the qualified name for the parent module, then append w */
-  exists(ConstantWriteAccess parent | parent = w.getEnclosingModule() |
-    result = constantQualifiedName(parent) + "::" + w.getName()
-  )
-  or
-  /* base case - there's no parent module */
-  not exists(ConstantWriteAccess parent | parent = w.getEnclosingModule()) and
-  result = w.getName()
-}
-
-/**
  * Gets the constant write that defines the given constant.
  *  Modules often don't have a unique definition, as they are opened multiple times in different
  *  files. In these cases we arbitrarily pick the definition with the lexicographically least
@@ -100,7 +74,7 @@ string constantQualifiedName(ConstantWriteAccess w) {
 ConstantWriteAccess definitionOf(ConstantReadAccess r) {
   result =
     min(ConstantWriteAccess w |
-      constantQualifiedName(w) = resolveConstant(r)
+      w.getQualifiedName() = resolveConstant(r)
     |
       w order by w.getLocation().toString()
     )
