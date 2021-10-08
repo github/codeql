@@ -36,7 +36,11 @@ class ImplicitPendingIntentStartConf extends TaintTracking::Configuration {
     super.allowImplicitRead(node, c)
     or
     this.isSink(node) and
-    allowIntentExtrasImplicitRead(node, c)
+    (
+      allowIntentExtrasImplicitRead(node, c) or
+      c.(DataFlow::SyntheticFieldContent).getField() =
+        ["android.app.Notification.action", "androidx.slice.Slice.action"]
+    )
     or
     this.isAdditionalTaintStep(node, _) and
     c.(DataFlow::FieldContent).getType() instanceof PendingIntent
