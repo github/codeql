@@ -1,0 +1,3 @@
+invalidModelRow
+#select
+| test.go:40:10:40:12 | arg | qltest |
