@@ -64,7 +64,7 @@ private class SendPendingIntent extends DataFlow::Node {
     not exists(MethodAccess ma, Method m |
       ma.getMethod() = m and
       m.getDeclaringType().getASupertype*() instanceof TypeContext and
-      m.hasName("startService") and
+      m.getName().matches("start%Service%") and
       this.asExpr() = ma.getArgument(0)
     )
     or

@@ -51,6 +51,7 @@ private class DefaultIntentRedirectionSinkModel extends SinkModelCsv {
         "android.content;Context;true;startActivityFromChild;;;Argument[1];intent-start",
         "android.content;Context;true;startActivityFromFragment;;;Argument[1];intent-start",
         "android.content;Context;true;startActivityIfNeeded;;;Argument[0];intent-start",
+        "android.content;Context;true;startForegroundService;;;Argument[0];intent-start",
         "android.content;Context;true;startService;;;Argument[0];intent-start",
         "android.content;Context;true;startServiceAsUser;;;Argument[0];intent-start",
         "android.content;Context;true;sendBroadcast;;;Argument[0];intent-start",
