@@ -422,6 +422,18 @@ def test_call_extra_keyword_flow():
     SINK(f_extra_keyword_flow(**{SOURCE: None})) #$ MISSING:flow="SOURCE -> f_extra_keyword(..)"
 
 
+# 6.11. Boolean operations
+
+def test_or(x = False):
+    # if we don't know the value of the lhs, we should always add flow
+    SINK(x or SOURCE) #$ MISSING: flow="SOURCE -> BoolExp"
+
+
+def test_and(x = True):
+    # if we don't know the value of the lhs, we should always add flow
+    SINK(x and SOURCE) #$ MISSING: flow="SOURCE -> BoolExp"
+
+
 # 6.12. Assignment expressions
 def test_assignment_expression():
     x = NONSOURCE
