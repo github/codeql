@@ -98,6 +98,9 @@ newtype TNode =
     FlowSummaryImpl::Private::summaryParameterNodeRange(c, i)
   }
 
+class TSimpleNode =
+  TEssaNode or TCfgNode or TModuleVariableNode or TIterableSequenceNode or TIterableElementNode;
+
 /** Helper for `Node::getEnclosingCallable`. */
 private DataFlowCallable getCallableScope(Scope s) {
   result.getScope() = s
