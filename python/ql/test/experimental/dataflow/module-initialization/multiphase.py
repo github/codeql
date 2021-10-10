@@ -5,15 +5,15 @@ sys.path.append(os.path.dirname(os.path.dirname((__file__))))
 from testlib import *
 
 # These are defined so that we can evaluate the test code.
-NONSOURCE = "not a source"  #$ importTimeFlow="ModuleVariableNode for Global Variable NONSOURCE in Module multiphase"
-SOURCE = "source"  #$ importTimeFlow="ModuleVariableNode for Global Variable SOURCE in Module multiphase"
+NONSOURCE = "not a source"
+SOURCE = "source"
 
 
-def is_source(x):  #$ importTimeFlow="ModuleVariableNode for Global Variable is_source in Module multiphase"
+def is_source(x):
     return x == "source" or x == b"source" or x == 42 or x == 42.0 or x == 42j
 
 
-def SINK(x):  #$ importTimeFlow="ModuleVariableNode for Global Variable SINK in Module multiphase"
+def SINK(x):
     if is_source(x):  #$ runtimeFlow="ModuleVariableNode for Global Variable is_source in Module multiphase, l:-17 -> is_source"
         print("OK")  #$ runtimeFlow="ModuleVariableNode for Global Variable print in Module multiphase, l:-18 -> print"
     else:
@@ -26,11 +26,11 @@ def SINK_F(x):
     else:
         print("OK")  #$ runtimeFlow="ModuleVariableNode for Global Variable print in Module multiphase, l:-27 -> print"
 
-def set_foo():  #$ importTimeFlow="ModuleVariableNode for Global Variable set_foo in Module multiphase"
+def set_foo():
     global foo
     foo = SOURCE  #$ runtimeFlow="ModuleVariableNode for Global Variable SOURCE in Module multiphase, l:-31 -> SOURCE" MISSING:importTimeFlow="ModuleVariableNode for Global Variable foo in Module multiphase"
 
-foo = NONSOURCE  #$ importTimeFlow="ModuleVariableNode for Global Variable foo in Module multiphase"
+foo = NONSOURCE
 set_foo()
 
 @expects(2)

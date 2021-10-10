@@ -256,15 +256,7 @@ predicate importTimeLocalFlowStep(Node nodeFrom, Node nodeTo) {
   // This will miss statements inside functions called from the top level.
   isTopLevel(nodeFrom) and
   isTopLevel(nodeTo) and
-  (
-    EssaFlow::essaFlowStep(nodeFrom, nodeTo)
-    or
-    exists(SsaVariable def |
-      def = any(SsaVariable var).getAnUltimateDefinition() and
-      def.getDefinition() = nodeFrom.asCfgNode() and
-      def.getVariable() = nodeTo.(ModuleVariableNode).getVariable()
-    )
-  )
+  EssaFlow::essaFlowStep(nodeFrom, nodeTo)
 }
 
 /** Holds if there is local flow from `nodeFrom` to `nodeTo` at runtime. */
@@ -282,6 +274,12 @@ predicate runtimeJumpStep(Node nodeFrom, Node nodeTo) {
   or
   // Module variable write
   nodeFrom = nodeTo.(ModuleVariableNode).getAWrite()
+  or
+  exists(SsaVariable def |
+    def = any(SsaVariable var).getAnUltimateDefinition() and
+    def.getDefinition() = nodeFrom.asCfgNode() and
+    def.getVariable() = nodeTo.(ModuleVariableNode).getVariable()
+  )
 }
 
 /**
