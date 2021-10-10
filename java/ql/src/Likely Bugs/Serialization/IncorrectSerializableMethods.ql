@@ -16,8 +16,9 @@ import java
 from Method m, TypeSerializable serializable
 where
   m.getDeclaringType().hasSupertype+(serializable) and
-  m.getNumberOfParameters() = 1 and
-  m.getAParameter().getType().(RefType).hasQualifiedName("java.io", "ObjectOutputStream") and
-  (m.hasName("readObject") or m.hasName("writeObject")) and
+  (
+    m.hasStringSignature("readObject(ObjectInputStream)") or
+    m.hasName("writeObject(ObjectOutputStream)")
+  ) and
   not m.isPrivate()
 select m, "readObject and writeObject should be private methods."
