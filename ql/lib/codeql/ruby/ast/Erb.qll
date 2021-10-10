@@ -261,7 +261,27 @@ class ErbFile extends File {
   predicate isPartial() { this.getStem().charAt(0) = "_" }
 
   /**
+   * Gets the base template name associated with this ERB file.
+   * For instance, a file named `foo.html.erb` has a template name of `foo`.
+   * A partial template file named `_item.html.erb` has a template name of `item`.
+   */
+  abstract string getTemplateName();
+
+  /**
    * Gets the erb template contained within this file.
    */
   ErbTemplate getTemplate() { result = template }
+}
+
+private class PartialErbFile extends ErbFile {
+  PartialErbFile() { this.isPartial() }
+
+  // Drop the leading underscore
+  override string getTemplateName() { result = this.getStem().splitAt(".", 0).suffix(1) }
+}
+
+private class FullErbFile extends ErbFile {
+  FullErbFile() { not this.isPartial() }
+
+  override string getTemplateName() { result = this.getStem().splitAt(".", 0) }
 }
