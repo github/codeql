@@ -139,8 +139,6 @@ class RegExpRoot extends RegExpTerm {
   predicate isRelevant() {
     // there is at least one repetition
     getRoot(any(InfiniteRepetitionQuantifier q)) = this and
-    // there are no lookbehinds
-    not exists(RegExpLookbehind lbh | getRoot(lbh) = this) and
     // is actually used as a RegExp
     isUsedAsRegExp() and
     // not excluded for library specific reasons
