@@ -602,6 +602,8 @@
 | test.py:7:12:7:12 | ControlFlowNode for x | test.py:7:71:7:71 | ControlFlowNode for x |
 | test.py:7:12:7:12 | ControlFlowNode for x | test.py:7:71:7:71 | ControlFlowNode for x |
 | test.py:7:12:7:12 | ControlFlowNode for x | test.py:7:71:7:71 | ControlFlowNode for x |
+| test.py:7:12:7:24 | ControlFlowNode for Compare | test.py:7:12:7:78 | ControlFlowNode for BoolExpr |
+| test.py:7:12:7:24 | ControlFlowNode for Compare | test.py:7:12:7:78 | ControlFlowNode for BoolExpr |
 | test.py:7:12:7:78 | ControlFlowNode for BoolExpr | test.py:11:8:11:19 | ControlFlowNode for is_source() |
 | test.py:7:12:7:78 | ControlFlowNode for BoolExpr | test.py:11:8:11:19 | ControlFlowNode for is_source() |
 | test.py:7:12:7:78 | ControlFlowNode for BoolExpr | test.py:18:8:18:19 | ControlFlowNode for is_source() |
@@ -618,6 +620,8 @@
 | test.py:7:29:7:29 | ControlFlowNode for x | test.py:7:71:7:71 | ControlFlowNode for x |
 | test.py:7:29:7:29 | ControlFlowNode for x | test.py:7:71:7:71 | ControlFlowNode for x |
 | test.py:7:29:7:29 | ControlFlowNode for x | test.py:7:71:7:71 | ControlFlowNode for x |
+| test.py:7:29:7:42 | ControlFlowNode for Compare | test.py:7:12:7:78 | ControlFlowNode for BoolExpr |
+| test.py:7:29:7:42 | ControlFlowNode for Compare | test.py:7:12:7:78 | ControlFlowNode for BoolExpr |
 | test.py:7:47:7:47 | ControlFlowNode for x | test.py:7:58:7:58 | ControlFlowNode for x |
 | test.py:7:47:7:47 | ControlFlowNode for x | test.py:7:58:7:58 | ControlFlowNode for x |
 | test.py:7:47:7:47 | ControlFlowNode for x | test.py:7:58:7:58 | ControlFlowNode for x |
@@ -626,10 +630,16 @@
 | test.py:7:47:7:47 | ControlFlowNode for x | test.py:7:71:7:71 | ControlFlowNode for x |
 | test.py:7:47:7:47 | ControlFlowNode for x | test.py:7:71:7:71 | ControlFlowNode for x |
 | test.py:7:47:7:47 | ControlFlowNode for x | test.py:7:71:7:71 | ControlFlowNode for x |
+| test.py:7:47:7:53 | ControlFlowNode for Compare | test.py:7:12:7:78 | ControlFlowNode for BoolExpr |
+| test.py:7:47:7:53 | ControlFlowNode for Compare | test.py:7:12:7:78 | ControlFlowNode for BoolExpr |
 | test.py:7:58:7:58 | ControlFlowNode for x | test.py:7:71:7:71 | ControlFlowNode for x |
 | test.py:7:58:7:58 | ControlFlowNode for x | test.py:7:71:7:71 | ControlFlowNode for x |
 | test.py:7:58:7:58 | ControlFlowNode for x | test.py:7:71:7:71 | ControlFlowNode for x |
 | test.py:7:58:7:58 | ControlFlowNode for x | test.py:7:71:7:71 | ControlFlowNode for x |
+| test.py:7:58:7:66 | ControlFlowNode for Compare | test.py:7:12:7:78 | ControlFlowNode for BoolExpr |
+| test.py:7:58:7:66 | ControlFlowNode for Compare | test.py:7:12:7:78 | ControlFlowNode for BoolExpr |
+| test.py:7:71:7:78 | ControlFlowNode for Compare | test.py:7:12:7:78 | ControlFlowNode for BoolExpr |
+| test.py:7:71:7:78 | ControlFlowNode for Compare | test.py:7:12:7:78 | ControlFlowNode for BoolExpr |
 | test.py:10:1:10:12 | ControlFlowNode for FunctionExpr | test.py:10:5:10:8 | GSSA Variable SINK |
 | test.py:10:1:10:12 | ControlFlowNode for FunctionExpr | test.py:10:5:10:8 | GSSA Variable SINK |
 | test.py:10:1:10:12 | GSSA Variable is_source | test.py:11:8:11:16 | ControlFlowNode for is_source |
