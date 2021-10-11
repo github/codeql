@@ -101,8 +101,12 @@ class Resource {
                 sink(form.get("questionable_parameter")); //$hasTaintFlow
                 sink(form.getAll().get("questionable_parameter").get(0)); //$hasTaintFlow
                 sink(form.getAll("questionable_parameter").get(0)); //$hasTaintFlow
-                sink(form.asMultimap().get("questionable_parameter")); //$hasTaintFlow // fails!
-                sink(form.asMultimap().asMap()); //$hasTaintFlow // fails!
+                sink(form.asMultimap().get("questionable_parameter")); //$hasTaintFlow
+                sink(form.asMultimap().asMap()); //$hasTaintFlow
+                form.asMultimap().asMap().forEach((name, values) -> {
+                    sink(name); //$hasTaintFlow
+                    sink(values); //$hasTaintFlow
+                });
             });
     }
 
