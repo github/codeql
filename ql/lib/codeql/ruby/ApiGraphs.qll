@@ -250,8 +250,8 @@ module API {
      * Holds if `ref` is a use of a node that should have an incoming edge from the root
      * node labeled `lbl` in the API graph.
      */
-    cached
-    predicate useRoot(string lbl, DataFlow::Node ref) {
+    pragma[nomagic]
+    private predicate useRoot(string lbl, DataFlow::Node ref) {
       exists(string name, ExprNodes::ConstantAccessCfgNode access, ConstantReadAccess read |
         access = ref.asExpr() and
         lbl = Label::member(read.getName()) and
@@ -266,49 +266,37 @@ module API {
     }
 
     /**
-     * Holds if `ref` is a use of a node that should have an incoming edge from use node
-     * `base` labeled `lbl` in the API graph.
+     * Holds if `ref` is a use of a node that should have an incoming edge labeled `lbl`,
+     * from a use node that flows to `node`.
      */
-    cached
-    predicate useUse(DataFlow::LocalSourceNode base, string lbl, DataFlow::Node ref) {
-      exists(ExprCfgNode node |
-        // First, we find a predecessor of the node `ref` that we want to determine. The predecessor
-        // is any node that is a type-tracked use of a data flow node (`src`), which is itself a
-        // reference to the API node `base`. Thus, `pred` and `src` both represent uses of `base`.
-        //
-        // Once we have identified the predecessor, we define its relation to the successor `ref` as
-        // well as the label on the edge from `pred` to `ref`. This label describes the nature of
-        // the relationship between `pred` and `ref`.
-        useExpr(node, base)
-      |
-        // // Referring to an attribute on a node that is a use of `base`:
-        // pred = `Rails` part of `Rails::Whatever`
-        // lbl = `Whatever`
-        // ref = `Rails::Whatever`
-        exists(ExprNodes::ConstantAccessCfgNode c, ConstantReadAccess read |
-          not exists(resolveTopLevel(read)) and
-          node = c.getScopeExpr() and
-          lbl = Label::member(read.getName()) and
-          ref.asExpr() = c and
-          read = c.getExpr()
-        )
-        or
-        // Calling a method on a node that is a use of `base`
-        exists(ExprNodes::MethodCallCfgNode call, string name |
-          node = call.getReceiver() and
-          name = call.getExpr().getMethodName() and
-          lbl = Label::return(name) and
-          name != "new" and
-          ref.asExpr() = call
-        )
-        or
-        // Calling the `new` method on a node that is a use of `base`, which creates a new instance
-        exists(ExprNodes::MethodCallCfgNode call |
-          node = call.getReceiver() and
-          lbl = Label::instance() and
-          call.getExpr().getMethodName() = "new" and
-          ref.asExpr() = call
-        )
+    private predicate useStep(string lbl, ExprCfgNode node, DataFlow::Node ref) {
+      // // Referring to an attribute on a node that is a use of `base`:
+      // pred = `Rails` part of `Rails::Whatever`
+      // lbl = `Whatever`
+      // ref = `Rails::Whatever`
+      exists(ExprNodes::ConstantAccessCfgNode c, ConstantReadAccess read |
+        not exists(resolveTopLevel(read)) and
+        node = c.getScopeExpr() and
+        lbl = Label::member(read.getName()) and
+        ref.asExpr() = c and
+        read = c.getExpr()
+      )
+      or
+      // Calling a method on a node that is a use of `base`
+      exists(ExprNodes::MethodCallCfgNode call, string name |
+        node = call.getReceiver() and
+        name = call.getExpr().getMethodName() and
+        lbl = Label::return(name) and
+        name != "new" and
+        ref.asExpr() = call
+      )
+      or
+      // Calling the `new` method on a node that is a use of `base`, which creates a new instance
+      exists(ExprNodes::MethodCallCfgNode call |
+        node = call.getReceiver() and
+        lbl = Label::instance() and
+        call.getExpr().getMethodName() = "new" and
+        ref.asExpr() = call
       )
     }
 
@@ -316,14 +304,10 @@ module API {
     private predicate isUse(DataFlow::Node nd) {
       useRoot(_, nd)
       or
-      useUse(_, _, nd)
-    }
-
-    pragma[nomagic]
-    private predicate useExpr(ExprCfgNode node, DataFlow::LocalSourceNode src) {
-      exists(DataFlow::LocalSourceNode pred |
-        pred = trackUseNode(src) and
-        pred.flowsTo(any(DataFlow::ExprNode n | n.getExprNode() = node))
+      exists(ExprCfgNode node, DataFlow::LocalSourceNode pred |
+        pred = pruneUseNodeFwd() and
+        pred.flowsTo(any(DataFlow::ExprNode n | n.getExprNode() = node)) and
+        useStep(_, node, nd)
       )
     }
 
@@ -333,26 +317,56 @@ module API {
     cached
     predicate use(TApiNode nd, DataFlow::Node ref) { nd = MkUse(ref) }
 
-    /**
-     * Gets a data-flow node to which `src`, which is a use of an API-graph node, flows.
-     *
-     * The flow from `src` to that node may be inter-procedural.
-     */
-    private DataFlow::LocalSourceNode trackUseNode(DataFlow::Node src, TypeTracker t) {
-      // Declaring `src` to be a `LocalSourceNode` currently causes a redundant check in the
-      // recursive case, so instead we check it explicitly here.
-      src instanceof DataFlow::LocalSourceNode and
+    private DataFlow::LocalSourceNode pruneUseNodeFwd(TypeTracker t) {
       t.start() and
-      isUse(src) and
-      result = src
+      isUse(result)
       or
-      exists(TypeTracker t2 | result = trackUseNode(src, t2).track(t2, t))
+      exists(TypeTracker t2 | result = pruneUseNodeFwd(t2).track(t2, t))
+    }
+
+    private DataFlow::LocalSourceNode pruneUseNodeFwd() {
+      result = pruneUseNodeFwd(TypeTracker::end())
+    }
+
+    private DataFlow::Node pruneUseNodeRev(TypeBackTracker tb) {
+      result = pruneUseNodeFwd() and
+      tb.start()
+      or
+      exists(TypeBackTracker tb2, DataFlow::LocalSourceNode mid, TypeTracker t |
+        mid = pruneUseNodeRev(tb2) and
+        result = mid.backtrack(tb2, tb) and
+        pragma[only_bind_out](result) = pruneUseNodeFwd(t) and
+        pragma[only_bind_out](t) = pragma[only_bind_out](tb).getACompatibleTypeTracker()
+      )
+    }
+
+    private DataFlow::LocalSourceNode pruneUseNodeRev() {
+      result = pruneUseNodeRev(TypeBackTracker::end()) and
+      isUse(result)
     }
 
     /**
      * Gets a data-flow node to which `src`, which is a use of an API-graph node, flows.
      *
-     * The flow from `src` to that node may be inter-procedural.
+     * The flow from `src` to the returned node may be inter-procedural.
+     */
+    private DataFlow::Node trackUseNode(DataFlow::LocalSourceNode src, TypeTracker t) {
+      result = src and
+      result = pruneUseNodeRev() and
+      t.start()
+      or
+      exists(TypeTracker t2, DataFlow::LocalSourceNode mid, TypeBackTracker tb |
+        mid = trackUseNode(src, t2) and
+        result = mid.track(t2, t) and
+        pragma[only_bind_out](result) = pruneUseNodeRev(tb) and
+        pragma[only_bind_out](t) = pragma[only_bind_out](tb).getACompatibleTypeTracker()
+      )
+    }
+
+    /**
+     * Gets a data-flow node to which `src`, which is a use of an API-graph node, flows.
+     *
+     * The flow from `src` to the returned node may be inter-procedural.
      */
     cached
     DataFlow::LocalSourceNode trackUseNode(DataFlow::LocalSourceNode src) {
@@ -369,9 +383,10 @@ module API {
         pred = MkRoot() and
         useRoot(lbl, ref)
         or
-        exists(DataFlow::Node nd |
-          pred = MkUse(nd) and
-          useUse(nd, lbl, ref)
+        exists(ExprCfgNode node, DataFlow::Node src |
+          pred = MkUse(src) and
+          trackUseNode(src).flowsTo(any(DataFlow::ExprNode n | n.getExprNode() = node)) and
+          useStep(lbl, node, ref)
         )
       )
     }
