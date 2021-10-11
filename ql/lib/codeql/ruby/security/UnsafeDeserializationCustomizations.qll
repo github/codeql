@@ -106,12 +106,6 @@ module UnsafeDeserialization {
      * `Oj` modes known to be safe to use with untrusted data.
      */
     predicate hasSafeMode() { this.hasKnownMode(true) }
-
-    /**
-     * Holds if this hash node contains a `:mode` key whose value is one of the
-     * `Oj` modes known to be unsafe to use with untrusted data.
-     */
-    predicate hasUnsafeMode() { this.hasKnownMode(false) }
   }
 
   /**
