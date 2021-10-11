@@ -30,8 +30,8 @@ private class SendBroadcastMethodAccess extends MethodAccess {
   }
 }
 
-private predicate isNullArg(Expr ex) {
-  exists(DataFlow::Node src, DataFlow::Node sink, SendBroadcastMethodAccess ma |
+private predicate maybeNullArg(Expr ex) {
+  exists(DataFlow::Node src, DataFlow::Node sink, MethodAccess ma |
     ex = ma.getAnArgument() and
     sink.asExpr() = ex and
     src.asExpr() instanceof NullLiteral
@@ -40,8 +40,8 @@ private predicate isNullArg(Expr ex) {
   )
 }
 
-private predicate isEmptyArrayArg(Expr ex) {
-  exists(DataFlow::Node src, DataFlow::Node sink, SendBroadcastMethodAccess ma |
+private predicate maybeEmptyArrayArg(Expr ex) {
+  exists(DataFlow::Node src, DataFlow::Node sink, MethodAccess ma |
     ex = ma.getAnArgument() and
     sink.asExpr() = ex and
     src.asExpr().(ArrayCreationExpr).getFirstDimensionSize() = 0
@@ -63,7 +63,7 @@ private predicate isSensitiveBroadcastSink(DataFlow::Node sink) {
         ma.getNumArgument() = 1
         or
         // sendBroadcast(Intent intent, String receiverPermission)
-        isNullArg(ma.getArgument(1))
+        maybeNullArg(ma.getArgument(1))
       )
       or
       name = "sendBroadcastAsUser" and
@@ -72,30 +72,30 @@ private predicate isSensitiveBroadcastSink(DataFlow::Node sink) {
         ma.getNumArgument() = 2
         or
         // sendBroadcastAsUser(Intent intent, UserHandle user, String receiverPermission)
-        isNullArg(ma.getArgument(2))
+        maybeNullArg(ma.getArgument(2))
       )
       or
       // sendBroadcastWithMultiplePermissions(Intent intent, String[] receiverPermissions)
       name = "sendBroadcastWithMultiplePermissions" and
-      isEmptyArrayArg(ma.getArgument(1))
+      maybeEmptyArrayArg(ma.getArgument(1))
       or
       // Method calls of `sendOrderedBroadcast` whose second argument is always `receiverPermission`
       name = "sendOrderedBroadcast" and
       (
         // sendOrderedBroadcast(Intent intent, String receiverPermission)
         // sendOrderedBroadcast(Intent intent, String receiverPermission, BroadcastReceiver resultReceiver, Handler scheduler, int initialCode, String initialData, Bundle initialExtras)
-        isNullArg(ma.getArgument(1)) and
+        maybeNullArg(ma.getArgument(1)) and
         ma.getNumArgument() = [2, 7]
         or
         // sendOrderedBroadcast(Intent intent, String receiverPermission, String receiverAppOp, BroadcastReceiver resultReceiver, Handler scheduler, int initialCode, String initialData, Bundle initialExtras)
-        isNullArg(ma.getArgument(1)) and
-        isNullArg(ma.getArgument(2)) and
+        maybeNullArg(ma.getArgument(1)) and
+        maybeNullArg(ma.getArgument(2)) and
         ma.getNumArgument() = 8
       )
       or
       // sendOrderedBroadcastAsUser(Intent intent, UserHandle user, String receiverPermission, BroadcastReceiver resultReceiver, Handler scheduler, int initialCode, String initialData, Bundle initialExtras)
       name = "sendOrderedBroadcastAsUser" and
-      isNullArg(ma.getArgument(2))
+      maybeNullArg(ma.getArgument(2))
       or
       // sendStickyBroadcast(Intent intent)
       // sendStickyBroadcast(Intent intent, Bundle options)
@@ -127,10 +127,10 @@ predicate isCleanIntent(Expr intent) {
       cc.getNumArgument() > 1 and
       (
         cc.getArgument(0).getType() instanceof TypeContext and
-        not isNullArg(cc.getArgument(1))
+        not maybeNullArg(cc.getArgument(1))
         or
         cc.getArgument(2).getType() instanceof TypeContext and
-        not isNullArg(cc.getArgument(3))
+        not maybeNullArg(cc.getArgument(3))
       )
     )
   )
