@@ -3,7 +3,7 @@
   "qhelp.dtd">
 <qhelp>
 <overview>
-<p>Finding for function calls for which wrapper functions exist.</p>
+<p>The presence of a shell function with additional check indicates the possible risks of the call. Use this check everywhere.</p>
 
 </overview>
 
