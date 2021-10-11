@@ -1,21 +1,35 @@
 import java
 import semmle.code.java.dataflow.FlowSources
-import TestUtilities.InlineFlowTest
+import TestUtilities.InlineExpectationsTest
 
-class RemoteValueConf extends DefaultValueFlowConf {
-  override predicate isSource(DataFlow::Node n) { n instanceof RemoteFlowSource }
+predicate isTestSink(DataFlow::Node n) {
+  exists(MethodAccess ma | ma.getMethod().hasName("sink") | n.asExpr() = ma.getAnArgument())
 }
 
-class RemoteTaintConf extends DefaultTaintFlowConf {
+class RemoteValueConf extends DataFlow::Configuration {
+  RemoteValueConf() { this = "RemoteValueConf" }
+
   override predicate isSource(DataFlow::Node n) { n instanceof RemoteFlowSource }
+
+  override predicate isSink(DataFlow::Node n) { isTestSink(n) }
 }
 
-class RemoteFlowTest extends InlineFlowTest {
+class RemoteTaintConf extends TaintTracking::Configuration {
+  RemoteTaintConf() { this = "RemoteTaintConf" }
+
+  override predicate isSource(DataFlow::Node n) { n instanceof RemoteFlowSource }
+
+  override predicate isSink(DataFlow::Node n) { isTestSink(n) }
+}
+
+class RemoteFlowTest extends InlineExpectationsTest {
+  RemoteFlowTest() { this = "RemoteFlowTest" }
+
   override string getARelevantTag() { result = ["hasRemoteValueFlow", "hasRemoteTaintFlow"] }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasRemoteValueFlow" and
-    exists(DataFlow::Node src, DataFlow::Node sink | getValueFlowConfig().hasFlow(src, sink) |
+    exists(DataFlow::Node src, DataFlow::Node sink | any(RemoteValueConf c).hasFlow(src, sink) |
       sink.getLocation() = location and
       element = sink.toString() and
       value = ""
@@ -23,7 +37,7 @@ class RemoteFlowTest extends InlineFlowTest {
     or
     tag = "hasRemoteTaintFlow" and
     exists(DataFlow::Node src, DataFlow::Node sink |
-      getTaintFlowConfig().hasFlow(src, sink) and not getValueFlowConfig().hasFlow(src, sink)
+      any(RemoteTaintConf c).hasFlow(src, sink) and not any(RemoteValueConf c).hasFlow(src, sink)
     |
       sink.getLocation() = location and
       element = sink.toString() and
