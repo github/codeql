@@ -105,8 +105,8 @@ class Recv extends SendRecv instanceof RemoteFlowSourceFunction {
  * practice it usually isn't very important which query reports a result as
  * long as its reported exactly once.
  *
- * We do exclude function calls that specify a constant socket, which is
- * likely to mean standard input, standard output or a similar channel.
+ * We do exclude function calls that specify an apparently constant socket,
+ * which is likely to mean standard input, standard output or a similar channel.
  */
 abstract class NetworkSendRecv extends FunctionCall {
   SendRecv target;
@@ -125,6 +125,16 @@ abstract class NetworkSendRecv extends FunctionCall {
           v.getInitializer().getExpr() instanceof Literal and
           g = globalValueNumber(v.getAnAccess())
         )
+        or 
+        // result of a function call with literal inputs (likely constant)
+        exists(FunctionCall fc |
+          forex(Expr arg |
+            arg = fc.getAnArgument() |
+            arg instanceof Literal
+          ) and
+          g = globalValueNumber(fc)
+        )
+        // (this is far from exhaustive)
       )
     )
   }

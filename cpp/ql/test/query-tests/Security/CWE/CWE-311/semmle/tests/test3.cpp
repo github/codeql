@@ -224,7 +224,7 @@ int get_socket(int from);
 
 void test_more_stdio(const char *password)
 {
-	send(get_socket(1), password, 128, val()); // GOOD: `getsocket(1)` is probably standard output [FALSE POSITIVE]
+	send(get_socket(1), password, 128, val()); // GOOD: `getsocket(1)` is probably standard output
 	send(get_socket(val()), password, 128, val()); // BAD
 }
 
