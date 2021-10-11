@@ -3,6 +3,7 @@ private import TreeSitter
 private import codeql.ruby.ast.internal.Call
 private import codeql.ruby.ast.internal.Parameter
 private import codeql.ruby.ast.internal.Variable
+private import codeql.ruby.ast.internal.Scope
 private import codeql.ruby.AST as AST
 private import Synthesis
 
@@ -236,6 +237,7 @@ private module Cached {
     } or
     TSelfReal(Ruby::Self g) or
     TSelfSynth(AST::AstNode parent, int i) { mkSynthChild(SelfKind(), parent, i) } or
+    TSelfVariableAccessReal(Ruby::Self self, MethodBase::Range scope) { scopeOf(self) = scope } or
     TSimpleParameter(Ruby::Identifier g) { g instanceof Parameter::Range } or
     TSimpleSymbolLiteral(Ruby::SimpleSymbol g) or
     TSingletonClass(Ruby::SingletonClass g) or
@@ -693,7 +695,8 @@ class TNamedParameter =
 class TTuplePattern = TTuplePatternParameter or TDestructuredLeftAssignment or TLeftAssignmentList;
 
 class TVariableAccess =
-  TLocalVariableAccess or TGlobalVariableAccess or TInstanceVariableAccess or TClassVariableAccess;
+  TLocalVariableAccess or TGlobalVariableAccess or TInstanceVariableAccess or
+      TClassVariableAccess or TSelfVariableAccess;
 
 class TLocalVariableAccess = TLocalVariableAccessReal or TLocalVariableAccessSynth;
 
@@ -702,3 +705,5 @@ class TGlobalVariableAccess = TGlobalVariableAccessReal or TGlobalVariableAccess
 class TInstanceVariableAccess = TInstanceVariableAccessReal or TInstanceVariableAccessSynth;
 
 class TClassVariableAccess = TClassVariableAccessReal or TClassVariableAccessSynth;
+
+class TSelfVariableAccess = TSelfVariableAccessReal;

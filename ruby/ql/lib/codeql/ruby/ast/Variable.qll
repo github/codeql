@@ -71,6 +71,9 @@ class ClassVariable extends Variable instanceof ClassVariableImpl {
   final override ClassVariableAccess getAnAccess() { result.getVariable() = this }
 }
 
+/** The `self` variable */
+class SelfVariable extends Variable instanceof SelfVariableImpl { }
+
 /** An access to a variable. */
 class VariableAccess extends Expr instanceof VariableAccessImpl {
   /** Gets the variable this identifier refers to. */
@@ -185,3 +188,8 @@ class ClassVariableWriteAccess extends ClassVariableAccess, VariableWriteAccess 
 
 /** An access to a class variable where the value is read. */
 class ClassVariableReadAccess extends ClassVariableAccess, VariableReadAccess { }
+
+/** An access to the `self` variable */
+class SelfVariableAccess extends VariableAccess instanceof SelfVariableAccessImpl {
+  final override string getAPrimaryQlClass() { result = "SelfVariableAccess" }
+}

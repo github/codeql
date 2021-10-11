@@ -133,6 +133,7 @@ private module Cached {
       not scopeDefinesParameterVariable(scope, name, _) and
       not inherits(scope, name, _)
     } or
+    TSelfVariable(MethodBase::Range scope) or
     TLocalVariableSynth(AstNode n, int i) { any(Synthesis s).localVariable(n, i) }
 
   // Db types that can be vcalls
@@ -374,9 +375,10 @@ abstract class VariableImpl extends TVariable {
   abstract Location getLocationImpl();
 }
 
-class TVariableReal = TGlobalVariable or TClassVariable or TInstanceVariable or TLocalVariableReal;
+class TVariableReal =
+  TGlobalVariable or TClassVariable or TInstanceVariable or TLocalVariableReal or TSelfVariable;
 
-class TLocalVariable = TLocalVariableReal or TLocalVariableSynth;
+class TLocalVariable = TLocalVariableReal or TLocalVariableSynth or TSelfVariable;
 
 /**
  * This class only exists to avoid negative recursion warnings. Ideally,
@@ -471,6 +473,18 @@ class ClassVariableImpl extends VariableReal, TClassVariable {
   final override string getNameImpl() { result = name }
 
   final override Location getLocationImpl() { result = decl.getLocation() }
+
+  final override Scope::Range getDeclaringScopeImpl() { result = scope }
+}
+
+class SelfVariableImpl extends VariableReal, TSelfVariable {
+  private MethodBase::Range scope;
+
+  SelfVariableImpl() { this = TSelfVariable(scope) }
+
+  final override string getNameImpl() { result = "self" }
+
+  final override Location getLocationImpl() { result = scope.getLocation() }
 
   final override Scope::Range getDeclaringScopeImpl() { result = scope }
 }
@@ -601,4 +615,19 @@ private class ClassVariableAccessSynth extends ClassVariableAccessRealImpl,
   final override ClassVariable getVariableImpl() { result = v }
 
   final override string toString() { result = v.getName() }
+}
+
+abstract class SelfVariableAccessImpl extends VariableAccessImpl, TSelfVariableAccess { }
+
+private class SelfVariableAccessReal extends SelfVariableAccessImpl, TSelfVariableAccessReal {
+  private Ruby::Self self;
+  private SelfVariable var;
+
+  SelfVariableAccessReal() {
+    exists(MethodBase::Range scope |
+      var = TSelfVariable(scope) and this = TSelfVariableAccessReal(self, scope)
+    )
+  }
+
+  final override SelfVariable getVariableImpl() { result = var }
 }

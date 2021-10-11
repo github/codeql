@@ -59,7 +59,7 @@ class ExitNode extends CfgNode, TExitNode {
 /**
  * A node for an AST node.
  *
- * Each AST node maps to zero or more `AstCfgNode`s: zero when the node in unreachable
+ * Each AST node maps to zero or more `AstCfgNode`s: zero when the node is unreachable
  * (dead) code or not important for control flow, and multiple when there are different
  * splits for the AST node.
  */
