@@ -1,6 +1,7 @@
 import cpp
 private import semmle.code.cpp.models.interfaces.ArrayFunction
 private import semmle.code.cpp.models.implementations.Strcat
+import semmle.code.cpp.dataflow.DataFlow
 
 private predicate mayAddNullTerminatorHelper(Expr e, VariableAccess va, Expr e0) {
   exists(StackVariable v0, Expr val |
@@ -64,10 +65,9 @@ predicate mayAddNullTerminator(Expr e, VariableAccess va) {
     // function containing assembler code
     exists(AsmStmt s | s.getEnclosingFunction() = f)
     or
-    // function where the relevant parameter is returned (leaking it)
-    exists(ReturnStmt rs |
-      rs.getEnclosingFunction() = f and rs.getExpr().getAChild*() = f.getParameter(i).getAnAccess()
-    )
+    // function where the relevant parameter is returned (leaking it to be potentially null terminated elsewhere)
+    DataFlow::localFlow(DataFlow::parameterNode(f.getParameter(i)),
+      DataFlow::exprNode(any(ReturnStmt rs).getExpr()))
   )
   or
   // Call without target (e.g., function pointer call)
