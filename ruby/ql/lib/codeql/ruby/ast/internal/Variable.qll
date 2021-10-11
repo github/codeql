@@ -308,7 +308,8 @@ private module Cached {
       access(this, _) or
       this instanceof Ruby::GlobalVariable or
       this instanceof Ruby::InstanceVariable or
-      this instanceof Ruby::ClassVariable
+      this instanceof Ruby::ClassVariable or
+      this instanceof Ruby::Self
     }
   }
 
@@ -619,15 +620,23 @@ private class ClassVariableAccessSynth extends ClassVariableAccessRealImpl,
 
 abstract class SelfVariableAccessImpl extends VariableAccessImpl, TSelfVariableAccess { }
 
-private class SelfVariableAccessReal extends SelfVariableAccessImpl, TSelfVariableAccessReal {
+private class SelfVariableAccessReal extends SelfVariableAccessImpl, TSelfReal {
   private Ruby::Self self;
   private SelfVariable var;
 
-  SelfVariableAccessReal() {
-    exists(MethodBase::Range scope |
-      var = TSelfVariable(scope) and this = TSelfVariableAccessReal(self, scope)
-    )
-  }
+  SelfVariableAccessReal() { this = TSelfReal(self) and var = TSelfVariable(scopeOf(self)) }
 
   final override SelfVariable getVariableImpl() { result = var }
+
+  final override string toString() { result = var.toString() }
+}
+
+private class SelfVariableAccessSynth extends SelfVariableAccessImpl, TSelfSynth {
+  private SelfVariable v;
+
+  SelfVariableAccessSynth() { this = TSelfSynth(_, _, v) }
+
+  final override LocalVariable getVariableImpl() { result = v }
+
+  final override string toString() { result = v.getName() }
 }

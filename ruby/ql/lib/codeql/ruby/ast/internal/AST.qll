@@ -236,8 +236,9 @@ private module Cached {
       isScopeResolutionMethodCall(g, i)
     } or
     TSelfReal(Ruby::Self g) or
-    TSelfSynth(AST::AstNode parent, int i) { mkSynthChild(SelfKind(), parent, i) } or
-    TSelfVariableAccessReal(Ruby::Self self, MethodBase::Range scope) { scopeOf(self) = scope } or
+    TSelfSynth(AST::AstNode parent, int i, AST::SelfVariable v) {
+      mkSynthChild(SelfKind(v), parent, i)
+    } or
     TSimpleParameter(Ruby::Identifier g) { g instanceof Parameter::Range } or
     TSimpleSymbolLiteral(Ruby::SimpleSymbol g) or
     TSingletonClass(Ruby::SingletonClass g) or
@@ -478,7 +479,7 @@ private module Cached {
     or
     result = TRShiftExprSynth(parent, i)
     or
-    result = TSelfSynth(parent, i)
+    result = TSelfSynth(parent, i, _)
     or
     result = TSplatExprSynth(parent, i)
     or
@@ -706,4 +707,4 @@ class TInstanceVariableAccess = TInstanceVariableAccessReal or TInstanceVariable
 
 class TClassVariableAccess = TClassVariableAccessReal or TClassVariableAccessSynth;
 
-class TSelfVariableAccess = TSelfVariableAccessReal;
+class TSelfVariableAccess = TSelfReal or TSelfSynth;

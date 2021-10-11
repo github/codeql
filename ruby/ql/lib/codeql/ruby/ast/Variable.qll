@@ -193,3 +193,6 @@ class ClassVariableReadAccess extends ClassVariableAccess, VariableReadAccess { 
 class SelfVariableAccess extends VariableAccess instanceof SelfVariableAccessImpl {
   final override string getAPrimaryQlClass() { result = "SelfVariableAccess" }
 }
+
+/** An access to the `self` variable where the value is read. */
+class SelfVariableReadAccess extends SelfVariableAccess, VariableReadAccess { }

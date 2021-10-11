@@ -5,6 +5,7 @@ private import TreeSitter
 private import codeql.ruby.ast.internal.Call
 private import codeql.ruby.ast.internal.Variable
 private import codeql.ruby.ast.internal.Pattern
+private import codeql.ruby.ast.internal.Scope
 private import codeql.ruby.AST
 
 /** A synthesized AST node kind. */
@@ -34,7 +35,7 @@ newtype SynthKind =
   RShiftExprKind() or
   SplatExprKind() or
   StmtSequenceKind() or
-  SelfKind() or
+  SelfKind(SelfVariable v) or
   SubExprKind() or
   ConstantReadAccessKind(string value) { any(Synthesis s).constantReadAccess(value) }
 
@@ -142,7 +143,7 @@ private predicate hasLocation(AstNode n, Location l) {
 private module ImplicitSelfSynthesis {
   pragma[nomagic]
   private predicate identifierMethodCallSelfSynthesis(AstNode mc, int i, Child child) {
-    child = SynthChild(SelfKind()) and
+    child = SynthChild(SelfKind(TSelfVariable(scopeOf(toGenerated(mc))))) and
     mc = TIdentifierMethodCall(_) and
     i = 0
   }
@@ -163,7 +164,7 @@ private module ImplicitSelfSynthesis {
       not exists(g.(Ruby::Call).getReceiver()) and
       not exists(g.(Ruby::Call).getMethod().(Ruby::ScopeResolution).getScope())
     ) and
-    child = SynthChild(SelfKind()) and
+    child = SynthChild(SelfKind(TSelfVariable(scopeOf(toGenerated(mc))))) and
     i = 0
   }
 
