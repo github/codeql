@@ -97,7 +97,7 @@ abstract class RenderCall extends MethodCall {
    */
   ErbFile getTemplateFile() {
     result.getTemplateName() = this.getBaseName() and
-    result.getRelativePath().matches("%/" + this.getSubPath() + "%")
+    result.getRelativePath().matches("%app/views/" + this.getSubPath() + "%")
   }
 
   /**
