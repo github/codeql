@@ -74,7 +74,7 @@ class IntegrationTest {
                 filterAndMerge(pojoForm, mergedParams, name -> false);
                 return mergedParams;
             }).then(pojoMap -> {
-                sink(pojoMap); //$hasTaintFlow
+                sinlk(pojoMap); //$hasTaintFlow
                 sink(pojoMap.get("value")); //$hasTaintFlow
             });
     }
