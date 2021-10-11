@@ -742,6 +742,18 @@ module Ruby {
     }
   }
 
+  /** A class representing `forward_argument` tokens. */
+  class ForwardArgument extends @ruby_token_forward_argument, Token {
+    /** Gets the name of the primary QL class for this element. */
+    override string getAPrimaryQlClass() { result = "ForwardArgument" }
+  }
+
+  /** A class representing `forward_parameter` tokens. */
+  class ForwardParameter extends @ruby_token_forward_parameter, Token {
+    /** Gets the name of the primary QL class for this element. */
+    override string getAPrimaryQlClass() { result = "ForwardParameter" }
+  }
+
   /** A class representing `global_variable` tokens. */
   class GlobalVariable extends @ruby_token_global_variable, Token {
     /** Gets the name of the primary QL class for this element. */

@@ -69,7 +69,7 @@ ruby_alias_def(
   int loc: @location ref
 );
 
-@ruby_argument_list_child_type = @ruby_block_argument | @ruby_break | @ruby_call | @ruby_hash_splat_argument | @ruby_next | @ruby_pair | @ruby_return | @ruby_splat_argument | @ruby_underscore_arg | @ruby_yield
+@ruby_argument_list_child_type = @ruby_block_argument | @ruby_break | @ruby_call | @ruby_hash_splat_argument | @ruby_next | @ruby_pair | @ruby_return | @ruby_splat_argument | @ruby_token_forward_argument | @ruby_underscore_arg | @ruby_yield
 
 #keyset[ruby_argument_list, index]
 ruby_argument_list_child(
@@ -83,7 +83,7 @@ ruby_argument_list_def(
   int loc: @location ref
 );
 
-@ruby_array_child_type = @ruby_block_argument | @ruby_break | @ruby_call | @ruby_hash_splat_argument | @ruby_next | @ruby_pair | @ruby_return | @ruby_splat_argument | @ruby_underscore_arg | @ruby_yield
+@ruby_array_child_type = @ruby_block_argument | @ruby_break | @ruby_call | @ruby_hash_splat_argument | @ruby_next | @ruby_pair | @ruby_return | @ruby_splat_argument | @ruby_token_forward_argument | @ruby_underscore_arg | @ruby_yield
 
 #keyset[ruby_array, index]
 ruby_array_child(
@@ -236,7 +236,7 @@ ruby_block_parameter_def(
   int loc: @location ref
 );
 
-@ruby_block_parameters_child_type = @ruby_block_parameter | @ruby_destructured_parameter | @ruby_hash_splat_parameter | @ruby_keyword_parameter | @ruby_optional_parameter | @ruby_splat_parameter | @ruby_token_identifier
+@ruby_block_parameters_child_type = @ruby_block_parameter | @ruby_destructured_parameter | @ruby_hash_splat_parameter | @ruby_keyword_parameter | @ruby_optional_parameter | @ruby_splat_parameter | @ruby_token_forward_parameter | @ruby_token_identifier
 
 #keyset[ruby_block_parameters, index]
 ruby_block_parameters_child(
@@ -376,7 +376,7 @@ ruby_destructured_left_assignment_def(
   int loc: @location ref
 );
 
-@ruby_destructured_parameter_child_type = @ruby_block_parameter | @ruby_destructured_parameter | @ruby_hash_splat_parameter | @ruby_keyword_parameter | @ruby_optional_parameter | @ruby_splat_parameter | @ruby_token_identifier
+@ruby_destructured_parameter_child_type = @ruby_block_parameter | @ruby_destructured_parameter | @ruby_hash_splat_parameter | @ruby_keyword_parameter | @ruby_optional_parameter | @ruby_splat_parameter | @ruby_token_forward_parameter | @ruby_token_identifier
 
 #keyset[ruby_destructured_parameter, index]
 ruby_destructured_parameter_child(
@@ -423,7 +423,7 @@ ruby_do_block_def(
   int loc: @location ref
 );
 
-@ruby_element_reference_child_type = @ruby_block_argument | @ruby_break | @ruby_call | @ruby_hash_splat_argument | @ruby_next | @ruby_pair | @ruby_return | @ruby_splat_argument | @ruby_underscore_arg | @ruby_yield
+@ruby_element_reference_child_type = @ruby_block_argument | @ruby_break | @ruby_call | @ruby_hash_splat_argument | @ruby_next | @ruby_pair | @ruby_return | @ruby_splat_argument | @ruby_token_forward_argument | @ruby_underscore_arg | @ruby_yield
 
 #keyset[ruby_element_reference, index]
 ruby_element_reference_child(
@@ -643,7 +643,7 @@ ruby_lambda_def(
   int loc: @location ref
 );
 
-@ruby_lambda_parameters_child_type = @ruby_block_parameter | @ruby_destructured_parameter | @ruby_hash_splat_parameter | @ruby_keyword_parameter | @ruby_optional_parameter | @ruby_splat_parameter | @ruby_token_identifier
+@ruby_lambda_parameters_child_type = @ruby_block_parameter | @ruby_destructured_parameter | @ruby_hash_splat_parameter | @ruby_keyword_parameter | @ruby_optional_parameter | @ruby_splat_parameter | @ruby_token_forward_parameter | @ruby_token_identifier
 
 #keyset[ruby_lambda_parameters, index]
 ruby_lambda_parameters_child(
@@ -691,7 +691,7 @@ ruby_method_def(
   int loc: @location ref
 );
 
-@ruby_method_parameters_child_type = @ruby_block_parameter | @ruby_destructured_parameter | @ruby_hash_splat_parameter | @ruby_keyword_parameter | @ruby_optional_parameter | @ruby_splat_parameter | @ruby_token_identifier
+@ruby_method_parameters_child_type = @ruby_block_parameter | @ruby_destructured_parameter | @ruby_hash_splat_parameter | @ruby_keyword_parameter | @ruby_optional_parameter | @ruby_splat_parameter | @ruby_token_forward_parameter | @ruby_token_identifier
 
 #keyset[ruby_method_parameters, index]
 ruby_method_parameters_child(
@@ -1220,22 +1220,24 @@ case @ruby_token.kind of
 | 7 = @ruby_token_escape_sequence
 | 8 = @ruby_token_false
 | 9 = @ruby_token_float
-| 10 = @ruby_token_global_variable
-| 11 = @ruby_token_hash_key_symbol
-| 12 = @ruby_token_heredoc_beginning
-| 13 = @ruby_token_heredoc_content
-| 14 = @ruby_token_heredoc_end
-| 15 = @ruby_token_identifier
-| 16 = @ruby_token_instance_variable
-| 17 = @ruby_token_integer
-| 18 = @ruby_token_nil
-| 19 = @ruby_token_operator
-| 20 = @ruby_token_self
-| 21 = @ruby_token_simple_symbol
-| 22 = @ruby_token_string_content
-| 23 = @ruby_token_super
-| 24 = @ruby_token_true
-| 25 = @ruby_token_uninterpreted
+| 10 = @ruby_token_forward_argument
+| 11 = @ruby_token_forward_parameter
+| 12 = @ruby_token_global_variable
+| 13 = @ruby_token_hash_key_symbol
+| 14 = @ruby_token_heredoc_beginning
+| 15 = @ruby_token_heredoc_content
+| 16 = @ruby_token_heredoc_end
+| 17 = @ruby_token_identifier
+| 18 = @ruby_token_instance_variable
+| 19 = @ruby_token_integer
+| 20 = @ruby_token_nil
+| 21 = @ruby_token_operator
+| 22 = @ruby_token_self
+| 23 = @ruby_token_simple_symbol
+| 24 = @ruby_token_string_content
+| 25 = @ruby_token_super
+| 26 = @ruby_token_true
+| 27 = @ruby_token_uninterpreted
 ;
 
 
