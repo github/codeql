@@ -57,6 +57,46 @@ module CookieWrites {
 }
 
 /**
+ * Holds if `node` looks like it can contain a sensitive cookie.
+ * Either from `node` being a sensitive expression, or from `node` containing
+ * a string value that looks like a sensitive cookie name.
+ */
+private predicate canHaveSensitiveCookie(DataFlow::Node node) {
+  exists(string s |
+    node.mayHaveStringValue(s) or
+    s = node.(StringOps::ConcatenationRoot).getConstantStringParts()
+  |
+    HeuristicNames::nameIndicatesSensitiveData([s, getCookieName(s)], _)
+  )
+  or
+  node.asExpr() instanceof SensitiveExpr
+}
+
+/**
+ * Gets cookie name from a `Set-Cookie` header value.
+ * The header value always starts with `<cookie-name>=<cookie-value>` optionally followed by attributes:
+ * `<cookie-name>=<cookie-value>; Domain=<domain-value>; Secure; HttpOnly`
+ */
+bindingset[s]
+private string getCookieName(string s) {
+  result = s.regexpCapture("\\s*\\b([^=\\s]*)\\b\\s*=.*", 1)
+}
+
+/**
+ * Holds if the `Set-Cookie` header value contains the specified attribute
+ * 1. The attribute is case insensitive
+ * 2. It always starts with a pair `<cookie-name>=<cookie-value>`.
+ *    If the attribute is present there must be `;` after the pair.
+ *    Other attributes like `Domain=`, `Path=`, etc. may come after the pair:
+ *    `<cookie-name>=<cookie-value>; Domain=<domain-value>; Secure; HttpOnly`
+ * See `https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie`
+ */
+bindingset[s, attribute]
+private predicate hasCookieAttribute(string s, string attribute) {
+  s.regexpMatch("(?i).*;\\s*" + attribute + "\\b\\s*;?.*$")
+}
+
+/**
  * A model of the `js-cookie` library (https://github.com/js-cookie/js-cookie).
  */
 private module JsCookie {
@@ -90,11 +130,7 @@ private module JsCookie {
       this.getOptionArgument(2, CookieWrites::secure()).mayHaveBooleanValue(true)
     }
 
-    override predicate isSensitive() {
-      HeuristicNames::nameIndicatesSensitiveData(any(string s |
-          this.getArgument(0).mayHaveStringValue(s)
-        ), _)
-    }
+    override predicate isSensitive() { canHaveSensitiveCookie(this.getArgument(0)) }
   }
 }
 
@@ -133,11 +169,7 @@ private module BrowserCookies {
       exists(DataFlow::moduleMember("browser-cookies", "defaults").getAPropertyWrite("secure"))
     }
 
-    override predicate isSensitive() {
-      HeuristicNames::nameIndicatesSensitiveData(any(string s |
-          this.getArgument(0).mayHaveStringValue(s)
-        ), _)
-    }
+    override predicate isSensitive() { canHaveSensitiveCookie(this.getArgument(0)) }
   }
 }
 
@@ -173,11 +205,7 @@ private module LibCookie {
       this.getOptionArgument(2, CookieWrites::secure()).mayHaveBooleanValue(true)
     }
 
-    override predicate isSensitive() {
-      HeuristicNames::nameIndicatesSensitiveData(any(string s |
-          this.getArgument(0).mayHaveStringValue(s)
-        ), _)
-    }
+    override predicate isSensitive() { canHaveSensitiveCookie(this.getArgument(0)) }
   }
 }
 
@@ -198,13 +226,7 @@ private module ExpressCookies {
       this.getOptionArgument(2, CookieWrites::secure()).mayHaveBooleanValue(true)
     }
 
-    override predicate isSensitive() {
-      HeuristicNames::nameIndicatesSensitiveData(any(string s |
-          this.getArgument(0).mayHaveStringValue(s)
-        ), _)
-      or
-      this.getArgument(0).asExpr() instanceof SensitiveExpr
-    }
+    override predicate isSensitive() { canHaveSensitiveCookie(this.getArgument(0)) }
 
     override predicate isHttpOnly() {
       // A cookie is httpOnly if there are cookie options with the `httpOnly` flag set to `true`.
@@ -307,33 +329,7 @@ private class HTTPCookieWrite extends CookieWrites::CookieWrite {
     hasCookieAttribute(header, CookieWrites::httpOnly())
   }
 
-  override predicate isSensitive() {
-    HeuristicNames::nameIndicatesSensitiveData(getCookieName(header), _)
-  }
-}
-
-/**
- * Gets cookie name from a `Set-Cookie` header value.
- * The header value always starts with `<cookie-name>=<cookie-value>` optionally followed by attributes:
- * `<cookie-name>=<cookie-value>; Domain=<domain-value>; Secure; HttpOnly`
- */
-bindingset[s]
-private string getCookieName(string s) {
-  result = s.regexpCapture("\\s*\\b([^=\\s]*)\\b\\s*=.*", 1)
-}
-
-/**
- * Holds if the `Set-Cookie` header value contains the specified attribute
- * 1. The attribute is case insensitive
- * 2. It always starts with a pair `<cookie-name>=<cookie-value>`.
- *    If the attribute is present there must be `;` after the pair.
- *    Other attributes like `Domain=`, `Path=`, etc. may come after the pair:
- *    `<cookie-name>=<cookie-value>; Domain=<domain-value>; Secure; HttpOnly`
- * See `https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie`
- */
-bindingset[s, attribute]
-private predicate hasCookieAttribute(string s, string attribute) {
-  s.regexpMatch("(?i).*;\\s*" + attribute + "\\b\\s*;?.*$")
+  override predicate isSensitive() { canHaveSensitiveCookie(this) }
 }
 
 /**
@@ -341,16 +337,16 @@ private predicate hasCookieAttribute(string s, string attribute) {
  */
 private class DocumentCookieWrite extends CookieWrites::ClientSideCookieWrite {
   string cookie;
+  DataFlow::PropWrite write;
 
   DocumentCookieWrite() {
-    exists(DataFlow::PropWrite write | this = write |
-      write = DOM::documentRef().getAPropertyWrite("cookie") and
-      cookie =
-        [
-          any(string s | write.getRhs().mayHaveStringValue(s)),
-          write.getRhs().(StringOps::ConcatenationRoot).getConstantStringParts()
-        ]
-    )
+    this = write and
+    write = DOM::documentRef().getAPropertyWrite("cookie") and
+    cookie =
+      [
+        any(string s | write.getRhs().mayHaveStringValue(s)),
+        write.getRhs().(StringOps::ConcatenationRoot).getConstantStringParts()
+      ]
   }
 
   override predicate isSecure() {
@@ -359,7 +355,5 @@ private class DocumentCookieWrite extends CookieWrites::ClientSideCookieWrite {
     hasCookieAttribute(cookie, CookieWrites::secure())
   }
 
-  override predicate isSensitive() {
-    HeuristicNames::nameIndicatesSensitiveData(getCookieName(cookie), _)
-  }
+  override predicate isSensitive() { canHaveSensitiveCookie(write.getRhs()) }
 }
