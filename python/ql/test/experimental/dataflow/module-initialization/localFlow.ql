@@ -4,21 +4,17 @@ import experimental.dataflow.TestUtil.FlowTest
 private import semmle.python.dataflow.new.internal.PrintNode
 private import semmle.python.dataflow.new.internal.DataFlowPrivate as DP
 
-class ImportTimeLocalFlowTest extends InlineExpectationsTest {
+class ImportTimeLocalFlowTest extends FlowTest {
   ImportTimeLocalFlowTest() { this = "ImportTimeLocalFlowTest" }
 
-  override string getARelevantTag() { result = "importTimeFlow" }
+  override string flowTag() { result = "importTimeFlow" }
 
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
-    exists(DataFlow::Node nodeFrom, DataFlow::ModuleVariableNode nodeTo |
-      DP::importTimeLocalFlowStep(nodeFrom, nodeTo)
-    |
-      nodeFrom.getLocation().getFile().getBaseName() = "multiphase.py" and
-      location = nodeFrom.getLocation() and
-      tag = "importTimeFlow" and
-      value = "\"" + prettyNode(nodeTo).replaceAll("\"", "'") + "\"" and
-      element = nodeTo.toString()
-    )
+  override predicate relevantFlow(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    nodeFrom.getLocation().getFile().getBaseName() = "multiphase.py" and
+    // results are displayed next to `nodeTo`, so we need a line to write on
+    nodeTo.getLocation().getStartLine() > 0 and
+    nodeTo.asVar() instanceof GlobalSsaVariable and
+    DP::importTimeLocalFlowStep(nodeFrom, nodeTo)
   }
 }
 

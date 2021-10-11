@@ -1,40 +1,40 @@
-import sys
-import os
+import sys  #$ importTimeFlow="ImportExpr -> GSSA Variable sys"
+import os  #$ importTimeFlow="ImportExpr -> GSSA Variable os"
 
 sys.path.append(os.path.dirname(os.path.dirname((__file__))))
 from testlib import *
 
 # These are defined so that we can evaluate the test code.
-NONSOURCE = "not a source"
-SOURCE = "source"
+NONSOURCE = "not a source"  #$ importTimeFlow="'not a source' -> GSSA Variable NONSOURCE"
+SOURCE = "source"  #$ importTimeFlow="'source' -> GSSA Variable SOURCE"
 
 
-def is_source(x):
+def is_source(x):  #$ importTimeFlow="FunctionExpr -> GSSA Variable is_source"
     return x == "source" or x == b"source" or x == 42 or x == 42.0 or x == 42j
 
 
-def SINK(x):
+def SINK(x):  #$ importTimeFlow="FunctionExpr -> GSSA Variable SINK"
     if is_source(x):  #$ runtimeFlow="ModuleVariableNode for multiphase.is_source, l:-17 -> is_source"
         print("OK")  #$ runtimeFlow="ModuleVariableNode for multiphase.print, l:-18 -> print"
     else:
         print("Unexpected flow", x)  #$ runtimeFlow="ModuleVariableNode for multiphase.print, l:-20 -> print"
 
 
-def SINK_F(x):
+def SINK_F(x):  #$ importTimeFlow="FunctionExpr -> GSSA Variable SINK_F"
     if is_source(x):  #$ runtimeFlow="ModuleVariableNode for multiphase.is_source, l:-24 -> is_source"
         print("Unexpected flow", x)  #$ runtimeFlow="ModuleVariableNode for multiphase.print, l:-25 -> print"
     else:
         print("OK")  #$ runtimeFlow="ModuleVariableNode for multiphase.print, l:-27 -> print"
 
-def set_foo():
+def set_foo():  #$ importTimeFlow="FunctionExpr -> GSSA Variable set_foo"
     global foo
-    foo = SOURCE  #$ runtimeFlow="ModuleVariableNode for multiphase.SOURCE, l:-31 -> SOURCE" MISSING:importTimeFlow="ModuleVariableNode for multiphase.foo"
+    foo = SOURCE  #$ runtimeFlow="ModuleVariableNode for multiphase.SOURCE, l:-31 -> SOURCE" # missing final definition of foo
 
-foo = NONSOURCE
+foo = NONSOURCE  #$ importTimeFlow="NONSOURCE -> GSSA Variable foo"
 set_foo()
 
 @expects(2)
-def test_phases():
+def test_phases():  #$ importTimeFlow="expects(..)(..), l:-1 -> GSSA Variable test_phases"
     global foo
     SINK(foo)  #$ runtimeFlow="ModuleVariableNode for multiphase.SINK, l:-39 -> SINK" runtimeFlow="ModuleVariableNode for multiphase.foo, l:-39 -> foo"
     foo = NONSOURCE  #$ runtimeFlow="ModuleVariableNode for multiphase.NONSOURCE, l:-40 -> NONSOURCE"
