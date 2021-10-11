@@ -24,7 +24,7 @@ def SINK_F(x):
     if is_source(x):  #$ runtimeFlow="ModuleVariableNode for multiphase.is_source, l:-24 -> is_source"
         print("Unexpected flow", x)  #$ runtimeFlow="ModuleVariableNode for multiphase.print, l:-25 -> print"
     else:
-        print("OK")  #$ Unexpected result: runtimeFlow="ModuleVariableNode for multiphase.print, l:-27 -> print"
+        print("OK")  #$ runtimeFlow="ModuleVariableNode for multiphase.print, l:-27 -> print"
 
 def set_foo():
     global foo
