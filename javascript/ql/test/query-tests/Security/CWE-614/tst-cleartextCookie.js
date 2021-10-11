@@ -186,3 +186,13 @@ function clientCookies() {
     cookie.serialize('authKey', makeAuthkey()); // NOT OK
     cookie.serialize('authKey', makeAuthkey(), { secure: true, expires: 7 }); // OK
 }
+
+const cookie = require('cookie');
+
+http.createServer((req, res) => {
+    res.setHeader('Content-Type', 'text/html');
+    res.setHeader("Set-Cookie", cookie.serialize("authKey", makeAuthkey(), {secure: true,httpOnly: true})); // OK
+    res.setHeader("Set-Cookie", cookie.serialize("authKey", makeAuthkey())); // NOT OK
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    res.end('ok');
+});

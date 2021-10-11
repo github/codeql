@@ -13,3 +13,4 @@
 | tst-cleartextCookie.js:177:5:177:19 | document.cookie | Sensitive cookie sent without enforcing SSL encryption |
 | tst-cleartextCookie.js:181:5:181:41 | cookies ... hkey()) | Sensitive cookie sent without enforcing SSL encryption |
 | tst-cleartextCookie.js:186:5:186:46 | cookie. ... hkey()) | Sensitive cookie sent without enforcing SSL encryption |
+| tst-cleartextCookie.js:195:33:195:74 | cookie. ... hkey()) | Sensitive cookie sent without enforcing SSL encryption |
