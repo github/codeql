@@ -1584,15 +1584,15 @@ private module StdlibPrivate {
     RegexExecutionMethod() {
       this in ["match", "fullmatch", "search", "split", "findall", "finditer", "sub", "subn"]
     }
-  }
 
-  /** Gets the index of the argument representing the string to be searched by a regex. */
-  int getStringArgIndex(RegexExecutionMethod method) {
-    method in ["match", "fullmatch", "search", "split", "findall", "finditer"] and
-    result = 1
-    or
-    method in ["sub", "subn"] and
-    result = 2
+    /** Gets the index of the argument representing the string to be searched by a regex. */
+    int getStringArgIndex() {
+      this in ["match", "fullmatch", "search", "split", "findall", "finditer"] and
+      result = 1
+      or
+      this in ["sub", "subn"] and
+      result = 2
+    }
   }
 
   /**
@@ -1608,7 +1608,7 @@ private module StdlibPrivate {
     override DataFlow::Node getRegex() { result in [this.getArg(0), this.getArgByName("pattern")] }
 
     override DataFlow::Node getString() {
-      result in [this.getArg(getStringArgIndex(method)), this.getArgByName("string")]
+      result in [this.getArg(method.getStringArgIndex()), this.getArgByName("string")]
     }
 
     override string getName() { result = "re." + method }
@@ -1656,17 +1656,17 @@ private module StdlibPrivate {
    */
   private class CompiledRegexExecution extends DataFlow::MethodCallNode, RegexExecution::Range {
     DataFlow::Node regexNode;
-    RegexExecutionMethod methodName;
+    RegexExecutionMethod method;
 
-    CompiledRegexExecution() { this.calls(compiledRegex(regexNode), methodName) }
+    CompiledRegexExecution() { this.calls(compiledRegex(regexNode), method) }
 
     override DataFlow::Node getRegex() { result = regexNode }
 
     override DataFlow::Node getString() {
-      result in [this.getArg(getStringArgIndex(methodName) - 1), this.getArgByName("string")]
+      result in [this.getArg(method.getStringArgIndex() - 1), this.getArgByName("string")]
     }
 
-    override string getName() { result = "re." + methodName }
+    override string getName() { result = "re." + method }
   }
 
   /**
