@@ -246,15 +246,16 @@ private module StdlibPrivate {
   // Functions with non-standard arguments:
   // - os.path.join(path, *paths)
   // - os.path.relpath(path, start=os.curdir)
-  // Functions that need summaries:
+  // these functions need special treatment when computing `getPathArg`.
+  //
+  // Functions that excluded because they can act as sanitizers:
   // - os.path.commonpath(paths): takes a sequence
   // - os.path.commonprefix(list): takes a list argument
-  // - os.path.splitdrive: retunrs a tuple
-  // - os.path.splittext: returns a tuple
+  // unless the user control all arguments, we are comparing with a known value.
   private string pathComputation() {
     result in [
         "abspath", "basename", "commonpath", "dirname", "expanduser", "expandvars", "join",
-        "normcase", "normpath", "realpath", "relpath", "split"
+        "normcase", "normpath", "realpath", "relpath", "split", "splitdrive", "splitext"
       ]
   }
 
