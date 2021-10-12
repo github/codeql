@@ -22,7 +22,7 @@ private import semmle.code.java.Reflection
 
 private class ObjectInputStreamReadObjectMethod extends Method {
   ObjectInputStreamReadObjectMethod() {
-    this.getDeclaringType().getASourceSupertype*().hasQualifiedName("java.io", "ObjectInputStream") and
+    this.getDeclaringType().getASourceSupertype*() instanceof TypeObjectInputStream and
     (this.hasName("readObject") or this.hasName("readUnshared"))
   }
 }

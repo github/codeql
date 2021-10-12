@@ -39,7 +39,7 @@ private predicate hasVulnerableMethod(RefType type) {
   |
     not parameterType instanceof PrimitiveType and
     not parameterType instanceof TypeString and
-    not parameterType.(RefType).hasQualifiedName("java.io", "ObjectInputStream")
+    not parameterType instanceof TypeObjectInputStream
   )
 }
 
