@@ -30,9 +30,9 @@ pragma[nomagic]
 private DataFlowPrivate::DataFlowCallable getCallableForArgument(
   DataFlowPublic::ArgumentSourceNode nodeFrom, int i
 ) {
-  exists(DataFlowPrivate::DataFlowSourceCall call |
+  exists(DataFlowPrivate::NonLibraryDataFlowSourceCall call |
     nodeFrom.sourceArgumentOf(call, i) and
-    result = call.getCallable()
+    result = call.getCallable2()
   )
 }
 

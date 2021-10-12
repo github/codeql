@@ -28,3 +28,7 @@ sink(tainted_mapped_explicit[0])
 
 tainted_mapped_summary = map(identity, [tainted])
 sink(tainted_mapped_summary[0])
+
+from json import loads as json_loads
+tainted_resultlist = json_loads(tainted)
+sink(tainted_resultlist[0])

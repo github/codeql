@@ -76,7 +76,7 @@ module syntheticPreUpdateNode {
    * that is mapped to the `self` parameter. That way, constructor calls represent the value of the
    * object after the constructor (currently only `__init__`) has run.
    */
-  CfgNode objectCreationNode() { result.getNode().(CallNode) = any(ClassCall c).getNode() }
+  CfgNode objectCreationNode() { result.getNode().(CallNode) = any(ClassCall c).getNode2() }
 }
 
 import syntheticPreUpdateNode
@@ -526,7 +526,7 @@ module ArgumentPassing {
    */
   predicate connects(CallNode call, CallableValue callable) {
     exists(NonLibraryDataFlowSourceCall c, NonLibraryDataFlowCallable k |
-      call = c.getNode() and
+      call = c.getNode2() and
       callable = k.getCallableValue() and
       call = k.getACall2()
     )
@@ -893,11 +893,7 @@ abstract class DataFlowSourceCall extends DataFlowCall, TDataFlowSourceCall {
 class NonSpecialCall extends DataFlowSourceCall, TNonSpecialCall {
   CallNode call;
 
-  // NonLibraryDataFlowCallable callable;
-  NonSpecialCall() {
-    this = TNonSpecialCall(call) //and
-    // call = callable.getACall()
-  }
+  NonSpecialCall() { this = TNonSpecialCall(call) }
 
   override string toString() { result = call.toString() }
 
@@ -907,25 +903,13 @@ class NonSpecialCall extends DataFlowSourceCall, TNonSpecialCall {
 
   ClassValue getClassValue() { call = result.getACall() }
 
-  private LibraryCallable getLibraryCallable() { call.getNode() = result.getACall() }
+  abstract override Node getArg(int n);
 
-  private CallableValue getCallableValue() {
-    this.getClassValue().getScope().getInitMethod() = result.getScope()
-  }
+  abstract override DataFlowCallable getCallable();
 
-  override Node getArg(int n) {
-    exists(this.getLibraryCallable()) and
-    result = TCfgNode(call.getArg(n))
-  }
+  ControlFlowNode getNode2() { result = call }
 
-  override ControlFlowNode getNode() { result = call }
-
-  override DataFlowCallable getCallable() {
-    result =
-      TCallableValue([this.getFunctionValue(), this.getMethodValue(), this.getCallableValue()])
-    or
-    result.asLibraryCallable() = this.getLibraryCallable() //.getACall() = call.getNode()
-  }
+  final override ControlFlowNode getNode() { result = call }
 
   override DataFlowCallable getEnclosingCallable() { result.getScope() = call.getNode().getScope() }
 }
@@ -934,12 +918,18 @@ abstract class NonLibraryDataFlowSourceCall extends NonSpecialCall {
   abstract Node getArg2(int n);
 
   final override Node getArg(int n) { result = getArg2(n) }
+
+  abstract DataFlowCallable getCallable2();
+
+  final override DataFlowCallable getCallable() { result = this.getCallable2() }
 }
 
 class FunctionCall extends NonLibraryDataFlowSourceCall {
   FunctionCall() { exists(this.getFunctionValue()) }
 
   override Node getArg2(int n) { result = getArg(call, TNoShift(), this.getFunctionValue(), n) }
+
+  override DataFlowCallable getCallable2() { result = TCallableValue(this.getFunctionValue()) }
 }
 
 class MethodCall extends NonLibraryDataFlowSourceCall {
@@ -952,6 +942,8 @@ class MethodCall extends NonLibraryDataFlowSourceCall {
     n = 0 and
     result = TCfgNode(call.getFunction().(AttrNode).getObject())
   }
+
+  override DataFlowCallable getCallable2() { result = TCallableValue(this.getMethodValue()) }
 }
 
 class ClassCall extends NonLibraryDataFlowSourceCall {
@@ -964,6 +956,12 @@ class ClassCall extends NonLibraryDataFlowSourceCall {
     n = 0 and
     result = TSyntheticPreUpdateNode(TCfgNode(call))
   }
+
+  private CallableValue getCallableValue() {
+    this.getClassValue().getScope().getInitMethod() = result.getScope()
+  }
+
+  override DataFlowCallable getCallable2() { result = TCallableValue(this.getCallableValue()) }
 }
 
 /** Represents a call to a special method. */
@@ -987,6 +985,16 @@ class SpecialCall extends DataFlowSourceCall, TSpecialCall {
   override DataFlowCallable getEnclosingCallable() {
     result.getScope() = special.getNode().getScope()
   }
+}
+
+class LibraryCall extends NonSpecialCall {
+  LibraryCallable callable;
+
+  LibraryCall() { call.getNode() = callable.getACall() }
+
+  override Node getArg(int n) { result = TCfgNode(call.getArg(n)) }
+
+  override DataFlowCallable getCallable() { result.asLibraryCallable() = callable }
 }
 
 /**
