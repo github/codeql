@@ -75,14 +75,6 @@ class IntentGetParcelableExtraMethod extends Method {
   }
 }
 
-/**
- * Specifies that if an `Intent` is tainted, then so are its synthetic fields.
- */
-private class IntentFieldsInheritTaint extends DataFlow::SyntheticFieldContent,
-  TaintInheritingContent {
-  IntentFieldsInheritTaint() { this.getField().matches("android.content.Intent.%") }
-}
-
 private class IntentBundleFlowSteps extends SummaryModelCsv {
   override predicate row(string row) {
     row =
