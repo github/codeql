@@ -22,7 +22,8 @@ class GsonDeserializeMethod extends Method {
 
 /**
  * Holds if `intentNode` is an `Intent` used in the context `(T)intentNode.getParcelableExtra(...)` and
- * `parcelNode` is the corresponding parameter of `Parcelable.Creator<T> { public T createFromParcel(Parcel parcelNode) { }`.
+ * `parcelNode` is the corresponding parameter of `Parcelable.Creator<T> { public T createFromParcel(Parcel parcelNode) { }`,
+ * where `T` is a concrete type implementing `Parcelable`.
  */
 predicate intentFlowsToParcel(DataFlow::Node intentNode, DataFlow::Node parcelNode) {
   exists(MethodAccess getParcelableExtraCall, CreateFromParcelMethod cfpm, Type createdType |
