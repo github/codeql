@@ -78,9 +78,7 @@ abstract class RenderCall extends MethodCall {
     result = [this.getKeywordArgument(["partial", "template", "action"]), this.getArgument(0)]
   }
 
-  private string getTemplatePathValue() {
-    result = this.getTemplatePathArgument().getValueText()
-  }
+  private string getTemplatePathValue() { result = this.getTemplatePathArgument().getValueText() }
 
   // everything up to and including the final slash, but ignoring any leading slash
   private string getSubPath() {
