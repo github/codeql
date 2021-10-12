@@ -169,6 +169,7 @@ Python built-in support
    multidict, Utility library
    yarl, Utility library
    aioch, Database
+   asyncpg, Database
    clickhouse-driver, Database
    mysql-connector-python, Database
    mysql-connector, Database
