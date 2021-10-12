@@ -69,6 +69,9 @@ private module Asyncpg {
 
   /**
    * Holds if `result` is the result of awaiting `awaitedValue`.
+   *
+   * Internal helper predicate to achieve the same as `.awaited()` does for API graphs,
+   * but sutiable for use with type-tracking.
    */
   pragma[inline]
   DataFlow::Node awaited(DataFlow::Node awaitedValue) {
