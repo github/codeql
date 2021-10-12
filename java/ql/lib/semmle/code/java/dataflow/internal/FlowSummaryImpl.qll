@@ -958,7 +958,6 @@ module Private {
 
     query predicate edges(NodeOrCall a, NodeOrCall b, string key, string value) {
       key = "semmle.label" and
-      edgesComponent(a, b, _) and
       value = strictconcat(string s | edgesComponent(a, b, s) | s, " / ")
     }
   }
