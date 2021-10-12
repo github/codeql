@@ -1540,49 +1540,19 @@ private module StdlibPrivate {
 
   /** Helper module for tracking compiled regexes. */
   private module CompiledRegexes {
-    private import semmle.python.dataflow.new.DataFlow4
-    private import semmle.python.RegexTreeView
-
-    // TODO: This module should be refactored once API graphs are more expressive.
-    // For now it uses data flow, so we pick the version with least chance of collision (4) .
-    /** A configuration for finding uses of compiled regexes. */
-    class RegexDefinitionConfiguration extends DataFlow4::Configuration {
-      RegexDefinitionConfiguration() { this = "RegexDefinitionConfiguration" }
-
-      override predicate isSource(DataFlow::Node source) { source instanceof RegexDefinitonSource }
-
-      override predicate isSink(DataFlow::Node sink) { sink instanceof RegexDefinitionSink }
+    private DataFlow::TypeTrackingNode compiledRegex(DataFlow::TypeTracker t, DataFlow::Node regex) {
+      t.start() and
+      result = API::moduleImport("re").getMember("compile").getACall() and
+      regex in [
+          result.(DataFlow::CallCfgNode).getArg(0),
+          result.(DataFlow::CallCfgNode).getArgByName("pattern")
+        ]
+      or
+      exists(DataFlow::TypeTracker t2 | result = compiledRegex(t2, regex).track(t2, t))
     }
 
-    /** A regex compilation. */
-    class RegexDefinitonSource extends DataFlow::CallCfgNode {
-      DataFlow::Node regexNode;
-
-      RegexDefinitonSource() {
-        this = API::moduleImport("re").getMember("compile").getACall() and
-        regexNode in [this.getArg(0), this.getArgByName("pattern")]
-      }
-
-      /** Gets the data flow node for the regex being compiled by this node. */
-      DataFlow::Node getRegexNode() { result = regexNode }
-    }
-
-    /** A use of a compiled regex. */
-    class RegexDefinitionSink extends DataFlow::Node {
-      RegexExecutionMethod method;
-      DataFlow::CallCfgNode executingCall;
-
-      RegexDefinitionSink() {
-        executingCall =
-          API::moduleImport("re").getMember("compile").getReturn().getMember(method).getACall() and
-        this = executingCall.getFunction().(DataFlow::AttrRead).getObject()
-      }
-
-      /** Gets the method used to execute the regex. */
-      RegexExecutionMethod getMethod() { result = method }
-
-      /** Gets the data flow node for the executing call. */
-      DataFlow::CallCfgNode getExecutingCall() { result = executingCall }
+    DataFlow::Node compiledRegex(DataFlow::Node regex) {
+      compiledRegex(DataFlow::TypeTracker::end(), regex).flowsTo(result)
     }
   }
 
@@ -1608,28 +1578,19 @@ private module StdlibPrivate {
    *
    * See https://docs.python.org/3/library/re.html#regular-expression-objects
    */
-  private class CompiledRegexExecution extends DataFlow::CallCfgNode, RegexExecution::Range {
+  private class CompiledRegexExecution extends DataFlow::MethodCallNode, RegexExecution::Range {
     DataFlow::Node regexNode;
-    RegexExecutionMethod method;
+    RegexExecutionMethod methodName;
 
-    CompiledRegexExecution() {
-      exists(
-        RegexDefinitionConfiguration conf, RegexDefinitonSource source, RegexDefinitionSink sink
-      |
-        conf.hasFlow(source, sink) and
-        regexNode = source.getRegexNode() and
-        method = sink.getMethod() and
-        this = sink.getExecutingCall()
-      )
-    }
+    CompiledRegexExecution() { this.calls(compiledRegex(regexNode), methodName) }
 
     override DataFlow::Node getRegex() { result = regexNode }
 
     override DataFlow::Node getString() {
-      result in [this.getArg(getStringArgIndex(method) - 1), this.getArgByName("string")]
+      result in [this.getArg(getStringArgIndex(methodName) - 1), this.getArgByName("string")]
     }
 
-    override string getName() { result = "re." + method }
+    override string getName() { result = "re." + methodName }
   }
 
   /**
