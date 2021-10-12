@@ -65,4 +65,6 @@ private class GetsFunction extends DataFlowFunction, TaintFunction, ArrayFunctio
   }
 
   override predicate hasArrayOutput(int bufParam) { bufParam = 0 }
+
+  override predicate hasSocketInput(FunctionInput input) { input.isParameter(2) }
 }

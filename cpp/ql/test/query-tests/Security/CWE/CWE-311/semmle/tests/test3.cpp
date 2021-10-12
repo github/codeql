@@ -239,7 +239,7 @@ void test_fgets(FILE *stream)
 	char password[128];
 
 	fgets(password, 128, stream); // BAD
-	fgets(password, 128, STDIN_STREAM); // GOOD: `STDIN_STREAM` is probably standard input [FALSE POSITIVE]
+	fgets(password, 128, STDIN_STREAM); // GOOD: `STDIN_STREAM` is probably standard input
 }
 
 void encrypt_to_buffer(const char *input, char* output);
