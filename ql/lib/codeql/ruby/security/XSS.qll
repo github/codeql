@@ -122,10 +122,7 @@ private module Shared {
     AssignExpr getAnAssignExpr() { result.getLeftOperand() = this.getExpr() }
   }
 
-  /**
-   * An additional step that is preserves dataflow in the context of XSS.
-   */
-  predicate isAdditionalXSSFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+  predicate isFlowFromLocals(DataFlow::Node node1, DataFlow::Node node2) {
     // node1 is a `locals` argument to a render call...
     exists(RenderCall call, Pair kvPair, string hashKey |
       call.getLocals().getAKeyValuePair() = kvPair and
@@ -154,7 +151,9 @@ private module Shared {
         )
       )
     )
-    or
+  }
+
+  predicate isFlowFromControllerInstanceVariable(DataFlow::Node node1, DataFlow::Node node2) {
     // instance variables in the controller
     exists(
       ActionControllerActionMethod action, VariableReadAccess viewVarRead, AssignExpr ae,
@@ -169,7 +168,9 @@ private module Shared {
       node1.asExpr().getExpr() = ae.getRightOperand() and
       ae.getParent+() = action
     )
-    or
+  }
+
+  predicate isFlowIntoHelperMethod(DataFlow::Node node1, DataFlow::Node node2) {
     // flow from template into controller helper method
     exists(
       ErbFile template, ActionControllerHelperMethod helperMethod,
@@ -181,13 +182,16 @@ private module Shared {
       helperMethodCall.getArgument(argIdx) = node1.asExpr() and
       helperMethod.getParameter(argIdx) = node2.asExpr().getExpr()
     )
-    or
+  }
+
+  predicate isFlowFromHelperMethod(DataFlow::Node node1, DataFlow::Node node2) {
     // flow out of controller helper method into template
     exists(
       ErbFile template, ActionControllerHelperMethod helperMethod,
       CfgNodes::ExprNodes::MethodCallCfgNode helperMethodCall
     |
       template = node2.getLocation().getFile() and
+      // TODO: this is slow, x-product of helper method names and method calls
       helperMethod.getName() = helperMethodCall.getExpr().getMethodName() and
       helperMethod.getControllerClass() = getAssociatedControllerClass(template) and
       // `node1` is an expr node that may be returned by the helper method
@@ -195,6 +199,20 @@ private module Shared {
       // `node2` is a call to the helper method
       node2.asExpr() = helperMethodCall
     )
+  }
+
+  /**
+   * An additional step that is preserves dataflow in the context of XSS.
+   */
+  pragma[noopt]
+  predicate isAdditionalXSSFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+    isFlowFromLocals(node1, node2)
+    or
+    isFlowFromControllerInstanceVariable(node1, node2)
+    or
+    isFlowIntoHelperMethod(node1, node2)
+    or
+    isFlowFromHelperMethod(node1, node2)
   }
 }
 
