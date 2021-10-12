@@ -435,7 +435,6 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
             return extractClass(c, listOf())
         }
 
-        logger.warnElement(Severity.ErrorSevere, "Missing class label", c)
         return tw.getLabelFor(classId)
     }
 
