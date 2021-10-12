@@ -1,0 +1,28 @@
+edges
+| LogInjectionBad.py:17:12:17:18 | ControlFlowNode for request | LogInjectionBad.py:17:12:17:23 | ControlFlowNode for Attribute |
+| LogInjectionBad.py:17:12:17:23 | ControlFlowNode for Attribute | LogInjectionBad.py:18:21:18:40 | ControlFlowNode for BinaryExpr |
+| LogInjectionBad.py:23:12:23:18 | ControlFlowNode for request | LogInjectionBad.py:23:12:23:23 | ControlFlowNode for Attribute |
+| LogInjectionBad.py:23:12:23:23 | ControlFlowNode for Attribute | LogInjectionBad.py:24:18:24:37 | ControlFlowNode for BinaryExpr |
+| LogInjectionBad.py:29:12:29:18 | ControlFlowNode for request | LogInjectionBad.py:29:12:29:23 | ControlFlowNode for Attribute |
+| LogInjectionBad.py:29:12:29:23 | ControlFlowNode for Attribute | LogInjectionBad.py:30:25:30:44 | ControlFlowNode for BinaryExpr |
+| LogInjectionBad.py:35:12:35:18 | ControlFlowNode for request | LogInjectionBad.py:35:12:35:23 | ControlFlowNode for Attribute |
+| LogInjectionBad.py:35:12:35:23 | ControlFlowNode for Attribute | LogInjectionBad.py:37:19:37:38 | ControlFlowNode for BinaryExpr |
+nodes
+| LogInjectionBad.py:17:12:17:18 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| LogInjectionBad.py:17:12:17:23 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| LogInjectionBad.py:18:21:18:40 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| LogInjectionBad.py:23:12:23:18 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| LogInjectionBad.py:23:12:23:23 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| LogInjectionBad.py:24:18:24:37 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| LogInjectionBad.py:29:12:29:18 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| LogInjectionBad.py:29:12:29:23 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| LogInjectionBad.py:30:25:30:44 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| LogInjectionBad.py:35:12:35:18 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| LogInjectionBad.py:35:12:35:23 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| LogInjectionBad.py:37:19:37:38 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+subpaths
+#select
+| LogInjectionBad.py:18:21:18:40 | ControlFlowNode for BinaryExpr | LogInjectionBad.py:17:12:17:18 | ControlFlowNode for request | LogInjectionBad.py:18:21:18:40 | ControlFlowNode for BinaryExpr | $@ flows to log entry. | LogInjectionBad.py:17:12:17:18 | ControlFlowNode for request | User-provided value |
+| LogInjectionBad.py:24:18:24:37 | ControlFlowNode for BinaryExpr | LogInjectionBad.py:23:12:23:18 | ControlFlowNode for request | LogInjectionBad.py:24:18:24:37 | ControlFlowNode for BinaryExpr | $@ flows to log entry. | LogInjectionBad.py:23:12:23:18 | ControlFlowNode for request | User-provided value |
+| LogInjectionBad.py:30:25:30:44 | ControlFlowNode for BinaryExpr | LogInjectionBad.py:29:12:29:18 | ControlFlowNode for request | LogInjectionBad.py:30:25:30:44 | ControlFlowNode for BinaryExpr | $@ flows to log entry. | LogInjectionBad.py:29:12:29:18 | ControlFlowNode for request | User-provided value |
+| LogInjectionBad.py:37:19:37:38 | ControlFlowNode for BinaryExpr | LogInjectionBad.py:35:12:35:18 | ControlFlowNode for request | LogInjectionBad.py:37:19:37:38 | ControlFlowNode for BinaryExpr | $@ flows to log entry. | LogInjectionBad.py:35:12:35:18 | ControlFlowNode for request | User-provided value |
