@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../../../vmsync/codeql-go"
+		}
+	],
+	"settings": {
+		"codeQL.runningQueries.autoSave": true
+	}
+}
