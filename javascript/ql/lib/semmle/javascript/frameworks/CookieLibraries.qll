@@ -24,12 +24,11 @@ module CookieWrites {
 
     /**
      * Holds if the cookie is likely an authentication cookie or otherwise sensitive.
-     * Can never hold for client-side cookies.
      */
     abstract predicate isSensitive();
 
     /**
-     * Holds if the cookie write happens on a server, that is `httpOnly` flag is relevant.
+     * Holds if the cookie write happens on a server, i.e. the `httpOnly` flag is relevant.
      */
     predicate isServerSide() {
       any() // holds by default. Client-side cookie writes should extend ClientSideCookieWrite.

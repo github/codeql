@@ -6,7 +6,7 @@
 <overview>
 <p>
 Authentication cookies stored by a server can be accessed by a client if the <code>httpOnly</code> flag is not set.
-<p>
+</p>
 <p>
 An attacker that manages a cross-site scripting (XSS) attack can read the cookie and hijack the session.
 </p>
@@ -17,8 +17,6 @@ An attacker that manages a cross-site scripting (XSS) attack can read the cookie
 Set the <code>httpOnly</code> flag on all cookies that are not needed by the client.
 </p>
 </recommendation>
-
-<references>
 
 <example>
 <p>
