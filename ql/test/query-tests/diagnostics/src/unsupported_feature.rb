@@ -1,17 +1,3 @@
-class Foo
-  def initialize(...)
-    do_init(...)
-  end
-
-  def do_init(...)
-    really_do_init(...)
-  end
-
-  def really_do_init(bar, baz:, &block)
-    puts bar
-    puts baz
-    block.call
-  end
+case foo
+  in 3 then 5
 end
-
-Foo.new("hello", baz: "world") { || puts "!" }
