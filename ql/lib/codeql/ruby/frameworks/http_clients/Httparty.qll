@@ -43,7 +43,7 @@ class HttpartyRequest extends HTTP::Client::Request::Range {
   override predicate disablesCertificateValidation(DataFlow::Node disablingNode) {
     // The various request methods take an options hash as their second
     // argument, and we're looking for `{ verify: false }` or
-    // `{ verify_peer: // false }`.
+    // `{ verify_peer: false }`.
     exists(DataFlow::Node arg, int i |
       i > 0 and arg.asExpr().getExpr() = requestUse.asExpr().getExpr().(MethodCall).getArgument(i)
     |
