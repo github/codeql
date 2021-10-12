@@ -188,7 +188,7 @@ module API {
   /** A node corresponding to the use of an API component. */
   class Use extends Node, Impl::MkUse {
     override string toString() {
-      exists(string type | this = Impl::MkUse(_) and type = "Use " |
+      exists(string type | type = "Use " |
         result = type + getPath()
         or
         not exists(this.getPath()) and result = type + "with no path"
@@ -239,7 +239,7 @@ module API {
       /** The root of the API graph. */
       MkRoot() or
       /** A use of an API member at the node `nd`. */
-      MkUse(DataFlow::Node nd) { use(_, _, nd) }
+      MkUse(DataFlow::Node nd) { isUse(nd) }
 
     private string resolveTopLevel(ConstantReadAccess read) {
       TResolved(result) = resolveScopeExpr(read) and
@@ -247,12 +247,11 @@ module API {
     }
 
     /**
-     * Holds if `ref` is a use of a node that should have an incoming edge from `base` labeled
-     * `lbl` in the API graph.
+     * Holds if `ref` is a use of a node that should have an incoming edge from the root
+     * node labeled `lbl` in the API graph.
      */
     cached
-    predicate use(TApiNode base, string lbl, DataFlow::Node ref) {
-      base = MkRoot() and
+    predicate useRoot(string lbl, DataFlow::Node ref) {
       exists(string name, ExprNodes::ConstantAccessCfgNode access, ConstantReadAccess read |
         access = ref.asExpr() and
         lbl = Label::member(read.getName()) and
@@ -264,7 +263,14 @@ module API {
         not exists(resolveTopLevel(read)) and
         not exists(read.getScopeExpr())
       )
-      or
+    }
+
+    /**
+     * Holds if `ref` is a use of a node that should have an incoming edge from use node
+     * `base` labeled `lbl` in the API graph.
+     */
+    cached
+    predicate useUse(DataFlow::LocalSourceNode base, string lbl, DataFlow::Node ref) {
       exists(ExprCfgNode node |
         // First, we find a predecessor of the node `ref` that we want to determine. The predecessor
         // is any node that is a type-tracked use of a data flow node (`src`), which is itself a
@@ -307,9 +313,15 @@ module API {
     }
 
     pragma[nomagic]
-    private predicate useExpr(ExprCfgNode node, TApiNode base) {
-      exists(DataFlow::LocalSourceNode src, DataFlow::LocalSourceNode pred |
-        use(base, src) and
+    private predicate isUse(DataFlow::Node nd) {
+      useRoot(_, nd)
+      or
+      useUse(_, _, nd)
+    }
+
+    pragma[nomagic]
+    private predicate useExpr(ExprCfgNode node, DataFlow::LocalSourceNode src) {
+      exists(DataFlow::LocalSourceNode pred |
         pred = trackUseNode(src) and
         pred.flowsTo(any(DataFlow::ExprNode n | n.getExprNode() = node))
       )
@@ -331,7 +343,7 @@ module API {
       // recursive case, so instead we check it explicitly here.
       src instanceof DataFlow::LocalSourceNode and
       t.start() and
-      use(_, src) and
+      isUse(src) and
       result = src
       or
       exists(TypeTracker t2 | result = trackUseNode(src, t2).track(t2, t))
@@ -353,9 +365,14 @@ module API {
     cached
     predicate edge(TApiNode pred, string lbl, TApiNode succ) {
       /* Every node that is a use of an API component is itself added to the API graph. */
-      exists(DataFlow::LocalSourceNode ref |
-        use(pred, lbl, ref) and
-        succ = MkUse(ref)
+      exists(DataFlow::LocalSourceNode ref | succ = MkUse(ref) |
+        pred = MkRoot() and
+        useRoot(lbl, ref)
+        or
+        exists(DataFlow::Node nd |
+          pred = MkUse(nd) and
+          useUse(nd, lbl, ref)
+        )
       )
     }
 
