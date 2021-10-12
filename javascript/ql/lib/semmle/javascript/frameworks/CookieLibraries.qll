@@ -126,7 +126,9 @@ private module JsCookie {
 
     override predicate isSecure() {
       // A cookie is secure if there are cookie options with the `secure` flag set to `true`.
-      this.getOptionArgument(2, CookieWrites::secure()).mayHaveBooleanValue(true)
+      exists(DataFlow::Node value | value = this.getOptionArgument(2, CookieWrites::secure()) |
+        not value.mayHaveBooleanValue(false) // anything but `false` is accepted as being maybe true
+      )
     }
 
     override predicate isSensitive() { canHaveSensitiveCookie(this.getArgument(0)) }
@@ -162,7 +164,9 @@ private module BrowserCookies {
 
     override predicate isSecure() {
       // A cookie is secure if there are cookie options with the `secure` flag set to `true`.
-      this.getOptionArgument(2, CookieWrites::secure()).mayHaveBooleanValue(true)
+      exists(DataFlow::Node value | value = this.getOptionArgument(2, CookieWrites::secure()) |
+        not value.mayHaveBooleanValue(false) // anything but `false` is accepted as being maybe true
+      )
       or
       // or, an explicit default has been set
       exists(DataFlow::moduleMember("browser-cookies", "defaults").getAPropertyWrite("secure"))
@@ -201,7 +205,9 @@ private module LibCookie {
 
     override predicate isSecure() {
       // A cookie is secure if there are cookie options with the `secure` flag set to `true`.
-      this.getOptionArgument(2, CookieWrites::secure()).mayHaveBooleanValue(true)
+      exists(DataFlow::Node value | value = this.getOptionArgument(2, CookieWrites::secure()) |
+        not value.mayHaveBooleanValue(false) // anything but `false` is accepted as being maybe true
+      )
     }
 
     override predicate isSensitive() { canHaveSensitiveCookie(this.getArgument(0)) }
@@ -222,7 +228,9 @@ private module ExpressCookies {
     override predicate isSecure() {
       // A cookie is secure if there are cookie options with the `secure` flag set to `true`.
       // The default is `false`.
-      this.getOptionArgument(2, CookieWrites::secure()).mayHaveBooleanValue(true)
+      exists(DataFlow::Node value | value = this.getOptionArgument(2, CookieWrites::secure()) |
+        not value.mayHaveBooleanValue(false) // anything but `false` is accepted as being maybe true
+      )
     }
 
     override predicate isSensitive() { canHaveSensitiveCookie(this.getArgument(0)) }
@@ -230,7 +238,9 @@ private module ExpressCookies {
     override predicate isHttpOnly() {
       // A cookie is httpOnly if there are cookie options with the `httpOnly` flag set to `true`.
       // The default is `false`.
-      this.getOptionArgument(2, CookieWrites::httpOnly()).mayHaveBooleanValue(true)
+      exists(DataFlow::Node value | value = this.getOptionArgument(2, CookieWrites::httpOnly()) |
+        not value.mayHaveBooleanValue(false) // anything but `false` is accepted as being maybe true
+      )
     }
   }
 
@@ -272,9 +282,9 @@ private module ExpressCookies {
     override predicate isSecure() {
       // The flag `secure` is not set by default (https://github.com/expressjs/session#Cookiesecure).
       // The default value for cookie options is { path: '/', httpOnly: true, secure: false, maxAge: null }.
-      // A cookie is secure if there are the cookie options with the `secure` flag set to `true` or to `auto`.
-      getCookieFlagValue(CookieWrites::secure()).mayHaveBooleanValue(true) or
-      getCookieFlagValue(CookieWrites::secure()).mayHaveStringValue("auto")
+      exists(DataFlow::Node value | value = getCookieFlagValue(CookieWrites::secure()) |
+        not value.mayHaveBooleanValue(false) // anything but `false` is accepted as being maybe true
+      )
     }
 
     override predicate isSensitive() {

@@ -196,3 +196,18 @@ http.createServer((req, res) => {
     res.writeHead(200, { 'Content-Type': 'text/plain' });
     res.end('ok');
 });
+
+(function mightBeSecures() {
+    const express = require('express')
+    const app = express()
+    const session = require('express-session')
+
+    app.use(session({
+      secret: config.sessionSecret,
+      cookie: {
+        httpOnly: config.sessionCookie.httpOnly,
+        secure: config.sessionCookie.secure && config.secure.ssl
+      },
+      name: config.sessionKey
+    }));
+})();
