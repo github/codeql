@@ -55,6 +55,7 @@
 | calls/calls.rb:320:9:320:9 | __synth__1 | 0 |
 | calls/calls.rb:320:31:320:31 | 1 | 1 |
 | calls/calls.rb:320:37:320:37 | 2 | 2 |
+| calls/calls.rb:328:31:328:37 | "error" | error |
 | constants/constants.rb:3:19:3:27 | "const_a" | const_a |
 | constants/constants.rb:6:15:6:23 | "const_b" | const_b |
 | constants/constants.rb:17:12:17:18 | "Hello" | Hello |

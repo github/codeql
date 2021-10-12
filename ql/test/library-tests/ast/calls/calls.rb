@@ -318,3 +318,20 @@ a, *foo[5] = [1, 2, 3]
 self.count += 1
 foo[0] += 1
 foo.bar[0, foo.baz, foo.boo + 1] *= 2
+
+# endless method definitions
+def foo = bar
+def foo() = bar
+def foo(x) = bar
+def Object.foo = bar
+def Object.foo (x) = bar
+def foo() = bar rescue (print "error")
+
+# forward parameter and forwarded arguments
+def foo(...)
+  super(...)
+end
+
+def foo(a, b, ...)
+  bar(b, ...)
+end

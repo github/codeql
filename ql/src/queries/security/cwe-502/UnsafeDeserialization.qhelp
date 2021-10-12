@@ -21,15 +21,18 @@ deserialization of arbitrary objects.
 
 <example>
 <p>
-The following example calls the <code>Marshal.load</code>, <code>JSON.load</code>, and
-<code>YAML.load</code> methods on data from an HTTP request. Since these methods
-are capable of deserializing to arbitrary objects, this is inherently unsafe.
+The following example calls the <code>Marshal.load</code>,
+<code>JSON.load</code>, <code>YAML.load</code>, and <code>Oj.load</code> methods
+on data from an HTTP request. Since these methods are capable of deserializing
+to arbitrary objects, this is inherently unsafe.
 </p>
 <sample src="examples/UnsafeDeserializationBad.rb"/>
 <p>
 Using <code>JSON.parse</code> and <code>YAML.safe_load</code> instead, as in the
-following example, removes the vulnerability. Note that there is no safe way to
-deserialize untrusted data using <code>Marshal</code>.
+following example, removes the vulnerability. Similarly, calling
+<code>Oj.load</code> with any mode other than <code>:object</code> is safe, as
+is calling <code>Oj.safe_load</code>. Note that there is no safe way to deserialize
+untrusted data using <code>Marshal</code>.
 </p>
 <sample src="examples/UnsafeDeserializationGood.rb"/>
 </example>

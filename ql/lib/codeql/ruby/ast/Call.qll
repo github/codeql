@@ -197,3 +197,19 @@ class BlockArgument extends Expr, TBlockArgument {
     pred = "getValue" and result = this.getValue()
   }
 }
+
+/**
+ * A `...` expression that contains forwarded arguments.
+ * ```rb
+ * foo(...)
+ * ```
+ */
+class ForwardedArguments extends Expr, TForwardArgument {
+  private Ruby::ForwardArgument g;
+
+  ForwardedArguments() { this = TForwardArgument(g) }
+
+  final override string getAPrimaryQlClass() { result = "ForwardedArguments" }
+
+  final override string toString() { result = "..." }
+}

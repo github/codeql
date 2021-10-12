@@ -2,9 +2,13 @@ name: Run QL Tests
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
+      - 'rc/*'
   pull_request:
-    branches: [main]
+    branches:
+      - main
+      - 'rc/*'
 
 env:
   CARGO_TERM_COLOR: always
