@@ -20,3 +20,7 @@ resp6.body
 
 resp7 = RestClient.options("http://example.com")
 resp7.body
+
+resource8 = RestClient::Resource.new "http://example.com"
+resp8 = resource8.get
+resp8.body

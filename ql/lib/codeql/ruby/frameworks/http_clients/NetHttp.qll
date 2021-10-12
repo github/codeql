@@ -50,5 +50,20 @@ class NetHttpRequest extends HTTP::Client::Request::Range {
 
   override DataFlow::Node getResponseBody() { result = responseBody }
 
+  override predicate disablesCertificateValidation(DataFlow::Node disablingNode) {
+    // A Net::HTTP request bypasses certificate validation if we see a setter
+    // call like this:
+    //   foo.verify_mode = OpenSSL::SSL::VERIFY_NONE
+    // and then the receiver of that call flows to the receiver in the request:
+    //   foo.request(...)
+    exists(DataFlow::CallNode setter |
+      disablingNode =
+        API::getTopLevelMember("OpenSSL").getMember("SSL").getMember("VERIFY_NONE").getAUse() and
+      setter.asExpr().getExpr().(SetterMethodCall).getMethodName() = "verify_mode=" and
+      disablingNode = setter.getArgument(0) and
+      localFlow(setter.getReceiver(), request.getReceiver())
+    )
+  }
+
   override string getFramework() { result = "Net::HTTP" }
 }
