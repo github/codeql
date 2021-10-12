@@ -185,18 +185,20 @@ private module Shared {
   }
 
   pragma[noinline]
-  private predicate isHelperMethodNameMatch(ActionControllerHelperMethod helperMethod, MethodCall call) {
+  private predicate isHelperMethodNameMatch(
+    ActionControllerHelperMethod helperMethod, MethodCall call
+  ) {
     helperMethod.getName() = call.getMethodName()
   }
 
   private predicate isFlowFromHelperMethod(DataFlow::Node node1, DataFlow::Node node2) {
     // flow out of controller helper method into template
-    exists(ErbFile template |
-      template = node2.getLocation().getFile() |
+    exists(ErbFile template | template = node2.getLocation().getFile() |
       exists(ActionControllerHelperMethod helperMethod |
         helperMethod.getControllerClass() = getAssociatedControllerClass(template) and
         // `node1` is an expr node that may be returned by the helper method
-        exprNodeReturnedFrom(node1, helperMethod) |
+        exprNodeReturnedFrom(node1, helperMethod)
+      |
         exists(CfgNodes::ExprNodes::MethodCallCfgNode helperMethodCall |
           // `node2` is a call to the helper method
           node2.asExpr() = helperMethodCall and
