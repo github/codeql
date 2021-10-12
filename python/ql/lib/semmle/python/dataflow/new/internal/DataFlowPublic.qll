@@ -332,7 +332,7 @@ class ModuleVariableNode extends Node, TModuleVariableNode {
   override Scope getScope() { result = mod }
 
   override string toString() {
-    result = "ModuleVariableNode for " + var.toString() + " in " + mod.toString()
+    result = "ModuleVariableNode for " + mod.getName() + "." + var.getId()
   }
 
   /** Gets the module in which this variable appears. */
