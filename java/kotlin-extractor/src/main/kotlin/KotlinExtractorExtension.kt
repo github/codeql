@@ -408,11 +408,10 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
     }
 
     fun useClass(c: IrClass, typeArgs: List<IrTypeArgument>): Label<out DbClassorinterface> {
-        // todo: this feels a bit arbitrary:
-        // It is introduced because the return type of a constructor is the type with its
-        // type parameters passed as type arguments.
-        // todo: investigate if this can only happen with constructor-like calls? If so, we could handle these there.
-        // todo: what happens with nested generics?
+        // todo: find a better way of finding if we're dealing with the source type.
+        // The return type of a constructor in a generic class is a simple type with the class as the classifier, and
+        // the type parameters added as type arguments. The same constructed source type can show up as parameter types
+        // of functions inside the class.
         val args = if (typeArgsMatchTypeParameters(typeArgs, c.typeParameters)) {
             listOf()
         } else {
