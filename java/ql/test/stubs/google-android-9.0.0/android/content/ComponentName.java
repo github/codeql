@@ -1,29 +1,35 @@
-/*
- * Copyright (C) 2006 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Generated automatically from android.content.ComponentName for testing purposes
+
 package android.content;
 
-/**
- * Identifier for a specific application component
- * ({@link android.app.Activity}, {@link android.app.Service},
- * {@link android.content.BroadcastReceiver}, or
- * {@link android.content.ContentProvider}) that is available.  Two
- * pieces of information, encapsulated here, are required to identify
- * a component: the package (a String) it exists in, and the class (a String)
- * name inside of that package.
- *
- */
-public final class ComponentName {
+import android.content.Context;
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class ComponentName implements Cloneable, Comparable<ComponentName>, Parcelable
+{
+    protected ComponentName() {}
+    public ComponentName clone(){ return null; }
+    public ComponentName(Context p0, Class<? extends Object> p1){}
+    public ComponentName(Context p0, String p1){}
+    public ComponentName(Parcel p0){}
+    public ComponentName(String p0, String p1){}
+    public String flattenToShortString(){ return null; }
+    public String flattenToString(){ return null; }
+    public String getClassName(){ return null; }
+    public String getPackageName(){ return null; }
+    public String getShortClassName(){ return null; }
+    public String toShortString(){ return null; }
+    public String toString(){ return null; }
+    public boolean equals(Object p0){ return false; }
+    public int compareTo(ComponentName p0){ return 0; }
+    public int describeContents(){ return 0; }
+    public int hashCode(){ return 0; }
+    public static ComponentName createRelative(Context p0, String p1){ return null; }
+    public static ComponentName createRelative(String p0, String p1){ return null; }
+    public static ComponentName readFromParcel(Parcel p0){ return null; }
+    public static ComponentName unflattenFromString(String p0){ return null; }
+    public static Parcelable.Creator<ComponentName> CREATOR = null;
+    public static void writeToParcel(ComponentName p0, Parcel p1){}
+    public void writeToParcel(Parcel p0, int p1){}
 }

@@ -17,6 +17,7 @@ private import semmle.code.java.frameworks.Jackson
 private import semmle.code.java.frameworks.Jabsorb
 private import semmle.code.java.frameworks.JoddJson
 private import semmle.code.java.frameworks.Flexjson
+private import semmle.code.java.frameworks.google.Gson
 private import semmle.code.java.frameworks.apache.Lang
 private import semmle.code.java.Reflection
 
@@ -207,6 +208,10 @@ predicate unsafeDeserialization(MethodAccess ma, Expr sink) {
     or
     m instanceof FlexjsonDeserializeMethod and
     sink = ma.getArgument(0)
+    or
+    m instanceof GsonDeserializeMethod and
+    sink = ma.getArgument(0) and
+    any(UnsafeTypeConfig config).hasFlowToExpr(ma.getArgument(1))
   )
 }
 
@@ -249,6 +254,8 @@ class UnsafeDeserializationConfig extends TaintTracking::Configuration {
     createJacksonJsonParserStep(pred, succ)
     or
     createJacksonTreeNodeStep(pred, succ)
+    or
+    intentFlowsToParcel(pred, succ)
   }
 
   override predicate isSanitizer(DataFlow::Node node) {
@@ -362,9 +369,15 @@ class UnsafeTypeConfig extends TaintTracking2::Configuration {
         ma.getMethod() instanceof JabsorbUnmarshallMethod
         or
         ma.getMethod() instanceof JoddJsonParseMethod
+        or
+        ma.getMethod() instanceof GsonDeserializeMethod
       ) and
       // Note `JacksonTypeDescriptorType` includes plain old `java.lang.Class`
-      arg.getType() instanceof JacksonTypeDescriptorType and
+      (
+        arg.getType() instanceof JacksonTypeDescriptorType
+        or
+        arg.getType().(RefType).hasQualifiedName("java.lang.reflect", "Type")
+      ) and
       arg = sink.asExpr()
     )
   }
@@ -375,7 +388,8 @@ class UnsafeTypeConfig extends TaintTracking2::Configuration {
    */
   override predicate isAdditionalTaintStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
     resolveClassStep(fromNode, toNode) or
-    looksLikeResolveClassStep(fromNode, toNode)
+    looksLikeResolveClassStep(fromNode, toNode) or
+    intentFlowsToParcel(fromNode, toNode)
   }
 }
 

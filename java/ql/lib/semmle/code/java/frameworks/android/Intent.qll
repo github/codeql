@@ -3,32 +3,53 @@ private import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.FlowSteps
 import semmle.code.java.dataflow.ExternalFlow
 
+/**
+ * The class `android.content.Intent`.
+ */
 class TypeIntent extends Class {
   TypeIntent() { hasQualifiedName("android.content", "Intent") }
 }
 
+/**
+ * The class `android.app.Activity`.
+ */
 class TypeActivity extends Class {
   TypeActivity() { hasQualifiedName("android.app", "Activity") }
 }
 
+/**
+ * The class `android.content.Context`.
+ */
 class TypeContext extends RefType {
   TypeContext() { hasQualifiedName("android.content", "Context") }
 }
 
+/**
+ * The class `android.content.BroadcastReceiver`.
+ */
 class TypeBroadcastReceiver extends Class {
   TypeBroadcastReceiver() { hasQualifiedName("android.content", "BroadcastReceiver") }
 }
 
+/**
+ * The method `Activity.getIntent`
+ */
 class AndroidGetIntentMethod extends Method {
   AndroidGetIntentMethod() { hasName("getIntent") and getDeclaringType() instanceof TypeActivity }
 }
 
+/**
+ * The method `BroadcastReceiver.onReceive`.
+ */
 class AndroidReceiveIntentMethod extends Method {
   AndroidReceiveIntentMethod() {
     hasName("onReceive") and getDeclaringType() instanceof TypeBroadcastReceiver
   }
 }
 
+/**
+ * The method `Context.startActivity` or `startActivities`.
+ */
 class ContextStartActivityMethod extends Method {
   ContextStartActivityMethod() {
     (hasName("startActivity") or hasName("startActivities")) and
@@ -42,6 +63,16 @@ class ContextStartActivityMethod extends Method {
 private class IntentFieldsInheritTaint extends DataFlow::SyntheticFieldContent,
   TaintInheritingContent {
   IntentFieldsInheritTaint() { this.getField().matches("android.content.Intent.%") }
+}
+
+/**
+ * The method `Intent.getParcelableExtra`.
+ */
+class IntentGetParcelableExtraMethod extends Method {
+  IntentGetParcelableExtraMethod() {
+    hasName("getParcelableExtra") and
+    getDeclaringType() instanceof TypeIntent
+  }
 }
 
 private class IntentBundleFlowSteps extends SummaryModelCsv {
