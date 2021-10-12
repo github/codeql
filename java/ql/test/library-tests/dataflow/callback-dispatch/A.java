@@ -179,7 +179,7 @@ public class A {
 
   void foo3() {
     A a1 = new A();
-    a1.field1 = source(1);
+    a1.field1 = source(20);
     A a2 = new A();
     applyConsumer1Field1Field2(a1, a2, p -> {
       sink(p); // MISSING FLOW
