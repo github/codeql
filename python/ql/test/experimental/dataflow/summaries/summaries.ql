@@ -72,19 +72,21 @@ private class SummarizedCallableMap extends SummarizedCallable {
 }
 
 // Typetracking needs to use a local flow step not including summaries
-// // Typetracking needs to use a call graph not including summaries
-// private class SummarizedCallableJsonLoads extends SummarizedCallable {
-//   SummarizedCallableJsonLoads() { this = "json.loads" }
-//   override Call getACall() {
-//     result = API::moduleImport("json").getMember("loads").getACall().asExpr()
-//   }
-//   override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-//     input = "Argument[0]" and
-//     output = "ListElement of ReturnValue" and
-//     preservesValue = true
-//   }
-// }
-//
+// Typetracking needs to use a call graph not including summaries
+private class SummarizedCallableJsonLoads extends SummarizedCallable {
+  SummarizedCallableJsonLoads() { this = "json.loads" }
+
+  override Call getACall() {
+    result = API::moduleImport("json").getMember("loads").getACall().asExpr()
+  }
+
+  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    input = "Argument[0]" and
+    output = "ListElement of ReturnValue" and
+    preservesValue = true
+  }
+}
+
 class Conf extends TaintTracking::Configuration {
   Conf() { this = "FlowSummaries" }
 

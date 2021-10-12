@@ -312,9 +312,9 @@ abstract class ArgumentNode extends Node {
 class ArgumentSourceNode extends ArgumentNode {
   ArgumentSourceNode() { this = any(DataFlowSourceCall c).getArg(_) }
 
-  override predicate argumentOf(DataFlowCall call, int pos) {
-    this = call.(DataFlowSourceCall).getArg(pos)
-  }
+  override predicate argumentOf(DataFlowCall call, int pos) { this.sourceArgumentOf(call, pos) }
+
+  predicate sourceArgumentOf(DataFlowSourceCall call, int pos) { this = call.getArg(pos) }
 
   /** Gets the call in which this node is an argument. */
   final DataFlowCall getCall() { this.argumentOf(result, _) }
