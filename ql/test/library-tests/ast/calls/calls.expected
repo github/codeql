@@ -86,6 +86,10 @@ callsWithArguments
 | calls.rb:320:1:320:32 | call to []= | []= | 4 | calls.rb:320:34:320:35 | __synth__4 |
 | calls.rb:320:21:320:31 | ... + ... | + | 0 | calls.rb:320:31:320:31 | 1 |
 | calls.rb:320:34:320:35 | ... * ... | * | 0 | calls.rb:320:37:320:37 | 2 |
+| calls.rb:328:25:328:37 | call to print | print | 0 | calls.rb:328:31:328:37 | "error" |
+| calls.rb:332:3:332:12 | call to super | super | 0 | calls.rb:332:9:332:11 | ... |
+| calls.rb:336:3:336:13 | call to bar | bar | 0 | calls.rb:336:7:336:7 | b |
+| calls.rb:336:3:336:13 | call to bar | bar | 1 | calls.rb:336:10:336:12 | ... |
 callsWithReceiver
 | calls.rb:2:1:2:5 | call to foo | calls.rb:2:1:2:5 | self |
 | calls.rb:5:1:5:10 | call to bar | calls.rb:5:1:5:3 | Foo |
@@ -316,6 +320,14 @@ callsWithReceiver
 | calls.rb:320:21:320:27 | call to boo | calls.rb:320:21:320:23 | call to foo |
 | calls.rb:320:21:320:31 | ... + ... | calls.rb:320:21:320:27 | call to boo |
 | calls.rb:320:34:320:35 | ... * ... | calls.rb:320:1:320:32 | call to [] |
+| calls.rb:323:11:323:13 | call to bar | calls.rb:323:11:323:13 | self |
+| calls.rb:324:13:324:15 | call to bar | calls.rb:324:13:324:15 | self |
+| calls.rb:325:14:325:16 | call to bar | calls.rb:325:14:325:16 | self |
+| calls.rb:326:18:326:20 | call to bar | calls.rb:326:18:326:20 | self |
+| calls.rb:327:22:327:24 | call to bar | calls.rb:327:22:327:24 | self |
+| calls.rb:328:13:328:15 | call to bar | calls.rb:328:13:328:15 | self |
+| calls.rb:328:25:328:37 | call to print | calls.rb:328:25:328:37 | self |
+| calls.rb:336:3:336:13 | call to bar | calls.rb:336:3:336:13 | self |
 callsWithBlock
 | calls.rb:17:1:17:17 | call to foo | calls.rb:17:5:17:17 | { ... } |
 | calls.rb:20:1:22:3 | call to foo | calls.rb:20:5:22:3 | do ... end |
@@ -339,6 +351,7 @@ superCalls
 | calls.rb:292:5:292:30 | call to super |
 | calls.rb:293:5:293:33 | call to super |
 | calls.rb:305:5:305:9 | call to super |
+| calls.rb:332:3:332:12 | call to super |
 superCallsWithArguments
 | calls.rb:288:5:288:16 | call to super | 0 | calls.rb:288:11:288:16 | "blah" |
 | calls.rb:289:5:289:17 | call to super | 0 | calls.rb:289:11:289:11 | 1 |
@@ -348,6 +361,7 @@ superCallsWithArguments
 | calls.rb:292:5:292:30 | call to super | 1 | calls.rb:292:14:292:14 | 5 |
 | calls.rb:293:5:293:33 | call to super | 0 | calls.rb:293:11:293:11 | 6 |
 | calls.rb:293:5:293:33 | call to super | 1 | calls.rb:293:14:293:14 | 7 |
+| calls.rb:332:3:332:12 | call to super | 0 | calls.rb:332:9:332:11 | ... |
 superCallsWithBlock
 | calls.rb:290:5:290:23 | call to super | calls.rb:290:11:290:23 | { ... } |
 | calls.rb:291:5:291:26 | call to super | calls.rb:291:11:291:26 | do ... end |
