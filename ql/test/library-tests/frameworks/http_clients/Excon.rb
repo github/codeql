@@ -24,9 +24,16 @@ resp7.body
 resp8 = Excon.trace("http://example.com/")
 resp8.body
 
-connection = Excon.new("http://example.com")
-resp9 = connection.get(path: "/")
+connection1 = Excon.new("http://example.com")
+resp9 = connection1.get(path: "/")
 resp9.body
 
-resp10 = connection.post(path: "/foo")
+resp10 = connection1.post(path: "/foo")
+resp10.body
+
+connection2 = Excon::Connection.new("http://example.com")
+resp9 = connection2.get(path: "/")
+resp9.body
+
+resp10 = connection2.post(path: "/foo")
 resp10.body

@@ -194,6 +194,13 @@ class BooleanLiteral extends Literal, TBooleanLiteral {
 
   /** Holds if the Boolean literal is `false` or `FALSE`. */
   predicate isFalse() { none() }
+
+  /** Gets the value of this Boolean literal. */
+  boolean getValue() {
+    this.isTrue() and result = true
+    or
+    this.isFalse() and result = false
+  }
 }
 
 private class TrueLiteral extends BooleanLiteral, TTrueLiteral {
@@ -750,7 +757,7 @@ class HashLiteral extends Literal, THashLiteral {
   final override string getAPrimaryQlClass() { result = "HashLiteral" }
 
   /**
-   * Gets the `n`th element in this array literal.
+   * Gets the `n`th element in this hash literal.
    *
    * In the following example, the 0th element is a `Pair`, and the 1st element
    * is a `HashSplatExpr`.
@@ -761,7 +768,7 @@ class HashLiteral extends Literal, THashLiteral {
    */
   final Expr getElement(int n) { toGenerated(result) = g.getChild(n) }
 
-  /** Gets an element in this array literal. */
+  /** Gets an element in this hash literal. */
   final Expr getAnElement() { result = this.getElement(_) }
 
   /** Gets a key-value `Pair` in this hash literal. */
