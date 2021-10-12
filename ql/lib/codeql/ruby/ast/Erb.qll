@@ -265,7 +265,7 @@ class ErbFile extends File {
    * For instance, a file named `foo.html.erb` has a template name of `foo`.
    * A partial template file named `_item.html.erb` has a template name of `item`.
    */
-  abstract string getTemplateName();
+  string getTemplateName() { none() }
 
   /**
    * Gets the erb template contained within this file.
