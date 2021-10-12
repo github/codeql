@@ -2,7 +2,9 @@ name: Query help preview
 
 on:
   pull_request:
-    branches: [main]
+    branches:
+      - main
+      - 'rc/*'
     paths:
       - "**/*.qhelp"
 
