@@ -389,6 +389,12 @@ module Generated {
     /** Gets the location of this element. */
     override Location getLocation() { dataclass_def(this, _, result) }
 
+    /** Gets the node corresponding to the field `extends`. */
+    AstNode getExtends(int i) { dataclass_extends(this, i, result) }
+
+    /** Gets the node corresponding to the field `instanceof`. */
+    AstNode getInstanceof(int i) { dataclass_instanceof(this, i, result) }
+
     /** Gets the node corresponding to the field `name`. */
     ClassName getName() { dataclass_def(this, result, _) }
 
@@ -397,7 +403,10 @@ module Generated {
 
     /** Gets a field or child node of this node. */
     override AstNode getAFieldOrChild() {
-      dataclass_def(this, result, _) or dataclass_child(this, _, result)
+      dataclass_extends(this, _, result) or
+      dataclass_instanceof(this, _, result) or
+      dataclass_def(this, result, _) or
+      dataclass_child(this, _, result)
     }
   }
 
