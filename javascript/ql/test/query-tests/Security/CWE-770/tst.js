@@ -77,3 +77,8 @@ express().get('/:path', catchAsync(expensiveHandler1)); // NOT OK
 express().get('/:path', rateLimiterMiddleware, catchAsync(expensiveHandler1)); // OK
 express().get('/:path', catchAsync(rateLimiterMiddleware), expensiveHandler1); // OK
 express().get('/:path', catchAsync(rateLimiterMiddleware), catchAsync(expensiveHandler1)); // OK
+
+function errorHandler(req, res, next) {
+  next(makeOAuthError(req, res));
+}
+express().use(errorHandler); // OK - does not perform authentication
