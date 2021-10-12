@@ -122,7 +122,7 @@ private module Shared {
     AssignExpr getAnAssignExpr() { result.getLeftOperand() = this.getExpr() }
   }
 
-  predicate isFlowFromLocals(DataFlow::Node node1, DataFlow::Node node2) {
+  private predicate isFlowFromLocals(DataFlow::Node node1, DataFlow::Node node2) {
     // node1 is a `locals` argument to a render call...
     exists(RenderCall call, Pair kvPair, string hashKey |
       call.getLocals().getAKeyValuePair() = kvPair and
@@ -153,7 +153,7 @@ private module Shared {
     )
   }
 
-  predicate isFlowFromControllerInstanceVariable(DataFlow::Node node1, DataFlow::Node node2) {
+  private predicate isFlowFromControllerInstanceVariable(DataFlow::Node node1, DataFlow::Node node2) {
     // instance variables in the controller
     exists(
       ActionControllerActionMethod action, VariableReadAccess viewVarRead, AssignExpr ae,
@@ -170,7 +170,7 @@ private module Shared {
     )
   }
 
-  predicate isFlowIntoHelperMethod(DataFlow::Node node1, DataFlow::Node node2) {
+  private predicate isFlowIntoHelperMethod(DataFlow::Node node1, DataFlow::Node node2) {
     // flow from template into controller helper method
     exists(
       ErbFile template, ActionControllerHelperMethod helperMethod,
@@ -185,11 +185,11 @@ private module Shared {
   }
 
   pragma[noinline]
-  predicate isHelperMethodNameMatch(ActionControllerHelperMethod helperMethod, MethodCall call) {
+  private predicate isHelperMethodNameMatch(ActionControllerHelperMethod helperMethod, MethodCall call) {
     helperMethod.getName() = call.getMethodName()
   }
 
-  predicate isFlowFromHelperMethod(DataFlow::Node node1, DataFlow::Node node2) {
+  private predicate isFlowFromHelperMethod(DataFlow::Node node1, DataFlow::Node node2) {
     // flow out of controller helper method into template
     exists(ErbFile template |
       template = node2.getLocation().getFile() |
