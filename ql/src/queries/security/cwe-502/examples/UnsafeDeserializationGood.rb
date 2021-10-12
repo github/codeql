@@ -10,4 +10,11 @@ class UserController < ActionController::Base
     object = YAML.safe_load params[:yaml]
     # ...
   end
+
+  def safe_oj_example
+    object = Oj.load params[:yaml], { mode: :strict }
+    # or
+    object = Oj.safe_load params[:yaml]
+    # ...
+  end
 end
