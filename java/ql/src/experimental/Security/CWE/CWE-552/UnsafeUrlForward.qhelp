@@ -11,7 +11,7 @@
 </overview>
 <recommendation>
 
-<p>In order to prevent untrusted URL forwarding, it is recommended to avoid entering user input directly into the forwarding URL.</p>
+<p>In order to prevent untrusted URL forwarding, it is recommended to avoid concatenating user input directly into the forwarding URL.</p>
 
 </recommendation>
 <example>
