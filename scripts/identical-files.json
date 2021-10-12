@@ -43,5 +43,9 @@
         "codeql/javascript/ql/lib/semmle/javascript/security/performance/SuperlinearBackTracking.qll",
         "codeql/python/ql/lib/semmle/python/security/performance/SuperlinearBackTracking.qll",
         "ql/lib/codeql/ruby/regexp/SuperlinearBackTracking.qll"
+    ],
+    "CodeQL Tutorial": [
+        "codeql/cpp/ql/lib/tutorial.qll",
+        "ql/lib/tutorial.qll"
     ]
 }
