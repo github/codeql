@@ -23,3 +23,5 @@
 | test.cpp:365:19:365:25 | buffer2 | Variable $@ may not be null terminated. | test.cpp:363:8:363:14 | buffer2 | buffer2 |
 | test.cpp:392:17:392:22 | buffer | Variable $@ may not be null terminated. | test.cpp:390:8:390:13 | buffer | buffer |
 | test.cpp:398:18:398:23 | buffer | Variable $@ may not be null terminated. | test.cpp:396:8:396:13 | buffer | buffer |
+| test.cpp:444:10:444:15 | buffer | Variable $@ may not be null terminated. | test.cpp:442:8:442:13 | buffer | buffer |
+| test.cpp:450:16:450:21 | buffer | Variable $@ may not be null terminated. | test.cpp:448:8:448:13 | buffer | buffer |

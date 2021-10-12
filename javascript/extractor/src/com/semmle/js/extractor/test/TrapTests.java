@@ -142,10 +142,6 @@ public class TrapTests {
       options.add(inputFile.getAbsolutePath());
     }
 
-    LinkedHashMap<String, String> vars = new LinkedHashMap<>();
-		vars.put("CODEQL_REDUCE_FILES_FOLDERS_RELATIONS", "true");
-    Env.systemEnv().pushEnvironmentContext(vars);
-
     final List<Pair<String, String>> expectedVsActual = new ArrayList<Pair<String, String>>();
     Main main =
         new Main(

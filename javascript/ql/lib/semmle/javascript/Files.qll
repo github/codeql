@@ -34,7 +34,7 @@ abstract class Container extends @container {
   /**
    * Gets a URL representing the location of this container.
    *
-   * For more information see [Providing URLs](https://help.semmle.com/QL/learn-ql/ql/locations.html#providing-urls).
+   * For more information see [Providing URLs](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/#providing-urls).
    */
   abstract string getURL();
 

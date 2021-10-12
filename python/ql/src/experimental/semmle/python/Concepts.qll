@@ -14,6 +14,36 @@ private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.TaintTracking
 private import experimental.semmle.python.Frameworks
 
+/** Provides classes for modeling log related APIs. */
+module LogOutput {
+  /**
+   * A data flow node for log output.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `LogOutput` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /**
+     * Get the parameter value of the log output function.
+     */
+    abstract DataFlow::Node getAnInput();
+  }
+}
+
+/**
+ * A data flow node for log output.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `LogOutput::Range` instead.
+ */
+class LogOutput extends DataFlow::Node {
+  LogOutput::Range range;
+
+  LogOutput() { this = range }
+
+  DataFlow::Node getAnInput() { result = range.getAnInput() }
+}
+
 /** Provides classes for modeling LDAP query execution-related APIs. */
 module LDAPQuery {
   /**
@@ -90,9 +120,19 @@ module LDAPBind {
    */
   abstract class Range extends DataFlow::Node {
     /**
+     * Gets the argument containing the binding host.
+     */
+    abstract DataFlow::Node getHost();
+
+    /**
      * Gets the argument containing the binding expression.
      */
     abstract DataFlow::Node getPassword();
+
+    /**
+     * Holds if the binding process use SSL.
+     */
+    abstract predicate useSSL();
   }
 }
 
@@ -107,7 +147,20 @@ class LDAPBind extends DataFlow::Node {
 
   LDAPBind() { this = range }
 
+  /**
+   * Gets the argument containing the binding host.
+   */
+  DataFlow::Node getHost() { result = range.getHost() }
+
+  /**
+   * Gets the argument containing the binding expression.
+   */
   DataFlow::Node getPassword() { result = range.getPassword() }
+
+  /**
+   * Holds if the binding process use SSL.
+   */
+  predicate useSSL() { range.useSSL() }
 }
 
 /** Provides classes for modeling SQL sanitization libraries. */

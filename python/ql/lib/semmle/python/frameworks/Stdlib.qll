@@ -429,6 +429,22 @@ private module StdlibPrivate {
   // marshal
   // ---------------------------------------------------------------------------
   /**
+   * A call to `marshal.load`
+   * See https://docs.python.org/3/library/marshal.html#marshal.load
+   */
+  private class MarshalLoadCall extends Decoding::Range, DataFlow::CallCfgNode {
+    MarshalLoadCall() { this = API::moduleImport("marshal").getMember("load").getACall() }
+
+    override predicate mayExecuteInput() { any() }
+
+    override DataFlow::Node getAnInput() { result = this.getArg(0) }
+
+    override DataFlow::Node getOutput() { result = this }
+
+    override string getFormat() { result = "marshal" }
+  }
+
+  /**
    * A call to `marshal.loads`
    * See https://docs.python.org/3/library/marshal.html#marshal.loads
    */
@@ -447,15 +463,23 @@ private module StdlibPrivate {
   // ---------------------------------------------------------------------------
   // pickle
   // ---------------------------------------------------------------------------
-  /** Gets a reference to the `pickle` module. */
-  DataFlow::Node pickle() { result = API::moduleImport(["pickle", "cPickle", "_pickle"]).getAUse() }
+  /** Gets a reference to any of the `pickle` modules. */
+  API::Node pickle() { result = API::moduleImport(["pickle", "cPickle", "_pickle"]) }
 
-  /** Provides models for the `pickle` module. */
-  module pickle {
-    /** Gets a reference to the `pickle.loads` function. */
-    DataFlow::Node loads() {
-      result = API::moduleImport(["pickle", "cPickle", "_pickle"]).getMember("loads").getAUse()
-    }
+  /**
+   * A call to `pickle.load`
+   * See https://docs.python.org/3/library/pickle.html#pickle.load
+   */
+  private class PickleLoadCall extends Decoding::Range, DataFlow::CallCfgNode {
+    PickleLoadCall() { this = pickle().getMember("load").getACall() }
+
+    override predicate mayExecuteInput() { any() }
+
+    override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("file")] }
+
+    override DataFlow::Node getOutput() { result = this }
+
+    override string getFormat() { result = "pickle" }
   }
 
   /**
@@ -463,11 +487,63 @@ private module StdlibPrivate {
    * See https://docs.python.org/3/library/pickle.html#pickle.loads
    */
   private class PickleLoadsCall extends Decoding::Range, DataFlow::CallCfgNode {
-    PickleLoadsCall() { this.getFunction() = pickle::loads() }
+    PickleLoadsCall() { this = pickle().getMember("loads").getACall() }
 
     override predicate mayExecuteInput() { any() }
 
-    override DataFlow::Node getAnInput() { result = this.getArg(0) }
+    override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("data")] }
+
+    override DataFlow::Node getOutput() { result = this }
+
+    override string getFormat() { result = "pickle" }
+  }
+
+  /**
+   * A construction of a `pickle.Unpickler`
+   * See https://docs.python.org/3/library/pickle.html#pickle.Unpickler
+   */
+  private class PickleUnpicklerCall extends Decoding::Range, DataFlow::CallCfgNode {
+    PickleUnpicklerCall() { this = pickle().getMember("Unpickler").getACall() }
+
+    override predicate mayExecuteInput() { any() }
+
+    override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("file")] }
+
+    override DataFlow::Node getOutput() { result = this.getAMethodCall("load") }
+
+    override string getFormat() { result = "pickle" }
+  }
+
+  // ---------------------------------------------------------------------------
+  // shelve
+  // ---------------------------------------------------------------------------
+  /**
+   * A call to `shelve.open`
+   * See https://docs.python.org/3/library/shelve.html#shelve.open
+   *
+   * Claiming there is decoding of the input to `shelve.open` is a bit questionable, since
+   * it's not the filename, but the contents of the file that is decoded.
+   *
+   * However, we definitely want to be able to alert if a user is able to control what
+   * file is used, since that can lead to code execution (even if that file is free of
+   * path injection).
+   *
+   * So right now the best way we have of modeling this seems to be to treat the filename
+   * argument as being deserialized...
+   */
+  private class ShelveOpenCall extends Decoding::Range, FileSystemAccess::Range,
+    DataFlow::CallCfgNode {
+    ShelveOpenCall() { this = API::moduleImport("shelve").getMember("open").getACall() }
+
+    override predicate mayExecuteInput() { any() }
+
+    override DataFlow::Node getAnInput() {
+      result in [this.getArg(0), this.getArgByName("filename")]
+    }
+
+    override DataFlow::Node getAPathArgument() {
+      result in [this.getArg(0), this.getArgByName("filename")]
+    }
 
     override DataFlow::Node getOutput() { result = this }
 

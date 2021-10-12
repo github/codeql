@@ -200,6 +200,9 @@ module EssaFlow {
     // If expressions
     nodeFrom.asCfgNode() = nodeTo.asCfgNode().(IfExprNode).getAnOperand()
     or
+    // boolean inline expressions such as `x or y` or `x and y`
+    nodeFrom.asCfgNode() = nodeTo.asCfgNode().(BoolExprNode).getAnOperand()
+    or
     // Flow inside an unpacking assignment
     iterableUnpackingFlowStep(nodeFrom, nodeTo)
     or
@@ -1619,6 +1622,12 @@ predicate mayBenefitFromCallContext(DataFlowCall call, DataFlowCallable c) { non
 predicate isImmutableOrUnobservable(Node n) { none() }
 
 int accessPathLimit() { result = 5 }
+
+/**
+ * Holds if access paths with `c` at their head always should be tracked at high
+ * precision. This disables adaptive access path precision for such access paths.
+ */
+predicate forceHighPrecision(Content c) { none() }
 
 /** Holds if `n` should be hidden from path explanations. */
 predicate nodeIsHidden(Node n) { none() }

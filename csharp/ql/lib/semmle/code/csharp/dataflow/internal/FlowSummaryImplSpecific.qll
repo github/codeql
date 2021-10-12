@@ -16,6 +16,9 @@ private import semmle.code.csharp.dataflow.ExternalFlow
 /** Holds is `i` is a valid parameter position. */
 predicate parameterPosition(int i) { i in [-1 .. any(Parameter p).getPosition()] }
 
+/** Gets the parameter position of the instance parameter. */
+int instanceParameterPosition() { none() } // disables implicit summary flow to `this` for callbacks
+
 /** Gets the synthesized summary data-flow node for the given values. */
 Node summaryNode(SummarizedCallable c, SummaryNodeState state) { result = TSummaryNode(c, state) }
 

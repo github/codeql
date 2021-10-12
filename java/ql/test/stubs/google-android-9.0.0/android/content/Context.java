@@ -961,4 +961,91 @@ public abstract class Context {
      * @see #sendOrderedBroadcast(Intent, String, BroadcastReceiver, Handler, int, String, Bundle)
      */
     public abstract void sendOrderedBroadcast(Intent intent, String receiverPermission);    
+
+    /**
+     * Request that a given application service be started.  The Intent
+     * should either contain the complete class name of a specific service
+     * implementation to start, or a specific package name to target.  If the
+     * Intent is less specified, it logs a warning about this.  In this case any of the
+     * multiple matching services may be used.  If this service
+     * is not already running, it will be instantiated and started (creating a
+     * process for it if needed); if it is running then it remains running.
+     *
+     * <p>Every call to this method will result in a corresponding call to
+     * the target service's {@link android.app.Service#onStartCommand} method,
+     * with the <var>intent</var> given here.  This provides a convenient way
+     * to submit jobs to a service without having to bind and call on to its
+     * interface.
+     *
+     * <p>Using startService() overrides the default service lifetime that is
+     * managed by {@link #bindService}: it requires the service to remain
+     * running until {@link #stopService} is called, regardless of whether
+     * any clients are connected to it.  Note that calls to startService()
+     * do not nest: no matter how many times you call startService(),
+     * a single call to {@link #stopService} will stop it.
+     *
+     * <p>The system attempts to keep running services around as much as
+     * possible.  The only time they should be stopped is if the current
+     * foreground application is using so many resources that the service needs
+     * to be killed.  If any errors happen in the service's process, it will
+     * automatically be restarted.
+     *
+     * <p>This function will throw {@link SecurityException} if you do not
+     * have permission to start the given service.
+     *
+     * <p class="note"><strong>Note:</strong> Each call to startService()
+     * results in significant work done by the system to manage service
+     * lifecycle surrounding the processing of the intent, which can take
+     * multiple milliseconds of CPU time. Due to this cost, startService()
+     * should not be used for frequent intent delivery to a service, and only
+     * for scheduling significant work. Use {@link #bindService bound services}
+     * for high frequency calls.
+     * </p>
+     *
+     * @param service Identifies the service to be started.  The Intent must be
+     *      fully explicit (supplying a component name).  Additional values
+     *      may be included in the Intent extras to supply arguments along with
+     *      this specific start call.
+     *
+     * @return If the service is being started or is already running, the
+     * {@link ComponentName} of the actual service that was started is
+     * returned; else if the service does not exist null is returned.
+     *
+     * @throws SecurityException If the caller does not have permission to access the service
+     * or the service can not be found.
+     * @throws IllegalStateException If the application is in a state where the service
+     * can not be started (such as not in the foreground in a state when services are allowed).
+     *
+     * @see #stopService
+     * @see #bindService
+     */
+    public abstract ComponentName startService(Intent service);
+
+    /**
+     * Similar to {@link #startService(Intent)}, but with an implicit promise that the
+     * Service will call {@link android.app.Service#startForeground(int, android.app.Notification)
+     * startForeground(int, android.app.Notification)} once it begins running.  The service is given
+     * an amount of time comparable to the ANR interval to do this, otherwise the system
+     * will automatically stop the service and declare the app ANR.
+     *
+     * <p>Unlike the ordinary {@link #startService(Intent)}, this method can be used
+     * at any time, regardless of whether the app hosting the service is in a foreground
+     * state.
+     *
+     * @param service Identifies the service to be started.  The Intent must be
+     *      fully explicit (supplying a component name).  Additional values
+     *      may be included in the Intent extras to supply arguments along with
+     *      this specific start call.
+     *
+     * @return If the service is being started or is already running, the
+     * {@link ComponentName} of the actual service that was started is
+     * returned; else if the service does not exist null is returned.
+     *
+     * @throws SecurityException If the caller does not have permission to access the service
+     * or the service can not be found.
+     *
+     * @see #stopService
+     * @see android.app.Service#startForeground(int, android.app.Notification)
+     */
+    public abstract ComponentName startForegroundService(Intent service);
 }

@@ -28,7 +28,11 @@ private module AlgorithmNames {
     name = "SHA256" or
     name = "SHA384" or
     name = "SHA512" or
-    name = "SHA3"
+    name = "SHA3" or
+    name = "SHA3224" or
+    name = "SHA3256" or
+    name = "SHA3384" or
+    name = "SHA3512"
   }
 
   predicate isWeakHashingAlgorithm(string name) {

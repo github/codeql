@@ -103,3 +103,19 @@ private class NumberTaintPreservingCallable extends TaintPreservingCallable {
 
   override predicate returnsTaintFrom(int arg) { arg = argument }
 }
+
+/**
+ * A `Content` that should be implicitly regarded as tainted whenever an object with such `Content`
+ * is itself tainted.
+ *
+ * For example, if we had a type `class Container { Contained field; }`, then by default a tainted
+ * `Container` and a `Container` with a tainted `Contained` stored in its `field` are distinct.
+ *
+ * If `any(DataFlow::FieldContent fc | fc.getField().hasQualifiedName("Container", "field"))` was
+ * included in this type however, then a tainted `Container` would imply that its `field` is also
+ * tainted (but not vice versa).
+ *
+ * Note that `TaintTracking::Configuration` applies this behaviour by default to array, collection,
+ * map-key and map-value content, so that e.g. a tainted `Map` is assumed to have tainted keys and values.
+ */
+abstract class TaintInheritingContent extends DataFlow::Content { }

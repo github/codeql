@@ -4,7 +4,7 @@ private import semmle.code.cpp.ir.dataflow.DataFlow
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowUtil
 private import semmle.code.cpp.ir.dataflow.DataFlow3
 private import semmle.code.cpp.ir.IR
-private import semmle.code.cpp.ir.dataflow.internal.DataFlowDispatch as Dispatch
+private import semmle.code.cpp.ir.dataflow.ResolveCall
 private import semmle.code.cpp.controlflow.IRGuards
 private import semmle.code.cpp.models.interfaces.Taint
 private import semmle.code.cpp.models.interfaces.DataFlow
@@ -356,20 +356,6 @@ predicate taintedIncludingGlobalVars(Expr source, Element tainted, string global
 GlobalOrNamespaceVariable globalVarFromId(string id) { id = result.getQualifiedName() }
 
 /**
- * Resolve potential target function(s) for `call`.
- *
- * If `call` is a call through a function pointer (`ExprCall`) or
- * targets a virtual method, simple data flow analysis is performed
- * in order to identify target(s).
- */
-Function resolveCall(Call call) {
-  exists(CallInstruction callInstruction |
-    callInstruction.getAST() = call and
-    result = Dispatch::viableCallable(callInstruction)
-  )
-}
-
-/**
  * Provides definitions for augmenting source/sink pairs with data-flow paths
  * between them. From a `@kind path-problem` query, import this module in the
  * global scope, extend `TaintTrackingConfiguration`, and use `taintedWithPath`
@@ -479,7 +465,7 @@ module TaintedWithPath {
      * The location spans column `startcolumn` of line `startline` to
      * column `endcolumn` of line `endline` in file `filepath`.
      * For more information, see
-     * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+     * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
      */
     predicate hasLocationInfo(
       string filepath, int startline, int startcolumn, int endline, int endcolumn
@@ -547,6 +533,39 @@ module TaintedWithPath {
       DataFlow3::PathGraph::edges(sourceNode.inner(), sinkNode.inner()) and
       sourceNode.inner().getNode() = getNodeForExpr(a.(InitialPathNode).inner()) and
       b.(FinalPathNode).inner() = adjustedSink(sinkNode.inner().getNode())
+    )
+  }
+
+  /**
+   * Holds if there is flow from `arg` to `out` across a call that can by summarized by the flow
+   * from `par` to `ret` within it, in the graph of data flow path explanations.
+   */
+  query predicate subpaths(PathNode arg, PathNode par, PathNode ret, PathNode out) {
+    DataFlow3::PathGraph::subpaths(arg.(WrapPathNode).inner(), par.(WrapPathNode).inner(),
+      ret.(WrapPathNode).inner(), out.(WrapPathNode).inner())
+    or
+    // To avoid showing trivial-looking steps, we _replace_ the last node instead
+    // of adding an edge out of it.
+    exists(WrapPathNode sinkNode |
+      DataFlow3::PathGraph::subpaths(arg.(WrapPathNode).inner(), par.(WrapPathNode).inner(),
+        ret.(WrapPathNode).inner(), sinkNode.inner()) and
+      out.(FinalPathNode).inner() = adjustedSink(sinkNode.inner().getNode())
+    )
+    or
+    // Same for the first node
+    exists(WrapPathNode sourceNode |
+      DataFlow3::PathGraph::subpaths(sourceNode.inner(), par.(WrapPathNode).inner(),
+        ret.(WrapPathNode).inner(), out.(WrapPathNode).inner()) and
+      sourceNode.inner().getNode() = getNodeForExpr(arg.(InitialPathNode).inner())
+    )
+    or
+    // Finally, handle the case where the path goes directly from a source to a
+    // sink, meaning that they both need to be translated.
+    exists(WrapPathNode sinkNode, WrapPathNode sourceNode |
+      DataFlow3::PathGraph::subpaths(sourceNode.inner(), par.(WrapPathNode).inner(),
+        ret.(WrapPathNode).inner(), sinkNode.inner()) and
+      sourceNode.inner().getNode() = getNodeForExpr(arg.(InitialPathNode).inner()) and
+      out.(FinalPathNode).inner() = adjustedSink(sinkNode.inner().getNode())
     )
   }
 

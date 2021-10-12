@@ -779,23 +779,15 @@ class NestedType extends RefType {
     getEnclosingType().isStrictfp()
   }
 
-  /**
-   * Holds if this nested type is static.
-   *
-   * A nested type is static either if it is explicitly declared as such
-   * using the modifier `static`, or if it is implicitly static
-   * because one of the following holds:
-   *
-   * - it is a member type of an interface,
-   * - it is a member interface, or
-   * - it is a nested enum type.
-   *
-   * See JLS v8, section 8.5.1 (Static Member Type Declarations),
-   * section 8.9 (Enums) and section 9.5 (Member Type Declarations).
-   */
   override predicate isStatic() {
     super.isStatic()
     or
+    /*
+     * Note: The following is most likely redundant because `isStatic()` of the superclass
+     * holds for implicitly static types, but keep the special casing below for now to be
+     * on the safe side
+     */
+
     // JLS 8.5.1: A member interface is implicitly static.
     this instanceof Interface
     or

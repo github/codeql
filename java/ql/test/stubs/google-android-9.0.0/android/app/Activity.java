@@ -15,6 +15,8 @@
  */
 package android.app;
 
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -675,7 +677,16 @@ import android.view.View;
  * upload, independent of whether the original activity is paused, stopped, or
  * finished.
  */
-public class Activity {
+public class Activity extends ContextWrapper {
+    /** Standard activity result: operation canceled. */
+    public static final int RESULT_CANCELED = 0;
+
+    /** Standard activity result: operation succeeded. */
+    public static final int RESULT_OK = -1;
+
+    /** Start of user-defined activity results. */
+    public static final int RESULT_FIRST_USER = 1;
+
     /** Return the intent that started this activity. */
     public Intent getIntent() {
         return null;
@@ -1141,5 +1152,38 @@ public class Activity {
      * @see #startActivityForResult
      */
     public void startActivities(Intent[] intents, Bundle options) {
+    }
+
+    /**
+     * Called when an activity you launched exits, giving you the requestCode
+     * you started it with, the resultCode it returned, and any additional
+     * data from it.  The <var>resultCode</var> will be
+     * {@link #RESULT_CANCELED} if the activity explicitly returned that,
+     * didn't return any result, or crashed during its operation.
+     *
+     * <p>An activity can never receive a result in the resumed state. You can count on
+     * {@link #onResume} being called after this method, though not necessarily immediately after.
+     * If the activity was resumed, it will be paused and the result will be delivered, followed
+     * by {@link #onResume}.  If the activity wasn't in the resumed state, then the result will
+     * be delivered, with {@link #onResume} called sometime later when the activity becomes active
+     * again.
+     *
+     * <p>This method is never invoked if your activity sets
+     * {@link android.R.styleable#AndroidManifestActivity_noHistory noHistory} to
+     * <code>true</code>.
+     *
+     * @param requestCode The integer request code originally supplied to
+     *                    startActivityForResult(), allowing you to identify who this
+     *                    result came from.
+     * @param resultCode The integer result code returned by the child activity
+     *                   through its setResult().
+     * @param data An Intent, which can return result data to the caller
+     *               (various data can be attached to Intent "extras").
+     *
+     * @see #startActivityForResult
+     * @see #createPendingResult
+     * @see #setResult(int)
+     */
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     }
 }
