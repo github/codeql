@@ -10,4 +10,4 @@ edition = "2018"
 node-types = { path = "../node-types" }
 tracing = "0.1"
 tracing-subscriber = { version = "0.2", features = ["env-filter"] }
-tree-sitter-ql = { git = "https://github.com/tausbn/tree-sitter-ql.git", rev = "e08901378e2fd5c33f1e88bbb59716fd36f094f7" }
+tree-sitter-ql = { git = "https://github.com/tausbn/tree-sitter-ql.git", rev = "a9348d405de3b2dde0e6d7e59d476ae91516b7af" }

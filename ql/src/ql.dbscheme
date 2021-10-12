@@ -240,7 +240,25 @@ conjunction_def(
   int loc: @location ref
 );
 
-@dataclass_child_type = @class_member | @type_alias_body | @type_expr | @type_union_body
+@dataclass_extends_type = @reserved_word | @type_expr
+
+#keyset[dataclass, index]
+dataclass_extends(
+  int dataclass: @dataclass ref,
+  int index: int ref,
+  unique int extends: @dataclass_extends_type ref
+);
+
+@dataclass_instanceof_type = @reserved_word | @type_expr
+
+#keyset[dataclass, index]
+dataclass_instanceof(
+  int dataclass: @dataclass ref,
+  int index: int ref,
+  unique int instanceof: @dataclass_instanceof_type ref
+);
+
+@dataclass_child_type = @class_member | @type_alias_body | @type_union_body
 
 #keyset[dataclass, index]
 dataclass_child(
