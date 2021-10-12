@@ -132,6 +132,8 @@ private module Cached {
     TFloatLiteral(Ruby::Float g) { not any(Ruby::Rational r).getChild() = g } or
     TForExpr(Ruby::For g) or
     TForIn(Ruby::In g) or // TODO REMOVE
+    TForwardParameter(Ruby::ForwardParameter g) or
+    TForwardArgument(Ruby::ForwardArgument g) or
     TGEExpr(Ruby::Binary g) { g instanceof @ruby_binary_rangleequal } or
     TGTExpr(Ruby::Binary g) { g instanceof @ruby_binary_rangle } or
     TGlobalVariableAccessReal(Ruby::GlobalVariable g, AST::GlobalVariable v) {
@@ -340,6 +342,8 @@ private module Cached {
     n = TFloatLiteral(result) or
     n = TForExpr(result) or
     n = TForIn(result) or // TODO REMOVE
+    n = TForwardArgument(result) or
+    n = TForwardParameter(result) or
     n = TGEExpr(result) or
     n = TGTExpr(result) or
     n = TGlobalVariableAccessReal(result, _) or
@@ -550,7 +554,8 @@ class TSelf = TSelfReal or TSelfSynth;
 class TExpr =
   TSelf or TArgumentList or TRescueClause or TRescueModifierExpr or TPair or TStringConcatenation or
       TCall or TBlockArgument or TConstantAccess or TControlExpr or TWhenExpr or TLiteral or
-      TCallable or TVariableAccess or TStmtSequence or TOperation or TSimpleParameter;
+      TCallable or TVariableAccess or TStmtSequence or TOperation or TSimpleParameter or
+      TForwardArgument;
 
 class TSplatExpr = TSplatExprReal or TSplatExprSynth;
 
@@ -677,7 +682,7 @@ class TReturningStmt = TReturnStmt or TBreakStmt or TNextStmt;
 
 class TParameter =
   TPatternParameter or TBlockParameter or THashSplatParameter or TKeywordParameter or
-      TOptionalParameter or TSplatParameter;
+      TOptionalParameter or TSplatParameter or TForwardParameter;
 
 class TPatternParameter = TSimpleParameter or TTuplePatternParameter;
 

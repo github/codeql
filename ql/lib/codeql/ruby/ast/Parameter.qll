@@ -233,3 +233,16 @@ class SplatParameter extends NamedParameter, TSplatParameter {
 
   final override string getName() { result = g.getName().getValue() }
 }
+
+/**
+ * A special `...` parameter that forwards positional/keyword/block arguments:
+ * ```rb
+ * def foo(...)
+ * end
+ * ```
+ */
+class ForwardParameter extends Parameter, TForwardParameter {
+  final override string getAPrimaryQlClass() { result = "ForwardParameter" }
+
+  final override string toString() { result = "..." }
+}

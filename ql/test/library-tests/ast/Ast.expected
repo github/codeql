@@ -611,6 +611,50 @@ calls/calls.rb:
 #  320|             getReceiver: [Self] self
 #  320|         getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 1
 #  320|     getAnOperand/getRightOperand: [IntegerLiteral] 2
+#  323|   getStmt: [Method] foo
+#  323|     getStmt: [MethodCall] call to bar
+#  323|       getReceiver: [Self] self
+#  324|   getStmt: [Method] foo
+#  324|     getStmt: [MethodCall] call to bar
+#  324|       getReceiver: [Self] self
+#  325|   getStmt: [Method] foo
+#  325|     getParameter: [SimpleParameter] x
+#  325|       getDefiningAccess: [LocalVariableAccess] x
+#  325|     getStmt: [MethodCall] call to bar
+#  325|       getReceiver: [Self] self
+#  326|   getStmt: [SingletonMethod] foo
+#  326|     getObject: [ConstantReadAccess] Object
+#  326|     getStmt: [MethodCall] call to bar
+#  326|       getReceiver: [Self] self
+#  327|   getStmt: [SingletonMethod] foo
+#  327|     getObject: [ConstantReadAccess] Object
+#  327|     getParameter: [SimpleParameter] x
+#  327|       getDefiningAccess: [LocalVariableAccess] x
+#  327|     getStmt: [MethodCall] call to bar
+#  327|       getReceiver: [Self] self
+#  328|   getStmt: [Method] foo
+#  328|     getStmt: [RescueModifierExpr] ... rescue ...
+#  328|       getBody: [MethodCall] call to bar
+#  328|         getReceiver: [Self] self
+#  328|       getHandler: [ParenthesizedExpr] ( ... )
+#  328|         getStmt: [MethodCall] call to print
+#  328|           getReceiver: [Self] self
+#  328|           getArgument: [StringLiteral] "error"
+#  328|             getComponent: [StringTextComponent] error
+#  331|   getStmt: [Method] foo
+#  331|     getParameter: [ForwardParameter] ...
+#  332|     getStmt: [SuperCall] call to super
+#  332|       getArgument: [ForwardedArguments] ...
+#  335|   getStmt: [Method] foo
+#  335|     getParameter: [SimpleParameter] a
+#  335|       getDefiningAccess: [LocalVariableAccess] a
+#  335|     getParameter: [SimpleParameter] b
+#  335|       getDefiningAccess: [LocalVariableAccess] b
+#  335|     getParameter: [ForwardParameter] ...
+#  336|     getStmt: [MethodCall] call to bar
+#  336|       getReceiver: [Self] self
+#  336|       getArgument: [LocalVariableAccess] b
+#  336|       getArgument: [ForwardedArguments] ...
 control/cases.rb:
 #    1| [Toplevel] cases.rb
 #    2|   getStmt: [AssignExpr] ... = ...
