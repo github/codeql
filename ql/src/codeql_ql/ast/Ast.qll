@@ -2019,3 +2019,187 @@ class ModuleExpr extends TModuleExpr, ModuleRef {
     pred = directMember("getQualifier") and result = this.getQualifier()
   }
 }
+
+/**
+ * Classes modelling YAML AST nodes.
+ */
+module YAML {
+  /** A node in a YAML file */
+  class YAMLNode extends TYAMLNode, AstNode {
+    /** Holds if the predicate is a root node (has no parent) */
+    predicate isRoot() { not exists(getParent()) }
+  }
+
+  /** A YAML comment. */
+  class YAMLComment extends TYamlCommemt, YAMLNode {
+    Generated::YamlComment yamlcomment;
+
+    YAMLComment() { this = TYamlCommemt(yamlcomment) }
+
+    override string getAPrimaryQlClass() { result = "YAMLComment" }
+  }
+
+  /** A YAML entry. */
+  class YAMLEntry extends TYamlEntry, YAMLNode {
+    Generated::YamlEntry yamle;
+
+    YAMLEntry() { this = TYamlEntry(yamle) }
+
+    /** Gets the key of this YAML entry. */
+    YAMLKey getKey() {
+      exists(Generated::YamlKeyvaluepair pair |
+        pair.getParent() = yamle and
+        result = TYamlKey(pair.getKey())
+      )
+    }
+
+    /** Gets the value of this YAML entry. */
+    YAMLValue getValue() {
+      exists(Generated::YamlKeyvaluepair pair |
+        pair.getParent() = yamle and
+        result = TYamlValue(pair.getValue())
+      )
+    }
+
+    override string getAPrimaryQlClass() { result = "YAMLEntry" }
+  }
+
+  /** A YAML key. */
+  class YAMLKey extends TYamlKey, YAMLNode {
+    Generated::YamlKey yamlkey;
+
+    YAMLKey() { this = TYamlKey(yamlkey) }
+
+    /**
+     * Gets the value of this YAML key.
+     */
+    YAMLValue getValue() {
+      exists(Generated::YamlKeyvaluepair pair |
+        pair.getKey() = yamlkey and result = TYamlValue(pair.getValue())
+      )
+    }
+
+    override string getAPrimaryQlClass() { result = "YAMLKey" }
+
+    /** Gets the value of this YAML value. */
+    string getNamePart(int i) {
+      i = 0 and result = yamlkey.getChild(0).(Generated::SimpleId).getValue()
+      or
+      exists(YAMLKey child |
+        child = TYamlKey(yamlkey.getChild(1)) and
+        result = child.getNamePart(i - 1)
+      )
+    }
+
+    /**
+     * Gets all the name parts of this YAML key concatenated with `/`.
+     * Dashes are replaced with `/` (because we don't have that information in the generated AST).
+     */
+    string getQualifiedName() {
+      result = concat(string part, int i | part = getNamePart(i) | part, "/" order by i)
+    }
+  }
+
+  /** A YAML list item. */
+  class YAMLListItem extends TYamlListitem, YAMLNode {
+    Generated::YamlListitem yamllistitem;
+
+    YAMLListItem() { this = TYamlListitem(yamllistitem) }
+
+    /**
+     * Gets the value of this YAML list item.
+     */
+    YAMLValue getValue() { result = TYamlValue(yamllistitem.getChild()) }
+
+    override string getAPrimaryQlClass() { result = "YAMLListItem" }
+  }
+
+  /** A YAML value. */
+  class YAMLValue extends TYamlValue, YAMLNode {
+    Generated::YamlValue yamlvalue;
+
+    YAMLValue() { this = TYamlValue(yamlvalue) }
+
+    override string getAPrimaryQlClass() { result = "YAMLValue" }
+
+    /** Gets the value of this YAML value. */
+    string getValue() { result = yamlvalue.getValue() }
+  }
+
+  // to not expose the entire `File` API on `QlPack`.
+  private newtype TQLPack = MKQlPack(File file) { file.getBaseName() = "qlpack.yml" }
+
+  YAMLEntry test() { not result.isRoot() }
+
+  /**
+   * A `qlpack.yml` file.
+   */
+  class QLPack extends MKQlPack {
+    File file;
+
+    QLPack() { this = MKQlPack(file) }
+
+    private string getProperty(string name) {
+      exists(YAMLEntry entry |
+        entry.isRoot() and
+        entry.getKey().getQualifiedName() = name and
+        result = entry.getValue().getValue() and
+        entry.getLocation().getFile() = file
+      )
+    }
+
+    /** Gets the name of this qlpack */
+    string getName() { result = getProperty("name") }
+
+    /** Gets the version of this qlpack */
+    string getVersion() { result = getProperty("version") }
+
+    /** Gets the database scheme of this qlpack */
+    string getDbScheme() { result = getProperty("dbscheme") }
+
+    /** Gets the extractor of this qlpack */
+    string getExtractor() { result = getProperty("extractor") }
+
+    string toString() { result = getName() }
+
+    /** Gets the file that this `QLPack` represents. */
+    File getFile() { result = file }
+
+    private predicate isADependency(YAMLEntry entry) {
+      exists(YAMLEntry deps |
+        deps.getLocation().getFile() = file and entry.getLocation().getFile() = file
+      |
+        deps.isRoot() and
+        deps.getKey().getQualifiedName() = "dependencies" and
+        entry.getLocation().getStartLine() = 1 + deps.getLocation().getStartLine() and
+        entry.getLocation().getStartColumn() > deps.getLocation().getStartColumn()
+      )
+      or
+      exists(YAMLEntry prev | isADependency(prev) |
+        prev.getLocation().getFile() = file and
+        entry.getLocation().getFile() = file and
+        entry.getLocation().getStartLine() = 1 + prev.getLocation().getStartLine() and
+        entry.getLocation().getStartColumn() = prev.getLocation().getStartColumn()
+      )
+    }
+
+    predicate hasDependency(string name, string version) {
+      exists(YAMLEntry entry | isADependency(entry) |
+        entry.getKey().getQualifiedName() = name and
+        entry.getValue().getValue() = version
+      )
+    }
+
+    Location getLocation() {
+      // hacky, just pick the first node in the file.
+      result =
+        min(YAMLNode entry, Location l, File f |
+          entry.getLocation().getFile() = file and
+          f = file and
+          l = entry.getLocation()
+        |
+          entry order by l.getStartLine(), l.getStartColumn(), l.getEndColumn(), l.getEndLine()
+        ).getLocation()
+    }
+  }
+}
