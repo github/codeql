@@ -65,6 +65,15 @@ class IntegrationTest {
     void test3() {
         Object value = extractSingleValueIfPossible(ImmutableList.of("a", taint()));
         sink(value); //$hasTaintFlow
+        List<Object> values = (List<Object>) value;
+        sink(values.get(1)); //$hasTaintFlow
+        Map<String, Object> weirdMap = new HashMap<>();
+        weirdMap.put("a", value);
+        weirdMap.forEach((key, mapValue) -> {
+            sink(mapValue); //$hasTaintFlow
+            List<Object> values2 = (List<Object>) mapValue;
+            sink(values2.get(0)); //$hasTaintFlow
+        });
     }
 
     void test4(Context ctx) {
@@ -74,8 +83,32 @@ class IntegrationTest {
                 filterAndMerge(pojoForm, mergedParams, name -> false);
                 return mergedParams;
             }).then(pojoMap -> {
-                sinlk(pojoMap); //$hasTaintFlow
+                sink(pojoMap.keySet().iterator().next()); //$hasTaintFlow
                 sink(pojoMap.get("value")); //$hasTaintFlow
+                pojoMap.forEach((key, value) -> {
+                    sink(key); //$hasTaintFlow
+                    sink(value); //$hasTaintFlow
+                    List<Object> values = (List<Object>) value;
+                    sink(values.get(0)); //$hasTaintFlow
+                });
+            });
+    }
+
+    void test5(Context ctx) {
+        parseToForm(ctx, Pojo.class)
+            .map(pojoForm -> {
+                Map<String, Object> mergedParams = new HashMap<>();
+                filterAndMerge_2(pojoForm, mergedParams, name -> false);
+                return mergedParams;
+            }).then(pojoMap -> {
+                sink(pojoMap.keySet().iterator().next()); //TODO:$hasTaintFlow
+                sink(pojoMap.get("value")); //TODO:$hasTaintFlow
+                pojoMap.forEach((key, value) -> {
+                    sink(key); //TODO:$hasTaintFlow
+                    sink(value); //TODO:$hasTaintFlow
+                    List<Object> values = (List<Object>) value;
+                    sink(values.get(0)); //TODO:$hasTaintFlow
+                });
             });
     }
 
@@ -138,6 +171,16 @@ class IntegrationTest {
     }
 
     private static void filterAndMerge(MultiValueMap<String, String> params, Map<String, Object> defaults, Predicate<String> filter) {
+        for(Map.Entry<String, Collection<String>> entry : params.asMultimap().asMap().entrySet()) {
+            String name = entry.getKey();
+            Collection<String> values = entry.getValue();
+            if (!isEmptyAndHasDefault(name, values, defaults) && !filter.test(name)) {
+                defaults.put(name, extractSingleValueIfPossible(values));
+            }
+        }
+    }
+
+    private static void filterAndMerge_2(MultiValueMap<String, String> params, Map<String, Object> defaults, Predicate<String> filter) {
         params.asMultimap().asMap().forEach((name, values) -> {
             if (!isEmptyAndHasDefault(name, values, defaults) && !filter.test(name)) {
                 defaults.put(name, extractSingleValueIfPossible(values));
