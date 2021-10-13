@@ -65,3 +65,18 @@ string getArgType(string args, int i) { result = args.splitAt(",", i).trim() }
 class StringClass extends PrimitiveType {
   StringClass() { this.getName() = "string" }
 }
+
+/** The primitive 'int' class. */
+class IntClass extends PrimitiveType {
+  IntClass() { this.getName() = "int" }
+}
+
+/** The primitive 'float' class. */
+class FloatClass extends PrimitiveType {
+  FloatClass() { this.getName() = "float" }
+}
+
+/** The primitive 'boolean' class. */
+class BooleanClass extends PrimitiveType {
+  BooleanClass() { this.getName() = "boolean" }
+}
