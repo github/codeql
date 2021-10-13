@@ -6,7 +6,7 @@ Under development.
 
 ## Building the tools from source
 
-[Install Rust](https://www.rust-lang.org/tools/install), then run:
+[Install Rust](https://www.rust-lang.org/tools/install) (if using VSCode, you may also want the `rust-analyzer` extension), then run:
 
 ```bash
 cargo build --release

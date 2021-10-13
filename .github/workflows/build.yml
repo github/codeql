@@ -14,7 +14,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        os: [ubuntu-latest, macos-latest]
+        #os: [ubuntu-latest, macos-latest, windows-latest]
 
     runs-on: ${{ matrix.os }}
 
@@ -73,10 +74,10 @@ jobs:
         with:
           name: extractor-ubuntu-latest
           path: linux64
-      - uses: actions/download-artifact@v2
-        with:
-          name: extractor-windows-latest
-          path: win64
+#      - uses: actions/download-artifact@v2
+#        with:
+#          name: extractor-windows-latest
+#          path: win64
       - uses: actions/download-artifact@v2
         with:
           name: extractor-macos-latest
@@ -84,10 +85,9 @@ jobs:
       - run: |
           mkdir -p ql
           cp -r codeql-extractor.yml tools ql/src/ql.dbscheme.stats ql/
-          mkdir -p ql/tools/{linux64,osx64,win64}
+          mkdir -p ql/tools/{linux64,osx64}
           cp linux64/ql-extractor ql/tools/linux64/extractor
           cp osx64/ql-extractor ql/tools/osx64/extractor
-          cp win64/ql-extractor.exe ql/tools/win64/extractor.exe
           chmod +x ql/tools/{linux64,osx64}/extractor
           zip -rq codeql-ql.zip ql
       - uses: actions/upload-artifact@v2
