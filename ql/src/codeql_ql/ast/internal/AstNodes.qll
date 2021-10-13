@@ -81,8 +81,7 @@ class TCall = TPredicateCall or TMemberCall or TNoneCall or TAnyCall;
 
 class TModuleRef = TImport or TModuleExpr;
 
-class TYAMLNode = TYamlCommemt or TYamlEntry or TYamlKey or TYamlListitem or
-    TYamlValue;
+class TYAMLNode = TYamlCommemt or TYamlEntry or TYamlKey or TYamlListitem or TYamlValue;
 
 private Generated::AstNode toGeneratedFormula(AST::AstNode n) {
   n = TConjunction(result) or
