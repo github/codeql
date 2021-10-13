@@ -81,5 +81,6 @@ where
   not usesThis(pred) and
   not isTrivialImplementation(pred) and
   not isSingleton(pred.getDeclaringType()) and
-  not exists(ClassPredicate other | pred.overrides(other) or other.overrides(pred))
+  not exists(ClassPredicate other | pred.overrides(other) or other.overrides(pred)) and
+  not pred.isOverride()
 select pred, "This predicate could be a classless predicate, as it doesn't depend on `this`."
