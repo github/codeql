@@ -10,6 +10,7 @@ newtype TAstNode =
   TClass(Generated::Dataclass dc) or
   TCharPred(Generated::Charpred pred) or
   TClassPredicate(Generated::MemberPredicate pred) or
+  TDBRelation(Generated::DbTable table) or
   TSelect(Generated::Select sel) or
   TModule(Generated::Module mod) or
   TNewType(Generated::Datatype dt) or
@@ -153,6 +154,8 @@ Generated::AstNode toGenerated(AST::AstNode n) {
   or
   n = TClassPredicate(result)
   or
+  n = TDBRelation(result)
+  or
   n = TSelect(result)
   or
   n = TModule(result)
@@ -184,7 +187,7 @@ Generated::AstNode toGenerated(AST::AstNode n) {
   n = TSuper(result)
 }
 
-class TPredicate = TCharPred or TClasslessPredicate or TClassPredicate;
+class TPredicate = TCharPred or TClasslessPredicate or TClassPredicate or TDBRelation;
 
 class TModuleMember = TModuleDeclaration or TImport or TSelect or TQLDoc;
 
