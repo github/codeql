@@ -98,9 +98,7 @@ class ExprNode extends Node, TExprNode_ {
  * The value of a parameter at function entry, viewed as a node in a data
  * flow graph.
  */
-class ParameterNode extends Node {
-  ParameterNode() { this instanceof ParameterNodeImpl }
-
+class ParameterNode extends Node instanceof ParameterNodeImpl {
   /** Gets the parameter corresponding to this node, if any. */
   DotNet::Parameter getParameter() {
     exists(DataFlowCallable c, int i | this.isParameterOf(c, i) and result = c.getParameter(i))
@@ -111,7 +109,7 @@ class ParameterNode extends Node {
    * (zero-based) position.
    */
   predicate isParameterOf(DataFlowCallable c, int i) {
-    this.(ParameterNodeImpl).isParameterOf(c, i)
+    super.isParameterOf(c, i)
   }
 }
 
