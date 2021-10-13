@@ -196,12 +196,12 @@ calls/calls.rb:
 #  124|   getStmt: [ClassDeclaration] MyClass2
 #  124|     getSuperclassExpr: [MethodCall] call to foo
 #  124|       getReceiver: [ConstantReadAccess] X
-#  128|   getStmt: [ClassDeclaration] class << ...
+#  128|   getStmt: [SingletonClass] class << ...
 #  128|     getValue: [MethodCall] call to foo
 #  128|       getReceiver: [Self] self
 #  129|     getStmt: [MethodCall] call to bar
 #  129|       getReceiver: [Self] self
-#  131|   getStmt: [ClassDeclaration] class << ...
+#  131|   getStmt: [SingletonClass] class << ...
 #  131|     getValue: [MethodCall] call to foo
 #  131|       getReceiver: [ConstantReadAccess] X
 #  132|     getStmt: [MethodCall] call to bar
@@ -735,7 +735,7 @@ modules/classes.rb:
 #   40|     getAnOperand/getLeftOperand: [LocalVariableAccess] x
 #   40|     getAnOperand/getRightOperand: [StringLiteral] "hello"
 #   40|       getComponent: [StringTextComponent] hello
-#   41|   getStmt: [ClassDeclaration] class << ...
+#   41|   getStmt: [SingletonClass] class << ...
 #   41|     getValue: [LocalVariableAccess] x
 #   42|     getStmt: [Method] length
 #   43|       getStmt: [MulExpr] ... * ...

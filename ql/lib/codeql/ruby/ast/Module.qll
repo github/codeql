@@ -293,7 +293,7 @@ class SingletonClass extends ModuleBase, TSingletonClass {
 
   SingletonClass() { this = TSingletonClass(g) }
 
-  final override string getAPrimaryQlClass() { result = "ClassDeclaration" }
+  final override string getAPrimaryQlClass() { result = "SingletonClass" }
 
   /**
    * Gets the expression resulting in the object on which the singleton class
