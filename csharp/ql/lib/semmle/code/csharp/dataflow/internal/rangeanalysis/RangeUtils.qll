@@ -89,14 +89,12 @@ private module Impl {
   }
 
   /** An expression whose value may control the execution of another element. */
-  class Guard extends Expr {
-    Guard() { this instanceof G::Guard }
-
+  class Guard extends Expr instanceof G::Guard {
     /**
      * Holds if basic block `bb` is guarded by this guard having value `v`.
      */
     predicate controlsBasicBlock(ControlFlow::BasicBlock bb, G::AbstractValue v) {
-      this.(G::Guard).controlsBasicBlock(bb, v)
+      super.controlsBasicBlock(bb, v)
     }
 
     /**
@@ -108,7 +106,7 @@ private module Impl {
       exists(Expr e1_, Expr e2_ |
         e1 = unique(ExprNode cfn | hasChild(this, e1_, _, cfn) | cfn) and
         e2 = unique(ExprNode cfn | hasChild(this, e2_, _, cfn) | cfn) and
-        this.(G::Guard).isEquality(e1_, e2_, polarity)
+        super.isEquality(e1_, e2_, polarity)
       )
     }
   }
