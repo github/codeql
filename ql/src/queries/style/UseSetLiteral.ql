@@ -9,7 +9,6 @@
  */
 
 import ql
-import codeql_ql.ast.internal.Predicate // TODO: for PredicateOrBuiltin
 
 /**
  * A chain of disjunctions treated as one object. For example the following is
@@ -106,7 +105,7 @@ class CallLiteral extends Call {
 class DisjunctionPredicateLiteral extends DisjunctionChain {
   DisjunctionPredicateLiteral() {
     // Call to the same target
-    exists(PredicateOrBuiltin target |
+    exists(AstNode target |
       forex(Formula f | f = getAnOperandRec() | f.(CallLiteral).getTarget() = target)
     )
   }
