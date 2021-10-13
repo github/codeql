@@ -31,7 +31,7 @@ class ImportExpr extends ImportExpr_ {
     // relative imports are no longer allowed in Python 3
     major_version() < 3 and
     // and can be explicitly turned off in later versions of Python 2
-    not getEnclosingModule().hasFromFuture("absolute_import")
+    not this.getEnclosingModule().hasFromFuture("absolute_import")
   }
 
   /**
@@ -53,8 +53,8 @@ class ImportExpr extends ImportExpr_ {
    * the name of the topmost module that will be imported.
    */
   private string relativeTopName() {
-    getLevel() = -1 and
-    result = basePackageName(1) + "." + this.getTopName() and
+    this.getLevel() = -1 and
+    result = this.basePackageName(1) + "." + this.getTopName() and
     valid_module_name(result)
   }
 
@@ -62,7 +62,7 @@ class ImportExpr extends ImportExpr_ {
     if this.getLevel() <= 0
     then result = this.getTopName()
     else (
-      result = basePackageName(this.getLevel()) and
+      result = this.basePackageName(this.getLevel()) and
       valid_module_name(result)
     )
   }
@@ -73,17 +73,17 @@ class ImportExpr extends ImportExpr_ {
    * which may not be the name of the module.
    */
   string bottomModuleName() {
-    result = relativeTopName() + this.remainderOfName()
+    result = this.relativeTopName() + this.remainderOfName()
     or
-    not exists(relativeTopName()) and
+    not exists(this.relativeTopName()) and
     result = this.qualifiedTopName() + this.remainderOfName()
   }
 
   /** Gets the name of topmost module or package being imported */
   string topModuleName() {
-    result = relativeTopName()
+    result = this.relativeTopName()
     or
-    not exists(relativeTopName()) and
+    not exists(this.relativeTopName()) and
     result = this.qualifiedTopName()
   }
 
@@ -94,7 +94,7 @@ class ImportExpr extends ImportExpr_ {
    */
   string getImportedModuleName() {
     exists(string bottomName | bottomName = this.bottomModuleName() |
-      if this.isTop() then result = topModuleName() else result = bottomName
+      if this.isTop() then result = this.topModuleName() else result = bottomName
     )
   }
 
