@@ -196,6 +196,101 @@ private module StdlibPrivate {
   }
 
   /**
+   * The `os.path` module offers a number of methods for checking if a file exists and/or has certain
+   * properties, leading to a file system access.
+   * A call to `os.path.exists` or `os.path.lexists` will check if a file exists on the file system.
+   * (Although, on some platforms, the check may return `false` due to missing permissions.)
+   * A call to `os.path.getatime` will raise `OSError` if the file does not exist or is inaccessible.
+   * See:
+   * - https://docs.python.org/3/library/os.path.html#os.path.exists
+   * - https://docs.python.org/3/library/os.path.html#os.path.lexists
+   * - https://docs.python.org/3/library/os.path.html#os.path.isfile
+   * - https://docs.python.org/3/library/os.path.html#os.path.isdir
+   * - https://docs.python.org/3/library/os.path.html#os.path.islink
+   * - https://docs.python.org/3/library/os.path.html#os.path.ismount
+   * - https://docs.python.org/3/library/os.path.html#os.path.getatime
+   * - https://docs.python.org/3/library/os.path.html#os.path.getmtime
+   * - https://docs.python.org/3/library/os.path.html#os.path.getctime
+   * - https://docs.python.org/3/library/os.path.html#os.path.getsize
+   * - https://docs.python.org/3/library/os.path.html#os.path.realpath
+   */
+  private class OsPathProbingCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    OsPathProbingCall() {
+      this =
+        os::path()
+            .getMember([
+                // these check if the file exists
+                "exists", "lexists", "isfile", "isdir", "islink", "ismount",
+                // these raise errors if the file does not exist
+                "getatime", "getmtime", "getctime", "getsize"
+              ])
+            .getACall()
+    }
+
+    override DataFlow::Node getAPathArgument() {
+      result in [this.getArg(0), this.getArgByName("path")]
+    }
+  }
+
+  /** A call to `os.path.samefile` will raise an exception if an `os.stat()` call on either pathname fails. */
+  private class OsPathSamefileCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    OsPathSamefileCall() { this = os::path().getMember("samefile").getACall() }
+
+    override DataFlow::Node getAPathArgument() {
+      result in [
+          this.getArg(0), this.getArgByName("path1"), this.getArg(1), this.getArgByName("path2")
+        ]
+    }
+  }
+
+  // Functions with non-standard arguments:
+  // - os.path.join(path, *paths)
+  // - os.path.relpath(path, start=os.curdir)
+  // these functions need special treatment when computing `getPathArg`.
+  //
+  // Functions that excluded because they can act as sanitizers:
+  // - os.path.commonpath(paths): takes a sequence
+  // - os.path.commonprefix(list): takes a list argument
+  // unless the user control all arguments, we are comparing with a known value.
+  private string pathComputation() {
+    result in [
+        "abspath", "basename", "commonpath", "dirname", "expanduser", "expandvars", "join",
+        "normcase", "normpath", "realpath", "relpath", "split", "splitdrive", "splitext"
+      ]
+  }
+
+  /**
+   * The `os.path` module offers a number of methods for computing new paths from existing paths.
+   * These should all propagate taint.
+   */
+  private class OsPathComputation extends DataFlow::CallCfgNode {
+    string methodName;
+
+    OsPathComputation() {
+      methodName = pathComputation() and
+      this = os::path().getMember(methodName).getACall()
+    }
+
+    DataFlow::Node getPathArg() {
+      result in [this.getArg(0), this.getArgByName("path")]
+      or
+      methodName = "join" and result = this.getArg(_)
+      or
+      methodName = "relpath" and result in [this.getArg(1), this.getArgByName("start")]
+    }
+  }
+
+  /** An additional taint step for path computations. */
+  private class OsPathComputationAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+    override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+      exists(OsPathComputation call |
+        nodeTo = call and
+        nodeFrom = call.getPathArg()
+      )
+    }
+  }
+
+  /**
    * A call to `os.path.normpath`.
    * See https://docs.python.org/3/library/os.path.html#os.path.normpath
    */
@@ -203,16 +298,6 @@ private module StdlibPrivate {
     OsPathNormpathCall() { this = os::path().getMember("normpath").getACall() }
 
     DataFlow::Node getPathArg() { result in [this.getArg(0), this.getArgByName("path")] }
-  }
-
-  /** An additional taint step for calls to `os.path.normpath` */
-  private class OsPathNormpathCallAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
-    override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-      exists(OsPathNormpathCall call |
-        nodeTo = call and
-        nodeFrom = call.getPathArg()
-      )
-    }
   }
 
   /**
@@ -225,16 +310,6 @@ private module StdlibPrivate {
     DataFlow::Node getPathArg() { result in [this.getArg(0), this.getArgByName("path")] }
   }
 
-  /** An additional taint step for calls to `os.path.abspath` */
-  private class OsPathAbspathCallAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
-    override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-      exists(OsPathAbspathCall call |
-        nodeTo = call and
-        nodeFrom = call.getPathArg()
-      )
-    }
-  }
-
   /**
    * A call to `os.path.realpath`.
    * See https://docs.python.org/3/library/os.path.html#os.path.realpath
@@ -243,16 +318,6 @@ private module StdlibPrivate {
     OsPathRealpathCall() { this = os::path().getMember("realpath").getACall() }
 
     DataFlow::Node getPathArg() { result in [this.getArg(0), this.getArgByName("path")] }
-  }
-
-  /** An additional taint step for calls to `os.path.realpath` */
-  private class OsPathRealpathCallAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
-    override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-      exists(OsPathRealpathCall call |
-        nodeTo = call and
-        nodeFrom = call.getPathArg()
-      )
-    }
   }
 
   /**
