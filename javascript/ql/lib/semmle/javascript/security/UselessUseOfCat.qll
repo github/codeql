@@ -307,7 +307,7 @@ module PrettyPrintCatCall {
     then result = str.suffix(5)
     else
       // prettify `${newpath}` to just newpath
-      if str.matches("`${%") and str.matches("}`%") and not str.suffix(3).matches("%{%")
+      if str.matches("`${%") and str.matches("%}`") and not str.suffix(3).matches("%{%")
       then result = str.prefix(str.length() - 2).suffix(3)
       else result = str
   }
