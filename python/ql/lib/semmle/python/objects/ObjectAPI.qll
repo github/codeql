@@ -869,14 +869,12 @@ class NumericValue extends Value {
  * https://docs.python.org/3/howto/descriptor.html#properties
  * https://docs.python.org/3/library/functions.html#property
  */
-class PropertyValue extends Value {
-  PropertyValue() { this instanceof PropertyInternal }
+class PropertyValue extends Value instanceof PropertyInternal {
+  CallableValue getGetter() { result = super.getGetter() }
 
-  CallableValue getGetter() { result = this.(PropertyInternal).getGetter() }
+  CallableValue getSetter() { result = super.getSetter() }
 
-  CallableValue getSetter() { result = this.(PropertyInternal).getSetter() }
-
-  CallableValue getDeleter() { result = this.(PropertyInternal).getDeleter() }
+  CallableValue getDeleter() { result = super.getDeleter() }
 }
 
 /** A method-resolution-order sequence of classes */
