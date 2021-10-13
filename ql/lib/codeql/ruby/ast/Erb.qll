@@ -111,20 +111,46 @@ private predicate locationIncludesPosition(Location loc, int line, int col) {
   col <= loc.getEndColumn()
 }
 
+/** A file containing an ERB directive. */
+private class ErbDirectiveFile extends File {
+  pragma[nomagic]
+  ErbDirectiveFile() { this = any(ErbDirective dir).getLocation().getFile() }
+
+  /** Gets a statement in this file. */
+  pragma[nomagic]
+  Stmt getAStmt(int startLine, int startColumn) {
+    exists(Location loc |
+      result.getLocation() = loc and
+      loc.getFile() = this and
+      loc.getStartLine() = startLine and
+      loc.getStartColumn() = startColumn
+    )
+  }
+}
+
 /**
  * A directive in an ERB template.
  */
 class ErbDirective extends TDirectiveNode, ErbAstNode {
-  private predicate containsStartOf(Location loc) {
-    loc.getFile() = this.getLocation().getFile() and
-    locationIncludesPosition(this.getLocation(), loc.getStartLine(), loc.getStartColumn())
+  /** Holds if this directive spans line `line` in the file `file`. */
+  pragma[nomagic]
+  private predicate spans(ErbDirectiveFile file, int line) {
+    exists(Location loc |
+      loc = this.getLocation() and
+      file = loc.getFile() and
+      line in [loc.getStartLine() .. loc.getEndLine()]
+    )
   }
 
   private predicate containsStmtStart(Stmt s) {
-    this.containsStartOf(s.getLocation()) and
     // `Toplevel` statements are not contained within individual directives,
     // though their start location may appear within a directive location
-    not s instanceof Toplevel
+    not s instanceof Toplevel and
+    exists(ErbDirectiveFile file, int startLine, int startColumn |
+      this.spans(file, startLine) and
+      s = file.getAStmt(startLine, startColumn) and
+      locationIncludesPosition(this.getLocation(), startLine, startColumn)
+    )
   }
 
   /**
