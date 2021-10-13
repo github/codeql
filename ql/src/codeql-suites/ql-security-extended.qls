@@ -1,4 +1,0 @@
-- description: Security-extended queries for QL
-- qlpack: codeql-ql
-- apply: security-extended-selectors.yml
-  from: codeql-suite-helpers

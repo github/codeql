@@ -1,4 +1,0 @@
-- description: Security-and-quality queries for QL
-- qlpack: codeql-ql
-- apply: security-and-quality-selectors.yml
-  from: codeql-suite-helpers
