@@ -718,12 +718,8 @@ abstract class FunctionValue extends CallableValue {
 }
 
 /** Class representing Python functions */
-class PythonFunctionValue extends FunctionValue {
-  PythonFunctionValue() { this instanceof PythonFunctionObjectInternal }
-
-  override string getQualifiedName() {
-    result = this.(PythonFunctionObjectInternal).getScope().getQualifiedName()
-  }
+class PythonFunctionValue extends FunctionValue instanceof PythonFunctionObjectInternal {
+  override string getQualifiedName() { result = super.getScope().getQualifiedName() }
 
   override string descriptiveString() {
     if this.getScope().isMethod()
