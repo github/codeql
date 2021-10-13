@@ -480,12 +480,10 @@ abstract class ServiceRequest extends Expr {
 /**
  * The request for a scope service in the form of the link-function of a directive.
  */
-private class LinkFunctionWithScopeInjection extends ServiceRequest {
-  LinkFunctionWithScopeInjection() { this instanceof LinkFunction }
-
+private class LinkFunctionWithScopeInjection extends ServiceRequest instanceof LinkFunction {
   override Parameter getDependencyParameter(ServiceReference service) {
     service instanceof ScopeServiceReference and
-    result = this.(LinkFunction).getScopeParameter()
+    result = super.getScopeParameter()
   }
 }
 
