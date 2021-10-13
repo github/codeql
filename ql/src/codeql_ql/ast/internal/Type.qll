@@ -76,7 +76,7 @@ class Type extends TType {
     p2 = classPredCandidate(this, name, arity)
   }
 
-  pragma[nomagic]
+  cached
   PredicateOrBuiltin getClassPredicate(string name, int arity) {
     result = classPredCandidate(this, name, arity) and
     not getClassPredicate1(name, arity, _, result)
