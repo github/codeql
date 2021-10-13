@@ -1042,10 +1042,44 @@ variable_def(
   int loc: @location ref
 );
 
+yaml_comment_def(
+  unique int id: @yaml_comment,
+  int child: @token_yaml_value ref,
+  int loc: @location ref
+);
+
+@yaml_entry_child_type = @yaml_comment | @yaml_keyvaluepair | @yaml_listitem
+
 yaml_entry_def(
   unique int id: @yaml_entry,
-  int key__: @token_simple_id ref,
+  int child: @yaml_entry_child_type ref,
+  int loc: @location ref
+);
+
+@yaml_key_child_type = @token_simple_id | @yaml_key
+
+#keyset[yaml_key, index]
+yaml_key_child(
+  int yaml_key: @yaml_key ref,
+  int index: int ref,
+  unique int child: @yaml_key_child_type ref
+);
+
+yaml_key_def(
+  unique int id: @yaml_key,
+  int loc: @location ref
+);
+
+yaml_keyvaluepair_def(
+  unique int id: @yaml_keyvaluepair,
+  int key__: @yaml_key ref,
   int value: @token_yaml_value ref,
+  int loc: @location ref
+);
+
+yaml_listitem_def(
+  unique int id: @yaml_listitem,
+  int child: @token_yaml_value ref,
   int loc: @location ref
 );
 
@@ -1120,7 +1154,7 @@ case @diagnostic.severity of
 ;
 
 
-@ast_node = @add_expr | @aggregate | @annot_arg | @annotation | @arityless_predicate_expr | @as_expr | @as_exprs | @body | @bool | @call_body | @call_or_unqual_agg_expr | @charpred | @class_member | @classless_predicate | @comp_term | @conjunction | @dataclass | @datatype | @datatype_branch | @datatype_branches | @db_annotation | @db_args_annotation | @db_branch | @db_case_decl | @db_col_type | @db_column | @db_entry | @db_repr_type | @db_table | @db_table_name | @db_union_decl | @disjunction | @expr_aggregate_body | @expr_annotation | @field | @full_aggregate_body | @higher_order_term | @if_term | @implication | @import_directive | @import_module_expr | @in_expr | @instance_of | @literal | @member_predicate | @module | @module_alias_body | @module_expr | @module_member | @module_name | @mul_expr | @negation | @order_by | @order_bys | @par_expr | @predicate_alias_body | @predicate_expr | @prefix_cast | @ql | @qual_module_expr | @qualified_expr | @qualified_rhs | @quantified | @range | @select | @set_literal | @special_call | @super_ref | @token | @type_alias_body | @type_expr | @type_union_body | @unary_expr | @unqual_agg_body | @var_decl | @var_name | @variable | @yaml_entry
+@ast_node = @add_expr | @aggregate | @annot_arg | @annotation | @arityless_predicate_expr | @as_expr | @as_exprs | @body | @bool | @call_body | @call_or_unqual_agg_expr | @charpred | @class_member | @classless_predicate | @comp_term | @conjunction | @dataclass | @datatype | @datatype_branch | @datatype_branches | @db_annotation | @db_args_annotation | @db_branch | @db_case_decl | @db_col_type | @db_column | @db_entry | @db_repr_type | @db_table | @db_table_name | @db_union_decl | @disjunction | @expr_aggregate_body | @expr_annotation | @field | @full_aggregate_body | @higher_order_term | @if_term | @implication | @import_directive | @import_module_expr | @in_expr | @instance_of | @literal | @member_predicate | @module | @module_alias_body | @module_expr | @module_member | @module_name | @mul_expr | @negation | @order_by | @order_bys | @par_expr | @predicate_alias_body | @predicate_expr | @prefix_cast | @ql | @qual_module_expr | @qualified_expr | @qualified_rhs | @quantified | @range | @select | @set_literal | @special_call | @super_ref | @token | @type_alias_body | @type_expr | @type_union_body | @unary_expr | @unqual_agg_body | @var_decl | @var_name | @variable | @yaml_comment | @yaml_entry | @yaml_key | @yaml_keyvaluepair | @yaml_listitem
 
 @ast_node_parent = @ast_node | @file
 
