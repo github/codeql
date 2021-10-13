@@ -53,9 +53,7 @@ class SuppressionComment extends Javadoc {
 /**
  * The scope of an alert suppression comment.
  */
-class SuppressionScope extends @javadoc {
-  SuppressionScope() { this instanceof SuppressionComment }
-
+class SuppressionScope extends @javadoc instanceof SuppressionComment {
   /** Gets a suppression comment with this scope. */
   SuppressionComment getSuppressionComment() { result = this }
 
@@ -69,7 +67,7 @@ class SuppressionScope extends @javadoc {
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    this.(SuppressionComment).covers(filepath, startline, startcolumn, endline, endcolumn)
+    super.covers(filepath, startline, startcolumn, endline, endcolumn)
   }
 
   /** Gets a textual representation of this element. */
