@@ -1,4 +1,8 @@
 - description: Standard Code Scanning queries for QL
-- qlpack: codeql-ql
-- apply: code-scanning-selectors.yml
-  from: codeql-suite-helpers
+- queries: .
+- include:
+    kind:
+    - problem
+    - path-problem
+    - alert
+    - path-alert
