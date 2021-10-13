@@ -8,7 +8,7 @@
           (.codeFlows | .[] | 
                ("    Path\n"
                 ,
-                ( .threadFlows | .[] | .locations | .[] | .location | "        "
+                ( .threadFlows | .[] | .locations | .[] | .location | "      "
                   ,
                   ( .physicalLocation | ( .artifactLocation.uri, ":", .region.startLine, ":"))
                   ,
