@@ -1,57 +1,59 @@
 * SQL injection example
+  This repository contains a trivial Go program to serve as introduction to
+  CodeQL.  The focus is on treating the Go program as /data/ to be examined via
+  CodeQL, so it's kept as simple as possible.
+
 ** Setup and sample run
-  #+BEGIN_SRC sh
-    # Use a simple headline prompt 
-    PS1='
-    \033[32m---- SQL injection demo ----\[\033[33m\033[0m\]
-    $?:$ '
+   With Go installed, install prerequisites via 
+   : make init
+   
+   Then try the following sequence to see the problem:
+   
+   #+BEGIN_SRC sh
+     # Build
+     ./build.sh
 
-    
-    # Build
-    ./build.sh
+     # Prepare db
+     ./admin -r
+     ./admin -c
+     ./admin -s 
 
-    # Prepare db
-    ./admin -r
-    ./admin -c
-    ./admin -s 
+     # Add regular user interactively
+     ./add-user 2>> users.log
+     First User
 
-    # Add regular user interactively
-    ./add-user 2>> users.log
-    First User
+     
+     # Regular user via "external" process
+     echo "User Outside" | ./add-user 2>> users.log
 
-    
-    # Regular user via "external" process
-    echo "User Outside" | ./add-user 2>> users.log
+     # Check
+     ./admin -s
 
-    # Check
-    ./admin -s
+     # Add Johnny Droptable 
+     ./add-user 2>> users.log
+     Johnny'); DROP TABLE users; --
 
-    # Add Johnny Droptable 
-    ./add-user 2>> users.log
-    Johnny'); DROP TABLE users; --
+     # And the problem:
+     ./admin -s
 
-    # And the problem:
-    ./admin -s
-    
-    # Check the log
-    tail users.log
-  #+END_SRC
+     # Check the log
+     tail users.log
+   #+END_SRC
 
-** TODO Identify the problem
+** Identify the problem
    =./add-user= is reading from =STDIN=, and writing to a database; looking at the code in
-   [[./add-user.c]] leads to
-   : count = read(STDIN_FILENO, buf, BUFSIZE - 1);
+   [[./add-user.go]] leads to
+   : count, err := os.Stdin.Read(buf)
    for the read and 
-   : rc = sqlite3_exec(db, query, NULL, 0, &zErrMsg);
+   : _, err = db.Exec(query)
    for the write.
 
    This problem is thus a dataflow problem; in codeql terminology we have
-   - a /source/ at the =read(STDIN_FILENO, buf, BUFSIZE - 1);=
-   - a /sink/ at the =sqlite3_exec(db, query, NULL, 0, &zErrMsg);=
+   - a /source/ at the =os.Stdin.Read(buf)=
+   - a /sink/ at the =db.Exec(query)=
 
    We write codeql to identify these two, and then connect them via
-   - a /dataflow configuration/ -- for this problem, the more general /taintflow
-     configuration/. 
+   a  /taintflow configuration/, the general form of a /dataflow configuration/.
    
 ** Build codeql database
    To get started, build the codeql database (adjust paths to your setup):
