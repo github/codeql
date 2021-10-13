@@ -3460,7 +3460,7 @@ private predicate pathStep(
   exists(TypedContent tc | pathReadStep(mid, node, ap.push(tc), tc, cc)) and
   sc = mid.getSummaryCtx()
   or
-  pathIntoCallable(mid, node, _, cc, sc, _) and ap = mid.getAp()
+  pathIntoCallable(mid, node, _, cc, sc, _, _) and ap = mid.getAp()
   or
   pathOutOfCallable(mid, node, cc) and ap = mid.getAp() and sc instanceof SummaryCtxNone
   or
@@ -3537,14 +3537,16 @@ private predicate pathOutOfCallable(PathNodeMid mid, NodeEx out, CallContext cc)
  */
 pragma[noinline]
 private predicate pathIntoArg(
-  PathNodeMid mid, int i, CallContext cc, DataFlowCall call, AccessPath ap, AccessPathApprox apa
+  PathNodeMid mid, int i, CallContext cc, DataFlowCall call, AccessPath ap, AccessPathApprox apa,
+  Configuration config
 ) {
   exists(ArgNode arg |
     arg = mid.getNodeEx().asNode() and
     cc = mid.getCallContext() and
     arg.argumentOf(call, i) and
     ap = mid.getAp() and
-    apa = ap.getApprox()
+    apa = ap.getApprox() and
+    config = mid.getConfiguration()
   )
 }
 
@@ -3561,13 +3563,10 @@ private predicate parameterCand(
 pragma[nomagic]
 private predicate pathIntoCallable0(
   PathNodeMid mid, DataFlowCallable callable, int i, CallContext outercc, DataFlowCall call,
-  AccessPath ap
+  AccessPath ap, AccessPathApprox apa, Configuration config
 ) {
-  exists(AccessPathApprox apa |
-    pathIntoArg(mid, i, outercc, call, ap, apa) and
-    callable = resolveCall(call, outercc) and
-    parameterCand(callable, any(int j | j <= i and j >= i), apa, mid.getConfiguration())
-  )
+  pathIntoArg(mid, i, outercc, call, ap, apa, config) and
+  callable = resolveCall(call, outercc)
 }
 
 /**
@@ -3575,12 +3574,14 @@ private predicate pathIntoCallable0(
  * before and after entering the callable are `outercc` and `innercc`,
  * respectively.
  */
+pragma[nomagic]
 private predicate pathIntoCallable(
   PathNodeMid mid, ParamNodeEx p, CallContext outercc, CallContextCall innercc, SummaryCtx sc,
-  DataFlowCall call
+  DataFlowCall call, Configuration config
 ) {
-  exists(int i, DataFlowCallable callable, AccessPath ap |
-    pathIntoCallable0(mid, callable, i, outercc, call, ap) and
+  exists(int i, DataFlowCallable callable, AccessPath ap, AccessPathApprox apa |
+    pathIntoCallable0(mid, callable, i, outercc, call, ap, apa, config) and
+    parameterCand(callable, i, apa, config) and
     p.isParameterOf(callable, i) and
     (
       sc = TSummaryCtxSome(p, ap)
@@ -3617,11 +3618,11 @@ private predicate paramFlowsThrough(
 pragma[nomagic]
 private predicate pathThroughCallable0(
   DataFlowCall call, PathNodeMid mid, ReturnKindExt kind, CallContext cc, AccessPath ap,
-  AccessPathApprox apa
+  AccessPathApprox apa, Configuration config
 ) {
   exists(CallContext innercc, SummaryCtx sc |
-    pathIntoCallable(mid, _, cc, innercc, sc, call) and
-    paramFlowsThrough(kind, innercc, sc, ap, apa, unbindConf(mid.getConfiguration()))
+    pathIntoCallable(mid, _, cc, innercc, sc, call, config) and
+    paramFlowsThrough(kind, innercc, sc, ap, apa, config)
   )
 }
 
@@ -3631,9 +3632,9 @@ private predicate pathThroughCallable0(
  */
 pragma[noinline]
 private predicate pathThroughCallable(PathNodeMid mid, NodeEx out, CallContext cc, AccessPath ap) {
-  exists(DataFlowCall call, ReturnKindExt kind, AccessPathApprox apa |
-    pathThroughCallable0(call, mid, kind, cc, ap, apa) and
-    out = getAnOutNodeFlow(kind, call, apa, unbindConf(mid.getConfiguration()))
+  exists(DataFlowCall call, ReturnKindExt kind, AccessPathApprox apa, Configuration config |
+    pathThroughCallable0(call, mid, kind, cc, ap, apa, config) and
+    out = getAnOutNodeFlow(kind, call, apa, config)
   )
 }
 
@@ -3647,10 +3648,11 @@ private module Subpaths {
     PathNode arg, ParamNodeEx par, SummaryCtxSome sc, CallContext innercc, ReturnKindExt kind,
     NodeEx out, AccessPath apout
   ) {
-    pathThroughCallable(arg, out, _, pragma[only_bind_into](apout)) and
-    pathIntoCallable(arg, par, _, innercc, sc, _) and
-    paramFlowsThrough(kind, innercc, sc, pragma[only_bind_into](apout), _,
-      unbindConf(arg.getConfiguration()))
+    exists(Configuration config |
+      pathThroughCallable(arg, out, _, pragma[only_bind_into](apout)) and
+      pathIntoCallable(arg, par, _, innercc, sc, _, config) and
+      paramFlowsThrough(kind, innercc, sc, pragma[only_bind_into](apout), _, unbindConf(config))
+    )
   }
 
   /**
