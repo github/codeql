@@ -771,7 +771,7 @@ class NewTypeBranch extends TNewTypeBranch, TypeDeclaration {
  * or a member call `foo.bar()`,
  * or a special call to `none()` or `any()`.
  */
-class Call extends TCall, Expr {
+class Call extends TCall, Expr, Formula {
   /** Gets the `i`th argument of this call. */
   Expr getArgument(int i) {
     none() // overriden in sublcasses.
@@ -1014,7 +1014,7 @@ class Conjunction extends TConjunction, AstNode, Formula {
 }
 
 /** An `or` formula, with 2 or more operands. */
-class Disjunction extends TDisjunction, AstNode {
+class Disjunction extends TDisjunction, AstNode, Formula {
   Generated::Disjunction disj;
 
   Disjunction() { this = TDisjunction(disj) }
