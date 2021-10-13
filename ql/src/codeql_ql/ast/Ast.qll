@@ -1926,7 +1926,7 @@ class Set extends TSet, Expr {
   Set() { this = TSet(set) }
 
   /**
-   * Gets the ith element in the set literal expression.
+   * Gets the `i`th element in this set literal expression.
    */
   Expr getElement(int i) { toGenerated(result) = set.getChild(i) }
 
