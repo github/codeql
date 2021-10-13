@@ -5,8 +5,13 @@ private import codeql_ql.ast.internal.Builtins
 
 private newtype TValueNumber =
   TVariableValueNumber(VarDecl var) { variableAccessValueNumber(_, var) } or
-  TPredicateValueNumber(PredicateOrBuiltin pred, ValueNumberList args) {
+  TFieldValueNumber(VarDecl var) { fieldAccessValueNumber(_, var) } or
+  TThisValueNumber(Predicate pred) { thisAccessValueNumber(_, pred) } or
+  TPredicateValueNumber(PredicateOrBuiltin pred, ValueNumberArgumentList args) {
     predicateCallValueNumber(_, pred, args)
+  } or
+  TClassPredicateValueNumber(PredicateOrBuiltin pred, ValueNumber base, ValueNumberArgumentList args) {
+    classPredicateCallValueNumber(_, pred, base, args)
   } or
   TLiteralValueNumber(string value, Type t) { literalValueNumber(_, value, t) } or
   TBinaryOpValueNumber(FunctionSymbol symbol, ValueNumber leftOperand, ValueNumber rightOperand) {
@@ -15,25 +20,54 @@ private newtype TValueNumber =
   TUnaryOpValueNumber(FunctionSymbol symbol, ValueNumber operand) {
     unaryOperandValueNumber(_, symbol, operand)
   } or
+  TInlineCastValueNumber(ValueNumber operand, Type t) { inlineCastValueNumber(_, operand, t) } or
+  TDontCareValueNumber() or
+  TRangeValueNumber(ValueNumber lower, ValueNumber high) { rangeValueNumber(_, lower, high) } or
+  TSetValueNumber(ValueNumberElementList elements) { setValueNumber(_, elements) } or
   TUniqueValueNumber(Expr e) { uniqueValueNumber(e) }
 
-private newtype ValueNumberList =
-  MkNil() or
-  MkCons(ValueNumber head, ValueNumberList tail) { globalValueNumbers(_, _, head, tail) }
+private newtype ValueNumberArgumentList =
+  MkArgsNil() or
+  MkArgsCons(ValueNumber head, ValueNumberArgumentList tail) {
+    argumentValueNumbers(_, _, head, tail)
+  }
 
-private ValueNumberList globalValueNumbers(Call call, int start) {
+private newtype ValueNumberElementList =
+  MkElementsNil() or
+  MkElementsCons(ValueNumber head, ValueNumberElementList tail) {
+    setValueNumbers(_, _, head, tail)
+  }
+
+private ValueNumberArgumentList argumentValueNumbers(Call call, int start) {
   start = call.getNumberOfArguments() and
-  result = MkNil()
+  result = MkArgsNil()
   or
-  exists(ValueNumber head, ValueNumberList tail |
-    globalValueNumbers(call, start, head, tail) and
-    result = MkCons(head, tail)
+  exists(ValueNumber head, ValueNumberArgumentList tail |
+    argumentValueNumbers(call, start, head, tail) and
+    result = MkArgsCons(head, tail)
   )
 }
 
-private predicate globalValueNumbers(Call call, int start, ValueNumber head, ValueNumberList tail) {
+private predicate argumentValueNumbers(
+  Call call, int start, ValueNumber head, ValueNumberArgumentList tail
+) {
   head = valueNumber(call.getArgument(start)) and
-  tail = globalValueNumbers(call, start + 1)
+  tail = argumentValueNumbers(call, start + 1)
+}
+
+private ValueNumberElementList setValueNumbers(Set set, int start) {
+  start = set.getNumberOfElements() and
+  result = MkElementsNil()
+  or
+  exists(ValueNumber head, ValueNumberElementList tail |
+    setValueNumbers(set, start, head, tail) and
+    result = MkElementsCons(head, tail)
+  )
+}
+
+private predicate setValueNumbers(Set set, int start, ValueNumber head, ValueNumberElementList tail) {
+  head = valueNumber(set.getElement(start)) and
+  tail = setValueNumbers(set, start + 1)
 }
 
 /**
@@ -51,20 +85,46 @@ private predicate uniqueValueNumber(Expr e) { not numberable(e) }
 
 private predicate numberable(Expr e) {
   e instanceof VarAccess or
+  e instanceof FieldAccess or
+  e instanceof ThisAccess or
   e instanceof Call or
   e instanceof Literal or
   e instanceof BinOpExpr or
-  e instanceof UnaryExpr
+  e instanceof UnaryExpr or
+  e instanceof InlineCast or
+  e instanceof ExprAnnotation or
+  e instanceof DontCare or
+  e instanceof Range or
+  e instanceof Set or
+  e instanceof AsExpr
 }
 
-private predicate variableAccessValueNumber(VarAccess access, VarDecl var) {
+private predicate variableAccessValueNumber(VarAccess access, VarDef var) {
   access.getDeclaration() = var
 }
 
-private predicate predicateCallValueNumber(Call call, PredicateOrBuiltin pred, ValueNumberList args) {
-  exists(pred.getReturnType()) and
+private predicate fieldAccessValueNumber(FieldAccess access, VarDef var) {
+  access.getDeclaration() = var
+}
+
+private predicate thisAccessValueNumber(ThisAccess access, Predicate pred) {
+  access.getEnclosingPredicate() = pred
+}
+
+private predicate predicateCallValueNumber(
+  Call call, PredicateOrBuiltin pred, ValueNumberArgumentList args
+) {
   call.getTarget() = pred and
-  args = globalValueNumbers(call, 0)
+  not exists(call.(MemberCall).getBase()) and
+  args = argumentValueNumbers(call, 0)
+}
+
+private predicate classPredicateCallValueNumber(
+  MemberCall call, PredicateOrBuiltin pred, ValueNumber base, ValueNumberArgumentList args
+) {
+  call.getTarget() = pred and
+  valueNumber(call.getBase()) = base and
+  args = argumentValueNumbers(call, 0)
 }
 
 private predicate literalValueNumber(Literal lit, string value, Type t) {
@@ -99,15 +159,44 @@ private predicate unaryOperandValueNumber(UnaryExpr e, FunctionSymbol symbol, Va
   valueNumber(e.getOperand()) = operand
 }
 
+private predicate inlineCastValueNumber(InlineCast cast, ValueNumber operand, Type t) {
+  valueNumber(cast.getBase()) = operand and
+  cast.getTypeExpr().getResolvedType() = t
+}
+
+private predicate rangeValueNumber(Range range, ValueNumber lower, ValueNumber high) {
+  valueNumber(range.getLowEndpoint()) = lower and
+  valueNumber(range.getHighEndpoint()) = high
+}
+
+private predicate setValueNumber(Set set, ValueNumberElementList elements) {
+  elements = setValueNumbers(set, 0)
+}
+
 private TValueNumber nonUniqueValueNumber(Expr e) {
   exists(VarDecl var |
     variableAccessValueNumber(e, var) and
     result = TVariableValueNumber(var)
   )
   or
-  exists(PredicateOrBuiltin pred, ValueNumberList args |
+  exists(VarDecl var |
+    fieldAccessValueNumber(e, var) and
+    result = TFieldValueNumber(var)
+  )
+  or
+  exists(Predicate pred |
+    thisAccessValueNumber(e, pred) and
+    result = TThisValueNumber(pred)
+  )
+  or
+  exists(PredicateOrBuiltin pred, ValueNumberArgumentList args |
     predicateCallValueNumber(e, pred, args) and
     result = TPredicateValueNumber(pred, args)
+  )
+  or
+  exists(PredicateOrBuiltin pred, ValueNumber base, ValueNumberArgumentList args |
+    classPredicateCallValueNumber(e, pred, base, args) and
+    result = TClassPredicateValueNumber(pred, base, args)
   )
   or
   exists(string value, Type t |
@@ -123,6 +212,25 @@ private TValueNumber nonUniqueValueNumber(Expr e) {
   exists(FunctionSymbol symbol, ValueNumber operand |
     unaryOperandValueNumber(e, symbol, operand) and
     result = TUnaryOpValueNumber(symbol, operand)
+  )
+  or
+  exists(ValueNumber operand, Type t |
+    inlineCastValueNumber(e, operand, t) and
+    result = TInlineCastValueNumber(operand, t)
+  )
+  or
+  result = valueNumber([e.(ExprAnnotation).getExpression(), e.(AsExpr).getInnerExpr()])
+  or
+  e instanceof DontCare and result = TDontCareValueNumber()
+  or
+  exists(ValueNumber lower, ValueNumber high |
+    rangeValueNumber(e, lower, high) and
+    result = TRangeValueNumber(lower, high)
+  )
+  or
+  exists(ValueNumberElementList elements |
+    setValueNumber(e, elements) and
+    result = TSetValueNumber(elements)
   )
 }
 
