@@ -76,14 +76,12 @@ module DOM {
   /**
    * A JSX element, viewed as an `ElementDefinition`.
    */
-  private class JsxElementDefinition extends ElementDefinition, @jsx_element {
-    JsxElementDefinition() { this instanceof JSXElement }
+  private class JsxElementDefinition extends ElementDefinition, @jsx_element instanceof JSXElement {
+    override string getName() { result = super.getName() }
 
-    override string getName() { result = this.(JSXElement).getName() }
+    override AttributeDefinition getAttribute(int i) { result = super.getAttribute(i) }
 
-    override AttributeDefinition getAttribute(int i) { result = this.(JSXElement).getAttribute(i) }
-
-    override ElementDefinition getParent() { result = this.(JSXElement).getJsxParent() }
+    override ElementDefinition getParent() { result = super.getJsxParent() }
   }
 
   /**
