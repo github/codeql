@@ -4,20 +4,47 @@
  * To use this library, extend the abstract class `InterestingPrefix` to have the library identify expressions that
  * may be appended to it, then check `InterestingPrefix.getAnAppendedExpression(Expr)` to get your results.
  *
- * For example, `private class FooPrefix extends InterestingPrefix { FooPrefix() { this = "foo:" } };`
- * `predicate mayFollowFoo(Expr e) { e = any(FooPrefix fp).getAnAppendedExpression() }`
+ * For example, to identify expressions that may follow "foo:" in some string, we could define:
+ * 
+ * ```
+ * private class FooPrefix extends InterestingPrefix { 
+ *   int offset;
+ *   FooPrefix() { this.getStringValue().substring("foo:") = offset }; 
+ *   override int getOffset() { result = offset } 
+ * };
+ * 
+ * predicate mayFollowFoo(Expr e) { e = any(FooPrefix fp).getAnAppendedExpression() }
+ * ```
+ *
+ * This will identify all the `suffix` expressions in contexts such as:
+ * 
+ * ```
+ * "foo:" + suffix1
+ * "barfoo:" + suffix2
+ * stringBuilder.append("foo:").append(suffix3);
+ * String.format("%sfoo:%s", notSuffix, suffix4);
+ * ```
  */
 
 import java
 import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.StringFormat
 
+/**
+ * A string constant that contains a prefix whose possible successor strings are returned
+ * by `getAnAppendedExpression`.
+ * 
+ * Extend this class to specify prefixes whose successors should be analysed.
+ */
 abstract class InterestingPrefix extends CompileTimeConstantExpr {
   /**
-   * Gets the offset in this constant string where the interesting substring begins.
+   * Gets the offset in this constant string where the interesting prefix begins.
    */
   abstract int getOffset();
 
+  /**
+   * Gets an expression that may follow this prefix in a derived string.
+   */
   Expr getAnAppendedExpression() { mayFollowInterestingPrefix(this, result) }
 }
 
