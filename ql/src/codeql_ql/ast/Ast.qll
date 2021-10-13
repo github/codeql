@@ -777,6 +777,9 @@ class Call extends TCall, Expr, Formula {
     none() // overriden in sublcasses.
   }
 
+  /** Gets an argument of this call, if any. */
+  final Expr getAnArgument() { result = getArgument(_) }
+
   PredicateOrBuiltin getTarget() { resolveCall(this, result) }
 
   override Type getType() { result = this.getTarget().getReturnType() }
@@ -1741,7 +1744,19 @@ class FunctionSymbol extends string {
 /**
  * A binary operation expression, such as `x + 3` or `y / 2`.
  */
-class BinOpExpr extends TBinOpExpr, Expr { }
+class BinOpExpr extends TBinOpExpr, Expr {
+  /** Gets the left operand of the binary expression. */
+  Expr getLeftOperand() { none() } // overriden in subclasses
+
+  /* Gets the right operand of the binary expression. */
+  Expr getRightOperand() { none() } // overriden in subclasses
+
+  /** Gets the operator of the binary expression. */
+  FunctionSymbol getOperator() { none() } // overriden in subclasses
+
+  /* Gets an operand of the binary expression. */
+  final Expr getAnOperand() { result = getLeftOperand() or result = getRightOperand() }
+}
 
 /**
  * An addition or subtraction expression.
@@ -1752,17 +1767,11 @@ class AddSubExpr extends TAddSubExpr, BinOpExpr {
 
   AddSubExpr() { this = TAddSubExpr(expr) and operator = expr.getChild().getValue() }
 
-  /** Gets the left operand of the binary expression. */
-  Expr getLeftOperand() { toGenerated(result) = expr.getLeft() }
+  override Expr getLeftOperand() { toGenerated(result) = expr.getLeft() }
 
-  /* Gets the right operand of the binary expression. */
-  Expr getRightOperand() { toGenerated(result) = expr.getRight() }
+  override Expr getRightOperand() { toGenerated(result) = expr.getRight() }
 
-  /* Gets an operand of the binary expression. */
-  Expr getAnOperand() { result = getLeftOperand() or result = getRightOperand() }
-
-  /** Gets the operator of the binary expression. */
-  FunctionSymbol getOperator() { result = operator }
+  override FunctionSymbol getOperator() { result = operator }
 
   override PrimitiveType getType() {
     // Both operands are the same type
@@ -1822,16 +1831,12 @@ class MulDivModExpr extends TMulDivModExpr, BinOpExpr {
   MulDivModExpr() { this = TMulDivModExpr(expr) and operator = expr.getChild().getValue() }
 
   /** Gets the left operand of the binary expression. */
-  Expr getLeftOperand() { toGenerated(result) = expr.getLeft() }
+  override Expr getLeftOperand() { toGenerated(result) = expr.getLeft() }
 
   /** Gets the right operand of the binary expression. */
-  Expr getRightOperand() { toGenerated(result) = expr.getRight() }
+  override Expr getRightOperand() { toGenerated(result) = expr.getRight() }
 
-  /** Gets an operand of the binary expression. */
-  Expr getAnOperand() { result = getLeftOperand() or result = getRightOperand() }
-
-  /** Gets the operator of the binary expression. */
-  FunctionSymbol getOperator() { result = operator }
+  override FunctionSymbol getOperator() { result = operator }
 
   override PrimitiveType getType() {
     // Both operands are of the same type
@@ -1904,6 +1909,11 @@ class Range extends TRange, Expr {
    */
   Expr getHighEndpoint() { toGenerated(result) = range.getUpper() }
 
+  /**
+   * Gets the lower and upper bounds of the range.
+   */
+  Expr getAnEndpoint() { result = [getLowEndpoint(), getHighEndpoint()] }
+
   override PrimitiveType getType() { result.getName() = "int" }
 
   override string getAPrimaryQlClass() { result = "Range" }
@@ -1929,6 +1939,11 @@ class Set extends TSet, Expr {
    * Gets the `i`th element in this set literal expression.
    */
   Expr getElement(int i) { toGenerated(result) = set.getChild(i) }
+
+  /**
+   * Gets an element in this set literal expression, if any.
+   */
+  Expr getAnElement() { result = getElement(_) }
 
   override Type getType() { result = this.getElement(0).getType() }
 
