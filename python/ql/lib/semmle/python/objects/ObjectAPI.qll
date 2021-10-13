@@ -446,23 +446,21 @@ class CallableValue extends Value instanceof CallableObjectInternal {
  * Class representing bound-methods, such as `o.func`, where `o` is an instance
  * of a class that has a callable attribute `func`.
  */
-class BoundMethodValue extends CallableValue {
-  BoundMethodValue() { this instanceof BoundMethodObjectInternal }
-
+class BoundMethodValue extends CallableValue instanceof BoundMethodObjectInternal {
   /**
    * Gets the callable that will be used when `this` is called.
    * The actual callable for `func` in `o.func`.
    */
-  CallableValue getFunction() { result = this.(BoundMethodObjectInternal).getFunction() }
+  CallableValue getFunction() { result = super.getFunction() }
 
   /**
    * Gets the value that will be used for the `self` parameter when `this` is called.
    * The value for `o` in `o.func`.
    */
-  Value getSelf() { result = this.(BoundMethodObjectInternal).getSelf() }
+  Value getSelf() { result = super.getSelf() }
 
   /** Gets the parameter node that will be used for `self`. */
-  NameNode getSelfParameter() { result = this.(BoundMethodObjectInternal).getSelfParameter() }
+  NameNode getSelfParameter() { result = super.getSelfParameter() }
 }
 
 /**
