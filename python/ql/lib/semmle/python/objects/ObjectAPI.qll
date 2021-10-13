@@ -762,10 +762,8 @@ class PythonFunctionValue extends FunctionValue instanceof PythonFunctionObjectI
 }
 
 /** Class representing builtin functions, such as `len` or `print` */
-class BuiltinFunctionValue extends FunctionValue {
-  BuiltinFunctionValue() { this instanceof BuiltinFunctionObjectInternal }
-
-  override string getQualifiedName() { result = this.(BuiltinFunctionObjectInternal).getName() }
+class BuiltinFunctionValue extends FunctionValue instanceof BuiltinFunctionObjectInternal {
+  override string getQualifiedName() { result = super.getName() }
 
   override string descriptiveString() { result = "builtin-function " + this.getName() }
 
@@ -784,7 +782,7 @@ class BuiltinFunctionValue extends FunctionValue {
      * explicit return nodes that we can query and get the class of.
      */
 
-    result = TBuiltinClassObject(this.(BuiltinFunctionObjectInternal).getReturnType())
+    result = TBuiltinClassObject(super.getReturnType())
   }
 }
 
