@@ -101,9 +101,15 @@ module LodashUnderscore {
       exists(DataFlow::CallNode call, string name |
         // Members ending with By, With, or While indicate that they are a variant of
         // another function that takes a callback.
-        name.matches(["%By", "%With", "%While"]) or
+        name.matches(["%By", "%With", "%While"])
+        or
         // Other members that don't fit the above pattern.
-        name = ["each", "eachRight", "every", "filter", "find", "findLast", "flatMap", "flatMapDeep", "flatMapDepth", "forEach", "forEachRight", "partition", "reduce", "reduceRight", "replace", "some", "transform"]
+        name =
+          [
+            "each", "eachRight", "every", "filter", "find", "findLast", "flatMap", "flatMapDeep",
+            "flatMapDepth", "forEach", "forEachRight", "partition", "reduce", "reduceRight",
+            "replace", "some", "transform"
+          ]
       |
         call = member(name).getACall() and
         pred = call.getAnArgument().(DataFlow::FunctionNode).getExceptionalReturn() and
@@ -181,77 +187,30 @@ private class LodashCallbackAsPartialInvoke extends DataFlow::PartialInvokeNode:
       this = LodashUnderscore::member(name).getACall() and
       getNumArgument() = argumentCount
     |
-      (
-        name = ["bind", "callback", "iteratee"]
-      ) and
+      name = ["bind", "callback", "iteratee"] and
       callbackIndex = 0 and
       contextIndex = 1 and
       argumentCount = 2
       or
-      (
-        name = [
-          "all",
-          "any",
-          "collect",
-          "countBy",
-          "detect",
-          "dropRightWhile",
-          "dropWhile",
-          "each",
-          "eachRight",
-          "every",
-          "filter",
-          "find",
-          "findIndex",
-          "findKey",
-          "findLast",
-          "findLastIndex",
-          "findLastKey",
-          "forEach",
-          "forEachRight",
-          "forIn",
-          "forInRight",
-          "groupBy",
-          "indexBy",
-          "map",
-          "mapKeys",
-          "mapValues",
-          "max",
-          "min",
-          "omit",
-          "partition",
-          "pick",
-          "reject",
-          "remove",
-          "select",
-          "some",
-          "sortBy",
-          "sum",
-          "takeRightWhile",
-          "takeWhile",
-          "tap",
-          "thru",
-          "times",
-          "unzipWith",
-          "zipWith"]
-      ) and
+      name =
+        [
+          "all", "any", "collect", "countBy", "detect", "dropRightWhile", "dropWhile", "each",
+          "eachRight", "every", "filter", "find", "findIndex", "findKey", "findLast",
+          "findLastIndex", "findLastKey", "forEach", "forEachRight", "forIn", "forInRight",
+          "groupBy", "indexBy", "map", "mapKeys", "mapValues", "max", "min", "omit", "partition",
+          "pick", "reject", "remove", "select", "some", "sortBy", "sum", "takeRightWhile",
+          "takeWhile", "tap", "thru", "times", "unzipWith", "zipWith"
+        ] and
       callbackIndex = 1 and
       contextIndex = 2 and
       argumentCount = 3
       or
-      (
-        name = ["foldl", "foldr", "inject", "reduce", "reduceRight", "transform"]
-      ) and
+      name = ["foldl", "foldr", "inject", "reduce", "reduceRight", "transform"] and
       callbackIndex = 1 and
       contextIndex = 3 and
       argumentCount = 4
       or
-      (
-        name = ["sortedlastIndex", "assign", "eq", "extend", "merge"]
-        or
-        name = "sortedIndex" and
-        name = "uniq"
-      ) and
+      name = ["sortedlastIndex", "assign", "eq", "extend", "merge", "sortedIndex", "uniq"] and
       callbackIndex = 2 and
       contextIndex = 3 and
       argumentCount = 4
