@@ -61,17 +61,15 @@ class ParameterNode extends DataFlow::SourceNode {
  * new Array(16)
  * ```
  */
-class InvokeNode extends DataFlow::SourceNode {
-  InvokeNode() { this instanceof DataFlow::Impl::InvokeNodeDef }
-
+class InvokeNode extends DataFlow::SourceNode instanceof DataFlow::Impl::InvokeNodeDef {
   /** Gets the syntactic invoke expression underlying this function invocation. */
-  InvokeExpr getInvokeExpr() { result = this.(DataFlow::Impl::InvokeNodeDef).getInvokeExpr() }
+  InvokeExpr getInvokeExpr() { result = super.getInvokeExpr() }
 
   /** Gets the name of the function or method being invoked, if it can be determined. */
-  string getCalleeName() { result = this.(DataFlow::Impl::InvokeNodeDef).getCalleeName() }
+  string getCalleeName() { result = super.getCalleeName() }
 
   /** Gets the data flow node specifying the function to be called. */
-  DataFlow::Node getCalleeNode() { result = this.(DataFlow::Impl::InvokeNodeDef).getCalleeNode() }
+  DataFlow::Node getCalleeNode() { result = super.getCalleeNode() }
 
   /**
    * Gets the data flow node corresponding to the `i`th argument of this invocation.
@@ -92,10 +90,10 @@ class InvokeNode extends DataFlow::SourceNode {
    * but the position of `z` cannot be determined, hence there are no first and second
    * argument nodes.
    */
-  DataFlow::Node getArgument(int i) { result = this.(DataFlow::Impl::InvokeNodeDef).getArgument(i) }
+  DataFlow::Node getArgument(int i) { result = super.getArgument(i) }
 
   /** Gets the data flow node corresponding to an argument of this invocation. */
-  DataFlow::Node getAnArgument() { result = this.(DataFlow::Impl::InvokeNodeDef).getAnArgument() }
+  DataFlow::Node getAnArgument() { result = super.getAnArgument() }
 
   /** Gets the data flow node corresponding to the last argument of this invocation. */
   DataFlow::Node getLastArgument() { result = getArgument(getNumArgument() - 1) }
@@ -112,12 +110,10 @@ class InvokeNode extends DataFlow::SourceNode {
    * ```
    *  .
    */
-  DataFlow::Node getASpreadArgument() {
-    result = this.(DataFlow::Impl::InvokeNodeDef).getASpreadArgument()
-  }
+  DataFlow::Node getASpreadArgument() { result = super.getASpreadArgument() }
 
   /** Gets the number of arguments of this invocation, if it can be determined. */
-  int getNumArgument() { result = this.(DataFlow::Impl::InvokeNodeDef).getNumArgument() }
+  int getNumArgument() { result = super.getNumArgument() }
 
   Function getEnclosingFunction() { result = getBasicBlock().getContainer() }
 
