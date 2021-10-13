@@ -815,12 +815,10 @@ class BuiltinMethodValue extends FunctionValue instanceof BuiltinMethodObjectInt
 /**
  * A class representing sequence objects with a length and tracked items.
  */
-class SequenceValue extends Value {
-  SequenceValue() { this instanceof SequenceObjectInternal }
+class SequenceValue extends Value instanceof SequenceObjectInternal {
+  Value getItem(int n) { result = super.getItem(n) }
 
-  Value getItem(int n) { result = this.(SequenceObjectInternal).getItem(n) }
-
-  int length() { result = this.(SequenceObjectInternal).length() }
+  int length() { result = super.length() }
 }
 
 /** A class representing tuple objects */
