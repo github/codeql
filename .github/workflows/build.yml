@@ -74,10 +74,10 @@ jobs:
         with:
           name: extractor-ubuntu-latest
           path: linux64
-      - uses: actions/download-artifact@v2
-        with:
-          name: extractor-windows-latest
-          path: win64
+#      - uses: actions/download-artifact@v2
+#        with:
+#          name: extractor-windows-latest
+#          path: win64
       - uses: actions/download-artifact@v2
         with:
           name: extractor-macos-latest
