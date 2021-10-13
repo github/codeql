@@ -783,6 +783,9 @@ class Call extends TCall, Expr, Formula {
 
   final int getNumberOfArguments() { result = count(this.getArgument(_)) }
 
+  /** Holds if this call is a transitive closure of `kind` either `+` or `*`. */
+  predicate isClosure(string kind) { none() }
+
   /**
    * Gets the module that contains the predicate.
    * E.g. for `Foo::bar()` the result is `Foo`.
@@ -813,6 +816,10 @@ class PredicateCall extends TPredicateCall, Call {
   }
 
   override string getAPrimaryQlClass() { result = "PredicateCall" }
+
+  override predicate isClosure(string kind) {
+    kind = expr.getChild(_).(Generated::Closure).getValue()
+  }
 
   /**
    * Gets the name of the predicate called.
@@ -848,6 +855,10 @@ class MemberCall extends TMemberCall, Call {
    */
   string getMemberName() {
     result = expr.getChild(_).(Generated::QualifiedRhs).getName().getValue()
+  }
+
+  override predicate isClosure(string kind) {
+    kind = expr.getChild(_).(Generated::QualifiedRhs).getChild(_).(Generated::Closure).getValue()
   }
 
   /**
