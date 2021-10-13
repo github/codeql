@@ -644,9 +644,7 @@ class TaintTrackingImplementation extends string instanceof TaintTracking::Confi
  * Another taint-tracking class to help partition the code for clarity
  * This class handle tracking of ESSA variables.
  */
-private class EssaTaintTracking extends string {
-  EssaTaintTracking() { this instanceof TaintTracking::Configuration }
-
+private class EssaTaintTracking extends string instanceof TaintTracking::Configuration {
   pragma[noinline]
   predicate taintedDefinition(
     TaintTrackingNode src, EssaDefinition defn, TaintTrackingContext context, AttributePath path,
@@ -689,7 +687,7 @@ private class EssaTaintTracking extends string {
       defn = phi.asVariable().getDefinition() and
       predvar = defn.getInput(pred) and
       not pred.unlikelySuccessor(defn.getBasicBlock()) and
-      not this.(TaintTracking::Configuration).isBarrierEdge(srcnode, phi) and
+      not super.isBarrierEdge(srcnode, phi) and
       srcnode.asVariable() = predvar
     )
   }
@@ -779,7 +777,7 @@ private class EssaTaintTracking extends string {
     exists(DataFlow::Node srcnode |
       src = TTaintTrackingNode_(srcnode, context, path, kind, this) and
       srcnode.asVariable() = defn.getInput() and
-      not this.(TaintTracking::Configuration).isBarrierTest(defn.getTest(), defn.getSense())
+      not super.isBarrierTest(defn.getTest(), defn.getSense())
     )
   }
 
@@ -799,7 +797,7 @@ private class EssaTaintTracking extends string {
   ) {
     exists(DataFlow::Node srcnode, ControlFlowNode use |
       src = TTaintTrackingNode_(srcnode, context, path, kind, this) and
-      not this.(TaintTracking::Configuration).isBarrierTest(defn.getTest(), defn.getSense()) and
+      not super.isBarrierTest(defn.getTest(), defn.getSense()) and
       defn.getSense() = testEvaluates(defn, defn.getTest(), use, src)
     )
   }
@@ -813,7 +811,7 @@ private class EssaTaintTracking extends string {
       src = TTaintTrackingNode_(srcnode, context, path, kind, this) and
       piNodeTestAndUse(defn, test, use) and
       srcnode.asVariable() = defn.getInput() and
-      not this.(TaintTracking::Configuration).isBarrierTest(test, defn.getSense()) and
+      not super.isBarrierTest(test, defn.getSense()) and
       testEvaluatesMaybe(test, use)
     )
   }
