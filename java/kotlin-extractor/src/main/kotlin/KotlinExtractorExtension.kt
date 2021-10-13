@@ -690,7 +690,15 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
         val signature = "TODO"
         val returnTypeId = useType(f.returnType)
 
-        val parentId = if (f.parent is IrClass ) useClass(f.parent as IrClass, listOf()) else fileClass
+        val parent = f.parent
+        val parentId = when (parent) {
+            is IrClass -> useClass(parent, listOf())
+            is IrFile -> fileClass
+            else ->  {
+                logger.warnElement(Severity.ErrorSevere, "Unrecognised function parent: " + parent.javaClass, parent)
+                fakeLabel()
+            }
+        }
 
         val id: Label<out DbCallable>
         if (f.symbol is IrConstructorSymbol) {
