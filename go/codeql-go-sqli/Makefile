@@ -1,13 +1,13 @@
 all: add-user
 
-init: add-user
+init: go-sqlite3 add-user 
 	./admin -r
 	./admin -c
 	rm -f users.log
 show:
 	./admin -s
 
-setup go-sqlite3: 
+go-sqlite3: 
 	go get github.com/mattn/go-sqlite3
 
 add-user: add-user.go
