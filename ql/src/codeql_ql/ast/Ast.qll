@@ -2143,7 +2143,7 @@ module YAML {
       exists(YAMLEntry entry |
         entry.isRoot() and
         entry.getKey().getQualifiedName() = name and
-        result = entry.getValue().getValue() and
+        result = entry.getValue().getValue().trim() and
         entry.getLocation().getFile() = file
       )
     }
@@ -2188,6 +2188,13 @@ module YAML {
         entry.getKey().getQualifiedName() = name and
         entry.getValue().getValue() = version
       )
+    }
+
+    /**
+     * Gets a QLPack that this QLPack depends on.
+     */
+    QLPack getADependency() {
+      exists(string name | hasDependency(name, _) | result.getName().replaceAll("-", "/") = name)
     }
 
     Location getLocation() {
