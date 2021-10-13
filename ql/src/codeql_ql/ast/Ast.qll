@@ -665,7 +665,7 @@ class Class extends TClass, TypeDeclaration, ModuleDeclaration {
   /**
    * Gets a super-type referenced in the `extends` part of the class declaration.
    */
-  TypeExpr getASuperType() { toGenerated(result) in [cls.getExtends(_), cls.getInstanceof(_)] }
+  TypeExpr getASuperType() { toGenerated(result) = cls.getExtends(_) }
 
   /** Gets the type that this class is defined to be an alias of. */
   TypeExpr getAliasType() {
