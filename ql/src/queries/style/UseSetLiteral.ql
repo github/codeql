@@ -81,9 +81,50 @@ class DisjunctionEqualsLiteral extends DisjunctionChain {
   }
 }
 
-from DisjunctionChain d, int c
+/**
+ * A call with a single `Literal` argument. For example:
+ * ```
+ * myPredicate(4)
+ * ```
+ */
+class CallLiteral extends Call {
+  CallLiteral() {
+    getNumberOfArguments() = 1 and
+    getArgument(0) instanceof Literal
+  }
+}
+
+/**
+ * A chain of disjunctions where each operand is a call to the same predicate
+ * using various `Literal`s. For example:
+ * ```
+ * myPredicate(4) or
+ * myPredicate(5) or
+ * myPredicate(6)
+ * ```
+ */
+class DisjunctionPredicateLiteral extends DisjunctionChain {
+  DisjunctionPredicateLiteral() {
+    // Call to the same target
+    exists(PredicateOrBuiltin target |
+      forex(Formula f | f = getAnOperandRec() | f.(CallLiteral).getTarget() = target)
+    )
+  }
+}
+
+from DisjunctionChain d, string msg, int c
 where
-  d instanceof DisjunctionEqualsLiteral and
+  (
+    d instanceof DisjunctionEqualsLiteral and
+    msg =
+      "This formula of " + c.toString() +
+        " comparisons can be replaced with a single equality on a set literal, improving readability."
+    or
+    d instanceof DisjunctionPredicateLiteral and
+    msg =
+      "This formula of " + c.toString() +
+        " predicate calls can be replaced with a single call on a set literal, improving readability."
+  ) and
   c = count(d.getAnOperandRec()) and
   c >= 4
-select d, "This formula can be replaced with equality on a set literal, improving readability."
+select d, msg
