@@ -219,7 +219,7 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
 
     fun extractDeclaration(declaration: IrDeclaration) {
         when (declaration) {
-            is IrClass -> extractClass(declaration, listOf())
+            is IrClass -> extractClassSource(declaration)
             is IrFunction -> extractFunction(declaration)
             is IrAnonymousInitializer -> {
                 // Leaving this intentionally empty. init blocks are extracted during class extraction.
@@ -421,41 +421,20 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
             // If this is a generic type instantiation then it has no
             // source entity, so we need to extract it here
             if (typeArgs.isNotEmpty()) {
-                extractClass(c, typeArgs)
+                extractClassInstance(c, typeArgs)
             }
             // we don't have an "external dependencies" extractor yet,
             // so for now we extract thr source class for those too
             if (c.origin == IrDeclarationOrigin.IR_EXTERNAL_DECLARATION_STUB ||
                        c.origin == IrDeclarationOrigin.IR_EXTERNAL_JAVA_DECLARATION_STUB) {
-                extractClass(c, listOf())
+                extractClassSource(c)
             }
         })
     }
 
-    fun extractClass(c: IrClass, typeArgs: List<IrTypeArgument>): Label<out DbClassorinterface> {
-        val id = addClassLabel(c, typeArgs)
-        val pkg = c.packageFqName?.asString() ?: ""
-        val cls = c.name.asString()
-        val pkgId = extractPackage(pkg)
-        if(c.kind == ClassKind.INTERFACE) {
-            @Suppress("UNCHECKED_CAST")
-            val interfaceId = id as Label<out DbInterface>
-            tw.writeInterfaces(interfaceId, cls, pkgId, interfaceId)
-        } else {
-            @Suppress("UNCHECKED_CAST")
-            val classId = id as Label<out DbClass>
-            tw.writeClasses(classId, cls, pkgId, classId)
-
-            if (c.kind == ClassKind.ENUM_CLASS) {
-                tw.writeIsEnumType(classId)
-            }
-        }
+    fun extractClassCommon(c: IrClass, id: Label<out DbClassorinterface>) {
         val locId = tw.getLocation(c)
         tw.writeHasLocation(id, locId)
-
-        if (typeArgs.isEmpty()) {
-            c.typeParameters.map { extractTypeParameter(it) }
-        }
 
         for(t in c.superTypes) {
             when(t) {
@@ -475,20 +454,70 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
                 }
             }
         }
+    }
 
-        if (typeArgs.isNotEmpty()) {
-            for ((idx, arg) in typeArgs.withIndex()) {
-                val argId = getTypeArgumentLabel(arg, c)
-                tw.writeTypeArgs(argId, idx, id)
-            }
-            tw.writeIsParameterized(id)
-            val unbound = useClassSource(c)
-            tw.writeErasure(id, unbound)
+    fun extractClassSource(c: IrClass): Label<out DbClassorinterface> {
+        val id = useClassSource(c)
+        val pkg = c.packageFqName?.asString() ?: ""
+        val cls = c.name.asString()
+        val pkgId = extractPackage(pkg)
+        if(c.kind == ClassKind.INTERFACE) {
+            @Suppress("UNCHECKED_CAST")
+            val interfaceId = id as Label<out DbInterface>
+            tw.writeInterfaces(interfaceId, cls, pkgId, interfaceId)
         } else {
-            c.declarations.map { extractDeclaration(it) }
+            @Suppress("UNCHECKED_CAST")
+            val classId = id as Label<out DbClass>
+            tw.writeClasses(classId, cls, pkgId, classId)
 
-            extractObjectInitializerFunction(c, id)
+            if (c.kind == ClassKind.ENUM_CLASS) {
+                tw.writeIsEnumType(classId)
+            }
         }
+
+        extractClassCommon(c, id)
+        c.typeParameters.map { extractTypeParameter(it) }
+        c.declarations.map { extractDeclaration(it) }
+        extractObjectInitializerFunction(c, id)
+
+        return id
+    }
+
+    fun extractClassInstance(c: IrClass, typeArgs: List<IrTypeArgument>): Label<out DbClassorinterface> {
+        if (typeArgs.isEmpty()) {
+            logger.warnElement(Severity.ErrorSevere, "Instance without type arguments: " + c.name.asString(), c)
+        }
+
+        val id = addClassLabel(c, typeArgs)
+        val pkg = c.packageFqName?.asString() ?: ""
+        val cls = c.name.asString()
+        val pkgId = extractPackage(pkg)
+        if(c.kind == ClassKind.INTERFACE) {
+            @Suppress("UNCHECKED_CAST")
+            val interfaceId = id as Label<out DbInterface>
+            @Suppress("UNCHECKED_CAST")
+            val sourceInterfaceId = useClassSource(c) as Label<out DbInterface>
+            tw.writeInterfaces(interfaceId, cls, pkgId, sourceInterfaceId)
+        } else {
+            @Suppress("UNCHECKED_CAST")
+            val classId = id as Label<out DbClass>
+            @Suppress("UNCHECKED_CAST")
+            val sourceClassId = useClassSource(c) as Label<out DbClass>
+            tw.writeClasses(classId, cls, pkgId, sourceClassId)
+
+            if (c.kind == ClassKind.ENUM_CLASS) {
+                tw.writeIsEnumType(classId)
+            }
+        }
+        extractClassCommon(c, id)
+
+        for ((idx, arg) in typeArgs.withIndex()) {
+            val argId = getTypeArgumentLabel(arg, c)
+            tw.writeTypeArgs(argId, idx, id)
+        }
+        tw.writeIsParameterized(id)
+        val unbound = useClassSource(c)
+        tw.writeErasure(id, unbound)
 
         return id
     }
