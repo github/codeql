@@ -123,78 +123,136 @@ private module Shared {
   }
 
   /**
-   * An additional step that is preserves dataflow in the context of XSS.
+   * Holds if `call` is a method call in ERB file `erb`, targeting a method
+   * named `name`.
    */
-  predicate isAdditionalXSSFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-    // node1 is a `locals` argument to a render call...
-    exists(RenderCall call, Pair kvPair, string hashKey |
+  pragma[noinline]
+  private predicate isMethodCall(MethodCall call, string name, ErbFile erb) {
+    name = call.getMethodName() and
+    erb = call.getLocation().getFile()
+  }
+
+  /**
+   * Holds if some render call passes `value` for `hashKey` in the `locals`
+   * argument, in ERB file `erb`.
+   */
+  pragma[noinline]
+  private predicate renderCallLocals(string hashKey, Expr value, ErbFile erb) {
+    exists(RenderCall call, Pair kvPair |
       call.getLocals().getAKeyValuePair() = kvPair and
-      kvPair.getValue() = node1.asExpr().getExpr() and
-      kvPair.getKey().(StringlikeLiteral).getValueText() = hashKey and
-      // `node2` appears in the rendered template file
-      call.getTemplateFile() = node2.getLocation().getFile() and
-      (
-        // node2 is an element reference against `local_assigns`
-        exists(
-          CfgNodes::ExprNodes::ElementReferenceCfgNode refNode, DataFlow::Node argNode,
-          CfgNodes::ExprNodes::StringlikeLiteralCfgNode strNode
-        |
-          refNode = node2.asExpr() and
-          argNode.asExpr() = refNode.getArgument(0) and
-          refNode.getReceiver().getExpr().(MethodCall).getMethodName() = "local_assigns" and
-          argNode.getALocalSource() = DataFlow::exprNode(strNode) and
-          strNode.getExpr().getValueText() = hashKey
-        )
-        or
-        // ...node2 is a "method call" to a "method" with `hashKey` as its name
-        // TODO: This may be a variable read in reality that we interpret as a method call
-        exists(MethodCall varAcc |
-          varAcc = node2.asExpr().(CfgNodes::ExprNodes::MethodCallCfgNode).getExpr() and
-          varAcc.getMethodName() = hashKey
-        )
-      )
+      kvPair.getValue() = value and
+      kvPair.getKey().getValueText() = hashKey and
+      call.getTemplateFile() = erb
     )
-    or
-    // instance variables in the controller
-    exists(
-      ActionControllerActionMethod action, VariableReadAccess viewVarRead, AssignExpr ae,
-      FinalInstanceVarWrite controllerVarWrite
+  }
+
+  pragma[noinline]
+  private predicate isFlowFromLocals0(
+    CfgNodes::ExprNodes::ElementReferenceCfgNode refNode, string hashKey, ErbFile erb
+  ) {
+    exists(DataFlow::Node argNode, CfgNodes::ExprNodes::StringlikeLiteralCfgNode strNode |
+      argNode.asExpr() = refNode.getArgument(0) and
+      refNode.getReceiver().getExpr().(MethodCall).getMethodName() = "local_assigns" and
+      argNode.getALocalSource() = DataFlow::exprNode(strNode) and
+      strNode.getExpr().getValueText() = hashKey and
+      erb = refNode.getFile()
+    )
+  }
+
+  private predicate isFlowFromLocals(DataFlow::Node node1, DataFlow::Node node2) {
+    exists(string hashKey, ErbFile erb |
+      // node1 is a `locals` argument to a render call...
+      renderCallLocals(hashKey, node1.asExpr().getExpr(), erb)
     |
-      viewVarRead = node2.asExpr().(CfgNodes::ExprNodes::VariableReadAccessCfgNode).getExpr() and
-      action.getDefaultTemplateFile() = viewVarRead.getLocation().getFile() and
-      // match read to write on variable name
-      viewVarRead.getVariable().getName() = controllerVarWrite.getVariable().getName() and
-      // propagate taint from assignment RHS expr to variable read access in view
-      ae = controllerVarWrite.getAnAssignExpr() and
-      node1.asExpr().getExpr() = ae.getRightOperand() and
-      ae.getParent+() = action
+      // node2 is an element reference against `local_assigns`
+      isFlowFromLocals0(node2.asExpr(), hashKey, erb)
+      or
+      // ...node2 is a "method call" to a "method" with `hashKey` as its name
+      // TODO: This may be a variable read in reality that we interpret as a method call
+      isMethodCall(node2.asExpr().getExpr(), hashKey, erb)
     )
-    or
+  }
+
+  /**
+   * Holds if `action` contains an assignment of `value` to an instance
+   * variable named `name`, in ERB file `erb`.
+   */
+  pragma[noinline]
+  private predicate actionAssigns(
+    ActionControllerActionMethod action, string name, Expr value, ErbFile erb
+  ) {
+    exists(AssignExpr ae, FinalInstanceVarWrite controllerVarWrite |
+      action.getDefaultTemplateFile() = erb and
+      ae.getParent+() = action and
+      ae = controllerVarWrite.getAnAssignExpr() and
+      name = controllerVarWrite.getVariable().getName() and
+      value = ae.getRightOperand()
+    )
+  }
+
+  pragma[noinline]
+  private predicate isVariableReadAccess(VariableReadAccess viewVarRead, string name, ErbFile erb) {
+    erb = viewVarRead.getLocation().getFile() and
+    viewVarRead.getVariable().getName() = name
+  }
+
+  private predicate isFlowFromControllerInstanceVariable(DataFlow::Node node1, DataFlow::Node node2) {
+    // instance variables in the controller
+    exists(ActionControllerActionMethod action, string name, ErbFile template |
+      // match read to write on variable name
+      actionAssigns(action, name, node1.asExpr().getExpr(), template) and
+      // propagate taint from assignment RHS expr to variable read access in view
+      isVariableReadAccess(node2.asExpr().getExpr(), name, template)
+    )
+  }
+
+  /**
+   * Holds if `helperMethod` is a helper method named `name` that is associated
+   * with ERB file `erb`.
+   */
+  pragma[noinline]
+  private predicate isHelperMethod(
+    ActionControllerHelperMethod helperMethod, string name, ErbFile erb
+  ) {
+    helperMethod.getName() = name and
+    helperMethod.getControllerClass() = getAssociatedControllerClass(erb)
+  }
+
+  private predicate isFlowIntoHelperMethod(DataFlow::Node node1, DataFlow::Node node2) {
     // flow from template into controller helper method
     exists(
-      ErbFile template, ActionControllerHelperMethod helperMethod,
+      ErbFile template, ActionControllerHelperMethod helperMethod, string name,
       CfgNodes::ExprNodes::MethodCallCfgNode helperMethodCall, int argIdx
     |
-      template = node1.getLocation().getFile() and
-      helperMethod.getName() = helperMethodCall.getExpr().getMethodName() and
-      helperMethod.getControllerClass() = getAssociatedControllerClass(template) and
-      helperMethodCall.getArgument(argIdx) = node1.asExpr() and
-      helperMethod.getParameter(argIdx) = node2.asExpr().getExpr()
+      isHelperMethod(helperMethod, name, template) and
+      isMethodCall(helperMethodCall.getExpr(), name, template) and
+      helperMethodCall.getArgument(pragma[only_bind_into](argIdx)) = node1.asExpr() and
+      helperMethod.getParameter(pragma[only_bind_into](argIdx)) = node2.asExpr().getExpr()
     )
-    or
+  }
+
+  private predicate isFlowFromHelperMethod(DataFlow::Node node1, DataFlow::Node node2) {
     // flow out of controller helper method into template
-    exists(
-      ErbFile template, ActionControllerHelperMethod helperMethod,
-      CfgNodes::ExprNodes::MethodCallCfgNode helperMethodCall
-    |
-      template = node2.getLocation().getFile() and
-      helperMethod.getName() = helperMethodCall.getExpr().getMethodName() and
-      helperMethod.getControllerClass() = getAssociatedControllerClass(template) and
+    exists(ErbFile template, ActionControllerHelperMethod helperMethod, string name |
       // `node1` is an expr node that may be returned by the helper method
       exprNodeReturnedFrom(node1, helperMethod) and
       // `node2` is a call to the helper method
-      node2.asExpr() = helperMethodCall
+      isHelperMethod(helperMethod, name, template) and
+      isMethodCall(node2.asExpr().getExpr(), name, template)
     )
+  }
+
+  /**
+   * An additional step that is preserves dataflow in the context of XSS.
+   */
+  predicate isAdditionalXSSFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+    isFlowFromLocals(node1, node2)
+    or
+    isFlowFromControllerInstanceVariable(node1, node2)
+    or
+    isFlowIntoHelperMethod(node1, node2)
+    or
+    isFlowFromHelperMethod(node1, node2)
   }
 }
 

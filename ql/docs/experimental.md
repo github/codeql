@@ -21,7 +21,7 @@ Experimental queries and libraries may not be actively maintained as the standar
 
 3. **Formatting**
 
-    - The queries and libraries must be [autoformatted](https://help.semmle.com/codeql/codeql-for-vscode/reference/editor.html#autoformatting).
+    - The queries and libraries must be [autoformatted](https://code.visualstudio.com/docs/editor/codebasics#_formatting).
 
 4. **Compilation**
 
