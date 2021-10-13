@@ -10,10 +10,7 @@
 
 import ql
 import codeql_ql.ast.internal.Predicate
-
-class StringClass extends PrimitiveType {
-  StringClass() { this.getName() = "string" }
-}
+import codeql_ql.ast.internal.Builtins
 
 class PrefixPredicate extends BuiltinPredicate {
   PrefixPredicate() { this = any(StringClass sc).getClassPredicate("prefix", 1) }
@@ -35,15 +32,18 @@ class EqFormula extends ComparisonFormula {
   EqFormula() { this.getSymbol() = "=" }
 }
 
+bindingset[s]
+string escape(string s) { result = s.replaceAll("_", "\\\\_").replaceAll("%", "\\\\%") }
+
 pragma[inline]
 string getMessage(Call call, String literal) {
-  call instanceof PrefixPredicateCall and result = ".matches(\"" + literal.getValue() + "%\")"
+  call instanceof PrefixPredicateCall and
+  result = ".matches(\"" + escape(literal.getValue()) + "%\")"
   or
-  call instanceof SuffixPredicateCall and result = ".matches(\"%" + literal.getValue() + "\")"
+  call instanceof SuffixPredicateCall and
+  result = ".matches(\"%" + escape(literal.getValue()) + "\")"
 }
 
 from EqFormula eq, PrefixPredicateCall call, String literal
 where eq.getAnOperand() = call and eq.getAnOperand() = literal
-select eq,
-  "Use " + getMessage(call, literal) + " instead (but be sure to escape " + literal.getValue() +
-    ")."
+select eq, "Use " + getMessage(call, literal) + " instead."
