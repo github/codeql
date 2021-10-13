@@ -74,23 +74,6 @@ private class Folder_ extends ContainerOrModule, TFolder {
   Folder getFolder() { result = f }
 }
 
-// TODO: Use `AstNode::getParent` once it is total
-private Generated::AstNode parent(Generated::AstNode n) {
-  result = n.getParent() and
-  not n instanceof Generated::Module
-}
-
-private Module getEnclosingModule0(AstNode n) {
-  AstNodes::toGenerated(result) = parent*(AstNodes::toGenerated(n).getParent())
-}
-
-ContainerOrModule getEnclosingModule(AstNode n) {
-  result = TModule(getEnclosingModule0(n))
-  or
-  not exists(getEnclosingModule0(n)) and
-  result = TFile(n.getLocation().getFile())
-}
-
 class Module_ extends FileOrModule, TModule {
   Module m;
 
@@ -163,6 +146,24 @@ private predicate resolveSelectionName(Import imp, ContainerOrModule m, int i) {
 
 cached
 private module Cached {
+  // TODO: Use `AstNode::getParent` once it is total
+  private Generated::AstNode parent(Generated::AstNode n) {
+    result = n.getParent() and
+    not n instanceof Generated::Module
+  }
+
+  private Module getEnclosingModule0(AstNode n) {
+    AstNodes::toGenerated(result) = parent*(AstNodes::toGenerated(n).getParent())
+  }
+
+  cached
+  ContainerOrModule getEnclosingModule(AstNode n) {
+    result = TModule(getEnclosingModule0(n))
+    or
+    not exists(getEnclosingModule0(n)) and
+    result = TFile(n.getLocation().getFile())
+  }
+
   cached
   module NewType {
     cached

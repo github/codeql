@@ -72,7 +72,7 @@ private module Cached {
   predicate resolveVariable(Identifier i, VarDef decl) { scopeOf(i).containsVar(decl, getName(i)) }
 
   cached
-  predicate resolveField(Identifier i, VarDef decl) { scopeOf(i).containsField(decl, getName(i)) }
+  predicate resolveField(Identifier i, VarDef decl) { scopeOf(i).containsField(decl, pragma[only_bind_into](getName(i))) }
 }
 
 import Cached
