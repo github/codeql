@@ -241,7 +241,7 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
                 val classifier: IrClassifierSymbol = s.classifier
                 val cls: IrClass = classifier.owner as IrClass
 
-                return useClass(cls, s.arguments)
+                return useClassInstance(cls, s.arguments)
             }
 
             s.isByte() -> return primitiveType("byte")
@@ -277,7 +277,7 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
                 val classifier: IrClassifierSymbol = s.classifier
                 val cls: IrClass = classifier.owner as IrClass
 
-                return useClass(cls, s.arguments)
+                return useClassInstance(cls, s.arguments)
             }
             s.classifier.owner is IrTypeParameter -> {
                 return useTypeParameter(s.classifier.owner as IrTypeParameter)
@@ -339,7 +339,7 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
 
         val parentId: Label<out DbTypeorcallable> = when (val parent = tp.parent) {
             is IrFunction -> useFunction(parent)
-            is IrClass -> useClass(parent, listOf())
+            is IrClass -> useClassSource(parent)
             else -> {
                 logger.warnElement(Severity.ErrorSevere, "Unexpected type parameter parent", tp)
                 fakeLabel()
@@ -392,6 +392,7 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
                 return wildcardId
             }
             is IrTypeProjection -> {
+                @Suppress("UNCHECKED_CAST")
                 return useType(arg.type, false) as Label<out DbReftype>
             }
             else -> {
@@ -407,45 +408,28 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
         return id
     }
 
-    fun useClass(c: IrClass, typeArgs: List<IrTypeArgument>): Label<out DbClassorinterface> {
-        // todo: find a better way of finding if we're dealing with the source type.
-        // The return type of a constructor in a generic class is a simple type with the class as the classifier, and
-        // the type parameters added as type arguments. The same constructed source type can show up as parameter types
-        // of functions inside the class.
-        val args = if (typeArgsMatchTypeParameters(typeArgs, c.typeParameters)) {
-            listOf()
-        } else {
-            typeArgs
-        }
-
+    fun useClassSource(c: IrClass): Label<out DbClassorinterface> {
+        // For source classes, the label doesn't include and type arguments
+        val args = listOf<IrTypeArgument>()
         val classId = getClassLabel(c, args)
-        val label = tw.getExistingLabelFor<DbClass>(classId)
-        if (label != null) {
-            return label
-        }
-
-        if (typeArgs.isNotEmpty()) {
-            return extractClass(c, typeArgs)
-        }
-
-        // todo: fix this
-        if (c.origin == IrDeclarationOrigin.IR_EXTERNAL_DECLARATION_STUB ||
-            c.origin == IrDeclarationOrigin.IR_EXTERNAL_JAVA_DECLARATION_STUB){
-            return extractClass(c, listOf())
-        }
-
         return tw.getLabelFor(classId)
     }
 
-    private fun typeArgsMatchTypeParameters(typeArgs: List<IrTypeArgument>, typeParameters: List<IrTypeParameter>): Boolean {
-        val args = typeArgs.map { if (it !is IrTypeProjection) null else it.type }
-        for ((idx, ta) in args.withIndex()){
-            val tp = typeParameters.elementAtOrNull(idx)
-            if (tp?.symbol?.typeWith() != ta) {
-                return false
+    fun useClassInstance(c: IrClass, typeArgs: List<IrTypeArgument>): Label<out DbClassorinterface> {
+        val classId = getClassLabel(c, typeArgs)
+        return tw.getLabelFor(classId, {
+            // If this is a generic type instantiation then it has no
+            // source entity, so we need to extract it here
+            if (typeArgs.isNotEmpty()) {
+                extractClass(c, typeArgs)
             }
-        }
-        return true
+            // we don't have an "external dependencies" extractor yet,
+            // so for now we extract thr source class for those too
+            if (c.origin == IrDeclarationOrigin.IR_EXTERNAL_DECLARATION_STUB ||
+                       c.origin == IrDeclarationOrigin.IR_EXTERNAL_JAVA_DECLARATION_STUB) {
+                extractClass(c, listOf())
+            }
+        })
     }
 
     fun extractClass(c: IrClass, typeArgs: List<IrTypeArgument>): Label<out DbClassorinterface> {
@@ -480,7 +464,7 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
                         t.classifier.owner is IrClass -> {
                             val classifier: IrClassifierSymbol = t.classifier
                             val tcls: IrClass = classifier.owner as IrClass
-                            val l = useClass(tcls, t.arguments)
+                            val l = useClassInstance(tcls, t.arguments)
                             tw.writeExtendsReftype(id, l)
                         } else -> {
                             logger.warn(Severity.ErrorSevere, "Unexpected simple type supertype: " + t.javaClass + ": " + t.render())
@@ -498,7 +482,7 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
                 tw.writeTypeArgs(argId, idx, id)
             }
             tw.writeIsParameterized(id)
-            val unbound = useClass(c, listOf())
+            val unbound = useClassSource(c)
             tw.writeErasure(id, unbound)
         } else {
             c.declarations.map { extractDeclaration(it) }
@@ -512,7 +496,6 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
     fun useType(t: IrType, canReturnPrimitiveTypes: Boolean = true): Label<out DbType> {
         when(t) {
             is IrSimpleType -> return useSimpleType(t, canReturnPrimitiveTypes)
-            is IrClass -> return useClass(t, listOf())
             else -> {
                 logger.warn(Severity.ErrorSevere, "Unrecognised IrType: " + t.javaClass)
                 return fakeLabel()
@@ -523,7 +506,7 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
     fun useDeclarationParent(dp: IrDeclarationParent): Label<out DbElement> {
         when(dp) {
             is IrFile -> return usePackage(dp.fqName.asString())
-            is IrClass -> return useClass(dp, listOf())
+            is IrClass -> return useClassSource(dp)
             is IrFunction -> return useFunction(dp)
             else -> {
                 logger.warnElement(Severity.ErrorSevere, "Unrecognised IrDeclarationParent: " + dp.javaClass, dp)
@@ -688,11 +671,10 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
 
         val locId = tw.getLocation(f)
         val signature = "TODO"
-        val returnTypeId = useType(f.returnType)
 
         val parent = f.parent
         val parentId = when (parent) {
-            is IrClass -> useClass(parent, listOf())
+            is IrClass -> useClassSource(parent)
             is IrFile -> fileClass
             else ->  {
                 logger.warnElement(Severity.ErrorSevere, "Unrecognised function parent: " + parent.javaClass, parent)
@@ -702,9 +684,11 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
 
         val id: Label<out DbCallable>
         if (f.symbol is IrConstructorSymbol) {
+            val returnTypeId = useType(erase(f.returnType))
             id = useFunction<DbConstructor>(f)
             tw.writeConstrs(id, f.returnType.classFqName?.shortName()?.asString() ?: f.name.asString(), signature, returnTypeId, parentId, id)
         } else {
+            val returnTypeId = useType(f.returnType)
             id = useFunction<DbMethod>(f)
             tw.writeMethods(id, f.name.asString(), signature, returnTypeId, parentId, id)
 
@@ -747,7 +731,7 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
             val id = useProperty(p)
             val locId = tw.getLocation(p)
             val typeId = useType(bf.type)
-            val parentId = if (p.parent is IrClass ) useClass(p.parent as IrClass, listOf()) else fileClass
+            val parentId = if (p.parent is IrClass) useClassSource(p.parent as IrClass) else fileClass
             tw.writeFields(id, p.name.asString(), typeId, parentId, id)
             tw.writeHasLocation(id, locId)
         }
