@@ -120,21 +120,13 @@ module JsonNET {
     SerializedMember() {
       // This member has a Json attribute
       exists(Class attribute | attribute = this.getAnAttribute().getType() |
-        attribute.hasName("JsonPropertyAttribute")
-        or
-        attribute.hasName("JsonDictionaryAttribute")
-        or
-        attribute.hasName("JsonRequiredAttribute")
-        or
-        attribute.hasName("JsonArrayAttribute")
-        or
-        attribute.hasName("JsonConverterAttribute")
-        or
-        attribute.hasName("JsonExtensionDataAttribute")
-        or
-        attribute.hasName("SerializableAttribute") // System.SerializableAttribute
-        or
-        attribute.hasName("DataMemberAttribute") // System.DataMemberAttribute
+        attribute
+            .hasName([
+                "JsonPropertyAttribute", "JsonDictionaryAttribute", "JsonRequiredAttribute",
+                "JsonArrayAttribute", "JsonConverterAttribute", "JsonExtensionDataAttribute",
+                "SerializableAttribute", // System.SerializableAttribute
+                "DataMemberAttribute" // System.DataMemberAttribute
+              ])
       )
       or
       // This field is a member of an explicitly serialized type
@@ -175,7 +167,7 @@ module JsonNET {
   /** Any attribute class that marks a member to not be serialized. */
   private class NotSerializedAttributeClass extends JsonClass {
     NotSerializedAttributeClass() {
-      this.hasName("JsonIgnoreAttribute") or this.hasName("NonSerializedAttribute")
+      this.hasName(["JsonIgnoreAttribute", "NonSerializedAttribute"])
     }
   }
 
