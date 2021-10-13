@@ -787,13 +787,11 @@ class BuiltinFunctionValue extends FunctionValue instanceof BuiltinFunctionObjec
 }
 
 /** Class representing builtin methods, such as `list.append` or `set.add` */
-class BuiltinMethodValue extends FunctionValue {
-  BuiltinMethodValue() { this instanceof BuiltinMethodObjectInternal }
-
+class BuiltinMethodValue extends FunctionValue instanceof BuiltinMethodObjectInternal {
   override string getQualifiedName() {
     exists(Builtin cls |
       cls.isClass() and
-      cls.getMember(_) = this.(BuiltinMethodObjectInternal).getBuiltin() and
+      cls.getMember(_) = super.getBuiltin() and
       result = cls.getName() + "." + this.getName()
     )
   }
@@ -810,7 +808,7 @@ class BuiltinMethodValue extends FunctionValue {
   }
 
   override ClassValue getAnInferredReturnType() {
-    result = TBuiltinClassObject(this.(BuiltinMethodObjectInternal).getReturnType())
+    result = TBuiltinClassObject(super.getReturnType())
   }
 }
 
