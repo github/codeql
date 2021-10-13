@@ -147,9 +147,7 @@ class Value extends TObject {
  * Class representing modules in the Python program
  * Each `ModuleValue` represents a module object in the Python program.
  */
-class ModuleValue extends Value {
-  ModuleValue() { this instanceof ModuleObjectInternal }
-
+class ModuleValue extends Value instanceof ModuleObjectInternal {
   /**
    * Holds if this module "exports" name.
    * That is, does it define `name` in `__all__` or is
@@ -159,7 +157,7 @@ class ModuleValue extends Value {
   predicate exports(string name) { PointsTo::moduleExports(this, name) }
 
   /** Gets the scope for this module, provided that it is a Python module. */
-  ModuleScope getScope() { result = this.(ModuleObjectInternal).getSourceModule() }
+  ModuleScope getScope() { result = super.getSourceModule() }
 
   /**
    * Gets the container path for this module. Will be the file for a Python module,
