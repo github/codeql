@@ -127,14 +127,12 @@ module DOM {
   /**
    * An HTML attribute, viewed as an `AttributeDefinition`.
    */
-  private class HtmlAttributeDefinition extends AttributeDefinition, @xmlattribute {
-    HtmlAttributeDefinition() { this instanceof HTML::Attribute }
+  private class HtmlAttributeDefinition extends AttributeDefinition, @xmlattribute instanceof HTML::Attribute {
+    override string getName() { result = super.getName() }
 
-    override string getName() { result = this.(HTML::Attribute).getName() }
+    override string getStringValue() { result = super.getValue() }
 
-    override string getStringValue() { result = this.(HTML::Attribute).getValue() }
-
-    override ElementDefinition getElement() { result = this.(HTML::Attribute).getElement() }
+    override ElementDefinition getElement() { result = super.getElement() }
   }
 
   /**
