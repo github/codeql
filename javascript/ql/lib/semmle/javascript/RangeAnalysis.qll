@@ -236,10 +236,9 @@ module RangeAnalysis {
   ) {
     if exists(r.getImmediatePredecessor())
     then linearDefinitionSum(r.getImmediatePredecessor(), xroot, xsign, yroot, ysign, bias)
-    else
-      if exists(r.asExpr().getIntValue())
-      then none() // do not model constants as sums
-      else (
+    else (
+      not exists(r.asExpr().getIntValue()) and // do not model constants as sums
+      (
         exists(AddExpr add, int bias1, int bias2 | r.asExpr() = add |
           // r = r1 + r2
           linearDefinition(add.getLeftOperand().flow(), xroot, xsign, bias1) and
@@ -257,6 +256,7 @@ module RangeAnalysis {
         linearDefinitionSum(r.asExpr().(NegExpr).getOperand().flow(), xroot, -xsign, yroot, -ysign,
           -bias)
       )
+    )
   }
 
   /**
