@@ -940,12 +940,10 @@ private module ParameterNodes {
 import ParameterNodes
 
 /** A data-flow node that represents a call argument. */
-class ArgumentNode extends Node {
-  ArgumentNode() { this instanceof ArgumentNodeImpl }
-
+class ArgumentNode extends Node instanceof ArgumentNodeImpl {
   /** Holds if this argument occurs at the given position in the given call. */
   final predicate argumentOf(DataFlowCall call, int pos) {
-    this.(ArgumentNodeImpl).argumentOf(call, pos)
+    super.argumentOf(call, pos)
   }
 }
 
