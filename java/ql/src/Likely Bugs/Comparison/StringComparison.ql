@@ -41,6 +41,7 @@ class StringValue extends Expr {
   }
 }
 
+pragma[noinline]
 predicate candidateVariable(Variable v) {
   v.fromSource() and
   // For parameters, assume they could be non-interned.
