@@ -104,7 +104,7 @@ class AsyncSentinelCall extends DataFlow::CallNode {
     exists(DataFlow::FunctionNode node | node.getAstNode() = asyncCallee |
       // manual models
       exists(string memberName |
-        not "Sync" = memberName.suffix(memberName.length() - 4) and
+        not memberName.matches("%Sync") and
         this = NodeJSLib::FS::moduleMember(memberName).getACall() and
         node = this.getCallback([1 .. 2])
       )

@@ -303,14 +303,11 @@ module PrettyPrintCatCall {
   bindingset[str]
   private string createSimplifiedStringConcat(string str) {
     // Remove an initial ""+ (e.g. in `""+file`)
-    if str.prefix(5) = "\"\" + "
+    if str.matches("\"\" + %")
     then result = str.suffix(5)
     else
       // prettify `${newpath}` to just newpath
-      if
-        str.prefix(3) = "`${" and
-        str.suffix(str.length() - 2) = "}`" and
-        not str.suffix(3).matches("%{%")
+      if str.matches("`${%") and str.matches("}`%") and not str.suffix(3).matches("%{%")
       then result = str.prefix(str.length() - 2).suffix(3)
       else result = str
   }
