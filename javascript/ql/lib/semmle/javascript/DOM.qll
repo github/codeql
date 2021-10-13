@@ -63,16 +63,14 @@ module DOM {
   /**
    * An HTML element, viewed as an `ElementDefinition`.
    */
-  private class HtmlElementDefinition extends ElementDefinition, @xmlelement {
-    HtmlElementDefinition() { this instanceof HTML::Element }
-
-    override string getName() { result = this.(HTML::Element).getName() }
+  private class HtmlElementDefinition extends ElementDefinition, @xmlelement instanceof HTML::Element {
+    override string getName() { result = super.getName() }
 
     override AttributeDefinition getAttribute(int i) {
-      result = this.(HTML::Element).getAttribute(i)
+      result = super.getAttribute(i)
     }
 
-    override ElementDefinition getParent() { result = this.(HTML::Element).getParent() }
+    override ElementDefinition getParent() { result = super.getParent() }
   }
 
   /**
