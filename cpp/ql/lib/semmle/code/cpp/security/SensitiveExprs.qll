@@ -11,17 +11,8 @@ import cpp
  */
 bindingset[s]
 private predicate suspicious(string s) {
-  (
-    s.matches("%password%") or
-    s.matches("%passwd%") or
-    s.matches("%trusted%")
-  ) and
-  not (
-    s.matches("%hash%") or
-    s.matches("%crypt%") or
-    s.matches("%file%") or
-    s.matches("%path%")
-  )
+  s.matches(["%password%", "%passwd%", "%trusted%"]) and
+  not s.matches(["%hash%", "%crypt%", "%file%", "%path%"])
 }
 
 /**
