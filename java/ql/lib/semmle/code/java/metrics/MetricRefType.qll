@@ -264,11 +264,7 @@ class MetricRefType extends RefType, MetricElement {
    * for use with the specialization index metric.
    */
   predicate ignoreOverride(Method c) {
-    c.hasStringSignature("equals(Object)") or
-    c.hasStringSignature("hashCode()") or
-    c.hasStringSignature("toString()") or
-    c.hasStringSignature("finalize()") or
-    c.hasStringSignature("clone()")
+    c.hasStringSignature(["equals(Object)", "hashCode()", "toString()", "finalize()", "clone()"])
   }
 
   /** Gets a method that overrides a non-abstract method in a super type. */

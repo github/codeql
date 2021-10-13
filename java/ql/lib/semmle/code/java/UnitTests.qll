@@ -38,11 +38,12 @@ class TearDownMethod extends Method {
 
 private class TestRelatedAnnotation extends Annotation {
   TestRelatedAnnotation() {
-    this.getType().getPackage().hasName("org.testng.annotations") or
-    this.getType().getPackage().hasName("org.junit") or
-    this.getType().getPackage().hasName("org.junit.runner") or
-    this.getType().getPackage().hasName("org.junit.jupiter.api") or
-    this.getType().getPackage().hasName("org.junit.jupiter.params")
+    this.getType()
+        .getPackage()
+        .hasName([
+            "org.testng.annotations", "org.junit", "org.junit.runner", "org.junit.jupiter.api",
+            "org.junit.jupiter.params"
+          ])
   }
 }
 
