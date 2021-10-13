@@ -275,11 +275,9 @@ class CallNode extends InvokeNode {
  * Math.abs(x)
  * ```
  */
-class MethodCallNode extends CallNode {
-  MethodCallNode() { this instanceof DataFlow::Impl::MethodCallNodeDef }
-
+class MethodCallNode extends CallNode instanceof DataFlow::Impl::MethodCallNodeDef {
   /** Gets the name of the invoked method, if it can be determined. */
-  string getMethodName() { result = this.(DataFlow::Impl::MethodCallNodeDef).getMethodName() }
+  string getMethodName() { result = super.getMethodName() }
 
   /**
    * Holds if this data flow node calls method `methodName` on receiver node `receiver`.
