@@ -9,7 +9,12 @@ class Foo extends string {
 
   /* Okay because not a member predicate. */
   string getBaz() { result = Baz::baz() }
+
+  /* Okay because not a member predicate. */
+  string getOuterQuux() { result = getQuux() }
 }
+
+string getQuux() { result = "quux" }
 
 module Baz {
   string baz() { result = "baz" }
