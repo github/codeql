@@ -77,21 +77,21 @@
 
    Then add this database directory to your VS Code =DATABASES= tab.
 
-** TODO Develop the query bottom-up
+** Develop the query bottom-up
    1. Identify the /source/ part of the 
-      : read(STDIN_FILENO, buf, BUFSIZE - 1);
+      : count, err := os.Stdin.Read(buf)
       expression, the =buf= argument.  
       Start from a =from..where..select=, then convert to a predicate.
 
    2. Identify the /sink/ part of the
-      : sqlite3_exec(db, query, NULL, 0, &zErrMsg);
+      : _, err = db.Exec(query)
       expression, the =query= argument.  Again start from =from..where..select=,
       then convert to a predicate.
 
    3. Fill in the /taintflow configuration/ boilerplate
       #+BEGIN_SRC java
-        class CppSqli extends TaintTracking::Configuration {
-            CppSqli() { this = "CppSqli" }
+        class SqliFlowConfig extends TaintTracking::Configuration {
+            SqliFlowConfig() { this = "SqliFlowConfig" }
 
             override predicate isSource(DataFlow::Node node) {
                 none()
@@ -103,43 +103,47 @@
         }
       #+END_SRC
 
-      Note that an inout-argument in C/C++ (the =buf= pointer is passed to =read=
+      Note that an inout-argument in Go (the =buf= slice is passed to =read=
       and points to updated data after the return) is accessed as a codeql source
       via
       : source.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr()
       instead of the usual
       : source.asExpr()
 
-   The final query (without =isAdditionalTaintStep=) is
+   The final query is
    #+BEGIN_SRC java
      /**
       ,* @name SQLI Vulnerability
       ,* @description Using untrusted strings in a sql query allows sql injection attacks.
       ,* @kind path-problem
-      ,* @id cpp/SQLIVulnerable
-      ,* @problem.severity warning
+      ,* @id go/SQLIVulnerable
+      ,* @problem.severity error
       ,*/
 
-     import cpp
-     import semmle.code.cpp.dataflow.TaintTracking
+     import go
+     import semmle.go.dataflow.DataFlow
      import DataFlow::PathGraph
 
      class SqliFlowConfig extends TaintTracking::Configuration {
          SqliFlowConfig() { this = "SqliFlow" }
 
          override predicate isSource(DataFlow::Node source) {
-             // count = read(STDIN_FILENO, buf, BUFSIZE);
-             exists(FunctionCall read |
-                 read.getTarget().getName() = "read" and
-                 read.getArgument(1) = source.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr()
+             // count, err := os.Stdin.Read(buf)
+             exists(CallExpr read |
+                 read.getTarget().getName() = "Read" and
+                 read.getArgument(0) = source.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr()
              )
          }
 
+         override predicate isSanitizer(DataFlow::Node sanitizer) { none() }
+
+         override predicate isAdditionalTaintStep(DataFlow::Node into, DataFlow::Node out) { none() }
+
          override predicate isSink(DataFlow::Node sink) {
-             // rc = sqlite3_exec(db, query, NULL, 0, &zErrMsg);
-             exists(FunctionCall exec |
-                 exec.getTarget().getName() = "sqlite3_exec" and
-                 exec.getArgument(1) = sink.asExpr()
+             // _, err = db.Exec(query)
+             exists(CallExpr exec |
+                 exec.getTarget().getName() = "Exec" and
+                 exec.getArgument(0) = sink.asExpr()
              )
          }
      }
