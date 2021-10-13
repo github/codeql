@@ -36,7 +36,7 @@ bindingset[s]
 string escape(string s) { result = s.replaceAll("_", "\\\\_").replaceAll("%", "\\\\%") }
 
 pragma[inline]
-string getMessage(Call call, String literal) {
+string getMessage(FixPredicateCall call, String literal) {
   call instanceof PrefixPredicateCall and
   result = ".matches(\"" + escape(literal.getValue()) + "%\")"
   or
@@ -44,6 +44,10 @@ string getMessage(Call call, String literal) {
   result = ".matches(\"%" + escape(literal.getValue()) + "\")"
 }
 
-from EqFormula eq, PrefixPredicateCall call, String literal
+class FixPredicateCall extends Call {
+  FixPredicateCall() { this instanceof PrefixPredicateCall or this instanceof SuffixPredicateCall }
+}
+
+from EqFormula eq, FixPredicateCall call, String literal
 where eq.getAnOperand() = call and eq.getAnOperand() = literal
 select eq, "Use " + getMessage(call, literal) + " instead."
