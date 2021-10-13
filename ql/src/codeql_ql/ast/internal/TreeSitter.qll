@@ -1687,24 +1687,84 @@ module Generated {
     override AstNode getAFieldOrChild() { variable_def(this, result, _) }
   }
 
+  /** A class representing `yaml_comment` nodes. */
+  class YamlComment extends @yaml_comment, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    override string getAPrimaryQlClass() { result = "YamlComment" }
+
+    /** Gets the location of this element. */
+    override Location getLocation() { yaml_comment_def(this, _, result) }
+
+    /** Gets the child of this node. */
+    YamlValue getChild() { yaml_comment_def(this, result, _) }
+
+    /** Gets a field or child node of this node. */
+    override AstNode getAFieldOrChild() { yaml_comment_def(this, result, _) }
+  }
+
   /** A class representing `yaml_entry` nodes. */
   class YamlEntry extends @yaml_entry, AstNode {
     /** Gets the name of the primary QL class for this element. */
     override string getAPrimaryQlClass() { result = "YamlEntry" }
 
     /** Gets the location of this element. */
-    override Location getLocation() { yaml_entry_def(this, _, _, result) }
+    override Location getLocation() { yaml_entry_def(this, _, result) }
+
+    /** Gets the child of this node. */
+    AstNode getChild() { yaml_entry_def(this, result, _) }
+
+    /** Gets a field or child node of this node. */
+    override AstNode getAFieldOrChild() { yaml_entry_def(this, result, _) }
+  }
+
+  /** A class representing `yaml_key` nodes. */
+  class YamlKey extends @yaml_key, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    override string getAPrimaryQlClass() { result = "YamlKey" }
+
+    /** Gets the location of this element. */
+    override Location getLocation() { yaml_key_def(this, result) }
+
+    /** Gets the `i`th child of this node. */
+    AstNode getChild(int i) { yaml_key_child(this, i, result) }
+
+    /** Gets a field or child node of this node. */
+    override AstNode getAFieldOrChild() { yaml_key_child(this, _, result) }
+  }
+
+  /** A class representing `yaml_keyvaluepair` nodes. */
+  class YamlKeyvaluepair extends @yaml_keyvaluepair, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    override string getAPrimaryQlClass() { result = "YamlKeyvaluepair" }
+
+    /** Gets the location of this element. */
+    override Location getLocation() { yaml_keyvaluepair_def(this, _, _, result) }
 
     /** Gets the node corresponding to the field `key`. */
-    SimpleId getKey() { yaml_entry_def(this, result, _, _) }
+    YamlKey getKey() { yaml_keyvaluepair_def(this, result, _, _) }
 
     /** Gets the node corresponding to the field `value`. */
-    YamlValue getValue() { yaml_entry_def(this, _, result, _) }
+    YamlValue getValue() { yaml_keyvaluepair_def(this, _, result, _) }
 
     /** Gets a field or child node of this node. */
     override AstNode getAFieldOrChild() {
-      yaml_entry_def(this, result, _, _) or yaml_entry_def(this, _, result, _)
+      yaml_keyvaluepair_def(this, result, _, _) or yaml_keyvaluepair_def(this, _, result, _)
     }
+  }
+
+  /** A class representing `yaml_listitem` nodes. */
+  class YamlListitem extends @yaml_listitem, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    override string getAPrimaryQlClass() { result = "YamlListitem" }
+
+    /** Gets the location of this element. */
+    override Location getLocation() { yaml_listitem_def(this, _, result) }
+
+    /** Gets the child of this node. */
+    YamlValue getChild() { yaml_listitem_def(this, result, _) }
+
+    /** Gets a field or child node of this node. */
+    override AstNode getAFieldOrChild() { yaml_listitem_def(this, result, _) }
   }
 
   /** A class representing `yaml_value` tokens. */
