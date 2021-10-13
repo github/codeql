@@ -1,12 +1,11 @@
 import ql
 private import Builtins
 private import codeql_ql.ast.internal.Module
-private import codeql_ql.ast.internal.AstNodes as AstNodes
+private import codeql_ql.ast.internal.AstNodes
 
-private class TClasslessPredicateOrNewTypeBranch =
-  AstNodes::TClasslessPredicate or AstNodes::TNewTypeBranch;
+private class TClasslessPredicateOrNewTypeBranch = TClasslessPredicate or TNewTypeBranch;
 
-string getPredicateName(TClasslessPredicateOrNewTypeBranch p) {
+private string getPredicateName(TClasslessPredicateOrNewTypeBranch p) {
   result = p.(ClasslessPredicate).getName() or
   result = p.(NewTypeBranch).getName()
 }
@@ -69,8 +68,7 @@ private module Cached {
       m = pc.getQualifier().getResolvedModule() and
       public = true
     |
-      definesPredicate(m, pc.getPredicateName(), pc.getNumberOfArguments(), p.getDeclaration(),
-        public)
+      definesPredicate(m, pc.getPredicateName(), pc.getNumberOfArguments(), p, public)
     )
   }
 
@@ -120,48 +118,12 @@ private module Cached {
     not resolvePredicateCall(c, _) and
     resolveDBRelation(c, p)
   }
-
-  cached
-  module NewTypeDef {
-    cached
-    newtype TPredOrBuiltin =
-      TPred(Predicate p) or
-      TNewTypeBranch(NewTypeBranch b) or
-      TBuiltinClassless(string ret, string name, string args) {
-        isBuiltinClassless(ret, name, args)
-      } or
-      TBuiltinMember(string qual, string ret, string name, string args) {
-        isBuiltinMember(qual, ret, name, args)
-      }
-  }
 }
 
 import Cached
-private import NewTypeDef
 
-class PredicateOrBuiltin extends TPredOrBuiltin {
+class PredicateOrBuiltin extends TPredOrBuiltin, AstNode {
   string getName() { none() }
-
-  string toString() { result = getName() }
-
-  predicate hasLocationInfo(
-    string filepath, int startline, int startcolumn, int endline, int endcolumn
-  ) {
-    if exists(getDeclaration())
-    then
-      getDeclaration()
-          .getLocation()
-          .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    else (
-      filepath = "" and
-      startline = 0 and
-      startcolumn = 0 and
-      endline = 0 and
-      endcolumn = 0
-    )
-  }
-
-  AstNode getDeclaration() { none() }
 
   Type getDeclaringType() { none() }
 
@@ -174,57 +136,13 @@ class PredicateOrBuiltin extends TPredOrBuiltin {
   predicate isPrivate() { none() }
 }
 
-private class DefinedPredicate extends PredicateOrBuiltin, TPred {
-  Predicate decl;
-
-  DefinedPredicate() { this = TPred(decl) }
-
-  override Predicate getDeclaration() { result = decl }
-
-  override string getName() { result = decl.getName() }
-
-  override Type getReturnType() { result = decl.getReturnType() }
-
-  override Type getParameterType(int i) { result = decl.getParameter(i).getType() }
-
-  // Can be removed when all types can be resolved
-  override int getArity() { result = decl.getArity() }
-
-  override Type getDeclaringType() {
-    result = decl.(ClassPredicate).getDeclaringType()
-    or
-    result = decl.(CharPred).getDeclaringType()
-  }
-
-  override predicate isPrivate() {
-    decl.(ClassPredicate).isPrivate() or decl.(ClassPredicate).isPrivate()
-  }
-}
-
-private class DefinedNewTypeBranch extends PredicateOrBuiltin, TNewTypeBranch {
-  NewTypeBranch b;
-
-  DefinedNewTypeBranch() { this = TNewTypeBranch(b) }
-
-  override NewTypeBranch getDeclaration() { result = b }
-
-  override string getName() { result = b.getName() }
-
-  override NewTypeBranchType getReturnType() { result.getDeclaration() = b }
-
-  override Type getParameterType(int i) { result = b.getField(i).getType() }
-
-  // Can be removed when all types can be resolved
-  override int getArity() { result = count(b.getField(_)) }
-
-  override Type getDeclaringType() { none() }
-
-  override predicate isPrivate() { b.getNewType().isPrivate() }
-}
-
 private class TBuiltin = TBuiltinClassless or TBuiltinMember;
 
-class BuiltinPredicate extends PredicateOrBuiltin, TBuiltin { }
+class BuiltinPredicate extends PredicateOrBuiltin, TBuiltin {
+  override string toString() { result = getName() }
+
+  override string getAPrimaryQlClass() { result = "BuiltinPredicate" }
+}
 
 private class BuiltinClassless extends BuiltinPredicate, TBuiltinClassless {
   string name;
@@ -287,7 +205,7 @@ module PredConsistency {
       strictcount(PredicateOrBuiltin p0 |
         resolveCall(call, p0) and
         // aliases are expected to resolve to multiple.
-        not exists(p0.getDeclaration().(ClasslessPredicate).getAlias())
+        not exists(p0.(ClasslessPredicate).getAlias())
       ) and
     c > 1 and
     resolveCall(call, p)

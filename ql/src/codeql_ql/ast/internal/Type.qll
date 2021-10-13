@@ -127,8 +127,7 @@ private PredicateOrBuiltin inherClassPredCandidate(Type ty, string name, int ari
 }
 
 predicate predOverrides(ClassPredicate sub, ClassPredicate sup) {
-  sup =
-    inherClassPredCandidate(sub.getDeclaringType(), sub.getName(), sub.getArity()).getDeclaration()
+  sup = inherClassPredCandidate(sub.getDeclaringType(), sub.getName(), sub.getArity())
 }
 
 private VarDecl declaredField(ClassType ty, string name) {
