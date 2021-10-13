@@ -219,15 +219,13 @@ class DataFlowExpr = Expr;
 class DataFlowType = Type;
 
 /** A function call relevant for data flow. */
-class DataFlowCall extends Expr {
-  DataFlowCall() { this instanceof Call }
-
+class DataFlowCall extends Expr instanceof Call {
   /**
    * Gets the nth argument for this call.
    *
    * The range of `n` is from `0` to `getNumberOfArguments() - 1`.
    */
-  Expr getArgument(int n) { result = this.(Call).getArgument(n) }
+  Expr getArgument(int n) { result = super.getArgument(n) }
 
   /** Gets the data flow node corresponding to this call. */
   ExprNode getNode() { result.getExpr() = this }
