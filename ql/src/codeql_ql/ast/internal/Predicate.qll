@@ -88,11 +88,37 @@ private module Cached {
     )
   }
 
+  pragma[noinline]
+  private predicate candidate(Relation rel, PredicateCall pc) {
+    rel.getName() = pc.getPredicateName()
+  }
+
+  private predicate resolveDBRelation(PredicateCall pc, DefinedPredicate p) {
+    exists(Relation rel | p = TPred(rel) |
+      candidate(rel, pc) and
+      rel.getArity() = pc.getNumberOfArguments() and
+      (
+        exists(YAML::QLPack libPack, YAML::QLPack qlPack |
+          rel.getLocation().getFile() = libPack.getDBScheme() and
+          qlPack.getADependency*() = libPack and
+          qlPack.getAFileInPack() = pc.getLocation().getFile()
+        )
+        or
+        // upgrade scripts don't have a qlpack
+        rel.getLocation().getFile().getParentContainer() =
+          pc.getLocation().getFile().getParentContainer()
+      )
+    )
+  }
+
   cached
   predicate resolveCall(Call c, PredicateOrBuiltin p) {
     resolvePredicateCall(c, p)
     or
     resolveMemberCall(c, p)
+    or
+    not resolvePredicateCall(c, _) and
+    resolveDBRelation(c, p)
   }
 
   cached

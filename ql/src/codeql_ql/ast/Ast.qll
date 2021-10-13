@@ -233,6 +233,45 @@ class Predicate extends TPredicate, AstNode, Declaration {
 }
 
 /**
+ * A relation in the database.
+ */
+class Relation extends TDBRelation, AstNode, Declaration {
+  Generated::DbTable table;
+
+  Relation() { this = TDBRelation(table) }
+
+  /**
+   * Gets the name of the relation.
+   */
+  override string getName() { result = table.getTableName().getChild().getValue() }
+
+  private Generated::DbColumn getColumn(int i) {
+    result =
+      rank[i + 1](Generated::DbColumn column, int child |
+        table.getChild(child) = column
+      |
+        column order by child
+      )
+  }
+
+  /** Gets the `i`th parameter name */
+  string getParameterName(int i) { result = getColumn(i).getColName().getValue() }
+
+  /** Gets the `i`th parameter type */
+  string getParameterType(int i) {
+    // TODO: This is just using the name of the type, not the actual type. Checkout Type.qll
+    result = getColumn(i).getColType().getChild().(Generated::Token).getValue()
+  }
+
+  /**
+   * Gets the number of parameters.
+   */
+  int getArity() { result = count(getColumn(_)) }
+
+  override string getAPrimaryQlClass() { result = "Relation" }
+}
+
+/**
  * An expression that refers to a predicate, e.g. `BasicBlock::succ/2`.
  */
 class PredicateExpr extends TPredicateExpr, AstNode {
@@ -2154,9 +2193,6 @@ module YAML {
     /** Gets the version of this qlpack */
     string getVersion() { result = getProperty("version") }
 
-    /** Gets the database scheme of this qlpack */
-    string getDbScheme() { result = getProperty("dbscheme") }
-
     /** Gets the extractor of this qlpack */
     string getExtractor() { result = getProperty("extractor") }
 
@@ -2188,6 +2224,19 @@ module YAML {
         entry.getKey().getQualifiedName() = name and
         entry.getValue().getValue() = version
       )
+    }
+
+    /** Gets the database scheme of this qlpack */
+    File getDBScheme() {
+      result.getBaseName() = getProperty("dbscheme") and
+      result = file.getParentContainer().getFile(any(string s | s.matches("%.dbscheme")))
+    }
+
+    pragma[noinline]
+    Container getAFileInPack() {
+      result.getParentContainer() = file.getParentContainer()
+      or
+      result = getAFileInPack().(Folder).getAChildContainer()
     }
 
     /**
