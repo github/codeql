@@ -14,6 +14,9 @@ private import codeql.ruby.dataflow.FlowSummary as FlowSummary
 /** Holds is `i` is a valid parameter position. */
 predicate parameterPosition(int i) { i in [-2 .. 10] }
 
+/** Gets the parameter position of the instance parameter. */
+int instanceParameterPosition() { none() } // disables implicit summary flow to `self` for callbacks
+
 /** Gets the synthesized summary data-flow node for the given values. */
 Node summaryNode(SummarizedCallable c, SummaryNodeState state) { result = TSummaryNode(c, state) }
 
