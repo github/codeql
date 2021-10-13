@@ -1,3 +1,5 @@
+private import codeql_ql.ast.internal.Type
+
 predicate isBuiltinClassless(string sig) {
   sig =
     [
@@ -58,3 +60,8 @@ predicate isBuiltinMember(string qual, string ret, string name, string args) {
 
 bindingset[args]
 string getArgType(string args, int i) { result = args.splitAt(",", i).trim() }
+
+/** The primitive 'string' class. */
+class StringClass extends PrimitiveType {
+  StringClass() { this.getName() = "string" }
+}
