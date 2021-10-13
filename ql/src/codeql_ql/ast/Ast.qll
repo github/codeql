@@ -1661,7 +1661,7 @@ class ThisAccess extends Identifier {
 class Super extends TSuper, Expr {
   Super() { this = TSuper(_) }
 
-  override string getAPrimaryQlClass() { result = "SuperAccess" }
+  override string getAPrimaryQlClass() { result = "Super" }
 }
 
 /** An access to `result`. */
