@@ -1945,6 +1945,11 @@ class Set extends TSet, Expr {
    */
   Expr getAnElement() { result = getElement(_) }
 
+  /**
+   * Gets the number of elements in this set literal expression.
+   */
+  int getNumberOfElements() { result = count(getAnElement()) }
+
   override Type getType() { result = this.getElement(0).getType() }
 
   override string getAPrimaryQlClass() { result = "Set" }
