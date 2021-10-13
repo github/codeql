@@ -61,7 +61,7 @@ predicate isBuiltinMember(string qual, string ret, string name, string args) {
 bindingset[args]
 string getArgType(string args, int i) { result = args.splitAt(",", i).trim() }
 
-/** The primitive 'string' class in QL. */
+/** The primitive 'string' class. */
 class StringClass extends PrimitiveType {
   StringClass() { this.getName() = "string" }
 }
