@@ -20,8 +20,6 @@ func get_user_info() (string, error) {
 		return "", err
 	}
 	trimmed := strings.TrimSpace(string(buf[0 : count-1]))
-
-	fmt.Printf(">>>%s<<<", trimmed)
 	return trimmed, nil
 }
 
