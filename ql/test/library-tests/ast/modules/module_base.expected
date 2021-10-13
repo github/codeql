@@ -8,7 +8,7 @@ moduleBases
 | classes.rb:20:1:37:3 | Wibble | ClassDeclaration |
 | classes.rb:32:3:33:5 | ClassInWibble | ClassDeclaration |
 | classes.rb:35:3:36:5 | ModuleInWibble | ModuleDeclaration |
-| classes.rb:41:1:52:3 | class << ... | ClassDeclaration |
+| classes.rb:41:1:52:3 | class << ... | SingletonClass |
 | classes.rb:55:1:56:3 | MyClassInGlobalScope | ClassDeclaration |
 | modules.rb:1:1:2:3 | Empty | ModuleDeclaration |
 | modules.rb:1:1:122:1 | modules.rb | Toplevel |
