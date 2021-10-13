@@ -120,15 +120,13 @@ abstract class AnalyzedPropertyWrite extends DataFlow::Node {
 /**
  * Flow analysis for property writes.
  */
-private class AnalyzedExplicitPropertyWrite extends AnalyzedPropertyWrite {
-  AnalyzedExplicitPropertyWrite() { this instanceof DataFlow::PropWrite }
-
+private class AnalyzedExplicitPropertyWrite extends AnalyzedPropertyWrite instanceof DataFlow::PropWrite {
   override predicate writes(AbstractValue base, string prop, DataFlow::AnalyzedNode source) {
     explicitPropertyWrite(this, base, prop, source)
   }
 
   override predicate baseIsIncomplete(DataFlow::Incompleteness reason) {
-    this.(DataFlow::PropWrite).getBase().isIncomplete(reason)
+    super.getBase().isIncomplete(reason)
   }
 }
 
