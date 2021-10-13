@@ -53,7 +53,7 @@
    - a /dataflow configuration/ -- for this problem, the more general /taintflow
      configuration/. 
    
-** TODO Build codeql database
+** Build codeql database
    To get started, build the codeql database (adjust paths to your setup):
    #+BEGIN_SRC sh
      # Choose consistent codeql and ql library versions
@@ -65,14 +65,14 @@
 
      # Build the db with source commit id.
      export PATH=$HOME/local/vmsync/codeql263:"$PATH"
-     SRCDIR=$HOME/local/codeql-training-material.cpp-sqli/cpp/codeql-dataflow-sql-injection
-     DB=$SRCDIR/cpp-sqli-$(cd $SRCDIR && git rev-parse --short HEAD)
+     SRCDIR=$HOME/local/codeql-training-material/go/codeql-go-sqli
+     DB=$SRCDIR/go-sqli-$(cd $SRCDIR && git rev-parse --short HEAD)
 
      echo $DB
      test -d "$DB" && rm -fR "$DB"
      mkdir -p "$DB"
 
-     cd $SRCDIR && codeql database create --language=cpp -s . -j 8 -v $DB --command='./build.sh'
+     cd $SRCDIR && codeql database create --language=go -s . -j 8 -v $DB
    #+END_SRC
 
    Then add this database directory to your VS Code =DATABASES= tab.
