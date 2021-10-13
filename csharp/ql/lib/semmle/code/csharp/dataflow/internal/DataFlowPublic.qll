@@ -108,9 +108,7 @@ class ParameterNode extends Node instanceof ParameterNodeImpl {
    * Holds if this node is the parameter of callable `c` at the specified
    * (zero-based) position.
    */
-  predicate isParameterOf(DataFlowCallable c, int i) {
-    super.isParameterOf(c, i)
-  }
+  predicate isParameterOf(DataFlowCallable c, int i) { super.isParameterOf(c, i) }
 }
 
 /** A definition, viewed as a node in a data flow graph. */
