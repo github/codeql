@@ -1,5 +1,6 @@
 import codeql_ql.ast.Ast as AST
 import TreeSitter
+private import Builtins
 
 cached
 newtype TAstNode =
@@ -65,7 +66,11 @@ newtype TAstNode =
   TYamlEntry(Generated::YamlEntry ye) or
   TYamlKey(Generated::YamlKey yk) or
   TYamlListitem(Generated::YamlListitem yli) or
-  TYamlValue(Generated::YamlValue yv)
+  TYamlValue(Generated::YamlValue yv) or
+  TBuiltinClassless(string ret, string name, string args) { isBuiltinClassless(ret, name, args) } or
+  TBuiltinMember(string qual, string ret, string name, string args) {
+    isBuiltinMember(qual, ret, name, args)
+  }
 
 class TFormula =
   TDisjunction or TConjunction or TComparisonFormula or TQuantifier or TNegation or TIfFormula or
@@ -193,6 +198,8 @@ Generated::AstNode toGenerated(AST::AstNode n) {
 }
 
 class TPredicate = TCharPred or TClasslessPredicate or TClassPredicate or TDBRelation;
+
+class TPredOrBuiltin = TPredicate or TNewTypeBranch or TBuiltinClassless or TBuiltinMember;
 
 class TModuleMember = TModuleDeclaration or TImport or TSelect or TQLDoc;
 

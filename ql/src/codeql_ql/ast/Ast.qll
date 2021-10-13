@@ -31,6 +31,20 @@ class AstNode extends TAstNode {
     )
   }
 
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    if exists(getLocation())
+    then getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    else (
+      filepath = "" and
+      startline = 0 and
+      startcolumn = 0 and
+      endline = 0 and
+      endcolumn = 0
+    )
+  }
+
   /**
    * Gets the parent in the AST for this node.
    */
@@ -181,7 +195,7 @@ class Select extends TSelect, AstNode {
  * A QL predicate.
  * Either a classless predicate, a class predicate, or a characteristic predicate.
  */
-class Predicate extends TPredicate, AstNode, Declaration {
+class Predicate extends TPredicate, AstNode, PredicateOrBuiltin, Declaration {
   /**
    * Gets the body of the predicate.
    */
@@ -200,7 +214,7 @@ class Predicate extends TPredicate, AstNode, Declaration {
   /**
    * Gets the number of parameters.
    */
-  int getArity() {
+  override int getArity() {
     not this.(ClasslessPredicate).getAlias() instanceof PredicateExpr and
     result = count(getParameter(_))
     or
@@ -210,11 +224,18 @@ class Predicate extends TPredicate, AstNode, Declaration {
   }
 
   /**
+   * Holds if this predicate is private.
+   */
+  override predicate isPrivate() { hasAnnotation("private") }
+
+  /**
    * Gets the return type (if any) of the predicate.
    */
   TypeExpr getReturnTypeExpr() { none() }
 
-  Type getReturnType() { result = this.getReturnTypeExpr().getResolvedType() }
+  override Type getReturnType() { result = this.getReturnTypeExpr().getResolvedType() }
+
+  override Type getParameterType(int i) { result = this.getParameter(i).getType() }
 
   override AstNode getAChild(string pred) {
     result = super.getAChild(pred)
@@ -376,6 +397,8 @@ class ClasslessPredicate extends TClasslessPredicate, Predicate, ModuleDeclarati
     or
     pred_name = directMember("getReturnTypeExpr") and result = this.getReturnTypeExpr()
   }
+
+  override predicate isPrivate() { Predicate.super.isPrivate() }
 }
 
 /**
@@ -395,11 +418,6 @@ class ClassPredicate extends TClassPredicate, Predicate {
   override Class getParent() { result.getAClassPredicate() = this }
 
   /**
-   * Holds if this predicate is private.
-   */
-  predicate isPrivate() { hasAnnotation("private") }
-
-  /**
    * Holds if this predicate is annotated as overriding another predicate.
    */
   predicate isOverride() { hasAnnotation("override") }
@@ -416,7 +434,7 @@ class ClassPredicate extends TClassPredicate, Predicate {
   /**
    * Gets the type representing this class.
    */
-  ClassType getDeclaringType() { result.getDeclaration() = getParent() }
+  override ClassType getDeclaringType() { result.getDeclaration() = getParent() }
 
   predicate overrides(ClassPredicate other) { predOverrides(this, other) }
 
@@ -453,7 +471,7 @@ class CharPred extends TCharPred, Predicate {
     pred_name = directMember("getBody") and result = this.getBody()
   }
 
-  ClassType getDeclaringType() { result.getDeclaration() = getParent() }
+  override ClassType getDeclaringType() { result.getDeclaration() = getParent() }
 }
 
 /**
@@ -764,7 +782,7 @@ class NewType extends TNewType, TypeDeclaration, ModuleDeclaration {
  * A branch in a `newtype`.
  * E.g. `Bar()` or `Baz()` in `newtype Foo = Bar() or Baz()`.
  */
-class NewTypeBranch extends TNewTypeBranch, TypeDeclaration {
+class NewTypeBranch extends TNewTypeBranch, PredicateOrBuiltin, TypeDeclaration {
   Generated::DatatypeBranch branch;
 
   NewTypeBranch() { this = TNewTypeBranch(branch) }
@@ -785,6 +803,16 @@ class NewTypeBranch extends TNewTypeBranch, TypeDeclaration {
 
   /** Gets the body of this branch. */
   Formula getBody() { toGenerated(result) = branch.getChild(_).(Generated::Body).getChild() }
+
+  override NewTypeBranchType getReturnType() { result.getDeclaration() = this }
+
+  override Type getParameterType(int i) { result = this.getField(i).getType() }
+
+  override int getArity() { result = count(this.getField(_)) }
+
+  override Type getDeclaringType() { none() }
+
+  predicate isPrivate() { this.getNewType().isPrivate() }
 
   override QLDoc getQLDoc() { toGenerated(result) = branch.getChild(_) }
 
