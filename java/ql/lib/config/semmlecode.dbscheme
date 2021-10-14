@@ -314,6 +314,18 @@ classes(
   int sourceid: @class ref
 );
 
+kt_nullable_types(
+  unique int id: @kt_nullable_type,
+  int classid: @classorinterface ref
+)
+
+kt_notnull_types(
+  unique int id: @kt_notnull_type,
+  int classid: @classorinterface ref
+)
+
+@kt_type = @kt_nullable_type | @kt_notnull_type
+
 isRecord(
   unique int id: @class ref
 );
@@ -906,7 +918,7 @@ javadocText(
 @type = @primitive | @reftype;
 @callable = @method | @constructor;
 @element = @file | @package | @primitive | @class | @interface | @method | @constructor | @modifier | @param | @exception | @field |
-           @annotation | @boundedtype | @array | @localvar | @expr | @stmt | @import | @fielddecl;
+           @annotation | @boundedtype | @array | @localvar | @expr | @stmt | @import | @fielddecl | @kt_type;
 
 @modifiable = @member_modifiable| @param | @localvar ;
 

@@ -42,7 +42,7 @@ open class Logger(val logCounter: LogCounter, open val tw: TrapWriter) {
         tw.writeTrap("// " + fullMsg.replace("\n", "\n//") + "\n")
         println(fullMsg)
     }
-    fun warn(severity: Severity, msg: String, locationString: String? = null, locationId: Label<DbLocation> = tw.unknownLocation, stackIndex: Int = 1) {
+    fun warn(severity: Severity, msg: String, locationString: String? = null, locationId: Label<DbLocation> = tw.unknownLocation, stackIndex: Int = 2) {
         val st = Exception().stackTrace
         val suffix =
             if(st.size < stackIndex + 1) {
@@ -79,7 +79,7 @@ class FileLogger(logCounter: LogCounter, override val tw: FileTrapWriter): Logge
         return "[${SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date())} K]"
     }
 
-    fun warnElement(severity: Severity, msg: String, element: IrElement, stackIndex: Int = 2) {
+    fun warnElement(severity: Severity, msg: String, element: IrElement, stackIndex: Int = 3) {
         val locationString = tw.getLocationString(element)
         val locationId = tw.getLocation(element)
         warn(severity, msg, locationString, locationId, stackIndex)
