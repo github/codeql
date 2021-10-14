@@ -106,13 +106,13 @@ class Node extends TNode {
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 
   /**
    * Gets an upper bound on the type of this node.
    */
-  Type getTypeBound() { result = getType() }
+  Type getTypeBound() { result = this.getType() }
 }
 
 /**
@@ -293,11 +293,11 @@ abstract class PostUpdateNode extends Node {
    */
   abstract Node getPreUpdateNode();
 
-  override Function getFunction() { result = getPreUpdateNode().getFunction() }
+  override Function getFunction() { result = this.getPreUpdateNode().getFunction() }
 
-  override Type getType() { result = getPreUpdateNode().getType() }
+  override Type getType() { result = this.getPreUpdateNode().getType() }
 
-  override Location getLocation() { result = getPreUpdateNode().getLocation() }
+  override Location getLocation() { result = this.getPreUpdateNode().getLocation() }
 }
 
 abstract private class PartialDefinitionNode extends PostUpdateNode, TPartialDefinitionNode {
@@ -309,7 +309,7 @@ abstract private class PartialDefinitionNode extends PostUpdateNode, TPartialDef
 
   PartialDefinition getPartialDefinition() { result = pd }
 
-  override string toString() { result = getPreUpdateNode().toString() + " [post update]" }
+  override string toString() { result = this.getPreUpdateNode().toString() + " [post update]" }
 }
 
 private class VariablePartialDefinitionNode extends PartialDefinitionNode {
@@ -380,13 +380,13 @@ private class ObjectInitializerNode extends PostUpdateNode, TExprNode {
 class PreObjectInitializerNode extends Node, TPreObjectInitializerNode {
   Expr getExpr() { this = TPreObjectInitializerNode(result) }
 
-  override Function getFunction() { result = getExpr().getEnclosingFunction() }
+  override Function getFunction() { result = this.getExpr().getEnclosingFunction() }
 
-  override Type getType() { result = getExpr().getType() }
+  override Type getType() { result = this.getExpr().getType() }
 
-  override Location getLocation() { result = getExpr().getLocation() }
+  override Location getLocation() { result = this.getExpr().getLocation() }
 
-  override string toString() { result = getExpr().toString() + " [pre init]" }
+  override string toString() { result = this.getExpr().toString() + " [pre init]" }
 }
 
 /**
@@ -401,7 +401,7 @@ private class PostConstructorInitThis extends PostUpdateNode, TPostConstructorIn
   }
 
   override string toString() {
-    result = getPreUpdateNode().getConstructorFieldInit().toString() + " [post-this]"
+    result = this.getPreUpdateNode().getConstructorFieldInit().toString() + " [post-this]"
   }
 }
 
@@ -416,15 +416,17 @@ private class PostConstructorInitThis extends PostUpdateNode, TPostConstructorIn
 class PreConstructorInitThis extends Node, TPreConstructorInitThis {
   ConstructorFieldInit getConstructorFieldInit() { this = TPreConstructorInitThis(result) }
 
-  override Constructor getFunction() { result = getConstructorFieldInit().getEnclosingFunction() }
-
-  override PointerType getType() {
-    result.getBaseType() = getConstructorFieldInit().getEnclosingFunction().getDeclaringType()
+  override Constructor getFunction() {
+    result = this.getConstructorFieldInit().getEnclosingFunction()
   }
 
-  override Location getLocation() { result = getConstructorFieldInit().getLocation() }
+  override PointerType getType() {
+    result.getBaseType() = this.getConstructorFieldInit().getEnclosingFunction().getDeclaringType()
+  }
 
-  override string toString() { result = getConstructorFieldInit().toString() + " [pre-this]" }
+  override Location getLocation() { result = this.getConstructorFieldInit().getLocation() }
+
+  override string toString() { result = this.getConstructorFieldInit().toString() + " [pre-this]" }
 }
 
 /**

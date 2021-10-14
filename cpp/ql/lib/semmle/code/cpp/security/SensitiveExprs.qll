@@ -29,7 +29,7 @@ private predicate suspicious(string s) {
  */
 class SensitiveVariable extends Variable {
   SensitiveVariable() {
-    suspicious(getName().toLowerCase()) and
+    suspicious(this.getName().toLowerCase()) and
     not this.getUnspecifiedType() instanceof IntegralType
   }
 }
@@ -39,7 +39,7 @@ class SensitiveVariable extends Variable {
  */
 class SensitiveFunction extends Function {
   SensitiveFunction() {
-    suspicious(getName().toLowerCase()) and
+    suspicious(this.getName().toLowerCase()) and
     not this.getUnspecifiedType() instanceof IntegralType
   }
 }

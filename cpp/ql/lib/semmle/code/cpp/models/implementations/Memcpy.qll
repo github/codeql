@@ -44,27 +44,27 @@ private class MemcpyFunction extends ArrayFunction, DataFlowFunction, SideEffect
    */
   int getParamSize() { if this.hasGlobalName("memccpy") then result = 3 else result = 2 }
 
-  override predicate hasArrayInput(int bufParam) { bufParam = getParamSrc() }
+  override predicate hasArrayInput(int bufParam) { bufParam = this.getParamSrc() }
 
-  override predicate hasArrayOutput(int bufParam) { bufParam = getParamDest() }
+  override predicate hasArrayOutput(int bufParam) { bufParam = this.getParamDest() }
 
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
-    input.isParameterDeref(getParamSrc()) and
-    output.isParameterDeref(getParamDest())
+    input.isParameterDeref(this.getParamSrc()) and
+    output.isParameterDeref(this.getParamDest())
     or
-    input.isParameterDeref(getParamSrc()) and
+    input.isParameterDeref(this.getParamSrc()) and
     output.isReturnValueDeref()
     or
-    input.isParameter(getParamDest()) and
+    input.isParameter(this.getParamDest()) and
     output.isReturnValue()
   }
 
   override predicate hasArrayWithVariableSize(int bufParam, int countParam) {
     (
-      bufParam = getParamDest() or
-      bufParam = getParamSrc()
+      bufParam = this.getParamDest() or
+      bufParam = this.getParamSrc()
     ) and
-    countParam = getParamSize()
+    countParam = this.getParamSize()
   }
 
   override predicate hasOnlySpecificReadSideEffects() { any() }
@@ -72,37 +72,37 @@ private class MemcpyFunction extends ArrayFunction, DataFlowFunction, SideEffect
   override predicate hasOnlySpecificWriteSideEffects() { any() }
 
   override predicate hasSpecificWriteSideEffect(ParameterIndex i, boolean buffer, boolean mustWrite) {
-    i = getParamDest() and
+    i = this.getParamDest() and
     buffer = true and
     // memccpy only writes until a given character `c` is found
     (if this.hasGlobalName("memccpy") then mustWrite = false else mustWrite = true)
   }
 
   override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
-    i = getParamSrc() and buffer = true
+    i = this.getParamSrc() and buffer = true
   }
 
   override ParameterIndex getParameterSizeIndex(ParameterIndex i) {
-    result = getParamSize() and
+    result = this.getParamSize() and
     (
-      i = getParamDest() or
-      i = getParamSrc()
+      i = this.getParamDest() or
+      i = this.getParamSrc()
     )
   }
 
   override predicate parameterNeverEscapes(int index) {
-    index = getParamSrc()
+    index = this.getParamSrc()
     or
-    this.hasGlobalName("bcopy") and index = getParamDest()
+    this.hasGlobalName("bcopy") and index = this.getParamDest()
   }
 
   override predicate parameterEscapesOnlyViaReturn(int index) {
-    not this.hasGlobalName("bcopy") and index = getParamDest()
+    not this.hasGlobalName("bcopy") and index = this.getParamDest()
   }
 
   override predicate parameterIsAlwaysReturned(int index) {
     not this.hasGlobalName(["bcopy", mempcpy(), "memccpy"]) and
-    index = getParamDest()
+    index = this.getParamDest()
   }
 }
 

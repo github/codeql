@@ -81,7 +81,7 @@ class Type extends Locatable, @type {
    * Holds if this type refers to type `t` (by default,
    * a type always refers to itself).
    */
-  predicate refersTo(Type t) { refersToDirectly*(t) }
+  predicate refersTo(Type t) { this.refersToDirectly*(t) }
 
   /**
    * Holds if this type refers to type `t` directly.
@@ -1080,11 +1080,11 @@ class DerivedType extends Type, @derivedtype {
 
   override predicate refersToDirectly(Type t) { t = this.getBaseType() }
 
-  override predicate involvesReference() { getBaseType().involvesReference() }
+  override predicate involvesReference() { this.getBaseType().involvesReference() }
 
-  override predicate involvesTemplateParameter() { getBaseType().involvesTemplateParameter() }
+  override predicate involvesTemplateParameter() { this.getBaseType().involvesTemplateParameter() }
 
-  override Type stripType() { result = getBaseType().stripType() }
+  override Type stripType() { result = this.getBaseType().stripType() }
 
   /**
    * Holds if this type has the `__autoreleasing` specifier or if it points to
@@ -1165,33 +1165,35 @@ class Decltype extends Type, @decltype {
    */
   predicate parenthesesWouldChangeMeaning() { decltypes(underlyingElement(this), _, _, true) }
 
-  override Type getUnderlyingType() { result = getBaseType().getUnderlyingType() }
+  override Type getUnderlyingType() { result = this.getBaseType().getUnderlyingType() }
 
-  override Type stripTopLevelSpecifiers() { result = getBaseType().stripTopLevelSpecifiers() }
+  override Type stripTopLevelSpecifiers() { result = this.getBaseType().stripTopLevelSpecifiers() }
 
-  override Type stripType() { result = getBaseType().stripType() }
+  override Type stripType() { result = this.getBaseType().stripType() }
 
-  override Type resolveTypedefs() { result = getBaseType().resolveTypedefs() }
+  override Type resolveTypedefs() { result = this.getBaseType().resolveTypedefs() }
 
-  override Location getLocation() { result = getExpr().getLocation() }
+  override Location getLocation() { result = this.getExpr().getLocation() }
 
   override string toString() { result = "decltype(...)" }
 
   override string getName() { none() }
 
-  override int getSize() { result = getBaseType().getSize() }
+  override int getSize() { result = this.getBaseType().getSize() }
 
-  override int getAlignment() { result = getBaseType().getAlignment() }
+  override int getAlignment() { result = this.getBaseType().getAlignment() }
 
-  override int getPointerIndirectionLevel() { result = getBaseType().getPointerIndirectionLevel() }
+  override int getPointerIndirectionLevel() {
+    result = this.getBaseType().getPointerIndirectionLevel()
+  }
 
   override string explain() {
     result = "decltype resulting in {" + this.getBaseType().explain() + "}"
   }
 
-  override predicate involvesReference() { getBaseType().involvesReference() }
+  override predicate involvesReference() { this.getBaseType().involvesReference() }
 
-  override predicate involvesTemplateParameter() { getBaseType().involvesTemplateParameter() }
+  override predicate involvesTemplateParameter() { this.getBaseType().involvesTemplateParameter() }
 
   override predicate isDeeplyConst() { this.getBaseType().isDeeplyConst() }
 
@@ -1223,7 +1225,7 @@ class PointerType extends DerivedType {
   override predicate isDeeplyConstBelow() { this.getBaseType().isDeeplyConst() }
 
   override Type resolveTypedefs() {
-    result.(PointerType).getBaseType() = getBaseType().resolveTypedefs()
+    result.(PointerType).getBaseType() = this.getBaseType().resolveTypedefs()
   }
 }
 
@@ -1240,7 +1242,9 @@ class ReferenceType extends DerivedType {
 
   override string getAPrimaryQlClass() { result = "ReferenceType" }
 
-  override int getPointerIndirectionLevel() { result = getBaseType().getPointerIndirectionLevel() }
+  override int getPointerIndirectionLevel() {
+    result = this.getBaseType().getPointerIndirectionLevel()
+  }
 
   override string explain() { result = "reference to {" + this.getBaseType().explain() + "}" }
 
@@ -1251,7 +1255,7 @@ class ReferenceType extends DerivedType {
   override predicate involvesReference() { any() }
 
   override Type resolveTypedefs() {
-    result.(ReferenceType).getBaseType() = getBaseType().resolveTypedefs()
+    result.(ReferenceType).getBaseType() = this.getBaseType().resolveTypedefs()
   }
 }
 
@@ -1330,11 +1334,11 @@ class SpecifiedType extends DerivedType {
   }
 
   override Type resolveTypedefs() {
-    result.(SpecifiedType).getBaseType() = getBaseType().resolveTypedefs() and
-    result.getASpecifier() = getASpecifier()
+    result.(SpecifiedType).getBaseType() = this.getBaseType().resolveTypedefs() and
+    result.getASpecifier() = this.getASpecifier()
   }
 
-  override Type stripTopLevelSpecifiers() { result = getBaseType().stripTopLevelSpecifiers() }
+  override Type stripTopLevelSpecifiers() { result = this.getBaseType().stripTopLevelSpecifiers() }
 }
 
 /**
@@ -1433,7 +1437,8 @@ class GNUVectorType extends DerivedType {
   override int getAlignment() { arraysizes(underlyingElement(this), _, _, result) }
 
   override string explain() {
-    result = "GNU " + getNumElements() + " element vector of {" + this.getBaseType().explain() + "}"
+    result =
+      "GNU " + this.getNumElements() + " element vector of {" + this.getBaseType().explain() + "}"
   }
 
   override predicate isDeeplyConstBelow() { this.getBaseType().isDeeplyConst() }
@@ -1468,7 +1473,9 @@ class FunctionReferenceType extends FunctionPointerIshType {
 
   override string getAPrimaryQlClass() { result = "FunctionReferenceType" }
 
-  override int getPointerIndirectionLevel() { result = getBaseType().getPointerIndirectionLevel() }
+  override int getPointerIndirectionLevel() {
+    result = this.getBaseType().getPointerIndirectionLevel()
+  }
 
   override string explain() {
     result = "reference to {" + this.getBaseType().(RoutineType).explain() + "}"
@@ -1535,8 +1542,8 @@ class FunctionPointerIshType extends DerivedType {
   int getNumberOfParameters() { result = count(int i | exists(this.getParameterType(i))) }
 
   override predicate involvesTemplateParameter() {
-    getReturnType().involvesTemplateParameter() or
-    getAParameterType().involvesTemplateParameter()
+    this.getReturnType().involvesTemplateParameter() or
+    this.getAParameterType().involvesTemplateParameter()
   }
 
   override predicate isDeeplyConstBelow() { this.getBaseType().isDeeplyConst() }
@@ -1581,7 +1588,7 @@ class PointerToMemberType extends Type, @ptrtomember {
         this.getBaseType().explain() + "}"
   }
 
-  override predicate involvesTemplateParameter() { getBaseType().involvesTemplateParameter() }
+  override predicate involvesTemplateParameter() { this.getBaseType().involvesTemplateParameter() }
 
   override predicate isDeeplyConstBelow() { this.getBaseType().isDeeplyConst() }
 }
@@ -1671,8 +1678,8 @@ class RoutineType extends Type, @routinetype {
   override predicate isDeeplyConstBelow() { none() } // Current limitation: no such thing as a const routine type
 
   override predicate involvesTemplateParameter() {
-    getReturnType().involvesTemplateParameter() or
-    getAParameterType().involvesTemplateParameter()
+    this.getReturnType().involvesTemplateParameter() or
+    this.getAParameterType().involvesTemplateParameter()
   }
 }
 
