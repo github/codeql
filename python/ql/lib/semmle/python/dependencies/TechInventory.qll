@@ -14,14 +14,16 @@ string munge(File sourceFile, ExternalPackage package) {
   result = "/" + sourceFile.getRelativePath() + "<|>" + package.getName() + "<|>unknown"
 }
 
-abstract class ExternalPackage extends Object instanceof ModuleObject {
+abstract class ExternalPackage extends Object {
+  ExternalPackage() { this instanceof ModuleObject }
+
   abstract string getName();
 
   abstract string getVersion();
 
-  Object getAttribute(string name) { result = super.attr(name) }
+  Object getAttribute(string name) { result = this.(ModuleObject).attr(name) }
 
-  PackageObject getPackage() { result = super.getPackage() }
+  PackageObject getPackage() { result = this.(ModuleObject).getPackage() }
 }
 
 bindingset[text]

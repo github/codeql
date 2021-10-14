@@ -197,7 +197,9 @@ class TaintTrackingNode extends TTaintTrackingNode {
  * It is implemented as a separate class for clarity and to keep the code
  * in `TaintTracking::Configuration` simpler.
  */
-class TaintTrackingImplementation extends string instanceof TaintTracking::Configuration {
+class TaintTrackingImplementation extends string {
+  TaintTrackingImplementation() { this instanceof TaintTracking::Configuration }
+
   /**
    * Hold if there is a flow from `source`, which is a taint source, to
    * `sink`, which is a taint sink, with this configuration.
@@ -216,7 +218,7 @@ class TaintTrackingImplementation extends string instanceof TaintTracking::Confi
   ) {
     context = TNoParam() and
     path = TNoAttribute() and
-    super.isSource(node, kind)
+    this.(TaintTracking::Configuration).isSource(node, kind)
   }
 
   /** Hold if `source` is a source of taint. */
@@ -232,7 +234,7 @@ class TaintTrackingImplementation extends string instanceof TaintTracking::Confi
     exists(DataFlow::Node node, AttributePath path, TaintKind kind |
       sink = TTaintTrackingNode_(node, _, path, kind, this) and
       path = TNoAttribute() and
-      super.isSink(node, kind)
+      this.(TaintTracking::Configuration).isSink(node, kind)
     )
   }
 
@@ -257,11 +259,11 @@ class TaintTrackingImplementation extends string instanceof TaintTracking::Confi
   ) {
     this.unprunedStep(src, node, context, path, kind, edgeLabel) and
     node.getBasicBlock().likelyReachable() and
-    not super.isBarrier(node) and
+    not this.(TaintTracking::Configuration).isBarrier(node) and
     (
       not path = TNoAttribute()
       or
-      not super.isBarrier(node, kind) and
+      not this.(TaintTracking::Configuration).isBarrier(node, kind) and
       exists(DataFlow::Node srcnode, TaintKind srckind |
         src = TTaintTrackingNode_(srcnode, _, _, srckind, this) and
         not this.prunedEdge(srcnode, node, srckind, kind)
@@ -272,9 +274,9 @@ class TaintTrackingImplementation extends string instanceof TaintTracking::Confi
   private predicate prunedEdge(
     DataFlow::Node srcnode, DataFlow::Node destnode, TaintKind srckind, TaintKind destkind
   ) {
-    super.isBarrierEdge(srcnode, destnode, srckind, destkind)
+    this.(TaintTracking::Configuration).isBarrierEdge(srcnode, destnode, srckind, destkind)
     or
-    srckind = destkind and super.isBarrierEdge(srcnode, destnode)
+    srckind = destkind and this.(TaintTracking::Configuration).isBarrierEdge(srcnode, destnode)
   }
 
   private predicate unprunedStep(
@@ -312,14 +314,14 @@ class TaintTrackingImplementation extends string instanceof TaintTracking::Confi
     this.legacyExtensionStep(src, node, context, path, kind, edgeLabel)
     or
     exists(DataFlow::Node srcnode, TaintKind srckind |
-      super.isAdditionalFlowStep(srcnode, node, srckind, kind) and
+      this.(TaintTracking::Configuration).isAdditionalFlowStep(srcnode, node, srckind, kind) and
       src = TTaintTrackingNode_(srcnode, context, path, srckind, this) and
       path.noAttribute() and
       edgeLabel = "additional with kind"
     )
     or
     exists(DataFlow::Node srcnode |
-      super.isAdditionalFlowStep(srcnode, node) and
+      this.(TaintTracking::Configuration).isAdditionalFlowStep(srcnode, node) and
       src = TTaintTrackingNode_(srcnode, context, path, kind, this) and
       path.noAttribute() and
       edgeLabel = "additional"
@@ -616,7 +618,7 @@ class TaintTrackingImplementation extends string instanceof TaintTracking::Confi
     TaintKind kind, string edgeLabel
   ) {
     exists(TaintTracking::Extension extension, DataFlow::Node srcnode, TaintKind srckind |
-      super.isExtension(extension) and
+      this.(TaintTracking::Configuration).isExtension(extension) and
       src = TTaintTrackingNode_(srcnode, context, path, srckind, this) and
       srcnode.asCfgNode() = extension
     |
@@ -644,7 +646,9 @@ class TaintTrackingImplementation extends string instanceof TaintTracking::Confi
  * Another taint-tracking class to help partition the code for clarity
  * This class handle tracking of ESSA variables.
  */
-private class EssaTaintTracking extends string instanceof TaintTracking::Configuration {
+private class EssaTaintTracking extends string {
+  EssaTaintTracking() { this instanceof TaintTracking::Configuration }
+
   pragma[noinline]
   predicate taintedDefinition(
     TaintTrackingNode src, EssaDefinition defn, TaintTrackingContext context, AttributePath path,
@@ -687,7 +691,7 @@ private class EssaTaintTracking extends string instanceof TaintTracking::Configu
       defn = phi.asVariable().getDefinition() and
       predvar = defn.getInput(pred) and
       not pred.unlikelySuccessor(defn.getBasicBlock()) and
-      not super.isBarrierEdge(srcnode, phi) and
+      not this.(TaintTracking::Configuration).isBarrierEdge(srcnode, phi) and
       srcnode.asVariable() = predvar
     )
   }
@@ -777,7 +781,7 @@ private class EssaTaintTracking extends string instanceof TaintTracking::Configu
     exists(DataFlow::Node srcnode |
       src = TTaintTrackingNode_(srcnode, context, path, kind, this) and
       srcnode.asVariable() = defn.getInput() and
-      not super.isBarrierTest(defn.getTest(), defn.getSense())
+      not this.(TaintTracking::Configuration).isBarrierTest(defn.getTest(), defn.getSense())
     )
   }
 
@@ -797,7 +801,7 @@ private class EssaTaintTracking extends string instanceof TaintTracking::Configu
   ) {
     exists(DataFlow::Node srcnode, ControlFlowNode use |
       src = TTaintTrackingNode_(srcnode, context, path, kind, this) and
-      not super.isBarrierTest(defn.getTest(), defn.getSense()) and
+      not this.(TaintTracking::Configuration).isBarrierTest(defn.getTest(), defn.getSense()) and
       defn.getSense() = testEvaluates(defn, defn.getTest(), use, src)
     )
   }
@@ -811,7 +815,7 @@ private class EssaTaintTracking extends string instanceof TaintTracking::Configu
       src = TTaintTrackingNode_(srcnode, context, path, kind, this) and
       piNodeTestAndUse(defn, test, use) and
       srcnode.asVariable() = defn.getInput() and
-      not super.isBarrierTest(test, defn.getSense()) and
+      not this.(TaintTracking::Configuration).isBarrierTest(test, defn.getSense()) and
       testEvaluatesMaybe(test, use)
     )
   }

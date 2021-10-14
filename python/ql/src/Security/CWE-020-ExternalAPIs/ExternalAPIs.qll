@@ -71,6 +71,8 @@ class ExternalAPIDataNode extends DataFlow::Node {
     callable = call.getCallable() and
     not any(SafeExternalAPI safe).getSafeCallable() = callable and
     exists(Value cv | cv = callable.getCallableValue() |
+      cv.isAbsent()
+      or
       cv.isBuiltin()
       or
       cv.(CallableValue).getScope().getLocation().getFile().inStdlib()
