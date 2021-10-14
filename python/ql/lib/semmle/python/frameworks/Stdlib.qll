@@ -462,8 +462,8 @@ private module StdlibPrivate {
       result = this.get_executable_arg()
       or
       exists(DataFlow::Node arg_args, boolean shell |
-        arg_args = get_args_arg() and
-        shell = get_shell_arg_value()
+        arg_args = this.get_args_arg() and
+        shell = this.get_shell_arg_value()
       |
         // When "executable" argument is set, and "shell" argument is `False`, the
         // "args" argument will only be used to set the program name and arguments to
