@@ -230,6 +230,45 @@ class Predicate extends TPredicate, AstNode, Declaration {
 }
 
 /**
+ * A relation in the database.
+ */
+class Relation extends TDBRelation, AstNode, Declaration {
+  Generated::DbTable table;
+
+  Relation() { this = TDBRelation(table) }
+
+  /**
+   * Gets the name of the relation.
+   */
+  override string getName() { result = table.getTableName().getChild().getValue() }
+
+  private Generated::DbColumn getColumn(int i) {
+    result =
+      rank[i + 1](Generated::DbColumn column, int child |
+        table.getChild(child) = column
+      |
+        column order by child
+      )
+  }
+
+  /** Gets the `i`th parameter name */
+  string getParameterName(int i) { result = getColumn(i).getColName().getValue() }
+
+  /** Gets the `i`th parameter type */
+  string getParameterType(int i) {
+    // TODO: This is just using the name of the type, not the actual type. Checkout Type.qll
+    result = getColumn(i).getColType().getChild().(Generated::Token).getValue()
+  }
+
+  /**
+   * Gets the number of parameters.
+   */
+  int getArity() { result = count(getColumn(_)) }
+
+  override string getAPrimaryQlClass() { result = "Relation" }
+}
+
+/**
  * An expression that refers to a predicate, e.g. `BasicBlock::succ/2`.
  */
 class PredicateExpr extends TPredicateExpr, AstNode {
@@ -773,6 +812,9 @@ class Call extends TCall, Expr, Formula {
   Expr getArgument(int i) {
     none() // overriden in sublcasses.
   }
+
+  /** Gets an argument of this call, if any. */
+  final Expr getAnArgument() { result = getArgument(_) }
 
   PredicateOrBuiltin getTarget() { resolveCall(this, result) }
 
@@ -1749,7 +1791,19 @@ class FunctionSymbol extends string {
 /**
  * A binary operation expression, such as `x + 3` or `y / 2`.
  */
-class BinOpExpr extends TBinOpExpr, Expr { }
+class BinOpExpr extends TBinOpExpr, Expr {
+  /** Gets the left operand of the binary expression. */
+  Expr getLeftOperand() { none() } // overriden in subclasses
+
+  /* Gets the right operand of the binary expression. */
+  Expr getRightOperand() { none() } // overriden in subclasses
+
+  /** Gets the operator of the binary expression. */
+  FunctionSymbol getOperator() { none() } // overriden in subclasses
+
+  /* Gets an operand of the binary expression. */
+  final Expr getAnOperand() { result = getLeftOperand() or result = getRightOperand() }
+}
 
 /**
  * An addition or subtraction expression.
@@ -1760,17 +1814,11 @@ class AddSubExpr extends TAddSubExpr, BinOpExpr {
 
   AddSubExpr() { this = TAddSubExpr(expr) and operator = expr.getChild().getValue() }
 
-  /** Gets the left operand of the binary expression. */
-  Expr getLeftOperand() { toGenerated(result) = expr.getLeft() }
+  override Expr getLeftOperand() { toGenerated(result) = expr.getLeft() }
 
-  /* Gets the right operand of the binary expression. */
-  Expr getRightOperand() { toGenerated(result) = expr.getRight() }
+  override Expr getRightOperand() { toGenerated(result) = expr.getRight() }
 
-  /* Gets an operand of the binary expression. */
-  Expr getAnOperand() { result = getLeftOperand() or result = getRightOperand() }
-
-  /** Gets the operator of the binary expression. */
-  FunctionSymbol getOperator() { result = operator }
+  override FunctionSymbol getOperator() { result = operator }
 
   override PrimitiveType getType() {
     // Both operands are the same type
@@ -1830,16 +1878,12 @@ class MulDivModExpr extends TMulDivModExpr, BinOpExpr {
   MulDivModExpr() { this = TMulDivModExpr(expr) and operator = expr.getChild().getValue() }
 
   /** Gets the left operand of the binary expression. */
-  Expr getLeftOperand() { toGenerated(result) = expr.getLeft() }
+  override Expr getLeftOperand() { toGenerated(result) = expr.getLeft() }
 
   /** Gets the right operand of the binary expression. */
-  Expr getRightOperand() { toGenerated(result) = expr.getRight() }
+  override Expr getRightOperand() { toGenerated(result) = expr.getRight() }
 
-  /** Gets an operand of the binary expression. */
-  Expr getAnOperand() { result = getLeftOperand() or result = getRightOperand() }
-
-  /** Gets the operator of the binary expression. */
-  FunctionSymbol getOperator() { result = operator }
+  override FunctionSymbol getOperator() { result = operator }
 
   override PrimitiveType getType() {
     // Both operands are of the same type
@@ -1912,6 +1956,11 @@ class Range extends TRange, Expr {
    */
   Expr getHighEndpoint() { toGenerated(result) = range.getUpper() }
 
+  /**
+   * Gets the lower and upper bounds of the range.
+   */
+  Expr getAnEndpoint() { result = [getLowEndpoint(), getHighEndpoint()] }
+
   override PrimitiveType getType() { result.getName() = "int" }
 
   override string getAPrimaryQlClass() { result = "Range" }
@@ -1937,6 +1986,16 @@ class Set extends TSet, Expr {
    * Gets the `i`th element in this set literal expression.
    */
   Expr getElement(int i) { toGenerated(result) = set.getChild(i) }
+
+  /**
+   * Gets an element in this set literal expression, if any.
+   */
+  Expr getAnElement() { result = getElement(_) }
+
+  /**
+   * Gets the number of elements in this set literal expression.
+   */
+  int getNumberOfElements() { result = count(getAnElement()) }
 
   override Type getType() { result = this.getElement(0).getType() }
 
@@ -2132,4 +2191,205 @@ class BindingSet extends Annotation {
 
   /** Gets the number of names bound by this bindingset. */
   int getNumberOfBoundNames() { result = count(getABoundName()) }
+}
+
+/**
+ * Classes modelling YAML AST nodes.
+ */
+module YAML {
+  /** A node in a YAML file */
+  class YAMLNode extends TYAMLNode, AstNode {
+    /** Holds if the predicate is a root node (has no parent) */
+    predicate isRoot() { not exists(getParent()) }
+  }
+
+  /** A YAML comment. */
+  class YAMLComment extends TYamlCommemt, YAMLNode {
+    Generated::YamlComment yamlcomment;
+
+    YAMLComment() { this = TYamlCommemt(yamlcomment) }
+
+    override string getAPrimaryQlClass() { result = "YAMLComment" }
+  }
+
+  /** A YAML entry. */
+  class YAMLEntry extends TYamlEntry, YAMLNode {
+    Generated::YamlEntry yamle;
+
+    YAMLEntry() { this = TYamlEntry(yamle) }
+
+    /** Gets the key of this YAML entry. */
+    YAMLKey getKey() {
+      exists(Generated::YamlKeyvaluepair pair |
+        pair.getParent() = yamle and
+        result = TYamlKey(pair.getKey())
+      )
+    }
+
+    /** Gets the value of this YAML entry. */
+    YAMLValue getValue() {
+      exists(Generated::YamlKeyvaluepair pair |
+        pair.getParent() = yamle and
+        result = TYamlValue(pair.getValue())
+      )
+    }
+
+    override string getAPrimaryQlClass() { result = "YAMLEntry" }
+  }
+
+  /** A YAML key. */
+  class YAMLKey extends TYamlKey, YAMLNode {
+    Generated::YamlKey yamlkey;
+
+    YAMLKey() { this = TYamlKey(yamlkey) }
+
+    /**
+     * Gets the value of this YAML key.
+     */
+    YAMLValue getValue() {
+      exists(Generated::YamlKeyvaluepair pair |
+        pair.getKey() = yamlkey and result = TYamlValue(pair.getValue())
+      )
+    }
+
+    override string getAPrimaryQlClass() { result = "YAMLKey" }
+
+    /** Gets the value of this YAML value. */
+    string getNamePart(int i) {
+      i = 0 and result = yamlkey.getChild(0).(Generated::SimpleId).getValue()
+      or
+      exists(YAMLKey child |
+        child = TYamlKey(yamlkey.getChild(1)) and
+        result = child.getNamePart(i - 1)
+      )
+    }
+
+    /**
+     * Gets all the name parts of this YAML key concatenated with `/`.
+     * Dashes are replaced with `/` (because we don't have that information in the generated AST).
+     */
+    string getQualifiedName() {
+      result = concat(string part, int i | part = getNamePart(i) | part, "/" order by i)
+    }
+  }
+
+  /** A YAML list item. */
+  class YAMLListItem extends TYamlListitem, YAMLNode {
+    Generated::YamlListitem yamllistitem;
+
+    YAMLListItem() { this = TYamlListitem(yamllistitem) }
+
+    /**
+     * Gets the value of this YAML list item.
+     */
+    YAMLValue getValue() { result = TYamlValue(yamllistitem.getChild()) }
+
+    override string getAPrimaryQlClass() { result = "YAMLListItem" }
+  }
+
+  /** A YAML value. */
+  class YAMLValue extends TYamlValue, YAMLNode {
+    Generated::YamlValue yamlvalue;
+
+    YAMLValue() { this = TYamlValue(yamlvalue) }
+
+    override string getAPrimaryQlClass() { result = "YAMLValue" }
+
+    /** Gets the value of this YAML value. */
+    string getValue() { result = yamlvalue.getValue() }
+  }
+
+  // to not expose the entire `File` API on `QlPack`.
+  private newtype TQLPack = MKQlPack(File file) { file.getBaseName() = "qlpack.yml" }
+
+  YAMLEntry test() { not result.isRoot() }
+
+  /**
+   * A `qlpack.yml` file.
+   */
+  class QLPack extends MKQlPack {
+    File file;
+
+    QLPack() { this = MKQlPack(file) }
+
+    private string getProperty(string name) {
+      exists(YAMLEntry entry |
+        entry.isRoot() and
+        entry.getKey().getQualifiedName() = name and
+        result = entry.getValue().getValue().trim() and
+        entry.getLocation().getFile() = file
+      )
+    }
+
+    /** Gets the name of this qlpack */
+    string getName() { result = getProperty("name") }
+
+    /** Gets the version of this qlpack */
+    string getVersion() { result = getProperty("version") }
+
+    /** Gets the extractor of this qlpack */
+    string getExtractor() { result = getProperty("extractor") }
+
+    string toString() { result = getName() }
+
+    /** Gets the file that this `QLPack` represents. */
+    File getFile() { result = file }
+
+    private predicate isADependency(YAMLEntry entry) {
+      exists(YAMLEntry deps |
+        deps.getLocation().getFile() = file and entry.getLocation().getFile() = file
+      |
+        deps.isRoot() and
+        deps.getKey().getQualifiedName() = "dependencies" and
+        entry.getLocation().getStartLine() = 1 + deps.getLocation().getStartLine() and
+        entry.getLocation().getStartColumn() > deps.getLocation().getStartColumn()
+      )
+      or
+      exists(YAMLEntry prev | isADependency(prev) |
+        prev.getLocation().getFile() = file and
+        entry.getLocation().getFile() = file and
+        entry.getLocation().getStartLine() = 1 + prev.getLocation().getStartLine() and
+        entry.getLocation().getStartColumn() = prev.getLocation().getStartColumn()
+      )
+    }
+
+    predicate hasDependency(string name, string version) {
+      exists(YAMLEntry entry | isADependency(entry) |
+        entry.getKey().getQualifiedName() = name and
+        entry.getValue().getValue() = version
+      )
+    }
+
+    /** Gets the database scheme of this qlpack */
+    File getDBScheme() {
+      result.getBaseName() = getProperty("dbscheme") and
+      result = file.getParentContainer().getFile(any(string s | s.matches("%.dbscheme")))
+    }
+
+    pragma[noinline]
+    Container getAFileInPack() {
+      result.getParentContainer() = file.getParentContainer()
+      or
+      result = getAFileInPack().(Folder).getAChildContainer()
+    }
+
+    /**
+     * Gets a QLPack that this QLPack depends on.
+     */
+    QLPack getADependency() {
+      exists(string name | hasDependency(name, _) | result.getName().replaceAll("-", "/") = name)
+    }
+
+    Location getLocation() {
+      // hacky, just pick the first node in the file.
+      result =
+        min(YAMLNode entry, Location l, File f |
+          entry.getLocation().getFile() = file and
+          f = file and
+          l = entry.getLocation()
+        |
+          entry order by l.getStartLine(), l.getStartColumn(), l.getEndColumn(), l.getEndLine()
+        ).getLocation()
+    }
+  }
 }
