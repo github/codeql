@@ -806,7 +806,7 @@ class Class extends TClass, TypeDeclaration, ModuleDeclaration {
   }
 
   /** Holds if this class is abstract. */
-  predicate isAbstract() { hasAnnotation(this, "abstract") }
+  predicate isAbstract() { hasAnnotation("abstract") }
 }
 
 /**
