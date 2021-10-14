@@ -5,25 +5,24 @@
  *              exponential time on certain inputs.
  * @kind path-problem
  * @problem.severity error
+ * @precision high
  * @id py/regex-injection
  * @tags security
  *       external/cwe/cwe-730
  *       external/cwe/cwe-400
  */
 
-// determine precision above
 import python
-import experimental.semmle.python.security.injection.RegexInjection
+private import semmle.python.Concepts
+import semmle.python.security.injection.RegexInjection
 import DataFlow::PathGraph
 
 from
-  RegexInjectionFlowConfig config, DataFlow::PathNode source, DataFlow::PathNode sink,
-  RegexInjectionSink regexInjectionSink, Attribute methodAttribute
+  RegexInjection::Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink,
+  RegexExecution regexExecution
 where
   config.hasFlowPath(source, sink) and
-  regexInjectionSink = sink.getNode() and
-  methodAttribute = regexInjectionSink.getRegexMethod()
+  regexExecution = sink.getNode().(RegexInjection::Sink).getRegexExecution()
 select sink.getNode(), source, sink,
   "$@ regular expression is constructed from a $@ and executed by $@.", sink.getNode(), "This",
-  source.getNode(), "user-provided value", methodAttribute,
-  regexInjectionSink.getRegexModule() + "." + methodAttribute.getName()
+  source.getNode(), "user-provided value", regexExecution, regexExecution.getName()

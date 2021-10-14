@@ -1636,6 +1636,119 @@ private module StdlibPrivate {
       result = this.getArg(any(int i | i >= msgIndex))
     }
   }
+
+  // ---------------------------------------------------------------------------
+  // re
+  // ---------------------------------------------------------------------------
+  /**
+   * List of methods in the `re` module immediately executing a regular expression.
+   *
+   * See https://docs.python.org/3/library/re.html#module-contents
+   */
+  private class RegexExecutionMethod extends string {
+    RegexExecutionMethod() {
+      this in ["match", "fullmatch", "search", "split", "findall", "finditer", "sub", "subn"]
+    }
+
+    /** Gets the index of the argument representing the string to be searched by a regex. */
+    int getStringArgIndex() {
+      this in ["match", "fullmatch", "search", "split", "findall", "finditer"] and
+      result = 1
+      or
+      this in ["sub", "subn"] and
+      result = 2
+    }
+  }
+
+  /**
+   * A a call to a method from the `re` module immediately executing a regular expression.
+   *
+   * See `RegexExecutionMethods`
+   */
+  private class DirectRegexExecution extends DataFlow::CallCfgNode, RegexExecution::Range {
+    RegexExecutionMethod method;
+
+    DirectRegexExecution() { this = API::moduleImport("re").getMember(method).getACall() }
+
+    override DataFlow::Node getRegex() { result in [this.getArg(0), this.getArgByName("pattern")] }
+
+    override DataFlow::Node getString() {
+      result in [this.getArg(method.getStringArgIndex()), this.getArgByName("string")]
+    }
+
+    override string getName() { result = "re." + method }
+  }
+
+  /** Helper module for tracking compiled regexes. */
+  private module CompiledRegexes {
+    private DataFlow::TypeTrackingNode compiledRegex(DataFlow::TypeTracker t, DataFlow::Node regex) {
+      t.start() and
+      result = API::moduleImport("re").getMember("compile").getACall() and
+      regex in [
+          result.(DataFlow::CallCfgNode).getArg(0),
+          result.(DataFlow::CallCfgNode).getArgByName("pattern")
+        ]
+      or
+      exists(DataFlow::TypeTracker t2 | result = compiledRegex(t2, regex).track(t2, t))
+    }
+
+    DataFlow::Node compiledRegex(DataFlow::Node regex) {
+      compiledRegex(DataFlow::TypeTracker::end(), regex).flowsTo(result)
+    }
+  }
+
+  private import CompiledRegexes
+
+  /**
+   * A call on compiled regular expression (obtained via `re.compile`) executing a
+   * regular expression.
+   *
+   * Given the following example:
+   *
+   * ```py
+   * pattern = re.compile(input)
+   * pattern.match(s)
+   * ```
+   *
+   * This class will identify that `re.compile` compiles `input` and afterwards
+   * executes `re`'s `match`. As a result, `this` will refer to `pattern.match(s)`
+   * and `this.getRegexNode()` will return the node for `input` (`re.compile`'s first argument).
+   *
+   *
+   * See `RegexExecutionMethods`
+   *
+   * See https://docs.python.org/3/library/re.html#regular-expression-objects
+   */
+  private class CompiledRegexExecution extends DataFlow::MethodCallNode, RegexExecution::Range {
+    DataFlow::Node regexNode;
+    RegexExecutionMethod method;
+
+    CompiledRegexExecution() { this.calls(compiledRegex(regexNode), method) }
+
+    override DataFlow::Node getRegex() { result = regexNode }
+
+    override DataFlow::Node getString() {
+      result in [this.getArg(method.getStringArgIndex() - 1), this.getArgByName("string")]
+    }
+
+    override string getName() { result = "re." + method }
+  }
+
+  /**
+   * A call to 're.escape'.
+   * See https://docs.python.org/3/library/re.html#re.escape
+   */
+  private class ReEscapeCall extends Escaping::Range, DataFlow::CallCfgNode {
+    ReEscapeCall() { this = API::moduleImport("re").getMember("escape").getACall() }
+
+    override DataFlow::Node getAnInput() {
+      result in [this.getArg(0), this.getArgByName("pattern")]
+    }
+
+    override DataFlow::Node getOutput() { result = this }
+
+    override string getKind() { result = Escaping::getRegexKind() }
+  }
 }
 
 // ---------------------------------------------------------------------------
