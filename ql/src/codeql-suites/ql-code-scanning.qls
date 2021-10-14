@@ -6,3 +6,13 @@
     - path-problem
     - alert
     - path-alert
+    precision:
+    - high
+    - very-high
+    problem.severity:
+    - error
+    - warning
+- exclude:
+    deprecated: //
+- exclude:
+    query path: /^experimental\/.*/
