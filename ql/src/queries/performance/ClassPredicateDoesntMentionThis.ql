@@ -19,7 +19,7 @@ predicate usesThis(ClassPredicate pred) {
   or
   // implicit this
   exists(PredicateCall pc | pc.getEnclosingPredicate() = pred |
-    pc.getTarget().getDeclaration() instanceof ClassPredicate
+    pc.getTarget() instanceof ClassPredicate
   )
 }
 
@@ -39,7 +39,7 @@ predicate isLiteralComparison(ComparisonFormula eq) {
       rhs instanceof Literal
       or
       exists(NewTypeBranch nt |
-        rhs.(Call).getTarget().getDeclaration() = nt and
+        rhs.(Call).getTarget() = nt and
         count(nt.getField(_)) = 0
       )
     )
