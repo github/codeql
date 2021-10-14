@@ -64,6 +64,9 @@ predicate summaryElement(DataFlowCallable c, string input, string output, string
 SummaryComponent interpretComponentSpecific(string c) {
   c = "BlockArgument" and
   result = FlowSummary::SummaryComponent::block()
+  or
+  c = "Argument[_]" and
+  result = FlowSummary::SummaryComponent::argument(any(int i | i >= 0))
 }
 
 /** Gets the return kind corresponding to specification `"ReturnValue"`. */

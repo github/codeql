@@ -583,3 +583,21 @@ module OrmInstantiation {
     abstract predicate methodCallMayAccessField(string methodName);
   }
 }
+
+/** Provides classes for modeling path-related APIs. */
+module Path {
+  /**
+   * A data-flow node that performs path sanitization. This is often needed in order
+   * to safely access paths.
+   */
+  class PathSanitization extends DataFlow::Node instanceof PathSanitization::Range { }
+
+  /** Provides a class for modeling new path sanitization APIs. */
+  module PathSanitization {
+    /**
+     * A data-flow node that performs path sanitization. This is often needed in order
+     * to safely access paths.
+     */
+    abstract class Range extends DataFlow::Node { }
+  }
+}
