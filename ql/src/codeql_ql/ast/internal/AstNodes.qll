@@ -59,6 +59,8 @@ newtype TAstNode =
   TDontCare(Generated::Underscore dontcare) or
   TModuleExpr(Generated::ModuleExpr me) or
   TPredicateExpr(Generated::PredicateExpr pe) or
+  TAnnotation(Generated::Annotation annot) or
+  TAnnotationArg(Generated::AnnotArg arg) or
   TYamlCommemt(Generated::YamlComment yc) or
   TYamlEntry(Generated::YamlEntry ye) or
   TYamlKey(Generated::YamlKey yk) or
@@ -184,6 +186,10 @@ Generated::AstNode toGenerated(AST::AstNode n) {
   n = TAnyCall(result)
   or
   n = TSuper(result)
+  or
+  n = TAnnotation(result)
+  or
+  n = TAnnotationArg(result)
 }
 
 class TPredicate = TCharPred or TClasslessPredicate or TClassPredicate or TDBRelation;
