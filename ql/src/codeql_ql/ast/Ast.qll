@@ -804,6 +804,9 @@ class Class extends TClass, TypeDeclaration, ModuleDeclaration {
       result = this.getClassPredicate(name)
     )
   }
+
+  /** Holds if this class is abstract. */
+  predicate isAbstract() { hasAnnotation(this, "abstract") }
 }
 
 /**
