@@ -72,9 +72,9 @@ private class MakeUniqueOrShared extends TaintFunction {
     // since these just take a size argument, which we don't want to propagate taint through.
     not this.isArray() and
     (
-      input.isParameter([0 .. getNumberOfParameters() - 1])
+      input.isParameter([0 .. this.getNumberOfParameters() - 1])
       or
-      input.isParameterDeref([0 .. getNumberOfParameters() - 1])
+      input.isParameterDeref([0 .. this.getNumberOfParameters() - 1])
     ) and
     output.isReturnValue()
   }
@@ -116,14 +116,14 @@ private class SmartPtrSetterFunction extends MemberFunction, AliasFunction, Side
     or
     // When taking ownership of a smart pointer via an rvalue reference, always overwrite the input
     // smart pointer.
-    getPointerInput().isParameterDeref(i) and
+    this.getPointerInput().isParameterDeref(i) and
     this.getParameter(i).getUnspecifiedType() instanceof RValueReferenceType and
     buffer = false and
     mustWrite = true
   }
 
   override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
-    getPointerInput().isParameterDeref(i) and
+    this.getPointerInput().isParameterDeref(i) and
     buffer = false
     or
     not this instanceof Constructor and
@@ -136,7 +136,7 @@ private class SmartPtrSetterFunction extends MemberFunction, AliasFunction, Side
   override predicate parameterEscapesOnlyViaReturn(int index) { none() }
 
   override predicate hasAddressFlow(FunctionInput input, FunctionOutput output) {
-    input = getPointerInput() and
+    input = this.getPointerInput() and
     output.isQualifierObject()
     or
     // Assignment operator always returns a reference to `*this`.
