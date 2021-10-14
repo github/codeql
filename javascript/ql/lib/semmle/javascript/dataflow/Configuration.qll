@@ -493,6 +493,7 @@ private predicate barrierGuardBlocksEdge(
  *
  * This predicate exists to get a better join-order for the `barrierGuardBlocksEdge` predicate above.
  */
+pragma[noinline]
 private BasicBlock getADominatedBasicBlock(BarrierGuardNode guard, ConditionGuardNode cond) {
   barrierGuardIsRelevant(guard) and
   guard.getEnclosingExpr() = cond.getTest() and
@@ -996,6 +997,7 @@ private predicate exploratoryLoadStep(
  *
  * This private predicate is only used in `exploratoryLoadStep`, and exists as a separate predicate to give the compiler a hint about join-ordering.
  */
+pragma[noinline]
 private string getAForwardRelevantLoadProperty(DataFlow::Configuration cfg) {
   exists(DataFlow::Node previous | isRelevantForward(previous, cfg) |
     basicStoreStep(previous, _, result) or
@@ -1055,6 +1057,7 @@ private predicate exploratoryBackwardStoreStep(
  *
  * This private predicate is only used in `exploratoryBackwardStoreStep`, and exists as a separate predicate to give the compiler a hint about join-ordering.
  */
+pragma[noinline]
 private string getABackwardsRelevantStoreProperty(DataFlow::Configuration cfg) {
   exists(DataFlow::Node mid | isRelevant(mid, cfg) |
     basicLoadStep(mid, _, result) or
@@ -1672,6 +1675,7 @@ private predicate onPath(DataFlow::Node nd, DataFlow::Configuration cfg, PathSum
  *
  * This predicate has been outlined from `onPath` to give the optimizer a hint about join-ordering.
  */
+pragma[noinline]
 private predicate onPathStep(
   DataFlow::Node nd, DataFlow::Configuration cfg, PathSummary summary, PathSummary stepSummary,
   DataFlow::Node mid

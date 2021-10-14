@@ -86,6 +86,7 @@ class AbstractProtoProperty extends AbstractProperty {
  * has to be toplevel predicate to avoid a spurious type join with `AbstractProperty`,
  * which in turn introduces a materialization.
  */
+pragma[noinline]
 private AbstractValue getAnAssignedValue(AbstractValue b, string p) {
   exists(AnalyzedPropertyWrite apw | apw.writesValue(b, p, result))
 }
