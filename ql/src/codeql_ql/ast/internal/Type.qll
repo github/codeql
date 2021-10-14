@@ -114,6 +114,7 @@ private PredicateOrBuiltin declaredPred(Type ty, string name, int arity) {
   result.getArity() = arity
 }
 
+pragma[nomagic]
 private PredicateOrBuiltin classPredCandidate(Type ty, string name, int arity) {
   result = declaredPred(ty, name, arity)
   or
@@ -127,8 +128,7 @@ private PredicateOrBuiltin inherClassPredCandidate(Type ty, string name, int ari
 }
 
 predicate predOverrides(ClassPredicate sub, ClassPredicate sup) {
-  sup =
-    inherClassPredCandidate(sub.getDeclaringType(), sub.getName(), sub.getArity()).getDeclaration()
+  sup = inherClassPredCandidate(sub.getDeclaringType(), sub.getName(), sub.getArity())
 }
 
 private VarDecl declaredField(ClassType ty, string name) {
@@ -283,6 +283,7 @@ private predicate qualifier(TypeExpr te, FileOrModule m, boolean public, string 
   )
 }
 
+pragma[nomagic]
 private predicate defines(FileOrModule m, string name, Type t, boolean public) {
   exists(Class ty | t = TClass(ty) |
     getEnclosingModule(ty) = m and

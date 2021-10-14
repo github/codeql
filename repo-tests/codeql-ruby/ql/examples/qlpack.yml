@@ -1,0 +1,4 @@
+name: codeql/ruby-examples
+version: 0.0.2
+dependencies:
+  codeql/ruby-all: ^0.0.2
