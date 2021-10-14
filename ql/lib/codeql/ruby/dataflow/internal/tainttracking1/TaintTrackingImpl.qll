@@ -75,26 +75,24 @@ abstract class Configuration extends DataFlow::Configuration {
   predicate isSanitizer(DataFlow::Node node) { none() }
 
   final override predicate isBarrier(DataFlow::Node node) {
-    this.isSanitizer(node) or
+    isSanitizer(node) or
     defaultTaintSanitizer(node)
   }
 
   /** Holds if taint propagation into `node` is prohibited. */
   predicate isSanitizerIn(DataFlow::Node node) { none() }
 
-  final override predicate isBarrierIn(DataFlow::Node node) { this.isSanitizerIn(node) }
+  final override predicate isBarrierIn(DataFlow::Node node) { isSanitizerIn(node) }
 
   /** Holds if taint propagation out of `node` is prohibited. */
   predicate isSanitizerOut(DataFlow::Node node) { none() }
 
-  final override predicate isBarrierOut(DataFlow::Node node) { this.isSanitizerOut(node) }
+  final override predicate isBarrierOut(DataFlow::Node node) { isSanitizerOut(node) }
 
   /** Holds if taint propagation through nodes guarded by `guard` is prohibited. */
   predicate isSanitizerGuard(DataFlow::BarrierGuard guard) { none() }
 
-  final override predicate isBarrierGuard(DataFlow::BarrierGuard guard) {
-    this.isSanitizerGuard(guard)
-  }
+  final override predicate isBarrierGuard(DataFlow::BarrierGuard guard) { isSanitizerGuard(guard) }
 
   /**
    * Holds if the additional taint propagation step from `node1` to `node2`
@@ -103,7 +101,7 @@ abstract class Configuration extends DataFlow::Configuration {
   predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) { none() }
 
   final override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-    this.isAdditionalTaintStep(node1, node2) or
+    isAdditionalTaintStep(node1, node2) or
     defaultAdditionalTaintStep(node1, node2)
   }
 
