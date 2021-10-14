@@ -105,7 +105,7 @@ class CallLiteral extends Call {
 class DisjunctionPredicateLiteral extends DisjunctionChain {
   DisjunctionPredicateLiteral() {
     // Call to the same target
-    exists(AstNode target |
+    exists(PredicateOrBuiltin target |
       forex(Formula f | f = getAnOperandRec() | f.(CallLiteral).getTarget() = target)
     )
   }
