@@ -28,7 +28,7 @@ module Ruby {
     string getAPrimaryQlClass() { result = "???" }
 
     /** Gets a comma-separated list of the names of the primary CodeQL classes to which this element belongs. */
-    string getPrimaryQlClasses() { result = concat(getAPrimaryQlClass(), ",") }
+    string getPrimaryQlClasses() { result = concat(this.getAPrimaryQlClass(), ",") }
   }
 
   /** A token. */
@@ -40,7 +40,7 @@ module Ruby {
     override Location getLocation() { ruby_tokeninfo(this, _, _, result) }
 
     /** Gets a string representation of this element. */
-    override string toString() { result = getValue() }
+    override string toString() { result = this.getValue() }
 
     /** Gets the name of the primary QL class for this element. */
     override string getAPrimaryQlClass() { result = "Token" }
@@ -1881,7 +1881,7 @@ module Erb {
     string getAPrimaryQlClass() { result = "???" }
 
     /** Gets a comma-separated list of the names of the primary CodeQL classes to which this element belongs. */
-    string getPrimaryQlClasses() { result = concat(getAPrimaryQlClass(), ",") }
+    string getPrimaryQlClasses() { result = concat(this.getAPrimaryQlClass(), ",") }
   }
 
   /** A token. */
@@ -1893,7 +1893,7 @@ module Erb {
     override Location getLocation() { erb_tokeninfo(this, _, _, result) }
 
     /** Gets a string representation of this element. */
-    override string toString() { result = getValue() }
+    override string toString() { result = this.getValue() }
 
     /** Gets the name of the primary QL class for this element. */
     override string getAPrimaryQlClass() { result = "Token" }
