@@ -22,7 +22,7 @@ Import importBefore(Import i) {
     result = m.getMember(bi) and
     i = m.getMember(ii) and
     bi < ii
-    )
+  )
 }
 
 from Import i
