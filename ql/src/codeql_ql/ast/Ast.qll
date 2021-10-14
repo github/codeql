@@ -16,15 +16,6 @@ private string stringIndexedMember(string name, string index) {
   result = name + "(_)" and exists(index)
 }
 
-/**
- * Holds if `node` has an annotation with `name`.
- */
-private predicate hasAnnotation(AstNode node, string name) {
-  exists(Generated::Annotation annotation | annotation.getName().getValue() = name |
-    toGenerated(node).getParent() = annotation.getParent()
-  )
-}
-
 /** An AST node of a QL program */
 class AstNode extends TAstNode {
   string toString() { result = getAPrimaryQlClass() }
@@ -59,6 +50,12 @@ class AstNode extends TAstNode {
 
   /** Gets the QLDoc comment for this AST node, if any. */
   QLDoc getQLDoc() { none() }
+
+  /** Holds if `node` has an annotation with `name`. */
+  predicate hasAnnotation(string name) { this.getAnAnnotation().getName() = name }
+
+  /** Gets an annotation of this AST node. */
+  Annotation getAnAnnotation() { toGenerated(this).getParent() = toGenerated(result).getParent() }
 
   /**
    * Gets the predicate that contains this AST node.
@@ -361,12 +358,12 @@ class ClassPredicate extends TClassPredicate, Predicate {
   /**
    * Holds if this predicate is private.
    */
-  predicate isPrivate() { hasAnnotation(this, "private") }
+  predicate isPrivate() { hasAnnotation("private") }
 
   /**
    * Holds if this predicate is annotated as overriding another predicate.
    */
-  predicate isOverride() { hasAnnotation(this, "override") }
+  predicate isOverride() { hasAnnotation("override") }
 
   override VarDecl getParameter(int i) {
     toGenerated(result) =
@@ -579,7 +576,7 @@ class Module extends TModule, ModuleDeclaration {
  */
 class ModuleMember extends TModuleMember, AstNode {
   /** Holds if this member is declared as `private`. */
-  predicate isPrivate() { hasAnnotation(this, "private") }
+  predicate isPrivate() { hasAnnotation("private") }
 }
 
 /** A declaration. E.g. a class, type, predicate, newtype... */
@@ -2029,4 +2026,110 @@ class ModuleExpr extends TModuleExpr, ModuleRef {
     or
     pred = directMember("getQualifier") and result = this.getQualifier()
   }
+}
+
+/** An argument to an annotation. */
+private class AnnotationArg extends TAnnotationArg, AstNode {
+  Generated::AnnotArg arg;
+
+  AnnotationArg() { this = TAnnotationArg(arg) }
+
+  /** Gets the name of this argument. */
+  string getValue() {
+    result =
+      [
+        arg.getChild().(Generated::SimpleId).getValue(),
+        arg.getChild().(Generated::Result).getValue(), arg.getChild().(Generated::This).getValue()
+      ]
+  }
+
+  override string toString() { result = this.getValue() }
+}
+
+private class NoInlineArg extends AnnotationArg {
+  NoInlineArg() { this.getValue() = "noinline" }
+}
+
+private class NoMagicArg extends AnnotationArg {
+  NoMagicArg() { this.getValue() = "nomagic" }
+}
+
+private class InlineArg extends AnnotationArg {
+  InlineArg() { this.getValue() = "inline" }
+}
+
+private class NoOptArg extends AnnotationArg {
+  NoOptArg() { this.getValue() = "noopt" }
+}
+
+private class MonotonicAggregatesArg extends AnnotationArg {
+  MonotonicAggregatesArg() { this.getValue() = "monotonicAggregates" }
+}
+
+/** An annotation on an element. */
+class Annotation extends TAnnotation, AstNode {
+  Generated::Annotation annot;
+
+  Annotation() { this = TAnnotation(annot) }
+
+  override string toString() { result = "annotation" }
+
+  override string getAPrimaryQlClass() { result = "Annotation" }
+
+  override Location getLocation() { result = annot.getLocation() }
+
+  /** Gets the node corresponding to the field `args`. */
+  AnnotationArg getArgs(int i) { toGenerated(result) = annot.getArgs(i) }
+
+  /** Gets the node corresponding to the field `name`. */
+  string getName() { result = annot.getName().getValue() }
+}
+
+/** A `pragma[noinline]` annotation. */
+class NoInline extends Annotation {
+  NoInline() { this.getArgs(0) instanceof NoInlineArg }
+
+  override string toString() { result = "noinline" }
+}
+
+/** A `pragma[inline]` annotation. */
+class Inline extends Annotation {
+  Inline() { this.getArgs(0) instanceof InlineArg }
+
+  override string toString() { result = "inline" }
+}
+
+/** A `pragma[nomagic]` annotation. */
+class NoMagic extends Annotation {
+  NoMagic() { this.getArgs(0) instanceof NoMagicArg }
+
+  override string toString() { result = "nomagic" }
+}
+
+/** A `pragma[noopt]` annotation. */
+class NoOpt extends Annotation {
+  NoOpt() { this.getArgs(0) instanceof NoOptArg }
+
+  override string toString() { result = "noopt" }
+}
+
+/** A `language[monotonicAggregates]` annotation. */
+class MonotonicAggregates extends Annotation {
+  MonotonicAggregates() { this.getArgs(0) instanceof MonotonicAggregatesArg }
+
+  override string toString() { result = "monotonicaggregates" }
+}
+
+/** A `bindingset` annotation. */
+class BindingSet extends Annotation {
+  BindingSet() { this.getName() = "bindingset" }
+
+  /** Gets the `index`'th bound name in this bindingset. */
+  string getBoundName(int index) { result = this.getArgs(index).getValue() }
+
+  /** Gets a name bound by this bindingset, if any. */
+  string getABoundName() { result = getBoundName(_) }
+
+  /** Gets the number of names bound by this bindingset. */
+  int getNumberOfBoundNames() { result = count(getABoundName()) }
 }
