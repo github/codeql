@@ -116,7 +116,7 @@ class SensitiveCall extends SensitiveExpr, CallExpr {
     )
   }
 
-  override string describe() { result = "a call to " + getCalleeName() }
+  override string describe() { result = "a call to " + this.getCalleeName() }
 
   override SensitiveExpr::Classification getClassification() { result = classification }
 }

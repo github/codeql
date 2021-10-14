@@ -47,7 +47,7 @@ abstract class Container extends @container {
    */
   string getRelativePath() {
     exists(string absPath, string pref |
-      absPath = getAbsolutePath() and sourceLocationPrefix(pref)
+      absPath = this.getAbsolutePath() and sourceLocationPrefix(pref)
     |
       absPath = pref and result = ""
       or
@@ -74,7 +74,7 @@ abstract class Container extends @container {
    * </table>
    */
   string getBaseName() {
-    result = getAbsolutePath().regexpCapture(".*/(([^/]*?)(?:\\.([^.]*))?)", 1)
+    result = this.getAbsolutePath().regexpCapture(".*/(([^/]*?)(?:\\.([^.]*))?)", 1)
   }
 
   /**
@@ -100,7 +100,9 @@ abstract class Container extends @container {
    * <tr><td>"/tmp/x.tar.gz"</td><td>"gz"</td></tr>
    * </table>
    */
-  string getExtension() { result = getAbsolutePath().regexpCapture(".*/([^/]*?)(\\.([^.]*))?", 3) }
+  string getExtension() {
+    result = this.getAbsolutePath().regexpCapture(".*/([^/]*?)(\\.([^.]*))?", 3)
+  }
 
   /**
    * Gets the stem of this container, that is, the prefix of its base name up to
@@ -119,7 +121,9 @@ abstract class Container extends @container {
    * <tr><td>"/tmp/x.tar.gz"</td><td>"x.tar"</td></tr>
    * </table>
    */
-  string getStem() { result = getAbsolutePath().regexpCapture(".*/([^/]*?)(?:\\.([^.]*))?", 1) }
+  string getStem() {
+    result = this.getAbsolutePath().regexpCapture(".*/([^/]*?)(?:\\.([^.]*))?", 1)
+  }
 
   /** Gets the parent container of this file or folder, if any. */
   Container getParentContainer() { containerparent(result, this) }
@@ -128,20 +132,20 @@ abstract class Container extends @container {
   Container getAChildContainer() { this = result.getParentContainer() }
 
   /** Gets a file in this container. */
-  File getAFile() { result = getAChildContainer() }
+  File getAFile() { result = this.getAChildContainer() }
 
   /** Gets the file in this container that has the given `baseName`, if any. */
   File getFile(string baseName) {
-    result = getAFile() and
+    result = this.getAFile() and
     result.getBaseName() = baseName
   }
 
   /** Gets a sub-folder in this container. */
-  Folder getAFolder() { result = getAChildContainer() }
+  Folder getAFolder() { result = this.getAChildContainer() }
 
   /** Gets the sub-folder in this container that has the given `baseName`, if any. */
   Folder getFolder(string baseName) {
-    result = getAFolder() and
+    result = this.getAFolder() and
     result.getBaseName() = baseName
   }
 
@@ -150,7 +154,7 @@ abstract class Container extends @container {
    *
    * This is the absolute path of the container.
    */
-  string toString() { result = getAbsolutePath() }
+  string toString() { result = this.getAbsolutePath() }
 }
 
 /** A folder. */
@@ -159,22 +163,22 @@ class Folder extends Container, @folder {
 
   /** Gets the file or subfolder in this folder that has the given `name`, if any. */
   Container getChildContainer(string name) {
-    result = getAChildContainer() and
+    result = this.getAChildContainer() and
     result.getBaseName() = name
   }
 
   /** Gets the file in this folder that has the given `stem` and `extension`, if any. */
   File getFile(string stem, string extension) {
-    result = getAChildContainer() and
+    result = this.getAChildContainer() and
     result.getStem() = stem and
     result.getExtension() = extension
   }
 
   /** Gets a subfolder contained in this folder. */
-  Folder getASubFolder() { result = getAChildContainer() }
+  Folder getASubFolder() { result = this.getAChildContainer() }
 
   /** Gets the URL of this folder. */
-  override string getURL() { result = "folder://" + getAbsolutePath() }
+  override string getURL() { result = "folder://" + this.getAbsolutePath() }
 }
 
 /** Any file, including files that have not been extracted but are referred to as locations for errors. */
@@ -194,10 +198,10 @@ class ExtractedOrExternalFile extends Container, @file, Documentable, ExprParent
   int getNumberOfLinesOfComments() { numlines(this, _, _, result) }
 
   /** Gets the package name as specified in the package clause of this file. */
-  Ident getPackageNameExpr() { result = getChildExpr(0) }
+  Ident getPackageNameExpr() { result = this.getChildExpr(0) }
 
   /** Gets the name of the package to which this file belongs. */
-  string getPackageName() { result = getPackageNameExpr().getName() }
+  string getPackageName() { result = this.getPackageNameExpr().getName() }
 
   /** Holds if this file contains at least one build constraint. */
   pragma[noinline]
@@ -209,8 +213,8 @@ class ExtractedOrExternalFile extends Container, @file, Documentable, ExprParent
    * 32 or 64.
    */
   predicate constrainsIntBitSize(int bitSize) {
-    explicitlyConstrainsIntBitSize(bitSize) or
-    implicitlyConstrainsIntBitSize(bitSize)
+    this.explicitlyConstrainsIntBitSize(bitSize) or
+    this.implicitlyConstrainsIntBitSize(bitSize)
   }
 
   /**
@@ -248,10 +252,10 @@ class ExtractedOrExternalFile extends Container, @file, Documentable, ExprParent
   CommentGroup getCommentGroup(int i) { comment_groups(result, this, i) }
 
   /** Gets a child comment group. */
-  CommentGroup getACommentGroup() { result = getCommentGroup(_) }
+  CommentGroup getACommentGroup() { result = this.getCommentGroup(_) }
 
   /** Gets the number of child comment groups of this file. */
-  int getNumCommentGroups() { result = count(getACommentGroup()) }
+  int getNumCommentGroups() { result = count(this.getACommentGroup()) }
 
   override string getAPrimaryQlClass() { result = "File" }
 }

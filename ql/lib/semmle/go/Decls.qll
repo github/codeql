@@ -42,12 +42,12 @@ class GenDecl extends @gendecl, Decl, Documentable {
   Spec getSpec(int i) { specs(result, _, this, i) }
 
   /** Gets a declaration specifier in this declaration. */
-  Spec getASpec() { result = getSpec(_) }
+  Spec getASpec() { result = this.getSpec(_) }
 
   /** Gets the number of declaration specifiers in this declaration. */
-  int getNumSpec() { result = count(getASpec()) }
+  int getNumSpec() { result = count(this.getASpec()) }
 
-  override predicate mayHaveSideEffects() { getASpec().mayHaveSideEffects() }
+  override predicate mayHaveSideEffects() { this.getASpec().mayHaveSideEffects() }
 
   override string getAPrimaryQlClass() { result = "GenDecl" }
 }
@@ -130,7 +130,7 @@ class FuncDef extends @funcdef, StmtParent, ExprParent {
   /**
    * Gets the number of parameters of this function.
    */
-  int getNumParameter() { result = count(getAParameter()) }
+  int getNumParameter() { result = count(this.getAParameter()) }
 
   /**
    * Gets a call to this function.
@@ -145,16 +145,16 @@ class FuncDef extends @funcdef, StmtParent, ExprParent {
  */
 class FuncDecl extends @funcdecl, Decl, Documentable, FuncDef {
   /** Gets the identifier denoting the name of this function. */
-  Ident getNameExpr() { result = getChildExpr(0) }
+  Ident getNameExpr() { result = this.getChildExpr(0) }
 
-  override string getName() { result = getNameExpr().getName() }
+  override string getName() { result = this.getNameExpr().getName() }
 
-  override FuncTypeExpr getTypeExpr() { result = getChildExpr(1) }
+  override FuncTypeExpr getTypeExpr() { result = this.getChildExpr(1) }
 
-  override SignatureType getType() { result = getNameExpr().getType() }
+  override SignatureType getType() { result = this.getNameExpr().getType() }
 
   /** Gets the body of this function, if any. */
-  override BlockStmt getBody() { result = getChildStmt(2) }
+  override BlockStmt getBody() { result = this.getChildStmt(2) }
 
   /** Gets the function declared by this function declaration. */
   DeclaredFunction getFunction() { this = result.getFuncDecl() }
@@ -196,7 +196,7 @@ class MethodDecl extends FuncDecl {
    *
    * is `*Rectangle`.
    */
-  Type getReceiverType() { result = getReceiverDecl().getType() }
+  Type getReceiverType() { result = this.getReceiverDecl().getType() }
 
   /**
    * Gets the receiver base type of this method.
@@ -210,8 +210,8 @@ class MethodDecl extends FuncDecl {
    * is `Rectangle`.
    */
   NamedType getReceiverBaseType() {
-    result = getReceiverType() or
-    result = getReceiverType().(PointerType).getBaseType()
+    result = this.getReceiverType() or
+    result = this.getReceiverType().(PointerType).getBaseType()
   }
 
   /**
@@ -261,16 +261,16 @@ class Spec extends @spec, ExprParent, Documentable {
  */
 class ImportSpec extends @importspec, Spec {
   /** Gets the identifier denoting the imported name. */
-  Ident getNameExpr() { result = getChildExpr(0) }
+  Ident getNameExpr() { result = this.getChildExpr(0) }
 
   /** Gets the imported name. */
-  string getName() { result = getNameExpr().getName() }
+  string getName() { result = this.getNameExpr().getName() }
 
   /** Gets the string literal denoting the imported path. */
-  StringLit getPathExpr() { result = getChildExpr(1) }
+  StringLit getPathExpr() { result = this.getChildExpr(1) }
 
   /** Gets the imported path. */
-  string getPath() { result = getPathExpr().getValue() }
+  string getPath() { result = this.getPathExpr().getValue() }
 
   override string toString() { result = "import specifier" }
 
@@ -284,41 +284,41 @@ class ValueSpec extends @valuespec, Spec {
   /** Gets the identifier denoting the `i`th name declared by this specifier (0-based). */
   Ident getNameExpr(int i) {
     i >= 0 and
-    result = getChildExpr(-(i + 1))
+    result = this.getChildExpr(-(i + 1))
   }
 
   /** Holds if this specifier is a part of a constant declaration. */
   predicate isConstSpec() { this.getParentDecl() instanceof ConstDecl }
 
   /** Gets an identifier denoting a name declared by this specifier. */
-  Ident getANameExpr() { result = getNameExpr(_) }
+  Ident getANameExpr() { result = this.getNameExpr(_) }
 
   /** Gets the `i`th name declared by this specifier (0-based). */
-  string getName(int i) { result = getNameExpr(i).getName() }
+  string getName(int i) { result = this.getNameExpr(i).getName() }
 
   /** Gets a name declared by this specifier. */
-  string getAName() { result = getName(_) }
+  string getAName() { result = this.getName(_) }
 
   /** Gets the number of names declared by this specifier. */
-  int getNumName() { result = count(getANameExpr()) }
+  int getNumName() { result = count(this.getANameExpr()) }
 
   /** Gets the expression denoting the type of the symbols declared by this specifier. */
-  Expr getTypeExpr() { result = getChildExpr(0) }
+  Expr getTypeExpr() { result = this.getChildExpr(0) }
 
   /** Gets the `i`th initializer of this specifier (0-based). */
   Expr getInit(int i) {
     i >= 0 and
-    result = getChildExpr(i + 1)
+    result = this.getChildExpr(i + 1)
   }
 
   /** Gets an initializer of this specifier. */
-  Expr getAnInit() { result = getInit(_) }
+  Expr getAnInit() { result = this.getInit(_) }
 
   /** Gets the number of initializers of this specifier. */
-  int getNumInit() { result = count(getAnInit()) }
+  int getNumInit() { result = count(this.getAnInit()) }
 
   /** Gets the unique initializer of this specifier, if there is only one. */
-  Expr getInit() { getNumInit() = 1 and result = getInit(0) }
+  Expr getInit() { this.getNumInit() = 1 and result = this.getInit(0) }
 
   /**
    * Gets the specifier that contains the initializers for this specifier.
@@ -349,12 +349,12 @@ class ValueSpec extends @valuespec, Spec {
   /** Holds if this specifier initializes `name` to the value of `init`. */
   predicate initializes(string name, Expr init) {
     exists(int i |
-      name = getName(i) and
-      init = getEffectiveInit(i)
+      name = this.getName(i) and
+      init = this.getEffectiveInit(i)
     )
   }
 
-  override predicate mayHaveSideEffects() { getAnInit().mayHaveSideEffects() }
+  override predicate mayHaveSideEffects() { this.getAnInit().mayHaveSideEffects() }
 
   override string toString() { result = "value declaration specifier" }
 
@@ -375,15 +375,15 @@ class ValueSpec extends @valuespec, Spec {
  */
 class TypeSpec extends @typespec, Spec {
   /** Gets the identifier denoting the name of the declared type. */
-  Ident getNameExpr() { result = getChildExpr(0) }
+  Ident getNameExpr() { result = this.getChildExpr(0) }
 
   /** Gets the name of the declared type. */
-  string getName() { result = getNameExpr().getName() }
+  string getName() { result = this.getNameExpr().getName() }
 
   /**
    * Gets the expression denoting the underlying type to which the newly declared type is bound.
    */
-  Expr getTypeExpr() { result = getChildExpr(1) }
+  Expr getTypeExpr() { result = this.getChildExpr(1) }
 
   override string toString() { result = "type declaration specifier" }
 
@@ -420,12 +420,12 @@ class FieldBase extends @field, ExprParent {
   /**
    * Gets the expression representing the type of the fields declared in this declaration.
    */
-  Expr getTypeExpr() { result = getChildExpr(0) }
+  Expr getTypeExpr() { result = this.getChildExpr(0) }
 
   /**
    * Gets the type of the fields declared in this declaration.
    */
-  Type getType() { result = getTypeExpr().getType() }
+  Type getType() { result = this.getTypeExpr().getType() }
 }
 
 /**
@@ -442,17 +442,17 @@ class FieldDecl extends FieldBase, Documentable, ExprParent {
    */
   Expr getNameExpr(int i) {
     i >= 0 and
-    result = getChildExpr(i + 1)
+    result = this.getChildExpr(i + 1)
   }
 
   /** Gets the tag expression of this field declaration, if any. */
-  Expr getTag() { result = getChildExpr(-1) }
+  Expr getTag() { result = this.getChildExpr(-1) }
 
   /** Gets the struct type expression to which this field declaration belongs. */
   StructTypeExpr getDeclaringStructTypeExpr() { result = st }
 
   /** Gets the struct type to which this field declaration belongs. */
-  StructType getDeclaringType() { result = getDeclaringStructTypeExpr().getType() }
+  StructType getDeclaringType() { result = this.getDeclaringStructTypeExpr().getType() }
 
   override string toString() { result = "field declaration" }
 
@@ -485,7 +485,7 @@ class ParameterOrResultDecl extends FieldBase, Documentable, ExprParent {
   /**
    * Gets the function to which this declaration belongs.
    */
-  FuncDef getFunction() { result.getTypeExpr() = getFunctionTypeExpr() }
+  FuncDef getFunction() { result.getTypeExpr() = this.getFunctionTypeExpr() }
 
   /**
    * Gets the expression representing the name of the `i`th variable declared in this declaration
@@ -493,13 +493,13 @@ class ParameterOrResultDecl extends FieldBase, Documentable, ExprParent {
    */
   Expr getNameExpr(int i) {
     i >= 0 and
-    result = getChildExpr(i + 1)
+    result = this.getChildExpr(i + 1)
   }
 
   /**
    * Gets an expression representing the name of a variable declared in this declaration.
    */
-  Expr getANameExpr() { result = getNameExpr(_) }
+  Expr getANameExpr() { result = this.getNameExpr(_) }
 }
 
 /**
@@ -535,7 +535,7 @@ class ReceiverDecl extends FieldBase, Documentable, ExprParent {
   /**
    * Gets the expression representing the name of the receiver declared in this declaration.
    */
-  Expr getNameExpr() { result = getChildExpr(1) }
+  Expr getNameExpr() { result = this.getChildExpr(1) }
 
   override string toString() { result = "receiver declaration" }
 
@@ -586,7 +586,7 @@ class InterfaceMemberSpec extends FieldBase, Documentable, ExprParent {
 class MethodSpec extends InterfaceMemberSpec {
   Expr name;
 
-  MethodSpec() { name = getChildExpr(1) }
+  MethodSpec() { name = this.getChildExpr(1) }
 
   /**
    * Gets the expression representing the name of the method declared in this specification.
@@ -602,7 +602,7 @@ class MethodSpec extends InterfaceMemberSpec {
  * An embedding specification in an interface.
  */
 class EmbeddingSpec extends InterfaceMemberSpec {
-  EmbeddingSpec() { not exists(getChildExpr(1)) }
+  EmbeddingSpec() { not exists(this.getChildExpr(1)) }
 
   override string toString() { result = "interface embedding" }
 

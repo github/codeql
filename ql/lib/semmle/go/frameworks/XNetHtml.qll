@@ -23,10 +23,10 @@ module XNetHtml {
   }
 
   private class FunctionModels extends TaintTracking::FunctionModel {
-    FunctionModels() { hasQualifiedName(packagePath(), _) }
+    FunctionModels() { this.hasQualifiedName(packagePath(), _) }
 
     override predicate hasTaintFlow(DataFlow::FunctionInput input, DataFlow::FunctionOutput output) {
-      getName() =
+      this.getName() =
         [
           "UnescapeString", "Parse", "ParseFragment", "ParseFragmentWithOptions",
           "ParseWithOptions", "NewTokenizer", "NewTokenizerFragment"
@@ -34,11 +34,11 @@ module XNetHtml {
       input.isParameter(0) and
       output.isResult(0)
       or
-      getName() = ["AppendChild", "InsertBefore"] and
+      this.getName() = ["AppendChild", "InsertBefore"] and
       input.isParameter(0) and
       output.isReceiver()
       or
-      getName() = "Render" and
+      this.getName() = "Render" and
       input.isParameter(1) and
       output.isParameter(0)
     }
@@ -50,9 +50,11 @@ module XNetHtml {
     // Note that `TagName` and the key part of `TagAttr` are not sources by default under the assumption
     // that their character-set restrictions usually rule them out as useful attack routes.
     override predicate hasTaintFlow(DataFlow::FunctionInput input, DataFlow::FunctionOutput output) {
-      getName() = ["Buffered", "Raw", "Text", "Token"] and input.isReceiver() and output.isResult(0)
+      this.getName() = ["Buffered", "Raw", "Text", "Token"] and
+      input.isReceiver() and
+      output.isResult(0)
       or
-      getName() = "TagAttr" and input.isReceiver() and output.isResult(1)
+      this.getName() = "TagAttr" and input.isReceiver() and output.isResult(1)
     }
   }
 }

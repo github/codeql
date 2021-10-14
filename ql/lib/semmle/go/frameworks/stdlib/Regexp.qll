@@ -32,7 +32,9 @@ module Regexp {
   }
 
   private class MatchFunction extends RegexpMatchFunction::Range, Function {
-    MatchFunction() { exists(string fn | fn.matches("Match%") | hasQualifiedName("regexp", fn)) }
+    MatchFunction() {
+      exists(string fn | fn.matches("Match%") | this.hasQualifiedName("regexp", fn))
+    }
 
     override FunctionInput getRegexpArg() { result.isParameter(0) }
 
@@ -43,7 +45,7 @@ module Regexp {
 
   private class MatchMethod extends RegexpMatchFunction::Range, Method {
     MatchMethod() {
-      exists(string fn | fn.matches("Match%") | hasQualifiedName("regexp", "Regexp", fn))
+      exists(string fn | fn.matches("Match%") | this.hasQualifiedName("regexp", "Regexp", fn))
     }
 
     override FunctionInput getRegexpArg() { result.isReceiver() }
@@ -55,7 +57,7 @@ module Regexp {
 
   private class ReplaceFunction extends RegexpReplaceFunction::Range, Method {
     ReplaceFunction() {
-      exists(string fn | fn.matches("ReplaceAll%") | hasQualifiedName("regexp", "Regexp", fn))
+      exists(string fn | fn.matches("ReplaceAll%") | this.hasQualifiedName("regexp", "Regexp", fn))
     }
 
     override FunctionInput getRegexpArg() { result.isReceiver() }
@@ -71,7 +73,7 @@ module Regexp {
 
     FunctionModels() {
       // signature: func QuoteMeta(s string) string
-      hasQualifiedName("regexp", "QuoteMeta") and
+      this.hasQualifiedName("regexp", "QuoteMeta") and
       (inp.isParameter(0) and outp.isResult())
     }
 
@@ -86,77 +88,77 @@ module Regexp {
 
     MethodModels() {
       // signature: func (*Regexp) Expand(dst []byte, template []byte, src []byte, match []int) []byte
-      hasQualifiedName("regexp", "Regexp", "Expand") and
+      this.hasQualifiedName("regexp", "Regexp", "Expand") and
       (
         inp.isParameter([1, 2]) and
         (outp.isParameter(0) or outp.isResult())
       )
       or
       // signature: func (*Regexp) ExpandString(dst []byte, template string, src string, match []int) []byte
-      hasQualifiedName("regexp", "Regexp", "ExpandString") and
+      this.hasQualifiedName("regexp", "Regexp", "ExpandString") and
       (
         inp.isParameter([1, 2]) and
         (outp.isParameter(0) or outp.isResult())
       )
       or
       // signature: func (*Regexp) Find(b []byte) []byte
-      hasQualifiedName("regexp", "Regexp", "Find") and
+      this.hasQualifiedName("regexp", "Regexp", "Find") and
       (inp.isParameter(0) and outp.isResult())
       or
       // signature: func (*Regexp) FindAll(b []byte, n int) [][]byte
-      hasQualifiedName("regexp", "Regexp", "FindAll") and
+      this.hasQualifiedName("regexp", "Regexp", "FindAll") and
       (inp.isParameter(0) and outp.isResult())
       or
       // signature: func (*Regexp) FindAllString(s string, n int) []string
-      hasQualifiedName("regexp", "Regexp", "FindAllString") and
+      this.hasQualifiedName("regexp", "Regexp", "FindAllString") and
       (inp.isParameter(0) and outp.isResult())
       or
       // signature: func (*Regexp) FindAllStringSubmatch(s string, n int) [][]string
-      hasQualifiedName("regexp", "Regexp", "FindAllStringSubmatch") and
+      this.hasQualifiedName("regexp", "Regexp", "FindAllStringSubmatch") and
       (inp.isParameter(0) and outp.isResult())
       or
       // signature: func (*Regexp) FindAllSubmatch(b []byte, n int) [][][]byte
-      hasQualifiedName("regexp", "Regexp", "FindAllSubmatch") and
+      this.hasQualifiedName("regexp", "Regexp", "FindAllSubmatch") and
       (inp.isParameter(0) and outp.isResult())
       or
       // signature: func (*Regexp) FindString(s string) string
-      hasQualifiedName("regexp", "Regexp", "FindString") and
+      this.hasQualifiedName("regexp", "Regexp", "FindString") and
       (inp.isParameter(0) and outp.isResult())
       or
       // signature: func (*Regexp) FindStringSubmatch(s string) []string
-      hasQualifiedName("regexp", "Regexp", "FindStringSubmatch") and
+      this.hasQualifiedName("regexp", "Regexp", "FindStringSubmatch") and
       (inp.isParameter(0) and outp.isResult())
       or
       // signature: func (*Regexp) FindSubmatch(b []byte) [][]byte
-      hasQualifiedName("regexp", "Regexp", "FindSubmatch") and
+      this.hasQualifiedName("regexp", "Regexp", "FindSubmatch") and
       (inp.isParameter(0) and outp.isResult())
       or
       // signature: func (*Regexp) ReplaceAll(src []byte, repl []byte) []byte
-      hasQualifiedName("regexp", "Regexp", "ReplaceAll") and
+      this.hasQualifiedName("regexp", "Regexp", "ReplaceAll") and
       (inp.isParameter(_) and outp.isResult())
       or
       // signature: func (*Regexp) ReplaceAllFunc(src []byte, repl func([]byte) []byte) []byte
-      hasQualifiedName("regexp", "Regexp", "ReplaceAllFunc") and
+      this.hasQualifiedName("regexp", "Regexp", "ReplaceAllFunc") and
       (inp.isParameter(_) and outp.isResult())
       or
       // signature: func (*Regexp) ReplaceAllLiteral(src []byte, repl []byte) []byte
-      hasQualifiedName("regexp", "Regexp", "ReplaceAllLiteral") and
+      this.hasQualifiedName("regexp", "Regexp", "ReplaceAllLiteral") and
       (inp.isParameter(_) and outp.isResult())
       or
       // signature: func (*Regexp) ReplaceAllLiteralString(src string, repl string) string
-      hasQualifiedName("regexp", "Regexp", "ReplaceAllLiteralString") and
+      this.hasQualifiedName("regexp", "Regexp", "ReplaceAllLiteralString") and
       (inp.isParameter(_) and outp.isResult())
       or
       // signature: func (*Regexp) ReplaceAllString(src string, repl string) string
-      hasQualifiedName("regexp", "Regexp", "ReplaceAllString") and
+      this.hasQualifiedName("regexp", "Regexp", "ReplaceAllString") and
       (inp.isParameter(_) and outp.isResult())
       or
       // signature: func (*Regexp) ReplaceAllStringFunc(src string, repl func(string) string) string
-      hasQualifiedName("regexp", "Regexp", "ReplaceAllStringFunc") and
+      this.hasQualifiedName("regexp", "Regexp", "ReplaceAllStringFunc") and
       (inp.isParameter(_) and outp.isResult())
       or
       // signature: func (*Regexp) Split(s string, n int) []string
-      hasQualifiedName("regexp", "Regexp", "Split") and
+      this.hasQualifiedName("regexp", "Regexp", "Split") and
       (inp.isParameter(0) and outp.isResult())
     }
 

@@ -136,7 +136,7 @@ abstract class InlineExpectationsTest extends string {
     or
     exists(ValidExpectation expectation |
       not exists(ActualResult actualResult | expectation.matchesActualResult(actualResult)) and
-      expectation.getTag() = getARelevantTag() and
+      expectation.getTag() = this.getARelevantTag() and
       element = expectation and
       (
         expectation instanceof GoodExpectation and
@@ -209,7 +209,7 @@ class FailureLocatable extends TFailureLocatable {
 
   predicate hasLocation(string file, int line) { none() }
 
-  final string getExpectationText() { result = getTag() + "=" + getValue() }
+  final string getExpectationText() { result = this.getTag() + "=" + this.getValue() }
 
   string getTag() { none() }
 
@@ -264,21 +264,21 @@ private class ValidExpectation extends Expectation, TValidExpectation {
     exists(string file, int line | actualResult.hasLocation(file, line) |
       this.hasLocation(file, line)
     ) and
-    getTag() = actualResult.getTag() and
-    getValue() = actualResult.getValue()
+    this.getTag() = actualResult.getTag() and
+    this.getValue() = actualResult.getValue()
   }
 }
 
 class GoodExpectation extends ValidExpectation {
-  GoodExpectation() { getKnownFailure() = "" }
+  GoodExpectation() { this.getKnownFailure() = "" }
 }
 
 class FalsePositiveExpectation extends ValidExpectation {
-  FalsePositiveExpectation() { getKnownFailure() = "f+" }
+  FalsePositiveExpectation() { this.getKnownFailure() = "f+" }
 }
 
 class FalseNegativeExpectation extends ValidExpectation {
-  FalseNegativeExpectation() { getKnownFailure() = "f-" }
+  FalseNegativeExpectation() { this.getKnownFailure() = "f-" }
 }
 
 class InvalidExpectation extends Expectation, TInvalidExpectation {

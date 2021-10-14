@@ -24,7 +24,7 @@ class Node extends TNode {
   ControlFlow::Root getRoot() { none() } // overridden in subclasses
 
   /** INTERNAL: Use `getRoot()` instead. */
-  FuncDef getEnclosingCallable() { result = getRoot() }
+  FuncDef getEnclosingCallable() { result = this.getRoot() }
 
   /** Gets the type of this node. */
   Type getType() { none() } // overridden in subclasses
@@ -42,7 +42,7 @@ class Node extends TNode {
   string getNodeKind() { none() } // overridden in subclasses
 
   /** Gets the basic block to which this data-flow node belongs, if any. */
-  BasicBlock getBasicBlock() { result = asInstruction().getBasicBlock() }
+  BasicBlock getBasicBlock() { result = this.asInstruction().getBasicBlock() }
 
   /** Gets a textual representation of this element. */
   string toString() { result = "data-flow node" } // overridden in subclasses
@@ -65,24 +65,24 @@ class Node extends TNode {
   }
 
   /** Gets the file in which this node appears. */
-  File getFile() { hasLocationInfo(result.getAbsolutePath(), _, _, _, _) }
+  File getFile() { this.hasLocationInfo(result.getAbsolutePath(), _, _, _, _) }
 
   /** Gets the start line of the location of this node. */
-  int getStartLine() { hasLocationInfo(_, result, _, _, _) }
+  int getStartLine() { this.hasLocationInfo(_, result, _, _, _) }
 
   /** Gets the start column of the location of this node. */
-  int getStartColumn() { hasLocationInfo(_, _, result, _, _) }
+  int getStartColumn() { this.hasLocationInfo(_, _, result, _, _) }
 
   /** Gets the end line of the location of this node. */
-  int getEndLine() { hasLocationInfo(_, _, _, result, _) }
+  int getEndLine() { this.hasLocationInfo(_, _, _, result, _) }
 
   /** Gets the end column of the location of this node. */
-  int getEndColumn() { hasLocationInfo(_, _, _, _, result) }
+  int getEndColumn() { this.hasLocationInfo(_, _, _, _, result) }
 
   /**
    * Gets an upper bound on the type of this node.
    */
-  Type getTypeBound() { result = getType() }
+  Type getTypeBound() { result = this.getType() }
 
   /** Gets the floating-point value this data-flow node contains, if any. */
   float getFloatValue() { result = this.asExpr().getFloatValue() }
@@ -277,7 +277,7 @@ class FunctionNode extends Node {
   /**
    * Gets the data-flow node corresponding to the `i`th result of this function.
    */
-  ResultNode getResult(int i) { result = getAResult() and result.getIndex() = i }
+  ResultNode getResult(int i) { result = this.getAResult() and result.getIndex() = i }
 
   /**
    * Gets the function entity this node corresponds to.
@@ -312,7 +312,7 @@ class GlobalFunctionNode extends FunctionNode::Range, MkGlobalFunctionNode {
   }
 
   override ResultNode getAResult() {
-    result.getRoot() = getFunction().(DeclaredFunction).getFuncDecl()
+    result.getRoot() = this.getFunction().(DeclaredFunction).getFuncDecl()
   }
 }
 
@@ -328,7 +328,7 @@ class FuncLitNode extends FunctionNode::Range, ExprNode {
 
   override string toString() { result = "function literal" }
 
-  override ResultNode getAResult() { result.getRoot() = getExpr() }
+  override ResultNode getAResult() { result.getRoot() = this.getExpr() }
 }
 
 /**
@@ -364,9 +364,9 @@ class CallNode extends ExprNode {
    * interface type.
    */
   FuncDef getACallee() {
-    result = getTarget().(DeclaredFunction).getFuncDecl()
+    result = this.getTarget().(DeclaredFunction).getFuncDecl()
     or
-    exists(DataFlow::Node calleeSource | calleeSource = getACalleeSource() |
+    exists(DataFlow::Node calleeSource | calleeSource = this.getACalleeSource() |
       result = calleeSource.asExpr()
       or
       exists(Method declared, Method actual |
@@ -418,7 +418,7 @@ class CallNode extends ExprNode {
    * If there is a single result then it is considered to be the 0th result.
    */
   Node getResult(int i) {
-    i = 0 and result = getResult()
+    i = 0 and result = this.getResult()
     or
     result = extractTupleElement(this, i)
   }
@@ -429,13 +429,13 @@ class CallNode extends ExprNode {
    * Note that this predicate is not defined for calls with multiple results; use the one-argument
    * variant `getResult(i)` for such calls.
    */
-  Node getResult() { not getType() instanceof TupleType and result = this }
+  Node getResult() { not this.getType() instanceof TupleType and result = this }
 
   /** Gets a result of this call. */
   Node getAResult() { result = this.getResult(_) }
 
   /** Gets the data flow node corresponding to the receiver of this call, if any. */
-  Node getReceiver() { result = getACalleeSource().(MethodReadNode).getReceiver() }
+  Node getReceiver() { result = this.getACalleeSource().(MethodReadNode).getReceiver() }
 
   /** Holds if this call has an ellipsis after its last argument. */
   predicate hasEllipsis() { expr.hasEllipsis() }
@@ -702,7 +702,7 @@ class ElementReadNode extends ComponentReadNode {
   Node getIndex() { result = instructionNode(insn.getIndex()) }
 
   /** Holds if this data-flow node reads element `index` of `base`. */
-  predicate reads(Node base, Node index) { readsElement(base, index) }
+  predicate reads(Node base, Node index) { this.readsElement(base, index) }
 }
 
 /**
@@ -734,14 +734,14 @@ class BinaryOperationNode extends Node {
   string op;
 
   BinaryOperationNode() {
-    exists(BinaryExpr bin | bin = asExpr() |
+    exists(BinaryExpr bin | bin = this.asExpr() |
       left = exprNode(bin.getLeftOperand()) and
       right = exprNode(bin.getRightOperand()) and
       op = bin.getOperator()
     )
     or
     exists(IR::EvalCompoundAssignRhsInstruction rhs, CompoundAssignStmt assgn, string o |
-      rhs = asInstruction() and assgn = rhs.getAssignment() and o = assgn.getOperator()
+      rhs = this.asInstruction() and assgn = rhs.getAssignment() and o = assgn.getOperator()
     |
       left = exprNode(assgn.getLhs()) and
       right = exprNode(assgn.getRhs()) and
@@ -749,7 +749,7 @@ class BinaryOperationNode extends Node {
     )
     or
     exists(IR::EvalIncDecRhsInstruction rhs, IncDecStmt ids |
-      rhs = asInstruction() and ids = rhs.getStmt()
+      rhs = this.asInstruction() and ids = rhs.getStmt()
     |
       left = exprNode(ids.getOperand()) and
       right = instructionNode(any(IR::EvalImplicitOneInstruction one | one.getStmt() = ids)) and
@@ -758,7 +758,7 @@ class BinaryOperationNode extends Node {
   }
 
   /** Holds if this operation may have observable side effects. */
-  predicate mayHaveSideEffects() { asExpr().mayHaveOwnSideEffects() }
+  predicate mayHaveSideEffects() { this.asExpr().mayHaveOwnSideEffects() }
 
   /** Gets the left operand of this operation. */
   Node getLeftOperand() { result = left }
@@ -774,8 +774,8 @@ class BinaryOperationNode extends Node {
 
   /** Holds if `x` and `y` are the operands of this operation, in either order. */
   predicate hasOperands(Node x, Node y) {
-    x = getAnOperand() and
-    y = getAnOperand() and
+    x = this.getAnOperand() and
+    y = this.getAnOperand() and
     x != y
   }
 }
@@ -785,34 +785,34 @@ class BinaryOperationNode extends Node {
  */
 class UnaryOperationNode extends InstructionNode {
   UnaryOperationNode() {
-    asExpr() instanceof UnaryExpr
+    this.asExpr() instanceof UnaryExpr
     or
-    asExpr() instanceof StarExpr
+    this.asExpr() instanceof StarExpr
     or
     insn instanceof IR::EvalImplicitDerefInstruction
   }
 
   /** Holds if this operation may have observable side effects. */
   predicate mayHaveSideEffects() {
-    asExpr().mayHaveOwnSideEffects()
+    this.asExpr().mayHaveOwnSideEffects()
     or
     insn instanceof IR::EvalImplicitDerefInstruction
   }
 
   /** Gets the operand of this operation. */
   Node getOperand() {
-    result = exprNode(asExpr().(UnaryExpr).getOperand())
+    result = exprNode(this.asExpr().(UnaryExpr).getOperand())
     or
-    result = exprNode(asExpr().(StarExpr).getBase())
+    result = exprNode(this.asExpr().(StarExpr).getBase())
     or
     result = exprNode(insn.(IR::EvalImplicitDerefInstruction).getOperand())
   }
 
   /** Gets the operator of this operation. */
   string getOperator() {
-    result = asExpr().(UnaryExpr).getOperator()
+    result = this.asExpr().(UnaryExpr).getOperator()
     or
-    asExpr() instanceof StarExpr and
+    this.asExpr() instanceof StarExpr and
     result = "*"
     or
     insn instanceof IR::EvalImplicitDerefInstruction and
@@ -825,9 +825,9 @@ class UnaryOperationNode extends InstructionNode {
  */
 class PointerDereferenceNode extends UnaryOperationNode {
   PointerDereferenceNode() {
-    asExpr() instanceof StarExpr
+    this.asExpr() instanceof StarExpr
     or
-    asExpr() instanceof DerefExpr
+    this.asExpr() instanceof DerefExpr
     or
     insn instanceof IR::EvalImplicitDerefInstruction
   }
@@ -1173,7 +1173,7 @@ abstract class BarrierGuard extends Node {
       Function f, FunctionInput inp, FunctionOutput outp, DataFlow::Property p, CallNode c,
       Node resNode, Node check, boolean outcome
     |
-      guardingFunction(f, inp, outp, p) and
+      this.guardingFunction(f, inp, outp, p) and
       c = f.getACall() and
       nd = inp.getNode(c) and
       localFlow(pragma[only_bind_into](outp.getNode(c)), resNode) and

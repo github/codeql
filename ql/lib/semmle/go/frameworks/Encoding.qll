@@ -23,6 +23,6 @@ private class JsonIteratorUnmarshalFunction extends TaintTracking::FunctionModel
   override string getFormat() { result = "JSON" }
 
   override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
-    inp = getAnInput() and outp = getOutput()
+    inp = this.getAnInput() and outp = this.getOutput()
   }
 }

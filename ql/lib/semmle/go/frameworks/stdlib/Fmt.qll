@@ -10,13 +10,13 @@ module Fmt {
   class Sprinter extends TaintTracking::FunctionModel {
     Sprinter() {
       // signature: func Sprint(a ...interface{}) string
-      hasQualifiedName("fmt", "Sprint")
+      this.hasQualifiedName("fmt", "Sprint")
       or
       // signature: func Sprintf(format string, a ...interface{}) string
-      hasQualifiedName("fmt", "Sprintf")
+      this.hasQualifiedName("fmt", "Sprintf")
       or
       // signature: func Sprintln(a ...interface{}) string
-      hasQualifiedName("fmt", "Sprintln")
+      this.hasQualifiedName("fmt", "Sprintln")
     }
 
     override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
@@ -26,7 +26,7 @@ module Fmt {
 
   /** The `Print` function or one of its variants. */
   class Printer extends Function {
-    Printer() { hasQualifiedName("fmt", ["Print", "Printf", "Println"]) }
+    Printer() { this.hasQualifiedName("fmt", ["Print", "Printf", "Println"]) }
   }
 
   /** A call to `Print`, `Fprint`, or similar. */
@@ -48,13 +48,13 @@ module Fmt {
   private class Fprinter extends TaintTracking::FunctionModel {
     Fprinter() {
       // signature: func Fprint(w io.Writer, a ...interface{}) (n int, err error)
-      hasQualifiedName("fmt", "Fprint")
+      this.hasQualifiedName("fmt", "Fprint")
       or
       // signature: func Fprintf(w io.Writer, format string, a ...interface{}) (n int, err error)
-      hasQualifiedName("fmt", "Fprintf")
+      this.hasQualifiedName("fmt", "Fprintf")
       or
       // signature: func Fprintln(w io.Writer, a ...interface{}) (n int, err error)
-      hasQualifiedName("fmt", "Fprintln")
+      this.hasQualifiedName("fmt", "Fprintln")
     }
 
     override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -69,15 +69,15 @@ module Fmt {
 
     Sscanner() {
       // signature: func Sscan(str string, a ...interface{}) (n int, err error)
-      hasQualifiedName("fmt", "Sscan") and
+      this.hasQualifiedName("fmt", "Sscan") and
       (inp.isParameter(0) and outp.isParameter(any(int i | i >= 1)))
       or
       // signature: func Sscanf(str string, format string, a ...interface{}) (n int, err error)
-      hasQualifiedName("fmt", "Sscanf") and
+      this.hasQualifiedName("fmt", "Sscanf") and
       (inp.isParameter([0, 1]) and outp.isParameter(any(int i | i >= 2)))
       or
       // signature: func Sscanln(str string, a ...interface{}) (n int, err error)
-      hasQualifiedName("fmt", "Sscanln") and
+      this.hasQualifiedName("fmt", "Sscanln") and
       (inp.isParameter(0) and outp.isParameter(any(int i | i >= 1)))
     }
 
@@ -111,19 +111,19 @@ module Fmt {
 
     FunctionModels() {
       // signature: func Errorf(format string, a ...interface{}) error
-      hasQualifiedName("fmt", "Errorf") and
+      this.hasQualifiedName("fmt", "Errorf") and
       (inp.isParameter(_) and outp.isResult())
       or
       // signature: func Fscan(r io.Reader, a ...interface{}) (n int, err error)
-      hasQualifiedName("fmt", "Fscan") and
+      this.hasQualifiedName("fmt", "Fscan") and
       (inp.isParameter(0) and outp.isParameter(any(int i | i >= 1)))
       or
       // signature: func Fscanf(r io.Reader, format string, a ...interface{}) (n int, err error)
-      hasQualifiedName("fmt", "Fscanf") and
+      this.hasQualifiedName("fmt", "Fscanf") and
       (inp.isParameter([0, 1]) and outp.isParameter(any(int i | i >= 2)))
       or
       // signature: func Fscanln(r io.Reader, a ...interface{}) (n int, err error)
-      hasQualifiedName("fmt", "Fscanln") and
+      this.hasQualifiedName("fmt", "Fscanln") and
       (inp.isParameter(0) and outp.isParameter(any(int i | i >= 1)))
     }
 
@@ -138,19 +138,19 @@ module Fmt {
 
     MethodModels() {
       // signature: func (GoStringer) GoString() string
-      implements("fmt", "GoStringer", "GoString") and
+      this.implements("fmt", "GoStringer", "GoString") and
       (inp.isReceiver() and outp.isResult())
       or
       // signature: func (ScanState) Read(buf []byte) (n int, err error)
-      implements("fmt", "ScanState", "Read") and
+      this.implements("fmt", "ScanState", "Read") and
       (inp.isReceiver() and outp.isParameter(0))
       or
       // signature: func (Stringer) String() string
-      implements("fmt", "Stringer", "String") and
+      this.implements("fmt", "Stringer", "String") and
       (inp.isReceiver() and outp.isResult())
       or
       // signature: func (ScanState) Token(skipSpace bool, f func(rune) bool) (token []byte, err error)
-      implements("fmt", "ScanState", "Token") and
+      this.implements("fmt", "ScanState", "Token") and
       (inp.isReceiver() and outp.isResult(0))
       or
       // signature: func (State) Write(b []byte) (n int, err error)

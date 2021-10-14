@@ -625,22 +625,22 @@ module CFG {
 
     predicate succ(ControlFlow::Node pred, ControlFlow::Node succ) {
       exists(int i |
-        lastNode(getChildTreeRanked(i), pred, normalCompletion()) and
-        firstNode(getChildTreeRanked(i + 1), succ)
+        lastNode(this.getChildTreeRanked(i), pred, normalCompletion()) and
+        firstNode(this.getChildTreeRanked(i + 1), succ)
       )
     }
 
     final ControlFlowTree getChildTreeRanked(int i) {
       exists(int j |
-        result = getChildTree(j) and
-        j = rank[i + 1](int k | exists(getChildTree(k)))
+        result = this.getChildTree(j) and
+        j = rank[i + 1](int k | exists(this.getChildTree(k)))
       )
     }
 
-    ControlFlowTree getFirstChildTree() { result = getChildTreeRanked(0) }
+    ControlFlowTree getFirstChildTree() { result = this.getChildTreeRanked(0) }
 
     ControlFlowTree getLastChildTree() {
-      result = max(ControlFlowTree ch, int j | ch = getChildTree(j) | ch order by j)
+      result = max(ControlFlowTree ch, int j | ch = this.getChildTree(j) | ch order by j)
     }
 
     ControlFlowTree getChildTree(int i) { none() }
@@ -711,46 +711,46 @@ module CFG {
     Completion getCompletion() { result = Done() }
 
     override predicate firstNode(ControlFlow::Node first) {
-      firstNode(getFirstChildTree(), first)
+      firstNode(this.getFirstChildTree(), first)
       or
-      not exists(getChildTree(_)) and
-      first = getNode()
+      not exists(this.getChildTree(_)) and
+      first = this.getNode()
     }
 
     override predicate lastNode(ControlFlow::Node last, Completion cmpl) {
       super.lastNode(last, cmpl)
       or
-      last = getNode() and cmpl = getCompletion()
+      last = this.getNode() and cmpl = this.getCompletion()
     }
 
     override predicate succ(ControlFlow::Node pred, ControlFlow::Node succ) {
       super.succ(pred, succ)
       or
-      lastNode(getLastChildTree(), pred, normalCompletion()) and
-      succ = getNode()
+      lastNode(this.getLastChildTree(), pred, normalCompletion()) and
+      succ = this.getNode()
     }
   }
 
   abstract private class PreOrderTree extends ControlFlowTree {
     abstract ControlFlow::Node getNode();
 
-    override predicate firstNode(ControlFlow::Node first) { first = getNode() }
+    override predicate firstNode(ControlFlow::Node first) { first = this.getNode() }
 
     override predicate lastNode(ControlFlow::Node last, Completion cmpl) {
       super.lastNode(last, cmpl)
       or
-      lastNode(getLastChildTree(), last, cmpl)
+      lastNode(this.getLastChildTree(), last, cmpl)
       or
-      not exists(getChildTree(_)) and
-      last = getNode() and
+      not exists(this.getChildTree(_)) and
+      last = this.getNode() and
       cmpl = Done()
     }
 
     override predicate succ(ControlFlow::Node pred, ControlFlow::Node succ) {
       super.succ(pred, succ)
       or
-      pred = getNode() and
-      firstNode(getFirstChildTree(), succ)
+      pred = this.getNode() and
+      firstNode(this.getFirstChildTree(), succ)
     }
   }
 
@@ -766,12 +766,14 @@ module CFG {
       this instanceof VarDecl
     }
 
-    override predicate firstNode(ControlFlow::Node first) { firstNode(getFirstChildTree(), first) }
+    override predicate firstNode(ControlFlow::Node first) {
+      firstNode(this.getFirstChildTree(), first)
+    }
 
     override predicate lastNode(ControlFlow::Node last, Completion cmpl) {
       super.lastNode(last, cmpl)
       or
-      lastNode(getLastChildTree(), last, cmpl)
+      lastNode(this.getLastChildTree(), last, cmpl)
       or
       exists(LoopStmt ls | this = ls.getBody() |
         lastNode(this, last, Continue(BranchTarget::of(ls))) and
@@ -828,21 +830,21 @@ module CFG {
       result = this.(ValueSpec).getNumInit()
     }
 
-    predicate isExtractingAssign() { getNumRhs() = 1 and getNumLhs() > 1 }
+    predicate isExtractingAssign() { this.getNumRhs() = 1 and this.getNumLhs() > 1 }
 
     override predicate firstNode(ControlFlow::Node first) {
       not this instanceof RecvStmt and
-      firstNode(getLhs(0), first)
+      firstNode(this.getLhs(0), first)
     }
 
     override predicate lastNode(ControlFlow::Node last, Completion cmpl) {
       ControlFlowTree.super.lastNode(last, cmpl)
       or
       (
-        last = max(int i | | epilogueNode(i) order by i)
+        last = max(int i | | this.epilogueNode(i) order by i)
         or
-        not exists(epilogueNode(_)) and
-        lastNode(getLastSubExprInEvalOrder(), last, normalCompletion())
+        not exists(this.epilogueNode(_)) and
+        lastNode(this.getLastSubExprInEvalOrder(), last, normalCompletion())
       ) and
       cmpl = Done()
     }
@@ -850,49 +852,49 @@ module CFG {
     override predicate succ(ControlFlow::Node pred, ControlFlow::Node succ) {
       ControlFlowTree.super.succ(pred, succ)
       or
-      exists(int i | lastNode(getLhs(i), pred, normalCompletion()) |
-        firstNode(getLhs(i + 1), succ)
+      exists(int i | lastNode(this.getLhs(i), pred, normalCompletion()) |
+        firstNode(this.getLhs(i + 1), succ)
         or
         not this instanceof RecvStmt and
-        i = getNumLhs() - 1 and
+        i = this.getNumLhs() - 1 and
         (
-          firstNode(getRhs(0), succ)
+          firstNode(this.getRhs(0), succ)
           or
-          not exists(getRhs(_)) and
-          succ = epilogueNodeRanked(0)
+          not exists(this.getRhs(_)) and
+          succ = this.epilogueNodeRanked(0)
         )
       )
       or
       exists(int i |
-        lastNode(getRhs(i), pred, normalCompletion()) and
-        firstNode(getRhs(i + 1), succ)
+        lastNode(this.getRhs(i), pred, normalCompletion()) and
+        firstNode(this.getRhs(i + 1), succ)
       )
       or
       not this instanceof RecvStmt and
-      lastNode(getRhs(getNumRhs() - 1), pred, normalCompletion()) and
-      succ = epilogueNodeRanked(0)
+      lastNode(this.getRhs(this.getNumRhs() - 1), pred, normalCompletion()) and
+      succ = this.epilogueNodeRanked(0)
       or
       exists(int i |
-        pred = epilogueNodeRanked(i) and
-        succ = epilogueNodeRanked(i + 1)
+        pred = this.epilogueNodeRanked(i) and
+        succ = this.epilogueNodeRanked(i + 1)
       )
     }
 
     ControlFlow::Node epilogueNodeRanked(int i) {
       exists(int j |
-        result = epilogueNode(j) and
-        j = rank[i + 1](int k | exists(epilogueNode(k)))
+        result = this.epilogueNode(j) and
+        j = rank[i + 1](int k | exists(this.epilogueNode(k)))
       )
     }
 
     private Expr getSubExprInEvalOrder(int evalOrder) {
-      if evalOrder < getNumLhs()
-      then result = getLhs(evalOrder)
-      else result = getRhs(evalOrder - getNumLhs())
+      if evalOrder < this.getNumLhs()
+      then result = this.getLhs(evalOrder)
+      else result = this.getRhs(evalOrder - this.getNumLhs())
     }
 
     private Expr getLastSubExprInEvalOrder() {
-      result = max(int i | | getSubExprInEvalOrder(i) order by i)
+      result = max(int i | | this.getSubExprInEvalOrder(i) order by i)
     }
 
     private ControlFlow::Node epilogueNode(int i) {
@@ -903,7 +905,7 @@ module CFG {
         result = MkExtractNode(this, j) and
         i = 2 * j
         or
-        result = MkZeroInitNode(any(ValueEntity v | getLhs(j) = v.getDeclaration())) and
+        result = MkZeroInitNode(any(ValueEntity v | this.getLhs(j) = v.getDeclaration())) and
         i = 2 * j
         or
         result = MkAssignNode(this, j) and
@@ -931,15 +933,15 @@ module CFG {
       result = PostOrderTree.super.getCompletion()
       or
       // runtime panic due to division by zero or comparison of incomparable interface values
-      (this instanceof DivExpr or equalityTestMayPanic()) and
+      (this instanceof DivExpr or this.equalityTestMayPanic()) and
       not this.(Expr).isConst() and
       result = Panic()
     }
 
     override ControlFlowTree getChildTree(int i) {
-      i = 0 and result = getLeftOperand()
+      i = 0 and result = this.getLeftOperand()
       or
-      i = 1 and result = getRightOperand()
+      i = 1 and result = this.getRightOperand()
     }
   }
 
@@ -953,19 +955,19 @@ module CFG {
     }
 
     private ControlFlow::Node getGuard(boolean outcome) {
-      result = MkConditionGuardNode(getLeftOperand(), outcome)
+      result = MkConditionGuardNode(this.getLeftOperand(), outcome)
     }
 
     override predicate lastNode(ControlFlow::Node last, Completion cmpl) {
-      lastNode(getAnOperand(), last, cmpl) and
+      lastNode(this.getAnOperand(), last, cmpl) and
       not cmpl.isNormal()
       or
       if isCond(this)
       then (
-        last = getGuard(shortCircuit) and
+        last = this.getGuard(shortCircuit) and
         cmpl = Bool(shortCircuit)
         or
-        lastNode(getRightOperand(), last, cmpl)
+        lastNode(this.getRightOperand(), last, cmpl)
       ) else (
         last = MkExprNode(this) and
         cmpl = Done()
@@ -974,20 +976,20 @@ module CFG {
 
     override predicate succ(ControlFlow::Node pred, ControlFlow::Node succ) {
       exists(Completion lcmpl |
-        lastNode(getLeftOperand(), pred, lcmpl) and
-        succ = getGuard(lcmpl.getOutcome())
+        lastNode(this.getLeftOperand(), pred, lcmpl) and
+        succ = this.getGuard(lcmpl.getOutcome())
       )
       or
-      pred = getGuard(shortCircuit.booleanNot()) and
-      firstNode(getRightOperand(), succ)
+      pred = this.getGuard(shortCircuit.booleanNot()) and
+      firstNode(this.getRightOperand(), succ)
       or
       not isCond(this) and
       (
-        pred = getGuard(shortCircuit) and
+        pred = this.getGuard(shortCircuit) and
         succ = MkExprNode(this)
         or
         exists(Completion rcmpl |
-          lastNode(getRightOperand(), pred, rcmpl) and
+          lastNode(this.getRightOperand(), pred, rcmpl) and
           rcmpl.isNormal() and
           succ = MkExprNode(this)
         )
@@ -1002,22 +1004,22 @@ module CFG {
     }
 
     override ControlFlow::Node getNode() {
-      not isSpecial() and
+      not this.isSpecial() and
       result = MkExprNode(this)
     }
 
     override Completion getCompletion() {
-      (not exists(getTarget()) or getTarget().mayReturnNormally()) and
+      (not exists(this.getTarget()) or this.getTarget().mayReturnNormally()) and
       result = Done()
       or
-      (not exists(getTarget()) or getTarget().mayPanic()) and
+      (not exists(this.getTarget()) or this.getTarget().mayPanic()) and
       result = Panic()
     }
 
     override ControlFlowTree getChildTree(int i) {
-      i = 0 and result = getCalleeExpr()
+      i = 0 and result = this.getCalleeExpr()
       or
-      result = getArgument(i - 1) and
+      result = this.getArgument(i - 1) and
       // calls to `make` and `new` can have type expressions as arguments
       not result instanceof TypeExpr
     }
@@ -1027,12 +1029,12 @@ module CFG {
       // and call itself; this is for cases like `f(g())` where `g` has multiple
       // results
       exists(ControlFlow::Node mid | PostOrderTree.super.succ(pred, mid) |
-        if mid = getNode() then succ = getEpilogueNode(0) else succ = mid
+        if mid = this.getNode() then succ = this.getEpilogueNode(0) else succ = mid
       )
       or
       exists(int i |
-        pred = getEpilogueNode(i) and
-        succ = getEpilogueNode(i + 1)
+        pred = this.getEpilogueNode(i) and
+        succ = this.getEpilogueNode(i + 1)
       )
     }
 
@@ -1040,31 +1042,31 @@ module CFG {
       result = MkExtractNode(this, i)
       or
       i = max(int j | exists(MkExtractNode(this, j))) + 1 and
-      result = getNode()
+      result = this.getNode()
       or
       not exists(MkExtractNode(this, _)) and
       i = 0 and
-      result = getNode()
+      result = this.getNode()
     }
 
     override predicate lastNode(ControlFlow::Node last, Completion cmpl) {
       PostOrderTree.super.lastNode(last, cmpl)
       or
-      isSpecial() and
-      lastNode(getLastChildTree(), last, cmpl)
+      this.isSpecial() and
+      lastNode(this.getLastChildTree(), last, cmpl)
     }
   }
 
   private class CaseClauseTree extends ControlFlowTree, CaseClause {
     private ControlFlow::Node getExprStart(int i) {
-      firstNode(getExpr(i), result)
+      firstNode(this.getExpr(i), result)
       or
-      getExpr(i) instanceof TypeExpr and
+      this.getExpr(i) instanceof TypeExpr and
       result = MkCaseCheckNode(this, i)
     }
 
     ControlFlow::Node getExprEnd(int i, Boolean outcome) {
-      exists(Expr e | e = getExpr(i) |
+      exists(Expr e | e = this.getExpr(i) |
         result = MkConditionGuardNode(e, outcome)
         or
         not exists(MkConditionGuardNode(e, _)) and
@@ -1073,59 +1075,59 @@ module CFG {
     }
 
     private ControlFlow::Node getBodyStart() {
-      firstNode(getStmt(0), result) or result = MkSkipNode(this)
+      firstNode(this.getStmt(0), result) or result = MkSkipNode(this)
     }
 
     override predicate firstNode(ControlFlow::Node first) {
-      first = getExprStart(0)
+      first = this.getExprStart(0)
       or
-      not exists(getAnExpr()) and
-      first = getBodyStart()
+      not exists(this.getAnExpr()) and
+      first = this.getBodyStart()
     }
 
     override predicate lastNode(ControlFlow::Node last, Completion cmpl) {
       ControlFlowTree.super.lastNode(last, cmpl)
       or
       // TODO: shouldn't be here
-      last = getExprEnd(getNumExpr() - 1, false) and
+      last = this.getExprEnd(this.getNumExpr() - 1, false) and
       cmpl = Bool(false)
       or
       last = MkSkipNode(this) and
       cmpl = Done()
       or
-      lastNode(getStmt(getNumStmt() - 1), last, cmpl)
+      lastNode(this.getStmt(this.getNumStmt() - 1), last, cmpl)
     }
 
     override predicate succ(ControlFlow::Node pred, ControlFlow::Node succ) {
       ControlFlowTree.super.succ(pred, succ)
       or
       exists(int i |
-        lastNode(getExpr(i), pred, normalCompletion()) and
+        lastNode(this.getExpr(i), pred, normalCompletion()) and
         succ = MkCaseCheckNode(this, i)
         or
         // visit guard node if there is one
         pred = MkCaseCheckNode(this, i) and
-        succ = getExprEnd(i, _) and
+        succ = this.getExprEnd(i, _) and
         succ != pred // this avoids self-loops if there isn't a guard node
         or
-        pred = getExprEnd(i, false) and
-        succ = getExprStart(i + 1)
+        pred = this.getExprEnd(i, false) and
+        succ = this.getExprStart(i + 1)
         or
-        isPassingEdge(i, pred, succ, _)
+        this.isPassingEdge(i, pred, succ, _)
       )
     }
 
     predicate isPassingEdge(int i, ControlFlow::Node pred, ControlFlow::Node succ, Expr testExpr) {
-      pred = getExprEnd(i, true) and
-      succ = getBodyStart() and
-      testExpr = getExpr(i)
+      pred = this.getExprEnd(i, true) and
+      succ = this.getBodyStart() and
+      testExpr = this.getExpr(i)
     }
 
-    override ControlFlowTree getChildTree(int i) { result = getStmt(i) }
+    override ControlFlowTree getChildTree(int i) { result = this.getStmt(i) }
   }
 
   private class CommClauseTree extends ControlFlowTree, CommClause {
-    override predicate firstNode(ControlFlow::Node first) { firstNode(getComm(), first) }
+    override predicate firstNode(ControlFlow::Node first) { firstNode(this.getComm(), first) }
 
     override predicate lastNode(ControlFlow::Node last, Completion cmpl) {
       ControlFlowTree.super.lastNode(last, cmpl)
@@ -1133,23 +1135,23 @@ module CFG {
       last = MkSkipNode(this) and
       cmpl = Done()
       or
-      lastNode(getStmt(getNumStmt() - 1), last, cmpl)
+      lastNode(this.getStmt(this.getNumStmt() - 1), last, cmpl)
     }
 
-    override ControlFlowTree getChildTree(int i) { result = getStmt(i) }
+    override ControlFlowTree getChildTree(int i) { result = this.getStmt(i) }
   }
 
   private class CompositeLiteralTree extends ControlFlowTree, CompositeLit {
     private ControlFlow::Node getElementInit(int i) {
-      result = MkLiteralElementInitNode(getElement(i))
+      result = MkLiteralElementInitNode(this.getElement(i))
     }
 
     private ControlFlow::Node getElementStart(int i) {
-      exists(Expr elt | elt = getElement(i) |
+      exists(Expr elt | elt = this.getElement(i) |
         result = MkImplicitLiteralElementIndex(elt)
         or
         (elt instanceof KeyValueExpr or this instanceof StructLit) and
-        firstNode(getElement(i), result)
+        firstNode(this.getElement(i), result)
       )
     }
 
@@ -1158,27 +1160,27 @@ module CFG {
     override predicate lastNode(ControlFlow::Node last, Completion cmpl) {
       ControlFlowTree.super.lastNode(last, cmpl)
       or
-      last = getElementInit(getNumElement() - 1) and
+      last = this.getElementInit(this.getNumElement() - 1) and
       cmpl = Done()
       or
-      not exists(getElement(_)) and
+      not exists(this.getElement(_)) and
       last = MkExprNode(this) and
       cmpl = Done()
     }
 
     override predicate succ(ControlFlow::Node pred, ControlFlow::Node succ) {
-      firstNode(pred) and
-      succ = getElementStart(0)
+      this.firstNode(pred) and
+      succ = this.getElementStart(0)
       or
       exists(int i |
-        pred = MkImplicitLiteralElementIndex(getElement(i)) and
-        firstNode(getElement(i), succ)
+        pred = MkImplicitLiteralElementIndex(this.getElement(i)) and
+        firstNode(this.getElement(i), succ)
         or
-        lastNode(getElement(i), pred, normalCompletion()) and
-        succ = getElementInit(i)
+        lastNode(this.getElement(i), pred, normalCompletion()) and
+        succ = this.getElementInit(i)
         or
-        pred = getElementInit(i) and
-        succ = getElementStart(i + 1)
+        pred = this.getElementInit(i) and
+        succ = this.getElementStart(i + 1)
       )
     }
   }
@@ -1194,75 +1196,75 @@ module CFG {
 
     override ControlFlow::Node getNode() { result = MkExprNode(this) }
 
-    override ControlFlowTree getChildTree(int i) { i = 0 and result = getOperand() }
+    override ControlFlowTree getChildTree(int i) { i = 0 and result = this.getOperand() }
   }
 
   private class DeferStmtTree extends PostOrderTree, DeferStmt {
     override ControlFlow::Node getNode() { result = MkDeferNode(this) }
 
-    override ControlFlowTree getChildTree(int i) { i = 0 and result = getCall() }
+    override ControlFlowTree getChildTree(int i) { i = 0 and result = this.getCall() }
   }
 
   private class FuncDeclTree extends PostOrderTree, FuncDecl {
     override ControlFlow::Node getNode() { result = MkFuncDeclNode(this) }
 
-    override ControlFlowTree getChildTree(int i) { i = 0 and result = getNameExpr() }
+    override ControlFlowTree getChildTree(int i) { i = 0 and result = this.getNameExpr() }
 
     override predicate lastNode(ControlFlow::Node last, Completion cmpl) {
       // override to prevent panic propagation out of function declarations
-      last = getNode() and cmpl = Done()
+      last = this.getNode() and cmpl = Done()
     }
   }
 
   private class GoStmtTree extends PostOrderTree, GoStmt {
     override ControlFlow::Node getNode() { result = MkGoNode(this) }
 
-    override ControlFlowTree getChildTree(int i) { i = 0 and result = getCall() }
+    override ControlFlowTree getChildTree(int i) { i = 0 and result = this.getCall() }
   }
 
   private class IfStmtTree extends ControlFlowTree, IfStmt {
     private ControlFlow::Node getGuard(boolean outcome) {
-      result = MkConditionGuardNode(getCond(), outcome)
+      result = MkConditionGuardNode(this.getCond(), outcome)
     }
 
     override predicate firstNode(ControlFlow::Node first) {
-      firstNode(getInit(), first)
+      firstNode(this.getInit(), first)
       or
-      not exists(getInit()) and
-      firstNode(getCond(), first)
+      not exists(this.getInit()) and
+      firstNode(this.getCond(), first)
     }
 
     override predicate lastNode(ControlFlow::Node last, Completion cmpl) {
       ControlFlowTree.super.lastNode(last, cmpl)
       or
-      lastNode(getThen(), last, cmpl)
+      lastNode(this.getThen(), last, cmpl)
       or
-      lastNode(getElse(), last, cmpl)
+      lastNode(this.getElse(), last, cmpl)
       or
-      not exists(getElse()) and
-      last = getGuard(false) and
+      not exists(this.getElse()) and
+      last = this.getGuard(false) and
       cmpl = Done()
     }
 
     override predicate succ(ControlFlow::Node pred, ControlFlow::Node succ) {
-      lastNode(getInit(), pred, normalCompletion()) and
-      firstNode(getCond(), succ)
+      lastNode(this.getInit(), pred, normalCompletion()) and
+      firstNode(this.getCond(), succ)
       or
       exists(Completion condCmpl |
-        lastNode(getCond(), pred, condCmpl) and
-        succ = MkConditionGuardNode(getCond(), condCmpl.getOutcome())
+        lastNode(this.getCond(), pred, condCmpl) and
+        succ = MkConditionGuardNode(this.getCond(), condCmpl.getOutcome())
       )
       or
-      pred = getGuard(true) and
-      firstNode(getThen(), succ)
+      pred = this.getGuard(true) and
+      firstNode(this.getThen(), succ)
       or
-      pred = getGuard(false) and
-      firstNode(getElse(), succ)
+      pred = this.getGuard(false) and
+      firstNode(this.getElse(), succ)
     }
   }
 
   private class IndexExprTree extends ControlFlowTree, IndexExpr {
-    override predicate firstNode(ControlFlow::Node first) { firstNode(getBase(), first) }
+    override predicate firstNode(ControlFlow::Node first) { firstNode(this.getBase(), first) }
 
     override predicate lastNode(ControlFlow::Node last, Completion cmpl) {
       ControlFlowTree.super.lastNode(last, cmpl)
@@ -1276,7 +1278,7 @@ module CFG {
     }
 
     override predicate succ(ControlFlow::Node pred, ControlFlow::Node succ) {
-      lastNode(getBase(), pred, normalCompletion()) and
+      lastNode(this.getBase(), pred, normalCompletion()) and
       (
         succ = MkImplicitDeref(this.getBase())
         or
@@ -1287,7 +1289,7 @@ module CFG {
       pred = MkImplicitDeref(this.getBase()) and
       firstNode(this.getIndex(), succ)
       or
-      lastNode(getIndex(), pred, normalCompletion()) and
+      lastNode(this.getIndex(), pred, normalCompletion()) and
       succ = mkExprOrSkipNode(this)
     }
   }
@@ -1296,11 +1298,11 @@ module CFG {
     BranchTarget getLabel() { result = BranchTarget::of(this) }
 
     override predicate lastNode(ControlFlow::Node last, Completion cmpl) {
-      exists(Completion inner | lastNode(getBody(), last, inner) and not inner.isNormal() |
-        if inner = Break(getLabel())
+      exists(Completion inner | lastNode(this.getBody(), last, inner) and not inner.isNormal() |
+        if inner = Break(this.getLabel())
         then cmpl = Done()
         else
-          if inner = Continue(getLabel())
+          if inner = Continue(this.getLabel())
           then none()
           else cmpl = inner
       )
@@ -1308,7 +1310,7 @@ module CFG {
   }
 
   private class FileTree extends ControlFlowTree, File {
-    FileTree() { exists(getADecl()) }
+    FileTree() { exists(this.getADecl()) }
 
     override predicate lastNode(ControlFlow::Node last, Completion cmpl) { none() }
 
@@ -1321,91 +1323,93 @@ module CFG {
       exists(int i, Completion inner | lastNode(this.getDecl(i), pred, inner) |
         not inner.isNormal()
         or
-        i = getNumDecl() - 1
+        i = this.getNumDecl() - 1
       ) and
       succ = MkExitNode(this)
     }
 
-    override ControlFlowTree getChildTree(int i) { result = getDecl(i) }
+    override ControlFlowTree getChildTree(int i) { result = this.getDecl(i) }
   }
 
   private class ForTree extends LoopTree, ForStmt {
     private ControlFlow::Node getGuard(boolean outcome) {
-      result = MkConditionGuardNode(getCond(), outcome)
+      result = MkConditionGuardNode(this.getCond(), outcome)
     }
 
-    override predicate firstNode(ControlFlow::Node first) { firstNode(getFirstChildTree(), first) }
+    override predicate firstNode(ControlFlow::Node first) {
+      firstNode(this.getFirstChildTree(), first)
+    }
 
     override predicate lastNode(ControlFlow::Node last, Completion cmpl) {
       LoopTree.super.lastNode(last, cmpl)
       or
-      lastNode(getInit(), last, cmpl) and
+      lastNode(this.getInit(), last, cmpl) and
       not cmpl.isNormal()
       or
-      lastNode(getCond(), last, cmpl) and
+      lastNode(this.getCond(), last, cmpl) and
       not cmpl.isNormal()
       or
-      lastNode(getPost(), last, cmpl) and
+      lastNode(this.getPost(), last, cmpl) and
       not cmpl.isNormal()
       or
-      last = getGuard(false) and
+      last = this.getGuard(false) and
       cmpl = Done()
     }
 
     override ControlFlowTree getChildTree(int i) {
-      i = 0 and result = getInit()
+      i = 0 and result = this.getInit()
       or
-      i = 1 and result = getCond()
+      i = 1 and result = this.getCond()
       or
-      i = 2 and result = getBody()
+      i = 2 and result = this.getBody()
       or
-      i = 3 and result = getPost()
+      i = 3 and result = this.getPost()
       or
-      i = 4 and result = getCond()
+      i = 4 and result = this.getCond()
       or
-      i = 5 and result = getBody()
+      i = 5 and result = this.getBody()
     }
 
     override predicate succ(ControlFlow::Node pred, ControlFlow::Node succ) {
       exists(int i, ControlFlowTree predTree, Completion cmpl |
-        predTree = getChildTreeRanked(i) and
+        predTree = this.getChildTreeRanked(i) and
         lastNode(predTree, pred, cmpl) and
         cmpl.isNormal()
       |
-        if predTree = getCond()
-        then succ = getGuard(cmpl.getOutcome())
-        else firstNode(getChildTreeRanked(i + 1), succ)
+        if predTree = this.getCond()
+        then succ = this.getGuard(cmpl.getOutcome())
+        else firstNode(this.getChildTreeRanked(i + 1), succ)
       )
       or
-      pred = getGuard(true) and
-      firstNode(getBody(), succ)
+      pred = this.getGuard(true) and
+      firstNode(this.getBody(), succ)
     }
   }
 
   private class FuncDefTree extends ControlFlowTree, FuncDef {
-    FuncDefTree() { exists(getBody()) }
+    FuncDefTree() { exists(this.getBody()) }
 
     pragma[noinline]
     private MkEntryNode getEntry() { result = MkEntryNode(this) }
 
     private Parameter getParameterRanked(int i) {
-      result = rank[i + 1](Parameter p, int j | p = getParameter(j) | p order by j)
+      result = rank[i + 1](Parameter p, int j | p = this.getParameter(j) | p order by j)
     }
 
     private ControlFlow::Node getPrologueNode(int i) {
-      i = -1 and result = getEntry()
+      i = -1 and result = this.getEntry()
       or
       exists(int numParm, int numRes |
-        numParm = count(getParameter(_)) and
-        numRes = count(getResultVar(_))
+        numParm = count(this.getParameter(_)) and
+        numRes = count(this.getResultVar(_))
       |
-        exists(int j, Parameter p | p = getParameterRanked(j) |
+        exists(int j, Parameter p | p = this.getParameterRanked(j) |
           i = 2 * j and result = MkArgumentNode(p)
           or
           i = 2 * j + 1 and result = MkParameterInit(p)
         )
         or
-        exists(int j, ResultVariable v | v = getResultVar(j) |
+        exists(int j, ResultVariable v | v = this.getResultVar(j) |
           i = 2 * numParm + 2 * j and
           result = MkZeroInitNode(v)
           or
@@ -1414,14 +1418,14 @@ module CFG {
         )
         or
         i = 2 * numParm + 2 * numRes and
-        firstNode(getBody(), result)
+        firstNode(this.getBody(), result)
       )
     }
 
     private ControlFlow::Node getEpilogueNode(int i) {
-      result = MkResultReadNode(getResultVar(i))
+      result = MkResultReadNode(this.getResultVar(i))
       or
-      i = count(getAResultVar()) and
+      i = count(this.getAResultVar()) and
       result = MkExitNode(this)
     }
 
@@ -1432,7 +1436,7 @@ module CFG {
         // `defer` can be the first `defer` statement executed
         // there is always a predecessor node because the `defer`'s call is always
         // evaluated before the defer statement itself
-        MkDeferNode(defer) = succ(notDeferSucc*(getEntry()))
+        MkDeferNode(defer) = succ(notDeferSucc*(this.getEntry()))
       )
     }
 
@@ -1440,8 +1444,8 @@ module CFG {
 
     override predicate succ(ControlFlow::Node pred, ControlFlow::Node succ) {
       exists(int i |
-        pred = getPrologueNode(i) and
-        succ = getPrologueNode(i + 1)
+        pred = this.getPrologueNode(i) and
+        succ = this.getPrologueNode(i + 1)
       )
       or
       exists(GotoStmt goto, LabeledStmt ls |
@@ -1455,10 +1459,10 @@ module CFG {
       exists(Completion cmpl |
         lastNode(this.getBody(), pred, cmpl) and
         // last node of function body can be reached without going through a `defer` statement
-        pred = notDeferSucc*(getEntry())
+        pred = notDeferSucc*(this.getEntry())
       |
         // panic goes directly to exit, non-panic reads result variables first
-        if cmpl = Panic() then succ = MkExitNode(this) else succ = getEpilogueNode(0)
+        if cmpl = Panic() then succ = MkExitNode(this) else succ = this.getEpilogueNode(0)
       )
       or
       lastNode(this.getBody(), pred, _) and
@@ -1478,18 +1482,18 @@ module CFG {
         succ = MkExprNode(succDefer.getCall())
       )
       or
-      firstDefer(pred) and
+      this.firstDefer(pred) and
       (
         // conservatively assume that we might either panic (and hence skip the result reads)
         // or not
         succ = MkExitNode(this)
         or
-        succ = getEpilogueNode(0)
+        succ = this.getEpilogueNode(0)
       )
       or
       exists(int i |
-        pred = getEpilogueNode(i) and
-        succ = getEpilogueNode(i + 1)
+        pred = this.getEpilogueNode(i) and
+        succ = this.getEpilogueNode(i + 1)
       )
     }
   }
@@ -1499,7 +1503,7 @@ module CFG {
   }
 
   private class IncDecTree extends ControlFlowTree, IncDecStmt {
-    override predicate firstNode(ControlFlow::Node first) { firstNode(getOperand(), first) }
+    override predicate firstNode(ControlFlow::Node first) { firstNode(this.getOperand(), first) }
 
     override predicate lastNode(ControlFlow::Node last, Completion cmpl) {
       ControlFlowTree.super.lastNode(last, cmpl)
@@ -1509,7 +1513,7 @@ module CFG {
     }
 
     override predicate succ(ControlFlow::Node pred, ControlFlow::Node succ) {
-      lastNode(getOperand(), pred, normalCompletion()) and
+      lastNode(this.getOperand(), pred, normalCompletion()) and
       succ = MkImplicitOne(this)
       or
       pred = MkImplicitOne(this) and
@@ -1521,7 +1525,7 @@ module CFG {
   }
 
   private class RangeTree extends LoopTree, RangeStmt {
-    override predicate firstNode(ControlFlow::Node first) { firstNode(getDomain(), first) }
+    override predicate firstNode(ControlFlow::Node first) { firstNode(this.getDomain(), first) }
 
     override predicate lastNode(ControlFlow::Node last, Completion cmpl) {
       LoopTree.super.lastNode(last, cmpl)
@@ -1529,42 +1533,42 @@ module CFG {
       last = MkNextNode(this) and
       cmpl = Done()
       or
-      lastNode(getKey(), last, cmpl) and
+      lastNode(this.getKey(), last, cmpl) and
       not cmpl.isNormal()
       or
-      lastNode(getValue(), last, cmpl) and
+      lastNode(this.getValue(), last, cmpl) and
       not cmpl.isNormal()
       or
-      lastNode(getDomain(), last, cmpl) and
+      lastNode(this.getDomain(), last, cmpl) and
       not cmpl.isNormal()
     }
 
     override predicate succ(ControlFlow::Node pred, ControlFlow::Node succ) {
-      lastNode(getDomain(), pred, normalCompletion()) and
+      lastNode(this.getDomain(), pred, normalCompletion()) and
       succ = MkNextNode(this)
       or
       pred = MkNextNode(this) and
       (
-        firstNode(getKey(), succ)
+        firstNode(this.getKey(), succ)
         or
-        not exists(getKey()) and
-        firstNode(getBody(), succ)
+        not exists(this.getKey()) and
+        firstNode(this.getBody(), succ)
       )
       or
-      lastNode(getKey(), pred, normalCompletion()) and
+      lastNode(this.getKey(), pred, normalCompletion()) and
       (
-        firstNode(getValue(), succ)
+        firstNode(this.getValue(), succ)
         or
-        not exists(getValue()) and
+        not exists(this.getValue()) and
         succ = MkExtractNode(this, 0)
       )
       or
-      lastNode(getValue(), pred, normalCompletion()) and
+      lastNode(this.getValue(), pred, normalCompletion()) and
       succ = MkExtractNode(this, 0)
       or
       pred = MkExtractNode(this, 0) and
       (
-        if exists(getValue())
+        if exists(this.getValue())
         then succ = MkExtractNode(this, 1)
         else
           if exists(MkAssignNode(this, 0))
@@ -1572,7 +1576,7 @@ module CFG {
           else
             if exists(MkAssignNode(this, 1))
             then succ = MkAssignNode(this, 1)
-            else firstNode(getBody(), succ)
+            else firstNode(this.getBody(), succ)
       )
       or
       pred = MkExtractNode(this, 1) and
@@ -1582,21 +1586,21 @@ module CFG {
         else
           if exists(MkAssignNode(this, 1))
           then succ = MkAssignNode(this, 1)
-          else firstNode(getBody(), succ)
+          else firstNode(this.getBody(), succ)
       )
       or
       pred = MkAssignNode(this, 0) and
       (
         if exists(MkAssignNode(this, 1))
         then succ = MkAssignNode(this, 1)
-        else firstNode(getBody(), succ)
+        else firstNode(this.getBody(), succ)
       )
       or
       pred = MkAssignNode(this, 1) and
-      firstNode(getBody(), succ)
+      firstNode(this.getBody(), succ)
       or
       exists(Completion inner |
-        lastNode(getBody(), pred, inner) and
+        lastNode(this.getBody(), pred, inner) and
         (inner.isNormal() or inner = Continue(BranchTarget::of(this))) and
         succ = MkNextNode(this)
       )
@@ -1605,7 +1609,7 @@ module CFG {
 
   private class RecvStmtTree extends ControlFlowTree, RecvStmt {
     override predicate firstNode(ControlFlow::Node first) {
-      firstNode(getExpr().getOperand(), first)
+      firstNode(this.getExpr().getOperand(), first)
     }
   }
 
@@ -1616,14 +1620,14 @@ module CFG {
 
     override predicate succ(ControlFlow::Node pred, ControlFlow::Node succ) {
       exists(int i |
-        lastNode(getExpr(i), pred, normalCompletion()) and
-        succ = complete(i)
+        lastNode(this.getExpr(i), pred, normalCompletion()) and
+        succ = this.complete(i)
         or
         pred = MkExtractNode(this, i) and
-        succ = after(i)
+        succ = this.after(i)
         or
         pred = MkResultWriteNode(_, i, this) and
-        succ = next(i)
+        succ = this.next(i)
       )
     }
 
@@ -1631,42 +1635,42 @@ module CFG {
       result = MkExtractNode(this, i)
       or
       not exists(MkExtractNode(this, _)) and
-      result = after(i)
+      result = this.after(i)
     }
 
     private ControlFlow::Node after(int i) {
       result = MkResultWriteNode(_, i, this)
       or
       not exists(MkResultWriteNode(_, i, this)) and
-      result = next(i)
+      result = this.next(i)
     }
 
     private ControlFlow::Node next(int i) {
-      firstNode(getExpr(i + 1), result)
+      firstNode(this.getExpr(i + 1), result)
       or
       exists(MkExtractNode(this, _)) and
-      result = complete(i + 1)
+      result = this.complete(i + 1)
       or
-      i + 1 = getEnclosingFunction().getType().getNumResult() and
-      result = getNode()
+      i + 1 = this.getEnclosingFunction().getType().getNumResult() and
+      result = this.getNode()
     }
 
-    override ControlFlowTree getChildTree(int i) { result = getExpr(i) }
+    override ControlFlowTree getChildTree(int i) { result = this.getExpr(i) }
   }
 
   private class SelectStmtTree extends ControlFlowTree, SelectStmt {
     private BranchTarget getLabel() { result = BranchTarget::of(this) }
 
     override predicate firstNode(ControlFlow::Node first) {
-      firstNode(getNonDefaultCommClause(0), first)
+      firstNode(this.getNonDefaultCommClause(0), first)
       or
-      getNumNonDefaultCommClause() = 0 and
+      this.getNumNonDefaultCommClause() = 0 and
       first = MkSelectNode(this)
     }
 
     override predicate lastNode(ControlFlow::Node last, Completion cmpl) {
-      exists(Completion inner | lastNode(getACommClause(), last, inner) |
-        if inner = Break(getLabel()) then cmpl = Done() else cmpl = inner
+      exists(Completion inner | lastNode(this.getACommClause(), last, inner) |
+        if inner = Break(this.getLabel()) then cmpl = Done() else cmpl = inner
       )
     }
 
@@ -1674,7 +1678,7 @@ module CFG {
       ControlFlowTree.super.succ(pred, succ)
       or
       exists(CommClause cc, int i, Stmt comm |
-        cc = getNonDefaultCommClause(i) and
+        cc = this.getNonDefaultCommClause(i) and
         comm = cc.getComm() and
         (
           comm instanceof RecvStmt and
@@ -1684,14 +1688,16 @@ module CFG {
           lastNode(comm.(SendStmt).getValue(), pred, normalCompletion())
         )
       |
-        firstNode(getNonDefaultCommClause(i + 1), succ)
+        firstNode(this.getNonDefaultCommClause(i + 1), succ)
         or
-        i = getNumNonDefaultCommClause() - 1 and
+        i = this.getNumNonDefaultCommClause() - 1 and
         succ = MkSelectNode(this)
       )
       or
       pred = MkSelectNode(this) and
-      exists(CommClause cc, Stmt comm | cc = getNonDefaultCommClause(_) and comm = cc.getComm() |
+      exists(CommClause cc, Stmt comm |
+        cc = this.getNonDefaultCommClause(_) and comm = cc.getComm()
+      |
         comm instanceof RecvStmt and
         succ = MkExprNode(comm.(RecvStmt).getExpr())
         or
@@ -1700,13 +1706,13 @@ module CFG {
       )
       or
       pred = MkSelectNode(this) and
-      exists(CommClause cc | cc = getDefaultCommClause() |
+      exists(CommClause cc | cc = this.getDefaultCommClause() |
         firstNode(cc.getStmt(0), succ)
         or
         succ = MkSkipNode(cc)
       )
       or
-      exists(CommClause cc, RecvStmt recv | cc = getCommClause(_) and recv = cc.getComm() |
+      exists(CommClause cc, RecvStmt recv | cc = this.getCommClause(_) and recv = cc.getComm() |
         pred = MkExprNode(recv.getExpr()) and
         (
           firstNode(recv.getLhs(0), succ)
@@ -1740,7 +1746,7 @@ module CFG {
       )
       or
       exists(CommClause cc, SendStmt ss |
-        cc = getCommClause(_) and
+        cc = this.getCommClause(_) and
         ss = cc.getComm() and
         pred = MkSendNode(ss)
       |
@@ -1795,7 +1801,7 @@ module CFG {
   }
 
   private class SendStmtTree extends ControlFlowTree, SendStmt {
-    override predicate firstNode(ControlFlow::Node first) { firstNode(getChannel(), first) }
+    override predicate firstNode(ControlFlow::Node first) { firstNode(this.getChannel(), first) }
 
     override predicate lastNode(ControlFlow::Node last, Completion cmpl) {
       ControlFlowTree.super.lastNode(last, cmpl)
@@ -1808,25 +1814,25 @@ module CFG {
       ControlFlowTree.super.succ(pred, succ)
       or
       not this = any(CommClause cc).getComm() and
-      lastNode(getValue(), pred, normalCompletion()) and
+      lastNode(this.getValue(), pred, normalCompletion()) and
       succ = MkSendNode(this)
     }
 
     override ControlFlowTree getChildTree(int i) {
-      i = 0 and result = getChannel()
+      i = 0 and result = this.getChannel()
       or
-      i = 1 and result = getValue()
+      i = 1 and result = this.getValue()
     }
   }
 
   private class SliceExprTree extends ControlFlowTree, SliceExpr {
-    override predicate firstNode(ControlFlow::Node first) { firstNode(getBase(), first) }
+    override predicate firstNode(ControlFlow::Node first) { firstNode(this.getBase(), first) }
 
     override predicate lastNode(ControlFlow::Node last, Completion cmpl) {
       ControlFlowTree.super.lastNode(last, cmpl)
       or
       // panic due to `nil` dereference
-      last = MkImplicitDeref(getBase()) and
+      last = MkImplicitDeref(this.getBase()) and
       cmpl = Panic()
       or
       last = MkExprNode(this) and
@@ -1836,24 +1842,24 @@ module CFG {
     override predicate succ(ControlFlow::Node pred, ControlFlow::Node succ) {
       ControlFlowTree.super.succ(pred, succ)
       or
-      lastNode(getBase(), pred, normalCompletion()) and
+      lastNode(this.getBase(), pred, normalCompletion()) and
       (
-        succ = MkImplicitDeref(getBase())
+        succ = MkImplicitDeref(this.getBase())
         or
-        not exists(MkImplicitDeref(getBase())) and
-        (firstNode(getLow(), succ) or succ = MkImplicitLowerSliceBound(this))
+        not exists(MkImplicitDeref(this.getBase())) and
+        (firstNode(this.getLow(), succ) or succ = MkImplicitLowerSliceBound(this))
       )
       or
-      pred = MkImplicitDeref(getBase()) and
-      (firstNode(getLow(), succ) or succ = MkImplicitLowerSliceBound(this))
+      pred = MkImplicitDeref(this.getBase()) and
+      (firstNode(this.getLow(), succ) or succ = MkImplicitLowerSliceBound(this))
       or
-      (lastNode(getLow(), pred, normalCompletion()) or pred = MkImplicitLowerSliceBound(this)) and
-      (firstNode(getHigh(), succ) or succ = MkImplicitUpperSliceBound(this))
+      (lastNode(this.getLow(), pred, normalCompletion()) or pred = MkImplicitLowerSliceBound(this)) and
+      (firstNode(this.getHigh(), succ) or succ = MkImplicitUpperSliceBound(this))
       or
-      (lastNode(getHigh(), pred, normalCompletion()) or pred = MkImplicitUpperSliceBound(this)) and
-      (firstNode(getMax(), succ) or succ = MkImplicitMaxSliceBound(this))
+      (lastNode(this.getHigh(), pred, normalCompletion()) or pred = MkImplicitUpperSliceBound(this)) and
+      (firstNode(this.getMax(), succ) or succ = MkImplicitMaxSliceBound(this))
       or
-      (lastNode(getMax(), pred, normalCompletion()) or pred = MkImplicitMaxSliceBound(this)) and
+      (lastNode(this.getMax(), pred, normalCompletion()) or pred = MkImplicitMaxSliceBound(this)) and
       succ = MkExprNode(this)
     }
   }
@@ -1863,14 +1869,14 @@ module CFG {
 
     override Completion getCompletion() { result = Done() or result = Panic() }
 
-    override ControlFlowTree getChildTree(int i) { i = 0 and result = getBase() }
+    override ControlFlowTree getChildTree(int i) { i = 0 and result = this.getBase() }
   }
 
   private class SwitchTree extends ControlFlowTree, SwitchStmt {
     override predicate firstNode(ControlFlow::Node first) {
-      firstNode(getInit(), first)
+      firstNode(this.getInit(), first)
       or
-      not exists(getInit()) and
+      not exists(this.getInit()) and
       (
         firstNode(this.(ExpressionSwitchStmt).getExpr(), first)
         or
@@ -1881,7 +1887,7 @@ module CFG {
     }
 
     override predicate lastNode(ControlFlow::Node last, Completion cmpl) {
-      lastNode(getInit(), last, cmpl) and
+      lastNode(this.getInit(), last, cmpl) and
       not cmpl.isNormal()
       or
       (
@@ -1923,7 +1929,7 @@ module CFG {
     override predicate succ(ControlFlow::Node pred, ControlFlow::Node succ) {
       ControlFlowTree.super.succ(pred, succ)
       or
-      lastNode(getInit(), pred, normalCompletion()) and
+      lastNode(this.getInit(), pred, normalCompletion()) and
       (
         firstNode(this.(ExpressionSwitchStmt).getExpr(), succ) or
         succ = MkImplicitTrue(this) or
@@ -1936,27 +1942,27 @@ module CFG {
         lastNode(this.(TypeSwitchStmt).getTest(), pred, normalCompletion())
       ) and
       (
-        firstNode(getNonDefaultCase(0), succ)
+        firstNode(this.getNonDefaultCase(0), succ)
         or
-        not exists(getANonDefaultCase()) and
-        firstNode(getDefault(), succ)
+        not exists(this.getANonDefaultCase()) and
+        firstNode(this.getDefault(), succ)
       )
       or
       exists(CaseClause cc, int i |
-        cc = getNonDefaultCase(i) and
+        cc = this.getNonDefaultCase(i) and
         lastNode(cc, pred, normalCompletion()) and
         pred = cc.(CaseClauseTree).getExprEnd(_, false)
       |
-        firstNode(getNonDefaultCase(i + 1), succ)
+        firstNode(this.getNonDefaultCase(i + 1), succ)
         or
-        i = getNumNonDefaultCase() - 1 and
-        firstNode(getDefault(), succ)
+        i = this.getNumNonDefaultCase() - 1 and
+        firstNode(this.getDefault(), succ)
       )
       or
       exists(CaseClause cc, int i, CaseClause next |
-        cc = getCase(i) and
+        cc = this.getCase(i) and
         lastNode(cc, pred, Fallthrough()) and
-        next = getCase(i + 1)
+        next = this.getCase(i + 1)
       |
         firstNode(next.getStmt(0), succ)
         or
@@ -1979,11 +1985,11 @@ module CFG {
       result = Panic()
     }
 
-    override ControlFlowTree getChildTree(int i) { i = 0 and result = getExpr() }
+    override ControlFlowTree getChildTree(int i) { i = 0 and result = this.getExpr() }
   }
 
   private class UnaryExprTree extends ControlFlowTree, UnaryExpr {
-    override predicate firstNode(ControlFlow::Node first) { firstNode(getOperand(), first) }
+    override predicate firstNode(ControlFlow::Node first) { firstNode(this.getOperand(), first) }
 
     override predicate lastNode(ControlFlow::Node last, Completion cmpl) {
       last = MkExprNode(this) and
@@ -1998,7 +2004,7 @@ module CFG {
       ControlFlowTree.super.succ(pred, succ)
       or
       not this = any(RecvStmt recv).getExpr() and
-      lastNode(getOperand(), pred, normalCompletion()) and
+      lastNode(this.getOperand(), pred, normalCompletion()) and
       succ = MkExprNode(this)
     }
   }
