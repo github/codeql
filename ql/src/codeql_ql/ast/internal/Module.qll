@@ -100,8 +100,10 @@ private predicate resolveQualifiedName(Import imp, ContainerOrModule m, int i) {
       exists(Container c, Container parent |
         // should ideally look at `qlpack.yml` files
         parent = imp.getLocation().getFile().getParentContainer+() and
-        exists(parent.getFile("qlpack.yml")) and
-        c.getParentContainer() = parent and
+        exists(YAML::QLPack pack |
+          pack.getFile().getParentContainer() = parent and
+          c.getParentContainer() = pack.getADependency*().getFile().getParentContainer()
+        ) and
         q = m.getName()
       |
         m = TFile(c)

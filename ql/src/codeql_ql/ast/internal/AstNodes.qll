@@ -1,5 +1,6 @@
 import codeql_ql.ast.Ast as AST
 import TreeSitter
+private import Builtins
 
 cached
 newtype TAstNode =
@@ -10,6 +11,7 @@ newtype TAstNode =
   TClass(Generated::Dataclass dc) or
   TCharPred(Generated::Charpred pred) or
   TClassPredicate(Generated::MemberPredicate pred) or
+  TDBRelation(Generated::DbTable table) or
   TSelect(Generated::Select sel) or
   TModule(Generated::Module mod) or
   TNewType(Generated::Datatype dt) or
@@ -57,7 +59,18 @@ newtype TAstNode =
   TUnaryExpr(Generated::UnaryExpr unaryexpr) or
   TDontCare(Generated::Underscore dontcare) or
   TModuleExpr(Generated::ModuleExpr me) or
-  TPredicateExpr(Generated::PredicateExpr pe)
+  TPredicateExpr(Generated::PredicateExpr pe) or
+  TAnnotation(Generated::Annotation annot) or
+  TAnnotationArg(Generated::AnnotArg arg) or
+  TYamlCommemt(Generated::YamlComment yc) or
+  TYamlEntry(Generated::YamlEntry ye) or
+  TYamlKey(Generated::YamlKey yk) or
+  TYamlListitem(Generated::YamlListitem yli) or
+  TYamlValue(Generated::YamlValue yv) or
+  TBuiltinClassless(string ret, string name, string args) { isBuiltinClassless(ret, name, args) } or
+  TBuiltinMember(string qual, string ret, string name, string args) {
+    isBuiltinMember(qual, ret, name, args)
+  }
 
 class TFormula =
   TDisjunction or TConjunction or TComparisonFormula or TQuantifier or TNegation or TIfFormula or
@@ -74,6 +87,8 @@ class TExpr =
 class TCall = TPredicateCall or TMemberCall or TNoneCall or TAnyCall;
 
 class TModuleRef = TImport or TModuleExpr;
+
+class TYAMLNode = TYamlCommemt or TYamlEntry or TYamlKey or TYamlListitem or TYamlValue;
 
 private Generated::AstNode toGeneratedFormula(AST::AstNode n) {
   n = TConjunction(result) or
@@ -105,6 +120,14 @@ private Generated::AstNode toGeneratedExpr(AST::AstNode n) {
   n = TDontCare(result)
 }
 
+private Generated::AstNode toGenerateYAML(AST::AstNode n) {
+  n = TYamlCommemt(result) or
+  n = TYamlEntry(result) or
+  n = TYamlKey(result) or
+  n = TYamlListitem(result) or
+  n = TYamlValue(result)
+}
+
 /**
  * Gets the underlying TreeSitter entity for a given AST node.
  */
@@ -112,6 +135,8 @@ Generated::AstNode toGenerated(AST::AstNode n) {
   result = toGeneratedExpr(n)
   or
   result = toGeneratedFormula(n)
+  or
+  result = toGenerateYAML(n)
   or
   result.(Generated::ParExpr).getChild() = toGenerated(n)
   or
@@ -134,6 +159,8 @@ Generated::AstNode toGenerated(AST::AstNode n) {
   n = TCharPred(result)
   or
   n = TClassPredicate(result)
+  or
+  n = TDBRelation(result)
   or
   n = TSelect(result)
   or
@@ -164,9 +191,17 @@ Generated::AstNode toGenerated(AST::AstNode n) {
   n = TAnyCall(result)
   or
   n = TSuper(result)
+  or
+  n = TAnnotation(result)
+  or
+  n = TAnnotationArg(result)
 }
 
-class TPredicate = TCharPred or TClasslessPredicate or TClassPredicate;
+class TPredicate = TCharPred or TClasslessPredicate or TClassPredicate or TDBRelation;
+
+class TPredOrBuiltin = TPredicate or TNewTypeBranch or TBuiltin;
+
+class TBuiltin = TBuiltinClassless or TBuiltinMember;
 
 class TModuleMember = TModuleDeclaration or TImport or TSelect or TQLDoc;
 
