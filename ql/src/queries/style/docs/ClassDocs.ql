@@ -16,7 +16,7 @@ predicate badStyle(string s) {
       .replaceAll("*", "")
       .splitAt("\n")
       .trim()
-      .matches(["A %", "An %", "The %"])
+      .matches(["A %", "An %", "The %", "INTERNAL"])
 }
 
 from Class c
