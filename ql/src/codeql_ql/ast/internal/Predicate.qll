@@ -91,8 +91,8 @@ private module Cached {
     rel.getName() = pc.getPredicateName()
   }
 
-  private predicate resolveDBRelation(PredicateCall pc, DefinedPredicate p) {
-    exists(Relation rel | p = TPred(rel) |
+  private predicate resolveDBRelation(PredicateCall pc, Predicate p) {
+    exists(Relation rel | p = rel |
       candidate(rel, pc) and
       rel.getArity() = pc.getNumberOfArguments() and
       (
