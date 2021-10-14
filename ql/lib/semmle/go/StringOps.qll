@@ -70,11 +70,11 @@ module StringOps {
      * An expression of the form `strings.HasPrefix(A, B)`.
      */
     private class StringsHasPrefix extends Range, DataFlow::CallNode {
-      StringsHasPrefix() { getTarget().hasQualifiedName("strings", "HasPrefix") }
+      StringsHasPrefix() { this.getTarget().hasQualifiedName("strings", "HasPrefix") }
 
-      override DataFlow::Node getBaseString() { result = getArgument(0) }
+      override DataFlow::Node getBaseString() { result = this.getArgument(0) }
 
-      override DataFlow::Node getSubstring() { result = getArgument(1) }
+      override DataFlow::Node getSubstring() { result = this.getArgument(1) }
     }
 
     /**
@@ -145,7 +145,7 @@ module StringOps {
       DataFlow::Node substring;
 
       HasPrefix_Substring() {
-        eq(_, slice, substring) and
+        this.eq(_, slice, substring) and
         slice.getLow().getIntValue() = 0 and
         (
           exists(DataFlow::CallNode len |
@@ -211,25 +211,25 @@ module StringOps {
        * Gets the string value of the `n`th operand of this string concatenation, if it is
        * a constant.
        */
-      string getOperandStringValue(int n) { result = getOperand(n).getStringValue() }
+      string getOperandStringValue(int n) { result = this.getOperand(n).getStringValue() }
 
       /**
        * Gets the number of operands of this string concatenation.
        */
-      int getNumOperand() { result = count(getOperand(_)) }
+      int getNumOperand() { result = count(this.getOperand(_)) }
     }
 
     /** A string concatenation using the `+` or `+=` operator. */
     private class PlusConcat extends Range, DataFlow::BinaryOperationNode {
       PlusConcat() {
-        getType() instanceof StringType and
-        getOperator() = "+"
+        this.getType() instanceof StringType and
+        this.getOperator() = "+"
       }
 
       override DataFlow::Node getOperand(int n) {
-        n = 0 and result = getLeftOperand()
+        n = 0 and result = this.getLeftOperand()
         or
-        n = 1 and result = getRightOperand()
+        n = 1 and result = this.getRightOperand()
       }
     }
 
@@ -278,7 +278,7 @@ module StringOps {
       SprintfConcat() {
         exists(Function sprintf | sprintf.hasQualifiedName("fmt", "Sprintf") |
           this = sprintf.getACall() and
-          fmt = getArgument(0).getStringValue() and
+          fmt = this.getArgument(0).getStringValue() and
           fmt.regexpMatch(getFormatComponentRegex() + "*")
         )
       }
@@ -292,22 +292,22 @@ module StringOps {
 
       override DataFlow::Node getOperand(int n) {
         exists(int i, string part | part = "%s" or part = "%v" |
-          part = getComponent(n) and
+          part = this.getComponent(n) and
           i = n / 2 and
-          result = getArgument(i + 1)
+          result = this.getArgument(i + 1)
         )
       }
 
       override string getOperandStringValue(int n) {
         result = Range.super.getOperandStringValue(n)
         or
-        exists(string cmp | cmp = getComponent(n) |
+        exists(string cmp | cmp = this.getComponent(n) |
           (cmp.charAt(0) != "%" or cmp.charAt(1) = "%") and
           result = cmp.replaceAll("%%", "%")
         )
       }
 
-      override int getNumOperand() { result = max(int i | exists(getComponent(i))) + 1 }
+      override int getNumOperand() { result = max(int i | exists(this.getComponent(i))) + 1 }
     }
 
     /**
@@ -357,7 +357,7 @@ module StringOps {
      * Gets the string value of this concatenation element if it is a constant.
      */
     string getStringValue() {
-      result = asNode().getStringValue()
+      result = this.asNode().getStringValue()
       or
       exists(Concatenation parent, int i | this = MkConcatenationOperand(parent, i) |
         result = parent.getOperandStringValue(i)
@@ -367,7 +367,7 @@ module StringOps {
     /**
      * Gets the `n`th operand of this string concatenation.
      */
-    ConcatenationOperand getOperand(int n) { result = MkConcatenationOperand(asNode(), n) }
+    ConcatenationOperand getOperand(int n) { result = MkConcatenationOperand(this.asNode(), n) }
 
     /**
      * Gets an operand of this string concatenation.
@@ -384,14 +384,14 @@ module StringOps {
      *
      * For example, the first operand of `(x + y) + z` is `(x + y)`.
      */
-    ConcatenationOperand getFirstOperand() { result = getOperand(0) }
+    ConcatenationOperand getFirstOperand() { result = this.getOperand(0) }
 
     /**
      * Gets the last operand of this string concatenation.
      *
      * For example, the last operand of `x + (y + z)` is `(y + z)`.
      */
-    ConcatenationOperand getLastOperand() { result = getOperand(getNumOperand() - 1) }
+    ConcatenationOperand getLastOperand() { result = this.getOperand(this.getNumOperand() - 1) }
 
     /**
      * Gets the root of the concatenation tree to which this element belongs.
@@ -408,22 +408,22 @@ module StringOps {
      *
      * For example, the first leaf of `(x + y) + z` is `x`.
      */
-    ConcatenationLeaf getFirstLeaf() { result = getFirstOperand*() }
+    ConcatenationLeaf getFirstLeaf() { result = this.getFirstOperand*() }
 
     /**
      * Gets the last leaf in this concatenation tree.
      *
      * For example, the last leaf of `x + (y + z)` is `z`.
      */
-    ConcatenationLeaf getLastLeaf() { result = getLastOperand*() }
+    ConcatenationLeaf getLastLeaf() { result = this.getLastOperand*() }
 
     /** Gets a textual representation of this concatenation element. */
     string toString() {
-      if exists(asNode())
-      then result = asNode().toString()
+      if exists(this.asNode())
+      then result = this.asNode().toString()
       else
-        if exists(getStringValue())
-        then result = getStringValue()
+        if exists(this.getStringValue())
+        then result = this.getStringValue()
         else result = "concatenation element"
     }
 
@@ -437,10 +437,10 @@ module StringOps {
     predicate hasLocationInfo(
       string filepath, int startline, int startcolumn, int endline, int endcolumn
     ) {
-      asNode().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+      this.asNode().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
       or
       // use dummy location for elements that don't have a corresponding node
-      not exists(asNode()) and
+      not exists(this.asNode()) and
       filepath = "" and
       startline = 0 and
       startcolumn = 0 and
@@ -470,7 +470,7 @@ module StringOps {
    * See `ConcatenationElement` for more information.
    */
   class ConcatenationLeaf extends ConcatenationOperand {
-    ConcatenationLeaf() { not exists(getAnOperand()) }
+    ConcatenationLeaf() { not exists(this.getAnOperand()) }
 
     /**
      * Gets the operand immediately preceding this one in its parent concatenation.

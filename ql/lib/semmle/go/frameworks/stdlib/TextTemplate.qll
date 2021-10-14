@@ -29,7 +29,7 @@ module TextTemplate {
     int dataArg;
 
     TextTemplateInstantiation() {
-      exists(string m | getTarget().hasQualifiedName("text/template", "Template", m) |
+      exists(string m | this.getTarget().hasQualifiedName("text/template", "Template", m) |
         m = "Execute" and
         dataArg = 1
         or
@@ -49,31 +49,31 @@ module TextTemplate {
 
     FunctionModels() {
       // signature: func HTMLEscape(w io.Writer, b []byte)
-      hasQualifiedName("text/template", "HTMLEscape") and
+      this.hasQualifiedName("text/template", "HTMLEscape") and
       (inp.isParameter(1) and outp.isParameter(0))
       or
       // signature: func HTMLEscapeString(s string) string
-      hasQualifiedName("text/template", "HTMLEscapeString") and
+      this.hasQualifiedName("text/template", "HTMLEscapeString") and
       (inp.isParameter(0) and outp.isResult())
       or
       // signature: func HTMLEscaper(args ...interface{}) string
-      hasQualifiedName("text/template", "HTMLEscaper") and
+      this.hasQualifiedName("text/template", "HTMLEscaper") and
       (inp.isParameter(_) and outp.isResult())
       or
       // signature: func JSEscape(w io.Writer, b []byte)
-      hasQualifiedName("text/template", "JSEscape") and
+      this.hasQualifiedName("text/template", "JSEscape") and
       (inp.isParameter(1) and outp.isParameter(0))
       or
       // signature: func JSEscapeString(s string) string
-      hasQualifiedName("text/template", "JSEscapeString") and
+      this.hasQualifiedName("text/template", "JSEscapeString") and
       (inp.isParameter(0) and outp.isResult())
       or
       // signature: func JSEscaper(args ...interface{}) string
-      hasQualifiedName("text/template", "JSEscaper") and
+      this.hasQualifiedName("text/template", "JSEscaper") and
       (inp.isParameter(_) and outp.isResult())
       or
       // signature: func URLQueryEscaper(args ...interface{}) string
-      hasQualifiedName("text/template", "URLQueryEscaper") and
+      this.hasQualifiedName("text/template", "URLQueryEscaper") and
       (inp.isParameter(_) and outp.isResult())
     }
 
@@ -88,11 +88,11 @@ module TextTemplate {
 
     MethodModels() {
       // signature: func (*Template) Execute(wr io.Writer, data interface{}) error
-      hasQualifiedName("text/template", "Template", "Execute") and
+      this.hasQualifiedName("text/template", "Template", "Execute") and
       (inp.isParameter(1) and outp.isParameter(0))
       or
       // signature: func (*Template) ExecuteTemplate(wr io.Writer, name string, data interface{}) error
-      hasQualifiedName("text/template", "Template", "ExecuteTemplate") and
+      this.hasQualifiedName("text/template", "Template", "ExecuteTemplate") and
       (inp.isParameter(2) and outp.isParameter(0))
     }
 

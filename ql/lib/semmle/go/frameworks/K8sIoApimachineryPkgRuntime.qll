@@ -39,7 +39,7 @@ module K8sIoApimachineryPkgRuntime {
     }
 
     override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
-      inp = getAnInput() and outp = getOutput()
+      inp = this.getAnInput() and outp = this.getOutput()
     }
   }
 
@@ -64,7 +64,7 @@ module K8sIoApimachineryPkgRuntime {
     }
 
     override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
-      inp = getAnInput() and outp = getOutput()
+      inp = this.getAnInput() and outp = this.getOutput()
     }
   }
 
@@ -100,7 +100,7 @@ module K8sIoApimachineryPkgRuntime {
     }
 
     override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
-      inp = getAnInput() and outp = getOutput()
+      inp = this.getAnInput() and outp = this.getOutput()
     }
   }
 
@@ -129,7 +129,7 @@ module K8sIoApimachineryPkgRuntime {
     }
 
     override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
-      inp = getAnInput() and outp = getOutput()
+      inp = this.getAnInput() and outp = this.getOutput()
     }
   }
 
@@ -150,7 +150,7 @@ module K8sIoApimachineryPkgRuntime {
     }
 
     override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
-      inp = getAnInput() and outp = getOutput()
+      inp = this.getAnInput() and outp = this.getOutput()
     }
   }
 
@@ -191,7 +191,7 @@ module K8sIoApimachineryPkgRuntime {
     }
 
     override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
-      inp = getAnInput() and outp = getOutput()
+      inp = this.getAnInput() and outp = this.getOutput()
     }
   }
 
@@ -255,7 +255,7 @@ module K8sIoApimachineryPkgRuntime {
     }
 
     override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
-      inp = getAnInput() and outp = getOutput()
+      inp = this.getAnInput() and outp = this.getOutput()
     }
   }
 
@@ -275,7 +275,7 @@ module K8sIoApimachineryPkgRuntime {
     }
 
     override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
-      inp = getAnInput() and outp = getOutput()
+      inp = this.getAnInput() and outp = this.getOutput()
     }
   }
 
@@ -293,7 +293,7 @@ module K8sIoApimachineryPkgRuntime {
     override string getFormat() { result = "protobuf" }
 
     override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
-      inp = getAnInput() and outp = getOutput()
+      inp = this.getAnInput() and outp = this.getOutput()
     }
   }
 
@@ -326,7 +326,7 @@ module K8sIoApimachineryPkgRuntime {
     override string getFormat() { result = "protobuf" }
 
     override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
-      inp = getAnInput() and outp = getOutput()
+      inp = this.getAnInput() and outp = this.getOutput()
     }
   }
 
@@ -341,7 +341,7 @@ module K8sIoApimachineryPkgRuntime {
     override string getFormat() { result = "protobuf" }
 
     override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
-      inp = getAnInput() and outp = getOutput()
+      inp = this.getAnInput() and outp = this.getOutput()
     }
   }
 
@@ -383,7 +383,7 @@ module K8sIoApimachineryPkgRuntime {
     override string getFormat() { result = "protobuf" }
 
     override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
-      inp = getAnInput() and outp = getOutput()
+      inp = this.getAnInput() and outp = this.getOutput()
     }
   }
 
@@ -398,7 +398,7 @@ module K8sIoApimachineryPkgRuntime {
     override string getFormat() { result = "protobuf" }
 
     override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
-      inp = getAnInput() and outp = getOutput()
+      inp = this.getAnInput() and outp = this.getOutput()
     }
   }
 

@@ -15,7 +15,7 @@ class RedirectCheckBarrierGuard extends DataFlow::BarrierGuard, DataFlow::CallNo
 
   override predicate checks(Expr e, boolean outcome) {
     // `isLocalUrl(e)` is a barrier for `e` if it evaluates to `true`
-    getAnArgument().asExpr() = e and
+    this.getAnArgument().asExpr() = e and
     outcome = true
   }
 }

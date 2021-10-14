@@ -29,7 +29,7 @@ class Type extends @type {
    * Only (defined) named types like `io.Writer` have a qualified name. Basic types like `int`,
    * pointer types like `*io.Writer`, and other composite types do not have a qualified name.
    */
-  string getQualifiedName() { result = getEntity().getQualifiedName() }
+  string getQualifiedName() { result = this.getEntity().getQualifiedName() }
 
   /**
    * Holds if this type is declared in a package with path `pkg` and has name `name`.
@@ -37,12 +37,14 @@ class Type extends @type {
    * Only (defined) named types like `io.Writer` have a qualified name. Basic types like `int`,
    * pointer types like `*io.Writer`, and other composite types do not have a qualified name.
    */
-  predicate hasQualifiedName(string pkg, string name) { getEntity().hasQualifiedName(pkg, name) }
+  predicate hasQualifiedName(string pkg, string name) {
+    this.getEntity().hasQualifiedName(pkg, name)
+  }
 
   /**
    * Holds if the method set of this type contains a method named `m` of type `t`.
    */
-  predicate hasMethod(string m, SignatureType t) { t = getMethod(m).getType() }
+  predicate hasMethod(string m, SignatureType t) { t = this.getMethod(m).getType() }
 
   /**
    * Gets the method `m` belonging to the method set of this type, if any.
@@ -60,7 +62,7 @@ class Type extends @type {
    *
    * This includes fields promoted from an embedded field.
    */
-  Field getField(string f) { result = getUnderlyingType().getField(f) }
+  Field getField(string f) { result = this.getUnderlyingType().getField(f) }
 
   /**
    * Holds if this type implements interface `i`, that is, the method set of `i`
@@ -89,12 +91,12 @@ class Type extends @type {
   /**
    * Gets a pretty-printed representation of this type, including its structure where applicable.
    */
-  string pp() { result = toString() }
+  string pp() { result = this.toString() }
 
   /**
    * Gets a basic textual representation of this type.
    */
-  string toString() { result = getName() }
+  string toString() { result = this.getName() }
 }
 
 /** An invalid type. */
@@ -129,7 +131,7 @@ class NumericType extends @numerictype, BasicType {
    * This predicate is not defined for `uintptr` since the language specification says nothing
    * about its size.
    */
-  int getASize() { result = getSize() }
+  int getASize() { result = this.getSize() }
 }
 
 /** An integer type such as `int` or `uint64`. */
@@ -313,11 +315,11 @@ class ArrayType extends @arraytype, CompositeType {
   string getLengthString() { array_length(this, result) }
 
   /** Gets the length of this array type if it can be represented as a QL integer. */
-  int getLength() { result = getLengthString().toInt() }
+  int getLength() { result = this.getLengthString().toInt() }
 
   override Package getPackage() { result = this.getElementType().getPackage() }
 
-  override string pp() { result = "[" + getLength() + "]" + getElementType().pp() }
+  override string pp() { result = "[" + this.getLength() + "]" + this.getElementType().pp() }
 
   override string toString() { result = "array type" }
 }
@@ -329,7 +331,7 @@ class SliceType extends @slicetype, CompositeType {
 
   override Package getPackage() { result = this.getElementType().getPackage() }
 
-  override string pp() { result = "[]" + getElementType().pp() }
+  override string pp() { result = "[]" + this.getElementType().pp() }
 
   override string toString() { result = "slice type" }
 }
@@ -445,12 +447,12 @@ class StructType extends @structtype, CompositeType {
   private Field getFieldCand(string name, int depth, boolean isEmbedded) {
     result = this.getOwnField(name, isEmbedded) and depth = 0
     or
-    exists(Type embedded | hasEmbeddedField(embedded, depth - 1) |
+    exists(Type embedded | this.hasEmbeddedField(embedded, depth - 1) |
       result = embedded.getUnderlyingType().(StructType).getOwnField(name, isEmbedded)
     )
   }
 
-  override Field getField(string name) { result = getFieldAtDepth(name, _) }
+  override Field getField(string name) { result = this.getFieldAtDepth(name, _) }
 
   /**
    * Gets the field `f` with depth `depth` of this type.
@@ -461,14 +463,14 @@ class StructType extends @structtype, CompositeType {
    * The depth of a field `f` declared in this type is zero.
    */
   Field getFieldAtDepth(string name, int depth) {
-    depth = min(int depthCand | exists(getFieldCand(name, depthCand, _))) and
-    result = getFieldCand(name, depth, _) and
-    strictcount(getFieldCand(name, depth, _)) = 1
+    depth = min(int depthCand | exists(this.getFieldCand(name, depthCand, _))) and
+    result = this.getFieldCand(name, depth, _) and
+    strictcount(this.getFieldCand(name, depth, _)) = 1
   }
 
   Method getMethodAtDepth(string name, int depth) {
-    depth = min(int depthCand | hasMethodCand(name, _, depthCand)) and
-    result = unique(Method m | hasMethodCand(name, m, depth))
+    depth = min(int depthCand | this.hasMethodCand(name, _, depthCand)) and
+    result = unique(Method m | this.hasMethodCand(name, m, depth))
   }
 
   override predicate hasMethod(string name, SignatureType tp) {
@@ -504,15 +506,15 @@ class PointerType extends @pointertype, CompositeType {
     or
     // https://golang.org/ref/spec#Method_sets: "the method set of a pointer type *T is
     // the set of all methods declared with receiver *T or T"
-    result = getBaseType().getMethod(m)
+    result = this.getBaseType().getMethod(m)
     or
     // promoted methods from embedded types
     exists(StructType s, Type embedded |
-      s = getBaseType().(NamedType).getUnderlyingType() and
+      s = this.getBaseType().(NamedType).getUnderlyingType() and
       s.hasOwnField(_, _, embedded, true) and
       // ensure that `m` can be promoted
       not s.hasOwnField(_, m, _, _) and
-      not exists(Method m2 | m2.getReceiverBaseType() = getBaseType() and m2.getName() = m)
+      not exists(Method m2 | m2.getReceiverBaseType() = this.getBaseType() and m2.getName() = m)
     |
       result = embedded.getMethod(m)
       or
@@ -525,7 +527,7 @@ class PointerType extends @pointertype, CompositeType {
     )
   }
 
-  override string pp() { result = "* " + getBaseType().pp() }
+  override string pp() { result = "* " + this.getBaseType().pp() }
 
   override string toString() { result = "pointer type" }
 }
@@ -535,14 +537,14 @@ class InterfaceType extends @interfacetype, CompositeType {
   /** Gets the type of method `name` of this interface type. */
   Type getMethodType(string name) { component_types(this, _, name, result) }
 
-  override predicate hasMethod(string m, SignatureType t) { t = getMethodType(m) }
+  override predicate hasMethod(string m, SignatureType t) { t = this.getMethodType(m) }
 
   language[monotonicAggregates]
   override string pp() {
     result =
       "interface { " +
         concat(string name, Type tp |
-          tp = getMethodType(name)
+          tp = this.getMethodType(name)
         |
           name + " " + tp.pp(), "; " order by name
         ) + " }"
@@ -559,7 +561,7 @@ class TupleType extends @tupletype, CompositeType {
   language[monotonicAggregates]
   override string pp() {
     result =
-      "(" + concat(int i, Type tp | tp = getComponentType(i) | tp.pp(), ", " order by i) + ")"
+      "(" + concat(int i, Type tp | tp = this.getComponentType(i) | tp.pp(), ", " order by i) + ")"
   }
 
   override string toString() { result = "tuple type" }
@@ -574,16 +576,16 @@ class SignatureType extends @signaturetype, CompositeType {
   Type getResultType(int i) { i >= 0 and component_types(this, -(i + 1), _, result) }
 
   /** Gets the number of parameters specified by this signature. */
-  int getNumParameter() { result = count(int i | exists(getParameterType(i))) }
+  int getNumParameter() { result = count(int i | exists(this.getParameterType(i))) }
 
   /** Gets the number of results specified by this signature. */
-  int getNumResult() { result = count(int i | exists(getResultType(i))) }
+  int getNumResult() { result = count(int i | exists(this.getResultType(i))) }
 
   language[monotonicAggregates]
   override string pp() {
     result =
-      "func(" + concat(int i, Type tp | tp = getParameterType(i) | tp.pp(), ", " order by i) + ") " +
-        concat(int i, Type tp | tp = getResultType(i) | tp.pp(), ", " order by i)
+      "func(" + concat(int i, Type tp | tp = this.getParameterType(i) | tp.pp(), ", " order by i) +
+        ") " + concat(int i, Type tp | tp = this.getResultType(i) | tp.pp(), ", " order by i)
   }
 
   override string toString() { result = "signature type" }
@@ -597,7 +599,7 @@ class MapType extends @maptype, CompositeType {
   /** Gets the value type of this map type. */
   Type getValueType() { element_type(this, result) }
 
-  override string pp() { result = "[" + getKeyType().pp() + "]" + getValueType().pp() }
+  override string pp() { result = "[" + this.getKeyType().pp() + "]" + this.getValueType().pp() }
 
   override string toString() { result = "map type" }
 }
@@ -618,7 +620,7 @@ class ChanType extends @chantype, CompositeType {
 class SendChanType extends @sendchantype, ChanType {
   override predicate canSend() { any() }
 
-  override string pp() { result = "chan<- " + getElementType().pp() }
+  override string pp() { result = "chan<- " + this.getElementType().pp() }
 
   override string toString() { result = "send-channel type" }
 }
@@ -627,7 +629,7 @@ class SendChanType extends @sendchantype, ChanType {
 class RecvChanType extends @recvchantype, ChanType {
   override predicate canReceive() { any() }
 
-  override string pp() { result = "<-chan " + getElementType().pp() }
+  override string pp() { result = "<-chan " + this.getElementType().pp() }
 
   override string toString() { result = "receive-channel type" }
 }
@@ -638,7 +640,7 @@ class SendRecvChanType extends @sendrcvchantype, ChanType {
 
   override predicate canReceive() { any() }
 
-  override string pp() { result = "chan " + getElementType().pp() }
+  override string pp() { result = "chan " + this.getElementType().pp() }
 
   override string toString() { result = "send-receive-channel type" }
 }
@@ -656,7 +658,7 @@ class NamedType extends @namedtype, CompositeType {
     or
     // handle promoted methods
     exists(StructType s, Type embedded |
-      s = getBaseType() and
+      s = this.getBaseType() and
       s.hasOwnField(_, _, embedded, true) and
       // ensure `m` can be promoted
       not s.hasOwnField(_, m, _, _) and
@@ -670,7 +672,7 @@ class NamedType extends @namedtype, CompositeType {
     )
   }
 
-  override Type getUnderlyingType() { result = getBaseType().getUnderlyingType() }
+  override Type getUnderlyingType() { result = this.getBaseType().getUnderlyingType() }
 }
 
 /**

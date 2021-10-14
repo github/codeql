@@ -60,10 +60,10 @@ class CommentGroup extends @comment_group, AstNode {
   Comment getComment(int i) { comments(result, _, this, i, _) }
 
   /** Gets a comment in this group. */
-  Comment getAComment() { result = getComment(_) }
+  Comment getAComment() { result = this.getComment(_) }
 
   /** Gets the number of comments in this group. */
-  int getNumComment() { result = count(getAComment()) }
+  int getNumComment() { result = count(this.getAComment()) }
 
   override string toString() { result = "comment group" }
 
@@ -219,8 +219,8 @@ class BuildConstraintComment extends LineComment {
   override string getAPrimaryQlClass() { result = "BuildConstraintComment" }
 
   /** Gets the body of this build constraint. */
-  string getConstraintBody() { result = getText().splitAt("build ", 1) }
+  string getConstraintBody() { result = this.getText().splitAt("build ", 1) }
 
   /** Gets a disjunct of this build constraint. */
-  string getADisjunct() { result = getConstraintBody().splitAt(" ") }
+  string getADisjunct() { result = this.getConstraintBody().splitAt(" ") }
 }

@@ -18,7 +18,7 @@ private class ShellOrSudoExecution extends SystemCommandExecution::Range, DataFl
     not hasSafeSubcommand(shellCommand.getStringValue(), this.getAnArgument().getStringValue())
   }
 
-  override DataFlow::Node getCommandName() { result = getAnArgument() }
+  override DataFlow::Node getCommandName() { result = this.getAnArgument() }
 
   override predicate doubleDashIsSanitizing() { shellCommand.getStringValue().matches("%git") }
 }
@@ -70,7 +70,7 @@ private class GoShCommandExecution extends SystemCommandExecution::Range, DataFl
       )
       or
       // Catch calls to the `Command` function:
-      getTarget().hasQualifiedName(packagePath, "Command")
+      this.getTarget().hasQualifiedName(packagePath, "Command")
     )
   }
 

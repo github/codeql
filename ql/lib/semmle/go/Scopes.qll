@@ -56,7 +56,7 @@ class LocalScope extends @localscope, Scope, Locatable {
    * For function scopes, this is the scope itself.
    */
   FunctionScope getEnclosingFunctionScope() {
-    result = getOuterScope().(LocalScope).getEnclosingFunctionScope()
+    result = this.getOuterScope().(LocalScope).getEnclosingFunctionScope()
   }
 
   override string toString() { result = "local scope" }
@@ -64,14 +64,14 @@ class LocalScope extends @localscope, Scope, Locatable {
 
 /** A local scope induced by a file. */
 class FileScope extends LocalScope {
-  FileScope() { getNode() instanceof File }
+  FileScope() { this.getNode() instanceof File }
 }
 
 /** A local scope induced by a function definition. */
 class FunctionScope extends LocalScope {
   FuncDef f;
 
-  FunctionScope() { getNode() = f.getTypeExpr() }
+  FunctionScope() { this.getNode() = f.getTypeExpr() }
 
   /** Gets the function inducing this scope. */
   FuncDef getFunction() { result = f }
@@ -97,13 +97,13 @@ class Entity extends @object {
 
   /** Holds if this entity is declared in a package with path `pkg` and has the given `name`. */
   predicate hasQualifiedName(string pkg, string name) {
-    pkg = getPackage().getPath() and
-    name = getName()
+    pkg = this.getPackage().getPath() and
+    name = this.getName()
   }
 
   /** Gets the qualified name of this entity, if any. */
   string getQualifiedName() {
-    exists(string pkg, string name | hasQualifiedName(pkg, name) | result = pkg + "." + name)
+    exists(string pkg, string name | this.hasQualifiedName(pkg, name) | result = pkg + "." + name)
   }
 
   /**
@@ -123,7 +123,7 @@ class Entity extends @object {
   Type getType() { objecttypes(this, result) }
 
   /** Gets a textual representation of this entity. */
-  string toString() { result = getName() }
+  string toString() { result = this.getName() }
 
   /**
    * Holds if this element is at the specified location.
@@ -136,10 +136,10 @@ class Entity extends @object {
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
     // take the location of the declaration if there is one
-    getDeclaration().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    this.getDeclaration().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     or
     // otherwise fall back on dummy location
-    not exists(getDeclaration()) and
+    not exists(this.getDeclaration()) and
     filepath = "" and
     startline = 0 and
     startcolumn = 0 and
@@ -153,7 +153,7 @@ class DeclaredEntity extends Entity, @declobject {
   /** Gets the expression to which this entity is initialized, if any. */
   Expr getInit() {
     exists(ValueSpec spec, int i |
-      spec.getNameExpr(i) = getDeclaration() and
+      spec.getNameExpr(i) = this.getDeclaration() and
       spec.getInit(i) = result
     )
   }
@@ -214,15 +214,17 @@ class DeclaredVariable extends Variable, DeclaredEntity, @declvarobject {
 
 /** A variable declared in a local scope (as opposed to a package scope or the universal scope). */
 class LocalVariable extends DeclaredVariable {
-  LocalVariable() { getScope() instanceof LocalScope }
+  LocalVariable() { this.getScope() instanceof LocalScope }
 
   /** Gets the innermost function containing the scope of this variable, if any. */
   FuncDef getDeclaringFunction() {
-    result = getScope().(LocalScope).getEnclosingFunctionScope().getFunction()
+    result = this.getScope().(LocalScope).getEnclosingFunctionScope().getFunction()
   }
 
   /** Holds if this variable is referenced inside a nested function. */
-  predicate isCaptured() { getDeclaringFunction() != getAReference().getEnclosingFunction() }
+  predicate isCaptured() {
+    this.getDeclaringFunction() != this.getAReference().getEnclosingFunction()
+  }
 }
 
 /**
@@ -388,8 +390,8 @@ class Function extends ValueEntity, @functionobject {
    * by extending `Function` rather than having to remember to extend `DeclaredFunction`.
    */
   predicate mayReturnNormally() {
-    not mustPanic() and
-    (ControlFlow::mayReturnNormally(getFuncDecl()) or not exists(getBody()))
+    not this.mustPanic() and
+    (ControlFlow::mayReturnNormally(this.getFuncDecl()) or not exists(this.getBody()))
   }
 
   /**
@@ -409,31 +411,31 @@ class Function extends ValueEntity, @functionobject {
   predicate mustPanic() { none() }
 
   /** Gets the number of parameters of this function. */
-  int getNumParameter() { result = getType().(SignatureType).getNumParameter() }
+  int getNumParameter() { result = this.getType().(SignatureType).getNumParameter() }
 
   /** Gets the type of the `i`th parameter of this function. */
-  Type getParameterType(int i) { result = getType().(SignatureType).getParameterType(i) }
+  Type getParameterType(int i) { result = this.getType().(SignatureType).getParameterType(i) }
 
   /** Gets the number of results of this function. */
-  int getNumResult() { result = getType().(SignatureType).getNumResult() }
+  int getNumResult() { result = this.getType().(SignatureType).getNumResult() }
 
   /** Gets the type of the `i`th result of this function. */
-  Type getResultType(int i) { result = getType().(SignatureType).getResultType(i) }
+  Type getResultType(int i) { result = this.getType().(SignatureType).getResultType(i) }
 
   /** Gets the body of this function, if any. */
-  BlockStmt getBody() { result = getFuncDecl().getBody() }
+  BlockStmt getBody() { result = this.getFuncDecl().getBody() }
 
   /** Gets the `i`th parameter of this function. */
-  Parameter getParameter(int i) { result.isParameterOf(getFuncDecl(), i) }
+  Parameter getParameter(int i) { result.isParameterOf(this.getFuncDecl(), i) }
 
   /** Gets a parameter of this function. */
-  Parameter getAParameter() { result = getParameter(_) }
+  Parameter getAParameter() { result = this.getParameter(_) }
 
   /** Gets the `i`th reslt variable of this function. */
-  ResultVariable getResult(int i) { result.isResultOf(getFuncDecl(), i) }
+  ResultVariable getResult(int i) { result.isResultOf(this.getFuncDecl(), i) }
 
   /** Gets a result variable of this function. */
-  ResultVariable getAResult() { result = getResult(_) }
+  ResultVariable getAResult() { result = this.getResult(_) }
 }
 
 /**
@@ -455,7 +457,9 @@ class Method extends Function {
   }
 
   /** Holds if this method is declared in an interface. */
-  predicate isInterfaceMethod() { getReceiverType().getUnderlyingType() instanceof InterfaceType }
+  predicate isInterfaceMethod() {
+    this.getReceiverType().getUnderlyingType() instanceof InterfaceType
+  }
 
   /** Gets the receiver variable of this method. */
   Variable getReceiver() { result = receiver }
@@ -468,7 +472,7 @@ class Method extends Function {
    * if it is a pointer type, or the receiver type itself if it is not a pointer type.
    */
   Type getReceiverBaseType() {
-    exists(Type recv | recv = getReceiverType() |
+    exists(Type recv | recv = this.getReceiverType() |
       if recv instanceof PointerType
       then result = recv.(PointerType).getBaseType()
       else result = recv
@@ -522,7 +526,7 @@ class Method extends Function {
   predicate implements(Method m) {
     this = m
     or
-    not isInterfaceMethod() and
+    not this.isInterfaceMethod() and
     exists(Type t |
       this = t.getMethod(m.getName()) and
       t.implements(m.getReceiverType().getUnderlyingType())
@@ -553,9 +557,9 @@ class DeclaredFunction extends Function, DeclaredEntity, @declfunctionobject {
   override FuncDecl getFuncDecl() { result.getNameExpr() = this.getDeclaration() }
 
   override predicate mayHaveSideEffects() {
-    not exists(getBody())
+    not exists(this.getBody())
     or
-    exists(BlockStmt body | body = getBody() |
+    exists(BlockStmt body | body = this.getBody() |
       body.mayHaveSideEffects()
       or
       // functions declared in files with build constraints may be defined differently
@@ -567,17 +571,17 @@ class DeclaredFunction extends Function, DeclaredEntity, @declfunctionobject {
 
 /** A built-in function. */
 class BuiltinFunction extends Function, BuiltinEntity, @builtinfunctionobject {
-  override predicate mayHaveSideEffects() { builtinFunction(getName(), false, _, _) }
+  override predicate mayHaveSideEffects() { builtinFunction(this.getName(), false, _, _) }
 
-  override predicate mayPanic() { builtinFunction(getName(), _, true, _) }
+  override predicate mayPanic() { builtinFunction(this.getName(), _, true, _) }
 
-  override predicate mustPanic() { builtinFunction(getName(), _, _, true) }
+  override predicate mustPanic() { builtinFunction(this.getName(), _, _, true) }
 
   /**
    * Holds if this function is pure, that is, it has no observable side effects and
    * no non-determinism.
    */
-  predicate isPure() { not mayHaveSideEffects() }
+  predicate isPure() { not this.mayHaveSideEffects() }
 }
 
 /** A statement label. */
