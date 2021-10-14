@@ -29,7 +29,7 @@ jobs:
 
       - uses: ./.github/actions/fetch-codeql
 
-      - uses: ./.github/actions/create-extractor-pack
+      - uses: ./ruby/actions/create-extractor-pack
 
       - name: Checkout ${{ matrix.repo }}
         uses: actions/checkout@v2

@@ -19,7 +19,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: ./.github/actions/fetch-codeql
-      - uses: ./.github/actions/create-extractor-pack
+      - uses: ./ruby/actions/create-extractor-pack
       - name: Run QL tests
         run: |
           codeql/codeql pack install ql/test
