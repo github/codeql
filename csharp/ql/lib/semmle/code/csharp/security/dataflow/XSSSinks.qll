@@ -166,7 +166,7 @@ class AspInlineMember extends AspInlineCode {
   Member getMember() { result = member }
 
   /** Gets the type of this member. */
-  Type getType() { result = getMemberType(getMember()) }
+  Type getType() { result = getMemberType(this.getMember()) }
 }
 
 /** Gets a value that is written to the member accessed by the given `AspInlineMember`. */
