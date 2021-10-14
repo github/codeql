@@ -229,7 +229,7 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
         }
     }
 
-    data class TypeResult<LabelType>(val label: Label<LabelType>, val signature: String)
+    data class TypeResult<LabelType>(val id: Label<LabelType>, val signature: String)
     data class TypeResults(val javaResult: TypeResult<out DbType>, val kotlinResult: TypeResult<out DbKt_type>)
 
     fun useSimpleType(s: IrSimpleType, canReturnPrimitiveTypes: Boolean): TypeResults {
@@ -635,7 +635,7 @@ class X {
     }
 
     fun useTypeOld(t: IrType, canReturnPrimitiveTypes: Boolean = true): Label<out DbType> {
-        return useType(t, canReturnPrimitiveTypes).javaResult.label
+        return useType(t, canReturnPrimitiveTypes).javaResult.id
     }
 
     fun useType(t: IrType, canReturnPrimitiveTypes: Boolean = true): TypeResults {
@@ -781,14 +781,14 @@ class X {
                     }
 
                     val assignmentId = tw.getFreshIdLabel<DbAssignexpr>()
-                    val typeId = useTypeOld(initializer.expression.type)
+                    val type = useType(initializer.expression.type)
                     val declLocId = tw.getLocation(decl)
-                    tw.writeExprs_assignexpr(assignmentId, typeId, blockId, idx++)
+                    tw.writeExprs_assignexpr(assignmentId, type.javaResult.id, type.kotlinResult.id, blockId, idx++)
                     tw.writeHasLocation(assignmentId, declLocId)
 
                     val lhsId = tw.getFreshIdLabel<DbVaraccess>()
-                    val lhsTypeId = useTypeOld(backingField.type)
-                    tw.writeExprs_varaccess(lhsId, lhsTypeId, assignmentId, 0)
+                    val lhsType = useType(backingField.type)
+                    tw.writeExprs_varaccess(lhsId, lhsType.javaResult.id, lhsType.kotlinResult.id, assignmentId, 0)
                     tw.writeHasLocation(lhsId, declLocId)
                     val vId = useProperty(decl) // todo: fix this. We should be assigning the field, and not the property
                     tw.writeVariableBinding(lhsId, vId)
@@ -906,11 +906,11 @@ class X {
     fun extractVariable(v: IrVariable, callable: Label<out DbCallable>) {
         val id = useVariable(v)
         val locId = tw.getLocation(v)
-        val typeId = useTypeOld(v.type)
+        val type = useType(v.type)
         val decId = tw.getFreshIdLabel<DbLocalvariabledeclexpr>()
-        tw.writeLocalvars(id, v.name.asString(), typeId, decId)
+        tw.writeLocalvars(id, v.name.asString(), type.javaResult.id, decId) // TODO: KT type
         tw.writeHasLocation(id, locId)
-        tw.writeExprs_localvariabledeclexpr(decId, typeId, id, 0)
+        tw.writeExprs_localvariabledeclexpr(decId, type.javaResult.id, type.kotlinResult.id, id, 0)
         tw.writeHasLocation(id, locId)
         val i = v.initializer
         if(i != null) {
@@ -951,80 +951,80 @@ class X {
         val exprId: Label<out DbExpr> = when {
             c.origin == PLUS -> {
                 val id = tw.getFreshIdLabel<DbAddexpr>()
-                val typeId = useTypeOld(c.type)
+                val type = useType(c.type)
                 val locId = tw.getLocation(c)
-                tw.writeExprs_addexpr(id, typeId, parent, idx)
+                tw.writeExprs_addexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 tw.writeHasLocation(id, locId)
                 id
             } c.origin == MINUS -> {
                 val id = tw.getFreshIdLabel<DbSubexpr>()
-                val typeId = useTypeOld(c.type)
+                val type = useType(c.type)
                 val locId = tw.getLocation(c)
-                tw.writeExprs_subexpr(id, typeId, parent, idx)
+                tw.writeExprs_subexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 tw.writeHasLocation(id, locId)
                 id
             } c.origin == DIV -> {
                 val id = tw.getFreshIdLabel<DbDivexpr>()
-                val typeId = useTypeOld(c.type)
+                val type = useType(c.type)
                 val locId = tw.getLocation(c)
-                tw.writeExprs_divexpr(id, typeId, parent, idx)
+                tw.writeExprs_divexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 tw.writeHasLocation(id, locId)
                 id
             } c.origin == PERC -> {
                 val id = tw.getFreshIdLabel<DbRemexpr>()
-                val typeId = useTypeOld(c.type)
+                val type = useType(c.type)
                 val locId = tw.getLocation(c)
-                tw.writeExprs_remexpr(id, typeId, parent, idx)
+                tw.writeExprs_remexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 tw.writeHasLocation(id, locId)
                 id
             } c.origin == EQEQ -> {
                 val id = tw.getFreshIdLabel<DbEqexpr>()
-                val typeId = useTypeOld(c.type)
+                val type = useType(c.type)
                 val locId = tw.getLocation(c)
-                tw.writeExprs_eqexpr(id, typeId, parent, idx)
+                tw.writeExprs_eqexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 tw.writeHasLocation(id, locId)
                 id
             } c.origin == EXCLEQ -> {
                 val id = tw.getFreshIdLabel<DbNeexpr>()
-                val typeId = useTypeOld(c.type)
+                val type = useType(c.type)
                 val locId = tw.getLocation(c)
-                tw.writeExprs_neexpr(id, typeId, parent, idx)
+                tw.writeExprs_neexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 tw.writeHasLocation(id, locId)
                 id
             } c.origin == LT -> {
                 val id = tw.getFreshIdLabel<DbLtexpr>()
-                val typeId = useTypeOld(c.type)
+                val type = useType(c.type)
                 val locId = tw.getLocation(c)
-                tw.writeExprs_ltexpr(id, typeId, parent, idx)
+                tw.writeExprs_ltexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 tw.writeHasLocation(id, locId)
                 id
             } c.origin == LTEQ -> {
                 val id = tw.getFreshIdLabel<DbLeexpr>()
-                val typeId = useTypeOld(c.type)
+                val type = useType(c.type)
                 val locId = tw.getLocation(c)
-                tw.writeExprs_leexpr(id, typeId, parent, idx)
+                tw.writeExprs_leexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 tw.writeHasLocation(id, locId)
                 id
             } c.origin == GT -> {
                 val id = tw.getFreshIdLabel<DbGtexpr>()
-                val typeId = useTypeOld(c.type)
+                val type = useType(c.type)
                 val locId = tw.getLocation(c)
-                tw.writeExprs_gtexpr(id, typeId, parent, idx)
+                tw.writeExprs_gtexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 tw.writeHasLocation(id, locId)
                 id
             } c.origin == GTEQ -> {
                 val id = tw.getFreshIdLabel<DbGeexpr>()
-                val typeId = useTypeOld(c.type)
+                val type = useType(c.type)
                 val locId = tw.getLocation(c)
-                tw.writeExprs_geexpr(id, typeId, parent, idx)
+                tw.writeExprs_geexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 tw.writeHasLocation(id, locId)
                 id
             } else -> {
                 val id = tw.getFreshIdLabel<DbMethodaccess>()
-                val typeId = useTypeOld(c.type)
+                val type = useType(c.type)
                 val locId = tw.getLocation(c)
                 val methodId = useFunction<DbMethod>(c.symbol.owner)
-                tw.writeExprs_methodaccess(id, typeId, parent, idx)
+                tw.writeExprs_methodaccess(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 tw.writeHasLocation(id, locId)
                 tw.writeCallableBinding(id, methodId)
 
@@ -1053,10 +1053,10 @@ class X {
     ) {
         for (argIdx in 0 until c.typeArgumentsCount) {
             val arg = c.getTypeArgument(argIdx)!!
-            val argTypeId = useTypeOld(arg, false)
+            val argType = useType(arg, false)
             val argId = tw.getFreshIdLabel<DbUnannotatedtypeaccess>()
             val mul = if (reverse) -1 else 1
-            tw.writeExprs_unannotatedtypeaccess(argId, argTypeId, id, argIdx * mul + startIndex)
+            tw.writeExprs_unannotatedtypeaccess(argId, argType.javaResult.id, argType.kotlinResult.id, id, argIdx * mul + startIndex)
         }
     }
 
@@ -1067,10 +1067,10 @@ class X {
         callable: Label<out DbCallable>
     ) {
         val id = tw.getFreshIdLabel<DbNewexpr>()
-        val typeId = useTypeOld(e.type)
+        val type = useType(e.type)
         val locId = tw.getLocation(e)
         val methodId = useFunction<DbConstructor>(e.symbol.owner)
-        tw.writeExprs_newexpr(id, typeId, parent, idx)
+        tw.writeExprs_newexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
         tw.writeHasLocation(id, locId)
         tw.writeCallableBinding(id, methodId)
         for (i in 0 until e.valueArgumentsCount) {
@@ -1086,7 +1086,7 @@ class X {
 
         if (e.typeArgumentsCount > 0) {
             val typeAccessId = tw.getFreshIdLabel<DbUnannotatedtypeaccess>()
-            tw.writeExprs_unannotatedtypeaccess(typeAccessId, typeId, id, -3)
+            tw.writeExprs_unannotatedtypeaccess(typeAccessId, type.javaResult.id, type.kotlinResult.id, id, -3)
             extractTypeArguments(e, typeAccessId)
         }
     }
@@ -1110,11 +1110,11 @@ class X {
 
                 // Add call to <obinit>:
                 val id = tw.getFreshIdLabel<DbMethodaccess>()
-                val typeId = useTypeOld(e.type)
+                val type = useType(e.type)
                 val locId = tw.getLocation(e)
                 var methodLabel = getFunctionLabel(irCallable.parent, "<obinit>", listOf(), e.type)
                 val methodId = tw.getLabelFor<DbMethod>(methodLabel)
-                tw.writeExprs_methodaccess(id, typeId, parent, idx)
+                tw.writeExprs_methodaccess(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 tw.writeHasLocation(id, locId)
                 tw.writeCallableBinding(id, methodId)
             }
@@ -1168,38 +1168,38 @@ class X {
                 when(v) {
                     is Int -> {
                         val id = tw.getFreshIdLabel<DbIntegerliteral>()
-                        val typeId = useTypeOld(e.type)
+                        val type = useType(e.type)
                         val locId = tw.getLocation(e)
-                        tw.writeExprs_integerliteral(id, typeId, parent, idx)
+                        tw.writeExprs_integerliteral(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                         tw.writeHasLocation(id, locId)
                         tw.writeNamestrings(v.toString(), v.toString(), id)
                     } is Boolean -> {
                         val id = tw.getFreshIdLabel<DbBooleanliteral>()
-                        val typeId = useTypeOld(e.type)
+                        val type = useType(e.type)
                         val locId = tw.getLocation(e)
-                        tw.writeExprs_booleanliteral(id, typeId, parent, idx)
+                        tw.writeExprs_booleanliteral(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                         tw.writeHasLocation(id, locId)
                         tw.writeNamestrings(v.toString(), v.toString(), id)
                     } is Char -> {
                         val id = tw.getFreshIdLabel<DbCharacterliteral>()
-                        val typeId = useTypeOld(e.type)
+                        val type = useType(e.type)
                         val locId = tw.getLocation(e)
-                        tw.writeExprs_characterliteral(id, typeId, parent, idx)
+                        tw.writeExprs_characterliteral(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                         tw.writeHasLocation(id, locId)
                         tw.writeNamestrings(v.toString(), v.toString(), id)
                     } is String -> {
                         val id = tw.getFreshIdLabel<DbStringliteral>()
-                        val typeId = useTypeOld(e.type)
+                        val type = useType(e.type)
                         val locId = tw.getLocation(e)
-                        tw.writeExprs_stringliteral(id, typeId, parent, idx)
+                        tw.writeExprs_stringliteral(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                         tw.writeHasLocation(id, locId)
                         tw.writeNamestrings(v.toString(), v.toString(), id)
                     }
                     null -> {
                         val id = tw.getFreshIdLabel<DbNullliteral>()
-                        val typeId = useTypeOld(e.type) // class;kotlin.Nothing
+                        val type = useType(e.type) // class;kotlin.Nothing
                         val locId = tw.getLocation(e)
-                        tw.writeExprs_nullliteral(id, typeId, parent, idx)
+                        tw.writeExprs_nullliteral(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                         tw.writeHasLocation(id, locId)
                     }
                     else -> {
@@ -1211,9 +1211,9 @@ class X {
                 val owner = e.symbol.owner
                 if (owner is IrValueParameter && owner.index == -1) {
                     val id = tw.getFreshIdLabel<DbThisaccess>()
-                    val typeId = useTypeOld(e.type)
+                    val type = useType(e.type)
                     val locId = tw.getLocation(e)
-                    tw.writeExprs_thisaccess(id, typeId, parent, idx)
+                    tw.writeExprs_thisaccess(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                     if (isQualifiedThis(owner)) {
                         // todo: add type access as child of 'id' at index 0
                         logger.warnElement(Severity.ErrorSevere, "TODO: Qualified this access found.", e)
@@ -1221,9 +1221,9 @@ class X {
                     tw.writeHasLocation(id, locId)
                 } else {
                     val id = tw.getFreshIdLabel<DbVaraccess>()
-                    val typeId = useTypeOld(e.type)
+                    val type = useType(e.type)
                     val locId = tw.getLocation(e)
-                    tw.writeExprs_varaccess(id, typeId, parent, idx)
+                    tw.writeExprs_varaccess(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                     tw.writeHasLocation(id, locId)
 
                     val vId = useValueDeclaration(owner)
@@ -1232,14 +1232,14 @@ class X {
             }
             is IrSetValue -> {
                 val id = tw.getFreshIdLabel<DbAssignexpr>()
-                val typeId = useTypeOld(e.type)
+                val type = useType(e.type)
                 val locId = tw.getLocation(e)
-                tw.writeExprs_assignexpr(id, typeId, parent, idx)
+                tw.writeExprs_assignexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 tw.writeHasLocation(id, locId)
 
                 val lhsId = tw.getFreshIdLabel<DbVaraccess>()
-                val lhsTypeId = useTypeOld(e.symbol.owner.type)
-                tw.writeExprs_varaccess(lhsId, lhsTypeId, id, 0)
+                val lhsType = useType(e.symbol.owner.type)
+                tw.writeExprs_varaccess(lhsId, lhsType.javaResult.id, lhsType.kotlinResult.id, id, 0)
                 tw.writeHasLocation(id, locId)
                 val vId = useValueDeclaration(e.symbol.owner)
                 tw.writeVariableBinding(lhsId, vId)
@@ -1307,9 +1307,9 @@ class X {
             }
             is IrWhen -> {
                 val id = tw.getFreshIdLabel<DbWhenexpr>()
-                val typeId = useTypeOld(e.type)
+                val type = useType(e.type)
                 val locId = tw.getLocation(e)
-                tw.writeExprs_whenexpr(id, typeId, parent, idx)
+                tw.writeExprs_whenexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 tw.writeHasLocation(id, locId)
                 if(e.origin == IF) {
                     tw.writeWhen_if(id)
@@ -1329,8 +1329,8 @@ class X {
             is IrGetClass -> {
                 val id = tw.getFreshIdLabel<DbGetclassexpr>()
                 val locId = tw.getLocation(e)
-                val typeId = useTypeOld(e.type)
-                tw.writeExprs_getclassexpr(id, typeId, parent, idx)
+                val type = useType(e.type)
+                tw.writeExprs_getclassexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 tw.writeHasLocation(id, locId)
                 extractExpression(e.argument, callable, id, 0)
             }

@@ -736,10 +736,10 @@ class LabeledStmt extends Stmt, @labeledstmt {
 /** An `assert` statement. */
 class AssertStmt extends Stmt, @assertstmt {
   /** Gets the boolean expression of this `assert` statement. */
-  Expr getExpr() { exprs(result, _, _, this, _) and result.getIndex() = 0 }
+  Expr getExpr() { exprs(result, _, _, _, this, _) and result.getIndex() = 0 }
 
   /** Gets the assertion message expression, if any. */
-  Expr getMessage() { exprs(result, _, _, this, _) and result.getIndex() = 1 }
+  Expr getMessage() { exprs(result, _, _, _, this, _) and result.getIndex() = 1 }
 
   override string pp() {
     if exists(this.getMessage()) then result = "assert ... : ..." else result = "assert ..."
