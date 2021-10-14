@@ -1,0 +1,49 @@
+name: "CodeQL with published queries and extractor"
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+  pull_request:
+    # The branches below must be a subset of the branches above
+    branches: [ main ]
+
+jobs:
+
+  analyze:
+    name: Analyze
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Download pack
+      run: |
+        gh release download latest --pattern ql-qlpack.zip
+        unzip ql-qlpack.zip -d "${PACK}"
+      env:
+        PACK: ${{ runner.temp }}/ql-qlpack
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Hack codeql-action options
+      run: |
+        JSON=$(jq -nc --arg pack "${PACK}" '.resolve.queries=["--search-path", $pack] | .resolve.extractor=["--search-path", $pack] | .database.init=["--search-path", $pack]')
+        echo "CODEQL_ACTION_EXTRA_OPTIONS=${JSON}" >> ${GITHUB_ENV}
+      env:
+        PACK: ${{ runner.temp }}/ql-qlpack
+
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@esbena/ql
+      with:
+        languages: ql
+        db-location: ${{ runner.temp }}/db
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@esbena/ql
