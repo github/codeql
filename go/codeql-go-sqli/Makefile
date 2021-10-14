@@ -18,24 +18,23 @@ run: add-user
 
 clean:
 	rm -f README.html add-user users.log
-	rm -f users.sqlite *.bak *~ cpp-sqli-demo.zip
+	rm -f users.sqlite *.bak *~ go-sqli.sarif go-sqli.txt
 
 ZIPLIST :=					\
-    Makefile					\
-    README.org					\
-    SqlInjection.ql				\
-    add-user.c					\
-    add-user.sh					\
-    admin					\
-    build.sh					\
-    codeql-dataflow-sql-injection.md		\
-    codeql-overview-for-workshop.pdf		\
-    cpp-sqli.code-workspace			\
-    dataflow-cropped.pdf			\
-    qlpack.yml					\
-    sarif-summary.jq				\
-    session.ql
+Makefile					\
+README.org					\
+SqlInjection.ql					\
+add-user.go					\
+add-user.sh					\
+admin						\
+build.sh					\
+go-sqli-ba5819d.db.zip				\
+go-sqli.code-workspace				\
+go.mod						\
+go.sum						\
+qlpack.yml					\
+sarif-summary.jq
 
 demo-zip: 
-	rm -f cpp-sqli-demo.zip
-	zip cpp-sqli-demo.zip $(ZIPLIST)
+	rm -f go-sqli-demo.zip
+	zip go-sqli-demo.zip $(ZIPLIST)
