@@ -63,25 +63,29 @@ module DOM {
   /**
    * An HTML element, viewed as an `ElementDefinition`.
    */
-  private class HtmlElementDefinition extends ElementDefinition, @xmlelement instanceof HTML::Element {
-    override string getName() { result = super.getName() }
+  private class HtmlElementDefinition extends ElementDefinition, @xmlelement {
+    HtmlElementDefinition() { this instanceof HTML::Element }
+
+    override string getName() { result = this.(HTML::Element).getName() }
 
     override AttributeDefinition getAttribute(int i) {
-      result = super.getAttribute(i)
+      result = this.(HTML::Element).getAttribute(i)
     }
 
-    override ElementDefinition getParent() { result = super.getParent() }
+    override ElementDefinition getParent() { result = this.(HTML::Element).getParent() }
   }
 
   /**
    * A JSX element, viewed as an `ElementDefinition`.
    */
-  private class JsxElementDefinition extends ElementDefinition, @jsx_element instanceof JSXElement {
-    override string getName() { result = super.getName() }
+  private class JsxElementDefinition extends ElementDefinition, @jsx_element {
+    JsxElementDefinition() { this instanceof JSXElement }
 
-    override AttributeDefinition getAttribute(int i) { result = super.getAttribute(i) }
+    override string getName() { result = this.(JSXElement).getName() }
 
-    override ElementDefinition getParent() { result = super.getJsxParent() }
+    override AttributeDefinition getAttribute(int i) { result = this.(JSXElement).getAttribute(i) }
+
+    override ElementDefinition getParent() { result = this.(JSXElement).getJsxParent() }
   }
 
   /**
@@ -127,12 +131,14 @@ module DOM {
   /**
    * An HTML attribute, viewed as an `AttributeDefinition`.
    */
-  private class HtmlAttributeDefinition extends AttributeDefinition, @xmlattribute instanceof HTML::Attribute {
-    override string getName() { result = super.getName() }
+  private class HtmlAttributeDefinition extends AttributeDefinition, @xmlattribute {
+    HtmlAttributeDefinition() { this instanceof HTML::Attribute }
 
-    override string getStringValue() { result = super.getValue() }
+    override string getName() { result = this.(HTML::Attribute).getName() }
 
-    override ElementDefinition getElement() { result = super.getElement() }
+    override string getStringValue() { result = this.(HTML::Attribute).getValue() }
+
+    override ElementDefinition getElement() { result = this.(HTML::Attribute).getElement() }
   }
 
   /**

@@ -201,23 +201,26 @@ class BuiltinVariable extends SsaSourceVariable {
   override CallNode redefinedAtCallSite() { none() }
 }
 
-class ModuleVariable extends SsaSourceVariable instanceof GlobalVariable {
+class ModuleVariable extends SsaSourceVariable {
   ModuleVariable() {
-    exists(this.(Variable).getAStore())
-    or
-    this.(Variable).getId() = "__name__"
-    or
-    this.(Variable).getId() = "__package__"
-    or
-    exists(ImportStar is | is.getScope() = this.(Variable).getScope())
+    this instanceof GlobalVariable and
+    (
+      exists(this.(Variable).getAStore())
+      or
+      this.(Variable).getId() = "__name__"
+      or
+      this.(Variable).getId() = "__package__"
+      or
+      exists(ImportStar is | is.getScope() = this.(Variable).getScope())
+    )
   }
 
   pragma[noinline]
-  CallNode global_variable_callnode() { result.getScope() = super.getScope() }
+  CallNode global_variable_callnode() { result.getScope() = this.(GlobalVariable).getScope() }
 
   pragma[noinline]
   ImportMemberNode global_variable_import() {
-    result.getScope() = super.getScope() and
+    result.getScope() = this.(GlobalVariable).getScope() and
     import_from_dot_in_init(result.(ImportMemberNode).getModule(this.getName()))
   }
 
@@ -247,13 +250,13 @@ class ModuleVariable extends SsaSourceVariable instanceof GlobalVariable {
   override ControlFlowNode getScopeEntryDefinition() {
     exists(Scope s | s.getEntryNode() = result |
       /* Module entry point */
-      super.getScope() = s
+      this.(GlobalVariable).getScope() = s
       or
       /* For implicit use of __metaclass__ when constructing class */
       class_with_global_metaclass(s, this)
       or
       /* Variable is used in scope */
-      super.getAUse().getScope() = s
+      this.(GlobalVariable).getAUse().getScope() = s
     )
     or
     exists(ImportTimeScope scope | scope.entryEdge(_, result) |

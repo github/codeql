@@ -718,8 +718,12 @@ abstract class FunctionValue extends CallableValue {
 }
 
 /** Class representing Python functions */
-class PythonFunctionValue extends FunctionValue instanceof PythonFunctionObjectInternal {
-  override string getQualifiedName() { result = super.getScope().getQualifiedName() }
+class PythonFunctionValue extends FunctionValue {
+  PythonFunctionValue() { this instanceof PythonFunctionObjectInternal }
+
+  override string getQualifiedName() {
+    result = this.(PythonFunctionObjectInternal).getScope().getQualifiedName()
+  }
 
   override string descriptiveString() {
     if this.getScope().isMethod()
@@ -762,8 +766,10 @@ class PythonFunctionValue extends FunctionValue instanceof PythonFunctionObjectI
 }
 
 /** Class representing builtin functions, such as `len` or `print` */
-class BuiltinFunctionValue extends FunctionValue instanceof BuiltinFunctionObjectInternal {
-  override string getQualifiedName() { result = super.getName() }
+class BuiltinFunctionValue extends FunctionValue {
+  BuiltinFunctionValue() { this instanceof BuiltinFunctionObjectInternal }
+
+  override string getQualifiedName() { result = this.(BuiltinFunctionObjectInternal).getName() }
 
   override string descriptiveString() { result = "builtin-function " + this.getName() }
 
@@ -782,7 +788,7 @@ class BuiltinFunctionValue extends FunctionValue instanceof BuiltinFunctionObjec
      * explicit return nodes that we can query and get the class of.
      */
 
-    result = TBuiltinClassObject(super.getReturnType())
+    result = TBuiltinClassObject(this.(BuiltinFunctionObjectInternal).getReturnType())
   }
 }
 

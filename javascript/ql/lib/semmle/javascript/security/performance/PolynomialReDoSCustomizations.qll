@@ -47,8 +47,10 @@ module PolynomialReDoS {
    * A remote input to a server, seen as a source for polynomial
    * regular expression denial-of-service vulnerabilities.
    */
-  class RequestInputAccessAsSource extends Source instanceof HTTP::RequestInputAccess {
-    override string getKind() { result = super.getKind() }
+  class RequestInputAccessAsSource extends Source {
+    RequestInputAccessAsSource() { this instanceof HTTP::RequestInputAccess }
+
+    override string getKind() { result = this.(HTTP::RequestInputAccess).getKind() }
   }
 
   /**
