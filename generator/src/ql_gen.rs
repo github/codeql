@@ -95,7 +95,11 @@ pub fn create_ast_node_class<'a>(ast_node: &'a str, ast_node_parent: &'a str) ->
                 name: "concat",
                 vars: vec![],
                 range: None,
-                expr: Box::new(ql::Expression::Pred("getAPrimaryQlClass", vec![])),
+                expr: Box::new(ql::Expression::Dot(
+                    Box::new(ql::Expression::Var("this")),
+                    "getAPrimaryQlClass",
+                    vec![],
+                )),
                 second_expr: Some(Box::new(ql::Expression::String(","))),
             }),
         ),
@@ -146,7 +150,11 @@ pub fn create_token_class<'a>(token_type: &'a str, tokeninfo: &'a str) -> ql::Cl
         formal_parameters: vec![],
         body: ql::Expression::Equals(
             Box::new(ql::Expression::Var("result")),
-            Box::new(ql::Expression::Pred("getValue", vec![])),
+            Box::new(ql::Expression::Dot(
+                Box::new(ql::Expression::Var("this")),
+                "getValue",
+                vec![],
+            )),
         ),
     };
     ql::Class {
