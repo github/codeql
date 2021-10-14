@@ -26,6 +26,10 @@ jobs:
 
     - name: Download pack
       run: |
+        # adjust this line to make the workflow work in other repositories
+        # the ql-qlpack.zip file can be downloaded at:
+        # - https://github.com/github/codeql-ql/releases
+        # - https://github.com/github/codeql-ql/actions/workflows/bleeding-codeql-analysis.yml
         gh release download latest --pattern ql-qlpack.zip
         unzip ql-qlpack.zip -d "${PACK}"
       env:
