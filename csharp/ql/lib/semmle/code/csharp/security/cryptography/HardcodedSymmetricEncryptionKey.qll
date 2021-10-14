@@ -21,7 +21,7 @@ module HardcodedSymmetricEncryptionKey {
   abstract class Sanitizer extends DataFlow::ExprNode { }
 
   private class ByteArrayType extends ArrayType {
-    ByteArrayType() { getElementType() instanceof ByteType }
+    ByteArrayType() { this.getElementType() instanceof ByteType }
   }
 
   private class ByteArrayLiteralSource extends Source {
@@ -49,7 +49,7 @@ module HardcodedSymmetricEncryptionKey {
   private class SymmetricEncryptionCreateEncryptorSink extends Sink {
     SymmetricEncryptionCreateEncryptorSink() {
       exists(SymmetricAlgorithm ag, MethodCall mc | mc = ag.getASymmetricEncryptor() |
-        asExpr() = mc.getArgumentForName("rgbKey")
+        this.asExpr() = mc.getArgumentForName("rgbKey")
       )
     }
 
@@ -59,7 +59,7 @@ module HardcodedSymmetricEncryptionKey {
   private class SymmetricEncryptionCreateDecryptorSink extends Sink {
     SymmetricEncryptionCreateDecryptorSink() {
       exists(SymmetricAlgorithm ag, MethodCall mc | mc = ag.getASymmetricDecryptor() |
-        asExpr() = mc.getArgumentForName("rgbKey")
+        this.asExpr() = mc.getArgumentForName("rgbKey")
       )
     }
 

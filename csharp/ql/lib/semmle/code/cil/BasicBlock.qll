@@ -10,7 +10,7 @@ private import CIL
  */
 class BasicBlock extends Cached::TBasicBlockStart {
   /** Gets an immediate successor of this basic block, if any. */
-  BasicBlock getASuccessor() { result.getFirstNode() = getLastNode().getASuccessor() }
+  BasicBlock getASuccessor() { result.getFirstNode() = this.getLastNode().getASuccessor() }
 
   /** Gets an immediate predecessor of this basic block, if any. */
   BasicBlock getAPredecessor() { result.getASuccessor() = this }
@@ -31,7 +31,7 @@ class BasicBlock extends Cached::TBasicBlockStart {
    * The basic block on line 2 is an immediate `true` successor of the
    * basic block on line 1.
    */
-  BasicBlock getATrueSuccessor() { result.getFirstNode() = getLastNode().getTrueSuccessor() }
+  BasicBlock getATrueSuccessor() { result.getFirstNode() = this.getLastNode().getTrueSuccessor() }
 
   /**
    * Gets an immediate `false` successor, if any.
@@ -49,22 +49,22 @@ class BasicBlock extends Cached::TBasicBlockStart {
    * The basic block on line 2 is an immediate `false` successor of the
    * basic block on line 1.
    */
-  BasicBlock getAFalseSuccessor() { result.getFirstNode() = getLastNode().getFalseSuccessor() }
+  BasicBlock getAFalseSuccessor() { result.getFirstNode() = this.getLastNode().getFalseSuccessor() }
 
   /** Gets the control flow node at a specific (zero-indexed) position in this basic block. */
-  ControlFlowNode getNode(int pos) { Cached::bbIndex(getFirstNode(), result, pos) }
+  ControlFlowNode getNode(int pos) { Cached::bbIndex(this.getFirstNode(), result, pos) }
 
   /** Gets a control flow node in this basic block. */
-  ControlFlowNode getANode() { result = getNode(_) }
+  ControlFlowNode getANode() { result = this.getNode(_) }
 
   /** Gets the first control flow node in this basic block. */
   ControlFlowNode getFirstNode() { this = Cached::TBasicBlockStart(result) }
 
   /** Gets the last control flow node in this basic block. */
-  ControlFlowNode getLastNode() { result = getNode(length() - 1) }
+  ControlFlowNode getLastNode() { result = this.getNode(this.length() - 1) }
 
   /** Gets the length of this basic block. */
-  int length() { result = strictcount(getANode()) }
+  int length() { result = strictcount(this.getANode()) }
 
   /**
    * Holds if this basic block strictly dominates basic block `bb`.
@@ -114,7 +114,7 @@ class BasicBlock extends Cached::TBasicBlockStart {
    */
   predicate dominates(BasicBlock bb) {
     bb = this or
-    strictlyDominates(bb)
+    this.strictlyDominates(bb)
   }
 
   /**
@@ -140,14 +140,14 @@ class BasicBlock extends Cached::TBasicBlockStart {
    * does not dominate the basic block on line 6.
    */
   predicate inDominanceFrontier(BasicBlock df) {
-    dominatesPredecessor(df) and
-    not strictlyDominates(df)
+    this.dominatesPredecessor(df) and
+    not this.strictlyDominates(df)
   }
 
   /**
    * Holds if this basic block dominates a predecessor of `df`.
    */
-  private predicate dominatesPredecessor(BasicBlock df) { dominates(df.getAPredecessor()) }
+  private predicate dominatesPredecessor(BasicBlock df) { this.dominates(df.getAPredecessor()) }
 
   /**
    * Gets the basic block that immediately dominates this basic block, if any.
@@ -226,7 +226,7 @@ class BasicBlock extends Cached::TBasicBlockStart {
    * post-dominates itself.
    */
   predicate postDominates(BasicBlock bb) {
-    strictlyPostDominates(bb) or
+    this.strictlyPostDominates(bb) or
     this = bb
   }
 
@@ -239,7 +239,7 @@ class BasicBlock extends Cached::TBasicBlockStart {
   predicate inLoop() { this.getASuccessor+() = this }
 
   /** Gets a textual representation of this basic block. */
-  string toString() { result = getFirstNode().toString() }
+  string toString() { result = this.getFirstNode().toString() }
 
   /** Gets the location of this basic block. */
   Location getLocation() { result = this.getFirstNode().getLocation() }
@@ -325,16 +325,16 @@ private predicate exitBB(BasicBlock bb) { not exists(bb.getLastNode().getASucces
  * A basic block with more than one predecessor.
  */
 class JoinBlock extends BasicBlock {
-  JoinBlock() { getFirstNode().isJoin() }
+  JoinBlock() { this.getFirstNode().isJoin() }
 }
 
 /** A basic block that terminates in a condition, splitting the subsequent control flow. */
 class ConditionBlock extends BasicBlock {
   ConditionBlock() {
     exists(BasicBlock succ |
-      succ = getATrueSuccessor()
+      succ = this.getATrueSuccessor()
       or
-      succ = getAFalseSuccessor()
+      succ = this.getAFalseSuccessor()
     )
   }
 
@@ -380,16 +380,16 @@ class ConditionBlock extends BasicBlock {
      */
 
     exists(BasicBlock succ |
-      isCandidateSuccessor(succ, testIsTrue) and
+      this.isCandidateSuccessor(succ, testIsTrue) and
       succ.dominates(controlled)
     )
   }
 
   private predicate isCandidateSuccessor(BasicBlock succ, boolean testIsTrue) {
     (
-      testIsTrue = true and succ = getATrueSuccessor()
+      testIsTrue = true and succ = this.getATrueSuccessor()
       or
-      testIsTrue = false and succ = getAFalseSuccessor()
+      testIsTrue = false and succ = this.getAFalseSuccessor()
     ) and
     forall(BasicBlock pred | pred = succ.getAPredecessor() and pred != this | succ.dominates(pred))
   }

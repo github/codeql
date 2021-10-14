@@ -6,129 +6,133 @@ import semmle.code.csharp.frameworks.Microsoft
 /** The `Microsoft.AspNetCore` namespace. */
 class MicrosoftAspNetCoreNamespace extends Namespace {
   MicrosoftAspNetCoreNamespace() {
-    getParentNamespace() instanceof MicrosoftNamespace and
-    hasName("AspNetCore")
+    this.getParentNamespace() instanceof MicrosoftNamespace and
+    this.hasName("AspNetCore")
   }
 }
 
 /** The `Microsoft.AspNetCore.Mvc` namespace. */
 class MicrosoftAspNetCoreMvcNamespace extends Namespace {
   MicrosoftAspNetCoreMvcNamespace() {
-    getParentNamespace() instanceof MicrosoftAspNetCoreNamespace and
-    hasName("Mvc")
+    this.getParentNamespace() instanceof MicrosoftAspNetCoreNamespace and
+    this.hasName("Mvc")
   }
 }
 
 /** The 'Microsoft.AspNetCore.Mvc.ViewFeatures' namespace. */
 class MicrosoftAspNetCoreMvcViewFeatures extends Namespace {
   MicrosoftAspNetCoreMvcViewFeatures() {
-    getParentNamespace() instanceof MicrosoftAspNetCoreMvcNamespace and
-    hasName("ViewFeatures")
+    this.getParentNamespace() instanceof MicrosoftAspNetCoreMvcNamespace and
+    this.hasName("ViewFeatures")
   }
 }
 
 /** The 'Microsoft.AspNetCore.Mvc.Rendering' namespace. */
 class MicrosoftAspNetCoreMvcRendering extends Namespace {
   MicrosoftAspNetCoreMvcRendering() {
-    getParentNamespace() instanceof MicrosoftAspNetCoreMvcNamespace and
-    hasName("Rendering")
+    this.getParentNamespace() instanceof MicrosoftAspNetCoreMvcNamespace and
+    this.hasName("Rendering")
   }
 }
 
 /** An attribute whose type is in the `Microsoft.AspNetCore.Mvc` namespace. */
 class MicrosoftAspNetCoreMvcAttribute extends Attribute {
   MicrosoftAspNetCoreMvcAttribute() {
-    getType().getNamespace() instanceof MicrosoftAspNetCoreMvcNamespace
+    this.getType().getNamespace() instanceof MicrosoftAspNetCoreMvcNamespace
   }
 }
 
 /** A `Microsoft.AspNetCore.Mvc.HttpPost` attribute. */
 class MicrosoftAspNetCoreMvcHttpPostAttribute extends MicrosoftAspNetCoreMvcAttribute {
-  MicrosoftAspNetCoreMvcHttpPostAttribute() { getType().hasName("HttpPostAttribute") }
+  MicrosoftAspNetCoreMvcHttpPostAttribute() { this.getType().hasName("HttpPostAttribute") }
 }
 
 /** A `Microsoft.AspNetCore.Mvc.HttpPut` attribute. */
 class MicrosoftAspNetCoreMvcHttpPutAttribute extends MicrosoftAspNetCoreMvcAttribute {
-  MicrosoftAspNetCoreMvcHttpPutAttribute() { getType().hasName("HttpPutAttribute") }
+  MicrosoftAspNetCoreMvcHttpPutAttribute() { this.getType().hasName("HttpPutAttribute") }
 }
 
 /** A `Microsoft.AspNetCore.Mvc.HttpDelete` attribute. */
 class MicrosoftAspNetCoreMvcHttpDeleteAttribute extends MicrosoftAspNetCoreMvcAttribute {
-  MicrosoftAspNetCoreMvcHttpDeleteAttribute() { getType().hasName("HttpDeleteAttribute") }
+  MicrosoftAspNetCoreMvcHttpDeleteAttribute() { this.getType().hasName("HttpDeleteAttribute") }
 }
 
 /** A `Microsoft.AspNetCore.Mvc.NonAction` attribute. */
 class MicrosoftAspNetCoreMvcNonActionAttribute extends MicrosoftAspNetCoreMvcAttribute {
-  MicrosoftAspNetCoreMvcNonActionAttribute() { getType().hasName("NonActionAttribute") }
+  MicrosoftAspNetCoreMvcNonActionAttribute() { this.getType().hasName("NonActionAttribute") }
 }
 
 /** The `Microsoft.AspNetCore.Antiforgery` namespace. */
 class MicrosoftAspNetCoreAntiforgeryNamespace extends Namespace {
   MicrosoftAspNetCoreAntiforgeryNamespace() {
-    getParentNamespace() instanceof MicrosoftAspNetCoreNamespace and
-    hasName("Antiforgery")
+    this.getParentNamespace() instanceof MicrosoftAspNetCoreNamespace and
+    this.hasName("Antiforgery")
   }
 }
 
 /** The `Microsoft.AspNetCore.Mvc.Filters` namespace. */
 class MicrosoftAspNetCoreMvcFilters extends Namespace {
   MicrosoftAspNetCoreMvcFilters() {
-    getParentNamespace() instanceof MicrosoftAspNetCoreMvcNamespace and
-    hasName("Filters")
+    this.getParentNamespace() instanceof MicrosoftAspNetCoreMvcNamespace and
+    this.hasName("Filters")
   }
 }
 
 /** The `Microsoft.AspNetCore.Mvc.Filters.IFilterMetadataInterface` interface. */
 class MicrosoftAspNetCoreMvcIFilterMetadataInterface extends Interface {
   MicrosoftAspNetCoreMvcIFilterMetadataInterface() {
-    getNamespace() instanceof MicrosoftAspNetCoreMvcFilters and
-    hasName("IFilterMetadata")
+    this.getNamespace() instanceof MicrosoftAspNetCoreMvcFilters and
+    this.hasName("IFilterMetadata")
   }
 }
 
 /** The `Microsoft.AspNetCore.IAuthorizationFilter` interface. */
 class MicrosoftAspNetCoreIAuthorizationFilterInterface extends Interface {
   MicrosoftAspNetCoreIAuthorizationFilterInterface() {
-    getNamespace() instanceof MicrosoftAspNetCoreMvcFilters and
-    hasName("IAsyncAuthorizationFilter")
+    this.getNamespace() instanceof MicrosoftAspNetCoreMvcFilters and
+    this.hasName("IAsyncAuthorizationFilter")
   }
 
   /** Gets the `OnAuthorizationAsync` method. */
-  Method getOnAuthorizationMethod() { result = getAMethod("OnAuthorizationAsync") }
+  Method getOnAuthorizationMethod() { result = this.getAMethod("OnAuthorizationAsync") }
 }
 
 /** The `Microsoft.AspNetCore.IAntiforgery` interface. */
 class MicrosoftAspNetCoreIAntiForgeryInterface extends Interface {
   MicrosoftAspNetCoreIAntiForgeryInterface() {
-    getNamespace() instanceof MicrosoftAspNetCoreAntiforgeryNamespace and
-    hasName("IAntiforgery")
+    this.getNamespace() instanceof MicrosoftAspNetCoreAntiforgeryNamespace and
+    this.hasName("IAntiforgery")
   }
 
   /** Gets the `ValidateRequestAsync` method. */
-  Method getValidateMethod() { result = getAMethod("ValidateRequestAsync") }
+  Method getValidateMethod() { result = this.getAMethod("ValidateRequestAsync") }
 }
 
 /** The `Microsoft.AspNetCore.DefaultAntiForgery` class, or another user-supplied class that implements `IAntiForgery`. */
 class AntiForgeryClass extends Class {
-  AntiForgeryClass() { getABaseInterface*() instanceof MicrosoftAspNetCoreIAntiForgeryInterface }
+  AntiForgeryClass() {
+    this.getABaseInterface*() instanceof MicrosoftAspNetCoreIAntiForgeryInterface
+  }
 
   /** Gets the `ValidateRequestAsync` method. */
-  Method getValidateMethod() { result = getAMethod("ValidateRequestAsync") }
+  Method getValidateMethod() { result = this.getAMethod("ValidateRequestAsync") }
 }
 
 /** An authorization filter class defined by AspNetCore or the user. */
 class AuthorizationFilterClass extends Class {
   AuthorizationFilterClass() {
-    getABaseInterface*() instanceof MicrosoftAspNetCoreIAuthorizationFilterInterface
+    this.getABaseInterface*() instanceof MicrosoftAspNetCoreIAuthorizationFilterInterface
   }
 
   /** Gets the `OnAuthorization` method provided by this filter. */
-  Method getOnAuthorizationMethod() { result = getAMethod("OnAuthorizationAsync") }
+  Method getOnAuthorizationMethod() { result = this.getAMethod("OnAuthorizationAsync") }
 }
 
 /** An attribute whose type has a name like `[Auto...]Validate[...]Anti[Ff]orgery[...Token]Attribute`. */
 class ValidateAntiForgeryAttribute extends Attribute {
-  ValidateAntiForgeryAttribute() { getType().getName().matches("%Validate%Anti_orgery%Attribute") }
+  ValidateAntiForgeryAttribute() {
+    this.getType().getName().matches("%Validate%Anti_orgery%Attribute")
+  }
 }
 
 /**
@@ -137,43 +141,43 @@ class ValidateAntiForgeryAttribute extends Attribute {
  */
 class ValidateAntiforgeryTokenAuthorizationFilter extends Class {
   ValidateAntiforgeryTokenAuthorizationFilter() {
-    getABaseInterface*() instanceof MicrosoftAspNetCoreMvcIFilterMetadataInterface and
-    getName().matches("%Validate%Anti_orgery%")
+    this.getABaseInterface*() instanceof MicrosoftAspNetCoreMvcIFilterMetadataInterface and
+    this.getName().matches("%Validate%Anti_orgery%")
   }
 }
 
 /** The `Microsoft.AspNetCore.Mvc.Filters.FilterCollection` class. */
 class MicrosoftAspNetCoreMvcFilterCollection extends Class {
   MicrosoftAspNetCoreMvcFilterCollection() {
-    getNamespace() instanceof MicrosoftAspNetCoreMvcFilters and
-    hasName("FilterCollection")
+    this.getNamespace() instanceof MicrosoftAspNetCoreMvcFilters and
+    this.hasName("FilterCollection")
   }
 
   /** Gets an `Add` method. */
   Method getAddMethod() {
-    result = getAMethod("Add") or
-    result = getABaseType().getAMethod("Add")
+    result = this.getAMethod("Add") or
+    result = this.getABaseType().getAMethod("Add")
   }
 }
 
 /** The `Microsoft.AspNetCore.Mvc.MvcOptions` class. */
 class MicrosoftAspNetCoreMvcOptions extends Class {
   MicrosoftAspNetCoreMvcOptions() {
-    getNamespace() instanceof MicrosoftAspNetCoreMvcNamespace and
-    hasName("MvcOptions")
+    this.getNamespace() instanceof MicrosoftAspNetCoreMvcNamespace and
+    this.hasName("MvcOptions")
   }
 
   /** Gets the `Filters` property. */
-  Property getFilterCollectionProperty() { result = getProperty("Filters") }
+  Property getFilterCollectionProperty() { result = this.getProperty("Filters") }
 }
 
 /** The base class for controllers in MVC, i.e. `Microsoft.AspNetCore.Mvc.Controller` or `Microsoft.AspNetCore.Mvc.ControllerBase` class. */
 class MicrosoftAspNetCoreMvcControllerBaseClass extends Class {
   MicrosoftAspNetCoreMvcControllerBaseClass() {
-    getNamespace() instanceof MicrosoftAspNetCoreMvcNamespace and
+    this.getNamespace() instanceof MicrosoftAspNetCoreMvcNamespace and
     (
-      hasName("Controller") or
-      hasName("ControllerBase")
+      this.hasName("Controller") or
+      this.hasName("ControllerBase")
     )
   }
 }
@@ -181,12 +185,12 @@ class MicrosoftAspNetCoreMvcControllerBaseClass extends Class {
 /** A subtype of `Microsoft.AspNetCore.Mvc.Controller` or `Microsoft.AspNetCore.Mvc.ControllerBase`. */
 class MicrosoftAspNetCoreMvcController extends Class {
   MicrosoftAspNetCoreMvcController() {
-    getABaseType*() instanceof MicrosoftAspNetCoreMvcControllerBaseClass
+    this.getABaseType*() instanceof MicrosoftAspNetCoreMvcControllerBaseClass
   }
 
   /** Gets an action method for this controller. */
   Method getAnActionMethod() {
-    result = getAMethod() and
+    result = this.getAMethod() and
     result.isPublic() and
     not result.isStatic() and
     not result.getAnAttribute() instanceof MicrosoftAspNetCoreMvcNonActionAttribute
@@ -208,12 +212,12 @@ class MicrosoftAspNetCoreMvcController extends Class {
 /** The `Microsoft.AspNetCore.Mvc.Rendering.IHtmlHelper` interface. */
 class MicrosoftAspNetCoreMvcRenderingIHtmlHelperInterface extends Interface {
   MicrosoftAspNetCoreMvcRenderingIHtmlHelperInterface() {
-    getNamespace() instanceof MicrosoftAspNetCoreMvcRendering and
-    hasName("IHtmlHelper")
+    this.getNamespace() instanceof MicrosoftAspNetCoreMvcRendering and
+    this.hasName("IHtmlHelper")
   }
 
   /** Gets the `Raw` method. */
-  Method getRawMethod() { result = getAMethod("Raw") }
+  Method getRawMethod() { result = this.getAMethod("Raw") }
 }
 
 /** A class deriving from `Microsoft.AspNetCore.Mvc.Razor.RazorPageBase`, implements Razor page in ASPNET Core. */
@@ -223,7 +227,7 @@ class MicrosoftAspNetCoreMvcRazorPageBase extends Class {
   }
 
   /** Gets the `WriteLiteral` method. */
-  Method getWriteLiteralMethod() { result = getAMethod("WriteLiteral") }
+  Method getWriteLiteralMethod() { result = this.getAMethod("WriteLiteral") }
 }
 
 /** A class deriving from `Microsoft.AspNetCore.Http.HttpRequest`, implements `HttpRequest` in ASP.NET Core. */
