@@ -1,5 +1,15 @@
-| file://:0:0:0:0 | <nulltype> | NullType |
 | file://:0:0:0:0 | Any | Class |
+| file://:0:0:0:0 | Boolean | Class |
+| file://:0:0:0:0 | Byte | Class |
+| file://:0:0:0:0 | Char | Class |
+| file://:0:0:0:0 | Double | Class |
+| file://:0:0:0:0 | Float | Class |
+| file://:0:0:0:0 | Int | Class |
+| file://:0:0:0:0 | Long | Class |
+| file://:0:0:0:0 | Nothing | Class |
+| file://:0:0:0:0 | Short | Class |
+| file://:0:0:0:0 | String | Class |
+| file://:0:0:0:0 | String | Class |
 | file://:0:0:0:0 | Unit | Class |
 | file://:0:0:0:0 | boolean | PrimitiveType |
 | file://:0:0:0:0 | byte | PrimitiveType |
@@ -9,5 +19,4 @@
 | file://:0:0:0:0 | int | PrimitiveType |
 | file://:0:0:0:0 | long | PrimitiveType |
 | file://:0:0:0:0 | short | PrimitiveType |
-| file://:0:0:0:0 | string | ??? |
 | types.kt:2:1:37:1 | Foo | Class |

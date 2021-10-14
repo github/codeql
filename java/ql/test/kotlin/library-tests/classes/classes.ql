@@ -1,5 +1,5 @@
 import java
 
 from Class c
-select c
+select c, c.getQualifiedName()
 
