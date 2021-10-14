@@ -6,3 +6,10 @@
 | Foo.qll:29:5:29:16 | PredicateCall | Foo.qll:26:3:26:32 | ClasslessPredicate alias2 |
 | Foo.qll:31:5:31:12 | PredicateCall | Foo.qll:22:3:22:32 | ClasslessPredicate myThing0 |
 | Foo.qll:31:5:31:12 | PredicateCall | Foo.qll:24:3:24:32 | ClasslessPredicate alias0 |
+| Overrides.qll:8:30:8:39 | MemberCall | Overrides.qll:6:3:6:29 | ClassPredicate bar |
+| Overrides.qll:16:39:16:48 | MemberCall | Overrides.qll:6:3:6:29 | ClassPredicate bar |
+| Overrides.qll:16:39:16:48 | MemberCall | Overrides.qll:14:12:14:43 | ClassPredicate bar |
+| Overrides.qll:24:39:24:48 | MemberCall | Overrides.qll:6:3:6:29 | ClassPredicate bar |
+| Overrides.qll:24:39:24:48 | MemberCall | Overrides.qll:22:12:22:44 | ClassPredicate bar |
+| Overrides.qll:28:3:28:9 | MemberCall | Overrides.qll:6:3:6:29 | ClassPredicate bar |
+| Overrides.qll:29:3:29:10 | MemberCall | Overrides.qll:8:3:8:41 | ClassPredicate baz |
