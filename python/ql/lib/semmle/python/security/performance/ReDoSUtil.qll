@@ -477,7 +477,7 @@ private module CharacterClasses {
       result = ["0", "9"]
       or
       cc.getValue() = "s" and
-      result = [" "]
+      result = " "
       or
       cc.getValue() = "w" and
       result = ["a", "Z", "_", "0", "9"]
@@ -490,7 +490,7 @@ private module CharacterClasses {
       result = "9"
       or
       cc.getValue() = "s" and
-      result = [" "]
+      result = " "
       or
       cc.getValue() = "w" and
       result = "a"

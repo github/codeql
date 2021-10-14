@@ -424,7 +424,7 @@ module AiohttpWebModel {
 
       override string getAttributeName() { none() }
 
-      override string getMethodName() { result in ["read_nowait"] }
+      override string getMethodName() { result = "read_nowait" }
 
       override string getAsyncMethodName() {
         result in [

@@ -239,7 +239,7 @@ module EntityFramework {
   private class SystemDataEntityDbSetSqlQuerySinkModelCsv extends SinkModelCsv {
     override predicate row(string row) {
       row =
-        ["System.Data.Entity;DbSet;false;SqlQuery;(System.String,System.Object[]);;Argument[0];sql"]
+        "System.Data.Entity;DbSet;false;SqlQuery;(System.String,System.Object[]);;Argument[0];sql"
     }
   }
 
