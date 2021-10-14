@@ -1277,7 +1277,7 @@ private module StdlibPrivate {
   /**
    * Gets a name of an attribute of a `pathlib.Path` object that is also a `pathlib.Path` object.
    */
-  private string pathlibPathAttribute() { result in ["parent"] }
+  private string pathlibPathAttribute() { result = "parent" }
 
   /**
    * Gets a name of a method of a `pathlib.Path` object that returns a `pathlib.Path` object.

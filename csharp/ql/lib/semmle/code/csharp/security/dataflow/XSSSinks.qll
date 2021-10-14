@@ -251,7 +251,7 @@ private class HttpResponseBaseSink extends Sink {
  */
 private class StringContentSinkModelCsv extends SinkModelCsv {
   override predicate row(string row) {
-    row = ["System.Net.Http;StringContent;false;StringContent;;;Argument[0];xss"]
+    row = "System.Net.Http;StringContent;false;StringContent;;;Argument[0];xss"
   }
 }
 
