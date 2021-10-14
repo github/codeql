@@ -12,4 +12,5 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Check synchronized files
-        run: ruby/scripts/sync-identical-files.py
+        run: python config/sync-files.py
+
