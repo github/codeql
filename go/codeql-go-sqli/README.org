@@ -1,7 +1,44 @@
-* SQL injection example
+* Overview
   This repository contains a trivial Go program to serve as introduction to
   CodeQL.  The focus is on treating the Go program as /data/ to be examined via
   CodeQL, so it's kept as simple as possible.
+  
+  Start with the [[*Setup Instructions][Setup Instructions]] for CodeQL, then follow the [[*SQL injection example][SQL injection
+  example]].  There is a short [[Codeql Recap]], but for details follow the
+  [[#documentation-links][Documentation Links]]
+
+* Setup Instructions
+  To write and run CodeQL queries, follow these steps:
+
+  1. Install the Visual Studio Code IDE.
+
+  2. Download and install the
+     [[https://codeql.github.com/docs/codeql-for-visual-studio-code/setting-up-codeql-in-visual-studio-code/#installing-the-extension][CodeQL extension for Visual Studio Code]].
+
+  3. [[https://codeql.github.com/docs/codeql-for-visual-studio-code/setting-up-codeql-in-visual-studio-code/#using-the-starter-workspace][Set up the starter workspace]].
+     - Basically,
+       =git clone --recursive https://github.com/github/vscode-codeql-starter.git=
+     - *Important*: Don't forget to =git clone --recursive= or
+       =git submodule update --init --remote=, so that you obtain the
+       standard query libraries.
+
+  4. Open the starter workspace: File > Open Workspace > Browse to
+     =vscode-codeql-starter/vscode-codeql-starter.code-workspace=.
+
+  5. Download the sample database [[https://drive.google.com/file/d/1jxLWHAzQb6SUfgAx3QyVkFTDYQU1woqV/view?usp=sharing][=go-sqli-ba5819d.db.zip=]]
+
+  6. Unzip the database.
+
+  7. Import the unzipped database into Visual Studio Code:
+     - Click the *CodeQL* icon in the left sidebar.
+     - Place your mouse over *Databases*, and click the + sign that
+       appears on the right.
+     - Choose the unzipped database directory on your filesystem.
+
+  8. Create a new file, name it =SqlInjection.ql=, save it under
+     =vscode-codeql-starter/codeql-custom-queries-go/=.
+
+* SQL injection example
 
 ** Setup and sample run
    With Go installed, install prerequisites via 
@@ -112,48 +149,7 @@
       instead of the usual
       : source.asExpr()
 
-   The final query is
-   #+BEGIN_SRC java
-     /**
-      ,* @name SQLI Vulnerability
-      ,* @description Using untrusted strings in a sql query allows sql injection attacks.
-      ,* @kind path-problem
-      ,* @id go/SQLIVulnerable
-      ,* @problem.severity error
-      ,*/
-
-     import go
-     import semmle.go.dataflow.DataFlow
-     import DataFlow::PathGraph
-
-     class SqliFlowConfig extends TaintTracking::Configuration {
-         SqliFlowConfig() { this = "SqliFlow" }
-
-         override predicate isSource(DataFlow::Node source) {
-             // count, err := os.Stdin.Read(buf)
-             exists(CallExpr read |
-                 read.getTarget().getName() = "Read" and
-                 read.getArgument(0) = source.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr()
-             )
-         }
-
-         override predicate isSanitizer(DataFlow::Node sanitizer) { none() }
-
-         override predicate isAdditionalTaintStep(DataFlow::Node into, DataFlow::Node out) { none() }
-
-         override predicate isSink(DataFlow::Node sink) {
-             // _, err = db.Exec(query)
-             exists(CallExpr exec |
-                 exec.getTarget().getName() = "Exec" and
-                 exec.getArgument(0) = sink.asExpr()
-             )
-         }
-     }
-
-     from SqliFlowConfig conf, DataFlow::PathNode source, DataFlow::PathNode sink
-     where conf.hasFlowPath(source, sink)
-     select sink, source, sink, "Possible SQL injection"
-   #+END_SRC
+   The final query is in [[./SqlInjection.ql]]
 
 ** Optional: sarif file review of the results
    Query results are available in several output formats using the cli.  The
@@ -202,4 +198,174 @@
          Path
             ...
    #+END_SRC
-   
+
+* Documentation Links
+  :PROPERTIES:
+  :CUSTOM_ID: documentation-links
+  :END:
+If you get stuck, try searching our documentation and blog posts for
+help and ideas. Below are a few links to help you get started:
+
+- [[https://codeql.github.com/docs/writing-codeql-queries/ql-tutorials/][CodeQL
+  Tutorials]]
+- [[https://codeql.github.com/docs/codeql-language-guides/codeql-for-go/][Learning
+  CodeQL for Go]]
+- [[https://codeql.github.com/docs/codeql-for-visual-studio-code/][Using
+  the CodeQL extension for VS Code]]
+
+* Codeql Recap
+This is a brief review of CodeQL. For more details, see the
+[[#documentation-links][documentation links]].
+
+** from, where, select
+   :PROPERTIES:
+   :CUSTOM_ID: from-where-select
+   :END:
+CodeQL is a declarative language and a basic query is defined by a
+/select/ clause, which specifies what the result of the query should be.
+For example:
+
+#+begin_example
+  import cpp
+
+  select "hello world"
+#+end_example
+
+More complicated queries look like this:
+
+#+begin_example
+  from /* ... variable declarations ... */
+  where /* ... logical formulas ... */
+  select /* ... expressions ... */
+#+end_example
+
+The =from= clause specifies some variables that will be used in the
+query. The =where= clause specifies some conditions on those variables
+in the form of logical formulas. The =select= clauses specifies what the
+results should be, and can refer to variables defined in the =from=
+clause.
+
+The =from= clause is defined as a series of variable declarations, where
+each declaration has a /type/ and a /name/. For example:
+
+#+begin_example
+  from IfStmt ifStmt
+  select ifStmt
+#+end_example
+
+We are declaring a variable with the name =ifStmt= and the type =IfStmt=
+(from the CodeQL standard library for analyzing Go). Variables represent
+a *set of values*, initially constrained by the type of the variable.
+Here, the variable =ifStmt= represents the set of all =if= statements in
+the Go program, as we can see if we run the query.
+
+A query using all three clauses to find empty blocks:
+
+#+begin_example
+  import go
+
+  from IfStmt ifStmt, BlockStmt block
+  where
+    ifStmt.getThen() = block and
+    block.getNumStmt() = 0
+  select ifStmt, "Empty if statement"
+#+end_example
+
+** Predicates
+   :PROPERTIES:
+   :CUSTOM_ID: predicates
+   :END:
+The other feature we will use are /predicates/. These provide a way to
+encapsulate portions of logic in the program so that they can be reused.
+You can think of them as a mini =from=-=where=-=select= query clause.
+Like a select clause they also produce a set of "tuples" or rows in a
+result table.
+
+We can introduce a new predicate in our query that identifies the set of
+empty blocks in the program (for example, to reuse this feature in
+another query):
+
+#+begin_example
+  import go
+
+  predicate isEmptyBlock(BlockStmt block) { block.getNumStmt() = 0 }
+
+  from IfStmt ifStmt
+  where isEmptyBlock(ifStmt.getThen())
+  select ifStmt, "Empty if statement"
+#+end_example
+
+** Existential quantifiers (local variables in queries)
+   :PROPERTIES:
+   :CUSTOM_ID: existential-quantifiers-local-variables-in-queries
+   :END:
+Although the terminology may sound scary if you are not familiar with
+logic and logic programming, /existential quantifiers/ are simply ways
+to introduce temporary variables with some associated conditions. The
+syntax for them is:
+
+#+begin_example
+  exists(<variable declarations> | <formula>)
+#+end_example
+
+They have a similar structure to the =from= and =where= clauses, where
+the first part allows you to declare one or more variables, and the
+second formula ("conditions") that can be applied to those variables.
+
+For example, we can use this to refactor the query
+
+#+begin_example
+  import go
+  from IfStmt ifStmt, BlockStmt block
+  where
+    ifStmt.getThen() = block and
+    block.getNumStmt() = 0
+  select ifStmt, "Empty if statement"
+#+end_example
+
+to use a temporary variable for the empty block:
+
+#+begin_example
+  import go
+  from IfStmt ifStmt
+  where
+    exists(BlockStmt block |
+      ifStmt.getThen() = block and
+      block.getNumStmt() = 0
+    )
+  select ifStmt, "Empty if statement"
+#+end_example
+
+This is frequently used to convert a query into a predicate.
+
+** Classes
+   :PROPERTIES:
+   :CUSTOM_ID: classes
+   :END:
+Classes are a way in which you can define new types within CodeQL, as
+well as providing an easy way to reuse and structure code.
+
+Like all types in CodeQL, classes represent a set of values. For
+example, the =Block= type is, in fact, a class, and it represents the
+set of all blocks in the program. You can also think of a class as
+defining a set of logical conditions that specifies the set of values
+for that class.
+
+For example, we can define a new CodeQL class to represent empty blocks:
+
+#+begin_example
+  import go
+
+  class EmptyBlock extends BlockStmt {
+      EmptyBlock() { this.getNumStmt() = 0 }
+  }
+#+end_example
+
+and use it in a query:
+
+#+begin_example
+  from IfStmt ifStmt, EmptyBlock block
+  where ifStmt.getThen() = block
+  select ifStmt, "Empty if statement"
+#+end_example
+
