@@ -4,6 +4,7 @@ private import codeql_ql.ast.internal.Module
 private import codeql_ql.ast.internal.Predicate
 import codeql_ql.ast.internal.Type
 private import codeql_ql.ast.internal.Variable
+private import codeql_ql.ast.internal.Builtins
 
 bindingset[name]
 private string directMember(string name) { result = name + "()" }
@@ -189,6 +190,57 @@ class Select extends TSelect, AstNode {
   }
 
   override string getAPrimaryQlClass() { result = "Select" }
+}
+
+class PredicateOrBuiltin extends TPredOrBuiltin, AstNode {
+  string getName() { none() }
+
+  Type getDeclaringType() { none() }
+
+  Type getParameterType(int i) { none() }
+
+  Type getReturnType() { none() }
+
+  int getArity() { result = count(getParameterType(_)) }
+
+  predicate isPrivate() { none() }
+}
+
+class BuiltinPredicate extends PredicateOrBuiltin, TBuiltin {
+  override string toString() { result = getName() }
+
+  override string getAPrimaryQlClass() { result = "BuiltinPredicate" }
+}
+
+private class BuiltinClassless extends BuiltinPredicate, TBuiltinClassless {
+  string name;
+  string ret;
+  string args;
+
+  BuiltinClassless() { this = TBuiltinClassless(ret, name, args) }
+
+  override string getName() { result = name }
+
+  override PrimitiveType getReturnType() { result.getName() = ret }
+
+  override PrimitiveType getParameterType(int i) { result.getName() = getArgType(args, i) }
+}
+
+private class BuiltinMember extends BuiltinPredicate, TBuiltinMember {
+  string name;
+  string qual;
+  string ret;
+  string args;
+
+  BuiltinMember() { this = TBuiltinMember(qual, ret, name, args) }
+
+  override string getName() { result = name }
+
+  override PrimitiveType getReturnType() { result.getName() = ret }
+
+  override PrimitiveType getParameterType(int i) { result.getName() = getArgType(args, i) }
+
+  override PrimitiveType getDeclaringType() { result.getName() = qual }
 }
 
 /**
@@ -812,7 +864,7 @@ class NewTypeBranch extends TNewTypeBranch, PredicateOrBuiltin, TypeDeclaration 
 
   override Type getDeclaringType() { none() }
 
-  predicate isPrivate() { this.getNewType().isPrivate() }
+  override predicate isPrivate() { this.getNewType().isPrivate() }
 
   override QLDoc getQLDoc() { toGenerated(result) = branch.getChild(_) }
 

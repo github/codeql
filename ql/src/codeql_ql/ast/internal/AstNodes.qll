@@ -199,7 +199,9 @@ Generated::AstNode toGenerated(AST::AstNode n) {
 
 class TPredicate = TCharPred or TClasslessPredicate or TClassPredicate or TDBRelation;
 
-class TPredOrBuiltin = TPredicate or TNewTypeBranch or TBuiltinClassless or TBuiltinMember;
+class TPredOrBuiltin = TPredicate or TNewTypeBranch or TBuiltin;
+
+class TBuiltin = TBuiltinClassless or TBuiltinMember;
 
 class TModuleMember = TModuleDeclaration or TImport or TSelect or TQLDoc;
 

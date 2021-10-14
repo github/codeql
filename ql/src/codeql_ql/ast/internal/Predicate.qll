@@ -122,59 +122,6 @@ private module Cached {
 
 import Cached
 
-class PredicateOrBuiltin extends TPredOrBuiltin, AstNode {
-  string getName() { none() }
-
-  Type getDeclaringType() { none() }
-
-  Type getParameterType(int i) { none() }
-
-  Type getReturnType() { none() }
-
-  int getArity() { result = count(getParameterType(_)) }
-
-  predicate isPrivate() { none() }
-}
-
-private class TBuiltin = TBuiltinClassless or TBuiltinMember;
-
-class BuiltinPredicate extends PredicateOrBuiltin, TBuiltin {
-  override string toString() { result = getName() }
-
-  override string getAPrimaryQlClass() { result = "BuiltinPredicate" }
-}
-
-private class BuiltinClassless extends BuiltinPredicate, TBuiltinClassless {
-  string name;
-  string ret;
-  string args;
-
-  BuiltinClassless() { this = TBuiltinClassless(ret, name, args) }
-
-  override string getName() { result = name }
-
-  override PrimitiveType getReturnType() { result.getName() = ret }
-
-  override PrimitiveType getParameterType(int i) { result.getName() = getArgType(args, i) }
-}
-
-private class BuiltinMember extends BuiltinPredicate, TBuiltinMember {
-  string name;
-  string qual;
-  string ret;
-  string args;
-
-  BuiltinMember() { this = TBuiltinMember(qual, ret, name, args) }
-
-  override string getName() { result = name }
-
-  override PrimitiveType getReturnType() { result.getName() = ret }
-
-  override PrimitiveType getParameterType(int i) { result.getName() = getArgType(args, i) }
-
-  override PrimitiveType getDeclaringType() { result.getName() = qual }
-}
-
 module PredConsistency {
   query predicate noResolvePredicateExpr(PredicateExpr pe) {
     not resolvePredicateExpr(pe, _) and
