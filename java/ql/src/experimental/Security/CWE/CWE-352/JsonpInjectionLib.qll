@@ -2,6 +2,7 @@ import java
 import DataFlow
 import JsonStringLib
 import semmle.code.java.security.XSS
+import semmle.code.java.security.XSSDefaults
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.DataFlow3
 import semmle.code.java.dataflow.FlowSources
