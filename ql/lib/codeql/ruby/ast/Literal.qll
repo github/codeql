@@ -631,7 +631,7 @@ class HereDoc extends StringlikeLiteral, THereDoc {
    * COMMAND
    * ```
    */
-  final predicate isSubShell() { getQuoteStyle() = "`" }
+  final predicate isSubShell() { this.getQuoteStyle() = "`" }
 
   /**
    * Gets the quotation mark (`"`, `'` or `` ` ``) that surrounds the here document identifier, if any.

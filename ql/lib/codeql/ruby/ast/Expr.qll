@@ -183,7 +183,7 @@ class BodyStmt extends StmtSequence, TBodyStmt {
   /** Gets the `n`th rescue clause in this block. */
   final RescueClause getRescue(int n) {
     result =
-      rank[n + 1](RescueClause node, int i | toGenerated(node) = getChild(i) | node order by i)
+      rank[n + 1](RescueClause node, int i | toGenerated(node) = this.getChild(i) | node order by i)
   }
 
   /** Gets a rescue clause in this block. */

@@ -373,15 +373,15 @@ private module ParameterNodes {
     override CfgScope getCfgScope() { result = method }
 
     override Location getLocationImpl() {
-      result = getParameter().getLocation()
+      result = this.getParameter().getLocation()
       or
-      not exists(getParameter()) and result = method.getLocation()
+      not exists(this.getParameter()) and result = method.getLocation()
     }
 
     override string toStringImpl() {
-      result = getParameter().toString()
+      result = this.getParameter().toString()
       or
-      not exists(getParameter()) and result = "&block"
+      not exists(this.getParameter()) and result = "&block"
     }
   }
 

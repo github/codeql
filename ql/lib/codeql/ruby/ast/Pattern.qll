@@ -92,5 +92,5 @@ class TuplePattern extends Pattern, TTuplePattern {
 
   override string toString() { result = "(..., ...)" }
 
-  override AstNode getAChild(string pred) { pred = "getElement" and result = getElement(_) }
+  override AstNode getAChild(string pred) { pred = "getElement" and result = this.getElement(_) }
 }

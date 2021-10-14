@@ -244,7 +244,7 @@ module EnsureSplitting {
      */
     private predicate exit(Trees::BodyStmtTree block, AstNode pred, Completion c, boolean inherited) {
       exists(EnsureSplitType type |
-        exit0(pred, block, this.getNestLevel(), c) and
+        this.exit0(pred, block, this.getNestLevel(), c) and
         type = this.getType()
       |
         if last(block.getEnsure(), pred, c)
@@ -303,18 +303,18 @@ module EnsureSplitting {
     override predicate hasExit(AstNode pred, AstNode succ, Completion c) {
       succ(pred, succ, c) and
       (
-        exit(_, pred, c, _)
+        this.exit(_, pred, c, _)
         or
-        exit(_, pred, c.(NestedBreakCompletion).getAnInnerCompatibleCompletion(), _)
+        this.exit(_, pred, c.(NestedBreakCompletion).getAnInnerCompatibleCompletion(), _)
       )
     }
 
     override predicate hasExitScope(CfgScope scope, AstNode last, Completion c) {
       succExit(scope, last, c) and
       (
-        exit(_, last, c, _)
+        this.exit(_, last, c, _)
         or
-        exit(_, last, c.(NestedBreakCompletion).getAnInnerCompatibleCompletion(), _)
+        this.exit(_, last, c.(NestedBreakCompletion).getAnInnerCompatibleCompletion(), _)
       )
     }
 

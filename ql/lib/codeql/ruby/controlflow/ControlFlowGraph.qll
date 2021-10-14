@@ -98,7 +98,7 @@ module SuccessorTypes {
     /** Gets the Boolean value of this successor. */
     final boolean getValue() { result = value }
 
-    override string toString() { result = getValue().toString() }
+    override string toString() { result = this.getValue().toString() }
   }
 
   /**

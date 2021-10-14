@@ -147,7 +147,7 @@ class BasicBlock extends TBasicBlockStart {
    */
   predicate inDominanceFrontier(BasicBlock df) {
     this.dominatesPredecessor(df) and
-    not strictlyDominates(df)
+    not this.strictlyDominates(df)
   }
 
   /**
@@ -373,7 +373,7 @@ private module JoinBlockPredecessors {
 
 /** A basic block with more than one predecessor. */
 class JoinBlock extends BasicBlock {
-  JoinBlock() { getFirstNode().isJoin() }
+  JoinBlock() { this.getFirstNode().isJoin() }
 
   /**
    * Gets the `i`th predecessor of this join block, with respect to some

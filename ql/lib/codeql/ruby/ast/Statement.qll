@@ -97,7 +97,7 @@ class UndefStmt extends Stmt, TUndefStmt {
   final MethodName getMethodName(int n) { toGenerated(result) = g.getChild(n) }
 
   /** Gets a method name to undefine. */
-  final MethodName getAMethodName() { result = getMethodName(_) }
+  final MethodName getAMethodName() { result = this.getMethodName(_) }
 
   final override string getAPrimaryQlClass() { result = "UndefStmt" }
 

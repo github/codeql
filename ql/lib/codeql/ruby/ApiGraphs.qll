@@ -47,7 +47,7 @@ module API {
      * Gets a call to a method on the receiver represented by this API component.
      */
     DataFlow::CallNode getAMethodCall(string method) {
-      result = getReturn(method).getAnImmediateUse()
+      result = this.getReturn(method).getAnImmediateUse()
     }
 
     /**
@@ -60,21 +60,21 @@ module API {
      */
     bindingset[m]
     bindingset[result]
-    Node getMember(string m) { result = getASuccessor(Label::member(m)) }
+    Node getMember(string m) { result = this.getASuccessor(Label::member(m)) }
 
     /**
      * Gets a node representing a member of this API component where the name of the member is
      * not known statically.
      */
-    Node getUnknownMember() { result = getASuccessor(Label::unknownMember()) }
+    Node getUnknownMember() { result = this.getASuccessor(Label::unknownMember()) }
 
     /**
      * Gets a node representing a member of this API component where the name of the member may
      * or may not be known statically.
      */
     Node getAMember() {
-      result = getASuccessor(Label::member(_)) or
-      result = getUnknownMember()
+      result = this.getASuccessor(Label::member(_)) or
+      result = this.getUnknownMember()
     }
 
     /**
@@ -88,28 +88,30 @@ module API {
      * This predicate may have multiple results when there are multiple constructor calls invoking this API component.
      * Consider using `getAnInstantiation()` if there is a need to distinguish between individual constructor calls.
      */
-    Node getInstance() { result = getASuccessor(Label::instance()) }
+    Node getInstance() { result = this.getASuccessor(Label::instance()) }
 
     /**
      * Gets a node representing the result of calling a method on the receiver represented by this node.
      */
-    Node getReturn(string method) { result = getASuccessor(Label::return(method)) }
+    Node getReturn(string method) { result = this.getASuccessor(Label::return(method)) }
 
     /**
      * Gets a `new` call to the function represented by this API component.
      */
-    DataFlow::Node getAnInstantiation() { result = getInstance().getAnImmediateUse() }
+    DataFlow::Node getAnInstantiation() { result = this.getInstance().getAnImmediateUse() }
 
     /**
      * Gets a node representing a subclass of the class represented by this node.
      */
-    Node getASubclass() { result = getASuccessor(Label::subclass()) }
+    Node getASubclass() { result = this.getASuccessor(Label::subclass()) }
 
     /**
      * Gets a string representation of the lexicographically least among all shortest access paths
      * from the root to this node.
      */
-    string getPath() { result = min(string p | p = getAPath(Impl::distanceFromRoot(this)) | p) }
+    string getPath() {
+      result = min(string p | p = this.getAPath(Impl::distanceFromRoot(this)) | p)
+    }
 
     /**
      * Gets a node such that there is an edge in the API graph between this node and the other
@@ -127,13 +129,13 @@ module API {
      * Gets a node such that there is an edge in the API graph between this node and the other
      * one.
      */
-    Node getAPredecessor() { result = getAPredecessor(_) }
+    Node getAPredecessor() { result = this.getAPredecessor(_) }
 
     /**
      * Gets a node such that there is an edge in the API graph between that other node and
      * this one.
      */
-    Node getASuccessor() { result = getASuccessor(_) }
+    Node getASuccessor() { result = this.getASuccessor(_) }
 
     /**
      * Gets the data-flow node that gives rise to this node, if any.
@@ -146,7 +148,7 @@ module API {
       or
       // For nodes that do not have a meaningful location, `path` is the empty string and all other
       // parameters are zero.
-      not exists(getInducingNode()) and
+      not exists(this.getInducingNode()) and
       result instanceof EmptyLocation
     }
 
@@ -189,7 +191,7 @@ module API {
   class Use extends Node, Impl::MkUse {
     override string toString() {
       exists(string type | type = "Use " |
-        result = type + getPath()
+        result = type + this.getPath()
         or
         not exists(this.getPath()) and result = type + "with no path"
       )

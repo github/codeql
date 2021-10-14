@@ -241,7 +241,7 @@ module Trees {
       c instanceof NormalCompletion
       or
       // Flow into `ensure` block
-      pred = getAnEnsurePredecessor(c, true) and
+      pred = this.getAnEnsurePredecessor(c, true) and
       first(this.getEnsure(), succ)
     }
 

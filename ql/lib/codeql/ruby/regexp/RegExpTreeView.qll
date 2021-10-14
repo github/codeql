@@ -12,9 +12,9 @@ class RegExpParent extends TRegExpParent {
 
   RegExpTerm getChild(int i) { none() }
 
-  RegExpTerm getAChild() { result = getChild(_) }
+  RegExpTerm getAChild() { result = this.getChild(_) }
 
-  int getNumChild() { result = count(getAChild()) }
+  int getNumChild() { result = count(this.getAChild()) }
 
   /**
    * Gets the name of a primary CodeQL class to which this regular
@@ -72,7 +72,7 @@ class RegExpTerm extends RegExpParent {
   RegExpTerm getRootTerm() {
     this.isRootTerm() and result = this
     or
-    result = getParent().(RegExpTerm).getRootTerm()
+    result = this.getParent().(RegExpTerm).getRootTerm()
   }
 
   predicate isUsedAsRegExp() { any() }
@@ -137,7 +137,7 @@ class RegExpTerm extends RegExpParent {
 
   /** Gets the regular expression term that is matched (textually) before this one, if any. */
   RegExpTerm getPredecessor() {
-    exists(RegExpTerm parent | parent = getParent() |
+    exists(RegExpTerm parent | parent = this.getParent() |
       result = parent.(RegExpSequence).previousElement(this)
       or
       not exists(parent.(RegExpSequence).previousElement(this)) and
@@ -148,7 +148,7 @@ class RegExpTerm extends RegExpParent {
 
   /** Gets the regular expression term that is matched (textually) after this one, if any. */
   RegExpTerm getSuccessor() {
-    exists(RegExpTerm parent | parent = getParent() |
+    exists(RegExpTerm parent | parent = this.getParent() |
       result = parent.(RegExpSequence).nextElement(this)
       or
       not exists(parent.(RegExpSequence).nextElement(this)) and
@@ -255,7 +255,7 @@ class RegExpSequence extends RegExpTerm, TRegExpSequence {
   override RegExpTerm getChild(int i) { result = seqChild(re, start, end, i) }
 
   /** Gets the element preceding `element` in this sequence. */
-  RegExpTerm previousElement(RegExpTerm element) { element = nextElement(result) }
+  RegExpTerm previousElement(RegExpTerm element) { element = this.nextElement(result) }
 
   /** Gets the element following `element` in this sequence. */
   RegExpTerm nextElement(RegExpTerm element) {
@@ -335,8 +335,8 @@ class RegExpEscape extends RegExpNormalChar {
     or
     this.getUnescaped() = "t" and result = "\t"
     or
-    isUnicode() and
-    result = getUnicode()
+    this.isUnicode() and
+    result = this.getUnicode()
   }
 
   predicate isIdentityEscape() { not this.getUnescaped() in ["n", "r", "t"] }
@@ -349,14 +349,14 @@ class RegExpEscape extends RegExpNormalChar {
   /**
    * Holds if this is a unicode escape.
    */
-  private predicate isUnicode() { getText().prefix(2) = ["\\u", "\\U"] }
+  private predicate isUnicode() { this.getText().prefix(2) = ["\\u", "\\U"] }
 
   /**
    * Gets the unicode char for this escape.
    * E.g. for `\u0061` this returns "a".
    */
   private string getUnicode() {
-    exists(int codepoint | codepoint = sum(getHexValueFromUnicode(_)) |
+    exists(int codepoint | codepoint = sum(this.getHexValueFromUnicode(_)) |
       result = codepoint.toUnicode()
     )
   }
@@ -366,8 +366,8 @@ class RegExpEscape extends RegExpNormalChar {
    * E.g. for `\u0061` and `index = 2` this returns 96 (the number `6` interpreted as hex).
    */
   private int getHexValueFromUnicode(int index) {
-    isUnicode() and
-    exists(string hex, string char | hex = getText().suffix(2) |
+    this.isUnicode() and
+    exists(string hex, string char | hex = this.getText().suffix(2) |
       char = hex.charAt(index) and
       result = 16.pow(hex.length() - index - 1) * toHex(char)
     )
@@ -436,13 +436,13 @@ class RegExpCharacterClass extends RegExpTerm, TRegExpCharacterClass {
 
   predicate isUniversalClass() {
     // [^]
-    isInverted() and not exists(getAChild())
+    this.isInverted() and not exists(this.getAChild())
     or
     // [\w\W] and similar
-    not isInverted() and
+    not this.isInverted() and
     exists(string cce1, string cce2 |
-      cce1 = getAChild().(RegExpCharacterClassEscape).getValue() and
-      cce2 = getAChild().(RegExpCharacterClassEscape).getValue()
+      cce1 = this.getAChild().(RegExpCharacterClassEscape).getValue() and
+      cce2 = this.getAChild().(RegExpCharacterClassEscape).getValue()
     |
       cce1 != cce2 and cce1.toLowerCase() = cce2.toLowerCase()
     )

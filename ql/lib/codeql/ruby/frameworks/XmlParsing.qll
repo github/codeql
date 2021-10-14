@@ -72,7 +72,7 @@ private newtype TFeature =
 class Feature extends TFeature {
   abstract int getValue();
 
-  string toString() { result = getConstantName() }
+  string toString() { result = this.getConstantName() }
 
   abstract string getConstantName();
 }

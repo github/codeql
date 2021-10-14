@@ -25,12 +25,12 @@ class Location extends @location {
   int getEndColumn() { locations_default(this, _, _, _, _, result) }
 
   /** Gets the number of lines covered by this location. */
-  int getNumLines() { result = getEndLine() - getStartLine() + 1 }
+  int getNumLines() { result = this.getEndLine() - this.getStartLine() + 1 }
 
   /** Gets a textual representation of this element. */
   string toString() {
     exists(string filepath, int startline, int startcolumn, int endline, int endcolumn |
-      hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) and
+      this.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) and
       result = filepath + "@" + startline + ":" + startcolumn + ":" + endline + ":" + endcolumn
     )
   }
