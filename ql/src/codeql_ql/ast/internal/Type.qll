@@ -114,6 +114,7 @@ private PredicateOrBuiltin declaredPred(Type ty, string name, int arity) {
   result.getArity() = arity
 }
 
+pragma[nomagic]
 private PredicateOrBuiltin classPredCandidate(Type ty, string name, int arity) {
   result = declaredPred(ty, name, arity)
   or
