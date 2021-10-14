@@ -43,7 +43,8 @@ class AspNetQueryStringMember extends Member {
  * request.
  */
 private string getHttpRequestFlowPropertyNames() {
-  result = ["QueryString", "Headers", "RawUrl", "Url", "Cookies", "Form", "Params", "Path", "PathInfo"]
+  result =
+    ["QueryString", "Headers", "RawUrl", "Url", "Cookies", "Form", "Params", "Path", "PathInfo"]
 }
 
 /** A data flow source of remote user input (ASP.NET query string). */
