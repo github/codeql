@@ -3,7 +3,7 @@
  * @description Any use of getAQlClass causes both compile-time and runtime to be significantly slower.
  * @kind problem
  * @problem.severity warning
- * @id ql/dont-use-getAQlClass
+ * @id ql/dont-use-getaqlclass
  * @tags performance
  * @precision very-high
  */
