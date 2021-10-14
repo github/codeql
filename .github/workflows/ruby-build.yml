@@ -1,10 +1,18 @@
-name: Build / Release
+name: "Ruby: Build"
 
 on:
   push:
-    branches: [main]
+    paths:
+      - 'ruby/**'
+    branches:
+      - main
+      - 'rc/*'
   pull_request:
-    branches: [main]
+    paths:
+      - 'ruby/**'
+    branches:
+      - main
+      - 'rc/*'
   workflow_dispatch:
     inputs:
       tag:
@@ -13,6 +21,10 @@ on:
 
 env:
   CARGO_TERM_COLOR: always
+
+defaults:
+  run:
+    working-directory: ruby
 
 jobs:
   build:
@@ -35,7 +47,7 @@ jobs:
           path: |
             ~/.cargo/registry
             ~/.cargo/git
-            target
+            ruby/target
           key: ${{ runner.os }}-rust-cargo-${{ hashFiles('**/Cargo.lock') }}
       - name: Check formatting
         run: cargo fmt --all -- --check
@@ -52,20 +64,20 @@ jobs:
         if: ${{ matrix.os == 'ubuntu-latest' }}
         with:
           name: ruby.dbscheme
-          path: ql/lib/ruby.dbscheme
+          path: ruby/ql/lib/ruby.dbscheme
       - uses: actions/upload-artifact@v2
         if: ${{ matrix.os == 'ubuntu-latest' }}
         with:
           name: TreeSitter.qll
-          path: ql/lib/codeql/ruby/ast/internal/TreeSitter.qll
+          path: ruby/ql/lib/codeql/ruby/ast/internal/TreeSitter.qll
       - uses: actions/upload-artifact@v2
         with:
           name: extractor-${{ matrix.os }}
           path: |
-            target/release/ruby-autobuilder
-            target/release/ruby-autobuilder.exe
-            target/release/ruby-extractor
-            target/release/ruby-extractor.exe
+            ruby/target/release/ruby-autobuilder
+            ruby/target/release/ruby-autobuilder.exe
+            ruby/target/release/ruby-extractor
+            ruby/target/release/ruby-extractor.exe
           retention-days: 1
   compile-queries:
     runs-on: ubuntu-latest
@@ -102,7 +114,7 @@ jobs:
         with:
           name: codeql-ruby-queries
           path: |
-            target/packs/*
+            ruby/target/packs/*
           retention-days: 1
 
   package:
@@ -113,19 +125,19 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: ruby.dbscheme
-          path: ruby
+          path: ruby/ruby
       - uses: actions/download-artifact@v2
         with:
           name: extractor-ubuntu-latest
-          path: linux64
+          path: ruby/linux64
       - uses: actions/download-artifact@v2
         with:
           name: extractor-windows-latest
-          path: win64
+          path: ruby/win64
       - uses: actions/download-artifact@v2
         with:
           name: extractor-macos-latest
-          path: osx64
+          path: ruby/osx64
       - run: |
           mkdir -p ruby
           cp -r codeql-extractor.yml tools ql/lib/ruby.dbscheme.stats ruby/
@@ -141,12 +153,12 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: codeql-ruby-pack
-          path: codeql-ruby.zip
+          path: ruby/codeql-ruby.zip
           retention-days: 1
       - uses: actions/download-artifact@v2
         with:
           name: codeql-ruby-queries
-          path: qlpacks
+          path: ruby/qlpacks
       - run: |
           echo '{
             "provide": [
@@ -158,18 +170,13 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: codeql-ruby-bundle
-          path: codeql-ruby-bundle.zip
+          path: ruby/codeql-ruby-bundle.zip
           retention-days: 1
-      - if: ${{ github.event.inputs.tag }}
-        run: |
-          gh release create --prerelease \
-             --title "CodeQL Ruby (${{ github.event.inputs.tag }})" \
-             --target "${{ github.sha }}" \
-             "${{ github.event.inputs.tag }}" \
-             codeql-ruby-bundle.zip
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   test:
+    defaults:
+      run:
+        working-directory: ${{ github.workspace }}
     strategy:
       fail-fast: false
       matrix:

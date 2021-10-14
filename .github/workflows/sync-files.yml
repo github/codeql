@@ -14,4 +14,4 @@ jobs:
         with:
           submodules: true
       - name: Check synchronized files
-        run: scripts/sync-identical-files.py
+        run: ruby/scripts/sync-identical-files.py
