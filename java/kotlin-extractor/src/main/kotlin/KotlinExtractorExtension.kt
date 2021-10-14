@@ -424,7 +424,7 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
                 extractClassInstance(c, typeArgs)
             }
             // we don't have an "external dependencies" extractor yet,
-            // so for now we extract thr source class for those too
+            // so for now we extract the source class for those too
             if (c.origin == IrDeclarationOrigin.IR_EXTERNAL_DECLARATION_STUB ||
                        c.origin == IrDeclarationOrigin.IR_EXTERNAL_JAVA_DECLARATION_STUB) {
                 extractClassSource(c)
