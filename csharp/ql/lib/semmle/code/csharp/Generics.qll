@@ -71,14 +71,14 @@ class ConstructedGeneric extends DotNet::ConstructedGeneric, Generic {
   override UnboundGeneric getUnboundGeneric() { constructed_generic(this, result) }
 
   override UnboundGeneric getUnboundDeclaration() {
-    result = getUnboundGeneric().getUnboundDeclaration()
+    result = this.getUnboundGeneric().getUnboundDeclaration()
   }
 
   override int getNumberOfTypeArguments() { result = count(int i | type_arguments(_, i, this)) }
 
   override Type getTypeArgument(int i) { none() }
 
-  override Type getATypeArgument() { result = getTypeArgument(_) }
+  override Type getATypeArgument() { result = this.getTypeArgument(_) }
 
   /** Gets the annotated type of type argument `i`. */
   final AnnotatedType getAnnotatedTypeArgument(int i) { result.appliesToTypeArgument(this, i) }
@@ -141,7 +141,7 @@ class UnboundGenericType extends ValueOrRefType, UnboundGeneric {
     result = ValueOrRefType.super.getUnboundDeclaration()
   }
 
-  final override Type getChild(int n) { result = getTypeParameter(n) }
+  final override Type getChild(int n) { result = this.getTypeParameter(n) }
 
   override string toStringWithTypes() {
     result = this.getUndecoratedName() + "<" + getTypeParametersToString(this) + ">"
@@ -173,7 +173,7 @@ class TypeParameter extends DotNet::TypeParameter, Type, @type_parameter {
   TypeParameterConstraints getConstraints() { result.getTypeParameter() = this }
 
   override predicate isRefType() {
-    exists(TypeParameterConstraints tpc | tpc = getConstraints() |
+    exists(TypeParameterConstraints tpc | tpc = this.getConstraints() |
       tpc.hasRefTypeConstraint() or
       tpc.getATypeConstraint() instanceof Class or
       tpc.getATypeConstraint().(TypeParameter).isRefType()
@@ -182,7 +182,7 @@ class TypeParameter extends DotNet::TypeParameter, Type, @type_parameter {
   }
 
   override predicate isValueType() {
-    exists(TypeParameterConstraints tpc | tpc = getConstraints() |
+    exists(TypeParameterConstraints tpc | tpc = this.getConstraints() |
       tpc.hasValueTypeConstraint() or
       tpc.getATypeConstraint().(TypeParameter).isValueType()
     )
@@ -219,9 +219,9 @@ class TypeParameter extends DotNet::TypeParameter, Type, @type_parameter {
 
   /** Gets a non-type-parameter type that was transitively supplied for this parameter. */
   Type getAnUltimatelySuppliedType() {
-    result = getASuppliedType() and not result instanceof TypeParameter
+    result = this.getASuppliedType() and not result instanceof TypeParameter
     or
-    result = getASuppliedType().(TypeParameter).getAnUltimatelySuppliedType()
+    result = this.getASuppliedType().(TypeParameter).getAnUltimatelySuppliedType()
   }
 
   override int getIndex() { type_parameters(this, result, _, _) }
@@ -376,8 +376,8 @@ class UnboundGenericDelegateType extends DelegateType, UnboundGenericType {
 
   override string toStringWithTypes() {
     result =
-      getUndecoratedName() + "<" + getTypeParametersToString(this) + ">(" + parameterTypesToString()
-        + ")"
+      this.getUndecoratedName() + "<" + getTypeParametersToString(this) + ">(" +
+        this.parameterTypesToString() + ")"
   }
 }
 
@@ -404,7 +404,7 @@ class ConstructedType extends ValueOrRefType, ConstructedGeneric {
 
   override UnboundGenericType getUnboundGeneric() { constructed_generic(this, getTypeRef(result)) }
 
-  final override Type getChild(int n) { result = getTypeArgument(n) }
+  final override Type getChild(int n) { result = this.getTypeArgument(n) }
 
   final override string toStringWithTypes() {
     result = this.getUndecoratedName() + "<" + getTypeArgumentsToString(this) + ">"
@@ -542,12 +542,12 @@ class UnboundGenericMethod extends Method, UnboundGeneric {
 
   override string toStringWithTypes() {
     result =
-      getUndecoratedName() + "<" + getTypeParametersToString(this) + ">" + "(" +
-        parameterTypesToString() + ")"
+      this.getUndecoratedName() + "<" + getTypeParametersToString(this) + ">" + "(" +
+        this.parameterTypesToString() + ")"
   }
 
   final override string getName() {
-    result = getUndecoratedName() + "<" + getTypeParameterCommas(this) + ">"
+    result = this.getUndecoratedName() + "<" + getTypeParameterCommas(this) + ">"
   }
 
   final override string getUndecoratedName() { methods(this, result, _, _, _) }
@@ -580,8 +580,8 @@ class ConstructedMethod extends Method, ConstructedGeneric {
 
   override string toStringWithTypes() {
     result =
-      getUndecoratedName() + "<" + getTypeArgumentsToString(this) + ">" + "(" +
-        parameterTypesToString() + ")"
+      this.getUndecoratedName() + "<" + getTypeArgumentsToString(this) + ">" + "(" +
+        this.parameterTypesToString() + ")"
   }
 
   override UnboundGenericMethod getUnboundDeclaration() {
@@ -589,12 +589,12 @@ class ConstructedMethod extends Method, ConstructedGeneric {
   }
 
   final override string getName() {
-    result = getUndecoratedName() + "<" + getTypeArgumentsNames(this) + ">"
+    result = this.getUndecoratedName() + "<" + getTypeArgumentsNames(this) + ">"
   }
 
   override predicate hasQualifiedName(string qualifier, string name) {
-    qualifier = getDeclaringType().getQualifiedName() and
-    name = getUndecoratedName() + "<" + getTypeArgumentsQualifiedNames(this) + ">"
+    qualifier = this.getDeclaringType().getQualifiedName() and
+    name = this.getUndecoratedName() + "<" + getTypeArgumentsQualifiedNames(this) + ">"
   }
 
   final override string getUndecoratedName() { methods(this, result, _, _, _) }

@@ -78,7 +78,7 @@ class AspNetUnvalidatedQueryStringRemoteFlowSource extends AspNetRemoteFlowSourc
 
 /** A data flow source of remote user input (ASP.NET user input). */
 class AspNetUserInputRemoteFlowSource extends AspNetRemoteFlowSource, DataFlow::ExprNode {
-  AspNetUserInputRemoteFlowSource() { getType() instanceof SystemWebUIWebControlsTextBoxClass }
+  AspNetUserInputRemoteFlowSource() { this.getType() instanceof SystemWebUIWebControlsTextBoxClass }
 
   override string getSourceType() { result = "ASP.NET user input" }
 }
@@ -105,7 +105,7 @@ class AspNetServiceRemoteFlowSource extends RemoteFlowSource, DataFlow::Paramete
 /** A data flow source of remote user input (ASP.NET request message). */
 class SystemNetHttpRequestMessageRemoteFlowSource extends RemoteFlowSource, DataFlow::ExprNode {
   SystemNetHttpRequestMessageRemoteFlowSource() {
-    getType() instanceof SystemWebHttpRequestMessageClass
+    this.getType() instanceof SystemWebHttpRequestMessageClass
   }
 
   override string getSourceType() { result = "ASP.NET request message" }

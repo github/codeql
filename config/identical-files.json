@@ -461,5 +461,12 @@
   "ReDoS Polynomial Python/JS": [
     "javascript/ql/lib/semmle/javascript/security/performance/SuperlinearBackTracking.qll",
     "python/ql/lib/semmle/python/security/performance/SuperlinearBackTracking.qll"
+  ],
+  "CodeQL Tutorial": [
+    "cpp/ql/lib/tutorial.qll",
+    "csharp/ql/lib/tutorial.qll",
+    "java/ql/lib/tutorial.qll",
+    "javascript/ql/lib/tutorial.qll",
+    "python/ql/lib/tutorial.qll"
   ]
 }

@@ -62,25 +62,25 @@ module JsonNET {
       boolean preservesValue
     ) {
       // ToString methods
-      c = getAToStringMethod() and
+      c = this.getAToStringMethod() and
       preservesValue = false and
       source = any(CallableFlowSourceArg arg | arg.getArgumentIndex() = 0) and
       sink instanceof CallableFlowSinkReturn
       or
       // Deserialize methods
-      c = getADeserializeMethod() and
+      c = this.getADeserializeMethod() and
       preservesValue = false and
       source = any(CallableFlowSourceArg arg | arg.getArgumentIndex() = 0) and
       sink instanceof CallableFlowSinkReturn
       or
       // Serialize methods
-      c = getASerializeMethod() and
+      c = this.getASerializeMethod() and
       preservesValue = false and
       source = any(CallableFlowSourceArg arg | arg.getArgumentIndex() = 0) and
       sink instanceof CallableFlowSinkReturn
       or
       // Populate methods
-      c = getAPopulateMethod() and
+      c = this.getAPopulateMethod() and
       preservesValue = false and
       source = any(CallableFlowSourceArg arg | arg.getArgumentIndex() = 0) and
       sink = any(CallableFlowSinkArg arg | arg.getArgumentIndex() = 1)

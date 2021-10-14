@@ -132,12 +132,12 @@ predicate incorrect_special_method_defn(
     else
       if required < func.minParameters()
       then message = "Too many parameters" and show_counts = true
-      else
-        if func.minParameters() < required and not func.getScope().hasVarArg()
-        then
-          message = (required - func.minParameters()) + " default values(s) will never be used" and
-          show_counts = false
-        else none()
+      else (
+        func.minParameters() < required and
+        not func.getScope().hasVarArg() and
+        message = (required - func.minParameters()) + " default values(s) will never be used" and
+        show_counts = false
+      )
   )
 }
 

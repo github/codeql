@@ -240,7 +240,7 @@ class Call extends Call_ {
   /** Gets the tuple (*) argument of this call, provided there is exactly one. */
   Expr getStarArg() {
     count(this.getStarargs()) < 2 and
-    result = getStarargs()
+    result = this.getStarargs()
   }
 }
 
