@@ -133,7 +133,7 @@ private module Cached {
       not scopeDefinesParameterVariable(scope, name, _) and
       not inherits(scope, name, _)
     } or
-    TSelfVariable(MethodBase::Range scope) or
+    TSelfVariable(SelfBase::Range scope) or
     TLocalVariableSynth(AstNode n, int i) { any(Synthesis s).localVariable(n, i) }
 
   // Db types that can be vcalls
@@ -479,7 +479,7 @@ class ClassVariableImpl extends VariableReal, TClassVariable {
 }
 
 class SelfVariableImpl extends VariableReal, TSelfVariable {
-  private MethodBase::Range scope;
+  private SelfBase::Range scope;
 
   SelfVariableImpl() { this = TSelfVariable(scope) }
 

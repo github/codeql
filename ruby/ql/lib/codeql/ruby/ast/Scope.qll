@@ -20,3 +20,5 @@ class Scope extends AstNode, TScopeType {
     result.getName() = name
   }
 }
+
+class SelfScope extends Scope, TSelfScopeType { }

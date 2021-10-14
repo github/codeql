@@ -143,7 +143,7 @@ private predicate hasLocation(AstNode n, Location l) {
 private module ImplicitSelfSynthesis {
   pragma[nomagic]
   private predicate identifierMethodCallSelfSynthesis(AstNode mc, int i, Child child) {
-    child = SynthChild(SelfKind(TSelfVariable(scopeOf(toGenerated(mc))))) and
+    child = SynthChild(SelfKind(TSelfVariable(scopeOf(toGenerated(mc)).getEnclosingSelfScope()))) and
     mc = TIdentifierMethodCall(_) and
     i = 0
   }
@@ -164,7 +164,7 @@ private module ImplicitSelfSynthesis {
       not exists(g.(Ruby::Call).getReceiver()) and
       not exists(g.(Ruby::Call).getMethod().(Ruby::ScopeResolution).getScope())
     ) and
-    child = SynthChild(SelfKind(TSelfVariable(scopeOf(toGenerated(mc))))) and
+    child = SynthChild(SelfKind(TSelfVariable(scopeOf(toGenerated(mc)).getEnclosingSelfScope()))) and
     i = 0
   }
 

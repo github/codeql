@@ -228,7 +228,7 @@ module Ssa {
 
     SelfDefinition() { this.definesAt(v, _, _) }
 
-    final override string toString() { result = "self (" + v.getMethod() + ")" }
+    final override string toString() { result = "self (" + v.getDeclaringScope() + ")" }
 
     final override Location getLocation() { result = this.getControlFlowNode().getLocation() }
   }

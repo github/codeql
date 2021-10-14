@@ -72,10 +72,7 @@ class ClassVariable extends Variable instanceof ClassVariableImpl {
 }
 
 /** A `self` variable. */
-class SelfVariable extends LocalVariable instanceof SelfVariableImpl {
-  /** Gets the method that this `self` variable belongs to. */
-  MethodBase getMethod() { result = this.getDeclaringScope() }
-}
+class SelfVariable extends LocalVariable instanceof SelfVariableImpl { }
 
 /** An access to a variable. */
 class VariableAccess extends Expr instanceof VariableAccessImpl {
