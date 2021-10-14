@@ -116,7 +116,7 @@ Declaring sources and sinks
 You must provide information about the ``source`` and ``sink`` in your path query. These are objects that correspond to the nodes of the paths that you are exploring.
 The name and the type of the ``source`` and the ``sink`` must be declared in the ``from`` statement of the query, and the types must be compatible with the nodes of the graph computed by the ``edges`` predicate.
 
-If you are querying C/C++, C#, Java, or JavaScript code (and you have used ``import DataFlow::PathGraph`` in your query), the definitions of the ``source`` and ``sink`` are accessed via the ``Configuration`` class in the data flow library. You should declare all three of these objects in the ``from`` statement.
+If you are querying C/C++, C#, Java, JavaScript, or Ruby code (and you have used ``import DataFlow::PathGraph`` in your query), the definitions of the ``source`` and ``sink`` are accessed via the ``Configuration`` class in the data flow library. You should declare all three of these objects in the ``from`` statement.
 For example:
 
 .. code-block:: ql
