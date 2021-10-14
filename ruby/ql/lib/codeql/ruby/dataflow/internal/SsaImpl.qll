@@ -7,8 +7,7 @@ private import CfgNodes::ExprNodes
 /** Holds if `v` is uninitialized at index `i` in entry block `bb`. */
 predicate uninitializedWrite(EntryBasicBlock bb, int i, LocalVariable v) {
   v.getDeclaringScope() = bb.getScope() and
-  i = -1 and
-  not v instanceof SelfVariable
+  i = -1
 }
 
 /** Holds if `bb` contains a caputured read of variable `v`. */
