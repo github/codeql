@@ -233,6 +233,45 @@ class Predicate extends TPredicate, AstNode, Declaration {
 }
 
 /**
+ * A relation in the database.
+ */
+class Relation extends TDBRelation, AstNode, Declaration {
+  Generated::DbTable table;
+
+  Relation() { this = TDBRelation(table) }
+
+  /**
+   * Gets the name of the relation.
+   */
+  override string getName() { result = table.getTableName().getChild().getValue() }
+
+  private Generated::DbColumn getColumn(int i) {
+    result =
+      rank[i + 1](Generated::DbColumn column, int child |
+        table.getChild(child) = column
+      |
+        column order by child
+      )
+  }
+
+  /** Gets the `i`th parameter name */
+  string getParameterName(int i) { result = getColumn(i).getColName().getValue() }
+
+  /** Gets the `i`th parameter type */
+  string getParameterType(int i) {
+    // TODO: This is just using the name of the type, not the actual type. Checkout Type.qll
+    result = getColumn(i).getColType().getChild().(Generated::Token).getValue()
+  }
+
+  /**
+   * Gets the number of parameters.
+   */
+  int getArity() { result = count(getColumn(_)) }
+
+  override string getAPrimaryQlClass() { result = "Relation" }
+}
+
+/**
  * An expression that refers to a predicate, e.g. `BasicBlock::succ/2`.
  */
 class PredicateExpr extends TPredicateExpr, AstNode {
@@ -665,7 +704,7 @@ class Class extends TClass, TypeDeclaration, ModuleDeclaration {
   /**
    * Gets a super-type referenced in the `extends` part of the class declaration.
    */
-  TypeExpr getASuperType() { toGenerated(result) in [cls.getExtends(_), cls.getInstanceof(_)] }
+  TypeExpr getASuperType() { toGenerated(result) = cls.getExtends(_) }
 
   /** Gets the type that this class is defined to be an alias of. */
   TypeExpr getAliasType() {
@@ -786,6 +825,9 @@ class Call extends TCall, Expr, Formula {
 
   final int getNumberOfArguments() { result = count(this.getArgument(_)) }
 
+  /** Holds if this call is a transitive closure of `kind` either `+` or `*`. */
+  predicate isClosure(string kind) { none() }
+
   /**
    * Gets the module that contains the predicate.
    * E.g. for `Foo::bar()` the result is `Foo`.
@@ -816,6 +858,10 @@ class PredicateCall extends TPredicateCall, Call {
   }
 
   override string getAPrimaryQlClass() { result = "PredicateCall" }
+
+  override predicate isClosure(string kind) {
+    kind = expr.getChild(_).(Generated::Closure).getValue()
+  }
 
   /**
    * Gets the name of the predicate called.
@@ -851,6 +897,10 @@ class MemberCall extends TMemberCall, Call {
    */
   string getMemberName() {
     result = expr.getChild(_).(Generated::QualifiedRhs).getName().getValue()
+  }
+
+  override predicate isClosure(string kind) {
+    kind = expr.getChild(_).(Generated::QualifiedRhs).getChild(_).(Generated::Closure).getValue()
   }
 
   /**
@@ -1664,7 +1714,7 @@ class ThisAccess extends Identifier {
 class Super extends TSuper, Expr {
   Super() { this = TSuper(_) }
 
-  override string getAPrimaryQlClass() { result = "SuperAccess" }
+  override string getAPrimaryQlClass() { result = "Super" }
 }
 
 /** An access to `result`. */
@@ -2037,5 +2087,206 @@ class ModuleExpr extends TModuleExpr, ModuleRef {
     result = super.getAChild(pred)
     or
     pred = directMember("getQualifier") and result = this.getQualifier()
+  }
+}
+
+/**
+ * Classes modelling YAML AST nodes.
+ */
+module YAML {
+  /** A node in a YAML file */
+  class YAMLNode extends TYAMLNode, AstNode {
+    /** Holds if the predicate is a root node (has no parent) */
+    predicate isRoot() { not exists(getParent()) }
+  }
+
+  /** A YAML comment. */
+  class YAMLComment extends TYamlCommemt, YAMLNode {
+    Generated::YamlComment yamlcomment;
+
+    YAMLComment() { this = TYamlCommemt(yamlcomment) }
+
+    override string getAPrimaryQlClass() { result = "YAMLComment" }
+  }
+
+  /** A YAML entry. */
+  class YAMLEntry extends TYamlEntry, YAMLNode {
+    Generated::YamlEntry yamle;
+
+    YAMLEntry() { this = TYamlEntry(yamle) }
+
+    /** Gets the key of this YAML entry. */
+    YAMLKey getKey() {
+      exists(Generated::YamlKeyvaluepair pair |
+        pair.getParent() = yamle and
+        result = TYamlKey(pair.getKey())
+      )
+    }
+
+    /** Gets the value of this YAML entry. */
+    YAMLValue getValue() {
+      exists(Generated::YamlKeyvaluepair pair |
+        pair.getParent() = yamle and
+        result = TYamlValue(pair.getValue())
+      )
+    }
+
+    override string getAPrimaryQlClass() { result = "YAMLEntry" }
+  }
+
+  /** A YAML key. */
+  class YAMLKey extends TYamlKey, YAMLNode {
+    Generated::YamlKey yamlkey;
+
+    YAMLKey() { this = TYamlKey(yamlkey) }
+
+    /**
+     * Gets the value of this YAML key.
+     */
+    YAMLValue getValue() {
+      exists(Generated::YamlKeyvaluepair pair |
+        pair.getKey() = yamlkey and result = TYamlValue(pair.getValue())
+      )
+    }
+
+    override string getAPrimaryQlClass() { result = "YAMLKey" }
+
+    /** Gets the value of this YAML value. */
+    string getNamePart(int i) {
+      i = 0 and result = yamlkey.getChild(0).(Generated::SimpleId).getValue()
+      or
+      exists(YAMLKey child |
+        child = TYamlKey(yamlkey.getChild(1)) and
+        result = child.getNamePart(i - 1)
+      )
+    }
+
+    /**
+     * Gets all the name parts of this YAML key concatenated with `/`.
+     * Dashes are replaced with `/` (because we don't have that information in the generated AST).
+     */
+    string getQualifiedName() {
+      result = concat(string part, int i | part = getNamePart(i) | part, "/" order by i)
+    }
+  }
+
+  /** A YAML list item. */
+  class YAMLListItem extends TYamlListitem, YAMLNode {
+    Generated::YamlListitem yamllistitem;
+
+    YAMLListItem() { this = TYamlListitem(yamllistitem) }
+
+    /**
+     * Gets the value of this YAML list item.
+     */
+    YAMLValue getValue() { result = TYamlValue(yamllistitem.getChild()) }
+
+    override string getAPrimaryQlClass() { result = "YAMLListItem" }
+  }
+
+  /** A YAML value. */
+  class YAMLValue extends TYamlValue, YAMLNode {
+    Generated::YamlValue yamlvalue;
+
+    YAMLValue() { this = TYamlValue(yamlvalue) }
+
+    override string getAPrimaryQlClass() { result = "YAMLValue" }
+
+    /** Gets the value of this YAML value. */
+    string getValue() { result = yamlvalue.getValue() }
+  }
+
+  // to not expose the entire `File` API on `QlPack`.
+  private newtype TQLPack = MKQlPack(File file) { file.getBaseName() = "qlpack.yml" }
+
+  YAMLEntry test() { not result.isRoot() }
+
+  /**
+   * A `qlpack.yml` file.
+   */
+  class QLPack extends MKQlPack {
+    File file;
+
+    QLPack() { this = MKQlPack(file) }
+
+    private string getProperty(string name) {
+      exists(YAMLEntry entry |
+        entry.isRoot() and
+        entry.getKey().getQualifiedName() = name and
+        result = entry.getValue().getValue().trim() and
+        entry.getLocation().getFile() = file
+      )
+    }
+
+    /** Gets the name of this qlpack */
+    string getName() { result = getProperty("name") }
+
+    /** Gets the version of this qlpack */
+    string getVersion() { result = getProperty("version") }
+
+    /** Gets the extractor of this qlpack */
+    string getExtractor() { result = getProperty("extractor") }
+
+    string toString() { result = getName() }
+
+    /** Gets the file that this `QLPack` represents. */
+    File getFile() { result = file }
+
+    private predicate isADependency(YAMLEntry entry) {
+      exists(YAMLEntry deps |
+        deps.getLocation().getFile() = file and entry.getLocation().getFile() = file
+      |
+        deps.isRoot() and
+        deps.getKey().getQualifiedName() = "dependencies" and
+        entry.getLocation().getStartLine() = 1 + deps.getLocation().getStartLine() and
+        entry.getLocation().getStartColumn() > deps.getLocation().getStartColumn()
+      )
+      or
+      exists(YAMLEntry prev | isADependency(prev) |
+        prev.getLocation().getFile() = file and
+        entry.getLocation().getFile() = file and
+        entry.getLocation().getStartLine() = 1 + prev.getLocation().getStartLine() and
+        entry.getLocation().getStartColumn() = prev.getLocation().getStartColumn()
+      )
+    }
+
+    predicate hasDependency(string name, string version) {
+      exists(YAMLEntry entry | isADependency(entry) |
+        entry.getKey().getQualifiedName() = name and
+        entry.getValue().getValue() = version
+      )
+    }
+
+    /** Gets the database scheme of this qlpack */
+    File getDBScheme() {
+      result.getBaseName() = getProperty("dbscheme") and
+      result = file.getParentContainer().getFile(any(string s | s.matches("%.dbscheme")))
+    }
+
+    pragma[noinline]
+    Container getAFileInPack() {
+      result.getParentContainer() = file.getParentContainer()
+      or
+      result = getAFileInPack().(Folder).getAChildContainer()
+    }
+
+    /**
+     * Gets a QLPack that this QLPack depends on.
+     */
+    QLPack getADependency() {
+      exists(string name | hasDependency(name, _) | result.getName().replaceAll("-", "/") = name)
+    }
+
+    Location getLocation() {
+      // hacky, just pick the first node in the file.
+      result =
+        min(YAMLNode entry, Location l, File f |
+          entry.getLocation().getFile() = file and
+          f = file and
+          l = entry.getLocation()
+        |
+          entry order by l.getStartLine(), l.getStartColumn(), l.getEndColumn(), l.getEndLine()
+        ).getLocation()
+    }
   }
 }

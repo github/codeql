@@ -1,0 +1,160 @@
+name: "CodeQL"
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+  pull_request:
+    # The branches below must be a subset of the branches above
+    branches: [ main ]
+  schedule:
+    - cron: '21 18 * * 5'
+
+jobs:
+
+  # XXX this is mostly an inlined copy of the 'build' job in build.yml
+  build_extractor_pack:
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-rust-cargo-${{ hashFiles('**/Cargo.lock') }}
+      - name: Check formatting
+        run: cargo fmt --all -- --check
+      - name: Build
+        run: cargo build --verbose
+      - name: Run tests
+        run: cargo test --verbose
+      - name: Release build
+        run: cargo build --release
+      - name: Generate dbscheme
+        run: target/release/ql-generator
+      - uses: actions/upload-artifact@v2
+        with:
+          name: ql.dbscheme
+          path: ql/src/ql.dbscheme
+      - uses: actions/upload-artifact@v2
+        with:
+          name: TreeSitter.qll
+          path: ql/src/codeql_ql/ast/internal/TreeSitter.qll
+      - uses: actions/upload-artifact@v2
+        with:
+          name: extractor-${{ matrix.os }}
+          path: |
+            target/release/ql-extractor
+          retention-days: 1
+  # XXX this is mostly an inlined copy of the 'package' job in build.yml
+      - run: |
+          mkdir -p ${PACK_DIR}
+        env:
+          PACK_DIR: ${{ runner.temp }}/pack
+
+      - name: Pack
+        working-directory: ${{ runner.temp }}/pack
+        run: |
+          mkdir -p ql
+          cp -r "${CHECKOUT}/codeql-extractor.yml" "${CHECKOUT}/tools" "${CHECKOUT}/ql/src/ql.dbscheme" "${CHECKOUT}/ql/src/ql.dbscheme.stats" ql/
+          mkdir -p ql/tools/linux64
+          cp "${CHECKOUT}/target/release/ql-extractor" ql/tools/linux64/extractor
+          chmod +x ql/tools/linux64/extractor
+          zip -rq codeql-ql.zip ql
+        env:
+          CHECKOUT: ${{ github.workspace }}
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: extractor-pack
+          path: ${{ runner.temp }}/pack/codeql-ql.zip
+          retention-days: 1
+
+  analyze:
+    name: Analyze
+    needs: build_extractor_pack
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    steps:
+    - name: Download pack
+      uses: actions/download-artifact@v2
+      with:
+        name: extractor-pack
+        path: ${{ runner.temp }}/extractor-pack-artifact
+
+    - name: Unzip pack
+      run: |
+        set -x
+        mkdir "${PACKTMP}"
+        cd "${PACKTMP}"
+        unzip "${PACKARTIFACT}/*.zip" -d unzipped
+        cp -r unzipped/ql "${PACK}"
+      env:
+        PACKTMP: ${{ runner.temp }}/extractor-pack-artifact.tmp
+        PACKARTIFACT: ${{ runner.temp }}/extractor-pack-artifact
+        PACK: ${{ runner.temp }}/extractor-pack
+
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Make config file
+      run: |
+        set -x
+        echo "name: CodeQL config for QL" >> "${CONFIG_FILE}"
+        echo "" >> "${CONFIG_FILE}"
+        echo "disable-default-queries: true" >> "${CONFIG_FILE}"
+        echo "" >> "${CONFIG_FILE}"
+        echo "queries: " >> "${CONFIG_FILE}"
+        echo "  - name: Standard queries" >> "${CONFIG_FILE}"
+        echo "    uses: ${SUITE}" >> "${CONFIG_FILE}"
+        cat "${CONFIG_FILE}"
+      env:
+        SUITE: ./ql/src/codeql-suites/ql-code-scanning.qls
+        CONFIG_FILE: ./.custom-codeql-actions-config.yml
+
+    - name: Hack codeql-action options
+      run: |
+        JSON=$(jq -nc --arg pack "${PACK}" '.resolve.extractor=["--search-path", $pack] | .database.init=["--search-path", $pack]')
+        echo "CODEQL_ACTION_EXTRA_OPTIONS=${JSON}" >> ${GITHUB_ENV}
+      env:
+        PACK: ${{ runner.temp }}/extractor-pack
+
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@esbena/ql
+      with:
+        languages: ql
+        db-location: ${{ runner.temp }}/db
+        config-file: ./.custom-codeql-actions-config.yml
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@esbena/ql
+      with:
+        results: ${{ runner.temp }}/results
+        add-snippets: true
+
+    - name: Upload db
+      uses: actions/upload-artifact@v2
+      with:
+        name: db
+        path: ${{ runner.temp }}/db
+        retention-days: 1
+
+    - name: Upload results
+      uses: actions/upload-artifact@v2
+      with:
+        name: results
+        path: ${{ runner.temp }}/results
+        retention-days: 1
