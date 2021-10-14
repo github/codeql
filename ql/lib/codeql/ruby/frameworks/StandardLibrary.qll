@@ -126,7 +126,7 @@ class SubshellLiteralExecution extends SystemCommandExecution::Range {
 
   override DataFlow::Node getAnArgument() { result.asExpr().getExpr() = literal.getComponent(_) }
 
-  override predicate isShellInterpreted(DataFlow::Node arg) { arg = getAnArgument() }
+  override predicate isShellInterpreted(DataFlow::Node arg) { arg = this.getAnArgument() }
 }
 
 /**
@@ -145,7 +145,7 @@ class SubshellHeredocExecution extends SystemCommandExecution::Range {
 
   override DataFlow::Node getAnArgument() { result.asExpr().getExpr() = heredoc.getComponent(_) }
 
-  override predicate isShellInterpreted(DataFlow::Node arg) { arg = getAnArgument() }
+  override predicate isShellInterpreted(DataFlow::Node arg) { arg = this.getAnArgument() }
 }
 
 /**
@@ -182,7 +182,7 @@ class KernelSystemCall extends SystemCommandExecution::Range, KernelMethodCall {
 
   override predicate isShellInterpreted(DataFlow::Node arg) {
     // Kernel.system invokes a subshell if you provide a single string as argument
-    this.getNumberOfArguments() = 1 and arg = getAnArgument()
+    this.getNumberOfArguments() = 1 and arg = this.getAnArgument()
   }
 }
 
@@ -198,7 +198,7 @@ class KernelExecCall extends SystemCommandExecution::Range, KernelMethodCall {
 
   override predicate isShellInterpreted(DataFlow::Node arg) {
     // Kernel.exec invokes a subshell if you provide a single string as argument
-    this.getNumberOfArguments() = 1 and arg = getAnArgument()
+    this.getNumberOfArguments() = 1 and arg = this.getAnArgument()
   }
 }
 
@@ -219,7 +219,7 @@ class KernelSpawnCall extends SystemCommandExecution::Range, KernelMethodCall {
 
   override predicate isShellInterpreted(DataFlow::Node arg) {
     // Kernel.spawn invokes a subshell if you provide a single string as argument
-    this.getNumberOfArguments() = 1 and arg = getAnArgument()
+    this.getNumberOfArguments() = 1 and arg = this.getAnArgument()
   }
 }
 

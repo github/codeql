@@ -37,7 +37,7 @@ class Node extends TNode {
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 
   /**

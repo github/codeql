@@ -229,8 +229,8 @@ class RegExp extends AST::RegExpLiteral {
 
   /** Matches named character properties such as `\p{Word}` and `[[:digit:]]` */
   predicate namedCharacterProperty(int start, int end, string name) {
-    pStyleNamedCharacterProperty(start, end, name) or
-    posixStyleNamedCharacterProperty(start, end, name)
+    this.pStyleNamedCharacterProperty(start, end, name) or
+    this.posixStyleNamedCharacterProperty(start, end, name)
   }
 
   /** Gets the name of the character property in start,end */

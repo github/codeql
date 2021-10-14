@@ -125,7 +125,7 @@ class Toplevel extends ModuleBase, TToplevel {
   /**
    * Gets a `BEGIN` block.
    */
-  final BeginBlock getABeginBlock() { result = getBeginBlock(_) }
+  final BeginBlock getABeginBlock() { result = this.getBeginBlock(_) }
 
   final override AstNode getAChild(string pred) {
     result = super.getAChild(pred)

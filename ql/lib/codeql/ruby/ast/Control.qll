@@ -184,9 +184,9 @@ class UnlessExpr extends ConditionalExpr, TUnlessExpr {
   final Stmt getElse() { toGenerated(result) = g.getAlternative() }
 
   final override Expr getBranch(boolean cond) {
-    cond = false and result = getThen()
+    cond = false and result = this.getThen()
     or
-    cond = true and result = getElse()
+    cond = true and result = this.getElse()
   }
 
   final override string toString() { result = "unless ..." }
@@ -292,9 +292,9 @@ class TernaryIfExpr extends ConditionalExpr, TTernaryIfExpr {
   final Stmt getElse() { toGenerated(result) = g.getAlternative() }
 
   final override Stmt getBranch(boolean cond) {
-    cond = true and result = getThen()
+    cond = true and result = this.getThen()
     or
-    cond = false and result = getElse()
+    cond = false and result = this.getElse()
   }
 
   final override string toString() { result = "... ? ... : ..." }
@@ -349,10 +349,10 @@ class CaseExpr extends ControlExpr, TCaseExpr {
   final Expr getABranch() { result = this.getBranch(_) }
 
   /** Gets a `when` branch of this case expression. */
-  final WhenExpr getAWhenBranch() { result = getABranch() }
+  final WhenExpr getAWhenBranch() { result = this.getABranch() }
 
   /** Gets the `else` branch of this case expression, if any. */
-  final StmtSequence getElseBranch() { result = getABranch() }
+  final StmtSequence getElseBranch() { result = this.getABranch() }
 
   /**
    * Gets the number of branches of this case expression.

@@ -453,9 +453,9 @@ class Assignment extends Operation instanceof AssignmentImpl {
   override AstNode getAChild(string pred) {
     result = Operation.super.getAChild(pred)
     or
-    pred = "getLeftOperand" and result = getLeftOperand()
+    pred = "getLeftOperand" and result = this.getLeftOperand()
     or
-    pred = "getRightOperand" and result = getRightOperand()
+    pred = "getRightOperand" and result = this.getRightOperand()
   }
 }
 

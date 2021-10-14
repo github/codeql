@@ -76,7 +76,7 @@ class PrintAstNode extends TPrintNode {
   PrintAstNode getChild(string edgeName) { none() }
 
   /** Gets a child of this node. */
-  final PrintAstNode getAChild() { result = getChild(_) }
+  final PrintAstNode getAChild() { result = this.getChild(_) }
 
   /** Gets the parent of this node, if any. */
   final PrintAstNode getParent() { result.getAChild() = this }
