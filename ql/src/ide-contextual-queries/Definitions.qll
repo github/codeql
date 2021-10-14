@@ -54,7 +54,7 @@ private predicate resolveField(FieldAccess va, VarDecl decl, string kind) {
 }
 
 private predicate resolveCall(Call c, Predicate p, string kind) {
-  p = c.getTarget().getDeclaration() and
+  p = c.getTarget() and
   kind = "call"
 }
 
