@@ -283,6 +283,7 @@ private predicate qualifier(TypeExpr te, FileOrModule m, boolean public, string 
   )
 }
 
+pragma[nomagic]
 private predicate defines(FileOrModule m, string name, Type t, boolean public) {
   exists(Class ty | t = TClass(ty) |
     getEnclosingModule(ty) = m and
