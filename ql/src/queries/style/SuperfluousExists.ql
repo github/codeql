@@ -51,8 +51,6 @@ predicate exprImpliesExists(ValueNumber vn, Expr e) {
   or
   exprImpliesExists(vn, e.(AsExpr).getInnerExpr())
   or
-  exprImpliesExists(vn, e.(Range).getAnEndpoint())
-  or
   exists(ExprAggregate agg |
     agg = e and
     agg.getKind().matches(["strict%", "unique"]) and
@@ -71,9 +69,8 @@ predicate formulaImpliesExists(ValueNumber vn, Formula f) {
   or
   exprImpliesExists(vn, f.(ComparisonFormula).getAnOperand())
   or
-  exists(IfFormula ifFormula | ifFormula = f |
-    exprImpliesExists(vn, ifFormula.getCondition())
-    or
+  exists(IfFormula ifFormula |
+    ifFormula = f and
     formulaImpliesExists(vn, ifFormula.getThenPart()) and
     formulaImpliesExists(vn, ifFormula.getElsePart())
   )
