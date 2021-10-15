@@ -1,4 +1,4 @@
-name: Collect database stats
+name: "Ruby: Collect database stats"
 
 on:
   push:
@@ -6,13 +6,13 @@ on:
       - main
       - 'rc/*'
     paths:
-      - ql/lib/ruby.dbscheme
+      - ruby/ql/lib/ruby.dbscheme
   pull_request:
     branches:
       - main
       - 'rc/*'
     paths:
-      - ql/lib/ruby.dbscheme
+      - ruby/ql/lib/ruby.dbscheme
   workflow_dispatch:
 
 jobs:
@@ -29,7 +29,7 @@ jobs:
 
       - uses: ./.github/actions/fetch-codeql
 
-      - uses: ./.github/actions/create-extractor-pack
+      - uses: ./ruby/actions/create-extractor-pack
 
       - name: Checkout ${{ matrix.repo }}
         uses: actions/checkout@v2
@@ -38,15 +38,15 @@ jobs:
           path: ${{ github.workspace }}/repo
       - name: Create database
         run: |
-          codeql/codeql database create \
-            --search-path "${{ github.workspace }}" \
+          codeql database create \
+            --search-path "${{ github.workspace }}/ruby" \
             --threads 4 \
             --language ruby --source-root "${{ github.workspace }}/repo" \
             "${{ runner.temp }}/database"
       - name: Measure database
         run: |
           mkdir -p "stats/${{ matrix.repo }}"
-          codeql/codeql dataset measure --threads 4 --output "stats/${{ matrix.repo }}/stats.xml" "${{ runner.temp }}/database/db-ruby"
+          codeql dataset measure --threads 4 --output "stats/${{ matrix.repo }}/stats.xml" "${{ runner.temp }}/database/db-ruby"
       - uses: actions/upload-artifact@v2
         with:
           name: measurements
@@ -64,8 +64,8 @@ jobs:
           path: stats
       - run: |
           python -m pip install --user lxml
-          find stats -name 'stats.xml' | sort | xargs python scripts/merge_stats.py --output ql/lib/ruby.dbscheme.stats --normalise ruby_tokeninfo
+          find stats -name 'stats.xml' | sort | xargs python ruby/scripts/merge_stats.py --output ruby/ql/lib/ruby.dbscheme.stats --normalise ruby_tokeninfo
       - uses: actions/upload-artifact@v2
         with:
           name: ruby.dbscheme.stats
-          path: ql/lib/ruby.dbscheme.stats
+          path: ruby/ql/lib/ruby.dbscheme.stats
