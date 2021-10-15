@@ -1,0 +1,33 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>Reference comparisons (<code>==</code> or <code>!=</code>) 
+with operands where the static type is <code>Object</code> may not work as intended.
+Reference comparisons check if two objects are <i>identical</i>. To check if 
+two objects are <i>equivalent</i>, use <code>Object.equals</code> instead.
+</p>
+
+</overview>
+<recommendation>
+
+<p>Use <code>Object.equals</code> instead of <code>==</code> or <code>!=</code>, and override
+the default behavior of the method in a subclass, so that it uses the appropriate notion of 
+equality.
+</p>
+
+</recommendation>
+<references>
+
+
+<li>
+  Java API Specification:
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)">Object.equals()</a>.
+</li>
+
+
+</references>
+</qhelp>

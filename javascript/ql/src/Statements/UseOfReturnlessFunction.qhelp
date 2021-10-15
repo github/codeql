@@ -1,0 +1,43 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+JavaScript functions that do not return an expression will implicitly return 
+<code>undefined</code>. Using the implicit return value from such a function  
+is not an error in itself, but it is a pattern indicating that some
+misunderstanding has occurred. 
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Do not use the return value from a function that does not return an expression.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+In the example below, the function <code>renderText</code> is used to render 
+text through side effects, and the function does not return an expression. 
+However, the programmer still uses the return value from 
+<code>renderText</code> as if the function returned an expression, which is 
+clearly an error. 
+</p>
+
+<sample src="examples/UseOfReturnlessFunction.js" />
+
+<p>
+The program can be fixed either by removing the use of the value returned by 
+<code>renderText</code>, or by changing the <code>renderText</code> function
+to return an expression.
+</p>
+
+</example>
+<references>
+<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/return">Return</a>.</li>
+</references>
+</qhelp>

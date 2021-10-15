@@ -1,0 +1,49 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Constructing URLs with the HTTP protocol can lead to unsecured connections.</p>
+
+<p>Furthermore, constructing URLs with the HTTP protocol can create problems if other parts of the 
+code expect HTTPS URLs. A typical pattern is to cast the <code>URLConnection</code> that is produced 
+by <code>url.getConnection()</code> to an <code>HttpsURLConnection</code>. This is impossible if the 
+URL that has been constructed uses HTTP rather than HTTPS, and results in a run-time <code>ClassCastException</code>.</p>
+
+</overview>
+<recommendation>
+
+<p>When you construct a URL using <code>java.net.URL</code>, ensure that you use an HTTPS
+URL rather than an HTTP URL. Then, any connections that are made using that URL are secure
+SSL connections.</p>
+
+</recommendation>
+<example>
+
+<p>The following example shows two ways of opening a connection using a URL. When the connection is 
+opened using an HTTP URL rather than an HTTPS URL, the connection is unsecured, and in this case a 
+<code>ClassCastException</code> is caused. When the connection is opened using an HTTPS URL, the 
+connection is a secure SSL connection.</p>
+
+<sample src="HttpsUrls.java" />
+
+</example>
+<references>
+
+<li>SEI CERT Oracle Coding Standard for Java:
+  <a href="https://wiki.sei.cmu.edu/confluence/display/java/SER03-J.+Do+not+serialize+unencrypted+sensitive+data">SER03-J. Do not serialize unencrypted, sensitive data</a>.</li>
+<li>Java API Specification: 
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/javax/net/ssl/HttpsURLConnection.html">
+Class HttpsURLConnection</a>.</li>
+<li>
+OWASP:
+<a href="https://cheatsheetseries.owasp.org/cheatsheets/Transport_Layer_Protection_Cheat_Sheet.html">Transport Layer Protection Cheat Sheet</a>.
+</li>
+
+
+
+<!--  LocalWords:  CWE
+ -->
+
+</references>
+</qhelp>

@@ -1,0 +1,3 @@
+# CWE-835: Infinite loop with unsatisfiable exit condition
++ semmlecode-cpp-queries/Security/CWE/CWE-835/InfiniteLoopWithUnsatisfiableExitCondition.ql: /CWE/CWE-835
+    @name Infinite loop with unsatisfiable exit condition (CWE-835)

@@ -1,0 +1,7 @@
+| extended.thrift:12:9:12:16 | service Extended | getUser | extended.thrift:14:4:14:15 | function getUser |
+| extended.thrift:37:9:37:19 | service with_throws | foo | extended.thrift:39:4:39:12 | function foo |
+| extended.thrift:48:9:48:15 | service TheShop | getPet | extended.thrift:50:5:50:18 | function getPet |
+| test.thrift:57:9:57:18 | service Calculator | add | test.thrift:68:4:68:10 | function add |
+| test.thrift:57:9:57:18 | service Calculator | calculate | test.thrift:70:4:70:16 | function calculate |
+| test.thrift:57:9:57:18 | service Calculator | ping | test.thrift:66:4:66:12 | function ping |
+| test.thrift:57:9:57:18 | service Calculator | zip | test.thrift:77:11:77:18 | function zip |

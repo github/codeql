@@ -1,0 +1,59 @@
+| test.py:4:4:4:9 | Comment # lgtm |  lgtm | lgtm | test.py:4:1:4:9 | suppression range |
+| test.py:5:4:5:27 | Comment # lgtm[py/line-too-long] |  lgtm[py/line-too-long] | lgtm[py/line-too-long] | test.py:5:1:5:27 | suppression range |
+| test.py:6:4:6:51 | Comment # lgtm[py/line-too-long, py/non-callable-called] |  lgtm[py/line-too-long, py/non-callable-called] | lgtm[py/line-too-long, py/non-callable-called] | test.py:6:1:6:51 | suppression range |
+| test.py:7:4:7:24 | Comment # lgtm[@tag:security] |  lgtm[@tag:security] | lgtm[@tag:security] | test.py:7:1:7:24 | suppression range |
+| test.py:8:4:8:41 | Comment # lgtm[@tag:security,py/line-too-long] |  lgtm[@tag:security,py/line-too-long] | lgtm[@tag:security,py/line-too-long] | test.py:8:1:8:41 | suppression range |
+| test.py:9:4:9:30 | Comment # lgtm[@expires:2017-06-11] |  lgtm[@expires:2017-06-11] | lgtm[@expires:2017-06-11] | test.py:9:1:9:30 | suppression range |
+| test.py:10:4:10:65 | Comment # lgtm[py/non-callable-called] because I know better than lgtm |  lgtm[py/non-callable-called] because I know better than lgtm | lgtm[py/non-callable-called] | test.py:10:1:10:65 | suppression range |
+| test.py:11:4:11:20 | Comment # lgtm: blah blah |  lgtm: blah blah | lgtm | test.py:11:1:11:20 | suppression range |
+| test.py:12:4:12:34 | Comment # lgtm blah blah #falsepositive |  lgtm blah blah #falsepositive | lgtm | test.py:12:1:12:34 | suppression range |
+| test.py:13:4:13:36 | Comment # lgtm blah blah -- falsepositive |  lgtm blah blah -- falsepositive | lgtm | test.py:13:1:13:36 | suppression range |
+| test.py:14:4:14:34 | Comment #lgtm  [py/non-callable-called] | lgtm  [py/non-callable-called] | lgtm  [py/non-callable-called] | test.py:14:1:14:34 | suppression range |
+| test.py:15:4:15:11 | Comment # lgtm[] |  lgtm[] | lgtm[] | test.py:15:1:15:11 | suppression range |
+| test.py:17:4:17:8 | Comment #lgtm | lgtm | lgtm | test.py:17:1:17:8 | suppression range |
+| test.py:18:4:18:12 | Comment #    lgtm |     lgtm | lgtm | test.py:18:1:18:12 | suppression range |
+| test.py:19:4:19:31 | Comment # lgtm    [py/line-too-long] |  lgtm    [py/line-too-long] | lgtm    [py/line-too-long] | test.py:19:1:19:31 | suppression range |
+| test.py:20:4:20:14 | Comment # lgtm lgtm |  lgtm lgtm | lgtm | test.py:20:1:20:14 | suppression range |
+| test.py:27:12:27:23 | Comment #lgtm [func] | lgtm [func] | lgtm [func] | test.py:27:1:27:23 | suppression range |
+| test.py:29:17:29:35 | Comment # lgtm on docstring |  lgtm on docstring | lgtm | test.py:29:1:29:35 | suppression range |
+| test.py:30:16:30:47 | Comment #lgtm [py/duplicate-key-in-dict] | lgtm [py/duplicate-key-in-dict] | lgtm [py/duplicate-key-in-dict] | test.py:30:1:30:47 | suppression range |
+| test.py:35:10:35:21 | Comment # lgtm class |  lgtm class | lgtm | test.py:35:1:35:21 | suppression range |
+| test.py:36:21:36:33 | Comment # lgtm method |  lgtm method | lgtm | test.py:36:1:36:33 | suppression range |
+| test.py:39:4:39:8 | Comment #noqa | noqa | lgtm | test.py:39:1:39:8 | suppression range |
+| test.py:40:4:40:9 | Comment # noqa |  noqa | lgtm | test.py:40:1:40:9 | suppression range |
+| test.py:50:34:50:117 | Comment # noqa: E501; (line too long) pylint: disable=invalid-name; lgtm [py/missing-equals] |  noqa: E501; (line too long) pylint: disable=invalid-name; lgtm [py/missing-equals] | lgtm [py/missing-equals] | test.py:50:1:50:117 | suppression range |
+| test.py:52:4:52:67 | Comment # noqa: E501; (line too long) pylint: disable=invalid-name; lgtm |  noqa: E501; (line too long) pylint: disable=invalid-name; lgtm | lgtm | test.py:52:1:52:67 | suppression range |
+| test.py:53:4:53:78 | Comment # random nonsense lgtm [py/missing-equals] and then some more commentary... |  random nonsense lgtm [py/missing-equals] and then some more commentary... | lgtm [py/missing-equals] | test.py:53:1:53:78 | suppression range |
+| test.py:58:4:58:9 | Comment # LGTM |  LGTM | LGTM | test.py:58:1:58:9 | suppression range |
+| test.py:59:4:59:27 | Comment # LGTM[py/line-too-long] |  LGTM[py/line-too-long] | LGTM[py/line-too-long] | test.py:59:1:59:27 | suppression range |
+| test.py:65:4:65:60 | Comment # lgtm[py/line-too-long] and lgtm[py/non-callable-called] |  lgtm[py/line-too-long] and lgtm[py/non-callable-called] | lgtm[py/line-too-long] | test.py:65:1:65:60 | suppression range |
+| test.py:65:4:65:60 | Comment # lgtm[py/line-too-long] and lgtm[py/non-callable-called] |  lgtm[py/line-too-long] and lgtm[py/non-callable-called] | lgtm[py/non-callable-called] | test.py:65:1:65:60 | suppression range |
+| test.py:66:4:66:33 | Comment # lgtm[py/line-too-long]; lgtm |  lgtm[py/line-too-long]; lgtm | lgtm | test.py:66:1:66:33 | suppression range |
+| test.py:66:4:66:33 | Comment # lgtm[py/line-too-long]; lgtm |  lgtm[py/line-too-long]; lgtm | lgtm[py/line-too-long] | test.py:66:1:66:33 | suppression range |
+| testWindows.py:4:4:4:9 | Comment # lgtm |  lgtm | lgtm | testWindows.py:4:1:4:9 | suppression range |
+| testWindows.py:5:4:5:27 | Comment # lgtm[py/line-too-long] |  lgtm[py/line-too-long] | lgtm[py/line-too-long] | testWindows.py:5:1:5:27 | suppression range |
+| testWindows.py:6:4:6:51 | Comment # lgtm[py/line-too-long, py/non-callable-called] |  lgtm[py/line-too-long, py/non-callable-called] | lgtm[py/line-too-long, py/non-callable-called] | testWindows.py:6:1:6:51 | suppression range |
+| testWindows.py:7:4:7:24 | Comment # lgtm[@tag:security] |  lgtm[@tag:security] | lgtm[@tag:security] | testWindows.py:7:1:7:24 | suppression range |
+| testWindows.py:8:4:8:41 | Comment # lgtm[@tag:security,py/line-too-long] |  lgtm[@tag:security,py/line-too-long] | lgtm[@tag:security,py/line-too-long] | testWindows.py:8:1:8:41 | suppression range |
+| testWindows.py:9:4:9:30 | Comment # lgtm[@expires:2017-06-11] |  lgtm[@expires:2017-06-11] | lgtm[@expires:2017-06-11] | testWindows.py:9:1:9:30 | suppression range |
+| testWindows.py:10:4:10:65 | Comment # lgtm[py/non-callable-called] because I know better than lgtm |  lgtm[py/non-callable-called] because I know better than lgtm | lgtm[py/non-callable-called] | testWindows.py:10:1:10:65 | suppression range |
+| testWindows.py:11:4:11:20 | Comment # lgtm: blah blah |  lgtm: blah blah | lgtm | testWindows.py:11:1:11:20 | suppression range |
+| testWindows.py:12:4:12:34 | Comment # lgtm blah blah #falsepositive |  lgtm blah blah #falsepositive | lgtm | testWindows.py:12:1:12:34 | suppression range |
+| testWindows.py:13:4:13:36 | Comment # lgtm blah blah -- falsepositive |  lgtm blah blah -- falsepositive | lgtm | testWindows.py:13:1:13:36 | suppression range |
+| testWindows.py:14:4:14:34 | Comment #lgtm  [py/non-callable-called] | lgtm  [py/non-callable-called] | lgtm  [py/non-callable-called] | testWindows.py:14:1:14:34 | suppression range |
+| testWindows.py:15:4:15:11 | Comment # lgtm[] |  lgtm[] | lgtm[] | testWindows.py:15:1:15:11 | suppression range |
+| testWindows.py:17:4:17:8 | Comment #lgtm | lgtm | lgtm | testWindows.py:17:1:17:8 | suppression range |
+| testWindows.py:18:4:18:12 | Comment #    lgtm |     lgtm | lgtm | testWindows.py:18:1:18:12 | suppression range |
+| testWindows.py:19:4:19:31 | Comment # lgtm    [py/line-too-long] |  lgtm    [py/line-too-long] | lgtm    [py/line-too-long] | testWindows.py:19:1:19:31 | suppression range |
+| testWindows.py:20:4:20:14 | Comment # lgtm lgtm |  lgtm lgtm | lgtm | testWindows.py:20:1:20:14 | suppression range |
+| testWindows.py:27:12:27:23 | Comment #lgtm [func] | lgtm [func] | lgtm [func] | testWindows.py:27:1:27:23 | suppression range |
+| testWindows.py:29:17:29:35 | Comment # lgtm on docstring |  lgtm on docstring | lgtm | testWindows.py:29:1:29:35 | suppression range |
+| testWindows.py:30:16:30:47 | Comment #lgtm [py/duplicate-key-in-dict] | lgtm [py/duplicate-key-in-dict] | lgtm [py/duplicate-key-in-dict] | testWindows.py:30:1:30:47 | suppression range |
+| testWindows.py:35:10:35:21 | Comment # lgtm class |  lgtm class | lgtm | testWindows.py:35:1:35:21 | suppression range |
+| testWindows.py:36:21:36:33 | Comment # lgtm method |  lgtm method | lgtm | testWindows.py:36:1:36:33 | suppression range |
+| testWindows.py:39:3:39:7 | Comment #noqa | noqa | lgtm | testWindows.py:39:1:39:7 | suppression range |
+| testWindows.py:40:4:40:9 | Comment # noqa |  noqa | lgtm | testWindows.py:40:1:40:9 | suppression range |
+| testWindows.py:48:4:48:60 | Comment # lgtm[py/line-too-long] and lgtm[py/non-callable-called] |  lgtm[py/line-too-long] and lgtm[py/non-callable-called] | lgtm[py/line-too-long] | testWindows.py:48:1:48:60 | suppression range |
+| testWindows.py:48:4:48:60 | Comment # lgtm[py/line-too-long] and lgtm[py/non-callable-called] |  lgtm[py/line-too-long] and lgtm[py/non-callable-called] | lgtm[py/non-callable-called] | testWindows.py:48:1:48:60 | suppression range |
+| testWindows.py:49:4:49:33 | Comment # lgtm[py/line-too-long]; lgtm |  lgtm[py/line-too-long]; lgtm | lgtm | testWindows.py:49:1:49:33 | suppression range |
+| testWindows.py:49:4:49:33 | Comment # lgtm[py/line-too-long]; lgtm |  lgtm[py/line-too-long]; lgtm | lgtm[py/line-too-long] | testWindows.py:49:1:49:33 | suppression range |

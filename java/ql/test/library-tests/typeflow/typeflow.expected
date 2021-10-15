@@ -1,0 +1,15 @@
+| A.java:9:10:9:11 | f1 | ArrayList<Long> | true |
+| A.java:11:19:11:20 | f2 | List<Long> | false |
+| A.java:12:16:12:16 | x | List<Long> | false |
+| A.java:14:9:14:9 | y | A | false |
+| A.java:19:9:19:9 | y | List<Integer> | false |
+| A.java:26:14:26:14 | o | List<Long> | false |
+| A.java:34:11:34:11 | x | Integer | false |
+| A.java:37:11:37:11 | x | A | false |
+| A.java:43:14:43:14 | o | Long | false |
+| A.java:51:19:51:19 | o | Integer | false |
+| A.java:55:12:55:12 | o | Integer | false |
+| A.java:61:11:61:11 | x | Integer | false |
+| A.java:67:22:67:22 | x | Integer | false |
+| A.java:70:23:70:24 | x2 | Integer | false |
+| A.java:92:18:92:18 | n | Integer | false |

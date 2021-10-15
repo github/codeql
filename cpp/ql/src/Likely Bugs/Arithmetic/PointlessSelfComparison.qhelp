@@ -1,0 +1,28 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+  <overview>
+    <p>
+      The purpose of comparing a variable to itself is usually to
+      detect either integer overflow or floating point NaN. If the
+      comparison does neither then it is most likely a coding error.
+    </p>
+  </overview>
+  <recommendation>
+    <p>
+      If the purpose of the cast is to detect integer overflow, then
+      make sure that the comparison uses explicit casts and that the
+      types are as intended.
+    </p>
+  </recommendation>
+  <example>
+    <sample src="PointlessSelfComparisonExample.cpp" />
+    <p>
+      The comparison is always true, because the explicit cast to
+      <tt>int</tt> has no effect. This might mean that the definition
+      of <tt>T</tt> has changed since <tt>checkOverflow</tt> was written and
+      that <tt>checkOverflow</tt> is now obsolete.
+    </p>
+  </example>
+</qhelp>

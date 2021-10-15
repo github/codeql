@@ -1,0 +1,46 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>In order to conform to the object model, classes that define their own equality method should also 
+define their own hash method, or be unhashable. If the hash method is not defined then the <code>hash</code> of the 
+super class is used. This is unlikely to result in the expected behavior.</p>
+
+<p>A class can be made unhashable by setting its <code>__hash__</code> attribute to <code>None</code>.</p>
+
+<p>In Python 3, if you define a class-level equality method and omit a <code>__hash__</code> method 
+then the class is automatically marked as unhashable.</p>
+
+</overview>
+<recommendation>
+
+<p>When you define an <code>__eq__</code> method for a class, remember to implement a <code>__hash__</code> method or set 
+<code>__hash__ = None</code>.</p>
+
+</recommendation>
+<example>
+<p>In the following example the <code>Point</code> class defines an equality method but 
+no hash method. If hash is called on this class then the hash method defined for <code>object</code> 
+is used. This is unlikely to give the required behavior. The <code>PointUpdated</code> class 
+is better as it defines both an equality and a hash method.
+If <code>Point</code> was not to be used in <code>dict</code>s or <code>set</code>s, then it could be defined as
+<code>UnhashablePoint</code> below.
+</p>
+<p>
+To comply fully with the object model this class should also define an inequality method (identified 
+by a separate rule).</p>
+
+<sample src="EqualsOrHash.py" />
+
+</example>
+<references>
+
+
+<li>Python Language Reference: <a href="http://docs.python.org/reference/datamodel.html#object.__hash__">object.__hash__</a>.</li>
+<li>Python Glossary: <a href="http://docs.python.org/2/glossary.html#term-hashable">hashable</a>.</li>
+
+
+</references>
+</qhelp>

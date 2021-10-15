@@ -1,0 +1,51 @@
+| 0 | parameterinitializer.cpp:7:6:7:6 | f | file://:0:0:0:0 | initializer for i | 0 | 0 |
+| 0 | parameterinitializer.cpp:13:2:13:2 | c | file://:0:0:0:0 | initializer for j | 0 | 0 |
+| 0 | parameterinitializer.cpp:15:7:15:12 | method | file://:0:0:0:0 | initializer for k | 0 | 0 |
+| 1 | parameterinitializer.cpp:1:6:1:11 | printf | parameterinitializer.cpp:1:6:1:11 | printf | 0 | 0 |
+| 3 | parameterinitializer.cpp:3:5:3:5 | g | parameterinitializer.cpp:3:5:3:5 | g | 1 | 0 |
+| 3 | parameterinitializer.cpp:3:5:3:5 | g | parameterinitializer.cpp:3:13:5:1 | { ... } | 0 | 1 |
+| 4 | parameterinitializer.cpp:3:5:3:5 | g | parameterinitializer.cpp:4:5:4:13 | return ... | 1 | 1 |
+| 4 | parameterinitializer.cpp:3:5:3:5 | g | parameterinitializer.cpp:4:12:4:12 | 5 | 1 | 1 |
+| 7 | parameterinitializer.cpp:7:6:7:6 | f | parameterinitializer.cpp:7:6:7:6 | f | 1 | 0 |
+| 7 | parameterinitializer.cpp:7:6:7:6 | f | parameterinitializer.cpp:7:16:7:16 | call to g | 0 | 0 |
+| 7 | parameterinitializer.cpp:7:6:7:6 | f | parameterinitializer.cpp:7:21:9:1 | { ... } | 0 | 1 |
+| 8 | parameterinitializer.cpp:7:6:7:6 | f | parameterinitializer.cpp:8:5:8:10 | call to printf | 1 | 1 |
+| 8 | parameterinitializer.cpp:7:6:7:6 | f | parameterinitializer.cpp:8:5:8:26 | ExprStmt | 1 | 1 |
+| 8 | parameterinitializer.cpp:7:6:7:6 | f | parameterinitializer.cpp:8:12:8:21 | (char *)... | 0 | 0 |
+| 8 | parameterinitializer.cpp:7:6:7:6 | f | parameterinitializer.cpp:8:12:8:21 | Got %d\n | 1 | 1 |
+| 8 | parameterinitializer.cpp:7:6:7:6 | f | parameterinitializer.cpp:8:12:8:21 | array to pointer conversion | 0 | 0 |
+| 8 | parameterinitializer.cpp:7:6:7:6 | f | parameterinitializer.cpp:8:24:8:24 | i | 1 | 1 |
+| 9 | parameterinitializer.cpp:7:6:7:6 | f | parameterinitializer.cpp:9:1:9:1 | return ... | 1 | 1 |
+| 11 | parameterinitializer.cpp:11:7:11:7 | c | parameterinitializer.cpp:11:7:11:7 | c | 0 | 0 |
+| 11 | parameterinitializer.cpp:11:7:11:7 | c | parameterinitializer.cpp:11:7:11:7 | c | 0 | 0 |
+| 11 | parameterinitializer.cpp:11:7:11:7 | operator= | parameterinitializer.cpp:11:7:11:7 | operator= | 0 | 0 |
+| 11 | parameterinitializer.cpp:11:7:11:7 | operator= | parameterinitializer.cpp:11:7:11:7 | operator= | 0 | 0 |
+| 13 | parameterinitializer.cpp:13:2:13:2 | c | parameterinitializer.cpp:13:2:13:2 | c | 1 | 0 |
+| 13 | parameterinitializer.cpp:13:2:13:2 | c | parameterinitializer.cpp:13:12:13:12 | call to g | 0 | 0 |
+| 13 | parameterinitializer.cpp:13:2:13:2 | c | parameterinitializer.cpp:13:17:13:18 | { ... } | 0 | 1 |
+| 13 | parameterinitializer.cpp:13:2:13:2 | c | parameterinitializer.cpp:13:18:13:18 | return ... | 1 | 1 |
+| 15 | parameterinitializer.cpp:15:7:15:12 | method | parameterinitializer.cpp:15:7:15:12 | method | 1 | 0 |
+| 15 | parameterinitializer.cpp:15:7:15:12 | method | parameterinitializer.cpp:15:22:15:22 | call to g | 0 | 0 |
+| 15 | parameterinitializer.cpp:15:7:15:12 | method | parameterinitializer.cpp:15:27:15:28 | { ... } | 0 | 1 |
+| 15 | parameterinitializer.cpp:15:7:15:12 | method | parameterinitializer.cpp:15:28:15:28 | return ... | 1 | 1 |
+| 18 | parameterinitializer.cpp:18:5:18:8 | main | parameterinitializer.cpp:18:5:18:8 | main | 1 | 0 |
+| 18 | parameterinitializer.cpp:18:5:18:8 | main | parameterinitializer.cpp:18:16:31:1 | { ... } | 0 | 1 |
+| 19 | parameterinitializer.cpp:18:5:18:8 | main | parameterinitializer.cpp:19:5:19:5 | call to f | 1 | 1 |
+| 19 | parameterinitializer.cpp:18:5:18:8 | main | parameterinitializer.cpp:19:5:19:9 | ExprStmt | 1 | 1 |
+| 19 | parameterinitializer.cpp:18:5:18:8 | main | parameterinitializer.cpp:19:7:19:7 | 3 | 1 | 1 |
+| 20 | parameterinitializer.cpp:18:5:18:8 | main | parameterinitializer.cpp:20:5:20:5 | call to f | 1 | 1 |
+| 20 | parameterinitializer.cpp:18:5:18:8 | main | parameterinitializer.cpp:20:5:20:8 | ExprStmt | 1 | 1 |
+| 21 | parameterinitializer.cpp:18:5:18:8 | main | parameterinitializer.cpp:21:5:21:5 | call to f | 1 | 1 |
+| 21 | parameterinitializer.cpp:18:5:18:8 | main | parameterinitializer.cpp:21:5:21:9 | ExprStmt | 1 | 1 |
+| 21 | parameterinitializer.cpp:18:5:18:8 | main | parameterinitializer.cpp:21:7:21:7 | 4 | 1 | 1 |
+| 22 | parameterinitializer.cpp:18:5:18:8 | main | parameterinitializer.cpp:22:5:22:5 | call to f | 1 | 1 |
+| 22 | parameterinitializer.cpp:18:5:18:8 | main | parameterinitializer.cpp:22:5:22:8 | ExprStmt | 1 | 1 |
+| 24 | parameterinitializer.cpp:18:5:18:8 | main | parameterinitializer.cpp:24:5:28:5 | { ... } | 1 | 1 |
+| 25 | parameterinitializer.cpp:18:5:18:8 | main | parameterinitializer.cpp:25:3:25:9 | declaration | 1 | 1 |
+| 25 | parameterinitializer.cpp:18:5:18:8 | main | parameterinitializer.cpp:25:5:25:8 | call to c | 1 | 1 |
+| 25 | parameterinitializer.cpp:18:5:18:8 | main | parameterinitializer.cpp:25:5:25:8 | initializer for my_c | 1 | 1 |
+| 27 | parameterinitializer.cpp:18:5:18:8 | main | parameterinitializer.cpp:27:3:27:6 | my_c | 1 | 1 |
+| 27 | parameterinitializer.cpp:18:5:18:8 | main | parameterinitializer.cpp:27:3:27:16 | ExprStmt | 1 | 1 |
+| 27 | parameterinitializer.cpp:18:5:18:8 | main | parameterinitializer.cpp:27:8:27:13 | call to method | 1 | 1 |
+| 30 | parameterinitializer.cpp:18:5:18:8 | main | parameterinitializer.cpp:30:5:30:13 | return ... | 1 | 1 |
+| 30 | parameterinitializer.cpp:18:5:18:8 | main | parameterinitializer.cpp:30:12:30:12 | 0 | 1 | 1 |

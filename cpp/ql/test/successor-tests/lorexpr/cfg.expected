@@ -1,0 +1,12 @@
+| lorexpr | lorexpr.c:1:6:1:6 | f | 1 | 1 | lorexpr.c:1:10:6:1 | lorexpr.c:1:10:6:1 | lorexpr.c:1:10:6:1 | { ... } | 2: declaration |
+| lorexpr | lorexpr.c:1:6:1:6 | f | 2 | 2 | lorexpr.c:2:2:2:10 | lorexpr.c:2:2:2:10 | lorexpr.c:2:2:2:10 | declaration | 3: if (...) ...  |
+| lorexpr | lorexpr.c:1:6:1:6 | f | 3 | 3 | lorexpr.c:3:2:4:2 | lorexpr.c:3:2:4:2 | lorexpr.c:3:2:4:2 | if (...) ...  | 3: ... \|\| ... |
+| lorexpr | lorexpr.c:1:6:1:6 | f | 3 | 4 | lorexpr.c:3:6:3:11 | lorexpr.c:3:6:3:11 | lorexpr.c:3:6:3:11 | ... \|\| ... | 3: a |
+| lorexpr | lorexpr.c:1:6:1:6 | f | 3 | 5 | lorexpr.c:3:6:3:6 | lorexpr.c:3:6:3:6 | lorexpr.c:3:6:3:6 | a | <false> 3: b |
+| lorexpr | lorexpr.c:1:6:1:6 | f | 3 | 5 | lorexpr.c:3:6:3:6 | lorexpr.c:3:6:3:6 | lorexpr.c:3:6:3:6 | a | <true> 3: { ... } |
+| lorexpr | lorexpr.c:1:6:1:6 | f | 3 | 6 | lorexpr.c:3:11:3:11 | lorexpr.c:3:11:3:11 | lorexpr.c:3:11:3:11 | b | <false> 5: ; |
+| lorexpr | lorexpr.c:1:6:1:6 | f | 3 | 6 | lorexpr.c:3:11:3:11 | lorexpr.c:3:11:3:11 | lorexpr.c:3:11:3:11 | b | <true> 3: { ... } |
+| lorexpr | lorexpr.c:1:6:1:6 | f | 3 | 7 | lorexpr.c:3:14:4:2 | lorexpr.c:3:14:4:2 | lorexpr.c:3:14:4:2 | { ... } | 5: ; |
+| lorexpr | lorexpr.c:1:6:1:6 | f | 5 | 8 | lorexpr.c:5:2:5:2 | lorexpr.c:5:2:5:2 | lorexpr.c:5:2:5:2 | ; | 6: return ... |
+| lorexpr | lorexpr.c:1:6:1:6 | f | 6 | 9 | lorexpr.c:6:1:6:1 | lorexpr.c:6:1:6:1 | lorexpr.c:6:1:6:1 | return ... | 6: f |
+| lorexpr | lorexpr.c:1:6:1:6 | f | 6 | 10 | lorexpr.c:1:6:1:6 | lorexpr.c:1:6:1:6 | lorexpr.c:1:6:1:6 | f | <none> |

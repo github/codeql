@@ -1,0 +1,9 @@
+| sys.modules | dict object |
+| test.C.cmeth | Function cmeth |
+| test.C.cmeth | classmethod() |
+| test.C.meth | Function meth |
+| test.C.smeth | Function smeth |
+| test.C.smeth | staticmethod() |
+| test.d | Dict |
+| test.l | List |
+| test.n | NoneType None |

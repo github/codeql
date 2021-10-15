@@ -1,0 +1,5 @@
+| UselessCastToSelf.cs:8:20:8:25 | (...) ... | This cast is redundant because the expression already has type Int32. |
+| UselessCastToSelf.cs:9:20:9:29 | (...) ... | This cast is redundant because the expression already has type Test. |
+| UselessCastToSelf.cs:10:20:10:31 | ... as ... | This cast is redundant because the expression already has type Test. |
+| UselessCastToSelf.cs:26:17:26:22 | (...) ... | This cast is redundant because the expression already has type Int32. |
+| UselessCastToSelf.cs:28:24:28:29 | (...) ... | This cast is redundant because the expression already has type Int32. |

@@ -1,0 +1,6 @@
+| javadoc/Test.java:3:1:3:20 | /** A test class. */ | javadoc/Test.java:4:14:4:17 | Test |
+| javadoc/Test.java:5:2:6:14 | /** A javadoc ... */ | javadoc/Test.java:7:7:7:7 | f |
+| javadoc/Test.java:9:2:9:33 | /** Another javadoc comment */ | javadoc/Test.java:11:7:11:7 | g |
+| javadoc/Test.java:10:2:10:24 | // and a normal comment | javadoc/Test.java:11:7:11:7 | g |
+| javadoc/Test.java:13:2:13:29 | /* another normal comment */ | javadoc/Test.java:14:6:14:6 | x |
+| javadoc/Test.java:17:2:17:19 | /** @deprecated */ | javadoc/Test.java:18:7:18:7 | h |

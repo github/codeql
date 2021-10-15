@@ -1,0 +1,24 @@
+| test.c:2:8:2:10 | declaration of 1st parameter |
+| test.c:2:13:2:15 | declaration of 2nd parameter |
+| test.c:2:18:2:20 | declaration of 3rd parameter |
+| test.c:2:23:2:25 | declaration of 4th parameter |
+| test.c:3:8:3:10 | declaration of y1 as anonymous 1st parameter |
+| test.c:3:13:3:15 | declaration of y2 as anonymous 2nd parameter |
+| test.c:3:18:3:20 | declaration of y3 as anonymous 3rd parameter |
+| test.c:3:23:3:25 | declaration of y4 as anonymous 4th parameter |
+| test.c:4:12:4:13 | declaration of x1 |
+| test.c:4:20:4:21 | declaration of x2 |
+| test.c:4:28:4:29 | declaration of x3 |
+| test.c:4:36:4:37 | declaration of x4 |
+| test.c:5:12:5:13 | declaration of y1 as x1 |
+| test.c:5:20:5:21 | declaration of y2 as x2 |
+| test.c:5:28:5:29 | declaration of y3 as x3 |
+| test.c:5:36:5:37 | declaration of y4 as x4 |
+| test.c:7:12:7:13 | definition of y1 |
+| test.c:7:20:7:21 | definition of y2 |
+| test.c:7:28:7:29 | definition of y3 |
+| test.c:7:36:7:37 | definition of y4 |
+| test.c:8:12:8:13 | definition of y1 |
+| test.c:8:20:8:21 | definition of y2 |
+| test.c:8:28:8:29 | definition of y3 |
+| test.c:8:36:8:37 | definition of y4 |

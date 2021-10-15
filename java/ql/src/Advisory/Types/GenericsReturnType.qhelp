@@ -1,0 +1,9 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<include src="Generics_Common.inc.qhelp" />
+
+</qhelp>

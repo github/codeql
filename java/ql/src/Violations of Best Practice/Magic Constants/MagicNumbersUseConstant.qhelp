@@ -1,0 +1,53 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>A <em>magic number</em> is a numeric literal (for example, <code>8080</code>,
+<code>2048</code>) that is used in the middle of a block of code without
+explanation. It is considered bad practice to use magic numbers because:</p>
+
+<ul>
+<li>A number in isolation can be difficult for other programmers to understand.
+</li>
+<li>It can be difficult to update the code if the requirements change. For example, if the magic 
+number represents the number of guests allowed, adding one more guest means that you must change
+every occurrence of the magic number.
+</li>
+</ul>
+
+</overview>
+<recommendation>
+
+<p>Replace the magic number with the existing named constant. This overcomes the two problems
+with magic numbers:</p>
+
+<ul>
+<li>A named constant (such as <code>MAX_GUESTS</code>) is more easily understood by other programmers.
+</li>
+<li>Using the same named constant in many places makes the code much easier to
+update if the requirements change, because you have to update the number in only one place.
+</li>
+</ul>
+
+</recommendation>
+<example>
+
+<p>The following example shows a magic number <code>internalPort</code>. This should be replaced by  
+the existing named constant, as shown in the fixed version.</p>
+
+<sample src="MagicNumbersUseConstant.java" />
+
+</example>
+<references>
+
+
+<li>
+R. C. Martin, <em>Clean Code: A Handbook of Agile Software Craftsmanship</em>, &sect;17.G25. Prentice Hall, 2008.
+</li>
+
+
+</references>
+</qhelp>

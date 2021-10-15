@@ -1,0 +1,1 @@
+| test.c:29:13:29:27 | call to maybe_null_func | The result of this call to maybe_null_func is not checked for null, but 88% of calls to maybe_null_func check for null. |

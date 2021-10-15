@@ -1,0 +1,2 @@
+| Test.java:13:3:13:5 | m(...) | Invoking $@ should be avoided because it has been deprecated. | Test.java:3:7:3:7 | m | Test.m |
+| Test.java:18:3:18:16 | n(...) | Invoking $@ should be avoided because it has been deprecated. | Test.java:6:7:6:7 | n | Test.n |

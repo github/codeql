@@ -1,0 +1,38 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>This rule finds static variables that are never accessed. These static variables should be removed, to increase code comprehensibility,
+reduce memory usage and avoid misuse. Unused static <code>const</code> variables could also be an indication of a defect 
+caused by an unhandled case.</p>
+
+</overview>
+<recommendation>
+<p>Check that the unused static variable does not indicate a defect, for example, an unhandled case. If the static variable is genuinuely not needed, 
+then removing it will make code more readable. If the static variable is needed then you should update the code to fix the defect.</p>
+
+</recommendation>
+<example><sample src="UnusedStaticVariables.cpp" />
+
+</example>
+<references>
+
+<li>
+  <a href="http://www.tutorialspoint.com/cplusplus/cpp_variable_scope.htm">Variable scope</a>
+</li>
+<li>
+  <a href="https://www.securecoding.cert.org/confluence/display/c/MSC12-C.+Detect+and+remove+code+that+has+no+effect+or+is+never+executed">Detect and remove code that has no effect</a>
+</li>
+<li>
+  <a href="https://wiki.sei.cmu.edu/confluence/display/c/DCL19-C.+Minimize+the+scope+of+variables+and+functions">Minimize the scope of variables and functions</a>
+</li>
+
+
+
+
+
+</references>
+</qhelp>

@@ -1,0 +1,6 @@
+| AV Rule 210.c:2:7:2:14 | myUnion1 | AV Rule 210: This union may make assumptions concerning data representation in memory. |
+| AV Rule 210.c:19:31:19:38 | myIntPtr | AV Rule 210: This cast makes assumptions concerning data representation in memory. |
+| AV Rule 210.c:20:38:20:45 | myIntPtr | AV Rule 210: This cast makes assumptions concerning data representation in memory. |
+| AV Rule 210.c:24:24:24:30 | array to pointer conversion | AV Rule 210: This cast makes assumptions concerning data representation in memory. |
+| AV Rule 210.c:24:24:24:30 | myArray | AV Rule 210: This cast makes assumptions concerning data representation in memory. |
+| AV Rule 210.c:29:7:29:14 | myUnion4 | AV Rule 210: This union may make assumptions concerning data representation in memory. |

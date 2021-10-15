@@ -1,0 +1,12 @@
+| module-refs.js:3:9:3:11 | dm1 |
+| module-refs.js:6:9:6:11 | rm1 |
+| module-refs.js:9:9:9:11 | cm1 |
+| module-refs.js:10:9:10:11 | cm2 |
+| module-refs.js:11:9:11:11 | cm3 |
+| module-refs.js:12:9:12:11 | cm4 |
+| module-refs.js:13:9:13:11 | cm5 |
+| module-refs.js:14:9:14:11 | cm6 |
+| module-refs.js:15:9:15:11 | cm7 |
+| module-refs.js:16:9:16:11 | cm8 |
+| module-refs.js:22:9:22:12 | mcm1 |
+| tst.js:19:7:19:7 | m |

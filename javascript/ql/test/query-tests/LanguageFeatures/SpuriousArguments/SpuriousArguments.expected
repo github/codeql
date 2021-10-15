@@ -1,0 +1,24 @@
+| es2015.js:4:16:4:17 | 23 | Superfluous argument passed to $@. | es2015.js:2:14:2:32 | (x) { this.x = x; } | constructor of class Class1 |
+| es2015.js:17:11:17:12 | 42 | Superfluous argument passed to $@. | es2015.js:15:13:15:12 | () {} | default constructor of class Other |
+| es2015.js:21:3:21:4 | 42 | Superfluous argument passed to $@. | tst.js:1:1:4:1 | functio ... x+19;\\n} | function f |
+| globals.js:15:13:15:13 | x | Superfluous argument passed to $@. | globals.js:9:1:9:32 | functio ... eturn;} | function otherglobal |
+| globals.js:16:24:16:24 | x | Superfluous argument passed to $@. | globals.js:9:1:9:32 | functio ... eturn;} | function otherglobal |
+| globals.js:17:24:17:27 | x | Superfluous arguments passed to $@. | globals.js:9:1:9:32 | functio ... eturn;} | function otherglobal |
+| reflection.js:6:15:6:15 | 1 | Superfluous argument passed to $@. | reflection.js:1:1:1:23 | functio ... eturn;} | function f0 |
+| reflection.js:7:15:7:18 | 1 | Superfluous arguments passed to $@. | reflection.js:1:1:1:23 | functio ... eturn;} | function f0 |
+| reflection.js:12:18:12:18 | 2 | Superfluous argument passed to $@. | reflection.js:2:1:2:24 | functio ... eturn;} | function f1 |
+| thisparameter.ts:4:11:4:12 | 45 | Superfluous argument passed to $@. | thisparameter.ts:1:1:1:45 | functio ... eturn;} | function foo |
+| tst.js:11:3:11:5 | g() | Superfluous argument passed to $@. | tst.js:1:1:4:1 | functio ... x+19;\\n} | function f |
+| tst.js:33:15:33:18 | 2 | Superfluous arguments passed to $@. | externs.js:34:1:34:27 | functio ... str) {} | function String |
+| tst.js:37:4:37:5 | 42 | Superfluous argument passed to $@. | tst.js:38:4:38:23 | function() {return;} | anonymous function |
+| tst.js:46:19:46:20 | 10 | Superfluous argument passed to $@. | externs.js:36:1:36:27 | functio ... num) {} | function parseFloat |
+| tst.js:70:11:70:12 | 42 | Superfluous argument passed to $@. | tst.js:49:2:51:2 | functio ... urn;\\n\\t} | function nonEmpty |
+| tst.js:75:13:75:14 | 42 | Superfluous argument passed to $@. | tst.js:63:19:63:33 | () => undefined | function emptyArrow |
+| tst.js:76:31:76:32 | 42 | Superfluous argument passed to $@. | tst.js:64:33:64:32 | () {} | default constructor of class ImplicitEmptyConstructor |
+| tst.js:77:31:77:32 | 42 | Superfluous argument passed to $@. | tst.js:67:14:68:3 | (){\\n\\t\\t} | constructor of class ExplicitEmptyConstructor |
+| tst.js:78:20:78:21 | 10 | Superfluous argument passed to $@. | externs.js:36:1:36:27 | functio ... num) {} | function parseFloat |
+| tst.js:114:20:114:21 | 42 | Superfluous argument passed to $@. | tst.js:82:2:86:2 | functio ... \\n\\t\\t}\\n\\t} | function notAPlainThrower1 |
+| tst.js:115:20:115:21 | 42 | Superfluous argument passed to $@. | tst.js:87:2:90:2 | functio ... .");\\n\\t} | function notAPlainThrower2 |
+| tst.js:116:20:116:21 | 42 | Superfluous argument passed to $@. | tst.js:91:2:94:2 | functio ... .");\\n\\t} | function notAPlainThrower3 |
+| tst.js:120:23:120:24 | 87 | Superfluous argument passed to $@. | tst.js:102:2:104:2 | functio ... (p);\\n\\t} | function throwerWithParam |
+| tst.js:121:18:121:19 | 42 | Superfluous argument passed to $@. | tst.js:105:2:113:2 | functio ... )();\\n\\t} | function throwerIndirect |

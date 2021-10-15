@@ -1,0 +1,33 @@
+{
+	"private": true,
+	"dependencies": {
+		"deep": "^0.0.2",
+		"deep-assign": "^2.0.0",
+		"deep-extend": "^0.6.0",
+		"deep-merge": "^1.0.0",
+		"deepmerge": "^2.1.1",
+		"defaults": "^1.0.3",
+		"extend": "^3.0.2",
+		"extend-shallow": "^3.0.2",
+		"extend2": "^1.0.0",
+		"js-extend": "^1.0.1",
+		"just-extend": "^4.0.0",
+		"lodash": "^4.17.10",
+		"lodash.defaultsdeep": "^4.6.0",
+		"lodash.mergewith": "^4.6.1",
+		"merge": "^1.2.0",
+		"merge-deep": "^3.0.2",
+		"merge-options": "^1.0.1",
+		"mixin-deep": "^2.0.0",
+		"mixin-object": "^3.0.0",
+		"node.extend": "^2.0.0",
+		"object-assign": "^4.1.1",
+		"object.assign": "^4.1.0",
+		"object.defaults": "^1.1.0",
+		"ramda": "^0.25.0",
+		"smart-extend": "^1.7.3",
+		"util-extend": "^1.0.3",
+		"utils-merge": "^1.0.1",
+		"xtend": "^4.0.1"
+	}
+}

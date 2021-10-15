@@ -1,0 +1,48 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+In JavaScript, <code>async</code> functions always return a promise object.
+To obtain the underlying value of the promise, use the <code>await</code> operator or call the <code>then</code> method.
+Attempting to use a promise object instead of its underlying value can lead to unexpected behavior.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Use the <code>await</code> operator to get the value contained in the promise.
+Alternatively, call <code>then</code> on the promise and use the value passed to the callback.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+In the following example, the <code>getData</code> function returns a promise,
+and the caller checks if the returned promise is <code>null</code>:
+</p>
+
+<sample src="examples/MissingAwait.js" />
+
+<p>
+However, the null check does not work as expected. The <code>return null</code> statement
+on line 2 actually returns a <em>promise</em> containing the <code>null</code> value.
+Since the promise object itself is not equal to <code>null</code>, the error check is bypassed.
+</p>
+
+<p>
+The issue can be corrected by inserting <code>await</code> before the promise:
+</p>
+
+<sample src="examples/MissingAwaitGood.js" />
+
+</example>
+<references>
+<li>MDN: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises">Using promises</a></li>
+<li>MDN: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function">Async functions</a></li>
+<li>MDN: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/await">Await operator</a></li>
+</references>
+</qhelp>

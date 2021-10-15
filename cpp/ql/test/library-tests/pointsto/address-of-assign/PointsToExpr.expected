@@ -1,0 +1,2 @@
+| test.cpp:8:9:8:9 | b | test.cpp:1:6:1:6 | a |
+| test.cpp:8:12:8:12 | c | test.cpp:1:11:1:11 | b |

@@ -1,0 +1,64 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+If a database query (such as a SQL or NoSQL query) is built from
+user-provided data without sufficient sanitization, a user
+may be able to run malicious database queries.
+</p>
+
+<p>
+This also includes using the <code>TextClause</code> class in the
+<code><a href="https://pypi.org/project/SQLAlchemy/">SQLAlchemy</a></code> PyPI package,
+which is used to represent a literal SQL fragment and is inserted directly into the
+final SQL when used in a query built using the ORM.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Most database connector libraries offer a way of safely
+embedding untrusted data into a query by means of query parameters
+or prepared statements.
+</p>
+</recommendation>
+
+<example>
+<p>
+In the following snippet, a user is fetched from the database using three
+different queries.
+</p>
+
+<p>
+In the first case, the query string is built by
+directly using string formatting from a user-supplied request parameter.
+The parameter may include quote characters, so this
+code is vulnerable to a SQL injection attack.
+</p>
+
+<p>
+In the second case, the user-supplied request attribute is passed
+to the database using query parameters. The database connector library will
+take care of escaping and inserting quotes as needed.
+</p>
+
+<p>
+In the third case, the placeholder in the SQL string has been manually quoted. Since most
+databaseconnector libraries will insert their own quotes, doing so yourself will make the code
+vulnerable to SQL injection attacks. In this example, if <code>username</code> was
+<code>; DROP ALL TABLES -- </code>, the final SQL query would be
+<code>SELECT * FROM users WHERE username = ''; DROP ALL TABLES -- ''</code>
+</p>
+
+<sample src="examples/sql_injection.py" />
+</example>
+
+<references>
+<li>Wikipedia: <a href="https://en.wikipedia.org/wiki/SQL_injection">SQL injection</a>.</li>
+<li>OWASP: <a href="https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html">SQL Injection Prevention Cheat Sheet</a>.</li>
+<li><a href="https://docs.sqlalchemy.org/en/14/core/sqlelement.html#sqlalchemy.sql.expression.text.params.text">SQLAlchemy documentation for TextClause</a>.</li>
+</references>
+</qhelp>

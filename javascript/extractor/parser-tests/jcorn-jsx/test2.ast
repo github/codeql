@@ -1,0 +1,108 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ExpressionStatement",
+      "expression": {
+        "type": "JSXElement",
+        "openingElement": {
+          "type": "JSXOpeningElement",
+          "attributes": [],
+          "name": {
+            "type": "JSXMemberExpression",
+            "object": {
+              "type": "JSXNamespacedName",
+              "namespace": {
+                "type": "JSXIdentifier",
+                "name": "a",
+                "loc": {
+                  "start": {
+                    "offset": 1
+                  },
+                  "end": {
+                    "offset": 2
+                  }
+                }
+              },
+              "name": {
+                "type": "JSXIdentifier",
+                "name": "b",
+                "loc": {
+                  "start": {
+                    "offset": 3
+                  },
+                  "end": {
+                    "offset": 4
+                  }
+                }
+              },
+              "loc": {
+                "start": {
+                  "offset": 1
+                },
+                "end": {
+                  "offset": 4
+                }
+              }
+            },
+            "property": {
+              "type": "JSXIdentifier",
+              "name": "c",
+              "loc": {
+                "start": {
+                  "offset": 5
+                },
+                "end": {
+                  "offset": 6
+                }
+              }
+            },
+            "loc": {
+              "start": {
+                "offset": 1
+              },
+              "end": {
+                "offset": 6
+              }
+            }
+          },
+          "selfClosing": true,
+          "loc": {
+            "start": {
+              "offset": 0
+            },
+            "end": {
+              "offset": 9
+            }
+          }
+        },
+        "closingElement": null,
+        "children": [],
+        "loc": {
+          "start": {
+            "offset": 0
+          },
+          "end": {
+            "offset": 9
+          }
+        }
+      },
+      "loc": {
+        "start": {
+          "offset": 0
+        },
+        "end": {
+          "offset": 9
+        }
+      }
+    }
+  ],
+  "loc": {
+    "start": {
+      "offset": 0
+    },
+    "end": {
+      "offset": 9
+    }
+  }
+}

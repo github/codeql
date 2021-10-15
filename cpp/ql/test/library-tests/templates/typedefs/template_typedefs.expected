@@ -1,0 +1,34 @@
+| A<TA> | TA |
+| A<int> | int |
+| B<TB> | TB |
+| B<int> | int |
+| C<TC> | TC |
+| C<int> | int |
+| D<TD> | TD |
+| D<int> | int |
+| E<TE> | TE |
+| E<int> | int |
+| F<TF> | TF |
+| F<int> | int |
+| G<..(*)(..)> | pointer to {function returning {pointer to {int}} with arguments (int)} |
+| G<TG> | TG |
+| G<__attribute((vector_size(32))) int> | GNU 8 element vector of {int} |
+| G<const int *const> | const {pointer to {const {int}}} |
+| G<int **&> | reference to {pointer to {pointer to {int}}} |
+| G<int *> | pointer to {int} |
+| G<int S::*> | pointer to member of S with type {int} |
+| G<int(&)[3]> | reference to {array of 3 {int}} |
+| H<TH> | TH |
+| H<int> | int |
+| a | Ta |
+| a | int |
+| b | Tb |
+| b | int |
+| c | Tc |
+| c | int |
+| d | Td |
+| d | int |
+| e | Te |
+| e | int |
+| f | Tf |
+| f | int |

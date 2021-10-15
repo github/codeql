@@ -1,0 +1,63 @@
+| Assert.cs:11:27:11:27 | access to local variable s |
+| Assert.cs:25:27:25:27 | access to local variable s |
+| Assert.cs:39:27:39:27 | access to local variable s |
+| Assert.cs:53:27:53:27 | access to local variable s |
+| Assert.cs:60:27:60:27 | access to local variable s |
+| Assert.cs:67:27:67:27 | access to local variable s |
+| Guards.cs:12:13:12:13 | access to parameter s |
+| Guards.cs:14:31:14:31 | access to parameter s |
+| Guards.cs:26:31:26:31 | access to parameter s |
+| Guards.cs:33:31:33:31 | access to parameter x |
+| Guards.cs:33:35:33:35 | access to parameter y |
+| Guards.cs:36:32:36:32 | access to parameter x |
+| Guards.cs:36:36:36:36 | access to parameter y |
+| Guards.cs:39:31:39:31 | access to parameter x |
+| Guards.cs:39:35:39:35 | access to parameter y |
+| Guards.cs:42:32:42:32 | access to parameter x |
+| Guards.cs:42:36:42:36 | access to parameter y |
+| Guards.cs:48:31:48:40 | access to field Field |
+| Guards.cs:55:27:55:33 | access to field Field |
+| Guards.cs:62:27:62:51 | access to field Field |
+| Guards.cs:70:31:70:31 | access to parameter s |
+| Guards.cs:79:31:79:31 | access to parameter s |
+| Guards.cs:81:31:81:31 | access to parameter s |
+| Guards.cs:83:31:83:31 | access to parameter s |
+| Guards.cs:85:31:85:31 | access to parameter s |
+| Guards.cs:87:31:87:31 | access to parameter s |
+| Guards.cs:89:31:89:31 | access to parameter s |
+| Guards.cs:95:31:95:31 | access to parameter s |
+| Guards.cs:97:31:97:31 | access to parameter s |
+| Guards.cs:116:27:116:51 | access to field Field |
+| Guards.cs:125:29:125:30 | access to parameter s1 |
+| Guards.cs:132:16:132:16 | access to parameter s |
+| Guards.cs:138:20:138:20 | access to parameter s |
+| Guards.cs:154:24:154:24 | access to parameter o |
+| Guards.cs:158:24:158:24 | access to parameter o |
+| Guards.cs:162:24:162:24 | access to parameter o |
+| Guards.cs:169:31:169:31 | access to parameter x |
+| Guards.cs:190:31:190:31 | access to parameter s |
+| Guards.cs:192:31:192:31 | access to parameter s |
+| Guards.cs:194:31:194:31 | access to parameter s |
+| Guards.cs:196:31:196:31 | access to parameter s |
+| Guards.cs:205:13:205:13 | access to parameter o |
+| Guards.cs:208:17:208:17 | access to parameter o |
+| Guards.cs:269:13:269:14 | access to parameter o1 |
+| Guards.cs:279:17:279:17 | access to parameter o |
+| Guards.cs:283:17:283:17 | access to parameter o |
+| Guards.cs:287:17:287:17 | access to parameter o |
+| Guards.cs:343:31:343:31 | access to local variable s |
+| Guards.cs:349:13:349:13 | access to parameter o |
+| Splitting.cs:13:17:13:17 | access to parameter o |
+| Splitting.cs:23:24:23:24 | access to parameter o |
+| Splitting.cs:35:13:35:13 | access to parameter o |
+| Splitting.cs:44:17:44:17 | access to parameter o |
+| Splitting.cs:46:17:46:17 | access to parameter o |
+| Splitting.cs:55:13:55:13 | access to parameter o |
+| Splitting.cs:66:20:66:20 | access to parameter o |
+| Splitting.cs:78:24:78:24 | access to parameter o |
+| Splitting.cs:90:13:90:13 | access to parameter o |
+| Splitting.cs:107:13:107:13 | access to parameter o |
+| Splitting.cs:109:13:109:13 | access to parameter o |
+| Splitting.cs:117:9:117:9 | access to parameter o |
+| Splitting.cs:119:13:119:13 | access to parameter o |
+| Splitting.cs:120:16:120:16 | access to parameter o |

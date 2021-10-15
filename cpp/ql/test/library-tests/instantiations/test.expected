@@ -1,0 +1,34 @@
+| file://:0:0:0:0 | operator delete |
+| file://:0:0:0:0 | operator new |
+| file://:0:0:0:0 | operator= |
+| file://:0:0:0:0 | operator= |
+| test.cpp:2:7:2:7 | A |
+| test.cpp:2:7:2:7 | operator= |
+| test.cpp:2:19:2:20 | ~A |
+| test.cpp:4:7:4:7 | X |
+| test.cpp:4:7:4:7 | X |
+| test.cpp:4:7:4:7 | X |
+| test.cpp:4:7:4:7 | operator= |
+| test.cpp:4:7:4:7 | operator= |
+| test.cpp:4:32:4:33 | vf |
+| test.cpp:14:7:14:7 | Y |
+| test.cpp:14:7:14:7 | Y |
+| test.cpp:14:7:14:7 | Y |
+| test.cpp:14:7:14:7 | operator= |
+| test.cpp:14:7:14:7 | operator= |
+| test.cpp:14:7:14:7 | ~Y |
+| test.cpp:14:35:14:36 | vf |
+| test.cpp:16:7:16:7 | B |
+| test.cpp:16:7:16:7 | B |
+| test.cpp:16:7:16:7 | B |
+| test.cpp:16:7:16:7 | operator= |
+| test.cpp:16:7:16:7 | operator= |
+| test.cpp:16:32:16:35 | vfun |
+| test.cpp:19:7:19:7 | C |
+| test.cpp:19:7:19:7 | C |
+| test.cpp:19:7:19:7 | C |
+| test.cpp:19:7:19:7 | operator= |
+| test.cpp:19:7:19:7 | operator= |
+| test.cpp:21:18:21:18 | vfun |
+| test.cpp:21:18:21:21 | vfun |
+| test.cpp:27:6:27:6 | f |

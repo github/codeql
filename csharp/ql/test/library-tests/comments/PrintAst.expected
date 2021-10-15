@@ -1,0 +1,208 @@
+comments1.cs:
+#    9| [Class] C
+#   34| [Class] Foo
+#   39|   5: [Field] x
+#   39|     -1: [TypeMention] int
+#   42|   6: [Field] y
+#   42|     -1: [TypeMention] int
+#   43|   7: [Field] z
+#   43|     -1: [TypeMention] int
+comments2.cs:
+#   11| [Class] C2
+#   13|   4: [Field] field1
+#   13|     -1: [TypeMention] int
+#   14|   5: [Field] field2
+#   14|     -1: [TypeMention] int
+#   19|   6: [Method] f
+#   19|     -1: [TypeMention] Void
+#   20|     4: [BlockStmt] {...}
+#   23|       0: [ExprStmt] ...;
+#   23|         0: [MethodCall] call to method f
+#   26|       1: [ExprStmt] ...;
+#   26|         0: [MethodCall] call to method g
+#   26|           0: [IntLiteral] 2
+#   29|   7: [Method] g
+#   29|     -1: [TypeMention] Void
+#-----|     2: (Parameters)
+#   29|       0: [Parameter] x
+#   29|         -1: [TypeMention] int
+#   30|     4: [BlockStmt] {...}
+#   32|       0: [LocalVariableDeclStmt] ... ...;
+#   32|         0: [LocalVariableDeclAndInitExpr] Int32 y = ...
+#   32|           -1: [TypeMention] int
+#   32|           0: [LocalVariableAccess] access to local variable y
+#   32|           1: [IntLiteral] 0
+#   34|       1: [LocalVariableDeclStmt] ... ...;
+#   34|         0: [LocalVariableDeclAndInitExpr] Int32 z = ...
+#   34|           -1: [TypeMention] int
+#   34|           0: [LocalVariableAccess] access to local variable z
+#   34|           1: [IntLiteral] 0
+#   40|   8: [Class] C3
+#   48|   9: [Property] S1
+#   48|     -1: [TypeMention] string
+#   52|     3: [Getter] get_S1
+#   52|       4: [BlockStmt] {...}
+#   52|         0: [ReturnStmt] return ...;
+#   52|           0: [StringLiteral] ""
+#   53|     4: [Setter] set_S1
+#-----|       2: (Parameters)
+#   53|         0: [Parameter] value
+#   54|       4: [BlockStmt] {...}
+#   61|   10: [Enum] Values
+#   66|     5: [Field] First
+#   67|     6: [Field] Second
+#   73|     7: [Field] Third
+#   79|   11: [InstanceConstructor] C2
+#   80|     4: [BlockStmt] {...}
+#   85|   12: [Destructor] ~C2
+#   86|     4: [BlockStmt] {...}
+#   90|   13: [AddOperator] +
+#   90|     -1: [TypeMention] int
+#-----|     2: (Parameters)
+#   90|       0: [Parameter] x
+#   90|         -1: [TypeMention] C2
+#   90|       1: [Parameter] b
+#   90|         -1: [TypeMention] C2
+#   91|     4: [BlockStmt] {...}
+#   92|       0: [ReturnStmt] return ...;
+#   92|         0: [IntLiteral] 2
+#   95|   14: [Method] f
+#   95|     -1: [TypeMention] Void
+#-----|     2: (Parameters)
+#   96|       0: [Parameter] x
+#   96|         -1: [TypeMention] int
+#   97|       1: [Parameter] y
+#   97|         -1: [TypeMention] int
+#   99|     4: [BlockStmt] {...}
+#  103|   15: [DelegateType] D
+#  107|   16: [Event] E
+#  107|     -1: [TypeMention] D
+#  107|     3: [AddEventAccessor] add_E
+#-----|       2: (Parameters)
+#  107|         0: [Parameter] value
+#  107|     4: [RemoveEventAccessor] remove_E
+#-----|       2: (Parameters)
+#  107|         0: [Parameter] value
+#  110|   17: [Method] gen
+#  110|     -1: [TypeMention] Void
+#  111|     4: [BlockStmt] {...}
+#  112|       0: [LocalVariableDeclStmt] ... ...;
+#  112|         0: [LocalVariableDeclAndInitExpr] GenericClass<Int32> t1 = ...
+#  112|           -1: [TypeMention] GenericClass<int>
+#  112|           0: [LocalVariableAccess] access to local variable t1
+#  112|           1: [ObjectCreation] object creation of type GenericClass<Int32>
+#  112|             0: [TypeMention] GenericClass<int>
+#  112|               1: [TypeMention] int
+#  113|       1: [LocalVariableDeclStmt] ... ...;
+#  113|         0: [LocalVariableDeclAndInitExpr] Int32 t2 = ...
+#  113|           -1: [TypeMention] int
+#  113|           0: [LocalVariableAccess] access to local variable t2
+#  113|           1: [MethodCall] call to method GenericFn<Int32>
+#  114|       2: [LocalVariableDeclStmt] ... ...;
+#  114|         0: [LocalVariableDeclAndInitExpr] GenericClass<Double> t3 = ...
+#  114|           -1: [TypeMention] GenericClass<double>
+#  114|           0: [LocalVariableAccess] access to local variable t3
+#  114|           1: [ObjectCreation] object creation of type GenericClass<Double>
+#  114|             0: [TypeMention] GenericClass<double>
+#  114|               1: [TypeMention] double
+#  115|       3: [LocalVariableDeclStmt] ... ...;
+#  115|         0: [LocalVariableDeclAndInitExpr] Int32 t4 = ...
+#  115|           -1: [TypeMention] int
+#  115|           0: [LocalVariableAccess] access to local variable t4
+#  115|           1: [MethodCall] call to method GenericFn<Double>
+#  119|   18: [Class] GenericClass<>
+#-----|     1: (Type parameters)
+#  119|       0: [TypeParameter] T
+#  121|     5: [Field] f
+#  121|       -1: [TypeMention] int
+#  125|   21: [Method] GenericFn<>
+#  125|     -1: [TypeMention] int
+#-----|     1: (Type parameters)
+#  125|       0: [TypeParameter] T
+#  126|     4: [BlockStmt] {...}
+#  127|       0: [LocalVariableDeclStmt] ... ...;
+#  127|         0: [LocalVariableDeclAndInitExpr] Int32 x = ...
+#  127|           -1: [TypeMention] int
+#  127|           0: [LocalVariableAccess] access to local variable x
+#  127|           1: [IntLiteral] 0
+#  128|       1: [ReturnStmt] return ...;
+#  128|         0: [IntLiteral] 0
+trivia.cs:
+#   14| [Class] Tr1
+#   16|   5: [Method] M1
+#   16|     -1: [TypeMention] Void
+#   17|     4: [BlockStmt] {...}
+comments1.cs:
+#    1|       0: [LocalVariableDeclStmt] ... ...;
+#    1|         0: [LocalVariableDeclExpr] Int32 i
+trivia.cs:
+#   19|           0: [TypeMention] int
+comments1.cs:
+#    2|       1: [LocalVariableDeclStmt] ... ...;
+#    2|         0: [LocalVariableDeclExpr] Int32 j
+trivia.cs:
+#   20|           0: [TypeMention] int
+#   22|       2: [LocalVariableDeclStmt] ... ...;
+#   22|         0: [LocalVariableDeclExpr] Char c
+#   22|           0: [TypeMention] char
+#   24|       3: [LocalVariableDeclStmt] ... ...;
+#   24|         0: [LocalVariableDeclExpr] Single f
+#   24|           0: [TypeMention] float
+#   26|       4: [LocalVariableDeclStmt] ... ...;
+#   26|         0: [LocalVariableDeclExpr] String s
+#   26|           0: [TypeMention] string
+#   28|       5: [LocalVariableDeclStmt] ... ...;
+#   28|         0: [LocalVariableDeclExpr] Double d
+#   28|           0: [TypeMention] double
+#   32| [Class] Tr2
+#   34|   5: [Method] M1
+#   34|     -1: [TypeMention] Void
+#   35|     4: [BlockStmt] {...}
+#   37|       0: [LocalVariableDeclStmt] ... ...;
+#   37|         0: [LocalVariableDeclExpr] Int32 i
+#   37|           0: [TypeMention] int
+#   39|       1: [LocalVariableDeclStmt] ... ...;
+#   39|         0: [LocalVariableDeclExpr] Int32 j
+#   39|           0: [TypeMention] int
+#   45| [Class] Tr3
+#   47|   5: [Method] M1
+#   47|     -1: [TypeMention] Void
+#   48|     4: [BlockStmt] {...}
+#   61| [Class] Tr4
+#   63|   5: [Method] M1
+#   63|     -1: [TypeMention] Void
+#   64|     4: [BlockStmt] {...}
+#   73|       0: [LocalVariableDeclStmt] ... ...;
+#   73|         0: [LocalVariableDeclAndInitExpr] Int32 i = ...
+#   73|           -1: [TypeMention] int
+#   73|           0: [LocalVariableAccess] access to local variable i
+#   73|           1: [IntLiteral] 1
+#   80| [Class] Tr5
+#   83|   5: [Method] M1
+#   83|     -1: [TypeMention] Void
+#   84|     4: [BlockStmt] {...}
+#   88|   6: [Method] M2
+#   88|     -1: [TypeMention] Void
+#   89|     4: [BlockStmt] {...}
+#   92|   7: [Field] F1
+#   92|     -1: [TypeMention] int
+#   92|     1: [AssignExpr] ... = ...
+#   92|       0: [FieldAccess] access to field F1
+#   94|       1: [IntLiteral] 10
+#   98|   8: [Field] F2
+#   98|     -1: [TypeMention] int
+#   98|     1: [AssignExpr] ... = ...
+#   98|       0: [FieldAccess] access to field F2
+#   98|       1: [IntLiteral] 0
+#  100|   9: [Property] P1
+#  100|     -1: [TypeMention] int
+#  102|     3: [Getter] get_P1
+#  104|     4: [Setter] set_P1
+#-----|       2: (Parameters)
+#  104|         0: [Parameter] value
+#  108|   10: [Property] P2
+#  108|     -1: [TypeMention] int
+#  108|     3: [Getter] get_P2
+#  108|     4: [Setter] set_P2
+#-----|       2: (Parameters)
+#  108|         0: [Parameter] value

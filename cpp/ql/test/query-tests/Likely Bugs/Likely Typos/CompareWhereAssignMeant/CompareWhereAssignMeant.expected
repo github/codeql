@@ -1,0 +1,8 @@
+| test.cpp:28:5:28:10 | ... == ... | This '==' operator has no effect. The assignment ('=') operator was probably intended. |
+| test.cpp:30:5:30:10 | ... == ... | This '==' operator has no effect. The assignment ('=') operator was probably intended. |
+| test.cpp:30:13:30:18 | ... == ... | This '==' operator has no effect. The assignment ('=') operator was probably intended. |
+| test.cpp:32:17:32:22 | ... == ... | This '==' operator has no effect. The assignment ('=') operator was probably intended. |
+| test.cpp:34:10:34:15 | ... == ... | This '==' operator has no effect. The assignment ('=') operator was probably intended. |
+| test.cpp:39:23:39:28 | ... == ... | This '==' operator has no effect. The assignment ('=') operator was probably intended. |
+| test.cpp:42:23:42:28 | ... == ... | This '==' operator has no effect. The assignment ('=') operator was probably intended. |
+| test.cpp:51:13:51:13 | call to operator== | This '==' operator has no effect. The assignment ('=') operator was probably intended. |

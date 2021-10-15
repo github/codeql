@@ -1,0 +1,15 @@
+| assignexpr | assignexpr.cpp:1:7:1:7 | operator= | 1 | 1 | assignexpr.cpp:1:7:1:7 | assignexpr.cpp:1:7:1:7 | assignexpr.cpp:1:7:1:7 | operator= | <none> |
+| assignexpr | assignexpr.cpp:1:7:1:7 | operator= | 1 | 1 | assignexpr.cpp:1:7:1:7 | assignexpr.cpp:1:7:1:7 | assignexpr.cpp:1:7:1:7 | operator= | <none> |
+| assignexpr | assignexpr.cpp:6:6:6:6 | f | 6 | 1 | assignexpr.cpp:6:10:11:1 | assignexpr.cpp:6:10:11:1 | assignexpr.cpp:6:10:11:1 | { ... } | 7: declaration |
+| assignexpr | assignexpr.cpp:6:6:6:6 | f | 7 | 2 | assignexpr.cpp:7:2:7:5 | assignexpr.cpp:7:2:7:5 | assignexpr.cpp:7:2:7:5 | declaration | 8: declaration |
+| assignexpr | assignexpr.cpp:6:6:6:6 | f | 8 | 3 | assignexpr.cpp:8:2:8:10 | assignexpr.cpp:8:2:8:10 | assignexpr.cpp:8:2:8:10 | declaration | 9: ExprStmt |
+| assignexpr | assignexpr.cpp:6:6:6:6 | f | 9 | 4 | assignexpr.cpp:9:2:9:13 | assignexpr.cpp:9:2:9:13 | assignexpr.cpp:9:2:9:13 | ExprStmt | 9: a |
+| assignexpr | assignexpr.cpp:6:6:6:6 | f | 9 | 5 | assignexpr.cpp:9:8:9:8 | assignexpr.cpp:9:8:9:8 | assignexpr.cpp:9:8:9:8 | a | 9: b |
+| assignexpr | assignexpr.cpp:6:6:6:6 | f | 9 | 6 | assignexpr.cpp:9:12:9:12 | assignexpr.cpp:9:12:9:12 | assignexpr.cpp:9:12:9:12 | b | 9: ... + ... |
+| assignexpr | assignexpr.cpp:6:6:6:6 | f | 9 | 7 | assignexpr.cpp:9:8:9:12 | assignexpr.cpp:9:8:9:12 | assignexpr.cpp:9:8:9:12 | ... + ... | 9: c |
+| assignexpr | assignexpr.cpp:6:6:6:6 | f | 9 | 8 | assignexpr.cpp:9:2:9:2 | assignexpr.cpp:9:2:9:2 | assignexpr.cpp:9:2:9:2 | c | 9: i |
+| assignexpr | assignexpr.cpp:6:6:6:6 | f | 9 | 9 | assignexpr.cpp:9:4:9:4 | assignexpr.cpp:9:4:9:4 | assignexpr.cpp:9:4:9:4 | i | 9: ... = ... |
+| assignexpr | assignexpr.cpp:6:6:6:6 | f | 9 | 10 | assignexpr.cpp:9:2:9:12 | assignexpr.cpp:9:2:9:12 | assignexpr.cpp:9:2:9:12 | ... = ... | 10: ; |
+| assignexpr | assignexpr.cpp:6:6:6:6 | f | 10 | 11 | assignexpr.cpp:10:2:10:2 | assignexpr.cpp:10:2:10:2 | assignexpr.cpp:10:2:10:2 | ; | 11: return ... |
+| assignexpr | assignexpr.cpp:6:6:6:6 | f | 11 | 12 | assignexpr.cpp:11:1:11:1 | assignexpr.cpp:11:1:11:1 | assignexpr.cpp:11:1:11:1 | return ... | 11: f |
+| assignexpr | assignexpr.cpp:6:6:6:6 | f | 11 | 13 | assignexpr.cpp:6:6:6:6 | assignexpr.cpp:6:6:6:6 | assignexpr.cpp:6:6:6:6 | f | <none> |

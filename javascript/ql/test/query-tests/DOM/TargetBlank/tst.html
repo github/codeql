@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<h1>OK</h1>
+<a href="http://example.com" target="_blank" rel="noopener noreferrer">Example</a>
+<a href="http://example.com" target="_blank" rel="noreferrer">Example</a>
+<a href="http://example.com" target="_blank" rel="noopener">Example</a>
+<a data-ng-href="https://example.com" target="_blank" rel="noopener">Example</a>
+
+<h1>OK, because of constant URL</h1>
+<a href="http://example.com" target="_blank">Example</a>
+<a href="http://example.com" target="_blank" rel="nopoener">Example</a>
+<a data-ng-href="https://example.com" target="_blank">Example</a>
+
+<h1>OK, because of constant prefix</h1>
+<a href="http://example.com/{{X}}" target="_blank">Example</a>
+<a href="http://example.com/{{X}}" target="_blank" rel="nopoener">Example</a>
+<a data-ng-href="https://example.com/{{X}}" target="_blank">Example</a>
+
+<h1>NOT OK, because of dynamic URL</h1>
+<a href="http://example.com{{X}}" target="_blank">Example</a>
+<a href="{{target}}" target="_blank">Example</a>
+<a href="{{target}}" target="_blank">
+  Example
+</a>
+
+<h1>NOT OK: mailto is not fine.</h1>
+<a target="_blank" href="mailto:{{var:mail}}">mail somone</a>
+
+<h1>OK: template elements after # or ? are fine.</h1>
+<a href="file.extension?#[% row.href %]" target="_blank">Example</a>
+<a href="file.extension?[% row.href %]" target="_blank">Example</a>
+<a href="file.extension#[% row.href %]" target="_blank">Example</a>
+
+</body>
+</html>

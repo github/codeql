@@ -1,0 +1,7 @@
+| ngBind | tst.html:3:3:3:30 | <span>...</> |
+| ngBind | tst.html:4:3:4:30 | <span>...</> |
+| ngBind | tst.html:5:3:5:30 | <span>...</> |
+| ngBind | tst.html:6:3:6:35 | <span>...</> |
+| ngBind | tst.html:7:3:7:32 | <span>...</> |
+| ngController | tst.html:1:1:8:6 | <div>...</> |
+| ngModel | tst.html:2:9:2:31 | <input>...</> |

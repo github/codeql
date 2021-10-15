@@ -1,0 +1,2 @@
+| function_try_stmt.cpp:1:11:3:1 | try { ... } | function_try_stmt.cpp:1:5:1:7 | foo | function_try_stmt.cpp:2:3:2:11 | return ... |
+| function_try_stmt.cpp:10:9:12:3 | try { ... } | function_try_stmt.cpp:10:3:10:5 | Bar | function_try_stmt.cpp:11:5:11:11 | return ... |

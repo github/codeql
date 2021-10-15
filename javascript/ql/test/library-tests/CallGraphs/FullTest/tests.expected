@@ -1,0 +1,529 @@
+test_isUncertain
+| a.js:7:1:7:5 | baz() |
+| classes.js:4:7:4:26 | console.log("Hello") |
+| classes.js:8:7:8:18 | this.hello() |
+| classes.js:14:7:14:27 | console ... ello!") |
+| classes.js:18:3:18:17 | new B().hello() |
+| es2015.js:3:5:3:21 | console.log("hi") |
+| es2015.js:27:5:27:23 | console.log(this.x) |
+| m.js:2:1:2:11 | exports.f() |
+| m.js:3:1:3:18 | module.exports.f() |
+| n.js:1:9:1:22 | require('./m') |
+| n.js:2:1:2:5 | m.f() |
+| n.js:4:10:4:24 | require('./m2') |
+| n.js:5:1:5:6 | m2.f() |
+| protoclass.js:4:3:4:13 | this.init() |
+| protoclass.js:8:3:8:15 | this.method() |
+| protoclass.js:9:11:9:32 | this.me ... d(this) |
+| protoclass.js:10:3:10:5 | m() |
+| reflection.js:7:1:7:22 | add.cal ... 23, 19) |
+| reflection.js:8:1:8:25 | add.app ... 3, 19]) |
+| tst.js:6:1:6:3 | f() |
+| tst.js:7:1:7:3 | g() |
+| tst.js:9:1:9:3 | k() |
+| tst.js:14:2:14:4 | m() |
+| tst.js:17:2:17:4 | n() |
+| tst.js:19:2:19:4 | f() |
+| tst.js:24:1:24:7 | new f() |
+| tst.js:25:1:25:5 | new g |
+| tst.js:33:4:33:11 | this.g() |
+| tst.js:41:1:41:5 | o.f() |
+| tst.js:42:1:42:34 | (functi ... o)).f() |
+| tst.js:46:2:46:9 | this.g() |
+| tst.js:53:3:53:10 | this.g() |
+| tst.js:56:17:56:29 | Math.random() |
+| tst.js:66:5:66:9 | b.f() |
+| tst.js:69:1:69:10 | globalfn() |
+test_getAFunctionValue
+| a.js:1:8:1:10 | foo | b.js:1:16:1:27 | function(){} |
+| a.js:1:8:1:10 | foo | b.js:1:16:1:27 | function(){} |
+| a.js:1:15:1:17 | bar | b.js:2:8:2:24 | function bar() {} |
+| a.js:1:15:1:17 | bar | b.js:2:8:2:24 | function bar() {} |
+| a.js:1:20:1:22 | qux | c.js:2:8:2:24 | function bar() {} |
+| a.js:1:20:1:22 | qux | c.js:2:8:2:24 | function bar() {} |
+| a.js:2:1:2:3 | foo | b.js:1:16:1:27 | function(){} |
+| a.js:3:1:3:3 | bar | b.js:2:8:2:24 | function bar() {} |
+| a.js:4:1:4:3 | qux | c.js:2:8:2:24 | function bar() {} |
+| b.js:1:16:1:27 | function(){} | b.js:1:16:1:27 | function(){} |
+| b.js:2:8:2:24 | function bar() {} | b.js:2:8:2:24 | function bar() {} |
+| c.js:1:16:1:27 | function(){} | c.js:1:16:1:27 | function(){} |
+| c.js:2:8:2:24 | function bar() {} | c.js:2:8:2:24 | function bar() {} |
+| classes.js:1:1:19:2 | (functi ... o();\\n}) | classes.js:1:2:19:1 | functio ... lo();\\n} |
+| classes.js:1:2:19:1 | functio ... lo();\\n} | classes.js:1:2:19:1 | functio ... lo();\\n} |
+| classes.js:2:3:10:3 | A | classes.js:2:11:2:10 | () {} |
+| classes.js:2:3:10:3 | class A ...   }\\n  } | classes.js:2:11:2:10 | () {} |
+| classes.js:2:11:2:10 | () {} | classes.js:2:11:2:10 | () {} |
+| classes.js:3:10:5:5 | () {\\n   ... ;\\n    } | classes.js:3:10:5:5 | () {\\n   ... ;\\n    } |
+| classes.js:7:6:9:5 | () {\\n   ... ;\\n    } | classes.js:7:6:9:5 | () {\\n   ... ;\\n    } |
+| classes.js:8:7:8:16 | this.hello | classes.js:3:10:5:5 | () {\\n   ... ;\\n    } |
+| classes.js:12:3:16:3 | B | classes.js:12:21:12:20 | (...arg ... rgs); } |
+| classes.js:12:3:16:3 | class B ...   }\\n  } | classes.js:12:21:12:20 | (...arg ... rgs); } |
+| classes.js:12:19:12:19 | A | classes.js:2:11:2:10 | () {} |
+| classes.js:12:21:12:20 | (...arg ... rgs); } | classes.js:12:21:12:20 | (...arg ... rgs); } |
+| classes.js:13:10:15:5 | () {\\n   ... ;\\n    } | classes.js:13:10:15:5 | () {\\n   ... ;\\n    } |
+| classes.js:18:3:18:15 | new B().hello | classes.js:13:10:15:5 | () {\\n   ... ;\\n    } |
+| classes.js:18:7:18:7 | B | classes.js:12:21:12:20 | (...arg ... rgs); } |
+| es2015.js:1:1:5:1 | class E ... ;\\n  }\\n} | es2015.js:2:14:4:3 | () {\\n   ... ");\\n  } |
+| es2015.js:2:14:4:3 | () {\\n   ... ");\\n  } | es2015.js:2:14:4:3 | () {\\n   ... ");\\n  } |
+| es2015.js:6:5:6:16 | ExampleClass | es2015.js:2:14:4:3 | () {\\n   ... ");\\n  } |
+| es2015.js:8:2:12:1 | functio ... \\n  };\\n} | es2015.js:8:2:12:1 | functio ... \\n  };\\n} |
+| es2015.js:8:2:12:1 | return of anonymous function | es2015.js:9:10:11:3 | () => { ... ();\\n  } |
+| es2015.js:9:10:11:3 | () => { ... ();\\n  } | es2015.js:9:10:11:3 | () => { ... ();\\n  } |
+| es2015.js:10:5:10:20 | arguments.callee | es2015.js:8:2:12:1 | functio ... \\n  };\\n} |
+| es2015.js:10:5:10:22 | arguments.callee() | es2015.js:9:10:11:3 | () => { ... ();\\n  } |
+| es2015.js:14:1:18:1 | class S ... ;\\n  }\\n} | es2015.js:15:14:17:3 | () {\\n   ... ();\\n  } |
+| es2015.js:14:19:14:47 | ("Wait  ... eClass) | es2015.js:2:14:4:3 | () {\\n   ... ");\\n  } |
+| es2015.js:14:20:14:46 | "Wait f ... leClass | es2015.js:2:14:4:3 | () {\\n   ... ");\\n  } |
+| es2015.js:14:35:14:46 | ExampleClass | es2015.js:2:14:4:3 | () {\\n   ... ");\\n  } |
+| es2015.js:15:14:17:3 | () {\\n   ... ();\\n  } | es2015.js:15:14:17:3 | () {\\n   ... ();\\n  } |
+| es2015.js:20:1:22:1 | functio ... = 42;\\n} | es2015.js:20:1:22:1 | functio ... = 42;\\n} |
+| es2015.js:24:1:29:1 | class O ... ;\\n  }\\n} | es2015.js:25:14:28:3 | () {\\n   ... x);\\n  } |
+| es2015.js:24:24:24:34 | PseudoClass | es2015.js:20:1:22:1 | functio ... = 42;\\n} |
+| es2015.js:25:14:28:3 | () {\\n   ... x);\\n  } | es2015.js:25:14:28:3 | () {\\n   ... x);\\n  } |
+| es2015.js:31:1:33:1 | functio ... +y+z;\\n} | es2015.js:31:1:33:1 | functio ... +y+z;\\n} |
+| es2015.js:34:1:34:3 | sum | es2015.js:31:1:33:1 | functio ... +y+z;\\n} |
+| es2015.js:35:1:35:3 | sum | es2015.js:31:1:33:1 | functio ... +y+z;\\n} |
+| es2015.js:36:1:36:3 | sum | es2015.js:31:1:33:1 | functio ... +y+z;\\n} |
+| m2.js:2:6:2:18 | function() {} | m2.js:2:6:2:18 | function() {} |
+| m.js:1:1:1:25 | exports ... on() {} | m.js:1:13:1:25 | function() {} |
+| m.js:1:13:1:25 | function() {} | m.js:1:13:1:25 | function() {} |
+| m.js:2:1:2:9 | exports.f | m.js:1:13:1:25 | function() {} |
+| m.js:3:1:3:16 | module.exports.f | m.js:1:13:1:25 | function() {} |
+| n.js:2:1:2:3 | m.f | m.js:1:13:1:25 | function() {} |
+| n.js:5:1:5:4 | m2.f | m2.js:2:6:2:18 | function() {} |
+| non-strict.js:1:1:8:2 | (functi ... ode.\\n}) | non-strict.js:1:2:8:1 | functio ... mode.\\n} |
+| non-strict.js:1:2:8:1 | functio ... mode.\\n} | non-strict.js:1:2:8:1 | functio ... mode.\\n} |
+| non-strict.js:3:5:5:5 | functio ... ;\\n    } | non-strict.js:3:5:5:5 | functio ... ;\\n    } |
+| non-strict.js:3:14:3:16 | foo | non-strict.js:3:5:5:5 | functio ... ;\\n    } |
+| non-strict.js:7:10:7:12 | foo | non-strict.js:3:5:5:5 | functio ... ;\\n    } |
+| protoclass.js:3:1:5:1 | functio ... it();\\n} | protoclass.js:3:1:5:1 | functio ... it();\\n} |
+| protoclass.js:3:10:3:10 | F | protoclass.js:3:1:5:1 | functio ... it();\\n} |
+| protoclass.js:4:3:4:11 | this.init | protoclass.js:7:20:11:1 | functio ...  m();\\n} |
+| protoclass.js:7:1:7:1 | F | protoclass.js:3:1:5:1 | functio ... it();\\n} |
+| protoclass.js:7:1:11:1 | F.proto ...  m();\\n} | protoclass.js:7:20:11:1 | functio ...  m();\\n} |
+| protoclass.js:7:20:11:1 | functio ...  m();\\n} | protoclass.js:7:20:11:1 | functio ...  m();\\n} |
+| protoclass.js:8:3:8:13 | this.method | protoclass.js:13:22:13:34 | function() {} |
+| protoclass.js:9:11:9:21 | this.method | protoclass.js:13:22:13:34 | function() {} |
+| protoclass.js:13:1:13:1 | F | protoclass.js:3:1:5:1 | functio ... it();\\n} |
+| protoclass.js:13:1:13:34 | F.proto ... on() {} | protoclass.js:13:22:13:34 | function() {} |
+| protoclass.js:13:22:13:34 | function() {} | protoclass.js:13:22:13:34 | function() {} |
+| protoclass.js:15:16:15:16 | F | protoclass.js:3:1:5:1 | functio ... it();\\n} |
+| reflection.js:1:1:3:1 | functio ...  x+y;\\n} | reflection.js:1:1:3:1 | functio ...  x+y;\\n} |
+| reflection.js:5:3:5:5 | add | reflection.js:1:1:3:1 | functio ...  x+y;\\n} |
+| reflection.js:5:3:5:39 | add.app ... n 56; } | reflection.js:5:15:5:39 | functio ... n 56; } |
+| reflection.js:5:15:5:14 | this | reflection.js:1:1:3:1 | functio ...  x+y;\\n} |
+| reflection.js:5:15:5:39 | functio ... n 56; } | reflection.js:5:15:5:39 | functio ... n 56; } |
+| reflection.js:7:1:7:3 | add | reflection.js:1:1:3:1 | functio ...  x+y;\\n} |
+| reflection.js:8:1:8:3 | add | reflection.js:1:1:3:1 | functio ...  x+y;\\n} |
+| reflection.js:8:1:8:9 | add.apply | reflection.js:5:15:5:39 | functio ... n 56; } |
+| strict2.js:2:1:10:2 | (functi ... ode.\\n}) | strict2.js:2:2:10:1 | functio ... mode.\\n} |
+| strict2.js:2:2:10:1 | functio ... mode.\\n} | strict2.js:2:2:10:1 | functio ... mode.\\n} |
+| strict2.js:5:5:7:5 | functio ... ;\\n    } | strict2.js:5:5:7:5 | functio ... ;\\n    } |
+| strict.js:1:1:8:2 | (functi ... ode.\\n}) | strict.js:1:2:8:1 | functio ... mode.\\n} |
+| strict.js:1:2:8:1 | functio ... mode.\\n} | strict.js:1:2:8:1 | functio ... mode.\\n} |
+| strict.js:3:5:5:5 | functio ... ;\\n    } | strict.js:3:5:5:5 | functio ... ;\\n    } |
+| tst3.js:1:1:1:22 | functio ... fn() {} | tst3.js:1:1:1:22 | functio ... fn() {} |
+| tst3.js:2:1:2:23 | functio ... n2() {} | tst3.js:2:1:2:23 | functio ... n2() {} |
+| tst.js:1:1:1:15 | function f() {} | tst.js:1:1:1:15 | function f() {} |
+| tst.js:2:9:2:21 | function() {} | tst.js:2:9:2:21 | function() {} |
+| tst.js:3:1:3:1 | h | tst.js:3:5:3:17 | function() {} |
+| tst.js:3:1:3:17 | h = function() {} | tst.js:3:5:3:17 | function() {} |
+| tst.js:3:5:3:17 | function() {} | tst.js:3:5:3:17 | function() {} |
+| tst.js:4:1:4:5 | k = g | tst.js:2:9:2:21 | function() {} |
+| tst.js:4:5:4:5 | g | tst.js:2:9:2:21 | function() {} |
+| tst.js:6:1:6:1 | f | tst.js:1:1:1:15 | function f() {} |
+| tst.js:7:1:7:1 | g | tst.js:2:9:2:21 | function() {} |
+| tst.js:8:1:8:1 | h | tst.js:3:5:3:17 | function() {} |
+| tst.js:9:1:9:1 | k | tst.js:2:9:2:21 | function() {} |
+| tst.js:11:1:20:1 | functio ... \\tf();\\n} | tst.js:11:1:20:1 | functio ... \\tf();\\n} |
+| tst.js:12:6:12:27 | n | tst.js:12:15:12:27 | function() {} |
+| tst.js:12:10:12:27 | m \|\| function() {} | tst.js:12:15:12:27 | function() {} |
+| tst.js:12:15:12:27 | function() {} | tst.js:12:15:12:27 | function() {} |
+| tst.js:13:2:13:16 | function p() {} | tst.js:13:2:13:16 | function p() {} |
+| tst.js:13:11:13:11 | p | tst.js:13:2:13:16 | function p() {} |
+| tst.js:15:2:15:2 | l | tst.js:11:1:20:1 | functio ... \\tf();\\n} |
+| tst.js:16:2:16:17 | arguments.callee | tst.js:11:1:20:1 | functio ... \\tf();\\n} |
+| tst.js:17:2:17:2 | n | tst.js:12:15:12:27 | function() {} |
+| tst.js:18:2:18:2 | p | tst.js:13:2:13:16 | function p() {} |
+| tst.js:19:2:19:2 | f | tst.js:1:1:1:15 | function f() {} |
+| tst.js:22:1:22:1 | l | tst.js:11:1:20:1 | functio ... \\tf();\\n} |
+| tst.js:22:3:22:3 | k | tst.js:2:9:2:21 | function() {} |
+| tst.js:24:5:24:5 | f | tst.js:1:1:1:15 | function f() {} |
+| tst.js:25:5:25:5 | g | tst.js:2:9:2:21 | function() {} |
+| tst.js:27:1:27:14 | (function(){}) | tst.js:27:2:27:13 | function(){} |
+| tst.js:27:2:27:13 | function(){} | tst.js:27:2:27:13 | function(){} |
+| tst.js:28:2:28:13 | function(){} | tst.js:28:2:28:13 | function(){} |
+| tst.js:32:6:34:3 | functio ... ();\\n\\t\\t} | tst.js:32:6:34:3 | functio ... ();\\n\\t\\t} |
+| tst.js:33:4:33:9 | this.g | tst.js:35:6:35:18 | function() {} |
+| tst.js:35:6:35:18 | function() {} | tst.js:35:6:35:18 | function() {} |
+| tst.js:38:6:38:18 | function() {} | tst.js:38:6:38:18 | function() {} |
+| tst.js:39:6:39:6 | g | tst.js:2:9:2:21 | function() {} |
+| tst.js:41:1:41:3 | o.f | tst.js:32:6:34:3 | functio ... ();\\n\\t\\t} |
+| tst.js:42:1:42:32 | (functi ... }(o)).f | tst.js:32:6:34:3 | functio ... ();\\n\\t\\t} |
+| tst.js:42:2:42:26 | functio ... rn x; } | tst.js:42:2:42:26 | functio ... rn x; } |
+| tst.js:44:1:44:15 | function A() {} | tst.js:44:1:44:15 | function A() {} |
+| tst.js:45:1:45:1 | A | tst.js:44:1:44:15 | function A() {} |
+| tst.js:45:1:47:1 | A.proto ... .g();\\n} | tst.js:45:17:47:1 | functio ... .g();\\n} |
+| tst.js:45:17:47:1 | functio ... .g();\\n} | tst.js:45:17:47:1 | functio ... .g();\\n} |
+| tst.js:46:2:46:7 | this.g | tst.js:48:17:48:29 | function() {} |
+| tst.js:46:2:46:7 | this.g | tst.js:61:17:61:29 | function() {} |
+| tst.js:48:1:48:1 | A | tst.js:44:1:44:15 | function A() {} |
+| tst.js:48:1:48:29 | A.proto ... on() {} | tst.js:48:17:48:29 | function() {} |
+| tst.js:48:17:48:29 | function() {} | tst.js:48:17:48:29 | function() {} |
+| tst.js:50:1:50:15 | function B() {} | tst.js:50:1:50:15 | function B() {} |
+| tst.js:51:1:51:1 | B | tst.js:50:1:50:15 | function B() {} |
+| tst.js:52:5:54:2 | functio ... g();\\n\\t} | tst.js:52:5:54:2 | functio ... g();\\n\\t} |
+| tst.js:53:3:53:8 | this.g | tst.js:56:39:56:51 | function() {} |
+| tst.js:53:3:53:8 | this.g | tst.js:57:39:57:51 | function() {} |
+| tst.js:56:1:56:1 | B | tst.js:50:1:50:15 | function B() {} |
+| tst.js:56:1:57:51 | B.proto ... on() {} | tst.js:56:39:56:51 | function() {} |
+| tst.js:56:1:57:51 | B.proto ... on() {} | tst.js:57:39:57:51 | function() {} |
+| tst.js:56:17:57:51 | Math.ra ... on() {} | tst.js:56:39:56:51 | function() {} |
+| tst.js:56:17:57:51 | Math.ra ... on() {} | tst.js:57:39:57:51 | function() {} |
+| tst.js:56:39:56:51 | function() {} | tst.js:56:39:56:51 | function() {} |
+| tst.js:57:39:57:51 | function() {} | tst.js:57:39:57:51 | function() {} |
+| tst.js:59:1:59:15 | function C() {} | tst.js:59:1:59:15 | function C() {} |
+| tst.js:60:1:60:1 | C | tst.js:59:1:59:15 | function C() {} |
+| tst.js:60:19:60:19 | A | tst.js:44:1:44:15 | function A() {} |
+| tst.js:61:1:61:1 | C | tst.js:59:1:59:15 | function C() {} |
+| tst.js:61:1:61:29 | C.proto ... on() {} | tst.js:61:17:61:29 | function() {} |
+| tst.js:61:17:61:29 | function() {} | tst.js:61:17:61:29 | function() {} |
+| tst.js:63:1:67:2 | (functi ... f();\\n}) | tst.js:63:2:67:1 | functio ... .f();\\n} |
+| tst.js:63:2:67:1 | functio ... .f();\\n} | tst.js:63:2:67:1 | functio ... .f();\\n} |
+| tst.js:64:17:64:17 | B | tst.js:50:1:50:15 | function B() {} |
+| tst.js:65:5:65:23 | b.f = function() {} | tst.js:65:11:65:23 | function() {} |
+| tst.js:65:11:65:23 | function() {} | tst.js:65:11:65:23 | function() {} |
+| tst.js:66:5:66:7 | b.f | tst.js:52:5:54:2 | functio ... g();\\n\\t} |
+| tst.js:66:5:66:7 | b.f | tst.js:65:11:65:23 | function() {} |
+| tst.js:70:1:70:9 | globalfn2 | tst3.js:2:1:2:23 | functio ... n2() {} |
+test_getArgument
+| classes.js:4:7:4:26 | console.log("Hello") | 0 | classes.js:4:19:4:25 | "Hello" |
+| classes.js:14:7:14:27 | console ... ello!") | 0 | classes.js:14:19:14:26 | "Hello!" |
+| es2015.js:3:5:3:21 | console.log("hi") | 0 | es2015.js:3:17:3:20 | "hi" |
+| es2015.js:27:5:27:23 | console.log(this.x) | 0 | es2015.js:27:17:27:22 | this.x |
+| es2015.js:35:1:35:17 | sum(1, ...[2, 3]) | 0 | es2015.js:35:5:35:5 | 1 |
+| es2015.js:36:1:36:17 | sum(1, ...[2], 3) | 0 | es2015.js:36:5:36:5 | 1 |
+| n.js:1:9:1:22 | require('./m') | 0 | n.js:1:17:1:21 | './m' |
+| n.js:4:10:4:24 | require('./m2') | 0 | n.js:4:18:4:23 | './m2' |
+| protoclass.js:9:11:9:32 | this.me ... d(this) | 0 | protoclass.js:9:28:9:31 | this |
+| reflection.js:7:1:7:22 | add.cal ... 23, 19) | 0 | reflection.js:7:10:7:13 | null |
+| reflection.js:7:1:7:22 | add.cal ... 23, 19) | 1 | reflection.js:7:16:7:17 | 23 |
+| reflection.js:7:1:7:22 | add.cal ... 23, 19) | 2 | reflection.js:7:20:7:21 | 19 |
+| reflection.js:7:1:7:22 | reflective call | 0 | reflection.js:7:16:7:17 | 23 |
+| reflection.js:7:1:7:22 | reflective call | 1 | reflection.js:7:20:7:21 | 19 |
+| reflection.js:8:1:8:25 | add.app ... 3, 19]) | 0 | reflection.js:8:11:8:14 | null |
+| reflection.js:8:1:8:25 | add.app ... 3, 19]) | 1 | reflection.js:8:17:8:24 | [23, 19] |
+| tst.js:22:1:22:4 | l(k) | 0 | tst.js:22:3:22:3 | k |
+| tst.js:42:2:42:29 | functio ... x; }(o) | 0 | tst.js:42:28:42:28 | o |
+test_getNumArgument
+| a.js:2:1:2:5 | foo() | 0 |
+| a.js:3:1:3:5 | bar() | 0 |
+| a.js:4:1:4:5 | qux() | 0 |
+| a.js:7:1:7:5 | baz() | 0 |
+| classes.js:4:7:4:26 | console.log("Hello") | 1 |
+| classes.js:8:7:8:18 | this.hello() | 0 |
+| classes.js:14:7:14:27 | console ... ello!") | 1 |
+| classes.js:18:3:18:9 | new B() | 0 |
+| classes.js:18:3:18:17 | new B().hello() | 0 |
+| es2015.js:3:5:3:21 | console.log("hi") | 1 |
+| es2015.js:6:1:6:18 | new ExampleClass() | 0 |
+| es2015.js:10:5:10:22 | arguments.callee() | 0 |
+| es2015.js:16:5:16:11 | super() | 0 |
+| es2015.js:26:5:26:11 | super() | 0 |
+| es2015.js:27:5:27:23 | console.log(this.x) | 1 |
+| m.js:2:1:2:11 | exports.f() | 0 |
+| m.js:3:1:3:18 | module.exports.f() | 0 |
+| n.js:1:9:1:22 | require('./m') | 1 |
+| n.js:2:1:2:5 | m.f() | 0 |
+| n.js:4:10:4:24 | require('./m2') | 1 |
+| n.js:5:1:5:6 | m2.f() | 0 |
+| non-strict.js:1:1:8:4 | (functi ... e.\\n})() | 0 |
+| non-strict.js:7:10:7:14 | foo() | 0 |
+| protoclass.js:4:3:4:13 | this.init() | 0 |
+| protoclass.js:8:3:8:15 | this.method() | 0 |
+| protoclass.js:9:11:9:32 | this.me ... d(this) | 1 |
+| protoclass.js:10:3:10:5 | m() | 0 |
+| reflection.js:4:5:4:12 | sneaky() | 0 |
+| reflection.js:7:1:7:22 | add.cal ... 23, 19) | 3 |
+| reflection.js:7:1:7:22 | reflective call | 2 |
+| reflection.js:8:1:8:25 | add.app ... 3, 19]) | 2 |
+| strict2.js:2:1:10:4 | (functi ... e.\\n})() | 0 |
+| strict2.js:9:10:9:14 | foo() | 0 |
+| strict.js:1:1:8:4 | (functi ... e.\\n})() | 0 |
+| strict.js:7:10:7:14 | foo() | 0 |
+| tst.js:6:1:6:3 | f() | 0 |
+| tst.js:7:1:7:3 | g() | 0 |
+| tst.js:8:1:8:3 | h() | 0 |
+| tst.js:9:1:9:3 | k() | 0 |
+| tst.js:14:2:14:4 | m() | 0 |
+| tst.js:15:2:15:4 | l() | 0 |
+| tst.js:16:2:16:19 | arguments.callee() | 0 |
+| tst.js:17:2:17:4 | n() | 0 |
+| tst.js:18:2:18:4 | p() | 0 |
+| tst.js:19:2:19:4 | f() | 0 |
+| tst.js:22:1:22:4 | l(k) | 1 |
+| tst.js:24:1:24:7 | new f() | 0 |
+| tst.js:25:1:25:5 | new g | 0 |
+| tst.js:27:1:27:16 | (function(){})() | 0 |
+| tst.js:28:2:28:15 | function(){}() | 0 |
+| tst.js:33:4:33:11 | this.g() | 0 |
+| tst.js:41:1:41:5 | o.f() | 0 |
+| tst.js:42:1:42:34 | (functi ... o)).f() | 0 |
+| tst.js:42:2:42:29 | functio ... x; }(o) | 1 |
+| tst.js:46:2:46:9 | this.g() | 0 |
+| tst.js:53:3:53:10 | this.g() | 0 |
+| tst.js:56:17:56:29 | Math.random() | 0 |
+| tst.js:60:15:60:21 | new A() | 0 |
+| tst.js:64:13:64:19 | new B() | 0 |
+| tst.js:66:5:66:9 | b.f() | 0 |
+| tst.js:69:1:69:10 | globalfn() | 0 |
+| tst.js:70:1:70:11 | globalfn2() | 0 |
+test_isIncomplete
+| a.js:7:1:7:5 | baz() |
+| classes.js:4:7:4:26 | console.log("Hello") |
+| classes.js:8:7:8:18 | this.hello() |
+| classes.js:14:7:14:27 | console ... ello!") |
+| classes.js:18:3:18:17 | new B().hello() |
+| es2015.js:3:5:3:21 | console.log("hi") |
+| es2015.js:27:5:27:23 | console.log(this.x) |
+| m.js:2:1:2:11 | exports.f() |
+| m.js:3:1:3:18 | module.exports.f() |
+| n.js:1:9:1:22 | require('./m') |
+| n.js:2:1:2:5 | m.f() |
+| n.js:4:10:4:24 | require('./m2') |
+| n.js:5:1:5:6 | m2.f() |
+| protoclass.js:4:3:4:13 | this.init() |
+| protoclass.js:8:3:8:15 | this.method() |
+| protoclass.js:9:11:9:32 | this.me ... d(this) |
+| protoclass.js:10:3:10:5 | m() |
+| reflection.js:7:1:7:22 | add.cal ... 23, 19) |
+| reflection.js:8:1:8:25 | add.app ... 3, 19]) |
+| tst.js:6:1:6:3 | f() |
+| tst.js:7:1:7:3 | g() |
+| tst.js:9:1:9:3 | k() |
+| tst.js:14:2:14:4 | m() |
+| tst.js:17:2:17:4 | n() |
+| tst.js:19:2:19:4 | f() |
+| tst.js:24:1:24:7 | new f() |
+| tst.js:25:1:25:5 | new g |
+| tst.js:33:4:33:11 | this.g() |
+| tst.js:41:1:41:5 | o.f() |
+| tst.js:42:1:42:34 | (functi ... o)).f() |
+| tst.js:46:2:46:9 | this.g() |
+| tst.js:53:3:53:10 | this.g() |
+| tst.js:56:17:56:29 | Math.random() |
+| tst.js:66:5:66:9 | b.f() |
+test_getCalleeNode
+| a.js:2:1:2:5 | foo() | a.js:2:1:2:3 | foo |
+| a.js:3:1:3:5 | bar() | a.js:3:1:3:3 | bar |
+| a.js:4:1:4:5 | qux() | a.js:4:1:4:3 | qux |
+| a.js:7:1:7:5 | baz() | a.js:7:1:7:3 | baz |
+| classes.js:4:7:4:26 | console.log("Hello") | classes.js:4:7:4:17 | console.log |
+| classes.js:8:7:8:18 | this.hello() | classes.js:8:7:8:16 | this.hello |
+| classes.js:12:21:12:20 | super(...args) | classes.js:12:21:12:20 | super |
+| classes.js:14:7:14:27 | console ... ello!") | classes.js:14:7:14:17 | console.log |
+| classes.js:18:3:18:9 | new B() | classes.js:18:7:18:7 | B |
+| classes.js:18:3:18:17 | new B().hello() | classes.js:18:3:18:15 | new B().hello |
+| es2015.js:3:5:3:21 | console.log("hi") | es2015.js:3:5:3:15 | console.log |
+| es2015.js:6:1:6:18 | new ExampleClass() | es2015.js:6:5:6:16 | ExampleClass |
+| es2015.js:10:5:10:22 | arguments.callee() | es2015.js:10:5:10:20 | arguments.callee |
+| es2015.js:16:5:16:11 | super() | es2015.js:16:5:16:9 | super |
+| es2015.js:26:5:26:11 | super() | es2015.js:26:5:26:9 | super |
+| es2015.js:27:5:27:23 | console.log(this.x) | es2015.js:27:5:27:15 | console.log |
+| es2015.js:34:1:34:17 | sum(...[1, 2, 3]) | es2015.js:34:1:34:3 | sum |
+| es2015.js:35:1:35:17 | sum(1, ...[2, 3]) | es2015.js:35:1:35:3 | sum |
+| es2015.js:36:1:36:17 | sum(1, ...[2], 3) | es2015.js:36:1:36:3 | sum |
+| m.js:2:1:2:11 | exports.f() | m.js:2:1:2:9 | exports.f |
+| m.js:3:1:3:18 | module.exports.f() | m.js:3:1:3:16 | module.exports.f |
+| n.js:1:9:1:22 | require('./m') | n.js:1:9:1:15 | require |
+| n.js:2:1:2:5 | m.f() | n.js:2:1:2:3 | m.f |
+| n.js:4:10:4:24 | require('./m2') | n.js:4:10:4:16 | require |
+| n.js:5:1:5:6 | m2.f() | n.js:5:1:5:4 | m2.f |
+| non-strict.js:1:1:8:4 | (functi ... e.\\n})() | non-strict.js:1:1:8:2 | (functi ... ode.\\n}) |
+| non-strict.js:7:10:7:14 | foo() | non-strict.js:7:10:7:12 | foo |
+| protoclass.js:4:3:4:13 | this.init() | protoclass.js:4:3:4:11 | this.init |
+| protoclass.js:8:3:8:15 | this.method() | protoclass.js:8:3:8:13 | this.method |
+| protoclass.js:9:11:9:32 | this.me ... d(this) | protoclass.js:9:11:9:26 | this.method.bind |
+| protoclass.js:10:3:10:5 | m() | protoclass.js:10:3:10:3 | m |
+| reflection.js:4:5:4:12 | sneaky() | reflection.js:4:5:4:10 | sneaky |
+| reflection.js:7:1:7:22 | add.cal ... 23, 19) | reflection.js:7:1:7:8 | add.call |
+| reflection.js:7:1:7:22 | reflective call | reflection.js:7:1:7:3 | add |
+| reflection.js:8:1:8:25 | add.app ... 3, 19]) | reflection.js:8:1:8:9 | add.apply |
+| reflection.js:8:1:8:25 | reflective call | reflection.js:8:1:8:3 | add |
+| strict2.js:2:1:10:4 | (functi ... e.\\n})() | strict2.js:2:1:10:2 | (functi ... ode.\\n}) |
+| strict2.js:9:10:9:14 | foo() | strict2.js:9:10:9:12 | foo |
+| strict.js:1:1:8:4 | (functi ... e.\\n})() | strict.js:1:1:8:2 | (functi ... ode.\\n}) |
+| strict.js:7:10:7:14 | foo() | strict.js:7:10:7:12 | foo |
+| tst.js:6:1:6:3 | f() | tst.js:6:1:6:1 | f |
+| tst.js:7:1:7:3 | g() | tst.js:7:1:7:1 | g |
+| tst.js:8:1:8:3 | h() | tst.js:8:1:8:1 | h |
+| tst.js:9:1:9:3 | k() | tst.js:9:1:9:1 | k |
+| tst.js:14:2:14:4 | m() | tst.js:14:2:14:2 | m |
+| tst.js:15:2:15:4 | l() | tst.js:15:2:15:2 | l |
+| tst.js:16:2:16:19 | arguments.callee() | tst.js:16:2:16:17 | arguments.callee |
+| tst.js:17:2:17:4 | n() | tst.js:17:2:17:2 | n |
+| tst.js:18:2:18:4 | p() | tst.js:18:2:18:2 | p |
+| tst.js:19:2:19:4 | f() | tst.js:19:2:19:2 | f |
+| tst.js:22:1:22:4 | l(k) | tst.js:22:1:22:1 | l |
+| tst.js:24:1:24:7 | new f() | tst.js:24:5:24:5 | f |
+| tst.js:25:1:25:5 | new g | tst.js:25:5:25:5 | g |
+| tst.js:27:1:27:16 | (function(){})() | tst.js:27:1:27:14 | (function(){}) |
+| tst.js:28:2:28:15 | function(){}() | tst.js:28:2:28:13 | function(){} |
+| tst.js:33:4:33:11 | this.g() | tst.js:33:4:33:9 | this.g |
+| tst.js:41:1:41:5 | o.f() | tst.js:41:1:41:3 | o.f |
+| tst.js:42:1:42:34 | (functi ... o)).f() | tst.js:42:1:42:32 | (functi ... }(o)).f |
+| tst.js:42:2:42:29 | functio ... x; }(o) | tst.js:42:2:42:26 | functio ... rn x; } |
+| tst.js:46:2:46:9 | this.g() | tst.js:46:2:46:7 | this.g |
+| tst.js:53:3:53:10 | this.g() | tst.js:53:3:53:8 | this.g |
+| tst.js:56:17:56:29 | Math.random() | tst.js:56:17:56:27 | Math.random |
+| tst.js:60:15:60:21 | new A() | tst.js:60:19:60:19 | A |
+| tst.js:64:13:64:19 | new B() | tst.js:64:17:64:17 | B |
+| tst.js:66:5:66:9 | b.f() | tst.js:66:5:66:7 | b.f |
+| tst.js:69:1:69:10 | globalfn() | tst.js:69:1:69:8 | globalfn |
+| tst.js:70:1:70:11 | globalfn2() | tst.js:70:1:70:9 | globalfn2 |
+test_getLastArgument
+| classes.js:4:7:4:26 | console.log("Hello") | classes.js:4:19:4:25 | "Hello" |
+| classes.js:14:7:14:27 | console ... ello!") | classes.js:14:19:14:26 | "Hello!" |
+| es2015.js:3:5:3:21 | console.log("hi") | es2015.js:3:17:3:20 | "hi" |
+| es2015.js:27:5:27:23 | console.log(this.x) | es2015.js:27:17:27:22 | this.x |
+| n.js:1:9:1:22 | require('./m') | n.js:1:17:1:21 | './m' |
+| n.js:4:10:4:24 | require('./m2') | n.js:4:18:4:23 | './m2' |
+| protoclass.js:9:11:9:32 | this.me ... d(this) | protoclass.js:9:28:9:31 | this |
+| reflection.js:7:1:7:22 | add.cal ... 23, 19) | reflection.js:7:20:7:21 | 19 |
+| reflection.js:7:1:7:22 | reflective call | reflection.js:7:20:7:21 | 19 |
+| reflection.js:8:1:8:25 | add.app ... 3, 19]) | reflection.js:8:17:8:24 | [23, 19] |
+| tst.js:22:1:22:4 | l(k) | tst.js:22:3:22:3 | k |
+| tst.js:42:2:42:29 | functio ... x; }(o) | tst.js:42:28:42:28 | o |
+test_getAnArgument
+| classes.js:4:7:4:26 | console.log("Hello") | classes.js:4:19:4:25 | "Hello" |
+| classes.js:14:7:14:27 | console ... ello!") | classes.js:14:19:14:26 | "Hello!" |
+| es2015.js:3:5:3:21 | console.log("hi") | es2015.js:3:17:3:20 | "hi" |
+| es2015.js:27:5:27:23 | console.log(this.x) | es2015.js:27:17:27:22 | this.x |
+| es2015.js:35:1:35:17 | sum(1, ...[2, 3]) | es2015.js:35:5:35:5 | 1 |
+| es2015.js:36:1:36:17 | sum(1, ...[2], 3) | es2015.js:36:5:36:5 | 1 |
+| es2015.js:36:1:36:17 | sum(1, ...[2], 3) | es2015.js:36:16:36:16 | 3 |
+| n.js:1:9:1:22 | require('./m') | n.js:1:17:1:21 | './m' |
+| n.js:4:10:4:24 | require('./m2') | n.js:4:18:4:23 | './m2' |
+| protoclass.js:9:11:9:32 | this.me ... d(this) | protoclass.js:9:28:9:31 | this |
+| reflection.js:7:1:7:22 | add.cal ... 23, 19) | reflection.js:7:10:7:13 | null |
+| reflection.js:7:1:7:22 | add.cal ... 23, 19) | reflection.js:7:16:7:17 | 23 |
+| reflection.js:7:1:7:22 | add.cal ... 23, 19) | reflection.js:7:20:7:21 | 19 |
+| reflection.js:7:1:7:22 | reflective call | reflection.js:7:16:7:17 | 23 |
+| reflection.js:7:1:7:22 | reflective call | reflection.js:7:20:7:21 | 19 |
+| reflection.js:8:1:8:25 | add.app ... 3, 19]) | reflection.js:8:11:8:14 | null |
+| reflection.js:8:1:8:25 | add.app ... 3, 19]) | reflection.js:8:17:8:24 | [23, 19] |
+| tst.js:22:1:22:4 | l(k) | tst.js:22:3:22:3 | k |
+| tst.js:42:2:42:29 | functio ... x; }(o) | tst.js:42:28:42:28 | o |
+test_getACallee
+| a.js:2:1:2:5 | foo() | b.js:1:16:1:27 | function(){} |
+| a.js:3:1:3:5 | bar() | b.js:2:8:2:24 | function bar() {} |
+| a.js:4:1:4:5 | qux() | c.js:2:8:2:24 | function bar() {} |
+| classes.js:8:7:8:18 | this.hello() | classes.js:3:10:5:5 | () {\\n   ... ;\\n    } |
+| classes.js:12:21:12:20 | super(...args) | classes.js:2:11:2:10 | () {} |
+| classes.js:18:3:18:9 | new B() | classes.js:12:21:12:20 | (...arg ... rgs); } |
+| classes.js:18:3:18:17 | new B().hello() | classes.js:13:10:15:5 | () {\\n   ... ;\\n    } |
+| es2015.js:6:1:6:18 | new ExampleClass() | es2015.js:2:14:4:3 | () {\\n   ... ");\\n  } |
+| es2015.js:10:5:10:22 | arguments.callee() | es2015.js:8:2:12:1 | functio ... \\n  };\\n} |
+| es2015.js:16:5:16:11 | super() | es2015.js:2:14:4:3 | () {\\n   ... ");\\n  } |
+| es2015.js:34:1:34:17 | sum(...[1, 2, 3]) | es2015.js:31:1:33:1 | functio ... +y+z;\\n} |
+| es2015.js:35:1:35:17 | sum(1, ...[2, 3]) | es2015.js:31:1:33:1 | functio ... +y+z;\\n} |
+| es2015.js:36:1:36:17 | sum(1, ...[2], 3) | es2015.js:31:1:33:1 | functio ... +y+z;\\n} |
+| m.js:2:1:2:11 | exports.f() | m.js:1:13:1:25 | function() {} |
+| m.js:3:1:3:18 | module.exports.f() | m.js:1:13:1:25 | function() {} |
+| n.js:2:1:2:5 | m.f() | m.js:1:13:1:25 | function() {} |
+| n.js:5:1:5:6 | m2.f() | m2.js:2:6:2:18 | function() {} |
+| non-strict.js:1:1:8:4 | (functi ... e.\\n})() | non-strict.js:1:2:8:1 | functio ... mode.\\n} |
+| non-strict.js:7:10:7:14 | foo() | non-strict.js:3:5:5:5 | functio ... ;\\n    } |
+| protoclass.js:4:3:4:13 | this.init() | protoclass.js:7:20:11:1 | functio ...  m();\\n} |
+| protoclass.js:8:3:8:15 | this.method() | protoclass.js:13:22:13:34 | function() {} |
+| reflection.js:7:1:7:22 | reflective call | reflection.js:1:1:3:1 | functio ...  x+y;\\n} |
+| reflection.js:8:1:8:25 | add.app ... 3, 19]) | reflection.js:5:15:5:39 | functio ... n 56; } |
+| reflection.js:8:1:8:25 | reflective call | reflection.js:1:1:3:1 | functio ...  x+y;\\n} |
+| strict2.js:2:1:10:4 | (functi ... e.\\n})() | strict2.js:2:2:10:1 | functio ... mode.\\n} |
+| strict.js:1:1:8:4 | (functi ... e.\\n})() | strict.js:1:2:8:1 | functio ... mode.\\n} |
+| tst.js:6:1:6:3 | f() | tst.js:1:1:1:15 | function f() {} |
+| tst.js:7:1:7:3 | g() | tst.js:2:9:2:21 | function() {} |
+| tst.js:8:1:8:3 | h() | tst.js:3:5:3:17 | function() {} |
+| tst.js:9:1:9:3 | k() | tst.js:2:9:2:21 | function() {} |
+| tst.js:15:2:15:4 | l() | tst.js:11:1:20:1 | functio ... \\tf();\\n} |
+| tst.js:16:2:16:19 | arguments.callee() | tst.js:11:1:20:1 | functio ... \\tf();\\n} |
+| tst.js:17:2:17:4 | n() | tst.js:12:15:12:27 | function() {} |
+| tst.js:18:2:18:4 | p() | tst.js:13:2:13:16 | function p() {} |
+| tst.js:19:2:19:4 | f() | tst.js:1:1:1:15 | function f() {} |
+| tst.js:22:1:22:4 | l(k) | tst.js:11:1:20:1 | functio ... \\tf();\\n} |
+| tst.js:24:1:24:7 | new f() | tst.js:1:1:1:15 | function f() {} |
+| tst.js:25:1:25:5 | new g | tst.js:2:9:2:21 | function() {} |
+| tst.js:27:1:27:16 | (function(){})() | tst.js:27:2:27:13 | function(){} |
+| tst.js:28:2:28:15 | function(){}() | tst.js:28:2:28:13 | function(){} |
+| tst.js:33:4:33:11 | this.g() | tst.js:35:6:35:18 | function() {} |
+| tst.js:41:1:41:5 | o.f() | tst.js:32:6:34:3 | functio ... ();\\n\\t\\t} |
+| tst.js:42:1:42:34 | (functi ... o)).f() | tst.js:32:6:34:3 | functio ... ();\\n\\t\\t} |
+| tst.js:42:2:42:29 | functio ... x; }(o) | tst.js:42:2:42:26 | functio ... rn x; } |
+| tst.js:46:2:46:9 | this.g() | tst.js:48:17:48:29 | function() {} |
+| tst.js:46:2:46:9 | this.g() | tst.js:61:17:61:29 | function() {} |
+| tst.js:53:3:53:10 | this.g() | tst.js:56:39:56:51 | function() {} |
+| tst.js:53:3:53:10 | this.g() | tst.js:57:39:57:51 | function() {} |
+| tst.js:60:15:60:21 | new A() | tst.js:44:1:44:15 | function A() {} |
+| tst.js:64:13:64:19 | new B() | tst.js:50:1:50:15 | function B() {} |
+| tst.js:66:5:66:9 | b.f() | tst.js:52:5:54:2 | functio ... g();\\n\\t} |
+| tst.js:66:5:66:9 | b.f() | tst.js:65:11:65:23 | function() {} |
+| tst.js:70:1:70:11 | globalfn2() | tst3.js:2:1:2:23 | functio ... n2() {} |
+test_getCalleeName
+| a.js:2:1:2:5 | foo() | foo |
+| a.js:3:1:3:5 | bar() | bar |
+| a.js:4:1:4:5 | qux() | qux |
+| a.js:7:1:7:5 | baz() | baz |
+| classes.js:4:7:4:26 | console.log("Hello") | log |
+| classes.js:8:7:8:18 | this.hello() | hello |
+| classes.js:14:7:14:27 | console ... ello!") | log |
+| classes.js:18:3:18:9 | new B() | B |
+| classes.js:18:3:18:17 | new B().hello() | hello |
+| es2015.js:3:5:3:21 | console.log("hi") | log |
+| es2015.js:6:1:6:18 | new ExampleClass() | ExampleClass |
+| es2015.js:10:5:10:22 | arguments.callee() | callee |
+| es2015.js:27:5:27:23 | console.log(this.x) | log |
+| es2015.js:34:1:34:17 | sum(...[1, 2, 3]) | sum |
+| es2015.js:35:1:35:17 | sum(1, ...[2, 3]) | sum |
+| es2015.js:36:1:36:17 | sum(1, ...[2], 3) | sum |
+| m.js:2:1:2:11 | exports.f() | f |
+| m.js:3:1:3:18 | module.exports.f() | f |
+| n.js:1:9:1:22 | require('./m') | require |
+| n.js:2:1:2:5 | m.f() | f |
+| n.js:4:10:4:24 | require('./m2') | require |
+| n.js:5:1:5:6 | m2.f() | f |
+| non-strict.js:7:10:7:14 | foo() | foo |
+| protoclass.js:4:3:4:13 | this.init() | init |
+| protoclass.js:8:3:8:15 | this.method() | method |
+| protoclass.js:9:11:9:32 | this.me ... d(this) | bind |
+| protoclass.js:10:3:10:5 | m() | m |
+| reflection.js:4:5:4:12 | sneaky() | sneaky |
+| reflection.js:7:1:7:22 | add.cal ... 23, 19) | call |
+| reflection.js:8:1:8:25 | add.app ... 3, 19]) | apply |
+| strict2.js:9:10:9:14 | foo() | foo |
+| strict.js:7:10:7:14 | foo() | foo |
+| tst.js:6:1:6:3 | f() | f |
+| tst.js:7:1:7:3 | g() | g |
+| tst.js:8:1:8:3 | h() | h |
+| tst.js:9:1:9:3 | k() | k |
+| tst.js:14:2:14:4 | m() | m |
+| tst.js:15:2:15:4 | l() | l |
+| tst.js:16:2:16:19 | arguments.callee() | callee |
+| tst.js:17:2:17:4 | n() | n |
+| tst.js:18:2:18:4 | p() | p |
+| tst.js:19:2:19:4 | f() | f |
+| tst.js:22:1:22:4 | l(k) | l |
+| tst.js:24:1:24:7 | new f() | f |
+| tst.js:25:1:25:5 | new g | g |
+| tst.js:33:4:33:11 | this.g() | g |
+| tst.js:41:1:41:5 | o.f() | f |
+| tst.js:42:1:42:34 | (functi ... o)).f() | f |
+| tst.js:46:2:46:9 | this.g() | g |
+| tst.js:53:3:53:10 | this.g() | g |
+| tst.js:56:17:56:29 | Math.random() | random |
+| tst.js:60:15:60:21 | new A() | A |
+| tst.js:64:13:64:19 | new B() | B |
+| tst.js:66:5:66:9 | b.f() | f |
+| tst.js:69:1:69:10 | globalfn() | globalfn |
+| tst.js:70:1:70:11 | globalfn2() | globalfn2 |
+test_isImprecise
+| tst.js:69:1:69:10 | globalfn() |

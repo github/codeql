@@ -1,0 +1,2 @@
+| Command sanitizer | Command injection | sanitizer.py:18 | Pi(x_0) [true] |
+| SQL sanitizer | SQL injection | sanitizer.py:11 | Pi(x_0) [true] |

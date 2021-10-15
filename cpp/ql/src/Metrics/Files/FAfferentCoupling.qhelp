@@ -1,0 +1,55 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>This metric measures, for each file, how many other files depend on it.</p>
+
+<p>A file depends on another file if:</p>
+<ul>
+<li>It calls a function in that file</li>
+<li>It reads or writes a variable declared in that file</li>
+<li>It uses a type declared in that file</li>
+</ul>
+
+<p>Many incoming dependencies can be good or bad, depending on the nature of the file.</p>
+
+<p>A large number of incoming dependencies is good for:</p>
+<ul>
+<li>files containing logging functions</li>
+<li>files containing system-wide utility functions</li>
+</ul>
+
+<p>A large number of incoming dependencies may be a problem for:</p>
+<ul>
+<li>files that should be internal to a particular component</li>
+<li>files containing functions or classes with unstable interfaces</li>
+</ul>
+
+<p>A file with many dependencies on it is risky to change, since large parts of a system
+may be affected. Such files should be well documented and have clean APIs.</p>
+
+</overview>
+<recommendation>
+
+<p>Group widely used utility functions together. Replace calls to a component's internals
+with uses of its public API (augmenting it if necessary).</p>
+
+<p>Ensure that the public API is well-documented.</p>
+
+</recommendation>
+<references>
+
+<li>
+  M. Fowler. <em>Refactoring</em>. Addison-Wesley, 1999.
+</li>
+<li>
+  <a href="https://en.wikipedia.org/wiki/Code_refactoring">Wikipedia: Code refactoring</a>
+</li>
+<li>
+  <a href="http://www.jot.fm/issues/issue_2005_01/column1/">Refactoring as Meta Programming?</a>
+</li>
+
+
+</references>
+</qhelp>

@@ -1,0 +1,20 @@
+| program.cs:5:15:5:23 | Interface |
+| program.cs:7:13:7:20 | Property |
+| program.cs:7:24:7:26 | get_Property |
+| program.cs:7:29:7:31 | set_Property |
+| program.cs:9:13:9:14 | Fn |
+| program.cs:12:11:12:15 | Class |
+| program.cs:14:23:14:23 | D |
+| program.cs:16:17:16:17 | add_e |
+| program.cs:16:17:16:17 | e |
+| program.cs:16:17:16:17 | remove_e |
+| program.cs:18:21:18:24 | Main |
+| program.cs:22:32:22:39 | explicit conversion |
+| program.cs:23:36:23:36 | + |
+| program.cs:26:6:26:7 | [My(...)] |
+| program.cs:27:10:27:13 | Enum |
+| program.cs:29:10:29:11 | [My(...)] |
+| program.cs:29:14:29:15 | E1 |
+| program.cs:29:18:29:19 | E2 |
+| program.cs:29:22:29:23 | E3 |
+| program.cs:32:11:32:21 | MyAttribute |

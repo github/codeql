@@ -1,0 +1,1 @@
+| tst.ts:2:5:2:22 | declare x: number; | true |

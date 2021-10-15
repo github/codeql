@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <AssemblyName>Semmle.Autobuild.CSharp</AssemblyName>
+    <RootNamespace>Semmle.Autobuild.CSharp</RootNamespace>
+    <ApplicationIcon />
+    <OutputType>Exe</OutputType>
+    <StartupObject />
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <RuntimeIdentifiers>win-x64;linux-x64;osx-x64</RuntimeIdentifiers>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Build" Version="16.9.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\extractor\Semmle.Util\Semmle.Util.csproj" />
+    <ProjectReference Include="..\..\extractor\Semmle.Extraction.CSharp\Semmle.Extraction.CSharp.csproj" />
+    <ProjectReference Include="..\Semmle.Autobuild.Shared\Semmle.Autobuild.Shared.csproj" />
+  </ItemGroup>
+
+</Project>

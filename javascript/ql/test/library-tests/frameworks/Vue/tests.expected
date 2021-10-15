@@ -1,0 +1,163 @@
+component_getAPropertyValue
+| compont-with-route.vue:0:0:0:0 | compont-with-route.vue | dataA | compont-with-route.vue:31:14:31:34 | this.$r ... ery.foo |
+| compont-with-route.vue:0:0:0:0 | compont-with-route.vue | message | compont-with-route.vue:19:15:19:22 | 'Hello!' |
+| single-component-file-1.vue:0:0:0:0 | single-component-file-1.vue | dataA | single-component-file-1.vue:6:40:6:41 | 42 |
+| single-file-component-3.vue:0:0:0:0 | single-file-component-3.vue | dataA | single-file-component-3-script.js:4:37:4:38 | 42 |
+| single-file-component-4.vue:0:0:0:0 | single-file-component-4.vue | dataA | single-file-component-4.vue:15:14:15:15 | 42 |
+| single-file-component-4.vue:0:0:0:0 | single-file-component-4.vue | message | single-file-component-4.vue:12:23:12:30 | 'Hello!' |
+| single-file-component-5.vue:0:0:0:0 | single-file-component-5.vue | dataA | single-file-component-5.vue:13:14:13:15 | 42 |
+| single-file-component-5.vue:0:0:0:0 | single-file-component-5.vue | message | single-file-component-5.vue:10:23:10:30 | 'Hello!' |
+| tst.js:3:1:10:2 | new Vue ... 2\\n\\t}\\n}) | dataA | tst.js:8:10:8:11 | 42 |
+| tst.js:12:1:16:2 | new Vue ... \\t}),\\n}) | dataA | tst.js:14:10:14:11 | 42 |
+| tst.js:18:1:27:2 | Vue.com ... }\\n\\t}\\n}) | dataA | tst.js:20:10:20:11 | 42 |
+| tst.js:18:1:27:2 | Vue.com ... }\\n\\t}\\n}) | dataB | tst.js:24:17:24:20 | true |
+| tst.js:29:1:35:2 | new Vue ... }\\n\\t}\\n}) | x | tst.js:31:12:31:13 | 42 |
+| tst.js:29:1:35:2 | new Vue ... }\\n\\t}\\n}) | y | tst.js:32:19:32:20 | 42 |
+| tst.js:29:1:35:2 | new Vue ... }\\n\\t}\\n}) | z2 | tst.js:33:36:33:37 | 42 |
+| tst.js:41:17:47:2 | Vue.ext ... \\n  }\\n}) | fromSuper | tst.js:44:18:44:19 | 42 |
+| tst.js:48:1:50:2 | new Ext ... 42 }\\n}) | fromSub | tst.js:49:19:49:20 | 42 |
+| tst.js:48:1:50:2 | new Ext ... 42 }\\n}) | fromSuper | tst.js:44:18:44:19 | 42 |
+| tst.js:51:17:57:2 | Vue.ext ... \\n  }\\n}) | fromSuper | tst.js:54:18:54:19 | 42 |
+| tst.js:58:1:61:2 | new Vue ... 42 }\\n}) | fromSub | tst.js:60:19:60:20 | 42 |
+| tst.js:58:1:61:2 | new Vue ... 42 }\\n}) | fromSuper | tst.js:54:18:54:19 | 42 |
+| tst.js:63:1:66:2 | new Vue ... 42 }\\n}) | fromMixin1 | tst.js:64:32:64:33 | 42 |
+| tst.js:63:1:66:2 | new Vue ... 42 }\\n}) | fromMixin2 | tst.js:64:61:64:62 | 42 |
+| tst.js:63:1:66:2 | new Vue ... 42 }\\n}) | fromSub | tst.js:65:19:65:20 | 42 |
+| tst.js:72:1:75:2 | new Vue ... 42 }\\n}) | fromMixinValue | tst.js:69:28:69:29 | 42 |
+| tst.js:72:1:75:2 | new Vue ... 42 }\\n}) | fromSub | tst.js:74:19:74:20 | 42 |
+| tst.js:77:20:83:2 | Vue.ext ... \\n  }\\n}) | deadExtended | tst.js:80:21:80:22 | 42 |
+| tst.js:85:1:87:2 | new Vue ... e; }\\n}) | created | tst.js:86:38:86:41 | true |
+| tst.js:94:2:96:3 | new Vue ...  f,\\n\\t}) | dataA | tst.js:89:22:89:23 | 42 |
+| tst.js:99:2:104:3 | new Vue ... \\t\\t}\\n\\t}) | dataA | tst.js:100:18:100:19 | 42 |
+| tst.js:107:12:109:2 | Vue.ext ... 23 }\\n}) | fromBase | tst.js:108:20:108:22 | 123 |
+| tst.js:110:16:112:2 | new Vue ... base\\n}) | fromBase | tst.js:108:20:108:22 | 123 |
+| tst.js:113:17:117:2 | base.ex ... 0\\n\\t}\\n}) | fromBase | tst.js:108:20:108:22 | 123 |
+| tst.js:113:17:117:2 | base.ex ... 0\\n\\t}\\n}) | fromSubclass2 | tst.js:115:18:115:20 | 100 |
+component_getOption
+| compont-with-route.vue:0:0:0:0 | compont-with-route.vue | watch | compont-with-route.vue:10:12:16:5 | {\\n      ... }\\n    } |
+| single-component-file-1.vue:0:0:0:0 | single-component-file-1.vue | data | single-component-file-1.vue:6:11:6:45 | functio ...  42 } } |
+| single-file-component-3.vue:0:0:0:0 | single-file-component-3.vue | data | single-file-component-3-script.js:4:8:4:42 | functio ...  42 } } |
+| single-file-component-4.vue:0:0:0:0 | single-file-component-4.vue | render | single-file-component-4.vue:9:13:9:22 | (h) => { } |
+| tst.js:3:1:10:2 | new Vue ... 2\\n\\t}\\n}) | data | tst.js:7:8:9:2 | {\\n\\t\\tdataA: 42\\n\\t} |
+| tst.js:3:1:10:2 | new Vue ... 2\\n\\t}\\n}) | render | tst.js:4:10:6:2 | functio ...  c);\\n\\t} |
+| tst.js:12:1:16:2 | new Vue ... \\t}),\\n}) | data | tst.js:13:8:15:3 | () => ( ...  42\\n\\t}) |
+| tst.js:18:1:27:2 | Vue.com ... }\\n\\t}\\n}) | data | tst.js:19:8:21:3 | () => ( ...  42\\n\\t}) |
+| tst.js:18:1:27:2 | Vue.com ... }\\n\\t}\\n}) | methods | tst.js:22:11:26:2 | {\\n\\t\\tmet ... \\n\\t\\t}\\n\\t} |
+| tst.js:29:1:35:2 | new Vue ... }\\n\\t}\\n}) | computed | tst.js:30:12:34:2 | {\\n\\t\\tx:  ...  } }\\n\\t} |
+| tst.js:37:1:39:2 | new Vue ... nger\\n}) | template | tst.js:38:12:38:17 | danger |
+| tst.js:41:17:47:2 | Vue.ext ... \\n  }\\n}) | data | tst.js:42:9:46:3 | functio ...  };\\n  } |
+| tst.js:48:1:50:2 | new Ext ... 42 }\\n}) | data | tst.js:42:9:46:3 | functio ...  };\\n  } |
+| tst.js:48:1:50:2 | new Ext ... 42 }\\n}) | data | tst.js:49:8:49:22 | { fromSub: 42 } |
+| tst.js:51:17:57:2 | Vue.ext ... \\n  }\\n}) | data | tst.js:52:9:56:3 | functio ...  };\\n  } |
+| tst.js:58:1:61:2 | new Vue ... 42 }\\n}) | data | tst.js:52:9:56:3 | functio ...  };\\n  } |
+| tst.js:58:1:61:2 | new Vue ... 42 }\\n}) | data | tst.js:60:8:60:22 | { fromSub: 42 } |
+| tst.js:58:1:61:2 | new Vue ... 42 }\\n}) | mixins | tst.js:59:10:59:18 | Extended2 |
+| tst.js:63:1:66:2 | new Vue ... 42 }\\n}) | data | tst.js:64:18:64:35 | { fromMixin1: 42 } |
+| tst.js:63:1:66:2 | new Vue ... 42 }\\n}) | data | tst.js:64:47:64:64 | { fromMixin2: 42 } |
+| tst.js:63:1:66:2 | new Vue ... 42 }\\n}) | data | tst.js:65:8:65:22 | { fromSub: 42 } |
+| tst.js:63:1:66:2 | new Vue ... 42 }\\n}) | mixins | tst.js:64:10:64:67 | [{data: ... 42 } }] |
+| tst.js:72:1:75:2 | new Vue ... 42 }\\n}) | data | tst.js:70:20:70:28 | mixinData |
+| tst.js:72:1:75:2 | new Vue ... 42 }\\n}) | data | tst.js:74:8:74:22 | { fromSub: 42 } |
+| tst.js:72:1:75:2 | new Vue ... 42 }\\n}) | mixins | tst.js:73:10:73:15 | mixins |
+| tst.js:77:20:83:2 | Vue.ext ... \\n  }\\n}) | data | tst.js:78:9:82:3 | functio ...  };\\n  } |
+| tst.js:85:1:87:2 | new Vue ... e; }\\n}) | created | tst.js:86:11:86:44 | functio ... true; } |
+| tst.js:94:2:96:3 | new Vue ...  f,\\n\\t}) | data | tst.js:95:9:95:9 | f |
+| tst.js:99:2:104:3 | new Vue ... \\t\\t}\\n\\t}) | data | tst.js:100:9:100:21 | { dataA: 42 } |
+| tst.js:99:2:104:3 | new Vue ... \\t\\t}\\n\\t}) | methods | tst.js:101:12:103:3 | {\\n\\t\\t\\tm: ... ; }\\n\\t\\t} |
+| tst.js:107:12:109:2 | Vue.ext ... 23 }\\n}) | data | tst.js:108:8:108:24 | { fromBase: 123 } |
+| tst.js:110:16:112:2 | new Vue ... base\\n}) | data | tst.js:108:8:108:24 | { fromBase: 123 } |
+| tst.js:110:16:112:2 | new Vue ... base\\n}) | extends | tst.js:111:11:111:14 | base |
+| tst.js:113:17:117:2 | base.ex ... 0\\n\\t}\\n}) | data | tst.js:108:8:108:24 | { fromBase: 123 } |
+| tst.js:113:17:117:2 | base.ex ... 0\\n\\t}\\n}) | data | tst.js:114:8:116:2 | {\\n\\t\\tfro ...  100\\n\\t} |
+component
+| compont-with-route.vue:0:0:0:0 | compont-with-route.vue |
+| single-component-file-1.vue:0:0:0:0 | single-component-file-1.vue |
+| single-file-component-2.vue:0:0:0:0 | single-file-component-2.vue |
+| single-file-component-3.vue:0:0:0:0 | single-file-component-3.vue |
+| single-file-component-4.vue:0:0:0:0 | single-file-component-4.vue |
+| single-file-component-5.vue:0:0:0:0 | single-file-component-5.vue |
+| tst.js:3:1:10:2 | new Vue ... 2\\n\\t}\\n}) |
+| tst.js:12:1:16:2 | new Vue ... \\t}),\\n}) |
+| tst.js:18:1:27:2 | Vue.com ... }\\n\\t}\\n}) |
+| tst.js:29:1:35:2 | new Vue ... }\\n\\t}\\n}) |
+| tst.js:37:1:39:2 | new Vue ... nger\\n}) |
+| tst.js:41:17:47:2 | Vue.ext ... \\n  }\\n}) |
+| tst.js:48:1:50:2 | new Ext ... 42 }\\n}) |
+| tst.js:51:17:57:2 | Vue.ext ... \\n  }\\n}) |
+| tst.js:58:1:61:2 | new Vue ... 42 }\\n}) |
+| tst.js:63:1:66:2 | new Vue ... 42 }\\n}) |
+| tst.js:72:1:75:2 | new Vue ... 42 }\\n}) |
+| tst.js:77:20:83:2 | Vue.ext ... \\n  }\\n}) |
+| tst.js:85:1:87:2 | new Vue ... e; }\\n}) |
+| tst.js:94:2:96:3 | new Vue ...  f,\\n\\t}) |
+| tst.js:99:2:104:3 | new Vue ... \\t\\t}\\n\\t}) |
+| tst.js:107:12:109:2 | Vue.ext ... 23 }\\n}) |
+| tst.js:110:16:112:2 | new Vue ... base\\n}) |
+| tst.js:113:17:117:2 | base.ex ... 0\\n\\t}\\n}) |
+viewComponentStep
+| compont-with-route.vue:31:14:31:34 | this.$r ... ery.foo | compont-with-route.vue:2:8:2:21 | v-html=dataA |
+| single-component-file-1.vue:6:40:6:41 | 42 | single-component-file-1.vue:2:8:2:21 | v-html=dataA |
+| single-file-component-3-script.js:4:37:4:38 | 42 | single-file-component-3.vue:2:8:2:21 | v-html=dataA |
+| single-file-component-4.vue:15:14:15:15 | 42 | single-file-component-4.vue:2:8:2:21 | v-html=dataA |
+| single-file-component-5.vue:13:14:13:15 | 42 | single-file-component-5.vue:2:8:2:21 | v-html=dataA |
+| tst.js:100:18:100:19 | 42 | tst.js:102:20:102:29 | this.dataA |
+templateElement
+| compont-with-route.vue:1:1:3:11 | <template>...</> |
+| compont-with-route.vue:2:5:51:9 | <p>...</> |
+| compont-with-route.vue:4:1:49:9 | <script>...</> |
+| compont-with-route.vue:50:1:51:8 | <style>...</> |
+| single-component-file-1.vue:1:1:3:11 | <template>...</> |
+| single-component-file-1.vue:2:5:10:8 | <p>...</> |
+| single-component-file-1.vue:4:1:8:9 | <script>...</> |
+| single-component-file-1.vue:9:1:10:8 | <style>...</> |
+| single-file-component-2.vue:1:1:3:11 | <template>...</> |
+| single-file-component-2.vue:2:5:11:8 | <p>...</> |
+| single-file-component-2.vue:4:1:9:9 | <script>...</> |
+| single-file-component-2.vue:10:1:11:8 | <style>...</> |
+| single-file-component-3.vue:1:1:3:11 | <template>...</> |
+| single-file-component-3.vue:2:5:7:8 | <p>...</> |
+| single-file-component-3.vue:4:1:5:9 | <script>...</> |
+| single-file-component-3.vue:6:1:7:8 | <style>...</> |
+| single-file-component-4.vue:1:1:3:11 | <template>...</> |
+| single-file-component-4.vue:2:5:20:9 | <p>...</> |
+| single-file-component-4.vue:4:1:18:9 | <script>...</> |
+| single-file-component-4.vue:19:1:20:8 | <style>...</> |
+| single-file-component-5.vue:1:1:3:11 | <template>...</> |
+| single-file-component-5.vue:2:5:18:9 | <p>...</> |
+| single-file-component-5.vue:4:1:16:9 | <script>...</> |
+| single-file-component-5.vue:17:1:18:8 | <style>...</> |
+xssSink
+| compont-with-route.vue:2:8:2:21 | v-html=dataA |
+| single-component-file-1.vue:2:8:2:21 | v-html=dataA |
+| single-file-component-2.vue:2:8:2:21 | v-html=dataA |
+| single-file-component-3.vue:2:8:2:21 | v-html=dataA |
+| single-file-component-4.vue:2:8:2:21 | v-html=dataA |
+| single-file-component-5.vue:2:8:2:21 | v-html=dataA |
+| tst.js:5:13:5:13 | a |
+| tst.js:38:12:38:17 | danger |
+remoteFlowSource
+| compont-with-route.vue:13:17:13:21 | newId |
+| compont-with-route.vue:13:24:13:28 | oldId |
+| compont-with-route.vue:22:7:22:24 | this.$route.params |
+| compont-with-route.vue:23:7:23:23 | this.$route.query |
+| compont-with-route.vue:24:7:24:22 | this.$route.hash |
+| compont-with-route.vue:25:7:25:22 | this.$route.path |
+| compont-with-route.vue:26:7:26:26 | this.$route.fullPath |
+| compont-with-route.vue:27:7:27:31 | router. ... e.query |
+| compont-with-route.vue:31:14:31:30 | this.$route.query |
+| compont-with-route.vue:35:7:35:14 | to.query |
+| compont-with-route.vue:36:7:36:16 | from.query |
+| compont-with-route.vue:40:7:40:14 | to.query |
+| compont-with-route.vue:41:7:41:16 | from.query |
+| compont-with-route.vue:45:7:45:14 | to.query |
+| compont-with-route.vue:46:7:46:16 | from.query |
+| router.js:8:17:8:24 | to.query |
+| router.js:9:17:9:26 | from.query |
+| router.js:15:25:15:32 | to.query |
+| router.js:16:25:16:34 | from.query |
+| router.js:23:9:23:16 | to.query |
+| router.js:24:9:24:18 | from.query |
+| router.js:29:5:29:12 | to.query |
+| router.js:30:5:30:14 | from.query |
+| router.js:34:5:34:12 | to.query |
+| router.js:35:5:35:14 | from.query |

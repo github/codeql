@@ -1,0 +1,3 @@
+| Hiding.c:15:25:15:25 | i | Variable i hides another variable of the same name (on $@). | Hiding.c:7:9:7:9 | i | line 7 |
+| Hiding.c:16:25:16:25 | j | Variable j hides another variable of the same name (on $@). | Hiding.c:10:13:10:13 | j | line 10 |
+| Hiding.c:17:25:17:25 | k | Variable k hides another variable of the same name (on $@). | Hiding.c:13:21:13:21 | k | line 13 |

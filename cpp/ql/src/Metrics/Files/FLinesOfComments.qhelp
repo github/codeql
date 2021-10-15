@@ -1,0 +1,29 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>This metric measures the number of lines of comments in a file. </p>
+
+<p>Files that have too few comments are more likely to be insufficiently documented. 
+Long files that have no comments at all require particular scrutiny, as these are more likely
+to need explicit documentation in comments.</p>
+
+</overview>
+<recommendation>
+<p>Files with few to no comments should be examined to see if they require documentation. Particular attention
+should be given to long files.</p>
+
+</recommendation>
+<references>
+
+<li>
+  <a href="http://en.wikibooks.org/wiki/C%2B%2B_Programming/Programming_Languages/C%2B%2B/Code/Style_Conventions#Comments">C++ Programming, Coding style conventions</a>
+</li>
+<li>
+  <a href="http://en.wikipedia.org/wiki/Comment_%28computer_programming%29#Need_for_comments">Wikipedia: Need for comments</a>
+</li>
+
+
+</references>
+</qhelp>

@@ -1,0 +1,7 @@
+| class C1 | class Meta1 |
+| class C2 | class Meta2 |
+| class C3 | builtin-class type |
+| class C4 | class Meta2 |
+| class Meta1 | builtin-class type |
+| class Meta2 | builtin-class type |
+| class NewStyleEvenForPython2 | builtin-class type |

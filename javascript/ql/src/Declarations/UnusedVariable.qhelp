@@ -1,0 +1,70 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Unused local variables make code hard to read and understand. Any computation used to initialize
+an unused variable is wasted, which may lead to performance problems.
+</p>
+<p>
+Similarly, unused imports and unused functions or classes can be confusing. They may even be
+a symptom of a bug caused, for example, by an incomplete refactoring.
+</p>
+
+</overview>
+<recommendation>
+
+<p>Remove the unused program element.</p>
+
+</recommendation>
+<example>
+
+<p>
+In this code, the function <code>f</code> initializes a local variable <code>x</code> with a
+call to the function <code>expensiveComputation</code>, but later on this variable is never read.
+Removing <code>x</code> would improve code quality and performance.
+</p>
+
+<sample src="examples/UnusedVariable.js" />
+
+<p>
+A slightly subtle case is shown below, where a function expression named <code>f</code> is
+assigned to a variable <code>f</code>:
+</p>
+
+<sample src="examples/UnusedVariable2.js" />
+
+<p>
+Note that this example involves two distinct variables, both named <code>f</code>: the global
+variable to which the function is assigned, and the variable implicitly declared by the
+function expression. The call to <code>f()</code> refers to the former variable, whereas the
+latter is unused. Hence the example can be rewritten as follows, eliminating the useless
+variable:
+</p>
+
+<sample src="examples/UnusedVariable2Good.js" />
+
+<p>
+A similar situation can occur with ECMAScript 2015 module exports, as shown in the following example:
+</p>
+
+<sample src="examples/UnusedVariable3.js" />
+
+<p>
+Again, the named function expression implicitly declares a variable <code>f</code>, but because
+the export statement is a default export, this variable is unused and can be eliminated:
+</p>
+
+<sample src="examples/UnusedVariable3Good.js" />
+
+</example>
+<references>
+
+
+<li>Coding Horror: <a href="http://blog.codinghorror.com/code-smells/">Code Smells</a>.</li>
+<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en/docs/web/JavaScript/Reference/Operators/function#Named_function_expression">Named function expressions</a>.</li>
+<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export#Using_the_default_export">Using the default export</a>.</li>
+
+</references>
+</qhelp>

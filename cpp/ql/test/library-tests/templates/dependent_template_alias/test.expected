@@ -1,0 +1,2 @@
+| test.cpp:17:14:17:24 | thing_float | test.cpp:6:8:6:12 | Thing<float, int> | test.cpp:7:7:7:7 | x |
+| test.cpp:31:10:31:16 | thing_s | test.cpp:11:8:11:41 | Thing<S, int> | test.cpp:12:7:12:7 | y |

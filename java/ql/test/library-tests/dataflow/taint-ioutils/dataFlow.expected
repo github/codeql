@@ -1,0 +1,50 @@
+| Test.java:12:21:12:47 | new FileInputStream(...) |
+| Test.java:14:21:14:39 | buffer(...) |
+| Test.java:14:36:14:38 | inp |
+| Test.java:15:24:15:54 | readLines(...) |
+| Test.java:15:42:15:44 | inp |
+| Test.java:16:18:16:45 | readFully(...) |
+| Test.java:16:36:16:38 | inp |
+| Test.java:17:22:17:55 | toBufferedInputStream(...) |
+| Test.java:17:52:17:54 | inp |
+| Test.java:18:20:18:71 | toBufferedReader(...) |
+| Test.java:18:45:18:70 | new InputStreamReader(...) |
+| Test.java:18:67:18:69 | inp |
+| Test.java:19:19:19:48 | toByteArray(...) |
+| Test.java:19:39:19:41 | inp |
+| Test.java:20:18:20:50 | toCharArray(...) |
+| Test.java:20:38:20:40 | inp |
+| Test.java:21:14:21:43 | toString(...) |
+| Test.java:21:31:21:33 | inp |
+| Test.java:22:20:22:52 | toInputStream(...) |
+| Test.java:22:42:22:42 | s |
+| Test.java:26:16:26:18 | inp |
+| Test.java:26:21:26:26 | writer [post update] |
+| Test.java:27:3:27:8 | writer |
+| Test.java:27:3:27:19 | toString(...) |
+| Test.java:31:21:31:27 | bufread |
+| Test.java:31:30:31:35 | writer [post update] |
+| Test.java:32:3:32:8 | writer |
+| Test.java:32:3:32:19 | toString(...) |
+| Test.java:37:16:37:18 | inp |
+| Test.java:37:21:37:23 | tgt [post update] |
+| Test.java:38:8:38:10 | tgt |
+| Test.java:42:21:42:23 | inp |
+| Test.java:42:26:42:28 | tgt [post update] |
+| Test.java:43:8:43:10 | tgt |
+| Test.java:47:17:47:21 | chars |
+| Test.java:47:24:47:29 | writer [post update] |
+| Test.java:48:3:48:8 | writer |
+| Test.java:48:3:48:19 | toString(...) |
+| Test.java:52:24:52:28 | chars |
+| Test.java:52:31:52:36 | writer [post update] |
+| Test.java:53:3:53:8 | writer |
+| Test.java:53:3:53:19 | toString(...) |
+| Test.java:57:22:57:26 | lines |
+| Test.java:57:35:57:40 | writer [post update] |
+| Test.java:58:3:58:8 | writer |
+| Test.java:58:3:58:19 | toString(...) |
+| Test.java:62:47:62:47 | s |
+| Test.java:62:50:62:55 | writer [post update] |
+| Test.java:63:3:63:8 | writer |
+| Test.java:63:3:63:19 | toString(...) |

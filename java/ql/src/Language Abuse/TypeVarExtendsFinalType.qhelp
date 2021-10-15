@@ -1,0 +1,48 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>A type wildcard with an <code>extends</code> clause (for example
+<code>?&nbsp;extends&nbsp;String</code>) implicitly suggests that a type (in
+this case <code>String</code>) has subclasses. If the type in the <code>extends</code>
+clause is final, the code is confusing because a final class cannot have 
+any subclasses. The only type that satisfies <code>?&nbsp;extends&nbsp;String</code> is 
+<code>String</code>.</p>
+
+</overview>
+<recommendation>
+
+<p>To make the code more readable, omit the wildcard to leave just the final type.</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, a wildcard is used to refer to any type that is a subclass of
+<code>String</code>.</p>
+
+<sample src="TypeVarExtendsFinalType.java" />
+
+<p>However, because <code>String</code> is declared <code>final</code>, it does not have any
+subclasses. Therefore, it is clearer to replace <code>?&nbsp;extends&nbsp;String</code> with 
+<code>String</code>.</p>
+
+</example>
+<references>
+
+
+<li>
+Help - Eclipse Platform:
+<a href="https://help.eclipse.org/2020-12/advanced/content.jsp?topic=/org.eclipse.jdt.doc.user/reference/preferences/java/compiler/ref-preferences-errors-warnings.htm">Java Compiler Errors/Warnings Preferences</a>.
+</li>
+<li>
+Java Language Specification:
+<a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-4.html#jls-4.5.1">4.5.1 Type Arguments of Parameterized Types </a>,
+<a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-8.html#jls-8.1.1.2">8.1.1.2 final Classes</a>.
+</li>
+
+
+</references>
+</qhelp>

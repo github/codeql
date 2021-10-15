@@ -1,0 +1,4 @@
+| test.py:6:20:6:43 | Attribute() | externally controlled string |
+| test.py:10:16:10:40 | Attribute() | [externally controlled string] |
+| test.py:17:15:17:26 | Attribute | tornado.request.HttpRequest |
+| test.py:26:20:26:48 | Attribute() | externally controlled string |

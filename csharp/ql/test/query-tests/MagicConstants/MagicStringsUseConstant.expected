@@ -1,0 +1,4 @@
+| MagicStringsUseConstant.cs:17:22:17:31 | "abcdefgh" | Literal value 'abcdefgh' used instead of constant $@. | MagicStringsUseConstant.cs:6:35:6:49 | PUBLIC_CONSTANT | PUBLIC_CONSTANT |
+| MagicStringsUseConstant.cs:17:22:17:31 | "abcdefgh" | Literal value 'abcdefgh' used instead of constant $@. | MagicStringsUseConstant.cs:11:18:11:25 | CONSTANT | CONSTANT |
+| MagicStringsUseConstant.cs:22:18:22:27 | "abcdefgh" | Literal value 'abcdefgh' used instead of constant $@. | MagicStringsUseConstant.cs:6:35:6:49 | PUBLIC_CONSTANT | PUBLIC_CONSTANT |
+| MagicStringsUseConstant.cs:22:18:22:27 | "abcdefgh" | Literal value 'abcdefgh' used instead of constant $@. | MagicStringsUseConstant.cs:11:18:11:25 | CONSTANT | CONSTANT |

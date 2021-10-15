@@ -1,0 +1,8 @@
++ semmlecode-csharp-queries/definitions.ql
+    @_namespace com.lgtm/csharp-queries
++ semmlecode-csharp-queries/AlertSuppression.ql
+    @_namespace com.lgtm/csharp-queries
++ semmlecode-csharp-queries/filters/ClassifyFiles.ql
+    @_namespace com.lgtm/csharp-queries
+
+@import "csharp-alerts-lgtm"

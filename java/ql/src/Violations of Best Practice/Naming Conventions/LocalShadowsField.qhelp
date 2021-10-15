@@ -1,0 +1,23 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>This query finds local variables that shadow like-named field declarations. This is confusing since it might easily lead to assignments 
+to the local variable that should have been to the corresponding field.</p>
+
+</overview>
+<section title="How to Address the Query Results">
+<p>For clarity, it may be better to rename the variable to avoid shadowing.</p>
+
+
+
+</section>
+<references>
+
+
+
+</references>
+</qhelp>

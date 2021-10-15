@@ -1,0 +1,48 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Directly writing an HTTP request parameter back to a web page
+allows for a cross-site scripting vulnerability. The data is displayed
+in a user's web browser as belonging to one site, but it is provided
+by some other site that the user browses to. In effect, such an attack
+allows one web site to insert content in the other one.</p>
+
+<p>For web servers implemented with the Common Gateway Interface
+(CGI), HTTP parameters are supplied via the <code>QUERY_STRING</code>
+environment variable.</p>
+
+</overview>
+<recommendation>
+
+<p>To guard against cross-site scripting, consider escaping special
+characters before writing the HTTP parameter back to the page.</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, the <code>bad_server</code> writes a
+parameter directly back to the HTML page that the user will
+see. The <code>good_server</code> first escapes any HTML special
+characters before writing to the HTML page.</p>
+
+<sample src="CgiXss.c" />
+
+</example>
+<references>
+
+<li>
+OWASP:
+<a href="https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html">XSS
+(Cross Site Scripting) Prevention Cheat Sheet</a>.
+</li>
+<li>
+Wikipedia: <a href="http://en.wikipedia.org/wiki/Cross-site_scripting">Cross-site scripting</a>.
+</li>
+<li>
+IETF Tools: <a href="http://tools.ietf.org/html/draft-robinson-www-interface-00">The Common Gateway Specification (CGI)</a>.</li>
+
+
+</references>
+</qhelp>

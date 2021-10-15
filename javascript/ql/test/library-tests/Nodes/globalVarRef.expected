@@ -1,0 +1,19 @@
+| Object | tst2.js:8:1:8:13 | global.Object |
+| String | tst2.js:9:1:9:11 | this.String |
+| document | tst2.js:2:1:2:26 | require ... ument") |
+| document | tst.js:3:1:3:15 | window.document |
+| document | tst.js:5:1:5:13 | self.document |
+| document | tst.js:6:1:6:19 | globalThis.document |
+| foo | tst3.js:4:1:4:5 | w.foo |
+| global | tst2.js:7:1:7:6 | global |
+| global | tst2.js:8:1:8:6 | global |
+| globalThis | tst.js:6:1:6:10 | globalThis |
+| goog | tst3.js:1:1:1:4 | goog |
+| goog | tst3.js:3:9:3:12 | goog |
+| self | tst.js:5:1:5:4 | self |
+| setTimeout | tst2.js:5:1:5:12 | g.setTimeout |
+| window | tst2.js:3:1:3:24 | require ... indow") |
+| window | tst.js:1:1:1:6 | window |
+| window | tst.js:3:1:3:6 | window |
+| window | tst.js:4:1:4:6 | window |
+| window | tst.js:4:1:4:13 | window.window |

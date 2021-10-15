@@ -1,0 +1,26 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>It is bad practice to have two methods with names that differ only in capitalization. If a developer does not 
+notice both methods they may call the wrong one. If they do notice then they will have to waste time investigating 
+which method needs to be called.</p>
+
+</overview>
+<recommendation>
+<p>Change the names of either one or both of the methods to make the distinction between them clear.</p>
+
+</recommendation>
+<example>
+<p>In this example the <code>ConvertToIso</code> method exists twice with two different capitalizations. One should 
+be removed.</p>
+<sample src="ConfusingMethodNames.cs" />
+
+</example>
+<references>
+
+  <li>Robert C. Martin, <em>Clean Code - A handbook of agile software craftsmanship</em>, &sect;17.N4. Prentice Hall, 2008.</li>
+
+</references>
+</qhelp>

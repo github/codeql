@@ -1,0 +1,23 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Finding places for the dangerous use of exceptions.</p>
+
+</overview>
+
+<example>
+<p>The following example demonstrates erroneous and fixed methods for using exceptions.</p>
+<sample src="FindIncorrectlyUsedExceptions.cpp" />
+
+</example>
+<references>
+
+<li>
+  CERT CPP Coding Standard:
+  <a href="https://wiki.sei.cmu.edu/confluence/display/cplusplus/DCL57-CPP.+Do+not+let+exceptions+escape+from+destructors+or+deallocation+functions">DCL57-CPP. Do not let exceptions escape from destructors or deallocation functions</a>.
+</li>
+
+</references>
+</qhelp>

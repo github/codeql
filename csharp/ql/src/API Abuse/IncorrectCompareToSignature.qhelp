@@ -1,0 +1,32 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>If you wish to make a class comparable with type <code>T</code> then you should both make a 
+<code>CompareTo(T)</code> method and inherit from the <code>IComparable&lt;T&gt;</code> interface. 
+If a <code>CompareTo(T)</code> method has been added without the interface also being implemented, 
+it is sometimes an indication that the programmer has forgotten to inherit the interface despite 
+providing the implementation for it.</p>
+
+</overview>
+<recommendation>
+<p>The problem can be easily resolved by making the class implement <code>IComparable&lt;T&gt;
+</code> (either directly or indirectly).</p>
+
+</recommendation>
+<example>
+<p>In this example, the developer has implemented a <code>CompareTo(Bad)</code> method, but has
+forgotten to add the corresponding <code>IComparable&lt;Bad&gt;</code> interface.</p>
+<sample src="IncorrectCompareToSignatureBad.cs" />
+
+<p>In the revised example, the interface is added.</p>
+<sample src="IncorrectCompareToSignatureGood.cs" />
+
+</example>
+<references>
+
+  <li>MSDN: <a href="https://msdn.microsoft.com/en-us/library/system.icomparable.aspx">IComparable Interface</a></li>
+
+</references>
+</qhelp>

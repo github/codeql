@@ -1,0 +1,2 @@
+| UnsynchronizedStaticAccess.cs:23:22:23:32 | access to indexer | Unsynchronized access to $@ in non-static context from $@. | UnsynchronizedStaticAccess.cs:9:46:9:49 | dict | dict | UnsynchronizedStaticAccess.cs:20:17:20:20 | test | test |
+| UnsynchronizedStaticAccess.cs:69:22:69:32 | access to indexer | Unsynchronized access to $@ in non-static context from $@. | UnsynchronizedStaticAccess.cs:9:46:9:49 | dict | dict | UnsynchronizedStaticAccess.cs:66:18:66:27 | testMethod | testMethod |

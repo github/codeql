@@ -1,0 +1,168 @@
+uniqueEnclosingCallable
+uniqueType
+uniqueNodeLocation
+| E.cpp:15:31:15:33 | buf | Node should have one location but has 2. |
+| aliasing.cpp:2:11:2:13 | (unnamed parameter 0) | Node should have one location but has 2. |
+| conflated.cpp:2:11:2:13 | (unnamed parameter 0) | Node should have one location but has 2. |
+| conflated.cpp:14:22:14:25 | buf | Node should have one location but has 2. |
+| file://:0:0:0:0 | (unnamed parameter 0) | Node should have one location but has 0. |
+| file://:0:0:0:0 | (unnamed parameter 0) | Node should have one location but has 0. |
+| file://:0:0:0:0 | (unnamed parameter 0) | Node should have one location but has 0. |
+| file://:0:0:0:0 | (unnamed parameter 0) | Node should have one location but has 0. |
+missingLocation
+| Nodes without location: 4 |
+uniqueNodeToString
+missingToString
+parameterCallable
+localFlowIsLocal
+compatibleTypesReflexive
+unreachableNodeCCtx
+localCallNodes
+postIsNotPre
+postHasUniquePre
+| D.cpp:57:5:57:42 | Store | PostUpdateNode should have one pre-update node but has 0. |
+| simple.cpp:65:5:65:22 | Store | PostUpdateNode should have one pre-update node but has 0. |
+| simple.cpp:83:9:83:28 | Store | PostUpdateNode should have one pre-update node but has 0. |
+| simple.cpp:92:5:92:22 | Store | PostUpdateNode should have one pre-update node but has 0. |
+uniquePostUpdate
+postIsInSameCallable
+reverseRead
+argHasPostUpdate
+postWithInFlow
+| A.cpp:25:7:25:17 | Chi | PostUpdateNode should not be the target of local flow. |
+| A.cpp:27:22:27:32 | Chi | PostUpdateNode should not be the target of local flow. |
+| A.cpp:98:12:98:18 | Chi | PostUpdateNode should not be the target of local flow. |
+| A.cpp:100:5:100:13 | Chi | PostUpdateNode should not be the target of local flow. |
+| A.cpp:142:7:142:20 | Chi | PostUpdateNode should not be the target of local flow. |
+| A.cpp:143:7:143:31 | Chi | PostUpdateNode should not be the target of local flow. |
+| A.cpp:183:7:183:20 | Chi | PostUpdateNode should not be the target of local flow. |
+| A.cpp:184:7:184:23 | Chi | PostUpdateNode should not be the target of local flow. |
+| B.cpp:6:15:6:24 | Chi | PostUpdateNode should not be the target of local flow. |
+| B.cpp:15:15:15:27 | Chi | PostUpdateNode should not be the target of local flow. |
+| B.cpp:35:7:35:22 | Chi | PostUpdateNode should not be the target of local flow. |
+| B.cpp:36:7:36:22 | Chi | PostUpdateNode should not be the target of local flow. |
+| B.cpp:46:7:46:21 | Chi | PostUpdateNode should not be the target of local flow. |
+| C.cpp:22:12:22:21 | Chi | PostUpdateNode should not be the target of local flow. |
+| C.cpp:22:12:22:21 | Chi | PostUpdateNode should not be the target of local flow. |
+| C.cpp:24:5:24:25 | Chi | PostUpdateNode should not be the target of local flow. |
+| C.cpp:24:16:24:25 | Chi | PostUpdateNode should not be the target of local flow. |
+| D.cpp:9:21:9:28 | Chi | PostUpdateNode should not be the target of local flow. |
+| D.cpp:11:29:11:36 | Chi | PostUpdateNode should not be the target of local flow. |
+| D.cpp:16:21:16:27 | Chi | PostUpdateNode should not be the target of local flow. |
+| D.cpp:18:29:18:35 | Chi | PostUpdateNode should not be the target of local flow. |
+| D.cpp:28:15:28:24 | Chi | PostUpdateNode should not be the target of local flow. |
+| D.cpp:35:15:35:24 | Chi | PostUpdateNode should not be the target of local flow. |
+| D.cpp:42:15:42:24 | Chi | PostUpdateNode should not be the target of local flow. |
+| D.cpp:49:15:49:24 | Chi | PostUpdateNode should not be the target of local flow. |
+| D.cpp:56:15:56:24 | Chi | PostUpdateNode should not be the target of local flow. |
+| D.cpp:57:5:57:42 | Chi | PostUpdateNode should not be the target of local flow. |
+| D.cpp:57:5:57:42 | Store | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:9:3:9:22 | Chi | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:13:3:13:21 | Chi | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:17:3:17:21 | Chi | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:21:12:21:12 | Chi | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:21:15:21:15 | Chi | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:22:12:22:12 | Chi | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:22:15:22:15 | Chi | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:23:12:23:12 | Chi | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:23:15:23:15 | Chi | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:35:12:35:12 | Chi | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:35:15:35:15 | Chi | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:37:3:37:24 | Chi | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:40:12:40:12 | Chi | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:40:15:40:15 | Chi | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:42:3:42:22 | Chi | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:47:12:47:12 | Chi | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:47:15:47:15 | Chi | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:49:3:49:25 | Chi | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:52:12:52:12 | Chi | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:52:15:52:15 | Chi | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:54:3:54:22 | Chi | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:59:12:59:12 | Chi | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:59:15:59:15 | Chi | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:60:3:60:22 | Chi | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:70:19:70:19 | Chi | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:70:22:70:22 | Chi | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:72:3:72:21 | Chi | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:77:19:77:19 | Chi | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:77:22:77:22 | Chi | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:79:3:79:22 | Chi | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:84:19:84:19 | Chi | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:84:22:84:22 | Chi | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:86:3:86:21 | Chi | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:91:19:91:19 | Chi | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:91:22:91:22 | Chi | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:92:3:92:23 | Chi | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:98:3:98:21 | Chi | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:106:3:106:20 | Chi | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:111:15:111:19 | Chi | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:147:15:147:22 | Chi | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:175:15:175:22 | Chi | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:181:15:181:22 | Chi | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:187:15:187:22 | Chi | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:194:15:194:22 | Chi | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:200:15:200:24 | Chi | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:205:15:205:24 | Chi | PostUpdateNode should not be the target of local flow. |
+| arrays.cpp:5:18:5:23 | Chi | PostUpdateNode should not be the target of local flow. |
+| arrays.cpp:5:21:5:21 | Chi | PostUpdateNode should not be the target of local flow. |
+| arrays.cpp:6:3:6:23 | Chi | PostUpdateNode should not be the target of local flow. |
+| arrays.cpp:14:18:14:23 | Chi | PostUpdateNode should not be the target of local flow. |
+| arrays.cpp:14:21:14:21 | Chi | PostUpdateNode should not be the target of local flow. |
+| arrays.cpp:15:3:15:25 | Chi | PostUpdateNode should not be the target of local flow. |
+| arrays.cpp:36:3:36:37 | Chi | PostUpdateNode should not be the target of local flow. |
+| by_reference.cpp:12:5:12:16 | Chi | PostUpdateNode should not be the target of local flow. |
+| by_reference.cpp:16:5:16:19 | Chi | PostUpdateNode should not be the target of local flow. |
+| by_reference.cpp:84:3:84:25 | Chi | PostUpdateNode should not be the target of local flow. |
+| by_reference.cpp:88:3:88:24 | Chi | PostUpdateNode should not be the target of local flow. |
+| by_reference.cpp:92:3:92:20 | Chi | PostUpdateNode should not be the target of local flow. |
+| by_reference.cpp:96:3:96:19 | Chi | PostUpdateNode should not be the target of local flow. |
+| by_reference.cpp:102:21:102:39 | Chi | PostUpdateNode should not be the target of local flow. |
+| by_reference.cpp:104:15:104:22 | Chi | PostUpdateNode should not be the target of local flow. |
+| by_reference.cpp:106:21:106:41 | Chi | PostUpdateNode should not be the target of local flow. |
+| by_reference.cpp:108:15:108:24 | Chi | PostUpdateNode should not be the target of local flow. |
+| by_reference.cpp:122:21:122:38 | Chi | PostUpdateNode should not be the target of local flow. |
+| by_reference.cpp:124:15:124:21 | Chi | PostUpdateNode should not be the target of local flow. |
+| by_reference.cpp:126:21:126:40 | Chi | PostUpdateNode should not be the target of local flow. |
+| by_reference.cpp:128:15:128:23 | Chi | PostUpdateNode should not be the target of local flow. |
+| complex.cpp:11:22:11:27 | Chi | PostUpdateNode should not be the target of local flow. |
+| complex.cpp:12:22:12:27 | Chi | PostUpdateNode should not be the target of local flow. |
+| complex.cpp:14:26:14:26 | Chi | PostUpdateNode should not be the target of local flow. |
+| complex.cpp:14:33:14:33 | Chi | PostUpdateNode should not be the target of local flow. |
+| complex.cpp:22:11:22:17 | Chi | PostUpdateNode should not be the target of local flow. |
+| complex.cpp:25:7:25:7 | Chi | PostUpdateNode should not be the target of local flow. |
+| complex.cpp:42:16:42:16 | Chi | PostUpdateNode should not be the target of local flow. |
+| complex.cpp:43:16:43:16 | Chi | PostUpdateNode should not be the target of local flow. |
+| complex.cpp:53:12:53:12 | Chi | PostUpdateNode should not be the target of local flow. |
+| complex.cpp:54:12:54:12 | Chi | PostUpdateNode should not be the target of local flow. |
+| complex.cpp:55:12:55:12 | Chi | PostUpdateNode should not be the target of local flow. |
+| complex.cpp:56:12:56:12 | Chi | PostUpdateNode should not be the target of local flow. |
+| conflated.cpp:45:39:45:42 | Chi | PostUpdateNode should not be the target of local flow. |
+| conflated.cpp:53:3:53:27 | Chi | PostUpdateNode should not be the target of local flow. |
+| constructors.cpp:20:24:20:29 | Chi | PostUpdateNode should not be the target of local flow. |
+| constructors.cpp:21:24:21:29 | Chi | PostUpdateNode should not be the target of local flow. |
+| constructors.cpp:23:28:23:28 | Chi | PostUpdateNode should not be the target of local flow. |
+| constructors.cpp:23:35:23:35 | Chi | PostUpdateNode should not be the target of local flow. |
+| qualifiers.cpp:9:30:9:44 | Chi | PostUpdateNode should not be the target of local flow. |
+| qualifiers.cpp:12:49:12:64 | Chi | PostUpdateNode should not be the target of local flow. |
+| qualifiers.cpp:13:51:13:65 | Chi | PostUpdateNode should not be the target of local flow. |
+| realistic.cpp:39:12:39:95 | Chi | PostUpdateNode should not be the target of local flow. |
+| realistic.cpp:49:9:49:64 | Chi | PostUpdateNode should not be the target of local flow. |
+| simple.cpp:20:24:20:29 | Chi | PostUpdateNode should not be the target of local flow. |
+| simple.cpp:21:24:21:29 | Chi | PostUpdateNode should not be the target of local flow. |
+| simple.cpp:23:28:23:28 | Chi | PostUpdateNode should not be the target of local flow. |
+| simple.cpp:23:35:23:35 | Chi | PostUpdateNode should not be the target of local flow. |
+| simple.cpp:65:5:65:22 | Store | PostUpdateNode should not be the target of local flow. |
+| simple.cpp:83:9:83:28 | Chi | PostUpdateNode should not be the target of local flow. |
+| simple.cpp:83:9:83:28 | Store | PostUpdateNode should not be the target of local flow. |
+| simple.cpp:92:5:92:22 | Store | PostUpdateNode should not be the target of local flow. |
+| struct_init.c:20:20:20:29 | Chi | PostUpdateNode should not be the target of local flow. |
+| struct_init.c:20:34:20:34 | Chi | PostUpdateNode should not be the target of local flow. |
+| struct_init.c:27:7:27:16 | Chi | PostUpdateNode should not be the target of local flow. |
+| struct_init.c:27:21:27:21 | Chi | PostUpdateNode should not be the target of local flow. |
+| struct_init.c:28:5:28:7 | Chi | PostUpdateNode should not be the target of local flow. |
+| struct_init.c:36:10:36:24 | Chi | PostUpdateNode should not be the target of local flow. |
+| struct_init.c:40:20:40:29 | Chi | PostUpdateNode should not be the target of local flow. |
+| struct_init.c:40:34:40:34 | Chi | PostUpdateNode should not be the target of local flow. |
+| struct_init.c:42:7:42:16 | Chi | PostUpdateNode should not be the target of local flow. |
+| struct_init.c:42:21:42:21 | Chi | PostUpdateNode should not be the target of local flow. |
+| struct_init.c:43:5:43:7 | Chi | PostUpdateNode should not be the target of local flow. |

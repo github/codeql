@@ -1,0 +1,3 @@
+| functions_test.py:99:5:99:40 | Function DeprecatedSliceMethods.__getslice__ | __getslice__ method has been deprecated since Python 2.0 |
+| functions_test.py:102:5:102:47 | Function DeprecatedSliceMethods.__setslice__ | __setslice__ method has been deprecated since Python 2.0 |
+| functions_test.py:105:5:105:40 | Function DeprecatedSliceMethods.__delslice__ | __delslice__ method has been deprecated since Python 2.0 |

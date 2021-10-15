@@ -1,0 +1,2 @@
+| test0.cs:11:18:11:43 | DerivesFromDeprecatedType1 | Defining a class that inherits or has a property derived from the obsolete DataSet or DataTable types. Please visit https://go.microsoft.com/fwlink/?linkid=2132227 for details. |
+| test0.cs:57:18:57:38 | AttributeSerializer01 | Defining a class that inherits or has a property derived from the obsolete DataSet or DataTable types. Please visit https://go.microsoft.com/fwlink/?linkid=2132227 for details. |

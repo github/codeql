@@ -1,0 +1,3 @@
+| main.c:8:5:8:5 | call to f | arity2.c:1:5:1:5 | f | 1 |
+| main.c:8:5:8:5 | call to f | incompatible_decl.c:2:7:2:7 | f | 1 |
+| main.c:8:5:8:5 | call to f | main.c:2:7:2:7 | f | 1 |

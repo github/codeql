@@ -1,0 +1,2 @@
+| tst.js:2:1:2:9 | while(c ... reak;\\n} | This loop executes at most once. |
+| tst.js:13:3:13:29 | for (;  ... et;\\n  } | This loop executes at most once. |

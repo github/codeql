@@ -1,0 +1,17 @@
+| src/nodejs.js:5:1:5:42 | unknown ... res){}) | A `RouteSetupCandidate` that did not get promoted to `RouteSetup`, and it is using at least one `RouteHandlerCandidate`. |
+| src/nodejs.js:11:1:11:43 | unknown ... res){}) | A `RouteSetupCandidate` that did not get promoted to `RouteSetup`, and it is using at least one `RouteHandlerCandidate`. |
+| src/nodejs.js:12:1:12:45 | unknown ... res){}) | A `RouteSetupCandidate` that did not get promoted to `RouteSetup`, and it is using at least one `RouteHandlerCandidate`. |
+| src/tst.js:6:1:6:53 | someOth ... es) {}) | A `RouteSetupCandidate` that did not get promoted to `RouteSetup`, and it is using at least one `RouteHandlerCandidate`. |
+| src/tst.js:8:1:8:62 | someOth ... se) {}) | A `RouteSetupCandidate` that did not get promoted to `RouteSetup`, and it is using at least one `RouteHandlerCandidate`. |
+| src/tst.js:30:1:30:57 | someOth ... es) {}) | A `RouteSetupCandidate` that did not get promoted to `RouteSetup`, and it is using at least one `RouteHandlerCandidate`. |
+| src/tst.js:32:1:34:39 | someOth ... es) {}) | A `RouteSetupCandidate` that did not get promoted to `RouteSetup`, and it is using at least one `RouteHandlerCandidate`. |
+| src/tst.js:36:1:39:2 | someOth ... ) {}\\n]) | A `RouteSetupCandidate` that did not get promoted to `RouteSetup`, and it is using at least one `RouteHandlerCandidate`. |
+| src/tst.js:41:1:43:39 | someOth ... es) {}) | A `RouteSetupCandidate` that did not get promoted to `RouteSetup`, and it is using at least one `RouteHandlerCandidate`. |
+| src/tst.js:87:5:87:57 | unknown ... cSetup) | A `RouteSetupCandidate` that did not get promoted to `RouteSetup`, and it is using at least one `RouteHandlerCandidate`. |
+| src/tst.js:96:5:96:36 | unknown ... h', rh) | A `RouteSetupCandidate` that did not get promoted to `RouteSetup`, and it is using at least one `RouteHandlerCandidate`. |
+| src/tst.js:98:5:98:38 | unknown ... , [rh]) | A `RouteSetupCandidate` that did not get promoted to `RouteSetup`, and it is using at least one `RouteHandlerCandidate`. |
+| src/tst.js:104:5:104:45 | unknown ... wn, rh) | A `RouteSetupCandidate` that did not get promoted to `RouteSetup`, and it is using at least one `RouteHandlerCandidate`. |
+| src/tst.js:137:5:137:57 | unknown ... cSetup) | A `RouteSetupCandidate` that did not get promoted to `RouteSetup`, and it is using at least one `RouteHandlerCandidate`. |
+| src/tst.js:149:5:149:36 | unknown ... h', rh) | A `RouteSetupCandidate` that did not get promoted to `RouteSetup`, and it is using at least one `RouteHandlerCandidate`. |
+| src/tst.js:151:5:151:38 | unknown ... , [rh]) | A `RouteSetupCandidate` that did not get promoted to `RouteSetup`, and it is using at least one `RouteHandlerCandidate`. |
+| src/tst.js:157:5:157:45 | unknown ... wn, rh) | A `RouteSetupCandidate` that did not get promoted to `RouteSetup`, and it is using at least one `RouteHandlerCandidate`. |

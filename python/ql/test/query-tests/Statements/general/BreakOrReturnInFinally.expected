@@ -1,0 +1,3 @@
+| test.py:11:13:11:17 | Break | 'break' in a finally block will swallow any exceptions raised. |
+| test.py:19:13:19:20 | Return | 'return' in a finally block will swallow any exceptions raised. |
+| test.py:37:13:37:18 | Return | 'return' in a finally block will swallow any exceptions raised. |

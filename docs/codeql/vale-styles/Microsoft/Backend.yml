@@ -1,0 +1,11 @@
+extends: substitution
+message: Use %s instead of '%s'
+level: warning
+link: 'https://docs.microsoft.com/en-us/style-guide/a-z-word-list-term-collections/b/back-end'
+# Use 'back end' (noun) or 'back-end' (adj).
+pos: 'back-end/NN|backend/(?:JJ|NN)|back/\w+ end/JJ|back/(?:JJ|RB) end/\w+'
+ignorecase: true
+swap:
+  back-end: "'back end'"
+  back end: "'back-end'"
+  backend: "'back end' or 'back-end'"

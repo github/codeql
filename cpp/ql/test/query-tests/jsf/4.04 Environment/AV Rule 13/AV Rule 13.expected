@@ -1,0 +1,2 @@
+| test.cpp:5:30:5:32 |  | AV Rule 13: Multi-byte characters and wide string literals will not be used. |
+| test.cpp:7:14:7:18 | 99 | AV Rule 13: Multi-byte characters and wide string literals will not be used. |

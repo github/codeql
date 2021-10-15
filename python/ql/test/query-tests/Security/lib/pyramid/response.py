@@ -1,0 +1,2 @@
+class Response(object):
+    pass

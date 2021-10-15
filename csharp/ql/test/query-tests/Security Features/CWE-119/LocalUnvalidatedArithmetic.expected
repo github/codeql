@@ -1,0 +1,1 @@
+| LocalUnvalidatedArithmetic.cs:17:36:17:80 | ... + ... | Unvalidated pointer arithmetic from virtual method $@. | LocalUnvalidatedArithmetic.cs:17:50:17:80 | call to method getNumber | getNumber |

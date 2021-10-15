@@ -1,0 +1,6 @@
+| alignment.cpp:2:8:2:14 | AlignAs::sse_t | 16 |
+| alignment.cpp:7:8:7:14 | AlignAs::avx_t | AlignAs::sse_t |
+| alignment.cpp:15:10:15:14 | AttributeAlign::sse_t | 16 |
+| alignment.cpp:20:10:20:14 | AttributeAlign::avx_t | AttributeAlign::sse_t |
+| alignment.cpp:25:10:25:14 | AttributeAlign::align_to_8_kilobytes | 8192 |
+| alignment.cpp:30:10:30:14 | AttributeAlign::align_to_256_megabytes | 268435456 |

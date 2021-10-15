@@ -1,0 +1,6 @@
+| repeated-injection.js:6:5:6:31 | functio ... name){} | This function has $@ defined in multiple places. | repeated-injection.js:7:5:7:22 | $Injected2.$inject | dependency injections |
+| repeated-injection.js:6:5:6:31 | functio ... name){} | This function has $@ defined in multiple places. | repeated-injection.js:8:54:8:73 | ['name', $Injected2] | dependency injections |
+| repeated-injection.js:10:5:10:31 | functio ... name){} | This function has $@ defined in multiple places. | repeated-injection.js:11:5:11:22 | $Injected3.$inject | dependency injections |
+| repeated-injection.js:10:5:10:31 | functio ... name){} | This function has $@ defined in multiple places. | repeated-injection.js:12:5:12:22 | $Injected3.$inject | dependency injections |
+| repeated-injection.js:33:5:33:84 | functio ... )\\n    } | This function has $@ defined in multiple places. | repeated-injection.js:35:5:35:23 | $Injected10.$inject | dependency injections |
+| repeated-injection.js:33:5:33:84 | functio ... )\\n    } | This function has $@ defined in multiple places. | repeated-injection.js:36:56:36:76 | ['name' ... cted10] | dependency injections |

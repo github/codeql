@@ -1,0 +1,4 @@
+| tst2.js:8:3:10:3 | setX: f ...  x;\\n  } | This property is overwritten by $@ in the same object literal. | tst2.js:16:3:18:3 | setX: f ...  x;\\n  } | another property |
+| tst.js:20:3:20:7 | x: 23 | This property is overwritten by $@ in the same object literal. | tst.js:23:3:23:7 | x: 56 | another property |
+| tst.js:21:3:21:12 | y: "hello" | This property is overwritten by $@ in the same object literal. | tst.js:24:3:24:14 | "y": "world" | another property |
+| tst.js:22:3:22:7 | x: 42 | This property is overwritten by $@ in the same object literal. | tst.js:23:3:23:7 | x: 56 | another property |

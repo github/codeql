@@ -1,0 +1,557 @@
+| f_0 | false | 125 | 125 | f_0 |
+| f_0 | false | 130 | 130 | 0 |
+| f_0 | false | 133 | 133 | return ... |
+| f_0 | false | 135 | 135 | { ... } |
+| f_0 | false | 137 | 137 | ; |
+| f_0 | false | 139 | 139 | { ... } |
+| f_0 | false | 141 | 141 | if (...) ...  |
+| f_0 | false | 143 | 143 | return ... |
+| f_0 | false | 145 | 145 | { ... } |
+| f_0 | true | 130 | 139 | F |
+| f_0 | true | 133 | 125 |  |
+| f_0 | true | 135 | 133 |  |
+| f_0 | true | 137 | 143 |  |
+| f_0 | true | 139 | 137 |  |
+| f_0 | true | 141 | 130 |  |
+| f_0 | true | 143 | 125 |  |
+| f_0 | true | 145 | 141 |  |
+| f_1 | false | 148 | 148 | f_1 |
+| f_1 | false | 153 | 153 | 1 |
+| f_1 | false | 154 | 154 | return ... |
+| f_1 | false | 156 | 156 | { ... } |
+| f_1 | false | 160 | 160 | ; |
+| f_1 | false | 162 | 162 | { ... } |
+| f_1 | false | 164 | 164 | if (...) ...  |
+| f_1 | false | 166 | 166 | return ... |
+| f_1 | false | 168 | 168 | { ... } |
+| f_1 | true | 153 | 156 | T |
+| f_1 | true | 154 | 148 |  |
+| f_1 | true | 156 | 154 |  |
+| f_1 | true | 160 | 166 |  |
+| f_1 | true | 162 | 160 |  |
+| f_1 | true | 164 | 153 |  |
+| f_1 | true | 166 | 148 |  |
+| f_1 | true | 168 | 164 |  |
+| f_256 | false | 171 | 171 | f_256 |
+| f_256 | false | 176 | 176 | 256 |
+| f_256 | false | 177 | 177 | return ... |
+| f_256 | false | 179 | 179 | { ... } |
+| f_256 | false | 183 | 183 | ; |
+| f_256 | false | 185 | 185 | { ... } |
+| f_256 | false | 187 | 187 | if (...) ...  |
+| f_256 | false | 189 | 189 | return ... |
+| f_256 | false | 191 | 191 | { ... } |
+| f_256 | true | 176 | 179 | T |
+| f_256 | true | 177 | 171 |  |
+| f_256 | true | 179 | 177 |  |
+| f_256 | true | 183 | 189 |  |
+| f_256 | true | 185 | 183 |  |
+| f_256 | true | 187 | 176 |  |
+| f_256 | true | 189 | 171 |  |
+| f_256 | true | 191 | 187 |  |
+| f_uint8_t_0 | false | 194 | 194 | f_uint8_t_0 |
+| f_uint8_t_0 | false | 199 | 199 | 0 |
+| f_uint8_t_0 | false | 200 | 200 | (uint8_t)... |
+| f_uint8_t_0 | false | 206 | 206 | return ... |
+| f_uint8_t_0 | false | 208 | 208 | { ... } |
+| f_uint8_t_0 | false | 210 | 210 | ; |
+| f_uint8_t_0 | false | 212 | 212 | { ... } |
+| f_uint8_t_0 | false | 214 | 214 | if (...) ...  |
+| f_uint8_t_0 | false | 216 | 216 | return ... |
+| f_uint8_t_0 | false | 218 | 218 | { ... } |
+| f_uint8_t_0 | true | 199 | 212 | F |
+| f_uint8_t_0 | true | 206 | 194 |  |
+| f_uint8_t_0 | true | 208 | 206 |  |
+| f_uint8_t_0 | true | 210 | 216 |  |
+| f_uint8_t_0 | true | 212 | 210 |  |
+| f_uint8_t_0 | true | 214 | 199 |  |
+| f_uint8_t_0 | true | 216 | 194 |  |
+| f_uint8_t_0 | true | 218 | 214 |  |
+| f_uint8_t_1 | false | 221 | 221 | f_uint8_t_1 |
+| f_uint8_t_1 | false | 226 | 226 | 1 |
+| f_uint8_t_1 | false | 227 | 227 | (uint8_t)... |
+| f_uint8_t_1 | false | 231 | 231 | return ... |
+| f_uint8_t_1 | false | 233 | 233 | { ... } |
+| f_uint8_t_1 | false | 237 | 237 | ; |
+| f_uint8_t_1 | false | 239 | 239 | { ... } |
+| f_uint8_t_1 | false | 241 | 241 | if (...) ...  |
+| f_uint8_t_1 | false | 243 | 243 | return ... |
+| f_uint8_t_1 | false | 245 | 245 | { ... } |
+| f_uint8_t_1 | true | 226 | 233 | T |
+| f_uint8_t_1 | true | 231 | 221 |  |
+| f_uint8_t_1 | true | 233 | 231 |  |
+| f_uint8_t_1 | true | 237 | 243 |  |
+| f_uint8_t_1 | true | 239 | 237 |  |
+| f_uint8_t_1 | true | 241 | 226 |  |
+| f_uint8_t_1 | true | 243 | 221 |  |
+| f_uint8_t_1 | true | 245 | 241 |  |
+| f_uint8_t_256 | false | 248 | 248 | f_uint8_t_256 |
+| f_uint8_t_256 | false | 253 | 253 | 256 |
+| f_uint8_t_256 | false | 254 | 254 | (uint8_t)... |
+| f_uint8_t_256 | false | 260 | 260 | return ... |
+| f_uint8_t_256 | false | 262 | 262 | { ... } |
+| f_uint8_t_256 | false | 264 | 264 | ; |
+| f_uint8_t_256 | false | 266 | 266 | { ... } |
+| f_uint8_t_256 | false | 268 | 268 | if (...) ...  |
+| f_uint8_t_256 | false | 270 | 270 | return ... |
+| f_uint8_t_256 | false | 272 | 272 | { ... } |
+| f_uint8_t_256 | true | 253 | 266 | F |
+| f_uint8_t_256 | true | 260 | 248 |  |
+| f_uint8_t_256 | true | 262 | 260 |  |
+| f_uint8_t_256 | true | 264 | 270 |  |
+| f_uint8_t_256 | true | 266 | 264 |  |
+| f_uint8_t_256 | true | 268 | 253 |  |
+| f_uint8_t_256 | true | 270 | 248 |  |
+| f_uint8_t_256 | true | 272 | 268 |  |
+| f_uint8_t_257 | false | 275 | 275 | f_uint8_t_257 |
+| f_uint8_t_257 | false | 280 | 280 | 257 |
+| f_uint8_t_257 | false | 281 | 281 | (uint8_t)... |
+| f_uint8_t_257 | false | 285 | 285 | return ... |
+| f_uint8_t_257 | false | 287 | 287 | { ... } |
+| f_uint8_t_257 | false | 291 | 291 | ; |
+| f_uint8_t_257 | false | 293 | 293 | { ... } |
+| f_uint8_t_257 | false | 295 | 295 | if (...) ...  |
+| f_uint8_t_257 | false | 297 | 297 | return ... |
+| f_uint8_t_257 | false | 299 | 299 | { ... } |
+| f_uint8_t_257 | true | 280 | 287 | T |
+| f_uint8_t_257 | true | 285 | 275 |  |
+| f_uint8_t_257 | true | 287 | 285 |  |
+| f_uint8_t_257 | true | 291 | 297 |  |
+| f_uint8_t_257 | true | 293 | 291 |  |
+| f_uint8_t_257 | true | 295 | 280 |  |
+| f_uint8_t_257 | true | 297 | 275 |  |
+| f_uint8_t_257 | true | 299 | 295 |  |
+| f_uint8_t_minus1 | false | 302 | 302 | f_uint8_t_minus1 |
+| f_uint8_t_minus1 | false | 307 | 307 | 255 |
+| f_uint8_t_minus1 | false | 310 | 310 | 1 |
+| f_uint8_t_minus1 | false | 311 | 311 | - ... |
+| f_uint8_t_minus1 | false | 313 | 313 | (uint8_t)... |
+| f_uint8_t_minus1 | false | 315 | 315 | (int)... |
+| f_uint8_t_minus1 | false | 319 | 319 | ... == ... |
+| f_uint8_t_minus1 | false | 323 | 323 | return ... |
+| f_uint8_t_minus1 | false | 325 | 325 | { ... } |
+| f_uint8_t_minus1 | false | 329 | 329 | ; |
+| f_uint8_t_minus1 | false | 331 | 331 | { ... } |
+| f_uint8_t_minus1 | false | 333 | 333 | if (...) ...  |
+| f_uint8_t_minus1 | false | 335 | 335 | return ... |
+| f_uint8_t_minus1 | false | 337 | 337 | { ... } |
+| f_uint8_t_minus1 | true | 307 | 310 |  |
+| f_uint8_t_minus1 | true | 310 | 311 |  |
+| f_uint8_t_minus1 | true | 311 | 319 |  |
+| f_uint8_t_minus1 | true | 319 | 325 | T |
+| f_uint8_t_minus1 | true | 323 | 302 |  |
+| f_uint8_t_minus1 | true | 325 | 323 |  |
+| f_uint8_t_minus1 | true | 329 | 335 |  |
+| f_uint8_t_minus1 | true | 331 | 329 |  |
+| f_uint8_t_minus1 | true | 333 | 307 |  |
+| f_uint8_t_minus1 | true | 335 | 302 |  |
+| f_uint8_t_minus1 | true | 337 | 333 |  |
+| f_v_int_0 | false | 340 | 340 | f_v_int_0 |
+| f_v_int_0 | false | 346 | 346 | 0 |
+| f_v_int_0 | false | 347 | 347 | initializer for i |
+| f_v_int_0 | false | 350 | 350 | declaration |
+| f_v_int_0 | false | 352 | 352 | i |
+| f_v_int_0 | false | 356 | 356 | return ... |
+| f_v_int_0 | false | 358 | 358 | { ... } |
+| f_v_int_0 | false | 360 | 360 | ; |
+| f_v_int_0 | false | 362 | 362 | { ... } |
+| f_v_int_0 | false | 364 | 364 | if (...) ...  |
+| f_v_int_0 | false | 366 | 366 | return ... |
+| f_v_int_0 | false | 368 | 368 | { ... } |
+| f_v_int_0 | true | 346 | 364 |  |
+| f_v_int_0 | true | 347 | 346 |  |
+| f_v_int_0 | true | 350 | 347 |  |
+| f_v_int_0 | true | 352 | 362 | F |
+| f_v_int_0 | true | 356 | 340 |  |
+| f_v_int_0 | true | 358 | 356 |  |
+| f_v_int_0 | true | 360 | 366 |  |
+| f_v_int_0 | true | 362 | 360 |  |
+| f_v_int_0 | true | 364 | 352 |  |
+| f_v_int_0 | true | 366 | 340 |  |
+| f_v_int_0 | true | 368 | 350 |  |
+| f_v_int_1 | false | 371 | 371 | f_v_int_1 |
+| f_v_int_1 | false | 377 | 377 | 1 |
+| f_v_int_1 | false | 378 | 378 | initializer for i |
+| f_v_int_1 | false | 381 | 381 | declaration |
+| f_v_int_1 | false | 383 | 383 | i |
+| f_v_int_1 | false | 385 | 385 | return ... |
+| f_v_int_1 | false | 387 | 387 | { ... } |
+| f_v_int_1 | false | 391 | 391 | ; |
+| f_v_int_1 | false | 393 | 393 | { ... } |
+| f_v_int_1 | false | 395 | 395 | if (...) ...  |
+| f_v_int_1 | false | 397 | 397 | return ... |
+| f_v_int_1 | false | 399 | 399 | { ... } |
+| f_v_int_1 | true | 377 | 395 |  |
+| f_v_int_1 | true | 378 | 377 |  |
+| f_v_int_1 | true | 381 | 378 |  |
+| f_v_int_1 | true | 383 | 387 | T |
+| f_v_int_1 | true | 385 | 371 |  |
+| f_v_int_1 | true | 387 | 385 |  |
+| f_v_int_1 | true | 391 | 397 |  |
+| f_v_int_1 | true | 393 | 391 |  |
+| f_v_int_1 | true | 395 | 383 |  |
+| f_v_int_1 | true | 397 | 371 |  |
+| f_v_int_1 | true | 399 | 381 |  |
+| f_v_int_256 | false | 402 | 402 | f_v_int_256 |
+| f_v_int_256 | false | 408 | 408 | 256 |
+| f_v_int_256 | false | 409 | 409 | initializer for i |
+| f_v_int_256 | false | 412 | 412 | declaration |
+| f_v_int_256 | false | 414 | 414 | i |
+| f_v_int_256 | false | 416 | 416 | return ... |
+| f_v_int_256 | false | 418 | 418 | { ... } |
+| f_v_int_256 | false | 422 | 422 | ; |
+| f_v_int_256 | false | 424 | 424 | { ... } |
+| f_v_int_256 | false | 426 | 426 | if (...) ...  |
+| f_v_int_256 | false | 428 | 428 | return ... |
+| f_v_int_256 | false | 430 | 430 | { ... } |
+| f_v_int_256 | true | 408 | 426 |  |
+| f_v_int_256 | true | 409 | 408 |  |
+| f_v_int_256 | true | 412 | 409 |  |
+| f_v_int_256 | true | 414 | 418 | T |
+| f_v_int_256 | true | 416 | 402 |  |
+| f_v_int_256 | true | 418 | 416 |  |
+| f_v_int_256 | true | 422 | 428 |  |
+| f_v_int_256 | true | 424 | 422 |  |
+| f_v_int_256 | true | 426 | 414 |  |
+| f_v_int_256 | true | 428 | 402 |  |
+| f_v_int_256 | true | 430 | 412 |  |
+| f_v_uint8_t_0 | false | 433 | 433 | f_v_uint8_t_0 |
+| f_v_uint8_t_0 | false | 439 | 439 | 0 |
+| f_v_uint8_t_0 | false | 440 | 440 | (uint8_t)... |
+| f_v_uint8_t_0 | false | 443 | 443 | initializer for i |
+| f_v_uint8_t_0 | false | 447 | 447 | declaration |
+| f_v_uint8_t_0 | false | 449 | 449 | i |
+| f_v_uint8_t_0 | false | 453 | 453 | return ... |
+| f_v_uint8_t_0 | false | 455 | 455 | { ... } |
+| f_v_uint8_t_0 | false | 457 | 457 | ; |
+| f_v_uint8_t_0 | false | 459 | 459 | { ... } |
+| f_v_uint8_t_0 | false | 461 | 461 | if (...) ...  |
+| f_v_uint8_t_0 | false | 463 | 463 | return ... |
+| f_v_uint8_t_0 | false | 465 | 465 | { ... } |
+| f_v_uint8_t_0 | true | 439 | 461 |  |
+| f_v_uint8_t_0 | true | 443 | 439 |  |
+| f_v_uint8_t_0 | true | 447 | 443 |  |
+| f_v_uint8_t_0 | true | 449 | 459 | F |
+| f_v_uint8_t_0 | true | 453 | 433 |  |
+| f_v_uint8_t_0 | true | 455 | 453 |  |
+| f_v_uint8_t_0 | true | 457 | 463 |  |
+| f_v_uint8_t_0 | true | 459 | 457 |  |
+| f_v_uint8_t_0 | true | 461 | 449 |  |
+| f_v_uint8_t_0 | true | 463 | 433 |  |
+| f_v_uint8_t_0 | true | 465 | 447 |  |
+| f_v_uint8_t_1 | false | 468 | 468 | f_v_uint8_t_1 |
+| f_v_uint8_t_1 | false | 474 | 474 | 1 |
+| f_v_uint8_t_1 | false | 475 | 475 | (uint8_t)... |
+| f_v_uint8_t_1 | false | 478 | 478 | initializer for i |
+| f_v_uint8_t_1 | false | 482 | 482 | declaration |
+| f_v_uint8_t_1 | false | 484 | 484 | i |
+| f_v_uint8_t_1 | false | 486 | 486 | return ... |
+| f_v_uint8_t_1 | false | 488 | 488 | { ... } |
+| f_v_uint8_t_1 | false | 492 | 492 | ; |
+| f_v_uint8_t_1 | false | 494 | 494 | { ... } |
+| f_v_uint8_t_1 | false | 496 | 496 | if (...) ...  |
+| f_v_uint8_t_1 | false | 498 | 498 | return ... |
+| f_v_uint8_t_1 | false | 500 | 500 | { ... } |
+| f_v_uint8_t_1 | true | 474 | 496 |  |
+| f_v_uint8_t_1 | true | 478 | 474 |  |
+| f_v_uint8_t_1 | true | 482 | 478 |  |
+| f_v_uint8_t_1 | true | 484 | 488 | T |
+| f_v_uint8_t_1 | true | 486 | 468 |  |
+| f_v_uint8_t_1 | true | 488 | 486 |  |
+| f_v_uint8_t_1 | true | 492 | 498 |  |
+| f_v_uint8_t_1 | true | 494 | 492 |  |
+| f_v_uint8_t_1 | true | 496 | 484 |  |
+| f_v_uint8_t_1 | true | 498 | 468 |  |
+| f_v_uint8_t_1 | true | 500 | 482 |  |
+| f_v_uint8_t_256 | false | 503 | 503 | f_v_uint8_t_256 |
+| f_v_uint8_t_256 | false | 509 | 509 | 256 |
+| f_v_uint8_t_256 | false | 510 | 510 | (uint8_t)... |
+| f_v_uint8_t_256 | false | 513 | 513 | initializer for i |
+| f_v_uint8_t_256 | false | 517 | 517 | declaration |
+| f_v_uint8_t_256 | false | 519 | 519 | i |
+| f_v_uint8_t_256 | false | 523 | 523 | return ... |
+| f_v_uint8_t_256 | false | 525 | 525 | { ... } |
+| f_v_uint8_t_256 | false | 527 | 527 | ; |
+| f_v_uint8_t_256 | false | 529 | 529 | { ... } |
+| f_v_uint8_t_256 | false | 531 | 531 | if (...) ...  |
+| f_v_uint8_t_256 | false | 533 | 533 | return ... |
+| f_v_uint8_t_256 | false | 535 | 535 | { ... } |
+| f_v_uint8_t_256 | true | 509 | 531 |  |
+| f_v_uint8_t_256 | true | 513 | 509 |  |
+| f_v_uint8_t_256 | true | 517 | 513 |  |
+| f_v_uint8_t_256 | true | 519 | 529 | F |
+| f_v_uint8_t_256 | true | 523 | 503 |  |
+| f_v_uint8_t_256 | true | 525 | 523 |  |
+| f_v_uint8_t_256 | true | 527 | 533 |  |
+| f_v_uint8_t_256 | true | 529 | 527 |  |
+| f_v_uint8_t_256 | true | 531 | 519 |  |
+| f_v_uint8_t_256 | true | 533 | 503 |  |
+| f_v_uint8_t_256 | true | 535 | 517 |  |
+| f_v_uint8_t_257 | false | 538 | 538 | f_v_uint8_t_257 |
+| f_v_uint8_t_257 | false | 544 | 544 | 257 |
+| f_v_uint8_t_257 | false | 545 | 545 | (uint8_t)... |
+| f_v_uint8_t_257 | false | 548 | 548 | initializer for i |
+| f_v_uint8_t_257 | false | 552 | 552 | declaration |
+| f_v_uint8_t_257 | false | 554 | 554 | i |
+| f_v_uint8_t_257 | false | 556 | 556 | return ... |
+| f_v_uint8_t_257 | false | 558 | 558 | { ... } |
+| f_v_uint8_t_257 | false | 562 | 562 | ; |
+| f_v_uint8_t_257 | false | 564 | 564 | { ... } |
+| f_v_uint8_t_257 | false | 566 | 566 | if (...) ...  |
+| f_v_uint8_t_257 | false | 568 | 568 | return ... |
+| f_v_uint8_t_257 | false | 570 | 570 | { ... } |
+| f_v_uint8_t_257 | true | 544 | 566 |  |
+| f_v_uint8_t_257 | true | 548 | 544 |  |
+| f_v_uint8_t_257 | true | 552 | 548 |  |
+| f_v_uint8_t_257 | true | 554 | 558 | T |
+| f_v_uint8_t_257 | true | 556 | 538 |  |
+| f_v_uint8_t_257 | true | 558 | 556 |  |
+| f_v_uint8_t_257 | true | 562 | 568 |  |
+| f_v_uint8_t_257 | true | 564 | 562 |  |
+| f_v_uint8_t_257 | true | 566 | 554 |  |
+| f_v_uint8_t_257 | true | 568 | 538 |  |
+| f_v_uint8_t_257 | true | 570 | 552 |  |
+| f_v_uint8_t_minus1 | false | 573 | 573 | f_v_uint8_t_minus1 |
+| f_v_uint8_t_minus1 | false | 579 | 579 | 1 |
+| f_v_uint8_t_minus1 | false | 580 | 580 | - ... |
+| f_v_uint8_t_minus1 | false | 582 | 582 | (uint8_t)... |
+| f_v_uint8_t_minus1 | false | 586 | 586 | initializer for i |
+| f_v_uint8_t_minus1 | false | 590 | 590 | declaration |
+| f_v_uint8_t_minus1 | false | 594 | 594 | 255 |
+| f_v_uint8_t_minus1 | false | 595 | 595 | i |
+| f_v_uint8_t_minus1 | false | 597 | 597 | (int)... |
+| f_v_uint8_t_minus1 | false | 599 | 599 | ... == ... |
+| f_v_uint8_t_minus1 | false | 601 | 601 | return ... |
+| f_v_uint8_t_minus1 | false | 603 | 603 | { ... } |
+| f_v_uint8_t_minus1 | false | 607 | 607 | ; |
+| f_v_uint8_t_minus1 | false | 609 | 609 | { ... } |
+| f_v_uint8_t_minus1 | false | 611 | 611 | if (...) ...  |
+| f_v_uint8_t_minus1 | false | 613 | 613 | return ... |
+| f_v_uint8_t_minus1 | false | 615 | 615 | { ... } |
+| f_v_uint8_t_minus1 | true | 579 | 580 |  |
+| f_v_uint8_t_minus1 | true | 580 | 611 |  |
+| f_v_uint8_t_minus1 | true | 586 | 579 |  |
+| f_v_uint8_t_minus1 | true | 590 | 586 |  |
+| f_v_uint8_t_minus1 | true | 594 | 595 |  |
+| f_v_uint8_t_minus1 | true | 595 | 599 |  |
+| f_v_uint8_t_minus1 | true | 599 | 603 | T |
+| f_v_uint8_t_minus1 | true | 601 | 573 |  |
+| f_v_uint8_t_minus1 | true | 603 | 601 |  |
+| f_v_uint8_t_minus1 | true | 607 | 613 |  |
+| f_v_uint8_t_minus1 | true | 609 | 607 |  |
+| f_v_uint8_t_minus1 | true | 611 | 594 |  |
+| f_v_uint8_t_minus1 | true | 613 | 573 |  |
+| f_v_uint8_t_minus1 | true | 615 | 590 |  |
+| switch_asm | false | 878 | 878 | switch_asm |
+| switch_asm | false | 884 | 884 | 0 |
+| switch_asm | false | 885 | 885 | initializer for faulted |
+| switch_asm | false | 888 | 888 | declaration |
+| switch_asm | false | 890 | 890 | faulted |
+| switch_asm | false | 892 | 892 | faulted |
+| switch_asm | false | 894 | 894 | asm statement |
+| switch_asm | false | 896 | 896 | faulted |
+| switch_asm | false | 900 | 900 | 1 |
+| switch_asm | false | 901 | 901 | case ...: |
+| switch_asm | false | 903 | 903 | break; |
+| switch_asm | false | 905 | 905 | { ... } |
+| switch_asm | false | 907 | 907 | switch (...) ...  |
+| switch_asm | false | 909 | 909 | label ...: |
+| switch_asm | false | 911 | 911 | return ... |
+| switch_asm | false | 913 | 913 | { ... } |
+| switch_asm | true | 884 | 894 |  |
+| switch_asm | true | 885 | 884 |  |
+| switch_asm | true | 888 | 885 |  |
+| switch_asm | true | 890 | 892 |  |
+| switch_asm | true | 892 | 907 |  |
+| switch_asm | true | 894 | 890 |  |
+| switch_asm | true | 896 | 905 |  |
+| switch_asm | true | 901 | 903 |  |
+| switch_asm | true | 903 | 909 |  |
+| switch_asm | true | 905 | 901 |  |
+| switch_asm | true | 905 | 909 |  |
+| switch_asm | true | 907 | 896 |  |
+| switch_asm | true | 909 | 911 |  |
+| switch_asm | true | 911 | 878 |  |
+| switch_asm | true | 913 | 888 |  |
+| switch_f_0 | false | 618 | 618 | switch_f_0 |
+| switch_f_0 | false | 623 | 623 | 255 |
+| switch_f_0 | false | 626 | 626 | 0 |
+| switch_f_0 | false | 627 | 627 | case ...: |
+| switch_f_0 | false | 631 | 631 | break; |
+| switch_f_0 | false | 633 | 633 | { ... } |
+| switch_f_0 | false | 635 | 635 | switch (...) ...  |
+| switch_f_0 | false | 637 | 637 | label ...: |
+| switch_f_0 | false | 639 | 639 | return ... |
+| switch_f_0 | false | 641 | 641 | { ... } |
+| switch_f_0 | true | 623 | 633 |  |
+| switch_f_0 | true | 627 | 631 |  |
+| switch_f_0 | true | 631 | 637 |  |
+| switch_f_0 | true | 633 | 637 |  |
+| switch_f_0 | true | 635 | 623 |  |
+| switch_f_0 | true | 637 | 639 |  |
+| switch_f_0 | true | 639 | 618 |  |
+| switch_f_0 | true | 641 | 635 |  |
+| switch_f_255 | false | 644 | 644 | switch_f_255 |
+| switch_f_255 | false | 649 | 649 | 255 |
+| switch_f_255 | false | 652 | 652 | 255 |
+| switch_f_255 | false | 653 | 653 | case ...: |
+| switch_f_255 | false | 655 | 655 | break; |
+| switch_f_255 | false | 657 | 657 | { ... } |
+| switch_f_255 | false | 659 | 659 | switch (...) ...  |
+| switch_f_255 | false | 661 | 661 | label ...: |
+| switch_f_255 | false | 663 | 663 | return ... |
+| switch_f_255 | false | 665 | 665 | { ... } |
+| switch_f_255 | true | 649 | 657 |  |
+| switch_f_255 | true | 653 | 655 |  |
+| switch_f_255 | true | 655 | 661 |  |
+| switch_f_255 | true | 657 | 653 |  |
+| switch_f_255 | true | 657 | 661 |  |
+| switch_f_255 | true | 659 | 649 |  |
+| switch_f_255 | true | 661 | 663 |  |
+| switch_f_255 | true | 663 | 644 |  |
+| switch_f_255 | true | 665 | 659 |  |
+| switch_f_uint8_t_256 | false | 700 | 700 | switch_f_uint8_t_256 |
+| switch_f_uint8_t_256 | false | 705 | 705 | 256 |
+| switch_f_uint8_t_256 | false | 708 | 708 | 256 |
+| switch_f_uint8_t_256 | false | 709 | 709 | (uint8_t)... |
+| switch_f_uint8_t_256 | false | 711 | 711 | (int)... |
+| switch_f_uint8_t_256 | false | 715 | 715 | case ...: |
+| switch_f_uint8_t_256 | false | 719 | 719 | break; |
+| switch_f_uint8_t_256 | false | 721 | 721 | { ... } |
+| switch_f_uint8_t_256 | false | 723 | 723 | switch (...) ...  |
+| switch_f_uint8_t_256 | false | 725 | 725 | label ...: |
+| switch_f_uint8_t_256 | false | 727 | 727 | return ... |
+| switch_f_uint8_t_256 | false | 729 | 729 | { ... } |
+| switch_f_uint8_t_256 | true | 705 | 721 |  |
+| switch_f_uint8_t_256 | true | 715 | 719 |  |
+| switch_f_uint8_t_256 | true | 719 | 725 |  |
+| switch_f_uint8_t_256 | true | 721 | 725 |  |
+| switch_f_uint8_t_256 | true | 723 | 705 |  |
+| switch_f_uint8_t_256 | true | 725 | 727 |  |
+| switch_f_uint8_t_256 | true | 727 | 700 |  |
+| switch_f_uint8_t_256 | true | 729 | 723 |  |
+| switch_f_uint8_t_minus1 | false | 668 | 668 | switch_f_uint8_t_minus1 |
+| switch_f_uint8_t_minus1 | false | 673 | 673 | 255 |
+| switch_f_uint8_t_minus1 | false | 676 | 676 | 1 |
+| switch_f_uint8_t_minus1 | false | 677 | 677 | - ... |
+| switch_f_uint8_t_minus1 | false | 679 | 679 | (uint8_t)... |
+| switch_f_uint8_t_minus1 | false | 681 | 681 | (int)... |
+| switch_f_uint8_t_minus1 | false | 685 | 685 | case ...: |
+| switch_f_uint8_t_minus1 | false | 687 | 687 | break; |
+| switch_f_uint8_t_minus1 | false | 689 | 689 | { ... } |
+| switch_f_uint8_t_minus1 | false | 691 | 691 | switch (...) ...  |
+| switch_f_uint8_t_minus1 | false | 693 | 693 | label ...: |
+| switch_f_uint8_t_minus1 | false | 695 | 695 | return ... |
+| switch_f_uint8_t_minus1 | false | 697 | 697 | { ... } |
+| switch_f_uint8_t_minus1 | true | 673 | 689 |  |
+| switch_f_uint8_t_minus1 | true | 685 | 687 |  |
+| switch_f_uint8_t_minus1 | true | 687 | 693 |  |
+| switch_f_uint8_t_minus1 | true | 689 | 685 |  |
+| switch_f_uint8_t_minus1 | true | 689 | 693 |  |
+| switch_f_uint8_t_minus1 | true | 691 | 673 |  |
+| switch_f_uint8_t_minus1 | true | 693 | 695 |  |
+| switch_f_uint8_t_minus1 | true | 695 | 668 |  |
+| switch_f_uint8_t_minus1 | true | 697 | 691 |  |
+| switch_f_v_0 | false | 732 | 732 | switch_f_v_0 |
+| switch_f_v_0 | false | 738 | 738 | 255 |
+| switch_f_v_0 | false | 739 | 739 | initializer for i |
+| switch_f_v_0 | false | 742 | 742 | declaration |
+| switch_f_v_0 | false | 744 | 744 | i |
+| switch_f_v_0 | false | 748 | 748 | 0 |
+| switch_f_v_0 | false | 749 | 749 | case ...: |
+| switch_f_v_0 | false | 753 | 753 | break; |
+| switch_f_v_0 | false | 755 | 755 | { ... } |
+| switch_f_v_0 | false | 757 | 757 | switch (...) ...  |
+| switch_f_v_0 | false | 759 | 759 | label ...: |
+| switch_f_v_0 | false | 761 | 761 | return ... |
+| switch_f_v_0 | false | 763 | 763 | { ... } |
+| switch_f_v_0 | true | 738 | 757 |  |
+| switch_f_v_0 | true | 739 | 738 |  |
+| switch_f_v_0 | true | 742 | 739 |  |
+| switch_f_v_0 | true | 744 | 755 |  |
+| switch_f_v_0 | true | 749 | 753 |  |
+| switch_f_v_0 | true | 753 | 759 |  |
+| switch_f_v_0 | true | 755 | 759 |  |
+| switch_f_v_0 | true | 757 | 744 |  |
+| switch_f_v_0 | true | 759 | 761 |  |
+| switch_f_v_0 | true | 761 | 732 |  |
+| switch_f_v_0 | true | 763 | 742 |  |
+| switch_f_v_255 | false | 766 | 766 | switch_f_v_255 |
+| switch_f_v_255 | false | 772 | 772 | 255 |
+| switch_f_v_255 | false | 773 | 773 | initializer for i |
+| switch_f_v_255 | false | 776 | 776 | declaration |
+| switch_f_v_255 | false | 778 | 778 | i |
+| switch_f_v_255 | false | 782 | 782 | 255 |
+| switch_f_v_255 | false | 783 | 783 | case ...: |
+| switch_f_v_255 | false | 785 | 785 | break; |
+| switch_f_v_255 | false | 787 | 787 | { ... } |
+| switch_f_v_255 | false | 789 | 789 | switch (...) ...  |
+| switch_f_v_255 | false | 791 | 791 | label ...: |
+| switch_f_v_255 | false | 793 | 793 | return ... |
+| switch_f_v_255 | false | 795 | 795 | { ... } |
+| switch_f_v_255 | true | 772 | 789 |  |
+| switch_f_v_255 | true | 773 | 772 |  |
+| switch_f_v_255 | true | 776 | 773 |  |
+| switch_f_v_255 | true | 778 | 787 |  |
+| switch_f_v_255 | true | 783 | 785 |  |
+| switch_f_v_255 | true | 785 | 791 |  |
+| switch_f_v_255 | true | 787 | 783 |  |
+| switch_f_v_255 | true | 787 | 791 |  |
+| switch_f_v_255 | true | 789 | 778 |  |
+| switch_f_v_255 | true | 791 | 793 |  |
+| switch_f_v_255 | true | 793 | 766 |  |
+| switch_f_v_255 | true | 795 | 776 |  |
+| switch_f_v_uint8_t_256 | false | 838 | 838 | switch_f_v_uint8_t_256 |
+| switch_f_v_uint8_t_256 | false | 844 | 844 | 256 |
+| switch_f_v_uint8_t_256 | false | 845 | 845 | initializer for i |
+| switch_f_v_uint8_t_256 | false | 848 | 848 | declaration |
+| switch_f_v_uint8_t_256 | false | 850 | 850 | i |
+| switch_f_v_uint8_t_256 | false | 854 | 854 | 256 |
+| switch_f_v_uint8_t_256 | false | 855 | 855 | (uint8_t)... |
+| switch_f_v_uint8_t_256 | false | 857 | 857 | (int)... |
+| switch_f_v_uint8_t_256 | false | 861 | 861 | case ...: |
+| switch_f_v_uint8_t_256 | false | 865 | 865 | break; |
+| switch_f_v_uint8_t_256 | false | 867 | 867 | { ... } |
+| switch_f_v_uint8_t_256 | false | 869 | 869 | switch (...) ...  |
+| switch_f_v_uint8_t_256 | false | 871 | 871 | label ...: |
+| switch_f_v_uint8_t_256 | false | 873 | 873 | return ... |
+| switch_f_v_uint8_t_256 | false | 875 | 875 | { ... } |
+| switch_f_v_uint8_t_256 | true | 844 | 869 |  |
+| switch_f_v_uint8_t_256 | true | 845 | 844 |  |
+| switch_f_v_uint8_t_256 | true | 848 | 845 |  |
+| switch_f_v_uint8_t_256 | true | 850 | 867 |  |
+| switch_f_v_uint8_t_256 | true | 861 | 865 |  |
+| switch_f_v_uint8_t_256 | true | 865 | 871 |  |
+| switch_f_v_uint8_t_256 | true | 867 | 871 |  |
+| switch_f_v_uint8_t_256 | true | 869 | 850 |  |
+| switch_f_v_uint8_t_256 | true | 871 | 873 |  |
+| switch_f_v_uint8_t_256 | true | 873 | 838 |  |
+| switch_f_v_uint8_t_256 | true | 875 | 848 |  |
+| switch_f_v_uint8_t_minus1 | false | 798 | 798 | switch_f_v_uint8_t_minus1 |
+| switch_f_v_uint8_t_minus1 | false | 804 | 804 | 255 |
+| switch_f_v_uint8_t_minus1 | false | 805 | 805 | initializer for i |
+| switch_f_v_uint8_t_minus1 | false | 808 | 808 | declaration |
+| switch_f_v_uint8_t_minus1 | false | 810 | 810 | i |
+| switch_f_v_uint8_t_minus1 | false | 814 | 814 | 1 |
+| switch_f_v_uint8_t_minus1 | false | 815 | 815 | - ... |
+| switch_f_v_uint8_t_minus1 | false | 817 | 817 | (uint8_t)... |
+| switch_f_v_uint8_t_minus1 | false | 819 | 819 | (int)... |
+| switch_f_v_uint8_t_minus1 | false | 823 | 823 | case ...: |
+| switch_f_v_uint8_t_minus1 | false | 825 | 825 | break; |
+| switch_f_v_uint8_t_minus1 | false | 827 | 827 | { ... } |
+| switch_f_v_uint8_t_minus1 | false | 829 | 829 | switch (...) ...  |
+| switch_f_v_uint8_t_minus1 | false | 831 | 831 | label ...: |
+| switch_f_v_uint8_t_minus1 | false | 833 | 833 | return ... |
+| switch_f_v_uint8_t_minus1 | false | 835 | 835 | { ... } |
+| switch_f_v_uint8_t_minus1 | true | 804 | 829 |  |
+| switch_f_v_uint8_t_minus1 | true | 805 | 804 |  |
+| switch_f_v_uint8_t_minus1 | true | 808 | 805 |  |
+| switch_f_v_uint8_t_minus1 | true | 810 | 827 |  |
+| switch_f_v_uint8_t_minus1 | true | 823 | 825 |  |
+| switch_f_v_uint8_t_minus1 | true | 825 | 831 |  |
+| switch_f_v_uint8_t_minus1 | true | 827 | 823 |  |
+| switch_f_v_uint8_t_minus1 | true | 827 | 831 |  |
+| switch_f_v_uint8_t_minus1 | true | 829 | 810 |  |
+| switch_f_v_uint8_t_minus1 | true | 831 | 833 |  |
+| switch_f_v_uint8_t_minus1 | true | 833 | 798 |  |
+| switch_f_v_uint8_t_minus1 | true | 835 | 808 |  |

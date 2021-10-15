@@ -1,0 +1,8 @@
+edges
+| UnvalidatedCors.java:21:22:21:48 | getHeader(...) : String | UnvalidatedCors.java:27:67:27:69 | url |
+nodes
+| UnvalidatedCors.java:21:22:21:48 | getHeader(...) : String | semmle.label | getHeader(...) : String |
+| UnvalidatedCors.java:27:67:27:69 | url | semmle.label | url |
+subpaths
+#select
+| UnvalidatedCors.java:27:67:27:69 | url | UnvalidatedCors.java:21:22:21:48 | getHeader(...) : String | UnvalidatedCors.java:27:67:27:69 | url | CORS header is being set using user controlled value $@. | UnvalidatedCors.java:21:22:21:48 | getHeader(...) | user-provided value |

@@ -1,0 +1,23 @@
+Partial.cs:
+#    1| [Class] TwoPartClass
+#    3|   5: [Method] PartialMethodWithBody1
+#    3|     -1: [TypeMention] Void
+#   10|     4: [BlockStmt] {...}
+#    4|   6: [Method] PartialMethodWithoutBody1
+#    4|     -1: [TypeMention] Void
+#    5|   7: [Method] Method2
+#    5|     -1: [TypeMention] Void
+#    5|     4: [BlockStmt] {...}
+#   11|   8: [Method] Method3
+#   11|     -1: [TypeMention] Void
+#   11|     4: [BlockStmt] {...}
+#   14| [Class] OnePartPartialClass
+#   16|   5: [Method] PartialMethodWithoutBody2
+#   16|     -1: [TypeMention] Void
+#   17|   6: [Method] Method4
+#   17|     -1: [TypeMention] Void
+#   17|     4: [BlockStmt] {...}
+#   20| [Class] NonPartialClass
+#   22|   5: [Method] Method5
+#   22|     -1: [TypeMention] Void
+#   22|     4: [BlockStmt] {...}

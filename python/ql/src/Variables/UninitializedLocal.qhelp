@@ -1,0 +1,41 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p> This local variable may be used before it is defined. If a variable is assigned to in a function
+and not explicitly declared <code>global</code> or <code>nonlocal</code> then it is assumed to be a
+local variable.
+If it is used before it is defined then an <code>UnboundLocalError</code> will be raised.
+</p>
+
+</overview>
+<recommendation>
+
+<p>Review the code and consider the intended scope of the variable. Determine whether the variable
+should be global or local in scope. If a global variable is required then add a <code>global</code>
+statement, or in Python 3 you can use a <code>nonlocal</code> statement if the variable occurs in an
+enclosing function. Otherwise, ensure that the variable is defined before it is used.</p>
+
+</recommendation>
+<example>
+<p>The following code includes different functions that use variables. <code>test1()</code>
+fails with an <code>UnboundLocalError</code> because the local variable <code>var</code> is used
+before it is initialized.</p>
+
+<sample src="UninitializedLocal.py" />
+
+
+</example>
+<references>
+
+  <li>Python Standard Library: <a href="http://docs.python.org/library/exceptions.html#exceptions.UnboundLocalError">Built-in Exceptions: UnboundLocalError</a>.</li>
+  <li>Python Frequently Asked Questions: <a href="http://docs.python.org/2/faq/programming.html#why-am-i-getting-an-unboundlocalerror-when-the-variable-has-a-value">Why am I getting an UnboundLocalError when the variable has a value?</a>.</li>
+  <li>Python Course: <a href="http://www.python-course.eu/global_vs_local_variables.php">Global and Local Variables</a>.</li>
+  <li>Python Language Reference: <a href="http://docs.python.org/2.7/reference/simple_stmts.html#index-54">The global statement</a>,
+    <a href="http://docs.python.org/3.3/reference/simple_stmts.html#index-43">The nonlocal statement</a>.</li>
+
+</references>
+</qhelp>

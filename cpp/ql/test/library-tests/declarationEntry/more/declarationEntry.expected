@@ -1,0 +1,89 @@
+| file://:0:0:0:0 | declaration of 1st parameter |
+| file://:0:0:0:0 | declaration of 1st parameter |
+| file://:0:0:0:0 | declaration of 1st parameter |
+| file://:0:0:0:0 | declaration of 1st parameter |
+| file://:0:0:0:0 | declaration of 1st parameter |
+| file://:0:0:0:0 | declaration of 1st parameter |
+| file://:0:0:0:0 | declaration of 1st parameter |
+| file://:0:0:0:0 | declaration of 1st parameter |
+| file://:0:0:0:0 | definition of fp_offset |
+| file://:0:0:0:0 | definition of gp_offset |
+| file://:0:0:0:0 | definition of overflow_arg_area |
+| file://:0:0:0:0 | definition of reg_save_area |
+| test.cpp:2:5:2:12 | definition of variable |
+| test.cpp:4:6:4:14 | declaration of protoOnly |
+| test.cpp:6:6:6:12 | definition of defOnly |
+| test.cpp:8:6:8:16 | declaration of protoAndDef |
+| test.cpp:9:6:9:16 | definition of protoAndDef |
+| test.cpp:11:19:11:19 | definition of T |
+| test.cpp:12:6:12:18 | declaration of tmplProtoOnly |
+| test.cpp:12:22:12:22 | declaration of t |
+| test.cpp:14:19:14:19 | definition of T |
+| test.cpp:15:6:15:16 | definition of tmplDefOnly |
+| test.cpp:15:20:15:20 | definition of t |
+| test.cpp:17:19:17:19 | definition of T |
+| test.cpp:18:6:18:20 | declaration of tmplProtoAndDef |
+| test.cpp:19:19:19:19 | definition of T |
+| test.cpp:20:6:20:20 | definition of tmplProtoAndDef |
+| test.cpp:20:24:20:24 | declaration of t |
+| test.cpp:20:24:20:24 | definition of t |
+| test.cpp:22:7:22:7 | declaration of Cl |
+| test.cpp:22:7:22:7 | declaration of operator= |
+| test.cpp:22:7:22:7 | declaration of operator= |
+| test.cpp:22:7:22:8 | definition of Cl |
+| test.cpp:23:9:23:13 | definition of clVar |
+| test.cpp:25:10:25:20 | declaration of clProtoOnly |
+| test.cpp:27:10:27:18 | definition of clDefOnly |
+| test.cpp:29:10:29:22 | declaration of clProtoAndDef |
+| test.cpp:31:23:31:23 | definition of T |
+| test.cpp:32:10:32:24 | declaration of clTmplProtoOnly |
+| test.cpp:32:28:32:28 | declaration of t |
+| test.cpp:34:23:34:23 | definition of T |
+| test.cpp:35:10:35:22 | definition of clTmplDefOnly |
+| test.cpp:35:26:35:26 | definition of t |
+| test.cpp:37:23:37:23 | definition of T |
+| test.cpp:38:10:38:26 | declaration of clTmplProtoAndDef |
+| test.cpp:41:6:41:22 | definition of clProtoAndDef |
+| test.cpp:43:19:43:19 | definition of T |
+| test.cpp:44:6:44:26 | definition of clTmplProtoAndDef |
+| test.cpp:44:30:44:30 | declaration of t |
+| test.cpp:44:30:44:30 | definition of t |
+| test.cpp:46:7:46:20 | declaration of classProtoOnly |
+| test.cpp:48:7:48:22 | declaration of classProtoAndDef |
+| test.cpp:49:7:49:7 | declaration of operator= |
+| test.cpp:49:7:49:7 | declaration of operator= |
+| test.cpp:49:7:49:22 | definition of classProtoAndDef |
+| test.cpp:51:19:51:19 | definition of T |
+| test.cpp:52:7:52:24 | declaration of tmplClassProtoOnly<T> |
+| test.cpp:54:19:54:19 | definition of T |
+| test.cpp:55:7:55:26 | declaration of tmplClassProtoAndDef<T> |
+| test.cpp:56:19:56:19 | definition of T |
+| test.cpp:57:7:57:26 | definition of tmplClassProtoAndDef<T> |
+| test.cpp:59:19:59:19 | definition of T |
+| test.cpp:60:6:60:29 | declaration of tmplInstantiatedFunction |
+| test.cpp:60:33:60:33 | definition of t |
+| test.cpp:60:33:60:33 | definition of t |
+| test.cpp:61:19:61:19 | definition of T |
+| test.cpp:62:6:62:6 | definition of tmplInstantiatedFunction |
+| test.cpp:62:6:62:6 | definition of tmplInstantiatedFunction |
+| test.cpp:62:6:62:29 | definition of tmplInstantiatedFunction |
+| test.cpp:62:33:62:33 | declaration of t |
+| test.cpp:62:33:62:33 | definition of t |
+| test.cpp:64:19:64:19 | definition of T |
+| test.cpp:65:7:65:27 | declaration of tmplInstantiatedClass<T> |
+| test.cpp:66:19:66:19 | definition of T |
+| test.cpp:67:7:67:7 | declaration of operator= |
+| test.cpp:67:7:67:7 | declaration of operator= |
+| test.cpp:67:7:67:7 | declaration of operator= |
+| test.cpp:67:7:67:7 | declaration of operator= |
+| test.cpp:67:7:67:7 | definition of tmplInstantiatedClass |
+| test.cpp:67:7:67:7 | definition of tmplInstantiatedClass |
+| test.cpp:67:7:67:27 | definition of tmplInstantiatedClass<T> |
+| test.cpp:68:7:68:7 | definition of t |
+| test.cpp:68:7:68:7 | definition of t |
+| test.cpp:68:7:68:7 | definition of t |
+| test.cpp:71:6:71:6 | definition of f |
+| test.cpp:72:32:72:35 | definition of tici |
+| test.cpp:73:35:73:38 | definition of ticd |
+| test.cpp:74:9:74:9 | definition of i |
+| test.cpp:75:12:75:12 | definition of d |

@@ -1,0 +1,34 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p> A global (module-level) variable is defined (by an assignment) but never used
+and is not explicitly made public by inclusion in the <code>__all__</code> list.
+</p>
+
+<include src="UnusedVariableNaming.inc.qhelp" />
+<include src="UnusedTuple.inc.qhelp" />
+
+</overview>
+<recommendation>
+<p>If the variable is included for documentation purposes or is otherwise intentionally unused, then change its name to indicate that it is unused,
+otherwise delete the assignment (taking care not to delete right hand side if it has side effects).</p>
+
+</recommendation>
+<example>
+<p>In this example, the <code>random_no</code> variable is never read but its assignment
+has a side effect. Because of this it is important to only remove the left hand side of the
+assignment in line 9.</p>
+<sample src="UnusedModuleVariable.py" />
+
+</example>
+<references>
+
+  <li>Python: <a href="http://docs.python.org/reference/simple_stmts.html#assignment-statements">Assignment statements</a>,
+  <a href="http://docs.python.org/reference/simple_stmts.html#the-import-statement">The import statement</a>.</li>
+  <li>Python Tutorial: <a href="http://docs.python.org/2/tutorial/modules.html#importing-from-a-package">Importing * from a package</a>.</li>
+
+</references>
+</qhelp>

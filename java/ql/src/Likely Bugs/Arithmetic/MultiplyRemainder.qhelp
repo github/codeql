@@ -1,0 +1,43 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+Using the remainder operator <code>%</code> with the multiplication operator may not give you the result that
+you expect unless you use parentheses. This is because the
+remainder operator has the same precedence as the multiplication operator, and the operators are
+left-associative.</p>
+
+</overview>
+<recommendation>
+
+<p>
+When you use the remainder operator with the multiplication operator, ensure that the expression is 
+evaluated as you expect. If necessary, add parentheses.</p>
+
+</recommendation>
+<example>
+
+<p>Consider a time in milliseconds,
+represented by <code>t</code>. To calculate the number of milliseconds remaining after the time has been converted to whole minutes,
+you might write <code>t % 60 * 1000</code>. However, this is equal to <code>(t % 60) * 1000</code>, which gives the wrong result.
+Instead, the expression should be <code>t % (60 * 1000)</code>.
+</p>
+
+</example>
+<references>
+
+
+<li>
+  J. Bloch and N. Gafter, <em>Java Puzzlers: Traps, Pitfalls, and Corner Cases</em>, Puzzle 35. Addison-Wesley, 2005.
+</li>
+<li>
+  The Java Tutorials: <a href="https://docs.oracle.com/javase/tutorial/java/nutsandbolts/operators.html">Operators</a>.
+</li>
+
+
+</references>
+</qhelp>

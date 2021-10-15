@@ -1,0 +1,78 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+
+  <overview>
+    <p>
+      Websites that do not specify the <code>X-Frame-Options</code>
+      HTTP header may be vulnerable to UI redress attacks
+      ("clickjacking"). In these attacks, the vulnerable site is
+      loaded in a frame on an attacker-controlled site which uses
+      opaque or transparent layers to trick the user into
+      unintentionally clicking a button or link on the vulnerable
+      site.
+    </p>
+
+  </overview>
+  <recommendation>
+
+    <p>
+      Set the <code>X-Frame-Options</code> HTTP header to
+      <code>DENY</code>, to instruct web browsers to block attempts to
+      load the site in a frame. Alternatively, if framing is needed in
+      certain circumstances, specify <code>SAMEORIGIN</code> or
+      <code>ALLOW FROM: ...</code> to limit the ability to frame the
+      site to pages from the same origin, or from an allowed whitelist
+      of trusted domains.
+    </p>
+    <p>
+      For <a href="https://www.npmjs.com/package/express">express</a>
+      applications, the header may be specified by setting
+      <code>res.setHeader('X-Frame-Options', 'DENY')</code> on each
+      request.  Several npm modules provide this functionality as
+      well: <a
+      href="https://www.npmjs.com/package/frameguard">frameguard</a>,
+      <a href="https://www.npmjs.com/package/helmet">helmet</a>,
+      <a href="https://www.npmjs.com/package/x-frame-options">x-frame-options</a>
+    </p>
+
+    <p>
+      Alternatively, the header can be set by a proxy.  As an example,
+      a <a href="http://www.haproxy.org/">HAProxy</a> configuration
+      should contain: <code>rspadd X-Frame-Options:\ DENY</code> to
+      set the header automatically.
+    </p>
+  </recommendation>
+  <example>
+
+    <p>
+      The following example shows an <a
+      href="https://www.npmjs.com/package/express">express</a>
+      application that does <em>not</em> set the
+      <code>X-Frame-Options</code> header on its responses:
+    </p>
+
+    <sample src="examples/missing-X-Frame-Options.js" />
+
+    <p>
+      The application can be made safer by setting the
+      <code>X-Frame-Options</code> header before responding:
+    </p>
+
+    <sample src="examples/X-Frame-Options.js" />
+
+  </example>
+  <references>
+
+    <li>
+      OWASP:
+      <a href="https://cheatsheetseries.owasp.org/cheatsheets/Clickjacking_Defense_Cheat_Sheet.html">Clickjacking Defense Cheat Sheet</a>.
+    </li>
+    <li>
+      Mozilla:
+      <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options">X-Frame-Options</a>
+    </li>
+
+  </references>
+</qhelp>

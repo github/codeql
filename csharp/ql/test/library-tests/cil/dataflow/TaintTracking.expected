@@ -1,0 +1,28 @@
+| dataflow.cs:9:18:9:22 | "123" | dataflow.cs:9:18:9:37 | call to method CompareTo |
+| dataflow.cs:9:34:9:36 | "b" | dataflow.cs:9:18:9:37 | call to method CompareTo |
+| dataflow.cs:16:18:16:26 | "tainted" | dataflow.cs:16:18:16:37 | call to method ToString |
+| dataflow.cs:18:27:18:27 | 2 | dataflow.cs:18:18:18:31 | call to method Max |
+| dataflow.cs:18:30:18:30 | 3 | dataflow.cs:18:18:18:31 | call to method Max |
+| dataflow.cs:19:29:19:31 | 0.5 | dataflow.cs:19:18:19:32 | call to method Round |
+| dataflow.cs:20:45:20:53 | "tainted" | dataflow.cs:20:18:20:54 | call to method GetFullPath |
+| dataflow.cs:24:37:24:37 | 1 | dataflow.cs:24:18:24:56 | call to method DivRem |
+| dataflow.cs:24:40:24:40 | 2 | dataflow.cs:24:18:24:56 | call to method DivRem |
+| dataflow.cs:27:44:27:46 | 1 | dataflow.cs:27:18:27:52 | call to method IEEERemainder |
+| dataflow.cs:27:49:27:51 | 2 | dataflow.cs:27:18:27:52 | call to method IEEERemainder |
+| dataflow.cs:30:60:30:60 | 1 | dataflow.cs:30:18:30:80 | call to method DivRem |
+| dataflow.cs:30:63:30:63 | 2 | dataflow.cs:30:18:30:80 | call to method DivRem |
+| dataflow.cs:38:34:38:37 | "d1" | dataflow.cs:38:18:38:38 | call to method Taint1 |
+| dataflow.cs:39:34:39:37 | "d2" | dataflow.cs:39:18:39:38 | call to method Taint2 |
+| dataflow.cs:40:34:40:37 | "d3" | dataflow.cs:40:18:40:38 | call to method Taint3 |
+| dataflow.cs:44:28:44:32 | "t1a" | dataflow.cs:44:18:44:40 | call to method Taint1 |
+| dataflow.cs:44:35:44:39 | "t1b" | dataflow.cs:44:18:44:40 | call to method Taint1 |
+| dataflow.cs:45:28:45:28 | 2 | dataflow.cs:45:18:45:32 | call to method Taint2 |
+| dataflow.cs:45:31:45:31 | 3 | dataflow.cs:45:18:45:32 | call to method Taint2 |
+| dataflow.cs:46:28:46:28 | 1 | dataflow.cs:46:18:46:29 | call to method Taint3 |
+| dataflow.cs:47:35:47:38 | "t6" | dataflow.cs:47:18:47:45 | call to method TaintIndirect |
+| dataflow.cs:47:41:47:44 | "t6" | dataflow.cs:47:18:47:45 | call to method TaintIndirect |
+| dataflow.cs:100:30:100:33 | null | dataflow.cs:72:21:72:52 | ... ?? ... |
+| dataflow.cs:100:30:100:33 | null | dataflow.cs:87:24:87:51 | ... ? ... : ... |
+| dataflow.cs:100:30:100:33 | null | dataflow.cs:106:20:106:33 | call to method IndirectNull |
+| dataflow.cs:107:23:107:26 | null | dataflow.cs:72:21:72:52 | ... ?? ... |
+| dataflow.cs:107:23:107:26 | null | dataflow.cs:87:24:87:51 | ... ? ... : ... |

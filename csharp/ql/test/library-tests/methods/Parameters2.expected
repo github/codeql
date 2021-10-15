@@ -1,0 +1,4 @@
+| methods.cs:29:28:29:33 | Divide | methods.cs:29:39:29:39 | x |
+| methods.cs:29:28:29:33 | Divide | methods.cs:29:46:29:46 | y |
+| methods.cs:29:28:29:33 | Divide | methods.cs:29:57:29:62 | result |
+| methods.cs:29:28:29:33 | Divide | methods.cs:29:73:29:81 | remainder |

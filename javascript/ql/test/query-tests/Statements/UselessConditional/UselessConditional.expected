@@ -1,0 +1,34 @@
+| UselessConditional.js:5:7:5:12 | !lines | This negation always evaluates to false. |
+| UselessConditional.js:12:34:12:79 | (v = ne ... k] = v) | This logical 'and' expression can be replaced with a comma expression. |
+| UselessConditional.js:17:9:17:9 | a | This use of variable 'a' always evaluates to false. |
+| UselessConditional.js:18:9:18:9 | b | This use of variable 'b' always evaluates to false. |
+| UselessConditional.js:21:9:21:9 | a | This use of variable 'a' always evaluates to false. |
+| UselessConditional.js:22:9:22:9 | b | This use of variable 'b' always evaluates to false. |
+| UselessConditional.js:26:6:26:6 | x | This use of variable 'x' always evaluates to true. |
+| UselessConditional.js:27:7:27:13 | new X() | This constructor call to X always evaluates to true. |
+| UselessConditional.js:28:7:28:7 | x | This use of variable 'x' always evaluates to true. |
+| UselessConditional.js:29:8:29:8 | x | This use of variable 'x' always evaluates to true. |
+| UselessConditional.js:30:8:30:14 | new X() | This constructor call to X always evaluates to true. |
+| UselessConditional.js:33:7:33:7 | x | This use of variable 'x' always evaluates to false. |
+| UselessConditional.js:54:9:54:13 | known | This use of variable 'known' always evaluates to false. |
+| UselessConditional.js:60:9:60:15 | unknown | This use of variable 'unknown' always evaluates to false. |
+| UselessConditional.js:65:5:65:5 | x | This use of variable 'x' always evaluates to true. |
+| UselessConditional.js:76:13:76:13 | x | This use of variable 'x' always evaluates to true. |
+| UselessConditional.js:89:10:89:16 | x, true | This expression always evaluates to true. |
+| UselessConditional.js:94:16:94:16 | x | This use of variable 'x' always evaluates to false. |
+| UselessConditional.js:100:13:100:24 | true && true | This expression always evaluates to true. |
+| UselessConditional.js:101:18:101:18 | x | This use of variable 'x' always evaluates to false. |
+| UselessConditional.js:102:19:102:19 | x | This use of variable 'x' always evaluates to false. |
+| UselessConditional.js:103:23:103:23 | x | This use of variable 'x' always evaluates to false. |
+| UselessConditional.js:109:15:109:16 | {} | This expression always evaluates to true. |
+| UselessConditional.js:129:6:129:24 | constantUndefined() | This call to constantUndefined always evaluates to false. |
+| UselessConditional.js:135:6:135:32 | constan ... ined1() | This call to constantFalseOrUndefined1 always evaluates to false. |
+| UselessConditional.js:139:6:139:32 | constan ... ined2() | This call to constantFalseOrUndefined2 always evaluates to false. |
+| UselessConditional.js:148:6:148:8 | p() | This call to p always evaluates to true. |
+| UselessConditional.js:151:6:151:6 | v | This use of variable 'v' always evaluates to true. |
+| UselessConditional.js:163:5:163:17 | findOrThrow() | This call to findOrThrow always evaluates to true. |
+| UselessConditional.js:166:6:166:6 | v | This use of variable 'v' always evaluates to true. |
+| UselessConditionalGood.js:58:12:58:13 | x2 | This use of variable 'x2' always evaluates to false. |
+| UselessConditionalGood.js:69:12:69:13 | xy | This use of variable 'xy' always evaluates to false. |
+| UselessConditionalGood.js:85:12:85:13 | xy | This use of variable 'xy' always evaluates to false. |
+| UselessConditionalGood.js:97:12:97:13 | xy | This use of variable 'xy' always evaluates to false. |

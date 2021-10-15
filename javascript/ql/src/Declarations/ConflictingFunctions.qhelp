@@ -1,0 +1,49 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+If two functions with the same name are declared in the same scope, one of the declarations
+overrides the other without warning. This makes the code hard to read and maintain. In some cases,
+which declaration overrides which may be platform dependent.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+If the two declarations are duplicates, remove one of them. Otherwise, rename one of them to
+distinguish the two functions, or turn the function declarations into assignments of function
+expressions to the same local variable.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+In the following example, function <code>converter</code> is defined differently in the two branches of
+the <code>if</code> statement. However, the function definition appearing later in
+the program text will override the one appearing earlier, independent of the flow of execution
+through the <code>if</code> statement, so in this case it is always the second function that is
+returned. (Note that this may not be true on older browsers.)
+</p>
+
+<sample src="examples/ConflictingFunctions.js" />
+
+<p>
+To address this problem, introduce a local variable <code>converter</code> and convert the
+function declarations into assignments of function expressions to this variable:
+</p>
+
+<sample src="examples/ConflictingFunctionsGood.js" />
+
+</example>
+<references>
+
+
+<li>Ecma International, <i>ECMAScript Language Definition</i>, 5.1 Edition, Section 10.5. ECMA, 2011.</li>
+
+
+</references>
+</qhelp>

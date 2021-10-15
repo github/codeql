@@ -1,0 +1,77 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Escaping meta-characters in untrusted input is an important technique for preventing injection
+attacks such as cross-site scripting. One particular example of this is HTML entity encoding,
+where HTML special characters are replaced by HTML character entities to prevent them from being
+interpreted as HTML markup. For example, the less-than character is encoded as <code>&amp;lt;</code>
+and the double-quote character as <code>&amp;quot;</code>.
+Other examples include backslash-escaping for including untrusted data in string literals and
+percent-encoding for URI components.
+</p>
+<p>
+The reverse process of replacing escape sequences with the characters they represent is known as
+unescaping.
+</p>
+<p>
+Note that the escape characters themselves (such as ampersand in the case of HTML encoding) play
+a special role during escaping and unescaping: they are themselves escaped, but also form part
+of the escaped representations of other characters. Hence care must be taken to avoid double escaping
+and unescaping: when escaping, the escape character must be escaped first, when unescaping it has
+to be unescaped last.
+</p>
+<p>
+If used in the context of sanitization, double unescaping may render the sanitization ineffective.
+Even if it is not used in a security-critical context, it may still result in confusing
+or garbled output.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Use a (well-tested) sanitization library if at all possible. These libraries are much more
+likely to handle corner cases correctly than a custom implementation. For URI encoding,
+you can use the standard <code>encodeURIComponent</code> and <code>decodeURIComponent</code> functions.
+</p>
+<p>
+Otherwise, make sure to always escape the escape character first, and unescape it last.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example shows a pair of hand-written HTML encoding and decoding functions:
+</p>
+
+<sample src="examples/DoubleEscaping.js" />
+
+<p>
+The encoding function correctly handles ampersand before the other characters. For example,
+the string <code>me &amp; "you"</code> is encoded as <code>me &amp;amp; &amp;quot;you&amp;quot;</code>,
+and the string <code>&amp;quot;</code> is encoded as <code>&amp;amp;quot;</code>.
+</p>
+
+<p>
+The decoding function, however, incorrectly decodes <code>&amp;amp;</code> into <code>&amp;</code>
+before handling the other characters. So while it correctly decodes the first example above,
+it decodes the second example (<code>&amp;amp;quot;</code>) to <code>&quot;</code> (a single double quote),
+which is not correct.
+</p>
+
+<p>
+Instead, the decoding function should decode the ampersand last:
+</p>
+
+<sample src="examples/DoubleEscapingGood.js" />
+</example>
+
+<references>
+<li>OWASP Top 10: <a href="https://www.owasp.org/index.php/Top_10-2017_A1-Injection">A1 Injection</a>.</li>
+<li>npm: <a href="https://www.npmjs.com/package/html-entities">html-entities</a> package.</li>
+<li>npm: <a href="https://www.npmjs.com/package/js-string-escape">js-string-escape</a> package.</li>
+</references>
+</qhelp>

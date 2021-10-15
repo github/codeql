@@ -1,0 +1,48 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+XML documents can contain Document Type Definitions (DTDs), which may define new XML entities. These
+can be used to perform Denial of Service (DoS) attacks, or resolve to resources outside the intended
+sphere of control.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+When processing XML documents, ensure that DTD processing is disabled unless absolutely necessary, and
+if it is necessary, ensure that a secure resolver is used.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+The following example shows an HTTP request parameter being read directly into an <code>XmlTextReader</code>.
+In the current version of the .NET Framework, <code>XmlTextReader</code> has DTD processing enabled by default.
+</p>
+
+
+<sample src="InsecureXml.cs" />
+
+<p>
+The solution is to set the <code>DtdProcessing</code> property to <code>DtdProcessing.Prohibit</code>.
+</p>
+
+</example>
+<references>
+
+<li>
+OWASP:
+<a href="https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html">XML External Entity (XXE) Prevention Cheat Sheet</a>.
+</li>
+<li>
+Microsoft Docs: <a href="https://msdn.microsoft.com/en-us/library/system.xml.xmlreadersettings(v=vs.110).aspx#Anchor_6">System.XML: Security considerations</a>.
+</li>
+
+</references>
+</qhelp>

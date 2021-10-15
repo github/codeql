@@ -1,0 +1,169 @@
+| Capture.cs:6:16:6:16 | i | Capture.cs:6:16:6:16 | i | Capture.cs:8:17:8:17 | access to parameter i |
+| Capture.cs:6:16:6:16 | i | Capture.cs:13:13:13:17 | ... = ... | Capture.cs:14:17:14:17 | access to parameter i |
+| Capture.cs:8:13:8:13 | x | Capture.cs:8:13:8:17 | Int32 x = ... | Capture.cs:34:13:34:13 | access to local variable x |
+| Capture.cs:8:13:8:13 | x | Capture.cs:15:13:15:17 | ... = ... | Capture.cs:16:17:16:17 | access to local variable x |
+| Capture.cs:8:13:8:13 | x | Capture.cs:43:9:43:13 | ... = ... | Capture.cs:44:11:44:11 | access to local variable x |
+| Capture.cs:10:16:10:16 | a | Capture.cs:10:16:27:9 | Action a = ... | Capture.cs:38:9:38:9 | access to local variable a |
+| Capture.cs:17:17:17:17 | y | Capture.cs:17:17:17:21 | Int32 y = ... | Capture.cs:26:17:26:17 | access to local variable y |
+| Capture.cs:19:20:19:20 | b | Capture.cs:19:20:23:13 | Action b = ... | Capture.cs:25:13:25:13 | access to local variable b |
+| Capture.cs:29:13:29:13 | z | Capture.cs:37:9:37:13 | ... = ... | Capture.cs:41:13:41:13 | access to local variable z |
+| Capture.cs:30:16:30:16 | c | Capture.cs:30:16:30:35 | Action c = ... | Capture.cs:32:9:32:9 | access to local variable c |
+| Capture.cs:52:16:52:16 | b | Capture.cs:52:16:52:43 | Action b = ... | Capture.cs:53:9:53:9 | access to local variable b |
+| Capture.cs:57:57:57:63 | strings | Capture.cs:57:57:57:63 | strings | Capture.cs:61:9:61:15 | access to parameter strings |
+| Capture.cs:60:27:60:27 | e | Capture.cs:60:27:60:38 | Func<String,Int32> e = ... | Capture.cs:61:24:61:24 | access to local variable e |
+| Capture.cs:65:45:65:51 | strings | Capture.cs:65:45:65:51 | strings | Capture.cs:68:18:68:24 | access to parameter strings |
+| Capture.cs:68:32:68:32 | s | Capture.cs:68:32:68:32 | s | Capture.cs:68:37:68:37 | access to parameter s |
+| Capture.cs:69:25:69:25 | s | Capture.cs:69:25:69:25 | s | Capture.cs:69:59:69:59 | access to parameter s |
+| Capture.cs:73:67:73:73 | strings | Capture.cs:73:67:73:73 | strings | Capture.cs:77:9:77:15 | access to parameter strings |
+| Capture.cs:76:63:76:63 | e | Capture.cs:76:63:76:81 | Expression<Func<String,Int32>> e = ... | Capture.cs:77:24:77:24 | access to local variable e |
+| Capture.cs:81:28:81:28 | i | Capture.cs:81:28:81:28 | i | Capture.cs:81:34:81:34 | access to parameter i |
+| Capture.cs:83:65:83:71 | strings | Capture.cs:83:65:83:71 | strings | Capture.cs:87:9:87:15 | access to parameter strings |
+| Capture.cs:86:64:86:64 | e | Capture.cs:86:64:86:73 | Expression<Func<String,Boolean>> e = ... | Capture.cs:87:23:87:23 | access to local variable e |
+| Capture.cs:92:18:92:18 | d | Capture.cs:92:18:92:18 | d | Capture.cs:92:24:92:24 | access to parameter d |
+| Capture.cs:98:17:98:17 | x | Capture.cs:98:17:98:21 | Int32 x = ... | Capture.cs:99:20:99:20 | access to local variable x |
+| Capture.cs:102:13:102:13 | z | Capture.cs:105:13:105:17 | ... = ... | Capture.cs:106:20:106:20 | access to local variable z |
+| Capture.cs:117:17:117:17 | x | Capture.cs:117:17:117:21 | Int32 x = ... | Capture.cs:118:17:118:17 | access to local variable x |
+| Capture.cs:122:13:122:13 | b | Capture.cs:125:13:125:17 | ... = ... | Capture.cs:126:17:126:17 | access to local variable b |
+| Capture.cs:130:13:130:13 | c | Capture.cs:133:13:133:17 | ... = ... | Capture.cs:134:17:134:17 | access to local variable c |
+| Capture.cs:154:13:154:13 | f | Capture.cs:154:13:154:18 | Int32 f = ... | Capture.cs:155:13:155:13 | access to local variable f |
+| Capture.cs:198:28:198:29 | eh | Capture.cs:198:28:198:44 | MyEventHandler eh = ... | Capture.cs:199:27:199:28 | access to local variable eh |
+| Capture.cs:203:28:203:30 | eh2 | Capture.cs:203:28:203:45 | MyEventHandler eh2 = ... | Capture.cs:204:27:204:29 | access to local variable eh2 |
+| Capture.cs:210:24:210:24 | p | Capture.cs:210:24:210:59 | Process p = ... | Capture.cs:213:17:213:17 | access to local variable p |
+| Capture.cs:212:30:212:35 | exited | Capture.cs:212:30:212:71 | EventHandler exited = ... | Capture.cs:213:29:213:34 | access to local variable exited |
+| Capture.cs:242:13:242:13 | i | Capture.cs:242:13:242:17 | Int32 i = ... | Capture.cs:254:27:254:27 | access to local variable i |
+| Capture.cs:242:13:242:13 | i | Capture.cs:254:27:254:27 | access to local variable i | Capture.cs:255:34:255:34 | access to local variable i |
+| Consistency.cs:7:25:7:25 | b | Consistency.cs:7:25:7:25 | b | Consistency.cs:11:17:11:17 | access to parameter b |
+| Consistency.cs:15:17:15:17 | i | Consistency.cs:15:17:15:21 | Int32 i = ... | Consistency.cs:16:17:16:17 | access to local variable i |
+| Consistency.cs:25:29:25:29 | c | Consistency.cs:25:29:25:29 | Consistency c | Consistency.cs:26:13:26:13 | access to local variable c |
+| Consistency.cs:30:30:30:30 | c | Consistency.cs:32:9:32:29 | ... = ... | Consistency.cs:33:9:33:9 | access to parameter c |
+| Consistency.cs:38:13:38:13 | i | Consistency.cs:39:28:39:32 | ... = ... | Consistency.cs:39:39:39:39 | access to local variable i |
+| Consistency.cs:44:11:44:11 | s | Consistency.cs:44:11:44:11 | S s | Consistency.cs:45:9:45:9 | access to local variable s |
+| Consistency.cs:49:30:49:30 | a | Consistency.cs:49:30:49:30 | a | Consistency.cs:49:47:49:47 | access to parameter a |
+| Consistency.cs:49:37:49:37 | i | Consistency.cs:49:37:49:37 | i | Consistency.cs:49:49:49:49 | access to parameter i |
+| Consistency.cs:51:20:51:20 | a | Consistency.cs:51:20:51:20 | a | Consistency.cs:53:28:53:28 | access to parameter a |
+| DefUse.cs:3:26:3:26 | w | DefUse.cs:3:26:3:26 | w | DefUse.cs:9:13:9:13 | access to parameter w |
+| DefUse.cs:3:26:3:26 | w | DefUse.cs:19:13:19:18 | ... = ... | DefUse.cs:20:17:20:17 | access to parameter w |
+| DefUse.cs:3:26:3:26 | w | DefUse.cs:29:13:29:18 | ... = ... | DefUse.cs:35:13:35:13 | access to parameter w |
+| DefUse.cs:5:13:5:13 | x | DefUse.cs:5:13:5:17 | Int32 x = ... | DefUse.cs:11:13:11:13 | access to local variable x |
+| DefUse.cs:6:14:6:14 | y | DefUse.cs:6:14:6:19 | Int64 y = ... | DefUse.cs:8:13:8:13 | access to local variable y |
+| DefUse.cs:6:14:6:14 | y | DefUse.cs:13:13:13:18 | ... = ... | DefUse.cs:14:17:14:17 | access to local variable y |
+| DefUse.cs:6:14:6:14 | y | DefUse.cs:28:13:28:18 | ... = ... | DefUse.cs:34:13:34:13 | access to local variable y |
+| DefUse.cs:44:13:44:13 | z | DefUse.cs:44:13:44:17 | Int32 z = ... | DefUse.cs:45:13:45:13 | access to local variable z |
+| DefUse.cs:44:13:44:13 | z | DefUse.cs:47:23:47:23 | access to local variable z | DefUse.cs:48:13:48:13 | access to local variable z |
+| DefUse.cs:44:13:44:13 | z | DefUse.cs:50:23:50:23 | access to local variable z | DefUse.cs:51:13:51:13 | access to local variable z |
+| DefUse.cs:59:13:59:13 | i | DefUse.cs:59:13:59:17 | Int32 i = ... | DefUse.cs:61:13:61:13 | access to local variable i |
+| DefUse.cs:59:13:59:13 | i | DefUse.cs:71:9:71:13 | ... = ... | DefUse.cs:72:9:72:9 | access to local variable i |
+| DefUse.cs:59:13:59:13 | i | DefUse.cs:72:9:72:11 | ...++ | DefUse.cs:73:13:73:13 | access to local variable i |
+| DefUse.cs:59:13:59:13 | i | DefUse.cs:75:9:75:13 | ... = ... | DefUse.cs:76:9:76:9 | access to local variable i |
+| DefUse.cs:59:13:59:13 | i | DefUse.cs:76:9:76:11 | ...-- | DefUse.cs:77:13:77:13 | access to local variable i |
+| DefUse.cs:67:19:67:20 | tc | DefUse.cs:67:19:67:27 | TestClass tc = ... | DefUse.cs:68:9:68:10 | access to local variable tc |
+| DefUse.cs:79:13:79:14 | x1 | DefUse.cs:80:30:80:31 | access to local variable x1 | DefUse.cs:81:13:81:14 | access to local variable x1 |
+| DefUse.cs:83:13:83:14 | x2 | DefUse.cs:83:13:83:18 | Int32 x2 = ... | DefUse.cs:85:15:85:16 | access to local variable x2 |
+| DefUse.cs:83:13:83:14 | x2 | DefUse.cs:85:15:85:16 | access to local variable x2 | DefUse.cs:87:13:87:14 | access to local variable x2 |
+| DefUse.cs:83:13:83:14 | x2 | DefUse.cs:86:15:86:16 | access to local variable x2 | DefUse.cs:87:13:87:14 | access to local variable x2 |
+| DefUse.cs:89:13:89:14 | x3 | DefUse.cs:89:13:89:18 | Int32 x3 = ... | DefUse.cs:92:15:92:16 | access to local variable x3 |
+| DefUse.cs:89:13:89:14 | x3 | DefUse.cs:92:15:92:16 | access to local variable x3 | DefUse.cs:94:13:94:14 | access to local variable x3 |
+| DefUse.cs:90:13:90:14 | x4 | DefUse.cs:93:15:93:16 | access to local variable x4 | DefUse.cs:95:13:95:14 | access to local variable x4 |
+| DefUse.cs:97:13:97:14 | x5 | DefUse.cs:104:9:104:15 | ... = ... | DefUse.cs:105:13:105:14 | access to local variable x5 |
+| DefUse.cs:118:45:118:45 | i | DefUse.cs:118:45:118:45 | i | DefUse.cs:118:65:118:65 | access to parameter i |
+| DefUse.cs:120:17:120:21 | Field | DefUse.cs:53:9:53:17 | ... = ... | DefUse.cs:54:13:54:17 | access to field Field |
+| DefUse.cs:122:16:122:21 | Field2 | DefUse.cs:63:9:63:18 | ... = ... | DefUse.cs:64:13:64:18 | access to field Field2 |
+| DefUse.cs:124:16:124:21 | Field3 | DefUse.cs:66:9:66:18 | ... = ... | DefUse.cs:69:13:69:18 | access to field Field3 |
+| DefUse.cs:126:16:126:19 | Prop | DefUse.cs:56:9:56:16 | ... = ... | DefUse.cs:57:13:57:16 | access to property Prop |
+| DefUse.cs:128:19:128:19 | i | DefUse.cs:128:19:128:19 | i | DefUse.cs:129:19:129:19 | access to parameter i |
+| DefUse.cs:134:22:134:22 | d | DefUse.cs:134:22:134:22 | d | DefUse.cs:135:14:135:14 | access to parameter d |
+| DefUse.cs:142:68:142:69 | ie | DefUse.cs:142:68:142:69 | ie | DefUse.cs:144:27:144:28 | access to parameter ie |
+| DefUse.cs:144:22:144:22 | x | DefUse.cs:144:22:144:22 | String x | DefUse.cs:146:17:146:17 | access to local variable x |
+| DefUse.cs:152:9:152:14 | Field4 | DefUse.cs:155:9:155:18 | ... = ... | DefUse.cs:156:13:156:18 | access to field Field4 |
+| DefUse.cs:166:9:166:14 | Field5 | DefUse.cs:184:9:184:18 | ... = ... | DefUse.cs:185:13:185:18 | access to field Field5 |
+| DefUse.cs:166:9:166:14 | Field5 | DefUse.cs:188:13:188:22 | ... = ... | DefUse.cs:189:17:189:22 | access to field Field5 |
+| DefUse.cs:167:23:167:23 | i | DefUse.cs:167:23:167:23 | i | DefUse.cs:169:13:169:13 | access to parameter i |
+| DefUse.cs:167:23:167:23 | i | DefUse.cs:173:13:173:17 | ... = ... | DefUse.cs:174:17:174:17 | access to parameter i |
+| DefUse.cs:171:23:171:23 | a | DefUse.cs:171:23:180:9 | Action a = ... | DefUse.cs:181:9:181:9 | access to local variable a |
+| DefUse.cs:171:23:171:23 | a | DefUse.cs:186:9:190:9 | ... = ... | DefUse.cs:191:9:191:9 | access to local variable a |
+| Example.cs:4:9:4:13 | Field | Example.cs:8:9:8:22 | ... = ... | Example.cs:9:13:9:22 | access to field Field |
+| Example.cs:6:23:6:23 | i | Example.cs:6:23:6:23 | i | Example.cs:8:22:8:22 | access to parameter i |
+| Example.cs:18:16:18:16 | p | Example.cs:18:16:18:16 | p | Example.cs:22:17:22:17 | access to parameter p |
+| Example.cs:18:24:18:24 | b | Example.cs:18:24:18:24 | b | Example.cs:20:13:20:13 | access to parameter b |
+| Fields.cs:5:18:5:19 | xs | Fields.cs:24:9:24:23 | ... = ... | Fields.cs:25:13:25:14 | access to field xs |
+| Fields.cs:5:18:5:19 | xs | Fields.cs:42:9:42:23 | ... = ... | Fields.cs:44:13:44:14 | access to field xs |
+| Fields.cs:5:18:5:19 | xs | Fields.cs:45:9:45:25 | ... = ... | Fields.cs:46:13:46:16 | access to field xs |
+| Fields.cs:5:18:5:19 | xs | Fields.cs:83:9:83:25 | ... = ... | Fields.cs:85:19:85:22 | access to field xs |
+| Fields.cs:5:18:5:19 | xs | Fields.cs:85:9:85:22 | ... = ... | Fields.cs:86:9:86:15 | access to field xs |
+| Fields.cs:5:18:5:19 | xs | Fields.cs:87:9:87:22 | ... = ... | Fields.cs:89:9:89:15 | access to field xs |
+| Fields.cs:5:18:5:19 | xs | Fields.cs:88:9:88:25 | ... = ... | Fields.cs:90:19:90:22 | access to field xs |
+| Fields.cs:18:15:18:15 | x | Fields.cs:20:9:20:14 | ... = ... | Fields.cs:21:13:21:13 | access to local variable x |
+| Fields.cs:30:13:30:13 | f | Fields.cs:30:13:30:28 | Fields f = ... | Fields.cs:31:19:31:19 | access to local variable f |
+| Fields.cs:32:15:32:15 | z | Fields.cs:47:9:47:14 | ... = ... | Fields.cs:48:13:48:13 | access to local variable z |
+| Fields.cs:77:13:77:13 | f | Fields.cs:77:13:77:45 | Fields f = ... | Fields.cs:80:9:80:9 | access to local variable f |
+| Fields.cs:78:23:78:23 | a | Fields.cs:78:23:78:54 | Action a = ... | Fields.cs:81:9:81:9 | access to local variable a |
+| Fields.cs:79:23:79:23 | b | Fields.cs:79:23:79:35 | Action b = ... | Fields.cs:84:9:84:9 | access to local variable b |
+| Fields.cs:93:19:93:23 | Field | Fields.cs:97:9:97:30 | ... = ... | Fields.cs:98:20:98:26 | access to field Field |
+| Fields.cs:93:19:93:23 | Field | Fields.cs:102:9:102:28 | ... = ... | Fields.cs:104:16:104:25 | access to field Field |
+| Fields.cs:95:19:95:19 | f | Fields.cs:95:19:95:19 | f | Fields.cs:97:9:97:9 | access to parameter f |
+| Fields.cs:107:33:107:33 | f | Fields.cs:107:33:107:33 | f | Fields.cs:107:38:107:38 | access to parameter f |
+| OutRef.cs:5:9:5:13 | Field | OutRef.cs:13:28:13:32 | access to field Field | OutRef.cs:15:13:15:17 | access to field Field |
+| OutRef.cs:5:9:5:13 | Field | OutRef.cs:16:21:16:25 | access to field Field | OutRef.cs:17:13:17:17 | access to field Field |
+| OutRef.cs:5:9:5:13 | Field | OutRef.cs:16:32:16:36 | access to field Field | OutRef.cs:17:13:17:17 | access to field Field |
+| OutRef.cs:5:9:5:13 | Field | OutRef.cs:19:21:19:25 | access to field Field | OutRef.cs:20:13:20:17 | access to field Field |
+| OutRef.cs:5:9:5:13 | Field | OutRef.cs:19:32:19:38 | access to field Field | OutRef.cs:21:13:21:19 | access to field Field |
+| OutRef.cs:9:13:9:13 | j | OutRef.cs:9:13:9:17 | Int32 j = ... | OutRef.cs:10:32:10:32 | access to local variable j |
+| OutRef.cs:9:13:9:13 | j | OutRef.cs:10:32:10:32 | access to local variable j | OutRef.cs:12:13:12:13 | access to local variable j |
+| OutRef.cs:9:13:9:13 | j | OutRef.cs:22:22:22:22 | access to local variable j | OutRef.cs:23:13:23:13 | access to local variable j |
+| OutRef.cs:9:13:9:13 | j | OutRef.cs:24:29:24:29 | access to local variable j | OutRef.cs:25:13:25:13 | access to local variable j |
+| OutRef.cs:10:25:10:25 | i | OutRef.cs:10:25:10:25 | Int32 i | OutRef.cs:11:13:11:13 | access to local variable i |
+| OutRef.cs:10:25:10:25 | i | OutRef.cs:13:21:13:21 | access to local variable i | OutRef.cs:14:13:14:13 | access to local variable i |
+| OutRef.cs:18:13:18:13 | t | OutRef.cs:18:13:18:28 | OutRef t = ... | OutRef.cs:19:32:19:32 | access to local variable t |
+| OutRef.cs:28:37:28:37 | j | OutRef.cs:28:37:28:37 | j | OutRef.cs:30:13:30:13 | access to parameter j |
+| OutRef.cs:34:38:34:38 | j | OutRef.cs:34:38:34:38 | j | OutRef.cs:36:13:36:13 | access to parameter j |
+| OutRef.cs:39:24:39:24 | b | OutRef.cs:39:24:39:24 | b | OutRef.cs:41:13:41:13 | access to parameter b |
+| Patterns.cs:7:16:7:16 | o | Patterns.cs:7:16:7:23 | Object o = ... | Patterns.cs:8:13:8:13 | access to local variable o |
+| Patterns.cs:8:22:8:23 | i1 | Patterns.cs:8:18:8:23 | Int32 i1 | Patterns.cs:10:38:10:39 | access to local variable i1 |
+| Patterns.cs:12:30:12:31 | s1 | Patterns.cs:12:23:12:31 | String s1 | Patterns.cs:14:41:14:42 | access to local variable s1 |
+| Patterns.cs:24:22:24:23 | i2 | Patterns.cs:24:18:24:23 | Int32 i2 | Patterns.cs:24:30:24:31 | access to local variable i2 |
+| Patterns.cs:27:22:27:23 | i3 | Patterns.cs:27:18:27:23 | Int32 i3 | Patterns.cs:28:42:28:43 | access to local variable i3 |
+| Patterns.cs:30:25:30:26 | s2 | Patterns.cs:30:18:30:26 | String s2 | Patterns.cs:31:45:31:46 | access to local variable s2 |
+| Properties.cs:5:18:5:19 | xs | Properties.cs:24:9:24:23 | ... = ... | Properties.cs:25:13:25:14 | access to property xs |
+| Properties.cs:5:18:5:19 | xs | Properties.cs:42:9:42:23 | ... = ... | Properties.cs:44:13:44:14 | access to property xs |
+| Properties.cs:5:18:5:19 | xs | Properties.cs:45:9:45:25 | ... = ... | Properties.cs:46:13:46:16 | access to property xs |
+| Properties.cs:5:18:5:19 | xs | Properties.cs:79:9:79:25 | ... = ... | Properties.cs:81:19:81:22 | access to property xs |
+| Properties.cs:5:18:5:19 | xs | Properties.cs:81:9:81:22 | ... = ... | Properties.cs:82:9:82:15 | access to property xs |
+| Properties.cs:5:18:5:19 | xs | Properties.cs:83:9:83:22 | ... = ... | Properties.cs:85:9:85:15 | access to property xs |
+| Properties.cs:5:18:5:19 | xs | Properties.cs:84:9:84:25 | ... = ... | Properties.cs:86:19:86:22 | access to property xs |
+| Properties.cs:18:15:18:15 | x | Properties.cs:20:9:20:14 | ... = ... | Properties.cs:21:13:21:13 | access to local variable x |
+| Properties.cs:30:13:30:13 | f | Properties.cs:30:13:30:32 | Properties f = ... | Properties.cs:31:19:31:19 | access to local variable f |
+| Properties.cs:32:15:32:15 | z | Properties.cs:47:9:47:14 | ... = ... | Properties.cs:48:13:48:13 | access to local variable z |
+| Properties.cs:73:13:73:13 | f | Properties.cs:73:13:73:32 | Properties f = ... | Properties.cs:76:9:76:9 | access to local variable f |
+| Properties.cs:74:23:74:23 | a | Properties.cs:74:23:74:54 | Action a = ... | Properties.cs:77:9:77:9 | access to local variable a |
+| Properties.cs:75:23:75:23 | b | Properties.cs:75:23:75:35 | Action b = ... | Properties.cs:80:9:80:9 | access to local variable b |
+| Properties.cs:106:37:106:37 | p | Properties.cs:106:37:106:37 | p | Properties.cs:106:42:106:42 | access to parameter p |
+| Splitting.cs:3:18:3:18 | b | Splitting.cs:3:18:3:18 | b | Splitting.cs:6:13:6:13 | access to parameter b |
+| Splitting.cs:5:13:5:13 | x | Splitting.cs:10:13:10:19 | ... = ... | Splitting.cs:11:13:11:13 | access to local variable x |
+| Splitting.cs:22:18:22:18 | b | Splitting.cs:22:18:22:18 | b | Splitting.cs:25:13:25:13 | access to parameter b |
+| Splitting.cs:24:13:24:13 | x | Splitting.cs:29:13:29:19 | ... = ... | Splitting.cs:30:13:30:13 | access to local variable x |
+| Splitting.cs:24:13:24:13 | x | Splitting.cs:32:9:32:15 | ... = ... | Splitting.cs:33:9:33:9 | access to local variable x |
+| Splitting.cs:42:18:42:18 | b | Splitting.cs:42:18:42:18 | b | Splitting.cs:45:13:45:13 | access to parameter b |
+| Splitting.cs:44:13:44:13 | x | Splitting.cs:49:13:49:19 | ... = ... | Splitting.cs:50:13:50:13 | access to local variable x |
+| Test.cs:3:9:3:13 | field | Test.cs:57:9:57:17 | ... = ... | Test.cs:58:13:58:17 | access to field field |
+| Test.cs:5:15:5:20 | param1 | Test.cs:5:15:5:20 | param1 | Test.cs:11:13:11:18 | access to parameter param1 |
+| Test.cs:5:67:5:72 | param2 | Test.cs:5:67:5:72 | param2 | Test.cs:39:27:39:32 | access to parameter param2 |
+| Test.cs:8:13:8:13 | x | Test.cs:8:13:8:17 | Int32 x = ... | Test.cs:13:13:13:13 | access to local variable x |
+| Test.cs:8:13:8:13 | x | Test.cs:13:13:13:15 | ...++ | Test.cs:14:19:14:19 | access to local variable x |
+| Test.cs:9:13:9:13 | y | Test.cs:19:13:19:17 | ... = ... | Test.cs:20:13:20:13 | access to local variable y |
+| Test.cs:39:22:39:22 | w | Test.cs:39:22:39:22 | Int32 w | Test.cs:41:23:41:23 | access to local variable w |
+| Test.cs:46:16:46:18 | in | Test.cs:46:16:46:18 | in | Test.cs:48:13:48:15 | access to parameter in |
+| Test.cs:62:16:62:16 | x | Test.cs:62:16:62:16 | x | Test.cs:66:28:66:28 | access to parameter x |
+| Test.cs:68:45:68:45 | e | Test.cs:68:45:68:45 | DivideByZeroException e | Test.cs:70:17:70:17 | access to local variable e |
+| Tuples.cs:5:9:5:13 | Field | Tuples.cs:20:9:20:34 | ... = ... | Tuples.cs:22:13:22:17 | access to field Field |
+| Tuples.cs:5:9:5:13 | Field | Tuples.cs:26:9:26:33 | ... = ... | Tuples.cs:27:13:27:17 | access to field Field |
+| Tuples.cs:5:9:5:13 | Field | Tuples.cs:26:9:26:33 | ... = ... | Tuples.cs:28:13:28:19 | access to field Field |
+| Tuples.cs:6:9:6:16 | Property | Tuples.cs:20:9:20:34 | ... = ... | Tuples.cs:21:13:21:20 | access to property Property |
+| Tuples.cs:10:14:10:14 | x | Tuples.cs:10:9:10:54 | ... = ... | Tuples.cs:11:13:11:13 | access to local variable x |
+| Tuples.cs:10:14:10:14 | x | Tuples.cs:14:9:14:32 | ... = ... | Tuples.cs:15:13:15:13 | access to local variable x |
+| Tuples.cs:10:14:10:14 | x | Tuples.cs:23:9:23:37 | ... = ... | Tuples.cs:24:13:24:13 | access to local variable x |
+| Tuples.cs:10:23:10:23 | b | Tuples.cs:10:9:10:54 | ... = ... | Tuples.cs:12:13:12:13 | access to local variable b |
+| Tuples.cs:10:23:10:23 | b | Tuples.cs:14:9:14:32 | ... = ... | Tuples.cs:16:13:16:13 | access to local variable b |
+| Tuples.cs:10:33:10:33 | s | Tuples.cs:10:9:10:54 | ... = ... | Tuples.cs:13:13:13:13 | access to local variable s |
+| Tuples.cs:10:33:10:33 | s | Tuples.cs:14:9:14:32 | ... = ... | Tuples.cs:17:13:17:13 | access to local variable s |
+| Tuples.cs:18:40:18:44 | tuple | Tuples.cs:18:40:18:57 | (Int32,(Boolean,String)) tuple = ... | Tuples.cs:19:13:19:17 | access to local variable tuple |
+| Tuples.cs:25:13:25:13 | t | Tuples.cs:25:13:25:28 | Tuples t = ... | Tuples.cs:26:17:26:17 | access to local variable t |

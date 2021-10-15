@@ -1,0 +1,40 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+A JUnit 3.8 test method that overrides a non-empty <code>tearDown</code> method should call <code>super.tearDown</code> to make sure that
+the superclass performs its de-initialization routines. Not calling <code>tearDown</code> may result in test failures in subsequent tests, or
+allow the current state to persist and affect any following tests.
+</p>
+
+</overview>
+<recommendation>
+<p>
+Call <code>super.tearDown</code> at the end of the overriding <code>tearDown</code> method.
+</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, <code>TearDownNoSuper.tearDown</code> does not call <code>super.tearDown</code>,
+which may cause subsequent tests to fail, or allow the internal state to be maintained. However, <code>TearDownSuper.tearDown</code>
+<em>does</em> call <code>super.tearDown</code>, at the end of the method, to enable 
+<code>FrameworkTestCase.tearDown</code> to perform de-initialization.</p>
+
+<sample src="TearDownNoSuper.java" />
+
+</example>
+<references>
+
+
+<li>
+JUnit: <a href="http://junit.sourceforge.net/junit3.8.1/doc/cookbook/cookbook.htm">JUnit Cookbook</a>.
+</li>
+
+
+</references>
+</qhelp>

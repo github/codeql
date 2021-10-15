@@ -1,0 +1,20 @@
+{
+  "name": "test-package",
+  "version": "0.1.0",
+  "maintainers": [{
+      "name": "me",
+      "email": "me@mine.com",
+      "web": "http://mine.com"
+  }],
+  "dependencies": {
+      "esprima": "*",
+      "something": "1.2.3-alpha.beta",
+      "foo": "! garbage string we \nreally can't parse %"
+  },
+  "devDependencies": {
+      "mocha": "1.0"
+  },
+  "peerDependencies": {
+      "tea": "2.x"
+  }
+}

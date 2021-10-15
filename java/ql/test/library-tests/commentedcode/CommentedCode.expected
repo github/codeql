@@ -1,0 +1,8 @@
+| CommentedCode.java:5:1:5:29 | //\t\tint commentedOutCode = 6; | 1 |
+| CommentedCode.java:7:1:7:56 | //\t\tint commentedOutCode = 6; // with a trailing comment | 1 |
+| CommentedCode.java:9:1:13:34 | //\t\tString s = "commented code with"; | 2 |
+| CommentedCode.java:45:3:50:5 | /** int blockCommentedCode; ... */ | 4 |
+| CommentedCode.java:84:3:90:5 | /** Incorrect HTML entities should trigger alert on semicolon ... */ | 3 |
+| CommentedCode.java:93:1:97:4 | //\tpublic static int commentedOutMethod(){ | 3 |
+| CommentedCode.java:112:1:120:65 | //     | 1 |
+| CommentedCode.java:122:5:124:9 | /** * ... */ | 1 |

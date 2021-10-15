@@ -1,0 +1,3 @@
+| file://:0:0:0:0 | There was an error during this compilation | 4 | Error occurred |
+| packed.c:11:16:11:16 | the size of an array must be greater than zero | 4 | array_size_must_be_positive |
+| packed.c:14:16:14:16 | the size of an array must be greater than zero | 4 | array_size_must_be_positive |

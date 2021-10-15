@@ -1,0 +1,1 @@
+// semmle-extractor-options: --javac-args -cp ${testdir}/../../../../../stubs/amazon-aws-sdk-1.11.700:${testdir}/../../../../../stubs/azure-sdk-for-java:${testdir}/../../../../../stubs/shiro-core-1.4.0

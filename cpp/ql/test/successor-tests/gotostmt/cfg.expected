@@ -1,0 +1,6 @@
+| gotostmt | gotostmt.c:1:6:1:6 | v | 1 | 1 | gotostmt.c:1:10:5:1 | gotostmt.c:1:10:5:1 | gotostmt.c:1:10:5:1 | { ... } | 2: goto ... |
+| gotostmt | gotostmt.c:1:6:1:6 | v | 2 | 2 | gotostmt.c:2:2:2:12 | gotostmt.c:2:2:2:12 | gotostmt.c:2:2:2:12 | goto ... | 4: label ...: |
+| gotostmt | gotostmt.c:1:6:1:6 | v | 3 | 1 | gotostmt.c:3:2:3:2 | gotostmt.c:3:2:3:2 | gotostmt.c:3:2:3:2 | ; | 4: label ...: |
+| gotostmt | gotostmt.c:1:6:1:6 | v | 4 | 4 | gotostmt.c:4:1:4:6 | gotostmt.c:4:1:4:6 | gotostmt.c:4:1:4:6 | label ...: | 5: return ... |
+| gotostmt | gotostmt.c:1:6:1:6 | v | 5 | 5 | gotostmt.c:5:1:5:1 | gotostmt.c:5:1:5:1 | gotostmt.c:5:1:5:1 | return ... | 5: v |
+| gotostmt | gotostmt.c:1:6:1:6 | v | 5 | 6 | gotostmt.c:1:6:1:6 | gotostmt.c:1:6:1:6 | gotostmt.c:1:6:1:6 | v | <none> |

@@ -1,0 +1,158 @@
+| Basic custom config: | simple.test | test.py:120 | CUSTOM_SOURCE |  |  -->  | simple.test | test.py:121 | t |  |
+| Basic custom config: | simple.test | test.py:126 | CUSTOM_SOURCE |  |  -->  | simple.test | test.py:130 | t |  |
+| Basic custom config: | simple.test | test.py:136 | CUSTOM_SOURCE |  |  -->  | simple.test | test.py:142 | t |  |
+| Basic custom config: | simple.test | test.py:146 | CUSTOM_SOURCE |  |  -->  | simple.test | test.py:149 | t |  |
+| Rock-paper-scissors config: | paper | rockpaperscissors.py:25 | Attribute() |  |  -->  | paper | rockpaperscissors.py:26 | y |  |
+| Rock-paper-scissors config: | paper | rockpaperscissors.py:26 | y |  |  -->  | paper | rockpaperscissors.py:9 | arg | p0 = paper |
+| Rock-paper-scissors config: | paper | rockpaperscissors.py:30 | Attribute() |  |  -->  | paper | rockpaperscissors.py:32 | y |  |
+| Rock-paper-scissors config: | paper | rockpaperscissors.py:32 | y |  |  -->  | paper | rockpaperscissors.py:6 | arg | p0 = paper |
+| Rock-paper-scissors config: | rock | rockpaperscissors.py:16 | ROCK |  |  -->  | rock | rockpaperscissors.py:6 | arg | p0 = rock |
+| Rock-paper-scissors config: | rock | rockpaperscissors.py:19 | ROCK |  |  -->  | rock | rockpaperscissors.py:20 | x |  |
+| Rock-paper-scissors config: | rock | rockpaperscissors.py:20 | x |  |  -->  | scissors | rockpaperscissors.py:20 | Attribute() |  |
+| Rock-paper-scissors config: | rock | rockpaperscissors.py:24 | ROCK |  |  -->  | rock | rockpaperscissors.py:25 | x |  |
+| Rock-paper-scissors config: | rock | rockpaperscissors.py:25 | x |  |  -->  | scissors | rockpaperscissors.py:25 | Attribute() |  |
+| Rock-paper-scissors config: | scissors | rockpaperscissors.py:13 | SCISSORS |  |  -->  | scissors | rockpaperscissors.py:3 | arg | p0 = scissors |
+| Rock-paper-scissors config: | scissors | rockpaperscissors.py:20 | Attribute() |  |  -->  | scissors | rockpaperscissors.py:21 | y |  |
+| Rock-paper-scissors config: | scissors | rockpaperscissors.py:21 | y |  |  -->  | scissors | rockpaperscissors.py:9 | arg | p0 = scissors |
+| Rock-paper-scissors config: | scissors | rockpaperscissors.py:25 | Attribute() |  |  -->  | paper | rockpaperscissors.py:25 | Attribute() |  |
+| Rock-paper-scissors config: | scissors | rockpaperscissors.py:29 | SCISSORS |  |  -->  | scissors | rockpaperscissors.py:30 | x |  |
+| Rock-paper-scissors config: | scissors | rockpaperscissors.py:29 | SCISSORS |  |  -->  | scissors | rockpaperscissors.py:31 | x |  |
+| Rock-paper-scissors config: | scissors | rockpaperscissors.py:30 | x |  |  -->  | paper | rockpaperscissors.py:30 | Attribute() |  |
+| Rock-paper-scissors config: | scissors | rockpaperscissors.py:31 | x |  |  -->  | scissors | rockpaperscissors.py:6 | arg | p0 = scissors |
+| Simple config: | [simple.test] | test.py:168 | List |  |  -->  | [simple.test] | test.py:170 | l |  |
+| Simple config: | [simple.test] | test.py:168 | List |  |  -->  | [simple.test] | test.py:174 | l |  |
+| Simple config: | [simple.test] | test.py:174 | l |  |  -->  | [simple.test] | test.py:174 | list() |  |
+| Simple config: | [simple.test] | test.py:208 | List |  |  -->  | [simple.test] | test.py:209 | seq |  |
+| Simple config: | [simple.test] | test.py:209 | seq |  |  -->  | simple.test | test.py:209 | For |  |
+| Simple config: | [simple.test] | test.py:213 | flow_in_generator() |  |  -->  | simple.test | test.py:213 | For |  |
+| Simple config: | iterable.simple | test.py:213 | flow_in_generator() |  |  -->  | simple.test | test.py:213 | For |  |
+| Simple config: | simple.test | carrier.py:4 | arg | p1 = simple.test |  -->  | simple.test | carrier.py:5 | arg | p1 = simple.test |
+| Simple config: | simple.test | carrier.py:10 | self | p0.attr = simple.test |  -->  | simple.test | carrier.py:11 | self | p0.attr = simple.test |
+| Simple config: | simple.test | carrier.py:11 | self | p0.attr = simple.test |  -->  | simple.test | carrier.py:11 | Attribute | p0.attr = simple.test |
+| Simple config: | simple.test | carrier.py:13 | arg | p0.attr = simple.test |  -->  | simple.test | carrier.py:14 | arg | p0.attr = simple.test |
+| Simple config: | simple.test | carrier.py:17 | ImplicitCarrier() |  |  -->  | simple.test | carrier.py:18 | c |  |
+| Simple config: | simple.test | carrier.py:17 | SOURCE |  |  -->  | simple.test | carrier.py:4 | arg | p1 = simple.test |
+| Simple config: | simple.test | carrier.py:17 | SOURCE |  |  -->  | simple.test | carrier.py:17 | ImplicitCarrier() |  |
+| Simple config: | simple.test | carrier.py:18 | c |  |  -->  | simple.test | carrier.py:18 | Attribute |  |
+| Simple config: | simple.test | carrier.py:25 | ImplicitCarrier() |  |  -->  | simple.test | carrier.py:13 | arg | p0.attr = simple.test |
+| Simple config: | simple.test | carrier.py:25 | ImplicitCarrier() |  |  -->  | simple.test | carrier.py:25 | hub() |  |
+| Simple config: | simple.test | carrier.py:25 | SOURCE |  |  -->  | simple.test | carrier.py:4 | arg | p1 = simple.test |
+| Simple config: | simple.test | carrier.py:25 | SOURCE |  |  -->  | simple.test | carrier.py:25 | ImplicitCarrier() |  |
+| Simple config: | simple.test | carrier.py:25 | hub() |  |  -->  | simple.test | carrier.py:26 | c |  |
+| Simple config: | simple.test | carrier.py:26 | c |  |  -->  | simple.test | carrier.py:10 | self | p0.attr = simple.test |
+| Simple config: | simple.test | carrier.py:26 | c |  |  -->  | simple.test | carrier.py:26 | Attribute() |  |
+| Simple config: | simple.test | deep.py:2 | arg | p0 = simple.test |  -->  | simple.test | deep.py:3 | arg | p0 = simple.test |
+| Simple config: | simple.test | deep.py:5 | arg | p0 = simple.test |  -->  | simple.test | deep.py:6 | arg | p0 = simple.test |
+| Simple config: | simple.test | deep.py:6 | arg | p0 = simple.test |  -->  | simple.test | deep.py:2 | arg | p0 = simple.test |
+| Simple config: | simple.test | deep.py:6 | arg | p0 = simple.test |  -->  | simple.test | deep.py:6 | f1() | p0 = simple.test |
+| Simple config: | simple.test | deep.py:8 | arg | p0 = simple.test |  -->  | simple.test | deep.py:9 | arg | p0 = simple.test |
+| Simple config: | simple.test | deep.py:9 | arg | p0 = simple.test |  -->  | simple.test | deep.py:5 | arg | p0 = simple.test |
+| Simple config: | simple.test | deep.py:9 | arg | p0 = simple.test |  -->  | simple.test | deep.py:9 | f2() | p0 = simple.test |
+| Simple config: | simple.test | deep.py:11 | arg | p0 = simple.test |  -->  | simple.test | deep.py:12 | arg | p0 = simple.test |
+| Simple config: | simple.test | deep.py:12 | arg | p0 = simple.test |  -->  | simple.test | deep.py:8 | arg | p0 = simple.test |
+| Simple config: | simple.test | deep.py:12 | arg | p0 = simple.test |  -->  | simple.test | deep.py:12 | f3() | p0 = simple.test |
+| Simple config: | simple.test | deep.py:14 | arg | p0 = simple.test |  -->  | simple.test | deep.py:15 | arg | p0 = simple.test |
+| Simple config: | simple.test | deep.py:15 | arg | p0 = simple.test |  -->  | simple.test | deep.py:11 | arg | p0 = simple.test |
+| Simple config: | simple.test | deep.py:15 | arg | p0 = simple.test |  -->  | simple.test | deep.py:15 | f4() | p0 = simple.test |
+| Simple config: | simple.test | deep.py:17 | arg | p0 = simple.test |  -->  | simple.test | deep.py:18 | arg | p0 = simple.test |
+| Simple config: | simple.test | deep.py:18 | arg | p0 = simple.test |  -->  | simple.test | deep.py:14 | arg | p0 = simple.test |
+| Simple config: | simple.test | deep.py:18 | arg | p0 = simple.test |  -->  | simple.test | deep.py:18 | f5() | p0 = simple.test |
+| Simple config: | simple.test | deep.py:20 | SOURCE |  |  -->  | simple.test | deep.py:17 | arg | p0 = simple.test |
+| Simple config: | simple.test | deep.py:20 | SOURCE |  |  -->  | simple.test | deep.py:20 | f6() |  |
+| Simple config: | simple.test | deep.py:20 | f6() |  |  -->  | simple.test | deep.py:22 | x |  |
+| Simple config: | simple.test | module.py:3 | SOURCE |  |  -->  | simple.test | test.py:85 | ImportExpr |  |
+| Simple config: | simple.test | module.py:3 | SOURCE |  |  -->  | simple.test | test.py:88 | module |  |
+| Simple config: | simple.test | module.py:3 | SOURCE |  |  -->  | simple.test | test.py:92 | module |  |
+| Simple config: | simple.test | module.py:3 | SOURCE |  |  -->  | simple.test | test.py:96 | module |  |
+| Simple config: | simple.test | module.py:3 | SOURCE |  |  -->  | simple.test | test.py:100 | module |  |
+| Simple config: | simple.test | module.py:3 | SOURCE |  |  -->  | simple.test | test.py:110 | module |  |
+| Simple config: | simple.test | module.py:3 | SOURCE |  |  -->  | simple.test | test.py:115 | module |  |
+| Simple config: | simple.test | module.py:3 | SOURCE |  |  -->  | simple.test | test.py:155 | ImportExpr |  |
+| Simple config: | simple.test | module.py:3 | SOURCE |  |  -->  | simple.test | test.py:155 | ImportMember |  |
+| Simple config: | simple.test | module.py:7 | SOURCE |  |  -->  | simple.test | test.py:100 | Attribute() |  |
+| Simple config: | simple.test | test.py:6 | SOURCE |  |  -->  | simple.test | test.py:7 | s |  |
+| Simple config: | simple.test | test.py:10 | SOURCE |  |  -->  | simple.test | test.py:16 | source() |  |
+| Simple config: | simple.test | test.py:10 | SOURCE |  |  -->  | simple.test | test.py:24 | source() |  |
+| Simple config: | simple.test | test.py:10 | SOURCE |  |  -->  | simple.test | test.py:44 | source() |  |
+| Simple config: | simple.test | test.py:12 | arg | p0 = simple.test |  -->  | simple.test | test.py:13 | arg | p0 = simple.test |
+| Simple config: | simple.test | test.py:16 | source() |  |  -->  | simple.test | test.py:17 | t |  |
+| Simple config: | simple.test | test.py:20 | SOURCE |  |  -->  | simple.test | test.py:21 | t |  |
+| Simple config: | simple.test | test.py:21 | t |  |  -->  | simple.test | test.py:12 | arg | p0 = simple.test |
+| Simple config: | simple.test | test.py:24 | source() |  |  -->  | simple.test | test.py:25 | t |  |
+| Simple config: | simple.test | test.py:25 | t |  |  -->  | simple.test | test.py:12 | arg | p0 = simple.test |
+| Simple config: | simple.test | test.py:37 | SOURCE |  |  -->  | simple.test | test.py:41 | t |  |
+| Simple config: | simple.test | test.py:44 | source() |  |  -->  | simple.test | test.py:54 | source2() |  |
+| Simple config: | simple.test | test.py:46 | arg | p0 = simple.test |  -->  | simple.test | test.py:47 | arg | p0 = simple.test |
+| Simple config: | simple.test | test.py:47 | arg | p0 = simple.test |  -->  | simple.test | test.py:12 | arg | p0 = simple.test |
+| Simple config: | simple.test | test.py:49 | arg | p1 = simple.test |  -->  | simple.test | test.py:51 | arg | p1 = simple.test |
+| Simple config: | simple.test | test.py:51 | arg | p1 = simple.test |  -->  | simple.test | test.py:12 | arg | p0 = simple.test |
+| Simple config: | simple.test | test.py:54 | source2() |  |  -->  | simple.test | test.py:55 | t |  |
+| Simple config: | simple.test | test.py:55 | t |  |  -->  | simple.test | test.py:46 | arg | p0 = simple.test |
+| Simple config: | simple.test | test.py:62 | SOURCE |  |  -->  | simple.test | test.py:63 | t |  |
+| Simple config: | simple.test | test.py:63 | t |  |  -->  | simple.test | test.py:49 | arg | p1 = simple.test |
+| Simple config: | simple.test | test.py:67 | SOURCE |  |  -->  | simple.test | test.py:70 | t |  |
+| Simple config: | simple.test | test.py:70 | t |  |  -->  | simple.test | test.py:49 | arg | p1 = simple.test |
+| Simple config: | simple.test | test.py:72 | arg | p0 = simple.test |  -->  | simple.test | test.py:73 | arg | p0 = simple.test |
+| Simple config: | simple.test | test.py:72 | arg | p0.x = simple.test |  -->  | simple.test | test.py:73 | arg | p0.x = simple.test |
+| Simple config: | simple.test | test.py:76 | SOURCE |  |  -->  | simple.test | test.py:77 | t |  |
+| Simple config: | simple.test | test.py:77 | hub() |  |  -->  | simple.test | test.py:78 | t |  |
+| Simple config: | simple.test | test.py:77 | t |  |  -->  | simple.test | test.py:72 | arg | p0 = simple.test |
+| Simple config: | simple.test | test.py:77 | t |  |  -->  | simple.test | test.py:77 | hub() |  |
+| Simple config: | simple.test | test.py:85 | ImportExpr |  |  -->  | simple.test | test.py:88 | module |  |
+| Simple config: | simple.test | test.py:85 | ImportExpr |  |  -->  | simple.test | test.py:92 | module |  |
+| Simple config: | simple.test | test.py:85 | ImportExpr |  |  -->  | simple.test | test.py:96 | module |  |
+| Simple config: | simple.test | test.py:85 | ImportExpr |  |  -->  | simple.test | test.py:100 | module |  |
+| Simple config: | simple.test | test.py:85 | ImportExpr |  |  -->  | simple.test | test.py:110 | module |  |
+| Simple config: | simple.test | test.py:85 | ImportExpr |  |  -->  | simple.test | test.py:115 | module |  |
+| Simple config: | simple.test | test.py:88 | Attribute |  |  -->  | simple.test | test.py:89 | t |  |
+| Simple config: | simple.test | test.py:88 | module |  |  -->  | simple.test | test.py:88 | Attribute |  |
+| Simple config: | simple.test | test.py:100 | Attribute() |  |  -->  | simple.test | test.py:101 | t |  |
+| Simple config: | simple.test | test.py:105 | arg | p0.x = simple.test |  -->  | simple.test | test.py:106 | arg | p0.x = simple.test |
+| Simple config: | simple.test | test.py:106 | arg | p0.x = simple.test |  -->  | simple.test | test.py:106 | Attribute | p0.x = simple.test |
+| Simple config: | simple.test | test.py:110 | Attribute |  |  -->  | simple.test | test.py:111 | t |  |
+| Simple config: | simple.test | test.py:110 | module |  |  -->  | simple.test | test.py:110 | Attribute |  |
+| Simple config: | simple.test | test.py:111 | t |  |  -->  | simple.test | test.py:111 | Attribute |  |
+| Simple config: | simple.test | test.py:115 | Attribute |  |  -->  | simple.test | test.py:116 | t |  |
+| Simple config: | simple.test | test.py:115 | module |  |  -->  | simple.test | test.py:115 | Attribute |  |
+| Simple config: | simple.test | test.py:116 | hub() |  |  -->  | simple.test | test.py:117 | t |  |
+| Simple config: | simple.test | test.py:116 | t |  |  -->  | simple.test | test.py:72 | arg | p0.x = simple.test |
+| Simple config: | simple.test | test.py:116 | t |  |  -->  | simple.test | test.py:116 | hub() |  |
+| Simple config: | simple.test | test.py:117 | t |  |  -->  | simple.test | test.py:105 | arg | p0.x = simple.test |
+| Simple config: | simple.test | test.py:128 | SOURCE |  |  -->  | simple.test | test.py:132 | t |  |
+| Simple config: | simple.test | test.py:138 | SOURCE |  |  -->  | simple.test | test.py:140 | t |  |
+| Simple config: | simple.test | test.py:148 | SOURCE |  |  -->  | simple.test | test.py:149 | t |  |
+| Simple config: | simple.test | test.py:155 | ImportMember |  |  -->  | simple.test | test.py:156 | unsafe |  |
+| Simple config: | simple.test | test.py:159 | SOURCE |  |  -->  | simple.test | test.py:160 | t |  |
+| Simple config: | simple.test | test.py:163 | SOURCE |  |  -->  | simple.test | test.py:164 | s |  |
+| Simple config: | simple.test | test.py:163 | SOURCE |  |  -->  | simple.test | test.py:165 | s |  |
+| Simple config: | simple.test | test.py:168 | SOURCE |  |  -->  | [simple.test] | test.py:168 | List |  |
+| Simple config: | simple.test | test.py:169 | SOURCE |  |  -->  | {simple.test} | test.py:169 | Dict |  |
+| Simple config: | simple.test | test.py:178 | SOURCE |  |  -->  | simple.test | test.py:179 | t |  |
+| Simple config: | simple.test | test.py:178 | SOURCE |  |  -->  | simple.test | test.py:180 | t |  |
+| Simple config: | simple.test | test.py:178 | SOURCE |  |  -->  | simple.test | test.py:183 | t |  |
+| Simple config: | simple.test | test.py:178 | SOURCE |  |  -->  | simple.test | test.py:186 | t |  |
+| Simple config: | simple.test | test.py:195 | SOURCE |  |  -->  | simple.test | test.py:196 | t |  |
+| Simple config: | simple.test | test.py:195 | SOURCE |  |  -->  | simple.test | test.py:197 | t |  |
+| Simple config: | simple.test | test.py:195 | SOURCE |  |  -->  | simple.test | test.py:199 | t |  |
+| Simple config: | simple.test | test.py:208 | SOURCE |  |  -->  | [simple.test] | test.py:208 | List |  |
+| Simple config: | simple.test | test.py:209 | For |  |  -->  | simple.test | test.py:210 | i |  |
+| Simple config: | simple.test | test.py:210 | i |  |  -->  | [simple.test] | test.py:213 | flow_in_generator() |  |
+| Simple config: | simple.test | test.py:210 | i |  |  -->  | iterable.simple | test.py:213 | flow_in_generator() |  |
+| Simple config: | simple.test | test.py:213 | For |  |  -->  | simple.test | test.py:214 | x |  |
+| Simple config: | {simple.test} | test.py:169 | Dict |  |  -->  | {simple.test} | test.py:171 | d |  |
+| Simple config: | {simple.test} | test.py:169 | Dict |  |  -->  | {simple.test} | test.py:175 | d |  |
+| Simple config: | {simple.test} | test.py:175 | d |  |  -->  | {simple.test} | test.py:175 | dict() |  |
+| Taint carrier config: | explicit.carrier | carrier.py:4 | arg | p1 = explicit.carrier |  -->  | explicit.carrier | carrier.py:5 | arg | p1 = explicit.carrier |
+| Taint carrier config: | explicit.carrier | carrier.py:13 | arg | p0 = explicit.carrier |  -->  | explicit.carrier | carrier.py:14 | arg | p0 = explicit.carrier |
+| Taint carrier config: | explicit.carrier | carrier.py:21 | TAINT_CARRIER_SOURCE |  |  -->  | explicit.carrier | carrier.py:22 | c |  |
+| Taint carrier config: | explicit.carrier | carrier.py:22 | c |  |  -->  | simple.test | carrier.py:22 | Attribute() |  |
+| Taint carrier config: | explicit.carrier | carrier.py:29 | TAINT_CARRIER_SOURCE |  |  -->  | explicit.carrier | carrier.py:13 | arg | p0 = explicit.carrier |
+| Taint carrier config: | explicit.carrier | carrier.py:29 | TAINT_CARRIER_SOURCE |  |  -->  | explicit.carrier | carrier.py:29 | hub() |  |
+| Taint carrier config: | explicit.carrier | carrier.py:29 | hub() |  |  -->  | explicit.carrier | carrier.py:30 | c |  |
+| Taint carrier config: | explicit.carrier | carrier.py:30 | c |  |  -->  | simple.test | carrier.py:30 | Attribute() |  |
+| Taint carrier config: | explicit.carrier | carrier.py:33 | ImplicitCarrier() |  |  -->  | explicit.carrier | carrier.py:34 | c |  |
+| Taint carrier config: | explicit.carrier | carrier.py:33 | TAINT_CARRIER_SOURCE |  |  -->  | explicit.carrier | carrier.py:4 | arg | p1 = explicit.carrier |
+| Taint carrier config: | explicit.carrier | carrier.py:33 | TAINT_CARRIER_SOURCE |  |  -->  | explicit.carrier | carrier.py:33 | ImplicitCarrier() |  |
+| Taint carrier config: | explicit.carrier | carrier.py:34 | Attribute |  |  -->  | explicit.carrier | carrier.py:35 | x |  |
+| Taint carrier config: | explicit.carrier | carrier.py:34 | c |  |  -->  | explicit.carrier | carrier.py:34 | Attribute |  |
+| Taint carrier config: | explicit.carrier | carrier.py:35 | x |  |  -->  | simple.test | carrier.py:35 | Attribute() |  |

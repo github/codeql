@@ -1,0 +1,11 @@
+| test_cookie-session.js:16:9:24:2 | session ... Date\\n}) | Cookie is added to response without the 'secure' flag being set to true |
+| test_express-session.js:5:9:8:2 | session ... T OK\\n}) | Cookie is added to response without the 'secure' flag being set to true |
+| test_express-session.js:10:9:13:2 | session ... T OK\\n}) | Cookie is added to response without the 'secure' flag being set to true |
+| test_express-session.js:15:9:18:2 | session ... T OK\\n}) | Cookie is added to response without the 'secure' flag being set to true |
+| test_express-session.js:25:9:25:21 | session(sess) | Cookie is added to response without the 'secure' flag being set to true |
+| test_httpserver.js:7:37:7:48 | "type=ninja" | Cookie is added to response without the 'secure' flag being set to true |
+| test_httpserver.js:27:37:27:73 | ["type= ... cript"] | Cookie is added to response without the 'secure' flag being set to true |
+| test_httpserver.js:57:37:57:81 | ["type= ... cript"] | Cookie is added to response without the 'secure' flag being set to true |
+| test_jscookie.js:2:1:2:48 | js_cook ... alse }) | Cookie is added to response without the 'secure' flag being set to true |
+| test_responseCookie.js:5:5:10:10 | res.coo ...      }) | Cookie is added to response without the 'secure' flag being set to true |
+| test_responseCookie.js:20:5:20:40 | res.coo ... ptions) | Cookie is added to response without the 'secure' flag being set to true |

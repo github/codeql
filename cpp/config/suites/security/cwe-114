@@ -1,0 +1,3 @@
+# CWE-114: Process Control
++ semmlecode-cpp-queries/Security/CWE/CWE-114/UncontrolledProcessOperation.ql: /CWE/CWE-114
+    @name Uncontrolled process operation (CWE-114)

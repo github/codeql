@@ -1,0 +1,250 @@
+| SignAnalysis.cs:7:72:7:75 | 1000 | strictlyPositive |
+| SignAnalysis.cs:7:80:7:82 | 500 | strictlyPositive |
+| SignAnalysis.cs:18:20:18:20 | access to local variable v | strictlyNegative |
+| SignAnalysis.cs:24:20:24:20 | access to local variable v | strictlyNegative |
+| SignAnalysis.cs:30:20:30:20 | access to local variable v | strictlyNegative |
+| SignAnalysis.cs:36:20:36:20 | access to local variable v | strictlyNegative |
+| SignAnalysis.cs:42:20:42:20 | access to local variable v | strictlyNegative |
+| SignAnalysis.cs:45:24:45:24 | 1 | strictlyPositive |
+| SignAnalysis.cs:49:20:49:20 | access to local variable v | strictlyNegative |
+| SignAnalysis.cs:59:17:59:25 | Int32 x = ... | strictlyNegative |
+| SignAnalysis.cs:59:21:59:21 | access to parameter i | strictlyNegative |
+| SignAnalysis.cs:59:21:59:25 | ... + ... | strictlyNegative |
+| SignAnalysis.cs:59:25:59:25 | access to parameter j | strictlyNegative |
+| SignAnalysis.cs:60:38:60:38 | access to local variable x | strictlyNegative |
+| SignAnalysis.cs:61:13:61:21 | ... = ... | strictlyPositive |
+| SignAnalysis.cs:61:17:61:17 | access to parameter i | strictlyNegative |
+| SignAnalysis.cs:61:17:61:21 | ... * ... | strictlyPositive |
+| SignAnalysis.cs:61:21:61:21 | access to parameter j | strictlyNegative |
+| SignAnalysis.cs:62:38:62:38 | access to local variable x | strictlyPositive |
+| SignAnalysis.cs:63:13:63:21 | ... = ... | positive |
+| SignAnalysis.cs:63:17:63:17 | access to parameter i | strictlyNegative |
+| SignAnalysis.cs:63:17:63:21 | ... / ... | positive |
+| SignAnalysis.cs:63:21:63:21 | access to parameter j | strictlyNegative |
+| SignAnalysis.cs:64:38:64:38 | access to local variable x | positive |
+| SignAnalysis.cs:65:17:65:17 | access to parameter i | strictlyNegative |
+| SignAnalysis.cs:65:21:65:21 | access to parameter j | strictlyNegative |
+| SignAnalysis.cs:67:13:67:21 | ... = ... | negative |
+| SignAnalysis.cs:67:17:67:17 | access to parameter i | strictlyNegative |
+| SignAnalysis.cs:67:17:67:21 | ... % ... | negative |
+| SignAnalysis.cs:67:21:67:21 | access to parameter j | strictlyNegative |
+| SignAnalysis.cs:68:38:68:38 | access to local variable x | negative |
+| SignAnalysis.cs:69:13:69:19 | ... = ... | strictlyNegative |
+| SignAnalysis.cs:69:17:69:17 | access to parameter i | strictlyNegative |
+| SignAnalysis.cs:69:17:69:19 | ...++ | strictlyNegative |
+| SignAnalysis.cs:70:38:70:38 | access to local variable x | strictlyNegative |
+| SignAnalysis.cs:71:13:71:19 | ... = ... | negative |
+| SignAnalysis.cs:71:17:71:17 | access to parameter i | negative |
+| SignAnalysis.cs:71:17:71:19 | ...-- | negative |
+| SignAnalysis.cs:72:38:72:38 | access to local variable x | negative |
+| SignAnalysis.cs:73:13:73:18 | ... = ... | strictlyPositive |
+| SignAnalysis.cs:73:17:73:18 | -... | strictlyPositive |
+| SignAnalysis.cs:73:18:73:18 | access to parameter i | strictlyNegative |
+| SignAnalysis.cs:74:38:74:38 | access to local variable x | strictlyPositive |
+| SignAnalysis.cs:75:13:75:18 | ... = ... | strictlyNegative |
+| SignAnalysis.cs:75:17:75:18 | +... | strictlyNegative |
+| SignAnalysis.cs:75:18:75:18 | access to parameter i | strictlyNegative |
+| SignAnalysis.cs:76:38:76:38 | access to local variable x | strictlyNegative |
+| SignAnalysis.cs:77:17:77:27 | Int64 l = ... | strictlyNegative |
+| SignAnalysis.cs:77:21:77:27 | (...) ... | strictlyNegative |
+| SignAnalysis.cs:77:27:77:27 | access to parameter i | strictlyNegative |
+| SignAnalysis.cs:78:38:78:38 | access to local variable l | strictlyNegative |
+| SignAnalysis.cs:80:13:80:17 | ... = ... | strictlyNegative |
+| SignAnalysis.cs:80:17:80:17 | access to parameter i | strictlyNegative |
+| SignAnalysis.cs:81:13:81:13 | access to local variable x | strictlyNegative |
+| SignAnalysis.cs:81:13:81:18 | ... + ... | strictlyNegative |
+| SignAnalysis.cs:81:13:81:18 | ... = ... | strictlyNegative |
+| SignAnalysis.cs:81:18:81:18 | access to parameter i | strictlyNegative |
+| SignAnalysis.cs:82:38:82:38 | access to local variable x | strictlyNegative |
+| SignAnalysis.cs:87:21:87:21 | access to parameter i | strictlyNegative |
+| SignAnalysis.cs:87:25:87:25 | access to parameter j | strictlyPositive |
+| SignAnalysis.cs:89:13:89:21 | ... = ... | strictlyNegative |
+| SignAnalysis.cs:89:17:89:17 | access to parameter i | strictlyNegative |
+| SignAnalysis.cs:89:17:89:21 | ... * ... | strictlyNegative |
+| SignAnalysis.cs:89:21:89:21 | access to parameter j | strictlyPositive |
+| SignAnalysis.cs:90:38:90:38 | access to local variable x | strictlyNegative |
+| SignAnalysis.cs:91:13:91:21 | ... = ... | negative |
+| SignAnalysis.cs:91:17:91:17 | access to parameter i | strictlyNegative |
+| SignAnalysis.cs:91:17:91:21 | ... / ... | negative |
+| SignAnalysis.cs:91:21:91:21 | access to parameter j | strictlyPositive |
+| SignAnalysis.cs:92:38:92:38 | access to local variable x | negative |
+| SignAnalysis.cs:93:13:93:21 | ... = ... | strictlyNegative |
+| SignAnalysis.cs:93:17:93:17 | access to parameter i | strictlyNegative |
+| SignAnalysis.cs:93:17:93:21 | ... - ... | strictlyNegative |
+| SignAnalysis.cs:93:21:93:21 | access to parameter j | strictlyPositive |
+| SignAnalysis.cs:94:38:94:38 | access to local variable x | strictlyNegative |
+| SignAnalysis.cs:95:13:95:21 | ... = ... | negative |
+| SignAnalysis.cs:95:17:95:17 | access to parameter i | strictlyNegative |
+| SignAnalysis.cs:95:17:95:21 | ... % ... | negative |
+| SignAnalysis.cs:95:21:95:21 | access to parameter j | strictlyPositive |
+| SignAnalysis.cs:96:38:96:38 | access to local variable x | negative |
+| SignAnalysis.cs:97:21:97:21 | access to parameter i | strictlyNegative |
+| SignAnalysis.cs:97:25:97:25 | access to parameter j | strictlyPositive |
+| SignAnalysis.cs:104:13:104:20 | Single f = ... | strictlyPositive |
+| SignAnalysis.cs:104:17:104:20 | 4.2 | strictlyPositive |
+| SignAnalysis.cs:105:34:105:34 | access to local variable f | strictlyPositive |
+| SignAnalysis.cs:106:13:106:19 | Double d = ... | strictlyPositive |
+| SignAnalysis.cs:106:17:106:19 | 4.2 | strictlyPositive |
+| SignAnalysis.cs:107:34:107:34 | access to local variable d | strictlyPositive |
+| SignAnalysis.cs:108:13:108:21 | Decimal de = ... | strictlyPositive |
+| SignAnalysis.cs:108:18:108:21 | 4.2 | strictlyPositive |
+| SignAnalysis.cs:109:34:109:35 | access to local variable de | strictlyPositive |
+| SignAnalysis.cs:110:13:110:19 | Char c = ... | strictlyPositive |
+| SignAnalysis.cs:110:17:110:19 | a | strictlyPositive |
+| SignAnalysis.cs:111:34:111:34 | access to local variable c | strictlyPositive |
+| SignAnalysis.cs:120:9:120:10 | access to field f0 | positive |
+| SignAnalysis.cs:120:9:120:12 | ...++ | positive |
+| SignAnalysis.cs:121:34:121:35 | access to field f0 | strictlyPositive |
+| SignAnalysis.cs:129:9:129:16 | ... = ... | strictlyNegative |
+| SignAnalysis.cs:129:14:129:16 | -... | strictlyNegative |
+| SignAnalysis.cs:129:15:129:16 | 10 | strictlyPositive |
+| SignAnalysis.cs:141:34:141:34 | access to local variable i | strictlyPositive |
+| SignAnalysis.cs:148:20:148:20 | access to parameter x | strictlyNegative |
+| SignAnalysis.cs:151:18:151:18 | 1 | strictlyPositive |
+| SignAnalysis.cs:153:20:153:20 | access to parameter y | strictlyPositive |
+| SignAnalysis.cs:156:18:156:19 | -... | strictlyNegative |
+| SignAnalysis.cs:156:19:156:19 | 1 | strictlyPositive |
+| SignAnalysis.cs:158:20:158:20 | access to parameter y | strictlyNegative |
+| SignAnalysis.cs:161:13:161:13 | access to parameter x | positive |
+| SignAnalysis.cs:163:20:163:20 | access to parameter y | strictlyPositive |
+| SignAnalysis.cs:166:22:166:22 | 1 | strictlyPositive |
+| SignAnalysis.cs:169:20:169:20 | access to parameter y | strictlyPositive |
+| SignAnalysis.cs:177:13:177:17 | Int32 i = ... | strictlyPositive |
+| SignAnalysis.cs:177:17:177:17 | 1 | strictlyPositive |
+| SignAnalysis.cs:178:13:178:13 | access to local variable i | strictlyPositive |
+| SignAnalysis.cs:180:38:180:38 | access to local variable i | strictlyPositive |
+| SignAnalysis.cs:186:34:186:44 | access to property Length | positive |
+| SignAnalysis.cs:187:16:187:36 | 3 | strictlyPositive |
+| SignAnalysis.cs:187:28:187:28 | 1 | strictlyPositive |
+| SignAnalysis.cs:187:31:187:31 | 2 | strictlyPositive |
+| SignAnalysis.cs:187:34:187:34 | 3 | strictlyPositive |
+| SignAnalysis.cs:188:34:188:44 | access to property Length | strictlyPositive |
+| SignAnalysis.cs:189:34:189:45 | call to method Count<Int32> | positive |
+| SignAnalysis.cs:190:34:190:55 | call to method Count<Int32> | positive |
+| SignAnalysis.cs:190:54:190:54 | 1 | strictlyPositive |
+| SignAnalysis.cs:193:34:193:41 | access to property Length | positive |
+| SignAnalysis.cs:196:34:196:51 | call to method Count<Int32> | positive |
+| SignAnalysis.cs:198:17:198:59 | 2 | strictlyPositive |
+| SignAnalysis.cs:198:17:198:59 | 3 | strictlyPositive |
+| SignAnalysis.cs:198:32:198:32 | 1 | strictlyPositive |
+| SignAnalysis.cs:198:35:198:35 | 1 | strictlyPositive |
+| SignAnalysis.cs:198:42:198:42 | 1 | strictlyPositive |
+| SignAnalysis.cs:198:45:198:45 | 2 | strictlyPositive |
+| SignAnalysis.cs:198:52:198:52 | 1 | strictlyPositive |
+| SignAnalysis.cs:198:55:198:55 | 3 | strictlyPositive |
+| SignAnalysis.cs:199:34:199:41 | access to property Length | strictlyPositive |
+| SignAnalysis.cs:206:38:206:38 | access to parameter i | strictlyPositive |
+| SignAnalysis.cs:210:38:210:38 | access to parameter i | negative |
+| SignAnalysis.cs:219:38:219:38 | access to parameter i | strictlyPositive |
+| SignAnalysis.cs:223:17:223:17 | access to parameter i | negative |
+| SignAnalysis.cs:225:42:225:42 | access to parameter i | strictlyNegative |
+| SignAnalysis.cs:236:38:236:38 | access to parameter i | strictlyPositive |
+| SignAnalysis.cs:240:17:240:17 | access to parameter i | negative |
+| SignAnalysis.cs:242:42:242:42 | access to parameter i | strictlyNegative |
+| SignAnalysis.cs:257:17:257:17 | access to parameter i | positive |
+| SignAnalysis.cs:257:17:257:19 | ...-- | positive |
+| SignAnalysis.cs:260:38:260:38 | access to parameter i | strictlyNegative |
+| SignAnalysis.cs:267:17:267:17 | access to parameter j | strictlyPositive |
+| SignAnalysis.cs:267:17:267:19 | ...-- | strictlyPositive |
+| SignAnalysis.cs:268:42:268:42 | access to parameter j | positive |
+| SignAnalysis.cs:270:38:270:38 | access to parameter j | negative |
+| SignAnalysis.cs:277:17:277:17 | access to parameter k | strictlyPositive |
+| SignAnalysis.cs:277:17:277:19 | ...-- | strictlyPositive |
+| SignAnalysis.cs:278:42:278:42 | access to parameter k | positive |
+| SignAnalysis.cs:280:21:280:21 | access to parameter k | positive |
+| SignAnalysis.cs:280:26:280:26 | 5 | strictlyPositive |
+| SignAnalysis.cs:292:34:292:34 | access to parameter i | strictlyPositive |
+| SignAnalysis.cs:295:38:295:38 | access to parameter i | strictlyPositive |
+| SignAnalysis.cs:300:27:300:28 | -... | strictlyNegative |
+| SignAnalysis.cs:300:28:300:28 | 1 | strictlyPositive |
+| SignAnalysis.cs:303:38:303:38 | access to local variable x | strictlyNegative |
+| SignAnalysis.cs:306:21:306:22 | -... | strictlyNegative |
+| SignAnalysis.cs:306:22:306:22 | 1 | strictlyPositive |
+| SignAnalysis.cs:309:38:309:38 | access to local variable x | strictlyNegative |
+| SignAnalysis.cs:316:13:316:31 | Char max = ... | strictlyPositive |
+| SignAnalysis.cs:316:19:316:31 | access to constant MaxValue | strictlyPositive |
+| SignAnalysis.cs:317:13:317:23 | Int32 c = ... | strictlyPositive |
+| SignAnalysis.cs:317:17:317:23 | ... + ... | strictlyPositive |
+| SignAnalysis.cs:317:23:317:23 | 1 | strictlyPositive |
+| SignAnalysis.cs:318:34:318:34 | access to local variable c | strictlyPositive |
+| SignAnalysis.cs:319:9:319:19 | ... = ... | strictlyNegative |
+| SignAnalysis.cs:319:13:319:19 | ... - ... | strictlyNegative |
+| SignAnalysis.cs:319:19:319:19 | 1 | strictlyPositive |
+| SignAnalysis.cs:320:34:320:34 | access to local variable c | strictlyNegative |
+| SignAnalysis.cs:321:9:321:19 | ... = ... | strictlyPositive |
+| SignAnalysis.cs:321:13:321:15 | (...) ... | strictlyPositive |
+| SignAnalysis.cs:321:13:321:15 | access to local variable max | strictlyPositive |
+| SignAnalysis.cs:321:13:321:19 | ... + ... | strictlyPositive |
+| SignAnalysis.cs:321:19:321:19 | 1 | strictlyPositive |
+| SignAnalysis.cs:322:34:322:34 | access to local variable c | strictlyPositive |
+| SignAnalysis.cs:329:17:329:26 | Int32 x = ... | strictlyPositive |
+| SignAnalysis.cs:329:21:329:21 | access to parameter v | strictlyPositive |
+| SignAnalysis.cs:329:21:329:26 | ... ?? ... | strictlyPositive |
+| SignAnalysis.cs:329:26:329:26 | 1 | strictlyPositive |
+| SignAnalysis.cs:330:38:330:38 | access to local variable x | strictlyPositive |
+| SignAnalysis.cs:335:17:335:26 | Int32 x = ... | strictlyPositive |
+| SignAnalysis.cs:335:21:335:26 | ... ?? ... | strictlyPositive |
+| SignAnalysis.cs:335:26:335:26 | 1 | strictlyPositive |
+| SignAnalysis.cs:336:38:336:38 | access to local variable x | strictlyPositive |
+| SignAnalysis.cs:341:17:341:26 | Int32 x = ... | negative |
+| SignAnalysis.cs:341:21:341:21 | access to parameter v | strictlyNegative |
+| SignAnalysis.cs:341:21:341:26 | ... ?? ... | negative |
+| SignAnalysis.cs:342:38:342:38 | access to local variable x | negative |
+| SignAnalysis.cs:348:62:348:62 | 5 | strictlyPositive |
+| SignAnalysis.cs:351:38:351:38 | access to local variable i | strictlyNegative |
+| SignAnalysis.cs:357:13:357:13 | access to parameter i | positive |
+| SignAnalysis.cs:359:38:359:38 | access to parameter i | strictlyPositive |
+| SignAnalysis.cs:371:38:371:38 | access to local variable y | strictlyNegative |
+| SignAnalysis.cs:377:16:377:22 | Single* dp = ... | positive |
+| SignAnalysis.cs:377:21:377:22 | &... | positive |
+| SignAnalysis.cs:378:18:378:19 | access to local variable dp | positive |
+| SignAnalysis.cs:381:38:381:38 | access to local variable x | strictlyNegative |
+| SignAnalysis.cs:390:13:390:32 | Int32 x = ... | strictlyPositive |
+| SignAnalysis.cs:390:17:390:32 | sizeof(..) | strictlyPositive |
+| SignAnalysis.cs:391:34:391:34 | access to local variable x | strictlyPositive |
+| SignAnalysis.cs:396:13:400:9 | Int32 x = ... | positive |
+| SignAnalysis.cs:396:17:400:9 | ... switch { ... } | positive |
+| SignAnalysis.cs:399:13:399:18 | ... => ... | strictlyPositive |
+| SignAnalysis.cs:399:18:399:18 | 2 | strictlyPositive |
+| SignAnalysis.cs:401:34:401:34 | access to local variable x | positive |
+| SignAnalysis.cs:406:13:406:17 | Int32 i = ... | strictlyPositive |
+| SignAnalysis.cs:406:17:406:17 | 1 | strictlyPositive |
+| SignAnalysis.cs:410:35:410:35 | access to local variable i | strictlyPositive |
+| SignAnalysis.cs:414:13:414:13 | access to local variable i | strictlyPositive |
+| SignAnalysis.cs:415:31:415:31 | access to local variable i | strictlyPositive |
+| SignAnalysis.cs:424:31:424:31 | access to local variable x | strictlyNegative |
+| SignAnalysis.cs:428:19:428:24 | ... = ... | strictlyPositive |
+| SignAnalysis.cs:428:23:428:24 | 12 | strictlyPositive |
+| SignAnalysis.cs:434:38:434:38 | access to local variable i | strictlyNegative |
+| SignAnalysis.cs:440:23:440:25 | access to parameter src | positive |
+| SignAnalysis.cs:440:29:440:31 | access to parameter dst | positive |
+| SignAnalysis.cs:443:38:443:38 | access to local variable x | strictlyNegative |
+| SignAnalysis.cs:446:31:446:32 | 10 | strictlyPositive |
+| SignAnalysis.cs:448:22:448:29 | Byte* to = ... | positive |
+| SignAnalysis.cs:448:27:448:29 | (...) ... | positive |
+| SignAnalysis.cs:450:38:450:44 | (...) ... | positive |
+| SignAnalysis.cs:450:43:450:44 | access to local variable to | positive |
+| SignAnalysis.cs:454:30:454:30 | 1 | strictlyPositive |
+| SignAnalysis.cs:454:30:454:30 | (...) ... | strictlyPositive |
+| SignAnalysis.cs:457:14:457:27 | Int64 l = ... | positive |
+| SignAnalysis.cs:457:18:457:27 | (...) ... | positive |
+| SignAnalysis.cs:457:18:457:27 | call to method Unsigned | positive |
+| SignAnalysis.cs:458:13:458:13 | access to local variable l | positive |
+| SignAnalysis.cs:460:38:460:38 | access to local variable l | strictlyPositive |
+| SignAnalysis.cs:463:14:463:24 | UInt32 x = ... | positive |
+| SignAnalysis.cs:463:18:463:24 | (...) ... | positive |
+| SignAnalysis.cs:464:9:464:9 | access to local variable x | positive |
+| SignAnalysis.cs:464:9:464:11 | ...++ | positive |
+| SignAnalysis.cs:465:34:465:34 | access to local variable x | strictlyPositive |
+| SignAnalysis.cs:470:21:470:21 | [b (line 468): true] 1 | strictlyPositive |
+| SignAnalysis.cs:470:25:470:26 | [b (line 468): false] -... | strictlyNegative |
+| SignAnalysis.cs:470:26:470:26 | [b (line 468): false] 1 | strictlyPositive |
+| SignAnalysis.cs:480:16:480:20 | [b (line 477): true] ... = ... | strictlyPositive |
+| SignAnalysis.cs:480:20:480:20 | [b (line 477): true] 1 | strictlyPositive |
+| SignAnalysis.cs:480:28:480:33 | [b (line 477): false] ... = ... | strictlyNegative |
+| SignAnalysis.cs:480:32:480:33 | [b (line 477): false] -... | strictlyNegative |
+| SignAnalysis.cs:480:33:480:33 | [b (line 477): false] 1 | strictlyPositive |
+| SignAnalysis.cs:482:34:482:34 | [b (line 477): false] access to local variable x | strictlyNegative |
+| SignAnalysis.cs:482:34:482:34 | [b (line 477): true] access to local variable x | strictlyPositive |
+| SignAnalysis.cs:485:38:485:38 | access to local variable x | strictlyPositive |
+| SignAnalysis.cs:487:38:487:38 | access to local variable x | strictlyNegative |

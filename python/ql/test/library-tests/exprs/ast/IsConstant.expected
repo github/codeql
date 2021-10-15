@@ -1,0 +1,17 @@
+| exprs_test.py:2:1:2:1 | IntegerLiteral |
+| exprs_test.py:3:2:3:2 | IntegerLiteral |
+| exprs_test.py:3:2:3:4 | Tuple |
+| exprs_test.py:3:4:3:4 | IntegerLiteral |
+| exprs_test.py:4:1:4:6 | List |
+| exprs_test.py:4:2:4:2 | IntegerLiteral |
+| exprs_test.py:4:5:4:5 | IntegerLiteral |
+| exprs_test.py:6:5:6:5 | IntegerLiteral |
+| exprs_test.py:8:1:8:6 | List |
+| exprs_test.py:8:1:8:10 | Attribute |
+| exprs_test.py:8:2:8:2 | IntegerLiteral |
+| exprs_test.py:8:5:8:5 | IntegerLiteral |
+| exprs_test.py:9:1:9:7 | List |
+| exprs_test.py:9:1:9:11 | Subscript |
+| exprs_test.py:9:2:9:2 | IntegerLiteral |
+| exprs_test.py:9:5:9:6 | IntegerLiteral |
+| exprs_test.py:9:9:9:10 | IntegerLiteral |

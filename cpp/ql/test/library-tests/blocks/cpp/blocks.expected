@@ -1,0 +1,32 @@
+| blocks.cpp:4:8:4:47 | functionPtrReturningVoidWithVoidArgument | file://:0:0:0:0 | ..(*)(..) | pointer to {function returning {void} with arguments ()} |
+| blocks.cpp:5:7:5:52 | functionPtrReturningIntWithIntAndCharArguments | file://:0:0:0:0 | ..(*)(..) | pointer to {function returning {int} with arguments (int,char)} |
+| blocks.cpp:6:8:6:57 | arrayOfTenFunctionPtrsReturningVoidWithIntArgument | file://:0:0:0:0 | ..(*[10])(..) | array of 10 {pointer to {function returning {void} with arguments (int)}} |
+| blocks.cpp:8:8:8:41 | blockReturningVoidWithVoidArgument | file://:0:0:0:0 | ..(^)(..) | block of {function returning {void} with arguments ()} |
+| blocks.cpp:9:7:9:46 | blockReturningIntWithIntAndCharArguments | file://:0:0:0:0 | ..(^)(..) | block of {function returning {int} with arguments (int,char)} |
+| blocks.cpp:10:8:10:51 | arrayOfTenBlocksReturningVoidWithIntArgument | file://:0:0:0:0 | ..(^[10])(..) | array of 10 {block of {function returning {void} with arguments (int)}} |
+| blocks.cpp:12:5:12:5 | x | file://:0:0:0:0 | int | int |
+| blocks.cpp:26:10:26:11 | b1 | file://:0:0:0:0 | ..(^)(..) | block of {function returning {void} with arguments (int,char)} |
+| blocks.cpp:27:16:27:16 | y | file://:0:0:0:0 | int | int |
+| blocks.cpp:27:24:27:24 | z | file://:0:0:0:0 | char | char |
+| blocks.cpp:30:10:30:11 | b2 | file://:0:0:0:0 | ..(^)(..) | block of {function returning {void} with arguments (int,char)} |
+| blocks.cpp:31:16:31:16 | y | file://:0:0:0:0 | int | int |
+| blocks.cpp:31:24:31:24 | z | file://:0:0:0:0 | char | char |
+| blocks.cpp:34:10:34:11 | b3 | file://:0:0:0:0 | ..(^)(..) | block of {function returning {char} with arguments (int,char)} |
+| blocks.cpp:35:16:35:16 | y | file://:0:0:0:0 | int | int |
+| blocks.cpp:35:24:35:24 | z | file://:0:0:0:0 | char | char |
+| blocks.cpp:38:10:38:11 | b4 | file://:0:0:0:0 | ..(^)(..) | block of {function returning {char} with arguments (int,char)} |
+| blocks.cpp:39:16:39:16 | y | file://:0:0:0:0 | int | int |
+| blocks.cpp:39:24:39:24 | z | file://:0:0:0:0 | char | char |
+| blocks.cpp:42:10:42:11 | b5 | file://:0:0:0:0 | ..(^)(..) | block of {function returning {char} with arguments (int,char)} |
+| blocks.cpp:43:21:43:21 | y | file://:0:0:0:0 | int | int |
+| blocks.cpp:43:29:43:29 | z | file://:0:0:0:0 | char | char |
+| blocks.cpp:45:10:45:10 | c | file://:0:0:0:0 | char | char |
+| blocks.cpp:55:7:55:10 | four | file://:0:0:0:0 | int | int |
+| file://:0:0:0:0 | (unnamed parameter 0) | file://:0:0:0:0 | Example && | rvalue reference to {struct Example} |
+| file://:0:0:0:0 | (unnamed parameter 0) | file://:0:0:0:0 | __va_list_tag && | rvalue reference to {struct __va_list_tag} |
+| file://:0:0:0:0 | (unnamed parameter 0) | file://:0:0:0:0 | const Example & | reference to {const {struct Example}} |
+| file://:0:0:0:0 | (unnamed parameter 0) | file://:0:0:0:0 | const __va_list_tag & | reference to {const {struct __va_list_tag}} |
+| file://:0:0:0:0 | fp_offset | file://:0:0:0:0 | unsigned int | unsigned int |
+| file://:0:0:0:0 | gp_offset | file://:0:0:0:0 | unsigned int | unsigned int |
+| file://:0:0:0:0 | overflow_arg_area | file://:0:0:0:0 | void * | pointer to {void} |
+| file://:0:0:0:0 | reg_save_area | file://:0:0:0:0 | void * | pointer to {void} |

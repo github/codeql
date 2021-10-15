@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+	<!-- BAD: Password of datasource is in not encrypted -->
+	<Resource name="jdbc/exampleDS1" auth="Container" type="javax.sql.DataSource"
+		maxTotal="100" maxIdle="30" maxWaitMillis="10000"
+		username="root" password="1234"
+		driverClassName="com.mysql.jdbc.Driver"
+		url="jdbc:mysql://www.example1.com:3306/proj"/>
+
+	<!-- GOOD: Password is encrypted and stored in a password vault -->
+	<Resource name="jdbc/exampleDS2" auth="Container" type="javax.sql.DataSource"
+		maxTotal="100" maxIdle="30" maxWaitMillis="10000"
+		username="root" password="${VAULT::exampleDS2::password::N2NhZDYzOTMtNWE0OS00ZGQ0LWE4MmEtMWNlMDMyNDdmNmI2TElORV9CUkVBS3ZhdWx0}"
+		driverClassName="com.mysql.jdbc.Driver"
+		url="jdbc:mysql://www.example2.com:3306/proj"/>
+
+	<!-- GOOD: Password is not stored in the configuration file -->
+	<Resource name="jdbc/exampleDS3" auth="Container" type="javax.sql.DataSource"
+		maxTotal="100" maxIdle="30" maxWaitMillis="10000"
+		username="root" password="${jdbc.password}"
+		driverClassName="com.mysql.jdbc.Driver"
+		url="jdbc:mysql://www.example3.com:3306/proj"/>
+
+	<!-- GOOD: Password is encrypted -->
+	<Resource name="jdbc/exampleDS4" auth="Container" type="javax.sql.DataSource"
+		maxTotal="100" maxIdle="30" maxWaitMillis="10000"
+		username="root" password="Tg2Nn7wUZOQ6Xc+1lenkZTQ9ZDf9a2/RBRiqJBCIX6o="
+		driverClassName="com.mysql.jdbc.Driver"
+		url="jdbc:mysql://www.example4.com:3306/proj"/>
+</Context>

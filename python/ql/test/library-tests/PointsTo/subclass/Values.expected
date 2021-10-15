@@ -1,0 +1,66 @@
+| 2 | ControlFlowNode for IntegerLiteral | int 7 | 2 |
+| 3 | ControlFlowNode for int | builtin-class int | 3 |
+| 3 | ControlFlowNode for isinstance | Builtin-function isinstance | 3 |
+| 3 | ControlFlowNode for isinstance() | bool True | 3 |
+| 3 | ControlFlowNode for x | int 7 | 2 |
+| 4 | ControlFlowNode for issubclass | Builtin-function issubclass | 4 |
+| 4 | ControlFlowNode for issubclass() | bool True | 4 |
+| 4 | ControlFlowNode for object | builtin-class object | 4 |
+| 4 | ControlFlowNode for type | builtin-class type | 4 |
+| 4 | ControlFlowNode for type() | builtin-class int | 4 |
+| 4 | ControlFlowNode for x | int 7 | 2 |
+| 5 | ControlFlowNode for dict | builtin-class dict | 5 |
+| 6 | ControlFlowNode for d | builtin-class dict | 5 |
+| 6 | ControlFlowNode for dict | builtin-class dict | 6 |
+| 6 | ControlFlowNode for issubclass | Builtin-function issubclass | 6 |
+| 6 | ControlFlowNode for issubclass() | bool True | 6 |
+| 7 | ControlFlowNode for UnaryExpr | bool True | 7 |
+| 7 | ControlFlowNode for d | builtin-class dict | 5 |
+| 7 | ControlFlowNode for issubclass | Builtin-function issubclass | 7 |
+| 7 | ControlFlowNode for issubclass() | bool False | 7 |
+| 7 | ControlFlowNode for list | builtin-class list | 7 |
+| 9 | ControlFlowNode for IfExp | () | 9 |
+| 9 | ControlFlowNode for IfExp | int 0 | 9 |
+| 9 | ControlFlowNode for IntegerLiteral | int 0 | 9 |
+| 9 | ControlFlowNode for Tuple | () | 9 |
+| 9 | ControlFlowNode for condition | Unknown value | 9 |
+| 10 | ControlFlowNode for isinstance | Builtin-function isinstance | 10 |
+| 10 | ControlFlowNode for isinstance() | bool False | 10 |
+| 10 | ControlFlowNode for isinstance() | bool True | 10 |
+| 10 | ControlFlowNode for tuple | builtin-class tuple | 10 |
+| 10 | ControlFlowNode for x | () | 9 |
+| 10 | ControlFlowNode for x | int 0 | 9 |
+| 12 | ControlFlowNode for IntegerLiteral | int 3 | 12 |
+| 12 | ControlFlowNode for isinstance | Builtin-function isinstance | 12 |
+| 12 | ControlFlowNode for isinstance() | bool False | 12 |
+| 12 | ControlFlowNode for isinstance() | bool True | 12 |
+| 12 | ControlFlowNode for unknown | Unknown value | 12 |
+| 12 | ControlFlowNode for unknown() | Unknown value | 12 |
+| 13 | ControlFlowNode for int | builtin-class int | 13 |
+| 13 | ControlFlowNode for isinstance | Builtin-function isinstance | 13 |
+| 13 | ControlFlowNode for isinstance() | bool False | 13 |
+| 13 | ControlFlowNode for isinstance() | bool True | 13 |
+| 13 | ControlFlowNode for x | () | 9 |
+| 13 | ControlFlowNode for x | int 0 | 9 |
+| 14 | ControlFlowNode for Tuple | (builtin-class list, builtin-class int, ) | 14 |
+| 14 | ControlFlowNode for int | builtin-class int | 14 |
+| 14 | ControlFlowNode for isinstance | Builtin-function isinstance | 14 |
+| 14 | ControlFlowNode for isinstance() | bool True | 14 |
+| 14 | ControlFlowNode for list | builtin-class list | 14 |
+| 14 | ControlFlowNode for x | int 0 | 9 |
+| 15 | ControlFlowNode for Tuple | (builtin-class list, builtin-class int, ) | 15 |
+| 15 | ControlFlowNode for int | builtin-class int | 15 |
+| 15 | ControlFlowNode for issubclass | Builtin-function issubclass | 15 |
+| 15 | ControlFlowNode for issubclass() | bool True | 15 |
+| 15 | ControlFlowNode for list | builtin-class list | 15 |
+| 15 | ControlFlowNode for type | builtin-class type | 15 |
+| 15 | ControlFlowNode for type() | builtin-class int | 15 |
+| 15 | ControlFlowNode for x | int 0 | 9 |
+| 16 | ControlFlowNode for Tuple | (builtin-class float, builtin-class dict, ) | 16 |
+| 16 | ControlFlowNode for dict | builtin-class dict | 16 |
+| 16 | ControlFlowNode for float | builtin-class float | 16 |
+| 16 | ControlFlowNode for issubclass | Builtin-function issubclass | 16 |
+| 16 | ControlFlowNode for issubclass() | bool False | 16 |
+| 16 | ControlFlowNode for type | builtin-class type | 16 |
+| 16 | ControlFlowNode for type() | builtin-class int | 16 |
+| 16 | ControlFlowNode for x | int 0 | 9 |

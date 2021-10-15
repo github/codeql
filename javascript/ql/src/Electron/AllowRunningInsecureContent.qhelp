@@ -1,0 +1,42 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+
+  <overview>
+    <p>
+      Electron is secure by default through a policy banning the execution of
+      content loaded over HTTP. Setting the
+      <code>allowRunningInsecureContent</code> property of a
+      <code>webPreferences</code> object to <code>true</code> will disable this
+      policy.
+    </p>
+    <p>
+      Enabling the execution of insecure content is strongly discouraged.
+    </p>
+  </overview>
+  
+  <recommendation>
+    <p>
+      Do not enable the <code>allowRunningInsecureContent</code> property.
+    </p>
+  </recommendation>
+  
+  <example>
+    <p>
+      The following example shows <code>allowRunningInsecureContent</code>
+      being enabled.
+    </p>
+    <sample src="examples/AllowRunningInsecureContent.js"/>
+    
+    <p>
+      This is problematic, since it allows the execution of code from an
+      untrusted origin.
+    </p>
+    
+  </example>
+  
+  <references>
+    <li>Electron Documentation: <a href="https://electronjs.org/docs/tutorial/security#8-do-not-set-allowrunninginsecurecontent-to-true">Security, Native Capabilities, and Your Responsibility</a></li>
+  </references>
+</qhelp>

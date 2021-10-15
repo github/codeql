@@ -1,0 +1,28 @@
+| unaryopexpr | unaryopexpr.c:1:6:1:6 | f | 1 | 1 | unaryopexpr.c:1:10:14:1 | unaryopexpr.c:1:10:14:1 | unaryopexpr.c:1:10:14:1 | { ... } | 2: declaration |
+| unaryopexpr | unaryopexpr.c:1:6:1:6 | f | 2 | 2 | unaryopexpr.c:2:5:2:10 | unaryopexpr.c:2:5:2:10 | unaryopexpr.c:2:5:2:10 | declaration | 3: ExprStmt |
+| unaryopexpr | unaryopexpr.c:1:6:1:6 | f | 3 | 3 | unaryopexpr.c:3:5:3:7 | unaryopexpr.c:3:5:3:7 | unaryopexpr.c:3:5:3:7 | ExprStmt | 3: i |
+| unaryopexpr | unaryopexpr.c:1:6:1:6 | f | 3 | 4 | unaryopexpr.c:3:6:3:6 | unaryopexpr.c:3:6:3:6 | unaryopexpr.c:3:6:3:6 | i | 3: & ... |
+| unaryopexpr | unaryopexpr.c:1:6:1:6 | f | 3 | 5 | unaryopexpr.c:3:5:3:6 | unaryopexpr.c:3:5:3:6 | unaryopexpr.c:3:5:3:6 | & ... | 5: ExprStmt |
+| unaryopexpr | unaryopexpr.c:1:6:1:6 | f | 5 | 6 | unaryopexpr.c:5:5:5:7 | unaryopexpr.c:5:5:5:7 | unaryopexpr.c:5:5:5:7 | ExprStmt | 5: i |
+| unaryopexpr | unaryopexpr.c:1:6:1:6 | f | 5 | 7 | unaryopexpr.c:5:6:5:6 | unaryopexpr.c:5:6:5:6 | unaryopexpr.c:5:6:5:6 | i | 5: - ... |
+| unaryopexpr | unaryopexpr.c:1:6:1:6 | f | 5 | 8 | unaryopexpr.c:5:5:5:6 | unaryopexpr.c:5:5:5:6 | unaryopexpr.c:5:5:5:6 | - ... | 7: ExprStmt |
+| unaryopexpr | unaryopexpr.c:1:6:1:6 | f | 7 | 9 | unaryopexpr.c:7:5:7:7 | unaryopexpr.c:7:5:7:7 | unaryopexpr.c:7:5:7:7 | ExprStmt | 7: i |
+| unaryopexpr | unaryopexpr.c:1:6:1:6 | f | 7 | 10 | unaryopexpr.c:7:6:7:6 | unaryopexpr.c:7:6:7:6 | unaryopexpr.c:7:6:7:6 | i | 7: ~ ... |
+| unaryopexpr | unaryopexpr.c:1:6:1:6 | f | 7 | 11 | unaryopexpr.c:7:5:7:6 | unaryopexpr.c:7:5:7:6 | unaryopexpr.c:7:5:7:6 | ~ ... | 8: ExprStmt |
+| unaryopexpr | unaryopexpr.c:1:6:1:6 | f | 8 | 12 | unaryopexpr.c:8:5:8:7 | unaryopexpr.c:8:5:8:7 | unaryopexpr.c:8:5:8:7 | ExprStmt | 8: i |
+| unaryopexpr | unaryopexpr.c:1:6:1:6 | f | 8 | 13 | unaryopexpr.c:8:6:8:6 | unaryopexpr.c:8:6:8:6 | unaryopexpr.c:8:6:8:6 | i | 8: ! ... |
+| unaryopexpr | unaryopexpr.c:1:6:1:6 | f | 8 | 14 | unaryopexpr.c:8:5:8:6 | unaryopexpr.c:8:5:8:6 | unaryopexpr.c:8:5:8:6 | ! ... | 10: ExprStmt |
+| unaryopexpr | unaryopexpr.c:1:6:1:6 | f | 10 | 15 | unaryopexpr.c:10:5:10:8 | unaryopexpr.c:10:5:10:8 | unaryopexpr.c:10:5:10:8 | ExprStmt | 10: i |
+| unaryopexpr | unaryopexpr.c:1:6:1:6 | f | 10 | 16 | unaryopexpr.c:10:5:10:5 | unaryopexpr.c:10:5:10:5 | unaryopexpr.c:10:5:10:5 | i | 10: ... ++ |
+| unaryopexpr | unaryopexpr.c:1:6:1:6 | f | 10 | 17 | unaryopexpr.c:10:5:10:7 | unaryopexpr.c:10:5:10:7 | unaryopexpr.c:10:5:10:7 | ... ++ | 11: ExprStmt |
+| unaryopexpr | unaryopexpr.c:1:6:1:6 | f | 11 | 18 | unaryopexpr.c:11:5:11:8 | unaryopexpr.c:11:5:11:8 | unaryopexpr.c:11:5:11:8 | ExprStmt | 11: i |
+| unaryopexpr | unaryopexpr.c:1:6:1:6 | f | 11 | 19 | unaryopexpr.c:11:5:11:5 | unaryopexpr.c:11:5:11:5 | unaryopexpr.c:11:5:11:5 | i | 11: ... -- |
+| unaryopexpr | unaryopexpr.c:1:6:1:6 | f | 11 | 20 | unaryopexpr.c:11:5:11:7 | unaryopexpr.c:11:5:11:7 | unaryopexpr.c:11:5:11:7 | ... -- | 12: ExprStmt |
+| unaryopexpr | unaryopexpr.c:1:6:1:6 | f | 12 | 21 | unaryopexpr.c:12:5:12:8 | unaryopexpr.c:12:5:12:8 | unaryopexpr.c:12:5:12:8 | ExprStmt | 12: i |
+| unaryopexpr | unaryopexpr.c:1:6:1:6 | f | 12 | 22 | unaryopexpr.c:12:7:12:7 | unaryopexpr.c:12:7:12:7 | unaryopexpr.c:12:7:12:7 | i | 12: ++ ... |
+| unaryopexpr | unaryopexpr.c:1:6:1:6 | f | 12 | 23 | unaryopexpr.c:12:5:12:7 | unaryopexpr.c:12:5:12:7 | unaryopexpr.c:12:5:12:7 | ++ ... | 13: ExprStmt |
+| unaryopexpr | unaryopexpr.c:1:6:1:6 | f | 13 | 24 | unaryopexpr.c:13:5:13:8 | unaryopexpr.c:13:5:13:8 | unaryopexpr.c:13:5:13:8 | ExprStmt | 13: i |
+| unaryopexpr | unaryopexpr.c:1:6:1:6 | f | 13 | 25 | unaryopexpr.c:13:7:13:7 | unaryopexpr.c:13:7:13:7 | unaryopexpr.c:13:7:13:7 | i | 13: -- ... |
+| unaryopexpr | unaryopexpr.c:1:6:1:6 | f | 13 | 26 | unaryopexpr.c:13:5:13:7 | unaryopexpr.c:13:5:13:7 | unaryopexpr.c:13:5:13:7 | -- ... | 14: return ... |
+| unaryopexpr | unaryopexpr.c:1:6:1:6 | f | 14 | 27 | unaryopexpr.c:14:1:14:1 | unaryopexpr.c:14:1:14:1 | unaryopexpr.c:14:1:14:1 | return ... | 14: f |
+| unaryopexpr | unaryopexpr.c:1:6:1:6 | f | 14 | 28 | unaryopexpr.c:1:6:1:6 | unaryopexpr.c:1:6:1:6 | unaryopexpr.c:1:6:1:6 | f | <none> |

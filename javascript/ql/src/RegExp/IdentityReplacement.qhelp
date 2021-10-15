@@ -1,0 +1,36 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Replacing a substring with itself has no effect and usually indicates a mistake, such as
+misspelling a backslash escape.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Examine the string replacement to find and correct any typos.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following code snippet attempts to backslash-escape all double quotes in <code>raw</code>
+by replacing all instances of <code>"</code> with <code>\"</code>:
+</p>
+<sample src="examples/IdentityReplacement.js" />
+<p>
+However, the replacement string <code>'\"'</code> is actually the same as <code>'"'</code>,
+with <code>\"</code> interpreted as an identity escape, so the replacement does nothing.
+Instead, the replacement string should be <code>'\\"'</code>:
+</p>
+<sample src="examples/IdentityReplacementGood.js" />
+</example>
+
+<references>
+<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String#Escape_notation">String escape notation</a>.</li>
+</references>
+</qhelp>

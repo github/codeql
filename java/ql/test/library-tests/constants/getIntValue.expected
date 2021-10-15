@@ -1,0 +1,37 @@
+| constants/Values.java:6:29:6:30 | 42 | 42 |
+| constants/Values.java:9:27:9:28 | 42 | 42 |
+| constants/Values.java:10:36:10:46 | -2147483648 | -2147483648 |
+| constants/Values.java:11:29:11:31 | 052 | 42 |
+| constants/Values.java:12:38:12:41 | -... | -42 |
+| constants/Values.java:13:27:13:30 | 0x2A | 42 |
+| constants/Values.java:14:36:14:40 | -... | -42 |
+| constants/Values.java:15:39:15:43 | 0x2_A | 42 |
+| constants/Values.java:16:30:16:37 | 0b101010 | 42 |
+| constants/Values.java:17:39:17:47 | -... | -42 |
+| constants/Values.java:18:42:18:51 | 0b1_0101_0 | 42 |
+| constants/Values.java:25:20:25:27 | (...)... | 42 |
+| constants/Values.java:26:25:26:33 | (...)... | 42 |
+| constants/Values.java:27:32:27:43 | (...)... | -42 |
+| constants/Values.java:28:32:28:40 | (...)... | 42 |
+| constants/Values.java:29:32:29:41 | (...)... | 42 |
+| constants/Values.java:30:32:30:41 | (...)... | -42 |
+| constants/Values.java:31:32:31:44 | (...)... | 42 |
+| constants/Values.java:32:32:32:44 | (...)... | -32768 |
+| constants/Values.java:36:26:36:28 | +... | 42 |
+| constants/Values.java:39:27:39:29 | -... | -42 |
+| constants/Values.java:43:27:43:28 | ~... | -1 |
+| constants/Values.java:45:19:45:23 | ... * ... | 63 |
+| constants/Values.java:48:19:48:25 | ... / ... | 42 |
+| constants/Values.java:52:19:52:26 | ... % ... | 42 |
+| constants/Values.java:56:20:56:26 | ... + ... | 42 |
+| constants/Values.java:59:21:59:29 | ... - ... | 42 |
+| constants/Values.java:62:22:62:28 | ... << ... | 84 |
+| constants/Values.java:65:22:65:28 | ... >> ... | -1 |
+| constants/Values.java:66:23:66:30 | ... >>> ... | 2147483647 |
+| constants/Values.java:67:27:67:33 | ... & ... | 42 |
+| constants/Values.java:68:26:68:32 | ... \| ... | 42 |
+| constants/Values.java:69:27:69:33 | ... ^ ... | 42 |
+| constants/Values.java:83:20:83:21 | 42 | 42 |
+| constants/Values.java:86:25:86:35 | final_field | 42 |
+| constants/Values.java:87:33:87:34 | 42 | 42 |
+| constants/Values.java:88:25:88:35 | final_local | 42 |

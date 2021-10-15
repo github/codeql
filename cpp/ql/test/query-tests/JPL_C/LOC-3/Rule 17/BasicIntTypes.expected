@@ -1,0 +1,3 @@
+| test.c:6:26:6:26 | x | x uses the basic integral type unsigned char rather than a typedef with size and signedness. |
+| test.c:7:20:7:20 | x | x uses the basic integral type unsigned char rather than a typedef with size and signedness. |
+| test.c:10:16:10:20 | test7 | test7 uses the basic integral type unsigned char rather than a typedef with size and signedness. |

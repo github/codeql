@@ -1,0 +1,25 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>The software uses a function to access a memory buffer in a way that may read or write data past the end of that buffer.  This may result in software instability, improper access to or corruption of sensitive information, or code execution by an attacker.</p>
+</overview>
+
+<recommendation>
+<p>When accessing buffers with functions such as <code>memcpy</code>, <code>memset</code> or <code>strncpy</code>, ensure that the size value for the operation is no greater than the amount of space available in the destination buffer.  Failure to do this may permit a buffer overwrite to occur.  Also ensure that the size value is no greater than the amount of data in the source buffer, to prevent a buffer overread from occurring.</p>
+</recommendation>
+
+<example>
+<p>In the following example, <code>memcpy</code> is used to fill a buffer with data from a string.</p>
+<sample src="OverflowBuffer.c" />
+<p>Although the size of the operation matches the destination buffer, the source is only 6 bytes long so an overread will occur.  This could copy sensitive data from nearby areas of memory (such as the local variable <code>password</code> in this example) into the buffer as well, potentially making it visible to an attacker.</p>
+
+<p>To fix this issue, reduce the size of the <code>memcpy</code> to the smaller of the source and destination buffers, <code>min(256, strlen(message) + 1)</code>.  Alternatively in this case it would be more appropriate to use the <code>strncpy</code> function rather than <code>memcpy</code>.</p>
+</example>
+
+<references>
+</references>
+
+</qhelp>

@@ -1,0 +1,10 @@
+| h.h:3:16:3:23 | mytype_t | file://:0:0:0:0 | char | 1 |
+| h.h:3:16:3:23 | mytype_t | file://:0:0:0:0 | int | 1 |
+| h.h:5:15:5:19 | myfun | file://:0:0:0:0 | char | 2 |
+| h.h:5:15:5:19 | myfun | file://:0:0:0:0 | int | 2 |
+| h.h:7:12:7:17 | intfun | file://:0:0:0:0 | int | 1 |
+| h.h:8:10:8:17 | localVar | file://:0:0:0:0 | char | 1 |
+| h.h:8:10:8:17 | localVar | file://:0:0:0:0 | int | 1 |
+| h.h:12:15:12:19 | myvar | file://:0:0:0:0 | char | 1 |
+| h.h:12:15:12:19 | myvar | file://:0:0:0:0 | int | 1 |
+| h.h:16:12:16:17 | intvar | file://:0:0:0:0 | int | 1 |

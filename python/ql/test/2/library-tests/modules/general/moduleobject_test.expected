@@ -1,0 +1,11 @@
+| Module confused_elements | __name__ | str b'henry' |
+| Module confused_elements | a | int 1 |
+| Module package | __name__ | str b'package' |
+| Module package | a | int 1 |
+| Module package | assistant | Module package.assistant |
+| Module package | b | int 2 |
+| Module package | c | int 3 |
+| Module package | d | int 4 |
+| Module package | f | int 1 |
+| Module package | g | int 7 |
+| Module package | helper | Module package.helper |

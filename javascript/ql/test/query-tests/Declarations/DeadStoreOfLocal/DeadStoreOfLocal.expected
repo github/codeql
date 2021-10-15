@@ -1,0 +1,13 @@
+| overload.ts:10:12:10:14 | baz | The value assigned to baz here is unused. |
+| tst2.js:26:9:26:14 | x = 23 | The initial value of x is unused, since it is always overwritten. |
+| tst2.js:28:9:28:14 | x = 42 | The value assigned to x here is unused. |
+| tst3.js:2:1:2:36 | exports ... a: 23 } | The value assigned to exports here is unused. |
+| tst3b.js:2:18:2:36 | exports = { a: 23 } | The value assigned to exports here is unused. |
+| tst.js:6:2:6:7 | y = 23 | The value assigned to y here is unused. |
+| tst.js:13:6:13:11 | a = 23 | The initial value of a is unused, since it is always overwritten. |
+| tst.js:13:14:13:19 | a = 42 | The value assigned to a here is unused. |
+| tst.js:45:6:45:11 | x = 23 | The initial value of x is unused, since it is always overwritten. |
+| tst.js:51:6:51:11 | x = 23 | The initial value of x is unused, since it is always overwritten. |
+| tst.js:132:7:132:13 | {x} = o | The initial value of x is unused, since it is always overwritten. |
+| tst.js:162:6:162:14 | [x] = [0] | The initial value of x is unused, since it is always overwritten. |
+| tst.js:172:7:172:17 | nSign = foo | The value assigned to nSign here is unused. |

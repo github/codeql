@@ -1,0 +1,31 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>The Java Shell tool (JShell) is an interactive tool for learning the Java programming 
+language and prototyping Java code. JShell is a Read-Evaluate-Print Loop (REPL), which 
+evaluates declarations, statements, and expressions as they are entered and immediately 
+shows the results. If an expression is built using attacker-controlled data and then evaluated, 
+it may allow the attacker to run arbitrary code.</p>
+</overview>
+
+<recommendation>
+<p>It is generally recommended to avoid using untrusted input in a JShell expression.
+If it is not possible, JShell expressions should be run in a sandbox that allows accessing only 
+explicitly allowed classes.</p>
+</recommendation>
+
+<example>
+<p>The following example calls <code>JShell.eval(...)</code> or <code>SourceCodeAnalysis.wrappers(...)</code> 
+to execute untrusted data.</p>
+<sample src="JShellInjection.java" />
+</example>
+
+<references>
+<li>
+Java Shell User’s Guide: <a href="https://docs.oracle.com/en/java/javase/11/jshell/introduction-jshell.html">Introduction to JShell</a>
+</li>
+</references>
+</qhelp>

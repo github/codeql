@@ -1,0 +1,32 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>This query finds namespaces that do not have a good balance between abstractness and stability where:</p>
+<ul>
+<li> 
+Abstractness measures the proportion of abstract types in a namespace relative to the total number of types in that namespace.
+</li>
+<li>
+Instability measures the level of expectation that changes to other namespaces will affect this namespace.
+</li>
+</ul>
+
+<p>The metric tries to capture the trade-off between abstractness
+      and instability. For an ideal balance, the sum of
+      abstractness and instability should be one. That is, a package is
+      completely abstract and stable (abstractness=1 and instability=0)
+      or it is concrete and instable (abstractness=0 and instability=1).
+      This query measures the distance between the balance in the code base
+      and the ideal.</p>
+</overview>
+
+<references>
+<li>C++ reference: <a href="https://en.cppreference.com/w/cpp/language/namespace">Namespaces</a>
+ </li>
+ <li>Geeks for Geeks: <a href="https://www.geeksforgeeks.org/abstraction-in-c/">Abstraction in C++</a></li>
+</references>
+</qhelp>

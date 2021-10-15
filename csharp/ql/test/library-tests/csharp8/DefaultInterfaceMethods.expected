@@ -1,0 +1,4 @@
+| DefaultInterfaceMethods.cs:9:9:9:11 | get_Greeting |
+| DefaultInterfaceMethods.cs:10:9:10:11 | set_Greeting |
+| DefaultInterfaceMethods.cs:13:12:13:16 | Greet |
+| DefaultInterfaceMethods.cs:15:30:15:40 | get_GreetingString |

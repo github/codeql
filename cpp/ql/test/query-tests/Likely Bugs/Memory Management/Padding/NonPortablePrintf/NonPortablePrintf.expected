@@ -1,0 +1,4 @@
+| test.cpp:10:17:10:17 | l | This argument should be of type 'int' but is of type 'long' (which changes size from 32 to 64 on 64-bit systems). |
+| test.cpp:13:17:13:19 | ptr | This argument should be of type 'int' but is of type 'void *' (which changes size from 32 to 64 on 64-bit systems). |
+| test.cpp:14:17:14:19 | ptr | This argument should be of type 'unsigned int' but is of type 'void *' (which changes size from 32 to 64 on 64-bit systems). |
+| test.cpp:15:17:15:19 | ptr | This argument should be of type 'unsigned int' but is of type 'void *' (which changes size from 32 to 64 on 64-bit systems). |

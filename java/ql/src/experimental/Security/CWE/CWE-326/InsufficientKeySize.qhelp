@@ -1,0 +1,29 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+    <overview>
+        <p>This rule finds uses of encryption algorithms with too small a key size. Encryption algorithms 
+are vulnerable to brute force attack when too small a key size is used.</p>
+    </overview>
+
+    <recommendation>
+        <p>The key should be at least 2048 bits long when using RSA and DSA encryption, 256 bits long when using EC encryption, and 128 bits long when using 
+symmetric encryption.</p>
+    </recommendation>
+    
+    <references>
+
+        <li>
+            Wikipedia.
+            <a href="http://en.wikipedia.org/wiki/Key_size">Key size</a>
+        </li>
+        <li>
+            SonarSource.
+            <a href="https://rules.sonarsource.com/java/type/Vulnerability/RSPEC-4426">Cryptographic keys should be robust</a>
+        </li>
+        <li>
+            CWE.
+            <a href="https://cwe.mitre.org/data/definitions/326.html">CWE-326: Inadequate Encryption Strength</a>
+        </li>
+ 
+    </references>
+</qhelp>

@@ -1,0 +1,2 @@
+| recursiveMappedType.ts:2:5:2:5 | a | RecursiveMappedType<this> & X |
+| recursiveMappedType.ts:3:5:3:5 | b | boolean |

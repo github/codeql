@@ -1,0 +1,9 @@
+graph
+{
+	node [shape=rectangle];
+
+	AC -- B;
+	AC -- D;
+	AC -- E;
+}
+

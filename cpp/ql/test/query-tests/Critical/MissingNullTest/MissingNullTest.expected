@@ -1,0 +1,6 @@
+| test.cpp:23:8:23:8 | p | Value may be null; it should be checked before dereferencing. |
+| test.cpp:35:10:35:10 | q | Value may be null; it should be checked before dereferencing. |
+| test.cpp:43:13:43:13 | q | Value may be null; it should be checked before dereferencing. |
+| test.cpp:51:17:51:17 | q | Value may be null; it should be checked before dereferencing. |
+| test.cpp:58:8:58:8 | p | Value may be null; it should be checked before dereferencing. |
+| test.cpp:67:8:67:8 | p | Value may be null; it should be checked before dereferencing. |

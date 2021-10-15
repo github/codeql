@@ -1,0 +1,1 @@
+| test.cpp:24:4:24:7 | arr3 | Array of size 3 passed to $@ which expects an array of size 4. | test.cpp:8:6:8:6 | g | g |

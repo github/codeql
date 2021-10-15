@@ -1,0 +1,4 @@
+| undefined_attribute.py:24:16:24:30 | Attribute | Attribute 'not_exists' is not defined in either the class body or in any method |
+| undefined_attribute.py:109:16:109:21 | Attribute | Attribute 'y' is not defined in either the class body or in any method |
+| undefined_attribute.py:250:16:250:31 | Attribute | Attribute 'glance_host' is not defined in either the class body or in any method |
+| undefined_attribute.py:251:16:251:31 | Attribute | Attribute 'glance_port' is not defined in either the class body or in any method |

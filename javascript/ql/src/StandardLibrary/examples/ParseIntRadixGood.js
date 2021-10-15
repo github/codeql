@@ -1,0 +1,1 @@
+var day = parseInt(form.day.value, 10);

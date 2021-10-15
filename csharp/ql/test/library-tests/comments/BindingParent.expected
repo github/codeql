@@ -1,0 +1,59 @@
+| comments1.cs:36:5:38:41 | /* ... */ | comments1.cs:34:7:34:9 | Foo |  |
+| comments1.cs:39:13:40:51 | // ... | comments1.cs:34:7:34:9 | Foo | as this line |
+| comments1.cs:42:15:42:36 | // ... | comments1.cs:34:7:34:9 | Foo | These are different |
+| comments1.cs:43:15:43:32 | // ... | comments1.cs:34:7:34:9 | Foo | comment blocks. |
+| comments2.cs:13:17:13:25 | // ... | comments2.cs:11:7:11:8 | C2 | field1 |
+| comments2.cs:14:17:14:25 | // ... | comments2.cs:11:7:11:8 | C2 | field2 |
+| comments2.cs:16:5:16:9 | // ... | comments2.cs:11:7:11:8 | C2 | C2 |
+| comments2.cs:18:5:18:8 | // ... | comments2.cs:11:7:11:8 | C2 | f |
+| comments2.cs:21:9:21:16 | // ... | comments2.cs:20:5:27:5 | {...} | {...} |
+| comments2.cs:23:15:23:21 | // ... | comments2.cs:20:5:27:5 | {...} | ...; |
+| comments2.cs:25:9:25:15 | // ... | comments2.cs:20:5:27:5 | {...} | ...; |
+| comments2.cs:31:9:31:15 | // ... | comments2.cs:30:5:37:5 | {...} | ...; |
+| comments2.cs:33:9:33:16 | // ... | comments2.cs:30:5:37:5 | {...} | {...} |
+| comments2.cs:36:9:36:16 | // ... | comments2.cs:30:5:37:5 | {...} | {...} |
+| comments2.cs:39:5:39:9 | // ... | comments2.cs:11:7:11:8 | C2 | C3 |
+| comments2.cs:42:9:42:13 | // ... | comments2.cs:40:11:40:12 | C3 | C3 |
+| comments2.cs:45:5:45:9 | // ... | comments2.cs:11:7:11:8 | C2 | C2 |
+| comments2.cs:47:5:47:9 | // ... | comments2.cs:11:7:11:8 | C2 | S1 |
+| comments2.cs:50:9:50:13 | // ... | comments2.cs:48:12:48:13 | S1 | S1 |
+| comments2.cs:52:28:52:35 | // ... | comments2.cs:48:12:48:13 | S1 | {...} |
+| comments2.cs:53:13:53:17 | // ... | comments2.cs:48:12:48:13 | S1 | S1 |
+| comments2.cs:55:13:55:20 | // ... | comments2.cs:54:9:56:9 | {...} | {...} |
+| comments2.cs:56:11:56:18 | // ... | comments2.cs:48:12:48:13 | S1 | {...} |
+| comments2.cs:58:5:58:9 | // ... | comments2.cs:11:7:11:8 | C2 | S1 |
+| comments2.cs:60:5:60:13 | // ... | comments2.cs:11:7:11:8 | C2 | Values |
+| comments2.cs:63:9:63:17 | // ... | comments2.cs:61:10:61:15 | Values | Values |
+| comments2.cs:65:9:65:16 | // ... | comments2.cs:61:10:61:15 | Values | First |
+| comments2.cs:66:17:66:24 | // ... | comments2.cs:61:10:61:15 | Values | First |
+| comments2.cs:67:17:67:25 | // ... | comments2.cs:61:10:61:15 | Values | Second |
+| comments2.cs:69:9:70:10 | // ... | comments2.cs:61:10:61:15 | Values | Values |
+| comments2.cs:72:9:72:16 | // ... | comments2.cs:61:10:61:15 | Values | Third |
+| comments2.cs:75:9:75:17 | // ... | comments2.cs:61:10:61:15 | Values | Values |
+| comments2.cs:78:5:78:21 | // ... | comments2.cs:11:7:11:8 | C2 | C2 Constructor |
+| comments2.cs:79:10:79:26 | // ... | comments2.cs:11:7:11:8 | C2 | C2 Constructor |
+| comments2.cs:81:9:81:16 | // ... | comments2.cs:80:5:82:5 | {...} | {...} |
+| comments2.cs:84:5:84:10 | // ... | comments2.cs:11:7:11:8 | C2 | ~C2 |
+| comments2.cs:85:11:85:16 | // ... | comments2.cs:11:7:11:8 | C2 | ~C2 |
+| comments2.cs:89:5:89:8 | // ... | comments2.cs:11:7:11:8 | C2 | + |
+| comments2.cs:90:46:90:49 | // ... | comments2.cs:11:7:11:8 | C2 | + |
+| comments2.cs:96:15:96:18 | // ... | comments2.cs:11:7:11:8 | C2 | x |
+| comments2.cs:97:13:97:16 | // ... | comments2.cs:11:7:11:8 | C2 | y |
+| comments2.cs:102:5:102:8 | // ... | comments2.cs:11:7:11:8 | C2 | D |
+| comments2.cs:103:31:104:34 | // ... | comments2.cs:11:7:11:8 | C2 | D |
+| comments2.cs:106:5:106:8 | // ... | comments2.cs:11:7:11:8 | C2 | E |
+| comments2.cs:107:23:108:26 | // ... | comments2.cs:11:7:11:8 | C2 | E |
+| comments2.cs:118:5:118:21 | // ... | comments2.cs:11:7:11:8 | C2 | GenericClass<> |
+| comments2.cs:121:17:121:20 | // ... | comments2.cs:119:11:119:25 | GenericClass<> | f |
+| comments2.cs:124:5:124:16 | // ... | comments2.cs:11:7:11:8 | C2 | GenericFn |
+| comments2.cs:127:20:127:23 | // ... | comments2.cs:126:5:129:5 | {...} | x |
+| trivia.cs:25:14:25:38 | // ... | trivia.cs:17:5:29:5 | {...} | numbering not affected |
+| trivia.cs:49:18:49:82 | // ... | trivia.cs:48:5:58:5 | {...} | Sets the nullable annotation and warning contexts to disabled. |
+| trivia.cs:50:17:50:80 | // ... | trivia.cs:48:5:58:5 | {...} | Sets the nullable annotation and warning contexts to enabled. |
+| trivia.cs:51:18:51:94 | // ... | trivia.cs:48:5:58:5 | {...} | Restores the nullable annotation and warning contexts to project settings. |
+| trivia.cs:52:30:52:81 | // ... | trivia.cs:48:5:58:5 | {...} | Sets the nullable annotation context to disabled. |
+| trivia.cs:53:29:53:79 | // ... | trivia.cs:48:5:58:5 | {...} | Sets the nullable annotation context to enabled. |
+| trivia.cs:54:30:54:93 | // ... | trivia.cs:48:5:58:5 | {...} | Restores the nullable annotation context to project settings. |
+| trivia.cs:55:27:55:75 | // ... | trivia.cs:48:5:58:5 | {...} | Sets the nullable warning context to disabled. |
+| trivia.cs:56:26:56:73 | // ... | trivia.cs:48:5:58:5 | {...} | Sets the nullable warning context to enabled. |
+| trivia.cs:57:27:57:87 | // ... | trivia.cs:48:5:58:5 | {...} | Restores the nullable warning context to project settings. |

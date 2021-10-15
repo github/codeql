@@ -1,0 +1,25 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+This metric measures how many tests each file contains. By default,
+the query recognizes QUnit tests, xUnit.js facts, and BDD-style
+tests as used by frameworks such as Jasmine, Mocha and Unit.js.
+</p>
+</overview>
+<recommendation>
+<p>
+This metric can be used to identify parts of the code base that
+have very few tests and could perhaps benefit from more thorough
+testing.
+</p>
+</recommendation>
+<references>
+<li><a href="https://qunitjs.com/">QUnit</a></li>
+<li><a href="http://xunitjs.shaege.com/">xUnit.js</a></li>
+<li><a href="http://jasmine.github.io/">Jasmine</a></li>
+<li><a href="http://unitjs.com/">Unit.js</a></li>
+</references>
+</qhelp>

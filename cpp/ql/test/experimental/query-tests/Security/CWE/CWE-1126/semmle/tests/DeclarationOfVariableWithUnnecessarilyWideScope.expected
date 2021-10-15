@@ -1,0 +1,1 @@
+| test.c:14:9:14:16 | intIndex | A variable with this name is used in the $@ condition. | test.c:11:3:16:3 | while (...) ... | loop |

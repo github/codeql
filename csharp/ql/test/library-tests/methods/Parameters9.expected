@@ -1,0 +1,7 @@
+| methods.cs:146:40:146:40 | c | methods.cs:146:44:146:44 | 1 | Method2(int, int, int, int, string) |
+| methods.cs:146:51:146:51 | d | methods.cs:146:55:146:55 | 2 | Method2(int, int, int, int, string) |
+| methods.cs:146:65:146:65 | e | methods.cs:146:69:146:77 | ... + ... | Method2(int, int, int, int, string) |
+| methods.cs:169:51:169:55 | right | methods.cs:169:59:169:59 | 0 | Plus(int, int) |
+| methods.cs:174:133:174:133 | i | methods.cs:174:137:174:137 | 1 | SkipTwo<T>(IEnumerable<T>, int) |
+| methods.cs:174:133:174:133 | i | methods.cs:174:137:174:137 | 1 | SkipTwo<int>(IEnumerable<int>, int) |
+| methods.cs:179:137:179:137 | i | methods.cs:179:141:179:141 | 1 | SkipTwoInt(IEnumerable<int>, int) |

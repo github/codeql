@@ -1,0 +1,19 @@
+| test.cpp:62:2:62:34 | ... = ... | The memory allocated here may not be released at $@. | test.cpp:67:1:67:1 | return ... | this exit point |
+| test.cpp:74:2:74:34 | ... = ... | The memory allocated here may not be released at $@. | test.cpp:77:3:77:9 | return ... | this exit point |
+| test.cpp:107:2:107:23 | ... = ... | The memory allocated here may not be released at $@. | test.cpp:110:1:110:1 | return ... | this exit point |
+| test.cpp:136:2:136:19 | ... = ... | The memory allocated here may not be released at $@. | test.cpp:142:3:142:9 | return ... | this exit point |
+| test.cpp:136:2:136:19 | ... = ... | The memory allocated here may not be released at $@. | test.cpp:145:1:145:1 | return ... | this exit point |
+| test.cpp:139:2:139:19 | ... = ... | The memory allocated here may not be released at $@. | test.cpp:142:3:142:9 | return ... | this exit point |
+| test.cpp:235:2:235:13 | ... = ... | The memory allocated here may not be released at $@. | test.cpp:236:1:236:1 | return ... | this exit point |
+| test.cpp:242:2:242:25 | ... = ... | The memory allocated here may not be released at $@. | test.cpp:250:1:250:1 | return ... | this exit point |
+| test.cpp:246:2:246:25 | ... = ... | The memory allocated here may not be released at $@. | test.cpp:250:1:250:1 | return ... | this exit point |
+| test.cpp:247:2:247:25 | ... = ... | The memory allocated here may not be released at $@. | test.cpp:250:1:250:1 | return ... | this exit point |
+| test.cpp:254:14:254:19 | call to malloc | The memory allocated here may not be released at $@. | test.cpp:266:4:266:10 | return ... | this exit point |
+| test.cpp:274:14:274:19 | call to malloc | The memory allocated here may not be released at $@. | test.cpp:281:2:281:8 | return ... | this exit point |
+| test.cpp:287:14:287:19 | call to malloc | The memory allocated here may not be released at $@. | test.cpp:294:1:294:1 | return ... | this exit point |
+| test.cpp:360:24:360:52 | new | The memory allocated here may not be released at $@. | test.cpp:366:1:366:1 | return ... | this exit point |
+| test.cpp:382:26:382:31 | call to malloc | The memory allocated here may not be released at $@. | test.cpp:402:1:402:1 | return ... | this exit point |
+| test.cpp:451:2:451:25 | ... = ... | The memory allocated here may not be released at $@. | test.cpp:463:1:463:1 | return ... | this exit point |
+| test.cpp:460:2:460:25 | ... = ... | The memory allocated here may not be released at $@. | test.cpp:463:1:463:1 | return ... | this exit point |
+| test.cpp:522:2:522:23 | ... = ... | The memory allocated here may not be released at $@. | test.cpp:533:1:533:1 | return ... | this exit point |
+| test.cpp:525:3:525:24 | ... = ... | The memory allocated here may not be released at $@. | test.cpp:533:1:533:1 | return ... | this exit point |

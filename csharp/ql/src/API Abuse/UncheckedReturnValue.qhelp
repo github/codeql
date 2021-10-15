@@ -1,0 +1,32 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Ignoring a method's return value can be a security risk and a common source of defects. If an 
+attacker can force the method to fail, the subsequent program logic could lead to a vulnerability 
+because the program will be running in an unexpected state. This rule checks that the return value 
+of standard library methods like <code>System.IO.Stream.Read(...)</code> is always used. 
+Furthermore, it identifies any calls to methods that ignore the return value despite it being 
+frequently used elsewhere. That is, if more than 90% of the total calls to a particular method use 
+its return value, all other calls that discard its return value are flagged as suspicious.</p>
+
+</overview>
+<recommendation>
+<p>Check the return value of the method and take appropriate action.</p>
+
+</recommendation>
+<example>
+<p>In the method <code>IgnoreOne</code>, there are lots of calls to <code>DoPrint</code> where the 
+return value is checked. However, the return value of <code>DoPrint("J")</code> is not checked.</p>
+<p>In the method <code>IgnoreRead</code>, the result of the call to <code>FileStream.Read</code> is
+ignored. This is dangerous, as the amount of data read might be less than the length of the array it
+is being read into.</p>
+<sample src="UncheckedReturnValueBad.cs" />
+
+</example>
+<references>
+
+
+</references>
+</qhelp>

@@ -1,0 +1,6 @@
+| UselessNullCoalescingExpression.cs:9:13:9:18 | ... ?? ... | Both operands of this null-coalescing expression access the same variable or property. |
+| UselessNullCoalescingExpression.cs:10:13:10:24 | ... ?? ... | Both operands of this null-coalescing expression access the same variable or property. |
+| UselessNullCoalescingExpression.cs:11:13:11:24 | ... ?? ... | Both operands of this null-coalescing expression access the same variable or property. |
+| UselessNullCoalescingExpression.cs:12:13:12:26 | ... ?? ... | Both operands of this null-coalescing expression access the same variable or property. |
+| UselessNullCoalescingExpression.cs:13:13:13:23 | ... ?? ... | Both operands of this null-coalescing expression access the same variable or property. |
+| UselessNullCoalescingExpression.cs:14:13:14:31 | ... ?? ... | Both operands of this null-coalescing expression access the same variable or property. |

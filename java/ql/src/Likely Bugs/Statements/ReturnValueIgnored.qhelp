@@ -1,0 +1,41 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>If the result of a method call is used in most cases, 
+any calls to that method where the result is ignored are
+inconsistent, and may be erroneous uses of the API.
+Often, the result is some kind of status indicator, and is therefore important to check. 
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Ensure that the results of <i>all</i> calls to a particular 
+method are used. The return value of a method that returns a status value should normally be checked 
+before any modified data or allocated resource is used.
+</p>
+
+</recommendation>
+<example>
+
+<p>Line 1 of the following example shows the value returned by <code>get</code> being ignored. Line
+3 shows it being assigned to <code>fs</code>.</p>
+
+<sample src="ReturnValueIgnored.java" />
+
+</example>
+<references>
+
+
+<li>
+    CERT Secure Coding Standards: <a href="https://www.securecoding.cert.org/confluence/display/java/EXP00-J.+Do+not+ignore+values+returned+by+methods">
+        EXP00-J. Do not ignore values returned by methods</a>.
+</li>
+
+</references>
+</qhelp>

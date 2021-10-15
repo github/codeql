@@ -1,0 +1,13 @@
+| test.py:4:1:11:2 | FunctionExpr | test.py:5:15:5:17 | int |
+| test.py:4:1:11:2 | FunctionExpr | test.py:5:21:5:22 | UnaryExpr |
+| test.py:4:1:11:2 | FunctionExpr | test.py:7:13:7:15 | int |
+| test.py:4:1:11:2 | FunctionExpr | test.py:7:19:7:20 | UnaryExpr |
+| test.py:4:1:11:2 | FunctionExpr | test.py:8:12:8:23 | Str |
+| test.py:4:1:11:2 | FunctionExpr | test.py:9:19:9:21 | int |
+| test.py:4:1:11:2 | FunctionExpr | test.py:9:25:9:26 | UnaryExpr |
+| test.py:4:1:11:2 | FunctionExpr | test.py:10:15:10:30 | Str |
+| test.py:23:1:31:2 | FunctionExpr | test.py:25:20:25:24 | Str |
+| test.py:23:1:31:2 | FunctionExpr | test.py:25:28:25:31 | None |
+| test.py:23:1:31:2 | FunctionExpr | test.py:26:20:26:23 | None |
+| test.py:23:1:31:2 | FunctionExpr | test.py:29:24:29:28 | Str |
+| test.py:23:1:31:2 | FunctionExpr | test.py:29:32:29:35 | None |

@@ -1,0 +1,1 @@
+| AV Rule 1.c:411:6:411:8 | bad | AV Rule 1: any one function (or method) will contain no more than 200 logical source lines of code. Function 'bad' contains 201 lines of code. |

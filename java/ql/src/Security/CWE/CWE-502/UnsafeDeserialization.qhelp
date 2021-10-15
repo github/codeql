@@ -1,0 +1,122 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Deserializing untrusted data using any deserialization framework that
+allows the construction of arbitrary serializable objects is easily exploitable
+and in many cases allows an attacker to execute arbitrary code.  Even before a
+deserialized object is returned to the caller of a deserialization method a lot
+of code may have been executed, including static initializers, constructors,
+and finalizers.  Automatic deserialization of fields means that an attacker may
+craft a nested combination of objects on which the executed initialization code
+may have unforeseen effects, such as the execution of arbitrary code.
+</p>
+<p>
+There are many different serialization frameworks.  This query currently
+supports Kryo, XmlDecoder, XStream, SnakeYaml, JYaml, JsonIO, YAMLBeans, HessianBurlap, Castor, Burlap,
+Jackson, Jabsorb, Jodd JSON, Flexjson, Gson and Java IO serialization through
+<code>ObjectInputStream</code>/<code>ObjectOutputStream</code>.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Avoid deserialization of untrusted data if at all possible.  If the
+architecture permits it then use other formats instead of serialized objects,
+for example JSON or XML.  However, these formats should not be deserialized
+into complex objects because this provides further opportunities for attack.
+For example, XML-based deserialization attacks
+are possible through libraries such as XStream and XmlDecoder.
+
+Alternatively, a tightly controlled whitelist can limit the vulnerability of code, but be aware
+of the existence of so-called Bypass Gadgets, which can circumvent such
+protection measures.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example calls <code>readObject</code> directly on an
+<code>ObjectInputStream</code> that is constructed from untrusted data, and is
+therefore inherently unsafe.
+</p>
+<sample src="UnsafeDeserializationBad.java" />
+
+<p>
+Rewriting the communication protocol to only rely on reading primitive types
+from the input stream removes the vulnerability.
+</p>
+<sample src="UnsafeDeserializationGood.java" />
+
+</example>
+
+<references>
+
+<li>
+OWASP vulnerability description:
+<a href="https://www.owasp.org/index.php/Deserialization_of_untrusted_data">Deserialization of untrusted data</a>.
+</li>
+<li>
+OWASP guidance on deserializing objects:
+<a href="https://cheatsheetseries.owasp.org/cheatsheets/Deserialization_Cheat_Sheet.html">Deserialization Cheat Sheet</a>.
+</li>
+<li>
+Talks by Chris Frohoff &amp; Gabriel Lawrence:
+<a href="http://frohoff.github.io/appseccali-marshalling-pickles/">
+AppSecCali 2015: Marshalling Pickles - how deserializing objects will ruin your day</a>,
+<a href="http://frohoff.github.io/owaspsd-deserialize-my-shorts/">OWASP SD: Deserialize My Shorts:
+Or How I Learned to Start Worrying and Hate Java Object Deserialization</a>.
+</li>
+<li>
+Alvaro Muñoz &amp; Christian Schneider, RSAConference 2016:
+<a href="https://speakerdeck.com/pwntester/serial-killer-silently-pwning-your-java-endpoints">Serial Killer: Silently Pwning Your Java Endpoints</a>.
+</li>
+<li>
+SnakeYaml documentation on deserialization:
+<a href="https://bitbucket.org/asomov/snakeyaml/wiki/Documentation#markdown-header-loading-yaml">SnakeYaml deserialization</a>.
+</li>
+<li>
+Hessian deserialization and related gadget chains:
+<a href="https://paper.seebug.org/1137/">Hessian deserialization</a>.
+</li>
+<li>
+Castor and Hessian java deserialization vulnerabilities:
+<a href="https://securitylab.github.com/research/hessian-java-deserialization-castor-vulnerabilities/">Castor and Hessian deserialization</a>.
+</li>
+<li>
+Remote code execution in JYaml library:
+<a href="https://www.cybersecurity-help.cz/vdb/SB2020022512">JYaml deserialization</a>.
+</li>
+<li>
+JsonIO deserialization vulnerabilities:
+<a href="https://klezvirus.github.io/Advanced-Web-Hacking/Serialisation/">JsonIO deserialization</a>.
+</li>
+<li>
+Research by Moritz Bechler:
+<a href="https://www.github.com/mbechler/marshalsec/blob/master/marshalsec.pdf?raw=true">Java Unmarshaller Security - Turning your data into code execution</a>
+</li>
+<li>
+Blog posts by the developer of Jackson libraries:
+<a href="https://cowtowncoder.medium.com/on-jackson-cves-dont-panic-here-is-what-you-need-to-know-54cd0d6e8062">On Jackson CVEs: Don’t Panic — Here is what you need to know</a>
+<a href="https://cowtowncoder.medium.com/jackson-2-10-safe-default-typing-2d018f0ce2ba">Jackson 2.10: Safe Default Typing</a>
+</li>
+<li>
+Jabsorb documentation on deserialization:
+<a href="https://github.com/Servoy/jabsorb/blob/master/src/org/jabsorb/">Jabsorb JSON Serializer</a>.
+</li>
+<li>
+Jodd JSON documentation on deserialization:
+<a href="https://json.jodd.org/parser">JoddJson Parser</a>.
+</li>
+<li>
+RCE in Flexjson:
+<a href="https://codewhitesec.blogspot.com/2020/03/liferay-portal-json-vulns.html">Flexjson deserialization</a>.
+</li>
+<li>
+Android Intent deserialization vulnerabilities with GSON parser:
+<a href="https://blog.oversecured.com/Exploiting-memory-corruption-vulnerabilities-on-Android/#insecure-use-of-json-parsers">Insecure use of JSON parsers</a>.
+</li>
+</references>
+
+</qhelp>

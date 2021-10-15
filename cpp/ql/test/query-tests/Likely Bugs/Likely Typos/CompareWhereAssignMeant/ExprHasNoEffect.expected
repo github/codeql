@@ -1,0 +1,2 @@
+| test.cpp:30:5:30:18 | ... , ... | This expression has no effect. | test.cpp:30:5:30:18 | ... , ... |  |
+| test.cpp:46:5:46:10 | ... != ... | This expression has no effect. | test.cpp:46:5:46:10 | ... != ... |  |

@@ -1,0 +1,32 @@
+| name_qualifiers.cpp:29:7:29:8 | :: | name_qualifiers.cpp:29:7:29:9 | x | file://:0:0:0:0 | (global namespace) |
+| name_qualifiers.cpp:31:7:31:10 | N1:: | name_qualifiers.cpp:31:7:31:12 | nx | name_qualifiers.cpp:4:11:4:12 | N1 |
+| name_qualifiers.cpp:34:7:34:8 | :: | name_qualifiers.cpp:34:9:34:12 | N1:: | file://:0:0:0:0 | (global namespace) |
+| name_qualifiers.cpp:34:9:34:12 | N1:: | name_qualifiers.cpp:34:7:34:14 | nx | name_qualifiers.cpp:4:11:4:12 | N1 |
+| name_qualifiers.cpp:36:7:36:10 | N1:: | name_qualifiers.cpp:36:11:36:14 | N2:: | name_qualifiers.cpp:4:11:4:12 | N1 |
+| name_qualifiers.cpp:36:11:36:14 | N2:: | name_qualifiers.cpp:36:7:36:16 | ny | name_qualifiers.cpp:9:13:9:14 | N1::N2 |
+| name_qualifiers.cpp:38:7:38:10 | N2:: | name_qualifiers.cpp:38:7:38:12 | ny | name_qualifiers.cpp:9:13:9:14 | N1::N2 |
+| name_qualifiers.cpp:41:7:41:8 | :: | name_qualifiers.cpp:41:9:41:12 | N1:: | file://:0:0:0:0 | (global namespace) |
+| name_qualifiers.cpp:41:9:41:12 | N1:: | name_qualifiers.cpp:41:13:41:16 | N2:: | name_qualifiers.cpp:4:11:4:12 | N1 |
+| name_qualifiers.cpp:41:13:41:16 | N2:: | name_qualifiers.cpp:41:7:41:18 | ny | name_qualifiers.cpp:9:13:9:14 | N1::N2 |
+| name_qualifiers.cpp:43:3:43:8 | Base:: | name_qualifiers.cpp:43:3:43:10 | bx | name_qualifiers.cpp:16:8:16:11 | Base |
+| name_qualifiers.cpp:44:7:44:12 | Base:: | name_qualifiers.cpp:44:7:44:14 | bx | name_qualifiers.cpp:16:8:16:11 | Base |
+| name_qualifiers.cpp:45:7:45:15 | Derived:: | name_qualifiers.cpp:45:7:45:17 | bx | name_qualifiers.cpp:24:8:24:14 | Derived |
+| name_qualifiers.cpp:46:7:46:8 | :: | name_qualifiers.cpp:46:9:46:14 | Base:: | file://:0:0:0:0 | (global namespace) |
+| name_qualifiers.cpp:46:9:46:14 | Base:: | name_qualifiers.cpp:46:7:46:16 | bx | name_qualifiers.cpp:16:8:16:11 | Base |
+| name_qualifiers.cpp:47:7:47:8 | :: | name_qualifiers.cpp:47:9:47:17 | Derived:: | file://:0:0:0:0 | (global namespace) |
+| name_qualifiers.cpp:47:9:47:17 | Derived:: | name_qualifiers.cpp:47:7:47:19 | bx | name_qualifiers.cpp:24:8:24:14 | Derived |
+| name_qualifiers.cpp:50:3:50:4 | :: | name_qualifiers.cpp:50:3:50:5 | call to f | file://:0:0:0:0 | (global namespace) |
+| name_qualifiers.cpp:52:3:52:6 | N1:: | name_qualifiers.cpp:52:3:52:8 | call to nf | name_qualifiers.cpp:4:11:4:12 | N1 |
+| name_qualifiers.cpp:55:3:55:4 | :: | name_qualifiers.cpp:55:5:55:8 | N1:: | file://:0:0:0:0 | (global namespace) |
+| name_qualifiers.cpp:55:5:55:8 | N1:: | name_qualifiers.cpp:55:3:55:10 | call to nf | name_qualifiers.cpp:4:11:4:12 | N1 |
+| name_qualifiers.cpp:57:3:57:6 | N1:: | name_qualifiers.cpp:57:7:57:10 | N2:: | name_qualifiers.cpp:4:11:4:12 | N1 |
+| name_qualifiers.cpp:57:7:57:10 | N2:: | name_qualifiers.cpp:57:3:57:12 | call to ng | name_qualifiers.cpp:9:13:9:14 | N1::N2 |
+| name_qualifiers.cpp:58:3:58:4 | :: | name_qualifiers.cpp:58:5:58:8 | N1:: | file://:0:0:0:0 | (global namespace) |
+| name_qualifiers.cpp:58:5:58:8 | N1:: | name_qualifiers.cpp:58:9:58:12 | N2:: | name_qualifiers.cpp:4:11:4:12 | N1 |
+| name_qualifiers.cpp:58:9:58:12 | N2:: | name_qualifiers.cpp:58:3:58:14 | call to ng | name_qualifiers.cpp:9:13:9:14 | N1::N2 |
+| name_qualifiers.cpp:60:3:60:8 | Base:: | name_qualifiers.cpp:60:3:60:10 | call to bf | name_qualifiers.cpp:16:8:16:11 | Base |
+| name_qualifiers.cpp:61:3:61:11 | Derived:: | name_qualifiers.cpp:61:3:61:13 | call to bf | name_qualifiers.cpp:24:8:24:14 | Derived |
+| name_qualifiers.cpp:62:3:62:4 | :: | name_qualifiers.cpp:62:5:62:10 | Base:: | file://:0:0:0:0 | (global namespace) |
+| name_qualifiers.cpp:62:5:62:10 | Base:: | name_qualifiers.cpp:62:3:62:12 | call to bf | name_qualifiers.cpp:16:8:16:11 | Base |
+| name_qualifiers.cpp:63:3:63:4 | :: | name_qualifiers.cpp:63:5:63:13 | Derived:: | file://:0:0:0:0 | (global namespace) |
+| name_qualifiers.cpp:63:5:63:13 | Derived:: | name_qualifiers.cpp:63:3:63:15 | call to bf | name_qualifiers.cpp:24:8:24:14 | Derived |

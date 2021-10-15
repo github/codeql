@@ -1,0 +1,53 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Calling a user-controlled method on certain objects can lead to invocation of unsafe functions,
+such as <code>eval</code> or the <code>Function</code> constructor. In particular, the global object
+contains the <code>eval</code> function, and any function object contains the <code>Function</code> constructor
+in its <code>constructor</code> property.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Avoid invoking user-controlled methods on the global object or on any function object.
+Whitelist the permitted method names or change the type of object the methods are stored on.
+</p>
+</recommendation>
+
+<example>
+<p>
+In the following example, a message from the document's parent frame can invoke the <code>play</code>
+or <code>pause</code> method. However, it can also invoke <code>eval</code>.
+A malicious website could embed the page in an iframe and execute arbitrary code by sending a message
+with the name <code>eval</code>.
+</p>
+
+<sample src="examples/UnsafeDynamicMethodAccess.js" />
+
+<p>
+Instead of storing the API methods in the global scope, put them in an API object or Map. It is also good
+practice to prevent invocation of inherited methods like <code>toString</code> and <code>valueOf</code>.
+</p>
+
+<sample src="examples/UnsafeDynamicMethodAccessGood.js" />
+
+</example>
+
+<references>
+<li>
+OWASP:
+<a href="https://www.owasp.org/index.php/Code_Injection">Code Injection</a>.
+</li>
+<li>
+MDN: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects#Function_properties">Global functions</a>.
+</li>
+<li>
+MDN: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function constructor</a>.
+</li>
+</references>
+</qhelp>

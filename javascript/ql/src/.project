@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>semmlecode-javascript-queries</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+	</buildSpec>
+	<natures>
+		<nature>com.semmle.plugin.qdt.core.qlnature</nature>
+	</natures>
+</projectDescription>

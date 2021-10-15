@@ -1,0 +1,15 @@
+| 44 | test.py:44:9:44:12 | ControlFlowNode for Pass | class ExceptionA |
+| 44 | test.py:44:9:44:12 | ControlFlowNode for Pass | class ExceptionB |
+| 53 | test.py:53:9:53:12 | ControlFlowNode for Pass | class ExceptionA |
+| 107 | test.py:107:9:107:12 | ControlFlowNode for Pass | builtin-class LookupError |
+| 128 | test.py:128:9:128:12 | ControlFlowNode for Pass | builtin-class IndexError |
+| 138 | test.py:138:13:138:16 | ControlFlowNode for Pass | class ExceptionA |
+| 138 | test.py:138:13:138:16 | ControlFlowNode for Pass | class ExceptionB |
+| 138 | test.py:138:13:138:16 | ControlFlowNode for Pass | class ExceptionC |
+| 138 | test.py:138:13:138:16 | ControlFlowNode for Pass | class ExceptionC |
+| 152 | test.py:152:9:152:12 | ControlFlowNode for Pass | class ExceptionA |
+| 152 | test.py:152:9:152:12 | ControlFlowNode for Pass | class ExceptionB |
+| 171 | test.py:171:13:171:16 | ControlFlowNode for Pass | class ExceptionC |
+| 171 | test.py:171:13:171:16 | ControlFlowNode for Pass | class ExceptionC |
+| 172 | test.py:172:9:172:12 | ControlFlowNode for Pass | class ExceptionA |
+| 172 | test.py:172:9:172:12 | ControlFlowNode for Pass | class ExceptionB |

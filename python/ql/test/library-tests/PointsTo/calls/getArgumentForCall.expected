@@ -1,0 +1,34 @@
+| 19 | ControlFlowNode for f() | Function f | 0 | ControlFlowNode for w |
+| 19 | ControlFlowNode for f() | Function f | 1 | ControlFlowNode for x |
+| 19 | ControlFlowNode for f() | Function f | 2 | ControlFlowNode for y |
+| 21 | ControlFlowNode for f() | Function f | 0 | ControlFlowNode for y |
+| 21 | ControlFlowNode for f() | Function f | 1 | ControlFlowNode for w |
+| 21 | ControlFlowNode for f() | Function f | 2 | ControlFlowNode for z |
+| 23 | ControlFlowNode for Attribute() | Function f | 0 | ControlFlowNode for c |
+| 23 | ControlFlowNode for Attribute() | Function f | 1 | ControlFlowNode for w |
+| 23 | ControlFlowNode for Attribute() | Function f | 2 | ControlFlowNode for z |
+| 23 | ControlFlowNode for Attribute() | Method(Function f, C()) | 0 | ControlFlowNode for w |
+| 23 | ControlFlowNode for Attribute() | Method(Function f, C()) | 1 | ControlFlowNode for z |
+| 24 | ControlFlowNode for Attribute() | Function C.n | 0 | ControlFlowNode for c |
+| 24 | ControlFlowNode for Attribute() | Function C.n | 1 | ControlFlowNode for x |
+| 24 | ControlFlowNode for Attribute() | Method(Function C.n, C()) | 0 | ControlFlowNode for x |
+| 25 | ControlFlowNode for Attribute() | Function C.n | 0 | ControlFlowNode for y |
+| 25 | ControlFlowNode for Attribute() | Function C.n | 1 | ControlFlowNode for z |
+| 33 | ControlFlowNode for Attribute() | Function D.foo | 0 | ControlFlowNode for IntegerLiteral |
+| 34 | ControlFlowNode for Attribute() | Function D.foo | 0 | ControlFlowNode for IntegerLiteral |
+| 37 | ControlFlowNode for Attribute() | Method(builtin method append, List) | 0 | ControlFlowNode for IntegerLiteral |
+| 37 | ControlFlowNode for Attribute() | builtin method append | 0 | ControlFlowNode for l |
+| 37 | ControlFlowNode for Attribute() | builtin method append | 1 | ControlFlowNode for IntegerLiteral |
+| 38 | ControlFlowNode for len() | Builtin-function len | 0 | ControlFlowNode for l |
+| 40 | ControlFlowNode for f() | Function f | 0 | ControlFlowNode for IntegerLiteral |
+| 40 | ControlFlowNode for f() | Function f | 1 | ControlFlowNode for IntegerLiteral |
+| 40 | ControlFlowNode for f() | Function f | 2 | ControlFlowNode for IntegerLiteral |
+| 42 | ControlFlowNode for Attribute() | Function C.n | 0 | ControlFlowNode for c |
+| 42 | ControlFlowNode for Attribute() | Function C.n | 1 | ControlFlowNode for IntegerLiteral |
+| 42 | ControlFlowNode for Attribute() | Method(Function C.n, C()) | 0 | ControlFlowNode for IntegerLiteral |
+| 45 | ControlFlowNode for open() | Builtin-function open | 0 | ControlFlowNode for Str |
+| 45 | ControlFlowNode for open() | Builtin-function open | 1 | ControlFlowNode for Str |
+| 51 | ControlFlowNode for foo() | Function foo | 0 | ControlFlowNode for IntegerLiteral |
+| 51 | ControlFlowNode for foo() | Function foo | 1 | ControlFlowNode for IntegerLiteral |
+| 51 | ControlFlowNode for foo() | Function foo | 2 | ControlFlowNode for IntegerLiteral |
+| 55 | ControlFlowNode for bar() | Function bar | 0 | ControlFlowNode for IntegerLiteral |

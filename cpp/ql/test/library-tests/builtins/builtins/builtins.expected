@@ -1,0 +1,6 @@
+| choose_expr.c:3:13:3:42 | __builtin_choose_expr |
+| types.c:4:9:4:57 | __builtin_types_compatible_p |
+| types.c:6:16:6:65 | __builtin_types_compatible_p |
+| varargs.c:7:5:7:32 | __builtin_va_start |
+| varargs.c:9:13:9:37 | __builtin_va_arg |
+| varargs.c:11:5:11:24 | __builtin_va_end |

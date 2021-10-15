@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns:qlpath xmlns:ns="https://semmle.com/schemas/qlpath">
+    <librarypath>
+        <path>/semmlecode-csharp-queries</path>
+    </librarypath>
+    <dbscheme kind="WORKSPACE">semmlecode-csharp-queries/semmlecode.csharp.dbscheme</dbscheme>
+    <defaultImports>
+        <defaultImport>csharp</defaultImport>
+    </defaultImports>
+</ns:qlpath>

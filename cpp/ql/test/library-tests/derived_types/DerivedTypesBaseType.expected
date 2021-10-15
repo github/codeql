@@ -1,0 +1,13 @@
+| file://:0:0:0:0 | C & | derivedtype.cpp:1:7:1:7 | C |
+| file://:0:0:0:0 | C && | derivedtype.cpp:1:7:1:7 | C |
+| file://:0:0:0:0 | C * | derivedtype.cpp:1:7:1:7 | C |
+| file://:0:0:0:0 | C ** | file://:0:0:0:0 | C * |
+| file://:0:0:0:0 | CC * | derivedtype.cpp:5:11:5:12 | CC |
+| file://:0:0:0:0 | CC ** | file://:0:0:0:0 | CC * |
+| file://:0:0:0:0 | __va_list_tag & | file://:0:0:0:0 | __va_list_tag |
+| file://:0:0:0:0 | __va_list_tag && | file://:0:0:0:0 | __va_list_tag |
+| file://:0:0:0:0 | const C | derivedtype.cpp:1:7:1:7 | C |
+| file://:0:0:0:0 | const C & | file://:0:0:0:0 | const C |
+| file://:0:0:0:0 | const __va_list_tag | file://:0:0:0:0 | __va_list_tag |
+| file://:0:0:0:0 | const __va_list_tag & | file://:0:0:0:0 | const __va_list_tag |
+| file://:0:0:0:0 | void * | file://:0:0:0:0 | void |

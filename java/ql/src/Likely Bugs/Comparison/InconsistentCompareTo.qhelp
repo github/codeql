@@ -1,0 +1,52 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>A class that overrides <code>compareTo</code> but not <code>equals</code>
+may not implement a natural ordering that is consistent with <code>equals</code>.
+</p>
+
+</overview>
+<recommendation>
+
+<p>Although this consistency is not strictly required by the <code>compareTo</code> contract, 
+usually both methods should be overridden to ensure that they are consistent, that is, that
+<code>x.compareTo(y)==0</code> is <code>true</code> if and only if <code>x.equals(y)</code>
+is <code>true</code>, for any non-null <code>x</code> and <code>y</code>.</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, the class <code>InconsistentCompareTo</code> overrides 
+<code>compareTo</code> but not <code>equals</code>.</p>
+
+<sample src="InconsistentCompareTo.java" />
+
+<p>In the following example, the class <code>InconsistentCompareToFix</code> overrides both
+<code>compareTo</code> and <code>equals</code>.</p>
+
+<sample src="InconsistentCompareToGood.java" />
+
+<p>
+If you require a natural ordering that is inconsistent with <code>equals</code>, you should document it clearly.
+</p>
+
+</example>
+<references>
+
+
+<li>
+  J. Bloch, <em>Effective Java (second edition)</em>, Item 12. Addison-Wesley, 2008.
+</li>
+<li>
+  Java API Specification: 
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Comparable.html#compareTo(T)">Comparable.compareTo</a>,
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)">Object.equals</a>.
+</li>
+
+
+</references>
+</qhelp>

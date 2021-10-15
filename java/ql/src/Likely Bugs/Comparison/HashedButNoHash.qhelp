@@ -1,0 +1,56 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>Classes that define an <code>equals</code> method but no <code>hashCode</code> method
+can lead to unexpected results if instances of those classes are stored in a hashing data structure. 
+Hashing data structures expect that hash codes fulfill the contract that two objects that 
+<code>equals</code> considers equal should have the same hash code. This contract is likely to be 
+violated by such classes.</p>
+
+</overview>
+<recommendation>
+
+<p>Every class that implements a custom <code>equals</code> method should also provide 
+an implementation of <code>hashCode</code>.</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, class <code>Point</code> has no implementation of <code>hashCode</code>. 
+Calling <code>hashCode</code> on two distinct <code>Point</code> objects 
+with the same coordinates would probably result in different hash codes.
+This would violate the contract of the <code>hashCode</code> method, in which case 
+objects of type <code>Point</code> should not be stored in hashing data structures.</p>
+
+<sample src="HashedButNoHashBad.java" />
+
+<p>In the modification of the above example, the implementation of <code>hashCode</code> for class 
+<code>Point</code> is suitable because the hash code is computed from exactly the same fields that are considered 
+in the <code>equals</code> method. Therefore, the contract of the <code>hashCode</code> method is fulfilled.
+</p>
+
+<sample src="HashedButNoHash.java" />
+
+</example>
+<references>
+
+
+<li>
+  J. Bloch, <em>Effective Java (second edition)</em>, Item 9. Addison-Wesley, 2008.
+</li>
+<li>
+  Java API Specification:
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)">Object.equals</a>,
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html#hashCode()">Object.hashCode</a>.
+</li>
+<li>
+  IBM developerWorks: <a href="https://www.ibm.com/developerworks/java/library/j-jtp05273/index.html">Java theory and practice: Hashing it out</a>.
+</li>
+
+
+</references>
+</qhelp>

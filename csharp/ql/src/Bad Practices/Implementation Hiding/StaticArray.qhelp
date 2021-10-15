@@ -1,0 +1,31 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Arrays might be made <code>static readonly</code> to prevent their contents from being changed.
+This doesn't have the desired effect because arrays are mutable. The <code>readonly</code> modifier prevents the array from being replaced 
+by a new array but it does not prevent the contents of the array from being changed.</p>
+
+</overview>
+<recommendation>
+<p>Consider whether the array could be split up into separate constants. If the array cannot be split then you may 
+wish to use a <code>ReadOnlyCollection</code> instead of an array.</p>
+
+</recommendation>
+<example>
+<p>In this example the <code>Foo</code> array is <code>readonly</code> but it is still modified by the <code>Main</code> method.</p>
+<sample src="StaticArrayBad.cs" />
+
+<p>This example uses a <code>ReadOnlyCollection</code>. Any attempt to modify <code>Foo</code> will 
+cause the program not to compile.</p>
+<sample src="StaticArrayGood.cs" />
+
+</example>
+<references>
+
+  <li>MSDN, C# Programming Guide, <a href="https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/arrays/arrays-as-objects">Arrays as Objects</a>.</li>
+  <li>MSDN, <a href="http://msdn.microsoft.com/en-us/library/ms132474.aspx">ReadOnlyCollection&lt;T&gt;</a>.</li>
+
+</references>
+</qhelp>
