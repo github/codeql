@@ -94,6 +94,8 @@ class ClassType extends Type, TClass {
 
   override Type getASuperType() { result = decl.getASuperType().getResolvedType() }
 
+  Type getAnInstanceofType() { result = decl.getAnInstanceofType().getResolvedType() }
+
   override Type getAnInternalSuperType() {
     result.(ClassCharType).getClassType() = this
     or
