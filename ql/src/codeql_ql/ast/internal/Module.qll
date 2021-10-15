@@ -154,17 +154,12 @@ private predicate resolveSelectionName(Import imp, ContainerOrModule m, int i) {
 
 cached
 private module Cached {
-  private Module getEnclosingModule0(AstNode n) {
-    not n instanceof Module and
-    (
-      n = result.getAChild(_)
-      or
-      exists(AstNode prev |
-        result = getEnclosingModule0(prev) and
-        n = prev.getAChild(_)
-      )
-    )
+  private AstNode parent(AstNode n) {
+    result = n.getParent() and
+    not n instanceof Module
   }
+
+  private Module getEnclosingModule0(AstNode n) { result = parent*(n.getParent()) }
 
   cached
   ContainerOrModule getEnclosingModule(AstNode n) {
