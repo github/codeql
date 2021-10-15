@@ -23,12 +23,8 @@ newtype TAstNode =
   TComparisonFormula(QL::CompTerm comp) or
   TComparisonOp(QL::Compop op) or
   TQuantifier(QL::Quantified quant) or
-  TFullAggregate(QL::Aggregate agg) {
-    agg.getChild(_) instanceof QL::FullAggregateBody
-  } or
-  TExprAggregate(QL::Aggregate agg) {
-    agg.getChild(_) instanceof QL::ExprAggregateBody
-  } or
+  TFullAggregate(QL::Aggregate agg) { agg.getChild(_) instanceof QL::FullAggregateBody } or
+  TExprAggregate(QL::Aggregate agg) { agg.getChild(_) instanceof QL::ExprAggregateBody } or
   TSuper(QL::SuperRef sup) or
   TIdentifier(QL::Variable var) or
   TAsExpr(QL::AsExpr asExpr) { asExpr.getChild(1) instanceof QL::VarName } or
