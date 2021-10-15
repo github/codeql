@@ -2382,8 +2382,6 @@ module YAML {
   // to not expose the entire `File` API on `QlPack`.
   private newtype TQLPack = MKQlPack(File file) { file.getBaseName() = "qlpack.yml" }
 
-  YAMLEntry test() { not result.isRoot() }
-
   /**
    * A `qlpack.yml` file.
    */
