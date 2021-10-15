@@ -1,3 +1,4 @@
+getTarget
 | Foo.qll:5:26:5:30 | PredicateCall | Foo.qll:3:1:3:26 | ClasslessPredicate foo |
 | Foo.qll:10:21:10:25 | PredicateCall | Foo.qll:8:3:8:28 | ClassPredicate bar |
 | Foo.qll:14:30:14:40 | MemberCall | Foo.qll:10:3:10:27 | ClassPredicate baz |
@@ -8,3 +9,7 @@
 | Foo.qll:31:5:31:12 | PredicateCall | Foo.qll:24:3:24:32 | ClasslessPredicate alias0 |
 | Foo.qll:36:36:36:65 | MemberCall | file://:0:0:0:0 | replaceAll |
 | Foo.qll:38:39:38:67 | MemberCall | file://:0:0:0:0 | regexpCapture |
+| packs/src/SrcThing.qll:4:3:4:8 | PredicateCall | packs/lib/LibThing/Foo.qll:1:1:1:30 | ClasslessPredicate foo |
+| packs/src/SrcThing.qll:5:3:5:8 | PredicateCall | packs/src/SrcThing.qll:8:1:8:30 | ClasslessPredicate bar |
+dependsOn
+| packs/src/qlpack.yml:1:1:1:4 | ql-testing-src-pack | packs/lib/qlpack.yml:1:1:1:4 | ql-testing-lib-pack |
