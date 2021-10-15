@@ -2,13 +2,11 @@ mod extractor;
 
 extern crate num_cpus;
 
-use clap;
 use flate2::write::GzEncoder;
 use rayon::prelude::*;
 use std::fs;
-use std::io::{BufRead, BufWriter, Write};
+use std::io::{BufRead, BufWriter};
 use std::path::{Path, PathBuf};
-use tree_sitter::{Language, Parser, Range};
 
 enum TrapCompression {
     None,
@@ -40,8 +38,8 @@ impl TrapCompression {
 
     fn extension(&self) -> &str {
         match self {
-            TrapCompression::None => ".trap",
-            TrapCompression::Gzip => ".trap.gz",
+            TrapCompression::None => "trap",
+            TrapCompression::Gzip => "trap.gz",
         }
     }
 }
@@ -54,28 +52,24 @@ impl TrapCompression {
  * "If the number is positive, it indicates the number of threads that should
  * be used. If the number is negative or zero, it should be added to the number
  * of cores available on the machine to determine how many threads to use
- * (minimum of 1). If unspecified, should be considered as set to 1."
+ * (minimum of 1). If unspecified, should be considered as set to -1."
  */
 fn num_codeql_threads() -> usize {
-    match std::env::var("CODEQL_THREADS") {
-        // Use 1 thread if the environment variable isn't set.
-        Err(_) => 1,
+    let threads_str = std::env::var("CODEQL_THREADS").unwrap_or_else(|_| "-1".to_owned());
+    match threads_str.parse::<i32>() {
+        Ok(num) if num <= 0 => {
+            let reduction = -num as usize;
+            std::cmp::max(1, num_cpus::get() - reduction)
+        }
+        Ok(num) => num as usize,
 
-        Ok(num) => match num.parse::<i32>() {
-            Ok(num) if num <= 0 => {
-                let reduction = -num as usize;
-                num_cpus::get() - reduction
-            }
-            Ok(num) => num as usize,
-
-            Err(_) => {
-                tracing::error!(
-                    "Unable to parse CODEQL_THREADS value '{}'; defaulting to 1 thread.",
-                    &num
-                );
-                1
-            }
-        },
+        Err(_) => {
+            tracing::error!(
+                "Unable to parse CODEQL_THREADS value '{}'; defaulting to 1 thread.",
+                &threads_str
+            );
+            1
+        }
     }
 }
 
@@ -127,29 +121,55 @@ fn main() -> std::io::Result<()> {
     let file_list = fs::File::open(file_list)?;
 
     let language = tree_sitter_ql::language();
-    let schema = node_types::read_node_types_str(tree_sitter_ql::NODE_TYPES)?;
+    let schema = node_types::read_node_types_str("ql", tree_sitter_ql::NODE_TYPES)?;
     let lines: std::io::Result<Vec<String>> = std::io::BufReader::new(file_list).lines().collect();
     let lines = lines?;
-    lines.par_iter().try_for_each(|line| {
-        let path = PathBuf::from(line).canonicalize()?;
-        let trap_file = path_for(&trap_dir, &path, trap_compression.extension());
-        let src_archive_file = path_for(&src_archive_dir, &path, "");
-        let mut source = std::fs::read(&path)?;
-        let code_ranges = vec![];
-        let trap = extractor::extract(language, &schema, &path, &source, &code_ranges)?;
-        std::fs::create_dir_all(&src_archive_file.parent().unwrap())?;
-        std::fs::copy(&path, &src_archive_file)?;
-        std::fs::create_dir_all(&trap_file.parent().unwrap())?;
-        let trap_file = std::fs::File::create(&trap_file)?;
-        let mut trap_file = BufWriter::new(trap_file);
-        match trap_compression {
-            TrapCompression::None => write!(trap_file, "{}", trap),
-            TrapCompression::Gzip => {
-                let mut compressed_writer = GzEncoder::new(trap_file, flate2::Compression::fast());
-                write!(compressed_writer, "{}", trap)
-            }
+    lines
+        .par_iter()
+        .try_for_each(|line| {
+            let path = PathBuf::from(line).canonicalize()?;
+            let src_archive_file = path_for(&src_archive_dir, &path, "");
+            let source = std::fs::read(&path)?;
+            let code_ranges = vec![];
+            let mut trap_writer = extractor::new_trap_writer();
+            extractor::extract(
+                language,
+                "ql",
+                &schema,
+                &mut trap_writer,
+                &path,
+                &source,
+                &code_ranges,
+            )?;
+            std::fs::create_dir_all(&src_archive_file.parent().unwrap())?;
+            std::fs::copy(&path, &src_archive_file)?;
+            write_trap(&trap_dir, path, trap_writer, &trap_compression)
+        })
+        .expect("failed to extract files");
+
+    let path = PathBuf::from("extras");
+    let mut trap_writer = extractor::new_trap_writer();
+    trap_writer.populate_empty_location();
+    write_trap(&trap_dir, path, trap_writer, &trap_compression)
+}
+
+fn write_trap(
+    trap_dir: &Path,
+    path: PathBuf,
+    trap_writer: extractor::TrapWriter,
+    trap_compression: &TrapCompression,
+) -> std::io::Result<()> {
+    let trap_file = path_for(trap_dir, &path, trap_compression.extension());
+    std::fs::create_dir_all(&trap_file.parent().unwrap())?;
+    let trap_file = std::fs::File::create(&trap_file)?;
+    let mut trap_file = BufWriter::new(trap_file);
+    match trap_compression {
+        TrapCompression::None => trap_writer.output(&mut trap_file),
+        TrapCompression::Gzip => {
+            let mut compressed_writer = GzEncoder::new(trap_file, flate2::Compression::fast());
+            trap_writer.output(&mut compressed_writer)
         }
-    })
+    }
 }
 
 fn path_for(dir: &Path, path: &Path, ext: &str) -> PathBuf {
@@ -184,12 +204,18 @@ fn path_for(dir: &Path, path: &Path, ext: &str) -> PathBuf {
             }
         }
     }
-    if let Some(x) = result.extension() {
-        let mut new_ext = x.to_os_string();
-        new_ext.push(ext);
-        result.set_extension(new_ext);
-    } else {
-        result.set_extension(ext);
+    if !ext.is_empty() {
+        match result.extension() {
+            Some(x) => {
+                let mut new_ext = x.to_os_string();
+                new_ext.push(".");
+                new_ext.push(ext);
+                result.set_extension(new_ext);
+            }
+            None => {
+                result.set_extension(ext);
+            }
+        }
     }
     result
 }

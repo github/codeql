@@ -1,6 +1,6 @@
 cargo build --release
 
-cargo run --release -p ql-generator
+cargo run --release -p ql-generator -- --dbscheme ql/src/ql.dbscheme --library ql/src/codeql_ql/ast/internal/
 codeql query format -i ql\src\codeql_ql\ast\internal\TreeSitter.qll
 
 if (Test-Path -Path extractor-pack) {

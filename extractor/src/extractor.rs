@@ -3,11 +3,13 @@ use std::borrow::Cow;
 use std::collections::BTreeMap as Map;
 use std::collections::BTreeSet as Set;
 use std::fmt;
+use std::io::Write;
 use std::path::Path;
+
 use tracing::{error, info, span, Level};
 use tree_sitter::{Language, Node, Parser, Range, Tree};
 
-struct TrapWriter {
+pub struct TrapWriter {
     /// The accumulated trap entries
     trap_output: Vec<TrapEntry>,
     /// A counter for generating fresh labels
@@ -16,7 +18,7 @@ struct TrapWriter {
     global_keys: std::collections::HashMap<String, Label>,
 }
 
-fn new_trap_writer() -> TrapWriter {
+pub fn new_trap_writer() -> TrapWriter {
     TrapWriter {
         counter: 0,
         trap_output: Vec::new(),
@@ -66,20 +68,27 @@ impl TrapWriter {
                 vec![
                     Arg::Label(file_label),
                     Arg::String(normalize_path(absolute_path)),
-                    Arg::String(match absolute_path.file_name() {
-                        None => "".to_owned(),
-                        Some(file_name) => format!("{}", file_name.to_string_lossy()),
-                    }),
-                    Arg::String(match absolute_path.extension() {
-                        None => "".to_owned(),
-                        Some(ext) => format!("{}", ext.to_string_lossy()),
-                    }),
-                    Arg::Int(1), // 1 = from source
                 ],
             );
             self.populate_parent_folders(file_label, absolute_path.parent());
         }
         file_label
+    }
+
+    fn populate_empty_file(&mut self) -> Label {
+        let (file_label, fresh) = self.global_id("empty;sourcefile");
+        if fresh {
+            self.add_tuple(
+                "files",
+                vec![Arg::Label(file_label), Arg::String("".to_string())],
+            );
+        }
+        file_label
+    }
+
+    pub fn populate_empty_location(&mut self) {
+        let file_label = self.populate_empty_file();
+        self.location(file_label, 0, 0, 0, 0);
     }
 
     fn populate_parent_folders(&mut self, child_label: Label, path: Option<&Path>) {
@@ -100,10 +109,6 @@ impl TrapWriter {
                             vec![
                                 Arg::Label(folder_label),
                                 Arg::String(normalize_path(folder)),
-                                Arg::String(match folder.file_name() {
-                                    None => "".to_owned(),
-                                    Some(file_name) => format!("{}", file_name.to_string_lossy()),
-                                }),
                             ],
                         );
                         path = folder.parent();
@@ -147,16 +152,22 @@ impl TrapWriter {
     fn comment(&mut self, text: String) {
         self.trap_output.push(TrapEntry::Comment(text));
     }
+
+    pub fn output(self, writer: &mut dyn Write) -> std::io::Result<()> {
+        write!(writer, "{}", Program(self.trap_output))
+    }
 }
 
 /// Extracts the source file at `path`, which is assumed to be canonicalized.
 pub fn extract(
     language: Language,
+    language_prefix: &str,
     schema: &NodeTypeMap,
+    trap_writer: &mut TrapWriter,
     path: &Path,
-    source: &Vec<u8>,
+    source: &[u8],
     ranges: &[Range],
-) -> std::io::Result<Program> {
+) -> std::io::Result<()> {
     let span = span!(
         Level::TRACE,
         "extract",
@@ -169,41 +180,32 @@ pub fn extract(
 
     let mut parser = Parser::new();
     parser.set_language(language).unwrap();
-    parser.set_included_ranges(&ranges).unwrap();
+    parser.set_included_ranges(ranges).unwrap();
     let tree = parser.parse(&source, None).expect("Failed to parse file");
-    let mut trap_writer = new_trap_writer();
     trap_writer.comment(format!("Auto-generated TRAP file for {}", path.display()));
     let file_label = &trap_writer.populate_file(path);
     let mut visitor = Visitor {
-        source: &source,
-        trap_writer: trap_writer,
+        source,
+        trap_writer,
         // TODO: should we handle path strings that are not valid UTF8 better?
         path: format!("{}", path.display()),
         file_label: *file_label,
-        token_counter: 0,
         toplevel_child_counter: 0,
         stack: Vec::new(),
+        language_prefix,
         schema,
     };
     traverse(&tree, &mut visitor);
 
     parser.reset();
-    Ok(Program(visitor.trap_writer.trap_output))
+    Ok(())
 }
 
 /// Escapes a string for use in a TRAP key, by replacing special characters with
 /// HTML entities.
 fn escape_key<'a, S: Into<Cow<'a, str>>>(key: S) -> Cow<'a, str> {
     fn needs_escaping(c: char) -> bool {
-        match c {
-            '&' => true,
-            '{' => true,
-            '}' => true,
-            '"' => true,
-            '@' => true,
-            '#' => true,
-            _ => false,
-        }
+        matches!(c, '&' | '{' | '}' | '"' | '@' | '#')
     }
 
     let key = key.into();
@@ -286,13 +288,13 @@ struct Visitor<'a> {
     /// source file.
     file_label: Label,
     /// The source code as a UTF-8 byte array
-    source: &'a Vec<u8>,
+    source: &'a [u8],
     /// A TrapWriter to accumulate trap entries
-    trap_writer: TrapWriter,
-    /// A counter for tokens
-    token_counter: usize,
+    trap_writer: &'a mut TrapWriter,
     /// A counter for top-level child nodes
     toplevel_child_counter: usize,
+    /// Language prefix
+    language_prefix: &'a str,
     /// A lookup table from type name to node types
     schema: &'a NodeTypeMap,
     /// A stack for gathering information from child nodes. Whenever a node is
@@ -332,7 +334,7 @@ impl Visitor<'_> {
         full_error_message: String,
         node: Node,
     ) {
-        let (start_line, start_column, end_line, end_column) = location_for(&self.source, node);
+        let (start_line, start_column, end_line, end_column) = location_for(self.source, node);
         let loc = self.trap_writer.location(
             self.file_label,
             start_line,
@@ -363,7 +365,7 @@ impl Visitor<'_> {
         let id = self.trap_writer.fresh_id();
 
         self.stack.push((id, 0, Vec::new()));
-        return true;
+        true
     }
 
     fn leave_node(&mut self, field_name: Option<&'static str>, node: Node) {
@@ -371,7 +373,7 @@ impl Visitor<'_> {
             return;
         }
         let (id, _, child_nodes) = self.stack.pop().expect("Vistor: empty stack");
-        let (start_line, start_column, end_line, end_column) = location_for(&self.source, node);
+        let (start_line, start_column, end_line, end_column) = location_for(self.source, node);
         let loc = self.trap_writer.location(
             self.file_label,
             start_line,
@@ -400,7 +402,7 @@ impl Visitor<'_> {
         match &table.kind {
             EntryKind::Token { kind_id, .. } => {
                 self.trap_writer.add_tuple(
-                    "ast_node_parent",
+                    &format!("{}_ast_node_parent", self.language_prefix),
                     vec![
                         Arg::Label(id),
                         Arg::Label(parent_id),
@@ -408,17 +410,14 @@ impl Visitor<'_> {
                     ],
                 );
                 self.trap_writer.add_tuple(
-                    "tokeninfo",
+                    &format!("{}_tokeninfo", self.language_prefix),
                     vec![
                         Arg::Label(id),
                         Arg::Int(*kind_id),
-                        Arg::Label(self.file_label),
-                        Arg::Int(self.token_counter),
                         sliced_source_arg(self.source, node),
                         Arg::Label(loc),
                     ],
                 );
-                self.token_counter += 1;
             }
             EntryKind::Table {
                 fields,
@@ -426,18 +425,17 @@ impl Visitor<'_> {
             } => {
                 if let Some(args) = self.complex_node(&node, fields, &child_nodes, id) {
                     self.trap_writer.add_tuple(
-                        "ast_node_parent",
+                        &format!("{}_ast_node_parent", self.language_prefix),
                         vec![
                             Arg::Label(id),
                             Arg::Label(parent_id),
                             Arg::Int(parent_index),
                         ],
                     );
-                    let mut all_args = Vec::new();
-                    all_args.push(Arg::Label(id));
+                    let mut all_args = vec![Arg::Label(id)];
                     all_args.extend(args);
                     all_args.push(Arg::Label(loc));
-                    self.trap_writer.add_tuple(&table_name, all_args);
+                    self.trap_writer.add_tuple(table_name, all_args);
                 }
             }
             _ => {
@@ -472,8 +470,8 @@ impl Visitor<'_> {
     fn complex_node(
         &mut self,
         node: &Node,
-        fields: &Vec<Field>,
-        child_nodes: &Vec<ChildNode>,
+        fields: &[Field],
+        child_nodes: &[ChildNode],
         parent_id: Label,
     ) -> Option<Vec<Arg>> {
         let mut map: Map<&Option<String>, (&Field, Vec<Arg>)> = Map::new();
@@ -510,22 +508,20 @@ impl Visitor<'_> {
                     );
                     self.record_parse_error_for_node(error_message, full_error_message, *node);
                 }
-            } else {
-                if child_node.field_name.is_some() || child_node.type_name.named {
-                    let error_message = format!(
-                        "value for unknown field: {}::{} and type {:?}",
-                        node.kind(),
-                        &child_node.field_name.unwrap_or("child"),
-                        &child_node.type_name
-                    );
-                    let full_error_message = format!(
-                        "{}:{}: {}",
-                        &self.path,
-                        node.start_position().row + 1,
-                        error_message
-                    );
-                    self.record_parse_error_for_node(error_message, full_error_message, *node);
-                }
+            } else if child_node.field_name.is_some() || child_node.type_name.named {
+                let error_message = format!(
+                    "value for unknown field: {}::{} and type {:?}",
+                    node.kind(),
+                    &child_node.field_name.unwrap_or("child"),
+                    &child_node.type_name
+                );
+                let full_error_message = format!(
+                    "{}:{}: {}",
+                    &self.path,
+                    node.start_position().row + 1,
+                    error_message
+                );
+                self.record_parse_error_for_node(error_message, full_error_message, *node);
             }
         }
         let mut args = Vec::new();
@@ -573,13 +569,12 @@ impl Visitor<'_> {
                             );
                             break;
                         }
-                        let mut args = Vec::new();
-                        args.push(Arg::Label(parent_id));
+                        let mut args = vec![Arg::Label(parent_id)];
                         if *has_index {
                             args.push(Arg::Int(index))
                         }
                         args.push(child_value.clone());
-                        self.trap_writer.add_tuple(&table_name, args);
+                        self.trap_writer.add_tuple(table_name, args);
                     }
                 }
             }
@@ -597,13 +592,10 @@ impl Visitor<'_> {
                 if tp == single_type {
                     return true;
                 }
-                match &self.schema.get(single_type).unwrap().kind {
-                    EntryKind::Union { members } => {
-                        if self.type_matches_set(tp, members) {
-                            return true;
-                        }
+                if let EntryKind::Union { members } = &self.schema.get(single_type).unwrap().kind {
+                    if self.type_matches_set(tp, members) {
+                        return true;
                     }
-                    _ => {}
                 }
             }
             node_types::FieldTypeInfo::Multiple { types, .. } => {
@@ -633,7 +625,7 @@ impl Visitor<'_> {
 }
 
 // Emit a slice of a source file as an Arg.
-fn sliced_source_arg(source: &Vec<u8>, n: Node) -> Arg {
+fn sliced_source_arg(source: &[u8], n: Node) -> Arg {
     let range = n.byte_range();
     Arg::String(String::from_utf8_lossy(&source[range.start..range.end]).into_owned())
 }
@@ -641,7 +633,7 @@ fn sliced_source_arg(source: &Vec<u8>, n: Node) -> Arg {
 // Emit a pair of `TrapEntry`s for the provided node, appropriately calibrated.
 // The first is the location and label definition, and the second is the
 // 'Located' entry.
-fn location_for<'a>(source: &Vec<u8>, n: Node) -> (usize, usize, usize, usize) {
+fn location_for(source: &[u8], n: Node) -> (usize, usize, usize, usize) {
     // Tree-sitter row, column values are 0-based while CodeQL starts
     // counting at 1. In addition Tree-sitter's row and column for the
     // end position are exclusive while CodeQL's end positions are inclusive.
@@ -720,9 +712,9 @@ impl fmt::Display for Program {
 }
 
 enum TrapEntry {
-    /// Maps the label to a fresh id, e.g. `#123 = *`.
+    /// Maps the label to a fresh id, e.g. `#123=*`.
     FreshId(Label),
-    /// Maps the label to a key, e.g. `#7 = @"foo"`.
+    /// Maps the label to a key, e.g. `#7=@"foo"`.
     MapLabelToKey(Label, String),
     /// foo_bar(arg*)
     GenericTuple(String, Vec<Arg>),
@@ -731,15 +723,15 @@ enum TrapEntry {
 impl fmt::Display for TrapEntry {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
-            TrapEntry::FreshId(label) => write!(f, "{} = *", label),
+            TrapEntry::FreshId(label) => write!(f, "{}=*", label),
             TrapEntry::MapLabelToKey(label, key) => {
-                write!(f, "{} = @\"{}\"", label, key.replace("\"", "\"\""))
+                write!(f, "{}=@\"{}\"", label, key.replace("\"", "\"\""))
             }
             TrapEntry::GenericTuple(name, args) => {
                 write!(f, "{}(", name)?;
                 for (index, arg) in args.iter().enumerate() {
                     if index > 0 {
-                        write!(f, ", ")?;
+                        write!(f, ",")?;
                     }
                     write!(f, "{}", arg)?;
                 }
@@ -756,7 +748,7 @@ struct Label(u32);
 
 impl fmt::Display for Label {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "#{}", self.0)
+        write!(f, "#{:x}", self.0)
     }
 }
 
@@ -799,18 +791,18 @@ impl fmt::Display for Arg {
 /// the string is sliced at the provided limit. If there is a multi-byte character
 /// at the limit then the returned slice will be slightly shorter than the limit to
 /// avoid splitting that multi-byte character.
-fn limit_string(string: &String, max_size: usize) -> &str {
+fn limit_string(string: &str, max_size: usize) -> &str {
     if string.len() <= max_size {
         return string;
     }
-    let p = string.as_ptr();
+    let p = string.as_bytes();
     let mut index = max_size;
     // We want to clip the string at [max_size]; however, the character at that position
     // may span several bytes. We need to find the first byte of the character. In UTF-8
     // encoded data any byte that matches the bit pattern 10XXXXXX is not a start byte.
     // Therefore we decrement the index as long as there are bytes matching this pattern.
     // This ensures we cut the string at the border between one character and another.
-    while index > 0 && unsafe { (*p.offset(index as isize) & 0b11000000) == 0b10000000 } {
+    while index > 0 && (p[index] & 0b11000000) == 0b10000000 {
         index -= 1;
     }
     &string[0..index]
@@ -829,9 +821,9 @@ fn escape_key_test() {
     assert_eq!("foo&lbrace;&rbrace;", escape_key("foo{}"));
     assert_eq!("&lbrace;&rbrace;", escape_key("{}"));
     assert_eq!("", escape_key(""));
-    assert_eq!("/path/to/foo.ql", escape_key("/path/to/foo.ql"));
+    assert_eq!("/path/to/foo.rb", escape_key("/path/to/foo.rb"));
     assert_eq!(
-        "/path/to/foo&amp;&lbrace;&rbrace;&quot;&commat;&num;.ql",
-        escape_key("/path/to/foo&{}\"@#.ql")
+        "/path/to/foo&amp;&lbrace;&rbrace;&quot;&commat;&num;.rb",
+        escape_key("/path/to/foo&{}\"@#.rb")
     );
 }
