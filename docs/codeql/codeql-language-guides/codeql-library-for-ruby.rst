@@ -48,7 +48,7 @@ in a program, even when it is not copied exactly.
 The API graphs library is used to locate methods in libraries. This is particuarly useful when locating
 particular functions or parameters that could be used as a source or sink of data in a security query.
 
-To summarise, the main Ruby modules are:
+To summarize, the main Ruby modules are:
 
 .. list-table:: Main Ruby modules
    :header-rows: 1
