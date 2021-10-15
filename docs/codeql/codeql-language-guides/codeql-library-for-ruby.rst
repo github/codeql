@@ -41,7 +41,7 @@ The data flow library is imported using
    import codeql.ruby.DataFlow
 
 Data flow tracks the flow of data through the program, including through function calls (interprocedural data flow).
-Data flow is particularly useful for security queries, where untrusted data flow to vulnerable parts of the program
+Data flow is particularly useful for security queries, where untrusted data flows to vulnerable parts of the program
 to exploit it. Related to data flow, is the taint-tracking library, which finds how data can *influence* other values
 in a program, even when it is not copied exactly.
 
