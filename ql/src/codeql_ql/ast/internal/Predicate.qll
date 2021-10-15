@@ -79,10 +79,11 @@ private module Cached {
     )
     or
     // super calls
-    exists(Super sup, ClassType type |
+    exists(Super sup, ClassType type, Type supertype |
       mc.getBase() = sup and
       sup.getEnclosingPredicate().(ClassPredicate).getParent().getType() = type and
-      p = type.getASuperType().getClassPredicate(mc.getMemberName(), mc.getNumberOfArguments())
+      supertype in [type.getASuperType(), type.getAnInstanceofType()] and
+      p = supertype.getClassPredicate(mc.getMemberName(), mc.getNumberOfArguments())
     )
   }
 
@@ -152,7 +153,9 @@ module PredConsistency {
       strictcount(PredicateOrBuiltin p0 |
         resolveCall(call, p0) and
         // aliases are expected to resolve to multiple.
-        not exists(p0.(ClasslessPredicate).getAlias())
+        not exists(p0.(ClasslessPredicate).getAlias()) and
+        // overridden predicates may have multiple targets
+        not p0.(ClassPredicate).isOverride()
       ) and
     c > 1 and
     resolveCall(call, p)

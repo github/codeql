@@ -19,7 +19,9 @@ private class ContainerOrModule extends TContainerOrModule {
 private class TFileOrModule = TFile or TModule;
 
 /** A file or a module. */
-class FileOrModule extends TFileOrModule, ContainerOrModule { }
+class FileOrModule extends TFileOrModule, ContainerOrModule {
+  abstract File getFile();
+}
 
 private class File_ extends FileOrModule, TFile {
   File f;
@@ -41,6 +43,8 @@ private class File_ extends FileOrModule, TFile {
     endline = 0 and
     endcolumn = 0
   }
+
+  override File getFile() { result = f }
 }
 
 private class Folder_ extends ContainerOrModule, TFolder {
@@ -90,6 +94,8 @@ class Module_ extends FileOrModule, TModule {
   ) {
     m.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
+
+  override File getFile() { result = m.getLocation().getFile() }
 }
 
 private predicate resolveQualifiedName(Import imp, ContainerOrModule m, int i) {
@@ -148,14 +154,16 @@ private predicate resolveSelectionName(Import imp, ContainerOrModule m, int i) {
 
 cached
 private module Cached {
-  // TODO: Use `AstNode::getParent` once it is total
-  private Generated::AstNode parent(Generated::AstNode n) {
-    result = n.getParent() and
-    not n instanceof Generated::Module
-  }
-
   private Module getEnclosingModule0(AstNode n) {
-    AstNodes::toGenerated(result) = parent*(AstNodes::toGenerated(n).getParent())
+    not n instanceof Module and
+    (
+      n = result.getAChild(_)
+      or
+      exists(AstNode prev |
+        result = getEnclosingModule0(prev) and
+        n = prev.getAChild(_)
+      )
+    )
   }
 
   cached

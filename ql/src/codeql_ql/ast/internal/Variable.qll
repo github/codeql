@@ -60,9 +60,9 @@ pragma[nomagic]
 VariableScope scopeOf(AstNode n) { result = parent*(n.getParent()) }
 
 private string getName(Identifier i) {
-  exists(Generated::Variable v |
+  exists(QL::Variable v |
     i = TIdentifier(v) and
-    result = v.getChild().(Generated::VarName).getChild().getValue()
+    result = v.getChild().(QL::VarName).getChild().getValue()
   )
 }
 
