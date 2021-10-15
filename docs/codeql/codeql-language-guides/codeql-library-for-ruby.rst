@@ -115,7 +115,7 @@ namespaces  (``Namespace``) and classes (``ClassDeclaration``).
      -  A representation of a run-time `module` or `class` value.
 
         - `getADeclaration()` - Gets a declaration
-        - `getSuperClass()` - Gets the super class fo this module, if any.
+        - `getSuperClass()` - Gets the super class of this module, if any.
         - `getAPrependedModule()` - Gets a prepended module.
         - `getAnIncludedModule()` - Gets an included module.
    * - ``Namespace``
