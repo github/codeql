@@ -68,7 +68,7 @@ To summarise, the main Ruby modules are:
    * - ``codeql.ruby.TaintTracking``
      - The taint tracking library
 
-The CodeQL examples are only excerpts and are not meant to represent complete queries.
+The CodeQL examples in this article are only excerpts and are not meant to represent complete queries.
 
 Abstract syntax
 ---------------
