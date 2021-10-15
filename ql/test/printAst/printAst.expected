@@ -220,6 +220,8 @@ nodes
 | file://:0:0:0:0 | none | semmle.label | [BuiltinPredicate] none |
 | file://:0:0:0:0 | pow | semmle.label | [BuiltinPredicate] pow |
 | file://:0:0:0:0 | prefix | semmle.label | [BuiltinPredicate] prefix |
+| file://:0:0:0:0 | regexpCapture | semmle.label | [BuiltinPredicate] regexpCapture |
+| file://:0:0:0:0 | regexpFind | semmle.label | [BuiltinPredicate] regexpFind |
 | file://:0:0:0:0 | regexpMatch | semmle.label | [BuiltinPredicate] regexpMatch |
 | file://:0:0:0:0 | regexpReplaceAll | semmle.label | [BuiltinPredicate] regexpReplaceAll |
 | file://:0:0:0:0 | replaceAll | semmle.label | [BuiltinPredicate] replaceAll |

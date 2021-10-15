@@ -31,3 +31,9 @@ module Aliases {
     alias0() // <- works
   }
 }
+
+module Buildins {
+  predicate replaceAll(string s) { "foo".replaceAll("foo", "bar") = s }
+
+  predicate regexpCapture(string s) { "foo".regexpCapture("\\w", 1) = s }
+}
