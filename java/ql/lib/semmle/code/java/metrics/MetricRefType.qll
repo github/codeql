@@ -137,7 +137,9 @@ class MetricRefType extends RefType, MetricElement {
   /** Holds if the specified callable should be included in the CK cohesion computation. */
   predicate includeInLackOfCohesionCK(Callable c) {
     not c instanceof TestMethod and
-    exists(Field f | c.getDeclaringType() = this and c.accesses(f) and relevantFieldForCohesion(f))
+    exists(Field f |
+      c.getDeclaringType() = this and c.accesses(f) and this.relevantFieldForCohesion(f)
+    )
   }
 
   pragma[noopt]
@@ -152,8 +154,8 @@ class MetricRefType extends RefType, MetricElement {
 
   /** Holds if a (non-ignored) callable reads a field relevant for cohesion. */
   private predicate relevantCallableAndFieldCK(Callable m, Field f) {
-    includeInLackOfCohesionCK(m) and
-    relevantFieldForCohesion(f) and
+    this.includeInLackOfCohesionCK(m) and
+    this.relevantFieldForCohesion(f) and
     m.accesses(f) and
     m.getDeclaringType() = this
   }
@@ -180,12 +182,12 @@ class MetricRefType extends RefType, MetricElement {
    */
   float getLackOfCohesionCK() {
     exists(int callables, int linked, float n |
-      callables = count(Callable m | includeInLackOfCohesionCK(m)) and
+      callables = count(Callable m | this.includeInLackOfCohesionCK(m)) and
       linked =
         count(Callable m1, Callable m2 |
           exists(Field f |
-            relevantCallableAndFieldCK(m1, f) and
-            relevantCallableAndFieldCK(m2, f) and
+            this.relevantCallableAndFieldCK(m1, f) and
+            this.relevantCallableAndFieldCK(m2, f) and
             m1 != m2
           )
         ) and
@@ -207,7 +209,7 @@ class MetricRefType extends RefType, MetricElement {
   int getADepth() {
     this.hasQualifiedName("java.lang", "Object") and result = 0
     or
-    not cyclic() and result = this.getASupertype().(MetricRefType).getADepth() + 1
+    not this.cyclic() and result = this.getASupertype().(MetricRefType).getADepth() + 1
   }
 
   /**
@@ -229,10 +231,10 @@ class MetricRefType extends RefType, MetricElement {
   int getADepth(RefType reference) {
     this = reference and result = 0
     or
-    not cyclic() and result = this.getASupertype().(MetricRefType).getADepth(reference) + 1
+    not this.cyclic() and result = this.getASupertype().(MetricRefType).getADepth(reference) + 1
   }
 
-  private predicate cyclic() { getASupertype+() = this }
+  private predicate cyclic() { this.getASupertype+() = this }
 
   /** Gets the depth of inheritance metric relative to the specified reference type. */
   int getInheritanceDepth(RefType reference) { result = max(this.getADepth(reference)) }

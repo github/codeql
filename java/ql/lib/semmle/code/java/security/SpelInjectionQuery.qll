@@ -58,8 +58,8 @@ private class SafeEvaluationContextFlowConfig extends DataFlow2::Configuration {
  */
 private class SafeContextSource extends DataFlow::ExprNode {
   SafeContextSource() {
-    isSimpleEvaluationContextConstructorCall(getExpr()) or
-    isSimpleEvaluationContextBuilderCall(getExpr())
+    isSimpleEvaluationContextConstructorCall(this.getExpr()) or
+    isSimpleEvaluationContextBuilderCall(this.getExpr())
   }
 }
 

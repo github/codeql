@@ -51,7 +51,7 @@ class Annotation extends @annotation, Expr {
   Expr getValue(string name) { filteredAnnotValue(this, this.getAnnotationElement(name), result) }
 
   /** Gets the element being annotated. */
-  Element getTarget() { result = getAnnotatedElement() }
+  Element getTarget() { result = this.getAnnotatedElement() }
 
   override string toString() { result = this.getType().getName() }
 
@@ -67,8 +67,8 @@ class Annotation extends @annotation, Expr {
    * expression defined for the value.
    */
   Expr getAValue(string name) {
-    getType().getAnnotationElement(name).getType() instanceof Array and
-    exists(Expr value | value = getValue(name) |
+    this.getType().getAnnotationElement(name).getType() instanceof Array and
+    exists(Expr value | value = this.getValue(name) |
       if value instanceof ArrayInit then result = value.(ArrayInit).getAnInit() else result = value
     )
   }
@@ -104,7 +104,7 @@ class Annotatable extends Element {
 
   /** Holds if this element has the specified annotation. */
   predicate hasAnnotation(string package, string name) {
-    exists(AnnotationType at | at = getAnAnnotation().getType() |
+    exists(AnnotationType at | at = this.getAnAnnotation().getType() |
       at.nestedName() = name and at.getPackage().getName() = package
     )
   }
@@ -118,7 +118,7 @@ class Annotatable extends Element {
    * annotation attached to it for the specified `category`.
    */
   predicate suppressesWarningsAbout(string category) {
-    category = getAnAnnotation().(SuppressWarningsAnnotation).getASuppressedWarning()
+    category = this.getAnAnnotation().(SuppressWarningsAnnotation).getASuppressedWarning()
     or
     this.(Member).getDeclaringType().suppressesWarningsAbout(category)
     or

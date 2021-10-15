@@ -30,7 +30,7 @@ class ProtobufMessageLite extends Interface {
    * Gets a static method named `parseFrom` (or similar) declared on a subtype of the `MessageLite` interface.
    */
   Method getAParseFromMethod() {
-    result = getASubtype+().getAMethod() and
+    result = this.getASubtype+().getAMethod() and
     result.getName().matches("parse%From") and
     result.isStatic()
   }

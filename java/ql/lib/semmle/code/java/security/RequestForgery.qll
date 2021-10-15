@@ -138,7 +138,7 @@ private class StringBuilderVarExt extends StringBuilderVar {
   private StringBuilderAppend getNextAppendIncludingAssignmentChains(
     StringBuilderConstructorOrAppend prev
   ) {
-    result = getNextAssignmentChainedAppend(prev)
+    result = this.getNextAssignmentChainedAppend(prev)
     or
     prev = this.getAnAssignedValue() and
     result = this.getAFirstAppendAfterAssignment()

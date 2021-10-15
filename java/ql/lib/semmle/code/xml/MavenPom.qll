@@ -32,7 +32,9 @@ class ProtoPom extends XMLElement {
    * tag was provided.
    */
   string getVersionString() {
-    if exists(getVersion().getValue()) then result = getVersion().getValue() else result = ""
+    if exists(this.getVersion().getValue())
+    then result = this.getVersion().getValue()
+    else result = ""
   }
 
   /** Gets a Maven coordinate of the form `groupId:artifactId`. */
@@ -78,25 +80,25 @@ class Pom extends ProtoPom {
   Dependencies getDependencies() { result = this.getAChild() }
 
   /** Gets a child XML element named "dependencyManagement". */
-  DependencyManagement getDependencyManagement() { result = getAChild() }
+  DependencyManagement getDependencyManagement() { result = this.getAChild() }
 
   /** Gets a Dependency element for this POM. */
-  Dependency getADependency() { result = getAChild().(Dependencies).getADependency() }
+  Dependency getADependency() { result = this.getAChild().(Dependencies).getADependency() }
 
   /**
    * Gets a property defined in the `<properties>` section of this POM.
    */
-  PomProperty getALocalProperty() { result = getAChild().(PomProperties).getAProperty() }
+  PomProperty getALocalProperty() { result = this.getAChild().(PomProperties).getAProperty() }
 
   /**
    * Gets a property value defined for this project, either in a local `<properties>` section, or
    * in the `<properties>` section of an ancestor POM.
    */
   PomProperty getAProperty() {
-    result = getALocalProperty()
+    result = this.getALocalProperty()
     or
-    result = getParentPom().getAProperty() and
-    not getALocalProperty().getName() = result.getName()
+    result = this.getParentPom().getAProperty() and
+    not this.getALocalProperty().getName() = result.getName()
   }
 
   /**
@@ -105,7 +107,7 @@ class Pom extends ProtoPom {
    */
   PomProperty getProperty(string name) {
     result.getName() = name and
-    result = getAProperty()
+    result = this.getAProperty()
   }
 
   /**
@@ -114,11 +116,11 @@ class Pom extends ProtoPom {
   PomElement getProjectProperty() {
     (
       // It must either be a child of the POM, or a child of the parent node of the POM
-      result = getAChild()
+      result = this.getAChild()
       or
-      result = getParentPom().getAChild() and
+      result = this.getParentPom().getAChild() and
       // The parent project property is not shadowed by a local project property
-      not exists(PomElement p | p = getAChild() and p.getName() = result.getName())
+      not exists(PomElement p | p = this.getAChild() and p.getName() = result.getName())
     ) and
     // Can't be a property if it has children of its own
     not exists(result.getAChild())
@@ -132,13 +134,13 @@ class Pom extends ProtoPom {
     if name.matches("project.%")
     then
       exists(PomElement p |
-        p = getProjectProperty() and
+        p = this.getProjectProperty() and
         "project." + p.getName() = name and
         result = p.getValue()
       )
     else
       exists(PomProperty prop |
-        prop = getAProperty() and prop.getName() = name and result = prop.getValue()
+        prop = this.getAProperty() and prop.getName() = name and result = prop.getValue()
       )
   }
 
@@ -147,24 +149,24 @@ class Pom extends ProtoPom {
    * is transitively available, i.e. one with scope "compile".
    */
   Dependency getAnExportedDependency() {
-    result = getADependency() and result.getScope() = "compile"
+    result = this.getADependency() and result.getScope() = "compile"
   }
 
   /**
    * Gets a POM dependency that is exported by this POM. An exported dependency is one that
    * is transitively available, i.e. one with scope "compile".
    */
-  Pom getAnExportedPom() { result = getAnExportedDependency().getPom() }
+  Pom getAnExportedPom() { result = this.getAnExportedDependency().getPom() }
 
   /**
    * Gets the `<parent>` element of this POM, if any.
    */
-  Parent getParentElement() { result = getAChild() }
+  Parent getParentElement() { result = this.getAChild() }
 
   /**
    * Gets the POM referred to by the `<parent>` element of this POM, if any.
    */
-  Pom getParentPom() { result = getParentElement().getPom() }
+  Pom getParentPom() { result = this.getParentElement().getPom() }
 
   /**
    * Gets the version specified for dependency `dep` in a `dependencyManagement`
@@ -172,11 +174,11 @@ class Pom extends ProtoPom {
    * is specified.
    */
   string getVersionStringForDependency(Dependency dep) {
-    if exists(getDependencyManagement().getDependency(dep))
-    then result = getDependencyManagement().getDependency(dep).getVersionString()
+    if exists(this.getDependencyManagement().getDependency(dep))
+    then result = this.getDependencyManagement().getDependency(dep).getVersionString()
     else
-      if exists(getParentPom())
-      then result = getParentPom().getVersionStringForDependency(dep)
+      if exists(this.getParentPom())
+      then result = this.getParentPom().getVersionStringForDependency(dep)
       else result = ""
   }
 
@@ -189,24 +191,24 @@ class Pom extends ProtoPom {
    */
   Folder getSourceDirectory() {
     exists(string relativePath |
-      if exists(getProperty("sourceDirectory"))
+      if exists(this.getProperty("sourceDirectory"))
       then
         // A custom source directory has been specified.
-        relativePath = getProperty("sourceDirectory").getValue()
+        relativePath = this.getProperty("sourceDirectory").getValue()
       else
         // The Maven default source directory.
         relativePath = "src"
     |
       // Resolve the relative path against the base directory for this POM
       result.getAbsolutePath() =
-        normalize(getFile().getParentContainer().getAbsolutePath() + "/" + relativePath)
+        normalize(this.getFile().getParentContainer().getAbsolutePath() + "/" + relativePath)
     )
   }
 
   /**
    * Gets a `RefType` contained in the source directory.
    */
-  RefType getASourceRefType() { result.getFile().getParentContainer*() = getSourceDirectory() }
+  RefType getASourceRefType() { result.getFile().getParentContainer*() = this.getSourceDirectory() }
 }
 
 /**
@@ -235,13 +237,13 @@ class Dependency extends ProtoPom {
    * be the string contents of that tag, otherwise it defaults to "compile".
    */
   string getScope() {
-    if exists(getAChild().(Scope))
-    then exists(Scope s | s = getAChild() and result = s.getValue())
+    if exists(this.getAChild().(Scope))
+    then exists(Scope s | s = this.getAChild() and result = s.getValue())
     else result = "compile"
   }
 
   override string getVersionString() {
-    if exists(getVersion())
+    if exists(this.getVersion())
     then result = super.getVersionString()
     else
       if exists(Pom p | this = p.getADependency())
@@ -263,11 +265,11 @@ class PomDependency extends Dependency {
       source.getADependency() = this and
       // Consider dependencies that can be used at compile time.
       (
-        getScope() = "compile"
+        this.getScope() = "compile"
         or
         // Provided dependencies are like compile time dependencies except (a) they are not packaged
         // when creating the jar and (b) they are not transitive.
-        getScope() = "provided"
+        this.getScope() = "provided"
         // We ignore "test" dependencies because they can be runtime or compile time dependencies
       )
     )
@@ -284,11 +286,11 @@ class PomElement extends XMLElement {
    */
   string getValue() {
     exists(string s |
-      s = allCharactersString() and
+      s = this.allCharactersString() and
       if s.matches("${%")
       then
         // Resolve the placeholder in the parent POM
-        result = getParent*().(Pom).resolvePlaceholder(s.substring(2, s.length() - 1))
+        result = this.getParent*().(Pom).resolvePlaceholder(s.substring(2, s.length() - 1))
       else result = s
     )
   }
@@ -335,18 +337,18 @@ class Dependencies extends PomElement {
 
 /** An XML element named "dependencyManagement", as found in Maven POM XML files. */
 class DependencyManagement extends PomElement {
-  DependencyManagement() { getName() = "dependencyManagement" }
+  DependencyManagement() { this.getName() = "dependencyManagement" }
 
-  Dependencies getDependencies() { result = getAChild() }
+  Dependencies getDependencies() { result = this.getAChild() }
 
-  Dependency getADependency() { result = getDependencies().getADependency() }
+  Dependency getADependency() { result = this.getDependencies().getADependency() }
 
   /**
    * Gets a dependency declared in this `dependencyManagement` element that has
    * the same (short) coordinates as `dep`.
    */
   Dependency getDependency(Dependency dep) {
-    result = getADependency() and
+    result = this.getADependency() and
     result.getShortCoordinate() = dep.getShortCoordinate()
   }
 }
@@ -365,7 +367,7 @@ class PomProperties extends PomElement {
  * Represents a single property.
  */
 class PomProperty extends PomElement {
-  PomProperty() { getParent() instanceof PomProperties }
+  PomProperty() { this.getParent() instanceof PomProperties }
 }
 
 /**
@@ -378,7 +380,7 @@ class DeclaredRepository extends PomElement {
    * Gets the url for this repository. If the `url` tag is present, this will
    * be the string contents of that tag.
    */
-  string getUrl() { result = getAChild("url").(PomElement).getValue() }
+  string getUrl() { result = this.getAChild("url").(PomElement).getValue() }
 }
 
 /**
@@ -386,12 +388,16 @@ class DeclaredRepository extends PomElement {
  * "repository" with a parent name ".m2" is considered to be a Maven repository.
  */
 class MavenRepo extends Folder {
-  MavenRepo() { getBaseName() = "repository" and getParentContainer().getBaseName() = ".m2" }
+  MavenRepo() {
+    this.getBaseName() = "repository" and this.getParentContainer().getBaseName() = ".m2"
+  }
 
   /**
    * Gets a Jar file contained within this repository.
    */
-  File getAJarFile() { result = getAChildContainer*().(File) and result.getExtension() = "jar" }
+  File getAJarFile() {
+    result = this.getAChildContainer*().(File) and result.getExtension() = "jar"
+  }
 
   /**
    * Gets any jar artifacts in this repository that match the POM project definition. This is an
@@ -400,7 +406,7 @@ class MavenRepo extends Folder {
    * For all other qualifiers, all matches are returned regardless of version.
    */
   MavenRepoJar getAnArtifact(ProtoPom pom) {
-    result = getAJarFile() and
+    result = this.getAJarFile() and
     if exists(MavenRepoJar mrj | mrj.preciseMatch(pom)) or versionHardMatch(pom)
     then
       // Either a hard match qualifier, or soft and there is at least one precise match
@@ -432,7 +438,7 @@ class MavenRepoJar extends File {
       // Assuming the standard layout, the first part of the directory structure from the Maven
       // repository will be the groupId converted to a path by replacing "." with "/".
       result =
-        getParentContainer()
+        this.getParentContainer()
             .getParentContainer()
             .getParentContainer()
             .getAbsolutePath()
@@ -444,44 +450,44 @@ class MavenRepoJar extends File {
   /**
    * DEPRECATED: name changed to `getGroupId` for consistent use of camel-case.
    */
-  deprecated string getGroupID() { result = getGroupId() }
+  deprecated string getGroupID() { result = this.getGroupId() }
 
   /**
    * Gets the `artifactId` of this jar.
    */
-  string getArtifactId() { result = getParentContainer().getParentContainer().getBaseName() }
+  string getArtifactId() { result = this.getParentContainer().getParentContainer().getBaseName() }
 
   /**
    * DEPRECATED: name changed to `getArtifactId` for consistent casing and consistent spelling with Maven.
    */
-  deprecated string getArtefactID() { result = getArtifactId() }
+  deprecated string getArtefactID() { result = this.getArtifactId() }
 
   /**
    * Gets the artifact version string of this jar.
    */
-  string getVersion() { result = getParentContainer().getBaseName() }
+  string getVersion() { result = this.getParentContainer().getBaseName() }
 
   /**
    * Holds if this jar is an artifact for the given POM or dependency, regardless of which version it is.
    */
   predicate artifactMatches(ProtoPom pom) {
-    pom.getGroup().getValue() = getGroupId() and
-    pom.getArtifact().getValue() = getArtifactId()
+    pom.getGroup().getValue() = this.getGroupId() and
+    pom.getArtifact().getValue() = this.getArtifactId()
   }
 
   /**
    * DEPRECATED: name changed to `artifactMatches` for consistent spelling with Maven.
    */
-  deprecated predicate artefactMatches(ProtoPom pom) { artifactMatches(pom) }
+  deprecated predicate artefactMatches(ProtoPom pom) { this.artifactMatches(pom) }
 
   /**
    * Holds if this jar is both an artifact for the POM, and has a version string that matches the POM
    * version string. Only soft and hard version matches are supported.
    */
   predicate preciseMatch(ProtoPom pom) {
-    artifactMatches(pom) and
+    this.artifactMatches(pom) and
     if versionHardMatch(pom)
-    then ("[" + getVersion() + "]").matches(pom.getVersionString() + "%")
-    else getVersion().matches(pom.getVersionString() + "%")
+    then ("[" + this.getVersion() + "]").matches(pom.getVersionString() + "%")
+    else this.getVersion().matches(pom.getVersionString() + "%")
   }
 }

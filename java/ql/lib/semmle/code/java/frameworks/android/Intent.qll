@@ -7,35 +7,37 @@ import semmle.code.java.dataflow.ExternalFlow
  * The class `android.content.Intent`.
  */
 class TypeIntent extends Class {
-  TypeIntent() { hasQualifiedName("android.content", "Intent") }
+  TypeIntent() { this.hasQualifiedName("android.content", "Intent") }
 }
 
 /**
  * The class `android.app.Activity`.
  */
 class TypeActivity extends Class {
-  TypeActivity() { hasQualifiedName("android.app", "Activity") }
+  TypeActivity() { this.hasQualifiedName("android.app", "Activity") }
 }
 
 /**
  * The class `android.content.Context`.
  */
 class TypeContext extends RefType {
-  TypeContext() { hasQualifiedName("android.content", "Context") }
+  TypeContext() { this.hasQualifiedName("android.content", "Context") }
 }
 
 /**
  * The class `android.content.BroadcastReceiver`.
  */
 class TypeBroadcastReceiver extends Class {
-  TypeBroadcastReceiver() { hasQualifiedName("android.content", "BroadcastReceiver") }
+  TypeBroadcastReceiver() { this.hasQualifiedName("android.content", "BroadcastReceiver") }
 }
 
 /**
  * The method `Activity.getIntent`
  */
 class AndroidGetIntentMethod extends Method {
-  AndroidGetIntentMethod() { hasName("getIntent") and getDeclaringType() instanceof TypeActivity }
+  AndroidGetIntentMethod() {
+    this.hasName("getIntent") and this.getDeclaringType() instanceof TypeActivity
+  }
 }
 
 /**
@@ -43,7 +45,7 @@ class AndroidGetIntentMethod extends Method {
  */
 class AndroidReceiveIntentMethod extends Method {
   AndroidReceiveIntentMethod() {
-    hasName("onReceive") and getDeclaringType() instanceof TypeBroadcastReceiver
+    this.hasName("onReceive") and this.getDeclaringType() instanceof TypeBroadcastReceiver
   }
 }
 
@@ -52,8 +54,8 @@ class AndroidReceiveIntentMethod extends Method {
  */
 class ContextStartActivityMethod extends Method {
   ContextStartActivityMethod() {
-    (hasName("startActivity") or hasName("startActivities")) and
-    getDeclaringType() instanceof TypeContext
+    (this.hasName("startActivity") or this.hasName("startActivities")) and
+    this.getDeclaringType() instanceof TypeContext
   }
 }
 
@@ -70,8 +72,8 @@ private class IntentFieldsInheritTaint extends DataFlow::SyntheticFieldContent,
  */
 class IntentGetParcelableExtraMethod extends Method {
   IntentGetParcelableExtraMethod() {
-    hasName("getParcelableExtra") and
-    getDeclaringType() instanceof TypeIntent
+    this.hasName("getParcelableExtra") and
+    this.getDeclaringType() instanceof TypeIntent
   }
 }
 
