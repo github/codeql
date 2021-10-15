@@ -287,7 +287,9 @@ module PredConsistency {
       strictcount(PredicateOrBuiltin p0 |
         resolveCall(call, p0) and
         // aliases are expected to resolve to multiple.
-        not exists(p0.getDeclaration().(ClasslessPredicate).getAlias())
+        not exists(p0.getDeclaration().(ClasslessPredicate).getAlias()) and
+        // overridden predicates may have multiple targets
+        not p0.getDeclaration().(ClassPredicate).isOverride()
       ) and
     c > 1 and
     resolveCall(call, p)
