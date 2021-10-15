@@ -196,6 +196,7 @@ nodes
 | file://:0:0:0:0 | exp | semmle.label | [BuiltinPredicate] exp |
 | file://:0:0:0:0 | floor | semmle.label | [BuiltinPredicate] floor |
 | file://:0:0:0:0 | gcd | semmle.label | [BuiltinPredicate] gcd |
+| file://:0:0:0:0 | getAQlClass | semmle.label | [BuiltinPredicate] getAQlClass |
 | file://:0:0:0:0 | getDay | semmle.label | [BuiltinPredicate] getDay |
 | file://:0:0:0:0 | getHours | semmle.label | [BuiltinPredicate] getHours |
 | file://:0:0:0:0 | getMinutes | semmle.label | [BuiltinPredicate] getMinutes |

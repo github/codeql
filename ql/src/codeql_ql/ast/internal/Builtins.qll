@@ -44,7 +44,9 @@ predicate isBuiltinMember(string sig) {
       "string string.toLowerCase()", "string string.toUpperCase()", "string string.trim()",
       "int date.daysTo(date)", "int date.getDay()", "int date.getHours()", "int date.getMinutes()",
       "int date.getMonth()", "int date.getSeconds()", "int date.getYear()",
-      "string date.toString()", "string date.toISO()", "string int.toUnicode()"
+      "string date.toString()", "string date.toISO()", "string int.toUnicode()",
+      "string any.getAQlClass()"
+      /* getAQlClass is special , see Predicate.qll*/
     ]
 }
 

@@ -213,7 +213,7 @@ class BuiltinPredicate extends PredicateOrBuiltin, TBuiltin {
   override string getAPrimaryQlClass() { result = "BuiltinPredicate" }
 }
 
-private class BuiltinClassless extends BuiltinPredicate, TBuiltinClassless {
+class BuiltinClassless extends BuiltinPredicate, TBuiltinClassless {
   string name;
   string ret;
   string args;
@@ -227,7 +227,7 @@ private class BuiltinClassless extends BuiltinPredicate, TBuiltinClassless {
   override PrimitiveType getParameterType(int i) { result.getName() = getArgType(args, i) }
 }
 
-private class BuiltinMember extends BuiltinPredicate, TBuiltinMember {
+class BuiltinMember extends BuiltinPredicate, TBuiltinMember {
   string name;
   string qual;
   string ret;
