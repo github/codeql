@@ -754,6 +754,11 @@ class Class extends TClass, TypeDeclaration, ModuleDeclaration {
    */
   TypeExpr getASuperType() { toQL(result) = cls.getExtends(_) }
 
+  /**
+   * Gets a type referenced in the `instanceof` part of the class declaration.
+   */
+  TypeExpr getAnInstanceofType() { toQL(result) = cls.getInstanceof(_) }
+
   /** Gets the type that this class is defined to be an alias of. */
   TypeExpr getAliasType() { toQL(result) = cls.getChild(_).(QL::TypeAliasBody).getChild() }
 
