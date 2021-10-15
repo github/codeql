@@ -59,42 +59,56 @@ module DataFlow {
   }
 
   private newtype TParameter =
-    TThisParam(ClassPredicate p) or
-    TResultParam(Predicate p) { exists(p.getReturnType()) } or
-    TVarParam(VarDecl v, int i, Predicate pred) { pred.getParameter(i) = v }
+    TThisParameter(ClassPredicate p) or
+    TResultParameter(Predicate p) { exists(p.getReturnType()) } or
+    TVariableParameter(VarDecl v, int i, Predicate pred) { pred.getParameter(i) = v }
 
-  class Parameter extends TParameter {
+  abstract class Parameter extends TParameter {
     string toString() { this.hasName(result) }
 
-    ClassPredicate asThis() { this = TThisParam(result) }
+    abstract predicate hasName(string name);
 
-    Predicate asResult() { this = TResultParam(result) }
+    abstract int getIndex();
 
-    VarDecl asVar(int i, Predicate pred) { this = TVarParam(result, i, pred) }
+    abstract Predicate getPredicate();
+  }
 
-    predicate hasName(string name) {
-      exists(this.asThis()) and name = "this"
-      or
-      exists(this.asResult()) and name = "result"
-      or
-      name = this.asVar(_, _).getName()
-    }
+  class ThisParameter extends Parameter, TThisParameter {
+    ClassPredicate p;
 
-    int getIndex() {
-      exists(this.asThis()) and result = -1
-      or
-      exists(this.asResult()) and result = -2
-      or
-      exists(this.asVar(result, _))
-    }
+    ThisParameter() { this = TThisParameter(p) }
 
-    Predicate getPredicate() {
-      result = this.asThis()
-      or
-      result = this.asResult()
-      or
-      exists(this.asVar(_, result))
-    }
+    override predicate hasName(string name) { name = "this" }
+
+    override int getIndex() { result = -1 }
+
+    override Predicate getPredicate() { result = p }
+  }
+
+  class ResultParameter extends Parameter, TResultParameter {
+    Predicate p;
+
+    ResultParameter() { this = TResultParameter(p) }
+
+    override predicate hasName(string name) { name = "result" }
+
+    override int getIndex() { result = -2 }
+
+    override Predicate getPredicate() { result = p }
+  }
+
+  class VariableParameter extends Parameter, TVariableParameter {
+    VarDecl v;
+    int i;
+    Predicate p;
+
+    VariableParameter() { this = TVariableParameter(v, i, p) }
+
+    override predicate hasName(string name) { name = v.getName() }
+
+    override int getIndex() { result = i }
+
+    override Predicate getPredicate() { result = p }
   }
 
   class Node extends TNode {
@@ -222,15 +236,15 @@ module DataFlow {
 
   predicate paramStep(Expr e1, Parameter p2) {
     exists(VarDecl v |
-      p2 = TVarParam(v, _, _) and
+      p2 = TVariableParameter(v, _, _) and
       varaccesValue(e1, v, _)
     )
     or
     exists(Formula scope |
-      p2 = TThisParam(scope.getEnclosingPredicate()) and
+      p2 = TThisParameter(scope.getEnclosingPredicate()) and
       thisValue(e1, scope)
       or
-      p2 = TResultParam(scope.getEnclosingPredicate()) and
+      p2 = TResultParameter(scope.getEnclosingPredicate()) and
       resultValue(e1, scope)
     )
   }
@@ -273,7 +287,7 @@ module DataFlow {
   }
 
   predicate flowsFromSource(Node node) {
-    isSource(node)
+    isSource(node.asExpr())
     or
     exists(Node mid | flowsFromSource(mid) | step(mid, node))
   }
@@ -292,11 +306,10 @@ module DataFlow {
     sink.getPredicate() instanceof EdgesPredicate
   }
 
-  predicate isSource(Node source) {
-    exists(ToStringCall toString |
-      source.asExpr() = toString and
-      not toString.getEnclosingPredicate() instanceof ToString
-    )
+  predicate isSource(ToStringCall toString) {
+    not toString.getEnclosingPredicate() instanceof ToString and
+    not toString.getEnclosingPredicate() instanceof NodesPredicate and
+    not toString.getEnclosingPredicate() instanceof EdgesPredicate
   }
 }
 
@@ -309,16 +322,23 @@ predicate flowsToSelect(Expr e) {
 
 from ToStringCall call
 where
+  // It's not part of a toString call
+  DataFlow::isSource(call) and
   // The call doesn't flow to a select
   not flowsToSelect(call) and
-  // It's not part of a toString call
-  not call.getEnclosingPredicate() instanceof ToString and
   // It's in a query
   call.getLocation().getFile().getBaseName().matches("%.ql") and
   // ... and not in a test
-  not call.getLocation()
-      .getFile()
-      .getAbsolutePath()
-      .toLowerCase()
-      .matches(["%test%", "%consistency%", "%meta%"])
+  not (
+    call.getLocation()
+        .getFile()
+        .getAbsolutePath()
+        .toLowerCase()
+        .matches(["%test%", "%consistency%", "%meta%"])
+    or
+    call.getLocation()
+        .getFile()
+        .getAbsolutePath()
+        .regexpMatch(".*/(test|examples|ql-training|recorded-call-graph-metrics)/.*")
+  )
 select call, "Query logic depends on implementation of 'toString'."
