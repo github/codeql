@@ -383,3 +383,6 @@ var bad91 = /(foo|FOO)*bar/i;
 
 var good47 = /([AB]|[ab])*C/;
 var bad92 = /([DE]|[de])*F/i;
+
+var bad93 = /(?<=^v?|\sv?)(a|aa)*$/; 
+var bad94 = /(a|aa)*$/;

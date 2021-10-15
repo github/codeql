@@ -24,7 +24,7 @@ class XMLLocatable extends @xmllocatable, TXMLLocatable {
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
-   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
@@ -108,7 +108,7 @@ class XMLParent extends @xmlparent {
   }
 
   /** Gets the text value contained in this XML parent. */
-  string getTextValue() { result = allCharactersString() }
+  string getTextValue() { result = this.allCharactersString() }
 
   /** Gets a printable representation of this XML parent. */
   string toString() { result = this.getName() }
@@ -119,7 +119,7 @@ class XMLFile extends XMLParent, File {
   XMLFile() { xmlEncoding(this, _) }
 
   /** Gets a printable representation of this XML file. */
-  override string toString() { result = getName() }
+  override string toString() { result = this.getName() }
 
   /** Gets the name of this XML file. */
   override string getName() { result = File.super.getAbsolutePath() }
@@ -129,14 +129,14 @@ class XMLFile extends XMLParent, File {
    *
    * Gets the path of this XML file.
    */
-  deprecated string getPath() { result = getAbsolutePath() }
+  deprecated string getPath() { result = this.getAbsolutePath() }
 
   /**
    * DEPRECATED: Use `getParentContainer().getAbsolutePath()` instead.
    *
    * Gets the path of the folder that contains this XML file.
    */
-  deprecated string getFolder() { result = getParentContainer().getAbsolutePath() }
+  deprecated string getFolder() { result = this.getParentContainer().getAbsolutePath() }
 
   /** Gets the encoding of this XML file. */
   string getEncoding() { xmlEncoding(this, result) }
@@ -200,7 +200,7 @@ class XMLDTD extends XMLLocatable, @xmldtd {
  */
 class XMLElement extends @xmlelement, XMLParent, XMLLocatable {
   /** Holds if this XML element has the given `name`. */
-  predicate hasName(string name) { name = getName() }
+  predicate hasName(string name) { name = this.getName() }
 
   /** Gets the name of this XML element. */
   override string getName() { xmlElements(this, result, _, _, _) }
@@ -239,7 +239,7 @@ class XMLElement extends @xmlelement, XMLParent, XMLLocatable {
   string getAttributeValue(string name) { result = this.getAttribute(name).getValue() }
 
   /** Gets a printable representation of this XML element. */
-  override string toString() { result = getName() }
+  override string toString() { result = this.getName() }
 }
 
 /**

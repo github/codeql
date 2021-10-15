@@ -1,6 +1,7 @@
 import cpp
 private import semmle.code.cpp.models.interfaces.ArrayFunction
 private import semmle.code.cpp.models.implementations.Strcat
+import semmle.code.cpp.dataflow.DataFlow
 
 private predicate mayAddNullTerminatorHelper(Expr e, VariableAccess va, Expr e0) {
   exists(StackVariable v0, Expr val |
@@ -45,22 +46,28 @@ predicate mayAddNullTerminator(Expr e, VariableAccess va) {
     ae.getRValue().getAChild*() = va
   )
   or
-  // Function call: library function, varargs function, function
-  // containing assembler code, or function where the relevant
-  // parameter is potentially added a null terminator.
+  // Function calls...
   exists(Call c, Function f, int i |
     e = c and
     f = c.getTarget() and
     not functionArgumentMustBeNullTerminated(f, i) and
     c.getAnArgumentSubExpr(i) = va
   |
-    not f.hasEntryPoint() and not functionArgumentMustBeNullTerminated(f, i)
+    // library function
+    not f.hasEntryPoint()
     or
+    // function where the relevant parameter is potentially added a null terminator
     mayAddNullTerminator(_, f.getParameter(i).getAnAccess())
     or
+    // varargs function
     f.isVarargs() and i >= f.getNumberOfParameters()
     or
+    // function containing assembler code
     exists(AsmStmt s | s.getEnclosingFunction() = f)
+    or
+    // function where the relevant parameter is returned (leaking it to be potentially null terminated elsewhere)
+    DataFlow::localFlow(DataFlow::parameterNode(f.getParameter(i)),
+      DataFlow::exprNode(any(ReturnStmt rs).getExpr()))
   )
   or
   // Call without target (e.g., function pointer call)
@@ -91,6 +98,15 @@ predicate variableMustBeNullTerminated(VariableAccess va) {
     exists(int i |
       functionArgumentMustBeNullTerminated(fc.getTarget(), i) and
       fc.getArgument(i) = va
+    )
+    or
+    // String argument to a formatting function (such as `printf`)
+    exists(int n, FormatLiteral fl |
+      fc.(FormattingFunctionCall).getConversionArgument(n) = va and
+      fl = fc.(FormattingFunctionCall).getFormat() and
+      fl.getConversionType(n) instanceof PointerType and // `%s`, `%ws` etc
+      not fl.getConversionType(n) instanceof VoidPointerType and // exclude: `%p`
+      not fl.hasPrecision(n) // exclude: `%.*s`
     )
     or
     // Call to a wrapper function that requires null termination

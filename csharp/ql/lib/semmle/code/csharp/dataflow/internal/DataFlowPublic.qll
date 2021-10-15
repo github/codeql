@@ -58,7 +58,7 @@ class Node extends TNode {
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
-   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
@@ -98,9 +98,7 @@ class ExprNode extends Node, TExprNode_ {
  * The value of a parameter at function entry, viewed as a node in a data
  * flow graph.
  */
-class ParameterNode extends Node {
-  ParameterNode() { this instanceof ParameterNodeImpl }
-
+class ParameterNode extends Node instanceof ParameterNodeImpl {
   /** Gets the parameter corresponding to this node, if any. */
   DotNet::Parameter getParameter() {
     exists(DataFlowCallable c, int i | this.isParameterOf(c, i) and result = c.getParameter(i))
@@ -110,9 +108,7 @@ class ParameterNode extends Node {
    * Holds if this node is the parameter of callable `c` at the specified
    * (zero-based) position.
    */
-  predicate isParameterOf(DataFlowCallable c, int i) {
-    this.(ParameterNodeImpl).isParameterOf(c, i)
-  }
+  predicate isParameterOf(DataFlowCallable c, int i) { super.isParameterOf(c, i) }
 }
 
 /** A definition, viewed as a node in a data flow graph. */

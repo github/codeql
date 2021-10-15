@@ -38,5 +38,8 @@ Instruction callOutput(CallInstruction call, FunctionOutput output) {
     effect.getPrimaryInstruction() = call and
     output.isParameterDerefOrQualifierObject(effect.getIndex())
   )
-  // TODO: return value dereference
+  or
+  // TODO: modify this when we get return value dereferences
+  result = call and
+  output.isReturnValueDeref()
 }

@@ -157,7 +157,7 @@ class SystemIComparableTInterface extends SystemUnboundGenericInterface {
     result.getDeclaringType() = this and
     result.hasName("CompareTo") and
     result.getNumberOfParameters() = 1 and
-    result.getParameter(0).getType() = getTypeParameter(0) and
+    result.getParameter(0).getType() = this.getTypeParameter(0) and
     result.getReturnType() instanceof IntType
   }
 }
@@ -171,7 +171,7 @@ class SystemIEquatableTInterface extends SystemUnboundGenericInterface {
     result.getDeclaringType() = this and
     result.hasName("Equals") and
     result.getNumberOfParameters() = 1 and
-    result.getParameter(0).getType() = getTypeParameter(0) and
+    result.getParameter(0).getType() = this.getTypeParameter(0) and
     result.getReturnType() instanceof BoolType
   }
 }
@@ -239,7 +239,7 @@ class SystemLazyClass extends SystemUnboundGenericClass {
   Property getValueProperty() {
     result.getDeclaringType() = this and
     result.hasName("Value") and
-    result.getType() = getTypeParameter(0)
+    result.getType() = this.getTypeParameter(0)
   }
 }
 
@@ -254,7 +254,7 @@ class SystemNullableStruct extends SystemUnboundGenericStruct {
   Property getValueProperty() {
     result.getDeclaringType() = this and
     result.hasName("Value") and
-    result.getType() = getTypeParameter(0)
+    result.getType() = this.getTypeParameter(0)
   }
 
   /** Gets the `HasValue` property. */
@@ -268,7 +268,7 @@ class SystemNullableStruct extends SystemUnboundGenericStruct {
   Method getAGetValueOrDefaultMethod() {
     result.getDeclaringType() = this and
     result.hasName("GetValueOrDefault") and
-    result.getReturnType() = getTypeParameter(0)
+    result.getReturnType() = this.getTypeParameter(0)
   }
 }
 
@@ -588,7 +588,7 @@ class IEquatableEqualsMethod extends Method {
       m = any(SystemIEquatableTInterface i).getAConstructedGeneric().getAMethod() and
       m.getUnboundDeclaration() = any(SystemIEquatableTInterface i).getEqualsMethod()
     |
-      this = m or getAnUltimateImplementee() = m
+      this = m or this.getAnUltimateImplementee() = m
     )
   }
 }
@@ -677,7 +677,7 @@ class DisposeMethod extends Method {
 /** A method with the signature `void Dispose(bool)`. */
 library class DisposeBoolMethod extends Method {
   DisposeBoolMethod() {
-    hasName("Dispose") and
+    this.hasName("Dispose") and
     this.getReturnType() instanceof VoidType and
     this.getNumberOfParameters() = 1 and
     this.getParameter(0).getType() instanceof BoolType

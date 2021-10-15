@@ -277,6 +277,18 @@ module Gvn {
       )
     }
 
+    pragma[noinline]
+    private predicate toStringPart(int i, int j) {
+      exists(int offset |
+        exists(GenericType t, int children |
+          t = this.getConstructedGenericDeclaringTypeAt(i) and
+          children = t.getNumberOfArgumentsSelf() and
+          (if this.isDeclaringTypeAt(i) then offset = 1 else offset = 0) and
+          if children = 0 then j in [0 .. offset] else j in [0 .. 2 * children + offset]
+        )
+      )
+    }
+
     language[monotonicAggregates]
     string toString() {
       this.isFullyConstructed() and
@@ -284,13 +296,8 @@ module Gvn {
         result = k.toStringBuiltin(this.getArg(0).toString())
         or
         result =
-          strictconcat(int i, int j, int offset |
-            exists(GenericType t, int children |
-              t = this.getConstructedGenericDeclaringTypeAt(i) and
-              children = t.getNumberOfArgumentsSelf() and
-              (if this.isDeclaringTypeAt(i) then offset = 1 else offset = 0) and
-              if children = 0 then j in [0 .. offset] else j in [0 .. 2 * children + offset]
-            )
+          strictconcat(int i, int j |
+            this.toStringPart(i, j)
           |
             this.toStringConstructedPart(i, j) order by i desc, j
           )

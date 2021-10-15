@@ -373,6 +373,7 @@
   ],
   "Inline Test Expectations": [
     "cpp/ql/test/TestUtilities/InlineExpectationsTest.qll",
+    "csharp/ql/test/TestUtilities/InlineExpectationsTest.qll",
     "java/ql/test/TestUtilities/InlineExpectationsTest.qll",
     "python/ql/test/TestUtilities/InlineExpectationsTest.qll",
     "ruby/ql/test/TestUtilities/InlineExpectationsTest.qll"
@@ -478,5 +479,13 @@
   "TypeTracker": [
     "python/ql/lib/semmle/python/dataflow/new/internal/TypeTracker.qll",
     "ruby/ql/lib/codeql/ruby/typetracking/TypeTracker.qll"
+  ],
+  "CodeQL Tutorial": [
+    "cpp/ql/lib/tutorial.qll",
+    "csharp/ql/lib/tutorial.qll",
+    "java/ql/lib/tutorial.qll",
+    "javascript/ql/lib/tutorial.qll",
+    "python/ql/lib/tutorial.qll",
+    "ruby/ql/lib/tutorial.qll"
   ]
 }

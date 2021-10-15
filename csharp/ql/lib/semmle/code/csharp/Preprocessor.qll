@@ -289,7 +289,7 @@ class IfDirective extends ConditionalDirective, @directive_if {
   }
 
   /** Gets a sibling `#elif` or `#else` preprocessor directive. */
-  BranchDirective getASiblingDirective() { result = getSiblingDirective(_) }
+  BranchDirective getASiblingDirective() { result = this.getSiblingDirective(_) }
 
   override string toString() { result = "#if ..." }
 

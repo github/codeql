@@ -4,7 +4,7 @@
  *              user to change the meaning of the command.
  * @kind path-problem
  * @problem.severity error
- * @security-severity 9.8
+ * @security-severity 6.3
  * @precision high
  * @id js/shell-command-constructed-from-input
  * @tags correctness

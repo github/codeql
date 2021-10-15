@@ -56,7 +56,7 @@ private class MallocAllocationFunction extends AllocationFunction {
       ]) and
     sizeArg = 1
     or
-    hasGlobalName(["HeapAlloc"]) and // HeapAlloc(heap, flags, size)
+    hasGlobalName("HeapAlloc") and // HeapAlloc(heap, flags, size)
     sizeArg = 2
     or
     hasGlobalName([

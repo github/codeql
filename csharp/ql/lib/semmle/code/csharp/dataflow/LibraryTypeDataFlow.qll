@@ -505,20 +505,20 @@ class SystemBooleanFlow extends LibraryTypeDataFlow, SystemBooleanStruct {
     CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
     boolean preservesValue
   ) {
-    methodFlow(source, sink, c) and
+    this.methodFlow(source, sink, c) and
     preservesValue = false
   }
 
   private predicate methodFlow(
     CallableFlowSource source, CallableFlowSink sink, SourceDeclarationMethod m
   ) {
-    m = getParseMethod() and
+    m = this.getParseMethod() and
     (
       source = TCallableFlowSourceArg(0) and
       sink = TCallableFlowSinkReturn()
     )
     or
-    m = getTryParseMethod() and
+    m = this.getTryParseMethod() and
     (
       source = TCallableFlowSourceArg(0) and
       (
@@ -537,12 +537,12 @@ class SystemUriFlow extends LibraryTypeDataFlow, SystemUriClass {
     boolean preservesValue
   ) {
     (
-      constructorFlow(source, sink, c)
+      this.constructorFlow(source, sink, c)
       or
-      methodFlow(source, sink, c)
+      this.methodFlow(source, sink, c)
       or
       exists(Property p |
-        propertyFlow(p) and
+        this.propertyFlow(p) and
         source = TCallableFlowSourceQualifier() and
         sink = TCallableFlowSinkReturn() and
         c = p.getGetter()
@@ -552,7 +552,7 @@ class SystemUriFlow extends LibraryTypeDataFlow, SystemUriClass {
   }
 
   private predicate constructorFlow(CallableFlowSource source, CallableFlowSink sink, Constructor c) {
-    c = getAMember() and
+    c = this.getAMember() and
     c.getParameter(0).getType() instanceof StringType and
     source = TCallableFlowSourceArg(0) and
     sink = TCallableFlowSinkReturn()
@@ -567,11 +567,11 @@ class SystemUriFlow extends LibraryTypeDataFlow, SystemUriClass {
   }
 
   private predicate propertyFlow(Property p) {
-    p = getPathAndQueryProperty()
+    p = this.getPathAndQueryProperty()
     or
-    p = getQueryProperty()
+    p = this.getQueryProperty()
     or
-    p = getOriginalStringProperty()
+    p = this.getOriginalStringProperty()
   }
 }
 
@@ -582,15 +582,15 @@ class SystemIOStringReaderFlow extends LibraryTypeDataFlow, SystemIOStringReader
     boolean preservesValue
   ) {
     (
-      constructorFlow(source, sink, c)
+      this.constructorFlow(source, sink, c)
       or
-      methodFlow(source, sink, c)
+      this.methodFlow(source, sink, c)
     ) and
     preservesValue = false
   }
 
   private predicate constructorFlow(CallableFlowSource source, CallableFlowSink sink, Constructor c) {
-    c = getAMember() and
+    c = this.getAMember() and
     c.getParameter(0).getType() instanceof StringType and
     source = TCallableFlowSourceArg(0) and
     sink = TCallableFlowSinkReturn()
@@ -599,7 +599,7 @@ class SystemIOStringReaderFlow extends LibraryTypeDataFlow, SystemIOStringReader
   private predicate methodFlow(
     CallableFlowSource source, CallableFlowSink sink, SourceDeclarationMethod m
   ) {
-    m.getDeclaringType() = getABaseType*() and
+    m.getDeclaringType() = this.getABaseType*() and
     m.getName().matches("Read%") and
     source = TCallableFlowSourceQualifier() and
     sink = TCallableFlowSinkReturn()
@@ -612,17 +612,17 @@ class SystemStringFlow extends LibraryTypeDataFlow, SystemStringClass {
     CallableFlowSource source, AccessPath sourceAp, CallableFlowSink sink, AccessPath sinkAp,
     SourceDeclarationCallable c, boolean preservesValue
   ) {
-    constructorFlow(source, sourceAp, sink, sinkAp, c) and
+    this.constructorFlow(source, sourceAp, sink, sinkAp, c) and
     preservesValue = false
     or
-    methodFlow(source, sourceAp, sink, sinkAp, c, preservesValue)
+    this.methodFlow(source, sourceAp, sink, sinkAp, c, preservesValue)
   }
 
   private predicate constructorFlow(
     CallableFlowSource source, AccessPath sourceAp, CallableFlowSink sink, AccessPath sinkAp,
     Constructor c
   ) {
-    c = getAMember() and
+    c = this.getAMember() and
     c.getParameter(0).getType().(ArrayType).getElementType() instanceof CharType and
     source = TCallableFlowSourceArg(0) and
     sourceAp = AccessPath::element() and
@@ -641,14 +641,14 @@ class SystemStringFlow extends LibraryTypeDataFlow, SystemStringClass {
     sinkAp = AccessPath::empty() and
     preservesValue = true
     or
-    m = getSplitMethod() and
+    m = this.getSplitMethod() and
     source = TCallableFlowSourceQualifier() and
     sourceAp = AccessPath::empty() and
     sink = TCallableFlowSinkReturn() and
     sinkAp = AccessPath::element() and
     preservesValue = false
     or
-    m = getReplaceMethod() and
+    m = this.getReplaceMethod() and
     sourceAp = AccessPath::empty() and
     sinkAp = AccessPath::empty() and
     (
@@ -661,21 +661,21 @@ class SystemStringFlow extends LibraryTypeDataFlow, SystemStringClass {
       preservesValue = false
     )
     or
-    m = getSubstringMethod() and
+    m = this.getSubstringMethod() and
     source = TCallableFlowSourceQualifier() and
     sourceAp = AccessPath::empty() and
     sink = TCallableFlowSinkReturn() and
     sinkAp = AccessPath::empty() and
     preservesValue = false
     or
-    m = getCloneMethod() and
+    m = this.getCloneMethod() and
     source = TCallableFlowSourceQualifier() and
     sourceAp = AccessPath::empty() and
     sink = TCallableFlowSinkReturn() and
     sinkAp = AccessPath::empty() and
     preservesValue = true
     or
-    m = getInsertMethod() and
+    m = this.getInsertMethod() and
     sourceAp = AccessPath::empty() and
     sinkAp = AccessPath::empty() and
     (
@@ -688,21 +688,21 @@ class SystemStringFlow extends LibraryTypeDataFlow, SystemStringClass {
       preservesValue = false
     )
     or
-    m = getNormalizeMethod() and
+    m = this.getNormalizeMethod() and
     source = TCallableFlowSourceQualifier() and
     sourceAp = AccessPath::empty() and
     sink = TCallableFlowSinkReturn() and
     sinkAp = AccessPath::empty() and
     preservesValue = false
     or
-    m = getRemoveMethod() and
+    m = this.getRemoveMethod() and
     source = TCallableFlowSourceQualifier() and
     sourceAp = AccessPath::empty() and
     sink = TCallableFlowSinkReturn() and
     sinkAp = AccessPath::empty() and
     preservesValue = false
     or
-    m = getAMethod() and
+    m = this.getAMethod() and
     m.getName().regexpMatch("((ToLower|ToUpper)(Invariant)?)|(Trim(Start|End)?)|(Pad(Left|Right))") and
     source = TCallableFlowSourceQualifier() and
     sourceAp = AccessPath::empty() and
@@ -710,7 +710,7 @@ class SystemStringFlow extends LibraryTypeDataFlow, SystemStringClass {
     sinkAp = AccessPath::empty() and
     preservesValue = false
     or
-    m = getConcatMethod() and
+    m = this.getConcatMethod() and
     exists(int i |
       source = getFlowSourceArg(m, i, sourceAp) and
       sink = TCallableFlowSinkReturn() and
@@ -718,20 +718,20 @@ class SystemStringFlow extends LibraryTypeDataFlow, SystemStringClass {
       preservesValue = false
     )
     or
-    m = getCopyMethod() and
+    m = this.getCopyMethod() and
     source = TCallableFlowSourceArg(0) and
     sourceAp = AccessPath::empty() and
     sink = TCallableFlowSinkReturn() and
     sinkAp = AccessPath::empty() and
     preservesValue = true
     or
-    m = getJoinMethod() and
+    m = this.getJoinMethod() and
     source = getFlowSourceArg(m, [0, 1], sourceAp) and
     sink = TCallableFlowSinkReturn() and
     sinkAp = AccessPath::empty() and
     preservesValue = false
     or
-    m = getFormatMethod() and
+    m = this.getFormatMethod() and
     exists(int i |
       (m.getParameter(0).getType() instanceof SystemIFormatProviderInterface implies i != 0) and
       source = getFlowSourceArg(m, i, sourceAp) and
@@ -749,10 +749,10 @@ class SystemTextStringBuilderFlow extends LibraryTypeDataFlow, SystemTextStringB
     SourceDeclarationCallable c, boolean preservesValue
   ) {
     (
-      constructorFlow(source, sourceAp, sink, sinkAp, c) and
+      this.constructorFlow(source, sourceAp, sink, sinkAp, c) and
       preservesValue = true
       or
-      methodFlow(source, sourceAp, sink, sinkAp, c, preservesValue)
+      this.methodFlow(source, sourceAp, sink, sinkAp, c, preservesValue)
     )
   }
 
@@ -760,7 +760,7 @@ class SystemTextStringBuilderFlow extends LibraryTypeDataFlow, SystemTextStringB
     CallableFlowSource source, AccessPath sourceAp, CallableFlowSink sink, AccessPath sinkAp,
     Constructor c
   ) {
-    c = getAMember() and
+    c = this.getAMember() and
     c.getParameter(0).getType() instanceof StringType and
     source = TCallableFlowSourceArg(0) and
     sourceAp = AccessPath::empty() and
@@ -894,7 +894,7 @@ class IEnumerableFlow extends LibraryTypeDataFlow, RefType {
   ) {
     preservesValue = true and
     (
-      methodFlowLINQExtensions(source, sourceAp, sink, sinkAp, c)
+      this.methodFlowLINQExtensions(source, sourceAp, sink, sinkAp, c)
       or
       c = this.getFind() and
       sourceAp = AccessPath::element() and
@@ -1674,14 +1674,14 @@ class SystemConvertFlow extends LibraryTypeDataFlow, SystemConvertClass {
     CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
     boolean preservesValue
   ) {
-    methodFlow(source, sink, c) and
+    this.methodFlow(source, sink, c) and
     preservesValue = false
   }
 
   private predicate methodFlow(
     CallableFlowSource source, CallableFlowSink sink, SourceDeclarationMethod m
   ) {
-    m = getAMethod() and
+    m = this.getAMethod() and
     source = TCallableFlowSourceArg(0) and
     sink = TCallableFlowSinkReturn()
   }
@@ -1694,7 +1694,7 @@ class SystemWebHttpCookieFlow extends LibraryTypeDataFlow, SystemWebHttpCookie {
     boolean preservesValue
   ) {
     exists(Property p |
-      propertyFlow(p) and
+      this.propertyFlow(p) and
       source = TCallableFlowSourceQualifier() and
       sink = TCallableFlowSinkReturn() and
       c = p.getGetter()
@@ -1703,8 +1703,8 @@ class SystemWebHttpCookieFlow extends LibraryTypeDataFlow, SystemWebHttpCookie {
   }
 
   private predicate propertyFlow(Property p) {
-    p = getValueProperty() or
-    p = getValuesProperty()
+    p = this.getValueProperty() or
+    p = this.getValuesProperty()
   }
 }
 
@@ -1715,7 +1715,7 @@ class SystemNetCookieFlow extends LibraryTypeDataFlow, SystemNetCookieClass {
     boolean preservesValue
   ) {
     exists(Property p |
-      propertyFlow(p) and
+      this.propertyFlow(p) and
       source = TCallableFlowSourceQualifier() and
       sink = TCallableFlowSinkReturn() and
       c = p.getGetter()
@@ -1733,7 +1733,7 @@ class SystemNetIPHostEntryFlow extends LibraryTypeDataFlow, SystemNetIPHostEntry
     boolean preservesValue
   ) {
     exists(Property p |
-      propertyFlow(p) and
+      this.propertyFlow(p) and
       source = TCallableFlowSourceQualifier() and
       sink = TCallableFlowSinkReturn() and
       c = p.getGetter()
@@ -1742,8 +1742,8 @@ class SystemNetIPHostEntryFlow extends LibraryTypeDataFlow, SystemNetIPHostEntry
   }
 
   private predicate propertyFlow(Property p) {
-    p = getHostNameProperty() or
-    p = getAliasesProperty()
+    p = this.getHostNameProperty() or
+    p = this.getAliasesProperty()
   }
 }
 
@@ -1755,7 +1755,7 @@ class SystemWebUIWebControlsTextBoxFlow extends LibraryTypeDataFlow,
     boolean preservesValue
   ) {
     exists(Property p |
-      propertyFlow(p) and
+      this.propertyFlow(p) and
       source = TCallableFlowSourceQualifier() and
       sink = TCallableFlowSinkReturn() and
       c = p.getGetter()
@@ -1763,7 +1763,7 @@ class SystemWebUIWebControlsTextBoxFlow extends LibraryTypeDataFlow,
     preservesValue = false
   }
 
-  private predicate propertyFlow(Property p) { p = getTextProperty() }
+  private predicate propertyFlow(Property p) { p = this.getTextProperty() }
 }
 
 /** Data flow for `System.Collections.Generic.KeyValuePair`. */
@@ -1864,11 +1864,11 @@ class SystemThreadingTasksTaskFlow extends LibraryTypeDataFlow, SystemThreadingT
     SourceDeclarationCallable c, boolean preservesValue
   ) {
     (
-      constructorFlow(source, sink, c) and
+      this.constructorFlow(source, sink, c) and
       sourceAp = AccessPath::empty() and
       sinkAp = AccessPath::empty()
       or
-      methodFlow(source, sourceAp, sink, sinkAp, c)
+      this.methodFlow(source, sourceAp, sink, sinkAp, c)
     ) and
     preservesValue = true
   }
@@ -1954,9 +1954,9 @@ class SystemThreadingTasksTaskTFlow extends LibraryTypeDataFlow, SystemThreading
     SourceDeclarationCallable c, boolean preservesValue
   ) {
     (
-      constructorFlow(source, sourceAp, sink, sinkAp, c)
+      this.constructorFlow(source, sourceAp, sink, sinkAp, c)
       or
-      methodFlow(source, sourceAp, sink, sinkAp, c)
+      this.methodFlow(source, sourceAp, sink, sinkAp, c)
     ) and
     preservesValue = true
     or
@@ -2101,14 +2101,14 @@ private class SystemRuntimeCompilerServicesConfiguredTaskAwaitableTFlow extends 
 class SystemThreadingTasksFactoryFlow extends LibraryTypeDataFlow {
   SystemThreadingTasksFactoryFlow() {
     this instanceof SystemThreadingTasksClass and
-    getName().regexpMatch("TaskFactory(<>)?")
+    this.getName().regexpMatch("TaskFactory(<>)?")
   }
 
   override predicate callableFlow(
     CallableFlowSource source, AccessPath sourceAp, CallableFlowSink sink, AccessPath sinkAp,
     SourceDeclarationCallable c, boolean preservesValue
   ) {
-    methodFlow(source, sourceAp, sink, sinkAp, c) and
+    this.methodFlow(source, sourceAp, sink, sinkAp, c) and
     preservesValue = true
   }
 
@@ -2236,12 +2236,12 @@ library class SystemTextEncodingFlow extends LibraryTypeDataFlow, SystemTextEnco
     preservesValue = false and
     c = this.getAMethod() and
     exists(Method m | m.getAnOverrider*().getUnboundDeclaration() = c |
-      m = getGetBytesMethod() and
+      m = this.getGetBytesMethod() and
       source = getFlowSourceArg(m, 0, sourceAp) and
       sink = TCallableFlowSinkReturn() and
       sinkAp = AccessPath::empty()
       or
-      m = [getGetStringMethod(), getGetCharsMethod()] and
+      m = [this.getGetStringMethod(), this.getGetCharsMethod()] and
       source = TCallableFlowSourceArg(0) and
       sourceAp = AccessPath::element() and
       sink = TCallableFlowSinkReturn() and
@@ -2257,9 +2257,9 @@ library class SystemIOMemoryStreamFlow extends LibraryTypeDataFlow, SystemIOMemo
     boolean preservesValue
   ) {
     (
-      constructorFlow(source, sink, c)
+      this.constructorFlow(source, sink, c)
       or
-      c = getToArrayMethod().getAnOverrider*() and
+      c = this.getToArrayMethod().getAnOverrider*() and
       source = TCallableFlowSourceQualifier() and
       sink = TCallableFlowSinkReturn()
     ) and
@@ -2267,7 +2267,7 @@ library class SystemIOMemoryStreamFlow extends LibraryTypeDataFlow, SystemIOMemo
   }
 
   private predicate constructorFlow(CallableFlowSource source, CallableFlowSink sink, Constructor c) {
-    c = getAMember() and
+    c = this.getAMember() and
     c.getParameter(0).getType().(ArrayType).getElementType() instanceof ByteType and
     source = TCallableFlowSourceArg(0) and
     sink = TCallableFlowSinkReturn()
@@ -2281,17 +2281,17 @@ class SystemIOStreamFlow extends LibraryTypeDataFlow, SystemIOStreamClass {
     boolean preservesValue
   ) {
     (
-      c = getAReadMethod().getAnOverrider*() and
+      c = this.getAReadMethod().getAnOverrider*() and
       c.getParameter(0).getType().(ArrayType).getElementType() instanceof ByteType and
       sink = TCallableFlowSinkArg(0) and
       source = TCallableFlowSourceQualifier()
       or
-      c = getAWriteMethod().getAnOverrider*() and
+      c = this.getAWriteMethod().getAnOverrider*() and
       c.getParameter(0).getType().(ArrayType).getElementType() instanceof ByteType and
       source = TCallableFlowSourceArg(0) and
       sink = TCallableFlowSinkQualifier()
       or
-      c = any(Method m | m = getAMethod() and m.getName().matches("CopyTo%")).getAnOverrider*() and
+      c = any(Method m | m = this.getAMethod() and m.getName().matches("CopyTo%")).getAnOverrider*() and
       c.getParameter(0).getType() instanceof SystemIOStreamClass and
       source = TCallableFlowSourceQualifier() and
       sink = TCallableFlowSinkArg(0)
@@ -2307,12 +2307,12 @@ class SystemIOCompressionDeflateStreamFlow extends LibraryTypeDataFlow,
     CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
     boolean preservesValue
   ) {
-    constructorFlow(source, sink, c) and
+    this.constructorFlow(source, sink, c) and
     preservesValue = false
   }
 
   private predicate constructorFlow(CallableFlowSource source, CallableFlowSink sink, Constructor c) {
-    c = getAMember() and
+    c = this.getAMember() and
     source = TCallableFlowSourceArg(0) and
     sink = TCallableFlowSinkReturn()
   }
@@ -2324,7 +2324,7 @@ class SystemXmlXmlReaderFlow extends LibraryTypeDataFlow, SystemXmlXmlReaderClas
     CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
     boolean preservesValue
   ) {
-    c = getCreateMethod() and
+    c = this.getCreateMethod() and
     source = TCallableFlowSourceArg(0) and
     sink = TCallableFlowSinkReturn() and
     preservesValue = false
@@ -2337,7 +2337,7 @@ class SystemXmlXmlDocumentFlow extends LibraryTypeDataFlow, SystemXmlXmlDocument
     CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
     boolean preservesValue
   ) {
-    c = getLoadMethod() and
+    c = this.getLoadMethod() and
     source = TCallableFlowSourceArg(0) and
     sink = TCallableFlowSinkQualifier() and
     preservesValue = false
@@ -2352,13 +2352,13 @@ class SystemXmlXmlNodeFlow extends LibraryTypeDataFlow, SystemXmlXmlNodeClass {
   ) {
     (
       exists(Property p |
-        p = getAProperty() and
+        p = this.getAProperty() and
         c = p.getGetter() and
         source = TCallableFlowSourceQualifier() and
         sink = TCallableFlowSinkReturn()
       )
       or
-      c = getASelectNodeMethod() and
+      c = this.getASelectNodeMethod() and
       source = TCallableFlowSourceQualifier() and
       sink = TCallableFlowSinkReturn()
     ) and
@@ -2372,7 +2372,7 @@ class SystemXmlXmlNamedNodeMapFlow extends LibraryTypeDataFlow, SystemXmlXmlName
     CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
     boolean preservesValue
   ) {
-    c = getGetNamedItemMethod() and
+    c = this.getGetNamedItemMethod() and
     source = TCallableFlowSourceQualifier() and
     sink = TCallableFlowSinkReturn() and
     preservesValue = true
@@ -2385,14 +2385,14 @@ class SystemIOPathFlow extends LibraryTypeDataFlow, SystemIOPathClass {
     CallableFlowSource source, AccessPath sourceAp, CallableFlowSink sink, AccessPath sinkAp,
     SourceDeclarationCallable c, boolean preservesValue
   ) {
-    c = getAMethod("Combine") and
+    c = this.getAMethod("Combine") and
     source = getFlowSourceArg(c, _, sourceAp) and
     sink = TCallableFlowSinkReturn() and
     sinkAp = AccessPath::empty() and
     preservesValue = false
     or
     exists(Parameter p |
-      c = getAMethod() and
+      c = this.getAMethod() and
       c.getName().matches("Get%") and
       p = c.getAParameter() and
       p.hasName("path") and
@@ -2411,10 +2411,10 @@ class SystemWebHttpUtilityFlow extends LibraryTypeDataFlow, SystemWebHttpUtility
     boolean preservesValue
   ) {
     (
-      c = getAnHtmlAttributeEncodeMethod() or
-      c = getAnHtmlEncodeMethod() or
-      c = getAJavaScriptStringEncodeMethod() or
-      c = getAnUrlEncodeMethod()
+      c = this.getAnHtmlAttributeEncodeMethod() or
+      c = this.getAnHtmlEncodeMethod() or
+      c = this.getAJavaScriptStringEncodeMethod() or
+      c = this.getAnUrlEncodeMethod()
     ) and
     source = TCallableFlowSourceArg(0) and
     sink = TCallableFlowSinkReturn() and
@@ -2429,8 +2429,8 @@ class SystemWebHttpServerUtilityFlow extends LibraryTypeDataFlow, SystemWebHttpS
     boolean preservesValue
   ) {
     (
-      c = getAnHtmlEncodeMethod() or
-      c = getAnUrlEncodeMethod()
+      c = this.getAnHtmlEncodeMethod() or
+      c = this.getAnUrlEncodeMethod()
     ) and
     source = TCallableFlowSourceArg(0) and
     sink = TCallableFlowSinkReturn() and
@@ -2445,8 +2445,8 @@ class SystemNetWebUtilityFlow extends LibraryTypeDataFlow, SystemNetWebUtility {
     boolean preservesValue
   ) {
     (
-      c = getAnHtmlEncodeMethod() or
-      c = getAnUrlEncodeMethod()
+      c = this.getAnHtmlEncodeMethod() or
+      c = this.getAnUrlEncodeMethod()
     ) and
     source = TCallableFlowSourceArg(0) and
     sink = TCallableFlowSinkReturn() and

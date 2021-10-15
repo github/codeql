@@ -52,6 +52,6 @@ predicate hasSmapLocationInfo(
     smap(inputFile, isl, outputFile, osl) and
     smap(inputFile, iel - 1, outputFile, oel) and
     isc = 1 and
-    iec = 0
+    iec = 1
   )
 }

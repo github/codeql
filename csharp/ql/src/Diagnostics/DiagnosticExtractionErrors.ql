@@ -21,8 +21,8 @@ abstract private class DiagnosticError extends TDiagnosticError {
   abstract Location getLocation();
 
   string getLocationMessage() {
-    if getLocation().getFile().fromSource()
-    then result = " in " + getLocation().getFile()
+    if this.getLocation().getFile().fromSource()
+    then result = " in " + this.getLocation().getFile()
     else result = ""
   }
 }

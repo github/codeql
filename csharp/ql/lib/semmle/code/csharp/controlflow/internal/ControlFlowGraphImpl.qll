@@ -495,7 +495,7 @@ module Expressions {
       // Flow from last element of left operand to first element of right operand
       last(this.getLeftOperand(), pred, c) and
       c.(NullnessCompletion).isNull() and
-      first(getRightOperand(), succ)
+      first(this.getRightOperand(), succ)
       or
       // Post-order: flow from last element of left operand to element itself
       last(this.getLeftOperand(), pred, c) and
@@ -504,7 +504,7 @@ module Expressions {
       not c.(NullnessCompletion).isNull()
       or
       // Post-order: flow from last element of right operand to element itself
-      last(getRightOperand(), pred, c) and
+      last(this.getRightOperand(), pred, c) and
       c instanceof NormalCompletion and
       succ = this
     }
@@ -575,7 +575,7 @@ module Expressions {
       PostOrderTree.super.last(last, c)
       or
       // Qualifier exits with a `null` completion
-      lastQualifier(last, c) and
+      this.lastQualifier(last, c) and
       c.(NullnessCompletion).isNull()
     }
 
@@ -1483,7 +1483,7 @@ module Statements {
       )
       or
       // Flow into `finally` block
-      pred = getAFinallyPredecessor(c, true) and
+      pred = this.getAFinallyPredecessor(c, true) and
       first(this.getFinally(), succ)
     }
   }

@@ -719,18 +719,30 @@ class CharacterLiteral extends Literal, @characterliteral {
   override string getAPrimaryQlClass() { result = "CharacterLiteral" }
 }
 
-/** A string literal. For example, `"hello world"`. */
+/**
+ * A string literal or text block (Java 15 feature). For example, `"hello world"`
+ * or
+ * ```java
+ * """
+ * Text with "quotes"
+ * """
+ * ```
+ */
 class StringLiteral extends Literal, @stringliteral {
   /**
    * Gets the literal string without the quotes.
    */
   string getRepresentedString() { result = getValue() }
 
+  /** Holds if this string literal is a text block (`""" ... """`). */
+  predicate isTextBlock() { getLiteral().matches("\"\"\"%") }
+
   override string getAPrimaryQlClass() { result = "StringLiteral" }
 }
 
 /** The null literal, written `null`. */
 class NullLiteral extends Literal, @nullliteral {
+  // Override these predicates because the inherited ones have no result
   override string getLiteral() { result = "null" }
 
   override string getValue() { result = "null" }

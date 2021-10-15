@@ -20,9 +20,9 @@ class Modifier extends Element, @modifier {
  */
 class AccessModifier extends Modifier {
   AccessModifier() {
-    hasName("public") or
-    hasName("private") or
-    hasName("internal") or
-    hasName("protected")
+    this.hasName("public") or
+    this.hasName("private") or
+    this.hasName("internal") or
+    this.hasName("protected")
   }
 }

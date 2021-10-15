@@ -13,7 +13,7 @@
  */
 
 import javascript
-import ExprHasNoEffect
+import Expressions.ExprHasNoEffect
 import semmle.javascript.RestrictedLocations
 
 from Expr e
