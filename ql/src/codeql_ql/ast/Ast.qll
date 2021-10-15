@@ -95,9 +95,7 @@ class TopLevel extends TTopLevel, AstNode {
   ModuleMember getAMember() { result = getMember(_) }
 
   /** Gets the `i`'th member of this top-level module. */
-  ModuleMember getMember(int i) {
-    toQL(result) = file.getChild(i).(QL::ModuleMember).getChild(_)
-  }
+  ModuleMember getMember(int i) { toQL(result) = file.getChild(i).(QL::ModuleMember).getChild(_) }
 
   /** Gets a top-level import in this module. */
   Import getAnImport() { result = this.getAMember() }
@@ -171,9 +169,7 @@ class Select extends TSelect, AstNode {
   Expr getExpr(int i) { toQL(result) = sel.getChild(_).(QL::AsExprs).getChild(i) }
 
   // TODO: This gets the `i`th order-by, but some expressions might not have an order-by.
-  Expr getOrderBy(int i) {
-    toQL(result) = sel.getChild(_).(QL::OrderBys).getChild(i).getChild(0)
-  }
+  Expr getOrderBy(int i) { toQL(result) = sel.getChild(_).(QL::OrderBys).getChild(i).getChild(0) }
 
   override AstNode getAChild(string pred) {
     result = super.getAChild(pred)
@@ -429,11 +425,7 @@ class ClasslessPredicate extends TClasslessPredicate, Predicate, ModuleDeclarati
 
   override VarDecl getParameter(int i) {
     toQL(result) =
-      rank[i + 1](QL::VarDecl decl, int index |
-        decl = pred.getChild(index)
-      |
-        decl order by index
-      )
+      rank[i + 1](QL::VarDecl decl, int index | decl = pred.getChild(index) | decl order by index)
   }
 
   override TypeExpr getReturnTypeExpr() { toQL(result) = pred.getReturnType() }
@@ -476,11 +468,7 @@ class ClassPredicate extends TClassPredicate, Predicate {
 
   override VarDecl getParameter(int i) {
     toQL(result) =
-      rank[i + 1](QL::VarDecl decl, int index |
-        decl = pred.getChild(index)
-      |
-        decl order by index
-      )
+      rank[i + 1](QL::VarDecl decl, int index | decl = pred.getChild(index) | decl order by index)
   }
 
   /**
@@ -654,22 +642,16 @@ class Module extends TModule, ModuleDeclaration {
   /**
    * Gets a member of the module.
    */
-  AstNode getAMember() {
-    toQL(result) = mod.getChild(_).(QL::ModuleMember).getChild(_)
-  }
+  AstNode getAMember() { toQL(result) = mod.getChild(_).(QL::ModuleMember).getChild(_) }
 
-  AstNode getMember(int i) {
-    toQL(result) = mod.getChild(i).(QL::ModuleMember).getChild(_)
-  }
+  AstNode getMember(int i) { toQL(result) = mod.getChild(i).(QL::ModuleMember).getChild(_) }
 
   QLDoc getQLDocFor(AstNode m) {
     exists(int i | result = this.getMember(i) and m = this.getMember(i + 1))
   }
 
   /** Gets the module expression that this module is an alias for, if any. */
-  ModuleExpr getAlias() {
-    toQL(result) = mod.getAFieldOrChild().(QL::ModuleAliasBody).getChild()
-  }
+  ModuleExpr getAlias() { toQL(result) = mod.getAFieldOrChild().(QL::ModuleAliasBody).getChild() }
 
   override AstNode getAChild(string pred) {
     result = super.getAChild(pred)
@@ -731,14 +713,11 @@ class Class extends TClass, TypeDeclaration, ModuleDeclaration {
   /**
    * Gets the charateristic predicate for this class.
    */
-  CharPred getCharPred() {
-    toQL(result) = cls.getChild(_).(QL::ClassMember).getChild(_)
-  }
+  CharPred getCharPred() { toQL(result) = cls.getChild(_).(QL::ClassMember).getChild(_) }
 
   AstNode getMember(int i) {
     toQL(result) = cls.getChild(i).(QL::ClassMember).getChild(_) or
-    toQL(result) =
-      cls.getChild(i).(QL::ClassMember).getChild(_).(QL::Field).getChild()
+    toQL(result) = cls.getChild(i).(QL::ClassMember).getChild(_).(QL::Field).getChild()
   }
 
   QLDoc getQLDocFor(AstNode m) {
@@ -764,8 +743,7 @@ class Class extends TClass, TypeDeclaration, ModuleDeclaration {
    * Gets a field in this class.
    */
   VarDecl getAField() {
-    toQL(result) =
-      cls.getChild(_).(QL::ClassMember).getChild(_).(QL::Field).getChild()
+    toQL(result) = cls.getChild(_).(QL::ClassMember).getChild(_).(QL::Field).getChild()
   }
 
   /**
@@ -774,14 +752,10 @@ class Class extends TClass, TypeDeclaration, ModuleDeclaration {
   TypeExpr getASuperType() { toQL(result) = cls.getExtends(_) }
 
   /** Gets the type that this class is defined to be an alias of. */
-  TypeExpr getAliasType() {
-    toQL(result) = cls.getChild(_).(QL::TypeAliasBody).getChild()
-  }
+  TypeExpr getAliasType() { toQL(result) = cls.getChild(_).(QL::TypeAliasBody).getChild() }
 
   /** Gets the type of one of the members that this class is defined to be a union of. */
-  TypeExpr getUnionMember() {
-    toQL(result) = cls.getChild(_).(QL::TypeUnionBody).getChild(_)
-  }
+  TypeExpr getUnionMember() { toQL(result) = cls.getChild(_).(QL::TypeUnionBody).getChild(_) }
 
   /** Gets the class type defined by this class declaration. */
   Type getType() { result.getDeclaration() = this }
@@ -846,11 +820,7 @@ class NewTypeBranch extends TNewTypeBranch, PredicateOrBuiltin, TypeDeclaration 
   /** Gets a field in this branch. */
   VarDecl getField(int i) {
     toQL(result) =
-      rank[i + 1](QL::VarDecl var, int index |
-        var = branch.getChild(index)
-      |
-        var order by index
-      )
+      rank[i + 1](QL::VarDecl var, int index | var = branch.getChild(index) | var order by index)
   }
 
   /** Gets the body of this branch. */
@@ -922,9 +892,7 @@ class PredicateCall extends TPredicateCall, Call {
   PredicateCall() { this = TPredicateCall(expr) }
 
   override Expr getArgument(int i) {
-    exists(QL::CallBody body | body.getParent() = expr |
-      toQL(result) = body.getChild(i)
-    )
+    exists(QL::CallBody body | body.getParent() = expr | toQL(result) = body.getChild(i))
   }
 
   final override ModuleExpr getQualifier() {
@@ -936,9 +904,7 @@ class PredicateCall extends TPredicateCall, Call {
 
   override string getAPrimaryQlClass() { result = "PredicateCall" }
 
-  override predicate isClosure(string kind) {
-    kind = expr.getChild(_).(QL::Closure).getValue()
-  }
+  override predicate isClosure(string kind) { kind = expr.getChild(_).(QL::Closure).getValue() }
 
   /**
    * Gets the name of the predicate called.
@@ -972,9 +938,7 @@ class MemberCall extends TMemberCall, Call {
    * Gets the name of the member called.
    * E.g. for `foo.bar()` the result is "bar".
    */
-  string getMemberName() {
-    result = expr.getChild(_).(QL::QualifiedRhs).getName().getValue()
-  }
+  string getMemberName() { result = expr.getChild(_).(QL::QualifiedRhs).getName().getValue() }
 
   override predicate isClosure(string kind) {
     kind = expr.getChild(_).(QL::QualifiedRhs).getChild(_).(QL::Closure).getValue()
@@ -985,9 +949,7 @@ class MemberCall extends TMemberCall, Call {
    *
    * Only yields a result if this is actually a `super` call.
    */
-  TypeExpr getSuperType() {
-    toQL(result) = expr.getChild(_).(QL::SuperRef).getChild(0)
-  }
+  TypeExpr getSuperType() { toQL(result) = expr.getChild(_).(QL::SuperRef).getChild(0) }
 
   override Expr getArgument(int i) {
     result =
@@ -1053,9 +1015,7 @@ class InlineCast extends TInlineCast, Expr {
    * Gets the type being cast to.
    * E.g. for `foo.(Bar)` the result is `Bar`.
    */
-  TypeExpr getTypeExpr() {
-    toQL(result) = expr.getChild(_).(QL::QualifiedRhs).getChild(_)
-  }
+  TypeExpr getTypeExpr() { toQL(result) = expr.getChild(_).(QL::QualifiedRhs).getChild(_) }
 
   override Type getType() { result = this.getTypeExpr().getResolvedType() }
 
@@ -2177,8 +2137,8 @@ private class AnnotationArg extends TAnnotationArg, AstNode {
   string getValue() {
     result =
       [
-        arg.getChild().(QL::SimpleId).getValue(),
-        arg.getChild().(QL::Result).getValue(), arg.getChild().(QL::This).getValue()
+        arg.getChild().(QL::SimpleId).getValue(), arg.getChild().(QL::Result).getValue(),
+        arg.getChild().(QL::This).getValue()
       ]
   }
 
