@@ -74,7 +74,7 @@ Abstract syntax
 ---------------
 
 The abstract syntax tree (AST) represents the elements of the source code organised into a tree. The AST viewer
-feature of Visual Studio Code shows the AST nodes, including the relevant CodeQL classes and predicates.
+in Visual Studio Code shows the AST nodes, including the relevant CodeQL classes and predicates.
 
 All CodeQL AST classes inherit from the `AstNode` class, which provides the following member predicates
 to all AST classes:
