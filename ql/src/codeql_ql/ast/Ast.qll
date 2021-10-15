@@ -2415,8 +2415,8 @@ module YAML {
 
     /** Gets the database scheme of this qlpack */
     File getDBScheme() {
-      result.getBaseName() = this.getProperty("dbscheme") and
-      result = file.getParentContainer().getFile(any(string s | s.matches("%.dbscheme")))
+      result.getAbsolutePath() =
+        file.getParentContainer().getAbsolutePath() + "/" + this.getProperty("dbscheme")
     }
 
     pragma[noinline]
