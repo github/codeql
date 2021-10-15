@@ -6,7 +6,7 @@ on:
       - main
       - 'rc/*'
     paths:
-      - "**/*.qhelp"
+      - "ruby/**/*.qhelp"
 
 jobs:
   qhelp:
@@ -32,7 +32,7 @@ jobs:
           for path in ${{ steps.changes.outputs.qhelp_files }} ; do
             echo "<details> <summary>${path}</summary>"
             echo
-            codeql/codeql generate query-help --format=markdown ${path}
+            codeql generate query-help --format=markdown ${path}
             echo "</details>"
           done) | gh pr comment "${{ github.event.pull_request.number }}" -F -
         env:
