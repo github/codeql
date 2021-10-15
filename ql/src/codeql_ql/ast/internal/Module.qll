@@ -148,14 +148,16 @@ private predicate resolveSelectionName(Import imp, ContainerOrModule m, int i) {
 
 cached
 private module Cached {
-  // TODO: Use `AstNode::getParent` once it is total
-  private QL::AstNode parent(QL::AstNode n) {
-    result = n.getParent() and
-    not n instanceof QL::Module
-  }
-
   private Module getEnclosingModule0(AstNode n) {
-    AstNodes::toQL(result) = parent*(AstNodes::toQL(n).getParent())
+    not n instanceof Module and
+    (
+      n = result.getAChild(_)
+      or
+      exists(AstNode prev |
+        result = getEnclosingModule0(prev) and
+        n = prev.getAChild(_)
+      )
+    )
   }
 
   cached

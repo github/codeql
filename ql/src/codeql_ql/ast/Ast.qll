@@ -70,7 +70,10 @@ class AstNode extends TAstNode {
   predicate hasAnnotation(string name) { this.getAnAnnotation().getName() = name }
 
   /** Gets an annotation of this AST node. */
-  Annotation getAnAnnotation() { toQL(this).getParent() = toQL(result).getParent() }
+  cached
+  Annotation getAnAnnotation() {
+    toQL(this).getParent() = pragma[only_bind_out](toQL(result)).getParent()
+  }
 
   /**
    * Gets the predicate that contains this AST node.
