@@ -43,7 +43,7 @@ jobs:
         run: cargo build --release
       - name: Generate dbscheme
         if: ${{ matrix.os == 'ubuntu-latest' }}
-        run: target/release/ql-generator --dbscheme ql/src/ql.dbscheme --library ql/src/codeql_ql/ast/internal/
+        run: target/release/ql-generator --dbscheme ql/src/ql.dbscheme --library ql/src/codeql_ql/ast/internal/TreeSitter.qll
       - uses: actions/upload-artifact@v2
         if: ${{ matrix.os == 'ubuntu-latest' }}
         with:
