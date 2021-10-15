@@ -112,7 +112,7 @@ namespaces  (``Namespace``) and classes (``ClassDeclaration``).
    * - CodeQL class
      - Description and selected predicates
    * - ``Module``
-     -  A representation of a run-time `module` or `class` value.
+     -  A representation of a runtime `module` or `class` value.
 
         - `getADeclaration()` - Gets a declaration
         - `getSuperClass()` - Gets the super class of this module, if any.
