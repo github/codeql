@@ -1,0 +1,15 @@
+| test.cpp:314:5:314:9 | wYear | Field $@ on variable $@ has been modified, but no appropriate check for LeapYear was found. | test.cpp:12:7:12:11 | wYear | wYear | test.cpp:309:13:309:14 | st | st |
+| test.cpp:327:5:327:9 | wYear | Field $@ on variable $@ has been modified, but no appropriate check for LeapYear was found. | test.cpp:12:7:12:11 | wYear | wYear | test.cpp:322:13:322:14 | st | st |
+| test.cpp:338:6:338:10 | wYear | Field $@ on variable $@ has been modified, but no appropriate check for LeapYear was found. | test.cpp:12:7:12:11 | wYear | wYear | test.cpp:333:62:333:63 | st | st |
+| test.cpp:484:5:484:9 | wYear | Field $@ on variable $@ has been modified, but no appropriate check for LeapYear was found. | test.cpp:12:7:12:11 | wYear | wYear | test.cpp:480:13:480:14 | st | st |
+| test.cpp:497:5:497:9 | wYear | Field $@ on variable $@ has been modified, but no appropriate check for LeapYear was found. | test.cpp:12:7:12:11 | wYear | wYear | test.cpp:492:13:492:14 | st | st |
+| test.cpp:509:5:509:9 | wYear | Field $@ on variable $@ has been modified, but no appropriate check for LeapYear was found. | test.cpp:12:7:12:11 | wYear | wYear | test.cpp:505:13:505:14 | st | st |
+| test.cpp:606:11:606:17 | tm_year | Field $@ on variable $@ has been modified, but no appropriate check for LeapYear was found. | test.cpp:56:6:56:12 | tm_year | tm_year | test.cpp:602:12:602:19 | timeinfo | timeinfo |
+| test.cpp:634:11:634:17 | tm_year | Field $@ on variable $@ has been modified, but no appropriate check for LeapYear was found. | test.cpp:56:6:56:12 | tm_year | tm_year | test.cpp:628:12:628:19 | timeinfo | timeinfo |
+| test.cpp:636:11:636:17 | tm_year | Field $@ on variable $@ has been modified, but no appropriate check for LeapYear was found. | test.cpp:56:6:56:12 | tm_year | tm_year | test.cpp:628:12:628:19 | timeinfo | timeinfo |
+| test.cpp:640:5:640:9 | wYear | Field $@ on variable $@ has been modified, but no appropriate check for LeapYear was found. | test.cpp:12:7:12:11 | wYear | wYear | test.cpp:629:13:629:14 | st | st |
+| test.cpp:642:5:642:9 | wYear | Field $@ on variable $@ has been modified, but no appropriate check for LeapYear was found. | test.cpp:12:7:12:11 | wYear | wYear | test.cpp:629:13:629:14 | st | st |
+| test.cpp:718:5:718:9 | wYear | Field $@ on variable $@ has been modified, but no appropriate check for LeapYear was found. | test.cpp:12:7:12:11 | wYear | wYear | test.cpp:712:13:712:14 | st | st |
+| test.cpp:731:5:731:9 | wYear | Field $@ on variable $@ has been modified, but no appropriate check for LeapYear was found. | test.cpp:12:7:12:11 | wYear | wYear | test.cpp:725:13:725:14 | st | st |
+| test.cpp:732:5:732:9 | wYear | Field $@ on variable $@ has been modified, but no appropriate check for LeapYear was found. | test.cpp:12:7:12:11 | wYear | wYear | test.cpp:725:13:725:14 | st | st |
+| test.cpp:733:5:733:9 | wYear | Field $@ on variable $@ has been modified, but no appropriate check for LeapYear was found. | test.cpp:12:7:12:11 | wYear | wYear | test.cpp:725:13:725:14 | st | st |

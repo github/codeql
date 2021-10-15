@@ -1,0 +1,5 @@
+| initializers.cs:22:16:22:36 | { ..., ... } | 0 | initializers.cs:22:18:22:18 | call to method Add | initializers.cs:12:17:12:19 | Add | 0 | initializers.cs:22:18:22:18 | 1 |
+| initializers.cs:22:16:22:36 | { ..., ... } | 1 | initializers.cs:22:21:22:21 | call to method Add | initializers.cs:12:17:12:19 | Add | 0 | initializers.cs:22:21:22:21 | 2 |
+| initializers.cs:22:16:22:36 | { ..., ... } | 2 | initializers.cs:22:24:22:24 | call to method Add | initializers.cs:12:17:12:19 | Add | 0 | initializers.cs:22:24:22:24 | 3 |
+| initializers.cs:22:16:22:36 | { ..., ... } | 3 | initializers.cs:22:27:22:34 | call to method Add | initializers.cs:13:17:13:19 | Add | 0 | initializers.cs:22:29:22:29 | 4 |
+| initializers.cs:22:16:22:36 | { ..., ... } | 3 | initializers.cs:22:27:22:34 | call to method Add | initializers.cs:13:17:13:19 | Add | 1 | initializers.cs:22:32:22:32 | 5 |

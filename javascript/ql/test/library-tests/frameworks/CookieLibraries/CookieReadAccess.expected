@@ -1,0 +1,3 @@
+| tst.js:7:2:7:21 | js_cookie.get('key') |
+| tst.js:12:2:12:27 | browser ... ('key') |
+| tst.js:18:2:18:22 | cookie. ... ['key'] |

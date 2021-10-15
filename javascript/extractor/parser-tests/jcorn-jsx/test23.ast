@@ -1,0 +1,150 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ExpressionStatement",
+      "expression": {
+        "type": "JSXElement",
+        "openingElement": {
+          "type": "JSXOpeningElement",
+          "name": {
+            "type": "JSXIdentifier",
+            "name": "div",
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 1,
+                "offset": 1
+              },
+              "end": {
+                "line": 1,
+                "column": 4,
+                "offset": 4
+              }
+            }
+          },
+          "selfClosing": true,
+          "attributes": [
+            {
+              "type": "JSXSpreadAttribute",
+              "argument": {
+                "type": "Identifier",
+                "name": "props",
+                "loc": {
+                  "start": {
+                    "line": 1,
+                    "column": 9,
+                    "offset": 9
+                  },
+                  "end": {
+                    "line": 1,
+                    "column": 14,
+                    "offset": 14
+                  }
+                }
+              },
+              "loc": {
+                "start": {
+                  "line": 1,
+                  "column": 5,
+                  "offset": 5
+                },
+                "end": {
+                  "line": 1,
+                  "column": 15,
+                  "offset": 15
+                }
+              }
+            },
+            {
+              "type": "JSXAttribute",
+              "name": {
+                "type": "JSXIdentifier",
+                "name": "post",
+                "loc": {
+                  "start": {
+                    "line": 1,
+                    "column": 16,
+                    "offset": 16
+                  },
+                  "end": {
+                    "line": 1,
+                    "column": 20,
+                    "offset": 20
+                  }
+                }
+              },
+              "value": {
+                "type": "Literal",
+                "value": "attribute",
+                "raw": "\"attribute\"",
+                "loc": {
+                  "start": {
+                    "line": 1,
+                    "column": 21,
+                    "offset": 21
+                  },
+                  "end": {
+                    "line": 1,
+                    "column": 32,
+                    "offset": 32
+                  }
+                }
+              },
+              "loc": {
+                "start": {
+                  "line": 1,
+                  "column": 16,
+                  "offset": 16
+                },
+                "end": {
+                  "line": 1,
+                  "column": 32,
+                  "offset": 32
+                }
+              }
+            }
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 0,
+              "offset": 0
+            },
+            "end": {
+              "line": 1,
+              "column": 35,
+              "offset": 35
+            }
+          }
+        },
+        "closingElement": null,
+        "children": [],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 0,
+            "offset": 0
+          },
+          "end": {
+            "line": 1,
+            "column": 35,
+            "offset": 35
+          }
+        }
+      },
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0,
+          "offset": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 35,
+          "offset": 35
+        }
+      }
+    }
+  ]
+}

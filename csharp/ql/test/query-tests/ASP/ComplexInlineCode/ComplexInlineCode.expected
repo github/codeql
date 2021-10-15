@@ -1,0 +1,2 @@
+| ComplexInlineCodeBad.aspx:5:1:18:2 | <% ... %> | Inline code contains multi-line logic. |
+| test.aspx:5:12:12:2 | <% ... %> | Inline code contains multi-line logic. |

@@ -1,0 +1,60 @@
+| a1.c:6:16:6:16 | struct <unnamed> | 0 members | 2 locations | -1 | <none> |
+| a1.c:10:16:10:16 | struct <unnamed> | 1 members | 2 locations | 0 | x |
+| a1.c:17:16:17:16 | struct <unnamed> | 1 members | 2 locations | 0 | x |
+| a1.c:24:8:24:10 | Foo | 3 members | 2 locations | 0 | empty |
+| a1.c:24:8:24:10 | Foo | 3 members | 2 locations | 1 | nonempty |
+| a1.c:24:8:24:10 | Foo | 3 members | 2 locations | 2 | i |
+| a1.c:30:8:30:12 | Empty | 0 members | 2 locations | -1 | <none> |
+| a1.c:32:8:32:15 | NonEmpty | 1 members | 2 locations | 0 | x |
+| a1.c:36:8:36:10 | Bar | 3 members | 2 locations | 0 | empty |
+| a1.c:36:8:36:10 | Bar | 3 members | 2 locations | 1 | nonempty |
+| a1.c:36:8:36:10 | Bar | 3 members | 2 locations | 2 | i |
+| a2.c:6:16:6:16 | struct <unnamed> | 0 members | 2 locations | -1 | <none> |
+| a2.c:10:16:10:16 | struct <unnamed> | 1 members | 2 locations | 0 | x |
+| a2.c:17:16:17:16 | struct <unnamed> | 1 members | 2 locations | 0 | x |
+| a2.c:24:8:24:10 | Foo | 3 members | 2 locations | 0 | empty |
+| a2.c:24:8:24:10 | Foo | 3 members | 2 locations | 1 | nonempty |
+| a2.c:24:8:24:10 | Foo | 3 members | 2 locations | 2 | i |
+| a2.c:30:8:30:12 | Empty | 0 members | 2 locations | -1 | <none> |
+| a2.c:32:8:32:15 | NonEmpty | 1 members | 2 locations | 0 | x |
+| a2.c:36:8:36:10 | Bar | 3 members | 2 locations | 0 | empty |
+| a2.c:36:8:36:10 | Bar | 3 members | 2 locations | 1 | nonempty |
+| a2.c:36:8:36:10 | Bar | 3 members | 2 locations | 2 | i |
+| b1.c:2:8:2:22 | AppleCompatible | 1 members | 2 locations | 0 | apple_x |
+| b1.c:7:8:7:23 | BananaCompatible | 1 members | 2 locations | 0 | banana_x |
+| b1.c:12:8:12:13 | Cherry | 1 members | 1 locations | 0 | cherry_x |
+| b1.c:17:8:17:13 | Damson | 1 members | 1 locations | 0 | damson_x |
+| b1.c:23:8:23:27 | ElderberryCompatible | 1 members | 2 locations | 0 | elderberry_x |
+| b1.c:28:8:28:10 | Fig | 1 members | 1 locations | 0 | fig_x |
+| b1.c:33:8:33:12 | Grape | 1 members | 1 locations | 0 | grape_x |
+| b1.c:39:8:39:18 | Huckleberry | 1 members | 1 locations | 0 | huckleberry_x |
+| b1.c:44:8:44:21 | IndonesianLime | 1 members | 1 locations | 0 | indonesian_lime_x |
+| b1.c:49:8:49:13 | Jujube | 1 members | 1 locations | 0 | jujube_x |
+| b1.c:60:8:60:12 | Mango | 1 members | 1 locations | 0 | mango_x |
+| b1.c:66:8:66:16 | Nectarine | 1 members | 1 locations | 0 | nectarine_x |
+| b1.c:72:8:72:13 | Orange | 1 members | 1 locations | 0 | orange_x |
+| b1.c:77:8:77:13 | Papaya | 1 members | 1 locations | 0 | papaya_x |
+| b1.c:82:8:82:13 | Quince | 1 members | 1 locations | 0 | quince_fp |
+| b2.c:2:8:2:22 | AppleCompatible | 1 members | 2 locations | 0 | apple_x |
+| b2.c:9:8:9:23 | BananaCompatible | 1 members | 2 locations | 0 | banana_x |
+| b2.c:14:8:14:13 | Cherry | 1 members | 1 locations | 0 | cherry_x |
+| b2.c:19:8:19:13 | Damson | 1 members | 1 locations | 0 | damson_y |
+| b2.c:25:8:25:27 | ElderberryCompatible | 1 members | 2 locations | 0 | elderberry_x |
+| b2.c:30:8:30:10 | Fig | 1 members | 1 locations | 0 | fig_x |
+| b2.c:35:8:35:12 | Grape | 1 members | 1 locations | 0 | grape_x |
+| b2.c:41:8:41:18 | Huckleberry | 1 members | 1 locations | 0 | huckleberry_x |
+| b2.c:46:8:46:21 | IndonesianLime | 1 members | 1 locations | 0 | indonesian_lime_x |
+| b2.c:51:8:51:13 | Jujube | 1 members | 1 locations | 0 | jujube_x |
+| b2.c:59:8:59:12 | Mango | 1 members | 1 locations | 0 | mango_x |
+| b2.c:65:8:65:16 | Nectarine | 1 members | 1 locations | 0 | nectarine_x |
+| b2.c:71:8:71:13 | Orange | 1 members | 1 locations | 0 | orange_x |
+| b2.c:76:8:76:13 | Papaya | 1 members | 1 locations | 0 | papaya_x |
+| b2.c:81:8:81:13 | Quince | 1 members | 1 locations | 0 | quince_fp |
+| c1_gnu.c:2:8:2:11 | Kiwi | 1 members | 1 locations | 0 | kiwi_x |
+| c1_gnu.c:7:8:7:12 | Lemon | 1 members | 1 locations | 0 | lemon_x |
+| c2_gnu.c:2:8:2:11 | Kiwi | 1 members | 1 locations | 0 | kiwi_x |
+| c2_gnu.c:7:8:7:12 | Lemon | 1 members | 1 locations | 0 | lemon_x |
+| file://:0:0:0:0 | __va_list_tag | 4 members | 0 locations | 0 | gp_offset |
+| file://:0:0:0:0 | __va_list_tag | 4 members | 0 locations | 1 | fp_offset |
+| file://:0:0:0:0 | __va_list_tag | 4 members | 0 locations | 2 | overflow_arg_area |
+| file://:0:0:0:0 | __va_list_tag | 4 members | 0 locations | 3 | reg_save_area |

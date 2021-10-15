@@ -1,0 +1,3 @@
+| tainted | 27 | Test.java:56:4:56:47 | StringBuilder querySb | 31 | Test.java:60:29:60:46 | toString(...) |
+| unescaped | 10 | Test.java:102:4:102:47 | StringBuilder querySb | 14 | Test.java:106:29:106:46 | toString(...) |
+| unescaped | 20 | Test.java:112:4:112:48 | StringBuilder querySb2 | 24 | Test.java:116:30:116:48 | toString(...) |

@@ -1,0 +1,21 @@
+| data.cs:21:29:21:76 | OleDbDataReader customerReader = ... |
+| data.cs:21:46:21:76 | call to method ExecuteReader |
+| data.cs:24:20:24:33 | access to local variable customerReader |
+| data.cs:24:20:24:40 | call to method Read |
+| data.cs:27:35:27:77 | ... + ... |
+| data.cs:27:51:27:64 | access to local variable customerReader |
+| data.cs:27:51:27:77 | call to method GetString |
+| data.cs:28:35:28:71 | ... + ... |
+| data.cs:28:51:28:64 | access to local variable customerReader |
+| data.cs:28:51:28:71 | access to indexer |
+| data.cs:30:13:30:26 | access to local variable customerReader |
+| data.cs:30:13:30:34 | call to method Close |
+| entity.cs:31:29:31:82 | DbRawSqlQuery<Blog> blogs = ... |
+| entity.cs:31:37:31:82 | call to method SqlQuery<Blog> |
+| entity.cs:32:30:32:34 | access to local variable blogs |
+| entity.cs:35:31:35:34 | access to local variable blog |
+| entity.cs:35:31:35:39 | access to property Name |
+| entity.cs:38:31:38:93 | DbRawSqlQuery<String> blogNames = ... |
+| entity.cs:38:43:38:93 | call to method SqlQuery<String> |
+| entity.cs:39:34:39:42 | access to local variable blogNames |
+| entity.cs:42:31:42:38 | access to local variable blogName |

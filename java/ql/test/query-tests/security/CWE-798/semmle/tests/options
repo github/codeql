@@ -1,0 +1,1 @@
+// semmle-extractor-options: --javac-args -cp ${testdir}/../../../../../stubs/amazon-aws-sdk-1.11.700

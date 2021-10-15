@@ -1,0 +1,4 @@
+| AV Rule 196.c:2:3:3:3 | switch (...) ...  | This switch statement should either handle more cases, or be rewritten as an if statement. |
+| AV Rule 196.c:5:3:7:3 | switch (...) ...  | This switch statement should either handle more cases, or be rewritten as an if statement. |
+| AV Rule 196.c:9:3:11:3 | switch (...) ...  | This switch statement should either handle more cases, or be rewritten as an if statement. |
+| AV Rule 196.c:13:3:16:3 | switch (...) ...  | This switch statement should either handle more cases, or be rewritten as an if statement. |

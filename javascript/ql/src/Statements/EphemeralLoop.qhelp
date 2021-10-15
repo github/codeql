@@ -1,0 +1,50 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+If the body of a loop can only execute at most once, then the whole loop is equivalent to an
+<code>if</code> conditional. This is confusing for readers, and may even indicate a
+logic error.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Replace the loop with a conditional.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+In the following example, the function <code>nextToken</code> reads a value <code>c</code>
+from a <code>reader</code>, and then enters a <code>while</code> loop if <code>c</code> is
+not falsy. Inside the loop body, it performs a <code>switch</code> on <code>c</code>,
+taking different actions depending on its value. After the <code>switch</code>, it then
+unconditionally breaks out of the loop.</p>
+
+<p>
+In other words, the loop body either does not execute at all (if <code>c</code> is falsy),
+or exactly once (if it is truthy), but never more than once.
+</p>
+
+<sample src="examples/EphemeralLoop.js" />
+
+<p>
+Assuming that this is the desired behavior, the <code>while</code> loop should be replaced
+with an <code>if</code> statement as follows:
+</p>
+
+<sample src="examples/EphemeralLoopGood.js" />
+
+</example>
+<references>
+
+
+<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Loops_and_iteration">Loops and iteration</a>.</li>
+
+</references>
+</qhelp>

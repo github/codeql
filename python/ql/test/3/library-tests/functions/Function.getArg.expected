@@ -1,0 +1,5 @@
+| test.py:4:1:11:2 | Function func | 0 | test.py:5:5:5:12 | Parameter |
+| test.py:4:1:11:2 | Function func | 1 | test.py:7:5:7:10 | Parameter |
+| test.py:23:1:31:2 | Function func2 | 0 | test.py:24:5:24:11 | Parameter |
+| test.py:23:1:31:2 | Function func2 | 1 | test.py:25:5:25:17 | Parameter |
+| test.py:23:1:31:2 | Function func2 | 2 | test.py:26:5:26:18 | Parameter |

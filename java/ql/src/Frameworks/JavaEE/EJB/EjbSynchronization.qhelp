@@ -1,0 +1,35 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+The Enterprise JavaBeans 3.0 core specification, Section 21.1.2, states:
+</p>
+
+<blockquote>
+<p>
+An enterprise bean must not use thread synchronization primitives to synchronize execution of
+multiple instances.
+</p>
+<p>
+Synchronization would not work if the EJB container distributed
+enterprise bean's instances across multiple JVMs.
+</p>
+</blockquote>
+
+</overview>
+<references>
+
+
+<li>
+  <a href="http://jcp.org/aboutJava/communityprocess/final/jsr220/index.html">
+  JSR-220 Enterprise JavaBeans 3.0 Final Release</a> (ejbcore),
+  Section 21.1.2 Programming Restrictions
+</li>
+
+
+</references>
+</qhelp>

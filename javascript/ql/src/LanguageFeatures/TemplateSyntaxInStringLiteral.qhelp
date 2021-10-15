@@ -1,0 +1,49 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Template literals are strings enclosed with backticks (<tt>``</tt>). These may
+contain placeholder expressions with the syntax <tt>${<em>..</em>}</tt>, which are
+evaluated at runtime and inserted as part of the string.
+</p>
+<p>
+Ordinary string literals may be enclosed by single (<tt>''</tt>) or double quotes (<tt>""</tt>),
+and the placeholder syntax <tt>${<em>..</em>}</tt> has no special meaning in these.
+</p>
+<p>
+In files that make use of template literals, it is hard to distinguish actual template literals from
+ordinary strings that happen to contain placeholder syntax.
+This is often the result of mistyping the quotes on a template literal.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Consider if this was intended to be a template literal, and if so, change the quotes to backticks (<tt>``</tt>).
+Alternatively:
+</p>
+<ul>
+<li>Rename some local variables so that the placeholders do not give the impression of referencing those.</li>
+<li>Avoid mixing JavaScript template literals with other template systems in the same file.</li>
+</ul> 
+</recommendation>
+
+<example>
+<p>
+In the following example, the call to <tt>log.error</tt> will log the string "<tt>${id}</tt>",
+rather than the contents of the <tt>id</tt> variable. 
+</p>
+<sample src="examples/TemplateSyntaxInStringLiteral.js"/>
+<p>
+To correct the error message, change the quotes to backticks:
+</p>
+<sample src="examples/TemplateSyntaxInStringLiteralGood.js"/>
+</example>
+
+<references>
+<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Template_literals">Template literals</a>.</li>
+</references>
+</qhelp>

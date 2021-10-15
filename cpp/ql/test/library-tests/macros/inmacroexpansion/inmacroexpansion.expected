@@ -1,0 +1,26 @@
+| file://:0:0:0:0 | (unnamed parameter 0) | false |
+| file://:0:0:0:0 | (unnamed parameter 0) | false |
+| file://:0:0:0:0 | __super | false |
+| file://:0:0:0:0 | __va_list_tag | false |
+| file://:0:0:0:0 | operator= | false |
+| file://:0:0:0:0 | operator= | false |
+| test.cpp:0:0:0:0 | test.cpp | false |
+| test.cpp:2:1:2:61 | #define FOO class S{int i; void f(void) { int j; return; } }; | false |
+| test.cpp:4:1:4:1 | S | false |
+| test.cpp:4:1:4:1 | declaration of S | false |
+| test.cpp:4:1:4:1 | declaration of operator= | false |
+| test.cpp:4:1:4:1 | declaration of operator= | false |
+| test.cpp:4:1:4:1 | operator= | false |
+| test.cpp:4:1:4:1 | operator= | false |
+| test.cpp:4:1:4:3 | FOO | false |
+| test.cpp:4:1:4:3 | S | false |
+| test.cpp:4:1:4:3 | declaration | true |
+| test.cpp:4:1:4:3 | definition of S | true |
+| test.cpp:4:1:4:3 | definition of f | true |
+| test.cpp:4:1:4:3 | definition of i | true |
+| test.cpp:4:1:4:3 | definition of j | true |
+| test.cpp:4:1:4:3 | f | false |
+| test.cpp:4:1:4:3 | i | false |
+| test.cpp:4:1:4:3 | j | true |
+| test.cpp:4:1:4:3 | return ... | true |
+| test.cpp:4:1:4:3 | { ... } | true |

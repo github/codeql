@@ -1,0 +1,146 @@
+| definitions.cs:8:49:8:50 | C1 | definitions.cs:18:11:18:12 | C1 | T |
+| definitions.cs:26:26:26:31 | access to field field1 | definitions.cs:22:13:22:18 | field1 | V |
+| definitions.cs:27:19:27:24 | access to field field1 | definitions.cs:22:13:22:18 | field1 | V |
+| definitions.cs:32:13:32:15 | C1 | definitions.cs:18:11:18:12 | C1 | T |
+| definitions.cs:32:29:32:32 | this access | definitions.cs:18:11:18:12 | C1 | T |
+| definitions.cs:35:13:35:14 | call to method f1 | definitions.cs:30:14:30:15 | f1 | M |
+| definitions.cs:36:13:36:14 | call to method f1 | definitions.cs:30:14:30:15 | f1 | M |
+| definitions.cs:37:13:37:14 | call to method f1 | definitions.cs:30:14:30:15 | f1 | M |
+| definitions.cs:39:13:39:16 | this access | definitions.cs:18:11:18:12 | C1 | T |
+| definitions.cs:39:18:39:19 | call to method f1 | definitions.cs:30:14:30:15 | f1 | M |
+| definitions.cs:40:13:40:16 | this access | definitions.cs:18:11:18:12 | C1 | T |
+| definitions.cs:40:18:40:19 | call to method f1 | definitions.cs:30:14:30:15 | f1 | M |
+| definitions.cs:41:13:41:16 | this access | definitions.cs:18:11:18:12 | C1 | T |
+| definitions.cs:41:18:41:19 | call to method f1 | definitions.cs:30:14:30:15 | f1 | M |
+| definitions.cs:43:13:43:16 | this access | definitions.cs:18:11:18:12 | C1 | T |
+| definitions.cs:43:18:43:32 | call to method ExtensionMethod | definitions.cs:8:28:8:42 | ExtensionMethod | M |
+| definitions.cs:44:13:44:16 | this access | definitions.cs:18:11:18:12 | C1 | T |
+| definitions.cs:44:18:44:32 | call to method ExtensionMethod | definitions.cs:8:28:8:42 | ExtensionMethod | M |
+| definitions.cs:45:13:45:16 | this access | definitions.cs:18:11:18:12 | C1 | T |
+| definitions.cs:45:18:45:32 | call to method ExtensionMethod | definitions.cs:8:28:8:42 | ExtensionMethod | M |
+| definitions.cs:47:13:47:28 | call to method GenericFn<Int32> | definitions.cs:75:14:75:25 | GenericFn<> | M |
+| definitions.cs:48:13:48:16 | this access | definitions.cs:18:11:18:12 | C1 | T |
+| definitions.cs:48:18:48:33 | call to method GenericFn<Int32> | definitions.cs:75:14:75:25 | GenericFn<> | M |
+| definitions.cs:51:17:51:18 | C1 | definitions.cs:18:11:18:12 | C1 | M |
+| definitions.cs:52:17:52:18 | C1 | definitions.cs:18:11:18:12 | C1 | M |
+| definitions.cs:53:17:53:18 | C1 | definitions.cs:18:11:18:12 | C1 | M |
+| definitions.cs:56:28:56:28 | access to local variable x | definitions.cs:56:17:56:17 | x | V |
+| definitions.cs:56:35:56:40 | access to field field1 | definitions.cs:22:13:22:18 | field1 | V |
+| definitions.cs:56:47:56:50 | access to parameter args | definitions.cs:30:30:30:33 | args | V |
+| definitions.cs:57:13:57:23 | Enumeration | definitions.cs:13:10:13:20 | Enumeration | T |
+| definitions.cs:57:29:57:39 | Enumeration | definitions.cs:13:10:13:20 | Enumeration | T |
+| definitions.cs:57:41:57:42 | access to constant e1 | definitions.cs:15:9:15:10 | e1 | V |
+| definitions.cs:60:13:60:21 | access to property property1 | definitions.cs:24:20:24:28 | property1 | M |
+| definitions.cs:60:25:60:33 | access to property property1 | definitions.cs:24:20:24:28 | property1 | M |
+| definitions.cs:63:13:63:14 | C1 | definitions.cs:18:11:18:12 | C1 | T |
+| definitions.cs:64:13:64:14 | S1 | definitions.cs:78:12:78:13 | S1 | T |
+| definitions.cs:67:30:67:45 | access to method GenericFn<Int32> | definitions.cs:75:14:75:25 | GenericFn<> | M |
+| definitions.cs:70:30:70:31 | C1 | definitions.cs:18:11:18:12 | C1 | T |
+| definitions.cs:72:13:72:14 | C1 | definitions.cs:18:11:18:12 | C1 | T |
+| definitions.cs:75:27:75:27 | T | definitions.cs:75:24:75:24 | T | T |
+| definitions.cs:80:9:80:10 | S1 | definitions.cs:78:12:78:13 | S1 | T |
+| definitions.cs:80:14:80:15 | S1 | definitions.cs:78:12:78:13 | S1 | T |
+| definitions.cs:88:26:88:28 | S1 | definitions.cs:78:12:78:13 | S1 | T |
+| definitions.cs:88:35:88:36 | access to parameter ss | definitions.cs:80:19:80:20 | ss | V |
+| definitions.cs:92:31:92:32 | S1 | definitions.cs:78:12:78:13 | S1 | T |
+| definitions.cs:93:24:93:25 | S1 | definitions.cs:78:12:78:13 | S1 | M |
+| definitions.cs:101:22:101:33 | EventHandler | definitions.cs:99:30:99:41 | EventHandler | T |
+| definitions.cs:105:13:105:17 | access to event Click | definitions.cs:101:35:101:39 | Click | M |
+| definitions.cs:105:22:105:22 | access to method M | definitions.cs:103:32:103:32 | M | M |
+| definitions.cs:107:13:107:17 | access to event Click | definitions.cs:101:35:101:39 | Click | M |
+| definitions.cs:107:22:107:34 | access to local function LocalFunction | definitions.cs:106:13:106:36 | LocalFunction | M |
+| definitions.cs:108:13:108:17 | access to event Click | definitions.cs:101:35:101:39 | Click | M |
+| definitions.cs:114:28:114:28 | T | definitions.cs:114:17:114:17 | T | T |
+| definitions.cs:114:32:114:32 | A | definitions.cs:97:11:97:11 | A | T |
+| definitions.cs:117:27:117:27 | T | definitions.cs:117:18:117:18 | T | T |
+| definitions.cs:119:20:119:21 | I2<Object> | definitions.cs:117:15:117:19 | I2<> | T |
+| definitions.cs:121:18:121:18 | A | definitions.cs:97:11:97:11 | A | T |
+| definitions.cs:121:21:121:22 | I1 | definitions.cs:112:15:112:16 | I1 | T |
+| definitions.cs:121:25:121:26 | I2<A> | definitions.cs:117:15:117:19 | I2<> | T |
+| definitions.cs:121:28:121:28 | A | definitions.cs:97:11:97:11 | A | T |
+| definitions.cs:121:37:121:37 | T | definitions.cs:121:13:121:13 | T | T |
+| definitions.cs:121:41:121:41 | A | definitions.cs:97:11:97:11 | A | T |
+| definitions.cs:125:13:125:16 | base access | definitions.cs:97:11:97:11 | A | T |
+| definitions.cs:125:18:125:18 | call to method M | definitions.cs:103:32:103:32 | M | M |
+| definitions.cs:128:14:128:15 | I1 | definitions.cs:112:15:112:16 | I1 | T |
+| definitions.cs:130:24:130:25 | I3 | definitions.cs:119:15:119:16 | I3 | T |
+| definitions.cs:130:33:130:34 | T2 | definitions.cs:130:18:130:19 | T2 | T |
+| definitions.cs:132:10:132:11 | I1 | definitions.cs:112:15:112:16 | I1 | T |
+| definitions.cs:132:14:132:14 | B<A> | definitions.cs:121:11:121:14 | B<> | T |
+| definitions.cs:132:16:132:16 | A | definitions.cs:97:11:97:11 | A | T |
+| definitions.cs:134:9:134:9 | B<A> | definitions.cs:121:11:121:14 | B<> | T |
+| definitions.cs:134:11:134:11 | A | definitions.cs:97:11:97:11 | A | T |
+| definitions.cs:134:19:134:19 | A | definitions.cs:97:11:97:11 | A | T |
+| definitions.cs:134:47:134:47 | B<A> | definitions.cs:121:11:121:14 | B<> | T |
+| definitions.cs:134:49:134:49 | A | definitions.cs:97:11:97:11 | A | T |
+| definitions.cs:140:9:140:9 | E | definitions.cs:139:14:139:14 | E | T |
+| definitions.cs:140:52:140:52 | E | definitions.cs:139:14:139:14 | E | T |
+| definitions.cs:145:15:145:15 | A | definitions.cs:97:11:97:11 | A | T |
+| definitions.cs:145:17:145:28 | EventHandler | definitions.cs:99:30:99:41 | EventHandler | T |
+| definitions.cs:146:9:146:9 | A | definitions.cs:97:11:97:11 | A | T |
+| definitions.cs:147:9:147:10 | I3 | definitions.cs:119:15:119:16 | I3 | T |
+| definitions.cs:148:9:148:10 | S1 | definitions.cs:78:12:78:13 | S1 | T |
+| definitions.cs:148:17:148:17 | A | definitions.cs:97:11:97:11 | A | T |
+| definitions.cs:148:19:148:30 | EventHandler | definitions.cs:99:30:99:41 | EventHandler | T |
+| definitions.cs:151:16:151:17 | I4 | definitions.cs:143:15:143:16 | I4 | T |
+| definitions.cs:153:30:153:31 | I4 | definitions.cs:143:15:143:16 | I4 | T |
+| definitions.cs:154:9:154:9 | A | definitions.cs:97:11:97:11 | A | T |
+| definitions.cs:154:11:154:12 | I4 | definitions.cs:143:15:143:16 | I4 | T |
+| definitions.cs:155:9:155:10 | I3 | definitions.cs:119:15:119:16 | I3 | T |
+| definitions.cs:155:12:155:13 | I4 | definitions.cs:143:15:143:16 | I4 | T |
+| definitions.cs:156:9:156:10 | S1 | definitions.cs:78:12:78:13 | S1 | T |
+| definitions.cs:156:12:156:13 | I4 | definitions.cs:143:15:143:16 | I4 | T |
+| definitions.cs:156:20:156:20 | A | definitions.cs:97:11:97:11 | A | T |
+| definitions.cs:156:22:156:33 | EventHandler | definitions.cs:99:30:99:41 | EventHandler | T |
+| definitions.cs:156:55:156:56 | S1 | definitions.cs:78:12:78:13 | S1 | T |
+| definitions.cs:156:62:156:63 | S1 | definitions.cs:78:12:78:13 | S1 | M |
+| definitions.cs:160:27:160:32 | Nested<> | definitions.cs:158:22:158:30 | Nested<> | T |
+| definitions.cs:160:34:160:34 | T | definitions.cs:158:29:158:29 | T | T |
+| definitions.cs:160:59:160:64 | Nested<> | definitions.cs:158:22:158:30 | Nested<> | M |
+| definitions.cs:160:66:160:66 | T | definitions.cs:158:29:158:29 | T | T |
+| definitions.cs:166:12:166:13 | C4 | definitions.cs:151:11:151:12 | C4 | T |
+| definitions.cs:166:15:166:20 | Nested<I4> | definitions.cs:158:22:158:30 | Nested<> | T |
+| definitions.cs:166:22:166:23 | I4 | definitions.cs:143:15:143:16 | I4 | T |
+| definitions.cs:166:30:166:31 | C4 | definitions.cs:151:11:151:12 | C4 | T |
+| definitions.cs:166:33:166:38 | Nested<I4> | definitions.cs:158:22:158:30 | Nested<> | T |
+| definitions.cs:166:40:166:41 | I4 | definitions.cs:143:15:143:16 | I4 | T |
+| definitions.cs:166:44:166:49 | call to method Create | definitions.cs:160:37:160:42 | Create | M |
+| definitions.cs:167:9:167:10 | C1 | definitions.cs:18:11:18:12 | C1 | T |
+| definitions.cs:171:16:171:17 | C1 | definitions.cs:18:11:18:12 | C1 | T |
+| definitions.cs:171:30:171:31 | C1 | definitions.cs:18:11:18:12 | C1 | M |
+| definitions.cs:172:13:172:13 | access to local variable c | definitions.cs:171:19:171:19 | c | V |
+| definitions.cs:172:15:172:23 | access to property property1 | definitions.cs:24:20:24:28 | property1 | M |
+| definitions.cs:172:27:172:27 | access to local variable c | definitions.cs:171:19:171:19 | c | V |
+| definitions.cs:172:29:172:37 | access to property property1 | definitions.cs:24:20:24:28 | property1 | M |
+| definitions.cs:173:13:173:15 | C5 | definitions.cs:164:11:164:12 | C5 | T |
+| definitions.cs:173:26:173:27 | C5 | definitions.cs:164:11:164:12 | C5 | M |
+| definitions.cs:173:34:173:35 | C5 | definitions.cs:164:11:164:12 | C5 | T |
+| definitions.cs:174:13:174:14 | access to local variable c5 | definitions.cs:173:17:173:18 | c5 | V |
+| definitions.cs:174:16:174:17 | access to field c1 | definitions.cs:167:12:167:13 | c1 | V |
+| definitions.cs:174:19:174:27 | access to property property1 | definitions.cs:24:20:24:28 | property1 | M |
+| definitions.cs:175:24:175:25 | access to local variable c5 | definitions.cs:173:17:173:18 | c5 | V |
+| definitions.cs:175:33:175:34 | C4 | definitions.cs:151:11:151:12 | C4 | T |
+| definitions.cs:175:36:175:41 | Nested<I4> | definitions.cs:158:22:158:30 | Nested<> | T |
+| definitions.cs:175:43:175:44 | I4 | definitions.cs:143:15:143:16 | I4 | T |
+| definitions.cs:181:41:181:42 | C5 | definitions.cs:164:11:164:12 | C5 | T |
+| definitions.cs:181:45:181:46 | MyAttribute | definitions.cs:194:11:194:21 | MyAttribute | T |
+| definitions.cs:181:51:181:52 | C6 | definitions.cs:179:11:179:12 | C6 | T |
+| definitions.cs:186:9:186:10 | C5 | definitions.cs:164:11:164:12 | C5 | T |
+| definitions.cs:188:21:188:22 | C5 | definitions.cs:164:11:164:12 | C5 | T |
+| definitions.cs:188:24:188:27 | this access | definitions.cs:179:11:179:12 | C6 | T |
+| definitions.cs:191:23:191:24 | C6 | definitions.cs:179:11:179:12 | C6 | T |
+| definitions.cs:191:37:191:38 | C6 | definitions.cs:179:11:179:12 | C6 | T |
+| definitions.cs:191:43:191:44 | C6 | definitions.cs:179:11:179:12 | C6 | T |
+| definitions.cs:191:52:191:52 | access to parameter x | definitions.cs:191:40:191:40 | x | V |
+| definitions.cs:202:13:202:14 | C7 | definitions.cs:196:11:196:12 | C7 | T |
+| definitions.cs:202:16:202:16 | call to method M | definitions.cs:198:28:198:28 | M | M |
+| definitions.cs:210:13:210:14 | C8 | definitions.cs:206:11:206:12 | C8 | T |
+| definitions.cs:211:17:211:19 | access to local variable c8a | definitions.cs:210:16:210:18 | c8a | V |
+| definitions.cs:211:24:211:25 | C8 | definitions.cs:206:11:206:12 | C8 | T |
+| definitions.cs:212:17:212:19 | access to local variable c8a | definitions.cs:210:16:210:18 | c8a | V |
+| definitions.cs:212:23:212:25 | access to local variable c8b | definitions.cs:211:27:211:29 | c8b | V |
+| definitions.cs:213:21:213:23 | access to local variable c8a | definitions.cs:210:16:210:18 | c8a | V |
+| definitions.cs:215:22:215:23 | C8 | definitions.cs:206:11:206:12 | C8 | T |
+| definitions.cs:215:34:215:36 | access to local variable c8c | definitions.cs:215:25:215:27 | c8c | V |
+| definitions.cs:216:21:216:23 | access to local variable c8a | definitions.cs:210:16:210:18 | c8a | V |
+| definitions.cs:216:27:216:29 | access to local variable c8c | definitions.cs:215:25:215:27 | c8c | V |

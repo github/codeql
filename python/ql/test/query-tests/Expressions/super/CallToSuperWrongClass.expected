@@ -1,0 +1,1 @@
+| test.py:10:9:10:27 | super() | First argument to super() should be NotMyDict. |

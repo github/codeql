@@ -1,0 +1,11 @@
+| file://:0:0:0:0 | declaration of 1st parameter | LibB/libb_internal.h:5:8:5:12 | thing |
+| file://:0:0:0:0 | declaration of 1st parameter | LibB/libb_internal.h:5:8:5:12 | thing |
+| include.h:3:25:3:33 | num | LibD/libd.h:5:12:5:14 | num |
+| main.cpp:8:31:8:31 | call to container | LibC/libc.h:9:3:9:3 | container |
+| main.cpp:8:31:8:31 | definition of x | LibB/libb_internal.h:5:8:5:12 | thing |
+| main.cpp:8:31:8:31 | definition of x | LibC/libc.h:5:18:5:18 | T |
+| main.cpp:8:31:8:31 | definition of x | LibC/libc.h:6:8:6:16 | container<T> |
+| main.cpp:8:31:8:31 | definition of x | LibC/libc.h:6:8:6:16 | container<thing> |
+| main.cpp:10:2:10:10 | call to fun | LibA/liba.h:5:7:5:9 | fun |
+| main.cpp:12:9:12:19 | include_num | include.h:3:11:3:21 | include_num |
+| main.cpp:13:1:13:1 | call to ~container | LibC/libc.h:10:3:10:3 | ~container |

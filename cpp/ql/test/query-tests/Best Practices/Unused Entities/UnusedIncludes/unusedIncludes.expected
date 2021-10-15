@@ -1,0 +1,4 @@
+| unusedIncludes.cpp:3:1:3:14 | #include "a.h" | Redundant include, this file does not require $@. | a.h:0:0:0:0 | a.h | a.h |
+| unusedIncludes.cpp:7:1:7:16 | #include "e.hpp" | Redundant include, this file does not require $@. | e.hpp:0:0:0:0 | e.hpp | e.hpp |
+| unusedIncludes.cpp:8:1:8:20 | #include "f.fwd.hpp" | Redundant include, this file does not require $@. | f.fwd.hpp:0:0:0:0 | f.fwd.hpp | f.fwd.hpp |
+| unusedIncludes.cpp:9:1:9:12 | #include "g" | Redundant include, this file does not require $@. | g:0:0:0:0 | g | g |

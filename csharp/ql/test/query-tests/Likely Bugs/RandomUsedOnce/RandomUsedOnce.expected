@@ -1,0 +1,5 @@
+| RandomUsedOnce.cs:11:9:11:27 | call to method Next | Random object created and used only once. |
+| RandomUsedOnce.cs:14:9:14:38 | call to method NextBytes | Random object created and used only once. |
+| RandomUsedOnce.cs:16:9:16:33 | call to method NextDouble | Random object created and used only once. |
+| RandomUsedOnce.cs:17:9:17:29 | call to method Next | Random object created and used only once. |
+| RandomUsedOnce.cs:18:9:18:33 | call to method Next | Random object created and used only once. |

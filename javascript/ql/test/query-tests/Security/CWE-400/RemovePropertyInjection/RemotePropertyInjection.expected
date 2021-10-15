@@ -1,0 +1,40 @@
+nodes
+| tst.js:8:6:8:52 | prop |
+| tst.js:8:13:8:52 | myCoolL ... rolled) |
+| tst.js:8:28:8:51 | req.que ... trolled |
+| tst.js:8:28:8:51 | req.que ... trolled |
+| tst.js:9:8:9:11 | prop |
+| tst.js:9:8:9:11 | prop |
+| tst.js:13:15:13:18 | prop |
+| tst.js:13:15:13:18 | prop |
+| tst.js:14:31:14:34 | prop |
+| tst.js:14:31:14:34 | prop |
+| tst.js:16:10:16:13 | prop |
+| tst.js:16:10:16:13 | prop |
+| tstNonExpr.js:5:7:5:23 | userVal |
+| tstNonExpr.js:5:17:5:23 | req.url |
+| tstNonExpr.js:5:17:5:23 | req.url |
+| tstNonExpr.js:8:17:8:23 | userVal |
+| tstNonExpr.js:8:17:8:23 | userVal |
+edges
+| tst.js:8:6:8:52 | prop | tst.js:9:8:9:11 | prop |
+| tst.js:8:6:8:52 | prop | tst.js:9:8:9:11 | prop |
+| tst.js:8:6:8:52 | prop | tst.js:13:15:13:18 | prop |
+| tst.js:8:6:8:52 | prop | tst.js:13:15:13:18 | prop |
+| tst.js:8:6:8:52 | prop | tst.js:14:31:14:34 | prop |
+| tst.js:8:6:8:52 | prop | tst.js:14:31:14:34 | prop |
+| tst.js:8:6:8:52 | prop | tst.js:16:10:16:13 | prop |
+| tst.js:8:6:8:52 | prop | tst.js:16:10:16:13 | prop |
+| tst.js:8:13:8:52 | myCoolL ... rolled) | tst.js:8:6:8:52 | prop |
+| tst.js:8:28:8:51 | req.que ... trolled | tst.js:8:13:8:52 | myCoolL ... rolled) |
+| tst.js:8:28:8:51 | req.que ... trolled | tst.js:8:13:8:52 | myCoolL ... rolled) |
+| tstNonExpr.js:5:7:5:23 | userVal | tstNonExpr.js:8:17:8:23 | userVal |
+| tstNonExpr.js:5:7:5:23 | userVal | tstNonExpr.js:8:17:8:23 | userVal |
+| tstNonExpr.js:5:17:5:23 | req.url | tstNonExpr.js:5:7:5:23 | userVal |
+| tstNonExpr.js:5:17:5:23 | req.url | tstNonExpr.js:5:7:5:23 | userVal |
+#select
+| tst.js:9:8:9:11 | prop | tst.js:8:28:8:51 | req.que ... trolled | tst.js:9:8:9:11 | prop | A $@ is used as a property name to write to. | tst.js:8:28:8:51 | req.que ... trolled | user-provided value |
+| tst.js:13:15:13:18 | prop | tst.js:8:28:8:51 | req.que ... trolled | tst.js:13:15:13:18 | prop | A $@ is used as a property name to write to. | tst.js:8:28:8:51 | req.que ... trolled | user-provided value |
+| tst.js:14:31:14:34 | prop | tst.js:8:28:8:51 | req.que ... trolled | tst.js:14:31:14:34 | prop | A $@ is used as a property name to write to. | tst.js:8:28:8:51 | req.que ... trolled | user-provided value |
+| tst.js:16:10:16:13 | prop | tst.js:8:28:8:51 | req.que ... trolled | tst.js:16:10:16:13 | prop | A $@ is used as a property name to write to. | tst.js:8:28:8:51 | req.que ... trolled | user-provided value |
+| tstNonExpr.js:8:17:8:23 | userVal | tstNonExpr.js:5:17:5:23 | req.url | tstNonExpr.js:8:17:8:23 | userVal | A $@ is used as a header name. | tstNonExpr.js:5:17:5:23 | req.url | user-provided value |

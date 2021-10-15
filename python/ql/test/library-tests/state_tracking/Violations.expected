@@ -1,0 +1,7 @@
+| global.py:23 | ControlFlowNode for frobnicate() | initialized |
+| global.py:26 | ControlFlowNode for exacerbate() | frobnicated |
+| test.py:42 | ControlFlowNode for frobnicate() | initialized |
+| test.py:48 | ControlFlowNode for exacerbate() | frobnicated |
+| test.py:51 | ControlFlowNode for exacerbate() | frobnicated |
+| test.py:65 | ControlFlowNode for frobnicate() | initialized |
+| test.py:75 | ControlFlowNode for exacerbate() | frobnicated |

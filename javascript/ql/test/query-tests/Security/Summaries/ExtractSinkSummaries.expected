@@ -1,0 +1,6 @@
+| (parameter 0 (member codeInjection (root https://www.npmjs.com/package/infer-sources))) | data | CodeInjection |
+| (parameter 0 (member codeInjection (root https://www.npmjs.com/package/infer-sources))) | taint | CodeInjection |
+| (parameter 0 (member hashPass (root https://www.npmjs.com/package/infer-sources))) | data | CodeInjection |
+| (parameter 0 (member hashPass (root https://www.npmjs.com/package/infer-sources))) | taint | CodeInjection |
+| (parameter 0 (member multiple (root https://www.npmjs.com/package/infer-sources))) | data | CodeInjection |
+| (parameter 0 (member multiple (root https://www.npmjs.com/package/infer-sources))) | taint | CodeInjection |

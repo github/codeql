@@ -1,0 +1,281 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ExpressionStatement",
+      "expression": {
+        "type": "JSXElement",
+        "openingElement": {
+          "type": "JSXOpeningElement",
+          "name": {
+            "type": "JSXIdentifier",
+            "name": "LeftRight",
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 1,
+                "offset": 1
+              },
+              "end": {
+                "line": 1,
+                "column": 10,
+                "offset": 10
+              }
+            }
+          },
+          "selfClosing": true,
+          "attributes": [
+            {
+              "type": "JSXAttribute",
+              "name": {
+                "type": "JSXIdentifier",
+                "name": "left",
+                "loc": {
+                  "start": {
+                    "line": 1,
+                    "column": 11,
+                    "offset": 11
+                  },
+                  "end": {
+                    "line": 1,
+                    "column": 15,
+                    "offset": 15
+                  }
+                }
+              },
+              "value": {
+                "type": "JSXElement",
+                "openingElement": {
+                  "type": "JSXOpeningElement",
+                  "name": {
+                    "type": "JSXIdentifier",
+                    "name": "a",
+                    "loc": {
+                      "start": {
+                        "line": 1,
+                        "column": 17,
+                        "offset": 17
+                      },
+                      "end": {
+                        "line": 1,
+                        "column": 18,
+                        "offset": 18
+                      }
+                    }
+                  },
+                  "selfClosing": true,
+                  "attributes": [],
+                  "loc": {
+                    "start": {
+                      "line": 1,
+                      "column": 16,
+                      "offset": 16
+                    },
+                    "end": {
+                      "line": 1,
+                      "column": 21,
+                      "offset": 21
+                    }
+                  }
+                },
+                "closingElement": null,
+                "children": [],
+                "loc": {
+                  "start": {
+                    "line": 1,
+                    "column": 16,
+                    "offset": 16
+                  },
+                  "end": {
+                    "line": 1,
+                    "column": 21,
+                    "offset": 21
+                  }
+                }
+              },
+              "loc": {
+                "start": {
+                  "line": 1,
+                  "column": 11,
+                  "offset": 11
+                },
+                "end": {
+                  "line": 1,
+                  "column": 21,
+                  "offset": 21
+                }
+              }
+            },
+            {
+              "type": "JSXAttribute",
+              "name": {
+                "type": "JSXIdentifier",
+                "name": "right",
+                "loc": {
+                  "start": {
+                    "line": 1,
+                    "column": 22,
+                    "offset": 22
+                  },
+                  "end": {
+                    "line": 1,
+                    "column": 27,
+                    "offset": 27
+                  }
+                }
+              },
+              "value": {
+                "type": "JSXElement",
+                "openingElement": {
+                  "type": "JSXOpeningElement",
+                  "name": {
+                    "type": "JSXIdentifier",
+                    "name": "b",
+                    "loc": {
+                      "start": {
+                        "line": 1,
+                        "column": 29,
+                        "offset": 29
+                      },
+                      "end": {
+                        "line": 1,
+                        "column": 30,
+                        "offset": 30
+                      }
+                    }
+                  },
+                  "selfClosing": false,
+                  "attributes": [],
+                  "loc": {
+                    "start": {
+                      "line": 1,
+                      "column": 28,
+                      "offset": 28
+                    },
+                    "end": {
+                      "line": 1,
+                      "column": 31,
+                      "offset": 31
+                    }
+                  }
+                },
+                "closingElement": {
+                  "type": "JSXClosingElement",
+                  "name": {
+                    "type": "JSXIdentifier",
+                    "name": "b",
+                    "loc": {
+                      "start": {
+                        "line": 1,
+                        "column": 52,
+                        "offset": 52
+                      },
+                      "end": {
+                        "line": 1,
+                        "column": 53,
+                        "offset": 53
+                      }
+                    }
+                  },
+                  "loc": {
+                    "start": {
+                      "line": 1,
+                      "column": 50,
+                      "offset": 50
+                    },
+                    "end": {
+                      "line": 1,
+                      "column": 54,
+                      "offset": 54
+                    }
+                  }
+                },
+                "children": [
+                  {
+                    "type": "Literal",
+                    "value": "monkeys /> gorillas",
+                    "raw": "monkeys /> gorillas",
+                    "loc": {
+                      "start": {
+                        "line": 1,
+                        "column": 31,
+                        "offset": 31
+                      },
+                      "end": {
+                        "line": 1,
+                        "column": 50,
+                        "offset": 50
+                      }
+                    }
+                  }
+                ],
+                "loc": {
+                  "start": {
+                    "line": 1,
+                    "column": 28,
+                    "offset": 28
+                  },
+                  "end": {
+                    "line": 1,
+                    "column": 54,
+                    "offset": 54
+                  }
+                }
+              },
+              "loc": {
+                "start": {
+                  "line": 1,
+                  "column": 22,
+                  "offset": 22
+                },
+                "end": {
+                  "line": 1,
+                  "column": 54,
+                  "offset": 54
+                }
+              }
+            }
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 0,
+              "offset": 0
+            },
+            "end": {
+              "line": 1,
+              "column": 57,
+              "offset": 57
+            }
+          }
+        },
+        "closingElement": null,
+        "children": [],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 0,
+            "offset": 0
+          },
+          "end": {
+            "line": 1,
+            "column": 57,
+            "offset": 57
+          }
+        }
+      },
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0,
+          "offset": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 57,
+          "offset": 57
+        }
+      }
+    }
+  ]
+}

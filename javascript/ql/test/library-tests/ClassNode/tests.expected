@@ -1,0 +1,60 @@
+fieldStep
+| tst2.js:3:14:3:14 | x | tst2.js:7:5:7:10 | this.x |
+| tst2.js:3:14:3:14 | x | tst2.js:8:25:8:30 | this.x |
+| tst2.js:3:14:3:14 | x | tst2.js:12:12:12:17 | this.x |
+getAReceiverNode
+| fields.ts:1:1:3:1 | class B ... mber;\\n} | fields.ts:1:12:1:11 | this |
+| fields.ts:5:1:13:1 | class F ... > {};\\n} | fields.ts:6:5:6:4 | this |
+| namespace.js:3:15:3:31 | function Baz() {} | namespace.js:3:15:3:14 | this |
+| namespace.js:3:15:3:31 | function Baz() {} | namespace.js:5:32:5:31 | this |
+| tst2.js:1:1:14:1 | class C ... ;\\n  }\\n} | tst2.js:2:14:2:13 | this |
+| tst2.js:1:1:14:1 | class C ... ;\\n  }\\n} | tst2.js:6:9:6:8 | this |
+| tst2.js:1:1:14:1 | class C ... ;\\n  }\\n} | tst2.js:11:13:11:12 | this |
+| tst2.js:16:1:20:1 | class D ... ;\\n  }\\n} | tst2.js:17:14:17:13 | this |
+| tst.js:3:1:10:1 | class A ... () {}\\n} | tst.js:3:9:3:8 | this |
+| tst.js:3:1:10:1 | class A ... () {}\\n} | tst.js:4:17:4:16 | this |
+| tst.js:3:1:10:1 | class A ... () {}\\n} | tst.js:7:6:7:5 | this |
+| tst.js:3:1:10:1 | class A ... () {}\\n} | tst.js:9:10:9:9 | this |
+| tst.js:13:1:13:21 | class A ... ds A {} | tst.js:13:20:13:19 | this |
+| tst.js:15:1:15:15 | function B() {} | tst.js:15:1:15:0 | this |
+| tst.js:15:1:15:15 | function B() {} | tst.js:17:19:17:18 | this |
+| tst.js:19:1:19:15 | function C() {} | tst.js:19:1:19:0 | this |
+| tst.js:19:1:19:15 | function C() {} | tst.js:21:19:21:18 | this |
+| tst.js:23:1:23:15 | function D() {} | tst.js:23:1:23:0 | this |
+| tst.js:23:1:23:15 | function D() {} | tst.js:25:13:25:12 | this |
+| tst.js:23:1:23:15 | function D() {} | tst.js:26:13:26:12 | this |
+| tst.js:23:1:23:15 | function D() {} | tst.js:27:4:27:3 | this |
+getFieldTypeAnnotation
+| fields.ts:1:1:3:1 | class B ... mber;\\n} | baseField | fields.ts:2:16:2:21 | number |
+| fields.ts:5:1:13:1 | class F ... > {};\\n} | x | fields.ts:6:27:6:32 | number |
+| fields.ts:5:1:13:1 | class F ... > {};\\n} | y | fields.ts:6:46:6:51 | string |
+| fields.ts:5:1:13:1 | class F ... > {};\\n} | z | fields.ts:10:8:10:15 | string[] |
+instanceMember
+| fields.ts:5:1:13:1 | class F ... > {};\\n} | m | method | fields.ts:12:16:12:32 | (x: string) => {} | Foo |
+| namespace.js:3:15:3:31 | function Baz() {} | method | method | namespace.js:5:32:5:44 | function() {} | Baz |
+| tst2.js:1:1:14:1 | class C ... ;\\n  }\\n} | getter | getter | tst2.js:11:13:13:3 | () {\\n   ... .x;\\n  } | C |
+| tst2.js:1:1:14:1 | class C ... ;\\n  }\\n} | method | method | tst2.js:6:9:9:3 | () {\\n   ... .x;\\n  } | C |
+| tst2.js:16:1:20:1 | class D ... ;\\n  }\\n} | f | method | tst2.js:18:14:18:22 | (x) => {} | D |
+| tst.js:3:1:10:1 | class A ... () {}\\n} | bar | method | tst.js:7:6:7:10 | () {} | A |
+| tst.js:3:1:10:1 | class A ... () {}\\n} | baz | getter | tst.js:9:10:9:14 | () {} | A |
+| tst.js:3:1:10:1 | class A ... () {}\\n} | instanceMethod | method | tst.js:4:17:4:21 | () {} | A |
+| tst.js:15:1:15:15 | function B() {} | foo | method | tst.js:17:19:17:31 | function() {} | B |
+| tst.js:19:1:19:15 | function C() {} | bar | method | tst.js:21:19:21:31 | function() {} | C |
+| tst.js:23:1:23:15 | function D() {} | getter | getter | tst.js:25:13:25:17 | () {} | D |
+| tst.js:23:1:23:15 | function D() {} | m | method | tst.js:27:4:27:8 | () {} | D |
+| tst.js:23:1:23:15 | function D() {} | setter | setter | tst.js:26:13:26:18 | (x) {} | D |
+instanceMethod
+| fields.ts:5:1:13:1 | class F ... > {};\\n} | m | fields.ts:12:16:12:32 | (x: string) => {} | Foo |
+| namespace.js:3:15:3:31 | function Baz() {} | method | namespace.js:5:32:5:44 | function() {} | Baz |
+| tst2.js:1:1:14:1 | class C ... ;\\n  }\\n} | method | tst2.js:6:9:9:3 | () {\\n   ... .x;\\n  } | C |
+| tst2.js:16:1:20:1 | class D ... ;\\n  }\\n} | f | tst2.js:18:14:18:22 | (x) => {} | D |
+| tst.js:3:1:10:1 | class A ... () {}\\n} | bar | tst.js:7:6:7:10 | () {} | A |
+| tst.js:3:1:10:1 | class A ... () {}\\n} | instanceMethod | tst.js:4:17:4:21 | () {} | A |
+| tst.js:15:1:15:15 | function B() {} | foo | tst.js:17:19:17:31 | function() {} | B |
+| tst.js:19:1:19:15 | function C() {} | bar | tst.js:21:19:21:31 | function() {} | C |
+| tst.js:23:1:23:15 | function D() {} | m | tst.js:27:4:27:8 | () {} | D |
+superClass
+| fields.ts:5:1:13:1 | class F ... > {};\\n} | fields.ts:1:1:3:1 | class B ... mber;\\n} | Foo | Base |
+| tst.js:13:1:13:21 | class A ... ds A {} | tst.js:3:1:10:1 | class A ... () {}\\n} | A2 | A |
+| tst.js:15:1:15:15 | function B() {} | tst.js:3:1:10:1 | class A ... () {}\\n} | B | A |
+| tst.js:19:1:19:15 | function C() {} | tst.js:15:1:15:15 | function B() {} | C | B |

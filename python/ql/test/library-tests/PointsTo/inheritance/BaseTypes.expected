@@ -1,0 +1,15 @@
+| class Base | 0 | builtin-class object |
+| class Derived1 | 0 | class Base |
+| class Derived2 | 0 | class Derived1 |
+| class Derived3 | 0 | class Derived1 |
+| class Derived4 | 0 | class Derived3 |
+| class Derived4 | 1 | class Derived2 |
+| class Derived5 | 0 | class Derived1 |
+| class Derived6 | 0 | class Derived5 |
+| class Derived6 | 1 | class Derived2 |
+| class Missing2 | 0 | class Base |
+| class Missing3 | 1 | class Base |
+| class Wrong1 | 0 | class Derived5 |
+| class Wrong1 | 1 | class Derived2 |
+| class Wrong2 | 0 | class Derived3 |
+| class Wrong2 | 1 | class Derived2 |

@@ -1,0 +1,34 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+Multi-parameter constructors with default arguments can be signature-compatible with a copy constructor
+when their default arguments are taken into account. An example would be a constructor for <code>X</code>
+of the form <code>X(const X&amp; rhs, int i = 0)</code>. A compiler will use such a constructor as a copy
+constructor in preference to the default member-wise copy constructor that it would otherwise generate.
+Since this is usually not what was intended, constructors of the form often do not provide the right
+semantics for copying objects of the class, making them potentially dangerous.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Do not declare constructors with default arguments that are signature-compatible with a copy constructor
+when their default arguments are taken into account.
+</p>
+
+</recommendation>
+<example>
+
+<sample src="AV Rule 77.1.cpp" />
+
+</example>
+<references>
+<li>AV Rule 77.1, <em>Joint Strike Fighter Air Vehicle C++ Coding Standards</em>. Lockheed Martin Corporation, 2005.</li>
+</references>
+</qhelp>

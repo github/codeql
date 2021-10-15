@@ -1,0 +1,101 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+
+	<overview>
+		<p>
+
+			Library plugins, such as those for the jQuery library, are often
+			configurable through options provided by the clients of the
+			plugin.
+
+
+			Clients, however, do not know the implementation details
+			of the plugin, so it is important to document the capabilities of each
+			option.  The documentation for the plugin options that the client is
+			responsible for sanitizing is of particular importance.
+
+			Otherwise, the plugin may write user input (for example, a URL query
+			parameter) to a web page without properly sanitizing it first,
+			which allows for a cross-site scripting vulnerability in the client
+			application through dynamic HTML construction.
+
+		</p>
+	</overview>
+
+	<recommendation>
+		<p>
+
+			Document all options that can lead to cross-site scripting
+			attacks, and guard against unsafe inputs where dynamic HTML
+			construction is not intended.
+
+		</p>
+	</recommendation>
+
+	<example>
+		<p>
+
+			The following example shows a jQuery plugin that selects a
+			DOM element, and copies its text content to another DOM element. The
+			selection is performed by using the plugin option
+			<code>sourceSelector</code> as a CSS selector.
+
+		</p>
+
+		<sample src="examples/UnsafeJQueryPlugin.js" />
+
+		<p>
+
+			This is, however, not a safe plugin, since the call to
+			<code>jQuery</code> interprets <code>sourceSelector</code> as HTML if
+			it is a string that starts with <code>&lt;</code>.
+
+		</p>
+
+		<p>
+
+			Instead of documenting that the client is responsible for
+			sanitizing <code>sourceSelector</code>, the plugin can use
+			<code>jQuery.find</code> to always interpret
+			<code>sourceSelector</code> as a CSS selector:
+
+		</p>
+
+		<sample src="examples/UnsafeJQueryPlugin_safe.js" />
+
+
+	</example>
+
+	<references>
+		<li>
+			OWASP:
+			<a href="https://www.owasp.org/index.php/DOM_based_XSS_Prevention_Cheat_Sheet">DOM based
+			XSS Prevention Cheat Sheet</a>.
+		</li>
+		<li>
+			OWASP:
+			<a href="https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html">XSS
+			(Cross Site Scripting) Prevention Cheat Sheet</a>.
+		</li>
+		<li>
+			OWASP
+			<a href="https://www.owasp.org/index.php/DOM_Based_XSS">DOM Based XSS</a>.
+		</li>
+		<li>
+			OWASP
+			<a href="https://www.owasp.org/index.php/Types_of_Cross-Site_Scripting">Types of Cross-Site
+			Scripting</a>.
+		</li>
+		<li>
+			Wikipedia: <a href="http://en.wikipedia.org/wiki/Cross-site_scripting">Cross-site scripting</a>.
+		</li>
+		<li>
+			jQuery: <a href="https://learn.jquery.com/plugins/basic-plugin-creation/">Plugin creation</a>.
+		</li>
+		<li>
+			Bootstrap:	<a href="https://github.com/twbs/bootstrap/pull/27047">XSS vulnerable bootstrap plugins</a>.
+		</li>
+	</references>
+</qhelp>

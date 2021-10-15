@@ -1,0 +1,3 @@
+| tst.js:2:53:2:56 | dep3 | This parameter is named 'dep3', but actually refers to dependency 'dep2'. |
+| tst.js:2:59:2:62 | dep2 | This parameter is named 'dep2', but actually refers to dependency 'dep3'. |
+| tst.js:5:67:5:71 | $http | This parameter has no injected dependency. |

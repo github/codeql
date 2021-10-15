@@ -1,0 +1,52 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>An unexplained empty block or statement makes the
+code less readable. It might also indicate missing code, a
+misplaced semicolon, or a misplaced brace. For these reasons, it
+should be avoided.</p>
+
+</overview>
+<recommendation>
+
+<p>If a block is empty because some code is missing, add the code.</p>
+<p>If an <code>if</code> statement has an empty <code>then</code> branch and a non-empty <code>else</code> branch,
+it may be possible to negate the condition and move the statements of the <code>else</code> branch into the <code>then</code> branch.</p>
+<p>If a block is deliberately empty, add a comment to explain why.</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, the <code>while</code> loop has intentionally been left empty.
+The purpose of the loop is to scan a <code>String</code> for the first occurrence of
+the character <code>'='</code>. A programmer reading the code might not understand the reason
+for the empty loop body, and think that something is missing, or perhaps even that the loop is useless.
+Therefore it is a good practice to add a comment to an empty block explaining why it is empty.</p>
+
+<sample src="EmptyBlock.java" />
+
+</example>
+<references>
+
+
+<li>
+Help - Eclipse Platform:
+<a href="https://help.eclipse.org/2020-12/advanced/content.jsp?topic=/org.eclipse.jdt.doc.user/reference/preferences/java/compiler/ref-preferences-errors-warnings.htm">Java Compiler Errors/Warnings Preferences</a>.
+</li>
+<li>
+Java Language Specification:
+<a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-14.html#jls-14.2">14.2 Blocks</a>,
+<a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-14.html#jls-14.6">14.6 The Empty Statement</a>,
+<a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-14.html#jls-14.9">14.9 The if Statement</a>,
+<a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-14.html#jls-14.12">14.12 The while Statement</a>,
+<a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-14.html#jls-14.13">14.13 The do Statement</a>,
+<a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-14.html#jls-14.14">14.14 The for Statement</a>.
+</li>
+
+
+</references>
+</qhelp>

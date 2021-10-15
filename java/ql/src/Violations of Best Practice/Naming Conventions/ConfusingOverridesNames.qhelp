@@ -1,0 +1,45 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>If a method that would override another method but does not
+because the name is capitalized differently, there are two possibilities:</p>
+
+<ul>
+    <li>The programmer intends the method to override the other method, and the 
+    difference in capitalization is a typographical error.</li>
+    <li>The programmer does not intend the method to override the other method, 
+    in which case the similarity of the names is very confusing.</li>
+</ul>
+
+</overview>
+<recommendation>
+
+<p>If overriding <em>is</em> intended, make the capitalization of the
+two methods the same.</p>
+
+<p>If overriding is <em>not</em> intended, consider naming the methods to make 
+the distinction between them clear.</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, <code>toString</code> has been
+wrongly capitalized as <code>tostring</code>. This means that objects of type
+<code>Customer</code> do not print correctly.</p>
+
+<sample src="ConfusingOverridesNames.java" />
+
+</example>
+<references>
+
+
+<li>
+R. C. Martin, <em>Clean Code: A Handbook of Agile Software Craftsmanship</em>, &sect;17.N4. Prentice Hall, 2008.
+</li>
+
+</references>
+</qhelp>

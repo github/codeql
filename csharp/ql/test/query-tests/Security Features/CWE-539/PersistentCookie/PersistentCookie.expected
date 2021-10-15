@@ -1,0 +1,2 @@
+| PersistentCookie.cs:7:9:7:51 | ... = ... | Avoid persistent cookies. |
+| PersistentCookie.cs:9:9:9:53 | ... = ... | Avoid persistent cookies. |

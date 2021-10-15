@@ -1,0 +1,17 @@
+| UnknownDirective.html:3:64:3:86 | 'some-f ... tring'; | Unknown directive: 'some-function-string'. |
+| UnknownDirective.html:5:1:5:20 | 'some-script-string' | Unknown directive: 'some-script-string'. |
+| UnknownDirective.js:1:1:1:10 | "use foo"; | Unknown directive: 'use foo'. |
+| UnknownDirective.js:5:5:5:19 | "'use strict'"; | Unknown directive: ''use strict''. |
+| UnknownDirective.js:6:5:6:18 | "use strict;"; | Unknown directive: 'use strict;'. |
+| UnknownDirective.js:7:5:7:20 | "'use strict';"; | Unknown directive: ''use strict';'. |
+| UnknownDirective.js:8:5:8:20 | "'use strict;'"; | Unknown directive: ''use strict;''. |
+| UnknownDirective.js:9:5:9:17 | "use-strict"; | Unknown directive: 'use-strict'. |
+| UnknownDirective.js:10:5:10:17 | "use_strict"; | Unknown directive: 'use_strict'. |
+| UnknownDirective.js:11:5:11:18 | "uses strict"; | Unknown directive: 'uses strict'. |
+| UnknownDirective.js:12:5:12:17 | "use struct;" | Unknown directive: 'use struct;'. |
+| UnknownDirective.js:13:5:13:17 | "Use Strict"; | Unknown directive: 'Use Strict'. |
+| UnknownDirective.js:14:5:14:14 | "use bar"; | Unknown directive: 'use bar'. |
+| UnknownDirective.js:38:5:38:17 | "[0, 0, 0];"; | Unknown directive: '[0, 0, 0];'. |
+| UnknownDirective.js:39:5:39:65 | "[0, 0, ... , 0];"; | Unknown directive: '[0, 0, 0, 0, 0, 0, 0 ... (truncated)'. |
+| UnknownDirective.js:45:5:45:15 | ":nomunge"; | Unknown directive: ':nomunge'. |
+| UnknownDirective.js:46:5:46:30 | "foo(), ... munge"; | Unknown directive: 'foo(), bar, baz:nomu ... (truncated)'. |

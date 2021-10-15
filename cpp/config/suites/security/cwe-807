@@ -1,0 +1,3 @@
+# CWE-807: Reliance on Untrusted Inputs in a Security Decision
++ semmlecode-cpp-queries/Security/CWE/CWE-807/TaintedCondition.ql: /CWE/CWE-807
+    @name Untrusted input for a condition (CWE-807)

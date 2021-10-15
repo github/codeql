@@ -1,0 +1,2 @@
+| tst.js:11:10:11:15 | y <= y | This expression compares $@ to itself. | tst.js:11:10:11:10 | y | y |
+| tst.js:22:1:22:35 | (functi ... n() {}) | This expression compares $@ to itself. | tst.js:22:1:22:16 | (function() { }) | (function() { }) |

@@ -1,0 +1,27 @@
+<beans>
+	<!--Using a description element makes it easier for tools to pick up
+	    documentation of the bean configuration-->
+	<description>
+	This file configures the various service beans.
+	</description>
+	
+	<!--You can also put a description element in a bean-->
+	<bean id="baseService" abstract="true">
+		<description>
+		This bean defines base properties common to the service beans
+		</description>
+		...
+	</bean>
+
+	<bean id="shippingService" 
+			class="documentation.examples.spring.ShippingService"
+			parent="baseService">
+		...
+	</bean>
+	
+	<bean id="orderService" 
+			class="documentation.examples.spring.OrderService"
+			parent="baseService">
+		...
+	</bean>
+</beans>

@@ -1,0 +1,49 @@
+csharp72.cs:
+#    3| [Class] InModifiers
+#    5|   5: [Struct] S
+#    9|   6: [Method] F
+#    9|     -1: [TypeMention] Void
+#-----|     2: (Parameters)
+#    9|       0: [Parameter] s
+#    9|         -1: [TypeMention] S
+#   10|     4: [BlockStmt] {...}
+#   13|   7: [Method] CallF
+#   13|     -1: [TypeMention] Void
+#   14|     4: [BlockStmt] {...}
+#   15|       0: [LocalVariableDeclStmt] ... ...;
+#   15|         0: [LocalVariableDeclAndInitExpr] S s = ...
+#   15|           -1: [TypeMention] S
+#   15|           0: [LocalVariableAccess] access to local variable s
+#   15|           1: [ObjectCreation] object creation of type S
+#   15|             0: [TypeMention] S
+#   16|       1: [ExprStmt] ...;
+#   16|         0: [MethodCall] call to method F
+#   16|           0: [LocalVariableAccess] access to local variable s
+#   20| [Class] RefReadonlyReturns
+#   22|   5: [Field] s
+#   22|     -1: [TypeMention] int
+#   24|   6: [Method] F
+#   24|     -1: [TypeMention] int
+#   25|     4: [BlockStmt] {...}
+#   26|       0: [ReturnStmt] return ...;
+#   26|         0: [RefExpr] ref ...
+#   26|           0: [FieldAccess] access to field s
+#   29|   7: [DelegateType] Del
+#   32| [Struct] ReadonlyStruct
+#   36| [Struct] RefStruct
+#   40| [Struct] ReadonlyRefStruct
+#   44| [Class] NumericLiterals
+#   46|   5: [Field] binaryValue
+#   46|     -1: [TypeMention] int
+#   46|     1: [AssignExpr] ... = ...
+#   46|       0: [FieldAccess] access to field binaryValue
+#   46|       1: [IntLiteral] 85
+#   49| [Class] PrivateProtected
+#   51|   5: [Field] X
+#   51|     -1: [TypeMention] int
+#   51|     1: [AssignExpr] ... = ...
+#   51|       0: [FieldAccess] access to field X
+#   51|       1: [IntLiteral] 1
+#   53|   6: [Method] F
+#   53|     -1: [TypeMention] Void
+#   53|     4: [BlockStmt] {...}

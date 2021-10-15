@@ -1,0 +1,35 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>Python statements can access variables in both the local namespace and in the global namespace.
+When a local and a global variable have the same name, the local variable "shadows" or "hides" the
+global variable. When the variable is referenced, the variable with local scope is used unless you
+explicitly use the <code>global</code> statement to reference the global variable. This can lead to
+confusion as a reader of the code may expect the variable to refer to a global.
+</p>
+
+</overview>
+<recommendation>
+
+<p>Avoid using the same name for variables in local and global namespaces.</p>
+
+</recommendation>
+<example>
+<p>The following simple example shows how a local variable can "shadow" a global variable. The local
+variable should be renamed to make the code easier to interpret.</p>
+<sample src="ShadowGlobal.py" />
+
+
+</example>
+<references>
+
+<li>J. Lusth, <i>The Art and Craft of Programming - Python Edition</i>, Section: Scope. University of Alabama, 2012. (<a href="https://web.archive.org/web/20190919091129/http://troll.cs.ua.edu/ACP-PY/index_13.html">Published online</a>).</li>
+<li>Python Language Reference: <a href="http://docs.python.org/reference/simple_stmts.html#the-global-statement">The global statement</a>.</li>
+
+
+
+</references>
+</qhelp>

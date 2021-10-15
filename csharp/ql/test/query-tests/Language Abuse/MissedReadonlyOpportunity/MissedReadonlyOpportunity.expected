@@ -1,0 +1,3 @@
+| MissedReadonlyOpportunity.cs:3:16:3:19 | Bad1 | Field 'Bad1' can be 'readonly'. |
+| MissedReadonlyOpportunity.cs:4:14:4:17 | Bad2 | Field 'Bad2' can be 'readonly'. |
+| MissedReadonlyOpportunityBad.cs:3:9:3:13 | Field | Field 'Field' can be 'readonly'. |

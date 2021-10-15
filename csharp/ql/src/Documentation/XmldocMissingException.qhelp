@@ -1,0 +1,40 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+A public method or constructor that throws an exception but does not have a documentation tag for 
+the exception makes an API more difficult to understand and maintain.
+</p>
+
+</overview>
+<recommendation>
+
+<p>The documentation comment for a method or constructor should include an <code>&lt;exception&gt;</code> tag 
+that describes each thrown exception, and the <code>cref</code> attribute of the tag should match 
+the type of the exception that is thrown.</p>
+
+</recommendation>
+<example>
+
+<p>The following example shows a good documentation comment, which clearly explains the method's 
+thrown exception.</p>
+
+<sample src="XmldocMethod.cs" />
+
+</example>
+<references>
+
+<li>
+  MSDN, C# Programming Guide:
+  <a href="http://msdn.microsoft.com/en-us/library/b2s063f7.aspx">XML Documentation Comments</a>, 
+  <a href="http://msdn.microsoft.com/en-us/library/z04awywx.aspx">How to: Use the XML Documentation Features</a>,
+  <a href="http://msdn.microsoft.com/en-us/library/5ast78ax.aspx">Recommended Tags for Documentation Comments</a>.
+</li>
+
+
+</references>
+</qhelp>

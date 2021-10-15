@@ -1,0 +1,8 @@
+| 0 | Foo && | (unnamed parameter 0) |
+| 0 | const Foo & | (unnamed parameter 0) |
+| 6 | Foo | x |
+| 8 | const char * | y |
+| 10 | int | z |
+| 17 | Foo | (unnamed parameter 0) |
+| 19 | const char * | (unnamed parameter 0) |
+| 21 | int | (unnamed parameter 0) |

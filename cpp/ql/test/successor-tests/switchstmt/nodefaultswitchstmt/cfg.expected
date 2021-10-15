@@ -1,0 +1,13 @@
+| nodefaultswitchstmt | nodefaultswitchstmt.c:1:6:1:6 | f | 1 | 1 | nodefaultswitchstmt.c:1:15:7:1 | nodefaultswitchstmt.c:1:15:7:1 | nodefaultswitchstmt.c:1:15:7:1 | { ... } | 2: switch (...) ...  |
+| nodefaultswitchstmt | nodefaultswitchstmt.c:1:6:1:6 | f | 2 | 2 | nodefaultswitchstmt.c:2:6:5:5 | nodefaultswitchstmt.c:2:6:5:5 | nodefaultswitchstmt.c:2:6:5:5 | switch (...) ...  | 2: x |
+| nodefaultswitchstmt | nodefaultswitchstmt.c:1:6:1:6 | f | 2 | 3 | nodefaultswitchstmt.c:2:14:2:14 | nodefaultswitchstmt.c:2:14:2:14 | nodefaultswitchstmt.c:2:14:2:14 | x | 2: { ... } |
+| nodefaultswitchstmt | nodefaultswitchstmt.c:1:6:1:6 | f | 2 | 4 | nodefaultswitchstmt.c:2:17:5:5 | nodefaultswitchstmt.c:2:17:5:5 | nodefaultswitchstmt.c:2:17:5:5 | { ... } | 3: case ...: |
+| nodefaultswitchstmt | nodefaultswitchstmt.c:1:6:1:6 | f | 2 | 4 | nodefaultswitchstmt.c:2:17:5:5 | nodefaultswitchstmt.c:2:17:5:5 | nodefaultswitchstmt.c:2:17:5:5 | { ... } | 4: case ...: |
+| nodefaultswitchstmt | nodefaultswitchstmt.c:1:6:1:6 | f | 2 | 4 | nodefaultswitchstmt.c:2:17:5:5 | nodefaultswitchstmt.c:2:17:5:5 | nodefaultswitchstmt.c:2:17:5:5 | { ... } | 6: ; |
+| nodefaultswitchstmt | nodefaultswitchstmt.c:1:6:1:6 | f | 3 | 1 | nodefaultswitchstmt.c:3:14:3:14 | nodefaultswitchstmt.c:3:14:3:14 | nodefaultswitchstmt.c:3:14:3:14 | 1 | <none> |
+| nodefaultswitchstmt | nodefaultswitchstmt.c:1:6:1:6 | f | 3 | 5 | nodefaultswitchstmt.c:3:9:3:15 | nodefaultswitchstmt.c:3:9:3:15 | nodefaultswitchstmt.c:3:9:3:15 | case ...: | 4: case ...: |
+| nodefaultswitchstmt | nodefaultswitchstmt.c:1:6:1:6 | f | 4 | 1 | nodefaultswitchstmt.c:4:14:4:14 | nodefaultswitchstmt.c:4:14:4:14 | nodefaultswitchstmt.c:4:14:4:14 | 2 | <none> |
+| nodefaultswitchstmt | nodefaultswitchstmt.c:1:6:1:6 | f | 4 | 6 | nodefaultswitchstmt.c:4:9:4:15 | nodefaultswitchstmt.c:4:9:4:15 | nodefaultswitchstmt.c:4:9:4:15 | case ...: | 6: ; |
+| nodefaultswitchstmt | nodefaultswitchstmt.c:1:6:1:6 | f | 6 | 7 | nodefaultswitchstmt.c:6:5:6:5 | nodefaultswitchstmt.c:6:5:6:5 | nodefaultswitchstmt.c:6:5:6:5 | ; | 7: return ... |
+| nodefaultswitchstmt | nodefaultswitchstmt.c:1:6:1:6 | f | 7 | 8 | nodefaultswitchstmt.c:7:1:7:1 | nodefaultswitchstmt.c:7:1:7:1 | nodefaultswitchstmt.c:7:1:7:1 | return ... | 7: f |
+| nodefaultswitchstmt | nodefaultswitchstmt.c:1:6:1:6 | f | 7 | 9 | nodefaultswitchstmt.c:1:6:1:6 | nodefaultswitchstmt.c:1:6:1:6 | nodefaultswitchstmt.c:1:6:1:6 | f | <none> |

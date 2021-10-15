@@ -1,0 +1,15 @@
+| LockedWait.cs:25:13:25:49 | ...; | 'lock1' is locked during this wait. |
+| LockedWait.cs:32:17:32:53 | ...; | 'lock1' is locked during this wait. |
+| LockedWait.cs:40:17:40:53 | ...; | 'lock2' is locked during this wait. |
+| LockedWait.cs:48:9:48:45 | ...; | 'this' is locked during this wait. |
+| LockedWait.cs:50:9:50:55 | ...; | 'this' is locked during this wait. |
+| LockedWait.cs:51:9:51:53 | ...; | 'this' is locked during this wait. |
+| LockedWait.cs:54:13:54:49 | ...; | 'this' is locked during this wait. |
+| LockedWait.cs:63:13:63:49 | ...; | 'typeof(Program)' is locked during this wait. |
+| LockedWait.cs:65:9:65:45 | ...; | 'typeof(Program)' is locked during this wait. |
+| LockedWait.cs:67:9:67:53 | ...; | 'typeof(Program)' is locked during this wait. |
+| LockedWait.cs:74:13:74:59 | ...; | 'this' is locked during this wait. |
+| LockedWait.cs:76:13:76:49 | ...; | 'this' is locked during this wait. |
+| LockedWait.cs:82:13:82:48 | ...; | 'typeof(Program)' is locked during this wait. |
+| LockedWait.cs:83:13:83:49 | ...; | 'typeof(Program)' is locked during this wait. |
+| LockedWait.cs:84:13:84:57 | ...; | 'typeof(Program)' is locked during this wait. |

@@ -1,0 +1,131 @@
+test_ExprSignature
+| tst.ts:2:4:2:4 | x | number |
+| tst.ts:6:4:6:4 | x | number |
+| tst.ts:7:4:7:4 | x | string |
+| tst.ts:8:4:8:4 | x | any |
+| tst.ts:12:8:12:8 | x | number |
+| tst.ts:16:8:16:8 | x | number |
+| tst.ts:17:8:17:8 | x | any |
+| tst.ts:21:3:21:28 | method( ... string; | (x: number): string |
+| tst.ts:21:10:21:10 | x | number |
+| tst.ts:23:3:23:38 | overloa ... number; | (x: any): any |
+| tst.ts:23:3:23:38 | overloa ... number; | (x: number): number |
+| tst.ts:23:3:23:38 | overloa ... number; | (x: string): string |
+| tst.ts:23:20:23:20 | x | number |
+| tst.ts:24:3:24:38 | overloa ... string; | (x: any): any |
+| tst.ts:24:3:24:38 | overloa ... string; | (x: number): number |
+| tst.ts:24:3:24:38 | overloa ... string; | (x: string): string |
+| tst.ts:24:20:24:20 | x | string |
+| tst.ts:25:3:25:32 | overloa ... ): any; | (x: any): any |
+| tst.ts:25:3:25:32 | overloa ... ): any; | (x: number): number |
+| tst.ts:25:3:25:32 | overloa ... ): any; | (x: string): string |
+| tst.ts:25:20:25:20 | x | any |
+| tst.ts:28:5:28:5 | m | Method |
+| tst.ts:29:1:29:1 | m | Method |
+| tst.ts:29:1:29:8 | m.method | (x: number): string |
+| tst.ts:29:1:29:12 | m.method(42) | string |
+| tst.ts:29:10:29:11 | 42 | 42 |
+| tst.ts:30:1:30:1 | m | Method |
+| tst.ts:30:1:30:18 | m.overloadedMethod | (x: any): any |
+| tst.ts:30:1:30:18 | m.overloadedMethod | (x: number): number |
+| tst.ts:30:1:30:18 | m.overloadedMethod | (x: string): string |
+| tst.ts:30:1:30:25 | m.overl ... ("foo") | string |
+| tst.ts:30:20:30:24 | "foo" | "foo" |
+| tst.ts:33:3:33:10 | callback | (x: number): string |
+| tst.ts:33:13:33:33 | (x: num ...  string | (x: number): string |
+| tst.ts:33:14:33:14 | x | number |
+| tst.ts:37:3:37:18 | method(x: T): T; | (x: T): T |
+| tst.ts:37:10:37:10 | x | T |
+| tst.ts:40:10:40:12 | foo | (g: Generic<string>): string |
+| tst.ts:40:14:40:14 | g | Generic<string> |
+| tst.ts:41:10:41:10 | g | Generic<string> |
+| tst.ts:41:10:41:17 | g.method | (x: string): string |
+| tst.ts:41:10:41:24 | g.method("foo") | string |
+| tst.ts:41:19:41:23 | "foo" | "foo" |
+| tst.ts:44:15:44:15 | C | C |
+| tst.ts:45:3:45:25 | constru ... tring); | any |
+| tst.ts:45:15:45:15 | x | string |
+| tst.ts:46:3:46:25 | constru ... umber); | any |
+| tst.ts:46:15:46:15 | x | number |
+| tst.ts:50:3:50:36 | method( ... ing[]); | (x: number, ...y: string[]): any |
+| tst.ts:50:10:50:10 | x | number |
+| tst.ts:50:24:50:24 | y | string[] |
+| tst.ts:51:4:51:4 | x | number |
+| tst.ts:51:18:51:18 | y | string[] |
+| tst.ts:52:7:52:7 | x | number |
+| tst.ts:52:21:52:21 | y | string[] |
+| tst.ts:54:3:54:34 | method2 ... ing[]); | (x: number, y: string[]): any |
+| tst.ts:54:11:54:11 | x | number |
+| tst.ts:54:22:54:22 | y | string[] |
+| tst.ts:55:3:55:32 | method3 ... tring); | (x: number, y: string): any |
+| tst.ts:55:11:55:11 | x | number |
+| tst.ts:55:22:55:22 | y | string |
+| tst.ts:59:3:59:25 | method( ... ing[]); | (...y: string[]): any |
+| tst.ts:59:13:59:13 | y | string[] |
+| tst.ts:60:7:60:7 | y | string[] |
+| tst.ts:61:10:61:10 | y | string[] |
+| tst.ts:63:3:63:23 | method2 ... ing[]); | (y: string[]): any |
+| tst.ts:63:11:63:11 | y | string[] |
+| tst.ts:64:3:64:21 | method3(y: string); | (y: string): any |
+| tst.ts:64:11:64:11 | y | string |
+test_TypeReferenceSig
+| Callable | function | 0 | (x: number): string |
+| Newable | constructor | 0 | new (x: number): any |
+| OnlyRestParams | constructor | 0 | new (...y: string[]): any |
+| OnlyRestParams | function | 0 | (...y: string[]): any |
+| OverloadedCallable | function | 0 | (x: number): number |
+| OverloadedCallable | function | 1 | (x: string): string |
+| OverloadedCallable | function | 2 | (x: any): any |
+| OverloadedNewable | constructor | 0 | new (x: number): OverloadedNewable |
+| OverloadedNewable | constructor | 1 | new (x: any): any |
+| WithRestParams | constructor | 0 | new (x: number, ...y: string[]): any |
+| WithRestParams | function | 0 | (x: number, ...y: string[]): any |
+test_FunctionCallSig
+| tst.ts:2:3:2:22 | (x: number): string; | (x: number): string |
+| tst.ts:6:3:6:22 | (x: number): number; | (x: number): number |
+| tst.ts:7:3:7:22 | (x: string): string; | (x: string): string |
+| tst.ts:8:3:8:16 | (x: any): any; | (x: any): any |
+| tst.ts:12:3:12:23 | new (x: ... ): any; | new (x: number): any |
+| tst.ts:16:3:16:37 | new (x: ... ewable; | new (x: number): OverloadedNewable |
+| tst.ts:17:3:17:20 | new (x: any): any; | new (x: any): any |
+| tst.ts:21:3:21:28 | method( ... string; | (x: number): string |
+| tst.ts:23:3:23:38 | overloa ... number; | (x: number): number |
+| tst.ts:24:3:24:38 | overloa ... string; | (x: string): string |
+| tst.ts:25:3:25:32 | overloa ... ): any; | (x: any): any |
+| tst.ts:33:13:33:33 | (x: num ...  string | (x: number): string |
+| tst.ts:37:3:37:18 | method(x: T): T; | (x: T): T |
+| tst.ts:40:1:42:1 | functio ... oo");\\n} | (g: Generic<string>): string |
+| tst.ts:45:3:45:25 | constru ... tring); | new (x: string): C |
+| tst.ts:46:3:46:25 | constru ... umber); | new (x: number): C |
+| tst.ts:50:3:50:36 | method( ... ing[]); | (x: number, ...y: string[]): any |
+| tst.ts:51:3:51:30 | (x: num ... ing[]); | (x: number, ...y: string[]): any |
+| tst.ts:52:3:52:33 | new(x:  ... ing[]); | new (x: number, ...y: string[]): any |
+| tst.ts:54:3:54:34 | method2 ... ing[]); | (x: number, y: string[]): any |
+| tst.ts:55:3:55:32 | method3 ... tring); | (x: number, y: string): any |
+| tst.ts:59:3:59:25 | method( ... ing[]); | (...y: string[]): any |
+| tst.ts:60:3:60:19 | (...y: string[]); | (...y: string[]): any |
+| tst.ts:61:3:61:22 | new(...y: string[]); | new (...y: string[]): any |
+| tst.ts:63:3:63:23 | method2 ... ing[]); | (y: string[]): any |
+| tst.ts:64:3:64:21 | method3(y: string); | (y: string): any |
+test_getRestParameterType
+| (...y: string[]): any | string |
+| (x: number, ...y: string[]): any | string |
+| new (...y: string[]): any | string |
+| new (x: number, ...y: string[]): any | string |
+test_getRestParameterArray
+| (...y: string[]): any | string[] |
+| (x: number, ...y: string[]): any | string[] |
+| new (...y: string[]): any | string[] |
+| new (x: number, ...y: string[]): any | string[] |
+test_RestSig_getParameter
+| (...y: string[]): any | 0 | y | string |
+| (x: number, ...y: string[]): any | 0 | x | number |
+| (x: number, ...y: string[]): any | 1 | y | string |
+| new (...y: string[]): any | 0 | y | string |
+| new (x: number, ...y: string[]): any | 0 | x | number |
+| new (x: number, ...y: string[]): any | 1 | y | string |
+test_RestSig_numRequiredParams
+| (...y: string[]): any | 0 |
+| (x: number, ...y: string[]): any | 1 |
+| new (...y: string[]): any | 0 |
+| new (x: number, ...y: string[]): any | 1 |

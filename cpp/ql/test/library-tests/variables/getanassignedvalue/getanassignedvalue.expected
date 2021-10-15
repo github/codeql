@@ -1,0 +1,27 @@
+| file://:0:0:0:0 | {...} | test.cpp:38:22:38:22 | v |
+| test.cpp:4:9:4:11 | 10 | test.cpp:4:6:4:6 | v |
+| test.cpp:5:15:5:16 | & ... | test.cpp:5:7:5:11 | ptr_v |
+| test.cpp:6:15:6:15 | v | test.cpp:6:7:6:11 | ref_v |
+| test.cpp:8:6:8:7 | 11 | test.cpp:4:6:4:6 | v |
+| test.cpp:10:10:10:11 | 13 | test.cpp:6:7:6:11 | ref_v |
+| test.cpp:11:6:11:10 | ... + ... | test.cpp:4:6:4:6 | v |
+| test.cpp:19:32:19:35 | 0.0 | test.cpp:19:27:19:28 | _y |
+| test.cpp:19:42:19:43 | _x | test.cpp:24:8:24:8 | x |
+| test.cpp:19:49:19:50 | _y | test.cpp:24:11:24:11 | y |
+| test.cpp:19:54:19:60 | 0.0 | test.cpp:24:14:24:14 | z |
+| test.cpp:35:16:35:25 | {...} | test.cpp:35:11:35:12 | v1 |
+| test.cpp:35:17:35:17 | 1 | test.cpp:31:6:31:8 | num |
+| test.cpp:35:20:35:24 | One | test.cpp:32:14:32:16 | str |
+| test.cpp:36:16:36:39 | {...} | test.cpp:36:11:36:12 | v2 |
+| test.cpp:36:24:36:24 | 2 | test.cpp:31:6:31:8 | num |
+| test.cpp:36:34:36:38 | Two | test.cpp:32:14:32:16 | str |
+| test.cpp:38:27:38:27 | 3 | test.cpp:31:6:31:8 | num |
+| test.cpp:38:30:38:36 | Three | test.cpp:32:14:32:16 | str |
+| test.cpp:48:16:48:28 | {...} | test.cpp:48:11:48:12 | v3 |
+| test.cpp:48:17:48:27 | {...} | test.cpp:45:12:45:14 | ms2 |
+| test.cpp:48:18:48:18 | 4 | test.cpp:31:6:31:8 | num |
+| test.cpp:48:21:48:26 | Four | test.cpp:32:14:32:16 | str |
+| test.cpp:52:19:52:27 | {...} | test.cpp:52:5:52:11 | myArray |
+| test.cpp:53:17:53:21 | abc | test.cpp:53:6:53:11 | chars1 |
+| test.cpp:54:17:54:31 | {...} | test.cpp:54:6:54:11 | chars2 |
+| test.cpp:55:16:55:20 | abc | test.cpp:55:7:55:12 | chars3 |

@@ -1,0 +1,962 @@
+edges
+| datamodel.py:35:7:35:7 | ControlFlowNode for a | datamodel.py:36:10:36:10 | ControlFlowNode for a |
+| datamodel.py:38:8:38:13 | ControlFlowNode for SOURCE | datamodel.py:35:7:35:7 | ControlFlowNode for a |
+| datamodel.py:38:8:38:13 | ControlFlowNode for SOURCE | datamodel.py:38:6:38:17 | ControlFlowNode for f() |
+| datamodel.py:44:22:44:22 | ControlFlowNode for x | datamodel.py:46:16:46:16 | ControlFlowNode for x |
+| datamodel.py:49:26:49:26 | ControlFlowNode for x | datamodel.py:50:16:50:16 | ControlFlowNode for x |
+| datamodel.py:71:15:71:20 | ControlFlowNode for SOURCE | datamodel.py:44:22:44:22 | ControlFlowNode for x |
+| datamodel.py:71:15:71:20 | ControlFlowNode for SOURCE | datamodel.py:71:6:71:24 | ControlFlowNode for Attribute() |
+| datamodel.py:72:18:72:23 | ControlFlowNode for SOURCE | datamodel.py:44:22:44:22 | ControlFlowNode for x |
+| datamodel.py:72:18:72:23 | ControlFlowNode for SOURCE | datamodel.py:72:6:72:27 | ControlFlowNode for Attribute() |
+| datamodel.py:80:20:80:25 | ControlFlowNode for SOURCE | datamodel.py:49:26:49:26 | ControlFlowNode for x |
+| datamodel.py:80:20:80:25 | ControlFlowNode for SOURCE | datamodel.py:80:6:80:26 | ControlFlowNode for Attribute() |
+| datamodel.py:81:20:81:25 | ControlFlowNode for SOURCE | datamodel.py:49:26:49:26 | ControlFlowNode for x |
+| datamodel.py:81:20:81:25 | ControlFlowNode for SOURCE | datamodel.py:81:6:81:26 | ControlFlowNode for Attribute() |
+| datamodel.py:152:5:152:8 | [post store] ControlFlowNode for self [Attribute b] | datamodel.py:155:14:155:25 | ControlFlowNode for Customized() [Attribute b] |
+| datamodel.py:152:14:152:19 | ControlFlowNode for SOURCE | datamodel.py:152:5:152:8 | [post store] ControlFlowNode for self [Attribute b] |
+| datamodel.py:155:14:155:25 | ControlFlowNode for Customized() [Attribute b] | datamodel.py:159:6:159:15 | ControlFlowNode for customized [Attribute b] |
+| datamodel.py:159:6:159:15 | ControlFlowNode for customized [Attribute b] | datamodel.py:159:6:159:17 | ControlFlowNode for Attribute |
+| test.py:42:10:42:26 | ControlFlowNode for Tuple [Tuple element at index 1] | test.py:43:9:43:9 | ControlFlowNode for x [Tuple element at index 1] |
+| test.py:42:21:42:26 | ControlFlowNode for SOURCE | test.py:42:10:42:26 | ControlFlowNode for Tuple [Tuple element at index 1] |
+| test.py:43:9:43:9 | ControlFlowNode for x [Tuple element at index 1] | test.py:43:9:43:12 | ControlFlowNode for Subscript |
+| test.py:43:9:43:12 | ControlFlowNode for Subscript | test.py:44:10:44:10 | ControlFlowNode for y |
+| test.py:55:9:55:14 | ControlFlowNode for SOURCE | test.py:56:10:56:10 | ControlFlowNode for x |
+| test.py:61:9:61:16 | ControlFlowNode for Str | test.py:62:10:62:10 | ControlFlowNode for x |
+| test.py:66:9:66:17 | ControlFlowNode for Str | test.py:67:10:67:10 | ControlFlowNode for x |
+| test.py:71:9:71:10 | ControlFlowNode for IntegerLiteral | test.py:72:10:72:10 | ControlFlowNode for x |
+| test.py:76:9:76:12 | ControlFlowNode for FloatLiteral | test.py:77:10:77:10 | ControlFlowNode for x |
+| test.py:87:10:87:15 | ControlFlowNode for SOURCE | test.py:88:10:88:10 | ControlFlowNode for x |
+| test.py:93:9:93:16 | ControlFlowNode for List [List element] | test.py:94:10:94:10 | ControlFlowNode for x [List element] |
+| test.py:93:10:93:15 | ControlFlowNode for SOURCE | test.py:93:9:93:16 | ControlFlowNode for List [List element] |
+| test.py:94:10:94:10 | ControlFlowNode for x [List element] | test.py:94:10:94:13 | ControlFlowNode for Subscript |
+| test.py:103:9:103:37 | ControlFlowNode for ListComp [List element] | test.py:104:10:104:10 | ControlFlowNode for x [List element] |
+| test.py:103:10:103:15 | ControlFlowNode for SOURCE | test.py:103:9:103:37 | ControlFlowNode for ListComp [List element] |
+| test.py:104:10:104:10 | ControlFlowNode for x [List element] | test.py:104:10:104:13 | ControlFlowNode for Subscript |
+| test.py:108:9:108:29 | ControlFlowNode for ListComp [List element] | test.py:109:10:109:10 | ControlFlowNode for x [List element] |
+| test.py:108:10:108:10 | ControlFlowNode for y | test.py:108:9:108:29 | ControlFlowNode for ListComp [List element] |
+| test.py:108:16:108:16 | SSA variable y | test.py:108:10:108:10 | ControlFlowNode for y |
+| test.py:108:21:108:28 | ControlFlowNode for List [List element] | test.py:108:16:108:16 | SSA variable y |
+| test.py:108:22:108:27 | ControlFlowNode for SOURCE | test.py:108:21:108:28 | ControlFlowNode for List [List element] |
+| test.py:109:10:109:10 | ControlFlowNode for x [List element] | test.py:109:10:109:13 | ControlFlowNode for Subscript |
+| test.py:113:9:113:16 | ControlFlowNode for List [List element] | test.py:114:21:114:21 | ControlFlowNode for l [List element] |
+| test.py:113:10:113:15 | ControlFlowNode for SOURCE | test.py:113:9:113:16 | ControlFlowNode for List [List element] |
+| test.py:114:9:114:22 | ControlFlowNode for ListComp [List element] | test.py:115:10:115:10 | ControlFlowNode for x [List element] |
+| test.py:114:10:114:10 | ControlFlowNode for y | test.py:114:9:114:22 | ControlFlowNode for ListComp [List element] |
+| test.py:114:16:114:16 | SSA variable y | test.py:114:10:114:10 | ControlFlowNode for y |
+| test.py:114:21:114:21 | ControlFlowNode for l [List element] | test.py:114:16:114:16 | SSA variable y |
+| test.py:115:10:115:10 | ControlFlowNode for x [List element] | test.py:115:10:115:13 | ControlFlowNode for Subscript |
+| test.py:125:9:125:16 | ControlFlowNode for Set [List element] | test.py:126:10:126:10 | ControlFlowNode for x [List element] |
+| test.py:125:10:125:15 | ControlFlowNode for SOURCE | test.py:125:9:125:16 | ControlFlowNode for Set [List element] |
+| test.py:126:10:126:10 | ControlFlowNode for x [List element] | test.py:126:10:126:16 | ControlFlowNode for Attribute() |
+| test.py:130:9:130:37 | ControlFlowNode for SetComp [Set element] | test.py:131:10:131:10 | ControlFlowNode for x [Set element] |
+| test.py:130:10:130:15 | ControlFlowNode for SOURCE | test.py:130:9:130:37 | ControlFlowNode for SetComp [Set element] |
+| test.py:131:10:131:10 | ControlFlowNode for x [Set element] | test.py:131:10:131:16 | ControlFlowNode for Attribute() |
+| test.py:135:9:135:29 | ControlFlowNode for SetComp [Set element] | test.py:136:10:136:10 | ControlFlowNode for x [Set element] |
+| test.py:135:10:135:10 | ControlFlowNode for y | test.py:135:9:135:29 | ControlFlowNode for SetComp [Set element] |
+| test.py:135:16:135:16 | SSA variable y | test.py:135:10:135:10 | ControlFlowNode for y |
+| test.py:135:21:135:28 | ControlFlowNode for List [List element] | test.py:135:16:135:16 | SSA variable y |
+| test.py:135:22:135:27 | ControlFlowNode for SOURCE | test.py:135:21:135:28 | ControlFlowNode for List [List element] |
+| test.py:136:10:136:10 | ControlFlowNode for x [Set element] | test.py:136:10:136:16 | ControlFlowNode for Attribute() |
+| test.py:140:9:140:16 | ControlFlowNode for Set [List element] | test.py:141:21:141:21 | ControlFlowNode for l [List element] |
+| test.py:140:10:140:15 | ControlFlowNode for SOURCE | test.py:140:9:140:16 | ControlFlowNode for Set [List element] |
+| test.py:141:9:141:22 | ControlFlowNode for SetComp [Set element] | test.py:142:10:142:10 | ControlFlowNode for x [Set element] |
+| test.py:141:10:141:10 | ControlFlowNode for y | test.py:141:9:141:22 | ControlFlowNode for SetComp [Set element] |
+| test.py:141:16:141:16 | SSA variable y | test.py:141:10:141:10 | ControlFlowNode for y |
+| test.py:141:21:141:21 | ControlFlowNode for l [List element] | test.py:141:16:141:16 | SSA variable y |
+| test.py:142:10:142:10 | ControlFlowNode for x [Set element] | test.py:142:10:142:16 | ControlFlowNode for Attribute() |
+| test.py:152:9:152:21 | ControlFlowNode for Dict [Dictionary element at key s] | test.py:153:10:153:10 | ControlFlowNode for x [Dictionary element at key s] |
+| test.py:152:15:152:20 | ControlFlowNode for SOURCE | test.py:152:9:152:21 | ControlFlowNode for Dict [Dictionary element at key s] |
+| test.py:153:10:153:10 | ControlFlowNode for x [Dictionary element at key s] | test.py:153:10:153:15 | ControlFlowNode for Subscript |
+| test.py:157:9:157:21 | ControlFlowNode for Dict [Dictionary element at key s] | test.py:158:10:158:10 | ControlFlowNode for x [Dictionary element at key s] |
+| test.py:157:15:157:20 | ControlFlowNode for SOURCE | test.py:157:9:157:21 | ControlFlowNode for Dict [Dictionary element at key s] |
+| test.py:158:10:158:10 | ControlFlowNode for x [Dictionary element at key s] | test.py:158:10:158:19 | ControlFlowNode for Attribute() |
+| test.py:183:9:183:42 | ControlFlowNode for ListComp [List element] | test.py:184:10:184:10 | ControlFlowNode for x [List element] |
+| test.py:183:10:183:10 | ControlFlowNode for y | test.py:183:9:183:42 | ControlFlowNode for ListComp [List element] |
+| test.py:183:16:183:16 | SSA variable z [List element] | test.py:183:41:183:41 | ControlFlowNode for z [List element] |
+| test.py:183:21:183:30 | ControlFlowNode for List [List element, List element] | test.py:183:16:183:16 | SSA variable z [List element] |
+| test.py:183:22:183:29 | ControlFlowNode for List [List element] | test.py:183:21:183:30 | ControlFlowNode for List [List element, List element] |
+| test.py:183:23:183:28 | ControlFlowNode for SOURCE | test.py:183:22:183:29 | ControlFlowNode for List [List element] |
+| test.py:183:36:183:36 | SSA variable y | test.py:183:10:183:10 | ControlFlowNode for y |
+| test.py:183:41:183:41 | ControlFlowNode for z [List element] | test.py:183:36:183:36 | SSA variable y |
+| test.py:184:10:184:10 | ControlFlowNode for x [List element] | test.py:184:10:184:13 | ControlFlowNode for Subscript |
+| test.py:188:9:188:68 | ControlFlowNode for ListComp [List element] | test.py:189:10:189:10 | ControlFlowNode for x [List element] |
+| test.py:188:10:188:10 | ControlFlowNode for y | test.py:188:9:188:68 | ControlFlowNode for ListComp [List element] |
+| test.py:188:16:188:16 | SSA variable v [List element, List element, List element] | test.py:188:45:188:45 | ControlFlowNode for v [List element, List element, List element] |
+| test.py:188:21:188:34 | ControlFlowNode for List [List element, List element, List element, List element] | test.py:188:16:188:16 | SSA variable v [List element, List element, List element] |
+| test.py:188:22:188:33 | ControlFlowNode for List [List element, List element, List element] | test.py:188:21:188:34 | ControlFlowNode for List [List element, List element, List element, List element] |
+| test.py:188:23:188:32 | ControlFlowNode for List [List element, List element] | test.py:188:22:188:33 | ControlFlowNode for List [List element, List element, List element] |
+| test.py:188:24:188:31 | ControlFlowNode for List [List element] | test.py:188:23:188:32 | ControlFlowNode for List [List element, List element] |
+| test.py:188:25:188:30 | ControlFlowNode for SOURCE | test.py:188:24:188:31 | ControlFlowNode for List [List element] |
+| test.py:188:40:188:40 | SSA variable u [List element, List element] | test.py:188:56:188:56 | ControlFlowNode for u [List element, List element] |
+| test.py:188:45:188:45 | ControlFlowNode for v [List element, List element, List element] | test.py:188:40:188:40 | SSA variable u [List element, List element] |
+| test.py:188:51:188:51 | SSA variable z [List element] | test.py:188:67:188:67 | ControlFlowNode for z [List element] |
+| test.py:188:56:188:56 | ControlFlowNode for u [List element, List element] | test.py:188:51:188:51 | SSA variable z [List element] |
+| test.py:188:62:188:62 | SSA variable y | test.py:188:10:188:10 | ControlFlowNode for y |
+| test.py:188:67:188:67 | ControlFlowNode for z [List element] | test.py:188:62:188:62 | SSA variable y |
+| test.py:189:10:189:10 | ControlFlowNode for x [List element] | test.py:189:10:189:13 | ControlFlowNode for Subscript |
+| test.py:199:9:199:42 | ControlFlowNode for ListComp [List element] | test.py:200:10:200:10 | ControlFlowNode for x [List element] |
+| test.py:199:10:199:10 | ControlFlowNode for y | test.py:199:9:199:42 | ControlFlowNode for ListComp [List element] |
+| test.py:199:16:199:16 | SSA variable y | test.py:199:10:199:10 | ControlFlowNode for y |
+| test.py:199:22:199:22 | ControlFlowNode for z | test.py:199:22:199:40 | ControlFlowNode for GeneratorExp [List element] |
+| test.py:199:22:199:40 | ControlFlowNode for GeneratorExp [List element] | test.py:199:16:199:16 | SSA variable y |
+| test.py:199:28:199:28 | SSA variable z | test.py:199:22:199:22 | ControlFlowNode for z |
+| test.py:199:33:199:40 | ControlFlowNode for List [List element] | test.py:199:28:199:28 | SSA variable z |
+| test.py:199:34:199:39 | ControlFlowNode for SOURCE | test.py:199:33:199:40 | ControlFlowNode for List [List element] |
+| test.py:200:10:200:10 | ControlFlowNode for x [List element] | test.py:200:10:200:13 | ControlFlowNode for Subscript |
+| test.py:205:9:205:47 | ControlFlowNode for ListComp [List element] | test.py:206:10:206:10 | ControlFlowNode for x [List element] |
+| test.py:205:10:205:10 | ControlFlowNode for a | test.py:205:9:205:47 | ControlFlowNode for ListComp [List element] |
+| test.py:205:17:205:17 | SSA variable a | test.py:205:10:205:10 | ControlFlowNode for a |
+| test.py:205:17:205:20 | ControlFlowNode for Tuple [Tuple element at index 0] | test.py:205:17:205:17 | SSA variable a |
+| test.py:205:17:205:20 | IterableSequence [Tuple element at index 0] | test.py:205:17:205:20 | ControlFlowNode for Tuple [Tuple element at index 0] |
+| test.py:205:26:205:46 | ControlFlowNode for List [List element, Tuple element at index 0] | test.py:205:17:205:20 | IterableSequence [Tuple element at index 0] |
+| test.py:205:28:205:33 | ControlFlowNode for SOURCE | test.py:205:28:205:44 | ControlFlowNode for Tuple [Tuple element at index 0] |
+| test.py:205:28:205:44 | ControlFlowNode for Tuple [Tuple element at index 0] | test.py:205:26:205:46 | ControlFlowNode for List [List element, Tuple element at index 0] |
+| test.py:206:10:206:10 | ControlFlowNode for x [List element] | test.py:206:10:206:13 | ControlFlowNode for Subscript |
+| test.py:210:9:210:51 | ControlFlowNode for ListComp [List element] | test.py:211:10:211:10 | ControlFlowNode for x [List element] |
+| test.py:210:10:210:10 | ControlFlowNode for a [List element] | test.py:210:10:210:13 | ControlFlowNode for Subscript |
+| test.py:210:10:210:13 | ControlFlowNode for Subscript | test.py:210:9:210:51 | ControlFlowNode for ListComp [List element] |
+| test.py:210:20:210:21 | IterableElement | test.py:210:20:210:21 | SSA variable a [List element] |
+| test.py:210:20:210:21 | SSA variable a [List element] | test.py:210:10:210:10 | ControlFlowNode for a [List element] |
+| test.py:210:20:210:24 | ControlFlowNode for Tuple [Tuple element at index 0] | test.py:210:20:210:21 | IterableElement |
+| test.py:210:20:210:24 | IterableSequence [Tuple element at index 0] | test.py:210:20:210:24 | ControlFlowNode for Tuple [Tuple element at index 0] |
+| test.py:210:30:210:50 | ControlFlowNode for List [List element, Tuple element at index 0] | test.py:210:20:210:24 | IterableSequence [Tuple element at index 0] |
+| test.py:210:32:210:37 | ControlFlowNode for SOURCE | test.py:210:32:210:48 | ControlFlowNode for Tuple [Tuple element at index 0] |
+| test.py:210:32:210:48 | ControlFlowNode for Tuple [Tuple element at index 0] | test.py:210:30:210:50 | ControlFlowNode for List [List element, Tuple element at index 0] |
+| test.py:211:10:211:10 | ControlFlowNode for x [List element] | test.py:211:10:211:13 | ControlFlowNode for Subscript |
+| test.py:349:11:349:16 | ControlFlowNode for SOURCE | test.py:349:11:349:17 | ControlFlowNode for Tuple [Tuple element at index 0] |
+| test.py:349:11:349:17 | ControlFlowNode for Tuple [Tuple element at index 0] | test.py:349:10:349:21 | ControlFlowNode for Subscript |
+| test.py:353:10:353:17 | ControlFlowNode for List [List element] | test.py:353:10:353:20 | ControlFlowNode for Subscript |
+| test.py:353:11:353:16 | ControlFlowNode for SOURCE | test.py:353:10:353:17 | ControlFlowNode for List [List element] |
+| test.py:357:10:357:22 | ControlFlowNode for Dict [Dictionary element at key s] | test.py:357:10:357:27 | ControlFlowNode for Subscript |
+| test.py:357:16:357:21 | ControlFlowNode for SOURCE | test.py:357:10:357:22 | ControlFlowNode for Dict [Dictionary element at key s] |
+| test.py:375:15:375:15 | ControlFlowNode for b | test.py:376:12:376:12 | ControlFlowNode for b |
+| test.py:380:28:380:33 | ControlFlowNode for SOURCE | test.py:375:15:375:15 | ControlFlowNode for b |
+| test.py:380:28:380:33 | ControlFlowNode for SOURCE | test.py:380:10:380:34 | ControlFlowNode for second() |
+| test.py:388:30:388:35 | ControlFlowNode for SOURCE | test.py:375:15:375:15 | ControlFlowNode for b |
+| test.py:388:30:388:35 | ControlFlowNode for SOURCE | test.py:388:10:388:36 | ControlFlowNode for second() |
+| test.py:396:10:396:43 | KwUnpacked b | test.py:375:15:375:15 | ControlFlowNode for b |
+| test.py:396:10:396:43 | KwUnpacked b | test.py:396:10:396:43 | ControlFlowNode for second() |
+| test.py:396:30:396:42 | ControlFlowNode for Dict [Dictionary element at key b] | test.py:396:10:396:43 | KwUnpacked b |
+| test.py:396:36:396:41 | ControlFlowNode for SOURCE | test.py:396:30:396:42 | ControlFlowNode for Dict [Dictionary element at key b] |
+| test.py:399:21:399:21 | ControlFlowNode for b [Tuple element at index 0] | test.py:400:12:400:12 | ControlFlowNode for b [Tuple element at index 0] |
+| test.py:400:12:400:12 | ControlFlowNode for b [Tuple element at index 0] | test.py:400:12:400:15 | ControlFlowNode for Subscript |
+| test.py:404:10:404:39 | PosOverflowNode for f_extra_pos() [Tuple element at index 0] | test.py:399:21:399:21 | ControlFlowNode for b [Tuple element at index 0] |
+| test.py:404:10:404:39 | PosOverflowNode for f_extra_pos() [Tuple element at index 0] | test.py:404:10:404:39 | ControlFlowNode for f_extra_pos() |
+| test.py:404:33:404:38 | ControlFlowNode for SOURCE | test.py:404:10:404:39 | PosOverflowNode for f_extra_pos() [Tuple element at index 0] |
+| test.py:407:26:407:26 | ControlFlowNode for b [Dictionary element at key b] | test.py:408:12:408:12 | ControlFlowNode for b [Dictionary element at key b] |
+| test.py:408:12:408:12 | ControlFlowNode for b [Dictionary element at key b] | test.py:408:12:408:17 | ControlFlowNode for Subscript |
+| test.py:412:10:412:45 | KwOverflowNode for f_extra_keyword() [Dictionary element at key b] | test.py:407:26:407:26 | ControlFlowNode for b [Dictionary element at key b] |
+| test.py:412:10:412:45 | KwOverflowNode for f_extra_keyword() [Dictionary element at key b] | test.py:412:10:412:45 | ControlFlowNode for f_extra_keyword() |
+| test.py:412:39:412:44 | ControlFlowNode for SOURCE | test.py:412:10:412:45 | KwOverflowNode for f_extra_keyword() [Dictionary element at key b] |
+| test.py:433:10:433:15 | ControlFlowNode for SOURCE | test.py:433:10:433:38 | ControlFlowNode for IfExp |
+| test.py:441:34:441:39 | ControlFlowNode for SOURCE | test.py:441:10:441:39 | ControlFlowNode for IfExp |
+| test.py:462:11:462:11 | ControlFlowNode for x | test.py:463:16:463:16 | ControlFlowNode for x |
+| test.py:465:12:465:17 | ControlFlowNode for SOURCE | test.py:462:11:462:11 | ControlFlowNode for x |
+| test.py:465:12:465:17 | ControlFlowNode for SOURCE | test.py:465:10:465:18 | ControlFlowNode for f() |
+| test.py:469:19:469:19 | ControlFlowNode for b | test.py:470:16:470:16 | ControlFlowNode for b |
+| test.py:472:28:472:33 | ControlFlowNode for SOURCE | test.py:469:19:469:19 | ControlFlowNode for b |
+| test.py:472:28:472:33 | ControlFlowNode for SOURCE | test.py:472:10:472:34 | ControlFlowNode for second() |
+| test.py:483:19:483:19 | ControlFlowNode for b | test.py:484:16:484:16 | ControlFlowNode for b |
+| test.py:486:30:486:35 | ControlFlowNode for SOURCE | test.py:483:19:483:19 | ControlFlowNode for b |
+| test.py:486:30:486:35 | ControlFlowNode for SOURCE | test.py:486:10:486:36 | ControlFlowNode for second() |
+| test.py:497:19:497:19 | ControlFlowNode for b | test.py:498:16:498:16 | ControlFlowNode for b |
+| test.py:500:10:500:43 | KwUnpacked b | test.py:497:19:497:19 | ControlFlowNode for b |
+| test.py:500:10:500:43 | KwUnpacked b | test.py:500:10:500:43 | ControlFlowNode for second() |
+| test.py:500:30:500:42 | ControlFlowNode for Dict [Dictionary element at key b] | test.py:500:10:500:43 | KwUnpacked b |
+| test.py:500:36:500:41 | ControlFlowNode for SOURCE | test.py:500:30:500:42 | ControlFlowNode for Dict [Dictionary element at key b] |
+| test.py:504:30:504:30 | ControlFlowNode for b [Tuple element at index 0] | test.py:504:33:504:33 | ControlFlowNode for b [Tuple element at index 0] |
+| test.py:504:33:504:33 | ControlFlowNode for b [Tuple element at index 0] | test.py:504:33:504:36 | ControlFlowNode for Subscript |
+| test.py:505:10:505:39 | PosOverflowNode for f_extra_pos() [Tuple element at index 0] | test.py:504:30:504:30 | ControlFlowNode for b [Tuple element at index 0] |
+| test.py:505:10:505:39 | PosOverflowNode for f_extra_pos() [Tuple element at index 0] | test.py:505:10:505:39 | ControlFlowNode for f_extra_pos() |
+| test.py:505:33:505:38 | ControlFlowNode for SOURCE | test.py:505:10:505:39 | PosOverflowNode for f_extra_pos() [Tuple element at index 0] |
+| test.py:509:35:509:35 | ControlFlowNode for b [Dictionary element at key b] | test.py:509:38:509:38 | ControlFlowNode for b [Dictionary element at key b] |
+| test.py:509:38:509:38 | ControlFlowNode for b [Dictionary element at key b] | test.py:509:38:509:43 | ControlFlowNode for Subscript |
+| test.py:510:10:510:45 | KwOverflowNode for f_extra_keyword() [Dictionary element at key b] | test.py:509:35:509:35 | ControlFlowNode for b [Dictionary element at key b] |
+| test.py:510:10:510:45 | KwOverflowNode for f_extra_keyword() [Dictionary element at key b] | test.py:510:10:510:45 | ControlFlowNode for f_extra_keyword() |
+| test.py:510:39:510:44 | ControlFlowNode for SOURCE | test.py:510:10:510:45 | KwOverflowNode for f_extra_keyword() [Dictionary element at key b] |
+| test.py:522:9:522:14 | ControlFlowNode for SOURCE | test.py:524:10:524:10 | ControlFlowNode for a |
+| test.py:522:9:522:14 | ControlFlowNode for SOURCE | test.py:529:10:529:10 | ControlFlowNode for b |
+| test.py:534:10:534:15 | ControlFlowNode for SOURCE | test.py:534:10:534:26 | ControlFlowNode for Tuple [Tuple element at index 0] |
+| test.py:534:10:534:26 | ControlFlowNode for Tuple [Tuple element at index 0] | test.py:535:5:535:8 | ControlFlowNode for Tuple [Tuple element at index 0] |
+| test.py:535:5:535:5 | SSA variable a | test.py:536:10:536:10 | ControlFlowNode for a |
+| test.py:535:5:535:8 | ControlFlowNode for Tuple [Tuple element at index 0] | test.py:535:5:535:5 | SSA variable a |
+| test.py:542:10:542:15 | ControlFlowNode for SOURCE | test.py:542:10:542:36 | ControlFlowNode for Tuple [Tuple element at index 0] |
+| test.py:542:10:542:36 | ControlFlowNode for Tuple [Tuple element at index 0] | test.py:543:5:543:13 | ControlFlowNode for Tuple [Tuple element at index 0] |
+| test.py:542:10:542:36 | ControlFlowNode for Tuple [Tuple element at index 1, Tuple element at index 1] | test.py:543:5:543:13 | ControlFlowNode for Tuple [Tuple element at index 1, Tuple element at index 1] |
+| test.py:542:19:542:35 | ControlFlowNode for Tuple [Tuple element at index 1] | test.py:542:10:542:36 | ControlFlowNode for Tuple [Tuple element at index 1, Tuple element at index 1] |
+| test.py:542:30:542:35 | ControlFlowNode for SOURCE | test.py:542:19:542:35 | ControlFlowNode for Tuple [Tuple element at index 1] |
+| test.py:543:5:543:5 | SSA variable a | test.py:544:10:544:10 | ControlFlowNode for a |
+| test.py:543:5:543:13 | ControlFlowNode for Tuple [Tuple element at index 0] | test.py:543:5:543:5 | SSA variable a |
+| test.py:543:5:543:13 | ControlFlowNode for Tuple [Tuple element at index 1, Tuple element at index 1] | test.py:543:9:543:12 | IterableSequence [Tuple element at index 1] |
+| test.py:543:9:543:12 | ControlFlowNode for Tuple [Tuple element at index 1] | test.py:543:12:543:12 | SSA variable c |
+| test.py:543:9:543:12 | IterableSequence [Tuple element at index 1] | test.py:543:9:543:12 | ControlFlowNode for Tuple [Tuple element at index 1] |
+| test.py:543:12:543:12 | SSA variable c | test.py:546:10:546:10 | ControlFlowNode for c |
+| test.py:551:9:551:33 | ControlFlowNode for List [List element, List element, List element, List element] | test.py:552:5:552:14 | IterableSequence [List element, List element, List element, List element] |
+| test.py:551:10:551:21 | ControlFlowNode for List [List element, List element, List element] | test.py:551:9:551:33 | ControlFlowNode for List [List element, List element, List element, List element] |
+| test.py:551:11:551:20 | ControlFlowNode for List [List element, List element] | test.py:551:10:551:21 | ControlFlowNode for List [List element, List element, List element] |
+| test.py:551:12:551:19 | ControlFlowNode for List [List element] | test.py:551:11:551:20 | ControlFlowNode for List [List element, List element] |
+| test.py:551:13:551:18 | ControlFlowNode for SOURCE | test.py:551:12:551:19 | ControlFlowNode for List [List element] |
+| test.py:552:5:552:11 | ControlFlowNode for List [Tuple element at index 0, List element, List element] | test.py:552:6:552:10 | IterableSequence [List element, List element] |
+| test.py:552:5:552:11 | IterableElement [List element, List element] | test.py:552:5:552:11 | ControlFlowNode for List [Tuple element at index 0, List element, List element] |
+| test.py:552:5:552:11 | IterableSequence [List element, List element, List element] | test.py:552:5:552:11 | IterableElement [List element, List element] |
+| test.py:552:5:552:14 | ControlFlowNode for Tuple [Tuple element at index 0, List element, List element, List element] | test.py:552:5:552:11 | IterableSequence [List element, List element, List element] |
+| test.py:552:5:552:14 | IterableElement [List element, List element, List element] | test.py:552:5:552:14 | ControlFlowNode for Tuple [Tuple element at index 0, List element, List element, List element] |
+| test.py:552:5:552:14 | IterableSequence [List element, List element, List element, List element] | test.py:552:5:552:14 | IterableElement [List element, List element, List element] |
+| test.py:552:6:552:10 | ControlFlowNode for List [Tuple element at index 0, List element] | test.py:552:7:552:9 | IterableSequence [List element] |
+| test.py:552:6:552:10 | IterableElement [List element] | test.py:552:6:552:10 | ControlFlowNode for List [Tuple element at index 0, List element] |
+| test.py:552:6:552:10 | IterableSequence [List element, List element] | test.py:552:6:552:10 | IterableElement [List element] |
+| test.py:552:7:552:9 | ControlFlowNode for List [Tuple element at index 0] | test.py:552:8:552:8 | SSA variable a |
+| test.py:552:7:552:9 | IterableElement | test.py:552:7:552:9 | ControlFlowNode for List [Tuple element at index 0] |
+| test.py:552:7:552:9 | IterableSequence [List element] | test.py:552:7:552:9 | IterableElement |
+| test.py:552:8:552:8 | SSA variable a | test.py:553:10:553:10 | ControlFlowNode for a |
+| test.py:559:10:559:15 | ControlFlowNode for SOURCE | test.py:559:10:559:34 | ControlFlowNode for Tuple [Tuple element at index 0] |
+| test.py:559:10:559:34 | ControlFlowNode for Tuple [Tuple element at index 0] | test.py:560:5:560:12 | ControlFlowNode for Tuple [Tuple element at index 0] |
+| test.py:559:10:559:34 | ControlFlowNode for Tuple [Tuple element at index 1] | test.py:560:5:560:12 | ControlFlowNode for Tuple [Tuple element at index 1] |
+| test.py:559:18:559:23 | ControlFlowNode for SOURCE | test.py:559:10:559:34 | ControlFlowNode for Tuple [Tuple element at index 1] |
+| test.py:560:5:560:5 | SSA variable a | test.py:561:10:561:10 | ControlFlowNode for a |
+| test.py:560:5:560:12 | ControlFlowNode for Tuple [Tuple element at index 0] | test.py:560:5:560:5 | SSA variable a |
+| test.py:560:5:560:12 | ControlFlowNode for Tuple [Tuple element at index 1] | test.py:560:8:560:9 | IterableElement |
+| test.py:560:5:560:12 | ControlFlowNode for Tuple [Tuple element at index 1] | test.py:560:12:560:12 | SSA variable c |
+| test.py:560:8:560:9 | IterableElement | test.py:560:8:560:9 | SSA variable b [List element] |
+| test.py:560:8:560:9 | SSA variable b [List element] | test.py:563:10:563:10 | ControlFlowNode for b [List element] |
+| test.py:560:12:560:12 | SSA variable c | test.py:564:12:564:12 | ControlFlowNode for c |
+| test.py:563:10:563:10 | ControlFlowNode for b [List element] | test.py:563:10:563:13 | ControlFlowNode for Subscript |
+| test.py:569:10:569:15 | ControlFlowNode for SOURCE | test.py:569:10:569:23 | ControlFlowNode for Tuple [Tuple element at index 0] |
+| test.py:569:10:569:23 | ControlFlowNode for Tuple [Tuple element at index 0] | test.py:570:5:570:12 | ControlFlowNode for Tuple [Tuple element at index 0] |
+| test.py:569:10:569:23 | ControlFlowNode for Tuple [Tuple element at index 1] | test.py:570:5:570:12 | ControlFlowNode for Tuple [Tuple element at index 1] |
+| test.py:569:18:569:23 | ControlFlowNode for SOURCE | test.py:569:10:569:23 | ControlFlowNode for Tuple [Tuple element at index 1] |
+| test.py:570:5:570:5 | SSA variable a | test.py:571:10:571:10 | ControlFlowNode for a |
+| test.py:570:5:570:12 | ControlFlowNode for Tuple [Tuple element at index 0] | test.py:570:5:570:5 | SSA variable a |
+| test.py:570:5:570:12 | ControlFlowNode for Tuple [Tuple element at index 1] | test.py:570:12:570:12 | SSA variable c |
+| test.py:570:12:570:12 | SSA variable c | test.py:573:10:573:10 | ControlFlowNode for c |
+| test.py:578:10:578:61 | ControlFlowNode for List [List element, List element] | test.py:581:6:581:23 | IterableSequence [List element, List element] |
+| test.py:578:10:578:61 | ControlFlowNode for List [List element, List element] | test.py:589:5:589:24 | IterableSequence [List element, List element] |
+| test.py:578:10:578:61 | ControlFlowNode for List [List element, List element] | test.py:597:6:597:23 | IterableSequence [List element, List element] |
+| test.py:578:11:578:37 | ControlFlowNode for List [List element] | test.py:578:10:578:61 | ControlFlowNode for List [List element, List element] |
+| test.py:578:12:578:17 | ControlFlowNode for SOURCE | test.py:578:11:578:37 | ControlFlowNode for List [List element] |
+| test.py:578:31:578:36 | ControlFlowNode for SOURCE | test.py:578:11:578:37 | ControlFlowNode for List [List element] |
+| test.py:578:40:578:47 | ControlFlowNode for List [List element] | test.py:578:10:578:61 | ControlFlowNode for List [List element, List element] |
+| test.py:578:41:578:46 | ControlFlowNode for SOURCE | test.py:578:40:578:47 | ControlFlowNode for List [List element] |
+| test.py:581:6:581:23 | ControlFlowNode for Tuple [Tuple element at index 0, List element] | test.py:581:7:581:16 | IterableSequence [List element] |
+| test.py:581:6:581:23 | IterableElement [List element] | test.py:581:6:581:23 | ControlFlowNode for Tuple [Tuple element at index 0, List element] |
+| test.py:581:6:581:23 | IterableSequence [List element, List element] | test.py:581:6:581:23 | IterableElement [List element] |
+| test.py:581:7:581:8 | SSA variable a1 | test.py:582:10:582:11 | ControlFlowNode for a1 |
+| test.py:581:7:581:16 | ControlFlowNode for Tuple [Tuple element at index 0] | test.py:581:7:581:8 | SSA variable a1 |
+| test.py:581:7:581:16 | ControlFlowNode for Tuple [Tuple element at index 1] | test.py:581:11:581:12 | SSA variable a2 |
+| test.py:581:7:581:16 | ControlFlowNode for Tuple [Tuple element at index 2] | test.py:581:15:581:16 | SSA variable a3 |
+| test.py:581:7:581:16 | IterableElement | test.py:581:7:581:16 | ControlFlowNode for Tuple [Tuple element at index 0] |
+| test.py:581:7:581:16 | IterableElement | test.py:581:7:581:16 | ControlFlowNode for Tuple [Tuple element at index 1] |
+| test.py:581:7:581:16 | IterableElement | test.py:581:7:581:16 | ControlFlowNode for Tuple [Tuple element at index 2] |
+| test.py:581:7:581:16 | IterableSequence [List element] | test.py:581:7:581:16 | IterableElement |
+| test.py:581:11:581:12 | SSA variable a2 | test.py:583:12:583:13 | ControlFlowNode for a2 |
+| test.py:581:15:581:16 | SSA variable a3 | test.py:584:10:584:11 | ControlFlowNode for a3 |
+| test.py:589:5:589:24 | ControlFlowNode for List [Tuple element at index 0, List element] | test.py:589:7:589:16 | IterableSequence [List element] |
+| test.py:589:5:589:24 | IterableElement [List element] | test.py:589:5:589:24 | ControlFlowNode for List [Tuple element at index 0, List element] |
+| test.py:589:5:589:24 | IterableSequence [List element, List element] | test.py:589:5:589:24 | IterableElement [List element] |
+| test.py:589:7:589:8 | SSA variable a1 | test.py:590:10:590:11 | ControlFlowNode for a1 |
+| test.py:589:7:589:16 | ControlFlowNode for Tuple [Tuple element at index 0] | test.py:589:7:589:8 | SSA variable a1 |
+| test.py:589:7:589:16 | ControlFlowNode for Tuple [Tuple element at index 1] | test.py:589:11:589:12 | SSA variable a2 |
+| test.py:589:7:589:16 | ControlFlowNode for Tuple [Tuple element at index 2] | test.py:589:15:589:16 | SSA variable a3 |
+| test.py:589:7:589:16 | IterableElement | test.py:589:7:589:16 | ControlFlowNode for Tuple [Tuple element at index 0] |
+| test.py:589:7:589:16 | IterableElement | test.py:589:7:589:16 | ControlFlowNode for Tuple [Tuple element at index 1] |
+| test.py:589:7:589:16 | IterableElement | test.py:589:7:589:16 | ControlFlowNode for Tuple [Tuple element at index 2] |
+| test.py:589:7:589:16 | IterableSequence [List element] | test.py:589:7:589:16 | IterableElement |
+| test.py:589:11:589:12 | SSA variable a2 | test.py:591:12:591:13 | ControlFlowNode for a2 |
+| test.py:589:15:589:16 | SSA variable a3 | test.py:592:10:592:11 | ControlFlowNode for a3 |
+| test.py:597:6:597:17 | ControlFlowNode for List [Tuple element at index 0] | test.py:597:7:597:8 | SSA variable a1 |
+| test.py:597:6:597:17 | ControlFlowNode for List [Tuple element at index 1] | test.py:597:11:597:12 | SSA variable a2 |
+| test.py:597:6:597:17 | ControlFlowNode for List [Tuple element at index 2] | test.py:597:15:597:16 | SSA variable a3 |
+| test.py:597:6:597:17 | IterableElement | test.py:597:6:597:17 | ControlFlowNode for List [Tuple element at index 0] |
+| test.py:597:6:597:17 | IterableElement | test.py:597:6:597:17 | ControlFlowNode for List [Tuple element at index 1] |
+| test.py:597:6:597:17 | IterableElement | test.py:597:6:597:17 | ControlFlowNode for List [Tuple element at index 2] |
+| test.py:597:6:597:17 | IterableSequence [List element] | test.py:597:6:597:17 | IterableElement |
+| test.py:597:6:597:23 | ControlFlowNode for Tuple [Tuple element at index 0, List element] | test.py:597:6:597:17 | IterableSequence [List element] |
+| test.py:597:6:597:23 | IterableElement [List element] | test.py:597:6:597:23 | ControlFlowNode for Tuple [Tuple element at index 0, List element] |
+| test.py:597:6:597:23 | IterableSequence [List element, List element] | test.py:597:6:597:23 | IterableElement [List element] |
+| test.py:597:7:597:8 | SSA variable a1 | test.py:598:10:598:11 | ControlFlowNode for a1 |
+| test.py:597:11:597:12 | SSA variable a2 | test.py:599:12:599:13 | ControlFlowNode for a2 |
+| test.py:597:15:597:16 | SSA variable a3 | test.py:600:10:600:11 | ControlFlowNode for a3 |
+| test.py:606:11:606:47 | ControlFlowNode for Tuple [Tuple element at index 0, Tuple element at index 0] | test.py:609:5:609:19 | ControlFlowNode for List [Tuple element at index 0, Tuple element at index 0] |
+| test.py:606:11:606:47 | ControlFlowNode for Tuple [Tuple element at index 0, Tuple element at index 0] | test.py:618:6:618:18 | ControlFlowNode for Tuple [Tuple element at index 0, Tuple element at index 0] |
+| test.py:606:11:606:47 | ControlFlowNode for Tuple [Tuple element at index 0, Tuple element at index 0] | test.py:627:5:627:19 | ControlFlowNode for List [Tuple element at index 0, Tuple element at index 0] |
+| test.py:606:11:606:47 | ControlFlowNode for Tuple [Tuple element at index 0, Tuple element at index 0] | test.py:636:6:636:18 | ControlFlowNode for Tuple [Tuple element at index 0, Tuple element at index 0] |
+| test.py:606:11:606:47 | ControlFlowNode for Tuple [Tuple element at index 0, Tuple element at index 2] | test.py:609:5:609:19 | ControlFlowNode for List [Tuple element at index 0, Tuple element at index 2] |
+| test.py:606:11:606:47 | ControlFlowNode for Tuple [Tuple element at index 0, Tuple element at index 2] | test.py:618:6:618:18 | ControlFlowNode for Tuple [Tuple element at index 0, Tuple element at index 2] |
+| test.py:606:11:606:47 | ControlFlowNode for Tuple [Tuple element at index 0, Tuple element at index 2] | test.py:627:5:627:19 | ControlFlowNode for List [Tuple element at index 0, Tuple element at index 2] |
+| test.py:606:11:606:47 | ControlFlowNode for Tuple [Tuple element at index 0, Tuple element at index 2] | test.py:636:6:636:18 | ControlFlowNode for Tuple [Tuple element at index 0, Tuple element at index 2] |
+| test.py:606:12:606:17 | ControlFlowNode for SOURCE | test.py:606:12:606:36 | ControlFlowNode for Tuple [Tuple element at index 0] |
+| test.py:606:12:606:36 | ControlFlowNode for Tuple [Tuple element at index 0] | test.py:606:11:606:47 | ControlFlowNode for Tuple [Tuple element at index 0, Tuple element at index 0] |
+| test.py:606:12:606:36 | ControlFlowNode for Tuple [Tuple element at index 2] | test.py:606:11:606:47 | ControlFlowNode for Tuple [Tuple element at index 0, Tuple element at index 2] |
+| test.py:606:31:606:36 | ControlFlowNode for SOURCE | test.py:606:12:606:36 | ControlFlowNode for Tuple [Tuple element at index 2] |
+| test.py:609:5:609:19 | ControlFlowNode for List [Tuple element at index 0, Tuple element at index 0] | test.py:609:6:609:14 | IterableSequence [Tuple element at index 0] |
+| test.py:609:5:609:19 | ControlFlowNode for List [Tuple element at index 0, Tuple element at index 2] | test.py:609:6:609:14 | IterableSequence [Tuple element at index 2] |
+| test.py:609:6:609:14 | ControlFlowNode for List [Tuple element at index 0] | test.py:609:7:609:8 | SSA variable a1 |
+| test.py:609:6:609:14 | ControlFlowNode for List [Tuple element at index 2] | test.py:609:11:609:13 | IterableElement |
+| test.py:609:6:609:14 | IterableSequence [Tuple element at index 0] | test.py:609:6:609:14 | ControlFlowNode for List [Tuple element at index 0] |
+| test.py:609:6:609:14 | IterableSequence [Tuple element at index 2] | test.py:609:6:609:14 | ControlFlowNode for List [Tuple element at index 2] |
+| test.py:609:7:609:8 | SSA variable a1 | test.py:610:10:610:11 | ControlFlowNode for a1 |
+| test.py:609:11:609:13 | IterableElement | test.py:609:11:609:13 | SSA variable a2 [List element] |
+| test.py:609:11:609:13 | SSA variable a2 [List element] | test.py:612:12:612:13 | ControlFlowNode for a2 [List element] |
+| test.py:609:11:609:13 | SSA variable a2 [List element] | test.py:613:10:613:11 | ControlFlowNode for a2 [List element] |
+| test.py:612:12:612:13 | ControlFlowNode for a2 [List element] | test.py:612:12:612:16 | ControlFlowNode for Subscript |
+| test.py:613:10:613:11 | ControlFlowNode for a2 [List element] | test.py:613:10:613:14 | ControlFlowNode for Subscript |
+| test.py:618:6:618:18 | ControlFlowNode for Tuple [Tuple element at index 0, Tuple element at index 0] | test.py:618:7:618:13 | IterableSequence [Tuple element at index 0] |
+| test.py:618:6:618:18 | ControlFlowNode for Tuple [Tuple element at index 0, Tuple element at index 2] | test.py:618:7:618:13 | IterableSequence [Tuple element at index 2] |
+| test.py:618:7:618:8 | SSA variable a1 | test.py:619:10:619:11 | ControlFlowNode for a1 |
+| test.py:618:7:618:13 | ControlFlowNode for Tuple [Tuple element at index 0] | test.py:618:7:618:8 | SSA variable a1 |
+| test.py:618:7:618:13 | ControlFlowNode for Tuple [Tuple element at index 2] | test.py:618:11:618:13 | IterableElement |
+| test.py:618:7:618:13 | IterableSequence [Tuple element at index 0] | test.py:618:7:618:13 | ControlFlowNode for Tuple [Tuple element at index 0] |
+| test.py:618:7:618:13 | IterableSequence [Tuple element at index 2] | test.py:618:7:618:13 | ControlFlowNode for Tuple [Tuple element at index 2] |
+| test.py:618:11:618:13 | IterableElement | test.py:618:11:618:13 | SSA variable a2 [List element] |
+| test.py:618:11:618:13 | SSA variable a2 [List element] | test.py:621:12:621:13 | ControlFlowNode for a2 [List element] |
+| test.py:618:11:618:13 | SSA variable a2 [List element] | test.py:622:10:622:11 | ControlFlowNode for a2 [List element] |
+| test.py:621:12:621:13 | ControlFlowNode for a2 [List element] | test.py:621:12:621:16 | ControlFlowNode for Subscript |
+| test.py:622:10:622:11 | ControlFlowNode for a2 [List element] | test.py:622:10:622:14 | ControlFlowNode for Subscript |
+| test.py:627:5:627:19 | ControlFlowNode for List [Tuple element at index 0, Tuple element at index 0] | test.py:627:7:627:13 | IterableSequence [Tuple element at index 0] |
+| test.py:627:5:627:19 | ControlFlowNode for List [Tuple element at index 0, Tuple element at index 2] | test.py:627:7:627:13 | IterableSequence [Tuple element at index 2] |
+| test.py:627:7:627:8 | SSA variable a1 | test.py:628:10:628:11 | ControlFlowNode for a1 |
+| test.py:627:7:627:13 | ControlFlowNode for Tuple [Tuple element at index 0] | test.py:627:7:627:8 | SSA variable a1 |
+| test.py:627:7:627:13 | ControlFlowNode for Tuple [Tuple element at index 2] | test.py:627:11:627:13 | IterableElement |
+| test.py:627:7:627:13 | IterableSequence [Tuple element at index 0] | test.py:627:7:627:13 | ControlFlowNode for Tuple [Tuple element at index 0] |
+| test.py:627:7:627:13 | IterableSequence [Tuple element at index 2] | test.py:627:7:627:13 | ControlFlowNode for Tuple [Tuple element at index 2] |
+| test.py:627:11:627:13 | IterableElement | test.py:627:11:627:13 | SSA variable a2 [List element] |
+| test.py:627:11:627:13 | SSA variable a2 [List element] | test.py:630:12:630:13 | ControlFlowNode for a2 [List element] |
+| test.py:627:11:627:13 | SSA variable a2 [List element] | test.py:631:10:631:11 | ControlFlowNode for a2 [List element] |
+| test.py:630:12:630:13 | ControlFlowNode for a2 [List element] | test.py:630:12:630:16 | ControlFlowNode for Subscript |
+| test.py:631:10:631:11 | ControlFlowNode for a2 [List element] | test.py:631:10:631:14 | ControlFlowNode for Subscript |
+| test.py:636:6:636:14 | ControlFlowNode for List [Tuple element at index 0] | test.py:636:7:636:8 | SSA variable a1 |
+| test.py:636:6:636:14 | ControlFlowNode for List [Tuple element at index 2] | test.py:636:11:636:13 | IterableElement |
+| test.py:636:6:636:14 | IterableSequence [Tuple element at index 0] | test.py:636:6:636:14 | ControlFlowNode for List [Tuple element at index 0] |
+| test.py:636:6:636:14 | IterableSequence [Tuple element at index 2] | test.py:636:6:636:14 | ControlFlowNode for List [Tuple element at index 2] |
+| test.py:636:6:636:18 | ControlFlowNode for Tuple [Tuple element at index 0, Tuple element at index 0] | test.py:636:6:636:14 | IterableSequence [Tuple element at index 0] |
+| test.py:636:6:636:18 | ControlFlowNode for Tuple [Tuple element at index 0, Tuple element at index 2] | test.py:636:6:636:14 | IterableSequence [Tuple element at index 2] |
+| test.py:636:7:636:8 | SSA variable a1 | test.py:637:10:637:11 | ControlFlowNode for a1 |
+| test.py:636:11:636:13 | IterableElement | test.py:636:11:636:13 | SSA variable a2 [List element] |
+| test.py:636:11:636:13 | SSA variable a2 [List element] | test.py:639:12:639:13 | ControlFlowNode for a2 [List element] |
+| test.py:636:11:636:13 | SSA variable a2 [List element] | test.py:640:10:640:11 | ControlFlowNode for a2 [List element] |
+| test.py:639:12:639:13 | ControlFlowNode for a2 [List element] | test.py:639:12:639:16 | ControlFlowNode for Subscript |
+| test.py:640:10:640:11 | ControlFlowNode for a2 [List element] | test.py:640:10:640:14 | ControlFlowNode for Subscript |
+| test.py:647:19:647:24 | ControlFlowNode for SOURCE | test.py:648:10:648:10 | ControlFlowNode for a |
+| test.py:655:10:655:51 | ControlFlowNode for List [List element, Tuple element at index 0] | test.py:656:16:656:17 | ControlFlowNode for tl [List element, Tuple element at index 0] |
+| test.py:655:12:655:17 | ControlFlowNode for SOURCE | test.py:655:12:655:28 | ControlFlowNode for Tuple [Tuple element at index 0] |
+| test.py:655:12:655:28 | ControlFlowNode for Tuple [Tuple element at index 0] | test.py:655:10:655:51 | ControlFlowNode for List [List element, Tuple element at index 0] |
+| test.py:655:33:655:38 | ControlFlowNode for SOURCE | test.py:655:33:655:49 | ControlFlowNode for Tuple [Tuple element at index 0] |
+| test.py:655:33:655:49 | ControlFlowNode for Tuple [Tuple element at index 0] | test.py:655:10:655:51 | ControlFlowNode for List [List element, Tuple element at index 0] |
+| test.py:656:9:656:9 | SSA variable x | test.py:657:14:657:14 | ControlFlowNode for x |
+| test.py:656:9:656:11 | ControlFlowNode for Tuple [Tuple element at index 0] | test.py:656:9:656:9 | SSA variable x |
+| test.py:656:9:656:11 | IterableSequence [Tuple element at index 0] | test.py:656:9:656:11 | ControlFlowNode for Tuple [Tuple element at index 0] |
+| test.py:656:16:656:17 | ControlFlowNode for tl [List element, Tuple element at index 0] | test.py:656:9:656:11 | IterableSequence [Tuple element at index 0] |
+| test.py:663:10:663:51 | ControlFlowNode for List [List element, Tuple element at index 0] | test.py:664:17:664:18 | ControlFlowNode for tl [List element, Tuple element at index 0] |
+| test.py:663:12:663:17 | ControlFlowNode for SOURCE | test.py:663:12:663:28 | ControlFlowNode for Tuple [Tuple element at index 0] |
+| test.py:663:12:663:28 | ControlFlowNode for Tuple [Tuple element at index 0] | test.py:663:10:663:51 | ControlFlowNode for List [List element, Tuple element at index 0] |
+| test.py:663:33:663:38 | ControlFlowNode for SOURCE | test.py:663:33:663:49 | ControlFlowNode for Tuple [Tuple element at index 0] |
+| test.py:663:33:663:49 | ControlFlowNode for Tuple [Tuple element at index 0] | test.py:663:10:663:51 | ControlFlowNode for List [List element, Tuple element at index 0] |
+| test.py:664:9:664:10 | IterableElement | test.py:664:9:664:10 | SSA variable x [List element] |
+| test.py:664:9:664:10 | SSA variable x [List element] | test.py:666:14:666:14 | ControlFlowNode for x [List element] |
+| test.py:664:9:664:12 | ControlFlowNode for Tuple [Tuple element at index 0] | test.py:664:9:664:10 | IterableElement |
+| test.py:664:9:664:12 | ControlFlowNode for Tuple [Tuple element at index 0] | test.py:664:12:664:12 | SSA variable y |
+| test.py:664:9:664:12 | IterableSequence [Tuple element at index 0] | test.py:664:9:664:12 | ControlFlowNode for Tuple [Tuple element at index 0] |
+| test.py:664:12:664:12 | SSA variable y | test.py:667:16:667:16 | ControlFlowNode for y |
+| test.py:664:17:664:18 | ControlFlowNode for tl [List element, Tuple element at index 0] | test.py:664:9:664:12 | IterableSequence [Tuple element at index 0] |
+| test.py:666:14:666:14 | ControlFlowNode for x [List element] | test.py:666:14:666:17 | ControlFlowNode for Subscript |
+| test.py:672:10:672:51 | ControlFlowNode for List [List element, Tuple element at index 0] | test.py:673:19:673:20 | ControlFlowNode for tl [List element, Tuple element at index 0] |
+| test.py:672:12:672:17 | ControlFlowNode for SOURCE | test.py:672:12:672:28 | ControlFlowNode for Tuple [Tuple element at index 0] |
+| test.py:672:12:672:28 | ControlFlowNode for Tuple [Tuple element at index 0] | test.py:672:10:672:51 | ControlFlowNode for List [List element, Tuple element at index 0] |
+| test.py:672:33:672:38 | ControlFlowNode for SOURCE | test.py:672:33:672:49 | ControlFlowNode for Tuple [Tuple element at index 0] |
+| test.py:672:33:672:49 | ControlFlowNode for Tuple [Tuple element at index 0] | test.py:672:10:672:51 | ControlFlowNode for List [List element, Tuple element at index 0] |
+| test.py:673:9:673:9 | SSA variable x | test.py:674:14:674:14 | ControlFlowNode for x |
+| test.py:673:9:673:14 | ControlFlowNode for Tuple [Tuple element at index 0] | test.py:673:9:673:9 | SSA variable x |
+| test.py:673:9:673:14 | IterableSequence [Tuple element at index 0] | test.py:673:9:673:14 | ControlFlowNode for Tuple [Tuple element at index 0] |
+| test.py:673:19:673:20 | ControlFlowNode for tl [List element, Tuple element at index 0] | test.py:673:9:673:14 | IterableSequence [Tuple element at index 0] |
+| test.py:678:39:678:42 | ControlFlowNode for args [Tuple element at index 0] | test.py:679:14:679:17 | ControlFlowNode for args [Tuple element at index 0] |
+| test.py:678:39:678:42 | ControlFlowNode for args [Tuple element at index 1] | test.py:679:14:679:17 | ControlFlowNode for args [Tuple element at index 1] |
+| test.py:679:7:679:9 | SSA variable arg | test.py:680:10:680:12 | ControlFlowNode for arg |
+| test.py:679:14:679:17 | ControlFlowNode for args [Tuple element at index 0] | test.py:679:7:679:9 | SSA variable arg |
+| test.py:679:14:679:17 | ControlFlowNode for args [Tuple element at index 1] | test.py:679:7:679:9 | SSA variable arg |
+| test.py:685:7:685:12 | ControlFlowNode for SOURCE | test.py:686:51:686:51 | ControlFlowNode for s |
+| test.py:686:3:686:52 | PosOverflowNode for iterate_star_args() [Tuple element at index 0] | test.py:678:39:678:42 | ControlFlowNode for args [Tuple element at index 0] |
+| test.py:686:3:686:52 | PosOverflowNode for iterate_star_args() [Tuple element at index 1] | test.py:678:39:678:42 | ControlFlowNode for args [Tuple element at index 1] |
+| test.py:686:43:686:48 | ControlFlowNode for SOURCE | test.py:686:3:686:52 | PosOverflowNode for iterate_star_args() [Tuple element at index 0] |
+| test.py:686:51:686:51 | ControlFlowNode for s | test.py:686:3:686:52 | PosOverflowNode for iterate_star_args() [Tuple element at index 1] |
+| test.py:757:16:757:21 | ControlFlowNode for SOURCE | test.py:760:10:760:36 | ControlFlowNode for return_from_inner_scope() |
+| test.py:795:35:795:35 | ControlFlowNode for x | test.py:796:10:796:10 | ControlFlowNode for x |
+| test.py:795:37:795:42 | ControlFlowNode for SOURCE | test.py:795:35:795:35 | ControlFlowNode for x |
+| test.py:795:48:795:48 | ControlFlowNode for y | test.py:797:10:797:10 | ControlFlowNode for y |
+| test.py:795:50:795:55 | ControlFlowNode for SOURCE | test.py:795:48:795:48 | ControlFlowNode for y |
+| test.py:795:61:795:61 | ControlFlowNode for z | test.py:798:10:798:10 | ControlFlowNode for z |
+| test.py:795:63:795:68 | ControlFlowNode for SOURCE | test.py:795:61:795:61 | ControlFlowNode for z |
+nodes
+| datamodel.py:35:7:35:7 | ControlFlowNode for a | semmle.label | ControlFlowNode for a |
+| datamodel.py:36:10:36:10 | ControlFlowNode for a | semmle.label | ControlFlowNode for a |
+| datamodel.py:38:6:38:17 | ControlFlowNode for f() | semmle.label | ControlFlowNode for f() |
+| datamodel.py:38:8:38:13 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| datamodel.py:44:22:44:22 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
+| datamodel.py:46:16:46:16 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
+| datamodel.py:49:26:49:26 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
+| datamodel.py:50:16:50:16 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
+| datamodel.py:71:6:71:24 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| datamodel.py:71:15:71:20 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| datamodel.py:72:6:72:27 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| datamodel.py:72:18:72:23 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| datamodel.py:80:6:80:26 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| datamodel.py:80:20:80:25 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| datamodel.py:81:6:81:26 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| datamodel.py:81:20:81:25 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| datamodel.py:152:5:152:8 | [post store] ControlFlowNode for self [Attribute b] | semmle.label | [post store] ControlFlowNode for self [Attribute b] |
+| datamodel.py:152:14:152:19 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| datamodel.py:155:14:155:25 | ControlFlowNode for Customized() [Attribute b] | semmle.label | ControlFlowNode for Customized() [Attribute b] |
+| datamodel.py:159:6:159:15 | ControlFlowNode for customized [Attribute b] | semmle.label | ControlFlowNode for customized [Attribute b] |
+| datamodel.py:159:6:159:17 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| test.py:42:10:42:26 | ControlFlowNode for Tuple [Tuple element at index 1] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 1] |
+| test.py:42:21:42:26 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:43:9:43:9 | ControlFlowNode for x [Tuple element at index 1] | semmle.label | ControlFlowNode for x [Tuple element at index 1] |
+| test.py:43:9:43:12 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| test.py:44:10:44:10 | ControlFlowNode for y | semmle.label | ControlFlowNode for y |
+| test.py:55:9:55:14 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:56:10:56:10 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
+| test.py:61:9:61:16 | ControlFlowNode for Str | semmle.label | ControlFlowNode for Str |
+| test.py:62:10:62:10 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
+| test.py:66:9:66:17 | ControlFlowNode for Str | semmle.label | ControlFlowNode for Str |
+| test.py:67:10:67:10 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
+| test.py:71:9:71:10 | ControlFlowNode for IntegerLiteral | semmle.label | ControlFlowNode for IntegerLiteral |
+| test.py:72:10:72:10 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
+| test.py:76:9:76:12 | ControlFlowNode for FloatLiteral | semmle.label | ControlFlowNode for FloatLiteral |
+| test.py:77:10:77:10 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
+| test.py:87:10:87:15 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:88:10:88:10 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
+| test.py:93:9:93:16 | ControlFlowNode for List [List element] | semmle.label | ControlFlowNode for List [List element] |
+| test.py:93:10:93:15 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:94:10:94:10 | ControlFlowNode for x [List element] | semmle.label | ControlFlowNode for x [List element] |
+| test.py:94:10:94:13 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| test.py:103:9:103:37 | ControlFlowNode for ListComp [List element] | semmle.label | ControlFlowNode for ListComp [List element] |
+| test.py:103:10:103:15 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:104:10:104:10 | ControlFlowNode for x [List element] | semmle.label | ControlFlowNode for x [List element] |
+| test.py:104:10:104:13 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| test.py:108:9:108:29 | ControlFlowNode for ListComp [List element] | semmle.label | ControlFlowNode for ListComp [List element] |
+| test.py:108:10:108:10 | ControlFlowNode for y | semmle.label | ControlFlowNode for y |
+| test.py:108:16:108:16 | SSA variable y | semmle.label | SSA variable y |
+| test.py:108:21:108:28 | ControlFlowNode for List [List element] | semmle.label | ControlFlowNode for List [List element] |
+| test.py:108:22:108:27 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:109:10:109:10 | ControlFlowNode for x [List element] | semmle.label | ControlFlowNode for x [List element] |
+| test.py:109:10:109:13 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| test.py:113:9:113:16 | ControlFlowNode for List [List element] | semmle.label | ControlFlowNode for List [List element] |
+| test.py:113:10:113:15 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:114:9:114:22 | ControlFlowNode for ListComp [List element] | semmle.label | ControlFlowNode for ListComp [List element] |
+| test.py:114:10:114:10 | ControlFlowNode for y | semmle.label | ControlFlowNode for y |
+| test.py:114:16:114:16 | SSA variable y | semmle.label | SSA variable y |
+| test.py:114:21:114:21 | ControlFlowNode for l [List element] | semmle.label | ControlFlowNode for l [List element] |
+| test.py:115:10:115:10 | ControlFlowNode for x [List element] | semmle.label | ControlFlowNode for x [List element] |
+| test.py:115:10:115:13 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| test.py:125:9:125:16 | ControlFlowNode for Set [List element] | semmle.label | ControlFlowNode for Set [List element] |
+| test.py:125:10:125:15 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:126:10:126:10 | ControlFlowNode for x [List element] | semmle.label | ControlFlowNode for x [List element] |
+| test.py:126:10:126:16 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test.py:130:9:130:37 | ControlFlowNode for SetComp [Set element] | semmle.label | ControlFlowNode for SetComp [Set element] |
+| test.py:130:10:130:15 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:131:10:131:10 | ControlFlowNode for x [Set element] | semmle.label | ControlFlowNode for x [Set element] |
+| test.py:131:10:131:16 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test.py:135:9:135:29 | ControlFlowNode for SetComp [Set element] | semmle.label | ControlFlowNode for SetComp [Set element] |
+| test.py:135:10:135:10 | ControlFlowNode for y | semmle.label | ControlFlowNode for y |
+| test.py:135:16:135:16 | SSA variable y | semmle.label | SSA variable y |
+| test.py:135:21:135:28 | ControlFlowNode for List [List element] | semmle.label | ControlFlowNode for List [List element] |
+| test.py:135:22:135:27 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:136:10:136:10 | ControlFlowNode for x [Set element] | semmle.label | ControlFlowNode for x [Set element] |
+| test.py:136:10:136:16 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test.py:140:9:140:16 | ControlFlowNode for Set [List element] | semmle.label | ControlFlowNode for Set [List element] |
+| test.py:140:10:140:15 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:141:9:141:22 | ControlFlowNode for SetComp [Set element] | semmle.label | ControlFlowNode for SetComp [Set element] |
+| test.py:141:10:141:10 | ControlFlowNode for y | semmle.label | ControlFlowNode for y |
+| test.py:141:16:141:16 | SSA variable y | semmle.label | SSA variable y |
+| test.py:141:21:141:21 | ControlFlowNode for l [List element] | semmle.label | ControlFlowNode for l [List element] |
+| test.py:142:10:142:10 | ControlFlowNode for x [Set element] | semmle.label | ControlFlowNode for x [Set element] |
+| test.py:142:10:142:16 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test.py:152:9:152:21 | ControlFlowNode for Dict [Dictionary element at key s] | semmle.label | ControlFlowNode for Dict [Dictionary element at key s] |
+| test.py:152:15:152:20 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:153:10:153:10 | ControlFlowNode for x [Dictionary element at key s] | semmle.label | ControlFlowNode for x [Dictionary element at key s] |
+| test.py:153:10:153:15 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| test.py:157:9:157:21 | ControlFlowNode for Dict [Dictionary element at key s] | semmle.label | ControlFlowNode for Dict [Dictionary element at key s] |
+| test.py:157:15:157:20 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:158:10:158:10 | ControlFlowNode for x [Dictionary element at key s] | semmle.label | ControlFlowNode for x [Dictionary element at key s] |
+| test.py:158:10:158:19 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test.py:183:9:183:42 | ControlFlowNode for ListComp [List element] | semmle.label | ControlFlowNode for ListComp [List element] |
+| test.py:183:10:183:10 | ControlFlowNode for y | semmle.label | ControlFlowNode for y |
+| test.py:183:16:183:16 | SSA variable z [List element] | semmle.label | SSA variable z [List element] |
+| test.py:183:21:183:30 | ControlFlowNode for List [List element, List element] | semmle.label | ControlFlowNode for List [List element, List element] |
+| test.py:183:22:183:29 | ControlFlowNode for List [List element] | semmle.label | ControlFlowNode for List [List element] |
+| test.py:183:23:183:28 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:183:36:183:36 | SSA variable y | semmle.label | SSA variable y |
+| test.py:183:41:183:41 | ControlFlowNode for z [List element] | semmle.label | ControlFlowNode for z [List element] |
+| test.py:184:10:184:10 | ControlFlowNode for x [List element] | semmle.label | ControlFlowNode for x [List element] |
+| test.py:184:10:184:13 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| test.py:188:9:188:68 | ControlFlowNode for ListComp [List element] | semmle.label | ControlFlowNode for ListComp [List element] |
+| test.py:188:10:188:10 | ControlFlowNode for y | semmle.label | ControlFlowNode for y |
+| test.py:188:16:188:16 | SSA variable v [List element, List element, List element] | semmle.label | SSA variable v [List element, List element, List element] |
+| test.py:188:21:188:34 | ControlFlowNode for List [List element, List element, List element, List element] | semmle.label | ControlFlowNode for List [List element, List element, List element, List element] |
+| test.py:188:22:188:33 | ControlFlowNode for List [List element, List element, List element] | semmle.label | ControlFlowNode for List [List element, List element, List element] |
+| test.py:188:23:188:32 | ControlFlowNode for List [List element, List element] | semmle.label | ControlFlowNode for List [List element, List element] |
+| test.py:188:24:188:31 | ControlFlowNode for List [List element] | semmle.label | ControlFlowNode for List [List element] |
+| test.py:188:25:188:30 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:188:40:188:40 | SSA variable u [List element, List element] | semmle.label | SSA variable u [List element, List element] |
+| test.py:188:45:188:45 | ControlFlowNode for v [List element, List element, List element] | semmle.label | ControlFlowNode for v [List element, List element, List element] |
+| test.py:188:51:188:51 | SSA variable z [List element] | semmle.label | SSA variable z [List element] |
+| test.py:188:56:188:56 | ControlFlowNode for u [List element, List element] | semmle.label | ControlFlowNode for u [List element, List element] |
+| test.py:188:62:188:62 | SSA variable y | semmle.label | SSA variable y |
+| test.py:188:67:188:67 | ControlFlowNode for z [List element] | semmle.label | ControlFlowNode for z [List element] |
+| test.py:189:10:189:10 | ControlFlowNode for x [List element] | semmle.label | ControlFlowNode for x [List element] |
+| test.py:189:10:189:13 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| test.py:199:9:199:42 | ControlFlowNode for ListComp [List element] | semmle.label | ControlFlowNode for ListComp [List element] |
+| test.py:199:10:199:10 | ControlFlowNode for y | semmle.label | ControlFlowNode for y |
+| test.py:199:16:199:16 | SSA variable y | semmle.label | SSA variable y |
+| test.py:199:22:199:22 | ControlFlowNode for z | semmle.label | ControlFlowNode for z |
+| test.py:199:22:199:40 | ControlFlowNode for GeneratorExp [List element] | semmle.label | ControlFlowNode for GeneratorExp [List element] |
+| test.py:199:28:199:28 | SSA variable z | semmle.label | SSA variable z |
+| test.py:199:33:199:40 | ControlFlowNode for List [List element] | semmle.label | ControlFlowNode for List [List element] |
+| test.py:199:34:199:39 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:200:10:200:10 | ControlFlowNode for x [List element] | semmle.label | ControlFlowNode for x [List element] |
+| test.py:200:10:200:13 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| test.py:205:9:205:47 | ControlFlowNode for ListComp [List element] | semmle.label | ControlFlowNode for ListComp [List element] |
+| test.py:205:10:205:10 | ControlFlowNode for a | semmle.label | ControlFlowNode for a |
+| test.py:205:17:205:17 | SSA variable a | semmle.label | SSA variable a |
+| test.py:205:17:205:20 | ControlFlowNode for Tuple [Tuple element at index 0] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 0] |
+| test.py:205:17:205:20 | IterableSequence [Tuple element at index 0] | semmle.label | IterableSequence [Tuple element at index 0] |
+| test.py:205:26:205:46 | ControlFlowNode for List [List element, Tuple element at index 0] | semmle.label | ControlFlowNode for List [List element, Tuple element at index 0] |
+| test.py:205:28:205:33 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:205:28:205:44 | ControlFlowNode for Tuple [Tuple element at index 0] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 0] |
+| test.py:206:10:206:10 | ControlFlowNode for x [List element] | semmle.label | ControlFlowNode for x [List element] |
+| test.py:206:10:206:13 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| test.py:210:9:210:51 | ControlFlowNode for ListComp [List element] | semmle.label | ControlFlowNode for ListComp [List element] |
+| test.py:210:10:210:10 | ControlFlowNode for a [List element] | semmle.label | ControlFlowNode for a [List element] |
+| test.py:210:10:210:13 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| test.py:210:20:210:21 | IterableElement | semmle.label | IterableElement |
+| test.py:210:20:210:21 | SSA variable a [List element] | semmle.label | SSA variable a [List element] |
+| test.py:210:20:210:24 | ControlFlowNode for Tuple [Tuple element at index 0] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 0] |
+| test.py:210:20:210:24 | IterableSequence [Tuple element at index 0] | semmle.label | IterableSequence [Tuple element at index 0] |
+| test.py:210:30:210:50 | ControlFlowNode for List [List element, Tuple element at index 0] | semmle.label | ControlFlowNode for List [List element, Tuple element at index 0] |
+| test.py:210:32:210:37 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:210:32:210:48 | ControlFlowNode for Tuple [Tuple element at index 0] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 0] |
+| test.py:211:10:211:10 | ControlFlowNode for x [List element] | semmle.label | ControlFlowNode for x [List element] |
+| test.py:211:10:211:13 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| test.py:349:10:349:21 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| test.py:349:11:349:16 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:349:11:349:17 | ControlFlowNode for Tuple [Tuple element at index 0] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 0] |
+| test.py:353:10:353:17 | ControlFlowNode for List [List element] | semmle.label | ControlFlowNode for List [List element] |
+| test.py:353:10:353:20 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| test.py:353:11:353:16 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:357:10:357:22 | ControlFlowNode for Dict [Dictionary element at key s] | semmle.label | ControlFlowNode for Dict [Dictionary element at key s] |
+| test.py:357:10:357:27 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| test.py:357:16:357:21 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:375:15:375:15 | ControlFlowNode for b | semmle.label | ControlFlowNode for b |
+| test.py:376:12:376:12 | ControlFlowNode for b | semmle.label | ControlFlowNode for b |
+| test.py:380:10:380:34 | ControlFlowNode for second() | semmle.label | ControlFlowNode for second() |
+| test.py:380:28:380:33 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:388:10:388:36 | ControlFlowNode for second() | semmle.label | ControlFlowNode for second() |
+| test.py:388:30:388:35 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:396:10:396:43 | ControlFlowNode for second() | semmle.label | ControlFlowNode for second() |
+| test.py:396:10:396:43 | KwUnpacked b | semmle.label | KwUnpacked b |
+| test.py:396:30:396:42 | ControlFlowNode for Dict [Dictionary element at key b] | semmle.label | ControlFlowNode for Dict [Dictionary element at key b] |
+| test.py:396:36:396:41 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:399:21:399:21 | ControlFlowNode for b [Tuple element at index 0] | semmle.label | ControlFlowNode for b [Tuple element at index 0] |
+| test.py:400:12:400:12 | ControlFlowNode for b [Tuple element at index 0] | semmle.label | ControlFlowNode for b [Tuple element at index 0] |
+| test.py:400:12:400:15 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| test.py:404:10:404:39 | ControlFlowNode for f_extra_pos() | semmle.label | ControlFlowNode for f_extra_pos() |
+| test.py:404:10:404:39 | PosOverflowNode for f_extra_pos() [Tuple element at index 0] | semmle.label | PosOverflowNode for f_extra_pos() [Tuple element at index 0] |
+| test.py:404:33:404:38 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:407:26:407:26 | ControlFlowNode for b [Dictionary element at key b] | semmle.label | ControlFlowNode for b [Dictionary element at key b] |
+| test.py:408:12:408:12 | ControlFlowNode for b [Dictionary element at key b] | semmle.label | ControlFlowNode for b [Dictionary element at key b] |
+| test.py:408:12:408:17 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| test.py:412:10:412:45 | ControlFlowNode for f_extra_keyword() | semmle.label | ControlFlowNode for f_extra_keyword() |
+| test.py:412:10:412:45 | KwOverflowNode for f_extra_keyword() [Dictionary element at key b] | semmle.label | KwOverflowNode for f_extra_keyword() [Dictionary element at key b] |
+| test.py:412:39:412:44 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:433:10:433:15 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:433:10:433:38 | ControlFlowNode for IfExp | semmle.label | ControlFlowNode for IfExp |
+| test.py:441:10:441:39 | ControlFlowNode for IfExp | semmle.label | ControlFlowNode for IfExp |
+| test.py:441:34:441:39 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:462:11:462:11 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
+| test.py:463:16:463:16 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
+| test.py:465:10:465:18 | ControlFlowNode for f() | semmle.label | ControlFlowNode for f() |
+| test.py:465:12:465:17 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:469:19:469:19 | ControlFlowNode for b | semmle.label | ControlFlowNode for b |
+| test.py:470:16:470:16 | ControlFlowNode for b | semmle.label | ControlFlowNode for b |
+| test.py:472:10:472:34 | ControlFlowNode for second() | semmle.label | ControlFlowNode for second() |
+| test.py:472:28:472:33 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:483:19:483:19 | ControlFlowNode for b | semmle.label | ControlFlowNode for b |
+| test.py:484:16:484:16 | ControlFlowNode for b | semmle.label | ControlFlowNode for b |
+| test.py:486:10:486:36 | ControlFlowNode for second() | semmle.label | ControlFlowNode for second() |
+| test.py:486:30:486:35 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:497:19:497:19 | ControlFlowNode for b | semmle.label | ControlFlowNode for b |
+| test.py:498:16:498:16 | ControlFlowNode for b | semmle.label | ControlFlowNode for b |
+| test.py:500:10:500:43 | ControlFlowNode for second() | semmle.label | ControlFlowNode for second() |
+| test.py:500:10:500:43 | KwUnpacked b | semmle.label | KwUnpacked b |
+| test.py:500:30:500:42 | ControlFlowNode for Dict [Dictionary element at key b] | semmle.label | ControlFlowNode for Dict [Dictionary element at key b] |
+| test.py:500:36:500:41 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:504:30:504:30 | ControlFlowNode for b [Tuple element at index 0] | semmle.label | ControlFlowNode for b [Tuple element at index 0] |
+| test.py:504:33:504:33 | ControlFlowNode for b [Tuple element at index 0] | semmle.label | ControlFlowNode for b [Tuple element at index 0] |
+| test.py:504:33:504:36 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| test.py:505:10:505:39 | ControlFlowNode for f_extra_pos() | semmle.label | ControlFlowNode for f_extra_pos() |
+| test.py:505:10:505:39 | PosOverflowNode for f_extra_pos() [Tuple element at index 0] | semmle.label | PosOverflowNode for f_extra_pos() [Tuple element at index 0] |
+| test.py:505:33:505:38 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:509:35:509:35 | ControlFlowNode for b [Dictionary element at key b] | semmle.label | ControlFlowNode for b [Dictionary element at key b] |
+| test.py:509:38:509:38 | ControlFlowNode for b [Dictionary element at key b] | semmle.label | ControlFlowNode for b [Dictionary element at key b] |
+| test.py:509:38:509:43 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| test.py:510:10:510:45 | ControlFlowNode for f_extra_keyword() | semmle.label | ControlFlowNode for f_extra_keyword() |
+| test.py:510:10:510:45 | KwOverflowNode for f_extra_keyword() [Dictionary element at key b] | semmle.label | KwOverflowNode for f_extra_keyword() [Dictionary element at key b] |
+| test.py:510:39:510:44 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:522:9:522:14 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:524:10:524:10 | ControlFlowNode for a | semmle.label | ControlFlowNode for a |
+| test.py:529:10:529:10 | ControlFlowNode for b | semmle.label | ControlFlowNode for b |
+| test.py:534:10:534:15 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:534:10:534:26 | ControlFlowNode for Tuple [Tuple element at index 0] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 0] |
+| test.py:535:5:535:5 | SSA variable a | semmle.label | SSA variable a |
+| test.py:535:5:535:8 | ControlFlowNode for Tuple [Tuple element at index 0] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 0] |
+| test.py:536:10:536:10 | ControlFlowNode for a | semmle.label | ControlFlowNode for a |
+| test.py:542:10:542:15 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:542:10:542:36 | ControlFlowNode for Tuple [Tuple element at index 0] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 0] |
+| test.py:542:10:542:36 | ControlFlowNode for Tuple [Tuple element at index 1, Tuple element at index 1] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 1, Tuple element at index 1] |
+| test.py:542:19:542:35 | ControlFlowNode for Tuple [Tuple element at index 1] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 1] |
+| test.py:542:30:542:35 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:543:5:543:5 | SSA variable a | semmle.label | SSA variable a |
+| test.py:543:5:543:13 | ControlFlowNode for Tuple [Tuple element at index 0] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 0] |
+| test.py:543:5:543:13 | ControlFlowNode for Tuple [Tuple element at index 1, Tuple element at index 1] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 1, Tuple element at index 1] |
+| test.py:543:9:543:12 | ControlFlowNode for Tuple [Tuple element at index 1] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 1] |
+| test.py:543:9:543:12 | IterableSequence [Tuple element at index 1] | semmle.label | IterableSequence [Tuple element at index 1] |
+| test.py:543:12:543:12 | SSA variable c | semmle.label | SSA variable c |
+| test.py:544:10:544:10 | ControlFlowNode for a | semmle.label | ControlFlowNode for a |
+| test.py:546:10:546:10 | ControlFlowNode for c | semmle.label | ControlFlowNode for c |
+| test.py:551:9:551:33 | ControlFlowNode for List [List element, List element, List element, List element] | semmle.label | ControlFlowNode for List [List element, List element, List element, List element] |
+| test.py:551:10:551:21 | ControlFlowNode for List [List element, List element, List element] | semmle.label | ControlFlowNode for List [List element, List element, List element] |
+| test.py:551:11:551:20 | ControlFlowNode for List [List element, List element] | semmle.label | ControlFlowNode for List [List element, List element] |
+| test.py:551:12:551:19 | ControlFlowNode for List [List element] | semmle.label | ControlFlowNode for List [List element] |
+| test.py:551:13:551:18 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:552:5:552:11 | ControlFlowNode for List [Tuple element at index 0, List element, List element] | semmle.label | ControlFlowNode for List [Tuple element at index 0, List element, List element] |
+| test.py:552:5:552:11 | IterableElement [List element, List element] | semmle.label | IterableElement [List element, List element] |
+| test.py:552:5:552:11 | IterableSequence [List element, List element, List element] | semmle.label | IterableSequence [List element, List element, List element] |
+| test.py:552:5:552:14 | ControlFlowNode for Tuple [Tuple element at index 0, List element, List element, List element] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 0, List element, List element, List element] |
+| test.py:552:5:552:14 | IterableElement [List element, List element, List element] | semmle.label | IterableElement [List element, List element, List element] |
+| test.py:552:5:552:14 | IterableSequence [List element, List element, List element, List element] | semmle.label | IterableSequence [List element, List element, List element, List element] |
+| test.py:552:6:552:10 | ControlFlowNode for List [Tuple element at index 0, List element] | semmle.label | ControlFlowNode for List [Tuple element at index 0, List element] |
+| test.py:552:6:552:10 | IterableElement [List element] | semmle.label | IterableElement [List element] |
+| test.py:552:6:552:10 | IterableSequence [List element, List element] | semmle.label | IterableSequence [List element, List element] |
+| test.py:552:7:552:9 | ControlFlowNode for List [Tuple element at index 0] | semmle.label | ControlFlowNode for List [Tuple element at index 0] |
+| test.py:552:7:552:9 | IterableElement | semmle.label | IterableElement |
+| test.py:552:7:552:9 | IterableSequence [List element] | semmle.label | IterableSequence [List element] |
+| test.py:552:8:552:8 | SSA variable a | semmle.label | SSA variable a |
+| test.py:553:10:553:10 | ControlFlowNode for a | semmle.label | ControlFlowNode for a |
+| test.py:559:10:559:15 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:559:10:559:34 | ControlFlowNode for Tuple [Tuple element at index 0] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 0] |
+| test.py:559:10:559:34 | ControlFlowNode for Tuple [Tuple element at index 1] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 1] |
+| test.py:559:18:559:23 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:560:5:560:5 | SSA variable a | semmle.label | SSA variable a |
+| test.py:560:5:560:12 | ControlFlowNode for Tuple [Tuple element at index 0] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 0] |
+| test.py:560:5:560:12 | ControlFlowNode for Tuple [Tuple element at index 1] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 1] |
+| test.py:560:8:560:9 | IterableElement | semmle.label | IterableElement |
+| test.py:560:8:560:9 | SSA variable b [List element] | semmle.label | SSA variable b [List element] |
+| test.py:560:12:560:12 | SSA variable c | semmle.label | SSA variable c |
+| test.py:561:10:561:10 | ControlFlowNode for a | semmle.label | ControlFlowNode for a |
+| test.py:563:10:563:10 | ControlFlowNode for b [List element] | semmle.label | ControlFlowNode for b [List element] |
+| test.py:563:10:563:13 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| test.py:564:12:564:12 | ControlFlowNode for c | semmle.label | ControlFlowNode for c |
+| test.py:569:10:569:15 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:569:10:569:23 | ControlFlowNode for Tuple [Tuple element at index 0] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 0] |
+| test.py:569:10:569:23 | ControlFlowNode for Tuple [Tuple element at index 1] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 1] |
+| test.py:569:18:569:23 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:570:5:570:5 | SSA variable a | semmle.label | SSA variable a |
+| test.py:570:5:570:12 | ControlFlowNode for Tuple [Tuple element at index 0] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 0] |
+| test.py:570:5:570:12 | ControlFlowNode for Tuple [Tuple element at index 1] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 1] |
+| test.py:570:12:570:12 | SSA variable c | semmle.label | SSA variable c |
+| test.py:571:10:571:10 | ControlFlowNode for a | semmle.label | ControlFlowNode for a |
+| test.py:573:10:573:10 | ControlFlowNode for c | semmle.label | ControlFlowNode for c |
+| test.py:578:10:578:61 | ControlFlowNode for List [List element, List element] | semmle.label | ControlFlowNode for List [List element, List element] |
+| test.py:578:11:578:37 | ControlFlowNode for List [List element] | semmle.label | ControlFlowNode for List [List element] |
+| test.py:578:12:578:17 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:578:31:578:36 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:578:40:578:47 | ControlFlowNode for List [List element] | semmle.label | ControlFlowNode for List [List element] |
+| test.py:578:41:578:46 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:581:6:581:23 | ControlFlowNode for Tuple [Tuple element at index 0, List element] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 0, List element] |
+| test.py:581:6:581:23 | IterableElement [List element] | semmle.label | IterableElement [List element] |
+| test.py:581:6:581:23 | IterableSequence [List element, List element] | semmle.label | IterableSequence [List element, List element] |
+| test.py:581:7:581:8 | SSA variable a1 | semmle.label | SSA variable a1 |
+| test.py:581:7:581:16 | ControlFlowNode for Tuple [Tuple element at index 0] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 0] |
+| test.py:581:7:581:16 | ControlFlowNode for Tuple [Tuple element at index 1] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 1] |
+| test.py:581:7:581:16 | ControlFlowNode for Tuple [Tuple element at index 2] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 2] |
+| test.py:581:7:581:16 | IterableElement | semmle.label | IterableElement |
+| test.py:581:7:581:16 | IterableSequence [List element] | semmle.label | IterableSequence [List element] |
+| test.py:581:11:581:12 | SSA variable a2 | semmle.label | SSA variable a2 |
+| test.py:581:15:581:16 | SSA variable a3 | semmle.label | SSA variable a3 |
+| test.py:582:10:582:11 | ControlFlowNode for a1 | semmle.label | ControlFlowNode for a1 |
+| test.py:583:12:583:13 | ControlFlowNode for a2 | semmle.label | ControlFlowNode for a2 |
+| test.py:584:10:584:11 | ControlFlowNode for a3 | semmle.label | ControlFlowNode for a3 |
+| test.py:589:5:589:24 | ControlFlowNode for List [Tuple element at index 0, List element] | semmle.label | ControlFlowNode for List [Tuple element at index 0, List element] |
+| test.py:589:5:589:24 | IterableElement [List element] | semmle.label | IterableElement [List element] |
+| test.py:589:5:589:24 | IterableSequence [List element, List element] | semmle.label | IterableSequence [List element, List element] |
+| test.py:589:7:589:8 | SSA variable a1 | semmle.label | SSA variable a1 |
+| test.py:589:7:589:16 | ControlFlowNode for Tuple [Tuple element at index 0] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 0] |
+| test.py:589:7:589:16 | ControlFlowNode for Tuple [Tuple element at index 1] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 1] |
+| test.py:589:7:589:16 | ControlFlowNode for Tuple [Tuple element at index 2] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 2] |
+| test.py:589:7:589:16 | IterableElement | semmle.label | IterableElement |
+| test.py:589:7:589:16 | IterableSequence [List element] | semmle.label | IterableSequence [List element] |
+| test.py:589:11:589:12 | SSA variable a2 | semmle.label | SSA variable a2 |
+| test.py:589:15:589:16 | SSA variable a3 | semmle.label | SSA variable a3 |
+| test.py:590:10:590:11 | ControlFlowNode for a1 | semmle.label | ControlFlowNode for a1 |
+| test.py:591:12:591:13 | ControlFlowNode for a2 | semmle.label | ControlFlowNode for a2 |
+| test.py:592:10:592:11 | ControlFlowNode for a3 | semmle.label | ControlFlowNode for a3 |
+| test.py:597:6:597:17 | ControlFlowNode for List [Tuple element at index 0] | semmle.label | ControlFlowNode for List [Tuple element at index 0] |
+| test.py:597:6:597:17 | ControlFlowNode for List [Tuple element at index 1] | semmle.label | ControlFlowNode for List [Tuple element at index 1] |
+| test.py:597:6:597:17 | ControlFlowNode for List [Tuple element at index 2] | semmle.label | ControlFlowNode for List [Tuple element at index 2] |
+| test.py:597:6:597:17 | IterableElement | semmle.label | IterableElement |
+| test.py:597:6:597:17 | IterableSequence [List element] | semmle.label | IterableSequence [List element] |
+| test.py:597:6:597:23 | ControlFlowNode for Tuple [Tuple element at index 0, List element] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 0, List element] |
+| test.py:597:6:597:23 | IterableElement [List element] | semmle.label | IterableElement [List element] |
+| test.py:597:6:597:23 | IterableSequence [List element, List element] | semmle.label | IterableSequence [List element, List element] |
+| test.py:597:7:597:8 | SSA variable a1 | semmle.label | SSA variable a1 |
+| test.py:597:11:597:12 | SSA variable a2 | semmle.label | SSA variable a2 |
+| test.py:597:15:597:16 | SSA variable a3 | semmle.label | SSA variable a3 |
+| test.py:598:10:598:11 | ControlFlowNode for a1 | semmle.label | ControlFlowNode for a1 |
+| test.py:599:12:599:13 | ControlFlowNode for a2 | semmle.label | ControlFlowNode for a2 |
+| test.py:600:10:600:11 | ControlFlowNode for a3 | semmle.label | ControlFlowNode for a3 |
+| test.py:606:11:606:47 | ControlFlowNode for Tuple [Tuple element at index 0, Tuple element at index 0] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 0, Tuple element at index 0] |
+| test.py:606:11:606:47 | ControlFlowNode for Tuple [Tuple element at index 0, Tuple element at index 2] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 0, Tuple element at index 2] |
+| test.py:606:12:606:17 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:606:12:606:36 | ControlFlowNode for Tuple [Tuple element at index 0] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 0] |
+| test.py:606:12:606:36 | ControlFlowNode for Tuple [Tuple element at index 2] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 2] |
+| test.py:606:31:606:36 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:609:5:609:19 | ControlFlowNode for List [Tuple element at index 0, Tuple element at index 0] | semmle.label | ControlFlowNode for List [Tuple element at index 0, Tuple element at index 0] |
+| test.py:609:5:609:19 | ControlFlowNode for List [Tuple element at index 0, Tuple element at index 2] | semmle.label | ControlFlowNode for List [Tuple element at index 0, Tuple element at index 2] |
+| test.py:609:6:609:14 | ControlFlowNode for List [Tuple element at index 0] | semmle.label | ControlFlowNode for List [Tuple element at index 0] |
+| test.py:609:6:609:14 | ControlFlowNode for List [Tuple element at index 2] | semmle.label | ControlFlowNode for List [Tuple element at index 2] |
+| test.py:609:6:609:14 | IterableSequence [Tuple element at index 0] | semmle.label | IterableSequence [Tuple element at index 0] |
+| test.py:609:6:609:14 | IterableSequence [Tuple element at index 2] | semmle.label | IterableSequence [Tuple element at index 2] |
+| test.py:609:7:609:8 | SSA variable a1 | semmle.label | SSA variable a1 |
+| test.py:609:11:609:13 | IterableElement | semmle.label | IterableElement |
+| test.py:609:11:609:13 | SSA variable a2 [List element] | semmle.label | SSA variable a2 [List element] |
+| test.py:610:10:610:11 | ControlFlowNode for a1 | semmle.label | ControlFlowNode for a1 |
+| test.py:612:12:612:13 | ControlFlowNode for a2 [List element] | semmle.label | ControlFlowNode for a2 [List element] |
+| test.py:612:12:612:16 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| test.py:613:10:613:11 | ControlFlowNode for a2 [List element] | semmle.label | ControlFlowNode for a2 [List element] |
+| test.py:613:10:613:14 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| test.py:618:6:618:18 | ControlFlowNode for Tuple [Tuple element at index 0, Tuple element at index 0] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 0, Tuple element at index 0] |
+| test.py:618:6:618:18 | ControlFlowNode for Tuple [Tuple element at index 0, Tuple element at index 2] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 0, Tuple element at index 2] |
+| test.py:618:7:618:8 | SSA variable a1 | semmle.label | SSA variable a1 |
+| test.py:618:7:618:13 | ControlFlowNode for Tuple [Tuple element at index 0] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 0] |
+| test.py:618:7:618:13 | ControlFlowNode for Tuple [Tuple element at index 2] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 2] |
+| test.py:618:7:618:13 | IterableSequence [Tuple element at index 0] | semmle.label | IterableSequence [Tuple element at index 0] |
+| test.py:618:7:618:13 | IterableSequence [Tuple element at index 2] | semmle.label | IterableSequence [Tuple element at index 2] |
+| test.py:618:11:618:13 | IterableElement | semmle.label | IterableElement |
+| test.py:618:11:618:13 | SSA variable a2 [List element] | semmle.label | SSA variable a2 [List element] |
+| test.py:619:10:619:11 | ControlFlowNode for a1 | semmle.label | ControlFlowNode for a1 |
+| test.py:621:12:621:13 | ControlFlowNode for a2 [List element] | semmle.label | ControlFlowNode for a2 [List element] |
+| test.py:621:12:621:16 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| test.py:622:10:622:11 | ControlFlowNode for a2 [List element] | semmle.label | ControlFlowNode for a2 [List element] |
+| test.py:622:10:622:14 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| test.py:627:5:627:19 | ControlFlowNode for List [Tuple element at index 0, Tuple element at index 0] | semmle.label | ControlFlowNode for List [Tuple element at index 0, Tuple element at index 0] |
+| test.py:627:5:627:19 | ControlFlowNode for List [Tuple element at index 0, Tuple element at index 2] | semmle.label | ControlFlowNode for List [Tuple element at index 0, Tuple element at index 2] |
+| test.py:627:7:627:8 | SSA variable a1 | semmle.label | SSA variable a1 |
+| test.py:627:7:627:13 | ControlFlowNode for Tuple [Tuple element at index 0] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 0] |
+| test.py:627:7:627:13 | ControlFlowNode for Tuple [Tuple element at index 2] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 2] |
+| test.py:627:7:627:13 | IterableSequence [Tuple element at index 0] | semmle.label | IterableSequence [Tuple element at index 0] |
+| test.py:627:7:627:13 | IterableSequence [Tuple element at index 2] | semmle.label | IterableSequence [Tuple element at index 2] |
+| test.py:627:11:627:13 | IterableElement | semmle.label | IterableElement |
+| test.py:627:11:627:13 | SSA variable a2 [List element] | semmle.label | SSA variable a2 [List element] |
+| test.py:628:10:628:11 | ControlFlowNode for a1 | semmle.label | ControlFlowNode for a1 |
+| test.py:630:12:630:13 | ControlFlowNode for a2 [List element] | semmle.label | ControlFlowNode for a2 [List element] |
+| test.py:630:12:630:16 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| test.py:631:10:631:11 | ControlFlowNode for a2 [List element] | semmle.label | ControlFlowNode for a2 [List element] |
+| test.py:631:10:631:14 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| test.py:636:6:636:14 | ControlFlowNode for List [Tuple element at index 0] | semmle.label | ControlFlowNode for List [Tuple element at index 0] |
+| test.py:636:6:636:14 | ControlFlowNode for List [Tuple element at index 2] | semmle.label | ControlFlowNode for List [Tuple element at index 2] |
+| test.py:636:6:636:14 | IterableSequence [Tuple element at index 0] | semmle.label | IterableSequence [Tuple element at index 0] |
+| test.py:636:6:636:14 | IterableSequence [Tuple element at index 2] | semmle.label | IterableSequence [Tuple element at index 2] |
+| test.py:636:6:636:18 | ControlFlowNode for Tuple [Tuple element at index 0, Tuple element at index 0] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 0, Tuple element at index 0] |
+| test.py:636:6:636:18 | ControlFlowNode for Tuple [Tuple element at index 0, Tuple element at index 2] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 0, Tuple element at index 2] |
+| test.py:636:7:636:8 | SSA variable a1 | semmle.label | SSA variable a1 |
+| test.py:636:11:636:13 | IterableElement | semmle.label | IterableElement |
+| test.py:636:11:636:13 | SSA variable a2 [List element] | semmle.label | SSA variable a2 [List element] |
+| test.py:637:10:637:11 | ControlFlowNode for a1 | semmle.label | ControlFlowNode for a1 |
+| test.py:639:12:639:13 | ControlFlowNode for a2 [List element] | semmle.label | ControlFlowNode for a2 [List element] |
+| test.py:639:12:639:16 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| test.py:640:10:640:11 | ControlFlowNode for a2 [List element] | semmle.label | ControlFlowNode for a2 [List element] |
+| test.py:640:10:640:14 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| test.py:647:19:647:24 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:648:10:648:10 | ControlFlowNode for a | semmle.label | ControlFlowNode for a |
+| test.py:655:10:655:51 | ControlFlowNode for List [List element, Tuple element at index 0] | semmle.label | ControlFlowNode for List [List element, Tuple element at index 0] |
+| test.py:655:12:655:17 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:655:12:655:28 | ControlFlowNode for Tuple [Tuple element at index 0] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 0] |
+| test.py:655:33:655:38 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:655:33:655:49 | ControlFlowNode for Tuple [Tuple element at index 0] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 0] |
+| test.py:656:9:656:9 | SSA variable x | semmle.label | SSA variable x |
+| test.py:656:9:656:11 | ControlFlowNode for Tuple [Tuple element at index 0] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 0] |
+| test.py:656:9:656:11 | IterableSequence [Tuple element at index 0] | semmle.label | IterableSequence [Tuple element at index 0] |
+| test.py:656:16:656:17 | ControlFlowNode for tl [List element, Tuple element at index 0] | semmle.label | ControlFlowNode for tl [List element, Tuple element at index 0] |
+| test.py:657:14:657:14 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
+| test.py:663:10:663:51 | ControlFlowNode for List [List element, Tuple element at index 0] | semmle.label | ControlFlowNode for List [List element, Tuple element at index 0] |
+| test.py:663:12:663:17 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:663:12:663:28 | ControlFlowNode for Tuple [Tuple element at index 0] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 0] |
+| test.py:663:33:663:38 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:663:33:663:49 | ControlFlowNode for Tuple [Tuple element at index 0] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 0] |
+| test.py:664:9:664:10 | IterableElement | semmle.label | IterableElement |
+| test.py:664:9:664:10 | SSA variable x [List element] | semmle.label | SSA variable x [List element] |
+| test.py:664:9:664:12 | ControlFlowNode for Tuple [Tuple element at index 0] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 0] |
+| test.py:664:9:664:12 | IterableSequence [Tuple element at index 0] | semmle.label | IterableSequence [Tuple element at index 0] |
+| test.py:664:12:664:12 | SSA variable y | semmle.label | SSA variable y |
+| test.py:664:17:664:18 | ControlFlowNode for tl [List element, Tuple element at index 0] | semmle.label | ControlFlowNode for tl [List element, Tuple element at index 0] |
+| test.py:666:14:666:14 | ControlFlowNode for x [List element] | semmle.label | ControlFlowNode for x [List element] |
+| test.py:666:14:666:17 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| test.py:667:16:667:16 | ControlFlowNode for y | semmle.label | ControlFlowNode for y |
+| test.py:672:10:672:51 | ControlFlowNode for List [List element, Tuple element at index 0] | semmle.label | ControlFlowNode for List [List element, Tuple element at index 0] |
+| test.py:672:12:672:17 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:672:12:672:28 | ControlFlowNode for Tuple [Tuple element at index 0] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 0] |
+| test.py:672:33:672:38 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:672:33:672:49 | ControlFlowNode for Tuple [Tuple element at index 0] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 0] |
+| test.py:673:9:673:9 | SSA variable x | semmle.label | SSA variable x |
+| test.py:673:9:673:14 | ControlFlowNode for Tuple [Tuple element at index 0] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 0] |
+| test.py:673:9:673:14 | IterableSequence [Tuple element at index 0] | semmle.label | IterableSequence [Tuple element at index 0] |
+| test.py:673:19:673:20 | ControlFlowNode for tl [List element, Tuple element at index 0] | semmle.label | ControlFlowNode for tl [List element, Tuple element at index 0] |
+| test.py:674:14:674:14 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
+| test.py:678:39:678:42 | ControlFlowNode for args [Tuple element at index 0] | semmle.label | ControlFlowNode for args [Tuple element at index 0] |
+| test.py:678:39:678:42 | ControlFlowNode for args [Tuple element at index 1] | semmle.label | ControlFlowNode for args [Tuple element at index 1] |
+| test.py:679:7:679:9 | SSA variable arg | semmle.label | SSA variable arg |
+| test.py:679:14:679:17 | ControlFlowNode for args [Tuple element at index 0] | semmle.label | ControlFlowNode for args [Tuple element at index 0] |
+| test.py:679:14:679:17 | ControlFlowNode for args [Tuple element at index 1] | semmle.label | ControlFlowNode for args [Tuple element at index 1] |
+| test.py:680:10:680:12 | ControlFlowNode for arg | semmle.label | ControlFlowNode for arg |
+| test.py:685:7:685:12 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:686:3:686:52 | PosOverflowNode for iterate_star_args() [Tuple element at index 0] | semmle.label | PosOverflowNode for iterate_star_args() [Tuple element at index 0] |
+| test.py:686:3:686:52 | PosOverflowNode for iterate_star_args() [Tuple element at index 1] | semmle.label | PosOverflowNode for iterate_star_args() [Tuple element at index 1] |
+| test.py:686:43:686:48 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:686:51:686:51 | ControlFlowNode for s | semmle.label | ControlFlowNode for s |
+| test.py:757:16:757:21 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:760:10:760:36 | ControlFlowNode for return_from_inner_scope() | semmle.label | ControlFlowNode for return_from_inner_scope() |
+| test.py:795:35:795:35 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
+| test.py:795:37:795:42 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:795:48:795:48 | ControlFlowNode for y | semmle.label | ControlFlowNode for y |
+| test.py:795:50:795:55 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:795:61:795:61 | ControlFlowNode for z | semmle.label | ControlFlowNode for z |
+| test.py:795:63:795:68 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:796:10:796:10 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
+| test.py:797:10:797:10 | ControlFlowNode for y | semmle.label | ControlFlowNode for y |
+| test.py:798:10:798:10 | ControlFlowNode for z | semmle.label | ControlFlowNode for z |
+subpaths
+| datamodel.py:38:8:38:13 | ControlFlowNode for SOURCE | datamodel.py:35:7:35:7 | ControlFlowNode for a | datamodel.py:36:10:36:10 | ControlFlowNode for a | datamodel.py:38:6:38:17 | ControlFlowNode for f() |
+| datamodel.py:71:15:71:20 | ControlFlowNode for SOURCE | datamodel.py:44:22:44:22 | ControlFlowNode for x | datamodel.py:46:16:46:16 | ControlFlowNode for x | datamodel.py:71:6:71:24 | ControlFlowNode for Attribute() |
+| datamodel.py:72:18:72:23 | ControlFlowNode for SOURCE | datamodel.py:44:22:44:22 | ControlFlowNode for x | datamodel.py:46:16:46:16 | ControlFlowNode for x | datamodel.py:72:6:72:27 | ControlFlowNode for Attribute() |
+| datamodel.py:80:20:80:25 | ControlFlowNode for SOURCE | datamodel.py:49:26:49:26 | ControlFlowNode for x | datamodel.py:50:16:50:16 | ControlFlowNode for x | datamodel.py:80:6:80:26 | ControlFlowNode for Attribute() |
+| datamodel.py:81:20:81:25 | ControlFlowNode for SOURCE | datamodel.py:49:26:49:26 | ControlFlowNode for x | datamodel.py:50:16:50:16 | ControlFlowNode for x | datamodel.py:81:6:81:26 | ControlFlowNode for Attribute() |
+| test.py:380:28:380:33 | ControlFlowNode for SOURCE | test.py:375:15:375:15 | ControlFlowNode for b | test.py:376:12:376:12 | ControlFlowNode for b | test.py:380:10:380:34 | ControlFlowNode for second() |
+| test.py:388:30:388:35 | ControlFlowNode for SOURCE | test.py:375:15:375:15 | ControlFlowNode for b | test.py:376:12:376:12 | ControlFlowNode for b | test.py:388:10:388:36 | ControlFlowNode for second() |
+| test.py:396:10:396:43 | KwUnpacked b | test.py:375:15:375:15 | ControlFlowNode for b | test.py:376:12:376:12 | ControlFlowNode for b | test.py:396:10:396:43 | ControlFlowNode for second() |
+| test.py:404:10:404:39 | PosOverflowNode for f_extra_pos() [Tuple element at index 0] | test.py:399:21:399:21 | ControlFlowNode for b [Tuple element at index 0] | test.py:400:12:400:15 | ControlFlowNode for Subscript | test.py:404:10:404:39 | ControlFlowNode for f_extra_pos() |
+| test.py:412:10:412:45 | KwOverflowNode for f_extra_keyword() [Dictionary element at key b] | test.py:407:26:407:26 | ControlFlowNode for b [Dictionary element at key b] | test.py:408:12:408:17 | ControlFlowNode for Subscript | test.py:412:10:412:45 | ControlFlowNode for f_extra_keyword() |
+| test.py:465:12:465:17 | ControlFlowNode for SOURCE | test.py:462:11:462:11 | ControlFlowNode for x | test.py:463:16:463:16 | ControlFlowNode for x | test.py:465:10:465:18 | ControlFlowNode for f() |
+| test.py:472:28:472:33 | ControlFlowNode for SOURCE | test.py:469:19:469:19 | ControlFlowNode for b | test.py:470:16:470:16 | ControlFlowNode for b | test.py:472:10:472:34 | ControlFlowNode for second() |
+| test.py:486:30:486:35 | ControlFlowNode for SOURCE | test.py:483:19:483:19 | ControlFlowNode for b | test.py:484:16:484:16 | ControlFlowNode for b | test.py:486:10:486:36 | ControlFlowNode for second() |
+| test.py:500:10:500:43 | KwUnpacked b | test.py:497:19:497:19 | ControlFlowNode for b | test.py:498:16:498:16 | ControlFlowNode for b | test.py:500:10:500:43 | ControlFlowNode for second() |
+| test.py:505:10:505:39 | PosOverflowNode for f_extra_pos() [Tuple element at index 0] | test.py:504:30:504:30 | ControlFlowNode for b [Tuple element at index 0] | test.py:504:33:504:36 | ControlFlowNode for Subscript | test.py:505:10:505:39 | ControlFlowNode for f_extra_pos() |
+| test.py:510:10:510:45 | KwOverflowNode for f_extra_keyword() [Dictionary element at key b] | test.py:509:35:509:35 | ControlFlowNode for b [Dictionary element at key b] | test.py:509:38:509:43 | ControlFlowNode for Subscript | test.py:510:10:510:45 | ControlFlowNode for f_extra_keyword() |
+#select
+| datamodel.py:38:6:38:17 | ControlFlowNode for f() | datamodel.py:38:8:38:13 | ControlFlowNode for SOURCE | datamodel.py:38:6:38:17 | ControlFlowNode for f() | Flow found |
+| datamodel.py:71:6:71:24 | ControlFlowNode for Attribute() | datamodel.py:71:15:71:20 | ControlFlowNode for SOURCE | datamodel.py:71:6:71:24 | ControlFlowNode for Attribute() | Flow found |
+| datamodel.py:72:6:72:27 | ControlFlowNode for Attribute() | datamodel.py:72:18:72:23 | ControlFlowNode for SOURCE | datamodel.py:72:6:72:27 | ControlFlowNode for Attribute() | Flow found |
+| datamodel.py:80:6:80:26 | ControlFlowNode for Attribute() | datamodel.py:80:20:80:25 | ControlFlowNode for SOURCE | datamodel.py:80:6:80:26 | ControlFlowNode for Attribute() | Flow found |
+| datamodel.py:81:6:81:26 | ControlFlowNode for Attribute() | datamodel.py:81:20:81:25 | ControlFlowNode for SOURCE | datamodel.py:81:6:81:26 | ControlFlowNode for Attribute() | Flow found |
+| datamodel.py:159:6:159:17 | ControlFlowNode for Attribute | datamodel.py:152:14:152:19 | ControlFlowNode for SOURCE | datamodel.py:159:6:159:17 | ControlFlowNode for Attribute | Flow found |
+| test.py:44:10:44:10 | ControlFlowNode for y | test.py:42:21:42:26 | ControlFlowNode for SOURCE | test.py:44:10:44:10 | ControlFlowNode for y | Flow found |
+| test.py:56:10:56:10 | ControlFlowNode for x | test.py:55:9:55:14 | ControlFlowNode for SOURCE | test.py:56:10:56:10 | ControlFlowNode for x | Flow found |
+| test.py:62:10:62:10 | ControlFlowNode for x | test.py:61:9:61:16 | ControlFlowNode for Str | test.py:62:10:62:10 | ControlFlowNode for x | Flow found |
+| test.py:67:10:67:10 | ControlFlowNode for x | test.py:66:9:66:17 | ControlFlowNode for Str | test.py:67:10:67:10 | ControlFlowNode for x | Flow found |
+| test.py:72:10:72:10 | ControlFlowNode for x | test.py:71:9:71:10 | ControlFlowNode for IntegerLiteral | test.py:72:10:72:10 | ControlFlowNode for x | Flow found |
+| test.py:77:10:77:10 | ControlFlowNode for x | test.py:76:9:76:12 | ControlFlowNode for FloatLiteral | test.py:77:10:77:10 | ControlFlowNode for x | Flow found |
+| test.py:88:10:88:10 | ControlFlowNode for x | test.py:87:10:87:15 | ControlFlowNode for SOURCE | test.py:88:10:88:10 | ControlFlowNode for x | Flow found |
+| test.py:94:10:94:13 | ControlFlowNode for Subscript | test.py:93:10:93:15 | ControlFlowNode for SOURCE | test.py:94:10:94:13 | ControlFlowNode for Subscript | Flow found |
+| test.py:104:10:104:13 | ControlFlowNode for Subscript | test.py:103:10:103:15 | ControlFlowNode for SOURCE | test.py:104:10:104:13 | ControlFlowNode for Subscript | Flow found |
+| test.py:109:10:109:13 | ControlFlowNode for Subscript | test.py:108:22:108:27 | ControlFlowNode for SOURCE | test.py:109:10:109:13 | ControlFlowNode for Subscript | Flow found |
+| test.py:115:10:115:13 | ControlFlowNode for Subscript | test.py:113:10:113:15 | ControlFlowNode for SOURCE | test.py:115:10:115:13 | ControlFlowNode for Subscript | Flow found |
+| test.py:126:10:126:16 | ControlFlowNode for Attribute() | test.py:125:10:125:15 | ControlFlowNode for SOURCE | test.py:126:10:126:16 | ControlFlowNode for Attribute() | Flow found |
+| test.py:131:10:131:16 | ControlFlowNode for Attribute() | test.py:130:10:130:15 | ControlFlowNode for SOURCE | test.py:131:10:131:16 | ControlFlowNode for Attribute() | Flow found |
+| test.py:136:10:136:16 | ControlFlowNode for Attribute() | test.py:135:22:135:27 | ControlFlowNode for SOURCE | test.py:136:10:136:16 | ControlFlowNode for Attribute() | Flow found |
+| test.py:142:10:142:16 | ControlFlowNode for Attribute() | test.py:140:10:140:15 | ControlFlowNode for SOURCE | test.py:142:10:142:16 | ControlFlowNode for Attribute() | Flow found |
+| test.py:153:10:153:15 | ControlFlowNode for Subscript | test.py:152:15:152:20 | ControlFlowNode for SOURCE | test.py:153:10:153:15 | ControlFlowNode for Subscript | Flow found |
+| test.py:158:10:158:19 | ControlFlowNode for Attribute() | test.py:157:15:157:20 | ControlFlowNode for SOURCE | test.py:158:10:158:19 | ControlFlowNode for Attribute() | Flow found |
+| test.py:184:10:184:13 | ControlFlowNode for Subscript | test.py:183:23:183:28 | ControlFlowNode for SOURCE | test.py:184:10:184:13 | ControlFlowNode for Subscript | Flow found |
+| test.py:189:10:189:13 | ControlFlowNode for Subscript | test.py:188:25:188:30 | ControlFlowNode for SOURCE | test.py:189:10:189:13 | ControlFlowNode for Subscript | Flow found |
+| test.py:200:10:200:13 | ControlFlowNode for Subscript | test.py:199:34:199:39 | ControlFlowNode for SOURCE | test.py:200:10:200:13 | ControlFlowNode for Subscript | Flow found |
+| test.py:206:10:206:13 | ControlFlowNode for Subscript | test.py:205:28:205:33 | ControlFlowNode for SOURCE | test.py:206:10:206:13 | ControlFlowNode for Subscript | Flow found |
+| test.py:211:10:211:13 | ControlFlowNode for Subscript | test.py:210:32:210:37 | ControlFlowNode for SOURCE | test.py:211:10:211:13 | ControlFlowNode for Subscript | Flow found |
+| test.py:349:10:349:21 | ControlFlowNode for Subscript | test.py:349:11:349:16 | ControlFlowNode for SOURCE | test.py:349:10:349:21 | ControlFlowNode for Subscript | Flow found |
+| test.py:353:10:353:20 | ControlFlowNode for Subscript | test.py:353:11:353:16 | ControlFlowNode for SOURCE | test.py:353:10:353:20 | ControlFlowNode for Subscript | Flow found |
+| test.py:357:10:357:27 | ControlFlowNode for Subscript | test.py:357:16:357:21 | ControlFlowNode for SOURCE | test.py:357:10:357:27 | ControlFlowNode for Subscript | Flow found |
+| test.py:380:10:380:34 | ControlFlowNode for second() | test.py:380:28:380:33 | ControlFlowNode for SOURCE | test.py:380:10:380:34 | ControlFlowNode for second() | Flow found |
+| test.py:388:10:388:36 | ControlFlowNode for second() | test.py:388:30:388:35 | ControlFlowNode for SOURCE | test.py:388:10:388:36 | ControlFlowNode for second() | Flow found |
+| test.py:396:10:396:43 | ControlFlowNode for second() | test.py:396:36:396:41 | ControlFlowNode for SOURCE | test.py:396:10:396:43 | ControlFlowNode for second() | Flow found |
+| test.py:404:10:404:39 | ControlFlowNode for f_extra_pos() | test.py:404:33:404:38 | ControlFlowNode for SOURCE | test.py:404:10:404:39 | ControlFlowNode for f_extra_pos() | Flow found |
+| test.py:412:10:412:45 | ControlFlowNode for f_extra_keyword() | test.py:412:39:412:44 | ControlFlowNode for SOURCE | test.py:412:10:412:45 | ControlFlowNode for f_extra_keyword() | Flow found |
+| test.py:433:10:433:38 | ControlFlowNode for IfExp | test.py:433:10:433:15 | ControlFlowNode for SOURCE | test.py:433:10:433:38 | ControlFlowNode for IfExp | Flow found |
+| test.py:441:10:441:39 | ControlFlowNode for IfExp | test.py:441:34:441:39 | ControlFlowNode for SOURCE | test.py:441:10:441:39 | ControlFlowNode for IfExp | Flow found |
+| test.py:465:10:465:18 | ControlFlowNode for f() | test.py:465:12:465:17 | ControlFlowNode for SOURCE | test.py:465:10:465:18 | ControlFlowNode for f() | Flow found |
+| test.py:472:10:472:34 | ControlFlowNode for second() | test.py:472:28:472:33 | ControlFlowNode for SOURCE | test.py:472:10:472:34 | ControlFlowNode for second() | Flow found |
+| test.py:486:10:486:36 | ControlFlowNode for second() | test.py:486:30:486:35 | ControlFlowNode for SOURCE | test.py:486:10:486:36 | ControlFlowNode for second() | Flow found |
+| test.py:500:10:500:43 | ControlFlowNode for second() | test.py:500:36:500:41 | ControlFlowNode for SOURCE | test.py:500:10:500:43 | ControlFlowNode for second() | Flow found |
+| test.py:505:10:505:39 | ControlFlowNode for f_extra_pos() | test.py:505:33:505:38 | ControlFlowNode for SOURCE | test.py:505:10:505:39 | ControlFlowNode for f_extra_pos() | Flow found |
+| test.py:510:10:510:45 | ControlFlowNode for f_extra_keyword() | test.py:510:39:510:44 | ControlFlowNode for SOURCE | test.py:510:10:510:45 | ControlFlowNode for f_extra_keyword() | Flow found |
+| test.py:524:10:524:10 | ControlFlowNode for a | test.py:522:9:522:14 | ControlFlowNode for SOURCE | test.py:524:10:524:10 | ControlFlowNode for a | Flow found |
+| test.py:529:10:529:10 | ControlFlowNode for b | test.py:522:9:522:14 | ControlFlowNode for SOURCE | test.py:529:10:529:10 | ControlFlowNode for b | Flow found |
+| test.py:536:10:536:10 | ControlFlowNode for a | test.py:534:10:534:15 | ControlFlowNode for SOURCE | test.py:536:10:536:10 | ControlFlowNode for a | Flow found |
+| test.py:544:10:544:10 | ControlFlowNode for a | test.py:542:10:542:15 | ControlFlowNode for SOURCE | test.py:544:10:544:10 | ControlFlowNode for a | Flow found |
+| test.py:546:10:546:10 | ControlFlowNode for c | test.py:542:30:542:35 | ControlFlowNode for SOURCE | test.py:546:10:546:10 | ControlFlowNode for c | Flow found |
+| test.py:553:10:553:10 | ControlFlowNode for a | test.py:551:13:551:18 | ControlFlowNode for SOURCE | test.py:553:10:553:10 | ControlFlowNode for a | Flow found |
+| test.py:561:10:561:10 | ControlFlowNode for a | test.py:559:10:559:15 | ControlFlowNode for SOURCE | test.py:561:10:561:10 | ControlFlowNode for a | Flow found |
+| test.py:563:10:563:13 | ControlFlowNode for Subscript | test.py:559:18:559:23 | ControlFlowNode for SOURCE | test.py:563:10:563:13 | ControlFlowNode for Subscript | Flow found |
+| test.py:564:12:564:12 | ControlFlowNode for c | test.py:559:18:559:23 | ControlFlowNode for SOURCE | test.py:564:12:564:12 | ControlFlowNode for c | Flow found |
+| test.py:571:10:571:10 | ControlFlowNode for a | test.py:569:10:569:15 | ControlFlowNode for SOURCE | test.py:571:10:571:10 | ControlFlowNode for a | Flow found |
+| test.py:573:10:573:10 | ControlFlowNode for c | test.py:569:18:569:23 | ControlFlowNode for SOURCE | test.py:573:10:573:10 | ControlFlowNode for c | Flow found |
+| test.py:582:10:582:11 | ControlFlowNode for a1 | test.py:578:12:578:17 | ControlFlowNode for SOURCE | test.py:582:10:582:11 | ControlFlowNode for a1 | Flow found |
+| test.py:582:10:582:11 | ControlFlowNode for a1 | test.py:578:31:578:36 | ControlFlowNode for SOURCE | test.py:582:10:582:11 | ControlFlowNode for a1 | Flow found |
+| test.py:582:10:582:11 | ControlFlowNode for a1 | test.py:578:41:578:46 | ControlFlowNode for SOURCE | test.py:582:10:582:11 | ControlFlowNode for a1 | Flow found |
+| test.py:583:12:583:13 | ControlFlowNode for a2 | test.py:578:12:578:17 | ControlFlowNode for SOURCE | test.py:583:12:583:13 | ControlFlowNode for a2 | Flow found |
+| test.py:583:12:583:13 | ControlFlowNode for a2 | test.py:578:31:578:36 | ControlFlowNode for SOURCE | test.py:583:12:583:13 | ControlFlowNode for a2 | Flow found |
+| test.py:583:12:583:13 | ControlFlowNode for a2 | test.py:578:41:578:46 | ControlFlowNode for SOURCE | test.py:583:12:583:13 | ControlFlowNode for a2 | Flow found |
+| test.py:584:10:584:11 | ControlFlowNode for a3 | test.py:578:12:578:17 | ControlFlowNode for SOURCE | test.py:584:10:584:11 | ControlFlowNode for a3 | Flow found |
+| test.py:584:10:584:11 | ControlFlowNode for a3 | test.py:578:31:578:36 | ControlFlowNode for SOURCE | test.py:584:10:584:11 | ControlFlowNode for a3 | Flow found |
+| test.py:584:10:584:11 | ControlFlowNode for a3 | test.py:578:41:578:46 | ControlFlowNode for SOURCE | test.py:584:10:584:11 | ControlFlowNode for a3 | Flow found |
+| test.py:590:10:590:11 | ControlFlowNode for a1 | test.py:578:12:578:17 | ControlFlowNode for SOURCE | test.py:590:10:590:11 | ControlFlowNode for a1 | Flow found |
+| test.py:590:10:590:11 | ControlFlowNode for a1 | test.py:578:31:578:36 | ControlFlowNode for SOURCE | test.py:590:10:590:11 | ControlFlowNode for a1 | Flow found |
+| test.py:590:10:590:11 | ControlFlowNode for a1 | test.py:578:41:578:46 | ControlFlowNode for SOURCE | test.py:590:10:590:11 | ControlFlowNode for a1 | Flow found |
+| test.py:591:12:591:13 | ControlFlowNode for a2 | test.py:578:12:578:17 | ControlFlowNode for SOURCE | test.py:591:12:591:13 | ControlFlowNode for a2 | Flow found |
+| test.py:591:12:591:13 | ControlFlowNode for a2 | test.py:578:31:578:36 | ControlFlowNode for SOURCE | test.py:591:12:591:13 | ControlFlowNode for a2 | Flow found |
+| test.py:591:12:591:13 | ControlFlowNode for a2 | test.py:578:41:578:46 | ControlFlowNode for SOURCE | test.py:591:12:591:13 | ControlFlowNode for a2 | Flow found |
+| test.py:592:10:592:11 | ControlFlowNode for a3 | test.py:578:12:578:17 | ControlFlowNode for SOURCE | test.py:592:10:592:11 | ControlFlowNode for a3 | Flow found |
+| test.py:592:10:592:11 | ControlFlowNode for a3 | test.py:578:31:578:36 | ControlFlowNode for SOURCE | test.py:592:10:592:11 | ControlFlowNode for a3 | Flow found |
+| test.py:592:10:592:11 | ControlFlowNode for a3 | test.py:578:41:578:46 | ControlFlowNode for SOURCE | test.py:592:10:592:11 | ControlFlowNode for a3 | Flow found |
+| test.py:598:10:598:11 | ControlFlowNode for a1 | test.py:578:12:578:17 | ControlFlowNode for SOURCE | test.py:598:10:598:11 | ControlFlowNode for a1 | Flow found |
+| test.py:598:10:598:11 | ControlFlowNode for a1 | test.py:578:31:578:36 | ControlFlowNode for SOURCE | test.py:598:10:598:11 | ControlFlowNode for a1 | Flow found |
+| test.py:598:10:598:11 | ControlFlowNode for a1 | test.py:578:41:578:46 | ControlFlowNode for SOURCE | test.py:598:10:598:11 | ControlFlowNode for a1 | Flow found |
+| test.py:599:12:599:13 | ControlFlowNode for a2 | test.py:578:12:578:17 | ControlFlowNode for SOURCE | test.py:599:12:599:13 | ControlFlowNode for a2 | Flow found |
+| test.py:599:12:599:13 | ControlFlowNode for a2 | test.py:578:31:578:36 | ControlFlowNode for SOURCE | test.py:599:12:599:13 | ControlFlowNode for a2 | Flow found |
+| test.py:599:12:599:13 | ControlFlowNode for a2 | test.py:578:41:578:46 | ControlFlowNode for SOURCE | test.py:599:12:599:13 | ControlFlowNode for a2 | Flow found |
+| test.py:600:10:600:11 | ControlFlowNode for a3 | test.py:578:12:578:17 | ControlFlowNode for SOURCE | test.py:600:10:600:11 | ControlFlowNode for a3 | Flow found |
+| test.py:600:10:600:11 | ControlFlowNode for a3 | test.py:578:31:578:36 | ControlFlowNode for SOURCE | test.py:600:10:600:11 | ControlFlowNode for a3 | Flow found |
+| test.py:600:10:600:11 | ControlFlowNode for a3 | test.py:578:41:578:46 | ControlFlowNode for SOURCE | test.py:600:10:600:11 | ControlFlowNode for a3 | Flow found |
+| test.py:610:10:610:11 | ControlFlowNode for a1 | test.py:606:12:606:17 | ControlFlowNode for SOURCE | test.py:610:10:610:11 | ControlFlowNode for a1 | Flow found |
+| test.py:612:12:612:16 | ControlFlowNode for Subscript | test.py:606:31:606:36 | ControlFlowNode for SOURCE | test.py:612:12:612:16 | ControlFlowNode for Subscript | Flow found |
+| test.py:613:10:613:14 | ControlFlowNode for Subscript | test.py:606:31:606:36 | ControlFlowNode for SOURCE | test.py:613:10:613:14 | ControlFlowNode for Subscript | Flow found |
+| test.py:619:10:619:11 | ControlFlowNode for a1 | test.py:606:12:606:17 | ControlFlowNode for SOURCE | test.py:619:10:619:11 | ControlFlowNode for a1 | Flow found |
+| test.py:621:12:621:16 | ControlFlowNode for Subscript | test.py:606:31:606:36 | ControlFlowNode for SOURCE | test.py:621:12:621:16 | ControlFlowNode for Subscript | Flow found |
+| test.py:622:10:622:14 | ControlFlowNode for Subscript | test.py:606:31:606:36 | ControlFlowNode for SOURCE | test.py:622:10:622:14 | ControlFlowNode for Subscript | Flow found |
+| test.py:628:10:628:11 | ControlFlowNode for a1 | test.py:606:12:606:17 | ControlFlowNode for SOURCE | test.py:628:10:628:11 | ControlFlowNode for a1 | Flow found |
+| test.py:630:12:630:16 | ControlFlowNode for Subscript | test.py:606:31:606:36 | ControlFlowNode for SOURCE | test.py:630:12:630:16 | ControlFlowNode for Subscript | Flow found |
+| test.py:631:10:631:14 | ControlFlowNode for Subscript | test.py:606:31:606:36 | ControlFlowNode for SOURCE | test.py:631:10:631:14 | ControlFlowNode for Subscript | Flow found |
+| test.py:637:10:637:11 | ControlFlowNode for a1 | test.py:606:12:606:17 | ControlFlowNode for SOURCE | test.py:637:10:637:11 | ControlFlowNode for a1 | Flow found |
+| test.py:639:12:639:16 | ControlFlowNode for Subscript | test.py:606:31:606:36 | ControlFlowNode for SOURCE | test.py:639:12:639:16 | ControlFlowNode for Subscript | Flow found |
+| test.py:640:10:640:14 | ControlFlowNode for Subscript | test.py:606:31:606:36 | ControlFlowNode for SOURCE | test.py:640:10:640:14 | ControlFlowNode for Subscript | Flow found |
+| test.py:648:10:648:10 | ControlFlowNode for a | test.py:647:19:647:24 | ControlFlowNode for SOURCE | test.py:648:10:648:10 | ControlFlowNode for a | Flow found |
+| test.py:657:14:657:14 | ControlFlowNode for x | test.py:655:12:655:17 | ControlFlowNode for SOURCE | test.py:657:14:657:14 | ControlFlowNode for x | Flow found |
+| test.py:657:14:657:14 | ControlFlowNode for x | test.py:655:33:655:38 | ControlFlowNode for SOURCE | test.py:657:14:657:14 | ControlFlowNode for x | Flow found |
+| test.py:666:14:666:17 | ControlFlowNode for Subscript | test.py:663:12:663:17 | ControlFlowNode for SOURCE | test.py:666:14:666:17 | ControlFlowNode for Subscript | Flow found |
+| test.py:666:14:666:17 | ControlFlowNode for Subscript | test.py:663:33:663:38 | ControlFlowNode for SOURCE | test.py:666:14:666:17 | ControlFlowNode for Subscript | Flow found |
+| test.py:667:16:667:16 | ControlFlowNode for y | test.py:663:12:663:17 | ControlFlowNode for SOURCE | test.py:667:16:667:16 | ControlFlowNode for y | Flow found |
+| test.py:667:16:667:16 | ControlFlowNode for y | test.py:663:33:663:38 | ControlFlowNode for SOURCE | test.py:667:16:667:16 | ControlFlowNode for y | Flow found |
+| test.py:674:14:674:14 | ControlFlowNode for x | test.py:672:12:672:17 | ControlFlowNode for SOURCE | test.py:674:14:674:14 | ControlFlowNode for x | Flow found |
+| test.py:674:14:674:14 | ControlFlowNode for x | test.py:672:33:672:38 | ControlFlowNode for SOURCE | test.py:674:14:674:14 | ControlFlowNode for x | Flow found |
+| test.py:680:10:680:12 | ControlFlowNode for arg | test.py:685:7:685:12 | ControlFlowNode for SOURCE | test.py:680:10:680:12 | ControlFlowNode for arg | Flow found |
+| test.py:680:10:680:12 | ControlFlowNode for arg | test.py:686:43:686:48 | ControlFlowNode for SOURCE | test.py:680:10:680:12 | ControlFlowNode for arg | Flow found |
+| test.py:760:10:760:36 | ControlFlowNode for return_from_inner_scope() | test.py:757:16:757:21 | ControlFlowNode for SOURCE | test.py:760:10:760:36 | ControlFlowNode for return_from_inner_scope() | Flow found |
+| test.py:796:10:796:10 | ControlFlowNode for x | test.py:795:37:795:42 | ControlFlowNode for SOURCE | test.py:796:10:796:10 | ControlFlowNode for x | Flow found |
+| test.py:797:10:797:10 | ControlFlowNode for y | test.py:795:50:795:55 | ControlFlowNode for SOURCE | test.py:797:10:797:10 | ControlFlowNode for y | Flow found |
+| test.py:798:10:798:10 | ControlFlowNode for z | test.py:795:63:795:68 | ControlFlowNode for SOURCE | test.py:798:10:798:10 | ControlFlowNode for z | Flow found |

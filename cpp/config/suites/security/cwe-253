@@ -1,0 +1,3 @@
+# CWE-253: Incorrect Check of Function Return Value
++ semmlecode-cpp-queries/Security/CWE/CWE-253/HResultBooleanConversion.ql: /CWE/CWE-253
+    @name Cast between HRESULT and a Boolean type (CWE-253)

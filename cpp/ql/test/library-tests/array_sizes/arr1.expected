@@ -1,0 +1,6 @@
+| array_sizes.c:10:10:10:20 | sizeof_arr5 |
+| array_sizes.c:11:11:11:21 | sizeof_arr6 |
+| array_sizes.c:14:14:14:24 | sizeof_arr7 |
+| array_sizes.cpp:7:10:7:20 | sizeof_arr1 |
+| array_sizes.cpp:8:11:8:21 | sizeof_arr2 |
+| array_sizes.cpp:11:14:11:24 | sizeof_arr3 |

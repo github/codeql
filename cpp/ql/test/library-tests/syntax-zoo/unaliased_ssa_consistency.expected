@@ -1,0 +1,105 @@
+missingOperand
+| misc.c:125:5:125:11 | CopyValue: (statement expression) | Instruction 'CopyValue' is missing an expected operand with tag 'Unary' in function '$@'. | misc.c:97:6:97:10 | void misc3() | void misc3() |
+unexpectedOperand
+duplicateOperand
+missingPhiOperand
+missingOperandType
+duplicateChiOperand
+sideEffectWithoutPrimary
+instructionWithoutSuccessor
+| VacuousDestructorCall.cpp:2:29:2:29 | InitializeIndirection: y | Instruction 'InitializeIndirection: y' has no successors in function '$@'. | VacuousDestructorCall.cpp:2:6:2:6 | void CallDestructor<int>(int, int*) | void CallDestructor<int>(int, int*) |
+| condition_decls.cpp:16:19:16:20 | IndirectMayWriteSideEffect: call to BoxedInt | Instruction 'IndirectMayWriteSideEffect: call to BoxedInt' has no successors in function '$@'. | condition_decls.cpp:15:6:15:17 | void if_decl_bind(int) | void if_decl_bind(int) |
+| condition_decls.cpp:26:23:26:24 | IndirectMayWriteSideEffect: call to BoxedInt | Instruction 'IndirectMayWriteSideEffect: call to BoxedInt' has no successors in function '$@'. | condition_decls.cpp:25:6:25:21 | void switch_decl_bind(int) | void switch_decl_bind(int) |
+| condition_decls.cpp:41:22:41:23 | IndirectMayWriteSideEffect: call to BoxedInt | Instruction 'IndirectMayWriteSideEffect: call to BoxedInt' has no successors in function '$@'. | condition_decls.cpp:40:6:40:20 | void while_decl_bind(int) | void while_decl_bind(int) |
+| condition_decls.cpp:48:52:48:53 | IndirectMayWriteSideEffect: call to BoxedInt | Instruction 'IndirectMayWriteSideEffect: call to BoxedInt' has no successors in function '$@'. | condition_decls.cpp:47:6:47:18 | void for_decl_bind(int) | void for_decl_bind(int) |
+| misc.c:171:10:171:13 | Uninitialized: definition of str2 | Instruction 'Uninitialized: definition of str2' has no successors in function '$@'. | misc.c:168:6:168:8 | void vla() | void vla() |
+| ms_try_except.cpp:3:9:3:9 | Uninitialized: definition of x | Instruction 'Uninitialized: definition of x' has no successors in function '$@'. | ms_try_except.cpp:2:6:2:18 | void ms_try_except(int) | void ms_try_except(int) |
+| ms_try_mix.cpp:11:12:11:15 | IndirectMayWriteSideEffect: call to C | Instruction 'IndirectMayWriteSideEffect: call to C' has no successors in function '$@'. | ms_try_mix.cpp:10:6:10:18 | void ms_except_mix(int) | void ms_except_mix(int) |
+| ms_try_mix.cpp:28:12:28:15 | IndirectMayWriteSideEffect: call to C | Instruction 'IndirectMayWriteSideEffect: call to C' has no successors in function '$@'. | ms_try_mix.cpp:27:6:27:19 | void ms_finally_mix(int) | void ms_finally_mix(int) |
+| ms_try_mix.cpp:48:10:48:13 | IndirectMayWriteSideEffect: call to C | Instruction 'IndirectMayWriteSideEffect: call to C' has no successors in function '$@'. | ms_try_mix.cpp:47:6:47:28 | void ms_empty_finally_at_end() | void ms_empty_finally_at_end() |
+| stmt_expr.cpp:27:5:27:15 | Store: ... = ... | Instruction 'Store: ... = ...' has no successors in function '$@'. | stmt_expr.cpp:21:6:21:6 | void stmtexpr::g(int) | void stmtexpr::g(int) |
+| vla.c:5:9:5:14 | Uninitialized: definition of matrix | Instruction 'Uninitialized: definition of matrix' has no successors in function '$@'. | vla.c:3:5:3:8 | int main(int, char**) | int main(int, char**) |
+| vla.c:11:6:11:16 | InitializeNonLocal: vla_typedef | Instruction 'InitializeNonLocal: vla_typedef' has no successors in function '$@'. | vla.c:11:6:11:16 | void vla_typedef() | void vla_typedef() |
+ambiguousSuccessors
+| allocators.cpp:14:5:14:8 | InitializeNonLocal: main | Instruction 'InitializeNonLocal: main' has 4 successors of kind 'Goto' in function '$@'. | allocators.cpp:14:5:14:8 | int main() | int main() |
+| array_delete.cpp:5:6:5:6 | InitializeNonLocal: f | Instruction 'InitializeNonLocal: f' has 14 successors of kind 'Goto' in function '$@'. | array_delete.cpp:5:6:5:6 | void f() | void f() |
+| assignexpr.cpp:6:6:6:6 | InitializeNonLocal: f | Instruction 'InitializeNonLocal: f' has 14 successors of kind 'Goto' in function '$@'. | array_delete.cpp:5:6:5:6 | void f() | void f() |
+| break_labels.c:2:11:2:11 | InitializeParameter: i | Instruction 'InitializeParameter: i' has 19 successors of kind 'Goto' in function '$@'. | aggregateinitializer.c:1:6:1:6 | int f(int); void f(int) | int f(int); void f(int) |
+| break_labels.c:2:11:2:11 | InitializeParameter: i | Instruction 'InitializeParameter: x' has 19 successors of kind 'Goto' in function '$@'. | aggregateinitializer.c:1:6:1:6 | int f(int); void f(int) | int f(int); void f(int) |
+| break_labels.c:2:11:2:11 | InitializeParameter: x | Instruction 'InitializeParameter: i' has 19 successors of kind 'Goto' in function '$@'. | aggregateinitializer.c:1:6:1:6 | int f(int); void f(int) | int f(int); void f(int) |
+| break_labels.c:2:11:2:11 | InitializeParameter: x | Instruction 'InitializeParameter: x' has 19 successors of kind 'Goto' in function '$@'. | aggregateinitializer.c:1:6:1:6 | int f(int); void f(int) | int f(int); void f(int) |
+| conditional_destructors.cpp:29:6:29:7 | InitializeNonLocal: f1 | Instruction 'InitializeNonLocal: f1' has 2 successors of kind 'Goto' in function '$@'. | conditional_destructors.cpp:29:6:29:7 | void f1() | void f1() |
+| conditional_destructors.cpp:38:6:38:7 | InitializeNonLocal: f2 | Instruction 'InitializeNonLocal: f2' has 2 successors of kind 'Goto' in function '$@'. | conditional_destructors.cpp:38:6:38:7 | void f2() | void f2() |
+| constmemberaccess.cpp:6:6:6:6 | InitializeNonLocal: f | Instruction 'InitializeNonLocal: f' has 14 successors of kind 'Goto' in function '$@'. | array_delete.cpp:5:6:5:6 | void f() | void f() |
+| constructorinitializer.cpp:6:6:6:6 | InitializeNonLocal: f | Instruction 'InitializeNonLocal: f' has 14 successors of kind 'Goto' in function '$@'. | array_delete.cpp:5:6:5:6 | void f() | void f() |
+| defconstructornewexpr.cpp:3:6:3:6 | InitializeNonLocal: f | Instruction 'InitializeNonLocal: f' has 14 successors of kind 'Goto' in function '$@'. | array_delete.cpp:5:6:5:6 | void f() | void f() |
+| defdestructordeleteexpr.cpp:3:6:3:6 | InitializeNonLocal: f | Instruction 'InitializeNonLocal: f' has 14 successors of kind 'Goto' in function '$@'. | array_delete.cpp:5:6:5:6 | void f() | void f() |
+| deleteexpr.cpp:6:6:6:6 | InitializeNonLocal: f | Instruction 'InitializeNonLocal: f' has 14 successors of kind 'Goto' in function '$@'. | array_delete.cpp:5:6:5:6 | void f() | void f() |
+| dostmt.c:8:6:8:18 | InitializeNonLocal: always_true_1 | Instruction 'InitializeNonLocal: always_true_1' has 4 successors of kind 'Goto' in function '$@'. | dostmt.c:8:6:8:18 | void always_true_1() | void always_true_1() |
+| dostmt.c:16:6:16:18 | InitializeNonLocal: always_true_2 | Instruction 'InitializeNonLocal: always_true_2' has 4 successors of kind 'Goto' in function '$@'. | dostmt.c:16:6:16:18 | void always_true_2() | void always_true_2() |
+| dostmt.c:25:6:25:18 | InitializeNonLocal: always_true_3 | Instruction 'InitializeNonLocal: always_true_3' has 2 successors of kind 'Goto' in function '$@'. | dostmt.c:25:6:25:18 | void always_true_3() | void always_true_3() |
+| duff.c:2:12:2:12 | InitializeParameter: i | Instruction 'InitializeParameter: i' has 19 successors of kind 'Goto' in function '$@'. | aggregateinitializer.c:1:6:1:6 | int f(int); void f(int) | int f(int); void f(int) |
+| duff.c:2:12:2:12 | InitializeParameter: i | Instruction 'InitializeParameter: x' has 19 successors of kind 'Goto' in function '$@'. | aggregateinitializer.c:1:6:1:6 | int f(int); void f(int) | int f(int); void f(int) |
+| duff.c:2:12:2:12 | InitializeParameter: x | Instruction 'InitializeParameter: i' has 19 successors of kind 'Goto' in function '$@'. | aggregateinitializer.c:1:6:1:6 | int f(int); void f(int) | int f(int); void f(int) |
+| duff.c:2:12:2:12 | InitializeParameter: x | Instruction 'InitializeParameter: x' has 19 successors of kind 'Goto' in function '$@'. | aggregateinitializer.c:1:6:1:6 | int f(int); void f(int) | int f(int); void f(int) |
+| fieldaccess.cpp:6:6:6:6 | InitializeNonLocal: f | Instruction 'InitializeNonLocal: f' has 14 successors of kind 'Goto' in function '$@'. | array_delete.cpp:5:6:5:6 | void f() | void f() |
+| forstmt.cpp:1:6:1:7 | InitializeNonLocal: f1 | Instruction 'InitializeNonLocal: f1' has 2 successors of kind 'Goto' in function '$@'. | conditional_destructors.cpp:29:6:29:7 | void f1() | void f1() |
+| forstmt.cpp:8:6:8:7 | InitializeNonLocal: f2 | Instruction 'InitializeNonLocal: f2' has 2 successors of kind 'Goto' in function '$@'. | conditional_destructors.cpp:38:6:38:7 | void f2() | void f2() |
+| ifelsestmt.c:1:6:1:19 | InitializeNonLocal: always_false_1 | Instruction 'InitializeNonLocal: always_false_1' has 3 successors of kind 'Goto' in function '$@'. | ifelsestmt.c:1:6:1:19 | void always_false_1() | void always_false_1() |
+| ifelsestmt.c:11:6:11:19 | InitializeNonLocal: always_false_2 | Instruction 'InitializeNonLocal: always_false_2' has 3 successors of kind 'Goto' in function '$@'. | ifelsestmt.c:11:6:11:19 | void always_false_2() | void always_false_2() |
+| ifelsestmt.c:19:6:19:18 | InitializeNonLocal: always_true_1 | Instruction 'InitializeNonLocal: always_true_1' has 4 successors of kind 'Goto' in function '$@'. | dostmt.c:8:6:8:18 | void always_true_1() | void always_true_1() |
+| ifelsestmt.c:29:6:29:18 | InitializeNonLocal: always_true_2 | Instruction 'InitializeNonLocal: always_true_2' has 4 successors of kind 'Goto' in function '$@'. | dostmt.c:16:6:16:18 | void always_true_2() | void always_true_2() |
+| ifelsestmt.c:37:24:37:24 | InitializeParameter: y | Instruction 'InitializeParameter: y' has 4 successors of kind 'Goto' in function '$@'. | dostmt.c:32:6:32:11 | void normal(int, int) | void normal(int, int) |
+| ifstmt.c:1:6:1:19 | InitializeNonLocal: always_false_1 | Instruction 'InitializeNonLocal: always_false_1' has 3 successors of kind 'Goto' in function '$@'. | ifelsestmt.c:1:6:1:19 | void always_false_1() | void always_false_1() |
+| ifstmt.c:8:6:8:19 | InitializeNonLocal: always_false_2 | Instruction 'InitializeNonLocal: always_false_2' has 3 successors of kind 'Goto' in function '$@'. | ifelsestmt.c:11:6:11:19 | void always_false_2() | void always_false_2() |
+| ifstmt.c:14:6:14:18 | InitializeNonLocal: always_true_1 | Instruction 'InitializeNonLocal: always_true_1' has 4 successors of kind 'Goto' in function '$@'. | dostmt.c:8:6:8:18 | void always_true_1() | void always_true_1() |
+| ifstmt.c:21:6:21:18 | InitializeNonLocal: always_true_2 | Instruction 'InitializeNonLocal: always_true_2' has 4 successors of kind 'Goto' in function '$@'. | dostmt.c:16:6:16:18 | void always_true_2() | void always_true_2() |
+| ifstmt.c:27:24:27:24 | InitializeParameter: y | Instruction 'InitializeParameter: y' has 4 successors of kind 'Goto' in function '$@'. | dostmt.c:32:6:32:11 | void normal(int, int) | void normal(int, int) |
+| membercallexpr.cpp:6:6:6:6 | InitializeNonLocal: f | Instruction 'InitializeNonLocal: f' has 14 successors of kind 'Goto' in function '$@'. | array_delete.cpp:5:6:5:6 | void f() | void f() |
+| membercallexpr_args.cpp:7:6:7:6 | InitializeNonLocal: f | Instruction 'InitializeNonLocal: f' has 14 successors of kind 'Goto' in function '$@'. | array_delete.cpp:5:6:5:6 | void f() | void f() |
+| newexpr.cpp:6:6:6:6 | InitializeNonLocal: f | Instruction 'InitializeNonLocal: f' has 14 successors of kind 'Goto' in function '$@'. | array_delete.cpp:5:6:5:6 | void f() | void f() |
+| no_dynamic_init.cpp:9:5:9:8 | InitializeNonLocal: main | Instruction 'InitializeNonLocal: main' has 4 successors of kind 'Goto' in function '$@'. | allocators.cpp:14:5:14:8 | int main() | int main() |
+| nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: i | Instruction 'InitializeParameter: i' has 19 successors of kind 'Goto' in function '$@'. | aggregateinitializer.c:1:6:1:6 | int f(int); void f(int) | int f(int); void f(int) |
+| nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: i | Instruction 'InitializeParameter: x' has 19 successors of kind 'Goto' in function '$@'. | aggregateinitializer.c:1:6:1:6 | int f(int); void f(int) | int f(int); void f(int) |
+| nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: x | Instruction 'InitializeParameter: i' has 19 successors of kind 'Goto' in function '$@'. | aggregateinitializer.c:1:6:1:6 | int f(int); void f(int) | int f(int); void f(int) |
+| nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: x | Instruction 'InitializeParameter: x' has 19 successors of kind 'Goto' in function '$@'. | aggregateinitializer.c:1:6:1:6 | int f(int); void f(int) | int f(int); void f(int) |
+| nonmembercallexpr.c:1:6:1:6 | InitializeNonLocal: g | Instruction 'InitializeNonLocal: g' has 2 successors of kind 'Goto' in function '$@'. | nonmembercallexpr.c:1:6:1:6 | void g(); void g())(); void(* g(); void(* g())() | void g(); void g())(); void(* g(); void(* g())() |
+| parameterinitializer.cpp:18:5:18:8 | InitializeNonLocal: main | Instruction 'InitializeNonLocal: main' has 4 successors of kind 'Goto' in function '$@'. | allocators.cpp:14:5:14:8 | int main() | int main() |
+| pmcallexpr.cpp:6:6:6:6 | InitializeNonLocal: f | Instruction 'InitializeNonLocal: f' has 14 successors of kind 'Goto' in function '$@'. | array_delete.cpp:5:6:5:6 | void f() | void f() |
+| revsubscriptexpr.c:1:6:1:6 | InitializeNonLocal: g | Instruction 'InitializeNonLocal: g' has 2 successors of kind 'Goto' in function '$@'. | nonmembercallexpr.c:1:6:1:6 | void g(); void g())(); void(* g(); void(* g())() | void g(); void g())(); void(* g(); void(* g())() |
+| staticmembercallexpr.cpp:6:6:6:6 | InitializeNonLocal: f | Instruction 'InitializeNonLocal: f' has 14 successors of kind 'Goto' in function '$@'. | array_delete.cpp:5:6:5:6 | void f() | void f() |
+| staticmembercallexpr_args.cpp:7:6:7:6 | InitializeNonLocal: f | Instruction 'InitializeNonLocal: f' has 14 successors of kind 'Goto' in function '$@'. | array_delete.cpp:5:6:5:6 | void f() | void f() |
+| stream_it.cpp:16:5:16:8 | InitializeNonLocal: main | Instruction 'InitializeNonLocal: main' has 4 successors of kind 'Goto' in function '$@'. | allocators.cpp:14:5:14:8 | int main() | int main() |
+| switchstmt.c:1:12:1:12 | InitializeParameter: i | Instruction 'InitializeParameter: i' has 19 successors of kind 'Goto' in function '$@'. | aggregateinitializer.c:1:6:1:6 | int f(int); void f(int) | int f(int); void f(int) |
+| switchstmt.c:1:12:1:12 | InitializeParameter: i | Instruction 'InitializeParameter: x' has 19 successors of kind 'Goto' in function '$@'. | aggregateinitializer.c:1:6:1:6 | int f(int); void f(int) | int f(int); void f(int) |
+| switchstmt.c:1:12:1:12 | InitializeParameter: x | Instruction 'InitializeParameter: i' has 19 successors of kind 'Goto' in function '$@'. | aggregateinitializer.c:1:6:1:6 | int f(int); void f(int) | int f(int); void f(int) |
+| switchstmt.c:1:12:1:12 | InitializeParameter: x | Instruction 'InitializeParameter: x' has 19 successors of kind 'Goto' in function '$@'. | aggregateinitializer.c:1:6:1:6 | int f(int); void f(int) | int f(int); void f(int) |
+| whilestmt.c:1:6:1:19 | InitializeNonLocal: always_false_1 | Instruction 'InitializeNonLocal: always_false_1' has 3 successors of kind 'Goto' in function '$@'. | ifelsestmt.c:1:6:1:19 | void always_false_1() | void always_false_1() |
+| whilestmt.c:8:6:8:19 | InitializeNonLocal: always_false_2 | Instruction 'InitializeNonLocal: always_false_2' has 3 successors of kind 'Goto' in function '$@'. | ifelsestmt.c:11:6:11:19 | void always_false_2() | void always_false_2() |
+| whilestmt.c:15:6:15:18 | InitializeNonLocal: always_true_1 | Instruction 'InitializeNonLocal: always_true_1' has 4 successors of kind 'Goto' in function '$@'. | dostmt.c:8:6:8:18 | void always_true_1() | void always_true_1() |
+| whilestmt.c:23:6:23:18 | InitializeNonLocal: always_true_2 | Instruction 'InitializeNonLocal: always_true_2' has 4 successors of kind 'Goto' in function '$@'. | dostmt.c:16:6:16:18 | void always_true_2() | void always_true_2() |
+| whilestmt.c:32:6:32:18 | InitializeNonLocal: always_true_3 | Instruction 'InitializeNonLocal: always_true_3' has 2 successors of kind 'Goto' in function '$@'. | dostmt.c:25:6:25:18 | void always_true_3() | void always_true_3() |
+unexplainedLoop
+unnecessaryPhiInstruction
+memoryOperandDefinitionIsUnmodeled
+operandAcrossFunctions
+instructionWithoutUniqueBlock
+containsLoopOfForwardEdges
+lostReachability
+backEdgeCountMismatch
+useNotDominatedByDefinition
+switchInstructionWithoutDefaultEdge
+notMarkedAsConflated
+wronglyMarkedAsConflated
+invalidOverlap
+nonUniqueEnclosingIRFunction
+fieldAddressOnNonPointer
+thisArgumentIsNonPointer
+| pmcallexpr.cpp:8:2:8:15 | Call: call to expression | Call instruction 'Call: call to expression' has a `this` argument operand that is not an address, in function '$@'. | array_delete.cpp:5:6:5:6 | void f() | void f() |
+| pointer_to_member.cpp:23:5:23:54 | Call: call to expression | Call instruction 'Call: call to expression' has a `this` argument operand that is not an address, in function '$@'. | pointer_to_member.cpp:14:5:14:9 | int usePM(int PM::*) | int usePM(int PM::*) |
+| pointer_to_member.cpp:24:5:24:49 | Call: call to expression | Call instruction 'Call: call to expression' has a `this` argument operand that is not an address, in function '$@'. | pointer_to_member.cpp:14:5:14:9 | int usePM(int PM::*) | int usePM(int PM::*) |
+missingCanonicalLanguageType
+multipleCanonicalLanguageTypes
+missingIRType
+multipleIRTypes
+missingCppType

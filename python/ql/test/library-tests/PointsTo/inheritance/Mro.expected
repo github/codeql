@@ -1,0 +1,12 @@
+| class Base | [Base, object] |
+| class Derived1 | [Derived1, Base, object] |
+| class Derived2 | [Derived2, Derived1, Base, object] |
+| class Derived3 | [Derived3, Derived1, Base, object] |
+| class Derived4 | [Derived4, Derived3, Derived2, Derived1, Base, object] |
+| class Derived5 | [Derived5, Derived1, Base, object] |
+| class Derived6 | [Derived6, Derived5, Derived2, Derived1, Base, object] |
+| class Missing1 | [Missing1, ??, object] |
+| class Missing2 | [Missing2, Base, ??, object] |
+| class Missing3 | [Missing3, ??, Base, object] |
+| class Wrong1 | [Wrong1, Derived5, Derived2, Derived1, Base, object] |
+| class Wrong2 | [Wrong2, Derived3, Derived2, Derived1, Base, object] |

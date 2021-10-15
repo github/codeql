@@ -1,0 +1,45 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>When handling an exception, Python searches the except blocks in source code order
+until it finds a matching <code>except</code> block for the exception.
+An except block, <code>except E:</code>, specifies a class <code>E</code> and will match any
+exception that is an instance of <code>E</code>.
+</p>
+<p>
+If a more general except block precedes a more specific except block,
+then the more general block is always executed and the more specific block is never executed.
+An except block, <code>except A:</code>, is more general than another except block, <code>except B:</code>,
+if <code>A</code> is a super class of <code>B</code>.
+</p>
+<p>
+For example:
+<code>except Exception:</code> is more general than <code>except Error:</code> as <code>Exception</code>
+is a super class of <code>Error</code>.
+</p>
+
+</overview>
+<recommendation>
+
+<p>Reorganize the <code>except</code> blocks so that the more specific <code>except</code> 
+is defined first. Alternatively, if the more specific <code>except</code> block is 
+no longer required then it should be deleted.</p>
+
+</recommendation>
+<example>
+<p>In this example the <code>except Exception:</code> will handle <code>AttributeError</code> preventing the
+subsequent handler from ever executing.</p>
+<sample src="IncorrectExceptOrder.py" />
+
+
+</example>
+<references>
+
+<li>Python Language Reference: <a href="http://docs.python.org/2.7/reference/compound_stmts.html#try">The try statement</a>, 
+<a href="http://docs.python.org/2.7/reference/executionmodel.html#exceptions">Exceptions</a>.</li>
+
+
+</references>
+</qhelp>

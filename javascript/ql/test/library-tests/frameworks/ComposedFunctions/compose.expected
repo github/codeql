@@ -1,0 +1,13 @@
+| tst.js:10:10:10:15 | source |
+| tst.js:15:10:15:13 | f1() |
+| tst.js:20:10:20:24 | lcompose1(f2)() |
+| tst.js:28:10:28:28 | lcompose1(f3, f4)() |
+| tst.js:33:10:33:29 | lcompose1(o.f, f5)() |
+| tst.js:41:10:41:28 | lcompose1(f6, f7)() |
+| tst.js:49:10:49:34 | lcompos ... source) |
+| tst.js:61:10:61:41 | lcompos ... source) |
+| tst.js:66:10:66:31 | lcompos ... source) |
+| tst.js:89:10:89:31 | f18(und ... source) |
+| tst.js:94:10:94:30 | rcompos ...  o.f)() |
+| tst.js:99:10:99:30 | lcompos ...  f20)() |
+| tst.js:104:10:104:30 | lcompos ...  f21)() |

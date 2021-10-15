@@ -1,0 +1,41 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+The <code>arguments.callee</code> property can be used to access the currently executing
+function, while the non-standard <code>arguments.caller</code> property provides access to
+its caller. Using these properties makes code hard to read, however, so they should be
+avoided.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Instead of using <code>arguments.callee</code>, you can refer to the enclosing function by
+its name (possibly giving it a name first if it is an anonymous function expression).
+Uses of <code>arguments.caller</code> can often be eliminated by refactoring the program.
+</p>
+</recommendation>
+
+<example>
+<p>
+In the following example, <code>arguments.callee</code> is used to recursively invoke the
+enclosing function, which is anonymous.
+</p>
+
+<sample src="examples/ArgumentsCallerCallee.js" />
+
+<p>
+To avoid this use, the function can be given a name and referred to using that name:
+</p>
+
+<sample src="examples/ArgumentsCallerCalleeGood.js" />
+</example>
+
+<references>
+<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions_and_function_scope/arguments">arguments</a>.</li>
+</references>
+</qhelp>

@@ -1,0 +1,9 @@
+| SimplifyBoolExpr.java:4:9:4:18 | ... == ... | Expressions of the form "A == false" can be simplified to "!A". |
+| SimplifyBoolExpr.java:5:9:5:17 | ... != ... | Expressions of the form "A != true" can be simplified to "!A". |
+| SimplifyBoolExpr.java:6:9:6:21 | ...?...:... | Expressions of the form "A ? false : B" can be simplified to "!A && B". |
+| SimplifyBoolExpr.java:7:9:7:24 | ...?...:... | Expressions of the form "A ? true : false" can be simplified to "A". |
+| SimplifyBoolExpr.java:8:9:8:20 | ...?...:... | Expressions of the form "A ? B : true" can be simplified to "!A \|\| B". |
+| SimplifyBoolExpr.java:12:9:12:16 | !... | Expressions of the form "!(A > B)" can be simplified to "A <= B". |
+| SimplifyBoolExpr.java:13:9:13:17 | !... | Expressions of the form "!(A != B)" can be simplified to "A == B". |
+| SimplifyBoolExpr.java:22:14:22:44 | ...?...:... | Expressions of the form "A ? true : B" can be simplified to "A \|\| B". |
+| SimplifyBoolExpr.java:23:12:23:43 | ...?...:... | Expressions of the form "A ? false : B" can be simplified to "!A && B". |

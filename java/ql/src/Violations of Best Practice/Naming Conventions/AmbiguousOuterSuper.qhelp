@@ -1,0 +1,48 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>If a call is made to a method from an inner class A, and a method of that name is 
+defined in both a superclass of A and an outer class of A, it is not clear to a programmer
+which method is intended to be called.</p>
+
+</overview>
+<example>
+
+<p>In the following example, it is not clear whether the call to <code>printMessage</code> calls the
+method that is defined in <code>Outer</code> or <code>Super</code>.</p>
+
+<sample src="AmbiguousOuterSuper.java" />
+
+<p>Inherited methods take precedence over methods in outer classes, so the method in the superclass 
+is called. However, such situations are a potential cause of confusion and defects.</p>
+
+</example>
+<recommendation>
+
+<p>Resolve the ambiguity by explicitly qualifying the method call:</p>
+
+<ul>
+<li>To specify the outer class, prefix the method with <code>Outer.this.</code>.</li>
+<li>To specify the superclass, prefix the method with <code>super.</code>.</li>
+</ul>
+
+<p> In the above example, the call to <code>printMessage</code> could be replaced by
+either <code>Outer.this.printMessage</code> or <code>super.printMessage</code>, depending on which 
+method you intend to call. To preserve the behavior in the example, use <code>super.printMessage</code>.</p>
+
+</recommendation>
+<references>
+
+
+<li>
+Inner Classes Specification:
+<a href="http://www.cis.upenn.edu/~bcpierce/courses/629/jdkdocs/guide/innerclasses/spec/innerclasses.doc1.html">What are top-level classes and inner classes?</a>.
+</li>
+
+
+</references>
+</qhelp>

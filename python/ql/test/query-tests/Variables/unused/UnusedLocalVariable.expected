@@ -1,0 +1,5 @@
+| variables_test.py:29:5:29:5 | x | The value assigned to local variable 'x' is never used. |
+| variables_test.py:89:5:89:5 | a | The value assigned to local variable 'a' is never used. |
+| variables_test.py:89:7:89:7 | b | The value assigned to local variable 'b' is never used. |
+| variables_test.py:89:9:89:9 | c | The value assigned to local variable 'c' is never used. |
+| variables_test.py:95:5:95:7 | var | The value assigned to local variable 'var' is never used. |

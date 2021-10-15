@@ -1,0 +1,518 @@
+isFromUninstantiatedTemplate
+| file://:0:0:0:0 | 0 | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<T> |
+| file://:0:0:0:0 | (int)... | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<T> |
+| file://:0:0:0:0 | (unnamed parameter 0) | isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<T> |
+| file://:0:0:0:0 | (unnamed parameter 0) | isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<T> |
+| file://:0:0:0:0 | declaration of 1st parameter | isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<T> |
+| file://:0:0:0:0 | declaration of 1st parameter | isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<T> |
+| file://:0:0:0:0 | initializer for MyClassEnumConst | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<T> |
+| isfromtemplateinstantiation.cpp:12:24:12:46 | definition of inner_template_function | isfromtemplateinstantiation.cpp:12:24:12:46 | inner_template_function |
+| isfromtemplateinstantiation.cpp:12:24:12:46 | inner_template_function | isfromtemplateinstantiation.cpp:12:24:12:46 | inner_template_function |
+| isfromtemplateinstantiation.cpp:13:1:17:1 | { ... } | isfromtemplateinstantiation.cpp:12:24:12:46 | inner_template_function |
+| isfromtemplateinstantiation.cpp:14:2:14:5 | declaration | isfromtemplateinstantiation.cpp:12:24:12:46 | inner_template_function |
+| isfromtemplateinstantiation.cpp:14:4:14:4 | definition of t | isfromtemplateinstantiation.cpp:12:24:12:46 | inner_template_function |
+| isfromtemplateinstantiation.cpp:14:4:14:4 | t | isfromtemplateinstantiation.cpp:12:24:12:46 | inner_template_function |
+| isfromtemplateinstantiation.cpp:16:2:16:2 | t | isfromtemplateinstantiation.cpp:12:24:12:46 | inner_template_function |
+| isfromtemplateinstantiation.cpp:16:2:16:4 | ... ++ | isfromtemplateinstantiation.cpp:12:24:12:46 | inner_template_function |
+| isfromtemplateinstantiation.cpp:16:2:16:5 | ExprStmt | isfromtemplateinstantiation.cpp:12:24:12:46 | inner_template_function |
+| isfromtemplateinstantiation.cpp:17:1:17:1 | return ... | isfromtemplateinstantiation.cpp:12:24:12:46 | inner_template_function |
+| isfromtemplateinstantiation.cpp:19:24:19:46 | definition of outer_template_function | isfromtemplateinstantiation.cpp:19:24:19:46 | outer_template_function |
+| isfromtemplateinstantiation.cpp:19:24:19:46 | outer_template_function | isfromtemplateinstantiation.cpp:19:24:19:46 | outer_template_function |
+| isfromtemplateinstantiation.cpp:20:1:26:1 | { ... } | isfromtemplateinstantiation.cpp:19:24:19:46 | outer_template_function |
+| isfromtemplateinstantiation.cpp:21:2:21:11 | declaration | isfromtemplateinstantiation.cpp:19:24:19:46 | outer_template_function |
+| isfromtemplateinstantiation.cpp:21:6:21:6 | definition of i | isfromtemplateinstantiation.cpp:19:24:19:46 | outer_template_function |
+| isfromtemplateinstantiation.cpp:21:6:21:6 | i | isfromtemplateinstantiation.cpp:19:24:19:46 | outer_template_function |
+| isfromtemplateinstantiation.cpp:21:9:21:10 | 0 | isfromtemplateinstantiation.cpp:19:24:19:46 | outer_template_function |
+| isfromtemplateinstantiation.cpp:21:9:21:10 | initializer for i | isfromtemplateinstantiation.cpp:19:24:19:46 | outer_template_function |
+| isfromtemplateinstantiation.cpp:23:2:23:8 | ... ++ | isfromtemplateinstantiation.cpp:19:24:19:46 | outer_template_function |
+| isfromtemplateinstantiation.cpp:23:2:23:8 | i | isfromtemplateinstantiation.cpp:19:24:19:46 | outer_template_function |
+| isfromtemplateinstantiation.cpp:23:2:23:9 | ExprStmt | isfromtemplateinstantiation.cpp:19:24:19:46 | outer_template_function |
+| isfromtemplateinstantiation.cpp:25:2:25:27 | Unknown literal | isfromtemplateinstantiation.cpp:19:24:19:46 | outer_template_function |
+| isfromtemplateinstantiation.cpp:25:2:25:29 | call to expression | isfromtemplateinstantiation.cpp:19:24:19:46 | outer_template_function |
+| isfromtemplateinstantiation.cpp:25:2:25:30 | ExprStmt | isfromtemplateinstantiation.cpp:19:24:19:46 | outer_template_function |
+| isfromtemplateinstantiation.cpp:26:1:26:1 | return ... | isfromtemplateinstantiation.cpp:19:24:19:46 | outer_template_function |
+| isfromtemplateinstantiation.cpp:38:26:38:42 | a_template_method | isfromtemplateinstantiation.cpp:38:26:38:42 | a_template_method |
+| isfromtemplateinstantiation.cpp:38:26:38:42 | definition of a_template_method | isfromtemplateinstantiation.cpp:38:26:38:42 | a_template_method |
+| isfromtemplateinstantiation.cpp:39:2:40:2 | { ... } | isfromtemplateinstantiation.cpp:38:26:38:42 | a_template_method |
+| isfromtemplateinstantiation.cpp:40:2:40:2 | return ... | isfromtemplateinstantiation.cpp:38:26:38:42 | a_template_method |
+| isfromtemplateinstantiation.cpp:44:26:44:39 | definition of template_class<T> | isfromtemplateinstantiation.cpp:44:26:44:39 | template_class<T> |
+| isfromtemplateinstantiation.cpp:44:26:44:39 | template_class<T> | isfromtemplateinstantiation.cpp:44:26:44:39 | template_class<T> |
+| isfromtemplateinstantiation.cpp:46:4:46:4 | definition of t | isfromtemplateinstantiation.cpp:44:26:44:39 | template_class<T> |
+| isfromtemplateinstantiation.cpp:46:4:46:4 | t | isfromtemplateinstantiation.cpp:44:26:44:39 | template_class<T> |
+| isfromtemplateinstantiation.cpp:49:7:49:14 | b_method | isfromtemplateinstantiation.cpp:44:26:44:39 | template_class<T> |
+| isfromtemplateinstantiation.cpp:49:7:49:14 | b_method | isfromtemplateinstantiation.cpp:49:7:49:14 | b_method |
+| isfromtemplateinstantiation.cpp:49:7:49:14 | definition of b_method | isfromtemplateinstantiation.cpp:44:26:44:39 | template_class<T> |
+| isfromtemplateinstantiation.cpp:49:7:49:14 | definition of b_method | isfromtemplateinstantiation.cpp:49:7:49:14 | b_method |
+| isfromtemplateinstantiation.cpp:50:2:51:2 | { ... } | isfromtemplateinstantiation.cpp:44:26:44:39 | template_class<T> |
+| isfromtemplateinstantiation.cpp:50:2:51:2 | { ... } | isfromtemplateinstantiation.cpp:49:7:49:14 | b_method |
+| isfromtemplateinstantiation.cpp:51:2:51:2 | return ... | isfromtemplateinstantiation.cpp:44:26:44:39 | template_class<T> |
+| isfromtemplateinstantiation.cpp:51:2:51:2 | return ... | isfromtemplateinstantiation.cpp:49:7:49:14 | b_method |
+| isfromtemplateinstantiation.cpp:53:26:53:42 | b_template_method | isfromtemplateinstantiation.cpp:44:26:44:39 | template_class<T> |
+| isfromtemplateinstantiation.cpp:53:26:53:42 | b_template_method | isfromtemplateinstantiation.cpp:53:26:53:42 | b_template_method |
+| isfromtemplateinstantiation.cpp:53:26:53:42 | b_template_method | isfromtemplateinstantiation.cpp:53:26:53:42 | b_template_method |
+| isfromtemplateinstantiation.cpp:53:26:53:42 | declaration of b_template_method | isfromtemplateinstantiation.cpp:53:26:53:42 | b_template_method |
+| isfromtemplateinstantiation.cpp:53:26:53:42 | definition of b_template_method | isfromtemplateinstantiation.cpp:44:26:44:39 | template_class<T> |
+| isfromtemplateinstantiation.cpp:53:26:53:42 | definition of b_template_method | isfromtemplateinstantiation.cpp:53:26:53:42 | b_template_method |
+| isfromtemplateinstantiation.cpp:53:46:53:46 | declaration of u | isfromtemplateinstantiation.cpp:53:26:53:42 | b_template_method |
+| isfromtemplateinstantiation.cpp:53:46:53:46 | definition of u | isfromtemplateinstantiation.cpp:44:26:44:39 | template_class<T> |
+| isfromtemplateinstantiation.cpp:53:46:53:46 | definition of u | isfromtemplateinstantiation.cpp:53:26:53:42 | b_template_method |
+| isfromtemplateinstantiation.cpp:53:46:53:46 | u | isfromtemplateinstantiation.cpp:44:26:44:39 | template_class<T> |
+| isfromtemplateinstantiation.cpp:53:46:53:46 | u | isfromtemplateinstantiation.cpp:53:26:53:42 | b_template_method |
+| isfromtemplateinstantiation.cpp:53:46:53:46 | u | isfromtemplateinstantiation.cpp:53:26:53:42 | b_template_method |
+| isfromtemplateinstantiation.cpp:54:2:55:2 | { ... } | isfromtemplateinstantiation.cpp:44:26:44:39 | template_class<T> |
+| isfromtemplateinstantiation.cpp:54:2:55:2 | { ... } | isfromtemplateinstantiation.cpp:53:26:53:42 | b_template_method |
+| isfromtemplateinstantiation.cpp:55:2:55:2 | return ... | isfromtemplateinstantiation.cpp:44:26:44:39 | template_class<T> |
+| isfromtemplateinstantiation.cpp:55:2:55:2 | return ... | isfromtemplateinstantiation.cpp:53:26:53:42 | b_template_method |
+| isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<T> | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<T> |
+| isfromtemplateinstantiation.cpp:77:26:77:45 | definition of AnotherTemplateClass<T> | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<T> |
+| isfromtemplateinstantiation.cpp:80:12:80:13 | _t | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<T> |
+| isfromtemplateinstantiation.cpp:80:12:80:13 | declaration of _t | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<T> |
+| isfromtemplateinstantiation.cpp:82:9:82:21 | MyClassStruct | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<T> |
+| isfromtemplateinstantiation.cpp:82:9:82:21 | MyClassStruct | isfromtemplateinstantiation.cpp:82:9:82:21 | MyClassStruct |
+| isfromtemplateinstantiation.cpp:82:9:82:21 | definition of MyClassStruct | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<T> |
+| isfromtemplateinstantiation.cpp:82:9:82:21 | definition of MyClassStruct | isfromtemplateinstantiation.cpp:82:9:82:21 | MyClassStruct |
+| isfromtemplateinstantiation.cpp:84:6:84:10 | definition of value | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<T> |
+| isfromtemplateinstantiation.cpp:84:6:84:10 | definition of value | isfromtemplateinstantiation.cpp:82:9:82:21 | MyClassStruct |
+| isfromtemplateinstantiation.cpp:84:6:84:10 | value | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<T> |
+| isfromtemplateinstantiation.cpp:84:6:84:10 | value | isfromtemplateinstantiation.cpp:82:9:82:21 | MyClassStruct |
+| isfromtemplateinstantiation.cpp:86:16:86:16 | definition of l | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<T> |
+| isfromtemplateinstantiation.cpp:86:16:86:16 | l | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<T> |
+| isfromtemplateinstantiation.cpp:88:7:88:17 | MyClassEnum | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<T> |
+| isfromtemplateinstantiation.cpp:88:7:88:17 | definition of MyClassEnum | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<T> |
+| isfromtemplateinstantiation.cpp:90:3:90:18 | MyClassEnumConst | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<T> |
+| isfromtemplateinstantiation.cpp:93:7:93:15 | definition of myMethod1 | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<T> |
+| isfromtemplateinstantiation.cpp:93:7:93:15 | definition of myMethod1 | isfromtemplateinstantiation.cpp:93:7:93:15 | myMethod1 |
+| isfromtemplateinstantiation.cpp:93:7:93:15 | myMethod1 | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<T> |
+| isfromtemplateinstantiation.cpp:93:7:93:15 | myMethod1 | isfromtemplateinstantiation.cpp:93:7:93:15 | myMethod1 |
+| isfromtemplateinstantiation.cpp:93:29:93:32 | definition of mce1 | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<T> |
+| isfromtemplateinstantiation.cpp:93:29:93:32 | definition of mce1 | isfromtemplateinstantiation.cpp:93:7:93:15 | myMethod1 |
+| isfromtemplateinstantiation.cpp:93:29:93:32 | mce1 | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<T> |
+| isfromtemplateinstantiation.cpp:93:29:93:32 | mce1 | isfromtemplateinstantiation.cpp:93:7:93:15 | myMethod1 |
+| isfromtemplateinstantiation.cpp:93:54:93:55 | { ... } | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<T> |
+| isfromtemplateinstantiation.cpp:93:54:93:55 | { ... } | isfromtemplateinstantiation.cpp:93:7:93:15 | myMethod1 |
+| isfromtemplateinstantiation.cpp:93:55:93:55 | return ... | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<T> |
+| isfromtemplateinstantiation.cpp:93:55:93:55 | return ... | isfromtemplateinstantiation.cpp:93:7:93:15 | myMethod1 |
+| isfromtemplateinstantiation.cpp:94:7:94:15 | declaration of myMethod2 | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<T> |
+| isfromtemplateinstantiation.cpp:94:7:94:15 | declaration of myMethod2 | isfromtemplateinstantiation.cpp:97:25:97:60 | myMethod2 |
+| isfromtemplateinstantiation.cpp:94:7:94:15 | declaration of myMethod2 | isfromtemplateinstantiation.cpp:97:52:97:52 | myMethod2 |
+| isfromtemplateinstantiation.cpp:94:29:94:32 | declaration of mce2 | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<T> |
+| isfromtemplateinstantiation.cpp:94:29:94:32 | declaration of mce2 | isfromtemplateinstantiation.cpp:97:25:97:60 | myMethod2 |
+| isfromtemplateinstantiation.cpp:94:29:94:32 | declaration of mce2 | isfromtemplateinstantiation.cpp:97:52:97:52 | myMethod2 |
+| isfromtemplateinstantiation.cpp:97:25:97:60 | definition of myMethod2 | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<T> |
+| isfromtemplateinstantiation.cpp:97:25:97:60 | definition of myMethod2 | isfromtemplateinstantiation.cpp:97:25:97:60 | myMethod2 |
+| isfromtemplateinstantiation.cpp:97:25:97:60 | definition of myMethod2 | isfromtemplateinstantiation.cpp:97:52:97:52 | myMethod2 |
+| isfromtemplateinstantiation.cpp:97:25:97:60 | myMethod2 | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<T> |
+| isfromtemplateinstantiation.cpp:97:25:97:60 | myMethod2 | isfromtemplateinstantiation.cpp:97:25:97:60 | myMethod2 |
+| isfromtemplateinstantiation.cpp:97:25:97:60 | myMethod2 | isfromtemplateinstantiation.cpp:97:52:97:52 | myMethod2 |
+| isfromtemplateinstantiation.cpp:97:52:97:52 | definition of myMethod2 | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<T> |
+| isfromtemplateinstantiation.cpp:97:52:97:52 | definition of myMethod2 | isfromtemplateinstantiation.cpp:97:25:97:60 | myMethod2 |
+| isfromtemplateinstantiation.cpp:97:52:97:52 | definition of myMethod2 | isfromtemplateinstantiation.cpp:97:52:97:52 | myMethod2 |
+| isfromtemplateinstantiation.cpp:97:52:97:52 | myMethod2 | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<T> |
+| isfromtemplateinstantiation.cpp:97:52:97:52 | myMethod2 | isfromtemplateinstantiation.cpp:97:25:97:60 | myMethod2 |
+| isfromtemplateinstantiation.cpp:97:52:97:52 | myMethod2 | isfromtemplateinstantiation.cpp:97:52:97:52 | myMethod2 |
+| isfromtemplateinstantiation.cpp:97:74:97:77 | definition of mce2 | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<T> |
+| isfromtemplateinstantiation.cpp:97:74:97:77 | definition of mce2 | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<T> |
+| isfromtemplateinstantiation.cpp:97:74:97:77 | definition of mce2 | isfromtemplateinstantiation.cpp:97:25:97:60 | myMethod2 |
+| isfromtemplateinstantiation.cpp:97:74:97:77 | definition of mce2 | isfromtemplateinstantiation.cpp:97:25:97:60 | myMethod2 |
+| isfromtemplateinstantiation.cpp:97:74:97:77 | definition of mce2 | isfromtemplateinstantiation.cpp:97:52:97:52 | myMethod2 |
+| isfromtemplateinstantiation.cpp:97:74:97:77 | definition of mce2 | isfromtemplateinstantiation.cpp:97:52:97:52 | myMethod2 |
+| isfromtemplateinstantiation.cpp:97:74:97:77 | mce2 | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<T> |
+| isfromtemplateinstantiation.cpp:97:74:97:77 | mce2 | isfromtemplateinstantiation.cpp:97:25:97:60 | myMethod2 |
+| isfromtemplateinstantiation.cpp:97:74:97:77 | mce2 | isfromtemplateinstantiation.cpp:97:52:97:52 | myMethod2 |
+| isfromtemplateinstantiation.cpp:98:1:99:1 | { ... } | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<T> |
+| isfromtemplateinstantiation.cpp:98:1:99:1 | { ... } | isfromtemplateinstantiation.cpp:97:25:97:60 | myMethod2 |
+| isfromtemplateinstantiation.cpp:98:1:99:1 | { ... } | isfromtemplateinstantiation.cpp:97:52:97:52 | myMethod2 |
+| isfromtemplateinstantiation.cpp:99:1:99:1 | return ... | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<T> |
+| isfromtemplateinstantiation.cpp:99:1:99:1 | return ... | isfromtemplateinstantiation.cpp:97:25:97:60 | myMethod2 |
+| isfromtemplateinstantiation.cpp:99:1:99:1 | return ... | isfromtemplateinstantiation.cpp:97:52:97:52 | myMethod2 |
+| isfromtemplateinstantiation.cpp:110:15:110:15 | definition of var_template | isfromtemplateinstantiation.cpp:110:15:110:15 | var_template |
+| isfromtemplateinstantiation.cpp:110:15:110:15 | var_template | isfromtemplateinstantiation.cpp:110:15:110:15 | var_template |
+| isfromtemplateinstantiation.cpp:128:7:128:30 | AnotherTemplateClass<T *> | isfromtemplateinstantiation.cpp:128:7:128:30 | AnotherTemplateClass<T *> |
+| isfromtemplateinstantiation.cpp:128:7:128:30 | definition of AnotherTemplateClass<T *> | isfromtemplateinstantiation.cpp:128:7:128:30 | AnotherTemplateClass<T *> |
+| isfromtemplateinstantiation.cpp:129:6:129:6 | definition of f | isfromtemplateinstantiation.cpp:128:7:128:30 | AnotherTemplateClass<T *> |
+| isfromtemplateinstantiation.cpp:129:6:129:6 | definition of f | isfromtemplateinstantiation.cpp:129:6:129:6 | f |
+| isfromtemplateinstantiation.cpp:129:6:129:6 | f | isfromtemplateinstantiation.cpp:128:7:128:30 | AnotherTemplateClass<T *> |
+| isfromtemplateinstantiation.cpp:129:6:129:6 | f | isfromtemplateinstantiation.cpp:129:6:129:6 | f |
+| isfromtemplateinstantiation.cpp:129:10:129:22 | { ... } | isfromtemplateinstantiation.cpp:128:7:128:30 | AnotherTemplateClass<T *> |
+| isfromtemplateinstantiation.cpp:129:10:129:22 | { ... } | isfromtemplateinstantiation.cpp:129:6:129:6 | f |
+| isfromtemplateinstantiation.cpp:129:12:129:20 | return ... | isfromtemplateinstantiation.cpp:128:7:128:30 | AnotherTemplateClass<T *> |
+| isfromtemplateinstantiation.cpp:129:12:129:20 | return ... | isfromtemplateinstantiation.cpp:129:6:129:6 | f |
+| isfromtemplateinstantiation.cpp:129:19:129:19 | 1 | isfromtemplateinstantiation.cpp:128:7:128:30 | AnotherTemplateClass<T *> |
+| isfromtemplateinstantiation.cpp:129:19:129:19 | 1 | isfromtemplateinstantiation.cpp:129:6:129:6 | f |
+| isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<T> | isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<T> |
+| isfromtemplateinstantiation.cpp:134:29:134:33 | definition of Outer<T> | isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<T> |
+| isfromtemplateinstantiation.cpp:135:31:135:31 | declaration of operator= | isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<T> |
+| isfromtemplateinstantiation.cpp:135:31:135:31 | declaration of operator= | isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<T> |
+| isfromtemplateinstantiation.cpp:135:31:135:31 | operator= | isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<T> |
+| isfromtemplateinstantiation.cpp:135:31:135:31 | operator= | isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<T> |
+| isfromtemplateinstantiation.cpp:135:31:135:35 | Inner<U> | isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<T> |
+| isfromtemplateinstantiation.cpp:135:31:135:35 | Inner<U> | isfromtemplateinstantiation.cpp:135:31:135:35 | Inner<U> |
+| isfromtemplateinstantiation.cpp:135:31:135:35 | Inner<U> | isfromtemplateinstantiation.cpp:135:31:135:35 | Inner<U> |
+| isfromtemplateinstantiation.cpp:135:31:135:35 | Inner<long> | isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<T> |
+| isfromtemplateinstantiation.cpp:135:31:135:35 | declaration of Inner<U> | isfromtemplateinstantiation.cpp:135:31:135:35 | Inner<U> |
+| isfromtemplateinstantiation.cpp:135:31:135:35 | definition of Inner<U> | isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<T> |
+| isfromtemplateinstantiation.cpp:135:31:135:35 | definition of Inner<U> | isfromtemplateinstantiation.cpp:135:31:135:35 | Inner<U> |
+| isfromtemplateinstantiation.cpp:136:7:136:7 | definition of x | isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<T> |
+| isfromtemplateinstantiation.cpp:136:7:136:7 | definition of x | isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<T> |
+| isfromtemplateinstantiation.cpp:136:7:136:7 | definition of x | isfromtemplateinstantiation.cpp:135:31:135:35 | Inner<U> |
+| isfromtemplateinstantiation.cpp:136:7:136:7 | x | isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<T> |
+| isfromtemplateinstantiation.cpp:136:7:136:7 | x | isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<T> |
+| isfromtemplateinstantiation.cpp:136:7:136:7 | x | isfromtemplateinstantiation.cpp:135:31:135:35 | Inner<U> |
+| isfromtemplateinstantiation.cpp:137:7:137:7 | definition of y | isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<T> |
+| isfromtemplateinstantiation.cpp:137:7:137:7 | definition of y | isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<T> |
+| isfromtemplateinstantiation.cpp:137:7:137:7 | definition of y | isfromtemplateinstantiation.cpp:135:31:135:35 | Inner<U> |
+| isfromtemplateinstantiation.cpp:137:7:137:7 | y | isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<T> |
+| isfromtemplateinstantiation.cpp:137:7:137:7 | y | isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<T> |
+| isfromtemplateinstantiation.cpp:137:7:137:7 | y | isfromtemplateinstantiation.cpp:135:31:135:35 | Inner<U> |
+| isfromtemplateinstantiation.cpp:144:28:144:56 | declaration of incomplete_never_instantiated<T> | isfromtemplateinstantiation.cpp:144:28:144:56 | incomplete_never_instantiated<T> |
+| isfromtemplateinstantiation.cpp:144:28:144:56 | incomplete_never_instantiated<T> | isfromtemplateinstantiation.cpp:144:28:144:56 | incomplete_never_instantiated<T> |
+| isfromtemplateinstantiation.cpp:146:28:146:45 | definition of never_instantiated<T> | isfromtemplateinstantiation.cpp:146:28:146:45 | never_instantiated<T> |
+| isfromtemplateinstantiation.cpp:146:28:146:45 | never_instantiated<T> | isfromtemplateinstantiation.cpp:146:28:146:45 | never_instantiated<T> |
+| isfromtemplateinstantiation.cpp:146:51:146:51 | definition of x | isfromtemplateinstantiation.cpp:146:28:146:45 | never_instantiated<T> |
+| isfromtemplateinstantiation.cpp:146:51:146:51 | x | isfromtemplateinstantiation.cpp:146:28:146:45 | never_instantiated<T> |
+| isfromtemplateinstantiation.cpp:148:24:148:46 | decl_never_instantiated | isfromtemplateinstantiation.cpp:148:24:148:46 | decl_never_instantiated |
+| isfromtemplateinstantiation.cpp:148:24:148:46 | declaration of decl_never_instantiated | isfromtemplateinstantiation.cpp:148:24:148:46 | decl_never_instantiated |
+| isfromtemplateinstantiation.cpp:148:50:148:50 | declaration of x | isfromtemplateinstantiation.cpp:148:24:148:46 | decl_never_instantiated |
+| isfromtemplateinstantiation.cpp:148:50:148:50 | x | isfromtemplateinstantiation.cpp:148:24:148:46 | decl_never_instantiated |
+| isfromtemplateinstantiation.cpp:150:24:150:45 | def_never_instantiated | isfromtemplateinstantiation.cpp:150:24:150:45 | def_never_instantiated |
+| isfromtemplateinstantiation.cpp:150:24:150:45 | definition of def_never_instantiated | isfromtemplateinstantiation.cpp:150:24:150:45 | def_never_instantiated |
+| isfromtemplateinstantiation.cpp:150:49:150:49 | definition of x | isfromtemplateinstantiation.cpp:150:24:150:45 | def_never_instantiated |
+| isfromtemplateinstantiation.cpp:150:49:150:49 | x | isfromtemplateinstantiation.cpp:150:24:150:45 | def_never_instantiated |
+| load.cpp:13:7:13:27 | basic_text_iprimitive<IStream> | load.cpp:13:7:13:27 | basic_text_iprimitive<IStream> |
+| load.cpp:13:7:13:27 | definition of basic_text_iprimitive<IStream> | load.cpp:13:7:13:27 | basic_text_iprimitive<IStream> |
+| load.cpp:15:14:15:15 | definition of is | load.cpp:13:7:13:27 | basic_text_iprimitive<IStream> |
+| load.cpp:15:14:15:15 | is | load.cpp:13:7:13:27 | basic_text_iprimitive<IStream> |
+| load.cpp:18:5:18:25 | basic_text_iprimitive | load.cpp:13:7:13:27 | basic_text_iprimitive<IStream> |
+| load.cpp:18:5:18:25 | basic_text_iprimitive | load.cpp:18:5:18:25 | basic_text_iprimitive |
+| load.cpp:18:5:18:25 | definition of basic_text_iprimitive | load.cpp:13:7:13:27 | basic_text_iprimitive<IStream> |
+| load.cpp:18:5:18:25 | definition of basic_text_iprimitive | load.cpp:18:5:18:25 | basic_text_iprimitive |
+| load.cpp:18:36:18:42 | definition of isParam | load.cpp:13:7:13:27 | basic_text_iprimitive<IStream> |
+| load.cpp:18:36:18:42 | definition of isParam | load.cpp:18:5:18:25 | basic_text_iprimitive |
+| load.cpp:18:36:18:42 | isParam | load.cpp:13:7:13:27 | basic_text_iprimitive<IStream> |
+| load.cpp:18:36:18:42 | isParam | load.cpp:18:5:18:25 | basic_text_iprimitive |
+| load.cpp:19:11:19:21 | constructor init of field is | load.cpp:13:7:13:27 | basic_text_iprimitive<IStream> |
+| load.cpp:19:11:19:21 | constructor init of field is | load.cpp:18:5:18:25 | basic_text_iprimitive |
+| load.cpp:19:14:19:20 | (reference dereference) | load.cpp:13:7:13:27 | basic_text_iprimitive<IStream> |
+| load.cpp:19:14:19:20 | (reference dereference) | load.cpp:18:5:18:25 | basic_text_iprimitive |
+| load.cpp:19:14:19:20 | (reference to) | load.cpp:13:7:13:27 | basic_text_iprimitive<IStream> |
+| load.cpp:19:14:19:20 | (reference to) | load.cpp:18:5:18:25 | basic_text_iprimitive |
+| load.cpp:19:14:19:20 | isParam | load.cpp:13:7:13:27 | basic_text_iprimitive<IStream> |
+| load.cpp:19:14:19:20 | isParam | load.cpp:18:5:18:25 | basic_text_iprimitive |
+| load.cpp:19:23:19:24 | { ... } | load.cpp:13:7:13:27 | basic_text_iprimitive<IStream> |
+| load.cpp:19:23:19:24 | { ... } | load.cpp:18:5:18:25 | basic_text_iprimitive |
+| load.cpp:19:24:19:24 | return ... | load.cpp:13:7:13:27 | basic_text_iprimitive<IStream> |
+| load.cpp:19:24:19:24 | return ... | load.cpp:18:5:18:25 | basic_text_iprimitive |
+| load.cpp:22:10:22:13 | declaration of load | load.cpp:22:10:22:13 | load |
+| load.cpp:22:10:22:13 | definition of load | load.cpp:13:7:13:27 | basic_text_iprimitive<IStream> |
+| load.cpp:22:10:22:13 | definition of load | load.cpp:22:10:22:13 | load |
+| load.cpp:22:10:22:13 | load | load.cpp:13:7:13:27 | basic_text_iprimitive<IStream> |
+| load.cpp:22:10:22:13 | load | load.cpp:22:10:22:13 | load |
+| load.cpp:22:10:22:13 | load | load.cpp:22:10:22:13 | load |
+| load.cpp:22:19:22:19 | declaration of t | load.cpp:22:10:22:13 | load |
+| load.cpp:22:19:22:19 | definition of t | load.cpp:13:7:13:27 | basic_text_iprimitive<IStream> |
+| load.cpp:22:19:22:19 | definition of t | load.cpp:22:10:22:13 | load |
+| load.cpp:22:19:22:19 | t | load.cpp:13:7:13:27 | basic_text_iprimitive<IStream> |
+| load.cpp:22:19:22:19 | t | load.cpp:22:10:22:13 | load |
+| load.cpp:22:19:22:19 | t | load.cpp:22:10:22:13 | load |
+| load.cpp:23:5:25:5 | { ... } | load.cpp:13:7:13:27 | basic_text_iprimitive<IStream> |
+| load.cpp:23:5:25:5 | { ... } | load.cpp:22:10:22:13 | load |
+| load.cpp:24:9:24:10 | (reference dereference) | load.cpp:13:7:13:27 | basic_text_iprimitive<IStream> |
+| load.cpp:24:9:24:10 | (reference dereference) | load.cpp:22:10:22:13 | load |
+| load.cpp:24:9:24:10 | is | load.cpp:13:7:13:27 | basic_text_iprimitive<IStream> |
+| load.cpp:24:9:24:10 | is | load.cpp:22:10:22:13 | load |
+| load.cpp:24:9:24:10 | this | load.cpp:13:7:13:27 | basic_text_iprimitive<IStream> |
+| load.cpp:24:9:24:10 | this | load.cpp:22:10:22:13 | load |
+| load.cpp:24:9:24:15 | ... >> ... | load.cpp:13:7:13:27 | basic_text_iprimitive<IStream> |
+| load.cpp:24:9:24:15 | ... >> ... | load.cpp:22:10:22:13 | load |
+| load.cpp:24:9:24:16 | ExprStmt | load.cpp:13:7:13:27 | basic_text_iprimitive<IStream> |
+| load.cpp:24:9:24:16 | ExprStmt | load.cpp:22:10:22:13 | load |
+| load.cpp:24:15:24:15 | (reference dereference) | load.cpp:13:7:13:27 | basic_text_iprimitive<IStream> |
+| load.cpp:24:15:24:15 | (reference dereference) | load.cpp:22:10:22:13 | load |
+| load.cpp:24:15:24:15 | t | load.cpp:13:7:13:27 | basic_text_iprimitive<IStream> |
+| load.cpp:24:15:24:15 | t | load.cpp:22:10:22:13 | load |
+| load.cpp:25:5:25:5 | return ... | load.cpp:13:7:13:27 | basic_text_iprimitive<IStream> |
+| load.cpp:25:5:25:5 | return ... | load.cpp:22:10:22:13 | load |
+| load.cpp:27:10:27:13 | definition of load | load.cpp:13:7:13:27 | basic_text_iprimitive<IStream> |
+| load.cpp:27:10:27:13 | definition of load | load.cpp:27:10:27:13 | load |
+| load.cpp:27:10:27:13 | load | load.cpp:13:7:13:27 | basic_text_iprimitive<IStream> |
+| load.cpp:27:10:27:13 | load | load.cpp:27:10:27:13 | load |
+| load.cpp:27:22:27:22 | definition of t | load.cpp:13:7:13:27 | basic_text_iprimitive<IStream> |
+| load.cpp:27:22:27:22 | definition of t | load.cpp:27:10:27:13 | load |
+| load.cpp:27:22:27:22 | t | load.cpp:13:7:13:27 | basic_text_iprimitive<IStream> |
+| load.cpp:27:22:27:22 | t | load.cpp:27:10:27:13 | load |
+| load.cpp:28:5:32:5 | { ... } | load.cpp:13:7:13:27 | basic_text_iprimitive<IStream> |
+| load.cpp:28:5:32:5 | { ... } | load.cpp:27:10:27:13 | load |
+| load.cpp:29:9:29:20 | declaration | load.cpp:13:7:13:27 | basic_text_iprimitive<IStream> |
+| load.cpp:29:9:29:20 | declaration | load.cpp:27:10:27:13 | load |
+| load.cpp:29:19:29:19 | definition of i | load.cpp:13:7:13:27 | basic_text_iprimitive<IStream> |
+| load.cpp:29:19:29:19 | definition of i | load.cpp:27:10:27:13 | load |
+| load.cpp:29:19:29:19 | i | load.cpp:13:7:13:27 | basic_text_iprimitive<IStream> |
+| load.cpp:29:19:29:19 | i | load.cpp:27:10:27:13 | load |
+| load.cpp:30:9:30:12 | Unknown literal | load.cpp:13:7:13:27 | basic_text_iprimitive<IStream> |
+| load.cpp:30:9:30:12 | Unknown literal | load.cpp:27:10:27:13 | load |
+| load.cpp:30:9:30:15 | call to expression | load.cpp:13:7:13:27 | basic_text_iprimitive<IStream> |
+| load.cpp:30:9:30:15 | call to expression | load.cpp:27:10:27:13 | load |
+| load.cpp:30:9:30:16 | ExprStmt | load.cpp:13:7:13:27 | basic_text_iprimitive<IStream> |
+| load.cpp:30:9:30:16 | ExprStmt | load.cpp:27:10:27:13 | load |
+| load.cpp:30:14:30:14 | i | load.cpp:13:7:13:27 | basic_text_iprimitive<IStream> |
+| load.cpp:30:14:30:14 | i | load.cpp:27:10:27:13 | load |
+| load.cpp:31:9:31:9 | (reference dereference) | load.cpp:13:7:13:27 | basic_text_iprimitive<IStream> |
+| load.cpp:31:9:31:9 | (reference dereference) | load.cpp:27:10:27:13 | load |
+| load.cpp:31:9:31:9 | t | load.cpp:13:7:13:27 | basic_text_iprimitive<IStream> |
+| load.cpp:31:9:31:9 | t | load.cpp:27:10:27:13 | load |
+| load.cpp:31:9:31:13 | ... = ... | load.cpp:13:7:13:27 | basic_text_iprimitive<IStream> |
+| load.cpp:31:9:31:13 | ... = ... | load.cpp:27:10:27:13 | load |
+| load.cpp:31:9:31:14 | ExprStmt | load.cpp:13:7:13:27 | basic_text_iprimitive<IStream> |
+| load.cpp:31:9:31:14 | ExprStmt | load.cpp:27:10:27:13 | load |
+| load.cpp:31:13:31:13 | (char)... | load.cpp:13:7:13:27 | basic_text_iprimitive<IStream> |
+| load.cpp:31:13:31:13 | (char)... | load.cpp:27:10:27:13 | load |
+| load.cpp:31:13:31:13 | i | load.cpp:13:7:13:27 | basic_text_iprimitive<IStream> |
+| load.cpp:31:13:31:13 | i | load.cpp:27:10:27:13 | load |
+| load.cpp:32:5:32:5 | return ... | load.cpp:13:7:13:27 | basic_text_iprimitive<IStream> |
+| load.cpp:32:5:32:5 | return ... | load.cpp:27:10:27:13 | load |
+#select
+| isfromtemplateinstantiation.cpp:4:6:4:20 | normal_function |  |  | Declaration |  |
+| isfromtemplateinstantiation.cpp:12:24:12:24 | definition of inner_template_function | I |  | Definition |  |
+| isfromtemplateinstantiation.cpp:12:24:12:24 | definition of inner_template_function | I |  | Definition |  |
+| isfromtemplateinstantiation.cpp:12:24:12:24 | inner_template_function | I |  | Declaration |  |
+| isfromtemplateinstantiation.cpp:12:24:12:24 | inner_template_function | I |  | Declaration |  |
+| isfromtemplateinstantiation.cpp:12:24:12:46 | inner_template_function |  | T | Declaration |  |
+| isfromtemplateinstantiation.cpp:13:1:17:1 | { ... } |  | T | Stmt |  |
+| isfromtemplateinstantiation.cpp:13:1:17:1 | { ... } | I |  | Stmt |  |
+| isfromtemplateinstantiation.cpp:13:1:17:1 | { ... } | I |  | Stmt |  |
+| isfromtemplateinstantiation.cpp:14:2:14:5 | declaration |  | T | Stmt |  |
+| isfromtemplateinstantiation.cpp:14:2:14:5 | declaration | I |  | Stmt |  |
+| isfromtemplateinstantiation.cpp:14:2:14:5 | declaration | I |  | Stmt |  |
+| isfromtemplateinstantiation.cpp:14:4:14:4 | definition of t |  | T | Definition |  |
+| isfromtemplateinstantiation.cpp:14:4:14:4 | definition of t | I |  | Definition |  |
+| isfromtemplateinstantiation.cpp:14:4:14:4 | definition of t | I |  | Definition |  |
+| isfromtemplateinstantiation.cpp:14:4:14:4 | t |  | T | Declaration |  |
+| isfromtemplateinstantiation.cpp:14:4:14:4 | t | I |  | Declaration |  |
+| isfromtemplateinstantiation.cpp:14:4:14:4 | t | I |  | Declaration |  |
+| isfromtemplateinstantiation.cpp:16:2:16:2 | t |  | T | Expr | Not ref |
+| isfromtemplateinstantiation.cpp:16:2:16:2 | t | I |  | Expr | Not ref |
+| isfromtemplateinstantiation.cpp:16:2:16:2 | t | I |  | Expr | Not ref |
+| isfromtemplateinstantiation.cpp:16:2:16:4 | ... ++ |  | T | Expr |  |
+| isfromtemplateinstantiation.cpp:16:2:16:4 | ... ++ | I |  | Expr |  |
+| isfromtemplateinstantiation.cpp:16:2:16:4 | ... ++ | I |  | Expr |  |
+| isfromtemplateinstantiation.cpp:16:2:16:5 | ExprStmt |  | T | Stmt |  |
+| isfromtemplateinstantiation.cpp:16:2:16:5 | ExprStmt | I |  | Stmt |  |
+| isfromtemplateinstantiation.cpp:16:2:16:5 | ExprStmt | I |  | Stmt |  |
+| isfromtemplateinstantiation.cpp:17:1:17:1 | return ... |  | T | Stmt |  |
+| isfromtemplateinstantiation.cpp:17:1:17:1 | return ... | I |  | Stmt |  |
+| isfromtemplateinstantiation.cpp:17:1:17:1 | return ... | I |  | Stmt |  |
+| isfromtemplateinstantiation.cpp:19:24:19:24 | definition of outer_template_function | I |  | Definition |  |
+| isfromtemplateinstantiation.cpp:19:24:19:24 | definition of outer_template_function | I |  | Definition |  |
+| isfromtemplateinstantiation.cpp:19:24:19:24 | outer_template_function | I |  | Declaration |  |
+| isfromtemplateinstantiation.cpp:19:24:19:24 | outer_template_function | I |  | Declaration |  |
+| isfromtemplateinstantiation.cpp:19:24:19:46 | outer_template_function |  | T | Declaration |  |
+| isfromtemplateinstantiation.cpp:20:1:26:1 | { ... } |  | T | Stmt |  |
+| isfromtemplateinstantiation.cpp:20:1:26:1 | { ... } | I |  | Stmt |  |
+| isfromtemplateinstantiation.cpp:20:1:26:1 | { ... } | I |  | Stmt |  |
+| isfromtemplateinstantiation.cpp:21:2:21:11 | declaration |  | T | Stmt |  |
+| isfromtemplateinstantiation.cpp:21:2:21:11 | declaration | I |  | Stmt |  |
+| isfromtemplateinstantiation.cpp:21:2:21:11 | declaration | I |  | Stmt |  |
+| isfromtemplateinstantiation.cpp:21:6:21:6 | definition of i |  | T | Definition |  |
+| isfromtemplateinstantiation.cpp:21:6:21:6 | definition of i | I |  | Definition |  |
+| isfromtemplateinstantiation.cpp:21:6:21:6 | definition of i | I |  | Definition |  |
+| isfromtemplateinstantiation.cpp:21:6:21:6 | i |  | T | Declaration |  |
+| isfromtemplateinstantiation.cpp:21:6:21:6 | i | I |  | Declaration |  |
+| isfromtemplateinstantiation.cpp:21:6:21:6 | i | I |  | Declaration |  |
+| isfromtemplateinstantiation.cpp:21:9:21:10 | 0 |  | T | Expr |  |
+| isfromtemplateinstantiation.cpp:21:9:21:10 | 0 | I |  | Expr |  |
+| isfromtemplateinstantiation.cpp:21:9:21:10 | 0 | I |  | Expr |  |
+| isfromtemplateinstantiation.cpp:21:9:21:10 | initializer for i |  | T | Initializer |  |
+| isfromtemplateinstantiation.cpp:21:9:21:10 | initializer for i | I |  | Initializer |  |
+| isfromtemplateinstantiation.cpp:21:9:21:10 | initializer for i | I |  | Initializer |  |
+| isfromtemplateinstantiation.cpp:23:2:23:8 | ... ++ |  | T | Expr |  |
+| isfromtemplateinstantiation.cpp:23:2:23:8 | ... ++ | I |  | Expr |  |
+| isfromtemplateinstantiation.cpp:23:2:23:8 | ... ++ | I |  | Expr |  |
+| isfromtemplateinstantiation.cpp:23:2:23:8 | A_MACRO |  |  | other |  |
+| isfromtemplateinstantiation.cpp:23:2:23:8 | A_MACRO |  |  | other |  |
+| isfromtemplateinstantiation.cpp:23:2:23:8 | A_MACRO |  |  | other |  |
+| isfromtemplateinstantiation.cpp:23:2:23:8 | i |  | T | Expr | Not ref |
+| isfromtemplateinstantiation.cpp:23:2:23:8 | i | I |  | Expr | Not ref |
+| isfromtemplateinstantiation.cpp:23:2:23:8 | i | I |  | Expr | Not ref |
+| isfromtemplateinstantiation.cpp:23:2:23:9 | ExprStmt |  | T | Stmt |  |
+| isfromtemplateinstantiation.cpp:23:2:23:9 | ExprStmt | I |  | Stmt |  |
+| isfromtemplateinstantiation.cpp:23:2:23:9 | ExprStmt | I |  | Stmt |  |
+| isfromtemplateinstantiation.cpp:25:2:25:27 | Unknown literal |  | T | Expr |  |
+| isfromtemplateinstantiation.cpp:25:2:25:27 | call to inner_template_function | I |  | Expr |  |
+| isfromtemplateinstantiation.cpp:25:2:25:27 | call to inner_template_function | I |  | Expr |  |
+| isfromtemplateinstantiation.cpp:25:2:25:30 | ExprStmt |  | T | Stmt |  |
+| isfromtemplateinstantiation.cpp:25:2:25:30 | ExprStmt | I |  | Stmt |  |
+| isfromtemplateinstantiation.cpp:25:2:25:30 | ExprStmt | I |  | Stmt |  |
+| isfromtemplateinstantiation.cpp:26:1:26:1 | return ... |  | T | Stmt |  |
+| isfromtemplateinstantiation.cpp:26:1:26:1 | return ... | I |  | Stmt |  |
+| isfromtemplateinstantiation.cpp:26:1:26:1 | return ... | I |  | Stmt |  |
+| isfromtemplateinstantiation.cpp:29:7:29:7 | declaration of operator= |  |  | DeclarationEntry |  |
+| isfromtemplateinstantiation.cpp:29:7:29:7 | declaration of operator= |  |  | DeclarationEntry |  |
+| isfromtemplateinstantiation.cpp:29:7:29:7 | normal_class |  |  | Declaration |  |
+| isfromtemplateinstantiation.cpp:29:7:29:7 | operator= |  |  | Declaration |  |
+| isfromtemplateinstantiation.cpp:29:7:29:7 | operator= |  |  | Declaration |  |
+| isfromtemplateinstantiation.cpp:29:7:29:18 | normal_class |  |  | Declaration |  |
+| isfromtemplateinstantiation.cpp:34:7:34:14 | a_method |  |  | Declaration |  |
+| isfromtemplateinstantiation.cpp:38:26:38:26 | a_template_method | I |  | Declaration |  |
+| isfromtemplateinstantiation.cpp:38:26:38:42 | a_template_method |  | T | Declaration |  |
+| isfromtemplateinstantiation.cpp:39:2:40:2 | { ... } |  | T | Stmt |  |
+| isfromtemplateinstantiation.cpp:39:2:40:2 | { ... } | I |  | Stmt |  |
+| isfromtemplateinstantiation.cpp:40:2:40:2 | return ... |  | T | Stmt |  |
+| isfromtemplateinstantiation.cpp:40:2:40:2 | return ... | I |  | Stmt |  |
+| isfromtemplateinstantiation.cpp:44:26:44:26 | declaration of operator= | I |  | DeclarationEntry |  |
+| isfromtemplateinstantiation.cpp:44:26:44:26 | declaration of operator= | I |  | DeclarationEntry |  |
+| isfromtemplateinstantiation.cpp:44:26:44:26 | operator= | I |  | Declaration |  |
+| isfromtemplateinstantiation.cpp:44:26:44:26 | operator= | I |  | Declaration |  |
+| isfromtemplateinstantiation.cpp:44:26:44:26 | template_class | I |  | Declaration |  |
+| isfromtemplateinstantiation.cpp:44:26:44:39 | template_class<T> |  | T | Declaration |  |
+| isfromtemplateinstantiation.cpp:44:26:44:39 | template_class<char> | I |  | Declaration |  |
+| isfromtemplateinstantiation.cpp:46:4:46:4 | definition of t |  | T | Definition |  |
+| isfromtemplateinstantiation.cpp:46:4:46:4 | definition of t | I |  | Definition |  |
+| isfromtemplateinstantiation.cpp:46:4:46:4 | t |  | T | Declaration |  |
+| isfromtemplateinstantiation.cpp:46:4:46:4 | t | I |  | Declaration |  |
+| isfromtemplateinstantiation.cpp:49:7:49:7 | b_method | I |  | Declaration |  |
+| isfromtemplateinstantiation.cpp:49:7:49:14 | b_method |  | T | Declaration |  |
+| isfromtemplateinstantiation.cpp:50:2:51:2 | { ... } |  | T | Stmt |  |
+| isfromtemplateinstantiation.cpp:50:2:51:2 | { ... } | I |  | Stmt |  |
+| isfromtemplateinstantiation.cpp:51:2:51:2 | return ... |  | T | Stmt |  |
+| isfromtemplateinstantiation.cpp:51:2:51:2 | return ... | I |  | Stmt |  |
+| isfromtemplateinstantiation.cpp:53:26:53:26 | b_template_method | I |  | Declaration |  |
+| isfromtemplateinstantiation.cpp:53:26:53:42 | b_template_method |  | T | Declaration |  |
+| isfromtemplateinstantiation.cpp:53:26:53:42 | b_template_method | I | T | Declaration |  |
+| isfromtemplateinstantiation.cpp:53:46:53:46 | definition of u |  | T | Definition |  |
+| isfromtemplateinstantiation.cpp:53:46:53:46 | definition of u | I |  | Definition |  |
+| isfromtemplateinstantiation.cpp:53:46:53:46 | u |  | T | Declaration |  |
+| isfromtemplateinstantiation.cpp:53:46:53:46 | u | I |  | Declaration |  |
+| isfromtemplateinstantiation.cpp:53:46:53:46 | u | I | T | Declaration |  |
+| isfromtemplateinstantiation.cpp:54:2:55:2 | { ... } |  | T | Stmt |  |
+| isfromtemplateinstantiation.cpp:54:2:55:2 | { ... } | I |  | Stmt |  |
+| isfromtemplateinstantiation.cpp:55:2:55:2 | return ... |  | T | Stmt |  |
+| isfromtemplateinstantiation.cpp:55:2:55:2 | return ... | I |  | Stmt |  |
+| isfromtemplateinstantiation.cpp:59:5:59:8 | main |  |  | Declaration |  |
+| isfromtemplateinstantiation.cpp:72:30:72:32 | 97 |  |  | Expr |  |
+| isfromtemplateinstantiation.cpp:72:30:72:32 | (long)... |  |  | Expr |  |
+| isfromtemplateinstantiation.cpp:77:26:77:26 | declaration of operator= | I |  | DeclarationEntry |  |
+| isfromtemplateinstantiation.cpp:77:26:77:26 | declaration of operator= | I |  | DeclarationEntry |  |
+| isfromtemplateinstantiation.cpp:77:26:77:26 | declaration of operator= | I |  | DeclarationEntry |  |
+| isfromtemplateinstantiation.cpp:77:26:77:26 | declaration of operator= | I |  | DeclarationEntry |  |
+| isfromtemplateinstantiation.cpp:77:26:77:26 | operator= | I |  | Declaration |  |
+| isfromtemplateinstantiation.cpp:77:26:77:26 | operator= | I |  | Declaration |  |
+| isfromtemplateinstantiation.cpp:77:26:77:26 | operator= | I |  | Declaration |  |
+| isfromtemplateinstantiation.cpp:77:26:77:26 | operator= | I |  | Declaration |  |
+| isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<T> |  | T | Declaration |  |
+| isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<int> | I |  | Declaration |  |
+| isfromtemplateinstantiation.cpp:82:9:82:9 | declaration of operator= | I |  | DeclarationEntry |  |
+| isfromtemplateinstantiation.cpp:82:9:82:9 | declaration of operator= | I |  | DeclarationEntry |  |
+| isfromtemplateinstantiation.cpp:82:9:82:9 | operator= | I |  | Declaration |  |
+| isfromtemplateinstantiation.cpp:82:9:82:9 | operator= | I |  | Declaration |  |
+| isfromtemplateinstantiation.cpp:82:9:82:21 | MyClassStruct |  | T | Declaration |  |
+| isfromtemplateinstantiation.cpp:82:9:82:21 | MyClassStruct | I |  | Declaration |  |
+| isfromtemplateinstantiation.cpp:84:6:84:10 | definition of value |  | T | Definition |  |
+| isfromtemplateinstantiation.cpp:84:6:84:10 | definition of value | I |  | Definition |  |
+| isfromtemplateinstantiation.cpp:84:6:84:10 | value |  | T | Declaration |  |
+| isfromtemplateinstantiation.cpp:84:6:84:10 | value | I |  | Declaration |  |
+| isfromtemplateinstantiation.cpp:86:16:86:16 | definition of l |  | T | Definition |  |
+| isfromtemplateinstantiation.cpp:86:16:86:16 | definition of l | I |  | Definition |  |
+| isfromtemplateinstantiation.cpp:86:16:86:16 | l |  | T | Declaration |  |
+| isfromtemplateinstantiation.cpp:86:16:86:16 | l | I |  | Declaration |  |
+| isfromtemplateinstantiation.cpp:90:3:90:18 | MyClassEnumConst |  | T | Declaration |  |
+| isfromtemplateinstantiation.cpp:90:3:90:18 | MyClassEnumConst | I |  | Declaration |  |
+| isfromtemplateinstantiation.cpp:93:7:93:7 | myMethod1 | I |  | Declaration |  |
+| isfromtemplateinstantiation.cpp:93:7:93:15 | myMethod1 |  | T | Declaration |  |
+| isfromtemplateinstantiation.cpp:93:29:93:32 | definition of mce1 |  | T | Definition |  |
+| isfromtemplateinstantiation.cpp:93:29:93:32 | definition of mce1 | I |  | Definition |  |
+| isfromtemplateinstantiation.cpp:93:29:93:32 | mce1 |  | T | Declaration |  |
+| isfromtemplateinstantiation.cpp:93:29:93:32 | mce1 | I |  | Declaration |  |
+| isfromtemplateinstantiation.cpp:93:54:93:55 | { ... } |  | T | Stmt |  |
+| isfromtemplateinstantiation.cpp:93:54:93:55 | { ... } | I |  | Stmt |  |
+| isfromtemplateinstantiation.cpp:93:55:93:55 | return ... |  | T | Stmt |  |
+| isfromtemplateinstantiation.cpp:93:55:93:55 | return ... | I |  | Stmt |  |
+| isfromtemplateinstantiation.cpp:97:25:97:60 | myMethod2 |  | T | Declaration |  |
+| isfromtemplateinstantiation.cpp:97:52:97:52 | definition of myMethod2 |  | T | Definition |  |
+| isfromtemplateinstantiation.cpp:97:52:97:52 | definition of myMethod2 | I |  | Definition |  |
+| isfromtemplateinstantiation.cpp:97:52:97:52 | myMethod2 |  | T | Declaration |  |
+| isfromtemplateinstantiation.cpp:97:52:97:52 | myMethod2 | I |  | Declaration |  |
+| isfromtemplateinstantiation.cpp:97:74:97:77 | definition of mce2 |  | T | Definition |  |
+| isfromtemplateinstantiation.cpp:97:74:97:77 | definition of mce2 |  | T | Definition |  |
+| isfromtemplateinstantiation.cpp:97:74:97:77 | mce2 |  | T | Declaration |  |
+| isfromtemplateinstantiation.cpp:97:74:97:77 | mce2 | I |  | Declaration |  |
+| isfromtemplateinstantiation.cpp:98:1:99:1 | { ... } |  | T | Stmt |  |
+| isfromtemplateinstantiation.cpp:98:1:99:1 | { ... } | I |  | Stmt |  |
+| isfromtemplateinstantiation.cpp:99:1:99:1 | return ... |  | T | Stmt |  |
+| isfromtemplateinstantiation.cpp:99:1:99:1 | return ... | I |  | Stmt |  |
+| isfromtemplateinstantiation.cpp:103:6:103:16 | anotherMain |  |  | Declaration |  |
+| isfromtemplateinstantiation.cpp:114:6:114:24 | function_using_vars |  |  | Declaration |  |
+| isfromtemplateinstantiation.cpp:122:7:122:7 | declaration of operator= |  |  | DeclarationEntry |  |
+| isfromtemplateinstantiation.cpp:122:7:122:7 | declaration of operator= |  |  | DeclarationEntry |  |
+| isfromtemplateinstantiation.cpp:122:7:122:7 | operator= |  |  | Declaration |  |
+| isfromtemplateinstantiation.cpp:122:7:122:7 | operator= |  |  | Declaration |  |
+| isfromtemplateinstantiation.cpp:122:7:122:32 | AnotherTemplateClass<long> |  |  | Declaration |  |
+| isfromtemplateinstantiation.cpp:123:6:123:6 | f |  |  | Declaration |  |
+| isfromtemplateinstantiation.cpp:128:7:128:30 | AnotherTemplateClass<T *> |  | T | Declaration |  |
+| isfromtemplateinstantiation.cpp:128:7:128:30 | AnotherTemplateClass<long *> | I |  | Declaration |  |
+| isfromtemplateinstantiation.cpp:129:6:129:6 | f |  | T | Declaration |  |
+| isfromtemplateinstantiation.cpp:134:29:134:29 | declaration of operator= | I |  | DeclarationEntry |  |
+| isfromtemplateinstantiation.cpp:134:29:134:29 | declaration of operator= | I |  | DeclarationEntry |  |
+| isfromtemplateinstantiation.cpp:134:29:134:29 | operator= | I |  | Declaration |  |
+| isfromtemplateinstantiation.cpp:134:29:134:29 | operator= | I |  | Declaration |  |
+| isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<T> |  | T | Declaration |  |
+| isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<int> | I |  | Declaration |  |
+| isfromtemplateinstantiation.cpp:135:31:135:31 | declaration of operator= | I | T | DeclarationEntry |  |
+| isfromtemplateinstantiation.cpp:135:31:135:31 | declaration of operator= | I | T | DeclarationEntry |  |
+| isfromtemplateinstantiation.cpp:135:31:135:31 | operator= | I | T | Declaration |  |
+| isfromtemplateinstantiation.cpp:135:31:135:31 | operator= | I | T | Declaration |  |
+| isfromtemplateinstantiation.cpp:135:31:135:35 | Inner<U> |  | T | Declaration |  |
+| isfromtemplateinstantiation.cpp:135:31:135:35 | Inner<U> | I | T | Declaration |  |
+| isfromtemplateinstantiation.cpp:135:31:135:35 | Inner<long> | I | T | Declaration |  |
+| isfromtemplateinstantiation.cpp:136:7:136:7 | definition of x |  | T | Definition |  |
+| isfromtemplateinstantiation.cpp:136:7:136:7 | definition of x | I | T | Definition |  |
+| isfromtemplateinstantiation.cpp:136:7:136:7 | x |  | T | Declaration |  |
+| isfromtemplateinstantiation.cpp:136:7:136:7 | x | I | T | Declaration |  |
+| isfromtemplateinstantiation.cpp:137:7:137:7 | definition of y |  | T | Definition |  |
+| isfromtemplateinstantiation.cpp:137:7:137:7 | definition of y | I | T | Definition |  |
+| isfromtemplateinstantiation.cpp:137:7:137:7 | y |  | T | Declaration |  |
+| isfromtemplateinstantiation.cpp:137:7:137:7 | y | I | T | Declaration |  |
+| isfromtemplateinstantiation.cpp:144:28:144:56 | incomplete_never_instantiated<T> |  | T | Declaration |  |
+| isfromtemplateinstantiation.cpp:146:28:146:45 | never_instantiated<T> |  | T | Declaration |  |
+| isfromtemplateinstantiation.cpp:148:24:148:46 | decl_never_instantiated |  | T | Declaration |  |
+| isfromtemplateinstantiation.cpp:150:24:150:45 | def_never_instantiated |  | T | Declaration |  |
+| load.cpp:3:7:3:7 | declaration of operator= |  |  | DeclarationEntry |  |
+| load.cpp:3:7:3:7 | declaration of operator= |  |  | DeclarationEntry |  |
+| load.cpp:3:7:3:7 | operator= |  |  | Declaration |  |
+| load.cpp:3:7:3:7 | operator= |  |  | Declaration |  |
+| load.cpp:3:7:3:24 | std_istream_mockup |  |  | Declaration |  |
+| load.cpp:5:25:5:34 | operator>> |  |  | Declaration |  |
+| load.cpp:6:9:6:9 | (reference dereference) |  |  | Expr |  |
+| load.cpp:6:9:6:9 | i |  |  | Expr | Not ref |
+| load.cpp:6:13:6:21 | (short)... |  |  | Expr |  |
+| load.cpp:6:13:6:21 | externInt |  |  | Expr | Not ref |
+| load.cpp:7:16:7:20 | (reference to) |  |  | Expr |  |
+| load.cpp:7:16:7:20 | * ... |  |  | Expr |  |
+| load.cpp:13:7:13:7 | basic_text_iprimitive | I |  | Declaration |  |
+| load.cpp:13:7:13:7 | basic_text_iprimitive | I |  | Declaration |  |
+| load.cpp:13:7:13:7 | declaration of basic_text_iprimitive | I |  | DeclarationEntry |  |
+| load.cpp:13:7:13:7 | declaration of basic_text_iprimitive | I |  | DeclarationEntry |  |
+| load.cpp:13:7:13:7 | operator= | I |  | Declaration |  |
+| load.cpp:13:7:13:27 | basic_text_iprimitive<IStream> |  | T | Declaration |  |
+| load.cpp:13:7:13:27 | basic_text_iprimitive<std_istream_mockup> | I |  | Declaration |  |
+| load.cpp:15:14:15:15 | definition of is |  | T | Definition |  |
+| load.cpp:15:14:15:15 | definition of is | I |  | Definition |  |
+| load.cpp:15:14:15:15 | is |  | T | Declaration |  |
+| load.cpp:15:14:15:15 | is | I |  | Declaration |  |
+| load.cpp:18:5:18:25 | basic_text_iprimitive |  | T | Declaration |  |
+| load.cpp:19:14:19:20 | (reference dereference) |  | T | Expr |  |
+| load.cpp:19:14:19:20 | (reference to) |  | T | Expr |  |
+| load.cpp:19:14:19:20 | isParam |  | T | Expr | Ref |
+| load.cpp:22:10:22:13 | load |  | T | Declaration |  |
+| load.cpp:22:10:22:13 | load | I | T | Declaration |  |
+| load.cpp:22:19:22:19 | t |  | T | Declaration |  |
+| load.cpp:22:19:22:19 | t | I | T | Declaration |  |
+| load.cpp:24:9:24:10 | (reference dereference) |  | T | Expr |  |
+| load.cpp:24:9:24:10 | is |  | T | Expr | Not ref |
+| load.cpp:24:9:24:10 | this |  | T | Expr |  |
+| load.cpp:24:15:24:15 | (reference dereference) |  | T | Expr |  |
+| load.cpp:24:15:24:15 | t |  | T | Expr | Not ref |
+| load.cpp:27:10:27:13 | load |  | T | Declaration |  |
+| load.cpp:31:9:31:9 | (reference dereference) |  | T | Expr |  |
+| load.cpp:31:9:31:9 | t |  | T | Expr | Not ref |
+| load.cpp:31:13:31:13 | (char)... |  | T | Expr |  |
+| load.cpp:31:13:31:13 | i |  | T | Expr | Not ref |

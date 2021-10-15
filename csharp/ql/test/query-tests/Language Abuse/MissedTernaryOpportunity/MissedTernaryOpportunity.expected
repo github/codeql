@@ -1,0 +1,2 @@
+| MissedTernaryOpportunity.cs:9:9:9:57 | if (...) ... | Both branches of this 'if' statement return - consider using '?' to express intent better. |
+| MissedTernaryOpportunity.cs:14:9:14:53 | if (...) ... | Both branches of this 'if' statement write to the same variable - consider using '?' to express intent better. |

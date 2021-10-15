@@ -1,0 +1,46 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>Modern C++ code and frameworks should not throw or catch pointers. Older frameworks, such as Microsoft's MFC,
+do throw and catch pointers. Said pointers will generally point to an exception object allocated on the heap,
+and therefore need to be freed when they are caught. Failure to free them will result in a memory leak.</p>
+
+</overview>
+<recommendation>
+<p>The <code>catch</code> block should be augmented to delete the exception pointer.</p>
+
+</recommendation>
+<example>
+<sample language="cpp">
+void bad() {
+  try {
+    /* ... */
+  }
+  catch(CException* e) {
+    e->ReportError();
+  }
+}
+
+void good() {
+  try {
+    /* ... */
+  }
+  catch(CException* e) {
+    e->ReportError();
+    e->Delete();
+  }
+}
+</sample>
+
+</example>
+<references>
+
+  <li>MSDN Library for MFC: <a href="https://docs.microsoft.com/en-us/cpp/mfc/exceptions-catching-and-deleting-exceptions">Exceptions: Catching and Deleting Exceptions</a>.</li>
+
+
+</references>
+</qhelp>

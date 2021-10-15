@@ -1,0 +1,11 @@
+| test1.py | ControlFlowNode for l0 | 8 | SSA Variable l0 | 6 |
+| test1.py | ControlFlowNode for l1 | 8 | SSA Variable l1 | 7 |
+| test1.py | ControlFlowNode for l2 | 9 | SSA Variable l2 | 8 |
+| test1.py | Exit node for Module test1 | 0 | SSA Variable no_phi | 5 |
+| test2.py | ControlFlowNode for cond | 6 | SSA Variable cond | 5 |
+| test2.py | ControlFlowNode for l0 | 10 | SSA Variable l0 | 10 |
+| test2.py | Exit node for Module test2 | 0 | SSA Variable with_phi | 4 |
+| test3.py | ControlFlowNode for l0 | 13 | SSA Variable l0 | 13 |
+| test3.py | Exit node for Module test3 | 0 | SSA Variable phi_in_try | 4 |
+| test5.py | Exit node for Module test5 | 0 | SSA Variable a | 0 |
+| test6.py | ControlFlowNode for a | 6 | SSA Variable a | 4 |

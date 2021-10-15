@@ -1,0 +1,33 @@
+| Assembly1.dll:0:0:0:0 | Assembly1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | Assembly1.dll:0:0:0:0 | [AssemblyCompany(...)] | System.Reflection.AssemblyCompanyAttribute |
+| Assembly1.dll:0:0:0:0 | Assembly1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | Assembly1.dll:0:0:0:0 | [AssemblyConfiguration(...)] | System.Reflection.AssemblyConfigurationAttribute |
+| Assembly1.dll:0:0:0:0 | Assembly1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | Assembly1.dll:0:0:0:0 | [AssemblyFileVersion(...)] | System.Reflection.AssemblyFileVersionAttribute |
+| Assembly1.dll:0:0:0:0 | Assembly1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | Assembly1.dll:0:0:0:0 | [AssemblyInformationalVersion(...)] | System.Reflection.AssemblyInformationalVersionAttribute |
+| Assembly1.dll:0:0:0:0 | Assembly1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | Assembly1.dll:0:0:0:0 | [AssemblyProduct(...)] | System.Reflection.AssemblyProductAttribute |
+| Assembly1.dll:0:0:0:0 | Assembly1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | Assembly1.dll:0:0:0:0 | [AssemblyTitle(...)] | System.Reflection.AssemblyTitleAttribute |
+| Assembly1.dll:0:0:0:0 | Assembly1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | Assembly1.dll:0:0:0:0 | [CompilationRelaxations(...)] | System.Runtime.CompilerServices.CompilationRelaxationsAttribute |
+| Assembly1.dll:0:0:0:0 | Assembly1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | Assembly1.dll:0:0:0:0 | [Custom(...)] | Assembly1.CustomAttribute |
+| Assembly1.dll:0:0:0:0 | Assembly1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | Assembly1.dll:0:0:0:0 | [Debuggable(...)] | System.Diagnostics.DebuggableAttribute |
+| Assembly1.dll:0:0:0:0 | Assembly1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | Assembly1.dll:0:0:0:0 | [RuntimeCompatibility(...)] | System.Runtime.CompilerServices.RuntimeCompatibilityAttribute |
+| Assembly1.dll:0:0:0:0 | Assembly1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | Assembly1.dll:0:0:0:0 | [TargetFramework(...)] | System.Runtime.Versioning.TargetFrameworkAttribute |
+| attributes.cs:44:7:44:9 | Foo | attributes.cs:43:2:43:22 | [AttributeUsage(...)] | System.AttributeUsageAttribute |
+| attributes.cs:47:17:47:19 | foo | attributes.cs:46:6:46:16 | [Conditional(...)] | System.Diagnostics.ConditionalAttribute |
+| attributes.cs:52:23:52:23 | x | attributes.cs:52:14:52:16 | [Foo(...)] | Foo |
+| attributes.cs:55:10:55:11 | M1 | attributes.cs:54:6:54:16 | [My(...)] | MyAttribute |
+| attributes.cs:59:10:59:11 | M2 | attributes.cs:57:6:57:16 | [My(...)] | MyAttribute |
+| attributes.cs:59:10:59:11 | M2 | attributes.cs:58:6:58:8 | [My2(...)] | My2Attribute |
+| attributes.cs:78:14:78:14 | X | attributes.cs:77:2:77:5 | [Args(...)] | ArgsAttribute |
+| attributes.cs:82:9:82:18 | SomeMethod | attributes.cs:80:6:80:9 | [Args(...)] | ArgsAttribute |
+| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:10:12:10:24 | [AssemblyTitle(...)] | System.Reflection.AssemblyTitleAttribute |
+| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:11:12:11:30 | [AssemblyDescription(...)] | System.Reflection.AssemblyDescriptionAttribute |
+| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:12:12:12:32 | [AssemblyConfiguration(...)] | System.Reflection.AssemblyConfigurationAttribute |
+| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:13:12:13:26 | [AssemblyCompany(...)] | System.Reflection.AssemblyCompanyAttribute |
+| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:14:12:14:26 | [AssemblyProduct(...)] | System.Reflection.AssemblyProductAttribute |
+| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:15:12:15:28 | [AssemblyCopyright(...)] | System.Reflection.AssemblyCopyrightAttribute |
+| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:16:12:16:28 | [AssemblyTrademark(...)] | System.Reflection.AssemblyTrademarkAttribute |
+| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:17:12:17:26 | [AssemblyCulture(...)] | System.Reflection.AssemblyCultureAttribute |
+| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:22:12:22:21 | [ComVisible(...)] | System.Runtime.InteropServices.ComVisibleAttribute |
+| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:25:12:25:15 | [Guid(...)] | System.Runtime.InteropServices.GuidAttribute |
+| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:37:12:37:26 | [AssemblyVersion(...)] | System.Reflection.AssemblyVersionAttribute |
+| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:38:12:38:30 | [AssemblyFileVersion(...)] | System.Reflection.AssemblyFileVersionAttribute |
+| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:40:12:40:15 | [Args(...)] | ArgsAttribute |
+| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:41:10:41:13 | [Args(...)] | ArgsAttribute |

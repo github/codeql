@@ -1,0 +1,77 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+     <overview>
+          <p>
+          The <code>ssl.wrap_socket</code> function defaults
+          to an insecure version of SSL/TLS when no specific protocol version is
+          specified. This may leave the connection vulnerable to attack.
+          </p>
+
+     </overview>
+     <recommendation>
+
+          <p>
+            Ensure that a modern, strong protocol is used. All versions of SSL,
+            and TLS 1.0 and 1.1 are known to be vulnerable to attacks. Using TLS 1.2 or
+            above is strongly recommended. If no explicit
+            <code>ssl_version</code> is specified, the default
+            <code>PROTOCOL_TLS</code> is chosen. This protocol is insecure because it
+            allows TLS 1.0 and TLS 1.1 and so should not be used.
+          </p>
+
+     </recommendation>
+     <example>
+
+       <p>
+         The following code shows two different ways of setting up a connection
+         using SSL or TLS. They are both potentially insecure because the
+         default version is used.
+          </p>
+
+          <sample src="examples/insecure_default_protocol.py" />
+
+          <p>
+            Both of the cases above should be updated to use a secure protocol
+            instead, for instance by specifying
+            <code>ssl_version=PROTOCOL_TLSv1_2</code> as a keyword argument.
+          </p>
+          <p>
+            The latter example can also be made secure by modifying the created
+            context before it is used to create a connection. Therefore it will not be
+            flagged by this query. However, if a connection is created before
+            the context has been secured (for example, by setting the value of <code>minimum_version</code>),
+            then the code should be flagged by the query <code>py/insecure-protocol</code>.
+          </p>
+          <p>
+            Note that <code>ssl.wrap_socket</code> has been deprecated in
+            Python 3.7. The recommended alternatives are:
+          </p>
+          <ul>
+            <li><code>ssl.SSLContext</code> - supported in Python 2.7.9,
+                  3.2, and later versions</li>
+            <li><code>ssl.create_default_context</code> - a convenience function,
+                  supported in Python 3.4 and later versions.</li>
+          </ul>
+
+          <p>
+            Even when you use these alternatives, you should
+            ensure that a safe protocol is used. The following code illustrates
+            how to use flags (available since Python 3.2) or the `minimum_version`
+            field (favored since Python 3.7) to restrict the protocols accepted when
+            creating a connection.
+          </p>
+
+          <sample src="examples/secure_default_protocol.py" />
+     </example>
+
+     <references>
+       <li>Wikipedia: <a href="https://en.wikipedia.org/wiki/Transport_Layer_Security"> Transport Layer Security</a>.</li>
+       <li>Python 3 documentation: <a href="https://docs.python.org/3/library/ssl.html#ssl.SSLContext"> class ssl.SSLContext</a>.</li>
+       <li>Python 3 documentation: <a href="https://docs.python.org/3/library/ssl.html#ssl.wrap_socket"> ssl.wrap_socket</a>.</li>
+       <li>Python 3 documentation: <a href="https://docs.python.org/3/library/ssl.html#functions-constants-and-exceptions"> notes on context creation</a>.</li>
+       <li>Python 3 documentation: <a href="https://docs.python.org/3/library/ssl.html#ssl-security"> notes on security considerations</a>.</li>
+     </references>
+
+</qhelp>

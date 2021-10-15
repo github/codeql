@@ -1,0 +1,67 @@
+localObject_hasOwnProperty
+| method-calls.js:2:11:7:2 | {\\n\\t\\tm1: ... }; }\\n\\t} | m1 |
+| method-calls.js:2:11:7:2 | {\\n\\t\\tm1: ... }; }\\n\\t} | m2 |
+| method-calls.js:2:11:7:2 | {\\n\\t\\tm1: ... }; }\\n\\t} | m3 |
+| method-calls.js:2:11:7:2 | {\\n\\t\\tm1: ... }; }\\n\\t} | m4 |
+| method-calls.js:25:11:25:17 | {m: f1} | m |
+| method-calls.js:29:11:29:17 | {m: f2} | m |
+| method-calls.js:34:12:34:18 | {m: f3} | m |
+| method-calls.js:38:15:38:21 | {m: f4} | m |
+| method-calls.js:46:16:46:28 | {m: () => 42} | m |
+| method-calls.js:50:17:50:29 | {m: () => 42} | m |
+| method-calls.js:54:16:54:28 | {m: () => 42} | m |
+| method-calls.js:57:16:57:28 | {m: () => 42} | m |
+| tst.js:4:18:4:36 | { f: function(){} } | f |
+| tst.js:38:18:38:26 | { p: 42 } | p |
+| tst.js:42:18:42:33 | { p: 42, q: 42 } | p |
+| tst.js:42:18:42:33 | { p: 42, q: 42 } | q |
+| tst.js:56:20:56:35 | { p: 42, p: 42 } | p |
+| tst.js:59:20:59:28 | { p: 42 } | p |
+| tst.js:63:20:63:28 | { p: 42 } | p |
+| tst.js:68:19:68:27 | { p: 42 } | p |
+| tst.js:76:18:76:26 | { p: 42 } | p |
+| tst.js:77:18:77:28 | { p: true } | p |
+localObject
+| method-calls.js:2:11:7:2 | {\\n\\t\\tm1: ... }; }\\n\\t} |
+| method-calls.js:11:23:11:24 | {} |
+| method-calls.js:16:11:16:12 | {} |
+| method-calls.js:25:11:25:17 | {m: f1} |
+| method-calls.js:29:11:29:17 | {m: f2} |
+| method-calls.js:34:12:34:18 | {m: f3} |
+| method-calls.js:38:15:38:21 | {m: f4} |
+| method-calls.js:46:16:46:28 | {m: () => 42} |
+| method-calls.js:50:17:50:29 | {m: () => 42} |
+| method-calls.js:54:16:54:28 | {m: () => 42} |
+| method-calls.js:57:16:57:28 | {m: () => 42} |
+| tst.js:3:18:3:19 | {} |
+| tst.js:4:18:4:36 | { f: function(){} } |
+| tst.js:5:18:5:34 | { [unknown]: 42 } |
+| tst.js:38:18:38:26 | { p: 42 } |
+| tst.js:42:18:42:33 | { p: 42, q: 42 } |
+| tst.js:52:23:52:24 | {} |
+| tst.js:56:20:56:35 | { p: 42, p: 42 } |
+| tst.js:59:20:59:28 | { p: 42 } |
+| tst.js:63:20:63:28 | { p: 42 } |
+| tst.js:68:19:68:27 | { p: 42 } |
+| tst.js:73:18:73:20 | { } |
+| tst.js:76:18:76:26 | { p: 42 } |
+| tst.js:77:18:77:28 | { p: true } |
+| tst.js:82:20:82:21 | {} |
+methodCallTypeInference
+| method-calls.js:8:2:8:8 | o1.m1() | object |
+| method-calls.js:9:2:9:8 | o1.m2() | object |
+| method-calls.js:12:2:12:7 | o.m3() | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| method-calls.js:21:2:21:7 | o2.m() | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| method-calls.js:25:11:25:21 | {m: f1}.m() | object |
+| method-calls.js:30:11:30:16 | o2.m() | object |
+| method-calls.js:34:11:34:23 | ({m: f3}).m() | object |
+| method-calls.js:41:11:41:16 | o4.m() | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| method-calls.js:47:12:47:16 | o.m() | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| method-calls.js:51:12:51:16 | o.m() | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| method-calls.js:55:12:55:16 | o.m() | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| method-calls.js:60:12:60:16 | o.m() | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+methodCallTypeInferenceUsage
+| method-calls.js:25:11:25:21 | {m: f1}.m() | method-calls.js:26:2:26:3 | v1 | method-calls.js:24:23:24:24 | object literal |
+| method-calls.js:30:11:30:16 | o2.m() | method-calls.js:31:2:31:3 | v2 | method-calls.js:28:23:28:24 | object literal |
+| method-calls.js:34:11:34:23 | ({m: f3}).m() | method-calls.js:35:2:35:3 | v3 | method-calls.js:33:23:33:24 | object literal |
+| method-calls.js:41:11:41:16 | o4.m() | method-calls.js:42:2:42:3 | v4 | file://:0:0:0:0 | indefinite value (call) |

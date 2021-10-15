@@ -1,0 +1,9 @@
+| setters.js:2:8:2:8 | Error: setter should have exactly one param | Error: setter should have exactly one param |
+| setters.js:3:9:3:9 | Error: Setter cannot use rest params | Error: Setter cannot use rest params |
+| setters.js:4:8:4:8 | Error: setter should have exactly one param | Error: setter should have exactly one param |
+| setters.js:4:12:4:12 | Error: Setter cannot use rest params | Error: Setter cannot use rest params |
+| setters.js:7:8:7:8 | Error: setter should have exactly one param | Error: setter should have exactly one param |
+| setters.js:8:9:8:9 | Error: Setter cannot use rest params | Error: Setter cannot use rest params |
+| setters.js:9:8:9:8 | Error: setter should have exactly one param | Error: setter should have exactly one param |
+| setters.js:9:12:9:12 | Error: Setter cannot use rest params | Error: Setter cannot use rest params |
+| tst.js:2:1:2:1 | Error: Unexpected token | Error: Unexpected token |

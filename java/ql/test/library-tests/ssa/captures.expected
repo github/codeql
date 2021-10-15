@@ -1,0 +1,9 @@
+| Nested.java:8:29:8:57 | SSA init(next(..).p1) | Nested.java:4:34:10:3 | SSA init(p1) |
+| Nested.java:8:29:8:57 | SSA init(next(..).x1) | Nested.java:5:9:5:14 | SSA def(x1) |
+| Nested.java:16:22:16:34 | SSA init(getInt(..).obj) | Nested.java:15:12:15:29 | SSA def(obj) |
+| Nested.java:19:27:22:7 | SSA init(getInt(..).hash) | Nested.java:16:15:16:34 | SSA def(hash) |
+| Nested.java:19:27:22:7 | SSA init(getInt(..).x2) | Nested.java:17:9:17:15 | SSA def(x2) |
+| Nested.java:20:27:20:39 | SSA init(getInt(..).obj) | Nested.java:15:12:15:29 | SSA def(obj) |
+| Nested.java:30:23:30:36 | SSA init(getInt(..).obj2) | Nested.java:30:5:30:37 | SSA phi(obj2) |
+| Nested.java:37:20:37:25 | SSA init(getInt(..).x3) | Nested.java:36:7:36:12 | SSA def(x3) |
+| Nested.java:40:20:40:25 | SSA init(getInt(..).x3) | Nested.java:39:7:39:12 | SSA def(x3) |

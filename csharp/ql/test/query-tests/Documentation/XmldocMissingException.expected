@@ -1,0 +1,1 @@
+| documentation.cs:33:16:33:22 | method2 | Exception $@ should be documented. | documentation.cs:35:25:35:46 | throw ... | Exception2 |

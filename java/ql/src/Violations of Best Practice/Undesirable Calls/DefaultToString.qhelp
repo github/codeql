@@ -1,0 +1,51 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+In most cases, calling the default implementation of <code>toString</code> in <code>java.lang.Object</code> is not what is intended when
+a string representation of an object is required. The output of the default <code>toString</code> method consists of the class name of the object 
+as well as the object's hashcode, which is usually not what was intended.
+</p>
+<p>
+This rule includes explicit and implicit calls to <code>toString</code> that resolve to <code>java.lang.Object.toString</code>, particularly
+calls that are used in print or log statements.
+</p>
+
+</overview>
+<recommendation>
+<p>
+For objects that are printed, define a <code>toString</code> method for the object that returns a human-readable string.
+</p>
+
+</recommendation>
+<example>
+
+<p>The following example shows that printing an object makes an implicit call to <code>toString</code>.
+Because the class <code>WrongPerson</code> does not have a <code>toString</code> method, 
+<code>Object.toString</code> is called instead, which returns the class name and the <code>wp</code> object's hashcode.</p>
+
+<sample src="DefaultToString.java" />
+
+<p>In contrast, in the following modification of the example, the class <code>Person</code> does have a <code>toString</code> method, which returns a 
+string containing the arguments that were passed when the object <code>p</code> was created.</p>
+
+<sample src="DefaultToStringGood.java" />
+ 
+</example>
+<references>
+
+
+<li>
+  J. Bloch, <em>Effective Java (second edition)</em>, Item 10. Addison-Wesley, 2008.
+</li>
+<li>
+  Java API Specification: <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html#toString()">Object.toString()</a>.
+</li>
+
+
+</references>
+</qhelp>

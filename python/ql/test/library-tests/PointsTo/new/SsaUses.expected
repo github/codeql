@@ -1,0 +1,813 @@
+| __init__.py:0 | __name___0 | Exit node for Module code.__init__ |
+| __init__.py:0 | __name___0 | Exit node for Module code.package.__init__ |
+| __init__.py:0 | __name___2 | Exit node for Module code.test_package.__init__ |
+| __init__.py:0 | __package___0 | Exit node for Module code.__init__ |
+| __init__.py:0 | __package___0 | Exit node for Module code.package.__init__ |
+| __init__.py:0 | __package___2 | Exit node for Module code.test_package.__init__ |
+| __init__.py:0 | module2_1 | Exit node for Module code.package.__init__ |
+| __init__.py:0 | module3_0 | Exit node for Module code.package.__init__ |
+| __init__.py:0 | module4_0 | Exit node for Module code.package.__init__ |
+| __init__.py:0 | module5_0 | Exit node for Module code.package.__init__ |
+| __init__.py:0 | moduleX_1 | Exit node for Module code.package.__init__ |
+| __init__.py:0 | module_0 | Exit node for Module code.package.__init__ |
+| __init__.py:0 | sys_2 | Exit node for Module code.test_package.__init__ |
+| __init__.py:1 | __name___0 | ControlFlowNode for from module1 import * |
+| __init__.py:1 | __package___0 | ControlFlowNode for from module1 import * |
+| __init__.py:1 | sys_0 | ControlFlowNode for from module1 import * |
+| __init__.py:2 | __name___1 | ControlFlowNode for from module2 import * |
+| __init__.py:2 | __package___1 | ControlFlowNode for from module2 import * |
+| __init__.py:2 | sys_1 | ControlFlowNode for from module2 import * |
+| __init__.py:4 | module2_0 | ControlFlowNode for ImportMember |
+| __init__.py:6 | module2_1 | ControlFlowNode for ImportMember |
+| __init__.py:7 | module3_0 | ControlFlowNode for ImportMember |
+| __init__.py:8 | moduleX_0 | ControlFlowNode for ImportMember |
+| a_simple.py:0 | C_0 | Exit node for Module code.a_simple |
+| a_simple.py:0 | __name___0 | Exit node for Module code.a_simple |
+| a_simple.py:0 | __package___0 | Exit node for Module code.a_simple |
+| a_simple.py:0 | f1_0 | Exit node for Module code.a_simple |
+| a_simple.py:0 | f_0 | Exit node for Module code.a_simple |
+| a_simple.py:0 | func_0 | Exit node for Module code.a_simple |
+| a_simple.py:0 | i1_0 | Exit node for Module code.a_simple |
+| a_simple.py:0 | multi_assign_and_packing_0 | Exit node for Module code.a_simple |
+| a_simple.py:0 | multi_loop_0 | Exit node for Module code.a_simple |
+| a_simple.py:0 | multi_loop_in_try_0 | Exit node for Module code.a_simple |
+| a_simple.py:0 | s_0 | Exit node for Module code.a_simple |
+| a_simple.py:0 | vararg_kwarg_0 | Exit node for Module code.a_simple |
+| a_simple.py:0 | with_definition_0 | Exit node for Module code.a_simple |
+| a_simple.py:14 | d_0 | Exit node for Function vararg_kwarg |
+| a_simple.py:14 | t_0 | Exit node for Function vararg_kwarg |
+| a_simple.py:15 | t_0 | ControlFlowNode for t |
+| a_simple.py:16 | d_0 | ControlFlowNode for d |
+| a_simple.py:18 | seq_0 | Exit node for Function multi_loop |
+| a_simple.py:18 | x_1 | Exit node for Function multi_loop |
+| a_simple.py:18 | y_1 | Exit node for Function multi_loop |
+| a_simple.py:20 | seq_0 | ControlFlowNode for seq |
+| a_simple.py:21 | x_2 | ControlFlowNode for x |
+| a_simple.py:23 | x_0 | Exit node for Function with_definition |
+| a_simple.py:23 | y_0 | Exit node for Function with_definition |
+| a_simple.py:24 | x_0 | ControlFlowNode for x |
+| a_simple.py:25 | y_0 | ControlFlowNode for y |
+| a_simple.py:27 | p_1 | Exit node for Function multi_loop_in_try |
+| a_simple.py:27 | q_1 | Exit node for Function multi_loop_in_try |
+| a_simple.py:27 | x_0 | Exit node for Function multi_loop_in_try |
+| a_simple.py:29 | x_0 | ControlFlowNode for x |
+| a_simple.py:30 | p_2 | ControlFlowNode for p |
+| a_simple.py:34 | args_0 | Exit node for Function f |
+| a_simple.py:34 | kwargs_0 | Exit node for Function f |
+| a_simple.py:35 | args_0 | ControlFlowNode for args |
+| a_simple.py:36 | kwargs_0 | ControlFlowNode for kwargs |
+| a_simple.py:38 | a_0 | Exit node for Function multi_assign_and_packing |
+| a_simple.py:38 | b_0 | Exit node for Function multi_assign_and_packing |
+| a_simple.py:38 | c_0 | Exit node for Function multi_assign_and_packing |
+| a_simple.py:38 | g_0 | Exit node for Function multi_assign_and_packing |
+| a_simple.py:38 | h_0 | Exit node for Function multi_assign_and_packing |
+| a_simple.py:38 | i_0 | Exit node for Function multi_assign_and_packing |
+| a_simple.py:38 | l_0 | Exit node for Function multi_assign_and_packing |
+| a_simple.py:38 | m_0 | Exit node for Function multi_assign_and_packing |
+| a_simple.py:38 | p_0 | Exit node for Function multi_assign_and_packing |
+| a_simple.py:38 | q_0 | Exit node for Function multi_assign_and_packing |
+| a_simple.py:38 | r_0 | Exit node for Function multi_assign_and_packing |
+| a_simple.py:38 | s_0 | Exit node for Function multi_assign_and_packing |
+| a_simple.py:38 | t_0 | Exit node for Function multi_assign_and_packing |
+| a_simple.py:38 | u_0 | Exit node for Function multi_assign_and_packing |
+| a_simple.py:38 | w_0 | Exit node for Function multi_assign_and_packing |
+| a_simple.py:38 | x_0 | Exit node for Function multi_assign_and_packing |
+| a_simple.py:38 | y_0 | Exit node for Function multi_assign_and_packing |
+| a_simple.py:38 | z_0 | Exit node for Function multi_assign_and_packing |
+| a_simple.py:40 | a_0 | ControlFlowNode for a |
+| a_simple.py:40 | b_0 | ControlFlowNode for b |
+| a_simple.py:40 | c_0 | ControlFlowNode for c |
+| a_simple.py:41 | t_0 | ControlFlowNode for t |
+| a_simple.py:42 | w_0 | ControlFlowNode for w |
+| a_simple.py:43 | p_0 | ControlFlowNode for p |
+| a_simple.py:44 | q_0 | ControlFlowNode for q |
+| a_simple.py:45 | r_0 | ControlFlowNode for r |
+| a_simple.py:46 | x_0 | ControlFlowNode for x |
+| a_simple.py:47 | y_0 | ControlFlowNode for y |
+| a_simple.py:48 | z_0 | ControlFlowNode for z |
+| a_simple.py:49 | a_0 | ControlFlowNode for a |
+| a_simple.py:49 | b_0 | ControlFlowNode for b |
+| a_simple.py:49 | c_0 | ControlFlowNode for c |
+| a_simple.py:50 | g_0 | ControlFlowNode for g |
+| a_simple.py:51 | h_0 | ControlFlowNode for h |
+| a_simple.py:52 | i_0 | ControlFlowNode for i |
+| a_simple.py:54 | l_0 | ControlFlowNode for l |
+| a_simple.py:55 | m_0 | ControlFlowNode for m |
+| a_simple.py:56 | a_0 | ControlFlowNode for a |
+| a_simple.py:57 | s_0 | ControlFlowNode for s |
+| a_simple.py:58 | u_0 | ControlFlowNode for u |
+| b_condition.py:0 | __name___0 | Exit node for Module code.b_condition |
+| b_condition.py:0 | __package___0 | Exit node for Module code.b_condition |
+| b_condition.py:0 | double_attr_check_1 | Exit node for Module code.b_condition |
+| b_condition.py:0 | f_0 | Exit node for Module code.b_condition |
+| b_condition.py:0 | g_1 | Exit node for Module code.b_condition |
+| b_condition.py:0 | h_1 | Exit node for Module code.b_condition |
+| b_condition.py:0 | k_1 | Exit node for Module code.b_condition |
+| b_condition.py:0 | loop_1 | Exit node for Module code.b_condition |
+| b_condition.py:0 | method_check_1 | Exit node for Module code.b_condition |
+| b_condition.py:0 | not_or_not_1 | Exit node for Module code.b_condition |
+| b_condition.py:0 | odasa6261_1 | Exit node for Module code.b_condition |
+| b_condition.py:0 | split_bool1_1 | Exit node for Module code.b_condition |
+| b_condition.py:0 | v2_5 | Exit node for Module code.b_condition |
+| b_condition.py:4 | x_24 | Exit node for Function f |
+| b_condition.py:4 | y_0 | Exit node for Function f |
+| b_condition.py:7 | x_0 | ControlFlowNode for x |
+| b_condition.py:9 | x_3 | ControlFlowNode for x |
+| b_condition.py:13 | x_4 | ControlFlowNode for x |
+| b_condition.py:15 | x_7 | ControlFlowNode for x |
+| b_condition.py:19 | x_8 | ControlFlowNode for x |
+| b_condition.py:21 | x_11 | ControlFlowNode for x |
+| b_condition.py:25 | x_12 | ControlFlowNode for x |
+| b_condition.py:25 | x_13 | ControlFlowNode for x |
+| b_condition.py:26 | x_14 | ControlFlowNode for x |
+| b_condition.py:29 | x_17 | ControlFlowNode for x |
+| b_condition.py:32 | x_18 | ControlFlowNode for x |
+| b_condition.py:34 | x_21 | ControlFlowNode for x |
+| b_condition.py:36 | x_22 | ControlFlowNode for x |
+| b_condition.py:37 | x_23 | ControlFlowNode for x |
+| b_condition.py:39 | __name___0 | ControlFlowNode for thing() |
+| b_condition.py:39 | __package___0 | ControlFlowNode for thing() |
+| b_condition.py:39 | double_attr_check_0 | ControlFlowNode for thing() |
+| b_condition.py:39 | f_0 | ControlFlowNode for thing() |
+| b_condition.py:39 | g_0 | ControlFlowNode for thing() |
+| b_condition.py:39 | h_0 | ControlFlowNode for thing() |
+| b_condition.py:39 | k_0 | ControlFlowNode for thing() |
+| b_condition.py:39 | loop_0 | ControlFlowNode for thing() |
+| b_condition.py:39 | method_check_0 | ControlFlowNode for thing() |
+| b_condition.py:39 | not_or_not_0 | ControlFlowNode for thing() |
+| b_condition.py:39 | odasa6261_0 | ControlFlowNode for thing() |
+| b_condition.py:39 | split_bool1_0 | ControlFlowNode for thing() |
+| b_condition.py:39 | v2_0 | ControlFlowNode for thing() |
+| b_condition.py:41 | v2_1 | ControlFlowNode for v2 |
+| b_condition.py:42 | v2_2 | ControlFlowNode for v2 |
+| b_condition.py:43 | __name___0 | ControlFlowNode for use() |
+| b_condition.py:43 | __package___0 | ControlFlowNode for use() |
+| b_condition.py:43 | double_attr_check_0 | ControlFlowNode for use() |
+| b_condition.py:43 | f_0 | ControlFlowNode for use() |
+| b_condition.py:43 | g_0 | ControlFlowNode for use() |
+| b_condition.py:43 | h_0 | ControlFlowNode for use() |
+| b_condition.py:43 | k_0 | ControlFlowNode for use() |
+| b_condition.py:43 | loop_0 | ControlFlowNode for use() |
+| b_condition.py:43 | method_check_0 | ControlFlowNode for use() |
+| b_condition.py:43 | not_or_not_0 | ControlFlowNode for use() |
+| b_condition.py:43 | odasa6261_0 | ControlFlowNode for use() |
+| b_condition.py:43 | split_bool1_0 | ControlFlowNode for use() |
+| b_condition.py:43 | v2_3 | ControlFlowNode for use() |
+| b_condition.py:43 | v2_3 | ControlFlowNode for v2 |
+| b_condition.py:44 | __name___0 | ControlFlowNode for use() |
+| b_condition.py:44 | __package___0 | ControlFlowNode for use() |
+| b_condition.py:44 | double_attr_check_0 | ControlFlowNode for use() |
+| b_condition.py:44 | f_0 | ControlFlowNode for use() |
+| b_condition.py:44 | g_0 | ControlFlowNode for use() |
+| b_condition.py:44 | h_0 | ControlFlowNode for use() |
+| b_condition.py:44 | k_0 | ControlFlowNode for use() |
+| b_condition.py:44 | loop_0 | ControlFlowNode for use() |
+| b_condition.py:44 | method_check_0 | ControlFlowNode for use() |
+| b_condition.py:44 | not_or_not_0 | ControlFlowNode for use() |
+| b_condition.py:44 | odasa6261_0 | ControlFlowNode for use() |
+| b_condition.py:44 | split_bool1_0 | ControlFlowNode for use() |
+| b_condition.py:44 | v2_3 | ControlFlowNode for use() |
+| b_condition.py:44 | v2_3 | ControlFlowNode for v2 |
+| b_condition.py:50 | x_3 | Exit node for Function g |
+| b_condition.py:51 | x_0 | ControlFlowNode for x |
+| b_condition.py:52 | x_1 | ControlFlowNode for x |
+| b_condition.py:55 | seq_0 | Exit node for Function loop |
+| b_condition.py:55 | v_2 | Exit node for Function loop |
+| b_condition.py:56 | seq_0 | ControlFlowNode for seq |
+| b_condition.py:57 | v_3 | ControlFlowNode for v |
+| b_condition.py:58 | v_4 | ControlFlowNode for v |
+| b_condition.py:61 | x_7 | Exit node for Function double_attr_check |
+| b_condition.py:61 | y_3 | Exit node for Function double_attr_check |
+| b_condition.py:62 | x_0 | ControlFlowNode for x |
+| b_condition.py:64 | y_0 | ControlFlowNode for y |
+| b_condition.py:65 | x_2 | ControlFlowNode for x |
+| b_condition.py:66 | x_3 | ControlFlowNode for x |
+| b_condition.py:69 | b_3 | Exit node for Function h |
+| b_condition.py:71 | b_0 | ControlFlowNode for b |
+| b_condition.py:73 | b_3 | ControlFlowNode for b |
+| b_condition.py:75 | t_4 | Exit node for Function k |
+| b_condition.py:77 | t_0 | ControlFlowNode for t |
+| b_condition.py:79 | t_3 | ControlFlowNode for t |
+| b_condition.py:81 | bar_2 | Exit node for Function odasa6261 |
+| b_condition.py:81 | foo_4 | Exit node for Function odasa6261 |
+| b_condition.py:82 | foo_0 | ControlFlowNode for foo |
+| b_condition.py:84 | foo_2 | ControlFlowNode for foo |
+| b_condition.py:87 | x_3 | Exit node for Function split_bool1 |
+| b_condition.py:87 | x_8 | Exit node for Function split_bool1 |
+| b_condition.py:87 | y_3 | Exit node for Function split_bool1 |
+| b_condition.py:87 | y_6 | Exit node for Function split_bool1 |
+| b_condition.py:88 | x_0 | ControlFlowNode for x |
+| b_condition.py:88 | y_0 | ControlFlowNode for y |
+| b_condition.py:90 | x_1 | ControlFlowNode for x |
+| b_condition.py:90 | x_4 | ControlFlowNode for x |
+| b_condition.py:90 | y_0 | ControlFlowNode for y |
+| b_condition.py:92 | x_5 | ControlFlowNode for x |
+| b_condition.py:92 | x_6 | ControlFlowNode for x |
+| b_condition.py:93 | y_4 | ControlFlowNode for y |
+| b_condition.py:95 | y_1 | ControlFlowNode for y |
+| b_condition.py:96 | y_2 | ControlFlowNode for y |
+| b_condition.py:96 | y_5 | ControlFlowNode for y |
+| b_condition.py:97 | x_2 | ControlFlowNode for x |
+| b_condition.py:99 | x_7 | ControlFlowNode for x |
+| b_condition.py:101 | a_3 | Exit node for Function not_or_not |
+| b_condition.py:102 | a_0 | ControlFlowNode for a |
+| b_condition.py:104 | a_1 | ControlFlowNode for a |
+| b_condition.py:105 | a_2 | ControlFlowNode for a |
+| b_condition.py:109 | x_5 | Exit node for Function method_check |
+| b_condition.py:110 | x_0 | ControlFlowNode for x |
+| b_condition.py:111 | x_1 | ControlFlowNode for x |
+| b_condition.py:113 | x_3 | ControlFlowNode for x |
+| d_globals.py:0 | D_1 | Exit node for Module code.d_globals |
+| d_globals.py:0 | Ugly_1 | Exit node for Module code.d_globals |
+| d_globals.py:0 | X_1 | Exit node for Module code.d_globals |
+| d_globals.py:0 | __name___0 | Exit node for Module code.d_globals |
+| d_globals.py:0 | __package___0 | Exit node for Module code.d_globals |
+| d_globals.py:0 | assign_global_0 | Exit node for Module code.d_globals |
+| d_globals.py:0 | dict_1 | Exit node for Module code.d_globals |
+| d_globals.py:0 | g1_1 | Exit node for Module code.d_globals |
+| d_globals.py:0 | g2_1 | Exit node for Module code.d_globals |
+| d_globals.py:0 | g3_1 | Exit node for Module code.d_globals |
+| d_globals.py:0 | g4_6 | Exit node for Module code.d_globals |
+| d_globals.py:0 | get_g4_1 | Exit node for Module code.d_globals |
+| d_globals.py:0 | glob_1 | Exit node for Module code.d_globals |
+| d_globals.py:0 | init_0 | Exit node for Module code.d_globals |
+| d_globals.py:0 | j_0 | Exit node for Module code.d_globals |
+| d_globals.py:0 | k_1 | Exit node for Module code.d_globals |
+| d_globals.py:0 | modinit_2 | Exit node for Module code.d_globals |
+| d_globals.py:0 | outer_1 | Exit node for Module code.d_globals |
+| d_globals.py:0 | redefine_1 | Exit node for Module code.d_globals |
+| d_globals.py:0 | set_g4_1 | Exit node for Module code.d_globals |
+| d_globals.py:0 | set_g4_indirect_1 | Exit node for Module code.d_globals |
+| d_globals.py:0 | tuple_1 | Exit node for Module code.d_globals |
+| d_globals.py:0 | use_list_attribute_1 | Exit node for Module code.d_globals |
+| d_globals.py:0 | x_3 | Exit node for Module code.d_globals |
+| d_globals.py:0 | y_3 | Exit node for Module code.d_globals |
+| d_globals.py:0 | z_1 | Exit node for Module code.d_globals |
+| d_globals.py:2 | g1_2 | Exit node for Function j |
+| d_globals.py:2 | g2_2 | Exit node for Function j |
+| d_globals.py:2 | g3_2 | Exit node for Function j |
+| d_globals.py:2 | g4_1 | Exit node for Function j |
+| d_globals.py:2 | glob_2 | Exit node for Function j |
+| d_globals.py:2 | z_2 | Exit node for Function j |
+| d_globals.py:3 | dict_2 | ControlFlowNode for dict |
+| d_globals.py:3 | tuple_2 | ControlFlowNode for tuple |
+| d_globals.py:4 | dict_0 | ControlFlowNode for dict |
+| d_globals.py:6 | dict_1 | ControlFlowNode for dict |
+| d_globals.py:7 | tuple_0 | ControlFlowNode for tuple |
+| d_globals.py:8 | tuple_1 | ControlFlowNode for tuple |
+| d_globals.py:16 | g1_3 | Exit node for Function assign_global |
+| d_globals.py:16 | g2_3 | Exit node for Function assign_global |
+| d_globals.py:16 | g3_3 | Exit node for Function assign_global |
+| d_globals.py:16 | g4_2 | Exit node for Function assign_global |
+| d_globals.py:16 | glob_3 | Exit node for Function assign_global |
+| d_globals.py:16 | z_3 | Exit node for Function assign_global |
+| d_globals.py:19 | g1_3 | ControlFlowNode for g1 |
+| d_globals.py:25 | g1_4 | Exit node for Function init |
+| d_globals.py:25 | g2_4 | Exit node for Function init |
+| d_globals.py:25 | g3_4 | Exit node for Function init |
+| d_globals.py:25 | g4_3 | Exit node for Function init |
+| d_globals.py:25 | glob_4 | Exit node for Function init |
+| d_globals.py:25 | z_4 | Exit node for Function init |
+| d_globals.py:29 | D_0 | ControlFlowNode for init() |
+| d_globals.py:29 | Ugly_0 | ControlFlowNode for init() |
+| d_globals.py:29 | X_0 | ControlFlowNode for init() |
+| d_globals.py:29 | __name___0 | ControlFlowNode for init() |
+| d_globals.py:29 | __package___0 | ControlFlowNode for init() |
+| d_globals.py:29 | assign_global_0 | ControlFlowNode for init() |
+| d_globals.py:29 | dict_1 | ControlFlowNode for init() |
+| d_globals.py:29 | g1_0 | ControlFlowNode for init() |
+| d_globals.py:29 | g2_0 | ControlFlowNode for init() |
+| d_globals.py:29 | g3_0 | ControlFlowNode for init() |
+| d_globals.py:29 | g4_0 | ControlFlowNode for init() |
+| d_globals.py:29 | get_g4_0 | ControlFlowNode for init() |
+| d_globals.py:29 | glob_0 | ControlFlowNode for init() |
+| d_globals.py:29 | init_0 | ControlFlowNode for init |
+| d_globals.py:29 | init_0 | ControlFlowNode for init() |
+| d_globals.py:29 | j_0 | ControlFlowNode for init() |
+| d_globals.py:29 | k_0 | ControlFlowNode for init() |
+| d_globals.py:29 | modinit_0 | ControlFlowNode for init() |
+| d_globals.py:29 | outer_0 | ControlFlowNode for init() |
+| d_globals.py:29 | redefine_0 | ControlFlowNode for init() |
+| d_globals.py:29 | set_g4_0 | ControlFlowNode for init() |
+| d_globals.py:29 | set_g4_indirect_0 | ControlFlowNode for init() |
+| d_globals.py:29 | tuple_1 | ControlFlowNode for init() |
+| d_globals.py:29 | use_list_attribute_0 | ControlFlowNode for init() |
+| d_globals.py:29 | x_0 | ControlFlowNode for init() |
+| d_globals.py:29 | y_0 | ControlFlowNode for init() |
+| d_globals.py:29 | z_0 | ControlFlowNode for init() |
+| d_globals.py:30 | g2_1 | ControlFlowNode for g2 |
+| d_globals.py:35 | __init___0 | Exit node for Class Ugly |
+| d_globals.py:35 | meth_0 | Exit node for Class Ugly |
+| d_globals.py:37 | g1_5 | Exit node for Function __init__ |
+| d_globals.py:37 | g2_5 | Exit node for Function __init__ |
+| d_globals.py:37 | g3_5 | Exit node for Function __init__ |
+| d_globals.py:37 | g4_4 | Exit node for Function __init__ |
+| d_globals.py:37 | glob_5 | Exit node for Function __init__ |
+| d_globals.py:37 | self_0 | Exit node for Function __init__ |
+| d_globals.py:37 | z_5 | Exit node for Function __init__ |
+| d_globals.py:41 | g1_6 | Exit node for Function meth |
+| d_globals.py:41 | g2_6 | Exit node for Function meth |
+| d_globals.py:41 | g3_6 | Exit node for Function meth |
+| d_globals.py:41 | g4_5 | Exit node for Function meth |
+| d_globals.py:41 | glob_6 | Exit node for Function meth |
+| d_globals.py:41 | self_0 | Exit node for Function meth |
+| d_globals.py:41 | z_6 | Exit node for Function meth |
+| d_globals.py:42 | g3_6 | ControlFlowNode for g3 |
+| d_globals.py:47 | x_1 | ControlFlowNode for x |
+| d_globals.py:59 | y_3 | ControlFlowNode for y |
+| d_globals.py:62 | X_0 | ControlFlowNode for ClassExpr |
+| d_globals.py:62 | g3_1 | ControlFlowNode for ClassExpr |
+| d_globals.py:62 | v4_0 | Exit node for Class X |
+| d_globals.py:62 | y_1 | Exit node for Class X |
+| d_globals.py:62 | y_3 | ControlFlowNode for ClassExpr |
+| d_globals.py:63 | y_0 | ControlFlowNode for y |
+| d_globals.py:63 | y_4 | ControlFlowNode for y |
+| d_globals.py:65 | X_2 | ControlFlowNode for X |
+| d_globals.py:66 | g3_7 | ControlFlowNode for g3 |
+| d_globals.py:70 | arg_0 | Exit node for Function k |
+| d_globals.py:70 | g1_7 | Exit node for Function k |
+| d_globals.py:70 | g2_7 | Exit node for Function k |
+| d_globals.py:70 | g3_8 | Exit node for Function k |
+| d_globals.py:70 | g4_7 | Exit node for Function k |
+| d_globals.py:70 | glob_7 | Exit node for Function k |
+| d_globals.py:70 | z_7 | Exit node for Function k |
+| d_globals.py:75 | g1_10 | Exit node for Function get_g4 |
+| d_globals.py:75 | g2_10 | Exit node for Function get_g4 |
+| d_globals.py:75 | g3_11 | Exit node for Function get_g4 |
+| d_globals.py:75 | g4_12 | Exit node for Function get_g4 |
+| d_globals.py:75 | glob_10 | Exit node for Function get_g4 |
+| d_globals.py:75 | z_10 | Exit node for Function get_g4 |
+| d_globals.py:76 | g4_8 | ControlFlowNode for g4 |
+| d_globals.py:77 | g1_8 | ControlFlowNode for set_g4() |
+| d_globals.py:77 | g2_8 | ControlFlowNode for set_g4() |
+| d_globals.py:77 | g3_9 | ControlFlowNode for set_g4() |
+| d_globals.py:77 | g4_9 | ControlFlowNode for set_g4() |
+| d_globals.py:77 | glob_8 | ControlFlowNode for set_g4() |
+| d_globals.py:77 | set_g4_2 | ControlFlowNode for set_g4 |
+| d_globals.py:77 | z_8 | ControlFlowNode for set_g4() |
+| d_globals.py:78 | g4_12 | ControlFlowNode for g4 |
+| d_globals.py:80 | g1_12 | Exit node for Function set_g4 |
+| d_globals.py:80 | g2_12 | Exit node for Function set_g4 |
+| d_globals.py:80 | g3_13 | Exit node for Function set_g4 |
+| d_globals.py:80 | g4_14 | Exit node for Function set_g4 |
+| d_globals.py:80 | glob_12 | Exit node for Function set_g4 |
+| d_globals.py:80 | z_12 | Exit node for Function set_g4 |
+| d_globals.py:81 | g1_11 | ControlFlowNode for set_g4_indirect() |
+| d_globals.py:81 | g2_11 | ControlFlowNode for set_g4_indirect() |
+| d_globals.py:81 | g3_12 | ControlFlowNode for set_g4_indirect() |
+| d_globals.py:81 | g4_13 | ControlFlowNode for set_g4_indirect() |
+| d_globals.py:81 | glob_11 | ControlFlowNode for set_g4_indirect() |
+| d_globals.py:81 | set_g4_indirect_2 | ControlFlowNode for set_g4_indirect |
+| d_globals.py:81 | z_11 | ControlFlowNode for set_g4_indirect() |
+| d_globals.py:83 | g1_13 | Exit node for Function set_g4_indirect |
+| d_globals.py:83 | g2_13 | Exit node for Function set_g4_indirect |
+| d_globals.py:83 | g3_14 | Exit node for Function set_g4_indirect |
+| d_globals.py:83 | g4_15 | Exit node for Function set_g4_indirect |
+| d_globals.py:83 | glob_13 | Exit node for Function set_g4_indirect |
+| d_globals.py:83 | z_13 | Exit node for Function set_g4_indirect |
+| d_globals.py:92 | modinit_1 | ControlFlowNode for modinit |
+| d_globals.py:95 | g1_15 | Exit node for Function outer |
+| d_globals.py:95 | g2_15 | Exit node for Function outer |
+| d_globals.py:95 | g3_16 | Exit node for Function outer |
+| d_globals.py:95 | g4_17 | Exit node for Function outer |
+| d_globals.py:95 | glob_15 | Exit node for Function outer |
+| d_globals.py:95 | inner_0 | Exit node for Function outer |
+| d_globals.py:95 | otherInner_0 | Exit node for Function outer |
+| d_globals.py:95 | z_15 | Exit node for Function outer |
+| d_globals.py:96 | g1_16 | Exit node for Function inner |
+| d_globals.py:96 | g2_16 | Exit node for Function inner |
+| d_globals.py:96 | g3_17 | Exit node for Function inner |
+| d_globals.py:96 | g4_18 | Exit node for Function inner |
+| d_globals.py:96 | glob_16 | Exit node for Function inner |
+| d_globals.py:96 | z_16 | Exit node for Function inner |
+| d_globals.py:99 | glob_16 | ControlFlowNode for glob |
+| d_globals.py:101 | g1_17 | Exit node for Function otherInner |
+| d_globals.py:101 | g2_17 | Exit node for Function otherInner |
+| d_globals.py:101 | g3_18 | Exit node for Function otherInner |
+| d_globals.py:101 | g4_19 | Exit node for Function otherInner |
+| d_globals.py:101 | glob_17 | Exit node for Function otherInner |
+| d_globals.py:101 | z_17 | Exit node for Function otherInner |
+| d_globals.py:102 | glob_17 | ControlFlowNode for glob |
+| d_globals.py:104 | g1_14 | ControlFlowNode for inner() |
+| d_globals.py:104 | g2_14 | ControlFlowNode for inner() |
+| d_globals.py:104 | g3_15 | ControlFlowNode for inner() |
+| d_globals.py:104 | g4_16 | ControlFlowNode for inner() |
+| d_globals.py:104 | glob_14 | ControlFlowNode for inner() |
+| d_globals.py:104 | inner_0 | ControlFlowNode for inner |
+| d_globals.py:104 | z_14 | ControlFlowNode for inner() |
+| d_globals.py:107 | g1_18 | Exit node for Function redefine |
+| d_globals.py:107 | g2_18 | Exit node for Function redefine |
+| d_globals.py:107 | g3_19 | Exit node for Function redefine |
+| d_globals.py:107 | g4_20 | Exit node for Function redefine |
+| d_globals.py:107 | glob_19 | Exit node for Function redefine |
+| d_globals.py:107 | z_19 | Exit node for Function redefine |
+| d_globals.py:109 | z_18 | ControlFlowNode for z |
+| d_globals.py:111 | z_19 | ControlFlowNode for z |
+| d_globals.py:112 | glob_18 | ControlFlowNode for glob |
+| d_globals.py:114 | glob_19 | ControlFlowNode for glob |
+| d_globals.py:118 | __init___0 | Exit node for Class D |
+| d_globals.py:118 | foo_0 | Exit node for Class D |
+| d_globals.py:120 | g1_19 | Exit node for Function __init__ |
+| d_globals.py:120 | g2_19 | Exit node for Function __init__ |
+| d_globals.py:120 | g3_20 | Exit node for Function __init__ |
+| d_globals.py:120 | g4_21 | Exit node for Function __init__ |
+| d_globals.py:120 | glob_20 | Exit node for Function __init__ |
+| d_globals.py:120 | self_0 | Exit node for Function __init__ |
+| d_globals.py:120 | z_20 | Exit node for Function __init__ |
+| d_globals.py:123 | g1_20 | Exit node for Function foo |
+| d_globals.py:123 | g2_20 | Exit node for Function foo |
+| d_globals.py:123 | g3_21 | Exit node for Function foo |
+| d_globals.py:123 | g4_22 | Exit node for Function foo |
+| d_globals.py:123 | glob_21 | Exit node for Function foo |
+| d_globals.py:123 | self_0 | Exit node for Function foo |
+| d_globals.py:123 | z_21 | Exit node for Function foo |
+| d_globals.py:124 | dict_3 | ControlFlowNode for dict |
+| d_globals.py:126 | g1_22 | Exit node for Function use_list_attribute |
+| d_globals.py:126 | g2_22 | Exit node for Function use_list_attribute |
+| d_globals.py:126 | g3_23 | Exit node for Function use_list_attribute |
+| d_globals.py:126 | g4_24 | Exit node for Function use_list_attribute |
+| d_globals.py:126 | glob_23 | Exit node for Function use_list_attribute |
+| d_globals.py:126 | l_1 | Exit node for Function use_list_attribute |
+| d_globals.py:126 | z_23 | Exit node for Function use_list_attribute |
+| d_globals.py:128 | g1_21 | ControlFlowNode for Attribute() |
+| d_globals.py:128 | g2_21 | ControlFlowNode for Attribute() |
+| d_globals.py:128 | g3_22 | ControlFlowNode for Attribute() |
+| d_globals.py:128 | g4_23 | ControlFlowNode for Attribute() |
+| d_globals.py:128 | glob_22 | ControlFlowNode for Attribute() |
+| d_globals.py:128 | l_0 | ControlFlowNode for l |
+| d_globals.py:128 | z_22 | ControlFlowNode for Attribute() |
+| d_globals.py:129 | l_1 | ControlFlowNode for l |
+| e_temporal.py:0 | __name___0 | Exit node for Module code.e_temporal |
+| e_temporal.py:0 | __package___0 | Exit node for Module code.e_temporal |
+| e_temporal.py:0 | f_0 | Exit node for Module code.e_temporal |
+| e_temporal.py:0 | g_0 | Exit node for Module code.e_temporal |
+| e_temporal.py:0 | sys_0 | Exit node for Module code.e_temporal |
+| e_temporal.py:0 | x_1 | Exit node for Module code.e_temporal |
+| e_temporal.py:5 | sys_1 | ControlFlowNode for sys |
+| e_temporal.py:9 | arg_0 | Exit node for Function g |
+| e_temporal.py:10 | arg_0 | ControlFlowNode for arg |
+| e_temporal.py:12 | __name___0 | ControlFlowNode for f() |
+| e_temporal.py:12 | __name___0 | ControlFlowNode for g() |
+| e_temporal.py:12 | __package___0 | ControlFlowNode for f() |
+| e_temporal.py:12 | __package___0 | ControlFlowNode for g() |
+| e_temporal.py:12 | f_0 | ControlFlowNode for f |
+| e_temporal.py:12 | f_0 | ControlFlowNode for f() |
+| e_temporal.py:12 | f_0 | ControlFlowNode for g() |
+| e_temporal.py:12 | g_0 | ControlFlowNode for f() |
+| e_temporal.py:12 | g_0 | ControlFlowNode for g |
+| e_temporal.py:12 | g_0 | ControlFlowNode for g() |
+| e_temporal.py:12 | sys_0 | ControlFlowNode for f() |
+| e_temporal.py:12 | sys_0 | ControlFlowNode for g() |
+| e_temporal.py:12 | x_0 | ControlFlowNode for f() |
+| e_temporal.py:12 | x_0 | ControlFlowNode for g() |
+| g_class_init.py:0 | C_0 | Exit node for Module code.g_class_init |
+| g_class_init.py:0 | D_0 | Exit node for Module code.g_class_init |
+| g_class_init.py:0 | E_0 | Exit node for Module code.g_class_init |
+| g_class_init.py:0 | Oddities_0 | Exit node for Module code.g_class_init |
+| g_class_init.py:0 | V2_0 | Exit node for Module code.g_class_init |
+| g_class_init.py:0 | V3_0 | Exit node for Module code.g_class_init |
+| g_class_init.py:0 | __name___0 | Exit node for Module code.g_class_init |
+| g_class_init.py:0 | __package___0 | Exit node for Module code.g_class_init |
+| g_class_init.py:3 | __init___0 | Exit node for Class C |
+| g_class_init.py:3 | _init2_0 | Exit node for Class C |
+| g_class_init.py:3 | _init_0 | Exit node for Class C |
+| g_class_init.py:3 | method_0 | Exit node for Class C |
+| g_class_init.py:5 | self_2 | Exit node for Function __init__ |
+| g_class_init.py:6 | self_0 | ControlFlowNode for self |
+| g_class_init.py:7 | self_1 | ControlFlowNode for self |
+| g_class_init.py:9 | self_2 | Exit node for Function _init |
+| g_class_init.py:10 | self_0 | ControlFlowNode for self |
+| g_class_init.py:11 | self_1 | ControlFlowNode for self |
+| g_class_init.py:13 | self_1 | Exit node for Function _init2 |
+| g_class_init.py:14 | self_0 | ControlFlowNode for self |
+| g_class_init.py:16 | self_3 | Exit node for Function method |
+| g_class_init.py:17 | self_0 | ControlFlowNode for self |
+| g_class_init.py:18 | self_0 | ControlFlowNode for self |
+| g_class_init.py:19 | self_1 | ControlFlowNode for self |
+| g_class_init.py:20 | self_3 | ControlFlowNode for self |
+| g_class_init.py:24 | float_1 | Exit node for Class Oddities |
+| g_class_init.py:24 | h_0 | Exit node for Class Oddities |
+| g_class_init.py:24 | int_1 | Exit node for Class Oddities |
+| g_class_init.py:24 | l_0 | Exit node for Class Oddities |
+| g_class_init.py:26 | int_0 | ControlFlowNode for int |
+| g_class_init.py:27 | float_0 | ControlFlowNode for float |
+| g_class_init.py:32 | __init___0 | Exit node for Class D |
+| g_class_init.py:34 | self_0 | Exit node for Function __init__ |
+| g_class_init.py:35 | D_1 | ControlFlowNode for D |
+| g_class_init.py:35 | self_0 | ControlFlowNode for self |
+| g_class_init.py:36 | D_2 | ControlFlowNode for D |
+| g_class_init.py:36 | self_0 | ControlFlowNode for self |
+| g_class_init.py:45 | __init___0 | Exit node for Class E |
+| g_class_init.py:45 | meth_0 | Exit node for Class E |
+| g_class_init.py:46 | c_3 | Exit node for Function __init__ |
+| g_class_init.py:46 | self_3 | Exit node for Function __init__ |
+| g_class_init.py:47 | c_0 | ControlFlowNode for c |
+| g_class_init.py:48 | V2_1 | ControlFlowNode for V2 |
+| g_class_init.py:48 | self_0 | ControlFlowNode for self |
+| g_class_init.py:50 | V3_1 | ControlFlowNode for V3 |
+| g_class_init.py:50 | self_0 | ControlFlowNode for self |
+| g_class_init.py:52 | self_3 | Exit node for Function meth |
+| g_class_init.py:53 | V2_2 | ControlFlowNode for V2 |
+| g_class_init.py:53 | self_0 | ControlFlowNode for self |
+| h_classes.py:0 | Base_1 | Exit node for Module code.h_classes |
+| h_classes.py:0 | C_0 | Exit node for Module code.h_classes |
+| h_classes.py:0 | D_1 | Exit node for Module code.h_classes |
+| h_classes.py:0 | Derived1_1 | Exit node for Module code.h_classes |
+| h_classes.py:0 | Derived2_1 | Exit node for Module code.h_classes |
+| h_classes.py:0 | Derived3_1 | Exit node for Module code.h_classes |
+| h_classes.py:0 | __name___0 | Exit node for Module code.h_classes |
+| h_classes.py:0 | __package___0 | Exit node for Module code.h_classes |
+| h_classes.py:0 | f_1 | Exit node for Module code.h_classes |
+| h_classes.py:0 | k_1 | Exit node for Module code.h_classes |
+| h_classes.py:0 | sys_1 | Exit node for Module code.h_classes |
+| h_classes.py:0 | thing_1 | Exit node for Module code.h_classes |
+| h_classes.py:3 | __init___0 | Exit node for Class C |
+| h_classes.py:3 | x_0 | Exit node for Class C |
+| h_classes.py:7 | self_1 | Exit node for Function __init__ |
+| h_classes.py:8 | self_0 | ControlFlowNode for self |
+| h_classes.py:10 | Base_0 | ControlFlowNode for C() |
+| h_classes.py:10 | Base_0 | ControlFlowNode for type() |
+| h_classes.py:10 | C_0 | ControlFlowNode for C |
+| h_classes.py:10 | C_0 | ControlFlowNode for C() |
+| h_classes.py:10 | C_0 | ControlFlowNode for type() |
+| h_classes.py:10 | D_0 | ControlFlowNode for C() |
+| h_classes.py:10 | D_0 | ControlFlowNode for type() |
+| h_classes.py:10 | Derived1_0 | ControlFlowNode for C() |
+| h_classes.py:10 | Derived1_0 | ControlFlowNode for type() |
+| h_classes.py:10 | Derived2_0 | ControlFlowNode for C() |
+| h_classes.py:10 | Derived2_0 | ControlFlowNode for type() |
+| h_classes.py:10 | Derived3_0 | ControlFlowNode for C() |
+| h_classes.py:10 | Derived3_0 | ControlFlowNode for type() |
+| h_classes.py:10 | __name___0 | ControlFlowNode for C() |
+| h_classes.py:10 | __name___0 | ControlFlowNode for type() |
+| h_classes.py:10 | __package___0 | ControlFlowNode for C() |
+| h_classes.py:10 | __package___0 | ControlFlowNode for type() |
+| h_classes.py:10 | f_0 | ControlFlowNode for C() |
+| h_classes.py:10 | f_0 | ControlFlowNode for type() |
+| h_classes.py:10 | k_0 | ControlFlowNode for C() |
+| h_classes.py:10 | k_0 | ControlFlowNode for type() |
+| h_classes.py:10 | sys_0 | ControlFlowNode for C() |
+| h_classes.py:10 | sys_0 | ControlFlowNode for type() |
+| h_classes.py:10 | thing_0 | ControlFlowNode for C() |
+| h_classes.py:10 | thing_0 | ControlFlowNode for type() |
+| h_classes.py:11 | Base_0 | ControlFlowNode for type() |
+| h_classes.py:11 | C_0 | ControlFlowNode for type() |
+| h_classes.py:11 | D_0 | ControlFlowNode for type() |
+| h_classes.py:11 | Derived1_0 | ControlFlowNode for type() |
+| h_classes.py:11 | Derived2_0 | ControlFlowNode for type() |
+| h_classes.py:11 | Derived3_0 | ControlFlowNode for type() |
+| h_classes.py:11 | __name___0 | ControlFlowNode for type() |
+| h_classes.py:11 | __package___0 | ControlFlowNode for type() |
+| h_classes.py:11 | f_0 | ControlFlowNode for type() |
+| h_classes.py:11 | k_0 | ControlFlowNode for type() |
+| h_classes.py:11 | sys_0 | ControlFlowNode for sys |
+| h_classes.py:11 | sys_0 | ControlFlowNode for type() |
+| h_classes.py:11 | thing_0 | ControlFlowNode for type() |
+| h_classes.py:12 | Base_0 | ControlFlowNode for type() |
+| h_classes.py:12 | C_0 | ControlFlowNode for type() |
+| h_classes.py:12 | D_0 | ControlFlowNode for type() |
+| h_classes.py:12 | Derived1_0 | ControlFlowNode for type() |
+| h_classes.py:12 | Derived2_0 | ControlFlowNode for type() |
+| h_classes.py:12 | Derived3_0 | ControlFlowNode for type() |
+| h_classes.py:12 | __name___0 | ControlFlowNode for type() |
+| h_classes.py:12 | __package___0 | ControlFlowNode for type() |
+| h_classes.py:12 | f_0 | ControlFlowNode for type() |
+| h_classes.py:12 | k_0 | ControlFlowNode for type() |
+| h_classes.py:12 | sys_1 | ControlFlowNode for type() |
+| h_classes.py:12 | thing_0 | ControlFlowNode for type() |
+| h_classes.py:14 | arg_1 | Exit node for Function k |
+| h_classes.py:15 | C_1 | ControlFlowNode for C |
+| h_classes.py:16 | sys_2 | ControlFlowNode for sys |
+| h_classes.py:17 | arg_0 | ControlFlowNode for arg |
+| h_classes.py:23 | __init___0 | Exit node for Class Base |
+| h_classes.py:25 | choice_5 | Exit node for Function __init__ |
+| h_classes.py:25 | self_4 | Exit node for Function __init__ |
+| h_classes.py:26 | choice_0 | ControlFlowNode for choice |
+| h_classes.py:27 | Derived1_2 | ControlFlowNode for Derived1 |
+| h_classes.py:27 | self_0 | ControlFlowNode for self |
+| h_classes.py:28 | choice_2 | ControlFlowNode for choice |
+| h_classes.py:29 | Derived2_2 | ControlFlowNode for Derived2 |
+| h_classes.py:29 | self_0 | ControlFlowNode for self |
+| h_classes.py:31 | Derived3_2 | ControlFlowNode for Derived3 |
+| h_classes.py:31 | self_0 | ControlFlowNode for self |
+| h_classes.py:33 | Base_1 | ControlFlowNode for Base |
+| h_classes.py:36 | Base_1 | ControlFlowNode for Base |
+| h_classes.py:39 | Base_1 | ControlFlowNode for Base |
+| h_classes.py:42 | Base_1 | ControlFlowNode for Base |
+| h_classes.py:42 | Base_1 | ControlFlowNode for Base() |
+| h_classes.py:42 | Base_1 | ControlFlowNode for unknown() |
+| h_classes.py:42 | C_0 | ControlFlowNode for Base() |
+| h_classes.py:42 | C_0 | ControlFlowNode for unknown() |
+| h_classes.py:42 | D_0 | ControlFlowNode for Base() |
+| h_classes.py:42 | D_0 | ControlFlowNode for unknown() |
+| h_classes.py:42 | Derived1_1 | ControlFlowNode for Base() |
+| h_classes.py:42 | Derived1_1 | ControlFlowNode for unknown() |
+| h_classes.py:42 | Derived2_1 | ControlFlowNode for Base() |
+| h_classes.py:42 | Derived2_1 | ControlFlowNode for unknown() |
+| h_classes.py:42 | Derived3_1 | ControlFlowNode for Base() |
+| h_classes.py:42 | Derived3_1 | ControlFlowNode for unknown() |
+| h_classes.py:42 | __name___0 | ControlFlowNode for Base() |
+| h_classes.py:42 | __name___0 | ControlFlowNode for unknown() |
+| h_classes.py:42 | __package___0 | ControlFlowNode for Base() |
+| h_classes.py:42 | __package___0 | ControlFlowNode for unknown() |
+| h_classes.py:42 | f_0 | ControlFlowNode for Base() |
+| h_classes.py:42 | f_0 | ControlFlowNode for unknown() |
+| h_classes.py:42 | k_1 | ControlFlowNode for Base() |
+| h_classes.py:42 | k_1 | ControlFlowNode for unknown() |
+| h_classes.py:42 | sys_1 | ControlFlowNode for Base() |
+| h_classes.py:42 | sys_1 | ControlFlowNode for unknown() |
+| h_classes.py:42 | thing_0 | ControlFlowNode for Base() |
+| h_classes.py:42 | thing_0 | ControlFlowNode for unknown() |
+| h_classes.py:45 | arg0_0 | Exit node for Function f |
+| h_classes.py:45 | arg1_0 | Exit node for Function f |
+| h_classes.py:45 | arg2_0 | Exit node for Function f |
+| h_classes.py:48 | f_1 | ControlFlowNode for ClassExpr |
+| h_classes.py:48 | m_0 | Exit node for Class D |
+| h_classes.py:48 | n_0 | Exit node for Class D |
+| h_classes.py:50 | f_2 | ControlFlowNode for f |
+| h_classes.py:52 | arg1_0 | Exit node for Function n |
+| h_classes.py:52 | self_0 | Exit node for Function n |
+| h_classes.py:55 | Base_1 | ControlFlowNode for int() |
+| h_classes.py:55 | C_0 | ControlFlowNode for int() |
+| h_classes.py:55 | D_1 | ControlFlowNode for int() |
+| h_classes.py:55 | Derived1_1 | ControlFlowNode for int() |
+| h_classes.py:55 | Derived2_1 | ControlFlowNode for int() |
+| h_classes.py:55 | Derived3_1 | ControlFlowNode for int() |
+| h_classes.py:55 | __name___0 | ControlFlowNode for int() |
+| h_classes.py:55 | __package___0 | ControlFlowNode for int() |
+| h_classes.py:55 | f_1 | ControlFlowNode for int() |
+| h_classes.py:55 | k_1 | ControlFlowNode for int() |
+| h_classes.py:55 | sys_1 | ControlFlowNode for int() |
+| h_classes.py:55 | thing_1 | ControlFlowNode for int() |
+| h_classes.py:56 | Base_1 | ControlFlowNode for type() |
+| h_classes.py:56 | Base_1 | ControlFlowNode for type()() |
+| h_classes.py:56 | C_0 | ControlFlowNode for type() |
+| h_classes.py:56 | C_0 | ControlFlowNode for type()() |
+| h_classes.py:56 | D_1 | ControlFlowNode for type() |
+| h_classes.py:56 | D_1 | ControlFlowNode for type()() |
+| h_classes.py:56 | Derived1_1 | ControlFlowNode for type() |
+| h_classes.py:56 | Derived1_1 | ControlFlowNode for type()() |
+| h_classes.py:56 | Derived2_1 | ControlFlowNode for type() |
+| h_classes.py:56 | Derived2_1 | ControlFlowNode for type()() |
+| h_classes.py:56 | Derived3_1 | ControlFlowNode for type() |
+| h_classes.py:56 | Derived3_1 | ControlFlowNode for type()() |
+| h_classes.py:56 | __name___0 | ControlFlowNode for type() |
+| h_classes.py:56 | __name___0 | ControlFlowNode for type()() |
+| h_classes.py:56 | __package___0 | ControlFlowNode for type() |
+| h_classes.py:56 | __package___0 | ControlFlowNode for type()() |
+| h_classes.py:56 | f_1 | ControlFlowNode for type() |
+| h_classes.py:56 | f_1 | ControlFlowNode for type()() |
+| h_classes.py:56 | k_1 | ControlFlowNode for type() |
+| h_classes.py:56 | k_1 | ControlFlowNode for type()() |
+| h_classes.py:56 | sys_1 | ControlFlowNode for type() |
+| h_classes.py:56 | sys_1 | ControlFlowNode for type()() |
+| h_classes.py:56 | thing_1 | ControlFlowNode for type() |
+| h_classes.py:56 | thing_1 | ControlFlowNode for type()() |
+| h_classes.py:57 | Base_1 | ControlFlowNode for list() |
+| h_classes.py:57 | C_0 | ControlFlowNode for list() |
+| h_classes.py:57 | D_1 | ControlFlowNode for list() |
+| h_classes.py:57 | Derived1_1 | ControlFlowNode for list() |
+| h_classes.py:57 | Derived2_1 | ControlFlowNode for list() |
+| h_classes.py:57 | Derived3_1 | ControlFlowNode for list() |
+| h_classes.py:57 | __name___0 | ControlFlowNode for list() |
+| h_classes.py:57 | __package___0 | ControlFlowNode for list() |
+| h_classes.py:57 | f_1 | ControlFlowNode for list() |
+| h_classes.py:57 | k_1 | ControlFlowNode for list() |
+| h_classes.py:57 | sys_1 | ControlFlowNode for list() |
+| h_classes.py:57 | thing_1 | ControlFlowNode for list() |
+| h_classes.py:58 | Base_1 | ControlFlowNode for dict() |
+| h_classes.py:58 | C_0 | ControlFlowNode for dict() |
+| h_classes.py:58 | D_1 | ControlFlowNode for dict() |
+| h_classes.py:58 | Derived1_1 | ControlFlowNode for dict() |
+| h_classes.py:58 | Derived2_1 | ControlFlowNode for dict() |
+| h_classes.py:58 | Derived3_1 | ControlFlowNode for dict() |
+| h_classes.py:58 | __name___0 | ControlFlowNode for dict() |
+| h_classes.py:58 | __package___0 | ControlFlowNode for dict() |
+| h_classes.py:58 | f_1 | ControlFlowNode for dict() |
+| h_classes.py:58 | k_1 | ControlFlowNode for dict() |
+| h_classes.py:58 | sys_1 | ControlFlowNode for dict() |
+| h_classes.py:58 | thing_1 | ControlFlowNode for dict() |
+| h_classes.py:59 | Base_1 | ControlFlowNode for bool() |
+| h_classes.py:59 | C_0 | ControlFlowNode for bool() |
+| h_classes.py:59 | D_1 | ControlFlowNode for bool() |
+| h_classes.py:59 | Derived1_1 | ControlFlowNode for bool() |
+| h_classes.py:59 | Derived2_1 | ControlFlowNode for bool() |
+| h_classes.py:59 | Derived3_1 | ControlFlowNode for bool() |
+| h_classes.py:59 | __name___0 | ControlFlowNode for bool() |
+| h_classes.py:59 | __package___0 | ControlFlowNode for bool() |
+| h_classes.py:59 | f_1 | ControlFlowNode for bool() |
+| h_classes.py:59 | k_1 | ControlFlowNode for bool() |
+| h_classes.py:59 | sys_1 | ControlFlowNode for bool() |
+| h_classes.py:59 | thing_1 | ControlFlowNode for bool() |
+| h_classes.py:60 | Base_1 | ControlFlowNode for bool() |
+| h_classes.py:60 | C_0 | ControlFlowNode for bool() |
+| h_classes.py:60 | D_1 | ControlFlowNode for bool() |
+| h_classes.py:60 | Derived1_1 | ControlFlowNode for bool() |
+| h_classes.py:60 | Derived2_1 | ControlFlowNode for bool() |
+| h_classes.py:60 | Derived3_1 | ControlFlowNode for bool() |
+| h_classes.py:60 | __name___0 | ControlFlowNode for bool() |
+| h_classes.py:60 | __package___0 | ControlFlowNode for bool() |
+| h_classes.py:60 | f_1 | ControlFlowNode for bool() |
+| h_classes.py:60 | k_1 | ControlFlowNode for bool() |
+| h_classes.py:60 | sys_1 | ControlFlowNode for bool() |
+| h_classes.py:60 | thing_1 | ControlFlowNode for bool() |
+| j_convoluted_imports.py:0 | C_3 | Exit node for Module code.j_convoluted_imports |
+| j_convoluted_imports.py:0 | __name___3 | Exit node for Module code.j_convoluted_imports |
+| j_convoluted_imports.py:0 | __package___3 | Exit node for Module code.j_convoluted_imports |
+| j_convoluted_imports.py:0 | moduleX_3 | Exit node for Module code.j_convoluted_imports |
+| j_convoluted_imports.py:0 | module_3 | Exit node for Module code.j_convoluted_imports |
+| j_convoluted_imports.py:0 | object_3 | Exit node for Module code.j_convoluted_imports |
+| j_convoluted_imports.py:0 | p_3 | Exit node for Module code.j_convoluted_imports |
+| j_convoluted_imports.py:0 | q_3 | Exit node for Module code.j_convoluted_imports |
+| j_convoluted_imports.py:0 | r_3 | Exit node for Module code.j_convoluted_imports |
+| j_convoluted_imports.py:0 | unknown_3 | Exit node for Module code.j_convoluted_imports |
+| j_convoluted_imports.py:0 | x_3 | Exit node for Module code.j_convoluted_imports |
+| j_convoluted_imports.py:9 | f_0 | Exit node for Class C |
+| j_convoluted_imports.py:9 | module2_0 | Exit node for Class C |
+| j_convoluted_imports.py:9 | object_0 | ControlFlowNode for object |
+| j_convoluted_imports.py:13 | self_0 | Exit node for Function f |
+| j_convoluted_imports.py:13 | x_0 | Exit node for Function f |
+| j_convoluted_imports.py:17 | moduleX_0 | ControlFlowNode for moduleX |
+| j_convoluted_imports.py:19 | unknown_0 | ControlFlowNode for unknown |
+| j_convoluted_imports.py:20 | C_0 | ControlFlowNode for from code.test_package.module1 import * |
+| j_convoluted_imports.py:20 | __name___0 | ControlFlowNode for from code.test_package.module1 import * |
+| j_convoluted_imports.py:20 | __package___0 | ControlFlowNode for from code.test_package.module1 import * |
+| j_convoluted_imports.py:20 | moduleX_0 | ControlFlowNode for from code.test_package.module1 import * |
+| j_convoluted_imports.py:20 | module_0 | ControlFlowNode for from code.test_package.module1 import * |
+| j_convoluted_imports.py:20 | object_0 | ControlFlowNode for from code.test_package.module1 import * |
+| j_convoluted_imports.py:20 | p_0 | ControlFlowNode for from code.test_package.module1 import * |
+| j_convoluted_imports.py:20 | q_0 | ControlFlowNode for from code.test_package.module1 import * |
+| j_convoluted_imports.py:20 | r_0 | ControlFlowNode for from code.test_package.module1 import * |
+| j_convoluted_imports.py:20 | unknown_0 | ControlFlowNode for from code.test_package.module1 import * |
+| j_convoluted_imports.py:20 | x_0 | ControlFlowNode for from code.test_package.module1 import * |
+| j_convoluted_imports.py:22 | C_0 | ControlFlowNode for from code.test_package.module2 import * |
+| j_convoluted_imports.py:22 | __name___0 | ControlFlowNode for from code.test_package.module2 import * |
+| j_convoluted_imports.py:22 | __package___0 | ControlFlowNode for from code.test_package.module2 import * |
+| j_convoluted_imports.py:22 | moduleX_0 | ControlFlowNode for from code.test_package.module2 import * |
+| j_convoluted_imports.py:22 | module_0 | ControlFlowNode for from code.test_package.module2 import * |
+| j_convoluted_imports.py:22 | object_0 | ControlFlowNode for from code.test_package.module2 import * |
+| j_convoluted_imports.py:22 | p_0 | ControlFlowNode for from code.test_package.module2 import * |
+| j_convoluted_imports.py:22 | q_0 | ControlFlowNode for from code.test_package.module2 import * |
+| j_convoluted_imports.py:22 | r_0 | ControlFlowNode for from code.test_package.module2 import * |
+| j_convoluted_imports.py:22 | unknown_0 | ControlFlowNode for from code.test_package.module2 import * |
+| j_convoluted_imports.py:22 | x_0 | ControlFlowNode for from code.test_package.module2 import * |
+| j_convoluted_imports.py:23 | p_3 | ControlFlowNode for p |
+| j_convoluted_imports.py:24 | q_3 | ControlFlowNode for q |
+| j_convoluted_imports.py:25 | r_3 | ControlFlowNode for r |
+| k_getsetattr.py:0 | C_0 | Exit node for Module code.k_getsetattr |
+| k_getsetattr.py:0 | __name___0 | Exit node for Module code.k_getsetattr |
+| k_getsetattr.py:0 | __package___0 | Exit node for Module code.k_getsetattr |
+| k_getsetattr.py:0 | k_0 | Exit node for Module code.k_getsetattr |
+| k_getsetattr.py:4 | meth1_0 | Exit node for Class C |
+| k_getsetattr.py:4 | meth2_0 | Exit node for Class C |
+| k_getsetattr.py:6 | self_4 | Exit node for Function meth1 |
+| k_getsetattr.py:7 | self_0 | ControlFlowNode for self |
+| k_getsetattr.py:8 | self_1 | ControlFlowNode for self |
+| k_getsetattr.py:9 | self_2 | ControlFlowNode for self |
+| k_getsetattr.py:10 | self_3 | ControlFlowNode for self |
+| k_getsetattr.py:12 | self_6 | Exit node for Function meth2 |
+| k_getsetattr.py:13 | self_0 | ControlFlowNode for self |
+| k_getsetattr.py:14 | self_1 | ControlFlowNode for self |
+| k_getsetattr.py:15 | self_2 | ControlFlowNode for self |
+| k_getsetattr.py:16 | self_3 | ControlFlowNode for self |
+| k_getsetattr.py:17 | self_4 | ControlFlowNode for self |
+| k_getsetattr.py:18 | self_5 | ControlFlowNode for self |
+| k_getsetattr.py:21 | c1_1 | Exit node for Function k |
+| k_getsetattr.py:21 | c2_2 | Exit node for Function k |
+| k_getsetattr.py:21 | c3_1 | Exit node for Function k |
+| k_getsetattr.py:21 | cond_3 | Exit node for Function k |
+| k_getsetattr.py:22 | C_1 | ControlFlowNode for C |
+| k_getsetattr.py:23 | C_1 | ControlFlowNode for C |
+| k_getsetattr.py:24 | C_1 | ControlFlowNode for C |
+| k_getsetattr.py:25 | c1_0 | ControlFlowNode for c1 |
+| k_getsetattr.py:26 | cond_0 | ControlFlowNode for cond |
+| k_getsetattr.py:27 | c2_0 | ControlFlowNode for c2 |
+| k_getsetattr.py:28 | c1_1 | ControlFlowNode for c1 |
+| k_getsetattr.py:29 | c2_2 | ControlFlowNode for c2 |
+| k_getsetattr.py:30 | c3_0 | ControlFlowNode for c3 |
+| k_getsetattr.py:31 | c3_0 | ControlFlowNode for c3 |
+| s_scopes.py:0 | C2_0 | Exit node for Module code.s_scopes |
+| s_scopes.py:0 | __name___0 | Exit node for Module code.s_scopes |
+| s_scopes.py:0 | __package___0 | Exit node for Module code.s_scopes |
+| s_scopes.py:0 | f_0 | Exit node for Module code.s_scopes |
+| s_scopes.py:0 | float_2 | Exit node for Module code.s_scopes |
+| s_scopes.py:0 | i_0 | Exit node for Module code.s_scopes |
+| s_scopes.py:0 | x_1 | Exit node for Module code.s_scopes |
+| s_scopes.py:7 | f1_0 | Exit node for Class C2 |
+| s_scopes.py:7 | f2_0 | Exit node for Class C2 |
+| s_scopes.py:7 | float_2 | ControlFlowNode for ClassExpr |
+| s_scopes.py:7 | float_2 | Exit node for Class C2 |
+| s_scopes.py:7 | i1_0 | Exit node for Class C2 |
+| s_scopes.py:7 | i2_0 | Exit node for Class C2 |
+| s_scopes.py:7 | int_1 | Exit node for Class C2 |
+| s_scopes.py:7 | s_0 | Exit node for Class C2 |
+| s_scopes.py:7 | str_2 | Exit node for Class C2 |
+| s_scopes.py:9 | int_0 | ControlFlowNode for int |
+| s_scopes.py:10 | float_0 | ControlFlowNode for float |
+| s_scopes.py:10 | float_3 | ControlFlowNode for float |
+| s_scopes.py:18 | int_1 | ControlFlowNode for int |
+| s_scopes.py:19 | str_2 | ControlFlowNode for str |
+| s_scopes.py:20 | float_2 | ControlFlowNode for float |
+| s_scopes.py:20 | float_3 | ControlFlowNode for float |
+| s_scopes.py:22 | x_0 | ControlFlowNode for x |
+| s_scopes.py:24 | float_2 | ControlFlowNode for float |

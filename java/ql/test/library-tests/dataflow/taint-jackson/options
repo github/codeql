@@ -1,0 +1,1 @@
+//semmle-extractor-options: --javac-args -cp ${testdir}/../../../stubs/jackson-databind-2.12:${testdir}/../../../stubs/jackson-core-2.12

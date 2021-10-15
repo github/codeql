@@ -1,0 +1,12 @@
+| duplicate_literal_locations.c:3:9:3:11 | 123 |
+| duplicate_literal_locations.c:4:9:4:9 | 4 |
+| duplicate_literal_locations.c:5:9:5:11 | 123 |
+| literal_locations.c:11:12:11:17 | 55555 |
+| literal_locations.c:14:10:14:14 | 11111 |
+| literal_locations.c:14:17:14:21 | 22222 |
+| literal_locations.c:15:10:15:14 | 33333 |
+| literal_locations.c:15:17:15:21 | 44444 |
+| literal_locations.c:18:12:18:17 | 55555 |
+| literal_locations.c:21:10:21:10 | 5 |
+| literal_locations.c:21:16:21:16 | 8 |
+| literal_locations.c:25:15:25:15 | 1 |

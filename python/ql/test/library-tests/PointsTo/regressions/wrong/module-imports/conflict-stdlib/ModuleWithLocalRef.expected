@@ -1,0 +1,3 @@
+| Module 'cmd' (external, in stdlib, not missing) referenced in local file | code-invalid-package-name/test_ok.py:1 |
+| Module 'pdb' (external, in stdlib, not missing) referenced in local file | code-invalid-package-name/test_fail.py:3 |
+| Module 'unique_name' (external, not in stdlib, missing) referenced in local file | code-invalid-package-name/unique_name_use.py:1 |

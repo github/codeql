@@ -1,0 +1,28 @@
+<!--AVOID: 'shippingService' and 'orderService' share several properties with the same values-->
+<bean id="shippingService" class="documentation.examples.spring.ShippingService">
+	<property name="transactionHelper">
+		<ref bean="transactionHelper"/>
+	</property>
+	<property name="dao">
+		<ref bean="dao"/>
+	</property>
+	<property name="registry">
+		<ref bean="basicRegistry"/>
+	</property>
+	
+	<property name="shippingProvider" value="Federal Parcel Service"/>
+</bean>
+
+<bean id="orderService" class="documentation.examples.spring.OrderService">
+	<property name="transactionHelper">
+		<ref bean="transactionHelper"/>
+	</property>
+	<property name="dao">
+		<ref bean="dao"/>
+	</property>
+	<property name="registry">
+		<ref bean="basicRegistry"/>
+	</property>
+	
+	<property name="orderReference" value="8675309"/>
+</bean>

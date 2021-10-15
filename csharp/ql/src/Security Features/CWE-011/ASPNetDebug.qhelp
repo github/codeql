@@ -1,0 +1,54 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+ASP.NET applications that deploy a 'debug' build to production can reveal debugging information
+to end users. This debugging information can aid a malicious user in attacking the system. The use
+of the debugging flag may also impair performance, increasing execution time and memory usage.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Remove the 'debug' flag from the <code>Web.config</code> file if this configuration is likely to be
+used in production.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+The following example shows the 'debug' flag set to true in a <code>Web.config</code> file for ASP.NET:
+</p>
+
+<sample src="Web.config.bad" />
+
+<p>
+This will produce a 'debug' build that may be exploited by an end user.
+</p>
+
+<p>
+To fix this problem, the 'debug' flag should be set to <code>false</code>, or removed completely:
+</p>
+
+<sample src="Web.config.good" />
+
+</example>
+<references>
+
+<li>
+MSDN:
+<a href="https://web.archive.org/web/20190919105353/https://blogs.msdn.microsoft.com/prashant_upadhyay/2011/07/14/why-debugfalse-in-asp-net-applications-in-production-environment/">Why debug=false in ASP.NET applications in production environment</a>.
+</li>
+<li>
+MSDN:
+<a href="https://msdn.microsoft.com/en-us/library/e8z01xdh.aspx">How to: Enable Debugging for ASP.NET Applications</a>.
+</li>
+
+
+</references>
+</qhelp>

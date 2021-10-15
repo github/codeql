@@ -1,0 +1,40 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+
+The signedness of a plain char, short, int, or long bit field is implementation-specific in C and in
+older versions of C++, and declaring their signedness explicitly removes the ambiguity and ensures
+portability.
+</p>
+
+
+</overview>
+<recommendation>
+<p>
+Declare all members of the bit field with explicit signedness.
+</p>
+
+</recommendation>
+<example><sample src="AmbiguouslySignedBitField.cpp" />
+
+
+
+</example>
+<references>
+
+
+<li>
+  AV Rule 154, <em>Joint Strike Fighter Air Vehicle C++ Coding Standards</em>. Lockheed Martin Corporation, 2005.
+</li>
+<li>
+  <a href="http://en.cppreference.com/w/cpp/language/bit_field">C++ Bit Fields</a>
+</li>
+
+
+</references>
+</qhelp>

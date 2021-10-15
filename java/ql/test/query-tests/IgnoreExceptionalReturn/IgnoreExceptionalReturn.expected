@@ -1,0 +1,6 @@
+| Test.java:5:3:5:33 | createNewFile(...) | Method main ignores exceptional return value of File.createNewFile. |
+| Test.java:7:3:7:25 | mkdir(...) | Method main ignores exceptional return value of File.mkdir. |
+| Test.java:9:3:9:43 | renameTo(...) | Method main ignores exceptional return value of File.renameTo. |
+| Test.java:10:3:10:37 | setLastModified(...) | Method main ignores exceptional return value of File.setLastModified. |
+| Test.java:11:3:11:31 | setReadOnly(...) | Method main ignores exceptional return value of File.setReadOnly. |
+| Test.java:12:3:12:35 | setWritable(...) | Method main ignores exceptional return value of File.setWritable. |

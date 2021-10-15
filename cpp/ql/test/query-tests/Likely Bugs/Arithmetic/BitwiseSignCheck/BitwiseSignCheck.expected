@@ -1,0 +1,4 @@
+| bsc.cpp:2:10:2:32 | ... > ... | Potential unsafe sign check of a bitwise operation. |
+| bsc.cpp:6:10:6:32 | ... > ... | Potential unsafe sign check of a bitwise operation. |
+| bsc.cpp:18:10:18:28 | ... > ... | Potential unsafe sign check of a bitwise operation. |
+| bsc.cpp:22:10:22:28 | ... < ... | Potential unsafe sign check of a bitwise operation. |

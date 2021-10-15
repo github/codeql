@@ -1,0 +1,14 @@
+{
+  "extensions": [
+    "rust-lang.rust",
+    "bungcip.better-toml",
+    "github.vscode-codeql",
+    "slevesque.vscode-zipexplorer"
+  ],
+  "settings": {
+    "files.watcherExclude": {
+      "**/target/**": true
+    },
+    "codeQL.runningQueries.memory": 2048
+  }
+}

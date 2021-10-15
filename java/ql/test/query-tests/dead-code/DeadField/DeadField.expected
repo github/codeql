@@ -1,0 +1,9 @@
+| AnnotationValueTest.java:11:23:11:31 | deadField | The field deadField is entirely unread. | AnnotationValueTest.java:11:23:11:31 | deadField | deadField |
+| AnnotationValueUtil.java:22:29:22:54 | DEAD_STRING_CONSTANT_FIELD | The field DEAD_STRING_CONSTANT_FIELD is only read from a dead-code cycle. | AnnotationValueUtil.java:22:29:22:54 | DEAD_STRING_CONSTANT_FIELD | DEAD_STRING_CONSTANT_FIELD |
+| AnnotationValueUtil.java:23:29:23:55 | DEAD_STRING_CONSTANT_METHOD | The field DEAD_STRING_CONSTANT_METHOD is only read from a dead-code cycle. | AnnotationValueUtil.java:23:29:23:55 | DEAD_STRING_CONSTANT_METHOD | DEAD_STRING_CONSTANT_METHOD |
+| AnnotationValueUtil.java:24:29:24:54 | DEAD_STRING_CONSTANT_CLASS | The field DEAD_STRING_CONSTANT_CLASS is only read from a dead-code cycle. | AnnotationValueUtil.java:24:29:24:54 | DEAD_STRING_CONSTANT_CLASS | DEAD_STRING_CONSTANT_CLASS |
+| BasicTest.java:2:24:2:38 | deadStaticField | The field deadStaticField is only read from dead code originating at $@. | BasicTest.java:29:23:29:40 | getDeadStaticField | getDeadStaticField |
+| BasicTest.java:4:17:4:25 | deadField | The field deadField is only read from dead code originating at $@. | BasicTest.java:13:16:13:27 | getDeadField | getDeadField |
+| BasicTest.java:5:17:5:30 | deadCycleField | The field deadCycleField is only read from a dead-code cycle. | BasicTest.java:5:17:5:30 | deadCycleField | deadCycleField |
+| ReflectionTest.java:5:15:5:31 | notInheritedField | The field notInheritedField is entirely unread. | ReflectionTest.java:5:15:5:31 | notInheritedField | notInheritedField |
+| ReflectionTest.java:9:14:9:26 | shadowedField | The field shadowedField is entirely unread. | ReflectionTest.java:9:14:9:26 | shadowedField | shadowedField |

@@ -1,0 +1,18 @@
+| NonSerializableFieldTest.java:25:8:25:19 | problematic1 | This field is in a serializable class,  but is not serializable itself because NS is not serializable. |
+| NonSerializableFieldTest.java:26:14:26:25 | problematic2 | This field is in a serializable class,  but is not serializable itself because NS is not serializable. |
+| NonSerializableFieldTest.java:27:16:27:27 | problematic3 | This field is in a serializable class,  but is not serializable itself because ? is not serializable. |
+| NonSerializableFieldTest.java:27:16:27:27 | problematic3 | This field is in a serializable class,  but is not serializable itself because NS is not serializable. |
+| NonSerializableFieldTest.java:28:16:28:27 | problematic4 | This field is in a serializable class,  but is not serializable itself because ? is not serializable. |
+| NonSerializableFieldTest.java:28:16:28:27 | problematic4 | This field is in a serializable class,  but is not serializable itself because NS is not serializable. |
+| NonSerializableFieldTest.java:29:30:29:41 | problematic5 | This field is in a serializable class,  but is not serializable itself because Map<?,NS> is not serializable. |
+| NonSerializableFieldTest.java:30:9:30:20 | problematic6 | This field is in a serializable class,  but is not serializable itself because Map<> is not serializable. |
+| NonSerializableFieldTest.java:31:24:31:35 | problematic7 | This field is in a serializable class,  but is not serializable itself because ? extends NS is not serializable. |
+| NonSerializableFieldTest.java:32:22:32:33 | problematic8 | This field is in a serializable class,  but is not serializable itself because ? super NS is not serializable. |
+| NonSerializableFieldTest.java:33:7:33:18 | problematic9 | This field is in a serializable class,  but is not serializable itself because T is not serializable. |
+| NonSerializableFieldTest.java:34:13:34:25 | problematic10 | This field is in a serializable class,  but is not serializable itself because T is not serializable. |
+| NonSerializableFieldTest.java:35:13:35:25 | problematic11 | This field is in a serializable class,  but is not serializable itself because ? is not serializable. |
+| NonSerializableFieldTest.java:36:15:36:27 | problematic12 | This field is in a serializable class,  but is not serializable itself because ? is not serializable. |
+| NonSerializableFieldTest.java:37:34:37:46 | problematic13 | This field is in a serializable class,  but is not serializable itself because Map<?,Double> is not serializable. |
+| NonSerializableFieldTest.java:38:21:38:33 | problematic14 | This field is in a serializable class,  but is not serializable itself because ? is not serializable. |
+| NonSerializableFieldTest.java:79:10:79:20 | problematic | This field is in a serializable class,  but is not serializable itself because NS is not serializable. |
+| NonSerializableFieldTest.java:109:26:109:45 | nonSerializableField | This field is in a serializable class,  but is not serializable itself because NonSerializableClass is not serializable. |

@@ -1,0 +1,1 @@
+| explicit_return_in_init.py:32:5:32:23 | Function __init__ | __init__ method is a generator. |

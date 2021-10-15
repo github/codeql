@@ -1,0 +1,5 @@
+| tests.cpp:258:2:258:8 | call to sprintf | This 'call to sprintf' operation requires 17 bytes but the destination is only 10 bytes. |
+| tests.cpp:259:2:259:8 | call to sprintf | This 'call to sprintf' operation requires 17 bytes but the destination is only 10 bytes. |
+| tests.cpp:272:2:272:8 | call to sprintf | This 'call to sprintf' operation requires 9 bytes but the destination is only 8 bytes. |
+| tests.cpp:273:2:273:8 | call to sprintf | This 'call to sprintf' operation requires 9 bytes but the destination is only 8 bytes. |
+| tests.cpp:308:3:308:9 | call to sprintf | This 'call to sprintf' operation requires 9 bytes but the destination is only 8 bytes. |

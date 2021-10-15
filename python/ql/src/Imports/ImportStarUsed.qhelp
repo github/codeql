@@ -1,0 +1,27 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p> Using <code>from xxx import *</code> makes it difficult to determine what has
+been defined by the import statement. This may hide errors and introduce
+unexpected dependencies. </p>
+
+</overview>
+<recommendation>
+
+<p>
+Use explicit imports. For example <code>from xxx import a, b, c</code>
+</p>
+
+</recommendation>
+<references>
+
+
+<li>Python Language  Reference: <a href="http://docs.python.org/2/reference/simple_stmts.html#import">The import statement</a>.</li>
+<li>Python PEP-8: <a href="http://www.python.org/dev/peps/pep-0008/#imports">Imports</a>.</li>
+
+
+</references>
+</qhelp>

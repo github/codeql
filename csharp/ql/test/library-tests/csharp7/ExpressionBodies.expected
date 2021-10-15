@@ -1,0 +1,18 @@
+| CSharp7.cs:15:9:15:11 | Foo | CSharp7.cs:15:18:15:22 | access to field field |
+| CSharp7.cs:16:14:16:14 | get_P | CSharp7.cs:16:14:16:14 | 5 |
+| CSharp7.cs:19:9:19:11 | get_Q | CSharp7.cs:19:16:19:20 | call to method Foo |
+| CSharp7.cs:20:9:20:11 | set_Q | CSharp7.cs:20:16:20:28 | ... = ... |
+| CSharp7.cs:23:5:23:27 | ExpressionBodiedMembers | CSharp7.cs:23:39:23:43 | call to method Foo |
+| CSharp7.cs:24:6:24:28 | ~ExpressionBodiedMembers | CSharp7.cs:24:35:24:39 | call to method Foo |
+| CSharp7.cs:135:9:135:22 | f3 | CSharp7.cs:135:21:135:21 | 2 |
+| CSharp7.cs:137:29:137:38 | (...) => ... | CSharp7.cs:137:34:137:38 | ... + ... |
+| CSharp7.cs:139:9:139:51 | f6 | CSharp7.cs:139:26:139:50 | ... ? ... : ... |
+| CSharp7.cs:141:9:141:31 | f7 | CSharp7.cs:141:26:141:30 | call to local function f6 |
+| CSharp7.cs:145:13:145:35 | f9 | CSharp7.cs:145:30:145:34 | call to local function f7 |
+| CSharp7.cs:151:13:151:26 | f9 | CSharp7.cs:151:25:151:25 | 0 |
+| CSharp7.cs:159:9:159:24 | f | CSharp7.cs:159:23:159:23 | 1 |
+| CSharp7.cs:160:9:160:25 | g | CSharp7.cs:160:24:160:24 | access to parameter t |
+| CSharp7.cs:164:13:164:43 | f2 | CSharp7.cs:164:37:164:42 | call to local function f |
+| CSharp7.cs:176:9:176:40 | f | CSharp7.cs:176:31:176:39 | ... + ... |
+| CSharp7.cs:177:9:177:32 | g | CSharp7.cs:177:31:177:31 | access to parameter s |
+| CSharp7.cs:283:32:283:61 | (...) => ... | CSharp7.cs:283:40:283:61 | (..., ...) |

@@ -1,0 +1,84 @@
+| switch.c:4:5:4:11 | case ...: | switch.c:3:5:10:5 | switch (...) ...  | getSwitchStmt |
+| switch.c:4:5:4:11 | case ...: | switch.c:4:5:4:11 | case ...: | terminatesInReturnStmt() |
+| switch.c:4:5:4:11 | case ...: | switch.c:4:10:4:10 | 1 | getExpr |
+| switch.c:4:5:4:11 | case ...: | switch.c:5:9:5:17 | return ... | getLastStmt |
+| switch.c:4:5:4:11 | case ...: | switch.c:6:5:6:11 | case ...: | getNextSwitchCase |
+| switch.c:6:5:6:11 | case ...: | switch.c:3:5:10:5 | switch (...) ...  | getSwitchStmt |
+| switch.c:6:5:6:11 | case ...: | switch.c:4:5:4:11 | case ...: | getPreviousSwitchCase |
+| switch.c:6:5:6:11 | case ...: | switch.c:6:5:6:11 | case ...: | terminatesInBreakStmt() |
+| switch.c:6:5:6:11 | case ...: | switch.c:6:10:6:10 | 2 | getExpr |
+| switch.c:6:5:6:11 | case ...: | switch.c:7:9:7:14 | break; | getLastStmt |
+| switch.c:6:5:6:11 | case ...: | switch.c:8:5:8:12 | default:  | getNextSwitchCase |
+| switch.c:8:5:8:12 | default:  | switch.c:3:5:10:5 | switch (...) ...  | getSwitchStmt |
+| switch.c:8:5:8:12 | default:  | switch.c:6:5:6:11 | case ...: | getPreviousSwitchCase |
+| switch.c:8:5:8:12 | default:  | switch.c:8:5:8:12 | default:  | terminatesInReturnStmt() |
+| switch.c:8:5:8:12 | default:  | switch.c:9:9:9:17 | return ... | getLastStmt |
+| switch.c:18:5:18:11 | case ...: | switch.c:17:5:26:5 | switch (...) ...  | getSwitchStmt |
+| switch.c:18:5:18:11 | case ...: | switch.c:18:5:18:11 | case ...: | terminatesInBreakStmt() |
+| switch.c:18:5:18:11 | case ...: | switch.c:18:10:18:10 | 1 | getExpr |
+| switch.c:18:5:18:11 | case ...: | switch.c:19:3:19:8 | break; | getLastStmt |
+| switch.c:18:5:18:11 | case ...: | switch.c:20:5:20:11 | case ...: | getNextSwitchCase |
+| switch.c:20:5:20:11 | case ...: | switch.c:17:5:26:5 | switch (...) ...  | getSwitchStmt |
+| switch.c:20:5:20:11 | case ...: | switch.c:18:5:18:11 | case ...: | getPreviousSwitchCase |
+| switch.c:20:5:20:11 | case ...: | switch.c:20:5:20:11 | case ...: | terminatesInBreakStmt() |
+| switch.c:20:5:20:11 | case ...: | switch.c:20:10:20:10 | 2 | getExpr |
+| switch.c:20:5:20:11 | case ...: | switch.c:22:5:22:10 | break; | getLastStmt |
+| switch.c:20:5:20:11 | case ...: | switch.c:23:5:23:11 | case ...: | getNextSwitchCase |
+| switch.c:23:5:23:11 | case ...: | switch.c:17:5:26:5 | switch (...) ...  | getSwitchStmt |
+| switch.c:23:5:23:11 | case ...: | switch.c:20:5:20:11 | case ...: | getPreviousSwitchCase |
+| switch.c:23:5:23:11 | case ...: | switch.c:23:5:23:11 | case ...: | terminatesInBreakStmt() |
+| switch.c:23:5:23:11 | case ...: | switch.c:23:10:23:10 | 3 | getExpr |
+| switch.c:23:5:23:11 | case ...: | switch.c:25:3:25:8 | break; | getLastStmt |
+| switch.c:32:2:32:8 | case ...: | switch.c:31:5:44:2 | switch (...) ...  | getSwitchStmt |
+| switch.c:32:2:32:8 | case ...: | switch.c:32:2:32:8 | case ...: | terminatesInBreakStmt() |
+| switch.c:32:2:32:8 | case ...: | switch.c:32:7:32:7 | 1 | getExpr |
+| switch.c:32:2:32:8 | case ...: | switch.c:33:3:33:8 | break; | getLastStmt |
+| switch.c:32:2:32:8 | case ...: | switch.c:34:2:34:8 | case ...: | getNextSwitchCase |
+| switch.c:34:2:34:8 | case ...: | switch.c:31:5:44:2 | switch (...) ...  | getSwitchStmt |
+| switch.c:34:2:34:8 | case ...: | switch.c:32:2:32:8 | case ...: | getPreviousSwitchCase |
+| switch.c:34:2:34:8 | case ...: | switch.c:34:2:34:8 | case ...: | terminatesInBreakStmt() |
+| switch.c:34:2:34:8 | case ...: | switch.c:34:7:34:7 | 2 | getExpr |
+| switch.c:34:2:34:8 | case ...: | switch.c:36:4:36:9 | break; | getLastStmt |
+| switch.c:34:2:34:8 | case ...: | switch.c:38:2:38:8 | case ...: | getNextSwitchCase |
+| switch.c:38:2:38:8 | case ...: | switch.c:31:5:44:2 | switch (...) ...  | getSwitchStmt |
+| switch.c:38:2:38:8 | case ...: | switch.c:34:2:34:8 | case ...: | getPreviousSwitchCase |
+| switch.c:38:2:38:8 | case ...: | switch.c:38:2:38:8 | case ...: | terminatesInBreakStmt() |
+| switch.c:38:2:38:8 | case ...: | switch.c:38:7:38:7 | 3 | getExpr |
+| switch.c:38:2:38:8 | case ...: | switch.c:41:5:41:10 | break; | getLastStmt |
+| switch.c:47:2:47:8 | case ...: | switch.c:46:2:51:2 | switch (...) ...  | getSwitchStmt |
+| switch.c:47:2:47:8 | case ...: | switch.c:47:7:47:7 | 1 | getExpr |
+| switch.c:47:2:47:8 | case ...: | switch.c:48:2:48:8 | case ...: | getNextSwitchCase |
+| switch.c:48:2:48:8 | case ...: | switch.c:46:2:51:2 | switch (...) ...  | getSwitchStmt |
+| switch.c:48:2:48:8 | case ...: | switch.c:47:2:47:8 | case ...: | getPreviousSwitchCase |
+| switch.c:48:2:48:8 | case ...: | switch.c:48:2:48:8 | case ...: | terminatesInReturnStmt() |
+| switch.c:48:2:48:8 | case ...: | switch.c:48:7:48:7 | 2 | getExpr |
+| switch.c:48:2:48:8 | case ...: | switch.c:49:3:49:9 | return ... | getLastStmt |
+| switch.c:48:2:48:8 | case ...: | switch.c:50:2:50:8 | case ...: | getNextSwitchCase |
+| switch.c:50:2:50:8 | case ...: | switch.c:46:2:51:2 | switch (...) ...  | getSwitchStmt |
+| switch.c:50:2:50:8 | case ...: | switch.c:48:2:48:8 | case ...: | getPreviousSwitchCase |
+| switch.c:50:2:50:8 | case ...: | switch.c:50:7:50:7 | 3 | getExpr |
+| switch.cpp:6:5:6:12 | default:  | switch.cpp:5:5:8:5 | switch (...) ...  | getSwitchStmt |
+| switch.cpp:6:5:6:12 | default:  | switch.cpp:6:5:6:12 | default:  | terminatesInThrowStmt() |
+| switch.cpp:6:5:6:12 | default:  | switch.cpp:7:9:7:22 | ExprStmt | getLastStmt |
+| switch_gnu99.c:4:5:4:11 | case ...: | switch_gnu99.c:3:5:12:5 | switch (...) ...  | getSwitchStmt |
+| switch_gnu99.c:4:5:4:11 | case ...: | switch_gnu99.c:4:5:4:11 | case ...: | terminatesInReturnStmt() |
+| switch_gnu99.c:4:5:4:11 | case ...: | switch_gnu99.c:4:10:4:10 | 1 | getExpr |
+| switch_gnu99.c:4:5:4:11 | case ...: | switch_gnu99.c:5:9:5:17 | return ... | getLastStmt |
+| switch_gnu99.c:4:5:4:11 | case ...: | switch_gnu99.c:6:5:6:11 | case ...: | getNextSwitchCase |
+| switch_gnu99.c:6:5:6:11 | case ...: | switch_gnu99.c:3:5:12:5 | switch (...) ...  | getSwitchStmt |
+| switch_gnu99.c:6:5:6:11 | case ...: | switch_gnu99.c:4:5:4:11 | case ...: | getPreviousSwitchCase |
+| switch_gnu99.c:6:5:6:11 | case ...: | switch_gnu99.c:6:5:6:11 | case ...: | terminatesInBreakStmt() |
+| switch_gnu99.c:6:5:6:11 | case ...: | switch_gnu99.c:6:10:6:10 | 2 | getExpr |
+| switch_gnu99.c:6:5:6:11 | case ...: | switch_gnu99.c:7:9:7:14 | break; | getLastStmt |
+| switch_gnu99.c:6:5:6:11 | case ...: | switch_gnu99.c:8:5:8:17 | case ...: | getNextSwitchCase |
+| switch_gnu99.c:8:5:8:17 | case ...: | switch_gnu99.c:3:5:12:5 | switch (...) ...  | getSwitchStmt |
+| switch_gnu99.c:8:5:8:17 | case ...: | switch_gnu99.c:6:5:6:11 | case ...: | getPreviousSwitchCase |
+| switch_gnu99.c:8:5:8:17 | case ...: | switch_gnu99.c:8:5:8:17 | case ...: | terminatesInBreakStmt() |
+| switch_gnu99.c:8:5:8:17 | case ...: | switch_gnu99.c:8:10:8:10 | 3 | getExpr |
+| switch_gnu99.c:8:5:8:17 | case ...: | switch_gnu99.c:8:16:8:16 | 6 | getEndExpr |
+| switch_gnu99.c:8:5:8:17 | case ...: | switch_gnu99.c:9:9:9:14 | break; | getLastStmt |
+| switch_gnu99.c:8:5:8:17 | case ...: | switch_gnu99.c:10:5:10:12 | default:  | getNextSwitchCase |
+| switch_gnu99.c:10:5:10:12 | default:  | switch_gnu99.c:3:5:12:5 | switch (...) ...  | getSwitchStmt |
+| switch_gnu99.c:10:5:10:12 | default:  | switch_gnu99.c:8:5:8:17 | case ...: | getPreviousSwitchCase |
+| switch_gnu99.c:10:5:10:12 | default:  | switch_gnu99.c:10:5:10:12 | default:  | terminatesInReturnStmt() |
+| switch_gnu99.c:10:5:10:12 | default:  | switch_gnu99.c:11:9:11:17 | return ... | getLastStmt |

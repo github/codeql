@@ -1,0 +1,5 @@
+| tst.js:6:7:6:19 | A.endsWith(B) | tst.js:6:7:6:7 | A | tst.js:6:18:6:18 | B | true |
+| tst.js:7:7:7:22 | _.endsWith(A, B) | tst.js:7:18:7:18 | A | tst.js:7:21:7:21 | B | true |
+| tst.js:8:7:8:22 | R.endsWith(A, B) | tst.js:8:18:8:18 | A | tst.js:8:21:8:21 | B | true |
+| tst.js:9:7:9:28 | strings ... h(A, B) | tst.js:9:24:9:24 | A | tst.js:9:27:9:27 | B | true |
+| tst.js:10:7:10:43 | strings ... h(A, B) | tst.js:10:39:10:39 | A | tst.js:10:42:10:42 | B | true |

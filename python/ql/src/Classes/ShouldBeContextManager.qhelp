@@ -1,0 +1,42 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>If a class has a <code>close()</code> or similar method to release resources, then it 
+should be made a context manager. Using a context manager allows instances of the class to be used 
+in the  <code>with</code> statement, improving code size and readability. This is a simpler and more 
+reliable method than implementing just a <code>__del__</code> method. 
+</p>
+
+</overview>
+<recommendation>
+<p>The context manager requires an <code>__enter__</code> and an <code>__exit__</code> method:</p>
+<ul>
+<li>
+<code>__enter__</code> method acquires the resource or does nothing if the resource
+is acquired in the <code>__init__</code> method</li>
+<li><code>__exit__</code> method releases the resource, this can just be a simple wrapper around the
+ <code>close</code> method.</li>
+</ul>
+
+</recommendation>
+<example>
+<p>The following example shows how a class definition that implements <code>__del__</code> can be 
+updated to use a context manager.</p>
+
+<sample src="ShouldBeContextManager.py" />
+
+
+</example>
+<references>
+
+<li>Effbot: <a href="https://web.archive.org/web/20201012110738/http://effbot.org/zone/python-with-statement.htm">Python with statement</a>.</li>
+<li>Python Standard Library: <a href="http://docs.python.org/library/stdtypes.html#context-manager-types">Context manager
+</a>.</li>
+<li>Python Language Reference: <a href="http://docs.python.org/2.7/reference/datamodel.html#with-statement-context-managers">
+With Statement Context Managers</a>.</li>
+<li>Python PEP 343: <a href="http://www.python.org/dev/peps/pep-0343">The "with" Statement</a>.</li>
+
+</references>
+</qhelp>

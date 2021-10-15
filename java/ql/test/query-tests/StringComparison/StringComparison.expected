@@ -1,0 +1,3 @@
+| StringComparison.java:23:6:23:19 | ... == ... | String values compared with  == . |
+| StringComparison.java:26:6:26:16 | ... == ... | String values compared with  == . |
+| StringComparison.java:29:6:29:20 | ... == ... | String values compared with  == . |

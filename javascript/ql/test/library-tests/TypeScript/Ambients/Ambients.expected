@@ -1,0 +1,1 @@
+| tst.ts:38:3:38:19 | resolveAmbient(x) | x should not resolve to a global |

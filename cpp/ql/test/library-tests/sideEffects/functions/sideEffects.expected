@@ -1,0 +1,71 @@
+| cpp.cpp:4:7:4:7 | SimpleFoo | SimpleFoo && -> void | false |
+| cpp.cpp:4:7:4:7 | SimpleFoo | const SimpleFoo & -> void | false |
+| cpp.cpp:4:7:4:7 | operator= | SimpleFoo && -> SimpleFoo & | false |
+| cpp.cpp:4:7:4:7 | operator= | const SimpleFoo & -> SimpleFoo & | false |
+| cpp.cpp:6:5:6:13 | SimpleFoo | void | true |
+| cpp.cpp:10:7:10:7 | SimpleBar | SimpleBar && -> void | false |
+| cpp.cpp:10:7:10:7 | SimpleBar | const SimpleBar & -> void | false |
+| cpp.cpp:10:7:10:7 | operator= | SimpleBar && -> SimpleBar & | false |
+| cpp.cpp:10:7:10:7 | operator= | const SimpleBar & -> SimpleBar & | false |
+| cpp.cpp:12:5:12:13 | SimpleBar | void | true |
+| cpp.cpp:16:7:16:7 | Foo | Foo && -> void | false |
+| cpp.cpp:16:7:16:7 | Foo | const Foo & -> void | false |
+| cpp.cpp:16:7:16:7 | operator= | Foo && -> Foo & | false |
+| cpp.cpp:16:7:16:7 | operator= | const Foo & -> Foo & | false |
+| cpp.cpp:19:5:19:7 | Foo | int -> void | true |
+| cpp.cpp:20:5:20:7 | Foo | int -> int -> void | true |
+| cpp.cpp:21:5:21:7 | Foo | int -> int -> int -> void | false |
+| cpp.cpp:24:7:24:7 | Bar | Bar && -> void | false |
+| cpp.cpp:24:7:24:7 | Bar | const Bar & -> void | false |
+| cpp.cpp:24:7:24:7 | operator= | Bar && -> Bar & | false |
+| cpp.cpp:24:7:24:7 | operator= | const Bar & -> Bar & | false |
+| cpp.cpp:27:5:27:7 | Bar | int -> void | true |
+| cpp.cpp:28:5:28:7 | Bar | int -> int -> void | true |
+| cpp.cpp:29:5:29:7 | Bar | int -> int -> int -> void | false |
+| cpp.cpp:30:5:30:7 | Bar | int -> int -> int -> int -> void | true |
+| cpp.cpp:31:5:31:7 | Bar | int -> int -> int -> int -> int -> void | false |
+| cpp.cpp:32:5:32:7 | Bar | int -> int -> int -> int -> int -> int -> void | false |
+| cpp.cpp:35:7:35:7 | PurelyDestructible | void | false |
+| cpp.cpp:35:7:35:7 | operator= | const PurelyDestructible & -> PurelyDestructible & | false |
+| cpp.cpp:37:5:37:23 | ~PurelyDestructible | void | true |
+| cpp.cpp:40:7:40:7 | ImpurelyDestructible | void | false |
+| cpp.cpp:40:7:40:7 | operator= | const ImpurelyDestructible & -> ImpurelyDestructible & | false |
+| cpp.cpp:42:5:42:25 | ~ImpurelyDestructible | void | false |
+| cpp.cpp:45:7:45:7 | SuperPurelyDestructible | void | false |
+| cpp.cpp:45:7:45:7 | operator= | const SuperPurelyDestructible & -> SuperPurelyDestructible & | false |
+| cpp.cpp:47:5:47:28 | ~SuperPurelyDestructible | void | true |
+| cpp.cpp:50:7:50:7 | SuperImpurelyDestructible | void | false |
+| cpp.cpp:50:7:50:7 | operator= | const SuperImpurelyDestructible & -> SuperImpurelyDestructible & | false |
+| cpp.cpp:52:5:52:30 | ~SuperImpurelyDestructible | void | false |
+| cpp.cpp:55:7:55:7 | operator= | const someClass & -> someClass & | false |
+| cpp.cpp:55:7:55:7 | operator= | someClass && -> someClass & | false |
+| cpp.cpp:57:9:57:17 | operator* | int | true |
+| cpp.cpp:62:6:62:19 | startSomeClass | someClass -> void | true |
+| cpp.cpp:70:6:70:28 | functionAccessesGlobal1 | void | false |
+| cpp.cpp:74:5:74:27 | functionAccessesGlobal2 | int | true |
+| cpp.cpp:78:5:78:27 | functionAccessesGlobal3 | int | true |
+| cpp.cpp:87:5:87:26 | functionAccessesStatic | int | false |
+| cpp.cpp:93:6:93:14 | increment | int & -> void | false |
+| cpp.cpp:97:6:97:16 | doIncrement | void | false |
+| error.cpp:3:6:3:24 | functionBeforeError | void | true |
+| error.cpp:7:6:7:23 | functionWithError1 | void | false |
+| error.cpp:12:6:12:23 | functionWithError2 | void | false |
+| error.cpp:17:6:17:23 | functionAfterError | void | true |
+| file://:0:0:0:0 | operator= | __va_list_tag && -> __va_list_tag & | false |
+| file://:0:0:0:0 | operator= | const __va_list_tag & -> __va_list_tag & | false |
+| sideEffects.c:4:5:4:6 | f1 | int | true |
+| sideEffects.c:12:5:12:6 | f2 | int | true |
+| sideEffects.c:20:5:20:6 | f3 | int | true |
+| sideEffects.c:29:5:29:6 | f4 | int | false |
+| sideEffects.c:37:6:37:7 | f5 | void | true |
+| sideEffects.c:45:6:45:7 | f6 | void | false |
+| sideEffects.c:53:5:53:6 | f7 | int -> int | true |
+| sideEffects.c:65:6:65:7 | f8 | void | true |
+| sideEffects.c:79:6:79:7 | f9 | void | false |
+| sideEffects.c:83:5:83:7 | fib | int -> int | true |
+| sideEffects.c:94:6:94:9 | mut1 | int -> void | true |
+| sideEffects.c:100:6:100:9 | mut2 | int -> void | true |
+| templates.cpp:3:5:3:5 | f | T -> int | true |
+| templates.cpp:3:5:3:5 | f | int -> int | true |
+| templates.cpp:8:6:8:6 | g | T -> void | false |
+| templates.cpp:16:6:16:6 | h | int -> void | true |

@@ -1,0 +1,41 @@
+# This is a duplicate of the Microsoft rule of the same name
+# It includes additional exceptions.
+
+extends: capitalization
+message: "'%s' should use sentence-style capitalization."
+link: 'https://docs.microsoft.com/en-us/style-guide/capitalization'
+level: error
+scope: heading
+match: $sentence
+indicators:
+  - ':'
+exceptions:
+# Microsoft exceptions:
+  - Azure
+  - CLI
+  - Code
+  - Cosmos
+  - Docker
+  - Emmet
+  - I
+  - Kubernetes
+  - Linux
+  - macOS
+  - Marketplace
+  - MongoDB
+  - REPL
+  - Studio
+  - TypeScript
+  - URLs
+  - Visual
+  - VS
+  - Windows
+
+# Semmle exceptions:
+  - AngularJS
+  - Java
+  - JavaScript
+  - JSDoc
+  - Node.js
+  - Python
+  - QLDoc

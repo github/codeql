@@ -1,0 +1,12 @@
+/**
+ * @name Test for field access
+ */
+import csharp
+
+from StaticConstructor c, FieldAccess e
+where c.hasName("Class")
+  and e.getEnclosingCallable() = c
+  and e.getTarget().getName() = "name"
+  and exists(e.getQualifier())
+select c, e
+

@@ -1,0 +1,36 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+  <p>
+  When eras change, calling a date and time instantiation method that relies on the default era can produce an ambiguous date. 
+  In the example below, the call to the <code>JapaneseCalendar.ToDateTime</code> method that uses the default era returns different dates depending on whether or not the new era has been defined in the registry.
+  </p>
+</overview>
+<recommendation>
+  <p>Use speific era when creating DateTime and DateTimeOffset structs from previously stored date in Japanese calendar</p>
+  <p>Don't store dates in Japanese format</p>
+  <p>Don't use hard-coded era start date for date calculations converting dates from Japanese date format</p>
+  <p>Use <code>JapaneseCalendar</code> class for date formatting only</p>
+</recommendation>
+<example>
+  <p>This example demonstrates the dangers of using current year assumptions in Japanese date conversions</p>
+  <sample src="MishandlingJapaneseEra.cs" />
+</example>
+
+<references>
+  <li>
+    <a href="https://devblogs.microsoft.com/dotnet/handling-a-new-era-in-the-japanese-calendar-in-net/">Handling a new era in the Japanese calendar in .NET</a>.
+  </li>
+  <li>
+    <a href="https://blogs.msdn.microsoft.com/shawnste/2018/04/12/the-japanese-calendars-y2k-moment/">The Japanese Calendar's Y2K Moment</a>.
+  </li>
+  <li>
+    <a href="https://docs.microsoft.com/en-us/windows/win32/intl/era-handling-for-the-japanese-calendar">Era Handling for the Japanese Calendar</a>.
+  </li>
+  <li>
+   <a href="https://simple.wikipedia.org/wiki/List_of_Japanese_eras">List of Japanese Eras (Wikipedia)</a>
+  </li>
+</references>
+</qhelp>

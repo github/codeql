@@ -1,0 +1,42 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p> The <code>alloca</code> macro allocates memory by expanding the current stack frame. Invoking
+<code>alloca</code> within a loop may lead to a stack overflow because the memory is not released
+until the function returns. 
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Consider invoking <code>alloca</code> once outside the loop, or using <code>malloc</code> or
+<code>new</code> to allocate memory on the heap if the allocation must be done inside the loop.
+</p>
+
+</recommendation>
+<example>
+<p>The variable <code>path</code> is allocated inside a loop with <code>alloca</code>. Consequently,
+storage for all copies of the path is present in the stack frame until the end of the function.
+</p>
+
+<sample src="AllocaInLoopBad.cpp" />
+
+<p>In the revised example, <code>path</code> is allocated with <code>malloc</code> and freed at the
+end of the loop.
+</p>
+
+<sample src="AllocaInLoopGood.cpp" />
+
+
+</example>
+<references>
+
+  <li>Linux Programmer's Manual: <a href="http://man7.org/linux/man-pages/man3/alloca.3.html">ALLOCA(3)</a>.</li>
+
+</references>
+</qhelp>

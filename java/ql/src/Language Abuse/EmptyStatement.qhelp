@@ -1,0 +1,39 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>An <em>empty statement</em> is a single semicolon <code>;</code> that does not
+terminate another statement. Such a statement hinders readability and has no effect on its own.</p>
+
+</overview>
+<recommendation>
+
+<p>Avoid empty statements. If a loop is intended to have an empty body, it is better
+to mark that fact explicitly by using a pair of braces <code>{}</code> containing an explanatory comment
+for the body, rather than a single semicolon.</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, there is an empty statement on line 3, where an additional semicolon is
+used. On line 6, the <code>for</code> statement has an empty body because the condition is
+immediately followed by a semicolon. In this case, it is better to include a pair of braces <code>{}</code> containing
+an explanatory comment for the body instead.
+
+</p><sample src="EmptyStatement.java" />
+
+</example>
+<references>
+
+
+<li>
+Help - Eclipse Platform:
+<a href="https://help.eclipse.org/2020-12/advanced/content.jsp?topic=/org.eclipse.jdt.doc.user/reference/preferences/java/compiler/ref-preferences-errors-warnings.htm">Java Compiler Errors/Warnings Preferences</a>.
+</li>
+
+
+</references>
+</qhelp>

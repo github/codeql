@@ -1,0 +1,5 @@
+import default
+import semmle.code.java.controlflow.UnreachableBlocks
+
+from UnreachableBasicBlock unreachableBasicBlock
+select unreachableBasicBlock

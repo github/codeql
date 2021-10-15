@@ -1,0 +1,52 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+A comment that includes the words <code>TODO</code>, <code>FIXME</code> or similar words 
+often indicates code that is incomplete or broken, or highlights ambiguities in the
+software's specification.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Address the problem indicated by the comment.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+In the following example, the programmer has not yet implemented the correct behavior for
+the case where parameter <code>a</code> is zero: the function will return <code>Infinity</code>
+or <code>NaN</code> (depending on the values of <code>b</code> and <code>c</code>) in this case.
+</p>
+
+<sample src="examples/TodoComments.js" />
+
+<p>
+As a first step to fixing this problem, a check could be introduced that compares <code>a</code>
+to zero and throws an exception if this is the case. A better solution would be to use a different
+formula that does not rely on <code>a</code> being non-zero. Regardless of the solution
+adopted, the <code>TODO</code> comment should then be removed.
+</p>
+
+</example>
+<references>
+
+
+<li>
+Approxion:
+    <a href="http://www.approxion.com/?p=39">TODO or not TODO</a>.
+</li>
+<li>
+Wikipedia:
+<a href="http://en.wikipedia.org/wiki/Comment_%28computer_programming%29#Tags">Comment tags</a>.
+</li>
+
+
+</references>
+</qhelp>

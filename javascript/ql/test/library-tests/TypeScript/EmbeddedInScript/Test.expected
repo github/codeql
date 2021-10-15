@@ -1,0 +1,38 @@
+classDeclaration
+| test.vue:3:18:5:3 | class M ... er;\\n  } |
+| test_tsx.vue:3:18:5:3 | class M ... er;\\n  } |
+exprType
+| htmlfile.html:4:22:4:24 | foo | () => void |
+| htmlfile.html:4:22:4:24 | foo | () => void |
+| htmlfile.html:4:33:4:41 | "./other" | any |
+| htmlfile.html:5:17:5:22 | result | number[] |
+| htmlfile.html:5:26:5:28 | foo | () => void |
+| htmlfile.html:5:26:5:30 | foo() | void |
+| htmlfile.html:5:26:5:42 | foo() as number[] | number[] |
+| other.ts:1:8:1:16 | Component | typeof default in library-tests/TypeScript/EmbeddedInScript/test.vue |
+| other.ts:1:23:1:34 | "./test.vue" | any |
+| other.ts:2:8:2:19 | ComponentTsx | typeof default in library-tests/TypeScript/EmbeddedInScript/test_tsx.vue |
+| other.ts:2:26:2:41 | "./test_tsx.vue" | any |
+| other.ts:4:1:4:15 | new Component() | MyComponent |
+| other.ts:4:5:4:13 | Component | typeof default in library-tests/TypeScript/EmbeddedInScript/test.vue |
+| other.ts:5:1:5:18 | new ComponentTsx() | MyComponentTsx |
+| other.ts:5:5:5:16 | ComponentTsx | typeof default in library-tests/TypeScript/EmbeddedInScript/test_tsx.vue |
+| other.ts:7:17:7:19 | foo | () => void |
+| test.vue:2:15:2:19 | other | typeof library-tests/TypeScript/EmbeddedInScript/other.ts |
+| test.vue:2:26:2:34 | "./other" | any |
+| test.vue:3:24:3:34 | MyComponent | MyComponent |
+| test.vue:4:7:4:7 | x | number |
+| test_tsx.vue:2:15:2:19 | other | typeof library-tests/TypeScript/EmbeddedInScript/other.ts |
+| test_tsx.vue:2:26:2:34 | "./other" | any |
+| test_tsx.vue:3:24:3:37 | MyComponentTsx | MyComponentTsx |
+| test_tsx.vue:4:7:4:7 | x | number |
+symbols
+| other.ts:1:1:8:0 | <toplevel> | library-tests/TypeScript/EmbeddedInScript/other.ts |
+| test.vue:2:3:6:0 | <toplevel> | library-tests/TypeScript/EmbeddedInScript/test.vue |
+| test_tsx.vue:2:3:6:0 | <toplevel> | library-tests/TypeScript/EmbeddedInScript/test_tsx.vue |
+importTarget
+| htmlfile.html:4:13:4:42 | import  ... other"; | other.ts:1:1:8:0 | <toplevel> |
+| other.ts:1:1:1:35 | import  ... t.vue"; | test.vue:2:3:6:0 | <toplevel> |
+| other.ts:2:1:2:42 | import  ... x.vue"; | test_tsx.vue:2:3:6:0 | <toplevel> |
+| test.vue:2:3:2:35 | import  ... other"; | other.ts:1:1:8:0 | <toplevel> |
+| test_tsx.vue:2:3:2:35 | import  ... other"; | other.ts:1:1:8:0 | <toplevel> |

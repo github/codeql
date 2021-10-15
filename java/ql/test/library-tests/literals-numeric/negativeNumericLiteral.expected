@@ -1,0 +1,12 @@
+| NumericLiterals.java:3:14:3:15 | 1f | 1.0 | NumericLiterals.java:3:13:3:15 | -... |
+| NumericLiterals.java:4:15:4:16 | 1d | 1.0 | NumericLiterals.java:4:14:4:16 | -... |
+| NumericLiterals.java:5:13:5:22 | 2147483647 | 2147483647 | NumericLiterals.java:5:12:5:22 | -... |
+| NumericLiterals.java:6:12:6:22 | -2147483648 | -2147483648 | NumericLiterals.java:6:7:6:22 | i2 |
+| NumericLiterals.java:7:13:7:46 | 0b10000000000000000000000000000000 | -2147483648 | NumericLiterals.java:7:12:7:46 | -... |
+| NumericLiterals.java:8:13:8:24 | 020000000000 | -2147483648 | NumericLiterals.java:8:12:8:24 | -... |
+| NumericLiterals.java:9:13:9:22 | 0x80000000 | -2147483648 | NumericLiterals.java:9:12:9:22 | -... |
+| NumericLiterals.java:10:14:10:33 | 9223372036854775807L | 9223372036854775807 | NumericLiterals.java:10:13:10:33 | -... |
+| NumericLiterals.java:11:13:11:33 | -9223372036854775808L | -9223372036854775808 | NumericLiterals.java:11:8:11:33 | l2 |
+| NumericLiterals.java:12:14:12:80 | 0b1000000000000000000000000000000000000000000000000000000000000000L | -9223372036854775808 | NumericLiterals.java:12:13:12:80 | -... |
+| NumericLiterals.java:13:14:13:37 | 01000000000000000000000L | -9223372036854775808 | NumericLiterals.java:13:13:13:37 | -... |
+| NumericLiterals.java:14:14:14:32 | 0x8000000000000000L | -9223372036854775808 | NumericLiterals.java:14:13:14:32 | -... |

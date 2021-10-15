@@ -1,0 +1,33 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Java has two interfaces for dealing with iteration,
+<code>Iterable&lt;T&gt;</code> and <code>Iterator&lt;T&gt;</code>.  An
+<code>Iterable&lt;T&gt;</code> represents a sequence of elements that can be
+traversed, and an <code>Iterator&lt;T&gt;</code> represents the
+<strong>state</strong> of an ongoing traversal.  As an example, all the
+<code>Collection&lt;T&gt;</code> classes in the Java standard library implement
+<code>Iterable&lt;T&gt;</code>.  Comparing this to a traditional
+<code>for</code> loop that increments an integer index and iterates over the
+elements of an array, then the <code>Iterable&lt;T&gt;</code> object
+corresponds to the array, whereas the <code>Iterator&lt;T&gt;</code> object
+corresponds to the index variable.
+</p>
+<p>
+Implementations of <code>Iterable&lt;T&gt;</code> are generally expected to
+support multiple traversals of the element sequence they represent, although
+there can be exceptions if the underlying data somehow makes this undesirable,
+see for example <code>DirectoryStream&lt;T&gt;</code>.  If an implementation of
+<code>Iterable&lt;T&gt;</code> does not support multiple iterations, then its
+<code>iterator()</code> method should throw an exception on its second and
+subsequent calls.  This makes bugs easier to find if such an
+<code>Iterable&lt;T&gt;</code> is used more than once, for example in two
+different for-each loops.
+</p>
+</overview>
+
+</qhelp>

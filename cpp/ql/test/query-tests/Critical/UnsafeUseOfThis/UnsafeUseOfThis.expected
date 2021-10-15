@@ -1,0 +1,61 @@
+edges
+| test.cpp:7:3:7:3 | InitializeParameter: B | test.cpp:8:12:8:15 | Load: this |
+| test.cpp:8:12:8:15 | Load: this | test.cpp:34:16:34:16 | InitializeParameter: x |
+| test.cpp:11:8:11:8 | InitializeParameter: b | test.cpp:12:5:12:5 | Load: b |
+| test.cpp:12:5:12:5 | CopyValue: (reference dereference) | test.cpp:12:5:12:5 | ConvertToNonVirtualBase: (A)... |
+| test.cpp:12:5:12:5 | Load: b | test.cpp:12:5:12:5 | CopyValue: (reference dereference) |
+| test.cpp:15:3:15:4 | InitializeParameter: ~B | test.cpp:16:5:16:5 | Load: this |
+| test.cpp:16:5:16:5 | Load: this | file://:0:0:0:0 | ConvertToNonVirtualBase: (A *)... |
+| test.cpp:21:3:21:3 | InitializeParameter: C | test.cpp:21:13:21:13 | ConvertToNonVirtualBase: call to B |
+| test.cpp:21:3:21:3 | InitializeParameter: C | test.cpp:22:12:22:15 | Load: this |
+| test.cpp:21:3:21:3 | InitializeParameter: C | test.cpp:25:7:25:10 | Load: this |
+| test.cpp:21:13:21:13 | ConvertToNonVirtualBase: call to B | test.cpp:7:3:7:3 | InitializeParameter: B |
+| test.cpp:22:12:22:15 | ConvertToNonVirtualBase: (B *)... | test.cpp:34:16:34:16 | InitializeParameter: x |
+| test.cpp:22:12:22:15 | Load: this | test.cpp:22:12:22:15 | ConvertToNonVirtualBase: (B *)... |
+| test.cpp:25:7:25:10 | ConvertToNonVirtualBase: (B *)... | test.cpp:25:7:25:10 | ConvertToNonVirtualBase: (A *)... |
+| test.cpp:25:7:25:10 | Load: this | test.cpp:25:7:25:10 | ConvertToNonVirtualBase: (B *)... |
+| test.cpp:31:3:31:3 | InitializeParameter: D | test.cpp:31:12:31:15 | Load: this |
+| test.cpp:31:11:31:15 | ConvertToNonVirtualBase: (B)... | test.cpp:31:11:31:15 | CopyValue: (reference to) |
+| test.cpp:31:11:31:15 | CopyValue: (reference to) | test.cpp:11:8:11:8 | InitializeParameter: b |
+| test.cpp:31:11:31:15 | CopyValue: * ... | test.cpp:31:11:31:15 | ConvertToNonVirtualBase: (B)... |
+| test.cpp:31:12:31:15 | Load: this | test.cpp:31:11:31:15 | CopyValue: * ... |
+| test.cpp:34:16:34:16 | InitializeParameter: x | test.cpp:35:3:35:3 | Load: x |
+| test.cpp:35:3:35:3 | Load: x | test.cpp:35:3:35:3 | ConvertToNonVirtualBase: (A *)... |
+| test.cpp:47:3:47:3 | InitializeParameter: F | test.cpp:48:10:48:13 | Load: this |
+| test.cpp:48:10:48:13 | ConvertToNonVirtualBase: (E *)... | test.cpp:48:6:48:13 | ConvertToNonVirtualBase: (A *)... |
+| test.cpp:48:10:48:13 | Load: this | test.cpp:48:10:48:13 | ConvertToNonVirtualBase: (E *)... |
+nodes
+| file://:0:0:0:0 | ConvertToNonVirtualBase: (A *)... | semmle.label | ConvertToNonVirtualBase: (A *)... |
+| test.cpp:7:3:7:3 | InitializeParameter: B | semmle.label | InitializeParameter: B |
+| test.cpp:8:12:8:15 | Load: this | semmle.label | Load: this |
+| test.cpp:11:8:11:8 | InitializeParameter: b | semmle.label | InitializeParameter: b |
+| test.cpp:12:5:12:5 | ConvertToNonVirtualBase: (A)... | semmle.label | ConvertToNonVirtualBase: (A)... |
+| test.cpp:12:5:12:5 | CopyValue: (reference dereference) | semmle.label | CopyValue: (reference dereference) |
+| test.cpp:12:5:12:5 | Load: b | semmle.label | Load: b |
+| test.cpp:15:3:15:4 | InitializeParameter: ~B | semmle.label | InitializeParameter: ~B |
+| test.cpp:16:5:16:5 | Load: this | semmle.label | Load: this |
+| test.cpp:21:3:21:3 | InitializeParameter: C | semmle.label | InitializeParameter: C |
+| test.cpp:21:13:21:13 | ConvertToNonVirtualBase: call to B | semmle.label | ConvertToNonVirtualBase: call to B |
+| test.cpp:22:12:22:15 | ConvertToNonVirtualBase: (B *)... | semmle.label | ConvertToNonVirtualBase: (B *)... |
+| test.cpp:22:12:22:15 | Load: this | semmle.label | Load: this |
+| test.cpp:25:7:25:10 | ConvertToNonVirtualBase: (A *)... | semmle.label | ConvertToNonVirtualBase: (A *)... |
+| test.cpp:25:7:25:10 | ConvertToNonVirtualBase: (B *)... | semmle.label | ConvertToNonVirtualBase: (B *)... |
+| test.cpp:25:7:25:10 | Load: this | semmle.label | Load: this |
+| test.cpp:31:3:31:3 | InitializeParameter: D | semmle.label | InitializeParameter: D |
+| test.cpp:31:11:31:15 | ConvertToNonVirtualBase: (B)... | semmle.label | ConvertToNonVirtualBase: (B)... |
+| test.cpp:31:11:31:15 | CopyValue: (reference to) | semmle.label | CopyValue: (reference to) |
+| test.cpp:31:11:31:15 | CopyValue: * ... | semmle.label | CopyValue: * ... |
+| test.cpp:31:12:31:15 | Load: this | semmle.label | Load: this |
+| test.cpp:34:16:34:16 | InitializeParameter: x | semmle.label | InitializeParameter: x |
+| test.cpp:35:3:35:3 | ConvertToNonVirtualBase: (A *)... | semmle.label | ConvertToNonVirtualBase: (A *)... |
+| test.cpp:35:3:35:3 | Load: x | semmle.label | Load: x |
+| test.cpp:47:3:47:3 | InitializeParameter: F | semmle.label | InitializeParameter: F |
+| test.cpp:48:6:48:13 | ConvertToNonVirtualBase: (A *)... | semmle.label | ConvertToNonVirtualBase: (A *)... |
+| test.cpp:48:10:48:13 | ConvertToNonVirtualBase: (E *)... | semmle.label | ConvertToNonVirtualBase: (E *)... |
+| test.cpp:48:10:48:13 | Load: this | semmle.label | Load: this |
+#select
+| test.cpp:12:7:12:7 | call to f | test.cpp:31:3:31:3 | InitializeParameter: D | test.cpp:12:5:12:5 | ConvertToNonVirtualBase: (A)... | Call to pure virtual function during construction |
+| test.cpp:16:5:16:5 | call to f | test.cpp:15:3:15:4 | InitializeParameter: ~B | file://:0:0:0:0 | ConvertToNonVirtualBase: (A *)... | Call to pure virtual function during destruction |
+| test.cpp:25:13:25:13 | call to f | test.cpp:21:3:21:3 | InitializeParameter: C | test.cpp:25:7:25:10 | ConvertToNonVirtualBase: (A *)... | Call to pure virtual function during construction |
+| test.cpp:35:6:35:6 | call to f | test.cpp:7:3:7:3 | InitializeParameter: B | test.cpp:35:3:35:3 | ConvertToNonVirtualBase: (A *)... | Call to pure virtual function during construction |
+| test.cpp:35:6:35:6 | call to f | test.cpp:21:3:21:3 | InitializeParameter: C | test.cpp:35:3:35:3 | ConvertToNonVirtualBase: (A *)... | Call to pure virtual function during construction |

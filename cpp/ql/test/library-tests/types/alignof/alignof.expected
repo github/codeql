@@ -1,0 +1,10 @@
+| alignof.cpp:19:15:19:26 | alignof(int) | AlignofTypeOperator.getTypeOperand() | file://:0:0:0:0 | int |
+| alignof.cpp:20:15:20:27 | alignof(char) | AlignofTypeOperator.getTypeOperand() | file://:0:0:0:0 | char |
+| alignof.cpp:21:15:21:28 | alignof(int *) | AlignofTypeOperator.getTypeOperand() | file://:0:0:0:0 | int * |
+| alignof.cpp:22:15:22:30 | alignof(MyClass) | AlignofTypeOperator.getTypeOperand() | alignof.cpp:4:7:4:13 | MyClass |
+| alignof.cpp:23:15:23:24 | alignof(<expr>) | AlignofExprOperator.getExprOperand() | alignof.cpp:23:23:23:23 | i |
+| alignof.cpp:24:15:24:24 | alignof(<expr>) | AlignofExprOperator.getExprOperand() | alignof.cpp:24:23:24:23 | c |
+| alignof.cpp:25:15:25:26 | alignof(<expr>) | AlignofExprOperator.getExprOperand() | alignof.cpp:25:23:25:25 | ptr |
+| alignof.cpp:26:15:26:25 | alignof(<expr>) | AlignofExprOperator.getExprOperand() | alignof.cpp:26:23:26:24 | mc |
+| alignof.cpp:27:15:27:26 | alignof(<expr>) | AlignofExprOperator.getExprOperand() | alignof.cpp:27:23:27:25 | arr |
+| alignof.cpp:28:16:28:30 | alignof(<expr>) | AlignofExprOperator.getExprOperand() | alignof.cpp:28:24:28:29 | access to array |

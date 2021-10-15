@@ -1,0 +1,5 @@
+| ms.cpp:17:3:17:8 | call to sscanf | 0 | 1 | ms.cpp:17:24:17:30 | %I64i | non-wide |
+| test.c:18:2:18:6 | call to scanf | 0 | 0 | test.c:18:8:18:11 | %s | non-wide |
+| test.c:19:2:19:7 | call to fscanf | 0 | 1 | test.c:19:15:19:23 | %10s %i | non-wide |
+| test.c:20:2:20:7 | call to sscanf | 0 | 1 | test.c:20:19:20:28 | %*i%s%*s | non-wide |
+| test.c:21:2:21:8 | call to swscanf | 0 | 1 | test.c:21:21:21:26 | %10s | wide |

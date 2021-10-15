@@ -1,0 +1,13 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+  <overview>
+    <p>This query detects literals that look like Solorigate Hash values used in the Solorigate code.</p>
+    <p>This query detects when the code includes at least 5 of the Hash literals used in the Solorigate tampered code</p>
+    <p>Please notice that by themselves these literals are not malign, but several of the values together would be less likely to be coincidental.</p>
+  </overview>
+
+  <include src="Solorigate.inc.qhelp" />
+
+</qhelp>

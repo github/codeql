@@ -1,0 +1,5 @@
+| script.aspx:4:1:4:23 | <%= ... %> | XSS.cs:114:16:114:29 | someJavascript |
+| script.aspx:8:1:8:12 | <%= ... %> | XSS.cs:121:24:121:28 | Field |
+| script.aspx:12:1:12:14 | <%= ... %> | <outside test directory> | Request |
+| script.aspx:16:1:16:34 | <%= ... %> | <outside test directory> | QueryString |
+| script.aspx:20:1:20:41 | <%= ... %> | <outside test directory> | QueryString |

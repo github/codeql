@@ -1,0 +1,40 @@
+| in | Capture.cs:6:16:6:16 | i | Capture.cs:6:16:6:16 | SSA param(i) | Capture.cs:10:20:27:9 | SSA capture def(i) | Capture.cs:38:9:38:11 | delegate call | false |
+| in | Capture.cs:6:16:6:16 | i | Capture.cs:6:16:6:16 | SSA param(i) | Capture.cs:10:20:27:9 | SSA capture def(i) | Capture.cs:44:9:44:12 | call to method M | true |
+| in | Capture.cs:8:13:8:13 | x | Capture.cs:8:13:8:17 | SSA def(x) | Capture.cs:19:24:23:13 | SSA capture def(x) | Capture.cs:38:9:38:11 | delegate call | true |
+| in | Capture.cs:8:13:8:13 | x | Capture.cs:15:13:15:17 | SSA def(x) | Capture.cs:19:24:23:13 | SSA capture def(x) | Capture.cs:25:13:25:15 | delegate call | false |
+| in | Capture.cs:8:13:8:13 | x | Capture.cs:43:9:43:13 | SSA def(x) | Capture.cs:19:24:23:13 | SSA capture def(x) | Capture.cs:44:9:44:12 | call to method M | true |
+| in | Capture.cs:17:17:17:17 | y | Capture.cs:17:17:17:21 | SSA def(y) | Capture.cs:19:24:23:13 | SSA capture def(y) | Capture.cs:25:13:25:15 | delegate call | false |
+| in | Capture.cs:59:13:59:13 | i | Capture.cs:59:13:59:17 | SSA def(i) | Capture.cs:60:31:60:38 | SSA capture def(i) | Capture.cs:61:9:61:25 | call to method Select<String,Int32> | true |
+| in | Capture.cs:67:13:67:13 | c | Capture.cs:67:13:67:19 | SSA def(c) | Capture.cs:68:32:68:49 | SSA capture def(c) | Capture.cs:68:18:68:50 | call to method Where<String> | true |
+| in | Capture.cs:67:13:67:13 | c | Capture.cs:67:13:67:19 | SSA def(c) | Capture.cs:69:9:69:62 | SSA capture def(c) | Capture.cs:70:9:70:25 | call to method Select<String,String> | true |
+| in | Capture.cs:75:13:75:13 | i | Capture.cs:75:13:75:17 | SSA def(i) | Capture.cs:76:67:76:81 | SSA capture def(i) | Capture.cs:77:9:77:25 | call to method Select<String,Int32> | true |
+| in | Capture.cs:85:13:85:13 | b | Capture.cs:85:13:85:20 | SSA def(b) | Capture.cs:86:68:86:73 | SSA capture def(b) | Capture.cs:87:9:87:24 | call to method Where<String> | true |
+| in | Capture.cs:94:13:94:13 | y | Capture.cs:94:13:94:18 | SSA def(y) | Capture.cs:96:12:100:9 | SSA capture def(y) | Capture.cs:96:9:100:10 | call to local function fn | true |
+| in | Capture.cs:94:13:94:13 | y | Capture.cs:94:13:94:18 | SSA def(y) | Capture.cs:96:12:100:9 | SSA capture def(y) | Capture.cs:103:9:107:10 | call to local function fn | true |
+| in | Capture.cs:114:13:114:13 | a | Capture.cs:114:13:114:18 | SSA def(a) | Capture.cs:115:9:119:9 | SSA capture def(a) | Capture.cs:120:9:120:12 | call to local function M1 | false |
+| in | Capture.cs:182:17:182:17 | i | Capture.cs:182:17:182:21 | SSA def(i) | Capture.cs:183:13:186:13 | SSA capture def(i) | Capture.cs:187:13:187:17 | call to local function M10 | true |
+| in | Capture.cs:182:17:182:17 | i | Capture.cs:188:13:188:17 | SSA def(i) | Capture.cs:183:13:186:13 | SSA capture def(i) | Capture.cs:189:13:189:17 | call to local function M11 | false |
+| in | Capture.cs:197:17:197:17 | i | Capture.cs:197:17:197:21 | SSA def(i) | Capture.cs:198:33:198:44 | SSA capture def(i) | Capture.cs:200:13:200:19 | delegate call | false |
+| in | Capture.cs:197:17:197:17 | i | Capture.cs:197:17:197:21 | SSA def(i) | Capture.cs:203:34:203:45 | SSA capture def(i) | Capture.cs:200:13:200:19 | delegate call | false |
+| in | Capture.cs:209:17:209:17 | i | Capture.cs:209:17:209:21 | SSA def(i) | Capture.cs:212:39:212:71 | SSA capture def(i) | Capture.cs:213:17:213:24 | access to event Exited | true |
+| in | Capture.cs:229:13:229:13 | i | Capture.cs:232:9:232:13 | SSA def(i) | Capture.cs:231:9:231:49 | SSA capture def(i) | Capture.cs:233:9:233:12 | call to local function M2 | false |
+| in | Fields.cs:77:13:77:13 | f | Fields.cs:77:13:77:45 | SSA def(f) | Fields.cs:78:27:78:54 | SSA capture def(f) | Fields.cs:81:9:81:11 | delegate call | false |
+| in | Fields.cs:77:13:77:13 | f | Fields.cs:77:13:77:45 | SSA def(f) | Fields.cs:78:27:78:54 | SSA capture def(f) | Fields.cs:86:9:86:47 | call to method Select<Int32,Int32> | true |
+| in | Fields.cs:78:23:78:23 | a | Fields.cs:78:23:78:54 | SSA def(a) | Fields.cs:86:24:86:46 | SSA capture def(a) | Fields.cs:86:9:86:47 | call to method Select<Int32,Int32> | true |
+| in | Fields.cs:79:23:79:23 | b | Fields.cs:79:23:79:35 | SSA def(b) | Fields.cs:89:24:89:46 | SSA capture def(b) | Fields.cs:89:9:89:47 | call to method Select<Int32,Int32> | true |
+| in | Properties.cs:73:13:73:13 | f | Properties.cs:73:13:73:32 | SSA def(f) | Properties.cs:74:27:74:54 | SSA capture def(f) | Properties.cs:77:9:77:11 | delegate call | false |
+| in | Properties.cs:73:13:73:13 | f | Properties.cs:73:13:73:32 | SSA def(f) | Properties.cs:74:27:74:54 | SSA capture def(f) | Properties.cs:82:9:82:47 | call to method Select<Int32,Int32> | true |
+| in | Properties.cs:74:23:74:23 | a | Properties.cs:74:23:74:54 | SSA def(a) | Properties.cs:82:24:82:46 | SSA capture def(a) | Properties.cs:82:9:82:47 | call to method Select<Int32,Int32> | true |
+| in | Properties.cs:75:23:75:23 | b | Properties.cs:75:23:75:35 | SSA def(b) | Properties.cs:85:24:85:46 | SSA capture def(b) | Properties.cs:85:9:85:47 | call to method Select<Int32,Int32> | true |
+| out | Capture.cs:6:16:6:16 | i | Capture.cs:13:13:13:17 | SSA def(i) | Capture.cs:38:9:38:11 | SSA call def(i) | Capture.cs:38:9:38:11 | delegate call | false |
+| out | Capture.cs:8:13:8:13 | x | Capture.cs:15:13:15:17 | SSA def(x) | Capture.cs:38:9:38:11 | SSA call def(x) | Capture.cs:38:9:38:11 | delegate call | false |
+| out | Capture.cs:8:13:8:13 | x | Capture.cs:15:13:15:17 | SSA def(x) | Capture.cs:44:9:44:12 | SSA call def(x) | Capture.cs:44:9:44:12 | call to method M | true |
+| out | Capture.cs:29:13:29:13 | z | Capture.cs:30:28:30:32 | SSA def(z) | Capture.cs:32:9:32:11 | SSA call def(z) | Capture.cs:32:9:32:11 | delegate call | false |
+| out | Capture.cs:50:20:50:20 | a | Capture.cs:52:28:52:40 | SSA def(a) | Capture.cs:53:9:53:11 | SSA call def(a) | Capture.cs:53:9:53:11 | delegate call | false |
+| out | Capture.cs:59:13:59:13 | i | Capture.cs:60:36:60:38 | SSA def(i) | Capture.cs:61:9:61:25 | SSA call def(i) | Capture.cs:61:9:61:25 | call to method Select<String,Int32> | true |
+| out | Capture.cs:75:13:75:13 | i | Capture.cs:76:80:76:80 | SSA def(i) | Capture.cs:77:9:77:25 | SSA call def(i) | Capture.cs:77:9:77:25 | call to method Select<String,Int32> | true |
+| out | Capture.cs:130:13:130:13 | c | Capture.cs:133:13:133:17 | SSA def(c) | Capture.cs:136:9:136:12 | SSA call def(c) | Capture.cs:136:9:136:12 | call to local function M3 | false |
+| out | Capture.cs:139:13:139:13 | d | Capture.cs:142:13:142:17 | SSA def(d) | Capture.cs:144:9:144:12 | SSA call def(d) | Capture.cs:144:9:144:12 | call to local function M4 | false |
+| out | Capture.cs:168:13:168:13 | h | Capture.cs:174:17:174:21 | SSA def(h) | Capture.cs:176:13:176:16 | SSA call def(h) | Capture.cs:176:13:176:16 | call to local function M9 | false |
+| out | Capture.cs:229:13:229:13 | i | Capture.cs:235:21:235:25 | SSA def(i) | Capture.cs:236:9:236:12 | SSA call def(i) | Capture.cs:236:9:236:12 | call to local function M3 | false |
+| out | DefUse.cs:167:23:167:23 | i | DefUse.cs:173:13:173:17 | SSA def(i) | DefUse.cs:181:9:181:11 | SSA call def(i) | DefUse.cs:181:9:181:11 | delegate call | false |

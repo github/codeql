@@ -1,0 +1,39 @@
+| blocks.c:4:8:4:47 | functionPtrReturningVoidWithVoidArgument | ..(*)(..) | pointer to {function returning {void} with arguments ()} |
+| blocks.c:5:7:5:52 | functionPtrReturningIntWithIntAndCharArguments | ..(*)(..) | pointer to {function returning {int} with arguments (int,char)} |
+| blocks.c:6:8:6:57 | arrayOfTenFunctionPtrsReturningVoidWithIntArgument | ..(*[10])(..) | array of 10 {pointer to {function returning {void} with arguments (int)}} |
+| blocks.c:8:8:8:41 | blockReturningVoidWithVoidArgument | ..(^)(..) | block of {function returning {void} with arguments ()} |
+| blocks.c:9:7:9:46 | blockReturningIntWithIntAndCharArguments | ..(^)(..) | block of {function returning {int} with arguments (int,char)} |
+| blocks.c:10:8:10:51 | arrayOfTenBlocksReturningVoidWithIntArgument | ..(^[10])(..) | array of 10 {block of {function returning {void} with arguments (int)}} |
+| blocks.c:12:5:12:5 | x | int | int |
+| blocks.c:26:12:26:13 | b1 | ..(^)(..) | block of {function returning {void} with arguments (int,char)} |
+| blocks.c:27:16:27:16 | y | int | int |
+| blocks.c:27:24:27:24 | z | char | char |
+| blocks.c:30:12:30:13 | b2 | ..(^)(..) | block of {function returning {void} with arguments (int,char)} |
+| blocks.c:31:16:31:16 | y | int | int |
+| blocks.c:31:24:31:24 | z | char | char |
+| blocks.c:34:14:34:15 | b3 | ..(^)(..) | block of {function returning {double} with arguments (int,char)} |
+| blocks.c:35:16:35:16 | y | int | int |
+| blocks.c:35:24:35:24 | z | char | char |
+| blocks.c:38:14:38:15 | b4 | ..(^)(..) | block of {function returning {double} with arguments (int,char)} |
+| blocks.c:39:16:39:16 | y | int | int |
+| blocks.c:39:24:39:24 | z | char | char |
+| blocks.c:42:12:42:13 | b5 | ..(^)(..) | block of {function returning {char} with arguments (int,char)} |
+| blocks.c:43:21:43:21 | y | int | int |
+| blocks.c:43:29:43:29 | z | char | char |
+| blocks.c:46:20:46:21 | b6 | ..(^)(..) | block of {function returning {pointer to {const {char}}} with arguments (int,char)} |
+| blocks.c:47:29:47:29 | y | int | int |
+| blocks.c:47:37:47:37 | z | char | char |
+| blocks.c:50:28:50:29 | b7 | ..(^)(..) | block of {function returning {pointer to {const {pointer to {const {char}}}}} with arguments (int,char)} |
+| blocks.c:51:37:51:37 | y | int | int |
+| blocks.c:51:45:51:45 | z | char | char |
+| blocks.c:53:10:53:10 | c | char | char |
+| blocks.c:54:12:54:12 | d | double | double |
+| blocks.c:63:7:63:8 | fn | ..(^)(..) | block of {function returning {int} with arguments ()} |
+| blocks.c:69:8:69:9 | b1 | ..(^)(..) | block of {function returning {int} with arguments ()} |
+| blocks.c:73:46:73:60 | functionPointer | pointerToFunctionThatReturnsIntWithCharArg | typedef {pointer to {function returning {int} with arguments (char)}} as "pointerToFunctionThatReturnsIntWithCharArg" |
+| blocks.c:74:48:74:49 | b2 | ..(^)(..) | block of {function returning {typedef {pointer to {function returning {int} with arguments (char)}} as "pointerToFunctionThatReturnsIntWithCharArg"} with arguments (float)} |
+| blocks.c:74:74:74:74 | x | float | float |
+| file://:0:0:0:0 | fp_offset | unsigned int | unsigned int |
+| file://:0:0:0:0 | gp_offset | unsigned int | unsigned int |
+| file://:0:0:0:0 | overflow_arg_area | void * | pointer to {void} |
+| file://:0:0:0:0 | reg_save_area | void * | pointer to {void} |

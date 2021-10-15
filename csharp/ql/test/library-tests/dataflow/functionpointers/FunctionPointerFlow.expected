@@ -1,0 +1,20 @@
+fptrCall
+| FunctionPointerFlow.cs:14:9:14:12 | function pointer call | FunctionPointerFlow.cs:5:24:5:27 | Log1 |
+| FunctionPointerFlow.cs:14:9:14:12 | function pointer call | FunctionPointerFlow.cs:6:24:6:27 | Log2 |
+| FunctionPointerFlow.cs:14:9:14:12 | function pointer call | FunctionPointerFlow.cs:10:24:10:27 | Log6 |
+| FunctionPointerFlow.cs:14:9:14:12 | function pointer call | FunctionPointerFlow.cs:46:9:46:44 | LocalFunction |
+| FunctionPointerFlow.cs:16:9:16:12 | function pointer call | FunctionPointerFlow.cs:7:24:7:27 | Log3 |
+| FunctionPointerFlow.cs:41:9:41:15 | function pointer call | FunctionPointerFlow.cs:8:24:8:27 | Log4 |
+| FunctionPointerFlow.cs:54:9:54:16 | function pointer call | FunctionPointerFlow.cs:9:24:9:27 | Log5 |
+| FunctionPointerFlow.cs:59:9:59:13 | function pointer call | FunctionPointerFlow.cs:24:24:24:25 | M4 |
+| FunctionPointerFlow.cs:69:9:69:13 | function pointer call | FunctionPointerFlow.cs:72:24:72:26 | M17 |
+fptrCallContext
+| FunctionPointerFlow.cs:14:9:14:12 | function pointer call | FunctionPointerFlow.cs:21:9:21:17 | call to method M2 | FunctionPointerFlow.cs:5:24:5:27 | Log1 |
+| FunctionPointerFlow.cs:14:9:14:12 | function pointer call | FunctionPointerFlow.cs:26:9:26:13 | call to method M2 | FunctionPointerFlow.cs:6:24:6:27 | Log2 |
+| FunctionPointerFlow.cs:14:9:14:12 | function pointer call | FunctionPointerFlow.cs:26:9:26:13 | call to method M2 | FunctionPointerFlow.cs:10:24:10:27 | Log6 |
+| FunctionPointerFlow.cs:14:9:14:12 | function pointer call | FunctionPointerFlow.cs:47:9:47:26 | call to method M2 | FunctionPointerFlow.cs:46:9:46:44 | LocalFunction |
+| FunctionPointerFlow.cs:16:9:16:12 | function pointer call | file://:0:0:0:0 | (none) | FunctionPointerFlow.cs:7:24:7:27 | Log3 |
+| FunctionPointerFlow.cs:41:9:41:15 | function pointer call | file://:0:0:0:0 | (none) | FunctionPointerFlow.cs:8:24:8:27 | Log4 |
+| FunctionPointerFlow.cs:54:9:54:16 | function pointer call | file://:0:0:0:0 | (none) | FunctionPointerFlow.cs:9:24:9:27 | Log5 |
+| FunctionPointerFlow.cs:59:9:59:13 | function pointer call | FunctionPointerFlow.cs:64:9:64:23 | call to method M10 | FunctionPointerFlow.cs:24:24:24:25 | M4 |
+| FunctionPointerFlow.cs:69:9:69:13 | function pointer call | FunctionPointerFlow.cs:81:9:81:29 | call to method M16 | FunctionPointerFlow.cs:72:24:72:26 | M17 |

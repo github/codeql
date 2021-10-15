@@ -1,0 +1,11 @@
+| selfassigns.cs:73:9:73:25 | ... = ... | This assignment assigns $@ to itself. | selfassigns.cs:56:9:56:12 | Item | Item |
+| selfassigns.cs:74:9:74:13 | ... = ... | This assignment assigns $@ to itself. | selfassigns.cs:71:44:71:44 | y | y |
+| selfassigns.cs:75:9:75:21 | ... = ... | This assignment assigns $@ to itself. | selfassigns.cs:15:20:15:20 | y | y |
+| selfassigns.cs:76:9:76:18 | ... = ... | This assignment assigns $@ to itself. | selfassigns.cs:15:23:15:23 | z | z |
+| selfassigns.cs:77:9:77:18 | ... = ... | This assignment assigns $@ to itself. | selfassigns.cs:15:23:15:23 | z | z |
+| selfassigns.cs:78:9:78:33 | ... = ... | This assignment assigns $@ to itself. | selfassigns.cs:46:16:46:22 | Normal1 | Normal1 |
+| selfassigns.cs:79:9:79:33 | ... = ... | This assignment assigns $@ to itself. | selfassigns.cs:52:16:52:22 | Normal2 | Normal2 |
+| selfassigns.cs:80:9:80:32 | ... = ... | This assignment assigns $@ to itself. | selfassigns.cs:5:19:5:26 | IntField | IntField |
+| selfassigns.cs:81:9:81:37 | ... = ... | This assignment assigns $@ to itself. | selfassigns.cs:6:20:6:27 | BoolProp | BoolProp |
+| selfassigns.cs:82:9:82:66 | ... = ... | This assignment assigns $@ to itself. | selfassigns.cs:12:28:12:37 | StringProp | StringProp |
+| selfassigns.cs:83:9:83:42 | ... = ... | This assignment assigns $@ to itself. | selfassigns.cs:54:11:54:18 | intArray | intArray |

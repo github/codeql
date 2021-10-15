@@ -1,0 +1,2 @@
+| file://:0:0:0:0 | 4 | Error occurred | There was an error during this compilation | There was an error during this compilation |
+| test.c:2:26:2:26 | 5 | cannot_open_file | cannot open source file 'non_existent.h' | "test.c", line 2: catastrophic error: cannot open source file "non_existent.h"\n  #include <non_existent.h>\n                           ^\n\n |

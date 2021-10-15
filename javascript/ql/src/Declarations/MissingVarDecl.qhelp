@@ -1,0 +1,49 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+In JavaScript, if a variable is used in a function but not declared as a local variable, it becomes
+a global variable by default. This can have unintended consequences: unlike local variables, global
+variables can be read and modified by all functions. If different functions use the same global
+variable, they may end up overwriting each others values, leading to subtle and difficult to
+diagnose bugs.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Check whether the variable in question was meant to be local; if so, declare it by means of a
+<code>var</code> declaration. If the variable is really meant to be global, it is best to
+document this fact by inserting a global <code>var</code> declaration at the beginning of
+the source file.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+In the following example, both <code>f</code> and <code>g</code> use a loop counter variable
+<code>i</code>. Since neither of them declares <code>i</code> to be a local variable, they end
+up accessing the same global variable, so every time <code>f</code> invokes <code>g</code>
+inside the loop, <code>g</code> overwrites <code>f</code>'s value for <code>i</code>.
+</p>
+
+<sample src="examples/MissingVarDecl.js" />
+
+<p>
+The example should be fixed by declaring <code>i</code> to be a local variable in <code>f</code>
+and <code>g</code>.
+</p>
+
+</example>
+<references>
+
+
+<li>D. Crockford, <i>JavaScript: The Good Parts</i>, Appendix A. O'Reilly, 2008.</li>
+
+
+</references>
+</qhelp>

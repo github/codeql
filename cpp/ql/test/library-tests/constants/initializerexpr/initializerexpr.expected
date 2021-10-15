@@ -1,0 +1,14 @@
+| clang.c:2:25:2:26 | 36 | a |  |
+| clang.c:2:25:2:26 | (MyType)... |  |  |
+| clang.c:3:25:3:25 | a | b |  |
+| clang.c:4:25:4:25 | 2 |  |  |
+| clang.c:4:25:4:25 | (float)... |  |  |
+| clang.c:4:25:4:29 | ... * ... | c |  |
+| clang.c:4:29:4:29 | a |  |  |
+| initializerexpr.cpp:3:22:3:23 | 20 | myConst2 |  |
+| initializerexpr.cpp:5:22:5:23 | 30 |  | thirty |
+| initializerexpr.cpp:7:20:7:27 | myConst1 | x | func1 |
+| initializerexpr.cpp:7:38:7:45 | myConst2 | y | func1 |
+| initializerexpr.cpp:7:56:7:61 | call to thirty | z | func1 |
+| initializerexpr.cpp:13:2:13:6 | call to func1 |  | func2 |
+| initializerexpr.cpp:16:22:16:23 | 10 | myConst1 |  |

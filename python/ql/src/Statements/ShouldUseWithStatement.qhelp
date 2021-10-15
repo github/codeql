@@ -1,0 +1,37 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>The <code>with</code> statement was introduced by PEP343 to allow standard uses of 
+<code>try-finally</code> statements to be factored out. Using this simplification makes code easier 
+to read.</p>
+
+</overview>
+<recommendation>
+<p>Review the code and determine whether or not the <code>try-finally</code> is used only to ensure 
+that a resource is closed. If the only purpose is to ensure that a resource is closed, then replace 
+the <code>try-finally</code> statement with a <code>with</code> statement.</p>
+
+</recommendation>
+<example>
+<p>The following code shows examples of different ways of ensuring that a file is always closed, even 
+when an error is generated. In the second example, the <code>try-finally</code> block is replaced by 
+a simpler <code>with</code> statement.</p>
+
+<sample src="ShouldUseWithStatement.py" />
+
+
+</example>
+<references>
+
+<li>Python Language Reference: <a href="http://docs.python.org/reference/compound_stmts.html#the-with-statement">The with 
+statement</a>.</li>
+<li>Python Standard Library: <a href="http://docs.python.org/library/stdtypes.html#context-manager-types">Context manager
+</a>.</li>
+<li>Python PEP 343: <a href="http://www.python.org/dev/peps/pep-0343">The "with" Statement</a>.</li>
+
+
+</references>
+</qhelp>

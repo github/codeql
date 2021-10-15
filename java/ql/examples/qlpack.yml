@@ -1,0 +1,4 @@
+name: codeql-java-examples
+version: 0.0.2
+dependencies:
+    codeql/java-all: "*"

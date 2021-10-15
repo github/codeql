@@ -1,0 +1,4 @@
+| test.c:1:1:1:12 | #pragma once |
+| test.c:2:1:2:32 | #pragma GCC warning "My warning" |
+| test.c:4:1:4:43 | #pragma My strange pragma. ("foo" : bar !!) |
+| test.c:7:1:7:47 | #pragma prefast(suppress: 26014, "qwerty uiop") |

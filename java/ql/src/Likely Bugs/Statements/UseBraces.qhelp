@@ -1,0 +1,68 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>A control structure (an <code>if</code> statement or a loop) has a body that is either a block
+of statements surrounded by curly braces or a single statement.</p>
+
+<p>If you omit braces, it is particularly important to ensure that the indentation of the code
+matches the control flow of the code.</p>
+
+</overview>
+<recommendation>
+
+<p>It is usually considered good practice to include braces for all control
+structures in Java. This is because it makes it easier to maintain the code
+later. For example, it's easy to see at a glance which part of the code is in the
+scope of an <code>if</code> statement, and adding more statements to the body of the <code>if</code>
+statement is less error-prone.</p>
+
+<p>You should also ensure that the indentation of the code is consistent with the actual flow of 
+control, so that it does not confuse programmers.</p>
+
+</recommendation>
+<example>
+
+<p>In the example below, the original version of <code>Cart</code> is missing braces. This means 
+that the code triggers a <code>NullPointerException</code> at runtime if <code>i</code>
+is <code>null</code>.</p>
+
+<sample src="UseBraces.java" />
+
+<p>The corrected version of <code>Cart</code> does include braces, so
+that the code executes as the indentation suggests.</p>
+
+<sample src="UseBracesGood.java" />
+
+<p>
+In the following example the indentation may or may not be misleading depending on your tab width
+settings. As such, mixing tabs and spaces in this way is not recommended, since what looks fine in
+one context can be very misleading in another.
+</p>
+
+<sample src="UseBraces2.java" />
+
+<p>
+If you mix tabs and spaces in this way, then you might get seemingly false positives, since your
+tab width settings cannot be taken into account.
+</p>
+
+</example>
+<references>
+
+
+<li>
+  Java SE Documentation:
+  <a href="https://www.oracle.com/java/technologies/javase/codeconventions-statements.html#15395">Compound Statements</a>.
+</li>
+<li>
+  Wikipedia:
+  <a href="https://en.wikipedia.org/wiki/Indentation_style">Indentation style</a>.
+</li>
+
+
+</references>
+</qhelp>

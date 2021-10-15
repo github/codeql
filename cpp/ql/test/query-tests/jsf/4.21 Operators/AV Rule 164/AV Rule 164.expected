@@ -1,0 +1,8 @@
+| test.c:3:2:3:9 | ... >> ... | AV Rule 164: The right-hand operand (here a value is -1) of this shift shall lie between 0 and 7. |
+| test.c:6:2:6:8 | ... >> ... | AV Rule 164: The right-hand operand (here a value is 8) of this shift shall lie between 0 and 7. |
+| test.c:8:2:8:9 | ... << ... | AV Rule 164: The right-hand operand (here a value is -1) of this shift shall lie between 0 and 7. |
+| test.c:11:2:11:8 | ... << ... | AV Rule 164: The right-hand operand (here a value is 8) of this shift shall lie between 0 and 7. |
+| test.c:18:2:18:9 | ... >> ... | AV Rule 164: The right-hand operand (here a value is -1) of this shift shall lie between 0 and 7. |
+| test.c:21:2:21:8 | ... >> ... | AV Rule 164: The right-hand operand (here a value is 8) of this shift shall lie between 0 and 7. |
+| test.c:23:2:23:25 | ... >> ... | AV Rule 164: The right-hand operand (here a value is -1) of this shift shall lie between 0 and 7. |
+| test.c:26:2:26:24 | ... >> ... | AV Rule 164: The right-hand operand (here a value is 8) of this shift shall lie between 0 and 7. |

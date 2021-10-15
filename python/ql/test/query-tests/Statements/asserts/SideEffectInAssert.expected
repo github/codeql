@@ -1,0 +1,3 @@
+| assert.py:5:5:5:20 | Assert | This 'assert' statement contains $@ which may have side effects. | assert.py:5:13:5:19 | Yield | an expression |
+| assert.py:8:5:8:22 | Assert | This 'assert' statement contains $@ which may have side effects. | assert.py:8:12:8:22 | Attribute() | an expression |
+| side_effect.py:5:1:5:43 | Assert | This 'assert' statement contains $@ which may have side effects. | side_effect.py:5:8:5:38 | Attribute() | an expression |

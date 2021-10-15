@@ -1,0 +1,45 @@
+edges
+| Test.java:21:32:21:48 | doFinal(...) : byte[] | Test.java:23:47:23:55 | actualMac |
+| Test.java:34:25:34:33 | actualMac : byte[] | Test.java:36:47:36:55 | actualMac |
+| Test.java:59:32:59:44 | sign(...) : byte[] | Test.java:61:44:61:52 | signature |
+| Test.java:73:25:73:33 | signature : byte[] | Test.java:75:44:75:52 | signature |
+| Test.java:99:26:99:45 | doFinal(...) : byte[] | Test.java:101:49:101:51 | tag |
+| Test.java:116:28:116:30 | tag : byte[] | Test.java:118:44:118:46 | tag |
+| Test.java:134:56:134:58 | tag : ByteBuffer | Test.java:136:44:136:46 | tag : ByteBuffer |
+| Test.java:136:44:136:46 | tag : ByteBuffer | Test.java:136:44:136:54 | array(...) |
+| Test.java:148:56:148:58 | tag : ByteBuffer | Test.java:150:53:150:55 | tag |
+| Test.java:174:26:174:50 | doFinal(...) : byte[] | Test.java:176:44:176:46 | tag |
+| Test.java:201:34:201:50 | doFinal(...) : byte[] | Test.java:204:26:204:36 | computedTag |
+nodes
+| Test.java:21:32:21:48 | doFinal(...) : byte[] | semmle.label | doFinal(...) : byte[] |
+| Test.java:23:47:23:55 | actualMac | semmle.label | actualMac |
+| Test.java:34:25:34:33 | actualMac : byte[] | semmle.label | actualMac : byte[] |
+| Test.java:36:47:36:55 | actualMac | semmle.label | actualMac |
+| Test.java:59:32:59:44 | sign(...) : byte[] | semmle.label | sign(...) : byte[] |
+| Test.java:61:44:61:52 | signature | semmle.label | signature |
+| Test.java:73:25:73:33 | signature : byte[] | semmle.label | signature : byte[] |
+| Test.java:75:44:75:52 | signature | semmle.label | signature |
+| Test.java:99:26:99:45 | doFinal(...) : byte[] | semmle.label | doFinal(...) : byte[] |
+| Test.java:101:49:101:51 | tag | semmle.label | tag |
+| Test.java:116:28:116:30 | tag : byte[] | semmle.label | tag : byte[] |
+| Test.java:118:44:118:46 | tag | semmle.label | tag |
+| Test.java:134:56:134:58 | tag : ByteBuffer | semmle.label | tag : ByteBuffer |
+| Test.java:136:44:136:46 | tag : ByteBuffer | semmle.label | tag : ByteBuffer |
+| Test.java:136:44:136:54 | array(...) | semmle.label | array(...) |
+| Test.java:148:56:148:58 | tag : ByteBuffer | semmle.label | tag : ByteBuffer |
+| Test.java:150:53:150:55 | tag | semmle.label | tag |
+| Test.java:174:26:174:50 | doFinal(...) : byte[] | semmle.label | doFinal(...) : byte[] |
+| Test.java:176:44:176:46 | tag | semmle.label | tag |
+| Test.java:201:34:201:50 | doFinal(...) : byte[] | semmle.label | doFinal(...) : byte[] |
+| Test.java:204:26:204:36 | computedTag | semmle.label | computedTag |
+subpaths
+#select
+| Test.java:23:47:23:55 | actualMac | Test.java:21:32:21:48 | doFinal(...) : byte[] | Test.java:23:47:23:55 | actualMac | Timing attack against $@ validation. | Test.java:21:32:21:48 | doFinal(...) : byte[] | MAC |
+| Test.java:36:47:36:55 | actualMac | Test.java:34:25:34:33 | actualMac : byte[] | Test.java:36:47:36:55 | actualMac | Timing attack against $@ validation. | Test.java:34:25:34:33 | actualMac : byte[] | MAC |
+| Test.java:61:44:61:52 | signature | Test.java:59:32:59:44 | sign(...) : byte[] | Test.java:61:44:61:52 | signature | Timing attack against $@ validation. | Test.java:59:32:59:44 | sign(...) : byte[] | signature |
+| Test.java:75:44:75:52 | signature | Test.java:73:25:73:33 | signature : byte[] | Test.java:75:44:75:52 | signature | Timing attack against $@ validation. | Test.java:73:25:73:33 | signature : byte[] | signature |
+| Test.java:101:49:101:51 | tag | Test.java:99:26:99:45 | doFinal(...) : byte[] | Test.java:101:49:101:51 | tag | Timing attack against $@ validation. | Test.java:99:26:99:45 | doFinal(...) : byte[] | ciphertext |
+| Test.java:118:44:118:46 | tag | Test.java:116:28:116:30 | tag : byte[] | Test.java:118:44:118:46 | tag | Timing attack against $@ validation. | Test.java:116:28:116:30 | tag : byte[] | ciphertext |
+| Test.java:136:44:136:54 | array(...) | Test.java:134:56:134:58 | tag : ByteBuffer | Test.java:136:44:136:54 | array(...) | Timing attack against $@ validation. | Test.java:134:56:134:58 | tag : ByteBuffer | ciphertext |
+| Test.java:150:53:150:55 | tag | Test.java:148:56:148:58 | tag : ByteBuffer | Test.java:150:53:150:55 | tag | Timing attack against $@ validation. | Test.java:148:56:148:58 | tag : ByteBuffer | ciphertext |
+| Test.java:176:44:176:46 | tag | Test.java:174:26:174:50 | doFinal(...) : byte[] | Test.java:176:44:176:46 | tag | Timing attack against $@ validation. | Test.java:174:26:174:50 | doFinal(...) : byte[] | ciphertext |

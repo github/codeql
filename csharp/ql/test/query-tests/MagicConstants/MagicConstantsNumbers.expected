@@ -1,0 +1,2 @@
+| AttributeInts.cs:23:17:23:19 | 555 | Magic constant: literal '555' is repeated 21 times and should be encapsulated in a constant. |
+| HashCode.cs:16:11:16:13 | 391 | Magic constant: literal '391' is repeated 21 times and should be encapsulated in a constant. |

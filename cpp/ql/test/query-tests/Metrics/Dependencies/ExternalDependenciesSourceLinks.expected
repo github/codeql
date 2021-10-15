@@ -1,0 +1,4 @@
+| /query-tests/Metrics/Dependencies/include.h<\|>LibD<\|>unknown | include.h:0:0:0:0 | include.h |
+| /query-tests/Metrics/Dependencies/main.cpp<\|>LibA<\|>unknown | main.cpp:0:0:0:0 | main.cpp |
+| /query-tests/Metrics/Dependencies/main.cpp<\|>LibB<\|>unknown | main.cpp:0:0:0:0 | main.cpp |
+| /query-tests/Metrics/Dependencies/main.cpp<\|>LibC<\|>unknown | main.cpp:0:0:0:0 | main.cpp |

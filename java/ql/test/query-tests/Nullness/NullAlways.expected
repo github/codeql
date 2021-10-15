@@ -1,0 +1,15 @@
+| A.java:15:7:15:9 | not | Variable $@ is always null here. | A.java:13:5:13:22 | Object not | not |
+| A.java:97:18:97:36 | synchronized_always | Variable $@ is always null here. | A.java:96:5:96:38 | Object synchronized_always | synchronized_always |
+| A.java:161:26:161:34 | do_always | Variable $@ is always null here. | A.java:159:5:159:28 | String do_always | do_always |
+| A.java:167:26:167:34 | do_maybe1 | Variable $@ is always null here. | A.java:165:5:165:28 | String do_maybe1 | do_maybe1 |
+| A.java:187:26:187:37 | while_always | Variable $@ is always null here. | A.java:185:5:185:31 | String while_always | while_always |
+| A.java:207:26:207:34 | if_always | Variable $@ is always null here. | A.java:205:5:205:28 | String if_always | if_always |
+| A.java:223:24:223:29 | for_ok | Variable $@ is always null here. | A.java:219:5:219:19 | String for_ok | for_ok |
+| A.java:226:26:226:35 | for_always | Variable $@ is always null here. | A.java:225:10:225:33 | String for_always | for_always |
+| A.java:236:5:236:14 | array_null | Variable $@ is always null here. | A.java:235:5:235:28 | int[] array_null | array_null |
+| A.java:248:24:248:34 | arrayaccess | Variable $@ is always null here. | A.java:244:5:244:29 | int[] arrayaccess | arrayaccess |
+| A.java:249:24:249:34 | fieldaccess | Variable $@ is always null here. | A.java:245:5:245:32 | String[] fieldaccess | fieldaccess |
+| A.java:250:24:250:35 | methodaccess | Variable $@ is always null here. | A.java:246:5:246:31 | Object methodaccess | methodaccess |
+| A.java:264:21:264:30 | for_always | Variable $@ is always null here. | A.java:263:5:263:35 | List<String> for_always | for_always |
+| A.java:266:24:266:33 | for_always | Variable $@ is always null here. | A.java:263:5:263:35 | List<String> for_always | for_always |
+| B.java:304:7:304:9 | ioe | Variable $@ is always null here. | B.java:297:5:297:25 | Exception ioe | ioe |

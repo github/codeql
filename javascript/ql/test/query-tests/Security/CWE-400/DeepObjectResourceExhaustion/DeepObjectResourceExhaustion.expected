@@ -1,0 +1,8 @@
+nodes
+| tst.js:9:29:9:36 | req.body |
+| tst.js:9:29:9:36 | req.body |
+| tst.js:9:29:9:36 | req.body |
+edges
+| tst.js:9:29:9:36 | req.body | tst.js:9:29:9:36 | req.body |
+#select
+| tst.js:9:29:9:36 | req.body | tst.js:9:29:9:36 | req.body | tst.js:9:29:9:36 | req.body | Denial of service caused by processing user input from $@ with $@. | tst.js:9:29:9:36 | req.body | here | tst.js:4:21:4:35 | allErrors: true | allErrors: true |

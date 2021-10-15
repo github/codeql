@@ -1,0 +1,7 @@
+| ObjectsTest.java:5:31:5:38 | source(...) | ObjectsTest.java:5:8:5:39 | requireNonNull(...) |
+| ObjectsTest.java:6:31:6:38 | source(...) | ObjectsTest.java:6:8:6:50 | requireNonNull(...) |
+| ObjectsTest.java:7:31:7:38 | source(...) | ObjectsTest.java:7:8:7:55 | requireNonNull(...) |
+| ObjectsTest.java:8:35:8:42 | source(...) | ObjectsTest.java:8:8:8:53 | requireNonNullElse(...) |
+| ObjectsTest.java:8:45:8:52 | source(...) | ObjectsTest.java:8:8:8:53 | requireNonNullElse(...) |
+| ObjectsTest.java:9:38:9:45 | source(...) | ObjectsTest.java:9:8:9:62 | requireNonNullElseGet(...) |
+| ObjectsTest.java:10:31:10:38 | source(...) | ObjectsTest.java:10:8:10:39 | toString(...) |

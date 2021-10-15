@@ -1,0 +1,1 @@
+| ChainedIs.cs:48:9:65:9 | if (...) ... | This if block performs a chain of 6 type tests - consider alternatives, e.g. polymorphism or the visitor pattern. |

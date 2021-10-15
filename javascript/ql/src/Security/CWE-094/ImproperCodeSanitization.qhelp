@@ -1,0 +1,38 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+  <overview>
+    <p>
+        Using string concatenation to construct JavaScript code can be error-prone, or in the worst
+        case, enable code injection if an input is constructed by an attacker.  
+    </p>
+  </overview>
+
+  <recommendation>
+    <p>
+      If using <code>JSON.stringify</code> or a HTML sanitizer to sanitize a string inserted into 
+      JavaScript code, then make sure to perform additional sanitization or remove potentially
+      dangerous characters. 
+    </p>
+  </recommendation>
+
+  <example>
+    <p>
+      The example below constructs a function that assigns the number 42 to the property <code>key</code>
+      on an object <code>obj</code>. However, if <code>key</code> contains <code>&lt;/script&gt;</code>, then 
+      the generated code will break out of a <code>&lt;/script&gt;</code> if inserted into a 
+      <code>&lt;/script&gt;</code> tag.
+    </p>
+    <sample src="examples/ImproperCodeSanitization.js" />
+    <p>
+      The issue has been fixed by escaping potentially dangerous characters, as shown below.
+    </p>
+    <sample src="examples/ImproperCodeSanitizationFixed.js" />
+  </example>
+
+  <references>
+    <li>OWASP: <a href="https://www.owasp.org/index.php/Code_Injection">Code Injection</a>.</li>
+  </references>
+</qhelp>

@@ -1,0 +1,37 @@
+| Basic custom config | test.py:120 | 120 | CUSTOM_SOURCE | simple.test |
+| Basic custom config | test.py:126 | 126 | CUSTOM_SOURCE | simple.test |
+| Basic custom config | test.py:136 | 136 | CUSTOM_SOURCE | simple.test |
+| Basic custom config | test.py:146 | 146 | CUSTOM_SOURCE | simple.test |
+| Rock-paper-scissors config | rockpaperscissors.py:13 | 13 | SCISSORS | scissors |
+| Rock-paper-scissors config | rockpaperscissors.py:16 | 16 | ROCK | rock |
+| Rock-paper-scissors config | rockpaperscissors.py:19 | 19 | ROCK | rock |
+| Rock-paper-scissors config | rockpaperscissors.py:24 | 24 | ROCK | rock |
+| Rock-paper-scissors config | rockpaperscissors.py:29 | 29 | SCISSORS | scissors |
+| Simple config | carrier.py:17 | 17 | SOURCE | simple.test |
+| Simple config | carrier.py:25 | 25 | SOURCE | simple.test |
+| Simple config | deep.py:20 | 20 | SOURCE | simple.test |
+| Simple config | module.py:3 | 3 | SOURCE | simple.test |
+| Simple config | module.py:7 | 7 | SOURCE | simple.test |
+| Simple config | module.py:10 | 10 | SOURCE | simple.test |
+| Simple config | test.py:3 | 3 | SOURCE | simple.test |
+| Simple config | test.py:6 | 6 | SOURCE | simple.test |
+| Simple config | test.py:10 | 10 | SOURCE | simple.test |
+| Simple config | test.py:20 | 20 | SOURCE | simple.test |
+| Simple config | test.py:31 | 31 | SOURCE | simple.test |
+| Simple config | test.py:37 | 37 | SOURCE | simple.test |
+| Simple config | test.py:62 | 62 | SOURCE | simple.test |
+| Simple config | test.py:67 | 67 | SOURCE | simple.test |
+| Simple config | test.py:76 | 76 | SOURCE | simple.test |
+| Simple config | test.py:128 | 128 | SOURCE | simple.test |
+| Simple config | test.py:138 | 138 | SOURCE | simple.test |
+| Simple config | test.py:148 | 148 | SOURCE | simple.test |
+| Simple config | test.py:159 | 159 | SOURCE | simple.test |
+| Simple config | test.py:163 | 163 | SOURCE | simple.test |
+| Simple config | test.py:168 | 168 | SOURCE | simple.test |
+| Simple config | test.py:169 | 169 | SOURCE | simple.test |
+| Simple config | test.py:178 | 178 | SOURCE | simple.test |
+| Simple config | test.py:195 | 195 | SOURCE | simple.test |
+| Simple config | test.py:208 | 208 | SOURCE | simple.test |
+| Taint carrier config | carrier.py:21 | 21 | TAINT_CARRIER_SOURCE | explicit.carrier |
+| Taint carrier config | carrier.py:29 | 29 | TAINT_CARRIER_SOURCE | explicit.carrier |
+| Taint carrier config | carrier.py:33 | 33 | TAINT_CARRIER_SOURCE | explicit.carrier |

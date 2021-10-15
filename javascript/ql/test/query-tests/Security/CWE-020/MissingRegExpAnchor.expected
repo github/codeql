@@ -1,0 +1,71 @@
+| tst-IncompleteHostnameRegExp.js:2:2:2:24 | /^http: ... le.com/ | This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end. |
+| tst-IncompleteHostnameRegExp.js:3:2:3:29 | /^http: ... le.com/ | This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end. |
+| tst-IncompleteHostnameRegExp.js:5:2:5:29 | /^http: ... le.net/ | This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end. |
+| tst-IncompleteHostnameRegExp.js:6:2:6:43 | /^http: ... b).com/ | This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end. |
+| tst-IncompleteHostnameRegExp.js:11:13:11:38 | "^http: ... le.com" | This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end. |
+| tst-IncompleteHostnameRegExp.js:12:14:12:39 | "^http: ... le.com" | This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end. |
+| tst-IncompleteHostnameRegExp.js:15:22:15:47 | "^http: ... le.com" | This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end. |
+| tst-IncompleteHostnameRegExp.js:19:17:19:35 | '^test.example.com' | This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end. |
+| tst-IncompleteHostnameRegExp.js:40:2:40:30 | /^https ... le.com/ | This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end. |
+| tst-IncompleteHostnameRegExp.js:55:13:55:39 | '^http: ... le.com' | This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end. |
+| tst-SemiAnchoredRegExp.js:3:2:3:7 | /^a\|b/ | Misleading operator precedence. The subexpression '^a' is anchored at the beginning, but the other parts of this regular expression are not |
+| tst-SemiAnchoredRegExp.js:6:2:6:9 | /^a\|b\|c/ | Misleading operator precedence. The subexpression '^a' is anchored at the beginning, but the other parts of this regular expression are not |
+| tst-SemiAnchoredRegExp.js:12:2:12:9 | /^a\|(b)/ | Misleading operator precedence. The subexpression '^a' is anchored at the beginning, but the other parts of this regular expression are not |
+| tst-SemiAnchoredRegExp.js:14:2:14:11 | /^(a)\|(b)/ | Misleading operator precedence. The subexpression '^(a)' is anchored at the beginning, but the other parts of this regular expression are not |
+| tst-SemiAnchoredRegExp.js:17:2:17:7 | /a\|b$/ | Misleading operator precedence. The subexpression 'b$' is anchored at the end, but the other parts of this regular expression are not |
+| tst-SemiAnchoredRegExp.js:20:2:20:9 | /a\|b\|c$/ | Misleading operator precedence. The subexpression 'c$' is anchored at the end, but the other parts of this regular expression are not |
+| tst-SemiAnchoredRegExp.js:26:2:26:9 | /(a)\|b$/ | Misleading operator precedence. The subexpression 'b$' is anchored at the end, but the other parts of this regular expression are not |
+| tst-SemiAnchoredRegExp.js:28:2:28:11 | /(a)\|(b)$/ | Misleading operator precedence. The subexpression '(b)$' is anchored at the end, but the other parts of this regular expression are not |
+| tst-SemiAnchoredRegExp.js:30:2:30:23 | /^good. ... er.com/ | Misleading operator precedence. The subexpression '^good.com' is anchored at the beginning, but the other parts of this regular expression are not |
+| tst-SemiAnchoredRegExp.js:31:2:31:25 | /^good\\ ... r\\.com/ | Misleading operator precedence. The subexpression '^good\\.com' is anchored at the beginning, but the other parts of this regular expression are not |
+| tst-SemiAnchoredRegExp.js:32:2:32:27 | /^good\\ ... \\\\.com/ | Misleading operator precedence. The subexpression '^good\\\\.com' is anchored at the beginning, but the other parts of this regular expression are not |
+| tst-SemiAnchoredRegExp.js:33:2:33:29 | /^good\\ ... \\\\.com/ | Misleading operator precedence. The subexpression '^good\\\\\\.com' is anchored at the beginning, but the other parts of this regular expression are not |
+| tst-SemiAnchoredRegExp.js:34:2:34:31 | /^good\\ ... \\\\.com/ | Misleading operator precedence. The subexpression '^good\\\\\\\\.com' is anchored at the beginning, but the other parts of this regular expression are not |
+| tst-SemiAnchoredRegExp.js:36:2:36:16 | /^foo\|bar\|baz$/ | Misleading operator precedence. The subexpression '^foo' is anchored at the beginning, but the other parts of this regular expression are not |
+| tst-SemiAnchoredRegExp.js:36:2:36:16 | /^foo\|bar\|baz$/ | Misleading operator precedence. The subexpression 'baz$' is anchored at the end, but the other parts of this regular expression are not |
+| tst-SemiAnchoredRegExp.js:42:13:42:18 | "^a\|b" | Misleading operator precedence. The subexpression '^a' is anchored at the beginning, but the other parts of this regular expression are not |
+| tst-SemiAnchoredRegExp.js:45:13:45:20 | "^a\|b\|c" | Misleading operator precedence. The subexpression '^a' is anchored at the beginning, but the other parts of this regular expression are not |
+| tst-SemiAnchoredRegExp.js:51:13:51:20 | "^a\|(b)" | Misleading operator precedence. The subexpression '^a' is anchored at the beginning, but the other parts of this regular expression are not |
+| tst-SemiAnchoredRegExp.js:53:13:53:22 | "^(a)\|(b)" | Misleading operator precedence. The subexpression '^(a)' is anchored at the beginning, but the other parts of this regular expression are not |
+| tst-SemiAnchoredRegExp.js:56:13:56:18 | "a\|b$" | Misleading operator precedence. The subexpression 'b$' is anchored at the end, but the other parts of this regular expression are not |
+| tst-SemiAnchoredRegExp.js:59:13:59:20 | "a\|b\|c$" | Misleading operator precedence. The subexpression 'c$' is anchored at the end, but the other parts of this regular expression are not |
+| tst-SemiAnchoredRegExp.js:65:13:65:20 | "(a)\|b$" | Misleading operator precedence. The subexpression 'b$' is anchored at the end, but the other parts of this regular expression are not |
+| tst-SemiAnchoredRegExp.js:67:13:67:22 | "(a)\|(b)$" | Misleading operator precedence. The subexpression '(b)$' is anchored at the end, but the other parts of this regular expression are not |
+| tst-SemiAnchoredRegExp.js:69:13:69:34 | '^good. ... er.com' | Misleading operator precedence. The subexpression '^good.com' is anchored at the beginning, but the other parts of this regular expression are not |
+| tst-SemiAnchoredRegExp.js:70:13:70:36 | '^good\\ ... r\\.com' | Misleading operator precedence. The subexpression '^good.com' is anchored at the beginning, but the other parts of this regular expression are not |
+| tst-SemiAnchoredRegExp.js:71:13:71:38 | '^good\\ ... \\\\.com' | Misleading operator precedence. The subexpression '^good\\.com' is anchored at the beginning, but the other parts of this regular expression are not |
+| tst-SemiAnchoredRegExp.js:72:13:72:40 | '^good\\ ... \\\\.com' | Misleading operator precedence. The subexpression '^good\\.com' is anchored at the beginning, but the other parts of this regular expression are not |
+| tst-SemiAnchoredRegExp.js:73:13:73:42 | '^good\\ ... \\\\.com' | Misleading operator precedence. The subexpression '^good\\\\.com' is anchored at the beginning, but the other parts of this regular expression are not |
+| tst-SemiAnchoredRegExp.js:82:2:82:27 | /(\\.xxx ... .zzz)$/ | Misleading operator precedence. The subexpression '(\\.zzz)$' is anchored at the end, but the other parts of this regular expression are not |
+| tst-SemiAnchoredRegExp.js:84:2:84:23 | /\\.xxx\| ... zzz$/ig | Misleading operator precedence. The subexpression '\\.zzz$' is anchored at the end, but the other parts of this regular expression are not |
+| tst-SemiAnchoredRegExp.js:85:2:85:19 | /\\.xxx\|\\.yyy\|zzz$/ | Misleading operator precedence. The subexpression 'zzz$' is anchored at the end, but the other parts of this regular expression are not |
+| tst-SemiAnchoredRegExp.js:87:2:87:28 | /^(xxx  ...  yyy)/i | Misleading operator precedence. The subexpression '^(xxx yyy zzz)' is anchored at the beginning, but the other parts of this regular expression are not |
+| tst-SemiAnchoredRegExp.js:88:2:88:53 | /^(xxx  ... x\|1st/i | Misleading operator precedence. The subexpression '^(xxx yyy zzz)' is anchored at the beginning, but the other parts of this regular expression are not |
+| tst-SemiAnchoredRegExp.js:89:2:89:24 | /^(xxx: ... (zzz:)/ | Misleading operator precedence. The subexpression '^(xxx:)' is anchored at the beginning, but the other parts of this regular expression are not |
+| tst-SemiAnchoredRegExp.js:90:2:90:23 | /^(xxx? ... zzz\\/)/ | Misleading operator precedence. The subexpression '^(xxx?:)' is anchored at the beginning, but the other parts of this regular expression are not |
+| tst-SemiAnchoredRegExp.js:91:2:91:16 | /^@media\|@page/ | Misleading operator precedence. The subexpression '^@media' is anchored at the beginning, but the other parts of this regular expression are not |
+| tst-SemiAnchoredRegExp.js:92:2:92:32 | /^\\s*(x ... :yyy\\// | Misleading operator precedence. The subexpression '^\\s*(xxx?\|yyy\|zzz):' is anchored at the beginning, but the other parts of this regular expression are not |
+| tst-SemiAnchoredRegExp.js:93:2:93:21 | /^click\|mouse\|touch/ | Misleading operator precedence. The subexpression '^click' is anchored at the beginning, but the other parts of this regular expression are not |
+| tst-SemiAnchoredRegExp.js:94:2:94:43 | /^http: ... r\\.com/ | Misleading operator precedence. The subexpression '^http:\\/\\/good\\.com' is anchored at the beginning, but the other parts of this regular expression are not |
+| tst-SemiAnchoredRegExp.js:95:2:95:47 | /^https ... r\\.com/ | Misleading operator precedence. The subexpression '^https?:\\/\\/good\\.com' is anchored at the beginning, but the other parts of this regular expression are not |
+| tst-SemiAnchoredRegExp.js:96:2:96:55 | /^mouse ... ragend/ | Misleading operator precedence. The subexpression '^mouse' is anchored at the beginning, but the other parts of this regular expression are not |
+| tst-SemiAnchoredRegExp.js:97:2:97:14 | /^xxx:\|yyy:/i | Misleading operator precedence. The subexpression '^xxx:' is anchored at the beginning, but the other parts of this regular expression are not |
+| tst-SemiAnchoredRegExp.js:98:2:98:18 | /_xxx\|_yyy\|_zzz$/ | Misleading operator precedence. The subexpression '_zzz$' is anchored at the end, but the other parts of this regular expression are not |
+| tst-UnanchoredUrlRegExp.js:3:47:3:65 | "https?://good.com" | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
+| tst-UnanchoredUrlRegExp.js:4:58:4:76 | "https?://good.com" | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
+| tst-UnanchoredUrlRegExp.js:5:47:5:66 | "^https?://good.com" | This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end. |
+| tst-UnanchoredUrlRegExp.js:6:47:6:68 | /^https ... od.com/ | This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end. |
+| tst-UnanchoredUrlRegExp.js:7:47:7:91 | "(^http ... 2.com)" | This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end. |
+| tst-UnanchoredUrlRegExp.js:8:47:8:90 | "(https ... e.com)" | This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end. |
+| tst-UnanchoredUrlRegExp.js:10:2:10:22 | /https? ... od.com/ | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
+| tst-UnanchoredUrlRegExp.js:11:13:11:31 | "https?://good.com" | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
+| tst-UnanchoredUrlRegExp.js:13:44:13:62 | "https?://good.com" | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
+| tst-UnanchoredUrlRegExp.js:15:13:15:31 | "https?://good.com" | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
+| tst-UnanchoredUrlRegExp.js:19:47:19:65 | "https?://good.com" | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
+| tst-UnanchoredUrlRegExp.js:20:47:20:70 | "https? ... m:8080" | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
+| tst-UnanchoredUrlRegExp.js:23:3:23:21 | "https?://good.com" | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
+| tst-UnanchoredUrlRegExp.js:24:3:24:23 | /https? ... od.com/ | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
+| tst-UnanchoredUrlRegExp.js:25:14:25:32 | "https?://good.com" | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
+| tst-UnanchoredUrlRegExp.js:26:3:26:22 | "^https?://good.com" | This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end. |
+| tst-UnanchoredUrlRegExp.js:35:2:35:32 | /https? ... 0-9]+)/ | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
+| tst-UnanchoredUrlRegExp.js:77:11:77:32 | /vimeo\\ ... 0-9]+)/ | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |

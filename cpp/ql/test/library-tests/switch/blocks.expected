@@ -1,0 +1,14 @@
+| switch.c:2:5:2:5 | f | switch.c:2:14:12:1 | { ... } | switch.c:3:5:10:5 | switch (...) ...  |
+| switch.c:2:5:2:5 | f | switch.c:2:14:12:1 | { ... } | switch.c:10:5:10:5 | label ...: |
+| switch.c:2:5:2:5 | f | switch.c:2:14:12:1 | { ... } | switch.c:11:5:11:13 | return ... |
+| switch.c:14:6:14:6 | g | switch.c:14:15:52:1 | { ... } | switch.c:15:2:15:7 | declaration |
+| switch.c:14:6:14:6 | g | switch.c:14:15:52:1 | { ... } | switch.c:17:5:26:5 | switch (...) ...  |
+| switch.c:14:6:14:6 | g | switch.c:14:15:52:1 | { ... } | switch.c:26:5:26:5 | label ...: |
+| switch.c:14:6:14:6 | g | switch.c:14:15:52:1 | { ... } | switch.c:28:5:29:5 | switch (...) ...  |
+| switch.c:14:6:14:6 | g | switch.c:14:15:52:1 | { ... } | switch.c:31:5:44:2 | switch (...) ...  |
+| switch.c:14:6:14:6 | g | switch.c:14:15:52:1 | { ... } | switch.c:44:2:44:2 | label ...: |
+| switch.c:14:6:14:6 | g | switch.c:14:15:52:1 | { ... } | switch.c:46:2:51:2 | switch (...) ...  |
+| switch.c:14:6:14:6 | g | switch.c:14:15:52:1 | { ... } | switch.c:52:1:52:1 | return ... |
+| switch.cpp:4:5:4:5 | f | switch.cpp:4:14:9:1 | { ... } | switch.cpp:5:5:8:5 | switch (...) ...  |
+| switch_gnu99.c:2:5:2:11 | f_gnu99 | switch_gnu99.c:2:20:14:1 | { ... } | switch_gnu99.c:3:5:3:5 | { ... } |
+| switch_gnu99.c:2:5:2:11 | f_gnu99 | switch_gnu99.c:2:20:14:1 | { ... } | switch_gnu99.c:13:5:13:13 | return ... |

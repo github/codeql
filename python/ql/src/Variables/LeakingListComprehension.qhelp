@@ -1,0 +1,41 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p> In Python 2 list comprehensions are evaluated in the enclosing scope, which means that the iteration variable of a list comprehension is visible
+outside of the list comprehension. In Python 3 the iteration variable is no longer visible in the enclosing scope.
+</p>
+
+<p>
+Code that uses the value of a list comprehension iteration variable after the list comprehension has finished will
+behave differently under Python 2 and Python 3.
+</p>
+
+</overview>
+<recommendation>
+<p>Explicitly set the variable in the outer scope to the value that it would have held when run under Python 2.
+Then rename the list comprehension variable for additional clarity.
+</p>
+
+</recommendation>
+<example>
+<p>In this example, <code>x</code> is initially assigned the value of 3.
+In Python 3, <code>x</code> will be unchanged as the list comprehension is evaluated in its own scope.
+In Python 2, evaluation of the list comprehension occurs in the scope of <code>two_or_three</code>, setting <code>x</code> to 2.</p>
+<sample src="LeakingListComprehension.py" />
+
+<p> The following example is the same code as above, but the list comprehension variable is renamed to ensure it does not overwrite <code>x</code>.</p>
+<sample src="LeakingListComprehensionFixed.py" /> 
+
+</example>
+<references>
+    
+    <li>Python Tutorial: <a href="https://docs.python.org/2/tutorial/datastructures.html#list-comprehensions">List Comprehensions</a>.</li>
+    <li>The History of Python: <a href="http://python-history.blogspot.co.uk/2010/06/from-list-comprehensions-to-generator.html">From List Comprehensions to Generator Expressions</a>.</li>
+    <li>Python Language Reference: <a href="https://docs.python.org/2/reference/expressions.html#list-displays">List displays</a>.</li>
+
+</references>
+</qhelp>

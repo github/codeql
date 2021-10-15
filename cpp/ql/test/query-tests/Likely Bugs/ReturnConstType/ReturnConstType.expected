@@ -1,0 +1,7 @@
+| test.cpp:5:11:5:16 | square | The 'const' modifier has no effect on a return type and can be removed. |
+| test.cpp:10:13:10:14 | id | The 'const' modifier has no effect on a return type and can be removed. |
+| test.cpp:18:12:18:24 | getAConstChar | The 'const' modifier has no effect on a return type and can be removed. |
+| test.cpp:19:19:19:37 | getASignedConstChar | The 'const' modifier has no effect on a return type and can be removed. |
+| test.cpp:20:21:20:42 | getAnUnsignedConstChar | The 'const' modifier has no effect on a return type and can be removed. |
+| test.cpp:46:8:46:17 | getAMYCHAR | The 'const' modifier has no effect on a return type and can be removed. |
+| test.cpp:49:1:49:14 | id_ | The 'const' modifier has no effect on a return type and can be removed. |

@@ -1,0 +1,3 @@
+| predefines.c:3:23:3:41 | __PRETTY_FUNCTION__ |
+| predefines.c:3:23:3:41 | array to pointer conversion |
+| predefines.c:3:23:3:41 | fun |

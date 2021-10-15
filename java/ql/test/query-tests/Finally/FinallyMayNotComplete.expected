@@ -1,0 +1,7 @@
+| Finally.java:6:4:6:10 | return ... | Leaving a finally-block with this statement can cause exceptions to silently disappear. |
+| Finally.java:17:5:17:13 | return ... | Leaving a finally-block with this statement can cause exceptions to silently disappear. |
+| Finally.java:30:5:30:40 | throw ... | Leaving a finally-block with this statement can cause exceptions to silently disappear. |
+| Finally.java:63:6:63:11 | break | Leaving a finally-block with this statement can cause exceptions to silently disappear. |
+| Finally.java:77:7:77:12 | break | Leaving a finally-block with this statement can cause exceptions to silently disappear. |
+| Finally.java:111:6:111:14 | continue | Leaving a finally-block with this statement can cause exceptions to silently disappear. |
+| Finally.java:125:7:125:15 | continue | Leaving a finally-block with this statement can cause exceptions to silently disappear. |

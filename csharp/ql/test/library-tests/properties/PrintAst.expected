@@ -1,0 +1,232 @@
+properties.cs:
+#    5| [NamespaceDeclaration] namespace ... { ... }
+#    7|   1: [Class] Button
+#   10|     5: [Field] caption
+#   10|       -1: [TypeMention] string
+#   12|     6: [Property] Caption
+#   12|       -1: [TypeMention] string
+#   15|       3: [Getter] get_Caption
+#   15|         4: [BlockStmt] {...}
+#   15|           0: [ReturnStmt] return ...;
+#   15|             0: [FieldAccess] access to field caption
+#   17|       4: [Setter] set_Caption
+#-----|         2: (Parameters)
+#   17|           0: [Parameter] value
+#   18|         4: [BlockStmt] {...}
+#   19|           0: [IfStmt] if (...) ...
+#   19|             0: [NEExpr] ... != ...
+#   19|               0: [FieldAccess] access to field caption
+#   19|               1: [ParameterAccess] access to parameter value
+#   20|             1: [BlockStmt] {...}
+#   21|               0: [ExprStmt] ...;
+#   21|                 0: [AssignExpr] ... = ...
+#   21|                   0: [FieldAccess] access to field caption
+#   21|                   1: [ParameterAccess] access to parameter value
+#   26|     7: [Method] Paint
+#   26|       -1: [TypeMention] Void
+#   27|       4: [BlockStmt] {...}
+#   28|         0: [LocalVariableDeclStmt] ... ...;
+#   28|           0: [LocalVariableDeclAndInitExpr] Button okButton = ...
+#   28|             -1: [TypeMention] Button
+#   28|             0: [LocalVariableAccess] access to local variable okButton
+#   28|             1: [ObjectCreation] object creation of type Button
+#   28|               0: [TypeMention] Button
+#   29|         1: [ExprStmt] ...;
+#   29|           0: [AssignExpr] ... = ...
+#   29|             0: [PropertyCall] access to property Caption
+#   29|               -1: [LocalVariableAccess] access to local variable okButton
+#   29|             1: [StringLiteral] "OK"
+#   30|         2: [LocalVariableDeclStmt] ... ...;
+#   30|           0: [LocalVariableDeclAndInitExpr] String s = ...
+#   30|             -1: [TypeMention] string
+#   30|             0: [LocalVariableAccess] access to local variable s
+#   30|             1: [PropertyCall] access to property Caption
+#   30|               -1: [LocalVariableAccess] access to local variable okButton
+#   34|   2: [Class] Counter
+#   37|     5: [Field] next
+#   37|       -1: [TypeMention] int
+#   39|     6: [Property] Next
+#   39|       -1: [TypeMention] int
+#   41|       3: [Getter] get_Next
+#   41|         4: [BlockStmt] {...}
+#   41|           0: [ReturnStmt] return ...;
+#   41|             0: [PostIncrExpr] ...++
+#   41|               0: [FieldAccess] access to field next
+#   46|   3: [Class] Point
+#   49|     5: [Property] X
+#   49|       -1: [TypeMention] int
+#   49|       3: [Getter] get_X
+#   49|       4: [Setter] set_X
+#-----|         2: (Parameters)
+#   49|           0: [Parameter] value
+#   50|     6: [Property] Y
+#   50|       -1: [TypeMention] int
+#   50|       3: [Getter] get_Y
+#   50|       4: [Setter] set_Y
+#-----|         2: (Parameters)
+#   50|           0: [Parameter] value
+#   54|   4: [Class] ReadOnlyPoint
+#   57|     4: [Property] X
+#   57|       -1: [TypeMention] int
+#   57|       3: [Getter] get_X
+#   57|       4: [Setter] set_X
+#-----|         2: (Parameters)
+#   57|           0: [Parameter] value
+#   58|     5: [Property] Y
+#   58|       -1: [TypeMention] int
+#   58|       3: [Getter] get_Y
+#   58|       4: [Setter] set_Y
+#-----|         2: (Parameters)
+#   58|           0: [Parameter] value
+#   59|     6: [InstanceConstructor] ReadOnlyPoint
+#-----|       2: (Parameters)
+#   59|         0: [Parameter] x
+#   59|           -1: [TypeMention] int
+#   59|         1: [Parameter] y
+#   59|           -1: [TypeMention] int
+#   60|       4: [BlockStmt] {...}
+#   61|         0: [ExprStmt] ...;
+#   61|           0: [AssignExpr] ... = ...
+#   61|             0: [PropertyCall] access to property X
+#   61|             1: [ParameterAccess] access to parameter x
+#   62|         1: [ExprStmt] ...;
+#   62|           0: [AssignExpr] ... = ...
+#   62|             0: [PropertyCall] access to property Y
+#   62|             1: [ParameterAccess] access to parameter y
+#   67|   5: [Class] A
+#   69|     5: [Field] y
+#   69|       -1: [TypeMention] int
+#   70|     6: [Property] X
+#   70|       -1: [TypeMention] int
+#   70|       3: [Getter] get_X
+#   70|         4: [BlockStmt] {...}
+#   70|           0: [ReturnStmt] return ...;
+#   70|             0: [IntLiteral] 0
+#   71|     7: [Property] Y
+#   71|       -1: [TypeMention] int
+#   73|       3: [Getter] get_Y
+#   73|         4: [BlockStmt] {...}
+#   73|           0: [ReturnStmt] return ...;
+#   73|             0: [FieldAccess] access to field y
+#   74|       4: [Setter] set_Y
+#-----|         2: (Parameters)
+#   74|           0: [Parameter] value
+#   74|         4: [BlockStmt] {...}
+#   74|           0: [ExprStmt] ...;
+#   74|             0: [AssignExpr] ... = ...
+#   74|               0: [FieldAccess] access to field y
+#   74|               1: [ParameterAccess] access to parameter value
+#   76|     8: [Property] Z
+#   76|       -1: [TypeMention] int
+#   76|       3: [Getter] get_Z
+#   76|       4: [Setter] set_Z
+#-----|         2: (Parameters)
+#   76|           0: [Parameter] value
+#   79|   6: [Class] B
+#-----|     3: (Base types)
+#   79|       0: [TypeMention] A
+#   81|     5: [Field] z
+#   81|       -1: [TypeMention] int
+#   82|     6: [Property] X
+#   82|       -1: [TypeMention] int
+#   82|       3: [Getter] get_X
+#   82|         4: [BlockStmt] {...}
+#   82|           0: [ReturnStmt] return ...;
+#   82|             0: [AddExpr] ... + ...
+#   82|               0: [PropertyCall] access to property X
+#   82|                 -1: [BaseAccess] base access
+#   82|               1: [IntLiteral] 1
+#   83|     7: [Property] Y
+#   83|       -1: [TypeMention] int
+#   83|       3: [Setter] set_Y
+#-----|         2: (Parameters)
+#   83|           0: [Parameter] value
+#   83|         4: [BlockStmt] {...}
+#   83|           0: [ExprStmt] ...;
+#   83|             0: [AssignExpr] ... = ...
+#   83|               0: [PropertyCall] access to property Y
+#   83|                 -1: [BaseAccess] base access
+#   83|               1: [ConditionalExpr] ... ? ... : ...
+#   83|                 0: [LTExpr] ... < ...
+#   83|                   0: [ParameterAccess] access to parameter value
+#   83|                   1: [IntLiteral] 0
+#   83|                 1: [IntLiteral] 0
+#   83|                 2: [ParameterAccess] access to parameter value
+#   84|     8: [Property] Z
+#   84|       -1: [TypeMention] int
+#   86|       3: [Getter] get_Z
+#   86|         4: [BlockStmt] {...}
+#   86|           0: [ReturnStmt] return ...;
+#   86|             0: [FieldAccess] access to field z
+#   87|       4: [Setter] set_Z
+#-----|         2: (Parameters)
+#   87|           0: [Parameter] value
+#   87|         4: [BlockStmt] {...}
+#   87|           0: [ExprStmt] ...;
+#   87|             0: [AssignExpr] ... = ...
+#   87|               0: [FieldAccess] access to field z
+#   87|               1: [ParameterAccess] access to parameter value
+#   91|   7: [Class] Test
+#   93|     5: [Property] Init
+#   93|       -1: [TypeMention] int
+#   93|       3: [Setter] set_Init
+#-----|         2: (Parameters)
+#   93|           0: [Parameter] value
+#   93|         4: [BlockStmt] {...}
+#   94|     6: [Method] Main
+#   94|       -1: [TypeMention] Void
+#   95|       4: [BlockStmt] {...}
+#   96|         0: [LocalVariableDeclStmt] ... ...;
+#   96|           0: [LocalVariableDeclAndInitExpr] List<Double> ds = ...
+#   96|             -1: [TypeMention] List<double>
+#   96|               1: [TypeMention] double
+#   96|             0: [LocalVariableAccess] access to local variable ds
+#   96|             1: [ObjectCreation] object creation of type List<Double>
+#   96|               0: [TypeMention] List<double>
+#   96|                 1: [TypeMention] double
+#   97|         1: [LocalVariableDeclStmt] ... ...;
+#   97|           0: [LocalVariableDeclAndInitExpr] List<Object> os = ...
+#   97|             -1: [TypeMention] List<object>
+#   97|               1: [TypeMention] object
+#   97|             0: [LocalVariableAccess] access to local variable os
+#   97|             1: [ObjectCreation] object creation of type List<Object>
+#   97|               0: [TypeMention] List<object>
+#   97|                 1: [TypeMention] object
+#   98|         2: [IfStmt] if (...) ...
+#   98|           0: [EQExpr] ... == ...
+#   98|             0: [PropertyCall] access to property Count
+#   98|               -1: [LocalVariableAccess] access to local variable ds
+#   98|             1: [PropertyCall] access to property Count
+#   98|               -1: [LocalVariableAccess] access to local variable os
+#   99|           1: [BlockStmt] {...}
+#  104|   8: [Interface] InterfaceWithProperties
+#  106|     4: [Property] Prop1
+#  106|       -1: [TypeMention] int
+#  106|       3: [Getter] get_Prop1
+#  107|     5: [Property] Prop2
+#  107|       -1: [TypeMention] int
+#  107|       3: [Setter] set_Prop2
+#-----|         2: (Parameters)
+#  107|           0: [Parameter] value
+#  110|   9: [Class] ImplementsProperties
+#-----|     3: (Base types)
+#  110|       1: [TypeMention] InterfaceWithProperties
+#  112|     5: [Property] Prop1
+#  112|       -1: [TypeMention] int
+#  114|       3: [Getter] get_Prop1
+#  114|         4: [BlockStmt] {...}
+#  114|           0: [ReturnStmt] return ...;
+#  114|             0: [IntLiteral] 0
+#  117|     6: [Property] Prop2
+#  117|       -1: [TypeMention] int
+#  119|       3: [Setter] set_Prop2
+#-----|         2: (Parameters)
+#  119|           0: [Parameter] value
+#  119|         4: [BlockStmt] {...}
+#  122|     7: [Property] Prop2
+#  122|       -1: [TypeMention] InterfaceWithProperties
+#  122|       -1: [TypeMention] int
+#  124|       3: [Setter] set_Prop2
+#-----|         2: (Parameters)
+#  124|           0: [Parameter] value
+#  124|         4: [BlockStmt] {...}

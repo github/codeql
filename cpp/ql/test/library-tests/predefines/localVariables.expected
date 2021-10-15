@@ -1,0 +1,2 @@
+| predefines.c:3:17:3:19 | str |
+| predefines.c:3:23:3:41 | __PRETTY_FUNCTION__ |

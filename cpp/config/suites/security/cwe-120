@@ -1,0 +1,13 @@
+# CWE-120: Buffer Copy without Checking Size of Input ('Classic Buffer Overflow')
++ semmlecode-cpp-queries/Security/CWE/CWE-120/UnboundedWrite.ql: /CWE/CWE-120
+  @name Unbounded write (CWE-120)
++ semmlecode-cpp-queries/Security/CWE/CWE-120/BadlyBoundedWrite.ql: /CWE/CWE-120
+  @name Badly bounded write (CWE-120)
++ semmlecode-cpp-queries/Security/CWE/CWE-120/OverrunWrite.ql: /CWE/CWE-120
+  @name Potentially overrunning write (CWE-120)
++ semmlecode-cpp-queries/Security/CWE/CWE-120/OverrunWriteFloat.ql: /CWE/CWE-120
+  @name Potentially overrunning write with float to string conversion (CWE-120)
++ semmlecode-cpp-queries/Best Practices/Likely Errors/OffsetUseBeforeRangeCheck.ql: /CWE/CWE-120
+  @name Array offset used before range check (CWE-120)
++ semmlecode-cpp-queries/Likely Bugs/Memory Management/UnsafeUseOfStrcat.ql: /CWE/CWE-120
+    @name Potentially unsafe use of strcat (CWE-120)

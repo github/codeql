@@ -1,0 +1,3 @@
+# CWE-367: Time-of-check Time-of-use (TOCTOU) Race Condition
++ semmlecode-cpp-queries/Security/CWE/CWE-367/TOCTOUFilesystemRace.ql: /CWE/CWE-367
+    @name Time-of-check time-of-use filesystem race condition (CWE-367)

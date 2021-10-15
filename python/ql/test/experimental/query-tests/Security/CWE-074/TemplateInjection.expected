@@ -1,0 +1,60 @@
+edges
+| AirspeedSsti.py:10:16:10:27 | dict of externally controlled string | AirspeedSsti.py:10:16:10:43 | externally controlled string |
+| AirspeedSsti.py:10:16:10:27 | dict of externally controlled string | AirspeedSsti.py:10:16:10:43 | externally controlled string |
+| AirspeedSsti.py:10:16:10:43 | externally controlled string | AirspeedSsti.py:11:30:11:37 | externally controlled string |
+| AirspeedSsti.py:10:16:10:43 | externally controlled string | AirspeedSsti.py:11:30:11:37 | externally controlled string |
+| ChevronSsti.py:10:16:10:27 | dict of externally controlled string | ChevronSsti.py:10:16:10:43 | externally controlled string |
+| ChevronSsti.py:10:16:10:27 | dict of externally controlled string | ChevronSsti.py:10:16:10:43 | externally controlled string |
+| ChevronSsti.py:10:16:10:43 | externally controlled string | ChevronSsti.py:11:27:11:34 | externally controlled string |
+| ChevronSsti.py:10:16:10:43 | externally controlled string | ChevronSsti.py:11:27:11:34 | externally controlled string |
+| DjangoTemplates.py:6:8:6:14 | django.request.HttpRequest | DjangoTemplates.py:8:16:8:22 | django.request.HttpRequest |
+| DjangoTemplates.py:6:8:6:14 | django.request.HttpRequest | DjangoTemplates.py:8:16:8:22 | django.request.HttpRequest |
+| DjangoTemplates.py:8:16:8:22 | django.request.HttpRequest | DjangoTemplates.py:8:16:8:26 | django.http.request.QueryDict |
+| DjangoTemplates.py:8:16:8:22 | django.request.HttpRequest | DjangoTemplates.py:8:16:8:26 | django.http.request.QueryDict |
+| DjangoTemplates.py:8:16:8:26 | django.http.request.QueryDict | DjangoTemplates.py:8:16:8:38 | externally controlled string |
+| DjangoTemplates.py:8:16:8:26 | django.http.request.QueryDict | DjangoTemplates.py:8:16:8:38 | externally controlled string |
+| DjangoTemplates.py:8:16:8:38 | externally controlled string | DjangoTemplates.py:9:18:9:25 | externally controlled string |
+| DjangoTemplates.py:8:16:8:38 | externally controlled string | DjangoTemplates.py:9:18:9:25 | externally controlled string |
+| FlaskTemplate.py:17:41:17:52 | dict of externally controlled string | FlaskTemplate.py:17:41:17:68 | externally controlled string |
+| FlaskTemplate.py:17:41:17:52 | dict of externally controlled string | FlaskTemplate.py:17:41:17:68 | externally controlled string |
+| JinjaSsti.py:7:7:7:13 | django.request.HttpRequest | JinjaSsti.py:9:16:9:22 | django.request.HttpRequest |
+| JinjaSsti.py:7:7:7:13 | django.request.HttpRequest | JinjaSsti.py:9:16:9:22 | django.request.HttpRequest |
+| JinjaSsti.py:9:16:9:22 | django.request.HttpRequest | JinjaSsti.py:9:16:9:26 | django.http.request.QueryDict |
+| JinjaSsti.py:9:16:9:22 | django.request.HttpRequest | JinjaSsti.py:9:16:9:26 | django.http.request.QueryDict |
+| JinjaSsti.py:9:16:9:26 | django.http.request.QueryDict | JinjaSsti.py:9:16:9:38 | externally controlled string |
+| JinjaSsti.py:9:16:9:26 | django.http.request.QueryDict | JinjaSsti.py:9:16:9:38 | externally controlled string |
+| JinjaSsti.py:9:16:9:38 | externally controlled string | JinjaSsti.py:10:25:10:32 | externally controlled string |
+| JinjaSsti.py:9:16:9:38 | externally controlled string | JinjaSsti.py:10:25:10:32 | externally controlled string |
+| JinjaSsti.py:16:7:16:13 | django.request.HttpRequest | JinjaSsti.py:19:16:19:22 | django.request.HttpRequest |
+| JinjaSsti.py:16:7:16:13 | django.request.HttpRequest | JinjaSsti.py:19:16:19:22 | django.request.HttpRequest |
+| JinjaSsti.py:19:16:19:22 | django.request.HttpRequest | JinjaSsti.py:19:16:19:26 | django.http.request.QueryDict |
+| JinjaSsti.py:19:16:19:22 | django.request.HttpRequest | JinjaSsti.py:19:16:19:26 | django.http.request.QueryDict |
+| JinjaSsti.py:19:16:19:26 | django.http.request.QueryDict | JinjaSsti.py:19:16:19:38 | externally controlled string |
+| JinjaSsti.py:19:16:19:26 | django.http.request.QueryDict | JinjaSsti.py:19:16:19:38 | externally controlled string |
+| JinjaSsti.py:19:16:19:38 | externally controlled string | JinjaSsti.py:20:28:20:35 | externally controlled string |
+| JinjaSsti.py:19:16:19:38 | externally controlled string | JinjaSsti.py:20:28:20:35 | externally controlled string |
+| MakoSsti.py:6:10:6:16 | django.request.HttpRequest | MakoSsti.py:8:16:8:22 | django.request.HttpRequest |
+| MakoSsti.py:6:10:6:16 | django.request.HttpRequest | MakoSsti.py:8:16:8:22 | django.request.HttpRequest |
+| MakoSsti.py:8:16:8:22 | django.request.HttpRequest | MakoSsti.py:8:16:8:26 | django.http.request.QueryDict |
+| MakoSsti.py:8:16:8:22 | django.request.HttpRequest | MakoSsti.py:8:16:8:26 | django.http.request.QueryDict |
+| MakoSsti.py:8:16:8:26 | django.http.request.QueryDict | MakoSsti.py:8:16:8:38 | externally controlled string |
+| MakoSsti.py:8:16:8:26 | django.http.request.QueryDict | MakoSsti.py:8:16:8:38 | externally controlled string |
+| MakoSsti.py:8:16:8:38 | externally controlled string | MakoSsti.py:9:27:9:34 | externally controlled string |
+| MakoSsti.py:8:16:8:38 | externally controlled string | MakoSsti.py:9:27:9:34 | externally controlled string |
+| TRender.py:5:13:5:19 | django.request.HttpRequest | TRender.py:6:16:6:22 | django.request.HttpRequest |
+| TRender.py:5:13:5:19 | django.request.HttpRequest | TRender.py:6:16:6:22 | django.request.HttpRequest |
+| TRender.py:6:16:6:22 | django.request.HttpRequest | TRender.py:6:16:6:26 | django.http.request.QueryDict |
+| TRender.py:6:16:6:22 | django.request.HttpRequest | TRender.py:6:16:6:26 | django.http.request.QueryDict |
+| TRender.py:6:16:6:26 | django.http.request.QueryDict | TRender.py:6:16:6:38 | externally controlled string |
+| TRender.py:6:16:6:26 | django.http.request.QueryDict | TRender.py:6:16:6:38 | externally controlled string |
+| TRender.py:6:16:6:38 | externally controlled string | TRender.py:7:24:7:31 | externally controlled string |
+| TRender.py:6:16:6:38 | externally controlled string | TRender.py:7:24:7:31 | externally controlled string |
+#select
+| AirspeedSsti.py:11:30:11:37 | template | AirspeedSsti.py:10:16:10:27 | dict of externally controlled string | AirspeedSsti.py:11:30:11:37 | externally controlled string | This Template depends on $@. | AirspeedSsti.py:10:16:10:27 | Attribute | a user-provided value |
+| ChevronSsti.py:11:27:11:34 | template | ChevronSsti.py:10:16:10:27 | dict of externally controlled string | ChevronSsti.py:11:27:11:34 | externally controlled string | This Template depends on $@. | ChevronSsti.py:10:16:10:27 | Attribute | a user-provided value |
+| DjangoTemplates.py:9:18:9:25 | template | DjangoTemplates.py:6:8:6:14 | django.request.HttpRequest | DjangoTemplates.py:9:18:9:25 | externally controlled string | This Template depends on $@. | DjangoTemplates.py:6:8:6:14 | request | a user-provided value |
+| FlaskTemplate.py:17:41:17:68 | Attribute() | FlaskTemplate.py:17:41:17:52 | dict of externally controlled string | FlaskTemplate.py:17:41:17:68 | externally controlled string | This Template depends on $@. | FlaskTemplate.py:17:41:17:52 | Attribute | a user-provided value |
+| JinjaSsti.py:10:25:10:32 | template | JinjaSsti.py:7:7:7:13 | django.request.HttpRequest | JinjaSsti.py:10:25:10:32 | externally controlled string | This Template depends on $@. | JinjaSsti.py:7:7:7:13 | request | a user-provided value |
+| JinjaSsti.py:20:28:20:35 | template | JinjaSsti.py:16:7:16:13 | django.request.HttpRequest | JinjaSsti.py:20:28:20:35 | externally controlled string | This Template depends on $@. | JinjaSsti.py:16:7:16:13 | request | a user-provided value |
+| MakoSsti.py:9:27:9:34 | template | MakoSsti.py:6:10:6:16 | django.request.HttpRequest | MakoSsti.py:9:27:9:34 | externally controlled string | This Template depends on $@. | MakoSsti.py:6:10:6:16 | request | a user-provided value |
+| TRender.py:7:24:7:31 | template | TRender.py:5:13:5:19 | django.request.HttpRequest | TRender.py:7:24:7:31 | externally controlled string | This Template depends on $@. | TRender.py:5:13:5:19 | request | a user-provided value |

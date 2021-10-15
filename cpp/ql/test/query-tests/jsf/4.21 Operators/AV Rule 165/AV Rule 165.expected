@@ -1,0 +1,9 @@
+| test.c:6:6:6:8 | - ... | The unary minus operator should not be applied to an unsigned expression. |
+| test.c:9:7:9:9 | - ... | The unary minus operator should not be applied to an unsigned expression. |
+| test.c:12:7:12:9 | - ... | The unary minus operator should not be applied to an unsigned expression. |
+| test.c:16:6:16:21 | - ... | The unary minus operator should not be applied to an unsigned expression. |
+| test.c:19:7:19:23 | - ... | The unary minus operator should not be applied to an unsigned expression. |
+| test.c:22:8:22:11 | - ... | The unary minus operator should not be applied to an unsigned expression. |
+| test.c:23:8:23:11 | - ... | The unary minus operator should not be applied to an unsigned expression. |
+| test.c:24:6:24:7 | - ... | The unary minus operator should not be applied to an unsigned expression. |
+| test.c:25:7:25:9 | - ... | The unary minus operator should not be applied to an unsigned expression. |

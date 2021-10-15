@@ -1,0 +1,16 @@
+| tests.cpp:129:12:129:12 | call to operator>> | Use of 'cin' without specifying the length of the input may be dangerous. |
+| tests.cpp:130:12:130:12 | call to operator>> | Use of 'cin' without specifying the length of the input may be dangerous. |
+| tests.cpp:131:12:131:12 | call to operator>> | Use of 'cin' without specifying the length of the input may be dangerous. |
+| tests.cpp:132:12:132:12 | call to operator>> | Use of 'cin' without specifying the length of the input may be dangerous. |
+| tests.cpp:157:17:157:17 | call to operator>> | Use of 'cin' without specifying the length of the input may be dangerous. |
+| tests.cpp:166:13:166:13 | call to operator>> | Use of 'cin' without specifying the length of the input may be dangerous. |
+| tests.cpp:177:15:177:15 | call to operator>> | Use of 'cin' without specifying the length of the input may be dangerous. |
+| tests.cpp:179:16:179:16 | call to operator>> | Use of 'cin' without specifying the length of the input may be dangerous. |
+| tests.cpp:190:12:190:12 | call to operator>> | Use of 'cin' without specifying the length of the input may be dangerous. |
+| tests.cpp:193:20:193:20 | call to operator>> | Use of 'cin' without specifying the length of the input may be dangerous. |
+| tests.cpp:203:12:203:12 | call to operator>> | Use of 'cin' without specifying the length of the input may be dangerous. |
+| tests.cpp:209:12:209:12 | call to operator>> | Use of 'cin' without specifying the length of the input may be dangerous. |
+| tests.cpp:213:37:213:37 | call to operator>> | Use of 'cin' without specifying the length of the input may be dangerous. |
+| tests.cpp:214:29:214:29 | call to operator>> | Use of 'cin' without specifying the length of the input may be dangerous. |
+| tests.cpp:225:19:225:19 | call to operator>> | Use of 'cin' without specifying the length of the input may be dangerous. |
+| tests.cpp:237:36:237:36 | call to operator>> | Use of 'cin' without specifying the length of the input may be dangerous. |
