@@ -30,7 +30,7 @@ The control flow graph (CFG) is imported using
 
    import codeql.ruby.CFG
 
-The CFG reasons about the control flow between statements and expressions, for example whether one expression can
+The CFG models the control flow between statements and expressions, for example whether one expression can
 flow to another expression, or whether an expression "dominates" another one, meaning that all paths to an
 expression must flow through another expression first.
 
