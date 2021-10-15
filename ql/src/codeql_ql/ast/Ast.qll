@@ -4,6 +4,7 @@ private import codeql_ql.ast.internal.Module
 private import codeql_ql.ast.internal.Predicate
 import codeql_ql.ast.internal.Type
 private import codeql_ql.ast.internal.Variable
+private import codeql_ql.ast.internal.Builtins
 
 bindingset[name]
 private string directMember(string name) { result = name + "()" }
@@ -16,18 +17,9 @@ private string stringIndexedMember(string name, string index) {
   result = name + "(_)" and exists(index)
 }
 
-/**
- * Holds if `node` has an annotation with `name`.
- */
-private predicate hasAnnotation(AstNode node, string name) {
-  exists(Generated::Annotation annotation | annotation.getName().getValue() = name |
-    toGenerated(node).getParent() = annotation.getParent()
-  )
-}
-
 /** An AST node of a QL program */
 class AstNode extends TAstNode {
-  string toString() { result = getAPrimaryQlClass() }
+  string toString() { result = this.getAPrimaryQlClass() }
 
   /**
    * Gets the location of the AST node.
@@ -37,6 +29,20 @@ class AstNode extends TAstNode {
     exists(Generated::AstNode node | not node instanceof Generated::ParExpr |
       node = toGenerated(this) and
       result = node.getLocation()
+    )
+  }
+
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    if exists(this.getLocation())
+    then this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    else (
+      filepath = "" and
+      startline = 0 and
+      startcolumn = 0 and
+      endline = 0 and
+      endcolumn = 0
     )
   }
 
@@ -60,6 +66,12 @@ class AstNode extends TAstNode {
   /** Gets the QLDoc comment for this AST node, if any. */
   QLDoc getQLDoc() { none() }
 
+  /** Holds if `node` has an annotation with `name`. */
+  predicate hasAnnotation(string name) { this.getAnAnnotation().getName() = name }
+
+  /** Gets an annotation of this AST node. */
+  Annotation getAnAnnotation() { toGenerated(this).getParent() = toGenerated(result).getParent() }
+
   /**
    * Gets the predicate that contains this AST node.
    */
@@ -80,7 +92,7 @@ class TopLevel extends TTopLevel, AstNode {
    * Gets a member from contained in this top-level module.
    * Includes private members.
    */
-  ModuleMember getAMember() { result = getMember(_) }
+  ModuleMember getAMember() { result = this.getMember(_) }
 
   /** Gets the `i`'th member of this top-level module. */
   ModuleMember getMember(int i) {
@@ -180,11 +192,62 @@ class Select extends TSelect, AstNode {
   override string getAPrimaryQlClass() { result = "Select" }
 }
 
+class PredicateOrBuiltin extends TPredOrBuiltin, AstNode {
+  string getName() { none() }
+
+  Type getDeclaringType() { none() }
+
+  Type getParameterType(int i) { none() }
+
+  Type getReturnType() { none() }
+
+  int getArity() { result = count(int i | exists(this.getParameterType(i))) }
+
+  predicate isPrivate() { none() }
+}
+
+class BuiltinPredicate extends PredicateOrBuiltin, TBuiltin {
+  override string toString() { result = this.getName() }
+
+  override string getAPrimaryQlClass() { result = "BuiltinPredicate" }
+}
+
+private class BuiltinClassless extends BuiltinPredicate, TBuiltinClassless {
+  string name;
+  string ret;
+  string args;
+
+  BuiltinClassless() { this = TBuiltinClassless(ret, name, args) }
+
+  override string getName() { result = name }
+
+  override PrimitiveType getReturnType() { result.getName() = ret }
+
+  override PrimitiveType getParameterType(int i) { result.getName() = getArgType(args, i) }
+}
+
+private class BuiltinMember extends BuiltinPredicate, TBuiltinMember {
+  string name;
+  string qual;
+  string ret;
+  string args;
+
+  BuiltinMember() { this = TBuiltinMember(qual, ret, name, args) }
+
+  override string getName() { result = name }
+
+  override PrimitiveType getReturnType() { result.getName() = ret }
+
+  override PrimitiveType getParameterType(int i) { result.getName() = getArgType(args, i) }
+
+  override PrimitiveType getDeclaringType() { result.getName() = qual }
+}
+
 /**
  * A QL predicate.
  * Either a classless predicate, a class predicate, or a characteristic predicate.
  */
-class Predicate extends TPredicate, AstNode, Declaration {
+class Predicate extends TPredicate, AstNode, PredicateOrBuiltin, Declaration {
   /**
    * Gets the body of the predicate.
    */
@@ -203,9 +266,9 @@ class Predicate extends TPredicate, AstNode, Declaration {
   /**
    * Gets the number of parameters.
    */
-  int getArity() {
+  override int getArity() {
     not this.(ClasslessPredicate).getAlias() instanceof PredicateExpr and
-    result = count(getParameter(_))
+    result = count(this.getParameter(_))
     or
     exists(PredicateExpr alias | alias = this.(ClasslessPredicate).getAlias() |
       result = alias.getArity()
@@ -213,11 +276,18 @@ class Predicate extends TPredicate, AstNode, Declaration {
   }
 
   /**
+   * Holds if this predicate is private.
+   */
+  override predicate isPrivate() { this.hasAnnotation("private") }
+
+  /**
    * Gets the return type (if any) of the predicate.
    */
   TypeExpr getReturnTypeExpr() { none() }
 
-  Type getReturnType() { result = this.getReturnTypeExpr().getResolvedType() }
+  override Type getReturnType() { result = this.getReturnTypeExpr().getResolvedType() }
+
+  override Type getParameterType(int i) { result = this.getParameter(i).getType() }
 
   override AstNode getAChild(string pred) {
     result = super.getAChild(pred)
@@ -255,18 +325,18 @@ class Relation extends TDBRelation, AstNode, Declaration {
   }
 
   /** Gets the `i`th parameter name */
-  string getParameterName(int i) { result = getColumn(i).getColName().getValue() }
+  string getParameterName(int i) { result = this.getColumn(i).getColName().getValue() }
 
   /** Gets the `i`th parameter type */
   string getParameterType(int i) {
     // TODO: This is just using the name of the type, not the actual type. Checkout Type.qll
-    result = getColumn(i).getColType().getChild().(Generated::Token).getValue()
+    result = this.getColumn(i).getColType().getChild().(Generated::Token).getValue()
   }
 
   /**
    * Gets the number of parameters.
    */
-  int getArity() { result = count(getColumn(_)) }
+  int getArity() { result = count(this.getColumn(_)) }
 
   override string getAPrimaryQlClass() { result = "Relation" }
 }
@@ -379,6 +449,8 @@ class ClasslessPredicate extends TClasslessPredicate, Predicate, ModuleDeclarati
     or
     pred_name = directMember("getReturnTypeExpr") and result = this.getReturnTypeExpr()
   }
+
+  override predicate isPrivate() { Predicate.super.isPrivate() }
 }
 
 /**
@@ -398,14 +470,9 @@ class ClassPredicate extends TClassPredicate, Predicate {
   override Class getParent() { result.getAClassPredicate() = this }
 
   /**
-   * Holds if this predicate is private.
-   */
-  predicate isPrivate() { hasAnnotation(this, "private") }
-
-  /**
    * Holds if this predicate is annotated as overriding another predicate.
    */
-  predicate isOverride() { hasAnnotation(this, "override") }
+  predicate isOverride() { this.hasAnnotation("override") }
 
   override VarDecl getParameter(int i) {
     toGenerated(result) =
@@ -419,7 +486,7 @@ class ClassPredicate extends TClassPredicate, Predicate {
   /**
    * Gets the type representing this class.
    */
-  ClassType getDeclaringType() { result.getDeclaration() = getParent() }
+  override ClassType getDeclaringType() { result.getDeclaration() = this.getParent() }
 
   predicate overrides(ClassPredicate other) { predOverrides(this, other) }
 
@@ -448,7 +515,7 @@ class CharPred extends TCharPred, Predicate {
 
   override Formula getBody() { toGenerated(result) = pred.getBody() }
 
-  override string getName() { result = getParent().(Class).getName() }
+  override string getName() { result = this.getParent().(Class).getName() }
 
   override AstNode getAChild(string pred_name) {
     result = super.getAChild(pred_name)
@@ -456,7 +523,7 @@ class CharPred extends TCharPred, Predicate {
     pred_name = directMember("getBody") and result = this.getBody()
   }
 
-  ClassType getDeclaringType() { result.getDeclaration() = getParent() }
+  override ClassType getDeclaringType() { result.getDeclaration() = this.getParent() }
 }
 
 /**
@@ -618,7 +685,7 @@ class Module extends TModule, ModuleDeclaration {
  */
 class ModuleMember extends TModuleMember, AstNode {
   /** Holds if this member is declared as `private`. */
-  predicate isPrivate() { hasAnnotation(this, "private") }
+  predicate isPrivate() { this.hasAnnotation("private") }
 }
 
 /** A declaration. E.g. a class, type, predicate, newtype... */
@@ -689,7 +756,7 @@ class Class extends TClass, TypeDeclaration, ModuleDeclaration {
    * Gets predicate `name` implemented in this class.
    */
   ClassPredicate getClassPredicate(string name) {
-    result = getAClassPredicate() and
+    result = this.getAClassPredicate() and
     result.getName() = name
   }
 
@@ -767,7 +834,7 @@ class NewType extends TNewType, TypeDeclaration, ModuleDeclaration {
  * A branch in a `newtype`.
  * E.g. `Bar()` or `Baz()` in `newtype Foo = Bar() or Baz()`.
  */
-class NewTypeBranch extends TNewTypeBranch, TypeDeclaration {
+class NewTypeBranch extends TNewTypeBranch, PredicateOrBuiltin, TypeDeclaration {
   Generated::DatatypeBranch branch;
 
   NewTypeBranch() { this = TNewTypeBranch(branch) }
@@ -788,6 +855,16 @@ class NewTypeBranch extends TNewTypeBranch, TypeDeclaration {
 
   /** Gets the body of this branch. */
   Formula getBody() { toGenerated(result) = branch.getChild(_).(Generated::Body).getChild() }
+
+  override NewTypeBranchType getReturnType() { result.getDeclaration() = this }
+
+  override Type getParameterType(int i) { result = this.getField(i).getType() }
+
+  override int getArity() { result = count(this.getField(_)) }
+
+  override Type getDeclaringType() { none() }
+
+  override predicate isPrivate() { this.getNewType().isPrivate() }
 
   override QLDoc getQLDoc() { toGenerated(result) = branch.getChild(_) }
 
@@ -815,6 +892,9 @@ class Call extends TCall, Expr, Formula {
   Expr getArgument(int i) {
     none() // overriden in sublcasses.
   }
+
+  /** Gets an argument of this call, if any. */
+  final Expr getAnArgument() { result = this.getArgument(_) }
 
   PredicateOrBuiltin getTarget() { resolveCall(this, result) }
 
@@ -1191,7 +1271,7 @@ class ComparisonFormula extends TComparisonFormula, Formula {
   Expr getRightOperand() { toGenerated(result) = comp.getRight() }
 
   /** Gets an operand of this comparison. */
-  Expr getAnOperand() { result in [getLeftOperand(), getRightOperand()] }
+  Expr getAnOperand() { result in [this.getLeftOperand(), this.getRightOperand()] }
 
   /** Gets the operator of this comparison. */
   ComparisonOp getOperator() { toGenerated(result) = comp.getChild() }
@@ -1249,7 +1329,7 @@ class Quantifier extends TQuantifier, Formula {
    * Holds if this is the "expression only" form of an exists quantifier.
    * In other words, the quantifier is of the form `exists( expr )`.
    */
-  predicate hasExpr() { exists(getExpr()) }
+  predicate hasExpr() { exists(this.getExpr()) }
 
   override string getAPrimaryQlClass() { result = "Quantifier" }
 
@@ -1421,7 +1501,7 @@ class HigherOrderFormula extends THigherOrderFormula, Formula {
    * Gets the `i`th argument to this higher-order formula.
    * E.g. for `fastTC(pathSucc/2)(n1, n2)` the result is `n1` and `n2`.
    */
-  Expr getArgument(int i) { toGenerated(result) = hop.getChild(i + getNumInputs()) }
+  Expr getArgument(int i) { toGenerated(result) = hop.getChild(i + this.getNumInputs()) }
 
   /**
    * Gets the name of this higher-order predicate.
@@ -1510,7 +1590,7 @@ class ExprAggregate extends TExprAggregate, Aggregate {
     )
     or
     not kind = ["count", "strictcount"] and
-    result = getExpr(0).getType()
+    result = this.getExpr(0).getType()
   }
 }
 
@@ -1574,11 +1654,11 @@ class FullAggregate extends TFullAggregate, Aggregate {
     )
     or
     kind = ["any", "min", "max", "unique"] and
-    not exists(getExpr(_)) and
-    result = getArgument(0).getTypeExpr().getResolvedType()
+    not exists(this.getExpr(_)) and
+    result = this.getArgument(0).getTypeExpr().getResolvedType()
     or
     not kind = ["count", "strictcount"] and
-    result = getExpr(0).getType()
+    result = this.getExpr(0).getType()
   }
 
   override AstNode getAChild(string pred) {
@@ -1791,7 +1871,19 @@ class FunctionSymbol extends string {
 /**
  * A binary operation expression, such as `x + 3` or `y / 2`.
  */
-class BinOpExpr extends TBinOpExpr, Expr { }
+class BinOpExpr extends TBinOpExpr, Expr {
+  /** Gets the left operand of the binary expression. */
+  Expr getLeftOperand() { none() } // overriden in subclasses
+
+  /* Gets the right operand of the binary expression. */
+  Expr getRightOperand() { none() } // overriden in subclasses
+
+  /** Gets the operator of the binary expression. */
+  FunctionSymbol getOperator() { none() } // overriden in subclasses
+
+  /* Gets an operand of the binary expression. */
+  final Expr getAnOperand() { result = this.getLeftOperand() or result = this.getRightOperand() }
+}
 
 /**
  * An addition or subtraction expression.
@@ -1802,17 +1894,11 @@ class AddSubExpr extends TAddSubExpr, BinOpExpr {
 
   AddSubExpr() { this = TAddSubExpr(expr) and operator = expr.getChild().getValue() }
 
-  /** Gets the left operand of the binary expression. */
-  Expr getLeftOperand() { toGenerated(result) = expr.getLeft() }
+  override Expr getLeftOperand() { toGenerated(result) = expr.getLeft() }
 
-  /* Gets the right operand of the binary expression. */
-  Expr getRightOperand() { toGenerated(result) = expr.getRight() }
+  override Expr getRightOperand() { toGenerated(result) = expr.getRight() }
 
-  /* Gets an operand of the binary expression. */
-  Expr getAnOperand() { result = getLeftOperand() or result = getRightOperand() }
-
-  /** Gets the operator of the binary expression. */
-  FunctionSymbol getOperator() { result = operator }
+  override FunctionSymbol getOperator() { result = operator }
 
   override PrimitiveType getType() {
     // Both operands are the same type
@@ -1872,16 +1958,12 @@ class MulDivModExpr extends TMulDivModExpr, BinOpExpr {
   MulDivModExpr() { this = TMulDivModExpr(expr) and operator = expr.getChild().getValue() }
 
   /** Gets the left operand of the binary expression. */
-  Expr getLeftOperand() { toGenerated(result) = expr.getLeft() }
+  override Expr getLeftOperand() { toGenerated(result) = expr.getLeft() }
 
   /** Gets the right operand of the binary expression. */
-  Expr getRightOperand() { toGenerated(result) = expr.getRight() }
+  override Expr getRightOperand() { toGenerated(result) = expr.getRight() }
 
-  /** Gets an operand of the binary expression. */
-  Expr getAnOperand() { result = getLeftOperand() or result = getRightOperand() }
-
-  /** Gets the operator of the binary expression. */
-  FunctionSymbol getOperator() { result = operator }
+  override FunctionSymbol getOperator() { result = operator }
 
   override PrimitiveType getType() {
     // Both operands are of the same type
@@ -1954,6 +2036,11 @@ class Range extends TRange, Expr {
    */
   Expr getHighEndpoint() { toGenerated(result) = range.getUpper() }
 
+  /**
+   * Gets the lower and upper bounds of the range.
+   */
+  Expr getAnEndpoint() { result = [this.getLowEndpoint(), this.getHighEndpoint()] }
+
   override PrimitiveType getType() { result.getName() = "int" }
 
   override string getAPrimaryQlClass() { result = "Range" }
@@ -1980,6 +2067,16 @@ class Set extends TSet, Expr {
    */
   Expr getElement(int i) { toGenerated(result) = set.getChild(i) }
 
+  /**
+   * Gets an element in this set literal expression, if any.
+   */
+  Expr getAnElement() { result = this.getElement(_) }
+
+  /**
+   * Gets the number of elements in this set literal expression.
+   */
+  int getNumberOfElements() { result = count(this.getAnElement()) }
+
   override Type getType() { result = this.getElement(0).getType() }
 
   override string getAPrimaryQlClass() { result = "Set" }
@@ -1987,7 +2084,7 @@ class Set extends TSet, Expr {
   override AstNode getAChild(string pred) {
     result = super.getAChild(pred)
     or
-    exists(int i | pred = indexedMember("getElement", i) and result = getElement(i))
+    exists(int i | pred = indexedMember("getElement", i) and result = this.getElement(i))
   }
 }
 
@@ -2070,6 +2167,112 @@ class ModuleExpr extends TModuleExpr, ModuleRef {
   }
 }
 
+/** An argument to an annotation. */
+private class AnnotationArg extends TAnnotationArg, AstNode {
+  Generated::AnnotArg arg;
+
+  AnnotationArg() { this = TAnnotationArg(arg) }
+
+  /** Gets the name of this argument. */
+  string getValue() {
+    result =
+      [
+        arg.getChild().(Generated::SimpleId).getValue(),
+        arg.getChild().(Generated::Result).getValue(), arg.getChild().(Generated::This).getValue()
+      ]
+  }
+
+  override string toString() { result = this.getValue() }
+}
+
+private class NoInlineArg extends AnnotationArg {
+  NoInlineArg() { this.getValue() = "noinline" }
+}
+
+private class NoMagicArg extends AnnotationArg {
+  NoMagicArg() { this.getValue() = "nomagic" }
+}
+
+private class InlineArg extends AnnotationArg {
+  InlineArg() { this.getValue() = "inline" }
+}
+
+private class NoOptArg extends AnnotationArg {
+  NoOptArg() { this.getValue() = "noopt" }
+}
+
+private class MonotonicAggregatesArg extends AnnotationArg {
+  MonotonicAggregatesArg() { this.getValue() = "monotonicAggregates" }
+}
+
+/** An annotation on an element. */
+class Annotation extends TAnnotation, AstNode {
+  Generated::Annotation annot;
+
+  Annotation() { this = TAnnotation(annot) }
+
+  override string toString() { result = "annotation" }
+
+  override string getAPrimaryQlClass() { result = "Annotation" }
+
+  override Location getLocation() { result = annot.getLocation() }
+
+  /** Gets the node corresponding to the field `args`. */
+  AnnotationArg getArgs(int i) { toGenerated(result) = annot.getArgs(i) }
+
+  /** Gets the node corresponding to the field `name`. */
+  string getName() { result = annot.getName().getValue() }
+}
+
+/** A `pragma[noinline]` annotation. */
+class NoInline extends Annotation {
+  NoInline() { this.getArgs(0) instanceof NoInlineArg }
+
+  override string toString() { result = "noinline" }
+}
+
+/** A `pragma[inline]` annotation. */
+class Inline extends Annotation {
+  Inline() { this.getArgs(0) instanceof InlineArg }
+
+  override string toString() { result = "inline" }
+}
+
+/** A `pragma[nomagic]` annotation. */
+class NoMagic extends Annotation {
+  NoMagic() { this.getArgs(0) instanceof NoMagicArg }
+
+  override string toString() { result = "nomagic" }
+}
+
+/** A `pragma[noopt]` annotation. */
+class NoOpt extends Annotation {
+  NoOpt() { this.getArgs(0) instanceof NoOptArg }
+
+  override string toString() { result = "noopt" }
+}
+
+/** A `language[monotonicAggregates]` annotation. */
+class MonotonicAggregates extends Annotation {
+  MonotonicAggregates() { this.getArgs(0) instanceof MonotonicAggregatesArg }
+
+  override string toString() { result = "monotonicaggregates" }
+}
+
+/** A `bindingset` annotation. */
+class BindingSet extends Annotation {
+  BindingSet() { this.getName() = "bindingset" }
+
+  /** Gets the `index`'th bound name in this bindingset. */
+  string getBoundName(int index) { result = this.getArgs(index).getValue() }
+
+  /** Gets a name bound by this bindingset, if any. */
+  string getABoundName() { result = this.getBoundName(_) }
+
+  /** Gets the number of names bound by this bindingset. */
+  int getNumberOfBoundNames() { result = count(this.getABoundName()) }
+}
+
 /**
  * Classes modelling YAML AST nodes.
  */
@@ -2077,7 +2280,7 @@ module YAML {
   /** A node in a YAML file */
   class YAMLNode extends TYAMLNode, AstNode {
     /** Holds if the predicate is a root node (has no parent) */
-    predicate isRoot() { not exists(getParent()) }
+    predicate isRoot() { not exists(this.getParent()) }
   }
 
   /** A YAML comment. */
@@ -2146,7 +2349,7 @@ module YAML {
      * Dashes are replaced with `/` (because we don't have that information in the generated AST).
      */
     string getQualifiedName() {
-      result = concat(string part, int i | part = getNamePart(i) | part, "/" order by i)
+      result = concat(string part, int i | part = this.getNamePart(i) | part, "/" order by i)
     }
   }
 
@@ -2179,8 +2382,6 @@ module YAML {
   // to not expose the entire `File` API on `QlPack`.
   private newtype TQLPack = MKQlPack(File file) { file.getBaseName() = "qlpack.yml" }
 
-  YAMLEntry test() { not result.isRoot() }
-
   /**
    * A `qlpack.yml` file.
    */
@@ -2199,15 +2400,15 @@ module YAML {
     }
 
     /** Gets the name of this qlpack */
-    string getName() { result = getProperty("name") }
+    string getName() { result = this.getProperty("name") }
 
     /** Gets the version of this qlpack */
-    string getVersion() { result = getProperty("version") }
+    string getVersion() { result = this.getProperty("version") }
 
     /** Gets the extractor of this qlpack */
-    string getExtractor() { result = getProperty("extractor") }
+    string getExtractor() { result = this.getProperty("extractor") }
 
-    string toString() { result = getName() }
+    string toString() { result = this.getName() }
 
     /** Gets the file that this `QLPack` represents. */
     File getFile() { result = file }
@@ -2222,7 +2423,7 @@ module YAML {
         entry.getLocation().getStartColumn() > deps.getLocation().getStartColumn()
       )
       or
-      exists(YAMLEntry prev | isADependency(prev) |
+      exists(YAMLEntry prev | this.isADependency(prev) |
         prev.getLocation().getFile() = file and
         entry.getLocation().getFile() = file and
         entry.getLocation().getStartLine() = 1 + prev.getLocation().getStartLine() and
@@ -2231,7 +2432,7 @@ module YAML {
     }
 
     predicate hasDependency(string name, string version) {
-      exists(YAMLEntry entry | isADependency(entry) |
+      exists(YAMLEntry entry | this.isADependency(entry) |
         entry.getKey().getQualifiedName() = name and
         entry.getValue().getValue() = version
       )
@@ -2239,7 +2440,7 @@ module YAML {
 
     /** Gets the database scheme of this qlpack */
     File getDBScheme() {
-      result.getBaseName() = getProperty("dbscheme") and
+      result.getBaseName() = this.getProperty("dbscheme") and
       result = file.getParentContainer().getFile(any(string s | s.matches("%.dbscheme")))
     }
 
@@ -2247,14 +2448,16 @@ module YAML {
     Container getAFileInPack() {
       result.getParentContainer() = file.getParentContainer()
       or
-      result = getAFileInPack().(Folder).getAChildContainer()
+      result = this.getAFileInPack().(Folder).getAChildContainer()
     }
 
     /**
      * Gets a QLPack that this QLPack depends on.
      */
     QLPack getADependency() {
-      exists(string name | hasDependency(name, _) | result.getName().replaceAll("-", "/") = name)
+      exists(string name | this.hasDependency(name, _) |
+        result.getName().replaceAll("-", "/") = name
+      )
     }
 
     Location getLocation() {

@@ -27,7 +27,7 @@ private predicate isActualClass(Class c) {
  * A type, such as `int` or `Node`.
  */
 class Type extends TType {
-  string toString() { result = getName() }
+  string toString() { result = this.getName() }
 
   string getName() { result = "???" }
 
@@ -48,9 +48,9 @@ class Type extends TType {
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    if exists(getDeclaration())
+    if exists(this.getDeclaration())
     then
-      getDeclaration()
+      this.getDeclaration()
           .getLocation()
           .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     else (
@@ -72,14 +72,14 @@ class Type extends TType {
   private predicate getClassPredicate1(
     string name, int arity, PredicateOrBuiltin p1, PredicateOrBuiltin p2
   ) {
-    getClassPredicate0(name, arity, p1, p2.getDeclaringType()) and
+    this.getClassPredicate0(name, arity, p1, p2.getDeclaringType()) and
     p2 = classPredCandidate(this, name, arity)
   }
 
   cached
   PredicateOrBuiltin getClassPredicate(string name, int arity) {
     result = classPredCandidate(this, name, arity) and
-    not getClassPredicate1(name, arity, _, result)
+    not this.getClassPredicate1(name, arity, _, result)
   }
 }
 
@@ -114,6 +114,7 @@ private PredicateOrBuiltin declaredPred(Type ty, string name, int arity) {
   result.getArity() = arity
 }
 
+pragma[nomagic]
 private PredicateOrBuiltin classPredCandidate(Type ty, string name, int arity) {
   result = declaredPred(ty, name, arity)
   or
@@ -127,8 +128,7 @@ private PredicateOrBuiltin inherClassPredCandidate(Type ty, string name, int ari
 }
 
 predicate predOverrides(ClassPredicate sub, ClassPredicate sup) {
-  sup =
-    inherClassPredCandidate(sub.getDeclaringType(), sub.getName(), sub.getArity()).getDeclaration()
+  sup = inherClassPredCandidate(sub.getDeclaringType(), sub.getName(), sub.getArity())
 }
 
 private VarDecl declaredField(ClassType ty, string name) {
@@ -179,7 +179,7 @@ class ClassDomainType extends Type, TClassDomain {
 
   ClassType getClassType() { result = TClass(decl) }
 
-  override Type getAnInternalSuperType() { result = getClassType().getASuperType() }
+  override Type getAnInternalSuperType() { result = this.getClassType().getASuperType() }
 }
 
 class PrimitiveType extends Type, TPrimitive {
@@ -192,7 +192,7 @@ class PrimitiveType extends Type, TPrimitive {
   override Type getASuperType() { name = "int" and result.(PrimitiveType).getName() = "float" }
 
   override Type getAnInternalSuperType() {
-    result = getASuperType()
+    result = this.getASuperType()
     or
     result = super.getAnInternalSuperType()
   }
@@ -232,7 +232,7 @@ class NewTypeBranchType extends Type, TNewTypeBranch {
   }
 
   override Type getAnInternalSuperType() {
-    result = getASuperType()
+    result = this.getASuperType()
     or
     result = super.getAnInternalSuperType()
   }
@@ -283,6 +283,7 @@ private predicate qualifier(TypeExpr te, FileOrModule m, boolean public, string 
   )
 }
 
+pragma[nomagic]
 private predicate defines(FileOrModule m, string name, Type t, boolean public) {
   exists(Class ty | t = TClass(ty) |
     getEnclosingModule(ty) = m and
