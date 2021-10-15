@@ -1,9 +1,11 @@
 use std::collections::BTreeSet;
 use std::fmt;
 
+#[derive(Clone, Eq, PartialEq, Hash)]
 pub enum TopLevel<'a> {
     Class(Class<'a>),
     Import(&'a str),
+    Module(Module<'a>),
 }
 
 impl<'a> fmt::Display for TopLevel<'a> {
@@ -11,6 +13,7 @@ impl<'a> fmt::Display for TopLevel<'a> {
         match self {
             TopLevel::Import(x) => write!(f, "private import {}", x),
             TopLevel::Class(cls) => write!(f, "{}", cls),
+            TopLevel::Module(m) => write!(f, "{}", m),
         }
     }
 }
@@ -40,15 +43,15 @@ impl<'a> fmt::Display for Class<'a> {
             }
             write!(f, "{}", supertype)?;
         }
-        write!(f, " {{ \n")?;
+        writeln!(f, " {{ ")?;
 
         if let Some(charpred) = &self.characteristic_predicate {
-            write!(
+            writeln!(
                 f,
-                "  {}\n",
+                "  {}",
                 Predicate {
                     qldoc: None,
-                    name: self.name.clone(),
+                    name: self.name,
                     overridden: false,
                     return_type: None,
                     formal_parameters: vec![],
@@ -58,7 +61,7 @@ impl<'a> fmt::Display for Class<'a> {
         }
 
         for predicate in &self.predicates {
-            write!(f, "  {}\n", predicate)?;
+            writeln!(f, "  {}", predicate)?;
         }
 
         write!(f, "}}")?;
@@ -67,6 +70,26 @@ impl<'a> fmt::Display for Class<'a> {
     }
 }
 
+#[derive(Clone, Eq, PartialEq, Hash)]
+pub struct Module<'a> {
+    pub qldoc: Option<String>,
+    pub name: &'a str,
+    pub body: Vec<TopLevel<'a>>,
+}
+
+impl<'a> fmt::Display for Module<'a> {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        if let Some(qldoc) = &self.qldoc {
+            write!(f, "/** {} */", qldoc)?;
+        }
+        writeln!(f, "module {} {{ ", self.name)?;
+        for decl in &self.body {
+            writeln!(f, "  {}", decl)?;
+        }
+        write!(f, "}}")?;
+        Ok(())
+    }
+}
 // The QL type of a column.
 #[derive(Clone, Eq, PartialEq, Hash, Ord, PartialOrd)]
 pub enum Type<'a> {
@@ -77,7 +100,7 @@ pub enum Type<'a> {
     String,
 
     /// A database type that will need to be referred to with an `@` prefix.
-    AtType(&'a str),
+    At(&'a str),
 
     /// A user-defined type.
     Normal(&'a str),
@@ -89,7 +112,7 @@ impl<'a> fmt::Display for Type<'a> {
             Type::Int => write!(f, "int"),
             Type::String => write!(f, "string"),
             Type::Normal(name) => write!(f, "{}", name),
-            Type::AtType(name) => write!(f, "@{}", name),
+            Type::At(name) => write!(f, "@{}", name),
         }
     }
 }
@@ -104,12 +127,13 @@ pub enum Expression<'a> {
     Or(Vec<Expression<'a>>),
     Equals(Box<Expression<'a>>, Box<Expression<'a>>),
     Dot(Box<Expression<'a>>, &'a str, Vec<Expression<'a>>),
-    Aggregate(
-        &'a str,
-        Vec<FormalParameter<'a>>,
-        Box<Expression<'a>>,
-        Box<Expression<'a>>,
-    ),
+    Aggregate {
+        name: &'a str,
+        vars: Vec<FormalParameter<'a>>,
+        range: Option<Box<Expression<'a>>>,
+        expr: Box<Expression<'a>>,
+        second_expr: Option<Box<Expression<'a>>>,
+    },
 }
 
 impl<'a> fmt::Display for Expression<'a> {
@@ -165,15 +189,31 @@ impl<'a> fmt::Display for Expression<'a> {
                 }
                 write!(f, ")")
             }
-            Expression::Aggregate(n, vars, range, term) => {
-                write!(f, "{}(", n)?;
-                for (index, var) in vars.iter().enumerate() {
-                    if index > 0 {
-                        write!(f, ", ")?;
+            Expression::Aggregate {
+                name,
+                vars,
+                range,
+                expr,
+                second_expr,
+            } => {
+                write!(f, "{}(", name)?;
+                if !vars.is_empty() {
+                    for (index, var) in vars.iter().enumerate() {
+                        if index > 0 {
+                            write!(f, ", ")?;
+                        }
+                        write!(f, "{}", var)?;
                     }
-                    write!(f, "{}", var)?;
+                    write!(f, " | ")?;
                 }
-                write!(f, " | {} | {})", range, term)
+                if let Some(range) = range {
+                    write!(f, "{} | ", range)?;
+                }
+                write!(f, "{}", expr)?;
+                if let Some(second_expr) = second_expr {
+                    write!(f, ", {}", second_expr)?;
+                }
+                write!(f, ")")
             }
         }
     }
@@ -226,25 +266,10 @@ impl<'a> fmt::Display for FormalParameter<'a> {
     }
 }
 
-/// Generates a QL library by writing the given `classes` to the `file`.
-pub fn write<'a>(
-    language_name: &str,
-    file: &mut dyn std::io::Write,
-    elements: &'a [TopLevel],
-) -> std::io::Result<()> {
-    write!(file, "/*\n")?;
-    write!(file, " * CodeQL library for {}\n", language_name)?;
-    write!(
-        file,
-        " * Automatically generated from the tree-sitter grammar; do not edit\n"
-    )?;
-    write!(file, " */\n\n")?;
-    write!(file, "module Generated {{\n")?;
-
+/// Generates a QL library by writing the given `elements` to the `file`.
+pub fn write<'a>(file: &mut dyn std::io::Write, elements: &'a [TopLevel]) -> std::io::Result<()> {
     for element in elements {
         write!(file, "{}\n\n", &element)?;
     }
-
-    write!(file, "}}")?;
     Ok(())
 }

@@ -4,69 +4,65 @@ private import Builtins
 
 cached
 newtype TAstNode =
-  TTopLevel(Generated::Ql file) or
-  TQLDoc(Generated::Qldoc qldoc) or
-  TClasslessPredicate(Generated::ClasslessPredicate pred) or
-  TVarDecl(Generated::VarDecl decl) or
-  TClass(Generated::Dataclass dc) or
-  TCharPred(Generated::Charpred pred) or
-  TClassPredicate(Generated::MemberPredicate pred) or
-  TDBRelation(Generated::DbTable table) or
-  TSelect(Generated::Select sel) or
-  TModule(Generated::Module mod) or
-  TNewType(Generated::Datatype dt) or
-  TNewTypeBranch(Generated::DatatypeBranch branch) or
-  TImport(Generated::ImportDirective imp) or
-  TType(Generated::TypeExpr type) or
-  TDisjunction(Generated::Disjunction disj) or
-  TConjunction(Generated::Conjunction conj) or
-  TComparisonFormula(Generated::CompTerm comp) or
-  TComparisonOp(Generated::Compop op) or
-  TQuantifier(Generated::Quantified quant) or
-  TFullAggregate(Generated::Aggregate agg) {
-    agg.getChild(_) instanceof Generated::FullAggregateBody
+  TTopLevel(QL::Ql file) or
+  TQLDoc(QL::Qldoc qldoc) or
+  TClasslessPredicate(QL::ClasslessPredicate pred) or
+  TVarDecl(QL::VarDecl decl) or
+  TClass(QL::Dataclass dc) or
+  TCharPred(QL::Charpred pred) or
+  TClassPredicate(QL::MemberPredicate pred) or
+  TDBRelation(QL::DbTable table) or
+  TSelect(QL::Select sel) or
+  TModule(QL::Module mod) or
+  TNewType(QL::Datatype dt) or
+  TNewTypeBranch(QL::DatatypeBranch branch) or
+  TImport(QL::ImportDirective imp) or
+  TType(QL::TypeExpr type) or
+  TDisjunction(QL::Disjunction disj) or
+  TConjunction(QL::Conjunction conj) or
+  TComparisonFormula(QL::CompTerm comp) or
+  TComparisonOp(QL::Compop op) or
+  TQuantifier(QL::Quantified quant) or
+  TFullAggregate(QL::Aggregate agg) { agg.getChild(_) instanceof QL::FullAggregateBody } or
+  TExprAggregate(QL::Aggregate agg) { agg.getChild(_) instanceof QL::ExprAggregateBody } or
+  TSuper(QL::SuperRef sup) or
+  TIdentifier(QL::Variable var) or
+  TAsExpr(QL::AsExpr asExpr) { asExpr.getChild(1) instanceof QL::VarName } or
+  TPredicateCall(QL::CallOrUnqualAggExpr call) or
+  TMemberCall(QL::QualifiedExpr expr) {
+    not expr.getChild(_).(QL::QualifiedRhs).getChild(_) instanceof QL::TypeExpr
   } or
-  TExprAggregate(Generated::Aggregate agg) {
-    agg.getChild(_) instanceof Generated::ExprAggregateBody
+  TInlineCast(QL::QualifiedExpr expr) {
+    expr.getChild(_).(QL::QualifiedRhs).getChild(_) instanceof QL::TypeExpr
   } or
-  TSuper(Generated::SuperRef sup) or
-  TIdentifier(Generated::Variable var) or
-  TAsExpr(Generated::AsExpr asExpr) { asExpr.getChild(1) instanceof Generated::VarName } or
-  TPredicateCall(Generated::CallOrUnqualAggExpr call) or
-  TMemberCall(Generated::QualifiedExpr expr) {
-    not expr.getChild(_).(Generated::QualifiedRhs).getChild(_) instanceof Generated::TypeExpr
+  TNoneCall(QL::SpecialCall call) or
+  TAnyCall(QL::Aggregate agg) {
+    "any" = agg.getChild(0).(QL::AggId).getValue() and
+    not agg.getChild(_) instanceof QL::FullAggregateBody
   } or
-  TInlineCast(Generated::QualifiedExpr expr) {
-    expr.getChild(_).(Generated::QualifiedRhs).getChild(_) instanceof Generated::TypeExpr
-  } or
-  TNoneCall(Generated::SpecialCall call) or
-  TAnyCall(Generated::Aggregate agg) {
-    "any" = agg.getChild(0).(Generated::AggId).getValue() and
-    not agg.getChild(_) instanceof Generated::FullAggregateBody
-  } or
-  TNegation(Generated::Negation neg) or
-  TIfFormula(Generated::IfTerm ifterm) or
-  TImplication(Generated::Implication impl) or
-  TInstanceOf(Generated::InstanceOf inst) or
-  TInFormula(Generated::InExpr inexpr) or
-  THigherOrderFormula(Generated::HigherOrderTerm hop) or
-  TExprAnnotation(Generated::ExprAnnotation expr_anno) or
-  TAddSubExpr(Generated::AddExpr addexp) or
-  TMulDivModExpr(Generated::MulExpr mulexpr) or
-  TRange(Generated::Range range) or
-  TSet(Generated::SetLiteral set) or
-  TLiteral(Generated::Literal lit) or
-  TUnaryExpr(Generated::UnaryExpr unaryexpr) or
-  TDontCare(Generated::Underscore dontcare) or
-  TModuleExpr(Generated::ModuleExpr me) or
-  TPredicateExpr(Generated::PredicateExpr pe) or
-  TAnnotation(Generated::Annotation annot) or
-  TAnnotationArg(Generated::AnnotArg arg) or
-  TYamlCommemt(Generated::YamlComment yc) or
-  TYamlEntry(Generated::YamlEntry ye) or
-  TYamlKey(Generated::YamlKey yk) or
-  TYamlListitem(Generated::YamlListitem yli) or
-  TYamlValue(Generated::YamlValue yv) or
+  TNegation(QL::Negation neg) or
+  TIfFormula(QL::IfTerm ifterm) or
+  TImplication(QL::Implication impl) or
+  TInstanceOf(QL::InstanceOf inst) or
+  TInFormula(QL::InExpr inexpr) or
+  THigherOrderFormula(QL::HigherOrderTerm hop) or
+  TExprAnnotation(QL::ExprAnnotation expr_anno) or
+  TAddSubExpr(QL::AddExpr addexp) or
+  TMulDivModExpr(QL::MulExpr mulexpr) or
+  TRange(QL::Range range) or
+  TSet(QL::SetLiteral set) or
+  TLiteral(QL::Literal lit) or
+  TUnaryExpr(QL::UnaryExpr unaryexpr) or
+  TDontCare(QL::Underscore dontcare) or
+  TModuleExpr(QL::ModuleExpr me) or
+  TPredicateExpr(QL::PredicateExpr pe) or
+  TAnnotation(QL::Annotation annot) or
+  TAnnotationArg(QL::AnnotArg arg) or
+  TYamlCommemt(QL::YamlComment yc) or
+  TYamlEntry(QL::YamlEntry ye) or
+  TYamlKey(QL::YamlKey yk) or
+  TYamlListitem(QL::YamlListitem yli) or
+  TYamlValue(QL::YamlValue yv) or
   TBuiltinClassless(string ret, string name, string args) { isBuiltinClassless(ret, name, args) } or
   TBuiltinMember(string qual, string ret, string name, string args) {
     isBuiltinMember(qual, ret, name, args)
@@ -90,7 +86,7 @@ class TModuleRef = TImport or TModuleExpr;
 
 class TYAMLNode = TYamlCommemt or TYamlEntry or TYamlKey or TYamlListitem or TYamlValue;
 
-private Generated::AstNode toGeneratedFormula(AST::AstNode n) {
+private QL::AstNode toQLFormula(AST::AstNode n) {
   n = TConjunction(result) or
   n = TDisjunction(result) or
   n = TComparisonFormula(result) or
@@ -106,7 +102,7 @@ private Generated::AstNode toGeneratedFormula(AST::AstNode n) {
   n = TInFormula(result)
 }
 
-private Generated::AstNode toGeneratedExpr(AST::AstNode n) {
+private QL::AstNode toQLExpr(AST::AstNode n) {
   n = TAddSubExpr(result) or
   n = TMulDivModExpr(result) or
   n = TRange(result) or
@@ -120,7 +116,7 @@ private Generated::AstNode toGeneratedExpr(AST::AstNode n) {
   n = TDontCare(result)
 }
 
-private Generated::AstNode toGenerateYAML(AST::AstNode n) {
+private QL::AstNode toGenerateYAML(AST::AstNode n) {
   n = TYamlCommemt(result) or
   n = TYamlEntry(result) or
   n = TYamlKey(result) or
@@ -131,19 +127,19 @@ private Generated::AstNode toGenerateYAML(AST::AstNode n) {
 /**
  * Gets the underlying TreeSitter entity for a given AST node.
  */
-Generated::AstNode toGenerated(AST::AstNode n) {
-  result = toGeneratedExpr(n)
+QL::AstNode toQL(AST::AstNode n) {
+  result = toQLExpr(n)
   or
-  result = toGeneratedFormula(n)
+  result = toQLFormula(n)
   or
   result = toGenerateYAML(n)
   or
-  result.(Generated::ParExpr).getChild() = toGenerated(n)
+  result.(QL::ParExpr).getChild() = toQL(n)
   or
   result =
-    any(Generated::AsExpr ae |
-      not ae.getChild(1) instanceof Generated::VarName and
-      toGenerated(n) = ae.getChild(0)
+    any(QL::AsExpr ae |
+      not ae.getChild(1) instanceof QL::VarName and
+      toQL(n) = ae.getChild(0)
     )
   or
   n = TTopLevel(result)

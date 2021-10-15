@@ -9,10 +9,10 @@ abstract class Container extends @container {
   Container getAChildContainer() { this = result.getParentContainer() }
 
   /** Gets a file in this container. */
-  File getAFile() { result = getAChildContainer() }
+  File getAFile() { result = this.getAChildContainer() }
 
   /** Gets a sub-folder in this container. */
-  Folder getAFolder() { result = getAChildContainer() }
+  Folder getAFolder() { result = this.getAChildContainer() }
 
   /**
    * Gets the absolute, canonical path of this container, using forward slashes
@@ -58,7 +58,7 @@ abstract class Container extends @container {
    * </table>
    */
   string getBaseName() {
-    result = getAbsolutePath().regexpCapture(".*/(([^/]*?)(?:\\.([^.]*))?)", 1)
+    result = this.getAbsolutePath().regexpCapture(".*/(([^/]*?)(?:\\.([^.]*))?)", 1)
   }
 
   /**
@@ -84,17 +84,19 @@ abstract class Container extends @container {
    * <tr><td>"/tmp/x.tar.gz"</td><td>"gz"</td></tr>
    * </table>
    */
-  string getExtension() { result = getAbsolutePath().regexpCapture(".*/([^/]*?)(\\.([^.]*))?", 3) }
+  string getExtension() {
+    result = this.getAbsolutePath().regexpCapture(".*/([^/]*?)(\\.([^.]*))?", 3)
+  }
 
   /** Gets the file in this container that has the given `baseName`, if any. */
   File getFile(string baseName) {
-    result = getAFile() and
+    result = this.getAFile() and
     result.getBaseName() = baseName
   }
 
   /** Gets the sub-folder in this container that has the given `baseName`, if any. */
   Folder getFolder(string baseName) {
-    result = getAFolder() and
+    result = this.getAFolder() and
     result.getBaseName() = baseName
   }
 
@@ -111,7 +113,7 @@ abstract class Container extends @container {
    */
   string getRelativePath() {
     exists(string absPath, string pref |
-      absPath = getAbsolutePath() and sourceLocationPrefix(pref)
+      absPath = this.getAbsolutePath() and sourceLocationPrefix(pref)
     |
       absPath = pref and result = ""
       or
@@ -137,7 +139,9 @@ abstract class Container extends @container {
    * <tr><td>"/tmp/x.tar.gz"</td><td>"x.tar"</td></tr>
    * </table>
    */
-  string getStem() { result = getAbsolutePath().regexpCapture(".*/([^/]*?)(?:\\.([^.]*))?", 1) }
+  string getStem() {
+    result = this.getAbsolutePath().regexpCapture(".*/([^/]*?)(?:\\.([^.]*))?", 1)
+  }
 
   /**
    * Gets a URL representing the location of this container.
@@ -151,34 +155,34 @@ abstract class Container extends @container {
    *
    * This is the absolute path of the container.
    */
-  string toString() { result = getAbsolutePath() }
+  string toString() { result = this.getAbsolutePath() }
 }
 
 /** A folder. */
 class Folder extends Container, @folder {
-  override string getAbsolutePath() { folders(this, result, _) }
+  override string getAbsolutePath() { folders(this, result) }
 
   /** Gets the URL of this folder. */
-  override string getURL() { result = "folder://" + getAbsolutePath() }
+  override string getURL() { result = "folder://" + this.getAbsolutePath() }
 }
 
 /** A file. */
 class File extends Container, @file {
-  override string getAbsolutePath() { files(this, result, _, _, _) }
+  override string getAbsolutePath() { files(this, result) }
 
   /** Gets the URL of this file. */
   override string getURL() { result = "file://" + this.getAbsolutePath() + ":0:0:0:0" }
 
   /** Gets a token in this file. */
-  private Generated::Token getAToken() { result.getLocation().getFile() = this }
+  private QL::Token getAToken() { result.getLocation().getFile() = this }
 
   /** Holds if `line` contains a token. */
   private predicate line(int line, boolean comment) {
-    exists(Generated::Token token, Location l |
+    exists(QL::Token token, Location l |
       token = this.getAToken() and
       l = token.getLocation() and
       line in [l.getStartLine() .. l.getEndLine()] and
-      if token instanceof @token_block_comment or token instanceof @token_line_comment
+      if token instanceof @ql_token_block_comment or token instanceof @ql_token_line_comment
       then comment = true
       else comment = false
     )
@@ -194,5 +198,5 @@ class File extends Container, @file {
   int getNumberOfLinesOfComments() { result = count(int line | this.line(line, true)) }
 
   /** Holds if this file was extracted from ordinary source code. */
-  predicate fromSource() { files(this, _, _, _, 1) }
+  predicate fromSource() { any() }
 }

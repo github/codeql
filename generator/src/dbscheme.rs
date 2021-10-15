@@ -68,10 +68,10 @@ impl<'a> fmt::Display for Table<'a> {
                 }
                 write!(f, "{}", key)?;
             }
-            write!(f, "]\n")?;
+            writeln!(f, "]")?;
         }
 
-        write!(f, "{}(\n", self.name)?;
+        writeln!(f, "{}(", self.name)?;
         for (column_index, column) in self.columns.iter().enumerate() {
             write!(f, "  ")?;
             if column.unique {
@@ -92,7 +92,7 @@ impl<'a> fmt::Display for Table<'a> {
             if column_index + 1 != self.columns.len() {
                 write!(f, ",")?;
             }
-            write!(f, "\n")?;
+            writeln!(f)?;
         }
         write!(f, ");")?;
 
@@ -117,17 +117,7 @@ impl<'a> fmt::Display for Union<'a> {
 }
 
 /// Generates the dbscheme by writing the given dbscheme `entries` to the `file`.
-pub fn write<'a>(
-    language_name: &str,
-    file: &mut dyn std::io::Write,
-    entries: &'a [Entry],
-) -> std::io::Result<()> {
-    write!(file, "// CodeQL database schema for {}\n", language_name)?;
-    write!(
-        file,
-        "// Automatically generated from the tree-sitter grammar; do not edit\n\n"
-    )?;
-
+pub fn write<'a>(file: &mut dyn std::io::Write, entries: &'a [Entry]) -> std::io::Result<()> {
     for entry in entries {
         match entry {
             Entry::Case(case) => write!(file, "{}\n\n", case)?,
