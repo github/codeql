@@ -8,8 +8,9 @@ runs:
         path: |
           ~/.cargo/registry
           ~/.cargo/git
-          target
-        key: ${{ runner.os }}-qltest-cargo-${{ hashFiles('**/Cargo.lock') }}
+          ruby/target
+        key: ${{ runner.os }}-qltest-cargo-${{ hashFiles('ruby/**/Cargo.lock') }}
     - name: Build Extractor
       shell: bash
-      run: env "PATH=$PATH:${{ github.workspace }}/codeql" scripts/create-extractor-pack.sh
+      run: scripts/create-extractor-pack.sh
+      working-directory: ruby
