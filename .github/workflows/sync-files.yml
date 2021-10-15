@@ -1,0 +1,21 @@
+name: Check synchronized files
+
+on:
+  push:
+    branches:
+      - main
+      - 'rc/*'
+  pull_request:
+    branches:
+      - main
+      - 'rc/*'
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Check synchronized files
+        run: ruby/scripts/sync-identical-files.py
