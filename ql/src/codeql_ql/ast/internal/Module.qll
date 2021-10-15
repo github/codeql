@@ -148,14 +148,16 @@ private predicate resolveSelectionName(Import imp, ContainerOrModule m, int i) {
 
 cached
 private module Cached {
-  // TODO: Use `AstNode::getParent` once it is total
-  private Generated::AstNode parent(Generated::AstNode n) {
-    result = n.getParent() and
-    not n instanceof Generated::Module
-  }
-
   private Module getEnclosingModule0(AstNode n) {
-    AstNodes::toGenerated(result) = parent*(AstNodes::toGenerated(n).getParent())
+    not n instanceof Module and
+    (
+      n = result.getAChild(_)
+      or
+      exists(AstNode prev |
+        result = getEnclosingModule0(prev) and
+        n = prev.getAChild(_)
+      )
+    )
   }
 
   cached
