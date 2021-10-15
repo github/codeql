@@ -1,0 +1,171 @@
+private import ql
+private import codeql_ql.ast.internal.Builtins
+private import DataFlowUtil
+
+/**
+ * A data flow node that occurs as the argument of a call and is passed as-is
+ * to the callable. Arguments that are wrapped in an implicit varargs array
+ * creation are not included, but the implicitly created array is.
+ * Instance arguments are also included.
+ */
+class ArgumentNode extends Node {
+  ArgumentNode() { exists(Argument arg | this.asExpr() = arg) }
+
+  /**
+   * Holds if this argument occurs at the given position in the given call.
+   * The instance argument is considered to have index `-1`.
+   */
+  predicate argumentOf(DataFlowCall call, int pos) {
+    exists(Argument arg | this.asExpr() = arg | call = arg.getCall() and pos = arg.getPosition())
+  }
+
+  /** Gets the call in which this node is an argument. */
+  DataFlowCall getCall() { this.argumentOf(result, _) }
+}
+
+/** A `ReturnNode` that occurs as the result of a `ReturnStmt`. */
+private class NormalReturnNode extends ReturnNode, ExprNode {
+  NormalReturnNode() { this.getExpr() instanceof ResultAccess }
+
+  /** Gets the kind of this returned value. */
+  override ReturnKind getKind() { result = TNormalReturnKind() }
+}
+
+private class ExprOutNode extends OutNode, ExprNode {
+  Call call;
+
+  ExprOutNode() { call = this.getExpr() }
+
+  /** Gets the underlying call. */
+  override DataFlowCall getCall() { result = call }
+}
+
+/**
+ * Gets a node that can read the value returned from `call` with return kind
+ * `kind`.
+ */
+OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
+  result = call.getNode() and
+  kind = TNormalReturnKind()
+  or
+  result.(ArgumentOutNode).getCall() = call and
+  kind = TParameterOutKind(result.(ArgumentOutNode).getIndex())
+}
+
+/**
+ * Holds if data can flow from `node1` to `node2` in a way that loses the
+ * calling context. For example, this would happen with flow through a
+ * global or static variable.
+ */
+predicate jumpStep(Node n1, Node n2) { none() }
+
+/**
+ * Holds if data can flow from `node1` to `node2` via an assignment to `f`.
+ * Thus, `node2` references an object with a field `f` that contains the
+ * value of `node1`.
+ */
+predicate storeStep(Node node1, Content f, PostUpdateNode node2) { none() }
+
+/**
+ * Holds if data can flow from `node1` to `node2` via a read of `f`.
+ * Thus, `node1` references an object with a field `f` whose value ends up in
+ * `node2`.
+ */
+predicate readStep(Node node1, Content f, Node node2) { none() }
+
+/**
+ * Holds if values stored inside content `c` are cleared at node `n`.
+ */
+predicate clearsContent(Node n, Content c) {
+  none() // stub implementation
+}
+
+/** Gets the type of `n` used for type pruning. */
+Type getNodeType(Node n) {
+  suppressUnusedNode(n) and
+  result instanceof IntClass // stub implementation
+}
+
+/** Gets a string representation of a type returned by `getNodeType`. */
+string ppReprType(Type t) { none() } // stub implementation
+
+/**
+ * Holds if `t1` and `t2` are compatible, that is, whether data can flow from
+ * a node of type `t1` to a node of type `t2`.
+ */
+pragma[inline]
+predicate compatibleTypes(Type t1, Type t2) {
+  any() // stub implementation
+}
+
+private predicate suppressUnusedNode(Node n) { any() }
+
+//////////////////////////////////////////////////////////////////////////////
+// Java QL library compatibility wrappers
+//////////////////////////////////////////////////////////////////////////////
+/** A node that performs a type cast. */
+class CastNode extends Node {
+  CastNode() { none() } // stub implementation
+}
+
+class DataFlowExpr = Expr;
+
+class DataFlowType = Type;
+
+/** A function call relevant for data flow. */
+class DataFlowCall extends Expr instanceof Call {
+  /**
+   * Gets the nth argument for this call.
+   *
+   * The range of `n` is from `0` to `getNumberOfArguments() - 1`.
+   */
+  Expr getArgument(int n) { result = super.getArgument(n) }
+
+  /** Gets the data flow node corresponding to this call. */
+  ExprNode getNode() { result.getExpr() = this }
+
+  /** Gets the enclosing callable of this call. */
+  DataFlowCallable getEnclosingCallable() { result.asPredicate() = this.getEnclosingPredicate() }
+}
+
+predicate isUnreachableInCall(Node n, DataFlowCall call) { none() } // stub implementation
+
+int accessPathLimit() { result = 5 }
+
+/**
+ * Holds if access paths with `c` at their head always should be tracked at high
+ * precision. This disables adaptive access path precision for such access paths.
+ */
+predicate forceHighPrecision(Content c) { none() }
+
+/** The unit type. */
+private newtype TUnit = TMkUnit()
+
+/** The trivial type with a single element. */
+class Unit extends TUnit {
+  /** Gets a textual representation of this element. */
+  string toString() { result = "unit" }
+}
+
+/**
+ * Holds if `n` does not require a `PostUpdateNode` as it either cannot be
+ * modified or its modification cannot be observed, for example if it is a
+ * freshly created object that is not saved in a variable.
+ *
+ * This predicate is only used for consistency checks.
+ */
+predicate isImmutableOrUnobservable(Node n) { none() }
+
+/** Holds if `n` should be hidden from path explanations. */
+predicate nodeIsHidden(Node n) { none() }
+
+class LambdaCallKind = Unit;
+
+/** Holds if `creation` is an expression that creates a lambda of kind `kind` for `c`. */
+predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c) { none() }
+
+/** Holds if `call` is a lambda call of kind `kind` where `receiver` is the lambda expression. */
+predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) { none() }
+
+/** Extra data-flow steps needed for lambda flow analysis. */
+predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) { none() }
