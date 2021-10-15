@@ -3,17 +3,8 @@ private import semmle.code.cpp.models.interfaces.ArrayFunction
 private import semmle.code.cpp.models.implementations.Strcat
 import semmle.code.cpp.dataflow.DataFlow
 
-private predicate mayAddNullTerminatorHelper(Expr e, VariableAccess va, Expr e0) {
-  exists(StackVariable v0, Expr val |
-    exprDefinition(v0, e, val) and
-    val.getAChild*() = va and
-    mayAddNullTerminator(e0, v0.getAnAccess())
-  )
-}
-
 /**
- * Holds if the expression `e` may add a null terminator to the string in
- * variable `v`.
+ * Holds if the expression `e` may add a null terminator to the string in `va`.
  */
 predicate mayAddNullTerminator(Expr e, VariableAccess va) {
   // Assignment: dereferencing or array access
@@ -30,14 +21,12 @@ predicate mayAddNullTerminator(Expr e, VariableAccess va) {
   )
   or
   // Assignment to another stack variable
-  exists(Expr e0, BasicBlock bb, int pos, BasicBlock bb0, int pos0 |
-    mayAddNullTerminatorHelper(e, va, e0) and
-    bb.getNode(pos) = e and
-    bb0.getNode(pos0) = e0
-  |
-    bb = bb0 and pos < pos0
-    or
-    bb.getASuccessor+() = bb0
+  exists(Expr e0 |
+    exists(StackVariable v0, Expr val |
+      exprDefinition(v0, e, val) and // e resembles `v0 := val`
+      val.getAChild*() = va and
+      mayAddNullTerminator(e0, v0.getAnAccess())
+    )
   )
   or
   // Assignment to non-stack variable
