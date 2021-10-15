@@ -2,6 +2,7 @@ private import codeql.ruby.AST
 private import codeql.ruby.Concepts
 private import codeql.ruby.DataFlow
 private import codeql.ruby.ApiGraphs
+private import codeql.ruby.dataflow.FlowSummary
 
 /**
  * The `Kernel` module is included by the `Object` class, so its methods are available
@@ -334,4 +335,19 @@ class ModuleEvalCallCodeExecution extends CodeExecution::Range, DataFlow::CallNo
   }
 
   override DataFlow::Node getCode() { result = this.getArgument(0) }
+}
+
+/** Flow summary for `Regexp.escape`. */
+class RegexpEscapeSummary extends SummarizedCallable {
+  RegexpEscapeSummary() { this = "Regexp.escape" }
+
+  override MethodCall getACall() {
+    result = API::getTopLevelMember("Regexp").getAMethodCall("escape").asExpr().getExpr()
+  }
+
+  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    input = "Argument[0]" and
+    output = "ReturnValue" and
+    preservesValue = false
+  }
 }
