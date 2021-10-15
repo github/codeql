@@ -79,10 +79,11 @@ private module Cached {
     )
     or
     // super calls
-    exists(Super sup, ClassType type |
+    exists(Super sup, ClassType type, Type supertype |
       mc.getBase() = sup and
       sup.getEnclosingPredicate().(ClassPredicate).getParent().getType() = type and
-      p = type.getASuperType().getClassPredicate(mc.getMemberName(), mc.getNumberOfArguments())
+      supertype in [type.getASuperType(), type.getAnInstanceofType()] and
+      p = supertype.getClassPredicate(mc.getMemberName(), mc.getNumberOfArguments())
     )
   }
 
