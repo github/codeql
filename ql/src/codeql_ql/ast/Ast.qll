@@ -79,10 +79,13 @@ class AstNode extends TAstNode {
    * Gets the predicate that contains this AST node.
    */
   pragma[noinline]
-  Predicate getEnclosingPredicate() {
-    not this instanceof Predicate and
-    toQL(result) = toQL(this).getParent+()
-  }
+  Predicate getEnclosingPredicate() { this = getANodeInPredicate(result) }
+}
+
+private AstNode getANodeInPredicate(Predicate pred) {
+  result = pred.getAChild(_)
+  or
+  result = getANodeInPredicate(pred).getAChild(_)
 }
 
 /** A toplevel QL program, i.e. a file. */
