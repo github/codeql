@@ -35,8 +35,8 @@ predicate isBuiltinMember(string sig) {
       "string int.toString()", "string string.charAt(int)", "int string.indexOf(string)",
       "int string.indexOf(string, int, int)", "predicate string.isLowercase()",
       "predicate string.isUppercase()", "int string.length()", "predicate string.matches(string)",
-      "string string.prefix(int)", "string regexpCapture(string, int)",
-      "string regexpFind(string, int, int)", "predicate string.regexpMatch(string)",
+      "string string.prefix(int)", "string string.regexpCapture(string, int)",
+      "string string.regexpFind(string, int, int)", "predicate string.regexpMatch(string)",
       "string string.regexpReplaceAll(string, string)", "string string.replaceAll(string, string)",
       "string string.splitAt(string)", "string string.splitAt(string, int)",
       "string string.substring(int, int)", "string string.suffix(int)", "date string.toDate()",
@@ -58,10 +58,37 @@ predicate isBuiltinMember(string qual, string ret, string name, string args) {
   )
 }
 
+module BuildinsConsistency {
+  query predicate noBuildinParse(string sig) {
+    isBuiltinMember(sig) and
+    not exists(sig.regexpCapture("(\\w+) (\\w+)\\.(\\w+)\\(([\\w, ]*)\\)", _))
+  }
+
+  query predicate noBuildinClasslessParse(string sig) {
+    isBuiltinClassless(sig) and
+    not exists(sig.regexpCapture("(\\w+) (\\w+)\\(([\\w, ]*)\\)", _))
+  }
+}
+
 bindingset[args]
 string getArgType(string args, int i) { result = args.splitAt(",", i).trim() }
 
 /** The primitive 'string' class. */
 class StringClass extends PrimitiveType {
   StringClass() { this.getName() = "string" }
+}
+
+/** The primitive 'int' class. */
+class IntClass extends PrimitiveType {
+  IntClass() { this.getName() = "int" }
+}
+
+/** The primitive 'float' class. */
+class FloatClass extends PrimitiveType {
+  FloatClass() { this.getName() = "float" }
+}
+
+/** The primitive 'boolean' class. */
+class BooleanClass extends PrimitiveType {
+  BooleanClass() { this.getName() = "boolean" }
 }

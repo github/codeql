@@ -1,5 +1,6 @@
 import codeql_ql.ast.Ast as AST
 import TreeSitter
+private import Builtins
 
 cached
 newtype TAstNode =
@@ -59,11 +60,17 @@ newtype TAstNode =
   TDontCare(Generated::Underscore dontcare) or
   TModuleExpr(Generated::ModuleExpr me) or
   TPredicateExpr(Generated::PredicateExpr pe) or
+  TAnnotation(Generated::Annotation annot) or
+  TAnnotationArg(Generated::AnnotArg arg) or
   TYamlCommemt(Generated::YamlComment yc) or
   TYamlEntry(Generated::YamlEntry ye) or
   TYamlKey(Generated::YamlKey yk) or
   TYamlListitem(Generated::YamlListitem yli) or
-  TYamlValue(Generated::YamlValue yv)
+  TYamlValue(Generated::YamlValue yv) or
+  TBuiltinClassless(string ret, string name, string args) { isBuiltinClassless(ret, name, args) } or
+  TBuiltinMember(string qual, string ret, string name, string args) {
+    isBuiltinMember(qual, ret, name, args)
+  }
 
 class TFormula =
   TDisjunction or TConjunction or TComparisonFormula or TQuantifier or TNegation or TIfFormula or
@@ -184,9 +191,17 @@ Generated::AstNode toGenerated(AST::AstNode n) {
   n = TAnyCall(result)
   or
   n = TSuper(result)
+  or
+  n = TAnnotation(result)
+  or
+  n = TAnnotationArg(result)
 }
 
 class TPredicate = TCharPred or TClasslessPredicate or TClassPredicate or TDBRelation;
+
+class TPredOrBuiltin = TPredicate or TNewTypeBranch or TBuiltin;
+
+class TBuiltin = TBuiltinClassless or TBuiltinMember;
 
 class TModuleMember = TModuleDeclaration or TImport or TSelect or TQLDoc;
 
