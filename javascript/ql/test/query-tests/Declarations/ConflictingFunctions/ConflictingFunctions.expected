@@ -1,0 +1,1 @@
+| tst.js:3:12:3:12 | g | Declaration of function g conflicts with $@ in the same scope. | tst.js:7:12:7:12 | g | another declaration |

@@ -1,0 +1,53 @@
+edges
+| JakartaExpressionInjection.java:23:25:23:47 | getInputStream(...) : InputStream | JakartaExpressionInjection.java:23:54:23:58 | bytes [post update] : byte[] |
+| JakartaExpressionInjection.java:23:54:23:58 | bytes [post update] : byte[] | JakartaExpressionInjection.java:24:48:24:52 | bytes : byte[] |
+| JakartaExpressionInjection.java:24:37:24:59 | new String(...) : String | JakartaExpressionInjection.java:25:31:25:40 | expression : String |
+| JakartaExpressionInjection.java:24:48:24:52 | bytes : byte[] | JakartaExpressionInjection.java:24:37:24:59 | new String(...) : String |
+| JakartaExpressionInjection.java:25:31:25:40 | expression : String | JakartaExpressionInjection.java:32:24:32:33 | expression : String |
+| JakartaExpressionInjection.java:25:31:25:40 | expression : String | JakartaExpressionInjection.java:40:24:40:33 | expression : String |
+| JakartaExpressionInjection.java:25:31:25:40 | expression : String | JakartaExpressionInjection.java:48:24:48:33 | expression : String |
+| JakartaExpressionInjection.java:25:31:25:40 | expression : String | JakartaExpressionInjection.java:59:24:59:33 | expression : String |
+| JakartaExpressionInjection.java:25:31:25:40 | expression : String | JakartaExpressionInjection.java:67:24:67:33 | expression : String |
+| JakartaExpressionInjection.java:25:31:25:40 | expression : String | JakartaExpressionInjection.java:75:24:75:33 | expression : String |
+| JakartaExpressionInjection.java:25:31:25:40 | expression : String | JakartaExpressionInjection.java:85:24:85:33 | expression : String |
+| JakartaExpressionInjection.java:25:31:25:40 | expression : String | JakartaExpressionInjection.java:95:24:95:33 | expression : String |
+| JakartaExpressionInjection.java:32:24:32:33 | expression : String | JakartaExpressionInjection.java:34:28:34:37 | expression |
+| JakartaExpressionInjection.java:40:24:40:33 | expression : String | JakartaExpressionInjection.java:42:32:42:41 | expression |
+| JakartaExpressionInjection.java:48:24:48:33 | expression : String | JakartaExpressionInjection.java:53:13:53:28 | lambdaExpression |
+| JakartaExpressionInjection.java:59:24:59:33 | expression : String | JakartaExpressionInjection.java:61:32:61:41 | expression |
+| JakartaExpressionInjection.java:67:24:67:33 | expression : String | JakartaExpressionInjection.java:69:43:69:52 | expression |
+| JakartaExpressionInjection.java:75:24:75:33 | expression : String | JakartaExpressionInjection.java:79:13:79:13 | e |
+| JakartaExpressionInjection.java:85:24:85:33 | expression : String | JakartaExpressionInjection.java:89:13:89:13 | e |
+| JakartaExpressionInjection.java:95:24:95:33 | expression : String | JakartaExpressionInjection.java:99:13:99:13 | e |
+nodes
+| JakartaExpressionInjection.java:23:25:23:47 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| JakartaExpressionInjection.java:23:54:23:58 | bytes [post update] : byte[] | semmle.label | bytes [post update] : byte[] |
+| JakartaExpressionInjection.java:24:37:24:59 | new String(...) : String | semmle.label | new String(...) : String |
+| JakartaExpressionInjection.java:24:48:24:52 | bytes : byte[] | semmle.label | bytes : byte[] |
+| JakartaExpressionInjection.java:25:31:25:40 | expression : String | semmle.label | expression : String |
+| JakartaExpressionInjection.java:32:24:32:33 | expression : String | semmle.label | expression : String |
+| JakartaExpressionInjection.java:34:28:34:37 | expression | semmle.label | expression |
+| JakartaExpressionInjection.java:40:24:40:33 | expression : String | semmle.label | expression : String |
+| JakartaExpressionInjection.java:42:32:42:41 | expression | semmle.label | expression |
+| JakartaExpressionInjection.java:48:24:48:33 | expression : String | semmle.label | expression : String |
+| JakartaExpressionInjection.java:53:13:53:28 | lambdaExpression | semmle.label | lambdaExpression |
+| JakartaExpressionInjection.java:59:24:59:33 | expression : String | semmle.label | expression : String |
+| JakartaExpressionInjection.java:61:32:61:41 | expression | semmle.label | expression |
+| JakartaExpressionInjection.java:67:24:67:33 | expression : String | semmle.label | expression : String |
+| JakartaExpressionInjection.java:69:43:69:52 | expression | semmle.label | expression |
+| JakartaExpressionInjection.java:75:24:75:33 | expression : String | semmle.label | expression : String |
+| JakartaExpressionInjection.java:79:13:79:13 | e | semmle.label | e |
+| JakartaExpressionInjection.java:85:24:85:33 | expression : String | semmle.label | expression : String |
+| JakartaExpressionInjection.java:89:13:89:13 | e | semmle.label | e |
+| JakartaExpressionInjection.java:95:24:95:33 | expression : String | semmle.label | expression : String |
+| JakartaExpressionInjection.java:99:13:99:13 | e | semmle.label | e |
+subpaths
+#select
+| JakartaExpressionInjection.java:34:28:34:37 | expression | JakartaExpressionInjection.java:23:25:23:47 | getInputStream(...) : InputStream | JakartaExpressionInjection.java:34:28:34:37 | expression | Jakarta Expression Language injection from $@. | JakartaExpressionInjection.java:23:25:23:47 | getInputStream(...) | this user input |
+| JakartaExpressionInjection.java:42:32:42:41 | expression | JakartaExpressionInjection.java:23:25:23:47 | getInputStream(...) : InputStream | JakartaExpressionInjection.java:42:32:42:41 | expression | Jakarta Expression Language injection from $@. | JakartaExpressionInjection.java:23:25:23:47 | getInputStream(...) | this user input |
+| JakartaExpressionInjection.java:53:13:53:28 | lambdaExpression | JakartaExpressionInjection.java:23:25:23:47 | getInputStream(...) : InputStream | JakartaExpressionInjection.java:53:13:53:28 | lambdaExpression | Jakarta Expression Language injection from $@. | JakartaExpressionInjection.java:23:25:23:47 | getInputStream(...) | this user input |
+| JakartaExpressionInjection.java:61:32:61:41 | expression | JakartaExpressionInjection.java:23:25:23:47 | getInputStream(...) : InputStream | JakartaExpressionInjection.java:61:32:61:41 | expression | Jakarta Expression Language injection from $@. | JakartaExpressionInjection.java:23:25:23:47 | getInputStream(...) | this user input |
+| JakartaExpressionInjection.java:69:43:69:52 | expression | JakartaExpressionInjection.java:23:25:23:47 | getInputStream(...) : InputStream | JakartaExpressionInjection.java:69:43:69:52 | expression | Jakarta Expression Language injection from $@. | JakartaExpressionInjection.java:23:25:23:47 | getInputStream(...) | this user input |
+| JakartaExpressionInjection.java:79:13:79:13 | e | JakartaExpressionInjection.java:23:25:23:47 | getInputStream(...) : InputStream | JakartaExpressionInjection.java:79:13:79:13 | e | Jakarta Expression Language injection from $@. | JakartaExpressionInjection.java:23:25:23:47 | getInputStream(...) | this user input |
+| JakartaExpressionInjection.java:89:13:89:13 | e | JakartaExpressionInjection.java:23:25:23:47 | getInputStream(...) : InputStream | JakartaExpressionInjection.java:89:13:89:13 | e | Jakarta Expression Language injection from $@. | JakartaExpressionInjection.java:23:25:23:47 | getInputStream(...) | this user input |
+| JakartaExpressionInjection.java:99:13:99:13 | e | JakartaExpressionInjection.java:23:25:23:47 | getInputStream(...) : InputStream | JakartaExpressionInjection.java:99:13:99:13 | e | Jakarta Expression Language injection from $@. | JakartaExpressionInjection.java:23:25:23:47 | getInputStream(...) | this user input |

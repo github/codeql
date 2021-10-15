@@ -1,0 +1,9 @@
+| test.py:11 | extended_unpacking | first | externally controlled string |
+| test.py:11 | extended_unpacking | last | externally controlled string |
+| test.py:11 | extended_unpacking | rest | [externally controlled string] |
+| test.py:16 | also_allowed | a | [externally controlled string] |
+| test.py:24 | also_allowed | b | NO TAINT |
+| test.py:24 | also_allowed | c | NO TAINT |
+| test.py:31 | nested | x | externally controlled string |
+| test.py:31 | nested | xs | [externally controlled string] |
+| test.py:31 | nested | ys | [externally controlled string] |

@@ -1,0 +1,27 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>If you concatenate strings in a loop then the time taken by the loop is quadratic in the number
+of iterations.</p>
+
+</overview>
+<recommendation>
+
+<p>Initialize an empty list before the start of the loop.
+During the loop append the substrings to the list.
+At the end of the loop, convert the list to a string by using <code>''.join(list)</code>.</p>
+
+
+</recommendation>
+<references>
+
+
+<li>Python Standard Library: <a href="http://docs.python.org/library/string.html#string.join">The str.join method</a>.</li>
+<li>Python Frequently Asked Questions: <a href="http://docs.python.org/3/faq/programming.html#what-is-the-most-efficient-way-to-concatenate-many-strings-together">
+What is the most efficient way to concatenate many strings together?</a>.</li>
+
+
+</references>
+</qhelp>

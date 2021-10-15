@@ -1,0 +1,27 @@
+| absent.py:3:8:3:11 | ControlFlowNode for ImportExpr | file://:0:0:0:0 | Missing module xxxx |
+| absent.py:4:1:4:4 | ControlFlowNode for xxxx | file://:0:0:0:0 | Missing module xxxx |
+| absent.py:6:6:6:9 | ControlFlowNode for ImportExpr | file://:0:0:0:0 | Missing module xxxx |
+| absent.py:6:18:6:21 | ControlFlowNode for ImportMember | file://:0:0:0:0 | Missing module attribute xxxx.open |
+| absent.py:8:1:8:4 | ControlFlowNode for open | file://:0:0:0:0 | Missing module attribute xxxx.open |
+| absent.py:12:8:12:13 | ControlFlowNode for ImportExpr | module.py:0:0:0:0 | Module module |
+| absent.py:14:1:14:6 | ControlFlowNode for module | module.py:0:0:0:0 | Module module |
+| absent.py:16:6:16:9 | ControlFlowNode for ImportExpr | file://:0:0:0:0 | Missing module xxxx |
+| absent.py:16:18:16:21 | ControlFlowNode for ImportMember | file://:0:0:0:0 | Missing module attribute xxxx.deco |
+| absent.py:18:2:18:5 | ControlFlowNode for deco | file://:0:0:0:0 | Missing module attribute xxxx.deco |
+| absent.py:18:2:18:5 | ControlFlowNode for deco() | absent.py:18:2:18:5 | Decorated Function func1 |
+| absent.py:19:1:19:12 | ControlFlowNode for FunctionExpr | absent.py:19:1:19:12 | Function func1 |
+| absent.py:22:2:22:5 | ControlFlowNode for deco | file://:0:0:0:0 | Missing module attribute xxxx.deco |
+| absent.py:22:2:22:8 | ControlFlowNode for deco()() | absent.py:22:2:22:8 | Decorated Function func2 |
+| absent.py:22:7:22:7 | ControlFlowNode for IntegerLiteral | file://:0:0:0:0 | int 0 |
+| absent.py:23:1:23:12 | ControlFlowNode for FunctionExpr | absent.py:23:1:23:12 | Function func2 |
+| absent.py:26:2:26:5 | ControlFlowNode for deco | file://:0:0:0:0 | Missing module attribute xxxx.deco |
+| absent.py:26:2:26:16 | ControlFlowNode for deco()() | absent.py:26:2:26:16 | Decorated Function func3 |
+| absent.py:27:1:27:12 | ControlFlowNode for FunctionExpr | absent.py:27:1:27:12 | Function func3 |
+| absent.py:30:2:30:5 | ControlFlowNode for deco | file://:0:0:0:0 | Missing module attribute xxxx.deco |
+| absent.py:30:2:30:11 | ControlFlowNode for deco()() | absent.py:30:2:30:11 | Decorated Function func4 |
+| absent.py:30:7:30:10 | ControlFlowNode for open | file://:0:0:0:0 | Missing module attribute xxxx.open |
+| absent.py:31:1:31:12 | ControlFlowNode for FunctionExpr | absent.py:31:1:31:12 | Function func4 |
+| absent.py:34:1:34:5 | ControlFlowNode for func1 | absent.py:18:2:18:5 | Decorated Function func1 |
+| absent.py:35:1:35:5 | ControlFlowNode for func2 | absent.py:22:2:22:8 | Decorated Function func2 |
+| absent.py:36:1:36:5 | ControlFlowNode for func3 | absent.py:26:2:26:16 | Decorated Function func3 |
+| absent.py:37:1:37:5 | ControlFlowNode for func4 | absent.py:30:2:30:11 | Decorated Function func4 |

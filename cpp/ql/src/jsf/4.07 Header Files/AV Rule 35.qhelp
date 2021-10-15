@@ -1,0 +1,77 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Some header files, such as those which define structures or classes, cannot be included more than once within a translation unit, as doing so would
+cause a redefinition error. Such headers must be guarded to prevent ill-effects from multiple inclusion. Simlarly, if header files include other
+header files, and this inclusion graph contains a cycle, then at least one file within the cycle must contain header guards in order to break the
+cycle. Because of cases like these, all headers should be guarded as a matter of good practice, even if they do not strictly need to be.
+</p>
+<p>
+Furthermore, most modern compilers contain optimisations which are triggered by header guards. If the header guard strictly conforms to the pattern
+that compilers expect, then inclusions of that header other than the first have absolutely no effect: the file isn't re-read from disk, nor is it
+re-tokenised or re-preprocessed. This can result in a noticeable, albeit minor, improvement to compilation time.
+</p>
+
+</overview>
+<recommendation>
+<p>
+Add one of the following forms of header guard to the file (where <code>HEADER_NAME</code> is a unique identifier derived from the name of the file):
+</p>
+<ol>
+  <li><code>#ifndef HEADER_NAME</code> followed by <code>#define HEADER_NAME</code> at the very start of the header, and a matching <code>#endif</code> at the very end.</li>
+  <li><code>#if !defined(HEADER_NAME)</code> followed by <code>#define HEADER_NAME</code> at the very start of the header, and a matching <code>#endif</code> at the very end.</li>
+  <li><code>#pragma once</code> anywhere within the header.</li>
+</ol>
+<p>
+Note that if you are updating code to match the Joint Strike Fighter Air Vehicle coding standard, then the first option is the only appropriate form.
+</p>
+
+</recommendation>
+<example>
+<p>The author of the following header tried to use header guards, but made a typo:
+</p><sample src="JSF35-typo-bad.cpp" />
+<p>In scenarios like this, <code>MY_HAEDER_H</code> should be replaced by <code>MY_HEADER_H</code> (note the transposed <code>A</code> and <code>E</code>):
+</p><sample src="JSF35-typo-good.cpp" />
+
+</example>
+<example>
+<p>The following header would seem to be guarded, but doesn't strictly abide to the rules:
+</p><sample src="JSF35-outermost-bad.cpp" />
+<p>Although the preprocessor directives in the preceding header will prevent errors from repeated inclusion, not all compilers are intelligent enough
+to recognise it as being guarded. Consequently compiler optimization will be limited. To ensure that the guard is recognized by compilers, change the
+header so that the guard is the outermost directive:
+</p><sample src="JSF35-outermost-good.cpp" />
+
+</example>
+<example>
+<p>The following header evolved over time, with different authors adding function declarations in different places:
+</p><sample src="JSF35-encompassing-bad.cpp" />
+<p>Unfortunately, the result is that some declarations are before the initial <code>#ifndef</code>, some are between the <code>#ifndef</code> and the <code>#define</code>, and
+some are after the final <code>#endif</code>. All three of these things must be addressed to turn the file into a correctly guarded header:
+</p><sample src="JSF35-encompassing-good.cpp" />
+
+</example>
+<references>
+
+<li>
+  AV Rules 27 and 35, <em>Joint Strike Fighter Air Vehicle C++ Coding Standards</em>. Lockheed Martin Corporation, 2005.
+</li>
+<li>
+  <a href="https://wiki.sei.cmu.edu/confluence/display/c/PRE06-C.+Enclose+header+files+in+an+include+guard">PRE06-C. Enclose header files in an inclusion guard</a>
+</li>
+<li>
+  <a href="http://www.learncpp.com/cpp-tutorial/19-header-files/">Header files</a>
+</li>
+<li>
+  <a href="http://www.cplusplus.com/forum/articles/10627/">Headers and Includes: Why and How</a>
+</li>
+<li>
+  <a href="https://gcc.gnu.org/onlinedocs/cppinternals/Guard-Macros.html">The Multiple-Include Optimization</a>
+</li>
+
+
+</references>
+</qhelp>

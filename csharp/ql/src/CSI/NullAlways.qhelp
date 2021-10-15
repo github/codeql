@@ -1,0 +1,40 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>If a variable is dereferenced, for example as the qualifier in a method call, and the
+variable has a <code>null</code> value on all possible execution paths leading to the
+dereferencing, the dereferencing is guaranteed to result in a <code>NullReferenceException</code>.
+</p>
+
+</overview>
+<recommendation>
+
+<p>Ensure that the variable does not have a <code>null</code> value when it is dereferenced.
+</p>
+
+</recommendation>
+<example>
+<p>
+In the following examples, the condition <code>s.Length > 0</code> is only
+executed if <code>s</code> is <code>null</code>.
+</p>
+
+<sample src="NullAlwaysBad.cs" />
+
+<p>
+In the revised example, the condition is guarded correctly by using <code>&amp;&amp;</code> instead of
+<code>||</code>.
+</p>
+
+<sample src="NullAlwaysGood.cs" />
+</example>
+<references>
+
+  <li>Microsoft, <a href="https://docs.microsoft.com/en-us/dotnet/api/system.nullreferenceexception">NullReferenceException Class</a>.</li>
+
+</references>
+</qhelp>

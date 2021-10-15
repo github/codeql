@@ -1,0 +1,27 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>The program uses input from the user as a format string for <code>printf</code> style functions. This can lead to buffer overflows or data representation problems. An attacker can exploit this weakness to crash the program, disclose information or even execute arbitrary code.</p>
+
+<p>The results of this rule do not include inputs from the user that are transferred through global variables. 
+Those can be found in the related rule "Uncontrolled format string (through global variable)".</p>
+
+</overview>
+<recommendation>
+<p>Use constant expressions as the format strings. If you need to print a value from the user, use <code>printf("%s", value_from_user)</code>.</p>
+
+</recommendation>
+<example>
+<sample src="UncontrolledFormatString.c" />
+
+</example>
+<references>
+
+<li>CERT C Coding
+Standard: <a href="https://www.securecoding.cert.org/confluence/display/c/FIO30-C.+Exclude+user+input+from+format+strings">FIO30-C. Exclude user input from format strings</a>.</li>
+
+
+</references>
+</qhelp>

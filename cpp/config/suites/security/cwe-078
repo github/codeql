@@ -1,0 +1,3 @@
+# CWE-078: Improper Neutralization of Special Elements used in an OS Command ('OS Command Injection')
++ semmlecode-cpp-queries/Security/CWE/CWE-078/ExecTainted.ql: /CWE/CWE-078
+    @name Uncontrolled data used in OS command (CWE-078)

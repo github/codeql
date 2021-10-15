@@ -1,0 +1,33 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Empty lock statements suspend execution until a lock can be acquired, and then release that lock 
+immediately. This can sometimes achieve the desired effect, but there are generally much better ways 
+to accomplish the same thing using event wait handles.</p>
+
+<p>There are also other reasons why you may have an empty lock statement in your code. For 
+example the statement may have originally contained code that has since been removed or code may 
+have been accidentally placed outside the statement when it should be inside it.</p>
+
+</overview>
+<recommendation>
+<p>Since there are various causes for an empty lock statement, dealing with the presence of one 
+requires careful analysis and a good understanding of what the code is intended to achieve. In some 
+cases, the problem can be solved by refactoring the code to use more appropriate synchronization 
+mechanisms. In other cases, the lock is redundant and can be removed altogether. In the most common 
+case, the empty lock may just indicate code that is incorrectly synchronized and needs fixing or 
+redesigning.</p>
+
+</recommendation>
+<example>
+<p>In the code below, an empty lock statement is being used to ensure that the assignment to 
+<code>value</code> has been completed before it is printed by method <code>Y</code>.</p>
+<sample src="EmptyLockStatement.cs" />
+
+<p>The previous example works, but can be implemented in a much better and more idiomatic way using 
+an event wait handle.</p>
+<sample src="EmptyLockStatementFix.cs" />
+</example>
+</qhelp>

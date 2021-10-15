@@ -1,0 +1,44 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>As C++ is not a garbage collected language, exceptions should not be dynamically allocated. Dynamically
+allocating an exception puts an onus on every <code>catch</code> site to ensure that the memory is freed.</p>
+
+<p>As a special case, it is permissible to throw anything derived from Microsoft MFC's <code>CException</code>
+class as a pointer. This is for historical reasons; modern code and modern frameworks should not throw
+pointer values.</p>
+
+</overview>
+<recommendation>
+<p>The <code>new</code> keyword immediately following the <code>throw</code> keyword should be removed. Any
+<code>catch</code> sites which previously caught the pointer should be changed to catch by reference or
+<code>const</code> reference.</p>
+
+</recommendation>
+<example>
+<sample language="cpp">
+void bad() {
+  throw new std::exception("This is how not to throw an exception");
+}
+
+void good() {
+  throw std::exception("This is how to throw an exception");
+}
+</sample>
+
+</example>
+<references>
+
+  <li>C++ FAQ: <a href="https://isocpp.org/wiki/faq/exceptions#what-to-throw">
+    What should I throw?</a>, <a href="https://isocpp.org/wiki/faq/exceptions#what-to-catch">
+    What should I catch?</a>.</li>
+  <li>Wikibooks: <a href="http://en.wikibooks.org/wiki/C%2B%2B_Programming/Exception_Handling#Throwing_objects">
+    Throwing objects</a>.</li>
+
+
+</references>
+</qhelp>

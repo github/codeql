@@ -1,0 +1,12 @@
+| 3 | class DerivedFromBuiltin | append | Builtin-method append |
+| 3 | class DerivedFromBuiltin | clear | Builtin-method clear |
+| 3 | class DerivedFromBuiltin | copy | Builtin-method copy |
+| 3 | class DerivedFromBuiltin | count | Builtin-method count |
+| 3 | class DerivedFromBuiltin | extend | Builtin-method extend |
+| 3 | class DerivedFromBuiltin | index | Builtin-method index |
+| 3 | class DerivedFromBuiltin | insert | Builtin-method insert |
+| 3 | class DerivedFromBuiltin | meth5 | Function meth5 |
+| 3 | class DerivedFromBuiltin | pop | Builtin-method pop |
+| 3 | class DerivedFromBuiltin | remove | Builtin-method remove |
+| 3 | class DerivedFromBuiltin | reverse | Builtin-method reverse |
+| 3 | class DerivedFromBuiltin | sort | Builtin-method sort |

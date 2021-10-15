@@ -1,0 +1,4 @@
+name: codeql-csharp-examples
+version: 0.0.2
+dependencies:
+  codeql/csharp-all: "*"

@@ -1,0 +1,2 @@
+| test.cpp:17:8:17:12 | test4 | test4 includes 0 bits of padding on ILP32, but 32 bits on LP64. |
+| test.cpp:29:8:29:12 | test6 | test6 includes 0 bits of padding on ILP32, but 32 bits on LP64. |

@@ -1,0 +1,4 @@
+| csharp6.cs:25:83:25:89 | access to property Length | csharp6.cs:25:79:25:81 | access to local variable bar | Conditional |
+| csharp6.cs:27:77:27:83 | access to property Length | csharp6.cs:27:73:27:75 | access to local variable bar | Conditional |
+| csharp6.cs:32:68:32:70 | access to indexer | csharp6.cs:32:38:32:66 | object creation of type Dictionary<Int32,String> | Conditional |
+| csharp6.cs:32:68:32:73 | access to indexer | csharp6.cs:32:68:32:70 | access to indexer | Unconditional |

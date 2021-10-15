@@ -1,0 +1,3 @@
+# CWE-078: Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')
++ semmlecode-cpp-queries/Security/CWE/CWE-022/TaintedPath.ql: /CWE/CWE-022
+    @name Uncontrolled data used in path expression (CWE-022)

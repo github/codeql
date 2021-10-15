@@ -1,0 +1,23 @@
+| file://:0:0:0:0 | operator= | __va_list_tag & | reference to {struct __va_list_tag} |
+| file://:0:0:0:0 | operator= | __va_list_tag & | reference to {struct __va_list_tag} |
+| ms_types.cpp:1:12:1:17 | ms_int | int | int |
+| ms_types.cpp:2:12:2:21 | ms_w64_int | int | int |
+| ms_types.cpp:3:12:3:25 | ms_w64_int_ptr | int * | pointer to {int} |
+| ms_types.cpp:4:12:4:21 | ms_int_ptr | int * | pointer to {int} |
+| ms_types.cpp:6:17:6:24 | ms_fptr1 | ..(*)(..) | pointer to {function returning {int} with arguments ()} |
+| ms_types.cpp:7:17:7:24 | ms_fptr2 | ..(*)(..) | pointer to {function returning {int} with arguments ()} |
+| ms_types.cpp:8:17:8:24 | ms_fptr3 | ..(*)(..) | pointer to {function returning {int} with arguments ()} |
+| type_strings.cpp:4:8:4:47 | functionPtrReturningVoidWithVoidArgument | ..(*)(..) | pointer to {function returning {void} with arguments ()} |
+| type_strings.cpp:5:7:5:52 | functionPtrReturningIntWithIntAndCharArguments | ..(*)(..) | pointer to {function returning {int} with arguments (int,char)} |
+| type_strings.cpp:6:8:6:57 | arrayOfTenFunctionPtrsReturningVoidWithIntArgument | ..(*[10])(..) | array of 10 {pointer to {function returning {void} with arguments (int)}} |
+| type_strings.cpp:8:7:8:7 | Foo | void | void |
+| type_strings.cpp:8:7:8:7 | Foo | void | void |
+| type_strings.cpp:8:7:8:7 | operator= | Foo & | reference to {class Foo} |
+| type_strings.cpp:8:7:8:7 | operator= | Foo & | reference to {class Foo} |
+| type_strings.cpp:10:9:10:11 | Foo | void | void |
+| type_strings.cpp:11:14:11:14 | f | char | char |
+| type_strings.cpp:14:6:14:15 | fooPointer | Foo * | pointer to {class Foo} |
+| type_strings.cpp:15:13:15:20 | fPointer | ..:: * | pointer to member of Foo with type {function returning {char} with arguments (int,int)} |
+| type_strings.cpp:17:6:17:12 | someFun | char | char |
+| type_strings.cpp:21:6:21:9 | test | void | void |
+| type_strings.cpp:35:5:35:6 | xs | int[10][20][30] | array of 10 {array of 20 {array of 30 {int}}} |

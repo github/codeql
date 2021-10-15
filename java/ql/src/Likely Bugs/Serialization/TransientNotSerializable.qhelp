@@ -1,0 +1,48 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+The <code>transient</code> modifier is used to identify fields that are not part of the persistent state of the class. As such, it only has an
+effect if the class is serializable, and has no purpose in a non-serializable class. 
+</p>
+
+<p>
+A field that is marked <code>transient</code> in a non-serializable class is likely to be a leftover from a time when the class
+was serializable.
+</p>
+
+</overview>
+<recommendation>
+<p>
+If the class is non-serializable, leave out the <code>transient</code> modifier. Otherwise,
+use the modifier, and ensure that the class (or a relevant supertype) implements <code>Serializable</code>.
+</p>
+
+</recommendation>
+<example>
+
+<p>The following example shows two fields that are declared <code>transient</code>. The modifier only has an effect
+in the class that implements <code>Serializable</code>.</p>
+
+<sample src="TransientNotSerializable.java" />
+
+</example>
+<references>
+
+
+<li>
+  Java Language Specification:
+  <a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-8.html#jls-8.3.1.3">8.3.1.3 transient Fields</a>.
+</li>
+<li>
+  Java Object Serialization Specification:
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/specs/serialization/serial-arch.html#defining-serializable-fields-for-a-class">1.5 Defining Serializable Fields for a Class</a>.
+</li>
+
+
+</references>
+</qhelp>

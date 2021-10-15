@@ -1,0 +1,17 @@
+| bar.h:1:13:1:15 | bar | Function | 2 | <none> |
+| bar.h:1:13:1:15 | bar | MemberFunction | 1 | C |
+| bar.h:1:13:1:15 | bar | MemberFunction | 1 | C |
+| bar.h:1:13:1:15 | bar | MemberFunction | 2 | D |
+| file://:0:0:0:0 | operator= | MemberFunction | 0 | __va_list_tag |
+| file://:0:0:0:0 | operator= | MemberFunction | 0 | __va_list_tag |
+| foo.h:1:13:1:15 | foo | Function | 1 | <none> |
+| foo.h:1:13:1:15 | foo | MemberFunction | 1 | C |
+| foo.h:1:13:1:15 | foo | MemberFunction | 1 | C |
+| main2.cpp:7:7:7:7 | C | MemberFunction | 0 | C |
+| main2.cpp:7:7:7:7 | C | MemberFunction | 0 | C |
+| main2.cpp:7:7:7:7 | operator= | MemberFunction | 0 | C |
+| main2.cpp:7:7:7:7 | operator= | MemberFunction | 0 | C |
+| main2.cpp:7:7:7:7 | operator= | MemberFunction | 0 | C |
+| main2.cpp:7:7:7:7 | operator= | MemberFunction | 0 | C |
+| main2.cpp:15:7:15:7 | operator= | MemberFunction | 0 | D |
+| main2.cpp:15:7:15:7 | operator= | MemberFunction | 0 | D |

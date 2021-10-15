@@ -1,0 +1,3 @@
+| statements_test.py:54:5:54:9 | AssignStmt | This assignment assigns a variable to itself. |
+| statements_test.py:57:9:57:19 | AssignStmt | This assignment assigns a variable to itself. |
+| statements_test.py:119:9:119:23 | AssignStmt | This assignment assigns a variable to itself. |

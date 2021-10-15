@@ -1,0 +1,4 @@
+| om_test.py:71:5:71:19 | Function __repr__ | Normal methods should have at least one parameter (the first of which should be 'self'). |
+| parameter_names.py:50:5:50:20 | Function __init__ | Normal methods should have 'self', rather than 'x', as their first parameter. |
+| parameter_names.py:53:5:53:20 | Function s_method | Normal methods should have 'self', rather than 'y', as their first parameter. |
+| parameter_names.py:56:5:56:20 | Function s_method2 | Normal methods should have at least one parameter (the first of which should be 'self'). |

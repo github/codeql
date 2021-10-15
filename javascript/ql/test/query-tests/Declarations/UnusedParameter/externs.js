@@ -1,0 +1,3 @@
+function String(str) {}
+
+/** @externs */

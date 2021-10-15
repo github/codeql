@@ -1,0 +1,55 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Assigning a variable to itself typically indicates a mistake such as a missing
+<code>this</code> qualifier or a misspelled variable name.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Carefully inspect the assignment to check for misspellings or missing qualifiers.
+</p>
+
+<p>
+If the self-assignment is intentional and is needed for documentation or optimization purposes,
+add a JSDoc comment with a <tt>@type</tt> tag. This will indicate the self-assignment is intentional.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+In the example below, the constructor function <code>Rectangle</code> is intended
+to initialize properties <code>x</code>, <code>y</code>, <code>width</code>, and
+<code>height</code> to the parameters of the same names.
+</p>
+
+<sample src="examples/SelfAssignment.js" />
+
+<p>
+Note, however, that on line 4 the programmer forgot to qualify the left hand side of
+the assignment with <code>this</code>: the code now performs a useless assignment of
+the <code>width</code> parameter to itself and leaves the <code>width</code>
+property uninitialized.
+</p>
+
+<p>
+To fix this issue, insert a <code>this</code> qualifier:
+</p>
+
+<sample src="examples/SelfAssignmentGood.js" />
+
+</example>
+<references>
+
+
+<li>Ecma International, <i>ECMAScript Language Definition</i>, 5.1 Edition, Section 11.13. ECMA, 2011.</li>
+
+
+</references>
+</qhelp>

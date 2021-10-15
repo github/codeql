@@ -1,0 +1,39 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+Documentation comments should contain a <code>&lt;summary&gt;</code> tag which briefly describes
+the purpose of the class or method.</p>
+
+</overview>
+<recommendation>
+
+<p>
+Add a <code>&lt;summary&gt;</code> tag to any documentation comments which do not have one.
+</p>
+
+</recommendation>
+<example>
+
+<p>The following example shows a <code>&lt;summary&gt;</code> tag describing a class.
+</p>
+
+<sample src="XmldocClass.cs" />
+
+</example>
+<references>
+
+<li>
+  MSDN, C# Programming Guide:
+  <a href="http://msdn.microsoft.com/en-us/library/b2s063f7.aspx">XML Documentation Comments</a>, 
+  <a href="http://msdn.microsoft.com/en-us/library/z04awywx.aspx">How to: Use the XML Documentation Features</a>,
+  <a href="http://msdn.microsoft.com/en-us/library/5ast78ax.aspx">Recommended Tags for Documentation Comments</a>.
+</li>
+
+
+</references>
+</qhelp>

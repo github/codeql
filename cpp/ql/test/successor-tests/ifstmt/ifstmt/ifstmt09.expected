@@ -1,0 +1,9 @@
+| 0 | ifstmt.c:21:22:25:1 | { ... } | 1 | ifstmt.c:22:3:23:8 | if (...) ...  |
+| 1 | ifstmt.c:22:3:23:8 | if (...) ...  | 1 | ifstmt.c:22:6:22:6 | 1 |
+| 1 | ifstmt.c:22:6:22:6 | 1 | -1 | file://:0:0:0:0 | { ... } |
+| 2 | ifstmt.c:23:5:23:7 | label ...: | 2 | ifstmt.c:23:8:23:8 | ; |
+| 2 | ifstmt.c:23:8:23:8 | ; | 3 | ifstmt.c:24:3:24:5 | label ...: |
+| 3 | ifstmt.c:24:3:24:5 | label ...: | 3 | ifstmt.c:24:6:24:6 | ; |
+| 3 | ifstmt.c:24:6:24:6 | ; | 4 | ifstmt.c:25:1:25:1 | return ... |
+| 4 | ifstmt.c:25:1:25:1 | return ... | 0 | ifstmt.c:21:6:21:18 | always_true_2 |
+| -1 | file://:0:0:0:0 | { ... } | 2 | ifstmt.c:23:5:23:7 | label ...: |

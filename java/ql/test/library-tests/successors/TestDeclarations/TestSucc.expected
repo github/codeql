@@ -1,0 +1,54 @@
+| TestDeclarations.java:1:7:1:22 | super(...) | TestDeclarations.java:1:7:1:22 | TestDeclarations |
+| TestDeclarations.java:1:7:1:22 | { ... } | TestDeclarations.java:1:7:1:22 | super(...) |
+| TestDeclarations.java:2:30:24:2 | { ... } | TestDeclarations.java:4:3:4:11 | var ...; |
+| TestDeclarations.java:4:3:4:11 | var ...; | TestDeclarations.java:4:7:4:7 | b |
+| TestDeclarations.java:4:7:4:7 | b | TestDeclarations.java:4:10:4:10 | c |
+| TestDeclarations.java:4:10:4:10 | c | TestDeclarations.java:5:3:5:8 | <Expr>; |
+| TestDeclarations.java:5:3:5:7 | ...=... | TestDeclarations.java:6:3:6:8 | <Expr>; |
+| TestDeclarations.java:5:3:5:8 | <Expr>; | TestDeclarations.java:5:7:5:7 | 0 |
+| TestDeclarations.java:5:7:5:7 | 0 | TestDeclarations.java:5:3:5:7 | ...=... |
+| TestDeclarations.java:6:3:6:7 | ...=... | TestDeclarations.java:7:3:7:13 | while (...) |
+| TestDeclarations.java:6:3:6:8 | <Expr>; | TestDeclarations.java:6:7:6:7 | 0 |
+| TestDeclarations.java:6:7:6:7 | 0 | TestDeclarations.java:6:3:6:7 | ...=... |
+| TestDeclarations.java:7:3:7:13 | while (...) | TestDeclarations.java:7:9:7:12 | true |
+| TestDeclarations.java:7:9:7:12 | true | TestDeclarations.java:8:3:19:3 | { ... } |
+| TestDeclarations.java:8:3:19:3 | { ... } | TestDeclarations.java:9:4:9:10 | <Expr>; |
+| TestDeclarations.java:9:4:9:9 | ...=... | TestDeclarations.java:10:4:10:15 | if (...) |
+| TestDeclarations.java:9:4:9:10 | <Expr>; | TestDeclarations.java:9:8:9:9 | 10 |
+| TestDeclarations.java:9:8:9:9 | 10 | TestDeclarations.java:9:4:9:9 | ...=... |
+| TestDeclarations.java:10:4:10:15 | if (...) | TestDeclarations.java:10:8:10:8 | a |
+| TestDeclarations.java:10:8:10:8 | a | TestDeclarations.java:10:12:10:14 | 100 |
+| TestDeclarations.java:10:8:10:14 | ... > ... | TestDeclarations.java:11:4:14:4 | { ... } |
+| TestDeclarations.java:10:8:10:14 | ... > ... | TestDeclarations.java:15:4:15:15 | if (...) |
+| TestDeclarations.java:10:12:10:14 | 100 | TestDeclarations.java:10:8:10:14 | ... > ... |
+| TestDeclarations.java:11:4:14:4 | { ... } | TestDeclarations.java:12:5:12:11 | <Expr>; |
+| TestDeclarations.java:12:5:12:10 | ...=... | TestDeclarations.java:13:5:13:10 | <Expr>; |
+| TestDeclarations.java:12:5:12:11 | <Expr>; | TestDeclarations.java:12:9:12:10 | 10 |
+| TestDeclarations.java:12:9:12:10 | 10 | TestDeclarations.java:12:5:12:10 | ...=... |
+| TestDeclarations.java:13:5:13:9 | ...=... | TestDeclarations.java:15:4:15:15 | if (...) |
+| TestDeclarations.java:13:5:13:10 | <Expr>; | TestDeclarations.java:13:9:13:9 | c |
+| TestDeclarations.java:13:9:13:9 | c | TestDeclarations.java:13:5:13:9 | ...=... |
+| TestDeclarations.java:15:4:15:15 | if (...) | TestDeclarations.java:15:8:15:8 | a |
+| TestDeclarations.java:15:8:15:8 | a | TestDeclarations.java:15:13:15:14 | 10 |
+| TestDeclarations.java:15:8:15:14 | ... == ... | TestDeclarations.java:16:5:16:10 | break |
+| TestDeclarations.java:15:8:15:14 | ... == ... | TestDeclarations.java:17:4:17:15 | if (...) |
+| TestDeclarations.java:15:13:15:14 | 10 | TestDeclarations.java:15:8:15:14 | ... == ... |
+| TestDeclarations.java:16:5:16:10 | break | TestDeclarations.java:20:3:20:10 | var ...; |
+| TestDeclarations.java:17:4:17:15 | if (...) | TestDeclarations.java:17:8:17:8 | a |
+| TestDeclarations.java:17:8:17:8 | a | TestDeclarations.java:17:13:17:14 | 20 |
+| TestDeclarations.java:17:8:17:14 | ... == ... | TestDeclarations.java:7:9:7:12 | true |
+| TestDeclarations.java:17:8:17:14 | ... == ... | TestDeclarations.java:18:12:18:12 | c |
+| TestDeclarations.java:17:13:17:14 | 20 | TestDeclarations.java:17:8:17:14 | ... == ... |
+| TestDeclarations.java:18:5:18:13 | return ... | TestDeclarations.java:2:6:2:21 | declarationTests |
+| TestDeclarations.java:18:12:18:12 | c | TestDeclarations.java:18:5:18:13 | return ... |
+| TestDeclarations.java:20:3:20:10 | var ...; | TestDeclarations.java:20:7:20:7 | x |
+| TestDeclarations.java:20:7:20:7 | x | TestDeclarations.java:20:9:20:9 | y |
+| TestDeclarations.java:20:9:20:9 | y | TestDeclarations.java:21:3:21:8 | <Expr>; |
+| TestDeclarations.java:21:3:21:7 | ...=... | TestDeclarations.java:22:3:22:8 | <Expr>; |
+| TestDeclarations.java:21:3:21:8 | <Expr>; | TestDeclarations.java:21:7:21:7 | 3 |
+| TestDeclarations.java:21:7:21:7 | 3 | TestDeclarations.java:21:3:21:7 | ...=... |
+| TestDeclarations.java:22:3:22:7 | ...=... | TestDeclarations.java:23:10:23:10 | b |
+| TestDeclarations.java:22:3:22:8 | <Expr>; | TestDeclarations.java:22:7:22:7 | 4 |
+| TestDeclarations.java:22:7:22:7 | 4 | TestDeclarations.java:22:3:22:7 | ...=... |
+| TestDeclarations.java:23:3:23:11 | return ... | TestDeclarations.java:2:6:2:21 | declarationTests |
+| TestDeclarations.java:23:10:23:10 | b | TestDeclarations.java:23:3:23:11 | return ... |

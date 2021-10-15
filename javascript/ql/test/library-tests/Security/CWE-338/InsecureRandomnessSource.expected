@@ -1,0 +1,10 @@
+| tst.js:1:1:1:13 | Math.random() |
+| tst.js:3:1:3:8 | random() |
+| tst.js:6:1:6:4 | rn() |
+| tst.js:9:1:9:12 | randomInt(5) |
+| tst.js:12:1:12:14 | randomFloat(5) |
+| tst.js:15:1:15:12 | randomSeed() |
+| tst.js:18:1:18:14 | uniqueRandom() |
+| tst.js:22:1:22:12 | chance.XYZ() |
+| tst.js:25:1:25:29 | crypto. ... es(100) |
+| tst.js:26:1:26:33 | new cry ... es(100) |

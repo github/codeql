@@ -1,0 +1,25 @@
+| file://:0:0:0:0 | <nulltype> |
+| file://:0:0:0:0 | ? |
+| file://:0:0:0:0 | ? extends Number |
+| file://:0:0:0:0 | ? super Double |
+| file://:0:0:0:0 | G[] |
+| file://:0:0:0:0 | Object[] |
+| file://:0:0:0:0 | Object[][] |
+| file://:0:0:0:0 | boolean |
+| file://:0:0:0:0 | byte |
+| file://:0:0:0:0 | char |
+| file://:0:0:0:0 | double |
+| file://:0:0:0:0 | float |
+| file://:0:0:0:0 | int |
+| file://:0:0:0:0 | long |
+| file://:0:0:0:0 | short |
+| file://:0:0:0:0 | void |
+| locations/A.java:3:12:3:25 | TestAnnotation |
+| locations/A.java:8:14:8:14 | A |
+| locations/B.java:4:14:4:14 | B |
+| locations/C.java:5:14:5:14 | C |
+| locations/D.java:3:14:3:14 | D |
+| locations/D.java:4:8:4:12 | Inner |
+| locations/E.java:1:6:1:6 | E |
+| locations/F.java:1:14:1:14 | F |
+| locations/G.java:1:14:1:14 | G |

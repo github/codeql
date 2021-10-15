@@ -1,0 +1,38 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+If the contents of a collection are never used, then it is useless and therefore unnecessary.
+This adds performance overhead, obscures the code, and may indicate an error in the logic.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Either remove the collection if it is no longer needed, or ensure that it is used as intended.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+In this example, the property <code>Names</code> returns the wrong collection 
+(<code>genres</code>). This logic error means that the <code>names</code> collection 
+is populated but never accessed.
+</p> 
+
+<sample src="WriteOnlyContainer.cs" />
+
+<p>
+The code is fixed by returning the correct field for <code>Names</code>.
+</p>
+
+<sample src="WriteOnlyContainerFix.cs" />
+
+
+</example>
+</qhelp>

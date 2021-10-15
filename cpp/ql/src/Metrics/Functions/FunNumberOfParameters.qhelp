@@ -1,0 +1,37 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>This metric measures the number of formal parameters per function.</p>
+
+<p>Functions with too many formal parameters are hard to use and maintain due to their complex 
+interface. Using them is hard since you need to provide the right number of parameters in the 
+right order. This can be particularly prone to mistakes if many of the parameters share the same type.</p>
+
+</overview>
+<recommendation>
+<p>If the function takes many related parameters they should be grouped into a class or struct. 
+This improves the usability of the function with more explicit naming, and also avoids reduces 
+the risk of forgetting parameters and accidental reordering. If some of the parameters are optional, 
+either explicitly with default value, or accepting NULL or 0, then it may be better to create separate 
+functions for the different use cases.</p>
+
+</recommendation>
+<references>
+
+<li>
+  <a href="http://www.cplusplus.com/doc/tutorial/functions/">Functions</a>
+</li>
+<li>
+  M. Fowler. <em>Refactoring</em>. Addison-Wesley, 1999.
+</li>
+<li>
+  <a href="https://en.wikipedia.org/wiki/Code_refactoring">Wikipedia: Code refactoring</a>
+</li>
+<li>
+  <a href="http://www.jot.fm/issues/issue_2005_01/column1/">Refactoring as Meta Programming?</a>
+</li>
+
+</references>
+</qhelp>

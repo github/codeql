@@ -1,0 +1,16 @@
+edges
+| StoredXPathInjection.cs:22:39:22:65 | call to method GetString : String | StoredXPathInjection.cs:25:45:25:148 | ... + ... |
+| StoredXPathInjection.cs:22:39:22:65 | call to method GetString : String | StoredXPathInjection.cs:28:41:28:144 | ... + ... |
+| StoredXPathInjection.cs:23:39:23:65 | call to method GetString : String | StoredXPathInjection.cs:25:45:25:148 | ... + ... |
+| StoredXPathInjection.cs:23:39:23:65 | call to method GetString : String | StoredXPathInjection.cs:28:41:28:144 | ... + ... |
+nodes
+| StoredXPathInjection.cs:22:39:22:65 | call to method GetString : String | semmle.label | call to method GetString : String |
+| StoredXPathInjection.cs:23:39:23:65 | call to method GetString : String | semmle.label | call to method GetString : String |
+| StoredXPathInjection.cs:25:45:25:148 | ... + ... | semmle.label | ... + ... |
+| StoredXPathInjection.cs:28:41:28:144 | ... + ... | semmle.label | ... + ... |
+subpaths
+#select
+| StoredXPathInjection.cs:25:45:25:148 | ... + ... | StoredXPathInjection.cs:22:39:22:65 | call to method GetString : String | StoredXPathInjection.cs:25:45:25:148 | ... + ... | $@ flows to here and is used in an XPath expression. | StoredXPathInjection.cs:22:39:22:65 | call to method GetString | Stored user-provided value |
+| StoredXPathInjection.cs:25:45:25:148 | ... + ... | StoredXPathInjection.cs:23:39:23:65 | call to method GetString : String | StoredXPathInjection.cs:25:45:25:148 | ... + ... | $@ flows to here and is used in an XPath expression. | StoredXPathInjection.cs:23:39:23:65 | call to method GetString | Stored user-provided value |
+| StoredXPathInjection.cs:28:41:28:144 | ... + ... | StoredXPathInjection.cs:22:39:22:65 | call to method GetString : String | StoredXPathInjection.cs:28:41:28:144 | ... + ... | $@ flows to here and is used in an XPath expression. | StoredXPathInjection.cs:22:39:22:65 | call to method GetString | Stored user-provided value |
+| StoredXPathInjection.cs:28:41:28:144 | ... + ... | StoredXPathInjection.cs:23:39:23:65 | call to method GetString : String | StoredXPathInjection.cs:28:41:28:144 | ... + ... | $@ flows to here and is used in an XPath expression. | StoredXPathInjection.cs:23:39:23:65 | call to method GetString | Stored user-provided value |

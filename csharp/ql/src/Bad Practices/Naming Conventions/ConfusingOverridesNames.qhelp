@@ -1,0 +1,20 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>This indicates that a method would have overridden another but did not because the methods were 
+capitalized differently.</p>
+
+</overview>
+<recommendation>
+<p>Check that there was no intention to override the parent method. If there was not then rename 
+the child method to something more descriptive.</p>
+
+</recommendation>
+<example>
+<p>This example program prints "parent" although the intention may have been for it to print 
+"child".</p>
+<sample src="ConfusingOverridesNames.cs" />
+</example>
+</qhelp>

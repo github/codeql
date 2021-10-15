@@ -1,0 +1,2 @@
+| tst.js:4:15:4:22 | "source" | tst.js:9:7:9:24 | readTaint(tainted) |
+| tst.js:4:15:4:22 | "source" | tst.js:15:7:15:20 | tainted3.other |

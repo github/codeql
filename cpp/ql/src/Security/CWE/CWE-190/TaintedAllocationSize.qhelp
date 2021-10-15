@@ -1,0 +1,46 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>This code calculates an allocation size by multiplying a user input
+by a <code>sizeof</code> expression. Since the user input has no
+apparent guard on its magnitude, this multiplication can
+overflow. When an integer multiply overflows in C, the result can wrap
+around and be much smaller than intended. A later attempt to put data
+into the allocated buffer can then overflow.</p>
+
+</overview>
+<recommendation>
+
+<p>Guard all integer parameters that come from an external
+user. Implement a guard with the expected range for the parameter and
+make sure that the input value meets both the minimum and maximum
+requirements for this range. If the input value fails this guard then
+reject the request before proceeding further. If the input value
+passes the guard then subsequent calculations should not overflow.</p>
+
+
+</recommendation>
+<example>
+<sample src="TaintedAllocationSize.c" />
+
+<p>This code shows one way to guard that an input value is within the
+expected range. If <code>factor</code> fails the guard, then an error
+is returned, and the value is not used as an argument to the
+subsequent call to <code>malloc</code>. Without this guard, the
+allocated buffer might be too small to hold the data intended for it.</p>
+
+</example>
+<references>
+
+<li>The CERT Oracle Secure Coding Standard for C:
+  <a href="https://www.securecoding.cert.org/confluence/display/c/INT04-C.+Enforce+limits+on+integer+values+originating+from+tainted+sources">INT04-C. Enforce
+  limits on integer values originating from tainted sources</a>.</li>
+
+
+<!--  LocalWords:  CWE
+ -->
+
+</references>
+</qhelp>

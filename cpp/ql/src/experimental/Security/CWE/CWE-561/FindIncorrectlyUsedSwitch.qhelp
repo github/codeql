@@ -1,0 +1,24 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>A mismatch between conditionals and <code>switch</code> cases can lead to control-flow violations (CWE-691) where the developer either does not handle all combinations of conditions or unintentionally created dead code (CWE-561).</p>
+
+
+</overview>
+
+<example>
+<p>The following example demonstrates fallacious and fixed ways of using a <code>switch</code> statement.</p>
+<sample src="FindIncorrectlyUsedSwitch.c" />
+
+</example>
+<references>
+
+<li>
+  CERT C Coding Standard:
+  <a href="https://wiki.sei.cmu.edu/confluence/display/c/MSC12-C.+Detect+and+remove+code+that+has+no+effect+or+is+never+executed">MSC12-C. Detect and remove code that has no effect or is never executed</a>.
+</li>
+
+</references>
+</qhelp>

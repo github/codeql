@@ -1,0 +1,35 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>The program performs a buffer copy or write operation that includes one or more float to string conversions (i.e. the %f format specifier), which may overflow the destination buffer if extreme inputs are given.  In addition to causing program instability, techniques exist which may allow an attacker to use this vulnerability to execute arbitrary code.</p>
+
+</overview>
+<recommendation>
+<p>Always control the length of buffer copy and buffer write operations.  <code>strncpy</code> should be used over <code>strcpy</code>, <code>snprintf</code> over <code>sprintf</code>, and in other cases 'n-variant' functions should be preferred.</p>
+
+</recommendation>
+<example>
+<sample src="OverrunWriteFloat.c" />
+
+<p>In this example, the call to <code>sprintf</code> contains a %f format specifier.  Though a 256 character buffer has been allowed, it is not sufficient for the most extreme floating point inputs.  For example the representation of double value 1e304 (that is 1 with 304 zeroes after it) will overflow a buffer of this length.</p>
+
+<p>To fix this issue three changes should be made:</p>
+<ul>
+  <li>Control the size of the buffer using a preprocessor define.</li>
+  <li>Replace the call to <code>sprintf</code> with <code>snprintf</code>, specifying the define as the maximum length to copy.  This will prevent the buffer overflow.</li>
+  <li>Consider using the %g format specifier instead of %f.</li>
+</ul>
+
+</example>
+<references>
+
+<li>CERT C Coding
+Standard: <a href="https://www.securecoding.cert.org/confluence/display/c/STR31-C.+Guarantee+that+storage+for+strings+has+sufficient+space+for+character+data+and+the+null+terminator">STR31-C. Guarantee
+that storage for strings has sufficient space for character data and
+the null terminator</a>.</li>
+
+
+</references>
+</qhelp>

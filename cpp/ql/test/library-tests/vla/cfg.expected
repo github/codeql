@@ -1,0 +1,102 @@
+| atoi | false | 126 | 126 | atoi |
+| f | false | 183 | 183 | f |
+| f | false | 193 | 193 | 10 |
+| f | false | 196 | 196 | 4 |
+| f | false | 197 | 197 | ... * ... |
+| f | false | 203 | 203 | 3 |
+| f | false | 206 | 206 | declaration |
+| f | false | 210 | 210 | 3 |
+| f | false | 213 | 213 | call to getInt |
+| f | false | 215 | 215 | ... + ... |
+| f | false | 217 | 217 | VLA dimension size |
+| f | false | 221 | 221 | 90 |
+| f | false | 222 | 222 | call to getInt |
+| f | false | 224 | 224 | ... * ... |
+| f | false | 226 | 226 | VLA dimension size |
+| f | false | 228 | 228 | VLA declaration |
+| f | false | 233 | 233 | declaration |
+| f | false | 235 | 235 | VLA declaration |
+| f | false | 243 | 243 | 120 |
+| f | false | 244 | 244 | (char)... |
+| f | false | 247 | 247 | initializer for c2 |
+| f | false | 253 | 253 | 10 |
+| f | false | 256 | 256 | 4 |
+| f | false | 257 | 257 | ... * ... |
+| f | false | 263 | 263 | 3 |
+| f | false | 272 | 272 | buf |
+| f | false | 274 | 274 | array to pointer conversion |
+| f | false | 276 | 276 | (char *)... |
+| f | false | 278 | 278 | initializer for ptr |
+| f | false | 282 | 282 | declaration |
+| f | false | 286 | 286 | 2 |
+| f | false | 287 | 287 | call to getInt |
+| f | false | 289 | 289 | ... + ... |
+| f | false | 291 | 291 | VLA dimension size |
+| f | false | 295 | 295 | 80 |
+| f | false | 296 | 296 | call to getInt |
+| f | false | 298 | 298 | ... * ... |
+| f | false | 300 | 300 | VLA dimension size |
+| f | false | 302 | 302 | VLA declaration |
+| f | false | 304 | 304 | call to getInt |
+| f | false | 306 | 306 | VLA dimension size |
+| f | false | 308 | 308 | VLA declaration |
+| f | false | 310 | 310 | return ... |
+| f | false | 312 | 312 | { ... } |
+| f | true | 206 | 217 |  |
+| f | true | 210 | 213 |  |
+| f | true | 213 | 215 |  |
+| f | true | 215 | 226 |  |
+| f | true | 217 | 210 |  |
+| f | true | 221 | 222 |  |
+| f | true | 222 | 224 |  |
+| f | true | 224 | 228 |  |
+| f | true | 226 | 221 |  |
+| f | true | 228 | 233 |  |
+| f | true | 233 | 235 |  |
+| f | true | 235 | 282 |  |
+| f | true | 243 | 291 |  |
+| f | true | 247 | 243 |  |
+| f | true | 272 | 310 |  |
+| f | true | 278 | 272 |  |
+| f | true | 282 | 247 |  |
+| f | true | 286 | 287 |  |
+| f | true | 287 | 289 |  |
+| f | true | 289 | 300 |  |
+| f | true | 291 | 286 |  |
+| f | true | 295 | 296 |  |
+| f | true | 296 | 298 |  |
+| f | true | 298 | 302 |  |
+| f | true | 300 | 295 |  |
+| f | true | 302 | 306 |  |
+| f | true | 304 | 308 |  |
+| f | true | 306 | 304 |  |
+| f | true | 308 | 278 |  |
+| f | true | 310 | 183 |  |
+| f | true | 312 | 206 |  |
+| getInt | false | 179 | 179 | getInt |
+| main | false | 139 | 139 | main |
+| main | false | 149 | 149 | declaration |
+| main | false | 151 | 151 | argc |
+| main | false | 153 | 153 | VLA dimension size |
+| main | false | 157 | 157 | call to atoi |
+| main | false | 159 | 159 | argv |
+| main | false | 163 | 163 | 1 |
+| main | false | 164 | 164 | access to array |
+| main | false | 166 | 166 | (const char *)... |
+| main | false | 168 | 168 | VLA dimension size |
+| main | false | 170 | 170 | VLA declaration |
+| main | false | 174 | 174 | 0 |
+| main | false | 175 | 175 | return ... |
+| main | false | 177 | 177 | { ... } |
+| main | true | 149 | 153 |  |
+| main | true | 151 | 168 |  |
+| main | true | 153 | 151 |  |
+| main | true | 157 | 170 |  |
+| main | true | 159 | 163 |  |
+| main | true | 163 | 164 |  |
+| main | true | 164 | 157 |  |
+| main | true | 168 | 159 |  |
+| main | true | 170 | 175 |  |
+| main | true | 174 | 139 |  |
+| main | true | 175 | 174 |  |
+| main | true | 177 | 149 |  |

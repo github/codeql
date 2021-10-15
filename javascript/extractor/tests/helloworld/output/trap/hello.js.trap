@@ -1,0 +1,96 @@
+#10000=@"/hello.js;sourcefile"
+files(#10000,"/hello.js")
+#10001=@"/;folder"
+folders(#10001,"/")
+containerparent(#10001,#10000)
+#10002=@"loc,{#10000},0,0,0,0"
+locations_default(#10002,#10000,0,0,0,0)
+hasLocation(#10000,#10002)
+#20000=@"global_scope"
+scopes(#20000,0)
+#20001=@"script;{#10000},1,1"
+#20002=*
+lines(#20002,#20001,"alert(""Hello, world!"");","")
+#20003=@"loc,{#10000},1,1,1,23"
+locations_default(#20003,#10000,1,1,1,23)
+hasLocation(#20002,#20003)
+numlines(#20001,1,1,0)
+#20004=*
+tokeninfo(#20004,6,#20001,0,"alert")
+#20005=@"loc,{#10000},1,1,1,5"
+locations_default(#20005,#10000,1,1,1,5)
+hasLocation(#20004,#20005)
+#20006=*
+tokeninfo(#20006,8,#20001,1,"(")
+#20007=@"loc,{#10000},1,6,1,6"
+locations_default(#20007,#10000,1,6,1,6)
+hasLocation(#20006,#20007)
+#20008=*
+tokeninfo(#20008,4,#20001,2,"""Hello, world!""")
+#20009=@"loc,{#10000},1,7,1,21"
+locations_default(#20009,#10000,1,7,1,21)
+hasLocation(#20008,#20009)
+#20010=*
+tokeninfo(#20010,8,#20001,3,")")
+#20011=@"loc,{#10000},1,22,1,22"
+locations_default(#20011,#10000,1,22,1,22)
+hasLocation(#20010,#20011)
+#20012=*
+tokeninfo(#20012,8,#20001,4,";")
+#20013=@"loc,{#10000},1,23,1,23"
+locations_default(#20013,#10000,1,23,1,23)
+hasLocation(#20012,#20013)
+#20014=*
+tokeninfo(#20014,0,#20001,5,"")
+#20015=@"loc,{#10000},1,24,1,23"
+locations_default(#20015,#10000,1,24,1,23)
+hasLocation(#20014,#20015)
+toplevels(#20001,0)
+hasLocation(#20001,#20003)
+#20016=*
+stmts(#20016,2,#20001,0,"alert("" ... rld!"");")
+hasLocation(#20016,#20003)
+stmt_containers(#20016,#20001)
+#20017=*
+exprs(#20017,13,#20016,0,"alert("" ... orld!"")")
+#20018=@"loc,{#10000},1,1,1,22"
+locations_default(#20018,#10000,1,1,1,22)
+hasLocation(#20017,#20018)
+enclosing_stmt(#20017,#20016)
+expr_containers(#20017,#20001)
+#20019=*
+exprs(#20019,79,#20017,-1,"alert")
+hasLocation(#20019,#20005)
+enclosing_stmt(#20019,#20016)
+expr_containers(#20019,#20001)
+literals("alert","alert",#20019)
+#20020=@"var;{alert};{#20000}"
+variables(#20020,"alert",#20000)
+bind(#20019,#20020)
+#20021=*
+exprs(#20021,4,#20017,0,"""Hello, world!""")
+hasLocation(#20021,#20009)
+enclosing_stmt(#20021,#20016)
+expr_containers(#20021,#20001)
+literals("Hello, world!","""Hello, world!""",#20021)
+#20022=*
+regexpterm(#20022,14,#20021,0,"Hello, world!")
+#20023=@"loc,{#10000},1,8,1,20"
+locations_default(#20023,#10000,1,8,1,20)
+hasLocation(#20022,#20023)
+regexp_const_value(#20022,"Hello, world!")
+#20024=*
+entry_cfg_node(#20024,#20001)
+#20025=@"loc,{#10000},1,1,1,0"
+locations_default(#20025,#10000,1,1,1,0)
+hasLocation(#20024,#20025)
+#20026=*
+exit_cfg_node(#20026,#20001)
+hasLocation(#20026,#20015)
+successor(#20016,#20019)
+successor(#20021,#20017)
+successor(#20019,#20021)
+successor(#20017,#20026)
+successor(#20024,#20016)
+numlines(#10000,1,1,0)
+filetype(#10000,"javascript")

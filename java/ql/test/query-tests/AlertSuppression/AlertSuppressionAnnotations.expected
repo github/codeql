@@ -1,0 +1,6 @@
+| TestSuppressWarnings.java:2:1:2:49 | SuppressWarnings | lgtm[java/non-sync-override] | lgtm[java/non-sync-override] | TestSuppressWarnings.java:2:1:21:5 | suppression range |
+| TestSuppressWarnings.java:5:5:5:31 | SuppressWarnings | lgtm[] | lgtm[] | TestSuppressWarnings.java:5:5:8:5 | suppression range |
+| TestSuppressWarnings.java:10:5:10:104 | SuppressWarnings | lgtm[java/confusing-method-name] not confusing | lgtm[java/confusing-method-name] | TestSuppressWarnings.java:9:5:13:5 | suppression range |
+| TestSuppressWarnings.java:10:5:10:104 | SuppressWarnings | lgtm[java/non-sync-override] | lgtm[java/non-sync-override] | TestSuppressWarnings.java:9:5:13:5 | suppression range |
+| TestSuppressWarnings.java:18:5:18:98 | SuppressWarnings | lgtm[java/confusing-method-name] blah blah lgtm[java/non-sync-override] | lgtm[java/confusing-method-name] | TestSuppressWarnings.java:18:5:21:5 | suppression range |
+| TestSuppressWarnings.java:18:5:18:98 | SuppressWarnings | lgtm[java/confusing-method-name] blah blah lgtm[java/non-sync-override] | lgtm[java/non-sync-override] | TestSuppressWarnings.java:18:5:21:5 | suppression range |

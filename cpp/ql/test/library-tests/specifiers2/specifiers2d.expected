@@ -1,0 +1,5 @@
+| specifiers2.c:18:21:18:23 | svi | file://:0:0:0:0 | volatile int | file://:0:0:0:0 | volatile |
+| specifiers2.c:19:11:19:12 | ci | file://:0:0:0:0 | const int | file://:0:0:0:0 | const |
+| specifiers2.c:21:34:21:34 | p | file://:0:0:0:0 | char *__restrict__ | file://:0:0:0:0 | restrict |
+| specifiers2pp.cpp:52:25:52:27 | vci | specifiers2pp.cpp:50:32:50:54 | volatile_const_pointer2 | file://:0:0:0:0 | const |
+| specifiers2pp.cpp:52:25:52:27 | vci | specifiers2pp.cpp:50:32:50:54 | volatile_const_pointer2 | file://:0:0:0:0 | volatile |

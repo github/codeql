@@ -1,0 +1,2 @@
+| NoConstantsOnly.cs:5:20:5:32 | MathConstants | Class 'MathConstants' only declares common constants. |
+| NoConstantsOnlyBad.cs:5:20:5:32 | MathConstants | Class 'MathConstants' only declares common constants. |

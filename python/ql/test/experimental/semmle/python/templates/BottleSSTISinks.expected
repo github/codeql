@@ -1,0 +1,2 @@
+| Bottle.py:11:26:11:33 | argument to bottle.SimpleTemplate() |
+| Bottle.py:17:17:17:24 | argument to bottle.template() |

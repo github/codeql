@@ -1,0 +1,45 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Property setter functions that silently ignore their parameter make code hard to understand
+and could indicate an underlying bug.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+If the property is meant to be immutable, the setter should throw an exception to flag
+any mutation attempt.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+The following example shows a constructor function <code>Point</code> that uses property accessors
+on <code>x</code> and <code>y</code> to ensure that they are only set to integer values. However,
+the setter for <code>y</code> contains a typo: it erroneously sets <code>y</code> to <code>_x</code>
+(which is unbound at this point), not to its parameter <code>_y</code>.
+</p>
+
+<sample src="examples/SetterIgnoresParameter.js" />
+
+<p>
+Clearly, the example should be fixed like this:
+</p>
+
+<sample src="examples/SetterIgnoresParameterGood.js" />
+
+</example>
+<references>
+
+
+<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/set">Property setters</a>.</li>
+
+
+</references>
+</qhelp>

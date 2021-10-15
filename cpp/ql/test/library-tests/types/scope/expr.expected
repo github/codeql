@@ -1,0 +1,34 @@
+| scope.c:12:11:12:14 | 2048 | scope.c:11:5:11:6 | f1 |
+| scope.c:13:12:13:12 | p | scope.c:11:5:11:6 | f1 |
+| scope.c:13:12:13:15 | array to pointer conversion | scope.c:11:5:11:6 | f1 |
+| scope.c:13:12:13:18 | access to array | scope.c:11:5:11:6 | f1 |
+| scope.c:13:15:13:15 | v | scope.c:11:5:11:6 | f1 |
+| scope.c:13:17:13:17 | 1 | scope.c:11:5:11:6 | f1 |
+| scope.c:17:11:17:14 | 2048 | scope.c:16:5:16:6 | f2 |
+| scope.c:18:12:18:12 | p | scope.c:16:5:16:6 | f2 |
+| scope.c:18:12:18:15 | array to pointer conversion | scope.c:16:5:16:6 | f2 |
+| scope.c:18:12:18:18 | access to array | scope.c:16:5:16:6 | f2 |
+| scope.c:18:15:18:15 | v | scope.c:16:5:16:6 | f2 |
+| scope.c:18:17:18:17 | 1 | scope.c:16:5:16:6 | f2 |
+| scope.c:21:11:21:14 | 2048 | scope.c:20:5:20:6 | f3 |
+| scope.c:22:12:22:12 | p | scope.c:20:5:20:6 | f3 |
+| scope.c:22:12:22:15 | array to pointer conversion | scope.c:20:5:20:6 | f3 |
+| scope.c:22:12:22:18 | access to array | scope.c:20:5:20:6 | f3 |
+| scope.c:22:15:22:15 | v | scope.c:20:5:20:6 | f3 |
+| scope.c:22:17:22:17 | 1 | scope.c:20:5:20:6 | f3 |
+| scope.c:26:11:26:14 | 2048 | scope.c:25:5:25:6 | f4 |
+| scope.c:27:12:27:12 | p | scope.c:25:5:25:6 | f4 |
+| scope.c:27:12:27:15 | array to pointer conversion | scope.c:25:5:25:6 | f4 |
+| scope.c:27:12:27:18 | access to array | scope.c:25:5:25:6 | f4 |
+| scope.c:27:15:27:15 | v | scope.c:25:5:25:6 | f4 |
+| scope.c:27:17:27:17 | 1 | scope.c:25:5:25:6 | f4 |
+| scope.cpp:7:11:7:13 | 400 | scope.cpp:6:6:6:7 | g1 |
+| scope.cpp:9:28:9:30 | 500 | scope.cpp:6:6:6:7 | g1 |
+| scope.cpp:18:19:18:21 | 600 | scope.cpp:16:14:16:15 | g2 |
+| scope.cpp:24:13:24:28 | (int)... | scope.cpp:6:6:6:7 | g1 |
+| scope.cpp:24:13:24:28 | sizeof(int[800]) | scope.cpp:6:6:6:7 | g1 |
+| scope.cpp:24:24:24:26 | 800 | scope.cpp:6:6:6:7 | g1 |
+| scope.cpp:25:14:25:25 | new[] | scope.cpp:6:6:6:7 | g1 |
+| scope.cpp:25:22:25:24 | 900 | scope.cpp:6:6:6:7 | g1 |
+| scope.cpp:26:14:26:26 | new[] | scope.cpp:6:6:6:7 | g1 |
+| scope.cpp:26:22:26:25 | 1000 | scope.cpp:6:6:6:7 | g1 |

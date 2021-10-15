@@ -1,0 +1,60 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Efferent coupling is the number of outgoing dependencies for each class. In other words, it is the 
+number of other classes on which each class depends.
+</p>
+
+<p>
+A class that depends on many other classes is quite brittle, because if any of
+its dependencies change, the class itself may have to change as well. Furthermore, the
+reason for the high number of dependencies is often that different parts of
+the class depend on different groups of other classes, so it is common to
+find that classes with high efferent coupling also lack cohesion.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+You can reduce efferent coupling by splitting up a class so that each part depends on fewer classes.
+</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, class <code>X</code> depends on both <code>Y</code> and
+<code>Z</code>.
+</p>
+
+<sample src="ClassEfferentCoupling.py" />
+
+<p>However, the methods that use <code>Y</code> do not use <code>Z</code>, and the methods 
+that use <code>Z</code> do not use <code>Y</code>. Therefore, the class can be split into 
+two classes, one of which depends only on <code>Y</code> and the other only on <code>Z</code></p>
+
+<sample src="ClassEfferentCouplingGood.py" />
+
+<p>
+Although this is a slightly artificial example, this sort of situation
+does tend to occur in more complicated classes,
+so the general technique is quite widely applicable.
+</p>
+
+</example>
+<references>
+
+
+<li>
+IBM developerWorks: <a href="https://web.archive.org/web/20190919085934/https://www.ibm.com/developerworks/library/j-eaed6/">Evolutionary architecture and emergent design: Emergent design through metrics</a>.
+</li>
+<li>
+R. Martin, <em>Agile Software Development: Principles, Patterns and Practices</em>. Pearson, 2011.
+</li>
+
+
+</references>
+</qhelp>

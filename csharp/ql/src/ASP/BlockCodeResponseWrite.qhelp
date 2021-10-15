@@ -1,0 +1,41 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>An inline code block containing a single <code>Response.Write()</code>
+can be written more clearly using an inline expression.</p>
+
+<p>ASP.NET provides general-purpose <em>inline code</em>, using the
+syntax "<code>&lt;%...%></code>". The inline code can emit content
+into the resulting HTML page by calling <code>Response.Write()</code>.</p>
+
+<p>In many cases, the inline code is only one line long, and does nothing more
+than issue a single call to <code>Response.Write()</code>. For such cases, the
+call to <code>Response.Write()</code> can be longer than the code to compute
+what will be embedded. This makes it harder to understand the intent of the code.</p>
+</overview>
+
+<recommendation>
+<p>ASP.NET also provides <em>inline expressions</em>, using
+the syntax "<code>&lt;%=...></code>". An inline expression does not need
+to call <code>Response.Write()</code>. The equals sign (=)
+is a concise way to tell ASP.NET to call <code>Response.Write()</code>.</p>
+</recommendation>
+
+<example>
+<p>This example shows a page where an inline code block writes
+content using <code>Response.Write()</code>.</p>
+<sample src="BlockCodeResponseWriteBad.aspx" />
+<p>In the following example, the code block is replaced with an inline expression,
+and is thus more concise and direct.</p>
+<sample src="BlockCodeResponseWriteGood.aspx" />
+</example>
+
+<references>
+<li>Microsoft: <a href="https://support.microsoft.com/en-us/help/976112/introduction-to-asp-net-inline-expressions-in-the--net-framework">Introduction
+    to ASP.NET inline expressions in the .NET Framework</a>.</li>
+<li>MSDN: <a href="https://msdn.microsoft.com/en-us/library/ms973868.aspx">Introduction to ASP.NET and Web Forms</a>,
+<a href="https://msdn.microsoft.com/en-us/library/fy30at8h(v=vs.100).aspx">ASP.NET Page Syntax</a>.</li>
+</references>
+</qhelp>

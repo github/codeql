@@ -1,0 +1,57 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Nested expressions where the spacing around operators suggests a different
+grouping than that imposed by the JavaScript operator precedence rules are problematic:
+they could indicate a bug where the author of the code misunderstood the precedence
+rules. Even if there is no a bug, the spacing could be confusing to people who
+read the code.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Make sure that the spacing around operators reflects operator precedence, or use parentheses to
+clarify grouping.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+Consider the following piece of code for allocating an array:
+</p>
+
+<sample src="examples/WhitespaceContradictsPrecedence.js" />
+
+<p>
+Here, the spacing around <code>+</code> and <code>&gt;&gt;</code> suggests the grouping
+<code>capacity + (capacity&gt;&gt;1)</code>, that is, the allocated array should be 50% larger than
+the given capacity.
+</p>
+
+<p>
+However, <code>+</code> has higher precedence than <code>&gt;&gt;</code>, so
+this code allocates an array of size <code>(capacity + capacity) &gt;&gt; 1</code>, which is
+the same as <code>capacity</code>.
+</p>
+
+<p>
+To fix this issue, parentheses should be used like this:
+</p>
+
+<sample src="examples/WhitespaceContradictsPrecedenceGood.js" />
+
+</example>
+<references>
+
+
+<li>J. Bloch and N. Gafter, <em>Java Puzzlers: Traps, Pitfalls, and Corner Cases</em>, Puzzle 35. Addison-Wesley, 2005.</li>
+
+
+</references>
+</qhelp>

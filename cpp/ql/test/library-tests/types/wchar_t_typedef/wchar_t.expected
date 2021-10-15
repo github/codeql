@@ -1,0 +1,3 @@
+| file://:0:0:0:0 | wchar_t | Wchar_t, WideCharType |  |
+| file://:0:0:0:0 | wchar_t * | PointerType | CTypedefType, Wchar_t |
+| ms.c:2:24:2:30 | wchar_t | CTypedefType, Wchar_t |  |

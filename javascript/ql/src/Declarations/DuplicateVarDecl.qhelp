@@ -1,0 +1,38 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+A variable declaration statement that declares the same variable twice is confusing and hard to
+maintain.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Remove one of the two declarations. When removing a declaration with an initializer, further changes
+may be necessary to ensure that the variable is correctly initialized.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+In the following example, the variable declaration statement declares the variable <code>dom</code>
+twice. The second declaration is unnecessary, and since it has no initializer it can simply be
+removed.
+</p>
+
+<sample src="examples/DuplicateVarDecl.js" />
+
+</example>
+<references>
+
+
+<li>Ecma International, <i>ECMAScript Language Definition</i>, 5.1 Edition, Section 12.2. ECMA, 2011.</li>
+
+
+</references>
+</qhelp>

@@ -1,0 +1,44 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+
+<!-- Mention that this rule may not be applicable in projects that don't follow the JSF standard. -->
+<include src="../jsfNote.inc.qhelp" />
+
+<p>
+This query highlights portions of code that can expose the floating point implementation of the underlying
+machine. Manually manipulating the bits in the float is prone to mistakes and is unportable. Floating point
+implementations can vary across architectures, and bit-field packing can differ across compilers,
+making manual bit-manipulation of floats inadvisable.
+</p>
+
+<p>
+The bits of a floating point could be exposed by:
+</p>
+<ul>
+  <li>casting a float pointer to a pointer of another type</li>
+  <li>casting a float array to a non-float pointer type</li>
+  <li>using a float in a union with another type</li>
+</ul>
+
+
+</overview>
+<recommendation>
+<p>
+Do not expose the bit contents of a float. 
+</p>
+
+</recommendation>
+<example><sample src="AV Rule 147.cpp" />
+
+
+
+</example>
+<references>
+
+<li>AV Rule 147, <em>Joint Strike Fighter Air Vehicle C++ Coding Standards</em>. Lockheed Martin Corporation, 2005.
+</li></references></qhelp>

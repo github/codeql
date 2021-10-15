@@ -1,0 +1,23 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>If a base class is both virtual and non-virtual within a single hierarchy then the hierarchy is 
+more difficult to understand and maintain. This rule identifies any base classes that are derived 
+as both virtual and non-virtual in one hierarchy as violations.</p>
+
+</overview>
+<references>
+
+<li>
+  AV Rule 89, <em>Joint Strike Fighter Air Vehicle C++ Coding Standards</em>. Lockheed Martin Corporation, 2005.
+</li>
+<li>
+  MSDN Library: <a href="https://docs.microsoft.com/en-us/cpp/cpp/multiple-base-classes">Multiple Base Classes</a>.
+</li>
+
+
+</references>
+</qhelp>

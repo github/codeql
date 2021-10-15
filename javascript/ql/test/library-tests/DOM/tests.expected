@@ -1,0 +1,138 @@
+test_AttributeDefinition
+| event-handler-receiver.html:4:11:4:40 | onclick=alert(this.tagName); |
+| tst.html:3:6:3:30 | href=https://semmle.com |
+| tst.html:3:32:3:46 | target=_blank |
+| tst.js:2:22:2:37 | target: "_blank" |
+| tst.js:3:11:3:66 | $("<a/> ... e.com") |
+| tst.js:4:3:4:27 | a.attr( ... pener") |
+| tst.js:6:5:6:24 | "data-bind": "stuff" |
+| tst.js:8:3:8:29 | a.prop( ... errer") |
+| tst.js:10:5:10:29 | "data-b ... rstuff" |
+| tst.js:12:3:12:41 | $.attr( ... errer") |
+| tst.js:13:3:13:28 | $.prop( ... d", "") |
+| tst.jsx:4:14:4:38 | href="h ... le.com" |
+| tst.jsx:4:40:4:48 | rel={rel} |
+| tst.jsx:4:50:4:64 | {...otherAttrs} |
+test_ElementDefinition_getAttribute
+| event-handler-receiver.html:4:3:4:58 | <button>...</> | 0 | event-handler-receiver.html:4:11:4:40 | onclick=alert(this.tagName); |
+| tst.html:3:3:3:57 | <a>...</> | 0 | tst.html:3:6:3:30 | href=https://semmle.com |
+| tst.html:3:3:3:57 | <a>...</> | 1 | tst.html:3:32:3:46 | target=_blank |
+| tst.jsx:4:11:4:75 | <a href ... mle</a> | 0 | tst.jsx:4:14:4:38 | href="h ... le.com" |
+| tst.jsx:4:11:4:75 | <a href ... mle</a> | 1 | tst.jsx:4:40:4:48 | rel={rel} |
+| tst.jsx:4:11:4:75 | <a href ... mle</a> | 2 | tst.jsx:4:50:4:64 | {...otherAttrs} |
+test_ElementDefinition_getRoot
+| event-handler-receiver.html:1:1:6:7 | <html>...</> | event-handler-receiver.html:1:1:6:7 | <html>...</> |
+| event-handler-receiver.html:2:1:2:13 | <head>...</> | event-handler-receiver.html:1:1:6:7 | <html>...</> |
+| event-handler-receiver.html:3:1:5:7 | <body>...</> | event-handler-receiver.html:1:1:6:7 | <html>...</> |
+| event-handler-receiver.html:4:3:4:58 | <button>...</> | event-handler-receiver.html:1:1:6:7 | <html>...</> |
+| tst.html:1:1:5:7 | <html>...</> | tst.html:1:1:5:7 | <html>...</> |
+| tst.html:2:1:4:7 | <body>...</> | tst.html:1:1:5:7 | <html>...</> |
+| tst.html:3:3:3:57 | <a>...</> | tst.html:1:1:5:7 | <html>...</> |
+| tst.js:3:11:3:31 | $("<a/> ... rAttrs) | tst.js:3:11:3:31 | $("<a/> ... rAttrs) |
+| tst.js:23:5:23:30 | React.c ... ('div') | tst.js:23:5:23:30 | React.c ... ('div') |
+| tst.js:24:5:24:55 | React.c ... , null) | tst.js:24:5:24:55 | React.c ... , null) |
+| tst.js:27:5:27:14 | factory1() | tst.js:27:5:27:14 | factory1() |
+| tst.js:31:20:31:55 | <div>He ... }</div> | tst.js:31:20:31:55 | <div>He ... }</div> |
+| tst.js:36:5:36:55 | React.c ... , null) | tst.js:36:5:36:55 | React.c ... , null) |
+| tst.js:39:5:39:14 | factory2() | tst.js:39:5:39:14 | factory2() |
+| tst.jsx:4:11:4:75 | <a href ... mle</a> | tst.jsx:4:11:4:75 | <a href ... mle</a> |
+test_WebStorageWrite
+| tst.js:15:22:15:28 | "value" |
+| tst.js:16:31:16:37 | "value" |
+| tst.js:17:24:17:30 | "value" |
+| tst.js:18:33:18:39 | "value" |
+test_ElementDefinition_getAttributeByName
+| event-handler-receiver.html:4:3:4:58 | <button>...</> | onclick | event-handler-receiver.html:4:11:4:40 | onclick=alert(this.tagName); |
+| tst.html:3:3:3:57 | <a>...</> | href | tst.html:3:6:3:30 | href=https://semmle.com |
+| tst.html:3:3:3:57 | <a>...</> | target | tst.html:3:32:3:46 | target=_blank |
+| tst.js:3:11:3:31 | $("<a/> ... rAttrs) | data-bind | tst.js:6:5:6:24 | "data-bind": "stuff" |
+| tst.js:3:11:3:31 | $("<a/> ... rAttrs) | data-bind | tst.js:10:5:10:29 | "data-b ... rstuff" |
+| tst.js:3:11:3:31 | $("<a/> ... rAttrs) | data-bind | tst.js:13:3:13:28 | $.prop( ... d", "") |
+| tst.js:3:11:3:31 | $("<a/> ... rAttrs) | href | tst.js:3:11:3:66 | $("<a/> ... e.com") |
+| tst.js:3:11:3:31 | $("<a/> ... rAttrs) | rel | tst.js:4:3:4:27 | a.attr( ... pener") |
+| tst.js:3:11:3:31 | $("<a/> ... rAttrs) | rel | tst.js:8:3:8:29 | a.prop( ... errer") |
+| tst.js:3:11:3:31 | $("<a/> ... rAttrs) | rel | tst.js:12:3:12:41 | $.attr( ... errer") |
+| tst.js:3:11:3:31 | $("<a/> ... rAttrs) | target | tst.js:2:22:2:37 | target: "_blank" |
+| tst.jsx:4:11:4:75 | <a href ... mle</a> | href | tst.jsx:4:14:4:38 | href="h ... le.com" |
+| tst.jsx:4:11:4:75 | <a href ... mle</a> | rel | tst.jsx:4:40:4:48 | rel={rel} |
+test_AttributeDefinition_getStringValue
+| event-handler-receiver.html:4:11:4:40 | onclick=alert(this.tagName); | alert(this.tagName); |
+| tst.html:3:6:3:30 | href=https://semmle.com | https://semmle.com |
+| tst.html:3:32:3:46 | target=_blank | _blank |
+| tst.js:2:22:2:37 | target: "_blank" | _blank |
+| tst.js:3:11:3:66 | $("<a/> ... e.com") | https://semmle.com |
+| tst.js:4:3:4:27 | a.attr( ... pener") | noopener |
+| tst.js:6:5:6:24 | "data-bind": "stuff" | stuff |
+| tst.js:8:3:8:29 | a.prop( ... errer") | noreferrer |
+| tst.js:10:5:10:29 | "data-b ... rstuff" | otherstuff |
+| tst.js:12:3:12:41 | $.attr( ... errer") | noopener noreferrer |
+| tst.js:13:3:13:28 | $.prop( ... d", "") |  |
+| tst.jsx:4:14:4:38 | href="h ... le.com" | https://semmle.com |
+test_AttributeDefinition_getName
+| event-handler-receiver.html:4:11:4:40 | onclick=alert(this.tagName); | onclick |
+| tst.html:3:6:3:30 | href=https://semmle.com | href |
+| tst.html:3:32:3:46 | target=_blank | target |
+| tst.js:2:22:2:37 | target: "_blank" | target |
+| tst.js:3:11:3:66 | $("<a/> ... e.com") | href |
+| tst.js:4:3:4:27 | a.attr( ... pener") | rel |
+| tst.js:6:5:6:24 | "data-bind": "stuff" | data-bind |
+| tst.js:8:3:8:29 | a.prop( ... errer") | rel |
+| tst.js:10:5:10:29 | "data-b ... rstuff" | data-bind |
+| tst.js:12:3:12:41 | $.attr( ... errer") | rel |
+| tst.js:13:3:13:28 | $.prop( ... d", "") | data-bind |
+| tst.jsx:4:14:4:38 | href="h ... le.com" | href |
+| tst.jsx:4:40:4:48 | rel={rel} | rel |
+test_Element
+| event-handler-receiver.html:1:1:6:7 | <html>...</> | event-handler-receiver.html:1:1:6:7 | <html>...</> |
+| event-handler-receiver.html:2:1:2:13 | <head>...</> | event-handler-receiver.html:2:1:2:13 | <head>...</> |
+| event-handler-receiver.html:3:1:5:7 | <body>...</> | event-handler-receiver.html:3:1:5:7 | <body>...</> |
+| event-handler-receiver.html:4:3:4:58 | <button>...</> | event-handler-receiver.html:4:3:4:58 | <button>...</> |
+| tst.html:1:1:5:7 | <html>...</> | tst.html:1:1:5:7 | <html>...</> |
+| tst.html:2:1:4:7 | <body>...</> | tst.html:2:1:4:7 | <body>...</> |
+| tst.html:3:3:3:57 | <a>...</> | tst.html:3:3:3:57 | <a>...</> |
+| tst.js:3:11:3:31 | $("<a/> ... rAttrs) | tst.js:3:11:3:31 | $("<a/> ... rAttrs) |
+| tst.js:3:11:3:66 | $("<a/> ... e.com") | tst.js:3:11:3:31 | $("<a/> ... rAttrs) |
+| tst.js:4:3:4:3 | a | tst.js:3:11:3:31 | $("<a/> ... rAttrs) |
+| tst.js:4:3:4:27 | a.attr( ... pener") | tst.js:3:11:3:31 | $("<a/> ... rAttrs) |
+| tst.js:5:3:5:3 | a | tst.js:3:11:3:31 | $("<a/> ... rAttrs) |
+| tst.js:5:3:7:4 | a.attr( ... f"\\n  }) | tst.js:3:11:3:31 | $("<a/> ... rAttrs) |
+| tst.js:8:3:8:3 | a | tst.js:3:11:3:31 | $("<a/> ... rAttrs) |
+| tst.js:8:3:8:29 | a.prop( ... errer") | tst.js:3:11:3:31 | $("<a/> ... rAttrs) |
+| tst.js:9:3:9:3 | a | tst.js:3:11:3:31 | $("<a/> ... rAttrs) |
+| tst.js:9:3:11:4 | a.prop( ... f"\\n  }) | tst.js:3:11:3:31 | $("<a/> ... rAttrs) |
+| tst.js:12:10:12:10 | a | tst.js:3:11:3:31 | $("<a/> ... rAttrs) |
+| tst.js:13:10:13:10 | a | tst.js:3:11:3:31 | $("<a/> ... rAttrs) |
+| tst.js:23:5:23:30 | React.c ... ('div') | tst.js:23:5:23:30 | React.c ... ('div') |
+| tst.js:24:5:24:55 | React.c ... , null) | tst.js:24:5:24:55 | React.c ... , null) |
+| tst.js:27:5:27:14 | factory1() | tst.js:27:5:27:14 | factory1() |
+| tst.js:31:20:31:55 | <div>He ... }</div> | tst.js:31:20:31:55 | <div>He ... }</div> |
+| tst.js:36:5:36:55 | React.c ... , null) | tst.js:36:5:36:55 | React.c ... , null) |
+| tst.js:39:5:39:14 | factory2() | tst.js:39:5:39:14 | factory2() |
+| tst.jsx:4:11:4:75 | <a href ... mle</a> | tst.jsx:4:11:4:75 | <a href ... mle</a> |
+| tst.jsx:5:3:5:3 | a | tst.jsx:4:11:4:75 | <a href ... mle</a> |
+test_AttributeDefinition_getValueNode
+| tst.js:2:22:2:37 | target: "_blank" | tst.js:2:30:2:37 | "_blank" |
+| tst.js:3:11:3:66 | $("<a/> ... e.com") | tst.js:3:46:3:65 | "https://semmle.com" |
+| tst.js:4:3:4:27 | a.attr( ... pener") | tst.js:4:17:4:26 | "noopener" |
+| tst.js:6:5:6:24 | "data-bind": "stuff" | tst.js:6:18:6:24 | "stuff" |
+| tst.js:8:3:8:29 | a.prop( ... errer") | tst.js:8:17:8:28 | "noreferrer" |
+| tst.js:10:5:10:29 | "data-b ... rstuff" | tst.js:10:18:10:29 | "otherstuff" |
+| tst.js:12:3:12:41 | $.attr( ... errer") | tst.js:12:20:12:40 | "noopen ... ferrer" |
+| tst.js:13:3:13:28 | $.prop( ... d", "") | tst.js:13:26:13:27 | "" |
+| tst.jsx:4:14:4:38 | href="h ... le.com" | tst.jsx:4:19:4:38 | "https://semmle.com" |
+| tst.jsx:4:40:4:48 | rel={rel} | tst.jsx:4:45:4:47 | rel |
+| tst.jsx:4:50:4:64 | {...otherAttrs} | tst.jsx:4:50:4:64 | ...otherAttrs |
+test_ElementDefinition
+| event-handler-receiver.html:1:1:6:7 | <html>...</> | html |
+| event-handler-receiver.html:2:1:2:13 | <head>...</> | head |
+| event-handler-receiver.html:3:1:5:7 | <body>...</> | body |
+| event-handler-receiver.html:4:3:4:58 | <button>...</> | button |
+| tst.html:1:1:5:7 | <html>...</> | html |
+| tst.html:2:1:4:7 | <body>...</> | body |
+| tst.html:3:3:3:57 | <a>...</> | a |
+| tst.js:3:11:3:31 | $("<a/> ... rAttrs) | a |
+| tst.js:23:5:23:30 | React.c ... ('div') | div |
+| tst.js:24:5:24:55 | React.c ... , null) | div |
+| tst.js:27:5:27:14 | factory1() | div |
+| tst.js:31:20:31:55 | <div>He ... }</div> | div |
+| tst.jsx:4:11:4:75 | <a href ... mle</a> | a |

@@ -1,0 +1,12 @@
+| Function C.n | 0 | ControlFlowNode for self |
+| Function C.n | 1 | ControlFlowNode for arg1 |
+| Function D.foo | 0 | ControlFlowNode for arg |
+| Function bar | 0 | ControlFlowNode for a |
+| Function f | 0 | ControlFlowNode for arg0 |
+| Function f | 1 | ControlFlowNode for arg1 |
+| Function f | 2 | ControlFlowNode for arg2 |
+| Function foo | 0 | ControlFlowNode for a |
+| Method(Function C.n, C()) | 0 | ControlFlowNode for arg1 |
+| Method(Function C.n, class C) | 0 | ControlFlowNode for arg1 |
+| Method(Function f, C()) | 0 | ControlFlowNode for arg1 |
+| Method(Function f, C()) | 1 | ControlFlowNode for arg2 |

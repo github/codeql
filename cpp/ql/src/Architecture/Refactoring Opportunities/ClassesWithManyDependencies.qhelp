@@ -1,0 +1,34 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>This rule finds classes that depend on many other types. Depending on too many other classes makes a class vulnerable to changes 
+and defects in its dependencies, and is also a sign that the class lacks cohesion (i.e. a single purpose). These classes
+could be refactored into smaller, more cohesive classes.</p>
+
+</overview>
+<recommendation>
+<p>These classes could probably be refactored into smaller classes with fewer dependencies.</p>
+
+</recommendation>
+<example>
+<sample src="ClassesWithManyDependencies.cpp" />
+
+
+</example>
+<references>
+
+<li>W. Stevens, G. Myers, L. Constantine, <em>Structured Design</em>, IBM Systems Journal, 13 (2), 115-139, 1974.</li>
+<li>
+Microsoft Patterns &amp; Practices Team. <a href="http://msdn.microsoft.com/en-us/library/ee658117.aspx">Architectural Patterns and Styles</a> <em>Microsoft Application Architecture Guide, 2nd Edition.</em> Microsoft Press, 2009.
+</li>
+<li>
+  <a href="https://en.wikipedia.org/wiki/Code_refactoring">Wikipedia: Code refactoring</a>
+</li>
+
+
+</references>
+</qhelp>

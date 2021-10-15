@@ -1,0 +1,50 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+
+<p>Deserializing an object from untrusted input may result in security problems, such
+as denial of service or remote code execution.</p>
+
+</overview>
+<recommendation>
+
+<p>Avoid deserializing objects from an untrusted source, and if not possible, make sure
+to use a safe deserialization framework.</p>
+
+</recommendation>
+<example>
+
+<p>In this example, text from an HTML text box is deserialized using a
+<code>JavaScriptSerializer</code> with a simple type resolver. Using a type resolver
+means that arbitrary code may be executed.</p>
+
+<sample src="UnsafeDeserializationUntrustedInputBad.cs" />
+
+<p>To fix this specific vulnerability, we avoid using a type resolver. In other cases,
+it may be necessary to use a different deserialization framework.</p>
+
+<sample src="UnsafeDeserializationUntrustedInputGood.cs" />
+
+<p>In the following example potentially untrusted stream and type is deserialized using a
+<code>DataContractJsonSerializer</code> which is known to be vulnerable with user supplied types.</p>
+
+<sample src="UnsafeDeserializationUntrustedInputTypeBad.cs" />
+
+<p>To fix this specific vulnerability, we are using hardcoded
+Plain Old CLR Object (<a href="https://en.wikipedia.org/wiki/Plain_old_CLR_object">POCO</a>) type. In other cases,
+it may be necessary to use a different deserialization framework.</p>
+
+<sample src="UnsafeDeserializationUntrustedInputTypeGood.cs" />
+
+</example>
+<references>
+
+<li>
+Mu&ntilde;oz, Alvaro and Mirosh, Oleksandr:
+<a href="https://www.blackhat.com/docs/us-17/thursday/us-17-Munoz-Friday-The-13th-Json-Attacks.pdf">JSON Attacks</a>.
+</li>
+
+</references>
+</qhelp>

@@ -1,0 +1,52 @@
+| assignment.py:5 | SOURCE | simple.test |
+| assignment.py:13 | SOURCE | simple.test |
+| carrier.py:17 | SOURCE | simple.test |
+| carrier.py:21 | TAINT_CARRIER_SOURCE | explicit.carrier |
+| carrier.py:25 | SOURCE | simple.test |
+| carrier.py:29 | TAINT_CARRIER_SOURCE | explicit.carrier |
+| carrier.py:33 | TAINT_CARRIER_SOURCE | explicit.carrier |
+| deep.py:20 | SOURCE | simple.test |
+| module.py:3 | SOURCE | simple.test |
+| module.py:7 | SOURCE | simple.test |
+| module.py:10 | SOURCE | simple.test |
+| rockpaperscissors.py:13 | SCISSORS | scissors |
+| rockpaperscissors.py:16 | ROCK | rock |
+| rockpaperscissors.py:19 | ROCK | rock |
+| rockpaperscissors.py:24 | ROCK | rock |
+| rockpaperscissors.py:29 | SCISSORS | scissors |
+| sanitizer.py:9 | user_input() | Command injection |
+| sanitizer.py:9 | user_input() | SQL injection |
+| sanitizer.py:16 | user_input() | Command injection |
+| sanitizer.py:16 | user_input() | SQL injection |
+| sanitizer.py:24 | user_input() | Command injection |
+| sanitizer.py:24 | user_input() | SQL injection |
+| sanitizer.py:31 | user_input() | Command injection |
+| sanitizer.py:31 | user_input() | SQL injection |
+| test.py:3 | SOURCE | simple.test |
+| test.py:6 | SOURCE | simple.test |
+| test.py:10 | SOURCE | simple.test |
+| test.py:20 | SOURCE | simple.test |
+| test.py:31 | SOURCE | simple.test |
+| test.py:37 | SOURCE | simple.test |
+| test.py:62 | SOURCE | simple.test |
+| test.py:67 | SOURCE | simple.test |
+| test.py:76 | SOURCE | simple.test |
+| test.py:120 | CUSTOM_SOURCE | basic.custom |
+| test.py:126 | CUSTOM_SOURCE | basic.custom |
+| test.py:128 | SOURCE | simple.test |
+| test.py:136 | CUSTOM_SOURCE | basic.custom |
+| test.py:138 | SOURCE | simple.test |
+| test.py:146 | CUSTOM_SOURCE | basic.custom |
+| test.py:148 | SOURCE | simple.test |
+| test.py:159 | SOURCE | simple.test |
+| test.py:163 | SOURCE | simple.test |
+| test.py:168 | SOURCE | simple.test |
+| test.py:169 | SOURCE | simple.test |
+| test.py:178 | SOURCE | simple.test |
+| test.py:189 | FALSEY | falsey |
+| test.py:195 | SOURCE | simple.test |
+| test.py:202 | ITERABLE_SOURCE | iterable.simple |
+| test.py:208 | SOURCE | simple.test |
+| test.py:217 | SOURCE | simple.test |
+| test.py:223 | SOURCE | simple.test |
+| test.py:229 | SOURCE | simple.test |

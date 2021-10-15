@@ -1,0 +1,6 @@
+| StringBuilderCharInit.cs:9:27:9:29 | a | A character value passed to 'new StringBuilder()' is interpreted as the buffer capacity. |
+| StringBuilderCharInit.cs:11:30:11:32 | a | A character value passed to 'new StringBuilder()' is interpreted as the buffer capacity. |
+| StringBuilderCharInit.cs:12:27:12:29 | a | A character value passed to 'new StringBuilder()' is interpreted as the buffer capacity. |
+| StringBuilderCharInit.cs:12:32:12:34 | b | A character value passed to 'new StringBuilder()' is interpreted as the buffer capacity. |
+| StringBuilderCharInit.cs:15:31:15:33 | a | A character value passed to 'new StringBuilder()' is interpreted as the buffer capacity. |
+| StringBuilderCharInit.cs:17:40:17:42 | a | A character value passed to 'new StringBuilder()' is interpreted as the buffer capacity. |

@@ -1,0 +1,51 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+If unsanitized user input is processed as XML, it should be validated against a known schema. If no
+validation occurs, or if the validation relies on the schema or DTD specified in the document
+itself, then the XML document may contain any data in any form, which may invalidate assumptions
+the program later makes.
+</p>
+
+</overview>
+
+<recommendation>
+<p>
+All XML provided by a user should be validated against a known schema when it is processed.
+</p>
+<p>
+If using <code>XmlReader.Create</code>, you should always pass an instance of
+<code>XmlReaderSettings</code>, with the following properties:
+</p>
+<ul>
+<li><code>ValidationType</code> must be set to <code>Schema</code>. If this property is unset, no
+validation occurs. If it is set to <code>DTD</code>, the document is only validated against the DTD
+specified in the user-provided document itself - which could be specified as anything by a malicious
+user.</li>
+<li><code>ValidationFlags</code> must not include <code>ProcessInlineSchema</code> or
+<code>ProcessSchemaLocation</code>. These flags allow a user to provide their own inline schema or
+schema location for validation, allowing a malicious user to bypass the known schema validation.
+</li>
+</ul>
+
+</recommendation>
+
+<example>
+<p>
+In the following example, text provided by a user is loaded using <code>XmlReader.Create</code>. In
+the first three examples, insufficient validation occurs, because either no validation is specified,
+or validation is only specified against a DTD provided by the user, or the validation permits a user
+to provide an inline schema. In the final example, a known schema is provided, and validation is set,
+using an instance of <code>XmlReaderSettings</code>. This ensures that the user input is properly
+validated against the known schema.
+</p>
+<sample src="MissingXMLValidation.cs" />
+</example>
+
+<references>
+<li>Microsoft: <a href="https://msdn.microsoft.com/en-us/library/3740e0b5(v=vs.110).aspx">XML Schema (XSD) Validation with XmlSchemaSet</a>.</li>
+</references>
+</qhelp>

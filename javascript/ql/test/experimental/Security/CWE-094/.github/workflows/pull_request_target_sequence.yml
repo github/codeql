@@ -1,0 +1,9 @@
+on: [pull_request_target, push]
+
+jobs:
+  echo-chamber:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        ref: ${{ github.event.pull_request.head.ref }}

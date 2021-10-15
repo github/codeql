@@ -1,0 +1,41 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+According to the HTML5 standard, the value of the <code>id</code> attribute of an element must be
+unique amongst all the IDs in the element's home subtree. In particular, a single HTML document
+must not contain two elements with the same ID. Documents that do not conform to this restriction may be
+interpreted differently by different browsers.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Choose unique IDs for all elements inside a document. If the <code>id</code> attributes are used
+to attach style information to the elements via CSS, consider using <code>class</code> attributes
+instead.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following HTML document contains two <code>li</code> elements with the same ID:
+</p>
+
+<sample src="examples/AmbiguousIdAttribute.html"/>
+
+<p>
+Instead, each element should have its own unique ID:
+</p>
+
+<sample src="examples/AmbiguousIdAttributeGood.html"/>
+</example>
+
+<references>
+<li>HTML5 Standard: <a href="https://www.w3.org/TR/html5/dom.html#the-id-attribute">3.2.5.1 The id attribute</a>.</li>
+</references>
+
+</qhelp>

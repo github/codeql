@@ -1,0 +1,42 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Data which is accessed concurrently from multiple threads is vulnerable to race conditions
+and other errors. <code>lock</code> statements are often needed to make concurrent code correct and ensure
+that the data is consistent. However <code>lock</code> statements must be used consistently on
+all methods which are potentially called concurrently.</p>
+
+<p>When there is a <code>lock</code> statement on a property setter, it implies that the property could be 
+assigned to concurrently, so the property could also be read concurrently.
+Therefore a <code>lock</code> statement is necessary on the property getter. Even simple getters
+require a <code>lock</code> statement to ensure that there is a memory barrier when reading a field.
+</p>
+</overview>
+
+<recommendation>
+<p>Examine the logic of the program to check whether the property could be read concurrently. 
+Add a <code>lock</code> statement in the property getter if necessary.</p>
+
+<p>Alternatively, remove the <code>lock</code> statement from the property setter if it is
+no longer needed.</p>
+
+</recommendation>
+<example>
+<p>This example shows a property setter which uses a <code>lock</code> statement, but there is no
+corresponding <code>lock</code> statement in the getter. This means that <code>count</code> is not
+synchronized with <code>GenerateDiagnostics()</code>, and there is a read barrier missing from the
+property getter, which could cause bugs on some CPU architectures.</p>
+
+<sample src="SynchSetUnsynchGet.cs" />
+
+<p>The solution is to add a <code>lock</code> statement to the property getter, as follows:</p>
+<sample src="SynchSetUnsynchGetFix.cs" />
+</example>
+
+<references>
+  <li>MSDN, C# Reference: <a href="http://msdn.microsoft.com/en-gb/library/c5kehkcz.aspx">lock Statement</a>.</li>
+  <li>Wikipedia: <a href="https://en.wikipedia.org/wiki/Memory_barrier">Memory barrier</a>.</li>
+</references>
+</qhelp>

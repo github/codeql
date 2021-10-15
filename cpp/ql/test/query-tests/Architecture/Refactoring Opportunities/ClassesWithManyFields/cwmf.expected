@@ -1,0 +1,11 @@
+| cwmf.cpp:8:3:9:12 | aa | Struct aa has 20 fields; we suggest refactoring to 15 fields or fewer. | cwmf.cpp:8:3:9:12 | group of 20 fields here | group of 20 fields here |
+| cwmf.cpp:13:3:14:12 | bb | Class bb has 20 fields; we suggest refactoring to 15 fields or fewer. | cwmf.cpp:13:3:14:12 | group of 20 fields here | group of 20 fields here |
+| cwmf.cpp:24:3:25:12 | dd<T> | Template class dd<T> has 20 fields; we suggest refactoring to 15 fields or fewer. | cwmf.cpp:24:3:25:12 | group of 20 fields here | group of 20 fields here |
+| cwmf.cpp:30:3:31:12 | ee<U> | Template class ee<U> has 20 fields; we suggest refactoring to 15 fields or fewer. | cwmf.cpp:30:3:31:12 | group of 20 fields here | group of 20 fields here |
+| cwmf.cpp:41:8:57:22 | MyParticle | Struct MyParticle has 30 fields; we suggest refactoring to 15 fields or fewer. | cwmf.cpp:41:8:57:22 | group of 30 fields here | group of 30 fields here |
+| cwmf.cpp:60:8:60:20 | MyAlphaClass1 | Struct MyAlphaClass1 has 52 fields; we suggest refactoring to 15 fields or fewer - see $@. | cwmf.cpp:61:7:63:28 | group of 26 fields here | group of 26 fields here |
+| cwmf.cpp:60:8:60:20 | MyAlphaClass1 | Struct MyAlphaClass1 has 52 fields; we suggest refactoring to 15 fields or fewer - see $@. | cwmf.cpp:69:7:71:28 | group of 26 fields here | group of 26 fields here |
+| cwmf.cpp:74:8:74:20 | MyAlphaClass2 | Struct MyAlphaClass2 has 27 fields; we suggest refactoring to 15 fields or fewer - see $@. | cwmf.cpp:75:7:75:7 | declaration of x | declaration of x |
+| cwmf.cpp:74:8:74:20 | MyAlphaClass2 | Struct MyAlphaClass2 has 27 fields; we suggest refactoring to 15 fields or fewer - see $@. | cwmf.cpp:81:7:83:28 | group of 26 fields here | group of 26 fields here |
+| different_types.h:15:15:33:10 | DifferentTypes2 | Class DifferentTypes2 has 18 fields; we suggest refactoring to 15 fields or fewer. | different_types.h:15:15:33:10 | group of 18 fields here | group of 18 fields here |
+| different_types.h:15:15:33:10 | DifferentTypes2 | Class DifferentTypes2 has 18 fields; we suggest refactoring to 15 fields or fewer. | different_types.h:15:15:33:10 | group of 18 fields here | group of 18 fields here |

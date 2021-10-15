@@ -1,0 +1,35 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>A field that is neither public nor protected and never accessed
+is typically a leftover from old refactorings or a sign of incomplete or pending
+code changes.</p>
+
+<p>This rule does not apply to a field in a serializable class because it may be accessed during 
+serialization and deserialization.</p>
+
+<p>Fields annotated with <code>@SuppressWarnings("unused")</code> are also not reported.</p>
+
+</overview>
+<recommendation>
+
+<p>If an unused field is a leftover from old refactorings, you should just remove it. If it indicates
+incomplete or pending code changes, finish making the changes and remove the field if it is not
+needed.</p>
+
+</recommendation>
+<references>
+
+
+<li>
+Help - Eclipse Platform:
+<a href="https://help.eclipse.org/2020-12/advanced/content.jsp?topic=/org.eclipse.jdt.doc.user/reference/preferences/java/compiler/ref-preferences-errors-warnings.htm">Java Compiler Errors/Warnings Preferences</a>.
+</li>
+
+
+</references>
+</qhelp>

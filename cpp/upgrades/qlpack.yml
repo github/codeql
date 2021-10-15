@@ -1,0 +1,3 @@
+name: codeql/cpp-upgrades
+upgrades: .
+version: 0.0.2

@@ -1,0 +1,41 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Previous versions of SpiderMonkey permitted the use of <code>yield</code> expressions in
+functions not marked as generators. This is no longer supported, and is not compliant
+with ECMAScript 2015.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Mark the enclosing function as a generator by replacing <code>function</code> with
+<code>function*</code>.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+The following example uses <code>yield</code> to produce a sequence of indices, but the
+function <code>idMaker</code> is not marked as a generator:
+</p>
+
+<sample src="examples/YieldInNonGenerator.js" />
+
+<p>
+This is easily fixed by adding an asterisk to the <code>function</code> keyword:
+</p>
+
+<sample src="examples/YieldInNonGeneratorGood.js" />
+
+</example>
+<references>
+<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function*">function*</a>.</li>
+<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/yield">yield</a>.</li>
+</references>
+</qhelp>

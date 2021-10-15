@@ -1,0 +1,36 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Programmers sometimes need to iterative over a filtered version of a sequence, rather than the 
+sequence itself. For example, you might want to print out only the numbers in the range [1,10] that 
+are even. One standard way of doing this is to write a loop that iterates over the whole sequence, 
+testing the variable each iteration to determine whether or not it is even. This is often written 
+using either <code>if(!condition(var)) continue;</code> as the initial statement in the loop, or by 
+enclosing the entire loop body with <code>if(condition(var))</code>.</p>
+
+</overview>
+<recommendation>
+<p>This pattern works well and is also available as the <code>Where</code> method in LINQ in C# 3.5 
+and above. It is better to use a library method in preference to writing your own pattern unless you 
+have a specific need for a custom version. In particular, this makes the code easier to read by 
+expressing the intent better and by reducing the nesting depth of the code.</p>
+
+</recommendation>
+<example>
+<p>This example shows two ways of iterating over a series of integers and only performing an action 
+on the even ones.</p>
+<sample src="MissedWhereOpportunity.cs" />
+
+<p>This is far better expressed using the <code>Where</code> method.</p>
+<sample src="MissedWhereOpportunityFix.cs" />
+
+</example>
+<references>
+
+  <li>MSDN: <a href="http://msdn.microsoft.com/en-us/library/system.linq.enumerable.where.aspx">Enumerable.Where Method</a>.</li>
+
+
+</references>
+</qhelp>

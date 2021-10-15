@@ -1,0 +1,49 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+AngularJS has built-in support for dependency injection: directives can simply list
+the services they depend on and AngularJS will provide appropriate instances and
+pass them as arguments at runtime.
+</p>
+
+<p>
+Developers have to ensure that the list of dependencies matches the parameter list
+of the directive's factory function: if a dependency is missing, no service instance
+will be injected, and the corresponding parameter will default to <code>undefined</code>.
+If a dependency and its corresponding parameter have different names, this makes
+the code hard to follow, and may even indicate a bug.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Ensure that declared dependencies and parameters match up.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example directive declares a single dependency on the <code>$compile</code>
+service, but its factory function has two parameters <code>$compile</code> and
+<code>$http</code>. Presumably the second parameter was introduced without adding
+a corresponding dependency, so the service will not be injected correctly.
+</p>
+
+<sample src="examples/DependencyMismatch.js"/>
+
+<p>
+To solve this problem, the <code>$http</code> service has to be listed as a dependency
+as well:
+</p>
+
+<sample src="examples/DependencyMismatchGood.js"/>
+</example>
+
+<references>
+<li>AngularJS Developer Guide: <a href="https://docs.angularjs.org/guide/di">Dependency Injection</a>.</li>
+</references>
+</qhelp>

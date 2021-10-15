@@ -1,0 +1,2 @@
+| test.cpp:2:9:2:18 | ... == ... | Possibly invalid test for oddness. This will fail for negative numbers. |
+| test.cpp:10:9:10:18 | ... == ... | Possibly invalid test for oddness. This will fail for negative numbers. |

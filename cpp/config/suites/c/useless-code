@@ -1,0 +1,8 @@
+# USELESS CODE
++ semmlecode-cpp-queries/Best Practices/Unused Entities/UnusedStaticFunctions.ql: /Useless Code
++ semmlecode-cpp-queries/Best Practices/Unused Entities/UnusedStaticVariables.ql: /Useless Code
++ semmlecode-cpp-queries/Best Practices/Unused Entities/UnusedLocals.ql: /Useless Code
++ semmlecode-cpp-queries/external/DuplicateFunction.ql: /Useless Code/Duplicate Code
++ semmlecode-cpp-queries/external/MostlyDuplicateFile.ql: /Useless Code/Duplicate Code
++ semmlecode-cpp-queries/external/MostlyDuplicateFunction.ql: /Useless Code/Duplicate Code
++ semmlecode-cpp-queries/external/MostlySimilarFile.ql: /Useless Code/Duplicate Code

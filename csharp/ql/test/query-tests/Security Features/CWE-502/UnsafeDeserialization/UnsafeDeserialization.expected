@@ -1,0 +1,7 @@
+| BinaryFormatterBad.cs:10:16:10:32 | call to method Deserialize | Unsafe deserializer is used. Make sure the value being deserialized comes from a trusted source. |
+| DataContractJsonSerializerBad.cs:11:16:11:31 | call to method ReadObject | Unsafe deserializer is used. Make sure the value being deserialized comes from a trusted source. |
+| DataContractSerializerBad.cs:11:16:11:31 | call to method ReadObject | Unsafe deserializer is used. Make sure the value being deserialized comes from a trusted source. |
+| ResourceReaderBad.cs:9:18:9:38 | object creation of type ResourceReader | Unsafe deserializer is used. Make sure the value being deserialized comes from a trusted source. |
+| UnsafeDeserializationBad.cs:9:16:9:38 | call to method DeserializeObject | Unsafe deserializer is used. Make sure the value being deserialized comes from a trusted source. |
+| XmlObjectSerializerBad.cs:11:16:11:31 | call to method ReadObject | Unsafe deserializer is used. Make sure the value being deserialized comes from a trusted source. |
+| XmlSerializerBad.cs:11:16:11:32 | call to method Deserialize | Unsafe deserializer is used. Make sure the value being deserialized comes from a trusted source. |

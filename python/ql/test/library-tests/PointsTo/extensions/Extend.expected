@@ -1,0 +1,23 @@
+WARNING: Type CustomPointsToAttribute has been deprecated and may be removed in future (Extend.ql:22,34-57)
+WARNING: Type CustomPointsToObjectFact has been deprecated and may be removed in future (Extend.ql:38,32-56)
+WARNING: Type CustomPointsToOriginFact has been deprecated and may be removed in future (Extend.ql:5,28-52)
+WARNING: Type CustomPointsToOriginFact has been deprecated and may be removed in future (Extend.ql:49,38-62)
+| test.py:4:1:4:3 | ControlFlowNode for one | int 1 |
+| test.py:5:1:5:3 | ControlFlowNode for two | int 2 |
+| test.py:8:1:8:1 | ControlFlowNode for IntegerLiteral | int 1 |
+| test.py:8:1:8:11 | ControlFlowNode for Tuple | Tuple |
+| test.py:8:3:8:3 | ControlFlowNode for IntegerLiteral | int 2 |
+| test.py:8:5:8:5 | ControlFlowNode for IntegerLiteral | int 3 |
+| test.py:8:7:8:7 | ControlFlowNode for IntegerLiteral | int 4 |
+| test.py:8:9:8:9 | ControlFlowNode for IntegerLiteral | int 5 |
+| test.py:8:11:8:11 | ControlFlowNode for IntegerLiteral | int 6 |
+| test.py:10:1:10:2 | ControlFlowNode for a3 | int 3 |
+| test.py:10:6:10:7 | ControlFlowNode for Tuple | Tuple |
+| test.py:10:6:10:13 | ControlFlowNode for Attribute | int 3 |
+| test.py:11:1:11:2 | ControlFlowNode for a4 | int 4 |
+| test.py:11:6:11:10 | ControlFlowNode for False | bool False |
+| test.py:11:6:11:15 | ControlFlowNode for Attribute | int 4 |
+| test.py:13:1:13:2 | ControlFlowNode for a3 | int 3 |
+| test.py:14:1:14:2 | ControlFlowNode for a4 | int 4 |
+| test.py:16:1:16:4 | ControlFlowNode for five | int 5 |
+| test.py:17:1:17:3 | ControlFlowNode for six | int 6 |

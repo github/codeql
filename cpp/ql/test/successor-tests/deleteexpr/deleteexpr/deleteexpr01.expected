@@ -1,0 +1,10 @@
+| deleteexpr.cpp:6:10:9:1 | { ... } | deleteexpr.cpp:7:2:7:16 | declaration |
+| deleteexpr.cpp:7:2:7:16 | declaration | deleteexpr.cpp:7:8:7:15 | initializer for c |
+| deleteexpr.cpp:7:8:7:15 | initializer for c | deleteexpr.cpp:7:9:7:15 | 0 |
+| deleteexpr.cpp:7:9:7:15 | 0 | deleteexpr.cpp:7:9:7:15 | new |
+| deleteexpr.cpp:7:9:7:15 | new | deleteexpr.cpp:8:2:8:10 | ExprStmt |
+| deleteexpr.cpp:8:2:8:9 | call to ~C | deleteexpr.cpp:8:2:8:9 | delete |
+| deleteexpr.cpp:8:2:8:9 | delete | deleteexpr.cpp:9:1:9:1 | return ... |
+| deleteexpr.cpp:8:2:8:10 | ExprStmt | deleteexpr.cpp:8:9:8:9 | c |
+| deleteexpr.cpp:8:9:8:9 | c | deleteexpr.cpp:8:2:8:9 | call to ~C |
+| deleteexpr.cpp:9:1:9:1 | return ... | deleteexpr.cpp:6:6:6:6 | f |

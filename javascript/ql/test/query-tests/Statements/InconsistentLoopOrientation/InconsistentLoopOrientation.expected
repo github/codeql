@@ -1,0 +1,3 @@
+| tst.js:6:1:7:1 | for (j  ... -j) {\\n} | This loop counts downward, but its variable is bounded upward. |
+| tst.js:10:1:11:1 | for (va ... ++) {\\n} | This loop counts upward, but its variable is bounded downward. |
+| tst.js:18:1:19:13 | for (i= ... i] = 0; | This loop counts downward, but its variable is bounded upward. |

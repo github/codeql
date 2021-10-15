@@ -1,0 +1,41 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Using broken or weak cryptographic algorithms can leave data vulnerable to being decrypted.</p>
+
+<p>Many cryptographic algorithms provided by cryptography libraries are known to be weak, or 
+flawed. Using such an algorithm means that an attacker may be able to easily decrypt the encrypted
+data.</p>
+
+</overview>
+<recommendation>
+
+<p>Ensure that you use a strong, modern cryptographic algorithm. Use at least AES-128 or RSA-2048. Do not use the ECB encryption mode since it is vulnerable to replay and other attacks.</p>
+
+</recommendation>
+<example>
+
+<p>The following code shows an example of using a java <code>Cipher</code> to encrypt some data.
+When creating a <code>Cipher</code> instance, you must specify the encryption algorithm to use. The first
+example uses DES, which is an older algorithm that is now considered weak. The second example uses AES, which
+is a strong modern algorithm.</p>
+
+<sample src="BrokenCryptoAlgorithm.java" />
+
+</example>
+<references>
+
+<li>NIST, FIPS 140 Annex a: <a href="http://csrc.nist.gov/publications/fips/fips140-2/fips1402annexa.pdf">
+Approved Security Functions</a>.</li>
+<li>NIST, SP 800-131A: <a href="http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-131Ar1.pdf">
+Transitions: Recommendation for Transitioning the Use of Cryptographic Algorithms and Key Lengths</a>.</li>
+
+
+
+<!--  LocalWords:  CWE
+ -->
+
+</references>
+</qhelp>

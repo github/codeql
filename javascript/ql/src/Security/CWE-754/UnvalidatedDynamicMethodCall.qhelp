@@ -1,0 +1,86 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+JavaScript makes it easy to look up object properties dynamically at runtime. In particular, methods
+can be looked up by name and then called. However, if the method name is user-controlled, an attacker
+could choose a name that makes the application invoke an unexpected method, which may cause a runtime
+exception. If this exception is not handled, it could be used to mount a denial-of-service attack.
+</p>
+<p>
+For example, there might not be a method of the given name, or the result of the lookup might not be
+a function. In either case the method call will throw a <code>TypeError</code> at runtime.
+</p>
+<p>
+Another, more subtle example is where the result of the lookup is a standard library method from
+<code>Object.prototype</code>, which most objects have on their prototype chain. Examples of such
+methods include <code>valueOf</code>, <code>hasOwnProperty</code> and <code>__defineSetter__</code>.
+If the method call passes the wrong number or kind of arguments to these methods, they will
+throw an exception.
+</p>
+</overview>
+
+<recommendation>
+<p>
+It is best to avoid dynamic method lookup involving user-controlled names altogether, for instance
+by using a <code>Map</code> instead of a plain object.
+</p>
+<p>
+If the dynamic method lookup cannot be avoided, consider whitelisting permitted method names. At
+the very least, check that the method is an own property and not inherited from the prototype object.
+If the object on which the method is looked up contains properties that are not methods, you
+should additionally check that the result of the lookup is a function. Even if the object only
+contains methods, it is still a good idea to perform this check in case other properties are
+added to the object later on.
+</p>
+</recommendation>
+
+<example>
+<p>
+In the following example, an HTTP request parameter <code>action</code> property is used to dynamically
+look up a function in the <code>actions</code> map, which is then invoked with the <code>payload</code>
+parameter as its argument.
+</p>
+
+<sample src="examples/UnvalidatedDynamicMethodCall.js" />
+
+<p>
+The intention is to allow clients to invoke the <code>play</code> or <code>pause</code> method, but there
+is no check that <code>action</code> is actually the name of a method stored in <code>actions</code>.
+If, for example, <code>action</code> is <code>rewind</code>, <code>action</code> will be <code>undefined</code>
+and the call will result in a runtime error.
+</p>
+
+<p>
+The easiest way to prevent this is to turn <code>actions</code> into a <code>Map</code> and using
+<code>Map.prototype.has</code> to check whether the method name is valid before looking it up.
+</p>
+
+<sample src="examples/UnvalidatedDynamicMethodCallGood.js" />
+
+<p>
+If <code>actions</code> cannot be turned into a <code>Map</code>, a <code>hasOwnProperty</code>
+check should be added to validate the method name:
+</p>
+
+<sample src="examples/UnvalidatedDynamicMethodCallGood2.js" />
+
+</example>
+
+<references>
+<li>
+OWASP:
+<a href="https://www.owasp.org/index.php/Denial_of_Service">Denial of Service</a>.
+</li>
+<li>
+MDN: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map">Map</a>.
+</li>
+<li>
+MDN: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/prototype">Object.prototype</a>.
+</li>
+</references>
+
+</qhelp>

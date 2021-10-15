@@ -1,0 +1,3 @@
+| test.cpp:29:7:29:19 | ... < ... | Comparison can be simplified by canceling $@ with $@. | test.cpp:29:15:29:15 | x | x | test.cpp:29:7:29:7 | x | x |
+| test.cpp:30:7:30:19 | ... < ... | Comparison can be simplified by canceling $@ with $@. | test.cpp:30:15:30:15 | x | x | test.cpp:30:7:30:7 | x | x |
+| test.cpp:108:11:108:19 | ... < ... | Comparison can be simplified by canceling $@ with $@. | test.cpp:108:19:108:19 | a | a | test.cpp:108:11:108:11 | a | a |

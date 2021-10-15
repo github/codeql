@@ -1,0 +1,5 @@
+| tst.ts:3:3:3:30 | method( ... number; | This overload of method() is unreachable, the $@ overload will always be selected. | tst.ts:2:3:2:30 | method( ... string; | previous |
+| tst.ts:6:3:6:17 | types1(): any[] | This overload of types1() is unreachable, the $@ overload will always be selected. | tst.ts:5:3:5:18 | types1<T>(): T[] | previous |
+| tst.ts:15:3:15:74 | on(even ... nction; | This overload of on() is unreachable, the $@ overload will always be selected. | tst.ts:14:3:14:74 | on(even ... nction; | previous |
+| tst.ts:21:3:21:28 | bar(thi ... number; | This overload of bar() is unreachable, the $@ overload will always be selected. | tst.ts:20:3:20:28 | bar(thi ... string; | previous |
+| tst.ts:27:3:27:30 | method( ... number; | This overload of method() is unreachable, the $@ overload will always be selected. | tst.ts:26:3:26:30 | method( ... string; | previous |

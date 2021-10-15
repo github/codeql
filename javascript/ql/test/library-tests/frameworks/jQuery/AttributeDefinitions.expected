@@ -1,0 +1,4 @@
+| tracking.js:15:5:15:26 | e.attr( ...  'foo') | class | tracking.js:15:21:15:25 | 'foo' |
+| tracking.js:17:7:17:18 | color: 'red' | color | tracking.js:17:14:17:18 | 'red' |
+| tracking.js:18:7:18:18 | size: '12pt' | size | tracking.js:18:13:18:18 | '12pt' |
+| tst.js:3:1:3:44 | $("<a/> ... e.com") | href | tst.js:3:24:3:43 | "https://semmle.com" |

@@ -1,0 +1,35 @@
+nodes
+| HttpToFileAccess.js:5:18:5:18 | d |
+| HttpToFileAccess.js:5:18:5:18 | d |
+| HttpToFileAccess.js:6:37:6:37 | d |
+| HttpToFileAccess.js:6:37:6:37 | d |
+| tst.js:15:26:15:26 | c |
+| tst.js:15:26:15:26 | c |
+| tst.js:16:33:16:33 | c |
+| tst.js:16:33:16:33 | c |
+| tst.js:19:25:19:25 | c |
+| tst.js:19:25:19:25 | c |
+| tst.js:24:22:24:22 | c |
+| tst.js:24:22:24:22 | c |
+edges
+| HttpToFileAccess.js:5:18:5:18 | d | HttpToFileAccess.js:6:37:6:37 | d |
+| HttpToFileAccess.js:5:18:5:18 | d | HttpToFileAccess.js:6:37:6:37 | d |
+| HttpToFileAccess.js:5:18:5:18 | d | HttpToFileAccess.js:6:37:6:37 | d |
+| HttpToFileAccess.js:5:18:5:18 | d | HttpToFileAccess.js:6:37:6:37 | d |
+| tst.js:15:26:15:26 | c | tst.js:16:33:16:33 | c |
+| tst.js:15:26:15:26 | c | tst.js:16:33:16:33 | c |
+| tst.js:15:26:15:26 | c | tst.js:16:33:16:33 | c |
+| tst.js:15:26:15:26 | c | tst.js:16:33:16:33 | c |
+| tst.js:15:26:15:26 | c | tst.js:19:25:19:25 | c |
+| tst.js:15:26:15:26 | c | tst.js:19:25:19:25 | c |
+| tst.js:15:26:15:26 | c | tst.js:19:25:19:25 | c |
+| tst.js:15:26:15:26 | c | tst.js:19:25:19:25 | c |
+| tst.js:15:26:15:26 | c | tst.js:24:22:24:22 | c |
+| tst.js:15:26:15:26 | c | tst.js:24:22:24:22 | c |
+| tst.js:15:26:15:26 | c | tst.js:24:22:24:22 | c |
+| tst.js:15:26:15:26 | c | tst.js:24:22:24:22 | c |
+#select
+| HttpToFileAccess.js:6:37:6:37 | d | HttpToFileAccess.js:5:18:5:18 | d | HttpToFileAccess.js:6:37:6:37 | d | $@ flows to file system | HttpToFileAccess.js:5:18:5:18 | d | Untrusted data |
+| tst.js:16:33:16:33 | c | tst.js:15:26:15:26 | c | tst.js:16:33:16:33 | c | $@ flows to file system | tst.js:15:26:15:26 | c | Untrusted data |
+| tst.js:19:25:19:25 | c | tst.js:15:26:15:26 | c | tst.js:19:25:19:25 | c | $@ flows to file system | tst.js:15:26:15:26 | c | Untrusted data |
+| tst.js:24:22:24:22 | c | tst.js:15:26:15:26 | c | tst.js:24:22:24:22 | c | $@ flows to file system | tst.js:15:26:15:26 | c | Untrusted data |

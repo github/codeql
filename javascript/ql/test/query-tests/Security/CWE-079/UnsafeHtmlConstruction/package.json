@@ -1,0 +1,4 @@
+{
+    "name": "my-unsafe-library",
+    "main": "./main.js"
+}

@@ -1,0 +1,2 @@
+| compare.py:8:1:8:6 | Compare | Comparison of identical values; use cmath.isnan() if testing for not-a-number. |
+| compare.py:9:1:9:10 | Compare | Comparison of identical values; use cmath.isnan() if testing for not-a-number. |

@@ -1,0 +1,7 @@
+| c89.c:1:12:1:19 | restrict | restrict |
+| c99.c:2:7:2:10 | (unnamed parameter 0) | (unnamed parameter 0) |
+| c99.c:2:23:2:26 | (unnamed parameter 1) | (unnamed parameter 1) |
+| file://:0:0:0:0 | fp_offset | fp_offset |
+| file://:0:0:0:0 | gp_offset | gp_offset |
+| file://:0:0:0:0 | overflow_arg_area | overflow_arg_area |
+| file://:0:0:0:0 | reg_save_area | reg_save_area |

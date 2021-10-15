@@ -1,0 +1,16 @@
+| IncorrectNotOperatorUsage.c:6:9:6:18 | ... & ... | Usage of a logical not (!) expression as a bitwise operator. |
+| IncorrectNotOperatorUsage.c:31:9:31:14 | ... & ... | Usage of a logical not (!) expression as a bitwise operator. |
+| IncorrectNotOperatorUsage.c:32:9:32:18 | ... & ... | Usage of a logical not (!) expression as a bitwise operator. |
+| IncorrectNotOperatorUsage.c:33:9:33:20 | ... & ... | Usage of a logical not (!) expression as a bitwise operator. |
+| IncorrectNotOperatorUsage.c:47:9:47:14 | ... \| ... | Usage of a logical not (!) expression as a bitwise operator. |
+| IncorrectNotOperatorUsage.c:48:9:48:18 | ... \| ... | Usage of a logical not (!) expression as a bitwise operator. |
+| IncorrectNotOperatorUsage.c:49:9:49:20 | ... \| ... | Usage of a logical not (!) expression as a bitwise operator. |
+| IncorrectNotOperatorUsage.c:70:10:70:34 | ... \| ... | Usage of a logical not (!) expression as a bitwise operator. |
+| IncorrectNotOperatorUsage.cpp:6:9:6:18 | ... & ... | Usage of a logical not (!) expression as a bitwise operator. |
+| IncorrectNotOperatorUsage.cpp:31:9:31:14 | ... & ... | Usage of a logical not (!) expression as a bitwise operator. |
+| IncorrectNotOperatorUsage.cpp:32:9:32:18 | ... & ... | Usage of a logical not (!) expression as a bitwise operator. |
+| IncorrectNotOperatorUsage.cpp:33:9:33:20 | ... & ... | Usage of a logical not (!) expression as a bitwise operator. |
+| IncorrectNotOperatorUsage.cpp:47:9:47:14 | ... \| ... | Usage of a logical not (!) expression as a bitwise operator. |
+| IncorrectNotOperatorUsage.cpp:48:9:48:18 | ... \| ... | Usage of a logical not (!) expression as a bitwise operator. |
+| IncorrectNotOperatorUsage.cpp:49:9:49:20 | ... \| ... | Usage of a logical not (!) expression as a bitwise operator. |
+| IncorrectNotOperatorUsage.cpp:70:10:70:34 | ... \| ... | Usage of a logical not (!) expression as a bitwise operator. |

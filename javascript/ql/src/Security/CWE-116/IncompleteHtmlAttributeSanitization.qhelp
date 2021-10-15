@@ -1,0 +1,98 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+
+	<overview>
+		<p>
+
+			Sanitizing untrusted input for HTML meta-characters is a common
+			technique for preventing cross-site scripting attacks. Usually, this
+			is done by escaping <code>&lt;</code>, <code>&gt;</code>,
+			<code>&amp;</code> and <code>&quot;</code>. However, the context in which
+			the sanitized value is used decides the characters that
+			need to be sanitized.
+
+		</p>
+
+		<p>
+
+			As a consequence, some programs only sanitize
+			<code>&lt;</code> and <code>&gt;</code> since those are the most
+			common dangerous characters. The lack of sanitization for
+			<code>&quot;</code> is problematic when an incompletely sanitized
+			value is used as an HTML attribute in a string that
+			later is parsed as HTML.
+
+		</p>
+
+	</overview>
+
+	<recommendation>
+
+		<p>
+
+			Sanitize all relevant HTML meta-characters when
+			constructing HTML dynamically, and pay special attention to where the
+			sanitized value is used.
+
+		</p>
+
+		<p>
+
+			An even safer alternative is to design the application
+			so that sanitization is not needed, for instance by using HTML
+			templates that are explicit about the values they treat as HTML.
+
+		</p>
+
+	</recommendation>
+
+	<example>
+
+		<p>
+
+			The following example code writes part of an HTTP request (which is
+			controlled by the user) to an HTML attribute of the server response.
+
+			The user-controlled value is, however, not sanitized for
+			<code>&quot;</code>. This leaves the website vulnerable to cross-site
+			scripting since an attacker can use a string like <code>"
+			onclick="alert(42)</code> to inject JavaScript code into the response.
+
+		</p>
+		<sample src="examples/IncompleteHtmlAttributeSanitization.js" />
+
+
+		<p>
+
+			Sanitizing the user-controlled data for
+			<code>&quot;</code> helps prevent the vulnerability:
+
+		</p>
+
+		<sample src="examples/IncompleteHtmlAttributeSanitizationGood.js" />
+
+	</example>
+
+	<references>
+		<li>
+			OWASP:
+			<a href="https://cheatsheetseries.owasp.org/cheatsheets/DOM_based_XSS_Prevention_Cheat_Sheet.html">DOM based
+			XSS Prevention Cheat Sheet</a>.
+		</li>
+		<li>
+			OWASP:
+			<a href="https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html">XSS
+			(Cross Site Scripting) Prevention Cheat Sheet</a>.
+		</li>
+		<li>
+			OWASP
+			<a href="https://owasp.org/www-community/Types_of_Cross-Site_Scripting">Types of Cross-Site</a>.
+		</li>
+		<li>
+			Wikipedia: <a href="http://en.wikipedia.org/wiki/Cross-site_scripting">Cross-site scripting</a>.
+		</li>
+	</references>
+
+</qhelp>

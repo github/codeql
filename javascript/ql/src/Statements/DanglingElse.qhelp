@@ -1,0 +1,58 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+In JavaScript, an <code>else</code> clause is always associated with the closest preceding
+<code>if</code> statement that does not already have an <code>else</code> clause. It is
+good practice to use indentation to clarify this structure by indenting matching
+<code>if</code> ... <code>else</code> pairs by the same amount of whitespace.
+</p>
+
+<p>
+Indenting the <code>else</code> clause of a nested <code>if</code> statement to suggest
+that it matches an outer <code>if</code> statement (instead of the one it actually belongs
+to) is confusing to readers and may even indicate a bug in the program logic.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Ensure that matching <code>if</code> ... <code>else</code> pairs are indented accordingly.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+In the following example, the <code>else</code> on line 5 belongs to the <code>if</code>
+on line 3, while its indentation wrongly suggests that it belongs to the <code>if</code>
+on line 2.
+</p>
+
+<sample src="examples/DanglingElse.js" />
+
+<p>
+To correct this issue, indent the <code>else</code> on line 5 further:
+</p>
+
+<sample src="examples/DanglingElseGood.js" />
+
+<p>
+Confusion about which <code>if</code> belongs to which <code>else</code> can also be
+avoided by always enclosing the branches of an <code>if</code> statement in
+curly braces:
+</p>
+
+<sample src="examples/DanglingElseGood2.js" />
+
+</example>
+<references>
+
+
+<li>Wikipedia: <a href="http://en.wikipedia.org/wiki/Dangling_else">Dangling else</a>.</li>
+
+</references>
+</qhelp>

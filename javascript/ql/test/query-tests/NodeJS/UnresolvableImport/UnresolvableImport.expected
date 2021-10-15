@@ -1,0 +1,3 @@
+| src/tst.js:2:1:2:16 | require('other') | Module other cannot be resolved, and is not declared as a dependency in $@. | src/package.json:1:1:15:1 | {\\n  "na ... "\\n  }\\n} | package.json |
+| src/tst.js:7:1:7:14 | require('mod') | Module mod cannot be resolved, and is not declared as a dependency in $@. | src/package.json:1:1:15:1 | {\\n  "na ... "\\n  }\\n} | package.json |
+| src/tst.js:8:1:8:21 | require ... lared') | Module undeclared cannot be resolved, and is not declared as a dependency in $@. | src/package.json:1:1:15:1 | {\\n  "na ... "\\n  }\\n} | package.json |

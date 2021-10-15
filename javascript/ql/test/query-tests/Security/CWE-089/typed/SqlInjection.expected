@@ -1,0 +1,42 @@
+nodes
+| typedClient.ts:13:7:13:32 | v |
+| typedClient.ts:13:11:13:32 | JSON.pa ... body.x) |
+| typedClient.ts:13:22:13:29 | req.body |
+| typedClient.ts:13:22:13:29 | req.body |
+| typedClient.ts:13:22:13:31 | req.body.x |
+| typedClient.ts:14:24:14:32 | { id: v } |
+| typedClient.ts:14:24:14:32 | { id: v } |
+| typedClient.ts:14:30:14:30 | v |
+| typedClient.ts:21:7:21:32 | v |
+| typedClient.ts:21:11:21:32 | JSON.pa ... body.x) |
+| typedClient.ts:21:22:21:29 | req.body |
+| typedClient.ts:21:22:21:29 | req.body |
+| typedClient.ts:21:22:21:31 | req.body.x |
+| typedClient.ts:22:27:22:35 | { id: v } |
+| typedClient.ts:22:27:22:35 | { id: v } |
+| typedClient.ts:22:33:22:33 | v |
+| typedClient.ts:23:27:23:35 | { id: v } |
+| typedClient.ts:23:27:23:35 | { id: v } |
+| typedClient.ts:23:33:23:33 | v |
+edges
+| typedClient.ts:13:7:13:32 | v | typedClient.ts:14:30:14:30 | v |
+| typedClient.ts:13:11:13:32 | JSON.pa ... body.x) | typedClient.ts:13:7:13:32 | v |
+| typedClient.ts:13:22:13:29 | req.body | typedClient.ts:13:22:13:31 | req.body.x |
+| typedClient.ts:13:22:13:29 | req.body | typedClient.ts:13:22:13:31 | req.body.x |
+| typedClient.ts:13:22:13:31 | req.body.x | typedClient.ts:13:11:13:32 | JSON.pa ... body.x) |
+| typedClient.ts:14:30:14:30 | v | typedClient.ts:14:24:14:32 | { id: v } |
+| typedClient.ts:14:30:14:30 | v | typedClient.ts:14:24:14:32 | { id: v } |
+| typedClient.ts:21:7:21:32 | v | typedClient.ts:22:33:22:33 | v |
+| typedClient.ts:21:7:21:32 | v | typedClient.ts:23:33:23:33 | v |
+| typedClient.ts:21:11:21:32 | JSON.pa ... body.x) | typedClient.ts:21:7:21:32 | v |
+| typedClient.ts:21:22:21:29 | req.body | typedClient.ts:21:22:21:31 | req.body.x |
+| typedClient.ts:21:22:21:29 | req.body | typedClient.ts:21:22:21:31 | req.body.x |
+| typedClient.ts:21:22:21:31 | req.body.x | typedClient.ts:21:11:21:32 | JSON.pa ... body.x) |
+| typedClient.ts:22:33:22:33 | v | typedClient.ts:22:27:22:35 | { id: v } |
+| typedClient.ts:22:33:22:33 | v | typedClient.ts:22:27:22:35 | { id: v } |
+| typedClient.ts:23:33:23:33 | v | typedClient.ts:23:27:23:35 | { id: v } |
+| typedClient.ts:23:33:23:33 | v | typedClient.ts:23:27:23:35 | { id: v } |
+#select
+| typedClient.ts:14:24:14:32 | { id: v } | typedClient.ts:13:22:13:29 | req.body | typedClient.ts:14:24:14:32 | { id: v } | This query depends on $@. | typedClient.ts:13:22:13:29 | req.body | a user-provided value |
+| typedClient.ts:22:27:22:35 | { id: v } | typedClient.ts:21:22:21:29 | req.body | typedClient.ts:22:27:22:35 | { id: v } | This query depends on $@. | typedClient.ts:21:22:21:29 | req.body | a user-provided value |
+| typedClient.ts:23:27:23:35 | { id: v } | typedClient.ts:21:22:21:29 | req.body | typedClient.ts:23:27:23:35 | { id: v } | This query depends on $@. | typedClient.ts:21:22:21:29 | req.body | a user-provided value |

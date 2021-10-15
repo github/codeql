@@ -1,0 +1,44 @@
+| test | test.cpp:2:7:2:7 | C | 2 | 1 | test.cpp:2:7:2:7 | test.cpp:2:7:2:7 | test.cpp:2:7:2:7 | C | <none> |
+| test | test.cpp:2:7:2:7 | operator= | 2 | 1 | test.cpp:2:7:2:7 | test.cpp:2:7:2:7 | test.cpp:2:7:2:7 | operator= | <none> |
+| test | test.cpp:4:9:4:9 | C | 4 | 1 | test.cpp:4:9:4:9 | test.cpp:4:9:4:9 | test.cpp:4:9:4:9 | C | <none> |
+| test | test.cpp:5:9:5:10 | ~C | 5 | 1 | test.cpp:5:9:5:10 | test.cpp:5:9:5:10 | test.cpp:5:9:5:10 | ~C | <none> |
+| test | test.cpp:8:6:8:6 | f | 8 | 1 | test.cpp:8:15:18:1 | test.cpp:8:15:18:1 | test.cpp:8:15:18:1 | { ... } | declaration |
+| test | test.cpp:8:6:8:6 | f | 8 | 18 | test.cpp:8:6:8:6 | test.cpp:8:6:8:6 | test.cpp:8:6:8:6 | f | <none> |
+| test | test.cpp:8:6:8:6 | f | 9 | 2 | test.cpp:9:5:9:10 | test.cpp:9:5:9:10 | test.cpp:9:5:9:10 | declaration | if (...) ...  |
+| test | test.cpp:8:6:8:6 | f | 11 | 1 | test.cpp:11:9:14:10 | test.cpp:11:9:14:10 | test.cpp:11:9:14:10 | (bool)... | <none> |
+| test | test.cpp:8:6:8:6 | f | 11 | 3 | test.cpp:11:5:17:9 | test.cpp:11:5:17:9 | test.cpp:11:5:17:9 | if (...) ...  | { ... } |
+| test | test.cpp:8:6:8:6 | f | 11 | 4 | test.cpp:11:10:14:9 | test.cpp:11:10:14:9 | test.cpp:11:10:14:9 | { ... } | declaration |
+| test | test.cpp:8:6:8:6 | f | 11 | 13 | test.cpp:11:9:14:10 | test.cpp:11:9:14:10 | test.cpp:11:9:14:10 | (statement expression) | <false> ; |
+| test | test.cpp:8:6:8:6 | f | 11 | 13 | test.cpp:11:9:14:10 | test.cpp:11:9:14:10 | test.cpp:11:9:14:10 | (statement expression) | <true> ExprStmt |
+| test | test.cpp:8:6:8:6 | f | 12 | 5 | test.cpp:12:14:12:20 | test.cpp:12:14:12:20 | test.cpp:12:14:12:20 | declaration | initializer for c |
+| test | test.cpp:8:6:8:6 | f | 12 | 6 | test.cpp:12:18:12:19 | test.cpp:12:18:12:19 | test.cpp:12:18:12:19 | initializer for c | 1 |
+| test | test.cpp:8:6:8:6 | f | 12 | 7 | test.cpp:12:18:12:18 | test.cpp:12:18:12:18 | test.cpp:12:18:12:18 | 1 | call to C |
+| test | test.cpp:8:6:8:6 | f | 12 | 8 | test.cpp:12:18:12:19 | test.cpp:12:18:12:19 | test.cpp:12:18:12:19 | call to C | ExprStmt |
+| test | test.cpp:8:6:8:6 | f | 13 | 9 | test.cpp:13:14:13:15 | test.cpp:13:14:13:15 | test.cpp:13:14:13:15 | ExprStmt | b |
+| test | test.cpp:8:6:8:6 | f | 13 | 10 | test.cpp:13:14:13:14 | test.cpp:13:14:13:14 | test.cpp:13:14:13:14 | b | c |
+| test | test.cpp:8:6:8:6 | f | 14 | 11 | test.cpp:14:9:14:9 | test.cpp:14:9:14:9 | test.cpp:14:9:14:9 | c | call to ~C |
+| test | test.cpp:8:6:8:6 | f | 14 | 12 | test.cpp:14:9:14:9 | test.cpp:14:9:14:9 | test.cpp:14:9:14:9 | call to ~C | (statement expression) |
+| test | test.cpp:8:6:8:6 | f | 15 | 14 | test.cpp:15:9:15:10 | test.cpp:15:9:15:10 | test.cpp:15:9:15:10 | ExprStmt | 2 |
+| test | test.cpp:8:6:8:6 | f | 15 | 15 | test.cpp:15:9:15:9 | test.cpp:15:9:15:9 | test.cpp:15:9:15:9 | 2 | return ... |
+| test | test.cpp:8:6:8:6 | f | 17 | 14 | test.cpp:17:9:17:9 | test.cpp:17:9:17:9 | test.cpp:17:9:17:9 | ; | return ... |
+| test | test.cpp:8:6:8:6 | f | 18 | 17 | test.cpp:18:1:18:1 | test.cpp:18:1:18:1 | test.cpp:18:1:18:1 | return ... | f |
+| test | test.cpp:20:6:20:6 | g | 20 | 1 | test.cpp:20:6:20:6 | test.cpp:20:6:20:6 | test.cpp:20:6:20:6 | g | <none> |
+| test | test.cpp:20:6:20:6 | g | 20 | 1 | test.cpp:20:15:32:1 | test.cpp:20:15:32:1 | test.cpp:20:15:32:1 | { ... } | declaration |
+| test | test.cpp:20:6:20:6 | g | 21 | 2 | test.cpp:21:5:21:14 | test.cpp:21:5:21:14 | test.cpp:21:5:21:14 | declaration | declaration |
+| test | test.cpp:20:6:20:6 | g | 22 | 3 | test.cpp:22:5:22:10 | test.cpp:22:5:22:10 | test.cpp:22:5:22:10 | declaration | label ...: |
+| test | test.cpp:20:6:20:6 | g | 24 | 4 | test.cpp:24:1:24:4 | test.cpp:24:1:24:4 | test.cpp:24:1:24:4 | label ...: | ExprStmt |
+| test | test.cpp:20:6:20:6 | g | 26 | 5 | test.cpp:26:5:26:16 | test.cpp:26:5:26:16 | test.cpp:26:5:26:16 | ExprStmt | &&lab |
+| test | test.cpp:20:6:20:6 | g | 26 | 6 | test.cpp:26:11:26:15 | test.cpp:26:11:26:15 | test.cpp:26:11:26:15 | &&lab | ptr |
+| test | test.cpp:20:6:20:6 | g | 26 | 7 | test.cpp:26:5:26:7 | test.cpp:26:5:26:7 | test.cpp:26:5:26:7 | ptr | ... = ... |
+| test | test.cpp:20:6:20:6 | g | 26 | 8 | test.cpp:26:5:26:15 | test.cpp:26:5:26:15 | test.cpp:26:5:26:15 | ... = ... | computed goto ... |
+| test | test.cpp:20:6:20:6 | g | 28 | 9 | test.cpp:28:5:31:12 | test.cpp:28:5:31:12 | test.cpp:28:5:31:12 | computed goto ... | { ... } |
+| test | test.cpp:20:6:20:6 | g | 28 | 10 | test.cpp:28:12:31:10 | test.cpp:28:12:31:10 | test.cpp:28:12:31:10 | { ... } | declaration |
+| test | test.cpp:20:6:20:6 | g | 28 | 19 | test.cpp:28:11:31:11 | test.cpp:28:11:31:11 | test.cpp:28:11:31:11 | (statement expression) | <none> |
+| test | test.cpp:20:6:20:6 | g | 29 | 11 | test.cpp:29:16:29:22 | test.cpp:29:16:29:22 | test.cpp:29:16:29:22 | declaration | initializer for c |
+| test | test.cpp:20:6:20:6 | g | 29 | 12 | test.cpp:29:20:29:21 | test.cpp:29:20:29:21 | test.cpp:29:20:29:21 | initializer for c | 3 |
+| test | test.cpp:20:6:20:6 | g | 29 | 13 | test.cpp:29:20:29:20 | test.cpp:29:20:29:20 | test.cpp:29:20:29:20 | 3 | call to C |
+| test | test.cpp:20:6:20:6 | g | 29 | 14 | test.cpp:29:20:29:21 | test.cpp:29:20:29:21 | test.cpp:29:20:29:21 | call to C | ExprStmt |
+| test | test.cpp:20:6:20:6 | g | 30 | 15 | test.cpp:30:16:30:19 | test.cpp:30:16:30:19 | test.cpp:30:16:30:19 | ExprStmt | ptr |
+| test | test.cpp:20:6:20:6 | g | 30 | 16 | test.cpp:30:16:30:18 | test.cpp:30:16:30:18 | test.cpp:30:16:30:18 | ptr | c |
+| test | test.cpp:20:6:20:6 | g | 31 | 17 | test.cpp:31:10:31:10 | test.cpp:31:10:31:10 | test.cpp:31:10:31:10 | c | call to ~C |
+| test | test.cpp:20:6:20:6 | g | 31 | 18 | test.cpp:31:10:31:10 | test.cpp:31:10:31:10 | test.cpp:31:10:31:10 | call to ~C | (statement expression) |

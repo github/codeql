@@ -1,0 +1,41 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+JUnit 3.8 requires that a <code>suite</code> method for defining a <code>TestSuite</code> that will 
+be used by a <code>TestRunner</code> has a specific signature. If the <code>suite</code> 
+method does not have the expected signature, JUnit does not detect the method as a 
+<code>suite</code> method.</p>
+
+</overview>
+<recommendation>
+<p>
+Make sure that <code>suite</code> methods in junit <code>TestCase</code> classes are declared both <code>public</code> and
+<code>static</code>, and that they have a return type of <code>junit.framework.Test</code> or one of its subtypes.
+</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, <code>BadSuiteMethod.suite</code> is not detected by JUnit because it is
+not declared <code>public</code>. However, <code>CorrectSuiteMethod.suite</code> <em>is</em> detected by JUnit 
+because it has the expected signature.</p>
+
+<sample src="BadSuiteMethod.java" />
+
+</example>
+<references>
+
+
+<li>
+JUnit: <a href="http://junit.sourceforge.net/junit3.8.1/doc/cookbook/cookbook.htm">JUnit Cookbook</a>.
+</li>
+
+
+
+</references>
+</qhelp>

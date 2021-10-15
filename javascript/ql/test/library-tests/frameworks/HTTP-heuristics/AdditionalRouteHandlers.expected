@@ -1,0 +1,61 @@
+| src/RouterExample.js:4:65:10:1 | (req, r ... ;\\n  }\\n} |
+| src/app-in-property.js:6:13:6:32 | function(req, res){} |
+| src/app-in-property.js:14:21:14:40 | function(req, res){} |
+| src/bound-handler.js:4:1:4:28 | functio ...  res){} |
+| src/bound-handler.js:9:12:9:31 | function(req, res){} |
+| src/connect.js:5:9:5:27 | function(req,res){} |
+| src/connect.js:8:12:8:31 | function(req, res){} |
+| src/connect.js:12:9:12:27 | function(req,res){} |
+| src/connect.js:13:10:13:28 | function(req,res){} |
+| src/connect.js:14:10:14:28 | function(req,res){} |
+| src/constructed-handler.js:5:12:5:32 | functio ... res) {} |
+| src/exported-getter.js:2:12:2:31 | function(req, res){} |
+| src/exported-handler.js:1:19:1:55 | functio ... res) {} |
+| src/exported-middleware-attacher-2.js:2:13:2:32 | function(req, res){} |
+| src/exported-middleware-attacher.js:2:13:2:32 | function(req, res){} |
+| src/handler-in-property.js:5:14:5:33 | function(req, res){} |
+| src/handler-in-property.js:12:18:12:37 | function(req, res){} |
+| src/iterated-handlers.js:4:2:4:22 | functio ...  res){} |
+| src/middleware-attacher-getter.js:4:17:4:36 | function(req, res){} |
+| src/middleware-attacher-getter.js:19:19:19:38 | function(req, res){} |
+| src/middleware-attacher-getter.js:29:32:29:51 | function(req, res){} |
+| src/middleware-attacher.js:3:13:3:32 | function(req, res){} |
+| src/nodejs.js:3:19:3:38 | function(req, res){} |
+| src/nodejs.js:5:22:5:41 | function(req, res){} |
+| src/nodejs.js:8:14:8:33 | function(req, res){} |
+| src/nodejs.js:10:35:10:54 | function(req, res){} |
+| src/nodejs.js:11:23:11:42 | function(req, res){} |
+| src/nodejs.js:12:25:12:44 | function(req, res){} |
+| src/nodejs.js:15:12:15:31 | function(req, res){} |
+| src/returned-handler.js:5:12:5:32 | functio ... res) {} |
+| src/route-objects.js:7:19:7:38 | function(req, res){} |
+| src/route-objects.js:8:12:10:5 | (req, res) {\\n\\n    } |
+| src/route-objects.js:20:16:22:9 | (req, r ...       } |
+| src/route-objects.js:27:16:29:9 | (req, r ...       } |
+| src/route-objects.js:40:12:42:5 | (req, res) {\\n\\n    } |
+| src/route-objects.js:50:12:52:5 | (req, res) {\\n\\n    } |
+| src/route-objects.js:56:12:58:5 | functio ... ;\\n    } |
+| src/tst.js:4:23:4:43 | functio ... res) {} |
+| src/tst.js:6:32:6:52 | functio ... res) {} |
+| src/tst.js:8:32:8:61 | functio ... nse) {} |
+| src/tst.js:30:36:30:56 | functio ... res) {} |
+| src/tst.js:33:18:33:38 | functio ... res) {} |
+| src/tst.js:34:18:34:38 | functio ... res) {} |
+| src/tst.js:37:5:37:25 | functio ... res) {} |
+| src/tst.js:38:5:38:25 | functio ... res) {} |
+| src/tst.js:43:18:43:38 | functio ... res) {} |
+| src/tst.js:46:1:46:23 | functio ... res) {} |
+| src/tst.js:52:1:54:1 | functio ... req()\\n} |
+| src/tst.js:56:1:58:1 | functio ... s) {\\n\\n} |
+| src/tst.js:61:1:63:1 | functio ... turn;\\n} |
+| src/tst.js:65:1:67:1 | functio ... rn x;\\n} |
+| src/tst.js:70:5:72:5 | functio ... \\n\\n    } |
+| src/tst.js:74:5:76:5 | functio ... \\n\\n    } |
+| src/tst.js:79:5:81:5 | functio ... \\n\\n    } |
+| src/tst.js:84:5:86:5 | functio ... \\n\\n    } |
+| src/tst.js:91:5:93:5 | functio ... \\n\\n    } |
+| src/tst.js:109:16:111:9 | functio ...       } |
+| src/tst.js:116:16:118:9 | functio ...       } |
+| src/tst.js:124:16:126:9 | functio ...       } |
+| src/tst.js:132:16:134:9 | functio ...       } |
+| src/tst.js:142:16:144:9 | functio ...       } |

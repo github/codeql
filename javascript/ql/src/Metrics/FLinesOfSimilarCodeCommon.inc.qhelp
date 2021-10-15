@@ -1,0 +1,36 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+
+<p>
+This metric measures the number of lines in a file that are contained within a block that is duplicated elsewhere. These lines may include code, comments and whitespace, and the duplicate block may be in this file or in another file.
+</p>
+
+<p>
+A file that contains many lines that are similar to other code within the code base is
+problematic for the same reasons as a file that contains a lot of (exactly)
+duplicated code.
+</p>
+
+</overview>
+<include src="DuplicationProblems.inc.qhelp" />
+
+<recommendation>
+
+<p>
+Refactor similar code snippets by extracting common functionality into functions
+that can be reused across modules.
+</p>
+
+</recommendation>
+<references> 
+
+
+<li>Wikipedia: <a href="http://en.wikipedia.org/wiki/Duplicate_code">Duplicate code</a>.</li>
+<li>M. Fowler, <em>Refactoring</em>. Addison-Wesley, 1999.</li>
+
+
+</references>
+</qhelp>

@@ -1,0 +1,2 @@
+| enabled.cpp:4:9:4:9 | expression must be an lvalue or a function designator | 4 | expr_not_an_lvalue_or_function_designator |
+| file://:0:0:0:0 | There was an error during this compilation | 4 | Error occurred |

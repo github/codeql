@@ -1,0 +1,37 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>This rule highlights potentially overflowing calls to the functions <code>sprintf</code> and <code>vsprintf</code> with a warning. 
+These functions allow unbounded writes to buffers, which may cause an overflow when used on untrusted data or without adequate checks on the size of the data. Function calls of this type constitute a security risk through buffer overflows.</p>
+
+</overview>
+<recommendation>
+<p>Always control the length of buffer copy and buffer write operations. Use the safer variants <code>snprintf</code> and <code>vsnprintf</code>, which include an extra buffer length argument.</p>
+
+</recommendation>
+<example>
+<sample src="PotentialBufferOverflow.cpp" />
+
+<p>To improve the security of this example code, three changes should be made:</p>
+<ol>
+  <li>Introduce a preprocessor define for the size of the buffer.</li>
+  <li>Replace both calls to <code>sprintf</code> with <code>snprintf</code>, specifying the define as the maximum length to copy.  This will prevent the buffer overflow.</li>
+  <li>Consider using the %g format specifier instead of %f.</li>
+</ol>
+
+</example>
+<references>
+
+<li>Common Weakness
+Enumeration: <a href="http://cwe.mitre.org/data/definitions/120.html">CWE-120: Buffer Copy without Checking Size of Input ('Classic Buffer Overflow').</a></li>
+<li>CERT C Coding
+Standard: <a href="https://www.securecoding.cert.org/confluence/display/c/STR31-C.+Guarantee+that+storage+for+strings+has+sufficient+space+for+character+data+and+the+null+terminator">STR31-C. Guarantee
+that storage for strings has sufficient space for character data and
+the null terminator</a>.</li>
+<li>M. Howard, D. Leblanc, J. Viega, <i>19 Deadly Sins of Software Security: Programming Flaws and How to Fix Them</i>, McGraw-Hill Osborne, 2005.</li>
+
+
+</references>
+</qhelp>

@@ -1,0 +1,20 @@
+| literals/Literals.java:6:22:6:37 | "literal string" | literal string | literal string |
+| literals/Literals.java:117:3:117:19 | "hello" + "world" | helloworld | helloworld |
+| literals/Literals.java:118:3:118:17 | "hello,\\tworld" | hello,\tworld | hello,\tworld |
+| literals/Literals.java:119:3:119:21 | "hello,\\u0009world" | hello,\tworld | hello,\tworld |
+| literals/Literals.java:120:3:120:10 | "\\u0061" | a | a |
+| literals/Literals.java:121:3:121:6 | "\\0" | \u0000 | \u0000 |
+| literals/Literals.java:122:3:122:9 | "\\0000" | \u00000 | \u00000 |
+| literals/Literals.java:123:3:123:6 | "\\"" | " | " |
+| literals/Literals.java:124:3:124:6 | "\\'" | ' | ' |
+| literals/Literals.java:125:3:125:6 | "\\n" | \n | \n |
+| literals/Literals.java:126:3:126:6 | "\\\\" | \\ | \\ |
+| literals/Literals.java:127:3:127:13 | "test \\123" | test S | test S |
+| literals/Literals.java:128:3:128:9 | "\\1234" | S4 | S4 |
+| literals/Literals.java:129:3:129:13 | "\\u0061567" | a567 | a567 |
+| literals/Literals.java:130:3:130:13 | "\\u1234567" | \u1234567 | \u1234567 |
+| literals/Literals.java:131:3:131:18 | "\\uaBcDeF\\u0aB1" | \uabcdeF\u0ab1 | \uabcdeF\u0ab1 |
+| literals/Literals.java:132:3:132:16 | "\\uD800\\uDC00" | \ud800\udc00 | \ud800\udc00 |
+| literals/Literals.java:134:3:134:10 | "\\uD800" | \ufffd | \ufffd |
+| literals/Literals.java:135:3:135:10 | "\\uDC00" | \ufffd | \ufffd |
+| literals/Literals.java:136:3:136:31 | "hello\\uD800hello\\uDC00world" | hello\ufffdhello\ufffdworld | hello\ufffdhello\ufffdworld |

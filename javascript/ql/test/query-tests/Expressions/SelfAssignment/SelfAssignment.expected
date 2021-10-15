@@ -1,0 +1,5 @@
+| jsdoc.js:9:5:9:19 | this.y = this.y | This expression assigns property y to itself. |
+| jsdoc.js:11:5:11:23 | this.arg = this.arg | This expression assigns property arg to itself. |
+| tst.js:5:2:5:14 | width = width | This expression assigns variable width to itself. |
+| tst.js:24:1:24:19 | array[1] = array[1] | This expression assigns element 1 to itself. |
+| tst.js:27:1:27:9 | o.x = o.x | This expression assigns property x to itself. |

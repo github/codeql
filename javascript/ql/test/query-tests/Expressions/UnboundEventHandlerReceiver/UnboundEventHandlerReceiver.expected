@@ -1,0 +1,3 @@
+| tst.js:27:18:27:40 | onClick ... bound1} | The receiver of this event handler call is unbound, `$@` will be `undefined` in the call to $@ | tst.js:56:9:56:12 | this | this | tst.js:55:5:57:5 | unbound ... ;\\n    } | unbound1 |
+| tst.js:28:18:28:40 | onClick ... bound2} | The receiver of this event handler call is unbound, `$@` will be `undefined` in the call to $@ | tst.js:60:15:60:18 | this | this | tst.js:59:5:61:5 | unbound ... ;\\n    } | unbound2 |
+| tst.js:29:18:29:35 | onClick={unbound3} | The receiver of this event handler call is unbound, `$@` will be `undefined` in the call to $@ | tst.js:64:15:64:18 | this | this | tst.js:63:5:65:5 | unbound ... ;\\n    } | unbound3 |

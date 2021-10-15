@@ -1,0 +1,59 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+The <code>with</code> statement provides a shorthand when accessing many properties of the same object.
+If a property is not found on that object, enclosing scopes are searched for a variable of the same
+name. This is confusing and makes code brittle and hard to read. For this reason, <code>with</code>
+is best avoided.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Eliminate <code>with</code> statements by introducing explicit property accesses.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+The following code snippet reads properties <code>firstName</code>, <code>lastName</code> and
+<code>email</code> from the object stored in <code>record</code> by means of a <code>with</code>
+statement. It also invokes the <code>addRecord</code> function, which is presumably defined in
+an enclosing scope.
+</p>
+
+<sample src="examples/WithStatement.js" />
+
+<p>
+Note that if <code>record</code> does not have any of the properties <code>firstName</code>,
+<code>lastName</code> or <code>email</code>, they will be looked up as variables in enclosing scopes.
+Conversely, if it should happen to have a property <code>addRecord</code>, the function call will
+attempt to invoke the value of this property as a method.
+</p>
+
+<p>
+To clarify the intended meaning of the code, the <code>with</code> statement should be removed
+and property accesses should be introduced to make it explicit which names are intended to
+be read from <code>record</code>, and which ones are intended to be looked up in enclosing scopes:
+</p>
+
+<sample src="examples/WithStatementGood.js" />
+
+<p>
+Note that <code>with</code> statements are not allowed in strict mode code.
+</p>
+
+</example>
+<references>
+
+
+<li>D. Crockford, <i>JavaScript: The Good Parts</i>, Appendix B.2. O'Reilly, 2008.</li>
+
+
+</references>
+</qhelp>

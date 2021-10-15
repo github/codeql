@@ -1,0 +1,37 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>The method signature of <code>Equals</code> takes an object as an argument. It is therefore 
+common to test whether the parameter is of the same type as the object that <code>Equals</code> is 
+being called on. This should not be done using <code>as</code> and then checking for null because 
+this technique does not limit the argument to being the exact same type as the object. It will not 
+return null if the argument is a subtype of the object's type.</p>
+
+<p>As an exception to the rule, it <em>is</em> acceptable to use <code>as</code> when your class is 
+sealed, because the concern about subclassing does not then apply. That said, it is probably best 
+to avoid it even then, because sealed classes can sometimes become unsealed later - it's sensible 
+to try and avoid potential problems down the line.</p>
+
+</overview>
+<recommendation>
+<p>Call <code>GetType()</code> on the argument and compare it with the type of the current object 
+instead.</p>
+
+</recommendation>
+<example>
+<p>The following example clearly demonstrates the problem with using <code>as</code>. The example 
+outputs:</p>
+<pre>b does equal d.
+d does not equal b.</pre>
+<p>This asymmetry violates the contract of the Equals method.</p>
+<sample src="EqualsUsesAs.cs" />
+
+</example>
+<references>
+
+  <li>MSDN: <a href="http://msdn.microsoft.com/en-us/library/bsc2ak47(v=vs.80).aspx">Object.Equals Method (Object)</a></li>
+
+</references>
+</qhelp>

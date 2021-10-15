@@ -1,0 +1,51 @@
+@import "compass/css3/background-size";
+
+@import "variables";
+
+* {
+  line-height: 1.3;
+}
+
+h2 {
+  font-weight: bold;
+}
+h2, h3 {
+  color: $gray-4;
+}
+
+q, blockquote {
+  font-weight: bold;
+}
+
+slides > slide {
+  color: $gray-4;
+
+  &.title-slide {
+    &:after {
+      content: '';
+      background: url(../../images/io2013/google-io-lockup-1.png) no-repeat 100% 50%;
+      @include background-size(contain);
+      position: absolute;
+      bottom: $slide-top-bottom-padding + 40;
+      right: $slide-top-bottom-padding;
+      width: 100%;
+      height: 90px;
+    }
+
+    hgroup {
+      h1 {
+        font-weight: bold;
+        line-height: 1.1;
+      }
+      h2, p {
+        color: $gray-4;
+      }
+      h2 {
+        margin-top: 0.25em;
+      }
+      p {
+        margin-top: 3em;
+      }
+    }
+  }
+}

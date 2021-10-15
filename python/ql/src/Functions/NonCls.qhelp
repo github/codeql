@@ -1,0 +1,35 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p> The first parameter of a class method, a new method or any metaclass method
+should be called <code>cls</code>. This makes the purpose of the parameter clear to other developers.
+</p>
+
+</overview>
+<recommendation>
+
+<p>Change the name of the first parameter to <code>cls</code> as recommended by the style guidelines
+in PEP 8.</p>
+
+</recommendation>
+<example>
+<p>In the example, the first parameter to <code>make()</code> is <code>klass</code> which should be changed to <code>cls</code>
+for ease of comprehension.
+</p>
+
+<sample src="NonCls.py" />
+
+
+</example>
+<references>
+
+<li>Python PEP 8: <a href="http://www.python.org/dev/peps/pep-0008/#function-and-method-arguments">Function and method arguments</a>.</li>
+<li>Python Tutorial: <a href="http://docs.python.org/2/tutorial/classes.html">Classes</a>.</li>
+
+
+</references>
+</qhelp>

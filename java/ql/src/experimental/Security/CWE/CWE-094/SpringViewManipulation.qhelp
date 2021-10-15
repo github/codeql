@@ -1,0 +1,50 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+  <overview>
+    <p>
+      The Spring Expression Language (SpEL) is a powerful expression language
+      provided by Spring Framework. The language offers many features
+      including invocation of methods available in the JVM.
+    </p>
+    <p>
+      An unrestricted view name manipulation vulnerability in Spring Framework could lead to attacker-controlled arbitary SpEL expressions being evaluated using attacker-controlled data, which may in turn allow an attacker to run arbitrary code.
+    </p>
+    <p>
+      Note: two related variants of this problem are detected by different queries, `java/spring-view-manipulation` and `java/spring-view-manipulation-implicit`. The first detects taint flow problems where the return types is always <code>String</code>. While the latter, `java/spring-view-manipulation-implicit` detects cases where the request mapping method has a non-string return type such as <code>void</code>.
+    </p>
+  </overview>
+
+  <recommendation>
+    <p>
+      In general, using user input to determine Spring view name should be avoided.
+      If user input must be included in the expression, the controller can be annotated by
+      a <code>@ReponseBody</code> annotation. In this case, Spring Framework does not interpret 
+      it as a view name, but just returns this string in HTTP Response. The same applies to using
+      a <code>@RestController</code> annotation on a class, as internally it inherits <code>@ResponseBody</code>.
+    </p>
+  </recommendation>
+
+  <example>
+    <p>
+      In the following example, the <code>Fragment</code> method uses an externally controlled variable <code>section</code> to generate the view name. Hence, it is vulnerable to Spring View Manipulation attacks.
+    </p>
+    <sample src="SpringViewBad.java" />
+    <p>
+      This can be easily prevented by using the <code>ResponseBody</code> annotation which marks the reponse is already processed preventing exploitation of Spring View Manipulation vulnerabilities. Alternatively, this can also be fixed by adding a <code>HttpServletResponse</code> parameter to the method definition as shown in the example below.
+    </p>
+    <sample src="SpringViewGood.java" />
+  </example>
+
+  <references>
+    <li>
+      Veracode Research : <a href="https://github.com/veracode-research/spring-view-manipulation/">Spring View Manipulation </a>
+    </li>
+    <li>
+      Spring Framework Reference Documentation: <a href="https://docs.spring.io/spring/docs/4.2.x/spring-framework-reference/html/expressions.html">Spring Expression Language (SpEL)</a>
+    </li>
+    <li>
+      OWASP: <a href="https://owasp.org/www-community/vulnerabilities/Expression_Language_Injection">Expression Language Injection</a>
+    </li>
+  </references>
+</qhelp>

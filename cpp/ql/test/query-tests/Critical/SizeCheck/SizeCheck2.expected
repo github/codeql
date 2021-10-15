@@ -1,0 +1,4 @@
+| test2.c:16:23:16:28 | call to malloc | Allocated memory (27 bytes) is not a multiple of the size of 'long long' (8 bytes). |
+| test2.c:17:20:17:25 | call to malloc | Allocated memory (33 bytes) is not a multiple of the size of 'double' (8 bytes). |
+| test2.c:32:23:32:28 | call to malloc | Allocated memory (28 bytes) is not a multiple of the size of 'long long' (8 bytes). |
+| test2.c:33:20:33:25 | call to malloc | Allocated memory (20 bytes) is not a multiple of the size of 'double' (8 bytes). |

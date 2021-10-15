@@ -1,0 +1,6 @@
+| es2015.js:1:1:4:0 | <toplevel> |
+| es2015.js:1:9:3:2 | () => ({\\n  m() {}\\n}) |
+| es2015.js:2:4:2:8 | () {} |
+| tst.js:1:1:9:1 | <toplevel> |
+| tst.js:1:1:9:1 | functio ... }\\n\\t};\\n} |
+| tst.js:2:10:8:2 | functio ... \\n\\t\\t}\\n\\t} |

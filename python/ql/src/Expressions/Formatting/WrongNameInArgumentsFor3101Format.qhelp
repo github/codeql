@@ -1,0 +1,31 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>A formatting expression, that is an expression of the form <code>the_format.format(args)</code> or <code>format(the_format, args)</code>,
+can use named fields. If it does, then keyword arguments must be supplied for all named fields.
+If any of the keyword arguments are missing then a <code>KeyError</code> will be raised.
+</p>
+
+</overview>
+<recommendation>
+<p>
+Change the format to match the arguments and ensure that the arguments have the correct names.
+</p>
+
+</recommendation>
+<example>
+<p>In the following example, if <code>unlikely_condition()</code> is true, then a <code>KeyError</code> will be raised 
+as the keyword parameter <code>eggs</code> is missing.
+Adding a keyword parameter named <code>eggs</code> would fix this.
+</p>
+<sample src="WrongNameInArgumentsFor3101Format.py" />
+
+</example>
+<references>
+
+  <li>Python Library Reference: <a href="https://docs.python.org/2/library/string.html#string-formatting">String Formatting.</a> </li>
+
+</references>
+</qhelp>

@@ -1,0 +1,5 @@
+classExprs
+| exportClass.ts:3:16:3:35 | class extends Foo {} |
+functionExprs
+| exportClass.ts:3:34:3:33 | (...arg ... rgs); } |
+| exportFunction.ts:3:16:3:33 | function(x=Foo) {} |

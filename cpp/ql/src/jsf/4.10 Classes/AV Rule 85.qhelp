@@ -1,0 +1,44 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+
+<!-- Mention that this rule may not be applicable in projects that don't follow the JSF standard. -->
+<include src="../jsfNote.inc.qhelp" />
+
+<p>
+This query ensures that all operators with opposites (e.g. == and !=) are both defined, and
+that one of them is defined in terms of the other. This just enforces the consistency of meaning
+of the operators.
+</p>
+
+
+<p>
+The indicated operator either does not have its opposite defined, or both of the definitions are not in terms of the other.
+Not defining an operator in terms of its opposite is prone to mistakes, as it requires modification of both operators when 
+the behavior of one changes. Deliberately defining opposite operators with behaviors that are not actual logical opposites
+(e.g. defining <code>x == y</code> if <code>x</code> and <code>y</code> are divisible by 2 and <code> x != y </code> if <code>x</code> and <code>y</code> are divisible by 3)
+violates the almost universal assumptions developers have on the relationship of <code>==</code> and <code>!=</code> and will
+lead to unnecessary confusion.
+</p>
+
+</overview>
+<recommendation>
+<p>
+Make sure that both opposite operators are defined when they are overloaded, and ensure that one of the overloads
+is defined in terms of the other.
+</p>
+
+</recommendation>
+<example><sample src="AV Rule 85.cpp" />
+
+
+
+</example>
+<references>
+<li>AV Rule 85, <em>Joint Strike Fighter Air Vehicle C++ Coding Standards</em>. Lockheed Martin Corporation, 2005.</li>
+</references>
+</qhelp>

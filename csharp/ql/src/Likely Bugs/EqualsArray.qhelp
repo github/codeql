@@ -1,0 +1,35 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>There are some circumstances where you want to compare two arrays or collections using reference equality, but 
+often you will want a deep comparison instead (that is, one that compares two collections on an 
+element-by-element basis).</p>
+
+</overview>
+<recommendation>
+<p>If you intended to make a deep comparison then the solution depends on whether or not you are 
+using C# 3.5 or later. From C# 3.5 onward LINQ is available and you can replace the call to <code>
+Equals</code> with a call to the LINQ extension method <code>SequenceEqual</code>. If this is not 
+possible then you can implement a helper function to compare arrays, which can then be used 
+throughout your code.</p>
+
+</recommendation>
+<example>
+<p>This example outputs "False" because calling <code>Equals</code> on an array only does a 
+reference comparison.</p>
+<sample src="EqualsArray.cs" />
+
+<p>The following example outputs "True" twice and uses two different methods of performing a deep 
+comparison of the array.</p>
+<sample src="EqualsArrayFix.cs" />
+
+</example>
+<references>
+
+  <li>MSDN: <a href="http://msdn.microsoft.com/en-us/library/system.linq.enumerable.sequenceequal.aspx">Enumerable.SequenceEqual Method</a>.</li>
+
+
+</references>
+</qhelp>

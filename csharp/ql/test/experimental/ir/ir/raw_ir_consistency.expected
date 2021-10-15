@@ -1,0 +1,34 @@
+missingOperand
+unexpectedOperand
+duplicateOperand
+missingPhiOperand
+missingOperandType
+duplicateChiOperand
+sideEffectWithoutPrimary
+instructionWithoutSuccessor
+ambiguousSuccessors
+unexplainedLoop
+unnecessaryPhiInstruction
+memoryOperandDefinitionIsUnmodeled
+operandAcrossFunctions
+instructionWithoutUniqueBlock
+containsLoopOfForwardEdges
+lostReachability
+backEdgeCountMismatch
+useNotDominatedByDefinition
+switchInstructionWithoutDefaultEdge
+notMarkedAsConflated
+wronglyMarkedAsConflated
+invalidOverlap
+nonUniqueEnclosingIRFunction
+fieldAddressOnNonPointer
+| inoutref.cs:18:9:18:13 | FieldAddress: access to field fld | FieldAddress instruction 'FieldAddress: access to field fld' has an object address operand that is not an address, in function '$@'. | inoutref.cs:16:17:16:17 | System.Void InOutRef.F(System.Int32,MyStruct,MyStruct,MyClass,MyClass) | System.Void InOutRef.F(System.Int32,MyStruct,MyStruct,MyClass,MyClass) |
+| inoutref.cs:19:13:19:17 | FieldAddress: access to field fld | FieldAddress instruction 'FieldAddress: access to field fld' has an object address operand that is not an address, in function '$@'. | inoutref.cs:16:17:16:17 | System.Void InOutRef.F(System.Int32,MyStruct,MyStruct,MyClass,MyClass) | System.Void InOutRef.F(System.Int32,MyStruct,MyStruct,MyClass,MyClass) |
+| pointers.cs:35:17:35:24 | FieldAddress: access to field fld | FieldAddress instruction 'FieldAddress: access to field fld' has an object address operand that is not an address, in function '$@'. | pointers.cs:25:17:25:20 | System.Void Pointers.Main() | System.Void Pointers.Main() |
+thisArgumentIsNonPointer
+| inoutref.cs:32:22:32:35 | Call: object creation of type MyStruct | Call instruction 'Call: object creation of type MyStruct' has a `this` argument operand that is not an address, in function '$@'. | inoutref.cs:29:17:29:20 | System.Void InOutRef.Main() | System.Void InOutRef.Main() |
+| pointers.cs:27:22:27:35 | Call: object creation of type MyStruct | Call instruction 'Call: object creation of type MyStruct' has a `this` argument operand that is not an address, in function '$@'. | pointers.cs:25:17:25:20 | System.Void Pointers.Main() | System.Void Pointers.Main() |
+missingCanonicalLanguageType
+multipleCanonicalLanguageTypes
+missingIRType
+multipleIRTypes

@@ -1,0 +1,3 @@
+| SignedOverflowCheck.cpp:35:9:35:23 | ... < ... | Bad overflow check. |
+| SignedOverflowCheck.cpp:113:12:113:66 | ... < ... | Bad overflow check. |
+| test.cpp:3:11:3:19 | ... < ... | Bad overflow check. |

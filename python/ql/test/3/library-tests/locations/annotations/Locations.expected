@@ -1,0 +1,53 @@
+| 0 | 0 | 0 | 0 | Module test |
+| 3 | 1 | 5 | 44 | Function func |
+| 3 | 1 | 5 | 44 | FunctionDef |
+| 3 | 1 | 5 | 44 | FunctionExpr |
+| 3 | 5 | 3 | 8 | func |
+| 3 | 10 | 3 | 20 | callee_type |
+| 3 | 23 | 3 | 34 | CallableType |
+| 4 | 10 | 4 | 25 | formal_to_actual |
+| 4 | 28 | 4 | 31 | List |
+| 4 | 28 | 4 | 42 | Subscript |
+| 4 | 33 | 4 | 36 | List |
+| 4 | 33 | 4 | 41 | Subscript |
+| 4 | 38 | 4 | 40 | int |
+| 5 | 10 | 5 | 15 | strict |
+| 5 | 18 | 5 | 21 | bool |
+| 5 | 25 | 5 | 28 | True |
+| 5 | 34 | 5 | 37 | List |
+| 5 | 34 | 5 | 43 | Subscript |
+| 5 | 39 | 5 | 42 | Type |
+| 6 | 5 | 6 | 8 | Pass |
+| 9 | 1 | 14 | 45 | Function func |
+| 9 | 1 | 14 | 45 | FunctionDef |
+| 9 | 1 | 14 | 45 | FunctionExpr |
+| 9 | 5 | 9 | 8 | func |
+| 9 | 10 | 9 | 13 | self |
+| 10 | 10 | 10 | 13 | name |
+| 10 | 16 | 10 | 18 | str |
+| 11 | 10 | 11 | 13 | args |
+| 11 | 16 | 11 | 19 | List |
+| 11 | 16 | 11 | 24 | Subscript |
+| 11 | 21 | 11 | 23 | str |
+| 13 | 10 | 13 | 12 | cwd |
+| 13 | 15 | 13 | 17 | str |
+| 13 | 21 | 13 | 24 | None |
+| 14 | 10 | 14 | 12 | env |
+| 14 | 15 | 14 | 18 | Dict |
+| 14 | 15 | 14 | 28 | Subscript |
+| 14 | 20 | 14 | 22 | str |
+| 14 | 20 | 14 | 27 | Tuple |
+| 14 | 25 | 14 | 27 | str |
+| 14 | 32 | 14 | 35 | None |
+| 14 | 41 | 14 | 44 | None |
+| 15 | 5 | 15 | 8 | Pass |
+| 17 | 1 | 17 | 54 | Function specials |
+| 17 | 1 | 17 | 54 | FunctionDef |
+| 17 | 1 | 17 | 54 | FunctionExpr |
+| 17 | 5 | 17 | 12 | specials |
+| 17 | 14 | 17 | 17 | self |
+| 17 | 21 | 17 | 27 | varargs |
+| 17 | 30 | 17 | 34 | vanno |
+| 17 | 39 | 17 | 44 | kwargs |
+| 17 | 47 | 17 | 52 | kwanno |
+| 18 | 5 | 18 | 8 | Pass |

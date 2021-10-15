@@ -1,0 +1,6 @@
+| CSharp7.cs:191:22:191:27 | ref ... | CSharp7.cs:191:26:191:27 | access to local variable v1 | Int32 |
+| CSharp7.cs:195:22:195:33 | ref ... | CSharp7.cs:195:26:195:33 | access to array element | Int32 |
+| CSharp7.cs:196:22:196:27 | ref ... | CSharp7.cs:196:26:196:27 | access to local variable r1 | Int32 |
+| CSharp7.cs:198:22:198:35 | ref ... | CSharp7.cs:198:26:198:35 | call to method F2 | Int32 |
+| CSharp7.cs:204:40:204:44 | ref ... | CSharp7.cs:204:44:204:44 | access to parameter q | Int32 |
+| CSharp7.cs:205:16:205:20 | ref ... | CSharp7.cs:205:20:205:20 | access to parameter p | Int32 |

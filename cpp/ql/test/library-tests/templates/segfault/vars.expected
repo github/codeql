@@ -1,0 +1,5 @@
+| file://:0:0:0:0 | __va_list_tag |
+| segfault.cpp:2:7:2:7 | c |
+| segfault.cpp:3:12:3:12 | t |
+| segfault.cpp:4:60:4:60 | s<V> |
+| segfault.cpp:4:60:4:60 | s<r> |

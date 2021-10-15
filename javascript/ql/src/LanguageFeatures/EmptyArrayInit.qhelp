@@ -1,0 +1,43 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Elements of array literal expressions that are omitted will be initialized to <code>undefined</code>.
+However, such omitted elements are easy to miss and make code hard to read. They should be avoided.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Explicitly initialize the array elements to <code>undefined</code>. If you want to create an array
+with a specific number of uninitialized elements, use the <code>Array</code> constructor instead.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+The following code snippet initializes <code>a</code> to an array of size ten by using omitted
+elements.
+</p>
+
+<sample src="examples/EmptyArrayInit.js" />
+
+<p>
+This code is clearly hard to read, and should be replaced by the following snippet:
+</p>
+
+<sample src="examples/EmptyArrayInitGood.js" />
+
+</example>
+<references>
+
+
+<li>D. Crockford, <i>JavaScript: The Good Parts</i>, Appendix C.6. O'Reilly, 2008.</li>
+
+
+</references>
+</qhelp>

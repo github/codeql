@@ -1,0 +1,2 @@
+lgtm,codescanning
+* Updated the _Use of a broken or weak cryptographic algorithm_ (`py/weak-cryptographic-algorithm`) query, so it alerts on any use of a weak cryptographic non-hashing algorithm. Introduced a new query _Use of a broken or weak cryptographic hashing algorithm on sensitive data_ (`py/weak-sensitive-data-hashing`) to handle weak cryptographic hashing algorithms, which only alerts when used on sensitive data.

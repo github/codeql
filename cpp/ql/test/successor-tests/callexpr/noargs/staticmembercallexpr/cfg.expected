@@ -1,0 +1,11 @@
+| staticmembercallexpr | staticmembercallexpr.cpp:1:7:1:7 | operator= | 1 | 1 | staticmembercallexpr.cpp:1:7:1:7 | staticmembercallexpr.cpp:1:7:1:7 | staticmembercallexpr.cpp:1:7:1:7 | operator= | <none> |
+| staticmembercallexpr | staticmembercallexpr.cpp:1:7:1:7 | operator= | 1 | 1 | staticmembercallexpr.cpp:1:7:1:7 | staticmembercallexpr.cpp:1:7:1:7 | staticmembercallexpr.cpp:1:7:1:7 | operator= | <none> |
+| staticmembercallexpr | staticmembercallexpr.cpp:3:15:3:15 | g | 3 | 1 | staticmembercallexpr.cpp:3:15:3:15 | staticmembercallexpr.cpp:3:15:3:15 | staticmembercallexpr.cpp:3:15:3:15 | g | <none> |
+| staticmembercallexpr | staticmembercallexpr.cpp:6:6:6:6 | f | 6 | 1 | staticmembercallexpr.cpp:6:10:10:1 | staticmembercallexpr.cpp:6:10:10:1 | staticmembercallexpr.cpp:6:10:10:1 | { ... } | 7: declaration |
+| staticmembercallexpr | staticmembercallexpr.cpp:6:6:6:6 | f | 7 | 2 | staticmembercallexpr.cpp:7:2:7:5 | staticmembercallexpr.cpp:7:2:7:5 | staticmembercallexpr.cpp:7:2:7:5 | declaration | 8: ExprStmt |
+| staticmembercallexpr | staticmembercallexpr.cpp:6:6:6:6 | f | 8 | 3 | staticmembercallexpr.cpp:8:2:8:7 | staticmembercallexpr.cpp:8:2:8:7 | staticmembercallexpr.cpp:8:2:8:7 | ExprStmt | 8: c |
+| staticmembercallexpr | staticmembercallexpr.cpp:6:6:6:6 | f | 8 | 4 | staticmembercallexpr.cpp:8:2:8:2 | staticmembercallexpr.cpp:8:2:8:2 | staticmembercallexpr.cpp:8:2:8:2 | c | 8: call to g |
+| staticmembercallexpr | staticmembercallexpr.cpp:6:6:6:6 | f | 8 | 5 | staticmembercallexpr.cpp:8:4:8:4 | staticmembercallexpr.cpp:8:4:8:4 | staticmembercallexpr.cpp:8:4:8:4 | call to g | 9: ; |
+| staticmembercallexpr | staticmembercallexpr.cpp:6:6:6:6 | f | 9 | 6 | staticmembercallexpr.cpp:9:2:9:2 | staticmembercallexpr.cpp:9:2:9:2 | staticmembercallexpr.cpp:9:2:9:2 | ; | 10: return ... |
+| staticmembercallexpr | staticmembercallexpr.cpp:6:6:6:6 | f | 10 | 7 | staticmembercallexpr.cpp:10:1:10:1 | staticmembercallexpr.cpp:10:1:10:1 | staticmembercallexpr.cpp:10:1:10:1 | return ... | 10: f |
+| staticmembercallexpr | staticmembercallexpr.cpp:6:6:6:6 | f | 10 | 8 | staticmembercallexpr.cpp:6:6:6:6 | staticmembercallexpr.cpp:6:6:6:6 | staticmembercallexpr.cpp:6:6:6:6 | f | <none> |

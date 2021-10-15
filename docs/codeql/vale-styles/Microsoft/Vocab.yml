@@ -1,0 +1,21 @@
+extends: existence
+message: "Verify your use of '%s' with the A-Z word list."
+link: 'https://docs.microsoft.com/en-us/style-guide/a-z-word-list-term-collections/a/abort-abortion'
+level: suggestion
+ignorecase: true
+tokens:
+  - above
+  - accessible
+  - actionable
+  - against
+  - alarm
+  - alert
+  - alias
+  - allows?
+  - assure
+  - author
+  - avg
+  - ensure
+  - he
+  - insure
+  - she

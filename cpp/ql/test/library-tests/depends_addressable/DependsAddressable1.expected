@@ -1,0 +1,7 @@
+| addressable.cpp:20:3:20:5 | ptr | addressable.cpp:18:9:18:11 | ptr |
+| addressable.cpp:20:10:20:10 | a | addressable.cpp:6:3:6:3 | a |
+| addressable.cpp:21:3:21:5 | ptr | addressable.cpp:18:9:18:11 | ptr |
+| addressable.cpp:21:10:21:11 | aa | addressable.cpp:11:4:11:5 | aa |
+| addressable.cpp:23:3:23:6 | fptr | addressable.cpp:16:10:16:13 | fptr |
+| addressable.cpp:24:3:24:6 | fptr | addressable.cpp:16:10:16:13 | fptr |
+| addressable.cpp:25:3:25:7 | mfptr | addressable.cpp:17:16:17:20 | mfptr |

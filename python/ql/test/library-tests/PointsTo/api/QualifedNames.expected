@@ -1,0 +1,5 @@
+| file://:0:0:0:0 | Builtin-function exit | exit |
+| file://:0:0:0:0 | Builtin-function len | len |
+| file://:0:0:0:0 | builtin method append | list.append |
+| test.py:8:1:8:10 | Function foo | foo |
+| test.py:13:5:13:19 | Function C.meth | C.meth |

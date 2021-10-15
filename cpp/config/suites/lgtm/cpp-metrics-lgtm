@@ -1,0 +1,16 @@
++ odasa-cpp-metrics/Files/FLinesOfCode.ql: /Metrics/Size
+    @_namespace com.lgtm/cpp-queries
++ odasa-cpp-metrics/Files/FLinesOfComments.ql: /Metrics/Documentation
+    @_namespace com.lgtm/cpp-queries
++ odasa-cpp-metrics/Files/FLinesOfCommentedOutCode.ql: /Metrics/Files
+    @_namespace com.lgtm/cpp-queries
++ semmlecode-cpp-queries/Metrics/Files/FLinesOfDuplicatedCode.ql: /Metrics/Coupling
+    @_namespace com.lgtm/cpp-queries
++ odasa-cpp-metrics/Files/FNumberOfTests.ql: /Metrics/Size
+    @_namespace com.lgtm/cpp-queries
+
++ semmlecode-cpp-queries/Metrics/Dependencies/ExternalDependencies.ql
+    @_namespace com.lgtm/cpp-queries
++ semmlecode-cpp-queries/Metrics/Dependencies/ExternalDependenciesSourceLinks.ql
+    @_namespace com.lgtm/cpp-queries
+

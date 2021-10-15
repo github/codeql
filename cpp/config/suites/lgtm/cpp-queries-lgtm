@@ -1,0 +1,8 @@
++ semmlecode-cpp-queries/definitions.ql
+    @_namespace com.lgtm/cpp-queries
++ semmlecode-cpp-queries/AlertSuppression.ql
+    @_namespace com.lgtm/cpp-queries
++ semmlecode-cpp-queries/filters/ClassifyFiles.ql
+    @_namespace com.lgtm/cpp-queries
+
+@import "cpp-alerts-lgtm"

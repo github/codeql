@@ -1,0 +1,27 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>The return value of a call to <code>snprintf</code> is the number of characters that <i>would have</i> been written to the buffer assuming there was sufficient space.  In the event that the operation reaches the end of the buffer and more than one character is discarded, the return value will be greater than the buffer size.  This can cause incorrect behaviour, for example:
+</p>
+</overview>
+
+<example><sample src="SnprintfOverflowBad.cpp" />
+</example>
+
+<recommendation>
+<p>The return value of <code>snprintf</code> should always be checked if it is used, and values larger than the buffer size should be accounted for.
+</p>
+</recommendation>
+
+<example><sample src="SnprintfOverflowGood.cpp" />
+</example>
+
+<references>
+
+<li>cplusplus.com: <a href="http://www.cplusplus.com/reference/cstdio/snprintf/">snprintf</a>.</li>
+<li>Red Hat Customer Portal: <a href="https://access.redhat.com/blogs/766093/posts/1976193">The trouble with snprintf</a>.</li>
+
+</references>
+</qhelp>

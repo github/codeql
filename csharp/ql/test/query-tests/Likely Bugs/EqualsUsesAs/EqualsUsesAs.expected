@@ -1,0 +1,1 @@
+| EqualsUsesAs.cs:5:25:5:38 | ... as ... | Test1.Equals(object) should not use "as" on its parameter, as it will not work properly for subclasses of Test1. |

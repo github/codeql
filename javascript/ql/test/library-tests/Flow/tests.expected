@@ -1,0 +1,1614 @@
+abseval
+| ChatListScreen.js:4:7:4:17 | b = Backend | ChatListScreen.js:4:11:4:17 | Backend | ChatListScreen.js:4:7:4:7 | b | backend.js:1:17:1:18 | object literal |
+| ChatListScreen.js:4:7:4:17 | b = Backend | ChatListScreen.js:4:11:4:17 | Backend | ChatListScreen.js:4:7:4:7 | b | file://:0:0:0:0 | undefined |
+| a.js:1:12:1:16 | x = 0 | a.js:1:16:1:16 | 0 | a.js:1:12:1:12 | x | file://:0:0:0:0 | 0 |
+| a.js:1:19:1:23 | y = 0 | a.js:1:23:1:23 | 0 | a.js:1:19:1:19 | y | file://:0:0:0:0 | 0 |
+| a.js:9:5:9:18 | z = someGlobal | a.js:9:9:9:18 | someGlobal | a.js:9:5:9:5 | z | file://:0:0:0:0 | "" |
+| a.js:9:5:9:18 | z = someGlobal | a.js:9:9:9:18 | someGlobal | a.js:9:5:9:5 | z | file://:0:0:0:0 | indefinite value (global) |
+| a.js:9:5:9:18 | z = someGlobal | a.js:9:9:9:18 | someGlobal | a.js:9:5:9:5 | z | file://:0:0:0:0 | non-zero value |
+| a.js:9:5:9:18 | z = someGlobal | a.js:9:9:9:18 | someGlobal | a.js:9:5:9:5 | z | file://:0:0:0:0 | true |
+| a.js:14:12:14:28 | notAlwaysZero = 0 | a.js:14:28:14:28 | 0 | a.js:14:12:14:24 | notAlwaysZero | file://:0:0:0:0 | 0 |
+| amd3.js:2:7:2:12 | _a = a | amd3.js:2:12:2:12 | a | amd3.js:2:7:2:8 | _a | a.js:1:1:18:0 | exports object of module a |
+| amd3.js:2:7:2:12 | _a = a | amd3.js:2:12:2:12 | a | amd3.js:2:7:2:8 | _a | file://:0:0:0:0 | indefinite value (call) |
+| amd3.js:3:7:3:12 | _c = c | amd3.js:3:12:3:12 | c | amd3.js:3:7:3:8 | _c | c.js:1:1:7:0 | exports object of module c |
+| amd3.js:3:7:3:12 | _c = c | amd3.js:3:12:3:12 | c | amd3.js:3:7:3:8 | _c | c.js:1:18:1:19 | object literal |
+| amd3.js:3:7:3:12 | _c = c | amd3.js:3:12:3:12 | c | amd3.js:3:7:3:8 | _c | file://:0:0:0:0 | indefinite value (call) |
+| amd4.js:2:7:2:12 | _u = u | amd4.js:2:12:2:12 | u | amd4.js:2:7:2:8 | _u | file://:0:0:0:0 | indefinite value (call) |
+| amd4.js:2:7:2:12 | _u = u | amd4.js:2:12:2:12 | u | amd4.js:2:7:2:8 | _u | file://:0:0:0:0 | non-empty, non-numeric string |
+| amd4.js:2:7:2:12 | _u = u | amd4.js:2:12:2:12 | u | amd4.js:2:7:2:8 | _u | reexport/lib/src/utils/util.js:1:1:3:0 | exports object of module util |
+| amd5.js:2:7:2:32 | _u = re ... /util') | amd5.js:2:12:2:32 | req('sr ... /util') | amd5.js:2:7:2:8 | _u | file://:0:0:0:0 | indefinite value (call) |
+| amd5.js:2:7:2:32 | _u = re ... /util') | amd5.js:2:12:2:32 | req('sr ... /util') | amd5.js:2:7:2:8 | _u | file://:0:0:0:0 | non-empty, non-numeric string |
+| amd5.js:2:7:2:32 | _u = re ... /util') | amd5.js:2:12:2:32 | req('sr ... /util') | amd5.js:2:7:2:8 | _u | reexport/lib/src/utils/util.js:1:1:3:0 | exports object of module util |
+| amd.js:2:7:2:13 | m = mod | amd.js:2:11:2:13 | mod | amd.js:2:7:2:7 | m | amd.js:1:1:7:0 | module object of module amd |
+| amd.js:2:7:2:13 | m = mod | amd.js:2:11:2:13 | mod | amd.js:2:7:2:7 | m | file://:0:0:0:0 | indefinite value (call) |
+| amd.js:3:7:3:13 | e = exp | amd.js:3:11:3:13 | exp | amd.js:3:7:3:7 | e | amd.js:1:1:7:0 | exports object of module amd |
+| amd.js:3:7:3:13 | e = exp | amd.js:3:11:3:13 | exp | amd.js:3:7:3:7 | e | file://:0:0:0:0 | indefinite value (call) |
+| arguments.js:2:7:2:11 | y = x | arguments.js:2:11:2:11 | x | arguments.js:2:7:2:7 | y | file://:0:0:0:0 | non-zero value |
+| arguments.js:7:7:7:11 | y = x | arguments.js:7:11:7:11 | x | arguments.js:7:7:7:7 | y | file://:0:0:0:0 | indefinite value (call) |
+| arguments.js:7:7:7:11 | y = x | arguments.js:7:11:7:11 | x | arguments.js:7:7:7:7 | y | file://:0:0:0:0 | indefinite value (eval) |
+| arguments.js:7:7:7:11 | y = x | arguments.js:7:11:7:11 | x | arguments.js:7:7:7:7 | y | file://:0:0:0:0 | non-zero value |
+| arguments.js:13:7:13:11 | y = x | arguments.js:13:11:13:11 | x | arguments.js:13:7:13:7 | y | file://:0:0:0:0 | non-zero value |
+| arguments.js:18:7:18:11 | y = x | arguments.js:18:11:18:11 | x | arguments.js:18:7:18:7 | y | file://:0:0:0:0 | indefinite value (call) |
+| arguments.js:18:7:18:11 | y = x | arguments.js:18:11:18:11 | x | arguments.js:18:7:18:7 | y | file://:0:0:0:0 | indefinite value (eval) |
+| arguments.js:18:7:18:11 | y = x | arguments.js:18:11:18:11 | x | arguments.js:18:7:18:7 | y | file://:0:0:0:0 | non-zero value |
+| arguments.js:24:7:24:11 | y = x | arguments.js:24:11:24:11 | x | arguments.js:24:7:24:7 | y | file://:0:0:0:0 | indefinite value (call) |
+| arguments.js:24:7:24:11 | y = x | arguments.js:24:11:24:11 | x | arguments.js:24:7:24:7 | y | file://:0:0:0:0 | non-zero value |
+| arguments.js:32:7:32:11 | y = x | arguments.js:32:11:32:11 | x | arguments.js:32:7:32:7 | y | file://:0:0:0:0 | indefinite value (call) |
+| arguments.js:32:7:32:11 | y = x | arguments.js:32:11:32:11 | x | arguments.js:32:7:32:7 | y | file://:0:0:0:0 | non-zero value |
+| b.js:2:5:2:10 | x1 = x | b.js:2:10:2:10 | x | b.js:2:5:2:6 | x1 | file://:0:0:0:0 | 0 |
+| b.js:2:5:2:10 | x1 = x | b.js:2:10:2:10 | x | b.js:2:5:2:6 | x1 | file://:0:0:0:0 | indefinite value (call) |
+| b.js:3:5:3:10 | y1 = y | b.js:3:10:3:10 | y | b.js:3:5:3:6 | y1 | file://:0:0:0:0 | 0 |
+| b.js:4:5:4:13 | s1 = setX | b.js:4:10:4:13 | setX | b.js:4:5:4:6 | s1 | a.js:3:8:5:1 | function setX |
+| b.js:6:5:6:10 | x2 = x | b.js:6:10:6:10 | x | b.js:6:5:6:6 | x2 | file://:0:0:0:0 | 0 |
+| b.js:6:5:6:10 | x2 = x | b.js:6:10:6:10 | x | b.js:6:5:6:6 | x2 | file://:0:0:0:0 | indefinite value (call) |
+| b.js:7:5:7:10 | y2 = y | b.js:7:10:7:10 | y | b.js:7:5:7:6 | y2 | file://:0:0:0:0 | 0 |
+| b.js:8:5:8:13 | s2 = setX | b.js:8:10:8:13 | setX | b.js:8:5:8:6 | s2 | a.js:3:8:5:1 | function setX |
+| b.js:13:5:13:12 | z1 = a.x | b.js:13:10:13:12 | a.x | b.js:13:5:13:6 | z1 | file://:0:0:0:0 | 0 |
+| b.js:13:5:13:12 | z1 = a.x | b.js:13:10:13:12 | a.x | b.js:13:5:13:6 | z1 | file://:0:0:0:0 | indefinite value (call) |
+| b.js:13:5:13:12 | z1 = a.x | b.js:13:10:13:12 | a.x | b.js:13:5:13:6 | z1 | file://:0:0:0:0 | indefinite value (heap) |
+| b.js:16:5:16:18 | z2 = a_default | b.js:16:10:16:18 | a_default | b.js:16:5:16:6 | z2 | file://:0:0:0:0 | true |
+| b.js:19:5:19:18 | z3 = c_default | b.js:19:10:19:18 | c_default | b.js:19:5:19:6 | z3 | c.js:1:1:7:0 | exports object of module c |
+| b.js:19:5:19:18 | z3 = c_default | b.js:19:10:19:18 | c_default | b.js:19:5:19:6 | z3 | c.js:1:18:1:19 | object literal |
+| b.js:19:5:19:18 | z3 = c_default | b.js:19:10:19:18 | c_default | b.js:19:5:19:6 | z3 | file://:0:0:0:0 | indefinite value (import) |
+| b.js:22:5:22:12 | z4 = foo | b.js:22:10:22:12 | foo | b.js:22:5:22:6 | z4 | file://:0:0:0:0 | indefinite value (import) |
+| b.js:22:5:22:12 | z4 = foo | b.js:22:10:22:12 | foo | b.js:22:5:22:6 | z4 | file://:0:0:0:0 | non-empty, non-numeric string |
+| b.js:25:5:25:14 | z5 = stuff | b.js:25:10:25:14 | stuff | b.js:25:5:25:6 | z5 | file://:0:0:0:0 | indefinite value (call) |
+| b.js:25:5:25:14 | z5 = stuff | b.js:25:10:25:14 | stuff | b.js:25:5:25:6 | z5 | file://:0:0:0:0 | indefinite value (import) |
+| b.js:28:5:28:14 | z6 = setX2 | b.js:28:10:28:14 | setX2 | b.js:28:5:28:6 | z6 | a.js:3:8:5:1 | function setX |
+| b.js:31:5:31:10 | z7 = A | b.js:31:10:31:10 | A | b.js:31:5:31:6 | z7 | ts.ts:1:16:1:25 | class A |
+| b.js:34:5:34:15 | z8 = amdfoo | b.js:34:10:34:15 | amdfoo | b.js:34:5:34:6 | z8 | amd.js:4:11:4:12 | object literal |
+| b.js:34:5:34:15 | z8 = amdfoo | b.js:34:10:34:15 | amdfoo | b.js:34:5:34:6 | z8 | file://:0:0:0:0 | indefinite value (import) |
+| b.js:34:5:34:15 | z8 = amdfoo | b.js:34:10:34:15 | amdfoo | b.js:34:5:34:6 | z8 | file://:0:0:0:0 | non-empty, non-numeric string |
+| b.js:37:5:37:16 | z8 = amdfoo2 | b.js:37:10:37:16 | amdfoo2 | b.js:37:5:37:6 | z8 | file://:0:0:0:0 | indefinite value (import) |
+| b.js:37:5:37:16 | z8 = amdfoo2 | b.js:37:10:37:16 | amdfoo2 | b.js:37:5:37:6 | z8 | file://:0:0:0:0 | null |
+| b.js:38:5:38:20 | z9 = amdToString | b.js:38:10:38:20 | amdToString | b.js:38:5:38:6 | z9 | file://:0:0:0:0 | indefinite value (import) |
+| b.js:41:5:41:11 | z10 = f | b.js:41:11:41:11 | f | b.js:41:5:41:7 | z10 | f.js:1:13:1:25 | anonymous function |
+| b.js:41:5:41:11 | z10 = f | b.js:41:11:41:11 | f | b.js:41:5:41:7 | z10 | file://:0:0:0:0 | indefinite value (import) |
+| b.js:42:5:42:18 | z11 = toString | b.js:42:11:42:18 | toString | b.js:42:5:42:7 | z11 | file://:0:0:0:0 | indefinite value (import) |
+| b.js:45:5:45:12 | z12 = f2 | b.js:45:11:45:12 | f2 | b.js:45:5:45:7 | z12 | ts2.ts:1:1:6:0 | exports object of module ts2 |
+| b.js:45:5:45:12 | z12 = f2 | b.js:45:11:45:12 | f2 | b.js:45:5:45:7 | z12 | ts2.ts:1:10:1:22 | anonymous function |
+| b.js:45:5:45:12 | z12 = f2 | b.js:45:11:45:12 | f2 | b.js:45:5:45:7 | z12 | ts2.ts:4:12:4:13 | object literal |
+| b.js:48:5:48:11 | z13 = w | b.js:48:11:48:11 | w | b.js:48:5:48:7 | z13 | file://:0:0:0:0 | non-empty, non-numeric string |
+| b.js:51:5:51:24 | z14 = foo_reexported | b.js:51:11:51:24 | foo_reexported | b.js:51:5:51:7 | z14 | file://:0:0:0:0 | indefinite value (import) |
+| b.js:54:5:54:19 | z15 = something | b.js:54:11:54:19 | something | b.js:54:5:54:7 | z15 | file://:0:0:0:0 | indefinite value (import) |
+| b.js:57:5:57:23 | z16 = notAlwaysZero | b.js:57:11:57:23 | notAlwaysZero | b.js:57:5:57:7 | z16 | file://:0:0:0:0 | 0 |
+| b.js:57:5:57:23 | z16 = notAlwaysZero | b.js:57:11:57:23 | notAlwaysZero | b.js:57:5:57:7 | z16 | file://:0:0:0:0 | non-zero value |
+| backend.js:1:7:1:18 | Backend = {} | backend.js:1:17:1:18 | {} | backend.js:1:7:1:13 | Backend | backend.js:1:17:1:18 | object literal |
+| classAccessors.js:10:9:10:20 | myX = this.x | classAccessors.js:10:15:10:20 | this.x | classAccessors.js:10:9:10:11 | myX | file://:0:0:0:0 | indefinite value (call) |
+| classAccessors.js:10:9:10:20 | myX = this.x | classAccessors.js:10:15:10:20 | this.x | classAccessors.js:10:9:10:11 | myX | file://:0:0:0:0 | indefinite value (heap) |
+| classAccessors.js:11:9:11:20 | myY = this.y | classAccessors.js:11:15:11:20 | this.y | classAccessors.js:11:9:11:11 | myY | file://:0:0:0:0 | indefinite value (call) |
+| classAccessors.js:11:9:11:20 | myY = this.y | classAccessors.js:11:15:11:20 | this.y | classAccessors.js:11:9:11:11 | myY | file://:0:0:0:0 | indefinite value (heap) |
+| classAccessors.js:12:9:12:20 | myZ = this.z | classAccessors.js:12:15:12:20 | this.z | classAccessors.js:12:9:12:11 | myZ | file://:0:0:0:0 | indefinite value (call) |
+| classAccessors.js:12:9:12:20 | myZ = this.z | classAccessors.js:12:15:12:20 | this.z | classAccessors.js:12:9:12:11 | myZ | file://:0:0:0:0 | indefinite value (heap) |
+| destructuring.js:2:7:2:28 | { x, y  ... ) } = o | destructuring.js:2:28:2:28 | o | destructuring.js:2:7:2:24 | { x, y = (z = x) } | file://:0:0:0:0 | indefinite value (call) |
+| destructuring.js:3:7:3:12 | z1 = z | destructuring.js:3:12:3:12 | z | destructuring.js:3:7:3:8 | z1 | file://:0:0:0:0 | indefinite value (call) |
+| destructuring.js:3:7:3:12 | z1 = z | destructuring.js:3:12:3:12 | z | destructuring.js:3:7:3:8 | z1 | file://:0:0:0:0 | indefinite value (heap) |
+| es2015.js:1:5:6:1 | Sup = c ... ;\\n  }\\n} | es2015.js:1:11:6:1 | class { ... ;\\n  }\\n} | es2015.js:1:5:1:7 | Sup | es2015.js:1:11:6:1 | class Sup |
+| es2015.js:4:9:4:25 | ctor = new.target | es2015.js:4:16:4:25 | new.target | es2015.js:4:9:4:12 | ctor | file://:0:0:0:0 | indefinite value (call) |
+| es2015.js:19:7:19:18 | _args = args | es2015.js:19:15:19:18 | args | es2015.js:19:7:19:11 | _args | file://:0:0:0:0 | object |
+| es2015.js:23:7:23:12 | _x = x | es2015.js:23:12:23:12 | x | es2015.js:23:7:23:8 | _x | file://:0:0:0:0 | non-zero value |
+| es2015.js:23:7:23:12 | _x = x | es2015.js:23:12:23:12 | x | es2015.js:23:7:23:8 | _x | file://:0:0:0:0 | undefined |
+| es2015.js:27:5:27:16 | ohSoVery = v | es2015.js:27:16:27:16 | v | es2015.js:27:5:27:12 | ohSoVery | file://:0:0:0:0 | true |
+| es2015.js:29:5:29:33 | r = tag ... iteral` | es2015.js:29:9:29:33 | tagged  ... iteral` | es2015.js:29:5:29:5 | r | file://:0:0:0:0 | indefinite value (call) |
+| es2015.js:32:7:32:12 | _x = x | es2015.js:32:12:32:12 | x | es2015.js:32:7:32:8 | _x | file://:0:0:0:0 | null |
+| es2015.js:33:7:33:12 | _y = y | es2015.js:33:12:33:12 | y | es2015.js:33:7:33:8 | _y | file://:0:0:0:0 | indefinite value (call) |
+| es2015.js:34:7:34:12 | _z = z | es2015.js:34:12:34:12 | z | es2015.js:34:7:34:8 | _z | file://:0:0:0:0 | indefinite value (call) |
+| es2015.js:39:7:39:12 | _x = x | es2015.js:39:12:39:12 | x | es2015.js:39:7:39:8 | _x | file://:0:0:0:0 | indefinite value (call) |
+| es2015.js:40:7:40:12 | _y = y | es2015.js:40:12:40:12 | y | es2015.js:40:7:40:8 | _y | file://:0:0:0:0 | indefinite value (call) |
+| es2015.js:41:7:41:12 | _z = z | es2015.js:41:12:41:12 | z | es2015.js:41:7:41:8 | _z | file://:0:0:0:0 | indefinite value (call) |
+| es2015.js:45:7:45:25 | f = function*(){}() | es2015.js:45:11:45:25 | function*(){}() | es2015.js:45:7:45:7 | f | file://:0:0:0:0 | object |
+| es2015.js:46:7:46:30 | x = asy ... n(){}() | es2015.js:46:11:46:30 | async function(){}() | es2015.js:46:7:46:7 | x | file://:0:0:0:0 | object |
+| es2015.js:49:5:49:17 | req = require | es2015.js:49:11:49:17 | require | es2015.js:49:5:49:7 | req | file://:0:0:0:0 | indefinite value (global) |
+| esClient.js:7:5:7:15 | x1 = nj.foo | esClient.js:7:10:7:15 | nj.foo | esClient.js:7:5:7:6 | x1 | file://:0:0:0:0 | indefinite value (heap) |
+| esClient.js:7:5:7:15 | x1 = nj.foo | esClient.js:7:10:7:15 | nj.foo | esClient.js:7:5:7:6 | x1 | file://:0:0:0:0 | indefinite value (import) |
+| esClient.js:7:5:7:15 | x1 = nj.foo | esClient.js:7:10:7:15 | nj.foo | esClient.js:7:5:7:6 | x1 | nodeJsLib.js:3:15:3:37 | function nodeJsFoo |
+| esClient.js:8:5:8:15 | x2 = es.foo | esClient.js:8:10:8:15 | es.foo | esClient.js:8:5:8:6 | x2 | esLib.js:3:8:3:24 | function foo |
+| esClient.js:8:5:8:15 | x2 = es.foo | esClient.js:8:10:8:15 | es.foo | esClient.js:8:5:8:6 | x2 | file://:0:0:0:0 | indefinite value (heap) |
+| esClient.js:10:5:10:14 | x3 = njFoo | esClient.js:10:10:10:14 | njFoo | esClient.js:10:5:10:6 | x3 | file://:0:0:0:0 | indefinite value (import) |
+| esClient.js:10:5:10:14 | x3 = njFoo | esClient.js:10:10:10:14 | njFoo | esClient.js:10:5:10:6 | x3 | nodeJsLib.js:3:15:3:37 | function nodeJsFoo |
+| esClient.js:11:5:11:14 | x4 = esFoo | esClient.js:11:10:11:14 | esFoo | esClient.js:11:5:11:6 | x4 | esLib.js:3:8:3:24 | function foo |
+| fundecls.js:2:7:2:12 | f_ = f | fundecls.js:2:12:2:12 | f | fundecls.js:2:7:2:8 | f_ | fundecls.js:4:3:4:17 | function f |
+| fundecls.js:3:7:3:12 | g1 = g | fundecls.js:3:12:3:12 | g | fundecls.js:3:7:3:8 | g1 | fundecls.js:8:5:8:19 | function g |
+| fundecls.js:7:9:7:14 | g2 = g | fundecls.js:7:14:7:14 | g | fundecls.js:7:9:7:10 | g2 | fundecls.js:8:5:8:19 | function g |
+| g.js:1:5:1:22 | f = require('./f') | g.js:1:9:1:22 | require('./f') | g.js:1:5:1:5 | f | f.js:1:1:2:0 | exports object of module f |
+| g.js:1:5:1:22 | f = require('./f') | g.js:1:9:1:22 | require('./f') | g.js:1:5:1:5 | f | file://:0:0:0:0 | indefinite value (call) |
+| g.js:2:5:2:12 | x1 = f.f | g.js:2:10:2:12 | f.f | g.js:2:5:2:6 | x1 | f.js:1:13:1:25 | anonymous function |
+| g.js:2:5:2:12 | x1 = f.f | g.js:2:10:2:12 | f.f | g.js:2:5:2:6 | x1 | file://:0:0:0:0 | indefinite value (call) |
+| g.js:2:5:2:12 | x1 = f.f | g.js:2:10:2:12 | f.f | g.js:2:5:2:6 | x1 | file://:0:0:0:0 | indefinite value (heap) |
+| g.js:3:5:3:19 | x2 = f.toString | g.js:3:10:3:19 | f.toString | g.js:3:5:3:6 | x2 | file://:0:0:0:0 | indefinite value (call) |
+| g.js:3:5:3:19 | x2 = f.toString | g.js:3:10:3:19 | f.toString | g.js:3:5:3:6 | x2 | file://:0:0:0:0 | indefinite value (heap) |
+| globals.html:5:11:5:15 | x = 0 | globals.html:5:15:5:15 | 0 | globals.html:5:11:5:11 | x | file://:0:0:0:0 | 0 |
+| globals.html:8:13:8:18 | x1 = x | globals.html:8:18:8:18 | x | globals.html:8:13:8:14 | x1 | file://:0:0:0:0 | 0 |
+| globals.html:8:13:8:18 | x1 = x | globals.html:8:18:8:18 | x | globals.html:8:13:8:14 | x1 | file://:0:0:0:0 | indefinite value (call) |
+| globals.html:8:13:8:18 | x1 = x | globals.html:8:18:8:18 | x | globals.html:8:13:8:14 | x1 | file://:0:0:0:0 | indefinite value (global) |
+| globals.html:9:13:9:27 | x2 = someGlobal | globals.html:9:18:9:27 | someGlobal | globals.html:9:13:9:14 | x2 | file://:0:0:0:0 | indefinite value (global) |
+| globals.html:9:13:9:27 | x2 = someGlobal | globals.html:9:18:9:27 | someGlobal | globals.html:9:13:9:14 | x2 | file://:0:0:0:0 | true |
+| globals.html:13:11:13:18 | x = "hi" | globals.html:13:15:13:18 | "hi" | globals.html:13:11:13:11 | x | file://:0:0:0:0 | non-empty, non-numeric string |
+| globals.html:17:13:17:18 | x1 = x | globals.html:17:18:17:18 | x | globals.html:17:13:17:14 | x1 | file://:0:0:0:0 | 0 |
+| globals.html:17:13:17:18 | x1 = x | globals.html:17:18:17:18 | x | globals.html:17:13:17:14 | x1 | file://:0:0:0:0 | indefinite value (call) |
+| globals.html:17:13:17:18 | x1 = x | globals.html:17:18:17:18 | x | globals.html:17:13:17:14 | x1 | file://:0:0:0:0 | indefinite value (global) |
+| globals.html:17:13:17:18 | x1 = x | globals.html:17:18:17:18 | x | globals.html:17:13:17:14 | x1 | file://:0:0:0:0 | non-empty, non-numeric string |
+| globals.html:17:13:17:18 | x1 = x | globals.html:17:18:17:18 | x | globals.html:17:13:17:14 | x1 | globals.html:22:7:22:21 | function x |
+| globals.html:18:13:18:27 | x2 = someGlobal | globals.html:18:18:18:27 | someGlobal | globals.html:18:13:18:14 | x2 | file://:0:0:0:0 | "" |
+| globals.html:18:13:18:27 | x2 = someGlobal | globals.html:18:18:18:27 | someGlobal | globals.html:18:13:18:14 | x2 | file://:0:0:0:0 | indefinite value (global) |
+| globals.html:18:13:18:27 | x2 = someGlobal | globals.html:18:18:18:27 | someGlobal | globals.html:18:13:18:14 | x2 | file://:0:0:0:0 | non-zero value |
+| globals.html:18:13:18:27 | x2 = someGlobal | globals.html:18:18:18:27 | someGlobal | globals.html:18:13:18:14 | x2 | file://:0:0:0:0 | true |
+| globals.html:26:40:26:45 | x1 = x | globals.html:26:45:26:45 | x | globals.html:26:40:26:41 | x1 | file://:0:0:0:0 | 0 |
+| globals.html:26:40:26:45 | x1 = x | globals.html:26:45:26:45 | x | globals.html:26:40:26:41 | x1 | file://:0:0:0:0 | indefinite value (call) |
+| globals.html:26:40:26:45 | x1 = x | globals.html:26:45:26:45 | x | globals.html:26:40:26:41 | x1 | file://:0:0:0:0 | indefinite value (global) |
+| globals.html:26:40:26:45 | x1 = x | globals.html:26:45:26:45 | x | globals.html:26:40:26:41 | x1 | file://:0:0:0:0 | non-empty, non-numeric string |
+| globals.html:26:40:26:45 | x1 = x | globals.html:26:45:26:45 | x | globals.html:26:40:26:41 | x1 | globals.html:22:7:22:21 | function x |
+| globals.html:26:52:26:66 | x2 = someGlobal | globals.html:26:57:26:66 | someGlobal | globals.html:26:52:26:53 | x2 | file://:0:0:0:0 | "" |
+| globals.html:26:52:26:66 | x2 = someGlobal | globals.html:26:57:26:66 | someGlobal | globals.html:26:52:26:53 | x2 | file://:0:0:0:0 | indefinite value (global) |
+| globals.html:26:52:26:66 | x2 = someGlobal | globals.html:26:57:26:66 | someGlobal | globals.html:26:52:26:53 | x2 | file://:0:0:0:0 | non-zero value |
+| globals.html:26:52:26:66 | x2 = someGlobal | globals.html:26:57:26:66 | someGlobal | globals.html:26:52:26:53 | x2 | file://:0:0:0:0 | true |
+| h_import.js:2:5:2:10 | ff = f | h_import.js:2:10:2:10 | f | h_import.js:2:5:2:6 | ff | h.js:1:8:1:22 | function f |
+| implicit-returns.js:4:9:4:13 | i = 0 | implicit-returns.js:4:13:4:13 | 0 | implicit-returns.js:4:9:4:9 | i | file://:0:0:0:0 | 0 |
+| implicit-returns.js:15:9:15:25 | x = endWithLoop() | implicit-returns.js:15:13:15:25 | endWithLoop() | implicit-returns.js:15:9:15:9 | x | file://:0:0:0:0 | true |
+| implicit-returns.js:15:9:15:25 | x = endWithLoop() | implicit-returns.js:15:13:15:25 | endWithLoop() | implicit-returns.js:15:9:15:9 | x | file://:0:0:0:0 | undefined |
+| implicit-returns.js:25:9:25:28 | x = endWithShortIf() | implicit-returns.js:25:13:25:28 | endWithShortIf() | implicit-returns.js:25:9:25:9 | x | file://:0:0:0:0 | true |
+| implicit-returns.js:25:9:25:28 | x = endWithShortIf() | implicit-returns.js:25:13:25:28 | endWithShortIf() | implicit-returns.js:25:9:25:9 | x | file://:0:0:0:0 | undefined |
+| import.js:2:5:2:13 | m = mixin | import.js:2:9:2:13 | mixin | import.js:2:5:2:5 | m | mixins.js:1:16:1:32 | anonymous function |
+| import.js:5:5:5:11 | myf = f | import.js:5:11:5:11 | f | import.js:5:5:5:7 | myf | n.js:1:1:1:15 | function f |
+| import.js:8:5:8:23 | someVar = someStuff | import.js:8:15:8:23 | someStuff | import.js:8:5:8:11 | someVar | file://:0:0:0:0 | indefinite value (call) |
+| import.js:11:5:11:10 | h1 = h | import.js:11:10:11:10 | h | import.js:11:5:11:6 | h1 | file://:0:0:0:0 | indefinite value (import) |
+| import.js:11:5:11:10 | h1 = h | import.js:11:10:11:10 | h | import.js:11:5:11:6 | h1 | h.js:1:1:3:0 | exports object of module h |
+| import.js:12:5:12:12 | hf = h.f | import.js:12:10:12:12 | h.f | import.js:12:5:12:6 | hf | file://:0:0:0:0 | indefinite value (heap) |
+| import.js:12:5:12:12 | hf = h.f | import.js:12:10:12:12 | h.f | import.js:12:5:12:6 | hf | file://:0:0:0:0 | indefinite value (import) |
+| import.js:12:5:12:12 | hf = h.f | import.js:12:10:12:12 | h.f | import.js:12:5:12:6 | hf | h.js:1:8:1:22 | function f |
+| imports.ts:2:5:2:11 | ax = Ax | imports.ts:2:10:2:11 | Ax | imports.ts:2:5:2:6 | ax | file://:0:0:0:0 | indefinite value (global) |
+| imports.ts:2:5:2:11 | ax = Ax | imports.ts:2:10:2:11 | Ax | imports.ts:2:5:2:6 | ax | file://:0:0:0:0 | indefinite value (heap) |
+| imports.ts:5:5:5:12 | fs_ = fs | imports.ts:5:11:5:12 | fs | imports.ts:5:5:5:7 | fs_ | file://:0:0:0:0 | indefinite value (import) |
+| instances.js:8:5:8:15 | a = new A() | instances.js:8:9:8:15 | new A() | instances.js:8:5:8:5 | a | file://:0:0:0:0 | indefinite function or class (call) |
+| instances.js:8:5:8:15 | a = new A() | instances.js:8:9:8:15 | new A() | instances.js:8:5:8:5 | a | file://:0:0:0:0 | indefinite object (call) |
+| instances.js:8:5:8:15 | a = new A() | instances.js:8:9:8:15 | new A() | instances.js:8:5:8:5 | a | instances.js:1:1:4:1 | instance of function A |
+| instances.js:9:5:9:12 | x1 = a.x | instances.js:9:10:9:12 | a.x | instances.js:9:5:9:6 | x1 | file://:0:0:0:0 | indefinite value (call) |
+| instances.js:9:5:9:12 | x1 = a.x | instances.js:9:10:9:12 | a.x | instances.js:9:5:9:6 | x1 | file://:0:0:0:0 | indefinite value (global) |
+| instances.js:9:5:9:12 | x1 = a.x | instances.js:9:10:9:12 | a.x | instances.js:9:5:9:6 | x1 | file://:0:0:0:0 | indefinite value (heap) |
+| instances.js:9:5:9:12 | x1 = a.x | instances.js:9:10:9:12 | a.x | instances.js:9:5:9:6 | x1 | file://:0:0:0:0 | non-zero value |
+| instances.js:10:5:10:14 | x2 = a.foo | instances.js:10:10:10:14 | a.foo | instances.js:10:5:10:6 | x2 | file://:0:0:0:0 | indefinite value (call) |
+| instances.js:10:5:10:14 | x2 = a.foo | instances.js:10:10:10:14 | a.foo | instances.js:10:5:10:6 | x2 | file://:0:0:0:0 | indefinite value (global) |
+| instances.js:10:5:10:14 | x2 = a.foo | instances.js:10:10:10:14 | a.foo | instances.js:10:5:10:6 | x2 | file://:0:0:0:0 | indefinite value (heap) |
+| instances.js:10:5:10:14 | x2 = a.foo | instances.js:10:10:10:14 | a.foo | instances.js:10:5:10:6 | x2 | instances.js:3:14:3:26 | anonymous function |
+| instances.js:11:5:11:14 | x3 = a.bar | instances.js:11:10:11:14 | a.bar | instances.js:11:5:11:6 | x3 | file://:0:0:0:0 | indefinite value (call) |
+| instances.js:11:5:11:14 | x3 = a.bar | instances.js:11:10:11:14 | a.bar | instances.js:11:5:11:6 | x3 | file://:0:0:0:0 | indefinite value (global) |
+| instances.js:11:5:11:14 | x3 = a.bar | instances.js:11:10:11:14 | a.bar | instances.js:11:5:11:6 | x3 | file://:0:0:0:0 | indefinite value (heap) |
+| instances.js:11:5:11:14 | x3 = a.bar | instances.js:11:10:11:14 | a.bar | instances.js:11:5:11:6 | x3 | instances.js:6:19:6:31 | anonymous function |
+| instances.js:16:5:16:21 | subA = new SubA() | instances.js:16:12:16:21 | new SubA() | instances.js:16:5:16:8 | subA | file://:0:0:0:0 | indefinite function or class (call) |
+| instances.js:16:5:16:21 | subA = new SubA() | instances.js:16:12:16:21 | new SubA() | instances.js:16:5:16:8 | subA | file://:0:0:0:0 | indefinite object (call) |
+| instances.js:16:5:16:21 | subA = new SubA() | instances.js:16:12:16:21 | new SubA() | instances.js:16:5:16:8 | subA | instances.js:13:1:13:18 | instance of function SubA |
+| jsx.js:1:5:1:12 | a = <a/> | jsx.js:1:9:1:12 | <a/> | jsx.js:1:5:1:5 | a | file://:0:0:0:0 | object |
+| jsx.js:2:5:2:20 | b = <>{a}<a/></> | jsx.js:2:9:2:20 | <>{a}<a/></> | jsx.js:2:5:2:5 | b | file://:0:0:0:0 | object |
+| m.js:1:5:1:22 | fs = require('fs') | m.js:1:10:1:22 | require('fs') | m.js:1:5:1:6 | fs | file://:0:0:0:0 | indefinite value (call) |
+| m.js:3:5:3:20 | args = arguments | m.js:3:12:3:20 | arguments | m.js:3:5:3:8 | args | file://:0:0:0:0 | object |
+| m.js:4:5:4:17 | req = require | m.js:4:11:4:17 | require | m.js:4:5:4:7 | req | file://:0:0:0:0 | indefinite value (heap) |
+| m.js:5:5:5:16 | mod = module | m.js:5:11:5:16 | module | m.js:5:5:5:7 | mod | m.js:1:1:9:0 | module object of module m |
+| m.js:6:5:6:17 | exp = exports | m.js:6:11:6:17 | exports | m.js:6:5:6:7 | exp | m.js:1:1:9:0 | exports object of module m |
+| m.js:7:5:7:19 | fn = __filename | m.js:7:10:7:19 | __filename | m.js:7:5:7:6 | fn | file://:0:0:0:0 | non-empty, non-numeric string |
+| m.js:7:5:7:19 | fn = __filename | m.js:7:10:7:19 | __filename | m.js:7:5:7:6 | fn | file://:0:0:0:0 | numeric string |
+| m.js:8:5:8:18 | dn = __dirname | m.js:8:10:8:18 | __dirname | m.js:8:5:8:6 | dn | file://:0:0:0:0 | non-empty, non-numeric string |
+| m.js:8:5:8:18 | dn = __dirname | m.js:8:10:8:18 | __dirname | m.js:8:5:8:6 | dn | file://:0:0:0:0 | numeric string |
+| mixed.js:1:5:1:22 | fs = require('fs') | mixed.js:1:10:1:22 | require('fs') | mixed.js:1:5:1:6 | fs | file://:0:0:0:0 | indefinite value (call) |
+| mixed.js:5:5:5:20 | args = arguments | mixed.js:5:12:5:20 | arguments | mixed.js:5:5:5:8 | args | file://:0:0:0:0 | object |
+| mixed.js:6:5:6:17 | req = require | mixed.js:6:11:6:17 | require | mixed.js:6:5:6:7 | req | file://:0:0:0:0 | indefinite value (heap) |
+| mixed.js:7:5:7:16 | mod = module | mixed.js:7:11:7:16 | module | mixed.js:7:5:7:7 | mod | mixed.js:1:1:11:0 | module object of module mixed |
+| mixed.js:8:5:8:17 | exp = exports | mixed.js:8:11:8:17 | exports | mixed.js:8:5:8:7 | exp | mixed.js:1:1:11:0 | exports object of module mixed |
+| mixed.js:9:5:9:19 | fn = __filename | mixed.js:9:10:9:19 | __filename | mixed.js:9:5:9:6 | fn | file://:0:0:0:0 | non-empty, non-numeric string |
+| mixed.js:9:5:9:19 | fn = __filename | mixed.js:9:10:9:19 | __filename | mixed.js:9:5:9:6 | fn | file://:0:0:0:0 | numeric string |
+| mixed.js:10:5:10:18 | dn = __dirname | mixed.js:10:10:10:18 | __dirname | mixed.js:10:5:10:6 | dn | file://:0:0:0:0 | non-empty, non-numeric string |
+| mixed.js:10:5:10:18 | dn = __dirname | mixed.js:10:10:10:18 | __dirname | mixed.js:10:5:10:6 | dn | file://:0:0:0:0 | numeric string |
+| nestedImport.js:2:5:2:12 | x1 = foo | nestedImport.js:2:10:2:12 | foo | nestedImport.js:2:5:2:6 | x1 | esLib.js:3:8:3:24 | function foo |
+| nestedImport.js:6:7:6:14 | x2 = foo | nestedImport.js:6:12:6:14 | foo | nestedImport.js:6:7:6:8 | x2 | file://:0:0:0:0 | indefinite value (import) |
+| nestedImport.js:6:7:6:14 | x2 = foo | nestedImport.js:6:12:6:14 | foo | nestedImport.js:6:7:6:8 | x2 | nodeJsLib.js:3:15:3:37 | function nodeJsFoo |
+| nestedImport.js:11:7:11:14 | x3 = foo | nestedImport.js:11:12:11:14 | foo | nestedImport.js:11:7:11:8 | x3 | esLib.js:3:8:3:24 | function foo |
+| nodeJsClient.js:1:5:1:31 | nj = re ... JsLib') | nodeJsClient.js:1:10:1:31 | require ... JsLib') | nodeJsClient.js:1:5:1:6 | nj | file://:0:0:0:0 | indefinite value (call) |
+| nodeJsClient.js:1:5:1:31 | nj = re ... JsLib') | nodeJsClient.js:1:10:1:31 | require ... JsLib') | nodeJsClient.js:1:5:1:6 | nj | nodeJsLib.js:1:1:4:0 | exports object of module nodeJsLib |
+| nodeJsClient.js:1:5:1:31 | nj = re ... JsLib') | nodeJsClient.js:1:10:1:31 | require ... JsLib') | nodeJsClient.js:1:5:1:6 | nj | nodeJsLib.js:1:18:1:43 | function nodeJsModule |
+| nodeJsClient.js:2:5:2:27 | es = re ... esLib') | nodeJsClient.js:2:10:2:27 | require('./esLib') | nodeJsClient.js:2:5:2:6 | es | esLib.js:1:1:4:0 | exports object of module esLib |
+| nodeJsClient.js:2:5:2:27 | es = re ... esLib') | nodeJsClient.js:2:10:2:27 | require('./esLib') | nodeJsClient.js:2:5:2:6 | es | file://:0:0:0:0 | indefinite value (call) |
+| nodeJsClient.js:4:5:4:15 | x1 = nj.foo | nodeJsClient.js:4:10:4:15 | nj.foo | nodeJsClient.js:4:5:4:6 | x1 | file://:0:0:0:0 | indefinite value (call) |
+| nodeJsClient.js:4:5:4:15 | x1 = nj.foo | nodeJsClient.js:4:10:4:15 | nj.foo | nodeJsClient.js:4:5:4:6 | x1 | file://:0:0:0:0 | indefinite value (heap) |
+| nodeJsClient.js:4:5:4:15 | x1 = nj.foo | nodeJsClient.js:4:10:4:15 | nj.foo | nodeJsClient.js:4:5:4:6 | x1 | nodeJsLib.js:3:15:3:37 | function nodeJsFoo |
+| nodeJsClient.js:5:5:5:15 | x2 = es.foo | nodeJsClient.js:5:10:5:15 | es.foo | nodeJsClient.js:5:5:5:6 | x2 | esLib.js:3:8:3:24 | function foo |
+| nodeJsClient.js:5:5:5:15 | x2 = es.foo | nodeJsClient.js:5:10:5:15 | es.foo | nodeJsClient.js:5:5:5:6 | x2 | file://:0:0:0:0 | indefinite value (call) |
+| nodeJsClient.js:5:5:5:15 | x2 = es.foo | nodeJsClient.js:5:10:5:15 | es.foo | nodeJsClient.js:5:5:5:6 | x2 | file://:0:0:0:0 | indefinite value (heap) |
+| nullish-coalescing-op.ts:2:7:2:18 | y = x ?? 0.5 | nullish-coalescing-op.ts:2:11:2:18 | x ?? 0.5 | nullish-coalescing-op.ts:2:7:2:7 | y | file://:0:0:0:0 | indefinite value (call) |
+| nullish-coalescing-op.ts:2:7:2:18 | y = x ?? 0.5 | nullish-coalescing-op.ts:2:11:2:18 | x ?? 0.5 | nullish-coalescing-op.ts:2:7:2:7 | y | file://:0:0:0:0 | non-zero value |
+| objlit.js:1:5:1:15 | A = A \|\| {} | objlit.js:1:9:1:15 | A \|\| {} | objlit.js:1:5:1:5 | A | file://:0:0:0:0 | indefinite value (global) |
+| objlit.js:1:5:1:15 | A = A \|\| {} | objlit.js:1:9:1:15 | A \|\| {} | objlit.js:1:5:1:5 | A | objlit.js:1:14:1:15 | object literal |
+| objlit.js:7:5:7:10 | B = {} | objlit.js:7:9:7:10 | {} | objlit.js:7:5:7:5 | B | objlit.js:7:9:7:10 | object literal |
+| objlit.js:14:5:14:10 | x1 = A | objlit.js:14:10:14:10 | A | objlit.js:14:5:14:6 | x1 | file://:0:0:0:0 | indefinite value (global) |
+| objlit.js:14:5:14:10 | x1 = A | objlit.js:14:10:14:10 | A | objlit.js:14:5:14:6 | x1 | objlit.js:1:14:1:15 | object literal |
+| objlit.js:15:5:15:14 | x2 = A.foo | objlit.js:15:10:15:14 | A.foo | objlit.js:15:5:15:6 | x2 | file://:0:0:0:0 | indefinite value (global) |
+| objlit.js:15:5:15:14 | x2 = A.foo | objlit.js:15:10:15:14 | A.foo | objlit.js:15:5:15:6 | x2 | file://:0:0:0:0 | indefinite value (heap) |
+| objlit.js:15:5:15:14 | x2 = A.foo | objlit.js:15:10:15:14 | A.foo | objlit.js:15:5:15:6 | x2 | objlit.js:2:9:2:21 | anonymous function |
+| objlit.js:16:5:16:14 | x3 = A.bar | objlit.js:16:10:16:14 | A.bar | objlit.js:16:5:16:6 | x3 | file://:0:0:0:0 | indefinite value (global) |
+| objlit.js:16:5:16:14 | x3 = A.bar | objlit.js:16:10:16:14 | A.bar | objlit.js:16:5:16:6 | x3 | file://:0:0:0:0 | indefinite value (heap) |
+| objlit.js:16:5:16:14 | x3 = A.bar | objlit.js:16:10:16:14 | A.bar | objlit.js:16:5:16:6 | x3 | objlit.js:3:9:5:1 | object literal |
+| objlit.js:17:5:17:18 | x4 = A.bar.baz | objlit.js:17:10:17:18 | A.bar.baz | objlit.js:17:5:17:6 | x4 | file://:0:0:0:0 | indefinite value (global) |
+| objlit.js:17:5:17:18 | x4 = A.bar.baz | objlit.js:17:10:17:18 | A.bar.baz | objlit.js:17:5:17:6 | x4 | file://:0:0:0:0 | indefinite value (heap) |
+| objlit.js:18:5:18:10 | x5 = B | objlit.js:18:10:18:10 | B | objlit.js:18:5:18:6 | x5 | file://:0:0:0:0 | indefinite value (global) |
+| objlit.js:18:5:18:10 | x5 = B | objlit.js:18:10:18:10 | B | objlit.js:18:5:18:6 | x5 | objlit.js:7:9:7:10 | object literal |
+| objlit.js:19:5:19:12 | x6 = B.a | objlit.js:19:10:19:12 | B.a | objlit.js:19:5:19:6 | x6 | file://:0:0:0:0 | indefinite value (global) |
+| objlit.js:19:5:19:12 | x6 = B.a | objlit.js:19:10:19:12 | B.a | objlit.js:19:5:19:6 | x6 | file://:0:0:0:0 | indefinite value (heap) |
+| objlit.js:19:5:19:12 | x6 = B.a | objlit.js:19:10:19:12 | B.a | objlit.js:19:5:19:6 | x6 | objlit.js:1:14:1:15 | object literal |
+| objlit.js:20:5:20:20 | x7 = B.a.bar.baz | objlit.js:20:10:20:20 | B.a.bar.baz | objlit.js:20:5:20:6 | x7 | file://:0:0:0:0 | indefinite value (global) |
+| objlit.js:20:5:20:20 | x7 = B.a.bar.baz | objlit.js:20:10:20:20 | B.a.bar.baz | objlit.js:20:5:20:6 | x7 | file://:0:0:0:0 | indefinite value (heap) |
+| objlit.js:21:5:21:14 | x8 = A.qux | objlit.js:21:10:21:14 | A.qux | objlit.js:21:5:21:6 | x8 | file://:0:0:0:0 | indefinite value (global) |
+| objlit.js:21:5:21:14 | x8 = A.qux | objlit.js:21:10:21:14 | A.qux | objlit.js:21:5:21:6 | x8 | file://:0:0:0:0 | indefinite value (heap) |
+| objlit.js:21:5:21:14 | x8 = A.qux | objlit.js:21:10:21:14 | A.qux | objlit.js:21:5:21:6 | x8 | objlit.js:11:11:11:23 | anonymous function |
+| objlit.js:24:7:28:3 | o = {\\n  ...   }\\n  } | objlit.js:24:11:28:3 | {\\n    q ...   }\\n  } | objlit.js:24:7:24:7 | o | objlit.js:24:11:28:3 | object literal |
+| objlit.js:29:7:29:12 | x1 = o | objlit.js:29:12:29:12 | o | objlit.js:29:7:29:8 | x1 | objlit.js:24:11:28:3 | object literal |
+| objlit.js:30:7:30:14 | x2 = o.q | objlit.js:30:12:30:14 | o.q | objlit.js:30:7:30:8 | x2 | file://:0:0:0:0 | indefinite value (heap) |
+| objlit.js:30:7:30:14 | x2 = o.q | objlit.js:30:12:30:14 | o.q | objlit.js:30:7:30:8 | x2 | objlit.js:25:8:27:5 | object literal |
+| objlit.js:31:7:31:16 | x3 = o.q.r | objlit.js:31:12:31:16 | o.q.r | objlit.js:31:7:31:8 | x3 | file://:0:0:0:0 | indefinite value (heap) |
+| objlit.js:31:7:31:16 | x3 = o.q.r | objlit.js:31:12:31:16 | o.q.r | objlit.js:31:7:31:8 | x3 | file://:0:0:0:0 | non-zero value |
+| objlit.js:33:7:40:3 | o2 = {\\n ...   }\\n  } | objlit.js:33:12:40:3 | {\\n    f ...   }\\n  } | objlit.js:33:7:33:8 | o2 | objlit.js:33:12:40:3 | object literal |
+| objlit.js:36:11:36:19 | x4 = this | objlit.js:36:16:36:19 | this | objlit.js:36:11:36:12 | x4 | file://:0:0:0:0 | indefinite value (call) |
+| objlit.js:36:11:36:19 | x4 = this | objlit.js:36:16:36:19 | this | objlit.js:36:11:36:12 | x4 | objlit.js:33:12:40:3 | object literal |
+| objlit.js:37:11:37:21 | x5 = this.f | objlit.js:37:16:37:21 | this.f | objlit.js:37:11:37:12 | x5 | file://:0:0:0:0 | indefinite value (call) |
+| objlit.js:37:11:37:21 | x5 = this.f | objlit.js:37:16:37:21 | this.f | objlit.js:37:11:37:12 | x5 | file://:0:0:0:0 | indefinite value (heap) |
+| objlit.js:37:11:37:21 | x5 = this.f | objlit.js:37:16:37:21 | this.f | objlit.js:37:11:37:12 | x5 | objlit.js:34:6:34:10 | method f |
+| objlit.js:38:11:38:21 | x6 = this.h | objlit.js:38:16:38:21 | this.h | objlit.js:38:11:38:12 | x6 | file://:0:0:0:0 | indefinite value (call) |
+| objlit.js:38:11:38:21 | x6 = this.h | objlit.js:38:16:38:21 | this.h | objlit.js:38:11:38:12 | x6 | file://:0:0:0:0 | indefinite value (heap) |
+| objlit.js:38:11:38:21 | x6 = this.h | objlit.js:38:16:38:21 | this.h | objlit.js:38:11:38:12 | x6 | objlit.js:41:10:41:22 | anonymous function |
+| objlit.js:43:7:45:3 | o3 = {\\n ...  o2\\n  } | objlit.js:43:12:45:3 | {\\n    _ ...  o2\\n  } | objlit.js:43:7:43:8 | o3 | objlit.js:43:12:45:3 | object literal |
+| reexport/client/src/index.js:2:5:2:15 | test = data | reexport/client/src/index.js:2:12:2:15 | data | reexport/client/src/index.js:2:5:2:8 | test | file://:0:0:0:0 | non-empty, non-numeric string |
+| refinements.js:3:7:3:12 | x1 = g | refinements.js:3:12:3:12 | g | refinements.js:3:7:3:8 | x1 | file://:0:0:0:0 | undefined |
+| refinements.js:7:7:7:12 | x3 = g | refinements.js:7:12:7:12 | g | refinements.js:7:7:7:8 | x3 | file://:0:0:0:0 | undefined |
+| refinements.js:11:7:11:72 | a = Mat ... ' : 42) | refinements.js:11:11:11:72 | Math.ra ... ' : 42) | refinements.js:11:7:11:7 | a | file://:0:0:0:0 | non-empty, non-numeric string |
+| refinements.js:11:7:11:72 | a = Mat ... ' : 42) | refinements.js:11:11:11:72 | Math.ra ... ' : 42) | refinements.js:11:7:11:7 | a | file://:0:0:0:0 | non-zero value |
+| refinements.js:11:7:11:72 | a = Mat ... ' : 42) | refinements.js:11:11:11:72 | Math.ra ... ' : 42) | refinements.js:11:7:11:7 | a | file://:0:0:0:0 | null |
+| refinements.js:12:7:12:12 | x1 = a | refinements.js:12:12:12:12 | a | refinements.js:12:7:12:8 | x1 | file://:0:0:0:0 | non-empty, non-numeric string |
+| refinements.js:12:7:12:12 | x1 = a | refinements.js:12:12:12:12 | a | refinements.js:12:7:12:8 | x1 | file://:0:0:0:0 | non-zero value |
+| refinements.js:12:7:12:12 | x1 = a | refinements.js:12:12:12:12 | a | refinements.js:12:7:12:8 | x1 | file://:0:0:0:0 | null |
+| refinements.js:14:9:14:14 | x2 = a | refinements.js:14:14:14:14 | a | refinements.js:14:9:14:10 | x2 | file://:0:0:0:0 | non-empty, non-numeric string |
+| refinements.js:14:9:14:14 | x2 = a | refinements.js:14:14:14:14 | a | refinements.js:14:9:14:10 | x2 | file://:0:0:0:0 | non-zero value |
+| refinements.js:16:9:16:14 | x3 = a | refinements.js:16:14:16:14 | a | refinements.js:16:9:16:10 | x3 | file://:0:0:0:0 | non-zero value |
+| refinements.js:16:9:16:14 | x3 = a | refinements.js:16:14:16:14 | a | refinements.js:16:9:16:10 | x3 | file://:0:0:0:0 | null |
+| refinements.js:18:11:18:16 | x4 = a | refinements.js:18:16:18:16 | a | refinements.js:18:11:18:12 | x4 | file://:0:0:0:0 | null |
+| refinements.js:20:11:20:16 | x5 = a | refinements.js:20:16:20:16 | a | refinements.js:20:11:20:12 | x5 | file://:0:0:0:0 | non-zero value |
+| refinements.js:23:7:23:12 | x6 = a | refinements.js:23:12:23:12 | a | refinements.js:23:7:23:8 | x6 | file://:0:0:0:0 | non-empty, non-numeric string |
+| refinements.js:23:7:23:12 | x6 = a | refinements.js:23:12:23:12 | a | refinements.js:23:7:23:8 | x6 | file://:0:0:0:0 | non-zero value |
+| refinements.js:23:7:23:12 | x6 = a | refinements.js:23:12:23:12 | a | refinements.js:23:7:23:8 | x6 | file://:0:0:0:0 | null |
+| refinements.js:31:7:31:12 | x2 = a | refinements.js:31:12:31:12 | a | refinements.js:31:7:31:8 | x2 | file://:0:0:0:0 | undefined |
+| refinements.js:35:7:35:31 | a = c ? ... ion(){} | refinements.js:35:11:35:31 | c ? {}  ... ion(){} | refinements.js:35:7:35:7 | a | refinements.js:35:15:35:16 | object literal |
+| refinements.js:35:7:35:31 | a = c ? ... ion(){} | refinements.js:35:11:35:31 | c ? {}  ... ion(){} | refinements.js:35:7:35:7 | a | refinements.js:35:20:35:31 | anonymous function |
+| refinements.js:37:9:37:14 | x1 = a | refinements.js:37:14:37:14 | a | refinements.js:37:9:37:10 | x1 | refinements.js:35:15:35:16 | object literal |
+| refinements.js:39:7:39:12 | x2 = a | refinements.js:39:12:39:12 | a | refinements.js:39:7:39:8 | x2 | refinements.js:35:15:35:16 | object literal |
+| refinements.js:39:7:39:12 | x2 = a | refinements.js:39:12:39:12 | a | refinements.js:39:7:39:8 | x2 | refinements.js:35:20:35:31 | anonymous function |
+| refinements.js:45:9:45:14 | x1 = f | refinements.js:45:14:45:14 | f | refinements.js:45:9:45:10 | x1 | file://:0:0:0:0 | null |
+| refinements.js:45:9:45:14 | x1 = f | refinements.js:45:14:45:14 | f | refinements.js:45:9:45:10 | x1 | file://:0:0:0:0 | undefined |
+| refinements.js:47:9:47:14 | x2 = f | refinements.js:47:14:47:14 | f | refinements.js:47:9:47:10 | x2 | file://:0:0:0:0 | null |
+| refinements.js:49:7:49:12 | x3 = f | refinements.js:49:12:49:12 | f | refinements.js:49:7:49:8 | x3 | file://:0:0:0:0 | undefined |
+| refinements.js:53:7:53:12 | x5 = f | refinements.js:53:12:53:12 | f | refinements.js:53:7:53:8 | x5 | file://:0:0:0:0 | undefined |
+| refinements.js:55:7:55:12 | x6 = f | refinements.js:55:12:55:12 | f | refinements.js:55:7:55:8 | x6 | file://:0:0:0:0 | null |
+| refinements.js:55:7:55:12 | x6 = f | refinements.js:55:12:55:12 | f | refinements.js:55:7:55:8 | x6 | file://:0:0:0:0 | undefined |
+| refinements.js:61:7:61:12 | x2 = x | refinements.js:61:12:61:12 | x | refinements.js:61:7:61:8 | x2 | file://:0:0:0:0 | "" |
+| refinements.js:61:7:61:12 | x2 = x | refinements.js:61:12:61:12 | x | refinements.js:61:7:61:8 | x2 | file://:0:0:0:0 | non-empty, non-numeric string |
+| refinements.js:61:7:61:12 | x2 = x | refinements.js:61:12:61:12 | x | refinements.js:61:7:61:8 | x2 | file://:0:0:0:0 | numeric string |
+| tsTest.ts:2:14:2:19 | x = 42 | tsTest.ts:2:18:2:19 | 42 | tsTest.ts:2:14:2:14 | x | file://:0:0:0:0 | non-zero value |
+| tsTest.ts:4:7:4:12 | x2 = x | tsTest.ts:4:12:4:12 | x | tsTest.ts:4:7:4:8 | x2 | file://:0:0:0:0 | indefinite value (namespace) |
+| tsTest.ts:4:7:4:12 | x2 = x | tsTest.ts:4:12:4:12 | x | tsTest.ts:4:7:4:8 | x2 | file://:0:0:0:0 | non-zero value |
+| tsTest.ts:12:5:12:9 | a = A | tsTest.ts:12:9:12:9 | A | tsTest.ts:12:5:12:5 | a | file://:0:0:0:0 | object |
+| tst2.js:4:7:4:20 | x = someGlobal | tst2.js:4:11:4:20 | someGlobal | tst2.js:4:7:4:7 | x | file://:0:0:0:0 | "" |
+| tst2.js:4:7:4:20 | x = someGlobal | tst2.js:4:11:4:20 | someGlobal | tst2.js:4:7:4:7 | x | file://:0:0:0:0 | indefinite value (global) |
+| tst.js:3:7:3:15 | x1 = true | tst.js:3:12:3:15 | true | tst.js:3:7:3:8 | x1 | file://:0:0:0:0 | true |
+| tst.js:4:7:4:16 | x2 = false | tst.js:4:12:4:16 | false | tst.js:4:7:4:8 | x2 | file://:0:0:0:0 | false |
+| tst.js:5:7:5:12 | x3 = 0 | tst.js:5:12:5:12 | 0 | tst.js:5:7:5:8 | x3 | file://:0:0:0:0 | 0 |
+| tst.js:6:7:6:14 | x4 = 0.0 | tst.js:6:12:6:14 | 0.0 | tst.js:6:7:6:8 | x4 | file://:0:0:0:0 | 0 |
+| tst.js:7:7:7:15 | x5 = -0.0 | tst.js:7:12:7:15 | -0.0 | tst.js:7:7:7:8 | x5 | file://:0:0:0:0 | 0 |
+| tst.js:7:7:7:15 | x5 = -0.0 | tst.js:7:12:7:15 | -0.0 | tst.js:7:7:7:8 | x5 | file://:0:0:0:0 | non-zero value |
+| tst.js:8:7:8:14 | x6 = 0.1 | tst.js:8:12:8:14 | 0.1 | tst.js:8:7:8:8 | x6 | file://:0:0:0:0 | non-zero value |
+| tst.js:9:7:9:12 | x7 = 1 | tst.js:9:12:9:12 | 1 | tst.js:9:7:9:8 | x7 | file://:0:0:0:0 | non-zero value |
+| tst.js:10:7:10:13 | x8 = "" | tst.js:10:12:10:13 | "" | tst.js:10:7:10:8 | x8 | file://:0:0:0:0 | "" |
+| tst.js:11:7:11:14 | x9 = 'a' | tst.js:11:12:11:14 | 'a' | tst.js:11:7:11:8 | x9 | file://:0:0:0:0 | non-empty, non-numeric string |
+| tst.js:12:7:12:14 | xa = /a/ | tst.js:12:12:12:14 | /a/ | tst.js:12:7:12:8 | xa | file://:0:0:0:0 | regular expression |
+| tst.js:13:7:13:13 | xb = {} | tst.js:13:12:13:13 | {} | tst.js:13:7:13:8 | xb | tst.js:13:12:13:13 | object literal |
+| tst.js:14:7:14:13 | xc = [] | tst.js:14:12:14:13 | [] | tst.js:14:7:14:8 | xc | file://:0:0:0:0 | object |
+| tst.js:15:7:15:23 | xd = function(){} | tst.js:15:12:15:23 | function(){} | tst.js:15:7:15:8 | xd | tst.js:15:12:15:23 | function xd |
+| tst.js:16:7:16:22 | xe = 1-unknown() | tst.js:16:12:16:22 | 1-unknown() | tst.js:16:7:16:8 | xe | file://:0:0:0:0 | 0 |
+| tst.js:16:7:16:22 | xe = 1-unknown() | tst.js:16:12:16:22 | 1-unknown() | tst.js:16:7:16:8 | xe | file://:0:0:0:0 | non-zero value |
+| tst.js:17:7:17:15 | xf = 1+xe | tst.js:17:12:17:15 | 1+xe | tst.js:17:7:17:8 | xf | file://:0:0:0:0 | 0 |
+| tst.js:17:7:17:15 | xf = 1+xe | tst.js:17:12:17:15 | 1+xe | tst.js:17:7:17:8 | xf | file://:0:0:0:0 | non-zero value |
+| tst.js:18:7:18:16 | xg = 'a'+2 | tst.js:18:12:18:16 | 'a'+2 | tst.js:18:7:18:8 | xg | file://:0:0:0:0 | "" |
+| tst.js:18:7:18:16 | xg = 'a'+2 | tst.js:18:12:18:16 | 'a'+2 | tst.js:18:7:18:8 | xg | file://:0:0:0:0 | non-empty, non-numeric string |
+| tst.js:18:7:18:16 | xg = 'a'+2 | tst.js:18:12:18:16 | 'a'+2 | tst.js:18:7:18:8 | xg | file://:0:0:0:0 | numeric string |
+| tst.js:19:7:19:32 | xh = 'a ... ?'b':0) | tst.js:19:12:19:32 | 'a'+(un ... ?'b':0) | tst.js:19:7:19:8 | xh | file://:0:0:0:0 | "" |
+| tst.js:19:7:19:32 | xh = 'a ... ?'b':0) | tst.js:19:12:19:32 | 'a'+(un ... ?'b':0) | tst.js:19:7:19:8 | xh | file://:0:0:0:0 | non-empty, non-numeric string |
+| tst.js:19:7:19:32 | xh = 'a ... ?'b':0) | tst.js:19:12:19:32 | 'a'+(un ... ?'b':0) | tst.js:19:7:19:8 | xh | file://:0:0:0:0 | numeric string |
+| tst.js:20:7:20:22 | xi = 2^unknown() | tst.js:20:12:20:22 | 2^unknown() | tst.js:20:7:20:8 | xi | file://:0:0:0:0 | 0 |
+| tst.js:20:7:20:22 | xi = 2^unknown() | tst.js:20:12:20:22 | 2^unknown() | tst.js:20:7:20:8 | xi | file://:0:0:0:0 | non-zero value |
+| tst.js:21:7:21:20 | xj = unknown() | tst.js:21:12:21:20 | unknown() | tst.js:21:7:21:8 | xj | file://:0:0:0:0 | indefinite value (call) |
+| tst.js:22:7:22:24 | xk = new Unknown() | tst.js:22:12:22:24 | new Unknown() | tst.js:22:7:22:8 | xk | file://:0:0:0:0 | indefinite function or class (call) |
+| tst.js:22:7:22:24 | xk = new Unknown() | tst.js:22:12:22:24 | new Unknown() | tst.js:22:7:22:8 | xk | file://:0:0:0:0 | indefinite object (call) |
+| tst.js:23:7:23:18 | xl = void(0) | tst.js:23:12:23:18 | void(0) | tst.js:23:7:23:8 | xl | file://:0:0:0:0 | undefined |
+| tst.js:24:7:24:20 | xm = typeof xj | tst.js:24:12:24:20 | typeof xj | tst.js:24:7:24:8 | xm | file://:0:0:0:0 | non-empty, non-numeric string |
+| tst.js:25:7:25:19 | xn = xj >= yk | tst.js:25:12:25:19 | xj >= yk | tst.js:25:7:25:8 | xn | file://:0:0:0:0 | false |
+| tst.js:25:7:25:19 | xn = xj >= yk | tst.js:25:12:25:19 | xj >= yk | tst.js:25:7:25:8 | xn | file://:0:0:0:0 | true |
+| tst.js:26:7:26:19 | xo = x9 in xk | tst.js:26:12:26:19 | x9 in xk | tst.js:26:7:26:8 | xo | file://:0:0:0:0 | false |
+| tst.js:26:7:26:19 | xo = x9 in xk | tst.js:26:12:26:19 | x9 in xk | tst.js:26:7:26:8 | xo | file://:0:0:0:0 | true |
+| tst.js:27:7:27:15 | xp = ++xj | tst.js:27:12:27:15 | ++xj | tst.js:27:7:27:8 | xp | file://:0:0:0:0 | 0 |
+| tst.js:27:7:27:15 | xp = ++xj | tst.js:27:12:27:15 | ++xj | tst.js:27:7:27:8 | xp | file://:0:0:0:0 | non-zero value |
+| tst.js:28:7:28:14 | xq = !xj | tst.js:28:12:28:14 | !xj | tst.js:28:7:28:8 | xq | file://:0:0:0:0 | false |
+| tst.js:28:7:28:14 | xq = !xj | tst.js:28:12:28:14 | !xj | tst.js:28:7:28:8 | xq | file://:0:0:0:0 | true |
+| tst.js:29:7:29:14 | xr = -xj | tst.js:29:12:29:14 | -xj | tst.js:29:7:29:8 | xr | file://:0:0:0:0 | 0 |
+| tst.js:29:7:29:14 | xr = -xj | tst.js:29:12:29:14 | -xj | tst.js:29:7:29:8 | xr | file://:0:0:0:0 | non-zero value |
+| tst.js:30:7:30:14 | xs = +xj | tst.js:30:12:30:14 | +xj | tst.js:30:7:30:8 | xs | file://:0:0:0:0 | 0 |
+| tst.js:30:7:30:14 | xs = +xj | tst.js:30:12:30:14 | +xj | tst.js:30:7:30:8 | xs | file://:0:0:0:0 | non-zero value |
+| tst.js:31:7:31:14 | xt = ~xj | tst.js:31:12:31:14 | ~xj | tst.js:31:7:31:8 | xt | file://:0:0:0:0 | 0 |
+| tst.js:31:7:31:14 | xt = ~xj | tst.js:31:12:31:14 | ~xj | tst.js:31:7:31:8 | xt | file://:0:0:0:0 | non-zero value |
+| tst.js:32:7:32:22 | xu = delete xj.p | tst.js:32:12:32:22 | delete xj.p | tst.js:32:7:32:8 | xu | file://:0:0:0:0 | false |
+| tst.js:32:7:32:22 | xu = delete xj.p | tst.js:32:12:32:22 | delete xj.p | tst.js:32:7:32:8 | xu | file://:0:0:0:0 | true |
+| tst.js:33:7:33:18 | xv = xj -= 2 | tst.js:33:12:33:18 | xj -= 2 | tst.js:33:7:33:8 | xv | file://:0:0:0:0 | 0 |
+| tst.js:33:7:33:18 | xv = xj -= 2 | tst.js:33:12:33:18 | xj -= 2 | tst.js:33:7:33:8 | xv | file://:0:0:0:0 | non-zero value |
+| tst.js:34:7:34:20 | xw = xj += "a" | tst.js:34:12:34:20 | xj += "a" | tst.js:34:7:34:8 | xw | file://:0:0:0:0 | "" |
+| tst.js:34:7:34:20 | xw = xj += "a" | tst.js:34:12:34:20 | xj += "a" | tst.js:34:7:34:8 | xw | file://:0:0:0:0 | non-empty, non-numeric string |
+| tst.js:34:7:34:20 | xw = xj += "a" | tst.js:34:12:34:20 | xj += "a" | tst.js:34:7:34:8 | xw | file://:0:0:0:0 | numeric string |
+| tst.js:35:7:35:12 | xx = y | tst.js:35:12:35:12 | y | tst.js:35:7:35:8 | xx | file://:0:0:0:0 | undefined |
+| tst.js:36:7:36:20 | xy = arguments | tst.js:36:12:36:20 | arguments | tst.js:36:7:36:8 | xy | tst.js:1:1:39:1 | arguments object of function tst |
+| tst.js:37:7:37:12 | xz = z | tst.js:37:12:37:12 | z | tst.js:37:7:37:8 | xz | file://:0:0:0:0 | indefinite value (call) |
+| tst.js:37:7:37:12 | xz = z | tst.js:37:12:37:12 | z | tst.js:37:7:37:8 | xz | file://:0:0:0:0 | indefinite value (eval) |
+| tst.js:38:7:38:21 | x_ = someGlobal | tst.js:38:12:38:21 | someGlobal | tst.js:38:7:38:8 | x_ | file://:0:0:0:0 | indefinite value (global) |
+| tst.js:38:7:38:21 | x_ = someGlobal | tst.js:38:12:38:21 | someGlobal | tst.js:38:7:38:8 | x_ | file://:0:0:0:0 | non-zero value |
+| tst.js:40:5:40:19 | someGlobal = 42 | tst.js:40:18:40:19 | 42 | tst.js:40:5:40:14 | someGlobal | file://:0:0:0:0 | non-zero value |
+| tst.js:43:7:43:17 | thiz = this | tst.js:43:14:43:17 | this | tst.js:43:7:43:10 | thiz | file://:0:0:0:0 | indefinite value (call) |
+| tst.js:43:7:43:17 | thiz = this | tst.js:43:14:43:17 | this | tst.js:43:7:43:10 | thiz | tst.js:42:1:44:1 | instance of function nonstrict |
+| tst.js:48:7:48:17 | thiz = this | tst.js:48:14:48:17 | this | tst.js:48:7:48:10 | thiz | file://:0:0:0:0 | indefinite value (call) |
+| tst.js:48:7:48:17 | thiz = this | tst.js:48:14:48:17 | this | tst.js:48:7:48:10 | thiz | tst.js:46:1:49:1 | instance of function strict |
+| tst.js:56:7:56:31 | neverUn ... aptured | tst.js:56:24:56:31 | captured | tst.js:56:7:56:20 | neverUndefined | tst.js:52:3:52:24 | function captured |
+| tst.js:60:7:60:12 | _x = x | tst.js:60:12:60:12 | x | tst.js:60:7:60:8 | _x | file://:0:0:0:0 | non-zero value |
+| tst.js:61:7:61:12 | _y = y | tst.js:61:12:61:12 | y | tst.js:61:7:61:8 | _y | file://:0:0:0:0 | undefined |
+| tst.js:65:7:65:12 | _x = x | tst.js:65:12:65:12 | x | tst.js:65:7:65:8 | _x | file://:0:0:0:0 | object |
+| tst.js:69:7:69:12 | _x = x | tst.js:69:12:69:12 | x | tst.js:69:7:69:8 | _x | file://:0:0:0:0 | indefinite value (call) |
+| tst.js:75:7:75:12 | _x = x | tst.js:75:12:75:12 | x | tst.js:75:7:75:8 | _x | file://:0:0:0:0 | 0 |
+| tst.js:75:7:75:12 | _x = x | tst.js:75:12:75:12 | x | tst.js:75:7:75:8 | _x | file://:0:0:0:0 | "" |
+| tst.js:75:7:75:12 | _x = x | tst.js:75:12:75:12 | x | tst.js:75:7:75:8 | _x | file://:0:0:0:0 | false |
+| tst.js:75:7:75:12 | _x = x | tst.js:75:12:75:12 | x | tst.js:75:7:75:8 | _x | file://:0:0:0:0 | indefinite function or class (call) |
+| tst.js:75:7:75:12 | _x = x | tst.js:75:12:75:12 | x | tst.js:75:7:75:8 | _x | file://:0:0:0:0 | indefinite object (call) |
+| tst.js:75:7:75:12 | _x = x | tst.js:75:12:75:12 | x | tst.js:75:7:75:8 | _x | file://:0:0:0:0 | non-empty, non-numeric string |
+| tst.js:75:7:75:12 | _x = x | tst.js:75:12:75:12 | x | tst.js:75:7:75:8 | _x | file://:0:0:0:0 | non-zero value |
+| tst.js:75:7:75:12 | _x = x | tst.js:75:12:75:12 | x | tst.js:75:7:75:8 | _x | file://:0:0:0:0 | null |
+| tst.js:75:7:75:12 | _x = x | tst.js:75:12:75:12 | x | tst.js:75:7:75:8 | _x | file://:0:0:0:0 | numeric string |
+| tst.js:75:7:75:12 | _x = x | tst.js:75:12:75:12 | x | tst.js:75:7:75:8 | _x | file://:0:0:0:0 | true |
+| tst.js:75:7:75:12 | _x = x | tst.js:75:12:75:12 | x | tst.js:75:7:75:8 | _x | file://:0:0:0:0 | undefined |
+| tst.js:81:7:81:12 | _x = x | tst.js:81:12:81:12 | x | tst.js:81:7:81:8 | _x | file://:0:0:0:0 | 0 |
+| tst.js:81:7:81:12 | _x = x | tst.js:81:12:81:12 | x | tst.js:81:7:81:8 | _x | file://:0:0:0:0 | "" |
+| tst.js:81:7:81:12 | _x = x | tst.js:81:12:81:12 | x | tst.js:81:7:81:8 | _x | file://:0:0:0:0 | false |
+| tst.js:81:7:81:12 | _x = x | tst.js:81:12:81:12 | x | tst.js:81:7:81:8 | _x | file://:0:0:0:0 | indefinite function or class (call) |
+| tst.js:81:7:81:12 | _x = x | tst.js:81:12:81:12 | x | tst.js:81:7:81:8 | _x | file://:0:0:0:0 | indefinite object (call) |
+| tst.js:81:7:81:12 | _x = x | tst.js:81:12:81:12 | x | tst.js:81:7:81:8 | _x | file://:0:0:0:0 | non-empty, non-numeric string |
+| tst.js:81:7:81:12 | _x = x | tst.js:81:12:81:12 | x | tst.js:81:7:81:8 | _x | file://:0:0:0:0 | non-zero value |
+| tst.js:81:7:81:12 | _x = x | tst.js:81:12:81:12 | x | tst.js:81:7:81:8 | _x | file://:0:0:0:0 | null |
+| tst.js:81:7:81:12 | _x = x | tst.js:81:12:81:12 | x | tst.js:81:7:81:8 | _x | file://:0:0:0:0 | numeric string |
+| tst.js:81:7:81:12 | _x = x | tst.js:81:12:81:12 | x | tst.js:81:7:81:8 | _x | file://:0:0:0:0 | true |
+| tst.js:81:7:81:12 | _x = x | tst.js:81:12:81:12 | x | tst.js:81:7:81:8 | _x | file://:0:0:0:0 | undefined |
+| tst.js:86:7:86:12 | _x = x | tst.js:86:12:86:12 | x | tst.js:86:7:86:8 | _x | file://:0:0:0:0 | indefinite value (eval) |
+| tst.js:86:7:86:12 | _x = x | tst.js:86:12:86:12 | x | tst.js:86:7:86:8 | _x | file://:0:0:0:0 | non-zero value |
+| tst.js:91:7:91:12 | _x = x | tst.js:91:12:91:12 | x | tst.js:91:7:91:8 | _x | file://:0:0:0:0 | non-zero value |
+| tst.js:96:9:96:13 | z = x | tst.js:96:13:96:13 | x | tst.js:96:9:96:9 | z | file://:0:0:0:0 | non-empty, non-numeric string |
+| tst.js:96:9:96:13 | z = x | tst.js:96:13:96:13 | x | tst.js:96:9:96:9 | z | file://:0:0:0:0 | non-zero value |
+| tst.js:96:9:96:13 | z = x | tst.js:96:13:96:13 | x | tst.js:96:9:96:9 | z | file://:0:0:0:0 | undefined |
+| tst.js:98:7:98:12 | x = 23 | tst.js:98:11:98:12 | 23 | tst.js:98:7:98:7 | x | file://:0:0:0:0 | non-zero value |
+| tst.js:99:7:99:12 | y1 = x | tst.js:99:12:99:12 | x | tst.js:99:7:99:8 | y1 | file://:0:0:0:0 | non-zero value |
+| tst.js:102:7:102:12 | y2 = x | tst.js:102:12:102:12 | x | tst.js:102:7:102:8 | y2 | file://:0:0:0:0 | non-empty, non-numeric string |
+| tst.js:107:7:107:19 | x = arguments | tst.js:107:11:107:19 | arguments | tst.js:107:7:107:7 | x | tst.js:106:2:109:1 | arguments object of anonymous function |
+| tst.js:112:7:112:19 | x = arguments | tst.js:112:11:112:19 | arguments | tst.js:112:7:112:7 | x | file://:0:0:0:0 | indefinite value (call) |
+| tst.js:112:7:112:19 | x = arguments | tst.js:112:11:112:19 | arguments | tst.js:112:7:112:7 | x | file://:0:0:0:0 | indefinite value (eval) |
+| tst.js:116:7:118:5 | x1 = fu ... ;\\n  }() | tst.js:116:12:118:5 | functio ... ;\\n  }() | tst.js:116:7:116:8 | x1 | file://:0:0:0:0 | non-zero value |
+| tst.js:119:7:121:5 | x2 = fu ... ;\\n  }() | tst.js:119:12:121:5 | functio ... ;\\n  }() | tst.js:119:7:119:8 | x2 | file://:0:0:0:0 | non-empty, non-numeric string |
+| tst.js:119:7:121:5 | x2 = fu ... ;\\n  }() | tst.js:119:12:121:5 | functio ... ;\\n  }() | tst.js:119:7:119:8 | x2 | file://:0:0:0:0 | null |
+| tst.js:122:7:124:7 | x3 = fu ...   }(x1) | tst.js:122:12:124:7 | functio ...   }(x1) | tst.js:122:7:122:8 | x3 | file://:0:0:0:0 | non-zero value |
+| tst.js:122:7:124:7 | x3 = fu ...   }(x1) | tst.js:122:12:124:7 | functio ...   }(x1) | tst.js:122:7:122:8 | x3 | file://:0:0:0:0 | undefined |
+| tst.js:125:7:125:26 | x4 = function() {}() | tst.js:125:12:125:26 | function() {}() | tst.js:125:7:125:8 | x4 | file://:0:0:0:0 | undefined |
+| tst.js:126:7:130:5 | x5 = fu ... ;\\n  }() | tst.js:126:12:130:5 | functio ... ;\\n  }() | tst.js:126:7:126:8 | x5 | file://:0:0:0:0 | true |
+| tst.js:135:7:135:12 | a1 = a | tst.js:135:12:135:12 | a | tst.js:135:7:135:8 | a1 | file://:0:0:0:0 | indefinite value (call) |
+| tst.js:135:15:135:20 | b1 = b | tst.js:135:20:135:20 | b | tst.js:135:15:135:16 | b1 | file://:0:0:0:0 | indefinite value (call) |
+| tst.js:137:9:137:14 | a2 = a | tst.js:137:14:137:14 | a | tst.js:137:9:137:10 | a2 | file://:0:0:0:0 | 0 |
+| tst.js:137:9:137:14 | a2 = a | tst.js:137:14:137:14 | a | tst.js:137:9:137:10 | a2 | file://:0:0:0:0 | "" |
+| tst.js:137:9:137:14 | a2 = a | tst.js:137:14:137:14 | a | tst.js:137:9:137:10 | a2 | file://:0:0:0:0 | false |
+| tst.js:137:9:137:14 | a2 = a | tst.js:137:14:137:14 | a | tst.js:137:9:137:10 | a2 | file://:0:0:0:0 | null |
+| tst.js:137:9:137:14 | a2 = a | tst.js:137:14:137:14 | a | tst.js:137:9:137:10 | a2 | file://:0:0:0:0 | undefined |
+| tst.js:137:17:137:22 | b2 = b | tst.js:137:22:137:22 | b | tst.js:137:17:137:18 | b2 | file://:0:0:0:0 | 0 |
+| tst.js:137:17:137:22 | b2 = b | tst.js:137:22:137:22 | b | tst.js:137:17:137:18 | b2 | file://:0:0:0:0 | "" |
+| tst.js:137:17:137:22 | b2 = b | tst.js:137:22:137:22 | b | tst.js:137:17:137:18 | b2 | file://:0:0:0:0 | false |
+| tst.js:137:17:137:22 | b2 = b | tst.js:137:22:137:22 | b | tst.js:137:17:137:18 | b2 | file://:0:0:0:0 | null |
+| tst.js:137:17:137:22 | b2 = b | tst.js:137:22:137:22 | b | tst.js:137:17:137:18 | b2 | file://:0:0:0:0 | undefined |
+| tst.js:140:9:140:14 | a3 = a | tst.js:140:14:140:14 | a | tst.js:140:9:140:10 | a3 | file://:0:0:0:0 | 0 |
+| tst.js:140:9:140:14 | a3 = a | tst.js:140:14:140:14 | a | tst.js:140:9:140:10 | a3 | file://:0:0:0:0 | "" |
+| tst.js:140:9:140:14 | a3 = a | tst.js:140:14:140:14 | a | tst.js:140:9:140:10 | a3 | file://:0:0:0:0 | false |
+| tst.js:140:9:140:14 | a3 = a | tst.js:140:14:140:14 | a | tst.js:140:9:140:10 | a3 | file://:0:0:0:0 | null |
+| tst.js:140:9:140:14 | a3 = a | tst.js:140:14:140:14 | a | tst.js:140:9:140:10 | a3 | file://:0:0:0:0 | undefined |
+| tst.js:140:17:140:22 | b3 = b | tst.js:140:22:140:22 | b | tst.js:140:17:140:18 | b3 | file://:0:0:0:0 | 0 |
+| tst.js:140:17:140:22 | b3 = b | tst.js:140:22:140:22 | b | tst.js:140:17:140:18 | b3 | file://:0:0:0:0 | "" |
+| tst.js:140:17:140:22 | b3 = b | tst.js:140:22:140:22 | b | tst.js:140:17:140:18 | b3 | file://:0:0:0:0 | false |
+| tst.js:140:17:140:22 | b3 = b | tst.js:140:22:140:22 | b | tst.js:140:17:140:18 | b3 | file://:0:0:0:0 | null |
+| tst.js:140:17:140:22 | b3 = b | tst.js:140:22:140:22 | b | tst.js:140:17:140:18 | b3 | file://:0:0:0:0 | undefined |
+| tst.js:145:7:145:16 | v1 = value | tst.js:145:12:145:16 | value | tst.js:145:7:145:8 | v1 | file://:0:0:0:0 | indefinite value (call) |
+| tst.js:147:9:147:18 | v2 = value | tst.js:147:14:147:18 | value | tst.js:147:9:147:10 | v2 | file://:0:0:0:0 | indefinite function or class (call) |
+| tst.js:147:9:147:18 | v2 = value | tst.js:147:14:147:18 | value | tst.js:147:9:147:10 | v2 | file://:0:0:0:0 | indefinite object (call) |
+| tst.js:147:9:147:18 | v2 = value | tst.js:147:14:147:18 | value | tst.js:147:9:147:10 | v2 | file://:0:0:0:0 | non-empty, non-numeric string |
+| tst.js:147:9:147:18 | v2 = value | tst.js:147:14:147:18 | value | tst.js:147:9:147:10 | v2 | file://:0:0:0:0 | non-zero value |
+| tst.js:147:9:147:18 | v2 = value | tst.js:147:14:147:18 | value | tst.js:147:9:147:10 | v2 | file://:0:0:0:0 | null |
+| tst.js:147:9:147:18 | v2 = value | tst.js:147:14:147:18 | value | tst.js:147:9:147:10 | v2 | file://:0:0:0:0 | numeric string |
+| tst.js:147:9:147:18 | v2 = value | tst.js:147:14:147:18 | value | tst.js:147:9:147:10 | v2 | file://:0:0:0:0 | undefined |
+| tst.js:154:9:154:14 | x1 = x | tst.js:154:14:154:14 | x | tst.js:154:9:154:10 | x1 | file://:0:0:0:0 | "" |
+| tst.js:154:9:154:14 | x1 = x | tst.js:154:14:154:14 | x | tst.js:154:9:154:10 | x1 | file://:0:0:0:0 | non-empty, non-numeric string |
+| tst.js:154:9:154:14 | x1 = x | tst.js:154:14:154:14 | x | tst.js:154:9:154:10 | x1 | file://:0:0:0:0 | numeric string |
+| tst.js:157:9:157:14 | y1 = y | tst.js:157:14:157:14 | y | tst.js:157:9:157:10 | y1 | file://:0:0:0:0 | "" |
+| tst.js:157:9:157:14 | y1 = y | tst.js:157:14:157:14 | y | tst.js:157:9:157:10 | y1 | file://:0:0:0:0 | non-empty, non-numeric string |
+| tst.js:157:9:157:14 | y1 = y | tst.js:157:14:157:14 | y | tst.js:157:9:157:10 | y1 | file://:0:0:0:0 | numeric string |
+| tst.js:160:9:160:14 | z1 = z | tst.js:160:14:160:14 | z | tst.js:160:9:160:10 | z1 | file://:0:0:0:0 | indefinite value (heap) |
+| tst.js:165:7:165:20 | x1 = undefined | tst.js:165:12:165:20 | undefined | tst.js:165:7:165:8 | x1 | file://:0:0:0:0 | undefined |
+| tst.js:166:7:166:27 | x2 = ar ... .callee | tst.js:166:12:166:27 | arguments.callee | tst.js:166:7:166:8 | x2 | tst.js:164:1:172:1 | function tst5 |
+| tst.js:167:7:167:19 | x3 = o.callee | tst.js:167:12:167:19 | o.callee | tst.js:167:7:167:8 | x3 | file://:0:0:0:0 | indefinite value (call) |
+| tst.js:167:7:167:19 | x3 = o.callee | tst.js:167:12:167:19 | o.callee | tst.js:167:7:167:8 | x3 | file://:0:0:0:0 | indefinite value (heap) |
+| tst.js:169:9:169:14 | x4 = o | tst.js:169:14:169:14 | o | tst.js:169:9:169:10 | x4 | file://:0:0:0:0 | 0 |
+| tst.js:169:9:169:14 | x4 = o | tst.js:169:14:169:14 | o | tst.js:169:9:169:10 | x4 | file://:0:0:0:0 | "" |
+| tst.js:169:9:169:14 | x4 = o | tst.js:169:14:169:14 | o | tst.js:169:9:169:10 | x4 | file://:0:0:0:0 | false |
+| tst.js:169:9:169:14 | x4 = o | tst.js:169:14:169:14 | o | tst.js:169:9:169:10 | x4 | file://:0:0:0:0 | indefinite function or class (call) |
+| tst.js:169:9:169:14 | x4 = o | tst.js:169:14:169:14 | o | tst.js:169:9:169:10 | x4 | file://:0:0:0:0 | indefinite object (call) |
+| tst.js:169:9:169:14 | x4 = o | tst.js:169:14:169:14 | o | tst.js:169:9:169:10 | x4 | file://:0:0:0:0 | non-empty, non-numeric string |
+| tst.js:169:9:169:14 | x4 = o | tst.js:169:14:169:14 | o | tst.js:169:9:169:10 | x4 | file://:0:0:0:0 | non-zero value |
+| tst.js:169:9:169:14 | x4 = o | tst.js:169:14:169:14 | o | tst.js:169:9:169:10 | x4 | file://:0:0:0:0 | null |
+| tst.js:169:9:169:14 | x4 = o | tst.js:169:14:169:14 | o | tst.js:169:9:169:10 | x4 | file://:0:0:0:0 | numeric string |
+| tst.js:169:9:169:14 | x4 = o | tst.js:169:14:169:14 | o | tst.js:169:9:169:10 | x4 | file://:0:0:0:0 | true |
+| tst.js:171:7:171:12 | x5 = o | tst.js:171:12:171:12 | o | tst.js:171:7:171:8 | x5 | file://:0:0:0:0 | 0 |
+| tst.js:171:7:171:12 | x5 = o | tst.js:171:12:171:12 | o | tst.js:171:7:171:8 | x5 | file://:0:0:0:0 | "" |
+| tst.js:171:7:171:12 | x5 = o | tst.js:171:12:171:12 | o | tst.js:171:7:171:8 | x5 | file://:0:0:0:0 | false |
+| tst.js:171:7:171:12 | x5 = o | tst.js:171:12:171:12 | o | tst.js:171:7:171:8 | x5 | file://:0:0:0:0 | indefinite function or class (call) |
+| tst.js:171:7:171:12 | x5 = o | tst.js:171:12:171:12 | o | tst.js:171:7:171:8 | x5 | file://:0:0:0:0 | indefinite object (call) |
+| tst.js:171:7:171:12 | x5 = o | tst.js:171:12:171:12 | o | tst.js:171:7:171:8 | x5 | file://:0:0:0:0 | non-empty, non-numeric string |
+| tst.js:171:7:171:12 | x5 = o | tst.js:171:12:171:12 | o | tst.js:171:7:171:8 | x5 | file://:0:0:0:0 | non-zero value |
+| tst.js:171:7:171:12 | x5 = o | tst.js:171:12:171:12 | o | tst.js:171:7:171:8 | x5 | file://:0:0:0:0 | null |
+| tst.js:171:7:171:12 | x5 = o | tst.js:171:12:171:12 | o | tst.js:171:7:171:8 | x5 | file://:0:0:0:0 | numeric string |
+| tst.js:171:7:171:12 | x5 = o | tst.js:171:12:171:12 | o | tst.js:171:7:171:8 | x5 | file://:0:0:0:0 | true |
+| tst.js:171:7:171:12 | x5 = o | tst.js:171:12:171:12 | o | tst.js:171:7:171:8 | x5 | file://:0:0:0:0 | undefined |
+| tst.js:176:9:176:18 | await1 = v | tst.js:176:18:176:18 | v | tst.js:176:9:176:14 | await1 | file://:0:0:0:0 | undefined |
+| tst.js:179:13:179:22 | await2 = v | tst.js:179:22:179:22 | v | tst.js:179:13:179:18 | await2 | file://:0:0:0:0 | indefinite value (await) |
+| tst.js:182:9:182:18 | await3 = v | tst.js:182:18:182:18 | v | tst.js:182:9:182:14 | await3 | file://:0:0:0:0 | indefinite value (await) |
+| tst.js:182:9:182:18 | await3 = v | tst.js:182:18:182:18 | v | tst.js:182:9:182:14 | await3 | file://:0:0:0:0 | undefined |
+| tst.js:185:5:185:26 | [someOt ... l] = [] | tst.js:185:25:185:26 | [] | tst.js:185:5:185:21 | [someOtherGlobal] | file://:0:0:0:0 | object |
+| tst.js:186:5:186:24 | x1 = someOtherGlobal | tst.js:186:10:186:24 | someOtherGlobal | tst.js:186:5:186:6 | x1 | file://:0:0:0:0 | indefinite value (global) |
+| tst.js:186:5:186:24 | x1 = someOtherGlobal | tst.js:186:10:186:24 | someOtherGlobal | tst.js:186:5:186:6 | x1 | file://:0:0:0:0 | indefinite value (heap) |
+| tst.mjs:3:5:3:17 | req = require | tst.mjs:3:11:3:17 | require | tst.mjs:3:5:3:7 | req | file://:0:0:0:0 | indefinite value (global) |
+| with.js:2:7:2:12 | x = 42 | with.js:2:11:2:12 | 42 | with.js:2:7:2:7 | x | file://:0:0:0:0 | non-zero value |
+| with.js:2:15:2:22 | y = null | with.js:2:19:2:22 | null | with.js:2:15:2:15 | y | file://:0:0:0:0 | null |
+| with.js:4:9:4:14 | r1 = x | with.js:4:14:4:14 | x | with.js:4:9:4:10 | r1 | file://:0:0:0:0 | indefinite value (eval) |
+| with.js:4:9:4:14 | r1 = x | with.js:4:14:4:14 | x | with.js:4:9:4:10 | r1 | file://:0:0:0:0 | non-zero value |
+| with.js:5:9:5:14 | r2 = y | with.js:5:14:5:14 | y | with.js:5:9:5:10 | r2 | file://:0:0:0:0 | indefinite value (eval) |
+| with.js:5:9:5:14 | r2 = y | with.js:5:14:5:14 | y | with.js:5:9:5:10 | r2 | file://:0:0:0:0 | null |
+| with.js:7:11:7:18 | y = "hi" | with.js:7:15:7:18 | "hi" | with.js:7:11:7:11 | y | file://:0:0:0:0 | non-empty, non-numeric string |
+| with.js:9:13:9:18 | r3 = x | with.js:9:18:9:18 | x | with.js:9:13:9:14 | r3 | file://:0:0:0:0 | indefinite value (eval) |
+| with.js:9:13:9:18 | r3 = x | with.js:9:18:9:18 | x | with.js:9:13:9:14 | r3 | file://:0:0:0:0 | non-zero value |
+| with.js:10:13:10:18 | r4 = y | with.js:10:18:10:18 | y | with.js:10:13:10:14 | r4 | file://:0:0:0:0 | non-empty, non-numeric string |
+| with.js:13:9:13:16 | z = true | with.js:13:13:13:16 | true | with.js:13:9:13:9 | z | file://:0:0:0:0 | true |
+| with.js:14:9:14:14 | r5 = z | with.js:14:14:14:14 | z | with.js:14:9:14:10 | r5 | file://:0:0:0:0 | indefinite value (eval) |
+| with.js:14:9:14:14 | r5 = z | with.js:14:14:14:14 | z | with.js:14:9:14:10 | r5 | file://:0:0:0:0 | true |
+| with.js:16:7:16:12 | r6 = x | with.js:16:12:16:12 | x | with.js:16:7:16:8 | r6 | file://:0:0:0:0 | non-zero value |
+abstractValues
+| ChatListScreen.js:1:1:6:0 | exports object of module ChatListScreen |
+| ChatListScreen.js:1:1:6:0 | module object of module ChatListScreen |
+| ChatListScreen.js:3:1:5:1 | function foo |
+| ChatListScreen.js:3:1:5:1 | instance of function foo |
+| a2.js:1:1:2:0 | exports object of module a2 |
+| a2.js:1:1:2:0 | module object of module a2 |
+| a.js:1:1:18:0 | exports object of module a |
+| a.js:1:1:18:0 | module object of module a |
+| a.js:3:8:5:1 | function setX |
+| a.js:3:8:5:1 | instance of function setX |
+| a.js:15:1:17:1 | function bump |
+| a.js:15:1:17:1 | instance of function bump |
+| amd2.js:1:1:4:0 | exports object of module amd2 |
+| amd2.js:1:1:4:0 | module object of module amd2 |
+| amd2.js:1:8:3:1 | anonymous function |
+| amd2.js:1:8:3:1 | instance of anonymous function |
+| amd2.js:2:10:2:22 | object literal |
+| amd3.js:1:1:5:0 | exports object of module amd3 |
+| amd3.js:1:1:5:0 | module object of module amd3 |
+| amd3.js:1:24:4:1 | anonymous function |
+| amd3.js:1:24:4:1 | instance of anonymous function |
+| amd4.js:1:1:4:0 | exports object of module amd4 |
+| amd4.js:1:1:4:0 | module object of module amd4 |
+| amd4.js:1:28:3:1 | anonymous function |
+| amd4.js:1:28:3:1 | instance of anonymous function |
+| amd5.js:1:1:4:0 | exports object of module amd5 |
+| amd5.js:1:1:4:0 | module object of module amd5 |
+| amd5.js:1:21:3:1 | anonymous function |
+| amd5.js:1:21:3:1 | instance of anonymous function |
+| amd.js:1:1:7:0 | exports object of module amd |
+| amd.js:1:1:7:0 | module object of module amd |
+| amd.js:1:31:6:1 | anonymous function |
+| amd.js:1:31:6:1 | instance of anonymous function |
+| amd.js:4:11:4:12 | object literal |
+| amd.js:5:15:5:27 | object literal |
+| arguments.js:1:2:3:1 | anonymous function |
+| arguments.js:1:2:3:1 | instance of anonymous function |
+| arguments.js:5:2:8:1 | anonymous function |
+| arguments.js:5:2:8:1 | arguments object of anonymous function |
+| arguments.js:5:2:8:1 | instance of anonymous function |
+| arguments.js:10:2:14:1 | anonymous function |
+| arguments.js:10:2:14:1 | arguments object of anonymous function |
+| arguments.js:10:2:14:1 | instance of anonymous function |
+| arguments.js:16:2:19:1 | anonymous function |
+| arguments.js:16:2:19:1 | arguments object of anonymous function |
+| arguments.js:16:2:19:1 | instance of anonymous function |
+| arguments.js:22:2:28:1 | anonymous function |
+| arguments.js:22:2:28:1 | arguments object of anonymous function |
+| arguments.js:22:2:28:1 | instance of anonymous function |
+| arguments.js:30:2:33:1 | anonymous function |
+| arguments.js:30:2:33:1 | arguments object of anonymous function |
+| arguments.js:30:2:33:1 | instance of anonymous function |
+| b.js:1:1:58:0 | exports object of module b |
+| b.js:1:1:58:0 | module object of module b |
+| backend.js:1:1:3:0 | exports object of module backend |
+| backend.js:1:1:3:0 | module object of module backend |
+| backend.js:1:17:1:18 | object literal |
+| c.js:1:1:7:0 | exports object of module c |
+| c.js:1:1:7:0 | module object of module c |
+| c.js:1:18:1:19 | object literal |
+| c.js:3:1:5:1 | function f |
+| c.js:3:1:5:1 | instance of function f |
+| classAccessors.js:1:1:14:1 | class C |
+| classAccessors.js:1:1:14:1 | instance of class C |
+| classAccessors.js:1:9:1:8 | default constructor of class C |
+| classAccessors.js:2:8:2:23 | getter method for property x of class C |
+| classAccessors.js:4:8:4:23 | getter method for property y of class C |
+| classAccessors.js:5:8:5:17 | setter method for property y of class C |
+| classAccessors.js:7:8:7:17 | setter method for property z of class C |
+| classAccessors.js:9:11:13:3 | method myMethod of class C |
+| d.js:1:1:4:0 | exports object of module d |
+| d.js:1:1:4:0 | module object of module d |
+| d.js:1:18:3:1 | object literal |
+| destructuring.js:1:1:4:1 | function f |
+| destructuring.js:1:1:4:1 | instance of function f |
+| e.js:1:1:6:0 | exports object of module e |
+| e.js:1:1:6:0 | module object of module e |
+| es2015.js:1:1:50:0 | exports object of module es2015 |
+| es2015.js:1:1:50:0 | module object of module es2015 |
+| es2015.js:1:11:6:1 | class Sup |
+| es2015.js:1:11:6:1 | instance of class Sup |
+| es2015.js:2:14:5:3 | constructor of class Sup |
+| es2015.js:8:1:16:1 | class Sub |
+| es2015.js:8:1:16:1 | instance of class Sub |
+| es2015.js:9:14:11:3 | constructor of class Sub |
+| es2015.js:13:6:15:3 | method foo of class Sub |
+| es2015.js:18:1:20:1 | function f |
+| es2015.js:18:1:20:1 | instance of function f |
+| es2015.js:22:2:24:1 | anonymous function |
+| es2015.js:22:2:24:1 | instance of anonymous function |
+| es2015.js:31:2:35:1 | anonymous function |
+| es2015.js:31:2:35:1 | instance of anonymous function |
+| es2015.js:38:2:42:1 | anonymous function |
+| es2015.js:38:2:42:1 | instance of anonymous function |
+| es2015.js:44:2:47:1 | anonymous function |
+| es2015.js:44:2:47:1 | instance of anonymous function |
+| es2015.js:45:11:45:23 | anonymous function |
+| es2015.js:46:11:46:28 | anonymous function |
+| esClient.js:1:1:12:0 | exports object of module esClient |
+| esClient.js:1:1:12:0 | module object of module esClient |
+| esLib.js:1:1:4:0 | exports object of module esLib |
+| esLib.js:1:1:4:0 | module object of module esLib |
+| esLib.js:3:8:3:24 | function foo |
+| esLib.js:3:8:3:24 | instance of function foo |
+| f.js:1:1:2:0 | exports object of module f |
+| f.js:1:1:2:0 | module object of module f |
+| f.js:1:13:1:25 | anonymous function |
+| f.js:1:13:1:25 | instance of anonymous function |
+| file://:0:0:0:0 | 0 |
+| file://:0:0:0:0 | "" |
+| file://:0:0:0:0 | date |
+| file://:0:0:0:0 | false |
+| file://:0:0:0:0 | global |
+| file://:0:0:0:0 | indefinite function or class (await) |
+| file://:0:0:0:0 | indefinite function or class (call) |
+| file://:0:0:0:0 | indefinite function or class (eval) |
+| file://:0:0:0:0 | indefinite function or class (global) |
+| file://:0:0:0:0 | indefinite function or class (heap) |
+| file://:0:0:0:0 | indefinite function or class (import) |
+| file://:0:0:0:0 | indefinite function or class (namespace) |
+| file://:0:0:0:0 | indefinite function or class (yield) |
+| file://:0:0:0:0 | indefinite object (await) |
+| file://:0:0:0:0 | indefinite object (call) |
+| file://:0:0:0:0 | indefinite object (eval) |
+| file://:0:0:0:0 | indefinite object (global) |
+| file://:0:0:0:0 | indefinite object (heap) |
+| file://:0:0:0:0 | indefinite object (import) |
+| file://:0:0:0:0 | indefinite object (namespace) |
+| file://:0:0:0:0 | indefinite object (yield) |
+| file://:0:0:0:0 | indefinite value (await) |
+| file://:0:0:0:0 | indefinite value (call) |
+| file://:0:0:0:0 | indefinite value (eval) |
+| file://:0:0:0:0 | indefinite value (global) |
+| file://:0:0:0:0 | indefinite value (heap) |
+| file://:0:0:0:0 | indefinite value (import) |
+| file://:0:0:0:0 | indefinite value (namespace) |
+| file://:0:0:0:0 | indefinite value (yield) |
+| file://:0:0:0:0 | non-empty, non-numeric string |
+| file://:0:0:0:0 | non-zero value |
+| file://:0:0:0:0 | null |
+| file://:0:0:0:0 | numeric string |
+| file://:0:0:0:0 | object |
+| file://:0:0:0:0 | regular expression |
+| file://:0:0:0:0 | true |
+| file://:0:0:0:0 | undefined |
+| fundecls.js:1:2:10:1 | anonymous function |
+| fundecls.js:1:2:10:1 | instance of anonymous function |
+| fundecls.js:4:3:4:17 | function f |
+| fundecls.js:4:3:4:17 | instance of function f |
+| fundecls.js:8:5:8:19 | function g |
+| fundecls.js:8:5:8:19 | instance of function g |
+| g.js:1:1:4:0 | exports object of module g |
+| g.js:1:1:4:0 | module object of module g |
+| globals.html:7:8:10:7 | anonymous function |
+| globals.html:7:8:10:7 | instance of anonymous function |
+| globals.html:16:8:19:7 | anonymous function |
+| globals.html:16:8:19:7 | instance of anonymous function |
+| globals.html:22:7:22:21 | function x |
+| globals.html:22:7:22:21 | instance of function x |
+| globals.html:26:23:26:69 | anonymous function |
+| globals.html:26:23:26:69 | instance of anonymous function |
+| h.js:1:1:3:0 | exports object of module h |
+| h.js:1:1:3:0 | module object of module h |
+| h.js:1:8:1:22 | function f |
+| h.js:1:8:1:22 | instance of function f |
+| h.js:2:16:2:24 | class C |
+| h.js:2:16:2:24 | instance of class C |
+| h.js:2:23:2:22 | default constructor of class C |
+| h_import.js:1:1:3:0 | exports object of module h_import |
+| h_import.js:1:1:3:0 | module object of module h_import |
+| implicit-returns.js:1:1:27:0 | exports object of module implicit-returns |
+| implicit-returns.js:1:1:27:0 | module object of module implicit-returns |
+| implicit-returns.js:3:1:12:1 | function endWithLoop |
+| implicit-returns.js:3:1:12:1 | instance of function endWithLoop |
+| implicit-returns.js:14:1:16:1 | function useLoop |
+| implicit-returns.js:14:1:16:1 | instance of function useLoop |
+| implicit-returns.js:18:1:22:1 | function endWithShortIf |
+| implicit-returns.js:18:1:22:1 | instance of function endWithShortIf |
+| implicit-returns.js:24:1:26:1 | function useShortIf |
+| implicit-returns.js:24:1:26:1 | instance of function useShortIf |
+| import.js:1:1:13:0 | exports object of module import |
+| import.js:1:1:13:0 | module object of module import |
+| imports.ts:1:1:8:0 | exports object of module imports |
+| imports.ts:1:1:8:0 | module object of module imports |
+| instances.js:1:1:4:1 | function A |
+| instances.js:1:1:4:1 | instance of function A |
+| instances.js:3:14:3:26 | anonymous function |
+| instances.js:3:14:3:26 | instance of anonymous function |
+| instances.js:6:19:6:31 | anonymous function |
+| instances.js:6:19:6:31 | instance of anonymous function |
+| instances.js:13:1:13:18 | function SubA |
+| instances.js:13:1:13:18 | instance of function SubA |
+| m.js:1:1:9:0 | exports object of module m |
+| m.js:1:1:9:0 | module object of module m |
+| mixed.js:1:1:11:0 | exports object of module mixed |
+| mixed.js:1:1:11:0 | module object of module mixed |
+| mixins.js:1:1:2:0 | exports object of module mixins |
+| mixins.js:1:1:2:0 | module object of module mixins |
+| mixins.js:1:16:1:32 | anonymous function |
+| n.js:1:1:1:15 | function f |
+| n.js:1:1:1:15 | instance of function f |
+| n.js:1:1:4:0 | exports object of module n |
+| n.js:1:1:4:0 | module object of module n |
+| n.js:2:1:2:15 | function g |
+| n.js:2:1:2:15 | instance of function g |
+| n.js:3:16:3:23 | object literal |
+| namespace-reexport.js:1:1:2:0 | exports object of module namespace-reexport |
+| namespace-reexport.js:1:1:2:0 | module object of module namespace-reexport |
+| nestedImport.js:1:1:13:0 | exports object of module nestedImport |
+| nestedImport.js:1:1:13:0 | module object of module nestedImport |
+| nestedImport.js:9:1:12:1 | function tst |
+| nestedImport.js:9:1:12:1 | instance of function tst |
+| nodeJsClient.js:1:1:6:0 | exports object of module nodeJsClient |
+| nodeJsClient.js:1:1:6:0 | module object of module nodeJsClient |
+| nodeJsLib.js:1:1:4:0 | exports object of module nodeJsLib |
+| nodeJsLib.js:1:1:4:0 | module object of module nodeJsLib |
+| nodeJsLib.js:1:18:1:43 | function nodeJsModule |
+| nodeJsLib.js:1:18:1:43 | instance of function nodeJsModule |
+| nodeJsLib.js:3:15:3:37 | function nodeJsFoo |
+| nodeJsLib.js:3:15:3:37 | instance of function nodeJsFoo |
+| nullish-coalescing-op.ts:1:1:3:1 | function test |
+| nullish-coalescing-op.ts:1:1:3:1 | instance of function test |
+| o.js:1:1:2:0 | exports object of module o |
+| o.js:1:1:2:0 | module object of module o |
+| objlit.js:1:14:1:15 | object literal |
+| objlit.js:2:9:2:21 | anonymous function |
+| objlit.js:2:9:2:21 | instance of anonymous function |
+| objlit.js:3:9:5:1 | object literal |
+| objlit.js:4:8:4:20 | instance of method baz |
+| objlit.js:4:8:4:20 | method baz |
+| objlit.js:7:9:7:10 | object literal |
+| objlit.js:10:2:12:1 | anonymous function |
+| objlit.js:10:2:12:1 | instance of anonymous function |
+| objlit.js:11:11:11:23 | anonymous function |
+| objlit.js:11:11:11:23 | instance of anonymous function |
+| objlit.js:23:2:48:1 | anonymous function |
+| objlit.js:23:2:48:1 | instance of anonymous function |
+| objlit.js:24:11:28:3 | object literal |
+| objlit.js:25:8:27:5 | object literal |
+| objlit.js:33:12:40:3 | object literal |
+| objlit.js:34:6:34:10 | method f |
+| objlit.js:35:6:39:5 | method g |
+| objlit.js:41:10:41:22 | anonymous function |
+| objlit.js:41:10:41:22 | instance of anonymous function |
+| objlit.js:43:12:45:3 | object literal |
+| reexport-d.js:1:1:2:0 | exports object of module reexport-d |
+| reexport-d.js:1:1:2:0 | module object of module reexport-d |
+| reexport-mixins.js:1:1:2:0 | exports object of module reexport-mixins |
+| reexport-mixins.js:1:1:2:0 | module object of module reexport-mixins |
+| reexport-unknown.js:1:1:2:0 | exports object of module reexport-unknown |
+| reexport-unknown.js:1:1:2:0 | module object of module reexport-unknown |
+| reexport/client/src/index.js:1:1:3:0 | exports object of module index |
+| reexport/client/src/index.js:1:1:3:0 | module object of module index |
+| reexport/lib/index.js:1:1:2:0 | exports object of module index |
+| reexport/lib/index.js:1:1:2:0 | module object of module index |
+| reexport/lib/src/utils/util.js:1:1:3:0 | exports object of module util |
+| reexport/lib/src/utils/util.js:1:1:3:0 | module object of module util |
+| refinements.js:1:1:8:1 | function f1 |
+| refinements.js:1:1:8:1 | instance of function f1 |
+| refinements.js:10:1:24:1 | function f2 |
+| refinements.js:10:1:24:1 | instance of function f2 |
+| refinements.js:26:1:32:1 | function f3 |
+| refinements.js:26:1:32:1 | instance of function f3 |
+| refinements.js:34:1:40:1 | function f4 |
+| refinements.js:34:1:40:1 | instance of function f4 |
+| refinements.js:35:15:35:16 | object literal |
+| refinements.js:35:20:35:31 | anonymous function |
+| refinements.js:35:20:35:31 | instance of anonymous function |
+| refinements.js:42:1:56:1 | function f5 |
+| refinements.js:42:1:56:1 | instance of function f5 |
+| refinements.js:44:3:48:3 | function inner |
+| refinements.js:44:3:48:3 | instance of function inner |
+| refinements.js:58:1:62:1 | function f6 |
+| refinements.js:58:1:62:1 | instance of function f6 |
+| ts2.ts:1:1:6:0 | exports object of module ts2 |
+| ts2.ts:1:1:6:0 | module object of module ts2 |
+| ts2.ts:1:10:1:22 | anonymous function |
+| ts2.ts:1:10:1:22 | instance of anonymous function |
+| ts2.ts:4:12:4:13 | object literal |
+| ts.ts:1:1:2:0 | exports object of module ts |
+| ts.ts:1:1:2:0 | module object of module ts |
+| ts.ts:1:16:1:25 | class A |
+| ts.ts:1:16:1:25 | instance of class A |
+| ts.ts:1:24:1:23 | default constructor of class A |
+| tsTest.ts:1:1:13:0 | exports object of module tsTest |
+| tsTest.ts:1:1:13:0 | module object of module tsTest |
+| tsTest.ts:8:1:10:1 | function setX |
+| tsTest.ts:8:1:10:1 | instance of function setX |
+| tst2.js:3:2:5:1 | anonymous function |
+| tst2.js:3:2:5:1 | instance of anonymous function |
+| tst.js:1:1:39:1 | arguments object of function tst |
+| tst.js:1:1:39:1 | function tst |
+| tst.js:1:1:39:1 | instance of function tst |
+| tst.js:13:12:13:13 | object literal |
+| tst.js:15:12:15:23 | function xd |
+| tst.js:15:12:15:23 | instance of function xd |
+| tst.js:42:1:44:1 | function nonstrict |
+| tst.js:42:1:44:1 | instance of function nonstrict |
+| tst.js:46:1:49:1 | function strict |
+| tst.js:46:1:49:1 | instance of function strict |
+| tst.js:51:1:57:1 | function capturedFn |
+| tst.js:51:1:57:1 | instance of function capturedFn |
+| tst.js:52:3:52:24 | function captured |
+| tst.js:52:3:52:24 | instance of function captured |
+| tst.js:53:3:55:3 | function capturing |
+| tst.js:53:3:55:3 | instance of function capturing |
+| tst.js:59:2:62:1 | anonymous function |
+| tst.js:59:2:62:1 | instance of anonymous function |
+| tst.js:64:2:66:1 | anonymous function |
+| tst.js:64:2:66:1 | instance of anonymous function |
+| tst.js:68:2:70:1 | anonymous function |
+| tst.js:68:2:70:1 | instance of anonymous function |
+| tst.js:72:2:76:1 | function s |
+| tst.js:72:2:76:1 | instance of function s |
+| tst.js:78:2:82:1 | anonymous function |
+| tst.js:78:2:82:1 | arguments object of anonymous function |
+| tst.js:78:2:82:1 | instance of anonymous function |
+| tst.js:84:2:87:1 | anonymous function |
+| tst.js:84:2:87:1 | instance of anonymous function |
+| tst.js:89:2:92:1 | anonymous function |
+| tst.js:89:2:92:1 | instance of anonymous function |
+| tst.js:94:2:104:1 | anonymous function |
+| tst.js:94:2:104:1 | instance of anonymous function |
+| tst.js:95:3:97:3 | function inner |
+| tst.js:95:3:97:3 | instance of function inner |
+| tst.js:106:2:109:1 | anonymous function |
+| tst.js:106:2:109:1 | arguments object of anonymous function |
+| tst.js:106:2:109:1 | instance of anonymous function |
+| tst.js:111:1:113:1 | arguments object of function tst |
+| tst.js:111:1:113:1 | function tst |
+| tst.js:111:1:113:1 | instance of function tst |
+| tst.js:115:2:132:1 | anonymous function |
+| tst.js:115:2:132:1 | instance of anonymous function |
+| tst.js:116:12:118:3 | anonymous function |
+| tst.js:116:12:118:3 | instance of anonymous function |
+| tst.js:119:12:121:3 | anonymous function |
+| tst.js:119:12:121:3 | instance of anonymous function |
+| tst.js:122:12:124:3 | anonymous function |
+| tst.js:122:12:124:3 | instance of anonymous function |
+| tst.js:125:12:125:24 | anonymous function |
+| tst.js:125:12:125:24 | instance of anonymous function |
+| tst.js:126:12:130:3 | anonymous function |
+| tst.js:126:12:130:3 | instance of anonymous function |
+| tst.js:131:12:131:37 | anonymous function |
+| tst.js:131:12:131:37 | instance of anonymous function |
+| tst.js:134:1:142:1 | function tst2 |
+| tst.js:134:1:142:1 | instance of function tst2 |
+| tst.js:144:1:149:1 | function tst3 |
+| tst.js:144:1:149:1 | instance of function tst3 |
+| tst.js:151:1:162:1 | function tst4 |
+| tst.js:151:1:162:1 | instance of function tst4 |
+| tst.js:164:1:172:1 | arguments object of function tst5 |
+| tst.js:164:1:172:1 | function tst5 |
+| tst.js:164:1:172:1 | instance of function tst5 |
+| tst.js:174:1:183:1 | function awaitFlow |
+| tst.mjs:1:1:4:0 | exports object of module tst |
+| tst.mjs:1:1:4:0 | module object of module tst |
+| with.js:1:1:17:1 | function f |
+| with.js:1:1:17:1 | instance of function f |
+getAPrototype
+| ChatListScreen.js:3:1:5:1 | instance of function foo | ChatListScreen.js:3:1:5:1 | instance of function foo |
+| a.js:3:8:5:1 | instance of function setX | a.js:3:8:5:1 | instance of function setX |
+| a.js:15:1:17:1 | instance of function bump | a.js:15:1:17:1 | instance of function bump |
+| amd2.js:1:8:3:1 | instance of anonymous function | amd2.js:1:8:3:1 | instance of anonymous function |
+| amd3.js:1:24:4:1 | instance of anonymous function | amd3.js:1:24:4:1 | instance of anonymous function |
+| amd4.js:1:28:3:1 | instance of anonymous function | amd4.js:1:28:3:1 | instance of anonymous function |
+| amd5.js:1:21:3:1 | instance of anonymous function | amd5.js:1:21:3:1 | instance of anonymous function |
+| amd.js:1:31:6:1 | instance of anonymous function | amd.js:1:31:6:1 | instance of anonymous function |
+| arguments.js:1:2:3:1 | instance of anonymous function | arguments.js:1:2:3:1 | instance of anonymous function |
+| arguments.js:5:2:8:1 | instance of anonymous function | arguments.js:5:2:8:1 | instance of anonymous function |
+| arguments.js:10:2:14:1 | instance of anonymous function | arguments.js:10:2:14:1 | instance of anonymous function |
+| arguments.js:16:2:19:1 | instance of anonymous function | arguments.js:16:2:19:1 | instance of anonymous function |
+| arguments.js:22:2:28:1 | instance of anonymous function | arguments.js:22:2:28:1 | instance of anonymous function |
+| arguments.js:30:2:33:1 | instance of anonymous function | arguments.js:30:2:33:1 | instance of anonymous function |
+| c.js:3:1:5:1 | instance of function f | c.js:3:1:5:1 | instance of function f |
+| destructuring.js:1:1:4:1 | instance of function f | destructuring.js:1:1:4:1 | instance of function f |
+| es2015.js:8:1:16:1 | instance of class Sub | es2015.js:1:11:6:1 | instance of class Sup |
+| es2015.js:18:1:20:1 | instance of function f | es2015.js:18:1:20:1 | instance of function f |
+| es2015.js:22:2:24:1 | instance of anonymous function | es2015.js:22:2:24:1 | instance of anonymous function |
+| es2015.js:31:2:35:1 | instance of anonymous function | es2015.js:31:2:35:1 | instance of anonymous function |
+| es2015.js:38:2:42:1 | instance of anonymous function | es2015.js:38:2:42:1 | instance of anonymous function |
+| es2015.js:44:2:47:1 | instance of anonymous function | es2015.js:44:2:47:1 | instance of anonymous function |
+| esLib.js:3:8:3:24 | instance of function foo | esLib.js:3:8:3:24 | instance of function foo |
+| f.js:1:13:1:25 | instance of anonymous function | f.js:1:13:1:25 | instance of anonymous function |
+| fundecls.js:1:2:10:1 | instance of anonymous function | fundecls.js:1:2:10:1 | instance of anonymous function |
+| fundecls.js:4:3:4:17 | instance of function f | fundecls.js:4:3:4:17 | instance of function f |
+| fundecls.js:8:5:8:19 | instance of function g | fundecls.js:8:5:8:19 | instance of function g |
+| globals.html:7:8:10:7 | instance of anonymous function | globals.html:7:8:10:7 | instance of anonymous function |
+| globals.html:16:8:19:7 | instance of anonymous function | globals.html:16:8:19:7 | instance of anonymous function |
+| globals.html:22:7:22:21 | instance of function x | globals.html:22:7:22:21 | instance of function x |
+| globals.html:26:23:26:69 | instance of anonymous function | globals.html:26:23:26:69 | instance of anonymous function |
+| h.js:1:8:1:22 | instance of function f | h.js:1:8:1:22 | instance of function f |
+| implicit-returns.js:3:1:12:1 | instance of function endWithLoop | implicit-returns.js:3:1:12:1 | instance of function endWithLoop |
+| implicit-returns.js:14:1:16:1 | instance of function useLoop | implicit-returns.js:14:1:16:1 | instance of function useLoop |
+| implicit-returns.js:18:1:22:1 | instance of function endWithShortIf | implicit-returns.js:18:1:22:1 | instance of function endWithShortIf |
+| implicit-returns.js:24:1:26:1 | instance of function useShortIf | implicit-returns.js:24:1:26:1 | instance of function useShortIf |
+| instances.js:1:1:4:1 | instance of function A | instances.js:1:1:4:1 | instance of function A |
+| instances.js:3:14:3:26 | instance of anonymous function | instances.js:3:14:3:26 | instance of anonymous function |
+| instances.js:6:19:6:31 | instance of anonymous function | instances.js:6:19:6:31 | instance of anonymous function |
+| instances.js:13:1:13:18 | instance of function SubA | instances.js:1:1:4:1 | instance of function A |
+| instances.js:13:1:13:18 | instance of function SubA | instances.js:13:1:13:18 | instance of function SubA |
+| n.js:1:1:1:15 | instance of function f | n.js:1:1:1:15 | instance of function f |
+| n.js:2:1:2:15 | instance of function g | n.js:2:1:2:15 | instance of function g |
+| nestedImport.js:9:1:12:1 | instance of function tst | nestedImport.js:9:1:12:1 | instance of function tst |
+| nodeJsLib.js:1:18:1:43 | instance of function nodeJsModule | nodeJsLib.js:1:18:1:43 | instance of function nodeJsModule |
+| nodeJsLib.js:3:15:3:37 | instance of function nodeJsFoo | nodeJsLib.js:3:15:3:37 | instance of function nodeJsFoo |
+| nullish-coalescing-op.ts:1:1:3:1 | instance of function test | nullish-coalescing-op.ts:1:1:3:1 | instance of function test |
+| objlit.js:2:9:2:21 | instance of anonymous function | objlit.js:2:9:2:21 | instance of anonymous function |
+| objlit.js:4:8:4:20 | instance of method baz | objlit.js:4:8:4:20 | instance of method baz |
+| objlit.js:10:2:12:1 | instance of anonymous function | objlit.js:10:2:12:1 | instance of anonymous function |
+| objlit.js:11:11:11:23 | instance of anonymous function | objlit.js:11:11:11:23 | instance of anonymous function |
+| objlit.js:23:2:48:1 | instance of anonymous function | objlit.js:23:2:48:1 | instance of anonymous function |
+| objlit.js:41:10:41:22 | instance of anonymous function | objlit.js:41:10:41:22 | instance of anonymous function |
+| objlit.js:43:12:45:3 | object literal | file://:0:0:0:0 | null |
+| objlit.js:43:12:45:3 | object literal | objlit.js:33:12:40:3 | object literal |
+| refinements.js:1:1:8:1 | instance of function f1 | refinements.js:1:1:8:1 | instance of function f1 |
+| refinements.js:10:1:24:1 | instance of function f2 | refinements.js:10:1:24:1 | instance of function f2 |
+| refinements.js:26:1:32:1 | instance of function f3 | refinements.js:26:1:32:1 | instance of function f3 |
+| refinements.js:34:1:40:1 | instance of function f4 | refinements.js:34:1:40:1 | instance of function f4 |
+| refinements.js:35:20:35:31 | instance of anonymous function | refinements.js:35:20:35:31 | instance of anonymous function |
+| refinements.js:42:1:56:1 | instance of function f5 | refinements.js:42:1:56:1 | instance of function f5 |
+| refinements.js:44:3:48:3 | instance of function inner | refinements.js:44:3:48:3 | instance of function inner |
+| refinements.js:58:1:62:1 | instance of function f6 | refinements.js:58:1:62:1 | instance of function f6 |
+| ts2.ts:1:10:1:22 | instance of anonymous function | ts2.ts:1:10:1:22 | instance of anonymous function |
+| tsTest.ts:8:1:10:1 | instance of function setX | tsTest.ts:8:1:10:1 | instance of function setX |
+| tst2.js:3:2:5:1 | instance of anonymous function | tst2.js:3:2:5:1 | instance of anonymous function |
+| tst.js:1:1:39:1 | instance of function tst | tst.js:1:1:39:1 | instance of function tst |
+| tst.js:15:12:15:23 | instance of function xd | tst.js:15:12:15:23 | instance of function xd |
+| tst.js:42:1:44:1 | instance of function nonstrict | tst.js:42:1:44:1 | instance of function nonstrict |
+| tst.js:46:1:49:1 | instance of function strict | tst.js:46:1:49:1 | instance of function strict |
+| tst.js:51:1:57:1 | instance of function capturedFn | tst.js:51:1:57:1 | instance of function capturedFn |
+| tst.js:52:3:52:24 | instance of function captured | tst.js:52:3:52:24 | instance of function captured |
+| tst.js:53:3:55:3 | instance of function capturing | tst.js:53:3:55:3 | instance of function capturing |
+| tst.js:59:2:62:1 | instance of anonymous function | tst.js:59:2:62:1 | instance of anonymous function |
+| tst.js:64:2:66:1 | instance of anonymous function | tst.js:64:2:66:1 | instance of anonymous function |
+| tst.js:68:2:70:1 | instance of anonymous function | tst.js:68:2:70:1 | instance of anonymous function |
+| tst.js:72:2:76:1 | instance of function s | tst.js:72:2:76:1 | instance of function s |
+| tst.js:78:2:82:1 | instance of anonymous function | tst.js:78:2:82:1 | instance of anonymous function |
+| tst.js:84:2:87:1 | instance of anonymous function | tst.js:84:2:87:1 | instance of anonymous function |
+| tst.js:89:2:92:1 | instance of anonymous function | tst.js:89:2:92:1 | instance of anonymous function |
+| tst.js:94:2:104:1 | instance of anonymous function | tst.js:94:2:104:1 | instance of anonymous function |
+| tst.js:95:3:97:3 | instance of function inner | tst.js:95:3:97:3 | instance of function inner |
+| tst.js:106:2:109:1 | instance of anonymous function | tst.js:106:2:109:1 | instance of anonymous function |
+| tst.js:111:1:113:1 | instance of function tst | tst.js:111:1:113:1 | instance of function tst |
+| tst.js:115:2:132:1 | instance of anonymous function | tst.js:115:2:132:1 | instance of anonymous function |
+| tst.js:116:12:118:3 | instance of anonymous function | tst.js:116:12:118:3 | instance of anonymous function |
+| tst.js:119:12:121:3 | instance of anonymous function | tst.js:119:12:121:3 | instance of anonymous function |
+| tst.js:122:12:124:3 | instance of anonymous function | tst.js:122:12:124:3 | instance of anonymous function |
+| tst.js:125:12:125:24 | instance of anonymous function | tst.js:125:12:125:24 | instance of anonymous function |
+| tst.js:126:12:130:3 | instance of anonymous function | tst.js:126:12:130:3 | instance of anonymous function |
+| tst.js:131:12:131:37 | instance of anonymous function | tst.js:131:12:131:37 | instance of anonymous function |
+| tst.js:134:1:142:1 | instance of function tst2 | tst.js:134:1:142:1 | instance of function tst2 |
+| tst.js:144:1:149:1 | instance of function tst3 | tst.js:144:1:149:1 | instance of function tst3 |
+| tst.js:151:1:162:1 | instance of function tst4 | tst.js:151:1:162:1 | instance of function tst4 |
+| tst.js:164:1:172:1 | instance of function tst5 | tst.js:164:1:172:1 | instance of function tst5 |
+| with.js:1:1:17:1 | instance of function f | with.js:1:1:17:1 | instance of function f |
+refinement_eval
+| refinements.js:4:7:4:14 | typeof g | [g = undefined] | 'undefined' |
+| refinements.js:4:7:4:14 | typeof g | [g = undefined] | 'undefined' |
+| refinements.js:4:7:4:29 | typeof  ... nction' | [g = undefined] | false |
+| refinements.js:4:7:4:29 | typeof  ... nction' | [g = undefined] | false |
+| refinements.js:4:14:4:14 | g | [g = undefined] | any undefined |
+| refinements.js:4:14:4:14 | g | [g = undefined] | any undefined |
+| refinements.js:4:20:4:29 | 'function' | [g = undefined] | 'function' |
+| refinements.js:4:20:4:29 | 'function' | [g = undefined] | 'function' |
+| refinements.js:13:7:13:7 | a | [a = non-empty, non-numeric string] | non-empty, non-numeric string |
+| refinements.js:13:7:13:7 | a | [a = non-empty, non-numeric string] | non-empty, non-numeric string |
+| refinements.js:13:7:13:7 | a | [a = non-zero value] | non-zero number |
+| refinements.js:13:7:13:7 | a | [a = non-zero value] | non-zero number |
+| refinements.js:13:7:13:7 | a | [a = null] | any null |
+| refinements.js:13:7:13:7 | a | [a = null] | any null |
+| refinements.js:15:7:15:14 | 'string' | [a = non-empty, non-numeric string] | 'string' |
+| refinements.js:15:7:15:14 | 'string' | [a = non-empty, non-numeric string] | 'string' |
+| refinements.js:15:7:15:14 | 'string' | [a = non-zero value] | 'string' |
+| refinements.js:15:7:15:14 | 'string' | [a = non-zero value] | 'string' |
+| refinements.js:15:7:15:14 | 'string' | [a = null] | 'string' |
+| refinements.js:15:7:15:14 | 'string' | [a = null] | 'string' |
+| refinements.js:15:7:15:26 | 'string' != typeof a | [a = non-empty, non-numeric string] | false |
+| refinements.js:15:7:15:26 | 'string' != typeof a | [a = non-empty, non-numeric string] | false |
+| refinements.js:15:7:15:26 | 'string' != typeof a | [a = non-zero value] | true |
+| refinements.js:15:7:15:26 | 'string' != typeof a | [a = non-zero value] | true |
+| refinements.js:15:7:15:26 | 'string' != typeof a | [a = null] | true |
+| refinements.js:15:7:15:26 | 'string' != typeof a | [a = null] | true |
+| refinements.js:15:19:15:26 | typeof a | [a = non-empty, non-numeric string] | 'string' |
+| refinements.js:15:19:15:26 | typeof a | [a = non-empty, non-numeric string] | 'string' |
+| refinements.js:15:19:15:26 | typeof a | [a = non-zero value] | 'number' |
+| refinements.js:15:19:15:26 | typeof a | [a = non-zero value] | 'number' |
+| refinements.js:15:19:15:26 | typeof a | [a = null] | 'object' |
+| refinements.js:15:19:15:26 | typeof a | [a = null] | 'object' |
+| refinements.js:15:26:15:26 | a | [a = non-empty, non-numeric string] | non-empty, non-numeric string |
+| refinements.js:15:26:15:26 | a | [a = non-empty, non-numeric string] | non-empty, non-numeric string |
+| refinements.js:15:26:15:26 | a | [a = non-zero value] | non-zero number |
+| refinements.js:15:26:15:26 | a | [a = non-zero value] | non-zero number |
+| refinements.js:15:26:15:26 | a | [a = null] | any null |
+| refinements.js:15:26:15:26 | a | [a = null] | any null |
+| refinements.js:17:10:17:10 | a | [a = non-zero value] | non-zero number |
+| refinements.js:17:10:17:10 | a | [a = non-zero value] | non-zero number |
+| refinements.js:17:10:17:10 | a | [a = null] | any null |
+| refinements.js:17:10:17:10 | a | [a = null] | any null |
+| refinements.js:28:7:28:16 | (typeof a) | [a = undefined] | 'undefined' |
+| refinements.js:28:7:28:16 | (typeof a) | [a = undefined] | 'undefined' |
+| refinements.js:28:7:28:19 | (typeof a)[0] | [a = undefined] | 'u' |
+| refinements.js:28:7:28:19 | (typeof a)[0] | [a = undefined] | 'u' |
+| refinements.js:28:7:28:27 | (typeof ... !== 'u' | [a = undefined] | false |
+| refinements.js:28:7:28:27 | (typeof ... !== 'u' | [a = undefined] | false |
+| refinements.js:28:8:28:15 | typeof a | [a = undefined] | 'undefined' |
+| refinements.js:28:8:28:15 | typeof a | [a = undefined] | 'undefined' |
+| refinements.js:28:15:28:15 | a | [a = undefined] | any undefined |
+| refinements.js:28:15:28:15 | a | [a = undefined] | any undefined |
+| refinements.js:28:18:28:18 | 0 | [a = undefined] | 0 |
+| refinements.js:28:18:28:18 | 0 | [a = undefined] | 0 |
+| refinements.js:28:25:28:27 | 'u' | [a = undefined] | 'u' |
+| refinements.js:28:25:28:27 | 'u' | [a = undefined] | 'u' |
+| refinements.js:36:7:36:16 | (typeof a) | [a = anonymous function] | 'function' |
+| refinements.js:36:7:36:16 | (typeof a) | [a = anonymous function] | 'function' |
+| refinements.js:36:7:36:16 | (typeof a) | [a = object literal] | 'object' |
+| refinements.js:36:7:36:16 | (typeof a) | [a = object literal] | 'object' |
+| refinements.js:36:7:36:19 | (typeof a)[0] | [a = anonymous function] | 'f' |
+| refinements.js:36:7:36:19 | (typeof a)[0] | [a = anonymous function] | 'f' |
+| refinements.js:36:7:36:19 | (typeof a)[0] | [a = object literal] | 'o' |
+| refinements.js:36:7:36:19 | (typeof a)[0] | [a = object literal] | 'o' |
+| refinements.js:36:7:36:27 | (typeof ... === 'o' | [a = anonymous function] | false |
+| refinements.js:36:7:36:27 | (typeof ... === 'o' | [a = anonymous function] | false |
+| refinements.js:36:7:36:27 | (typeof ... === 'o' | [a = object literal] | true |
+| refinements.js:36:7:36:27 | (typeof ... === 'o' | [a = object literal] | true |
+| refinements.js:36:8:36:15 | typeof a | [a = anonymous function] | 'function' |
+| refinements.js:36:8:36:15 | typeof a | [a = anonymous function] | 'function' |
+| refinements.js:36:8:36:15 | typeof a | [a = object literal] | 'object' |
+| refinements.js:36:8:36:15 | typeof a | [a = object literal] | 'object' |
+| refinements.js:36:15:36:15 | a | [a = anonymous function] | any function |
+| refinements.js:36:15:36:15 | a | [a = anonymous function] | any function |
+| refinements.js:36:15:36:15 | a | [a = object literal] | any object |
+| refinements.js:36:15:36:15 | a | [a = object literal] | any object |
+| refinements.js:36:18:36:18 | 0 | [a = anonymous function] | 0 |
+| refinements.js:36:18:36:18 | 0 | [a = anonymous function] | 0 |
+| refinements.js:36:18:36:18 | 0 | [a = object literal] | 0 |
+| refinements.js:36:18:36:18 | 0 | [a = object literal] | 0 |
+| refinements.js:36:25:36:27 | 'o' | [a = anonymous function] | 'o' |
+| refinements.js:36:25:36:27 | 'o' | [a = anonymous function] | 'o' |
+| refinements.js:36:25:36:27 | 'o' | [a = object literal] | 'o' |
+| refinements.js:36:25:36:27 | 'o' | [a = object literal] | 'o' |
+| refinements.js:50:7:50:7 | f | [f = undefined] | any undefined |
+| refinements.js:50:7:50:7 | f | [f = undefined] | any undefined |
+| refinements.js:59:7:59:14 | typeof x | [x = 0] | 'number' |
+| refinements.js:59:7:59:14 | typeof x | [x = ""] | 'string' |
+| refinements.js:59:7:59:14 | typeof x | [x = false] | 'boolean' |
+| refinements.js:59:7:59:14 | typeof x | [x = indefinite function or class (call)] | 'function' |
+| refinements.js:59:7:59:14 | typeof x | [x = indefinite object (call)] | 'function' |
+| refinements.js:59:7:59:14 | typeof x | [x = indefinite object (call)] | 'object' |
+| refinements.js:59:7:59:14 | typeof x | [x = non-empty, non-numeric string] | 'string' |
+| refinements.js:59:7:59:14 | typeof x | [x = non-zero value] | 'number' |
+| refinements.js:59:7:59:14 | typeof x | [x = null] | 'object' |
+| refinements.js:59:7:59:14 | typeof x | [x = numeric string] | 'string' |
+| refinements.js:59:7:59:14 | typeof x | [x = true] | 'boolean' |
+| refinements.js:59:7:59:14 | typeof x | [x = undefined] | 'undefined' |
+| refinements.js:59:7:59:27 | typeof  ... string' | [x = 0] | true |
+| refinements.js:59:7:59:27 | typeof  ... string' | [x = ""] | false |
+| refinements.js:59:7:59:27 | typeof  ... string' | [x = false] | true |
+| refinements.js:59:7:59:27 | typeof  ... string' | [x = indefinite function or class (call)] | true |
+| refinements.js:59:7:59:27 | typeof  ... string' | [x = indefinite object (call)] | true |
+| refinements.js:59:7:59:27 | typeof  ... string' | [x = non-empty, non-numeric string] | false |
+| refinements.js:59:7:59:27 | typeof  ... string' | [x = non-zero value] | true |
+| refinements.js:59:7:59:27 | typeof  ... string' | [x = null] | true |
+| refinements.js:59:7:59:27 | typeof  ... string' | [x = numeric string] | false |
+| refinements.js:59:7:59:27 | typeof  ... string' | [x = true] | true |
+| refinements.js:59:7:59:27 | typeof  ... string' | [x = undefined] | true |
+| refinements.js:59:14:59:14 | x | [x = 0] | 0 |
+| refinements.js:59:14:59:14 | x | [x = ""] | '' |
+| refinements.js:59:14:59:14 | x | [x = false] | false |
+| refinements.js:59:14:59:14 | x | [x = indefinite function or class (call)] | any class |
+| refinements.js:59:14:59:14 | x | [x = indefinite function or class (call)] | any function |
+| refinements.js:59:14:59:14 | x | [x = indefinite object (call)] | any date |
+| refinements.js:59:14:59:14 | x | [x = indefinite object (call)] | any object |
+| refinements.js:59:14:59:14 | x | [x = indefinite object (call)] | any regular expression |
+| refinements.js:59:14:59:14 | x | [x = non-empty, non-numeric string] | non-empty, non-numeric string |
+| refinements.js:59:14:59:14 | x | [x = non-zero value] | non-zero number |
+| refinements.js:59:14:59:14 | x | [x = null] | any null |
+| refinements.js:59:14:59:14 | x | [x = numeric string] | numeric string |
+| refinements.js:59:14:59:14 | x | [x = true] | true |
+| refinements.js:59:14:59:14 | x | [x = undefined] | any undefined |
+| refinements.js:59:20:59:27 | 'string' | [x = 0] | 'string' |
+| refinements.js:59:20:59:27 | 'string' | [x = ""] | 'string' |
+| refinements.js:59:20:59:27 | 'string' | [x = false] | 'string' |
+| refinements.js:59:20:59:27 | 'string' | [x = indefinite function or class (call)] | 'string' |
+| refinements.js:59:20:59:27 | 'string' | [x = indefinite object (call)] | 'string' |
+| refinements.js:59:20:59:27 | 'string' | [x = non-empty, non-numeric string] | 'string' |
+| refinements.js:59:20:59:27 | 'string' | [x = non-zero value] | 'string' |
+| refinements.js:59:20:59:27 | 'string' | [x = null] | 'string' |
+| refinements.js:59:20:59:27 | 'string' | [x = numeric string] | 'string' |
+| refinements.js:59:20:59:27 | 'string' | [x = true] | 'string' |
+| refinements.js:59:20:59:27 | 'string' | [x = undefined] | 'string' |
+| tst.js:73:7:73:7 | x | [x = 0] | 0 |
+| tst.js:73:7:73:7 | x | [x = 0] | 0 |
+| tst.js:73:7:73:7 | x | [x = ""] | '' |
+| tst.js:73:7:73:7 | x | [x = ""] | '' |
+| tst.js:73:7:73:7 | x | [x = false] | false |
+| tst.js:73:7:73:7 | x | [x = false] | false |
+| tst.js:73:7:73:7 | x | [x = indefinite function or class (call)] | any class |
+| tst.js:73:7:73:7 | x | [x = indefinite function or class (call)] | any class |
+| tst.js:73:7:73:7 | x | [x = indefinite function or class (call)] | any function |
+| tst.js:73:7:73:7 | x | [x = indefinite function or class (call)] | any function |
+| tst.js:73:7:73:7 | x | [x = indefinite object (call)] | any date |
+| tst.js:73:7:73:7 | x | [x = indefinite object (call)] | any date |
+| tst.js:73:7:73:7 | x | [x = indefinite object (call)] | any object |
+| tst.js:73:7:73:7 | x | [x = indefinite object (call)] | any object |
+| tst.js:73:7:73:7 | x | [x = indefinite object (call)] | any regular expression |
+| tst.js:73:7:73:7 | x | [x = indefinite object (call)] | any regular expression |
+| tst.js:73:7:73:7 | x | [x = non-empty, non-numeric string] | non-empty, non-numeric string |
+| tst.js:73:7:73:7 | x | [x = non-empty, non-numeric string] | non-empty, non-numeric string |
+| tst.js:73:7:73:7 | x | [x = non-zero value] | non-zero number |
+| tst.js:73:7:73:7 | x | [x = non-zero value] | non-zero number |
+| tst.js:73:7:73:7 | x | [x = null] | any null |
+| tst.js:73:7:73:7 | x | [x = null] | any null |
+| tst.js:73:7:73:7 | x | [x = numeric string] | numeric string |
+| tst.js:73:7:73:7 | x | [x = numeric string] | numeric string |
+| tst.js:73:7:73:7 | x | [x = true] | true |
+| tst.js:73:7:73:7 | x | [x = true] | true |
+| tst.js:73:7:73:7 | x | [x = undefined] | any undefined |
+| tst.js:73:7:73:7 | x | [x = undefined] | any undefined |
+| tst.js:79:7:79:7 | x | [x = 0] | 0 |
+| tst.js:79:7:79:7 | x | [x = 0] | 0 |
+| tst.js:79:7:79:7 | x | [x = ""] | '' |
+| tst.js:79:7:79:7 | x | [x = ""] | '' |
+| tst.js:79:7:79:7 | x | [x = false] | false |
+| tst.js:79:7:79:7 | x | [x = false] | false |
+| tst.js:79:7:79:7 | x | [x = indefinite function or class (call)] | any class |
+| tst.js:79:7:79:7 | x | [x = indefinite function or class (call)] | any class |
+| tst.js:79:7:79:7 | x | [x = indefinite function or class (call)] | any function |
+| tst.js:79:7:79:7 | x | [x = indefinite function or class (call)] | any function |
+| tst.js:79:7:79:7 | x | [x = indefinite object (call)] | any date |
+| tst.js:79:7:79:7 | x | [x = indefinite object (call)] | any date |
+| tst.js:79:7:79:7 | x | [x = indefinite object (call)] | any object |
+| tst.js:79:7:79:7 | x | [x = indefinite object (call)] | any object |
+| tst.js:79:7:79:7 | x | [x = indefinite object (call)] | any regular expression |
+| tst.js:79:7:79:7 | x | [x = indefinite object (call)] | any regular expression |
+| tst.js:79:7:79:7 | x | [x = non-empty, non-numeric string] | non-empty, non-numeric string |
+| tst.js:79:7:79:7 | x | [x = non-empty, non-numeric string] | non-empty, non-numeric string |
+| tst.js:79:7:79:7 | x | [x = non-zero value] | non-zero number |
+| tst.js:79:7:79:7 | x | [x = non-zero value] | non-zero number |
+| tst.js:79:7:79:7 | x | [x = null] | any null |
+| tst.js:79:7:79:7 | x | [x = null] | any null |
+| tst.js:79:7:79:7 | x | [x = numeric string] | numeric string |
+| tst.js:79:7:79:7 | x | [x = numeric string] | numeric string |
+| tst.js:79:7:79:7 | x | [x = true] | true |
+| tst.js:79:7:79:7 | x | [x = true] | true |
+| tst.js:79:7:79:7 | x | [x = undefined] | any undefined |
+| tst.js:79:7:79:7 | x | [x = undefined] | any undefined |
+| tst.js:136:8:136:8 | a | [a = 0] | 0 |
+| tst.js:136:8:136:8 | a | [a = 0] | 0 |
+| tst.js:136:8:136:8 | a | [a = ""] | '' |
+| tst.js:136:8:136:8 | a | [a = ""] | '' |
+| tst.js:136:8:136:8 | a | [a = false] | false |
+| tst.js:136:8:136:8 | a | [a = false] | false |
+| tst.js:136:8:136:8 | a | [a = indefinite function or class (call)] | any class |
+| tst.js:136:8:136:8 | a | [a = indefinite function or class (call)] | any class |
+| tst.js:136:8:136:8 | a | [a = indefinite function or class (call)] | any function |
+| tst.js:136:8:136:8 | a | [a = indefinite function or class (call)] | any function |
+| tst.js:136:8:136:8 | a | [a = indefinite object (call)] | any date |
+| tst.js:136:8:136:8 | a | [a = indefinite object (call)] | any date |
+| tst.js:136:8:136:8 | a | [a = indefinite object (call)] | any object |
+| tst.js:136:8:136:8 | a | [a = indefinite object (call)] | any object |
+| tst.js:136:8:136:8 | a | [a = indefinite object (call)] | any regular expression |
+| tst.js:136:8:136:8 | a | [a = indefinite object (call)] | any regular expression |
+| tst.js:136:8:136:8 | a | [a = non-empty, non-numeric string] | non-empty, non-numeric string |
+| tst.js:136:8:136:8 | a | [a = non-empty, non-numeric string] | non-empty, non-numeric string |
+| tst.js:136:8:136:8 | a | [a = non-zero value] | non-zero number |
+| tst.js:136:8:136:8 | a | [a = non-zero value] | non-zero number |
+| tst.js:136:8:136:8 | a | [a = null] | any null |
+| tst.js:136:8:136:8 | a | [a = null] | any null |
+| tst.js:136:8:136:8 | a | [a = numeric string] | numeric string |
+| tst.js:136:8:136:8 | a | [a = numeric string] | numeric string |
+| tst.js:136:8:136:8 | a | [a = true] | true |
+| tst.js:136:8:136:8 | a | [a = true] | true |
+| tst.js:136:8:136:8 | a | [a = undefined] | any undefined |
+| tst.js:136:8:136:8 | a | [a = undefined] | any undefined |
+| tst.js:136:14:136:14 | b | [b = 0] | 0 |
+| tst.js:136:14:136:14 | b | [b = 0] | 0 |
+| tst.js:136:14:136:14 | b | [b = ""] | '' |
+| tst.js:136:14:136:14 | b | [b = ""] | '' |
+| tst.js:136:14:136:14 | b | [b = false] | false |
+| tst.js:136:14:136:14 | b | [b = false] | false |
+| tst.js:136:14:136:14 | b | [b = indefinite function or class (call)] | any class |
+| tst.js:136:14:136:14 | b | [b = indefinite function or class (call)] | any class |
+| tst.js:136:14:136:14 | b | [b = indefinite function or class (call)] | any function |
+| tst.js:136:14:136:14 | b | [b = indefinite function or class (call)] | any function |
+| tst.js:136:14:136:14 | b | [b = indefinite object (call)] | any date |
+| tst.js:136:14:136:14 | b | [b = indefinite object (call)] | any date |
+| tst.js:136:14:136:14 | b | [b = indefinite object (call)] | any object |
+| tst.js:136:14:136:14 | b | [b = indefinite object (call)] | any object |
+| tst.js:136:14:136:14 | b | [b = indefinite object (call)] | any regular expression |
+| tst.js:136:14:136:14 | b | [b = indefinite object (call)] | any regular expression |
+| tst.js:136:14:136:14 | b | [b = non-empty, non-numeric string] | non-empty, non-numeric string |
+| tst.js:136:14:136:14 | b | [b = non-empty, non-numeric string] | non-empty, non-numeric string |
+| tst.js:136:14:136:14 | b | [b = non-zero value] | non-zero number |
+| tst.js:136:14:136:14 | b | [b = non-zero value] | non-zero number |
+| tst.js:136:14:136:14 | b | [b = null] | any null |
+| tst.js:136:14:136:14 | b | [b = null] | any null |
+| tst.js:136:14:136:14 | b | [b = numeric string] | numeric string |
+| tst.js:136:14:136:14 | b | [b = numeric string] | numeric string |
+| tst.js:136:14:136:14 | b | [b = true] | true |
+| tst.js:136:14:136:14 | b | [b = true] | true |
+| tst.js:136:14:136:14 | b | [b = undefined] | any undefined |
+| tst.js:136:14:136:14 | b | [b = undefined] | any undefined |
+| tst.js:139:9:139:9 | a | [a = 0] | 0 |
+| tst.js:139:9:139:9 | a | [a = 0] | 0 |
+| tst.js:139:9:139:9 | a | [a = 0] | 0 |
+| tst.js:139:9:139:9 | a | [a = ""] | '' |
+| tst.js:139:9:139:9 | a | [a = ""] | '' |
+| tst.js:139:9:139:9 | a | [a = ""] | '' |
+| tst.js:139:9:139:9 | a | [a = false] | false |
+| tst.js:139:9:139:9 | a | [a = false] | false |
+| tst.js:139:9:139:9 | a | [a = false] | false |
+| tst.js:139:9:139:9 | a | [a = indefinite function or class (call)] | any class |
+| tst.js:139:9:139:9 | a | [a = indefinite function or class (call)] | any class |
+| tst.js:139:9:139:9 | a | [a = indefinite function or class (call)] | any class |
+| tst.js:139:9:139:9 | a | [a = indefinite function or class (call)] | any function |
+| tst.js:139:9:139:9 | a | [a = indefinite function or class (call)] | any function |
+| tst.js:139:9:139:9 | a | [a = indefinite function or class (call)] | any function |
+| tst.js:139:9:139:9 | a | [a = indefinite object (call)] | any date |
+| tst.js:139:9:139:9 | a | [a = indefinite object (call)] | any date |
+| tst.js:139:9:139:9 | a | [a = indefinite object (call)] | any date |
+| tst.js:139:9:139:9 | a | [a = indefinite object (call)] | any object |
+| tst.js:139:9:139:9 | a | [a = indefinite object (call)] | any object |
+| tst.js:139:9:139:9 | a | [a = indefinite object (call)] | any object |
+| tst.js:139:9:139:9 | a | [a = indefinite object (call)] | any regular expression |
+| tst.js:139:9:139:9 | a | [a = indefinite object (call)] | any regular expression |
+| tst.js:139:9:139:9 | a | [a = indefinite object (call)] | any regular expression |
+| tst.js:139:9:139:9 | a | [a = non-empty, non-numeric string] | non-empty, non-numeric string |
+| tst.js:139:9:139:9 | a | [a = non-empty, non-numeric string] | non-empty, non-numeric string |
+| tst.js:139:9:139:9 | a | [a = non-empty, non-numeric string] | non-empty, non-numeric string |
+| tst.js:139:9:139:9 | a | [a = non-zero value] | non-zero number |
+| tst.js:139:9:139:9 | a | [a = non-zero value] | non-zero number |
+| tst.js:139:9:139:9 | a | [a = non-zero value] | non-zero number |
+| tst.js:139:9:139:9 | a | [a = null] | any null |
+| tst.js:139:9:139:9 | a | [a = null] | any null |
+| tst.js:139:9:139:9 | a | [a = null] | any null |
+| tst.js:139:9:139:9 | a | [a = numeric string] | numeric string |
+| tst.js:139:9:139:9 | a | [a = numeric string] | numeric string |
+| tst.js:139:9:139:9 | a | [a = numeric string] | numeric string |
+| tst.js:139:9:139:9 | a | [a = true] | true |
+| tst.js:139:9:139:9 | a | [a = true] | true |
+| tst.js:139:9:139:9 | a | [a = true] | true |
+| tst.js:139:9:139:9 | a | [a = undefined] | any undefined |
+| tst.js:139:9:139:9 | a | [a = undefined] | any undefined |
+| tst.js:139:9:139:9 | a | [a = undefined] | any undefined |
+| tst.js:139:14:139:14 | b | [b = 0] | 0 |
+| tst.js:139:14:139:14 | b | [b = ""] | '' |
+| tst.js:139:14:139:14 | b | [b = false] | false |
+| tst.js:139:14:139:14 | b | [b = indefinite function or class (call)] | any class |
+| tst.js:139:14:139:14 | b | [b = indefinite function or class (call)] | any function |
+| tst.js:139:14:139:14 | b | [b = indefinite object (call)] | any date |
+| tst.js:139:14:139:14 | b | [b = indefinite object (call)] | any object |
+| tst.js:139:14:139:14 | b | [b = indefinite object (call)] | any regular expression |
+| tst.js:139:14:139:14 | b | [b = non-empty, non-numeric string] | non-empty, non-numeric string |
+| tst.js:139:14:139:14 | b | [b = non-zero value] | non-zero number |
+| tst.js:139:14:139:14 | b | [b = null] | any null |
+| tst.js:139:14:139:14 | b | [b = numeric string] | numeric string |
+| tst.js:139:14:139:14 | b | [b = true] | true |
+| tst.js:139:14:139:14 | b | [b = undefined] | any undefined |
+| tst.js:146:7:146:11 | value | [value = 0] | 0 |
+| tst.js:146:7:146:11 | value | [value = ""] | '' |
+| tst.js:146:7:146:11 | value | [value = false] | false |
+| tst.js:146:7:146:11 | value | [value = indefinite function or class (call)] | any class |
+| tst.js:146:7:146:11 | value | [value = indefinite function or class (call)] | any function |
+| tst.js:146:7:146:11 | value | [value = indefinite object (call)] | any date |
+| tst.js:146:7:146:11 | value | [value = indefinite object (call)] | any object |
+| tst.js:146:7:146:11 | value | [value = indefinite object (call)] | any regular expression |
+| tst.js:146:7:146:11 | value | [value = non-empty, non-numeric string] | non-empty, non-numeric string |
+| tst.js:146:7:146:11 | value | [value = non-zero value] | non-zero number |
+| tst.js:146:7:146:11 | value | [value = null] | any null |
+| tst.js:146:7:146:11 | value | [value = numeric string] | numeric string |
+| tst.js:146:7:146:11 | value | [value = true] | true |
+| tst.js:146:7:146:11 | value | [value = undefined] | any undefined |
+| tst.js:146:7:146:19 | value == null | [value = 0] | false |
+| tst.js:146:7:146:19 | value == null | [value = ""] | false |
+| tst.js:146:7:146:19 | value == null | [value = false] | false |
+| tst.js:146:7:146:19 | value == null | [value = indefinite function or class (call)] | any boolean |
+| tst.js:146:7:146:19 | value == null | [value = indefinite object (call)] | any boolean |
+| tst.js:146:7:146:19 | value == null | [value = non-empty, non-numeric string] | any boolean |
+| tst.js:146:7:146:19 | value == null | [value = non-zero value] | any boolean |
+| tst.js:146:7:146:19 | value == null | [value = null] | true |
+| tst.js:146:7:146:19 | value == null | [value = numeric string] | any boolean |
+| tst.js:146:7:146:19 | value == null | [value = true] | false |
+| tst.js:146:7:146:19 | value == null | [value = undefined] | true |
+| tst.js:146:16:146:19 | null | [value = 0] | any null |
+| tst.js:146:16:146:19 | null | [value = ""] | any null |
+| tst.js:146:16:146:19 | null | [value = false] | any null |
+| tst.js:146:16:146:19 | null | [value = indefinite function or class (call)] | any null |
+| tst.js:146:16:146:19 | null | [value = indefinite object (call)] | any null |
+| tst.js:146:16:146:19 | null | [value = non-empty, non-numeric string] | any null |
+| tst.js:146:16:146:19 | null | [value = non-zero value] | any null |
+| tst.js:146:16:146:19 | null | [value = null] | any null |
+| tst.js:146:16:146:19 | null | [value = numeric string] | any null |
+| tst.js:146:16:146:19 | null | [value = true] | any null |
+| tst.js:146:16:146:19 | null | [value = undefined] | any null |
+| tst.js:168:7:168:7 | o | [o = 0] | 0 |
+| tst.js:168:7:168:7 | o | [o = 0] | 0 |
+| tst.js:168:7:168:7 | o | [o = ""] | '' |
+| tst.js:168:7:168:7 | o | [o = ""] | '' |
+| tst.js:168:7:168:7 | o | [o = false] | false |
+| tst.js:168:7:168:7 | o | [o = false] | false |
+| tst.js:168:7:168:7 | o | [o = indefinite function or class (call)] | any class |
+| tst.js:168:7:168:7 | o | [o = indefinite function or class (call)] | any class |
+| tst.js:168:7:168:7 | o | [o = indefinite function or class (call)] | any function |
+| tst.js:168:7:168:7 | o | [o = indefinite function or class (call)] | any function |
+| tst.js:168:7:168:7 | o | [o = indefinite object (call)] | any date |
+| tst.js:168:7:168:7 | o | [o = indefinite object (call)] | any date |
+| tst.js:168:7:168:7 | o | [o = indefinite object (call)] | any object |
+| tst.js:168:7:168:7 | o | [o = indefinite object (call)] | any object |
+| tst.js:168:7:168:7 | o | [o = indefinite object (call)] | any regular expression |
+| tst.js:168:7:168:7 | o | [o = indefinite object (call)] | any regular expression |
+| tst.js:168:7:168:7 | o | [o = non-empty, non-numeric string] | non-empty, non-numeric string |
+| tst.js:168:7:168:7 | o | [o = non-empty, non-numeric string] | non-empty, non-numeric string |
+| tst.js:168:7:168:7 | o | [o = non-zero value] | non-zero number |
+| tst.js:168:7:168:7 | o | [o = non-zero value] | non-zero number |
+| tst.js:168:7:168:7 | o | [o = null] | any null |
+| tst.js:168:7:168:7 | o | [o = null] | any null |
+| tst.js:168:7:168:7 | o | [o = numeric string] | numeric string |
+| tst.js:168:7:168:7 | o | [o = numeric string] | numeric string |
+| tst.js:168:7:168:7 | o | [o = true] | true |
+| tst.js:168:7:168:7 | o | [o = true] | true |
+| tst.js:168:7:168:7 | o | [o = undefined] | any undefined |
+| tst.js:168:7:168:7 | o | [o = undefined] | any undefined |
+| tst.js:168:7:168:21 | o !== undefined | [o = 0] | true |
+| tst.js:168:7:168:21 | o !== undefined | [o = 0] | true |
+| tst.js:168:7:168:21 | o !== undefined | [o = ""] | true |
+| tst.js:168:7:168:21 | o !== undefined | [o = ""] | true |
+| tst.js:168:7:168:21 | o !== undefined | [o = false] | true |
+| tst.js:168:7:168:21 | o !== undefined | [o = false] | true |
+| tst.js:168:7:168:21 | o !== undefined | [o = indefinite function or class (call)] | any boolean |
+| tst.js:168:7:168:21 | o !== undefined | [o = indefinite function or class (call)] | any boolean |
+| tst.js:168:7:168:21 | o !== undefined | [o = indefinite object (call)] | any boolean |
+| tst.js:168:7:168:21 | o !== undefined | [o = indefinite object (call)] | any boolean |
+| tst.js:168:7:168:21 | o !== undefined | [o = non-empty, non-numeric string] | any boolean |
+| tst.js:168:7:168:21 | o !== undefined | [o = non-empty, non-numeric string] | any boolean |
+| tst.js:168:7:168:21 | o !== undefined | [o = non-zero value] | any boolean |
+| tst.js:168:7:168:21 | o !== undefined | [o = non-zero value] | any boolean |
+| tst.js:168:7:168:21 | o !== undefined | [o = null] | true |
+| tst.js:168:7:168:21 | o !== undefined | [o = null] | true |
+| tst.js:168:7:168:21 | o !== undefined | [o = numeric string] | any boolean |
+| tst.js:168:7:168:21 | o !== undefined | [o = numeric string] | any boolean |
+| tst.js:168:7:168:21 | o !== undefined | [o = true] | true |
+| tst.js:168:7:168:21 | o !== undefined | [o = true] | true |
+| tst.js:168:7:168:21 | o !== undefined | [o = undefined] | false |
+| tst.js:168:7:168:21 | o !== undefined | [o = undefined] | false |
+| tst.js:168:13:168:21 | undefined | [o = 0] | any undefined |
+| tst.js:168:13:168:21 | undefined | [o = 0] | any undefined |
+| tst.js:168:13:168:21 | undefined | [o = ""] | any undefined |
+| tst.js:168:13:168:21 | undefined | [o = ""] | any undefined |
+| tst.js:168:13:168:21 | undefined | [o = false] | any undefined |
+| tst.js:168:13:168:21 | undefined | [o = false] | any undefined |
+| tst.js:168:13:168:21 | undefined | [o = indefinite function or class (call)] | any undefined |
+| tst.js:168:13:168:21 | undefined | [o = indefinite function or class (call)] | any undefined |
+| tst.js:168:13:168:21 | undefined | [o = indefinite object (call)] | any undefined |
+| tst.js:168:13:168:21 | undefined | [o = indefinite object (call)] | any undefined |
+| tst.js:168:13:168:21 | undefined | [o = non-empty, non-numeric string] | any undefined |
+| tst.js:168:13:168:21 | undefined | [o = non-empty, non-numeric string] | any undefined |
+| tst.js:168:13:168:21 | undefined | [o = non-zero value] | any undefined |
+| tst.js:168:13:168:21 | undefined | [o = non-zero value] | any undefined |
+| tst.js:168:13:168:21 | undefined | [o = null] | any undefined |
+| tst.js:168:13:168:21 | undefined | [o = null] | any undefined |
+| tst.js:168:13:168:21 | undefined | [o = numeric string] | any undefined |
+| tst.js:168:13:168:21 | undefined | [o = numeric string] | any undefined |
+| tst.js:168:13:168:21 | undefined | [o = true] | any undefined |
+| tst.js:168:13:168:21 | undefined | [o = true] | any undefined |
+| tst.js:168:13:168:21 | undefined | [o = undefined] | any undefined |
+| tst.js:168:13:168:21 | undefined | [o = undefined] | any undefined |
+types
+| ChatListScreen.js:4:7:4:17 | b = Backend | ChatListScreen.js:4:11:4:17 | Backend | ChatListScreen.js:4:7:4:7 | b | object or undefined |
+| a.js:1:12:1:16 | x = 0 | a.js:1:16:1:16 | 0 | a.js:1:12:1:12 | x | number |
+| a.js:1:19:1:23 | y = 0 | a.js:1:23:1:23 | 0 | a.js:1:19:1:19 | y | number |
+| a.js:9:5:9:18 | z = someGlobal | a.js:9:9:9:18 | someGlobal | a.js:9:5:9:5 | z | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| a.js:14:12:14:28 | notAlwaysZero = 0 | a.js:14:28:14:28 | 0 | a.js:14:12:14:24 | notAlwaysZero | number |
+| amd3.js:2:7:2:12 | _a = a | amd3.js:2:12:2:12 | a | amd3.js:2:7:2:8 | _a | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| amd3.js:3:7:3:12 | _c = c | amd3.js:3:12:3:12 | c | amd3.js:3:7:3:8 | _c | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| amd4.js:2:7:2:12 | _u = u | amd4.js:2:12:2:12 | u | amd4.js:2:7:2:8 | _u | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| amd5.js:2:7:2:32 | _u = re ... /util') | amd5.js:2:12:2:32 | req('sr ... /util') | amd5.js:2:7:2:8 | _u | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| amd.js:2:7:2:13 | m = mod | amd.js:2:11:2:13 | mod | amd.js:2:7:2:7 | m | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| amd.js:3:7:3:13 | e = exp | amd.js:3:11:3:13 | exp | amd.js:3:7:3:7 | e | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| arguments.js:2:7:2:11 | y = x | arguments.js:2:11:2:11 | x | arguments.js:2:7:2:7 | y | number |
+| arguments.js:7:7:7:11 | y = x | arguments.js:7:11:7:11 | x | arguments.js:7:7:7:7 | y | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| arguments.js:13:7:13:11 | y = x | arguments.js:13:11:13:11 | x | arguments.js:13:7:13:7 | y | number |
+| arguments.js:18:7:18:11 | y = x | arguments.js:18:11:18:11 | x | arguments.js:18:7:18:7 | y | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| arguments.js:24:7:24:11 | y = x | arguments.js:24:11:24:11 | x | arguments.js:24:7:24:7 | y | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| arguments.js:32:7:32:11 | y = x | arguments.js:32:11:32:11 | x | arguments.js:32:7:32:7 | y | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| b.js:2:5:2:10 | x1 = x | b.js:2:10:2:10 | x | b.js:2:5:2:6 | x1 | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| b.js:3:5:3:10 | y1 = y | b.js:3:10:3:10 | y | b.js:3:5:3:6 | y1 | number |
+| b.js:4:5:4:13 | s1 = setX | b.js:4:10:4:13 | setX | b.js:4:5:4:6 | s1 | function |
+| b.js:6:5:6:10 | x2 = x | b.js:6:10:6:10 | x | b.js:6:5:6:6 | x2 | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| b.js:7:5:7:10 | y2 = y | b.js:7:10:7:10 | y | b.js:7:5:7:6 | y2 | number |
+| b.js:8:5:8:13 | s2 = setX | b.js:8:10:8:13 | setX | b.js:8:5:8:6 | s2 | function |
+| b.js:13:5:13:12 | z1 = a.x | b.js:13:10:13:12 | a.x | b.js:13:5:13:6 | z1 | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| b.js:16:5:16:18 | z2 = a_default | b.js:16:10:16:18 | a_default | b.js:16:5:16:6 | z2 | boolean |
+| b.js:19:5:19:18 | z3 = c_default | b.js:19:10:19:18 | c_default | b.js:19:5:19:6 | z3 | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| b.js:22:5:22:12 | z4 = foo | b.js:22:10:22:12 | foo | b.js:22:5:22:6 | z4 | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| b.js:25:5:25:14 | z5 = stuff | b.js:25:10:25:14 | stuff | b.js:25:5:25:6 | z5 | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| b.js:28:5:28:14 | z6 = setX2 | b.js:28:10:28:14 | setX2 | b.js:28:5:28:6 | z6 | function |
+| b.js:31:5:31:10 | z7 = A | b.js:31:10:31:10 | A | b.js:31:5:31:6 | z7 | class |
+| b.js:34:5:34:15 | z8 = amdfoo | b.js:34:10:34:15 | amdfoo | b.js:34:5:34:6 | z8 | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| b.js:37:5:37:16 | z8 = amdfoo2 | b.js:37:10:37:16 | amdfoo2 | b.js:37:5:37:6 | z8 | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| b.js:38:5:38:20 | z9 = amdToString | b.js:38:10:38:20 | amdToString | b.js:38:5:38:6 | z9 | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| b.js:41:5:41:11 | z10 = f | b.js:41:11:41:11 | f | b.js:41:5:41:7 | z10 | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| b.js:42:5:42:18 | z11 = toString | b.js:42:11:42:18 | toString | b.js:42:5:42:7 | z11 | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| b.js:45:5:45:12 | z12 = f2 | b.js:45:11:45:12 | f2 | b.js:45:5:45:7 | z12 | function or object |
+| b.js:48:5:48:11 | z13 = w | b.js:48:11:48:11 | w | b.js:48:5:48:7 | z13 | string |
+| b.js:51:5:51:24 | z14 = foo_reexported | b.js:51:11:51:24 | foo_reexported | b.js:51:5:51:7 | z14 | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| b.js:54:5:54:19 | z15 = something | b.js:54:11:54:19 | something | b.js:54:5:54:7 | z15 | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| b.js:57:5:57:23 | z16 = notAlwaysZero | b.js:57:11:57:23 | notAlwaysZero | b.js:57:5:57:7 | z16 | number |
+| backend.js:1:7:1:18 | Backend = {} | backend.js:1:17:1:18 | {} | backend.js:1:7:1:13 | Backend | object |
+| classAccessors.js:10:9:10:20 | myX = this.x | classAccessors.js:10:15:10:20 | this.x | classAccessors.js:10:9:10:11 | myX | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| classAccessors.js:11:9:11:20 | myY = this.y | classAccessors.js:11:15:11:20 | this.y | classAccessors.js:11:9:11:11 | myY | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| classAccessors.js:12:9:12:20 | myZ = this.z | classAccessors.js:12:15:12:20 | this.z | classAccessors.js:12:9:12:11 | myZ | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| destructuring.js:2:7:2:28 | { x, y  ... ) } = o | destructuring.js:2:28:2:28 | o | destructuring.js:2:7:2:24 | { x, y = (z = x) } | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| destructuring.js:3:7:3:12 | z1 = z | destructuring.js:3:12:3:12 | z | destructuring.js:3:7:3:8 | z1 | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| es2015.js:1:5:6:1 | Sup = c ... ;\\n  }\\n} | es2015.js:1:11:6:1 | class { ... ;\\n  }\\n} | es2015.js:1:5:1:7 | Sup | class |
+| es2015.js:4:9:4:25 | ctor = new.target | es2015.js:4:16:4:25 | new.target | es2015.js:4:9:4:12 | ctor | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| es2015.js:19:7:19:18 | _args = args | es2015.js:19:15:19:18 | args | es2015.js:19:7:19:11 | _args | object |
+| es2015.js:23:7:23:12 | _x = x | es2015.js:23:12:23:12 | x | es2015.js:23:7:23:8 | _x | number or undefined |
+| es2015.js:27:5:27:16 | ohSoVery = v | es2015.js:27:16:27:16 | v | es2015.js:27:5:27:12 | ohSoVery | boolean |
+| es2015.js:29:5:29:33 | r = tag ... iteral` | es2015.js:29:9:29:33 | tagged  ... iteral` | es2015.js:29:5:29:5 | r | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| es2015.js:32:7:32:12 | _x = x | es2015.js:32:12:32:12 | x | es2015.js:32:7:32:8 | _x | null |
+| es2015.js:33:7:33:12 | _y = y | es2015.js:33:12:33:12 | y | es2015.js:33:7:33:8 | _y | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| es2015.js:34:7:34:12 | _z = z | es2015.js:34:12:34:12 | z | es2015.js:34:7:34:8 | _z | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| es2015.js:39:7:39:12 | _x = x | es2015.js:39:12:39:12 | x | es2015.js:39:7:39:8 | _x | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| es2015.js:40:7:40:12 | _y = y | es2015.js:40:12:40:12 | y | es2015.js:40:7:40:8 | _y | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| es2015.js:41:7:41:12 | _z = z | es2015.js:41:12:41:12 | z | es2015.js:41:7:41:8 | _z | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| es2015.js:45:7:45:25 | f = function*(){}() | es2015.js:45:11:45:25 | function*(){}() | es2015.js:45:7:45:7 | f | object |
+| es2015.js:46:7:46:30 | x = asy ... n(){}() | es2015.js:46:11:46:30 | async function(){}() | es2015.js:46:7:46:7 | x | object |
+| es2015.js:49:5:49:17 | req = require | es2015.js:49:11:49:17 | require | es2015.js:49:5:49:7 | req | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| esClient.js:7:5:7:15 | x1 = nj.foo | esClient.js:7:10:7:15 | nj.foo | esClient.js:7:5:7:6 | x1 | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| esClient.js:8:5:8:15 | x2 = es.foo | esClient.js:8:10:8:15 | es.foo | esClient.js:8:5:8:6 | x2 | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| esClient.js:10:5:10:14 | x3 = njFoo | esClient.js:10:10:10:14 | njFoo | esClient.js:10:5:10:6 | x3 | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| esClient.js:11:5:11:14 | x4 = esFoo | esClient.js:11:10:11:14 | esFoo | esClient.js:11:5:11:6 | x4 | function |
+| fundecls.js:2:7:2:12 | f_ = f | fundecls.js:2:12:2:12 | f | fundecls.js:2:7:2:8 | f_ | function |
+| fundecls.js:3:7:3:12 | g1 = g | fundecls.js:3:12:3:12 | g | fundecls.js:3:7:3:8 | g1 | function |
+| fundecls.js:7:9:7:14 | g2 = g | fundecls.js:7:14:7:14 | g | fundecls.js:7:9:7:10 | g2 | function |
+| g.js:1:5:1:22 | f = require('./f') | g.js:1:9:1:22 | require('./f') | g.js:1:5:1:5 | f | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| g.js:2:5:2:12 | x1 = f.f | g.js:2:10:2:12 | f.f | g.js:2:5:2:6 | x1 | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| g.js:3:5:3:19 | x2 = f.toString | g.js:3:10:3:19 | f.toString | g.js:3:5:3:6 | x2 | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| globals.html:5:11:5:15 | x = 0 | globals.html:5:15:5:15 | 0 | globals.html:5:11:5:11 | x | number |
+| globals.html:8:13:8:18 | x1 = x | globals.html:8:18:8:18 | x | globals.html:8:13:8:14 | x1 | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| globals.html:9:13:9:27 | x2 = someGlobal | globals.html:9:18:9:27 | someGlobal | globals.html:9:13:9:14 | x2 | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| globals.html:13:11:13:18 | x = "hi" | globals.html:13:15:13:18 | "hi" | globals.html:13:11:13:11 | x | string |
+| globals.html:17:13:17:18 | x1 = x | globals.html:17:18:17:18 | x | globals.html:17:13:17:14 | x1 | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| globals.html:18:13:18:27 | x2 = someGlobal | globals.html:18:18:18:27 | someGlobal | globals.html:18:13:18:14 | x2 | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| globals.html:26:40:26:45 | x1 = x | globals.html:26:45:26:45 | x | globals.html:26:40:26:41 | x1 | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| globals.html:26:52:26:66 | x2 = someGlobal | globals.html:26:57:26:66 | someGlobal | globals.html:26:52:26:53 | x2 | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| h_import.js:2:5:2:10 | ff = f | h_import.js:2:10:2:10 | f | h_import.js:2:5:2:6 | ff | function |
+| implicit-returns.js:4:9:4:13 | i = 0 | implicit-returns.js:4:13:4:13 | 0 | implicit-returns.js:4:9:4:9 | i | number |
+| implicit-returns.js:15:9:15:25 | x = endWithLoop() | implicit-returns.js:15:13:15:25 | endWithLoop() | implicit-returns.js:15:9:15:9 | x | boolean or undefined |
+| implicit-returns.js:25:9:25:28 | x = endWithShortIf() | implicit-returns.js:25:13:25:28 | endWithShortIf() | implicit-returns.js:25:9:25:9 | x | boolean or undefined |
+| import.js:2:5:2:13 | m = mixin | import.js:2:9:2:13 | mixin | import.js:2:5:2:5 | m | function |
+| import.js:5:5:5:11 | myf = f | import.js:5:11:5:11 | f | import.js:5:5:5:7 | myf | function |
+| import.js:8:5:8:23 | someVar = someStuff | import.js:8:15:8:23 | someStuff | import.js:8:5:8:11 | someVar | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| import.js:11:5:11:10 | h1 = h | import.js:11:10:11:10 | h | import.js:11:5:11:6 | h1 | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| import.js:12:5:12:12 | hf = h.f | import.js:12:10:12:12 | h.f | import.js:12:5:12:6 | hf | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| imports.ts:2:5:2:11 | ax = Ax | imports.ts:2:10:2:11 | Ax | imports.ts:2:5:2:6 | ax | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| imports.ts:5:5:5:12 | fs_ = fs | imports.ts:5:11:5:12 | fs | imports.ts:5:5:5:7 | fs_ | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| instances.js:8:5:8:15 | a = new A() | instances.js:8:9:8:15 | new A() | instances.js:8:5:8:5 | a | class, date, function, object or regular expression |
+| instances.js:9:5:9:12 | x1 = a.x | instances.js:9:10:9:12 | a.x | instances.js:9:5:9:6 | x1 | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| instances.js:10:5:10:14 | x2 = a.foo | instances.js:10:10:10:14 | a.foo | instances.js:10:5:10:6 | x2 | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| instances.js:11:5:11:14 | x3 = a.bar | instances.js:11:10:11:14 | a.bar | instances.js:11:5:11:6 | x3 | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| instances.js:16:5:16:21 | subA = new SubA() | instances.js:16:12:16:21 | new SubA() | instances.js:16:5:16:8 | subA | class, date, function, object or regular expression |
+| jsx.js:1:5:1:12 | a = <a/> | jsx.js:1:9:1:12 | <a/> | jsx.js:1:5:1:5 | a | object |
+| jsx.js:2:5:2:20 | b = <>{a}<a/></> | jsx.js:2:9:2:20 | <>{a}<a/></> | jsx.js:2:5:2:5 | b | object |
+| m.js:1:5:1:22 | fs = require('fs') | m.js:1:10:1:22 | require('fs') | m.js:1:5:1:6 | fs | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| m.js:3:5:3:20 | args = arguments | m.js:3:12:3:20 | arguments | m.js:3:5:3:8 | args | object |
+| m.js:4:5:4:17 | req = require | m.js:4:11:4:17 | require | m.js:4:5:4:7 | req | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| m.js:5:5:5:16 | mod = module | m.js:5:11:5:16 | module | m.js:5:5:5:7 | mod | object |
+| m.js:6:5:6:17 | exp = exports | m.js:6:11:6:17 | exports | m.js:6:5:6:7 | exp | object |
+| m.js:7:5:7:19 | fn = __filename | m.js:7:10:7:19 | __filename | m.js:7:5:7:6 | fn | string |
+| m.js:8:5:8:18 | dn = __dirname | m.js:8:10:8:18 | __dirname | m.js:8:5:8:6 | dn | string |
+| mixed.js:1:5:1:22 | fs = require('fs') | mixed.js:1:10:1:22 | require('fs') | mixed.js:1:5:1:6 | fs | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| mixed.js:5:5:5:20 | args = arguments | mixed.js:5:12:5:20 | arguments | mixed.js:5:5:5:8 | args | object |
+| mixed.js:6:5:6:17 | req = require | mixed.js:6:11:6:17 | require | mixed.js:6:5:6:7 | req | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| mixed.js:7:5:7:16 | mod = module | mixed.js:7:11:7:16 | module | mixed.js:7:5:7:7 | mod | object |
+| mixed.js:8:5:8:17 | exp = exports | mixed.js:8:11:8:17 | exports | mixed.js:8:5:8:7 | exp | object |
+| mixed.js:9:5:9:19 | fn = __filename | mixed.js:9:10:9:19 | __filename | mixed.js:9:5:9:6 | fn | string |
+| mixed.js:10:5:10:18 | dn = __dirname | mixed.js:10:10:10:18 | __dirname | mixed.js:10:5:10:6 | dn | string |
+| nestedImport.js:2:5:2:12 | x1 = foo | nestedImport.js:2:10:2:12 | foo | nestedImport.js:2:5:2:6 | x1 | function |
+| nestedImport.js:6:7:6:14 | x2 = foo | nestedImport.js:6:12:6:14 | foo | nestedImport.js:6:7:6:8 | x2 | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| nestedImport.js:11:7:11:14 | x3 = foo | nestedImport.js:11:12:11:14 | foo | nestedImport.js:11:7:11:8 | x3 | function |
+| nodeJsClient.js:1:5:1:31 | nj = re ... JsLib') | nodeJsClient.js:1:10:1:31 | require ... JsLib') | nodeJsClient.js:1:5:1:6 | nj | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| nodeJsClient.js:2:5:2:27 | es = re ... esLib') | nodeJsClient.js:2:10:2:27 | require('./esLib') | nodeJsClient.js:2:5:2:6 | es | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| nodeJsClient.js:4:5:4:15 | x1 = nj.foo | nodeJsClient.js:4:10:4:15 | nj.foo | nodeJsClient.js:4:5:4:6 | x1 | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| nodeJsClient.js:5:5:5:15 | x2 = es.foo | nodeJsClient.js:5:10:5:15 | es.foo | nodeJsClient.js:5:5:5:6 | x2 | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| nullish-coalescing-op.ts:2:7:2:18 | y = x ?? 0.5 | nullish-coalescing-op.ts:2:11:2:18 | x ?? 0.5 | nullish-coalescing-op.ts:2:7:2:7 | y | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| objlit.js:1:5:1:15 | A = A \|\| {} | objlit.js:1:9:1:15 | A \|\| {} | objlit.js:1:5:1:5 | A | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| objlit.js:7:5:7:10 | B = {} | objlit.js:7:9:7:10 | {} | objlit.js:7:5:7:5 | B | object |
+| objlit.js:14:5:14:10 | x1 = A | objlit.js:14:10:14:10 | A | objlit.js:14:5:14:6 | x1 | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| objlit.js:15:5:15:14 | x2 = A.foo | objlit.js:15:10:15:14 | A.foo | objlit.js:15:5:15:6 | x2 | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| objlit.js:16:5:16:14 | x3 = A.bar | objlit.js:16:10:16:14 | A.bar | objlit.js:16:5:16:6 | x3 | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| objlit.js:17:5:17:18 | x4 = A.bar.baz | objlit.js:17:10:17:18 | A.bar.baz | objlit.js:17:5:17:6 | x4 | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| objlit.js:18:5:18:10 | x5 = B | objlit.js:18:10:18:10 | B | objlit.js:18:5:18:6 | x5 | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| objlit.js:19:5:19:12 | x6 = B.a | objlit.js:19:10:19:12 | B.a | objlit.js:19:5:19:6 | x6 | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| objlit.js:20:5:20:20 | x7 = B.a.bar.baz | objlit.js:20:10:20:20 | B.a.bar.baz | objlit.js:20:5:20:6 | x7 | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| objlit.js:21:5:21:14 | x8 = A.qux | objlit.js:21:10:21:14 | A.qux | objlit.js:21:5:21:6 | x8 | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| objlit.js:24:7:28:3 | o = {\\n  ...   }\\n  } | objlit.js:24:11:28:3 | {\\n    q ...   }\\n  } | objlit.js:24:7:24:7 | o | object |
+| objlit.js:29:7:29:12 | x1 = o | objlit.js:29:12:29:12 | o | objlit.js:29:7:29:8 | x1 | object |
+| objlit.js:30:7:30:14 | x2 = o.q | objlit.js:30:12:30:14 | o.q | objlit.js:30:7:30:8 | x2 | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| objlit.js:31:7:31:16 | x3 = o.q.r | objlit.js:31:12:31:16 | o.q.r | objlit.js:31:7:31:8 | x3 | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| objlit.js:33:7:40:3 | o2 = {\\n ...   }\\n  } | objlit.js:33:12:40:3 | {\\n    f ...   }\\n  } | objlit.js:33:7:33:8 | o2 | object |
+| objlit.js:36:11:36:19 | x4 = this | objlit.js:36:16:36:19 | this | objlit.js:36:11:36:12 | x4 | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| objlit.js:37:11:37:21 | x5 = this.f | objlit.js:37:16:37:21 | this.f | objlit.js:37:11:37:12 | x5 | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| objlit.js:38:11:38:21 | x6 = this.h | objlit.js:38:16:38:21 | this.h | objlit.js:38:11:38:12 | x6 | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| objlit.js:43:7:45:3 | o3 = {\\n ...  o2\\n  } | objlit.js:43:12:45:3 | {\\n    _ ...  o2\\n  } | objlit.js:43:7:43:8 | o3 | object |
+| reexport/client/src/index.js:2:5:2:15 | test = data | reexport/client/src/index.js:2:12:2:15 | data | reexport/client/src/index.js:2:5:2:8 | test | string |
+| refinements.js:3:7:3:12 | x1 = g | refinements.js:3:12:3:12 | g | refinements.js:3:7:3:8 | x1 | undefined |
+| refinements.js:5:9:5:14 | x2 = g | refinements.js:5:14:5:14 | g | refinements.js:5:9:5:10 | x2 |  |
+| refinements.js:7:7:7:12 | x3 = g | refinements.js:7:12:7:12 | g | refinements.js:7:7:7:8 | x3 | undefined |
+| refinements.js:11:7:11:72 | a = Mat ... ' : 42) | refinements.js:11:11:11:72 | Math.ra ... ' : 42) | refinements.js:11:7:11:7 | a | null, number or string |
+| refinements.js:12:7:12:12 | x1 = a | refinements.js:12:12:12:12 | a | refinements.js:12:7:12:8 | x1 | null, number or string |
+| refinements.js:14:9:14:14 | x2 = a | refinements.js:14:14:14:14 | a | refinements.js:14:9:14:10 | x2 | number or string |
+| refinements.js:16:9:16:14 | x3 = a | refinements.js:16:14:16:14 | a | refinements.js:16:9:16:10 | x3 | null or number |
+| refinements.js:18:11:18:16 | x4 = a | refinements.js:18:16:18:16 | a | refinements.js:18:11:18:12 | x4 | null |
+| refinements.js:20:11:20:16 | x5 = a | refinements.js:20:16:20:16 | a | refinements.js:20:11:20:12 | x5 | number |
+| refinements.js:23:7:23:12 | x6 = a | refinements.js:23:12:23:12 | a | refinements.js:23:7:23:8 | x6 | null, number or string |
+| refinements.js:29:9:29:14 | x1 = a | refinements.js:29:14:29:14 | a | refinements.js:29:9:29:10 | x1 |  |
+| refinements.js:31:7:31:12 | x2 = a | refinements.js:31:12:31:12 | a | refinements.js:31:7:31:8 | x2 | undefined |
+| refinements.js:35:7:35:31 | a = c ? ... ion(){} | refinements.js:35:11:35:31 | c ? {}  ... ion(){} | refinements.js:35:7:35:7 | a | function or object |
+| refinements.js:37:9:37:14 | x1 = a | refinements.js:37:14:37:14 | a | refinements.js:37:9:37:10 | x1 | object |
+| refinements.js:39:7:39:12 | x2 = a | refinements.js:39:12:39:12 | a | refinements.js:39:7:39:8 | x2 | function or object |
+| refinements.js:45:9:45:14 | x1 = f | refinements.js:45:14:45:14 | f | refinements.js:45:9:45:10 | x1 | null or undefined |
+| refinements.js:47:9:47:14 | x2 = f | refinements.js:47:14:47:14 | f | refinements.js:47:9:47:10 | x2 | null |
+| refinements.js:49:7:49:12 | x3 = f | refinements.js:49:12:49:12 | f | refinements.js:49:7:49:8 | x3 | undefined |
+| refinements.js:51:9:51:14 | x4 = f | refinements.js:51:14:51:14 | f | refinements.js:51:9:51:10 | x4 |  |
+| refinements.js:53:7:53:12 | x5 = f | refinements.js:53:12:53:12 | f | refinements.js:53:7:53:8 | x5 | undefined |
+| refinements.js:55:7:55:12 | x6 = f | refinements.js:55:12:55:12 | f | refinements.js:55:7:55:8 | x6 | null or undefined |
+| refinements.js:61:7:61:12 | x2 = x | refinements.js:61:12:61:12 | x | refinements.js:61:7:61:8 | x2 | string |
+| tsTest.ts:2:14:2:19 | x = 42 | tsTest.ts:2:18:2:19 | 42 | tsTest.ts:2:14:2:14 | x | number |
+| tsTest.ts:4:7:4:12 | x2 = x | tsTest.ts:4:12:4:12 | x | tsTest.ts:4:7:4:8 | x2 | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| tsTest.ts:12:5:12:9 | a = A | tsTest.ts:12:9:12:9 | A | tsTest.ts:12:5:12:5 | a | object |
+| tst2.js:4:7:4:20 | x = someGlobal | tst2.js:4:11:4:20 | someGlobal | tst2.js:4:7:4:7 | x | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| tst.js:3:7:3:15 | x1 = true | tst.js:3:12:3:15 | true | tst.js:3:7:3:8 | x1 | boolean |
+| tst.js:4:7:4:16 | x2 = false | tst.js:4:12:4:16 | false | tst.js:4:7:4:8 | x2 | boolean |
+| tst.js:5:7:5:12 | x3 = 0 | tst.js:5:12:5:12 | 0 | tst.js:5:7:5:8 | x3 | number |
+| tst.js:6:7:6:14 | x4 = 0.0 | tst.js:6:12:6:14 | 0.0 | tst.js:6:7:6:8 | x4 | number |
+| tst.js:7:7:7:15 | x5 = -0.0 | tst.js:7:12:7:15 | -0.0 | tst.js:7:7:7:8 | x5 | number |
+| tst.js:8:7:8:14 | x6 = 0.1 | tst.js:8:12:8:14 | 0.1 | tst.js:8:7:8:8 | x6 | number |
+| tst.js:9:7:9:12 | x7 = 1 | tst.js:9:12:9:12 | 1 | tst.js:9:7:9:8 | x7 | number |
+| tst.js:10:7:10:13 | x8 = "" | tst.js:10:12:10:13 | "" | tst.js:10:7:10:8 | x8 | string |
+| tst.js:11:7:11:14 | x9 = 'a' | tst.js:11:12:11:14 | 'a' | tst.js:11:7:11:8 | x9 | string |
+| tst.js:12:7:12:14 | xa = /a/ | tst.js:12:12:12:14 | /a/ | tst.js:12:7:12:8 | xa | regular expression |
+| tst.js:13:7:13:13 | xb = {} | tst.js:13:12:13:13 | {} | tst.js:13:7:13:8 | xb | object |
+| tst.js:14:7:14:13 | xc = [] | tst.js:14:12:14:13 | [] | tst.js:14:7:14:8 | xc | object |
+| tst.js:15:7:15:23 | xd = function(){} | tst.js:15:12:15:23 | function(){} | tst.js:15:7:15:8 | xd | function |
+| tst.js:16:7:16:22 | xe = 1-unknown() | tst.js:16:12:16:22 | 1-unknown() | tst.js:16:7:16:8 | xe | number |
+| tst.js:17:7:17:15 | xf = 1+xe | tst.js:17:12:17:15 | 1+xe | tst.js:17:7:17:8 | xf | number |
+| tst.js:18:7:18:16 | xg = 'a'+2 | tst.js:18:12:18:16 | 'a'+2 | tst.js:18:7:18:8 | xg | string |
+| tst.js:19:7:19:32 | xh = 'a ... ?'b':0) | tst.js:19:12:19:32 | 'a'+(un ... ?'b':0) | tst.js:19:7:19:8 | xh | string |
+| tst.js:20:7:20:22 | xi = 2^unknown() | tst.js:20:12:20:22 | 2^unknown() | tst.js:20:7:20:8 | xi | number |
+| tst.js:21:7:21:20 | xj = unknown() | tst.js:21:12:21:20 | unknown() | tst.js:21:7:21:8 | xj | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| tst.js:22:7:22:24 | xk = new Unknown() | tst.js:22:12:22:24 | new Unknown() | tst.js:22:7:22:8 | xk | class, date, function, object or regular expression |
+| tst.js:23:7:23:18 | xl = void(0) | tst.js:23:12:23:18 | void(0) | tst.js:23:7:23:8 | xl | undefined |
+| tst.js:24:7:24:20 | xm = typeof xj | tst.js:24:12:24:20 | typeof xj | tst.js:24:7:24:8 | xm | string |
+| tst.js:25:7:25:19 | xn = xj >= yk | tst.js:25:12:25:19 | xj >= yk | tst.js:25:7:25:8 | xn | boolean |
+| tst.js:26:7:26:19 | xo = x9 in xk | tst.js:26:12:26:19 | x9 in xk | tst.js:26:7:26:8 | xo | boolean |
+| tst.js:27:7:27:15 | xp = ++xj | tst.js:27:12:27:15 | ++xj | tst.js:27:7:27:8 | xp | number |
+| tst.js:28:7:28:14 | xq = !xj | tst.js:28:12:28:14 | !xj | tst.js:28:7:28:8 | xq | boolean |
+| tst.js:29:7:29:14 | xr = -xj | tst.js:29:12:29:14 | -xj | tst.js:29:7:29:8 | xr | number |
+| tst.js:30:7:30:14 | xs = +xj | tst.js:30:12:30:14 | +xj | tst.js:30:7:30:8 | xs | number |
+| tst.js:31:7:31:14 | xt = ~xj | tst.js:31:12:31:14 | ~xj | tst.js:31:7:31:8 | xt | number |
+| tst.js:32:7:32:22 | xu = delete xj.p | tst.js:32:12:32:22 | delete xj.p | tst.js:32:7:32:8 | xu | boolean |
+| tst.js:33:7:33:18 | xv = xj -= 2 | tst.js:33:12:33:18 | xj -= 2 | tst.js:33:7:33:8 | xv | number |
+| tst.js:34:7:34:20 | xw = xj += "a" | tst.js:34:12:34:20 | xj += "a" | tst.js:34:7:34:8 | xw | string |
+| tst.js:35:7:35:12 | xx = y | tst.js:35:12:35:12 | y | tst.js:35:7:35:8 | xx | undefined |
+| tst.js:36:7:36:20 | xy = arguments | tst.js:36:12:36:20 | arguments | tst.js:36:7:36:8 | xy | object |
+| tst.js:37:7:37:12 | xz = z | tst.js:37:12:37:12 | z | tst.js:37:7:37:8 | xz | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| tst.js:38:7:38:21 | x_ = someGlobal | tst.js:38:12:38:21 | someGlobal | tst.js:38:7:38:8 | x_ | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| tst.js:40:5:40:19 | someGlobal = 42 | tst.js:40:18:40:19 | 42 | tst.js:40:5:40:14 | someGlobal | number |
+| tst.js:43:7:43:17 | thiz = this | tst.js:43:14:43:17 | this | tst.js:43:7:43:10 | thiz | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| tst.js:48:7:48:17 | thiz = this | tst.js:48:14:48:17 | this | tst.js:48:7:48:10 | thiz | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| tst.js:56:7:56:31 | neverUn ... aptured | tst.js:56:24:56:31 | captured | tst.js:56:7:56:20 | neverUndefined | function |
+| tst.js:60:7:60:12 | _x = x | tst.js:60:12:60:12 | x | tst.js:60:7:60:8 | _x | number |
+| tst.js:61:7:61:12 | _y = y | tst.js:61:12:61:12 | y | tst.js:61:7:61:8 | _y | undefined |
+| tst.js:65:7:65:12 | _x = x | tst.js:65:12:65:12 | x | tst.js:65:7:65:8 | _x | object |
+| tst.js:69:7:69:12 | _x = x | tst.js:69:12:69:12 | x | tst.js:69:7:69:8 | _x | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| tst.js:75:7:75:12 | _x = x | tst.js:75:12:75:12 | x | tst.js:75:7:75:8 | _x | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| tst.js:81:7:81:12 | _x = x | tst.js:81:12:81:12 | x | tst.js:81:7:81:8 | _x | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| tst.js:86:7:86:12 | _x = x | tst.js:86:12:86:12 | x | tst.js:86:7:86:8 | _x | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| tst.js:91:7:91:12 | _x = x | tst.js:91:12:91:12 | x | tst.js:91:7:91:8 | _x | number |
+| tst.js:96:9:96:13 | z = x | tst.js:96:13:96:13 | x | tst.js:96:9:96:9 | z | number, string or undefined |
+| tst.js:98:7:98:12 | x = 23 | tst.js:98:11:98:12 | 23 | tst.js:98:7:98:7 | x | number |
+| tst.js:99:7:99:12 | y1 = x | tst.js:99:12:99:12 | x | tst.js:99:7:99:8 | y1 | number |
+| tst.js:102:7:102:12 | y2 = x | tst.js:102:12:102:12 | x | tst.js:102:7:102:8 | y2 | string |
+| tst.js:107:7:107:19 | x = arguments | tst.js:107:11:107:19 | arguments | tst.js:107:7:107:7 | x | object |
+| tst.js:112:7:112:19 | x = arguments | tst.js:112:11:112:19 | arguments | tst.js:112:7:112:7 | x | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| tst.js:116:7:118:5 | x1 = fu ... ;\\n  }() | tst.js:116:12:118:5 | functio ... ;\\n  }() | tst.js:116:7:116:8 | x1 | number |
+| tst.js:119:7:121:5 | x2 = fu ... ;\\n  }() | tst.js:119:12:121:5 | functio ... ;\\n  }() | tst.js:119:7:119:8 | x2 | null or string |
+| tst.js:122:7:124:7 | x3 = fu ...   }(x1) | tst.js:122:12:124:7 | functio ...   }(x1) | tst.js:122:7:122:8 | x3 | number or undefined |
+| tst.js:125:7:125:26 | x4 = function() {}() | tst.js:125:12:125:26 | function() {}() | tst.js:125:7:125:8 | x4 | undefined |
+| tst.js:126:7:130:5 | x5 = fu ... ;\\n  }() | tst.js:126:12:130:5 | functio ... ;\\n  }() | tst.js:126:7:126:8 | x5 | boolean |
+| tst.js:131:7:131:39 | x6 = fu ... ll; }() | tst.js:131:12:131:39 | functio ... ll; }() | tst.js:131:7:131:8 | x6 |  |
+| tst.js:135:7:135:12 | a1 = a | tst.js:135:12:135:12 | a | tst.js:135:7:135:8 | a1 | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| tst.js:135:15:135:20 | b1 = b | tst.js:135:20:135:20 | b | tst.js:135:15:135:16 | b1 | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| tst.js:137:9:137:14 | a2 = a | tst.js:137:14:137:14 | a | tst.js:137:9:137:10 | a2 | boolean, null, number, string or undefined |
+| tst.js:137:17:137:22 | b2 = b | tst.js:137:22:137:22 | b | tst.js:137:17:137:18 | b2 | boolean, null, number, string or undefined |
+| tst.js:140:9:140:14 | a3 = a | tst.js:140:14:140:14 | a | tst.js:140:9:140:10 | a3 | boolean, null, number, string or undefined |
+| tst.js:140:17:140:22 | b3 = b | tst.js:140:22:140:22 | b | tst.js:140:17:140:18 | b3 | boolean, null, number, string or undefined |
+| tst.js:145:7:145:16 | v1 = value | tst.js:145:12:145:16 | value | tst.js:145:7:145:8 | v1 | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| tst.js:147:9:147:18 | v2 = value | tst.js:147:14:147:18 | value | tst.js:147:9:147:10 | v2 | class, date, function, null, number, object, regular expression, string or undefined |
+| tst.js:154:9:154:14 | x1 = x | tst.js:154:14:154:14 | x | tst.js:154:9:154:10 | x1 | string |
+| tst.js:157:9:157:14 | y1 = y | tst.js:157:14:157:14 | y | tst.js:157:9:157:10 | y1 | string |
+| tst.js:160:9:160:14 | z1 = z | tst.js:160:14:160:14 | z | tst.js:160:9:160:10 | z1 | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| tst.js:165:7:165:20 | x1 = undefined | tst.js:165:12:165:20 | undefined | tst.js:165:7:165:8 | x1 | undefined |
+| tst.js:166:7:166:27 | x2 = ar ... .callee | tst.js:166:12:166:27 | arguments.callee | tst.js:166:7:166:8 | x2 | function |
+| tst.js:167:7:167:19 | x3 = o.callee | tst.js:167:12:167:19 | o.callee | tst.js:167:7:167:8 | x3 | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| tst.js:169:9:169:14 | x4 = o | tst.js:169:14:169:14 | o | tst.js:169:9:169:10 | x4 | boolean, class, date, function, null, number, object, regular expression or string |
+| tst.js:171:7:171:12 | x5 = o | tst.js:171:12:171:12 | o | tst.js:171:7:171:8 | x5 | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| tst.js:176:9:176:18 | await1 = v | tst.js:176:18:176:18 | v | tst.js:176:9:176:14 | await1 | undefined |
+| tst.js:179:13:179:22 | await2 = v | tst.js:179:22:179:22 | v | tst.js:179:13:179:18 | await2 | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| tst.js:182:9:182:18 | await3 = v | tst.js:182:18:182:18 | v | tst.js:182:9:182:14 | await3 | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| tst.js:185:5:185:26 | [someOt ... l] = [] | tst.js:185:25:185:26 | [] | tst.js:185:5:185:21 | [someOtherGlobal] | object |
+| tst.js:186:5:186:24 | x1 = someOtherGlobal | tst.js:186:10:186:24 | someOtherGlobal | tst.js:186:5:186:6 | x1 | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| tst.mjs:3:5:3:17 | req = require | tst.mjs:3:11:3:17 | require | tst.mjs:3:5:3:7 | req | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| with.js:2:7:2:12 | x = 42 | with.js:2:11:2:12 | 42 | with.js:2:7:2:7 | x | number |
+| with.js:2:15:2:22 | y = null | with.js:2:19:2:22 | null | with.js:2:15:2:15 | y | null |
+| with.js:4:9:4:14 | r1 = x | with.js:4:14:4:14 | x | with.js:4:9:4:10 | r1 | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| with.js:5:9:5:14 | r2 = y | with.js:5:14:5:14 | y | with.js:5:9:5:10 | r2 | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| with.js:7:11:7:18 | y = "hi" | with.js:7:15:7:18 | "hi" | with.js:7:11:7:11 | y | string |
+| with.js:9:13:9:18 | r3 = x | with.js:9:18:9:18 | x | with.js:9:13:9:14 | r3 | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| with.js:10:13:10:18 | r4 = y | with.js:10:18:10:18 | y | with.js:10:13:10:14 | r4 | string |
+| with.js:13:9:13:16 | z = true | with.js:13:13:13:16 | true | with.js:13:9:13:9 | z | boolean |
+| with.js:14:9:14:14 | r5 = z | with.js:14:14:14:14 | z | with.js:14:9:14:10 | r5 | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| with.js:16:7:16:12 | r6 = x | with.js:16:12:16:12 | x | with.js:16:7:16:8 | r6 | number |

@@ -1,0 +1,7 @@
+| tst.js:5:30:5:45 | arguments.callee | Strict mode code cannot use arguments.callee. |
+| tst.js:7:21:7:36 | arguments.callee | Strict mode code cannot use arguments.callee. |
+| tst.js:9:20:9:27 | f.caller | Strict mode code cannot use Function.prototype.caller. |
+| tst.js:11:17:11:27 | f.arguments | Strict mode code cannot use Function.prototype.arguments. |
+| tst.js:18:10:18:25 | arguments.callee | Strict mode code cannot use arguments.callee. |
+| tst.js:31:12:31:21 | foo.caller | Strict mode code cannot use Function.prototype.caller. |
+| tst.js:31:12:31:21 | foo.caller | Strict mode code cannot use arguments.caller. |

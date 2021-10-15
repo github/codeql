@@ -1,0 +1,42 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>If the application dynamically compiles and runs source code
+constructed from user input, a malicious user may be able to run
+arbitrary code.</p>
+</overview>
+
+<recommendation>
+<p>
+It is good practice not to generate, compile and run source code
+constructed from untrusted user input. If code must be dynamically
+generated using user input, the user input should be validated to
+prevent arbitrary code from appearing in the input. For example, a
+whitelist may be used to ensure that the input is limited to an
+acceptable range of values.
+</p>
+</recommendation>
+
+<example>
+<p>In the following example, the HttpHandler accepts remote user
+input which is C# source code for calculating tax. It compiles and
+runs this code, returning the output. However, the user provided
+source code is entirely unvalidated, and therefore allows arbitrary
+code execution.
+</p>
+<p>
+If possible, the dynamic compilation should be removed all together,
+and replaced with a fixed set of tax calculation algorithms. If this
+is not sufficiently powerful, an interpreter could be provided for a
+safe, restricted language.</p>
+
+<sample src="CodeInjection.cs" />
+</example>
+
+<references>
+<li>Wikipedia: <a href="https://en.wikipedia.org/wiki/Code_injection">Code Injection</a>.</li>
+<li>OWASP: <a href="https://www.owasp.org/index.php/Code_Injection">Code Injection</a>.</li>
+</references>
+</qhelp>

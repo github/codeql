@@ -1,0 +1,27 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+  <overview>
+    <p>Debug code can create unintended entry points in a deployed Java EE web application therefore should never make into production. There is no reason to have a main method in a Java EE web application. Having a main method in the Java EE application increases the attack surface that an attacker can exploit to attack the application logic.</p>
+  </overview>
+
+  <recommendation>
+    <p>Remove the main method from enterprise beans.</p>
+  </recommendation>
+
+  <example>
+    <p>The following example shows two ways of implementing enterprise beans. In the 'BAD' case, a main method is implemented. In the 'GOOD' case, no main method is implemented.</p>
+    <sample src="EJBMain.java" />
+  </example>
+
+  <references>
+    <li>
+      SonarSource:
+      <a href="https://rules.sonarsource.com/java/tag/owasp/RSPEC-2653">Web applications should not have a "main" method</a>
+    </li>
+    <li>
+      Carnegie Mellon University:
+      <a href="https://wiki.sei.cmu.edu/confluence/display/java/ENV06-J.+Production+code+must+not+contain+debugging+entry+points">ENV06-J. Production code must not contain debugging entry points</a>
+    </li>
+  </references>
+</qhelp>

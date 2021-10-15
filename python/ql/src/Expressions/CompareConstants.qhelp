@@ -1,0 +1,35 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>When two constants are compared it is typically an
+indication of a mistake, since the Boolean value of the comparison
+will always be the same. In very old code this may be used to initialize
+<code>True</code> and <code>False</code>.</p>
+
+</overview>
+<recommendation>
+
+<p>It is never good practice to compare a value with itself. If the constant
+behavior is indeed required, use the Boolean literals <code>True</code> or
+<code>False</code>, rather than encoding them obscurely as <code>1 == 1</code>
+or similar. If there is a mistake, ascertain the desired behavior and correct it.
+</p>
+
+</recommendation>
+<example>
+
+<p>In this example, old code uses <code>1==1</code> to initialize <code>__builtins__.True</code>.
+This code has been unnecessary on all versions of Python released since 2003 and can be deleted.
+</p><sample src="CompareConstants.py" />
+
+</example>
+<references>
+
+<li>Python Language Reference: <a href="http://docs.python.org/2/reference/expressions.html#not-in">Comparisons</a>.</li>
+
+</references>
+</qhelp>

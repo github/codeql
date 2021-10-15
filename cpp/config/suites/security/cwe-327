@@ -1,0 +1,5 @@
+# CWE-327: Use of a Broken or Risky Cryptographic Algorithm
++ semmlecode-cpp-queries/Security/CWE/CWE-327/BrokenCryptoAlgorithm.ql: /CWE/CWE-327
+    @name Use of a broken or risky cryptographic algorithm (CWE-327)
++ semmlecode-cpp-queries/Security/CWE/CWE-327/OpenSslHeartbleed.ql: /CWE/CWE-327
+    @name Use of a version of OpenSSL with Heartbleed (CWE-327)

@@ -1,0 +1,24 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+It is always the case that, for any type <code>B</code>, an instance of a type derived from <code>B</code> is also an instance of <code>B</code>.
+There is no need to explicitly test that this relationship exists.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Remove the unnecessary type test to simplify the code.
+</p>
+
+</recommendation>
+<example>
+<p>The following example shows an unnecessary type test.</p>
+
+<sample src="UselessTypeTest.java" />
+</example>
+</qhelp>

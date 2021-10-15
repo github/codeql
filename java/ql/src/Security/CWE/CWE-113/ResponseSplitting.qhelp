@@ -1,0 +1,48 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>Directly writing user input (for example, an HTTP request parameter) to an HTTP header
+can lead to an HTTP response-splitting vulnerability.
+If the user input includes blank lines in it, and if the servlet container does not itself
+escape the blank lines, then a remote user can cause the response to turn into two separate
+responses, one of which is controlled by the remote user.</p>
+</overview>
+
+<recommendation>
+<p>Guard against HTTP header splitting in the same way as guarding against cross-site scripting.
+Before passing any data into HTTP headers, either check the data for special characters, or
+escape any special characters that are present.</p>
+</recommendation>
+
+<example>
+<p>The following example shows the 'name' parameter being written to a cookie
+in two different ways. The first way writes it directly to the cookie, and thus
+is vulnerable to response-splitting attacks. The second way first removes all special
+characters, thus avoiding the potential problem.</p>
+
+<sample src="ResponseSplitting.java" />
+</example>
+
+<example>
+<p>The following example shows the use of the library 'netty' with HTTP response-splitting verification configurations.
+The second way will verify the parameters before using them to build the HTTP response.</p>
+
+<sample src="NettyResponseSplitting.java" />
+</example>
+
+<references>
+<li>
+InfosecWriters: <a href="http://www.infosecwriters.com/Papers/DCrab_HTTP_Response.pdf">HTTP response splitting</a>.
+</li>
+<li>
+OWASP:
+<a href="https://www.owasp.org/index.php/HTTP_Response_Splitting">HTTP Response Splitting</a>.
+</li>
+<li>
+Wikipedia: <a href="http://en.wikipedia.org/wiki/HTTP_response_splitting">HTTP response splitting</a>.
+</li>
+</references>
+</qhelp>

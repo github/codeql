@@ -1,0 +1,61 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+
+	<overview>
+		<p>
+			AngularJS is secure by default through automated
+			sanitization and filtering of untrusted values that could
+			cause vulnerabilities such as XSS. Strict Contextual
+			Escaping (SCE) is an execution mode in AngularJS that
+			provides this security mechanism.
+		</p>
+
+		<p>
+			Disabling SCE in an AngularJS application is strongly
+			discouraged. It is even more discouraged to disable SCE in a
+			library, since it is an application-wide setting.
+		</p>
+	</overview>
+
+	<recommendation>
+		<p>
+			Do not disable SCE.
+		</p>
+	</recommendation>
+
+	<example>
+		<p>
+			The following example shows an AngularJS application that
+			disables SCE in order to dynamically construct an HTML
+			fragment, which is later inserted into the DOM through
+			<code>$scope.html</code>.
+		</p>
+
+		<sample src="examples/DisablingSce.js"/>
+
+		<p>
+			This is problematic, since it disables SCE for the entire
+			AngularJS application.
+		</p>
+		<p>
+			Instead, just mark the dynamically constructed HTML
+			fragment as safe using <code>$sce.trustAsHtml</code>, before assigning
+			it to <code>$scope.html</code>:
+		</p>
+
+		<sample src="examples/DisablingSce_better.js"/>
+
+		<p>
+			Please note that this example is for illustrative
+			purposes only; use the AngularJS templating system to
+			dynamically construct HTML when possible.
+		</p>
+	</example>
+
+	<references>
+		<li>AngularJS Developer Guide: <a href="https://docs.angularjs.org/api/ng/service/$sce">Strict Contextual Escaping</a></li>
+		<li>AngularJS Developer Guide: <a href="https://docs.angularjs.org/api/ng/service/$sce#can-i-disable-sce-completely-">Can I disable SCE completely?</a>.</li>
+	</references>
+</qhelp>

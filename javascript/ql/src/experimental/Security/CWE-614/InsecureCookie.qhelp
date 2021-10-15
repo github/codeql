@@ -1,0 +1,26 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Failing to set the 'secure' flag on a cookie can cause it to be sent in cleartext.
+This makes it easier for an attacker to intercept.</p>
+</overview>
+<recommendation>
+
+<p>Always set the <code>secure</code> flag to `true` on a cookie before adding it
+to an HTTP response (if the default value is `false`).</p>
+
+</recommendation>
+
+<references>
+
+<li>Production Best Practices: Security:<a href="https://expressjs.com/en/advanced/best-practice-security.html#use-cookies-securely">Use cookies securely</a>.</li>
+<li>NodeJS security cheat sheet:<a href="https://cheatsheetseries.owasp.org/cheatsheets/Nodejs_Security_Cheat_Sheet.html#set-cookie-flags-appropriately">Set cookie flags appropriately</a>.</li>
+<li>express-session:<a href="https://github.com/expressjs/session#cookiesecure">cookie.secure</a>.</li>
+<li>cookie-session:<a href="https://github.com/expressjs/cookie-session#cookie-options">Cookie Options</a>.</li>
+<li><a href="https://expressjs.com/en/api.html#res.cookie">express response.cookie</a>.</li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie">Set-Cookie</a>.</li>
+<li><a href="https://github.com/js-cookie/js-cookie">js-cookie</a>.</li>
+</references>
+</qhelp>

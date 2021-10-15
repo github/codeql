@@ -1,0 +1,3 @@
+| destructors.cpp:3:3:3:3 | ~Parameterized | destructors.cpp:2:8:2:20 | Parameterized<int> |
+| destructors.cpp:3:3:3:16 | ~Parameterized | destructors.cpp:2:8:2:20 | Parameterized<T> |
+| destructors.cpp:6:8:6:8 | ~Concrete | destructors.cpp:6:8:6:15 | Concrete |

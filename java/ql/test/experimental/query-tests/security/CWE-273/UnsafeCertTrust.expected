@@ -1,0 +1,3 @@
+| UnsafeCertTrustTest.java:26:25:26:52 | createSSLEngine(...) | Unsafe configuration of trusted certificates |
+| UnsafeCertTrustTest.java:37:25:37:52 | createSSLEngine(...) | Unsafe configuration of trusted certificates |
+| UnsafeCertTrustTest.java:46:34:46:83 | createSocket(...) | Unsafe configuration of trusted certificates |

@@ -1,0 +1,6 @@
+| targets.cs:15:13:15:18 | call to method m | targets.cs:12:30:12:30 | m |
+| targets.cs:16:13:16:20 | call to method m | targets.cs:12:30:12:30 | m |
+| targets.cs:17:13:17:20 | call to method m | targets.cs:7:29:7:29 | m |
+| targets.cs:26:13:26:18 | call to method m | targets.cs:23:30:23:30 | m |
+| targets.cs:27:13:27:20 | call to method m | targets.cs:23:30:23:30 | m |
+| targets.cs:28:13:28:20 | call to method m | targets.cs:12:30:12:30 | m |

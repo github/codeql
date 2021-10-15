@@ -1,0 +1,70 @@
+| file://:0:0:0:0 | (unnamed parameter 0) | file://:0:0:0:0 | __va_list_tag && | SemanticStackVariable |  |  |
+| file://:0:0:0:0 | (unnamed parameter 0) | file://:0:0:0:0 | address && | SemanticStackVariable |  |  |
+| file://:0:0:0:0 | (unnamed parameter 0) | file://:0:0:0:0 | const __va_list_tag & | SemanticStackVariable |  |  |
+| file://:0:0:0:0 | (unnamed parameter 0) | file://:0:0:0:0 | const address & | SemanticStackVariable |  |  |
+| file://:0:0:0:0 | fp_offset | file://:0:0:0:0 | unsigned int | Field |  |  |
+| file://:0:0:0:0 | gp_offset | file://:0:0:0:0 | unsigned int | Field |  |  |
+| file://:0:0:0:0 | overflow_arg_area | file://:0:0:0:0 | void * | Field |  |  |
+| file://:0:0:0:0 | reg_save_area | file://:0:0:0:0 | void * | Field |  |  |
+| variables.cpp:1:12:1:12 | i | file://:0:0:0:0 | int | GlobalVariable |  |  |
+| variables.cpp:1:12:1:12 | i | file://:0:0:0:0 | int | StaticStorageDurationVariable |  |  |
+| variables.cpp:2:12:2:12 | i | file://:0:0:0:0 | int | GlobalVariable |  |  |
+| variables.cpp:2:12:2:12 | i | file://:0:0:0:0 | int | StaticStorageDurationVariable |  |  |
+| variables.cpp:3:12:3:12 | i | file://:0:0:0:0 | int | GlobalVariable |  |  |
+| variables.cpp:3:12:3:12 | i | file://:0:0:0:0 | int | StaticStorageDurationVariable |  |  |
+| variables.cpp:5:11:5:11 | c | file://:0:0:0:0 | const int | GlobalVariable | const | static |
+| variables.cpp:5:11:5:11 | c | file://:0:0:0:0 | const int | StaticStorageDurationVariable | const | static |
+| variables.cpp:6:14:6:15 | pi | file://:0:0:0:0 | const double | GlobalVariable | const | static |
+| variables.cpp:6:14:6:15 | pi | file://:0:0:0:0 | const double | StaticStorageDurationVariable | const | static |
+| variables.cpp:8:10:8:10 | a | file://:0:0:0:0 | unsigned int | GlobalVariable |  |  |
+| variables.cpp:8:10:8:10 | a | file://:0:0:0:0 | unsigned int | StaticStorageDurationVariable |  |  |
+| variables.cpp:10:14:10:14 | b | file://:0:0:0:0 | unsigned int | GlobalVariable |  |  |
+| variables.cpp:10:14:10:14 | b | file://:0:0:0:0 | unsigned int | StaticStorageDurationVariable |  |  |
+| variables.cpp:12:13:12:17 | kings | file://:0:0:0:0 | const char *[] | GlobalVariable |  |  |
+| variables.cpp:12:13:12:17 | kings | file://:0:0:0:0 | const char *[] | StaticStorageDurationVariable |  |  |
+| variables.cpp:14:6:14:6 | p | file://:0:0:0:0 | int * | GlobalVariable |  |  |
+| variables.cpp:14:6:14:6 | p | file://:0:0:0:0 | int * | StaticStorageDurationVariable |  |  |
+| variables.cpp:14:9:14:9 | q | file://:0:0:0:0 | int | GlobalVariable |  |  |
+| variables.cpp:14:9:14:9 | q | file://:0:0:0:0 | int | StaticStorageDurationVariable |  |  |
+| variables.cpp:15:12:15:13 | v1 | file://:0:0:0:0 | int[10] | GlobalVariable |  | static |
+| variables.cpp:15:12:15:13 | v1 | file://:0:0:0:0 | int[10] | StaticStorageDurationVariable |  | static |
+| variables.cpp:15:21:15:22 | pv | file://:0:0:0:0 | int * | GlobalVariable |  | static |
+| variables.cpp:15:21:15:22 | pv | file://:0:0:0:0 | int * | StaticStorageDurationVariable |  | static |
+| variables.cpp:17:7:17:8 | fp | file://:0:0:0:0 | ..(*)(..) | FunctionPointerVariable |  |  |
+| variables.cpp:17:7:17:8 | fp | file://:0:0:0:0 | ..(*)(..) | GlobalVariable |  |  |
+| variables.cpp:17:7:17:8 | fp | file://:0:0:0:0 | ..(*)(..) | StaticStorageDurationVariable |  |  |
+| variables.cpp:19:7:19:8 | v2 | file://:0:0:0:0 | float[3] | GlobalVariable |  |  |
+| variables.cpp:19:7:19:8 | v2 | file://:0:0:0:0 | float[3] | StaticStorageDurationVariable |  |  |
+| variables.cpp:20:7:20:8 | v3 | file://:0:0:0:0 | char *[32] | GlobalVariable |  |  |
+| variables.cpp:20:7:20:8 | v3 | file://:0:0:0:0 | char *[32] | StaticStorageDurationVariable |  |  |
+| variables.cpp:22:5:22:6 | d2 | file://:0:0:0:0 | int[10][20] | GlobalVariable |  |  |
+| variables.cpp:22:5:22:6 | d2 | file://:0:0:0:0 | int[10][20] | StaticStorageDurationVariable |  |  |
+| variables.cpp:24:6:24:7 | v4 | file://:0:0:0:0 | char[3] | GlobalVariable |  |  |
+| variables.cpp:24:6:24:7 | v4 | file://:0:0:0:0 | char[3] | StaticStorageDurationVariable |  |  |
+| variables.cpp:26:5:26:6 | v5 | file://:0:0:0:0 | int[8] | GlobalVariable |  |  |
+| variables.cpp:26:5:26:6 | v5 | file://:0:0:0:0 | int[8] | StaticStorageDurationVariable |  |  |
+| variables.cpp:28:7:28:8 | p2 | file://:0:0:0:0 | char * | GlobalVariable |  |  |
+| variables.cpp:28:7:28:8 | p2 | file://:0:0:0:0 | char * | StaticStorageDurationVariable |  |  |
+| variables.cpp:29:6:29:7 | p3 | file://:0:0:0:0 | char[] | GlobalVariable |  |  |
+| variables.cpp:29:6:29:7 | p3 | file://:0:0:0:0 | char[] | StaticStorageDurationVariable |  |  |
+| variables.cpp:31:6:31:10 | alpha | file://:0:0:0:0 | char[] | GlobalVariable |  |  |
+| variables.cpp:31:6:31:10 | alpha | file://:0:0:0:0 | char[] | StaticStorageDurationVariable |  |  |
+| variables.cpp:34:5:34:6 | av | file://:0:0:0:0 | int[] | GlobalVariable |  |  |
+| variables.cpp:34:5:34:6 | av | file://:0:0:0:0 | int[] | StaticStorageDurationVariable |  |  |
+| variables.cpp:35:6:35:8 | ap1 | file://:0:0:0:0 | int * | GlobalVariable |  |  |
+| variables.cpp:35:6:35:8 | ap1 | file://:0:0:0:0 | int * | StaticStorageDurationVariable |  |  |
+| variables.cpp:36:6:36:8 | ap2 | file://:0:0:0:0 | int * | GlobalVariable |  |  |
+| variables.cpp:36:6:36:8 | ap2 | file://:0:0:0:0 | int * | StaticStorageDurationVariable |  |  |
+| variables.cpp:37:6:37:8 | ap3 | file://:0:0:0:0 | int * | GlobalVariable |  |  |
+| variables.cpp:37:6:37:8 | ap3 | file://:0:0:0:0 | int * | StaticStorageDurationVariable |  |  |
+| variables.cpp:41:7:41:11 | local | file://:0:0:0:0 | char[] | LocalVariable |  |  |
+| variables.cpp:41:7:41:11 | local | file://:0:0:0:0 | char[] | SemanticStackVariable |  |  |
+| variables.cpp:43:14:43:18 | local | file://:0:0:0:0 | int | StaticLocalVariable |  | static |
+| variables.cpp:48:9:48:12 | name | file://:0:0:0:0 | char * | Field |  |  |
+| variables.cpp:49:12:49:17 | number | file://:0:0:0:0 | long | Field |  |  |
+| variables.cpp:50:9:50:14 | street | file://:0:0:0:0 | char * | Field |  |  |
+| variables.cpp:51:9:51:12 | town | file://:0:0:0:0 | char * | Field |  |  |
+| variables.cpp:52:16:52:22 | country | file://:0:0:0:0 | char * | MemberVariable |  | static |
+| variables.cpp:52:16:52:22 | country | file://:0:0:0:0 | char * | StaticStorageDurationVariable |  | static |
+| variables.cpp:56:14:56:29 | externInFunction | file://:0:0:0:0 | int | GlobalVariable |  |  |
+| variables.cpp:56:14:56:29 | externInFunction | file://:0:0:0:0 | int | StaticStorageDurationVariable |  |  |

@@ -1,0 +1,16 @@
+| 0 | Entry node for Module test | 1 | ControlFlowNode for FunctionExpr |
+| 1 | ControlFlowNode for FunctionExpr | 1 | ControlFlowNode for foo |
+| 1 | ControlFlowNode for a | 1 | ControlFlowNode for b |
+| 1 | ControlFlowNode for b | 1 | ControlFlowNode for c |
+| 1 | ControlFlowNode for c | 2 | ControlFlowNode for a |
+| 1 | ControlFlowNode for foo | 0 | Exit node for Module test |
+| 1 | Entry node for Function foo | 1 | ControlFlowNode for a |
+| 2 | ControlFlowNode for Attribute | 2 | ControlFlowNode for Delete |
+| 2 | ControlFlowNode for Delete | 3 | ControlFlowNode for a |
+| 2 | ControlFlowNode for a | 2 | ControlFlowNode for Attribute |
+| 3 | ControlFlowNode for Delete | 3 | ControlFlowNode for b |
+| 3 | ControlFlowNode for Delete | 4 | ControlFlowNode for c |
+| 3 | ControlFlowNode for a | 3 | ControlFlowNode for Delete |
+| 3 | ControlFlowNode for b | 3 | ControlFlowNode for Delete |
+| 4 | ControlFlowNode for Delete | 1 | Exit node for Function foo |
+| 4 | ControlFlowNode for c | 4 | ControlFlowNode for Delete |

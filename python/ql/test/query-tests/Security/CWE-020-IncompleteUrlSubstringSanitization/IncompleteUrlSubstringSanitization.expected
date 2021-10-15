@@ -1,0 +1,2 @@
+| urltest.py:9:8:9:30 | Compare | '$@' may be at an arbitrary position in the sanitized URL. | urltest.py:9:8:9:20 | Str | example.com |
+| urltest.py:15:8:15:37 | Attribute() | '$@' may be at an arbitrary position in the sanitized URL. | urltest.py:15:24:15:36 | Str | example.com |

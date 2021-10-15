@@ -1,0 +1,1 @@
+| tst.js:6:1:6:16 | (req, res) => 42 | UnpromotedRouteHandlerPoI | tst.js:6:1:6:16 | (req, res) => 42 | irrelevant | tst.js:6:1:6:16 | (req, res) => 42 | irrelevant |

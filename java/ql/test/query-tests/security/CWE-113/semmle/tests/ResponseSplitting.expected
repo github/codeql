@@ -1,0 +1,14 @@
+edges
+| ResponseSplitting.java:22:20:22:67 | new Cookie(...) : Cookie | ResponseSplitting.java:23:23:23:28 | cookie |
+| ResponseSplitting.java:22:39:22:66 | getParameter(...) : String | ResponseSplitting.java:22:20:22:67 | new Cookie(...) : Cookie |
+nodes
+| ResponseSplitting.java:22:20:22:67 | new Cookie(...) : Cookie | semmle.label | new Cookie(...) : Cookie |
+| ResponseSplitting.java:22:39:22:66 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| ResponseSplitting.java:23:23:23:28 | cookie | semmle.label | cookie |
+| ResponseSplitting.java:28:38:28:72 | getParameter(...) | semmle.label | getParameter(...) |
+| ResponseSplitting.java:29:38:29:72 | getParameter(...) | semmle.label | getParameter(...) |
+subpaths
+#select
+| ResponseSplitting.java:23:23:23:28 | cookie | ResponseSplitting.java:22:39:22:66 | getParameter(...) : String | ResponseSplitting.java:23:23:23:28 | cookie | Response-splitting vulnerability due to this $@. | ResponseSplitting.java:22:39:22:66 | getParameter(...) | user-provided value |
+| ResponseSplitting.java:28:38:28:72 | getParameter(...) | ResponseSplitting.java:28:38:28:72 | getParameter(...) | ResponseSplitting.java:28:38:28:72 | getParameter(...) | Response-splitting vulnerability due to this $@. | ResponseSplitting.java:28:38:28:72 | getParameter(...) | user-provided value |
+| ResponseSplitting.java:29:38:29:72 | getParameter(...) | ResponseSplitting.java:29:38:29:72 | getParameter(...) | ResponseSplitting.java:29:38:29:72 | getParameter(...) | Response-splitting vulnerability due to this $@. | ResponseSplitting.java:29:38:29:72 | getParameter(...) | user-provided value |

@@ -1,0 +1,22 @@
+| Fields.java:13:15:13:16 | this.xs | Fields.java:18:5:18:16 | <Expr>; | Fields.java:14:5:14:9 | upd(...) |
+| Fields.java:13:15:13:16 | this.xs | Fields.java:18:5:18:16 | <Expr>; | Fields.java:17:7:17:11 | upd(...) |
+| Fields.java:24:5:24:28 | f | Fields.java:44:5:44:13 | <Expr>; | Fields.java:24:12:24:27 | f |
+| Fields.java:24:5:24:28 | f | Fields.java:44:5:44:13 | <Expr>; | Fields.java:43:7:43:22 | ...=... |
+| Fields.java:25:15:25:18 | f.xs | Fields.java:44:5:44:13 | <Expr>; | Fields.java:39:5:39:21 | ...=... |
+| Fields.java:25:15:25:18 | f.xs | Fields.java:44:5:44:13 | <Expr>; | Fields.java:43:7:43:22 | ...=... |
+| Fields.java:27:15:27:18 | Fields.stat | Fields.java:44:5:44:13 | <Expr>; | Fields.java:32:5:32:9 | f(...) |
+| Fields.java:27:15:27:18 | Fields.stat | Fields.java:44:5:44:13 | <Expr>; | Fields.java:43:11:43:22 | new Fields(...) |
+| Nested.java:24:5:24:31 | obj2 | Nested.java:30:5:30:37 | var ...; | Nested.java:26:7:26:25 | ...=... |
+| Nested.java:24:5:24:31 | obj2 | Nested.java:30:5:30:37 | var ...; | Nested.java:28:7:28:25 | ...=... |
+| Test.java:4:8:4:16 | param | Test.java:20:10:20:10 | x | Test.java:4:19:32:2 | { ... } |
+| Test.java:4:8:4:16 | param | Test.java:20:10:20:10 | x | Test.java:21:8:21:14 | ...++ |
+| Test.java:6:3:6:12 | x | Test.java:19:3:19:3 | ; | Test.java:6:7:6:11 | x |
+| Test.java:6:3:6:12 | x | Test.java:19:3:19:3 | ; | Test.java:11:8:11:10 | ++... |
+| Test.java:6:3:6:12 | x | Test.java:27:19:27:19 | i | Test.java:19:3:19:3 | ; |
+| Test.java:6:3:6:12 | x | Test.java:27:19:27:19 | i | Test.java:28:4:28:9 | ...+=... |
+| Test.java:7:3:7:8 | y | Test.java:19:3:19:3 | ; | Test.java:11:4:11:10 | ...=... |
+| Test.java:7:3:7:8 | y | Test.java:19:3:19:3 | ; | Test.java:15:4:15:9 | ...+=... |
+| Test.java:7:3:7:8 | y | Test.java:20:10:20:10 | x | Test.java:19:3:19:3 | ; |
+| Test.java:7:3:7:8 | y | Test.java:20:10:20:10 | x | Test.java:24:4:24:9 | ...-=... |
+| Test.java:27:8:27:16 | i | Test.java:27:19:27:19 | i | Test.java:27:12:27:16 | i |
+| Test.java:27:8:27:16 | i | Test.java:27:19:27:19 | i | Test.java:27:25:27:27 | ...++ |
