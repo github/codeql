@@ -56,7 +56,11 @@ class AstNode extends TAstNode {
    * named `pred`.
    */
   cached
-  AstNode getAChild(string pred) { none() }
+  AstNode getAChild(string pred) {
+    pred = directMember("getAnAnnotation") and result = getAnAnnotation()
+    or
+    pred = directMember("getQLDoc") and result = getQLDoc()
+  }
 
   /**
    * Gets the primary QL class for the ast node.
@@ -70,10 +74,7 @@ class AstNode extends TAstNode {
   predicate hasAnnotation(string name) { this.getAnAnnotation().getName() = name }
 
   /** Gets an annotation of this AST node. */
-  cached
-  Annotation getAnAnnotation() {
-    toQL(this).getParent() = pragma[only_bind_out](toQL(result)).getParent()
-  }
+  Annotation getAnAnnotation() { toQL(this).getParent() = toQL(result).getParent() }
 
   /**
    * Gets the predicate that contains this AST node.
@@ -119,8 +120,6 @@ class TopLevel extends TTopLevel, AstNode {
   NewType getANewType() { result = this.getAMember() }
 
   override ModuleMember getAChild(string pred) {
-    pred = directMember("getQLDoc") and result = this.getQLDoc()
-    or
     pred = directMember("getAnImport") and result = this.getAnImport()
     or
     pred = directMember("getAClass") and result = this.getAClass()
@@ -214,7 +213,7 @@ class BuiltinPredicate extends PredicateOrBuiltin, TBuiltin {
   override string getAPrimaryQlClass() { result = "BuiltinPredicate" }
 }
 
-private class BuiltinClassless extends BuiltinPredicate, TBuiltinClassless {
+class BuiltinClassless extends BuiltinPredicate, TBuiltinClassless {
   string name;
   string ret;
   string args;
@@ -228,7 +227,7 @@ private class BuiltinClassless extends BuiltinPredicate, TBuiltinClassless {
   override PrimitiveType getParameterType(int i) { result.getName() = getArgType(args, i) }
 }
 
-private class BuiltinMember extends BuiltinPredicate, TBuiltinMember {
+class BuiltinMember extends BuiltinPredicate, TBuiltinMember {
   string name;
   string qual;
   string ret;
@@ -626,7 +625,7 @@ class TypeExpr extends TType, AstNode {
    */
   Type getResolvedType() { resolveTypeExpr(this, result) }
 
-  override ModuleExpr getAChild(string pred) {
+  override AstNode getAChild(string pred) {
     result = super.getAChild(pred)
     or
     pred = directMember("getModule") and result = this.getModule()
@@ -691,11 +690,7 @@ class Declaration extends TDeclaration, AstNode {
     result = any(Class c).getQLDocFor(this)
   }
 
-  override AstNode getAChild(string pred) {
-    result = super.getAChild(pred)
-    or
-    pred = directMember("getQLDoc") and result = this.getQLDoc()
-  }
+  override AstNode getAChild(string pred) { result = super.getAChild(pred) }
 }
 
 /** An entity that can be declared in a module. */
@@ -784,6 +779,8 @@ class Class extends TClass, TypeDeclaration, ModuleDeclaration {
     or
     pred = directMember("getASuperType") and result = this.getASuperType()
     or
+    pred = directMember("getAnInstanceofType") and result = this.getAnInstanceofType()
+    or
     exists(string name |
       pred = stringIndexedMember("getClassPredicate", name) and
       result = this.getClassPredicate(name)
@@ -860,8 +857,6 @@ class NewTypeBranch extends TNewTypeBranch, PredicateOrBuiltin, TypeDeclaration 
     pred = directMember("getBody") and result = this.getBody()
     or
     exists(int i | pred = indexedMember("getField", i) and result = this.getField(i))
-    or
-    pred = directMember("getQLDoc") and result = this.getQLDoc()
   }
 }
 
@@ -2196,6 +2191,12 @@ class Annotation extends TAnnotation, AstNode {
 
   /** Gets the node corresponding to the field `name`. */
   string getName() { result = annot.getName().getValue() }
+
+  override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
+    exists(int i | pred = indexedMember("getArgs", i) and result = this.getArgs(i))
+  }
 }
 
 /** A `pragma[noinline]` annotation. */
@@ -2414,8 +2415,8 @@ module YAML {
 
     /** Gets the database scheme of this qlpack */
     File getDBScheme() {
-      result.getBaseName() = this.getProperty("dbscheme") and
-      result = file.getParentContainer().getFile(any(string s | s.matches("%.dbscheme")))
+      result.getAbsolutePath() =
+        file.getParentContainer().getAbsolutePath() + "/" + this.getProperty("dbscheme")
     }
 
     pragma[noinline]
