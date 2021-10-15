@@ -110,14 +110,26 @@ private module Cached {
     )
   }
 
+  private predicate resolveBuildinPredicateCall(PredicateCall call, BuiltinClassless pred) {
+    call.getNumberOfArguments() = pred.getArity() and
+    call.getPredicateName() = pred.getName()
+  }
+
   cached
   predicate resolveCall(Call c, PredicateOrBuiltin p) {
     resolvePredicateCall(c, p)
+    or
+    not resolvePredicateCall(c, _) and
+    resolveBuildinPredicateCall(c, p)
     or
     resolveMemberCall(c, p)
     or
     not resolvePredicateCall(c, _) and
     resolveDBRelation(c, p)
+    or
+    // getAQlClass() is special
+    c.(MemberCall).getMemberName() = "getAQlClass" and
+    p.(BuiltinMember).getName() = "getAQlClass"
   }
 }
 
