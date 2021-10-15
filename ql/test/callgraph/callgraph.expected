@@ -6,3 +6,5 @@
 | Foo.qll:29:5:29:16 | PredicateCall | Foo.qll:26:3:26:32 | ClasslessPredicate alias2 |
 | Foo.qll:31:5:31:12 | PredicateCall | Foo.qll:22:3:22:32 | ClasslessPredicate myThing0 |
 | Foo.qll:31:5:31:12 | PredicateCall | Foo.qll:24:3:24:32 | ClasslessPredicate alias0 |
+| Foo.qll:36:36:36:65 | MemberCall | file://:0:0:0:0 | replaceAll |
+| Foo.qll:38:39:38:67 | MemberCall | file://:0:0:0:0 | regexpCapture |
