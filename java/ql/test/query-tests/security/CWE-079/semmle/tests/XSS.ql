@@ -1,7 +1,6 @@
 import java
 import semmle.code.java.dataflow.FlowSources
-import semmle.code.java.security.XSS
-import semmle.code.java.security.XSSDefaults
+import semmle.code.java.security.XSSQuery
 import TestUtilities.InlineExpectationsTest
 
 class XSSConfig extends TaintTracking::Configuration {

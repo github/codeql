@@ -1,8 +1,7 @@
 import java
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.FlowSources
-import semmle.code.java.security.XSS
-import semmle.code.java.security.XSSDefaults
+import semmle.code.java.security.XSSQuery
 import semmle.code.java.security.UrlRedirect
 import TestUtilities.InlineFlowTest
 
