@@ -5,7 +5,6 @@
  * @kind problem
  * @id cpp/improper-null-termination
  * @problem.severity warning
- * @precision medium
  * @security-severity 7.8
  * @tags security
  *       external/cwe/cwe-170
