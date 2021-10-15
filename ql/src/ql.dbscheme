@@ -12,27 +12,14 @@ locations_default(
   int end_column: int ref
 );
 
-@sourceline = @file
-
-numlines(
-  int element_id: @sourceline ref,
-  int num_lines: int ref,
-  int num_code: int ref,
-  int num_comment: int ref
-);
-
 files(
   unique int id: @file,
-  string name: string ref,
-  string simple: string ref,
-  string ext: string ref,
-  int fromSource: int ref
+  string name: string ref
 );
 
 folders(
   unique int id: @folder,
-  string name: string ref,
-  string simple: string ref
+  string name: string ref
 );
 
 @container = @file | @folder
@@ -45,1097 +32,6 @@ containerparent(
 sourceLocationPrefix(
   string prefix: string ref
 );
-
-@add_expr_left_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @expr_annotation | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @unary_expr | @variable
-
-@add_expr_right_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @expr_annotation | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @unary_expr | @variable
-
-add_expr_def(
-  unique int id: @add_expr,
-  int left: @add_expr_left_type ref,
-  int right: @add_expr_right_type ref,
-  int child: @token_addop ref,
-  int loc: @location ref
-);
-
-@aggregate_child_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @expr_aggregate_body | @expr_annotation | @full_aggregate_body | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @token_agg_id | @unary_expr | @variable
-
-#keyset[aggregate, index]
-aggregate_child(
-  int aggregate: @aggregate ref,
-  int index: int ref,
-  unique int child: @aggregate_child_type ref
-);
-
-aggregate_def(
-  unique int id: @aggregate,
-  int loc: @location ref
-);
-
-@annotArg_child_type = @token_result | @token_simple_id | @token_this
-
-annot_arg_def(
-  unique int id: @annot_arg,
-  int child: @annotArg_child_type ref,
-  int loc: @location ref
-);
-
-@annotation_args_type = @annot_arg | @reserved_word
-
-#keyset[annotation, index]
-annotation_args(
-  int annotation: @annotation ref,
-  int index: int ref,
-  unique int args: @annotation_args_type ref
-);
-
-annotation_def(
-  unique int id: @annotation,
-  int name: @token_annot_name ref,
-  int loc: @location ref
-);
-
-arityless_predicate_expr_child(
-  unique int arityless_predicate_expr: @arityless_predicate_expr ref,
-  unique int child: @module_expr ref
-);
-
-arityless_predicate_expr_def(
-  unique int id: @arityless_predicate_expr,
-  int name: @token_literal_id ref,
-  int loc: @location ref
-);
-
-@asExpr_child_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @expr_annotation | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @unary_expr | @var_name | @variable
-
-#keyset[as_expr, index]
-as_expr_child(
-  int as_expr: @as_expr ref,
-  int index: int ref,
-  unique int child: @asExpr_child_type ref
-);
-
-as_expr_def(
-  unique int id: @as_expr,
-  int loc: @location ref
-);
-
-#keyset[as_exprs, index]
-as_exprs_child(
-  int as_exprs: @as_exprs ref,
-  int index: int ref,
-  unique int child: @as_expr ref
-);
-
-as_exprs_def(
-  unique int id: @as_exprs,
-  int loc: @location ref
-);
-
-@body_child_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @expr_annotation | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @unary_expr | @variable
-
-body_def(
-  unique int id: @body,
-  int child: @body_child_type ref,
-  int loc: @location ref
-);
-
-@bool_child_type = @token_false | @token_true
-
-bool_def(
-  unique int id: @bool,
-  int child: @bool_child_type ref,
-  int loc: @location ref
-);
-
-@call_body_child_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @expr_annotation | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @token_underscore | @unary_expr | @variable
-
-#keyset[call_body, index]
-call_body_child(
-  int call_body: @call_body ref,
-  int index: int ref,
-  unique int child: @call_body_child_type ref
-);
-
-call_body_def(
-  unique int id: @call_body,
-  int loc: @location ref
-);
-
-@call_or_unqual_agg_expr_child_type = @arityless_predicate_expr | @call_body | @token_closure | @unqual_agg_body
-
-#keyset[call_or_unqual_agg_expr, index]
-call_or_unqual_agg_expr_child(
-  int call_or_unqual_agg_expr: @call_or_unqual_agg_expr ref,
-  int index: int ref,
-  unique int child: @call_or_unqual_agg_expr_child_type ref
-);
-
-call_or_unqual_agg_expr_def(
-  unique int id: @call_or_unqual_agg_expr,
-  int loc: @location ref
-);
-
-@charpred_body_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @expr_annotation | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @unary_expr | @variable
-
-charpred_def(
-  unique int id: @charpred,
-  int body: @charpred_body_type ref,
-  int child: @token_class_name ref,
-  int loc: @location ref
-);
-
-@classMember_child_type = @annotation | @charpred | @field | @member_predicate | @token_qldoc
-
-#keyset[class_member, index]
-class_member_child(
-  int class_member: @class_member ref,
-  int index: int ref,
-  unique int child: @classMember_child_type ref
-);
-
-class_member_def(
-  unique int id: @class_member,
-  int loc: @location ref
-);
-
-@classlessPredicate_returnType_type = @token_predicate | @type_expr
-
-@classlessPredicate_child_type = @body | @higher_order_term | @predicate_alias_body | @token_empty | @var_decl
-
-#keyset[classless_predicate, index]
-classless_predicate_child(
-  int classless_predicate: @classless_predicate ref,
-  int index: int ref,
-  unique int child: @classlessPredicate_child_type ref
-);
-
-classless_predicate_def(
-  unique int id: @classless_predicate,
-  int name: @token_predicate_name ref,
-  int return_type: @classlessPredicate_returnType_type ref,
-  int loc: @location ref
-);
-
-@comp_term_left_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @expr_annotation | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @unary_expr | @variable
-
-@comp_term_right_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @expr_annotation | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @unary_expr | @variable
-
-comp_term_def(
-  unique int id: @comp_term,
-  int left: @comp_term_left_type ref,
-  int right: @comp_term_right_type ref,
-  int child: @token_compop ref,
-  int loc: @location ref
-);
-
-@conjunction_left_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @expr_annotation | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @unary_expr | @variable
-
-@conjunction_right_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @expr_annotation | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @unary_expr | @variable
-
-conjunction_def(
-  unique int id: @conjunction,
-  int left: @conjunction_left_type ref,
-  int right: @conjunction_right_type ref,
-  int loc: @location ref
-);
-
-@dataclass_extends_type = @reserved_word | @type_expr
-
-#keyset[dataclass, index]
-dataclass_extends(
-  int dataclass: @dataclass ref,
-  int index: int ref,
-  unique int extends: @dataclass_extends_type ref
-);
-
-@dataclass_instanceof_type = @reserved_word | @type_expr
-
-#keyset[dataclass, index]
-dataclass_instanceof(
-  int dataclass: @dataclass ref,
-  int index: int ref,
-  unique int instanceof: @dataclass_instanceof_type ref
-);
-
-@dataclass_child_type = @class_member | @type_alias_body | @type_union_body
-
-#keyset[dataclass, index]
-dataclass_child(
-  int dataclass: @dataclass ref,
-  int index: int ref,
-  unique int child: @dataclass_child_type ref
-);
-
-dataclass_def(
-  unique int id: @dataclass,
-  int name: @token_class_name ref,
-  int loc: @location ref
-);
-
-datatype_def(
-  unique int id: @datatype,
-  int name: @token_class_name ref,
-  int child: @datatype_branches ref,
-  int loc: @location ref
-);
-
-@datatypeBranch_child_type = @annotation | @body | @token_qldoc | @var_decl
-
-#keyset[datatype_branch, index]
-datatype_branch_child(
-  int datatype_branch: @datatype_branch ref,
-  int index: int ref,
-  unique int child: @datatypeBranch_child_type ref
-);
-
-datatype_branch_def(
-  unique int id: @datatype_branch,
-  int name: @token_class_name ref,
-  int loc: @location ref
-);
-
-#keyset[datatype_branches, index]
-datatype_branches_child(
-  int datatype_branches: @datatype_branches ref,
-  int index: int ref,
-  unique int child: @datatype_branch ref
-);
-
-datatype_branches_def(
-  unique int id: @datatype_branches,
-  int loc: @location ref
-);
-
-db_annotation_args_annotation(
-  unique int db_annotation: @db_annotation ref,
-  unique int args_annotation: @db_args_annotation ref
-);
-
-db_annotation_simple_annotation(
-  unique int db_annotation: @db_annotation ref,
-  unique int simple_annotation: @token_annot_name ref
-);
-
-db_annotation_def(
-  unique int id: @db_annotation,
-  int loc: @location ref
-);
-
-#keyset[db_args_annotation, index]
-db_args_annotation_child(
-  int db_args_annotation: @db_args_annotation ref,
-  int index: int ref,
-  unique int child: @token_simple_id ref
-);
-
-db_args_annotation_def(
-  unique int id: @db_args_annotation,
-  int name: @token_annot_name ref,
-  int loc: @location ref
-);
-
-db_branch_qldoc(
-  unique int db_branch: @db_branch ref,
-  unique int qldoc: @token_qldoc ref
-);
-
-@db_branch_child_type = @token_dbtype | @token_integer
-
-#keyset[db_branch, index]
-db_branch_child(
-  int db_branch: @db_branch ref,
-  int index: int ref,
-  unique int child: @db_branch_child_type ref
-);
-
-db_branch_def(
-  unique int id: @db_branch,
-  int loc: @location ref
-);
-
-@db_caseDecl_child_type = @db_branch | @token_db_case
-
-#keyset[db_case_decl, index]
-db_case_decl_child(
-  int db_case_decl: @db_case_decl ref,
-  int index: int ref,
-  unique int child: @db_caseDecl_child_type ref
-);
-
-db_case_decl_def(
-  unique int id: @db_case_decl,
-  int base: @token_dbtype ref,
-  int discriminator: @token_simple_id ref,
-  int loc: @location ref
-);
-
-@db_colType_child_type = @token_db_boolean | @token_db_date | @token_db_float | @token_db_int | @token_db_string | @token_dbtype
-
-db_col_type_def(
-  unique int id: @db_col_type,
-  int child: @db_colType_child_type ref,
-  int loc: @location ref
-);
-
-db_column_is_ref(
-  unique int db_column: @db_column ref,
-  unique int is_ref: @token_db_ref ref
-);
-
-db_column_is_unique(
-  unique int db_column: @db_column ref,
-  unique int is_unique: @token_db_unique ref
-);
-
-db_column_qldoc(
-  unique int db_column: @db_column ref,
-  unique int qldoc: @token_qldoc ref
-);
-
-db_column_def(
-  unique int id: @db_column,
-  int col_name: @token_simple_id ref,
-  int col_type: @db_col_type ref,
-  int repr_type: @db_repr_type ref,
-  int loc: @location ref
-);
-
-@db_entry_child_type = @db_case_decl | @db_table | @db_union_decl | @token_qldoc
-
-db_entry_def(
-  unique int id: @db_entry,
-  int child: @db_entry_child_type ref,
-  int loc: @location ref
-);
-
-@db_reprType_child_type = @token_db_boolean | @token_db_date | @token_db_float | @token_db_int | @token_db_string | @token_db_varchar | @token_integer
-
-#keyset[db_repr_type, index]
-db_repr_type_child(
-  int db_repr_type: @db_repr_type ref,
-  int index: int ref,
-  unique int child: @db_reprType_child_type ref
-);
-
-db_repr_type_def(
-  unique int id: @db_repr_type,
-  int loc: @location ref
-);
-
-@db_table_child_type = @db_annotation | @db_column
-
-#keyset[db_table, index]
-db_table_child(
-  int db_table: @db_table ref,
-  int index: int ref,
-  unique int child: @db_table_child_type ref
-);
-
-db_table_def(
-  unique int id: @db_table,
-  int table_name: @db_table_name ref,
-  int loc: @location ref
-);
-
-db_table_name_def(
-  unique int id: @db_table_name,
-  int child: @token_simple_id ref,
-  int loc: @location ref
-);
-
-#keyset[db_union_decl, index]
-db_union_decl_child(
-  int db_union_decl: @db_union_decl ref,
-  int index: int ref,
-  unique int child: @token_dbtype ref
-);
-
-db_union_decl_def(
-  unique int id: @db_union_decl,
-  int base: @token_dbtype ref,
-  int loc: @location ref
-);
-
-@disjunction_left_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @expr_annotation | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @unary_expr | @variable
-
-@disjunction_right_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @expr_annotation | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @unary_expr | @variable
-
-disjunction_def(
-  unique int id: @disjunction,
-  int left: @disjunction_left_type ref,
-  int right: @disjunction_right_type ref,
-  int loc: @location ref
-);
-
-expr_aggregate_body_order_bys(
-  unique int expr_aggregate_body: @expr_aggregate_body ref,
-  unique int order_bys: @order_bys ref
-);
-
-expr_aggregate_body_def(
-  unique int id: @expr_aggregate_body,
-  int as_exprs: @as_exprs ref,
-  int loc: @location ref
-);
-
-@expr_annotation_child_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @expr_annotation | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @unary_expr | @variable
-
-expr_annotation_def(
-  unique int id: @expr_annotation,
-  int annot_arg: @token_annot_name ref,
-  int name: @token_annot_name ref,
-  int child: @expr_annotation_child_type ref,
-  int loc: @location ref
-);
-
-field_def(
-  unique int id: @field,
-  int child: @var_decl ref,
-  int loc: @location ref
-);
-
-full_aggregate_body_as_exprs(
-  unique int full_aggregate_body: @full_aggregate_body ref,
-  unique int as_exprs: @as_exprs ref
-);
-
-@full_aggregate_body_guard_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @expr_annotation | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @unary_expr | @variable
-
-full_aggregate_body_guard(
-  unique int full_aggregate_body: @full_aggregate_body ref,
-  unique int guard: @full_aggregate_body_guard_type ref
-);
-
-full_aggregate_body_order_bys(
-  unique int full_aggregate_body: @full_aggregate_body ref,
-  unique int order_bys: @order_bys ref
-);
-
-#keyset[full_aggregate_body, index]
-full_aggregate_body_child(
-  int full_aggregate_body: @full_aggregate_body ref,
-  int index: int ref,
-  unique int child: @var_decl ref
-);
-
-full_aggregate_body_def(
-  unique int id: @full_aggregate_body,
-  int loc: @location ref
-);
-
-@higherOrderTerm_child_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @expr_annotation | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @predicate_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @token_underscore | @unary_expr | @variable
-
-#keyset[higher_order_term, index]
-higher_order_term_child(
-  int higher_order_term: @higher_order_term ref,
-  int index: int ref,
-  unique int child: @higherOrderTerm_child_type ref
-);
-
-higher_order_term_def(
-  unique int id: @higher_order_term,
-  int name: @token_literal_id ref,
-  int loc: @location ref
-);
-
-@if_term_cond_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @expr_annotation | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @unary_expr | @variable
-
-@if_term_first_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @expr_annotation | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @unary_expr | @variable
-
-@if_term_second_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @expr_annotation | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @unary_expr | @variable
-
-if_term_def(
-  unique int id: @if_term,
-  int cond: @if_term_cond_type ref,
-  int first: @if_term_first_type ref,
-  int second: @if_term_second_type ref,
-  int loc: @location ref
-);
-
-@implication_left_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @expr_annotation | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @unary_expr | @variable
-
-@implication_right_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @expr_annotation | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @unary_expr | @variable
-
-implication_def(
-  unique int id: @implication,
-  int left: @implication_left_type ref,
-  int right: @implication_right_type ref,
-  int loc: @location ref
-);
-
-@importDirective_child_type = @import_module_expr | @module_name
-
-#keyset[import_directive, index]
-import_directive_child(
-  int import_directive: @import_directive ref,
-  int index: int ref,
-  unique int child: @importDirective_child_type ref
-);
-
-import_directive_def(
-  unique int id: @import_directive,
-  int loc: @location ref
-);
-
-#keyset[import_module_expr, index]
-import_module_expr_name(
-  int import_module_expr: @import_module_expr ref,
-  int index: int ref,
-  unique int name: @token_simple_id ref
-);
-
-import_module_expr_def(
-  unique int id: @import_module_expr,
-  int child: @qual_module_expr ref,
-  int loc: @location ref
-);
-
-@in_expr_left_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @expr_annotation | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @unary_expr | @variable
-
-@in_expr_right_type = @aggregate | @call_or_unqual_agg_expr | @expr_annotation | @literal | @par_expr | @qualified_expr | @range | @set_literal | @super_ref | @variable
-
-in_expr_def(
-  unique int id: @in_expr,
-  int left: @in_expr_left_type ref,
-  int right: @in_expr_right_type ref,
-  int loc: @location ref
-);
-
-@instance_of_child_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @expr_annotation | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @type_expr | @unary_expr | @variable
-
-#keyset[instance_of, index]
-instance_of_child(
-  int instance_of: @instance_of ref,
-  int index: int ref,
-  unique int child: @instance_of_child_type ref
-);
-
-instance_of_def(
-  unique int id: @instance_of,
-  int loc: @location ref
-);
-
-@literal_child_type = @bool | @token_float | @token_integer | @token_string
-
-literal_def(
-  unique int id: @literal,
-  int child: @literal_child_type ref,
-  int loc: @location ref
-);
-
-@memberPredicate_returnType_type = @token_predicate | @type_expr
-
-@memberPredicate_child_type = @body | @higher_order_term | @token_empty | @var_decl
-
-#keyset[member_predicate, index]
-member_predicate_child(
-  int member_predicate: @member_predicate ref,
-  int index: int ref,
-  unique int child: @memberPredicate_child_type ref
-);
-
-member_predicate_def(
-  unique int id: @member_predicate,
-  int name: @token_predicate_name ref,
-  int return_type: @memberPredicate_returnType_type ref,
-  int loc: @location ref
-);
-
-@module_child_type = @module_alias_body | @module_member
-
-#keyset[module, index]
-module_child(
-  int module: @module ref,
-  int index: int ref,
-  unique int child: @module_child_type ref
-);
-
-module_def(
-  unique int id: @module,
-  int name: @module_name ref,
-  int loc: @location ref
-);
-
-module_alias_body_def(
-  unique int id: @module_alias_body,
-  int child: @module_expr ref,
-  int loc: @location ref
-);
-
-module_expr_name(
-  unique int module_expr: @module_expr ref,
-  unique int name: @token_simple_id ref
-);
-
-@moduleExpr_child_type = @module_expr | @token_simple_id
-
-module_expr_def(
-  unique int id: @module_expr,
-  int child: @moduleExpr_child_type ref,
-  int loc: @location ref
-);
-
-@moduleMember_child_type = @annotation | @classless_predicate | @dataclass | @datatype | @import_directive | @module | @select | @token_qldoc
-
-#keyset[module_member, index]
-module_member_child(
-  int module_member: @module_member ref,
-  int index: int ref,
-  unique int child: @moduleMember_child_type ref
-);
-
-module_member_def(
-  unique int id: @module_member,
-  int loc: @location ref
-);
-
-module_name_def(
-  unique int id: @module_name,
-  int child: @token_simple_id ref,
-  int loc: @location ref
-);
-
-@mul_expr_left_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @expr_annotation | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @unary_expr | @variable
-
-@mul_expr_right_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @expr_annotation | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @unary_expr | @variable
-
-mul_expr_def(
-  unique int id: @mul_expr,
-  int left: @mul_expr_left_type ref,
-  int right: @mul_expr_right_type ref,
-  int child: @token_mulop ref,
-  int loc: @location ref
-);
-
-@negation_child_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @expr_annotation | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @unary_expr | @variable
-
-negation_def(
-  unique int id: @negation,
-  int child: @negation_child_type ref,
-  int loc: @location ref
-);
-
-@orderBy_child_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @expr_annotation | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @token_direction | @unary_expr | @variable
-
-#keyset[order_by, index]
-order_by_child(
-  int order_by: @order_by ref,
-  int index: int ref,
-  unique int child: @orderBy_child_type ref
-);
-
-order_by_def(
-  unique int id: @order_by,
-  int loc: @location ref
-);
-
-#keyset[order_bys, index]
-order_bys_child(
-  int order_bys: @order_bys ref,
-  int index: int ref,
-  unique int child: @order_by ref
-);
-
-order_bys_def(
-  unique int id: @order_bys,
-  int loc: @location ref
-);
-
-@par_expr_child_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @expr_annotation | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @unary_expr | @variable
-
-par_expr_def(
-  unique int id: @par_expr,
-  int child: @par_expr_child_type ref,
-  int loc: @location ref
-);
-
-predicate_alias_body_def(
-  unique int id: @predicate_alias_body,
-  int child: @predicate_expr ref,
-  int loc: @location ref
-);
-
-@predicateExpr_child_type = @arityless_predicate_expr | @token_integer
-
-#keyset[predicate_expr, index]
-predicate_expr_child(
-  int predicate_expr: @predicate_expr ref,
-  int index: int ref,
-  unique int child: @predicateExpr_child_type ref
-);
-
-predicate_expr_def(
-  unique int id: @predicate_expr,
-  int loc: @location ref
-);
-
-@prefix_cast_child_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @expr_annotation | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @type_expr | @unary_expr | @variable
-
-#keyset[prefix_cast, index]
-prefix_cast_child(
-  int prefix_cast: @prefix_cast ref,
-  int index: int ref,
-  unique int child: @prefix_cast_child_type ref
-);
-
-prefix_cast_def(
-  unique int id: @prefix_cast,
-  int loc: @location ref
-);
-
-@ql_child_type = @db_entry | @module_member | @yaml_entry
-
-#keyset[ql, index]
-ql_child(
-  int ql: @ql ref,
-  int index: int ref,
-  unique int child: @ql_child_type ref
-);
-
-ql_def(
-  unique int id: @ql,
-  int loc: @location ref
-);
-
-#keyset[qual_module_expr, index]
-qual_module_expr_name(
-  int qual_module_expr: @qual_module_expr ref,
-  int index: int ref,
-  unique int name: @token_simple_id ref
-);
-
-qual_module_expr_def(
-  unique int id: @qual_module_expr,
-  int loc: @location ref
-);
-
-qualified_rhs_name(
-  unique int qualified_rhs: @qualified_rhs ref,
-  unique int name: @token_predicate_name ref
-);
-
-@qualifiedRhs_child_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @expr_annotation | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @token_closure | @token_underscore | @type_expr | @unary_expr | @variable
-
-#keyset[qualified_rhs, index]
-qualified_rhs_child(
-  int qualified_rhs: @qualified_rhs ref,
-  int index: int ref,
-  unique int child: @qualifiedRhs_child_type ref
-);
-
-qualified_rhs_def(
-  unique int id: @qualified_rhs,
-  int loc: @location ref
-);
-
-@qualified_expr_child_type = @aggregate | @call_or_unqual_agg_expr | @expr_annotation | @literal | @par_expr | @qualified_expr | @qualified_rhs | @range | @set_literal | @super_ref | @variable
-
-#keyset[qualified_expr, index]
-qualified_expr_child(
-  int qualified_expr: @qualified_expr ref,
-  int index: int ref,
-  unique int child: @qualified_expr_child_type ref
-);
-
-qualified_expr_def(
-  unique int id: @qualified_expr,
-  int loc: @location ref
-);
-
-@quantified_expr_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @expr_annotation | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @unary_expr | @variable
-
-quantified_expr(
-  unique int quantified: @quantified ref,
-  unique int expr: @quantified_expr_type ref
-);
-
-@quantified_formula_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @expr_annotation | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @unary_expr | @variable
-
-quantified_formula(
-  unique int quantified: @quantified ref,
-  unique int formula: @quantified_formula_type ref
-);
-
-@quantified_range_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @expr_annotation | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @unary_expr | @variable
-
-quantified_range(
-  unique int quantified: @quantified ref,
-  unique int range: @quantified_range_type ref
-);
-
-@quantified_child_type = @token_quantifier | @var_decl
-
-#keyset[quantified, index]
-quantified_child(
-  int quantified: @quantified ref,
-  int index: int ref,
-  unique int child: @quantified_child_type ref
-);
-
-quantified_def(
-  unique int id: @quantified,
-  int loc: @location ref
-);
-
-@range_lower_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @expr_annotation | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @unary_expr | @variable
-
-@range_upper_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @expr_annotation | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @unary_expr | @variable
-
-range_def(
-  unique int id: @range,
-  int lower: @range_lower_type ref,
-  int upper: @range_upper_type ref,
-  int loc: @location ref
-);
-
-@select_child_type = @add_expr | @aggregate | @as_exprs | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @expr_annotation | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @order_bys | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @unary_expr | @var_decl | @variable
-
-#keyset[select, index]
-select_child(
-  int select: @select ref,
-  int index: int ref,
-  unique int child: @select_child_type ref
-);
-
-select_def(
-  unique int id: @select,
-  int loc: @location ref
-);
-
-@set_literal_child_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @expr_annotation | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @unary_expr | @variable
-
-#keyset[set_literal, index]
-set_literal_child(
-  int set_literal: @set_literal ref,
-  int index: int ref,
-  unique int child: @set_literal_child_type ref
-);
-
-set_literal_def(
-  unique int id: @set_literal,
-  int loc: @location ref
-);
-
-special_call_def(
-  unique int id: @special_call,
-  int child: @token_special_id ref,
-  int loc: @location ref
-);
-
-@super_ref_child_type = @token_super | @type_expr
-
-#keyset[super_ref, index]
-super_ref_child(
-  int super_ref: @super_ref ref,
-  int index: int ref,
-  unique int child: @super_ref_child_type ref
-);
-
-super_ref_def(
-  unique int id: @super_ref,
-  int loc: @location ref
-);
-
-type_alias_body_def(
-  unique int id: @type_alias_body,
-  int child: @type_expr ref,
-  int loc: @location ref
-);
-
-type_expr_name(
-  unique int type_expr: @type_expr ref,
-  unique int name: @token_class_name ref
-);
-
-@typeExpr_child_type = @module_expr | @token_dbtype | @token_primitive_type
-
-type_expr_child(
-  unique int type_expr: @type_expr ref,
-  unique int child: @typeExpr_child_type ref
-);
-
-type_expr_def(
-  unique int id: @type_expr,
-  int loc: @location ref
-);
-
-#keyset[type_union_body, index]
-type_union_body_child(
-  int type_union_body: @type_union_body ref,
-  int index: int ref,
-  unique int child: @type_expr ref
-);
-
-type_union_body_def(
-  unique int id: @type_union_body,
-  int loc: @location ref
-);
-
-@unary_expr_child_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @expr_annotation | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @token_unop | @unary_expr | @variable
-
-#keyset[unary_expr, index]
-unary_expr_child(
-  int unary_expr: @unary_expr ref,
-  int index: int ref,
-  unique int child: @unary_expr_child_type ref
-);
-
-unary_expr_def(
-  unique int id: @unary_expr,
-  int loc: @location ref
-);
-
-@unqual_agg_body_asExprs_type = @as_exprs | @reserved_word
-
-#keyset[unqual_agg_body, index]
-unqual_agg_body_as_exprs(
-  int unqual_agg_body: @unqual_agg_body ref,
-  int index: int ref,
-  unique int as_exprs: @unqual_agg_body_asExprs_type ref
-);
-
-@unqual_agg_body_guard_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @expr_annotation | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @unary_expr | @variable
-
-unqual_agg_body_guard(
-  unique int unqual_agg_body: @unqual_agg_body ref,
-  unique int guard: @unqual_agg_body_guard_type ref
-);
-
-#keyset[unqual_agg_body, index]
-unqual_agg_body_child(
-  int unqual_agg_body: @unqual_agg_body ref,
-  int index: int ref,
-  unique int child: @var_decl ref
-);
-
-unqual_agg_body_def(
-  unique int id: @unqual_agg_body,
-  int loc: @location ref
-);
-
-@varDecl_child_type = @type_expr | @var_name
-
-#keyset[var_decl, index]
-var_decl_child(
-  int var_decl: @var_decl ref,
-  int index: int ref,
-  unique int child: @varDecl_child_type ref
-);
-
-var_decl_def(
-  unique int id: @var_decl,
-  int loc: @location ref
-);
-
-var_name_def(
-  unique int id: @var_name,
-  int child: @token_simple_id ref,
-  int loc: @location ref
-);
-
-@variable_child_type = @token_result | @token_this | @var_name
-
-variable_def(
-  unique int id: @variable,
-  int child: @variable_child_type ref,
-  int loc: @location ref
-);
-
-yaml_comment_def(
-  unique int id: @yaml_comment,
-  int child: @token_yaml_value ref,
-  int loc: @location ref
-);
-
-@yaml_entry_child_type = @yaml_comment | @yaml_keyvaluepair | @yaml_listitem
-
-yaml_entry_def(
-  unique int id: @yaml_entry,
-  int child: @yaml_entry_child_type ref,
-  int loc: @location ref
-);
-
-@yaml_key_child_type = @token_simple_id | @yaml_key
-
-#keyset[yaml_key, index]
-yaml_key_child(
-  int yaml_key: @yaml_key ref,
-  int index: int ref,
-  unique int child: @yaml_key_child_type ref
-);
-
-yaml_key_def(
-  unique int id: @yaml_key,
-  int loc: @location ref
-);
-
-yaml_keyvaluepair_def(
-  unique int id: @yaml_keyvaluepair,
-  int key__: @yaml_key ref,
-  int value: @token_yaml_value ref,
-  int loc: @location ref
-);
-
-yaml_listitem_def(
-  unique int id: @yaml_listitem,
-  int child: @token_yaml_value ref,
-  int loc: @location ref
-);
-
-tokeninfo(
-  unique int id: @token,
-  int kind: int ref,
-  int file: @file ref,
-  int idx: int ref,
-  string value: string ref,
-  int loc: @location ref
-);
-
-case @token.kind of
-  0 = @reserved_word
-| 1 = @token_addop
-| 2 = @token_agg_id
-| 3 = @token_annot_name
-| 4 = @token_block_comment
-| 5 = @token_class_name
-| 6 = @token_closure
-| 7 = @token_compop
-| 8 = @token_db_boolean
-| 9 = @token_db_case
-| 10 = @token_db_date
-| 11 = @token_db_float
-| 12 = @token_db_int
-| 13 = @token_db_ref
-| 14 = @token_db_string
-| 15 = @token_db_unique
-| 16 = @token_db_varchar
-| 17 = @token_dbtype
-| 18 = @token_direction
-| 19 = @token_empty
-| 20 = @token_false
-| 21 = @token_float
-| 22 = @token_integer
-| 23 = @token_line_comment
-| 24 = @token_literal_id
-| 25 = @token_mulop
-| 26 = @token_predicate
-| 27 = @token_predicate_name
-| 28 = @token_primitive_type
-| 29 = @token_qldoc
-| 30 = @token_quantifier
-| 31 = @token_result
-| 32 = @token_simple_id
-| 33 = @token_special_id
-| 34 = @token_string
-| 35 = @token_super
-| 36 = @token_this
-| 37 = @token_true
-| 38 = @token_underscore
-| 39 = @token_unop
-| 40 = @token_yaml_value
-;
-
 
 diagnostics(
   unique int id: @diagnostic,
@@ -1154,14 +50,1103 @@ case @diagnostic.severity of
 ;
 
 
-@ast_node = @add_expr | @aggregate | @annot_arg | @annotation | @arityless_predicate_expr | @as_expr | @as_exprs | @body | @bool | @call_body | @call_or_unqual_agg_expr | @charpred | @class_member | @classless_predicate | @comp_term | @conjunction | @dataclass | @datatype | @datatype_branch | @datatype_branches | @db_annotation | @db_args_annotation | @db_branch | @db_case_decl | @db_col_type | @db_column | @db_entry | @db_repr_type | @db_table | @db_table_name | @db_union_decl | @disjunction | @expr_aggregate_body | @expr_annotation | @field | @full_aggregate_body | @higher_order_term | @if_term | @implication | @import_directive | @import_module_expr | @in_expr | @instance_of | @literal | @member_predicate | @module | @module_alias_body | @module_expr | @module_member | @module_name | @mul_expr | @negation | @order_by | @order_bys | @par_expr | @predicate_alias_body | @predicate_expr | @prefix_cast | @ql | @qual_module_expr | @qualified_expr | @qualified_rhs | @quantified | @range | @select | @set_literal | @special_call | @super_ref | @token | @type_alias_body | @type_expr | @type_union_body | @unary_expr | @unqual_agg_body | @var_decl | @var_name | @variable | @yaml_comment | @yaml_entry | @yaml_key | @yaml_keyvaluepair | @yaml_listitem
+@ql_add_expr_left_type = @ql_add_expr | @ql_aggregate | @ql_call_or_unqual_agg_expr | @ql_comp_term | @ql_conjunction | @ql_disjunction | @ql_expr_annotation | @ql_if_term | @ql_implication | @ql_in_expr | @ql_instance_of | @ql_literal | @ql_mul_expr | @ql_negation | @ql_par_expr | @ql_prefix_cast | @ql_qualified_expr | @ql_quantified | @ql_range | @ql_set_literal | @ql_special_call | @ql_super_ref | @ql_unary_expr | @ql_variable
 
-@ast_node_parent = @ast_node | @file
+@ql_add_expr_right_type = @ql_add_expr | @ql_aggregate | @ql_call_or_unqual_agg_expr | @ql_comp_term | @ql_conjunction | @ql_disjunction | @ql_expr_annotation | @ql_if_term | @ql_implication | @ql_in_expr | @ql_instance_of | @ql_literal | @ql_mul_expr | @ql_negation | @ql_par_expr | @ql_prefix_cast | @ql_qualified_expr | @ql_quantified | @ql_range | @ql_set_literal | @ql_special_call | @ql_super_ref | @ql_unary_expr | @ql_variable
+
+ql_add_expr_def(
+  unique int id: @ql_add_expr,
+  int left: @ql_add_expr_left_type ref,
+  int right: @ql_add_expr_right_type ref,
+  int child: @ql_token_addop ref,
+  int loc: @location ref
+);
+
+@ql_aggregate_child_type = @ql_add_expr | @ql_aggregate | @ql_call_or_unqual_agg_expr | @ql_comp_term | @ql_conjunction | @ql_disjunction | @ql_expr_aggregate_body | @ql_expr_annotation | @ql_full_aggregate_body | @ql_if_term | @ql_implication | @ql_in_expr | @ql_instance_of | @ql_literal | @ql_mul_expr | @ql_negation | @ql_par_expr | @ql_prefix_cast | @ql_qualified_expr | @ql_quantified | @ql_range | @ql_set_literal | @ql_special_call | @ql_super_ref | @ql_token_agg_id | @ql_unary_expr | @ql_variable
+
+#keyset[ql_aggregate, index]
+ql_aggregate_child(
+  int ql_aggregate: @ql_aggregate ref,
+  int index: int ref,
+  unique int child: @ql_aggregate_child_type ref
+);
+
+ql_aggregate_def(
+  unique int id: @ql_aggregate,
+  int loc: @location ref
+);
+
+@ql_annotArg_child_type = @ql_token_result | @ql_token_simple_id | @ql_token_this
+
+ql_annot_arg_def(
+  unique int id: @ql_annot_arg,
+  int child: @ql_annotArg_child_type ref,
+  int loc: @location ref
+);
+
+@ql_annotation_args_type = @ql_annot_arg | @ql_reserved_word
+
+#keyset[ql_annotation, index]
+ql_annotation_args(
+  int ql_annotation: @ql_annotation ref,
+  int index: int ref,
+  unique int args: @ql_annotation_args_type ref
+);
+
+ql_annotation_def(
+  unique int id: @ql_annotation,
+  int name: @ql_token_annot_name ref,
+  int loc: @location ref
+);
+
+ql_arityless_predicate_expr_child(
+  unique int ql_arityless_predicate_expr: @ql_arityless_predicate_expr ref,
+  unique int child: @ql_module_expr ref
+);
+
+ql_arityless_predicate_expr_def(
+  unique int id: @ql_arityless_predicate_expr,
+  int name: @ql_token_literal_id ref,
+  int loc: @location ref
+);
+
+@ql_asExpr_child_type = @ql_add_expr | @ql_aggregate | @ql_call_or_unqual_agg_expr | @ql_comp_term | @ql_conjunction | @ql_disjunction | @ql_expr_annotation | @ql_if_term | @ql_implication | @ql_in_expr | @ql_instance_of | @ql_literal | @ql_mul_expr | @ql_negation | @ql_par_expr | @ql_prefix_cast | @ql_qualified_expr | @ql_quantified | @ql_range | @ql_set_literal | @ql_special_call | @ql_super_ref | @ql_unary_expr | @ql_var_name | @ql_variable
+
+#keyset[ql_as_expr, index]
+ql_as_expr_child(
+  int ql_as_expr: @ql_as_expr ref,
+  int index: int ref,
+  unique int child: @ql_asExpr_child_type ref
+);
+
+ql_as_expr_def(
+  unique int id: @ql_as_expr,
+  int loc: @location ref
+);
+
+#keyset[ql_as_exprs, index]
+ql_as_exprs_child(
+  int ql_as_exprs: @ql_as_exprs ref,
+  int index: int ref,
+  unique int child: @ql_as_expr ref
+);
+
+ql_as_exprs_def(
+  unique int id: @ql_as_exprs,
+  int loc: @location ref
+);
+
+@ql_body_child_type = @ql_add_expr | @ql_aggregate | @ql_call_or_unqual_agg_expr | @ql_comp_term | @ql_conjunction | @ql_disjunction | @ql_expr_annotation | @ql_if_term | @ql_implication | @ql_in_expr | @ql_instance_of | @ql_literal | @ql_mul_expr | @ql_negation | @ql_par_expr | @ql_prefix_cast | @ql_qualified_expr | @ql_quantified | @ql_range | @ql_set_literal | @ql_special_call | @ql_super_ref | @ql_unary_expr | @ql_variable
+
+ql_body_def(
+  unique int id: @ql_body,
+  int child: @ql_body_child_type ref,
+  int loc: @location ref
+);
+
+@ql_bool_child_type = @ql_token_false | @ql_token_true
+
+ql_bool_def(
+  unique int id: @ql_bool,
+  int child: @ql_bool_child_type ref,
+  int loc: @location ref
+);
+
+@ql_call_body_child_type = @ql_add_expr | @ql_aggregate | @ql_call_or_unqual_agg_expr | @ql_comp_term | @ql_conjunction | @ql_disjunction | @ql_expr_annotation | @ql_if_term | @ql_implication | @ql_in_expr | @ql_instance_of | @ql_literal | @ql_mul_expr | @ql_negation | @ql_par_expr | @ql_prefix_cast | @ql_qualified_expr | @ql_quantified | @ql_range | @ql_set_literal | @ql_special_call | @ql_super_ref | @ql_token_underscore | @ql_unary_expr | @ql_variable
+
+#keyset[ql_call_body, index]
+ql_call_body_child(
+  int ql_call_body: @ql_call_body ref,
+  int index: int ref,
+  unique int child: @ql_call_body_child_type ref
+);
+
+ql_call_body_def(
+  unique int id: @ql_call_body,
+  int loc: @location ref
+);
+
+@ql_call_or_unqual_agg_expr_child_type = @ql_arityless_predicate_expr | @ql_call_body | @ql_token_closure | @ql_unqual_agg_body
+
+#keyset[ql_call_or_unqual_agg_expr, index]
+ql_call_or_unqual_agg_expr_child(
+  int ql_call_or_unqual_agg_expr: @ql_call_or_unqual_agg_expr ref,
+  int index: int ref,
+  unique int child: @ql_call_or_unqual_agg_expr_child_type ref
+);
+
+ql_call_or_unqual_agg_expr_def(
+  unique int id: @ql_call_or_unqual_agg_expr,
+  int loc: @location ref
+);
+
+@ql_charpred_body_type = @ql_add_expr | @ql_aggregate | @ql_call_or_unqual_agg_expr | @ql_comp_term | @ql_conjunction | @ql_disjunction | @ql_expr_annotation | @ql_if_term | @ql_implication | @ql_in_expr | @ql_instance_of | @ql_literal | @ql_mul_expr | @ql_negation | @ql_par_expr | @ql_prefix_cast | @ql_qualified_expr | @ql_quantified | @ql_range | @ql_set_literal | @ql_special_call | @ql_super_ref | @ql_unary_expr | @ql_variable
+
+ql_charpred_def(
+  unique int id: @ql_charpred,
+  int body: @ql_charpred_body_type ref,
+  int child: @ql_token_class_name ref,
+  int loc: @location ref
+);
+
+@ql_classMember_child_type = @ql_annotation | @ql_charpred | @ql_field | @ql_member_predicate | @ql_token_qldoc
+
+#keyset[ql_class_member, index]
+ql_class_member_child(
+  int ql_class_member: @ql_class_member ref,
+  int index: int ref,
+  unique int child: @ql_classMember_child_type ref
+);
+
+ql_class_member_def(
+  unique int id: @ql_class_member,
+  int loc: @location ref
+);
+
+@ql_classlessPredicate_returnType_type = @ql_token_predicate | @ql_type_expr
+
+@ql_classlessPredicate_child_type = @ql_body | @ql_higher_order_term | @ql_predicate_alias_body | @ql_token_empty | @ql_var_decl
+
+#keyset[ql_classless_predicate, index]
+ql_classless_predicate_child(
+  int ql_classless_predicate: @ql_classless_predicate ref,
+  int index: int ref,
+  unique int child: @ql_classlessPredicate_child_type ref
+);
+
+ql_classless_predicate_def(
+  unique int id: @ql_classless_predicate,
+  int name: @ql_token_predicate_name ref,
+  int return_type: @ql_classlessPredicate_returnType_type ref,
+  int loc: @location ref
+);
+
+@ql_comp_term_left_type = @ql_add_expr | @ql_aggregate | @ql_call_or_unqual_agg_expr | @ql_comp_term | @ql_conjunction | @ql_disjunction | @ql_expr_annotation | @ql_if_term | @ql_implication | @ql_in_expr | @ql_instance_of | @ql_literal | @ql_mul_expr | @ql_negation | @ql_par_expr | @ql_prefix_cast | @ql_qualified_expr | @ql_quantified | @ql_range | @ql_set_literal | @ql_special_call | @ql_super_ref | @ql_unary_expr | @ql_variable
+
+@ql_comp_term_right_type = @ql_add_expr | @ql_aggregate | @ql_call_or_unqual_agg_expr | @ql_comp_term | @ql_conjunction | @ql_disjunction | @ql_expr_annotation | @ql_if_term | @ql_implication | @ql_in_expr | @ql_instance_of | @ql_literal | @ql_mul_expr | @ql_negation | @ql_par_expr | @ql_prefix_cast | @ql_qualified_expr | @ql_quantified | @ql_range | @ql_set_literal | @ql_special_call | @ql_super_ref | @ql_unary_expr | @ql_variable
+
+ql_comp_term_def(
+  unique int id: @ql_comp_term,
+  int left: @ql_comp_term_left_type ref,
+  int right: @ql_comp_term_right_type ref,
+  int child: @ql_token_compop ref,
+  int loc: @location ref
+);
+
+@ql_conjunction_left_type = @ql_add_expr | @ql_aggregate | @ql_call_or_unqual_agg_expr | @ql_comp_term | @ql_conjunction | @ql_disjunction | @ql_expr_annotation | @ql_if_term | @ql_implication | @ql_in_expr | @ql_instance_of | @ql_literal | @ql_mul_expr | @ql_negation | @ql_par_expr | @ql_prefix_cast | @ql_qualified_expr | @ql_quantified | @ql_range | @ql_set_literal | @ql_special_call | @ql_super_ref | @ql_unary_expr | @ql_variable
+
+@ql_conjunction_right_type = @ql_add_expr | @ql_aggregate | @ql_call_or_unqual_agg_expr | @ql_comp_term | @ql_conjunction | @ql_disjunction | @ql_expr_annotation | @ql_if_term | @ql_implication | @ql_in_expr | @ql_instance_of | @ql_literal | @ql_mul_expr | @ql_negation | @ql_par_expr | @ql_prefix_cast | @ql_qualified_expr | @ql_quantified | @ql_range | @ql_set_literal | @ql_special_call | @ql_super_ref | @ql_unary_expr | @ql_variable
+
+ql_conjunction_def(
+  unique int id: @ql_conjunction,
+  int left: @ql_conjunction_left_type ref,
+  int right: @ql_conjunction_right_type ref,
+  int loc: @location ref
+);
+
+@ql_dataclass_extends_type = @ql_reserved_word | @ql_type_expr
+
+#keyset[ql_dataclass, index]
+ql_dataclass_extends(
+  int ql_dataclass: @ql_dataclass ref,
+  int index: int ref,
+  unique int extends: @ql_dataclass_extends_type ref
+);
+
+@ql_dataclass_instanceof_type = @ql_reserved_word | @ql_type_expr
+
+#keyset[ql_dataclass, index]
+ql_dataclass_instanceof(
+  int ql_dataclass: @ql_dataclass ref,
+  int index: int ref,
+  unique int instanceof: @ql_dataclass_instanceof_type ref
+);
+
+@ql_dataclass_child_type = @ql_class_member | @ql_type_alias_body | @ql_type_union_body
+
+#keyset[ql_dataclass, index]
+ql_dataclass_child(
+  int ql_dataclass: @ql_dataclass ref,
+  int index: int ref,
+  unique int child: @ql_dataclass_child_type ref
+);
+
+ql_dataclass_def(
+  unique int id: @ql_dataclass,
+  int name: @ql_token_class_name ref,
+  int loc: @location ref
+);
+
+ql_datatype_def(
+  unique int id: @ql_datatype,
+  int name: @ql_token_class_name ref,
+  int child: @ql_datatype_branches ref,
+  int loc: @location ref
+);
+
+@ql_datatypeBranch_child_type = @ql_annotation | @ql_body | @ql_token_qldoc | @ql_var_decl
+
+#keyset[ql_datatype_branch, index]
+ql_datatype_branch_child(
+  int ql_datatype_branch: @ql_datatype_branch ref,
+  int index: int ref,
+  unique int child: @ql_datatypeBranch_child_type ref
+);
+
+ql_datatype_branch_def(
+  unique int id: @ql_datatype_branch,
+  int name: @ql_token_class_name ref,
+  int loc: @location ref
+);
+
+#keyset[ql_datatype_branches, index]
+ql_datatype_branches_child(
+  int ql_datatype_branches: @ql_datatype_branches ref,
+  int index: int ref,
+  unique int child: @ql_datatype_branch ref
+);
+
+ql_datatype_branches_def(
+  unique int id: @ql_datatype_branches,
+  int loc: @location ref
+);
+
+ql_db_annotation_args_annotation(
+  unique int ql_db_annotation: @ql_db_annotation ref,
+  unique int args_annotation: @ql_db_args_annotation ref
+);
+
+ql_db_annotation_simple_annotation(
+  unique int ql_db_annotation: @ql_db_annotation ref,
+  unique int simple_annotation: @ql_token_annot_name ref
+);
+
+ql_db_annotation_def(
+  unique int id: @ql_db_annotation,
+  int loc: @location ref
+);
+
+#keyset[ql_db_args_annotation, index]
+ql_db_args_annotation_child(
+  int ql_db_args_annotation: @ql_db_args_annotation ref,
+  int index: int ref,
+  unique int child: @ql_token_simple_id ref
+);
+
+ql_db_args_annotation_def(
+  unique int id: @ql_db_args_annotation,
+  int name: @ql_token_annot_name ref,
+  int loc: @location ref
+);
+
+ql_db_branch_qldoc(
+  unique int ql_db_branch: @ql_db_branch ref,
+  unique int qldoc: @ql_token_qldoc ref
+);
+
+@ql_db_branch_child_type = @ql_token_dbtype | @ql_token_integer
+
+#keyset[ql_db_branch, index]
+ql_db_branch_child(
+  int ql_db_branch: @ql_db_branch ref,
+  int index: int ref,
+  unique int child: @ql_db_branch_child_type ref
+);
+
+ql_db_branch_def(
+  unique int id: @ql_db_branch,
+  int loc: @location ref
+);
+
+@ql_db_caseDecl_child_type = @ql_db_branch | @ql_token_db_case
+
+#keyset[ql_db_case_decl, index]
+ql_db_case_decl_child(
+  int ql_db_case_decl: @ql_db_case_decl ref,
+  int index: int ref,
+  unique int child: @ql_db_caseDecl_child_type ref
+);
+
+ql_db_case_decl_def(
+  unique int id: @ql_db_case_decl,
+  int base: @ql_token_dbtype ref,
+  int discriminator: @ql_token_simple_id ref,
+  int loc: @location ref
+);
+
+@ql_db_colType_child_type = @ql_token_db_boolean | @ql_token_db_date | @ql_token_db_float | @ql_token_db_int | @ql_token_db_string | @ql_token_dbtype
+
+ql_db_col_type_def(
+  unique int id: @ql_db_col_type,
+  int child: @ql_db_colType_child_type ref,
+  int loc: @location ref
+);
+
+ql_db_column_is_ref(
+  unique int ql_db_column: @ql_db_column ref,
+  unique int is_ref: @ql_token_db_ref ref
+);
+
+ql_db_column_is_unique(
+  unique int ql_db_column: @ql_db_column ref,
+  unique int is_unique: @ql_token_db_unique ref
+);
+
+ql_db_column_qldoc(
+  unique int ql_db_column: @ql_db_column ref,
+  unique int qldoc: @ql_token_qldoc ref
+);
+
+ql_db_column_def(
+  unique int id: @ql_db_column,
+  int col_name: @ql_token_simple_id ref,
+  int col_type: @ql_db_col_type ref,
+  int repr_type: @ql_db_repr_type ref,
+  int loc: @location ref
+);
+
+@ql_db_entry_child_type = @ql_db_case_decl | @ql_db_table | @ql_db_union_decl | @ql_token_qldoc
+
+ql_db_entry_def(
+  unique int id: @ql_db_entry,
+  int child: @ql_db_entry_child_type ref,
+  int loc: @location ref
+);
+
+@ql_db_reprType_child_type = @ql_token_db_boolean | @ql_token_db_date | @ql_token_db_float | @ql_token_db_int | @ql_token_db_string | @ql_token_db_varchar | @ql_token_integer
+
+#keyset[ql_db_repr_type, index]
+ql_db_repr_type_child(
+  int ql_db_repr_type: @ql_db_repr_type ref,
+  int index: int ref,
+  unique int child: @ql_db_reprType_child_type ref
+);
+
+ql_db_repr_type_def(
+  unique int id: @ql_db_repr_type,
+  int loc: @location ref
+);
+
+@ql_db_table_child_type = @ql_db_annotation | @ql_db_column
+
+#keyset[ql_db_table, index]
+ql_db_table_child(
+  int ql_db_table: @ql_db_table ref,
+  int index: int ref,
+  unique int child: @ql_db_table_child_type ref
+);
+
+ql_db_table_def(
+  unique int id: @ql_db_table,
+  int table_name: @ql_db_table_name ref,
+  int loc: @location ref
+);
+
+ql_db_table_name_def(
+  unique int id: @ql_db_table_name,
+  int child: @ql_token_simple_id ref,
+  int loc: @location ref
+);
+
+#keyset[ql_db_union_decl, index]
+ql_db_union_decl_child(
+  int ql_db_union_decl: @ql_db_union_decl ref,
+  int index: int ref,
+  unique int child: @ql_token_dbtype ref
+);
+
+ql_db_union_decl_def(
+  unique int id: @ql_db_union_decl,
+  int base: @ql_token_dbtype ref,
+  int loc: @location ref
+);
+
+@ql_disjunction_left_type = @ql_add_expr | @ql_aggregate | @ql_call_or_unqual_agg_expr | @ql_comp_term | @ql_conjunction | @ql_disjunction | @ql_expr_annotation | @ql_if_term | @ql_implication | @ql_in_expr | @ql_instance_of | @ql_literal | @ql_mul_expr | @ql_negation | @ql_par_expr | @ql_prefix_cast | @ql_qualified_expr | @ql_quantified | @ql_range | @ql_set_literal | @ql_special_call | @ql_super_ref | @ql_unary_expr | @ql_variable
+
+@ql_disjunction_right_type = @ql_add_expr | @ql_aggregate | @ql_call_or_unqual_agg_expr | @ql_comp_term | @ql_conjunction | @ql_disjunction | @ql_expr_annotation | @ql_if_term | @ql_implication | @ql_in_expr | @ql_instance_of | @ql_literal | @ql_mul_expr | @ql_negation | @ql_par_expr | @ql_prefix_cast | @ql_qualified_expr | @ql_quantified | @ql_range | @ql_set_literal | @ql_special_call | @ql_super_ref | @ql_unary_expr | @ql_variable
+
+ql_disjunction_def(
+  unique int id: @ql_disjunction,
+  int left: @ql_disjunction_left_type ref,
+  int right: @ql_disjunction_right_type ref,
+  int loc: @location ref
+);
+
+ql_expr_aggregate_body_order_bys(
+  unique int ql_expr_aggregate_body: @ql_expr_aggregate_body ref,
+  unique int order_bys: @ql_order_bys ref
+);
+
+ql_expr_aggregate_body_def(
+  unique int id: @ql_expr_aggregate_body,
+  int as_exprs: @ql_as_exprs ref,
+  int loc: @location ref
+);
+
+@ql_expr_annotation_child_type = @ql_add_expr | @ql_aggregate | @ql_call_or_unqual_agg_expr | @ql_comp_term | @ql_conjunction | @ql_disjunction | @ql_expr_annotation | @ql_if_term | @ql_implication | @ql_in_expr | @ql_instance_of | @ql_literal | @ql_mul_expr | @ql_negation | @ql_par_expr | @ql_prefix_cast | @ql_qualified_expr | @ql_quantified | @ql_range | @ql_set_literal | @ql_special_call | @ql_super_ref | @ql_unary_expr | @ql_variable
+
+ql_expr_annotation_def(
+  unique int id: @ql_expr_annotation,
+  int annot_arg: @ql_token_annot_name ref,
+  int name: @ql_token_annot_name ref,
+  int child: @ql_expr_annotation_child_type ref,
+  int loc: @location ref
+);
+
+ql_field_def(
+  unique int id: @ql_field,
+  int child: @ql_var_decl ref,
+  int loc: @location ref
+);
+
+ql_full_aggregate_body_as_exprs(
+  unique int ql_full_aggregate_body: @ql_full_aggregate_body ref,
+  unique int as_exprs: @ql_as_exprs ref
+);
+
+@ql_full_aggregate_body_guard_type = @ql_add_expr | @ql_aggregate | @ql_call_or_unqual_agg_expr | @ql_comp_term | @ql_conjunction | @ql_disjunction | @ql_expr_annotation | @ql_if_term | @ql_implication | @ql_in_expr | @ql_instance_of | @ql_literal | @ql_mul_expr | @ql_negation | @ql_par_expr | @ql_prefix_cast | @ql_qualified_expr | @ql_quantified | @ql_range | @ql_set_literal | @ql_special_call | @ql_super_ref | @ql_unary_expr | @ql_variable
+
+ql_full_aggregate_body_guard(
+  unique int ql_full_aggregate_body: @ql_full_aggregate_body ref,
+  unique int guard: @ql_full_aggregate_body_guard_type ref
+);
+
+ql_full_aggregate_body_order_bys(
+  unique int ql_full_aggregate_body: @ql_full_aggregate_body ref,
+  unique int order_bys: @ql_order_bys ref
+);
+
+#keyset[ql_full_aggregate_body, index]
+ql_full_aggregate_body_child(
+  int ql_full_aggregate_body: @ql_full_aggregate_body ref,
+  int index: int ref,
+  unique int child: @ql_var_decl ref
+);
+
+ql_full_aggregate_body_def(
+  unique int id: @ql_full_aggregate_body,
+  int loc: @location ref
+);
+
+@ql_higherOrderTerm_child_type = @ql_add_expr | @ql_aggregate | @ql_call_or_unqual_agg_expr | @ql_comp_term | @ql_conjunction | @ql_disjunction | @ql_expr_annotation | @ql_if_term | @ql_implication | @ql_in_expr | @ql_instance_of | @ql_literal | @ql_mul_expr | @ql_negation | @ql_par_expr | @ql_predicate_expr | @ql_prefix_cast | @ql_qualified_expr | @ql_quantified | @ql_range | @ql_set_literal | @ql_special_call | @ql_super_ref | @ql_token_underscore | @ql_unary_expr | @ql_variable
+
+#keyset[ql_higher_order_term, index]
+ql_higher_order_term_child(
+  int ql_higher_order_term: @ql_higher_order_term ref,
+  int index: int ref,
+  unique int child: @ql_higherOrderTerm_child_type ref
+);
+
+ql_higher_order_term_def(
+  unique int id: @ql_higher_order_term,
+  int name: @ql_token_literal_id ref,
+  int loc: @location ref
+);
+
+@ql_if_term_cond_type = @ql_add_expr | @ql_aggregate | @ql_call_or_unqual_agg_expr | @ql_comp_term | @ql_conjunction | @ql_disjunction | @ql_expr_annotation | @ql_if_term | @ql_implication | @ql_in_expr | @ql_instance_of | @ql_literal | @ql_mul_expr | @ql_negation | @ql_par_expr | @ql_prefix_cast | @ql_qualified_expr | @ql_quantified | @ql_range | @ql_set_literal | @ql_special_call | @ql_super_ref | @ql_unary_expr | @ql_variable
+
+@ql_if_term_first_type = @ql_add_expr | @ql_aggregate | @ql_call_or_unqual_agg_expr | @ql_comp_term | @ql_conjunction | @ql_disjunction | @ql_expr_annotation | @ql_if_term | @ql_implication | @ql_in_expr | @ql_instance_of | @ql_literal | @ql_mul_expr | @ql_negation | @ql_par_expr | @ql_prefix_cast | @ql_qualified_expr | @ql_quantified | @ql_range | @ql_set_literal | @ql_special_call | @ql_super_ref | @ql_unary_expr | @ql_variable
+
+@ql_if_term_second_type = @ql_add_expr | @ql_aggregate | @ql_call_or_unqual_agg_expr | @ql_comp_term | @ql_conjunction | @ql_disjunction | @ql_expr_annotation | @ql_if_term | @ql_implication | @ql_in_expr | @ql_instance_of | @ql_literal | @ql_mul_expr | @ql_negation | @ql_par_expr | @ql_prefix_cast | @ql_qualified_expr | @ql_quantified | @ql_range | @ql_set_literal | @ql_special_call | @ql_super_ref | @ql_unary_expr | @ql_variable
+
+ql_if_term_def(
+  unique int id: @ql_if_term,
+  int cond: @ql_if_term_cond_type ref,
+  int first: @ql_if_term_first_type ref,
+  int second: @ql_if_term_second_type ref,
+  int loc: @location ref
+);
+
+@ql_implication_left_type = @ql_add_expr | @ql_aggregate | @ql_call_or_unqual_agg_expr | @ql_comp_term | @ql_conjunction | @ql_disjunction | @ql_expr_annotation | @ql_if_term | @ql_implication | @ql_in_expr | @ql_instance_of | @ql_literal | @ql_mul_expr | @ql_negation | @ql_par_expr | @ql_prefix_cast | @ql_qualified_expr | @ql_quantified | @ql_range | @ql_set_literal | @ql_special_call | @ql_super_ref | @ql_unary_expr | @ql_variable
+
+@ql_implication_right_type = @ql_add_expr | @ql_aggregate | @ql_call_or_unqual_agg_expr | @ql_comp_term | @ql_conjunction | @ql_disjunction | @ql_expr_annotation | @ql_if_term | @ql_implication | @ql_in_expr | @ql_instance_of | @ql_literal | @ql_mul_expr | @ql_negation | @ql_par_expr | @ql_prefix_cast | @ql_qualified_expr | @ql_quantified | @ql_range | @ql_set_literal | @ql_special_call | @ql_super_ref | @ql_unary_expr | @ql_variable
+
+ql_implication_def(
+  unique int id: @ql_implication,
+  int left: @ql_implication_left_type ref,
+  int right: @ql_implication_right_type ref,
+  int loc: @location ref
+);
+
+@ql_importDirective_child_type = @ql_import_module_expr | @ql_module_name
+
+#keyset[ql_import_directive, index]
+ql_import_directive_child(
+  int ql_import_directive: @ql_import_directive ref,
+  int index: int ref,
+  unique int child: @ql_importDirective_child_type ref
+);
+
+ql_import_directive_def(
+  unique int id: @ql_import_directive,
+  int loc: @location ref
+);
+
+#keyset[ql_import_module_expr, index]
+ql_import_module_expr_name(
+  int ql_import_module_expr: @ql_import_module_expr ref,
+  int index: int ref,
+  unique int name: @ql_token_simple_id ref
+);
+
+ql_import_module_expr_def(
+  unique int id: @ql_import_module_expr,
+  int child: @ql_qual_module_expr ref,
+  int loc: @location ref
+);
+
+@ql_in_expr_left_type = @ql_add_expr | @ql_aggregate | @ql_call_or_unqual_agg_expr | @ql_comp_term | @ql_conjunction | @ql_disjunction | @ql_expr_annotation | @ql_if_term | @ql_implication | @ql_in_expr | @ql_instance_of | @ql_literal | @ql_mul_expr | @ql_negation | @ql_par_expr | @ql_prefix_cast | @ql_qualified_expr | @ql_quantified | @ql_range | @ql_set_literal | @ql_special_call | @ql_super_ref | @ql_unary_expr | @ql_variable
+
+@ql_in_expr_right_type = @ql_aggregate | @ql_call_or_unqual_agg_expr | @ql_expr_annotation | @ql_literal | @ql_par_expr | @ql_qualified_expr | @ql_range | @ql_set_literal | @ql_super_ref | @ql_variable
+
+ql_in_expr_def(
+  unique int id: @ql_in_expr,
+  int left: @ql_in_expr_left_type ref,
+  int right: @ql_in_expr_right_type ref,
+  int loc: @location ref
+);
+
+@ql_instance_of_child_type = @ql_add_expr | @ql_aggregate | @ql_call_or_unqual_agg_expr | @ql_comp_term | @ql_conjunction | @ql_disjunction | @ql_expr_annotation | @ql_if_term | @ql_implication | @ql_in_expr | @ql_instance_of | @ql_literal | @ql_mul_expr | @ql_negation | @ql_par_expr | @ql_prefix_cast | @ql_qualified_expr | @ql_quantified | @ql_range | @ql_set_literal | @ql_special_call | @ql_super_ref | @ql_type_expr | @ql_unary_expr | @ql_variable
+
+#keyset[ql_instance_of, index]
+ql_instance_of_child(
+  int ql_instance_of: @ql_instance_of ref,
+  int index: int ref,
+  unique int child: @ql_instance_of_child_type ref
+);
+
+ql_instance_of_def(
+  unique int id: @ql_instance_of,
+  int loc: @location ref
+);
+
+@ql_literal_child_type = @ql_bool | @ql_token_float | @ql_token_integer | @ql_token_string
+
+ql_literal_def(
+  unique int id: @ql_literal,
+  int child: @ql_literal_child_type ref,
+  int loc: @location ref
+);
+
+@ql_memberPredicate_returnType_type = @ql_token_predicate | @ql_type_expr
+
+@ql_memberPredicate_child_type = @ql_body | @ql_higher_order_term | @ql_token_empty | @ql_var_decl
+
+#keyset[ql_member_predicate, index]
+ql_member_predicate_child(
+  int ql_member_predicate: @ql_member_predicate ref,
+  int index: int ref,
+  unique int child: @ql_memberPredicate_child_type ref
+);
+
+ql_member_predicate_def(
+  unique int id: @ql_member_predicate,
+  int name: @ql_token_predicate_name ref,
+  int return_type: @ql_memberPredicate_returnType_type ref,
+  int loc: @location ref
+);
+
+@ql_module_child_type = @ql_module_alias_body | @ql_module_member
+
+#keyset[ql_module, index]
+ql_module_child(
+  int ql_module: @ql_module ref,
+  int index: int ref,
+  unique int child: @ql_module_child_type ref
+);
+
+ql_module_def(
+  unique int id: @ql_module,
+  int name: @ql_module_name ref,
+  int loc: @location ref
+);
+
+ql_module_alias_body_def(
+  unique int id: @ql_module_alias_body,
+  int child: @ql_module_expr ref,
+  int loc: @location ref
+);
+
+ql_module_expr_name(
+  unique int ql_module_expr: @ql_module_expr ref,
+  unique int name: @ql_token_simple_id ref
+);
+
+@ql_moduleExpr_child_type = @ql_module_expr | @ql_token_simple_id
+
+ql_module_expr_def(
+  unique int id: @ql_module_expr,
+  int child: @ql_moduleExpr_child_type ref,
+  int loc: @location ref
+);
+
+@ql_moduleMember_child_type = @ql_annotation | @ql_classless_predicate | @ql_dataclass | @ql_datatype | @ql_import_directive | @ql_module | @ql_select | @ql_token_qldoc
+
+#keyset[ql_module_member, index]
+ql_module_member_child(
+  int ql_module_member: @ql_module_member ref,
+  int index: int ref,
+  unique int child: @ql_moduleMember_child_type ref
+);
+
+ql_module_member_def(
+  unique int id: @ql_module_member,
+  int loc: @location ref
+);
+
+ql_module_name_def(
+  unique int id: @ql_module_name,
+  int child: @ql_token_simple_id ref,
+  int loc: @location ref
+);
+
+@ql_mul_expr_left_type = @ql_add_expr | @ql_aggregate | @ql_call_or_unqual_agg_expr | @ql_comp_term | @ql_conjunction | @ql_disjunction | @ql_expr_annotation | @ql_if_term | @ql_implication | @ql_in_expr | @ql_instance_of | @ql_literal | @ql_mul_expr | @ql_negation | @ql_par_expr | @ql_prefix_cast | @ql_qualified_expr | @ql_quantified | @ql_range | @ql_set_literal | @ql_special_call | @ql_super_ref | @ql_unary_expr | @ql_variable
+
+@ql_mul_expr_right_type = @ql_add_expr | @ql_aggregate | @ql_call_or_unqual_agg_expr | @ql_comp_term | @ql_conjunction | @ql_disjunction | @ql_expr_annotation | @ql_if_term | @ql_implication | @ql_in_expr | @ql_instance_of | @ql_literal | @ql_mul_expr | @ql_negation | @ql_par_expr | @ql_prefix_cast | @ql_qualified_expr | @ql_quantified | @ql_range | @ql_set_literal | @ql_special_call | @ql_super_ref | @ql_unary_expr | @ql_variable
+
+ql_mul_expr_def(
+  unique int id: @ql_mul_expr,
+  int left: @ql_mul_expr_left_type ref,
+  int right: @ql_mul_expr_right_type ref,
+  int child: @ql_token_mulop ref,
+  int loc: @location ref
+);
+
+@ql_negation_child_type = @ql_add_expr | @ql_aggregate | @ql_call_or_unqual_agg_expr | @ql_comp_term | @ql_conjunction | @ql_disjunction | @ql_expr_annotation | @ql_if_term | @ql_implication | @ql_in_expr | @ql_instance_of | @ql_literal | @ql_mul_expr | @ql_negation | @ql_par_expr | @ql_prefix_cast | @ql_qualified_expr | @ql_quantified | @ql_range | @ql_set_literal | @ql_special_call | @ql_super_ref | @ql_unary_expr | @ql_variable
+
+ql_negation_def(
+  unique int id: @ql_negation,
+  int child: @ql_negation_child_type ref,
+  int loc: @location ref
+);
+
+@ql_orderBy_child_type = @ql_add_expr | @ql_aggregate | @ql_call_or_unqual_agg_expr | @ql_comp_term | @ql_conjunction | @ql_disjunction | @ql_expr_annotation | @ql_if_term | @ql_implication | @ql_in_expr | @ql_instance_of | @ql_literal | @ql_mul_expr | @ql_negation | @ql_par_expr | @ql_prefix_cast | @ql_qualified_expr | @ql_quantified | @ql_range | @ql_set_literal | @ql_special_call | @ql_super_ref | @ql_token_direction | @ql_unary_expr | @ql_variable
+
+#keyset[ql_order_by, index]
+ql_order_by_child(
+  int ql_order_by: @ql_order_by ref,
+  int index: int ref,
+  unique int child: @ql_orderBy_child_type ref
+);
+
+ql_order_by_def(
+  unique int id: @ql_order_by,
+  int loc: @location ref
+);
+
+#keyset[ql_order_bys, index]
+ql_order_bys_child(
+  int ql_order_bys: @ql_order_bys ref,
+  int index: int ref,
+  unique int child: @ql_order_by ref
+);
+
+ql_order_bys_def(
+  unique int id: @ql_order_bys,
+  int loc: @location ref
+);
+
+@ql_par_expr_child_type = @ql_add_expr | @ql_aggregate | @ql_call_or_unqual_agg_expr | @ql_comp_term | @ql_conjunction | @ql_disjunction | @ql_expr_annotation | @ql_if_term | @ql_implication | @ql_in_expr | @ql_instance_of | @ql_literal | @ql_mul_expr | @ql_negation | @ql_par_expr | @ql_prefix_cast | @ql_qualified_expr | @ql_quantified | @ql_range | @ql_set_literal | @ql_special_call | @ql_super_ref | @ql_unary_expr | @ql_variable
+
+ql_par_expr_def(
+  unique int id: @ql_par_expr,
+  int child: @ql_par_expr_child_type ref,
+  int loc: @location ref
+);
+
+ql_predicate_alias_body_def(
+  unique int id: @ql_predicate_alias_body,
+  int child: @ql_predicate_expr ref,
+  int loc: @location ref
+);
+
+@ql_predicateExpr_child_type = @ql_arityless_predicate_expr | @ql_token_integer
+
+#keyset[ql_predicate_expr, index]
+ql_predicate_expr_child(
+  int ql_predicate_expr: @ql_predicate_expr ref,
+  int index: int ref,
+  unique int child: @ql_predicateExpr_child_type ref
+);
+
+ql_predicate_expr_def(
+  unique int id: @ql_predicate_expr,
+  int loc: @location ref
+);
+
+@ql_prefix_cast_child_type = @ql_add_expr | @ql_aggregate | @ql_call_or_unqual_agg_expr | @ql_comp_term | @ql_conjunction | @ql_disjunction | @ql_expr_annotation | @ql_if_term | @ql_implication | @ql_in_expr | @ql_instance_of | @ql_literal | @ql_mul_expr | @ql_negation | @ql_par_expr | @ql_prefix_cast | @ql_qualified_expr | @ql_quantified | @ql_range | @ql_set_literal | @ql_special_call | @ql_super_ref | @ql_type_expr | @ql_unary_expr | @ql_variable
+
+#keyset[ql_prefix_cast, index]
+ql_prefix_cast_child(
+  int ql_prefix_cast: @ql_prefix_cast ref,
+  int index: int ref,
+  unique int child: @ql_prefix_cast_child_type ref
+);
+
+ql_prefix_cast_def(
+  unique int id: @ql_prefix_cast,
+  int loc: @location ref
+);
+
+@ql_ql_child_type = @ql_db_entry | @ql_module_member | @ql_yaml_entry
+
+#keyset[ql_ql, index]
+ql_ql_child(
+  int ql_ql: @ql_ql ref,
+  int index: int ref,
+  unique int child: @ql_ql_child_type ref
+);
+
+ql_ql_def(
+  unique int id: @ql_ql,
+  int loc: @location ref
+);
+
+#keyset[ql_qual_module_expr, index]
+ql_qual_module_expr_name(
+  int ql_qual_module_expr: @ql_qual_module_expr ref,
+  int index: int ref,
+  unique int name: @ql_token_simple_id ref
+);
+
+ql_qual_module_expr_def(
+  unique int id: @ql_qual_module_expr,
+  int loc: @location ref
+);
+
+ql_qualified_rhs_name(
+  unique int ql_qualified_rhs: @ql_qualified_rhs ref,
+  unique int name: @ql_token_predicate_name ref
+);
+
+@ql_qualifiedRhs_child_type = @ql_add_expr | @ql_aggregate | @ql_call_or_unqual_agg_expr | @ql_comp_term | @ql_conjunction | @ql_disjunction | @ql_expr_annotation | @ql_if_term | @ql_implication | @ql_in_expr | @ql_instance_of | @ql_literal | @ql_mul_expr | @ql_negation | @ql_par_expr | @ql_prefix_cast | @ql_qualified_expr | @ql_quantified | @ql_range | @ql_set_literal | @ql_special_call | @ql_super_ref | @ql_token_closure | @ql_token_underscore | @ql_type_expr | @ql_unary_expr | @ql_variable
+
+#keyset[ql_qualified_rhs, index]
+ql_qualified_rhs_child(
+  int ql_qualified_rhs: @ql_qualified_rhs ref,
+  int index: int ref,
+  unique int child: @ql_qualifiedRhs_child_type ref
+);
+
+ql_qualified_rhs_def(
+  unique int id: @ql_qualified_rhs,
+  int loc: @location ref
+);
+
+@ql_qualified_expr_child_type = @ql_aggregate | @ql_call_or_unqual_agg_expr | @ql_expr_annotation | @ql_literal | @ql_par_expr | @ql_qualified_expr | @ql_qualified_rhs | @ql_range | @ql_set_literal | @ql_super_ref | @ql_variable
+
+#keyset[ql_qualified_expr, index]
+ql_qualified_expr_child(
+  int ql_qualified_expr: @ql_qualified_expr ref,
+  int index: int ref,
+  unique int child: @ql_qualified_expr_child_type ref
+);
+
+ql_qualified_expr_def(
+  unique int id: @ql_qualified_expr,
+  int loc: @location ref
+);
+
+@ql_quantified_expr_type = @ql_add_expr | @ql_aggregate | @ql_call_or_unqual_agg_expr | @ql_comp_term | @ql_conjunction | @ql_disjunction | @ql_expr_annotation | @ql_if_term | @ql_implication | @ql_in_expr | @ql_instance_of | @ql_literal | @ql_mul_expr | @ql_negation | @ql_par_expr | @ql_prefix_cast | @ql_qualified_expr | @ql_quantified | @ql_range | @ql_set_literal | @ql_special_call | @ql_super_ref | @ql_unary_expr | @ql_variable
+
+ql_quantified_expr(
+  unique int ql_quantified: @ql_quantified ref,
+  unique int expr: @ql_quantified_expr_type ref
+);
+
+@ql_quantified_formula_type = @ql_add_expr | @ql_aggregate | @ql_call_or_unqual_agg_expr | @ql_comp_term | @ql_conjunction | @ql_disjunction | @ql_expr_annotation | @ql_if_term | @ql_implication | @ql_in_expr | @ql_instance_of | @ql_literal | @ql_mul_expr | @ql_negation | @ql_par_expr | @ql_prefix_cast | @ql_qualified_expr | @ql_quantified | @ql_range | @ql_set_literal | @ql_special_call | @ql_super_ref | @ql_unary_expr | @ql_variable
+
+ql_quantified_formula(
+  unique int ql_quantified: @ql_quantified ref,
+  unique int formula: @ql_quantified_formula_type ref
+);
+
+@ql_quantified_range_type = @ql_add_expr | @ql_aggregate | @ql_call_or_unqual_agg_expr | @ql_comp_term | @ql_conjunction | @ql_disjunction | @ql_expr_annotation | @ql_if_term | @ql_implication | @ql_in_expr | @ql_instance_of | @ql_literal | @ql_mul_expr | @ql_negation | @ql_par_expr | @ql_prefix_cast | @ql_qualified_expr | @ql_quantified | @ql_range | @ql_set_literal | @ql_special_call | @ql_super_ref | @ql_unary_expr | @ql_variable
+
+ql_quantified_range(
+  unique int ql_quantified: @ql_quantified ref,
+  unique int range: @ql_quantified_range_type ref
+);
+
+@ql_quantified_child_type = @ql_token_quantifier | @ql_var_decl
+
+#keyset[ql_quantified, index]
+ql_quantified_child(
+  int ql_quantified: @ql_quantified ref,
+  int index: int ref,
+  unique int child: @ql_quantified_child_type ref
+);
+
+ql_quantified_def(
+  unique int id: @ql_quantified,
+  int loc: @location ref
+);
+
+@ql_range_lower_type = @ql_add_expr | @ql_aggregate | @ql_call_or_unqual_agg_expr | @ql_comp_term | @ql_conjunction | @ql_disjunction | @ql_expr_annotation | @ql_if_term | @ql_implication | @ql_in_expr | @ql_instance_of | @ql_literal | @ql_mul_expr | @ql_negation | @ql_par_expr | @ql_prefix_cast | @ql_qualified_expr | @ql_quantified | @ql_range | @ql_set_literal | @ql_special_call | @ql_super_ref | @ql_unary_expr | @ql_variable
+
+@ql_range_upper_type = @ql_add_expr | @ql_aggregate | @ql_call_or_unqual_agg_expr | @ql_comp_term | @ql_conjunction | @ql_disjunction | @ql_expr_annotation | @ql_if_term | @ql_implication | @ql_in_expr | @ql_instance_of | @ql_literal | @ql_mul_expr | @ql_negation | @ql_par_expr | @ql_prefix_cast | @ql_qualified_expr | @ql_quantified | @ql_range | @ql_set_literal | @ql_special_call | @ql_super_ref | @ql_unary_expr | @ql_variable
+
+ql_range_def(
+  unique int id: @ql_range,
+  int lower: @ql_range_lower_type ref,
+  int upper: @ql_range_upper_type ref,
+  int loc: @location ref
+);
+
+@ql_select_child_type = @ql_add_expr | @ql_aggregate | @ql_as_exprs | @ql_call_or_unqual_agg_expr | @ql_comp_term | @ql_conjunction | @ql_disjunction | @ql_expr_annotation | @ql_if_term | @ql_implication | @ql_in_expr | @ql_instance_of | @ql_literal | @ql_mul_expr | @ql_negation | @ql_order_bys | @ql_par_expr | @ql_prefix_cast | @ql_qualified_expr | @ql_quantified | @ql_range | @ql_set_literal | @ql_special_call | @ql_super_ref | @ql_unary_expr | @ql_var_decl | @ql_variable
+
+#keyset[ql_select, index]
+ql_select_child(
+  int ql_select: @ql_select ref,
+  int index: int ref,
+  unique int child: @ql_select_child_type ref
+);
+
+ql_select_def(
+  unique int id: @ql_select,
+  int loc: @location ref
+);
+
+@ql_set_literal_child_type = @ql_add_expr | @ql_aggregate | @ql_call_or_unqual_agg_expr | @ql_comp_term | @ql_conjunction | @ql_disjunction | @ql_expr_annotation | @ql_if_term | @ql_implication | @ql_in_expr | @ql_instance_of | @ql_literal | @ql_mul_expr | @ql_negation | @ql_par_expr | @ql_prefix_cast | @ql_qualified_expr | @ql_quantified | @ql_range | @ql_set_literal | @ql_special_call | @ql_super_ref | @ql_unary_expr | @ql_variable
+
+#keyset[ql_set_literal, index]
+ql_set_literal_child(
+  int ql_set_literal: @ql_set_literal ref,
+  int index: int ref,
+  unique int child: @ql_set_literal_child_type ref
+);
+
+ql_set_literal_def(
+  unique int id: @ql_set_literal,
+  int loc: @location ref
+);
+
+ql_special_call_def(
+  unique int id: @ql_special_call,
+  int child: @ql_token_special_id ref,
+  int loc: @location ref
+);
+
+@ql_super_ref_child_type = @ql_token_super | @ql_type_expr
+
+#keyset[ql_super_ref, index]
+ql_super_ref_child(
+  int ql_super_ref: @ql_super_ref ref,
+  int index: int ref,
+  unique int child: @ql_super_ref_child_type ref
+);
+
+ql_super_ref_def(
+  unique int id: @ql_super_ref,
+  int loc: @location ref
+);
+
+ql_type_alias_body_def(
+  unique int id: @ql_type_alias_body,
+  int child: @ql_type_expr ref,
+  int loc: @location ref
+);
+
+ql_type_expr_name(
+  unique int ql_type_expr: @ql_type_expr ref,
+  unique int name: @ql_token_class_name ref
+);
+
+@ql_typeExpr_child_type = @ql_module_expr | @ql_token_dbtype | @ql_token_primitive_type
+
+ql_type_expr_child(
+  unique int ql_type_expr: @ql_type_expr ref,
+  unique int child: @ql_typeExpr_child_type ref
+);
+
+ql_type_expr_def(
+  unique int id: @ql_type_expr,
+  int loc: @location ref
+);
+
+#keyset[ql_type_union_body, index]
+ql_type_union_body_child(
+  int ql_type_union_body: @ql_type_union_body ref,
+  int index: int ref,
+  unique int child: @ql_type_expr ref
+);
+
+ql_type_union_body_def(
+  unique int id: @ql_type_union_body,
+  int loc: @location ref
+);
+
+@ql_unary_expr_child_type = @ql_add_expr | @ql_aggregate | @ql_call_or_unqual_agg_expr | @ql_comp_term | @ql_conjunction | @ql_disjunction | @ql_expr_annotation | @ql_if_term | @ql_implication | @ql_in_expr | @ql_instance_of | @ql_literal | @ql_mul_expr | @ql_negation | @ql_par_expr | @ql_prefix_cast | @ql_qualified_expr | @ql_quantified | @ql_range | @ql_set_literal | @ql_special_call | @ql_super_ref | @ql_token_unop | @ql_unary_expr | @ql_variable
+
+#keyset[ql_unary_expr, index]
+ql_unary_expr_child(
+  int ql_unary_expr: @ql_unary_expr ref,
+  int index: int ref,
+  unique int child: @ql_unary_expr_child_type ref
+);
+
+ql_unary_expr_def(
+  unique int id: @ql_unary_expr,
+  int loc: @location ref
+);
+
+@ql_unqual_agg_body_asExprs_type = @ql_as_exprs | @ql_reserved_word
+
+#keyset[ql_unqual_agg_body, index]
+ql_unqual_agg_body_as_exprs(
+  int ql_unqual_agg_body: @ql_unqual_agg_body ref,
+  int index: int ref,
+  unique int as_exprs: @ql_unqual_agg_body_asExprs_type ref
+);
+
+@ql_unqual_agg_body_guard_type = @ql_add_expr | @ql_aggregate | @ql_call_or_unqual_agg_expr | @ql_comp_term | @ql_conjunction | @ql_disjunction | @ql_expr_annotation | @ql_if_term | @ql_implication | @ql_in_expr | @ql_instance_of | @ql_literal | @ql_mul_expr | @ql_negation | @ql_par_expr | @ql_prefix_cast | @ql_qualified_expr | @ql_quantified | @ql_range | @ql_set_literal | @ql_special_call | @ql_super_ref | @ql_unary_expr | @ql_variable
+
+ql_unqual_agg_body_guard(
+  unique int ql_unqual_agg_body: @ql_unqual_agg_body ref,
+  unique int guard: @ql_unqual_agg_body_guard_type ref
+);
+
+#keyset[ql_unqual_agg_body, index]
+ql_unqual_agg_body_child(
+  int ql_unqual_agg_body: @ql_unqual_agg_body ref,
+  int index: int ref,
+  unique int child: @ql_var_decl ref
+);
+
+ql_unqual_agg_body_def(
+  unique int id: @ql_unqual_agg_body,
+  int loc: @location ref
+);
+
+@ql_varDecl_child_type = @ql_type_expr | @ql_var_name
+
+#keyset[ql_var_decl, index]
+ql_var_decl_child(
+  int ql_var_decl: @ql_var_decl ref,
+  int index: int ref,
+  unique int child: @ql_varDecl_child_type ref
+);
+
+ql_var_decl_def(
+  unique int id: @ql_var_decl,
+  int loc: @location ref
+);
+
+ql_var_name_def(
+  unique int id: @ql_var_name,
+  int child: @ql_token_simple_id ref,
+  int loc: @location ref
+);
+
+@ql_variable_child_type = @ql_token_result | @ql_token_this | @ql_var_name
+
+ql_variable_def(
+  unique int id: @ql_variable,
+  int child: @ql_variable_child_type ref,
+  int loc: @location ref
+);
+
+ql_yaml_comment_def(
+  unique int id: @ql_yaml_comment,
+  int child: @ql_token_yaml_value ref,
+  int loc: @location ref
+);
+
+@ql_yaml_entry_child_type = @ql_yaml_comment | @ql_yaml_keyvaluepair | @ql_yaml_listitem
+
+ql_yaml_entry_def(
+  unique int id: @ql_yaml_entry,
+  int child: @ql_yaml_entry_child_type ref,
+  int loc: @location ref
+);
+
+@ql_yaml_key_child_type = @ql_token_simple_id | @ql_yaml_key
+
+#keyset[ql_yaml_key, index]
+ql_yaml_key_child(
+  int ql_yaml_key: @ql_yaml_key ref,
+  int index: int ref,
+  unique int child: @ql_yaml_key_child_type ref
+);
+
+ql_yaml_key_def(
+  unique int id: @ql_yaml_key,
+  int loc: @location ref
+);
+
+ql_yaml_keyvaluepair_def(
+  unique int id: @ql_yaml_keyvaluepair,
+  int key__: @ql_yaml_key ref,
+  int value: @ql_token_yaml_value ref,
+  int loc: @location ref
+);
+
+ql_yaml_listitem_def(
+  unique int id: @ql_yaml_listitem,
+  int child: @ql_token_yaml_value ref,
+  int loc: @location ref
+);
+
+ql_tokeninfo(
+  unique int id: @ql_token,
+  int kind: int ref,
+  string value: string ref,
+  int loc: @location ref
+);
+
+case @ql_token.kind of
+  0 = @ql_reserved_word
+| 1 = @ql_token_addop
+| 2 = @ql_token_agg_id
+| 3 = @ql_token_annot_name
+| 4 = @ql_token_block_comment
+| 5 = @ql_token_class_name
+| 6 = @ql_token_closure
+| 7 = @ql_token_compop
+| 8 = @ql_token_db_boolean
+| 9 = @ql_token_db_case
+| 10 = @ql_token_db_date
+| 11 = @ql_token_db_float
+| 12 = @ql_token_db_int
+| 13 = @ql_token_db_ref
+| 14 = @ql_token_db_string
+| 15 = @ql_token_db_unique
+| 16 = @ql_token_db_varchar
+| 17 = @ql_token_dbtype
+| 18 = @ql_token_direction
+| 19 = @ql_token_empty
+| 20 = @ql_token_false
+| 21 = @ql_token_float
+| 22 = @ql_token_integer
+| 23 = @ql_token_line_comment
+| 24 = @ql_token_literal_id
+| 25 = @ql_token_mulop
+| 26 = @ql_token_predicate
+| 27 = @ql_token_predicate_name
+| 28 = @ql_token_primitive_type
+| 29 = @ql_token_qldoc
+| 30 = @ql_token_quantifier
+| 31 = @ql_token_result
+| 32 = @ql_token_simple_id
+| 33 = @ql_token_special_id
+| 34 = @ql_token_string
+| 35 = @ql_token_super
+| 36 = @ql_token_this
+| 37 = @ql_token_true
+| 38 = @ql_token_underscore
+| 39 = @ql_token_unop
+| 40 = @ql_token_yaml_value
+;
+
+
+@ql_ast_node = @ql_add_expr | @ql_aggregate | @ql_annot_arg | @ql_annotation | @ql_arityless_predicate_expr | @ql_as_expr | @ql_as_exprs | @ql_body | @ql_bool | @ql_call_body | @ql_call_or_unqual_agg_expr | @ql_charpred | @ql_class_member | @ql_classless_predicate | @ql_comp_term | @ql_conjunction | @ql_dataclass | @ql_datatype | @ql_datatype_branch | @ql_datatype_branches | @ql_db_annotation | @ql_db_args_annotation | @ql_db_branch | @ql_db_case_decl | @ql_db_col_type | @ql_db_column | @ql_db_entry | @ql_db_repr_type | @ql_db_table | @ql_db_table_name | @ql_db_union_decl | @ql_disjunction | @ql_expr_aggregate_body | @ql_expr_annotation | @ql_field | @ql_full_aggregate_body | @ql_higher_order_term | @ql_if_term | @ql_implication | @ql_import_directive | @ql_import_module_expr | @ql_in_expr | @ql_instance_of | @ql_literal | @ql_member_predicate | @ql_module | @ql_module_alias_body | @ql_module_expr | @ql_module_member | @ql_module_name | @ql_mul_expr | @ql_negation | @ql_order_by | @ql_order_bys | @ql_par_expr | @ql_predicate_alias_body | @ql_predicate_expr | @ql_prefix_cast | @ql_ql | @ql_qual_module_expr | @ql_qualified_expr | @ql_qualified_rhs | @ql_quantified | @ql_range | @ql_select | @ql_set_literal | @ql_special_call | @ql_super_ref | @ql_token | @ql_type_alias_body | @ql_type_expr | @ql_type_union_body | @ql_unary_expr | @ql_unqual_agg_body | @ql_var_decl | @ql_var_name | @ql_variable | @ql_yaml_comment | @ql_yaml_entry | @ql_yaml_key | @ql_yaml_keyvaluepair | @ql_yaml_listitem
+
+@ql_ast_node_parent = @file | @ql_ast_node
 
 #keyset[parent, parent_index]
-ast_node_parent(
-  int child: @ast_node ref,
-  int parent: @ast_node_parent ref,
+ql_ast_node_parent(
+  int child: @ql_ast_node ref,
+  int parent: @ql_ast_node_parent ref,
   int parent_index: int ref
 );
 

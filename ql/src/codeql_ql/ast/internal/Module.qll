@@ -149,13 +149,13 @@ private predicate resolveSelectionName(Import imp, ContainerOrModule m, int i) {
 cached
 private module Cached {
   // TODO: Use `AstNode::getParent` once it is total
-  private Generated::AstNode parent(Generated::AstNode n) {
+  private QL::AstNode parent(QL::AstNode n) {
     result = n.getParent() and
-    not n instanceof Generated::Module
+    not n instanceof QL::Module
   }
 
   private Module getEnclosingModule0(AstNode n) {
-    AstNodes::toGenerated(result) = parent*(AstNodes::toGenerated(n).getParent())
+    AstNodes::toQL(result) = parent*(AstNodes::toQL(n).getParent())
   }
 
   cached
