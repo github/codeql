@@ -1,6 +1,8 @@
 /**
  * @name Bidirectional imports for abstract classes
- * @description An abstract class should import each of its subclasses, unless it is meant as an extension point, in which case it should import none of them.
+ * @description An abstract class should import each of its subclasses, unless
+ *              it is meant as a configuration-style class, in which case it
+ *              should import none of them.
  * @kind problem
  * @problem.severity error
  * @id ql/abstract-class-import
@@ -19,12 +21,31 @@ File imports(File file) {
   )
 }
 
-/** Gets a non-abstract subclass of `ab` that is defined in a different file */
+predicate testFile(File f) { f.getRelativePath().matches("%/ql/test/%") }
+
+predicate nonTestQuery(File f) { f.getBaseName().matches("%.ql") and not testFile(f) }
+
+predicate liveNonTestFile(File f) {
+  exists(File query | nonTestQuery(query) and f = imports*(query))
+}
+
+predicate experimentalFile(File f) { f.getRelativePath().matches("%/experimental/%") }
+
+Class getASubclassOfAbstract(Class ab) {
+  ab.isAbstract() and
+  result.getType().getASuperType() = ab.getType()
+}
+
+/** Gets a non-abstract subclass of `ab` that contributes to the extent of `ab`. */
 Class concreteExternalSubclass(Class ab) {
   ab.isAbstract() and
   not result.isAbstract() and
-  result.getType().getASuperType*() = ab.getType() and
-  result.getLocation().getFile() != ab.getLocation().getFile()
+  result = getASubclassOfAbstract+(ab) and
+  // Heuristic: An abstract class with subclasses in the same file and no other
+  // imported subclasses is likely intentional.
+  result.getLocation().getFile() != ab.getLocation().getFile() and
+  // Exclude subclasses in tests and libraries that are only used in tests.
+  liveNonTestFile(result.getLocation().getFile())
 }
 
 /** Holds if there is a bidirectional import between the abstract class `ab` and its subclass `sub` */
@@ -74,7 +95,9 @@ predicate alert(Class ab, string msg, Class sub, Class sub2) {
         "This abstract class imports its subclass $@ but doesn't import " + nonImports +
           " other subclasses, such as $@."
     )
-  )
+  ) and
+  // exclude results in experimental
+  not experimentalFile(sub.getLocation().getFile())
 }
 
 from Class ab, string msg, Class sub, Class sub2
