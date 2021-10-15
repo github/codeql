@@ -11,7 +11,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-        with:
-          submodules: true
       - name: Check synchronized files
         run: ruby/scripts/sync-identical-files.py
