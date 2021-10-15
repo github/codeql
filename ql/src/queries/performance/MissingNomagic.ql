@@ -5,7 +5,7 @@
  * @problem.severity warning
  * @id ql/cand-missing-nomagic
  * @tags performance
- * @precision high
+ * @precision medium
  */
 
 import ql
