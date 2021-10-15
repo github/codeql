@@ -201,7 +201,7 @@ class PredicateOrBuiltin extends TPredOrBuiltin, AstNode {
 
   Type getReturnType() { none() }
 
-  int getArity() { result = count(this.getParameterType(_)) }
+  int getArity() { result = count(int i | exists(this.getParameterType(i))) }
 
   predicate isPrivate() { none() }
 }
