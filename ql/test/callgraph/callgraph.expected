@@ -9,6 +9,13 @@ getTarget
 | Foo.qll:31:5:31:12 | PredicateCall | Foo.qll:24:3:24:32 | ClasslessPredicate alias0 |
 | Foo.qll:36:36:36:65 | MemberCall | file://:0:0:0:0 | replaceAll |
 | Foo.qll:38:39:38:67 | MemberCall | file://:0:0:0:0 | regexpCapture |
+| Overrides.qll:8:30:8:39 | MemberCall | Overrides.qll:6:3:6:29 | ClassPredicate bar |
+| Overrides.qll:16:39:16:48 | MemberCall | Overrides.qll:6:3:6:29 | ClassPredicate bar |
+| Overrides.qll:16:39:16:48 | MemberCall | Overrides.qll:14:12:14:43 | ClassPredicate bar |
+| Overrides.qll:24:39:24:48 | MemberCall | Overrides.qll:6:3:6:29 | ClassPredicate bar |
+| Overrides.qll:24:39:24:48 | MemberCall | Overrides.qll:22:12:22:44 | ClassPredicate bar |
+| Overrides.qll:28:3:28:9 | MemberCall | Overrides.qll:6:3:6:29 | ClassPredicate bar |
+| Overrides.qll:29:3:29:10 | MemberCall | Overrides.qll:8:3:8:41 | ClassPredicate baz |
 | packs/src/SrcThing.qll:4:3:4:8 | PredicateCall | packs/lib/LibThing/Foo.qll:1:1:1:30 | ClasslessPredicate foo |
 | packs/src/SrcThing.qll:5:3:5:8 | PredicateCall | packs/src/SrcThing.qll:8:1:8:30 | ClasslessPredicate bar |
 dependsOn
