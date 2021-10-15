@@ -3,7 +3,7 @@
 Basic query for Ruby code
 =========================
 
-Learn to write and run a simple CodeQL query using CodeQL.
+Learn to write and run a simple CodeQL query.
 
 About the query
 ---------------
