@@ -32,24 +32,24 @@ def mainHandler():
 def xml_makeparser_MainHandler():
     xml_content = request.args['xml_content']
 
-    BadHandler = MainHandler()
+    GoodHandler = MainHandler()
     parser = xml.sax.make_parser()
-    parser.setContentHandler(BadHandler)
+    parser.setContentHandler(GoodHandler)
     parser.parse(StringIO(xml_content))
-    return BadHandler._result
+    return GoodHandler._result
 
 
 @app.route("/xml.sax.make_parser()+MainHandler-xml.sax.handler.feature_external_ges_False")
 def xml_makeparser_MainHandler_entitiesFalse():
     xml_content = request.args['xml_content']
 
-    BadHandler = MainHandler()
+    GoodHandler = MainHandler()
     parser = xml.sax.make_parser()
-    parser.setContentHandler(BadHandler)
+    parser.setContentHandler(GoodHandler)
     # https://docs.python.org/3/library/xml.sax.handler.html#xml.sax.handler.feature_external_ges
     parser.setFeature(xml.sax.handler.feature_external_ges, False)
     parser.parse(StringIO(xml_content))
-    return BadHandler._result
+    return GoodHandler._result
 
 # BAD
 
@@ -58,12 +58,12 @@ def xml_makeparser_MainHandler_entitiesFalse():
 def xml_makeparser_MainHandler_entitiesTrue():
     xml_content = request.args['xml_content']
 
-    GoodHandler = MainHandler()
+    BadHandler = MainHandler()
     parser = xml.sax.make_parser()
-    parser.setContentHandler(GoodHandler)
+    parser.setContentHandler(BadHandler)
     parser.setFeature(xml.sax.handler.feature_external_ges, True)
     parser.parse(StringIO(xml_content))
-    return GoodHandler._result
+    return BadHandler._result
 
 
 @app.route("/xml.sax.make_parser()+xml.dom.minidom.parse-xml.sax.handler.feature_external_ges_True")
