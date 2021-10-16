@@ -28,7 +28,9 @@
 | Test.qll:8:67:8:69 | Float | file://:0:0:0:0 | float |
 | Test.qll:11:37:11:42 | result | file://:0:0:0:0 | string |
 | Test.qll:11:46:11:46 | a | Test.qll:3:1:5:1 | Strings |
+| Test.qll:11:46:11:50 | AddExpr | file://:0:0:0:0 | string |
 | Test.qll:11:50:11:50 | b | Test.qll:3:1:5:1 | Strings |
 | Test.qll:13:36:13:41 | result | file://:0:0:0:0 | float |
 | Test.qll:13:45:13:45 | a | Test.qll:7:1:9:1 | Floats |
+| Test.qll:13:45:13:49 | AddExpr | file://:0:0:0:0 | float |
 | Test.qll:13:49:13:49 | b | Test.qll:7:1:9:1 | Floats |
