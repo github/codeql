@@ -129,7 +129,7 @@ class Pom extends ProtoPom {
    * occurs by considering the properties defined by this project or an ancestor project.
    */
   string resolvePlaceholder(string name) {
-    if name.prefix(8) = "project."
+    if name.matches("project.%")
     then
       exists(PomElement p |
         p = getProjectProperty() and

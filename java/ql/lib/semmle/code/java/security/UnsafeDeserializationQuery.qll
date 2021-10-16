@@ -16,12 +16,14 @@ private import semmle.code.java.frameworks.Castor
 private import semmle.code.java.frameworks.Jackson
 private import semmle.code.java.frameworks.Jabsorb
 private import semmle.code.java.frameworks.JoddJson
+private import semmle.code.java.frameworks.Flexjson
+private import semmle.code.java.frameworks.google.Gson
 private import semmle.code.java.frameworks.apache.Lang
 private import semmle.code.java.Reflection
 
 private class ObjectInputStreamReadObjectMethod extends Method {
   ObjectInputStreamReadObjectMethod() {
-    this.getDeclaringType().getASourceSupertype*().hasQualifiedName("java.io", "ObjectInputStream") and
+    this.getDeclaringType().getASourceSupertype*() instanceof TypeObjectInputStream and
     (this.hasName("readObject") or this.hasName("readUnshared"))
   }
 }
@@ -203,6 +205,13 @@ predicate unsafeDeserialization(MethodAccess ma, Expr sink) {
       // jodd.json.JsonParser may be configured for unrestricted deserialization to user-specified types
       joddJsonParserConfiguredUnsafely(ma.getQualifier())
     )
+    or
+    m instanceof FlexjsonDeserializeMethod and
+    sink = ma.getArgument(0)
+    or
+    m instanceof GsonDeserializeMethod and
+    sink = ma.getArgument(0) and
+    any(UnsafeTypeConfig config).hasFlowToExpr(ma.getArgument(1))
   )
 }
 
@@ -245,6 +254,8 @@ class UnsafeDeserializationConfig extends TaintTracking::Configuration {
     createJacksonJsonParserStep(pred, succ)
     or
     createJacksonTreeNodeStep(pred, succ)
+    or
+    intentFlowsToParcel(pred, succ)
   }
 
   override predicate isSanitizer(DataFlow::Node node) {
@@ -270,7 +281,46 @@ class UnsafeDeserializationConfig extends TaintTracking::Configuration {
       not ma.getArgument(1).getType().getName() = ["Class<Object>", "Class<?>"] and
       node.asExpr() = ma.getAnArgument()
     )
+    or
+    exists(MethodAccess ma |
+      // Sanitize the input to flexjson.JSONDeserializer.deserialize whenever it appears
+      // to be called with an explicit class argument limiting those types that can
+      // be instantiated during deserialization, or if the deserializer has already been
+      // configured to use a specified root class.
+      ma.getMethod() instanceof FlexjsonDeserializeMethod and
+      node.asExpr() = ma.getAnArgument() and
+      (
+        ma.getArgument(1).getType() instanceof TypeClass and
+        not ma.getArgument(1) instanceof NullLiteral and
+        not ma.getArgument(1).getType().getName() = ["Class<Object>", "Class<?>"]
+        or
+        isSafeFlexjsonDeserializer(ma.getQualifier())
+      )
+    )
   }
+}
+
+/**
+ * Gets a safe usage of the `use` method of Flexjson, which could be:
+ *     use(String, ...) where the path is null or
+ *     use(ObjectFactory, String...) where the string varargs (or array) contains null
+ */
+MethodAccess getASafeFlexjsonUseCall() {
+  result.getMethod() instanceof FlexjsonDeserializerUseMethod and
+  (
+    result.getMethod().getParameterType(0) instanceof TypeString and
+    result.getArgument(0) instanceof NullLiteral
+    or
+    result.getMethod().getParameterType(0) instanceof FlexjsonObjectFactory and
+    exists(NullLiteral e | e = result.getAnArgument())
+  )
+}
+
+/**
+ * Holds if `e` is a safely configured Flexjson `JSONDeserializer`.
+ */
+predicate isSafeFlexjsonDeserializer(Expr e) {
+  DataFlow::localExprFlow(getASafeFlexjsonUseCall().getQualifier(), e)
 }
 
 /** Holds if `fromNode` to `toNode` is a dataflow step that resolves a class. */
@@ -319,9 +369,15 @@ class UnsafeTypeConfig extends TaintTracking2::Configuration {
         ma.getMethod() instanceof JabsorbUnmarshallMethod
         or
         ma.getMethod() instanceof JoddJsonParseMethod
+        or
+        ma.getMethod() instanceof GsonDeserializeMethod
       ) and
       // Note `JacksonTypeDescriptorType` includes plain old `java.lang.Class`
-      arg.getType() instanceof JacksonTypeDescriptorType and
+      (
+        arg.getType() instanceof JacksonTypeDescriptorType
+        or
+        arg.getType().(RefType).hasQualifiedName("java.lang.reflect", "Type")
+      ) and
       arg = sink.asExpr()
     )
   }
@@ -332,7 +388,8 @@ class UnsafeTypeConfig extends TaintTracking2::Configuration {
    */
   override predicate isAdditionalTaintStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
     resolveClassStep(fromNode, toNode) or
-    looksLikeResolveClassStep(fromNode, toNode)
+    looksLikeResolveClassStep(fromNode, toNode) or
+    intentFlowsToParcel(fromNode, toNode)
   }
 }
 

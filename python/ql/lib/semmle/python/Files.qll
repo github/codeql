@@ -1,9 +1,7 @@
 import python
 
 /** A file */
-class File extends Container {
-  File() { files(this, _, _, _, _) }
-
+class File extends Container, @file {
   /** DEPRECATED: Use `getAbsolutePath` instead. */
   deprecated override string getName() { result = this.getAbsolutePath() }
 
@@ -15,7 +13,7 @@ class File extends Container {
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
-   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
@@ -34,9 +32,7 @@ class File extends Container {
   }
 
   /** Gets a short name for this file (just the file name) */
-  string getShortName() {
-    exists(string simple, string ext | files(this, _, simple, ext, _) | result = simple + ext)
-  }
+  string getShortName() { result = this.getBaseName() }
 
   private int lastLine() {
     result = max(int i | exists(Location l | l.getFile() = this and l.getEndLine() = i))
@@ -55,7 +51,7 @@ class File extends Container {
     )
   }
 
-  override string getAbsolutePath() { files(this, result, _, _, _) }
+  override string getAbsolutePath() { files(this, result) }
 
   /** Gets the URL of this file. */
   override string getURL() { result = "file://" + this.getAbsolutePath() + ":0:0:0:0" }
@@ -118,21 +114,16 @@ private predicate occupied_line(File f, int n) {
 }
 
 /** A folder (directory) */
-class Folder extends Container {
-  Folder() { folders(this, _, _) }
-
+class Folder extends Container, @folder {
   /** DEPRECATED: Use `getAbsolutePath` instead. */
   deprecated override string getName() { result = this.getAbsolutePath() }
-
-  /** DEPRECATED: Use `getBaseName` instead. */
-  deprecated string getSimple() { folders(this, _, result) }
 
   /**
    * Holds if this element is at the specified location.
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
-   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
@@ -144,7 +135,7 @@ class Folder extends Container {
     endcolumn = 0
   }
 
-  override string getAbsolutePath() { folders(this, result, _) }
+  override string getAbsolutePath() { folders(this, result) }
 
   /** Gets the URL of this folder. */
   override string getURL() { result = "folder://" + this.getAbsolutePath() }
@@ -265,7 +256,7 @@ abstract class Container extends @container {
    * </table>
    */
   string getBaseName() {
-    result = getAbsolutePath().regexpCapture(".*/(([^/]*?)(?:\\.([^.]*))?)", 1)
+    result = this.getAbsolutePath().regexpCapture(".*/(([^/]*?)(?:\\.([^.]*))?)", 1)
   }
 
   /**
@@ -291,7 +282,9 @@ abstract class Container extends @container {
    * <tr><td>"/tmp/x.tar.gz"</td><td>"gz"</td></tr>
    * </table>
    */
-  string getExtension() { result = getAbsolutePath().regexpCapture(".*/([^/]*?)(\\.([^.]*))?", 3) }
+  string getExtension() {
+    result = this.getAbsolutePath().regexpCapture(".*/([^/]*?)(\\.([^.]*))?", 3)
+  }
 
   /**
    * Gets the stem of this container, that is, the prefix of its base name up to
@@ -310,7 +303,9 @@ abstract class Container extends @container {
    * <tr><td>"/tmp/x.tar.gz"</td><td>"x.tar"</td></tr>
    * </table>
    */
-  string getStem() { result = getAbsolutePath().regexpCapture(".*/([^/]*?)(?:\\.([^.]*))?", 1) }
+  string getStem() {
+    result = this.getAbsolutePath().regexpCapture(".*/([^/]*?)(?:\\.([^.]*))?", 1)
+  }
 
   File getFile(string baseName) {
     result = this.getAFile() and
@@ -332,7 +327,7 @@ abstract class Container extends @container {
   /**
    * Gets a URL representing the location of this container.
    *
-   * For more information see [Providing URLs](https://help.semmle.com/QL/learn-ql/ql/locations.html#providing-urls).
+   * For more information see [Providing URLs](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/#providing-urls).
    */
   abstract string getURL();
 
@@ -438,7 +433,7 @@ class Location extends @location {
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
-   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
@@ -466,7 +461,7 @@ class Line extends @py_line {
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
-   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn

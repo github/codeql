@@ -88,7 +88,7 @@ class CredentialSink extends TaintSink {
   CredentialSink() {
     exists(string name |
       name.regexpMatch(getACredentialRegex()) and
-      not name.suffix(name.length() - 4) = "file"
+      not name.matches("%file")
     |
       any(FunctionValue func).getNamedArgumentForCall(_, name) = this
       or

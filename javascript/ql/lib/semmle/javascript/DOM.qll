@@ -450,6 +450,8 @@ module DOM {
     result = domValueRef(DataFlow::TypeTracker::end())
     or
     result.hasUnderlyingType("Element")
+    or
+    result.hasUnderlyingType(any(string s | s.matches("HTML%Element")))
   }
 
   module LocationSource {

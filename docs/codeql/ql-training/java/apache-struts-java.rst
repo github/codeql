@@ -15,7 +15,7 @@ Setup
 
 For this example you should download:
 
-- `CodeQL for Visual Studio Code <https://help.semmle.com/codeql/codeql-for-vscode/procedures/setting-up.html>`__
+- `CodeQL for Visual Studio Code <https://codeql.github.com/docs/codeql-for-visual-studio-code/setting-up-codeql-in-visual-studio-code/>`__
 - `Apache Struts database <https://downloads.lgtm.com/snapshots/java/apache/struts/apache-struts-7fd1622-CVE-2018-11776.zip>`__
 
 .. note::
@@ -134,4 +134,4 @@ Model answer, step 4
      and sink.getNode() instanceof UnsafeDeserializationSink
    select sink.getNode().(UnsafeDeserializationSink).getMethodAccess(), source, sink, "Unsafe    deserialization of $@.", source, "user input"
 
-More full-featured version: https://github.com/github/security-lab/tree/main/CodeQL_Queries/java/Apache_Struts_CVE-2017-9805
+More full-featured version: https://github.com/github/securitylab/tree/main/CodeQL_Queries/java/Apache_Struts_CVE-2017-9805

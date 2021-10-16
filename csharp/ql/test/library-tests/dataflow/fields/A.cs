@@ -2,35 +2,35 @@ public class A
 {
     public void M1()
     {
-        var c = new C();
+        var c = Source<C>(1);
         var b = B.Make(c);
-        Sink(b.c); // flow
+        Sink(b.c); // $ hasValueFlow=1
     }
 
     public void M2()
     {
         var b = new B();
-        b.Set(new C1());
-        Sink(b.Get()); // flow
-        Sink((new B(new C())).Get()); // flow
+        b.Set(Source<C1>(2.1));
+        Sink(b.Get()); // $ hasValueFlow=2.1
+        Sink((new B(Source<C>(2.2))).Get()); // $ hasValueFlow=2.2
     }
 
     public void M3()
     {
         var b1 = new B();
         B b2;
-        b2 = SetOnB(b1, new C2());
-        Sink(b1.c); // no flow
-        Sink(b2.c); // flow
+        b2 = SetOnB(b1, Source<C2>(3));
+        Sink(b1.c);
+        Sink(b2.c); // $ hasValueFlow=3
     }
 
     public void M4()
     {
         var b1 = new B();
         B b2;
-        b2 = SetOnBWrap(b1, new C2());
-        Sink(b1.c); // no flow
-        Sink(b2.c); // flow
+        b2 = SetOnBWrap(b1, Source<C2>(4));
+        Sink(b1.c);
+        Sink(b2.c); // $ hasValueFlow=4
     }
 
     public B SetOnBWrap(B b1, C c)
@@ -52,7 +52,7 @@ public class A
 
     public void M5()
     {
-        var a = new A();
+        var a = Source<A>(5);
         C1 c1 = new C1();
         c1.a = a;
         M6(c1);
@@ -61,7 +61,7 @@ public class A
     {
         if (c is C1)
         {
-            Sink(((C1)c).a); // flow
+            Sink(((C1)c).a); // $ hasValueFlow=5
         }
         C cc;
         if (c is C2)
@@ -80,13 +80,13 @@ public class A
 
     public void M7(B b)
     {
-        b.Set(new C());
+        b.Set(Source<C>(7));
     }
     public void M8()
     {
         var b = new B();
         M7(b);
-        Sink(b.c); // flow
+        Sink(b.c); // $ hasValueFlow=7
     }
 
     public class D
@@ -94,33 +94,33 @@ public class A
         public B b;
         public D(B b, bool x)
         {
-            b.c = new C();
-            this.b = x ? b : new B();
+            b.c = Source<C>(9.1);
+            this.b = x ? b : Source<B>(9.2);
         }
     }
 
     public void M9()
     {
-        var b = new B();
+        var b = Source<B>(9.3);
         var d = new D(b, R());
-        Sink(d.b); // flow x2
-        Sink(d.b.c); // flow
-        Sink(b.c); // flow
+        Sink(d.b); // $ hasValueFlow=9.2 $ hasValueFlow=9.3
+        Sink(d.b.c); // $ hasValueFlow=9.1
+        Sink(b.c); // $ hasValueFlow=9.1
     }
 
     public void M10()
     {
-        var b = new B();
+        var b = Source<B>(10);
         var l1 = new MyList(b, new MyList(null, null));
         var l2 = new MyList(null, l1);
         var l3 = new MyList(null, l2);
         Sink(l3.head); // no flow, b is nested beneath at least one .next
         Sink(l3.next.head); // flow, the precise nesting depth isn't tracked
-        Sink(l3.next.next.head); // flow
+        Sink(l3.next.next.head); // $ hasValueFlow=10
         Sink(l3.next.next.next.head); // no flow
         for (var l = l3; l != null; l = l.next)
         {
-            Sink(l.head); // flow
+            Sink(l.head); // $ hasValueFlow=10
         }
     }
 
@@ -160,4 +160,6 @@ public class A
             this.next = next;
         }
     }
+
+    static T Source<T>(object source) => throw null;
 }

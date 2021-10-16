@@ -88,6 +88,11 @@ private module LDAP {
       result.(DataFlow::AttrRead).getAttributeName() instanceof LDAP2BindMethods
     }
 
+    /**List of SSL-demanding options */
+    private class LDAPSSLOptions extends DataFlow::Node {
+      LDAPSSLOptions() { this = ldap().getMember("OPT_X_TLS_" + ["DEMAND", "HARD"]).getAUse() }
+    }
+
     /**
      * A class to find `ldap` methods binding a connection.
      *
@@ -98,6 +103,44 @@ private module LDAP {
 
       override DataFlow::Node getPassword() {
         result in [this.getArg(1), this.getArgByName("cred")]
+      }
+
+      override DataFlow::Node getHost() {
+        exists(DataFlow::CallCfgNode initialize |
+          this.getFunction().(DataFlow::AttrRead).getObject().getALocalSource() = initialize and
+          initialize = ldapInitialize().getACall() and
+          result = initialize.getArg(0)
+        )
+      }
+
+      override predicate useSSL() {
+        // use initialize to correlate `this` and so avoid FP in several instances
+        exists(DataFlow::CallCfgNode initialize |
+          // ldap.set_option(ldap.OPT_X_TLS_%s)
+          ldap().getMember("set_option").getACall().getArg(_) instanceof LDAPSSLOptions
+          or
+          this.getFunction().(DataFlow::AttrRead).getObject().getALocalSource() = initialize and
+          initialize = ldapInitialize().getACall() and
+          (
+            // ldap_connection.start_tls_s()
+            // see https://www.python-ldap.org/en/python-ldap-3.3.0/reference/ldap.html#ldap.LDAPObject.start_tls_s
+            exists(DataFlow::MethodCallNode startTLS |
+              startTLS.getObject().getALocalSource() = initialize and
+              startTLS.getMethodName() = "start_tls_s"
+            )
+            or
+            // ldap_connection.set_option(ldap.OPT_X_TLS_%s, True)
+            exists(DataFlow::CallCfgNode setOption |
+              setOption.getFunction().(DataFlow::AttrRead).getObject().getALocalSource() =
+                initialize and
+              setOption.getFunction().(DataFlow::AttrRead).getAttributeName() = "set_option" and
+              setOption.getArg(0) instanceof LDAPSSLOptions and
+              not DataFlow::exprNode(any(False falseExpr))
+                  .(DataFlow::LocalSourceNode)
+                  .flowsTo(setOption.getArg(1))
+            )
+          )
+        )
       }
     }
 
@@ -165,6 +208,31 @@ private module LDAP {
 
       override DataFlow::Node getPassword() {
         result in [this.getArg(2), this.getArgByName("password")]
+      }
+
+      override DataFlow::Node getHost() {
+        exists(DataFlow::CallCfgNode serverCall |
+          serverCall = ldap3Server().getACall() and
+          this.getArg(0).getALocalSource() = serverCall and
+          result = serverCall.getArg(0)
+        )
+      }
+
+      override predicate useSSL() {
+        exists(DataFlow::CallCfgNode serverCall |
+          serverCall = ldap3Server().getACall() and
+          this.getArg(0).getALocalSource() = serverCall and
+          DataFlow::exprNode(any(True trueExpr))
+              .(DataFlow::LocalSourceNode)
+              .flowsTo([serverCall.getArg(2), serverCall.getArgByName("use_ssl")])
+        )
+        or
+        // ldap_connection.start_tls_s()
+        // see https://www.python-ldap.org/en/python-ldap-3.3.0/reference/ldap.html#ldap.LDAPObject.start_tls_s
+        exists(DataFlow::MethodCallNode startTLS |
+          startTLS.getMethodName() = "start_tls_s" and
+          startTLS.getObject().getALocalSource() = this
+        )
       }
     }
 

@@ -10,6 +10,7 @@ private import semmle.code.csharp.frameworks.system.web.UI
 private import semmle.code.csharp.security.dataflow.flowsinks.Html
 private import semmle.code.csharp.security.dataflow.flowsinks.Remote
 private import semmle.code.csharp.dataflow.ExternalFlow
+private import semmle.code.csharp.frameworks.ServiceStack::XSS
 
 /**
  * A data flow sink for cross-site scripting (XSS) vulnerabilities.
@@ -165,7 +166,7 @@ class AspInlineMember extends AspInlineCode {
   Member getMember() { result = member }
 
   /** Gets the type of this member. */
-  Type getType() { result = getMemberType(getMember()) }
+  Type getType() { result = getMemberType(this.getMember()) }
 }
 
 /** Gets a value that is written to the member accessed by the given `AspInlineMember`. */
@@ -250,7 +251,7 @@ private class HttpResponseBaseSink extends Sink {
  */
 private class StringContentSinkModelCsv extends SinkModelCsv {
   override predicate row(string row) {
-    row = ["System.Net.Http;StringContent;false;StringContent;;;Argument[0];xss"]
+    row = "System.Net.Http;StringContent;false;StringContent;;;Argument[0];xss"
   }
 }
 

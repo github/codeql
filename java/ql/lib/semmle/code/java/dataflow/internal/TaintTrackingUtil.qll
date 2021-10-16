@@ -42,11 +42,28 @@ private module Cached {
    */
   cached
   predicate localTaintStep(DataFlow::Node src, DataFlow::Node sink) {
-    DataFlow::localFlowStep(src, sink) or
-    localAdditionalTaintStep(src, sink) or
+    DataFlow::localFlowStep(src, sink)
+    or
+    localAdditionalTaintStep(src, sink)
+    or
     // Simple flow through library code is included in the exposed local
     // step relation, even though flow is technically inter-procedural
     FlowSummaryImpl::Private::Steps::summaryThroughStep(src, sink, false)
+    or
+    // Treat container flow as taint for the local taint flow relation
+    exists(DataFlow::Content c | containerContent(c) |
+      readStep(src, c, sink) or
+      storeStep(src, c, sink) or
+      FlowSummaryImpl::Private::Steps::summaryGetterStep(src, c, sink) or
+      FlowSummaryImpl::Private::Steps::summarySetterStep(src, c, sink)
+    )
+  }
+
+  private predicate containerContent(DataFlow::Content c) {
+    c instanceof DataFlow::ArrayContent or
+    c instanceof DataFlow::CollectionContent or
+    c instanceof DataFlow::MapKeyContent or
+    c instanceof DataFlow::MapValueContent
   }
 
   /**
@@ -65,12 +82,12 @@ private module Cached {
       readStep(src, f, sink) and
       not sink.getTypeBound() instanceof PrimitiveType and
       not sink.getTypeBound() instanceof BoxedType and
-      not sink.getTypeBound() instanceof NumberType
-    |
-      f instanceof DataFlow::ArrayContent or
-      f instanceof DataFlow::CollectionContent or
-      f instanceof DataFlow::MapKeyContent or
-      f instanceof DataFlow::MapValueContent
+      not sink.getTypeBound() instanceof NumberType and
+      (
+        containerContent(f)
+        or
+        f instanceof TaintInheritingContent
+      )
     )
     or
     FlowSummaryImpl::Private::Steps::summaryLocalStep(src, sink, false)
@@ -252,7 +269,7 @@ private predicate taintPreservingQualifierToMethod(Method m) {
     m.getName() = "toString"
   )
   or
-  m.getDeclaringType().hasQualifiedName("java.io", "ObjectInputStream") and
+  m.getDeclaringType() instanceof TypeObjectInputStream and
   m.getName().matches("read%")
   or
   m instanceof GetterMethod and

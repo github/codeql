@@ -73,6 +73,7 @@ edges
 | test.cpp:305:18:305:21 | Chi | test.cpp:308:10:308:27 | ... * ... |
 | test.cpp:305:18:305:21 | Chi | test.cpp:308:10:308:27 | ... * ... |
 | test.cpp:305:18:305:21 | get_size output argument [[]] | test.cpp:305:18:305:21 | Chi |
+subpaths
 nodes
 | test.cpp:40:21:40:24 | argv | semmle.label | argv |
 | test.cpp:40:21:40:24 | argv | semmle.label | argv |

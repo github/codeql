@@ -80,6 +80,7 @@ import com.semmle.js.ast.SourceElement;
 import com.semmle.js.ast.SourceLocation;
 import com.semmle.js.ast.SpreadElement;
 import com.semmle.js.ast.Statement;
+import com.semmle.js.ast.StaticInitializer;
 import com.semmle.js.ast.Super;
 import com.semmle.js.ast.SwitchCase;
 import com.semmle.js.ast.SwitchStatement;
@@ -1613,6 +1614,8 @@ public class ASTExtractor {
       int kind;
       if (nd instanceof MethodDefinition) {
         kind = getMethodKind((MethodDefinition) nd);
+      } else if (nd instanceof StaticInitializer) {
+        kind = 10;
       } else {
         kind = getFieldKind((FieldDefinition) nd);
       }

@@ -6,8 +6,8 @@
  * @precision medium
  * @id java/insecure-ldap-auth
  * @tags security
- *       external/cwe-522
- *       external/cwe-319
+ *       external/cwe/cwe-522
+ *       external/cwe/cwe-319
  */
 
 import java

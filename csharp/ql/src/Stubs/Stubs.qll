@@ -161,7 +161,7 @@ abstract private class GeneratedType extends Type, GeneratedElement {
     if this instanceof Enum
     then result = ""
     else
-      if exists(getAnInterestingBaseType())
+      if exists(this.getAnInterestingBaseType())
       then
         result =
           " : " +
@@ -220,15 +220,15 @@ abstract private class GeneratedType extends Type, GeneratedElement {
   }
 
   final Type getAGeneratedType() {
-    result = getAnInterestingBaseType()
+    result = this.getAnInterestingBaseType()
     or
-    result = getAGeneratedMember().(Callable).getReturnType()
+    result = this.getAGeneratedMember().(Callable).getReturnType()
     or
-    result = getAGeneratedMember().(Callable).getAParameter().getType()
+    result = this.getAGeneratedMember().(Callable).getAParameter().getType()
     or
-    result = getAGeneratedMember().(Property).getType()
+    result = this.getAGeneratedMember().(Property).getType()
     or
-    result = getAGeneratedMember().(Field).getType()
+    result = this.getAGeneratedMember().(Field).getType()
   }
 }
 
@@ -331,7 +331,8 @@ private class GeneratedNamespace extends Namespace, GeneratedElement {
 
   final string getStubs(Assembly assembly) {
     result =
-      getPreamble() + getTypeStubs(assembly) + getSubNamespaceStubs(assembly) + getPostAmble()
+      this.getPreamble() + this.getTypeStubs(assembly) + this.getSubNamespaceStubs(assembly) +
+        this.getPostAmble()
   }
 
   /** Gets the `n`th generated child namespace, indexed from 0. */
@@ -358,7 +359,7 @@ private class GeneratedNamespace extends Namespace, GeneratedElement {
     this.isInAssembly(assembly) and
     result =
       concat(GeneratedNamespace child, int i |
-        child = getChildNamespace(i) and child.isInAssembly(assembly)
+        child = this.getChildNamespace(i) and child.isInAssembly(assembly)
       |
         child.getStubs(assembly) order by i
       )

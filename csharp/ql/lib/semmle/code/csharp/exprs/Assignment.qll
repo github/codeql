@@ -27,7 +27,7 @@ class Assignment extends Operation, @assign_expr {
   Expr getRValue() { result = this.getChild(0) }
 
   /** Gets the variable being assigned to, if any. */
-  Variable getTargetVariable() { result.getAnAccess() = getLValue() }
+  Variable getTargetVariable() { result.getAnAccess() = this.getLValue() }
 
   override string getOperator() { none() }
 }
@@ -38,7 +38,7 @@ class Assignment extends Operation, @assign_expr {
 class LocalVariableDeclAndInitExpr extends LocalVariableDeclExpr, Assignment {
   override string getOperator() { result = "=" }
 
-  override LocalVariable getTargetVariable() { result = getVariable() }
+  override LocalVariable getTargetVariable() { result = this.getVariable() }
 
   override LocalVariableAccess getLValue() { result = Assignment.super.getLValue() }
 
@@ -86,7 +86,7 @@ class AssignOperation extends Assignment, @assign_op_expr {
    * If an expanded version exists, then it is used in the control
    * flow graph.
    */
-  predicate hasExpandedAssignment() { exists(getExpandedAssignment()) }
+  predicate hasExpandedAssignment() { exists(this.getExpandedAssignment()) }
 
   override string toString() { result = "... " + this.getOperator() + " ..." }
 }

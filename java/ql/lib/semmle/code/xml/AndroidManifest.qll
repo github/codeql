@@ -79,6 +79,47 @@ class AndroidReceiverXmlElement extends AndroidComponentXmlElement {
  */
 class AndroidProviderXmlElement extends AndroidComponentXmlElement {
   AndroidProviderXmlElement() { this.getName() = "provider" }
+
+  /**
+   * Holds if this provider element has explicitly set a value for either its
+   * `android:permission` attribute or its `android:readPermission` and `android:writePermission`
+   * attributes.
+   */
+  predicate requiresPermissions() {
+    this.getAnAttribute().(AndroidPermissionXmlAttribute).isFull()
+    or
+    this.getAnAttribute().(AndroidPermissionXmlAttribute).isWrite() and
+    this.getAnAttribute().(AndroidPermissionXmlAttribute).isRead()
+  }
+}
+
+/**
+ * The attribute `android:perrmission`, `android:readPermission`, or `android:writePermission`.
+ */
+class AndroidPermissionXmlAttribute extends XMLAttribute {
+  AndroidPermissionXmlAttribute() {
+    this.getNamespace().getPrefix() = "android" and
+    this.getName() = ["permission", "readPermission", "writePermission"]
+  }
+
+  /** Holds if this is an `android:permission` attribute. */
+  predicate isFull() { this.getName() = "permission" }
+
+  /** Holds if this is an `android:readPermission` attribute. */
+  predicate isRead() { this.getName() = "readPermission" }
+
+  /** Holds if this is an `android:writePermission` attribute. */
+  predicate isWrite() { this.getName() = "writePermission" }
+}
+
+/**
+ * The `<path-permission`> element of a `<provider>` in an Android manifest file.
+ */
+class AndroidPathPermissionXmlElement extends XMLElement {
+  AndroidPathPermissionXmlElement() {
+    this.getParent() instanceof AndroidProviderXmlElement and
+    this.hasName("path-permission")
+  }
 }
 
 /**

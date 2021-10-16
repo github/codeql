@@ -5,6 +5,7 @@
  * @kind problem
  * @id cpp/improper-null-termination
  * @problem.severity warning
+ * @precision medium
  * @security-severity 7.8
  * @tags security
  *       external/cwe/cwe-170
@@ -53,6 +54,7 @@ class ImproperNullTerminationReachability extends StackVariableReachabilityWithR
   override predicate isBarrier(ControlFlowNode node, StackVariable v) {
     exprDefinition(v, node, _) or
     mayAddNullTerminator(node, v.getAnAccess()) or
+    node.(AddressOfExpr).getOperand() = v.getAnAccess() or // address taken
     isSinkActual(node, v) // only report first use
   }
 }

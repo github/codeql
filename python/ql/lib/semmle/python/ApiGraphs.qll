@@ -55,7 +55,7 @@ module API {
     /**
      * Gets a call to the function represented by this API component.
      */
-    DataFlow::CallCfgNode getACall() { result = getReturn().getAnImmediateUse() }
+    DataFlow::CallCfgNode getACall() { result = this.getReturn().getAnImmediateUse() }
 
     /**
      * Gets a node representing member `m` of this API component.
@@ -67,21 +67,21 @@ module API {
      */
     bindingset[m]
     bindingset[result]
-    Node getMember(string m) { result = getASuccessor(Label::member(m)) }
+    Node getMember(string m) { result = this.getASuccessor(Label::member(m)) }
 
     /**
      * Gets a node representing a member of this API component where the name of the member is
      * not known statically.
      */
-    Node getUnknownMember() { result = getASuccessor(Label::unknownMember()) }
+    Node getUnknownMember() { result = this.getASuccessor(Label::unknownMember()) }
 
     /**
      * Gets a node representing a member of this API component where the name of the member may
      * or may not be known statically.
      */
     Node getAMember() {
-      result = getASuccessor(Label::member(_)) or
-      result = getUnknownMember()
+      result = this.getASuccessor(Label::member(_)) or
+      result = this.getUnknownMember()
     }
 
     /**
@@ -90,23 +90,25 @@ module API {
      * This predicate may have multiple results when there are multiple invocations of this API component.
      * Consider using `getACall()` if there is a need to distinguish between individual calls.
      */
-    Node getReturn() { result = getASuccessor(Label::return()) }
+    Node getReturn() { result = this.getASuccessor(Label::return()) }
 
     /**
      * Gets a node representing a subclass of the class represented by this node.
      */
-    Node getASubclass() { result = getASuccessor(Label::subclass()) }
+    Node getASubclass() { result = this.getASuccessor(Label::subclass()) }
 
     /**
      * Gets a node representing the result from awaiting this node.
      */
-    Node getAwaited() { result = getASuccessor(Label::await()) }
+    Node getAwaited() { result = this.getASuccessor(Label::await()) }
 
     /**
      * Gets a string representation of the lexicographically least among all shortest access paths
      * from the root to this node.
      */
-    string getPath() { result = min(string p | p = getAPath(Impl::distanceFromRoot(this)) | p) }
+    string getPath() {
+      result = min(string p | p = this.getAPath(Impl::distanceFromRoot(this)) | p)
+    }
 
     /**
      * Gets a node such that there is an edge in the API graph between this node and the other
@@ -124,13 +126,13 @@ module API {
      * Gets a node such that there is an edge in the API graph between this node and the other
      * one.
      */
-    Node getAPredecessor() { result = getAPredecessor(_) }
+    Node getAPredecessor() { result = this.getAPredecessor(_) }
 
     /**
      * Gets a node such that there is an edge in the API graph between that other node and
      * this one.
      */
-    Node getASuccessor() { result = getASuccessor(_) }
+    Node getASuccessor() { result = this.getASuccessor(_) }
 
     /**
      * Gets the data-flow node that gives rise to this node, if any.
@@ -142,16 +144,16 @@ module API {
      * The location spans column `startcolumn` of line `startline` to
      * column `endcolumn` of line `endline` in file `filepath`.
      * For more information, see
-     * [Locations](https://help.semmle.com/QL/learn-ql/locations.html).
+     * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
      */
     predicate hasLocationInfo(
       string filepath, int startline, int startcolumn, int endline, int endcolumn
     ) {
-      getInducingNode().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+      this.getInducingNode().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
       or
       // For nodes that do not have a meaningful location, `path` is the empty string and all other
       // parameters are zero.
-      not exists(getInducingNode()) and
+      not exists(this.getInducingNode()) and
       filepath = "" and
       startline = 0 and
       startcolumn = 0 and
@@ -202,7 +204,7 @@ module API {
         or
         this = Impl::MkModuleImport(_) and type = "ModuleImport "
       |
-        result = type + getPath()
+        result = type + this.getPath()
         or
         not exists(this.getPath()) and result = type + "with no path"
       )

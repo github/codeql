@@ -29,8 +29,7 @@ predicate nanExcludingComparison(ComparisonOperation guard, boolean polarity) {
  */
 private predicate excludesNan(RangeSsaDefinition def, VariableAccess v) {
   exists(VariableAccess inCond, ComparisonOperation guard, boolean branch, StackVariable lsv |
-    def.isGuardPhi(inCond, guard, branch) and
-    inCond.getTarget() = lsv and
+    def.isGuardPhi(lsv, inCond, guard, branch) and
     v = def.getAUse(lsv) and
     guard.getAnOperand() = inCond and
     nanExcludingComparison(guard, branch)

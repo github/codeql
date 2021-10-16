@@ -940,13 +940,9 @@ private module ParameterNodes {
 import ParameterNodes
 
 /** A data-flow node that represents a call argument. */
-class ArgumentNode extends Node {
-  ArgumentNode() { this instanceof ArgumentNodeImpl }
-
+class ArgumentNode extends Node instanceof ArgumentNodeImpl {
   /** Holds if this argument occurs at the given position in the given call. */
-  final predicate argumentOf(DataFlowCall call, int pos) {
-    this.(ArgumentNodeImpl).argumentOf(call, pos)
-  }
+  final predicate argumentOf(DataFlowCall call, int pos) { super.argumentOf(call, pos) }
 }
 
 abstract private class ArgumentNodeImpl extends Node {
@@ -1917,6 +1913,12 @@ private predicate viableConstantBooleanParamArg(
 }
 
 int accessPathLimit() { result = 5 }
+
+/**
+ * Holds if access paths with `c` at their head always should be tracked at high
+ * precision. This disables adaptive access path precision for such access paths.
+ */
+predicate forceHighPrecision(Content c) { c instanceof ElementContent }
 
 /** The unit type. */
 private newtype TUnit = TMkUnit()

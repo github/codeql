@@ -8,9 +8,15 @@ class SummaryModelTest extends SummaryModelCsv {
     row =
       [
         "my.callback.qltest;A;false;applyConsumer1;(Object,Consumer1);;Argument[0];Parameter[0] of Argument[1];value",
+        "my.callback.qltest;A;false;applyConsumer1Field1Field2;(A,A,Consumer1);;Field[my.callback.qltest.A.field1] of Argument[0];Parameter[0] of Argument[2];value",
+        "my.callback.qltest;A;false;applyConsumer1Field1Field2;(A,A,Consumer1);;Field[my.callback.qltest.A.field2] of Argument[1];Parameter[0] of Argument[2];value",
         "my.callback.qltest;A;false;applyConsumer2;(Object,Consumer2);;Argument[0];Parameter[0] of Argument[1];value",
         "my.callback.qltest;A;false;applyConsumer3;(Object,Consumer3);;Argument[0];Parameter[0] of Argument[1];value",
+        "my.callback.qltest;A;false;applyConsumer3_ret_postup;(Consumer3);;Parameter[0] of Argument[0];ReturnValue;value",
+        "my.callback.qltest;A;false;forEach;(Object[],Consumer3);;ArrayElement of Argument[0];Parameter[0] of Argument[1];value",
         "my.callback.qltest;A;false;applyProducer1;(Producer1);;ReturnValue of Argument[0];ReturnValue;value",
+        "my.callback.qltest;A;false;produceConsume;(Producer1,Consumer3);;ReturnValue of Argument[0];Parameter[0] of Argument[1];value",
+        "my.callback.qltest;A;false;produceConsume;(Producer1,Consumer3);;Parameter[0] of Argument[1];ReturnValue;value",
         "my.callback.qltest;A;false;applyConverter1;(Object,Converter1);;Argument[0];Parameter[0] of Argument[1];value",
         "my.callback.qltest;A;false;applyConverter1;(Object,Converter1);;ReturnValue of Argument[1];ReturnValue;value"
       ]

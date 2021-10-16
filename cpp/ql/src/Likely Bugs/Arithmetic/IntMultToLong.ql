@@ -166,6 +166,7 @@ class VarAnalyzableExpr extends AnalyzableExpr, VariableAccess {
  * Holds if `t` is not an instance of `IntegralType`,
  * or if `me` cannot be proven to not overflow
  */
+pragma[inline]
 predicate overflows(MulExpr me, Type t) {
   t instanceof IntegralType
   implies

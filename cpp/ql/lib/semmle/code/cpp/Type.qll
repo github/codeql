@@ -1650,7 +1650,6 @@ class RoutineType extends Type, @routinetype {
     i = 0 and result = "" and not exists(this.getAParameterType())
     or
     (
-      exists(this.getParameterType(i)) and
       if i < max(int j | exists(this.getParameterType(j)))
       then
         // Not the last one

@@ -653,6 +653,8 @@ class DefinitionNode extends ControlFlowNode {
   DefinitionNode() {
     exists(Assign a | a.getATarget().getAFlowNode() = this)
     or
+    exists(AnnAssign a | a.getTarget().getAFlowNode() = this and exists(a.getValue()))
+    or
     exists(Alias a | a.getAsname().getAFlowNode() = this)
     or
     augstore(_, this)
@@ -795,6 +797,9 @@ private AstNode assigned_value(Expr lhs) {
   /* lhs = result */
   exists(Assign a | a.getATarget() = lhs and result = a.getValue())
   or
+  /* lhs : annotation = result */
+  exists(AnnAssign a | a.getTarget() = lhs and result = a.getValue())
+  or
   /* import result as lhs */
   exists(Alias a | a.getAsname() = lhs and result = a.getValue())
   or
@@ -846,9 +851,9 @@ class ForNode extends ControlFlowNode {
 
   /** Holds if this `for` statement causes iteration over `sequence` storing each step of the iteration in `target` */
   predicate iterates(ControlFlowNode target, ControlFlowNode sequence) {
-    sequence = getSequence() and
-    target = possibleTarget() and
-    not target = unrolledSuffix().possibleTarget()
+    sequence = this.getSequence() and
+    target = this.possibleTarget() and
+    not target = this.unrolledSuffix().possibleTarget()
   }
 
   /** Gets the sequence node for this `for` statement. */
@@ -1106,7 +1111,7 @@ class BasicBlock extends @py_flow_node {
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
-   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn

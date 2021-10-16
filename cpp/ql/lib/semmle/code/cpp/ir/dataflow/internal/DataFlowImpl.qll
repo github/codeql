@@ -2139,7 +2139,8 @@ private predicate expensiveLen2unfolding(TypedContent tc, Configuration config) 
       ) and
     accessPathApproxCostLimits(apLimit, tupleLimit) and
     apLimit < tails and
-    tupleLimit < (tails - 1) * nodes
+    tupleLimit < (tails - 1) * nodes and
+    not tc.forceHighPrecision()
   )
 }
 
@@ -2973,12 +2974,15 @@ private AccessPathApprox getATail(AccessPathApprox apa, Configuration config) {
  * expected to be expensive. Holds with `unfold = true` otherwise.
  */
 private predicate evalUnfold(AccessPathApprox apa, boolean unfold, Configuration config) {
-  exists(int aps, int nodes, int apLimit, int tupleLimit |
-    aps = countPotentialAps(apa, config) and
-    nodes = countNodesUsingAccessPath(apa, config) and
-    accessPathCostLimits(apLimit, tupleLimit) and
-    if apLimit < aps and tupleLimit < (aps - 1) * nodes then unfold = false else unfold = true
-  )
+  if apa.getHead().forceHighPrecision()
+  then unfold = true
+  else
+    exists(int aps, int nodes, int apLimit, int tupleLimit |
+      aps = countPotentialAps(apa, config) and
+      nodes = countNodesUsingAccessPath(apa, config) and
+      accessPathCostLimits(apLimit, tupleLimit) and
+      if apLimit < aps and tupleLimit < (aps - 1) * nodes then unfold = false else unfold = true
+    )
 }
 
 /**
@@ -3248,7 +3252,7 @@ class PathNode extends TPathNode {
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
-   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
@@ -3643,9 +3647,10 @@ private module Subpaths {
     PathNode arg, ParamNodeEx par, SummaryCtxSome sc, CallContext innercc, ReturnKindExt kind,
     NodeEx out, AccessPath apout
   ) {
-    pathThroughCallable(arg, out, _, apout) and
+    pathThroughCallable(arg, out, _, pragma[only_bind_into](apout)) and
     pathIntoCallable(arg, par, _, innercc, sc, _) and
-    paramFlowsThrough(kind, innercc, sc, apout, _, unbindConf(arg.getConfiguration()))
+    paramFlowsThrough(kind, innercc, sc, pragma[only_bind_into](apout), _,
+      unbindConf(arg.getConfiguration()))
   }
 
   /**
@@ -3690,8 +3695,8 @@ private module Subpaths {
    */
   predicate subpaths(PathNode arg, PathNodeImpl par, PathNodeMid ret, PathNodeMid out) {
     exists(ParamNodeEx p, NodeEx o, AccessPath apout |
-      arg.getASuccessor() = par and
-      arg.getASuccessor() = out and
+      pragma[only_bind_into](arg).getASuccessor() = par and
+      pragma[only_bind_into](arg).getASuccessor() = out and
       subpaths03(arg, p, ret, o, apout) and
       par.getNodeEx() = p and
       out.getNodeEx() = o and
@@ -4032,7 +4037,7 @@ private module FlowExploration {
      * The location spans column `startcolumn` of line `startline` to
      * column `endcolumn` of line `endline` in file `filepath`.
      * For more information, see
-     * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+     * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
      */
     predicate hasLocationInfo(
       string filepath, int startline, int startcolumn, int endline, int endcolumn

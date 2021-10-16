@@ -275,9 +275,8 @@ class Declaration extends Locatable, @declaration {
    * `getTemplateArgumentKind(0)`.
    */
   final Locatable getTemplateArgumentKind(int index) {
-    if exists(getTemplateArgumentValue(index))
-    then result = getTemplateArgumentType(index)
-    else none()
+    exists(getTemplateArgumentValue(index)) and
+    result = getTemplateArgumentType(index)
   }
 
   /** Gets the number of template arguments for this declaration. */

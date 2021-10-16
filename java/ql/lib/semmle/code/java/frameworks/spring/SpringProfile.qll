@@ -37,7 +37,7 @@ class SpringProfileExpr extends string {
  * A Spring profile expression that begins with "!", indicating a negated expression.
  */
 class NotSpringProfileExpr extends SpringProfileExpr {
-  NotSpringProfileExpr() { this.prefix(1) = "!" }
+  NotSpringProfileExpr() { this.matches("!%") }
 
   /**
    * Gets the profile described in this profile expression.

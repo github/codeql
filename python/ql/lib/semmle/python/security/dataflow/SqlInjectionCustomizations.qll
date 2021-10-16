@@ -9,6 +9,7 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.Concepts
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.BarrierGuards
+private import semmle.python.frameworks.SqlAlchemy
 
 /**
  * Provides default sources, sinks and sanitizers for detecting
@@ -46,6 +47,13 @@ module SqlInjection {
    */
   class SqlExecutionAsSink extends Sink {
     SqlExecutionAsSink() { this = any(SqlExecution e).getSql() }
+  }
+
+  /**
+   * The text argument of a SQLAlchemy TextClause construction, considered as a flow sink.
+   */
+  class TextArgAsSink extends Sink {
+    TextArgAsSink() { this = any(SqlAlchemy::TextClause::TextClauseConstruction tcc).getTextArg() }
   }
 
   /**

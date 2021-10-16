@@ -219,15 +219,13 @@ class DataFlowExpr = Expr;
 class DataFlowType = Type;
 
 /** A function call relevant for data flow. */
-class DataFlowCall extends Expr {
-  DataFlowCall() { this instanceof Call }
-
+class DataFlowCall extends Expr instanceof Call {
   /**
    * Gets the nth argument for this call.
    *
    * The range of `n` is from `0` to `getNumberOfArguments() - 1`.
    */
-  Expr getArgument(int n) { result = this.(Call).getArgument(n) }
+  Expr getArgument(int n) { result = super.getArgument(n) }
 
   /** Gets the data flow node corresponding to this call. */
   ExprNode getNode() { result.getExpr() = this }
@@ -239,6 +237,12 @@ class DataFlowCall extends Expr {
 predicate isUnreachableInCall(Node n, DataFlowCall call) { none() } // stub implementation
 
 int accessPathLimit() { result = 5 }
+
+/**
+ * Holds if access paths with `c` at their head always should be tracked at high
+ * precision. This disables adaptive access path precision for such access paths.
+ */
+predicate forceHighPrecision(Content c) { none() }
 
 /** The unit type. */
 private newtype TUnit = TMkUnit()
