@@ -50,4 +50,5 @@
 | Test.qll:24:24:24:33 | Super | Test.qll:15:1:19:1 | Base |
 | Test.qll:24:24:24:39 | MemberCall | file://:0:0:0:0 | int |
 | Test.qll:26:16:26:21 | result | file://:0:0:0:0 | int |
+| Test.qll:26:25:26:29 | Super | Test.qll:15:1:19:1 | Base |
 | Test.qll:26:25:26:35 | MemberCall | file://:0:0:0:0 | int |
