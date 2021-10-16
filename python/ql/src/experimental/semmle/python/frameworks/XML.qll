@@ -9,11 +9,10 @@ private import experimental.semmle.python.Concepts
 private import semmle.python.ApiGraphs
 
 private module XML {
-  /** Gets a reference to the `xml` module. */
-  private API::Node xml() { result = API::moduleImport("xml") }
-
   /** Gets a reference to `xml.etree.ElementTree`. */
-  private API::Node xmlEtree() { result = xml().getMember("etree").getMember("ElementTree") }
+  private API::Node xmlEtree() {
+    result = API::moduleImport("xml").getMember("etree").getMember("ElementTree")
+  }
 
   /** Gets a call to `xml.etree.ElementTree.XMLParser`. */
   private class XMLEtreeParser extends DataFlow::CallCfgNode, XMLParser::Range {
@@ -53,7 +52,7 @@ private module XML {
   }
 
   /** Gets a reference to `xml.sax`. */
-  private API::Node xmlSax() { result = xml().getMember("sax") }
+  private API::Node xmlSax() { result = API::moduleImport("xml").getMember("sax") }
 
   /**
    * Gets a call to `xml.sax.make_parser` and following calls.
@@ -93,11 +92,8 @@ private module XML {
     }
   }
 
-  /** Gets a reference to `lxml`. */
-  private API::Node lxml() { result = API::moduleImport("lxml") }
-
   /** Gets a reference to `lxml.etree`. */
-  private API::Node lxmlEtree() { result = lxml().getMember("etree") }
+  private API::Node lxmlEtree() { result = API::moduleImport("lxml").getMember("etree") }
 
   /**
    * Gets a call to `lxml.etree.XMLParser` or `lxml.etree.get_default_parser` and `mayBeDangerous()`
@@ -166,7 +162,9 @@ private module XML {
   }
 
   /** Gets a reference to `xml.dom.minidom` or `xml.dom.pulldom`. */
-  private API::Node xmlDom() { result = xml().getMember("dom").getMember(["mini", "pull"] + "dom") }
+  private API::Node xmlDom() {
+    result = API::moduleImport("xml").getMember("dom").getMember(["mini", "pull"] + "dom")
+  }
 
   /**
    * Gets a call to `xml.dom.minidom.parse` or `xml.dom.pulldom.parse`.
