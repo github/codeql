@@ -37,12 +37,13 @@ Changing the labels of query history items
 
 The query history **Format** setting controls how the extension lists queries in the query history. By default, each item has a label with the following format::
     
-    [%t] %q on %d - %s
-  
-- ``%t`` is the time the query was run
+    %q on %d - %s, %r result count [%t]
+
 - ``%q`` is the query name
 - ``%d`` is the database name
 - ``%s`` is a status string
+- ``%r`` is the number of results
+- ``%t`` is the time the query was run
 
 To override the default label, you can specify a different format for the query history items.
 
@@ -61,6 +62,8 @@ Configuring settings for testing queries
 -----------------------------------------
 
 To increase the number of threads used for testing queries, you can update the **Running Tests > Number Of Threads** setting.
+
+To pass additional arguments to the CodeQL CLI when running tests, you can update the **Running Tests > Additional Test Arguments** setting. For more information about the available arguments, see "`test run <https://codeql.github.com/docs/codeql-cli/manual/test-run/>`_" in the CodeQL CLI help. 
 
 Configuring settings for telemetry and data collection
 --------------------------------------------------------

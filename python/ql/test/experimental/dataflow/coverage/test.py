@@ -793,6 +793,6 @@ def test_reverse_read_subscript_cls():
 
 @expects(3)
 def test_with_default_param_value(x=SOURCE, /, y=SOURCE, *, z=SOURCE):
-    SINK(x) #$ MISSING:flow="SOURCE, l:-1 -> x"
-    SINK(y) #$ MISSING:flow="SOURCE, l:-2 -> y"
-    SINK(z) #$ MISSING:flow="SOURCE, l:-3 -> z"
+    SINK(x) #$ flow="SOURCE, l:-1 -> x"
+    SINK(y) #$ flow="SOURCE, l:-2 -> y"
+    SINK(z) #$ flow="SOURCE, l:-3 -> z"

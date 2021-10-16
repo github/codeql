@@ -13,10 +13,15 @@
 
 import cpp
 
-from BitField fi, VariableAccess va
+from BitField fi, VariableAccess va, Type fct
 where
-  fi.getNumBits() > va.getFullyConverted().getType().getSize() * 8 and
-  va.getExplicitlyConverted().getType().getSize() > va.getFullyConverted().getType().getSize() and
+  (
+    if va.getFullyConverted().getType() instanceof ReferenceType
+    then fct = va.getFullyConverted().getType().(ReferenceType).getBaseType()
+    else fct = va.getFullyConverted().getType()
+  ) and
+  fi.getNumBits() > fct.getSize() * 8 and
+  va.getExplicitlyConverted().getType().getSize() > fct.getSize() and
   va.getTarget() = fi and
-  not va.getActualType() instanceof BoolType
+  not fct.getUnspecifiedType() instanceof BoolType
 select va, "Implicit downcast of bitfield $@", fi, fi.toString()

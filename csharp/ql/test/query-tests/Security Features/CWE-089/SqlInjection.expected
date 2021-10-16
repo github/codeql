@@ -36,6 +36,7 @@ nodes
 | SqlInjectionDapper.cs:67:42:67:46 | access to local variable query | semmle.label | access to local variable query |
 | SqlInjectionDapper.cs:75:86:75:94 | access to property Text : String | semmle.label | access to property Text : String |
 | SqlInjectionDapper.cs:77:52:77:56 | access to local variable query | semmle.label | access to local variable query |
+subpaths
 #select
 | SqlInjection.cs:34:50:34:55 | access to local variable query1 | SqlInjection.cs:33:21:33:35 | access to field categoryTextBox : TextBox | SqlInjection.cs:34:50:34:55 | access to local variable query1 | Query might include code from $@. | SqlInjection.cs:33:21:33:35 | access to field categoryTextBox : TextBox | this ASP.NET user input |
 | SqlInjection.cs:69:56:69:61 | access to local variable query1 | SqlInjection.cs:68:33:68:47 | access to field categoryTextBox : TextBox | SqlInjection.cs:69:56:69:61 | access to local variable query1 | Query might include code from $@. | SqlInjection.cs:68:33:68:47 | access to field categoryTextBox : TextBox | this ASP.NET user input |

@@ -163,4 +163,5 @@ where
     or
     eots.dangerousCrementChanges()
   )
-select eots, "This expression may have undefined behavior."
+select eots,
+  "This expression may have undefined behavior, because the order of evaluation is not specified."

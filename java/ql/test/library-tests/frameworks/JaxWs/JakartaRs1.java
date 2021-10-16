@@ -71,7 +71,7 @@ public class JakartaRs1 { // $ RootResourceClass
     @Produces("text/html") // $ ProducesAnnotation=text/html
     @POST
     boolean Post() { // $ ResourceMethod=text/html ResourceMethodOnResourceClass
-      return false;
+      return false; // $ XssSink
     }
 
     @Produces(MediaType.TEXT_PLAIN) // $ ProducesAnnotation=text/plain
