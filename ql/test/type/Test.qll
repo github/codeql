@@ -11,3 +11,17 @@ class Floats extends float {
 string conc(Strings a, Strings b) { result = a + b }
 
 float floats(Floats a, Floats b) { result = a + b }
+
+class Base extends string {
+  Base() { this = ["foo"] }
+
+  int foo() { result = 1 }
+}
+
+class Sub extends Base {
+  Sub() { this = ["bar"] }
+
+  int bar() { result = Base.super.foo() }
+
+  int bar2() { result = super.foo() }
+}
