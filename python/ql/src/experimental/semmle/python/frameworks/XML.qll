@@ -69,8 +69,9 @@ private module XML {
    * ```
    *
    * `this` would be `xml.sax.make_parser()`, `getAnInput()` would return `StringIO(xml_content)`
-   * and `mayBeDangerous()` would succeed since `xml.sax.handler.feature_external_ges` is set to
-   * `False` and so it's vulnerable.
+   * and `mayBeDangerous()` would not hold since `xml.sax.handler.feature_external_ges` is set to
+   * `False` and so is not vulnerable.
+   * see https://docs.python.org/3/library/xml.sax.handler.html#xml.sax.handler.feature_external_ges
    */
   private class XMLSaxParser extends DataFlow::CallCfgNode, XMLParser::Range {
     DataFlow::CallCfgNode attrCall;
