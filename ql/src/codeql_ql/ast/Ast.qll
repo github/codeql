@@ -1758,9 +1758,16 @@ class ThisAccess extends Identifier {
 
 /** A use of `super`. */
 class Super extends TSuper, Expr {
-  Super() { this = TSuper(_) }
+  QL::SuperRef ref;
+
+  Super() { this = TSuper(ref) }
 
   override string getAPrimaryQlClass() { result = "Super" }
+
+  override Type getType() {
+    exists(TypeExpr te | ref.getChild(0) = toQL(te) | result = te.getResolvedType())
+    // TODO: Also resolve the type when there is no TypeExpr.
+  }
 }
 
 /** An access to `result`. */
