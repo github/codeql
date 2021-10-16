@@ -97,6 +97,9 @@ module XMLParsing {
 
     /**
      * Holds if the parser may be parsing the input dangerously.
+     *
+     * Specifically, this predicate holds whether the XML parsing parses/extends external
+     * entities in the parsed XML stream.
      */
     abstract predicate mayBeDangerous();
   }
@@ -115,6 +118,9 @@ class XMLParsing extends DataFlow::Node {
 
   /**
    * Gets the argument containing the content to parse.
+   *
+   * Specifically, this predicate holds whether the XML parsing parses/extends external
+   * entities in the parsed XML stream.
    */
   DataFlow::Node getAnInput() { result = range.getAnInput() }
 
@@ -140,6 +146,9 @@ module XMLParser {
 
     /**
      * Holds if the parser may be dangerously configured.
+     *
+     * Specifically, this predicate holds whether the XML parser parses/extends external
+     * entities in the parsed XML stream.
      */
     abstract predicate mayBeDangerous();
   }
@@ -163,6 +172,9 @@ class XMLParser extends DataFlow::Node {
 
   /**
    * Holds if the parser may be dangerously configured.
+   *
+   * Specifically, this predicate holds whether the XML parser parses/extends external
+   * entities in the parsed XML stream.
    */
   predicate mayBeDangerous() { range.mayBeDangerous() }
 }
