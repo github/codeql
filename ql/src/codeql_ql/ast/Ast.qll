@@ -1794,6 +1794,7 @@ class Negation extends TNegation, Formula {
 
 /** An expression, such as `x+4`. */
 class Expr extends TExpr, AstNode {
+  cached
   Type getType() { none() }
 }
 
@@ -1874,15 +1875,14 @@ class AddSubExpr extends TAddSubExpr, BinOpExpr {
     result = this.getLeftOperand().getType() and
     result = this.getRightOperand().getType()
     or
-    // Both operands are subtypes of `int`
-    result.getName() = "int" and
-    result = this.getLeftOperand().getType().getASuperType*() and
-    result = this.getRightOperand().getType().getASuperType*()
+    // Both operands are subtypes of `int` / `string` / `float`
+    exprOfPrimitiveAddType(result) = this.getLeftOperand() and
+    exprOfPrimitiveAddType(result) = this.getRightOperand()
     or
     // Coercion to from `int` to `float`
     exists(PrimitiveType i | result.getName() = "float" and i.getName() = "int" |
       this.getAnOperand().getType() = result and
-      this.getAnOperand().getType().getASuperType*() = i
+      this.getAnOperand() = exprOfPrimitiveAddType(i)
     )
     or
     // Coercion to `string`
@@ -1897,6 +1897,18 @@ class AddSubExpr extends TAddSubExpr, BinOpExpr {
     or
     pred = directMember("getRightOperand") and result = this.getRightOperand()
   }
+}
+
+pragma[noinline]
+private Expr exprOfPrimitiveAddType(PrimitiveType t) {
+  result.getType() = getASubTypeOfAddPrimitive(t)
+}
+
+private Type getASubTypeOfAddPrimitive(PrimitiveType prim) {
+  result = prim and
+  result.getName() = ["int", "string", "float"]
+  or
+  result.getASuperType() = getASubTypeOfAddPrimitive(prim)
 }
 
 /**
