@@ -163,7 +163,7 @@ private module XML {
 
   /** Gets a reference to `xml.dom.minidom` or `xml.dom.pulldom`. */
   private API::Node xmlDom() {
-    result = API::moduleImport("xml").getMember("dom").getMember(["mini", "pull"] + "dom")
+    result = API::moduleImport("xml").getMember("dom").getMember(["minidom", "pulldom"])
   }
 
   /**
