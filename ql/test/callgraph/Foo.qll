@@ -37,3 +37,11 @@ module Buildins {
 
   predicate regexpCapture(string s) { "foo".regexpCapture("\\w", 1) = s }
 }
+
+cached
+newtype TApiNode = MkRoot()
+
+private predicate edge(TApiNode a, TApiNode b) { a = b }
+
+cached
+int distanceFromRoot(TApiNode nd) = shortestDistances(MkRoot/0, edge/2)(_, nd, result)

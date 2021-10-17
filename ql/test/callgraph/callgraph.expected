@@ -22,3 +22,7 @@ getTarget
 | packs/src/SrcThing.qll:5:3:5:8 | PredicateCall | packs/src/SrcThing.qll:8:1:8:30 | ClasslessPredicate bar |
 dependsOn
 | packs/src/qlpack.yml:1:1:1:4 | ql-testing-src-pack | packs/lib/qlpack.yml:1:1:1:4 | ql-testing-lib-pack |
+exprPredicate
+| Foo.qll:24:22:24:31 | predicate | Foo.qll:22:3:22:32 | ClasslessPredicate myThing0 |
+| Foo.qll:26:22:26:31 | predicate | Foo.qll:20:3:20:54 | ClasslessPredicate myThing2 |
+| Foo.qll:47:65:47:70 | predicate | Foo.qll:44:9:44:56 | ClasslessPredicate edge |
