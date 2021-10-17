@@ -14,6 +14,7 @@ import codeql_ql.ast.internal.Type::TyConsistency as TypeConsistency
 import codeql_ql.ast.internal.Builtins::BuildinsConsistency as BuildinsConsistency
 import codeql_ql.ast.internal.Module::ModConsistency as ModConsistency
 import codeql_ql.ast.internal.Variable::VarConsistency as VarConsistency
+import codeql_ql.ast.internal.AstNodes::AstConsistency as AstConsistency
 
 from AstNode node, string msg
 where
@@ -29,6 +30,8 @@ where
   or
   TypeConsistency::multiplePrimitivesExpr(node, _, _) and
   msg = "TypeConsistency::multiplePrimitivesExpr"
+  or
+  AstConsistency::nonTotalGetParent(node) and msg = "AstConsistency::nonTotalGetParent"
   or
   //or // has 1 result, but the CodeQL compiler also can't figure out that one. I suppoed the file is never imported.
   //TypeConsistency::noResolve(node) and msg = "TypeConsistency::noResolve"
