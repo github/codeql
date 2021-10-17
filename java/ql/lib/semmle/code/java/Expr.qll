@@ -1226,6 +1226,27 @@ class MemberRefExpr extends FunctionalExpr, @memberref {
   override Method asMethod() { result = getAnonymousClass().getAMethod() }
 
   /**
+   * Gets the receiver type whose member this expression refers to. The result might not be
+   * the type which actually declares the member (makes a difference for inherited non-overridden
+   * methods).
+   */
+  RefType getReceiverType() {
+    exists(Stmt stmt, Expr resultExpr |
+      stmt = asMethod().getBody().(SingletonBlock).getStmt() and
+      (
+        resultExpr = stmt.(ReturnStmt).getResult()
+        or
+        // Note: Currently never an ExprStmt, but might change once https://github.com/github/codeql/issues/3605 is fixed
+        resultExpr = stmt.(ExprStmt).getExpr()
+      )
+    |
+      result = resultExpr.(MethodAccess).getReceiverType() or
+      result = resultExpr.(ClassInstanceExpr).getConstructedType() or
+      result = resultExpr.(ArrayCreationExpr).getType()
+    )
+  }
+
+  /**
    * Gets the method or constructor referenced by this member reference expression.
    */
   Callable getReferencedCallable() { memberRefBinding(this, result) }
