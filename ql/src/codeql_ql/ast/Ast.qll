@@ -1551,7 +1551,7 @@ class ExprAggregate extends TExprAggregate, Aggregate {
 
   override Type getType() {
     exists(PrimitiveType prim | prim = result |
-      kind.regexpMatch("(strict)?count|sum|min|max|rank") and
+      kind.regexpMatch("(strict)?count") and
       result.getName() = "int"
       or
       kind.regexpMatch("(strict)?concat") and
@@ -1615,16 +1615,16 @@ class FullAggregate extends TFullAggregate, Aggregate {
 
   override Type getType() {
     exists(PrimitiveType prim | prim = result |
-      kind.regexpMatch("(strict)?(count|sum|min|max|rank)") and
+      kind = ["count", "strictcount"] and
       result.getName() = "int"
       or
       kind.regexpMatch("(strict)?concat") and
       result.getName() = "string"
     )
     or
-    kind = ["any", "min", "max", "unique"] and
+    kind = ["any", "min", "max", "unique", "rank", "sum", "strictsum"] and
     not exists(this.getExpr(_)) and
-    result = this.getArgument(0).getTypeExpr().getResolvedType()
+    result = this.getArgument(0).getType()
     or
     not kind = ["count", "strictcount"] and
     result = this.getExpr(0).getType()
@@ -1910,11 +1910,18 @@ private Expr exprOfPrimitiveAddType(PrimitiveType t) {
   result.getType() = getASubTypeOfAddPrimitive(t)
 }
 
+/**
+ * Gets a subtype of the given primitive type `prim`.
+ * This predicate does not consider float to be a supertype of int.
+ */
 private Type getASubTypeOfAddPrimitive(PrimitiveType prim) {
   result = prim and
   result.getName() = ["int", "string", "float"]
   or
-  result.getASuperType() = getASubTypeOfAddPrimitive(prim)
+  exists(Type superType | superType = getASubTypeOfAddPrimitive(prim) |
+    result.getASuperType() = superType and
+    not (result.getName() = "int" and superType.getName() = "float")
+  )
 }
 
 /**
@@ -1957,15 +1964,18 @@ class MulDivModExpr extends TMulDivModExpr, BinOpExpr {
     this.getLeftOperand().getType() = result and
     this.getRightOperand().getType() = result
     or
-    // Both operands are subtypes of `int`
-    result.getName() = "int" and
-    result = this.getLeftOperand().getType().getASuperType*() and
-    result = this.getRightOperand().getType().getASuperType*()
+    // Both operands are subtypes of `int`/`float`
+    result.getName() = ["int", "float"] and
+    exprOfPrimitiveAddType(result) = this.getLeftOperand() and
+    exprOfPrimitiveAddType(result) = this.getRightOperand()
     or
     // Coercion from `int` to `float`
     exists(PrimitiveType i | result.getName() = "float" and i.getName() = "int" |
-      this.getAnOperand().getType() = result and
-      this.getAnOperand().getType().getASuperType*() = i
+      this.getLeftOperand() = exprOfPrimitiveAddType(result) and
+      this.getRightOperand() = exprOfPrimitiveAddType(i)
+      or
+      this.getRightOperand() = exprOfPrimitiveAddType(result) and
+      this.getLeftOperand() = exprOfPrimitiveAddType(i)
     )
   }
 

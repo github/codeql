@@ -25,3 +25,6 @@ class Sub extends Base {
 
   int bar2() { result = super.foo() }
 }
+
+bindingset[result, a, b]
+int integerMul(int a, int b) { result = a * b }
