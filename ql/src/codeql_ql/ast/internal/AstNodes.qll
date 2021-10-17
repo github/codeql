@@ -193,7 +193,8 @@ QL::AstNode toQL(AST::AstNode n) {
   n = TAnnotationArg(result)
 }
 
-class TPredicate = TCharPred or TClasslessPredicate or TClassPredicate or TDBRelation;
+class TPredicate =
+  TCharPred or TClasslessPredicate or TClassPredicate or TDBRelation or TNewTypeBranch;
 
 class TPredOrBuiltin = TPredicate or TNewTypeBranch or TBuiltin;
 

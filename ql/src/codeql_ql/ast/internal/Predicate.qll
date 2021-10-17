@@ -3,20 +3,13 @@ private import Builtins
 private import codeql_ql.ast.internal.Module
 private import codeql_ql.ast.internal.AstNodes
 
-private class TClasslessPredicateOrNewTypeBranch = TClasslessPredicate or TNewTypeBranch;
-
-private string getPredicateName(TClasslessPredicateOrNewTypeBranch p) {
-  result = p.(ClasslessPredicate).getName() or
-  result = p.(NewTypeBranch).getName()
-}
-
 private predicate definesPredicate(
-  FileOrModule m, string name, int arity, TClasslessPredicateOrNewTypeBranch p, boolean public
+  FileOrModule m, string name, int arity, Predicate p, boolean public
 ) {
   m = getEnclosingModule(p) and
-  name = getPredicateName(p) and
+  name = p.getName() and
   public = getPublicBool(p) and
-  arity = [p.(ClasslessPredicate).getArity(), count(p.(NewTypeBranch).getField(_))]
+  arity = p.getArity()
   or
   // import X
   exists(Import imp, FileOrModule m0 |
@@ -40,7 +33,7 @@ private predicate definesPredicate(
 cached
 private module Cached {
   cached
-  predicate resolvePredicateExpr(PredicateExpr pe, ClasslessPredicate p) {
+  predicate resolvePredicateExpr(PredicateExpr pe, Predicate p) {
     exists(FileOrModule m, boolean public |
       not exists(pe.getQualifier()) and
       m = getEnclosingModule(pe).getEnclosing*() and
@@ -49,7 +42,7 @@ private module Cached {
       m = pe.getQualifier().getResolvedModule() and
       public = true
     |
-      definesPredicate(m, pe.getName(), count(p.getParameter(_)), p, public)
+      definesPredicate(m, pe.getName(), p.getArity(), p, public)
     )
   }
 

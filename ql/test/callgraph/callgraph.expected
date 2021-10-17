@@ -25,4 +25,5 @@ dependsOn
 exprPredicate
 | Foo.qll:24:22:24:31 | predicate | Foo.qll:22:3:22:32 | ClasslessPredicate myThing0 |
 | Foo.qll:26:22:26:31 | predicate | Foo.qll:20:3:20:54 | ClasslessPredicate myThing2 |
+| Foo.qll:47:55:47:62 | predicate | Foo.qll:42:20:42:27 | NewTypeBranch MkRoot |
 | Foo.qll:47:65:47:70 | predicate | Foo.qll:44:9:44:56 | ClasslessPredicate edge |
