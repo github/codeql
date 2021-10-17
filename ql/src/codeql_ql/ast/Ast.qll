@@ -2309,6 +2309,8 @@ module YAML {
       )
     }
 
+    YAMLListItem getListItem() { toQL(result).getParent() = yamle }
+
     /** Gets the value of this YAML entry. */
     YAMLValue getValue() {
       exists(QL::YamlKeyvaluepair pair |
@@ -2421,7 +2423,7 @@ module YAML {
         deps.getLocation().getFile() = file and entry.getLocation().getFile() = file
       |
         deps.isRoot() and
-        deps.getKey().getQualifiedName() = "dependencies" and
+        deps.getKey().getQualifiedName() = ["dependencies", "libraryPathDependencies"] and
         entry.getLocation().getStartLine() = 1 + deps.getLocation().getStartLine() and
         entry.getLocation().getStartColumn() > deps.getLocation().getStartColumn()
       )
@@ -2436,8 +2438,11 @@ module YAML {
 
     predicate hasDependency(string name, string version) {
       exists(YAMLEntry entry | this.isADependency(entry) |
-        entry.getKey().getQualifiedName() = name and
+        entry.getKey().getQualifiedName().trim() = name and
         entry.getValue().getValue() = version
+        or
+        name = entry.getListItem().getValue().getValue().trim() and
+        version = "\"*\""
       )
     }
 
@@ -2459,7 +2464,7 @@ module YAML {
      */
     QLPack getADependency() {
       exists(string name | this.hasDependency(name, _) |
-        result.getName().replaceAll("-", "/") = name
+        result.getName().replaceAll("-", "/") = name.replaceAll("-", "/")
       )
     }
 
