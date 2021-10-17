@@ -16,7 +16,7 @@ class ArgumentRoutingConfig extends DataFlow::Configuration {
   override predicate isSource(DataFlow::Node node) {
     node.(DataFlow::CfgNode).getNode().(NameNode).getId() = "arg1"
     or
-    exists(AssignmentDefinition def, DataFlowPrivate::DataFlowCall call |
+    exists(AssignmentDefinition def, DataFlowPrivate::DataFlowSourceCall call |
       def.getVariable() = node.(DataFlow::EssaNode).getVar() and
       def.getValue() = call.getNode() and
       call.getNode().(CallNode).getFunction().(NameNode).getId().matches("With\\_%")

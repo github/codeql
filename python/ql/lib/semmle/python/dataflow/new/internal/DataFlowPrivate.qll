@@ -877,6 +877,8 @@ abstract class DataFlowSourceCall extends DataFlowCall, TDataFlowSourceCall {
   /**
    * Gets the argument to this call that will be sent
    * to the `n`th parameter of the callable.
+   *
+   * This can _not_ depend on the call graph that includes summaries.
    */
   abstract Node getArg(int n);
 
@@ -897,12 +899,6 @@ class NonSpecialCall extends DataFlowSourceCall, TNonSpecialCall {
 
   override string toString() { result = call.toString() }
 
-  FunctionValue getFunctionValue() { call = result.getAFunctionCall() }
-
-  FunctionValue getMethodValue() { call = result.getAMethodCall() }
-
-  ClassValue getClassValue() { call = result.getACall() }
-
   abstract override Node getArg(int n);
 
   abstract override DataFlowCallable getCallable();
@@ -915,6 +911,12 @@ class NonSpecialCall extends DataFlowSourceCall, TNonSpecialCall {
 }
 
 abstract class NonLibraryDataFlowSourceCall extends NonSpecialCall {
+  /**
+   * Gets the argument to this call that will be sent
+   * to the `n`th parameter of the callable.
+   *
+   * This can depend on the call graph that includes summaries
+   */
   abstract Node getArg2(int n);
 
   final override Node getArg(int n) { result = getArg2(n) }
@@ -925,7 +927,9 @@ abstract class NonLibraryDataFlowSourceCall extends NonSpecialCall {
 }
 
 class FunctionCall extends NonLibraryDataFlowSourceCall {
-  FunctionCall() { exists(this.getFunctionValue()) }
+  FunctionCall() { call = any(FunctionValue fv).getAFunctionCall() }
+
+  FunctionValue getFunctionValue() { call = result.getAFunctionCall() }
 
   override Node getArg2(int n) { result = getArg(call, TNoShift(), this.getFunctionValue(), n) }
 
@@ -933,7 +937,9 @@ class FunctionCall extends NonLibraryDataFlowSourceCall {
 }
 
 class MethodCall extends NonLibraryDataFlowSourceCall {
-  MethodCall() { exists(this.getMethodValue()) }
+  MethodCall() { call = any(FunctionValue fv).getAMethodCall() }
+
+  FunctionValue getMethodValue() { call = result.getAMethodCall() }
 
   override Node getArg2(int n) {
     n > 0 and result = getArg(call, TShiftOneUp(), this.getMethodValue(), n)
@@ -947,7 +953,9 @@ class MethodCall extends NonLibraryDataFlowSourceCall {
 }
 
 class ClassCall extends NonLibraryDataFlowSourceCall {
-  ClassCall() { exists(this.getClassValue()) }
+  ClassCall() { call = any(ClassValue cv).getACall() }
+
+  ClassValue getClassValue() { call = result.getACall() }
 
   override Node getArg2(int n) {
     n > 0 and result = getArg(call, TShiftOneUp(), this.getClassValue(), n)
