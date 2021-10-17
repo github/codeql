@@ -21,11 +21,14 @@ where
   or
   PredConsistency::noResolvePredicateExpr(node) and msg = "PredConsistency::noResolvePredicateExpr"
   or
-  TypeConsistency::noResolve(node) and msg = "TypeConsistency::noResolve"
-  or
   TypeConsistency::exprNoType(node) and msg = "TypeConsistency::exprNoType"
   or
   TypeConsistency::varDefNoType(node) and msg = "TypeConsistency::varDefNoType"
+  or
+  TypeConsistency::multiplePrimitives(node, _, _) and msg = "TypeConsistency::multiplePrimitives"
+  or
+  TypeConsistency::multiplePrimitivesExpr(node, _, _) and
+  msg = "TypeConsistency::multiplePrimitivesExpr"
   or
   //or // has 1 result, but the CodeQL compiler also can't figure out that one. I suppoed the file is never imported.
   //TypeConsistency::noResolve(node) and msg = "TypeConsistency::noResolve"

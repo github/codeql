@@ -52,3 +52,7 @@
 | Test.qll:26:16:26:21 | result | file://:0:0:0:0 | int |
 | Test.qll:26:25:26:29 | Super | Test.qll:15:1:19:1 | Base |
 | Test.qll:26:25:26:35 | MemberCall | file://:0:0:0:0 | int |
+| Test.qll:30:32:30:37 | result | file://:0:0:0:0 | int |
+| Test.qll:30:41:30:41 | a | file://:0:0:0:0 | int |
+| Test.qll:30:41:30:45 | MulExpr | file://:0:0:0:0 | int |
+| Test.qll:30:45:30:45 | b | file://:0:0:0:0 | int |
