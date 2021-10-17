@@ -8,7 +8,7 @@
  * to hold for only the AST nodes you wish to view.
  */
 
-import ast.internal.TreeSitter::Generated
+import ast.internal.TreeSitter::QL
 private import codeql.Locations
 
 /**
