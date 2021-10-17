@@ -819,7 +819,7 @@ class NewType extends TNewType, TypeDeclaration, ModuleDeclaration {
  * A branch in a `newtype`.
  * E.g. `Bar()` or `Baz()` in `newtype Foo = Bar() or Baz()`.
  */
-class NewTypeBranch extends TNewTypeBranch, PredicateOrBuiltin, TypeDeclaration {
+class NewTypeBranch extends TNewTypeBranch, Predicate, TypeDeclaration {
   QL::DatatypeBranch branch;
 
   NewTypeBranch() { this = TNewTypeBranch(branch) }
@@ -835,7 +835,7 @@ class NewTypeBranch extends TNewTypeBranch, PredicateOrBuiltin, TypeDeclaration 
   }
 
   /** Gets the body of this branch. */
-  Formula getBody() { toQL(result) = branch.getChild(_).(QL::Body).getChild() }
+  override Formula getBody() { toQL(result) = branch.getChild(_).(QL::Body).getChild() }
 
   override NewTypeBranchType getReturnType() { result.getDeclaration() = this }
 
