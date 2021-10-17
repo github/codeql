@@ -6,27 +6,33 @@ private import codeql_ql.ast.internal.AstNodes
 private predicate definesPredicate(
   FileOrModule m, string name, int arity, Predicate p, boolean public
 ) {
-  m = getEnclosingModule(p) and
-  name = p.getName() and
-  public = getPublicBool(p) and
-  arity = p.getArity()
-  or
-  // import X
-  exists(Import imp, FileOrModule m0 |
-    m = getEnclosingModule(imp) and
-    m0 = imp.getResolvedModule() and
-    not exists(imp.importedAs()) and
-    definesPredicate(m0, name, arity, p, true) and
-    public = getPublicBool(imp)
-  )
-  or
-  // predicate X = Y
-  exists(ClasslessPredicate alias |
-    m = getEnclosingModule(alias) and
-    name = alias.getName() and
-    resolvePredicateExpr(alias.getAlias(), p) and
-    public = getPublicBool(alias) and
-    arity = alias.getArity()
+  (
+    p instanceof NewTypeBranch or
+    p instanceof ClasslessPredicate
+  ) and
+  (
+    m = getEnclosingModule(p) and
+    name = p.getName() and
+    public = getPublicBool(p) and
+    arity = p.getArity()
+    or
+    // import X
+    exists(Import imp, FileOrModule m0 |
+      m = getEnclosingModule(imp) and
+      m0 = imp.getResolvedModule() and
+      not exists(imp.importedAs()) and
+      definesPredicate(m0, name, arity, p, true) and
+      public = getPublicBool(imp)
+    )
+    or
+    // predicate X = Y
+    exists(ClasslessPredicate alias |
+      m = getEnclosingModule(alias) and
+      name = alias.getName() and
+      resolvePredicateExpr(alias.getAlias(), p) and
+      public = getPublicBool(alias) and
+      arity = alias.getArity()
+    )
   )
 }
 
