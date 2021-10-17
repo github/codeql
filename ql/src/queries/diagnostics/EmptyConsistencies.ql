@@ -19,6 +19,8 @@ from AstNode node, string msg
 where
   PredConsistency::noResolveCall(node) and msg = "PredConsistency::noResolveCall"
   or
+  PredConsistency::noResolvePredicateExpr(node) and msg = "PredConsistency::noResolvePredicateExpr"
+  or
   TypeConsistency::noResolve(node) and msg = "TypeConsistency::noResolve"
   or
   TypeConsistency::exprNoType(node) and msg = "TypeConsistency::exprNoType"
