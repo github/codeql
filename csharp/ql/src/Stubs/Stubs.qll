@@ -613,83 +613,18 @@ private string stubImplementation(Virtualizable c) {
 }
 
 private predicate isKeyword(string s) {
-  s = "abstract" or
-  s = "as" or
-  s = "base" or
-  s = "bool" or
-  s = "break" or
-  s = "byte" or
-  s = "case" or
-  s = "catch" or
-  s = "char" or
-  s = "checked" or
-  s = "class" or
-  s = "const" or
-  s = "continue" or
-  s = "decimal" or
-  s = "default" or
-  s = "delegate" or
-  s = "do" or
-  s = "double" or
-  s = "else" or
-  s = "enum" or
-  s = "event" or
-  s = "explicit" or
-  s = "extern" or
-  s = "false" or
-  s = "finally" or
-  s = "fixed" or
-  s = "float" or
-  s = "for" or
-  s = "foreach" or
-  s = "goto" or
-  s = "if" or
-  s = "implicit" or
-  s = "in" or
-  s = "int" or
-  s = "interface" or
-  s = "internal" or
-  s = "is" or
-  s = "lock" or
-  s = "long" or
-  s = "namespace" or
-  s = "new" or
-  s = "null" or
-  s = "object" or
-  s = "operator" or
-  s = "out" or
-  s = "override" or
-  s = "params" or
-  s = "private" or
-  s = "protected" or
-  s = "public" or
-  s = "readonly" or
-  s = "ref" or
-  s = "return" or
-  s = "sbyte" or
-  s = "sealed" or
-  s = "short" or
-  s = "sizeof" or
-  s = "stackalloc" or
-  s = "static" or
-  s = "string" or
-  s = "struct" or
-  s = "switch" or
-  s = "this" or
-  s = "throw" or
-  s = "true" or
-  s = "try" or
-  s = "typeof" or
-  s = "uint" or
-  s = "ulong" or
-  s = "unchecked" or
-  s = "unsafe" or
-  s = "ushort" or
-  s = "using" or
-  s = "virtual" or
-  s = "void" or
-  s = "volatile" or
-  s = "while"
+  s =
+    [
+      "abstract", "as", "base", "bool", "break", "byte", "case", "catch", "char", "checked",
+      "class", "const", "continue", "decimal", "default", "delegate", "do", "double", "else",
+      "enum", "event", "explicit", "extern", "false", "finally", "fixed", "float", "for", "foreach",
+      "goto", "if", "implicit", "in", "int", "interface", "internal", "is", "lock", "long",
+      "namespace", "new", "null", "object", "operator", "out", "override", "params", "private",
+      "protected", "public", "readonly", "ref", "return", "sbyte", "sealed", "short", "sizeof",
+      "stackalloc", "static", "string", "struct", "switch", "this", "throw", "true", "try",
+      "typeof", "uint", "ulong", "unchecked", "unsafe", "ushort", "using", "virtual", "void",
+      "volatile", "while"
+    ]
 }
 
 bindingset[s]

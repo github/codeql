@@ -31,11 +31,7 @@ class Specifier extends Element, @specifier {
  * A C/C++ function specifier: `inline`, `virtual`, or `explicit`.
  */
 class FunctionSpecifier extends Specifier {
-  FunctionSpecifier() {
-    this.hasName("inline") or
-    this.hasName("virtual") or
-    this.hasName("explicit")
-  }
+  FunctionSpecifier() { this.hasName(["inline", "virtual", "explicit"]) }
 
   override string getAPrimaryQlClass() { result = "FunctionSpecifier" }
 }
@@ -45,13 +41,7 @@ class FunctionSpecifier extends Specifier {
  * or `mutable".
  */
 class StorageClassSpecifier extends Specifier {
-  StorageClassSpecifier() {
-    this.hasName("auto") or
-    this.hasName("register") or
-    this.hasName("static") or
-    this.hasName("extern") or
-    this.hasName("mutable")
-  }
+  StorageClassSpecifier() { this.hasName(["auto", "register", "static", "extern", "mutable"]) }
 
   override string getAPrimaryQlClass() { result = "StorageClassSpecifier" }
 }
@@ -60,11 +50,7 @@ class StorageClassSpecifier extends Specifier {
  * A C++ access specifier: `public`, `protected`, or `private`.
  */
 class AccessSpecifier extends Specifier {
-  AccessSpecifier() {
-    this.hasName("public") or
-    this.hasName("protected") or
-    this.hasName("private")
-  }
+  AccessSpecifier() { this.hasName(["public", "protected", "private"]) }
 
   /**
    * Gets the visibility of a field with access specifier `this` if it is

@@ -40,13 +40,7 @@ class ProtobufMessageLite extends Interface {
    */
   Method getAGetterMethod() {
     exists(RefType decl | decl = result.getDeclaringType() and decl = this.getASubtype+() |
-      exists(string name, string suffix |
-        suffix = "" or
-        suffix = "list" or
-        suffix = "map" or
-        suffix = "ordefault" or
-        suffix = "orthrow"
-      |
+      exists(string name, string suffix | suffix = ["", "list", "map", "ordefault", "orthrow"] |
         exists(Field f | f.getDeclaringType() = decl |
           f.getName().toLowerCase().replaceAll("_", "") = name
         ) and

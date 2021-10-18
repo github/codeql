@@ -21,14 +21,12 @@ class OutputWrite extends Expr {
  * A standard output or standard error variable.
  */
 private predicate outputVariable(Variable v) {
-  // standard output
-  v.hasName("cout") or
-  v.hasName("wcout") or
-  // standard error
-  v.hasName("cerr") or
-  v.hasName("clog") or
-  v.hasName("wcerr") or
-  v.hasName("wclog")
+  v.hasName([
+      // standard output
+      "cout", "wcout",
+      // standard error
+      "cerr", "clog", "wcerr", "wclog"
+    ])
 }
 
 /**
@@ -64,10 +62,7 @@ private predicate outputWrite(Expr write, Expr source) {
     arg >= f.(FormattingFunction).getFormatParameterIndex()
     or
     // puts, putchar
-    (
-      f.hasGlobalOrStdName("puts") or
-      f.hasGlobalOrStdName("putchar")
-    ) and
+    f.hasGlobalOrStdName(["puts", "putchar"]) and
     arg = 0
     or
     exists(Call wrappedCall, Expr wrappedSource |
