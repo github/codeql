@@ -98,3 +98,34 @@ jobs:
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@esbena/ql
+        with:
+          upload: false
+          output: ${{ runner.temp }}/sarifs
+          add-snippets: true
+
+      - name: Upload results artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: results
+          path: ${{ runner.temp }}/sarifs
+
+      - name: Obtain git info for sarif upload
+        id: git-info
+        run: |
+          echo "::set-output name=commit_sha::$(git log -1 --format=%H | tr -d '\n')"
+          echo "::set-output name=ref::refs/heads/nightly-changes-alerts"
+
+      - name: Upload results to code-scanning
+        run: |
+          URL="https://api.github.com/repos/github/codeql-ql/code-scanning/sarifs"
+          ENCODED_SARIF_FILE=ql.sarif.encoded
+          gzip -c "${SARIFS}/ql.sarif" | base64 -w0 > "${ENCODED_SARIF_FILE}"
+          ARGS_FILE=args.json
+          jq -nc --arg commit_sha "${COMMIT_SHA}" --arg ref "${REF}" --rawfile sarif "${ENCODED_SARIF_FILE}" '.commit_sha=$commit_sha | .ref=$ref | .sarif=$sarif' > "${ARGS_FILE}"
+          curl -H "Authorization: token ${GITHUB_TOKEN}" -H "Accept: application/vnd.github.v3+json" "${URL}" -d "@${ARGS_FILE}"
+        env:
+          COMMIT_SHA: ${{ steps.git-info.outputs.commit_sha }}
+          REF: ${{ steps.git-info.outputs.ref }}
+          SARIFS: ${{ runner.temp }}/sarifs
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
