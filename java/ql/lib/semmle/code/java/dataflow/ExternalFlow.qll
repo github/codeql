@@ -104,6 +104,7 @@ private module Frameworks {
   private import semmle.code.java.frameworks.spring.SpringBeans
   private import semmle.code.java.frameworks.spring.SpringWebMultipart
   private import semmle.code.java.frameworks.spring.SpringWebUtil
+  private import semmle.code.java.security.AndroidIntentRedirection
   private import semmle.code.java.security.ResponseSplitting
   private import semmle.code.java.security.InformationLeak
   private import semmle.code.java.security.GroovyInjection

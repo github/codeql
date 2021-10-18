@@ -28,6 +28,10 @@ public class Fragment {
     @Override
     public void writeToParcel(Parcel dest, int flags) {}
 
+    @Override
+    public int describeContents() {
+      return 0;
+    }
   }
 
   static public class InstantiationException {

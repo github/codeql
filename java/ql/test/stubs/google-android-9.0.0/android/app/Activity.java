@@ -51,11 +51,6 @@ public class Activity extends ContextWrapper {
 
     public void onStateNotSaved() {}
 
-    @Override
-    public int getNextAutofillId() {
-        return 0;
-    }
-
     public boolean isVoiceInteraction() {
         return false;
     }
@@ -373,7 +368,7 @@ public class Activity extends ContextWrapper {
     }
 
     @Override
-    public Object getSystemService(@ServiceName @NonNull String name) {
+    public Object getSystemService(@NonNull String name) {
         return null;
     }
 

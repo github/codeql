@@ -17,7 +17,6 @@ public class AndroidIntentRedirectionTest extends Activity {
         startActivity(intent); // $ hasAndroidIntentRedirection
         startActivity(intent, null); // $ hasAndroidIntentRedirection
         startActivityAsUser(intent, null); // $ hasAndroidIntentRedirection
-        startActivityAsUser(intent, null, null); // $ hasAndroidIntentRedirection
         startActivityAsCaller(intent, null, false, 0); // $ hasAndroidIntentRedirection
         startActivityForResult(intent, 0); // $ hasAndroidIntentRedirection
         startActivityForResult(intent, 0, null); // $ hasAndroidIntentRedirection
@@ -25,20 +24,18 @@ public class AndroidIntentRedirectionTest extends Activity {
         startActivityForResultAsUser(intent, null, 0, null, null); // $ hasAndroidIntentRedirection
         startActivityForResultAsUser(intent, 0, null, null); // $ hasAndroidIntentRedirection
         startActivityForResultAsUser(intent, 0, null); // $ hasAndroidIntentRedirection
+        bindService(intent, null, 0);
+        bindServiceAsUser(intent, null, 0, null);
         startService(intent); // $ hasAndroidIntentRedirection
         startServiceAsUser(intent, null); // $ hasAndroidIntentRedirection
+        startForegroundService(intent); // $ hasAndroidIntentRedirection
         sendBroadcast(intent); // $ hasAndroidIntentRedirection
         sendBroadcast(intent, null); // $ hasAndroidIntentRedirection
-        sendBroadcast(intent, null, null); // $ hasAndroidIntentRedirection
-        sendBroadcast(intent, null, 0); // $ hasAndroidIntentRedirection
         sendBroadcastAsUser(intent, null); // $ hasAndroidIntentRedirection
         sendBroadcastAsUser(intent, null, null); // $ hasAndroidIntentRedirection
-        sendBroadcastAsUser(intent, null, null, null); // $ hasAndroidIntentRedirection
-        sendBroadcastAsUser(intent, null, null, 0); // $ hasAndroidIntentRedirection
         sendBroadcastWithMultiplePermissions(intent, null); // $ hasAndroidIntentRedirection
         sendStickyBroadcast(intent); // $ hasAndroidIntentRedirection
         sendStickyBroadcastAsUser(intent, null); // $ hasAndroidIntentRedirection
-        sendStickyBroadcastAsUser(intent, null, null); // $ hasAndroidIntentRedirection
         sendStickyOrderedBroadcast(intent, null, null, 0, null, null); // $ hasAndroidIntentRedirection
         sendStickyOrderedBroadcastAsUser(intent, null, null, null, 0, null, null); // $ hasAndroidIntentRedirection
         // @formatter:on
@@ -63,56 +60,56 @@ public class AndroidIntentRedirectionTest extends Activity {
             }
             {
                 Intent fwdIntent = new Intent();
-                fwdIntent.setClassName((Context) null, (String) intent.getExtra("className"));
+                fwdIntent.setClassName((Context) null, intent.getStringExtra("className"));
                 startActivity(fwdIntent); // $ hasAndroidIntentRedirection
             }
             {
                 Intent fwdIntent = new Intent();
-                fwdIntent.setClassName((String) intent.getExtra("packageName"), null);
+                fwdIntent.setClassName(intent.getStringExtra("packageName"), null);
                 startActivity(fwdIntent); // $ hasAndroidIntentRedirection
             }
             {
                 Intent fwdIntent = new Intent();
-                fwdIntent.setClassName((String) intent.getExtra("packageName"),
-                        (String) intent.getExtra("className"));
+                fwdIntent.setClassName(intent.getStringExtra("packageName"),
+                        intent.getStringExtra("className"));
                 startActivity(fwdIntent); // $ hasAndroidIntentRedirection
             }
             {
                 Intent fwdIntent = new Intent();
-                fwdIntent.setClass(null, Class.forName((String) intent.getExtra("className")));
+                fwdIntent.setClass(null, Class.forName(intent.getStringExtra("className")));
                 // needs taint step for Class.forName
                 startActivity(fwdIntent); // $ MISSING: $hasAndroidIntentRedirection
             }
             {
                 Intent fwdIntent = new Intent();
-                fwdIntent.setPackage((String) intent.getExtra("packageName"));
+                fwdIntent.setPackage(intent.getStringExtra("packageName"));
                 startActivity(fwdIntent); // $ hasAndroidIntentRedirection
             }
             {
                 Intent fwdIntent = new Intent();
                 ComponentName component =
-                        new ComponentName((String) intent.getExtra("packageName"), null);
+                        new ComponentName(intent.getStringExtra("packageName"), null);
                 fwdIntent.setComponent(component);
                 startActivity(fwdIntent); // $ hasAndroidIntentRedirection
             }
             {
                 Intent fwdIntent = new Intent();
                 ComponentName component =
-                        new ComponentName("", (String) intent.getExtra("className"));
+                        new ComponentName("", intent.getStringExtra("className"));
                 fwdIntent.setComponent(component);
                 startActivity(fwdIntent); // $ hasAndroidIntentRedirection
             }
             {
                 Intent fwdIntent = new Intent();
                 ComponentName component =
-                        new ComponentName((Context) null, (String) intent.getExtra("className"));
+                        new ComponentName((Context) null, intent.getStringExtra("className"));
                 fwdIntent.setComponent(component);
                 startActivity(fwdIntent); // $ hasAndroidIntentRedirection
             }
             {
                 Intent fwdIntent = new Intent();
                 ComponentName component = new ComponentName((Context) null,
-                        Class.forName((String) intent.getExtra("className")));
+                        Class.forName(intent.getStringExtra("className")));
                 fwdIntent.setComponent(component);
                 // needs taint step for Class.forName
                 startActivity(fwdIntent); // $ MISSING: $hasAndroidIntentRedirection
@@ -120,21 +117,21 @@ public class AndroidIntentRedirectionTest extends Activity {
             {
                 Intent fwdIntent = new Intent();
                 ComponentName component =
-                        ComponentName.createRelative("", (String) intent.getExtra("className"));
+                        ComponentName.createRelative("", intent.getStringExtra("className"));
                 fwdIntent.setComponent(component);
                 startActivity(fwdIntent); // $ hasAndroidIntentRedirection
             }
             {
                 Intent fwdIntent = new Intent();
                 ComponentName component =
-                        ComponentName.createRelative((String) intent.getExtra("packageName"), "");
+                        ComponentName.createRelative(intent.getStringExtra("packageName"), "");
                 fwdIntent.setComponent(component);
                 startActivity(fwdIntent); // $ hasAndroidIntentRedirection
             }
             {
                 Intent fwdIntent = new Intent();
                 ComponentName component = ComponentName.createRelative((Context) null,
-                        (String) intent.getExtra("className"));
+                        intent.getStringExtra("className"));
                 fwdIntent.setComponent(component);
                 startActivity(fwdIntent); // $ hasAndroidIntentRedirection
             }
