@@ -2,8 +2,7 @@
 
 package android.os;
 
-import android.os.Parcel;
-import android.os.Parcelable;
+import java.io.PrintWriter;
 
 public class UserHandle implements Parcelable
 {

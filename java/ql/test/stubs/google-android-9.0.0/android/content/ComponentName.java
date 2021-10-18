@@ -2,7 +2,7 @@
 
 package android.content;
 
-import android.content.Context;
+import java.io.PrintWriter;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -28,7 +28,7 @@ public class ComponentName implements Cloneable, Comparable<ComponentName>, Parc
     public static void appendShortString(StringBuilder sb, String packageName, String className) {}
     public static ComponentName createRelative(Context p0, String p1){ return null; }
     public static ComponentName createRelative(String p0, String p1){ return null; }
-    public static String flattenToShortString(@Nullable ComponentName componentName) { return null; }
+    public static String flattenToShortString(ComponentName componentName) { return null; }
     public static void printShortString(PrintWriter pw, String packageName, String className) {}
     public static ComponentName readFromParcel(Parcel p0){ return null; }
     public static ComponentName unflattenFromString(String p0){ return null; }
