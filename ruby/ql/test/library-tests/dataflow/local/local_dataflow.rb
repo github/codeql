@@ -51,3 +51,8 @@ m do
   break "break" if x < 9
   "normal"
 end
+
+foo([1, 2, 3])
+
+def foo x
+end
