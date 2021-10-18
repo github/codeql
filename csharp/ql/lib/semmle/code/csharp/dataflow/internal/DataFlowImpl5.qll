@@ -2139,7 +2139,8 @@ private predicate expensiveLen2unfolding(TypedContent tc, Configuration config) 
       ) and
     accessPathApproxCostLimits(apLimit, tupleLimit) and
     apLimit < tails and
-    tupleLimit < (tails - 1) * nodes
+    tupleLimit < (tails - 1) * nodes and
+    not tc.forceHighPrecision()
   )
 }
 
@@ -2973,12 +2974,15 @@ private AccessPathApprox getATail(AccessPathApprox apa, Configuration config) {
  * expected to be expensive. Holds with `unfold = true` otherwise.
  */
 private predicate evalUnfold(AccessPathApprox apa, boolean unfold, Configuration config) {
-  exists(int aps, int nodes, int apLimit, int tupleLimit |
-    aps = countPotentialAps(apa, config) and
-    nodes = countNodesUsingAccessPath(apa, config) and
-    accessPathCostLimits(apLimit, tupleLimit) and
-    if apLimit < aps and tupleLimit < (aps - 1) * nodes then unfold = false else unfold = true
-  )
+  if apa.getHead().forceHighPrecision()
+  then unfold = true
+  else
+    exists(int aps, int nodes, int apLimit, int tupleLimit |
+      aps = countPotentialAps(apa, config) and
+      nodes = countNodesUsingAccessPath(apa, config) and
+      accessPathCostLimits(apLimit, tupleLimit) and
+      if apLimit < aps and tupleLimit < (aps - 1) * nodes then unfold = false else unfold = true
+    )
 }
 
 /**

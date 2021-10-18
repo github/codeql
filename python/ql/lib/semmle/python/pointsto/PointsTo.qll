@@ -300,7 +300,7 @@ module PointsToInternal {
     ssa_definition_points_to(var.getDefinition(), context, value, origin)
     or
     exists(EssaVariable prev |
-      ssaShortCut+(prev, var) and
+      ssaShortCut(prev, var) and
       variablePointsTo(prev, context, value, origin)
     )
   }

@@ -92,6 +92,19 @@ namespace My.Qltest
             Sink(i);
         }
 
+        void M15()
+        {
+            var d1 = new D();
+            d1.Field = new object();
+            var d2 = new D();
+            Apply2(d =>
+            {
+                Sink(d); // MISSING FLOW
+            }, d1, d2);
+            Sink(d1.Field); // MISSING FLOW
+            Sink(d2.Field2);
+        }
+
         object StepArgRes(object x) { return null; }
 
         void StepArgArg(object @in, object @out) { }
@@ -103,6 +116,7 @@ namespace My.Qltest
         void StepQualArg(object @out) { }
 
         object Field;
+        object Field2;
 
         object StepFieldGetter() => throw null;
 
@@ -121,6 +135,8 @@ namespace My.Qltest
         static T Apply<S, T>(Func<S, T> f, S s) => throw null;
 
         static S[] Map<S, T>(S[] elements, Func<S, T> f) => throw null;
+
+        static void Apply2<S>(Action<S> f, S s1, S s2) => throw null;
 
         static void Parse(string s, out int i) => throw null;
 

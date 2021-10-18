@@ -202,3 +202,44 @@ private class ContentProviderSourceModels extends SourceModelCsv {
       ]
   }
 }
+
+/** Interface for classes whose instances can be written to and restored from a Parcel. */
+class TypeParcelable extends Interface {
+  TypeParcelable() { this.hasQualifiedName("android.os", "Parcelable") }
+}
+
+/**
+ * A method that overrides `android.os.Parcelable.Creator.createFromParcel`.
+ */
+class CreateFromParcelMethod extends Method {
+  CreateFromParcelMethod() {
+    this.hasName("createFromParcel") and
+    this.getEnclosingCallable().getDeclaringType().getASupertype*() instanceof TypeParcelable
+  }
+}
+
+private class ParcelPropagationModels extends SummaryModelCsv {
+  override predicate row(string s) {
+    // Parcel readers that return their value
+    s =
+      "android.os;Parcel;false;read" +
+        [
+          "Array", "ArrayList", "Boolean", "Bundle", "Byte", "Double", "FileDescriptor", "Float",
+          "HashMap", "Int", "Long", "Parcelable", "ParcelableArray", "PersistableBundle",
+          "Serializable", "Size", "SizeF", "SparseArray", "SparseBooleanArray", "String",
+          "StrongBinder", "TypedObject", "Value"
+        ] + ";;;Argument[-1];ReturnValue;taint"
+    or
+    // Parcel readers that write to an existing object
+    s =
+      "android.os;Parcel;false;read" +
+        [
+          "BinderArray", "BinderList", "BooleanArray", "ByteArray", "CharArray", "DoubleArray",
+          "FloatArray", "IntArray", "List", "LongArray", "Map", "ParcelableList", "StringArray",
+          "StringList", "TypedArray", "TypedList"
+        ] + ";;;Argument[-1];Argument[0];taint"
+    or
+    // One Parcel method that aliases an argument to a return value
+    s = "android.os;Parcel;false;readParcelableList;;;Argument[0];ReturnValue;value"
+  }
+}

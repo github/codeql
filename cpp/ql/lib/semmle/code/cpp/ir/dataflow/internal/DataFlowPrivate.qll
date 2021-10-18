@@ -466,6 +466,12 @@ predicate isUnreachableInCall(Node n, DataFlowCall call) { none() } // stub impl
 
 int accessPathLimit() { result = 5 }
 
+/**
+ * Holds if access paths with `c` at their head always should be tracked at high
+ * precision. This disables adaptive access path precision for such access paths.
+ */
+predicate forceHighPrecision(Content c) { none() }
+
 /** The unit type. */
 private newtype TUnit = TMkUnit()
 

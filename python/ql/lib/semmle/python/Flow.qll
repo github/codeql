@@ -851,9 +851,9 @@ class ForNode extends ControlFlowNode {
 
   /** Holds if this `for` statement causes iteration over `sequence` storing each step of the iteration in `target` */
   predicate iterates(ControlFlowNode target, ControlFlowNode sequence) {
-    sequence = getSequence() and
-    target = possibleTarget() and
-    not target = unrolledSuffix().possibleTarget()
+    sequence = this.getSequence() and
+    target = this.possibleTarget() and
+    not target = this.unrolledSuffix().possibleTarget()
   }
 
   /** Gets the sequence node for this `for` statement. */

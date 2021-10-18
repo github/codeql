@@ -727,7 +727,7 @@ module NodeJSLib {
       result = getParameter(1).getARhs()
     }
 
-    override predicate isSync() { "Sync" = methodName.suffix(methodName.length() - 4) }
+    override predicate isSync() { methodName.matches("%Sync") }
 
     override DataFlow::Node getOptionsArg() {
       not result.getALocalSource() instanceof DataFlow::FunctionNode and // looks like callback

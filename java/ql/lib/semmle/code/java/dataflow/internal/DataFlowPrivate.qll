@@ -234,6 +234,19 @@ class DataFlowCall extends TDataFlowCall {
 
   /** Gets the location of this call. */
   abstract Location getLocation();
+
+  /**
+   * Holds if this element is at the specified location.
+   * The location spans column `startcolumn` of line `startline` to
+   * column `endcolumn` of line `endline` in file `filepath`.
+   * For more information, see
+   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
+   */
+  final predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+  }
 }
 
 /** A source call, that is, a `Call`. */
@@ -307,6 +320,14 @@ predicate isUnreachableInCall(Node n, DataFlowCall call) {
 }
 
 int accessPathLimit() { result = 5 }
+
+/**
+ * Holds if access paths with `c` at their head always should be tracked at high
+ * precision. This disables adaptive access path precision for such access paths.
+ */
+predicate forceHighPrecision(Content c) {
+  c instanceof ArrayContent or c instanceof CollectionContent
+}
 
 /**
  * Holds if `n` does not require a `PostUpdateNode` as it either cannot be

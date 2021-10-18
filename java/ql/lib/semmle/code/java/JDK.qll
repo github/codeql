@@ -156,6 +156,11 @@ class TypeObjectOutputStream extends RefType {
   TypeObjectOutputStream() { hasQualifiedName("java.io", "ObjectOutputStream") }
 }
 
+/** The type `java.io.ObjectInputStream`. */
+class TypeObjectInputStream extends RefType {
+  TypeObjectInputStream() { hasQualifiedName("java.io", "ObjectInputStream") }
+}
+
 /** The class `java.nio.file.Paths`. */
 class TypePaths extends Class {
   TypePaths() { this.hasQualifiedName("java.nio.file", "Paths") }
@@ -275,7 +280,7 @@ class WriteObjectMethod extends Method {
  */
 class ReadObjectMethod extends Method {
   ReadObjectMethod() {
-    this.getDeclaringType().hasQualifiedName("java.io", "ObjectInputStream") and
+    this.getDeclaringType() instanceof TypeObjectInputStream and
     (
       this.hasName("readObject") or
       this.hasName("readObjectOverride") or

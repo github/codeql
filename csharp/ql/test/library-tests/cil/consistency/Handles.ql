@@ -5,7 +5,7 @@ import dotnet
 class MetadataEntity extends DotNet::NamedElement, @metadata_entity {
   int getHandle() { metadata_handle(this, _, result) }
 
-  predicate hasHandle() { exists(getHandle()) }
+  predicate hasHandle() { exists(this.getHandle()) }
 
   Assembly getAssembly() { metadata_handle(this, result, _) }
 }
