@@ -269,7 +269,7 @@ private predicate taintPreservingQualifierToMethod(Method m) {
     m.getName() = "toString"
   )
   or
-  m.getDeclaringType().hasQualifiedName("java.io", "ObjectInputStream") and
+  m.getDeclaringType() instanceof TypeObjectInputStream and
   m.getName().matches("read%")
   or
   m instanceof GetterMethod and

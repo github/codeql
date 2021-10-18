@@ -58,13 +58,13 @@ class OverridableCallable extends Callable {
    * `I.M.getAnImplementorSubType(D) = C.M`.
    */
   private Callable getAnImplementorSubType(ValueOrRefType t) {
-    result = getAnImplementor(t)
+    result = this.getAnImplementor(t)
     or
     exists(ValueOrRefType mid |
-      result = getAnImplementorSubType(mid) and
+      result = this.getAnImplementorSubType(mid) and
       t.getBaseClass() = mid and
       // There must be no other implementation of this callable in `t`
-      forall(Callable other | other = getAnImplementor(t) | other = result)
+      forall(Callable other | other = this.getAnImplementor(t) | other = result)
     )
   }
 
@@ -107,8 +107,8 @@ class OverridableCallable extends Callable {
    * implements this interface callable, if any.
    */
   private Callable getAnOverridingImplementor() {
-    result = getAnUltimateImplementor() and
-    not result = getAnImplementor(_)
+    result = this.getAnUltimateImplementor() and
+    not result = this.getAnImplementor(_)
   }
 
   /**
@@ -150,10 +150,10 @@ class OverridableCallable extends Callable {
   }
 
   private Callable getInherited1(ValueOrRefType t) {
-    result = getInherited0(t)
+    result = this.getInherited0(t)
     or
     // An interface implementation
-    result = getAnImplementorSubType(t)
+    result = this.getAnImplementorSubType(t)
   }
 
   pragma[noinline]
@@ -171,7 +171,7 @@ class OverridableCallable extends Callable {
   private predicate isDeclaringSubType(ValueOrRefType t) {
     t = this.getDeclaringType()
     or
-    exists(ValueOrRefType mid | isDeclaringSubType(mid) | t = mid.getASubType())
+    exists(ValueOrRefType mid | this.isDeclaringSubType(mid) | t = mid.getASubType())
   }
 
   pragma[noinline]
@@ -232,7 +232,7 @@ class OverridableAccessor extends Accessor, OverridableCallable {
 
   override Accessor getAnImplementor(ValueOrRefType t) {
     exists(Virtualizable implementor, int kind |
-      getAnImplementorAux(t, implementor, kind) and
+      this.getAnImplementorAux(t, implementor, kind) and
       result.getDeclaration() = implementor and
       getAccessorKind(result) = kind
     )
@@ -241,7 +241,7 @@ class OverridableAccessor extends Accessor, OverridableCallable {
   // predicate folding to get proper join order
   private predicate getAnImplementorAux(ValueOrRefType t, Virtualizable implementor, int kind) {
     exists(Virtualizable implementee |
-      implementee = getDeclaration() and
+      implementee = this.getDeclaration() and
       kind = getAccessorKind(this) and
       implementor = implementee.getAnImplementor(t)
     )
@@ -249,7 +249,7 @@ class OverridableAccessor extends Accessor, OverridableCallable {
 
   override Accessor getAnUltimateImplementor() {
     exists(Virtualizable implementor, int kind |
-      getAnUltimateImplementorAux(implementor, kind) and
+      this.getAnUltimateImplementorAux(implementor, kind) and
       result.getDeclaration() = implementor and
       getAccessorKind(result) = kind
     )
@@ -258,7 +258,7 @@ class OverridableAccessor extends Accessor, OverridableCallable {
   // predicate folding to get proper join order
   private predicate getAnUltimateImplementorAux(Virtualizable implementor, int kind) {
     exists(Virtualizable implementee |
-      implementee = getDeclaration() and
+      implementee = this.getDeclaration() and
       kind = getAccessorKind(this) and
       implementor = implementee.getAnUltimateImplementor()
     )

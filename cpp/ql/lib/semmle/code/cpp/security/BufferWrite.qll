@@ -365,7 +365,7 @@ class GetsBW extends BufferWriteCall {
   /**
    * Gets the index of the parameter that is the maximum number of characters to be read.
    */
-  int getParamSize() { if exists(getArgument(1)) then result = 1 else none() }
+  int getParamSize() { exists(getArgument(1)) and result = 1 }
 
   override Type getBufferType() { result = this.getTarget().getParameter(0).getUnspecifiedType() }
 

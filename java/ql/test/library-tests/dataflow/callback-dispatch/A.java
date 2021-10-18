@@ -169,4 +169,25 @@ public class A {
     sink(res2); // $ flow=19
   }
 
+  static void applyConsumer1Field1Field2(A a1, A a2, Consumer1 con) {
+    // summary:
+    // con.eat(a1.field1);
+    // con.eat(a2.field2);
+  }
+
+  static void wrapSinkToAvoidFieldSsa(A a) { sink(a.field1); }
+
+  void foo3() {
+    A a1 = new A();
+    a1.field1 = source(20);
+    A a2 = new A();
+    applyConsumer1Field1Field2(a1, a2, p -> {
+      sink(p); // MISSING FLOW
+    });
+    wrapSinkToAvoidFieldSsa(a1); // MISSING FLOW
+    sink(a2.field2);
+  }
+
+  public Object field1;
+  public Object field2;
 }

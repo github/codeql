@@ -11,7 +11,7 @@ private import ControlFlow::SuccessorTypes
  */
 class BasicBlock extends TBasicBlockStart {
   /** Gets an immediate successor of this basic block, if any. */
-  BasicBlock getASuccessor() { result.getFirstNode() = getLastNode().getASuccessor() }
+  BasicBlock getASuccessor() { result.getFirstNode() = this.getLastNode().getASuccessor() }
 
   /** Gets an immediate successor of this basic block of a given type, if any. */
   BasicBlock getASuccessorByType(ControlFlow::SuccessorType t) {
@@ -42,7 +42,7 @@ class BasicBlock extends TBasicBlockStart {
    * The basic block on line 2 is an immediate `true` successor of the
    * basic block on line 1.
    */
-  BasicBlock getATrueSuccessor() { result.getFirstNode() = getLastNode().getATrueSuccessor() }
+  BasicBlock getATrueSuccessor() { result.getFirstNode() = this.getLastNode().getATrueSuccessor() }
 
   /**
    * Gets an immediate `false` successor, if any.
@@ -60,25 +60,27 @@ class BasicBlock extends TBasicBlockStart {
    * The basic block on line 2 is an immediate `false` successor of the
    * basic block on line 1.
    */
-  BasicBlock getAFalseSuccessor() { result.getFirstNode() = getLastNode().getAFalseSuccessor() }
+  BasicBlock getAFalseSuccessor() {
+    result.getFirstNode() = this.getLastNode().getAFalseSuccessor()
+  }
 
   /** Gets the control flow node at a specific (zero-indexed) position in this basic block. */
-  ControlFlow::Node getNode(int pos) { bbIndex(getFirstNode(), result, pos) }
+  ControlFlow::Node getNode(int pos) { bbIndex(this.getFirstNode(), result, pos) }
 
   /** Gets a control flow node in this basic block. */
-  ControlFlow::Node getANode() { result = getNode(_) }
+  ControlFlow::Node getANode() { result = this.getNode(_) }
 
   /** Gets the first control flow node in this basic block. */
   ControlFlow::Node getFirstNode() { this = TBasicBlockStart(result) }
 
   /** Gets the last control flow node in this basic block. */
-  ControlFlow::Node getLastNode() { result = getNode(length() - 1) }
+  ControlFlow::Node getLastNode() { result = this.getNode(this.length() - 1) }
 
   /** Gets the callable that this basic block belongs to. */
   final Callable getCallable() { result = this.getFirstNode().getEnclosingCallable() }
 
   /** Gets the length of this basic block. */
-  int length() { result = strictcount(getANode()) }
+  int length() { result = strictcount(this.getANode()) }
 
   /**
    * Holds if this basic block immediately dominates basic block `bb`.
@@ -151,7 +153,7 @@ class BasicBlock extends TBasicBlockStart {
    */
   predicate dominates(BasicBlock bb) {
     bb = this or
-    strictlyDominates(bb)
+    this.strictlyDominates(bb)
   }
 
   /**
@@ -177,14 +179,14 @@ class BasicBlock extends TBasicBlockStart {
    * does not dominate the basic block on line 6.
    */
   predicate inDominanceFrontier(BasicBlock df) {
-    dominatesPredecessor(df) and
-    not strictlyDominates(df)
+    this.dominatesPredecessor(df) and
+    not this.strictlyDominates(df)
   }
 
   /**
    * Holds if this basic block dominates a predecessor of `df`.
    */
-  private predicate dominatesPredecessor(BasicBlock df) { dominates(df.getAPredecessor()) }
+  private predicate dominatesPredecessor(BasicBlock df) { this.dominates(df.getAPredecessor()) }
 
   /**
    * Gets the basic block that immediately dominates this basic block, if any.
@@ -263,7 +265,7 @@ class BasicBlock extends TBasicBlockStart {
    * post-dominates itself.
    */
   predicate postDominates(BasicBlock bb) {
-    strictlyPostDominates(bb) or
+    this.strictlyPostDominates(bb) or
     this = bb
   }
 
@@ -276,10 +278,10 @@ class BasicBlock extends TBasicBlockStart {
   predicate inLoop() { this.getASuccessor+() = this }
 
   /** Gets a textual representation of this basic block. */
-  string toString() { result = getFirstNode().toString() }
+  string toString() { result = this.getFirstNode().toString() }
 
   /** Gets the location of this basic block. */
-  Location getLocation() { result = getFirstNode().getLocation() }
+  Location getLocation() { result = this.getFirstNode().getLocation() }
 }
 
 /**
@@ -420,7 +422,7 @@ private module JoinBlockPredecessors {
 
 /** A basic block with more than one predecessor. */
 class JoinBlock extends BasicBlock {
-  JoinBlock() { getFirstNode().isJoin() }
+  JoinBlock() { this.getFirstNode().isJoin() }
 
   /**
    * Gets the `i`th predecessor of this join block, with respect to some

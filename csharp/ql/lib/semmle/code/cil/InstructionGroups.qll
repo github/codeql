@@ -14,7 +14,7 @@ class Expr extends DotNet::Expr, Instruction, @cil_expr {
 
   override Type getType() { result = Instruction.super.getType() }
 
-  override Method getEnclosingCallable() { result = getImplementation().getMethod() }
+  override Method getEnclosingCallable() { result = this.getImplementation().getMethod() }
 
   /**
    * The "parent" of a CIL expression is taken to be the instruction
@@ -28,13 +28,13 @@ class Branch extends Instruction, @cil_jump {
   /** Gets the instruction that is jumped to. */
   Instruction getTarget() { cil_jump(this, result) }
 
-  override string getExtra() { result = getTarget().getIndex() + ":" }
+  override string getExtra() { result = this.getTarget().getIndex() + ":" }
 }
 
 /** An instruction that unconditionally jumps to another instruction. */
 class UnconditionalBranch extends Branch, @cil_unconditional_jump {
   override Instruction getASuccessorType(FlowType t) {
-    t instanceof NormalFlow and result = getTarget()
+    t instanceof NormalFlow and result = this.getTarget()
   }
 
   override predicate canFlowNext() { none() }
@@ -43,9 +43,9 @@ class UnconditionalBranch extends Branch, @cil_unconditional_jump {
 /** An instruction that jumps to a target based on a condition. */
 class ConditionalBranch extends Branch, @cil_conditional_jump {
   override Instruction getASuccessorType(FlowType t) {
-    t instanceof TrueFlow and result = getTarget()
+    t instanceof TrueFlow and result = this.getTarget()
     or
-    t instanceof FalseFlow and result = getImplementation().getInstruction(getIndex() + 1)
+    t instanceof FalseFlow and result = this.getImplementation().getInstruction(this.getIndex() + 1)
   }
 
   override int getPushCount() { result = 0 }
@@ -61,7 +61,7 @@ class UnaryExpr extends Expr, @cil_unary_expr {
   override int getPopCount() { result = 1 }
 
   /** Gets the operand of this unary expression. */
-  Expr getOperand() { result = getOperand(0) }
+  Expr getOperand() { result = this.getOperand(0) }
 }
 
 /** A binary expression that compares two values. */
@@ -73,8 +73,8 @@ class ComparisonOperation extends BinaryExpr, @cil_comparison_operation {
 class BinaryArithmeticExpr extends BinaryExpr, @cil_binary_arithmetic_operation {
   override Type getType() {
     exists(Type t0, Type t1 |
-      t0 = getOperand(0).getType().getUnderlyingType() and
-      t1 = getOperand(1).getType().getUnderlyingType()
+      t0 = this.getOperand(0).getType().getUnderlyingType() and
+      t1 = this.getOperand(1).getType().getUnderlyingType()
     |
       t0 = t1 and result = t0
       or
@@ -100,7 +100,7 @@ class UnaryBitwiseOperation extends UnaryExpr, @cil_unary_bitwise_operation {
 /** A unary expression that converts a value from one primitive type to another. */
 class Conversion extends UnaryExpr, @cil_conversion_operation {
   /** Gets the expression being converted. */
-  Expr getExpr() { result = getOperand(0) }
+  Expr getExpr() { result = this.getOperand(0) }
 }
 
 /** A branch that leaves the scope of a `Handler`. */
@@ -111,7 +111,7 @@ class Literal extends DotNet::Literal, Expr, @cil_literal {
   /** Gets the pushed value. */
   override string getValue() { cil_value(this, result) }
 
-  override string getExtra() { result = getValue() }
+  override string getExtra() { result = this.getValue() }
 }
 
 /** An integer literal. */
@@ -149,44 +149,44 @@ class Call extends Expr, DotNet::Call, @cil_call_any {
   /** Gets the method that is called. */
   override Method getTarget() { cil_access(this, result) }
 
-  override Method getARuntimeTarget() { result = getTarget().getAnOverrider*() }
+  override Method getARuntimeTarget() { result = this.getTarget().getAnOverrider*() }
 
-  override string getExtra() { result = getTarget().getQualifiedName() }
+  override string getExtra() { result = this.getTarget().getQualifiedName() }
 
   /**
    * Gets the return type of the call. Methods that do not return a value
    * return the `void` type, `System.Void`, although the value of `getPushCount` is
    * 0 in this case.
    */
-  override Type getType() { result = getTarget().getReturnType() }
+  override Type getType() { result = this.getTarget().getReturnType() }
 
   // The number of items popped/pushed from the stack
   // depends on the target of the call.
-  override int getPopCount() { result = getTarget().getCallPopCount() }
+  override int getPopCount() { result = this.getTarget().getCallPopCount() }
 
-  override int getPushCount() { result = getTarget().getCallPushCount() }
+  override int getPushCount() { result = this.getTarget().getCallPushCount() }
 
   /**
    * Holds if this is a "tail call", meaning that control does not return to the
    * calling method.
    */
   predicate isTailCall() {
-    getImplementation().getInstruction(getIndex() - 1) instanceof Opcodes::Tail
+    this.getImplementation().getInstruction(this.getIndex() - 1) instanceof Opcodes::Tail
   }
 
   /** Holds if this call is virtual and could go to an overriding method. */
   predicate isVirtual() { none() }
 
-  override Expr getRawArgument(int i) { result = getOperand(getPopCount() - i - 1) }
+  override Expr getRawArgument(int i) { result = this.getOperand(this.getPopCount() - i - 1) }
 
   /** Gets the qualifier of this call, if any. */
-  Expr getQualifier() { result = getRawArgument(0) and not getTarget().isStatic() }
+  Expr getQualifier() { result = this.getRawArgument(0) and not this.getTarget().isStatic() }
 
   override Expr getArgument(int i) {
-    if getTarget().isStatic()
-    then result = getRawArgument(i)
+    if this.getTarget().isStatic()
+    then result = this.getRawArgument(i)
     else (
-      result = getRawArgument(i + 1) and i >= 0
+      result = this.getRawArgument(i + 1) and i >= 0
     )
   }
 
@@ -217,10 +217,10 @@ class VirtualCall extends Call {
 /** A read of an array element. */
 class ReadArrayElement extends BinaryExpr, @cil_read_array {
   /** Gets the array being read. */
-  Expr getArray() { result = getOperand(1) }
+  Expr getArray() { result = this.getOperand(1) }
 
   /** Gets the index into the array. */
-  Expr getArrayIndex() { result = getOperand(0) }
+  Expr getArrayIndex() { result = this.getOperand(0) }
 }
 
 /** A write of an array element. */
@@ -233,14 +233,14 @@ class WriteArrayElement extends Instruction, @cil_write_array {
 /** A `return` statement. */
 class Return extends Instruction, @cil_ret {
   /** Gets the expression being returned, if any. */
-  Expr getExpr() { result = getOperand(0) }
+  Expr getExpr() { result = this.getOperand(0) }
 
   override predicate canFlowNext() { none() }
 }
 
 /** A `throw` statement. */
 class Throw extends Instruction, DotNet::Throw, @cil_throw_any {
-  override Expr getExpr() { result = getOperand(0) }
+  override Expr getExpr() { result = this.getOperand(0) }
 
   override predicate canFlowNext() { none() }
 }
@@ -250,10 +250,10 @@ class StoreIndirect extends Instruction, @cil_stind {
   override int getPopCount() { result = 2 }
 
   /** Gets the location to store the value at. */
-  Expr getAddress() { result = getOperand(1) }
+  Expr getAddress() { result = this.getOperand(1) }
 
   /** Gets the value to store. */
-  Expr getExpr() { result = getOperand(0) }
+  Expr getExpr() { result = this.getOperand(0) }
 }
 
 /** Loads a value from an address/location. */

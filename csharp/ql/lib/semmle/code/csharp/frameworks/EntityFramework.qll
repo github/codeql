@@ -239,7 +239,7 @@ module EntityFramework {
   private class SystemDataEntityDbSetSqlQuerySinkModelCsv extends SinkModelCsv {
     override predicate row(string row) {
       row =
-        ["System.Data.Entity;DbSet;false;SqlQuery;(System.String,System.Object[]);;Argument[0];sql"]
+        "System.Data.Entity;DbSet;false;SqlQuery;(System.String,System.Object[]);;Argument[0];sql"
     }
   }
 
@@ -317,7 +317,7 @@ module EntityFramework {
         dist = 0
       )
       or
-      step(_, _, c1, t1, dist - 1) and
+      this.step(_, _, c1, t1, dist - 1) and
       dist < DataFlowPrivate::accessPathLimit() - 1 and
       not isNotMapped(t2) and
       (
@@ -374,11 +374,11 @@ module EntityFramework {
     }
 
     private predicate stepRev(Content c1, Type t1, Content c2, Type t2, int dist) {
-      step(c1, t1, c2, t2, dist) and
-      c2.(PropertyContent).getProperty() = getAColumnProperty(dist)
+      this.step(c1, t1, c2, t2, dist) and
+      c2.(PropertyContent).getProperty() = this.getAColumnProperty(dist)
       or
-      stepRev(c2, t2, _, _, dist + 1) and
-      step(c1, t1, c2, t2, dist)
+      this.stepRev(c2, t2, _, _, dist + 1) and
+      this.step(c1, t1, c2, t2, dist)
     }
 
     /** Gets a `SaveChanges[Async]` method. */
@@ -453,8 +453,8 @@ module EntityFramework {
     ) {
       exists(Property mapped |
         preservesValue = true and
-        input(input, mapped) and
-        output(output, mapped)
+        this.input(input, mapped) and
+        this.output(output, mapped)
       )
     }
   }

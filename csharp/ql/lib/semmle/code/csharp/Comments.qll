@@ -11,7 +11,7 @@ import Location
 /**
  * A single line of comment.
  *
- * Either a single line comment (`SingleLineComment`), an XML comment (`XmlComment`),
+ * Either a single line comment (`SinglelineComment`), an XML comment (`XmlComment`),
  * or a line in a multi-line comment (`MultilineComment`).
  */
 class CommentLine extends @commentline {
