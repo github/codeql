@@ -12,102 +12,17 @@ on:
 
 jobs:
 
-  build_query_pack:
-    runs-on: ubuntu-latest-xl
-    steps:
-      - uses: actions/checkout@v2
-      - name: Find codeql
-        id: find-codeql
-        uses: github/codeql-action/init@esbena/ql
-        with:
-          languages: javascript # does not matter
-      - name: Build query pack
-        run: |
-          cd ql/src
-          "${CODEQL}" pack create
-          cd .codeql/pack/codeql/ql-all/0.0.0
-          zip "${PACKZIP}" -r .
-        env:
-          CODEQL: ${{ steps.find-codeql.outputs.codeql-path }}
-          PACKZIP: ${{ runner.temp }}/query-pack.zip
-      - name: Upload query pack
-        uses: actions/upload-artifact@v2
-        with:
-          name: query-pack
-          path: ${{ runner.temp }}/query-pack.zip
-
-  # XXX this is mostly an inlined copy of the 'build' job in build.yml
-  build_extractor_pack:
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-
-    runs-on: ${{ matrix.os }}
-
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/cache@v2
-        with:
-          path: |
-            ~/.cargo/registry
-            ~/.cargo/git
-            target
-          key: ${{ runner.os }}-rust-cargo-${{ hashFiles('**/Cargo.lock') }}
-      - name: Check formatting
-        run: cargo fmt --all -- --check
-      - name: Build
-        run: cargo build --verbose
-      - name: Run tests
-        run: cargo test --verbose
-      - name: Release build
-        run: cargo build --release
-      - name: Generate dbscheme
-        run: target/release/ql-generator --dbscheme ql/src/ql.dbscheme --library ql/src/codeql_ql/ast/internal/TreeSitter.qll
-      - uses: actions/upload-artifact@v2
-        with:
-          name: ql.dbscheme
-          path: ql/src/ql.dbscheme
-      - uses: actions/upload-artifact@v2
-        with:
-          name: TreeSitter.qll
-          path: ql/src/codeql_ql/ast/internal/TreeSitter.qll
-      - uses: actions/upload-artifact@v2
-        with:
-          name: extractor-${{ matrix.os }}
-          path: |
-            target/release/ql-extractor
-          retention-days: 1
-  # XXX this is mostly an inlined copy of the 'package' job in build.yml
-      - run: |
-          mkdir -p ${PACK_DIR}
-        env:
-          PACK_DIR: ${{ runner.temp }}/pack
-
-      - name: Pack
-        working-directory: ${{ runner.temp }}/pack
-        run: |
-          mkdir -p ql
-          cp -r "${CHECKOUT}/codeql-extractor.yml" "${CHECKOUT}/tools" "${CHECKOUT}/ql/src/ql.dbscheme" "${CHECKOUT}/ql/src/ql.dbscheme.stats" ql/
-          mkdir -p ql/tools/linux64
-          cp "${CHECKOUT}/target/release/ql-extractor" ql/tools/linux64/extractor
-          chmod +x ql/tools/linux64/extractor
-          zip -rq codeql-ql.zip ql
-        env:
-          CHECKOUT: ${{ github.workspace }}
-
-      - uses: actions/upload-artifact@v2
-        with:
-          name: extractor-pack
-          path: ${{ runner.temp }}/pack/codeql-ql.zip
-          retention-days: 1
+  build:
+    uses: github/codeql-ql/.github/workflows/build.yml@esbena/workflow-improvements
+    with:
+      os: '[ "ubuntu-latest" ]'
 
   analyze:
     name: Analyze
     needs:
-      - build_query_pack
-      - build_extractor_pack
+      - build
 
-    runs-on: ubuntu-latest-xl
+    runs-on: ubuntu-latest
 
     permissions:
       actions: read
@@ -115,43 +30,25 @@ jobs:
       security-events: write
 
     steps:
-    - name: Download query pack
+    - name: Download pack
       uses: actions/download-artifact@v2
       with:
-        name: query-pack
-        path: ${{ runner.temp }}/query-pack-artifact
+        name: codeql-ql-pack
+        path: ${{ runner.temp }}/codeql-ql-pack-artifact
 
-    - name: Download extractor pack
-      uses: actions/download-artifact@v2
-      with:
-        name: extractor-pack
-        path: ${{ runner.temp }}/extractor-pack-artifact
-
-    - name: Prepare packs
-      id: prepare-packs
+    - name: Prepare pack
       run: |
-        set -x
-        mkdir -p "${COMPLETE_PACK}" "${PACKS_TMP}"
-        cd "${PACKS_TMP}"
-        unzip "${QUERY_PACK_ARTIFACT}/*.zip" -d query-pack-artifact-unzipped
-        cp -r query-pack-artifact-unzipped/. "${COMPLETE_PACK}"
-        unzip "${EXTRACTOR_PACK_ARTIFACT}/*.zip" -d extractor-pack-artifact-unzipped
-        cp -r extractor-pack-artifact-unzipped/ql/. "${COMPLETE_PACK}"
-        cd "${COMPLETE_PACK}"
-        zip "${COMPLETE_PACK_ZIP}" -r .
+        unzip "${PACK_ARTIFACT}/*.zip" -d "${PACK}"
       env:
-        PACKS_TMP: ${{ runner.temp }}/pack-artifacts.tmp
-        QUERY_PACK_ARTIFACT: ${{ runner.temp }}/query-pack-artifact
-        EXTRACTOR_PACK_ARTIFACT: ${{ runner.temp }}/extractor-pack-artifact
-        COMPLETE_PACK: ${{ runner.temp }}/pack
-        COMPLETE_PACK_ZIP: ${{ runner.temp }}/pack.zip
+        PACK_ARTIFACT: ${{ runner.temp }}/codeql-ql-pack-artifact
+        PACK: ${{ runner.temp }}/pack
 
     - name: Hack codeql-action options
       run: |
-        JSON=$(jq -nc --arg pack "${COMPLETE_PACK}" '.resolve.queries=["--search-path", $pack] | .resolve.extractor=["--search-path", $pack] | .database.init=["--search-path", $pack]')
+        JSON=$(jq -nc --arg pack "${PACK}" '.resolve.queries=["--search-path", $pack] | .resolve.extractor=["--search-path", $pack] | .database.init=["--search-path", $pack]')
         echo "CODEQL_ACTION_EXTRA_OPTIONS=${JSON}" >> ${GITHUB_ENV}
       env:
-        COMPLETE_PACK: ${{ runner.temp }}/pack
+        PACK: ${{ runner.temp }}/pack
 
     - name: Checkout repository
       uses: actions/checkout@v2
@@ -172,9 +69,3 @@ jobs:
         path: ${{ runner.temp }}/db
         retention-days: 1
 
-    - name: Upload complete pack
-      uses: actions/upload-artifact@v2
-      with:
-        name: complete-pack
-        path: ${{ runner.temp }}/pack.zip
-        retention-days: 1
