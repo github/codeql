@@ -1,0 +1,6 @@
+name: codeql/javascript-experimental-atm-src
+language: javascript
+version: 0.0.0
+suites: codeql-suites
+dependencies:
+    codeql/javascript-experimental-atm-lib: "*"
