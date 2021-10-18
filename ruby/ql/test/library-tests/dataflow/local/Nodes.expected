@@ -35,6 +35,7 @@ arg
 | local_dataflow.rb:51:24:51:24 | 9 | local_dataflow.rb:51:20:51:24 | ... < ... | 0 |
 | local_dataflow.rb:55:1:55:14 | self | local_dataflow.rb:55:1:55:14 | call to foo | -1 |
 | local_dataflow.rb:55:5:55:13 | Array | local_dataflow.rb:55:5:55:13 | call to [] | -1 |
+| local_dataflow.rb:55:5:55:13 | call to [] | local_dataflow.rb:55:1:55:14 | call to foo | 0 |
 | local_dataflow.rb:55:6:55:6 | 1 | local_dataflow.rb:55:5:55:13 | call to [] | 0 |
 | local_dataflow.rb:55:9:55:9 | 2 | local_dataflow.rb:55:5:55:13 | call to [] | 1 |
 | local_dataflow.rb:55:12:55:12 | 3 | local_dataflow.rb:55:5:55:13 | call to [] | 2 |

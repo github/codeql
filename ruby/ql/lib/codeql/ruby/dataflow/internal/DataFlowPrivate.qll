@@ -97,15 +97,20 @@ module LocalFlow {
   }
 }
 
-/** An argument of a call (including qualifier arguments). */
-private class Argument extends Expr {
-  private Call call;
+/** An argument of a call (including qualifier arguments, excluding block arguments). */
+private class Argument extends CfgNodes::ExprCfgNode {
+  private CfgNodes::ExprNodes::CallCfgNode call;
   private int arg;
 
-  Argument() { this = call.getArgument(arg) }
+  Argument() {
+    this = call.getArgument(arg) and
+    not this.getExpr() instanceof BlockArgument
+    or
+    this = call.getReceiver() and arg = -1
+  }
 
   /** Holds if this expression is the `i`th argument of `c`. */
-  predicate isArgumentOf(Expr c, int i) { c = call and i = arg }
+  predicate isArgumentOf(CfgNodes::ExprNodes::CallCfgNode c, int i) { c = call and i = arg }
 }
 
 /** A collection of cached types and predicates to be evaluated in the same stage. */
@@ -125,14 +130,7 @@ private module Cached {
     TNormalParameterNode(Parameter p) { not p instanceof BlockParameter } or
     TSelfParameterNode(MethodBase m) or
     TBlockParameterNode(MethodBase m) or
-    TExprPostUpdateNode(CfgNodes::ExprCfgNode n) {
-      exists(AstNode node | node = n.getNode() |
-        node instanceof Argument and
-        not node instanceof BlockArgument
-        or
-        n = any(CfgNodes::ExprNodes::CallCfgNode call).getReceiver()
-      )
-    } or
+    TExprPostUpdateNode(CfgNodes::ExprCfgNode n) { n instanceof Argument } or
     TSummaryNode(
       FlowSummaryImpl::Public::SummarizedCallable c,
       FlowSummaryImpl::Private::SummaryNodeState state
@@ -438,24 +436,18 @@ abstract class ArgumentNode extends Node {
 private module ArgumentNodes {
   /** A data-flow node that represents an explicit call argument. */
   class ExplicitArgumentNode extends ArgumentNode {
-    ExplicitArgumentNode() {
-      this.asExpr().getExpr() instanceof Argument and
-      not this.asExpr().getExpr() instanceof BlockArgument
-    }
+    Argument arg;
+
+    ExplicitArgumentNode() { this.asExpr() = arg }
 
     override predicate sourceArgumentOf(CfgNodes::ExprNodes::CallCfgNode call, int pos) {
-      this.asExpr() = call.getArgument(pos)
+      arg.isArgumentOf(call, pos)
     }
   }
 
   /** A data-flow node that represents the `self` argument of a call. */
-  class SelfArgumentNode extends ArgumentNode {
-    SelfArgumentNode() { this.asExpr() = any(CfgNodes::ExprNodes::CallCfgNode call).getReceiver() }
-
-    override predicate sourceArgumentOf(CfgNodes::ExprNodes::CallCfgNode call, int pos) {
-      this.asExpr() = call.getReceiver() and
-      pos = -1
-    }
+  class SelfArgumentNode extends ExplicitArgumentNode {
+    SelfArgumentNode() { arg.isArgumentOf(_, -1) }
   }
 
   /** A data-flow node that represents a block argument. */
