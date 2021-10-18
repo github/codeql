@@ -1,0 +1,100 @@
+name: "Nightly analysis of changes in standard repos"
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '15 4 * * *'
+
+jobs:
+
+  build:
+    uses: github/codeql-ql/.github/workflows/build.yml@esbena/workflow-improvements
+    with:
+      os: '[ "ubuntu-latest" ]'
+
+  prepare-alert-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code-scanning alert branch
+        uses: actions/checkout@v2
+        with:
+          ref: nightly-changes-alerts
+
+      - name: Checkout codeql
+        uses: actions/checkout@v2
+        with:
+          repository: github/codeql
+          path: codeql
+
+      - name: Checkout codeql-go
+        uses: actions/checkout@v2
+        with:
+          repository: github/codeql-go
+          path: codeql-go
+
+      - name: Store relevant files
+        run: |
+          git config --global user.name "${GITHUB_ACTOR}"
+          git config --global user.email "${GITHUB_ACTOR}+github/codeql-ql@users.noreply.github.com"
+
+          # see repo-tests/import-repositories.sh
+          for repo in codeql codeql-go; do
+            git -C "$repo" rev-parse HEAD > "$repo.txt";
+            # remove upgrades and tests (heuristic)
+            find "$repo" -depth -type d \( -path "*/upgrades" -o -path "*/ql/test" \) -exec rm -rf {} \; ;
+            # only preserve files mentioned in tools/autobuild.sh
+            find "$repo" -type f -not \( -name "*.qll" -o -name "*.ql" -o -name "*.dbscheme" -o -name qlpack.yml \) -exec rm -f {} \; ;
+            # remove empty directories (git does not care though)
+            find "$repo" -type d -empty -delete;
+            git add "$repo" "$repo.txt";
+            git commit --allow-empty -m "Add $repo sources ($(tr -d '\n' < $repo.txt))";
+          done
+
+          git push
+
+  analyze:
+    name: Analyze
+    needs:
+      - build
+      - prepare-alert-branch
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    steps:
+      - name: Download pack
+        uses: actions/download-artifact@v2
+        with:
+          name: codeql-ql-pack
+          path: ${{ runner.temp }}/codeql-ql-pack-artifact
+
+      - name: Prepare pack
+        run: |
+          unzip "${PACK_ARTIFACT}/*.zip" -d "${PACK}"
+        env:
+          PACK_ARTIFACT: ${{ runner.temp }}/codeql-ql-pack-artifact
+          PACK: ${{ runner.temp }}/pack
+
+      - name: Hack codeql-action options
+        run: |
+          JSON=$(jq -nc --arg pack "${PACK}" '.resolve.queries=["--search-path", $pack] | .resolve.extractor=["--search-path", $pack] | .database.init=["--search-path", $pack]')
+          echo "CODEQL_ACTION_EXTRA_OPTIONS=${JSON}" >> ${GITHUB_ENV}
+        env:
+          PACK: ${{ runner.temp }}/pack
+
+      - name: Checkout code-scanning alert branch
+        uses: actions/checkout@v2
+        with:
+          ref: nightly-changes-alerts
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@esbena/ql
+        with:
+          languages: ql
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@esbena/ql

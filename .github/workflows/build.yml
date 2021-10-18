@@ -1,21 +1,50 @@
-name: Rust
+name: Build codeql-ql-pack
 
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
+  workflow_call:
+    inputs:
+      os:
+        description: A JSON array string of (fixed) operating systems to build for, e.g. '["ubuntu-latest", "macos-latest", "windows-latest"]'
+        required: false
+        type: string
 
 env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  build:
+  queries:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Find codeql
+        id: find-codeql
+        uses: github/codeql-action/init@esbena/ql
+        with:
+          languages: javascript # does not matter
+      - name: Build query pack
+        run: |
+          cd ql/src
+          "${CODEQL}" pack create
+          cd .codeql/pack/codeql/ql-all/0.0.0
+          zip "${PACKZIP}" -r .
+        env:
+          CODEQL: ${{ steps.find-codeql.outputs.codeql-path }}
+          PACKZIP: ${{ runner.temp }}/query-pack.zip
+      - name: Upload query pack
+        uses: actions/upload-artifact@v2
+        with:
+          name: query-pack-zip
+          path: ${{ runner.temp }}/query-pack.zip
+
+  extractors:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-latest]
-        #os: [ubuntu-latest, macos-latest, windows-latest]
+        os: ${{ fromJson(inputs.os || '["ubuntu-latest", "macos-latest", "windows-latest"]') }}
 
     runs-on: ${{ matrix.os }}
 
@@ -45,16 +74,6 @@ jobs:
         if: ${{ matrix.os == 'ubuntu-latest' }}
         run: target/release/ql-generator --dbscheme ql/src/ql.dbscheme --library ql/src/codeql_ql/ast/internal/TreeSitter.qll
       - uses: actions/upload-artifact@v2
-        if: ${{ matrix.os == 'ubuntu-latest' }}
-        with:
-          name: ql.dbscheme
-          path: ql/src/ql.dbscheme
-      - uses: actions/upload-artifact@v2
-        if: ${{ matrix.os == 'ubuntu-latest' }}
-        with:
-          name: TreeSitter.qll
-          path: ql/src/codeql_ql/ast/internal/TreeSitter.qll
-      - uses: actions/upload-artifact@v2
         with:
           name: extractor-${{ matrix.os }}
           path: |
@@ -63,33 +82,49 @@ jobs:
           retention-days: 1
   package:
     runs-on: ubuntu-latest
-    needs: build
+
+    needs:
+      - extractors
+      - queries
+
     steps:
       - uses: actions/checkout@v2
       - uses: actions/download-artifact@v2
         with:
-          name: ql.dbscheme
-          path: ql
+          name: query-pack-zip
+          path: query-pack-zip
       - uses: actions/download-artifact@v2
+        if: ${{ contains(fromJson(inputs.os || '["ubuntu-latest", "macos-latest", "windows-latest"]'), 'ubuntu-latest') }}
         with:
           name: extractor-ubuntu-latest
           path: linux64
-#      - uses: actions/download-artifact@v2
-#        with:
-#          name: extractor-windows-latest
-#          path: win64
       - uses: actions/download-artifact@v2
+        if: ${{ contains(fromJson(inputs.os || '["ubuntu-latest", "macos-latest", "windows-latest"]'), 'windows-latest') }}
+        with:
+         name: extractor-windows-latest
+         path: win64
+      - uses: actions/download-artifact@v2
+        if: ${{ contains(fromJson(inputs.os || '["ubuntu-latest", "macos-latest", "windows-latest"]'), 'macos-latest') }}
         with:
           name: extractor-macos-latest
           path: osx64
       - run: |
-          mkdir -p ql
-          cp -r codeql-extractor.yml tools ql/src/ql.dbscheme.stats ql/
-          mkdir -p ql/tools/{linux64,osx64}
-          cp linux64/ql-extractor ql/tools/linux64/extractor
-          cp osx64/ql-extractor ql/tools/osx64/extractor
-          chmod +x ql/tools/{linux64,osx64}/extractor
-          zip -rq codeql-ql.zip ql
+          unzip query-pack-zip/*.zip -d pack
+          cp -r codeql-extractor.yml tools ql/src/ql.dbscheme.stats pack/
+          mkdir -p pack/tools/{linux64,osx64,win64}
+          if [[ -f linux64/ql-extractor ]]; then
+            cp linux64/ql-extractor pack/tools/linux64/extractor
+            chmod +x pack/tools/linux64/extractor
+          fi
+          if [[ -f osx64/ql-extractor ]]; then
+            cp osx64/ql-extractor pack/tools/osx64/extractor
+            chmod +x pack/tools/osx64/extractor
+          fi
+          if [[ -f win64/ql-extractor.exe ]]; then
+            cp win64/ql-extractor.exe pack/tools/win64/extractor
+          fi
+          cd pack
+          zip -rq ../codeql-ql.zip .
       - uses: actions/upload-artifact@v2
         with:
           name: codeql-ql-pack
