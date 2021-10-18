@@ -3563,10 +3563,15 @@ private predicate parameterCand(
 pragma[nomagic]
 private predicate pathIntoCallable0(
   PathNodeMid mid, DataFlowCallable callable, int i, CallContext outercc, DataFlowCall call,
-  AccessPath ap, AccessPathApprox apa, Configuration config
+  AccessPath ap, Configuration config
 ) {
-  pathIntoArg(mid, i, outercc, call, ap, apa, config) and
-  callable = resolveCall(call, outercc)
+  exists(AccessPathApprox apa |
+    pathIntoArg(mid, pragma[only_bind_into](i), outercc, call, ap, pragma[only_bind_into](apa),
+      pragma[only_bind_into](config)) and
+    callable = resolveCall(call, outercc) and
+    parameterCand(callable, pragma[only_bind_into](i), pragma[only_bind_into](apa),
+      pragma[only_bind_into](config))
+  )
 }
 
 /**
@@ -3579,9 +3584,8 @@ private predicate pathIntoCallable(
   PathNodeMid mid, ParamNodeEx p, CallContext outercc, CallContextCall innercc, SummaryCtx sc,
   DataFlowCall call, Configuration config
 ) {
-  exists(int i, DataFlowCallable callable, AccessPath ap, AccessPathApprox apa |
-    pathIntoCallable0(mid, callable, i, outercc, call, ap, apa, config) and
-    parameterCand(callable, i, apa, config) and
+  exists(int i, DataFlowCallable callable, AccessPath ap |
+    pathIntoCallable0(mid, callable, i, outercc, call, ap, config) and
     p.isParameterOf(callable, i) and
     (
       sc = TSummaryCtxSome(p, ap)
