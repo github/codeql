@@ -385,7 +385,7 @@ library class ExprEvaluator extends int {
   abstract predicate interesting(Expr e);
 
   /** Gets the value of (interesting) expression `e`, if any. */
-  int getValue(Expr e) { result = getValueInternal(e, e) }
+  int getValue(Expr e) { result = this.getValueInternal(e, e) }
 
   /**
    * When evaluating a syntactic subexpression of `e`, we may
@@ -425,9 +425,9 @@ library class ExprEvaluator extends int {
    * calculates the values bottom-up.
    */
   predicate interestingInternal(Expr e, Expr req, boolean sub) {
-    interesting(e) and req = e and sub = true
+    this.interesting(e) and req = e and sub = true
     or
-    exists(Expr mid | interestingInternal(e, mid, sub) |
+    exists(Expr mid | this.interestingInternal(e, mid, sub) |
       req = mid.(NotExpr).getOperand() or
       req = mid.(BinaryLogicalOperation).getAnOperand() or
       req = mid.(RelationalOperation).getAnOperand() or
@@ -442,36 +442,36 @@ library class ExprEvaluator extends int {
     )
     or
     exists(VariableAccess va, Variable v, boolean sub1 |
-      interestingVariableAccess(e, va, v, sub1) and
+      this.interestingVariableAccess(e, va, v, sub1) and
       req = v.getAnAssignedValue() and
-      (sub1 = true implies not ignoreVariableAssignment(e, v, req)) and
+      (sub1 = true implies not this.ignoreVariableAssignment(e, v, req)) and
       sub = false
     )
     or
     exists(Function f |
-      interestingFunction(e, f) and
+      this.interestingFunction(e, f) and
       returnStmt(f, req) and
       sub = false
     )
   }
 
   private predicate interestingVariableAccess(Expr e, VariableAccess va, Variable v, boolean sub) {
-    interestingInternal(e, va, sub) and
+    this.interestingInternal(e, va, sub) and
     v = getVariableTarget(va) and
     (
       v.hasInitializer()
       or
-      sub = true and allowVariableWithoutInitializer(e, v)
+      sub = true and this.allowVariableWithoutInitializer(e, v)
     ) and
     tractableVariable(v) and
     forall(StmtParent def | nonAnalyzableVariableDefinition(v, def) |
       sub = true and
-      ignoreNonAnalyzableVariableDefinition(e, v, def)
+      this.ignoreNonAnalyzableVariableDefinition(e, v, def)
     )
   }
 
   private predicate interestingFunction(Expr e, Function f) {
-    exists(FunctionCall fc | interestingInternal(e, fc, _) |
+    exists(FunctionCall fc | this.interestingInternal(e, fc, _) |
       f = fc.getTarget() and
       not obviouslyNonConstant(f) and
       not f.getUnspecifiedType() instanceof VoidType
@@ -481,10 +481,10 @@ library class ExprEvaluator extends int {
   /** Gets the value of subexpressions `req` for expression `e`, if any. */
   private int getValueInternal(Expr e, Expr req) {
     (
-      interestingInternal(e, req, true) and
+      this.interestingInternal(e, req, true) and
       (
         result = req.(CompileTimeConstantInt).getIntValue() or
-        result = getCompoundValue(e, req.(CompileTimeVariableExpr))
+        result = this.getCompoundValue(e, req.(CompileTimeVariableExpr))
       ) and
       (
         req.getUnderlyingType().(IntegralType).isSigned() or
@@ -495,109 +495,126 @@ library class ExprEvaluator extends int {
 
   /** Gets the value of compound subexpressions `val` for expression `e`, if any. */
   private int getCompoundValue(Expr e, CompileTimeVariableExpr val) {
-    interestingInternal(e, val, true) and
+    this.interestingInternal(e, val, true) and
     (
       exists(NotExpr req | req = val |
-        result = 1 and getValueInternal(e, req.getOperand()) = 0
+        result = 1 and this.getValueInternal(e, req.getOperand()) = 0
         or
-        result = 0 and getValueInternal(e, req.getOperand()) != 0
+        result = 0 and this.getValueInternal(e, req.getOperand()) != 0
       )
       or
       exists(LogicalAndExpr req | req = val |
         result = 1 and
-        getValueInternal(e, req.getLeftOperand()) != 0 and
-        getValueInternal(e, req.getRightOperand()) != 0
+        this.getValueInternal(e, req.getLeftOperand()) != 0 and
+        this.getValueInternal(e, req.getRightOperand()) != 0
         or
-        result = 0 and getValueInternal(e, req.getAnOperand()) = 0
+        result = 0 and this.getValueInternal(e, req.getAnOperand()) = 0
       )
       or
       exists(LogicalOrExpr req | req = val |
-        result = 1 and getValueInternal(e, req.getAnOperand()) != 0
+        result = 1 and this.getValueInternal(e, req.getAnOperand()) != 0
         or
         result = 0 and
-        getValueInternal(e, req.getLeftOperand()) = 0 and
-        getValueInternal(e, req.getRightOperand()) = 0
+        this.getValueInternal(e, req.getLeftOperand()) = 0 and
+        this.getValueInternal(e, req.getRightOperand()) = 0
       )
       or
       exists(LTExpr req | req = val |
         result = 1 and
-        getValueInternal(e, req.getLeftOperand()) < getValueInternal(e, req.getRightOperand())
+        this.getValueInternal(e, req.getLeftOperand()) <
+          this.getValueInternal(e, req.getRightOperand())
         or
         result = 0 and
-        getValueInternal(e, req.getLeftOperand()) >= getValueInternal(e, req.getRightOperand())
+        this.getValueInternal(e, req.getLeftOperand()) >=
+          this.getValueInternal(e, req.getRightOperand())
       )
       or
       exists(GTExpr req | req = val |
         result = 1 and
-        getValueInternal(e, req.getLeftOperand()) > getValueInternal(e, req.getRightOperand())
+        this.getValueInternal(e, req.getLeftOperand()) >
+          this.getValueInternal(e, req.getRightOperand())
         or
         result = 0 and
-        getValueInternal(e, req.getLeftOperand()) <= getValueInternal(e, req.getRightOperand())
+        this.getValueInternal(e, req.getLeftOperand()) <=
+          this.getValueInternal(e, req.getRightOperand())
       )
       or
       exists(LEExpr req | req = val |
         result = 1 and
-        getValueInternal(e, req.getLeftOperand()) <= getValueInternal(e, req.getRightOperand())
+        this.getValueInternal(e, req.getLeftOperand()) <=
+          this.getValueInternal(e, req.getRightOperand())
         or
         result = 0 and
-        getValueInternal(e, req.getLeftOperand()) > getValueInternal(e, req.getRightOperand())
+        this.getValueInternal(e, req.getLeftOperand()) >
+          this.getValueInternal(e, req.getRightOperand())
       )
       or
       exists(GEExpr req | req = val |
         result = 1 and
-        getValueInternal(e, req.getLeftOperand()) >= getValueInternal(e, req.getRightOperand())
+        this.getValueInternal(e, req.getLeftOperand()) >=
+          this.getValueInternal(e, req.getRightOperand())
         or
         result = 0 and
-        getValueInternal(e, req.getLeftOperand()) < getValueInternal(e, req.getRightOperand())
+        this.getValueInternal(e, req.getLeftOperand()) <
+          this.getValueInternal(e, req.getRightOperand())
       )
       or
       exists(EQExpr req | req = val |
         result = 1 and
-        getValueInternal(e, req.getLeftOperand()) = getValueInternal(e, req.getRightOperand())
+        this.getValueInternal(e, req.getLeftOperand()) =
+          this.getValueInternal(e, req.getRightOperand())
         or
         result = 0 and
-        getValueInternal(e, req.getLeftOperand()) != getValueInternal(e, req.getRightOperand())
+        this.getValueInternal(e, req.getLeftOperand()) !=
+          this.getValueInternal(e, req.getRightOperand())
       )
       or
       exists(NEExpr req | req = val |
         result = 0 and
-        getValueInternal(e, req.getLeftOperand()) = getValueInternal(e, req.getRightOperand())
+        this.getValueInternal(e, req.getLeftOperand()) =
+          this.getValueInternal(e, req.getRightOperand())
         or
         result = 1 and
-        getValueInternal(e, req.getLeftOperand()) != getValueInternal(e, req.getRightOperand())
+        this.getValueInternal(e, req.getLeftOperand()) !=
+          this.getValueInternal(e, req.getRightOperand())
       )
       or
       exists(AddExpr req | req = val |
         result =
-          getValueInternal(e, req.getLeftOperand()) + getValueInternal(e, req.getRightOperand())
+          this.getValueInternal(e, req.getLeftOperand()) +
+            this.getValueInternal(e, req.getRightOperand())
       )
       or
       exists(SubExpr req | req = val |
         result =
-          getValueInternal(e, req.getLeftOperand()) - getValueInternal(e, req.getRightOperand())
+          this.getValueInternal(e, req.getLeftOperand()) -
+            this.getValueInternal(e, req.getRightOperand())
       )
       or
       exists(MulExpr req | req = val |
         result =
-          getValueInternal(e, req.getLeftOperand()) * getValueInternal(e, req.getRightOperand())
+          this.getValueInternal(e, req.getLeftOperand()) *
+            this.getValueInternal(e, req.getRightOperand())
       )
       or
       exists(RemExpr req | req = val |
         result =
-          getValueInternal(e, req.getLeftOperand()) % getValueInternal(e, req.getRightOperand())
+          this.getValueInternal(e, req.getLeftOperand()) %
+            this.getValueInternal(e, req.getRightOperand())
       )
       or
       exists(DivExpr req | req = val |
         result =
-          getValueInternal(e, req.getLeftOperand()) / getValueInternal(e, req.getRightOperand())
+          this.getValueInternal(e, req.getLeftOperand()) /
+            this.getValueInternal(e, req.getRightOperand())
       )
       or
-      exists(AssignExpr req | req = val | result = getValueInternal(e, req.getRValue()))
+      exists(AssignExpr req | req = val | result = this.getValueInternal(e, req.getRValue()))
       or
-      result = getVariableValue(e, val.(VariableAccess))
+      result = this.getVariableValue(e, val.(VariableAccess))
       or
       exists(FunctionCall call | call = val and not callWithMultipleTargets(call) |
-        result = getFunctionValue(call.getTarget())
+        result = this.getFunctionValue(call.getTarget())
       )
     )
   }
@@ -605,7 +622,7 @@ library class ExprEvaluator extends int {
   language[monotonicAggregates]
   private int getVariableValue(Expr e, VariableAccess va) {
     exists(Variable v |
-      interestingVariableAccess(e, va, v, true) and
+      this.interestingVariableAccess(e, va, v, true) and
       // All assignments must have the same int value
       result =
         unique(Expr value |
@@ -619,14 +636,16 @@ library class ExprEvaluator extends int {
   /** Holds if the function `f` is considered by the analysis and may return `ret`. */
   pragma[noinline]
   private predicate interestingReturnValue(Function f, Expr ret) {
-    interestingFunction(_, f) and
+    this.interestingFunction(_, f) and
     returnStmt(f, ret)
   }
 
   private int getFunctionValue(Function f) {
     // All returns must have the same int value
     // And it must have at least one return
-    forex(Expr ret | interestingReturnValue(f, ret) | result = getValueInternalNonSubExpr(ret))
+    forex(Expr ret | this.interestingReturnValue(f, ret) |
+      result = this.getValueInternalNonSubExpr(ret)
+    )
   }
 
   /**
@@ -641,10 +660,10 @@ library class ExprEvaluator extends int {
    * omitted).
    */
   private int getValueInternalNonSubExpr(Expr req) {
-    interestingInternal(_, req, false) and
+    this.interestingInternal(_, req, false) and
     (
       result = req.(CompileTimeConstantInt).getIntValue() or
-      result = getCompoundValueNonSubExpr(req.(CompileTimeVariableExpr))
+      result = this.getCompoundValueNonSubExpr(req.(CompileTimeVariableExpr))
     ) and
     (
       req.getUnderlyingType().(IntegralType).isSigned() or
@@ -655,131 +674,131 @@ library class ExprEvaluator extends int {
   private int getCompoundValueNonSubExpr(CompileTimeVariableExpr val) {
     (
       exists(NotExpr req | req = val |
-        result = 1 and getValueInternalNonSubExpr(req.getOperand()) = 0
+        result = 1 and this.getValueInternalNonSubExpr(req.getOperand()) = 0
         or
-        result = 0 and getValueInternalNonSubExpr(req.getOperand()) != 0
+        result = 0 and this.getValueInternalNonSubExpr(req.getOperand()) != 0
       )
       or
       exists(LogicalAndExpr req | req = val |
         result = 1 and
-        getValueInternalNonSubExpr(req.getLeftOperand()) != 0 and
-        getValueInternalNonSubExpr(req.getRightOperand()) != 0
+        this.getValueInternalNonSubExpr(req.getLeftOperand()) != 0 and
+        this.getValueInternalNonSubExpr(req.getRightOperand()) != 0
         or
-        result = 0 and getValueInternalNonSubExpr(req.getAnOperand()) = 0
+        result = 0 and this.getValueInternalNonSubExpr(req.getAnOperand()) = 0
       )
       or
       exists(LogicalOrExpr req | req = val |
-        result = 1 and getValueInternalNonSubExpr(req.getAnOperand()) != 0
+        result = 1 and this.getValueInternalNonSubExpr(req.getAnOperand()) != 0
         or
         result = 0 and
-        getValueInternalNonSubExpr(req.getLeftOperand()) = 0 and
-        getValueInternalNonSubExpr(req.getRightOperand()) = 0
+        this.getValueInternalNonSubExpr(req.getLeftOperand()) = 0 and
+        this.getValueInternalNonSubExpr(req.getRightOperand()) = 0
       )
       or
       exists(LTExpr req | req = val |
         result = 1 and
-        getValueInternalNonSubExpr(req.getLeftOperand()) <
-          getValueInternalNonSubExpr(req.getRightOperand())
+        this.getValueInternalNonSubExpr(req.getLeftOperand()) <
+          this.getValueInternalNonSubExpr(req.getRightOperand())
         or
         result = 0 and
-        getValueInternalNonSubExpr(req.getLeftOperand()) >=
-          getValueInternalNonSubExpr(req.getRightOperand())
+        this.getValueInternalNonSubExpr(req.getLeftOperand()) >=
+          this.getValueInternalNonSubExpr(req.getRightOperand())
       )
       or
       exists(GTExpr req | req = val |
         result = 1 and
-        getValueInternalNonSubExpr(req.getLeftOperand()) >
-          getValueInternalNonSubExpr(req.getRightOperand())
+        this.getValueInternalNonSubExpr(req.getLeftOperand()) >
+          this.getValueInternalNonSubExpr(req.getRightOperand())
         or
         result = 0 and
-        getValueInternalNonSubExpr(req.getLeftOperand()) <=
-          getValueInternalNonSubExpr(req.getRightOperand())
+        this.getValueInternalNonSubExpr(req.getLeftOperand()) <=
+          this.getValueInternalNonSubExpr(req.getRightOperand())
       )
       or
       exists(LEExpr req | req = val |
         result = 1 and
-        getValueInternalNonSubExpr(req.getLeftOperand()) <=
-          getValueInternalNonSubExpr(req.getRightOperand())
+        this.getValueInternalNonSubExpr(req.getLeftOperand()) <=
+          this.getValueInternalNonSubExpr(req.getRightOperand())
         or
         result = 0 and
-        getValueInternalNonSubExpr(req.getLeftOperand()) >
-          getValueInternalNonSubExpr(req.getRightOperand())
+        this.getValueInternalNonSubExpr(req.getLeftOperand()) >
+          this.getValueInternalNonSubExpr(req.getRightOperand())
       )
       or
       exists(GEExpr req | req = val |
         result = 1 and
-        getValueInternalNonSubExpr(req.getLeftOperand()) >=
-          getValueInternalNonSubExpr(req.getRightOperand())
+        this.getValueInternalNonSubExpr(req.getLeftOperand()) >=
+          this.getValueInternalNonSubExpr(req.getRightOperand())
         or
         result = 0 and
-        getValueInternalNonSubExpr(req.getLeftOperand()) <
-          getValueInternalNonSubExpr(req.getRightOperand())
+        this.getValueInternalNonSubExpr(req.getLeftOperand()) <
+          this.getValueInternalNonSubExpr(req.getRightOperand())
       )
       or
       exists(EQExpr req | req = val |
         result = 1 and
-        getValueInternalNonSubExpr(req.getLeftOperand()) =
-          getValueInternalNonSubExpr(req.getRightOperand())
+        this.getValueInternalNonSubExpr(req.getLeftOperand()) =
+          this.getValueInternalNonSubExpr(req.getRightOperand())
         or
         result = 0 and
-        getValueInternalNonSubExpr(req.getLeftOperand()) !=
-          getValueInternalNonSubExpr(req.getRightOperand())
+        this.getValueInternalNonSubExpr(req.getLeftOperand()) !=
+          this.getValueInternalNonSubExpr(req.getRightOperand())
       )
       or
       exists(NEExpr req | req = val |
         result = 0 and
-        getValueInternalNonSubExpr(req.getLeftOperand()) =
-          getValueInternalNonSubExpr(req.getRightOperand())
+        this.getValueInternalNonSubExpr(req.getLeftOperand()) =
+          this.getValueInternalNonSubExpr(req.getRightOperand())
         or
         result = 1 and
-        getValueInternalNonSubExpr(req.getLeftOperand()) !=
-          getValueInternalNonSubExpr(req.getRightOperand())
+        this.getValueInternalNonSubExpr(req.getLeftOperand()) !=
+          this.getValueInternalNonSubExpr(req.getRightOperand())
       )
       or
       exists(AddExpr req | req = val |
         result =
-          getValueInternalNonSubExpr(req.getLeftOperand()) +
-            getValueInternalNonSubExpr(req.getRightOperand())
+          this.getValueInternalNonSubExpr(req.getLeftOperand()) +
+            this.getValueInternalNonSubExpr(req.getRightOperand())
       )
       or
       exists(SubExpr req | req = val |
         result =
-          getValueInternalNonSubExpr(req.getLeftOperand()) -
-            getValueInternalNonSubExpr(req.getRightOperand())
+          this.getValueInternalNonSubExpr(req.getLeftOperand()) -
+            this.getValueInternalNonSubExpr(req.getRightOperand())
       )
       or
       exists(MulExpr req | req = val |
         result =
-          getValueInternalNonSubExpr(req.getLeftOperand()) *
-            getValueInternalNonSubExpr(req.getRightOperand())
+          this.getValueInternalNonSubExpr(req.getLeftOperand()) *
+            this.getValueInternalNonSubExpr(req.getRightOperand())
       )
       or
       exists(RemExpr req | req = val |
         result =
-          getValueInternalNonSubExpr(req.getLeftOperand()) %
-            getValueInternalNonSubExpr(req.getRightOperand())
+          this.getValueInternalNonSubExpr(req.getLeftOperand()) %
+            this.getValueInternalNonSubExpr(req.getRightOperand())
       )
       or
       exists(DivExpr req | req = val |
         result =
-          getValueInternalNonSubExpr(req.getLeftOperand()) /
-            getValueInternalNonSubExpr(req.getRightOperand())
+          this.getValueInternalNonSubExpr(req.getLeftOperand()) /
+            this.getValueInternalNonSubExpr(req.getRightOperand())
       )
       or
-      exists(AssignExpr req | req = val | result = getValueInternalNonSubExpr(req.getRValue()))
+      exists(AssignExpr req | req = val | result = this.getValueInternalNonSubExpr(req.getRValue()))
       or
-      result = getVariableValueNonSubExpr(val.(VariableAccess))
+      result = this.getVariableValueNonSubExpr(val.(VariableAccess))
       or
       exists(FunctionCall call | call = val and not callWithMultipleTargets(call) |
-        result = getFunctionValue(call.getTarget())
+        result = this.getFunctionValue(call.getTarget())
       )
     )
   }
 
   private int getVariableValueNonSubExpr(VariableAccess va) {
     // All assignments must have the same int value
-    result = getMinVariableValueNonSubExpr(va) and
-    result = getMaxVariableValueNonSubExpr(va)
+    result = this.getMinVariableValueNonSubExpr(va) and
+    result = this.getMaxVariableValueNonSubExpr(va)
   }
 
   /**
@@ -790,8 +809,9 @@ library class ExprEvaluator extends int {
   pragma[noopt]
   private int getMinVariableValueNonSubExpr(VariableAccess va) {
     exists(Variable v |
-      interestingVariableAccess(_, va, v, false) and
-      result = min(Expr value | value = v.getAnAssignedValue() | getValueInternalNonSubExpr(value))
+      this.interestingVariableAccess(_, va, v, false) and
+      result =
+        min(Expr value | value = v.getAnAssignedValue() | this.getValueInternalNonSubExpr(value))
     )
   }
 
@@ -803,8 +823,9 @@ library class ExprEvaluator extends int {
   pragma[noopt]
   private int getMaxVariableValueNonSubExpr(VariableAccess va) {
     exists(Variable v |
-      interestingVariableAccess(_, va, v, false) and
-      result = max(Expr value | value = v.getAnAssignedValue() | getValueInternalNonSubExpr(value))
+      this.interestingVariableAccess(_, va, v, false) and
+      result =
+        max(Expr value | value = v.getAnAssignedValue() | this.getValueInternalNonSubExpr(value))
     )
   }
 }
@@ -967,9 +988,9 @@ library class LoopEntryConditionEvaluator extends ExprEvaluator {
   abstract predicate isLoopBody(Expr e, StmtParent s);
 
   private predicate isLoopBodyDescendant(Expr e, StmtParent s) {
-    isLoopBody(e, s)
+    this.isLoopBody(e, s)
     or
-    exists(StmtParent mid | isLoopBodyDescendant(e, mid) |
+    exists(StmtParent mid | this.isLoopBodyDescendant(e, mid) |
       s = mid.(Stmt).getAChild() or
       s = mid.(Expr).getAChild()
     )
@@ -977,13 +998,13 @@ library class LoopEntryConditionEvaluator extends ExprEvaluator {
 
   // Same as `interestingInternal(e, sub, true)` but avoids negative recursion
   private predicate interestingSubExpr(Expr e, Expr sub) {
-    interesting(e) and e = sub
+    this.interesting(e) and e = sub
     or
-    exists(Expr mid | interestingSubExpr(e, mid) and sub = mid.getAChild())
+    exists(Expr mid | this.interestingSubExpr(e, mid) and sub = mid.getAChild())
   }
 
   private predicate maybeInterestingVariable(Expr e, Variable v) {
-    exists(VariableAccess va | interestingSubExpr(e, va) | va.getTarget() = v)
+    exists(VariableAccess va | this.interestingSubExpr(e, va) | va.getTarget() = v)
   }
 
   /**
@@ -995,9 +1016,9 @@ library class LoopEntryConditionEvaluator extends ExprEvaluator {
    * definition of `v`.
    */
   private predicate reachesLoopEntryFromLoopBody(Expr e, Variable v, StmtParent valueOrDef) {
-    maybeInterestingVariable(e, v) and
+    this.maybeInterestingVariable(e, v) and
     (valueOrDef = v.getAnAssignedValue() or nonAnalyzableVariableDefinition(v, valueOrDef)) and
-    isLoopBodyDescendant(e, valueOrDef) and
+    this.isLoopBodyDescendant(e, valueOrDef) and
     /*
      * Use primitive basic blocks in reachability analysis for better performance.
      * This is similar to the pattern used in e.g. `DefinitionsAndUses` and
@@ -1007,16 +1028,16 @@ library class LoopEntryConditionEvaluator extends ExprEvaluator {
     exists(PrimitiveBasicBlock bb1, int pos1 | bb1.getNode(pos1) = valueOrDef |
       // Reaches in same basic block
       exists(int pos2 |
-        loopEntryAt(bb1, pos2, e) and
+        this.loopEntryAt(bb1, pos2, e) and
         pos2 > pos1 and
-        not exists(int k | assignmentAt(bb1, k, v) | k in [pos1 + 1 .. pos2 - 1])
+        not exists(int k | this.assignmentAt(bb1, k, v) | k in [pos1 + 1 .. pos2 - 1])
       )
       or
       // Reaches in a successor block
       exists(PrimitiveBasicBlock bb2 |
         bb2 = bb1.getASuccessor() and
-        not exists(int pos3 | assignmentAt(bb1, pos3, v) and pos3 > pos1) and
-        bbReachesLoopEntry(bb2, e, v)
+        not exists(int pos3 | this.assignmentAt(bb1, pos3, v) and pos3 > pos1) and
+        this.bbReachesLoopEntry(bb2, e, v)
       )
     )
   }
@@ -1024,12 +1045,12 @@ library class LoopEntryConditionEvaluator extends ExprEvaluator {
   private predicate loopEntryAt(PrimitiveBasicBlock bb, int pos, Expr e) {
     exists(Node cfn |
       bb.getNode(pos) = cfn and
-      isLoopEntry(e, cfn)
+      this.isLoopEntry(e, cfn)
     )
   }
 
   private predicate assignmentAt(PrimitiveBasicBlock bb, int pos, Variable v) {
-    maybeInterestingVariable(_, v) and
+    this.maybeInterestingVariable(_, v) and
     bb.getNode(pos) = v.getAnAssignedValue()
   }
 
@@ -1038,19 +1059,19 @@ library class LoopEntryConditionEvaluator extends ExprEvaluator {
    * the loop belonging to `e` without crossing an assignment to `v`.
    */
   private predicate bbReachesLoopEntry(PrimitiveBasicBlock bb, Expr e, Variable v) {
-    bbReachesLoopEntryLocally(bb, e, v)
+    this.bbReachesLoopEntryLocally(bb, e, v)
     or
     exists(PrimitiveBasicBlock succ | succ = bb.getASuccessor() |
-      bbReachesLoopEntry(succ, e, v) and
-      not assignmentAt(bb, _, v)
+      this.bbReachesLoopEntry(succ, e, v) and
+      not this.assignmentAt(bb, _, v)
     )
   }
 
   private predicate bbReachesLoopEntryLocally(PrimitiveBasicBlock bb, Expr e, Variable v) {
     exists(int pos |
-      loopEntryAt(bb, pos, e) and
-      maybeInterestingVariable(e, v) and
-      not exists(int pos1 | assignmentAt(bb, pos1, v) | pos1 < pos)
+      this.loopEntryAt(bb, pos, e) and
+      this.maybeInterestingVariable(e, v) and
+      not exists(int pos1 | this.assignmentAt(bb, pos1, v) | pos1 < pos)
     )
   }
 
@@ -1084,10 +1105,10 @@ library class LoopEntryConditionEvaluator extends ExprEvaluator {
    * ```
    */
   override predicate ignoreNonAnalyzableVariableDefinition(Expr e, Variable v, StmtParent def) {
-    maybeInterestingVariable(e, v) and
+    this.maybeInterestingVariable(e, v) and
     nonAnalyzableVariableDefinition(v, def) and
-    isLoopBodyDescendant(e, def) and
-    not reachesLoopEntryFromLoopBody(e, v, def)
+    this.isLoopBodyDescendant(e, def) and
+    not this.reachesLoopEntryFromLoopBody(e, v, def)
   }
 
   /**
@@ -1120,10 +1141,10 @@ library class LoopEntryConditionEvaluator extends ExprEvaluator {
    * ```
    */
   override predicate ignoreVariableAssignment(Expr e, Variable v, Expr value) {
-    maybeInterestingVariable(e, v) and
+    this.maybeInterestingVariable(e, v) and
     value = v.getAnAssignedValue() and
-    isLoopBodyDescendant(e, value) and
-    not reachesLoopEntryFromLoopBody(e, v, value)
+    this.isLoopBodyDescendant(e, value) and
+    not this.reachesLoopEntryFromLoopBody(e, v, value)
   }
 }
 
