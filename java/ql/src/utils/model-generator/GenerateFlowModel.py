@@ -126,7 +126,7 @@ private import semmle.code.java.dataflow.ExternalFlow
 """
 
 
-qllContents = qllTemplate.format(shortname, summaryCsv, sinkCsv, sourceCsv)
+qllContents = qllTemplate.format(shortname, sinkCsv, sourceCsv, summaryCsv)
 
 
 with open(frameworkTarget, "w") as frameworkQll:
