@@ -7,31 +7,31 @@ private import semmle.code.java.dataflow.DataFlow
 
 private class ObjectMapper extends RefType {
   ObjectMapper() {
-    getASupertype*().hasQualifiedName("com.fasterxml.jackson.databind", "ObjectMapper")
+    this.getASupertype*().hasQualifiedName("com.fasterxml.jackson.databind", "ObjectMapper")
   }
 }
 
 /** A builder for building Jackson's `JsonMapper`. */
 class MapperBuilder extends RefType {
   MapperBuilder() {
-    hasQualifiedName("com.fasterxml.jackson.databind.cfg", "MapperBuilder<JsonMapper,Builder>")
+    this.hasQualifiedName("com.fasterxml.jackson.databind.cfg", "MapperBuilder<JsonMapper,Builder>")
   }
 }
 
 private class JsonFactory extends RefType {
-  JsonFactory() { hasQualifiedName("com.fasterxml.jackson.core", "JsonFactory") }
+  JsonFactory() { this.hasQualifiedName("com.fasterxml.jackson.core", "JsonFactory") }
 }
 
 private class JsonParser extends RefType {
-  JsonParser() { hasQualifiedName("com.fasterxml.jackson.core", "JsonParser") }
+  JsonParser() { this.hasQualifiedName("com.fasterxml.jackson.core", "JsonParser") }
 }
 
 /** A type descriptor in Jackson libraries. For example, `java.lang.Class`. */
 class JacksonTypeDescriptorType extends RefType {
   JacksonTypeDescriptorType() {
     this instanceof TypeClass or
-    hasQualifiedName("com.fasterxml.jackson.databind", "JavaType") or
-    hasQualifiedName("com.fasterxml.jackson.core.type", "TypeReference")
+    this.hasQualifiedName("com.fasterxml.jackson.databind", "JavaType") or
+    this.hasQualifiedName("com.fasterxml.jackson.core.type", "TypeReference")
   }
 }
 

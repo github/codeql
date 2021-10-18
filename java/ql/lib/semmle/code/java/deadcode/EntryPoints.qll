@@ -102,7 +102,7 @@ library class JacksonReflectivelyConstructedClass extends ReflectivelyConstructe
   override Callable getALiveCallable() {
     // Constructors may be called by Jackson, if they are a no-arg, they have a suitable annotation,
     // or inherit a suitable annotation through a mixin.
-    result = getAConstructor() and
+    result = this.getAConstructor() and
     (
       result.getNumberOfParameters() = 0 or
       result.getAnAnnotation() instanceof JacksonAnnotation or
@@ -153,7 +153,7 @@ class DeserializedClass extends ReflectivelyConstructedClass {
  */
 class NewInstanceCall extends EntryPoint, NewInstance {
   override Constructor getALiveCallable() {
-    result = getInferredConstructor() and
+    result = this.getInferredConstructor() and
     // The `newInstance(...)` call must be used in a live context.
     isLive(this.getEnclosingCallable())
   }
@@ -164,7 +164,7 @@ class NewInstanceCall extends EntryPoint, NewInstance {
  */
 class ReflectiveMethodAccessEntryPoint extends EntryPoint, ReflectiveMethodAccess {
   override Method getALiveCallable() {
-    result = inferAccessedMethod() and
+    result = this.inferAccessedMethod() and
     // The `getMethod(...)` call must be used in a live context.
     isLive(this.getEnclosingCallable())
   }
@@ -210,8 +210,8 @@ class JaxbXmlEnum extends AnnotationEntryPoint {
 class JaxbXmlType extends AnnotationEntryPoint, JaxbType {
   override Callable getALiveCallable() {
     // Must have a live no-arg constructor for JAXB to perform marshal/unmarshal.
-    exists(Constructor c | c = getAConstructor() and c.getNumberOfParameters() = 0 | isLive(c)) and
-    result = getACallable() and
+    exists(Constructor c | c = this.getAConstructor() and c.getNumberOfParameters() = 0 | isLive(c)) and
+    result = this.getACallable() and
     (
       // A bound getter or setter.
       result instanceof JaxbBoundGetterSetter
@@ -262,7 +262,7 @@ class ManagedBeanImplEntryPoint extends EntryPoint, RegisteredManagedBeanImpl {
     // Find the method that will be called for each method on each managed bean that this class
     // implements.
     this.inherits(result) and
-    result.(Method).overrides(getAnImplementedManagedBean().getAMethod())
+    result.(Method).overrides(this.getAnImplementedManagedBean().getAMethod())
   }
 }
 
@@ -377,7 +377,7 @@ class JavaxResourceAnnotatedMethod extends CallableEntryPointOnConstructedClass 
  */
 class JavaxManagedBeanReflectivelyConstructed extends ReflectivelyConstructedClass {
   JavaxManagedBeanReflectivelyConstructed() {
-    getAnAnnotation() instanceof JavaxManagedBeanAnnotation
+    this.getAnAnnotation() instanceof JavaxManagedBeanAnnotation
   }
 }
 
@@ -413,13 +413,13 @@ class PersistencePropertyMethod extends CallableEntryPoint {
  */
 class PersistenceCallbackMethod extends CallableEntryPoint {
   PersistenceCallbackMethod() {
-    getAnAnnotation() instanceof PrePersistAnnotation or
-    getAnAnnotation() instanceof PreRemoveAnnotation or
-    getAnAnnotation() instanceof PreUpdateAnnotation or
-    getAnAnnotation() instanceof PostPersistAnnotation or
-    getAnAnnotation() instanceof PostRemoveAnnotation or
-    getAnAnnotation() instanceof PostUpdateAnnotation or
-    getAnAnnotation() instanceof PostLoadAnnotation
+    this.getAnAnnotation() instanceof PrePersistAnnotation or
+    this.getAnAnnotation() instanceof PreRemoveAnnotation or
+    this.getAnAnnotation() instanceof PreUpdateAnnotation or
+    this.getAnAnnotation() instanceof PostPersistAnnotation or
+    this.getAnAnnotation() instanceof PostRemoveAnnotation or
+    this.getAnAnnotation() instanceof PostUpdateAnnotation or
+    this.getAnAnnotation() instanceof PostLoadAnnotation
   }
 }
 
@@ -429,20 +429,20 @@ class PersistenceCallbackMethod extends CallableEntryPoint {
  */
 class ArbitraryXMLEntryPoint extends ReflectivelyConstructedClass {
   ArbitraryXMLEntryPoint() {
-    fromSource() and
+    this.fromSource() and
     exists(XMLAttribute attribute |
       attribute.getName() = "className" or
       attribute.getName().matches("%ClassName") or
       attribute.getName() = "class" or
       attribute.getName().matches("%Class")
     |
-      attribute.getValue() = getQualifiedName()
+      attribute.getValue() = this.getQualifiedName()
     )
   }
 
   override Callable getALiveCallable() {
     // Any constructor on these classes, as we don't know which may be called.
-    result = getAConstructor()
+    result = this.getAConstructor()
   }
 }
 

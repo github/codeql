@@ -24,7 +24,7 @@ predicate hasInjectAnnotation(Annotatable a) {
 class SpringComponentConstructor extends Constructor {
   SpringComponentConstructor() {
     // Must be a live Spring component.
-    getDeclaringType().(SpringComponent).isLive() and
+    this.getDeclaringType().(SpringComponent).isLive() and
     (
       this.getNumberOfParameters() = 0 or
       hasInjectAnnotation(this)
@@ -93,8 +93,8 @@ class SpringBeanXMLAutowiredSetterMethod extends Method {
         )
       ) and
       // The resulting bean is of the right type.
-      result.getClass().getAnAncestor() = getParameter(0).getType() and
-      getNumberOfParameters() = 1 and
+      result.getClass().getAnAncestor() = this.getParameter(0).getType() and
+      this.getNumberOfParameters() = 1 and
       this.getName().matches("set%")
     )
   }
@@ -110,7 +110,7 @@ class SpringBeanAutowiredCallable extends Callable {
     // Marked as `@Autowired`.
     hasInjectAnnotation(this) and
     // No autowiring occurs if there are no parameters
-    getNumberOfParameters() > 0
+    this.getNumberOfParameters() > 0
   }
 
   /**
@@ -118,7 +118,7 @@ class SpringBeanAutowiredCallable extends Callable {
    * defined in.
    */
   SpringBean getEnclosingSpringBean() {
-    result = getDeclaringType().(SpringBeanRefType).getSpringBean()
+    result = this.getDeclaringType().(SpringBeanRefType).getSpringBean()
   }
 
   /**
@@ -129,22 +129,24 @@ class SpringBeanAutowiredCallable extends Callable {
   /**
    * Gets the qualifier annotation for parameter at `pos`, if any.
    */
-  SpringQualifierAnnotation getQualifier(int pos) { result = getParameter(pos).getAnAnnotation() }
+  SpringQualifierAnnotation getQualifier(int pos) {
+    result = this.getParameter(pos).getAnAnnotation()
+  }
 
   /**
    * Gets the qualifier annotation for this method, if any.
    */
-  SpringQualifierAnnotation getQualifier() { result = getAnAnnotation() }
+  SpringQualifierAnnotation getQualifier() { result = this.getAnAnnotation() }
 
   /**
    * Gets the resource annotation for this method, if any.
    */
-  SpringResourceAnnotation getResource() { result = getAnAnnotation() }
+  SpringResourceAnnotation getResource() { result = this.getAnAnnotation() }
 
   /**
    * Gets a bean that will be injected into this callable.
    */
-  SpringBean getAnInjectedBean() { result = getInjectedBean(_) }
+  SpringBean getAnInjectedBean() { result = this.getInjectedBean(_) }
 
   /**
    * Gets the `SpringBean`, if any, that will be injected for the parameter at position `pos`,
@@ -152,24 +154,24 @@ class SpringBeanAutowiredCallable extends Callable {
    */
   SpringBean getInjectedBean(int pos) {
     // Must be a sub-type of the parameter type
-    result.getClass().getAnAncestor() = getParameterType(pos) and
+    result.getClass().getAnAncestor() = this.getParameterType(pos) and
     // Now look up bean
-    if exists(getQualifier(pos))
+    if exists(this.getQualifier(pos))
     then
       // Resolved by `@Qualifier("qualifier")` specified on the parameter
-      result = getQualifier(pos).getSpringBean()
+      result = this.getQualifier(pos).getSpringBean()
     else
-      if exists(getQualifier()) and getNumberOfParameters() = 1
+      if exists(this.getQualifier()) and this.getNumberOfParameters() = 1
       then
         // Resolved by `@Qualifier("qualifier")` on the method
         pos = 0 and
-        result = getQualifier().getSpringBean()
+        result = this.getQualifier().getSpringBean()
       else
-        if exists(getResource().getNameValue()) and getNumberOfParameters() = 1
+        if exists(this.getResource().getNameValue()) and this.getNumberOfParameters() = 1
         then
           // Resolved by looking at the name part of `@Resource(name="qualifier")`
           pos = 0 and
-          result = getResource().getSpringBean()
+          result = this.getResource().getSpringBean()
         else
           // Otherwise no restrictions, just by type
           any()
@@ -181,24 +183,24 @@ class SpringBeanAutowiredCallable extends Callable {
    */
   SpringComponent getInjectedComponent(int pos) {
     // Must be a sub-type of the parameter type
-    result.getAnAncestor() = getParameterType(pos) and
+    result.getAnAncestor() = this.getParameterType(pos) and
     // Now look up bean
-    if exists(getQualifier(pos))
+    if exists(this.getQualifier(pos))
     then
       // Resolved by `@Qualifier("qualifier")` specified on the parameter
-      result = getQualifier(pos).getSpringComponent()
+      result = this.getQualifier(pos).getSpringComponent()
     else
-      if exists(getQualifier()) and getNumberOfParameters() = 1
+      if exists(this.getQualifier()) and this.getNumberOfParameters() = 1
       then
         // Resolved by `@Qualifier("qualifier")` on the method
         pos = 0 and
-        result = getQualifier().getSpringComponent()
+        result = this.getQualifier().getSpringComponent()
       else
-        if exists(getResource().getNameValue()) and getNumberOfParameters() = 1
+        if exists(this.getResource().getNameValue()) and this.getNumberOfParameters() = 1
         then
           // Resolved by looking at the name part of `@Resource(name="qualifier")`
           pos = 0 and
-          result = getResource().getSpringComponent()
+          result = this.getResource().getSpringComponent()
         else
           // Otherwise no restrictions, just by type
           any()
@@ -219,7 +221,7 @@ class SpringBeanAutowiredField extends Field {
    * defined in.
    */
   SpringBean getEnclosingSpringBean() {
-    result = getDeclaringType().(SpringBeanRefType).getSpringBean()
+    result = this.getDeclaringType().(SpringBeanRefType).getSpringBean()
   }
 
   /**
@@ -230,12 +232,12 @@ class SpringBeanAutowiredField extends Field {
   /**
    * Gets the qualifier annotation for this method, if any.
    */
-  SpringQualifierAnnotation getQualifier() { result = getAnAnnotation() }
+  SpringQualifierAnnotation getQualifier() { result = this.getAnAnnotation() }
 
   /**
    * Gets the resource annotation for this method, if any.
    */
-  SpringResourceAnnotation getResource() { result = getAnAnnotation() }
+  SpringResourceAnnotation getResource() { result = this.getAnAnnotation() }
 
   /**
    * Gets the `SpringBean`, if any, that will be injected for this field, considering any `@Qualifier`
@@ -243,17 +245,17 @@ class SpringBeanAutowiredField extends Field {
    */
   SpringBean getInjectedBean() {
     // Must be a sub-type of the parameter type
-    result.getClass().getAnAncestor() = getType() and
+    result.getClass().getAnAncestor() = this.getType() and
     // Now look up bean
-    if exists(getQualifier())
+    if exists(this.getQualifier())
     then
       // Resolved by `@Qualifier("qualifier")` specified on the field
-      result = getQualifier().getSpringBean()
+      result = this.getQualifier().getSpringBean()
     else
-      if exists(getResource().getNameValue())
+      if exists(this.getResource().getNameValue())
       then
         // Resolved by looking at the name part of `@Resource(name="qualifier")`
-        result = getResource().getSpringBean()
+        result = this.getResource().getSpringBean()
       else
         // Otherwise no restrictions, just by type
         any()
@@ -265,17 +267,17 @@ class SpringBeanAutowiredField extends Field {
    */
   SpringComponent getInjectedComponent() {
     // Must be a sub-type of the parameter type
-    result.getAnAncestor() = getType() and
+    result.getAnAncestor() = this.getType() and
     // Now look up bean
-    if exists(getQualifier())
+    if exists(this.getQualifier())
     then
       // Resolved by `@Qualifier("qualifier")` specified on the field
-      result = getQualifier().getSpringComponent()
+      result = this.getQualifier().getSpringComponent()
     else
-      if exists(getResource().getNameValue())
+      if exists(this.getResource().getNameValue())
       then
         // Resolved by looking at the name part of `@Resource(name="qualifier")`
-        result = getResource().getSpringComponent()
+        result = this.getResource().getSpringComponent()
       else
         // Otherwise no restrictions, just by type
         any()
@@ -287,9 +289,9 @@ class SpringBeanAutowiredField extends Field {
  */
 class SpringQualifierAnnotationType extends AnnotationType {
   SpringQualifierAnnotationType() {
-    hasQualifiedName("org.springframework.beans.factory.annotation", "Qualifier") or
-    hasQualifiedName("javax.inject", "Qualifier") or
-    getAnAnnotation().getType() instanceof SpringQualifierAnnotationType
+    this.hasQualifiedName("org.springframework.beans.factory.annotation", "Qualifier") or
+    this.hasQualifiedName("javax.inject", "Qualifier") or
+    this.getAnAnnotation().getType() instanceof SpringQualifierAnnotationType
   }
 }
 
@@ -299,15 +301,15 @@ class SpringQualifierAnnotationType extends AnnotationType {
  */
 class SpringQualifierDefinitionAnnotation extends Annotation {
   SpringQualifierDefinitionAnnotation() {
-    getType() instanceof SpringQualifierAnnotationType and
-    getAnnotatedElement() instanceof SpringComponent
+    this.getType() instanceof SpringQualifierAnnotationType and
+    this.getAnnotatedElement() instanceof SpringComponent
   }
 
   /**
    * Gets the value of the qualifier field for this qualifier.
    */
   string getQualifierValue() {
-    result = getValue("value").(CompileTimeConstantExpr).getStringValue()
+    result = this.getValue("value").(CompileTimeConstantExpr).getStringValue()
   }
 }
 
@@ -315,24 +317,24 @@ class SpringQualifierDefinitionAnnotation extends Annotation {
  * A qualifier annotation on a method or field that is used to disambiguate which bean will be used.
  */
 class SpringQualifierAnnotation extends Annotation {
-  SpringQualifierAnnotation() { getType() instanceof SpringQualifierAnnotationType }
+  SpringQualifierAnnotation() { this.getType() instanceof SpringQualifierAnnotationType }
 
   /**
    * Gets the value of the qualifier field for this qualifier.
    */
   string getQualifierValue() {
-    result = getValue("value").(CompileTimeConstantExpr).getStringValue()
+    result = this.getValue("value").(CompileTimeConstantExpr).getStringValue()
   }
 
   /**
    * Gets the bean definition in an XML file that this qualifier resolves to, if any.
    */
-  SpringBean getSpringBean() { result.getQualifierValue() = getQualifierValue() }
+  SpringBean getSpringBean() { result.getQualifierValue() = this.getQualifierValue() }
 
   /**
    * Gets the Spring component that this qualifier resolves to, if any.
    */
-  SpringComponent getSpringComponent() { result.getQualifierValue() = getQualifierValue() }
+  SpringComponent getSpringComponent() { result.getQualifierValue() = this.getQualifierValue() }
 }
 
 /**
@@ -340,20 +342,22 @@ class SpringQualifierAnnotation extends Annotation {
  * autowired by Spring, and can optionally specify a qualifier in the "name".
  */
 class SpringResourceAnnotation extends Annotation {
-  SpringResourceAnnotation() { getType().hasQualifiedName("javax.inject", "Resource") }
+  SpringResourceAnnotation() { this.getType().hasQualifiedName("javax.inject", "Resource") }
 
   /**
    * Gets the specified name value, if any.
    */
-  string getNameValue() { result = getValue("name").(CompileTimeConstantExpr).getStringValue() }
+  string getNameValue() {
+    result = this.getValue("name").(CompileTimeConstantExpr).getStringValue()
+  }
 
   /**
    * Gets the bean definition in an XML file that the resource resolves to, if any.
    */
-  SpringBean getSpringBean() { result.getQualifierValue() = getNameValue() }
+  SpringBean getSpringBean() { result.getQualifierValue() = this.getNameValue() }
 
   /**
    * Gets the Spring component that this qualifier resolves to, if any.
    */
-  SpringComponent getSpringComponent() { result.getQualifierValue() = getNameValue() }
+  SpringComponent getSpringComponent() { result.getQualifierValue() = this.getNameValue() }
 }

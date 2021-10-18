@@ -31,7 +31,7 @@ class GuiceProvider extends Interface {
    * A method that overrides the `get` method on the interface `com.google.inject.Provider`.
    */
   Method getAnOverridingGetMethod() {
-    exists(Method m | m.getSourceDeclaration() = getGetMethod() | result.overrides*(m))
+    exists(Method m | m.getSourceDeclaration() = this.getGetMethod() | result.overrides*(m))
   }
 }
 

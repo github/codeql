@@ -37,7 +37,7 @@ class WebXMLElement extends XMLElement {
   /**
    * Gets the value for this element, with leading and trailing whitespace trimmed.
    */
-  string getValue() { result = allCharactersString().trim() }
+  string getValue() { result = this.allCharactersString().trim() }
 }
 
 /**
@@ -49,33 +49,33 @@ class WebContextParameter extends WebXMLElement {
   /**
    * Gets the `<param-name>` element of this `<context-param>`.
    */
-  WebContextParamName getParamName() { result = getAChild() }
+  WebContextParamName getParamName() { result = this.getAChild() }
 
   /**
    * Gets the `<param-value>` element of this `<context-param>`.
    */
-  WebContextParamValue getParamValue() { result = getAChild() }
+  WebContextParamValue getParamValue() { result = this.getAChild() }
 }
 
 /**
  * A `<param-name>` element in a `web.xml` file.
  */
 class WebContextParamName extends WebXMLElement {
-  WebContextParamName() { getName() = "param-name" }
+  WebContextParamName() { this.getName() = "param-name" }
 }
 
 /**
  * A `<param-value>` element in a `web.xml` file.
  */
 class WebContextParamValue extends WebXMLElement {
-  WebContextParamValue() { getName() = "param-value" }
+  WebContextParamValue() { this.getName() = "param-value" }
 }
 
 /**
  * A `<filter>` element in a `web.xml` file.
  */
 class WebFilter extends WebXMLElement {
-  WebFilter() { getName() = "filter" }
+  WebFilter() { this.getName() = "filter" }
 }
 
 /**
@@ -83,18 +83,18 @@ class WebFilter extends WebXMLElement {
  */
 class WebFilterClass extends WebXMLElement {
   WebFilterClass() {
-    getName() = "filter-class" and
-    getParent() instanceof WebFilter
+    this.getName() = "filter-class" and
+    this.getParent() instanceof WebFilter
   }
 
-  Class getClass() { result.getQualifiedName() = getValue() }
+  Class getClass() { result.getQualifiedName() = this.getValue() }
 }
 
 /**
  * A `<servlet>` element in a `web.xml` file.
  */
 class WebServlet extends WebXMLElement {
-  WebServlet() { getName() = "servlet" }
+  WebServlet() { this.getName() = "servlet" }
 }
 
 /**
@@ -102,18 +102,18 @@ class WebServlet extends WebXMLElement {
  */
 class WebServletClass extends WebXMLElement {
   WebServletClass() {
-    getName() = "servlet-class" and
-    getParent() instanceof WebServlet
+    this.getName() = "servlet-class" and
+    this.getParent() instanceof WebServlet
   }
 
-  Class getClass() { result.getQualifiedName() = getValue() }
+  Class getClass() { result.getQualifiedName() = this.getValue() }
 }
 
 /**
  * A `<listener>` element in a `web.xml` file.
  */
 class WebListener extends WebXMLElement {
-  WebListener() { getName() = "listener" }
+  WebListener() { this.getName() = "listener" }
 }
 
 /**
@@ -121,14 +121,14 @@ class WebListener extends WebXMLElement {
  */
 class WebListenerClass extends WebXMLElement {
   WebListenerClass() {
-    getName() = "listener-class" and
-    getParent() instanceof WebListener
+    this.getName() = "listener-class" and
+    this.getParent() instanceof WebListener
   }
 
   /**
    * Gets the `Class` instance associated with this element.
    */
-  Class getClass() { result.getQualifiedName() = getValue() }
+  Class getClass() { result.getQualifiedName() = this.getValue() }
 }
 
 /**
@@ -140,12 +140,12 @@ class WebErrorPage extends WebXMLElement {
   /**
    * Gets the `<exception-type>` element of this `<error-page>`.
    */
-  WebErrorPageType getPageType() { result = getAChild() }
+  WebErrorPageType getPageType() { result = this.getAChild() }
 
   /**
    * Gets the `<location>` element of this `<error-page>`.
    */
-  WebErrorPageLocation getPageLocation() { result = getAChild() }
+  WebErrorPageLocation getPageLocation() { result = this.getAChild() }
 }
 
 /**
@@ -153,8 +153,8 @@ class WebErrorPage extends WebXMLElement {
  */
 class WebErrorPageType extends WebXMLElement {
   WebErrorPageType() {
-    getName() = "exception-type" and
-    getParent() instanceof WebErrorPage
+    this.getName() = "exception-type" and
+    this.getParent() instanceof WebErrorPage
   }
 }
 
@@ -163,7 +163,7 @@ class WebErrorPageType extends WebXMLElement {
  */
 class WebErrorPageLocation extends WebXMLElement {
   WebErrorPageLocation() {
-    getName() = "location" and
-    getParent() instanceof WebErrorPage
+    this.getName() = "location" and
+    this.getParent() instanceof WebErrorPage
   }
 }
