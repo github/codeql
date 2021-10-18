@@ -53,9 +53,9 @@ private predicate maybeEmptyArrayArg(Expr ex) {
 /**
  * Holds if a `sendBroadcast` call doesn't specify receiver permission.
  */
-private predicate isSensitiveBroadcastSink(DataFlow::Node sink) {
+private predicate isSensitiveBroadcastSink(DataFlow::Node sendBroadcastCallArg) {
   exists(SendBroadcastMethodAccess ma, string name | ma.getMethod().hasName(name) |
-    sink.asExpr() = ma.getAnArgument() and
+    sendBroadcastCallArg.asExpr() = ma.getAnArgument() and
     (
       name = "sendBroadcast" and
       (
