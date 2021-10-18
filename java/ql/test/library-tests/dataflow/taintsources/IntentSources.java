@@ -6,10 +6,6 @@ public class IntentSources extends Activity {
 
 	private static void sink(Object o) {}
 
-	public IntentSources(Context base) {
-		super(base);
-	}
-
 	public void test() throws java.io.IOException {
 
 		String trouble = this.getIntent().getStringExtra("key");

@@ -28,6 +28,7 @@ import android.os.UserHandle;
 import android.view.View;
 
 public class Activity extends ContextWrapper {
+    public static final int RESULT_OK = -1;
 
     public void onCreate(Bundle savedInstanceState) {}
 
@@ -346,6 +347,8 @@ public class Activity extends ContextWrapper {
     }
 
     public void onActivityReenter(int resultCode, Intent data) {}
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {}
 
     public int getRequestedOrientation() {
         return 0;
