@@ -179,6 +179,18 @@ public class AndroidIntentRedirectionTest extends Activity {
                 // Conditionally tainted sinks aren't supported currently
                 startActivity(fwdIntent); // $ MISSING: $hasAndroidIntentRedirection
             }
+            {
+                Intent fwdIntent = Intent.parseUri(getIntent().getStringExtra("uri"), 0);
+                startActivity(fwdIntent); // $ hasAndroidIntentRedirection
+            }
+            {
+                Intent fwdIntent = Intent.getIntent(getIntent().getStringExtra("uri"));
+                startActivity(fwdIntent); // $ hasAndroidIntentRedirection
+            }
+            {
+                Intent fwdIntent = Intent.getIntentOld(getIntent().getStringExtra("uri"));
+                startActivity(fwdIntent); // $ hasAndroidIntentRedirection
+            }
         } catch (Exception e) {
         }
     }
