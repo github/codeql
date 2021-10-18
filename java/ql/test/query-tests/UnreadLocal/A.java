@@ -71,6 +71,101 @@ public class A {
         if (valid) return;
     }
 
+    public void use(Object o) { }
+
+    public void badNonDefault() {
+        String s1 = "";
+        s1 = "a";
+        use(s1);
+
+        String s2 = "null";
+        s2 = "a";
+        use(s2);
+
+        Object o = false; // `false` is not the default for Object
+        o = true;
+        use(o);
+
+        boolean b = true;
+        b = false;
+        use(b);
+
+        char c1 = '\1';
+        c1 = '1';
+        use(c1);
+
+        char c2 = '0'; // is not \0
+        c2 = '1';
+        use(c2);
+
+        double d = 1d;
+        d = 0d;
+        use(d);
+
+        float f = 1f;
+        f = 0f;
+        use(f);
+
+        int i = 1;
+        i = 0;
+        use(i);
+
+        long l = 1L;
+        l = 0L;
+        use(l);
+    }
+
+    // Ignore if stored value is default value
+    public void goodDefault() {
+        String s = null;
+        s = "a";
+        use(s);
+
+        boolean b = false;
+        b = true;
+        use(b);
+
+        char c1 = '\0';
+        c1 = '1';
+        use(c1);
+
+        char c2 = 0;
+        c2 = 1;
+        use(c2);
+
+        double d1 = 0d;
+        d1 = 1d;
+        use(d1);
+
+        double d2 = '\0';
+        d2 = 1;
+        use(d2);
+
+        float f1 = 0f;
+        f1 = 1f;
+        use(f1);
+
+        float f2 = 0;
+        f2 = 1;
+        use(f2);
+
+        int i1 = 0;
+        i1 = 1;
+        use(i1);
+
+        int i2 = '\0';
+        i2 = '1';
+        use(i2);
+
+        long l1 = 0L;
+        l1 = 1L;
+        use(l1);
+
+        long l2 = 0;
+        l2 = 1;
+        use(l2);
+    }
+
     // ensure extraction of java.lang.RuntimeException
     public void noop() throws RuntimeException { }
 }

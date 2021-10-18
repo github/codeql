@@ -3,3 +3,13 @@
 | A.java:40:14:40:16 | ++... | This assignment to y is useless: the value is always overwritten before it is read. |
 | A.java:55:13:55:17 | ...=... | This assignment to x is useless: the value is always overwritten before it is read. |
 | A.java:64:17:64:29 | ...=... | This assignment to valid is useless: the value is always overwritten before it is read. |
+| A.java:77:16:77:22 | s1 | This assignment to s1 is useless: the value is always overwritten before it is read. |
+| A.java:81:16:81:26 | s2 | This assignment to s2 is useless: the value is always overwritten before it is read. |
+| A.java:85:16:85:24 | o | This assignment to o is useless: the value is always overwritten before it is read. |
+| A.java:89:17:89:24 | b | This assignment to b is useless: the value is always overwritten before it is read. |
+| A.java:93:14:93:22 | c1 | This assignment to c1 is useless: the value is always overwritten before it is read. |
+| A.java:97:14:97:21 | c2 | This assignment to c2 is useless: the value is always overwritten before it is read. |
+| A.java:101:16:101:21 | d | This assignment to d is useless: the value is always overwritten before it is read. |
+| A.java:105:15:105:20 | f | This assignment to f is useless: the value is always overwritten before it is read. |
+| A.java:109:13:109:17 | i | This assignment to i is useless: the value is always overwritten before it is read. |
+| A.java:113:14:113:19 | l | This assignment to l is useless: the value is always overwritten before it is read. |
