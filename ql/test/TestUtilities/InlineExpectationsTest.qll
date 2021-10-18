@@ -121,7 +121,12 @@ abstract class InlineExpectationsTest extends string {
    * - `value` - The value of the result, which will be matched against the value associated with
    *   `tag` in any expected result comment on that line.
    */
-  abstract predicate hasActualResult(Location location, string element, string tag, string value);
+  abstract predicate hasActualResult(string file, int line, string element, string tag, string value);
+
+  predicate hasActualResult(Location location, string element, string tag, string value) {
+    this.hasActualResult(location.getFile().getAbsolutePath(), location.getStartLine(), element,
+      tag, value)
+  }
 
   final predicate hasFailureMessage(FailureLocatable element, string message) {
     exists(ActualResult actualResult |
