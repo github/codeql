@@ -8,7 +8,7 @@ on:
 jobs:
 
   build:
-    uses: github/codeql-ql/.github/workflows/build.yml@esbena/workflow-improvements
+    uses: github/codeql-ql/.github/workflows/build.yml@main
     with:
       os: '[ "ubuntu-latest" ]'
 
