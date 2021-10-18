@@ -514,8 +514,8 @@ private module ReturnNodes {
   }
 
   /**
-   * A data-flow node that represents an expression returned by a callable,
-   * either using an explict `return` statement or as the expression of a method body.
+   * A data-flow node that represents an expression explicitly returned by
+   * a callable.
    */
   class ExplicitReturnNode extends ReturningNode, ReturningStatementNode {
     ExplicitReturnNode() {
@@ -531,11 +531,25 @@ private module ReturnNodes {
     }
   }
 
+  pragma[noinline]
+  private AstNode implicitReturn(Callable c, ExprNode n) {
+    exists(CfgNodes::ExprCfgNode en |
+      en = n.getExprNode() and
+      en.getASuccessor().(CfgNodes::AnnotatedExitNode).isNormal() and
+      n.(NodeImpl).getCfgScope() = c and
+      result = en.getExpr()
+    )
+    or
+    result = implicitReturn(c, n).getParent()
+  }
+
+  /**
+   * A data-flow node that represents an expression implicitly returned by
+   * a callable. An implicit return happens when an expression can be the
+   * last thing that is evaluated in the body of the callable.
+   */
   class ExprReturnNode extends ReturningNode, ExprNode {
-    ExprReturnNode() {
-      this.getExprNode().getASuccessor().(CfgNodes::AnnotatedExitNode).isNormal() and
-      this.(NodeImpl).getCfgScope() instanceof Callable
-    }
+    ExprReturnNode() { exists(Callable c | implicitReturn(c, this) = c.getAStmt()) }
 
     override ReturnKind getKind() { result instanceof NormalReturnKind }
   }

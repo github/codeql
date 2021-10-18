@@ -4,7 +4,7 @@ private import internal.AST
 private import internal.TreeSitter
 
 /** A callable. */
-class Callable extends Expr, Scope, TCallable {
+class Callable extends StmtSequence, Expr, Scope, TCallable {
   /** Gets the number of parameters of this callable. */
   final int getNumberOfParameters() { result = count(this.getAParameter()) }
 
