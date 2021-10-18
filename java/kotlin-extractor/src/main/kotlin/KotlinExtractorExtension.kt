@@ -306,6 +306,19 @@ XXX delete?
 
             s.isNothing() -> return primitiveType(null, "java.lang", "Void", "kotlin", "Nothing") // TODO: Is this right?
 
+/*
+TODO: Test case: nullable and has-question-mark type variables:
+class X {
+    fun <T : Int> f1(t: T?) {
+        f1(null)
+    }
+
+    fun <T : Int?> f2(t: T) {
+        f2(null)
+    }
+}
+*/
+
             s.isArray() && s.arguments.isNotEmpty() -> {
                 // TODO: fix this, this is only a dummy implementation to let the tests pass
                 val elementType = useTypeOld(s.getArrayElementType(pluginContext.irBuiltIns))
