@@ -842,7 +842,7 @@ func test() {
 		s := source()
 		isValid := !guardBool(s)
 		if isValid {
-			sink(s) // $f+:dataflow=s
+			sink(s) // $SPURIOUS:dataflow=s
 		} else {
 			sink(s) // $dataflow=s
 		}
