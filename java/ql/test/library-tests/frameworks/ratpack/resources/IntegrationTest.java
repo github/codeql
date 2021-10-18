@@ -31,8 +31,14 @@ class IntegrationTest {
     static class Pojo {
         String value;
 
+        List<String> values;
+
         String getValue() {
             return value;
+        }
+
+        List<String> getValues() {
+            return values;
         }
     }
 
@@ -110,6 +116,24 @@ class IntegrationTest {
                     sink(values.get(0)); //TODO:$hasTaintFlow
                 });
             });
+    }
+
+    void test6(Context ctx) {
+        bindQuery(ctx, Pojo.class)
+            .then(pojo -> {
+                sink(pojo.getValue()); //$hasTaintFlow
+                sink(pojo.getValues()); //$hasTaintFlow
+            });
+    }
+
+    public <T> Promise<T> bindQuery(Context ctx, Class<T> type) {
+        return bindQuery(ctx, type, Action.noop());
+    }
+
+    public <T> Promise<T> bindQuery(Context ctx, Class<T> type, Action<? super ImmutableMap.Builder<String, Object>> defaults) {
+        return Promise.sync(() ->
+            bind(ctx, toObjectNode(ctx.getRequest().getQueryParams(), defaults, name -> false), type)
+        );
     }
 
     private <T> Promise<T> bindJson(Context ctx, Class<T> type) {

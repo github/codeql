@@ -316,6 +316,5 @@ class Resource {
             .then(value -> {
                 sink(value); // no tainted flow
             });
-    }
-    
+    }    
 }

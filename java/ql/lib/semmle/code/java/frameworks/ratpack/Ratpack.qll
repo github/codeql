@@ -81,7 +81,7 @@ private class RatpackModel extends SummaryModelCsv {
           "MultiValueMap;true;getAll;();;MapValue of Argument[-1];Element of MapValue of ReturnValue;value",
           "MultiValueMap;true;getAll;(Object);;MapValue of Argument[-1];Element of ReturnValue;value",
           "MultiValueMap;true;asMultimap;;;MapKey of Argument[-1];MapKey of ReturnValue;value",
-          "MultiValueMap;true;asMultimap;;;MapValue of Argument[-1];Element of MapValue of ReturnValue;value"
+          "MultiValueMap;true;asMultimap;;;MapValue of Argument[-1];MapValue of ReturnValue;value"
         ]
   }
 }
