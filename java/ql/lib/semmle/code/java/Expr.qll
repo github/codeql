@@ -1227,8 +1227,9 @@ class MemberRefExpr extends FunctionalExpr, @memberref {
 
   /**
    * Gets the receiver type whose member this expression refers to. The result might not be
-   * the type which actually declares the member (makes a difference for inherited non-overridden
-   * methods).
+   * the type which actually declares the member. For example, for the member reference `ArrayList::toString`,
+   * this predicate has the result `java.util.ArrayList`, the type explicitly referred to, while
+   * `getReferencedCallable` will have `java.util.AbstractCollection.toString` as result, which `ArrayList` inherits.
    */
   RefType getReceiverType() {
     exists(Stmt stmt, Expr resultExpr |
