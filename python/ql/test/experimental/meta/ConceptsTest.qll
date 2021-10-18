@@ -2,7 +2,7 @@ import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.Concepts
 import TestUtilities.InlineExpectationsTest
-import experimental.dataflow.TestUtil.PrintNode
+private import semmle.python.dataflow.new.internal.PrintNode
 
 class SystemCommandExecutionTest extends InlineExpectationsTest {
   SystemCommandExecutionTest() { this = "SystemCommandExecutionTest" }
@@ -96,7 +96,7 @@ class EncodingTest extends InlineExpectationsTest {
 class LoggingTest extends InlineExpectationsTest {
   LoggingTest() { this = "LoggingTest" }
 
-  override string getARelevantTag() { result in ["loggingInput"] }
+  override string getARelevantTag() { result = "loggingInput" }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(location.getFile().getRelativePath()) and
@@ -181,7 +181,7 @@ class EscapingTest extends InlineExpectationsTest {
 class HttpServerRouteSetupTest extends InlineExpectationsTest {
   HttpServerRouteSetupTest() { this = "HttpServerRouteSetupTest" }
 
-  override string getARelevantTag() { result in ["routeSetup"] }
+  override string getARelevantTag() { result = "routeSetup" }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(location.getFile().getRelativePath()) and

@@ -33,4 +33,4 @@ taintFlow
 | source.component.ts:14:22:14:29 | source() | source.component.ts:20:48:20:48 | x |
 | source.component.ts:15:33:15:40 | source() | sink.component.ts:22:48:22:57 | this.sink1 |
 testAttrSourceLocation
-| inline.component.ts:8:43:8:61 | [testAttr]=taint | inline.component.ts:8:55:8:59 | <toplevel> |
+| inline.component.ts:8:43:8:60 | [testAttr]=taint | inline.component.ts:8:55:8:59 | <toplevel> |

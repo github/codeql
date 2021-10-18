@@ -48,7 +48,7 @@ class TranslatedLocalVariableDeclaration extends TranslatedLocalDeclaration,
 
   override LocalVariable getDeclVar() { result = var }
 
-  override Type getVarType() { result = getVariableType(getDeclVar()) }
+  override Type getVarType() { result = getVariableType(this.getDeclVar()) }
 
   override Type getTargetType() { result = getVariableType(var) }
 
@@ -58,7 +58,7 @@ class TranslatedLocalVariableDeclaration extends TranslatedLocalDeclaration,
       or
       this.hasUninitializedInstruction() and tag = InitializerStoreTag()
     ) and
-    result = getIRUserVariable(getFunction(), getDeclVar())
+    result = getIRUserVariable(this.getFunction(), this.getDeclVar())
   }
 
   override TranslatedInitialization getInitialization() {

@@ -1,0 +1,15 @@
+| BooleanLiterals.java:5:3:5:6 | true | true | true |
+| BooleanLiterals.java:6:3:6:7 | false | false | false |
+| BooleanLiterals.java:8:8:8:26 | 4\\u0072\\u0075\\u0065 | true | true |
+| BooleanLiterals.java:13:3:13:6 | true | true | true |
+| BooleanLiterals.java:13:11:13:14 | true | true | true |
+| BooleanLiterals.java:14:3:14:7 | false | false | false |
+| BooleanLiterals.java:14:12:14:16 | false | false | false |
+| BooleanLiterals.java:15:3:15:6 | true | true | true |
+| BooleanLiterals.java:15:11:15:15 | false | false | false |
+| BooleanLiterals.java:16:3:16:6 | true | true | true |
+| BooleanLiterals.java:16:11:16:14 | true | true | true |
+| BooleanLiterals.java:17:3:17:7 | false | false | false |
+| BooleanLiterals.java:17:12:17:16 | false | false | false |
+| BooleanLiterals.java:18:3:18:6 | true | true | true |
+| BooleanLiterals.java:18:11:18:15 | false | false | false |

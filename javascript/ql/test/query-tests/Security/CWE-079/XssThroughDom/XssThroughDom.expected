@@ -112,6 +112,16 @@ nodes
 | xss-through-dom.js:87:16:87:40 | new ans ... s(text) |
 | xss-through-dom.js:87:16:87:40 | new ans ... s(text) |
 | xss-through-dom.js:87:36:87:39 | text |
+| xss-through-dom.js:93:16:93:46 | $("#foo ... ].value |
+| xss-through-dom.js:93:16:93:46 | $("#foo ... ].value |
+| xss-through-dom.js:93:16:93:46 | $("#foo ... ].value |
+| xss-through-dom.js:96:17:96:47 | $("#foo ... ].value |
+| xss-through-dom.js:96:17:96:47 | $("#foo ... ].value |
+| xss-through-dom.js:96:17:96:47 | $("#foo ... ].value |
+| xss-through-dom.js:109:31:109:70 | "<a src ... oo</a>" |
+| xss-through-dom.js:109:31:109:70 | "<a src ... oo</a>" |
+| xss-through-dom.js:109:45:109:55 | this.el.src |
+| xss-through-dom.js:109:45:109:55 | this.el.src |
 edges
 | forms.js:8:23:8:28 | values | forms.js:9:31:9:36 | values |
 | forms.js:8:23:8:28 | values | forms.js:9:31:9:36 | values |
@@ -178,6 +188,12 @@ edges
 | xss-through-dom.js:86:33:86:36 | text | xss-through-dom.js:86:16:86:37 | anser.a ... l(text) |
 | xss-through-dom.js:87:36:87:39 | text | xss-through-dom.js:87:16:87:40 | new ans ... s(text) |
 | xss-through-dom.js:87:36:87:39 | text | xss-through-dom.js:87:16:87:40 | new ans ... s(text) |
+| xss-through-dom.js:93:16:93:46 | $("#foo ... ].value | xss-through-dom.js:93:16:93:46 | $("#foo ... ].value |
+| xss-through-dom.js:96:17:96:47 | $("#foo ... ].value | xss-through-dom.js:96:17:96:47 | $("#foo ... ].value |
+| xss-through-dom.js:109:45:109:55 | this.el.src | xss-through-dom.js:109:31:109:70 | "<a src ... oo</a>" |
+| xss-through-dom.js:109:45:109:55 | this.el.src | xss-through-dom.js:109:31:109:70 | "<a src ... oo</a>" |
+| xss-through-dom.js:109:45:109:55 | this.el.src | xss-through-dom.js:109:31:109:70 | "<a src ... oo</a>" |
+| xss-through-dom.js:109:45:109:55 | this.el.src | xss-through-dom.js:109:31:109:70 | "<a src ... oo</a>" |
 #select
 | forms.js:9:31:9:40 | values.foo | forms.js:8:23:8:28 | values | forms.js:9:31:9:40 | values.foo | $@ is reinterpreted as HTML without escaping meta-characters. | forms.js:8:23:8:28 | values | DOM text |
 | forms.js:12:31:12:40 | values.bar | forms.js:11:24:11:29 | values | forms.js:12:31:12:40 | values.bar | $@ is reinterpreted as HTML without escaping meta-characters. | forms.js:11:24:11:29 | values | DOM text |
@@ -209,3 +225,6 @@ edges
 | xss-through-dom.js:81:17:81:43 | $('#foo ... rText') | xss-through-dom.js:81:17:81:43 | $('#foo ... rText') | xss-through-dom.js:81:17:81:43 | $('#foo ... rText') | $@ is reinterpreted as HTML without escaping meta-characters. | xss-through-dom.js:81:17:81:43 | $('#foo ... rText') | DOM text |
 | xss-through-dom.js:86:16:86:37 | anser.a ... l(text) | xss-through-dom.js:84:15:84:30 | $("text").text() | xss-through-dom.js:86:16:86:37 | anser.a ... l(text) | $@ is reinterpreted as HTML without escaping meta-characters. | xss-through-dom.js:84:15:84:30 | $("text").text() | DOM text |
 | xss-through-dom.js:87:16:87:40 | new ans ... s(text) | xss-through-dom.js:84:15:84:30 | $("text").text() | xss-through-dom.js:87:16:87:40 | new ans ... s(text) | $@ is reinterpreted as HTML without escaping meta-characters. | xss-through-dom.js:84:15:84:30 | $("text").text() | DOM text |
+| xss-through-dom.js:93:16:93:46 | $("#foo ... ].value | xss-through-dom.js:93:16:93:46 | $("#foo ... ].value | xss-through-dom.js:93:16:93:46 | $("#foo ... ].value | $@ is reinterpreted as HTML without escaping meta-characters. | xss-through-dom.js:93:16:93:46 | $("#foo ... ].value | DOM text |
+| xss-through-dom.js:96:17:96:47 | $("#foo ... ].value | xss-through-dom.js:96:17:96:47 | $("#foo ... ].value | xss-through-dom.js:96:17:96:47 | $("#foo ... ].value | $@ is reinterpreted as HTML without escaping meta-characters. | xss-through-dom.js:96:17:96:47 | $("#foo ... ].value | DOM text |
+| xss-through-dom.js:109:31:109:70 | "<a src ... oo</a>" | xss-through-dom.js:109:45:109:55 | this.el.src | xss-through-dom.js:109:31:109:70 | "<a src ... oo</a>" | $@ is reinterpreted as HTML without escaping meta-characters. | xss-through-dom.js:109:45:109:55 | this.el.src | DOM text |

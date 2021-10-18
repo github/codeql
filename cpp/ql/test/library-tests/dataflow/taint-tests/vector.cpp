@@ -68,8 +68,8 @@ void test_element_taint(int x) {
 
 	v5.push_back(source());
 	sink(v5); // $ ast,ir
-	sink(v5.front()); // $ SPURIOUS: ast
-	sink(v5.back()); // $ ast MISSING: ir
+	sink(v5.front()); // $ SPURIOUS: ast,ir
+	sink(v5.back()); // $ ast,ir
 
 	v6.data()[2] = source();
 	sink(v6); // $ ast MISSING: ir
@@ -81,8 +81,8 @@ void test_element_taint(int x) {
 		v7.insert(it, source());
 	}
 	sink(v7); // $ ast,ir
-	sink(v7.front()); // $ ast MISSING: ir
-	sink(v7.back()); // $ SPURIOUS: ast
+	sink(v7.front()); // $ ast,ir
+	sink(v7.back()); // $ SPURIOUS: ast,ir
 
 	{
 		const std::vector<int> &v8c = v8;
@@ -283,8 +283,8 @@ void test_data_more() {
 
 	v1.push_back(source());
 	sink(v1); // $ ast,ir
-	sink(v1.data()); // $ ast MISSING: ir
-	sink(v1.data()[2]); // $ ast MISSING: ir
+	sink(v1.data()); // $ ast,ir
+	sink(v1.data()[2]); // $ ast,ir
 
 	*(v2.data()) = ns_int::source();
 	sink(v2); // $ ast MISSING: ir
@@ -305,10 +305,10 @@ void test_vector_insert() {
 	sink(a.insert(a.end(), b.begin(), b.end()));
 	sink(a);
 
-	sink(c.insert(c.end(), d.begin(), d.end())); // $ ast MISSING: ir
+	sink(c.insert(c.end(), d.begin(), d.end())); // $ ast,ir
 	sink(c); // $ ast,ir
 
-	sink(d.insert(d.end(), a.begin(), a.end())); // $ ast MISSING: ir
+	sink(d.insert(d.end(), a.begin(), a.end())); // $ ast,ir
 	sink(d); // $ ast,ir
 }
 

@@ -4,10 +4,13 @@
  * @kind problem
  * @id cpp/incorrect-allocation-error-handling
  * @problem.severity warning
+ * @security-severity 7.5
  * @precision medium
  * @tags correctness
  *       security
  *       external/cwe/cwe-570
+ *       external/cwe/cwe-252
+ *       external/cwe/cwe-755
  */
 
 import cpp
@@ -182,7 +185,7 @@ class ThrowingAllocator extends Function {
       // 3. the allocator isn't marked with `throw()` or `noexcept`.
       not exists(this.getBlock()) and
       not exists(Parameter p | p = this.getAParameter() |
-        p.getUnspecifiedType() instanceof NoThrowType
+        p.getUnspecifiedType().stripType() instanceof NoThrowType
       ) and
       not this.isNoExcept() and
       not this.isNoThrow()

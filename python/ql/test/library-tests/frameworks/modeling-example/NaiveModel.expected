@@ -26,6 +26,7 @@ nodes
 | test.py:90:11:90:14 | ControlFlowNode for bm() | semmle.label | ControlFlowNode for bm() |
 | test.py:91:10:91:12 | ControlFlowNode for val | semmle.label | ControlFlowNode for val |
 | test.py:107:11:107:18 | ControlFlowNode for source() | semmle.label | ControlFlowNode for source() |
+subpaths
 #select
 | test.py:22:10:22:24 | ControlFlowNode for Attribute() | test.py:21:11:21:18 | ControlFlowNode for source() | test.py:22:10:22:24 | ControlFlowNode for Attribute() | test flow (naive): test_simple |
 | test.py:33:10:33:12 | ControlFlowNode for val | test.py:29:11:29:18 | ControlFlowNode for source() | test.py:33:10:33:12 | ControlFlowNode for val | test flow (naive): test_alias |

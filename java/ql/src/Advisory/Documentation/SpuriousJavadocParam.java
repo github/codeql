@@ -39,6 +39,12 @@ public void html(int ordinate){ ... }
  */ 
 public <T> void parameterized(T parameter){ ... }
 
+/**
+ * BAD: The following param tag refers to a non-existent type parameter.
+ * 
+ * @param <X> The type of the elements.
+ */
+class Generic<T> { ... }
 
 /**
  * GOOD: A proper Javadoc comment.
