@@ -120,8 +120,8 @@ predicate variableMustBeNullTerminated(VariableAccess va) {
       // Simplified: check that `p` may not be null terminated on *any*
       // path to `use` (including the one found via `parameterUsePair`)
       not exists(Expr e, BasicBlock bb1, int pos1, BasicBlock bb2, int pos2 |
-        mayAddNullTerminator(e, p.getAnAccess()) and
-        bb1.getNode(pos1) = e and
+        mayAddNullTerminator(pragma[only_bind_into](e), p.getAnAccess()) and
+        pragma[only_bind_into](bb1).getNode(pos1) = e and
         bb2.getNode(pos2) = use
       |
         bb1 = bb2 and pos1 < pos2
