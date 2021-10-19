@@ -27,7 +27,7 @@
  */
 
 import java
-import semmle.code.java.dataflow.TaintTracking
+private import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.StringFormat
 
 /**
