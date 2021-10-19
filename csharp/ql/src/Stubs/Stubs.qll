@@ -128,6 +128,7 @@ abstract private class GeneratedType extends Type, GeneratedElement {
   /** Gets the entire C# stub code for this type. */
   pragma[nomagic]
   final string getStub(Assembly assembly) {
+    this.isInAssembly(assembly) and
     if this.isDuplicate(assembly)
     then
       result =
