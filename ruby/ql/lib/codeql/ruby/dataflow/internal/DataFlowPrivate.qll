@@ -97,15 +97,20 @@ module LocalFlow {
   }
 }
 
-/** An argument of a call (including qualifier arguments). */
-private class Argument extends Expr {
-  private Call call;
+/** An argument of a call (including qualifier arguments, excluding block arguments). */
+private class Argument extends CfgNodes::ExprCfgNode {
+  private CfgNodes::ExprNodes::CallCfgNode call;
   private int arg;
 
-  Argument() { this = call.getArgument(arg) }
+  Argument() {
+    this = call.getArgument(arg) and
+    not this.getExpr() instanceof BlockArgument
+    or
+    this = call.getReceiver() and arg = -1
+  }
 
   /** Holds if this expression is the `i`th argument of `c`. */
-  predicate isArgumentOf(Expr c, int i) { c = call and i = arg }
+  predicate isArgumentOf(CfgNodes::ExprNodes::CallCfgNode c, int i) { c = call and i = arg }
 }
 
 /** A collection of cached types and predicates to be evaluated in the same stage. */
@@ -125,14 +130,7 @@ private module Cached {
     TNormalParameterNode(Parameter p) { not p instanceof BlockParameter } or
     TSelfParameterNode(MethodBase m) or
     TBlockParameterNode(MethodBase m) or
-    TExprPostUpdateNode(CfgNodes::ExprCfgNode n) {
-      exists(AstNode node | node = n.getNode() |
-        node instanceof Argument and
-        not node instanceof BlockArgument
-        or
-        n = any(CfgNodes::ExprNodes::CallCfgNode call).getReceiver()
-      )
-    } or
+    TExprPostUpdateNode(CfgNodes::ExprCfgNode n) { n instanceof Argument } or
     TSummaryNode(
       FlowSummaryImpl::Public::SummarizedCallable c,
       FlowSummaryImpl::Private::SummaryNodeState state
@@ -438,24 +436,18 @@ abstract class ArgumentNode extends Node {
 private module ArgumentNodes {
   /** A data-flow node that represents an explicit call argument. */
   class ExplicitArgumentNode extends ArgumentNode {
-    ExplicitArgumentNode() {
-      this.asExpr().getExpr() instanceof Argument and
-      not this.asExpr().getExpr() instanceof BlockArgument
-    }
+    Argument arg;
+
+    ExplicitArgumentNode() { this.asExpr() = arg }
 
     override predicate sourceArgumentOf(CfgNodes::ExprNodes::CallCfgNode call, int pos) {
-      this.asExpr() = call.getArgument(pos)
+      arg.isArgumentOf(call, pos)
     }
   }
 
   /** A data-flow node that represents the `self` argument of a call. */
-  class SelfArgumentNode extends ArgumentNode {
-    SelfArgumentNode() { this.asExpr() = any(CfgNodes::ExprNodes::CallCfgNode call).getReceiver() }
-
-    override predicate sourceArgumentOf(CfgNodes::ExprNodes::CallCfgNode call, int pos) {
-      this.asExpr() = call.getReceiver() and
-      pos = -1
-    }
+  class SelfArgumentNode extends ExplicitArgumentNode {
+    SelfArgumentNode() { arg.isArgumentOf(_, -1) }
   }
 
   /** A data-flow node that represents a block argument. */
@@ -522,8 +514,8 @@ private module ReturnNodes {
   }
 
   /**
-   * A data-flow node that represents an expression returned by a callable,
-   * either using an explict `return` statement or as the expression of a method body.
+   * A data-flow node that represents an expression explicitly returned by
+   * a callable.
    */
   class ExplicitReturnNode extends ReturningNode, ReturningStatementNode {
     ExplicitReturnNode() {
@@ -539,11 +531,25 @@ private module ReturnNodes {
     }
   }
 
+  pragma[noinline]
+  private AstNode implicitReturn(Callable c, ExprNode n) {
+    exists(CfgNodes::ExprCfgNode en |
+      en = n.getExprNode() and
+      en.getASuccessor().(CfgNodes::AnnotatedExitNode).isNormal() and
+      n.(NodeImpl).getCfgScope() = c and
+      result = en.getExpr()
+    )
+    or
+    result = implicitReturn(c, n).getParent()
+  }
+
+  /**
+   * A data-flow node that represents an expression implicitly returned by
+   * a callable. An implicit return happens when an expression can be the
+   * last thing that is evaluated in the body of the callable.
+   */
   class ExprReturnNode extends ReturningNode, ExprNode {
-    ExprReturnNode() {
-      this.getExprNode().getASuccessor().(CfgNodes::AnnotatedExitNode).isNormal() and
-      this.(NodeImpl).getCfgScope() instanceof Callable
-    }
+    ExprReturnNode() { exists(Callable c | implicitReturn(c, this) = c.getAStmt()) }
 
     override ReturnKind getKind() { result instanceof NormalReturnKind }
   }
