@@ -320,7 +320,11 @@ module ExprNodes {
 
     /** Gets the the keyword argument whose key is `keyword` of this call. */
     final ExprCfgNode getKeywordArgument(string keyword) {
-      e.hasCfgChild(e.getKeywordArgument(keyword), this, result)
+      exists(PairCfgNode n |
+        e.hasCfgChild(e.getAnArgument(), this, n) and
+        n.getKey().getExpr().(SymbolLiteral).getValueText() = keyword and
+        result = n.getValue()
+      )
     }
 
     /** Gets the number of arguments of this call. */
@@ -424,6 +428,21 @@ module ExprNodes {
   /** A control-flow node that wraps a `ParenthesizedExpr` AST expression. */
   class ParenthesizedExprCfgNode extends StmtSequenceCfgNode {
     ParenthesizedExprCfgNode() { this.getExpr() instanceof ParenthesizedExpr }
+  }
+
+  private class PairChildMapping extends ExprChildMapping, Pair {
+    override predicate relevantChild(Expr e) { e = this.getKey() or e = this.getValue() }
+  }
+
+  /** A control-flow node that wraps a `Pair` AST expression. */
+  class PairCfgNode extends ExprCfgNode {
+    override PairChildMapping e;
+
+    final override Pair getExpr() { result = ExprCfgNode.super.getExpr() }
+
+    final ExprCfgNode getKey() { e.hasCfgChild(e.getKey(), this, result) }
+
+    final ExprCfgNode getValue() { e.hasCfgChild(e.getValue(), this, result) }
   }
 
   /** A control-flow node that wraps a `VariableReadAccess` AST expression. */
