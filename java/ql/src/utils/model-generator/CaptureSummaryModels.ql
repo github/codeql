@@ -31,7 +31,7 @@ string captureFieldFlow(Callable api) {
   exists(FieldAccess fa, ReturnNodeExt postUpdate |
     not (fa.getField().isStatic() and fa.getField().isFinal()) and
     postUpdate.getEnclosingCallable() = api and
-    not api.getReturnType() instanceof PrimitiveType and
+    isRelevantType(api.getReturnType()) and
     not api.getDeclaringType() instanceof EnumType and
     TaintTracking::localTaint(DataFlow::exprNode(fa), postUpdate)
   |
@@ -55,7 +55,7 @@ class ParameterToFieldConfig extends TaintTracking::Configuration {
 
   override predicate isSource(DataFlow::Node source) {
     source instanceof DataFlow::ParameterNode and
-    not source.getType() instanceof PrimitiveType
+    isRelevantType(source.getType())
   }
 
   override predicate isSink(DataFlow::Node sink) {
@@ -82,10 +82,8 @@ class ParameterToReturnValueTaintConfig extends TaintTracking::Configuration {
     exists(Callable api |
       source instanceof DataFlow::ParameterNode and
       api = source.asParameter().getCallable() and
-      not api.getReturnType() instanceof PrimitiveType and
-      not api.getReturnType() instanceof TypeClass and
-      not source.asParameter().getType() instanceof PrimitiveType and
-      not source.asParameter().getType() instanceof TypeClass
+      isRelevantType(api.getReturnType()) and
+      isRelevantType(source.asParameter().getType())
     )
   }
 
@@ -118,6 +116,18 @@ string captureParameterToParameterFlow(Callable api) {
       asTaintModel(api, parameterAccess(source.asParameter()),
         parameterAccess(sink.getPreUpdateNode().asExpr().(VarAccess).getVariable().(Parameter)))
   )
+}
+
+predicate isRelevantType(Type t) {
+  not t instanceof TypeClass and
+  not t instanceof EnumType and
+  not t instanceof PrimitiveType and
+  not t instanceof BoxedType and
+  not t.(RefType).hasQualifiedName("java.math", "BigInteger") and
+  not t.(Array).getElementType() instanceof PrimitiveType and
+  not t.(Array).getElementType().(PrimitiveType).getName().regexpMatch("byte|char") and
+  not t.(Array).getElementType() instanceof BoxedType and
+  not t.(CollectionType).getElementType() instanceof BoxedType
 }
 
 // TODO: "com.google.common.base;Converter;true;convertAll;(Iterable);;Element of Argument[0];Element of ReturnValue;taint",

@@ -1,5 +1,7 @@
 package p;
 
+import java.math.BigInteger;
+import java.util.Collection;
 import java.util.List;
 
 public final class Pojo {
@@ -35,6 +37,34 @@ public final class Pojo {
 
     public int getIntValue() {
         return intValue;
+    }
+
+    public Integer getBoxedValue() {
+        return Integer.valueOf(intValue);
+    }
+
+    public int[] getPrimitiveArray() {
+        return new int[] { intValue };
+    }
+
+    public char[] getCharArray() {
+        return Character.toChars(intValue);
+    }
+
+    public byte[] getByteArray() {
+        return new byte[] { (byte) intValue };
+    }
+    
+    public Integer[] getBoxedArray() {
+        return new Integer[] { Integer.valueOf(intValue) };
+    }
+    
+    public Collection<Integer> getBoxedCollection() {
+        return List.of(Integer.valueOf(intValue));
+    }
+
+    public BigInteger getBigInt() {
+        return BigInteger.valueOf(intValue);
     }
 
     public void fillIn(List<String> target) {
