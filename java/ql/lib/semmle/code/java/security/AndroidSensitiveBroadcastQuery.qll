@@ -111,6 +111,26 @@ private predicate isSensitiveBroadcastSink(DataFlow::Node sendBroadcastCallArg) 
   )
 }
 
+/**
+ * Holds if `arg`  as an argument to a use of a `startActivity` or `startService` method that sends an intent to another application.
+ */
+private predicate isStartActivityOrServiceSink(DataFlow::Node arg) {
+  exists(MethodAccess ma, string name | ma.getMethod().hasName(name) |
+    arg.asExpr() = ma.getArgument(0) and
+    ma.getMethod().getDeclaringType().getASourceSupertype*() instanceof TypeContext and
+    // startActivity(Intent intent)
+    // startActivity(Intent intent, Bundle options)
+    // startActivities(Intent[] intents)
+    // startActivities(Intent[] intents, Bundle options)
+    // startService(Intent service)
+    // startForegroundService(Intent service)
+    // bindService (Intent service, int flags, Executor executor, ServiceConnection conn)
+    // bindService (Intent service, Executor executor, ServiceConnection conn)
+    name =
+      ["startActivity", "startActivities", "startService", "startForegroundService", "bindService"]
+  )
+}
+
 predicate isCleanIntent(Expr intent) {
   intent.getType() instanceof TypeIntent and
   (
@@ -146,7 +166,11 @@ class SensitiveBroadcastConfig extends TaintTracking::Configuration {
     source.asExpr() instanceof SensitiveInfoExpr
   }
 
-  override predicate isSink(DataFlow::Node sink) { isSensitiveBroadcastSink(sink) }
+  override predicate isSink(DataFlow::Node sink) {
+    isSensitiveBroadcastSink(sink)
+    or
+    isStartActivityOrServiceSink(sink)
+  }
 
   /**
    * Holds if broadcast doesn't specify receiving package name of the 3rd party app
