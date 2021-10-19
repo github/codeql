@@ -59,7 +59,7 @@ private class RatpackExecModel extends SummaryModelCsv {
 /** A reference type that extends a parameterization the Promise type. */
 private class RatpackPromise extends RefType {
   RatpackPromise() {
-    getSourceDeclaration().getASourceSupertype*().hasQualifiedName("ratpack.exec", "Promise")
+    this.getSourceDeclaration().getASourceSupertype*().hasQualifiedName("ratpack.exec", "Promise")
   }
 }
 
@@ -68,13 +68,12 @@ private class RatpackPromise extends RefType {
  */
 private class RatpackPromiseFluentMethod extends FluentMethod {
   RatpackPromiseFluentMethod() {
-    getDeclaringType() instanceof RatpackPromise and
-    not isStatic() and
+    not this.isStatic() and
     // It's generally safe to assume that if the return type exactly matches the declaring type, `this` will be returned.
     exists(ParameterizedType t |
       t instanceof RatpackPromise and
-      t = getDeclaringType() and
-      t = getReturnType()
+      t = this.getDeclaringType() and
+      t = this.getReturnType()
     )
   }
 }
