@@ -244,6 +244,8 @@ private class ParamNodeEx extends NodeEx {
   }
 
   int getPosition() { this.isParameterOf(_, result) }
+
+  predicate allowParameterReturnInSelf() { allowParameterReturnInSelfCached(this.asNode()) }
 }
 
 private class RetNodeEx extends NodeEx {
@@ -252,8 +254,6 @@ private class RetNodeEx extends NodeEx {
   ReturnPosition getReturnPosition() { result = getReturnPosition(this.asNode()) }
 
   ReturnKindExt getKind() { result = this.asNode().(ReturnNodeExt).getKind() }
-
-  predicate allowFlowThroughParameter() { allowFlowThroughParameterCached(this.asNode()) }
 }
 
 private predicate inBarrier(NodeEx node, Configuration config) {
@@ -727,16 +727,12 @@ private module Stage1 {
   /** Holds if flow may return from `callable`. */
   pragma[nomagic]
   private predicate returnFlowCallableNodeCand(
-    DataFlowCallable callable, ReturnKindExt kind, boolean allowFlowThroughParameter,
-    Configuration config
+    DataFlowCallable callable, ReturnKindExt kind, Configuration config
   ) {
     exists(RetNodeEx ret |
       throughFlowNodeCand(ret, config) and
       callable = ret.getEnclosingCallable() and
-      kind = ret.getKind() and
-      if ret.allowFlowThroughParameter()
-      then allowFlowThroughParameter = true
-      else allowFlowThroughParameter = false
+      kind = ret.getKind()
     )
   }
 
@@ -745,16 +741,17 @@ private module Stage1 {
    * candidate for the origin of a summary.
    */
   predicate parameterMayFlowThrough(ParamNodeEx p, DataFlowCallable c, Ap ap, Configuration config) {
-    exists(ReturnKindExt kind, boolean allowFlowThroughParameter |
+    exists(ReturnKindExt kind |
       throughFlowNodeCand(p, config) and
-      returnFlowCallableNodeCand(c, kind, allowFlowThroughParameter, config) and
+      returnFlowCallableNodeCand(c, kind, config) and
       p.getEnclosingCallable() = c and
+      exists(ap) and
+      // we don't expect a parameter to return stored in itself, unless explicitly allowed
       (
-        if kind.(ParamUpdateReturnKind).getPosition() = p.getPosition()
-        then allowFlowThroughParameter = true
-        else any()
-      ) and
-      exists(ap)
+        not kind.(ParamUpdateReturnKind).getPosition() = p.getPosition()
+        or
+        p.allowParameterReturnInSelf()
+      )
     )
   }
 
@@ -1403,10 +1400,11 @@ private module Stage2 {
       fwdFlow(ret, any(CcCall ccc), apSome(ap), ap0, config) and
       kind = ret.getKind() and
       p.getPosition() = pos and
+      // we don't expect a parameter to return stored in itself, unless explicitly allowed
       (
-        if kind.(ParamUpdateReturnKind).getPosition() = p.getPosition()
-        then ret.allowFlowThroughParameter()
-        else any()
+        not kind.(ParamUpdateReturnKind).getPosition() = pos
+        or
+        p.allowParameterReturnInSelf()
       )
     )
   }
@@ -2095,10 +2093,11 @@ private module Stage3 {
       fwdFlow(ret, any(CcCall ccc), apSome(ap), ap0, config) and
       kind = ret.getKind() and
       p.getPosition() = pos and
+      // we don't expect a parameter to return stored in itself, unless explicitly allowed
       (
-        if kind.(ParamUpdateReturnKind).getPosition() = p.getPosition()
-        then ret.allowFlowThroughParameter()
-        else any()
+        not kind.(ParamUpdateReturnKind).getPosition() = pos
+        or
+        p.allowParameterReturnInSelf()
       )
     )
   }
@@ -2858,10 +2857,11 @@ private module Stage4 {
       fwdFlow(ret, any(CcCall ccc), apSome(ap), ap0, config) and
       kind = ret.getKind() and
       p.getPosition() = pos and
+      // we don't expect a parameter to return stored in itself, unless explicitly allowed
       (
-        if kind.(ParamUpdateReturnKind).getPosition() = p.getPosition()
-        then ret.allowFlowThroughParameter()
-        else any()
+        not kind.(ParamUpdateReturnKind).getPosition() = pos
+        or
+        p.allowParameterReturnInSelf()
       )
     )
   }
@@ -2935,7 +2935,7 @@ private class SummaryCtxSome extends SummaryCtx, TSummaryCtxSome {
 
   int getParameterPos() { p.isParameterOf(_, result) }
 
-  ParameterNode getParameterNode() { result = p.asNode() }
+  ParamNodeEx getParamNode() { result = p }
 
   override string toString() { result = p + ": " + ap }
 
@@ -3637,10 +3637,11 @@ private predicate paramFlowsThrough(
     ap = mid.getAp() and
     apa = ap.getApprox() and
     pos = sc.getParameterPos() and
+    // we don't expect a parameter to return stored in itself, unless explicitly allowed
     (
-      if kind.(ParamUpdateReturnKind).getPosition() = pos
-      then ret.allowFlowThroughParameter()
-      else any()
+      not kind.(ParamUpdateReturnKind).getPosition() = pos
+      or
+      sc.getParamNode().allowParameterReturnInSelf()
     )
   )
 }

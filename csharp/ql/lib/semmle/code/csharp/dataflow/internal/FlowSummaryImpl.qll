@@ -504,11 +504,14 @@ module Private {
   }
 
   /**
-   * Holds if flow is allowed to pass from a parameter `p`, to return
-   * node `ret`, and back out to `p`.
+   * Holds if flow is allowed to pass from parameter `p`, to a return
+   * node, and back out to `p`.
    */
-  predicate summaryAllowFlowThroughParameter(ReturnNodeExt ret) {
-    ret = summaryNode(_, TSummaryNodeClearsContentState(_, true))
+  predicate summaryAllowParameterReturnInSelf(ParamNode p) {
+    exists(SummarizedCallable c, int i |
+      c.clearsContent(i, _) and
+      p.isParameterOf(c, i)
+    )
   }
 
   /** Provides a compilation of flow summaries to atomic data-flow steps. */

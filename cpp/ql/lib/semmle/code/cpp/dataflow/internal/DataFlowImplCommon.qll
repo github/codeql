@@ -802,7 +802,7 @@ private module Cached {
   }
 
   cached
-  predicate allowFlowThroughParameterCached(Node ret) { allowFlowThroughParameter(ret) }
+  predicate allowParameterReturnInSelfCached(ParamNode p) { allowParameterReturnInSelf(p) }
 
   cached
   newtype TCallContext =
