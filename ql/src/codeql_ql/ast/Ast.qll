@@ -1758,9 +1758,7 @@ class ThisAccess extends Identifier {
 
 /** A use of `super`. */
 class Super extends TSuper, Expr {
-  QL::SuperRef ref;
-
-  Super() { this = TSuper(ref) }
+  Super() { this = TSuper(_) }
 
   override string getAPrimaryQlClass() { result = "Super" }
 
