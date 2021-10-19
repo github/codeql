@@ -257,7 +257,7 @@ class ExtractedOrExternalFile extends Container, @file, Documentable, ExprParent
   /** Gets the number of child comment groups of this file. */
   int getNumCommentGroups() { result = count(this.getACommentGroup()) }
 
-  override string getAPrimaryQlClass() { result = "File" }
+  override string getAPrimaryQlClass() { result = "ExtractedOrExternalFile" }
 }
 
 /** A file that has been extracted. */
@@ -269,14 +269,20 @@ class File extends ExtractedOrExternalFile {
     or
     exists(this.getAChild())
   }
+
+  override string getAPrimaryQlClass() { result = "File" }
 }
 
 /** A Go file. */
 class GoFile extends File {
   GoFile() { this.getExtension() = "go" }
+
+  override string getAPrimaryQlClass() { result = "GoFile" }
 }
 
 /** An HTML file. */
 class HtmlFile extends File {
   HtmlFile() { this.getExtension().regexpMatch("x?html?") }
+
+  override string getAPrimaryQlClass() { result = "HtmlFile" }
 }
