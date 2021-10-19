@@ -108,14 +108,12 @@ Browsing the results of our basic query shows that it could be improved. Among t
 
 .. code-block:: ruby
 
-   if ...
-     ...
-   elsif option == "-verbose"
+   if option == "-verbose"
      # nothing to do - handled earlier
    else
      error "unrecognized option"
 
-In this case, identifying the ``if`` statement with the empty ``then`` branch as redundant is a false positive. One solution to this is to modify the query to ignore empty ``then`` branches if the ``if`` statement has an ``else`` branch.
+In this case, identifying the ``if`` statement with the empty ``then`` branch as redundant is a false positive. One solution to this is to modify the query to select ``if`` statements where both the ``then`` and ``else`` branches are missing.
 
 To exclude ``if`` statements that have an ``else`` branch:
 
