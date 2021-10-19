@@ -21,12 +21,10 @@ predicate mayAddNullTerminator(Expr e, VariableAccess va) {
   )
   or
   // Assignment to another stack variable
-  exists(Expr e0 |
-    exists(StackVariable v0, Expr val |
-      exprDefinition(v0, e, val) and // e resembles `v0 := val`
-      val.getAChild*() = va and
-      mayAddNullTerminator(e0, v0.getAnAccess())
-    )
+  exists(StackVariable v0, Expr val |
+    exprDefinition(v0, e, val) and // e resembles `v0 := val`
+    val.getAChild*() = va and
+    mayAddNullTerminator(_, v0.getAnAccess())
   )
   or
   // Assignment to non-stack variable
