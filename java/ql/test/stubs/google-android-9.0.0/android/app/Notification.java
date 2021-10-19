@@ -1140,6 +1140,11 @@ public class Notification implements Parcelable {
       }
 
     }
+
+    @Override
+    public int describeContents() {
+      return 0;
+    }
   }
   public interface Extender {
     public Builder extend(Builder builder);
