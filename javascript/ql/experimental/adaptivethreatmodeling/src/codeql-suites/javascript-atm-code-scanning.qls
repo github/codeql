@@ -1,5 +1,5 @@
 - description: ATM boosted Code Scanning queries for JavaScript
-- qlpack: codeql/javascript-experimental-atm-src
+- queries: .
 - include:
     id: 
     - adaptive-threat-modeling/js/nosql-injection
