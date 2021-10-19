@@ -31,10 +31,10 @@ import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.StringFormat
 
 /**
- * A string constant that contains a prefix whose possible successor strings are returned
- * by `getAnAppendedExpression`.
+ * A string constant that contains a prefix whose possibly-appended strings are
+ * returned by `getAnAppendedExpression`.
  *
- * Extend this class to specify prefixes whose successors should be analysed.
+ * Extend this class to specify prefixes whose possibly-appended strings should be analysed.
  */
 abstract class InterestingPrefix extends CompileTimeConstantExpr {
   /**
