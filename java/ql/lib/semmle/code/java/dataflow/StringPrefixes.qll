@@ -5,19 +5,19 @@
  * may be appended to it, then check `InterestingPrefix.getAnAppendedExpression(Expr)` to get your results.
  *
  * For example, to identify expressions that may follow "foo:" in some string, we could define:
- * 
+ *
  * ```
- * private class FooPrefix extends InterestingPrefix { 
+ * private class FooPrefix extends InterestingPrefix {
  *   int offset;
- *   FooPrefix() { this.getStringValue().substring("foo:") = offset }; 
- *   override int getOffset() { result = offset } 
+ *   FooPrefix() { this.getStringValue().substring("foo:") = offset };
+ *   override int getOffset() { result = offset }
  * };
- * 
+ *
  * predicate mayFollowFoo(Expr e) { e = any(FooPrefix fp).getAnAppendedExpression() }
  * ```
  *
  * This will identify all the `suffix` expressions in contexts such as:
- * 
+ *
  * ```
  * "foo:" + suffix1
  * "barfoo:" + suffix2
@@ -33,7 +33,7 @@ private import semmle.code.java.StringFormat
 /**
  * A string constant that contains a prefix whose possible successor strings are returned
  * by `getAnAppendedExpression`.
- * 
+ *
  * Extend this class to specify prefixes whose successors should be analysed.
  */
 abstract class InterestingPrefix extends CompileTimeConstantExpr {
