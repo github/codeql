@@ -1,7 +1,0 @@
-| Typhoeus.rb:3:9:3:43 | call to get | Typhoeus.rb:4:1:4:10 | call to body |
-| Typhoeus.rb:6:9:6:63 | call to post | Typhoeus.rb:7:1:7:10 | call to body |
-| Typhoeus.rb:9:9:9:62 | call to put | Typhoeus.rb:10:1:10:10 | call to body |
-| Typhoeus.rb:12:9:12:64 | call to patch | Typhoeus.rb:13:1:13:10 | call to body |
-| Typhoeus.rb:15:9:15:46 | call to delete | Typhoeus.rb:16:1:16:10 | call to body |
-| Typhoeus.rb:18:9:18:44 | call to head | Typhoeus.rb:19:1:19:10 | call to body |
-| Typhoeus.rb:21:9:21:47 | call to options | Typhoeus.rb:22:1:22:10 | call to body |

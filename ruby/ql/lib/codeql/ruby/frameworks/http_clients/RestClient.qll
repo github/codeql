@@ -9,7 +9,7 @@ private import codeql.ruby.ApiGraphs
  * ```
  */
 class RestClientHttpRequest extends HTTP::Client::Request::Range {
-  DataFlow::Node requestUse;
+  DataFlow::CallNode requestUse;
   API::Node requestNode;
   API::Node connectionNode;
 
@@ -24,6 +24,8 @@ class RestClientHttpRequest extends HTTP::Client::Request::Range {
     requestUse = requestNode.getAnImmediateUse() and
     this = requestUse.asExpr().getExpr()
   }
+
+  override DataFlow::Node getURL() { result = requestUse.getArgument(0) }
 
   override DataFlow::Node getResponseBody() { result = requestNode.getAMethodCall("body") }
 

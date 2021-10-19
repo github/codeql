@@ -18,7 +18,7 @@ private import codeql.ruby.ApiGraphs
  */
 class HttpartyRequest extends HTTP::Client::Request::Range {
   API::Node requestNode;
-  DataFlow::Node requestUse;
+  DataFlow::CallNode requestUse;
 
   HttpartyRequest() {
     requestUse = requestNode.getAnImmediateUse() and
@@ -27,6 +27,8 @@ class HttpartyRequest extends HTTP::Client::Request::Range {
           .getReturn(["get", "head", "delete", "options", "post", "put", "patch"]) and
     this = requestUse.asExpr().getExpr()
   }
+
+  override DataFlow::Node getURL() { result = requestUse.getArgument(0) }
 
   override DataFlow::Node getResponseBody() {
     // If HTTParty can recognise the response type, it will parse and return it

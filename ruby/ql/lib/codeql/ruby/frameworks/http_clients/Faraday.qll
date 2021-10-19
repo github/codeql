@@ -14,9 +14,10 @@ private import codeql.ruby.ApiGraphs
  * ```
  */
 class FaradayHttpRequest extends HTTP::Client::Request::Range {
-  DataFlow::Node requestUse;
   API::Node requestNode;
   API::Node connectionNode;
+  DataFlow::Node connectionUse;
+  DataFlow::CallNode requestUse;
 
   FaradayHttpRequest() {
     connectionNode =
@@ -29,10 +30,16 @@ class FaradayHttpRequest extends HTTP::Client::Request::Range {
     requestNode =
       connectionNode.getReturn(["get", "head", "delete", "post", "put", "patch", "trace"]) and
     requestUse = requestNode.getAnImmediateUse() and
+    connectionUse = connectionNode.getAnImmediateUse() and
     this = requestUse.asExpr().getExpr()
   }
 
   override DataFlow::Node getResponseBody() { result = requestNode.getAMethodCall("body") }
+
+  override DataFlow::Node getURL() {
+    result = requestUse.getArgument(0) or
+    result = connectionUse.(DataFlow::CallNode).getArgument(0)
+  }
 
   override predicate disablesCertificateValidation(DataFlow::Node disablingNode) {
     // `Faraday::new` takes an options hash as its second argument, and we're
