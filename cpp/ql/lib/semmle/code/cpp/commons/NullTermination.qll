@@ -12,7 +12,7 @@ private predicate mayAddNullTerminatorHelper(Expr e, VariableAccess va, Expr e0)
 }
 
 bindingset[n1, n2]
-predicate nodeBefore(ControlFlowNode n1, ControlFlowNode n2) {
+private predicate controlFlowNodeSuccessorTransitive(ControlFlowNode n1, ControlFlowNode n2) {
   exists(BasicBlock bb1, int pos1, BasicBlock bb2, int pos2 |
     pragma[only_bind_into](bb1).getNode(pos1) = n1 and
     pragma[only_bind_into](bb2).getNode(pos2) = n2 and
@@ -45,7 +45,7 @@ predicate mayAddNullTerminator(Expr e, VariableAccess va) {
   // Assignment to another stack variable
   exists(Expr e0 |
     mayAddNullTerminatorHelper(pragma[only_bind_into](e), va, pragma[only_bind_into](e0)) and
-    nodeBefore(e, e0)
+    controlFlowNodeSuccessorTransitive(e, e0)
   )
   or
   // Assignment to non-stack variable
@@ -129,7 +129,7 @@ predicate variableMustBeNullTerminated(VariableAccess va) {
       // path to `use` (including the one found via `parameterUsePair`)
       not exists(Expr e |
         mayAddNullTerminator(pragma[only_bind_into](e), p.getAnAccess()) and
-        nodeBefore(e, use)
+        controlFlowNodeSuccessorTransitive(e, use)
       )
     )
   )
