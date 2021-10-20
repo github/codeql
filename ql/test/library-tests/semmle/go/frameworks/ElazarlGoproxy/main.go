@@ -20,7 +20,7 @@ func handler1(r *http.Request, ctx *goproxy.ProxyCtx) (*http.Request, *http.Resp
 	ctx.Logf("test")   // $ logger="test"
 	ctx.Warnf("test1") // $ logger="test1"
 
-	return r, goproxy.TextResponse(r, "Hello!") // $ headerwrite=status:200 $headerwrite=content-type:text/plain
+	return r, goproxy.TextResponse(r, "Hello!") // $ headerwrite=status:200 headerwrite=content-type:text/plain
 }
 
 func main() {

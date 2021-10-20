@@ -55,7 +55,7 @@ func TaintTracking_ClevergoTechClevergoV052() {
 			{
 				fromParams396 := source().(clevergo.Params)
 				intoString707 := fromParams396.String("")
-				sink(intoString707) // $ taintSink $untrustedFlowSource
+				sink(intoString707) // $ taintSink untrustedFlowSource
 			}
 		}
 	}
@@ -69,7 +69,7 @@ func TaintTracking_ClevergoTechClevergoV052() {
 				var intoInterface718 interface{}
 				var mediumObjCQL clevergo.Decoder
 				mediumObjCQL.Decode(fromRequest912, intoInterface718)
-				sink(intoInterface718) // $ taintSink $untrustedFlowSource
+				sink(intoInterface718) // $ taintSink untrustedFlowSource
 			}
 		}
 		// Taint-tracking through method calls on clevergo.tech/clevergo.Renderer interface.

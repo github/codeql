@@ -160,7 +160,7 @@ func fsAccesses() {
 	os.Chtimes(path, time, time)         // $ fsaccess=path
 	os.Create(path)                      // $ fsaccess=path
 	os.Lchown(path, 1000, 1000)          // $ fsaccess=path
-	os.Link(path, path1)                 // $ fsaccess=path $fsaccess=path1
+	os.Link(path, path1)                 // $ fsaccess=path fsaccess=path1
 	os.Lstat(path)                       // $ fsaccess=path
 	os.Mkdir(path, 0600)                 // $ fsaccess=path
 	os.MkdirAll(path, 0600)              // $ fsaccess=path
@@ -170,14 +170,14 @@ func fsAccesses() {
 	os.Readlink(path)                    // $ fsaccess=path
 	os.Remove(path)                      // $ fsaccess=path
 	os.RemoveAll(path)                   // $ fsaccess=path
-	os.Rename(path, path1)               // $ fsaccess=path $fsaccess=path1
+	os.Rename(path, path1)               // $ fsaccess=path fsaccess=path1
 	os.Stat(path)                        // $ fsaccess=path
-	os.Symlink(path, path1)              // $ fsaccess=path $fsaccess=path1
+	os.Symlink(path, path1)              // $ fsaccess=path fsaccess=path1
 	os.Truncate(path, 1000)              // $ fsaccess=path
 	os.DirFS(path)                       // $ fsaccess=path
 	os.ReadDir(path)                     // $ fsaccess=path
 	os.ReadFile(path)                    // $ fsaccess=path
-	os.MkdirTemp(path, part)             // $ fsaccess=path $fsaccess=part
-	os.CreateTemp(path, part)            // $ fsaccess=path $fsaccess=part
+	os.MkdirTemp(path, part)             // $ fsaccess=path fsaccess=part
+	os.CreateTemp(path, part)            // $ fsaccess=path fsaccess=part
 	os.WriteFile(path, []byte{}, 0600)   // $ fsaccess=path
 }

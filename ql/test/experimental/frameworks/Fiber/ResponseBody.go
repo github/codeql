@@ -18,13 +18,13 @@ func ResponseBody_GithubComGofiberFiberV1146() {
 			{
 				bodyInterface768 := source().(interface{})
 				var rece fiber.Ctx
-				rece.JSON(bodyInterface768) // $ contentType=application/json $responseBody=bodyInterface768
+				rece.JSON(bodyInterface768) // $ contentType=application/json responseBody=bodyInterface768
 			}
 			// func (*Ctx).JSONP(data interface{}, callback ...string) error
 			{
 				bodyInterface468 := source().(interface{})
 				var rece fiber.Ctx
-				rece.JSONP(bodyInterface468, "") // $ contentType=application/javascript $responseBody=bodyInterface468
+				rece.JSONP(bodyInterface468, "") // $ contentType=application/javascript responseBody=bodyInterface468
 			}
 		}
 	}

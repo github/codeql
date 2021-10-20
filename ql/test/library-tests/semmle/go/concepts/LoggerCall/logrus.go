@@ -19,7 +19,7 @@ func logrusCalls() {
 	var fn logrus.LogFunction = nil
 	var ctx context.Context
 	tmp := logrus.WithContext(ctx)  // $ logger=ctx
-	tmp.Debugf(fmt, text)           // $ logger=fmt $logger=text
+	tmp.Debugf(fmt, text)           // $ logger=fmt logger=text
 	tmp = logrus.WithError(err)     // $ logger=err
 	tmp.Warn(text)                  // $ logger=text
 	tmp = logrus.WithFields(fields) // $ logger=fields
@@ -28,8 +28,8 @@ func logrusCalls() {
 	logSomething(tmp)
 
 	logrus.Error(text)       // $ logger=text
-	logrus.Fatalf(fmt, text) // $ logger=fmt $logger=text
+	logrus.Fatalf(fmt, text) // $ logger=fmt logger=text
 	logrus.Panicln(text)     // $ logger=text
-	logrus.Infof(fmt, text)  // $ logger=fmt $logger=text
+	logrus.Infof(fmt, text)  // $ logger=fmt logger=text
 	logrus.FatalFn(fn)       // $ logger=fn
 }

@@ -66,27 +66,27 @@ func (c MyRoute) Handler6() revel.Result {
 
 func (c MyRoute) Handler7() revel.Result {
 	// BAD: straightforward XSS
-	return c.RenderHTML(c.Params.Form.Get("someField")) // $ responsebody='call to Get' $source="selection of Params"
+	return c.RenderHTML(c.Params.Form.Get("someField")) // $ responsebody='call to Get' source="selection of Params"
 }
 
 func (c MyRoute) Handler8() revel.Result {
 	// GOOD: uses JSON content-type
-	return c.RenderJSON(c.Params.Form.Get("someField")) // $ responsebody='call to Get' $source="selection of Params"
+	return c.RenderJSON(c.Params.Form.Get("someField")) // $ responsebody='call to Get' source="selection of Params"
 }
 
 func (c MyRoute) Handler9() revel.Result {
 	// GOOD: uses Javascript content-type
-	return c.RenderJSONP("callback", c.Params.Form.Get("someField")) // $ responsebody='call to Get' $source="selection of Params"
+	return c.RenderJSONP("callback", c.Params.Form.Get("someField")) // $ responsebody='call to Get' source="selection of Params"
 }
 
 func (c MyRoute) Handler10() revel.Result {
 	// GOOD: uses text content-type
-	return c.RenderText(c.Params.Form.Get("someField")) // $ responsebody='call to Get' $source="selection of Params"
+	return c.RenderText(c.Params.Form.Get("someField")) // $ responsebody='call to Get' source="selection of Params"
 }
 
 func (c MyRoute) Handler11() revel.Result {
 	// GOOD: uses xml content-type
-	return c.RenderXML(c.Params.Form.Get("someField")) // $ responsebody='call to Get' $source="selection of Params"
+	return c.RenderXML(c.Params.Form.Get("someField")) // $ responsebody='call to Get' source="selection of Params"
 }
 
 func (c MyRoute) Handler12() revel.Result {
