@@ -317,6 +317,13 @@ class X {
         f2(null)
     }
 }
+
+TODO: Test case: This breaks kotlinc codegen currently, but up to IR is OK, so we can still have it in a qltest
+class X {
+    fun <T : Int> f1(t: T?) {
+        f1(null)
+    }
+}
 */
 
             s.isArray() && s.arguments.isNotEmpty() -> {
