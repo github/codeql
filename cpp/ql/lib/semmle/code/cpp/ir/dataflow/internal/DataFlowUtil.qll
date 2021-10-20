@@ -498,7 +498,7 @@ abstract class PostUpdateNode extends Node {
  * value, but does not necessarily replace it entirely. For example:
  * ```
  * x.y = 1; // a partial definition of the object `x`.
- * x.y.z = 1; // a partial definition of the object `x.y`.
+ * x.y.z = 1; // a partial definition of the object `x.y` and `x`.
  * x.setY(1); // a partial definition of the object `x`.
  * setY(&x); // a partial definition of the object `x`.
  * ```
@@ -507,135 +507,34 @@ abstract private class PartialDefinitionNode extends PostUpdateNode {
   abstract Expr getDefinedExpr();
 }
 
-private class ExplicitFieldStoreQualifierNode extends PartialDefinitionNode {
-  override ChiInstruction instr;
-  StoreInstruction store;
-
-  ExplicitFieldStoreQualifierNode() {
-    not instr.isResultConflated() and
-    instr.getPartial() = store and
-    (
-      instr.getUpdatedInterval(_, _) or
-      store.getDestinationAddress() instanceof FieldAddressInstruction
-    )
+private class FieldPartialDefinitionNode extends PartialDefinitionNode, StoreNodeInstr {
+  FieldPartialDefinitionNode() {
+    this.getInstruction() = any(FieldAddressInstruction fai).getObjectAddress()
   }
 
-  // By using an operand as the result of this predicate we avoid the dataflow inconsistency errors
-  // caused by having multiple nodes sharing the same pre update node. This inconsistency error can cause
-  // a tuple explosion in the big step dataflow relation since it can make many nodes be the entry node
-  // into a big step.
-  override Node getPreUpdateNode() { result.asOperand() = instr.getTotalOperand() }
+  override Node getPreUpdateNode() { result.asInstruction() = this.getInstruction() }
+
+  override Expr getDefinedExpr() { result = this.getInstruction().getUnconvertedResultExpression() }
+
+  override string toString() { result = PartialDefinitionNode.super.toString() }
+}
+
+private class NonPartialDefinitionPostUpdate extends PostUpdateNode, StoreNodeInstr {
+  NonPartialDefinitionPostUpdate() { not this instanceof PartialDefinitionNode }
+
+  override Node getPreUpdateNode() { result.asInstruction() = this.getInstruction() }
+
+  override string toString() { result = PostUpdateNode.super.toString() }
+}
+
+private class ArgumentPostUpdateNode extends PartialDefinitionNode, StoreNodeOperand {
+  override ArgumentNode getPreUpdateNode() { result.asOperand() = operand }
 
   override Expr getDefinedExpr() {
-    result =
-      store
-          .getDestinationAddress()
-          .(FieldAddressInstruction)
-          .getObjectAddress()
-          .getUnconvertedResultExpression()
-  }
-}
-
-/**
- * Not every store instruction generates a chi instruction that we can attach a PostUpdateNode to.
- * For instance, an update to a field of a struct containing only one field. Even if the store does
- * have a chi instruction, a subsequent use of the result of the store may be linked directly to the
- * result of the store as an inexact definition if the store totally overlaps the use. For these
- * cases we attach the PostUpdateNode to the store instruction. There's no obvious pre update node
- * for this case (as the entire memory is updated), so `getPreUpdateNode` is implemented as
- * `none()`.
- */
-private class ExplicitSingleFieldStoreQualifierNode extends PartialDefinitionNode {
-  override StoreInstruction instr;
-
-  ExplicitSingleFieldStoreQualifierNode() {
-    (
-      instr.getAUse().isDefinitionInexact()
-      or
-      not exists(ChiInstruction chi | chi.getPartial() = instr)
-    ) and
-    // Without this condition any store would create a `PostUpdateNode`.
-    instr.getDestinationAddress() instanceof FieldAddressInstruction
+    result = this.getOperand().getDef().getUnconvertedResultExpression()
   }
 
-  override Node getPreUpdateNode() { none() }
-
-  override Expr getDefinedExpr() {
-    result =
-      instr
-          .getDestinationAddress()
-          .(FieldAddressInstruction)
-          .getObjectAddress()
-          .getUnconvertedResultExpression()
-  }
-}
-
-private FieldAddressInstruction getFieldInstruction(Instruction instr) {
-  result = instr or
-  result = instr.(CopyValueInstruction).getUnary()
-}
-
-/**
- * The target of a `fieldStoreStepAfterArraySuppression` store step, which is used to convert
- * an `ArrayContent` to a `FieldContent` when the `WriteSideEffect` instruction stores
- * into a field. See the QLDoc for `suppressArrayRead` for an example of where such a conversion
- * is inserted.
- */
-private class WriteSideEffectFieldStoreQualifierNode extends PartialDefinitionNode {
-  override ChiInstruction instr;
-  WriteSideEffectInstruction write;
-  FieldAddressInstruction field;
-
-  WriteSideEffectFieldStoreQualifierNode() {
-    not instr.isResultConflated() and
-    instr.getPartial() = write and
-    field = getFieldInstruction(write.getDestinationAddress())
-  }
-
-  override Node getPreUpdateNode() { result.asOperand() = instr.getTotalOperand() }
-
-  override Expr getDefinedExpr() {
-    result = field.getObjectAddress().getUnconvertedResultExpression()
-  }
-}
-
-/**
- * The `PostUpdateNode` that is the target of a `arrayStoreStepChi` store step. The overriden
- * `ChiInstruction` corresponds to the instruction represented by `node2` in `arrayStoreStepChi`.
- */
-private class ArrayStoreNode extends PartialDefinitionNode {
-  override ChiInstruction instr;
-  PointerAddInstruction add;
-
-  ArrayStoreNode() {
-    not instr.isResultConflated() and
-    exists(StoreInstruction store |
-      instr.getPartial() = store and
-      add = store.getDestinationAddress()
-    )
-  }
-
-  override Node getPreUpdateNode() { result.asOperand() = instr.getTotalOperand() }
-
-  override Expr getDefinedExpr() { result = add.getLeft().getUnconvertedResultExpression() }
-}
-
-/**
- * The `PostUpdateNode` that is the target of a `arrayStoreStepChi` store step. The overriden
- * `ChiInstruction` corresponds to the instruction represented by `node2` in `arrayStoreStepChi`.
- */
-private class PointerStoreNode extends PostUpdateNode {
-  override ChiInstruction instr;
-
-  PointerStoreNode() {
-    not instr.isResultConflated() and
-    exists(StoreInstruction store |
-      instr.getPartial() = store and
-      store.getDestinationAddress().(CopyValueInstruction).getUnary() instanceof LoadInstruction
-    )
-  }
-
-  override Node getPreUpdateNode() { result.asOperand() = instr.getTotalOperand() }
+  override string toString() { result = PartialDefinitionNode.super.toString() }
 }
 
 /**
