@@ -63,8 +63,10 @@ private module VirtualDispatch {
       |
         // Call argument
         exists(DataFlowCall call, int i |
-          other.(DataFlow::ParameterNode).isParameterOf(call.getStaticCallTarget(), i) and
-          src.(ArgumentNode).argumentOf(call, i)
+          other
+              .(DataFlow::ParameterNode)
+              .isParameterOf(pragma[only_bind_into](call).getStaticCallTarget(), i) and
+          src.(ArgumentNode).argumentOf(call, pragma[only_bind_into](pragma[only_bind_out](i)))
         ) and
         allowOtherFromArg = true and
         allowFromArg = true
@@ -128,6 +130,7 @@ private module VirtualDispatch {
    *
    * Used to fix a join ordering issue in flowsFrom.
    */
+  pragma[noinline]
   private predicate returnNodeWithKindAndEnclosingCallable(
     ReturnNode node, ReturnKind kind, DataFlowCallable callable
   ) {
