@@ -14,10 +14,6 @@
 | test.cpp:49:23:49:28 | call to getenv | test.cpp:49:23:49:28 | call to getenv |
 | test.cpp:49:23:49:28 | call to getenv | test.cpp:49:23:49:40 | (const char *)... |
 | test.cpp:49:23:49:28 | call to getenv | test.cpp:52:16:52:21 | envStr |
-| test.cpp:49:23:49:28 | call to getenv | test.cpp:54:6:54:35 | ! ... |
-| test.cpp:49:23:49:28 | call to getenv | test.cpp:54:7:54:12 | call to strcmp |
-| test.cpp:49:23:49:28 | call to getenv | test.cpp:54:7:54:35 | (bool)... |
-| test.cpp:49:23:49:28 | call to getenv | test.cpp:54:14:54:25 | envStrGlobal |
 | test.cpp:60:29:60:34 | call to getenv | test.cpp:60:29:60:34 | call to getenv |
 | test.cpp:60:29:60:34 | call to getenv | test.cpp:60:29:60:47 | (const char *)... |
 | test.cpp:60:29:60:34 | call to getenv | test.cpp:64:25:64:32 | userName |
