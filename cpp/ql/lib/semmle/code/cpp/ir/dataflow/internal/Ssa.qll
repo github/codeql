@@ -330,6 +330,24 @@ private module Cached {
       flowOutOfAddressStep(use2.getOperand(), nodeTo)
     )
     or
+    // Flow from phi nodes
+    exists(PhiNode phi, Use use, IRBlock block, int rnk |
+      phi = nodeFrom.(SsaPhiNode).getPhiNode() and
+      use.hasRankInBlock(block, rnk) and
+      phi.getSourceVariable() = use.getVariable() and
+      flowOutOfAddressStep(use.getOperand(), nodeTo) and
+      adjacentDefRead(_, phi.getBasicBlock(), -1, block, rnk)
+    )
+    or
+    // Flow to phi nodes
+    exists(Def def, StoreNode store, IRBlock block, int rnk |
+      store = nodeFrom and
+      store.isTerminal() and
+      def.getInstruction() = store.getStoreInstruction() and
+      def.hasRankInBlock(block, rnk) and
+      nodeTo.(SsaPhiNode).hasInputAtRankInBlock(block, rnk)
+    )
+    or
     // Def-use flow from a `StoreNode` to an `OperandNode`.
     exists(
       StoreNode store, IRBlock bb1, int i1, IRBlock bb2, int i2, Def def, Use use, Definition ssaDef
