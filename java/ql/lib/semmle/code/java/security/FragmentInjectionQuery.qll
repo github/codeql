@@ -1,3 +1,5 @@
+/** Provides classes and predicates to be used in queries related to Android Fragment injection. */
+
 import java
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking

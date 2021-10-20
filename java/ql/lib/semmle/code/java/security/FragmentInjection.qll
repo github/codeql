@@ -1,3 +1,5 @@
+/** Provides classes and predicates to reason about Android Fragment injection vulnerabilities. */
+
 import java
 private import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.dataflow.ExternalFlow
@@ -43,6 +45,10 @@ abstract class FragmentInjectionSink extends DataFlow::Node { }
  * Extend this class to add additional taint steps that should apply to `FragmentInjectionTaintConf`.
  */
 class FragmentInjectionAdditionalTaintStep extends Unit {
+  /**
+   * Holds if the step from `node1` to `node2` should be considered a taint
+   * step for the `FragmentInjectionTaintConf` configuration.
+   */
   abstract predicate step(DataFlow::Node n1, DataFlow::Node n2);
 }
 
