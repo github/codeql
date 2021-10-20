@@ -1,7 +1,6 @@
 plugins {
     id 'org.jetbrains.kotlin.jvm' version "${kotlinVersion}"
     id 'org.jetbrains.dokka' version '1.4.32'
-    id "com.vanniktech.maven.publish" version '0.15.1'
 }
 
 group 'com.github.codeql'
@@ -20,4 +19,8 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+}
+
+jar {
+    archiveName = "${OUTPUT_JAR_NAME}"
 }
