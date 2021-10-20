@@ -367,7 +367,9 @@ class ParameterizedType extends ClassOrInterface {
   }
 
   /** Holds if this type originates from source code. */
-  override predicate fromSource() { typeVars(_, _, _, _, this) and ClassOrInterface.super.fromSource() }
+  override predicate fromSource() {
+    typeVars(_, _, _, _, this) and ClassOrInterface.super.fromSource()
+  }
 
   override string getAPrimaryQlClass() { result = "ParameterizedType" }
 }
