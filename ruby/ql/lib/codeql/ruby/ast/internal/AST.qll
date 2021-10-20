@@ -3,7 +3,6 @@ private import TreeSitter
 private import codeql.ruby.ast.internal.Call
 private import codeql.ruby.ast.internal.Parameter
 private import codeql.ruby.ast.internal.Variable
-private import codeql.ruby.ast.internal.Scope
 private import codeql.ruby.AST as AST
 private import Synthesis
 
