@@ -2,17 +2,15 @@
 <qhelp>
 
   <overview>
-    <p>When an implicit intent is broadcast in an Android application, if no reciever application or reciever permission is specified, it is visible to all applications installed on the same mobile device, exposing all sensitive information they contain.</p>
-    <p>This means that broadcasts that don't specify this are vulnerable to passive eavesdropping or active denial of service attacks.</p>
+    <p>When an implicit intent is used with a method such as <code>startActivity</code>, <code>startService</code>, or <code>sendBroadcast</code>, it may be read by other applications on the device.</p>
+    <p>This means that sensitive data in these intents may be leaked.</p>
   </overview>
 
   <recommendation>
-    <p>
-      Specify a receiver permission or application when broadcasting intents, or switch to
-      <code>LocalBroadcastManager</code>
-      or the latest
-      <code>LiveData</code>
-      library.
+    <p> 
+      For <code>sendBroadcast</code> methods, a receiver permission may be specified so that only applications with a certain permission may read recieve the intent; 
+      or a <code>LocalBroadcastManager</code> may be used.
+      Otherwise, ensure that intents containing sensitive data have an explicit receiver class set.
     </p>
   </recommendation>
 
