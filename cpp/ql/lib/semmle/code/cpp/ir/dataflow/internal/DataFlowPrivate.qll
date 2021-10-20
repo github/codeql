@@ -106,11 +106,9 @@ class ReturnNode extends InstructionNode {
   Instruction primary;
 
   ReturnNode() {
-    exists(ReturnValueInstruction ret | instr = ret.getReturnValue() and primary = ret)
+    exists(ReturnValueInstruction ret | instr = ret and primary = ret)
     or
-    exists(ReturnIndirectionInstruction rii |
-      instr = rii.getSideEffectOperand().getAnyDef() and primary = rii
-    )
+    exists(ReturnIndirectionInstruction rii | instr = rii and primary = rii)
   }
 
   /** Gets the kind of this returned value. */

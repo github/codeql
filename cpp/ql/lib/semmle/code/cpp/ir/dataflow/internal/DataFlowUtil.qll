@@ -614,6 +614,11 @@ class VariableNode extends Node, TVariableNode {
 InstructionNode instructionNode(Instruction instr) { result.getInstruction() = instr }
 
 /**
+ * Gets the node corresponding to `operand`.
+ */
+OperandNode operandNode(Operand operand) { result.getOperand() = operand }
+
+/**
  * DEPRECATED: use `definitionByReferenceNodeFromArgument` instead.
  *
  * Gets the `Node` corresponding to a definition by reference of the variable
@@ -693,14 +698,32 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   ReadNodeFlow::flowThrough(nodeFrom, nodeTo)
   or
   ReadNodeFlow::flowOutOf(nodeFrom, nodeTo)
+  or
+  // Adjacent-def-use and adjacent-use-use flow
+  adjacentDefUseFlow(nodeFrom, nodeTo)
 }
 
-pragma[noinline]
-private predicate getFieldSizeOfClass(Class c, Type type, int size) {
-  exists(Field f |
-    f.getDeclaringType() = c and
-    f.getUnderlyingType() = type and
-    type.getSize() = size
+private predicate adjacentDefUseFlow(Node nodeFrom, Node nodeTo) {
+  // Flow that isn't already covered by field flow out of store/read nodes.
+  not nodeFrom.asInstruction() = any(StoreNode pun).getStoreInstruction() and
+  not nodeFrom.asInstruction() = any(ReadNode pun).getALoadInstruction() and
+  (
+    //Def-use flow
+    Ssa::ssaFlow(nodeFrom, nodeTo)
+    or
+    exists(Instruction loadAddress | loadAddress = Ssa::getSourceAddressFromNode(nodeFrom) |
+      // Use-use flow through reads
+      exists(Node address |
+        Ssa::addressFlowTC(address.asInstruction(), loadAddress) and
+        Ssa::ssaFlow(address, nodeTo)
+      )
+      or
+      // Use-use flow through stores.
+      exists(Node store |
+        Ssa::explicitWrite(_, store.asInstruction(), loadAddress) and
+        Ssa::ssaFlow(store, nodeTo)
+      )
+    )
   )
 }
 
@@ -789,38 +812,37 @@ private module StoreNodeFlow {
 
 private predicate simpleOperandLocalFlowStep(Instruction iFrom, Operand opTo) {
   // Propagate flow from an instruction to its exact uses.
+  // We do this for all instruction/operand pairs, except when the operand is the
+  // side effect operand of a ReturnIndirectionInstruction, or the load operand of a LoadInstruction.
+  // This is because we get these flows through the shared SSA library already, and including this
+  // flow here will create multiple dataflow paths which creates a blowup in stage 3 of dataflow.
+  (
+    not any(ReturnIndirectionInstruction ret).getSideEffectOperand() = opTo and
+    not any(LoadInstruction load).getSourceValueOperand() = opTo and
+    not any(ReturnValueInstruction ret).getReturnValueOperand() = opTo
+  ) and
   opTo.getDef() = iFrom
-  or
-  opTo = any(ReadSideEffectInstruction read).getSideEffectOperand() and
-  not iFrom.isResultConflated() and
-  iFrom = opTo.getAnyDef()
-  or
-  // Loading a single `int` from an `int *` parameter is not an exact load since
-  // the parameter may point to an entire array rather than a single `int`. The
-  // following rule ensures that any flow going into the
-  // `InitializeIndirectionInstruction`, even if it's for a different array
-  // element, will propagate to a load of the first element.
-  //
-  // Since we're linking `InitializeIndirectionInstruction` and
-  // `LoadInstruction` together directly, this rule will break if there's any
-  // reassignment of the parameter indirection, including a conditional one that
-  // leads to a phi node.
-  exists(InitializeIndirectionInstruction init |
-    iFrom = init and
-    opTo.(LoadOperand).getAnyDef() = init and
-    // Check that the types match. Otherwise we can get flow from an object to
-    // its fields, which leads to field conflation when there's flow from other
-    // fields to the object elsewhere.
-    init.getParameter().getType().getUnspecifiedType().(DerivedType).getBaseType() =
-      opTo.getType().getUnspecifiedType()
+}
+
+pragma[noinline]
+private predicate getAddressType(LoadInstruction load, Type t) {
+  exists(Instruction address |
+    address = load.getSourceAddress() and
+    t = address.getResultType()
   )
-  or
-  // Flow from stores to structs with a single field to a load of that field.
-  exists(LoadInstruction load |
-    load.getSourceValueOperand() = opTo and
-    opTo.getAnyDef() = iFrom and
-    isSingleFieldClass(pragma[only_bind_out](pragma[only_bind_out](iFrom).getResultType()), opTo)
-  )
+}
+
+/**
+ * Like the AST dataflow library, we want to conflate the address and value of a reference. This class
+ * represents the `LoadInstruction` that is generated from a reference dereference.
+ */
+private class ReferenceDereferenceInstruction extends LoadInstruction {
+  ReferenceDereferenceInstruction() {
+    exists(ReferenceType ref |
+      getAddressType(this, ref) and
+      this.getResultType() = ref.getBaseType()
+    )
+  }
 }
 
 private predicate simpleInstructionLocalFlowStep(Operand opFrom, Instruction iTo) {
@@ -835,40 +857,8 @@ private predicate simpleInstructionLocalFlowStep(Operand opFrom, Instruction iTo
   or
   iTo.(InheritanceConversionInstruction).getUnaryOperand() = opFrom
   or
-  // A chi instruction represents a point where a new value (the _partial_
-  // operand) may overwrite an old value (the _total_ operand), but the alias
-  // analysis couldn't determine that it surely will overwrite every bit of it or
-  // that it surely will overwrite no bit of it.
-  //
-  // By allowing flow through the total operand, we ensure that flow is not lost
-  // due to shortcomings of the alias analysis. We may get false flow in cases
-  // where the data is indeed overwritten.
-  //
-  // Flow through the partial operand belongs in the taint-tracking libraries
-  // for now.
-  iTo.getAnOperand().(ChiTotalOperand) = opFrom
-  or
-  // Add flow from write side-effects to non-conflated chi instructions through their
-  // partial operands. From there, a `readStep` will find subsequent reads of that field.
-  // Consider the following example:
-  // ```
-  // void setX(Point* p, int new_x) {
-  //   p->x = new_x;
-  // }
-  // ...
-  // setX(&p, taint());
-  // ```
-  // Here, a `WriteSideEffectInstruction` will provide a new definition for `p->x` after the call to
-  // `setX`, which will be melded into `p` through a chi instruction.
-  exists(ChiInstruction chi | chi = iTo |
-    opFrom.getAnyDef() instanceof WriteSideEffectInstruction and
-    chi.getPartialOperand() = opFrom and
-    not chi.isResultConflated() and
-    // In a call such as `set_value(&x->val);` we don't want the memory representing `x` to receive
-    // dataflow by a simple step. Instead, this is handled by field flow. If we add a simple step here
-    // we can get field-to-object flow.
-    not chi.isPartialUpdate()
-  )
+  // Conflate references and values like in AST dataflow.
+  iTo.(ReferenceDereferenceInstruction).getSourceAddressOperand() = opFrom
   or
   // Flow through modeled functions
   modelFlow(opFrom, iTo)
