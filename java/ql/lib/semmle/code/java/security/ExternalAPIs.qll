@@ -17,38 +17,38 @@ private class DefaultSafeExternalAPIMethod extends SafeExternalAPIMethod {
   DefaultSafeExternalAPIMethod() {
     this instanceof EqualsMethod
     or
-    getName().regexpMatch("size|length|compareTo|getClass|lastIndexOf")
+    this.getName().regexpMatch("size|length|compareTo|getClass|lastIndexOf")
     or
     this.getDeclaringType().hasQualifiedName("org.apache.commons.lang3", "Validate")
     or
-    getQualifiedName() = "Objects.equals"
+    this.getQualifiedName() = "Objects.equals"
     or
-    getDeclaringType() instanceof TypeString and getName() = "equals"
+    this.getDeclaringType() instanceof TypeString and this.getName() = "equals"
     or
-    getDeclaringType().hasQualifiedName("com.google.common.base", "Preconditions")
+    this.getDeclaringType().hasQualifiedName("com.google.common.base", "Preconditions")
     or
-    getDeclaringType().getPackage().getName().matches("org.junit%")
+    this.getDeclaringType().getPackage().getName().matches("org.junit%")
     or
-    getDeclaringType().hasQualifiedName("com.google.common.base", "Strings") and
-    getName() = "isNullOrEmpty"
+    this.getDeclaringType().hasQualifiedName("com.google.common.base", "Strings") and
+    this.getName() = "isNullOrEmpty"
     or
-    getDeclaringType().hasQualifiedName("org.apache.commons.lang3", "StringUtils") and
-    getName() = "isNotEmpty"
+    this.getDeclaringType().hasQualifiedName("org.apache.commons.lang3", "StringUtils") and
+    this.getName() = "isNotEmpty"
     or
-    getDeclaringType().hasQualifiedName("java.lang", "Character") and
-    getName() = "isDigit"
+    this.getDeclaringType().hasQualifiedName("java.lang", "Character") and
+    this.getName() = "isDigit"
     or
-    getDeclaringType().hasQualifiedName("java.lang", "String") and
-    getName().regexpMatch("equalsIgnoreCase|regionMatches")
+    this.getDeclaringType().hasQualifiedName("java.lang", "String") and
+    this.getName().regexpMatch("equalsIgnoreCase|regionMatches")
     or
-    getDeclaringType().hasQualifiedName("java.lang", "Boolean") and
-    getName() = "parseBoolean"
+    this.getDeclaringType().hasQualifiedName("java.lang", "Boolean") and
+    this.getName() = "parseBoolean"
     or
-    getDeclaringType().hasQualifiedName("org.apache.commons.io", "IOUtils") and
-    getName() = "closeQuietly"
+    this.getDeclaringType().hasQualifiedName("org.apache.commons.io", "IOUtils") and
+    this.getName() = "closeQuietly"
     or
-    getDeclaringType().hasQualifiedName("org.springframework.util", "StringUtils") and
-    getName().regexpMatch("hasText|isEmpty")
+    this.getDeclaringType().hasQualifiedName("org.springframework.util", "StringUtils") and
+    this.getName().regexpMatch("hasText|isEmpty")
   }
 }
 
@@ -90,7 +90,8 @@ class ExternalAPIDataNode extends DataFlow::Node {
 
   /** Gets the description of the method being called. */
   string getMethodDescription() {
-    result = getMethod().getDeclaringType().getPackage() + "." + getMethod().getQualifiedName()
+    result =
+      this.getMethod().getDeclaringType().getPackage() + "." + this.getMethod().getQualifiedName()
   }
 }
 
@@ -130,7 +131,7 @@ class ExternalAPIUsedWithUntrustedData extends TExternalAPI {
 
   /** Gets the number of untrusted sources used with this external API. */
   int getNumberOfUntrustedSources() {
-    result = count(getUntrustedDataNode().getAnUntrustedSource())
+    result = count(this.getUntrustedDataNode().getAnUntrustedSource())
   }
 
   /** Gets a textual representation of this element. */

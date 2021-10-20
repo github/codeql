@@ -47,7 +47,7 @@ class Container extends @container, Top {
    */
   string getRelativePath() {
     exists(string absPath, string pref |
-      absPath = getAbsolutePath() and sourceLocationPrefix(pref)
+      absPath = this.getAbsolutePath() and sourceLocationPrefix(pref)
     |
       absPath = pref and result = ""
       or
@@ -74,7 +74,7 @@ class Container extends @container, Top {
    * </table>
    */
   string getBaseName() {
-    result = getAbsolutePath().regexpCapture(".*/(([^/]*?)(?:\\.([^.]*))?)", 1)
+    result = this.getAbsolutePath().regexpCapture(".*/(([^/]*?)(?:\\.([^.]*))?)", 1)
   }
 
   /**
@@ -100,7 +100,9 @@ class Container extends @container, Top {
    * <tr><td>"/tmp/x.tar.gz"</td><td>"gz"</td></tr>
    * </table>
    */
-  string getExtension() { result = getAbsolutePath().regexpCapture(".*/([^/]*?)(\\.([^.]*))?", 3) }
+  string getExtension() {
+    result = this.getAbsolutePath().regexpCapture(".*/([^/]*?)(\\.([^.]*))?", 3)
+  }
 
   /**
    * Gets the stem of this container, that is, the prefix of its base name up to
@@ -119,7 +121,9 @@ class Container extends @container, Top {
    * <tr><td>"/tmp/x.tar.gz"</td><td>"x.tar"</td></tr>
    * </table>
    */
-  string getStem() { result = getAbsolutePath().regexpCapture(".*/([^/]*?)(?:\\.([^.]*))?", 1) }
+  string getStem() {
+    result = this.getAbsolutePath().regexpCapture(".*/([^/]*?)(?:\\.([^.]*))?", 1)
+  }
 
   /** Gets the parent container of this file or folder, if any. */
   Container getParentContainer() { containerparent(result, this) }
@@ -128,20 +132,20 @@ class Container extends @container, Top {
   Container getAChildContainer() { this = result.getParentContainer() }
 
   /** Gets a file in this container. */
-  File getAFile() { result = getAChildContainer() }
+  File getAFile() { result = this.getAChildContainer() }
 
   /** Gets the file in this container that has the given `baseName`, if any. */
   File getFile(string baseName) {
-    result = getAFile() and
+    result = this.getAFile() and
     result.getBaseName() = baseName
   }
 
   /** Gets a sub-folder in this container. */
-  Folder getAFolder() { result = getAChildContainer() }
+  Folder getAFolder() { result = this.getAChildContainer() }
 
   /** Gets the sub-folder in this container that has the given `baseName`, if any. */
   Folder getFolder(string baseName) {
-    result = getAFolder() and
+    result = this.getAFolder() and
     result.getBaseName() = baseName
   }
 
@@ -152,7 +156,7 @@ class Container extends @container, Top {
    * to provide a different result. To get the absolute path of any `Container`, call
    * `Container.getAbsolutePath()` directly.
    */
-  override string toString() { result = getAbsolutePath() }
+  override string toString() { result = this.getAbsolutePath() }
 }
 
 /** A folder. */
@@ -160,7 +164,7 @@ class Folder extends Container, @folder {
   override string getAbsolutePath() { folders(this, result) }
 
   /** Gets the URL of this folder. */
-  override string getURL() { result = "folder://" + getAbsolutePath() }
+  override string getURL() { result = "folder://" + this.getAbsolutePath() }
 
   override string getAPrimaryQlClass() { result = "Folder" }
 }
@@ -183,7 +187,7 @@ class File extends Container, @file {
  * A Java archive file with a ".jar" extension.
  */
 class JarFile extends File {
-  JarFile() { getExtension() = "jar" }
+  JarFile() { this.getExtension() = "jar" }
 
   /**
    * Gets the main attribute with the specified `key`
@@ -195,13 +199,17 @@ class JarFile extends File {
    * Gets the "Specification-Version" main attribute
    * from this JAR file's manifest.
    */
-  string getSpecificationVersion() { result = getManifestMainAttribute("Specification-Version") }
+  string getSpecificationVersion() {
+    result = this.getManifestMainAttribute("Specification-Version")
+  }
 
   /**
    * Gets the "Implementation-Version" main attribute
    * from this JAR file's manifest.
    */
-  string getImplementationVersion() { result = getManifestMainAttribute("Implementation-Version") }
+  string getImplementationVersion() {
+    result = this.getManifestMainAttribute("Implementation-Version")
+  }
 
   /**
    * Gets the per-entry attribute for the specified `entry` and `key`

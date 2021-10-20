@@ -99,10 +99,10 @@ namespace My.Qltest
             var d2 = new D();
             Apply2(d =>
             {
-                Sink(d); // MISSING FLOW
+                Sink(d);
             }, d1, d2);
-            Sink(d1.Field); // MISSING FLOW
-            Sink(d2.Field2);
+            Sink(d1.Field);
+            Sink(d2.Field2); // SPURIOUS FLOW
         }
 
         object StepArgRes(object x) { return null; }

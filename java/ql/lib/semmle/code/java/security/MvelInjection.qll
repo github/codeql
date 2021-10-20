@@ -183,8 +183,8 @@ private predicate templateCompileStep(DataFlow::Node node1, DataFlow::Node node2
  */
 private class MvelScriptEngineCompilationMethod extends Method {
   MvelScriptEngineCompilationMethod() {
-    getDeclaringType() instanceof MvelScriptEngine and
-    hasName(["compile", "compiledScript"])
+    this.getDeclaringType() instanceof MvelScriptEngine and
+    this.hasName(["compile", "compiledScript"])
   }
 }
 
@@ -193,8 +193,8 @@ private class MvelScriptEngineCompilationMethod extends Method {
  */
 private class TemplateCompilerCompileMethod extends Method {
   TemplateCompilerCompileMethod() {
-    getDeclaringType() instanceof TemplateCompiler and
-    hasName("compile")
+    this.getDeclaringType() instanceof TemplateCompiler and
+    this.hasName("compile")
   }
 }
 
@@ -203,31 +203,31 @@ private class TemplateCompilerCompileMethod extends Method {
  */
 private class TemplateCompilerCompileTemplateMethod extends Method {
   TemplateCompilerCompileTemplateMethod() {
-    getDeclaringType() instanceof TemplateCompiler and
-    hasName("compileTemplate")
+    this.getDeclaringType() instanceof TemplateCompiler and
+    this.hasName("compileTemplate")
   }
 }
 
 private class MVEL extends RefType {
-  MVEL() { hasQualifiedName("org.mvel2", "MVEL") }
+  MVEL() { this.hasQualifiedName("org.mvel2", "MVEL") }
 }
 
 private class ExpressionCompiler extends RefType {
-  ExpressionCompiler() { hasQualifiedName("org.mvel2.compiler", "ExpressionCompiler") }
+  ExpressionCompiler() { this.hasQualifiedName("org.mvel2.compiler", "ExpressionCompiler") }
 }
 
 private class CompiledAccExpression extends RefType {
-  CompiledAccExpression() { hasQualifiedName("org.mvel2.compiler", "CompiledAccExpression") }
+  CompiledAccExpression() { this.hasQualifiedName("org.mvel2.compiler", "CompiledAccExpression") }
 }
 
 private class MvelScriptEngine extends RefType {
-  MvelScriptEngine() { hasQualifiedName("org.mvel2.jsr223", "MvelScriptEngine") }
+  MvelScriptEngine() { this.hasQualifiedName("org.mvel2.jsr223", "MvelScriptEngine") }
 }
 
 private class MvelCompiledScript extends RefType {
-  MvelCompiledScript() { hasQualifiedName("org.mvel2.jsr223", "MvelCompiledScript") }
+  MvelCompiledScript() { this.hasQualifiedName("org.mvel2.jsr223", "MvelCompiledScript") }
 }
 
 private class TemplateCompiler extends RefType {
-  TemplateCompiler() { hasQualifiedName("org.mvel2.templates", "TemplateCompiler") }
+  TemplateCompiler() { this.hasQualifiedName("org.mvel2.templates", "TemplateCompiler") }
 }

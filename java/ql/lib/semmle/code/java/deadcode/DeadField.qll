@@ -10,7 +10,7 @@ import semmle.code.java.frameworks.jackson.JacksonSerializability
  * This defines the set of fields for which we will determine liveness.
  */
 library class SourceField extends Field {
-  SourceField() { fromSource() }
+  SourceField() { this.fromSource() }
 }
 
 /**
@@ -26,7 +26,7 @@ class DeadField extends SourceField {
    */
   predicate isInDeadScope() {
     // `EnumConstant`s, and fields in dead classes, are reported in other queries.
-    getDeclaringType() instanceof DeadClass or
+    this.getDeclaringType() instanceof DeadClass or
     this instanceof EnumConstant
   }
 }
@@ -37,7 +37,7 @@ class DeadField extends SourceField {
  */
 class LiveField extends SourceField {
   LiveField() {
-    exists(FieldRead access | access = getAnAccess() |
+    exists(FieldRead access | access = this.getAnAccess() |
       isLive(access.getEnclosingCallable())
       or
       exists(Annotation a |
@@ -89,11 +89,11 @@ abstract class WhitelistedLiveField extends Field { }
  */
 class SerialVersionUIDField extends ReflectivelyReadField {
   SerialVersionUIDField() {
-    hasName("serialVersionUID") and
-    isStatic() and
-    isFinal() and
-    getType().hasName("long") and
-    getDeclaringType().getASupertype*() instanceof TypeSerializable
+    this.hasName("serialVersionUID") and
+    this.isStatic() and
+    this.isFinal() and
+    this.getType().hasName("long") and
+    this.getDeclaringType().getASupertype*() instanceof TypeSerializable
   }
 }
 
@@ -104,7 +104,7 @@ class SerialVersionUIDField extends ReflectivelyReadField {
 class LiveJaxbBoundField extends ReflectivelyReadField, JaxbBoundField {
   LiveJaxbBoundField() {
     // If the class is considered live, it must have at least one live constructor.
-    exists(Constructor c | c = getDeclaringType().getAConstructor() | isLive(c))
+    exists(Constructor c | c = this.getDeclaringType().getAConstructor() | isLive(c))
   }
 }
 
@@ -114,11 +114,11 @@ class LiveJaxbBoundField extends ReflectivelyReadField, JaxbBoundField {
  */
 class JUnitAnnotatedField extends ReflectivelyReadField {
   JUnitAnnotatedField() {
-    hasAnnotation("org.junit.experimental.theories", "DataPoint") or
-    hasAnnotation("org.junit.experimental.theories", "DataPoints") or
-    hasAnnotation("org.junit.runners", "Parameterized$Parameter") or
-    hasAnnotation("org.junit", "Rule") or
-    hasAnnotation("org.junit", "ClassRule")
+    this.hasAnnotation("org.junit.experimental.theories", "DataPoint") or
+    this.hasAnnotation("org.junit.experimental.theories", "DataPoints") or
+    this.hasAnnotation("org.junit.runners", "Parameterized$Parameter") or
+    this.hasAnnotation("org.junit", "Rule") or
+    this.hasAnnotation("org.junit", "ClassRule")
   }
 }
 
@@ -164,8 +164,8 @@ class JPAReadField extends ReflectivelyReadField {
       )
     |
       not this.hasAnnotation("javax.persistence", "Transient") and
-      not isStatic() and
-      not isFinal()
+      not this.isStatic() and
+      not this.isFinal()
     )
   }
 }

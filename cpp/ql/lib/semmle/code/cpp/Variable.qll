@@ -104,17 +104,17 @@ class Variable extends Declaration, @variable {
 
   override VariableDeclarationEntry getADeclarationEntry() { result.getDeclaration() = this }
 
-  override Location getADeclarationLocation() { result = getADeclarationEntry().getLocation() }
+  override Location getADeclarationLocation() { result = this.getADeclarationEntry().getLocation() }
 
   override VariableDeclarationEntry getDefinition() {
-    result = getADeclarationEntry() and
+    result = this.getADeclarationEntry() and
     result.isDefinition()
   }
 
-  override Location getDefinitionLocation() { result = getDefinition().getLocation() }
+  override Location getDefinitionLocation() { result = this.getDefinition().getLocation() }
 
   override Location getLocation() {
-    if exists(getDefinition())
+    if exists(this.getDefinition())
     then result = this.getDefinitionLocation()
     else result = this.getADeclarationLocation()
   }
@@ -199,7 +199,7 @@ class Variable extends Declaration, @variable {
  * ```
  */
 class VariableDeclarationEntry extends DeclarationEntry, @var_decl {
-  override Variable getDeclaration() { result = getVariable() }
+  override Variable getDeclaration() { result = this.getVariable() }
 
   override string getAPrimaryQlClass() { result = "VariableDeclarationEntry" }
 
@@ -276,32 +276,33 @@ class ParameterDeclarationEntry extends VariableDeclarationEntry {
   int getIndex() { param_decl_bind(underlyingElement(this), result, _) }
 
   private string getAnonymousParameterDescription() {
-    not exists(getName()) and
+    not exists(this.getName()) and
     exists(string idx |
       idx =
-        ((getIndex() + 1).toString() + "th")
+        ((this.getIndex() + 1).toString() + "th")
             .replaceAll("1th", "1st")
             .replaceAll("2th", "2nd")
             .replaceAll("3th", "3rd")
             .replaceAll("11st", "11th")
             .replaceAll("12nd", "12th")
             .replaceAll("13rd", "13th") and
-      if exists(getCanonicalName())
-      then result = "declaration of " + getCanonicalName() + " as anonymous " + idx + " parameter"
+      if exists(this.getCanonicalName())
+      then
+        result = "declaration of " + this.getCanonicalName() + " as anonymous " + idx + " parameter"
       else result = "declaration of " + idx + " parameter"
     )
   }
 
   override string toString() {
-    isDefinition() and
-    result = "definition of " + getName()
+    this.isDefinition() and
+    result = "definition of " + this.getName()
     or
-    not isDefinition() and
-    if getName() = getCanonicalName()
-    then result = "declaration of " + getName()
-    else result = "declaration of " + getCanonicalName() + " as " + getName()
+    not this.isDefinition() and
+    if this.getName() = this.getCanonicalName()
+    then result = "declaration of " + this.getName()
+    else result = "declaration of " + this.getCanonicalName() + " as " + this.getName()
     or
-    result = getAnonymousParameterDescription()
+    result = this.getAnonymousParameterDescription()
   }
 
   /**
@@ -311,8 +312,12 @@ class ParameterDeclarationEntry extends VariableDeclarationEntry {
    */
   string getTypedName() {
     exists(string typeString, string nameString |
-      (if exists(getType().getName()) then typeString = getType().getName() else typeString = "") and
-      (if exists(getName()) then nameString = getName() else nameString = "") and
+      (
+        if exists(this.getType().getName())
+        then typeString = this.getType().getName()
+        else typeString = ""
+      ) and
+      (if exists(this.getName()) then nameString = this.getName() else nameString = "") and
       if typeString != "" and nameString != ""
       then result = typeString + " " + nameString
       else result = typeString + nameString
@@ -540,7 +545,7 @@ class MemberVariable extends Variable, @membervariable {
   }
 
   /** Holds if this member is mutable. */
-  predicate isMutable() { getADeclarationEntry().hasSpecifier("mutable") }
+  predicate isMutable() { this.getADeclarationEntry().hasSpecifier("mutable") }
 
   private Type getAType() { membervariables(underlyingElement(this), unresolveElement(result), _) }
 }

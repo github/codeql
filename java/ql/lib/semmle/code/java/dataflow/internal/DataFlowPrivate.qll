@@ -139,11 +139,7 @@ predicate readStep(Node node1, Content f, Node node2) {
  */
 predicate clearsContent(Node n, Content c) {
   c instanceof FieldContent and
-  (
-    n = any(PostUpdateNode pun | storeStep(_, c, pun)).getPreUpdateNode()
-    or
-    FlowSummaryImpl::Private::Steps::summaryStoresIntoArg(c, n)
-  )
+  n = any(PostUpdateNode pun | storeStep(_, c, pun)).getPreUpdateNode()
   or
   FlowSummaryImpl::Private::Steps::summaryClearsContent(n, c)
 }
@@ -369,3 +365,14 @@ predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
 
 /** Extra data-flow steps needed for lambda flow analysis. */
 predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) { none() }
+
+/**
+ * Holds if flow is allowed to pass from parameter `p` and back to itself as a
+ * side-effect, resulting in a summary from `p` to itself.
+ *
+ * One example would be to allow flow like `p.foo = p.bar;`, which is disallowed
+ * by default as a heuristic.
+ */
+predicate allowParameterReturnInSelf(ParameterNode p) {
+  FlowSummaryImpl::Private::summaryAllowParameterReturnInSelf(p)
+}

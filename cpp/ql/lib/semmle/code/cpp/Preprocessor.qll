@@ -29,8 +29,8 @@ class PreprocessorDirective extends Locatable, @preprocdirect {
   PreprocessorBranch getAGuard() {
     exists(PreprocessorEndif e, int line |
       result.getEndIf() = e and
-      e.getFile() = getFile() and
-      result.getFile() = getFile() and
+      e.getFile() = this.getFile() and
+      result.getFile() = this.getFile() and
       line = this.getLocation().getStartLine() and
       result.getLocation().getStartLine() < line and
       line < e.getLocation().getEndLine()
@@ -69,7 +69,9 @@ class PreprocessorBranchDirective extends PreprocessorDirective, TPreprocessorBr
    * directives in different translation units, then there can be more than
    * one result.
    */
-  PreprocessorEndif getEndIf() { preprocpair(unresolveElement(getIf()), unresolveElement(result)) }
+  PreprocessorEndif getEndIf() {
+    preprocpair(unresolveElement(this.getIf()), unresolveElement(result))
+  }
 
   /**
    * Gets the next `#elif`, `#else` or `#endif` matching this branching
@@ -137,7 +139,7 @@ class PreprocessorBranch extends PreprocessorBranchDirective, @ppd_branch {
    * which evaluated it, or was not taken by any translation unit which
    * evaluated it.
    */
-  predicate wasPredictable() { not (wasTaken() and wasNotTaken()) }
+  predicate wasPredictable() { not (this.wasTaken() and this.wasNotTaken()) }
 }
 
 /**
@@ -268,7 +270,7 @@ class PreprocessorUndef extends PreprocessorDirective, @ppd_undef {
   /**
    * Gets the name of the macro that is undefined.
    */
-  string getName() { result = getHead() }
+  string getName() { result = this.getHead() }
 }
 
 /**

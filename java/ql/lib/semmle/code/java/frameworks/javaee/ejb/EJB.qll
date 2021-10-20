@@ -8,7 +8,7 @@ import EJBJarXML
  */
 abstract class EJB extends Class {
   /** Gets a `Callable` that is directly or indirectly called from within the EJB. */
-  Callable getAUsedCallable() { getACallable().polyCalls*(result) }
+  Callable getAUsedCallable() { this.getACallable().polyCalls*(result) }
 }
 
 /**
@@ -33,16 +33,16 @@ class SessionEJB extends EJB {
     // Either the EJB does not declare any business interfaces explicitly
     // and implements a single interface candidate,
     // which is then considered to be the business interface...
-    count(getAnExplicitBusinessInterface()) = 0 and
-    count(getAnImplementedBusinessInterfaceCandidate()) = 1 and
-    result = getAnImplementedBusinessInterfaceCandidate()
+    count(this.getAnExplicitBusinessInterface()) = 0 and
+    count(this.getAnImplementedBusinessInterfaceCandidate()) = 1 and
+    result = this.getAnImplementedBusinessInterfaceCandidate()
     or
     // ...or each business interface needs to be declared explicitly.
     (
-      count(getAnImplementedBusinessInterfaceCandidate()) != 1 or
-      count(getAnExplicitBusinessInterface()) != 0
+      count(this.getAnImplementedBusinessInterfaceCandidate()) != 1 or
+      count(this.getAnExplicitBusinessInterface()) != 0
     ) and
-    result = getAnExplicitBusinessInterface()
+    result = this.getAnExplicitBusinessInterface()
   }
 
   /**
@@ -198,7 +198,7 @@ abstract class EjbInterfaceAnnotation extends Annotation {
     // Returns the type `Foo` of any type literal `Foo.class` occurring
     // within the "value" element of this annotation.
     // Uses `getAChildExpr*()` since the "value" element can have type `Class` or `Class[]`.
-    exists(TypeLiteral tl | tl = getValue("value").getAChildExpr*() |
+    exists(TypeLiteral tl | tl = this.getValue("value").getAChildExpr*() |
       result = tl.getReferencedType()
     )
   }
@@ -447,7 +447,7 @@ class AnnotatedRemoteHomeInterface extends LegacyEjbRemoteHomeInterface {
   SessionEJB getAnEJB() { result.getAnAnnotation().(RemoteHomeAnnotation).getANamedType() = this }
 
   /** Gets a remote interface associated with this legacy remote home interface. */
-  Interface getAnAssociatedRemoteInterface() { result = getACreateMethod().getReturnType() }
+  Interface getAnAssociatedRemoteInterface() { result = this.getACreateMethod().getReturnType() }
 }
 
 /** A legacy remote home interface specified within an XML deployment descriptor. */
@@ -511,7 +511,7 @@ class AnnotatedLocalHomeInterface extends LegacyEjbLocalHomeInterface {
   SessionEJB getAnEJB() { result.getAnAnnotation().(LocalHomeAnnotation).getANamedType() = this }
 
   /** Gets a local interface associated with this legacy local home interface. */
-  Interface getAnAssociatedLocalInterface() { result = getACreateMethod().getReturnType() }
+  Interface getAnAssociatedLocalInterface() { result = this.getACreateMethod().getReturnType() }
 }
 
 /** A legacy local home interface specified within an XML deployment descriptor. */
@@ -562,8 +562,8 @@ class RemoteInterface extends Interface {
 
   /** Gets a remote method implementation for this remote interface. */
   Method getARemoteMethodImplementation() {
-    result = getARemoteMethodImplementationChecked() or
-    result = getARemoteMethodImplementationUnchecked()
+    result = this.getARemoteMethodImplementationChecked() or
+    result = this.getARemoteMethodImplementationUnchecked()
   }
 
   /**
@@ -572,7 +572,7 @@ class RemoteInterface extends Interface {
    * abstract methods or overriding within an interface hierarchy.
    */
   Method getARemoteMethodImplementationChecked() {
-    result.overrides(getARemoteMethod()) and
+    result.overrides(this.getARemoteMethod()) and
     exists(result.getBody())
   }
 
@@ -586,9 +586,9 @@ class RemoteInterface extends Interface {
    */
   Method getARemoteMethodImplementationUnchecked() {
     exists(SessionEJB ejb, Method rm |
-      ejb = getAnEJB() and
+      ejb = this.getAnEJB() and
       not ejb.getASupertype*() = this and
-      rm = getARemoteMethod() and
+      rm = this.getARemoteMethod() and
       result = getAnInheritedMatchingMethodIgnoreThrows(ejb, rm.getSignature()) and
       not exists(inheritsMatchingMethodExceptThrows(ejb, rm))
     ) and

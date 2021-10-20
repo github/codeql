@@ -169,27 +169,27 @@ private class PpArrayCreationExpr extends PpAst, ArrayCreationExpr {
   override string getPart(int i) {
     i = 0 and result = "new "
     or
-    i = 1 and result = baseType()
+    i = 1 and result = this.baseType()
     or
-    i = 2 + 3 * dimensionIndex() and result = "["
+    i = 2 + 3 * this.dimensionIndex() and result = "["
     or
-    i = 4 + 3 * dimensionIndex() and result = "]"
+    i = 4 + 3 * this.dimensionIndex() and result = "]"
     or
-    i = 4 + 3 * exprDims() + [1 .. nonExprDims()] and result = "[]"
+    i = 4 + 3 * this.exprDims() + [1 .. this.nonExprDims()] and result = "[]"
   }
 
   private string baseType() { result = this.getType().(Array).getElementType().toString() }
 
   private int dimensionIndex() { exists(this.getDimension(result)) }
 
-  private int exprDims() { result = max(int j | j = 0 or j = 1 + dimensionIndex()) }
+  private int exprDims() { result = max(int j | j = 0 or j = 1 + this.dimensionIndex()) }
 
-  private int nonExprDims() { result = this.getType().(Array).getDimension() - exprDims() }
+  private int nonExprDims() { result = this.getType().(Array).getDimension() - this.exprDims() }
 
   override PpAst getChild(int i) {
     exists(int j | result = this.getDimension(j) and i = 3 + 3 * j)
     or
-    i = 5 + 3 * exprDims() + nonExprDims() and result = this.getInit()
+    i = 5 + 3 * this.exprDims() + this.nonExprDims() and result = this.getInit()
   }
 }
 
@@ -539,27 +539,27 @@ private class PpForStmt extends PpAst, ForStmt {
     or
     exists(int j | j > 0 and exists(this.getInit(j)) and i = 2 + 2 * j and result = ", ")
     or
-    i = 1 + lastInitIndex() and result = "; "
+    i = 1 + this.lastInitIndex() and result = "; "
     or
-    i = 3 + lastInitIndex() and result = "; "
+    i = 3 + this.lastInitIndex() and result = "; "
     or
     exists(int j |
-      j > 0 and exists(this.getUpdate(j)) and i = 3 + lastInitIndex() + 2 * j and result = ", "
+      j > 0 and exists(this.getUpdate(j)) and i = 3 + this.lastInitIndex() + 2 * j and result = ", "
     )
     or
-    i = 1 + lastUpdateIndex() and result = ")"
+    i = 1 + this.lastUpdateIndex() and result = ")"
     or
-    i = 2 + lastUpdateIndex() and result = " " and this.getStmt() instanceof BlockStmt
+    i = 2 + this.lastUpdateIndex() and result = " " and this.getStmt() instanceof BlockStmt
   }
 
   private int lastInitIndex() { result = 3 + 2 * max(int j | exists(this.getInit(j))) }
 
   private int lastUpdateIndex() {
-    result = 4 + lastInitIndex() + 2 * max(int j | exists(this.getUpdate(j)))
+    result = 4 + this.lastInitIndex() + 2 * max(int j | exists(this.getUpdate(j)))
   }
 
   override predicate newline(int i) {
-    i = 2 + lastUpdateIndex() and not this.getStmt() instanceof BlockStmt
+    i = 2 + this.lastUpdateIndex() and not this.getStmt() instanceof BlockStmt
   }
 
   override PpAst getChild(int i) {
@@ -567,15 +567,15 @@ private class PpForStmt extends PpAst, ForStmt {
     or
     exists(int j | result = this.getInit(j) and i = 3 + 2 * j)
     or
-    i = 2 + lastInitIndex() and result = this.getCondition()
+    i = 2 + this.lastInitIndex() and result = this.getCondition()
     or
-    exists(int j | result = this.getUpdate(j) and i = 4 + lastInitIndex() + 2 * j)
+    exists(int j | result = this.getUpdate(j) and i = 4 + this.lastInitIndex() + 2 * j)
     or
-    i = 3 + lastUpdateIndex() and result = this.getStmt()
+    i = 3 + this.lastUpdateIndex() and result = this.getStmt()
   }
 
   override predicate indents(int i) {
-    i = 3 + lastUpdateIndex() and not this.getStmt() instanceof BlockStmt
+    i = 3 + this.lastUpdateIndex() and not this.getStmt() instanceof BlockStmt
   }
 }
 
@@ -654,9 +654,9 @@ private class PpTryStmt extends PpAst, TryStmt {
     or
     exists(int j | exists(this.getResourceExpr(j)) and i = 3 + 2 * j and result = ";")
     or
-    i = 2 + lastResourceIndex() and result = ") " and exists(this.getAResource())
+    i = 2 + this.lastResourceIndex() and result = ") " and exists(this.getAResource())
     or
-    i = 1 + lastCatchIndex() and result = " finally " and exists(this.getFinally())
+    i = 1 + this.lastCatchIndex() and result = " finally " and exists(this.getFinally())
   }
 
   private int lastResourceIndex() {
@@ -664,17 +664,17 @@ private class PpTryStmt extends PpAst, TryStmt {
   }
 
   private int lastCatchIndex() {
-    result = 4 + lastResourceIndex() + max(int j | exists(this.getCatchClause(j)) or j = 0)
+    result = 4 + this.lastResourceIndex() + max(int j | exists(this.getCatchClause(j)) or j = 0)
   }
 
   override PpAst getChild(int i) {
     exists(int j | i = 2 + 2 * j and result = this.getResource(j))
     or
-    i = 3 + lastResourceIndex() and result = this.getBlock()
+    i = 3 + this.lastResourceIndex() and result = this.getBlock()
     or
-    exists(int j | i = 4 + lastResourceIndex() + j and result = this.getCatchClause(j))
+    exists(int j | i = 4 + this.lastResourceIndex() + j and result = this.getCatchClause(j))
     or
-    i = 2 + lastCatchIndex() and result = this.getFinally()
+    i = 2 + this.lastCatchIndex() and result = this.getFinally()
   }
 }
 
@@ -728,11 +728,11 @@ private class PpSwitchCase extends PpAst, SwitchCase {
     or
     exists(int j | i = 2 * j and j != 0 and result = ", " and exists(this.(ConstCase).getValue(j)))
     or
-    i = 1 + lastConstCaseValueIndex() and result = ":" and not this.isRule()
+    i = 1 + this.lastConstCaseValueIndex() and result = ":" and not this.isRule()
     or
-    i = 1 + lastConstCaseValueIndex() and result = " -> " and this.isRule()
+    i = 1 + this.lastConstCaseValueIndex() and result = " -> " and this.isRule()
     or
-    i = 3 + lastConstCaseValueIndex() and result = ";" and exists(this.getRuleExpression())
+    i = 3 + this.lastConstCaseValueIndex() and result = ";" and exists(this.getRuleExpression())
   }
 
   private int lastConstCaseValueIndex() {
@@ -742,9 +742,9 @@ private class PpSwitchCase extends PpAst, SwitchCase {
   override PpAst getChild(int i) {
     exists(int j | i = 1 + 2 * j and result = this.(ConstCase).getValue(j))
     or
-    i = 2 + lastConstCaseValueIndex() and result = this.getRuleExpression()
+    i = 2 + this.lastConstCaseValueIndex() and result = this.getRuleExpression()
     or
-    i = 2 + lastConstCaseValueIndex() and result = this.getRuleStatement()
+    i = 2 + this.lastConstCaseValueIndex() and result = this.getRuleStatement()
   }
 }
 
