@@ -1,0 +1,3 @@
+lgtm,codescanning
+* Two new queries, "Android Fragment injection" (`java/android/fragment-injection`) and "Android Fragment injection in PreferenceActivity" (`java/android/fragment-injection-preference-activity`) have been added.
+These queries find exported Android Activities that instantiate and host Fragments created from user-provided data, which can lead to access control bypass and exposes the application to unintended effects.
