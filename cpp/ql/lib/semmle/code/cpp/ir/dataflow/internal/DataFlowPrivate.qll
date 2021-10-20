@@ -241,7 +241,7 @@ private predicate suppressUnusedNode(Node n) { any() }
 // Java QL library compatibility wrappers
 //////////////////////////////////////////////////////////////////////////////
 /** A node that performs a type cast. */
-class CastNode extends InstructionNode {
+class CastNode extends Node {
   CastNode() { none() } // stub implementation
 }
 

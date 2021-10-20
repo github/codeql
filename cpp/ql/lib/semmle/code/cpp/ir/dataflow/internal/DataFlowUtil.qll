@@ -202,7 +202,7 @@ class OperandNode extends Node, TOperandNode {
 
 /**
  * INTERNAL: do not use.
- * 
+ *
  * A `StoreNode` is a node that has been (or is about to be) the
  * source or target of a `storeStep`.
  */
@@ -295,7 +295,7 @@ private class StoreNodeOperand extends StoreNode, TStoreNodeOperand {
 
 /**
  * INTERNAL: do not use.
- * 
+ *
  * A `ReadNode` is a node that has been (or is about to be) the
  * source or target of a `readStep`.
  */
@@ -350,7 +350,7 @@ class ReadNode extends Node, TReadNode {
 
 /**
  * INTERNAL: do not use.
- * 
+ *
  * A phi node produced by the shared SSA library, viewed as a node in a data flow graph.
  */
 class SsaPhiNode extends Node, TSsaPhiNode {
