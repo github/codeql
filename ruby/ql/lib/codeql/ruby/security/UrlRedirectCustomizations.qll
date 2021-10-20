@@ -9,6 +9,7 @@ private import codeql.ruby.DataFlow
 private import codeql.ruby.Concepts
 private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.dataflow.BarrierGuards
+private import codeql.ruby.dataflow.Sanitizers
 
 /**
  * Provides default sources, sinks and sanitizers for detecting
@@ -103,11 +104,7 @@ module UrlRedirect {
    *
    * We currently don't catch these cases.
    */
-  class StringInterpolationAsSanitizer extends Sanitizer {
-    StringInterpolationAsSanitizer() {
-      exists(StringlikeLiteral str, int n | str.getComponent(n) = this.asExpr().getExpr() and n > 0)
-    }
-  }
+  class StringInterpolationAsSanitizer extends PrefixedStringInterpolation, Sanitizer { }
 
   /**
    * These methods return a new `ActionController::Parameters` or a `Hash` containing a subset of
