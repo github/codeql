@@ -244,6 +244,8 @@ private class ParamNodeEx extends NodeEx {
   }
 
   int getPosition() { this.isParameterOf(_, result) }
+
+  predicate allowParameterReturnInSelf() { allowParameterReturnInSelfCached(this.asNode()) }
 }
 
 private class RetNodeEx extends NodeEx {
@@ -744,8 +746,12 @@ private module Stage1 {
       returnFlowCallableNodeCand(c, kind, config) and
       p.getEnclosingCallable() = c and
       exists(ap) and
-      // we don't expect a parameter to return stored in itself
-      not kind.(ParamUpdateReturnKind).getPosition() = p.getPosition()
+      // we don't expect a parameter to return stored in itself, unless explicitly allowed
+      (
+        not kind.(ParamUpdateReturnKind).getPosition() = p.getPosition()
+        or
+        p.allowParameterReturnInSelf()
+      )
     )
   }
 
@@ -1394,8 +1400,12 @@ private module Stage2 {
       fwdFlow(ret, any(CcCall ccc), apSome(ap), ap0, config) and
       kind = ret.getKind() and
       p.getPosition() = pos and
-      // we don't expect a parameter to return stored in itself
-      not kind.(ParamUpdateReturnKind).getPosition() = pos
+      // we don't expect a parameter to return stored in itself, unless explicitly allowed
+      (
+        not kind.(ParamUpdateReturnKind).getPosition() = pos
+        or
+        p.allowParameterReturnInSelf()
+      )
     )
   }
 
@@ -2083,8 +2093,12 @@ private module Stage3 {
       fwdFlow(ret, any(CcCall ccc), apSome(ap), ap0, config) and
       kind = ret.getKind() and
       p.getPosition() = pos and
-      // we don't expect a parameter to return stored in itself
-      not kind.(ParamUpdateReturnKind).getPosition() = pos
+      // we don't expect a parameter to return stored in itself, unless explicitly allowed
+      (
+        not kind.(ParamUpdateReturnKind).getPosition() = pos
+        or
+        p.allowParameterReturnInSelf()
+      )
     )
   }
 
@@ -2843,8 +2857,12 @@ private module Stage4 {
       fwdFlow(ret, any(CcCall ccc), apSome(ap), ap0, config) and
       kind = ret.getKind() and
       p.getPosition() = pos and
-      // we don't expect a parameter to return stored in itself
-      not kind.(ParamUpdateReturnKind).getPosition() = pos
+      // we don't expect a parameter to return stored in itself, unless explicitly allowed
+      (
+        not kind.(ParamUpdateReturnKind).getPosition() = pos
+        or
+        p.allowParameterReturnInSelf()
+      )
     )
   }
 
@@ -2916,6 +2934,8 @@ private class SummaryCtxSome extends SummaryCtx, TSummaryCtxSome {
   SummaryCtxSome() { this = TSummaryCtxSome(p, ap) }
 
   int getParameterPos() { p.isParameterOf(_, result) }
+
+  ParamNodeEx getParamNode() { result = p }
 
   override string toString() { result = p + ": " + ap }
 
@@ -3617,7 +3637,12 @@ private predicate paramFlowsThrough(
     ap = mid.getAp() and
     apa = ap.getApprox() and
     pos = sc.getParameterPos() and
-    not kind.(ParamUpdateReturnKind).getPosition() = pos
+    // we don't expect a parameter to return stored in itself, unless explicitly allowed
+    (
+      not kind.(ParamUpdateReturnKind).getPosition() = pos
+      or
+      sc.getParamNode().allowParameterReturnInSelf()
+    )
   )
 }
 
