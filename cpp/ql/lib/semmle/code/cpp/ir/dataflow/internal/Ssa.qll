@@ -324,6 +324,30 @@ private module Cached {
       use.hasRankInBlock(bb2, i2) and
       flowOutOfAddressStep(use.getOperand(), nodeTo)
     )
+    or
+    // This final case is a bit annoying. The write side effect on an expression like `a = new A;` writes
+    // to a fresh address returned by `operator new`, and there's no easy way to use the shared SSA
+    // library to hook that up to the assignment to `a`. So instead we flow to the _first_ use of the
+    // value computed by `operator new` that occurs after `nodeFrom` (to avoid a loop in the
+    // dataflow graph).
+    exists(WriteSideEffectInstruction write, IRBlock bb, int i1, int i2, Operand op |
+      nodeFrom.getInstruction().(CallInstruction).getStaticCallTarget() instanceof
+        Alloc::OperatorNewAllocationFunction and
+      write = nodeFrom.getStoreInstruction() and
+      bb.getInstruction(i1) = write and
+      bb.getInstruction(i2) = op.getUse() and
+      // Flow to an instruction that occurs later in the block.
+      valueFlow*(nodeFrom.getInstruction(), op.getDef()) and
+      nodeTo.asOperand() = op and
+      i2 > i1 and
+      // There is no previous instruction that also occurs after `nodeFrom`.
+      not exists(Instruction instr, int i |
+        bb.getInstruction(i) = instr and
+        valueFlow(instr, op.getDef()) and
+        i1 < i and
+        i < i2
+      )
+    )
   }
 
   private predicate fromReadNode(ReadNode nodeFrom, Node nodeTo) {
@@ -400,6 +424,16 @@ private module Cached {
       // And flow to the next load of that address
       flowOutOfAddressStep([mid.asInstruction().getAUse(), mid.asOperand()], nodeTo)
     )
+  }
+
+  private predicate valueFlow(Instruction iFrom, Instruction iTo) {
+    iTo.(CopyValueInstruction).getSourceValue() = iFrom
+    or
+    iTo.(ConvertInstruction).getUnary() = iFrom
+    or
+    iTo.(CheckedConvertOrNullInstruction).getUnary() = iFrom
+    or
+    iTo.(InheritanceConversionInstruction).getUnary() = iFrom
   }
 
   private predicate flowOutOfAddressStep(Operand operand, Node nTo) {

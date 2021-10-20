@@ -21,9 +21,9 @@ void test_unique_ptr_struct() {
 	std::unique_ptr<A> p1(new A{source(), 0});
 	std::unique_ptr<A> p2 = std::make_unique<A>(source(), 0);
 	
-	sink(p1->x); // $ MISSING: ast,ir
+	sink(p1->x); // $ ir MISSING: ast
 	sink(p1->y);
-	sink(p2->x); // $ MISSING: ast,ir
+	sink(p2->x); // $ ir=22:46 MISSING: ast
 	sink(p2->y);
 }
 

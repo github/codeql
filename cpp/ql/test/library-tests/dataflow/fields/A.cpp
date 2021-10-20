@@ -46,7 +46,7 @@ public:
   {
     C *c = new C();
     B *b = B::make(c);
-    sink(b->c); // $ast MISSING: ir
+    sink(b->c); // $ast,ir
   }
 
   void f2()
@@ -54,7 +54,7 @@ public:
     B *b = new B();
     b->set(new C1());
     sink(b->get());                // $ ast ir=55:12
-    sink((new B(new C()))->get()); // $ ast MISSING: ir
+    sink((new B(new C()))->get()); // $ ast,ir
   }
 
   void f3()
@@ -149,8 +149,8 @@ public:
   {
     B *b = new B();
     D *d = new D(b, r());
-    sink(d->b);    // $ ast MISSING: ir
-    sink(d->b->c); // $ ast MISSING: ir
+    sink(d->b);    // $ ast,ir=143:25 ast,ir=150:12
+    sink(d->b->c); // $ ast,ir
     sink(b->c);    // $ ast,ir
   }
 
@@ -162,11 +162,11 @@ public:
     MyList *l3 = new MyList(nullptr, l2);
     sink(l3->head);                   // no flow, b is nested beneath at least one ->next
     sink(l3->next->head);             // no flow
-    sink(l3->next->next->head);       // $ ast MISSING: ir
+    sink(l3->next->next->head);       // $ ast,ir
     sink(l3->next->next->next->head); // no flow
     for (MyList *l = l3; l != nullptr; l = l->next)
     {
-      sink(l->head); // $ ast MISSING: ir
+      sink(l->head); // $ ast,ir
     }
   }
 
