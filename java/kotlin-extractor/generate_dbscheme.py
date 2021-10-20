@@ -7,6 +7,8 @@ enums = {}
 unions = {}
 tables = {}
 
+dbscheme = sys.argv[1] if len(sys.argv) >= 2 else '../ql/lib/config/semmlecode.dbscheme'
+
 def parse_dbscheme(filename):
     with open(filename, 'r') as f:
         dbscheme = f.read()
@@ -38,7 +40,7 @@ def parse_dbscheme(filename):
         columns = list(re.findall('(\S+)\s*:\s*([^\s,]+)(?:\s+(ref)|)', body))
         tables[relname] = columns
 
-parse_dbscheme('../ql/lib/config/semmlecode.dbscheme')
+parse_dbscheme(dbscheme)
 
 type_aliases = {}
 
