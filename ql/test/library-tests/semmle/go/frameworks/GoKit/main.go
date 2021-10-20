@@ -11,12 +11,12 @@ type MyService interface {
 }
 
 func makeEndpointLit(svc MyService) endpoint.Endpoint {
-	return func(_ context.Context, request interface{}) (interface{}, error) { // $source=definition of request
+	return func(_ context.Context, request interface{}) (interface{}, error) { // $source="definition of request"
 		return request, nil
 	}
 }
 
-func endpointfn(_ context.Context, request interface{}) (interface{}, error) { // $source=definition of request
+func endpointfn(_ context.Context, request interface{}) (interface{}, error) { // $source="definition of request"
 	return request, nil
 }
 

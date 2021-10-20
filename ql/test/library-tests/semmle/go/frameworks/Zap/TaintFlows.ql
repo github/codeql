@@ -22,7 +22,7 @@ class ZapTest extends InlineExpectationsTest {
     tag = "zap" and
     exists(DataFlow::Node sink | any(TestConfig c).hasFlow(_, sink) |
       element = sink.toString() and
-      value = sink.toString() and
+      value = "\"" + sink.toString() + "\"" and
       sink.hasLocationInfo(file, line, _, _, _)
     )
   }
