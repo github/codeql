@@ -6,7 +6,9 @@ private import internal.FlowSummaryImpl as Impl
 private import internal.DataFlowDispatch
 
 // import all instances below
-private module Summaries { }
+private module Summaries {
+  private import codeql.ruby.Frameworks
+}
 
 class SummaryComponent = Impl::Public::SummaryComponent;
 
