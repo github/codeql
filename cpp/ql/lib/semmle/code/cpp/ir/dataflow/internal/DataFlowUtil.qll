@@ -22,7 +22,8 @@ private module Cached {
     TVariableNode(Variable var) or
     TStoreNodeInstr(Instruction i) { Ssa::explicitWrite(_, _, i) } or
     TStoreNodeOperand(ArgumentOperand op) { Ssa::explicitWrite(_, _, op.getDef()) } or
-    TReadNode(Instruction i) { needsPostReadNode(i) }
+    TReadNode(Instruction i) { needsPostReadNode(i) } or
+    TSsaPhiNode(Ssa::PhiNode phi)
 
   cached
   predicate localFlowStepCached(Node nodeFrom, Node nodeTo) {
@@ -345,6 +346,44 @@ class ReadNode extends Node, TReadNode {
     not exists(this.getAPredecessor()) and
     not readStep(_, _, this)
   }
+}
+
+/**
+ * INTERNAL: do not use.
+ * 
+ * A phi node produced by the shared SSA library, viewed as a node in a data flow graph.
+ */
+class SsaPhiNode extends Node, TSsaPhiNode {
+  Ssa::PhiNode phi;
+
+  SsaPhiNode() { this = TSsaPhiNode(phi) }
+
+  /* Get the phi node associated with this node. */
+  Ssa::PhiNode getPhiNode() { result = phi }
+
+  override Declaration getEnclosingCallable() { result = this.getFunction() }
+
+  override Function getFunction() { result = phi.getBasicBlock().getEnclosingFunction() }
+
+  override IRType getType() { result instanceof IRVoidType }
+
+  override Location getLocation() { result = phi.getBasicBlock().getLocation() }
+
+  /** Holds if this phi node has input from the `rnk`'th write operation in block `block`. */
+  final predicate hasInputAtRankInBlock(IRBlock block, int rnk) {
+    hasInputAtRankInBlock(block, rnk, _)
+  }
+
+  /**
+   * Holds if this phi node has input from the definition `input` (which is the `rnk`'th write
+   * operation in block `block`).
+   */
+  cached
+  final predicate hasInputAtRankInBlock(IRBlock block, int rnk, Ssa::Definition input) {
+    Ssa::phiHasInputFromBlock(phi, input, _) and input.definesAt(_, block, rnk)
+  }
+
+  override string toString() { result = "Phi" }
 }
 
 /**

@@ -336,6 +336,34 @@ private module Cached {
     )
   }
 
+  private predicate fromPhiNode(SsaPhiNode nodeFrom, Node nodeTo) {
+    exists(PhiNode phi, Use use, IRBlock block, int rnk |
+      phi = nodeFrom.getPhiNode() and
+      adjacentDefRead(phi, _, _, block, rnk) and
+      use.hasRankInBlock(block, rnk) and
+      flowOutOfAddressStep(use.getOperand(), nodeTo)
+    )
+  }
+
+  private predicate toPhiNode(Node nodeFrom, SsaPhiNode nodeTo) {
+    // Flow to phi nodes
+    exists(Def def, IRBlock block, int rnk |
+      def.hasRankInBlock(block, rnk) and
+      nodeTo.hasInputAtRankInBlock(block, rnk)
+    |
+      exists(StoreNode store |
+        store = nodeFrom and
+        store.isTerminal() and
+        def.getInstruction() = store.getStoreInstruction()
+      )
+      or
+      def.getInstruction() = nodeFrom.asInstruction()
+    )
+    or
+    // Phi -> phi flow
+    nodeTo.hasInputAtRankInBlock(_, _, nodeFrom.(SsaPhiNode).getPhiNode())
+  }
+
   /**
    * Holds if `nodeFrom` is a read or write, and `nTo` is the next subsequent read of the variable
    * written (or read) by `storeOrRead`.
@@ -350,6 +378,10 @@ private module Cached {
     or
     // Use-use flow from a `ReadNode` to an `OperandNode`
     fromReadNode(nodeFrom, nodeTo)
+    or
+    fromPhiNode(nodeFrom, nodeTo)
+    or
+    toPhiNode(nodeFrom, nodeTo)
   }
 
   private predicate flowOutOfAddressStep(Operand operand, Node nTo) {
