@@ -69,12 +69,25 @@ string asSourceModel(Callable api, string output, string kind) {
  */
 private string asPartialModel(Callable api) {
   result =
-    api.getCompilationUnit().getPackage().getName() + ";" //
-      + api.getDeclaringType().nestedName() + ";" //
+    asModelName(api) + ";" //
       + isExtensible(api.getDeclaringType()).toString() + ";" //
       + api.getName() + ";" //
       + paramsString(api) + ";" //
       + /* ext + */ ";" //
+}
+
+/**
+ * Returns the appropriate type name for the model. Either the type
+ * declaring the method or the supertype introducing the method.
+ */
+private string asModelName(Callable api) {
+  if api.(Method).getASourceOverriddenMethod().fromSource()
+  then result = typeAsModel(api.(Method).getASourceOverriddenMethod().getDeclaringType())
+  else result = typeAsModel(api.getDeclaringType())
+}
+
+private string typeAsModel(RefType type) {
+  result = type.getCompilationUnit().getPackage().getName() + ";" + type.nestedName()
 }
 
 string parameterAccess(Parameter p) {
