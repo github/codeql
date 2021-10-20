@@ -3,6 +3,7 @@ package com.github.codeql
 import com.github.codeql.comments.CommentExtractor
 import org.jetbrains.kotlin.backend.common.extensions.IrGenerationExtension
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
+import org.jetbrains.kotlin.builtins.jvm.JavaToKotlinClassMap
 import org.jetbrains.kotlin.descriptors.ClassKind
 import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.IrStatement
@@ -15,6 +16,7 @@ import org.jetbrains.kotlin.ir.symbols.IrConstructorSymbol
 import org.jetbrains.kotlin.ir.types.*
 import org.jetbrains.kotlin.ir.util.packageFqName
 import org.jetbrains.kotlin.ir.util.render
+import org.jetbrains.kotlin.name.FqName
 import java.io.File
 import java.io.FileOutputStream
 import java.io.PrintWriter
@@ -27,6 +29,8 @@ import com.intellij.openapi.vfs.StandardFileSystems
 import com.semmle.extractor.java.OdasaOutput
 import com.semmle.extractor.java.OdasaOutput.TrapFileManager
 import com.semmle.util.files.FileUtil
+import org.jetbrains.kotlin.ir.util.fqNameWhenAvailable
+import org.jetbrains.kotlin.ir.util.kotlinFqName
 import kotlin.system.exitProcess
 
 class KotlinExtractorExtension(private val invocationTrapFile: String, private val checkTrapIdentical: Boolean) : IrGenerationExtension {
@@ -370,6 +374,7 @@ XXX delete?
             s.isChar() -> return primitiveType("char", "java.lang", "Character", "kotlin", "Char")
             s.isString() -> return primitiveType(null, "java.lang", "String", "kotlin", "String")
 
+            s.isUnit() -> return primitiveType("void", "java.lang", "Void", "kotlin", "Nothing") // TODO: Is this right?
             s.isNothing() -> return primitiveType(null, "java.lang", "Void", "kotlin", "Nothing") // TODO: Is this right?
 
 /*
@@ -605,20 +610,39 @@ class X {
         return tw.getLabelFor(classId)
     }
 
+    fun extractClassLaterIfExternal(c: IrClass) {
+        // we don't have an "external dependencies" extractor yet,
+        // so for now we extract the source class for those too
+        if (c.origin == IrDeclarationOrigin.IR_EXTERNAL_DECLARATION_STUB ||
+            c.origin == IrDeclarationOrigin.IR_EXTERNAL_JAVA_DECLARATION_STUB) {
+            extractExternalClassLater(c)
+        }
+    }
+
     fun useClassInstance(c: IrClass, typeArgs: List<IrTypeArgument>): Label<out DbClassorinterface> {
-        val classId = getClassLabel(c, typeArgs)
+        // TODO: only substitute in class and function signatures
+        //       because within function bodies we can get things like Unit.INSTANCE
+        //       and List.asIterable (an extension, i.e. static, method)
+        // Map Kotlin class to its equivalent Java class:
+        val substituteClass = c.fqNameWhenAvailable?.toUnsafe()
+            ?.let { JavaToKotlinClassMap.mapKotlinToJava(it) }
+            ?.let { pluginContext.referenceClass(it.asSingleFqName()) }
+            ?.owner
+
+        val extractClass = substituteClass ?: c
+
+        val classId = getClassLabel(extractClass, typeArgs)
         return tw.getLabelFor(classId, {
             // If this is a generic type instantiation then it has no
             // source entity, so we need to extract it here
             if (typeArgs.isNotEmpty()) {
-                extractClassInstance(c, typeArgs)
+                extractClassInstance(extractClass, typeArgs)
             }
-            // we don't have an "external dependencies" extractor yet,
-            // so for now we extract the source class for those too
-            if (c.origin == IrDeclarationOrigin.IR_EXTERNAL_DECLARATION_STUB ||
-                       c.origin == IrDeclarationOrigin.IR_EXTERNAL_JAVA_DECLARATION_STUB) {
-                extractExternalClassLater(c)
-            }
+
+            // Extract both the Kotlin and equivalent Java classes, so that we have database entries
+            // for both even if all internal references to the Kotlin type are substituted.
+            extractClassLaterIfExternal(c)
+            substituteClass?.let { extractClassLaterIfExternal(it) }
         })
     }
 
@@ -1465,5 +1489,4 @@ class X {
 
         tw.writeKtBreakContinueTargets(id, loopId)
     }
-
 }
