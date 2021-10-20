@@ -19,5 +19,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".SafePreferenceActivity" android:exported="true" />
+        <activity android:name=".UnsafePreferenceActivity" android:exported="true" />
+        <activity android:name=".UnexportedPreferenceActivity" android:exported="false" />
     </application>
 </manifest>

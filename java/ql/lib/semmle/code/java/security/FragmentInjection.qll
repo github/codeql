@@ -5,6 +5,32 @@ private import semmle.code.java.frameworks.android.Android
 private import semmle.code.java.frameworks.android.Fragment
 private import semmle.code.java.Reflection
 
+/** The method `isValidFragment` of the class `android.preference.PreferenceActivity`. */
+class IsValidFragmentMethod extends Method {
+  IsValidFragmentMethod() {
+    this.getDeclaringType()
+        .getASupertype*()
+        .hasQualifiedName("android.preference", "PreferenceActivity") and
+    this.hasName("isValidFragment")
+  }
+
+  /**
+   * Holds if this method makes the Activity it is declared in vulnerable to Fragment injection,
+   * that is, all code paths in this method return `true` and the Activity is exported.
+   */
+  predicate isUnsafe() {
+    this.getDeclaringType().(AndroidActivity).isExported() and
+    forex(ReturnStmt retStmt, BooleanLiteral bool |
+      retStmt.getEnclosingCallable() = this and
+      // Using taint tracking to handle logical expressions, like
+      // fragmentName.equals("safe") || true
+      TaintTracking::localExprTaint(bool, retStmt.getResult())
+    |
+      bool.getBooleanValue() = true
+    )
+  }
+}
+
 /**
  * A sink for Fragment injection vulnerabilities,
  * that is, method calls that dynamically add Fragments to Activities.
