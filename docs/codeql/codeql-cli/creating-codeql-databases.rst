@@ -116,6 +116,8 @@ Here, we have specified a ``--source-root`` path, which is the location where
 database creation is executed, but is not necessarily the checkout root of the
 codebase. 
 
+By default, files in ``node_modules`` and ``bower_components`` directories are not extracted.
+
 Python
 ~~~~~~
 
