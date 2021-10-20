@@ -10,6 +10,8 @@ private import semmle.code.cpp.ir.ValueNumbering
 private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.controlflow.IRGuards
 private import semmle.code.cpp.models.interfaces.DataFlow
+private import DataFlowPrivate
+private import Ssa as Ssa
 
 cached
 private module Cached {
@@ -17,11 +19,27 @@ private module Cached {
   newtype TIRDataFlowNode =
     TInstructionNode(Instruction i) or
     TOperandNode(Operand op) or
-    TVariableNode(Variable var)
+    TVariableNode(Variable var) or
+    TStoreNodeInstr(Instruction i) { Ssa::explicitWrite(_, _, i) } or
+    TStoreNodeOperand(ArgumentOperand op) { Ssa::explicitWrite(_, _, op.getDef()) }
 
   cached
   predicate localFlowStepCached(Node nodeFrom, Node nodeTo) {
     simpleLocalFlowStep(nodeFrom, nodeTo)
+  }
+
+  private predicate needsPostReadNode(Instruction iFrom) {
+    // If the instruction generates an address that flows to a load.
+    Ssa::addressFlowTC(iFrom, Ssa::getSourceAddress(_)) and
+    (
+      // And it is either a field address
+      iFrom instanceof FieldAddressInstruction
+      or
+      // Or it is instruction that either uses or is used for an address that needs a post read node.
+      exists(Instruction mid | needsPostReadNode(mid) |
+        Ssa::addressFlow(mid, iFrom) or Ssa::addressFlow(iFrom, mid)
+      )
+    )
   }
 }
 
@@ -181,6 +199,99 @@ class OperandNode extends Node, TOperandNode {
 }
 
 /**
+ * INTERNAL: do not use.
+ * 
+ * A `StoreNode` is a node that has been (or is about to be) the
+ * source or target of a `storeStep`.
+ */
+abstract class StoreNode extends Node {
+  /** Gets the underlying instruction, if any. */
+  Instruction getInstruction() { none() }
+
+  /** Gets the underlying operand, if any. */
+  Operand getOperand() { none() }
+
+  /** Holds if this node should receive flow from `addr`. */
+  abstract predicate flowInto(Instruction addr);
+
+  override Declaration getEnclosingCallable() { result = this.getFunction() }
+
+  /** Holds if this `StoreNode` is the root of the address computation used by a store operation. */
+  predicate isTerminal() {
+    not exists(this.getAPredecessor()) and
+    not storeStep(this, _, _)
+  }
+
+  /** Gets the store operation that uses the address computed by this `StoreNode`. */
+  abstract Instruction getStoreInstruction();
+
+  /** Holds if the store operation associated with this `StoreNode` overwrites the entire variable. */
+  final predicate isCertain() { Ssa::explicitWrite(true, this.getStoreInstruction(), _) }
+
+  /**
+   * Gets the `StoreNode` that computes the address used by this `StoreNode`.
+   * The boolean `readEffect` is `true` if the predecessor is accessed through the
+   * address of a `ReadSideEffectInstruction`.
+   */
+  abstract StoreNode getAPredecessor();
+
+  /** The inverse of `StoreNode.getAPredecessor`. */
+  final StoreNode getASuccessor() { result.getAPredecessor() = this }
+}
+
+private class StoreNodeInstr extends StoreNode, TStoreNodeInstr {
+  Instruction instr;
+
+  StoreNodeInstr() { this = TStoreNodeInstr(instr) }
+
+  override predicate flowInto(Instruction addr) { this.getInstruction() = addr }
+
+  override Instruction getInstruction() { result = instr }
+
+  override Function getFunction() { result = this.getInstruction().getEnclosingFunction() }
+
+  override IRType getType() { result = this.getInstruction().getResultIRType() }
+
+  override Location getLocation() { result = this.getInstruction().getLocation() }
+
+  override string toString() {
+    result = instructionNode(this.getInstruction()).toString() + " [store]"
+  }
+
+  override Instruction getStoreInstruction() {
+    Ssa::explicitWrite(_, result, this.getInstruction())
+  }
+
+  override StoreNode getAPredecessor() {
+    Ssa::addressFlow(result.getInstruction(), this.getInstruction())
+  }
+}
+
+private class StoreNodeOperand extends StoreNode, TStoreNodeOperand {
+  ArgumentOperand operand;
+
+  StoreNodeOperand() { this = TStoreNodeOperand(operand) }
+
+  override predicate flowInto(Instruction addr) { this.getOperand().getDef() = addr }
+
+  override Operand getOperand() { result = operand }
+
+  override Function getFunction() { result = operand.getDef().getEnclosingFunction() }
+
+  override IRType getType() { result = operand.getIRType() }
+
+  override Location getLocation() { result = operand.getLocation() }
+
+  override string toString() { result = operandNode(this.getOperand()).toString() + " [store]" }
+
+  override WriteSideEffectInstruction getStoreInstruction() {
+    Ssa::explicitWrite(_, result, operand.getDef())
+  }
+
+  override StoreNode getAPredecessor() { operand.getDef() = result.getInstruction() }
+}
+
+/**
  * An expression, viewed as a node in a data flow graph.
  */
 class ExprNode extends InstructionNode {
@@ -313,15 +424,14 @@ deprecated class UninitializedNode extends Node {
  * Nodes corresponding to AST elements, for example `ExprNode`, usually refer
  * to the value before the update with the exception of `ClassInstanceExpr`,
  * which represents the value after the constructor has run.
- *
- * This class exists to match the interface used by Java. There are currently no non-abstract
- * classes that extend it. When we implement field flow, we can revisit this.
  */
-abstract class PostUpdateNode extends InstructionNode {
+abstract class PostUpdateNode extends Node {
   /**
    * Gets the node before the state update.
    */
   abstract Node getPreUpdateNode();
+
+  override string toString() { result = this.getPreUpdateNode() + " [post update]" }
 }
 
 /**
@@ -614,6 +724,13 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   or
   // Instruction -> Operand flow
   simpleOperandLocalFlowStep(nodeFrom.asInstruction(), nodeTo.asOperand())
+  or
+  // Flow into, through, and out of store nodes
+  StoreNodeFlow::flowInto(nodeFrom, nodeTo)
+  or
+  StoreNodeFlow::flowThrough(nodeFrom, nodeTo)
+  or
+  StoreNodeFlow::flowOutOf(nodeFrom, nodeTo)
 }
 
 pragma[noinline]
@@ -631,6 +748,28 @@ private predicate isSingleFieldClass(Type type, Operand op) {
     c.getSize() = size and
     getFieldSizeOfClass(c, type, size)
   )
+private module StoreNodeFlow {
+  /** Holds if the store node `nodeTo` should receive flow from `nodeFrom`. */
+  predicate flowInto(Node nodeFrom, StoreNode nodeTo) {
+    nodeTo.flowInto(Ssa::getDestinationAddress(nodeFrom.asInstruction()))
+  }
+
+  /** Holds if the store node `nodeTo` should receive flow from `nodeFom`. */
+  predicate flowThrough(StoreNode nFrom, StoreNode nodeTo) {
+    // Flow through a post update node that doesn't need a store step.
+    not storeStep(nFrom, _, _) and
+    nodeTo.getASuccessor() = nFrom
+  }
+
+  /**
+   * Holds if flow should leave the store node `nodeFrom` and enter the node `nodeTo`.
+   * This happens because we have traversed an entire chain of field dereferences
+   * after a store operation.
+   */
+  predicate flowOutOf(StoreNode nFrom, Node nodeTo) {
+    nFrom.isTerminal() and
+    Ssa::ssaFlow(nFrom, nodeTo)
+  }
 }
 
 private predicate simpleOperandLocalFlowStep(Instruction iFrom, Operand opTo) {
@@ -788,25 +927,10 @@ predicate localInstructionFlow(Instruction e1, Instruction e2) {
  */
 predicate localExprFlow(Expr e1, Expr e2) { localFlow(exprNode(e1), exprNode(e2)) }
 
-/**
- * Gets a field corresponding to the bit range `[startBit..endBit)` of class `c`, if any.
- */
-private Field getAField(Class c, int startBit, int endBit) {
-  result.getDeclaringType() = c and
-  startBit = 8 * result.getByteOffset() and
-  endBit = 8 * result.getType().getSize() + startBit
-  or
-  exists(Field f, Class cInner |
-    f = c.getAField() and
-    cInner = f.getUnderlyingType() and
-    result = getAField(cInner, startBit - 8 * f.getByteOffset(), endBit - 8 * f.getByteOffset())
-  )
-}
-
 private newtype TContent =
-  TFieldContent(Class c, int startBit, int endBit) { exists(getAField(c, startBit, endBit)) } or
-  TCollectionContent() or
-  TArrayContent()
+  TFieldContent(Field f) or
+  TCollectionContent() or // Not used in C/C++
+  TArrayContent() // Not used in C/C++.
 
 /**
  * A description of the way data may be stored inside an object. Examples
@@ -824,18 +948,13 @@ class Content extends TContent {
 
 /** A reference through an instance field. */
 class FieldContent extends Content, TFieldContent {
-  Class c;
-  int startBit;
-  int endBit;
+  Field f;
 
-  FieldContent() { this = TFieldContent(c, startBit, endBit) }
+  FieldContent() { this = TFieldContent(f) }
 
-  // Ensure that there's just 1 result for `toString`.
-  override string toString() { result = min(Field f | f = getAField() | f.toString()) }
+  override string toString() { result = f.toString() }
 
-  predicate hasOffset(Class cl, int start, int end) { cl = c and start = startBit and end = endBit }
-
-  Field getAField() { result = getAField(c, startBit, endBit) }
+  Field getField() { result = f }
 }
 
 /** A reference through an array. */
