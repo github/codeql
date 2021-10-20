@@ -44,7 +44,7 @@ import ratpack.exec.registry.Registry;
  * <pre class="tested">
  * import ratpack.core.handling.*;
  *
- * // A responder may just return a response to the client…
+ * // A responder may just return a response to the client
  *
  * class SimpleHandler implements Handler {
  *   void handle(Context exchange) {
@@ -52,7 +52,7 @@ import ratpack.exec.registry.Registry;
  *   }
  * }
  *
- * // A responder may add a response header, before delegating to the next in the pipeline…
+ * // A responder may add a response header, before delegating to the next in the pipeline
  *
  * class DecoratingHandler implements Handler {
  *   void handle(Context exchange) {
@@ -61,7 +61,7 @@ import ratpack.exec.registry.Registry;
  *   }
  * }
  *
- * // Or a handler may conditionally respond…
+ * // Or a handler may conditionally respond
  *
  * class ConditionalHandler implements Handler {
  *   void handle(Context exchange) {
@@ -73,7 +73,7 @@ import ratpack.exec.registry.Registry;
  *   }
  * }
  *
- * // A handler does not need to participate in the response, but can instead "route" the exchange to different handlers…
+ * // A handler does not need to participate in the response, but can instead "route" the exchange to different handlers
  *
  * class RoutingHandler implements Handler {
  *   private final Handler[] fooHandlers;
@@ -91,7 +91,7 @@ import ratpack.exec.registry.Registry;
  *   }
  * }
  *
- * // It can sometimes be appropriate to directly delegate to a handler, instead of using exchange.insert() …
+ * // It can sometimes be appropriate to directly delegate to a handler, instead of using exchange.insert()
  *
  * class FilteringHandler implements Handler {
  *   private final Handler nestedHandler;
