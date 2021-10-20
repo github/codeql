@@ -21,7 +21,7 @@ class Member extends Element, Annotatable, Modifiable, @member {
   RefType getDeclaringType() { declaresMember(result, this) }
 
   /** Gets the qualified name of this member. */
-  string getQualifiedName() { result = getDeclaringType().getName() + "." + getName() }
+  string getQualifiedName() { result = this.getDeclaringType().getName() + "." + this.getName() }
 
   /**
    * Holds if this member has the specified name and is declared in the
@@ -33,9 +33,9 @@ class Member extends Element, Annotatable, Modifiable, @member {
 
   /** Holds if this member is package protected, that is, neither public nor private nor protected. */
   predicate isPackageProtected() {
-    not isPrivate() and
-    not isProtected() and
-    not isPublic()
+    not this.isPrivate() and
+    not this.isProtected() and
+    not this.isPublic()
   }
 
   /**
@@ -78,7 +78,7 @@ class Callable extends StmtParent, Member, @callable {
    */
   string getMethodDescriptor() {
     exists(string return | return = this.getReturnType().getTypeDescriptor() |
-      result = "(" + descriptorUpTo(this.getNumberOfParameters()) + ")" + return
+      result = "(" + this.descriptorUpTo(this.getNumberOfParameters()) + ")" + return
     )
   }
 
@@ -86,19 +86,19 @@ class Callable extends StmtParent, Member, @callable {
     n = 0 and result = ""
     or
     exists(Parameter p | p = this.getParameter(n - 1) |
-      result = descriptorUpTo(n - 1) + p.getType().getTypeDescriptor()
+      result = this.descriptorUpTo(n - 1) + p.getType().getTypeDescriptor()
     )
   }
 
   /** Holds if this callable calls `target`. */
-  predicate calls(Callable target) { exists(getACallSite(target)) }
+  predicate calls(Callable target) { exists(this.getACallSite(target)) }
 
   /**
    * Holds if this callable calls `target`
    * using a `super(...)` constructor call.
    */
   predicate callsSuperConstructor(Constructor target) {
-    getACallSite(target) instanceof SuperConstructorInvocationStmt
+    this.getACallSite(target) instanceof SuperConstructorInvocationStmt
   }
 
   /**
@@ -106,14 +106,14 @@ class Callable extends StmtParent, Member, @callable {
    * using a `this(...)` constructor call.
    */
   predicate callsThis(Constructor target) {
-    getACallSite(target) instanceof ThisConstructorInvocationStmt
+    this.getACallSite(target) instanceof ThisConstructorInvocationStmt
   }
 
   /**
    * Holds if this callable calls `target`
    * using a `super` method call.
    */
-  predicate callsSuper(Method target) { getACallSite(target) instanceof SuperMethodAccess }
+  predicate callsSuper(Method target) { this.getACallSite(target) instanceof SuperMethodAccess }
 
   /**
    * Holds if this callable calls `c` using
@@ -165,13 +165,13 @@ class Callable extends StmtParent, Member, @callable {
   Field getAnAccessedField() { this.accesses(result) }
 
   /** Gets the type of a formal parameter of this callable. */
-  Type getAParamType() { result = getParameterType(_) }
+  Type getAParamType() { result = this.getParameterType(_) }
 
   /** Holds if this callable does not have any formal parameters. */
-  predicate hasNoParameters() { not exists(getAParameter()) }
+  predicate hasNoParameters() { not exists(this.getAParameter()) }
 
   /** Gets the number of formal parameters of this callable. */
-  int getNumberOfParameters() { result = count(getAParameter()) }
+  int getNumberOfParameters() { result = count(this.getAParameter()) }
 
   /** Gets a formal parameter of this callable. */
   Parameter getAParameter() { result.getCallable() = this }
@@ -205,7 +205,7 @@ class Callable extends StmtParent, Member, @callable {
    */
   pragma[nomagic]
   string paramsString() {
-    exists(int n | n = getNumberOfParameters() |
+    exists(int n | n = this.getNumberOfParameters() |
       n = 0 and result = "()"
       or
       n > 0 and result = "(" + this.paramUpTo(n - 1) + ")"
@@ -217,9 +217,9 @@ class Callable extends StmtParent, Member, @callable {
    * from left to right, up to (and including) the `n`-th parameter.
    */
   private string paramUpTo(int n) {
-    n = 0 and result = getParameterType(0).toString()
+    n = 0 and result = this.getParameterType(0).toString()
     or
-    n > 0 and result = paramUpTo(n - 1) + ", " + getParameterType(n)
+    n > 0 and result = this.paramUpTo(n - 1) + ", " + this.getParameterType(n)
   }
 
   /**
@@ -234,7 +234,7 @@ class Callable extends StmtParent, Member, @callable {
   Exception getAnException() { exceptions(result, _, this) }
 
   /** Gets an exception type that occurs in the `throws` clause of this callable. */
-  RefType getAThrownExceptionType() { result = getAnException().getType() }
+  RefType getAThrownExceptionType() { result = this.getAnException().getType() }
 
   /** Gets a call site that references this callable. */
   Call getAReference() { result.getCallee() = this }
@@ -392,7 +392,7 @@ class Method extends Callable, @method {
     or
     // JLS 9.4: Every method declaration in the body of an interface without an
     // access modifier is implicitly public.
-    getDeclaringType() instanceof Interface and
+    this.getDeclaringType() instanceof Interface and
     not this.isPrivate()
     or
     exists(FunctionalExpr func | func.asMethod() = this)
@@ -413,7 +413,7 @@ class Method extends Callable, @method {
     Callable.super.isStrictfp()
     or
     // JLS 8.1.1.3, JLS 9.1.1.2
-    getDeclaringType().isStrictfp()
+    this.getDeclaringType().isStrictfp()
   }
 
   /**
@@ -421,8 +421,8 @@ class Method extends Callable, @method {
    * nor an initializer method, and hence could be inherited.
    */
   predicate isInheritable() {
-    not isPrivate() and
-    not (isStatic() and getDeclaringType() instanceof Interface) and
+    not this.isPrivate() and
+    not (this.isStatic() and this.getDeclaringType() instanceof Interface) and
     not this instanceof InitializerMethod
   }
 
@@ -430,13 +430,13 @@ class Method extends Callable, @method {
    * Holds if this method is neither private nor static, and hence
    * uses dynamic dispatch.
    */
-  predicate isVirtual() { not isPrivate() and not isStatic() }
+  predicate isVirtual() { not this.isPrivate() and not this.isStatic() }
 
   /** Holds if this method can be overridden. */
   predicate isOverridable() {
-    isVirtual() and
-    not isFinal() and
-    not getDeclaringType().isFinal()
+    this.isVirtual() and
+    not this.isFinal() and
+    not this.getDeclaringType().isFinal()
   }
 
   override string getAPrimaryQlClass() { result = "Method" }
@@ -549,7 +549,7 @@ abstract class InitializerMethod extends Method { }
  * field initializations and static initializer blocks.
  */
 class StaticInitializer extends InitializerMethod {
-  StaticInitializer() { hasName("<clinit>") }
+  StaticInitializer() { this.hasName("<clinit>") }
 }
 
 /**
@@ -629,7 +629,7 @@ class Field extends Member, ExprParent, @field, Variable {
     or
     // JLS 9.3: Every field declaration in the body of an interface is
     // implicitly public, static, and final
-    getDeclaringType() instanceof Interface
+    this.getDeclaringType() instanceof Interface
   }
 
   override predicate isStatic() {

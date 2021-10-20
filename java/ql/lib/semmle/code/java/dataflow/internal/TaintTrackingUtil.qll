@@ -285,11 +285,11 @@ private predicate taintPreservingQualifierToMethod(Method m) {
 
 private class StringReplaceMethod extends TaintPreservingCallable {
   StringReplaceMethod() {
-    getDeclaringType() instanceof TypeString and
+    this.getDeclaringType() instanceof TypeString and
     (
-      hasName("replace") or
-      hasName("replaceAll") or
-      hasName("replaceFirst")
+      this.hasName("replace") or
+      this.hasName("replaceAll") or
+      this.hasName("replaceFirst")
     )
   }
 
@@ -443,7 +443,7 @@ class ObjectOutputStreamVar extends LocalVariableDecl {
   }
 
   MethodAccess getAWriteObjectMethodAccess() {
-    result.getQualifier() = getAnAccess() and
+    result.getQualifier() = this.getAnAccess() and
     result.getMethod().hasName("writeObject")
   }
 }
@@ -488,7 +488,7 @@ private class FormatterVar extends LocalVariableDecl {
   }
 
   MethodAccess getAFormatMethodAccess() {
-    result.getQualifier() = getAnAccess() and
+    result.getQualifier() = this.getAnAccess() and
     result.getMethod().hasName("format")
   }
 }
@@ -513,13 +513,13 @@ private class FormatterCallable extends TaintPreservingCallable {
   }
 
   override predicate returnsTaintFrom(int arg) {
-    if this instanceof Constructor then arg = 0 else arg = [-1 .. getNumberOfParameters()]
+    if this instanceof Constructor then arg = 0 else arg = [-1 .. this.getNumberOfParameters()]
   }
 
   override predicate transfersTaint(int src, int sink) {
     this.hasName("format") and
     sink = -1 and
-    src = [0 .. getNumberOfParameters()]
+    src = [0 .. this.getNumberOfParameters()]
   }
 }
 
@@ -532,13 +532,13 @@ module StringBuilderVarModule {
    * build up a query using string concatenation.
    */
   class StringBuilderVar extends LocalVariableDecl {
-    StringBuilderVar() { getType() instanceof StringBuildingType }
+    StringBuilderVar() { this.getType() instanceof StringBuildingType }
 
     /**
      * Gets a call that adds something to this string builder, from the argument at the given index.
      */
     MethodAccess getAnInput(int arg) {
-      result.getQualifier() = getAChainedReference() and
+      result.getQualifier() = this.getAChainedReference() and
       (
         result.getMethod().getName() = "append" and arg = 0
         or
@@ -552,20 +552,20 @@ module StringBuilderVarModule {
      * Gets a call that appends something to this string builder.
      */
     MethodAccess getAnAppend() {
-      result.getQualifier() = getAChainedReference() and
+      result.getQualifier() = this.getAChainedReference() and
       result.getMethod().getName() = "append"
     }
 
     MethodAccess getNextAppend(MethodAccess append) {
-      result = getAnAppend() and
-      append = getAnAppend() and
+      result = this.getAnAppend() and
+      append = this.getAnAppend() and
       (
         result.getQualifier() = append
         or
         not exists(MethodAccess chainAccess | chainAccess.getQualifier() = append) and
         exists(RValue sbva1, RValue sbva2 |
           adjacentUseUse(sbva1, sbva2) and
-          append.getQualifier() = getAChainedReference(sbva1) and
+          append.getQualifier() = this.getAChainedReference(sbva1) and
           result.getQualifier() = sbva2
         )
       )
@@ -575,7 +575,7 @@ module StringBuilderVarModule {
      * Gets a call that converts this string builder to a string.
      */
     MethodAccess getToStringCall() {
-      result.getQualifier() = getAChainedReference() and
+      result.getQualifier() = this.getAChainedReference() and
       result.getMethod().getName() = "toString"
     }
 
@@ -590,7 +590,7 @@ module StringBuilderVarModule {
     /**
      * Gets an expression that refers to this `StringBuilder`, possibly after some chained calls.
      */
-    Expr getAChainedReference() { result = getAChainedReference(_) }
+    Expr getAChainedReference() { result = this.getAChainedReference(_) }
   }
 }
 

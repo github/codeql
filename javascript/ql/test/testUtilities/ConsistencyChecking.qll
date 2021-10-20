@@ -62,7 +62,7 @@ private class AssertionComment extends LineComment {
   /**
    * Holds if a consistency issue is expected at this location.
    */
-  predicate expectConsistencyError() { getText().matches(["%[INCONSISTENCY]%"]) }
+  predicate expectConsistencyError() { getText().matches("%[INCONSISTENCY]%") }
 }
 
 private DataFlow::Node getASink() { exists(DataFlow::Configuration cfg | cfg.hasFlow(_, result)) }

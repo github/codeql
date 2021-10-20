@@ -45,8 +45,8 @@ private class RmiMethodParameterSource extends RemoteFlowSource {
     exists(RemoteCallableMethod method |
       method.getAParameter() = this.asParameter() and
       (
-        getType() instanceof PrimitiveType or
-        getType() instanceof TypeString
+        this.getType() instanceof PrimitiveType or
+        this.getType() instanceof TypeString
       )
     )
   }

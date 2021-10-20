@@ -14,5 +14,5 @@ class RemoteCallableMethod extends Method {
 private predicate remoteCallableMethod(Method method) {
   method.getDeclaringType().getASupertype() instanceof TypeRemote
   or
-  exists(Method meth | remoteCallableMethod(meth) and method.getAnOverride() = meth)
+  exists(Method meth | remoteCallableMethod(meth) and method.overrides(meth))
 }

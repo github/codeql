@@ -42,7 +42,7 @@ abstract class AssertMethod extends Method {
    *
    * Gets the index of a parameter being asserted.
    */
-  deprecated final int getAssertionIndex() { result = getAnAssertionIndex() }
+  deprecated final int getAssertionIndex() { result = this.getAnAssertionIndex() }
 
   /** Gets the parameter at position `i` being asserted. */
   final Parameter getAssertedParameter(int i) {
@@ -55,7 +55,7 @@ abstract class AssertMethod extends Method {
    *
    * Gets a parameter being asserted.
    */
-  deprecated final Parameter getAssertedParameter() { result = getAssertedParameter(_) }
+  deprecated final Parameter getAssertedParameter() { result = this.getAssertedParameter(_) }
 
   /** Gets the failure type if the assertion fails for argument `i`, if any. */
   abstract AssertionFailure getAssertionFailure(int i);

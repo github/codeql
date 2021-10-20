@@ -38,10 +38,10 @@ class Copy extends @duplication_or_similarity {
   int sourceStartColumn() { tokens(this, 0, _, result, _, _) }
 
   /** Gets the line on which the last token in this block ends. */
-  int sourceEndLine() { tokens(this, lastToken(), _, _, result, _) }
+  int sourceEndLine() { tokens(this, this.lastToken(), _, _, result, _) }
 
   /** Gets the column on which the last token in this block ends. */
-  int sourceEndColumn() { tokens(this, lastToken(), _, _, _, result) }
+  int sourceEndColumn() { tokens(this, this.lastToken(), _, _, _, result) }
 
   /** Gets the number of lines containing at least (part of) one token in this block. */
   int sourceLines() { result = this.sourceEndLine() + 1 - this.sourceStartLine() }
@@ -66,11 +66,11 @@ class Copy extends @duplication_or_similarity {
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    sourceFile().getAbsolutePath() = filepath and
-    startline = sourceStartLine() and
-    startcolumn = sourceStartColumn() and
-    endline = sourceEndLine() and
-    endcolumn = sourceEndColumn()
+    this.sourceFile().getAbsolutePath() = filepath and
+    startline = this.sourceStartLine() and
+    startcolumn = this.sourceStartColumn() and
+    endline = this.sourceEndLine() and
+    endcolumn = this.sourceEndColumn()
   }
 
   /** Gets a textual representation of this element. */
@@ -79,13 +79,15 @@ class Copy extends @duplication_or_similarity {
 
 /** A block of duplicated code. */
 class DuplicateBlock extends Copy, @duplication {
-  override string toString() { result = "Duplicate code: " + sourceLines() + " duplicated lines." }
+  override string toString() {
+    result = "Duplicate code: " + this.sourceLines() + " duplicated lines."
+  }
 }
 
 /** A block of similar code. */
 class SimilarBlock extends Copy, @similarity {
   override string toString() {
-    result = "Similar code: " + sourceLines() + " almost duplicated lines."
+    result = "Similar code: " + this.sourceLines() + " almost duplicated lines."
   }
 }
 

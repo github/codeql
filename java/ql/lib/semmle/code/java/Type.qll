@@ -379,7 +379,7 @@ class RefType extends Type, Annotatable, Modifiable, @reftype {
   }
 
   /** Holds if this type declares any members. */
-  predicate hasMember() { exists(getAMember()) }
+  predicate hasMember() { exists(this.getAMember()) }
 
   /** Gets a member declared in this type. */
   Member getAMember() { this = result.getDeclaringType() }
@@ -545,8 +545,10 @@ class RefType extends Type, Annotatable, Modifiable, @reftype {
    * `java.lang.Thread$State`.
    */
   string getQualifiedName() {
-    exists(string pkgName | pkgName = getPackage().getName() |
-      if pkgName = "" then result = nestedName() else result = pkgName + "." + nestedName()
+    exists(string pkgName | pkgName = this.getPackage().getName() |
+      if pkgName = ""
+      then result = this.nestedName()
+      else result = pkgName + "." + this.nestedName()
     )
   }
 
@@ -656,7 +658,7 @@ class IntersectionType extends RefType, @class {
 
   /** Gets a textual representation of this type that includes all the intersected types. */
   string getLongName() {
-    result = superType().toString() + concat(" & " + superInterface().toString())
+    result = this.superType().toString() + concat(" & " + this.superInterface().toString())
   }
 
   /** Gets the first bound of this intersection type. */
@@ -690,7 +692,8 @@ class AnonymousClass extends NestedClass {
   override string getTypeDescriptor() {
     exists(RefType parent | parent = this.getEnclosingType() |
       exists(int num |
-        num = 1 + count(AnonymousClass other | other.rankInParent(parent) < rankInParent(parent))
+        num =
+          1 + count(AnonymousClass other | other.rankInParent(parent) < this.rankInParent(parent))
       |
         exists(string parentWithSemi | parentWithSemi = parent.getTypeDescriptor() |
           result = parentWithSemi.prefix(parentWithSemi.length() - 1) + "$" + num + ";"
@@ -760,8 +763,8 @@ class NestedType extends RefType {
 
   /** Gets the nesting depth of this nested type. Top-level types have nesting depth 0. */
   int getNestingDepth() {
-    if getEnclosingType() instanceof NestedType
-    then result = getEnclosingType().(NestedType).getNestingDepth() + 1
+    if this.getEnclosingType() instanceof NestedType
+    then result = this.getEnclosingType().(NestedType).getNestingDepth() + 1
     else result = 1
   }
 
@@ -776,7 +779,7 @@ class NestedType extends RefType {
     super.isStrictfp()
     or
     // JLS 8.1.1.3, JLS 9.1.1.2
-    getEnclosingType().isStrictfp()
+    this.getEnclosingType().isStrictfp()
   }
 
   override predicate isStatic() {
@@ -860,9 +863,9 @@ class ClassOrInterface extends RefType, @classorinterface {
 
   /** Holds if this class or interface is package protected, that is, neither public nor private nor protected. */
   predicate isPackageProtected() {
-    not isPrivate() and
-    not isProtected() and
-    not isPublic()
+    not this.isPrivate() and
+    not this.isProtected() and
+    not this.isPublic()
   }
 }
 
@@ -948,12 +951,12 @@ class PrimitiveType extends Type, @primitive {
    * require an explicit cast.
    */
   Literal getADefaultValue() {
-    getName() = "boolean" and result.getLiteral() = "false"
+    this.getName() = "boolean" and result.getLiteral() = "false"
     or
-    getName() = "char" and
+    this.getName() = "char" and
     (result.getLiteral() = "'\\0'" or result.getLiteral() = "'\\u0000'")
     or
-    getName().regexpMatch("(float|double|int|short|byte|long)") and
+    this.getName().regexpMatch("(float|double|int|short|byte|long)") and
     result.getLiteral().regexpMatch("0(\\.0)?+[lLfFdD]?+")
   }
 
@@ -1047,7 +1050,7 @@ class EnumType extends Class {
   override predicate isFinal() {
     // JLS 8.9: An enum declaration is implicitly `final` unless it contains
     // at least one enum constant that has a class body.
-    not getAnEnumConstant().getAnAssignedValue().getType() instanceof AnonymousClass
+    not this.getAnEnumConstant().getAnAssignedValue().getType() instanceof AnonymousClass
   }
 }
 

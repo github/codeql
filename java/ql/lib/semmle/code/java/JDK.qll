@@ -19,12 +19,12 @@ class TypeCloneable extends Interface {
 
 /** The class `java.lang.ProcessBuilder`. */
 class TypeProcessBuilder extends Class {
-  TypeProcessBuilder() { hasQualifiedName("java.lang", "ProcessBuilder") }
+  TypeProcessBuilder() { this.hasQualifiedName("java.lang", "ProcessBuilder") }
 }
 
 /** The class `java.lang.Runtime`. */
 class TypeRuntime extends Class {
-  TypeRuntime() { hasQualifiedName("java.lang", "Runtime") }
+  TypeRuntime() { this.hasQualifiedName("java.lang", "Runtime") }
 }
 
 /** The class `java.lang.String`. */
@@ -143,22 +143,22 @@ class ImmutableType extends Type {
 // --- Java IO ---
 /** The interface `java.io.Serializable`. */
 class TypeSerializable extends Interface {
-  TypeSerializable() { hasQualifiedName("java.io", "Serializable") }
+  TypeSerializable() { this.hasQualifiedName("java.io", "Serializable") }
 }
 
 /** The interface `java.io.ObjectOutput`. */
 class TypeObjectOutput extends Interface {
-  TypeObjectOutput() { hasQualifiedName("java.io", "ObjectOutput") }
+  TypeObjectOutput() { this.hasQualifiedName("java.io", "ObjectOutput") }
 }
 
 /** The type `java.io.ObjectOutputStream`. */
 class TypeObjectOutputStream extends RefType {
-  TypeObjectOutputStream() { hasQualifiedName("java.io", "ObjectOutputStream") }
+  TypeObjectOutputStream() { this.hasQualifiedName("java.io", "ObjectOutputStream") }
 }
 
 /** The type `java.io.ObjectInputStream`. */
 class TypeObjectInputStream extends RefType {
-  TypeObjectInputStream() { hasQualifiedName("java.io", "ObjectInputStream") }
+  TypeObjectInputStream() { this.hasQualifiedName("java.io", "ObjectInputStream") }
 }
 
 /** The class `java.nio.file.Paths`. */
@@ -196,8 +196,8 @@ class ProcessBuilderConstructor extends Constructor, ExecCallable {
  */
 class MethodProcessBuilderCommand extends Method, ExecCallable {
   MethodProcessBuilderCommand() {
-    hasName("command") and
-    getDeclaringType() instanceof TypeProcessBuilder
+    this.hasName("command") and
+    this.getDeclaringType() instanceof TypeProcessBuilder
   }
 
   override int getAnExecutedArgument() { result = 0 }
@@ -208,8 +208,8 @@ class MethodProcessBuilderCommand extends Method, ExecCallable {
  */
 class MethodRuntimeExec extends Method, ExecCallable {
   MethodRuntimeExec() {
-    hasName("exec") and
-    getDeclaringType() instanceof TypeRuntime
+    this.hasName("exec") and
+    this.getDeclaringType() instanceof TypeRuntime
   }
 
   override int getAnExecutedArgument() { result = 0 }
@@ -220,8 +220,8 @@ class MethodRuntimeExec extends Method, ExecCallable {
  */
 class MethodSystemGetenv extends Method {
   MethodSystemGetenv() {
-    hasName("getenv") and
-    getDeclaringType() instanceof TypeSystem
+    this.hasName("getenv") and
+    this.getDeclaringType() instanceof TypeSystem
   }
 }
 
@@ -230,8 +230,8 @@ class MethodSystemGetenv extends Method {
  */
 class MethodSystemGetProperty extends Method {
   MethodSystemGetProperty() {
-    hasName("getProperty") and
-    getDeclaringType() instanceof TypeSystem
+    this.hasName("getProperty") and
+    this.getDeclaringType() instanceof TypeSystem
   }
 }
 
@@ -239,7 +239,7 @@ class MethodSystemGetProperty extends Method {
  * An access to a method named `getProperty` on class `java.lang.System`.
  */
 class MethodAccessSystemGetProperty extends MethodAccess {
-  MethodAccessSystemGetProperty() { getMethod() instanceof MethodSystemGetProperty }
+  MethodAccessSystemGetProperty() { this.getMethod() instanceof MethodSystemGetProperty }
 
   /**
    * Holds if this call has a compile-time constant first argument with the value `propertyName`.
@@ -255,8 +255,11 @@ class MethodAccessSystemGetProperty extends MethodAccess {
  */
 class MethodExit extends Method {
   MethodExit() {
-    hasName("exit") and
-    (getDeclaringType() instanceof TypeRuntime or getDeclaringType() instanceof TypeSystem)
+    this.hasName("exit") and
+    (
+      this.getDeclaringType() instanceof TypeRuntime or
+      this.getDeclaringType() instanceof TypeSystem
+    )
   }
 }
 
@@ -266,10 +269,10 @@ class MethodExit extends Method {
  */
 class WriteObjectMethod extends Method {
   WriteObjectMethod() {
-    hasName("writeObject") and
+    this.hasName("writeObject") and
     (
-      getDeclaringType() instanceof TypeObjectOutputStream or
-      getDeclaringType() instanceof TypeObjectOutput
+      this.getDeclaringType() instanceof TypeObjectOutputStream or
+      this.getDeclaringType() instanceof TypeObjectOutput
     )
   }
 }
@@ -293,16 +296,16 @@ class ReadObjectMethod extends Method {
 /** The method `Class.getName()`. */
 class ClassNameMethod extends Method {
   ClassNameMethod() {
-    hasName("getName") and
-    getDeclaringType() instanceof TypeClass
+    this.hasName("getName") and
+    this.getDeclaringType() instanceof TypeClass
   }
 }
 
 /** The method `Class.getSimpleName()`. */
 class ClassSimpleNameMethod extends Method {
   ClassSimpleNameMethod() {
-    hasName("getSimpleName") and
-    getDeclaringType() instanceof TypeClass
+    this.hasName("getSimpleName") and
+    this.getDeclaringType() instanceof TypeClass
   }
 }
 
@@ -334,24 +337,24 @@ class MethodMathMax extends Method {
 /** The field `System.in`. */
 class SystemIn extends Field {
   SystemIn() {
-    hasName("in") and
-    getDeclaringType() instanceof TypeSystem
+    this.hasName("in") and
+    this.getDeclaringType() instanceof TypeSystem
   }
 }
 
 /** The field `System.out`. */
 class SystemOut extends Field {
   SystemOut() {
-    hasName("out") and
-    getDeclaringType() instanceof TypeSystem
+    this.hasName("out") and
+    this.getDeclaringType() instanceof TypeSystem
   }
 }
 
 /** The field `System.err`. */
 class SystemErr extends Field {
   SystemErr() {
-    hasName("err") and
-    getDeclaringType() instanceof TypeSystem
+    this.hasName("err") and
+    this.getDeclaringType() instanceof TypeSystem
   }
 }
 

@@ -52,9 +52,9 @@ class BasicOStreamClass extends Type {
  */
 class BasicOStreamCall extends FunctionCall {
   BasicOStreamCall() {
-    if getTarget() instanceof MemberFunction
-    then getQualifier().getType() instanceof BasicOStreamClass
-    else getArgument(0).getType() instanceof BasicOStreamClass
+    if this.getTarget() instanceof MemberFunction
+    then this.getQualifier().getType() instanceof BasicOStreamClass
+    else this.getArgument(0).getType() instanceof BasicOStreamClass
   }
 }
 
@@ -77,10 +77,10 @@ abstract class ChainedOutputCall extends BasicOStreamCall {
    */
   Expr getEndDest() {
     // recurse into the destination
-    result = getDest().(ChainedOutputCall).getEndDest()
+    result = this.getDest().(ChainedOutputCall).getEndDest()
     or
     // or return something other than a ChainedOutputCall
-    result = getDest() and
+    result = this.getDest() and
     not result instanceof ChainedOutputCall
   }
 }
@@ -89,18 +89,18 @@ abstract class ChainedOutputCall extends BasicOStreamCall {
  * A call to `operator<<` on an output stream.
  */
 class OperatorLShiftCall extends ChainedOutputCall {
-  OperatorLShiftCall() { getTarget().(Operator).hasName("operator<<") }
+  OperatorLShiftCall() { this.getTarget().(Operator).hasName("operator<<") }
 
   override Expr getSource() {
-    if getTarget() instanceof MemberFunction
-    then result = getArgument(0)
-    else result = getArgument(1)
+    if this.getTarget() instanceof MemberFunction
+    then result = this.getArgument(0)
+    else result = this.getArgument(1)
   }
 
   override Expr getDest() {
-    if getTarget() instanceof MemberFunction
-    then result = getQualifier()
-    else result = getArgument(0)
+    if this.getTarget() instanceof MemberFunction
+    then result = this.getQualifier()
+    else result = this.getArgument(0)
   }
 }
 
@@ -108,22 +108,22 @@ class OperatorLShiftCall extends ChainedOutputCall {
  * A call to 'put'.
  */
 class PutFunctionCall extends ChainedOutputCall {
-  PutFunctionCall() { getTarget().(MemberFunction).hasName("put") }
+  PutFunctionCall() { this.getTarget().(MemberFunction).hasName("put") }
 
-  override Expr getSource() { result = getArgument(0) }
+  override Expr getSource() { result = this.getArgument(0) }
 
-  override Expr getDest() { result = getQualifier() }
+  override Expr getDest() { result = this.getQualifier() }
 }
 
 /**
  * A call to 'write'.
  */
 class WriteFunctionCall extends ChainedOutputCall {
-  WriteFunctionCall() { getTarget().(MemberFunction).hasName("write") }
+  WriteFunctionCall() { this.getTarget().(MemberFunction).hasName("write") }
 
-  override Expr getSource() { result = getArgument(0) }
+  override Expr getSource() { result = this.getArgument(0) }
 
-  override Expr getDest() { result = getQualifier() }
+  override Expr getDest() { result = this.getQualifier() }
 }
 
 /**

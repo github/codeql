@@ -375,8 +375,8 @@ class Wchar_t extends Type {
 class MicrosoftInt8Type extends IntegralType {
   MicrosoftInt8Type() {
     this instanceof CharType and
-    not isExplicitlyUnsigned() and
-    not isExplicitlySigned()
+    not this.isExplicitlyUnsigned() and
+    not this.isExplicitlySigned()
   }
 }
 
@@ -391,8 +391,8 @@ class MicrosoftInt8Type extends IntegralType {
 class MicrosoftInt16Type extends IntegralType {
   MicrosoftInt16Type() {
     this instanceof ShortType and
-    not isExplicitlyUnsigned() and
-    not isExplicitlySigned()
+    not this.isExplicitlyUnsigned() and
+    not this.isExplicitlySigned()
   }
 }
 
@@ -407,8 +407,8 @@ class MicrosoftInt16Type extends IntegralType {
 class MicrosoftInt32Type extends IntegralType {
   MicrosoftInt32Type() {
     this instanceof IntType and
-    not isExplicitlyUnsigned() and
-    not isExplicitlySigned()
+    not this.isExplicitlyUnsigned() and
+    not this.isExplicitlySigned()
   }
 }
 
@@ -423,8 +423,8 @@ class MicrosoftInt32Type extends IntegralType {
 class MicrosoftInt64Type extends IntegralType {
   MicrosoftInt64Type() {
     this instanceof LongLongType and
-    not isExplicitlyUnsigned() and
-    not isExplicitlySigned()
+    not this.isExplicitlyUnsigned() and
+    not this.isExplicitlySigned()
   }
 }
 

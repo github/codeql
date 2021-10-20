@@ -20,7 +20,7 @@ class SpringXMLComponentScan extends SpringXMLElement {
    * Gets a profile expression for which this `component-scan` is enabled, or nothing if it is
    * applicable to any profile.
    */
-  string getAProfileExpr() { result = getSpringBeanFile().getAProfileExpr() }
+  string getAProfileExpr() { result = this.getSpringBeanFile().getAProfileExpr() }
 }
 
 /**
@@ -29,7 +29,7 @@ class SpringXMLComponentScan extends SpringXMLElement {
  */
 class SpringComponentScan extends Annotation {
   SpringComponentScan() {
-    getType().hasQualifiedName("org.springframework.context.annotation", "ComponentScan")
+    this.getType().hasQualifiedName("org.springframework.context.annotation", "ComponentScan")
   }
 
   /**
@@ -37,13 +37,13 @@ class SpringComponentScan extends Annotation {
    */
   string getBasePackages() {
     // "value" and "basePackages" are synonymous, and are simple strings
-    result = getAValue("basePackages").(StringLiteral).getRepresentedString()
+    result = this.getAValue("basePackages").(StringLiteral).getRepresentedString()
     or
-    result = getAValue("value").(StringLiteral).getRepresentedString()
+    result = this.getAValue("value").(StringLiteral).getRepresentedString()
     or
     exists(TypeLiteral typeLiteral |
       // Base package classes are type literals whose package should be considered a base package.
-      typeLiteral = getAValue("basePackageClasses")
+      typeLiteral = this.getAValue("basePackageClasses")
     |
       result = typeLiteral.getReferencedType().(RefType).getPackage().getName()
     )
@@ -97,10 +97,10 @@ class SpringBasePackage extends string {
 class SpringComponentAnnotation extends AnnotationType {
   SpringComponentAnnotation() {
     // Component used directly as an annotation.
-    hasQualifiedName("org.springframework.stereotype", "Component")
+    this.hasQualifiedName("org.springframework.stereotype", "Component")
     or
     // Component can be used as a meta-annotation on other annotation types.
-    getAnAnnotation().getType() instanceof SpringComponentAnnotation
+    this.getAnAnnotation().getType() instanceof SpringComponentAnnotation
   }
 }
 
@@ -117,20 +117,20 @@ private predicate isSpringXMLEnabled() { exists(SpringXMLElement springXMLElemen
  */
 class SpringComponent extends RefType {
   SpringComponent() {
-    getAnAnnotation().getType() instanceof SpringComponentAnnotation and
+    this.getAnAnnotation().getType() instanceof SpringComponentAnnotation and
     not this instanceof AnnotationType
   }
 
   /**
    * Gets a qualifier used to distinguish when this class should be autowired into other classes.
    */
-  SpringQualifierDefinitionAnnotation getQualifier() { result = getAnAnnotation() }
+  SpringQualifierDefinitionAnnotation getQualifier() { result = this.getAnAnnotation() }
 
   /**
    * Gets the `@Component` or equivalent annotation.
    */
   Annotation getComponentAnnotation() {
-    result = getAnAnnotation() and
+    result = this.getAnAnnotation() and
     result.getType() instanceof SpringComponentAnnotation
   }
 
@@ -138,13 +138,14 @@ class SpringComponent extends RefType {
    * Gets the bean identifier for this component.
    */
   string getBeanIdentifier() {
-    if exists(getComponentAnnotation().getValue("value"))
+    if exists(this.getComponentAnnotation().getValue("value"))
     then
       // If the name has been specified in the component annotation, use that.
-      result = getComponentAnnotation().getValue("value").(CompileTimeConstantExpr).getStringValue()
+      result =
+        this.getComponentAnnotation().getValue("value").(CompileTimeConstantExpr).getStringValue()
     else
       // Otherwise use the name of the class, with the initial letter lower cased.
-      exists(string name | name = getName() |
+      exists(string name | name = this.getName() |
         result = name.charAt(0).toLowerCase() + name.suffix(1)
       )
   }
@@ -154,13 +155,13 @@ class SpringComponent extends RefType {
    * resolving autowiring on other classes.
    */
   string getQualifierValue() {
-    if exists(getQualifier())
+    if exists(this.getQualifier())
     then
       // If given a qualifier, use the value specified.
-      result = getQualifier().getQualifierValue()
+      result = this.getQualifier().getQualifierValue()
     else
       // Otherwise, default to the bean identifier.
-      result = getBeanIdentifier()
+      result = this.getBeanIdentifier()
   }
 
   /**
@@ -184,8 +185,8 @@ class SpringComponent extends RefType {
       this.getPackage().getName() = sbp
     ) and
     (
-      not exists(getAProfileExpr()) or
-      getAProfileExpr().(SpringProfileExpr).isActive()
+      not exists(this.getAProfileExpr()) or
+      this.getAProfileExpr().(SpringProfileExpr).isActive()
     )
   }
 
@@ -195,7 +196,7 @@ class SpringComponent extends RefType {
    */
   string getAProfileExpr() {
     exists(Annotation profileAnnotation |
-      profileAnnotation = getAnAnnotation() and
+      profileAnnotation = this.getAnAnnotation() and
       profileAnnotation
           .getType()
           .hasQualifiedName("org.springframework.context.annotation", "Profile")

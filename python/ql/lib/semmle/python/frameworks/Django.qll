@@ -1844,11 +1844,13 @@ private module PrivateDjango {
       t.start() and
       result.asCfgNode().(CallNode).getFunction() = this.asViewRef().asCfgNode()
       or
-      exists(DataFlow::TypeTracker t2 | result = asViewResult(t2).track(t2, t))
+      exists(DataFlow::TypeTracker t2 | result = this.asViewResult(t2).track(t2, t))
     }
 
     /** Gets a reference to the result of calling the `as_view` classmethod of this class. */
-    DataFlow::Node asViewResult() { asViewResult(DataFlow::TypeTracker::end()).flowsTo(result) }
+    DataFlow::Node asViewResult() {
+      this.asViewResult(DataFlow::TypeTracker::end()).flowsTo(result)
+    }
   }
 
   /** A class that we consider a django View class. */
@@ -1944,10 +1946,10 @@ private module PrivateDjango {
     abstract DataFlow::Node getViewArg();
 
     final override DjangoRouteHandler getARequestHandler() {
-      poorMansFunctionTracker(result) = getViewArg()
+      poorMansFunctionTracker(result) = this.getViewArg()
       or
       exists(DjangoViewClass vc |
-        getViewArg() = vc.asViewResult() and
+        this.getViewArg() = vc.asViewResult() and
         result = vc.getARequestHandler()
       )
     }
