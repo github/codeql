@@ -20,16 +20,6 @@ private class SensitiveInfoExpr extends Expr {
   }
 }
 
-/**
- * A method access of the `Context.sendBroadcast` family.
- */
-private class SendBroadcastMethodAccess extends MethodAccess {
-  SendBroadcastMethodAccess() {
-    this.getMethod().getDeclaringType().getASourceSupertype*() instanceof TypeContext and
-    this.getMethod().getName().matches("send%Broadcast%")
-  }
-}
-
 private predicate maybeNullArg(Expr ex) {
   exists(DataFlow::Node src, DataFlow::Node sink, MethodAccess ma |
     ex = ma.getAnArgument() and
@@ -54,7 +44,8 @@ private predicate maybeEmptyArrayArg(Expr ex) {
  * Holds if a `sendBroadcast` call doesn't specify receiver permission.
  */
 private predicate isSensitiveBroadcastSink(DataFlow::Node sendBroadcastCallArg) {
-  exists(SendBroadcastMethodAccess ma, string name | ma.getMethod().hasName(name) |
+  exists(MethodAccess ma, string name | ma.getMethod().hasName(name) |
+    ma.getMethod().getDeclaringType().getASourceSupertype*() instanceof TypeContext and
     sendBroadcastCallArg.asExpr() = ma.getAnArgument() and
     (
       name = "sendBroadcast" and
