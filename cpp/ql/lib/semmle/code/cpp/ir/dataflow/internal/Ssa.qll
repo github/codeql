@@ -301,3 +301,107 @@ predicate explicitWrite(boolean certain, Instruction instr, Instruction address)
   addressFlowTC(address, instr.(WriteSideEffectInstruction).getDestinationAddress()) and
   certain = false
 }
+
+cached
+private module Cached {
+  /**
+   * Holds if `nodeFrom` is a read or write, and `nTo` is the next subsequent read of the variable
+   * written (or read) by `storeOrRead`.
+   */
+  cached
+  predicate ssaFlow(Node nodeFrom, Node nodeTo) {
+    // Def-use/use-use flow from an `InstructionNode` to an `OperandNode`.
+    exists(IRBlock bb1, int i1, IRBlock bb2, int i2, DefOrUse defOrUse, Use use, SourceVariable v |
+      defOrUse.hasRankInBlock(bb1, i1) and
+      use.hasRankInBlock(bb2, i2) and
+      use.getVariable() = v and
+      adjacentDefRead(_, bb1, i1, bb2, i2) and
+      nodeFrom.asInstruction() = toInstruction(defOrUse) and
+      flowOutOfAddressStep(use.getOperand(), nodeTo)
+    )
+    or
+    // Def-use flow from a `StoreNode` to an `OperandNode`.
+    exists(
+      StoreNode store, IRBlock bb1, int i1, IRBlock bb2, int i2, Def def, Use use, Definition ssaDef
+    |
+      store = nodeFrom and
+      store.isTerminal() and
+      def.getInstruction() = store.getStoreInstruction() and
+      def.hasRankInBlock(bb1, i1) and
+      adjacentDefRead(ssaDef, bb1, i1, bb2, i2) and
+      use.hasRankInBlock(bb2, i2) and
+      flowOutOfAddressStep(use.getOperand(), nodeTo)
+    )
+  private predicate flowOutOfAddressStep(Operand operand, Node nTo) {
+    exists(StoreNode storeNode, Instruction def |
+      storeNode = nTo and
+      def = operand.getDef()
+    |
+      storeNode.isTerminal() and
+      not addressFlow(def, _) and
+      // Only transfer flow to a store node if it doesn't immediately overwrite the address
+      // we've just written to.
+      explicitWrite(false, storeNode.getStoreInstruction(), def)
+    )
+    or
+    operand = getSourceAddressOperand(nTo.asInstruction())
+    or
+    exists(ReturnIndirectionInstruction ret |
+      ret.getSourceAddressOperand() = operand and
+      ret = nTo.asInstruction()
+    )
+    or
+    exists(ReturnValueInstruction ret |
+      ret.getReturnAddressOperand() = operand and
+      nTo.asInstruction() = ret
+    )
+    or
+    exists(CallInstruction call, int index, ReadSideEffectInstruction read |
+      call.getArgumentOperand(index) = operand and
+      read = getSideEffectFor(call, index) and
+      nTo.asOperand() = read.getSideEffectOperand()
+    )
+    or
+    exists(CopyInstruction copy |
+      not exists(getSourceAddressOperand(copy)) and
+      copy.getSourceValueOperand() = operand and
+      flowOutOfAddressStep(copy.getAUse(), nTo)
+    )
+    or
+    exists(ConvertInstruction convert |
+      convert.getUnaryOperand() = operand and
+      flowOutOfAddressStep(convert.getAUse(), nTo)
+    )
+    or
+    exists(CheckedConvertOrNullInstruction convert |
+      convert.getUnaryOperand() = operand and
+      flowOutOfAddressStep(convert.getAUse(), nTo)
+    )
+    or
+    exists(InheritanceConversionInstruction convert |
+      convert.getUnaryOperand() = operand and
+      flowOutOfAddressStep(convert.getAUse(), nTo)
+    )
+    or
+    exists(PointerArithmeticInstruction arith |
+      arith.getLeftOperand() = operand and
+      flowOutOfAddressStep(arith.getAUse(), nTo)
+    )
+    or
+    // Flow through a modelled function that has parameter -> return value flow.
+    exists(
+      CallInstruction call, DataFlow::DataFlowFunction func, int index,
+      DataFlow::FunctionInput input, DataFlow::FunctionOutput output
+    |
+      call.getStaticCallTarget() = func and
+      call.getArgumentOperand(index) = operand and
+      not getSideEffectFor(call, index) instanceof ReadSideEffectInstruction and
+      func.hasDataFlow(input, output) and
+      input.isParameter(index) and
+      output.isReturnValue() and
+      flowOutOfAddressStep(call.getAUse(), nTo)
+    )
+  }
+}
+
+import Cached
