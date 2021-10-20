@@ -236,7 +236,7 @@ private module Cached {
     // for `self`. At that point, the `self`s returned by `trackInstance`
     // in `DataFlowDispatch.qll` should refer to the post-update node,
     // and we can remove this case.
-    n instanceof SelfArgumentNode
+    n.asExpr().getExpr() instanceof Self
     or
     not localFlowStepTypeTracker+(any(Node e |
         e instanceof ExprNode
