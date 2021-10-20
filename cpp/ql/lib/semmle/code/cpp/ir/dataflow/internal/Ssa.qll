@@ -320,6 +320,16 @@ private module Cached {
       flowOutOfAddressStep(use.getOperand(), nodeTo)
     )
     or
+    // Use-use flow from a `ReadNode` to an `OperandNode`.
+    exists(ReadNode read, IRBlock bb1, int i1, IRBlock bb2, int i2, Use use1, Use use2 |
+      read = nodeFrom and
+      use1.hasRankInBlock(bb1, i1) and
+      use2.hasRankInBlock(bb2, i2) and
+      use1.getOperand().getDef() = read.getInstruction() and
+      adjacentDefRead(_, bb1, i1, bb2, i2) and
+      flowOutOfAddressStep(use2.getOperand(), nodeTo)
+    )
+    or
     // Def-use flow from a `StoreNode` to an `OperandNode`.
     exists(
       StoreNode store, IRBlock bb1, int i1, IRBlock bb2, int i2, Def def, Use use, Definition ssaDef
@@ -333,6 +343,12 @@ private module Cached {
       flowOutOfAddressStep(use.getOperand(), nodeTo)
     )
   private predicate flowOutOfAddressStep(Operand operand, Node nTo) {
+    // Flow into a read node
+    exists(ReadNode readNode | readNode = nTo |
+      readNode.isInitial() and
+      operand.getDef() = readNode.getInstruction()
+    )
+    or
     exists(StoreNode storeNode, Instruction def |
       storeNode = nTo and
       def = operand.getDef()

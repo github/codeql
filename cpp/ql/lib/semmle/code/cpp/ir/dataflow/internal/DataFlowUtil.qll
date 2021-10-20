@@ -21,7 +21,8 @@ private module Cached {
     TOperandNode(Operand op) or
     TVariableNode(Variable var) or
     TStoreNodeInstr(Instruction i) { Ssa::explicitWrite(_, _, i) } or
-    TStoreNodeOperand(ArgumentOperand op) { Ssa::explicitWrite(_, _, op.getDef()) }
+    TStoreNodeOperand(ArgumentOperand op) { Ssa::explicitWrite(_, _, op.getDef()) } or
+    TReadNode(Instruction i) { needsPostReadNode(i) }
 
   cached
   predicate localFlowStepCached(Node nodeFrom, Node nodeTo) {
@@ -289,6 +290,61 @@ private class StoreNodeOperand extends StoreNode, TStoreNodeOperand {
   }
 
   override StoreNode getAPredecessor() { operand.getDef() = result.getInstruction() }
+}
+
+/**
+ * INTERNAL: do not use.
+ * 
+ * A `ReadNode` is a node that has been (or is about to be) the
+ * source or target of a `readStep`.
+ */
+class ReadNode extends Node, TReadNode {
+  Instruction i;
+
+  ReadNode() { this = TReadNode(i) }
+
+  /** Gets the underlying instruction. */
+  Instruction getInstruction() { result = i }
+
+  override Declaration getEnclosingCallable() { result = this.getFunction() }
+
+  override Function getFunction() { result = this.getInstruction().getEnclosingFunction() }
+
+  override IRType getType() { result = this.getInstruction().getResultIRType() }
+
+  override Location getLocation() { result = this.getInstruction().getLocation() }
+
+  override string toString() {
+    result = instructionNode(this.getInstruction()).toString() + " [read]"
+  }
+
+  /** Gets a load instruction that uses the address computed by this read node. */
+  final Instruction getALoadInstruction() {
+    Ssa::addressFlowTC(this.getInstruction(), Ssa::getSourceAddress(result))
+  }
+
+  /**
+   * Gets a read node with an underlying instruction that is used by this
+   * underlying instruction to compute an address of a load instruction.
+   */
+  final ReadNode getAPredecessor() {
+    Ssa::addressFlow(result.getInstruction(), this.getInstruction())
+  }
+
+  /** The inverse of `ReadNode.getAPredecessor`. */
+  final ReadNode getASuccessor() { result.getAPredecessor() = this }
+
+  /** Holds if this read node computes a value that will not be used for any future read nodes. */
+  final predicate isTerminal() {
+    not exists(this.getASuccessor()) and
+    not readStep(this, _, _)
+  }
+
+  /** Holds if this read node computes a value that has not yet been used for any read operations. */
+  final predicate isInitial() {
+    not exists(this.getAPredecessor()) and
+    not readStep(_, _, this)
+  }
 }
 
 /**
@@ -731,6 +787,13 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   StoreNodeFlow::flowThrough(nodeFrom, nodeTo)
   or
   StoreNodeFlow::flowOutOf(nodeFrom, nodeTo)
+  or
+  // Flow into, through, and out of read nodes
+  ReadNodeFlow::flowInto(nodeFrom, nodeTo)
+  or
+  ReadNodeFlow::flowThrough(nodeFrom, nodeTo)
+  or
+  ReadNodeFlow::flowOutOf(nodeFrom, nodeTo)
 }
 
 pragma[noinline]
@@ -742,12 +805,65 @@ private predicate getFieldSizeOfClass(Class c, Type type, int size) {
   )
 }
 
-private predicate isSingleFieldClass(Type type, Operand op) {
-  exists(int size, Class c |
-    c = op.getType().getUnderlyingType() and
-    c.getSize() = size and
-    getFieldSizeOfClass(c, type, size)
-  )
+private module ReadNodeFlow {
+  /** Holds if the read node `nodeTo` should receive flow from `nodeFrom`. */
+  predicate flowInto(Node nodeFrom, ReadNode nodeTo) {
+    nodeTo.isInitial() and
+    (
+      // If we entered through an address operand.
+      nodeFrom.asOperand().getDef() = nodeTo.getInstruction()
+      or
+      // If we entered flow through a memory-producing instruction.
+      // This can happen if we have flow to an `InitializeParameterIndirection` through
+      // a `ReadSideEffectInstruction`.
+      exists(Instruction load, Instruction def |
+        def = nodeFrom.asInstruction() and
+        def = Ssa::getSourceValueOperand(load).getAnyDef() and
+        not def = any(StoreNode store).getStoreInstruction() and
+        pragma[only_bind_into](nodeTo).getALoadInstruction() = load
+      )
+    )
+  }
+
+  /** Holds if the read node `nodeTo` should receive flow from the read node `nodeFrom`. */
+  predicate flowThrough(ReadNode nodeFrom, ReadNode nodeTo) {
+    not readStep(nodeFrom, _, _) and
+    nodeFrom.getASuccessor() = nodeTo
+  }
+
+  /**
+   * Holds if flow should leave the read node `nFrom` and enter the node `nodeTo`.
+   * This happens either because there is use-use flow from one of the variables used in
+   * the read operation, or because we have traversed all the field dereferences in the
+   * read operation.
+   */
+  predicate flowOutOf(ReadNode nFrom, Node nodeTo) {
+    // Use-use flow to another use of the same variable instruction
+    Ssa::ssaFlow(nFrom, nodeTo)
+    or
+    not exists(nFrom.getAPredecessor()) and
+    exists(Node store |
+      Ssa::explicitWrite(_, store.asInstruction(), nFrom.getInstruction()) and
+      Ssa::ssaFlow(store, nodeTo)
+    )
+    or
+    // Flow out of read nodes and into memory instructions if we cannot move any further through
+    // read nodes.
+    nFrom.isTerminal() and
+    (
+      exists(Instruction load |
+        load = nodeTo.asInstruction() and
+        Ssa::getSourceAddress(load) = nFrom.getInstruction()
+      )
+      or
+      exists(CallInstruction call, int i |
+        call.getArgument(i) = nodeTo.asInstruction() and
+        call.getArgument(i) = nFrom.getInstruction()
+      )
+    )
+  }
+}
+
 private module StoreNodeFlow {
   /** Holds if the store node `nodeTo` should receive flow from `nodeFrom`. */
   predicate flowInto(Node nodeFrom, StoreNode nodeTo) {
