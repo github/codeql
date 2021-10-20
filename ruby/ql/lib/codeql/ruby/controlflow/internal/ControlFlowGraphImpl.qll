@@ -956,8 +956,6 @@ module Trees {
     final override ControlFlowTree getChildElement(int i) { result = this.getValue() and i = 0 }
   }
 
-  private class SelfTree extends LeafTree, Self { }
-
   private class SimpleParameterTree extends NonDefaultValueParameterTree, SimpleParameter { }
 
   // Corner case: For duplicated '_' parameters, only the first occurence has a defining

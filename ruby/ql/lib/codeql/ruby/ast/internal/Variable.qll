@@ -618,7 +618,7 @@ private class ClassVariableAccessSynth extends ClassVariableAccessRealImpl,
   final override string toString() { result = v.getName() }
 }
 
-abstract class SelfVariableAccessImpl extends VariableAccessImpl, TSelfVariableAccess { }
+abstract class SelfVariableAccessImpl extends LocalVariableAccessImpl, TSelfVariableAccess { }
 
 private class SelfVariableAccessReal extends SelfVariableAccessImpl, TSelfReal {
   private Ruby::Self self;

@@ -698,7 +698,8 @@ class TVariableAccess =
   TLocalVariableAccess or TGlobalVariableAccess or TInstanceVariableAccess or
       TClassVariableAccess or TSelfVariableAccess;
 
-class TLocalVariableAccess = TLocalVariableAccessReal or TLocalVariableAccessSynth;
+class TLocalVariableAccess =
+  TLocalVariableAccessReal or TLocalVariableAccessSynth or TSelfVariableAccess;
 
 class TGlobalVariableAccess = TGlobalVariableAccessReal or TGlobalVariableAccessSynth;
 

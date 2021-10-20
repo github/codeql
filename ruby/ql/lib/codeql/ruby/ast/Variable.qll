@@ -130,7 +130,7 @@ class VariableReadAccess extends VariableAccess {
 
 /** An access to a local variable. */
 class LocalVariableAccess extends VariableAccess instanceof LocalVariableAccessImpl {
-  final override string getAPrimaryQlClass() { result = "LocalVariableAccess" }
+  override string getAPrimaryQlClass() { result = "LocalVariableAccess" }
 
   /**
    * Holds if this access is a captured variable access. For example in
@@ -190,7 +190,7 @@ class ClassVariableWriteAccess extends ClassVariableAccess, VariableWriteAccess 
 class ClassVariableReadAccess extends ClassVariableAccess, VariableReadAccess { }
 
 /** An access to the `self` variable */
-class SelfVariableAccess extends VariableAccess instanceof SelfVariableAccessImpl {
+class SelfVariableAccess extends LocalVariableAccess instanceof SelfVariableAccessImpl {
   final override string getAPrimaryQlClass() { result = "SelfVariableAccess" }
 }
 
