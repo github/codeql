@@ -54,7 +54,7 @@ public:
     B *b = new B();
     b->set(new C1());
     sink(b->get());                // $ ast ir=55:12
-    sink((new B(new C()))->get()); // $ ast ir
+    sink((new B(new C()))->get()); // $ ast MISSING: ir
   }
 
   void f3()
@@ -63,7 +63,7 @@ public:
     B *b2;
     b2 = setOnB(b1, new C2());
     sink(b1->c); // no flow
-    sink(b2->c); // $ ast MISSING: ir
+    sink(b2->c); // $ ast ir=64:21
   }
 
   void f4()
@@ -72,7 +72,7 @@ public:
     B *b2;
     b2 = setOnBWrap(b1, new C2());
     sink(b1->c); // no flow
-    sink(b2->c); // $ ast MISSING: ir
+    sink(b2->c); // $ ast ir=73:25
   }
 
   B *setOnBWrap(B *b1, C *c)
@@ -117,7 +117,7 @@ public:
     }
     if (C1 *c1 = dynamic_cast<C1 *>(cc))
     {
-      sink(c1->a); // $ SPURIOUS: ast
+      sink(c1->a); // $ SPURIOUS: ast,ir
     }
   }
 
@@ -149,7 +149,7 @@ public:
   {
     B *b = new B();
     D *d = new D(b, r());
-    sink(d->b);    // $ ast,ir=143:25 ast,ir=150:12
+    sink(d->b);    // $ ast MISSING: ir
     sink(d->b->c); // $ ast MISSING: ir
     sink(b->c);    // $ ast,ir
   }

@@ -36,12 +36,12 @@ void test_stringstream_string(int amount)
 
 	sink(ss1);
 	sink(ss2); // $ ast,ir
-	sink(ss3); // $ ast MISSING: ir
+	sink(ss3); // $ ast,ir
 	sink(ss4); // $ ast,ir
 	sink(ss5); // $ ast,ir
 	sink(ss1.str());
 	sink(ss2.str()); // $ ast,ir
-	sink(ss3.str()); // $ ast MISSING: ir
+	sink(ss3.str()); // $ ast,ir
 	sink(ss4.str()); // $ ast,ir
 	sink(ss5.str()); // $ ast,ir
 
@@ -57,14 +57,14 @@ void test_stringstream_string(int amount)
 	sink(ss10.put('a').put(ns_char::source()).put('z')); // $ ast,ir
 	sink(ss8);
 	sink(ss9); // $ ast,ir
-	sink(ss10); // $ ast MISSING: ir
+	sink(ss10); // $ ast,ir
 
 	sink(ss11.write("begin", 5));
 	sink(ss12.write(source(), 5)); // $ ast,ir
 	sink(ss13.write("begin", 5).write(source(), amount).write("end", 3)); // $ ast,ir
 	sink(ss11);
 	sink(ss12); // $ ast,ir
-	sink(ss13); // $ ast MISSING: ir
+	sink(ss13); // $ ast,ir
 }
 
 void test_stringstream_int(int source)
@@ -264,5 +264,5 @@ void test_chaining()
 	sink(b2); // $ ast,ir
 
 	sink(ss2.write("abc", 3).flush().write(source(), 3).flush().write("xyz", 3)); // $ ast,ir
-	sink(ss2); // $ ast MISSING: ir
+	sink(ss2); // $ ast,ir
 }

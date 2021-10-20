@@ -82,7 +82,7 @@ module IRTest {
     TestAllocationConfig() { this = "TestAllocationConfig" }
 
     override predicate isSource(DataFlow::Node source) {
-      source.(DataFlow::ExprNode).getConvertedExpr().(FunctionCall).getTarget().getName() = "source"
+      source.asConvertedExpr().(FunctionCall).getTarget().getName() = "source"
       or
       source.asParameter().getName().matches("source%")
       or
@@ -95,11 +95,11 @@ module IRTest {
     override predicate isSink(DataFlow::Node sink) {
       exists(FunctionCall call |
         call.getTarget().getName() = "sink" and
-        sink.(DataFlow::ExprNode).getConvertedExpr() = call.getAnArgument()
+        sink.asConvertedExpr() = call.getAnArgument()
         or
         call.getTarget().getName() = "sink" and
         sink.asExpr() = call.getAnArgument() and
-        sink.(DataFlow::ExprNode).getConvertedExpr() instanceof ReferenceDereferenceExpr
+        sink.asConvertedExpr() instanceof ReferenceDereferenceExpr
       )
       or
       exists(ReadSideEffectInstruction read |
