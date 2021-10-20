@@ -399,6 +399,16 @@ private module Cached {
     iTo.(InheritanceConversionInstruction).getUnary() = iFrom
   }
 
+  pragma[noinline]
+  private predicate callTargetHasInputOutput(
+    CallInstruction call, DataFlow::FunctionInput input, DataFlow::FunctionOutput output
+  ) {
+    exists(DataFlow::DataFlowFunction func |
+      call.getStaticCallTarget() = func and
+      func.hasDataFlow(input, output)
+    )
+  }
+
   private predicate flowOutOfAddressStep(Operand operand, Node nTo) {
     // Flow into a read node
     exists(ReadNode readNode | readNode = nTo |
@@ -463,13 +473,12 @@ private module Cached {
     or
     // Flow through a modelled function that has parameter -> return value flow.
     exists(
-      CallInstruction call, DataFlow::DataFlowFunction func, int index,
-      DataFlow::FunctionInput input, DataFlow::FunctionOutput output
+      CallInstruction call, int index, DataFlow::FunctionInput input,
+      DataFlow::FunctionOutput output
     |
-      call.getStaticCallTarget() = func and
+      callTargetHasInputOutput(call, input, output) and
       call.getArgumentOperand(index) = operand and
       not getSideEffectFor(call, index) instanceof ReadSideEffectInstruction and
-      func.hasDataFlow(input, output) and
       input.isParameter(index) and
       output.isReturnValue() and
       flowOutOfAddressStep(call.getAUse(), nTo)
