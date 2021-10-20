@@ -45,7 +45,7 @@ predicate mayAddNullTerminator(Expr e, VariableAccess va) {
   // Assignment to another stack variable
   exists(Expr e0 |
     mayAddNullTerminatorHelper(pragma[only_bind_into](e), va, pragma[only_bind_into](e0)) and
-    nodeBefore(e0, e)
+    nodeBefore(e, e0)
   )
   or
   // Assignment to non-stack variable
