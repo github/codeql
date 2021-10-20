@@ -1,18 +1,17 @@
 /**
- * @name Broadcasting sensitive data to all Android applications
- * @description An Android application uses implicit intents to broadcast
- *              sensitive data to all applications without specifying any
- *              receiver permission.
+ * @name Leaking sensetive information through an implicit Intent.
+ * @description An Android application uses implicit intents containing sensitive data
+ *              in a way that exposes it to arbitrary applications on the device.
  * @kind path-problem
  * @problem.severity warning
  * @precision medium
- * @id java/android/sensitive-broadcast
+ * @id java/android/sensitive-communication
  * @tags security
  *       external/cwe/cwe-927
  */
 
 import java
-import semmle.code.java.security.AndroidSensitiveBroadcastQuery
+import semmle.code.java.security.AndroidSensitiveCommunicationQuery
 import DataFlow::PathGraph
 
 from SensitiveBroadcastConfig cfg, DataFlow::PathNode source, DataFlow::PathNode sink

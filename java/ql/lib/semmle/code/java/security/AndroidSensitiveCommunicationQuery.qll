@@ -1,4 +1,4 @@
-/** Provides definitions to reason about Android Sensitive Broadcast queries */
+/** Provides definitions to reason about Android Sensitive Communication queries */
 
 import java
 import semmle.code.java.dataflow.DataFlow3
