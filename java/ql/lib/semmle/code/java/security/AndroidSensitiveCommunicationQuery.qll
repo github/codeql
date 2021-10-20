@@ -122,7 +122,7 @@ private predicate isStartActivityOrServiceSink(DataFlow::Node arg) {
   )
 }
 
-predicate isCleanIntent(Expr intent) {
+private predicate isCleanIntent(Expr intent) {
   intent.getType() instanceof TypeIntent and
   (
     exists(MethodAccess setRecieverMa |

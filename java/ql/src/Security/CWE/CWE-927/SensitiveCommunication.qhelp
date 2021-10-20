@@ -16,7 +16,7 @@
 
   <example>
     <p>The following example shows two ways of broadcasting intents. In the 'BAD' case, no "receiver permission" is specified. In the 'GOOD' case, "receiver permission" or "receiver application" is specified.</p>
-    <sample src="SensitiveBroadcast.java" />
+    <sample src="SensitiveCommunication.java" />
   </example>
 
   <references>
