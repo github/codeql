@@ -1,0 +1,60 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Fragments are reusable parts of an Android application's user interface.
+Even though a Fragment controls its own lifecycle and layout and handles its input events,
+it cannot exist on its own: it must be hosted either by an Activity or another fragment.
+This means that a Fragment will be accessible by third-party applications (that is, exported)
+only if its hosting Activity is itself exported.
+</p>
+<p>
+If an exported Activity dinamically creates and hosts Fragments instantiated with externally
+provided names, a malicious application could provide the name of an arbitrary Fragment, even
+one not designed to be externally accessible, and inject it into the Activity, effectively
+bypassing access controls and exposing the application to unintended effects.
+</p>
+</overview>
+
+<recommendation>
+<p>
+In general, do not instantiate classes (including Fragments) with user-provided names
+without proper validation.
+
+Also, if an exported Activity is extending the <code>PreferenceActivity</code> class, make sure that
+the <code>isValidFragment</code> method is overriden and only returns <code>true</code> when the provided
+<code>fragmentName</code> points to an intended Fragment.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example shows two cases: in the first one, untrusted data is used to instantiate and
+add a Fragment to an Activity, while in the second one, a Fragment is safely added with a static name.
+</p>
+<sample src="FragmentInjection.java" />
+
+<p>
+The next example shows two Activities extending <code>PreferenceActivity</code>. The first one overrides
+<code>isValidFragment</code>, but it wrongly returns <code>true</code> inconditionally. The second Activity
+correctly overrides <code>isValidFragment</code> to only return <code>true</code> when <code>fragmentName</code>
+is a trusted Fragment name.
+</p>
+<sample src="FragmentInjectionInPreferenceActivity.java" />
+</example>
+
+<references>
+<li> Google Help:
+  <a href="https://support.google.com/faqs/answer/7188427?hl=en">How to fix Fragment Injection vulnerability</a>.
+</li>
+<li>
+  IBM Security Systems:
+  <a href="https://securityintelligence.com/wp-content/uploads/2013/12/android-collapses-into-fragments.pdf">Android collapses into Fragments</a>.
+</li>
+<li>
+  Android Developers:
+  <a href="https://developer.android.com/guide/fragments">Fragments</a>
+</li>
+</references>
+</qhelp>
