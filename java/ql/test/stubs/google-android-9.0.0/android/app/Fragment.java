@@ -16,6 +16,7 @@ package android.app;
 
 import android.annotation.Nullable;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -63,5 +64,14 @@ public class Fragment {
   public String toString() {
     return null;
   }
+
+  @Override
+  public void onConfigurationChanged(Configuration p0) {}
+
+  @Override
+  public void onLowMemory() {}
+
+  @Override
+  public void onTrimMemory(int p0) {}
 
 }
