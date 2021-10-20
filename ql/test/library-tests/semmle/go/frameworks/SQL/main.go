@@ -59,16 +59,16 @@ func test2(tx *sql.Tx, query string, ctx context.Context) {
 }
 
 func test3(db *sql.DB, ctx context.Context) {
-	stmt1, _ := db.Prepare(query21)             // $ SPURIOUS:querystring=query21
-	stmt1.Exec()                                // $ MISSING:query=query21
-	stmt2, _ := db.PrepareContext(ctx, query22) // $ SPURIOUS:querystring=query22
-	stmt2.ExecContext(ctx)                      // $ MISSING:query=query22
-	stmt3, _ := db.Prepare(query23)             // $ SPURIOUS:querystring=query23
+	stmt1, _ := db.Prepare(query21)             // $ SPURIOUS: querystring=query21
+	stmt1.Exec()                                // $ MISSING: query=query21
+	stmt2, _ := db.PrepareContext(ctx, query22) // $ SPURIOUS: querystring=query22
+	stmt2.ExecContext(ctx)                      // $ MISSING: query=query22
+	stmt3, _ := db.Prepare(query23)             // $ SPURIOUS: querystring=query23
 	runQuery(stmt3)
 }
 
 func runQuery(stmt *sql.Stmt) {
-	stmt.Exec() // $ MISSING:query=query23
+	stmt.Exec() // $ MISSING: query=query23
 }
 
 func main() {}

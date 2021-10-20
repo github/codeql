@@ -61,7 +61,7 @@ func testZapLoggerWarn(logger *zap.Logger) {
 func testZapLoggerNop() {
 	// We do not currently recognise that a logger made using NewNop() does not actually do any logging
 	logger := zap.NewNop()
-	logger.Debug(getUntrustedString()) // $ SPURIOUS:zap="call to getUntrustedString"
+	logger.Debug(getUntrustedString()) // $ SPURIOUS: zap="call to getUntrustedString"
 }
 
 func testLoggerNamed(logger *zap.Logger) {
@@ -74,7 +74,7 @@ func testLoggerWith(logger *zap.Logger) *zap.Logger {
 	logger1.Info("hello world")
 	logger2 := logger.With(zap.String("key", getUntrustedString())) // $ zap="call to String"
 	logger2.Info("hello world")
-	logger3 := logger.With(zap.String("key", getUntrustedString())) // $ SPURIOUS:zap="call to String"
+	logger3 := logger.With(zap.String("key", getUntrustedString())) // $ SPURIOUS: zap="call to String"
 	return logger3
 }
 
@@ -83,7 +83,7 @@ func getLoggerWithUntrustedField() *zap.Logger {
 }
 
 func getLoggerWithUntrustedFieldUnused() *zap.Logger {
-	return zap.NewExample().With(zap.NamedError("key", getUntrustedData().(error))) // $ SPURIOUS:zap="call to NamedError"
+	return zap.NewExample().With(zap.NamedError("key", getUntrustedData().(error))) // $ SPURIOUS: zap="call to NamedError"
 }
 
 func testLoggerWithAcrossFunctionBoundary() {
@@ -95,7 +95,7 @@ func testLoggerWithOptions(logger *zap.Logger) *zap.Logger {
 	logger1.Info("hello world")
 	logger2 := logger.WithOptions(zap.Fields(zap.String("key", getUntrustedString()))) // $ zap="call to Fields"
 	logger2.Info("hello world")
-	logger3 := logger.WithOptions(zap.Fields(zap.String("key", getUntrustedString()))) // $ SPURIOUS:zap="call to Fields"
+	logger3 := logger.WithOptions(zap.Fields(zap.String("key", getUntrustedString()))) // $ SPURIOUS: zap="call to Fields"
 	return logger3
 }
 
