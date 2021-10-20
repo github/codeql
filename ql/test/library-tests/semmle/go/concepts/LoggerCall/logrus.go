@@ -10,7 +10,7 @@ import (
 )
 
 func logSomething(entry *logrus.Entry) {
-	entry.Traceln(text) // $logger=text
+	entry.Traceln(text) // $ logger=text
 }
 
 func logrusCalls() {
@@ -18,18 +18,18 @@ func logrusCalls() {
 	var fields logrus.Fields = nil
 	var fn logrus.LogFunction = nil
 	var ctx context.Context
-	tmp := logrus.WithContext(ctx)  // $logger=ctx
-	tmp.Debugf(fmt, text)           // $logger=fmt $logger=text
-	tmp = logrus.WithError(err)     // $logger=err
-	tmp.Warn(text)                  // $logger=text
-	tmp = logrus.WithFields(fields) // $logger=fields
-	tmp.Infoln(text)                // $logger=text
-	tmp = logrus.WithFields(fields) // $logger=fields
+	tmp := logrus.WithContext(ctx)  // $ logger=ctx
+	tmp.Debugf(fmt, text)           // $ logger=fmt $logger=text
+	tmp = logrus.WithError(err)     // $ logger=err
+	tmp.Warn(text)                  // $ logger=text
+	tmp = logrus.WithFields(fields) // $ logger=fields
+	tmp.Infoln(text)                // $ logger=text
+	tmp = logrus.WithFields(fields) // $ logger=fields
 	logSomething(tmp)
 
-	logrus.Error(text)       // $logger=text
-	logrus.Fatalf(fmt, text) // $logger=fmt $logger=text
-	logrus.Panicln(text)     // $logger=text
-	logrus.Infof(fmt, text)  // $logger=fmt $logger=text
-	logrus.FatalFn(fn)       // $logger=fn
+	logrus.Error(text)       // $ logger=text
+	logrus.Fatalf(fmt, text) // $ logger=fmt $logger=text
+	logrus.Panicln(text)     // $ logger=text
+	logrus.Infof(fmt, text)  // $ logger=fmt $logger=text
+	logrus.FatalFn(fn)       // $ logger=fn
 }

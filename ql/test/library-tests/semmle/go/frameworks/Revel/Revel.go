@@ -24,18 +24,18 @@ func sink(_ ...interface{}) {}
 
 func (c myAppController) accessingParamsDirectlyIsUnsafe() {
 	sink(c.Params.Get("key"))
-	sink(c.Params.Values) // $source="selection of Params"
+	sink(c.Params.Values) // $ source="selection of Params"
 
 	val4 := ""
-	c.Params.Bind(&val4, "key") // $source="selection of Params"
+	c.Params.Bind(&val4, "key") // $ source="selection of Params"
 	sink(val4)
 
 	sink(c.Request.FormValue("key"))
 }
 
 func (c myAppController) accessingFixedIsSafe(mainRouter *revel.Router) {
-	sink(c.Params.Fixed.Get("key"))                  // $noflow
-	sink(mainRouter.Route(c.Request).FixedParams[0]) // $noflow
+	sink(c.Params.Fixed.Get("key"))                  // $ noflow
+	sink(mainRouter.Route(c.Request).FixedParams[0]) // $ noflow
 }
 
 func (c myAppController) accessingRouteIsUnsafe(mainRouter *revel.Router) {
@@ -64,10 +64,10 @@ func (c myAppController) accessingParamsJSONIsUnsafe() {
 	sink(val2["name"].(string))
 }
 
-func (c myAppController) rawRead() { // $responsebody='argument corresponding to c'
-	c.ViewArgs["Foo"] = "<p>raw HTML</p>" // $responsebody='"<p>raw HTML</p>"'
+func (c myAppController) rawRead() { // $ responsebody='argument corresponding to c'
+	c.ViewArgs["Foo"] = "<p>raw HTML</p>" // $ responsebody='"<p>raw HTML</p>"'
 	c.ViewArgs["Bar"] = "<p>not raw HTML</p>"
-	c.ViewArgs["Foo"] = c.Params.Query // $responsebody='selection of Query'
+	c.ViewArgs["Foo"] = c.Params.Query // $ responsebody='selection of Query'
 	c.Render()
 }
 

@@ -14,7 +14,7 @@ func Redirect_GithubComGofiberFiberV1146() {
 			{
 				urlString832 := source().(string)
 				var rece fiber.Ctx
-				rece.Redirect(urlString832, 0) // $redirectUrl=urlString832
+				rece.Redirect(urlString832, 0) // $ redirectUrl=urlString832
 			}
 		}
 	}

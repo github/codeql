@@ -15,7 +15,7 @@ func HeaderWrite_ClevergoTechClevergoV052() {
 				keyString506 := source().(string)
 				valString213 := source().(string)
 				var rece clevergo.Context
-				rece.SetHeader(keyString506, valString213) // $headerKeyNode=keyString506 $headerValNode=valString213
+				rece.SetHeader(keyString506, valString213) // $ headerKeyNode=keyString506 $headerValNode=valString213
 			}
 		}
 	}
@@ -27,7 +27,7 @@ func HeaderWrite_ClevergoTechClevergoV052() {
 			{
 				valString468 := source().(string)
 				var rece clevergo.Context
-				rece.SetContentType(valString468) // $headerKey=content-type $headerValNode=valString468
+				rece.SetContentType(valString468) // $ headerKey=content-type $headerValNode=valString468
 			}
 		}
 	}
@@ -38,22 +38,22 @@ func HeaderWrite_ClevergoTechClevergoV052() {
 			// func (*Context).SetContentTypeHTML()
 			{
 				var rece clevergo.Context
-				rece.SetContentTypeHTML() // $headerKey=content-type $headerVal=text/html
+				rece.SetContentTypeHTML() // $ headerKey=content-type $headerVal=text/html
 			}
 			// func (*Context).SetContentTypeJSON()
 			{
 				var rece clevergo.Context
-				rece.SetContentTypeJSON() // $headerKey=content-type $headerVal=application/json
+				rece.SetContentTypeJSON() // $ headerKey=content-type $headerVal=application/json
 			}
 			// func (*Context).SetContentTypeText()
 			{
 				var rece clevergo.Context
-				rece.SetContentTypeText() // $headerKey=content-type $headerVal=text/plain
+				rece.SetContentTypeText() // $ headerKey=content-type $headerVal=text/plain
 			}
 			// func (*Context).SetContentTypeXML()
 			{
 				var rece clevergo.Context
-				rece.SetContentTypeXML() // $headerKey=content-type $headerVal=text/xml
+				rece.SetContentTypeXML() // $ headerKey=content-type $headerVal=text/xml
 			}
 		}
 	}

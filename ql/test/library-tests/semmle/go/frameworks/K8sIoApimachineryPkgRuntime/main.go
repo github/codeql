@@ -31,93 +31,93 @@ func main() {
 		// func Convert_Slice_string_To_Pointer_int64(in *[]string, out **int64, s conversion.Scope) error
 		var out **int64
 		runtime.Convert_Slice_string_To_Pointer_int64(source().(*[]string), out, s)
-		sink(out) // $KsIoApimachineryPkgRuntime
+		sink(out) // $ KsIoApimachineryPkgRuntime
 	}
 	{
 		// func Convert_Slice_string_To_int(in *[]string, out *int, s conversion.Scope) error
 		var out *int
 		runtime.Convert_Slice_string_To_int(source().(*[]string), out, s)
-		sink(out) // $KsIoApimachineryPkgRuntime
+		sink(out) // $ KsIoApimachineryPkgRuntime
 	}
 	{
 		// func Convert_Slice_string_To_int64(in *[]string, out *int64, s conversion.Scope) error
 		var out *int64
 		runtime.Convert_Slice_string_To_int64(source().(*[]string), out, s)
-		sink(out) // $KsIoApimachineryPkgRuntime
+		sink(out) // $ KsIoApimachineryPkgRuntime
 	}
 	{
 		// func Convert_Slice_string_To_string(in *[]string, out *string, s conversion.Scope) error
 		var out *string
 		runtime.Convert_Slice_string_To_string(source().(*[]string), out, s)
-		sink(out) // $KsIoApimachineryPkgRuntime
+		sink(out) // $ KsIoApimachineryPkgRuntime
 	}
 	{
 		// func Convert_runtime_Object_To_runtime_RawExtension(in *Object, out *RawExtension, s conversion.Scope) error
 		var out *runtime.RawExtension
 		runtime.Convert_runtime_Object_To_runtime_RawExtension(source().(*runtime.Object), out, s)
-		sink(out) // $KsIoApimachineryPkgRuntime
+		sink(out) // $ KsIoApimachineryPkgRuntime
 	}
 	{
 		// func Convert_runtime_RawExtension_To_runtime_Object(in *RawExtension, out *Object, s conversion.Scope) error
 		var out *runtime.Object
 		runtime.Convert_runtime_RawExtension_To_runtime_Object(source().(*runtime.RawExtension), out, s)
-		sink(out) // $KsIoApimachineryPkgRuntime
+		sink(out) // $ KsIoApimachineryPkgRuntime
 	}
 	{
 		// func Convert_string_To_Pointer_int64(in *string, out **int64, s conversion.Scope) error
 		var out **int64
 		runtime.Convert_string_To_Pointer_int64(source().(*string), out, s)
-		sink(out) // $KsIoApimachineryPkgRuntime
+		sink(out) // $ KsIoApimachineryPkgRuntime
 	}
 	{
 		// func Convert_string_To_int64(in *string, out *int64, s conversion.Scope) error
 		var out *int64
 		runtime.Convert_string_To_int64(source().(*string), out, s)
-		sink(out) // $KsIoApimachineryPkgRuntime
+		sink(out) // $ KsIoApimachineryPkgRuntime
 	}
 	{
 		// func DecodeInto(d Decoder, data []byte, into Object) error
 		var o runtime.Object
 		runtime.DecodeInto(decoder, source().([]byte), o)
-		sink(o) // $KsIoApimachineryPkgRuntime
+		sink(o) // $ KsIoApimachineryPkgRuntime
 	}
 	{
 		// func DeepCopyJSON(x map[string]interface{}) map[string]interface{}
-		sink(runtime.DeepCopyJSON(source().(map[string]interface{}))) // $KsIoApimachineryPkgRuntime
+		sink(runtime.DeepCopyJSON(source().(map[string]interface{}))) // $ KsIoApimachineryPkgRuntime
 	}
 	{
 		// func DeepCopyJSONValue(x interface{}) interface{}
-		sink(runtime.DeepCopyJSONValue(source().(map[string]interface{}))) // $KsIoApimachineryPkgRuntime
+		sink(runtime.DeepCopyJSONValue(source().(map[string]interface{}))) // $ KsIoApimachineryPkgRuntime
 	}
 	{
 		// func Encode(e Encoder, obj Object) ([]byte, error)
 		x, _ := runtime.Encode(encoder, source().(runtime.Object))
-		sink(x) // $KsIoApimachineryPkgRuntime
+		sink(x) // $ KsIoApimachineryPkgRuntime
 	}
 	{
 		// func EncodeOrDie(e Encoder, obj Object) string
-		sink(runtime.EncodeOrDie(encoder, source().(runtime.Object))) // $KsIoApimachineryPkgRuntime
+		sink(runtime.EncodeOrDie(encoder, source().(runtime.Object))) // $ KsIoApimachineryPkgRuntime
 	}
 	{
 		// func Field(v reflect.Value, fieldName string, dest interface{}) error
 		var fieldName string
 		var dest interface{}
 		runtime.Field(source().(reflect.Value), fieldName, dest)
-		sink(dest) // $KsIoApimachineryPkgRuntime
+		sink(dest) // $ KsIoApimachineryPkgRuntime
 	}
 	{
 		// func FieldPtr(v reflect.Value, fieldName string, dest interface{}) error
 		var fieldName string
 		var dest interface{}
 		runtime.FieldPtr(source().(reflect.Value), fieldName, dest)
-		sink(dest) // $KsIoApimachineryPkgRuntime
+		sink(dest) // $ KsIoApimachineryPkgRuntime
 	}
 	{
 		// func SetField(src interface{}, v reflect.Value, fieldName string) error
 		var v reflect.Value
 		var fieldName string
 		runtime.SetField(source(), v, fieldName)
-		sink(v) // $KsIoApimachineryPkgRuntime
+		sink(v) // $ KsIoApimachineryPkgRuntime
 	}
 	{
 		//    CacheEncode(id Identifier, encode func(Object, io.Writer) error, w io.Writer) error
@@ -125,19 +125,19 @@ func main() {
 		var encode func(runtime.Object, io.Writer) error
 		var w io.Writer
 		source().(myCacheableObject).CacheEncode(id, encode, w)
-		sink(w) // $KsIoApimachineryPkgRuntime
+		sink(w) // $ KsIoApimachineryPkgRuntime
 	}
 	{
 		//    GetObject() Object
-		sink(source().(myCacheableObject).GetObject()) // $KsIoApimachineryPkgRuntime
+		sink(source().(myCacheableObject).GetObject()) // $ KsIoApimachineryPkgRuntime
 	}
 	{
 		// Decode(data []byte, defaults *schema.GroupVersionKind, into Object) (Object, *schema.GroupVersionKind, error)
 		var defaults *schema.GroupVersionKind
 		var into runtime.Object
 		x, _, _ := decoder.Decode(source().([]byte), defaults, into)
-		sink(x)    // $KsIoApimachineryPkgRuntime
-		sink(into) // $KsIoApimachineryPkgRuntime
+		sink(x)    // $ KsIoApimachineryPkgRuntime
+		sink(into) // $ KsIoApimachineryPkgRuntime
 	}
 	{
 		// Decode(data []byte, defaults *schema.GroupVersionKind, into Object) (Object, *schema.GroupVersionKind, error)
@@ -145,47 +145,47 @@ func main() {
 		var into runtime.Object
 		var withoutVersionDecoder runtime.WithoutVersionDecoder
 		x, _, _ := withoutVersionDecoder.Decode(source().([]byte), defaults, into)
-		sink(x)    // $KsIoApimachineryPkgRuntime
-		sink(into) // $KsIoApimachineryPkgRuntime
+		sink(x)    // $ KsIoApimachineryPkgRuntime
+		sink(into) // $ KsIoApimachineryPkgRuntime
 	}
 	{
 		// Encode(obj Object, w io.Writer) error
 		var w io.Writer
 		encoder.Encode(source().(runtime.Object), w)
-		sink(w) // $KsIoApimachineryPkgRuntime
+		sink(w) // $ KsIoApimachineryPkgRuntime
 	}
 	{
 		// Encode(obj Object, w io.Writer) error
 		var w io.Writer
 		var withVersionEncoder runtime.WithVersionEncoder
 		withVersionEncoder.Encode(source().(runtime.Object), w)
-		sink(w) // $KsIoApimachineryPkgRuntime
+		sink(w) // $ KsIoApimachineryPkgRuntime
 	}
 	{
 		var framer myFramer
 
 		// NewFrameReader(r io.ReadCloser) io.ReadCloser
-		sink(framer.NewFrameReader(source().(io.ReadCloser))) // $KsIoApimachineryPkgRuntime
+		sink(framer.NewFrameReader(source().(io.ReadCloser))) // $ KsIoApimachineryPkgRuntime
 
 		// NewFrameWriter(w io.Writer) io.Writer
-		sink(framer.NewFrameWriter(source().(io.Writer))) // $KsIoApimachineryPkgRuntime
+		sink(framer.NewFrameWriter(source().(io.Writer))) // $ KsIoApimachineryPkgRuntime
 	}
 	{
 		// DeepCopyObject() Object
-		sink(source().(runtime.Object).DeepCopyObject()) // $KsIoApimachineryPkgRuntime
+		sink(source().(runtime.Object).DeepCopyObject()) // $ KsIoApimachineryPkgRuntime
 	}
 	{
 		// func Decode(d Decoder, data []byte) (Object, error)
 		o, _ := runtime.Decode(decoder, source().([]byte))
-		sink(o) // $KsIoApimachineryPkgRuntime
+		sink(o) // $ KsIoApimachineryPkgRuntime
 	}
 	{
 		// func NewEncodable(e Encoder, obj Object, versions ...schema.GroupVersion) Object
-		sink(runtime.NewEncodable(encoder, source().(runtime.Object))) // $KsIoApimachineryPkgRuntime
+		sink(runtime.NewEncodable(encoder, source().(runtime.Object))) // $ KsIoApimachineryPkgRuntime
 	}
 	{
 		// func NewEncodableList(e Encoder, objects []Object, versions ...schema.GroupVersion) []Object
-		sink(runtime.NewEncodableList(encoder, source().([]runtime.Object))) // $KsIoApimachineryPkgRuntime
+		sink(runtime.NewEncodableList(encoder, source().([]runtime.Object))) // $ KsIoApimachineryPkgRuntime
 	}
 	{
 		// func UseOrCreateObject(t ObjectTyper, c ObjectCreater, gvk schema.GroupVersionKind, obj Object) (Object, error)
@@ -193,7 +193,7 @@ func main() {
 		var c runtime.ObjectCreater
 		var gvk schema.GroupVersionKind
 		o, _ := runtime.UseOrCreateObject(t, c, gvk, source().(runtime.Object))
-		sink(o) // $KsIoApimachineryPkgRuntime
+		sink(o) // $ KsIoApimachineryPkgRuntime
 	}
 	{
 		var objectConverter myObjectConverter
@@ -201,12 +201,12 @@ func main() {
 		//    Convert(in, out, context interface{}) error
 		var out, context interface{}
 		objectConverter.Convert(source(), out, context)
-		sink(out) // $KsIoApimachineryPkgRuntime
+		sink(out) // $ KsIoApimachineryPkgRuntime
 
 		//    ConvertToVersion(in Object, gv GroupVersioner) (out Object, err error)
 		var gv runtime.GroupVersioner
 		o, _ := objectConverter.ConvertToVersion(source().(runtime.Object), gv)
-		sink(o) // $KsIoApimachineryPkgRuntime
+		sink(o) // $ KsIoApimachineryPkgRuntime
 	}
 	{
 		var parameterCodec myParameterCodec
@@ -215,110 +215,110 @@ func main() {
 		var gv schema.GroupVersion
 		var into runtime.Object
 		parameterCodec.DecodeParameters(source().(url.Values), gv, into)
-		sink(into) // $KsIoApimachineryPkgRuntime
+		sink(into) // $ KsIoApimachineryPkgRuntime
 
 		//    EncodeParameters(obj Object, to schema.GroupVersion) (url.Values, error)
 		urlValues, _ := parameterCodec.EncodeParameters(source().(runtime.Object), gv)
-		sink(urlValues) // $KsIoApimachineryPkgRuntime
+		sink(urlValues) // $ KsIoApimachineryPkgRuntime
 	}
 	{
 		//    MarshalTo(data []byte) (int, error)
 		var data []byte
 		source().(myProtobufMarshaller).MarshalTo(data)
-		sink(data) // $KsIoApimachineryPkgRuntime
+		sink(data) // $ KsIoApimachineryPkgRuntime
 	}
 	{
 		//    MarshalToSizedBuffer(data []byte) (int, error)
 		var data []byte
 		source().(myProtobufReverseMarshaller).MarshalToSizedBuffer(data)
-		sink(data) // $KsIoApimachineryPkgRuntime
+		sink(data) // $ KsIoApimachineryPkgRuntime
 	}
 	{
 		// func (in *RawExtension) DeepCopy() *RawExtension
-		sink(source().(*runtime.RawExtension).DeepCopy()) // $KsIoApimachineryPkgRuntime
+		sink(source().(*runtime.RawExtension).DeepCopy()) // $ KsIoApimachineryPkgRuntime
 	}
 	{
 		// func (in *RawExtension) DeepCopyInto(out *RawExtension)
 		var out *runtime.RawExtension
 		source().(*runtime.RawExtension).DeepCopyInto(out)
-		sink(out) // $KsIoApimachineryPkgRuntime
+		sink(out) // $ KsIoApimachineryPkgRuntime
 	}
 	{
 		// func (m *RawExtension) Marshal() (dAtA []byte, err error)
 		dAtA, _ := source().(*runtime.RawExtension).Marshal()
-		sink(dAtA) // $KsIoApimachineryPkgRuntime
+		sink(dAtA) // $ KsIoApimachineryPkgRuntime
 	}
 	{
 		// func (m *RawExtension) MarshalTo(dAtA []byte) (int, error)
 		var dAtA []byte
 		source().(*runtime.RawExtension).MarshalTo(dAtA)
-		sink(dAtA) // $KsIoApimachineryPkgRuntime
+		sink(dAtA) // $ KsIoApimachineryPkgRuntime
 	}
 	{
 		// func (m *RawExtension) MarshalToSizedBuffer(dAtA []byte) (int, error)
 		var dAtA []byte
 		source().(*runtime.RawExtension).MarshalToSizedBuffer(dAtA)
-		sink(dAtA) // $KsIoApimachineryPkgRuntime
+		sink(dAtA) // $ KsIoApimachineryPkgRuntime
 	}
 	{
 		// func (m *RawExtension) Unmarshal(dAtA []byte) error
 		var dAtA []byte
 		source().(*runtime.RawExtension).Unmarshal(dAtA)
-		sink(dAtA) // $KsIoApimachineryPkgRuntime
+		sink(dAtA) // $ KsIoApimachineryPkgRuntime
 	}
 	{
 		// func (in *Unknown) DeepCopy() *Unknown
-		sink(source().(*runtime.Unknown).DeepCopy()) // $KsIoApimachineryPkgRuntime
+		sink(source().(*runtime.Unknown).DeepCopy()) // $ KsIoApimachineryPkgRuntime
 	}
 	{
 		// func (in *Unknown) DeepCopyObject() Object
-		sink(source().(*runtime.Unknown).DeepCopyObject()) // $KsIoApimachineryPkgRuntime
+		sink(source().(*runtime.Unknown).DeepCopyObject()) // $ KsIoApimachineryPkgRuntime
 	}
 	{
 		// func (in *Unknown) DeepCopyInto(out *Unknown)
 		var out *runtime.Unknown
 		source().(*runtime.Unknown).DeepCopyInto(out)
-		sink(out) // $KsIoApimachineryPkgRuntime
+		sink(out) // $ KsIoApimachineryPkgRuntime
 	}
 	{
 		// func (m *Unknown) Marshal() (dAtA []byte, err error)
 		dAtA, _ := source().(*runtime.Unknown).Marshal()
-		sink(dAtA) // $KsIoApimachineryPkgRuntime
+		sink(dAtA) // $ KsIoApimachineryPkgRuntime
 	}
 	{
 		// func (m *Unknown) MarshalTo(dAtA []byte) (int, error)
 		var dAtA []byte
 		source().(*runtime.Unknown).MarshalTo(dAtA)
-		sink(dAtA) // $KsIoApimachineryPkgRuntime
+		sink(dAtA) // $ KsIoApimachineryPkgRuntime
 	}
 	{
 		// func (m *Unknown) MarshalToSizedBuffer(dAtA []byte) (int, error)
 		var dAtA []byte
 		source().(*runtime.Unknown).MarshalToSizedBuffer(dAtA)
-		sink(dAtA) // $KsIoApimachineryPkgRuntime
+		sink(dAtA) // $ KsIoApimachineryPkgRuntime
 	}
 	{
 		// func (m *Unknown) NestedMarshalTo(data []byte, b ProtobufMarshaller, size uint64) (int, error)
 		var dAtA []byte
 		var b myProtobufMarshaller
 		source().(*runtime.Unknown).NestedMarshalTo(dAtA, b, 1)
-		sink(dAtA) // $KsIoApimachineryPkgRuntime
+		sink(dAtA) // $ KsIoApimachineryPkgRuntime
 	}
 	{
 		// func (m *Unknown) Unmarshal(dAtA []byte) error
 		var dAtA []byte
 		source().(*runtime.Unknown).Unmarshal(dAtA)
-		sink(dAtA) // $KsIoApimachineryPkgRuntime
+		sink(dAtA) // $ KsIoApimachineryPkgRuntime
 	}
 	{
 		//    UnstructuredContent() map[string]interface{}
-		sink(source().(myUnstructured).UnstructuredContent()) // $KsIoApimachineryPkgRuntime
+		sink(source().(myUnstructured).UnstructuredContent()) // $ KsIoApimachineryPkgRuntime
 	}
 	{
 		//    SetUnstructuredContent(map[string]interface{})
 		var unstructured myUnstructured
 		unstructured.SetUnstructuredContent(source().(map[string]interface{}))
-		sink(unstructured) // $KsIoApimachineryPkgRuntime
+		sink(unstructured) // $ KsIoApimachineryPkgRuntime
 	}
 }
 

@@ -15,14 +15,14 @@ func HeaderWrite_GithubComGofiberFiberV1146() {
 				keyString378 := source().(string)
 				valString541 := source().(string)
 				var rece fiber.Ctx
-				rece.Append(keyString378, valString541) // $headerKeyNode=keyString378 $headerValNode=valString541
+				rece.Append(keyString378, valString541) // $ headerKeyNode=keyString378 $headerValNode=valString541
 			}
 			// func (*Ctx).Set(key string, val string)
 			{
 				keyString139 := source().(string)
 				valString814 := source().(string)
 				var rece fiber.Ctx
-				rece.Set(keyString139, valString814) // $headerKeyNode=keyString139 $headerValNode=valString814
+				rece.Set(keyString139, valString814) // $ headerKeyNode=keyString139 $headerValNode=valString814
 			}
 		}
 	}
