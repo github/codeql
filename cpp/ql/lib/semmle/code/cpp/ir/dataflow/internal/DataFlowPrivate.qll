@@ -203,120 +203,13 @@ predicate storeStep(StoreNode node1, FieldContent f, StoreNode node2) {
  * Thus, `node1` references an object with a field `f` whose value ends up in
  * `node2`.
  */
-private predicate fieldReadStep(Node node1, FieldContent f, Node node2) {
-  exists(LoadOperand operand |
-    node2.asOperand() = operand and
-    node1.asInstruction() = operand.getAnyDef() and
-    exists(Class c |
-      c = operand.getAnyDef().getResultType() and
-      exists(int startBit, int endBit |
-        operand.getUsedInterval(unbindInt(startBit), unbindInt(endBit)) and
-        f.hasOffset(c, startBit, endBit)
-      )
-      or
-      getLoadedField(operand.getUse(), f.getAField(), c) and
-      f.hasOffset(c, _, _)
-    )
+predicate readStep(ReadNode node1, FieldContent f, ReadNode node2) {
+  exists(FieldAddressInstruction fai |
+    not fai.getObjectAddress().getResultType().stripType() instanceof Union and
+    node1.getInstruction() = fai.getObjectAddress() and
+    node2.getInstruction() = fai and
+    f.getField() = fai.getField()
   )
-}
-
-/**
- * When a store step happens in a function that looks like an array write such as:
- * ```cpp
- * void f(int* pa) {
- *   pa = source();
- * }
- * ```
- * it can be a write to an array, but it can also happen that `f` is called as `f(&a.x)`. If that is
- * the case, the `ArrayContent` that was written by the call to `f` should be popped off the access
- * path, and a `FieldContent` containing `x` should be pushed instead.
- * So this case pops `ArrayContent` off the access path, and the `fieldStoreStepAfterArraySuppression`
- * predicate in `storeStep` ensures that we push the right `FieldContent` onto the access path.
- */
-predicate suppressArrayRead(Node node1, ArrayContent a, Node node2) {
-  exists(a) and
-  exists(WriteSideEffectInstruction write, ChiInstruction chi |
-    node1.asInstruction() = write and
-    node2.asInstruction() = chi and
-    chi.getPartial() = write and
-    getWrittenField(write, _, _)
-  )
-}
-
-private class ArrayToPointerConvertInstruction extends ConvertInstruction {
-  ArrayToPointerConvertInstruction() {
-    this.getUnary().getResultType() instanceof ArrayType and
-    this.getResultType() instanceof PointerType
-  }
-}
-
-private Instruction skipOneCopyValueInstructionRec(CopyValueInstruction copy) {
-  copy.getUnary() = result and not result instanceof CopyValueInstruction
-  or
-  result = skipOneCopyValueInstructionRec(copy.getUnary())
-}
-
-private Instruction skipCopyValueInstructions(Operand op) {
-  not result instanceof CopyValueInstruction and result = op.getDef()
-  or
-  result = skipOneCopyValueInstructionRec(op.getDef())
-}
-
-private predicate arrayReadStep(Node node1, ArrayContent a, Node node2) {
-  exists(a) and
-  // Explicit dereferences such as `*p` or `p[i]` where `p` is a pointer or array.
-  exists(LoadOperand operand, Instruction address |
-    operand.isDefinitionInexact() and
-    node1.asInstruction() = operand.getAnyDef() and
-    operand = node2.asOperand() and
-    address = skipCopyValueInstructions(operand.getAddressOperand()) and
-    (
-      address instanceof LoadInstruction or
-      address instanceof ArrayToPointerConvertInstruction or
-      address instanceof PointerOffsetInstruction
-    )
-  )
-}
-
-/**
- * In cases such as:
- * ```cpp
- * void f(int* pa) {
- *   *pa = source();
- * }
- * ...
- * int x;
- * f(&x);
- * use(x);
- * ```
- * the load on `x` in `use(x)` will exactly overlap with its definition (in this case the definition
- * is a `WriteSideEffect`). This predicate pops the `ArrayContent` (pushed by the store in `f`)
- * from the access path.
- */
-private predicate exactReadStep(Node node1, ArrayContent a, Node node2) {
-  exists(a) and
-  exists(WriteSideEffectInstruction write, ChiInstruction chi |
-    not chi.isResultConflated() and
-    chi.getPartial() = write and
-    node1.asInstruction() = write and
-    node2.asInstruction() = chi and
-    // To distinquish this case from the `arrayReadStep` case we require that the entire variable was
-    // overwritten by the `WriteSideEffectInstruction` (i.e., there is a load that reads the
-    // entire variable).
-    exists(LoadInstruction load | load.getSourceValue() = chi)
-  )
-}
-
-/**
- * Holds if data can flow from `node1` to `node2` via a read of `f`.
- * Thus, `node1` references an object with a field `f` whose value ends up in
- * `node2`.
- */
-predicate readStep(Node node1, Content f, Node node2) {
-  fieldReadStep(node1, f, node2) or
-  arrayReadStep(node1, f, node2) or
-  exactReadStep(node1, f, node2) or
-  suppressArrayRead(node1, f, node2)
 }
 
 /**

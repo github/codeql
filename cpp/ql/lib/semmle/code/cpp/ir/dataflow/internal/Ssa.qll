@@ -326,6 +326,16 @@ private module Cached {
     )
   }
 
+  private predicate fromReadNode(ReadNode nodeFrom, Node nodeTo) {
+    exists(IRBlock bb1, int i1, IRBlock bb2, int i2, Use use1, Use use2 |
+      use1.hasRankInBlock(bb1, i1) and
+      use2.hasRankInBlock(bb2, i2) and
+      use1.getOperand().getDef() = nodeFrom.getInstruction() and
+      adjacentDefRead(_, bb1, i1, bb2, i2) and
+      flowOutOfAddressStep(use2.getOperand(), nodeTo)
+    )
+  }
+
   /**
    * Holds if `nodeFrom` is a read or write, and `nTo` is the next subsequent read of the variable
    * written (or read) by `storeOrRead`.
@@ -337,9 +347,18 @@ private module Cached {
     or
     // Def-use flow from a `StoreNode` to an `OperandNode`.
     fromStoreNode(nodeFrom, nodeTo)
+    or
+    // Use-use flow from a `ReadNode` to an `OperandNode`
+    fromReadNode(nodeFrom, nodeTo)
   }
 
   private predicate flowOutOfAddressStep(Operand operand, Node nTo) {
+    // Flow into a read node
+    exists(ReadNode readNode | readNode = nTo |
+      readNode.isInitial() and
+      operand.getDef() = readNode.getInstruction()
+    )
+    or
     exists(StoreNode storeNode, Instruction def |
       storeNode = nTo and
       def = operand.getDef()
