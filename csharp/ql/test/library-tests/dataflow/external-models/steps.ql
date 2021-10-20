@@ -1,6 +1,7 @@
 import csharp
 import DataFlow
 import semmle.code.csharp.dataflow.ExternalFlow
+import semmle.code.csharp.dataflow.FlowSummary
 import semmle.code.csharp.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 import CsvValidation
 
@@ -39,4 +40,9 @@ query predicate summaryGetterStep(DataFlow::Node arg, DataFlow::Node out, Conten
 
 query predicate summarySetterStep(DataFlow::Node arg, DataFlow::Node out, Content c) {
   FlowSummaryImpl::Private::Steps::summarySetterStep(arg, c, out)
+}
+
+query predicate clearsContent(SummarizedCallable c, DataFlow::Content k, int i) {
+  c.clearsContent(i, k) and
+  c.fromSource()
 }
