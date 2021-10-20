@@ -18,7 +18,7 @@ class ExpressionEvaluationMethod extends Method {
  * The class `org.springframework.expression.ExpressionParser`.
  */
 class ExpressionParser extends RefType {
-  ExpressionParser() { hasQualifiedName("org.springframework.expression", "ExpressionParser") }
+  ExpressionParser() { this.hasQualifiedName("org.springframework.expression", "ExpressionParser") }
 }
 
 /**
@@ -26,7 +26,7 @@ class ExpressionParser extends RefType {
  */
 class SimpleEvaluationContextBuilder extends RefType {
   SimpleEvaluationContextBuilder() {
-    hasQualifiedName("org.springframework.expression.spel.support",
+    this.hasQualifiedName("org.springframework.expression.spel.support",
       "SimpleEvaluationContext$Builder")
   }
 }
@@ -35,7 +35,7 @@ class SimpleEvaluationContextBuilder extends RefType {
  * The class `org.springframework.expression.Expression`.
  */
 class Expression extends RefType {
-  Expression() { hasQualifiedName("org.springframework.expression", "Expression") }
+  Expression() { this.hasQualifiedName("org.springframework.expression", "Expression") }
 }
 
 /**
@@ -43,6 +43,6 @@ class Expression extends RefType {
  */
 class SimpleEvaluationContext extends RefType {
   SimpleEvaluationContext() {
-    hasQualifiedName("org.springframework.expression.spel.support", "SimpleEvaluationContext")
+    this.hasQualifiedName("org.springframework.expression.spel.support", "SimpleEvaluationContext")
   }
 }

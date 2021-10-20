@@ -253,3 +253,46 @@ class NoSQLSanitizer extends DataFlow::Node {
   /** Gets the argument that specifies the NoSQL query to be sanitized. */
   DataFlow::Node getAnInput() { result = range.getAnInput() }
 }
+
+/** Provides classes for modeling HTTP Header APIs. */
+module HeaderDeclaration {
+  /**
+   * A data-flow node that collects functions setting HTTP Headers.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `HeaderDeclaration` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /**
+     * Gets the argument containing the header name.
+     */
+    abstract DataFlow::Node getNameArg();
+
+    /**
+     * Gets the argument containing the header value.
+     */
+    abstract DataFlow::Node getValueArg();
+  }
+}
+
+/**
+ * A data-flow node that collects functions setting HTTP Headers.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `HeaderDeclaration::Range` instead.
+ */
+class HeaderDeclaration extends DataFlow::Node {
+  HeaderDeclaration::Range range;
+
+  HeaderDeclaration() { this = range }
+
+  /**
+   * Gets the argument containing the header name.
+   */
+  DataFlow::Node getNameArg() { result = range.getNameArg() }
+
+  /**
+   * Gets the argument containing the header value.
+   */
+  DataFlow::Node getValueArg() { result = range.getValueArg() }
+}

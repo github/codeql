@@ -173,7 +173,7 @@ class LocalVariable extends LocalScopeVariable, @localvariable { }
 class VariableDeclarationEntry extends @var_decl {
   string toString() { result = "QualifiedName DeclarationEntry" }
 
-  Variable getDeclaration() { result = getVariable() }
+  Variable getDeclaration() { result = this.getVariable() }
 
   /**
    * Gets the variable which is being declared or defined.

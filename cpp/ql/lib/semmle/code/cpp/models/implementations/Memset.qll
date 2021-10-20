@@ -31,17 +31,17 @@ private class MemsetFunction extends ArrayFunction, DataFlowFunction, AliasFunct
 
   override predicate hasArrayWithVariableSize(int bufParam, int countParam) {
     bufParam = 0 and
-    (if hasGlobalName(bzero()) then countParam = 1 else countParam = 2)
+    (if this.hasGlobalName(bzero()) then countParam = 1 else countParam = 2)
   }
 
-  override predicate parameterNeverEscapes(int index) { hasGlobalName(bzero()) and index = 0 }
+  override predicate parameterNeverEscapes(int index) { this.hasGlobalName(bzero()) and index = 0 }
 
   override predicate parameterEscapesOnlyViaReturn(int index) {
-    not hasGlobalName(bzero()) and index = 0
+    not this.hasGlobalName(bzero()) and index = 0
   }
 
   override predicate parameterIsAlwaysReturned(int index) {
-    not hasGlobalName(bzero()) and index = 0
+    not this.hasGlobalName(bzero()) and index = 0
   }
 
   override predicate hasOnlySpecificReadSideEffects() { any() }
@@ -54,7 +54,7 @@ private class MemsetFunction extends ArrayFunction, DataFlowFunction, AliasFunct
 
   override ParameterIndex getParameterSizeIndex(ParameterIndex i) {
     i = 0 and
-    if hasGlobalName(bzero()) then result = 1 else result = 2
+    if this.hasGlobalName(bzero()) then result = 1 else result = 2
   }
 }
 

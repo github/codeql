@@ -79,8 +79,8 @@ class Location extends @location {
 
   /** Holds if location `l` is completely contained within this one. */
   predicate subsumes(Location l) {
-    exists(File f | f = getFile() |
-      exists(int thisStart, int thisEnd | charLoc(f, thisStart, thisEnd) |
+    exists(File f | f = this.getFile() |
+      exists(int thisStart, int thisEnd | this.charLoc(f, thisStart, thisEnd) |
         exists(int lStart, int lEnd | l.charLoc(f, lStart, lEnd) |
           thisStart <= lStart and lEnd <= thisEnd
         )
@@ -97,10 +97,10 @@ class Location extends @location {
    * see `subsumes`.
    */
   predicate charLoc(File f, int start, int end) {
-    f = getFile() and
+    f = this.getFile() and
     exists(int maxCols | maxCols = maxCols(f) |
-      start = getStartLine() * maxCols + getStartColumn() and
-      end = getEndLine() * maxCols + getEndColumn()
+      start = this.getStartLine() * maxCols + this.getStartColumn() and
+      end = this.getEndLine() * maxCols + this.getEndColumn()
     )
   }
 }
@@ -144,7 +144,7 @@ class Locatable extends Element { }
  * expressions, one for statements and one for other program elements.
  */
 class UnknownLocation extends Location {
-  UnknownLocation() { getFile().getAbsolutePath() = "" }
+  UnknownLocation() { this.getFile().getAbsolutePath() = "" }
 }
 
 /**

@@ -134,7 +134,7 @@ class MetricFile extends File {
     result =
       // avoid 0 values
       1 + count(string s | exists(Operation op | op.getFile() = this and s = op.getOperator())) +
-        count(string s | s = getAUsedHalsteadN1Operator())
+        count(string s | s = this.getAUsedHalsteadN1Operator())
   }
 
   /**

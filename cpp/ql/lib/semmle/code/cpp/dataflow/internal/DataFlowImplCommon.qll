@@ -802,6 +802,9 @@ private module Cached {
   }
 
   cached
+  predicate allowParameterReturnInSelfCached(ParamNode p) { allowParameterReturnInSelf(p) }
+
+  cached
   newtype TCallContext =
     TAnyCallContext() or
     TSpecificCall(DataFlowCall call) { recordDataFlowCallSite(call, _) } or
