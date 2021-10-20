@@ -382,6 +382,24 @@ private module Cached {
     fromPhiNode(nodeFrom, nodeTo)
     or
     toPhiNode(nodeFrom, nodeTo)
+    or
+    // When we want to transfer flow out of a `StoreNode` we perform two steps:
+    // 1. Find the next use of the address being stored to
+    // 2. Find the `LoadInstruction` that loads the address
+    // When the address being stored into doesn't have a `LoadInstruction` associated with it because it's
+    // passed into a `CallInstruction` we transfer flow to the `ReadSideEffect`, which will then flow into
+    // the callee. We then pickup the flow from the `InitializeIndirectionInstruction` and use the shared
+    // SSA library to determine where the next use of the address that received the flow is.
+    exists(Node init, Node mid |
+      nodeFrom.asInstruction().(InitializeIndirectionInstruction).getIRVariable() =
+        init.asInstruction().(InitializeParameterInstruction).getIRVariable() and
+      // No need for the flow if the next use is the instruction that returns the flow out of the callee.
+      not mid.asInstruction() instanceof ReturnIndirectionInstruction and
+      // Find the next use of the address
+      ssaFlow(init, mid) and
+      // And flow to the next load of that address
+      flowOutOfAddressStep([mid.asInstruction().getAUse(), mid.asOperand()], nodeTo)
+    )
   }
 
   private predicate flowOutOfAddressStep(Operand operand, Node nTo) {
