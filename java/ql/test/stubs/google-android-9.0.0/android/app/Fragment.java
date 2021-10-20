@@ -15,30 +15,29 @@
 package android.app;
 
 import android.annotation.Nullable;
+import android.content.ComponentCallbacks2;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-
-public class Fragment {
-
+public class Fragment implements ComponentCallbacks2 {
   public static class SavedState implements Parcelable {
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {}
-
     @Override
     public int describeContents() {
       return 0;
     }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {}
+
   }
 
   static public class InstantiationException {
     public InstantiationException(String msg, Exception cause) {}
-
   }
+
 
   public Fragment() {}
 
@@ -64,5 +63,14 @@ public class Fragment {
   public String toString() {
     return null;
   }
+
+  @Override
+  public void onConfigurationChanged(Configuration p0) {}
+
+  @Override
+  public void onLowMemory() {}
+
+  @Override
+  public void onTrimMemory(int p0) {}
 
 }
