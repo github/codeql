@@ -26,7 +26,7 @@ class Expr extends StmtParent, @expr {
   Function getEnclosingFunction() { result = exprEnclosingElement(this) }
 
   /** Gets the nearest enclosing set of curly braces around this expression in the source, if any. */
-  BlockStmt getEnclosingBlock() { result = getEnclosingStmt().getEnclosingBlock() }
+  BlockStmt getEnclosingBlock() { result = this.getEnclosingStmt().getEnclosingBlock() }
 
   override Stmt getEnclosingStmt() {
     result = this.getParent().(Expr).getEnclosingStmt()
@@ -219,13 +219,13 @@ class Expr extends StmtParent, @expr {
    * Holds if this expression is a _glvalue_. A _glvalue_ is either an _lvalue_ or an
    * _xvalue_.
    */
-  predicate isGLValueCategory() { isLValueCategory() or isXValueCategory() }
+  predicate isGLValueCategory() { this.isLValueCategory() or this.isXValueCategory() }
 
   /**
    * Holds if this expression is an _rvalue_. An _rvalue_ is either a _prvalue_ or an
    * _xvalue_.
    */
-  predicate isRValueCategory() { isPRValueCategory() or isXValueCategory() }
+  predicate isRValueCategory() { this.isPRValueCategory() or this.isXValueCategory() }
 
   /**
    * Gets a string representation of the value category of the expression.
@@ -240,15 +240,15 @@ class Expr extends StmtParent, @expr {
    * `hasLValueToRvalueConversion()` holds.
    */
   string getValueCategoryString() {
-    isLValueCategory() and
+    this.isLValueCategory() and
     result = "lvalue"
     or
-    isXValueCategory() and
+    this.isXValueCategory() and
     result = "xvalue"
     or
     (
-      isPRValueCategory() and
-      if hasLValueToRValueConversion() then result = "prvalue(load)" else result = "prvalue"
+      this.isPRValueCategory() and
+      if this.hasLValueToRValueConversion() then result = "prvalue(load)" else result = "prvalue"
     )
   }
 
@@ -263,7 +263,7 @@ class Expr extends StmtParent, @expr {
    * such as an expression inside a sizeof.
    */
   predicate isUnevaluated() {
-    exists(Element e | e = getParentWithConversions+() |
+    exists(Element e | e = this.getParentWithConversions+() |
       e instanceof SizeofOperator
       or
       exists(Expr e2 |
@@ -279,7 +279,7 @@ class Expr extends StmtParent, @expr {
       e instanceof AlignofOperator
     )
     or
-    exists(Decltype d | d.getExpr() = getParentWithConversions*())
+    exists(Decltype d | d.getExpr() = this.getParentWithConversions*())
   }
 
   /**
@@ -725,7 +725,7 @@ class PointerDereferenceExpr extends UnaryOperation, @indirect {
    *
    * Gets the expression that is being dereferenced.
    */
-  deprecated Expr getExpr() { result = getOperand() }
+  deprecated Expr getExpr() { result = this.getOperand() }
 
   override string getOperator() { result = "*" }
 
@@ -780,15 +780,15 @@ class NewOrNewArrayExpr extends Expr, @any_new_expr {
    * Gets the alignment argument passed to the allocation function, if any.
    */
   Expr getAlignmentArgument() {
-    hasAlignedAllocation() and
+    this.hasAlignedAllocation() and
     (
       // If we have an allocator call, the alignment is the second argument to
       // that call.
-      result = getAllocatorCall().getArgument(1)
+      result = this.getAllocatorCall().getArgument(1)
       or
       // Otherwise, the alignment winds up as child number 3 of the `new`
       // itself.
-      result = getChild(3)
+      result = this.getChild(3)
     )
   }
 
@@ -916,7 +916,7 @@ class NewArrayExpr extends NewOrNewArrayExpr, @new_array_expr {
    * Gets the element type of the array being allocated.
    */
   Type getAllocatedElementType() {
-    result = getType().getUnderlyingType().(PointerType).getBaseType()
+    result = this.getType().getUnderlyingType().(PointerType).getBaseType()
   }
 
   /**
@@ -946,7 +946,12 @@ class DeleteExpr extends Expr, @delete_expr {
    */
   Type getDeletedObjectType() {
     result =
-      getExpr().getFullyConverted().getType().stripTopLevelSpecifiers().(PointerType).getBaseType()
+      this.getExpr()
+          .getFullyConverted()
+          .getType()
+          .stripTopLevelSpecifiers()
+          .(PointerType)
+          .getBaseType()
   }
 
   /**
@@ -957,7 +962,7 @@ class DeleteExpr extends Expr, @delete_expr {
   /**
    * Gets the destructor to be called to destroy the object, if any.
    */
-  Destructor getDestructor() { result = getDestructorCall().getTarget() }
+  Destructor getDestructor() { result = this.getDestructorCall().getTarget() }
 
   /**
    * Gets the `operator delete` that deallocates storage. Does not hold
@@ -1020,7 +1025,12 @@ class DeleteArrayExpr extends Expr, @delete_array_expr {
    */
   Type getDeletedElementType() {
     result =
-      getExpr().getFullyConverted().getType().stripTopLevelSpecifiers().(PointerType).getBaseType()
+      this.getExpr()
+          .getFullyConverted()
+          .getType()
+          .stripTopLevelSpecifiers()
+          .(PointerType)
+          .getBaseType()
   }
 
   /**
@@ -1034,7 +1044,7 @@ class DeleteArrayExpr extends Expr, @delete_array_expr {
   /**
    * Gets the destructor to be called to destroy each element in the array, if any.
    */
-  Destructor getDestructor() { result = getDestructorCall().getTarget() }
+  Destructor getDestructor() { result = this.getDestructorCall().getTarget() }
 
   /**
    * Gets the `operator delete[]` that deallocates storage.
@@ -1101,7 +1111,7 @@ class StmtExpr extends Expr, @expr_stmt {
    * x = ({ dosomething(); a+b; });
    * ```
    */
-  Expr getResultExpr() { result = getStmtResultExpr(getStmt()) }
+  Expr getResultExpr() { result = getStmtResultExpr(this.getStmt()) }
 }
 
 /** Get the result expression of a statement. (Helper function for StmtExpr.) */
@@ -1230,20 +1240,20 @@ class FoldExpr extends Expr, @foldexpr {
   predicate isRightFold() { fold(underlyingElement(this), _, false) }
 
   /** Holds if this is a unary fold expression. */
-  predicate isUnaryFold() { getNumChild() = 1 }
+  predicate isUnaryFold() { this.getNumChild() = 1 }
 
   /** Holds if this is a binary fold expression. */
-  predicate isBinaryFold() { getNumChild() = 2 }
+  predicate isBinaryFold() { this.getNumChild() = 2 }
 
   /**
    * Gets the child expression containing the unexpanded parameter pack.
    */
   Expr getPackExpr() {
     this.isUnaryFold() and
-    result = getChild(0)
+    result = this.getChild(0)
     or
     this.isBinaryFold() and
-    if this.isRightFold() then result = getChild(0) else result = getChild(1)
+    if this.isRightFold() then result = this.getChild(0) else result = this.getChild(1)
   }
 
   /**
@@ -1251,7 +1261,7 @@ class FoldExpr extends Expr, @foldexpr {
    */
   Expr getInitExpr() {
     this.isBinaryFold() and
-    if this.isRightFold() then result = getChild(1) else result = getChild(0)
+    if this.isRightFold() then result = this.getChild(1) else result = this.getChild(0)
   }
 }
 

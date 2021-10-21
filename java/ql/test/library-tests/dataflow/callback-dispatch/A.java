@@ -175,7 +175,7 @@ public class A {
     // con.eat(a2.field2);
   }
 
-  static void wrapSinkToAvoidFieldSsa(A a) { sink(a.field1); }
+  static void wrapSinkToAvoidFieldSsa(A a) { sink(a.field1); } // $ flow=20
 
   void foo3() {
     A a1 = new A();
@@ -184,7 +184,7 @@ public class A {
     applyConsumer1Field1Field2(a1, a2, p -> {
       sink(p); // MISSING FLOW
     });
-    wrapSinkToAvoidFieldSsa(a1); // MISSING FLOW
+    wrapSinkToAvoidFieldSsa(a1);
     sink(a2.field2);
   }
 

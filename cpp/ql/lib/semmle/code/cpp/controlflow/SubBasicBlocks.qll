@@ -80,7 +80,7 @@ class SubBasicBlock extends ControlFlowNodeBase {
    * returns a 0-based position, while `getRankInBasicBlock` returns a 1-based
    * position.
    */
-  deprecated int getPosInBasicBlock(BasicBlock bb) { result = getRankInBasicBlock(bb) - 1 }
+  deprecated int getPosInBasicBlock(BasicBlock bb) { result = this.getRankInBasicBlock(bb) - 1 }
 
   pragma[noinline]
   private int getIndexInBasicBlock(BasicBlock bb) { this = bb.getNode(result) }
@@ -102,7 +102,7 @@ class SubBasicBlock extends ControlFlowNodeBase {
     exists(BasicBlock bb |
       exists(int outerIndex |
         result = bb.getNode(outerIndex) and
-        index = outerToInnerIndex(bb, outerIndex)
+        index = this.outerToInnerIndex(bb, outerIndex)
       )
     )
   }

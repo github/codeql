@@ -36,7 +36,9 @@ class MemberFunction extends Function {
    * `this` parameter.
    */
   override int getEffectiveNumberOfParameters() {
-    if isStatic() then result = getNumberOfParameters() else result = getNumberOfParameters() + 1
+    if this.isStatic()
+    then result = this.getNumberOfParameters()
+    else result = this.getNumberOfParameters() + 1
   }
 
   /** Holds if this member is private. */
@@ -49,13 +51,13 @@ class MemberFunction extends Function {
   predicate isPublic() { this.hasSpecifier("public") }
 
   /** Holds if this declaration has the lvalue ref-qualifier */
-  predicate isLValueRefQualified() { hasSpecifier("&") }
+  predicate isLValueRefQualified() { this.hasSpecifier("&") }
 
   /** Holds if this declaration has the rvalue ref-qualifier */
-  predicate isRValueRefQualified() { hasSpecifier("&&") }
+  predicate isRValueRefQualified() { this.hasSpecifier("&&") }
 
   /** Holds if this declaration has a ref-qualifier */
-  predicate isRefQualified() { isLValueRefQualified() or isRValueRefQualified() }
+  predicate isRefQualified() { this.isLValueRefQualified() or this.isRValueRefQualified() }
 
   /** Holds if this function overrides that function. */
   predicate overrides(MemberFunction that) {
@@ -73,10 +75,10 @@ class MemberFunction extends Function {
    * class body.
    */
   FunctionDeclarationEntry getClassBodyDeclarationEntry() {
-    if strictcount(getADeclarationEntry()) = 1
-    then result = getDefinition()
+    if strictcount(this.getADeclarationEntry()) = 1
+    then result = this.getDefinition()
     else (
-      result = getADeclarationEntry() and result != getDefinition()
+      result = this.getADeclarationEntry() and result != this.getDefinition()
     )
   }
 
@@ -198,7 +200,7 @@ class Constructor extends MemberFunction {
    * compiler-generated action which initializes a base class or member
    * variable.
    */
-  ConstructorInit getAnInitializer() { result = getInitializer(_) }
+  ConstructorInit getAnInitializer() { result = this.getInitializer(_) }
 
   /**
    * Gets an entry in the constructor's initializer list, or a
@@ -220,8 +222,8 @@ class ImplicitConversionFunction extends MemberFunction {
     functions(underlyingElement(this), _, 4)
     or
     // ConversionConstructor (deprecated)
-    strictcount(Parameter p | p = getAParameter() and not p.hasInitializer()) = 1 and
-    not hasSpecifier("explicit")
+    strictcount(Parameter p | p = this.getAParameter() and not p.hasInitializer()) = 1 and
+    not this.hasSpecifier("explicit")
   }
 
   /** Gets the type this `ImplicitConversionFunction` takes as input. */
@@ -248,8 +250,8 @@ class ImplicitConversionFunction extends MemberFunction {
  */
 deprecated class ConversionConstructor extends Constructor, ImplicitConversionFunction {
   ConversionConstructor() {
-    strictcount(Parameter p | p = getAParameter() and not p.hasInitializer()) = 1 and
-    not hasSpecifier("explicit")
+    strictcount(Parameter p | p = this.getAParameter() and not p.hasInitializer()) = 1 and
+    not this.hasSpecifier("explicit")
   }
 
   override string getAPrimaryQlClass() {
@@ -301,15 +303,15 @@ class CopyConstructor extends Constructor {
     hasCopySignature(this) and
     (
       // The rest of the parameters all have default values
-      forall(int i | i > 0 and exists(getParameter(i)) | getParameter(i).hasInitializer())
+      forall(int i | i > 0 and exists(this.getParameter(i)) | this.getParameter(i).hasInitializer())
       or
       // or this is a template class, in which case the default values have
       // not been extracted even if they exist. In that case, we assume that
       // there are default values present since that is the most common case
       // in real-world code.
-      getDeclaringType() instanceof TemplateClass
+      this.getDeclaringType() instanceof TemplateClass
     ) and
-    not exists(getATemplateArgument())
+    not exists(this.getATemplateArgument())
   }
 
   override string getAPrimaryQlClass() { result = "CopyConstructor" }
@@ -325,8 +327,8 @@ class CopyConstructor extends Constructor {
     // type-checked for each template instantiation; if an argument in an
     // instantiation fails to type-check then the corresponding parameter has
     // no default argument in the instantiation.
-    getDeclaringType() instanceof TemplateClass and
-    getNumberOfParameters() > 1
+    this.getDeclaringType() instanceof TemplateClass and
+    this.getNumberOfParameters() > 1
   }
 }
 
@@ -358,15 +360,15 @@ class MoveConstructor extends Constructor {
     hasMoveSignature(this) and
     (
       // The rest of the parameters all have default values
-      forall(int i | i > 0 and exists(getParameter(i)) | getParameter(i).hasInitializer())
+      forall(int i | i > 0 and exists(this.getParameter(i)) | this.getParameter(i).hasInitializer())
       or
       // or this is a template class, in which case the default values have
       // not been extracted even if they exist. In that case, we assume that
       // there are default values present since that is the most common case
       // in real-world code.
-      getDeclaringType() instanceof TemplateClass
+      this.getDeclaringType() instanceof TemplateClass
     ) and
-    not exists(getATemplateArgument())
+    not exists(this.getATemplateArgument())
   }
 
   override string getAPrimaryQlClass() { result = "MoveConstructor" }
@@ -382,8 +384,8 @@ class MoveConstructor extends Constructor {
     // type-checked for each template instantiation; if an argument in an
     // instantiation fails to type-check then the corresponding parameter has
     // no default argument in the instantiation.
-    getDeclaringType() instanceof TemplateClass and
-    getNumberOfParameters() > 1
+    this.getDeclaringType() instanceof TemplateClass and
+    this.getNumberOfParameters() > 1
   }
 }
 
@@ -426,7 +428,7 @@ class Destructor extends MemberFunction {
    * Gets a compiler-generated action which destructs a base class or member
    * variable.
    */
-  DestructorDestruction getADestruction() { result = getDestruction(_) }
+  DestructorDestruction getADestruction() { result = this.getDestruction(_) }
 
   /**
    * Gets a compiler-generated action which destructs a base class or member
@@ -475,16 +477,16 @@ class ConversionOperator extends MemberFunction, ImplicitConversionFunction {
  */
 class CopyAssignmentOperator extends Operator {
   CopyAssignmentOperator() {
-    hasName("operator=") and
+    this.hasName("operator=") and
     (
       hasCopySignature(this)
       or
       // Unlike CopyConstructor, this member allows a non-reference
       // parameter.
-      getParameter(0).getUnspecifiedType() = getDeclaringType()
+      this.getParameter(0).getUnspecifiedType() = this.getDeclaringType()
     ) and
     not exists(this.getParameter(1)) and
-    not exists(getATemplateArgument())
+    not exists(this.getATemplateArgument())
   }
 
   override string getAPrimaryQlClass() { result = "CopyAssignmentOperator" }
@@ -507,10 +509,10 @@ class CopyAssignmentOperator extends Operator {
  */
 class MoveAssignmentOperator extends Operator {
   MoveAssignmentOperator() {
-    hasName("operator=") and
+    this.hasName("operator=") and
     hasMoveSignature(this) and
     not exists(this.getParameter(1)) and
-    not exists(getATemplateArgument())
+    not exists(this.getATemplateArgument())
   }
 
   override string getAPrimaryQlClass() { result = "MoveAssignmentOperator" }

@@ -24,7 +24,7 @@ private class RemoteReturnSource extends RemoteFlowSource {
 
   RemoteReturnSource() {
     exists(RemoteFlowSourceFunction func, CallInstruction instr, FunctionOutput output |
-      asInstruction() = instr and
+      this.asInstruction() = instr and
       instr.getStaticCallTarget() = func and
       func.hasRemoteFlowSource(output, sourceType) and
       (
@@ -43,7 +43,7 @@ private class RemoteParameterSource extends RemoteFlowSource {
 
   RemoteParameterSource() {
     exists(RemoteFlowSourceFunction func, WriteSideEffectInstruction instr, FunctionOutput output |
-      asInstruction() = instr and
+      this.asInstruction() = instr and
       instr.getPrimaryInstruction().(CallInstruction).getStaticCallTarget() = func and
       func.hasRemoteFlowSource(output, sourceType) and
       output.isParameterDerefOrQualifierObject(instr.getIndex())
@@ -58,7 +58,7 @@ private class LocalReturnSource extends LocalFlowSource {
 
   LocalReturnSource() {
     exists(LocalFlowSourceFunction func, CallInstruction instr, FunctionOutput output |
-      asInstruction() = instr and
+      this.asInstruction() = instr and
       instr.getStaticCallTarget() = func and
       func.hasLocalFlowSource(output, sourceType) and
       (
@@ -77,7 +77,7 @@ private class LocalParameterSource extends LocalFlowSource {
 
   LocalParameterSource() {
     exists(LocalFlowSourceFunction func, WriteSideEffectInstruction instr, FunctionOutput output |
-      asInstruction() = instr and
+      this.asInstruction() = instr and
       instr.getPrimaryInstruction().(CallInstruction).getStaticCallTarget() = func and
       func.hasLocalFlowSource(output, sourceType) and
       output.isParameterDerefOrQualifierObject(instr.getIndex())
