@@ -77,6 +77,9 @@ class FileTrapWriter (
     fun getLocation(e: IrElement): Label<DbLocation> {
         return getLocation(e.startOffset, e.endOffset)
     }
+    fun getWholeFileLocation(): Label<DbLocation> {
+        return getLocation(fileId, 0, 0, 0, 0)
+    }
     fun getLocation(startOffset: Int, endOffset: Int): Label<DbLocation> {
         // If the compiler doesn't have a location, then start and end are both -1
         val unknownLoc = startOffset == -1 && endOffset == -1

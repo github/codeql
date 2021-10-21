@@ -166,8 +166,10 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
     }
 
     fun extractFileContents(id: Label<DbFile>) {
+        val locId = tw.getWholeFileLocation()
         val pkg = file.fqName.asString()
         val pkgId = extractPackage(pkg)
+        tw.writeHasLocation(id, locId)
         tw.writeCupackage(id, pkgId)
         file.declarations.map { extractDeclaration(it) }
         CommentExtractor(this).extract()
@@ -198,7 +200,7 @@ class KotlinFileExtractor(val logger: FileLogger, val tw: FileTrapWriter, val fi
       val qualClassName = if (pkg.isEmpty()) jvmName else "$pkg.$jvmName"
       val label = "@\"class;$qualClassName\""
       val id: Label<DbClass> = tw.getLabelFor(label)
-      val locId = tw.getLocation(-1, -1) // TODO: This should be the whole file
+      val locId = tw.getWholeFileLocation()
       val pkgId = extractPackage(pkg)
       tw.writeClasses(id, jvmName, pkgId, id)
       tw.writeHasLocation(id, locId)

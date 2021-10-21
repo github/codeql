@@ -192,7 +192,7 @@ class Location extends @location {
 }
 
 private predicate hasSourceLocation(Top l, Location loc, File f) {
-  hasLocation(l, loc) and f = loc.getFile() and f.getExtension() = "java"
+  hasLocation(l, loc) and f = loc.getFile() and f.getExtension() = ["java", "kt"]
 }
 
 cached
