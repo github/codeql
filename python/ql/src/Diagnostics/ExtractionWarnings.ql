@@ -26,7 +26,7 @@ int getWarningSeverity() { result = 1 }
 // is such that the analysis might be incomplete but the results that were generated are
 // probably valid.
 //
-// so SyntaxErrors are reported at the warning level, since analysis might be incomplete
+// So SyntaxErrors are reported at the warning level, since analysis might be incomplete
 // but the results that were generated are probably valid.
 from SyntaxError error, File file
 where
