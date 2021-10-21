@@ -130,10 +130,6 @@ predicate isRelevantType(Type t) {
   not t.(CollectionType).getElementType() instanceof BoxedType
 }
 
-// TODO: "com.google.common.base;Converter;true;convertAll;(Iterable);;Element of Argument[0];Element of ReturnValue;taint",
-// TODO: infer interface from multiple implementations? e.g. UriComponentsContributor
-// TODO: distinguish between taint and value flows. If we find a value flow, omit the taint flow
-// TODO: merge param->return value with param->parameter flow?
 from TargetAPI api, string flow
 where flow = captureFlow(api)
 select flow order by flow

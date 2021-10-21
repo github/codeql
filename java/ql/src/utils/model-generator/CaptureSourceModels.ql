@@ -29,7 +29,7 @@ class FromSourceConfiguration extends TaintTracking::Configuration {
   }
 }
 
-// TODO: better way than rely on internals?
+// TODO: better way than rely on internals to capture kind?
 cached
 predicate specificSourceNode(DataFlow::Node node, string output, string kind) {
   exists(InterpretNode n | Private::External::isSourceNode(n, output, kind) and n.asNode() = node)

@@ -1,9 +1,13 @@
 package p;
 
+import java.io.File;
+import java.io.FileFilter;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.concurrent.Callable;
 
 public class MultipleImpls {
-    
+
     public static interface Strategy {
         String doSomething(String value);
     }
@@ -22,7 +26,7 @@ public class MultipleImpls {
             return null;
         }
 
-    }
+    }    
     public static class Strat2 implements Strategy {
         private String foo;
 

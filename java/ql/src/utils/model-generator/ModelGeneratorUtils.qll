@@ -69,7 +69,7 @@ string asSourceModel(Callable api, string output, string kind) {
  */
 private string asPartialModel(Callable api) {
   result =
-    asModelName(api) + ";" //
+    typeAsSummaryModel(api) + ";" //
       + isExtensible(api.getDeclaringType()).toString() + ";" //
       + api.getName() + ";" //
       + paramsString(api) + ";" //
@@ -80,10 +80,18 @@ private string asPartialModel(Callable api) {
  * Returns the appropriate type name for the model. Either the type
  * declaring the method or the supertype introducing the method.
  */
-private string asModelName(Callable api) {
-  if api.(Method).getASourceOverriddenMethod().fromSource()
-  then result = typeAsModel(api.(Method).getASourceOverriddenMethod().getDeclaringType())
+private string typeAsSummaryModel(Callable api) {
+  if exists(superImpl(api.(Method)))
+  then
+    superImpl(api.(Method)).fromSource() and
+    result = typeAsModel(superImpl(api.(Method)).getDeclaringType())
   else result = typeAsModel(api.getDeclaringType())
+}
+
+Method superImpl(Method m) {
+  result = m.getAnOverride() and
+  not exists(result.getAnOverride()) and
+  not m instanceof ToStringMethod
 }
 
 private string typeAsModel(RefType type) {
