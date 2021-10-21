@@ -150,8 +150,8 @@ private predicate isCleanIntent(Expr intent) {
 /**
  * Taint configuration tracking flow from variables containing sensitive information to broadcast intents.
  */
-class SensitiveBroadcastConfig extends TaintTracking::Configuration {
-  SensitiveBroadcastConfig() { this = "Sensitive Broadcast Configuration" }
+class SensitiveCommunicationConfig extends TaintTracking::Configuration {
+  SensitiveCommunicationConfig() { this = "Sensitive Communication Configuration" }
 
   override predicate isSource(DataFlow::Node source) {
     source.asExpr() instanceof SensitiveInfoExpr

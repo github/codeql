@@ -14,7 +14,7 @@ import java
 import semmle.code.java.security.AndroidSensitiveCommunicationQuery
 import DataFlow::PathGraph
 
-from SensitiveBroadcastConfig cfg, DataFlow::PathNode source, DataFlow::PathNode sink
+from SensitiveCommunicationConfig cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where cfg.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "Sending $@ to broadcast.", source.getNode(),
-  "sensitive information"
+select sink.getNode(), source, sink, "This call may leak sensitive infomration from $@.",
+  source.getNode(), "here"
