@@ -2147,6 +2147,9 @@ class WhenExpr extends Expr, @whenexpr {
 
   /** Gets the `i`th branch. */
   WhenBranch getBranch(int i) { when_branch(result, this, i) }
+
+  /** Holds if this was written as an `if` expression. */
+  predicate isIf() { when_if(this) }
 }
 
 /** A Kotlin `when` branch. */
@@ -2158,6 +2161,11 @@ class WhenBranch extends Top, @whenbranch {
   Top getResult() {
     result.(Expr).isNthChildOf(this, 1) or
     result.(Stmt).isNthChildOf(this, 1)
+  }
+
+  /** Holds if this is an `else` branch. */
+  predicate isElseBranch() {
+    when_branch_else(this)
   }
 
   override string toString() { result = "... -> ..." }
