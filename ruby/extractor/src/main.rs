@@ -79,9 +79,12 @@ fn main() -> std::io::Result<()> {
         .with_target(false)
         .without_time()
         .with_level(true)
-        .with_env_filter(tracing_subscriber::EnvFilter::from_default_env())
+        .with_env_filter(
+            tracing_subscriber::EnvFilter::try_from_default_env()
+                .unwrap_or(tracing_subscriber::EnvFilter::new("ruby_extractor=warn")),
+        )
         .init();
-
+    tracing::warn!("Support for Ruby is currently in Beta: https://git.io/codeql-language-support");
     let num_threads = num_codeql_threads();
     tracing::info!(
         "Using {} {}",
