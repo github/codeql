@@ -24,10 +24,10 @@ func sink(_ ...interface{}) {}
 
 func (c myAppController) accessingParamsDirectlyIsUnsafe() {
 	sink(c.Params.Get("key"))
-	sink(c.Params.Values) // $ source="selection of Params"
+	sink(c.Params.Values)
 
 	val4 := ""
-	c.Params.Bind(&val4, "key") // $ source="selection of Params"
+	c.Params.Bind(&val4, "key")
 	sink(val4)
 
 	sink(c.Request.FormValue("key"))
