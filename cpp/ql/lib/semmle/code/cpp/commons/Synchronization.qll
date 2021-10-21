@@ -40,8 +40,8 @@ abstract class MutexType extends Type {
    * Gets a call that locks or tries to lock any mutex of this type.
    */
   FunctionCall getLockAccess() {
-    result = getMustlockAccess() or
-    result = getTrylockAccess()
+    result = this.getMustlockAccess() or
+    result = this.getTrylockAccess()
   }
 
   /**
@@ -63,22 +63,22 @@ abstract class MutexType extends Type {
   /**
    * DEPRECATED: use mustlockAccess(fc, arg) instead.
    */
-  deprecated Function getMustlockFunction() { result = getMustlockAccess().getTarget() }
+  deprecated Function getMustlockFunction() { result = this.getMustlockAccess().getTarget() }
 
   /**
    * DEPRECATED: use trylockAccess(fc, arg) instead.
    */
-  deprecated Function getTrylockFunction() { result = getTrylockAccess().getTarget() }
+  deprecated Function getTrylockFunction() { result = this.getTrylockAccess().getTarget() }
 
   /**
    * DEPRECATED: use lockAccess(fc, arg) instead.
    */
-  deprecated Function getLockFunction() { result = getLockAccess().getTarget() }
+  deprecated Function getLockFunction() { result = this.getLockAccess().getTarget() }
 
   /**
    * DEPRECATED: use unlockAccess(fc, arg) instead.
    */
-  deprecated Function getUnlockFunction() { result = getUnlockAccess().getTarget() }
+  deprecated Function getUnlockFunction() { result = this.getUnlockAccess().getTarget() }
 }
 
 /**
@@ -155,17 +155,17 @@ class DefaultMutexType extends MutexType {
 
   override predicate mustlockAccess(FunctionCall fc, Expr arg) {
     fc.getTarget() = mustlockCandidate() and
-    lockArgType(fc, arg)
+    this.lockArgType(fc, arg)
   }
 
   override predicate trylockAccess(FunctionCall fc, Expr arg) {
     fc.getTarget() = trylockCandidate() and
-    lockArgType(fc, arg)
+    this.lockArgType(fc, arg)
   }
 
   override predicate unlockAccess(FunctionCall fc, Expr arg) {
     fc.getTarget() = unlockCandidate() and
-    lockArgType(fc, arg)
+    this.lockArgType(fc, arg)
   }
 }
 

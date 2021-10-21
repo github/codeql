@@ -1,0 +1,26 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>If an HTTP Header is built using string concatenation or string formatting, and the
+components of the concatenation include user input, a user 
+is likely to be able to manipulate the response.</p>
+</overview>
+
+<recommendation>
+<p>User input should not be included in an HTTP Header.</p>
+</recommendation>
+
+<example>
+<p>In the following example, the code appends a user-provided value into a header.</p>
+
+<sample src="header_injection.py" />
+</example>
+
+<references>
+<li>OWASP: <a href="https://owasp.org/www-community/attacks/HTTP_Response_Splitting">HTTP Response Splitting</a>.</li>
+<li>Python Security: <a href="https://python-security.readthedocs.io/vuln/http-header-injection.html">HTTP header injection</a>.</li>
+<li>SonarSource: <a href="https://rules.sonarsource.com/python/RSPEC-5167">RSPEC-5167</a>.</li>
+</references>
+</qhelp>

@@ -110,7 +110,7 @@ class Node extends TIRDataFlowNode {
   /**
    * Gets an upper bound on the type of this node.
    */
-  IRType getTypeBound() { result = getType() }
+  IRType getTypeBound() { result = this.getType() }
 
   /** Gets the location of this element. */
   Location getLocation() { none() } // overridden by subclasses
@@ -831,7 +831,7 @@ class FieldContent extends Content, TFieldContent {
   FieldContent() { this = TFieldContent(c, startBit, endBit) }
 
   // Ensure that there's just 1 result for `toString`.
-  override string toString() { result = min(Field f | f = getAField() | f.toString()) }
+  override string toString() { result = min(Field f | f = this.getAField() | f.toString()) }
 
   predicate hasOffset(Class cl, int start, int end) { cl = c and start = startBit and end = endBit }
 

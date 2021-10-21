@@ -203,7 +203,7 @@ class PointerFieldAccess extends FieldAccess {
 
   PointerFieldAccess() {
     exists(PointerType t |
-      t = getQualifier().getFullyConverted().getUnspecifiedType() and
+      t = this.getQualifier().getFullyConverted().getUnspecifiedType() and
       t.getBaseType() instanceof Class
     )
   }
@@ -218,7 +218,9 @@ class PointerFieldAccess extends FieldAccess {
 class DotFieldAccess extends FieldAccess {
   override string getAPrimaryQlClass() { result = "DotFieldAccess" }
 
-  DotFieldAccess() { exists(Class c | c = getQualifier().getFullyConverted().getUnspecifiedType()) }
+  DotFieldAccess() {
+    exists(Class c | c = this.getQualifier().getFullyConverted().getUnspecifiedType())
+  }
 }
 
 /**

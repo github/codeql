@@ -127,17 +127,22 @@ private string getValue(Expr e) {
 private class UnsignedBitwiseAndExpr extends BitwiseAndExpr {
   UnsignedBitwiseAndExpr() {
     (
-      getLeftOperand().getFullyConverted().getType().getUnderlyingType().(IntegralType).isUnsigned() or
-      getValue(getLeftOperand().getFullyConverted()).toInt() >= 0
-    ) and
-    (
-      getRightOperand()
+      this.getLeftOperand()
           .getFullyConverted()
           .getType()
           .getUnderlyingType()
           .(IntegralType)
           .isUnsigned() or
-      getValue(getRightOperand().getFullyConverted()).toInt() >= 0
+      getValue(this.getLeftOperand().getFullyConverted()).toInt() >= 0
+    ) and
+    (
+      this.getRightOperand()
+          .getFullyConverted()
+          .getType()
+          .getUnderlyingType()
+          .(IntegralType)
+          .isUnsigned() or
+      getValue(this.getRightOperand().getFullyConverted()).toInt() >= 0
     )
   }
 }

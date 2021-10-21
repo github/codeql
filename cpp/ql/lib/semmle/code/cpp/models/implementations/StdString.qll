@@ -31,31 +31,31 @@ private class StdStringConstructor extends Constructor, TaintFunction {
    * character).
    */
   int getAStringParameterIndex() {
-    exists(Type paramType | paramType = getParameter(result).getUnspecifiedType() |
+    exists(Type paramType | paramType = this.getParameter(result).getUnspecifiedType() |
       // e.g. `std::basic_string::CharT *`
       paramType instanceof PointerType
       or
       // e.g. `std::basic_string &`, avoiding `const Allocator&`
       paramType instanceof ReferenceType and
       not paramType.(ReferenceType).getBaseType() =
-        getDeclaringType().getTemplateArgument(2).(Type).getUnspecifiedType()
+        this.getDeclaringType().getTemplateArgument(2).(Type).getUnspecifiedType()
       or
       // i.e. `std::basic_string::CharT`
-      getParameter(result).getUnspecifiedType() =
-        getDeclaringType().getTemplateArgument(0).(Type).getUnspecifiedType()
+      this.getParameter(result).getUnspecifiedType() =
+        this.getDeclaringType().getTemplateArgument(0).(Type).getUnspecifiedType()
     )
   }
 
   /**
    * Gets the index of a parameter to this function that is an iterator.
    */
-  int getAnIteratorParameterIndex() { getParameter(result).getType() instanceof Iterator }
+  int getAnIteratorParameterIndex() { this.getParameter(result).getType() instanceof Iterator }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // taint flow from any parameter of the value type to the returned object
     (
-      input.isParameterDeref(getAStringParameterIndex()) or
-      input.isParameter(getAnIteratorParameterIndex())
+      input.isParameterDeref(this.getAStringParameterIndex()) or
+      input.isParameter(this.getAnIteratorParameterIndex())
     ) and
     (
       output.isReturnValue() // TODO: this is only needed for AST data flow, which treats constructors as returning the new object
@@ -156,23 +156,23 @@ private class StdStringAppend extends TaintFunction {
    * character).
    */
   int getAStringParameterIndex() {
-    getParameter(result).getType() instanceof PointerType or // e.g. `std::basic_string::CharT *`
-    getParameter(result).getType() instanceof ReferenceType or // e.g. `std::basic_string &`
-    getParameter(result).getUnspecifiedType() =
-      getDeclaringType().getTemplateArgument(0).(Type).getUnspecifiedType() // i.e. `std::basic_string::CharT`
+    this.getParameter(result).getType() instanceof PointerType or // e.g. `std::basic_string::CharT *`
+    this.getParameter(result).getType() instanceof ReferenceType or // e.g. `std::basic_string &`
+    this.getParameter(result).getUnspecifiedType() =
+      this.getDeclaringType().getTemplateArgument(0).(Type).getUnspecifiedType() // i.e. `std::basic_string::CharT`
   }
 
   /**
    * Gets the index of a parameter to this function that is an iterator.
    */
-  int getAnIteratorParameterIndex() { getParameter(result).getType() instanceof Iterator }
+  int getAnIteratorParameterIndex() { this.getParameter(result).getType() instanceof Iterator }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from string and parameter to string (qualifier) and return value
     (
       input.isQualifierObject() or
-      input.isParameterDeref(getAStringParameterIndex()) or
-      input.isParameter(getAnIteratorParameterIndex())
+      input.isParameterDeref(this.getAStringParameterIndex()) or
+      input.isParameter(this.getAnIteratorParameterIndex())
     ) and
     (
       output.isQualifierObject() or
@@ -197,22 +197,22 @@ private class StdStringAssign extends TaintFunction {
    * character).
    */
   int getAStringParameterIndex() {
-    getParameter(result).getType() instanceof PointerType or // e.g. `std::basic_string::CharT *`
-    getParameter(result).getType() instanceof ReferenceType or // e.g. `std::basic_string &`
-    getParameter(result).getUnspecifiedType() =
-      getDeclaringType().getTemplateArgument(0).(Type).getUnspecifiedType() // i.e. `std::basic_string::CharT`
+    this.getParameter(result).getType() instanceof PointerType or // e.g. `std::basic_string::CharT *`
+    this.getParameter(result).getType() instanceof ReferenceType or // e.g. `std::basic_string &`
+    this.getParameter(result).getUnspecifiedType() =
+      this.getDeclaringType().getTemplateArgument(0).(Type).getUnspecifiedType() // i.e. `std::basic_string::CharT`
   }
 
   /**
    * Gets the index of a parameter to this function that is an iterator.
    */
-  int getAnIteratorParameterIndex() { getParameter(result).getType() instanceof Iterator }
+  int getAnIteratorParameterIndex() { this.getParameter(result).getType() instanceof Iterator }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from parameter to string itself (qualifier) and return value
     (
-      input.isParameterDeref(getAStringParameterIndex()) or
-      input.isParameter(getAnIteratorParameterIndex())
+      input.isParameterDeref(this.getAStringParameterIndex()) or
+      input.isParameter(this.getAnIteratorParameterIndex())
     ) and
     (
       output.isQualifierObject() or
@@ -574,12 +574,12 @@ private class StdStringStreamConstructor extends Constructor, TaintFunction {
    * Gets the index of a parameter to this function that is a string.
    */
   int getAStringParameterIndex() {
-    getParameter(result).getType() instanceof ReferenceType // `const std::basic_string &`
+    this.getParameter(result).getType() instanceof ReferenceType // `const std::basic_string &`
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // taint flow from any parameter of string type to the returned object
-    input.isParameterDeref(getAStringParameterIndex()) and
+    input.isParameterDeref(this.getAStringParameterIndex()) and
     (
       output.isReturnValue() // TODO: this is only needed for AST data flow, which treats constructors as returning the new object
       or

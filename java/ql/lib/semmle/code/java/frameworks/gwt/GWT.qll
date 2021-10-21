@@ -38,7 +38,7 @@ class GwtEntryPointClass extends Class {
     isGwtXmlIncluded()
     implies
     // The entry point is live if it is specified in a `*.gwt.xml` file.
-    exists(getAGwtXmlFile())
+    exists(this.getAGwtXmlFile())
   }
 }
 
@@ -48,7 +48,7 @@ class GwtEntryPointClass extends Class {
  */
 class GwtCompilationUnit extends CompilationUnit {
   GwtCompilationUnit() {
-    exists(GwtXmlFile f | getRelativePath().matches(f.getARelativeSourcePath() + "%"))
+    exists(GwtXmlFile f | this.getRelativePath().matches(f.getARelativeSourcePath() + "%"))
   }
 }
 

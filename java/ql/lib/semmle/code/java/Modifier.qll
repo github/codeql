@@ -25,7 +25,7 @@ abstract class Modifiable extends Element {
    * abstract, so `isAbstract()` will hold for them even if `hasModifier("abstract")`
    * does not.
    */
-  predicate hasModifier(string m) { modifiers(getAModifier(), m) }
+  predicate hasModifier(string m) { modifiers(this.getAModifier(), m) }
 
   /** Holds if this element has no modifier. */
   predicate hasNoModifier() { not hasModifier(this, _) }
@@ -34,31 +34,31 @@ abstract class Modifiable extends Element {
   Modifier getAModifier() { this = result.getElement() }
 
   /** Holds if this element has an `abstract` modifier or is implicitly abstract. */
-  predicate isAbstract() { hasModifier("abstract") }
+  predicate isAbstract() { this.hasModifier("abstract") }
 
   /** Holds if this element has a `static` modifier or is implicitly static. */
-  predicate isStatic() { hasModifier("static") }
+  predicate isStatic() { this.hasModifier("static") }
 
   /** Holds if this element has a `final` modifier or is implicitly final. */
-  predicate isFinal() { hasModifier("final") }
+  predicate isFinal() { this.hasModifier("final") }
 
   /** Holds if this element has a `public` modifier or is implicitly public. */
-  predicate isPublic() { hasModifier("public") }
+  predicate isPublic() { this.hasModifier("public") }
 
   /** Holds if this element has a `protected` modifier. */
-  predicate isProtected() { hasModifier("protected") }
+  predicate isProtected() { this.hasModifier("protected") }
 
   /** Holds if this element has a `private` modifier or is implicitly private. */
-  predicate isPrivate() { hasModifier("private") }
+  predicate isPrivate() { this.hasModifier("private") }
 
   /** Holds if this element has a `volatile` modifier. */
-  predicate isVolatile() { hasModifier("volatile") }
+  predicate isVolatile() { this.hasModifier("volatile") }
 
   /** Holds if this element has a `synchronized` modifier. */
-  predicate isSynchronized() { hasModifier("synchronized") }
+  predicate isSynchronized() { this.hasModifier("synchronized") }
 
   /** Holds if this element has a `native` modifier. */
-  predicate isNative() { hasModifier("native") }
+  predicate isNative() { this.hasModifier("native") }
 
   /** Holds if this element has a `default` modifier. */
   predicate isDefault() { this.hasModifier("default") }

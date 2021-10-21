@@ -10,9 +10,9 @@ import java
 class OCNIComment extends Javadoc {
   OCNIComment() {
     // The comment must start with `-[` ...
-    getChild(0).getText().matches("-[%") and
+    this.getChild(0).getText().matches("-[%") and
     // ... and it must end with `]-`.
-    getChild(getNumChild() - 1).getText().matches("%]-")
+    this.getChild(this.getNumChild() - 1).getText().matches("%]-")
   }
 }
 
@@ -42,9 +42,9 @@ class OCNIMethodComment extends OCNIComment {
  */
 class OCNIImport extends OCNIComment {
   OCNIImport() {
-    getAChild().getText().regexpMatch(".*#(import|include).*") and
+    this.getAChild().getText().regexpMatch(".*#(import|include).*") and
     not exists(RefType rt | rt.getFile() = this.getFile() |
-      rt.getLocation().getStartLine() < getLocation().getStartLine()
+      rt.getLocation().getStartLine() < this.getLocation().getStartLine()
     )
   }
 }
