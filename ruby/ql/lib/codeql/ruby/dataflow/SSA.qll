@@ -221,12 +221,17 @@ module Ssa {
   }
 
   /**
-   * An SSA definition that corresponds to the value of `self` upon method entry.
+   * An SSA definition that corresponds to the value of `self` upon entry to a method, class or module.
    */
   class SelfDefinition extends Definition, SsaImplCommon::WriteDefinition {
     private SelfVariable v;
 
-    SelfDefinition() { this.definesAt(v, _, _) }
+    SelfDefinition() {
+      exists(BasicBlock bb, int i |
+        this.definesAt(v, bb, i) and
+        not SsaImpl::capturedEntryWrite(bb, i, v)
+      )
+    }
 
     final override string toString() { result = "self (" + v.getDeclaringScope() + ")" }
 

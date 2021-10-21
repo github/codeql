@@ -147,7 +147,7 @@ class LocalVariableAccess extends VariableAccess instanceof LocalVariableAccessI
    * the access to `x` in the first `puts x` is a captured access, while
    * the access to `x` in the second `puts x` is not.
    */
-  final predicate isCapturedAccess() { isCapturedAccess(this) }
+  predicate isCapturedAccess() { isCapturedAccess(this) }
 }
 
 /** An access to a local variable where the value is updated. */
@@ -195,4 +195,10 @@ class SelfVariableAccess extends LocalVariableAccess instanceof SelfVariableAcce
 }
 
 /** An access to the `self` variable where the value is read. */
-class SelfVariableReadAccess extends SelfVariableAccess, VariableReadAccess { }
+class SelfVariableReadAccess extends SelfVariableAccess, VariableReadAccess {
+  // We override the definition in `LocalVariableAccess` because it gives the
+  // wrong result for synthesised `self` variables.
+  override predicate isCapturedAccess() {
+    this.getVariable().getDeclaringScope() != this.getCfgScope()
+  }
+}
