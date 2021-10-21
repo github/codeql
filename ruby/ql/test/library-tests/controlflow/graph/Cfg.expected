@@ -1056,7 +1056,7 @@ cfg.rb:
 #-----|  -> ... = ...
 
 #   54| ... = ...
-#-----|  -> Object
+#-----|  -> Silly
 
 #   54| character
 #-----|  -> ?\x40
@@ -1065,7 +1065,7 @@ cfg.rb:
 #-----|  -> ... = ...
 
 #   58| Silly
-#-----|  -> x
+#-----|  -> Object
 
 #   58| Object
 #-----|  -> complex
@@ -1293,7 +1293,7 @@ cfg.rb:
 #-----|  -> self
 
 #   69| print
-#-----|  -> Silly
+#-----|  -> x
 
 #   69| exit print
 
@@ -1620,7 +1620,7 @@ cfg.rb:
 #-----|  -> #{...}
 
 #  113| ... if ...
-#-----|  -> @field
+#-----|  -> C
 
 #  113| call to puts
 #-----|  -> ... if ...
@@ -1642,7 +1642,7 @@ cfg.rb:
 #-----|  -> ... > ...
 
 #  115| C
-#-----|  -> swap
+#-----|  -> @field
 
 #  116| ... = ...
 #-----|  -> @@static_field
@@ -1654,7 +1654,7 @@ cfg.rb:
 #-----|  -> ... = ...
 
 #  117| ... = ...
-#-----|  -> C
+#-----|  -> swap
 
 #  117| @@static_field
 #-----|  -> 10
@@ -1663,7 +1663,7 @@ cfg.rb:
 #-----|  -> ... = ...
 
 #  120| ... = ...
-#-----|  -> nothing
+#-----|  -> M
 
 #  120| swap
 #-----|  -> -> { ... }
@@ -1701,7 +1701,7 @@ cfg.rb:
 #-----|  -> call to []
 
 #  122| M
-#-----|  -> EmptyClass
+#-----|  -> nothing
 
 #  123| ... = ...
 #-----|  -> some
@@ -1812,7 +1812,7 @@ cfg.rb:
 #-----|  -> #{...}
 
 #  130| ... = ...
-#-----|  -> M
+#-----|  -> EmptyClass
 
 #  130| Constant
 #-----|  -> 5
@@ -2832,7 +2832,7 @@ desugar.rb:
 #-----|  -> __synth__0
 
 #   25| m7
-#-----|  -> @x
+#-----|  -> X
 
 #   25| exit m7
 
@@ -2939,7 +2939,7 @@ desugar.rb:
 #-----|  -> call to []
 
 #   29| X
-#-----|  -> $global_var
+#-----|  -> @x
 
 #   30| ... = ...
 #-----|  -> @x
@@ -2978,7 +2978,7 @@ desugar.rb:
 #-----|  -> @@y
 
 #   34| ... = ...
-#-----|  -> X
+#-----|  -> $global_var
 
 #   34| @@y
 #-----|  -> 4
@@ -3907,7 +3907,7 @@ loops.rb:
 
 raise.rb:
 #    1| enter raise.rb
-#-----|  -> Exception
+#-----|  -> ExceptionA
 
 #    1| ExceptionA
 #-----|  -> Exception
@@ -3918,13 +3918,13 @@ raise.rb:
 #-----|  -> exit raise.rb
 
 #    1| Exception
-#-----|  -> ExceptionA
+#-----|  -> ExceptionB
 
 #    4| ExceptionB
-#-----|  -> m1
+#-----|  -> Exception
 
 #    4| Exception
-#-----|  -> ExceptionB
+#-----|  -> m1
 
 #    7| enter m1
 #-----|  -> x
@@ -5070,7 +5070,7 @@ raise.rb:
 #-----|  -> self
 
 #  158| m15
-#-----|  -> self
+#-----|  -> C
 
 #  158| exit m15
 
@@ -5134,13 +5134,13 @@ raise.rb:
 #-----| false -> self
 
 #  166| C
-#-----|  -> exit raise.rb (normal)
+#-----|  -> self
 
 #  167| enter m
 #-----|  -> self
 
 #  167| m
-#-----|  -> C
+#-----|  -> exit raise.rb (normal)
 
 #  167| exit m
 

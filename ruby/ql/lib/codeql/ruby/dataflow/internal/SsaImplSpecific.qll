@@ -23,9 +23,13 @@ class SourceVariable = LocalVariable;
  */
 predicate variableWrite(BasicBlock bb, int i, SourceVariable v, boolean certain) {
   (
-    // We consider the `self` variable to have a single write at the entry to a method block.
+    // We consider the `self` variable to have a single write at the entry to a method block...
     v.(SelfVariable).getDeclaringScope() = bb.(BasicBlocks::EntryBasicBlock).getScope() and
     i = 0
+    or
+    // ...or a class or module block.
+    bb.getNode(i).getNode() =
+      v.(SelfVariable).getDeclaringScope().(ModuleBase).getAControlFlowEntryNode()
     or
     SsaImpl::uninitializedWrite(bb, i, v)
     or
