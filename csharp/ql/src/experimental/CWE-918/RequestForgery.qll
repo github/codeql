@@ -24,7 +24,7 @@ module RequestForgery {
   abstract private class BarrierGuard extends DataFlow::BarrierGuard { }
 
   /**
-   * A taint-tracking configuration for detecting server side request forgery vulnerabilities.
+   * A data flow configuration for detecting server side request forgery vulnerabilities.
    */
   class RequestForgeryConfiguration extends DataFlow::Configuration {
     RequestForgeryConfiguration() { this = "Server Side Request forgery" }
@@ -148,7 +148,9 @@ module RequestForgery {
    * This guard considers all checks as valid.
    */
   private class StringStartsWithBarrierGuard extends BarrierGuard, MethodCall {
-    StringStartsWithBarrierGuard() { this.getTarget().hasQualifiedName("System.String.StartsWith") }
+    StringStartsWithBarrierGuard() {
+      this.getTarget().hasQualifiedName("System.String", "StartsWith")
+    }
 
     override predicate checks(Expr e, AbstractValue v) {
       // Any check such as the ones shown below
