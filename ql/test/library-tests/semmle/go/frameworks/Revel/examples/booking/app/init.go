@@ -33,11 +33,11 @@ func init() {
 		switch event {
 		case revel.ENGINE_BEFORE_INITIALIZED:
 			revel.AddHTTPMux("/this/is/a/test", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-				fmt.Fprintln(w, "Hi there, it worked", r.URL.Path) // $responsebody=selection of Path $responsebody="Hi there, it worked"
+				fmt.Fprintln(w, "Hi there, it worked", r.URL.Path) // $ responsebody='selection of Path' responsebody='"Hi there, it worked"'
 				w.WriteHeader(200)
 			}))
 			revel.AddHTTPMux("/this/is/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-				fmt.Fprintln(w, "Hi there, shorter prefix", r.URL.Path) // $responsebody=selection of Path $responsebody="Hi there, shorter prefix"
+				fmt.Fprintln(w, "Hi there, shorter prefix", r.URL.Path) // $ responsebody='selection of Path' responsebody='"Hi there, shorter prefix"'
 				w.WriteHeader(200)
 			}))
 		}

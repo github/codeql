@@ -22,7 +22,7 @@ func TaintStepTest_OsExpandEnv_B0I0O0(sourceCQL interface{}) interface{} {
 
 func TaintStepTest_OsNewFile_B0I0O0(sourceCQL interface{}) interface{} {
 	fromUintptr784 := sourceCQL.(uintptr)
-	intoFile957 := os.NewFile(fromUintptr784, "") // $fsaccess=""
+	intoFile957 := os.NewFile(fromUintptr784, "") // $ fsaccess=""
 	return intoFile957
 }
 
@@ -154,30 +154,30 @@ func RunAllTaints_Os() {
 func fsAccesses() {
 	var path, path1, part string
 	var time time.Time
-	os.Chdir(path)                       // $fsaccess=path
-	os.Chmod(path, 0600)                 // $fsaccess=path
-	os.Chown(path, 1000, 1000)           // $fsaccess=path
-	os.Chtimes(path, time, time)         // $fsaccess=path
-	os.Create(path)                      // $fsaccess=path
-	os.Lchown(path, 1000, 1000)          // $fsaccess=path
-	os.Link(path, path1)                 // $fsaccess=path $fsaccess=path1
-	os.Lstat(path)                       // $fsaccess=path
-	os.Mkdir(path, 0600)                 // $fsaccess=path
-	os.MkdirAll(path, 0600)              // $fsaccess=path
-	os.NewFile(124, path)                // $fsaccess=path
-	os.Open(path)                        // $fsaccess=path
-	os.OpenFile(path, os.O_RDONLY, 0600) // $fsaccess=path
-	os.Readlink(path)                    // $fsaccess=path
-	os.Remove(path)                      // $fsaccess=path
-	os.RemoveAll(path)                   // $fsaccess=path
-	os.Rename(path, path1)               // $fsaccess=path $fsaccess=path1
-	os.Stat(path)                        // $fsaccess=path
-	os.Symlink(path, path1)              // $fsaccess=path $fsaccess=path1
-	os.Truncate(path, 1000)              // $fsaccess=path
-	os.DirFS(path)                       // $fsaccess=path
-	os.ReadDir(path)                     // $fsaccess=path
-	os.ReadFile(path)                    // $fsaccess=path
-	os.MkdirTemp(path, part)             // $fsaccess=path $fsaccess=part
-	os.CreateTemp(path, part)            // $fsaccess=path $fsaccess=part
-	os.WriteFile(path, []byte{}, 0600)   // $fsaccess=path
+	os.Chdir(path)                       // $ fsaccess=path
+	os.Chmod(path, 0600)                 // $ fsaccess=path
+	os.Chown(path, 1000, 1000)           // $ fsaccess=path
+	os.Chtimes(path, time, time)         // $ fsaccess=path
+	os.Create(path)                      // $ fsaccess=path
+	os.Lchown(path, 1000, 1000)          // $ fsaccess=path
+	os.Link(path, path1)                 // $ fsaccess=path fsaccess=path1
+	os.Lstat(path)                       // $ fsaccess=path
+	os.Mkdir(path, 0600)                 // $ fsaccess=path
+	os.MkdirAll(path, 0600)              // $ fsaccess=path
+	os.NewFile(124, path)                // $ fsaccess=path
+	os.Open(path)                        // $ fsaccess=path
+	os.OpenFile(path, os.O_RDONLY, 0600) // $ fsaccess=path
+	os.Readlink(path)                    // $ fsaccess=path
+	os.Remove(path)                      // $ fsaccess=path
+	os.RemoveAll(path)                   // $ fsaccess=path
+	os.Rename(path, path1)               // $ fsaccess=path fsaccess=path1
+	os.Stat(path)                        // $ fsaccess=path
+	os.Symlink(path, path1)              // $ fsaccess=path fsaccess=path1
+	os.Truncate(path, 1000)              // $ fsaccess=path
+	os.DirFS(path)                       // $ fsaccess=path
+	os.ReadDir(path)                     // $ fsaccess=path
+	os.ReadFile(path)                    // $ fsaccess=path
+	os.MkdirTemp(path, part)             // $ fsaccess=path fsaccess=part
+	os.CreateTemp(path, part)            // $ fsaccess=path fsaccess=part
+	os.WriteFile(path, []byte{}, 0600)   // $ fsaccess=path
 }

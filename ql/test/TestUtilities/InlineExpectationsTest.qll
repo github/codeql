@@ -1,6 +1,7 @@
 /**
  * Provides a library for writing QL tests whose success or failure is based on expected results
- * embedded in the test source code as comments, rather than a `.expected` file.
+ * embedded in the test source code as comments, rather than the contents of an `.expected` file
+ * (in that the `.expected` file should always be empty).
  *
  * To add this framework to a new language:
  * - Add a file `InlineExpectationsTestPrivate.qll` that defines a `ExpectationComment` class. This class
@@ -43,15 +44,15 @@
  * There is no need to write a `select` clause or query predicate. All of the differences between
  * expected results and actual results will be reported in the `failures()` query predicate.
  *
- * To annotate the test source code with an expected result, place a comment on the
+ * To annotate the test source code with an expected result, place a comment starting with a `$` on the
  * same line as the expected result, with text of the following format as the body of the comment:
  *
- * `$tag=expected-value`
+ * `tag=expected-value`
  *
  * Where `tag` is the value of the `tag` parameter from `hasActualResult()`, and `expected-value` is
  * the value of the `value` parameter from `hasActualResult()`. The `=expected-value` portion may be
  * omitted, in which case `expected-value` is treated as the empty string. Multiple expectations may
- * be placed in the same comment, as long as each is prefixed by a `$`. Any actual result that
+ * be placed in the same comment. Any actual result that
  * appears on a line that does not contain a matching expected result comment will be reported with
  * a message of the form "Unexpected result: tag=value". Any expected result comment for which there
  * is no matching actual result will be reported with a message of the form
@@ -59,31 +60,34 @@
  *
  * Example:
  * ```cpp
- * int i = x + 5;  // $const=5
- * int j = y + (7 - 3)  // $const=7 $const=3 $const=4  // The result of the subtraction is a constant.
+ * int i = x + 5;  // $ const=5
+ * int j = y + (7 - 3)  // $ const=7 const=3 const=4  // The result of the subtraction is a constant.
  * ```
  *
- * For tests that contain known false positives and false negatives, it is possible to further
- * annotate that a particular expected result is known to be a false positive, or that a particular
- * missing result is known to be a false negative:
+ * For tests that contain known missing and spurious results, it is possible to further
+ * annotate that a particular expected result is known to be spurious, or that a particular
+ * missing result is known to be missing:
  *
- * `$f+:tag=expected-value`  // False positive
- * `$f-:tag=expected-value`  // False negative
+ * `$ SPURIOUS: tag=expected-value`  // Spurious result
+ * `$ MISSING: tag=expected-value`  // Missing result
  *
- * A false positive expectation is treated as any other expected result, except that if there is no
- * matching actual result, the message will be of the form "Fixed false positive: tag=value". A
- * false negative expectation is treated as if there were no expected result, except that if a
+ * A spurious expectation is treated as any other expected result, except that if there is no
+ * matching actual result, the message will be of the form "Fixed spurious result: tag=value". A
+ * missing expectation is treated as if there were no expected result, except that if a
  * matching expected result is found, the message will be of the form
- * "Fixed false negative: tag=value".
+ * "Fixed missing result: tag=value".
+ *
+ * A single line can contain all the expected, spurious and missing results of that line. For instance:
+ * `$ tag1=value1 SPURIOUS: tag2=value2 MISSING: tag3=value3`.
  *
  * If the same result value is expected for two or more tags on the same line, there is a shorthand
  * notation available:
  *
- * `$tag1,tag2=expected-value`
+ * `tag1,tag2=expected-value`
  *
  * is equivalent to:
  *
- * `$tag1=expected-value $tag2=expected-value`
+ * `tag1=expected-value tag2=expected-value`
  */
 
 private import InlineExpectationsTestPrivate
@@ -119,6 +123,11 @@ abstract class InlineExpectationsTest extends string {
    */
   abstract predicate hasActualResult(string file, int line, string element, string tag, string value);
 
+  predicate hasActualResult(Location location, string element, string tag, string value) {
+    this.hasActualResult(location.getFile().getAbsolutePath(), location.getStartLine(), element,
+      tag, value)
+  }
+
   final predicate hasFailureMessage(FailureLocatable element, string message) {
     exists(ActualResult actualResult |
       actualResult.getTest() = this and
@@ -126,7 +135,7 @@ abstract class InlineExpectationsTest extends string {
       (
         exists(FalseNegativeExpectation falseNegative |
           falseNegative.matchesActualResult(actualResult) and
-          message = "Fixed false negative:" + falseNegative.getExpectationText()
+          message = "Fixed missing result:" + falseNegative.getExpectationText()
         )
         or
         not exists(ValidExpectation expectation | expectation.matchesActualResult(actualResult)) and
@@ -143,7 +152,7 @@ abstract class InlineExpectationsTest extends string {
         message = "Missing result:" + expectation.getExpectationText()
         or
         expectation instanceof FalsePositiveExpectation and
-        message = "Fixed false positive:" + expectation.getExpectationText()
+        message = "Fixed spurious result:" + expectation.getExpectationText()
       )
     )
     or
@@ -160,54 +169,105 @@ abstract class InlineExpectationsTest extends string {
  * is treated as part of the expected results, except that the comment may contain a `//` sequence
  * to treat the remainder of the line as a regular (non-interpreted) comment.
  */
-private string expectationCommentPattern() { result = "\\s*(\\$(?:[^/]|/[^/])*)(?://.*)?" }
+private string expectationCommentPattern() { result = "\\s*\\$((?:[^/]|/[^/])*)(?://.*)?" }
 
 /**
- * RegEx pattern to match a single expected result, not including the leading `$`. It starts with an
- * optional `f+:` or `f-:`, followed by one or more comma-separated tags containing only letters,
- * `-`, and `_`, optionally followed by `=` and the expected value.
+ * The possible columns in an expectation comment. The `TDefaultColumn` branch represents the first
+ * column in a comment. This column is not precedeeded by a name. `TNamedColumn(name)` represents a
+ * column containing expected results preceeded by the string `name:`.
  */
-private string expectationPattern() {
-  result = "(?:(f(?:\\+|-)):)?((?:[A-Za-z-_]+)(?:\\s*,\\s*[A-Za-z-_]+)*)(?:=(.*))?"
+private newtype TColumn =
+  TDefaultColumn() or
+  TNamedColumn(string name) { name = ["MISSING", "SPURIOUS"] }
+
+bindingset[start, content]
+private int getEndOfColumnPosition(int start, string content) {
+  result =
+    min(string name, int cand |
+      exists(TNamedColumn(name)) and
+      cand = content.indexOf(name + ":") and
+      cand >= start
+    |
+      cand
+    )
+  or
+  not exists(string name |
+    exists(TNamedColumn(name)) and
+    content.indexOf(name + ":") >= start
+  ) and
+  result = content.length()
 }
 
-private string getAnExpectation(ExpectationComment comment) {
-  result = comment.getContents().regexpCapture(expectationCommentPattern(), 1).splitAt("$").trim() and
-  result != ""
+private predicate getAnExpectation(
+  ExpectationComment comment, TColumn column, string expectation, string tags, string value
+) {
+  exists(string content |
+    content = comment.getContents().regexpCapture(expectationCommentPattern(), 1) and
+    (
+      column = TDefaultColumn() and
+      exists(int end |
+        end = getEndOfColumnPosition(0, content) and
+        expectation = content.prefix(end).regexpFind(expectationPattern(), _, _).trim()
+      )
+      or
+      exists(string name, int start, int end |
+        column = TNamedColumn(name) and
+        start = content.indexOf(name + ":") + name.length() + 1 and
+        end = getEndOfColumnPosition(start, content) and
+        expectation = content.substring(start, end).regexpFind(expectationPattern(), _, _).trim()
+      )
+    )
+  ) and
+  tags = expectation.regexpCapture(expectationPattern(), 1) and
+  if exists(expectation.regexpCapture(expectationPattern(), 2))
+  then value = expectation.regexpCapture(expectationPattern(), 2)
+  else value = ""
+}
+
+private string getColumnString(TColumn column) {
+  column = TDefaultColumn() and result = ""
+  or
+  column = TNamedColumn(result)
+}
+
+/**
+ * RegEx pattern to match a single expected result, not including the leading `$`. It consists of one or
+ * more comma-separated tags containing only letters, digits, `-` and `_` (note that the first character
+ * must not be a digit), optionally followed by `=` and the expected value.
+ */
+private string expectationPattern() {
+  exists(string tag, string tags, string value |
+    tag = "[A-Za-z-_][A-Za-z-_0-9]*" and
+    tags = "((?:" + tag + ")(?:\\s*,\\s*" + tag + ")*)" and
+    // In Python, we allow both `"` and `'` for strings, as well as the prefixes `bru`.
+    // For example, `b"foo"`.
+    value = "((?:[bru]*\"[^\"]*\"|[bru]*'[^']*'|\\S+)*)" and
+    result = tags + "(?:=" + value + ")?"
+  )
 }
 
 private newtype TFailureLocatable =
   TActualResult(
-    InlineExpectationsTest test, string file, int line, string element, string tag, string value
+    InlineExpectationsTest test, Location location, string element, string tag, string value
   ) {
-    test.hasActualResult(file, line, element, tag, value)
+    test.hasActualResult(location, element, tag, value)
   } or
   TValidExpectation(ExpectationComment comment, string tag, string value, string knownFailure) {
-    exists(string expectation |
-      expectation = getAnExpectation(comment) and
-      expectation.regexpMatch(expectationPattern()) and
-      tag = expectation.regexpCapture(expectationPattern(), 2).splitAt(",").trim() and
-      (
-        if exists(expectation.regexpCapture(expectationPattern(), 3))
-        then value = expectation.regexpCapture(expectationPattern(), 3)
-        else value = ""
-      ) and
-      (
-        if exists(expectation.regexpCapture(expectationPattern(), 1))
-        then knownFailure = expectation.regexpCapture(expectationPattern(), 1)
-        else knownFailure = ""
-      )
+    exists(TColumn column, string tags |
+      getAnExpectation(comment, column, _, tags, value) and
+      tag = tags.splitAt(",") and
+      knownFailure = getColumnString(column)
     )
   } or
   TInvalidExpectation(ExpectationComment comment, string expectation) {
-    expectation = getAnExpectation(comment) and
+    getAnExpectation(comment, _, expectation, _, _) and
     not expectation.regexpMatch(expectationPattern())
   }
 
 class FailureLocatable extends TFailureLocatable {
   string toString() { none() }
 
-  predicate hasLocation(string file, int line) { none() }
+  Location getLocation() { none() }
 
   final string getExpectationText() { result = this.getTag() + "=" + this.getValue() }
 
@@ -218,17 +278,16 @@ class FailureLocatable extends TFailureLocatable {
 
 class ActualResult extends FailureLocatable, TActualResult {
   InlineExpectationsTest test;
-  string file;
-  int line;
+  Location location;
   string element;
   string tag;
   string value;
 
-  ActualResult() { this = TActualResult(test, file, line, element, tag, value) }
+  ActualResult() { this = TActualResult(test, location, element, tag, value) }
 
   override string toString() { result = element }
 
-  override predicate hasLocation(string f, int l) { f = file and l = line }
+  override Location getLocation() { result = location }
 
   InlineExpectationsTest getTest() { result = test }
 
@@ -242,9 +301,7 @@ abstract private class Expectation extends FailureLocatable {
 
   override string toString() { result = comment.toString() }
 
-  override predicate hasLocation(string file, int line) {
-    comment.hasLocationInfo(file, line, _, _, _)
-  }
+  override Location getLocation() { result = comment.getLocation() }
 }
 
 private class ValidExpectation extends Expectation, TValidExpectation {
@@ -261,24 +318,24 @@ private class ValidExpectation extends Expectation, TValidExpectation {
   string getKnownFailure() { result = knownFailure }
 
   predicate matchesActualResult(ActualResult actualResult) {
-    exists(string file, int line | actualResult.hasLocation(file, line) |
-      this.hasLocation(file, line)
-    ) and
+    this.getLocation().getStartLine() = actualResult.getLocation().getStartLine() and
+    this.getLocation().getFile() = actualResult.getLocation().getFile() and
     this.getTag() = actualResult.getTag() and
     this.getValue() = actualResult.getValue()
   }
 }
 
+/* Note: These next three classes correspond to all the possible values of type `TColumn`. */
 class GoodExpectation extends ValidExpectation {
   GoodExpectation() { this.getKnownFailure() = "" }
 }
 
 class FalsePositiveExpectation extends ValidExpectation {
-  FalsePositiveExpectation() { this.getKnownFailure() = "f+" }
+  FalsePositiveExpectation() { this.getKnownFailure() = "SPURIOUS" }
 }
 
 class FalseNegativeExpectation extends ValidExpectation {
-  FalseNegativeExpectation() { this.getKnownFailure() = "f-" }
+  FalseNegativeExpectation() { this.getKnownFailure() = "MISSING" }
 }
 
 class InvalidExpectation extends Expectation, TInvalidExpectation {
@@ -289,8 +346,6 @@ class InvalidExpectation extends Expectation, TInvalidExpectation {
   string getExpectation() { result = expectation }
 }
 
-query predicate failures(string file, int line, FailureLocatable element, string message) {
-  exists(InlineExpectationsTest test | test.hasFailureMessage(element, message) |
-    element.hasLocation(file, line)
-  )
+query predicate failures(FailureLocatable element, string message) {
+  exists(InlineExpectationsTest test | test.hasFailureMessage(element, message))
 }
