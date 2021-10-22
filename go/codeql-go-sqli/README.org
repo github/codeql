@@ -4,7 +4,7 @@
   CodeQL, so it's kept as simple as possible.
   
   Start with the [[*Setup Instructions][Setup Instructions]] for CodeQL, then follow the [[*SQL injection example][SQL injection
-  example]].  There is a short [[Codeql Recap]], but for details follow the
+  example]].  There is a short [[*Codeql Recap][Codeql Recap]], but for details follow the
   [[#documentation-links][Documentation Links]]
 
 * Setup Instructions
