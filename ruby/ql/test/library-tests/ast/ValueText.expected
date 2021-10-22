@@ -56,6 +56,15 @@
 | calls/calls.rb:320:31:320:31 | 1 | 1 |
 | calls/calls.rb:320:37:320:37 | 2 | 2 |
 | calls/calls.rb:328:31:328:37 | "error" | error |
+| calls/calls.rb:340:5:340:5 | 0 | 0 |
+| calls/calls.rb:340:8:340:8 | 1 | 1 |
+| calls/calls.rb:340:11:340:11 | 2 | 2 |
+| calls/calls.rb:340:18:340:18 | 1 | 1 |
+| calls/calls.rb:340:20:340:20 | 2 | 2 |
+| calls/calls.rb:340:22:340:22 | 3 | 3 |
+| calls/calls.rb:340:27:340:27 | 4 | 4 |
+| calls/calls.rb:340:29:340:29 | 5 | 5 |
+| calls/calls.rb:340:31:340:31 | 6 | 6 |
 | constants/constants.rb:3:19:3:27 | "const_a" | const_a |
 | constants/constants.rb:6:15:6:23 | "const_b" | const_b |
 | constants/constants.rb:17:12:17:18 | "Hello" | Hello |
@@ -148,38 +157,38 @@
 | control/loops.rb:6:5:6:5 | 0 | 0 |
 | control/loops.rb:9:10:9:10 | 1 | 1 |
 | control/loops.rb:9:13:9:14 | 10 | 10 |
+| control/loops.rb:10:5:10:7 | sum | 0 |
 | control/loops.rb:16:10:16:10 | 1 | 1 |
 | control/loops.rb:16:13:16:14 | 10 | 10 |
+| control/loops.rb:22:5:22:7 | 0 | 0 |
+| control/loops.rb:22:10:22:14 | 1 | 1 |
 | control/loops.rb:22:20:22:22 | :foo | foo |
 | control/loops.rb:22:25:22:25 | 0 | 0 |
 | control/loops.rb:22:28:22:30 | :bar | bar |
 | control/loops.rb:22:33:22:33 | 1 | 1 |
+| control/loops.rb:28:6:28:8 | 0 | 0 |
+| control/loops.rb:28:11:28:15 | 1 | 1 |
 | control/loops.rb:28:22:28:24 | :foo | foo |
 | control/loops.rb:28:27:28:27 | 0 | 0 |
 | control/loops.rb:28:30:28:32 | :bar | bar |
 | control/loops.rb:28:35:28:35 | 1 | 1 |
-| control/loops.rb:35:11:35:11 | y | 0 |
 | control/loops.rb:36:8:36:8 | 1 | 1 |
 | control/loops.rb:37:8:37:8 | 1 | 1 |
-| control/loops.rb:42:11:42:11 | y | 0 |
 | control/loops.rb:43:8:43:8 | 1 | 1 |
 | control/loops.rb:44:8:44:8 | 2 | 2 |
 | control/loops.rb:48:6:48:6 | 1 | 1 |
-| control/loops.rb:48:14:48:14 | y | 0 |
-| control/loops.rb:51:12:51:12 | y | 0 |
 | control/loops.rb:52:8:52:8 | 1 | 1 |
 | control/loops.rb:53:8:53:8 | 1 | 1 |
-| control/loops.rb:57:11:57:11 | y | 0 |
 | control/loops.rb:58:8:58:8 | 1 | 1 |
 | control/loops.rb:59:8:59:8 | 4 | 4 |
 | control/loops.rb:63:6:63:6 | 1 | 1 |
 | control/loops.rb:63:19:63:19 | 0 | 0 |
-| control/loops.rb:66:11:66:11 | y | 0 |
 | erb/template.html.erb:19:5:19:17 | "hello world" | hello world |
 | erb/template.html.erb:25:9:25:10 | "" |  |
 | erb/template.html.erb:27:16:27:20 | "foo" | foo |
 | erb/template.html.erb:27:23:27:27 | "bar" | bar |
 | erb/template.html.erb:27:30:27:34 | "baz" | baz |
+| erb/template.html.erb:28:11:28:12 | xs |  |
 | gems/Gemfile:1:8:1:29 | "https://rubygems.org" | https://rubygems.org |
 | gems/Gemfile:3:5:3:13 | "foo_gem" | foo_gem |
 | gems/Gemfile:3:16:3:23 | "~> 2.0" | ~> 2.0 |

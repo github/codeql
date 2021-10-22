@@ -1,3 +1,11 @@
+#-----| [LocalVariableAccess] __synth__0__1
+#-----| [LocalVariableAccess] __synth__0__1
+#-----| [LocalVariableAccess] __synth__0__1
+#-----| [LocalVariableAccess] __synth__0__1
+#-----| [LocalVariableAccess] __synth__0__1
+#-----| [LocalVariableAccess] __synth__0__1
+#-----| [LocalVariableAccess] __synth__0__1
+#-----| [LocalVariableAccess] __synth__0__1
 gems/Gemfile:
 #    1| [Toplevel] Gemfile
 #    1|   getStmt: [MethodCall] call to source
@@ -365,7 +373,6 @@ calls/calls.rb:
 #  223|       getReceiver: [ConstantReadAccess] X
 #  226|   getStmt: [ForExpr] for ... in ...
 #  226|     getPattern: [LocalVariableAccess] x
-#  226|     <in>: [???] In
 #  226|     getValue: [MethodCall] call to bar
 #  226|       getReceiver: [Self, SelfVariableAccess] self
 #  226|     getBody: [StmtSequence] do ...
@@ -373,7 +380,6 @@ calls/calls.rb:
 #  227|         getReceiver: [Self, SelfVariableAccess] self
 #  229|   getStmt: [ForExpr] for ... in ...
 #  229|     getPattern: [LocalVariableAccess] x
-#  229|     <in>: [???] In
 #  229|     getValue: [MethodCall] call to bar
 #  229|       getReceiver: [ConstantReadAccess] X
 #  229|     getBody: [StmtSequence] do ...
@@ -655,6 +661,26 @@ calls/calls.rb:
 #  336|       getReceiver: [Self, SelfVariableAccess] self
 #  336|       getArgument: [LocalVariableAccess] b
 #  336|       getArgument: [ForwardedArguments] ...
+#  340|   getStmt: [ForExpr] for ... in ...
+#  340|     getPattern: [TuplePattern] (..., ...)
+#  340|       getElement: [LocalVariableAccess] x
+#  340|       getElement: [LocalVariableAccess] y
+#  340|       getElement: [LocalVariableAccess] z
+#  340|     getValue: [ArrayLiteral] [...]
+#  340|       getElement: [ArrayLiteral] [...]
+#  340|         getElement: [IntegerLiteral] 1
+#  340|         getElement: [IntegerLiteral] 2
+#  340|         getElement: [IntegerLiteral] 3
+#  340|       getElement: [ArrayLiteral] [...]
+#  340|         getElement: [IntegerLiteral] 4
+#  340|         getElement: [IntegerLiteral] 5
+#  340|         getElement: [IntegerLiteral] 6
+#  340|     getBody: [StmtSequence] do ...
+#  341|       getStmt: [MethodCall] call to foo
+#  341|         getReceiver: [Self, SelfVariableAccess] self
+#  341|         getArgument: [LocalVariableAccess] x
+#  341|         getArgument: [LocalVariableAccess] y
+#  341|         getArgument: [LocalVariableAccess] z
 control/cases.rb:
 #    1| [Toplevel] cases.rb
 #    2|   getStmt: [AssignExpr] ... = ...
@@ -1422,7 +1448,6 @@ control/loops.rb:
 #    6|     getAnOperand/getRightOperand: [IntegerLiteral] 0
 #    9|   getStmt: [ForExpr] for ... in ...
 #    9|     getPattern: [LocalVariableAccess] n
-#    9|     <in>: [???] In
 #    9|     getValue: [RangeLiteral] _ .. _
 #    9|       getBegin: [IntegerLiteral] 1
 #    9|       getEnd: [IntegerLiteral] 10
@@ -1435,7 +1460,6 @@ control/loops.rb:
 #   11|         getAnOperand/getRightOperand: [LocalVariableAccess] n
 #   16|   getStmt: [ForExpr] for ... in ...
 #   16|     getPattern: [LocalVariableAccess] n
-#   16|     <in>: [???] In
 #   16|     getValue: [RangeLiteral] _ .. _
 #   16|       getBegin: [IntegerLiteral] 1
 #   16|       getEnd: [IntegerLiteral] 10
@@ -1450,7 +1474,6 @@ control/loops.rb:
 #   22|     getPattern: [TuplePattern] (..., ...)
 #   22|       getElement: [LocalVariableAccess] key
 #   22|       getElement: [LocalVariableAccess] value
-#   22|     <in>: [???] In
 #   22|     getValue: [HashLiteral] {...}
 #   22|       getElement: [Pair] Pair
 #   22|         getKey: [SymbolLiteral] :foo
@@ -1469,7 +1492,6 @@ control/loops.rb:
 #   28|     getPattern: [TuplePattern] (..., ...)
 #   28|       getElement: [LocalVariableAccess] key
 #   28|       getElement: [LocalVariableAccess] value
-#   28|     <in>: [???] In
 #   28|     getValue: [HashLiteral] {...}
 #   28|       getElement: [Pair] Pair
 #   28|         getKey: [SymbolLiteral] :foo
@@ -2140,7 +2162,6 @@ erb/template.html.erb:
 #   25|     getAnOperand/getRightOperand: [StringLiteral] ""
 #   27|   getStmt: [ForExpr] for ... in ...
 #   27|     getPattern: [LocalVariableAccess] x
-#   27|     <in>: [???] In
 #   27|     getValue: [ArrayLiteral] [...]
 #   27|       getElement: [StringLiteral] "foo"
 #   27|         getComponent: [StringTextComponent] foo

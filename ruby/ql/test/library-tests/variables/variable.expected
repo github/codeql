@@ -123,6 +123,7 @@
 | ssa.rb:18:8:18:8 | x |
 | ssa.rb:25:1:30:3 | self |
 | ssa.rb:25:8:25:15 | elements |
+| ssa.rb:26:3:28:5 | __synth__0__1 |
 | ssa.rb:26:7:26:10 | elem |
 | ssa.rb:32:1:36:3 | self |
 | ssa.rb:33:20:33:20 | x |
