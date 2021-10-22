@@ -1,0 +1,41 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>SAML (Security Assertion Markup Language) is an XML-based markup language for exchanging 
+    authentication and authorization data between parties, in particular, between an identity 
+    provider and a service provider. It is used for security assertions, which are statements 
+    that service providers use to make access-control decisions. SAML response messages consist 
+    of issuer, assertion (subject, conditions, and statements), signing key, and signature.
+</p>
+<p>If SAML token does not contain any signature, no protection of integrity or authenticity is 
+    provided. Since no digital signature for the token is required, an attacker can generate tokens 
+    containing arbitrary identities of other users.
+</p>
+<p>Java applications use the JAXB (Java Architecture for XML Binding) API for unmarshalling 
+    (reading) XML instance documents into Java content trees, and then marshalling (writing) Java 
+    content trees back into XML instance documents. The Java XML Digital Signature APIs are specified 
+    in JSR-105 and are implemented in the <code>javax.xml.crypto</code> package, which are used to 
+    verify signature of SAML XML documents. 
+</p>
+</overview>
+
+<recommendation>
+<p>Always verify a SAML XML document has signature and is signed by the issuer's private key.
+</p>
+</recommendation>
+
+<example>
+<p>The following example shows two cases of SAML assertion. In the 'BAD' case, there is no signature 
+    node in the SAML XML document. In the 'GOOD' case, there is a valid signature.
+</p>
+<sample src="MissingSAMLSignatureCheck.java" />
+</example>
+
+<references>
+<li>SSO-Attacks.org: <a href="https://sso-attacks.org/Signature_Exclusion_Attack">Signature Exclusion Attack</a>.</li>
+<li>Packet Storm: <a href="https://packetstormsecurity.com/files/159454/FusionAuth-SAMLv2-0.2.3-Message-Forging.html">FusionAuth-SAMLv2 0.2.3 Message Forging</a></li>
+<li>Fusionauth: <a href="https://github.com/FusionAuth/fusionauth-samlv2/commit/886dbb55613e5c2b99a8b83232f846ba7e5cd5ea#diff-8a2df2671a99b7b052fe464b72e7c8ee04f67aa116345044acfbf2222d2a6a3a">Fixed SAMLv2 signature check</a></li>
+</references>
+
+</qhelp>

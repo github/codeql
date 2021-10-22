@@ -1,5 +1,7 @@
 package javax.xml.bind;
 
+import org.w3c.dom.Node;
+
 import java.net.URL;
 import java.io.Reader;
 import java.io.InputStream;
@@ -68,8 +70,8 @@ abstract public interface Unmarshaller {
 //  abstract public JAXBElement<T> unmarshal(Source p0, Class<T> p1);
 //
 //  abstract public Object unmarshal(Node p0);
-//
-//  abstract public JAXBElement<T> unmarshal(Node p0, Class<T> p1);
+
+  abstract public <T> JAXBElement<T> unmarshal(Node p0, Class<T> p1);
 //
 //  abstract public Object unmarshal(InputSource p0);
 }

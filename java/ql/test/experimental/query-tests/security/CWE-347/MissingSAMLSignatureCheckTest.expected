@@ -1,0 +1,93 @@
+edges
+| MissingSAMLSignatureCheckTest.java:25:42:25:58 | document : Document | MissingSAMLSignatureCheckTest.java:29:61:29:68 | document : Document |
+| MissingSAMLSignatureCheckTest.java:29:38:29:75 | unmarshal(...) : JAXBElement | MissingSAMLSignatureCheckTest.java:30:20:30:26 | element : JAXBElement |
+| MissingSAMLSignatureCheckTest.java:29:61:29:68 | document : Document | MissingSAMLSignatureCheckTest.java:29:38:29:75 | unmarshal(...) : JAXBElement |
+| MissingSAMLSignatureCheckTest.java:30:20:30:26 | element : JAXBElement | MissingSAMLSignatureCheckTest.java:30:20:30:37 | getValue(...) : Object |
+| MissingSAMLSignatureCheckTest.java:69:24:69:79 | parse(...) : Document | MissingSAMLSignatureCheckTest.java:76:60:76:67 | document : Document |
+| MissingSAMLSignatureCheckTest.java:76:37:76:88 | unmarshallFromDocument(...) : Object | MissingSAMLSignatureCheckTest.java:77:35:77:46 | jaxbResponse |
+| MissingSAMLSignatureCheckTest.java:76:60:76:67 | document : Document | MissingSAMLSignatureCheckTest.java:25:42:25:58 | document : Document |
+| MissingSAMLSignatureCheckTest.java:76:60:76:67 | document : Document | MissingSAMLSignatureCheckTest.java:76:37:76:88 | unmarshallFromDocument(...) : Object |
+| MissingSAMLSignatureCheckTest.java:89:24:89:79 | parse(...) : Document | MissingSAMLSignatureCheckTest.java:94:60:94:67 | document : Document |
+| MissingSAMLSignatureCheckTest.java:94:37:94:88 | unmarshallFromDocument(...) : Object | MissingSAMLSignatureCheckTest.java:95:35:95:46 | jaxbResponse |
+| MissingSAMLSignatureCheckTest.java:94:60:94:67 | document : Document | MissingSAMLSignatureCheckTest.java:25:42:25:58 | document : Document |
+| MissingSAMLSignatureCheckTest.java:94:60:94:67 | document : Document | MissingSAMLSignatureCheckTest.java:94:37:94:88 | unmarshallFromDocument(...) : Object |
+| MissingSAMLSignatureCheckTest.java:98:35:98:51 | document : Document | MissingSAMLSignatureCheckTest.java:99:23:99:30 | document : Document |
+| MissingSAMLSignatureCheckTest.java:99:23:99:30 | document : Document | MissingSAMLSignatureCheckTest.java:99:23:99:104 | getElementsByTagNameNS(...) : NodeList |
+| MissingSAMLSignatureCheckTest.java:99:23:99:104 | getElementsByTagNameNS(...) : NodeList | MissingSAMLSignatureCheckTest.java:105:78:105:79 | nl : NodeList |
+| MissingSAMLSignatureCheckTest.java:105:50:105:88 | new DOMValidateContext(...) : DOMValidateContext | MissingSAMLSignatureCheckTest.java:108:72:108:86 | validateContext : DOMValidateContext |
+| MissingSAMLSignatureCheckTest.java:105:78:105:79 | nl : NodeList | MissingSAMLSignatureCheckTest.java:105:78:105:87 | item(...) : Node |
+| MissingSAMLSignatureCheckTest.java:105:78:105:87 | item(...) : Node | MissingSAMLSignatureCheckTest.java:105:50:105:88 | new DOMValidateContext(...) : DOMValidateContext |
+| MissingSAMLSignatureCheckTest.java:108:42:108:87 | unmarshalXMLSignature(...) : XMLSignature | MissingSAMLSignatureCheckTest.java:109:33:109:41 | signature |
+| MissingSAMLSignatureCheckTest.java:108:72:108:86 | validateContext : DOMValidateContext | MissingSAMLSignatureCheckTest.java:108:42:108:87 | unmarshalXMLSignature(...) : XMLSignature |
+| MissingSAMLSignatureCheckTest.java:131:24:131:79 | parse(...) : Document | MissingSAMLSignatureCheckTest.java:136:26:136:33 | document : Document |
+| MissingSAMLSignatureCheckTest.java:131:24:131:79 | parse(...) : Document | MissingSAMLSignatureCheckTest.java:138:60:138:67 | document : Document |
+| MissingSAMLSignatureCheckTest.java:136:26:136:33 | document : Document | MissingSAMLSignatureCheckTest.java:98:35:98:51 | document : Document |
+| MissingSAMLSignatureCheckTest.java:138:37:138:88 | unmarshallFromDocument(...) : Object | MissingSAMLSignatureCheckTest.java:139:35:139:46 | jaxbResponse |
+| MissingSAMLSignatureCheckTest.java:138:60:138:67 | document : Document | MissingSAMLSignatureCheckTest.java:25:42:25:58 | document : Document |
+| MissingSAMLSignatureCheckTest.java:138:60:138:67 | document : Document | MissingSAMLSignatureCheckTest.java:138:37:138:88 | unmarshallFromDocument(...) : Object |
+| MissingSAMLSignatureCheckTest.java:142:39:142:55 | document : Document | MissingSAMLSignatureCheckTest.java:145:23:145:30 | document : Document |
+| MissingSAMLSignatureCheckTest.java:145:23:145:30 | document : Document | MissingSAMLSignatureCheckTest.java:145:23:145:104 | getElementsByTagNameNS(...) : NodeList |
+| MissingSAMLSignatureCheckTest.java:145:23:145:104 | getElementsByTagNameNS(...) : NodeList | MissingSAMLSignatureCheckTest.java:147:78:147:79 | nl : NodeList |
+| MissingSAMLSignatureCheckTest.java:147:50:147:88 | new DOMValidateContext(...) : DOMValidateContext | MissingSAMLSignatureCheckTest.java:150:72:150:86 | validateContext : DOMValidateContext |
+| MissingSAMLSignatureCheckTest.java:147:78:147:79 | nl : NodeList | MissingSAMLSignatureCheckTest.java:147:78:147:87 | item(...) : Node |
+| MissingSAMLSignatureCheckTest.java:147:78:147:87 | item(...) : Node | MissingSAMLSignatureCheckTest.java:147:50:147:88 | new DOMValidateContext(...) : DOMValidateContext |
+| MissingSAMLSignatureCheckTest.java:150:42:150:87 | unmarshalXMLSignature(...) : XMLSignature | MissingSAMLSignatureCheckTest.java:151:37:151:45 | signature |
+| MissingSAMLSignatureCheckTest.java:150:72:150:86 | validateContext : DOMValidateContext | MissingSAMLSignatureCheckTest.java:150:42:150:87 | unmarshalXMLSignature(...) : XMLSignature |
+| MissingSAMLSignatureCheckTest.java:175:24:175:79 | parse(...) : Document | MissingSAMLSignatureCheckTest.java:180:31:180:38 | document : Document |
+| MissingSAMLSignatureCheckTest.java:175:24:175:79 | parse(...) : Document | MissingSAMLSignatureCheckTest.java:181:64:181:71 | document : Document |
+| MissingSAMLSignatureCheckTest.java:180:31:180:38 | document : Document | MissingSAMLSignatureCheckTest.java:142:39:142:55 | document : Document |
+| MissingSAMLSignatureCheckTest.java:181:41:181:92 | unmarshallFromDocument(...) : Object | MissingSAMLSignatureCheckTest.java:182:39:182:50 | jaxbResponse |
+| MissingSAMLSignatureCheckTest.java:181:64:181:71 | document : Document | MissingSAMLSignatureCheckTest.java:25:42:25:58 | document : Document |
+| MissingSAMLSignatureCheckTest.java:181:64:181:71 | document : Document | MissingSAMLSignatureCheckTest.java:181:41:181:92 | unmarshallFromDocument(...) : Object |
+nodes
+| MissingSAMLSignatureCheckTest.java:25:42:25:58 | document : Document | semmle.label | document : Document |
+| MissingSAMLSignatureCheckTest.java:29:38:29:75 | unmarshal(...) : JAXBElement | semmle.label | unmarshal(...) : JAXBElement |
+| MissingSAMLSignatureCheckTest.java:29:61:29:68 | document : Document | semmle.label | document : Document |
+| MissingSAMLSignatureCheckTest.java:30:20:30:26 | element : JAXBElement | semmle.label | element : JAXBElement |
+| MissingSAMLSignatureCheckTest.java:30:20:30:37 | getValue(...) : Object | semmle.label | getValue(...) : Object |
+| MissingSAMLSignatureCheckTest.java:69:24:69:79 | parse(...) : Document | semmle.label | parse(...) : Document |
+| MissingSAMLSignatureCheckTest.java:76:37:76:88 | unmarshallFromDocument(...) : Object | semmle.label | unmarshallFromDocument(...) : Object |
+| MissingSAMLSignatureCheckTest.java:76:60:76:67 | document : Document | semmle.label | document : Document |
+| MissingSAMLSignatureCheckTest.java:77:35:77:46 | jaxbResponse | semmle.label | jaxbResponse |
+| MissingSAMLSignatureCheckTest.java:89:24:89:79 | parse(...) : Document | semmle.label | parse(...) : Document |
+| MissingSAMLSignatureCheckTest.java:94:37:94:88 | unmarshallFromDocument(...) : Object | semmle.label | unmarshallFromDocument(...) : Object |
+| MissingSAMLSignatureCheckTest.java:94:60:94:67 | document : Document | semmle.label | document : Document |
+| MissingSAMLSignatureCheckTest.java:95:35:95:46 | jaxbResponse | semmle.label | jaxbResponse |
+| MissingSAMLSignatureCheckTest.java:98:35:98:51 | document : Document | semmle.label | document : Document |
+| MissingSAMLSignatureCheckTest.java:99:23:99:30 | document : Document | semmle.label | document : Document |
+| MissingSAMLSignatureCheckTest.java:99:23:99:104 | getElementsByTagNameNS(...) : NodeList | semmle.label | getElementsByTagNameNS(...) : NodeList |
+| MissingSAMLSignatureCheckTest.java:105:50:105:88 | new DOMValidateContext(...) : DOMValidateContext | semmle.label | new DOMValidateContext(...) : DOMValidateContext |
+| MissingSAMLSignatureCheckTest.java:105:78:105:79 | nl : NodeList | semmle.label | nl : NodeList |
+| MissingSAMLSignatureCheckTest.java:105:78:105:87 | item(...) : Node | semmle.label | item(...) : Node |
+| MissingSAMLSignatureCheckTest.java:108:42:108:87 | unmarshalXMLSignature(...) : XMLSignature | semmle.label | unmarshalXMLSignature(...) : XMLSignature |
+| MissingSAMLSignatureCheckTest.java:108:72:108:86 | validateContext : DOMValidateContext | semmle.label | validateContext : DOMValidateContext |
+| MissingSAMLSignatureCheckTest.java:109:33:109:41 | signature | semmle.label | signature |
+| MissingSAMLSignatureCheckTest.java:131:24:131:79 | parse(...) : Document | semmle.label | parse(...) : Document |
+| MissingSAMLSignatureCheckTest.java:131:24:131:79 | parse(...) : Document | semmle.label | parse(...) : Document |
+| MissingSAMLSignatureCheckTest.java:136:26:136:33 | document : Document | semmle.label | document : Document |
+| MissingSAMLSignatureCheckTest.java:138:37:138:88 | unmarshallFromDocument(...) : Object | semmle.label | unmarshallFromDocument(...) : Object |
+| MissingSAMLSignatureCheckTest.java:138:60:138:67 | document : Document | semmle.label | document : Document |
+| MissingSAMLSignatureCheckTest.java:139:35:139:46 | jaxbResponse | semmle.label | jaxbResponse |
+| MissingSAMLSignatureCheckTest.java:142:39:142:55 | document : Document | semmle.label | document : Document |
+| MissingSAMLSignatureCheckTest.java:145:23:145:30 | document : Document | semmle.label | document : Document |
+| MissingSAMLSignatureCheckTest.java:145:23:145:104 | getElementsByTagNameNS(...) : NodeList | semmle.label | getElementsByTagNameNS(...) : NodeList |
+| MissingSAMLSignatureCheckTest.java:147:50:147:88 | new DOMValidateContext(...) : DOMValidateContext | semmle.label | new DOMValidateContext(...) : DOMValidateContext |
+| MissingSAMLSignatureCheckTest.java:147:78:147:79 | nl : NodeList | semmle.label | nl : NodeList |
+| MissingSAMLSignatureCheckTest.java:147:78:147:87 | item(...) : Node | semmle.label | item(...) : Node |
+| MissingSAMLSignatureCheckTest.java:150:42:150:87 | unmarshalXMLSignature(...) : XMLSignature | semmle.label | unmarshalXMLSignature(...) : XMLSignature |
+| MissingSAMLSignatureCheckTest.java:150:72:150:86 | validateContext : DOMValidateContext | semmle.label | validateContext : DOMValidateContext |
+| MissingSAMLSignatureCheckTest.java:151:37:151:45 | signature | semmle.label | signature |
+| MissingSAMLSignatureCheckTest.java:175:24:175:79 | parse(...) : Document | semmle.label | parse(...) : Document |
+| MissingSAMLSignatureCheckTest.java:175:24:175:79 | parse(...) : Document | semmle.label | parse(...) : Document |
+| MissingSAMLSignatureCheckTest.java:180:31:180:38 | document : Document | semmle.label | document : Document |
+| MissingSAMLSignatureCheckTest.java:181:41:181:92 | unmarshallFromDocument(...) : Object | semmle.label | unmarshallFromDocument(...) : Object |
+| MissingSAMLSignatureCheckTest.java:181:64:181:71 | document : Document | semmle.label | document : Document |
+| MissingSAMLSignatureCheckTest.java:182:39:182:50 | jaxbResponse | semmle.label | jaxbResponse |
+subpaths
+| MissingSAMLSignatureCheckTest.java:76:60:76:67 | document : Document | MissingSAMLSignatureCheckTest.java:25:42:25:58 | document : Document | MissingSAMLSignatureCheckTest.java:30:20:30:37 | getValue(...) : Object | MissingSAMLSignatureCheckTest.java:76:37:76:88 | unmarshallFromDocument(...) : Object |
+| MissingSAMLSignatureCheckTest.java:94:60:94:67 | document : Document | MissingSAMLSignatureCheckTest.java:25:42:25:58 | document : Document | MissingSAMLSignatureCheckTest.java:30:20:30:37 | getValue(...) : Object | MissingSAMLSignatureCheckTest.java:94:37:94:88 | unmarshallFromDocument(...) : Object |
+| MissingSAMLSignatureCheckTest.java:138:60:138:67 | document : Document | MissingSAMLSignatureCheckTest.java:25:42:25:58 | document : Document | MissingSAMLSignatureCheckTest.java:30:20:30:37 | getValue(...) : Object | MissingSAMLSignatureCheckTest.java:138:37:138:88 | unmarshallFromDocument(...) : Object |
+| MissingSAMLSignatureCheckTest.java:181:64:181:71 | document : Document | MissingSAMLSignatureCheckTest.java:25:42:25:58 | document : Document | MissingSAMLSignatureCheckTest.java:30:20:30:37 | getValue(...) : Object | MissingSAMLSignatureCheckTest.java:181:41:181:92 | unmarshallFromDocument(...) : Object |
+#select
+| MissingSAMLSignatureCheckTest.java:77:35:77:46 | jaxbResponse | MissingSAMLSignatureCheckTest.java:69:24:69:79 | parse(...) : Document | MissingSAMLSignatureCheckTest.java:77:35:77:46 | jaxbResponse | SAMLv2 assertion is used $@, but the signature is not verified. | MissingSAMLSignatureCheckTest.java:69:24:69:79 | parse(...) | here |
+| MissingSAMLSignatureCheckTest.java:95:35:95:46 | jaxbResponse | MissingSAMLSignatureCheckTest.java:89:24:89:79 | parse(...) : Document | MissingSAMLSignatureCheckTest.java:95:35:95:46 | jaxbResponse | SAMLv2 assertion is used $@, but the signature is not verified. | MissingSAMLSignatureCheckTest.java:89:24:89:79 | parse(...) | here |

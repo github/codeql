@@ -1,0 +1,1 @@
+// semmle-extractor-options: --javac-args -cp ${testdir}/../../../../stubs/jsr105-api:${testdir}/../../../../stubs/jaxb-api-2.3.1
