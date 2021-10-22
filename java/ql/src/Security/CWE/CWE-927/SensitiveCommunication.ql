@@ -1,9 +1,10 @@
 /**
- * @name Leaking sensetive information through an implicit Intent.
+ * @name Leaking sensitive information through an implicit Intent
  * @description An Android application uses implicit intents containing sensitive data
  *              in a way that exposes it to arbitrary applications on the device.
  * @kind path-problem
  * @problem.severity warning
+ * @security-severity 8.2
  * @precision medium
  * @id java/android/sensitive-communication
  * @tags security

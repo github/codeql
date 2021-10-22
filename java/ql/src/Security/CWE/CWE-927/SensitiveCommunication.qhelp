@@ -8,7 +8,7 @@
 
   <recommendation>
     <p> 
-      For <code>sendBroadcast</code> methods, a receiver permission may be specified so that only applications with a certain permission may read recieve the intent; 
+      For <code>sendBroadcast</code> methods, a receiver permission may be specified so that only applications with a certain permission may receive the intent; 
       or a <code>LocalBroadcastManager</code> may be used.
       Otherwise, ensure that intents containing sensitive data have an explicit receiver class set.
     </p>
