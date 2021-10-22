@@ -816,3 +816,90 @@ private module ArrayLiteralDesugar {
     final override predicate constantReadAccess(string name) { name = "::Array" }
   }
 }
+
+/**
+ * ```rb
+ * for x in xs
+ *   <loop_body>
+ * end
+ * ```
+ * desugars to, roughly,
+ * ```rb
+ * xs.each { |__synth__0| x = __synth__0; <loop_body> }
+ * ```
+ *
+ * Note that for-loops, unlike blocks, do not create a new variable scope, so
+ * variables within this block inherit the enclosing scope. The exception to
+ * this is the synthesized variable declared by the block parameter, which is
+ * scoped to the synthesized block.
+ */
+private module ForLoopDesugar {
+  private predicate forLoopSynthesis(AstNode parent, int i, Child child) {
+    exists(ForExpr for |
+      // each call
+      parent = for and
+      i = -1 and
+      child = SynthChild(MethodCallKind("each", false, 0))
+      or
+      exists(MethodCall eachCall | eachCall = TMethodCallSynth(for, -1, "each", false, 0) |
+        // receiver
+        parent = eachCall and
+        i = 0 and
+        child = RealChild(for.getValue()) // value is the Enumerable
+        or
+        parent = eachCall and
+        i = -2 and
+        child = SynthChild(BlockKind())
+        or
+        exists(Block block | block = TBlockSynth(eachCall, -2) |
+          // block params
+          parent = block and
+          i = 0 and
+          child = SynthChild(SimpleParameterKind())
+          or
+          exists(SimpleParameter param | param = TSimpleParameterSynth(block, 0) |
+            parent = param and
+            i = 0 and
+            child = SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(param, 0)))
+            or
+            // assignment to pattern from for loop to synth parameter
+            parent = block and
+            i = 1 and
+            child = SynthChild(AssignExprKind())
+            or
+            parent = TAssignExprSynth(block, 1) and
+            (
+              i = 0 and
+              child = RealChild(for.getPattern())
+              or
+              i = 1 and
+              child = SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(param, 0)))
+            )
+          )
+          or
+          // rest of block body
+          parent = block and
+          i = 2 and
+          child = RealChild(for.getBody())
+        )
+      )
+    )
+  }
+
+  private class ForLoopSynthesis extends Synthesis {
+    final override predicate child(AstNode parent, int i, Child child) {
+      forLoopSynthesis(parent, i, child)
+    }
+
+    final override predicate methodCall(string name, boolean setter, int arity) {
+      name = "each" and
+      setter = false and
+      arity = 0
+    }
+
+    final override predicate localVariable(AstNode n, int i) {
+      n instanceof TSimpleParameterSynth and
+      i = 0
+    }
+  }
+}
