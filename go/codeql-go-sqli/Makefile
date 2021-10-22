@@ -20,6 +20,10 @@ clean:
 	rm -f README.html add-user users.log
 	rm -f users.sqlite *.bak *~ go-sqli.sarif go-sqli.txt
 
+%.html: %.org
+	emacs $< --batch -l init.el -f org-html-export-to-html --kill
+
+
 ZIPLIST :=					\
 codeql-go-sqli/Makefile				\
 codeql-go-sqli/README.org			\
@@ -36,5 +40,5 @@ codeql-go-sqli/go.sum				\
 codeql-go-sqli/qlpack.yml			\
 codeql-go-sqli/sarif-summary.jq
 
-demo-zip: 
+demo-zip: README.html
 	rm -f codeql-go-sqli.zip && cd ../ && zip codeql-go-sqli/codeql-go-sqli.zip $(ZIPLIST)
