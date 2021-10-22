@@ -68,20 +68,20 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
       or
       (
         tag = AliasedDefinitionTag() and
-        if exists(getThisType())
+        if exists(this.getThisType())
         then result = this.getInstruction(InitializeThisTag())
         else
-          if exists(getParameter(0))
+          if exists(this.getParameter(0))
           then result = this.getParameter(0).getFirstInstruction()
           else result = this.getBodyOrReturn()
       )
       or
       (
         tag = InitializeThisTag() and
-        if exists(getParameter(0))
+        if exists(this.getParameter(0))
         then result = this.getParameter(0).getFirstInstruction()
         else
-          if exists(getConstructorInitializer())
+          if exists(this.getConstructorInitializer())
           then result = this.getConstructorInitializer().getFirstInstruction()
           else result = this.getBodyOrReturn()
       )
@@ -106,7 +106,7 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
       if exists(callable.getParameter(paramIndex + 1))
       then result = this.getParameter(paramIndex + 1).getFirstInstruction()
       else
-        if exists(getConstructorInitializer())
+        if exists(this.getConstructorInitializer())
         then result = this.getConstructorInitializer().getFirstInstruction()
         else result = this.getBodyOrReturn()
     )
@@ -136,12 +136,12 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
       or
       tag = InitializeThisTag() and
       opcode instanceof Opcode::InitializeThis and
-      resultType = getTypeForGLValue(getThisType())
+      resultType = getTypeForGLValue(this.getThisType())
       or
       tag = ReturnValueAddressTag() and
       opcode instanceof Opcode::VariableAddress and
-      not getReturnType() instanceof VoidType and
-      resultType = getTypeForGLValue(getReturnType())
+      not this.getReturnType() instanceof VoidType and
+      resultType = getTypeForGLValue(this.getReturnType())
       or
       (
         tag = ReturnTag() and
@@ -201,7 +201,7 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
   final override predicate hasTempVariable(TempVariableTag tag, CSharpType type) {
     tag = ReturnValueTempVar() and
     type = getTypeForPRValue(this.getReturnType()) and
-    not getReturnType() instanceof VoidType
+    not this.getReturnType() instanceof VoidType
   }
 
   /**
@@ -320,7 +320,7 @@ class TranslatedParameter extends TranslatedElement, TTranslatedParameter {
       tag = InitializerStoreTag() or
       tag = InitializerVariableAddressTag()
     ) and
-    result = getIRUserVariable(getFunction(), param)
+    result = getIRUserVariable(this.getFunction(), param)
   }
 
   final override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {

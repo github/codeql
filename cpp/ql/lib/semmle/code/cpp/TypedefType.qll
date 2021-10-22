@@ -25,7 +25,7 @@ class TypedefType extends UserType {
 
   override Type getUnderlyingType() { result = this.getBaseType().getUnderlyingType() }
 
-  override Type stripTopLevelSpecifiers() { result = getBaseType().stripTopLevelSpecifiers() }
+  override Type stripTopLevelSpecifiers() { result = this.getBaseType().stripTopLevelSpecifiers() }
 
   override int getSize() { result = this.getBaseType().getSize() }
 
@@ -43,11 +43,11 @@ class TypedefType extends UserType {
     result = this.getBaseType().getASpecifier()
   }
 
-  override predicate involvesReference() { getBaseType().involvesReference() }
+  override predicate involvesReference() { this.getBaseType().involvesReference() }
 
-  override Type resolveTypedefs() { result = getBaseType().resolveTypedefs() }
+  override Type resolveTypedefs() { result = this.getBaseType().resolveTypedefs() }
 
-  override Type stripType() { result = getBaseType().stripType() }
+  override Type stripType() { result = this.getBaseType().stripType() }
 }
 
 /**
@@ -90,7 +90,7 @@ class UsingAliasTypedefType extends TypedefType {
  * ```
  */
 class LocalTypedefType extends TypedefType {
-  LocalTypedefType() { isLocal() }
+  LocalTypedefType() { this.isLocal() }
 
   override string getAPrimaryQlClass() { result = "LocalTypedefType" }
 }

@@ -36,7 +36,7 @@ class AndroidManifestXmlElement extends XMLElement {
   /**
    * Gets the value of the `package` attribute of this `<manifest>` element.
    */
-  string getPackageAttributeValue() { result = getAttributeValue("package") }
+  string getPackageAttributeValue() { result = this.getAttributeValue("package") }
 }
 
 /**
@@ -141,7 +141,7 @@ class AndroidComponentXmlElement extends XMLElement {
    */
   string getComponentName() {
     exists(XMLAttribute attr |
-      attr = getAnAttribute() and
+      attr = this.getAnAttribute() and
       attr.getNamespace().getPrefix() = "android" and
       attr.getName() = "name"
     |
@@ -153,12 +153,15 @@ class AndroidComponentXmlElement extends XMLElement {
    * Gets the resolved value of the `android:name` attribute of this component element.
    */
   string getResolvedComponentName() {
-    if getComponentName().matches(".%")
+    if this.getComponentName().matches(".%")
     then
       result =
-        getParent().(XMLElement).getParent().(AndroidManifestXmlElement).getPackageAttributeValue() +
-          getComponentName()
-    else result = getComponentName()
+        this.getParent()
+              .(XMLElement)
+              .getParent()
+              .(AndroidManifestXmlElement)
+              .getPackageAttributeValue() + this.getComponentName()
+    else result = this.getComponentName()
   }
 
   /**
@@ -166,7 +169,7 @@ class AndroidComponentXmlElement extends XMLElement {
    */
   string getExportedAttributeValue() {
     exists(XMLAttribute attr |
-      attr = getAnAttribute() and
+      attr = this.getAnAttribute() and
       attr.getNamespace().getPrefix() = "android" and
       attr.getName() = "exported"
     |
@@ -177,12 +180,12 @@ class AndroidComponentXmlElement extends XMLElement {
   /**
    * Holds if the `android:exported` attribute of this component element is `true`.
    */
-  predicate isExported() { getExportedAttributeValue() = "true" }
+  predicate isExported() { this.getExportedAttributeValue() = "true" }
 
   /**
    * Holds if the `android:exported` attribute of this component element is explicitly set to `false`.
    */
-  predicate isNotExported() { getExportedAttributeValue() = "false" }
+  predicate isNotExported() { this.getExportedAttributeValue() = "false" }
 }
 
 /**
@@ -212,7 +215,7 @@ class AndroidActionXmlElement extends XMLElement {
    */
   string getActionName() {
     exists(XMLAttribute attr |
-      attr = getAnAttribute() and
+      attr = this.getAnAttribute() and
       attr.getNamespace().getPrefix() = "android" and
       attr.getName() = "name"
     |

@@ -72,7 +72,7 @@ class SensitiveProperty extends Property {
 /** A parameter to a library method that may hold a sensitive value. */
 class SensitiveLibraryParameter extends Parameter {
   SensitiveLibraryParameter() {
-    fromLibrary() and
+    this.fromLibrary() and
     exists(string s | this.getName().toLowerCase() = s | s.matches(suspicious()))
   }
 }

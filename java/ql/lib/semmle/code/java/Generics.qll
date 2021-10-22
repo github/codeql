@@ -69,12 +69,12 @@ class GenericType extends RefType {
   /**
    * Gets a type parameter of this generic type.
    */
-  TypeVariable getATypeParameter() { result = getTypeParameter(_) }
+  TypeVariable getATypeParameter() { result = this.getTypeParameter(_) }
 
   /**
    * Gets the number of type parameters of this generic type.
    */
-  int getNumberOfTypeParameters() { result = strictcount(getATypeParameter()) }
+  int getNumberOfTypeParameters() { result = strictcount(this.getATypeParameter()) }
 
   override string getAPrimaryQlClass() { result = "GenericType" }
 }
@@ -107,7 +107,7 @@ abstract class BoundedType extends RefType, @boundedtype {
   TypeBound getATypeBound() { result.getBoundedType() = this }
 
   /** Gets the first type bound for this type, if any. */
-  TypeBound getFirstTypeBound() { result = getATypeBound() and result.getPosition() = 0 }
+  TypeBound getFirstTypeBound() { result = this.getATypeBound() and result.getPosition() = 0 }
 
   /**
    * Gets an upper type bound of this type, or `Object`
@@ -123,9 +123,9 @@ abstract class BoundedType extends RefType, @boundedtype {
 
   /** Gets a transitive upper bound for this type that is not itself a bounded type. */
   RefType getAnUltimateUpperBoundType() {
-    result = getUpperBoundType() and not result instanceof BoundedType
+    result = this.getUpperBoundType() and not result instanceof BoundedType
     or
-    result = getUpperBoundType().(BoundedType).getAnUltimateUpperBoundType()
+    result = this.getUpperBoundType().(BoundedType).getAnUltimateUpperBoundType()
   }
 
   override string getAPrimaryQlClass() { result = "BoundedType" }
@@ -168,8 +168,8 @@ class TypeVariable extends BoundedType, @typevariable {
 
   /** Gets the lexically enclosing package of this type parameter, if any. */
   override Package getPackage() {
-    result = getGenericType().getPackage() or
-    result = getGenericCallable().getDeclaringType().getPackage()
+    result = this.getGenericType().getPackage() or
+    result = this.getGenericCallable().getDeclaringType().getPackage()
   }
 
   /** Finds a type that was supplied for this parameter. */
@@ -190,9 +190,9 @@ class TypeVariable extends BoundedType, @typevariable {
 
   /** Finds a non-typevariable type that was transitively supplied for this parameter. */
   RefType getAnUltimatelySuppliedType() {
-    result = getASuppliedType() and not result instanceof TypeVariable
+    result = this.getASuppliedType() and not result instanceof TypeVariable
     or
-    result = getASuppliedType().(TypeVariable).getAnUltimatelySuppliedType()
+    result = this.getASuppliedType().(TypeVariable).getAnUltimatelySuppliedType()
   }
 
   override string getAPrimaryQlClass() { result = "TypeVariable" }
@@ -261,7 +261,7 @@ class Wildcard extends BoundedType, @wildcard {
    * Holds if this is the unconstrained wildcard `?`.
    */
   predicate isUnconstrained() {
-    not hasLowerBound() and
+    not this.hasLowerBound() and
     wildcards(this, "?", _)
   }
 
@@ -451,12 +451,12 @@ class GenericCallable extends Callable {
   /**
    * Gets a type parameter of this generic callable.
    */
-  TypeVariable getATypeParameter() { result = getTypeParameter(_) }
+  TypeVariable getATypeParameter() { result = this.getTypeParameter(_) }
 
   /**
    * Gets the number of type parameters of this generic callable.
    */
-  int getNumberOfTypeParameters() { result = strictcount(getATypeParameter()) }
+  int getNumberOfTypeParameters() { result = strictcount(this.getATypeParameter()) }
 }
 
 /**
@@ -484,10 +484,10 @@ class GenericCall extends Call {
 
   /** Gets a type argument of the call for the given `TypeVariable`. */
   RefType getATypeArgument(TypeVariable v) {
-    result = getAnExplicitTypeArgument(v)
+    result = this.getAnExplicitTypeArgument(v)
     or
-    not exists(getAnExplicitTypeArgument(v)) and
-    result = getAnInferredTypeArgument(v)
+    not exists(this.getAnExplicitTypeArgument(v)) and
+    result = this.getAnInferredTypeArgument(v)
   }
 }
 

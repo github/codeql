@@ -1,0 +1,16 @@
+edges
+| flask_bad.py:13:17:13:54 | ControlFlowNode for Attribute() | flask_bad.py:14:12:14:20 | ControlFlowNode for client_ip |
+| flask_bad.py:20:17:20:54 | ControlFlowNode for Attribute() | flask_bad.py:21:12:21:20 | ControlFlowNode for client_ip |
+| tornado_bad.py:22:25:22:69 | ControlFlowNode for Attribute() | tornado_bad.py:23:16:23:24 | ControlFlowNode for client_ip |
+nodes
+| flask_bad.py:13:17:13:54 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| flask_bad.py:14:12:14:20 | ControlFlowNode for client_ip | semmle.label | ControlFlowNode for client_ip |
+| flask_bad.py:20:17:20:54 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| flask_bad.py:21:12:21:20 | ControlFlowNode for client_ip | semmle.label | ControlFlowNode for client_ip |
+| tornado_bad.py:22:25:22:69 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| tornado_bad.py:23:16:23:24 | ControlFlowNode for client_ip | semmle.label | ControlFlowNode for client_ip |
+subpaths
+#select
+| flask_bad.py:14:12:14:20 | ControlFlowNode for client_ip | flask_bad.py:13:17:13:54 | ControlFlowNode for Attribute() | flask_bad.py:14:12:14:20 | ControlFlowNode for client_ip | IP address spoofing might include code from $@. | flask_bad.py:13:17:13:54 | ControlFlowNode for Attribute() | this user input |
+| flask_bad.py:21:12:21:20 | ControlFlowNode for client_ip | flask_bad.py:20:17:20:54 | ControlFlowNode for Attribute() | flask_bad.py:21:12:21:20 | ControlFlowNode for client_ip | IP address spoofing might include code from $@. | flask_bad.py:20:17:20:54 | ControlFlowNode for Attribute() | this user input |
+| tornado_bad.py:23:16:23:24 | ControlFlowNode for client_ip | tornado_bad.py:22:25:22:69 | ControlFlowNode for Attribute() | tornado_bad.py:23:16:23:24 | ControlFlowNode for client_ip | IP address spoofing might include code from $@. | tornado_bad.py:22:25:22:69 | ControlFlowNode for Attribute() | this user input |

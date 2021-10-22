@@ -45,7 +45,7 @@ class ObjectInitializer extends ObjectOrCollectionInitializer, @object_init_expr
    * }
    * ```
    */
-  MemberInitializer getAMemberInitializer() { result = getMemberInitializer(_) }
+  MemberInitializer getAMemberInitializer() { result = this.getMemberInitializer(_) }
 
   /**
    * Gets the `i`th member initializer of this object initializer. For example,
@@ -122,7 +122,7 @@ class CollectionInitializer extends ObjectOrCollectionInitializer, @collection_i
    * };
    * ```
    */
-  ElementInitializer getAnElementInitializer() { result = getElementInitializer(_) }
+  ElementInitializer getAnElementInitializer() { result = this.getElementInitializer(_) }
 
   /**
    * Gets the `i`th element initializer of this collection initializer, for
@@ -180,7 +180,7 @@ class ElementInitializer extends MethodCall {
  */
 class ObjectCreation extends Call, LateBindableExpr, @object_creation_expr {
   /** Gets the type of the newly created object. */
-  ValueOrRefType getObjectType() { result = getType() }
+  ValueOrRefType getObjectType() { result = this.getType() }
 
   override Constructor getTarget() { expr_call(this, result) }
 
@@ -320,7 +320,7 @@ class ArrayInitializer extends Expr, @array_init_expr {
    * };
    * ```
    */
-  Expr getAnElement() { result = getElement(_) }
+  Expr getAnElement() { result = this.getElement(_) }
 
   /**
    * Gets the `i`th element of this array initializer, for example the second
@@ -365,7 +365,7 @@ class ArrayCreation extends Expr, @array_creation_expr {
    * new int[5, 10]
    * ```
    */
-  Expr getALengthArgument() { result = getLengthArgument(_) }
+  Expr getALengthArgument() { result = this.getLengthArgument(_) }
 
   /**
    * Gets the `i`th dimension's length argument of this array creation, for
@@ -427,7 +427,7 @@ class AnonymousFunctionExpr extends Expr, Callable, Modifiable, @anonymous_funct
 
   override string toString() { result = Expr.super.toString() }
 
-  override string toStringWithTypes() { result = toString() }
+  override string toStringWithTypes() { result = this.toString() }
 }
 
 /**

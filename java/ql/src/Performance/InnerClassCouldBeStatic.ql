@@ -17,6 +17,7 @@ import java
  * since package-protected fields are not inherited by classes in different
  * packages, but it's enough for the purposes of this check.
  */
+pragma[nomagic]
 predicate inherits(Class c, Field f) {
   f = c.getAField()
   or

@@ -130,7 +130,7 @@ class Node extends TIRDataFlowNode {
   /**
    * Gets an upper bound on the type of this node.
    */
-  IRType getTypeBound() { result = getType() }
+  IRType getTypeBound() { result = this.getType() }
 
   /** Gets the location of this element. */
   Location getLocation() { none() } // overridden by subclasses

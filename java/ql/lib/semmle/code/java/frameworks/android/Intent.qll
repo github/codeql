@@ -1,57 +1,80 @@
 import java
+private import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.FlowSteps
 import semmle.code.java.dataflow.ExternalFlow
 
+/**
+ * The class `android.content.Intent`.
+ */
 class TypeIntent extends Class {
-  TypeIntent() { hasQualifiedName("android.content", "Intent") }
+  TypeIntent() { this.hasQualifiedName("android.content", "Intent") }
 }
 
+/**
+ * The class `android.app.Activity`.
+ */
 class TypeActivity extends Class {
-  TypeActivity() { hasQualifiedName("android.app", "Activity") }
+  TypeActivity() { this.hasQualifiedName("android.app", "Activity") }
 }
 
+/**
+ * The class `android.content.Context`.
+ */
 class TypeContext extends RefType {
-  TypeContext() { hasQualifiedName("android.content", "Context") }
+  TypeContext() { this.hasQualifiedName("android.content", "Context") }
 }
 
+/**
+ * The class `android.content.BroadcastReceiver`.
+ */
 class TypeBroadcastReceiver extends Class {
-  TypeBroadcastReceiver() { hasQualifiedName("android.content", "BroadcastReceiver") }
+  TypeBroadcastReceiver() { this.hasQualifiedName("android.content", "BroadcastReceiver") }
 }
 
+/**
+ * The method `Activity.getIntent`
+ */
 class AndroidGetIntentMethod extends Method {
-  AndroidGetIntentMethod() { hasName("getIntent") and getDeclaringType() instanceof TypeActivity }
+  AndroidGetIntentMethod() {
+    this.hasName("getIntent") and this.getDeclaringType() instanceof TypeActivity
+  }
 }
 
+/**
+ * The method `BroadcastReceiver.onReceive`.
+ */
 class AndroidReceiveIntentMethod extends Method {
   AndroidReceiveIntentMethod() {
-    hasName("onReceive") and getDeclaringType() instanceof TypeBroadcastReceiver
+    this.hasName("onReceive") and this.getDeclaringType() instanceof TypeBroadcastReceiver
   }
 }
 
+/**
+ * The method `Context.startActivity` or `startActivities`.
+ */
 class ContextStartActivityMethod extends Method {
   ContextStartActivityMethod() {
-    (hasName("startActivity") or hasName("startActivities")) and
-    getDeclaringType() instanceof TypeContext
+    (this.hasName("startActivity") or this.hasName("startActivities")) and
+    this.getDeclaringType() instanceof TypeContext
   }
 }
 
-class IntentGetExtraMethod extends Method, TaintPreservingCallable {
-  IntentGetExtraMethod() {
-    (getName().regexpMatch("get\\w+Extra") or hasName("getExtras")) and
-    getDeclaringType() instanceof TypeIntent
-  }
-
-  override predicate returnsTaintFrom(int arg) { arg = -1 }
+/**
+ * Specifies that if an `Intent` is tainted, then so are its synthetic fields.
+ */
+private class IntentFieldsInheritTaint extends DataFlow::SyntheticFieldContent,
+  TaintInheritingContent {
+  IntentFieldsInheritTaint() { this.getField().matches("android.content.Intent.%") }
 }
 
-/** A getter on `android.os.BaseBundle` or `android.os.Bundle`. */
-class BundleGetterMethod extends Method, TaintPreservingCallable {
-  BundleGetterMethod() {
-    getDeclaringType().hasQualifiedName("android.os", ["BaseBundle", "Bundle"]) and
-    getName().matches("get%")
+/**
+ * The method `Intent.getParcelableExtra`.
+ */
+class IntentGetParcelableExtraMethod extends Method {
+  IntentGetParcelableExtraMethod() {
+    this.hasName("getParcelableExtra") and
+    this.getDeclaringType() instanceof TypeIntent
   }
-
-  override predicate returnsTaintFrom(int arg) { arg = -1 }
 }
 
 private class IntentBundleFlowSteps extends SummaryModelCsv {
@@ -142,18 +165,25 @@ private class IntentBundleFlowSteps extends SummaryModelCsv {
         "android.os;Bundle;true;putStringArrayList;;;Argument[1];MapValue of Argument[-1];value",
         "android.os;Bundle;true;readFromParcel;;;Argument[0];MapKey of Argument[-1];taint",
         "android.os;Bundle;true;readFromParcel;;;Argument[0];MapValue of Argument[-1];taint",
-        // currently only the Extras part of the intent is fully modelled
-        "android.content;Intent;true;addCategory;;;Argument[-1];ReturnValue;value",
-        "android.content;Intent;true;addFlags;;;Argument[-1];ReturnValue;value",
+        // currently only the Extras part of the intent and the data field are fully modelled
         "android.content;Intent;false;Intent;(Intent);;MapKey of SyntheticField[android.content.Intent.extras] of Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[-1];value",
         "android.content;Intent;false;Intent;(Intent);;MapValue of SyntheticField[android.content.Intent.extras] of Argument[0];MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];value",
-        "android.content;Intent;true;getExtras;();;SyntheticField[android.content.Intent.extras] of Argument[-1];ReturnValue;value",
+        "android.content;Intent;false;Intent;(String,Uri);;Argument[1];SyntheticField[android.content.Intent.data] of Argument[-1];value",
+        "android.content;Intent;false;Intent;(String,Uri,Context,Class);;Argument[1];SyntheticField[android.content.Intent.data] of Argument[-1];value",
+        "android.content;Intent;true;addCategory;;;Argument[-1];ReturnValue;value",
+        "android.content;Intent;true;addFlags;;;Argument[-1];ReturnValue;value",
+        "android.content;Intent;false;createChooser;;;Argument[0..2];MapValue of SyntheticField[android.content.Intent.extras] of ReturnValue;value",
         "android.content;Intent;true;getBundleExtra;(String);;MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];ReturnValue;value",
         "android.content;Intent;true;getByteArrayExtra;(String);;MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];ReturnValue;value",
         "android.content;Intent;true;getCharArrayExtra;(String);;MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];ReturnValue;value",
         "android.content;Intent;true;getCharSequenceArrayExtra;(String);;MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];ReturnValue;value",
         "android.content;Intent;true;getCharSequenceArrayListExtra;(String);;MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];ReturnValue;value",
         "android.content;Intent;true;getCharSequenceExtra;(String);;MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];ReturnValue;value",
+        "android.content;Intent;true;getData;;;SyntheticField[android.content.Intent.data] of Argument[-1];ReturnValue;value",
+        "android.content;Intent;true;getDataString;;;SyntheticField[android.content.Intent.data] of Argument[-1];ReturnValue;taint",
+        "android.content;Intent;true;getExtras;();;SyntheticField[android.content.Intent.extras] of Argument[-1];ReturnValue;value",
+        "android.content;Intent;false;getIntent;;;Argument[0];SyntheticField[android.content.Intent.data] of ReturnValue;taint",
+        "android.content;Intent;false;getIntentOld;;;Argument[0];SyntheticField[android.content.Intent.data] of ReturnValue;taint",
         "android.content;Intent;true;getParcelableArrayExtra;(String);;MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];ReturnValue;value",
         "android.content;Intent;true;getParcelableArrayListExtra;(String);;MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];ReturnValue;value",
         "android.content;Intent;true;getParcelableExtra;(String);;MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];ReturnValue;value",
@@ -161,12 +191,19 @@ private class IntentBundleFlowSteps extends SummaryModelCsv {
         "android.content;Intent;true;getStringArrayExtra;(String);;MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];ReturnValue;value",
         "android.content;Intent;true;getStringArrayListExtra;(String);;MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];ReturnValue;value",
         "android.content;Intent;true;getStringExtra;(String);;MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];ReturnValue;value",
+        "android.content;Intent;false;parseUri;;;Argument[0];SyntheticField[android.content.Intent.data] of ReturnValue;taint",
         "android.content;Intent;true;putCharSequenceArrayListExtra;;;Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[-1];value",
         "android.content;Intent;true;putCharSequenceArrayListExtra;;;Argument[1];MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];value",
         "android.content;Intent;true;putCharSequenceArrayListExtra;;;Argument[-1];ReturnValue;value",
         "android.content;Intent;true;putExtra;;;Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[-1];value",
         "android.content;Intent;true;putExtra;;;Argument[1];MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];value",
         "android.content;Intent;true;putExtra;;;Argument[-1];ReturnValue;value",
+        "android.content;Intent;true;putExtras;(Bundle);;MapKey of Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[-1];value",
+        "android.content;Intent;true;putExtras;(Bundle);;MapValue of Argument[0];MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];value",
+        "android.content;Intent;true;putExtras;(Bundle);;Argument[-1];ReturnValue;value",
+        "android.content;Intent;true;putExtras;(Intent);;MapKey of SyntheticField[android.content.Intent.extras] of Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[-1];value",
+        "android.content;Intent;true;putExtras;(Intent);;MapValue of SyntheticField[android.content.Intent.extras] of Argument[0];MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];value",
+        "android.content;Intent;true;putExtras;(Intent);;Argument[-1];ReturnValue;value",
         "android.content;Intent;true;putIntegerArrayListExtra;;;Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[-1];value",
         "android.content;Intent;true;putIntegerArrayListExtra;;;Argument[-1];ReturnValue;value",
         "android.content;Intent;true;putParcelableArrayListExtra;;;Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[-1];value",
@@ -175,12 +212,6 @@ private class IntentBundleFlowSteps extends SummaryModelCsv {
         "android.content;Intent;true;putStringArrayListExtra;;;Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[-1];value",
         "android.content;Intent;true;putStringArrayListExtra;;;Argument[1];MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];value",
         "android.content;Intent;true;putStringArrayListExtra;;;Argument[-1];ReturnValue;value",
-        "android.content;Intent;true;putExtras;(Bundle);;MapKey of Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[-1];value",
-        "android.content;Intent;true;putExtras;(Bundle);;MapValue of Argument[0];MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];value",
-        "android.content;Intent;true;putExtras;(Bundle);;Argument[-1];ReturnValue;value",
-        "android.content;Intent;true;putExtras;(Intent);;MapKey of SyntheticField[android.content.Intent.extras] of Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[-1];value",
-        "android.content;Intent;true;putExtras;(Intent);;MapValue of SyntheticField[android.content.Intent.extras] of Argument[0];MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];value",
-        "android.content;Intent;true;putExtras;(Intent);;Argument[-1];ReturnValue;value",
         "android.content;Intent;true;replaceExtras;(Bundle);;MapKey of Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[-1];value",
         "android.content;Intent;true;replaceExtras;(Bundle);;MapValue of Argument[0];MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];value",
         "android.content;Intent;true;replaceExtras;(Bundle);;Argument[-1];ReturnValue;value",
@@ -192,9 +223,13 @@ private class IntentBundleFlowSteps extends SummaryModelCsv {
         "android.content;Intent;true;setClassName;;;Argument[-1];ReturnValue;value",
         "android.content;Intent;true;setComponent;;;Argument[-1];ReturnValue;value",
         "android.content;Intent;true;setData;;;Argument[-1];ReturnValue;value",
+        "android.content;Intent;true;setData;;;Argument[0];SyntheticField[android.content.Intent.data] of Argument[-1];value",
         "android.content;Intent;true;setDataAndNormalize;;;Argument[-1];ReturnValue;value",
+        "android.content;Intent;true;setDataAndNormalize;;;Argument[0];SyntheticField[android.content.Intent.data] of Argument[-1];value",
         "android.content;Intent;true;setDataAndType;;;Argument[-1];ReturnValue;value",
+        "android.content;Intent;true;setDataAndType;;;Argument[0];SyntheticField[android.content.Intent.data] of Argument[-1];value",
         "android.content;Intent;true;setDataAndTypeAndNormalize;;;Argument[-1];ReturnValue;value",
+        "android.content;Intent;true;setDataAndTypeAndNormalize;;;Argument[0];SyntheticField[android.content.Intent.data] of Argument[-1];value",
         "android.content;Intent;true;setFlags;;;Argument[-1];ReturnValue;value",
         "android.content;Intent;true;setIdentifier;;;Argument[-1];ReturnValue;value",
         "android.content;Intent;true;setPackage;;;Argument[-1];ReturnValue;value",
