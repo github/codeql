@@ -1,6 +1,7 @@
 private import codeql.ruby.AST
 private import AST
 private import TreeSitter
+private import Variable
 
 module Parameter {
   class Range extends Ruby::AstNode {
@@ -16,4 +17,28 @@ module Parameter {
 
     int getPosition() { result = pos }
   }
+}
+
+abstract class SimpleParameterImpl extends AstNode, TSimpleParameter {
+  abstract LocalVariable getVariableImpl();
+
+  abstract string getNameImpl();
+}
+
+private class SimpleParameterRealImpl extends SimpleParameterImpl, TSimpleParameterReal {
+  private Ruby::Identifier g;
+
+  SimpleParameterRealImpl() { this = TSimpleParameterReal(g) }
+
+  override LocalVariable getVariableImpl() { result = TLocalVariableReal(_, _, g) }
+
+  override string getNameImpl() { result = g.getValue() }
+}
+
+private class SimpleParameterSynthImpl extends SimpleParameterImpl, TSimpleParameterSynth {
+  SimpleParameterSynthImpl() { this = TSimpleParameterSynth(_, _) }
+
+  override LocalVariable getVariableImpl() { result = TLocalVariableSynth(this, _) }
+
+  override string getNameImpl() { result = this.getVariableImpl().getName() }
 }

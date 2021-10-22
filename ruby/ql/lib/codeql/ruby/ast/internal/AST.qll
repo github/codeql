@@ -238,7 +238,10 @@ private module Cached {
     TSelfSynth(AST::AstNode parent, int i, AST::SelfVariable v) {
       mkSynthChild(SelfKind(v), parent, i)
     } or
-    TSimpleParameter(Ruby::Identifier g) { g instanceof Parameter::Range } or
+    TSimpleParameterReal(Ruby::Identifier g) { g instanceof Parameter::Range } or
+    TSimpleParameterSynth(AST::AstNode parent, int i) {
+      mkSynthChild(SimpleParameterKind(), parent, i)
+    } or
     TSimpleSymbolLiteral(Ruby::SimpleSymbol g) or
     TSingletonClass(Ruby::SingletonClass g) or
     TSingletonMethod(Ruby::SingletonMethod g) or
@@ -439,7 +442,7 @@ private module Cached {
     n = TScopeResolutionConstantAccess(result, _) or
     n = TScopeResolutionMethodCall(result, _) or
     n = TSelfReal(result) or
-    n = TSimpleParameter(result) or
+    n = TSimpleParameterReal(result) or
     n = TSimpleSymbolLiteral(result) or
     n = TSingletonClass(result) or
     n = TSingletonMethod(result) or
@@ -521,6 +524,8 @@ private module Cached {
     result = TRShiftExprSynth(parent, i)
     or
     result = TSelfSynth(parent, i, _)
+    or
+    result = TSimpleParameterSynth(parent, i)
     or
     result = TSplatExprSynth(parent, i)
     or
@@ -729,6 +734,8 @@ class TReturningStmt = TReturnStmt or TBreakStmt or TNextStmt;
 class TParameter =
   TPatternParameter or TBlockParameter or THashSplatParameter or TKeywordParameter or
       TOptionalParameter or TSplatParameter or TForwardParameter;
+
+class TSimpleParameter = TSimpleParameterReal or TSimpleParameterSynth;
 
 class TPatternParameter = TSimpleParameter or TTuplePatternParameter;
 

@@ -68,14 +68,12 @@ class NamedParameter extends Parameter, TNamedParameter {
 }
 
 /** A simple (normal) parameter. */
-class SimpleParameter extends NamedParameter, PatternParameter, VariablePattern, TSimpleParameter {
-  private Ruby::Identifier g;
+class SimpleParameter extends NamedParameter, PatternParameter, VariablePattern, TSimpleParameter instanceof SimpleParameterImpl {
+  final override string getName() { result = SimpleParameterImpl.super.getNameImpl() }
 
-  SimpleParameter() { this = TSimpleParameter(g) }
-
-  final override string getName() { result = g.getValue() }
-
-  final override LocalVariable getVariable() { result = TLocalVariableReal(_, _, g) }
+  final override LocalVariable getVariable() {
+    result = SimpleParameterImpl.super.getVariableImpl()
+  }
 
   final override LocalVariable getAVariable() { result = this.getVariable() }
 

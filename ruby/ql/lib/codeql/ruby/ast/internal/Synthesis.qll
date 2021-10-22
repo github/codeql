@@ -33,6 +33,7 @@ newtype SynthKind =
   MulExprKind() or
   RangeLiteralKind(boolean inclusive) { inclusive in [false, true] } or
   RShiftExprKind() or
+  SimpleParameterKind() or
   SplatExprKind() or
   StmtSequenceKind() or
   SelfKind(SelfVariable v) or
