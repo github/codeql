@@ -60,7 +60,7 @@ class IdentifierMethodCall extends MethodCallImpl, TIdentifierMethodCall {
 
   final override string getMethodNameImpl() { result = g.getValue() }
 
-  final override AstNode getReceiverImpl() { result = TSelfSynth(this, 0) }
+  final override AstNode getReceiverImpl() { result = TSelfSynth(this, 0, _) }
 
   final override Expr getArgumentImpl(int n) { none() }
 
@@ -97,7 +97,7 @@ class RegularMethodCall extends MethodCallImpl, TRegularMethodCall {
     not exists(g.getReceiver()) and
     toGenerated(result) = g.getMethod().(Ruby::ScopeResolution).getScope()
     or
-    result = TSelfSynth(this, 0)
+    result = TSelfSynth(this, 0, _)
   }
 
   final override string getMethodNameImpl() {

@@ -5,6 +5,12 @@ private import codeql.ruby.ast.internal.Parameter
 
 class TScopeType = TMethodBase or TModuleLike or TBlockLike;
 
+/**
+ * The scope of a `self` variable.
+ * This differs from a normal scope because it is not affected by blocks or lambdas.
+ */
+class TSelfScopeType = TMethodBase or TModuleBase;
+
 private class TBlockLike = TDoBlock or TLambda or TBlock or TEndBlock;
 
 private class TModuleLike = TToplevel or TModuleDeclaration or TClassDeclaration or TSingletonClass;
@@ -27,6 +33,12 @@ module Scope {
       not this instanceof MethodBase::Range and
       not this instanceof ModuleBase::Range and
       result = this.getOuterScope().getEnclosingMethod()
+    }
+
+    SelfBase::Range getEnclosingSelfScope() {
+      this instanceof SelfBase::Range and result = this
+      or
+      not this instanceof SelfBase::Range and result = this.getOuterScope().getEnclosingSelfScope()
     }
 
     Range getOuterScope() { result = scopeOf(this) }
@@ -56,6 +68,15 @@ module Callable {
 module ModuleBase {
   class TypeRange = @ruby_program or @ruby_module or @ruby_class or @ruby_singleton_class;
 
+  class Range extends Scope::Range, TypeRange { }
+}
+
+module SelfBase {
+  class TypeRange = MethodBase::TypeRange or ModuleBase::TypeRange;
+
+  /**
+   * A `self` variable can appear in a class, module, method or at the top level.
+   */
   class Range extends Scope::Range, TypeRange { }
 }
 

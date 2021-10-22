@@ -221,6 +221,24 @@ module Ssa {
   }
 
   /**
+   * An SSA definition that corresponds to the value of `self` upon entry to a method, class or module.
+   */
+  class SelfDefinition extends Definition, SsaImplCommon::WriteDefinition {
+    private SelfVariable v;
+
+    SelfDefinition() {
+      exists(BasicBlock bb, int i |
+        this.definesAt(v, bb, i) and
+        not SsaImpl::capturedEntryWrite(bb, i, v)
+      )
+    }
+
+    final override string toString() { result = "self (" + v.getDeclaringScope() + ")" }
+
+    final override Location getLocation() { result = this.getControlFlowNode().getLocation() }
+  }
+
+  /**
    * An SSA definition inserted at the beginning of a scope to represent an
    * uninitialized local variable. For example, in
    *

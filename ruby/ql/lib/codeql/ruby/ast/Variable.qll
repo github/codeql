@@ -71,6 +71,9 @@ class ClassVariable extends Variable instanceof ClassVariableImpl {
   final override ClassVariableAccess getAnAccess() { result.getVariable() = this }
 }
 
+/** A `self` variable. */
+class SelfVariable extends LocalVariable instanceof SelfVariableImpl { }
+
 /** An access to a variable. */
 class VariableAccess extends Expr instanceof VariableAccessImpl {
   /** Gets the variable this identifier refers to. */
@@ -127,7 +130,7 @@ class VariableReadAccess extends VariableAccess {
 
 /** An access to a local variable. */
 class LocalVariableAccess extends VariableAccess instanceof LocalVariableAccessImpl {
-  final override string getAPrimaryQlClass() { result = "LocalVariableAccess" }
+  override string getAPrimaryQlClass() { result = "LocalVariableAccess" }
 
   /**
    * Holds if this access is a captured variable access. For example in
@@ -144,7 +147,7 @@ class LocalVariableAccess extends VariableAccess instanceof LocalVariableAccessI
    * the access to `x` in the first `puts x` is a captured access, while
    * the access to `x` in the second `puts x` is not.
    */
-  final predicate isCapturedAccess() { isCapturedAccess(this) }
+  predicate isCapturedAccess() { isCapturedAccess(this) }
 }
 
 /** An access to a local variable where the value is updated. */
@@ -185,3 +188,17 @@ class ClassVariableWriteAccess extends ClassVariableAccess, VariableWriteAccess 
 
 /** An access to a class variable where the value is read. */
 class ClassVariableReadAccess extends ClassVariableAccess, VariableReadAccess { }
+
+/** An access to the `self` variable */
+class SelfVariableAccess extends LocalVariableAccess instanceof SelfVariableAccessImpl {
+  final override string getAPrimaryQlClass() { result = "SelfVariableAccess" }
+}
+
+/** An access to the `self` variable where the value is read. */
+class SelfVariableReadAccess extends SelfVariableAccess, VariableReadAccess {
+  // We override the definition in `LocalVariableAccess` because it gives the
+  // wrong result for synthesised `self` variables.
+  override predicate isCapturedAccess() {
+    this.getVariable().getDeclaringScope() != this.getCfgScope()
+  }
+}

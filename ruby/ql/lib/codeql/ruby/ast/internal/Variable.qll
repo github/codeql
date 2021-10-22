@@ -133,6 +133,7 @@ private module Cached {
       not scopeDefinesParameterVariable(scope, name, _) and
       not inherits(scope, name, _)
     } or
+    TSelfVariable(SelfBase::Range scope) or
     TLocalVariableSynth(AstNode n, int i) { any(Synthesis s).localVariable(n, i) }
 
   // Db types that can be vcalls
@@ -307,7 +308,8 @@ private module Cached {
       access(this, _) or
       this instanceof Ruby::GlobalVariable or
       this instanceof Ruby::InstanceVariable or
-      this instanceof Ruby::ClassVariable
+      this instanceof Ruby::ClassVariable or
+      this instanceof Ruby::Self
     }
   }
 
@@ -374,9 +376,10 @@ abstract class VariableImpl extends TVariable {
   abstract Location getLocationImpl();
 }
 
-class TVariableReal = TGlobalVariable or TClassVariable or TInstanceVariable or TLocalVariableReal;
+class TVariableReal =
+  TGlobalVariable or TClassVariable or TInstanceVariable or TLocalVariableReal or TSelfVariable;
 
-class TLocalVariable = TLocalVariableReal or TLocalVariableSynth;
+class TLocalVariable = TLocalVariableReal or TLocalVariableSynth or TSelfVariable;
 
 /**
  * This class only exists to avoid negative recursion warnings. Ideally,
@@ -471,6 +474,18 @@ class ClassVariableImpl extends VariableReal, TClassVariable {
   final override string getNameImpl() { result = name }
 
   final override Location getLocationImpl() { result = decl.getLocation() }
+
+  final override Scope::Range getDeclaringScopeImpl() { result = scope }
+}
+
+class SelfVariableImpl extends VariableReal, TSelfVariable {
+  private SelfBase::Range scope;
+
+  SelfVariableImpl() { this = TSelfVariable(scope) }
+
+  final override string getNameImpl() { result = "self" }
+
+  final override Location getLocationImpl() { result = scope.getLocation() }
 
   final override Scope::Range getDeclaringScopeImpl() { result = scope }
 }
@@ -599,6 +614,29 @@ private class ClassVariableAccessSynth extends ClassVariableAccessRealImpl,
   ClassVariableAccessSynth() { this = TClassVariableAccessSynth(_, _, v) }
 
   final override ClassVariable getVariableImpl() { result = v }
+
+  final override string toString() { result = v.getName() }
+}
+
+abstract class SelfVariableAccessImpl extends LocalVariableAccessImpl, TSelfVariableAccess { }
+
+private class SelfVariableAccessReal extends SelfVariableAccessImpl, TSelfReal {
+  private Ruby::Self self;
+  private SelfVariable var;
+
+  SelfVariableAccessReal() { this = TSelfReal(self) and var = TSelfVariable(scopeOf(self)) }
+
+  final override SelfVariable getVariableImpl() { result = var }
+
+  final override string toString() { result = var.toString() }
+}
+
+private class SelfVariableAccessSynth extends SelfVariableAccessImpl, TSelfSynth {
+  private SelfVariable v;
+
+  SelfVariableAccessSynth() { this = TSelfSynth(_, _, v) }
+
+  final override LocalVariable getVariableImpl() { result = v }
 
   final override string toString() { result = v.getName() }
 }

@@ -17,8 +17,21 @@ class ExitBasicBlock = BasicBlocks::ExitBasicBlock;
 
 class SourceVariable = LocalVariable;
 
+/**
+ * Holds if the statement at index `i` of basic block `bb` contains a write to variable `v`.
+ * `certain` is true if the write definitely occurs.
+ */
 predicate variableWrite(BasicBlock bb, int i, SourceVariable v, boolean certain) {
   (
+    exists(Scope scope | scope = v.(SelfVariable).getDeclaringScope() |
+      // We consider the `self` variable to have a single write at the entry to a method block...
+      scope = bb.(BasicBlocks::EntryBasicBlock).getScope() and
+      i = 0
+      or
+      // ...or a class or module block.
+      bb.getNode(i).getNode() = scope.(ModuleBase).getAControlFlowEntryNode()
+    )
+    or
     SsaImpl::uninitializedWrite(bb, i, v)
     or
     SsaImpl::capturedEntryWrite(bb, i, v)

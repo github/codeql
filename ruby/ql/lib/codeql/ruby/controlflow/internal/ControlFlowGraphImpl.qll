@@ -808,19 +808,28 @@ module Trees {
     }
   }
 
+  /**
+   * Namespaces (i.e. modules or classes) behave like other `BodyStmt`s except they are
+   * executed in pre-order rather than post-order. We do this in order to insert a write for
+   * `self` before any subsequent reads in the namespace body.
+   */
   private class NamespaceTree extends BodyStmtTree, Namespace {
-    final override predicate first(AstNode first) {
-      this.firstInner(first)
-      or
-      not exists(this.getAChild(_)) and
-      first = this
-    }
+    final override predicate first(AstNode first) { first = this }
 
     final override predicate succ(AstNode pred, AstNode succ, Completion c) {
       BodyStmtTree.super.succ(pred, succ, c)
       or
-      succ = this and
-      this.lastInner(pred, c)
+      pred = this and
+      this.firstInner(succ) and
+      c instanceof SimpleCompletion
+    }
+
+    final override predicate last(AstNode last, Completion c) {
+      this.lastInner(last, c)
+      or
+      not exists(this.getAChild(_)) and
+      last = this and
+      c.isValidFor(this)
     }
   }
 
@@ -955,8 +964,6 @@ module Trees {
   private class ReturningStmtTree extends StandardPostOrderTree, ReturningStmt {
     final override ControlFlowTree getChildElement(int i) { result = this.getValue() and i = 0 }
   }
-
-  private class SelfTree extends LeafTree, Self { }
 
   private class SimpleParameterTree extends NonDefaultValueParameterTree, SimpleParameter { }
 
