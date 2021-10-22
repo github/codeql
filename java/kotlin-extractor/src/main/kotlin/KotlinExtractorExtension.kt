@@ -1182,6 +1182,27 @@ class X {
                         tw.writeExprs_integerliteral(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                         tw.writeHasLocation(id, locId)
                         tw.writeNamestrings(v.toString(), v.toString(), id)
+                    } is Long -> {
+                        val id = tw.getFreshIdLabel<DbLongliteral>()
+                        val type = useType(e.type)
+                        val locId = tw.getLocation(e)
+                        tw.writeExprs_longliteral(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
+                        tw.writeHasLocation(id, locId)
+                        tw.writeNamestrings(v.toString(), v.toString(), id)
+                    } is Float -> {
+                        val id = tw.getFreshIdLabel<DbFloatingpointliteral>()
+                        val type = useType(e.type)
+                        val locId = tw.getLocation(e)
+                        tw.writeExprs_floatingpointliteral(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
+                        tw.writeHasLocation(id, locId)
+                        tw.writeNamestrings(v.toString(), v.toString(), id)
+                    } is Double -> {
+                        val id = tw.getFreshIdLabel<DbDoubleliteral>()
+                        val type = useType(e.type)
+                        val locId = tw.getLocation(e)
+                        tw.writeExprs_doubleliteral(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
+                        tw.writeHasLocation(id, locId)
+                        tw.writeNamestrings(v.toString(), v.toString(), id)
                     } is Boolean -> {
                         val id = tw.getFreshIdLabel<DbBooleanliteral>()
                         val type = useType(e.type)
