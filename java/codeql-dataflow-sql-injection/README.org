@@ -22,10 +22,6 @@
      ./add-user 2>> users.log
      First User
 
-     
-     # Regular user via "external" process
-     echo "User Outside" | ./add-user 2>> users.log
-
      # Check
      ./admin -s
 
@@ -42,15 +38,15 @@
 
 ** Identify the problem
    =./add-user= is reading from =STDIN=, and writing to a database; looking at the code in
-   [[./add-user.c]] leads to
-   : count = read(STDIN_FILENO, buf, BUFSIZE - 1);
+   [[./AddUser.java]] leads to
+   : System.console().readLine();
    for the read and 
-   : rc = sqlite3_exec(db, query, NULL, 0, &zErrMsg);
+   : conn.createStatement().executeUpdate(query);
    for the write.
 
    This problem is thus a dataflow problem; in codeql terminology we have
-   - a /source/ at the =read(STDIN_FILENO, buf, BUFSIZE - 1);=
-   - a /sink/ at the =sqlite3_exec(db, query, NULL, 0, &zErrMsg);=
+   - a /source/ at the =System.console().readLine();=
+   - a /sink/ at the =conn.createStatement().executeUpdate(query);=
 
    We write codeql to identify these two, and then connect them via
    - a /dataflow configuration/ -- for this problem, the more general /taintflow
@@ -86,8 +82,8 @@
    #+BEGIN_SRC sh
      # Build the db with source commit id.
      export PATH=$HOME/local/vmsync/codeql250:"$PATH"
-     SRCDIR=$HOME/local/codeql-training-material.cpp-sqli/cpp/codeql-dataflow-sql-injection
-     DB=$SRCDIR/cpp-sqli-$(cd $SRCDIR && git rev-parse --short HEAD)
+     SRCDIR=$HOME/local/codeql-training-material.java-sqli/java/codeql-dataflow-sql-injection
+     DB=$SRCDIR/java-sqli-$(cd $SRCDIR && git rev-parse --short HEAD)
 
      # Check paths
      echo $DB
@@ -99,7 +95,7 @@
 
      # Run the build
      cd $SRCDIR
-     codeql database init --language=cpp -s . -v $DB
+     codeql database init --language=java -s . -v $DB
      # Repeat trace-command as needed to cover all targets
      codeql database trace-command -v $DB -- make 
      codeql database finalize -j4 $DB
@@ -109,19 +105,19 @@
 
 ** Develop the query bottom-up
    1. Identify the /source/ part of the 
-      : read(STDIN_FILENO, buf, BUFSIZE - 1);
+      : System.console().readLine();
       expression, the =buf= argument.  
       Start from a =from..where..select=, then convert to a predicate.
 
    2. Identify the /sink/ part of the
-      : sqlite3_exec(db, query, NULL, 0, &zErrMsg);
+      : conn.createStatement().executeUpdate(query);
       expression, the =query= argument.  Again start from =from..where..select=,
       then convert to a predicate.
 
    3. Fill in the /taintflow configuration/ boilerplate
       #+BEGIN_SRC java
-        class CppSqli extends TaintTracking::Configuration {
-            CppSqli() { this = "CppSqli" }
+        class SqliFlowConfig extends TaintTracking::Configuration {
+            SqliFlowConfig() { this = "SqliFlow" }
 
             override predicate isSource(DataFlow::Node node) {
                 none()
@@ -133,45 +129,38 @@
         }
       #+END_SRC
 
-      Note that an inout-argument in C/C++ (the =buf= pointer is passed to =read=
-      and points to updated data after the return) is accessed as a codeql source
-      via
-      : source.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr()
-      instead of the usual
-      : source.asExpr()
-
    The final query (without =isAdditionalTaintStep=) is
    #+BEGIN_SRC java
      /**
       ,* @name SQLI Vulnerability
       ,* @description Using untrusted strings in a sql query allows sql injection attacks.
       ,* @kind path-problem
-      ,* @id cpp/SQLIVulnerable
+      ,* @id java/SQLIVulnerable
       ,* @problem.severity warning
       ,*/
 
-     import cpp
-     import semmle.code.cpp.dataflow.TaintTracking
+     import java
+     import semmle.code.java.dataflow.TaintTracking
      import DataFlow::PathGraph
 
      class SqliFlowConfig extends TaintTracking::Configuration {
          SqliFlowConfig() { this = "SqliFlow" }
 
          override predicate isSource(DataFlow::Node source) {
-             // count = read(STDIN_FILENO, buf, BUFSIZE);
-             exists(FunctionCall read |
-                 read.getTarget().getName() = "read" and
-                 read.getArgument(1) = source.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr()
-             )
-         }
+            // System.console().readLine();
+            exists(Call read |
+                read.getCallee().getName() = "readLine" and
+                read = source.asExpr()
+            )
+        }
 
          override predicate isSink(DataFlow::Node sink) {
-             // rc = sqlite3_exec(db, query, NULL, 0, &zErrMsg);
-             exists(FunctionCall exec |
-                 exec.getTarget().getName() = "sqlite3_exec" and
-                 exec.getArgument(1) = sink.asExpr()
-             )
-         }
+            // conn.createStatement().executeUpdate(query);
+            exists(Call exec |
+                exec.getCallee().getName() = "executeUpdate" and
+                exec.getArgument(0) = sink.asExpr()
+            )
+        }
      }
 
      from SqliFlowConfig conf, DataFlow::PathNode source, DataFlow::PathNode sink
@@ -186,8 +175,8 @@
    #+BEGIN_SRC sh
      # The setup information from before
      export PATH=$HOME/local/vmsync/codeql250:"$PATH"
-     SRCDIR=$HOME/local/codeql-training-material.cpp-sqli/cpp/codeql-dataflow-sql-injection
-     DB=$SRCDIR/cpp-sqli-$(cd $SRCDIR && git rev-parse --short HEAD)
+     SRCDIR=$HOME/local/codeql-training-material.java-sqli/java/codeql-dataflow-sql-injection
+     DB=$SRCDIR/java-sqli-$(cd $SRCDIR && git rev-parse --short HEAD)
 
      # Check paths
      echo $DB
@@ -204,19 +193,19 @@
             --rerun                                  \
             --search-path ~/local/vmsync/ql          \
             --format=sarif-latest                    \
-            --output cpp-sqli.sarif                  \
+            --output java-sqli.sarif                 \
             --                                       \
             $DB                                      \
             $SRCDIR/SqlInjection.ql
 
      # Examine the file in an editor
-     edit cpp-sqli.sarif
+     edit java-sqli.sarif
    #+END_SRC
 
    An example of using the sarif data is in the the jq script [[./sarif-summary.jq]].
    When run against the sarif input via 
    #+BEGIN_SRC sh
-     jq --raw-output --join-output  -f sarif-summary.jq < cpp-sqli.sarif > cpp-sqli.txt
+     jq --raw-output --join-output  -f sarif-summary.jq < java-sqli.sarif > java-sqli.txt
    #+END_SRC
    it produces output in a form close to that of compiler error messages:
    #+BEGIN_SRC text
