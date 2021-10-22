@@ -93,6 +93,7 @@ private module Cached {
     } or
     TBlockArgument(Ruby::BlockArgument g) or
     TBlockParameter(Ruby::BlockParameter g) or
+    TBlockSynth(AST::AstNode parent, int i) { mkSynthChild(BlockKind(), parent, i) } or
     TBraceBlock(Ruby::Block g) { not g.getParent() instanceof Ruby::Lambda } or
     TBreakStmt(Ruby::Break g) or
     TCaseEqExpr(Ruby::Binary g) { g instanceof @ruby_binary_equalequalequal } or
@@ -491,6 +492,8 @@ private module Cached {
     or
     result = TBitwiseXorExprSynth(parent, i)
     or
+    result = TBlockSynth(parent, i)
+    or
     result = TClassVariableAccessSynth(parent, i, _)
     or
     result = TConstantReadAccessSynth(parent, i, _)
@@ -644,7 +647,7 @@ class TCallable = TMethodBase or TLambda or TBlock;
 
 class TMethodBase = TMethod or TSingletonMethod;
 
-class TBlock = TDoBlock or TBraceBlock;
+class TBlock = TDoBlock or TBraceBlock or TBlockSynth;
 
 class TModuleBase = TToplevel or TNamespace or TSingletonClass;
 

@@ -1,7 +1,9 @@
 private import TreeSitter
+private import codeql.ruby.AST
 private import codeql.ruby.ast.Scope
 private import codeql.ruby.ast.internal.AST
 private import codeql.ruby.ast.internal.Parameter
+private import codeql.ruby.ast.internal.Variable
 
 class TScopeType = TMethodBase or TModuleLike or TBlockLike;
 
@@ -14,6 +16,10 @@ class TSelfScopeType = TMethodBase or TModuleBase;
 private class TBlockLike = TDoBlock or TLambda or TBlock or TEndBlock;
 
 private class TModuleLike = TToplevel or TModuleDeclaration or TClassDeclaration or TSingletonClass;
+
+private class TScopeReal = TMethodBase or TModuleLike or TDoBlock or TLambda or TBraceBlock;
+
+private class TScopeSynth = TBlockSynth;
 
 module Scope {
   class TypeRange = Callable::TypeRange or ModuleBase::TypeRange or @ruby_end_block;
@@ -127,4 +133,45 @@ Scope::Range scopeOf(Ruby::AstNode n) {
     or
     not p instanceof Scope::Range and result = scopeOf(p)
   )
+}
+
+abstract class ScopeImpl extends AstNode, TScopeType {
+  abstract Scope getOuterScopeImpl();
+
+  abstract Variable getAVariableImpl();
+
+  final Variable getVariableImpl(string name) {
+    result = this.getAVariableImpl() and
+    result.getName() = name
+  }
+}
+
+private class ScopeRealImpl extends ScopeImpl, TScopeReal {
+  private Scope::Range range;
+
+  ScopeRealImpl() { range = toGenerated(this) }
+
+  override Scope getOuterScopeImpl() { toGenerated(result) = range.getOuterScope() }
+
+  override Variable getAVariableImpl() { result.getDeclaringScope() = this }
+}
+
+// We desugar for loops by implementing them as calls to `each` with a block
+// argument. Though this is how the desugaring is described in the MRI parser,
+// in practice there is not a real nested scope created, so variables that
+// may appear to be local to the loop body (e.g. the iteration variable) are
+// scoped to the outer scope rather than the loop body.
+private class ScopeSynthImpl extends ScopeImpl, TScopeSynth {
+  ScopeSynthImpl() { this = TBlockSynth(_, _) }
+
+  override Scope getOuterScopeImpl() { scopeOf(toGeneratedInclSynth(this)) = toGenerated(result) }
+
+  override Variable getAVariableImpl() {
+    // Synthesized variables introduced as parameters to this scope
+    // As this variable is also synthetic, it is genuinely local to this scope.
+    exists(SimpleParameter p | p = TSimpleParameterSynth(this, _) |
+      p.getVariable() = result and
+      exists(TLocalVariableAccessSynth(p, _, result))
+    )
+  }
 }

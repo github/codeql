@@ -15,6 +15,7 @@ newtype SynthKind =
   BitwiseAndExprKind() or
   BitwiseOrExprKind() or
   BitwiseXorExprKind() or
+  BlockKind() or
   ClassVariableAccessKind(ClassVariable v) or
   DivExprKind() or
   ExponentExprKind() or
