@@ -27,7 +27,7 @@ import ratpack.exec.registry.Registry;
  * <h3>Non blocking/Asynchronous</h3>
  * <p>
  * Handlers are expected to be asynchronous.
- * That is, there is no expectation that the handler is “finished" when its {@link #handle(Context)} method returns.
+ * That is, there is no expectation that the handler is "finished" when its {@link #handle(Context)} method returns.
  * This facilitates the use of non blocking IO without needing to enter some kind of special mode.
  * An implication is that handlers <b>must</b> ensure that they either send a response or delegate to another handler.
  * </p>
