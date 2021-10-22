@@ -5,5 +5,7 @@
                "cpp/ql/test/query-tests/Security/CWE/CWE-190/semmle/tainted/qlpack.yml",
                "*/ql/examples/qlpack.yml",
                "*/upgrades/qlpack.yml",
+               "javascript/ql/experimental/adaptivethreatmodeling/lib/qlpack.yml",
+               "javascript/ql/experimental/adaptivethreatmodeling/src/qlpack.yml",
                "misc/legacy-support/*/qlpack.yml",
                "misc/suite-helpers/qlpack.yml" ] }

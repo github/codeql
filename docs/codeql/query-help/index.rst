@@ -11,7 +11,6 @@ View the query help for the queries included in the ``code-scanning``, ``securit
 - :doc:`CodeQL query help for Python <python>`
 - :doc:`CodeQL query help for Ruby <ruby>`
 
-
 .. pull-quote:: Information
 
    Each query help article includes: 
@@ -23,6 +22,8 @@ View the query help for the queries included in the ``code-scanning``, ``securit
 
 
 For a full list of the CWEs covered by these queries, see ":doc:`CodeQL CWE coverage <codeql-cwe-coverage>`." 
+
+.. include:: ../reusables/ruby-beta-note.rst
 
 .. toctree::
    :hidden:

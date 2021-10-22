@@ -100,7 +100,7 @@ further options on the command line.
 
 The `CodeQL repository <https://github.com/github/codeql>`__ contains 
 the queries and libraries required for CodeQL analysis of C/C++, C#, Java,
-JavaScript/TypeScript, and Python.
+JavaScript/TypeScript, Python, and Ruby.
 Clone a copy of this repository into ``codeql-home``. 
  
 By default, the root of the cloned repository will be called ``codeql``. 

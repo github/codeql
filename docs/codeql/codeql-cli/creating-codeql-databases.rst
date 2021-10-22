@@ -88,15 +88,15 @@ Creating databases for non-compiled languages
 ---------------------------------------------
 
 The CodeQL CLI includes extractors to create databases for non-compiled
-languages---specifically, JavaScript (and TypeScript) and Python. These
-extractors are automatically invoked when you specify JavaScript or Python as
+languages---specifically, JavaScript (and TypeScript), Python, and Ruby. These
+extractors are automatically invoked when you specify JavaScript, Python, or Ruby as
 the ``--language`` option when executing ``database create``. When creating
 databases for these languages you must ensure that all additional dependencies
 are available.
 
 .. pull-quote:: Important
 
-   When you run ``database create`` for JavaScript, TypeScript, and Python, you should not
+   When you run ``database create`` for JavaScript, TypeScript, Python, and Ruby, you should not
    specify a ``--command`` option. Otherwise this overrides the normal
    extractor invocation, which will create an empty database. If you create
    databases for multiple languages and one of them is a compiled language,
@@ -116,6 +116,8 @@ Here, we have specified a ``--source-root`` path, which is the location where
 database creation is executed, but is not necessarily the checkout root of the
 codebase. 
 
+By default, files in ``node_modules`` and ``bower_components`` directories are not extracted.
+
 Python
 ~~~~~~
 
@@ -127,14 +129,25 @@ When creating databases for Python you must ensure:
   packages that the codebase depends on.
 - You have installed the `virtualenv <https://pypi.org/project/virtualenv/>`__ pip module.
 
-In the command line you must specify ``--language=python``. For example
+In the command line you must specify ``--language=python``. For example::
 ::
 
    codeql database create --language=python <output-folder>/python-database
 
-executes the ``database create`` subcommand from the code's checkout root,
+This executes the ``database create`` subcommand from the code's checkout root,
 generating a new Python database at ``<output-folder>/python-database``.
 
+Ruby
+~~~~
+
+Creating databases for Ruby requires no additional dependencies. 
+In the command line you must specify ``--language=ruby``. For example::
+
+   codeql database create --language=ruby --source-root <folder-to-extract> <output-folder>/ruby-database
+
+Here, we have specified a ``--source-root`` path, which is the location where
+database creation is executed, but is not necessarily the checkout root of the
+codebase. 
 
 Creating databases for compiled languages
 -----------------------------------------
