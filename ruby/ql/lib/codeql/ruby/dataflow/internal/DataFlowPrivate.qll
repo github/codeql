@@ -398,7 +398,7 @@ private module ParameterNodes {
 
     override DataFlowCallable getEnclosingCallable() { result = sc }
 
-    override Location getLocationImpl() { none() }
+    override EmptyLocation getLocationImpl() { any() }
 
     override string toStringImpl() { result = "parameter " + pos + " of " + sc }
   }
@@ -417,7 +417,7 @@ private class SummaryNode extends NodeImpl, TSummaryNode {
 
   override DataFlowCallable getEnclosingCallable() { result = c }
 
-  override Location getLocationImpl() { none() }
+  override EmptyLocation getLocationImpl() { any() }
 
   override string toStringImpl() { result = "[summary] " + state + " in " + c }
 }

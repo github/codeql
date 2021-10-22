@@ -7,6 +7,7 @@ private import codeql.ruby.Concepts
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.DataFlow
 private import codeql.ruby.frameworks.StandardLibrary
+private import codeql.ruby.dataflow.FlowSummary
 
 private DataFlow::Node ioInstanceInstantiation() {
   result = API::getTopLevelMember("IO").getAnInstantiation() or
@@ -252,6 +253,47 @@ module File {
     }
 
     override DataFlow::Node getAPermissionNode() { result = permissionArg }
+  }
+
+  /**
+   * Flow summary for several methods on the `File` class that propagate taint
+   * from their first argument to the return value.
+   */
+  class FilePathConversionSummary extends SummarizedCallable {
+    string methodName;
+
+    FilePathConversionSummary() {
+      methodName = ["absolute_path", "dirname", "expand_path", "path", "realdirpath", "realpath"] and
+      this = "File." + methodName
+    }
+
+    override MethodCall getACall() {
+      result = API::getTopLevelMember("File").getAMethodCall(methodName).asExpr().getExpr()
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "Argument[0]" and
+      output = "ReturnValue" and
+      preservesValue = false
+    }
+  }
+
+  /**
+   * Flow summary for `File.join`, which propagates taint from every argument to
+   * its return value.
+   */
+  class FileJoinSummary extends SummarizedCallable {
+    FileJoinSummary() { this = "File.join" }
+
+    override MethodCall getACall() {
+      result = API::getTopLevelMember("File").getAMethodCall("join").asExpr().getExpr()
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "Argument[_]" and
+      output = "ReturnValue" and
+      preservesValue = false
+    }
   }
 }
 
