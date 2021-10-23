@@ -232,8 +232,7 @@ CodeQL is a declarative language and a basic query is defined by a
 For example:
 
 #+begin_example
-  import cpp
-
+  import go
   select "hello world"
 #+end_example
 
