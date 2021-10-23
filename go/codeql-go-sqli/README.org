@@ -3,11 +3,14 @@
   CodeQL.  The focus is on treating the Go program as /data/ to be examined via
   CodeQL, so it's kept as simple as possible.
   
-  Start with the [[*Setup Instructions][Setup Instructions]] for CodeQL, then follow the [[*SQL injection example][SQL injection
-  example]].  There is a short [[*Codeql Recap][Codeql Recap]], but for details follow the
+  Start with the [[#Setup-Instructions][Setup Instructions]] for CodeQL, then follow the [[#SQL-injection-example][SQL injection
+  example]].  There is a short [[#Codeql-Recap][Codeql Recap]], but for details follow the
   [[#documentation-links][Documentation Links]]
 
 * Setup Instructions
+  :PROPERTIES:
+  :CUSTOM_ID: Setup-Instructions
+  :END:
   To write and run CodeQL queries, follow these steps:
 
   1. Install the Visual Studio Code IDE.
@@ -39,6 +42,9 @@
      =vscode-codeql-starter/codeql-custom-queries-go/=.
 
 * SQL injection example
+  :PROPERTIES:
+  :CUSTOM_ID: SQL-injection-example
+  :END:
 
 ** Setup and sample run
    With Go installed, install prerequisites via 
@@ -206,14 +212,14 @@
 If you get stuck, try searching our documentation and blog posts for
 help and ideas. Below are a few links to help you get started:
 
-- [[https://codeql.github.com/docs/writing-codeql-queries/ql-tutorials/][CodeQL
-  Tutorials]]
-- [[https://codeql.github.com/docs/codeql-language-guides/codeql-for-go/][Learning
-  CodeQL for Go]]
-- [[https://codeql.github.com/docs/codeql-for-visual-studio-code/][Using
-  the CodeQL extension for VS Code]]
+- [[https://codeql.github.com/docs/writing-codeql-queries/ql-tutorials/][CodeQL Tutorials]]
+- [[https://codeql.github.com/docs/codeql-language-guides/codeql-for-go/][Learning CodeQL for Go]]
+- [[https://codeql.github.com/docs/codeql-for-visual-studio-code/][Using the CodeQL extension for VS Code]]
 
 * Codeql Recap
+  :PROPERTIES:
+  :CUSTOM_ID: Codeql-Recap
+  :END:
 This is a brief review of CodeQL. For more details, see the
 [[#documentation-links][documentation links]].
 
