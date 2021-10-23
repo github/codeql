@@ -17,10 +17,10 @@ func functionWithVarArgsOfStructsParameter(s ...A) {
 
 func main() {
 	stringSlice := []string{source()}
-	sink(stringSlice[0]) // $ taintflow MISSING: dataflow
+	sink(stringSlice[0]) // $ taintflow dataflow
 
 	arrayOfStructs := []A{{f: source()}}
-	sink(arrayOfStructs[0].f) // $ MISSING: taintflow dataflow
+	sink(arrayOfStructs[0].f) // $ taintflow dataflow
 
 	a := A{f: source()}
 	functionWithVarArgsOfStructsParameter(a)

@@ -106,7 +106,7 @@ predicate jumpStep(Node n1, Node n2) {
 
 /**
  * Holds if data can flow from `node1` to `node2` via an assignment to `c`.
- * Thus, `node2` references an object with a field `f` that contains the
+ * Thus, `node2` references an object with a content `x` that contains the
  * value of `node1`.
  */
 predicate storeStep(Node node1, Content c, PostUpdateNode node2) {
@@ -131,23 +131,23 @@ predicate storeStep(Node node1, Content c, PostUpdateNode node2) {
 }
 
 /**
- * Holds if data can flow from `node1` to `node2` via a read of `f`.
- * Thus, `node1` references an object with a field `f` whose value ends up in
+ * Holds if data can flow from `node1` to `node2` via a read of `c`.
+ * Thus, `node1` references an object with a content `c` whose value ends up in
  * `node2`.
  */
-predicate readStep(Node node1, Content f, Node node2) {
+predicate readStep(Node node1, Content c, Node node2) {
   node1 = node2.(PointerDereferenceNode).getOperand() and
-  f = any(DataFlow::PointerContent pc | pc.getPointerType() = node1.getType())
+  c = any(DataFlow::PointerContent pc | pc.getPointerType() = node1.getType())
   or
   exists(FieldReadNode read |
     node2 = read and
     node1 = read.getBase() and
-    f = any(DataFlow::FieldContent fc | fc.getField() = read.getField())
+    c = any(DataFlow::FieldContent fc | fc.getField() = read.getField())
   )
   or
-  FlowSummaryImpl::Private::Steps::summaryReadStep(node1, f, node2)
+  FlowSummaryImpl::Private::Steps::summaryReadStep(node1, c, node2)
   or
-  containerReadStep(node1, node2, f)
+  containerReadStep(node1, node2, c)
 }
 
 /**

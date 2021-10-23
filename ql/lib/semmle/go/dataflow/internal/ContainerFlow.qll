@@ -7,18 +7,19 @@ private import DataFlowUtil
 
 /**
  * Holds if the step from `node1` to `node2` stores a value in a slice or array.
- * This covers array assignments and initializers as well as implicit array
- * creations for varargs.
+ * Thus, `node2` references an object with a content `c` that contains the value
+ * of `node1`. This covers array assignments and initializers as well as
+ * implicit array creations for varargs.
  */
 predicate containerStoreStep(Node node1, Node node2, Content c) {
   c instanceof ArrayContent and
   (
     // currently there is no database information about variadic functions
     (
-      node1.getType() instanceof ArrayType or
-      node1.getType() instanceof SliceType
+      node2.getType() instanceof ArrayType or
+      node2.getType() instanceof SliceType
     ) and
-    exists(Write w | w.writesElement(node1, _, node2))
+    exists(Write w | w.writesElement(node2, _, node1))
   )
   or
   c instanceof CollectionContent and
@@ -35,8 +36,9 @@ predicate containerStoreStep(Node node1, Node node2, Content c) {
 
 /**
  * Holds if the step from `node1` to `node2` reads a value from a slice or array.
- * This covers ordinary array reads as well as array iteration through enhanced
- * `for` statements.
+ * Thus, `node1` references an object with a content `c` whose value ends up in
+ * `node2`. This covers ordinary array reads as well as array iteration through
+ * enhanced `for` statements.
  */
 predicate containerReadStep(Node node1, Node node2, Content c) {
   c instanceof ArrayContent and
