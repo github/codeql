@@ -1,0 +1,1 @@
+| test.cpp:11:20:11:25 | call to tmpnam | Finding the name of a file that does not exist does not mean that it will not be exist at the next operation. |
