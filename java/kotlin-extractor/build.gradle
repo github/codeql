@@ -30,3 +30,9 @@ task getHomeDir {
         println gradle.gradleHomeDir
     }
 }
+
+java {
+  toolchain {
+    languageVersion.set(JavaLanguageVersion.of(8))
+  }
+}
