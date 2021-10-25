@@ -920,7 +920,7 @@ class X {
         val type = useType(v.type)
         tw.writeLocalvars(varId, v.name.asString(), type.javaResult.id, exprId) // TODO: KT type
         tw.writeHasLocation(varId, locId)
-        tw.writeExprs_localvariabledeclexpr(exprId, type.javaResult.id, type.kotlinResult.id, stmtId, 0)
+        tw.writeExprs_localvariabledeclexpr(exprId, type.javaResult.id, type.kotlinResult.id, stmtId, 1)
         tw.writeHasLocation(exprId, locId)
         tw.writeStmts_localvariabledeclstmt(stmtId, parent, idx, callable)
         tw.writeHasLocation(stmtId, locId)
