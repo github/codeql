@@ -44,15 +44,6 @@ private module Asyncpg {
     }
   }
 
-  /** Reverse lokup of the path argument name for a method accessing the file system. */
-  private string fileAccessMethodName(string pathArg) {
-    result in ["copy_from_query", "copy_from_table"] and
-    pathArg = "output"
-    or
-    result = "copy_to_table" and
-    pathArg = "source"
-  }
-
   /** `Connection`s and `ConnectionPool`s provide some methods that access the file system. */
   class FileAccessOnConnection extends FileSystemAccess::Range, DataFlow::MethodCallNode {
     string methodName;
