@@ -1,5 +1,5 @@
 /**
- * @name Leaking sensitive information through an implicit Intent
+ * @name Leaking sensitive information through an implicit intent
  * @description An Android application uses implicit intents containing sensitive data
  *              in a way that exposes it to arbitrary applications on the device.
  * @kind path-problem
