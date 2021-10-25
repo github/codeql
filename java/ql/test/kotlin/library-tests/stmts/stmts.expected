@@ -11,8 +11,11 @@
 | stmts.kt:12:5:14:18 | { ... } | BlockStmt |
 | stmts.kt:12:8:14:5 | { ... } | BlockStmt |
 | stmts.kt:13:9:13:16 | return ... | ReturnStmt |
+| stmts.kt:15:5:15:13 | var ...; | LocalVariableDeclStmt |
+| stmts.kt:17:5:17:58 | var ...; | LocalVariableDeclStmt |
 | stmts.kt:17:35:17:43 | { ... } | BlockStmt |
 | stmts.kt:17:50:17:58 | { ... } | BlockStmt |
+| stmts.kt:18:5:18:56 | var ...; | LocalVariableDeclStmt |
 | stmts.kt:19:5:19:16 | return ... | ReturnStmt |
 | stmts.kt:22:27:30:1 | { ... } | BlockStmt |
 | stmts.kt:23:11:27:5 | while (...) | WhileStmt |

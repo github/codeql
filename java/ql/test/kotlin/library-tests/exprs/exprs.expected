@@ -1,46 +1,69 @@
+| exprs.kt:3:5:3:14 | i1 | LocalVariableDeclExpr |
 | exprs.kt:3:14:3:14 | 1 | IntegerLiteral |
+| exprs.kt:4:5:4:18 | i2 | LocalVariableDeclExpr |
 | exprs.kt:4:14:4:14 | x | VarAccess |
 | exprs.kt:4:14:4:18 | ... + ... | AddExpr |
 | exprs.kt:4:18:4:18 | y | VarAccess |
+| exprs.kt:5:5:5:18 | i3 | LocalVariableDeclExpr |
 | exprs.kt:5:14:5:14 | x | VarAccess |
 | exprs.kt:5:14:5:18 | ... - ... | SubExpr |
 | exprs.kt:5:18:5:18 | y | VarAccess |
+| exprs.kt:6:5:6:18 | i4 | LocalVariableDeclExpr |
 | exprs.kt:6:14:6:14 | x | VarAccess |
 | exprs.kt:6:14:6:18 | ... / ... | DivExpr |
 | exprs.kt:6:18:6:18 | y | VarAccess |
+| exprs.kt:7:5:7:18 | i5 | LocalVariableDeclExpr |
 | exprs.kt:7:14:7:14 | x | VarAccess |
 | exprs.kt:7:14:7:18 | ... % ... | RemExpr |
 | exprs.kt:7:18:7:18 | y | VarAccess |
+| exprs.kt:18:5:18:20 | i13 | LocalVariableDeclExpr |
 | exprs.kt:18:15:18:15 | x | VarAccess |
 | exprs.kt:18:15:18:20 | ... == ... | EQExpr |
 | exprs.kt:18:20:18:20 | y | VarAccess |
+| exprs.kt:19:5:19:20 | i14 | LocalVariableDeclExpr |
 | exprs.kt:19:15:19:15 | x | VarAccess |
 | exprs.kt:19:15:19:20 | ... != ... | NEExpr |
 | exprs.kt:19:15:19:20 | ... != ... | NEExpr |
 | exprs.kt:19:20:19:20 | y | VarAccess |
+| exprs.kt:20:5:20:19 | i15 | LocalVariableDeclExpr |
 | exprs.kt:20:15:20:15 | x | VarAccess |
 | exprs.kt:20:15:20:19 | ... < ... | LTExpr |
 | exprs.kt:20:19:20:19 | y | VarAccess |
+| exprs.kt:21:5:21:20 | i16 | LocalVariableDeclExpr |
 | exprs.kt:21:15:21:15 | x | VarAccess |
 | exprs.kt:21:15:21:20 | ... <= ... | LEExpr |
 | exprs.kt:21:20:21:20 | y | VarAccess |
+| exprs.kt:22:5:22:19 | i17 | LocalVariableDeclExpr |
 | exprs.kt:22:15:22:15 | x | VarAccess |
 | exprs.kt:22:15:22:19 | ... > ... | GTExpr |
 | exprs.kt:22:19:22:19 | y | VarAccess |
+| exprs.kt:23:5:23:20 | i18 | LocalVariableDeclExpr |
 | exprs.kt:23:15:23:15 | x | VarAccess |
 | exprs.kt:23:15:23:20 | ... >= ... | GEExpr |
 | exprs.kt:23:20:23:20 | y | VarAccess |
+| exprs.kt:29:5:29:17 | b1 | LocalVariableDeclExpr |
 | exprs.kt:29:14:29:17 | true | BooleanLiteral |
+| exprs.kt:30:5:30:18 | b2 | LocalVariableDeclExpr |
 | exprs.kt:30:14:30:18 | false | BooleanLiteral |
+| exprs.kt:37:5:37:15 | c | LocalVariableDeclExpr |
 | exprs.kt:37:13:37:15 | x | CharacterLiteral |
+| exprs.kt:38:5:38:26 | str | LocalVariableDeclExpr |
 | exprs.kt:38:16:38:25 | string lit | StringLiteral |
+| exprs.kt:39:5:39:38 | strWithQuote | LocalVariableDeclExpr |
 | exprs.kt:39:25:39:37 | string " lit | StringLiteral |
+| exprs.kt:40:5:40:22 | b6 | LocalVariableDeclExpr |
+| exprs.kt:41:5:41:23 | b7 | LocalVariableDeclExpr |
+| exprs.kt:42:5:42:26 | b8 | LocalVariableDeclExpr |
+| exprs.kt:43:5:43:35 | str1 | LocalVariableDeclExpr |
 | exprs.kt:43:25:43:34 | string lit | StringLiteral |
+| exprs.kt:44:5:44:36 | str2 | LocalVariableDeclExpr |
 | exprs.kt:44:26:44:35 | string lit | StringLiteral |
+| exprs.kt:45:5:45:28 | str3 | LocalVariableDeclExpr |
 | exprs.kt:45:25:45:28 | null | NullLiteral |
 | exprs.kt:46:12:46:14 | 123 | IntegerLiteral |
 | exprs.kt:46:12:46:20 | ... + ... | AddExpr |
 | exprs.kt:46:18:46:20 | 456 | IntegerLiteral |
+| exprs.kt:50:5:50:23 | d | LocalVariableDeclExpr |
 | exprs.kt:50:13:50:16 | true | BooleanLiteral |
 | exprs.kt:50:13:50:23 | ::class | ClassExpr |
 | exprs.kt:53:1:55:1 | <obinit>(...) | MethodAccess |
@@ -49,26 +72,3 @@
 | exprs.kt:53:9:53:18 | n | VarAccess |
 | exprs.kt:54:27:54:31 | new C(...) | ClassInstanceExpr |
 | exprs.kt:54:29:54:30 | 42 | IntegerLiteral |
-| file://:0:0:0:0 | b1 | LocalVariableDeclExpr |
-| file://:0:0:0:0 | b2 | LocalVariableDeclExpr |
-| file://:0:0:0:0 | b6 | LocalVariableDeclExpr |
-| file://:0:0:0:0 | b7 | LocalVariableDeclExpr |
-| file://:0:0:0:0 | b8 | LocalVariableDeclExpr |
-| file://:0:0:0:0 | c | LocalVariableDeclExpr |
-| file://:0:0:0:0 | d | LocalVariableDeclExpr |
-| file://:0:0:0:0 | i1 | LocalVariableDeclExpr |
-| file://:0:0:0:0 | i2 | LocalVariableDeclExpr |
-| file://:0:0:0:0 | i3 | LocalVariableDeclExpr |
-| file://:0:0:0:0 | i4 | LocalVariableDeclExpr |
-| file://:0:0:0:0 | i5 | LocalVariableDeclExpr |
-| file://:0:0:0:0 | i13 | LocalVariableDeclExpr |
-| file://:0:0:0:0 | i14 | LocalVariableDeclExpr |
-| file://:0:0:0:0 | i15 | LocalVariableDeclExpr |
-| file://:0:0:0:0 | i16 | LocalVariableDeclExpr |
-| file://:0:0:0:0 | i17 | LocalVariableDeclExpr |
-| file://:0:0:0:0 | i18 | LocalVariableDeclExpr |
-| file://:0:0:0:0 | str | LocalVariableDeclExpr |
-| file://:0:0:0:0 | str1 | LocalVariableDeclExpr |
-| file://:0:0:0:0 | str2 | LocalVariableDeclExpr |
-| file://:0:0:0:0 | str3 | LocalVariableDeclExpr |
-| file://:0:0:0:0 | strWithQuote | LocalVariableDeclExpr |
