@@ -169,7 +169,7 @@ pragma[noinline]
 private predicate inDefDominanceFrontier(BasicBlock bb, SourceVariable v) {
   exists(BasicBlock defbb, Definition def |
     def.definesAt(v, defbb, _) and
-    inDominanceFrontier(defbb, bb)
+    inDominanceFrontier(pragma[only_bind_into](defbb), bb)
   )
 }
 
