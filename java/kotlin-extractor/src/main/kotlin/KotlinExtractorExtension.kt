@@ -14,8 +14,6 @@ import org.jetbrains.kotlin.ir.symbols.IrClassSymbol
 import org.jetbrains.kotlin.ir.symbols.IrClassifierSymbol
 import org.jetbrains.kotlin.ir.symbols.IrConstructorSymbol
 import org.jetbrains.kotlin.ir.types.*
-import org.jetbrains.kotlin.ir.util.packageFqName
-import org.jetbrains.kotlin.ir.util.render
 import org.jetbrains.kotlin.name.FqName
 import java.io.File
 import java.io.FileOutputStream
@@ -29,8 +27,7 @@ import com.intellij.openapi.vfs.StandardFileSystems
 import com.semmle.extractor.java.OdasaOutput
 import com.semmle.extractor.java.OdasaOutput.TrapFileManager
 import com.semmle.util.files.FileUtil
-import org.jetbrains.kotlin.ir.util.fqNameWhenAvailable
-import org.jetbrains.kotlin.ir.util.kotlinFqName
+import org.jetbrains.kotlin.ir.util.*
 import kotlin.system.exitProcess
 
 class KotlinExtractorExtension(private val invocationTrapFile: String, private val checkTrapIdentical: Boolean) : IrGenerationExtension {
@@ -299,6 +296,7 @@ open class KotlinFileExtractor(
         }
     }
 
+    data class UseClassInstanceResult(val classLabel: Label<out DbClassorinterface>, val javaClass: IrClass)
     data class TypeResult<LabelType>(val id: Label<LabelType>, val signature: String)
     data class TypeResults(val javaResult: TypeResult<out DbType>, val kotlinResult: TypeResult<out DbKt_type>)
 
@@ -427,24 +425,24 @@ class X {
                 val classifier: IrClassifierSymbol = s.classifier
                 val cls: IrClass = classifier.owner as IrClass
 
-                val classId = useClassInstance(cls, s.arguments)
-                val javaPackage = cls.packageFqName?.asString()
-                val javaName = cls.name.asString()
-                val qualClassName = if (javaPackage == null) javaName else "$javaPackage.$javaName"
-                val javaSignature = qualClassName // TODO: Is this right?
-                val javaResult = TypeResult(classId, javaSignature)
+                val classInstanceResult = useClassInstance(cls, s.arguments)
+                val javaClassId = classInstanceResult.classLabel
+                val kotlinQualClassName = cls.fqNameForIrSerialization.asString()
+                val javaQualClassName = classInstanceResult.javaClass.fqNameForIrSerialization.asString()
+                val javaSignature = javaQualClassName // TODO: Is this right?
+                val javaResult = TypeResult(javaClassId, javaSignature)
                 val kotlinResult = if (s.hasQuestionMark) {
-                        val kotlinSignature = "$javaSignature?" // TODO: Is this right?
-                        val kotlinLabel = "@\"kt_type;nullable;$qualClassName\""
+                        val kotlinSignature = "$kotlinQualClassName?" // TODO: Is this right?
+                        val kotlinLabel = "@\"kt_type;nullable;$kotlinQualClassName\""
                         val kotlinId: Label<DbKt_nullable_type> = tw.getLabelFor(kotlinLabel, {
-                            tw.writeKt_nullable_types(it, classId)
+                            tw.writeKt_nullable_types(it, javaClassId)
                         })
                         TypeResult(kotlinId, kotlinSignature)
                     } else {
-                        val kotlinSignature = javaSignature // TODO: Is this right?
-                        val kotlinLabel = "@\"kt_type;notnull;$qualClassName\""
+                        val kotlinSignature = kotlinQualClassName // TODO: Is this right?
+                        val kotlinLabel = "@\"kt_type;notnull;$kotlinQualClassName\""
                         val kotlinId: Label<DbKt_notnull_type> = tw.getLabelFor(kotlinLabel, {
-                            tw.writeKt_notnull_types(it, classId)
+                            tw.writeKt_notnull_types(it, javaClassId)
                         })
                         TypeResult(kotlinId, kotlinSignature)
                     }
@@ -619,7 +617,7 @@ class X {
         }
     }
 
-    fun useClassInstance(c: IrClass, typeArgs: List<IrTypeArgument>): Label<out DbClassorinterface> {
+    fun useClassInstance(c: IrClass, typeArgs: List<IrTypeArgument>): UseClassInstanceResult {
         // TODO: only substitute in class and function signatures
         //       because within function bodies we can get things like Unit.INSTANCE
         //       and List.asIterable (an extension, i.e. static, method)
@@ -632,7 +630,7 @@ class X {
         val extractClass = substituteClass ?: c
 
         val classId = getClassLabel(extractClass, typeArgs)
-        return tw.getLabelFor(classId, {
+        val classLabel : Label<out DbClassorinterface> = tw.getLabelFor(classId, {
             // If this is a generic type instantiation then it has no
             // source entity, so we need to extract it here
             if (typeArgs.isNotEmpty()) {
@@ -644,6 +642,8 @@ class X {
             extractClassLaterIfExternal(c)
             substituteClass?.let { extractClassLaterIfExternal(it) }
         })
+
+        return UseClassInstanceResult(classLabel, extractClass)
     }
 
     fun extractClassCommon(c: IrClass, id: Label<out DbClassorinterface>) {
@@ -657,7 +657,7 @@ class X {
                         t.classifier.owner is IrClass -> {
                             val classifier: IrClassifierSymbol = t.classifier
                             val tcls: IrClass = classifier.owner as IrClass
-                            val l = useClassInstance(tcls, t.arguments)
+                            val l = useClassInstance(tcls, t.arguments).classLabel
                             tw.writeExtendsReftype(id, l)
                         } else -> {
                             logger.warn(Severity.ErrorSevere, "Unexpected simple type supertype: " + t.javaClass + ": " + t.render())
