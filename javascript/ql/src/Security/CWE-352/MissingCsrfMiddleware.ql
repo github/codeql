@@ -72,19 +72,37 @@ DataFlow::SourceNode csrfMiddlewareCreation() {
   result = Fastify::server().getAPropertyRead("csrfProtection")
 }
 
+/** Holds if the given property has a name indicating that it refers to a CSRF token. */
+pragma[nomagic]
+private predicate isCsrfProperty(DataFlow::PropRef ref) {
+  ref.getPropertyName().regexpMatch("(?i).*(csrf|xsrf).*")
+}
+
 /**
  * Gets a data flow node that flows to the base of a reference to `cookies`, `session`, or `user`,
- * where the referenced property has `csrf` or `xsrf` in its name,
- * and a property is either written or part of a comparison.
+ * of which a property appears to be used in a CSRF token check.
  */
 private DataFlow::SourceNode nodeLeadingToCsrfWriteOrCheck(DataFlow::TypeBackTracker t) {
   t.start() and
   exists(DataFlow::PropRef ref |
-    ref = result.getAPropertyRead(cookieProperty()).getAPropertyReference() and
-    ref.getPropertyName().regexpMatch("(?i).*(csrf|xsrf).*")
+    ref = result.getAPropertyRead(cookieProperty()).getAPropertyReference()
   |
-    ref instanceof DataFlow::PropWrite or
-    ref.(DataFlow::PropRead).asExpr() = any(EqualityTest c).getAnOperand()
+    // Assignment to property with csrf/xsrf in the name
+    ref instanceof DataFlow::PropWrite and
+    isCsrfProperty(ref)
+    or
+    // Comparison where one of the properties has csrf/xsrf in the name
+    exists(EqualityTest test |
+      test.getAnOperand().flow().getALocalSource() = ref and
+      isCsrfProperty(test.getAnOperand().flow().getALocalSource())
+    )
+    or
+    // Comparison via a call, where one of the properties has csrf/xsrf in the name
+    exists(DataFlow::CallNode call |
+      call.getCalleeName().regexpMatch("(?i).*(check|verify|valid|equal).*") and
+      call.getAnArgument().getALocalSource() = ref and
+      isCsrfProperty(call.getAnArgument().getALocalSource())
+    )
   )
   or
   exists(DataFlow::TypeBackTracker t2 | result = nodeLeadingToCsrfWriteOrCheck(t2).backtrack(t2, t))
@@ -128,7 +146,9 @@ predicate hasCsrfMiddleware(Routing::RouteHandler handler) {
   handler.isGuardedByNode(getACsrfMiddleware())
 }
 
-from Routing::RouteSetup setup, Routing::RouteHandler handler, HTTP::CookieMiddlewareInstance cookie
+from
+  Routing::RouteSetup setup, Routing::Node setupArg, Routing::RouteHandler handler,
+  HTTP::CookieMiddlewareInstance cookie
 where
   // Require that the handler uses cookies and has cookie middleware.
   //
@@ -136,13 +156,16 @@ where
   // the handler wouldn't work. However, if we can't find the cookie middleware, it
   // indicates that our middleware model is too incomplete, so in that case we
   // don't trust it to detect the presence of CSRF middleware either.
-  setup.getAChild*() = handler and
+  setup.getAChild() = setupArg and
+  setupArg.getAChild*() = handler and
   isRouteHandlerUsingCookies(handler) and
   hasCookieMiddleware(handler, cookie) and
   // Only flag the cookie parser registered first.
   not hasCookieMiddleware(Routing::getNode(cookie), _) and
   not hasCsrfMiddleware(handler) and
+  // Sometimes the CSRF protection comes later in the same route setup.
+  not setup.getAChild*() = getACsrfMiddleware() and
   // Only warn for dangerous handlers, such as for POST and PUT.
   setup.getOwnHttpMethod().isUnsafe()
 select cookie, "This cookie middleware is serving a request handler $@ without CSRF protection.",
-  setup, "here"
+  setupArg, "here"
