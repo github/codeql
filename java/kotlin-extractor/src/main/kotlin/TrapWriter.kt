@@ -71,7 +71,7 @@ abstract class SourceOffsetResolver {
 
 class FileSourceOffsetResolver(val fileEntry: IrFileEntry) : SourceOffsetResolver() {
     override fun getLineNumber(offset: Int) = fileEntry.getLineNumber(offset)
-    override fun getColumnNumber(offset: Int) = fileEntry.getLineNumber(offset)
+    override fun getColumnNumber(offset: Int) = fileEntry.getColumnNumber(offset)
 }
 
 object NullSourceOffsetResolver : SourceOffsetResolver() {
