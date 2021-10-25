@@ -912,18 +912,21 @@ class X {
         return tw.getVariableLabelFor<DbLocalvar>(v)
     }
 
-    fun extractVariable(v: IrVariable, callable: Label<out DbCallable>) {
-        val id = useVariable(v)
+    fun extractVariable(v: IrVariable, callable: Label<out DbCallable>, parent: Label<out DbStmtparent>, idx: Int) {
+        val varId = useVariable(v)
+        val exprId = tw.getFreshIdLabel<DbLocalvariabledeclexpr>()
+        val stmtId = tw.getFreshIdLabel<DbLocalvariabledeclstmt>()
         val locId = tw.getLocation(v)
         val type = useType(v.type)
-        val decId = tw.getFreshIdLabel<DbLocalvariabledeclexpr>()
-        tw.writeLocalvars(id, v.name.asString(), type.javaResult.id, decId) // TODO: KT type
-        tw.writeHasLocation(id, locId)
-        tw.writeExprs_localvariabledeclexpr(decId, type.javaResult.id, type.kotlinResult.id, id, 0)
-        tw.writeHasLocation(id, locId)
+        tw.writeLocalvars(varId, v.name.asString(), type.javaResult.id, exprId) // TODO: KT type
+        tw.writeHasLocation(varId, locId)
+        tw.writeExprs_localvariabledeclexpr(exprId, type.javaResult.id, type.kotlinResult.id, stmtId, 0)
+        tw.writeHasLocation(exprId, locId)
+        tw.writeStmts_localvariabledeclstmt(stmtId, parent, idx, callable)
+        tw.writeHasLocation(stmtId, locId)
         val i = v.initializer
         if(i != null) {
-            extractExpression(i, callable, decId, 0)
+            extractExpression(i, callable, exprId, 0)
         }
     }
 
@@ -933,7 +936,7 @@ class X {
                 extractExpression(s, callable, parent, idx)
             }
             is IrVariable -> {
-                extractVariable(s, callable)
+                extractVariable(s, callable, parent, idx)
             }
             else -> {
                 logger.warnElement(Severity.ErrorSevere, "Unrecognised IrStatement: " + s.javaClass, s)
