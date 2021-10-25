@@ -113,7 +113,6 @@ async def websocket_test(websocket: WebSocket):
 
         websocket.url, # $ MISSING: tainted
 
-        websocket.url.scheme, # $ MISSING: tainted
         websocket.url.netloc, # $ MISSING: tainted
         websocket.url.path, # $ MISSING: tainted
         websocket.url.query, # $ MISSING: tainted
@@ -124,7 +123,6 @@ async def websocket_test(websocket: WebSocket):
         websocket.url.port, # $ MISSING: tainted
 
         websocket.url.components, # $ MISSING: tainted
-        websocket.url.components.scheme, # $ MISSING: tainted
         websocket.url.components.netloc, # $ MISSING: tainted
         websocket.url.components.path, # $ MISSING: tainted
         websocket.url.components.query, # $ MISSING: tainted
@@ -147,6 +145,12 @@ async def websocket_test(websocket: WebSocket):
         await websocket.receive_bytes(), # $ MISSING: tainted
         await websocket.receive_text(), # $ MISSING: tainted
         await websocket.receive_json(), # $ MISSING: tainted
+    )
+
+    # scheme seems very unlikely to give interesting results, but very likely to give FPs.
+    ensure_not_tainted(
+        websocket.url.scheme,
+        websocket.url.components.scheme,
     )
 
     async for data in  websocket.iter_bytes():
