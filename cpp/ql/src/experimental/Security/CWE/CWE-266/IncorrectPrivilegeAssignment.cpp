@@ -8,8 +8,8 @@
   fchmod(fileno(fp), 0555 & ~curumsk); // GOOD
 ...
   umask(0666);
-  chmod(0666); // BAD
+  chmod(pathname, 0666); // BAD
 ...
   umask(0022);
-  chmod(0666); // GOOD
+  chmod(pathname, 0666); // GOOD
 ...
