@@ -762,6 +762,8 @@ class X {
         }
     }
 
+    fun withQuestionMark(t: IrType, hasQuestionMark: Boolean) = if(hasQuestionMark) t.makeNullable() else t.makeNotNull()
+
     fun erase (t: IrType): IrType {
         if (t is IrSimpleType) {
             val classifier = t.classifier
@@ -774,11 +776,11 @@ class X {
             if (t.makeNotNull().isArray()) {
                 val elementType = t.getArrayElementType(pluginContext.irBuiltIns)
                 val erasedElementType = erase(elementType)
-                return (classifier as IrClassSymbol).typeWith(erasedElementType)
+                return withQuestionMark((classifier as IrClassSymbol).typeWith(erasedElementType), t.hasQuestionMark)
             }
 
             if (owner is IrClass) {
-                return (classifier as IrClassSymbol).typeWith()
+                return withQuestionMark((classifier as IrClassSymbol).typeWith(), t.hasQuestionMark)
             }
         }
         return t
