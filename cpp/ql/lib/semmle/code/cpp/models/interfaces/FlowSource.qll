@@ -18,6 +18,12 @@ abstract class RemoteFlowSourceFunction extends Function {
    * Holds if remote data described by `description` flows from `output` of a call to this function.
    */
   abstract predicate hasRemoteFlowSource(FunctionOutput output, string description);
+
+  /**
+   * Holds if remote data from this source comes from a socket described by
+   * `input`. There is no result if a socket is not specified.
+   */
+  predicate hasSocketInput(FunctionInput input) { none() }
 }
 
 /**
@@ -51,4 +57,10 @@ abstract class RemoteFlowSinkFunction extends Function {
    * send over a network connection.
    */
   abstract predicate hasRemoteFlowSink(FunctionInput input, string description);
+
+  /**
+   * Holds if data put into this sink is transmitted through a socket described
+   * by `input`. There is no result if a socket is not specified.
+   */
+  predicate hasSocketInput(FunctionInput input) { none() }
 }

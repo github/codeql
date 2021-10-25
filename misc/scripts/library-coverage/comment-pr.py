@@ -25,16 +25,13 @@ def get_comment_text(output_file, repo, run_id):
 
     comment = comment_first_line + \
         f"The generated reports are available in the [artifacts of this workflow run](https://github.com/{repo}/actions/runs/{run_id}). " + \
-        "The differences will be picked up by the nightly job after the PR gets merged. "
+        "The differences will be picked up by the nightly job after the PR gets merged.\n\n"
 
-    if size < 2000:
-        print("There's a small change in the CSV framework coverage reports")
-        comment += "The following differences were found: \n\n"
-        with open(output_file, 'r') as file:
-            comment += file.read()
-    else:
-        print("There's a large change in the CSV framework coverage reports")
-        comment += f"The differences can be found in the {comparison_artifact_name} [artifact of this workflow run](https://github.com/{repo}/actions/runs/{run_id})."
+    comment += "<details><summary>Click to show differences in coverage</summary>\n\n"
+    with open(output_file, 'r') as file:
+        comment += file.read()
+
+    comment += "</details>\n"
 
     return comment
 

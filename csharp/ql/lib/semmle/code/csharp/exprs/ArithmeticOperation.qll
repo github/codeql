@@ -138,10 +138,10 @@ class DivExpr extends BinaryArithmeticOperation, @div_expr {
   override string getOperator() { result = "/" }
 
   /** Gets the numerator of this division operation. */
-  Expr getNumerator() { result = getLeftOperand() }
+  Expr getNumerator() { result = this.getLeftOperand() }
 
   /** Gets the denominator of this division operation. */
-  Expr getDenominator() { result = getRightOperand() }
+  Expr getDenominator() { result = this.getRightOperand() }
 
   override string getAPrimaryQlClass() { result = "DivExpr" }
 }

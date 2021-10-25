@@ -7,10 +7,7 @@ import java
 predicate relativePath(Element tree, string command) {
   exists(StringLiteral lit, string text | tree = lit and text = lit.getRepresentedString() |
     text != "" and
-    (
-      text.regexpMatch("[^/\\\\ \t]*") or
-      text.regexpMatch("[^/\\\\ \t]*[ \t].*")
-    ) and
+    text.regexpMatch(["[^/\\\\ \t]*", "[^/\\\\ \t]*[ \t].*"]) and
     command = text.replaceAll("\t", " ").splitAt(" ", 0).replaceAll("\"", "")
   )
   or
@@ -35,39 +32,11 @@ predicate arrayStartingWithRelative(Element tree, string command) {
  * because they do not correspond to files in the filesystem.
  */
 predicate shellBuiltin(string command) {
-  command = "." or
-  command = "[" or
-  command = "[[" or
-  command = "alias" or
-  command = "builtin" or
-  command = "case" or
-  command = "command" or
-  command = "compgen" or
-  command = "complete" or
-  command = "compopt" or
-  command = "echo" or
-  command = "eval" or
-  command = "exec" or
-  command = "false" or
-  command = "fc" or
-  command = "for" or
-  command = "getopts" or
-  command = "help" or
-  command = "history" or
-  command = "if" or
-  command = "kill" or
-  command = "printf" or
-  command = "pwd" or
-  command = "select" or
-  command = "source" or
-  command = "test" or
-  command = "time" or
-  command = "times" or
-  command = "trap" or
-  command = "true" or
-  command = "type" or
-  command = "typeset" or
-  command = "ulimit" or
-  command = "until" or
-  command = "while"
+  command =
+    [
+      ".", "[", "[[", "alias", "builtin", "case", "command", "compgen", "complete", "compopt",
+      "echo", "eval", "exec", "false", "fc", "for", "getopts", "help", "history", "if", "kill",
+      "printf", "pwd", "select", "source", "test", "time", "times", "trap", "true", "type",
+      "typeset", "ulimit", "until", "while"
+    ]
 }

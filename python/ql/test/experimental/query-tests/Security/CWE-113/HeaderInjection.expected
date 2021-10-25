@@ -1,0 +1,50 @@
+edges
+| django_bad.py:5:18:5:58 | ControlFlowNode for Attribute() | django_bad.py:7:40:7:49 | ControlFlowNode for rfs_header |
+| django_bad.py:12:18:12:58 | ControlFlowNode for Attribute() | django_bad.py:14:30:14:39 | ControlFlowNode for rfs_header |
+| flask_bad.py:9:18:9:24 | ControlFlowNode for request | flask_bad.py:9:18:9:29 | ControlFlowNode for Attribute |
+| flask_bad.py:9:18:9:29 | ControlFlowNode for Attribute | flask_bad.py:9:18:9:43 | ControlFlowNode for Subscript |
+| flask_bad.py:9:18:9:43 | ControlFlowNode for Subscript | flask_bad.py:12:31:12:40 | ControlFlowNode for rfs_header |
+| flask_bad.py:19:18:19:24 | ControlFlowNode for request | flask_bad.py:19:18:19:29 | ControlFlowNode for Attribute |
+| flask_bad.py:19:18:19:29 | ControlFlowNode for Attribute | flask_bad.py:19:18:19:43 | ControlFlowNode for Subscript |
+| flask_bad.py:19:18:19:43 | ControlFlowNode for Subscript | flask_bad.py:21:38:21:47 | ControlFlowNode for rfs_header |
+| flask_bad.py:27:18:27:24 | ControlFlowNode for request | flask_bad.py:27:18:27:29 | ControlFlowNode for Attribute |
+| flask_bad.py:27:18:27:29 | ControlFlowNode for Attribute | flask_bad.py:27:18:27:43 | ControlFlowNode for Subscript |
+| flask_bad.py:27:18:27:43 | ControlFlowNode for Subscript | flask_bad.py:29:34:29:43 | ControlFlowNode for rfs_header |
+| flask_bad.py:35:18:35:24 | ControlFlowNode for request | flask_bad.py:35:18:35:29 | ControlFlowNode for Attribute |
+| flask_bad.py:35:18:35:29 | ControlFlowNode for Attribute | flask_bad.py:35:18:35:43 | ControlFlowNode for Subscript |
+| flask_bad.py:35:18:35:43 | ControlFlowNode for Subscript | flask_bad.py:38:24:38:33 | ControlFlowNode for rfs_header |
+| flask_bad.py:44:44:44:50 | ControlFlowNode for request | flask_bad.py:44:44:44:55 | ControlFlowNode for Attribute |
+| flask_bad.py:44:44:44:55 | ControlFlowNode for Attribute | flask_bad.py:44:44:44:69 | ControlFlowNode for Subscript |
+nodes
+| django_bad.py:5:18:5:58 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| django_bad.py:7:40:7:49 | ControlFlowNode for rfs_header | semmle.label | ControlFlowNode for rfs_header |
+| django_bad.py:12:18:12:58 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| django_bad.py:14:30:14:39 | ControlFlowNode for rfs_header | semmle.label | ControlFlowNode for rfs_header |
+| flask_bad.py:9:18:9:24 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| flask_bad.py:9:18:9:29 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| flask_bad.py:9:18:9:43 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| flask_bad.py:12:31:12:40 | ControlFlowNode for rfs_header | semmle.label | ControlFlowNode for rfs_header |
+| flask_bad.py:19:18:19:24 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| flask_bad.py:19:18:19:29 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| flask_bad.py:19:18:19:43 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| flask_bad.py:21:38:21:47 | ControlFlowNode for rfs_header | semmle.label | ControlFlowNode for rfs_header |
+| flask_bad.py:27:18:27:24 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| flask_bad.py:27:18:27:29 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| flask_bad.py:27:18:27:43 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| flask_bad.py:29:34:29:43 | ControlFlowNode for rfs_header | semmle.label | ControlFlowNode for rfs_header |
+| flask_bad.py:35:18:35:24 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| flask_bad.py:35:18:35:29 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| flask_bad.py:35:18:35:43 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| flask_bad.py:38:24:38:33 | ControlFlowNode for rfs_header | semmle.label | ControlFlowNode for rfs_header |
+| flask_bad.py:44:44:44:50 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| flask_bad.py:44:44:44:55 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| flask_bad.py:44:44:44:69 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+subpaths
+#select
+| django_bad.py:7:40:7:49 | ControlFlowNode for rfs_header | django_bad.py:5:18:5:58 | ControlFlowNode for Attribute() | django_bad.py:7:40:7:49 | ControlFlowNode for rfs_header | $@ HTTP header is constructed from a $@. | django_bad.py:7:40:7:49 | ControlFlowNode for rfs_header | This | django_bad.py:5:18:5:58 | ControlFlowNode for Attribute() | user-provided value |
+| django_bad.py:14:30:14:39 | ControlFlowNode for rfs_header | django_bad.py:12:18:12:58 | ControlFlowNode for Attribute() | django_bad.py:14:30:14:39 | ControlFlowNode for rfs_header | $@ HTTP header is constructed from a $@. | django_bad.py:14:30:14:39 | ControlFlowNode for rfs_header | This | django_bad.py:12:18:12:58 | ControlFlowNode for Attribute() | user-provided value |
+| flask_bad.py:12:31:12:40 | ControlFlowNode for rfs_header | flask_bad.py:9:18:9:24 | ControlFlowNode for request | flask_bad.py:12:31:12:40 | ControlFlowNode for rfs_header | $@ HTTP header is constructed from a $@. | flask_bad.py:12:31:12:40 | ControlFlowNode for rfs_header | This | flask_bad.py:9:18:9:24 | ControlFlowNode for request | user-provided value |
+| flask_bad.py:21:38:21:47 | ControlFlowNode for rfs_header | flask_bad.py:19:18:19:24 | ControlFlowNode for request | flask_bad.py:21:38:21:47 | ControlFlowNode for rfs_header | $@ HTTP header is constructed from a $@. | flask_bad.py:21:38:21:47 | ControlFlowNode for rfs_header | This | flask_bad.py:19:18:19:24 | ControlFlowNode for request | user-provided value |
+| flask_bad.py:29:34:29:43 | ControlFlowNode for rfs_header | flask_bad.py:27:18:27:24 | ControlFlowNode for request | flask_bad.py:29:34:29:43 | ControlFlowNode for rfs_header | $@ HTTP header is constructed from a $@. | flask_bad.py:29:34:29:43 | ControlFlowNode for rfs_header | This | flask_bad.py:27:18:27:24 | ControlFlowNode for request | user-provided value |
+| flask_bad.py:38:24:38:33 | ControlFlowNode for rfs_header | flask_bad.py:35:18:35:24 | ControlFlowNode for request | flask_bad.py:38:24:38:33 | ControlFlowNode for rfs_header | $@ HTTP header is constructed from a $@. | flask_bad.py:38:24:38:33 | ControlFlowNode for rfs_header | This | flask_bad.py:35:18:35:24 | ControlFlowNode for request | user-provided value |
+| flask_bad.py:44:44:44:69 | ControlFlowNode for Subscript | flask_bad.py:44:44:44:50 | ControlFlowNode for request | flask_bad.py:44:44:44:69 | ControlFlowNode for Subscript | $@ HTTP header is constructed from a $@. | flask_bad.py:44:44:44:69 | ControlFlowNode for Subscript | This | flask_bad.py:44:44:44:50 | ControlFlowNode for request | user-provided value |

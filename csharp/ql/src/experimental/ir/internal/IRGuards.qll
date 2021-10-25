@@ -147,7 +147,7 @@ private class GuardConditionFromBinaryLogicalOperator extends GuardCondition {
 
   override predicate ensuresLt(Expr left, Expr right, int k, BasicBlock block, boolean isLessThan) {
     exists(boolean testIsTrue |
-      comparesLt(left, right, k, isLessThan, testIsTrue) and this.controls(block, testIsTrue)
+      this.comparesLt(left, right, k, isLessThan, testIsTrue) and this.controls(block, testIsTrue)
     )
   }
 
@@ -161,7 +161,7 @@ private class GuardConditionFromBinaryLogicalOperator extends GuardCondition {
 
   override predicate ensuresEq(Expr left, Expr right, int k, BasicBlock block, boolean areEqual) {
     exists(boolean testIsTrue |
-      comparesEq(left, right, k, areEqual, testIsTrue) and this.controls(block, testIsTrue)
+      this.comparesEq(left, right, k, areEqual, testIsTrue) and this.controls(block, testIsTrue)
     )
   }
 }
@@ -326,9 +326,9 @@ class IRGuardCondition extends Instruction {
   cached
   predicate controlsEdge(IRBlock pred, IRBlock succ, boolean testIsTrue) {
     pred.getASuccessor() = succ and
-    controls(pred, testIsTrue)
+    this.controls(pred, testIsTrue)
     or
-    hasBranchEdge(succ, testIsTrue) and
+    this.hasBranchEdge(succ, testIsTrue) and
     branch.getCondition() = this and
     branch.getBlock() = pred
   }

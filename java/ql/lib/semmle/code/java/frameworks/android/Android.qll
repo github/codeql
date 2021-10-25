@@ -7,18 +7,28 @@ import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.xml.AndroidManifest
 
 /**
+ * Gets a transitive superType avoiding magic optimisation
+ */
+pragma[nomagic]
+private RefType getASuperTypePlus(RefType t) { result = t.getASupertype+() }
+
+/**
+ * Gets a reflexive/transitive superType avoiding magic optimisation
+ */
+pragma[inline]
+private RefType getASuperTypeStar(RefType t) { result = getASuperTypePlus(t) or result = t }
+
+/**
  * An Android component. That is, either an activity, a service,
  * a broadcast receiver, or a content provider.
  */
 class AndroidComponent extends Class {
   AndroidComponent() {
-    // The casts here are due to misoptimisation if they are missing
-    // but are not needed semantically.
-    this.(Class).getASupertype*().hasQualifiedName("android.app", "Activity") or
-    this.(Class).getASupertype*().hasQualifiedName("android.app", "Service") or
-    this.(Class).getASupertype*().hasQualifiedName("android.content", "BroadcastReceiver") or
-    this.(Class).getASupertype*().hasQualifiedName("android.content", "ContentProvider") or
-    this.(Class).getASupertype*().hasQualifiedName("android.content", "ContentResolver")
+    getASuperTypeStar(this).hasQualifiedName("android.app", "Activity") or
+    getASuperTypeStar(this).hasQualifiedName("android.app", "Service") or
+    getASuperTypeStar(this).hasQualifiedName("android.content", "BroadcastReceiver") or
+    getASuperTypeStar(this).hasQualifiedName("android.content", "ContentProvider") or
+    getASuperTypeStar(this).hasQualifiedName("android.content", "ContentResolver")
   }
 
   /** The XML element corresponding to this Android component. */
@@ -27,10 +37,12 @@ class AndroidComponent extends Class {
   }
 
   /** Holds if this Android component is configured as `exported` in an `AndroidManifest.xml` file. */
-  predicate isExported() { getAndroidComponentXmlElement().isExported() }
+  predicate isExported() { this.getAndroidComponentXmlElement().isExported() }
 
   /** Holds if this Android component has an intent filter configured in an `AndroidManifest.xml` file. */
-  predicate hasIntentFilter() { exists(getAndroidComponentXmlElement().getAnIntentFilterElement()) }
+  predicate hasIntentFilter() {
+    exists(this.getAndroidComponentXmlElement().getAnIntentFilterElement())
+  }
 }
 
 /**
@@ -43,34 +55,34 @@ class ExportableAndroidComponent extends AndroidComponent {
    * `AndroidManifest.xml` file.
    */
   override predicate isExported() {
-    getAndroidComponentXmlElement().isExported()
+    this.getAndroidComponentXmlElement().isExported()
     or
-    hasIntentFilter() and
-    not getAndroidComponentXmlElement().isNotExported()
+    this.hasIntentFilter() and
+    not this.getAndroidComponentXmlElement().isNotExported()
   }
 }
 
 /** An Android activity. */
 class AndroidActivity extends ExportableAndroidComponent {
-  AndroidActivity() { this.getASupertype*().hasQualifiedName("android.app", "Activity") }
+  AndroidActivity() { getASuperTypeStar(this).hasQualifiedName("android.app", "Activity") }
 }
 
 /** An Android service. */
 class AndroidService extends ExportableAndroidComponent {
-  AndroidService() { this.getASupertype*().hasQualifiedName("android.app", "Service") }
+  AndroidService() { getASuperTypeStar(this).hasQualifiedName("android.app", "Service") }
 }
 
 /** An Android broadcast receiver. */
 class AndroidBroadcastReceiver extends ExportableAndroidComponent {
   AndroidBroadcastReceiver() {
-    this.getASupertype*().hasQualifiedName("android.content", "BroadcastReceiver")
+    getASuperTypeStar(this).hasQualifiedName("android.content", "BroadcastReceiver")
   }
 }
 
 /** An Android content provider. */
 class AndroidContentProvider extends ExportableAndroidComponent {
   AndroidContentProvider() {
-    this.getASupertype*().hasQualifiedName("android.content", "ContentProvider")
+    getASuperTypeStar(this).hasQualifiedName("android.content", "ContentProvider")
   }
 
   /**
@@ -78,14 +90,14 @@ class AndroidContentProvider extends ExportableAndroidComponent {
    * in an `AndroidManifest.xml` file.
    */
   predicate requiresPermissions() {
-    getAndroidComponentXmlElement().(AndroidProviderXmlElement).requiresPermissions()
+    this.getAndroidComponentXmlElement().(AndroidProviderXmlElement).requiresPermissions()
   }
 }
 
 /** An Android content resolver. */
 class AndroidContentResolver extends AndroidComponent {
   AndroidContentResolver() {
-    this.getASupertype*().hasQualifiedName("android.content", "ContentResolver")
+    getASuperTypeStar(this).hasQualifiedName("android.content", "ContentResolver")
   }
 }
 
@@ -190,5 +202,46 @@ private class ContentProviderSourceModels extends SourceModelCsv {
         "android.content;ContentProvider;true;update;(Uri,ContentValues,Bundle);;Parameter[0..2];contentprovider",
         "android.content;ContentProvider;true;update;(Uri,ContentValues,String,String[]);;Parameter[0..3];contentprovider"
       ]
+  }
+}
+
+/** Interface for classes whose instances can be written to and restored from a Parcel. */
+class TypeParcelable extends Interface {
+  TypeParcelable() { this.hasQualifiedName("android.os", "Parcelable") }
+}
+
+/**
+ * A method that overrides `android.os.Parcelable.Creator.createFromParcel`.
+ */
+class CreateFromParcelMethod extends Method {
+  CreateFromParcelMethod() {
+    this.hasName("createFromParcel") and
+    this.getEnclosingCallable().getDeclaringType().getASupertype*() instanceof TypeParcelable
+  }
+}
+
+private class ParcelPropagationModels extends SummaryModelCsv {
+  override predicate row(string s) {
+    // Parcel readers that return their value
+    s =
+      "android.os;Parcel;false;read" +
+        [
+          "Array", "ArrayList", "Boolean", "Bundle", "Byte", "Double", "FileDescriptor", "Float",
+          "HashMap", "Int", "Long", "Parcelable", "ParcelableArray", "PersistableBundle",
+          "Serializable", "Size", "SizeF", "SparseArray", "SparseBooleanArray", "String",
+          "StrongBinder", "TypedObject", "Value"
+        ] + ";;;Argument[-1];ReturnValue;taint"
+    or
+    // Parcel readers that write to an existing object
+    s =
+      "android.os;Parcel;false;read" +
+        [
+          "BinderArray", "BinderList", "BooleanArray", "ByteArray", "CharArray", "DoubleArray",
+          "FloatArray", "IntArray", "List", "LongArray", "Map", "ParcelableList", "StringArray",
+          "StringList", "TypedArray", "TypedList"
+        ] + ";;;Argument[-1];Argument[0];taint"
+    or
+    // One Parcel method that aliases an argument to a return value
+    s = "android.os;Parcel;false;readParcelableList;;;Argument[0];ReturnValue;value"
   }
 }

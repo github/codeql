@@ -466,7 +466,7 @@ void test_qualifiers()
 	sink(d.getString());
 	d.setString(strings::source());
 	sink(d); // $ ast,ir
-	sink(d.getString()); // $ ast MISSING: ir
+	sink(d.getString()); // $ ast,ir
 }
 
 // --- non-standard swap ---

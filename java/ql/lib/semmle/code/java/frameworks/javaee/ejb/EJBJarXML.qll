@@ -114,8 +114,8 @@ class EjbJarSessionElement extends EjbJarBeanTypeElement {
    * This is either a `business-local` or `business-remote` element.
    */
   XMLElement getABusinessElement() {
-    result = getABusinessLocalElement() or
-    result = getABusinessRemoteElement()
+    result = this.getABusinessLocalElement() or
+    result = this.getABusinessRemoteElement()
   }
 
   /** Gets a `remote` child XML element of this `session` XML element. */
@@ -153,7 +153,7 @@ class EjbJarSessionElement extends EjbJarBeanTypeElement {
    * XML element nested within this `session` XML element.
    */
   XMLElement getACreateMethodNameElement() {
-    result = getAnInitMethodElement().getACreateMethodElement().getAMethodNameElement()
+    result = this.getAnInitMethodElement().getACreateMethodElement().getAMethodNameElement()
   }
 
   /**
@@ -161,7 +161,7 @@ class EjbJarSessionElement extends EjbJarBeanTypeElement {
    * XML element nested within this `session` XML element.
    */
   XMLElement getABeanMethodNameElement() {
-    result = getAnInitMethodElement().getABeanMethodElement().getAMethodNameElement()
+    result = this.getAnInitMethodElement().getABeanMethodElement().getAMethodNameElement()
   }
 }
 

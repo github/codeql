@@ -78,4 +78,21 @@ module SummaryComponentStack {
 
 class SummarizedCallable = Impl::Public::SummarizedCallable;
 
+private class SummarizedCallableDefaultClearsContent extends Impl::Public::SummarizedCallable {
+  SummarizedCallableDefaultClearsContent() {
+    this instanceof Impl::Public::SummarizedCallable or none()
+  }
+
+  // By default, we assume that all stores into arguments are definite
+  override predicate clearsContent(int i, DataFlow::Content content) {
+    exists(SummaryComponentStack output |
+      this.propagatesFlow(_, output, _) and
+      output.drop(_) =
+        SummaryComponentStack::push(SummaryComponent::content(content),
+          SummaryComponentStack::argument(i)) and
+      not content instanceof DataFlow::ElementContent
+    )
+  }
+}
+
 class RequiredSummaryComponentStack = Impl::Public::RequiredSummaryComponentStack;

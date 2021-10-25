@@ -155,7 +155,9 @@ class Modifiable extends Declaration, @modifiable {
    * Holds if this declaration is effectively `public`, meaning that it can be
    * referenced outside the declaring assembly.
    */
-  predicate isEffectivelyPublic() { not isEffectivelyPrivate() and not isEffectivelyInternal() }
+  predicate isEffectivelyPublic() {
+    not this.isEffectivelyPrivate() and not this.isEffectivelyInternal()
+  }
 }
 
 /** A declaration that is a member of a type. */
@@ -193,12 +195,12 @@ class Virtualizable extends Member, @virtualizable {
 
   override predicate isPublic() {
     Member.super.isPublic() or
-    implementsExplicitInterface()
+    this.implementsExplicitInterface()
   }
 
   override predicate isPrivate() {
     super.isPrivate() and
-    not implementsExplicitInterface()
+    not this.implementsExplicitInterface()
   }
 
   /**
@@ -211,17 +213,17 @@ class Virtualizable extends Member, @virtualizable {
   /**
    * Holds if this member implements an interface member explicitly.
    */
-  predicate implementsExplicitInterface() { exists(getExplicitlyImplementedInterface()) }
+  predicate implementsExplicitInterface() { exists(this.getExplicitlyImplementedInterface()) }
 
   /** Holds if this member can be overridden or implemented. */
   predicate isOverridableOrImplementable() {
-    not isSealed() and
-    not getDeclaringType().isSealed() and
+    not this.isSealed() and
+    not this.getDeclaringType().isSealed() and
     (
-      isVirtual() or
-      isOverride() or
-      isAbstract() or
-      getDeclaringType() instanceof Interface
+      this.isVirtual() or
+      this.isOverride() or
+      this.isAbstract() or
+      this.getDeclaringType() instanceof Interface
     )
   }
 
@@ -243,10 +245,10 @@ class Virtualizable extends Member, @virtualizable {
   Virtualizable getAnOverrider() { this = result.getOverridee() }
 
   /** Holds if this member is overridden by some other member. */
-  predicate isOverridden() { exists(getAnOverrider()) }
+  predicate isOverridden() { exists(this.getAnOverrider()) }
 
   /** Holds if this member overrides another member. */
-  predicate overrides() { exists(getOverridee()) }
+  predicate overrides() { exists(this.getOverridee()) }
 
   /**
    * Gets the interface member that is immediately implemented by this member, if any.
@@ -274,7 +276,7 @@ class Virtualizable extends Member, @virtualizable {
   Virtualizable getImplementee(ValueOrRefType t) { implements(this, result, t) }
 
   /** Gets the interface member that is immediately implemented by this member, if any. */
-  Virtualizable getImplementee() { result = getImplementee(_) }
+  Virtualizable getImplementee() { result = this.getImplementee(_) }
 
   /**
    * Gets a member that immediately implements this interface member, if any.
@@ -338,8 +340,8 @@ class Virtualizable extends Member, @virtualizable {
     |
       this = implementation
       or
-      getOverridee+() = implementation and
-      getDeclaringType().getABaseType+() = implementationType
+      this.getOverridee+() = implementation and
+      this.getDeclaringType().getABaseType+() = implementationType
     )
   }
 
@@ -355,10 +357,10 @@ class Virtualizable extends Member, @virtualizable {
   Virtualizable getAnUltimateImplementor() { this = result.getAnUltimateImplementee() }
 
   /** Holds if this interface member is implemented by some other member. */
-  predicate isImplemented() { exists(getAnImplementor()) }
+  predicate isImplemented() { exists(this.getAnImplementor()) }
 
   /** Holds if this member implements (transitively) an interface member. */
-  predicate implements() { exists(getAnUltimateImplementee()) }
+  predicate implements() { exists(this.getAnUltimateImplementee()) }
 
   /**
    * Holds if this member overrides or implements (reflexively, transitively)
@@ -366,8 +368,8 @@ class Virtualizable extends Member, @virtualizable {
    */
   predicate overridesOrImplementsOrEquals(Virtualizable that) {
     this = that or
-    getOverridee+() = that or
-    getAnUltimateImplementee() = that
+    this.getOverridee+() = that or
+    this.getAnUltimateImplementee() = that
   }
 }
 
@@ -386,7 +388,7 @@ class Parameterizable extends DotNet::Parameterizable, Declaration, @parameteriz
    */
   private string parameterTypeToString(int i) {
     exists(Parameter p, string prefix |
-      p = getParameter(i) and
+      p = this.getParameter(i) and
       result = prefix + p.getType().toStringWithTypes()
     |
       if p.isOut()
@@ -407,6 +409,7 @@ class Parameterizable extends DotNet::Parameterizable, Declaration, @parameteriz
    */
   language[monotonicAggregates]
   string parameterTypesToString() {
-    result = concat(int i | exists(getParameter(i)) | parameterTypeToString(i), ", " order by i)
+    result =
+      concat(int i | exists(this.getParameter(i)) | this.parameterTypeToString(i), ", " order by i)
   }
 }

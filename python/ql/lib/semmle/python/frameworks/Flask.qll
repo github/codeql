@@ -292,12 +292,12 @@ module Flask {
 
     override Function getARequestHandler() {
       exists(DataFlow::LocalSourceNode func_src |
-        func_src.flowsTo(getViewArg()) and
+        func_src.flowsTo(this.getViewArg()) and
         func_src.asExpr().(CallableExpr) = result.getDefinition()
       )
       or
       exists(FlaskViewClass vc |
-        getViewArg() = vc.asViewResult().getAUse() and
+        this.getViewArg() = vc.asViewResult().getAUse() and
         result = vc.getARequestHandler()
       )
     }

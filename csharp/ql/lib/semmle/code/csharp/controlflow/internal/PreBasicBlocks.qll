@@ -69,9 +69,9 @@ class PreBasicBlock extends ControlFlowElement {
 
   ControlFlowElement getFirstElement() { result = this }
 
-  ControlFlowElement getLastElement() { result = this.getElement(length() - 1) }
+  ControlFlowElement getLastElement() { result = this.getElement(this.length() - 1) }
 
-  int length() { result = strictcount(getAnElement()) }
+  int length() { result = strictcount(this.getAnElement()) }
 
   predicate immediatelyDominates(PreBasicBlock bb) { bbIDominates(this, bb) }
 
@@ -117,7 +117,7 @@ class ConditionBlock extends PreBasicBlock {
 
   pragma[nomagic]
   predicate controls(PreBasicBlock controlled, SuccessorTypes::ConditionalSuccessor s) {
-    exists(PreBasicBlock succ, ConditionalCompletion c | immediatelyControls(succ, c) |
+    exists(PreBasicBlock succ, ConditionalCompletion c | this.immediatelyControls(succ, c) |
       succ.dominates(controlled) and
       s = c.getAMatchingSuccessorType()
     )

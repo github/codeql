@@ -1,16 +1,8 @@
 import csharp
 
 Version getAVersion() {
-  result = "1.2" or
-  result = "1.2.0" or
-  result = "1.2.0.0" or
-  result = "1.3" or
-  result = "1.3.1" or
-  result = "1.3.1.2" or
-  result = "1.3.1.3" or
-  result = "1.3.2" or
-  result = "1.4" or
-  result = "2.3.1"
+  result =
+    ["1.2", "1.2.0", "1.2.0.0", "1.3", "1.3.1", "1.3.1.2", "1.3.1.3", "1.3.2", "1.4", "2.3.1"]
 }
 
 from Version v1, Version v2

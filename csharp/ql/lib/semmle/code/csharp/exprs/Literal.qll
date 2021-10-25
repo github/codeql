@@ -23,9 +23,9 @@ class Literal extends DotNet::Literal, Expr, @literal_expr {
 class BoolLiteral extends Literal, @bool_literal_expr {
   /** Gets the value of this Boolean literal. */
   boolean getBoolValue() {
-    getValue() = "true" and result = true
+    this.getValue() = "true" and result = true
     or
-    getValue() = "false" and result = false
+    this.getValue() = "false" and result = false
   }
 
   override string getAPrimaryQlClass() { result = "BoolLiteral" }
@@ -105,7 +105,7 @@ class DecimalLiteral extends RealLiteral, @decimal_literal_expr {
  * A `string` literal, for example `"Hello, World!"`.
  */
 class StringLiteral extends DotNet::StringLiteral, Literal, @string_literal_expr {
-  override string toString() { result = "\"" + getValue().replaceAll("\"", "\\\"") + "\"" }
+  override string toString() { result = "\"" + this.getValue().replaceAll("\"", "\\\"") + "\"" }
 
   override string getAPrimaryQlClass() { result = "StringLiteral" }
 }

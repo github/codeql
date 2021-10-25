@@ -528,13 +528,13 @@ private module ControlFlowGraphImpl {
 
     /** Gets the first child node, if any. */
     ControlFlowNode firstChild() {
-      result = getChildNode(-1)
+      result = this.getChildNode(-1)
       or
-      result = getChildNode(0) and not exists(getChildNode(-1))
+      result = this.getChildNode(0) and not exists(this.getChildNode(-1))
     }
 
     /** Holds if this CFG node has any child nodes. */
-    predicate isLeafNode() { not exists(getChildNode(_)) }
+    predicate isLeafNode() { not exists(this.getChildNode(_)) }
 
     /** Holds if this node can finish with a `normalCompletion`. */
     predicate mayCompleteNormally() {
@@ -1222,10 +1222,10 @@ class ConditionNode extends ControlFlowNode {
   ControlFlowNode getABranchSuccessor(boolean branch) { result = branchSuccessor(this, branch) }
 
   /** Gets a true-successor of the `ConditionNode`. */
-  ControlFlowNode getATrueSuccessor() { result = getABranchSuccessor(true) }
+  ControlFlowNode getATrueSuccessor() { result = this.getABranchSuccessor(true) }
 
   /** Gets a false-successor of the `ConditionNode`. */
-  ControlFlowNode getAFalseSuccessor() { result = getABranchSuccessor(false) }
+  ControlFlowNode getAFalseSuccessor() { result = this.getABranchSuccessor(false) }
 
   /** Gets the condition of this `ConditionNode`. This is equal to the node itself. */
   Expr getCondition() { result = this }
