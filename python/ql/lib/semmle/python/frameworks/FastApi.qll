@@ -10,6 +10,7 @@ private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
 private import semmle.python.frameworks.Pydantic
+private import semmle.python.frameworks.Starlette
 
 /**
  * Provides models for the `fastapi` PyPI package.
@@ -49,7 +50,7 @@ private module FastApi {
       exists(string routeAddingMethod |
         routeAddingMethod = HTTP::httpVerbLower()
         or
-        routeAddingMethod = "api_route"
+        routeAddingMethod in ["api_route", "websocket"]
       |
         this = App::instance().getMember(routeAddingMethod).getACall()
         or
@@ -94,6 +95,17 @@ private module FastApi {
   // ---------------------------------------------------------------------------
   // Response modeling
   // ---------------------------------------------------------------------------
+  /**
+   * A parameter to a request handler that has a WebSocket type-annotation.
+   */
+  private class WebSocketRequestHandlerParam extends Starlette::WebSocket::InstanceSource,
+    DataFlow::ParameterNode {
+    WebSocketRequestHandlerParam() {
+      this.getParameter().getAnnotation() = Starlette::WebSocket::classRef().getAUse().asExpr() and
+      any(FastApiRouteSetup rs).getARequestHandler().getArgByName(_) = this.getParameter()
+    }
+  }
+
   /**
    * Provides models for the `fastapi.Response` class and subclasses.
    *
