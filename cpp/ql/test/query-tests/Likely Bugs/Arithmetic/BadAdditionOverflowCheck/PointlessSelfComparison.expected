@@ -1,0 +1,7 @@
+| templates.cpp:17:5:17:25 | ... < ... | Self comparison. |
+| test.cpp:13:11:13:21 | ... == ... | Self comparison. |
+| test.cpp:79:11:79:32 | ... == ... | Self comparison. |
+| test.cpp:83:10:83:15 | ... == ... | Self comparison. |
+| test.cpp:90:10:90:15 | ... == ... | Self comparison. |
+| test.cpp:118:7:118:32 | ... != ... | Self comparison. |
+| test.cpp:151:11:151:16 | ... == ... | Self comparison. |

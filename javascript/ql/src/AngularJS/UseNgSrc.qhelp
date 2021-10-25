@@ -1,0 +1,56 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Using AngularJS markup (that is, AngularJS expressions enclosed in double curly braces)
+in HTML attributes that reference URLs is not recommended: the browser may attempt to
+fetch the URL before the AngularJS compiler evaluates the markup, resulting in a request
+for an invalid URL.
+</p>
+<p>
+While this is not a serious problem, it can degrade user experience, since the page
+may, for example, display broken image links while loading.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Use the corresponding AngularJS attributes: <code>ng-src</code> instead of <code>src</code>,
+<code>ng-href</code> instead of <code>href</code>, and <code>ng-srcset</code> instead of
+<code>srcset</code>.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example snippet loads an image from a URL that contains the AngularJS expression
+<code>{{item._id}}</code>.
+</p>
+
+<sample src="examples/UseNgSrc.html"/>
+
+<p>
+At page loading time before AngularJS has been fully initialized, the browser may attempt to
+load the image from the un-evaluated URL <code>#/resources/pics/{{item._id}}</code>, which
+will most likely fail and result in a broken image link. Later on when AngularJS has been
+loaded, the AngularJS compiler will evaluate the expression <code>{{item._id}}</code> and
+replace it with its value, which will cause the browser to reload the image.
+</p>
+
+<p>
+To avoid the broken link and the reload, use the AngularJS-specific attribute
+<code>ng-src</code>:
+</p>
+
+<sample src="examples/UseNgSrcGood.html"/>
+</example>
+
+<references>
+<li>AngularJS API Reference: <a href="https://docs.angularjs.org/api/ng/directive/ngHref">ngHref</a>.</li>
+<li>AngularJS API Reference: <a href="https://docs.angularjs.org/api/ng/directive/ngSrc">ngSrc</a>.</li>
+<li>AngularJS API Reference: <a href="https://docs.angularjs.org/api/ng/directive/ngSrcset">ngSrcset</a>.</li>
+</references>
+</qhelp>

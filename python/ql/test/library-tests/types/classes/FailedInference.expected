@@ -1,0 +1,14 @@
+| circular_inheritance.py:33:1:33:11 | class A | Missing base 0 |
+| circular_inheritance.py:37:1:37:11 | class B | Failed inference for base class at position 0 |
+| circular_inheritance.py:40:1:40:72 | class D | Duplicate bases classes |
+| circular_inheritance.py:43:1:43:41 | class E | Duplicate bases classes |
+| circular_inheritance.py:47:1:47:19 | class G | Failed inference for base class at position 0 |
+| circular_inheritance.py:50:1:50:19 | class J | Missing base 0 |
+| circular_inheritance.py:54:1:54:11 | class M | Failed inference for base class at position 0 |
+| circular_inheritance.py:57:1:57:11 | class L | Failed inference for base class at position 0 |
+| circular_inheritance.py:61:1:61:19 | class S | Failed inference for base class at position 0 |
+| circular_inheritance.py:64:1:64:19 | class R | Failed inference for base class at position 0 |
+| mutual_inheritance.py:4:1:4:11 | class C | Failed inference for base class at position 0 |
+| mutual_inheritance.py:8:1:8:19 | class H | Failed inference for base class at position 0 |
+| mutual_inheritance.py:12:1:12:11 | class N | Failed inference for base class at position 0 |
+| mutual_inheritance.py:15:1:15:19 | class T | Failed inference for base class at position 0 |

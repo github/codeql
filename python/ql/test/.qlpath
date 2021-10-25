@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns:qlpath xmlns:ns="https://semmle.com/schemas/qlpath">
+    <librarypath>
+        <path kind="WORKSPACE">/semmlecode-python-queries</path>
+    </librarypath>
+    <dbscheme>/semmlecode-python-queries/semmlecode.python.dbscheme</dbscheme>
+    <defaultImports><defaultImport>python</defaultImport></defaultImports>
+</ns:qlpath>

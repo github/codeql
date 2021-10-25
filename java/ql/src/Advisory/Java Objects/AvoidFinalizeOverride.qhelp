@@ -1,0 +1,39 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+Overriding the <code>Object.finalize</code> method is
+not a reliable way to terminate use of resources.
+In particular, there are no guarantees regarding the timeliness of
+finalizer execution.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Provide explicit termination methods, which should be
+called by users of an API.
+</p>
+
+</recommendation>
+<references>
+
+
+<li>
+  J. Bloch, <em>Effective Java (second edition)</em>,
+  Item 7.  
+  Addison-Wesley, 2008.
+</li>
+<li>
+  Java Language Specification:
+  <a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-12.html#jls-12.6">12.6. Finalization of Class Instances</a>.
+</li>
+
+
+</references>
+</qhelp>

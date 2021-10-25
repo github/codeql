@@ -1,0 +1,56 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>When checking whether a string <code>s</code> is empty, perhaps the most obvious
+solution is to write something like <code>s.equals("")</code> (or <code>"".equals(s)</code>).
+However, this actually carries a fairly significant overhead, because <code>String.equals</code>
+performs a number of type tests and conversions before starting to compare the content
+of the strings.</p>
+
+</overview>
+<recommendation>
+
+<p>The preferred way of checking whether a string <code>s</code> is empty is to check if its
+length is equal to zero. Thus, the condition is <code>s.length() == 0</code>. The <code>length</code>
+method is implemented as a simple field access, and so should be noticeably faster than
+calling <code>equals</code>.</p>
+
+<p>Note that in Java 6 and later, the <code>String</code> class has an <code>isEmpty</code>
+method that checks whether a string is empty. If the codebase does not need to support Java 5, it may
+be better to use that method instead.</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, class <code>InefficientDBClient</code> uses <code>equals</code> to test
+whether the strings <code>user</code> and <code>pw</code> are empty. Note that the test
+<code>"".equals(pw)</code> guards against <code>NullPointerException</code>, but the test
+<code>user.equals("")</code> throws a <code>NullPointerException</code> if <code>user</code> is
+<code>null</code>.</p>
+
+<p>In contrast, the class <code>EfficientDBClient</code> uses <code>length</code> instead of 
+<code>equals</code>. The class preserves the behavior of <code>InefficientDBClient</code> by 
+guarding <code>pw.length() == 0</code> but not <code>user.length() == 0</code> with an explicit test 
+for <code>null</code>. Whether or not this guard is desirable depends on the intended behavior of 
+the program.</p>
+
+<sample src="InefficientEmptyStringTest.java" />
+
+</example>
+<references>
+
+
+<li>
+  Java API Specification:
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html#length()">String.length()</a>,
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html#isEmpty()">String.isEmpty()</a>,
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html#equals(java.lang.Object)">String.equals()</a>.
+</li>
+
+
+</references>
+</qhelp>

@@ -1,0 +1,23 @@
+| test.cpp:15:8:15:11 | Load: aptr | VNLength(InitializeParameter: count) | 0 | ZeroOffset | 0 |
+| test.cpp:19:8:19:8 | Load: a | VNLength(Chi: ptr) | 0 | ZeroOffset | 0 |
+| test.cpp:21:8:21:8 | Load: a | VNLength(Chi: ptr) | -1 | ZeroOffset | 0 |
+| test.cpp:23:8:23:8 | Load: a | VNLength(Chi: ptr) | 1 | ZeroOffset | 0 |
+| test.cpp:27:8:27:8 | Load: c | VNLength(Chi: ptr) | 0 | ZeroOffset | 0 |
+| test.cpp:28:8:28:24 | Convert: (unsigned char *)... | VNLength(Chi: ptr) | 0 | ZeroOffset | 0 |
+| test.cpp:30:8:30:8 | Load: v | VNLength(Chi: ptr) | 0 | ZeroOffset | 0 |
+| test.cpp:34:8:34:12 | Convert: array to pointer conversion | ZeroLength | 100 | ZeroOffset | 0 |
+| test.cpp:37:10:37:10 | Load: b | VNLength(Chi: ptr) | 0 | ZeroOffset | 0 |
+| test.cpp:44:8:44:8 | Load: a | VNLength(InitializeParameter: count) | 0 | ZeroOffset | 2 |
+| test.cpp:53:10:53:10 | Load: a | VNLength(InitializeParameter: count) | 0 | ZeroOffset | 2 |
+| test.cpp:56:10:56:10 | Load: a | VNLength(InitializeParameter: count) | 0 | ZeroOffset | 3 |
+| test.cpp:63:10:63:14 | CopyValue: & ... | VNLength(InitializeParameter: count) | 0 | OpOffset(Load: i) | 0 |
+| test.cpp:66:8:66:8 | Load: a | VNLength(InitializeParameter: count) | 0 | ZeroOffset | 0 |
+| test.cpp:68:8:68:8 | Load: a | VNLength(InitializeParameter: count) | 0 | ZeroOffset | 3 |
+| test.cpp:70:8:70:8 | Load: a | VNLength(InitializeParameter: count) | 0 | ZeroOffset | 2 |
+| test.cpp:72:8:72:8 | Load: a | VNLength(InitializeParameter: count) | 0 | ZeroOffset | 0 |
+| test.cpp:74:8:74:8 | Load: a | VNLength(InitializeParameter: count) | 0 | ZeroOffset | -10 |
+| test.cpp:76:8:76:8 | Load: a | VNLength(InitializeParameter: count) | 1 | ZeroOffset | 0 |
+| test.cpp:78:8:78:8 | Load: a | VNLength(InitializeParameter: count) | 1 | OpOffset(Load: count) | 0 |
+| test.cpp:80:8:80:8 | Load: a | VNLength(InitializeParameter: count) | 1 | OpOffset(Load: count) | 1 |
+| test.cpp:85:8:85:8 | Load: a | VNLength(InitializeParameter: count) | 1 | OpOffset(Add: ... + ...) | 0 |
+| test.cpp:87:8:87:8 | Load: a | VNLength(InitializeParameter: count) | 1 | OpOffset(Add: ... + ...) | 1 |

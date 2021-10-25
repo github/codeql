@@ -1,0 +1,4 @@
+| undefined_attribute.py:27:16:27:29 | Attribute | Attribute 'may_exist' is not defined in the class body nor in the __init__() method, but it is defined $@ | undefined_attribute.py:11:9:11:22 | Attribute | here |
+| undefined_attribute.py:184:16:184:32 | Attribute | Attribute 'return_queue' is not defined in the class body nor in the __init__() method, but it is defined $@ | undefined_attribute.py:181:13:181:29 | Attribute | here |
+| undefined_attribute.py:257:16:257:31 | Attribute | Attribute 'glance_host' is not defined in the class body nor in the __init__() method, but it is defined $@ | undefined_attribute.py:262:13:262:28 | Attribute | here |
+| undefined_attribute.py:258:16:258:31 | Attribute | Attribute 'glance_port' is not defined in the class body nor in the __init__() method, but it is defined $@ | undefined_attribute.py:263:10:263:25 | Attribute | here |

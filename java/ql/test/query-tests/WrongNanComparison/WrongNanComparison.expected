@@ -1,0 +1,2 @@
+| Test.java:3:9:3:23 | ... == ... | This comparison will always yield the same result since 'NaN != NaN'. Consider using Double.isNaN instead |
+| Test.java:4:9:4:22 | ... == ... | This comparison will always yield the same result since 'NaN != NaN'. Consider using Float.isNaN instead |

@@ -1,0 +1,45 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+ASP.NET applications that enable directory browsing can leak sensitive information to an attacker.
+The precise nature of the vulnerability depends on which files are listed and accessible.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+If this configuration may be used in production, remove the <code>directoryBrowse</code> element from the 
+<code>Web.config</code> file or set the value to false.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+The following example shows the <code>directoryBrowse</code> <code>enable</code> attribute set to true in a <code>Web.config</code> file for ASP.NET:
+</p>
+
+<sample src="Web.config.bad" />
+
+<p>
+To fix this problem, the <code>enable</code> attribute should be set to <code>false</code>, or the <code>directoryBrowse</code> element should be removed completely:
+</p>
+
+<sample src="Web.config.good" />
+
+</example>
+<references>
+
+<li>
+MSDN:
+<a href="https://msdn.microsoft.com/en-us/library/ms691327(v=vs.90).aspx">directoryBrowse element</a>.
+</li>
+
+
+</references>
+</qhelp>

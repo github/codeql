@@ -1,0 +1,16 @@
+| id | file://:0:0:0:0 | __float128 | file://:0:0:0:0 | __float128 |
+| id | file://:0:0:0:0 | long double | file://:0:0:0:0 | long double |
+| operator= | file://:0:0:0:0 | __is_floating_point_helper<__float128> & | file://:0:0:0:0 | __is_floating_point_helper<__float128> && |
+| operator= | file://:0:0:0:0 | __is_floating_point_helper<__float128> & | file://:0:0:0:0 | const __is_floating_point_helper<__float128> & |
+| operator= | file://:0:0:0:0 | __is_floating_point_helper<double> & | file://:0:0:0:0 | __is_floating_point_helper<double> && |
+| operator= | file://:0:0:0:0 | __is_floating_point_helper<double> & | file://:0:0:0:0 | const __is_floating_point_helper<double> & |
+| operator= | file://:0:0:0:0 | __is_floating_point_helper<float> & | file://:0:0:0:0 | __is_floating_point_helper<float> && |
+| operator= | file://:0:0:0:0 | __is_floating_point_helper<float> & | file://:0:0:0:0 | const __is_floating_point_helper<float> & |
+| operator= | file://:0:0:0:0 | __is_floating_point_helper<long double> & | file://:0:0:0:0 | __is_floating_point_helper<long double> && |
+| operator= | file://:0:0:0:0 | __is_floating_point_helper<long double> & | file://:0:0:0:0 | const __is_floating_point_helper<long double> & |
+| operator= | file://:0:0:0:0 | __va_list_tag & | file://:0:0:0:0 | __va_list_tag && |
+| operator= | file://:0:0:0:0 | __va_list_tag & | file://:0:0:0:0 | const __va_list_tag & |
+| operator= | file://:0:0:0:0 | false_type & | file://:0:0:0:0 | const false_type & |
+| operator= | file://:0:0:0:0 | false_type & | file://:0:0:0:0 | false_type && |
+| operator= | file://:0:0:0:0 | true_type & | file://:0:0:0:0 | const true_type & |
+| operator= | file://:0:0:0:0 | true_type & | file://:0:0:0:0 | true_type && |

@@ -1,0 +1,40 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>This rule finds uses of the assignment operator <code>=</code> in places where the 
+equality operator <code>==</code> would make more sense. This is a very common mistake in
+C and C++, because of the similarity of the <code>=</code> and the <code>==</code> operator, 
+and the fact that the <code>if</code> statement accepts
+a condition with an integral type, instead of limiting it to just the <code>bool</code> type.</p>
+
+<p>
+The rule flags every occurrence of an assignment in a position where its result is interpreted as a truth value. 
+An assignment is only flagged if its right hand side is a compile-time constant. 
+</p>
+
+</overview>
+<recommendation>
+<p>Check to ensure that the flagged expressions are not typos. If an assignment is really intended to be treated as a truth value, it may be better to surround it with parentheses.</p>
+
+</recommendation>
+<example><sample src="AssignWhereCompareMeant.cpp" />
+
+</example>
+<references>
+
+<li>
+  Tutorialspoint - The C++ Programming Language: <a href="http://www.tutorialspoint.com/cplusplus/cpp_operators.htm">Operators in C++</a>
+</li>
+<li>
+  Wikipedia: <a href="http://en.wikipedia.org/wiki/Operators_in_C_and_C%2B%2B#Comparison_operators.2Frelational_operators">Operators in C and C++</a>
+</li>
+
+
+
+
+</references>
+</qhelp>

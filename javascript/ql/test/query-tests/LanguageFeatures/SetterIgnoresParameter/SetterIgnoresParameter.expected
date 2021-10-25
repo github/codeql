@@ -1,0 +1,2 @@
+| tst.js:15:3:15:12 | set x(v ...  OK\\n\\t\\t} | This setter function does not use its parameter $@. | tst.js:15:9:15:9 | v | v |
+| tst.js:40:3:40:25 | set y(_ ... _x\|0; } | This setter function does not use its parameter $@. | tst.js:40:9:40:10 | _y | _y |

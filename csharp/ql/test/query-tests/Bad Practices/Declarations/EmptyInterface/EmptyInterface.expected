@@ -1,0 +1,1 @@
+| EmptyInterfaceBad.cs:5:15:5:25 | IsPrintable | Interface 'IsPrintable' does not declare any members. |

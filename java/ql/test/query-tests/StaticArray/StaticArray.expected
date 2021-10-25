@@ -1,0 +1,5 @@
+| StaticArray.java:3:31:3:33 | bad | The array constant bad is vulnerable to mutation. |
+| StaticArray.java:14:35:14:54 | bad_multidimensional | The array constant bad_multidimensional is vulnerable to mutation. |
+| StaticArray.java:15:35:15:67 | bad_multidimensional_partial_init | The array constant bad_multidimensional_partial_init is vulnerable to mutation. |
+| StaticArray.java:17:31:17:47 | bad_separate_init | The array constant bad_separate_init is vulnerable to mutation. |
+| StaticArray.java:26:33:26:44 | bad_nonempty | The array constant bad_nonempty is vulnerable to mutation. |

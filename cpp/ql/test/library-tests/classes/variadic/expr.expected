@@ -1,0 +1,7 @@
+| file://:0:0:0:0 | 0 |
+| test.cpp:4:9:4:9 | call to f |
+| test.cpp:4:9:4:9 | f |
+| test.cpp:4:9:4:9 | this |
+| test.cpp:4:9:4:11 | call to expression |
+| test.cpp:10:5:10:11 | call to Foo |
+| test.cpp:10:5:10:11 | temporary object |

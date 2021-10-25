@@ -1,0 +1,1 @@
+| Test.java:108:9:108:22 | IntIteratorBad | This Iterable is its own Iterator, but does not guard against multiple iterations. |

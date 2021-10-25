@@ -1,0 +1,7 @@
+<bean id="contentService" class="documentation.examples.spring.ContentService">
+	<!--BAD: The setter method in the class is 'setHelper', so this property
+	         does not match the setter method.-->
+	<property name="transactionHelper">
+		<ref bean="transactionHelper"/>
+	</property>
+</bean>

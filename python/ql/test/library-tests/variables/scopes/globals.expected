@@ -1,0 +1,17 @@
+| Global Variable C | Module test |
+| Global Variable __name__ | Module test |
+| Global Variable __package__ | Module test |
+| Global Variable base | Module test |
+| Global Variable func0 | Module test |
+| Global Variable func1 | Module test |
+| Global Variable func2 | Module test |
+| Global Variable func3 | Module test |
+| Global Variable func4 | Module test |
+| Global Variable func5 | Module test |
+| Global Variable func6 | Module test |
+| Global Variable global0 | Module test |
+| Global Variable global1 | Module test |
+| Global Variable global_local | Module test |
+| Global Variable range | Module test |
+| Global Variable seq | Module test |
+| Global Variable use_in_loop | Module test |

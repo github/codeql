@@ -1,0 +1,4 @@
+| allocators.cpp:16:14:16:36 | call to Foo | 2 |
+| allocators.cpp:16:14:16:36 | call to operator new | 3 |
+| allocators.cpp:17:3:17:12 | call to operator delete | 0 |
+| allocators.cpp:17:3:17:12 | call to ~Foo | 0 |

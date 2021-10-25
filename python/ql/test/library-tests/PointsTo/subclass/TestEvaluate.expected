@@ -1,0 +1,11 @@
+| 3 | isinstance() | true | x | int 7 |
+| 4 | issubclass() | true | x | int 7 |
+| 6 | issubclass() | true | d | builtin-class dict |
+| 7 | UnaryExpr | true | d | builtin-class dict |
+| 10 | isinstance() | false | x | int 0 |
+| 10 | isinstance() | true | x | () |
+| 13 | isinstance() | false | x | () |
+| 13 | isinstance() | true | x | int 0 |
+| 14 | isinstance() | true | x | int 0 |
+| 15 | issubclass() | true | x | int 0 |
+| 16 | issubclass() | false | x | int 0 |

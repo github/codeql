@@ -1,0 +1,7 @@
+| EntityFrameworkCore.cs:62:13:62:46 | call to method ExecuteSqlCommand |
+| EntityFrameworkCore.cs:63:19:63:57 | call to method ExecuteSqlCommandAsync |
+| EntityFrameworkCore.cs:66:13:66:29 | call to method Build |
+| EntityFrameworkCore.cs:69:13:69:32 | object creation of type RawSqlString |
+| EntityFrameworkCore.cs:70:32:70:33 | call to operator implicit conversion |
+| EntityFrameworkCore.cs:77:18:77:46 | object creation of type RawSqlString |
+| EntityFrameworkCore.cs:78:18:78:42 | call to operator implicit conversion |

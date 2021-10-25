@@ -1,0 +1,66 @@
+Assignments.cs:
+#    1| [Class] Assignments
+#    3|   5: [Method] M
+#    3|     -1: [TypeMention] Void
+#    4|     4: [BlockStmt] {...}
+#    5|       0: [LocalVariableDeclStmt] ... ...;
+#    5|         0: [LocalVariableDeclAndInitExpr] Int32 x = ...
+#    5|           -1: [TypeMention] int
+#    5|           0: [LocalVariableAccess] access to local variable x
+#    5|           1: [IntLiteral] 0
+#    6|       1: [ExprStmt] ...;
+#    6|         0: [AssignAddExpr] ... += ...
+#    6|           0: [LocalVariableAccess] access to local variable x
+#    6|           1: [IntLiteral] 1
+#    8|       2: [LocalVariableDeclStmt] ... ...;
+#    8|         0: [LocalVariableDeclAndInitExpr] dynamic d = ...
+#    8|           -1: [TypeMention] dynamic
+#    8|           0: [LocalVariableAccess] access to local variable d
+#    8|           1: [CastExpr] (...) ...
+#    8|             1: [IntLiteral] 0
+#    9|       3: [ExprStmt] ...;
+#    9|         0: [AssignSubExpr] ... -= ...
+#    9|           0: [LocalVariableAccess] access to local variable d
+#    9|           1: [IntLiteral] 2
+#   11|       4: [LocalVariableDeclStmt] ... ...;
+#   11|         0: [LocalVariableDeclAndInitExpr] Assignments a = ...
+#   11|           -1: [TypeMention] Assignments
+#   11|           0: [LocalVariableAccess] access to local variable a
+#   11|           1: [ObjectCreation] object creation of type Assignments
+#   11|             0: [TypeMention] Assignments
+#   12|       5: [ExprStmt] ...;
+#   12|         0: [AssignAddExpr] ... += ...
+#   12|           0: [LocalVariableAccess] access to local variable a
+#   12|           1: [ThisAccess] this access
+#   14|       6: [ExprStmt] ...;
+#   14|         0: [AddEventExpr] ... += ...
+#   14|           0: [EventAccess,EventCall] access to event Event
+#   14|           1: [LambdaExpr] (...) => ...
+#-----|             2: (Parameters)
+#   14|               0: [Parameter] sender
+#   14|               1: [Parameter] e
+#   14|             4: [BlockStmt] {...}
+#   17|   6: [AddOperator] +
+#   17|     -1: [TypeMention] Assignments
+#-----|     2: (Parameters)
+#   17|       0: [Parameter] x
+#   17|         -1: [TypeMention] Assignments
+#   17|       1: [Parameter] y
+#   17|         -1: [TypeMention] Assignments
+#   18|     4: [BlockStmt] {...}
+#   19|       0: [ReturnStmt] return ...;
+#   19|         0: [ParameterAccess] access to parameter x
+#   22|   7: [DelegateType] EventHandler
+#-----|     2: (Parameters)
+#   22|       0: [Parameter] sender
+#   22|         -1: [TypeMention] object
+#   22|       1: [Parameter] e
+#   22|         -1: [TypeMention] object
+#   23|   8: [Event] Event
+#   23|     -1: [TypeMention] EventHandler
+#   23|     3: [AddEventAccessor] add_Event
+#-----|       2: (Parameters)
+#   23|         0: [Parameter] value
+#   23|     4: [RemoveEventAccessor] remove_Event
+#-----|       2: (Parameters)
+#   23|         0: [Parameter] value

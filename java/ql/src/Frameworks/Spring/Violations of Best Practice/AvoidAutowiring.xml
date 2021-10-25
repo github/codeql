@@ -1,0 +1,13 @@
+<!--AVOID: Using autowiring makes it difficult to see the dependencies of the bean-->
+<bean id="autoWiredOrderService"
+        class="documentation.examples.spring.OrderService"
+        autowire="byName"/>
+
+<!--GOOD: Explicitly specifying the properties of the bean documents its dependencies
+    and makes the bean configuration easier to maintain-->
+<bean id="orderService"
+        class="documentation.examples.spring.OrderService">
+        <property name="DAO">
+            <idref bean="dao"/>
+        </property>
+</bean>

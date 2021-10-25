@@ -1,0 +1,55 @@
+edges
+| ZipSlip.cs:15:35:15:66 | call to method GetFullPath : String | ZipSlip.cs:30:71:30:78 | access to local variable fullPath : String |
+| ZipSlip.cs:15:35:15:66 | call to method GetFullPath : String | ZipSlip.cs:38:81:38:88 | access to local variable fullPath : String |
+| ZipSlip.cs:15:52:15:65 | access to property FullName : String | ZipSlip.cs:15:35:15:66 | call to method GetFullPath : String |
+| ZipSlip.cs:18:31:18:44 | access to property FullName : String | ZipSlip.cs:22:71:22:74 | access to local variable file : String |
+| ZipSlip.cs:22:43:22:75 | call to method Combine : String | ZipSlip.cs:23:41:23:52 | access to local variable destFileName |
+| ZipSlip.cs:22:71:22:74 | access to local variable file : String | ZipSlip.cs:22:43:22:75 | call to method Combine : String |
+| ZipSlip.cs:30:43:30:79 | call to method Combine : String | ZipSlip.cs:31:41:31:52 | access to local variable destFilePath |
+| ZipSlip.cs:30:43:30:79 | call to method Combine : String | ZipSlip.cs:35:45:35:56 | access to local variable destFilePath |
+| ZipSlip.cs:30:71:30:78 | access to local variable fullPath : String | ZipSlip.cs:30:43:30:79 | call to method Combine : String |
+| ZipSlip.cs:38:36:38:90 | call to method GetFullPath : String | ZipSlip.cs:39:41:39:52 | access to local variable destFilePath |
+| ZipSlip.cs:38:53:38:89 | call to method Combine : String | ZipSlip.cs:38:36:38:90 | call to method GetFullPath : String |
+| ZipSlip.cs:38:81:38:88 | access to local variable fullPath : String | ZipSlip.cs:38:53:38:89 | call to method Combine : String |
+| ZipSlip.cs:61:47:61:86 | call to method Combine : String | ZipSlip.cs:68:74:68:85 | access to local variable destFilePath |
+| ZipSlip.cs:61:47:61:86 | call to method Combine : String | ZipSlip.cs:75:71:75:82 | access to local variable destFilePath |
+| ZipSlip.cs:61:47:61:86 | call to method Combine : String | ZipSlip.cs:82:57:82:68 | access to local variable destFilePath |
+| ZipSlip.cs:61:47:61:86 | call to method Combine : String | ZipSlip.cs:90:58:90:69 | access to local variable destFilePath |
+| ZipSlip.cs:61:72:61:85 | access to property FullName : String | ZipSlip.cs:61:47:61:86 | call to method Combine : String |
+| ZipSlipBad.cs:9:31:9:73 | call to method Combine : String | ZipSlipBad.cs:10:29:10:40 | access to local variable destFileName |
+| ZipSlipBad.cs:9:59:9:72 | access to property FullName : String | ZipSlipBad.cs:9:31:9:73 | call to method Combine : String |
+nodes
+| ZipSlip.cs:15:35:15:66 | call to method GetFullPath : String | semmle.label | call to method GetFullPath : String |
+| ZipSlip.cs:15:52:15:65 | access to property FullName : String | semmle.label | access to property FullName : String |
+| ZipSlip.cs:18:31:18:44 | access to property FullName : String | semmle.label | access to property FullName : String |
+| ZipSlip.cs:22:43:22:75 | call to method Combine : String | semmle.label | call to method Combine : String |
+| ZipSlip.cs:22:71:22:74 | access to local variable file : String | semmle.label | access to local variable file : String |
+| ZipSlip.cs:23:41:23:52 | access to local variable destFileName | semmle.label | access to local variable destFileName |
+| ZipSlip.cs:30:43:30:79 | call to method Combine : String | semmle.label | call to method Combine : String |
+| ZipSlip.cs:30:71:30:78 | access to local variable fullPath : String | semmle.label | access to local variable fullPath : String |
+| ZipSlip.cs:31:41:31:52 | access to local variable destFilePath | semmle.label | access to local variable destFilePath |
+| ZipSlip.cs:35:45:35:56 | access to local variable destFilePath | semmle.label | access to local variable destFilePath |
+| ZipSlip.cs:38:36:38:90 | call to method GetFullPath : String | semmle.label | call to method GetFullPath : String |
+| ZipSlip.cs:38:53:38:89 | call to method Combine : String | semmle.label | call to method Combine : String |
+| ZipSlip.cs:38:81:38:88 | access to local variable fullPath : String | semmle.label | access to local variable fullPath : String |
+| ZipSlip.cs:39:41:39:52 | access to local variable destFilePath | semmle.label | access to local variable destFilePath |
+| ZipSlip.cs:61:47:61:86 | call to method Combine : String | semmle.label | call to method Combine : String |
+| ZipSlip.cs:61:72:61:85 | access to property FullName : String | semmle.label | access to property FullName : String |
+| ZipSlip.cs:68:74:68:85 | access to local variable destFilePath | semmle.label | access to local variable destFilePath |
+| ZipSlip.cs:75:71:75:82 | access to local variable destFilePath | semmle.label | access to local variable destFilePath |
+| ZipSlip.cs:82:57:82:68 | access to local variable destFilePath | semmle.label | access to local variable destFilePath |
+| ZipSlip.cs:90:58:90:69 | access to local variable destFilePath | semmle.label | access to local variable destFilePath |
+| ZipSlipBad.cs:9:31:9:73 | call to method Combine : String | semmle.label | call to method Combine : String |
+| ZipSlipBad.cs:9:59:9:72 | access to property FullName : String | semmle.label | access to property FullName : String |
+| ZipSlipBad.cs:10:29:10:40 | access to local variable destFileName | semmle.label | access to local variable destFileName |
+subpaths
+#select
+| ZipSlip.cs:15:52:15:65 | access to property FullName | ZipSlip.cs:15:52:15:65 | access to property FullName : String | ZipSlip.cs:31:41:31:52 | access to local variable destFilePath | Unsanitized archive entry, which may contain '..', is used in a $@. | ZipSlip.cs:31:41:31:52 | access to local variable destFilePath | file system operation |
+| ZipSlip.cs:15:52:15:65 | access to property FullName | ZipSlip.cs:15:52:15:65 | access to property FullName : String | ZipSlip.cs:35:45:35:56 | access to local variable destFilePath | Unsanitized archive entry, which may contain '..', is used in a $@. | ZipSlip.cs:35:45:35:56 | access to local variable destFilePath | file system operation |
+| ZipSlip.cs:15:52:15:65 | access to property FullName | ZipSlip.cs:15:52:15:65 | access to property FullName : String | ZipSlip.cs:39:41:39:52 | access to local variable destFilePath | Unsanitized archive entry, which may contain '..', is used in a $@. | ZipSlip.cs:39:41:39:52 | access to local variable destFilePath | file system operation |
+| ZipSlip.cs:18:31:18:44 | access to property FullName | ZipSlip.cs:18:31:18:44 | access to property FullName : String | ZipSlip.cs:23:41:23:52 | access to local variable destFileName | Unsanitized archive entry, which may contain '..', is used in a $@. | ZipSlip.cs:23:41:23:52 | access to local variable destFileName | file system operation |
+| ZipSlip.cs:61:72:61:85 | access to property FullName | ZipSlip.cs:61:72:61:85 | access to property FullName : String | ZipSlip.cs:68:74:68:85 | access to local variable destFilePath | Unsanitized archive entry, which may contain '..', is used in a $@. | ZipSlip.cs:68:74:68:85 | access to local variable destFilePath | file system operation |
+| ZipSlip.cs:61:72:61:85 | access to property FullName | ZipSlip.cs:61:72:61:85 | access to property FullName : String | ZipSlip.cs:75:71:75:82 | access to local variable destFilePath | Unsanitized archive entry, which may contain '..', is used in a $@. | ZipSlip.cs:75:71:75:82 | access to local variable destFilePath | file system operation |
+| ZipSlip.cs:61:72:61:85 | access to property FullName | ZipSlip.cs:61:72:61:85 | access to property FullName : String | ZipSlip.cs:82:57:82:68 | access to local variable destFilePath | Unsanitized archive entry, which may contain '..', is used in a $@. | ZipSlip.cs:82:57:82:68 | access to local variable destFilePath | file system operation |
+| ZipSlip.cs:61:72:61:85 | access to property FullName | ZipSlip.cs:61:72:61:85 | access to property FullName : String | ZipSlip.cs:90:58:90:69 | access to local variable destFilePath | Unsanitized archive entry, which may contain '..', is used in a $@. | ZipSlip.cs:90:58:90:69 | access to local variable destFilePath | file system operation |
+| ZipSlipBad.cs:9:59:9:72 | access to property FullName | ZipSlipBad.cs:9:59:9:72 | access to property FullName : String | ZipSlipBad.cs:10:29:10:40 | access to local variable destFileName | Unsanitized archive entry, which may contain '..', is used in a $@. | ZipSlipBad.cs:10:29:10:40 | access to local variable destFileName | file system operation |

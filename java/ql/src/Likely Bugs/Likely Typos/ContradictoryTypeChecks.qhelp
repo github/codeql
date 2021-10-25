@@ -1,0 +1,55 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+If an <code>instanceof</code> expression occurs in a position where the
+type test is guaranteed to return <code>false</code>, this is often due
+to a typo or logical mistake. It also suggests that the surrounding code
+is not well tested, or possibly even dead.
+</p>
+
+<p>
+Similarly, a cast that is guaranteed to fail usually indicates badly
+tested or dead code.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Inspect the surrounding code for logical errors. 
+</p>
+
+</recommendation>
+<example>
+
+<p>
+In the following example, method <code>getKind</code> first checks whether
+its argument <code>x</code> is an instance of class <code>Mammal</code>,
+and then whether it is an instance of class <code>Tiger</code>.
+</p>
+
+<sample src="ContradictoryTypeChecks.java" />
+
+<p>
+If <code>Tiger</code> is a subclass of <code>Mammal</code>, then the second
+<code>instanceof</code> check can never evaluate to <code>true</code>. Clearly,
+the two conditions should be swapped:
+</p>
+
+<sample src="ContradictoryTypeChecksGood.java" />
+
+</example>
+<references>
+
+
+<li>
+Java Language Specification: <a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-15.html#jls-15.20.2">Type Comparison Operator instanceof</a>.
+</li>
+
+</references>
+</qhelp>

@@ -1,0 +1,251 @@
+delegates.cs:
+#    5| [NamespaceDeclaration] namespace ... { ... }
+#    7|   1: [DelegateType] FooDelegate
+#-----|     2: (Parameters)
+#    7|       0: [Parameter] param
+#    7|         -1: [TypeMention] string
+#    7|       1: [Parameter] condition
+#    7|         -1: [TypeMention] bool
+#    7|       2: [Parameter] args
+#    7|         -1: [TypeMention] String[]
+#    7|           1: [TypeMention] string
+#    9|   2: [DelegateType] D1
+#-----|     2: (Parameters)
+#    9|       0: [Parameter] i
+#    9|         -1: [TypeMention] int
+#    9|       1: [Parameter] d
+#    9|         -1: [TypeMention] double
+#   11|   3: [Class] A
+#   14|     5: [Method] M1
+#   14|       -1: [TypeMention] int
+#-----|       2: (Parameters)
+#   14|         0: [Parameter] a
+#   14|           -1: [TypeMention] int
+#   14|         1: [Parameter] b
+#   14|           -1: [TypeMention] double
+#   14|       4: [BlockStmt] {...}
+#   14|         0: [ReturnStmt] return ...;
+#   14|           0: [CastExpr] (...) ...
+#   14|             0: [TypeAccess] access to type Int32
+#   14|               0: [TypeMention] int
+#   14|             1: [AddExpr] ... + ...
+#   14|               0: [CastExpr] (...) ...
+#   14|                 1: [ParameterAccess] access to parameter a
+#   14|               1: [ParameterAccess] access to parameter b
+#   18|   4: [Class] B
+#   21|     5: [DelegateType] D2
+#-----|       2: (Parameters)
+#   21|         0: [Parameter] c
+#   21|           -1: [TypeMention] int
+#   21|         1: [Parameter] d
+#   21|           -1: [TypeMention] double
+#   23|     6: [Method] M1
+#   23|       -1: [TypeMention] int
+#-----|       2: (Parameters)
+#   23|         0: [Parameter] f
+#   23|           -1: [TypeMention] int
+#   23|         1: [Parameter] g
+#   23|           -1: [TypeMention] double
+#   23|       4: [BlockStmt] {...}
+#   23|         0: [ReturnStmt] return ...;
+#   23|           0: [SubExpr] ... - ...
+#   23|             0: [ParameterAccess] access to parameter f
+#   23|             1: [CastExpr] (...) ...
+#   23|               0: [TypeAccess] access to type Int32
+#   23|                 0: [TypeMention] int
+#   23|               1: [ParameterAccess] access to parameter g
+#   25|     7: [Method] M2
+#   25|       -1: [TypeMention] Void
+#-----|       2: (Parameters)
+#   25|         0: [Parameter] k
+#   25|           -1: [TypeMention] int
+#   25|         1: [Parameter] l
+#   25|           -1: [TypeMention] double
+#   25|       4: [BlockStmt] {...}
+#   27|     8: [Method] M3
+#   27|       -1: [TypeMention] int
+#-----|       2: (Parameters)
+#   27|         0: [Parameter] g
+#   27|           -1: [TypeMention] int
+#   27|       4: [BlockStmt] {...}
+#   27|         0: [ReturnStmt] return ...;
+#   27|           0: [AddExpr] ... + ...
+#   27|             0: [UnaryMinusExpr] -...
+#   27|               0: [ParameterAccess] access to parameter g
+#   27|             1: [UnaryPlusExpr] +...
+#   27|               0: [ParameterAccess] access to parameter g
+#   29|     9: [Method] M4
+#   29|       -1: [TypeMention] Void
+#-----|       2: (Parameters)
+#   29|         0: [Parameter] g
+#   29|           -1: [TypeMention] int
+#   29|       4: [BlockStmt] {...}
+#   33|   5: [DelegateType] Predicate<>
+#-----|     1: (Type parameters)
+#   33|       0: [TypeParameter] T
+#-----|     2: (Parameters)
+#   33|       0: [Parameter] value
+#   33|         -1: [TypeMention] T
+#   35|   6: [Class] X
+#   38|     5: [Method] F
+#   38|       -1: [TypeMention] bool
+#-----|       2: (Parameters)
+#   38|         0: [Parameter] i
+#   38|           -1: [TypeMention] int
+#   38|       4: [BlockStmt] {...}
+#   38|         0: [ReturnStmt] return ...;
+#   38|           0: [LTExpr] ... < ...
+#   38|             0: [ParameterAccess] access to parameter i
+#   38|             1: [IntLiteral] 2
+#   40|     6: [Method] G
+#   40|       -1: [TypeMention] bool
+#-----|       2: (Parameters)
+#   40|         0: [Parameter] s
+#   40|           -1: [TypeMention] string
+#   40|       4: [BlockStmt] {...}
+#   40|         0: [ReturnStmt] return ...;
+#   40|           0: [BoolLiteral] false
+#   44|   7: [DelegateType] D
+#-----|     2: (Parameters)
+#   44|       0: [Parameter] x
+#   44|         -1: [TypeMention] int
+#   46|   8: [Class] C
+#   49|     5: [Method] M1
+#   49|       -1: [TypeMention] Void
+#-----|       2: (Parameters)
+#   49|         0: [Parameter] i
+#   49|           -1: [TypeMention] int
+#   49|       4: [BlockStmt] {...}
+#   50|     6: [Method] M2
+#   50|       -1: [TypeMention] Void
+#-----|       2: (Parameters)
+#   50|         0: [Parameter] i
+#   50|           -1: [TypeMention] int
+#   50|       4: [BlockStmt] {...}
+#   51|     7: [Method] M3
+#   51|       -1: [TypeMention] Void
+#-----|       2: (Parameters)
+#   51|         0: [Parameter] i
+#   51|           -1: [TypeMention] int
+#   51|       4: [BlockStmt] {...}
+#   55|   9: [Class] Test
+#   58|     5: [Method] Main
+#   58|       -1: [TypeMention] Void
+#   59|       4: [BlockStmt] {...}
+#   60|         0: [LocalVariableDeclStmt] ... ...;
+#   60|           0: [LocalVariableDeclAndInitExpr] D cd1 = ...
+#   60|             -1: [TypeMention] D
+#   60|             0: [LocalVariableAccess] access to local variable cd1
+#   60|             1: [ExplicitDelegateCreation] delegate creation of type D
+#   60|               -1: [TypeMention] D
+#   60|               0: [MethodAccess] access to method M1
+#   60|                 -1: [TypeAccess] access to type C
+#   60|                   0: [TypeMention] C
+#   61|         1: [LocalVariableDeclStmt] ... ...;
+#   61|           0: [LocalVariableDeclAndInitExpr] D cd2 = ...
+#   61|             -1: [TypeMention] D
+#   61|             0: [LocalVariableAccess] access to local variable cd2
+#   61|             1: [ImplicitDelegateCreation] delegate creation of type D
+#   61|               0: [MethodAccess] access to method M2
+#   61|                 -1: [TypeAccess] access to type C
+#   61|                   0: [TypeMention] C
+#   62|         2: [LocalVariableDeclStmt] ... ...;
+#   62|           0: [LocalVariableDeclAndInitExpr] D cd3 = ...
+#   62|             -1: [TypeMention] D
+#   62|             0: [LocalVariableAccess] access to local variable cd3
+#   62|             1: [OperatorCall] call to operator +
+#   62|               0: [LocalVariableAccess] access to local variable cd1
+#   62|               1: [LocalVariableAccess] access to local variable cd2
+#   63|         3: [LocalVariableDeclStmt] ... ...;
+#   63|           0: [LocalVariableDeclAndInitExpr] D cd4 = ...
+#   63|             -1: [TypeMention] D
+#   63|             0: [LocalVariableAccess] access to local variable cd4
+#   63|             1: [OperatorCall] call to operator +
+#   63|               0: [LocalVariableAccess] access to local variable cd3
+#   63|               1: [LocalVariableAccess] access to local variable cd1
+#   64|         4: [LocalVariableDeclStmt] ... ...;
+#   64|           0: [LocalVariableDeclAndInitExpr] D cd5 = ...
+#   64|             -1: [TypeMention] D
+#   64|             0: [LocalVariableAccess] access to local variable cd5
+#   64|             1: [OperatorCall] call to operator -
+#   64|               0: [LocalVariableAccess] access to local variable cd4
+#   64|               1: [LocalVariableAccess] access to local variable cd3
+#   65|         5: [ExprStmt] ...;
+#   65|           0: [AssignAddExpr] ... += ...
+#   65|             0: [LocalVariableAccess] access to local variable cd4
+#   65|             1: [LocalVariableAccess] access to local variable cd5
+#   66|         6: [ExprStmt] ...;
+#   66|           0: [AssignSubExpr] ... -= ...
+#   66|             0: [LocalVariableAccess] access to local variable cd4
+#   66|             1: [LocalVariableAccess] access to local variable cd1
+#   68|         7: [LocalVariableDeclStmt] ... ...;
+#   68|           0: [LocalVariableDeclAndInitExpr] C c = ...
+#   68|             -1: [TypeMention] C
+#   68|             0: [LocalVariableAccess] access to local variable c
+#   68|             1: [ObjectCreation] object creation of type C
+#   68|               0: [TypeMention] C
+#   69|         8: [LocalVariableDeclStmt] ... ...;
+#   69|           0: [LocalVariableDeclAndInitExpr] D cd6 = ...
+#   69|             -1: [TypeMention] D
+#   69|             0: [LocalVariableAccess] access to local variable cd6
+#   69|             1: [ExplicitDelegateCreation] delegate creation of type D
+#   69|               -1: [TypeMention] D
+#   69|               0: [MethodAccess] access to method M3
+#   69|                 -1: [LocalVariableAccess] access to local variable c
+#   70|         9: [LocalVariableDeclStmt] ... ...;
+#   70|           0: [LocalVariableDeclAndInitExpr] D cd7 = ...
+#   70|             -1: [TypeMention] D
+#   70|             0: [LocalVariableAccess] access to local variable cd7
+#   70|             1: [ExplicitDelegateCreation] delegate creation of type D
+#   70|               -1: [TypeMention] D
+#   70|               0: [LocalVariableAccess] access to local variable cd6
+#   72|         10: [ExprStmt] ...;
+#   72|           0: [DelegateCall] delegate call
+#   72|             -1: [LocalVariableAccess] access to local variable cd1
+#   72|             0: [UnaryMinusExpr] -...
+#   72|               0: [IntLiteral] 40
+#   73|         11: [LocalVariableDeclStmt] ... ...;
+#   73|           0: [LocalVariableDeclAndInitExpr] Int32 x = ...
+#   73|             -1: [TypeMention] int
+#   73|             0: [LocalVariableAccess] access to local variable x
+#   73|             1: [IntLiteral] 0
+#   74|         12: [ExprStmt] ...;
+#   74|           0: [DelegateCall] delegate call
+#   74|             -1: [LocalVariableAccess] access to local variable cd7
+#   74|             0: [AddExpr] ... + ...
+#   74|               0: [IntLiteral] 34
+#   74|               1: [LocalVariableAccess] access to local variable x
+#   76|         13: [LocalVariableDeclStmt] ... ...;
+#   76|           0: [LocalVariableDeclAndInitExpr] Predicate<Int32> pi = ...
+#   76|             -1: [TypeMention] Predicate<int>
+#   76|               1: [TypeMention] int
+#   76|             0: [LocalVariableAccess] access to local variable pi
+#   76|             1: [ExplicitDelegateCreation] delegate creation of type Predicate<Int32>
+#   76|               -1: [TypeMention] Predicate<int>
+#   76|                 1: [TypeMention] int
+#   76|               0: [MethodAccess] access to method F
+#   76|                 -1: [TypeAccess] access to type X
+#   76|                   0: [TypeMention] X
+#   77|         14: [LocalVariableDeclStmt] ... ...;
+#   77|           0: [LocalVariableDeclAndInitExpr] Predicate<String> ps = ...
+#   77|             -1: [TypeMention] Predicate<string>
+#   77|               1: [TypeMention] string
+#   77|             0: [LocalVariableAccess] access to local variable ps
+#   77|             1: [ImplicitDelegateCreation] delegate creation of type Predicate<String>
+#   77|               0: [MethodAccess] access to method G
+#   77|                 -1: [TypeAccess] access to type X
+#   77|                   0: [TypeMention] X
+#   79|         15: [LocalVariableDeclStmt] ... ...;
+#   79|           0: [LocalVariableDeclAndInitExpr] Boolean b = ...
+#   79|             -1: [TypeMention] bool
+#   79|             0: [LocalVariableAccess] access to local variable b
+#   79|             1: [BitwiseAndExpr] ... & ...
+#   79|               0: [DelegateCall] delegate call
+#   79|                 -1: [LocalVariableAccess] access to local variable pi
+#   79|                 0: [IntLiteral] 3
+#   79|               1: [DelegateCall] delegate call
+#   79|                 -1: [LocalVariableAccess] access to local variable ps
+#   79|                 0: [StringLiteral] ""
+#   81|         16: [LocalVariableDeclStmt] ... ...;
+#   81|           0: [LocalVariableDeclExpr] ContextCallback d
+#   81|             0: [TypeMention] ContextCallback

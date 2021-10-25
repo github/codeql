@@ -1,0 +1,2 @@
+def generate(bits):
+    pass

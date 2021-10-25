@@ -1,0 +1,306 @@
+test_ClientRequest
+| apollo.js:5:18:5:78 | new cre ... hql' }) |
+| apollo.js:10:1:10:54 | new Htt ... hql' }) |
+| apollo.js:14:16:14:69 | new Apo ... .com'}) |
+| apollo.js:17:1:17:34 | new Pre ... yurl"}) |
+| apollo.js:20:1:20:77 | createN ... phql'}) |
+| apollo.js:23:1:23:31 | new Web ... wsUri}) |
+| puppeteer.ts:6:11:6:42 | page.go ... e.com') |
+| puppeteer.ts:8:5:8:61 | page.ad ... css" }) |
+| puppeteer.ts:18:30:18:50 | page.go ... estUrl) |
+| tst.js:11:5:11:16 | request(url) |
+| tst.js:13:5:13:20 | request.get(url) |
+| tst.js:15:5:15:23 | request.delete(url) |
+| tst.js:17:5:17:25 | request ...  url }) |
+| tst.js:19:5:19:23 | requestPromise(url) |
+| tst.js:21:5:21:23 | superagent.get(url) |
+| tst.js:23:5:23:17 | http.get(url) |
+| tst.js:25:5:25:14 | axios(url) |
+| tst.js:27:5:27:18 | axios.get(url) |
+| tst.js:29:5:29:23 | axios({ url: url }) |
+| tst.js:31:5:31:12 | got(url) |
+| tst.js:33:5:33:19 | got.stream(url) |
+| tst.js:35:5:35:21 | window.fetch(url) |
+| tst.js:37:5:37:18 | nodeFetch(url) |
+| tst.js:39:5:39:20 | net.request(url) |
+| tst.js:41:5:41:29 | net.req ...  url }) |
+| tst.js:43:5:43:26 | new Cli ... st(url) |
+| tst.js:45:5:45:35 | new Cli ...  url }) |
+| tst.js:53:5:53:23 | axios({data: data}) |
+| tst.js:55:5:55:34 | axios.g ... _data}) |
+| tst.js:57:5:57:39 | axios.p ... data2}) |
+| tst.js:59:5:59:52 | axios({ ... sData}) |
+| tst.js:61:5:61:60 | window. ... yData}) |
+| tst.js:63:5:63:68 | got(url ... yData}) |
+| tst.js:65:5:65:23 | superagent.get(url) |
+| tst.js:66:5:66:23 | superagent.get(url) |
+| tst.js:67:5:67:24 | superagent.post(url) |
+| tst.js:68:5:68:23 | superagent.get(url) |
+| tst.js:69:5:69:23 | superagent.get(url) |
+| tst.js:74:5:74:29 | $.ajax( ...  data}) |
+| tst.js:75:5:75:35 | $.ajax( ...  data}) |
+| tst.js:77:5:77:32 | $.getJS ...  data}) |
+| tst.js:78:5:78:38 | $.getJS ...  data}) |
+| tst.js:80:15:80:34 | new XMLHttpRequest() |
+| tst.js:87:5:87:39 | http.ge ...  host}) |
+| tst.js:89:5:89:23 | axios({host: host}) |
+| tst.js:91:5:91:34 | got(rel ...  host}) |
+| tst.js:93:5:93:35 | net.req ... host }) |
+| tst.js:98:15:98:34 | new XMLHttpRequest() |
+| tst.js:106:16:106:35 | new XMLHttpRequest() |
+| tst.js:117:5:121:6 | request ... \\n    }) |
+| tst.js:123:5:127:6 | request ... \\n    }) |
+| tst.js:129:5:129:37 | request ...  true}) |
+| tst.js:133:5:133:18 | axios.get(url) |
+| tst.js:134:5:134:44 | axios({ ... json'}) |
+| tst.js:135:5:135:18 | axios(unknown) |
+| tst.js:136:5:136:36 | axios({ ... nown }) |
+| tst.js:141:5:141:14 | fetch(url) |
+| tst.js:145:5:145:12 | got(url) |
+| tst.js:146:5:146:28 | got(url ... true }) |
+| tst.js:147:5:147:19 | got.stream(url) |
+| tst.js:151:5:151:23 | superagent.get(url) |
+| tst.js:160:5:160:17 | xhr.send(url) |
+| tst.js:171:2:171:10 | base(url) |
+| tst.js:172:2:172:14 | variant1(url) |
+| tst.js:173:2:173:14 | variant2(url) |
+| tst.js:177:5:177:49 | $.get(  ... a ) {}) |
+| tst.js:179:2:179:60 | $.getJS ... a ) {}) |
+| tst.js:181:2:181:69 | $.getSc ... r ) {}) |
+| tst.js:183:2:183:60 | $.post( ...  ) { }) |
+| tst.js:185:2:185:60 | $( "#re ... lt) {}) |
+| tst.js:187:2:193:3 | $.ajax( ... on"\\n\\t}) |
+| tst.js:195:2:195:54 | $.get(  ... "json") |
+| tst.js:197:2:197:45 | $.ajax( ... blob"}) |
+| tst.js:200:2:200:21 | $.get("example.php") |
+| tst.js:202:5:208:7 | $.ajax( ...     }}) |
+| tst.js:210:2:210:21 | $.get("example.php") |
+| tst.js:219:5:219:41 | data.so ... Host"}) |
+| tst.js:229:5:229:67 | needle( ... ptions) |
+| tst.js:231:5:233:6 | needle. ... \\n    }) |
+| tst.js:235:5:237:6 | needle. ... \\n    }) |
+| tst.js:247:24:247:68 | request ... o.png') |
+| tst.js:249:1:251:2 | form.su ... e();\\n}) |
+| tst.js:257:1:262:2 | form.su ... rs()\\n}) |
+| tst.js:267:1:267:61 | httpPro ... 9000'}) |
+| tst.js:269:13:269:48 | httpPro ... ptions) |
+| tst.js:271:3:271:61 | proxy.w ... 080' }) |
+| tst.js:274:1:283:2 | httpPro ... true\\n}) |
+| tst.js:286:20:286:55 | new Web ... :8080') |
+| tst.js:296:5:299:6 | axios({ ... \\n    }) |
+| tst.js:312:12:312:36 | fetchPo ... o/bar') |
+test_getADataNode
+| tst.js:53:5:53:23 | axios({data: data}) | tst.js:53:18:53:21 | data |
+| tst.js:57:5:57:39 | axios.p ... data2}) | tst.js:57:19:57:23 | data1 |
+| tst.js:57:5:57:39 | axios.p ... data2}) | tst.js:57:33:57:37 | data2 |
+| tst.js:59:5:59:52 | axios({ ... sData}) | tst.js:59:21:59:30 | headerData |
+| tst.js:59:5:59:52 | axios({ ... sData}) | tst.js:59:41:59:50 | paramsData |
+| tst.js:61:5:61:60 | window. ... yData}) | tst.js:61:33:61:42 | headerData |
+| tst.js:61:5:61:60 | window. ... yData}) | tst.js:61:51:61:58 | bodyData |
+| tst.js:63:5:63:68 | got(url ... yData}) | tst.js:63:24:63:33 | headerData |
+| tst.js:63:5:63:68 | got(url ... yData}) | tst.js:63:42:63:49 | bodyData |
+| tst.js:65:5:65:23 | superagent.get(url) | tst.js:65:31:65:34 | data |
+| tst.js:66:5:66:23 | superagent.get(url) | tst.js:66:29:66:31 | 'x' |
+| tst.js:66:5:66:23 | superagent.get(url) | tst.js:66:34:66:43 | headerData |
+| tst.js:67:5:67:24 | superagent.post(url) | tst.js:67:31:67:38 | bodyData |
+| tst.js:68:5:68:23 | superagent.get(url) | tst.js:68:29:68:31 | 'x' |
+| tst.js:68:5:68:23 | superagent.get(url) | tst.js:68:34:68:43 | headerData |
+| tst.js:68:5:68:23 | superagent.get(url) | tst.js:68:52:68:60 | queryData |
+| tst.js:69:5:69:23 | superagent.get(url) | tst.js:69:48:69:56 | queryData |
+| tst.js:74:5:74:29 | $.ajax( ...  data}) | tst.js:74:24:74:27 | data |
+| tst.js:77:5:77:32 | $.getJS ...  data}) | tst.js:77:20:77:31 | {data: data} |
+| tst.js:80:15:80:34 | new XMLHttpRequest() | tst.js:82:14:82:17 | data |
+| tst.js:98:15:98:34 | new XMLHttpRequest() | tst.js:101:14:101:17 | data |
+| tst.js:106:16:106:35 | new XMLHttpRequest() | tst.js:108:15:108:18 | data |
+| tst.js:117:5:121:6 | request ... \\n    }) | tst.js:117:18:121:5 | functio ... ;\\n    } |
+| tst.js:123:5:127:6 | request ... \\n    }) | tst.js:123:18:123:29 | {json: true} |
+| tst.js:129:5:129:37 | request ...  true}) | tst.js:129:25:129:36 | {json: true} |
+| tst.js:179:2:179:60 | $.getJS ... a ) {}) | tst.js:179:31:179:38 | "MyData" |
+| tst.js:183:2:183:60 | $.post( ...  ) { }) | tst.js:183:28:183:37 | "PostData" |
+| tst.js:187:2:193:3 | $.ajax( ... on"\\n\\t}) | tst.js:190:11:190:20 | "AjaxData" |
+| tst.js:219:5:219:41 | data.so ... Host"}) | tst.js:223:23:223:30 | "foobar" |
+| tst.js:229:5:229:67 | needle( ... ptions) | tst.js:228:32:228:70 | { 'X-Cu ... tuna' } |
+| tst.js:229:5:229:67 | needle( ... ptions) | tst.js:229:50:229:57 | "MyData" |
+| tst.js:235:5:237:6 | needle. ... \\n    }) | tst.js:228:32:228:70 | { 'X-Cu ... tuna' } |
+| tst.js:235:5:237:6 | needle. ... \\n    }) | tst.js:235:44:235:49 | "data" |
+| tst.js:249:1:251:2 | form.su ... e();\\n}) | tst.js:245:25:245:34 | 'my value' |
+| tst.js:249:1:251:2 | form.su ... e();\\n}) | tst.js:246:26:246:43 | Buffer.from("foo") |
+| tst.js:249:1:251:2 | form.su ... e();\\n}) | tst.js:247:24:247:68 | request ... o.png') |
+| tst.js:257:1:262:2 | form.su ... rs()\\n}) | tst.js:255:25:255:35 | 'new_value' |
+| tst.js:286:20:286:55 | new Web ... :8080') | tst.js:288:21:288:35 | 'Hello Server!' |
+test_getHost
+| tst.js:87:5:87:39 | http.ge ...  host}) | tst.js:87:34:87:37 | host |
+| tst.js:89:5:89:23 | axios({host: host}) | tst.js:89:18:89:21 | host |
+| tst.js:91:5:91:34 | got(rel ...  host}) | tst.js:91:29:91:32 | host |
+| tst.js:93:5:93:35 | net.req ... host }) | tst.js:93:29:93:32 | host |
+| tst.js:219:5:219:41 | data.so ... Host"}) | tst.js:219:32:219:39 | "myHost" |
+| tst.js:257:1:262:2 | form.su ... rs()\\n}) | tst.js:259:11:259:23 | 'example.org' |
+| tst.js:274:1:283:2 | httpPro ... true\\n}) | tst.js:277:15:277:30 | 'my-domain-name' |
+test_getUrl
+| apollo.js:5:18:5:78 | new cre ... hql' }) | apollo.js:5:44:5:75 | 'https: ... raphql' |
+| apollo.js:10:1:10:54 | new Htt ... hql' }) | apollo.js:10:21:10:51 | 'http:/ ... raphql' |
+| apollo.js:14:16:14:69 | new Apo ... .com'}) | apollo.js:14:39:14:67 | 'https: ... le.com' |
+| apollo.js:17:1:17:34 | new Pre ... yurl"}) | apollo.js:17:26:17:32 | "myurl" |
+| apollo.js:20:1:20:77 | createN ... phql'}) | apollo.js:20:30:20:75 | 'https: ... raphql' |
+| apollo.js:23:1:23:31 | new Web ... wsUri}) | apollo.js:23:25:23:29 | wsUri |
+| puppeteer.ts:6:11:6:42 | page.go ... e.com') | puppeteer.ts:6:21:6:41 | 'https: ... le.com' |
+| puppeteer.ts:8:5:8:61 | page.ad ... css" }) | puppeteer.ts:8:29:8:58 | "http:/ ... le.css" |
+| puppeteer.ts:18:30:18:50 | page.go ... estUrl) | puppeteer.ts:18:40:18:49 | requestUrl |
+| tst.js:11:5:11:16 | request(url) | tst.js:11:13:11:15 | url |
+| tst.js:13:5:13:20 | request.get(url) | tst.js:13:17:13:19 | url |
+| tst.js:15:5:15:23 | request.delete(url) | tst.js:15:20:15:22 | url |
+| tst.js:17:5:17:25 | request ...  url }) | tst.js:17:13:17:24 | { url: url } |
+| tst.js:17:5:17:25 | request ...  url }) | tst.js:17:20:17:22 | url |
+| tst.js:19:5:19:23 | requestPromise(url) | tst.js:19:20:19:22 | url |
+| tst.js:21:5:21:23 | superagent.get(url) | tst.js:21:20:21:22 | url |
+| tst.js:23:5:23:17 | http.get(url) | tst.js:23:14:23:16 | url |
+| tst.js:25:5:25:14 | axios(url) | tst.js:25:11:25:13 | url |
+| tst.js:27:5:27:18 | axios.get(url) | tst.js:27:15:27:17 | url |
+| tst.js:29:5:29:23 | axios({ url: url }) | tst.js:29:11:29:22 | { url: url } |
+| tst.js:29:5:29:23 | axios({ url: url }) | tst.js:29:18:29:20 | url |
+| tst.js:31:5:31:12 | got(url) | tst.js:31:9:31:11 | url |
+| tst.js:33:5:33:19 | got.stream(url) | tst.js:33:16:33:18 | url |
+| tst.js:35:5:35:21 | window.fetch(url) | tst.js:35:18:35:20 | url |
+| tst.js:37:5:37:18 | nodeFetch(url) | tst.js:37:15:37:17 | url |
+| tst.js:39:5:39:20 | net.request(url) | tst.js:39:17:39:19 | url |
+| tst.js:41:5:41:29 | net.req ...  url }) | tst.js:41:17:41:28 | { url: url } |
+| tst.js:41:5:41:29 | net.req ...  url }) | tst.js:41:24:41:26 | url |
+| tst.js:43:5:43:26 | new Cli ... st(url) | tst.js:43:23:43:25 | url |
+| tst.js:45:5:45:35 | new Cli ...  url }) | tst.js:45:23:45:34 | { url: url } |
+| tst.js:45:5:45:35 | new Cli ...  url }) | tst.js:45:30:45:32 | url |
+| tst.js:53:5:53:23 | axios({data: data}) | tst.js:53:11:53:22 | {data: data} |
+| tst.js:55:5:55:34 | axios.g ... _data}) | tst.js:55:15:55:15 | x |
+| tst.js:57:5:57:39 | axios.p ... data2}) | tst.js:57:16:57:16 | x |
+| tst.js:59:5:59:52 | axios({ ... sData}) | tst.js:59:11:59:51 | {header ... msData} |
+| tst.js:61:5:61:60 | window. ... yData}) | tst.js:61:18:61:20 | url |
+| tst.js:63:5:63:68 | got(url ... yData}) | tst.js:63:9:63:11 | url |
+| tst.js:65:5:65:23 | superagent.get(url) | tst.js:65:20:65:22 | url |
+| tst.js:66:5:66:23 | superagent.get(url) | tst.js:66:20:66:22 | url |
+| tst.js:67:5:67:24 | superagent.post(url) | tst.js:67:21:67:23 | url |
+| tst.js:68:5:68:23 | superagent.get(url) | tst.js:68:20:68:22 | url |
+| tst.js:69:5:69:23 | superagent.get(url) | tst.js:69:20:69:22 | url |
+| tst.js:74:5:74:29 | $.ajax( ...  data}) | tst.js:74:12:74:14 | url |
+| tst.js:75:5:75:35 | $.ajax( ...  data}) | tst.js:75:18:75:20 | url |
+| tst.js:77:5:77:32 | $.getJS ...  data}) | tst.js:77:15:77:17 | url |
+| tst.js:78:5:78:38 | $.getJS ...  data}) | tst.js:78:15:78:37 | {url: u ... : data} |
+| tst.js:80:15:80:34 | new XMLHttpRequest() | tst.js:81:17:81:19 | url |
+| tst.js:87:5:87:39 | http.ge ...  host}) | tst.js:87:14:87:24 | relativeUrl |
+| tst.js:89:5:89:23 | axios({host: host}) | tst.js:89:11:89:22 | {host: host} |
+| tst.js:91:5:91:34 | got(rel ...  host}) | tst.js:91:9:91:19 | relativeUrl |
+| tst.js:93:5:93:35 | net.req ... host }) | tst.js:93:17:93:34 | { hostname: host } |
+| tst.js:98:15:98:34 | new XMLHttpRequest() | tst.js:100:17:100:19 | url |
+| tst.js:106:16:106:35 | new XMLHttpRequest() | tst.js:107:18:107:20 | url |
+| tst.js:117:5:121:6 | request ... \\n    }) | tst.js:117:13:117:15 | url |
+| tst.js:123:5:127:6 | request ... \\n    }) | tst.js:123:13:123:15 | url |
+| tst.js:129:5:129:37 | request ...  true}) | tst.js:129:20:129:22 | url |
+| tst.js:133:5:133:18 | axios.get(url) | tst.js:133:15:133:17 | url |
+| tst.js:134:5:134:44 | axios({ ... json'}) | tst.js:134:11:134:43 | { url:  ... 'json'} |
+| tst.js:134:5:134:44 | axios({ ... json'}) | tst.js:134:18:134:20 | url |
+| tst.js:135:5:135:18 | axios(unknown) | tst.js:135:11:135:17 | unknown |
+| tst.js:136:5:136:36 | axios({ ... nown }) | tst.js:136:11:136:35 | { respo ... known } |
+| tst.js:141:5:141:14 | fetch(url) | tst.js:141:11:141:13 | url |
+| tst.js:145:5:145:12 | got(url) | tst.js:145:9:145:11 | url |
+| tst.js:146:5:146:28 | got(url ... true }) | tst.js:146:9:146:11 | url |
+| tst.js:147:5:147:19 | got.stream(url) | tst.js:147:16:147:18 | url |
+| tst.js:151:5:151:23 | superagent.get(url) | tst.js:151:20:151:22 | url |
+| tst.js:160:5:160:17 | xhr.send(url) | tst.js:160:14:160:16 | url |
+| tst.js:171:2:171:10 | base(url) | tst.js:171:7:171:9 | url |
+| tst.js:172:2:172:14 | variant1(url) | tst.js:172:11:172:13 | url |
+| tst.js:173:2:173:14 | variant2(url) | tst.js:173:11:173:13 | url |
+| tst.js:177:5:177:49 | $.get(  ... a ) {}) | tst.js:177:12:177:27 | "ajax/test.html" |
+| tst.js:179:2:179:60 | $.getJS ... a ) {}) | tst.js:179:13:179:28 | "ajax/test.json" |
+| tst.js:181:2:181:69 | $.getSc ... r ) {}) | tst.js:181:15:181:28 | "ajax/test.js" |
+| tst.js:183:2:183:60 | $.post( ...  ) { }) | tst.js:183:10:183:25 | "ajax/test.html" |
+| tst.js:185:2:185:60 | $( "#re ... lt) {}) | tst.js:185:23:185:38 | "ajax/test.html" |
+| tst.js:187:2:193:3 | $.ajax( ... on"\\n\\t}) | tst.js:189:8:189:27 | "http://example.org" |
+| tst.js:195:2:195:54 | $.get(  ... "json") | tst.js:195:9:195:24 | "ajax/test.json" |
+| tst.js:197:2:197:45 | $.ajax( ... blob"}) | tst.js:197:15:197:25 | "ajax/blob" |
+| tst.js:200:2:200:21 | $.get("example.php") | tst.js:200:8:200:20 | "example.php" |
+| tst.js:202:5:208:7 | $.ajax( ...     }}) | tst.js:203:10:203:22 | "example.php" |
+| tst.js:210:2:210:21 | $.get("example.php") | tst.js:210:8:210:20 | "example.php" |
+| tst.js:219:5:219:41 | data.so ... Host"}) | tst.js:219:25:219:40 | {host: "myHost"} |
+| tst.js:229:5:229:67 | needle( ... ptions) | tst.js:229:20:229:47 | "http:/ ... oo/bar" |
+| tst.js:231:5:233:6 | needle. ... \\n    }) | tst.js:231:16:231:35 | "http://example.org" |
+| tst.js:235:5:237:6 | needle. ... \\n    }) | tst.js:235:17:235:41 | "http:/ ... g/post" |
+| tst.js:247:24:247:68 | request ... o.png') | tst.js:247:32:247:67 | 'http:/ ... go.png' |
+| tst.js:249:1:251:2 | form.su ... e();\\n}) | tst.js:249:13:249:33 | 'http:/ ... e.org/' |
+| tst.js:257:1:262:2 | form.su ... rs()\\n}) | tst.js:257:13:262:1 | {\\n    m ... ers()\\n} |
+| tst.js:267:1:267:61 | httpPro ... 9000'}) | tst.js:267:37:267:59 | 'http:/ ... t:9000' |
+| tst.js:271:3:271:61 | proxy.w ... 080' }) | tst.js:271:33:271:58 | 'http:/ ... m:8080' |
+| tst.js:274:1:283:2 | httpPro ... true\\n}) | tst.js:275:13:281:5 | {\\n      ... ,\\n    } |
+| tst.js:286:20:286:55 | new Web ... :8080') | tst.js:286:34:286:54 | 'ws://l ... t:8080' |
+| tst.js:296:5:299:6 | axios({ ... \\n    }) | tst.js:296:11:299:5 | {\\n      ... ,\\n    } |
+| tst.js:296:5:299:6 | axios({ ... \\n    }) | tst.js:298:14:298:44 | "http:/ ... -axios" |
+| tst.js:312:12:312:36 | fetchPo ... o/bar') | tst.js:312:26:312:35 | '/foo/bar' |
+test_getAResponseDataNode
+| tst.js:19:5:19:23 | requestPromise(url) | tst.js:19:5:19:23 | requestPromise(url) | text | true |
+| tst.js:21:5:21:23 | superagent.get(url) | tst.js:21:5:21:23 | superagent.get(url) | stream | true |
+| tst.js:25:5:25:14 | axios(url) | tst.js:25:5:25:14 | axios(url) |  | true |
+| tst.js:25:5:25:14 | axios(url) | tst.js:25:5:25:14 | axios(url) | json | true |
+| tst.js:27:5:27:18 | axios.get(url) | tst.js:27:5:27:18 | axios.get(url) | json | true |
+| tst.js:29:5:29:23 | axios({ url: url }) | tst.js:29:5:29:23 | axios({ url: url }) | json | true |
+| tst.js:31:5:31:12 | got(url) | tst.js:31:5:31:12 | got(url) | text | true |
+| tst.js:33:5:33:19 | got.stream(url) | tst.js:33:5:33:19 | got.stream(url) | stream | false |
+| tst.js:35:5:35:21 | window.fetch(url) | tst.js:35:5:35:21 | window.fetch(url) | fetch.response | true |
+| tst.js:37:5:37:18 | nodeFetch(url) | tst.js:37:5:37:18 | nodeFetch(url) | fetch.response | true |
+| tst.js:53:5:53:23 | axios({data: data}) | tst.js:53:5:53:23 | axios({data: data}) | json | true |
+| tst.js:55:5:55:34 | axios.g ... _data}) | tst.js:55:5:55:34 | axios.g ... _data}) | json | true |
+| tst.js:57:5:57:39 | axios.p ... data2}) | tst.js:57:5:57:39 | axios.p ... data2}) | json | true |
+| tst.js:59:5:59:52 | axios({ ... sData}) | tst.js:59:5:59:52 | axios({ ... sData}) | json | true |
+| tst.js:61:5:61:60 | window. ... yData}) | tst.js:61:5:61:60 | window. ... yData}) | fetch.response | true |
+| tst.js:63:5:63:68 | got(url ... yData}) | tst.js:63:5:63:68 | got(url ... yData}) | text | true |
+| tst.js:65:5:65:23 | superagent.get(url) | tst.js:65:5:65:23 | superagent.get(url) | stream | true |
+| tst.js:66:5:66:23 | superagent.get(url) | tst.js:66:5:66:23 | superagent.get(url) | stream | true |
+| tst.js:67:5:67:24 | superagent.post(url) | tst.js:67:5:67:24 | superagent.post(url) | stream | true |
+| tst.js:68:5:68:23 | superagent.get(url) | tst.js:68:5:68:23 | superagent.get(url) | stream | true |
+| tst.js:69:5:69:23 | superagent.get(url) | tst.js:69:5:69:23 | superagent.get(url) | stream | true |
+| tst.js:89:5:89:23 | axios({host: host}) | tst.js:89:5:89:23 | axios({host: host}) | json | true |
+| tst.js:91:5:91:34 | got(rel ...  host}) | tst.js:91:5:91:34 | got(rel ...  host}) | text | true |
+| tst.js:98:15:98:34 | new XMLHttpRequest() | tst.js:103:9:103:21 | this.response | json | false |
+| tst.js:106:16:106:35 | new XMLHttpRequest() | tst.js:110:9:110:25 | this.responseText | text | false |
+| tst.js:106:16:106:35 | new XMLHttpRequest() | tst.js:111:9:111:24 | this.responseXML | document | false |
+| tst.js:106:16:106:35 | new XMLHttpRequest() | tst.js:112:9:112:23 | this.statusText | text | false |
+| tst.js:117:5:121:6 | request ... \\n    }) | tst.js:117:28:117:32 | error | error | false |
+| tst.js:117:5:121:6 | request ... \\n    }) | tst.js:117:45:117:48 | body | text | false |
+| tst.js:117:5:121:6 | request ... \\n    }) | tst.js:119:9:119:21 | response.body | text | false |
+| tst.js:123:5:127:6 | request ... \\n    }) | tst.js:123:42:123:46 | error | error | false |
+| tst.js:123:5:127:6 | request ... \\n    }) | tst.js:123:59:123:62 | body | json | false |
+| tst.js:123:5:127:6 | request ... \\n    }) | tst.js:125:9:125:21 | response.body | json | false |
+| tst.js:129:5:129:37 | request ...  true}) | tst.js:129:5:129:37 | request ...  true}) | json | true |
+| tst.js:133:5:133:18 | axios.get(url) | tst.js:133:5:133:18 | axios.get(url) | json | true |
+| tst.js:134:5:134:44 | axios({ ... json'}) | tst.js:134:5:134:44 | axios({ ... json'}) | json | true |
+| tst.js:135:5:135:18 | axios(unknown) | tst.js:135:5:135:18 | axios(unknown) |  | true |
+| tst.js:135:5:135:18 | axios(unknown) | tst.js:135:5:135:18 | axios(unknown) | json | true |
+| tst.js:136:5:136:36 | axios({ ... nown }) | tst.js:136:5:136:36 | axios({ ... nown }) |  | true |
+| tst.js:141:5:141:14 | fetch(url) | tst.js:141:5:141:14 | fetch(url) | fetch.response | true |
+| tst.js:145:5:145:12 | got(url) | tst.js:145:5:145:12 | got(url) | text | true |
+| tst.js:146:5:146:28 | got(url ... true }) | tst.js:146:5:146:28 | got(url ... true }) | json | true |
+| tst.js:147:5:147:19 | got.stream(url) | tst.js:147:5:147:19 | got.stream(url) | stream | false |
+| tst.js:151:5:151:23 | superagent.get(url) | tst.js:151:5:151:23 | superagent.get(url) | stream | true |
+| tst.js:151:5:151:23 | superagent.get(url) | tst.js:151:30:151:32 | err | error | false |
+| tst.js:151:5:151:23 | superagent.get(url) | tst.js:151:35:151:37 | res | stream | false |
+| tst.js:160:5:160:17 | xhr.send(url) | tst.js:162:9:162:29 | xhr.get ... eJson() | json | false |
+| tst.js:160:5:160:17 | xhr.send(url) | tst.js:163:9:163:32 | xhr.get ... aders() | headers | false |
+| tst.js:177:5:177:49 | $.get(  ... a ) {}) | tst.js:177:40:177:43 | data |  | false |
+| tst.js:179:2:179:60 | $.getJS ... a ) {}) | tst.js:179:51:179:54 | data | json | false |
+| tst.js:181:2:181:69 | $.getSc ... r ) {}) | tst.js:181:41:181:44 | data | text | false |
+| tst.js:183:2:183:60 | $.post( ...  ) { }) | tst.js:183:50:183:53 | data |  | false |
+| tst.js:185:2:185:60 | $( "#re ... lt) {}) | tst.js:185:50:185:55 | result | text | false |
+| tst.js:187:2:193:3 | $.ajax( ... on"\\n\\t}) | tst.js:191:15:191:22 | ajaxData | json | false |
+| tst.js:195:2:195:54 | $.get(  ... "json") | tst.js:195:37:195:40 | data | json | false |
+| tst.js:197:2:197:45 | $.ajax( ... blob"}) | tst.js:198:23:198:26 | data | blob | false |
+| tst.js:200:2:200:21 | $.get("example.php") | tst.js:200:37:200:44 | response |  | false |
+| tst.js:202:5:208:7 | $.ajax( ...     }}) | tst.js:207:21:207:36 | err.responseText | json | false |
+| tst.js:210:2:210:21 | $.get("example.php") | tst.js:210:55:210:70 | xhr.responseText |  | false |
+| tst.js:219:5:219:41 | data.so ... Host"}) | tst.js:221:29:221:32 | data | text | false |
+| tst.js:229:5:229:67 | needle( ... ptions) | tst.js:229:5:229:67 | needle( ... ptions) | fetch.response | true |
+| tst.js:231:5:233:6 | needle. ... \\n    }) | tst.js:231:44:231:47 | resp | fetch.response | false |
+| tst.js:231:5:233:6 | needle. ... \\n    }) | tst.js:231:50:231:53 | body | json | false |
+| tst.js:235:5:237:6 | needle. ... \\n    }) | tst.js:235:67:235:70 | resp | fetch.response | false |
+| tst.js:235:5:237:6 | needle. ... \\n    }) | tst.js:235:73:235:76 | body | json | false |
+| tst.js:286:20:286:55 | new Web ... :8080') | tst.js:291:44:291:53 | event.data | json | false |
+| tst.js:296:5:299:6 | axios({ ... \\n    }) | tst.js:296:5:299:6 | axios({ ... \\n    }) | json | true |
+| tst.js:296:5:299:6 | axios({ ... \\n    }) | tst.js:302:28:302:39 | err.response | json | false |
+| tst.js:296:5:299:6 | axios({ ... \\n    }) | tst.js:303:26:303:37 | err.response | json | false |
+| tst.js:296:5:299:6 | axios({ ... \\n    }) | tst.js:304:27:304:38 | err.response | json | false |
+| tst.js:312:12:312:36 | fetchPo ... o/bar') | tst.js:312:12:312:36 | fetchPo ... o/bar') | fetch.response | true |

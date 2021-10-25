@@ -1,0 +1,28 @@
+<html>
+  <head>
+    <title>Test</title>
+    <script>
+      var x = 0;
+      someGlobal = true;
+      (function() {
+        var x1 = x;
+        var x2 = someGlobal;
+      })();
+    </script>
+    <script>
+      var x = "hi";
+    </script>
+    <script>
+      (function() {
+        var x1 = x;
+        var x2 = someGlobal;
+      })();
+    </script>
+    <script>
+      function x() {}
+    </script>
+  </head>
+  <body>
+    <button onclick="(function() { var x1 = x; var x2 = someGlobal; })()">b</button>
+  </body>
+</html>

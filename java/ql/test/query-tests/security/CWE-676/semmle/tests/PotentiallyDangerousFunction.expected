@@ -1,0 +1,1 @@
+| Test.java:14:3:14:15 | stop(...) | Call to java.lang.Thread.stop is potentially dangerous. |

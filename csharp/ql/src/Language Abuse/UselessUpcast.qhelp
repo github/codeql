@@ -1,0 +1,26 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>In most situations, casting an expression where there exists a corresponding implicit conversion
+serves no purpose.</p>
+
+</overview>
+<recommendation>
+<p>Remove the redundant cast.</p>
+
+</recommendation>
+<example>
+<p>In this example, casting explicitly from <code>Sub</code> to <code>Super</code> is redundant.</p>
+<sample src="UselessUpcastBad.cs" />
+
+<p>The code above can be fixed, either by removing the explicit cast, or by making <code>super</code>
+an implicitly typed (<code>var</code>) variable.</p>
+</example>
+<references>
+
+  <li>Microsoft: <a href="https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/types/casting-and-type-conversions">Casting and Type Conversions</a>.</li>
+
+</references>
+</qhelp>

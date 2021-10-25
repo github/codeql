@@ -1,0 +1,9 @@
+| p1 | MyPromise<string> | string |
+| p2 | MyPromise<any> | any |
+| p3 | Promise<string> | string |
+| p5 | PromiseLike<string> | string |
+| p6 | Thenable<string> | string |
+| p8 | ThenPromise<string> | string |
+| p9 | JQueryPromise<string> | string |
+| p10 | JQueryGenericPromise<string> | string |
+| p11 | JQueryDeferred<string> | string |

@@ -1,0 +1,18 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>This query finds namespaces that have an afferent coupling greater than 20.</p>
+
+<p>The query counts number of namespaces depending on a namespace and 
+displays those that have more than 20 namespaces depending on them.</p>
+</overview>
+
+<references>
+<li>C++ reference: <a href="https://en.cppreference.com/w/cpp/language/namespace">Namespaces</a>
+ </li>
+</references>
+</qhelp>

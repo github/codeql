@@ -1,0 +1,111 @@
+edges
+| InsecureLdapAuth.java:11:20:11:50 | "ldap://ad.your-server.com:389" : String | InsecureLdapAuth.java:15:41:15:47 | ldapUrl : String |
+| InsecureLdapAuth.java:11:20:11:50 | "ldap://ad.your-server.com:389" : String | InsecureLdapAuth.java:20:49:20:59 | environment |
+| InsecureLdapAuth.java:15:3:15:13 | environment [post update] [<map.value>] : String | InsecureLdapAuth.java:20:49:20:59 | environment |
+| InsecureLdapAuth.java:15:41:15:47 | ldapUrl : String | InsecureLdapAuth.java:15:3:15:13 | environment [post update] [<map.value>] : String |
+| InsecureLdapAuth.java:17:3:17:13 | environment [post update] : Hashtable | InsecureLdapAuth.java:20:49:20:59 | environment |
+| InsecureLdapAuth.java:25:20:25:39 | ... + ... : String | InsecureLdapAuth.java:29:41:29:47 | ldapUrl : String |
+| InsecureLdapAuth.java:25:20:25:39 | ... + ... : String | InsecureLdapAuth.java:34:49:34:59 | environment |
+| InsecureLdapAuth.java:29:3:29:13 | environment [post update] [<map.value>] : String | InsecureLdapAuth.java:34:49:34:59 | environment |
+| InsecureLdapAuth.java:29:41:29:47 | ldapUrl : String | InsecureLdapAuth.java:29:3:29:13 | environment [post update] [<map.value>] : String |
+| InsecureLdapAuth.java:31:3:31:13 | environment [post update] : Hashtable | InsecureLdapAuth.java:34:49:34:59 | environment |
+| InsecureLdapAuth.java:45:3:45:13 | environment [post update] : Hashtable | InsecureLdapAuth.java:48:49:48:59 | environment |
+| InsecureLdapAuth.java:53:20:53:50 | "ldap://ad.your-server.com:636" : String | InsecureLdapAuth.java:57:41:57:47 | ldapUrl : String |
+| InsecureLdapAuth.java:53:20:53:50 | "ldap://ad.your-server.com:636" : String | InsecureLdapAuth.java:63:49:63:59 | environment |
+| InsecureLdapAuth.java:57:3:57:13 | environment [post update] [<map.value>] : String | InsecureLdapAuth.java:63:49:63:59 | environment |
+| InsecureLdapAuth.java:57:41:57:47 | ldapUrl : String | InsecureLdapAuth.java:57:3:57:13 | environment [post update] [<map.value>] : String |
+| InsecureLdapAuth.java:59:3:59:13 | environment [post update] : Hashtable | InsecureLdapAuth.java:63:49:63:59 | environment |
+| InsecureLdapAuth.java:62:3:62:13 | environment [post update] : Hashtable | InsecureLdapAuth.java:63:49:63:59 | environment |
+| InsecureLdapAuth.java:68:20:68:50 | "ldap://ad.your-server.com:389" : String | InsecureLdapAuth.java:72:41:72:47 | ldapUrl : String |
+| InsecureLdapAuth.java:68:20:68:50 | "ldap://ad.your-server.com:389" : String | InsecureLdapAuth.java:77:49:77:59 | environment |
+| InsecureLdapAuth.java:72:3:72:13 | environment [post update] [<map.value>] : String | InsecureLdapAuth.java:77:49:77:59 | environment |
+| InsecureLdapAuth.java:72:41:72:47 | ldapUrl : String | InsecureLdapAuth.java:72:3:72:13 | environment [post update] [<map.value>] : String |
+| InsecureLdapAuth.java:88:3:88:13 | environment [post update] : Hashtable | InsecureLdapAuth.java:91:49:91:59 | environment |
+| InsecureLdapAuth.java:96:20:96:50 | "ldap://ad.your-server.com:389" : String | InsecureLdapAuth.java:100:41:100:47 | ldapUrl : String |
+| InsecureLdapAuth.java:96:20:96:50 | "ldap://ad.your-server.com:389" : String | InsecureLdapAuth.java:105:59:105:69 | environment |
+| InsecureLdapAuth.java:100:3:100:13 | environment [post update] [<map.value>] : String | InsecureLdapAuth.java:105:59:105:69 | environment |
+| InsecureLdapAuth.java:100:41:100:47 | ldapUrl : String | InsecureLdapAuth.java:100:3:100:13 | environment [post update] [<map.value>] : String |
+| InsecureLdapAuth.java:102:3:102:13 | environment [post update] : Hashtable | InsecureLdapAuth.java:105:59:105:69 | environment |
+| InsecureLdapAuth.java:111:20:111:50 | "ldap://ad.your-server.com:389" : String | InsecureLdapAuth.java:115:47:115:53 | ldapUrl : String |
+| InsecureLdapAuth.java:111:20:111:50 | "ldap://ad.your-server.com:389" : String | InsecureLdapAuth.java:120:49:120:59 | environment |
+| InsecureLdapAuth.java:115:3:115:13 | environment [post update] [<map.value>] : String | InsecureLdapAuth.java:120:49:120:59 | environment |
+| InsecureLdapAuth.java:115:47:115:53 | ldapUrl : String | InsecureLdapAuth.java:115:3:115:13 | environment [post update] [<map.value>] : String |
+| InsecureLdapAuth.java:117:3:117:13 | environment [post update] : Hashtable | InsecureLdapAuth.java:120:49:120:59 | environment |
+| InsecureLdapAuth.java:124:3:124:5 | env [post update] : Hashtable | InsecureLdapAuth.java:137:10:137:20 | environment [post update] : Hashtable |
+| InsecureLdapAuth.java:128:3:128:5 | env [post update] : Hashtable | InsecureLdapAuth.java:141:16:141:26 | environment [post update] : Hashtable |
+| InsecureLdapAuth.java:128:3:128:5 | env [post update] : Hashtable | InsecureLdapAuth.java:152:16:152:26 | environment [post update] : Hashtable |
+| InsecureLdapAuth.java:135:20:135:39 | ... + ... : String | InsecureLdapAuth.java:140:41:140:47 | ldapUrl : String |
+| InsecureLdapAuth.java:135:20:135:39 | ... + ... : String | InsecureLdapAuth.java:142:50:142:60 | environment |
+| InsecureLdapAuth.java:137:10:137:20 | environment [post update] : Hashtable | InsecureLdapAuth.java:142:50:142:60 | environment |
+| InsecureLdapAuth.java:140:3:140:13 | environment [post update] [<map.value>] : String | InsecureLdapAuth.java:142:50:142:60 | environment |
+| InsecureLdapAuth.java:140:41:140:47 | ldapUrl : String | InsecureLdapAuth.java:140:3:140:13 | environment [post update] [<map.value>] : String |
+| InsecureLdapAuth.java:141:16:141:26 | environment [post update] : Hashtable | InsecureLdapAuth.java:142:50:142:60 | environment |
+| InsecureLdapAuth.java:147:20:147:39 | ... + ... : String | InsecureLdapAuth.java:151:41:151:47 | ldapUrl : String |
+| InsecureLdapAuth.java:147:20:147:39 | ... + ... : String | InsecureLdapAuth.java:153:50:153:60 | environment |
+| InsecureLdapAuth.java:151:3:151:13 | environment [post update] [<map.value>] : String | InsecureLdapAuth.java:153:50:153:60 | environment |
+| InsecureLdapAuth.java:151:41:151:47 | ldapUrl : String | InsecureLdapAuth.java:151:3:151:13 | environment [post update] [<map.value>] : String |
+| InsecureLdapAuth.java:152:16:152:26 | environment [post update] : Hashtable | InsecureLdapAuth.java:153:50:153:60 | environment |
+nodes
+| InsecureLdapAuth.java:11:20:11:50 | "ldap://ad.your-server.com:389" : String | semmle.label | "ldap://ad.your-server.com:389" : String |
+| InsecureLdapAuth.java:15:3:15:13 | environment [post update] [<map.value>] : String | semmle.label | environment [post update] [<map.value>] : String |
+| InsecureLdapAuth.java:15:41:15:47 | ldapUrl : String | semmle.label | ldapUrl : String |
+| InsecureLdapAuth.java:17:3:17:13 | environment [post update] : Hashtable | semmle.label | environment [post update] : Hashtable |
+| InsecureLdapAuth.java:20:49:20:59 | environment | semmle.label | environment |
+| InsecureLdapAuth.java:20:49:20:59 | environment | semmle.label | environment |
+| InsecureLdapAuth.java:25:20:25:39 | ... + ... : String | semmle.label | ... + ... : String |
+| InsecureLdapAuth.java:29:3:29:13 | environment [post update] [<map.value>] : String | semmle.label | environment [post update] [<map.value>] : String |
+| InsecureLdapAuth.java:29:41:29:47 | ldapUrl : String | semmle.label | ldapUrl : String |
+| InsecureLdapAuth.java:31:3:31:13 | environment [post update] : Hashtable | semmle.label | environment [post update] : Hashtable |
+| InsecureLdapAuth.java:34:49:34:59 | environment | semmle.label | environment |
+| InsecureLdapAuth.java:34:49:34:59 | environment | semmle.label | environment |
+| InsecureLdapAuth.java:45:3:45:13 | environment [post update] : Hashtable | semmle.label | environment [post update] : Hashtable |
+| InsecureLdapAuth.java:48:49:48:59 | environment | semmle.label | environment |
+| InsecureLdapAuth.java:53:20:53:50 | "ldap://ad.your-server.com:636" : String | semmle.label | "ldap://ad.your-server.com:636" : String |
+| InsecureLdapAuth.java:57:3:57:13 | environment [post update] [<map.value>] : String | semmle.label | environment [post update] [<map.value>] : String |
+| InsecureLdapAuth.java:57:41:57:47 | ldapUrl : String | semmle.label | ldapUrl : String |
+| InsecureLdapAuth.java:59:3:59:13 | environment [post update] : Hashtable | semmle.label | environment [post update] : Hashtable |
+| InsecureLdapAuth.java:62:3:62:13 | environment [post update] : Hashtable | semmle.label | environment [post update] : Hashtable |
+| InsecureLdapAuth.java:63:49:63:59 | environment | semmle.label | environment |
+| InsecureLdapAuth.java:63:49:63:59 | environment | semmle.label | environment |
+| InsecureLdapAuth.java:63:49:63:59 | environment | semmle.label | environment |
+| InsecureLdapAuth.java:68:20:68:50 | "ldap://ad.your-server.com:389" : String | semmle.label | "ldap://ad.your-server.com:389" : String |
+| InsecureLdapAuth.java:72:3:72:13 | environment [post update] [<map.value>] : String | semmle.label | environment [post update] [<map.value>] : String |
+| InsecureLdapAuth.java:72:41:72:47 | ldapUrl : String | semmle.label | ldapUrl : String |
+| InsecureLdapAuth.java:77:49:77:59 | environment | semmle.label | environment |
+| InsecureLdapAuth.java:88:3:88:13 | environment [post update] : Hashtable | semmle.label | environment [post update] : Hashtable |
+| InsecureLdapAuth.java:91:49:91:59 | environment | semmle.label | environment |
+| InsecureLdapAuth.java:96:20:96:50 | "ldap://ad.your-server.com:389" : String | semmle.label | "ldap://ad.your-server.com:389" : String |
+| InsecureLdapAuth.java:100:3:100:13 | environment [post update] [<map.value>] : String | semmle.label | environment [post update] [<map.value>] : String |
+| InsecureLdapAuth.java:100:41:100:47 | ldapUrl : String | semmle.label | ldapUrl : String |
+| InsecureLdapAuth.java:102:3:102:13 | environment [post update] : Hashtable | semmle.label | environment [post update] : Hashtable |
+| InsecureLdapAuth.java:105:59:105:69 | environment | semmle.label | environment |
+| InsecureLdapAuth.java:105:59:105:69 | environment | semmle.label | environment |
+| InsecureLdapAuth.java:111:20:111:50 | "ldap://ad.your-server.com:389" : String | semmle.label | "ldap://ad.your-server.com:389" : String |
+| InsecureLdapAuth.java:115:3:115:13 | environment [post update] [<map.value>] : String | semmle.label | environment [post update] [<map.value>] : String |
+| InsecureLdapAuth.java:115:47:115:53 | ldapUrl : String | semmle.label | ldapUrl : String |
+| InsecureLdapAuth.java:117:3:117:13 | environment [post update] : Hashtable | semmle.label | environment [post update] : Hashtable |
+| InsecureLdapAuth.java:120:49:120:59 | environment | semmle.label | environment |
+| InsecureLdapAuth.java:120:49:120:59 | environment | semmle.label | environment |
+| InsecureLdapAuth.java:124:3:124:5 | env [post update] : Hashtable | semmle.label | env [post update] : Hashtable |
+| InsecureLdapAuth.java:128:3:128:5 | env [post update] : Hashtable | semmle.label | env [post update] : Hashtable |
+| InsecureLdapAuth.java:135:20:135:39 | ... + ... : String | semmle.label | ... + ... : String |
+| InsecureLdapAuth.java:137:10:137:20 | environment [post update] : Hashtable | semmle.label | environment [post update] : Hashtable |
+| InsecureLdapAuth.java:140:3:140:13 | environment [post update] [<map.value>] : String | semmle.label | environment [post update] [<map.value>] : String |
+| InsecureLdapAuth.java:140:41:140:47 | ldapUrl : String | semmle.label | ldapUrl : String |
+| InsecureLdapAuth.java:141:16:141:26 | environment [post update] : Hashtable | semmle.label | environment [post update] : Hashtable |
+| InsecureLdapAuth.java:142:50:142:60 | environment | semmle.label | environment |
+| InsecureLdapAuth.java:142:50:142:60 | environment | semmle.label | environment |
+| InsecureLdapAuth.java:142:50:142:60 | environment | semmle.label | environment |
+| InsecureLdapAuth.java:147:20:147:39 | ... + ... : String | semmle.label | ... + ... : String |
+| InsecureLdapAuth.java:151:3:151:13 | environment [post update] [<map.value>] : String | semmle.label | environment [post update] [<map.value>] : String |
+| InsecureLdapAuth.java:151:41:151:47 | ldapUrl : String | semmle.label | ldapUrl : String |
+| InsecureLdapAuth.java:152:16:152:26 | environment [post update] : Hashtable | semmle.label | environment [post update] : Hashtable |
+| InsecureLdapAuth.java:153:50:153:60 | environment | semmle.label | environment |
+| InsecureLdapAuth.java:153:50:153:60 | environment | semmle.label | environment |
+subpaths
+#select
+| InsecureLdapAuth.java:20:49:20:59 | environment | InsecureLdapAuth.java:11:20:11:50 | "ldap://ad.your-server.com:389" : String | InsecureLdapAuth.java:20:49:20:59 | environment | Insecure LDAP authentication from $@. | InsecureLdapAuth.java:11:20:11:50 | "ldap://ad.your-server.com:389" | LDAP connection string |
+| InsecureLdapAuth.java:34:49:34:59 | environment | InsecureLdapAuth.java:25:20:25:39 | ... + ... : String | InsecureLdapAuth.java:34:49:34:59 | environment | Insecure LDAP authentication from $@. | InsecureLdapAuth.java:25:20:25:39 | ... + ... | LDAP connection string |
+| InsecureLdapAuth.java:105:59:105:69 | environment | InsecureLdapAuth.java:96:20:96:50 | "ldap://ad.your-server.com:389" : String | InsecureLdapAuth.java:105:59:105:69 | environment | Insecure LDAP authentication from $@. | InsecureLdapAuth.java:96:20:96:50 | "ldap://ad.your-server.com:389" | LDAP connection string |
+| InsecureLdapAuth.java:120:49:120:59 | environment | InsecureLdapAuth.java:111:20:111:50 | "ldap://ad.your-server.com:389" : String | InsecureLdapAuth.java:120:49:120:59 | environment | Insecure LDAP authentication from $@. | InsecureLdapAuth.java:111:20:111:50 | "ldap://ad.your-server.com:389" | LDAP connection string |
+| InsecureLdapAuth.java:153:50:153:60 | environment | InsecureLdapAuth.java:147:20:147:39 | ... + ... : String | InsecureLdapAuth.java:153:50:153:60 | environment | Insecure LDAP authentication from $@. | InsecureLdapAuth.java:147:20:147:39 | ... + ... | LDAP connection string |

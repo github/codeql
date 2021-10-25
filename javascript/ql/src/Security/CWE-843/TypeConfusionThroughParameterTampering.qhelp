@@ -1,0 +1,101 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+	<overview>
+		<p>
+
+			Sanitizing untrusted HTTP request parameters is a common
+			technique for preventing injection attacks such as SQL injection or
+			path traversal. This is sometimes done by checking if the request
+			parameters contain blacklisted substrings.
+
+		</p>
+
+		<p>
+
+			However, sanitizing request parameters assuming they have type
+			<code>String</code> and using the builtin string methods such as
+			<code>String.prototype.indexOf</code> is susceptible to type confusion
+			attacks.
+
+			In a type confusion attack, an attacker tampers with an HTTP request
+			parameter such that it has a value of type <code>Array</code> instead
+			of the expected type <code>String</code>. Furthermore, the content of
+			the array has been crafted to bypass sanitizers by exploiting that
+			some identically named methods of strings and arrays behave differently.
+
+		</p>
+
+	</overview>
+
+	<recommendation>
+		<p>
+
+			Check the runtime type of sanitizer inputs if the input type
+			is user-controlled.
+
+		</p>
+
+		<p>
+
+			An even safer alternative is to design the application so that sanitization is not
+			needed, for instance by using prepared statements for SQL queries.
+
+		</p>
+
+
+	</recommendation>
+
+	<example>
+		<p>
+
+			For example, Node.js server frameworks usually present
+			request parameters as strings. But if an attacker sends multiple
+			request parameters with the same name, then the request parameter is
+			represented as an array instead.
+
+		</p>
+
+		<p>
+
+			In the following example, a sanitizer checks that a path does
+			not contain the <code>".."</code> string, which would allow an
+			attacker to access content outside a user-accessible directory.
+
+		</p>
+
+
+		<sample src="examples/TypeConfusionThroughParameterTampering.js" />
+
+		<p>
+
+			As written, this sanitizer is ineffective: an array like
+			<code>["../", "/../secret.txt"]</code> will bypass the sanitizer. The
+			array does not contain <code>".."</code> as an element, so the call to
+			<code>indexOf</code> returns <code>-1</code> .
+
+			This is problematic since the value of the <code>absolute</code>
+			variable then ends up being <code>"/secret.txt"</code>.
+
+			This happens since the concatenation of <code>"/public/"</code>
+			and the array results in <code>"/public/../,/../secret.txt"</code>,
+			which the <code>resolve</code>-call converts to
+			<code>"/secret.txt"</code>.
+
+		</p>
+
+		<p>
+
+			To fix the sanitizer, check that the request parameter is a
+			string, and not an array:
+
+		</p>
+
+		<sample src="examples/TypeConfusionThroughParameterTampering_fixed.js" />
+
+	</example>
+
+	<references>
+		<li>Node.js API: <a href="https://nodejs.org/api/querystring.html">querystring</a>.</li>
+	</references>
+</qhelp>

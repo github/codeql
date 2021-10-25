@@ -1,0 +1,42 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>The <code>__del__</code> method exists to release any resources held by an object when that object is deleted.
+The <code>__del__</code> is called only by the garbage collector which may call it after an indefinite delay or
+never.
+</p>
+
+<p>
+Consequently,  <code>__del__</code> method should not be relied on to release resources, such as file descriptors.
+Rather, these resources should be released explicitly.
+</p>
+
+<p>The existence of a complex <code>__del__</code> method suggests that this is the main or only way to release resources
+associated with the object.</p>
+
+</overview>
+<recommendation>
+
+<p>In order to ensure correct cleanup of the object add an explicit close(), or similar,
+method. Possibly make the object a context manager.</p>
+
+<p>The __del__ method should just call close()</p>
+
+
+</recommendation>
+<example>
+<p>The first example below shows a class which relies on <code>__del__</code> to release resources. 
+The second example shows an improved version of the class where <code>__del__</code> simply calls close.</p>
+
+<sample src="OverlyComplexDelMethod.py" />
+
+</example>
+<references>
+
+  <li>Python Standard Library: <a href="http://docs.python.org/library/stdtypes.html#context-manager-types">Context manager</a>.</li>
+
+</references>
+</qhelp>

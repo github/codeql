@@ -1,0 +1,42 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Holding a lock during a call to <code>System.Threading.Monitor.Wait()</code> can lead to
+performance problems or deadlock because the lock can prevent other threads from running. 
+This can be caused by nesting the call to <code>System.Threading.Monitor.Wait()</code> in
+two <code>lock</code> statements, or by waiting on a different object to the one
+which is locked.</p>
+
+<p>Synchronized methods (with the attribute <code>[MethodImpl(MethodImplOptions.Synchronized)]</code>)
+can also cause problems, because they are equivalent to <code>lock(this)</code> or 
+<code>lock(typeof(Class))</code>.</p>
+
+</overview>
+<recommendation>
+<p>Ensure that the call to <code>System.Threading.Monitor.Wait()</code> occurs within a single
+<code>lock</code> statement and ensure that the argument to <code>System.Threading.Monitor.Wait()</code>
+matches the variable in the <code>lock</code> statement.</p>
+
+</recommendation>
+<example>
+<p>The following example locks two variables, <code>countLock</code> and <code>textLock</code>,
+then calls <code>System.Threading.Monitor.Wait()</code>. However for the duration of <code>Wait()</code>,
+the variable <code>countLock</code> is locked, which deadlocks the program.</p>
+
+<sample src="LockedWait.cs" />
+
+<p>The problem can be fixed by moving the <code>lock</code> statement so that <code>countLock</code>
+is not locked for the duration of the wait.</p>
+
+<sample src="LockedWaitFix.cs" />
+
+</example>
+<references>
+
+   <li>MSDN, C# Reference: <a href="http://msdn.microsoft.com/en-gb/library/c5kehkcz.aspx">lock Statement</a>.</li>
+
+
+</references>
+</qhelp>

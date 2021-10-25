@@ -1,0 +1,1 @@
+semmle-extractor-options: --lang=3 -p ../../lib/ --max-import-depth=3

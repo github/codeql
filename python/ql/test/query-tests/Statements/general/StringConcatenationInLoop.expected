@@ -1,0 +1,2 @@
+| performance.py:6:9:6:20 | AugAssign | String concatenation in a loop is quadratic in the number of iterations. |
+| performance.py:12:9:12:29 | AssignStmt | String concatenation in a loop is quadratic in the number of iterations. |

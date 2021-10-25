@@ -1,0 +1,4 @@
+| c.c:10:5:10:10 | ... == ... | Equality test on floating point values may not behave as expected. |
+| c.c:14:5:14:14 | ... == ... | Equality test on floating point values may not behave as expected. |
+| c.c:16:5:16:12 | ... == ... | Equality test on floating point values may not behave as expected. |
+| c.c:17:5:17:12 | ... == ... | Equality test on floating point values may not behave as expected. |

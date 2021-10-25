@@ -1,0 +1,39 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+The indicated comment is a TODO comment.
+TODO comments are often used to indicate code that is incomplete. This may be necessary during the implementation of new functionality
+but TODO comments should not be present in stable code. Any TODO comments should be reviewed and the code completed as soon as possible
+to avoid the accumulation of partially implemented features.
+</p>
+
+</overview>
+<recommendation>
+<p>
+Implement the functionality indicated by the comment. If the comment no longer applies, delete it to avoid confusion.
+</p>
+
+</recommendation>
+<example><sample src="TodoComments.cpp" />
+
+</example>
+<references>
+
+<li>
+  <a href="http://en.wikipedia.org/wiki/Comment_%28computer_programming%29#Tags">Wikipedia: Comment tags</a>
+</li>
+<li>
+  <a href="http://www.approxion.com/?p=39">TODO or not TODO</a>
+</li>
+<li>
+  <a href="http://wordaligned.org/articles/todo">The case against TODO</a>
+</li>
+
+
+</references>
+</qhelp>

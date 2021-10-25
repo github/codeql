@@ -1,0 +1,41 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>Assigning a variable to itself does not have any effect. Therefore, such an assignment is either
+completely unnecessary, or it indicates a typo or a similar mistake.</p>
+
+</overview>
+<recommendation>
+
+<p>If the assignment is unnecessary, remove it. If the assignment indicates a typo or a similar mistake, correct
+the mistake.</p>
+
+</recommendation>
+<example>
+
+<p>The following example shows part of a method that is intended to make a copy of an existing 
+<code>MotionEvent</code> without preserving its history. On line 8, <code>o.mFlags</code> is
+assigned to itself. Given that the statement is surrounded by
+statements that transfer information from the fields of <code>o</code> to the
+fields of the new event, <code>ev</code>, the statement is clearly a mistake. To correct this, the 
+<code>mFlags</code> value should be assigned to <code>ev.mFlags</code> instead, as shown in the
+corrected method.</p>
+
+<sample src="SelfAssignment.java" />
+
+</example>
+<references>
+
+
+<li>
+Help - Eclipse Platform:
+<a href="https://help.eclipse.org/2020-12/advanced/content.jsp?topic=/org.eclipse.jdt.doc.user/reference/preferences/java/compiler/ref-preferences-errors-warnings.htm">Java Compiler Errors/Warnings Preferences</a>.
+</li>
+
+
+</references>
+</qhelp>

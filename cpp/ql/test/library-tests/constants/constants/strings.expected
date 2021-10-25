@@ -1,0 +1,6 @@
+| Narrow \u00a2 One | Narrow \u00a2 One |
+| Narrow \u00a2 Two | Narrow \u00a2 Two |
+| Narrow \u00a2 Zero | "Narrow \\xa2 Zero" |
+| Wide \u20ac One | Wide \u20ac One |
+| Wide \u20ac Two | Wide \u20ac Two |
+| Wide \u20ac Zero | L"Wide \\x20ac Zero" |

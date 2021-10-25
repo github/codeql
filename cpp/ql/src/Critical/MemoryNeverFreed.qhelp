@@ -1,0 +1,26 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+This rule finds calls to the <code>alloc</code> family of functions without a corresponding <code>free</code> call in the entire program.
+This leads to memory leaks.
+</p>
+
+<include src="aliasAnalysisWarning.inc.qhelp" />
+
+</overview>
+<recommendation>
+<p>Ensure that all memory allocated by the program is freed before it terminates.</p>
+
+</recommendation>
+<example>
+<sample src="MemoryNeverFreed.cpp" />
+
+
+
+</example>
+</qhelp>

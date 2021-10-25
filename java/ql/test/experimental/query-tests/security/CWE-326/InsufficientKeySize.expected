@@ -1,0 +1,11 @@
+| InsufficientKeySize.java:9:9:9:24 | init(...) | Key size should be at least 128 bits for AES encryption. |
+| InsufficientKeySize.java:17:9:17:36 | initialize(...) | Key size should be at least 2048 bits for RSA encryption. |
+| InsufficientKeySize.java:25:9:25:36 | initialize(...) | Key size should be at least 2048 bits for DSA encryption. |
+| InsufficientKeySize.java:34:9:34:39 | initialize(...) | Key size should be at least 256 bits for EC encryption. |
+| InsufficientKeySize.java:38:9:38:67 | initialize(...) | Key size should be at least 256 bits for EC encryption. |
+| InsufficientKeySize.java:48:9:48:39 | initialize(...) | Key size should be at least 256 bits for EC encryption. |
+| InsufficientKeySize.java:53:9:53:39 | initialize(...) | Key size should be at least 256 bits for EC encryption. |
+| InsufficientKeySize.java:58:9:58:40 | initialize(...) | Key size should be at least 256 bits for EC encryption. |
+| InsufficientKeySize.java:68:9:68:40 | initialize(...) | Key size should be at least 256 bits for EC encryption. |
+| InsufficientKeySize.java:78:9:78:40 | initialize(...) | Key size should be at least 256 bits for EC encryption. |
+| InsufficientKeySize.java:87:9:87:37 | initialize(...) | Key size should be at least 2048 bits for DH encryption. |

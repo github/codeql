@@ -1,0 +1,3 @@
+| StaticLocalFunctions.cs:7:9:7:33 | I | private |
+| StaticLocalFunctions.cs:7:9:7:33 | I | static |
+| StaticLocalFunctions.cs:8:9:8:28 | J | private |

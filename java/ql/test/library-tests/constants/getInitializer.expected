@@ -1,0 +1,6 @@
+| constants/Initializers.java:4:19:4:24 | SFIELD | constants/Initializers.java:4:28:4:29 | 12 |
+| constants/Initializers.java:6:12:6:17 | IFIELD | constants/Initializers.java:6:21:6:22 | 20 |
+| constants/Initializers.java:16:3:16:14 | int x | constants/Initializers.java:16:11:16:13 | 300 |
+| constants/Initializers.java:21:22:21:34 | SFIELD_OBJECT | constants/Initializers.java:21:38:21:47 | "a string" |
+| constants/Initializers.java:24:13:24:14 | sf | constants/Initializers.java:24:18:24:18 | 3 |
+| constants/Initializers.java:26:6:26:6 | f | constants/Initializers.java:26:10:26:10 | 4 |

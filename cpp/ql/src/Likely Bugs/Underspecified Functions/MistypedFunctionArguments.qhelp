@@ -1,0 +1,29 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>A function is called with at least one argument whose type is incompatible with the type of
+ the corresponding parameter of the function being called.  This may cause the called function
+ to behave unpredictably.</p>
+
+<p>This may indicate that an incorrect function is being called, or that the
+ signature (parameter list and parameter types) of the called function 
+ is not known to the author.</p>
+
+</overview>
+<recommendation>
+<p>Call the function with the proper argument types.  In some cases, it may
+ suffice to provide an explicit cast of an argument to the desired (parameter) type.</p>
+
+</recommendation>
+<example><sample src="MistypedFunctionArguments.c" />
+
+</example>
+
+<references>
+<li>SEI CERT C Coding Standard: <a href="https://wiki.sei.cmu.edu/confluence/display/c/DCL20-C.+Explicitly+specify+void+when+a+function+accepts+no+arguments"> DCL20-C. Explicitly specify void when a function accepts no arguments </a></li>
+</references>
+</qhelp>

@@ -1,0 +1,196 @@
+| Class | specifiers2pp.cpp:8:7:8:13 | MyClass | MyClass | abstract |
+| Class | specifiers2pp.cpp:24:7:24:14 | MyClass2 | MyClass2 | abstract |
+| Function | cpp20.cpp:5:7:5:7 | operator= | operator= | extern |
+| Function | cpp20.cpp:5:7:5:7 | operator= | operator= | extern |
+| Function | cpp20.cpp:5:7:5:7 | operator= | operator= | inline |
+| Function | cpp20.cpp:5:7:5:7 | operator= | operator= | inline |
+| Function | cpp20.cpp:5:7:5:7 | operator= | operator= | is_constexpr |
+| Function | cpp20.cpp:5:7:5:7 | operator= | operator= | is_constexpr |
+| Function | cpp20.cpp:5:7:5:7 | operator= | operator= | public |
+| Function | cpp20.cpp:5:7:5:7 | operator= | operator= | public |
+| Function | cpp20.cpp:6:19:6:34 | member_constexpr | member_constexpr | declared_constexpr |
+| Function | cpp20.cpp:6:19:6:34 | member_constexpr | member_constexpr | inline |
+| Function | cpp20.cpp:6:19:6:34 | member_constexpr | member_constexpr | is_constexpr |
+| Function | cpp20.cpp:6:19:6:34 | member_constexpr | member_constexpr | private |
+| Function | cpp20.cpp:7:19:7:40 | member_const_constexpr | member_const_constexpr | const |
+| Function | cpp20.cpp:7:19:7:40 | member_const_constexpr | member_const_constexpr | declared_constexpr |
+| Function | cpp20.cpp:7:19:7:40 | member_const_constexpr | member_const_constexpr | inline |
+| Function | cpp20.cpp:7:19:7:40 | member_const_constexpr | member_const_constexpr | is_constexpr |
+| Function | cpp20.cpp:7:19:7:40 | member_const_constexpr | member_const_constexpr | private |
+| Function | specifiers2.c:11:6:11:6 | f | f | c_linkage |
+| Function | specifiers2.c:11:6:11:6 | f | f | extern |
+| Function | specifiers2.c:12:13:12:13 | f | f | c_linkage |
+| Function | specifiers2.c:12:13:12:13 | f | f | extern |
+| Function | specifiers2.c:13:13:13:13 | f | f | c_linkage |
+| Function | specifiers2.c:13:13:13:13 | f | f | extern |
+| Function | specifiers2.c:15:13:15:13 | g | g | c_linkage |
+| Function | specifiers2.c:15:13:15:13 | g | g | extern |
+| Function | specifiers2.c:16:13:16:13 | g | g | c_linkage |
+| Function | specifiers2.c:16:13:16:13 | g | g | extern |
+| Function | specifiers2.c:21:6:21:12 | somefun | somefun | c_linkage |
+| Function | specifiers2.c:21:6:21:12 | somefun | somefun | extern |
+| Function | specifiers2.c:25:12:25:14 | add | add | c_linkage |
+| Function | specifiers2.c:25:12:25:14 | add | add | inline |
+| Function | specifiers2pp.cpp:8:7:8:7 | MyClass | MyClass | extern |
+| Function | specifiers2pp.cpp:8:7:8:7 | MyClass | MyClass | extern |
+| Function | specifiers2pp.cpp:8:7:8:7 | MyClass | MyClass | inline |
+| Function | specifiers2pp.cpp:8:7:8:7 | MyClass | MyClass | inline |
+| Function | specifiers2pp.cpp:8:7:8:7 | MyClass | MyClass | is_constexpr |
+| Function | specifiers2pp.cpp:8:7:8:7 | MyClass | MyClass | is_constexpr |
+| Function | specifiers2pp.cpp:8:7:8:7 | MyClass | MyClass | public |
+| Function | specifiers2pp.cpp:8:7:8:7 | MyClass | MyClass | public |
+| Function | specifiers2pp.cpp:8:7:8:7 | operator= | operator= | extern |
+| Function | specifiers2pp.cpp:8:7:8:7 | operator= | operator= | extern |
+| Function | specifiers2pp.cpp:8:7:8:7 | operator= | operator= | inline |
+| Function | specifiers2pp.cpp:8:7:8:7 | operator= | operator= | inline |
+| Function | specifiers2pp.cpp:8:7:8:7 | operator= | operator= | public |
+| Function | specifiers2pp.cpp:8:7:8:7 | operator= | operator= | public |
+| Function | specifiers2pp.cpp:10:18:10:24 | MyClass | MyClass | explicit |
+| Function | specifiers2pp.cpp:10:18:10:24 | MyClass | MyClass | extern |
+| Function | specifiers2pp.cpp:10:18:10:24 | MyClass | MyClass | public |
+| Function | specifiers2pp.cpp:12:14:12:22 | publicFun | publicFun | inline |
+| Function | specifiers2pp.cpp:12:14:12:22 | publicFun | publicFun | public |
+| Function | specifiers2pp.cpp:13:21:13:26 | getInt | getInt | declared_virtual |
+| Function | specifiers2pp.cpp:13:21:13:26 | getInt | getInt | extern |
+| Function | specifiers2pp.cpp:13:21:13:26 | getInt | getInt | public |
+| Function | specifiers2pp.cpp:13:21:13:26 | getInt | getInt | pure |
+| Function | specifiers2pp.cpp:13:21:13:26 | getInt | getInt | virtual |
+| Function | specifiers2pp.cpp:14:21:14:21 | f | f | declared_virtual |
+| Function | specifiers2pp.cpp:14:21:14:21 | f | f | extern |
+| Function | specifiers2pp.cpp:14:21:14:21 | f | f | public |
+| Function | specifiers2pp.cpp:14:21:14:21 | f | f | virtual |
+| Function | specifiers2pp.cpp:18:14:18:23 | privateFun | privateFun | inline |
+| Function | specifiers2pp.cpp:18:14:18:23 | privateFun | privateFun | private |
+| Function | specifiers2pp.cpp:21:14:21:25 | protectedFun | protectedFun | inline |
+| Function | specifiers2pp.cpp:21:14:21:25 | protectedFun | protectedFun | protected |
+| Function | specifiers2pp.cpp:24:7:24:7 | MyClass2 | MyClass2 | extern |
+| Function | specifiers2pp.cpp:24:7:24:7 | MyClass2 | MyClass2 | extern |
+| Function | specifiers2pp.cpp:24:7:24:7 | MyClass2 | MyClass2 | extern |
+| Function | specifiers2pp.cpp:24:7:24:7 | MyClass2 | MyClass2 | inline |
+| Function | specifiers2pp.cpp:24:7:24:7 | MyClass2 | MyClass2 | inline |
+| Function | specifiers2pp.cpp:24:7:24:7 | MyClass2 | MyClass2 | inline |
+| Function | specifiers2pp.cpp:24:7:24:7 | MyClass2 | MyClass2 | is_constexpr |
+| Function | specifiers2pp.cpp:24:7:24:7 | MyClass2 | MyClass2 | is_constexpr |
+| Function | specifiers2pp.cpp:24:7:24:7 | MyClass2 | MyClass2 | public |
+| Function | specifiers2pp.cpp:24:7:24:7 | MyClass2 | MyClass2 | public |
+| Function | specifiers2pp.cpp:24:7:24:7 | MyClass2 | MyClass2 | public |
+| Function | specifiers2pp.cpp:24:7:24:7 | operator= | operator= | extern |
+| Function | specifiers2pp.cpp:24:7:24:7 | operator= | operator= | extern |
+| Function | specifiers2pp.cpp:24:7:24:7 | operator= | operator= | inline |
+| Function | specifiers2pp.cpp:24:7:24:7 | operator= | operator= | inline |
+| Function | specifiers2pp.cpp:24:7:24:7 | operator= | operator= | public |
+| Function | specifiers2pp.cpp:24:7:24:7 | operator= | operator= | public |
+| Function | specifiers2pp.cpp:26:21:26:21 | f | f | declared_virtual |
+| Function | specifiers2pp.cpp:26:21:26:21 | f | f | extern |
+| Function | specifiers2pp.cpp:26:21:26:21 | f | f | override |
+| Function | specifiers2pp.cpp:26:21:26:21 | f | f | public |
+| Function | specifiers2pp.cpp:26:21:26:21 | f | f | virtual |
+| Function | specifiers2pp.cpp:29:7:29:7 | operator= | operator= | extern |
+| Function | specifiers2pp.cpp:29:7:29:7 | operator= | operator= | extern |
+| Function | specifiers2pp.cpp:29:7:29:7 | operator= | operator= | inline |
+| Function | specifiers2pp.cpp:29:7:29:7 | operator= | operator= | inline |
+| Function | specifiers2pp.cpp:29:7:29:7 | operator= | operator= | is_constexpr |
+| Function | specifiers2pp.cpp:29:7:29:7 | operator= | operator= | is_constexpr |
+| Function | specifiers2pp.cpp:29:7:29:7 | operator= | operator= | public |
+| Function | specifiers2pp.cpp:29:7:29:7 | operator= | operator= | public |
+| Function | specifiers2pp.cpp:33:5:33:18 | fun | fun | public |
+| Function | specifiers2pp.cpp:35:7:35:7 | operator= | operator= | extern |
+| Function | specifiers2pp.cpp:35:7:35:7 | operator= | operator= | extern |
+| Function | specifiers2pp.cpp:35:7:35:7 | operator= | operator= | inline |
+| Function | specifiers2pp.cpp:35:7:35:7 | operator= | operator= | inline |
+| Function | specifiers2pp.cpp:35:7:35:7 | operator= | operator= | is_constexpr |
+| Function | specifiers2pp.cpp:35:7:35:7 | operator= | operator= | is_constexpr |
+| Function | specifiers2pp.cpp:35:7:35:7 | operator= | operator= | public |
+| Function | specifiers2pp.cpp:35:7:35:7 | operator= | operator= | public |
+| Function | specifiers2pp.cpp:40:12:40:18 | someFun | someFun | extern |
+| Function | specifiers2pp.cpp:41:16:41:23 | someFun2 | someFun2 | c_linkage |
+| Function | specifiers2pp.cpp:41:16:41:23 | someFun2 | someFun2 | extern |
+| Function | specifiers2pp.cpp:43:9:43:16 | someFun3 | someFun3 | c_linkage |
+| Function | specifiers2pp.cpp:43:9:43:16 | someFun3 | someFun3 | extern |
+| Function | specifiers2pp.cpp:44:16:44:23 | someFun4 | someFun4 | c_linkage |
+| Function | specifiers2pp.cpp:44:16:44:23 | someFun4 | someFun4 | static |
+| Function | specifiers2pp.cpp:62:7:62:7 | operator= | operator= | extern |
+| Function | specifiers2pp.cpp:62:7:62:7 | operator= | operator= | extern |
+| Function | specifiers2pp.cpp:62:7:62:7 | operator= | operator= | inline |
+| Function | specifiers2pp.cpp:62:7:62:7 | operator= | operator= | inline |
+| Function | specifiers2pp.cpp:62:7:62:7 | operator= | operator= | is_constexpr |
+| Function | specifiers2pp.cpp:62:7:62:7 | operator= | operator= | is_constexpr |
+| Function | specifiers2pp.cpp:62:7:62:7 | operator= | operator= | public |
+| Function | specifiers2pp.cpp:62:7:62:7 | operator= | operator= | public |
+| Function | specifiers2pp.cpp:63:19:63:34 | member_constexpr | member_constexpr | const |
+| Function | specifiers2pp.cpp:63:19:63:34 | member_constexpr | member_constexpr | declared_constexpr |
+| Function | specifiers2pp.cpp:63:19:63:34 | member_constexpr | member_constexpr | inline |
+| Function | specifiers2pp.cpp:63:19:63:34 | member_constexpr | member_constexpr | is_constexpr |
+| Function | specifiers2pp.cpp:63:19:63:34 | member_constexpr | member_constexpr | private |
+| Function | specifiers2pp.cpp:64:19:64:40 | member_const_constexpr | member_const_constexpr | const |
+| Function | specifiers2pp.cpp:64:19:64:40 | member_const_constexpr | member_const_constexpr | declared_constexpr |
+| Function | specifiers2pp.cpp:64:19:64:40 | member_const_constexpr | member_const_constexpr | inline |
+| Function | specifiers2pp.cpp:64:19:64:40 | member_const_constexpr | member_const_constexpr | is_constexpr |
+| Function | specifiers2pp.cpp:64:19:64:40 | member_const_constexpr | member_const_constexpr | private |
+| FunctionDeclarationEntry | specifiers2.c:11:6:11:6 | declaration of f | f | c_linkage |
+| FunctionDeclarationEntry | specifiers2.c:11:6:11:6 | declaration of f | f | void_param_list |
+| FunctionDeclarationEntry | specifiers2.c:12:13:12:13 | declaration of f | f | c_linkage |
+| FunctionDeclarationEntry | specifiers2.c:12:13:12:13 | declaration of f | f | extern |
+| FunctionDeclarationEntry | specifiers2.c:12:13:12:13 | declaration of f | f | void_param_list |
+| FunctionDeclarationEntry | specifiers2.c:13:13:13:13 | declaration of f | f | c_linkage |
+| FunctionDeclarationEntry | specifiers2.c:13:13:13:13 | declaration of f | f | extern |
+| FunctionDeclarationEntry | specifiers2.c:13:13:13:13 | declaration of f | f | void_param_list |
+| FunctionDeclarationEntry | specifiers2.c:15:13:15:13 | declaration of g | g | c_linkage |
+| FunctionDeclarationEntry | specifiers2.c:15:13:15:13 | declaration of g | g | extern |
+| FunctionDeclarationEntry | specifiers2.c:15:13:15:13 | declaration of g | g | void_param_list |
+| FunctionDeclarationEntry | specifiers2.c:16:13:16:13 | declaration of g | g | c_linkage |
+| FunctionDeclarationEntry | specifiers2.c:16:13:16:13 | declaration of g | g | extern |
+| FunctionDeclarationEntry | specifiers2.c:16:13:16:13 | declaration of g | g | void_param_list |
+| FunctionDeclarationEntry | specifiers2.c:21:6:21:12 | declaration of somefun | somefun | c_linkage |
+| FunctionDeclarationEntry | specifiers2.c:25:12:25:14 | definition of add | add | c_linkage |
+| FunctionDeclarationEntry | specifiers2pp.cpp:2:6:2:9 | definition of afun | afun | void_param_list |
+| FunctionDeclarationEntry | specifiers2pp.cpp:10:18:10:24 | declaration of MyClass | MyClass | explicit |
+| FunctionDeclarationEntry | specifiers2pp.cpp:12:14:12:22 | definition of publicFun | publicFun | void_param_list |
+| FunctionDeclarationEntry | specifiers2pp.cpp:13:21:13:26 | declaration of getInt | getInt | virtual |
+| FunctionDeclarationEntry | specifiers2pp.cpp:14:21:14:21 | declaration of f | f | virtual |
+| FunctionDeclarationEntry | specifiers2pp.cpp:18:14:18:23 | definition of privateFun | privateFun | void_param_list |
+| FunctionDeclarationEntry | specifiers2pp.cpp:21:14:21:25 | definition of protectedFun | protectedFun | void_param_list |
+| FunctionDeclarationEntry | specifiers2pp.cpp:26:21:26:21 | declaration of f | f | virtual |
+| FunctionDeclarationEntry | specifiers2pp.cpp:31:13:31:15 | declaration of fun | fun | void_param_list |
+| FunctionDeclarationEntry | specifiers2pp.cpp:33:5:33:18 | definition of fun | fun | void_param_list |
+| FunctionDeclarationEntry | specifiers2pp.cpp:40:12:40:18 | declaration of someFun | someFun | extern |
+| FunctionDeclarationEntry | specifiers2pp.cpp:41:16:41:23 | declaration of someFun2 | someFun2 | c_linkage |
+| FunctionDeclarationEntry | specifiers2pp.cpp:41:16:41:23 | declaration of someFun2 | someFun2 | extern |
+| FunctionDeclarationEntry | specifiers2pp.cpp:43:9:43:16 | declaration of someFun3 | someFun3 | c_linkage |
+| FunctionDeclarationEntry | specifiers2pp.cpp:43:9:43:16 | declaration of someFun3 | someFun3 | extern |
+| FunctionDeclarationEntry | specifiers2pp.cpp:44:16:44:23 | declaration of someFun4 | someFun4 | c_linkage |
+| FunctionDeclarationEntry | specifiers2pp.cpp:44:16:44:23 | declaration of someFun4 | someFun4 | static |
+| TypedefType | file://:0:0:0:0 | Const | Const | const |
+| TypedefType | specifiers2.c:27:19:27:26 | constInt | constInt | const |
+| TypedefType | specifiers2pp.cpp:47:20:47:32 | const_pointer | const_pointer | const |
+| TypedefType | specifiers2pp.cpp:49:32:49:53 | volatile_const_pointer | volatile_const_pointer | const |
+| TypedefType | specifiers2pp.cpp:49:32:49:53 | volatile_const_pointer | volatile_const_pointer | volatile |
+| TypedefType | specifiers2pp.cpp:50:32:50:54 | volatile_const_pointer2 | volatile_const_pointer2 | const |
+| TypedefType | specifiers2pp.cpp:50:32:50:54 | volatile_const_pointer2 | volatile_const_pointer2 | volatile |
+| TypedefType | specifiers2pp.cpp:53:23:53:45 | volatile_const_pointer3 | volatile_const_pointer3 | const |
+| TypedefType | specifiers2pp.cpp:53:23:53:45 | volatile_const_pointer3 | volatile_const_pointer3 | volatile |
+| TypedefType | specifiers2pp.cpp:54:44:54:74 | volatile_const_restrict_pointer | volatile_const_restrict_pointer | const |
+| TypedefType | specifiers2pp.cpp:54:44:54:74 | volatile_const_restrict_pointer | volatile_const_restrict_pointer | restrict |
+| TypedefType | specifiers2pp.cpp:54:44:54:74 | volatile_const_restrict_pointer | volatile_const_restrict_pointer | volatile |
+| TypedefType | specifiers2pp.cpp:56:28:56:32 | Const | Const | const |
+| TypedefType | specifiers2pp.cpp:58:7:58:15 | Const_int | Const_int | const |
+| TypedefType | specifiers2pp.cpp:60:28:60:45 | volatile_Const_int | volatile_Const_int | const |
+| TypedefType | specifiers2pp.cpp:60:28:60:45 | volatile_Const_int | volatile_Const_int | volatile |
+| Variable | specifiers2.c:8:12:8:12 | j | j | extern |
+| Variable | specifiers2.c:9:12:9:12 | j | j | extern |
+| Variable | specifiers2.c:18:21:18:23 | svi | svi | static |
+| Variable | specifiers2pp.cpp:3:9:3:9 | x | x | auto |
+| Variable | specifiers2pp.cpp:4:10:4:11 | x2 | x2 | auto |
+| Variable | specifiers2pp.cpp:5:18:5:18 | y | y | register |
+| Variable | specifiers2pp.cpp:11:13:11:21 | publicInt | publicInt | public |
+| Variable | specifiers2pp.cpp:16:13:16:22 | privateInt | privateInt | private |
+| Variable | specifiers2pp.cpp:17:21:17:30 | mutableInt | mutableInt | private |
+| Variable | specifiers2pp.cpp:20:13:20:24 | protectedInt | protectedInt | protected |
+| Variable | specifiers2pp.cpp:52:25:52:27 | vci | vci | static |
+| VariableDeclarationEntry | specifiers2.c:5:12:5:12 | declaration of i | i | extern |
+| VariableDeclarationEntry | specifiers2.c:6:12:6:12 | declaration of i | i | extern |
+| VariableDeclarationEntry | specifiers2.c:8:12:8:12 | declaration of j | j | extern |
+| VariableDeclarationEntry | specifiers2.c:9:12:9:12 | declaration of j | j | extern |
+| VariableDeclarationEntry | specifiers2.c:18:21:18:23 | definition of svi | svi | static |
+| VariableDeclarationEntry | specifiers2pp.cpp:5:18:5:18 | definition of y | y | register |
+| VariableDeclarationEntry | specifiers2pp.cpp:17:21:17:30 | definition of mutableInt | mutableInt | mutable |

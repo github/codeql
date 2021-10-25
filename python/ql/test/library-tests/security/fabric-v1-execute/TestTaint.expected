@@ -1,0 +1,10 @@
+| test.py:8 | ok   | unsafe | cmd | externally controlled string |
+| test.py:8 | ok   | unsafe | cmd2 | externally controlled string |
+| test.py:9 | ok   | unsafe | safe_arg | <NO TAINT> |
+| test.py:9 | ok   | unsafe | safe_optional | <NO TAINT> |
+| test.py:16 | ok   | unsafe | cmd | externally controlled string |
+| test.py:16 | ok   | unsafe | cmd2 | externally controlled string |
+| test.py:17 | ok   | unsafe | safe_arg | <NO TAINT> |
+| test.py:17 | ok   | unsafe | safe_optional | <NO TAINT> |
+| test.py:23 | ok   | some_http_handler | cmd | externally controlled string |
+| test.py:23 | ok   | some_http_handler | cmd2 | externally controlled string |

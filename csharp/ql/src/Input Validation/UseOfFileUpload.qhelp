@@ -1,0 +1,28 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Allowing end users to upload files may lead to severe security threats. Attackers may use this 
+open door to compromise your application, either by overwriting data or by injecting malicious code 
+to run on your server.</p>
+
+</overview>
+<recommendation>
+<p>Whist it might not be possible to remove the ability to upload files, special care should be 
+taken to ensure files are handled in a secure manner. The following checks should be implemented to 
+ensure the security of your application:</p>
+<ul>
+  <li>Validate each path where the uploaded data is written to.</li>
+  <li>Check the content of the data being uploaded without just relying on the MIME type.</li>
+  <li>Set a size limit for the uploaded data.</li>  
+  <li>Do not run your web application with administrator privileges.</li>
+  <li>Log each upload request.</li> 
+  <li>Do not display system information or exception in case the upload fails as this information may help attackers to find a breach.</li> 
+</ul>
+
+</recommendation>
+<references>
+
+</references>
+</qhelp>

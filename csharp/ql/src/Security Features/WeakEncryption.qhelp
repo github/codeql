@@ -1,0 +1,25 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Weak encryption algorithms provide very little security. For example DES encryption uses keys of 56 bits only, and no longer provides sufficient protection for sensitive data. TripleDES should also be deprecated for very sensitive data: Although it improves on DES by using 168-bit long keys, it provides in fact at most 112 bits of security.</p>
+
+</overview>
+<recommendation>
+<p>You should switch to a more secure encryption algorithm, such as AES (Advanced Encryption Standard) and use a key length which is reasonable for the application for which it is being used.</p>
+
+</recommendation>
+<example>
+<p>This example uses DES, which is limited to a 56-bit key. The key provided is actually 64 bits but the last bit of each byte is turned into a parity bit. For example the bytes 01010101 and 01010100 can be used in place of each other when encrypting and decrypting.</p>
+<sample src="WeakEncryption.cs" />
+
+</example>
+<references>
+
+  <li>Wikipedia: <a href="http://en.wikipedia.org/wiki/Key_size">Key Size</a></li>
+  <li>Wikipedia: <a href="http://en.wikipedia.org/wiki/Data_Encryption_Standard">DES</a></li>
+
+
+</references>
+</qhelp>

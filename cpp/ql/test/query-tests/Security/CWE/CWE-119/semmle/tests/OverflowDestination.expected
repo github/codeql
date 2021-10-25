@@ -1,0 +1,4 @@
+| overflowdestination.cpp:30:2:30:8 | call to strncpy | To avoid overflow, this operation should be bounded by destination-buffer size, not source-buffer size. |
+| overflowdestination.cpp:46:2:46:7 | call to memcpy | To avoid overflow, this operation should be bounded by destination-buffer size, not source-buffer size. |
+| overflowdestination.cpp:53:2:53:7 | call to memcpy | To avoid overflow, this operation should be bounded by destination-buffer size, not source-buffer size. |
+| overflowdestination.cpp:64:2:64:7 | call to memcpy | To avoid overflow, this operation should be bounded by destination-buffer size, not source-buffer size. |

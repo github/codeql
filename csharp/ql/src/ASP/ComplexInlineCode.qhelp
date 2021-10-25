@@ -1,0 +1,35 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>ASP.NET allows arbitrary amounts of code to be embedded into a page. If
+that code is lengthy, then the overall page can be harder to read.
+The code itself does not fully benefit from IDE features, and the
+HTML content of the page is harder to read due to being obstructed
+by the code.</p>
+</overview>
+
+<recommendation>
+<p>Consider updating the page to use the Code-Behind Page Model
+(see <a href="https://msdn.microsoft.com/en-us/library/015103yb.aspx">ASP.NET
+Web Page Code Model for details</a>). In this model the markup and
+programming code are stored in separate files for easier maintenance.</p>
+</recommendation>
+
+<example>
+<p>This example uses a large amount of code in the middle of a page.</p>
+<sample src="ComplexInlineCodeBad.aspx" />
+<p>In the following example, the code is stored in a code-behind
+file. This separation of the HTML content from the VB.Net content
+makes the intention of the ASP page clearer and also simplifies reuse
+of the code.</p>
+<sample src="ComplexInlineCodeGood.aspx" />
+</example>
+
+<references>
+<li>MSDN: <a href="https://msdn.microsoft.com/en-us/library/ms973868.aspx">Introduction to ASP.NET and Web Forms</a>,
+<a href="https://msdn.microsoft.com/en-us/library/fy30at8h(v=vs.100).aspx">ASP.NET Page Syntax</a>,
+<a href="https://msdn.microsoft.com/en-us/library/015103yb.aspx">ASP.NET Web Page Code Model</a>.</li>
+</references>
+</qhelp>

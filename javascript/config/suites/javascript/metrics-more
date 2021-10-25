@@ -1,0 +1,13 @@
++ semmlecode-javascript-queries/Comments/FCommentedOutCode.ql: /Metrics/Files
++ semmlecode-javascript-queries/Metrics/FFunctions.ql: /Metrics/Files
++ semmlecode-javascript-queries/Metrics/FNumberOfStatements.ql: /Metrics/Files
++ semmlecode-javascript-queries/Metrics/FCyclomaticComplexity.ql: /Metrics/Files
++ semmlecode-javascript-queries/Metrics/FCommentRatio.ql: /Metrics/Files
++ semmlecode-javascript-queries/Metrics/FUseOfES6.ql: /Metrics/Files
++ semmlecode-javascript-queries/Metrics/FNumberOfTests.ql: /Metrics/Files
+
++ semmlecode-javascript-queries/Metrics/FLinesOfDuplicatedCode.ql: /Metrics/Duplication
++ semmlecode-javascript-queries/Metrics/FLinesOfSimilarCode.ql: /Metrics/Duplication
+
++ semmlecode-javascript-queries/Metrics/FunLinesOfCode.ql: /Metrics/Functions
++ semmlecode-javascript-queries/Metrics/FunCyclomaticComplexity.ql: /Metrics/Functions

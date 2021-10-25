@@ -1,0 +1,38 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p> A local non-static variable of a non-class type has an undefined value
+before it is initialized. For example, it is incorrect to rely on
+an uninitialized integer to have the value <code>0</code>.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Review the code and consider whether the variable should have an initializer or
+whether some path through the program lacks an assignment to the variable.
+</p>
+
+</recommendation>
+<example>
+<p>The function <code>absWrong</code> does not initialize the variable <code>j</code>
+in the case where <code>i = 0</code>. Functions <code>absCorrect1</code> and
+<code>absCorrect2</code> remedy this deficiency by adding an initializer and adding
+an assignment to one of the paths through the program, respectively.
+</p>
+
+<sample src="UninitializedLocal.cpp" />
+
+
+</example>
+<references>
+
+  <li>ISO/IEC 9899:2011: <a href="https://www.iso.org/standard/57853.html">Programming languages - C (Section 6.3.2.1)</a>.</li>
+
+</references>
+</qhelp>

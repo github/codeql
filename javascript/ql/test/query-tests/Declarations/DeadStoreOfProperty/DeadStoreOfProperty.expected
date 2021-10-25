@@ -1,0 +1,18 @@
+| exports.js:2:1:2:22 | exports ... = "yes" | This write to property 'answer' is useless, since $@ always overrides it. | exports.js:3:1:3:21 | exports ...  = "no" | another property write |
+| fieldInit.ts:10:3:10:8 | f = 4; | This write to property 'f' is useless, since $@ always overrides it. | fieldInit.ts:13:5:13:14 | this.f = 5 | another property write |
+| fieldInit.ts:18:22:18:22 | h | This write to property 'h' is useless, since $@ always overrides it. | fieldInit.ts:19:5:19:14 | this.h = h | another property write |
+| real-world-examples.js:5:4:5:11 | o.p = 42 | This write to property 'p' is useless, since $@ always overrides it. | real-world-examples.js:10:2:10:9 | o.p = 42 | another property write |
+| real-world-examples.js:15:9:15:18 | o.p1 += 42 | This write to property 'p1' is useless, since $@ always overrides it. | real-world-examples.js:15:2:15:18 | o.p1 = o.p1 += 42 | another property write |
+| real-world-examples.js:16:11:16:20 | o.p2 *= 42 | This write to property 'p2' is useless, since $@ always overrides it. | real-world-examples.js:16:2:16:21 | o.p2 -= (o.p2 *= 42) | another property write |
+| real-world-examples.js:29:5:29:12 | o.p = 42 | This write to property 'p' is useless, since $@ always overrides it. | real-world-examples.js:32:3:32:10 | o.p = 42 | another property write |
+| real-world-examples.js:38:15:38:24 | o.p = f3() | This write to property 'p' is useless, since $@ always overrides it. | real-world-examples.js:38:2:38:31 | o.p = f ...  : f4() | another property write |
+| tst.js:3:5:3:16 | o.pure1 = 42 | This write to property 'pure1' is useless, since $@ always overrides it. | tst.js:4:5:4:16 | o.pure1 = 42 | another property write |
+| tst.js:6:5:6:16 | o.pure2 = 42 | This write to property 'pure2' is useless, since $@ always overrides it. | tst.js:7:5:7:16 | o.pure2 = 43 | another property write |
+| tst.js:13:5:13:16 | o.pure4 = 42 | This write to property 'pure4' is useless, since $@ always overrides it. | tst.js:15:5:15:16 | o.pure4 = 42 | another property write |
+| tst.js:20:5:20:17 | o.pure6 = f() | This write to property 'pure6' is useless, since $@ always overrides it. | tst.js:21:5:21:16 | o.pure6 = 42 | another property write |
+| tst.js:23:5:23:16 | o.pure7 = 42 | This write to property 'pure7' is useless, since $@ always overrides it. | tst.js:25:5:25:16 | o.pure7 = 42 | another property write |
+| tst.js:76:5:76:34 | o.pure1 ... te = 42 | This write to property 'pure16_simpleAliasWrite' is useless, since $@ always overrides it. | tst.js:77:5:77:36 | o16.pur ... te = 42 | another property write |
+| tst.js:95:5:95:17 | o.pure18 = 42 | This write to property 'pure18' is useless, since $@ always overrides it. | tst.js:96:5:96:17 | o.pure18 = 42 | another property write |
+| tst.js:96:5:96:17 | o.pure18 = 42 | This write to property 'pure18' is useless, since $@ always overrides it. | tst.js:97:5:97:17 | o.pure18 = 42 | another property write |
+| tst.js:114:2:114:14 | o.setter = 42 | This write to property 'setter' is useless, since $@ always overrides it. | tst.js:115:2:115:14 | o.setter = 87 | another property write |
+| tst.js:118:2:118:104 | Object. ... lue()}) | This write to property 'prop' is useless, since $@ always overrides it. | tst.js:119:2:119:12 | o.prop = 42 | another property write |

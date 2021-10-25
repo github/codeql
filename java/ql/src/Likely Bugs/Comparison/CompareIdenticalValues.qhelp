@@ -1,0 +1,57 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>If two identical expressions are compared (that is, checked for equality or
+inequality), this is typically an
+indication of a mistake, because the Boolean value of the comparison
+is always the same. Often, it indicates that the wrong qualifier has been
+used on a field access.</p>
+
+<p>An exception applies to inequality (<code>!=</code>) and equality (<code>==</code>) tests
+of a floating point variable with itself: the special floating point value <code>NaN</code> ("not-a-number")
+is the only value that is not considered to be equal to itself. Thus, the test <code>x != x</code> where
+<code>x</code> is a <code>float</code> or <code>double</code> variable is equivalent to checking whether
+<code>x</code> is <code>NaN</code>, and similarly for <code>x == x</code>.</p>
+
+</overview>
+<recommendation>
+
+<p>It is never good practice to compare a value with itself. If you require constant
+behavior, use the Boolean literals <code>true</code> and
+<code>false</code>, rather than encoding them obscurely as <code>1 == 1</code>
+or similar.</p>
+
+<p>If an inequality test (using <code>!=</code>) of a floating point variable with itself is intentional, it
+should be replaced by <code>Double.isNaN(...)</code> or <code>Float.isNaN(...)</code> for readability.
+Similarly, if an equality test (using <code>==</code>) of a floating point variable with itself is intentional, it
+should be replaced by <code>!Double.isNaN(...)</code> or <code>!Float.isNaN(...)</code>.</p>
+
+</recommendation>
+<example>
+
+<p>In the example below, the original version of <code>Customer</code> compares <code>id</code> with
+<code>id</code>, which always returns <code>true</code>. The corrected version of <code>Customer</code>
+includes the missing qualifier <code>o</code> in the comparison of <code>id</code> with <code>o.id</code>.</p>
+
+<sample src="CompareIdenticalValues.java" />
+
+</example>
+<references>
+
+
+<li>
+Help - Eclipse Platform:
+<a href="https://help.eclipse.org/2020-12/advanced/content.jsp?topic=/org.eclipse.jdt.doc.user/reference/preferences/java/compiler/ref-preferences-errors-warnings.htm">Java Compiler Errors/Warnings Preferences</a>.
+</li>
+<li>
+Java Language Specification:
+<a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-15.html#jls-15.21.1">15.21.1. Numerical Equality Operators</a>.
+</li>
+
+
+</references>
+</qhelp>

@@ -1,0 +1,42 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>This metric measures the percentage of lines of code in each file that use macros.</p>
+
+<p>Macros are useful for defining constants in header files to avoid having magic constants scattered 
+throughout a project. However, files with a high percentage of lines that use macros are likely to be 
+using macros to encapsulate functionality. Such use can lead to code that is hard to read and understand, 
+because standard assumptions about the control-flow of a function, and how many times expressions are 
+evaluated, may no longer hold.</p>
+
+<p>With regards to performance, modern compilers usually perform aggressive inlining and the difference 
+between a macro invocation and a function call is negligible. Functions have much better error checking 
+and IDE support than macros.</p>
+
+<sample src="FMacroRatio.cpp" />
+
+</overview>
+
+<recommendation>
+
+<p>Try to limit the use of macros to constants. Complicated uses of macros can often be replaced by functions.</p>
+
+</recommendation>
+<references>
+
+<li>
+  MSDN Library: <a href="https://docs.microsoft.com/en-us/cpp/preprocessor/macros-c-cpp">Macros (C/C++)</a>
+</li>
+<li>
+  <a href="http://www.stroustrup.com/icsm-2012-demacro.pdf">Rejuvenating C++ Programs through
+Demacrofication</a>
+</li>
+<li>
+  <a href="http://www.idinews.com/macroPhobe.html">Outgrowing Macrophobia</a>
+</li>
+
+
+</references>
+</qhelp>

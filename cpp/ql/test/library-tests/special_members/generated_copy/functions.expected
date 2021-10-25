@@ -1,0 +1,90 @@
+| copy.cpp:5:5:5:5 | C |  | defaulted |
+| copy.cpp:6:8:6:16 | operator= |  | defaulted |
+| copy.cpp:9:9:9:9 | Sub1 |  |  |
+| copy.cpp:9:9:9:9 | Sub1 |  |  |
+| copy.cpp:9:9:9:9 | Sub1 | deleted |  |
+| copy.cpp:9:9:9:9 | operator= |  |  |
+| copy.cpp:9:9:9:9 | operator= |  |  |
+| copy.cpp:13:9:13:9 | Sub2 |  |  |
+| copy.cpp:13:9:13:9 | Sub2 |  |  |
+| copy.cpp:13:9:13:9 | Sub2 | deleted |  |
+| copy.cpp:13:9:13:9 | operator= |  |  |
+| copy.cpp:13:9:13:9 | operator= |  |  |
+| copy.cpp:17:9:17:9 | HasMember |  |  |
+| copy.cpp:17:9:17:9 | HasMember |  |  |
+| copy.cpp:17:9:17:9 | HasMember | deleted |  |
+| copy.cpp:17:9:17:9 | operator= |  |  |
+| copy.cpp:17:9:17:9 | operator= |  |  |
+| copy.cpp:25:5:25:5 | C | deleted |  |
+| copy.cpp:26:8:26:16 | operator= | deleted |  |
+| copy.cpp:29:9:29:9 | Sub | deleted |  |
+| copy.cpp:29:9:29:9 | Sub | deleted |  |
+| copy.cpp:29:9:29:9 | operator= | deleted |  |
+| copy.cpp:37:5:37:5 | C |  | defaulted |
+| copy.cpp:38:8:38:16 | operator= |  | defaulted |
+| copy.cpp:41:9:41:9 | operator= |  |  |
+| copy.cpp:46:5:46:7 | Sub | deleted | defaulted |
+| copy.cpp:49:9:49:9 | HasPointer |  |  |
+| copy.cpp:49:9:49:9 | operator= |  |  |
+| copy.cpp:49:9:49:9 | operator= |  |  |
+| copy.cpp:54:9:54:9 | HasArray | deleted |  |
+| copy.cpp:54:9:54:9 | HasArray | deleted |  |
+| copy.cpp:54:9:54:9 | operator= |  |  |
+| copy.cpp:54:9:54:9 | operator= |  |  |
+| copy.cpp:59:9:59:9 | HasArray2D | deleted |  |
+| copy.cpp:59:9:59:9 | HasArray2D | deleted |  |
+| copy.cpp:59:9:59:9 | operator= |  |  |
+| copy.cpp:59:9:59:9 | operator= |  |  |
+| copy.cpp:67:9:67:9 | Wrapper |  |  |
+| copy.cpp:67:9:67:9 | Wrapper |  |  |
+| copy.cpp:67:9:67:9 | Wrapper | deleted |  |
+| copy.cpp:67:9:67:9 | Wrapper | deleted |  |
+| copy.cpp:67:9:67:9 | operator= |  |  |
+| copy.cpp:67:9:67:9 | operator= |  |  |
+| copy.cpp:67:9:67:9 | operator= | deleted |  |
+| copy.cpp:71:9:71:9 | operator= |  |  |
+| copy.cpp:71:9:71:9 | operator= |  |  |
+| copy.cpp:72:9:72:9 | NotCopyable |  |  |
+| copy.cpp:72:9:72:9 | NotCopyable | deleted |  |
+| copy.cpp:72:9:72:9 | NotCopyable | deleted |  |
+| copy.cpp:72:9:72:9 | operator= | deleted |  |
+| copy.cpp:76:9:76:9 | CopyableComposition |  |  |
+| copy.cpp:76:9:76:9 | operator= |  |  |
+| copy.cpp:76:9:76:9 | operator= |  |  |
+| copy.cpp:80:9:80:9 | NotCopyableComposition |  |  |
+| copy.cpp:80:9:80:9 | NotCopyableComposition | deleted |  |
+| copy.cpp:80:9:80:9 | NotCopyableComposition | deleted |  |
+| copy.cpp:80:9:80:9 | operator= | deleted |  |
+| copy.cpp:84:9:84:9 | CopyableInheritance |  |  |
+| copy.cpp:84:9:84:9 | operator= |  |  |
+| copy.cpp:84:9:84:9 | operator= |  |  |
+| copy.cpp:86:9:86:9 | NotCopyableInheritance |  |  |
+| copy.cpp:86:9:86:9 | NotCopyableInheritance | deleted |  |
+| copy.cpp:86:9:86:9 | NotCopyableInheritance | deleted |  |
+| copy.cpp:86:9:86:9 | operator= | deleted |  |
+| copy.cpp:90:9:90:9 | operator= |  |  |
+| copy.cpp:90:9:90:9 | operator= |  |  |
+| copy.cpp:91:11:91:11 | operator= |  |  |
+| copy.cpp:91:11:91:11 | operator= |  |  |
+| copy.cpp:95:9:95:9 | operator= |  |  |
+| copy.cpp:95:9:95:9 | operator= |  |  |
+| copy.cpp:100:9:100:9 | Derived |  |  |
+| copy.cpp:100:9:100:9 | operator= |  |  |
+| copy.cpp:100:9:100:9 | operator= |  |  |
+| copy.cpp:106:9:106:9 | MoveCtor | deleted |  |
+| copy.cpp:106:9:106:9 | operator= | deleted |  |
+| copy.cpp:108:5:108:12 | MoveCtor |  |  |
+| copy.cpp:111:9:111:9 | MoveAssign |  |  |
+| copy.cpp:111:9:111:9 | MoveAssign | deleted |  |
+| copy.cpp:111:9:111:9 | operator= | deleted |  |
+| copy.cpp:113:17:113:25 | operator= |  |  |
+| copy.cpp:120:9:120:9 | OnlyCtor | deleted |  |
+| copy.cpp:120:9:120:9 | operator= | deleted |  |
+| copy.cpp:126:11:126:19 | operator= |  |  |
+| copy.cpp:128:5:128:8 | Base |  |  |
+| copy.cpp:131:9:131:9 | OnlyAssign | deleted |  |
+| copy.cpp:131:9:131:9 | OnlyAssign | deleted |  |
+| copy.cpp:131:9:131:9 | operator= |  |  |
+| copy.cpp:131:9:131:9 | operator= |  |  |
+| file://:0:0:0:0 | operator= |  |  |
+| file://:0:0:0:0 | operator= |  |  |

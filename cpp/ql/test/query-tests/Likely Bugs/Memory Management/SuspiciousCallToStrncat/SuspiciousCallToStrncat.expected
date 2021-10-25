@@ -1,0 +1,5 @@
+| test.c:24:2:24:8 | call to strncat | Potentially unsafe call to strncat. |
+| test.c:45:3:45:9 | call to strncat | Potentially unsafe call to strncat. |
+| test.c:67:3:67:9 | call to strncat | Potentially unsafe call to strncat. |
+| test.c:75:3:75:9 | call to strncat | Potentially unsafe call to strncat. |
+| test.c:76:3:76:9 | call to strncat | Potentially unsafe call to strncat. |

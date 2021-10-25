@@ -1,0 +1,53 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>A comment that includes the word <code>TODO</code> often marks a part of
+the code that is incomplete or broken, or highlights ambiguities in the
+software's specification.</p>
+
+<p>For example, this list of comments is typical of those found in real
+programs:</p>
+
+<ul>
+<li><code>TODO: move this code somewhere else</code></li>
+<li><code>TODO: find a better solution to this workaround</code></li>
+<li><code>TODO: test this</code></li>
+</ul>
+
+</overview>
+<recommendation>
+
+<p>It is very important that <code>TODO</code> comments are
+not just removed from the code. Each of them must be addressed in some way.</p>
+
+<p>Simpler comments can usually be immediately addressed by fixing the code,
+adding a test, doing some refactoring, or clarifying the intended behavior of
+a feature.</p>
+
+<p>In contrast, larger issues may require discussion, and a significant amount
+of work to address. In these cases it is a good idea to move the comment to an
+issue-tracking system, so that the issue can be tracked
+and prioritized relative to other defects and feature requests.</p>
+
+</recommendation>
+<example>
+<p>The following example shows a function where a TODO comment indicates a known limitation in the 
+existing implementation. The function should be reviewed, the limitation addressed and then the 
+comment deleted.</p>
+
+<sample src="ToDoComment.py" />
+
+</example>
+<references>
+
+<li>
+  Wikipedia: <a href="http://en.wikipedia.org/wiki/Comment_%28computer_programming%29#Tags">
+  Comment tags</a>.
+</li>
+
+
+</references>
+</qhelp>

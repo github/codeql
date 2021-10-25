@@ -1,0 +1,18 @@
+| tst.ts:4:1:4:32 | class I ... ts A {} | class Implement1 | 0 | tst.ts:4:29:4:29 | A |
+| tst.ts:5:1:5:35 | class I ... A, B {} | class Implement2 | 0 | tst.ts:5:29:5:29 | A |
+| tst.ts:5:1:5:35 | class I ... A, B {} | class Implement2 | 1 | tst.ts:5:32:5:32 | B |
+| tst.ts:6:18:6:38 | class i ... ts A {} | class Implement3 | 0 | tst.ts:6:35:6:35 | A |
+| tst.ts:7:18:7:41 | class i ... A, B {} | class Implement4 | 0 | tst.ts:7:35:7:35 | A |
+| tst.ts:7:18:7:41 | class i ... A, B {} | class Implement4 | 1 | tst.ts:7:38:7:38 | B |
+| tst.ts:10:1:10:49 | class S ... ts A {} | class SubClass1 | 0 | tst.ts:10:46:10:46 | A |
+| tst.ts:11:1:11:52 | class S ... A, B {} | class SubClass2 | 0 | tst.ts:11:46:11:46 | A |
+| tst.ts:11:1:11:52 | class S ... A, B {} | class SubClass2 | 1 | tst.ts:11:49:11:49 | B |
+| tst.ts:12:17:12:55 | class e ... ts A {} | class SubClass3 | 0 | tst.ts:12:52:12:52 | A |
+| tst.ts:13:17:13:58 | class e ... A, B {} | class SubClass4 | 0 | tst.ts:13:52:13:52 | A |
+| tst.ts:13:17:13:58 | class e ... A, B {} | class SubClass4 | 1 | tst.ts:13:55:13:55 | B |
+| tst.ts:15:1:15:30 | interfa ... ds A {} | interface Extend1 | 0 | tst.ts:15:27:15:27 | A |
+| tst.ts:16:1:16:33 | interfa ... A, B {} | interface Extend2 | 0 | tst.ts:16:27:16:27 | A |
+| tst.ts:16:1:16:33 | interfa ... A, B {} | interface Extend2 | 1 | tst.ts:16:30:16:30 | B |
+| tst.ts:19:1:19:47 | class I ... ber> {} | class ImplementGeneric1 | 0 | tst.ts:19:36:19:44 | G<number> |
+| tst.ts:20:25:20:53 | class i ... ber> {} | class ImplementGeneric2 | 0 | tst.ts:20:42:20:50 | G<number> |
+| tst.ts:21:1:21:44 | interfa ... ber> {} | interface ExtendGeneric | 0 | tst.ts:21:33:21:41 | G<number> |

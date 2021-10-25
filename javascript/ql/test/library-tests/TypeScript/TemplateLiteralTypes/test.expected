@@ -1,0 +1,9 @@
+| templateLiteralTypes.ts:4:17:4:32 | `hello ${World}` | 0 | templateLiteralTypes.ts:4:18:4:23 | hello  |
+| templateLiteralTypes.ts:4:17:4:32 | `hello ${World}` | 1 | templateLiteralTypes.ts:4:26:4:30 | World |
+| templateLiteralTypes.ts:9:18:9:43 | `${Quan ... } fish` | 0 | templateLiteralTypes.ts:9:21:9:36 | Quantity \| Color |
+| templateLiteralTypes.ts:9:18:9:43 | `${Quan ... } fish` | 1 | templateLiteralTypes.ts:9:38:9:42 |  fish |
+| templateLiteralTypes.ts:14:38:14:82 | `${Vert ... nment}` | 0 | templateLiteralTypes.ts:14:41:14:57 | VerticalAlignment |
+| templateLiteralTypes.ts:14:38:14:82 | `${Vert ... nment}` | 1 | templateLiteralTypes.ts:14:59:14:59 | - |
+| templateLiteralTypes.ts:14:38:14:82 | `${Vert ... nment}` | 2 | templateLiteralTypes.ts:14:62:14:80 | HorizontalAlignment |
+| templateLiteralTypes.ts:18:47:18:59 | `${K}Changed` | 0 | templateLiteralTypes.ts:18:50:18:50 | K |
+| templateLiteralTypes.ts:18:47:18:59 | `${K}Changed` | 1 | templateLiteralTypes.ts:18:52:18:58 | Changed |

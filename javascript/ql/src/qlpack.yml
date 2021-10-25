@@ -1,0 +1,7 @@
+name: codeql/javascript-queries
+version: 0.0.3
+suites: codeql-suites
+extractor: javascript
+dependencies:
+    codeql/javascript-all: "*"
+    codeql/suite-helpers: "*"

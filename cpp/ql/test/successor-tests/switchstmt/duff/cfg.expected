@@ -1,0 +1,63 @@
+| duff | duff.c:2:6:2:6 | f | 2 | 1 | duff.c:2:15:15:1 | duff.c:2:15:15:1 | duff.c:2:15:15:1 | { ... } | 3: declaration |
+| duff | duff.c:2:6:2:6 | f | 3 | 1 | duff.c:3:13:3:19 | duff.c:3:13:3:19 | duff.c:3:13:3:19 | (...) | <none> |
+| duff | duff.c:2:6:2:6 | f | 3 | 2 | duff.c:3:5:3:24 | duff.c:3:5:3:24 | duff.c:3:5:3:24 | declaration | 3: initializer for n |
+| duff | duff.c:2:6:2:6 | f | 3 | 3 | duff.c:3:12:3:23 | duff.c:3:12:3:23 | duff.c:3:12:3:23 | initializer for n | 3: i |
+| duff | duff.c:2:6:2:6 | f | 3 | 4 | duff.c:3:14:3:14 | duff.c:3:14:3:14 | duff.c:3:14:3:14 | i | 3: 7 |
+| duff | duff.c:2:6:2:6 | f | 3 | 5 | duff.c:3:18:3:18 | duff.c:3:18:3:18 | duff.c:3:18:3:18 | 7 | 3: ... + ... |
+| duff | duff.c:2:6:2:6 | f | 3 | 6 | duff.c:3:14:3:18 | duff.c:3:14:3:18 | duff.c:3:14:3:18 | ... + ... | 3: 8 |
+| duff | duff.c:2:6:2:6 | f | 3 | 7 | duff.c:3:23:3:23 | duff.c:3:23:3:23 | duff.c:3:23:3:23 | 8 | 3: ... / ... |
+| duff | duff.c:2:6:2:6 | f | 3 | 8 | duff.c:3:13:3:23 | duff.c:3:13:3:23 | duff.c:3:13:3:23 | ... / ... | 4: switch (...) ...  |
+| duff | duff.c:2:6:2:6 | f | 4 | 9 | duff.c:4:5:14:5 | duff.c:4:5:14:5 | duff.c:4:5:14:5 | switch (...) ...  | 4: i |
+| duff | duff.c:2:6:2:6 | f | 4 | 10 | duff.c:4:13:4:13 | duff.c:4:13:4:13 | duff.c:4:13:4:13 | i | 4: 8 |
+| duff | duff.c:2:6:2:6 | f | 4 | 11 | duff.c:4:17:4:17 | duff.c:4:17:4:17 | duff.c:4:17:4:17 | 8 | 4: ... % ... |
+| duff | duff.c:2:6:2:6 | f | 4 | 12 | duff.c:4:13:4:17 | duff.c:4:13:4:17 | duff.c:4:13:4:17 | ... % ... | 4: { ... } |
+| duff | duff.c:2:6:2:6 | f | 4 | 13 | duff.c:4:20:14:5 | duff.c:4:20:14:5 | duff.c:4:20:14:5 | { ... } | 5: case ...: |
+| duff | duff.c:2:6:2:6 | f | 4 | 13 | duff.c:4:20:14:5 | duff.c:4:20:14:5 | duff.c:4:20:14:5 | { ... } | 6: case ...: |
+| duff | duff.c:2:6:2:6 | f | 4 | 13 | duff.c:4:20:14:5 | duff.c:4:20:14:5 | duff.c:4:20:14:5 | { ... } | 7: case ...: |
+| duff | duff.c:2:6:2:6 | f | 4 | 13 | duff.c:4:20:14:5 | duff.c:4:20:14:5 | duff.c:4:20:14:5 | { ... } | 8: case ...: |
+| duff | duff.c:2:6:2:6 | f | 4 | 13 | duff.c:4:20:14:5 | duff.c:4:20:14:5 | duff.c:4:20:14:5 | { ... } | 9: case ...: |
+| duff | duff.c:2:6:2:6 | f | 4 | 13 | duff.c:4:20:14:5 | duff.c:4:20:14:5 | duff.c:4:20:14:5 | { ... } | 10: case ...: |
+| duff | duff.c:2:6:2:6 | f | 4 | 13 | duff.c:4:20:14:5 | duff.c:4:20:14:5 | duff.c:4:20:14:5 | { ... } | 11: case ...: |
+| duff | duff.c:2:6:2:6 | f | 4 | 13 | duff.c:4:20:14:5 | duff.c:4:20:14:5 | duff.c:4:20:14:5 | { ... } | 12: case ...: |
+| duff | duff.c:2:6:2:6 | f | 4 | 13 | duff.c:4:20:14:5 | duff.c:4:20:14:5 | duff.c:4:20:14:5 | { ... } | 15: return ... |
+| duff | duff.c:2:6:2:6 | f | 5 | 1 | duff.c:5:10:5:10 | duff.c:5:10:5:10 | duff.c:5:10:5:10 | 0 | <none> |
+| duff | duff.c:2:6:2:6 | f | 5 | 14 | duff.c:5:5:5:11 | duff.c:5:5:5:11 | duff.c:5:5:5:11 | case ...: | 5: do (...) ... |
+| duff | duff.c:2:6:2:6 | f | 5 | 15 | duff.c:5:13:13:30 | duff.c:5:13:13:30 | duff.c:5:13:13:30 | do (...) ... | 5: { ... } |
+| duff | duff.c:2:6:2:6 | f | 5 | 43 | duff.c:5:16:13:13 | duff.c:5:16:13:13 | duff.c:5:16:13:13 | { ... } | 5: ExprStmt |
+| duff | duff.c:2:6:2:6 | f | 5 | 43 | duff.c:5:18:5:19 | duff.c:5:18:5:19 | duff.c:5:18:5:19 | 10 | 6: case ...: |
+| duff | duff.c:2:6:2:6 | f | 5 | 43 | duff.c:5:18:5:20 | duff.c:5:18:5:20 | duff.c:5:18:5:20 | ExprStmt | 5: 10 |
+| duff | duff.c:2:6:2:6 | f | 6 | 1 | duff.c:6:10:6:10 | duff.c:6:10:6:10 | duff.c:6:10:6:10 | 7 | <none> |
+| duff | duff.c:2:6:2:6 | f | 6 | 43 | duff.c:6:5:6:11 | duff.c:6:5:6:11 | duff.c:6:5:6:11 | case ...: | 6: ExprStmt |
+| duff | duff.c:2:6:2:6 | f | 6 | 43 | duff.c:6:18:6:19 | duff.c:6:18:6:19 | duff.c:6:18:6:19 | 17 | 7: case ...: |
+| duff | duff.c:2:6:2:6 | f | 6 | 43 | duff.c:6:18:6:20 | duff.c:6:18:6:20 | duff.c:6:18:6:20 | ExprStmt | 6: 17 |
+| duff | duff.c:2:6:2:6 | f | 7 | 1 | duff.c:7:10:7:10 | duff.c:7:10:7:10 | duff.c:7:10:7:10 | 6 | <none> |
+| duff | duff.c:2:6:2:6 | f | 7 | 43 | duff.c:7:5:7:11 | duff.c:7:5:7:11 | duff.c:7:5:7:11 | case ...: | 7: ExprStmt |
+| duff | duff.c:2:6:2:6 | f | 7 | 43 | duff.c:7:18:7:19 | duff.c:7:18:7:19 | duff.c:7:18:7:19 | 16 | 8: case ...: |
+| duff | duff.c:2:6:2:6 | f | 7 | 43 | duff.c:7:18:7:20 | duff.c:7:18:7:20 | duff.c:7:18:7:20 | ExprStmt | 7: 16 |
+| duff | duff.c:2:6:2:6 | f | 8 | 1 | duff.c:8:10:8:10 | duff.c:8:10:8:10 | duff.c:8:10:8:10 | 5 | <none> |
+| duff | duff.c:2:6:2:6 | f | 8 | 43 | duff.c:8:5:8:11 | duff.c:8:5:8:11 | duff.c:8:5:8:11 | case ...: | 8: ExprStmt |
+| duff | duff.c:2:6:2:6 | f | 8 | 43 | duff.c:8:18:8:19 | duff.c:8:18:8:19 | duff.c:8:18:8:19 | 15 | 9: case ...: |
+| duff | duff.c:2:6:2:6 | f | 8 | 43 | duff.c:8:18:8:20 | duff.c:8:18:8:20 | duff.c:8:18:8:20 | ExprStmt | 8: 15 |
+| duff | duff.c:2:6:2:6 | f | 9 | 1 | duff.c:9:10:9:10 | duff.c:9:10:9:10 | duff.c:9:10:9:10 | 4 | <none> |
+| duff | duff.c:2:6:2:6 | f | 9 | 43 | duff.c:9:5:9:11 | duff.c:9:5:9:11 | duff.c:9:5:9:11 | case ...: | 9: ExprStmt |
+| duff | duff.c:2:6:2:6 | f | 9 | 43 | duff.c:9:18:9:19 | duff.c:9:18:9:19 | duff.c:9:18:9:19 | 14 | 10: case ...: |
+| duff | duff.c:2:6:2:6 | f | 9 | 43 | duff.c:9:18:9:20 | duff.c:9:18:9:20 | duff.c:9:18:9:20 | ExprStmt | 9: 14 |
+| duff | duff.c:2:6:2:6 | f | 10 | 1 | duff.c:10:10:10:10 | duff.c:10:10:10:10 | duff.c:10:10:10:10 | 3 | <none> |
+| duff | duff.c:2:6:2:6 | f | 10 | 43 | duff.c:10:5:10:11 | duff.c:10:5:10:11 | duff.c:10:5:10:11 | case ...: | 10: ExprStmt |
+| duff | duff.c:2:6:2:6 | f | 10 | 43 | duff.c:10:18:10:19 | duff.c:10:18:10:19 | duff.c:10:18:10:19 | 13 | 11: case ...: |
+| duff | duff.c:2:6:2:6 | f | 10 | 43 | duff.c:10:18:10:20 | duff.c:10:18:10:20 | duff.c:10:18:10:20 | ExprStmt | 10: 13 |
+| duff | duff.c:2:6:2:6 | f | 11 | 1 | duff.c:11:10:11:10 | duff.c:11:10:11:10 | duff.c:11:10:11:10 | 2 | <none> |
+| duff | duff.c:2:6:2:6 | f | 11 | 43 | duff.c:11:5:11:11 | duff.c:11:5:11:11 | duff.c:11:5:11:11 | case ...: | 11: ExprStmt |
+| duff | duff.c:2:6:2:6 | f | 11 | 43 | duff.c:11:18:11:19 | duff.c:11:18:11:19 | duff.c:11:18:11:19 | 12 | 12: case ...: |
+| duff | duff.c:2:6:2:6 | f | 11 | 43 | duff.c:11:18:11:20 | duff.c:11:18:11:20 | duff.c:11:18:11:20 | ExprStmt | 11: 12 |
+| duff | duff.c:2:6:2:6 | f | 12 | 1 | duff.c:12:10:12:10 | duff.c:12:10:12:10 | duff.c:12:10:12:10 | 1 | <none> |
+| duff | duff.c:2:6:2:6 | f | 12 | 43 | duff.c:12:5:12:11 | duff.c:12:5:12:11 | duff.c:12:5:12:11 | case ...: | 12: ExprStmt |
+| duff | duff.c:2:6:2:6 | f | 12 | 43 | duff.c:12:18:12:19 | duff.c:12:18:12:19 | duff.c:12:18:12:19 | 11 | 13: n |
+| duff | duff.c:2:6:2:6 | f | 12 | 43 | duff.c:12:18:12:20 | duff.c:12:18:12:20 | duff.c:12:18:12:20 | ExprStmt | 12: 11 |
+| duff | duff.c:2:6:2:6 | f | 13 | 43 | duff.c:13:22:13:24 | duff.c:13:22:13:24 | duff.c:13:22:13:24 | -- ... | 13: 0 |
+| duff | duff.c:2:6:2:6 | f | 13 | 43 | duff.c:13:22:13:28 | duff.c:13:22:13:28 | duff.c:13:22:13:28 | ... > ... | <false> 15: return ... |
+| duff | duff.c:2:6:2:6 | f | 13 | 43 | duff.c:13:22:13:28 | duff.c:13:22:13:28 | duff.c:13:22:13:28 | ... > ... | <true> 5: { ... } |
+| duff | duff.c:2:6:2:6 | f | 13 | 43 | duff.c:13:24:13:24 | duff.c:13:24:13:24 | duff.c:13:24:13:24 | n | 13: -- ... |
+| duff | duff.c:2:6:2:6 | f | 13 | 43 | duff.c:13:28:13:28 | duff.c:13:28:13:28 | duff.c:13:28:13:28 | 0 | 13: ... > ... |
+| duff | duff.c:2:6:2:6 | f | 15 | 44 | duff.c:15:1:15:1 | duff.c:15:1:15:1 | duff.c:15:1:15:1 | return ... | 15: f |
+| duff | duff.c:2:6:2:6 | f | 15 | 45 | duff.c:2:6:2:6 | duff.c:2:6:2:6 | duff.c:2:6:2:6 | f | <none> |

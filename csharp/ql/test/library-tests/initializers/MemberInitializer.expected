@@ -1,0 +1,3 @@
+| initializers.cs:21:18:21:23 | ... = ... | initializers.cs:5:16:5:17 | P1 |
+| initializers.cs:21:26:21:31 | ... = ... | initializers.cs:6:16:6:17 | P2 |
+| initializers.cs:21:34:21:39 | ... = ... | initializers.cs:7:16:7:17 | P3 |

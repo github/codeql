@@ -1,0 +1,1 @@
+| wrong_arguments.py:24:12:24:56 | analyze_member_access() | Call to $@ with too many arguments; should be no more than 1. | wrong_arguments.py:17:1:17:77 | Function analyze_member_access | function analyze_member_access |

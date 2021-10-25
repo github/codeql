@@ -1,0 +1,10 @@
+| 36 | class DerivedFromBuiltin | append |
+| 36 | class DerivedFromBuiltin | count |
+| 36 | class DerivedFromBuiltin | extend |
+| 36 | class DerivedFromBuiltin | index |
+| 36 | class DerivedFromBuiltin | insert |
+| 36 | class DerivedFromBuiltin | meth5 |
+| 36 | class DerivedFromBuiltin | pop |
+| 36 | class DerivedFromBuiltin | remove |
+| 36 | class DerivedFromBuiltin | reverse |
+| 36 | class DerivedFromBuiltin | sort |

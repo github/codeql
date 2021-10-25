@@ -1,0 +1,39 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+     <overview>
+          <p>
+              Running a Flask application with debug mode enabled may allow an
+              attacker to gain access through the Werkzeug debugger.
+          </p>
+
+     </overview>
+     <recommendation>
+
+          <p>
+               Ensure that Flask applications that are run in a production
+               environment have debugging disabled.
+          </p>
+
+     </recommendation>
+     <example>
+
+          <p>
+            Running the following code starts a Flask webserver that has
+            debugging enabled. By visiting <code>/crash</code>, it is possible
+            to gain access to the debugger, and run arbitrary code through the
+            interactive debugger.
+          </p>
+
+          <sample src="FlaskDebug.py" />
+
+     </example>
+
+     <references>
+       <li>Flask Quickstart Documentation: <a href="http://flask.pocoo.org/docs/1.0/quickstart/#debug-mode">Debug Mode</a>.</li>
+       <li>Werkzeug Documentation: <a href="http://werkzeug.pocoo.org/docs/0.14/debug/">Debugging Applications</a>.</li>
+     </references>
+
+</qhelp>
+

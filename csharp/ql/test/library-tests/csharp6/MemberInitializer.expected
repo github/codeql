@@ -1,0 +1,87 @@
+assignedMembers
+| csharp6.cs:12:16:12:20 | Value | csharp6.cs:15:9:15:10 | 20 |
+| csharp6.cs:57:40:57:54 | DictionaryField | csharp6.cs:73:31:73:72 | { ..., ... } |
+| csharp6.cs:58:40:58:57 | DictionaryProperty | csharp6.cs:74:34:74:76 | { ..., ... } |
+| csharp6.cs:59:25:59:34 | ArrayField | csharp6.cs:75:26:75:54 | { ..., ... } |
+| csharp6.cs:60:25:60:37 | ArrayProperty | csharp6.cs:77:29:77:56 | { ..., ... } |
+| csharp6.cs:61:26:61:36 | ArrayField2 | csharp6.cs:76:27:76:56 | { ..., ... } |
+| csharp6.cs:62:26:62:39 | ArrayProperty2 | csharp6.cs:78:30:78:59 | { ..., ... } |
+indexerCalls
+| csharp6.cs:32:68:32:70 | access to indexer | 0 | csharp6.cs:32:69:32:69 | 2 |
+| csharp6.cs:32:68:32:73 | access to indexer | 0 | csharp6.cs:32:72:32:72 | 1 |
+| csharp6.cs:68:52:68:54 | access to indexer | 0 | csharp6.cs:68:53:68:53 | 0 |
+| csharp6.cs:68:52:68:54 | access to indexer | 1 | csharp6.cs:68:58:68:63 | "Zero" |
+| csharp6.cs:68:66:68:68 | access to indexer | 0 | csharp6.cs:68:67:68:67 | 1 |
+| csharp6.cs:68:66:68:68 | access to indexer | 1 | csharp6.cs:68:72:68:76 | "One" |
+| csharp6.cs:68:79:68:81 | access to indexer | 0 | csharp6.cs:68:80:68:80 | 2 |
+| csharp6.cs:68:79:68:81 | access to indexer | 1 | csharp6.cs:68:85:68:89 | "Two" |
+| csharp6.cs:73:33:73:35 | access to indexer | 0 | csharp6.cs:73:34:73:34 | 0 |
+| csharp6.cs:73:33:73:35 | access to indexer | 1 | csharp6.cs:73:39:73:44 | "Zero" |
+| csharp6.cs:73:47:73:49 | access to indexer | 0 | csharp6.cs:73:48:73:48 | 1 |
+| csharp6.cs:73:47:73:49 | access to indexer | 1 | csharp6.cs:73:53:73:57 | "One" |
+| csharp6.cs:73:60:73:62 | access to indexer | 0 | csharp6.cs:73:61:73:61 | 2 |
+| csharp6.cs:73:60:73:62 | access to indexer | 1 | csharp6.cs:73:66:73:70 | "Two" |
+| csharp6.cs:74:36:74:38 | access to indexer | 0 | csharp6.cs:74:37:74:37 | 3 |
+| csharp6.cs:74:36:74:38 | access to indexer | 1 | csharp6.cs:74:42:74:48 | "Three" |
+| csharp6.cs:74:51:74:53 | access to indexer | 0 | csharp6.cs:74:52:74:52 | 2 |
+| csharp6.cs:74:51:74:53 | access to indexer | 1 | csharp6.cs:74:57:74:61 | "Two" |
+| csharp6.cs:74:64:74:66 | access to indexer | 0 | csharp6.cs:74:65:74:65 | 1 |
+| csharp6.cs:74:64:74:66 | access to indexer | 1 | csharp6.cs:74:70:74:74 | "One" |
+elementAssignments
+| csharp6.cs:68:52:68:54 | access to indexer | csharp6.cs:68:52:68:63 | ... = ... | 0 | csharp6.cs:68:53:68:53 | 0 |
+| csharp6.cs:68:66:68:68 | access to indexer | csharp6.cs:68:66:68:76 | ... = ... | 0 | csharp6.cs:68:67:68:67 | 1 |
+| csharp6.cs:68:79:68:81 | access to indexer | csharp6.cs:68:79:68:89 | ... = ... | 0 | csharp6.cs:68:80:68:80 | 2 |
+| csharp6.cs:73:33:73:35 | access to indexer | csharp6.cs:73:33:73:44 | ... = ... | 0 | csharp6.cs:73:34:73:34 | 0 |
+| csharp6.cs:73:47:73:49 | access to indexer | csharp6.cs:73:47:73:57 | ... = ... | 0 | csharp6.cs:73:48:73:48 | 1 |
+| csharp6.cs:73:60:73:62 | access to indexer | csharp6.cs:73:60:73:70 | ... = ... | 0 | csharp6.cs:73:61:73:61 | 2 |
+| csharp6.cs:74:36:74:38 | access to indexer | csharp6.cs:74:36:74:48 | ... = ... | 0 | csharp6.cs:74:37:74:37 | 3 |
+| csharp6.cs:74:51:74:53 | access to indexer | csharp6.cs:74:51:74:61 | ... = ... | 0 | csharp6.cs:74:52:74:52 | 2 |
+| csharp6.cs:74:64:74:66 | access to indexer | csharp6.cs:74:64:74:74 | ... = ... | 0 | csharp6.cs:74:65:74:65 | 1 |
+| csharp6.cs:75:28:75:30 | access to array element | csharp6.cs:75:28:75:39 | ... = ... | 0 | csharp6.cs:75:29:75:29 | 0 |
+| csharp6.cs:75:42:75:44 | access to array element | csharp6.cs:75:42:75:52 | ... = ... | 0 | csharp6.cs:75:43:75:43 | 1 |
+| csharp6.cs:76:29:76:34 | access to array element | csharp6.cs:76:29:76:40 | ... = ... | 0 | csharp6.cs:76:30:76:30 | 0 |
+| csharp6.cs:76:29:76:34 | access to array element | csharp6.cs:76:29:76:40 | ... = ... | 1 | csharp6.cs:76:33:76:33 | 1 |
+| csharp6.cs:76:43:76:48 | access to array element | csharp6.cs:76:43:76:54 | ... = ... | 0 | csharp6.cs:76:44:76:44 | 1 |
+| csharp6.cs:76:43:76:48 | access to array element | csharp6.cs:76:43:76:54 | ... = ... | 1 | csharp6.cs:76:47:76:47 | 0 |
+| csharp6.cs:77:31:77:33 | access to array element | csharp6.cs:77:31:77:41 | ... = ... | 0 | csharp6.cs:77:32:77:32 | 1 |
+| csharp6.cs:77:44:77:46 | access to array element | csharp6.cs:77:44:77:54 | ... = ... | 0 | csharp6.cs:77:45:77:45 | 2 |
+| csharp6.cs:78:32:78:37 | access to array element | csharp6.cs:78:32:78:43 | ... = ... | 0 | csharp6.cs:78:33:78:33 | 0 |
+| csharp6.cs:78:32:78:37 | access to array element | csharp6.cs:78:32:78:43 | ... = ... | 1 | csharp6.cs:78:36:78:36 | 1 |
+| csharp6.cs:78:46:78:51 | access to array element | csharp6.cs:78:46:78:57 | ... = ... | 0 | csharp6.cs:78:47:78:47 | 1 |
+| csharp6.cs:78:46:78:51 | access to array element | csharp6.cs:78:46:78:57 | ... = ... | 1 | csharp6.cs:78:50:78:50 | 0 |
+arrayQualifiers
+| csharp6.cs:32:68:32:70 | access to indexer | csharp6.cs:32:38:32:66 | object creation of type Dictionary<Int32,String> |
+| csharp6.cs:32:68:32:73 | access to indexer | csharp6.cs:32:68:32:70 | access to indexer |
+initializers
+| csharp6.cs:68:50:68:91 | { ..., ... } | 0 | csharp6.cs:68:52:68:63 | ... = ... |
+| csharp6.cs:68:50:68:91 | { ..., ... } | 1 | csharp6.cs:68:66:68:76 | ... = ... |
+| csharp6.cs:68:50:68:91 | { ..., ... } | 2 | csharp6.cs:68:79:68:89 | ... = ... |
+| csharp6.cs:72:9:79:9 | { ..., ... } | 0 | csharp6.cs:73:13:73:72 | ... = ... |
+| csharp6.cs:72:9:79:9 | { ..., ... } | 1 | csharp6.cs:74:13:74:76 | ... = ... |
+| csharp6.cs:72:9:79:9 | { ..., ... } | 2 | csharp6.cs:75:13:75:54 | ... = ... |
+| csharp6.cs:72:9:79:9 | { ..., ... } | 3 | csharp6.cs:76:13:76:56 | ... = ... |
+| csharp6.cs:72:9:79:9 | { ..., ... } | 4 | csharp6.cs:77:13:77:56 | ... = ... |
+| csharp6.cs:72:9:79:9 | { ..., ... } | 5 | csharp6.cs:78:13:78:59 | ... = ... |
+| csharp6.cs:73:31:73:72 | { ..., ... } | 0 | csharp6.cs:73:33:73:44 | ... = ... |
+| csharp6.cs:73:31:73:72 | { ..., ... } | 1 | csharp6.cs:73:47:73:57 | ... = ... |
+| csharp6.cs:73:31:73:72 | { ..., ... } | 2 | csharp6.cs:73:60:73:70 | ... = ... |
+| csharp6.cs:74:34:74:76 | { ..., ... } | 0 | csharp6.cs:74:36:74:48 | ... = ... |
+| csharp6.cs:74:34:74:76 | { ..., ... } | 1 | csharp6.cs:74:51:74:61 | ... = ... |
+| csharp6.cs:74:34:74:76 | { ..., ... } | 2 | csharp6.cs:74:64:74:74 | ... = ... |
+| csharp6.cs:75:26:75:54 | { ..., ... } | 0 | csharp6.cs:75:28:75:39 | ... = ... |
+| csharp6.cs:75:26:75:54 | { ..., ... } | 1 | csharp6.cs:75:42:75:52 | ... = ... |
+| csharp6.cs:76:27:76:56 | { ..., ... } | 0 | csharp6.cs:76:29:76:40 | ... = ... |
+| csharp6.cs:76:27:76:56 | { ..., ... } | 1 | csharp6.cs:76:43:76:54 | ... = ... |
+| csharp6.cs:77:29:77:56 | { ..., ... } | 0 | csharp6.cs:77:31:77:41 | ... = ... |
+| csharp6.cs:77:29:77:56 | { ..., ... } | 1 | csharp6.cs:77:44:77:54 | ... = ... |
+| csharp6.cs:78:30:78:59 | { ..., ... } | 0 | csharp6.cs:78:32:78:43 | ... = ... |
+| csharp6.cs:78:30:78:59 | { ..., ... } | 1 | csharp6.cs:78:46:78:57 | ... = ... |
+initializerType
+| csharp6.cs:68:50:68:91 | { ..., ... } | Dictionary<int, string> |
+| csharp6.cs:72:9:79:9 | { ..., ... } | Compound |
+| csharp6.cs:73:31:73:72 | { ..., ... } | Dictionary<int, string> |
+| csharp6.cs:74:34:74:76 | { ..., ... } | Dictionary<int, string> |
+| csharp6.cs:75:26:75:54 | { ..., ... } | String[] |
+| csharp6.cs:76:27:76:56 | { ..., ... } | String[,] |
+| csharp6.cs:77:29:77:56 | { ..., ... } | String[] |
+| csharp6.cs:78:30:78:59 | { ..., ... } | String[,] |

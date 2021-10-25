@@ -1,0 +1,4 @@
+| integral_types.cpp:2:8:2:9 | i8 | file://:0:0:0:0 | char | MicrosoftInt8Type, PlainCharType |
+| integral_types.cpp:3:9:3:11 | i16 | file://:0:0:0:0 | short | MicrosoftInt16Type, ShortType |
+| integral_types.cpp:4:9:4:11 | i32 | file://:0:0:0:0 | int | IntType, MicrosoftInt32Type |
+| integral_types.cpp:5:9:5:11 | i64 | file://:0:0:0:0 | long long | LongLongType, MicrosoftInt64Type |

@@ -1,0 +1,64 @@
+| a1.c:10:16:10:16 | struct <unnamed> | 0 | file://:0:0:0:0 | int | 1 types |
+| a1.c:17:16:17:16 | struct <unnamed> | 0 | file://:0:0:0:0 | int | 1 types |
+| a1.c:24:8:24:10 | Foo | 0 | file://:0:0:0:0 | anon_empty_t * | 1 types |
+| a1.c:24:8:24:10 | Foo | 1 | file://:0:0:0:0 | anon_nonempty_t * | 1 types |
+| a1.c:24:8:24:10 | Foo | 2 | file://:0:0:0:0 | int | 1 types |
+| a1.c:32:8:32:15 | NonEmpty | 0 | file://:0:0:0:0 | int | 1 types |
+| a1.c:36:8:36:10 | Bar | 0 | file://:0:0:0:0 | Empty * | 1 types |
+| a1.c:36:8:36:10 | Bar | 1 | file://:0:0:0:0 | NonEmpty * | 1 types |
+| a1.c:36:8:36:10 | Bar | 2 | file://:0:0:0:0 | int | 1 types |
+| a2.c:10:16:10:16 | struct <unnamed> | 0 | file://:0:0:0:0 | int | 1 types |
+| a2.c:17:16:17:16 | struct <unnamed> | 0 | file://:0:0:0:0 | int | 1 types |
+| a2.c:24:8:24:10 | Foo | 0 | file://:0:0:0:0 | anon_empty_t * | 1 types |
+| a2.c:24:8:24:10 | Foo | 1 | file://:0:0:0:0 | anon_nonempty_t * | 1 types |
+| a2.c:24:8:24:10 | Foo | 2 | file://:0:0:0:0 | int | 1 types |
+| a2.c:32:8:32:15 | NonEmpty | 0 | file://:0:0:0:0 | int | 1 types |
+| a2.c:36:8:36:10 | Bar | 0 | file://:0:0:0:0 | Empty * | 1 types |
+| a2.c:36:8:36:10 | Bar | 1 | file://:0:0:0:0 | NonEmpty * | 1 types |
+| a2.c:36:8:36:10 | Bar | 2 | file://:0:0:0:0 | int | 1 types |
+| b1.c:2:8:2:22 | AppleCompatible | 0 | file://:0:0:0:0 | int | 1 types |
+| b1.c:7:8:7:23 | BananaCompatible | 0 | file://:0:0:0:0 | int | 1 types |
+| b1.c:12:8:12:13 | Cherry | 0 | file://:0:0:0:0 | int | 1 types |
+| b1.c:17:8:17:13 | Damson | 0 | file://:0:0:0:0 | int | 1 types |
+| b1.c:23:8:23:27 | ElderberryCompatible | 0 | b1.c:22:13:22:17 | AnInt | 1 types |
+| b1.c:23:8:23:27 | ElderberryCompatible | 0 | b2.c:24:13:24:17 | AnInt | 1 types |
+| b1.c:28:8:28:10 | Fig | 0 | file://:0:0:0:0 | float | 1 types |
+| b1.c:33:8:33:12 | Grape | 0 | file://:0:0:0:0 | _Imaginary float | 1 types |
+| b1.c:39:8:39:18 | Huckleberry | 0 | file://:0:0:0:0 | _Complex float | 1 types |
+| b1.c:44:8:44:21 | IndonesianLime | 0 | file://:0:0:0:0 | int[7] | 1 types |
+| b1.c:49:8:49:13 | Jujube | 0 | file://:0:0:0:0 | signed int[4] | 1 types |
+| b1.c:60:8:60:12 | Mango | 0 | b1.c:59:6:59:14 | MangoEnum | 1 types |
+| b1.c:60:8:60:12 | Mango | 0 | b2.c:58:6:58:14 | MangoEnum | 1 types |
+| b1.c:66:8:66:16 | Nectarine | 0 | b1.c:65:6:65:18 | NectarineEnum | 1 types |
+| b1.c:66:8:66:16 | Nectarine | 0 | b2.c:64:6:64:18 | NectarineEnum | 1 types |
+| b1.c:72:8:72:13 | Orange | 0 | b1.c:71:6:71:15 | OrangeEnum | 1 types |
+| b1.c:72:8:72:13 | Orange | 0 | b2.c:70:6:70:15 | OrangeEnum | 1 types |
+| b1.c:77:8:77:13 | Papaya | 0 | file://:0:0:0:0 | int * | 1 types |
+| b1.c:82:8:82:13 | Quince | 0 | file://:0:0:0:0 | ..(*)(..) | 1 types |
+| b2.c:2:8:2:22 | AppleCompatible | 0 | file://:0:0:0:0 | int | 1 types |
+| b2.c:9:8:9:23 | BananaCompatible | 0 | file://:0:0:0:0 | int | 1 types |
+| b2.c:14:8:14:13 | Cherry | 0 | file://:0:0:0:0 | short | 1 types |
+| b2.c:19:8:19:13 | Damson | 0 | file://:0:0:0:0 | int | 1 types |
+| b2.c:25:8:25:27 | ElderberryCompatible | 0 | b1.c:22:13:22:17 | AnInt | 1 types |
+| b2.c:25:8:25:27 | ElderberryCompatible | 0 | b2.c:24:13:24:17 | AnInt | 1 types |
+| b2.c:30:8:30:10 | Fig | 0 | file://:0:0:0:0 | double | 1 types |
+| b2.c:35:8:35:12 | Grape | 0 | file://:0:0:0:0 | _Imaginary double | 1 types |
+| b2.c:41:8:41:18 | Huckleberry | 0 | file://:0:0:0:0 | _Complex double | 1 types |
+| b2.c:46:8:46:21 | IndonesianLime | 0 | file://:0:0:0:0 | int[9] | 1 types |
+| b2.c:51:8:51:13 | Jujube | 0 | file://:0:0:0:0 | unsigned int[4] | 1 types |
+| b2.c:59:8:59:12 | Mango | 0 | b1.c:59:6:59:14 | MangoEnum | 1 types |
+| b2.c:59:8:59:12 | Mango | 0 | b2.c:58:6:58:14 | MangoEnum | 1 types |
+| b2.c:65:8:65:16 | Nectarine | 0 | b1.c:65:6:65:18 | NectarineEnum | 1 types |
+| b2.c:65:8:65:16 | Nectarine | 0 | b2.c:64:6:64:18 | NectarineEnum | 1 types |
+| b2.c:71:8:71:13 | Orange | 0 | b1.c:71:6:71:15 | OrangeEnum | 1 types |
+| b2.c:71:8:71:13 | Orange | 0 | b2.c:70:6:70:15 | OrangeEnum | 1 types |
+| b2.c:76:8:76:13 | Papaya | 0 | file://:0:0:0:0 | long * | 1 types |
+| b2.c:81:8:81:13 | Quince | 0 | file://:0:0:0:0 | ..(*)(..) | 1 types |
+| c1_gnu.c:2:8:2:11 | Kiwi | 0 | file://:0:0:0:0 | __attribute((vector_size(16))) int | 1 types |
+| c1_gnu.c:7:8:7:12 | Lemon | 0 | file://:0:0:0:0 | __attribute((vector_size(16))) unsigned int | 1 types |
+| c2_gnu.c:2:8:2:11 | Kiwi | 0 | file://:0:0:0:0 | __attribute((vector_size(8))) int | 1 types |
+| c2_gnu.c:7:8:7:12 | Lemon | 0 | file://:0:0:0:0 | __attribute((vector_size(16))) signed int | 1 types |
+| file://:0:0:0:0 | __va_list_tag | 0 | file://:0:0:0:0 | unsigned int | 1 types |
+| file://:0:0:0:0 | __va_list_tag | 1 | file://:0:0:0:0 | unsigned int | 1 types |
+| file://:0:0:0:0 | __va_list_tag | 2 | file://:0:0:0:0 | void * | 1 types |
+| file://:0:0:0:0 | __va_list_tag | 3 | file://:0:0:0:0 | void * | 1 types |

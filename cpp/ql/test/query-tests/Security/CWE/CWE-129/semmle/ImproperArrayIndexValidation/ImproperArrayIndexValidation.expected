@@ -1,0 +1,3 @@
+| test1.c:18:16:18:16 | i | $@ flows to here and is used in an array indexing expression, potentially causing an invalid access. | test1.c:8:16:8:19 | argv | User-provided value |
+| test1.c:33:11:33:11 | i | $@ flows to here and is used in an array indexing expression, potentially causing an invalid access. | test1.c:8:16:8:19 | argv | User-provided value |
+| test1.c:53:15:53:15 | j | $@ flows to here and is used in an array indexing expression, potentially causing an invalid access. | test1.c:8:16:8:19 | argv | User-provided value |

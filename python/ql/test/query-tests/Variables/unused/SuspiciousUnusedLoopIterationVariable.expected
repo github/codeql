@@ -1,0 +1,6 @@
+| test.py:4:5:4:28 | For | For loop variable 't' is not used in the loop body. |
+| test.py:66:9:66:26 | For | For loop variable 'y' is not used in the loop body. |
+| test.py:72:5:72:22 | For | For loop variable 'y' is not used in the loop body. |
+| test.py:78:5:78:22 | For | For loop variable 's' is not used in the loop body. |
+| test.py:106:5:106:25 | For | For loop variable 'sess' is deleted, but not used, in the loop body. |
+| variables_test.py:133:5:133:32 | For | For loop variable 'tag' is not used in the loop body. |

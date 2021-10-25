@@ -1,0 +1,27 @@
+| UsingDeclarations.cs:6:10:6:30 | enter TestUsingDeclarations | UsingDeclarations.cs:7:5:16:5 | {...} | semmle.label | successor |
+| UsingDeclarations.cs:6:10:6:30 | exit TestUsingDeclarations (normal) | UsingDeclarations.cs:6:10:6:30 | exit TestUsingDeclarations | semmle.label | successor |
+| UsingDeclarations.cs:7:5:16:5 | {...} | UsingDeclarations.cs:8:9:8:116 | using ... ...; | semmle.label | successor |
+| UsingDeclarations.cs:8:9:8:116 | using ... ...; | UsingDeclarations.cs:8:49:8:53 | "..." | semmle.label | successor |
+| UsingDeclarations.cs:8:26:8:69 | FileStream file1 = ... | UsingDeclarations.cs:8:95:8:99 | "..." | semmle.label | successor |
+| UsingDeclarations.cs:8:34:8:69 | object creation of type FileStream | UsingDeclarations.cs:8:26:8:69 | FileStream file1 = ... | semmle.label | successor |
+| UsingDeclarations.cs:8:49:8:53 | "..." | UsingDeclarations.cs:8:56:8:68 | access to constant Open | semmle.label | successor |
+| UsingDeclarations.cs:8:56:8:68 | access to constant Open | UsingDeclarations.cs:8:34:8:69 | object creation of type FileStream | semmle.label | successor |
+| UsingDeclarations.cs:8:72:8:115 | FileStream file2 = ... | UsingDeclarations.cs:10:9:12:9 | using (...) {...} | semmle.label | successor |
+| UsingDeclarations.cs:8:80:8:115 | object creation of type FileStream | UsingDeclarations.cs:8:72:8:115 | FileStream file2 = ... | semmle.label | successor |
+| UsingDeclarations.cs:8:95:8:99 | "..." | UsingDeclarations.cs:8:102:8:114 | access to constant Open | semmle.label | successor |
+| UsingDeclarations.cs:8:102:8:114 | access to constant Open | UsingDeclarations.cs:8:80:8:115 | object creation of type FileStream | semmle.label | successor |
+| UsingDeclarations.cs:10:9:12:9 | using (...) {...} | UsingDeclarations.cs:10:49:10:53 | "..." | semmle.label | successor |
+| UsingDeclarations.cs:10:26:10:69 | FileStream file3 = ... | UsingDeclarations.cs:10:95:10:99 | "..." | semmle.label | successor |
+| UsingDeclarations.cs:10:34:10:69 | object creation of type FileStream | UsingDeclarations.cs:10:26:10:69 | FileStream file3 = ... | semmle.label | successor |
+| UsingDeclarations.cs:10:49:10:53 | "..." | UsingDeclarations.cs:10:56:10:68 | access to constant Open | semmle.label | successor |
+| UsingDeclarations.cs:10:56:10:68 | access to constant Open | UsingDeclarations.cs:10:34:10:69 | object creation of type FileStream | semmle.label | successor |
+| UsingDeclarations.cs:10:72:10:115 | FileStream file4 = ... | UsingDeclarations.cs:11:9:12:9 | {...} | semmle.label | successor |
+| UsingDeclarations.cs:10:80:10:115 | object creation of type FileStream | UsingDeclarations.cs:10:72:10:115 | FileStream file4 = ... | semmle.label | successor |
+| UsingDeclarations.cs:10:95:10:99 | "..." | UsingDeclarations.cs:10:102:10:114 | access to constant Open | semmle.label | successor |
+| UsingDeclarations.cs:10:102:10:114 | access to constant Open | UsingDeclarations.cs:10:80:10:115 | object creation of type FileStream | semmle.label | successor |
+| UsingDeclarations.cs:11:9:12:9 | {...} | UsingDeclarations.cs:14:9:15:13 | using (...) {...} | semmle.label | successor |
+| UsingDeclarations.cs:14:9:15:13 | using (...) {...} | UsingDeclarations.cs:14:30:14:34 | "..." | semmle.label | successor |
+| UsingDeclarations.cs:14:15:14:50 | object creation of type FileStream | UsingDeclarations.cs:15:13:15:13 | ; | semmle.label | successor |
+| UsingDeclarations.cs:14:30:14:34 | "..." | UsingDeclarations.cs:14:37:14:49 | access to constant Open | semmle.label | successor |
+| UsingDeclarations.cs:14:37:14:49 | access to constant Open | UsingDeclarations.cs:14:15:14:50 | object creation of type FileStream | semmle.label | successor |
+| UsingDeclarations.cs:15:13:15:13 | ; | UsingDeclarations.cs:6:10:6:30 | exit TestUsingDeclarations (normal) | semmle.label | successor |

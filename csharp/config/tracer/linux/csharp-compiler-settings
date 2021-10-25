@@ -1,0 +1,14 @@
+**/mcs.exe:
+**/csc.exe:
+  invoke ${env.SEMMLE_PLATFORM_TOOLS}/csharp/Semmle.Extraction.CSharp.Driver
+  prepend --compiler
+  prepend "${compiler}"
+  prepend --cil
+**/mono*:
+**/dotnet:
+  invoke ${odasa_tools}/extract-csharp.sh
+**/msbuild:
+**/xbuild:
+  replace yes
+  invoke ${compiler}
+  append /p:UseSharedCompilation=false

@@ -1,0 +1,16 @@
+| literals/Literals.java:9:22:9:27 | 123.0F | 123.0 | 123.0 |
+| literals/Literals.java:52:3:52:6 | 0.0f | 0.0 | 0.0 |
+| literals/Literals.java:53:3:53:4 | 0f | 0.0 | 0.0 |
+| literals/Literals.java:54:3:54:5 | .0f | 0.0 | 0.0 |
+| literals/Literals.java:55:4:55:6 | 0.f | 0.0 | 0.0 |
+| literals/Literals.java:56:4:56:6 | 0.f | 0.0 | 0.0 |
+| literals/Literals.java:57:3:57:10 | 1_0_0.0f | 100.0 | 100.0 |
+| literals/Literals.java:58:3:58:23 | 1.234567890123456789f | 1.2345679 | 1.2345679 |
+| literals/Literals.java:59:3:59:25 | 1.55555555555555555555f | 1.5555556 | 1.5555556 |
+| literals/Literals.java:61:3:61:6 | 1e1f | 10.0 | 10.0 |
+| literals/Literals.java:62:3:62:15 | 3.4028235e38f | 3.4028235E38 | 3.4028235E38 |
+| literals/Literals.java:63:4:63:16 | 3.4028235e38f | 3.4028235E38 | 3.4028235E38 |
+| literals/Literals.java:64:3:64:18 | 0x1.fffffeP+127f | 3.4028235E38 | 3.4028235E38 |
+| literals/Literals.java:65:3:65:10 | 1.4e-45f | 1.4E-45 | 1.4E-45 |
+| literals/Literals.java:66:3:66:18 | 0x0.000002P-126f | 1.4E-45 | 1.4E-45 |
+| literals/Literals.java:67:3:67:13 | 0x1.0P-149f | 1.4E-45 | 1.4E-45 |

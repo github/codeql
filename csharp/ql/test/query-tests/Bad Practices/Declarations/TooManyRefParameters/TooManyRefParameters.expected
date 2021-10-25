@@ -1,0 +1,1 @@
+| TooManyRefParametersBad.cs:5:25:5:39 | PopulateDetails | Method 'PopulateDetails' has 3 'ref' parameters and might be hard to understand. |

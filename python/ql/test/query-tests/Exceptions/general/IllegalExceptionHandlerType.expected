@@ -1,0 +1,4 @@
+| exceptions_test.py:51:5:51:25 | ExceptStmt | Non-exception $@ in exception handler which will never match raised exception. | exceptions_test.py:33:1:33:28 | ControlFlowNode for ClassExpr | class 'NotException1' |
+| exceptions_test.py:54:5:54:25 | ExceptStmt | Non-exception $@ in exception handler which will never match raised exception. | exceptions_test.py:36:1:36:28 | ControlFlowNode for ClassExpr | class 'NotException2' |
+| exceptions_test.py:112:5:112:22 | ExceptStmt | Non-exception $@ in exception handler which will never match raised exception. | exceptions_test.py:107:12:107:14 | ControlFlowNode for FloatLiteral | instance of 'float' |
+| pypy_test.py:14:5:14:14 | ExceptStmt | Non-exception $@ in exception handler which will never match raised exception. | pypy_test.py:14:12:14:13 | ControlFlowNode for IntegerLiteral | instance of 'int' |

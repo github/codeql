@@ -1,0 +1,67 @@
+edges
+| command_injection.py:11:13:11:19 | ControlFlowNode for request | command_injection.py:11:13:11:24 | ControlFlowNode for Attribute |
+| command_injection.py:11:13:11:24 | ControlFlowNode for Attribute | command_injection.py:13:15:13:27 | ControlFlowNode for BinaryExpr |
+| command_injection.py:18:13:18:19 | ControlFlowNode for request | command_injection.py:18:13:18:24 | ControlFlowNode for Attribute |
+| command_injection.py:18:13:18:24 | ControlFlowNode for Attribute | command_injection.py:20:22:20:34 | ControlFlowNode for BinaryExpr |
+| command_injection.py:25:11:25:17 | ControlFlowNode for request | command_injection.py:25:11:25:22 | ControlFlowNode for Attribute |
+| command_injection.py:25:11:25:22 | ControlFlowNode for Attribute | command_injection.py:26:23:26:25 | ControlFlowNode for cmd |
+| command_injection.py:31:13:31:19 | ControlFlowNode for request | command_injection.py:31:13:31:24 | ControlFlowNode for Attribute |
+| command_injection.py:31:13:31:24 | ControlFlowNode for Attribute | command_injection.py:33:14:33:26 | ControlFlowNode for BinaryExpr |
+| command_injection.py:38:15:38:21 | ControlFlowNode for request | command_injection.py:38:15:38:26 | ControlFlowNode for Attribute |
+| command_injection.py:38:15:38:26 | ControlFlowNode for Attribute | command_injection.py:41:15:41:21 | ControlFlowNode for command |
+| command_injection.py:38:15:38:26 | ControlFlowNode for Attribute | command_injection.py:42:15:42:21 | ControlFlowNode for command |
+| command_injection.py:54:15:54:21 | ControlFlowNode for request | command_injection.py:54:15:54:26 | ControlFlowNode for Attribute |
+| command_injection.py:54:15:54:26 | ControlFlowNode for Attribute | command_injection.py:55:15:55:21 | ControlFlowNode for command |
+| command_injection.py:54:15:54:26 | ControlFlowNode for Attribute | command_injection.py:56:14:56:20 | ControlFlowNode for command |
+| command_injection.py:54:15:54:26 | ControlFlowNode for Attribute | command_injection.py:57:21:57:27 | ControlFlowNode for command |
+| command_injection.py:54:15:54:26 | ControlFlowNode for Attribute | command_injection.py:58:27:58:33 | ControlFlowNode for command |
+| command_injection.py:54:15:54:26 | ControlFlowNode for Attribute | command_injection.py:59:20:59:26 | ControlFlowNode for command |
+| command_injection.py:71:12:71:18 | ControlFlowNode for request | command_injection.py:71:12:71:23 | ControlFlowNode for Attribute |
+| command_injection.py:71:12:71:23 | ControlFlowNode for Attribute | command_injection.py:73:19:73:30 | ControlFlowNode for BinaryExpr |
+| command_injection.py:78:12:78:18 | ControlFlowNode for request | command_injection.py:78:12:78:23 | ControlFlowNode for Attribute |
+| command_injection.py:78:12:78:23 | ControlFlowNode for Attribute | command_injection.py:80:19:80:30 | ControlFlowNode for BinaryExpr |
+nodes
+| command_injection.py:11:13:11:19 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| command_injection.py:11:13:11:24 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| command_injection.py:13:15:13:27 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| command_injection.py:18:13:18:19 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| command_injection.py:18:13:18:24 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| command_injection.py:20:22:20:34 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| command_injection.py:25:11:25:17 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| command_injection.py:25:11:25:22 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| command_injection.py:26:23:26:25 | ControlFlowNode for cmd | semmle.label | ControlFlowNode for cmd |
+| command_injection.py:31:13:31:19 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| command_injection.py:31:13:31:24 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| command_injection.py:33:14:33:26 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| command_injection.py:38:15:38:21 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| command_injection.py:38:15:38:26 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| command_injection.py:41:15:41:21 | ControlFlowNode for command | semmle.label | ControlFlowNode for command |
+| command_injection.py:42:15:42:21 | ControlFlowNode for command | semmle.label | ControlFlowNode for command |
+| command_injection.py:54:15:54:21 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| command_injection.py:54:15:54:26 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| command_injection.py:55:15:55:21 | ControlFlowNode for command | semmle.label | ControlFlowNode for command |
+| command_injection.py:56:14:56:20 | ControlFlowNode for command | semmle.label | ControlFlowNode for command |
+| command_injection.py:57:21:57:27 | ControlFlowNode for command | semmle.label | ControlFlowNode for command |
+| command_injection.py:58:27:58:33 | ControlFlowNode for command | semmle.label | ControlFlowNode for command |
+| command_injection.py:59:20:59:26 | ControlFlowNode for command | semmle.label | ControlFlowNode for command |
+| command_injection.py:71:12:71:18 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| command_injection.py:71:12:71:23 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| command_injection.py:73:19:73:30 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| command_injection.py:78:12:78:18 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| command_injection.py:78:12:78:23 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| command_injection.py:80:19:80:30 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+subpaths
+#select
+| command_injection.py:13:15:13:27 | ControlFlowNode for BinaryExpr | command_injection.py:11:13:11:19 | ControlFlowNode for request | command_injection.py:13:15:13:27 | ControlFlowNode for BinaryExpr | This command depends on $@. | command_injection.py:11:13:11:19 | ControlFlowNode for request | a user-provided value |
+| command_injection.py:20:22:20:34 | ControlFlowNode for BinaryExpr | command_injection.py:18:13:18:19 | ControlFlowNode for request | command_injection.py:20:22:20:34 | ControlFlowNode for BinaryExpr | This command depends on $@. | command_injection.py:18:13:18:19 | ControlFlowNode for request | a user-provided value |
+| command_injection.py:26:23:26:25 | ControlFlowNode for cmd | command_injection.py:25:11:25:17 | ControlFlowNode for request | command_injection.py:26:23:26:25 | ControlFlowNode for cmd | This command depends on $@. | command_injection.py:25:11:25:17 | ControlFlowNode for request | a user-provided value |
+| command_injection.py:33:14:33:26 | ControlFlowNode for BinaryExpr | command_injection.py:31:13:31:19 | ControlFlowNode for request | command_injection.py:33:14:33:26 | ControlFlowNode for BinaryExpr | This command depends on $@. | command_injection.py:31:13:31:19 | ControlFlowNode for request | a user-provided value |
+| command_injection.py:41:15:41:21 | ControlFlowNode for command | command_injection.py:38:15:38:21 | ControlFlowNode for request | command_injection.py:41:15:41:21 | ControlFlowNode for command | This command depends on $@. | command_injection.py:38:15:38:21 | ControlFlowNode for request | a user-provided value |
+| command_injection.py:42:15:42:21 | ControlFlowNode for command | command_injection.py:38:15:38:21 | ControlFlowNode for request | command_injection.py:42:15:42:21 | ControlFlowNode for command | This command depends on $@. | command_injection.py:38:15:38:21 | ControlFlowNode for request | a user-provided value |
+| command_injection.py:55:15:55:21 | ControlFlowNode for command | command_injection.py:54:15:54:21 | ControlFlowNode for request | command_injection.py:55:15:55:21 | ControlFlowNode for command | This command depends on $@. | command_injection.py:54:15:54:21 | ControlFlowNode for request | a user-provided value |
+| command_injection.py:56:14:56:20 | ControlFlowNode for command | command_injection.py:54:15:54:21 | ControlFlowNode for request | command_injection.py:56:14:56:20 | ControlFlowNode for command | This command depends on $@. | command_injection.py:54:15:54:21 | ControlFlowNode for request | a user-provided value |
+| command_injection.py:57:21:57:27 | ControlFlowNode for command | command_injection.py:54:15:54:21 | ControlFlowNode for request | command_injection.py:57:21:57:27 | ControlFlowNode for command | This command depends on $@. | command_injection.py:54:15:54:21 | ControlFlowNode for request | a user-provided value |
+| command_injection.py:58:27:58:33 | ControlFlowNode for command | command_injection.py:54:15:54:21 | ControlFlowNode for request | command_injection.py:58:27:58:33 | ControlFlowNode for command | This command depends on $@. | command_injection.py:54:15:54:21 | ControlFlowNode for request | a user-provided value |
+| command_injection.py:59:20:59:26 | ControlFlowNode for command | command_injection.py:54:15:54:21 | ControlFlowNode for request | command_injection.py:59:20:59:26 | ControlFlowNode for command | This command depends on $@. | command_injection.py:54:15:54:21 | ControlFlowNode for request | a user-provided value |
+| command_injection.py:73:19:73:30 | ControlFlowNode for BinaryExpr | command_injection.py:71:12:71:18 | ControlFlowNode for request | command_injection.py:73:19:73:30 | ControlFlowNode for BinaryExpr | This command depends on $@. | command_injection.py:71:12:71:18 | ControlFlowNode for request | a user-provided value |
+| command_injection.py:80:19:80:30 | ControlFlowNode for BinaryExpr | command_injection.py:78:12:78:18 | ControlFlowNode for request | command_injection.py:80:19:80:30 | ControlFlowNode for BinaryExpr | This command depends on $@. | command_injection.py:78:12:78:18 | ControlFlowNode for request | a user-provided value |

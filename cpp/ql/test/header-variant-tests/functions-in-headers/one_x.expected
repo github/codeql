@@ -1,0 +1,7 @@
+| a.h:3:8:3:8 | x | x | true |
+| file://:0:0:0:0 | (unnamed parameter 0) | (unnamed parameter 0) | false |
+| file://:0:0:0:0 | (unnamed parameter 0) | (unnamed parameter 0) | false |
+| file://:0:0:0:0 | fp_offset | fp_offset | false |
+| file://:0:0:0:0 | gp_offset | gp_offset | false |
+| file://:0:0:0:0 | overflow_arg_area | overflow_arg_area | false |
+| file://:0:0:0:0 | reg_save_area | reg_save_area | false |

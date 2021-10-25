@@ -1,0 +1,178 @@
+// Generate DataFlow.dll: `csc /o /target:library DataFlow.cs_ /out:DataFlow.dll`
+
+using System;
+
+namespace Dataflow
+{
+    public class NullMethods
+    {
+        public object ReturnsNull() => null;
+
+        public object ReturnsNull2()
+        {
+            var x = ReturnsNull();
+            return x;
+        }
+
+        // Does not necessarily return null because of virtual method call.
+        public object NotReturnsNull() => VirtualReturnsNull();
+
+        public object ReturnsNullIndirect() => ReturnsNull();
+
+        public virtual object VirtualReturnsNull() => null;
+
+        public object NullProperty { get => null; }
+
+        public virtual object VirtualNullProperty { get => null; }
+    }
+
+    public class NonNullMethods
+    {
+        public object ReturnsNonNull() => new object();
+
+        public object ReturnsNonNull2()
+        {
+            var x = ReturnsNonNull();
+            return x;
+        }
+
+        public object ReturnsNonNullIndirect() => ReturnsNonNull();
+
+        public object NonNullProperty { get => 1; }
+
+        public string NonNullProperty2 { get => "not null"; }
+
+        public virtual object VirtualNonNull { get => "not null"; }
+
+        public bool cond = false;
+
+        public string MaybeNull()
+        {
+            if (cond)
+                return null;
+            else
+                return "not null";
+        }
+
+        public string MaybeNull2()
+        {
+            return cond ? null : "not null";
+        }
+
+        public virtual object VirtualNonNullProperty { get => "non null"; }
+    }
+
+    public class ThrowingMethods
+    {
+        public static object AlwaysThrows() => throw new InvalidOperationException();
+
+        public object AlwaysThrowsIndirect() => AlwaysThrows();
+
+        public virtual object VirtualThrows() => throw new Exception();
+
+        public object ThrowProperty { get => throw new Exception(); }
+        public virtual object VirtualThrowProperty { get => throw new Exception(); }
+
+    }
+
+    public class DataFlow
+    {
+        public object Taint1(object x) => x;
+
+        public object Taint2(object x) => Taint5(x);
+
+        public string Taint3(string s)
+        {
+            var x = s;
+            Console.WriteLine(s);
+            return x;
+        }
+
+        public object Taint5(object x) => Taint6(x);
+
+        private object Taint6(object x) => x;
+    }
+
+    public class TaintFlow
+    {
+        public string Taint1(string a, string b) => a + b;
+
+        public int Taint2(int a, int b) => a + b;
+
+        public int Taint3(int a) => -a;
+
+        public string TaintIndirect(string a, string b) => Taint1(a, b);
+    }
+
+    public class Properties
+    {
+        public int TrivialProperty1 { get; set; }
+
+        int field;
+
+        public int TrivialProperty2
+        {
+            get => field;
+            set { field = value; }
+        }
+    }
+
+    public class ThisAssemblyIsNotAStub
+    {
+        public void F()
+        {
+            // Ensure that the assembly isn't tagged as a stub
+            // Need to bump the average instruction count.
+            Console.WriteLine("This is not a stub assembly");
+            Console.WriteLine("This is not a stub assembly");
+            Console.WriteLine("This is not a stub assembly");
+            Console.WriteLine("This is not a stub assembly");
+            Console.WriteLine("This is not a stub assembly");
+            Console.WriteLine("This is not a stub assembly");
+            Console.WriteLine("This is not a stub assembly");
+            Console.WriteLine("This is not a stub assembly");
+            Console.WriteLine("This is not a stub assembly");
+            Console.WriteLine("This is not a stub assembly");
+            Console.WriteLine("This is not a stub assembly");
+            Console.WriteLine("This is not a stub assembly");
+            Console.WriteLine("This is not a stub assembly");
+            Console.WriteLine("This is not a stub assembly");
+            Console.WriteLine("This is not a stub assembly");
+            Console.WriteLine("This is not a stub assembly");
+            Console.WriteLine("This is not a stub assembly");
+            Console.WriteLine("This is not a stub assembly");
+            Console.WriteLine("This is not a stub assembly");
+            Console.WriteLine("This is not a stub assembly");
+            Console.WriteLine("This is not a stub assembly");
+            Console.WriteLine("This is not a stub assembly");
+            Console.WriteLine("This is not a stub assembly");
+            Console.WriteLine("This is not a stub assembly");
+            Console.WriteLine("This is not a stub assembly");
+            Console.WriteLine("This is not a stub assembly");
+            Console.WriteLine("This is not a stub assembly");
+            Console.WriteLine("This is not a stub assembly");
+            Console.WriteLine("This is not a stub assembly");
+            Console.WriteLine("This is not a stub assembly");
+            Console.WriteLine("This is not a stub assembly");
+            Console.WriteLine("This is not a stub assembly");
+            Console.WriteLine("This is not a stub assembly");
+            Console.WriteLine("This is not a stub assembly");
+            Console.WriteLine("This is not a stub assembly");
+            Console.WriteLine("This is not a stub assembly");
+            Console.WriteLine("This is not a stub assembly");
+            Console.WriteLine("This is not a stub assembly");
+            Console.WriteLine("This is not a stub assembly");
+            Console.WriteLine("This is not a stub assembly");
+            Console.WriteLine("This is not a stub assembly");
+            Console.WriteLine("This is not a stub assembly");
+            Console.WriteLine("This is not a stub assembly");
+            Console.WriteLine("This is not a stub assembly");
+            Console.WriteLine("This is not a stub assembly");
+            Console.WriteLine("This is not a stub assembly");
+            Console.WriteLine("This is not a stub assembly");
+            Console.WriteLine("This is not a stub assembly");
+            Console.WriteLine("This is not a stub assembly");
+            Console.WriteLine("This is not a stub assembly");
+        }
+    }
+}

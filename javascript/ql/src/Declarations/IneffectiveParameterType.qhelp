@@ -1,0 +1,46 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+In TypeScript, the parameters of a function signature must have a name and may optionally have a type.
+A common mistake is to try to omit the name. This means the type is instead seen as the name.
+As a result, the parameter type will default to <tt>any</tt> since no type was given.
+</p>
+<p>
+Parameter names in function signatures are only relevant for documentation purposes but cannot be omitted.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Give both a name and type to the parameter, as it cannot be given a type without having a name.
+Alternatively, if the parameter is intentionally untyped, change its name so it does not coincide with a type name.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+In the following example, the callback parameter is written as <tt>(T) => string</tt>, which
+actually means <tt>(T: any) => string</tt> and is not useful for type checking or code completion.
+</p>
+<sample src="examples/IneffectiveParameterType.ts" />
+
+<p>
+Amend this by changing the callback type to <tt>(item: T) => string</tt>.
+The parameter name <tt>item</tt> is only relevant for documentation purposes, but a name is required regardless.
+</p>
+<sample src="examples/IneffectiveParameterTypeGood.ts" />
+
+<p>
+Untyped parameters are illegal when compiling with the TypeScript flag <tt>--noImplicitAny</tt>.
+</p>
+
+</example>
+<references>
+<li><a href="https://www.typescriptlang.org/docs/handbook/functions.html">TypeScript Handbook, Functions</a></li>
+</references>
+</qhelp>

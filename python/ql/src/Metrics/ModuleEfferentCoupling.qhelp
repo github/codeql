@@ -1,0 +1,40 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Efferent coupling is the number of outgoing dependencies for each module. In other words, it is the 
+number of other modules on which each module depends.
+</p>
+
+<p>
+A module that depends on many other modules is quite brittle, because if any of
+its dependencies change, the module itself may have to change as well. Furthermore, the
+reason for the high number of dependencies is often that different parts of
+the module depend on different groups of other modules, so it is common to
+find that modules with high efferent coupling also lack cohesion.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+You can reduce efferent coupling by splitting up a module so that each part depends on fewer modules.
+</p>
+
+
+</recommendation>
+<references>
+
+
+<li>
+IBM developerWorks: <a href="https://web.archive.org/web/20190919085934/https://www.ibm.com/developerworks/library/j-eaed6/">Evolutionary architecture and emergent design: Emergent design through metrics</a>.
+</li>
+<li>
+R. Martin, <em>Agile Software Development: Principles, Patterns and Practices</em>. Pearson, 2011.
+</li>
+
+
+</references>
+</qhelp>

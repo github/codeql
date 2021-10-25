@@ -1,0 +1,5 @@
+| test.py:24:1:24:3 | ExprStmt | This statement has no effect. |
+| test.py:25:1:25:13 | ExprStmt | This statement has no effect. |
+| test.py:26:1:26:6 | ExprStmt | This statement has no effect. |
+| test.py:80:1:80:6 | ExprStmt | This statement has no effect. |
+| test.py:116:5:116:9 | ExprStmt | This statement has no effect. |

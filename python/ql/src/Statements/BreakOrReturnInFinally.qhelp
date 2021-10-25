@@ -1,0 +1,32 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>When a <code>break</code> or <code>return</code> statement is used in a 
+<code>finally</code> block this causes the <code>try-finally</code> block 
+to exit immediately discarding the exception. This is unlikely to be the 
+intention of the developer and makes the code more difficult to read.</p>
+
+</overview>
+<recommendation>
+
+<p>Either move the <code>break</code> or <code>return</code> statement to 
+immediately after the <code>finally</code> block or use an explicit 
+<code>except</code> block to handle the exception.</p>
+
+<p>These modifications are behavior changing so you must take care to ensure
+that the resulting behavior is correct.</p>
+
+</recommendation>
+<references>
+
+<li>
+Python Language Reference: <a href="http://docs.python.org/2.7/reference/compound_stmts.html#the-try-statement">
+The try statement</a>, <a href="http://docs.python.org/2/reference/simple_stmts.html#break">
+The break statement</a>, <a href="http://docs.python.org/2/reference/simple_stmts.html#return">
+The return statement</a>.</li>
+
+
+</references>
+</qhelp>

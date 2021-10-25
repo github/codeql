@@ -1,0 +1,56 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+The Spring Expression Language (SpEL) is a powerful expression language
+provided by Spring Framework. The language offers many features
+including invocation of methods available in the JVM.
+If a SpEL expression is built using attacker-controlled data, 
+and then evaluated in a powerful context,
+then it may allow the attacker to run arbitrary code.
+</p>
+<p>
+The <code>SpelExpressionParser</code> class parses a SpEL expression string
+and returns an <code>Expression</code> instance
+that can be then evaluated by calling one of its methods.
+By default, an expression is evaluated in a powerful <code>StandardEvaluationContext</code>
+that allows the expression to access other methods available in the JVM.
+</p>
+</overview>
+
+<recommendation>
+<p>
+In general, including user input in a SpEL expression should be avoided.
+If user input must be included in the expression,
+it should be then evaluated in a limited context
+that doesn't allow arbitrary method invocation.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example uses untrusted data to build a SpEL expression
+and then runs it in the default powerfull context.
+</p>
+<sample src="UnsafeSpelExpressionEvaluation.java" />
+
+<p>
+The next example shows how an untrusted SpEL expression can be run
+in <code>SimpleEvaluationContext</code> that doesn't allow accessing arbitrary methods.
+However, it's recommended to avoid using untrusted input in SpEL expressions.
+</p>
+<sample src="SaferSpelExpressionEvaluation.java" />
+</example>
+
+<references>
+<li>
+  Spring Framework Reference Documentation:
+  <a href="https://docs.spring.io/spring/docs/4.2.x/spring-framework-reference/html/expressions.html">Spring Expression Language (SpEL)</a>.
+</li>
+<li>
+  OWASP:
+  <a href="https://owasp.org/www-community/vulnerabilities/Expression_Language_Injection">Expression Language Injection</a>.
+</li>
+</references>
+</qhelp>

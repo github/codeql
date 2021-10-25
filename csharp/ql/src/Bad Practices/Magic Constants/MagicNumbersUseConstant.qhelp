@@ -1,0 +1,23 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>This rule finds numbers that are used where a named constant already exists instead.</p>
+
+</overview>
+<recommendation>
+<p>Consider replacing the number with the existing named constant.</p>
+
+</recommendation>
+<example>
+<sample src="MagicNumbersUseConstant.cs" />
+
+</example>
+<references>
+
+  <li>Robert C. Martin, <em>Clean Code - A handbook of agile software craftsmanship</em>, p. 295. Prentice Hall, 2008.</li>
+
+
+</references>
+</qhelp>

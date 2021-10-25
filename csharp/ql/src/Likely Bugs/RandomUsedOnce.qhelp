@@ -1,0 +1,59 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+A program that uses <code>System.Random</code> to generate a sequence of pseudo-random numbers <em>should not</em> create a new instance of <code>Random</code> 
+every time a new pseudo-random number is required (for example, <code>new Random().Next()</code>).
+</p>
+
+<p> 
+According to MSDN:</p>
+
+<blockquote>
+<p>The default seed value is derived from the system clock and has finite resolution. As a result, different <code>Random</code> objects that are created 
+in close succession by a call to the default constructor will have identical default seed values and, therefore, will produce identical sets of random numbers.
+</p>
+</blockquote>
+
+<p>The sequence of pseudo-random numbers returned by these calls depends only on the value of the seed. 
+If you construct a new <code>Random</code> object each time a pseudo-random number is needed, this does not 
+generate a good distribution of pseudo-random numbers, even though the parameterless <code>Random()</code>
+constructor tries to initialize itself with a unique seed.
+</p>
+
+</overview>
+<recommendation>
+<p>
+Create a <code>Random</code> object once and use the same instance when generating sequences of 
+pseudo-random numbers (by calling <code>Next</code>, <code>NextBytes</code> or <code>NextDouble</code>).
+</p>
+
+</recommendation>
+<example>
+
+<p>In the first example, the same number is actually output ten times, because the random number generator
+is initialized with the same time value.
+</p>
+
+<sample src="RandomUsedOnce.cs" />
+
+<p>This is fixed by using a single <code>Random</code> instance to guarantee a good distribution.
+</p>
+
+<sample src="RandomUsedOnceFix.cs" />
+
+</example>
+<references>
+
+
+<li>
+  MSDN:
+  <a href="http://msdn.microsoft.com/en-us/library/h343ddh9.aspx">Random Constructor</a>.
+</li>
+
+
+</references>
+</qhelp>

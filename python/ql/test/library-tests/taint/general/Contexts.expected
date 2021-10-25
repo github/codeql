@@ -1,0 +1,33 @@
+WARNING: Type CallContext has been deprecated and may be removed in future (Contexts.ql:5,6-17)
+WARNING: Type CallContext has been deprecated and may be removed in future (Contexts.ql:7,10-21)
+| assignment.py:1 | p0 = simple.test | Function test |
+| assignment.py:1 | p1 = simple.test | Function test |
+| assignment.py:1 | p2 = simple.test | Function test |
+| carrier.py:4 | p1 = explicit.carrier | Function __init__ |
+| carrier.py:4 | p1 = simple.test | Function __init__ |
+| carrier.py:10 | p0.attr = simple.test | Function get_attr |
+| carrier.py:13 | p0 = explicit.carrier | Function hub |
+| carrier.py:13 | p0.attr = simple.test | Function hub |
+| deep.py:2 | p0 = simple.test | Function f1 |
+| deep.py:5 | p0 = simple.test | Function f2 |
+| deep.py:8 | p0 = simple.test | Function f3 |
+| deep.py:11 | p0 = simple.test | Function f4 |
+| deep.py:14 | p0 = simple.test | Function f5 |
+| deep.py:17 | p0 = simple.test | Function f6 |
+| rockpaperscissors.py:3 | p0 = scissors | Function rock |
+| rockpaperscissors.py:6 | p0 = paper | Function paper |
+| rockpaperscissors.py:6 | p0 = rock | Function paper |
+| rockpaperscissors.py:6 | p0 = scissors | Function paper |
+| rockpaperscissors.py:9 | p0 = paper | Function scissors |
+| rockpaperscissors.py:9 | p0 = scissors | Function scissors |
+| sanitizer.py:3 | p0 = Command injection | Function isEscapedSql |
+| sanitizer.py:3 | p0 = SQL injection | Function isEscapedSql |
+| sanitizer.py:5 | p0 = Command injection | Function isValidCommand |
+| sanitizer.py:5 | p0 = SQL injection | Function isValidCommand |
+| test.py:12 | p0 = simple.test | Function sink |
+| test.py:46 | p0 = simple.test | Function sink2 |
+| test.py:49 | p1 = simple.test | Function sink3 |
+| test.py:72 | p0 = basic.custom | Function hub |
+| test.py:72 | p0 = simple.test | Function hub |
+| test.py:72 | p0.x = simple.test | Function hub |
+| test.py:105 | p0.x = simple.test | Function x_sink |

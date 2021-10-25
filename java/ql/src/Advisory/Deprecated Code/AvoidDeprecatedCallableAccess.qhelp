@@ -1,0 +1,47 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+A method (or constructor) can be marked as deprecated using either the <code>@Deprecated</code> 
+annotation or the <code>@deprecated</code> Javadoc tag. Using a method that has been 
+marked as deprecated is bad practice, typically for one or more of the following reasons:</p>
+
+<ul>
+<li>The method is dangerous.</li>
+<li>There is a better alternative method.</li>
+<li>Methods that are marked as deprecated are often removed from future versions of an API. So using 
+a deprecated method may cause extra maintenance effort when the API is upgraded.</li>
+</ul>
+
+</overview>
+<recommendation>
+
+<p>Avoid using a method that has been marked as deprecated. Follow any guidance that
+is provided with the <code>@deprecated</code> Javadoc tag, which should explain how to replace the 
+call to the deprecated method.
+</p>
+
+</recommendation>
+<references>
+
+
+<li>
+Help - Eclipse Platform:
+<a href="https://help.eclipse.org/2020-12/advanced/content.jsp?topic=/org.eclipse.jdt.doc.user/reference/preferences/java/compiler/ref-preferences-errors-warnings.htm">Java Compiler Errors/Warnings Preferences</a>.
+</li>
+<li>
+  Java API Specification:
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Deprecated.html">Annotation Type Deprecated</a>.
+</li>
+<li>
+  Java SE Documentation:
+  <a href="https://docs.oracle.com/javase/8/docs/technotes/guides/javadoc/deprecation/deprecation.html">How and When To Deprecate APIs</a>.
+</li>
+
+
+</references>
+</qhelp>

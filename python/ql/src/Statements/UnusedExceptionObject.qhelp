@@ -1,0 +1,25 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p> Creating a new exception object is no different from creating any other object. The exception needs to be raised to have an effect.
+</p>
+
+</overview>
+<recommendation>
+<p> Insert a <code>raise</code> before the exception.
+</p>
+
+</recommendation>
+<example>
+
+<p>In this example, the first function <code>do_action_forgotten_raise()</code> silently ignores any erroneous input. 
+Whereas, the second function <code>do_action</code> correctly raises an exception if the 'action' is not understood.
+</p>
+
+<sample src="UnusedExceptionObject.py" />
+</example>
+</qhelp>

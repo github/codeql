@@ -1,0 +1,3 @@
+struct MultipleDefsButSameHeader;
+
+struct OneDefInDifferentFile;

@@ -1,0 +1,49 @@
+| value_categories.cpp:6:5:6:5 | y | int | lvalue |
+| value_categories.cpp:6:5:6:13 | ... = ... | int | lvalue |
+| value_categories.cpp:16:5:16:6 | * ... | int | lvalue |
+| value_categories.cpp:16:5:16:11 | ... = ... | int | lvalue |
+| value_categories.cpp:22:14:22:14 | x | int | lvalue |
+| value_categories.cpp:33:15:33:15 | (reference dereference) | int | lvalue |
+| value_categories.cpp:38:5:38:5 | (reference dereference) | int | lvalue |
+| value_categories.cpp:38:5:38:9 | ... = ... | int | lvalue |
+| value_categories.cpp:42:12:42:12 | (reference dereference) | int | lvalue |
+| value_categories.cpp:52:19:52:33 | (reference dereference) | int | xvalue |
+| value_categories.cpp:57:5:57:6 | (reference dereference) | int | lvalue |
+| value_categories.cpp:57:5:57:10 | ... = ... | int | lvalue |
+| value_categories.cpp:62:12:62:33 | static_cast<int>... | int | xvalue |
+| value_categories.cpp:62:31:62:32 | (reference dereference) | int | lvalue |
+| value_categories.cpp:74:12:74:12 | (reference dereference) | S | lvalue |
+| value_categories.cpp:95:5:95:5 | t | T | lvalue |
+| value_categories.cpp:95:5:95:11 | ... = ... | int | lvalue |
+| value_categories.cpp:95:7:95:7 | x | int | lvalue |
+| value_categories.cpp:98:13:98:13 | t | T | lvalue |
+| value_categories.cpp:104:5:104:12 | String | const char[7] | lvalue |
+| value_categories.cpp:105:21:105:28 | String | const char[7] | lvalue |
+| value_categories.cpp:106:26:106:33 | String | const char[7] | lvalue |
+| value_categories.cpp:108:14:108:21 | String | const char[7] | lvalue |
+| value_categories.cpp:115:5:115:5 | x | int | lvalue |
+| value_categories.cpp:117:5:117:5 | x | int | lvalue |
+| value_categories.cpp:119:5:119:7 | ++ ... | int | lvalue |
+| value_categories.cpp:119:7:119:7 | x | int | lvalue |
+| value_categories.cpp:121:5:121:7 | -- ... | int | lvalue |
+| value_categories.cpp:121:7:121:7 | x | int | lvalue |
+| value_categories.cpp:129:5:129:5 | x | int | lvalue |
+| value_categories.cpp:129:5:129:10 | ... += ... | int | lvalue |
+| value_categories.cpp:131:5:131:5 | x | int | lvalue |
+| value_categories.cpp:131:5:131:10 | ... -= ... | int | lvalue |
+| value_categories.cpp:133:5:133:5 | x | int | lvalue |
+| value_categories.cpp:133:5:133:10 | ... *= ... | int | lvalue |
+| value_categories.cpp:135:5:135:5 | x | int | lvalue |
+| value_categories.cpp:135:5:135:10 | ... /= ... | int | lvalue |
+| value_categories.cpp:137:5:137:5 | x | int | lvalue |
+| value_categories.cpp:137:5:137:10 | ... %= ... | int | lvalue |
+| value_categories.cpp:139:5:139:5 | x | int | lvalue |
+| value_categories.cpp:139:5:139:11 | ... <<= ... | int | lvalue |
+| value_categories.cpp:141:5:141:5 | x | int | lvalue |
+| value_categories.cpp:141:5:141:11 | ... >>= ... | int | lvalue |
+| value_categories.cpp:143:5:143:5 | x | int | lvalue |
+| value_categories.cpp:143:5:143:10 | ... \|= ... | int | lvalue |
+| value_categories.cpp:145:5:145:5 | x | int | lvalue |
+| value_categories.cpp:145:5:145:10 | ... &= ... | int | lvalue |
+| value_categories.cpp:147:5:147:5 | x | int | lvalue |
+| value_categories.cpp:147:5:147:10 | ... ^= ... | int | lvalue |

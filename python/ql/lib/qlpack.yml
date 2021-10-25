@@ -1,0 +1,7 @@
+name: codeql/python-all
+version: 0.0.2
+dbscheme: semmlecode.python.dbscheme
+extractor: python
+library: true
+dependencies:
+    codeql/python-upgrades: 0.0.2

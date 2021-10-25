@@ -1,0 +1,1 @@
+| pointlessforwardingmethod/Test.java:9:6:9:11 | addOne | This method is a forwarder for $@, which is not called independently - the methods can be merged. | pointlessforwardingmethod/Test.java:5:6:5:11 | addOne | addOne |

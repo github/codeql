@@ -1,0 +1,29 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>This rule finds calls to <code>std::istream::operator>></code> on
+<code>std::cin</code> without a preceding call to <code>cin.width</code>.
+Consuming input from <code>cin</code> without specifying the length
+of the input is dangerous due to the possibility of buffer overflows.
+
+</p></overview>
+<recommendation>
+
+<p>Always specify the length of any input expected from <code>cin</code>
+by calling <code>cin.width</code> before consuming the input.
+
+</p></recommendation>
+<example>
+<p>The following example shows both a dangerous and a safe way to consume
+input from <code>cin</code>.</p>
+<sample src="DangerousUseOfCin.cpp" />
+
+</example>
+<references>
+
+
+
+</references>
+</qhelp>

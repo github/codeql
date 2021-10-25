@@ -1,0 +1,57 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+A program that uses <code>java.util.Random</code> to generate a sequence of pseudo-random numbers <em>should not</em> create a new instance of <code>Random</code> 
+every time a new pseudo-random number is required (for example, <code>new Random().nextInt()</code>).
+</p>
+
+<p> 
+According to the Java API Specification:</p>
+
+<blockquote>
+<p>If two instances of <code>Random</code> are created with the same seed, and the same sequence of method calls is made for each, they will generate and return 
+identical sequences of numbers.</p>
+</blockquote>
+
+<p>The sequence of pseudo-random numbers returned by these calls depends only on the value of the seed. 
+If you construct a new <code>Random</code> object each time a pseudo-random number is needed, this does not 
+generate a good distribution of pseudo-random numbers, even though the parameterless <code>Random()</code>
+constructor tries to initialize itself with a unique seed.
+</p>
+
+</overview>
+<recommendation>
+<p>
+Create a <code>Random</code> object once and use the same instance when generating sequences of 
+pseudo-random numbers (by calling <code>nextInt</code>, <code>nextLong</code>, and so on).
+</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, generating a series of pseudo-random numbers, such as <code>notReallyRandom</code> 
+and <code>notReallyRandom2</code>, by creating a new instance of <code>Random</code> each time is 
+unlikely to result in a good distribution of pseudo-random numbers. In contrast, generating a series
+of pseudo-random numbers, such as <code>random1</code> and <code>random2</code>, by calling
+<code>nextInt</code> each time <em>is</em> likely to result in a good distribution. This is because 
+the numbers are based on only one <code>Random</code> object.</p>
+
+<sample src="RandomUsedOnce.java" />
+
+</example>
+<references>
+
+
+<li>
+  Java API Specification:
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Random.html">Random</a>.
+</li>
+
+
+</references>
+</qhelp>

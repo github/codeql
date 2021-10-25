@@ -1,0 +1,14 @@
+obj/
+TestResults/
+*.manifest
+*.pdb
+*.suo
+*.mdb
+*.vsmdi
+csharp.log
+**/bin/Debug
+**/bin/Release
+*.tlog
+.vs
+*.user
+.vscode/launch.json

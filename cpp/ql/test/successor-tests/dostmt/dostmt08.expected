@@ -1,0 +1,13 @@
+| 0 | dostmt.c:16:22:23:1 | { ... } | 1 | dostmt.c:17:3:21:13 | do (...) ... |
+| 1 | dostmt.c:17:3:21:13 | do (...) ... | 1 | dostmt.c:17:6:21:3 | { ... } |
+| 1 | dostmt.c:17:6:21:3 | { ... } | 2 | dostmt.c:18:5:18:7 | label ...: |
+| 2 | dostmt.c:18:5:18:7 | label ...: | 2 | dostmt.c:18:8:18:8 | ; |
+| 2 | dostmt.c:18:8:18:8 | ; | 3 | dostmt.c:19:5:19:10 | break; |
+| 3 | dostmt.c:19:5:19:10 | break; | 5 | dostmt.c:21:13:21:13 | label ...: |
+| 4 | dostmt.c:20:5:20:7 | label ...: | 4 | dostmt.c:20:8:20:8 | ; |
+| 4 | dostmt.c:20:8:20:8 | ; | 5 | dostmt.c:21:11:21:11 | 1 |
+| 5 | dostmt.c:21:11:21:11 | 1 | 1 | dostmt.c:17:6:21:3 | { ... } |
+| 5 | dostmt.c:21:13:21:13 | label ...: | 6 | dostmt.c:22:3:22:5 | label ...: |
+| 6 | dostmt.c:22:3:22:5 | label ...: | 6 | dostmt.c:22:6:22:6 | ; |
+| 6 | dostmt.c:22:6:22:6 | ; | 7 | dostmt.c:23:1:23:1 | return ... |
+| 7 | dostmt.c:23:1:23:1 | return ... | 0 | dostmt.c:16:6:16:18 | always_true_2 |

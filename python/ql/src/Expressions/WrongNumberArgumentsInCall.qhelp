@@ -1,0 +1,39 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+  A function call must supply an argument for each parameter that does not have a default value defined, so:
+</p>
+  <ul>
+    <li>The minimum number of arguments is the number of parameters without default values.</li>
+    <li>The maximum number of arguments is the total number of parameters,
+    unless the function takes a varargs (starred) parameter in which case there
+    is no limit.</li>
+  </ul>
+</overview>
+<recommendation>
+<p>If there are too few arguments then check to see which arguments have been omitted and supply values for those.</p>
+
+<p>If there are too many arguments then check to see if any have been added by mistake and remove those.</p>
+
+<p>
+  Also check where a comma has been inserted instead of an operator or a dot.
+  For example, the code is <code>obj,attr</code> when it should be <code>obj.attr</code>.
+</p>
+<p> If it is not clear which are the missing or surplus arguments, then this suggests a logical error.
+The fix will then depend on the nature of the error.
+</p>
+
+</recommendation>
+<references>
+
+    <li>Python Glossary: <a href="https://docs.python.org/2/glossary.html#term-argument">Arguments</a>.</li>
+    <li>Python Glossary: <a href="https://docs.python.org/glossary.html#term-parameter">Parameters</a>.</li>
+    <li>Python Programming FAQ: <a href="https://docs.python.org/2/faq/programming.html#faq-argument-vs-parameter">
+    What is the difference between arguments and parameters?</a>.</li>
+
+
+</references>
+</qhelp>

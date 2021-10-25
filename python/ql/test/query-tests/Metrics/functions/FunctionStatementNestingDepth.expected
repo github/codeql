@@ -1,0 +1,9 @@
+| test.py:20:1:20:12 | Function f4 | 4 |
+| test.py:50:5:50:23 | Function f4 | 4 |
+| test.py:13:1:13:13 | Function f3 | 3 |
+| test.py:43:5:43:23 | Function f3 | 3 |
+| test.py:5:1:5:16 | Function f2 | 2 |
+| test.py:35:5:35:23 | Function f2 | 2 |
+| test.py:60:1:60:8 | Function g | 2 |
+| test.py:2:1:2:9 | Function f1 | 1 |
+| test.py:32:5:32:17 | Function f1 | 1 |

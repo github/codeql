@@ -1,0 +1,1 @@
+| FeatureEnvyBad.cs:16:17:16:29 | GetTotalPrice | Method GetTotalPrice is too closely tied to $@: 5 dependencies to it, but only 0 dependencies to its own type. | FeatureEnvyBad.cs:5:11:5:14 | Item | Item |

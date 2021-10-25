@@ -1,0 +1,10 @@
+| literals/Literals.java:12:22:12:24 | 'x' | x |
+| literals/Literals.java:21:3:21:5 | 'a' | a |
+| literals/Literals.java:22:3:22:10 | '\\u0061' | a |
+| literals/Literals.java:23:3:23:10 | '\\u0000' | \u0000 |
+| literals/Literals.java:24:3:24:6 | '\\0' | \u0000 |
+| literals/Literals.java:25:3:25:6 | '\\n' | \n |
+| literals/Literals.java:26:3:26:6 | '\\0' | \u0000 |
+| literals/Literals.java:27:3:27:6 | '\\\\' | \\ |
+| literals/Literals.java:28:3:28:6 | '\\'' | ' |
+| literals/Literals.java:29:3:29:8 | '\\123' | S |

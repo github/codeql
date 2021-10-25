@@ -1,0 +1,712 @@
+| binary_logical_operator.c:2:11:2:25 | Constant: ... && ... | positive strictlyPositive |
+| binary_logical_operator.c:2:11:2:25 | Load: ... && ... | positive |
+| binary_logical_operator.c:2:11:2:25 | Phi: ... && ... | positive |
+| binary_logical_operator.c:2:11:2:25 | Store: ... && ... | positive |
+| binary_logical_operator.c:2:11:2:25 | Store: ... && ... | positive strictlyPositive |
+| binary_logical_operator.c:2:15:2:16 | Constant: 10 | positive strictlyPositive |
+| binary_logical_operator.c:3:7:3:7 | Load: b | positive |
+| bounded_bounds.c:3:12:3:12 | Load: x | negative strictlyNegative |
+| bounded_bounds.c:3:12:3:12 | Store: x | negative strictlyNegative |
+| bounded_bounds.c:5:7:5:7 | Load: x | positive |
+| bounded_bounds.c:6:11:6:11 | Load: y | positive strictlyPositive |
+| bounded_bounds.c:6:11:6:11 | Store: y | positive strictlyPositive |
+| bounded_bounds.c:16:12:16:12 | Load: x | negative strictlyNegative |
+| bounded_bounds.c:16:12:16:12 | Store: x | negative strictlyNegative |
+| inline_assembly.c:9:23:9:23 | Uninitialized: definition of y | positive |
+| inline_assembly.c:10:3:10:7 | Store: ... = ... | positive strictlyPositive |
+| inline_assembly.c:10:7:10:7 | Constant: (unsigned int)... | positive strictlyPositive |
+| inline_assembly.c:12:32:12:32 | Load: y | positive strictlyPositive |
+| inline_assembly.c:21:32:21:32 | Load: y | positive strictlyPositive |
+| minmax.c:16:9:16:10 | Constant: 1 | positive strictlyPositive |
+| minmax.c:16:9:16:10 | Store: 1 | positive strictlyPositive |
+| minmax.c:16:16:16:17 | Constant: 2 | positive strictlyPositive |
+| minmax.c:16:16:16:17 | Store: 2 | positive strictlyPositive |
+| minmax.c:16:23:16:24 | Constant: 3 | positive strictlyPositive |
+| minmax.c:16:23:16:24 | Store: 3 | positive strictlyPositive |
+| minmax.c:18:37:18:37 | Load: x | positive strictlyPositive |
+| minmax.c:18:40:18:40 | Load: y | positive strictlyPositive |
+| minmax.c:18:43:18:43 | Load: z | positive strictlyPositive |
+| minmax.c:20:2:24:3 | Store: ... = ... | positive |
+| minmax.c:20:6:24:3 | CopyValue: (statement expression) | positive |
+| minmax.c:22:18:22:22 | Store: ... = ... | positive strictlyPositive |
+| minmax.c:22:22:22:22 | Load: x | positive strictlyPositive |
+| minmax.c:23:3:23:3 | Load: t | positive |
+| minmax.c:23:3:23:3 | Phi: t | positive |
+| minmax.c:26:37:26:37 | Load: x | positive strictlyPositive |
+| minmax.c:26:40:26:40 | Load: y | positive strictlyPositive |
+| minmax.c:26:43:26:43 | Load: z | positive |
+| test.c:7:10:7:10 | Phi: p | positive |
+| test.c:8:5:8:19 | Store: ... = ... | positive strictlyPositive |
+| test.c:8:13:8:17 | Load: count | positive |
+| test.c:8:13:8:19 | Add: ... + ... | positive strictlyPositive |
+| test.c:8:19:8:19 | Constant: 1 | positive strictlyPositive |
+| test.c:10:10:10:14 | Load: count | positive |
+| test.c:10:10:10:14 | Store: count | positive |
+| test.c:15:10:15:10 | Phi: p | positive |
+| test.c:16:5:16:26 | Store: ... = ... | positive |
+| test.c:16:13:16:26 | Rem: ... % ... | positive |
+| test.c:16:14:16:18 | Load: count | positive |
+| test.c:16:14:16:20 | Add: ... + ... | positive strictlyPositive |
+| test.c:16:20:16:20 | Constant: 1 | positive strictlyPositive |
+| test.c:16:25:16:26 | Constant: 10 | positive strictlyPositive |
+| test.c:18:10:18:14 | Load: count | positive |
+| test.c:18:10:18:14 | Store: count | positive |
+| test.c:23:10:23:10 | Phi: p | positive |
+| test.c:24:5:24:9 | Load: count | positive |
+| test.c:24:5:24:11 | Add: ... ++ | positive strictlyPositive |
+| test.c:24:5:24:11 | Constant: ... ++ | positive strictlyPositive |
+| test.c:24:5:24:11 | Store: ... ++ | positive strictlyPositive |
+| test.c:25:5:25:22 | Store: ... = ... | positive |
+| test.c:25:13:25:17 | Load: count | positive strictlyPositive |
+| test.c:25:13:25:22 | Rem: ... % ... | positive |
+| test.c:25:21:25:22 | Constant: 10 | positive strictlyPositive |
+| test.c:27:10:27:14 | Load: count | positive |
+| test.c:27:10:27:14 | Store: count | positive |
+| test.c:33:15:33:15 | Load: i | positive |
+| test.c:33:15:33:15 | Phi: i | positive |
+| test.c:33:15:33:15 | Phi: i | positive |
+| test.c:33:19:33:19 | Constant: 2 | positive strictlyPositive |
+| test.c:33:22:33:28 | Store: ... = ... | positive strictlyPositive |
+| test.c:33:26:33:26 | Load: i | positive |
+| test.c:33:26:33:28 | Add: ... + ... | positive strictlyPositive |
+| test.c:33:28:33:28 | Constant: 1 | positive strictlyPositive |
+| test.c:34:5:34:9 | Load: total | positive |
+| test.c:34:5:34:14 | Add: ... += ... | positive |
+| test.c:34:5:34:14 | Store: ... += ... | positive |
+| test.c:34:14:34:14 | Load: i | positive |
+| test.c:36:10:36:14 | Load: total | positive |
+| test.c:36:10:36:18 | Add: ... + ... | positive strictlyPositive |
+| test.c:36:10:36:18 | Store: ... + ... | positive strictlyPositive |
+| test.c:36:18:36:18 | Load: i | positive strictlyPositive |
+| test.c:42:15:42:15 | Load: i | positive |
+| test.c:42:15:42:15 | Phi: i | positive |
+| test.c:42:15:42:15 | Phi: i | positive |
+| test.c:42:19:42:19 | Constant: 2 | positive strictlyPositive |
+| test.c:42:22:42:22 | Load: i | positive |
+| test.c:42:22:42:24 | Add: ... ++ | positive strictlyPositive |
+| test.c:42:22:42:24 | Constant: ... ++ | positive strictlyPositive |
+| test.c:42:22:42:24 | Store: ... ++ | positive strictlyPositive |
+| test.c:43:5:43:9 | Load: total | positive |
+| test.c:43:5:43:14 | Add: ... += ... | positive |
+| test.c:43:5:43:14 | Store: ... += ... | positive |
+| test.c:43:14:43:14 | Load: i | positive |
+| test.c:45:10:45:14 | Load: total | positive |
+| test.c:45:10:45:18 | Add: ... + ... | positive strictlyPositive |
+| test.c:45:10:45:18 | Store: ... + ... | positive strictlyPositive |
+| test.c:45:18:45:18 | Load: i | positive strictlyPositive |
+| test.c:51:15:51:15 | Load: i | positive |
+| test.c:51:15:51:15 | Phi: i | positive |
+| test.c:51:15:51:15 | Phi: i | positive |
+| test.c:51:15:51:17 | Add: ... + ... | positive strictlyPositive |
+| test.c:51:17:51:17 | Constant: 2 | positive strictlyPositive |
+| test.c:51:21:51:21 | Constant: 4 | positive strictlyPositive |
+| test.c:51:24:51:30 | Store: ... = ... | positive strictlyPositive |
+| test.c:51:28:51:28 | Load: i | positive |
+| test.c:51:28:51:30 | Add: ... + ... | positive strictlyPositive |
+| test.c:51:30:51:30 | Constant: 1 | positive strictlyPositive |
+| test.c:52:5:52:9 | Load: total | positive |
+| test.c:52:5:52:14 | Add: ... += ... | positive |
+| test.c:52:5:52:14 | Store: ... += ... | positive |
+| test.c:52:14:52:14 | Load: i | positive |
+| test.c:54:10:54:14 | Load: total | positive |
+| test.c:54:10:54:18 | Add: ... + ... | positive |
+| test.c:54:10:54:18 | Store: ... + ... | positive |
+| test.c:54:18:54:18 | Load: i | positive |
+| test.c:58:11:58:11 | Constant: 4 | positive strictlyPositive |
+| test.c:59:13:59:13 | Constant: 5 | positive strictlyPositive |
+| test.c:63:10:63:10 | Constant: 1 | positive strictlyPositive |
+| test.c:63:10:63:10 | Store: 1 | positive strictlyPositive |
+| test.c:67:7:67:11 | Constant: - ... | negative strictlyNegative |
+| test.c:67:24:67:25 | Constant: 10 | positive strictlyPositive |
+| test.c:68:15:68:15 | Constant: 2 | positive strictlyPositive |
+| test.c:77:13:77:13 | Constant: 4 | positive strictlyPositive |
+| test.c:81:13:81:13 | Constant: 4 | positive strictlyPositive |
+| test.c:82:14:82:14 | Constant: 1 | positive strictlyPositive |
+| test.c:82:14:82:14 | Store: 1 | positive strictlyPositive |
+| test.c:88:5:88:10 | Phi: test10 | positive |
+| test.c:89:11:89:11 | Constant: 7 | positive strictlyPositive |
+| test.c:90:13:90:13 | Load: y | positive strictlyPositive |
+| test.c:93:12:93:12 | Load: x | positive strictlyPositive |
+| test.c:93:12:93:12 | Store: x | positive strictlyPositive |
+| test.c:95:10:95:10 | Constant: 1 | positive strictlyPositive |
+| test.c:95:10:95:10 | Store: 1 | positive strictlyPositive |
+| test.c:98:18:98:18 | Phi: p | positive |
+| test.c:102:6:102:8 | Constant: ... ++ | positive strictlyPositive |
+| test.c:104:12:104:14 | Constant: 58 | positive strictlyPositive |
+| test.c:107:8:107:10 | Constant: ... ++ | positive strictlyPositive |
+| test.c:109:14:109:16 | Constant: 44 | positive strictlyPositive |
+| test.c:110:14:110:14 | Constant: 1 | positive strictlyPositive |
+| test.c:110:14:110:14 | Store: 1 | positive strictlyPositive |
+| test.c:119:10:119:10 | Load: n | positive |
+| test.c:119:10:119:12 | Add: ... ++ | positive strictlyPositive |
+| test.c:119:10:119:12 | Constant: ... ++ | positive strictlyPositive |
+| test.c:119:10:119:12 | CopyValue: ... ++ | positive |
+| test.c:119:10:119:12 | Store: ... ++ | positive |
+| test.c:119:10:119:12 | Store: ... ++ | positive strictlyPositive |
+| test.c:124:11:124:15 | Load: Start | positive |
+| test.c:124:11:124:15 | Phi: Start | positive |
+| test.c:124:20:124:32 | Call: call to test12_helper | positive |
+| test.c:124:20:124:36 | Sub: ... - ... | positive |
+| test.c:124:36:124:36 | Constant: (unsigned long long)... | positive strictlyPositive |
+| test.c:126:31:126:43 | Call: call to test12_helper | positive |
+| test.c:126:31:126:43 | Store: call to test12_helper | positive |
+| test.c:127:6:127:10 | Load: Start | positive |
+| test.c:127:6:127:24 | Add: ... += ... | positive strictlyPositive |
+| test.c:127:6:127:24 | Store: ... += ... | positive strictlyPositive |
+| test.c:127:15:127:20 | Load: Length | positive |
+| test.c:127:15:127:24 | Add: ... + ... | positive strictlyPositive |
+| test.c:127:24:127:24 | Constant: (unsigned long long)... | positive strictlyPositive |
+| test.c:130:11:130:11 | Constant: 1 | positive strictlyPositive |
+| test.c:130:11:130:11 | Store: 1 | positive strictlyPositive |
+| test.c:135:22:135:22 | Convert: (unsigned char)... | positive |
+| test.c:135:22:135:22 | Store: (unsigned char)... | positive |
+| test.c:137:22:137:22 | Constant: (unsigned int)... | positive strictlyPositive |
+| test.c:138:13:138:13 | Constant: 1 | positive strictlyPositive |
+| test.c:139:19:139:28 | Convert: (unsigned int)... | positive |
+| test.c:139:19:139:32 | Add: ... + ... | positive |
+| test.c:139:27:139:28 | Convert: (int)... | positive |
+| test.c:139:27:139:28 | Load: uc | positive |
+| test.c:139:40:139:40 | Convert: (unsigned int)... | positive |
+| test.c:145:12:145:32 | Convert: (int)... | positive |
+| test.c:145:12:145:32 | Store: (int)... | positive |
+| test.c:145:17:145:32 | Convert: (unsigned char)... | positive |
+| test.c:146:12:146:33 | Convert: (int)... | positive |
+| test.c:146:12:146:33 | Store: (int)... | positive |
+| test.c:146:17:146:33 | Convert: (unsigned short)... | positive |
+| test.c:147:17:147:31 | Convert: (unsigned int)... | positive |
+| test.c:149:23:149:23 | Convert: (unsigned short)... | positive |
+| test.c:149:23:149:23 | Store: (unsigned short)... | positive |
+| test.c:150:15:150:16 | Load: x1 | positive |
+| test.c:150:20:150:21 | Load: x2 | positive |
+| test.c:150:35:150:36 | Convert: (int)... | positive |
+| test.c:150:35:150:36 | Load: s0 | positive |
+| test.c:154:10:154:40 | Store: ... ? ... : ... | negative strictlyNegative |
+| test.c:154:10:154:40 | Store: ... ? ... : ... | positive strictlyPositive |
+| test.c:154:20:154:20 | Load: x | positive strictlyPositive |
+| test.c:154:25:154:30 | Convert: (int)... | positive |
+| test.c:154:25:154:30 | Convert: (long long)... | positive |
+| test.c:154:30:154:30 | Load: x | positive strictlyPositive |
+| test.c:154:35:154:35 | Load: x | positive strictlyPositive |
+| test.c:154:39:154:40 | Constant: (long long)... | negative strictlyNegative |
+| test.c:161:7:161:7 | Constant: 3 | positive strictlyPositive |
+| test.c:161:17:161:17 | Load: a | positive strictlyPositive |
+| test.c:161:22:161:23 | Constant: 11 | positive strictlyPositive |
+| test.c:162:13:162:14 | CopyValue: + ... | positive strictlyPositive |
+| test.c:162:13:162:14 | Store: + ... | positive strictlyPositive |
+| test.c:162:14:162:14 | Load: a | positive strictlyPositive |
+| test.c:163:13:163:14 | Negate: - ... | negative strictlyNegative |
+| test.c:163:13:163:14 | Store: - ... | negative strictlyNegative |
+| test.c:163:14:163:14 | Load: a | positive strictlyPositive |
+| test.c:164:14:164:14 | Load: b | positive strictlyPositive |
+| test.c:164:16:164:16 | Load: c | negative strictlyNegative |
+| test.c:166:17:166:17 | Load: a | positive |
+| test.c:166:22:166:23 | Constant: 11 | positive strictlyPositive |
+| test.c:167:13:167:14 | CopyValue: + ... | positive |
+| test.c:167:13:167:14 | Store: + ... | positive |
+| test.c:167:14:167:14 | Load: a | positive |
+| test.c:168:13:168:14 | Negate: - ... | negative |
+| test.c:168:13:168:14 | Store: - ... | negative |
+| test.c:168:14:168:14 | Load: a | positive |
+| test.c:169:14:169:14 | Load: b | positive |
+| test.c:169:16:169:16 | Load: c | negative |
+| test.c:171:7:171:8 | Constant: - ... | negative strictlyNegative |
+| test.c:171:23:171:24 | Constant: 11 | positive strictlyPositive |
+| test.c:176:7:176:8 | Constant: - ... | negative strictlyNegative |
+| test.c:176:23:176:23 | Constant: 1 | positive strictlyPositive |
+| test.c:181:7:181:8 | Constant: - ... | negative strictlyNegative |
+| test.c:182:13:182:14 | CopyValue: + ... | negative |
+| test.c:182:13:182:14 | Store: + ... | negative |
+| test.c:182:14:182:14 | Load: a | negative |
+| test.c:183:13:183:14 | Negate: - ... | positive |
+| test.c:183:13:183:14 | Store: - ... | positive |
+| test.c:183:14:183:14 | Load: a | negative |
+| test.c:184:14:184:14 | Load: b | negative |
+| test.c:184:16:184:16 | Load: c | positive |
+| test.c:186:7:186:8 | Constant: - ... | negative strictlyNegative |
+| test.c:186:23:186:24 | Constant: - ... | negative strictlyNegative |
+| test.c:187:13:187:14 | CopyValue: + ... | negative strictlyNegative |
+| test.c:187:13:187:14 | Store: + ... | negative strictlyNegative |
+| test.c:187:14:187:14 | Load: a | negative strictlyNegative |
+| test.c:188:13:188:14 | Negate: - ... | positive strictlyPositive |
+| test.c:188:13:188:14 | Store: - ... | positive strictlyPositive |
+| test.c:188:14:188:14 | Load: a | negative strictlyNegative |
+| test.c:189:14:189:14 | Load: b | negative strictlyNegative |
+| test.c:189:16:189:16 | Load: c | positive strictlyPositive |
+| test.c:200:7:200:7 | Constant: 3 | positive strictlyPositive |
+| test.c:200:17:200:17 | Load: a | positive strictlyPositive |
+| test.c:200:22:200:23 | Constant: 11 | positive strictlyPositive |
+| test.c:200:28:200:28 | Constant: 5 | positive strictlyPositive |
+| test.c:200:38:200:38 | Load: b | positive strictlyPositive |
+| test.c:200:43:200:44 | Constant: 23 | positive strictlyPositive |
+| test.c:201:13:201:13 | Load: a | positive strictlyPositive |
+| test.c:201:13:201:15 | Mul: ... * ... | positive strictlyPositive |
+| test.c:201:13:201:15 | Store: ... * ... | positive strictlyPositive |
+| test.c:201:15:201:15 | Load: b | positive strictlyPositive |
+| test.c:202:5:202:14 | Add: ... += ... | positive strictlyPositive |
+| test.c:202:5:202:14 | Store: ... += ... | positive strictlyPositive |
+| test.c:202:14:202:14 | Load: r | positive strictlyPositive |
+| test.c:204:7:204:7 | Constant: 3 | positive strictlyPositive |
+| test.c:204:7:204:7 | Phi: 3 | positive |
+| test.c:204:17:204:17 | Load: a | positive strictlyPositive |
+| test.c:204:22:204:23 | Constant: 11 | positive strictlyPositive |
+| test.c:204:38:204:38 | Load: b | positive |
+| test.c:204:43:204:44 | Constant: 23 | positive strictlyPositive |
+| test.c:205:13:205:13 | Load: a | positive strictlyPositive |
+| test.c:205:13:205:15 | Mul: ... * ... | positive |
+| test.c:205:13:205:15 | Store: ... * ... | positive |
+| test.c:205:15:205:15 | Load: b | positive |
+| test.c:206:5:206:9 | Load: total | positive |
+| test.c:206:5:206:14 | Add: ... += ... | positive |
+| test.c:206:5:206:14 | Store: ... += ... | positive |
+| test.c:206:14:206:14 | Load: r | positive |
+| test.c:208:7:208:7 | Constant: 3 | positive strictlyPositive |
+| test.c:208:7:208:7 | Phi: 3 | positive |
+| test.c:208:17:208:17 | Load: a | positive strictlyPositive |
+| test.c:208:22:208:23 | Constant: 11 | positive strictlyPositive |
+| test.c:208:28:208:30 | Constant: - ... | negative strictlyNegative |
+| test.c:208:45:208:46 | Constant: 23 | positive strictlyPositive |
+| test.c:209:13:209:13 | Load: a | positive strictlyPositive |
+| test.c:210:5:210:9 | Load: total | positive |
+| test.c:212:7:212:7 | Constant: 3 | positive strictlyPositive |
+| test.c:212:17:212:17 | Load: a | positive strictlyPositive |
+| test.c:212:22:212:23 | Constant: 11 | positive strictlyPositive |
+| test.c:212:28:212:30 | Constant: - ... | negative strictlyNegative |
+| test.c:213:13:213:13 | Load: a | positive strictlyPositive |
+| test.c:213:13:213:15 | Mul: ... * ... | negative |
+| test.c:213:13:213:15 | Store: ... * ... | negative |
+| test.c:213:15:213:15 | Load: b | negative |
+| test.c:214:14:214:14 | Load: r | negative |
+| test.c:216:7:216:7 | Constant: 3 | positive strictlyPositive |
+| test.c:216:17:216:17 | Load: a | positive strictlyPositive |
+| test.c:216:22:216:23 | Constant: 11 | positive strictlyPositive |
+| test.c:216:28:216:30 | Constant: - ... | negative strictlyNegative |
+| test.c:216:45:216:46 | Constant: - ... | negative strictlyNegative |
+| test.c:217:13:217:13 | Load: a | positive strictlyPositive |
+| test.c:217:13:217:15 | Mul: ... * ... | negative strictlyNegative |
+| test.c:217:13:217:15 | Store: ... * ... | negative strictlyNegative |
+| test.c:217:15:217:15 | Load: b | negative strictlyNegative |
+| test.c:218:14:218:14 | Load: r | negative strictlyNegative |
+| test.c:228:17:228:17 | Load: a | positive |
+| test.c:228:22:228:23 | Constant: 11 | positive strictlyPositive |
+| test.c:228:28:228:28 | Constant: 5 | positive strictlyPositive |
+| test.c:228:38:228:38 | Load: b | positive strictlyPositive |
+| test.c:228:43:228:44 | Constant: 23 | positive strictlyPositive |
+| test.c:229:13:229:13 | Load: a | positive |
+| test.c:229:13:229:15 | Mul: ... * ... | positive |
+| test.c:229:13:229:15 | Store: ... * ... | positive |
+| test.c:229:15:229:15 | Load: b | positive strictlyPositive |
+| test.c:230:5:230:14 | Add: ... += ... | positive |
+| test.c:230:5:230:14 | Store: ... += ... | positive |
+| test.c:230:14:230:14 | Load: r | positive |
+| test.c:232:7:232:7 | Phi: 0 | positive |
+| test.c:232:17:232:17 | Load: a | positive |
+| test.c:232:22:232:23 | Constant: 11 | positive strictlyPositive |
+| test.c:232:38:232:38 | Load: b | positive |
+| test.c:232:43:232:44 | Constant: 23 | positive strictlyPositive |
+| test.c:233:13:233:13 | Load: a | positive |
+| test.c:233:13:233:15 | Mul: ... * ... | positive |
+| test.c:233:13:233:15 | Store: ... * ... | positive |
+| test.c:233:15:233:15 | Load: b | positive |
+| test.c:234:5:234:9 | Load: total | positive |
+| test.c:234:5:234:14 | Add: ... += ... | positive |
+| test.c:234:5:234:14 | Store: ... += ... | positive |
+| test.c:234:14:234:14 | Load: r | positive |
+| test.c:236:7:236:7 | Phi: 0 | positive |
+| test.c:236:17:236:17 | Load: a | positive |
+| test.c:236:22:236:23 | Constant: 11 | positive strictlyPositive |
+| test.c:236:28:236:30 | Constant: - ... | negative strictlyNegative |
+| test.c:236:45:236:46 | Constant: 23 | positive strictlyPositive |
+| test.c:237:13:237:13 | Load: a | positive |
+| test.c:238:5:238:9 | Load: total | positive |
+| test.c:240:17:240:17 | Load: a | positive |
+| test.c:240:22:240:23 | Constant: 11 | positive strictlyPositive |
+| test.c:240:28:240:30 | Constant: - ... | negative strictlyNegative |
+| test.c:241:13:241:13 | Load: a | positive |
+| test.c:241:13:241:15 | Mul: ... * ... | negative |
+| test.c:241:13:241:15 | Store: ... * ... | negative |
+| test.c:241:15:241:15 | Load: b | negative |
+| test.c:242:14:242:14 | Load: r | negative |
+| test.c:244:17:244:17 | Load: a | positive |
+| test.c:244:22:244:23 | Constant: 11 | positive strictlyPositive |
+| test.c:244:28:244:30 | Constant: - ... | negative strictlyNegative |
+| test.c:244:45:244:46 | Constant: - ... | negative strictlyNegative |
+| test.c:245:13:245:13 | Load: a | positive |
+| test.c:245:13:245:15 | Mul: ... * ... | negative |
+| test.c:245:13:245:15 | Store: ... * ... | negative |
+| test.c:245:15:245:15 | Load: b | negative strictlyNegative |
+| test.c:246:14:246:14 | Load: r | negative |
+| test.c:256:7:256:9 | Constant: - ... | negative strictlyNegative |
+| test.c:256:24:256:25 | Constant: 11 | positive strictlyPositive |
+| test.c:256:30:256:30 | Constant: 5 | positive strictlyPositive |
+| test.c:256:40:256:40 | Load: b | positive strictlyPositive |
+| test.c:256:45:256:46 | Constant: 23 | positive strictlyPositive |
+| test.c:257:15:257:15 | Load: b | positive strictlyPositive |
+| test.c:260:7:260:9 | Constant: - ... | negative strictlyNegative |
+| test.c:260:24:260:25 | Constant: 11 | positive strictlyPositive |
+| test.c:260:40:260:40 | Load: b | positive |
+| test.c:260:45:260:46 | Constant: 23 | positive strictlyPositive |
+| test.c:261:15:261:15 | Load: b | positive |
+| test.c:264:7:264:9 | Constant: - ... | negative strictlyNegative |
+| test.c:264:24:264:25 | Constant: 11 | positive strictlyPositive |
+| test.c:264:30:264:32 | Constant: - ... | negative strictlyNegative |
+| test.c:264:47:264:48 | Constant: 23 | positive strictlyPositive |
+| test.c:268:7:268:9 | Constant: - ... | negative strictlyNegative |
+| test.c:268:24:268:25 | Constant: 11 | positive strictlyPositive |
+| test.c:268:30:268:32 | Constant: - ... | negative strictlyNegative |
+| test.c:269:15:269:15 | Load: b | negative |
+| test.c:272:7:272:9 | Constant: - ... | negative strictlyNegative |
+| test.c:272:24:272:25 | Constant: 11 | positive strictlyPositive |
+| test.c:272:30:272:32 | Constant: - ... | negative strictlyNegative |
+| test.c:272:47:272:48 | Constant: - ... | negative strictlyNegative |
+| test.c:273:15:273:15 | Load: b | negative strictlyNegative |
+| test.c:284:7:284:9 | Constant: - ... | negative strictlyNegative |
+| test.c:284:29:284:29 | Constant: 5 | positive strictlyPositive |
+| test.c:284:39:284:39 | Load: b | positive strictlyPositive |
+| test.c:284:44:284:45 | Constant: 23 | positive strictlyPositive |
+| test.c:285:13:285:13 | Load: a | negative |
+| test.c:285:13:285:15 | Mul: ... * ... | negative |
+| test.c:285:13:285:15 | Store: ... * ... | negative |
+| test.c:285:15:285:15 | Load: b | positive strictlyPositive |
+| test.c:286:5:286:14 | Add: ... += ... | negative |
+| test.c:286:5:286:14 | Store: ... += ... | negative |
+| test.c:286:14:286:14 | Load: r | negative |
+| test.c:288:7:288:9 | Constant: - ... | negative strictlyNegative |
+| test.c:288:7:288:9 | Phi: - ... | negative |
+| test.c:288:39:288:39 | Load: b | positive |
+| test.c:288:44:288:45 | Constant: 23 | positive strictlyPositive |
+| test.c:289:13:289:13 | Load: a | negative |
+| test.c:289:13:289:15 | Mul: ... * ... | negative |
+| test.c:289:13:289:15 | Store: ... * ... | negative |
+| test.c:289:15:289:15 | Load: b | positive |
+| test.c:290:5:290:9 | Load: total | negative |
+| test.c:290:5:290:14 | Add: ... += ... | negative |
+| test.c:290:5:290:14 | Store: ... += ... | negative |
+| test.c:290:14:290:14 | Load: r | negative |
+| test.c:292:7:292:9 | Constant: - ... | negative strictlyNegative |
+| test.c:292:7:292:9 | Phi: - ... | negative |
+| test.c:292:29:292:31 | Constant: - ... | negative strictlyNegative |
+| test.c:292:46:292:47 | Constant: 23 | positive strictlyPositive |
+| test.c:293:13:293:13 | Load: a | negative |
+| test.c:294:5:294:9 | Load: total | negative |
+| test.c:296:7:296:9 | Constant: - ... | negative strictlyNegative |
+| test.c:296:29:296:31 | Constant: - ... | negative strictlyNegative |
+| test.c:297:13:297:13 | Load: a | negative |
+| test.c:297:13:297:15 | Mul: ... * ... | positive |
+| test.c:297:13:297:15 | Store: ... * ... | positive |
+| test.c:297:15:297:15 | Load: b | negative |
+| test.c:298:14:298:14 | Load: r | positive |
+| test.c:300:7:300:9 | Constant: - ... | negative strictlyNegative |
+| test.c:300:29:300:31 | Constant: - ... | negative strictlyNegative |
+| test.c:300:46:300:47 | Constant: - ... | negative strictlyNegative |
+| test.c:301:13:301:13 | Load: a | negative |
+| test.c:301:13:301:15 | Mul: ... * ... | positive |
+| test.c:301:13:301:15 | Store: ... * ... | positive |
+| test.c:301:15:301:15 | Load: b | negative strictlyNegative |
+| test.c:302:14:302:14 | Load: r | positive |
+| test.c:312:7:312:9 | Constant: - ... | negative strictlyNegative |
+| test.c:312:24:312:25 | Constant: - ... | negative strictlyNegative |
+| test.c:312:30:312:30 | Constant: 5 | positive strictlyPositive |
+| test.c:312:40:312:40 | Load: b | positive strictlyPositive |
+| test.c:312:45:312:46 | Constant: 23 | positive strictlyPositive |
+| test.c:313:13:313:13 | Load: a | negative strictlyNegative |
+| test.c:313:13:313:15 | Mul: ... * ... | negative strictlyNegative |
+| test.c:313:13:313:15 | Store: ... * ... | negative strictlyNegative |
+| test.c:313:15:313:15 | Load: b | positive strictlyPositive |
+| test.c:314:5:314:14 | Add: ... += ... | negative strictlyNegative |
+| test.c:314:5:314:14 | Store: ... += ... | negative strictlyNegative |
+| test.c:314:14:314:14 | Load: r | negative strictlyNegative |
+| test.c:316:7:316:9 | Constant: - ... | negative strictlyNegative |
+| test.c:316:7:316:9 | Phi: - ... | negative |
+| test.c:316:24:316:25 | Constant: - ... | negative strictlyNegative |
+| test.c:316:40:316:40 | Load: b | positive |
+| test.c:316:45:316:46 | Constant: 23 | positive strictlyPositive |
+| test.c:317:13:317:13 | Load: a | negative strictlyNegative |
+| test.c:317:13:317:15 | Mul: ... * ... | negative |
+| test.c:317:13:317:15 | Store: ... * ... | negative |
+| test.c:317:15:317:15 | Load: b | positive |
+| test.c:318:5:318:9 | Load: total | negative |
+| test.c:318:5:318:14 | Add: ... += ... | negative |
+| test.c:318:5:318:14 | Store: ... += ... | negative |
+| test.c:318:14:318:14 | Load: r | negative |
+| test.c:320:7:320:9 | Constant: - ... | negative strictlyNegative |
+| test.c:320:7:320:9 | Phi: - ... | negative |
+| test.c:320:24:320:25 | Constant: - ... | negative strictlyNegative |
+| test.c:320:30:320:32 | Constant: - ... | negative strictlyNegative |
+| test.c:320:47:320:48 | Constant: 23 | positive strictlyPositive |
+| test.c:321:13:321:13 | Load: a | negative strictlyNegative |
+| test.c:322:5:322:9 | Load: total | negative |
+| test.c:324:7:324:9 | Constant: - ... | negative strictlyNegative |
+| test.c:324:24:324:25 | Constant: - ... | negative strictlyNegative |
+| test.c:324:30:324:32 | Constant: - ... | negative strictlyNegative |
+| test.c:325:13:325:13 | Load: a | negative strictlyNegative |
+| test.c:325:13:325:15 | Mul: ... * ... | positive |
+| test.c:325:13:325:15 | Store: ... * ... | positive |
+| test.c:325:15:325:15 | Load: b | negative |
+| test.c:326:14:326:14 | Load: r | positive |
+| test.c:328:7:328:9 | Constant: - ... | negative strictlyNegative |
+| test.c:328:24:328:25 | Constant: - ... | negative strictlyNegative |
+| test.c:328:30:328:32 | Constant: - ... | negative strictlyNegative |
+| test.c:328:47:328:48 | Constant: - ... | negative strictlyNegative |
+| test.c:329:13:329:13 | Load: a | negative strictlyNegative |
+| test.c:329:13:329:15 | Mul: ... * ... | positive strictlyPositive |
+| test.c:329:13:329:15 | Store: ... * ... | positive strictlyPositive |
+| test.c:329:15:329:15 | Load: b | negative strictlyNegative |
+| test.c:330:14:330:14 | Load: r | positive strictlyPositive |
+| test.c:339:12:339:13 | Constant: - ... | negative strictlyNegative |
+| test.c:339:12:339:13 | Store: - ... | negative strictlyNegative |
+| test.c:342:10:342:10 | Load: i | positive |
+| test.c:342:10:342:10 | Phi: i | positive |
+| test.c:342:14:342:14 | Constant: 3 | positive strictlyPositive |
+| test.c:343:5:343:5 | Load: i | positive |
+| test.c:343:5:343:7 | Add: ... ++ | positive strictlyPositive |
+| test.c:343:5:343:7 | Constant: ... ++ | positive strictlyPositive |
+| test.c:343:5:343:7 | Store: ... ++ | positive strictlyPositive |
+| test.c:345:3:345:7 | Store: ... = ... | positive strictlyPositive |
+| test.c:345:7:345:7 | Load: i | positive strictlyPositive |
+| test.c:346:7:346:7 | Load: x | positive |
+| test.c:347:9:347:9 | Load: d | positive strictlyPositive |
+| test.c:348:14:348:14 | Constant: 1 | positive strictlyPositive |
+| test.c:348:14:348:14 | Store: 1 | positive strictlyPositive |
+| test.c:355:42:355:42 | InitializeParameter: x | positive |
+| test.c:356:16:356:17 | Uninitialized: definition of y1 | positive |
+| test.c:356:20:356:21 | Uninitialized: definition of y2 | positive |
+| test.c:356:24:356:25 | Uninitialized: definition of y3 | positive |
+| test.c:356:28:356:29 | Uninitialized: definition of y4 | positive |
+| test.c:356:32:356:33 | Uninitialized: definition of y5 | positive |
+| test.c:356:36:356:37 | Uninitialized: definition of y6 | positive |
+| test.c:356:40:356:41 | Uninitialized: definition of y7 | positive |
+| test.c:356:44:356:45 | Uninitialized: definition of y8 | positive |
+| test.c:357:3:357:23 | Store: ... = ... | positive |
+| test.c:357:8:357:8 | Load: x | positive |
+| test.c:357:8:357:23 | Load: ... ? ... : ... | positive |
+| test.c:357:8:357:23 | Phi: ... ? ... : ... | positive |
+| test.c:357:8:357:23 | Store: ... ? ... : ... | positive |
+| test.c:357:8:357:23 | Store: ... ? ... : ... | positive strictlyPositive |
+| test.c:357:12:357:14 | Constant: (unsigned int)... | positive strictlyPositive |
+| test.c:357:18:357:18 | Load: x | positive |
+| test.c:357:22:357:23 | Constant: (unsigned int)... | positive strictlyPositive |
+| test.c:358:3:358:24 | Store: ... = ... | positive |
+| test.c:358:8:358:8 | Load: x | positive |
+| test.c:358:8:358:24 | Load: ... ? ... : ... | positive |
+| test.c:358:8:358:24 | Phi: ... ? ... : ... | positive |
+| test.c:358:8:358:24 | Store: ... ? ... : ... | positive |
+| test.c:358:8:358:24 | Store: ... ? ... : ... | positive strictlyPositive |
+| test.c:358:13:358:15 | Constant: (unsigned int)... | positive strictlyPositive |
+| test.c:358:19:358:20 | Constant: (unsigned int)... | positive strictlyPositive |
+| test.c:358:24:358:24 | Load: x | positive |
+| test.c:365:7:365:7 | Load: x | positive |
+| test.c:365:11:365:13 | Constant: (unsigned int)... | positive strictlyPositive |
+| test.c:366:5:366:15 | Store: ... = ... | positive |
+| test.c:366:10:366:10 | Load: x | positive |
+| test.c:366:10:366:15 | Load: ... ? ... : ... | positive |
+| test.c:366:10:366:15 | Phi: ... ? ... : ... | positive |
+| test.c:366:10:366:15 | Store: ... ? ... : ... | positive |
+| test.c:366:10:366:15 | Store: ... ? ... : ... | positive strictlyPositive |
+| test.c:366:15:366:15 | Constant: (unsigned int)... | positive strictlyPositive |
+| test.c:367:5:367:17 | Store: ... = ... | positive |
+| test.c:367:10:367:10 | Load: x | positive |
+| test.c:367:10:367:17 | Load: ... ? ... : ... | positive |
+| test.c:367:10:367:17 | Phi: ... ? ... : ... | positive |
+| test.c:367:10:367:17 | Store: ... ? ... : ... | positive |
+| test.c:367:10:367:17 | Store: ... ? ... : ... | positive strictlyPositive |
+| test.c:367:15:367:17 | Constant: (unsigned int)... | positive strictlyPositive |
+| test.c:368:5:368:21 | Store: ... = ... | positive strictlyPositive |
+| test.c:368:10:368:21 | Load: ... ? ... : ... | positive strictlyPositive |
+| test.c:368:10:368:21 | Phi: ... ? ... : ... | positive strictlyPositive |
+| test.c:368:10:368:21 | Store: ... ? ... : ... | positive strictlyPositive |
+| test.c:368:10:368:21 | Store: ... ? ... : ... | positive strictlyPositive |
+| test.c:368:11:368:11 | Load: x | positive |
+| test.c:368:11:368:13 | Add: ... + ... | positive strictlyPositive |
+| test.c:368:13:368:13 | Constant: (unsigned int)... | positive strictlyPositive |
+| test.c:368:19:368:21 | Constant: (unsigned int)... | positive strictlyPositive |
+| test.c:369:5:369:36 | Store: ... = ... | positive |
+| test.c:369:10:369:36 | Convert: (unsigned int)... | positive |
+| test.c:369:10:369:36 | Load: ... ? ... : ... | positive |
+| test.c:369:10:369:36 | Phi: ... ? ... : ... | positive |
+| test.c:369:10:369:36 | Store: ... ? ... : ... | positive |
+| test.c:369:10:369:36 | Store: ... ? ... : ... | positive strictlyPositive |
+| test.c:369:11:369:30 | Convert: (unsigned char)... | positive |
+| test.c:369:27:369:27 | Load: x | positive |
+| test.c:369:27:369:29 | Add: ... + ... | positive strictlyPositive |
+| test.c:369:29:369:29 | Constant: (unsigned int)... | positive strictlyPositive |
+| test.c:369:36:369:36 | Constant: 5 | positive strictlyPositive |
+| test.c:370:5:370:38 | Store: ... = ... | positive |
+| test.c:370:10:370:38 | Convert: (unsigned int)... | positive |
+| test.c:370:10:370:38 | Load: ... ? ... : ... | positive |
+| test.c:370:10:370:38 | Phi: ... ? ... : ... | positive |
+| test.c:370:10:370:38 | Store: ... ? ... : ... | positive |
+| test.c:370:10:370:38 | Store: ... ? ... : ... | positive strictlyPositive |
+| test.c:370:11:370:30 | Convert: (unsigned char)... | positive |
+| test.c:370:27:370:27 | Load: x | positive |
+| test.c:370:27:370:29 | Add: ... + ... | positive strictlyPositive |
+| test.c:370:29:370:29 | Constant: (unsigned int)... | positive strictlyPositive |
+| test.c:370:36:370:38 | Constant: 500 | positive strictlyPositive |
+| test.c:371:5:371:39 | Store: ... = ... | positive |
+| test.c:371:10:371:39 | Convert: (unsigned int)... | positive |
+| test.c:371:10:371:39 | Load: ... ? ... : ... | positive |
+| test.c:371:10:371:39 | Phi: ... ? ... : ... | positive |
+| test.c:371:10:371:39 | Store: ... ? ... : ... | positive |
+| test.c:371:10:371:39 | Store: ... ? ... : ... | positive strictlyPositive |
+| test.c:371:11:371:31 | Convert: (unsigned short)... | positive |
+| test.c:371:28:371:28 | Load: x | positive |
+| test.c:371:28:371:30 | Add: ... + ... | positive strictlyPositive |
+| test.c:371:30:371:30 | Constant: (unsigned int)... | positive strictlyPositive |
+| test.c:371:37:371:39 | Constant: 500 | positive strictlyPositive |
+| test.c:373:3:373:47 | Phi: return ... | positive |
+| test.c:373:3:373:47 | Phi: return ... | positive |
+| test.c:373:3:373:47 | Phi: return ... | positive |
+| test.c:373:3:373:47 | Phi: return ... | positive |
+| test.c:373:3:373:47 | Phi: return ... | positive |
+| test.c:373:3:373:47 | Phi: return ... | positive |
+| test.c:373:10:373:11 | Load: y1 | positive |
+| test.c:373:10:373:16 | Add: ... + ... | positive |
+| test.c:373:10:373:21 | Add: ... + ... | positive |
+| test.c:373:10:373:26 | Add: ... + ... | positive |
+| test.c:373:10:373:31 | Add: ... + ... | positive |
+| test.c:373:10:373:36 | Add: ... + ... | positive |
+| test.c:373:10:373:41 | Add: ... + ... | positive |
+| test.c:373:10:373:46 | Add: ... + ... | positive |
+| test.c:373:10:373:46 | Store: ... + ... | positive |
+| test.c:373:15:373:16 | Load: y2 | positive |
+| test.c:373:20:373:21 | Load: y3 | positive |
+| test.c:373:25:373:26 | Load: y4 | positive |
+| test.c:373:30:373:31 | Load: y5 | positive |
+| test.c:373:35:373:36 | Load: y6 | positive |
+| test.c:373:40:373:41 | Load: y7 | positive |
+| test.c:373:45:373:46 | Load: y8 | positive |
+| test.c:377:42:377:42 | InitializeParameter: x | positive |
+| test.c:378:16:378:17 | Uninitialized: definition of y1 | positive |
+| test.c:378:20:378:21 | Uninitialized: definition of y2 | positive |
+| test.c:378:24:378:25 | Uninitialized: definition of y3 | positive |
+| test.c:378:28:378:29 | Uninitialized: definition of y4 | positive |
+| test.c:378:32:378:33 | Uninitialized: definition of y5 | positive |
+| test.c:379:3:379:24 | Store: ... = ... | positive strictlyPositive |
+| test.c:379:8:379:8 | Load: x | positive |
+| test.c:379:8:379:24 | Load: ... ? ... : ... | positive strictlyPositive |
+| test.c:379:8:379:24 | Phi: ... ? ... : ... | positive strictlyPositive |
+| test.c:379:8:379:24 | Store: ... ? ... : ... | positive strictlyPositive |
+| test.c:379:8:379:24 | Store: ... ? ... : ... | positive strictlyPositive |
+| test.c:379:12:379:14 | Constant: (unsigned int)... | positive strictlyPositive |
+| test.c:379:18:379:18 | Load: x | positive strictlyPositive |
+| test.c:379:22:379:24 | Constant: (unsigned int)... | positive strictlyPositive |
+| test.c:380:3:380:25 | Store: ... = ... | positive strictlyPositive |
+| test.c:380:8:380:8 | Load: x | positive |
+| test.c:380:8:380:25 | Load: ... ? ... : ... | positive strictlyPositive |
+| test.c:380:8:380:25 | Phi: ... ? ... : ... | positive strictlyPositive |
+| test.c:380:8:380:25 | Store: ... ? ... : ... | positive strictlyPositive |
+| test.c:380:8:380:25 | Store: ... ? ... : ... | positive strictlyPositive |
+| test.c:380:13:380:15 | Constant: (unsigned int)... | positive strictlyPositive |
+| test.c:380:19:380:21 | Constant: (unsigned int)... | positive strictlyPositive |
+| test.c:380:25:380:25 | Load: x | positive strictlyPositive |
+| test.c:381:3:381:11 | Store: ... = ... | positive strictlyPositive |
+| test.c:381:8:381:11 | Constant: (unsigned int)... | positive strictlyPositive |
+| test.c:382:3:382:11 | Store: ... = ... | positive strictlyPositive |
+| test.c:382:8:382:11 | Constant: (unsigned int)... | positive strictlyPositive |
+| test.c:383:3:383:11 | Store: ... = ... | positive strictlyPositive |
+| test.c:383:8:383:11 | Constant: (unsigned int)... | positive strictlyPositive |
+| test.c:384:7:384:7 | Load: x | positive |
+| test.c:384:12:384:14 | Constant: (unsigned int)... | positive strictlyPositive |
+| test.c:385:5:385:21 | Store: ... = ... | positive |
+| test.c:385:10:385:21 | Load: ... ? ... : ... | positive |
+| test.c:385:10:385:21 | Phi: ... ? ... : ... | positive |
+| test.c:385:10:385:21 | Store: ... ? ... : ... | positive |
+| test.c:385:10:385:21 | Store: ... ? ... : ... | positive strictlyPositive |
+| test.c:385:11:385:11 | Load: x | positive strictlyPositive |
+| test.c:385:11:385:15 | Sub: ... - ... | positive |
+| test.c:385:13:385:15 | Constant: (unsigned int)... | positive strictlyPositive |
+| test.c:385:21:385:21 | Constant: (unsigned int)... | positive strictlyPositive |
+| test.c:386:5:386:21 | Store: ... = ... | positive |
+| test.c:386:10:386:21 | Load: ... ? ... : ... | positive |
+| test.c:386:10:386:21 | Phi: ... ? ... : ... | positive |
+| test.c:386:10:386:21 | Store: ... ? ... : ... | positive |
+| test.c:386:10:386:21 | Store: ... ? ... : ... | positive strictlyPositive |
+| test.c:386:11:386:11 | Load: x | positive strictlyPositive |
+| test.c:386:11:386:15 | Sub: ... - ... | positive |
+| test.c:386:13:386:15 | Constant: (unsigned int)... | positive strictlyPositive |
+| test.c:386:21:386:21 | Constant: (unsigned int)... | positive strictlyPositive |
+| test.c:387:5:387:38 | Store: ... = ... | positive |
+| test.c:387:10:387:38 | Convert: (unsigned int)... | positive |
+| test.c:387:10:387:38 | Load: ... ? ... : ... | positive |
+| test.c:387:10:387:38 | Phi: ... ? ... : ... | positive |
+| test.c:387:10:387:38 | Store: ... ? ... : ... | positive |
+| test.c:387:10:387:38 | Store: ... ? ... : ... | positive strictlyPositive |
+| test.c:387:11:387:32 | Convert: (unsigned char)... | positive |
+| test.c:387:27:387:27 | Load: x | positive strictlyPositive |
+| test.c:387:27:387:31 | Sub: ... - ... | positive |
+| test.c:387:29:387:31 | Constant: (unsigned int)... | positive strictlyPositive |
+| test.c:387:38:387:38 | Constant: 5 | positive strictlyPositive |
+| test.c:389:3:389:32 | Phi: return ... | positive |
+| test.c:389:3:389:32 | Phi: return ... | positive |
+| test.c:389:3:389:32 | Phi: return ... | positive |
+| test.c:389:10:389:11 | Load: y1 | positive strictlyPositive |
+| test.c:389:10:389:16 | Add: ... + ... | positive strictlyPositive |
+| test.c:389:10:389:21 | Add: ... + ... | positive strictlyPositive |
+| test.c:389:10:389:26 | Add: ... + ... | positive strictlyPositive |
+| test.c:389:10:389:31 | Add: ... + ... | positive strictlyPositive |
+| test.c:389:10:389:31 | Store: ... + ... | positive strictlyPositive |
+| test.c:389:15:389:16 | Load: y2 | positive strictlyPositive |
+| test.c:389:20:389:21 | Load: y3 | positive |
+| test.c:389:25:389:26 | Load: y4 | positive |
+| test.c:389:30:389:31 | Load: y5 | positive |
+| test.c:393:40:393:40 | InitializeParameter: x | positive |
+| test.c:394:20:394:20 | Load: x | positive |
+| test.c:394:20:394:36 | Load: ... ? ... : ... | positive |
+| test.c:394:20:394:36 | Phi: ... ? ... : ... | positive |
+| test.c:394:20:394:36 | Store: ... ? ... : ... | positive |
+| test.c:394:20:394:36 | Store: ... ? ... : ... | positive |
+| test.c:394:20:394:36 | Store: ... ? ... : ... | positive strictlyPositive |
+| test.c:394:24:394:26 | Constant: (unsigned int)... | positive strictlyPositive |
+| test.c:394:30:394:30 | Load: x | positive |
+| test.c:394:34:394:36 | Constant: (unsigned int)... | positive strictlyPositive |
+| test.c:395:16:395:17 | Uninitialized: definition of y1 | positive |
+| test.c:396:16:396:17 | Uninitialized: definition of y2 | positive |
+| test.c:397:3:397:15 | Store: ... = ... | positive strictlyPositive |
+| test.c:397:9:397:11 | Add: ++ ... | positive strictlyPositive |
+| test.c:397:9:397:11 | Constant: ++ ... | positive strictlyPositive |
+| test.c:397:9:397:11 | Store: ++ ... | positive strictlyPositive |
+| test.c:397:9:397:14 | CopyValue: ... , ... | positive strictlyPositive |
+| test.c:397:11:397:11 | Load: y | positive |
+| test.c:397:14:397:14 | Load: y | positive strictlyPositive |
+| test.c:398:3:398:23 | Store: ... = ... | positive strictlyPositive |
+| test.c:398:9:398:9 | Load: y | positive strictlyPositive |
+| test.c:398:9:398:11 | Add: ... ++ | positive strictlyPositive |
+| test.c:398:9:398:11 | Constant: ... ++ | positive strictlyPositive |
+| test.c:398:9:398:11 | Store: ... ++ | positive strictlyPositive |
+| test.c:398:9:398:22 | CopyValue: ... , ... | positive strictlyPositive |
+| test.c:398:14:398:14 | Load: y | positive strictlyPositive |
+| test.c:398:14:398:19 | Add: ... += ... | positive strictlyPositive |
+| test.c:398:14:398:19 | Store: ... += ... | positive strictlyPositive |
+| test.c:398:19:398:19 | Constant: (unsigned int)... | positive strictlyPositive |
+| test.c:398:22:398:22 | Load: y | positive strictlyPositive |
+| test.c:399:10:399:11 | Load: y1 | positive strictlyPositive |
+| test.c:399:10:399:16 | Add: ... + ... | positive strictlyPositive |
+| test.c:399:10:399:16 | Store: ... + ... | positive strictlyPositive |
+| test.c:399:15:399:16 | Load: y2 | positive strictlyPositive |
+| test.cpp:9:11:9:12 | Constant: - ... | negative strictlyNegative |
+| test.cpp:9:11:9:12 | Store: - ... | negative strictlyNegative |
+| test.cpp:11:13:11:13 | Constant: 3 | positive strictlyPositive |
+| test.cpp:30:12:30:13 | Constant: - ... | negative strictlyNegative |
+| test.cpp:31:5:31:10 | Store: ... = ... | negative strictlyNegative |
+| test.cpp:31:9:31:10 | Constant: - ... | negative strictlyNegative |
+| test.cpp:33:12:33:12 | Constant: 1 | positive strictlyPositive |
+| test.cpp:34:5:34:9 | Store: ... = ... | positive strictlyPositive |
+| test.cpp:34:9:34:9 | Constant: 1 | positive strictlyPositive |
+| test.cpp:36:12:36:15 | Constant: - ... | negative strictlyNegative |
+| test.cpp:37:5:37:12 | Store: ... = ... | negative strictlyNegative |
+| test.cpp:37:9:37:12 | Constant: - ... | negative strictlyNegative |
+| test.cpp:39:12:39:14 | Constant: 128 | positive strictlyPositive |
+| test.cpp:40:5:40:11 | Store: ... = ... | positive strictlyPositive |
+| test.cpp:40:9:40:11 | Constant: 128 | positive strictlyPositive |
+| test.cpp:42:12:42:16 | Constant: - ... | negative strictlyNegative |
+| test.cpp:43:5:43:13 | Store: ... = ... | negative strictlyNegative |
+| test.cpp:43:9:43:13 | Constant: - ... | negative strictlyNegative |
+| test.cpp:45:12:45:15 | Constant: 1024 | positive strictlyPositive |
+| test.cpp:46:5:46:12 | Store: ... = ... | positive strictlyPositive |
+| test.cpp:46:9:46:12 | Constant: 1024 | positive strictlyPositive |
+| test.cpp:57:21:57:21 | Load: x | positive strictlyPositive |
+| test.cpp:62:21:62:21 | Load: x | negative strictlyNegative |
+| test.cpp:69:10:69:21 | Constant: ... \|\| ... | positive strictlyPositive |
+| test.cpp:69:10:69:21 | Load: ... \|\| ... | positive |
+| test.cpp:69:10:69:21 | Phi: ... \|\| ... | positive |
+| test.cpp:69:10:69:21 | Store: ... \|\| ... | positive |
+| test.cpp:69:10:69:21 | Store: ... \|\| ... | positive strictlyPositive |

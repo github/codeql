@@ -1,0 +1,2 @@
+| UnreadLocal/UnreadLocals.java:17:5:17:18 | int alpha | Variable 'int alpha' is never read. |
+| UnreadLocal/UnreadLocals.java:23:5:23:43 | Something something2 | Variable 'Something something2' is never read. |

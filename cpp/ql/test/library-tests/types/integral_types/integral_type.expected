@@ -1,0 +1,23 @@
+| 4  | bool               | ------ | -------- | ---------------- | ------------------ | ---------------- | 1 | 1 | <no unsigned equivalent> |  |
+| 5  | char               | signed | -------- | ---------------- | ------------------ | implicitlySigned | 1 | 1 | unsigned char | MicrosoftInt8Type |
+| 6  | unsigned char      | ------ | unsigned | ---------------- | explicitlyUnsigned | ---------------- | 1 | 1 | unsigned char |  |
+| 7  | signed char        | signed | -------- | explicitlySigned | ------------------ | ---------------- | 1 | 1 | unsigned char |  |
+| 8  | short              | signed | -------- | ---------------- | ------------------ | implicitlySigned | 2 | 2 | unsigned short | MicrosoftInt16Type |
+| 9  | unsigned short     | ------ | unsigned | ---------------- | explicitlyUnsigned | ---------------- | 2 | 2 | unsigned short |  |
+| 10 | signed short       | signed | -------- | explicitlySigned | ------------------ | ---------------- | 2 | 2 | unsigned short |  |
+| 11 | int                | signed | -------- | ---------------- | ------------------ | implicitlySigned | 4 | 4 | unsigned int | MicrosoftInt32Type |
+| 12 | unsigned int       | ------ | unsigned | ---------------- | explicitlyUnsigned | ---------------- | 4 | 4 | unsigned int |  |
+| 13 | signed int         | signed | -------- | explicitlySigned | ------------------ | ---------------- | 4 | 4 | unsigned int |  |
+| 14 | long               | signed | -------- | ---------------- | ------------------ | implicitlySigned | 8 | 8 | unsigned long |  |
+| 15 | unsigned long      | ------ | unsigned | ---------------- | explicitlyUnsigned | ---------------- | 8 | 8 | unsigned long |  |
+| 16 | signed long        | signed | -------- | explicitlySigned | ------------------ | ---------------- | 8 | 8 | unsigned long |  |
+| 17 | long long          | signed | -------- | ---------------- | ------------------ | implicitlySigned | 8 | 8 | unsigned long long | MicrosoftInt64Type |
+| 18 | unsigned long long | ------ | unsigned | ---------------- | explicitlyUnsigned | ---------------- | 8 | 8 | unsigned long long |  |
+| 19 | signed long long   | signed | -------- | explicitlySigned | ------------------ | ---------------- | 8 | 8 | unsigned long long |  |
+| 33 | wchar_t            | ------ | -------- | ---------------- | ------------------ | ---------------- | 4 | 4 | <no unsigned equivalent> |  |
+| 35 | __int128           | signed | -------- | ---------------- | ------------------ | implicitlySigned | 16 | 16 | unsigned __int128 |  |
+| 36 | unsigned __int128  | ------ | unsigned | ---------------- | explicitlyUnsigned | ---------------- | 16 | 16 | unsigned __int128 |  |
+| 37 | signed __int128    | signed | -------- | explicitlySigned | ------------------ | ---------------- | 16 | 16 | unsigned __int128 |  |
+| 43 | char16_t           | ------ | -------- | ---------------- | ------------------ | ---------------- | 2 | 2 | <no unsigned equivalent> |  |
+| 44 | char32_t           | ------ | -------- | ---------------- | ------------------ | ---------------- | 4 | 4 | <no unsigned equivalent> |  |
+| 51 | char8_t            | ------ | -------- | ---------------- | ------------------ | ---------------- | 1 | 1 | <no unsigned equivalent> |  |

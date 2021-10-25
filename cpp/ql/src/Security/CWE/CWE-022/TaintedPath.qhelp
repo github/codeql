@@ -1,0 +1,46 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Accessing paths controlled by users can allow an attacker to access unexpected resources. This
+can result in sensitive information being revealed or deleted, or an attacker being able to influence
+behavior by modifying unexpected files.</p>
+
+<p>Paths that are naively constructed from data controlled by a user may contain unexpected special characters,
+such as "..". Such a path may potentially point to any directory on the filesystem.</p>
+
+</overview>
+<recommendation>
+
+<p>Validate user input before using it to construct a filepath. Ideally, follow these rules:</p>
+
+<ul>
+<li>Do not allow more than a single "." character.</li>
+<li>Do not allow directory separators such as "/" or "\" (depending on the filesystem).</li>
+<li>Do not rely on simply replacing problematic sequences such as "../". For example, after applying this filter to
+".../...//" the resulting string would still be "../".</li>
+<li>Ideally use a whitelist of known good patterns.</li>
+</ul>
+
+</recommendation>
+<example>
+
+<p>In this example, a username and file are read from the arguments to main and then used to access a file in the
+user's home directory. However, a malicious user could enter a filename which contains special
+characters. For example, the string "../../etc/passwd" will result in the code reading the file located at
+"/home/[user]/../../etc/passwd", which is the system's password file. This could potentially allow them to
+access all the system's passwords.</p>
+
+<sample src="TaintedPath.c" />
+
+</example>
+<references>
+
+<li>
+OWASP:
+<a href="https://owasp.org/www-community/attacks/Path_Traversal">Path Traversal</a>.
+</li>
+
+</references>
+</qhelp>

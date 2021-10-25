@@ -1,0 +1,2 @@
+| exceptions_test.py:7:5:7:11 | ExceptStmt | Except block directly handles BaseException. |
+| exceptions_test.py:71:5:71:25 | ExceptStmt | Except block directly handles BaseException. |

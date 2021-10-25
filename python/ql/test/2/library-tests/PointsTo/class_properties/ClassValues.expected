@@ -1,0 +1,12 @@
+| mapping | builtin-class collections.defaultdict |
+| mapping | builtin-class dict |
+| mapping | class MyDictSubclass |
+| mapping | class MyMappingABC |
+| mapping | class OrderedDict |
+| neither sequence nor mapping | builtin-class set |
+| sequence | builtin-class list |
+| sequence | builtin-class str |
+| sequence | builtin-class tuple |
+| sequence | builtin-class unicode |
+| sequence | class MySequenceABC |
+| sequence | class MySequenceImpl |

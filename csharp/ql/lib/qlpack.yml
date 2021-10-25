@@ -1,0 +1,7 @@
+name: codeql/csharp-all
+version: 0.0.2
+dbscheme: semmlecode.csharp.dbscheme
+extractor: csharp
+library: true
+dependencies:
+  codeql/csharp-upgrades: 0.0.2

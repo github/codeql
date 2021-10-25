@@ -1,0 +1,35 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p> An assignment statement evaluates a sequence expression and assigns each item of the sequence to 
+one of the variables on the left. If there is a mismatch between the number of variables on
+the left and the values in the sequence on the right of the statement, then an exception is raised 
+at runtime.
+</p>
+
+</overview>
+<recommendation>
+<p>Ensure that the number of variables on either side of the assignment match.</p>
+
+</recommendation>
+<example>
+<p>The following examples show a simple definition of the Fibonacci series. In the first example, 
+one of the values in the assignment has been duplicated, causing an exception at runtime.</p>
+<sample src="MismatchInMultipleAssignment.py" />
+
+
+</example>
+<references>
+
+<li>Python Language Reference: <a href="http://docs.python.org/2/reference/simple_stmts.html#grammar-token-assignment_stmt">
+Assignment statements</a>.</li>
+<li>Python Tutorial: <a href="http://docs.python.org/2/tutorial/introduction.html#first-steps-towards-programming">
+First steps towards programming</a>.</li> 
+
+
+</references>
+</qhelp>

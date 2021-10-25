@@ -1,0 +1,1 @@
+| collections/Test.java:9:3:9:18 | put(...) | java.util.Map<String,Integer>.put(java.lang.String,java.lang.Integer) | java.lang.String | java.lang.Integer |

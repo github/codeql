@@ -1,0 +1,66 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>Using a bitwise logical operator (<code>&amp;</code> or
+<code>|</code>) on a boolean where a conditional-and or conditional-or operator
+(<code>&amp;&amp;</code> or <code>||</code>) is intended may yield the wrong result or
+cause an exception. This is especially true if the left-hand operand is a guard for the
+right-hand operand.</p>
+
+<p>Typically, as in the example below, this kind of defect is introduced by
+simply mistyping the intended logical operator rather than any conceptual
+mistake by the programmer.</p>
+
+</overview>
+<recommendation>
+
+<p>If the right-hand side of an expression is only intended to be
+evaluated if the left-hand side evaluates to <code>true</code>, use a
+conditional-and.</p>
+
+<p>Similarly, if the right-hand side of an expression is only intended
+to be evaluated if the left-hand side evaluates to <code>false</code>, use a
+conditional-or.</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, the <code>hasForename</code> method is implemented correctly. For a forename
+to be valid it must be a non-null string with a non-zero length. The method has
+two expressions (<code>forename != null</code> and <code>forename.length() &gt;
+0</code>) to check these two properties. The second check is 
+executed only if the first succeeds, because they are combined using a conditional-and
+operator (<code>&amp;&amp;</code>).</p>
+
+<p>In contrast, although <code>hasSurname</code> looks almost the same, it contains
+a defect. Again there are two tests (<code>surname != null</code> and
+<code>surname.length() &gt; 0</code>), but they are linked by a
+bitwise logical operator (<code>&amp;</code>). Both sides of a bitwise logical
+operator are <i>always</i> evaluated, so if <code>surname</code> is
+<code>null</code> the <code>hasSurname</code> method throws a
+<code>NullPointerException</code>. To fix the defect, change <code>&amp;</code> to <code>&amp;&amp;</code>.</p>
+
+<sample src="DangerousNonCircuitLogic.java" />
+
+</example>
+<references>
+
+
+<li>
+  J. Bloch and N. Gafter, <em>Java Puzzlers: Traps, Pitfalls, and Corner Cases</em>, Puzzle 42.
+  Addison-Wesley, 2005.
+</li>
+<li>
+Java Language Specification:
+<a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-15.html#jls-15.22.2">15.22.2 Boolean Logical Operators &amp;, ^, and |</a>,
+<a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-15.html#jls-15.23">15.23 Conditional-And Operator &amp;&amp;</a>,
+<a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-15.html#jls-15.24">15.24 Conditional-Or Operator ||</a>.
+</li>
+
+
+</references>
+</qhelp>

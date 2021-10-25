@@ -1,0 +1,18 @@
+| vla.c:4:1:7:1 | { ... } | 0 | vla.c:5:3:5:36 | declaration |
+| vla.c:4:1:7:1 | { ... } | 1 | vla.c:5:15:5:15 | VLA dimension size |
+| vla.c:4:1:7:1 | { ... } | 2 | vla.c:5:21:5:21 | VLA dimension size |
+| vla.c:4:1:7:1 | { ... } | 3 | vla.c:5:9:5:9 | VLA declaration |
+| vla.c:4:1:7:1 | { ... } | 4 | vla.c:6:3:6:11 | return ... |
+| vla.c:11:14:15:1 | { ... } | 0 | vla.c:12:5:12:64 | declaration |
+| vla.c:11:14:15:1 | { ... } | 1 | vla.c:12:32:12:32 | VLA dimension size |
+| vla.c:11:14:15:1 | { ... } | 2 | vla.c:12:49:12:49 | VLA dimension size |
+| vla.c:11:14:15:1 | { ... } | 3 | vla.c:12:18:12:18 | VLA declaration |
+| vla.c:11:14:15:1 | { ... } | 4 | vla.c:13:5:13:15 | declaration |
+| vla.c:11:14:15:1 | { ... } | 5 | vla.c:13:12:13:12 | VLA declaration |
+| vla.c:11:14:15:1 | { ... } | 6 | vla.c:14:5:14:95 | declaration |
+| vla.c:11:14:15:1 | { ... } | 7 | vla.c:14:35:14:35 | VLA dimension size |
+| vla.c:11:14:15:1 | { ... } | 8 | vla.c:14:52:14:52 | VLA dimension size |
+| vla.c:11:14:15:1 | { ... } | 9 | vla.c:14:24:14:24 | VLA declaration |
+| vla.c:11:14:15:1 | { ... } | 10 | vla.c:14:73:14:73 | VLA dimension size |
+| vla.c:11:14:15:1 | { ... } | 11 | vla.c:14:69:14:69 | VLA declaration |
+| vla.c:11:14:15:1 | { ... } | 12 | vla.c:15:1:15:1 | return ... |

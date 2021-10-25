@@ -1,0 +1,4 @@
+| A.java:4:15:4:25 | always_dom1 |
+| A.java:8:15:8:25 | always_dom2 |
+| A.java:13:15:13:25 | always_path |
+| A.java:21:15:21:27 | always_w_call |

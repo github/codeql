@@ -1,0 +1,42 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>It is good practice to initialize every field in a constructor explicitly. A field that is never 
+assigned any value (except possibly <code>null</code>) just returns
+the default value when it is read, or throws a <code>NullPointerException</code>.</p>
+
+</overview>
+<recommendation>
+
+<p>A field whose value is always <code>null</code> (or the
+corresponding default value for primitive types, for example <code>0</code>) is not particularly
+useful. Ensure that the code contains an assignment or initialization for each field. To help
+satisfy this rule, it is good practice to explicitly initialize every field in the constructor, 
+even if the default value is acceptable.</p>
+
+<p>If the field is genuinely never expected to hold a non-default value, check the statements that
+read the field and ensure that they are not making incorrect assumptions about the value of the 
+field. Consider completely removing the field and rewriting the statements that read it, 
+as appropriate.</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, the private field <code>name</code> is not initialized in the constructor
+(and thus is implicitly set to <code>null</code>), but there is a getter method to access it.</p>
+
+<sample src="NonAssignedFields.java" />
+
+<p>Therefore, the following code throws a <code>NullPointerException</code>:</p>
+
+<sample language="java">Person p = new Person("Arthur Dent", 30);
+int l = p.getName().length();</sample>
+
+<p>To fix the code, <code>name</code> should be initialized in the constructor by adding the 
+following line: <code>this.name = name;</code></p>
+</example>
+</qhelp>

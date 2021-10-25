@@ -1,0 +1,4 @@
+| templates.cpp:13:7:13:7 | fun | The 'const' modifier has no effect on return types. The 'const' modifying the return type can be removed. |
+| test.cpp:5:12:5:23 | getAConstInt | The 'const' modifier has no effect on return types. For a const function, the 'const' should go after the parameter list. |
+| test.cpp:11:12:11:28 | getAConstIntConst | The 'const' modifier has no effect on return types. The 'const' modifying the return type can be removed. |
+| test.cpp:19:19:19:36 | getAStaticConstInt | The 'const' modifier has no effect on return types. The 'const' modifying the return type can be removed. |

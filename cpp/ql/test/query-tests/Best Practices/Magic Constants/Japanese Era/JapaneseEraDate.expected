@@ -1,0 +1,7 @@
+| ConstructorOrMethodWithExactDate.cpp:27:31:27:53 | call to EraInfo | Call that appears to have hard-coded Japanese era start date as parameter. |
+| ConstructorOrMethodWithExactDate.cpp:30:32:30:77 | call to EraInfo | Call that appears to have hard-coded Japanese era start date as parameter. |
+| ConstructorOrMethodWithExactDate.cpp:36:32:36:55 | call to EraInfoFromDate | Call that appears to have hard-coded Japanese era start date as parameter. |
+| ConstructorOrMethodWithExactDate.cpp:42:32:42:54 | call to EraInfo | Call that appears to have hard-coded Japanese era start date as parameter. |
+| StructWithExactDate.cpp:31:13:31:19 | tm_year | A time struct that is initialized with exact Japanese calendar era start date. |
+| StructWithExactDate.cpp:46:8:46:12 | wYear | A time struct that is initialized with exact Japanese calendar era start date. |
+| StructWithExactDate.cpp:60:9:60:13 | wYear | A time struct that is initialized with exact Japanese calendar era start date. |

@@ -1,0 +1,69 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+A cohesive class is one in which most methods access the same fields. A class that 
+lacks cohesion is usually one that has multiple responsibilities.
+</p>
+
+<p>
+Various measures of lack of cohesion have been proposed. The Chidamber and Kemerer 
+version of lack of cohesion inspects pairs of methods. If there are many pairs that 
+access the same data, the class is cohesive. If there are many pairs that do not access
+any common data, the class is not cohesive. More precisely, if:</p>
+
+<ul>
+    <li><code>n1</code> is the number of pairs of distinct methods in a class that 
+    <em>do not have</em> at least one commonly-accessed field, and</li>
+    <li><code>n2</code> is the number of pairs of distinct methods in a class that 
+    <em>do have</em> at least one commonly-accessed field,</li>
+</ul>
+
+<p>the lack of cohesion measure (LCOM) can be defined as:
+</p>
+
+<p>
+LCOM = max((n1 - n2) / 2, 0)
+</p>
+
+<p>
+High values of LCOM indicate a significant lack of cohesion. As a rough 
+indication, an LCOM of 500 or more may give you cause for concern.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Classes generally lack cohesion because they have more responsibilities
+than they should (see [Martin]). In general, the solution is to identify each 
+of the different responsibilities that the class has, and split them 
+into multiple classes, using the 'Extract Class' refactoring from [Fowler], for
+example.
+</p>
+
+
+
+</recommendation>
+<references>
+
+
+<li>
+S. R. Chidamber and C. F. Kemerer, <em>A metrics suite for object-oriented design</em>. IEEE Transactions on Software Engineering, 20(6):476-493, 1994.
+</li>
+<li>
+M. Fowler, <em>Refactoring</em>, pp. 65, 122-5. Addison-Wesley, 1999.
+</li>
+<li>
+R. Martin. <em>Agile Software Development: Principles, Patterns, and Practices</em>
+Chapter 8 - SRP: The Single-Responsibility Principle. Pearson Education, 2003.
+</li>
+<li>
+O. de Moor et al, <em>Keynote Address: .QL for Source Code Analysis</em>. Proceedings of the 7th IEEE International Working Conference on Source Code Analysis and Manipulation, 2007.
+</li>
+
+
+</references>
+</qhelp>

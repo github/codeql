@@ -1,0 +1,30 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+
+<overview>
+<p> A parameter is never used.
+</p>
+
+<include src="UnusedVariableNaming.inc.qhelp" />
+
+</overview>
+<recommendation>
+
+<p>Delete the parameter from the relevant function or method.
+If that is not possible (due to overriding or similar) rename the parameter
+ as described above.
+
+</p></recommendation>
+<example>
+
+<p>In this example the parameter <code>filename</code> is ignored which is misleading.
+
+</p><sample src="UnusedParameter.py" />
+
+
+</example>
+</qhelp>

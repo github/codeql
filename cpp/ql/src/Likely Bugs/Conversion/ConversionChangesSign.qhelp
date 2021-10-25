@@ -1,0 +1,24 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>This rule finds expressions which are implicitly converted from signed to unsigned or vice versa. Casting an unsigned value to
+a signed value and vice versa does not change the contents (in bits) of the variable, it just changes the way the sign bit is
+interpreted. Casting a large unsigned value (one with the most significant bit set) to a signed value will make it negative, while
+casting a negative signed value converts it to a large unsigned number.</p>
+
+</overview>
+<recommendation>
+<p>Make the conversion explicit by adding a cast (and comparing against zero where appropriate).</p>
+
+</recommendation>
+<example><sample src="ConversionChangesSign.cpp" />
+
+
+
+
+</example>
+</qhelp>

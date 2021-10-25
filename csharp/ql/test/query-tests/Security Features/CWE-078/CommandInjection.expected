@@ -1,0 +1,28 @@
+edges
+| CommandInjection.cs:25:32:25:46 | access to field categoryTextBox : TextBox | CommandInjection.cs:25:32:25:51 | access to property Text : String |
+| CommandInjection.cs:25:32:25:51 | access to property Text : String | CommandInjection.cs:26:27:26:47 | ... + ... |
+| CommandInjection.cs:25:32:25:51 | access to property Text : String | CommandInjection.cs:26:50:26:66 | ... + ... |
+| CommandInjection.cs:25:32:25:51 | access to property Text : String | CommandInjection.cs:28:63:28:71 | access to local variable userInput |
+| CommandInjection.cs:25:32:25:51 | access to property Text : String | CommandInjection.cs:28:74:28:82 | access to local variable userInput |
+| CommandInjection.cs:25:32:25:51 | access to property Text : String | CommandInjection.cs:32:39:32:47 | access to local variable userInput |
+| CommandInjection.cs:25:32:25:51 | access to property Text : String | CommandInjection.cs:33:40:33:48 | access to local variable userInput |
+| CommandInjection.cs:25:32:25:51 | access to property Text : String | CommandInjection.cs:34:47:34:55 | access to local variable userInput |
+nodes
+| CommandInjection.cs:25:32:25:46 | access to field categoryTextBox : TextBox | semmle.label | access to field categoryTextBox : TextBox |
+| CommandInjection.cs:25:32:25:51 | access to property Text : String | semmle.label | access to property Text : String |
+| CommandInjection.cs:26:27:26:47 | ... + ... | semmle.label | ... + ... |
+| CommandInjection.cs:26:50:26:66 | ... + ... | semmle.label | ... + ... |
+| CommandInjection.cs:28:63:28:71 | access to local variable userInput | semmle.label | access to local variable userInput |
+| CommandInjection.cs:28:74:28:82 | access to local variable userInput | semmle.label | access to local variable userInput |
+| CommandInjection.cs:32:39:32:47 | access to local variable userInput | semmle.label | access to local variable userInput |
+| CommandInjection.cs:33:40:33:48 | access to local variable userInput | semmle.label | access to local variable userInput |
+| CommandInjection.cs:34:47:34:55 | access to local variable userInput | semmle.label | access to local variable userInput |
+subpaths
+#select
+| CommandInjection.cs:26:27:26:47 | ... + ... | CommandInjection.cs:25:32:25:46 | access to field categoryTextBox : TextBox | CommandInjection.cs:26:27:26:47 | ... + ... | $@ flows to here and is used in a command. | CommandInjection.cs:25:32:25:46 | access to field categoryTextBox | User-provided value |
+| CommandInjection.cs:26:50:26:66 | ... + ... | CommandInjection.cs:25:32:25:46 | access to field categoryTextBox : TextBox | CommandInjection.cs:26:50:26:66 | ... + ... | $@ flows to here and is used in a command. | CommandInjection.cs:25:32:25:46 | access to field categoryTextBox | User-provided value |
+| CommandInjection.cs:28:63:28:71 | access to local variable userInput | CommandInjection.cs:25:32:25:46 | access to field categoryTextBox : TextBox | CommandInjection.cs:28:63:28:71 | access to local variable userInput | $@ flows to here and is used in a command. | CommandInjection.cs:25:32:25:46 | access to field categoryTextBox | User-provided value |
+| CommandInjection.cs:28:74:28:82 | access to local variable userInput | CommandInjection.cs:25:32:25:46 | access to field categoryTextBox : TextBox | CommandInjection.cs:28:74:28:82 | access to local variable userInput | $@ flows to here and is used in a command. | CommandInjection.cs:25:32:25:46 | access to field categoryTextBox | User-provided value |
+| CommandInjection.cs:32:39:32:47 | access to local variable userInput | CommandInjection.cs:25:32:25:46 | access to field categoryTextBox : TextBox | CommandInjection.cs:32:39:32:47 | access to local variable userInput | $@ flows to here and is used in a command. | CommandInjection.cs:25:32:25:46 | access to field categoryTextBox | User-provided value |
+| CommandInjection.cs:33:40:33:48 | access to local variable userInput | CommandInjection.cs:25:32:25:46 | access to field categoryTextBox : TextBox | CommandInjection.cs:33:40:33:48 | access to local variable userInput | $@ flows to here and is used in a command. | CommandInjection.cs:25:32:25:46 | access to field categoryTextBox | User-provided value |
+| CommandInjection.cs:34:47:34:55 | access to local variable userInput | CommandInjection.cs:25:32:25:46 | access to field categoryTextBox : TextBox | CommandInjection.cs:34:47:34:55 | access to local variable userInput | $@ flows to here and is used in a command. | CommandInjection.cs:25:32:25:46 | access to field categoryTextBox | User-provided value |

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<db-connections>
+	<db-connection name="oracleServerConn" value="server=myoracle.example.com;port=1521;database=testdb;username=root;password=test1234" /> 
+</db-connections>

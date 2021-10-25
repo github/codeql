@@ -1,0 +1,4 @@
+| override.cpp:1:8:1:11 | Base | override.cpp:2:16:2:16 | a | 0 |
+| override.cpp:1:8:1:11 | Base | override.cpp:3:16:3:16 | b | 0 |
+| override.cpp:6:8:6:14 | Derived | override.cpp:7:8:7:8 | a | 1 |
+| override.cpp:6:8:6:14 | Derived | override.cpp:8:8:8:8 | b | 0 |

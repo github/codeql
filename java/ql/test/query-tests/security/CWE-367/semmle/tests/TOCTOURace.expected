@@ -1,0 +1,4 @@
+| Test.java:13:4:13:10 | act(...) | The state of $@ is checked $@, and then it is used here. But these are not jointly synchronized. | Test.java:10:32:10:41 | r | r | Test.java:12:7:12:18 | getState(...) | here |
+| Test.java:20:4:20:10 | act(...) | The state of $@ is checked $@, and then it is used here. But these are not jointly synchronized. | Test.java:17:32:17:42 | r | r | Test.java:19:7:19:18 | getState(...) | here |
+| Test.java:27:4:27:10 | act(...) | The state of $@ is checked $@, and then it is used here. But these are not jointly synchronized. | Test.java:24:19:24:28 | r | r | Test.java:26:7:26:18 | getState(...) | here |
+| Test.java:35:5:35:11 | act(...) | The state of $@ is checked $@, and then it is used here. But these are not jointly synchronized. | Test.java:31:19:31:28 | r | r | Test.java:34:8:34:19 | getState(...) | here |

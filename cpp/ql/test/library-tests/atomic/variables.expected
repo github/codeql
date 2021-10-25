@@ -1,0 +1,22 @@
+| (unnamed parameter 0) | __va_list_tag && | rvalue reference to {struct __va_list_tag} |
+| (unnamed parameter 0) | atomic_box<int> && | rvalue reference to {struct atomic_box<int>} |
+| (unnamed parameter 0) | const __va_list_tag & | reference to {const {struct __va_list_tag}} |
+| (unnamed parameter 0) | const atomic_box<int> & | reference to {const {struct atomic_box<int>}} |
+| a | _Atomic(int) | atomic {int} |
+| b | _Atomic(int) | atomic {int} |
+| c | _Atomic(int) * | pointer to {atomic {int}} |
+| d | _Atomic(int) | atomic {int} |
+| e | int *_Atomic | atomic {pointer to {int}} |
+| f | int *_Atomic | atomic {pointer to {int}} |
+| fp_offset | unsigned int | unsigned int |
+| g | atomic_box<int> | struct atomic_box<int> |
+| gp_offset | unsigned int | unsigned int |
+| h | const _Atomic(int) | atomic const {int} |
+| i | const _Atomic(int) | atomic const {int} |
+| j | _Atomic(int) *_Atomic | atomic {pointer to {atomic {int}}} |
+| k | _Atomic(int) *_Atomic | atomic {pointer to {atomic {int}}} |
+| m | int | int |
+| overflow_arg_area | void * | pointer to {void} |
+| reg_save_area | void * | pointer to {void} |
+| value | _Atomic(T) | atomic {T} |
+| value | _Atomic(int) | atomic {int} |

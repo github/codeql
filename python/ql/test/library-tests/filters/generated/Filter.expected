@@ -1,0 +1,5 @@
+| antlr.py | none |
+| generic.py | tools/idna-data |
+| sphinx.py | Sphinx |
+| swig.py | SWIG |
+| thrift.py | Thrift |

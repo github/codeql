@@ -1,0 +1,44 @@
+goto.cs:
+#    2| [Class] Goto
+#    4|   5: [Method] Main
+#    4|     -1: [TypeMention] Void
+#    5|     4: [BlockStmt] {...}
+#    6|       0: [BlockStmt] {...}
+#    7|         0: [LabelStmt] s1:
+#    7|         1: [GotoLabelStmt] goto ...;
+#    9|       1: [LabelStmt] s2:
+#    9|       2: [LocalVariableDeclStmt] ... ...;
+#    9|         0: [LocalVariableDeclAndInitExpr] String s = ...
+#    9|           -1: [TypeMention] string
+#    9|           0: [LocalVariableAccess] access to local variable s
+#    9|           1: [StringLiteral] "5"
+#   10|       3: [SwitchStmt] switch (...) {...}
+#   10|         0: [LocalVariableAccess] access to local variable s
+#   12|         0: [ConstCase] case ...:
+#   12|           0: [ConstantPatternExpr,NullLiteral] null
+#   12|         1: [LabelStmt] s3:
+#   12|         2: [GotoCaseStmt] goto case ...;
+#   12|           0: [StringLiteral] "1"
+#   13|         3: [ConstCase] case ...:
+#   13|           0: [ConstantPatternExpr,StringLiteral] "1"
+#   13|         4: [LabelStmt] s4:
+#   13|         5: [GotoCaseStmt] goto case ...;
+#   13|           0: [StringLiteral] "2"
+#   14|         6: [ConstCase] case ...:
+#   14|           0: [ConstantPatternExpr,StringLiteral] "2"
+#   14|         7: [LabelStmt] s5:
+#   14|         8: [GotoLabelStmt] goto ...;
+#   15|         9: [ConstCase] case ...:
+#   15|           0: [ConstantPatternExpr,StringLiteral] "3"
+#   15|         10: [LabelStmt] s6:
+#   15|         11: [GotoDefaultStmt] goto default;
+#   16|         12: [ConstCase] case ...:
+#   16|           0: [ConstantPatternExpr,StringLiteral] "4"
+#   16|         13: [LabelStmt] s7:
+#   16|         14: [BreakStmt] break;
+#   17|         15: [DefaultCase] default:
+#   17|         16: [LabelStmt] s8:
+#   17|         17: [GotoCaseStmt] goto case ...;
+#   17|           0: [NullLiteral] null
+#   19|       4: [LabelStmt] s9:
+#   19|       5: [EmptyStmt] ;

@@ -1,0 +1,7 @@
+| args | test.py:8:12:8:23 | Str |
+| keyword_only | test.py:9:19:9:21 | int |
+| keyword_w_default | test.py:29:24:29:28 | Str |
+| kwargs | test.py:10:15:10:30 | Str |
+| normal | test.py:7:13:7:15 | int |
+| pos_only | test.py:5:15:5:17 | int |
+| pos_w_default | test.py:25:20:25:24 | Str |

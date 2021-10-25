@@ -1,0 +1,50 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+
+	<overview>
+		<p>
+			AngularJS uses filters to ensure that the URLs used for
+			sourcing AngularJS templates and other script-running
+			URLs are safe. One such filter is a whitelist of URL
+			patterns to allow.
+		</p>
+		<p>
+			A URL pattern that is too permissive can cause security
+			vulnerabilities.
+		</p>
+	</overview>
+
+	<recommendation>
+		<p>
+			Make the whitelist URL patterns as restrictive as possible.
+		</p>
+	</recommendation>
+
+	<example>
+		<p>
+			The following example shows an AngularJS application
+			with whitelist URL patterns that all are too permissive.
+		</p>
+
+		<sample src="examples/InsecureUrlWhitelist.js"/>
+
+		<p>
+			This is problematic, since the four patterns match the
+			following malicious URLs, respectively:
+		</p>
+		<ul>
+			<li><code>javascript://example.org/a%0A%0Dalert(1)</code> (<code>%0A%0D</code> is a linebreak)</li>
+			<li><code>https://evil.com/?ignore=://example.com/a</code></li>
+			<li><code>https://example.evil.com</code></li>
+			<li><code>https://example.evilTld</code></li>
+		</ul>
+
+	</example>
+
+	<references>
+		<li>OWASP/Google presentation: <a href="https://www.owasp.org/images/6/6e/Benelus_day_20161125_S_Lekies_Securing_AngularJS_Applications.pdf">Securing AngularJS Applications</a></li>
+		<li>AngularJS Developer Guide: <a href="https://docs.angularjs.org/api/ng/service/$sce#resourceUrlPatternItem">Format of items in resourceUrlWhitelist/Blacklist</a>.</li>
+	</references>
+</qhelp>

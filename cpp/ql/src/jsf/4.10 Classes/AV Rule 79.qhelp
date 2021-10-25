@@ -1,0 +1,95 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+This rule finds resources that are allocated by a class, but not released in the destructor of that class.
+Allocating a resource includes:</p>
+<ul>
+  <li>Allocating memory with <code>malloc</code></li>
+  <li>Creating objects using <code>new</code></li>
+  <li>Opening files</li>
+  <li>Opening network sockets</li>
+</ul>
+
+<p>
+Resource management can be a complex task, so a standard best practice is the pattern of <em>Resource Acquisition is Initialization</em>
+(RAII). In an RAII class, the constructor allocates all required resources, and the destructor frees all resources.
+This guarantees that simply deleting an instance of the class is enough to free resources, and benefits from C++'s
+automatic object lifetime management. A well-designed RAII class cannot be a source of resource leaks as long as its
+lifetime is properly managed:</p>
+<ul>
+  <li>If it is allocated with <code>new</code> it should be released with <code>delete</code> by the client that created it</li>
+  <li>If its lifetime is lexical (it is only used in one function), then it is enough to declare it as a local variable
+  of that function (not a pointer) and the C++ runtime will ensure it is released on exit. </li>
+</ul>
+
+
+<p>
+There are two possible messages:
+</p>
+
+<ul>
+  <li>"Resource <em>x</em> is acquired by class <em>C</em> but not released in the destructor. It is released from <em>f</em>,
+  so this function may need to be called in the destructor".</li>
+</ul>
+<p>
+This indicates that the resource (<em>x</em>) is being released, just not in the destructor of the class. Typically,
+it is released in a function called <code>close</code>, <code>free</code> or something similar. This does not always
+indicate a resource leak, but it shows that the class is unnecessarily difficult to use because it does not conform to
+the RAII pattern.
+</p>
+
+<ul>
+  <li>"Resource <em>x</em> is acquired by class <em>C</em> but not released anywhere in this class".</li>
+</ul>
+<p>
+This indicates that the class is allocating resources but not responsible for releasing them. This is very error-prone:
+even if a class requires an explicit close operator, it should manage any resources it allocates rather than forcing
+clients to manage them. In the worst case this can be a resource leak, if client code does not free the resource.
+</p>
+
+</overview>
+<recommendation>
+<p>
+If the resource is not being released at all, ensure that the class does release the resource, normally by adding
+the release to the destructor of the class. This change needs to be carefully validated: client code may be relying
+on the resource outliving the class that allocated it, and must be reviewed and updated if necessary.
+</p>
+
+<p>
+In the other case, for instance a class that has an explicit <code>close</code> function, the aim is to migrate the class
+to a straightforward RAII pattern. This can be achieved in several steps:</p>
+<ol>
+  <li>First, ensure that the <code>close</code> function (or its equivalent) is safe to call twice, by releasing resources
+  only if they have not been released before.</li>
+  <li>Next, call the <code>close</code> function from the destructor. This does not require changing the client code, since
+  it is safe to call it twice.</li>
+  <li>Migrate client code to remove direct uses of the <code>close</code> function, taking the opportunity to check that
+  the object itself is being deleted appropriately.</li>
+  <li>Finally, when possible also migrate initialization code to the constructor of the class to make it follow the RAII
+  pattern precisely. </li>
+</ol>
+
+</recommendation>
+<example><sample src="AV Rule 79.cpp" />
+
+</example>
+<references>
+
+<li>
+  AV Rule 79, <em>Joint Strike Fighter Air Vehicle C++ Coding Standards</em>. Lockheed Martin Corporation, 2005.
+</li>
+<li>
+  S. Meyers. <em>Effective C++ 3d ed.</em> pp 61-66. Addison-Wesley Professional, 2005.
+</li>
+<li>
+  <a href="http://en.wikipedia.org/wiki/Resource_Acquisition_Is_Initialization">Resource Acquisition Is Initialization</a>
+</li>
+
+
+</references>
+</qhelp>

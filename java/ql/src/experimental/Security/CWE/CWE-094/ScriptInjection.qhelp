@@ -1,0 +1,52 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>The Java Scripting API has been available since the release of Java 6. It allows
+  applications to interact with scripts written in languages such as JavaScript. It serves
+  as an embedded scripting engine inside Java applications which allows Java-to-JavaScript
+  interoperability and provides a seamless integration between the two languages. If an 
+  expression is built using attacker-controlled data, and then evaluated in a powerful 
+  context, it may allow the attacker to run arbitrary code.</p>
+</overview>
+
+<recommendation>
+<p>In general, including user input in a Java Script Engine expression should be avoided.
+  If user input must be included in the expression, it should be then evaluated in a safe
+  context that doesn't allow arbitrary code invocation. Use "Cloudbees Rhino Sandbox" or
+  sandboxing with SecurityManager, which will be deprecated in a future release, or use
+  <a href="https://www.graalvm.org/">GraalVM</a> instead.</p>
+</recommendation>
+
+<example>
+<p>The following code could execute user-supplied JavaScript code in <code>ScriptEngine</code></p>
+<sample src="ScriptEngine.java" />
+<sample src="NashornScriptEngine.java" />
+
+<p>The following example shows two ways of using Rhino expression. In the 'BAD' case,
+  an unsafe context is initialized with <code>initStandardObjects</code> that allows arbitrary
+  Java code to be executed. In the 'GOOD' case, a safe context is initialized with 
+  <code>initSafeStandardObjects</code> or <code>setClassShutter</code>.</p>
+  <sample src="RhinoInjection.java" />
+</example>
+
+<references>
+<li>
+CERT coding standard: <a href="https://wiki.sei.cmu.edu/confluence/display/java/IDS52-J.+Prevent+code+injection">ScriptEngine code injection</a>
+</li>
+<li>
+GraalVM: <a href="https://www.graalvm.org/reference-manual/js/NashornMigrationGuide/#secure-by-default">Secure by Default</a>
+</li>
+<li>
+  Mozilla Rhino: <a href="https://github.com/mozilla/rhino">Rhino: JavaScript in Java</a>
+</li>
+<li>
+  Rhino Sandbox: <a href="https://github.com/javadelight/delight-rhino-sandbox">A sandbox to execute JavaScript code with Rhino in Java</a>
+</li>
+<li>
+  GuardRails: <a href="https://docs.guardrails.io/docs/en/vulnerabilities/java/insecure_use_of_dangerous_function#code-injection">Code Injection</a>
+</li>
+</references>
+</qhelp>

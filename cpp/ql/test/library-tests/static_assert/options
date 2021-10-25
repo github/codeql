@@ -1,0 +1,1 @@
+semmle-extractor-options: --edg --target --edg win64

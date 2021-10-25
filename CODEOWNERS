@@ -1,0 +1,25 @@
+/cpp/ @github/codeql-c-analysis
+/csharp/ @github/codeql-csharp
+/java/ @github/codeql-java
+/javascript/ @github/codeql-javascript
+/python/ @github/codeql-python
+
+# Make @xcorail (GitHub Security Lab) a code owner for experimental queries so he gets pinged when we promote a query out of experimental
+/cpp/**/experimental/**/* @github/codeql-c-analysis @xcorail
+/csharp/**/experimental/**/* @github/codeql-csharp @xcorail
+/java/**/experimental/**/* @github/codeql-java @xcorail
+/javascript/**/experimental/**/* @github/codeql-javascript @xcorail
+/python/**/experimental/**/* @github/codeql-python @xcorail
+
+# Notify members of codeql-go about PRs to the shared data-flow library files
+/java/ql/src/semmle/code/java/dataflow/internal/DataFlowImpl.qll @github/codeql-java @github/codeql-go
+/java/ql/src/semmle/code/java/dataflow/internal/DataFlowImpl2.qll @github/codeql-java @github/codeql-go
+/java/ql/src/semmle/code/java/dataflow/internal/DataFlowImplCommon.qll @github/codeql-java @github/codeql-go
+/java/ql/src/semmle/code/java/dataflow/internal/tainttracking1/TaintTrackingImpl.qll @github/codeql-java @github/codeql-go
+/java/ql/src/semmle/code/java/dataflow/internal/tainttracking2/TaintTrackingImpl.qll @github/codeql-java @github/codeql-go
+
+# CodeQL tools and associated docs
+/docs/codeql-cli/ @github/codeql-cli-reviewers
+/docs/codeql-for-visual-studio-code/ @github/codeql-vscode-reviewers
+/docs/ql-language-reference/ @github/codeql-frontend-reviewers
+/docs/query-*-style-guide.md @github/codeql-analysis-reviewers

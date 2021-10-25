@@ -1,0 +1,3 @@
+| tst.js:2:9:2:24 | (x & (1<<n)) > 0 | Sign check of a bitwise operation |
+| tst.js:14:13:14:25 | (x >>> 0) > 0 | Sign check of a bitwise operation |
+| tst.js:23:1:23:21 | (x & 0x ... 00) > 0 | Sign check of a bitwise operation |

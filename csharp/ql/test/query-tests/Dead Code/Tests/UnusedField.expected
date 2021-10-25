@@ -1,0 +1,5 @@
+| deadcode.cs:85:7:85:11 | Field | Unused field (or field used from dead method only) |
+| regression.cs:7:20:7:23 | dead | Unused field (or field used from dead method only) |
+| regression.cs:113:9:113:17 | deadField | Unused field (or field used from dead method only) |
+| regression.cs:116:9:116:24 | deadWrittenField | Unused field (or field used from dead method only) |
+| regression.cs:129:9:129:17 | deadField | Unused field (or field used from dead method only) |

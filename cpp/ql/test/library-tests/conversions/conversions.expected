@@ -1,0 +1,151 @@
+| complex.c:3:25:3:27 | (_Imaginary double)... | floating point conversion | prval | _Imaginary double | double |
+| complex.c:4:23:4:25 | (_Complex double)... | floating point conversion | prval | _Complex double | double |
+| complex.c:5:7:5:7 | (double)... | floating point conversion | prval | double | _Complex double |
+| complex.c:6:7:6:7 | (_Complex double)... | floating point conversion | prval | _Complex double | _Imaginary double |
+| complex.c:7:7:7:7 | (_Complex double)... | floating point conversion | prval | _Complex double | double |
+| conversions.cpp:14:12:14:12 | (char)... | integral conversion | prval | char | int |
+| conversions.cpp:15:22:15:22 | (unsigned char)... | integral conversion | prval | unsigned char | int |
+| conversions.cpp:16:13:16:13 | (short)... | integral conversion | prval | short | int |
+| conversions.cpp:17:23:17:23 | (unsigned short)... | integral conversion | prval | unsigned short | int |
+| conversions.cpp:19:21:19:21 | (unsigned int)... | integral conversion | prval | unsigned int | int |
+| conversions.cpp:20:12:20:12 | (long)... | integral conversion | prval | long | int |
+| conversions.cpp:21:22:21:22 | (unsigned long)... | integral conversion | prval | unsigned long | int |
+| conversions.cpp:22:18:22:18 | (long long)... | integral conversion | prval | long long | int |
+| conversions.cpp:23:28:23:28 | (unsigned long long)... | integral conversion | prval | unsigned long long | int |
+| conversions.cpp:24:13:24:13 | (float)... | integral to floating point conversion | prval | float | int |
+| conversions.cpp:25:14:25:14 | (double)... | integral to floating point conversion | prval | double | int |
+| conversions.cpp:26:16:26:16 | (wchar_t)... | integral conversion | prval | wchar_t | int |
+| conversions.cpp:30:7:30:8 | (char)... | integral conversion | prval | char | unsigned char |
+| conversions.cpp:31:7:31:14 | (char)... | integral conversion | prval | char | unsigned char |
+| conversions.cpp:32:7:32:14 | (char)... | integral conversion | prval | char | unsigned char |
+| conversions.cpp:33:7:33:27 | static_cast<char>... | integral conversion | prval | char | unsigned char |
+| conversions.cpp:34:7:34:7 | (int)... | integral conversion | prval | int | short |
+| conversions.cpp:35:7:35:12 | (int)... | integral conversion | prval | int | short |
+| conversions.cpp:36:7:36:12 | (int)... | integral conversion | prval | int | short |
+| conversions.cpp:37:7:37:25 | static_cast<int>... | integral conversion | prval | int | short |
+| conversions.cpp:38:8:38:8 | (unsigned short)... | integral conversion | prval | unsigned short | int |
+| conversions.cpp:39:8:39:24 | (unsigned short)... | integral conversion | prval | unsigned short | int |
+| conversions.cpp:40:8:40:16 | (ushort)... | integral conversion | prval | ushort | int |
+| conversions.cpp:41:8:41:37 | static_cast<unsigned short>... | integral conversion | prval | unsigned short | int |
+| conversions.cpp:43:7:43:7 | (int)... | floating point to integral conversion | prval | int | double |
+| conversions.cpp:44:7:44:12 | (int)... | floating point to integral conversion | prval | int | double |
+| conversions.cpp:45:7:45:12 | (int)... | floating point to integral conversion | prval | int | double |
+| conversions.cpp:46:7:46:25 | static_cast<int>... | floating point to integral conversion | prval | int | double |
+| conversions.cpp:48:7:48:7 | (float)... | integral to floating point conversion | prval | float | char |
+| conversions.cpp:49:7:49:14 | (float)... | integral to floating point conversion | prval | float | char |
+| conversions.cpp:50:7:50:14 | (float)... | integral to floating point conversion | prval | float | char |
+| conversions.cpp:51:7:51:27 | static_cast<float>... | integral to floating point conversion | prval | float | char |
+| conversions.cpp:53:7:53:7 | (float)... | floating point conversion | prval | float | double |
+| conversions.cpp:54:7:54:14 | (float)... | floating point conversion | prval | float | double |
+| conversions.cpp:55:7:55:14 | (float)... | floating point conversion | prval | float | double |
+| conversions.cpp:56:7:56:27 | static_cast<float>... | floating point conversion | prval | float | double |
+| conversions.cpp:58:7:58:7 | (double)... | floating point conversion | prval | double | float |
+| conversions.cpp:59:7:59:15 | (double)... | floating point conversion | prval | double | float |
+| conversions.cpp:60:7:60:15 | (double)... | floating point conversion | prval | double | float |
+| conversions.cpp:61:7:61:28 | static_cast<double>... | floating point conversion | prval | double | float |
+| conversions.cpp:63:7:63:8 | (int)... | integral conversion | prval | int | E |
+| conversions.cpp:64:7:64:7 | (int)... | integral conversion | prval | int | E |
+| conversions.cpp:65:7:65:31 | static_cast<int>... | integral conversion | prval | int | EC |
+| conversions.cpp:66:7:66:26 | static_cast<int>... | integral conversion | prval | int | EC |
+| conversions.cpp:67:7:67:23 | static_cast<E>... | integral conversion | prval | E | int |
+| conversions.cpp:68:8:68:25 | static_cast<EC>... | integral conversion | prval | EC | int |
+| conversions.cpp:77:12:77:12 | (bool)... | conversion to bool | prval | bool | int |
+| conversions.cpp:79:14:79:14 | (double)... | integral to floating point conversion | prval | double | int |
+| conversions.cpp:80:13:80:19 | (void *)... | pointer conversion | prval | void * | decltype(nullptr) |
+| conversions.cpp:81:18:81:24 | (..:: *)... | pointer-to-member conversion | prval | ..:: * | decltype(nullptr) |
+| conversions.cpp:85:12:85:18 | (bool)... | conversion to bool | prval | bool | bool |
+| conversions.cpp:87:12:87:12 | (bool)... | conversion to bool | prval | bool | int |
+| conversions.cpp:89:12:89:12 | (bool)... | conversion to bool | prval | bool | double |
+| conversions.cpp:91:12:91:12 | (bool)... | conversion to bool | prval | bool | void * |
+| conversions.cpp:93:12:93:14 | (bool)... | conversion to bool | prval | bool | ..:: * |
+| conversions.cpp:121:7:121:7 | (Base)... | base class conversion | prval(load) | Base | Middle |
+| conversions.cpp:122:13:122:13 | (Base)... | base class conversion | prval(load) | Base | Middle |
+| conversions.cpp:123:25:123:25 | (Base)... | base class conversion | prval(load) | Base | Middle |
+| conversions.cpp:124:8:124:9 | (Base *)... | base class conversion | prval | Base * | Middle * |
+| conversions.cpp:125:8:125:16 | (Base *)... | base class conversion | prval | Base * | Middle * |
+| conversions.cpp:126:8:126:29 | static_cast<Base *>... | base class conversion | prval | Base * | Middle * |
+| conversions.cpp:127:8:127:34 | reinterpret_cast<Base *>... | pointer conversion | prval | Base * | Middle * |
+| conversions.cpp:129:7:129:16 | (Middle)... | derived class conversion | prval(load) | Middle | Base |
+| conversions.cpp:130:7:130:29 | static_cast<Middle>... | derived class conversion | prval(load) | Middle | Base |
+| conversions.cpp:131:8:131:18 | (Middle *)... | derived class conversion | prval | Middle * | Base * |
+| conversions.cpp:132:8:132:31 | static_cast<Middle *>... | derived class conversion | prval | Middle * | Base * |
+| conversions.cpp:133:8:133:36 | reinterpret_cast<Middle *>... | pointer conversion | prval | Middle * | Base * |
+| conversions.cpp:135:7:135:7 | (Base)... | base class conversion | prval(load) | Base | Middle |
+| conversions.cpp:135:7:135:7 | (Middle)... | base class conversion | lval | Middle | Derived |
+| conversions.cpp:136:13:136:13 | (Base)... | base class conversion | prval(load) | Base | Middle |
+| conversions.cpp:136:13:136:13 | (Middle)... | base class conversion | lval | Middle | Derived |
+| conversions.cpp:137:25:137:25 | (Base)... | base class conversion | prval(load) | Base | Middle |
+| conversions.cpp:137:25:137:25 | (Middle)... | base class conversion | lval | Middle | Derived |
+| conversions.cpp:138:8:138:9 | (Base *)... | base class conversion | prval | Base * | Middle * |
+| conversions.cpp:138:8:138:9 | (Middle *)... | base class conversion | prval | Middle * | Derived * |
+| conversions.cpp:139:8:139:16 | (Base *)... | base class conversion | prval | Base * | Middle * |
+| conversions.cpp:139:15:139:16 | (Middle *)... | base class conversion | prval | Middle * | Derived * |
+| conversions.cpp:140:8:140:29 | static_cast<Base *>... | base class conversion | prval | Base * | Middle * |
+| conversions.cpp:140:27:140:28 | (Middle *)... | base class conversion | prval | Middle * | Derived * |
+| conversions.cpp:141:8:141:34 | reinterpret_cast<Base *>... | pointer conversion | prval | Base * | Derived * |
+| conversions.cpp:143:7:143:17 | (Derived)... | derived class conversion | prval(load) | Derived | Middle |
+| conversions.cpp:143:17:143:17 | (Middle)... | derived class conversion | lval | Middle | Base |
+| conversions.cpp:144:7:144:30 | static_cast<Derived>... | derived class conversion | prval(load) | Derived | Middle |
+| conversions.cpp:144:29:144:29 | (Middle)... | derived class conversion | lval | Middle | Base |
+| conversions.cpp:145:8:145:19 | (Derived *)... | derived class conversion | prval | Derived * | Middle * |
+| conversions.cpp:145:18:145:19 | (Middle *)... | derived class conversion | prval | Middle * | Base * |
+| conversions.cpp:146:8:146:32 | static_cast<Derived *>... | derived class conversion | prval | Derived * | Middle * |
+| conversions.cpp:146:30:146:31 | (Middle *)... | derived class conversion | prval | Middle * | Base * |
+| conversions.cpp:147:8:147:37 | reinterpret_cast<Derived *>... | pointer conversion | prval | Derived * | Base * |
+| conversions.cpp:158:8:158:22 | (..:: *)... | pointer-to-member base class conversion | prval | ..:: * | ..:: * |
+| conversions.cpp:159:10:159:31 | (..:: *)... | pointer-to-member base class conversion | prval | ..:: * | ..:: * |
+| conversions.cpp:160:8:160:35 | static_cast<..:: *>... | pointer-to-member base class conversion | prval | ..:: * | ..:: * |
+| conversions.cpp:161:10:161:44 | static_cast<..:: *>... | pointer-to-member base class conversion | prval | ..:: * | ..:: * |
+| conversions.cpp:163:8:163:9 | (..:: *)... | pointer-to-member derived class conversion | prval | ..:: * | ..:: * |
+| conversions.cpp:164:10:164:13 | (..:: *)... | pointer-to-member derived class conversion | prval | ..:: * | ..:: * |
+| conversions.cpp:165:8:165:24 | (..:: *)... | pointer-to-member derived class conversion | prval | ..:: * | ..:: * |
+| conversions.cpp:166:10:166:33 | (..:: *)... | pointer-to-member derived class conversion | prval | ..:: * | ..:: * |
+| conversions.cpp:167:8:167:37 | static_cast<..:: *>... | pointer-to-member derived class conversion | prval | ..:: * | ..:: * |
+| conversions.cpp:168:10:168:46 | static_cast<..:: *>... | pointer-to-member derived class conversion | prval | ..:: * | ..:: * |
+| conversions.cpp:170:8:170:22 | (..:: *)... | pointer-to-member base class conversion | prval | ..:: * | ..:: * |
+| conversions.cpp:170:21:170:22 | (..:: *)... | pointer-to-member base class conversion | prval | ..:: * | ..:: * |
+| conversions.cpp:171:10:171:31 | (..:: *)... | pointer-to-member base class conversion | prval | ..:: * | ..:: * |
+| conversions.cpp:171:28:171:31 | (..:: *)... | pointer-to-member base class conversion | prval | ..:: * | ..:: * |
+| conversions.cpp:172:8:172:35 | static_cast<..:: *>... | pointer-to-member base class conversion | prval | ..:: * | ..:: * |
+| conversions.cpp:172:33:172:34 | (..:: *)... | pointer-to-member base class conversion | prval | ..:: * | ..:: * |
+| conversions.cpp:173:10:173:44 | static_cast<..:: *>... | pointer-to-member base class conversion | prval | ..:: * | ..:: * |
+| conversions.cpp:173:40:173:43 | (..:: *)... | pointer-to-member base class conversion | prval | ..:: * | ..:: * |
+| conversions.cpp:175:8:175:9 | (..:: *)... | pointer-to-member derived class conversion | prval | ..:: * | ..:: * |
+| conversions.cpp:175:8:175:9 | (..:: *)... | pointer-to-member derived class conversion | prval | ..:: * | ..:: * |
+| conversions.cpp:176:10:176:13 | (..:: *)... | pointer-to-member derived class conversion | prval | ..:: * | ..:: * |
+| conversions.cpp:176:10:176:13 | (..:: *)... | pointer-to-member derived class conversion | prval | ..:: * | ..:: * |
+| conversions.cpp:177:8:177:25 | (..:: *)... | pointer-to-member derived class conversion | prval | ..:: * | ..:: * |
+| conversions.cpp:177:24:177:25 | (..:: *)... | pointer-to-member derived class conversion | prval | ..:: * | ..:: * |
+| conversions.cpp:178:10:178:34 | (..:: *)... | pointer-to-member derived class conversion | prval | ..:: * | ..:: * |
+| conversions.cpp:178:31:178:34 | (..:: *)... | pointer-to-member derived class conversion | prval | ..:: * | ..:: * |
+| conversions.cpp:179:8:179:38 | static_cast<..:: *>... | pointer-to-member derived class conversion | prval | ..:: * | ..:: * |
+| conversions.cpp:179:36:179:37 | (..:: *)... | pointer-to-member derived class conversion | prval | ..:: * | ..:: * |
+| conversions.cpp:180:10:180:47 | static_cast<..:: *>... | pointer-to-member derived class conversion | prval | ..:: * | ..:: * |
+| conversions.cpp:180:43:180:46 | (..:: *)... | pointer-to-member derived class conversion | prval | ..:: * | ..:: * |
+| conversions.cpp:190:22:190:29 | (const String)... | glvalue conversion | lval | const String | String |
+| conversions.cpp:193:20:193:31 | (const Base)... | glvalue conversion | lval | const Base | Base |
+| conversions.cpp:193:31:193:31 | (Base)... | base class conversion | lval | Base | Middle |
+| conversions.cpp:193:31:193:31 | (Middle)... | base class conversion | lval | Middle | Derived |
+| conversions.cpp:194:19:194:27 | (Base)... | glvalue conversion | lval | Base | const String |
+| conversions.cpp:194:19:194:27 | (const Base)... | glvalue conversion | lval | const Base | Base |
+| conversions.cpp:198:19:198:25 | (const int *)... | pointer conversion | prval | const int * | decltype(nullptr) |
+| conversions.cpp:199:29:199:35 | (const volatile int *)... | pointer conversion | prval | const volatile int * | decltype(nullptr) |
+| conversions.cpp:200:9:200:10 | (const volatile int *)... | pointer conversion | prval | const volatile int * | const int * |
+| conversions.cpp:201:8:201:34 | const_cast<const int *>... | pointer conversion | prval | const int * | const volatile int * |
+| conversions.cpp:205:13:205:19 | (void *)... | pointer conversion | prval | void * | decltype(nullptr) |
+| conversions.cpp:206:12:206:18 | (long)... | pointer to integral conversion | prval | long | void * |
+| conversions.cpp:207:7:207:31 | reinterpret_cast<long>... | pointer to integral conversion | prval | long | void * |
+| conversions.cpp:208:7:208:14 | (void *)... | integral to pointer conversion | prval | void * | long |
+| conversions.cpp:209:7:209:32 | reinterpret_cast<void *>... | integral to pointer conversion | prval | void * | long |
+| conversions.cpp:227:8:227:41 | dynamic_cast<PolymorphicBase *>... | dynamic_cast | prval | PolymorphicBase * | PolymorphicDerived * |
+| conversions.cpp:228:25:228:57 | dynamic_cast<PolymorphicBase>... | dynamic_cast | lval | PolymorphicBase | PolymorphicDerived |
+| conversions.cpp:230:8:230:44 | dynamic_cast<PolymorphicDerived *>... | dynamic_cast | prval | PolymorphicDerived * | PolymorphicBase * |
+| conversions.cpp:231:28:231:63 | dynamic_cast<PolymorphicDerived>... | dynamic_cast | lval | PolymorphicDerived | PolymorphicBase |
+| conversions.cpp:235:7:235:16 | (void *)... | pointer conversion | prval | void * | ..(*)(..) |
+| conversions.cpp:236:9:236:22 | (..(*)(..))... | pointer conversion | prval | ..(*)(..) | void * |
+| conversions.cpp:243:3:243:9 | (void)... | conversion to void | prval | void | int |
+| conversions.cpp:244:3:244:22 | static_cast<void>... | conversion to void | prval | void | int |
+| conversions.cpp:245:3:245:14 | (void)... | conversion to void | prval | void | int |
+| conversions.cpp:246:3:246:27 | static_cast<void>... | conversion to void | prval | void | int |
+| conversions.cpp:247:3:247:9 | (void)... | conversion to void | prval | void | int |
+| conversions.cpp:248:3:248:22 | static_cast<void>... | conversion to void | prval | void | int |

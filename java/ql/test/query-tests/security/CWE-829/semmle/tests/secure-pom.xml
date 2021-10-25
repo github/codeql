@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <!-- Duplicated in java/ql/src/Security/CWE/CWE-829/secure-pom.xml -->
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.semmle</groupId>
+    <artifactId>parent</artifactId>
+    <version>1.0</version>
+    <packaging>pom</packaging>
+
+    <name>Security Testing</name>
+    <description>An example of secure download and upload of dependencies</description>
+
+    <distributionManagement>
+        <repository>
+            <id>insecure-releases</id>
+            <name>Secure Repository Releases</name>
+            <!-- GOOD! Use HTTPS -->
+            <url>https://insecure-repository.example</url>
+        </repository>
+        <snapshotRepository>
+            <id>insecure-snapshots</id>
+            <name>Secure Repository Snapshots</name>
+            <!-- GOOD! Use HTTPS -->
+            <url>https://insecure-repository.example</url>
+        </snapshotRepository>
+        <snapshotRepository>
+            <id>insecure-snapshots</id>
+            <name>Secure Repository Snapshots</name>
+            <!-- GOOD! Use HTTP, but for localhost -->
+            <url>http://localhost/snaphots</url>
+        </snapshotRepository>
+        <snapshotRepository>
+            <id>insecure-snapshots</id>
+            <name>Secure Repository Snapshots</name>
+            <!-- GOOD! Use HTTP, but for localhost -->
+            <url>http://localhost:82</url>
+        </snapshotRepository>
+    </distributionManagement>
+    <repositories>
+        <repository>
+            <id>insecure</id>
+            <name>Secure Repository</name>
+            <!-- GOOD! Use HTTPS -->
+            <url>https://insecure-repository.example</url>
+        </repository>
+        <repository>
+            <id>test</id>
+            <!-- GOOD! Use HTTP, but for localhost -->
+            <url>http://localhost:${deploy.webserver.port}/repo</url>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>insecure-plugins</id>
+            <name>Secure Repository Releases</name>
+            <!-- GOOD! Use HTTPS -->
+            <url>https://insecure-repository.example</url>
+        </pluginRepository>
+    </pluginRepositories>
+</project>
