@@ -128,6 +128,24 @@ class CodeExecutionTest extends InlineExpectationsTest {
   }
 }
 
+class SqlConstructionTest extends InlineExpectationsTest {
+  SqlConstructionTest() { this = "SqlConstructionTest" }
+
+  override string getARelevantTag() { result = "constructedSql" }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
+    exists(SqlConstruction e, DataFlow::Node sql |
+      exists(location.getFile().getRelativePath()) and
+      sql = e.getSql() and
+      location = e.getLocation() and
+      element = sql.toString() and
+      value = prettyNodeForInlineTest(sql) and
+      tag = "constructedSql"
+    )
+  }
+}
+
 class SqlExecutionTest extends InlineExpectationsTest {
   SqlExecutionTest() { this = "SqlExecutionTest" }
 
