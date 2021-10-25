@@ -94,3 +94,66 @@ async def file_upload(f1: bytes = File(None), f2: UploadFile = File(None)): # $ 
         await f2.read(), # $ MISSING: tainted
     )
     return "ok" # $ HttpResponse
+
+# --- WebSocket ---
+
+import starlette.websockets
+from fastapi import WebSocket
+
+
+assert WebSocket == starlette.websockets.WebSocket
+
+
+@app.websocket("/ws")
+async def websocket_test(websocket: WebSocket):
+    await websocket.accept()
+
+    ensure_tainted(
+        websocket, # $ MISSING: tainted
+
+        websocket.url, # $ MISSING: tainted
+
+        websocket.url.scheme, # $ MISSING: tainted
+        websocket.url.netloc, # $ MISSING: tainted
+        websocket.url.path, # $ MISSING: tainted
+        websocket.url.query, # $ MISSING: tainted
+        websocket.url.fragment, # $ MISSING: tainted
+        websocket.url.username, # $ MISSING: tainted
+        websocket.url.password, # $ MISSING: tainted
+        websocket.url.hostname, # $ MISSING: tainted
+        websocket.url.port, # $ MISSING: tainted
+
+        websocket.url.components, # $ MISSING: tainted
+        websocket.url.components.scheme, # $ MISSING: tainted
+        websocket.url.components.netloc, # $ MISSING: tainted
+        websocket.url.components.path, # $ MISSING: tainted
+        websocket.url.components.query, # $ MISSING: tainted
+        websocket.url.components.fragment, # $ MISSING: tainted
+        websocket.url.components.username, # $ MISSING: tainted
+        websocket.url.components.password, # $ MISSING: tainted
+        websocket.url.components.hostname, # $ MISSING: tainted
+        websocket.url.components.port, # $ MISSING: tainted
+
+        websocket.headers, # $ MISSING: tainted
+        websocket.headers["key"], # $ MISSING: tainted
+
+        websocket.query_params, # $ MISSING: tainted
+        websocket.query_params["key"], # $ MISSING: tainted
+
+        websocket.cookies, # $ MISSING: tainted
+        websocket.cookies["key"], # $ MISSING: tainted
+
+        await websocket.receive(), # $ MISSING: tainted
+        await websocket.receive_bytes(), # $ MISSING: tainted
+        await websocket.receive_text(), # $ MISSING: tainted
+        await websocket.receive_json(), # $ MISSING: tainted
+    )
+
+    async for data in  websocket.iter_bytes():
+        ensure_tainted(data) # $ MISSING: tainted
+
+    async for data in  websocket.iter_text():
+        ensure_tainted(data) # $ MISSING: tainted
+
+    async for data in  websocket.iter_json():
+        ensure_tainted(data) # $ MISSING: tainted
