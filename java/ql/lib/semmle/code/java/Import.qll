@@ -25,7 +25,7 @@ class ImportType extends Import {
   ImportType() { imports(this, _, _, 1) }
 
   /** Gets the imported type. */
-  RefType getImportedType() { imports(this, result, _, _) }
+  ClassOrInterface getImportedType() { imports(this, result, _, _) }
 
   override string toString() { result = "import " + this.getImportedType().toString() }
 
@@ -44,7 +44,7 @@ class ImportOnDemandFromType extends Import {
   ImportOnDemandFromType() { imports(this, _, _, 2) }
 
   /** Gets the type from which accessible nested types are imported. */
-  RefType getTypeHoldingImport() { imports(this, result, _, _) }
+  ClassOrInterface getTypeHoldingImport() { imports(this, result, _, _) }
 
   /** Gets an imported type. */
   NestedType getAnImport() { result.getEnclosingType() = this.getTypeHoldingImport() }
@@ -87,7 +87,7 @@ class ImportStaticOnDemand extends Import {
   ImportStaticOnDemand() { imports(this, _, _, 4) }
 
   /** Gets the type from which accessible static members are imported. */
-  RefType getTypeHoldingImport() { imports(this, result, _, _) }
+  ClassOrInterface getTypeHoldingImport() { imports(this, result, _, _) }
 
   /** Gets an imported type. */
   NestedType getATypeImport() { result.getEnclosingType() = this.getTypeHoldingImport() }
@@ -118,7 +118,7 @@ class ImportStaticTypeMember extends Import {
   ImportStaticTypeMember() { imports(this, _, _, 5) }
 
   /** Gets the type from which static members with a given name are imported. */
-  RefType getTypeHoldingImport() { imports(this, result, _, _) }
+  ClassOrInterface getTypeHoldingImport() { imports(this, result, _, _) }
 
   /** Gets the name of the imported member(s). */
   override string getName() { imports(this, _, result, _) }
