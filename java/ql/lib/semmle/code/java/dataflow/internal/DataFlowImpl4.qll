@@ -3459,6 +3459,16 @@ private class PathNodeMid extends PathNodeImpl, TPathNodeMid {
     ap instanceof AccessPathNil and
     if hasSinkCallCtx(config)
     then
+      // For `FeatureHasSinkCallContext` the condition `cc instanceof CallContextNoCall`
+      // is exactly what we need to check. This also implies
+      // `sc instanceof SummaryCtxNone`.
+      // For `FeatureEqualSourceSinkCallContext` the initial call context was
+      // set to `CallContextSomeCall` and jumps are disallowed, so
+      // `cc instanceof CallContextNoCall` never holds. On the other hand,
+      // in this case there's never any need to enter a call except to identify
+      // a summary, so the condition in `pathIntoCallable` enforces this, which
+      // means that `sc instanceof SummaryCtxNone` holds if and only if we are
+      // in the call context of the source.
       sc instanceof SummaryCtxNone or
       cc instanceof CallContextNoCall
     else any()
@@ -3664,6 +3674,9 @@ private predicate pathIntoCallable(
       or
       not exists(TSummaryCtxSome(p, ap)) and
       sc = TSummaryCtxNone() and
+      // When the call contexts of source and sink needs to match then there's
+      // never any reason to enter a callable except to find a summary. See also
+      // the comment in `PathNodeMid::isAtSink`.
       not config.getAFeature() instanceof FeatureEqualSourceSinkCallContext
     )
   |

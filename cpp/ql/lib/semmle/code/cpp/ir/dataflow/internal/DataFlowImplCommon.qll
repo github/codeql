@@ -10,7 +10,7 @@ module DataFlowImplCommonPublic {
 
   /** A flow configuration feature for use in `Configuration::getAFeature()`. */
   class FlowFeature extends TFlowFeature {
-    abstract string toString();
+    string toString() { none() }
   }
 
   /**
