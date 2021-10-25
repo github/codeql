@@ -427,7 +427,7 @@ class X {
 
                 val classInstanceResult = useClassInstance(cls, s.arguments)
                 val javaClassId = classInstanceResult.classLabel
-                val kotlinQualClassName = cls.fqNameForIrSerialization.asString()
+                val kotlinQualClassName = getUnquotedClassLabel(cls, s.arguments)
                 val javaQualClassName = classInstanceResult.javaClass.fqNameForIrSerialization.asString()
                 val javaSignature = javaQualClassName // TODO: Is this right?
                 val javaResult = TypeResult(javaClassId, javaSignature)
@@ -548,7 +548,7 @@ class X {
         externalClassExtractor.extractLater(c)
     }
 
-    private fun getClassLabel(c: IrClass, typeArgs: List<IrTypeArgument>): String {
+    private fun getUnquotedClassLabel(c: IrClass, typeArgs: List<IrTypeArgument>): String {
         val pkg = c.packageFqName?.asString() ?: ""
         val cls = c.name.asString()
         var label: String
@@ -556,11 +556,9 @@ class X {
         if (parent is IrClass) {
             // todo: fix this. Ugly string concat to handle nested class IDs.
             // todo: Can the containing class have type arguments?
-            val p = getClassLabel(parent, listOf())
-            label = "${p.substring(0, p.length - 1)}\$$cls"
+            label = "${getUnquotedClassLabel(parent, listOf())}\$$cls"
         } else {
-            val qualClassName = if (pkg.isEmpty()) cls else "$pkg.$cls"
-            label = "@\"class;$qualClassName"
+            label = if (pkg.isEmpty()) cls else "$pkg.$cls"
         }
 
         for (arg in typeArgs) {
@@ -568,9 +566,11 @@ class X {
             label += ";{$argId}"
         }
 
-        label += "\""
         return label
     }
+
+    private fun getClassLabel(c: IrClass, typeArgs: List<IrTypeArgument>) =
+        "@\"class;${getUnquotedClassLabel(c, typeArgs)}\""
 
     private fun getTypeArgumentLabel(
         arg: IrTypeArgument,
