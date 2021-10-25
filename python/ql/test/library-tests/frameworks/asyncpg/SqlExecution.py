@@ -20,7 +20,7 @@ async def test_prepared_statement():
     conn = await asyncpg.connect()
 
     try:
-        pstmt = await conn.prepare("psql")
+        pstmt = await conn.prepare("psql")  # $ constructedSql="psql"
         pstmt.executemany()  # $ getSql="psql"
         pstmt.fetch()  # $ getSql="psql"
         pstmt.fetchrow()  # $ getSql="psql"
@@ -36,20 +36,20 @@ async def test_cursor():
 
     try:
         async with conn.transaction():
-            cursor = await conn.cursor("sql")  # $ getSql="sql"
+            cursor = await conn.cursor("sql")  # $ getSql="sql" constructedSql="sql"
             await cursor.fetch()
 
-            pstmt = await conn.prepare("psql")
+            pstmt = await conn.prepare("psql")  # $ constructedSql="psql"
             pcursor = await pstmt.cursor()  # $ getSql="psql"
             await pcursor.fetch()
 
-            async for record in conn.cursor("sql"):  # $ getSql="sql"
+            async for record in conn.cursor("sql"):  # $ getSql="sql" constructedSql="sql"
                 pass
 
             async for record in pstmt.cursor():  # $ getSql="psql"
                 pass
 
-            cursor_factory = conn.cursor("sql")
+            cursor_factory = conn.cursor("sql")  # $ constructedSql="sql"
             cursor = await cursor_factory  # $ getSql="sql"
 
             pcursor_factory = pstmt.cursor()

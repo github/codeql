@@ -18,7 +18,7 @@ private module Asyncpg {
   /**
    * A `Connection` is created when
    * - the result of `asyncpg.connect()` is awaited.
-   * - the result of calling `aquire` on a c=`ConnectionPool` is awaited.
+   * - the result of calling `aquire` on a `ConnectionPool` is awaited.
    */
   API::Node connection() {
     result = API::moduleImport("asyncpg").getMember("connect").getReturn().getAwaited()
@@ -112,15 +112,17 @@ private module Asyncpg {
    * TODO: Rewrite this, once we have `API::CallNode` available.
    */
   module PreparedStatement {
+    class PreparedStatementConstruction extends SqlConstruction::Range, DataFlow::CallCfgNode {
+      PreparedStatementConstruction() { this = connection().getMember("prepare").getACall() }
+
+      override DataFlow::Node getSql() { result in [this.getArg(0), this.getArgByName("query")] }
+    }
+
     private DataFlow::TypeTrackingNode preparedStatementFactory(
       DataFlow::TypeTracker t, DataFlow::Node sql
     ) {
       t.start() and
-      result = connection().getMember("prepare").getACall() and
-      sql in [
-          result.(DataFlow::CallCfgNode).getArg(0),
-          result.(DataFlow::CallCfgNode).getArgByName("query")
-        ]
+      sql = result.(PreparedStatementConstruction).getSql()
       or
       exists(DataFlow::TypeTracker t2 | result = preparedStatementFactory(t2, sql).track(t2, t))
     }
@@ -163,14 +165,16 @@ private module Asyncpg {
    * TODO: Rewrite this, once we have `API::CallNode` available.
    */
   module Cursor {
+    class CursorConstruction extends SqlConstruction::Range, DataFlow::CallCfgNode {
+      CursorConstruction() { this = connection().getMember("cursor").getACall() }
+
+      override DataFlow::Node getSql() { result in [this.getArg(0), this.getArgByName("query")] }
+    }
+
     private DataFlow::TypeTrackingNode cursorFactory(DataFlow::TypeTracker t, DataFlow::Node sql) {
       // cursor created from connection
       t.start() and
-      result = connection().getMember("cursor").getACall() and
-      sql in [
-          result.(DataFlow::CallCfgNode).getArg(0),
-          result.(DataFlow::CallCfgNode).getArgByName("query")
-        ]
+      sql = result.(CursorConstruction).getSql()
       or
       // cursor created from prepared statement
       t.start() and
