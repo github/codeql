@@ -9,7 +9,7 @@ edition = "2018"
 [dependencies]
 flate2 = "1.0"
 node-types = { path = "../node-types" }
-tree-sitter = "0.19"
+tree-sitter = "0.20"
 tree-sitter-embedded-template = "0.19"
 tree-sitter-ruby = { git = "https://github.com/tree-sitter/tree-sitter-ruby.git", rev = "bb6a42e42b048627a74a127d3e0184c1eef01de9" }
 clap = "2.33"
