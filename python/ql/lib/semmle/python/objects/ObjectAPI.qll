@@ -343,21 +343,25 @@ module Value {
  * Callables include Python functions, built-in functions and bound-methods,
  * but not classes.
  */
-class CallableValue extends Value instanceof CallableObjectInternal {
+class CallableValue extends Value {
+  CallableValue() { this instanceof CallableObjectInternal }
+
   /**
    * Holds if this callable never returns once called.
    * For example, `sys.exit`
    */
-  predicate neverReturns() { super.neverReturns() }
+  predicate neverReturns() { this.(CallableObjectInternal).neverReturns() }
 
   /** Gets the scope for this function, provided that it is a Python function. */
   FunctionScope getScope() { result = this.(PythonFunctionObjectInternal).getScope() }
 
   /** Gets the `n`th parameter node of this callable. */
-  NameNode getParameter(int n) { result = super.getParameter(n) }
+  NameNode getParameter(int n) { result = this.(CallableObjectInternal).getParameter(n) }
 
   /** Gets the `name`d parameter node of this callable. */
-  NameNode getParameterByName(string name) { result = super.getParameterByName(name) }
+  NameNode getParameterByName(string name) {
+    result = this.(CallableObjectInternal).getParameterByName(name)
+  }
 
   /**
    * Gets the argument in `call` corresponding to the `n`'th positional parameter of this callable.
