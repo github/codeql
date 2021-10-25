@@ -11,12 +11,17 @@ import tempfile
 
 def printHelp():
     print("""Usage:
-GenerateFlowModel.py <library-database> "simpleName"
+GenerateFlowModel.py <library-database> "simpleName" [--with-sinks] [--with-sources] [--with-summaries]
 
 This generates summary, source and sink models for the code in the database.
 The files will be placed in `java/ql/lib/semmle/code/java/frameworks/generated/<simpleName>/`
 
 A simple name is used for the generated target files (e.g. `simpleName.qll`).
+Which models are generated is controlled by the flags:
+    --with-sinks
+    --with-sources
+    --with-summaries
+If none of these flags are specified, all models are generated.
 
 Requirements: `codeql` should both appear on your path.
 """)
@@ -26,10 +31,23 @@ if any(s == "--help" for s in sys.argv):
     printHelp()
     sys.exit(0)
 
-withTests = False
-if "--with-tests" in sys.argv:
-    sys.argv.remove("--with-tests")
-    withTests = True
+generateSinks = False
+generateSources = False
+generateSummaries = False
+if "--with-sinks" in sys.argv:
+    sys.argv.remove("--with-sinks")
+    generateSinks = True
+
+if "--with-sources" in sys.argv:
+    sys.argv.remove("--with-sources")
+    generateSources = True
+
+if "--with-summaries" in sys.argv:
+    sys.argv.remove("--with-summaries")
+    generateSummaries = True
+
+if not generateSinks and not generateSources and not generateSummaries:
+    generateSinks = generateSources = generateSummaries = True
 
 if len(sys.argv) != 3:
     printHelp()
@@ -104,14 +122,23 @@ private class {0}{1}Csv extends {2} {{
     return classTemplate.format(shortname[0].upper() + shortname[1:], kind.capitalize(), superclass, rows)
 
 
-summaryRows = runQuery("summary models", "CaptureSummaryModels.ql")
-summaryCsv = asCsvModel("SummaryModelCsv", "summary", summaryRows)
+if generateSummaries:
+    summaryRows = runQuery("summary models", "CaptureSummaryModels.ql")
+    summaryCsv = asCsvModel("SummaryModelCsv", "summary", summaryRows)
+else:
+    summaryCsv = ""
 
-sinkRows = runQuery("sink models", "CaptureSinkModels.ql")
-sinkCsv = asCsvModel("SinkModelCsv", "sinks", sinkRows)
+if generateSinks:
+    sinkRows = runQuery("sink models", "CaptureSinkModels.ql")
+    sinkCsv = asCsvModel("SinkModelCsv", "sinks", sinkRows)
+else:
+    sinkCsv = ""
 
-sourceRows = runQuery("source models", "CaptureSourceModels.ql")
-sourceCsv = asCsvModel("SourceModelCsv", "sources", sourceRows)
+if generateSources:
+    sourceRows = runQuery("source models", "CaptureSourceModels.ql")
+    sourceCsv = asCsvModel("SourceModelCsv", "sources", sourceRows)
+else:
+    sourceCsv = ""
 
 qllTemplate = """
 /** Definitions of taint steps in the {0} framework */
