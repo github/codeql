@@ -91,25 +91,6 @@ predicate succEntry(CfgScope::Range_ scope, AstNode first) { scope.entry(first) 
 pragma[nomagic]
 predicate succExit(CfgScope::Range_ scope, AstNode last, Completion c) { scope.exit(last, c) }
 
-// TODO: remove this class; it should be replaced with an implicit non AST node
-private class ForIn extends AstNode, ASTInternal::TForIn {
-  final override string toString() { result = "In" }
-}
-
-// TODO: remove this class; it should be replaced with an implicit non AST node
-private class ForRange extends ForExpr {
-  override AstNode getAChild(string pred) {
-    result = super.getAChild(pred)
-    or
-    pred = "<in>" and
-    result = this.getIn()
-  }
-
-  ForIn getIn() {
-    result = ASTInternal::TForIn(ASTInternal::toGenerated(this).(Ruby::For).getValue())
-  }
-}
-
 /** Defines the CFG by dispatch on the various AST types. */
 module Trees {
   private class AliasStmtTree extends StandardPreOrderTree, AliasStmt {
@@ -609,89 +590,6 @@ module Trees {
   }
 
   private class ForwardParameterTree extends LeafTree, ForwardParameter { }
-
-  private class ForInTree extends LeafTree, ForIn { }
-
-  /**
-   * Control flow of a for-in loop
-   *
-   * For example, this program fragment:
-   *
-   * ```rb
-   * for arg in args do
-   *   puts arg
-   * end
-   * puts "done";
-   * ```
-   *
-   * has the following control flow graph:
-   *
-   * ```
-   *           args
-   *            |
-   *           in------<-----
-   *           / \           \
-   *          /   \          |
-   *         /     \         |
-   *        /       \        |
-   *     empty    non-empty  |
-   *       |          \      |
-   *      for          \     |
-   *       |          arg    |
-   *       |            |    |
-   *  puts "done"   puts arg |
-   *                     \___/
-   * ```
-   */
-  private class ForTree extends PostOrderTree, ForRange {
-    final override predicate propagatesAbnormal(AstNode child) {
-      child = this.getPattern() or child = this.getValue()
-    }
-
-    final override predicate first(AstNode first) { first(this.getValue(), first) }
-
-    /**
-     * for pattern in array do body end
-     * ```
-     * array +-> in +--[non empty]--> pattern -> body -> in
-     *              |--[empty]--> for
-     * ```
-     */
-    final override predicate succ(AstNode pred, AstNode succ, Completion c) {
-      last(this.getValue(), pred, c) and
-      first(this.getIn(), succ) and
-      c instanceof SimpleCompletion
-      or
-      last(this.getIn(), pred, c) and
-      first(this.getPattern(), succ) and
-      c.(EmptinessCompletion).getValue() = false
-      or
-      last(this.getPattern(), pred, c) and
-      first(this.getBody(), succ) and
-      c instanceof NormalCompletion
-      or
-      last(this.getBody(), pred, c) and
-      first(this.getIn(), succ) and
-      c.continuesLoop()
-      or
-      last(this.getBody(), pred, c) and
-      first(this.getBody(), succ) and
-      c instanceof RedoCompletion
-      or
-      succ = this and
-      (
-        last(this.getIn(), pred, c) and
-        c.(EmptinessCompletion).getValue() = true
-        or
-        last(this.getBody(), pred, c) and
-        not c.continuesLoop() and
-        not c instanceof BreakCompletion and
-        not c instanceof RedoCompletion
-        or
-        last(this.getBody(), pred, c.(NestedBreakCompletion).getAnInnerCompatibleCompletion())
-      )
-    }
-  }
 
   private class GlobalVariableTree extends LeafTree, GlobalVariableAccess { }
 

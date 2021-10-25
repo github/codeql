@@ -54,9 +54,6 @@ private predicate nestedEnsureCompletion(Completion outer, int nestLevel) {
 
 pragma[noinline]
 private predicate completionIsValidForStmt(AstNode n, Completion c) {
-  n = TForIn(_) and
-  c instanceof EmptinessCompletion
-  or
   n instanceof BreakStmt and
   c = TBreakCompletion()
   or

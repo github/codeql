@@ -132,7 +132,6 @@ private module Cached {
     TFalseLiteral(Ruby::False g) or
     TFloatLiteral(Ruby::Float g) { not any(Ruby::Rational r).getChild() = g } or
     TForExpr(Ruby::For g) or
-    TForIn(Ruby::In g) or // TODO REMOVE
     TForwardParameter(Ruby::ForwardParameter g) or
     TForwardArgument(Ruby::ForwardArgument g) or
     TGEExpr(Ruby::Binary g) { g instanceof @ruby_binary_rangleequal } or
@@ -389,7 +388,6 @@ private module Cached {
     n = TFalseLiteral(result) or
     n = TFloatLiteral(result) or
     n = TForExpr(result) or
-    n = TForIn(result) or // TODO REMOVE
     n = TForwardArgument(result) or
     n = TForwardParameter(result) or
     n = TGEExpr(result) or
