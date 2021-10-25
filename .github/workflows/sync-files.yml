@@ -2,9 +2,13 @@ name: Check synchronized files
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
+      - 'rc/*'
   pull_request:
-    branches: [main]
+    branches:
+      - main
+      - 'rc/*'
 
 jobs:
   sync:

@@ -2,11 +2,15 @@ name: "Ruby: Collect database stats"
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
+      - 'rc/*'
     paths:
       - ruby/ql/lib/ruby.dbscheme
   pull_request:
-    branches: [main]
+    branches:
+      - main
+      - 'rc/*'
     paths:
       - ruby/ql/lib/ruby.dbscheme
   workflow_dispatch:
