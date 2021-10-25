@@ -324,10 +324,8 @@ abstract class DataOutput extends Element {
 /**
  * Data that is output via standard output or standard error.
  */
-class StandardOutput extends DataOutput {
-  StandardOutput() { this instanceof OutputWrite }
-
-  override Expr getASource() { result = this.(OutputWrite).getASource() }
+class StandardOutput extends DataOutput instanceof OutputWrite {
+  override Expr getASource() { result = OutputWrite.super.getASource() }
 }
 
 private predicate socketCallOrIndirect(FunctionCall call) {
