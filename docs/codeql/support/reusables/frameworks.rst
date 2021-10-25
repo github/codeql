@@ -168,6 +168,7 @@ Python built-in support
    invoke, Utility library
    jmespath, Utility library
    multidict, Utility library
+   pydantic, Utility library
    yarl, Utility library
    aioch, Database
    clickhouse-driver, Database

@@ -24,6 +24,7 @@ private import semmle.python.frameworks.Mysql
 private import semmle.python.frameworks.MySQLdb
 private import semmle.python.frameworks.Peewee
 private import semmle.python.frameworks.Psycopg2
+private import semmle.python.frameworks.Pydantic
 private import semmle.python.frameworks.PyMySQL
 private import semmle.python.frameworks.Rsa
 private import semmle.python.frameworks.Simplejson

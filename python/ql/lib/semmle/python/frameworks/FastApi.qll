@@ -9,6 +9,7 @@ private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
+private import semmle.python.frameworks.Pydantic
 
 /**
  * Provides models for the `fastapi` PyPI package.
@@ -76,6 +77,18 @@ private module FastApi {
 
     /** Gets the argument specifying the response class to use, if any. */
     DataFlow::Node getResponseClassArg() { result = this.getArgByName("response_class") }
+  }
+
+  /**
+   * A parameter to a request handler that has a type-annotation with a class that is a
+   * Pydantic model.
+   */
+  private class PydanticModelRequestHandlerParam extends Pydantic::BaseModel::InstanceSource,
+    DataFlow::ParameterNode {
+    PydanticModelRequestHandlerParam() {
+      this.getParameter().getAnnotation() = Pydantic::BaseModel::subclassRef().getAUse().asExpr() and
+      any(FastApiRouteSetup rs).getARequestHandler().getArgByName(_) = this.getParameter()
+    }
   }
 
   // ---------------------------------------------------------------------------

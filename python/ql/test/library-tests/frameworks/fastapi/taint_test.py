@@ -29,14 +29,14 @@ async def test_taint(name : str, number : int, also_input: MyComplexModel): # $ 
         number, # $ tainted
 
         also_input, # $ tainted
-        also_input.field, # $ MISSING: tainted
+        also_input.field, # $ tainted
 
-        also_input.main_foo, # $ MISSING: tainted
-        also_input.main_foo.foo, # $ MISSING: tainted
+        also_input.main_foo, # $ tainted
+        also_input.main_foo.foo, # $ tainted
 
-        also_input.other_foos, # $ MISSING: tainted
-        also_input.other_foos[0], # $ MISSING: tainted
-        also_input.other_foos[0].foo, # $ MISSING: tainted
+        also_input.other_foos, # $ tainted
+        also_input.other_foos[0], # $ tainted
+        also_input.other_foos[0].foo, # $ tainted
         [f.foo for f in also_input.other_foos], # $ MISSING: tainted
     )
 
