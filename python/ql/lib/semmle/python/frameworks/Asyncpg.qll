@@ -26,24 +26,22 @@ private module Asyncpg {
     result = connectionPool().getMember("acquire").getReturn().getAwaited()
   }
 
-  /** Reverse lookup of the query argument name for a query method. */
-  private string queryMethodName(string queryArg) {
-    result in ["copy_from_query", "execute", "fetch", "fetchrow", "fetchval"] and
-    queryArg = "query"
-    or
-    result = "executemany" and
-    queryArg = "command"
-  }
-
   /** `Connection`s and `ConnectionPool`s provide some methods that execute SQL. */
   class SqlExecutionOnConnection extends SqlExecution::Range, DataFlow::MethodCallNode {
-    string queryArg;
+    string methodName;
 
     SqlExecutionOnConnection() {
-      this.calls([connectionPool().getAUse(), connection().getAUse()], queryMethodName(queryArg))
+      methodName in ["copy_from_query", "execute", "fetch", "fetchrow", "fetchval", "executemany"] and
+      this.calls([connectionPool().getAUse(), connection().getAUse()], methodName)
     }
 
-    override DataFlow::Node getSql() { result in [this.getArg(0), this.getArgByName(queryArg)] }
+    override DataFlow::Node getSql() {
+      methodName in ["copy_from_query", "execute", "fetch", "fetchrow", "fetchval"] and
+      result in [this.getArg(0), this.getArgByName("query")]
+      or
+      methodName = "executemany" and
+      result in [this.getArg(0), this.getArgByName("command")]
+    }
   }
 
   /** Reverse lokup of the path argument name for a method accessing the file system. */
@@ -57,14 +55,21 @@ private module Asyncpg {
 
   /** `Connection`s and `ConnectionPool`s provide some methods that access the file system. */
   class FileAccessOnConnection extends FileSystemAccess::Range, DataFlow::MethodCallNode {
-    string pathArg;
+    string methodName;
 
     FileAccessOnConnection() {
-      this.calls([connectionPool().getAUse(), connection().getAUse()], fileAccessMethodName(pathArg))
+      methodName in ["copy_from_query", "copy_from_table", "copy_to_table"] and
+      this.calls([connectionPool().getAUse(), connection().getAUse()], methodName)
     }
 
     // The path argument is keyword only.
-    override DataFlow::Node getAPathArgument() { result in [this.getArgByName(pathArg)] }
+    override DataFlow::Node getAPathArgument() {
+      methodName in ["copy_from_query", "copy_from_table"] and
+      result = this.getArgByName("output")
+      or
+      methodName = "copy_to_table" and
+      result = this.getArgByName("source")
+    }
   }
 
   /**
