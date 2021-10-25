@@ -9,6 +9,7 @@ View the query help for the queries included in the ``code-scanning``, ``securit
 - :doc:`CodeQL query help for Java <java>`
 - :doc:`CodeQL query help for JavaScript <javascript>`
 - :doc:`CodeQL query help for Python <python>`
+- :doc:`CodeQL query help for Ruby <ruby>`
 
 .. pull-quote:: Information
 
@@ -34,5 +35,6 @@ For a full list of the CWEs covered by these queries, see ":doc:`CodeQL CWE cove
    java
    javascript
    python
+   ruby
    codeql-cwe-coverage
    
