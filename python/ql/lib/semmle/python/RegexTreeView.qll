@@ -481,7 +481,7 @@ class RegExpEscape extends RegExpNormalChar {
   override string getPrimaryQLClass() { result = "RegExpEscape" }
 
   /** Gets the part of the term following the escape character. That is e.g. "w" if the term is "\w". */
-  private string getUnescaped() { result = this.getText().suffix(1) }
+  string getUnescaped() { result = this.getText().suffix(1) }
 
   /**
    * Gets the text for this escape. That is e.g. "\w".
