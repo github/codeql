@@ -6,4 +6,10 @@ public final class FluentAPI {
         return this;
     }
 
+    public class Inner {
+        public FluentAPI notThis(String input) {
+            return FluentAPI.this;
+        }
+    }
+
 }

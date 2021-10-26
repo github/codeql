@@ -22,7 +22,7 @@ string captureFlow(Callable api) {
 string captureQualifierFlow(Callable api) {
   exists(ReturnStmt rtn |
     rtn.getEnclosingCallable() = api and
-    rtn.getResult() instanceof ThisAccess
+    rtn.getResult().(ThisAccess).isOwnInstanceAccess()
   ) and
   result = asValueModel(api, "Argument[-1]", "ReturnValue")
 }
