@@ -33,10 +33,10 @@ module ControlFlow {
     ControlFlowElement getElement() { none() }
 
     /** Gets the location of this control flow node. */
-    Location getLocation() { result = getElement().getLocation() }
+    Location getLocation() { result = this.getElement().getLocation() }
 
     /** Holds if this control flow node has conditional successors. */
-    predicate isCondition() { exists(getASuccessorByType(any(ConditionalSuccessor e))) }
+    predicate isCondition() { exists(this.getASuccessorByType(any(ConditionalSuccessor e))) }
 
     /** Gets the basic block that this control flow node belongs to. */
     BasicBlock getBasicBlock() { result.getANode() = this }
@@ -67,7 +67,7 @@ module ControlFlow {
     // potentially very large predicate, so must be inlined
     pragma[inline]
     predicate dominates(Node that) {
-      strictlyDominates(that)
+      this.strictlyDominates(that)
       or
       this = that
     }
@@ -138,7 +138,7 @@ module ControlFlow {
     // potentially very large predicate, so must be inlined
     pragma[inline]
     predicate postDominates(Node that) {
-      strictlyPostDominates(that)
+      this.strictlyPostDominates(that)
       or
       this = that
     }
@@ -186,13 +186,13 @@ module ControlFlow {
     Node getASuccessorByType(SuccessorType t) { result = getASuccessor(this, t) }
 
     /** Gets an immediate successor, if any. */
-    Node getASuccessor() { result = getASuccessorByType(_) }
+    Node getASuccessor() { result = this.getASuccessorByType(_) }
 
     /** Gets an immediate predecessor node of a given flow type, if any. */
     Node getAPredecessorByType(SuccessorType t) { result.getASuccessorByType(t) = this }
 
     /** Gets an immediate predecessor, if any. */
-    Node getAPredecessor() { result = getAPredecessorByType(_) }
+    Node getAPredecessor() { result = this.getAPredecessorByType(_) }
 
     /**
      * Gets an immediate `true` successor, if any.
@@ -211,7 +211,7 @@ module ControlFlow {
      * on line 1.
      */
     Node getATrueSuccessor() {
-      result = getASuccessorByType(any(BooleanSuccessor t | t.getValue() = true))
+      result = this.getASuccessorByType(any(BooleanSuccessor t | t.getValue() = true))
     }
 
     /**
@@ -231,7 +231,7 @@ module ControlFlow {
      * on line 1.
      */
     Node getAFalseSuccessor() {
-      result = getASuccessorByType(any(BooleanSuccessor t | t.getValue() = false))
+      result = this.getASuccessorByType(any(BooleanSuccessor t | t.getValue() = false))
     }
 
     /** Holds if this node has more than one predecessor. */
@@ -285,7 +285,7 @@ module ControlFlow {
 
       override Callable getEnclosingCallable() { result = this.getCallable() }
 
-      override Location getLocation() { result = getCallable().getLocation() }
+      override Location getLocation() { result = this.getCallable().getLocation() }
 
       override string toString() {
         exists(string s |
@@ -293,7 +293,7 @@ module ControlFlow {
           or
           normal = false and s = "abnormal"
         |
-          result = "exit " + getCallable() + " (" + s + ")"
+          result = "exit " + this.getCallable() + " (" + s + ")"
         )
       }
     }
@@ -307,9 +307,9 @@ module ControlFlow {
 
       override Callable getEnclosingCallable() { result = this.getCallable() }
 
-      override Location getLocation() { result = getCallable().getLocation() }
+      override Location getLocation() { result = this.getCallable().getLocation() }
 
-      override string toString() { result = "exit " + getCallable().toString() }
+      override string toString() { result = "exit " + this.getCallable().toString() }
     }
 
     /**

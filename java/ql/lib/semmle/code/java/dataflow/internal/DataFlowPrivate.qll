@@ -139,11 +139,7 @@ predicate readStep(Node node1, Content f, Node node2) {
  */
 predicate clearsContent(Node n, Content c) {
   c instanceof FieldContent and
-  (
-    n = any(PostUpdateNode pun | storeStep(_, c, pun)).getPreUpdateNode()
-    or
-    FlowSummaryImpl::Private::Steps::summaryStoresIntoArg(c, n)
-  )
+  n = any(PostUpdateNode pun | storeStep(_, c, pun)).getPreUpdateNode()
   or
   FlowSummaryImpl::Private::Steps::summaryClearsContent(n, c)
 }
@@ -234,6 +230,19 @@ class DataFlowCall extends TDataFlowCall {
 
   /** Gets the location of this call. */
   abstract Location getLocation();
+
+  /**
+   * Holds if this element is at the specified location.
+   * The location spans column `startcolumn` of line `startline` to
+   * column `endcolumn` of line `endline` in file `filepath`.
+   * For more information, see
+   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
+   */
+  final predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+  }
 }
 
 /** A source call, that is, a `Call`. */
@@ -294,7 +303,7 @@ predicate isUnreachableInCall(Node n, DataFlowCall call) {
     Guard guard
   |
     // get constant bool argument and parameter for this call
-    viableParamArg(call, paramNode, arg) and
+    viableParamArg(call, pragma[only_bind_into](paramNode), arg) and
     // get the ssa variable definition for this parameter
     param.isParameterDefinition(paramNode.getParameter()) and
     // which is used in a guard
@@ -302,11 +311,19 @@ predicate isUnreachableInCall(Node n, DataFlowCall call) {
     // which controls `n` with the opposite value of `arg`
     guard
         .controls(n.asExpr().getBasicBlock(),
-          pragma[only_bind_out](arg.getBooleanValue()).booleanNot())
+          pragma[only_bind_into](pragma[only_bind_out](arg.getBooleanValue()).booleanNot()))
   )
 }
 
 int accessPathLimit() { result = 5 }
+
+/**
+ * Holds if access paths with `c` at their head always should be tracked at high
+ * precision. This disables adaptive access path precision for such access paths.
+ */
+predicate forceHighPrecision(Content c) {
+  c instanceof ArrayContent or c instanceof CollectionContent
+}
 
 /**
  * Holds if `n` does not require a `PostUpdateNode` as it either cannot be
@@ -326,19 +343,36 @@ class LambdaCallKind = Method; // the "apply" method in the functional interface
 
 /** Holds if `creation` is an expression that creates a lambda of kind `kind` for `c`. */
 predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c) {
-  exists(FunctionalExpr func, FunctionalInterface interface |
+  exists(ClassInstanceExpr func, Interface t, FunctionalInterface interface |
     creation.asExpr() = func and
-    func.asMethod() = c and
-    func.getType().(RefType).getSourceDeclaration() = interface and
-    kind = interface.getRunMethod()
+    func.getAnonymousClass().getAMethod() = c and
+    func.getConstructedType().extendsOrImplements+(t) and
+    t.getSourceDeclaration() = interface and
+    c.(Method).overridesOrInstantiates+(pragma[only_bind_into](kind)) and
+    pragma[only_bind_into](kind) = interface.getRunMethod().getSourceDeclaration()
   )
 }
 
 /** Holds if `call` is a lambda call of kind `kind` where `receiver` is the lambda expression. */
 predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
   receiver = call.(SummaryCall).getReceiver() and
-  getNodeDataFlowType(receiver).getSourceDeclaration().(FunctionalInterface).getRunMethod() = kind
+  getNodeDataFlowType(receiver)
+      .getSourceDeclaration()
+      .(FunctionalInterface)
+      .getRunMethod()
+      .getSourceDeclaration() = kind
 }
 
 /** Extra data-flow steps needed for lambda flow analysis. */
 predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) { none() }
+
+/**
+ * Holds if flow is allowed to pass from parameter `p` and back to itself as a
+ * side-effect, resulting in a summary from `p` to itself.
+ *
+ * One example would be to allow flow like `p.foo = p.bar;`, which is disallowed
+ * by default as a heuristic.
+ */
+predicate allowParameterReturnInSelf(ParameterNode p) {
+  FlowSummaryImpl::Private::summaryAllowParameterReturnInSelf(p)
+}

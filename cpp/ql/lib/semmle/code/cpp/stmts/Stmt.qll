@@ -27,10 +27,10 @@ class Stmt extends StmtParent, @stmt {
    */
   BlockStmt getEnclosingBlock() {
     if
-      getParentStmt() instanceof BlockStmt and
-      not getParentStmt().(BlockStmt).getLocation() instanceof UnknownLocation
-    then result = getParentStmt()
-    else result = getParentStmt().getEnclosingBlock()
+      this.getParentStmt() instanceof BlockStmt and
+      not this.getParentStmt().(BlockStmt).getLocation() instanceof UnknownLocation
+    then result = this.getParentStmt()
+    else result = this.getParentStmt().getEnclosingBlock()
   }
 
   /** Gets a child of this statement. */
@@ -438,7 +438,7 @@ class WhileStmt extends Loop, @stmt_while {
    * while(1) { ...; if(b) break; ...; }
    * ```
    */
-  predicate conditionAlwaysTrue() { conditionAlwaysTrue(getCondition()) }
+  predicate conditionAlwaysTrue() { conditionAlwaysTrue(this.getCondition()) }
 
   /**
    * Holds if the loop condition is provably `false`.
@@ -448,7 +448,7 @@ class WhileStmt extends Loop, @stmt_while {
    * while(0) { ...; }
    * ```
    */
-  predicate conditionAlwaysFalse() { conditionAlwaysFalse(getCondition()) }
+  predicate conditionAlwaysFalse() { conditionAlwaysFalse(this.getCondition()) }
 
   /**
    * Holds if the loop condition is provably `true` upon entry,
@@ -857,7 +857,7 @@ class RangeBasedForStmt extends Loop, @stmt_range_based_for {
    * ```
    * the result is `int x`.
    */
-  LocalVariable getVariable() { result = getChild(4).(DeclStmt).getADeclaration() }
+  LocalVariable getVariable() { result = this.getChild(4).(DeclStmt).getADeclaration() }
 
   /**
    * Gets the expression giving the range to iterate over.
@@ -868,10 +868,10 @@ class RangeBasedForStmt extends Loop, @stmt_range_based_for {
    * ```
    * the result is `xs`.
    */
-  Expr getRange() { result = getRangeVariable().getInitializer().getExpr() }
+  Expr getRange() { result = this.getRangeVariable().getInitializer().getExpr() }
 
   /** Gets the compiler-generated `__range` variable after desugaring. */
-  LocalVariable getRangeVariable() { result = getChild(0).(DeclStmt).getADeclaration() }
+  LocalVariable getRangeVariable() { result = this.getChild(0).(DeclStmt).getADeclaration() }
 
   /**
    * Gets the compiler-generated `__begin != __end` which is the
@@ -891,10 +891,10 @@ class RangeBasedForStmt extends Loop, @stmt_range_based_for {
   DeclStmt getBeginEndDeclaration() { result = this.getChild(1) }
 
   /** Gets the compiler-generated `__begin` variable after desugaring. */
-  LocalVariable getBeginVariable() { result = getBeginEndDeclaration().getDeclaration(0) }
+  LocalVariable getBeginVariable() { result = this.getBeginEndDeclaration().getDeclaration(0) }
 
   /** Gets the compiler-generated `__end` variable after desugaring. */
-  LocalVariable getEndVariable() { result = getBeginEndDeclaration().getDeclaration(1) }
+  LocalVariable getEndVariable() { result = this.getBeginEndDeclaration().getDeclaration(1) }
 
   /**
    * Gets the compiler-generated `++__begin` which is the update
@@ -905,7 +905,7 @@ class RangeBasedForStmt extends Loop, @stmt_range_based_for {
   Expr getUpdate() { result = this.getChild(3) }
 
   /** Gets the compiler-generated `__begin` variable after desugaring. */
-  LocalVariable getAnIterationVariable() { result = getBeginVariable() }
+  LocalVariable getAnIterationVariable() { result = this.getBeginVariable() }
 }
 
 /**
@@ -1067,7 +1067,7 @@ class ForStmt extends Loop, @stmt_for {
    * for(x = 0; 1; ++x) { sum += x; }
    * ```
    */
-  predicate conditionAlwaysTrue() { conditionAlwaysTrue(getCondition()) }
+  predicate conditionAlwaysTrue() { conditionAlwaysTrue(this.getCondition()) }
 
   /**
    * Holds if the loop condition is provably `false`.
@@ -1077,7 +1077,7 @@ class ForStmt extends Loop, @stmt_for {
    * for(x = 0; 0; ++x) { sum += x; }
    * ```
    */
-  predicate conditionAlwaysFalse() { conditionAlwaysFalse(getCondition()) }
+  predicate conditionAlwaysFalse() { conditionAlwaysFalse(this.getCondition()) }
 
   /**
    * Holds if the loop condition is provably `true` upon entry,
@@ -1723,10 +1723,10 @@ class Handler extends Stmt, @stmt_handler {
   /**
    * Gets the block containing the implementation of this handler.
    */
-  CatchBlock getBlock() { result = getChild(0) }
+  CatchBlock getBlock() { result = this.getChild(0) }
 
   /** Gets the 'try' statement corresponding to this 'catch block'. */
-  TryStmt getTryStmt() { result = getParent() }
+  TryStmt getTryStmt() { result = this.getParent() }
 
   /**
    * Gets the parameter introduced by this 'catch block', if any.
@@ -1734,7 +1734,7 @@ class Handler extends Stmt, @stmt_handler {
    * For example, `catch(std::exception&amp; e)` introduces a
    * parameter `e`, whereas `catch(...)` does not introduce a parameter.
    */
-  Parameter getParameter() { result = getBlock().getParameter() }
+  Parameter getParameter() { result = this.getBlock().getParameter() }
 
   override predicate mayBeImpure() { none() }
 
@@ -1921,15 +1921,15 @@ class MicrosoftTryStmt extends Stmt, @stmt_microsoft_try {
  * This is a Microsoft C/C++ extension.
  */
 class MicrosoftTryExceptStmt extends MicrosoftTryStmt {
-  MicrosoftTryExceptStmt() { getChild(1) instanceof Expr }
+  MicrosoftTryExceptStmt() { this.getChild(1) instanceof Expr }
 
   override string toString() { result = "__try { ... } __except( ... ) { ... }" }
 
   /** Gets the expression guarding the `__except` statement. */
-  Expr getCondition() { result = getChild(1) }
+  Expr getCondition() { result = this.getChild(1) }
 
   /** Gets the `__except` statement (usually a `BlockStmt`). */
-  Stmt getExcept() { result = getChild(2) }
+  Stmt getExcept() { result = this.getChild(2) }
 
   override string getAPrimaryQlClass() { result = "MicrosoftTryExceptStmt" }
 }
@@ -1948,12 +1948,12 @@ class MicrosoftTryExceptStmt extends MicrosoftTryStmt {
  * This is a Microsoft C/C++ extension.
  */
 class MicrosoftTryFinallyStmt extends MicrosoftTryStmt {
-  MicrosoftTryFinallyStmt() { not getChild(1) instanceof Expr }
+  MicrosoftTryFinallyStmt() { not this.getChild(1) instanceof Expr }
 
   override string toString() { result = "__try { ... } __finally { ... }" }
 
   /** Gets the `__finally` statement (usually a `BlockStmt`). */
-  Stmt getFinally() { result = getChild(1) }
+  Stmt getFinally() { result = this.getChild(1) }
 
   override string getAPrimaryQlClass() { result = "MicrosoftTryFinallyStmt" }
 }

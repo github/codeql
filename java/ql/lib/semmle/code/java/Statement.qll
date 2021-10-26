@@ -71,7 +71,7 @@ class BlockStmt extends Stmt, @block {
   int getNumStmt() { result = count(this.getAStmt()) }
 
   /** Gets the last statement in this block. */
-  Stmt getLastStmt() { result = getStmt(getNumStmt() - 1) }
+  Stmt getLastStmt() { result = this.getStmt(this.getNumStmt() - 1) }
 
   override string pp() { result = "{ ... }" }
 
@@ -93,7 +93,7 @@ class SingletonBlock extends BlockStmt {
   SingletonBlock() { this.getNumStmt() = 1 }
 
   /** Gets the single statement in this block. */
-  Stmt getStmt() { result = getStmt(0) }
+  Stmt getStmt() { result = this.getStmt(0) }
 }
 
 /**
@@ -125,7 +125,7 @@ class IfStmt extends ConditionalStmt, @ifstmt {
    * Gets the statement that is executed whenever the condition
    * of this branch statement evaluates to `true`.
    */
-  deprecated override Stmt getTrueSuccessor() { result = getThen() }
+  deprecated override Stmt getTrueSuccessor() { result = this.getThen() }
 
   /** Gets the `else` branch of this `if` statement. */
   Stmt getElse() { result.isNthChildOf(this, 2) }
@@ -155,7 +155,7 @@ class ForStmt extends ConditionalStmt, @forstmt {
 
   /** Gets the initializer expression of the loop at the specified (zero-based) position. */
   Expr getInit(int index) {
-    result = getAnInit() and
+    result = this.getAnInit() and
     index = -1 - result.getIndex()
   }
 
@@ -167,7 +167,7 @@ class ForStmt extends ConditionalStmt, @forstmt {
 
   /** Gets the update expression of this loop at the specified (zero-based) position. */
   Expr getUpdate(int index) {
-    result = getAnUpdate() and
+    result = this.getAnUpdate() and
     index = result.getIndex() - 3
   }
 
@@ -178,7 +178,7 @@ class ForStmt extends ConditionalStmt, @forstmt {
    * Gets the statement that is executed whenever the condition
    * of this branch statement evaluates to true.
    */
-  deprecated override Stmt getTrueSuccessor() { result = getStmt() }
+  deprecated override Stmt getTrueSuccessor() { result = this.getStmt() }
 
   /**
    * Gets a variable that is used as an iteration variable: it is defined,
@@ -193,12 +193,12 @@ class ForStmt extends ConditionalStmt, @forstmt {
    */
   Variable getAnIterationVariable() {
     // Check that the variable is assigned to, incremented or decremented in the update expression, and...
-    exists(Expr update | update = getAnUpdate().getAChildExpr*() |
+    exists(Expr update | update = this.getAnUpdate().getAChildExpr*() |
       update.(UnaryAssignExpr).getExpr() = result.getAnAccess() or
       update = result.getAnAssignedValue()
     ) and
     // ...that it is checked or used in the condition.
-    getCondition().getAChildExpr*() = result.getAnAccess()
+    this.getCondition().getAChildExpr*() = result.getAnAccess()
   }
 
   override string pp() { result = "for (...;...;...) " + this.getStmt().pp() }
@@ -242,7 +242,7 @@ class WhileStmt extends ConditionalStmt, @whilestmt {
    * Gets the statement that is executed whenever the condition
    * of this branch statement evaluates to true.
    */
-  deprecated override Stmt getTrueSuccessor() { result = getStmt() }
+  deprecated override Stmt getTrueSuccessor() { result = this.getStmt() }
 
   override string pp() { result = "while (...) " + this.getStmt().pp() }
 
@@ -265,7 +265,7 @@ class DoStmt extends ConditionalStmt, @dostmt {
    * Gets the statement that is executed whenever the condition
    * of this branch statement evaluates to `true`.
    */
-  deprecated override Stmt getTrueSuccessor() { result = getStmt() }
+  deprecated override Stmt getTrueSuccessor() { result = this.getStmt() }
 
   override string pp() { result = "do " + this.getStmt().pp() + " while (...)" }
 
@@ -343,17 +343,17 @@ class TryStmt extends Stmt, @trystmt {
   }
 
   /** Gets a resource in this `try` statement, if any. */
-  ExprParent getAResource() { result = getAResourceDecl() or result = getAResourceExpr() }
+  ExprParent getAResource() { result = this.getAResourceDecl() or result = this.getAResourceExpr() }
 
   /** Gets the resource at the specified position in this `try` statement. */
   ExprParent getResource(int index) {
-    result = getResourceDecl(index) or result = getResourceExpr(index)
+    result = this.getResourceDecl(index) or result = this.getResourceExpr(index)
   }
 
   /** Gets a resource variable, if any, either from a resource variable declaration or resource expression. */
   Variable getAResourceVariable() {
-    result = getAResourceDecl().getAVariable().getVariable() or
-    result = getAResourceExpr().getVariable()
+    result = this.getAResourceDecl().getAVariable().getVariable() or
+    result = this.getAResourceExpr().getVariable()
   }
 
   override string pp() { result = "try " + this.getBlock().pp() + " catch (...)" }
@@ -381,7 +381,7 @@ class CatchClause extends Stmt, @catchclause {
 
   /** Gets a type caught by this `catch` clause. */
   RefType getACaughtType() {
-    exists(Expr ta | ta = getVariable().getTypeAccess() |
+    exists(Expr ta | ta = this.getVariable().getTypeAccess() |
       result = ta.(TypeAccess).getType() or
       result = ta.(UnionTypeAccess).getAnAlternative().getType()
     )
@@ -411,7 +411,7 @@ class SwitchStmt extends Stmt, @switchstmt {
    * Gets a case of this `switch` statement,
    * which may be either a normal `case` or a `default`.
    */
-  SwitchCase getACase() { result = getAConstCase() or result = getDefaultCase() }
+  SwitchCase getACase() { result = this.getAConstCase() or result = this.getDefaultCase() }
 
   /** Gets a (non-default) `case` of this `switch` statement. */
   ConstCase getAConstCase() { result.getParent() = this }
@@ -550,7 +550,7 @@ class ThrowStmt extends Stmt, @throwstmt {
   override string getHalsteadID() { result = "ThrowStmt" }
 
   /** Gets the type of the expression thrown by this `throw` statement. */
-  RefType getThrownExceptionType() { result = getExpr().getType() }
+  RefType getThrownExceptionType() { result = this.getExpr().getType() }
 
   /**
    * Gets the `catch` clause that catches the exception
@@ -559,14 +559,14 @@ class ThrowStmt extends Stmt, @throwstmt {
    * provided such a `catch` exists.
    */
   CatchClause getLexicalCatchIfAny() {
-    exists(TryStmt try | try = findEnclosing() and result = catchClauseForThis(try))
+    exists(TryStmt try | try = this.findEnclosing() and result = this.catchClauseForThis(try))
   }
 
   private Stmt findEnclosing() {
-    result = getEnclosingStmt()
+    result = this.getEnclosingStmt()
     or
     exists(Stmt mid |
-      mid = findEnclosing() and
+      mid = this.findEnclosing() and
       not exists(this.catchClauseForThis(mid.(TryStmt))) and
       result = mid.getEnclosingStmt()
     )
@@ -575,7 +575,7 @@ class ThrowStmt extends Stmt, @throwstmt {
   private CatchClause catchClauseForThis(TryStmt try) {
     result = try.getACatchClause() and
     result.getEnclosingCallable() = this.getEnclosingCallable() and
-    getExpr().getType().(RefType).hasSupertype*(result.getVariable().getType().(RefType)) and
+    this.getExpr().getType().(RefType).hasSupertype*(result.getVariable().getType().(RefType)) and
     not this.getEnclosingStmt+() = result
   }
 
@@ -599,7 +599,7 @@ class JumpStmt extends Stmt {
     namestrings(result.getLabel(), _, this)
   }
 
-  private Stmt getLabelTarget() { result = getTargetLabel().getStmt() }
+  private Stmt getLabelTarget() { result = this.getTargetLabel().getStmt() }
 
   private Stmt getAPotentialTarget() {
     this.getEnclosingStmt+() = result and
@@ -613,20 +613,20 @@ class JumpStmt extends Stmt {
   private SwitchExpr getSwitchExprTarget() { result = this.(YieldStmt).getParent+() }
 
   private StmtParent getEnclosingTarget() {
-    result = getSwitchExprTarget()
+    result = this.getSwitchExprTarget()
     or
-    not exists(getSwitchExprTarget()) and
-    result = getAPotentialTarget() and
-    not exists(Stmt other | other = getAPotentialTarget() | other.getEnclosingStmt+() = result)
+    not exists(this.getSwitchExprTarget()) and
+    result = this.getAPotentialTarget() and
+    not exists(Stmt other | other = this.getAPotentialTarget() | other.getEnclosingStmt+() = result)
   }
 
   /**
    * Gets the statement or `switch` expression that this `break`, `yield` or `continue` jumps to.
    */
   StmtParent getTarget() {
-    result = getLabelTarget()
+    result = this.getLabelTarget()
     or
-    not exists(getLabelTarget()) and result = getEnclosingTarget()
+    not exists(this.getLabelTarget()) and result = this.getEnclosingTarget()
   }
 }
 
@@ -714,9 +714,9 @@ class ExprStmt extends Stmt, @exprstmt {
 
   /** Holds if this statement represents a field declaration with an initializer. */
   predicate isFieldDecl() {
-    getEnclosingCallable() instanceof InitializerMethod and
+    this.getEnclosingCallable() instanceof InitializerMethod and
     exists(FieldDeclaration fd, Location fdl, Location sl |
-      fdl = fd.getLocation() and sl = getLocation()
+      fdl = fd.getLocation() and sl = this.getLocation()
     |
       fdl.getFile() = sl.getFile() and
       fdl.getStartLine() = sl.getStartLine() and
@@ -775,7 +775,7 @@ class LocalVariableDeclStmt extends Stmt, @localvariabledeclstmt {
   }
 
   /** Gets an index of a variable declared in this local variable declaration statement. */
-  int getAVariableIndex() { exists(getVariable(result)) }
+  int getAVariableIndex() { exists(this.getVariable(result)) }
 
   override string pp() { result = "var ...;" }
 

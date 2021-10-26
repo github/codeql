@@ -247,6 +247,13 @@ edges
 | argvLocal.c:168:18:168:21 | argv | argvLocal.c:170:24:170:26 | i10 |
 | argvLocal.c:168:18:168:21 | argv | argvLocal.c:170:24:170:26 | i10 |
 | argvLocal.c:170:15:170:26 | i10 indirection | argvLocal.c:9:25:9:31 | *correct |
+subpaths
+| argvLocal.c:117:2:117:13 | i3 | argvLocal.c:9:25:9:31 | correct | argvLocal.c:9:25:9:31 | *correct | argvLocal.c:117:15:117:16 | printWrapper output argument |
+| argvLocal.c:117:15:117:16 | i3 indirection | argvLocal.c:9:25:9:31 | *correct | argvLocal.c:9:25:9:31 | *correct | argvLocal.c:117:15:117:16 | printWrapper output argument |
+| argvLocal.c:122:2:122:13 | i4 | argvLocal.c:9:25:9:31 | correct | argvLocal.c:9:25:9:31 | *correct | argvLocal.c:122:15:122:16 | printWrapper output argument |
+| argvLocal.c:122:15:122:16 | i4 indirection | argvLocal.c:9:25:9:31 | *correct | argvLocal.c:9:25:9:31 | *correct | argvLocal.c:122:15:122:16 | printWrapper output argument |
+| argvLocal.c:128:2:128:13 | i5 | argvLocal.c:9:25:9:31 | correct | argvLocal.c:9:25:9:31 | *correct | argvLocal.c:128:15:128:16 | printWrapper output argument |
+| argvLocal.c:128:15:128:16 | i5 indirection | argvLocal.c:9:25:9:31 | *correct | argvLocal.c:9:25:9:31 | *correct | argvLocal.c:128:15:128:16 | printWrapper output argument |
 nodes
 | argvLocal.c:9:25:9:31 | *correct | semmle.label | *correct |
 | argvLocal.c:9:25:9:31 | *correct | semmle.label | *correct |

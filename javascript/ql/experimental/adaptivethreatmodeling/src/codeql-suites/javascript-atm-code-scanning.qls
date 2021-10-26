@@ -1,0 +1,8 @@
+- description: ATM boosted Code Scanning queries for JavaScript
+- queries: .
+- include:
+    id: 
+    - adaptive-threat-modeling/js/nosql-injection
+    - adaptive-threat-modeling/js/sql-injection
+    - adaptive-threat-modeling/js/path-injection
+    - adaptive-threat-modeling/js/xss

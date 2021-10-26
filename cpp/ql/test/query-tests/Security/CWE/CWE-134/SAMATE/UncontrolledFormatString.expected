@@ -17,6 +17,7 @@ edges
 | char_environment_fprintf_01_bad.c:27:30:27:35 | call to getenv | char_environment_fprintf_01_bad.c:36:21:36:24 | data |
 | char_environment_fprintf_01_bad.c:27:30:27:35 | call to getenv | char_environment_fprintf_01_bad.c:36:21:36:24 | data indirection |
 | char_environment_fprintf_01_bad.c:27:30:27:35 | call to getenv | char_environment_fprintf_01_bad.c:36:21:36:24 | data indirection |
+subpaths
 nodes
 | char_connect_socket_w32_vsnprintf_01_bad.c:94:46:94:69 | recv output argument | semmle.label | recv output argument |
 | char_connect_socket_w32_vsnprintf_01_bad.c:94:55:94:68 | ... + ... | semmle.label | ... + ... |

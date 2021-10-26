@@ -14,26 +14,22 @@ import semmle.code.csharp.frameworks.system.windows.Forms
 
 /** A string for `match` that identifies strings that look like they represent private data. */
 private string privateNames() {
-  // Inspired by the list on https://cwe.mitre.org/data/definitions/359.html
-  // Government identifiers, such as Social Security Numbers
-  result = "%social%security%number%" or
-  // Contact information, such as home addresses and telephone numbers
-  result = "%postcode%" or
-  result = "%zipcode%" or
-  result = "%telephone%" or
-  // Geographic location - where the user is (or was)
-  result = "%latitude%" or
-  result = "%longitude%" or
-  // Financial data - such as credit card numbers, salary, bank accounts, and debts
-  result = "%creditcard%" or
-  result = "%salary%" or
-  result = "%bankaccount%" or
-  // Communications - e-mail addresses, private e-mail messages, SMS text messages, chat logs, etc.
-  result = "%email%" or
-  result = "%mobile%" or
-  result = "%employer%" or
-  // Health - medical conditions, insurance status, prescription records
-  result = "%medical%"
+  result =
+    [
+      // Inspired by the list on https://cwe.mitre.org/data/definitions/359.html
+      // Government identifiers, such as Social Security Numbers
+      "%social%security%number%",
+      // Contact information, such as home addresses and telephone numbers
+      "%postcode%", "%zipcode%", "%telephone%",
+      // Geographic location - where the user is (or was)
+      "%latitude%", "%longitude%",
+      // Financial data - such as credit card numbers, salary, bank accounts, and debts
+      "%creditcard%", "%salary%", "%bankaccount%",
+      // Communications - e-mail addresses, private e-mail messages, SMS text messages, chat logs, etc.
+      "%email%", "%mobile%", "%employer%",
+      // Health - medical conditions, insurance status, prescription records
+      "%medical%"
+    ]
 }
 
 /** An expression that might contain private data. */

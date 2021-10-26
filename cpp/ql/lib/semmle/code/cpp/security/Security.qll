@@ -7,6 +7,7 @@ import semmle.code.cpp.exprs.Expr
 import semmle.code.cpp.commons.Environment
 import semmle.code.cpp.security.SecurityOptions
 import semmle.code.cpp.models.interfaces.FlowSource
+import semmle.code.cpp.models.interfaces.Sql
 
 /**
  * Extend this class to customize the security queries for
@@ -34,13 +35,11 @@ class SecurityOptions extends string {
    * An argument to a function that is passed to a SQL server.
    */
   predicate sqlArgument(string function, int arg) {
-    // MySQL C API
-    function = "mysql_query" and arg = 1
-    or
-    function = "mysql_real_query" and arg = 1
-    or
-    // SQLite3 C API
-    function = "sqlite3_exec" and arg = 1
+    exists(FunctionInput input, SqlExecutionFunction sql |
+      sql.hasName(function) and
+      input.isParameterDeref(arg) and
+      sql.hasSqlArgument(input)
+    )
   }
 
   /**
@@ -79,7 +78,7 @@ class SecurityOptions extends string {
       functionCall.getTarget().getName() = fname and
       (
         fname = ["fgets", "gets"] or
-        userInputReturn(fname)
+        this.userInputReturn(fname)
       )
     )
     or

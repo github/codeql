@@ -86,13 +86,15 @@ class Expr extends ExprParent, @expr {
      * explicit constructor invocation statement.
      */
 
-    getEnclosingCallable().isStatic()
+    this.getEnclosingCallable().isStatic()
     or
-    getParent+() instanceof ThisConstructorInvocationStmt
+    this.getParent+() instanceof ThisConstructorInvocationStmt
     or
-    getParent+() instanceof SuperConstructorInvocationStmt
+    this.getParent+() instanceof SuperConstructorInvocationStmt
     or
-    exists(LambdaExpr lam | lam.asMethod() = getEnclosingCallable() and lam.isInStaticContext())
+    exists(LambdaExpr lam |
+      lam.asMethod() = this.getEnclosingCallable() and lam.isInStaticContext()
+    )
   }
 
   /** Holds if this expression is parenthesized. */
@@ -116,7 +118,7 @@ private predicate primitiveOrString(Type t) {
  */
 class CompileTimeConstantExpr extends Expr {
   CompileTimeConstantExpr() {
-    primitiveOrString(getType()) and
+    primitiveOrString(this.getType()) and
     (
       // Literals of primitive type and literals of type `String`.
       this instanceof Literal
@@ -425,9 +427,9 @@ class ArrayCreationExpr extends Expr, @arraycreationexpr {
    * Gets the size of the first dimension, if it can be statically determined.
    */
   int getFirstDimensionSize() {
-    if exists(getInit())
-    then result = getInit().getSize()
-    else result = getDimension(0).(CompileTimeConstantExpr).getIntValue()
+    if exists(this.getInit())
+    then result = this.getInit().getSize()
+    else result = this.getDimension(0).(CompileTimeConstantExpr).getIntValue()
   }
 
   /** Gets a printable representation of this expression. */
@@ -463,7 +465,7 @@ class ArrayInit extends Expr, @arrayinit {
    * Gets the number of expressions in this initializer, that is, the size the
    * created array will have.
    */
-  int getSize() { result = count(getAnInit()) }
+  int getSize() { result = count(this.getAnInit()) }
 
   /** Gets a printable representation of this expression. */
   override string toString() { result = "{...}" }
@@ -632,9 +634,9 @@ class Literal extends Expr, @literal {
 class BooleanLiteral extends Literal, @booleanliteral {
   /** Gets the boolean representation of this literal. */
   boolean getBooleanValue() {
-    result = true and getValue() = "true"
+    result = true and this.getValue() = "true"
     or
-    result = false and getValue() = "false"
+    result = false and this.getValue() = "false"
   }
 
   override string getAPrimaryQlClass() { result = "BooleanLiteral" }
@@ -657,7 +659,7 @@ class BooleanLiteral extends Literal, @booleanliteral {
  */
 class IntegerLiteral extends Literal, @integerliteral {
   /** Gets the int representation of this literal. */
-  int getIntValue() { result = getValue().toInt() }
+  int getIntValue() { result = this.getValue().toInt() }
 
   override string getAPrimaryQlClass() { result = "IntegerLiteral" }
 }
@@ -693,7 +695,7 @@ class FloatingPointLiteral extends Literal, @floatingpointliteral {
    * Gets the value of this literal as CodeQL 64-bit `float`. The value will
    * be parsed as Java 32-bit `float` and then converted to a CodeQL `float`.
    */
-  float getFloatValue() { result = getValue().toFloat() }
+  float getFloatValue() { result = this.getValue().toFloat() }
 
   override string getAPrimaryQlClass() { result = "FloatingPointLiteral" }
 }
@@ -709,7 +711,7 @@ class DoubleLiteral extends Literal, @doubleliteral {
    * Gets the value of this literal as CodeQL 64-bit `float`. The result will
    * have the same effective value as the Java `double` literal.
    */
-  float getDoubleValue() { result = getValue().toFloat() }
+  float getDoubleValue() { result = this.getValue().toFloat() }
 
   override string getAPrimaryQlClass() { result = "DoubleLiteral" }
 }
@@ -719,18 +721,30 @@ class CharacterLiteral extends Literal, @characterliteral {
   override string getAPrimaryQlClass() { result = "CharacterLiteral" }
 }
 
-/** A string literal. For example, `"hello world"`. */
+/**
+ * A string literal or text block (Java 15 feature). For example, `"hello world"`
+ * or
+ * ```java
+ * """
+ * Text with "quotes"
+ * """
+ * ```
+ */
 class StringLiteral extends Literal, @stringliteral {
   /**
    * Gets the literal string without the quotes.
    */
-  string getRepresentedString() { result = getValue() }
+  string getRepresentedString() { result = this.getValue() }
+
+  /** Holds if this string literal is a text block (`""" ... """`). */
+  predicate isTextBlock() { this.getLiteral().matches("\"\"\"%") }
 
   override string getAPrimaryQlClass() { result = "StringLiteral" }
 }
 
 /** The null literal, written `null`. */
 class NullLiteral extends Literal, @nullliteral {
+  // Override these predicates because the inherited ones have no result
   override string getLiteral() { result = "null" }
 
   override string getValue() { result = "null" }
@@ -1172,7 +1186,7 @@ class LambdaExpr extends FunctionalExpr, @lambdaexpr {
    * Gets the implicit method corresponding to this lambda expression.
    * The parameters of the lambda expression are the parameters of this method.
    */
-  override Method asMethod() { result = getAnonymousClass().getAMethod() }
+  override Method asMethod() { result = this.getAnonymousClass().getAMethod() }
 
   /** Holds if the body of this lambda is an expression. */
   predicate hasExprBody() { lambdaKind(this, 0) }
@@ -1182,11 +1196,11 @@ class LambdaExpr extends FunctionalExpr, @lambdaexpr {
 
   /** Gets the body of this lambda expression, if it is an expression. */
   Expr getExprBody() {
-    hasExprBody() and result = asMethod().getBody().getAChild().(ReturnStmt).getResult()
+    this.hasExprBody() and result = this.asMethod().getBody().getAChild().(ReturnStmt).getResult()
   }
 
   /** Gets the body of this lambda expression, if it is a statement. */
-  BlockStmt getStmtBody() { hasStmtBody() and result = asMethod().getBody() }
+  BlockStmt getStmtBody() { this.hasStmtBody() and result = this.asMethod().getBody() }
 
   /** Gets a printable representation of this expression. */
   override string toString() { result = "...->..." }
@@ -1211,7 +1225,29 @@ class MemberRefExpr extends FunctionalExpr, @memberref {
    * (if the reference is to a constructor) or an array creation expression (if the reference
    * is to an array constructor).
    */
-  override Method asMethod() { result = getAnonymousClass().getAMethod() }
+  override Method asMethod() { result = this.getAnonymousClass().getAMethod() }
+
+  /**
+   * Gets the receiver type whose member this expression refers to. The result might not be
+   * the type which actually declares the member. For example, for the member reference `ArrayList::toString`,
+   * this predicate has the result `java.util.ArrayList`, the type explicitly referred to, while
+   * `getReferencedCallable` will have `java.util.AbstractCollection.toString` as result, which `ArrayList` inherits.
+   */
+  RefType getReceiverType() {
+    exists(Stmt stmt, Expr resultExpr |
+      stmt = asMethod().getBody().(SingletonBlock).getStmt() and
+      (
+        resultExpr = stmt.(ReturnStmt).getResult()
+        or
+        // Note: Currently never an ExprStmt, but might change once https://github.com/github/codeql/issues/3605 is fixed
+        resultExpr = stmt.(ExprStmt).getExpr()
+      )
+    |
+      result = resultExpr.(MethodAccess).getReceiverType() or
+      result = resultExpr.(ClassInstanceExpr).getConstructedType() or
+      result = resultExpr.(ArrayCreationExpr).getType()
+    )
+  }
 
   /**
    * Gets the method or constructor referenced by this member reference expression.
@@ -1262,16 +1298,16 @@ class ConditionalExpr extends Expr, @conditionalexpr {
    * it is `getFalseExpr()`.
    */
   Expr getBranchExpr(boolean branch) {
-    branch = true and result = getTrueExpr()
+    branch = true and result = this.getTrueExpr()
     or
-    branch = false and result = getFalseExpr()
+    branch = false and result = this.getFalseExpr()
   }
 
   /**
    * Gets the expressions that is evaluated by one of the branches (`true`
    * or `false` branch) of this conditional expression.
    */
-  Expr getABranchExpr() { result = getBranchExpr(_) }
+  Expr getABranchExpr() { result = this.getBranchExpr(_) }
 
   /** Gets a printable representation of this expression. */
   override string toString() { result = "...?...:..." }
@@ -1296,7 +1332,7 @@ class SwitchExpr extends Expr, StmtParent, @switchexpr {
    * Gets a case of this `switch` expression,
    * which may be either a normal `case` or a `default`.
    */
-  SwitchCase getACase() { result = getAConstCase() or result = getDefaultCase() }
+  SwitchCase getACase() { result = this.getAConstCase() or result = this.getDefaultCase() }
 
   /** Gets a (non-default) `case` of this `switch` expression. */
   ConstCase getAConstCase() { result.getParent() = this }
@@ -1309,7 +1345,7 @@ class SwitchExpr extends Expr, StmtParent, @switchexpr {
 
   /** Gets a result expression of this `switch` expression. */
   Expr getAResult() {
-    result = getACase().getRuleExpression()
+    result = this.getACase().getRuleExpression()
     or
     exists(YieldStmt yield | yield.(JumpStmt).getTarget() = this and result = yield.getValue())
   }
@@ -1324,8 +1360,8 @@ class SwitchExpr extends Expr, StmtParent, @switchexpr {
 class InstanceOfExpr extends Expr, @instanceofexpr {
   /** Gets the expression on the left-hand side of the `instanceof` operator. */
   Expr getExpr() {
-    if isPattern()
-    then result = getLocalVariableDeclExpr().getInit()
+    if this.isPattern()
+    then result = this.getLocalVariableDeclExpr().getInit()
     else result.isNthChildOf(this, 0)
   }
 
@@ -1334,7 +1370,7 @@ class InstanceOfExpr extends Expr, @instanceofexpr {
    *
    * Holds if this `instanceof` expression uses pattern matching.
    */
-  predicate isPattern() { exists(getLocalVariableDeclExpr()) }
+  predicate isPattern() { exists(this.getLocalVariableDeclExpr()) }
 
   /**
    * PREVIEW FEATURE in Java 14. Subject to removal in a future release.
@@ -1347,7 +1383,7 @@ class InstanceOfExpr extends Expr, @instanceofexpr {
   Expr getTypeName() { result.isNthChildOf(this, 1) }
 
   /** Gets the type this `instanceof` expression checks for. */
-  RefType getCheckedType() { result = getTypeName().getType() }
+  RefType getCheckedType() { result = this.getTypeName().getType() }
 
   /** Gets a printable representation of this expression. */
   override string toString() { result = "...instanceof..." }
@@ -1445,7 +1481,7 @@ class TypeLiteral extends Expr, @typeliteral {
    * Gets the type this type literal refers to. For example for `String.class` the
    * result is the type representing `String`.
    */
-  Type getReferencedType() { result = getTypeName().getType() }
+  Type getReferencedType() { result = this.getTypeName().getType() }
 
   /** Gets a printable representation of this expression. */
   override string toString() { result = this.getTypeName().toString() + ".class" }
@@ -1470,15 +1506,15 @@ abstract class InstanceAccess extends Expr {
    * This never holds for accesses in lambda expressions as they cannot access
    * their own instance directly.
    */
-  predicate isOwnInstanceAccess() { not isEnclosingInstanceAccess(_) }
+  predicate isOwnInstanceAccess() { not this.isEnclosingInstanceAccess(_) }
 
   /** Holds if this instance access is to an enclosing instance of type `t`. */
   predicate isEnclosingInstanceAccess(RefType t) {
-    t = getQualifier().getType().(RefType).getSourceDeclaration() and
-    t != getEnclosingCallable().getDeclaringType()
+    t = this.getQualifier().getType().(RefType).getSourceDeclaration() and
+    t != this.getEnclosingCallable().getDeclaringType()
     or
-    not exists(getQualifier()) and
-    exists(LambdaExpr lam | lam.asMethod() = getEnclosingCallable() |
+    not exists(this.getQualifier()) and
+    exists(LambdaExpr lam | lam.asMethod() = this.getEnclosingCallable() |
       t = lam.getAnonymousClass().getEnclosingType()
     )
   }
@@ -1526,7 +1562,7 @@ class VarAccess extends Expr, @varaccess {
   Expr getQualifier() { result.getParent() = this }
 
   /** Holds if this variable access has a qualifier. */
-  predicate hasQualifier() { exists(getQualifier()) }
+  predicate hasQualifier() { exists(this.getQualifier()) }
 
   /** Gets the variable accessed by this variable access. */
   Variable getVariable() { variableBinding(this, result) }
@@ -1568,11 +1604,11 @@ class VarAccess extends Expr, @varaccess {
    */
   predicate isLocal() {
     // The access has no qualifier, or...
-    not hasQualifier()
+    not this.hasQualifier()
     or
     // the qualifier is either `this` or `A.this`, where `A` is the enclosing type, or
     // the qualifier is either `super` or `A.super`, where `A` is the enclosing type.
-    getQualifier().(InstanceAccess).isOwnInstanceAccess()
+    this.getQualifier().(InstanceAccess).isOwnInstanceAccess()
   }
 
   override string getAPrimaryQlClass() { result = "VarAccess" }
@@ -1614,7 +1650,7 @@ class MethodAccess extends Expr, Call, @methodaccess {
   override Expr getQualifier() { result.isNthChildOf(this, -1) }
 
   /** Holds if this method access has a qualifier. */
-  predicate hasQualifier() { exists(getQualifier()) }
+  predicate hasQualifier() { exists(this.getQualifier()) }
 
   /** Gets an argument supplied to the method that is invoked using this method access. */
   override Expr getAnArgument() { result.getIndex() >= 0 and result.getParent() = this }
@@ -1651,9 +1687,9 @@ class MethodAccess extends Expr, Call, @methodaccess {
    * the enclosing type if there is no qualifier.
    */
   RefType getReceiverType() {
-    result = getQualifier().getType()
+    result = this.getQualifier().getType()
     or
-    not hasQualifier() and result = getEnclosingCallable().getDeclaringType()
+    not this.hasQualifier() and result = this.getEnclosingCallable().getDeclaringType()
   }
 
   /**
@@ -1829,7 +1865,7 @@ class Call extends ExprParent, @caller {
   Callable getCallee() { callableBinding(this, result) }
 
   /** Gets the callable invoking this call. */
-  Callable getCaller() { result = getEnclosingCallable() }
+  Callable getCaller() { result = this.getEnclosingCallable() }
 }
 
 /** A polymorphic call to an instance method. */
@@ -2030,14 +2066,14 @@ class Argument extends Expr {
   }
 
   /** Holds if this argument is part of an implicit varargs array. */
-  predicate isVararg() { isNthVararg(_) }
+  predicate isVararg() { this.isNthVararg(_) }
 
   /**
    * Holds if this argument is part of an implicit varargs array at the
    * given array index.
    */
   predicate isNthVararg(int arrayindex) {
-    not isExplicitVarargsArray() and
+    not this.isExplicitVarargsArray() and
     exists(Callable tgt |
       call.getCallee() = tgt and
       tgt.isVarargs() and

@@ -95,13 +95,18 @@ private class ContainerFlowSummaries extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
+        "java.lang;Object;true;clone;;;MapKey of Argument[-1];MapKey of ReturnValue;value",
+        "java.lang;Object;true;clone;;;MapValue of Argument[-1];MapValue of ReturnValue;value",
+        "java.lang;Object;true;clone;;;Element of Argument[-1];Element of ReturnValue;value",
         "java.util;Map$Entry;true;getKey;;;MapKey of Argument[-1];ReturnValue;value",
         "java.util;Map$Entry;true;getValue;;;MapValue of Argument[-1];ReturnValue;value",
         "java.util;Map$Entry;true;setValue;;;MapValue of Argument[-1];ReturnValue;value",
         "java.util;Map$Entry;true;setValue;;;Argument[0];MapValue of Argument[-1];value",
         "java.lang;Iterable;true;iterator;();;Element of Argument[-1];Element of ReturnValue;value",
         "java.lang;Iterable;true;spliterator;();;Element of Argument[-1];Element of ReturnValue;value",
+        "java.lang;Iterable;true;forEach;(Consumer);;Element of Argument[-1];Parameter[0] of Argument[0];value",
         "java.util;Iterator;true;next;;;Element of Argument[-1];ReturnValue;value",
+        "java.util;Iterator;true;forEachRemaining;(Consumer);;Element of Argument[-1];Parameter[0] of Argument[0];value",
         "java.util;ListIterator;true;previous;;;Element of Argument[-1];ReturnValue;value",
         "java.util;ListIterator;true;add;(Object);;Argument[0];Element of Argument[-1];value",
         "java.util;ListIterator;true;set;(Object);;Argument[0];Element of Argument[-1];value",
@@ -132,6 +137,8 @@ private class ContainerFlowSummaries extends SummaryModelCsv {
         "java.util;Map;true;merge;(Object,Object,BiFunction);;Argument[1];MapValue of Argument[-1];value",
         "java.util;Map;true;putAll;(Map);;MapKey of Argument[0];MapKey of Argument[-1];value",
         "java.util;Map;true;putAll;(Map);;MapValue of Argument[0];MapValue of Argument[-1];value",
+        "java.util;Map;true;forEach;(BiConsumer);;MapKey of Argument[-1];Parameter[0] of Argument[0];value",
+        "java.util;Map;true;forEach;(BiConsumer);;MapValue of Argument[-1];Parameter[1] of Argument[0];value",
         "java.util;Collection;true;parallelStream;();;Element of Argument[-1];Element of ReturnValue;value",
         "java.util;Collection;true;stream;();;Element of Argument[-1];Element of ReturnValue;value",
         "java.util;Collection;true;toArray;;;Element of Argument[-1];ArrayElement of ReturnValue;value",

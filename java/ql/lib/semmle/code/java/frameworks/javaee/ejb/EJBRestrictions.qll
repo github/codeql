@@ -299,10 +299,7 @@ class RuntimeExitOrHaltMethod extends Method {
     (this.hasName("exit") or this.hasName("halt")) and
     this.getNumberOfParameters() = 1 and
     this.getParameter(0).getType().(PrimitiveType).hasName("int") and
-    this.getDeclaringType()
-        .getASupertype*()
-        .getSourceDeclaration()
-        .hasQualifiedName("java.lang", "Runtime")
+    this.getDeclaringType().getASupertype*().getSourceDeclaration() instanceof TypeRuntime
   }
 }
 
@@ -315,10 +312,7 @@ class RuntimeAddOrRemoveShutdownHookMethod extends Method {
     (this.hasName("addShutdownHook") or this.hasName("removeShutdownHook")) and
     this.getNumberOfParameters() = 1 and
     this.getParameter(0).getType().(RefType).hasQualifiedName("java.lang", "Thread") and
-    this.getDeclaringType()
-        .getASupertype*()
-        .getSourceDeclaration()
-        .hasQualifiedName("java.lang", "Runtime")
+    this.getDeclaringType().getASupertype*().getSourceDeclaration() instanceof TypeRuntime
   }
 }
 
@@ -414,33 +408,29 @@ class ForbiddenSerializationMethod extends Method {
 
 /**
  * A method named `enableReplaceObject` declared in
- * the class `java.io.ObjectInputStream` or a subclass thereof.
+ * the class `java.io.ObjectOutputStream` or a subclass thereof.
  */
 class EnableReplaceObjectMethod extends Method {
   EnableReplaceObjectMethod() {
     this.hasName("enableReplaceObject") and
     this.getNumberOfParameters() = 1 and
     this.getParameter(0).getType().(PrimitiveType).hasName("boolean") and
-    this.getDeclaringType()
-        .getASupertype*()
-        .getSourceDeclaration()
-        .hasQualifiedName("java.io", "ObjectOutputStream")
+    this.getDeclaringType().getASupertype*().getSourceDeclaration() instanceof
+      TypeObjectOutputStream
   }
 }
 
 /**
  * A method named `replaceObject` declared in
- * the class `java.io.ObjectInputStream` or a subclass thereof.
+ * the class `java.io.ObjectOutputStream` or a subclass thereof.
  */
 class ReplaceObjectMethod extends Method {
   ReplaceObjectMethod() {
     this.hasName("replaceObject") and
     this.getNumberOfParameters() = 1 and
     this.getParameter(0).getType() instanceof TypeObject and
-    this.getDeclaringType()
-        .getASupertype*()
-        .getSourceDeclaration()
-        .hasQualifiedName("java.io", "ObjectOutputStream")
+    this.getDeclaringType().getASupertype*().getSourceDeclaration() instanceof
+      TypeObjectOutputStream
   }
 }
 
@@ -453,10 +443,7 @@ class EnableResolveObjectMethod extends Method {
     this.hasName("enableResolveObject") and
     this.getNumberOfParameters() = 1 and
     this.getParameter(0).getType().(PrimitiveType).hasName("boolean") and
-    this.getDeclaringType()
-        .getASupertype*()
-        .getSourceDeclaration()
-        .hasQualifiedName("java.io", "ObjectInputStream")
+    this.getDeclaringType().getASupertype*().getSourceDeclaration() instanceof TypeObjectInputStream
   }
 }
 
@@ -469,10 +456,7 @@ class ResolveObjectMethod extends Method {
     this.hasName("resolveObject") and
     this.getNumberOfParameters() = 1 and
     this.getParameter(0).getType() instanceof TypeObject and
-    this.getDeclaringType()
-        .getASupertype*()
-        .getSourceDeclaration()
-        .hasQualifiedName("java.io", "ObjectInputStream")
+    this.getDeclaringType().getASupertype*().getSourceDeclaration() instanceof TypeObjectInputStream
   }
 }
 
@@ -485,10 +469,7 @@ class ResolveClassMethod extends Method {
     this.hasName("resolveClass") and
     this.getNumberOfParameters() = 1 and
     this.getParameter(0).getType().(RefType).hasQualifiedName("java.io", "ObjectStreamClass") and
-    this.getDeclaringType()
-        .getASupertype*()
-        .getSourceDeclaration()
-        .hasQualifiedName("java.io", "ObjectInputStream")
+    this.getDeclaringType().getASupertype*().getSourceDeclaration() instanceof TypeObjectInputStream
   }
 }
 
@@ -500,16 +481,8 @@ class ResolveProxyClassMethod extends Method {
   ResolveProxyClassMethod() {
     this.hasName("resolveProxyClass") and
     this.getNumberOfParameters() = 1 and
-    this.getParameter(0)
-        .getType()
-        .(Array)
-        .getComponentType()
-        .(RefType)
-        .hasQualifiedName("java.lang", "String") and
-    this.getDeclaringType()
-        .getASupertype*()
-        .getSourceDeclaration()
-        .hasQualifiedName("java.io", "ObjectInputStream")
+    this.getParameter(0).getType().(Array).getComponentType() instanceof TypeString and
+    this.getDeclaringType().getASupertype*().getSourceDeclaration() instanceof TypeObjectInputStream
   }
 }
 
@@ -598,16 +571,13 @@ class SystemOrRuntimeLoadLibraryMethod extends Method {
   SystemOrRuntimeLoadLibraryMethod() {
     (this.hasName("load") or this.hasName("loadLibrary")) and
     this.getNumberOfParameters() = 1 and
-    this.getParameter(0).getType().(RefType).hasQualifiedName("java.lang", "String") and
+    this.getParameter(0).getType() instanceof TypeString and
     (
       this.getDeclaringType()
           .getASupertype*()
           .getSourceDeclaration()
           .hasQualifiedName("java.lang", "System") or
-      this.getDeclaringType()
-          .getASupertype*()
-          .getSourceDeclaration()
-          .hasQualifiedName("java.lang", "Runtime")
+      this.getDeclaringType().getASupertype*().getSourceDeclaration() instanceof TypeRuntime
     )
   }
 }
@@ -619,9 +589,6 @@ class SystemOrRuntimeLoadLibraryMethod extends Method {
 class RuntimeExecMethod extends Method {
   RuntimeExecMethod() {
     this.hasName("exec") and
-    this.getDeclaringType()
-        .getASupertype*()
-        .getSourceDeclaration()
-        .hasQualifiedName("java.lang", "Runtime")
+    this.getDeclaringType().getASupertype*().getSourceDeclaration() instanceof TypeRuntime
   }
 }

@@ -3,6 +3,7 @@ edges
 | examples.cpp:63:26:63:30 | & ... | examples.cpp:66:11:66:14 | data |
 | examples.cpp:63:26:63:30 | fscanf output argument | examples.cpp:66:11:66:14 | data |
 | examples.cpp:63:26:63:30 | fscanf output argument | examples.cpp:66:11:66:14 | data |
+subpaths
 nodes
 | examples.cpp:63:26:63:30 | & ... | semmle.label | & ... |
 | examples.cpp:63:26:63:30 | fscanf output argument | semmle.label | fscanf output argument |

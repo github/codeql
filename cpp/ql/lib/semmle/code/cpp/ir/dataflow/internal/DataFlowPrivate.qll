@@ -466,6 +466,12 @@ predicate isUnreachableInCall(Node n, DataFlowCall call) { none() } // stub impl
 
 int accessPathLimit() { result = 5 }
 
+/**
+ * Holds if access paths with `c` at their head always should be tracked at high
+ * precision. This disables adaptive access path precision for such access paths.
+ */
+predicate forceHighPrecision(Content c) { none() }
+
 /** The unit type. */
 private newtype TUnit = TMkUnit()
 
@@ -501,3 +507,12 @@ predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) { no
 
 /** Extra data-flow steps needed for lambda flow analysis. */
 predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) { none() }
+
+/**
+ * Holds if flow is allowed to pass from parameter `p` and back to itself as a
+ * side-effect, resulting in a summary from `p` to itself.
+ *
+ * One example would be to allow flow like `p.foo = p.bar;`, which is disallowed
+ * by default as a heuristic.
+ */
+predicate allowParameterReturnInSelf(ParameterNode p) { none() }

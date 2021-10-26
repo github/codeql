@@ -10,7 +10,7 @@
  */
 
 import javascript
-import UnusedVariable
+import Declarations.UnusedVariable
 
 /**
  * Holds if `v` is mentioned in a JSDoc comment in the same file, and that file

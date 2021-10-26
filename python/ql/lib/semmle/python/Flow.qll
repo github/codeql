@@ -851,9 +851,9 @@ class ForNode extends ControlFlowNode {
 
   /** Holds if this `for` statement causes iteration over `sequence` storing each step of the iteration in `target` */
   predicate iterates(ControlFlowNode target, ControlFlowNode sequence) {
-    sequence = getSequence() and
-    target = possibleTarget() and
-    not target = unrolledSuffix().possibleTarget()
+    sequence = this.getSequence() and
+    target = this.possibleTarget() and
+    not target = this.unrolledSuffix().possibleTarget()
   }
 
   /** Gets the sequence node for this `for` statement. */
@@ -1111,7 +1111,7 @@ class BasicBlock extends @py_flow_node {
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
-   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn

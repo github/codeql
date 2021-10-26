@@ -51,8 +51,8 @@ void testVarString(int n) {
     s1->str[1] = '?'; // GOOD
     s2->str[1] = '?'; // GOOD
     s3->str[1] = '?'; // GOOD
-    s4->str[1] = '?'; // BAD
-    s5->str[1] = '?'; // BAD
+    s4->str[1] = '?'; // BAD [NOT DETECTED]
+    s5->str[1] = '?'; // BAD [NOT DETECTED]
   }
 }
 
@@ -166,7 +166,7 @@ void useVarStruct34(varStruct5 *vs5) {
 
 void testVarStruct34(varStruct3 *vs3, varStruct4 *vs4, varStruct5 *vs5, varStruct6 *vs6, varStruct7 *vs7, varStruct8 *vs8, varStruct9 *vs9) {
   memset(vs3->arr, 'x', 100); // GOOD: it's variable size, we don't know how big so shouldn't flag
-  memset(vs4->arr, 'x', 100); // BAD: it's not variable size, so this is a buffer overflow
+  memset(vs4->arr, 'x', 100); // BAD: [NOT DETECTED] it's not variable size, so this is a buffer overflow
   memset(vs5->arr, 'x', 100); // GOOD: it's variable size, we don't know how big so shouldn't flag
   memset(vs6->arr, 'x', 100); // GOOD: it's variable size, we don't know how big so shouldn't flag
   memset(vs7->arr, 'x', 100); // GOOD: it's variable size, we don't know how big so shouldn't flag

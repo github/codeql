@@ -34,7 +34,7 @@ abstract class Container extends @container {
   /**
    * Gets a URL representing the location of this container.
    *
-   * For more information see [Providing URLs](https://help.semmle.com/QL/learn-ql/ql/locations.html#providing-urls).
+   * For more information see [Providing URLs](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/#providing-urls).
    */
   abstract string getURL();
 
@@ -246,13 +246,7 @@ class File extends Container, @file {
  * A file type.
  */
 class FileType extends string {
-  FileType() {
-    this = "javascript" or
-    this = "html" or
-    this = "typescript" or
-    this = "json" or
-    this = "yaml"
-  }
+  FileType() { this = ["javascript", "html", "typescript", "json", "yaml"] }
 
   /**
    * Holds if this is the JavaScript file type.

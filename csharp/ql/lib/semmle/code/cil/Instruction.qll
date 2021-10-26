@@ -4,15 +4,17 @@ private import CIL
 
 /** An instruction. */
 class Instruction extends Element, ControlFlowNode, DataFlowNode, @cil_instruction {
-  override string toString() { result = getOpcodeName() }
+  override string toString() { result = this.getOpcodeName() }
 
   /** Gets a more verbose textual representation of this instruction. */
-  string toStringExtra() { result = getIndex() + ": " + getOpcodeName() + getExtraStr() }
+  string toStringExtra() {
+    result = this.getIndex() + ": " + this.getOpcodeName() + this.getExtraStr()
+  }
 
   /** Gets the method containing this instruction. */
   override MethodImplementation getImplementation() { cil_instruction(this, _, _, result) }
 
-  override Method getMethod() { result = getImplementation().getMethod() }
+  override Method getMethod() { result = this.getImplementation().getMethod() }
 
   /**
    * Gets the index of this instruction.
@@ -30,7 +32,7 @@ class Instruction extends Element, ControlFlowNode, DataFlowNode, @cil_instructi
   string getExtra() { none() }
 
   private string getExtraStr() {
-    if exists(getExtra()) then result = " " + getExtra() else result = ""
+    if exists(this.getExtra()) then result = " " + this.getExtra() else result = ""
   }
 
   /** Gets the declaration accessed by this instruction, if any. */
@@ -39,8 +41,8 @@ class Instruction extends Element, ControlFlowNode, DataFlowNode, @cil_instructi
   /** Gets a successor instruction to this instruction. */
   override Instruction getASuccessorType(FlowType t) {
     t instanceof NormalFlow and
-    canFlowNext() and
-    result = this.getImplementation().getInstruction(getIndex() + 1)
+    this.canFlowNext() and
+    result = this.getImplementation().getInstruction(this.getIndex() + 1)
   }
 
   /** Holds if this instruction passes control flow into the next instruction. */
@@ -61,7 +63,7 @@ class Instruction extends Element, ControlFlowNode, DataFlowNode, @cil_instructi
   override Location getALocation() {
     cil_instruction_location(this, result) // The source code, if available
     or
-    result = getImplementation().getLocation() // The containing assembly
+    result = this.getImplementation().getLocation() // The containing assembly
   }
 
   override Location getLocation() { result = Element.super.getLocation() }

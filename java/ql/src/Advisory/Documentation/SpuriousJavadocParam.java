@@ -44,7 +44,7 @@ public <T> void parameterized(T parameter){ ... }
  * 
  * @param <X> The type of the elements.
  */
-class Generic<T> { ...}
+class Generic<T> { ... }
 
 /**
  * GOOD: A proper Javadoc comment.

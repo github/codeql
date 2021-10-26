@@ -60,12 +60,12 @@ class TextLiteral extends Literal {
 
   /** Gets a hex escape sequence that appears in the character or string literal (see [lex.ccon] in the C++ Standard). */
   string getAHexEscapeSequence(int occurrence, int offset) {
-    result = getValueText().regexpFind("(?<!\\\\)\\\\x[0-9a-fA-F]+", occurrence, offset)
+    result = this.getValueText().regexpFind("(?<!\\\\)\\\\x[0-9a-fA-F]+", occurrence, offset)
   }
 
   /** Gets an octal escape sequence that appears in the character or string literal (see [lex.ccon] in the C++ Standard). */
   string getAnOctalEscapeSequence(int occurrence, int offset) {
-    result = getValueText().regexpFind("(?<!\\\\)\\\\[0-7]{1,3}", occurrence, offset)
+    result = this.getValueText().regexpFind("(?<!\\\\)\\\\[0-7]{1,3}", occurrence, offset)
   }
 
   /**
@@ -75,27 +75,27 @@ class TextLiteral extends Literal {
   string getANonStandardEscapeSequence(int occurrence, int offset) {
     // Find all single character escape sequences (ignoring the start of octal escape sequences),
     // together with anything starting like a hex escape sequence but not followed by a hex digit.
-    result = getValueText().regexpFind("\\\\[^x0-7\\s]|\\\\x[^0-9a-fA-F]", occurrence, offset) and
+    result = this.getValueText().regexpFind("\\\\[^x0-7\\s]|\\\\x[^0-9a-fA-F]", occurrence, offset) and
     // From these, exclude all standard escape sequences.
-    not result = getAStandardEscapeSequence(_, _)
+    not result = this.getAStandardEscapeSequence(_, _)
   }
 
   /** Gets a simple escape sequence that appears in the char or string literal (see [lex.ccon] in the C++ Standard). */
   string getASimpleEscapeSequence(int occurrence, int offset) {
-    result = getValueText().regexpFind("\\\\['\"?\\\\abfnrtv]", occurrence, offset)
+    result = this.getValueText().regexpFind("\\\\['\"?\\\\abfnrtv]", occurrence, offset)
   }
 
   /** Gets a standard escape sequence that appears in the char or string literal (see [lex.ccon] in the C++ Standard). */
   string getAStandardEscapeSequence(int occurrence, int offset) {
-    result = getASimpleEscapeSequence(occurrence, offset) or
-    result = getAnOctalEscapeSequence(occurrence, offset) or
-    result = getAHexEscapeSequence(occurrence, offset)
+    result = this.getASimpleEscapeSequence(occurrence, offset) or
+    result = this.getAnOctalEscapeSequence(occurrence, offset) or
+    result = this.getAHexEscapeSequence(occurrence, offset)
   }
 
   /**
    * Gets the length of the string literal (including null) before escape sequences added by the extractor.
    */
-  int getOriginalLength() { result = getValue().length() + 1 }
+  int getOriginalLength() { result = this.getValue().length() + 1 }
 }
 
 /**
@@ -216,7 +216,7 @@ class ClassAggregateLiteral extends AggregateLiteral {
     (
       // If the field has an explicit initializer expression, then the field is
       // initialized.
-      exists(getFieldExpr(field))
+      exists(this.getFieldExpr(field))
       or
       // If the type is not a union, all fields without initializers are value
       // initialized.
@@ -224,7 +224,7 @@ class ClassAggregateLiteral extends AggregateLiteral {
       or
       // If the type is a union, and there are no explicit initializers, then
       // the first declared field is value initialized.
-      not exists(getAChild()) and
+      not exists(this.getAChild()) and
       field.getInitializationOrder() = 0
     )
   }
@@ -239,8 +239,8 @@ class ClassAggregateLiteral extends AggregateLiteral {
    */
   pragma[inline]
   predicate isValueInitialized(Field field) {
-    isInitialized(field) and
-    not exists(getFieldExpr(field))
+    this.isInitialized(field) and
+    not exists(this.getFieldExpr(field))
   }
 }
 
@@ -285,7 +285,7 @@ class ArrayOrVectorAggregateLiteral extends AggregateLiteral {
   bindingset[elementIndex]
   predicate isInitialized(int elementIndex) {
     elementIndex >= 0 and
-    elementIndex < getArraySize()
+    elementIndex < this.getArraySize()
   }
 
   /**
@@ -298,8 +298,8 @@ class ArrayOrVectorAggregateLiteral extends AggregateLiteral {
    */
   bindingset[elementIndex]
   predicate isValueInitialized(int elementIndex) {
-    isInitialized(elementIndex) and
-    not exists(getElementExpr(elementIndex))
+    this.isInitialized(elementIndex) and
+    not exists(this.getElementExpr(elementIndex))
   }
 }
 

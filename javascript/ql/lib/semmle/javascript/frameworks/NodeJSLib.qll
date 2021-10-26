@@ -523,14 +523,11 @@ module NodeJSLib {
   /** A write to the file system. */
   private class NodeJSFileSystemAccessWrite extends FileSystemWriteAccess, NodeJSFileSystemAccess {
     NodeJSFileSystemAccessWrite() {
-      methodName = "appendFile" or
-      methodName = "appendFileSync" or
-      methodName = "write" or
-      methodName = "writeFile" or
-      methodName = "writeFileSync" or
-      methodName = "writeSync" or
-      methodName = "link" or
-      methodName = "linkSync"
+      methodName =
+        [
+          "appendFile", "appendFileSync", "write", "writeFile", "writeFileSync", "writeSync",
+          "link", "linkSync"
+        ]
     }
 
     override DataFlow::Node getADataNode() {
@@ -699,13 +696,7 @@ module NodeJSLib {
         )
         or
         shell = false and
-        (
-          methodName = "execFile" or
-          methodName = "execFileSync" or
-          methodName = "spawn" or
-          methodName = "spawnSync" or
-          methodName = "fork"
-        )
+        methodName = ["execFile", "execFileSync", "spawn", "spawnSync", "fork"]
       ) and
       // all of the above methods take the command as their first argument
       result = getParameter(0).getARhs()
@@ -716,18 +707,12 @@ module NodeJSLib {
     override predicate isShellInterpreted(DataFlow::Node arg) { arg = getACommandArgument(true) }
 
     override DataFlow::Node getArgumentList() {
-      (
-        methodName = "execFile" or
-        methodName = "execFileSync" or
-        methodName = "fork" or
-        methodName = "spawn" or
-        methodName = "spawnSync"
-      ) and
+      methodName = ["execFile", "execFileSync", "fork", "spawn", "spawnSync"] and
       // all of the above methods take the argument list as their second argument
       result = getParameter(1).getARhs()
     }
 
-    override predicate isSync() { "Sync" = methodName.suffix(methodName.length() - 4) }
+    override predicate isSync() { methodName.matches("%Sync") }
 
     override DataFlow::Node getOptionsArg() {
       not result.getALocalSource() instanceof DataFlow::FunctionNode and // looks like callback

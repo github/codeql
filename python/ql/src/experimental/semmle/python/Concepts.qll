@@ -14,71 +14,34 @@ private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.TaintTracking
 private import experimental.semmle.python.Frameworks
 
-/** Provides classes for modeling Regular Expression-related APIs. */
-module RegexExecution {
+/** Provides classes for modeling log related APIs. */
+module LogOutput {
   /**
-   * A data-flow node that executes a regular expression.
+   * A data flow node for log output.
    *
    * Extend this class to model new APIs. If you want to refine existing API models,
-   * extend `RegexExecution` instead.
+   * extend `LogOutput` instead.
    */
   abstract class Range extends DataFlow::Node {
     /**
-     * Gets the argument containing the executed expression.
+     * Get the parameter value of the log output function.
      */
-    abstract DataFlow::Node getRegexNode();
-
-    /**
-     * Gets the library used to execute the regular expression.
-     */
-    abstract string getRegexModule();
+    abstract DataFlow::Node getAnInput();
   }
 }
 
 /**
- * A data-flow node that executes a regular expression.
+ * A data flow node for log output.
  *
  * Extend this class to refine existing API models. If you want to model new APIs,
- * extend `RegexExecution::Range` instead.
+ * extend `LogOutput::Range` instead.
  */
-class RegexExecution extends DataFlow::Node {
-  RegexExecution::Range range;
+class LogOutput extends DataFlow::Node {
+  LogOutput::Range range;
 
-  RegexExecution() { this = range }
+  LogOutput() { this = range }
 
-  DataFlow::Node getRegexNode() { result = range.getRegexNode() }
-
-  string getRegexModule() { result = range.getRegexModule() }
-}
-
-/** Provides classes for modeling Regular Expression escape-related APIs. */
-module RegexEscape {
-  /**
-   * A data-flow node that escapes a regular expression.
-   *
-   * Extend this class to model new APIs. If you want to refine existing API models,
-   * extend `RegexEscape` instead.
-   */
-  abstract class Range extends DataFlow::Node {
-    /**
-     * Gets the argument containing the escaped expression.
-     */
-    abstract DataFlow::Node getRegexNode();
-  }
-}
-
-/**
- * A data-flow node that escapes a regular expression.
- *
- * Extend this class to refine existing API models. If you want to model new APIs,
- * extend `RegexEscape::Range` instead.
- */
-class RegexEscape extends DataFlow::Node {
-  RegexEscape::Range range;
-
-  RegexEscape() { this = range }
-
-  DataFlow::Node getRegexNode() { result = range.getRegexNode() }
+  DataFlow::Node getAnInput() { result = range.getAnInput() }
 }
 
 /** Provides classes for modeling LDAP query execution-related APIs. */
@@ -157,9 +120,19 @@ module LDAPBind {
    */
   abstract class Range extends DataFlow::Node {
     /**
+     * Gets the argument containing the binding host.
+     */
+    abstract DataFlow::Node getHost();
+
+    /**
      * Gets the argument containing the binding expression.
      */
     abstract DataFlow::Node getPassword();
+
+    /**
+     * Holds if the binding process use SSL.
+     */
+    abstract predicate useSSL();
   }
 }
 
@@ -174,7 +147,20 @@ class LDAPBind extends DataFlow::Node {
 
   LDAPBind() { this = range }
 
+  /**
+   * Gets the argument containing the binding host.
+   */
+  DataFlow::Node getHost() { result = range.getHost() }
+
+  /**
+   * Gets the argument containing the binding expression.
+   */
   DataFlow::Node getPassword() { result = range.getPassword() }
+
+  /**
+   * Holds if the binding process use SSL.
+   */
+  predicate useSSL() { range.useSSL() }
 }
 
 /** Provides classes for modeling SQL sanitization libraries. */
@@ -266,4 +252,47 @@ class NoSQLSanitizer extends DataFlow::Node {
 
   /** Gets the argument that specifies the NoSQL query to be sanitized. */
   DataFlow::Node getAnInput() { result = range.getAnInput() }
+}
+
+/** Provides classes for modeling HTTP Header APIs. */
+module HeaderDeclaration {
+  /**
+   * A data-flow node that collects functions setting HTTP Headers.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `HeaderDeclaration` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /**
+     * Gets the argument containing the header name.
+     */
+    abstract DataFlow::Node getNameArg();
+
+    /**
+     * Gets the argument containing the header value.
+     */
+    abstract DataFlow::Node getValueArg();
+  }
+}
+
+/**
+ * A data-flow node that collects functions setting HTTP Headers.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `HeaderDeclaration::Range` instead.
+ */
+class HeaderDeclaration extends DataFlow::Node {
+  HeaderDeclaration::Range range;
+
+  HeaderDeclaration() { this = range }
+
+  /**
+   * Gets the argument containing the header name.
+   */
+  DataFlow::Node getNameArg() { result = range.getNameArg() }
+
+  /**
+   * Gets the argument containing the header value.
+   */
+  DataFlow::Node getValueArg() { result = range.getValueArg() }
 }

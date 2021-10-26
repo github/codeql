@@ -36,8 +36,8 @@ class GwtComponentTemplateElement extends XMLElement {
    */
   Class getClass() {
     exists(string namespace |
-      namespace = getNamespace().getURI() and
-      result.getQualifiedName() = namespace.substring(11, namespace.length()) + "." + getName()
+      namespace = this.getNamespace().getURI() and
+      result.getQualifiedName() = namespace.substring(11, namespace.length()) + "." + this.getName()
     )
   }
 }

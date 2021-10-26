@@ -12,13 +12,13 @@ import semmle.code.java.controlflow.Guards
  */
 class ConstantField extends Field {
   ConstantField() {
-    getType() instanceof ImmutableType and
+    this.getType() instanceof ImmutableType and
     // Assigned once
-    count(getAnAssignedValue()) = 1 and
+    count(this.getAnAssignedValue()) = 1 and
     // And that assignment is either in the appropriate initializer, or, for instance fields on
     // classes with one constructor, in the constructor.
-    forall(FieldWrite fa | fa = getAnAccess() |
-      if isStatic()
+    forall(FieldWrite fa | fa = this.getAnAccess() |
+      if this.isStatic()
       then fa.getEnclosingCallable() instanceof StaticInitializer
       else (
         // Defined in the instance initializer.
@@ -26,7 +26,7 @@ class ConstantField extends Field {
         or
         // It can be defined in the constructor if there is only one constructor.
         fa.getEnclosingCallable() instanceof Constructor and
-        count(getDeclaringType().getAConstructor()) = 1
+        count(this.getDeclaringType().getAConstructor()) = 1
       )
     )
   }
@@ -36,7 +36,7 @@ class ConstantField extends Field {
    *
    * Note: although this value is constant, we may not be able to statically determine the value.
    */
-  ConstantExpr getConstantValue() { result = getAnAssignedValue() }
+  ConstantExpr getConstantValue() { result = this.getAnAssignedValue() }
 }
 
 /**
@@ -162,18 +162,18 @@ class ConstSwitchStmt extends SwitchStmt {
 
   /** Gets the `ConstCase` that matches, if any. */
   ConstCase getMatchingConstCase() {
-    result = getAConstCase() and
+    result = this.getAConstCase() and
     // Only handle the int case for now
-    result.getValue().(ConstantExpr).getIntValue() = getExpr().(ConstantExpr).getIntValue()
+    result.getValue().(ConstantExpr).getIntValue() = this.getExpr().(ConstantExpr).getIntValue()
   }
 
   /** Gets the matching case, if it can be deduced. */
   SwitchCase getMatchingCase() {
     // Must be a value we can deduce
-    exists(getExpr().(ConstantExpr).getIntValue()) and
-    if exists(getMatchingConstCase())
-    then result = getMatchingConstCase()
-    else result = getDefaultCase()
+    exists(this.getExpr().(ConstantExpr).getIntValue()) and
+    if exists(this.getMatchingConstCase())
+    then result = this.getMatchingConstCase()
+    else result = this.getDefaultCase()
   }
 
   /**
@@ -184,8 +184,8 @@ class ConstSwitchStmt extends SwitchStmt {
   SwitchCase getAFailingCase() {
     exists(SwitchCase matchingCase |
       // We must have found the matching case, otherwise we can't deduce which cases are not matched
-      matchingCase = getMatchingCase() and
-      result = getACase() and
+      matchingCase = this.getMatchingCase() and
+      result = this.getACase() and
       result != matchingCase
     )
   }
@@ -208,7 +208,7 @@ class UnreachableBasicBlock extends BasicBlock {
     or
     // This block is not reachable in the CFG, and is not a callable, a body of a callable, an
     // expression in an annotation, an expression in an assert statement, or a catch clause.
-    forall(BasicBlock bb | bb = getABBPredecessor() | bb instanceof UnreachableBasicBlock) and
+    forall(BasicBlock bb | bb = this.getABBPredecessor() | bb instanceof UnreachableBasicBlock) and
     not exists(Callable c | c.getBody() = this) and
     not this instanceof Callable and
     not exists(Annotation a | a.getAChildExpr*() = this) and
@@ -231,12 +231,12 @@ class UnreachableBasicBlock extends BasicBlock {
  * An unreachable expression is an expression contained in an `UnreachableBasicBlock`.
  */
 class UnreachableExpr extends Expr {
-  UnreachableExpr() { getBasicBlock() instanceof UnreachableBasicBlock }
+  UnreachableExpr() { this.getBasicBlock() instanceof UnreachableBasicBlock }
 }
 
 /**
  * An unreachable statement is a statement contained in an `UnreachableBasicBlock`.
  */
 class UnreachableStmt extends Stmt {
-  UnreachableStmt() { getBasicBlock() instanceof UnreachableBasicBlock }
+  UnreachableStmt() { this.getBasicBlock() instanceof UnreachableBasicBlock }
 }

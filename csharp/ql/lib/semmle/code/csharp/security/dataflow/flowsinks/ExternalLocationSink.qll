@@ -38,12 +38,7 @@ class TraceMessageSink extends ExternalLocationSink {
       trace.hasQualifiedName("System.Diagnostics", "TraceSource")
     |
       this.getExpr() = trace.getAMethod().getACall().getArgumentForName(parameterName) and
-      (
-        parameterName = "format" or
-        parameterName = "args" or
-        parameterName = "message" or
-        parameterName = "category"
-      )
+      parameterName = ["format", "args", "message", "category"]
     )
   }
 }

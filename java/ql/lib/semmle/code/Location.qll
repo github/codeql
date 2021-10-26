@@ -58,15 +58,15 @@ class Top extends @top {
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
-   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    hasLocationInfoAux(filepath, startline, startcolumn, endline, endcolumn)
+    this.hasLocationInfoAux(filepath, startline, startcolumn, endline, endcolumn)
     or
     exists(string outFilepath, int outStartline, int outEndline |
-      hasLocationInfoAux(outFilepath, outStartline, _, outEndline, _) and
+      this.hasLocationInfoAux(outFilepath, outStartline, _, outEndline, _) and
       hasSmapLocationInfo(filepath, startline, startcolumn, endline, endcolumn, outFilepath,
         outStartline, outEndline)
     )
@@ -103,7 +103,7 @@ class Top extends @top {
   /**
    * Gets a comma-separated list of the names of the primary CodeQL classes to which this element belongs.
    */
-  final string getPrimaryQlClasses() { result = concat(getAPrimaryQlClass(), ",") }
+  final string getPrimaryQlClasses() { result = concat(this.getAPrimaryQlClass(), ",") }
 
   /**
    * Gets the name of a primary CodeQL class to which this element belongs.
@@ -180,7 +180,7 @@ class Location extends @location {
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
-   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn

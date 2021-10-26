@@ -175,6 +175,7 @@ module Consistency {
 
   query predicate postWithInFlow(Node n, string msg) {
     isPostUpdateNode(n) and
+    not clearsContent(n, _) and
     simpleLocalFlowStep(_, n) and
     msg = "PostUpdateNode should not be the target of local flow."
   }

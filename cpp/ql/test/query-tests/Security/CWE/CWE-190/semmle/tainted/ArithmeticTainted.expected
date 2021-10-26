@@ -23,6 +23,7 @@ edges
 | test.c:51:17:51:20 | argv | test.c:54:7:54:10 | len3 |
 | test.c:51:17:51:20 | argv | test.c:54:7:54:10 | len3 |
 | test.c:51:17:51:20 | argv | test.c:54:7:54:10 | len3 |
+subpaths
 nodes
 | test2.cpp:12:21:12:21 | v | semmle.label | v |
 | test2.cpp:14:11:14:11 | v | semmle.label | v |

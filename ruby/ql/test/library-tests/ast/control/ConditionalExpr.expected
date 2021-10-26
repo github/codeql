@@ -1,0 +1,43 @@
+conditionalExprs
+| conditionals.rb:10:1:12:3 | if ... | IfExpr | conditionals.rb:10:4:10:8 | ... > ... | conditionals.rb:10:10:11:5 | then ... | true |
+| conditionals.rb:15:1:19:3 | if ... | IfExpr | conditionals.rb:15:4:15:9 | ... == ... | conditionals.rb:15:10:16:5 | then ... | true |
+| conditionals.rb:15:1:19:3 | if ... | IfExpr | conditionals.rb:15:4:15:9 | ... == ... | conditionals.rb:17:1:18:5 | else ... | false |
+| conditionals.rb:22:1:30:3 | if ... | IfExpr | conditionals.rb:22:4:22:9 | ... == ... | conditionals.rb:22:11:23:5 | then ... | true |
+| conditionals.rb:22:1:30:3 | if ... | IfExpr | conditionals.rb:22:4:22:9 | ... == ... | conditionals.rb:24:1:29:5 | elsif ... | false |
+| conditionals.rb:24:1:29:5 | elsif ... | IfExpr | conditionals.rb:24:7:24:12 | ... == ... | conditionals.rb:24:14:25:5 | then ... | true |
+| conditionals.rb:24:1:29:5 | elsif ... | IfExpr | conditionals.rb:24:7:24:12 | ... == ... | conditionals.rb:26:1:29:5 | elsif ... | false |
+| conditionals.rb:26:1:29:5 | elsif ... | IfExpr | conditionals.rb:26:7:26:12 | ... == ... | conditionals.rb:26:14:27:5 | then ... | true |
+| conditionals.rb:26:1:29:5 | elsif ... | IfExpr | conditionals.rb:26:7:26:12 | ... == ... | conditionals.rb:28:1:29:5 | else ... | false |
+| conditionals.rb:33:1:37:3 | if ... | IfExpr | conditionals.rb:33:4:33:9 | ... == ... | conditionals.rb:33:10:34:5 | then ... | true |
+| conditionals.rb:33:1:37:3 | if ... | IfExpr | conditionals.rb:33:4:33:9 | ... == ... | conditionals.rb:35:1:36:5 | elsif ... | false |
+| conditionals.rb:35:1:36:5 | elsif ... | IfExpr | conditionals.rb:35:7:35:12 | ... == ... | conditionals.rb:35:13:36:5 | then ... | true |
+| conditionals.rb:40:1:42:3 | unless ... | UnlessExpr | conditionals.rb:40:8:40:12 | ... > ... | conditionals.rb:40:14:41:5 | then ... | false |
+| conditionals.rb:45:1:49:3 | unless ... | UnlessExpr | conditionals.rb:45:8:45:13 | ... == ... | conditionals.rb:45:14:46:5 | then ... | false |
+| conditionals.rb:45:1:49:3 | unless ... | UnlessExpr | conditionals.rb:45:8:45:13 | ... == ... | conditionals.rb:47:1:48:5 | else ... | true |
+| conditionals.rb:52:1:52:14 | ... if ... | IfModifierExpr | conditionals.rb:52:10:52:14 | ... > ... | conditionals.rb:52:1:52:5 | ... = ... | true |
+| conditionals.rb:55:1:55:18 | ... unless ... | UnlessModifierExpr | conditionals.rb:55:14:55:18 | ... < ... | conditionals.rb:55:1:55:5 | ... = ... | false |
+| conditionals.rb:58:5:58:25 | ... ? ... : ... | TernaryIfExpr | conditionals.rb:58:5:58:9 | ... > ... | conditionals.rb:58:13:58:17 | ... + ... | true |
+| conditionals.rb:58:5:58:25 | ... ? ... : ... | TernaryIfExpr | conditionals.rb:58:5:58:9 | ... > ... | conditionals.rb:58:21:58:25 | ... - ... | false |
+| conditionals.rb:61:1:64:3 | if ... | IfExpr | conditionals.rb:61:4:61:8 | ... > ... | conditionals.rb:61:10:62:5 | then ... | true |
+| conditionals.rb:61:1:64:3 | if ... | IfExpr | conditionals.rb:61:4:61:8 | ... > ... | conditionals.rb:63:1:63:4 | else ... | false |
+| conditionals.rb:67:1:70:3 | if ... | IfExpr | conditionals.rb:67:4:67:8 | ... > ... | conditionals.rb:67:10:67:13 | then ... | true |
+| conditionals.rb:67:1:70:3 | if ... | IfExpr | conditionals.rb:67:4:67:8 | ... > ... | conditionals.rb:68:1:69:5 | else ... | false |
+ifExprs
+| conditionals.rb:10:1:12:3 | if ... | IfExpr | conditionals.rb:10:4:10:8 | ... > ... | conditionals.rb:10:10:11:5 | then ... | (none) | false |
+| conditionals.rb:15:1:19:3 | if ... | IfExpr | conditionals.rb:15:4:15:9 | ... == ... | conditionals.rb:15:10:16:5 | then ... | else ... | false |
+| conditionals.rb:22:1:30:3 | if ... | IfExpr | conditionals.rb:22:4:22:9 | ... == ... | conditionals.rb:22:11:23:5 | then ... | elsif ... | false |
+| conditionals.rb:24:1:29:5 | elsif ... | IfExpr | conditionals.rb:24:7:24:12 | ... == ... | conditionals.rb:24:14:25:5 | then ... | elsif ... | true |
+| conditionals.rb:26:1:29:5 | elsif ... | IfExpr | conditionals.rb:26:7:26:12 | ... == ... | conditionals.rb:26:14:27:5 | then ... | else ... | true |
+| conditionals.rb:33:1:37:3 | if ... | IfExpr | conditionals.rb:33:4:33:9 | ... == ... | conditionals.rb:33:10:34:5 | then ... | elsif ... | false |
+| conditionals.rb:35:1:36:5 | elsif ... | IfExpr | conditionals.rb:35:7:35:12 | ... == ... | conditionals.rb:35:13:36:5 | then ... | (none) | true |
+| conditionals.rb:61:1:64:3 | if ... | IfExpr | conditionals.rb:61:4:61:8 | ... > ... | conditionals.rb:61:10:62:5 | then ... | else ... | false |
+| conditionals.rb:67:1:70:3 | if ... | IfExpr | conditionals.rb:67:4:67:8 | ... > ... | conditionals.rb:67:10:67:13 | then ... | else ... | false |
+unlessExprs
+| conditionals.rb:40:1:42:3 | unless ... | UnlessExpr | conditionals.rb:40:8:40:12 | ... > ... | conditionals.rb:40:14:41:5 | then ... | (none) |
+| conditionals.rb:45:1:49:3 | unless ... | UnlessExpr | conditionals.rb:45:8:45:13 | ... == ... | conditionals.rb:45:14:46:5 | then ... | else ... |
+ifModifierExprs
+| conditionals.rb:52:1:52:14 | ... if ... | IfModifierExpr | conditionals.rb:52:10:52:14 | ... > ... | conditionals.rb:52:1:52:5 | ... = ... |
+unlessModifierExprs
+| conditionals.rb:55:1:55:18 | ... unless ... | UnlessModifierExpr | conditionals.rb:55:14:55:18 | ... < ... | conditionals.rb:55:1:55:5 | ... = ... |
+ternaryIfExprs
+| conditionals.rb:58:5:58:25 | ... ? ... : ... | TernaryIfExpr | conditionals.rb:58:5:58:9 | ... > ... | conditionals.rb:58:13:58:17 | ... + ... | conditionals.rb:58:21:58:25 | ... - ... |

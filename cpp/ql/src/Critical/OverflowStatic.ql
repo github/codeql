@@ -5,7 +5,7 @@
  * @kind problem
  * @problem.severity warning
  * @security-severity 9.3
- * @precision medium
+ * @precision high
  * @id cpp/static-buffer-overflow
  * @tags reliability
  *       security
@@ -55,6 +55,8 @@ predicate overflowOffsetInLoop(BufferAccess bufaccess, string msg) {
     loop.counter().getAnAccess() = bufaccess.getArrayOffset() and
     // Ensure that we don't have an upper bound on the array index that's less than the buffer size.
     not upperBound(bufaccess.getArrayOffset().getFullyConverted()) < bufaccess.bufferSize() and
+    // The upper bounds analysis must not have been widended
+    not upperBoundMayBeWidened(bufaccess.getArrayOffset().getFullyConverted()) and
     msg =
       "Potential buffer-overflow: counter '" + loop.counter().toString() + "' <= " +
         loop.limit().toString() + " but '" + bufaccess.buffer().getName() + "' has " +
@@ -130,11 +132,13 @@ predicate outOfBounds(BufferAccess bufaccess, string msg) {
     (
       access > size
       or
-      access = size and not exists(AddressOfExpr addof | bufaccess = addof.getOperand())
+      access = size and
+      not exists(AddressOfExpr addof | bufaccess = addof.getOperand()) and
+      not exists(BuiltInOperationBuiltInOffsetOf offsetof | offsetof.getAChild() = bufaccess)
     ) and
     msg =
       "Potential buffer-overflow: '" + buf + "' has size " + size.toString() + " but '" + buf + "[" +
-        access.toString() + "]' is accessed here."
+        access.toString() + "]' may be accessed here."
   )
 }
 

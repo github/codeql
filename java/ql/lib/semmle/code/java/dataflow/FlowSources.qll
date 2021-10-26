@@ -45,8 +45,8 @@ private class RmiMethodParameterSource extends RemoteFlowSource {
     exists(RemoteCallableMethod method |
       method.getAParameter() = this.asParameter() and
       (
-        getType() instanceof PrimitiveType or
-        getType() instanceof TypeString
+        this.getType() instanceof PrimitiveType or
+        this.getType() instanceof TypeString
       )
     )
   }
@@ -246,4 +246,21 @@ class ExportedAndroidIntentInput extends RemoteFlowSource, AndroidIntentInput {
   ExportedAndroidIntentInput() { receiverType.(ExportableAndroidComponent).isExported() }
 
   override string getSourceType() { result = "Exported Android intent source" }
+}
+
+/** A parameter of an entry-point method declared in a `ContentProvider` class. */
+class AndroidContentProviderInput extends DataFlow::Node {
+  AndroidContentProvider declaringType;
+
+  AndroidContentProviderInput() {
+    sourceNode(this, "contentprovider") and
+    this.getEnclosingCallable().getDeclaringType() = declaringType
+  }
+}
+
+/** A parameter of an entry-point method declared in an exported `ContentProvider` class. */
+class ExportedAndroidContentProviderInput extends RemoteFlowSource, AndroidContentProviderInput {
+  ExportedAndroidContentProviderInput() { declaringType.isExported() }
+
+  override string getSourceType() { result = "Exported Android content provider source" }
 }

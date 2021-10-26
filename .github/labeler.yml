@@ -18,6 +18,10 @@ Python:
   - python/**/*
   - change-notes/**/*python*
 
+Ruby:
+  - ruby/**/*
+  - change-notes/**/*ruby*
+
 documentation:
   - "**/*.qhelp"
   - "**/*.md"

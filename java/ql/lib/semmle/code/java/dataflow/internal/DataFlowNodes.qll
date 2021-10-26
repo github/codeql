@@ -117,9 +117,9 @@ module Public {
      * Gets an upper bound on the type of this node.
      */
     Type getTypeBound() {
-      result = getImprovedTypeBound()
+      result = this.getImprovedTypeBound()
       or
-      result = getType() and not exists(getImprovedTypeBound())
+      result = this.getType() and not exists(this.getImprovedTypeBound())
     }
 
     /**
@@ -127,12 +127,12 @@ module Public {
      * The location spans column `startcolumn` of line `startline` to
      * column `endcolumn` of line `endline` in file `filepath`.
      * For more information, see
-     * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+     * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
      */
     predicate hasLocationInfo(
       string filepath, int startline, int startcolumn, int endline, int endcolumn
     ) {
-      getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+      this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     }
   }
 
@@ -288,9 +288,9 @@ private class NewExpr extends PostUpdateNode, TExprNode {
  * A `PostUpdateNode` that is not a `ClassInstanceExpr`.
  */
 abstract private class ImplicitPostUpdateNode extends PostUpdateNode {
-  override Location getLocation() { result = getPreUpdateNode().getLocation() }
+  override Location getLocation() { result = this.getPreUpdateNode().getLocation() }
 
-  override string toString() { result = getPreUpdateNode().toString() + " [post update]" }
+  override string toString() { result = this.getPreUpdateNode().toString() + " [post update]" }
 }
 
 private class ExplicitExprPostUpdate extends ImplicitPostUpdateNode, TExplicitExprPostUpdate {
