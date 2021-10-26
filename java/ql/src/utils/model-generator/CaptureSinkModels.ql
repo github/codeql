@@ -16,8 +16,8 @@ class PropagateToSinkConfiguration extends TaintTracking::Configuration {
 
   override predicate isSource(DataFlow::Node source) {
     source instanceof DataFlow::ParameterNode and
-    source.asParameter().getCallable().isPublic() and
-    source.asParameter().getCallable().getDeclaringType().isPublic() and
+    source.getEnclosingCallable().isPublic() and
+    source.getEnclosingCallable().getDeclaringType().isPublic() and
     isRelevantForModels(source.getEnclosingCallable())
   }
 
@@ -25,7 +25,10 @@ class PropagateToSinkConfiguration extends TaintTracking::Configuration {
 }
 
 string asInputArgument(DataFlow::Node source) {
-  result = "Argument[" + source.asParameter().getPosition() + "]"
+  exists(int pos |
+    source.(DataFlow::ParameterNode).isParameterOf(_, pos) and
+    result = "Argument[" + pos + "]"
+  )
 }
 
 string captureSink(Callable api) {

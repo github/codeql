@@ -15,6 +15,10 @@ public final class ImmutablePojo {
         return value;
     }
 
+    public long getX() {
+        return x;
+    }
+
     public String or(String defaultValue) {
         return value != null ? value : defaultValue;
     }

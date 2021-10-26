@@ -19,4 +19,12 @@ public final class Factory {
         this.intValue = intValue;
     }
 
+    public String getValue() {
+        return value;
+    }
+
+    public int getIntValue() {
+        return intValue;
+    }
+
 }

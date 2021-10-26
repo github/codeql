@@ -28,14 +28,15 @@ string captureQualifierFlow(Callable api) {
 }
 
 string captureFieldFlow(Callable api) {
-  exists(FieldAccess fa, ReturnNodeExt postUpdate |
+  exists(FieldAccess fa, ReturnNodeExt returnNode |
     not (fa.getField().isStatic() and fa.getField().isFinal()) and
-    postUpdate.getEnclosingCallable() = api and
+    returnNode.getEnclosingCallable() = api and
+    fa.getCompilationUnit() = api.getCompilationUnit() and
     isRelevantType(api.getReturnType()) and
     not api.getDeclaringType() instanceof EnumType and
-    TaintTracking::localTaint(DataFlow::exprNode(fa), postUpdate)
+    TaintTracking::localTaint(DataFlow::exprNode(fa), returnNode)
   |
-    result = asTaintModel(api, "Argument[-1]", asOutput(api, postUpdate))
+    result = asTaintModel(api, "Argument[-1]", asOutput(api, returnNode))
   )
 }
 
@@ -59,7 +60,11 @@ class ParameterToFieldConfig extends TaintTracking::Configuration {
   }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(FieldAssignment a | a.getSource() = sink.asExpr())
+    exists(FieldAssignment a |
+      a.getSource() = sink.asExpr() and
+      a.getDest().(VarAccess).getVariable().getCompilationUnit() =
+        sink.getEnclosingCallable().getCompilationUnit()
+    )
   }
 }
 
