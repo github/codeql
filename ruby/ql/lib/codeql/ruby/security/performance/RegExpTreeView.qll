@@ -3,6 +3,42 @@ private import codeql.Locations
 private import ParseRegExp
 
 /**
+ * Holds if the regular expression should not be considered.
+ */
+predicate isExcluded(RegExpParent parent) {
+  parent.(RegExpTerm).getRegExp().hasFreeSpacingFlag() // exclude free-spacing mode regexes
+}
+
+/**
+ * A module containing predicates for determining which flags a regular expression have.
+ */
+module RegExpFlags {
+  /**
+   * Holds if `root` has the `i` flag for case-insensitive matching.
+   */
+  predicate isIgnoreCase(RegExpTerm root) {
+    root.isRootTerm() and
+    root.getLiteral().isIgnoreCase()
+  }
+
+  /**
+   * Gets the flags for `root`, or the empty string if `root` has no flags.
+   */
+  string getFlags(RegExpTerm root) {
+    root.isRootTerm() and
+    result = root.getLiteral().getFlags()
+  }
+
+  /**
+   * Holds if `root` has the `s` flag for multi-line matching.
+   */
+  predicate isDotAll(RegExpTerm root) {
+    root.isRootTerm() and
+    root.getLiteral().isDotAll()
+  }
+}
+
+/**
  * An element containing a regular expression term, that is, either
  * a string literal (parsed as a regular expression)
  * or another regular expression term.
@@ -37,6 +73,10 @@ class RegExpLiteral extends TRegExpLiteral, RegExpParent {
   override RegExpTerm getChild(int i) { i = 0 and result.getRegExp() = re and result.isRootTerm() }
 
   predicate isDotAll() { re.hasMultilineFlag() }
+
+  predicate isIgnoreCase() { re.hasCaseInsensitiveFlag() }
+
+  string getFlags() { result = re.getFlagString() }
 
   override string getAPrimaryQlClass() { result = "RegExpLiteral" }
 }
