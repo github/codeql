@@ -4,6 +4,7 @@ import glob
 import re
 import subprocess
 import shutil
+import os
 
 kotlinc = 'kotlinc'
 
@@ -57,6 +58,8 @@ def compile_embeddable():
     classpath = ':'.join(jar_files)
 
     try:
+        if os.path.exists('build/temp_src'):
+            shutil.rmtree('build/temp_src')
         shutil.copytree('src', 'build/temp_src')
         srcs = glob.glob('build/temp_src/**/*.kt', recursive=True)
 
@@ -71,7 +74,8 @@ def compile_embeddable():
 
         compile(srcs, classpath, 'codeql-extractor-kotlin-embeddable.jar')
     finally:
-        shutil.rmtree('build/temp_src')
+        if os.path.exists('build/temp_src'):
+            shutil.rmtree('build/temp_src')
 
 
 compile_standalone()
