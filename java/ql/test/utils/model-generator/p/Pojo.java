@@ -67,6 +67,14 @@ public final class Pojo {
         return List.of(Integer.valueOf(intValue));
     }
 
+    public List<Character> getBoxedChars() {
+        return List.of((char)intValue);
+    }
+
+    public Byte[] getBoxedBytes() {
+        return new Byte[] { Byte.valueOf((byte) intValue) };
+    }
+    
     public BigInteger getBigInt() {
         return BigInteger.valueOf(intValue);
     }

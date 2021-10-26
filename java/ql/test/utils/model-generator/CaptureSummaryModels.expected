@@ -32,6 +32,8 @@
 | p;ParamFlow;true;returnsInput;(String);;Argument[0];ReturnValue;taint; |
 | p;ParamFlow;true;writeChunked;(byte[],OutputStream);;ArrayElement of Argument[0];Argument[1];taint; |
 | p;Pojo;false;fillIn;(List);;Argument[-1];Element of Argument[0];taint; |
+| p;Pojo;false;getBoxedBytes;();;Argument[-1];ReturnValue;taint; |
+| p;Pojo;false;getBoxedChars;();;Argument[-1];ReturnValue;taint; |
 | p;Pojo;false;getByteArray;();;Argument[-1];ReturnValue;taint; |
 | p;Pojo;false;getCharArray;();;Argument[-1];ReturnValue;taint; |
 | p;Pojo;false;getValue;();;Argument[-1];ReturnValue;taint; |

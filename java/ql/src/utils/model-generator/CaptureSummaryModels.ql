@@ -131,10 +131,20 @@ predicate isRelevantType(Type t) {
   not t.(RefType).hasQualifiedName("java.math", "BigInteger") and
   (
     not t.(Array).getElementType() instanceof PrimitiveType or
-    t.(Array).getElementType().(PrimitiveType).getName().regexpMatch("byte|char")
+    isPrimitiveTypeUsedForBulkData(t.(Array).getElementType())
   ) and
-  not t.(Array).getElementType() instanceof BoxedType and
-  not t.(CollectionType).getElementType() instanceof BoxedType
+  (
+    not t.(Array).getElementType() instanceof BoxedType or
+    isPrimitiveTypeUsedForBulkData(t.(Array).getElementType())
+  ) and
+  (
+    not t.(CollectionType).getElementType() instanceof BoxedType or
+    isPrimitiveTypeUsedForBulkData(t.(CollectionType).getElementType())
+  )
+}
+
+predicate isPrimitiveTypeUsedForBulkData(Type t) {
+  t.getName().regexpMatch("byte|char|Byte|Character")
 }
 
 from TargetAPI api, string flow
