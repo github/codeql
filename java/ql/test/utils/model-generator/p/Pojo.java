@@ -48,13 +48,17 @@ public final class Pojo {
     }
 
     public char[] getCharArray() {
-        return Character.toChars(intValue);
+        return new char[] { (char) intValue };
     }
 
     public byte[] getByteArray() {
         return new byte[] { (byte) intValue };
     }
     
+    public float[] getFloatArray() {
+        return new float[] { (float) intValue };
+    }
+
     public Integer[] getBoxedArray() {
         return new Integer[] { Integer.valueOf(intValue) };
     }

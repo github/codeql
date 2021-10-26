@@ -129,8 +129,10 @@ predicate isRelevantType(Type t) {
   not t instanceof PrimitiveType and
   not t instanceof BoxedType and
   not t.(RefType).hasQualifiedName("java.math", "BigInteger") and
-  not t.(Array).getElementType() instanceof PrimitiveType and
-  not t.(Array).getElementType().(PrimitiveType).getName().regexpMatch("byte|char") and
+  (
+    not t.(Array).getElementType() instanceof PrimitiveType or
+    t.(Array).getElementType().(PrimitiveType).getName().regexpMatch("byte|char")
+  ) and
   not t.(Array).getElementType() instanceof BoxedType and
   not t.(CollectionType).getElementType() instanceof BoxedType
 }
