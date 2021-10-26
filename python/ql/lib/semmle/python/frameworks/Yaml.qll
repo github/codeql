@@ -9,7 +9,6 @@
 
 private import python
 private import semmle.python.dataflow.new.DataFlow
-private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
 
@@ -63,7 +62,7 @@ private module Yaml {
       )
     }
 
-    override DataFlow::Node getAnInput() { result = this.getArg(0) }
+    override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("stream")] }
 
     override DataFlow::Node getOutput() { result = this }
 
