@@ -1,0 +1,60 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Deserializing untrusted data using any method that allows the construction of
+arbitrary objects is easily exploitable and, in many cases, allows an attacker
+to execute arbitrary code.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Avoid deserialization of untrusted data if possible. If the architecture permits
+it, use serialization formats that cannot represent arbitarary objects. For
+libraries that support it, such as the Ruby standard library's <code>JSON</code>
+module, ensure that the parser is configured to disable
+deserialization of arbitrary objects.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example calls the <code>Marshal.load</code>,
+<code>JSON.load</code>, <code>YAML.load</code>, and <code>Oj.load</code> methods
+on data from an HTTP request. Since these methods are capable of deserializing
+to arbitrary objects, this is inherently unsafe.
+</p>
+<sample src="examples/UnsafeDeserializationBad.rb"/>
+<p>
+Using <code>JSON.parse</code> and <code>YAML.safe_load</code> instead, as in the
+following example, removes the vulnerability. Similarly, calling
+<code>Oj.load</code> with any mode other than <code>:object</code> is safe, as
+is calling <code>Oj.safe_load</code>. Note that there is no safe way to deserialize
+untrusted data using <code>Marshal</code>.
+</p>
+<sample src="examples/UnsafeDeserializationGood.rb"/>
+</example>
+
+<references>
+
+<li>
+OWASP vulnerability description:
+<a href="https://www.owasp.org/index.php/Deserialization_of_untrusted_data">deserialization of untrusted data</a>.
+</li>
+<li>
+Ruby documentation: <a href="https://docs.ruby-lang.org/en/3.0.0/doc/security_rdoc.html">guidance on deserializing objects safely</a>.
+</li>
+<li>
+Ruby documentation: <a href="https://ruby-doc.org/core-3.0.2/Marshal.html#module-Marshal-label-Security+considerations">security guidance on the Marshal library</a>.
+</li>
+<li>
+Ruby documentation: <a href="https://ruby-doc.org/stdlib-3.0.2/libdoc/json/rdoc/JSON.html#method-i-load">security guidance on JSON.load</a>.
+</li>
+<li>
+Ruby documentation: <a href="https://ruby-doc.org/stdlib-3.0.2/libdoc/yaml/rdoc/YAML.html#module-YAML-label-Security">security guidance on the YAML library</a>.
+</li>
+</references>
+
+</qhelp>

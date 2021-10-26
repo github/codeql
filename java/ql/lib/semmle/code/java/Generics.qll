@@ -38,7 +38,7 @@ import Type
  *
  * For example, `X` in `class X<T> { }`.
  */
-class GenericType extends RefType {
+class GenericType extends ClassOrInterface {
   GenericType() { typeVars(_, _, _, _, this) }
 
   /**
@@ -139,7 +139,7 @@ abstract class BoundedType extends RefType, @boundedtype {
  */
 class TypeVariable extends BoundedType, @typevariable {
   /** Gets the generic type that is parameterized by this type parameter, if any. */
-  RefType getGenericType() { typeVars(this, _, _, _, result) }
+  GenericType getGenericType() { typeVars(this, _, _, _, result) }
 
   /** Gets the generic callable that is parameterized by this type parameter, if any. */
   GenericCallable getGenericCallable() { typeVars(this, _, _, _, result) }
@@ -321,7 +321,7 @@ class TypeBound extends @typebound {
  * For example, `List<Number>` is a parameterization of
  * the generic type `List<E>`, where `E` is a type parameter.
  */
-class ParameterizedType extends RefType {
+class ParameterizedType extends ClassOrInterface {
   ParameterizedType() {
     typeArgs(_, _, this) or
     typeVars(_, _, _, _, this)
@@ -367,7 +367,9 @@ class ParameterizedType extends RefType {
   }
 
   /** Holds if this type originates from source code. */
-  override predicate fromSource() { typeVars(_, _, _, _, this) and RefType.super.fromSource() }
+  override predicate fromSource() {
+    typeVars(_, _, _, _, this) and ClassOrInterface.super.fromSource()
+  }
 
   override string getAPrimaryQlClass() { result = "ParameterizedType" }
 }

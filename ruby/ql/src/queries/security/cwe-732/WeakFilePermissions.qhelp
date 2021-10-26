@@ -1,0 +1,26 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+When creating a file, POSIX systems allow permissions to be specified
+for owner, group and others separately. Permissions should be kept as
+strict as possible, preventing access to the files contents by other users.
+</p>
+
+</overview>
+
+<recommendation>
+<p>
+Restrict the file permissions of files to prevent any but the owner being able to read or write to that file
+</p>
+</recommendation>
+
+<references>
+<li>
+Wikipedia:
+<a href="https://en.wikipedia.org/wiki/File_system_permissions">File system permissions</a>.
+</li>
+</references>
+
+</qhelp>

@@ -15,31 +15,11 @@ class DjangoDbTableObjects extends TaintKind {
 
   override TaintKind getTaintOfMethodResult(string name) {
     result = this and
-    (
-      name = "filter" or
-      name = "exclude" or
-      name = "annotate" or
-      name = "order_by" or
-      name = "reverse" or
-      name = "distinct" or
-      name = "values" or
-      name = "values_list" or
-      name = "dates" or
-      name = "datetimes" or
-      name = "none" or
-      name = "all" or
-      name = "union" or
-      name = "intersection" or
-      name = "difference" or
-      name = "select_related" or
-      name = "prefetch_related" or
-      name = "extra" or
-      name = "defer" or
-      name = "only" or
-      name = "using" or
-      name = "select_for_update" or
-      name = "raw"
-    )
+    name in [
+        "filter", "exclude", "none", "all", "union", "intersection", "difference", "select_related",
+        "prefetch_related", "extra", "defer", "only", "annotate", "using", "select_for_update",
+        "raw", "order_by", "reverse", "distinct", "values", "values_list", "dates", "datetimes"
+      ]
   }
 }
 
