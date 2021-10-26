@@ -535,8 +535,7 @@ stmts(
   int bodydecl: @callable ref
 );
 
-// @stmtparent = @callable | @stmt | @switchexpr;
-@stmtparent = @exprparent;
+@stmtparent = @callable | @stmt | @switchexpr | @whenbranch;
 
 case @stmt.kind of
   0 = @block

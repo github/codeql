@@ -789,10 +789,13 @@ class X {
                         continue
                     }
 
+                    val declLocId = tw.getLocation(decl)
+                    val stmtId = tw.getFreshIdLabel<DbExprstmt>()
+                    tw.writeStmts_exprstmt(stmtId, blockId, idx++, obinitId)
+                    tw.writeHasLocation(stmtId, declLocId)
                     val assignmentId = tw.getFreshIdLabel<DbAssignexpr>()
                     val type = useType(initializer.expression.type)
-                    val declLocId = tw.getLocation(decl)
-                    tw.writeExprs_assignexpr(assignmentId, type.javaResult.id, type.kotlinResult.id, blockId, idx++)
+                    tw.writeExprs_assignexpr(assignmentId, type.javaResult.id, type.kotlinResult.id, stmtId, 0)
                     tw.writeHasLocation(assignmentId, declLocId)
 
                     val lhsId = tw.getFreshIdLabel<DbVaraccess>()
@@ -802,7 +805,7 @@ class X {
                     val vId = useProperty(decl) // todo: fix this. We should be assigning the field, and not the property
                     tw.writeVariableBinding(lhsId, vId)
 
-                    extractExpression(initializer.expression, obinitId, assignmentId, 1)
+                    extractExpressionExpr(initializer.expression, obinitId, assignmentId, 1)
                 }
                 is IrAnonymousInitializer -> {
                     if (decl.isStatic) {
@@ -926,14 +929,14 @@ class X {
         tw.writeHasLocation(stmtId, locId)
         val i = v.initializer
         if(i != null) {
-            extractExpression(i, callable, exprId, 0)
+            extractExpressionExpr(i, callable, exprId, 0)
         }
     }
 
     fun extractStatement(s: IrStatement, callable: Label<out DbCallable>, parent: Label<out DbStmtparent>, idx: Int) {
         when(s) {
             is IrExpression -> {
-                extractExpression(s, callable, parent, idx)
+                extractExpressionStmt(s, callable, parent, idx)
             }
             is IrVariable -> {
                 extractVariable(s, callable, parent, idx)
@@ -1047,12 +1050,12 @@ class X {
         }
         val dr = c.dispatchReceiver
         if(dr != null) {
-            extractExpression(dr, callable, exprId, -1)
+            extractExpressionExpr(dr, callable, exprId, -1)
         }
         for(i in 0 until c.valueArgumentsCount) {
             val arg = c.getValueArgument(i)
             if(arg != null) {
-                extractExpression(arg, callable, exprId, i)
+                extractExpressionExpr(arg, callable, exprId, i)
             }
         }
     }
@@ -1088,12 +1091,12 @@ class X {
         for (i in 0 until e.valueArgumentsCount) {
             val arg = e.getValueArgument(i)
             if (arg != null) {
-                extractExpression(arg, callable, id, i)
+                extractExpressionExpr(arg, callable, id, i)
             }
         }
         val dr = e.dispatchReceiver
         if (dr != null) {
-            extractExpression(dr, callable, id, -2)
+            extractExpressionExpr(dr, callable, id, -2)
         }
 
         if (e.typeArgumentsCount > 0) {
@@ -1107,29 +1110,8 @@ class X {
 
     private var currentFunction: IrFunction? = null
 
-    fun extractExpression(e: IrExpression, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int) {
+    fun extractExpressionStmt(e: IrExpression, callable: Label<out DbCallable>, parent: Label<out DbStmtparent>, idx: Int) {
         when(e) {
-            is IrInstanceInitializerCall -> {
-                val irCallable = currentFunction
-                if (irCallable == null) {
-                    logger.warnElement(Severity.ErrorSevere, "Current function is not set", e)
-                    return
-                }
-
-                if (irCallable is IrConstructor && irCallable.isPrimary) {
-                    // Todo add parameter to field assignments
-                }
-
-                // Add call to <obinit>:
-                val id = tw.getFreshIdLabel<DbMethodaccess>()
-                val type = useType(e.type)
-                val locId = tw.getLocation(e)
-                var methodLabel = getFunctionLabel(irCallable.parent, "<obinit>", listOf(), e.type)
-                val methodId = tw.getLabelFor<DbMethod>(methodLabel)
-                tw.writeExprs_methodaccess(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
-                tw.writeHasLocation(id, locId)
-                tw.writeCallableBinding(id, methodId)
-            }
             is IrDelegatingConstructorCall -> {
                 val irCallable = currentFunction
                 if (irCallable == null) {
@@ -1158,15 +1140,107 @@ class X {
                 for (i in 0 until e.valueArgumentsCount) {
                     val arg = e.getValueArgument(i)
                     if (arg != null) {
-                        extractExpression(arg, callable, id, i)
+                        extractExpressionExpr(arg, callable, id, i)
                     }
                 }
                 val dr = e.dispatchReceiver
                 if (dr != null) {
-                    extractExpression(dr, callable, id, -1)
+                    extractExpressionExpr(dr, callable, id, -1)
                 }
 
                 // todo: type arguments at index -2, -3, ...
+            }
+            is IrThrow -> {
+                val id = tw.getFreshIdLabel<DbThrowstmt>()
+                val locId = tw.getLocation(e)
+                tw.writeStmts_throwstmt(id, parent, idx, callable)
+                tw.writeHasLocation(id, locId)
+                extractExpressionExpr(e.value, callable, id, 0)
+            }
+            is IrBreak -> {
+                val id = tw.getFreshIdLabel<DbBreakstmt>()
+                tw.writeStmts_breakstmt(id, parent, idx, callable)
+                extractBreakContinue(e, id)
+            }
+            is IrContinue -> {
+                val id = tw.getFreshIdLabel<DbContinuestmt>()
+                tw.writeStmts_continuestmt(id, parent, idx, callable)
+                extractBreakContinue(e, id)
+            }
+            is IrReturn -> {
+                val id = tw.getFreshIdLabel<DbReturnstmt>()
+                val locId = tw.getLocation(e)
+                tw.writeStmts_returnstmt(id, parent, idx, callable)
+                tw.writeHasLocation(id, locId)
+                extractExpressionExpr(e.value, callable, id, 0)
+            }
+            is IrContainerExpression -> {
+                val id = tw.getFreshIdLabel<DbBlock>()
+                val locId = tw.getLocation(e)
+                tw.writeStmts_block(id, parent, idx, callable)
+                tw.writeHasLocation(id, locId)
+                e.statements.forEachIndexed { i, s ->
+                    extractStatement(s, callable, id, i)
+                }
+            }
+            is IrWhileLoop -> {
+                val id = tw.getFreshIdLabel<DbWhilestmt>()
+                loopIdMap[e] = id
+                val locId = tw.getLocation(e)
+                tw.writeStmts_whilestmt(id, parent, idx, callable)
+                tw.writeHasLocation(id, locId)
+                extractExpressionExpr(e.condition, callable, id, 0)
+                val body = e.body
+                if(body != null) {
+                    extractExpressionStmt(body, callable, id, 1)
+                }
+                loopIdMap.remove(e)
+            }
+            is IrDoWhileLoop -> {
+                val id = tw.getFreshIdLabel<DbDostmt>()
+                loopIdMap[e] = id
+                val locId = tw.getLocation(e)
+                tw.writeStmts_dostmt(id, parent, idx, callable)
+                tw.writeHasLocation(id, locId)
+                extractExpressionExpr(e.condition, callable, id, 0)
+                val body = e.body
+                if(body != null) {
+                    extractExpressionStmt(body, callable, id, 1)
+                }
+                loopIdMap.remove(e)
+            }
+            else -> {
+                val id = tw.getFreshIdLabel<DbExprstmt>()
+                val locId = tw.getLocation(e)
+                tw.writeStmts_exprstmt(id, parent, idx, callable)
+                tw.writeHasLocation(id, locId)
+                extractExpressionExpr(e, callable, id, 0)
+            }
+        }
+    }
+
+    fun extractExpressionExpr(e: IrExpression, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int) {
+        when(e) {
+            is IrInstanceInitializerCall -> {
+                val irCallable = currentFunction
+                if (irCallable == null) {
+                    logger.warnElement(Severity.ErrorSevere, "Current function is not set", e)
+                    return
+                }
+
+                if (irCallable is IrConstructor && irCallable.isPrimary) {
+                    // Todo add parameter to field assignments
+                }
+
+                // Add call to <obinit>:
+                val id = tw.getFreshIdLabel<DbMethodaccess>()
+                val type = useType(e.type)
+                val locId = tw.getLocation(e)
+                var methodLabel = getFunctionLabel(irCallable.parent, "<obinit>", listOf(), e.type)
+                val methodId = tw.getLabelFor<DbMethod>(methodLabel)
+                tw.writeExprs_methodaccess(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
+                tw.writeHasLocation(id, locId)
+                tw.writeCallableBinding(id, methodId)
             }
             is IrConstructorCall -> {
                 extractConstructorCall(e, parent, idx, callable)
@@ -1277,66 +1351,7 @@ class X {
                 val vId = useValueDeclaration(e.symbol.owner)
                 tw.writeVariableBinding(lhsId, vId)
 
-                extractExpression(e.value, callable, id, 1)
-            }
-            is IrThrow -> {
-                val id = tw.getFreshIdLabel<DbThrowstmt>()
-                val locId = tw.getLocation(e)
-                tw.writeStmts_throwstmt(id, parent, idx, callable)
-                tw.writeHasLocation(id, locId)
-                extractExpression(e.value, callable, id, 0)
-            }
-            is IrBreak -> {
-                val id = tw.getFreshIdLabel<DbBreakstmt>()
-                tw.writeStmts_breakstmt(id, parent, idx, callable)
-                extractBreakContinue(e, id)
-            }
-            is IrContinue -> {
-                val id = tw.getFreshIdLabel<DbContinuestmt>()
-                tw.writeStmts_continuestmt(id, parent, idx, callable)
-                extractBreakContinue(e, id)
-            }
-            is IrReturn -> {
-                val id = tw.getFreshIdLabel<DbReturnstmt>()
-                val locId = tw.getLocation(e)
-                tw.writeStmts_returnstmt(id, parent, idx, callable)
-                tw.writeHasLocation(id, locId)
-                extractExpression(e.value, callable, id, 0)
-            }
-            is IrContainerExpression -> {
-                val id = tw.getFreshIdLabel<DbBlock>()
-                val locId = tw.getLocation(e)
-                tw.writeStmts_block(id, parent, idx, callable)
-                tw.writeHasLocation(id, locId)
-                e.statements.forEachIndexed { i, s ->
-                    extractStatement(s, callable, id, i)
-                }
-            }
-            is IrWhileLoop -> {
-                val id = tw.getFreshIdLabel<DbWhilestmt>()
-                loopIdMap[e] = id
-                val locId = tw.getLocation(e)
-                tw.writeStmts_whilestmt(id, parent, idx, callable)
-                tw.writeHasLocation(id, locId)
-                extractExpression(e.condition, callable, id, 0)
-                val body = e.body
-                if(body != null) {
-                    extractExpression(body, callable, id, 1)
-                }
-                loopIdMap.remove(e)
-            }
-            is IrDoWhileLoop -> {
-                val id = tw.getFreshIdLabel<DbDostmt>()
-                loopIdMap[e] = id
-                val locId = tw.getLocation(e)
-                tw.writeStmts_dostmt(id, parent, idx, callable)
-                tw.writeHasLocation(id, locId)
-                extractExpression(e.condition, callable, id, 0)
-                val body = e.body
-                if(body != null) {
-                    extractExpression(body, callable, id, 1)
-                }
-                loopIdMap.remove(e)
+                extractExpressionExpr(e.value, callable, id, 1)
             }
             is IrWhen -> {
                 val id = tw.getFreshIdLabel<DbWhenexpr>()
@@ -1352,8 +1367,8 @@ class X {
                     val bLocId = tw.getLocation(b)
                     tw.writeWhen_branch(bId, id, i)
                     tw.writeHasLocation(bId, bLocId)
-                    extractExpression(b.condition, callable, bId, 0)
-                    extractExpression(b.result, callable, bId, 1)
+                    extractExpressionExpr(b.condition, callable, bId, 0)
+                    extractExpressionStmt(b.result, callable, bId, 1)
                     if(b is IrElseBranch) {
                         tw.writeWhen_branch_else(bId)
                     }
@@ -1365,7 +1380,7 @@ class X {
                 val type = useType(e.type)
                 tw.writeExprs_getclassexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 tw.writeHasLocation(id, locId)
-                extractExpression(e.argument, callable, id, 0)
+                extractExpressionExpr(e.argument, callable, id, 0)
             }
             else -> {
                 logger.warnElement(Severity.ErrorSevere, "Unrecognised IrExpression: " + e.javaClass, e)
