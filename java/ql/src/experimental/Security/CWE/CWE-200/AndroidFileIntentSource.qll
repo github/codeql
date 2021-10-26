@@ -48,11 +48,7 @@ class GetContentIntentConfig extends TaintTracking2::Configuration {
     // Allow the wrapped intent created by Intent.getChooser to be consumed
     // by at the sink:
     isSink(node) and
-    (
-      content.(DataFlow::SyntheticFieldContent).getField() = "android.content.Intent.extras"
-      or
-      content instanceof DataFlow::MapValueContent
-    )
+    allowIntentExtrasImplicitRead(node, content)
   }
 }
 
