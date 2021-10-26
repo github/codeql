@@ -73,6 +73,17 @@ async def form_example(username: str = Form(None)): # $ requestHandler routedPar
     return "ok" # $ HttpResponse
 
 
+# --- HTTP headers ---
+# see https://fastapi.tiangolo.com/tutorial/header-params/
+
+from fastapi import Header
+
+@app.get("/header-example") # $ routeSetup="/header-example"
+async def header_example(user_agent: Optional[str] = Header(None)): # $ requestHandler routedParameter=user_agent
+    ensure_tainted(user_agent) # $ tainted
+    return "ok" # $ HttpResponse
+
+
 # --- file upload ---
 # see https://fastapi.tiangolo.com/tutorial/request-files/
 # see https://fastapi.tiangolo.com/tutorial/request-files/#uploadfile
