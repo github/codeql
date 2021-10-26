@@ -297,41 +297,17 @@ private predicate file_or_url(Comment c) {
   c.getText().regexpMatch("#[^'\"]+(\\[a-zA-Z]\\w*)+\\.[a-zA-Z]+.*")
 }
 
-private string operator_keyword() {
-  result = "import" or
-  result = "and" or
-  result = "is" or
-  result = "or" or
-  result = "in" or
-  result = "not" or
-  result = "as"
-}
+private string operator_keyword() { result in ["import", "and", "is", "or", "in", "not", "as"] }
 
 private string keyword_requiring_colon() {
-  result = "try" or
-  result = "while" or
-  result = "elif" or
-  result = "else" or
-  result = "if" or
-  result = "except" or
-  result = "def" or
-  result = "class"
+  result in ["try", "while", "elif", "else", "if", "except", "def", "class"]
 }
 
 private string other_keyword() {
-  result = "del" or
-  result = "lambda" or
-  result = "from" or
-  result = "global" or
-  result = "with" or
-  result = "assert" or
-  result = "yield" or
-  result = "finally" or
-  result = "print" or
-  result = "exec" or
-  result = "raise" or
-  result = "return" or
-  result = "for"
+  result in [
+      "del", "lambda", "raise", "return", "for", "from", "global", "with", "assert", "yield",
+      "finally", "print", "exec"
+    ]
 }
 
 private string a_keyword() {
