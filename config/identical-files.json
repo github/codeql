@@ -470,11 +470,12 @@
   "ReDoS Polynomial Python/JS": [
     "javascript/ql/lib/semmle/javascript/security/performance/SuperlinearBackTracking.qll",
     "python/ql/lib/semmle/python/security/performance/SuperlinearBackTracking.qll",
-    "ruby/ql/lib/codeql/ruby/regexp/SuperlinearBackTracking.qll"
+    "ruby/ql/lib/codeql/ruby/security/performance/SuperlinearBackTracking.qll"
   ],
-  "BadTagFilterQuery Python/JS": [
+  "BadTagFilterQuery Python/JS/Ruby": [
     "javascript/ql/lib/semmle/javascript/security/BadTagFilterQuery.qll",
-    "python/ql/lib/semmle/python/security/BadTagFilterQuery.qll"
+    "python/ql/lib/semmle/python/security/BadTagFilterQuery.qll",
+    "ruby/ql/lib/codeql/ruby/security/BadTagFilterQuery.qll"
   ],
   "CFG": [
     "csharp/ql/lib/semmle/code/csharp/controlflow/internal/ControlFlowGraphImplShared.qll",
