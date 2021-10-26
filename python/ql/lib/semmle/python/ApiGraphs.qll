@@ -502,20 +502,23 @@ module API {
       // - `awaitedValue` is `l`
       // - `result` is `l` (should perhaps be `x`, but that should really be a read)
       exists(AsyncFor asyncFor |
-        result.asExpr() = asyncFor.getTarget() and
-        // Morally, we should perhaps use asyncFor.getIter() = awaitedValue.asExpr(),
-        // but that is actually behind a read step rather than a flow step.
-        asyncFor.getTarget() = awaitedValue.asExpr()
+        result.asExpr() = asyncFor.getIter() and
+        // To consider `x` the result of awaiting, we would use asyncFor.getTarget() = awaitedValue.asExpr(),
+        // but that is behind a read step rather than a flow step.
+        asyncFor.getIter() = awaitedValue.asExpr()
       )
       or
       // `async with x as y`
       // - `awaitedValue` is `x`
-      // - `result` is `x` (should probably be `y` but it might not exist)
+      // - `result` is `x` and `y` if it exists
       exists(AsyncWith asyncWith |
         result.asExpr() = asyncWith.getContextExpr() and
-        // Morally, we should perhaps use asyncWith.getOptionalVars() = awaitedValue.asExpr(),
-        // but that might not exist.
-        asyncWith.getContextExpr() = awaitedValue.asExpr()
+        awaitedValue.asExpr() in [
+            // `x`
+            asyncWith.getContextExpr(),
+            // `y`, if it exists
+            asyncWith.getOptionalVars()
+          ]
       )
     }
 

@@ -11,6 +11,18 @@ async def bar():
     result = await pkg.async_func() # $ use=moduleImport("pkg").getMember("async_func").getReturn().getAwaited()
     return result # $ use=moduleImport("pkg").getMember("async_func").getReturn().getAwaited()
 
+async def test_async_with():
+    async with pkg.async_func() as result: # $ use=moduleImport("pkg").getMember("async_func").getReturn()
+        return result # $ use=moduleImport("pkg").getMember("async_func").getReturn()
+
+async def test_async_for():
+    async for _ in pkg.async_func(): # $ use=moduleImport("pkg").getMember("async_func").getReturn()
+        pass
+
+    coro = pkg.async_func() # $ use=moduleImport("pkg").getMember("async_func").getReturn()
+    async for _ in coro: # $ use=moduleImport("pkg").getMember("async_func").getReturn()
+        pass
+
 def check_annotations():
     # Just to make sure how annotations should look like :)
     result = pkg.sync_func() # $ use=moduleImport("pkg").getMember("sync_func").getReturn()

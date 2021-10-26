@@ -83,17 +83,17 @@ private module Asyncpg {
     // - `awaitedValue` is local source of `l`
     // - `result` is `l`
     exists(AsyncFor asyncFor, DataFlow::Node awaited |
-      result.asExpr() = asyncFor.getTarget() and
+      result.asExpr() = asyncFor.getIter() and
       asyncFor.getIter() = awaited.asExpr() and
       awaited.getALocalSource() = awaitedValue
     )
     or
     // `async with x as y`
     // - `awaitedValue` is local source of `x`
-    // - `result` is `x`
+    // - `result` is `x` and `y`
     exists(AsyncWith asyncWith, DataFlow::Node awaited |
       result.asExpr() = asyncWith.getContextExpr() and
-      asyncWith.getOptionalVars() = awaited.asExpr() and
+      awaited.asExpr() in [asyncWith.getContextExpr(), asyncWith.getOptionalVars()] and
       awaited.getALocalSource() = awaitedValue
     )
   }
