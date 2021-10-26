@@ -156,6 +156,7 @@ private predicate dominatesPredecessor(BasicBlock bb1, BasicBlock bb2) {
 }
 
 /** Holds if `df` is in the dominance frontier of `bb`. */
+pragma[noinline]
 private predicate inDominanceFrontier(BasicBlock bb, BasicBlock df) {
   dominatesPredecessor(bb, df) and
   not strictlyDominates(bb, df)
@@ -169,7 +170,7 @@ pragma[noinline]
 private predicate inDefDominanceFrontier(BasicBlock bb, SourceVariable v) {
   exists(BasicBlock defbb, Definition def |
     def.definesAt(v, defbb, _) and
-    inDominanceFrontier(pragma[only_bind_into](defbb), bb)
+    inDominanceFrontier(defbb, bb)
   )
 }
 
