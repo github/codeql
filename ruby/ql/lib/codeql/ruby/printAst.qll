@@ -7,7 +7,7 @@
  */
 
 private import AST
-private import codeql.ruby.regexp.RegExpTreeView as RETV
+private import codeql.ruby.security.performance.RegExpTreeView as RETV
 
 /** Holds if `n` appears in the desugaring of some other node. */
 predicate isDesugared(AstNode n) {
