@@ -378,23 +378,11 @@ module Express {
    */
   private predicate isChainableResponseMethodCall(RouteHandler handler, MethodCallExpr call) {
     exists(string name | call.calls(handler.getAResponseExpr(), name) |
-      name = "append" or
-      name = "attachment" or
-      name = "clearCookie" or
-      name = "contentType" or
-      name = "cookie" or
-      name = "format" or
-      name = "header" or
-      name = "json" or
-      name = "jsonp" or
-      name = "links" or
-      name = "location" or
-      name = "send" or
-      name = "sendStatus" or
-      name = "set" or
-      name = "status" or
-      name = "type" or
-      name = "vary"
+      name =
+        [
+          "append", "attachment", "location", "send", "sendStatus", "set", "status", "type", "vary",
+          "clearCookie", "contentType", "cookie", "format", "header", "json", "jsonp", "links"
+        ]
     )
   }
 

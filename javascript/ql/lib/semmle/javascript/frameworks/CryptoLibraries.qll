@@ -408,14 +408,7 @@ private module Forge {
           this = mod.getAPropertyRead("cipher").getAMemberCall(createName) and
           getArgument(0).asExpr().mayHaveStringValue(cipherName) and
           cipherName = cipherPrefix + "-" + cipherSuffix and
-          (
-            cipherSuffix = "CBC" or
-            cipherSuffix = "CFB" or
-            cipherSuffix = "CTR" or
-            cipherSuffix = "ECB" or
-            cipherSuffix = "GCM" or
-            cipherSuffix = "OFB"
-          ) and
+          cipherSuffix = ["CBC", "CFB", "CTR", "ECB", "GCM", "OFB"] and
           algorithmName = cipherPrefix and
           key = getArgument(1)
         )

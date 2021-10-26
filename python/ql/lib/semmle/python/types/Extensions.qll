@@ -112,14 +112,7 @@ class BottleRoutePointToExtension extends PointsToExtension {
 
 /* Python 3.6+ regex module constants */
 string short_flag(string flag) {
-  (
-    flag = "ASCII" or
-    flag = "IGNORECASE" or
-    flag = "LOCALE" or
-    flag = "UNICODE" or
-    flag = "MULTILINE" or
-    flag = "TEMPLATE"
-  ) and
+  flag in ["ASCII", "IGNORECASE", "LOCALE", "UNICODE", "MULTILINE", "TEMPLATE"] and
   result = flag.prefix(1)
   or
   flag = "DOTALL" and result = "S"

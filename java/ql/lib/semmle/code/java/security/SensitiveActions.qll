@@ -14,11 +14,7 @@
 import java
 
 private string suspicious() {
-  result = "%password%" or
-  result = "%passwd%" or
-  result = "%account%" or
-  result = "%accnt%" or
-  result = "%trusted%"
+  result = ["%password%", "%passwd%", "%account%", "%accnt%", "%trusted%"]
 }
 
 private string nonSuspicious() {
