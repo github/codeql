@@ -1,3 +1,5 @@
+/** Provides classes and predicates related to Android Fragments. */
+
 import java
 
 /** An Android Fragment. */
