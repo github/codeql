@@ -33,7 +33,7 @@ import ratpack.func.Predicate;
  * To create a promise, use the {@link Promise#async(Upstream)} method (or one of the variants such as {@link Promise#sync(Factory)}.
  * To test code that uses promises, use the {@link ratpack.test.exec.ExecHarness}.
  * <p>
- * The promise is not "activated” until the {@link #then(Action)} method is called.
+ * The promise is not "activated" until the {@link #then(Action)} method is called.
  * This method terminates the pipeline, and receives the final value.
  * <p>
  * Promise objects are multi use.
