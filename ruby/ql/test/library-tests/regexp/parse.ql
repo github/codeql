@@ -3,7 +3,7 @@
  */
 
 import codeql.Locations
-import codeql.ruby.regexp.RegExpTreeView as RETV
+import codeql.ruby.security.performance.RegExpTreeView as RETV
 
 query predicate nodes(RETV::RegExpTerm n, string attr, string val) {
   attr = "semmle.label" and
