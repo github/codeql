@@ -102,7 +102,7 @@ private predicate isSensitiveBroadcastSink(DataFlow::Node sendBroadcastCallArg) 
 }
 
 /**
- * Holds if `arg`  as an argument to a use of a `startActivity` or `startService` method that sends an intent to another application.
+ * Holds if `arg` is an argument in a use of a `startActivity` or `startService` method that sends an Intent to another application.
  */
 private predicate isStartActivityOrServiceSink(DataFlow::Node arg) {
   exists(MethodAccess ma, string name | ma.getMethod().hasName(name) |
@@ -147,7 +147,7 @@ private predicate isCleanIntent(Expr intent) {
 }
 
 /**
- * Taint configuration tracking flow from variables containing sensitive information to broadcast intents.
+ * Taint configuration tracking flow from variables containing sensitive information to broadcast Intents.
  */
 class SensitiveCommunicationConfig extends TaintTracking::Configuration {
   SensitiveCommunicationConfig() { this = "Sensitive Communication Configuration" }

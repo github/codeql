@@ -2,20 +2,20 @@
 <qhelp>
 
   <overview>
-    <p>When an implicit intent is used with a method such as <code>startActivity</code>, <code>startService</code>, or <code>sendBroadcast</code>, it may be read by other applications on the device.</p>
-    <p>This means that sensitive data in these intents may be leaked.</p>
+    <p>When an implicit Intent is used with a method such as <code>startActivity</code>, <code>startService</code>, or <code>sendBroadcast</code>, it may be read by other applications on the device.</p>
+    <p>This means that sensitive data in these Intents may be leaked.</p>
   </overview>
 
   <recommendation>
     <p> 
-      For <code>sendBroadcast</code> methods, a receiver permission may be specified so that only applications with a certain permission may receive the intent; 
+      For <code>sendBroadcast</code> methods, a receiver permission may be specified so that only applications with a certain permission may receive the Intent; 
       or a <code>LocalBroadcastManager</code> may be used.
-      Otherwise, ensure that intents containing sensitive data have an explicit receiver class set.
+      Otherwise, ensure that Intents containing sensitive data have an explicit receiver class set.
     </p>
   </recommendation>
 
   <example>
-    <p>The following example shows two ways of broadcasting intents. In the 'BAD' case, no "receiver permission" is specified. In the 'GOOD' case, "receiver permission" or "receiver application" is specified.</p>
+    <p>The following example shows two ways of broadcasting Intents. In the 'BAD' case, no "receiver permission" is specified. In the 'GOOD' case, "receiver permission" or "receiver application" is specified.</p>
     <sample src="SensitiveCommunication.java" />
   </example>
 
