@@ -24,3 +24,9 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
 jar {
     archiveName = "${OUTPUT_JAR_NAME}"
 }
+
+task getHomeDir {
+    doLast {
+        println gradle.gradleHomeDir
+    }
+}
