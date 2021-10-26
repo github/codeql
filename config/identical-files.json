@@ -449,7 +449,8 @@
     "csharp/ql/lib/semmle/code/csharp/controlflow/internal/pressa/SsaImplCommon.qll",
     "csharp/ql/lib/semmle/code/csharp/dataflow/internal/basessa/SsaImplCommon.qll",
     "csharp/ql/lib/semmle/code/cil/internal/SsaImplCommon.qll",
-    "ruby/ql/lib/codeql/ruby/dataflow/internal/SsaImplCommon.qll"
+    "ruby/ql/lib/codeql/ruby/dataflow/internal/SsaImplCommon.qll",
+    "cpp/ql/lib/semmle/code/cpp/ir/dataflow/internal/SsaImplCommon.qll"
   ],
   "CryptoAlgorithms Python/JS": [
     "javascript/ql/lib/semmle/javascript/security/CryptoAlgorithms.qll",
