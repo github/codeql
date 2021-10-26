@@ -19,6 +19,18 @@ string captureFlow(Callable api) {
   result = captureFieldFlow(api)
 }
 
+/**
+ * Capture fluent APIs that return `this`.
+ * Example of a fluent API:
+ * ```
+ * public class Foo {
+ *   public Foo someAPI() {
+ *    // some side-effect
+ *    return this;
+ *  }
+ * }
+ * ```
+ */
 string captureQualifierFlow(Callable api) {
   exists(ReturnStmt rtn |
     rtn.getEnclosingCallable() = api and
@@ -27,6 +39,28 @@ string captureQualifierFlow(Callable api) {
   result = asValueModel(api, "Argument[-1]", "ReturnValue")
 }
 
+/**
+ * Capture APIs that return tainted instance data.
+ * Example of an API that returns tainted instance data:
+ * ```
+ * public class Foo {
+ *   private String tainted;
+ *
+ *   public String returnsTainted() {
+ *     return tainted;
+ *   }
+ *
+ *   public void putsTaintIntoParameter(List<String> foo) {
+ *     foo.add(tainted);
+ *   }
+ * }
+ * ```
+ * Captured Model:
+ * ```
+ * p;Foo;true;returnsTainted;;Argument[-1];ReturnValue;taint
+ * p;Foo;true;putsTaintIntoParameter;(List);Argument[-1];ReturnValue;taint
+ * ```
+ */
 string captureFieldFlow(Callable api) {
   exists(FieldAccess fa, ReturnNodeExt returnNode |
     not (fa.getField().isStatic() and fa.getField().isFinal()) and
@@ -68,6 +102,19 @@ class ParameterToFieldConfig extends TaintTracking::Configuration {
   }
 }
 
+/**
+ * Captures APIs that accept input and store them in a field.
+ * Example:
+ * ```
+ * public class Foo {
+ *  private String tainted;
+ *  public void doSomething(String input) {
+ *    tainted = input;
+ *  }
+ * ```
+ * Captured Model:
+ * `p;Foo;true;doSomething;(String);Argument[0];Argument[-1];taint`
+ */
 string captureFieldFlowIn(Callable api) {
   exists(DataFlow::ParameterNode source, DataFlow::ExprNode sink, ParameterToFieldConfig config |
     sink.asExpr().getEnclosingCallable().getDeclaringType() =
@@ -102,6 +149,22 @@ predicate paramFlowToReturnValueExists(Parameter p) {
   )
 }
 
+/**
+ * Capture APIs that return (parts of) data passed in as a parameter.
+ * Example:
+ * ```
+ * public class Foo {
+ *
+ *   public String returnData(String tainted) {
+ *     return tainted.substring(0,10)
+ *   }
+ * }
+ * ```
+ * Captured Model:
+ * ```
+ * p;Foo;true;returnData;;Argument[0];ReturnValue;taint
+ * ```
+ */
 string captureParameterFlowToReturnValue(Callable api) {
   exists(Parameter p |
     p = api.getAParameter() and
@@ -111,6 +174,22 @@ string captureParameterFlowToReturnValue(Callable api) {
   )
 }
 
+/**
+ * Capture APIs that pass tainted data from a parameter to a parameter.
+ * Example:
+ * ```
+ * public class Foo {
+ *
+ *   public void addToList(String tainted, List<String> foo) {
+ *     foo.add(tainted);
+ *   }
+ * }
+ * ```
+ * Captured Model:
+ * ```
+ * p;Foo;true;addToList;;Argument[0];Argument[1];taint
+ * ```
+ */
 string captureParameterToParameterFlow(Callable api) {
   exists(DataFlow::ParameterNode source, DataFlow::PostUpdateNode sink |
     source.getEnclosingCallable() = api and
