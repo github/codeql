@@ -49,10 +49,10 @@ string asOutput(DataFlow::Node node) {
 }
 
 string captureSource(Callable api) {
-  exists(DataFlow::Node src, DataFlow::Node sink, FromSourceConfiguration config, string kind |
-    config.hasFlow(src, sink) and
-    sourceNode(sink, kind) and
-    api = src.getEnclosingCallable() and
+  exists(DataFlow::Node source, DataFlow::Node sink, FromSourceConfiguration config, string kind |
+    config.hasFlow(source, sink) and
+    sourceNode(source, kind) and
+    api = source.getEnclosingCallable() and
     result = asSourceModel(api, asOutput(sink), kind)
   )
 }
