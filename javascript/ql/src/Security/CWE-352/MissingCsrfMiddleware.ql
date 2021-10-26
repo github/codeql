@@ -130,11 +130,25 @@ predicate isCsrfProtectionRouteHandler(Routing::RouteHandler handler) {
 }
 
 /**
+ * A call of form `passport.authenticate(..., { session: false })`, implying that the incoming
+ * request must carry its credentials rather than relying on cookies.
+ *
+ * In principle such routes should not be preceded by a cookie-parsing middleware, but to
+ * reduce noise we do not want to flag them.
+ */
+API::CallNode nonSessionBasedAuthMiddleware() {
+  result = API::moduleImport("passport").getMember("authenticate").getACall() and
+  result.getParameter(1).getMember("session").getARhs().mayHaveBooleanValue(false)
+}
+
+/**
  * Gets an express route handler expression that is either a custom CSRF protection middleware,
  * or a CSRF protecting library.
  */
 Routing::Node getACsrfMiddleware() {
   result = Routing::getNode(csrfMiddlewareCreation())
+  or
+  result = Routing::getNode(nonSessionBasedAuthMiddleware())
   or
   isCsrfProtectionRouteHandler(result)
 }
