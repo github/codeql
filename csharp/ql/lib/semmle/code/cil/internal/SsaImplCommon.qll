@@ -156,6 +156,7 @@ private predicate dominatesPredecessor(BasicBlock bb1, BasicBlock bb2) {
 }
 
 /** Holds if `df` is in the dominance frontier of `bb`. */
+pragma[noinline]
 private predicate inDominanceFrontier(BasicBlock bb, BasicBlock df) {
   dominatesPredecessor(bb, df) and
   not strictlyDominates(bb, df)
