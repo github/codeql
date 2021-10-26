@@ -17,6 +17,7 @@ package android.app;
 import android.annotation.Nullable;
 import android.content.ComponentCallbacks2;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Parcel;
@@ -73,4 +74,9 @@ public class Fragment implements ComponentCallbacks2 {
   @Override
   public void onTrimMemory(int p0) {}
 
+  public void startActivityForResult(Intent intent, int requestCode) {}
+
+  public void startActivityForResult(Intent intent, int requestCode, Bundle options) {}
+
+  public void onActivityResult(int requestCode, int resultCode, Intent data) {}
 }
