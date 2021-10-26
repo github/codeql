@@ -1,1 +1,3 @@
+| p;Sources;true;consumeSource;(int,Consumer);;Parameter[1];remote; |
 | p;Sources;true;readUrl;(URL);;ReturnValue;remote; |
+| p;Sources;true;socketStream;();;ReturnValue;remote; |

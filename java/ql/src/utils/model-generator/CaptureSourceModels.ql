@@ -13,6 +13,7 @@ private import ModelGeneratorUtils
 private import semmle.code.java.dataflow.internal.FlowSummaryImplSpecific
 private import semmle.code.java.dataflow.internal.FlowSummaryImpl
 private import semmle.code.java.dataflow.internal.DataFlowImplCommon
+import semmle.code.java.dataflow.internal.DataFlowNodes::Private
 
 class FromSourceConfiguration extends TaintTracking::Configuration {
   FromSourceConfiguration() { this = "FromSourceConfiguration" }
@@ -26,24 +27,33 @@ class FromSourceConfiguration extends TaintTracking::Configuration {
       c.isPublic() and
       c.fromSource()
     )
+    or
+    exists(MethodAccess c | sink.asExpr() = c.getAnArgument())
   }
 }
 
-// TODO: better way than rely on internals to capture kind?
-cached
-predicate specificSourceNode(DataFlow::Node node, string output, string kind) {
-  exists(InterpretNode n | Private::External::isSourceNode(n, output, kind) and n.asNode() = node)
+string asOutput(DataFlow::Node node) {
+  if node instanceof ReturnNodeExt
+  then result = "ReturnValue"
+  else
+    result =
+      "Parameter[" +
+        node.(ArgumentNode)
+            .getCall()
+            .asCall()
+            .getQualifier()
+            .(VarAccess)
+            .getVariable()
+            .(Parameter)
+            .getPosition() + "]"
 }
 
 string captureSource(Callable api) {
-  exists(
-    DataFlow::Node src, DataFlow::Node sink, FromSourceConfiguration config, string kind,
-    string output
-  |
+  exists(DataFlow::Node src, DataFlow::Node sink, FromSourceConfiguration config, string kind |
     config.hasFlow(src, sink) and
-    specificSourceNode(sink, output, kind) and
+    sourceNode(sink, kind) and
     api = src.getEnclosingCallable() and
-    result = asSourceModel(api, output, kind)
+    result = asSourceModel(api, asOutput(sink), kind)
   )
 }
 
