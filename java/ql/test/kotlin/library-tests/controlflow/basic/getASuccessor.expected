@@ -1,0 +1,133 @@
+| Test.kt:3:1:80:1 | <Expr>; | ExprStmt | Test.kt:3:1:80:1 | <obinit>(...) | MethodAccess |
+| Test.kt:3:1:80:1 | <obinit> | Method | file://:0:0:0:0 | <none> | <none> |
+| Test.kt:3:1:80:1 | <obinit>(...) | MethodAccess | Test.kt:3:8:80:1 | Test | Constructor |
+| Test.kt:3:1:80:1 | Test | Class | file://:0:0:0:0 | <none> | <none> |
+| Test.kt:3:1:80:1 | super(...) | SuperConstructorInvocationStmt | Test.kt:3:1:80:1 | <Expr>; | ExprStmt |
+| Test.kt:3:1:80:1 | { ... } | BlockStmt | Test.kt:3:1:80:1 | <obinit> | Method |
+| Test.kt:3:1:80:1 | { ... } | BlockStmt | Test.kt:3:1:80:1 | super(...) | SuperConstructorInvocationStmt |
+| Test.kt:3:8:80:1 | Test | Constructor | file://:0:0:0:0 | <none> | <none> |
+| Test.kt:3:8:80:1 | equals | Method | file://:0:0:0:0 | <none> | <none> |
+| Test.kt:3:8:80:1 | hashCode | Method | file://:0:0:0:0 | <none> | <none> |
+| Test.kt:3:8:80:1 | other | Parameter | file://:0:0:0:0 | <none> | <none> |
+| Test.kt:3:8:80:1 | toString | Method | file://:0:0:0:0 | <none> | <none> |
+| Test.kt:4:2:79:2 | test | Method | file://:0:0:0:0 | <none> | <none> |
+| Test.kt:4:13:79:2 | { ... } | BlockStmt | Test.kt:5:3:5:16 | var ...; | LocalVariableDeclStmt |
+| Test.kt:5:3:5:16 | int x | LocalVariableDecl | file://:0:0:0:0 | <none> | <none> |
+| Test.kt:5:3:5:16 | var ...; | LocalVariableDeclStmt | Test.kt:5:16:5:16 | 0 | IntegerLiteral |
+| Test.kt:5:3:5:16 | x | LocalVariableDeclExpr | Test.kt:6:3:6:18 | var ...; | LocalVariableDeclStmt |
+| Test.kt:5:16:5:16 | 0 | IntegerLiteral | Test.kt:5:3:5:16 | x | LocalVariableDeclExpr |
+| Test.kt:6:3:6:18 | long y | LocalVariableDecl | file://:0:0:0:0 | <none> | <none> |
+| Test.kt:6:3:6:18 | var ...; | LocalVariableDeclStmt | Test.kt:6:17:6:18 | 50 | LongLiteral |
+| Test.kt:6:3:6:18 | y | LocalVariableDeclExpr | Test.kt:7:3:7:16 | var ...; | LocalVariableDeclStmt |
+| Test.kt:6:17:6:18 | 50 | LongLiteral | Test.kt:6:3:6:18 | y | LocalVariableDeclExpr |
+| Test.kt:7:3:7:16 | int z | LocalVariableDecl | file://:0:0:0:0 | <none> | <none> |
+| Test.kt:7:3:7:16 | var ...; | LocalVariableDeclStmt | Test.kt:7:16:7:16 | 0 | IntegerLiteral |
+| Test.kt:7:3:7:16 | z | LocalVariableDeclExpr | Test.kt:8:3:8:16 | var ...; | LocalVariableDeclStmt |
+| Test.kt:7:16:7:16 | 0 | IntegerLiteral | Test.kt:7:3:7:16 | z | LocalVariableDeclExpr |
+| Test.kt:8:3:8:16 | int w | LocalVariableDecl | file://:0:0:0:0 | <none> | <none> |
+| Test.kt:8:3:8:16 | var ...; | LocalVariableDeclStmt | Test.kt:8:16:8:16 | 0 | IntegerLiteral |
+| Test.kt:8:3:8:16 | w | LocalVariableDeclExpr | Test.kt:11:3:16:3 | <Expr>; | ExprStmt |
+| Test.kt:8:16:8:16 | 0 | IntegerLiteral | Test.kt:8:3:8:16 | w | LocalVariableDeclExpr |
+| Test.kt:11:3:16:3 | ... -> ... | WhenBranch | Test.kt:11:3:16:3 | true | BooleanLiteral |
+| Test.kt:11:3:16:3 | ... -> ... | WhenBranch | Test.kt:11:7:11:7 | x | VarAccess |
+| Test.kt:11:3:16:3 | <Expr>; | ExprStmt | Test.kt:11:3:16:3 | when ... | WhenExpr |
+| Test.kt:11:3:16:3 | true | BooleanLiteral | file://:0:0:0:0 | <none> | <none> |
+| Test.kt:11:3:16:3 | when ... | WhenExpr | Test.kt:11:3:16:3 | ... -> ... | WhenBranch |
+| Test.kt:11:7:11:7 | x | VarAccess | Test.kt:11:11:11:11 | 0 | IntegerLiteral |
+| Test.kt:11:7:11:11 | ... > ... | GTExpr | file://:0:0:0:0 | <none> | <none> |
+| Test.kt:11:11:11:11 | 0 | IntegerLiteral | Test.kt:11:7:11:11 | ... > ... | GTExpr |
+| Test.kt:11:14:14:3 | { ... } | BlockStmt | Test.kt:12:4:12:4 | <Expr>; | ExprStmt |
+| Test.kt:12:4:12:4 | ...=... | AssignExpr | Test.kt:13:4:13:4 | <Expr>; | ExprStmt |
+| Test.kt:12:4:12:4 | <Expr>; | ExprStmt | Test.kt:12:8:12:9 | 20 | LongLiteral |
+| Test.kt:12:8:12:9 | 20 | LongLiteral | Test.kt:12:4:12:4 | ...=... | AssignExpr |
+| Test.kt:13:4:13:4 | ...=... | AssignExpr | Test.kt:18:3:18:3 | <Expr>; | ExprStmt |
+| Test.kt:13:4:13:4 | <Expr>; | ExprStmt | Test.kt:13:8:13:9 | 10 | IntegerLiteral |
+| Test.kt:13:8:13:9 | 10 | IntegerLiteral | Test.kt:13:4:13:4 | ...=... | AssignExpr |
+| Test.kt:14:10:16:3 | { ... } | BlockStmt | Test.kt:15:4:15:4 | <Expr>; | ExprStmt |
+| Test.kt:15:4:15:4 | ...=... | AssignExpr | Test.kt:18:3:18:3 | <Expr>; | ExprStmt |
+| Test.kt:15:4:15:4 | <Expr>; | ExprStmt | Test.kt:15:8:15:9 | 30 | LongLiteral |
+| Test.kt:15:8:15:9 | 30 | LongLiteral | Test.kt:15:4:15:4 | ...=... | AssignExpr |
+| Test.kt:18:3:18:3 | ...=... | AssignExpr | Test.kt:21:3:24:9 | <Expr>; | ExprStmt |
+| Test.kt:18:3:18:3 | <Expr>; | ExprStmt | Test.kt:18:7:18:7 | 0 | IntegerLiteral |
+| Test.kt:18:7:18:7 | 0 | IntegerLiteral | Test.kt:18:3:18:3 | ...=... | AssignExpr |
+| Test.kt:21:3:24:9 | ... -> ... | WhenBranch | Test.kt:21:3:24:9 | true | BooleanLiteral |
+| Test.kt:21:3:24:9 | ... -> ... | WhenBranch | Test.kt:21:6:21:6 | x | VarAccess |
+| Test.kt:21:3:24:9 | <Expr>; | ExprStmt | Test.kt:21:3:24:9 | when ... | WhenExpr |
+| Test.kt:21:3:24:9 | true | BooleanLiteral | file://:0:0:0:0 | <none> | <none> |
+| Test.kt:21:3:24:9 | when ... | WhenExpr | Test.kt:21:3:24:9 | ... -> ... | WhenBranch |
+| Test.kt:21:6:21:6 | x | VarAccess | Test.kt:21:10:21:10 | 0 | IntegerLiteral |
+| Test.kt:21:6:21:10 | ... < ... | LTExpr | file://:0:0:0:0 | <none> | <none> |
+| Test.kt:21:10:21:10 | 0 | IntegerLiteral | Test.kt:21:6:21:10 | ... < ... | LTExpr |
+| Test.kt:22:4:22:4 | ...=... | AssignExpr | Test.kt:27:3:27:3 | <Expr>; | ExprStmt |
+| Test.kt:22:4:22:4 | <Expr>; | ExprStmt | Test.kt:22:8:22:9 | 40 | LongLiteral |
+| Test.kt:22:8:22:9 | 40 | LongLiteral | Test.kt:22:4:22:4 | ...=... | AssignExpr |
+| Test.kt:24:4:24:9 | return ... | ReturnStmt | Test.kt:4:2:79:2 | test | Method |
+| Test.kt:27:3:27:3 | ...=... | AssignExpr | Test.kt:30:3:33:3 | <Expr>; | ExprStmt |
+| Test.kt:27:3:27:3 | <Expr>; | ExprStmt | Test.kt:27:7:27:8 | 10 | IntegerLiteral |
+| Test.kt:27:7:27:8 | 10 | IntegerLiteral | Test.kt:27:3:27:3 | ...=... | AssignExpr |
+| Test.kt:30:3:33:3 | ... -> ... | WhenBranch | Test.kt:30:7:30:7 | x | VarAccess |
+| Test.kt:30:3:33:3 | <Expr>; | ExprStmt | Test.kt:30:3:33:3 | when ... | WhenExpr |
+| Test.kt:30:3:33:3 | when ... | WhenExpr | Test.kt:30:3:33:3 | ... -> ... | WhenBranch |
+| Test.kt:30:3:33:3 | when ... | WhenExpr | Test.kt:35:3:35:3 | <Expr>; | ExprStmt |
+| Test.kt:30:7:30:7 | x | VarAccess | Test.kt:30:12:30:12 | 0 | IntegerLiteral |
+| Test.kt:30:7:30:12 | ... == ... | EQExpr | file://:0:0:0:0 | <none> | <none> |
+| Test.kt:30:12:30:12 | 0 | IntegerLiteral | Test.kt:30:7:30:12 | ... == ... | EQExpr |
+| Test.kt:30:15:33:3 | { ... } | BlockStmt | Test.kt:31:4:31:4 | <Expr>; | ExprStmt |
+| Test.kt:31:4:31:4 | ...=... | AssignExpr | Test.kt:32:4:32:4 | <Expr>; | ExprStmt |
+| Test.kt:31:4:31:4 | <Expr>; | ExprStmt | Test.kt:31:8:31:9 | 60 | LongLiteral |
+| Test.kt:31:8:31:9 | 60 | LongLiteral | Test.kt:31:4:31:4 | ...=... | AssignExpr |
+| Test.kt:32:4:32:4 | ...=... | AssignExpr | Test.kt:35:3:35:3 | <Expr>; | ExprStmt |
+| Test.kt:32:4:32:4 | <Expr>; | ExprStmt | Test.kt:32:8:32:9 | 10 | IntegerLiteral |
+| Test.kt:32:8:32:9 | 10 | IntegerLiteral | Test.kt:32:4:32:4 | ...=... | AssignExpr |
+| Test.kt:35:3:35:3 | ...=... | AssignExpr | Test.kt:38:3:41:3 | while (...) | WhileStmt |
+| Test.kt:35:3:35:3 | <Expr>; | ExprStmt | Test.kt:35:7:35:8 | 20 | IntegerLiteral |
+| Test.kt:35:7:35:8 | 20 | IntegerLiteral | Test.kt:35:3:35:3 | ...=... | AssignExpr |
+| Test.kt:38:3:41:3 | while (...) | WhileStmt | Test.kt:38:9:38:9 | x | VarAccess |
+| Test.kt:38:9:38:9 | x | VarAccess | Test.kt:38:13:38:13 | 0 | IntegerLiteral |
+| Test.kt:38:9:38:13 | ... > ... | GTExpr | Test.kt:38:16:41:3 | { ... } | BlockStmt |
+| Test.kt:38:9:38:13 | ... > ... | GTExpr | Test.kt:43:3:43:3 | <Expr>; | ExprStmt |
+| Test.kt:38:13:38:13 | 0 | IntegerLiteral | Test.kt:38:9:38:13 | ... > ... | GTExpr |
+| Test.kt:38:16:41:3 | { ... } | BlockStmt | Test.kt:39:4:39:4 | <Expr>; | ExprStmt |
+| Test.kt:39:4:39:4 | ...=... | AssignExpr | Test.kt:40:4:40:6 | <Expr>; | ExprStmt |
+| Test.kt:39:4:39:4 | <Expr>; | ExprStmt | Test.kt:39:8:39:9 | 10 | LongLiteral |
+| Test.kt:39:8:39:9 | 10 | LongLiteral | Test.kt:39:4:39:4 | ...=... | AssignExpr |
+| Test.kt:40:4:40:6 | <Expr>; | ExprStmt | file://:0:0:0:0 | <none> | <none> |
+| Test.kt:43:3:43:3 | ...=... | AssignExpr | Test.kt:73:3:73:3 | <Expr>; | ExprStmt |
+| Test.kt:43:3:43:3 | <Expr>; | ExprStmt | Test.kt:43:7:43:8 | 30 | IntegerLiteral |
+| Test.kt:43:7:43:8 | 30 | IntegerLiteral | Test.kt:43:3:43:3 | ...=... | AssignExpr |
+| Test.kt:73:3:73:3 | ...=... | AssignExpr | Test.kt:77:3:77:3 | <Expr>; | ExprStmt |
+| Test.kt:73:3:73:3 | <Expr>; | ExprStmt | Test.kt:73:7:73:8 | 50 | IntegerLiteral |
+| Test.kt:73:7:73:8 | 50 | IntegerLiteral | Test.kt:73:3:73:3 | ...=... | AssignExpr |
+| Test.kt:77:3:77:3 | ...=... | AssignExpr | Test.kt:78:3:78:8 | return ... | ReturnStmt |
+| Test.kt:77:3:77:3 | <Expr>; | ExprStmt | Test.kt:77:7:77:8 | 40 | IntegerLiteral |
+| Test.kt:77:7:77:8 | 40 | IntegerLiteral | Test.kt:77:3:77:3 | ...=... | AssignExpr |
+| Test.kt:78:3:78:8 | return ... | ReturnStmt | Test.kt:4:2:79:2 | test | Method |
+| file://:0:0:0:0 | Any | Class | file://:0:0:0:0 | <none> | <none> |
+| file://:0:0:0:0 | Any | Constructor | file://:0:0:0:0 | <none> | <none> |
+| file://:0:0:0:0 | Boolean | Class | file://:0:0:0:0 | <none> | <none> |
+| file://:0:0:0:0 | Int | Class | file://:0:0:0:0 | <none> | <none> |
+| file://:0:0:0:0 | Long | Class | file://:0:0:0:0 | <none> | <none> |
+| file://:0:0:0:0 | String | Class | file://:0:0:0:0 | <none> | <none> |
+| file://:0:0:0:0 | String | Class | file://:0:0:0:0 | <none> | <none> |
+| file://:0:0:0:0 | Unit | Class | file://:0:0:0:0 | <none> | <none> |
+| file://:0:0:0:0 | equals | Method | file://:0:0:0:0 | <none> | <none> |
+| file://:0:0:0:0 | equals | Method | file://:0:0:0:0 | <none> | <none> |
+| file://:0:0:0:0 | hashCode | Method | file://:0:0:0:0 | <none> | <none> |
+| file://:0:0:0:0 | hashCode | Method | file://:0:0:0:0 | <none> | <none> |
+| file://:0:0:0:0 | other | Parameter | file://:0:0:0:0 | <none> | <none> |
+| file://:0:0:0:0 | other | Parameter | file://:0:0:0:0 | <none> | <none> |
+| file://:0:0:0:0 | toString | Method | file://:0:0:0:0 | <none> | <none> |
+| file://:0:0:0:0 | toString | Method | file://:0:0:0:0 | <none> | <none> |
+| file://:0:0:0:0 | w | VarAccess | file://:0:0:0:0 | <none> | <none> |
+| file://:0:0:0:0 | y | VarAccess | file://:0:0:0:0 | <none> | <none> |
+| file://:0:0:0:0 | y | VarAccess | file://:0:0:0:0 | <none> | <none> |
+| file://:0:0:0:0 | y | VarAccess | file://:0:0:0:0 | <none> | <none> |
+| file://:0:0:0:0 | y | VarAccess | file://:0:0:0:0 | <none> | <none> |
+| file://:0:0:0:0 | y | VarAccess | file://:0:0:0:0 | <none> | <none> |
+| file://:0:0:0:0 | z | VarAccess | file://:0:0:0:0 | <none> | <none> |
+| file://:0:0:0:0 | z | VarAccess | file://:0:0:0:0 | <none> | <none> |
+| file://:0:0:0:0 | z | VarAccess | file://:0:0:0:0 | <none> | <none> |
+| file://:0:0:0:0 | z | VarAccess | file://:0:0:0:0 | <none> | <none> |
+| file://:0:0:0:0 | z | VarAccess | file://:0:0:0:0 | <none> | <none> |
+| file://:0:0:0:0 | z | VarAccess | file://:0:0:0:0 | <none> | <none> |
+| file://:0:0:0:0 | z | VarAccess | file://:0:0:0:0 | <none> | <none> |
