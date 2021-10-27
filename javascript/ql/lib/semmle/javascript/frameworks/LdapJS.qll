@@ -7,7 +7,7 @@ import javascript
 /**
  * A module providing sinks and sanitizers for LDAP injection.
  */
-module LDAPjs {
+module LdapJS {
   /** Gets a reference to the ldapjs library. */
   API::Node ldapjs() { result = API::moduleImport("ldapjs") }
 
@@ -43,7 +43,7 @@ module LDAPjs {
     abstract DataFlow::Node getOutput();
   }
 
-  /** A call to the ldap utility method "parseFilter". */
+  /** A call to the LDAPjs utility method "parseFilter". */
   private class ParseFilter extends TaintPreservingLdapFilterStep, API::CallNode {
     ParseFilter() { this = ldapjs().getMember("parseFilter").getACall() }
 
