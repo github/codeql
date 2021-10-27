@@ -176,6 +176,8 @@ private predicate localAdditionalTaintExprStep(Expr src, Expr sink) {
   serializationStep(src, sink)
   or
   formatStep(src, sink)
+  or
+  bitwiseStep(src, sink)
 }
 
 /**
@@ -524,6 +526,9 @@ private class FormatterCallable extends TaintPreservingCallable {
     src = [0 .. this.getNumberOfParameters()]
   }
 }
+
+/** Holds if taint may flow from the operand of a bitwise expression to its result. */
+private predicate bitwiseStep(Expr src, BitwiseExpr sink) { sink.(BinaryExpr).getAnOperand() = src }
 
 private import StringBuilderVarModule
 
