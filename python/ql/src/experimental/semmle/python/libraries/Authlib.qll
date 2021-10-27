@@ -4,12 +4,12 @@ private import semmle.python.ApiGraphs
 private import experimental.semmle.python.frameworks.JWT
 
 private module Authlib {
-  /** Gets a reference to `authlib.jose` */
-  private API::Node authlib() { result = API::moduleImport("authlib.jose") }
-
   /** Gets a reference to `authlib.jose.(jwt|JsonWebToken)` */
   private API::Node authlibJWT() {
-    result in [authlib().getMember("jwt"), authlib().getMember("JsonWebToken").getReturn()]
+    result in [
+        API::moduleImport("authlib.jose").getMember("jwt"),
+        API::moduleImport("authlib.jose").getMember("JsonWebToken").getReturn()
+      ]
   }
 
   /** Gets a reference to `jwt.encode` */

@@ -4,11 +4,8 @@ private import semmle.python.ApiGraphs
 private import experimental.semmle.python.frameworks.JWT
 
 private module PythonJose {
-  /** Gets a reference to `jose` */
-  private API::Node jose() { result = API::moduleImport("jose") }
-
   /** Gets a reference to `jwt` */
-  private API::Node joseJWT() { result = jose().getMember("jwt") }
+  private API::Node joseJWT() { result = API::moduleImport("jose").getMember("jwt") }
 
   /** Gets a reference to `jwt.encode` */
   private API::Node joseJWTEncode() { result = joseJWT().getMember("encode") }

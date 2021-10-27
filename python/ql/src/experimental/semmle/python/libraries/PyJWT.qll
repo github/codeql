@@ -4,14 +4,11 @@ private import semmle.python.ApiGraphs
 private import experimental.semmle.python.frameworks.JWT
 
 private module PyJWT {
-  /** Gets a reference to `jwt` */
-  private API::Node pyjwt() { result = API::moduleImport("jwt") }
-
   /** Gets a reference to `jwt.encode` */
-  private API::Node pyjwtEncode() { result = pyjwt().getMember("encode") }
+  private API::Node pyjwtEncode() { result = API::moduleImport("jwt").getMember("encode") }
 
   /** Gets a reference to `jwt.decode` */
-  private API::Node pyjwtDecode() { result = pyjwt().getMember("decode") }
+  private API::Node pyjwtDecode() { result = API::moduleImport("jwt").getMember("decode") }
 
   // def encode(self, payload, key, algorithm="HS256", headers=None, json_encoder=None)
   private class PyJWTEncodeCall extends DataFlow::CallCfgNode, JWTEncoding::Range {
