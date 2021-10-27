@@ -2,6 +2,42 @@ private import DataFlowImplSpecific::Private
 private import DataFlowImplSpecific::Public
 import Cached
 
+module DataFlowImplCommonPublic {
+  private newtype TFlowFeature =
+    TFeatureHasSourceCallContext() or
+    TFeatureHasSinkCallContext() or
+    TFeatureEqualSourceSinkCallContext()
+
+  /** A flow configuration feature for use in `Configuration::getAFeature()`. */
+  class FlowFeature extends TFlowFeature {
+    string toString() { none() }
+  }
+
+  /**
+   * A flow configuration feature that implies that sources have some existing
+   * call context.
+   */
+  class FeatureHasSourceCallContext extends FlowFeature, TFeatureHasSourceCallContext {
+    override string toString() { result = "FeatureHasSourceCallContext" }
+  }
+
+  /**
+   * A flow configuration feature that implies that sinks have some existing
+   * call context.
+   */
+  class FeatureHasSinkCallContext extends FlowFeature, TFeatureHasSinkCallContext {
+    override string toString() { result = "FeatureHasSinkCallContext" }
+  }
+
+  /**
+   * A flow configuration feature that implies that source-sink pairs have some
+   * shared existing call context.
+   */
+  class FeatureEqualSourceSinkCallContext extends FlowFeature, TFeatureEqualSourceSinkCallContext {
+    override string toString() { result = "FeatureEqualSourceSinkCallContext" }
+  }
+}
+
 /**
  * The cost limits for the `AccessPathFront` to `AccessPathApprox` expansion.
  *
