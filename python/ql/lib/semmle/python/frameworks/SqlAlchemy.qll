@@ -315,7 +315,7 @@ module SqlAlchemy {
      */
     abstract class TextClauseConstruction extends SqlConstruction::Range, DataFlow::CallCfgNode {
       /** Gets the argument that specifies the SQL text. */
-      final override DataFlow::Node getSql() {
+      override DataFlow::Node getSql() {
         result in [this.getArg(0), this.getArgByName("text")]
       }
     }
