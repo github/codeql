@@ -18,28 +18,25 @@
  * 3. The `subtypes` is a boolean that indicates whether to jump to an
  *    arbitrary subtype of that type.
  * 4. The `name` column optionally selects a specific named member of the type.
- * 5. The `signature` column optionally restricts the named member. If
- *    `signature` is blank then no such filtering is done. The format of the
- *    signature is a comma-separated list of types enclosed in parentheses. The
- *    types can be short names or fully qualified names (mixing these two options
- *    is not allowed within a single signature).
- * 6. The `ext` column specifies additional API-graph-like edges. Currently
- *    there are only two valid values: "" and "Annotated". The empty string has no
- *    effect. "Annotated" applies if `name` and `signature` were left blank and
- *    acts by selecting an element that is annotated by the annotation type
- *    selected by the first 4 columns. This can be another member such as a field
- *    or method, or a parameter.
+ * 5. The `signature` column is always empty.
+ * 6. The `ext` column is always empty.
  * 7. The `input` column specifies how data enters the element selected by the
  *    first 6 columns, and the `output` column specifies how data leaves the
  *    element selected by the first 6 columns. An `input` can be either "",
- *    "Argument[n]", "Argument[n1..n2]", "ReturnValue":
+ *    "Argument[n]", "Argument[n1..n2]", "ReturnValue", "ReturnValue[n]",
+ *    "ReturnValue[n1..n2]":
  *    - "": Selects a write to the selected element in case this is a field.
  *    - "Argument[n]": Selects an argument in a call to the selected element.
  *      The arguments are zero-indexed, and `-1` specifies the qualifier.
- *    - "Argument[n1..n2]": Similar to "Argument[n]" but select any argument in
- *      the given range. The range is inclusive at both ends.
- *    - "ReturnValue": Selects a value being returned by the selected element.
- *      This requires that the selected element is a method with a body.
+ *    - "Argument[n1..n2]": Similar to "Argument[n]" but selects any argument
+ *      in the given range. The range is inclusive at both ends.
+ *    - "ReturnValue": Selects the first value being returned by the selected
+ *      element. This requires that the selected element is a method with a
+ *      body.
+ *    - "ReturnValue[n]": Similar to "ReturnValue" but selects the specified
+ *      return value. The return values are zero-indexed
+ *    - "ReturnValue[n1..n2]": Similar to "ReturnValue[n]" but selects any
+ *      return value in the given range. The range is inclusive at both ends.
  *
  *    An `output` can be either "", "Argument[n]", "Argument[n1..n2]", "Parameter",
  *    "Parameter[n]", "Parameter[n1..n2]", or "ReturnValue":
