@@ -341,7 +341,7 @@ class SqlConstruction extends DataFlow::Node {
 
   SqlConstruction() { this = range }
 
-  /** Gets the argument that specifies the SQL statements to be executed. */
+  /** Gets the argument that specifies the SQL statements to be constructed. */
   DataFlow::Node getSql() { result = range.getSql() }
 }
 
@@ -356,7 +356,7 @@ module SqlConstruction {
    * extend `SqlExecution` instead.
    */
   abstract class Range extends DataFlow::Node {
-    /** Gets the argument that specifies the SQL statements to be executed. */
+    /** Gets the argument that specifies the SQL statements to be constructed. */
     abstract DataFlow::Node getSql();
   }
 }
