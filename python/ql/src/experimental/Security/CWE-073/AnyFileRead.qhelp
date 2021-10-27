@@ -1,0 +1,38 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Accessing files using paths constructed from user-controlled data can allow an attacker to access
+unexpected resources. This may cause sensitive information to be leaked
+</p>
+</overview>
+
+<recommendation>
+<p>
+After the user completes the file path construction and before reading the file content, the file 
+path needs to be strictly verified.
+</p>
+
+</recommendation>
+
+<example>
+<p>
+In the first and second examples, the accessed file name comes from the user's input, and without 
+any verification, it is directly returned to the user, causing the leakage of sensitive information. 
+For example: Linux system, the file name can enter <code>"/etc/passwd"</code> to obtain the system user password file.
+</p>
+
+<p>
+In the third example, the file name entered by the user is fully verified, and there is no arbitrary file reading vulnerability.
+</p>
+
+<sample src="AnyFileRead.py" />
+</example>
+
+<references>
+<li>OWASP: <a href="https://owasp.org/www-community/attacks/Path_Traversal">Path Traversal</a>.</li>
+</references>
+</qhelp>
