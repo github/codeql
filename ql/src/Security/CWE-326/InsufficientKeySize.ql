@@ -33,10 +33,17 @@ class RsaKeyTrackingConfiguration extends DataFlow::Configuration {
   }
 }
 
-class ComparisonBarrierGuard extends DataFlow::BarrierGuard, DataFlow::RelationalComparisonNode {
+/**
+ * A comparison which guarantees that an expression is at least 2048,
+ * considered as a barrier guard for key sizes.
+ */
+class ComparisonBarrierGuard extends DataFlow::BarrierGuard instanceof DataFlow::RelationalComparisonNode {
   override predicate checks(Expr e, boolean branch) {
-    exists(DataFlow::Node lesser , DataFlow::Node greater, int bias | this.leq(branch, lesser, greater, bias) |
-      globalValueNumber(DataFlow::exprNode(e)) = globalValueNumber(greater) and lesser.getIntValue() - bias >= 2048
+    exists(DataFlow::Node lesser, DataFlow::Node greater, int bias |
+      super.leq(branch, lesser, greater, bias)
+    |
+      globalValueNumber(DataFlow::exprNode(e)) = globalValueNumber(greater) and
+      lesser.getIntValue() - bias >= 2048
     )
   }
 }

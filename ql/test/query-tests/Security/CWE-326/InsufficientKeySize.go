@@ -55,3 +55,14 @@ func foo9() {
 		rsa.GenerateKey(rand.Reader, keyBits) // GOOD
 	}
 }
+
+func foo10(customOptionSupplied bool, nonConstantKeyBits int) {
+	keyBits := 0
+	constantKeyBits := 1024
+	if customOptionSupplied {
+		keyBits = constantKeyBits
+	} else {
+		keyBits = nonConstantKeyBits
+	}
+	rsa.GenerateKey(rand.Reader, keyBits) // BAD
+}
