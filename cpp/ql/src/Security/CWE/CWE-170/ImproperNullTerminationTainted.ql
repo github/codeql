@@ -5,7 +5,6 @@
  * @kind problem
  * @id cpp/user-controlled-null-termination-tainted
  * @problem.severity warning
- * @precision medium
  * @security-severity 10.0
  * @tags security
  *       external/cwe/cwe-170
