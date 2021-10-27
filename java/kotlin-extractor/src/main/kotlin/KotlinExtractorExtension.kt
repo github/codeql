@@ -509,7 +509,7 @@ class X {
 }
 */
 
-            s.isArray() && s.arguments.isNotEmpty() -> {
+            (s.isArray() || s.isNullableArray()) && s.arguments.isNotEmpty() -> {
                 // TODO: fix this, this is only a dummy implementation to let the tests pass
                 val elementType = useType(s.getArrayElementType(pluginContext.irBuiltIns))
                 val id = tw.getLabelFor<DbArray>("@\"array;1;{$elementType}\"")
