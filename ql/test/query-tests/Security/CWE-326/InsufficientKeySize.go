@@ -25,3 +25,33 @@ func foo4() {
 func foo5(size int) {
 	rsa.GenerateKey(rand.Reader, size)
 }
+
+func foo6() {
+	keyBits := 1024
+	if keyBits >= 2047 {
+		rsa.GenerateKey(rand.Reader, keyBits) // BAD
+	}
+}
+
+func foo7() {
+	keyBits := 1024
+	if keyBits >= 2048 {
+		rsa.GenerateKey(rand.Reader, keyBits) // GOOD
+	}
+}
+
+func foo8() {
+	keyBits := 1024
+	switch {
+	case keyBits >= 2047:
+		rsa.GenerateKey(rand.Reader, keyBits) // BAD
+	}
+}
+
+func foo9() {
+	keyBits := 1024
+	switch {
+	case keyBits >= 2048:
+		rsa.GenerateKey(rand.Reader, keyBits) // GOOD
+	}
+}
