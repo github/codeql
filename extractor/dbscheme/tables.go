@@ -1159,6 +1159,7 @@ var ErrorsTable = NewTable("errors",
 	IntColumn("idx"),
 ).KeySet("package", "idx")
 
+// HasEllipsisTable is the table containing all call expressions that have ellipses
 var HasEllipsisTable = NewTable("has_ellipsis",
 	EntityColumn(CallOrConversionExpr, "id"),
 )
