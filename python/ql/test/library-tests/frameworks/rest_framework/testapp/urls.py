@@ -11,5 +11,6 @@ router.register(r"bars", views.BarViewSet)
 urlpatterns = [
     path("", include(router.urls)),
     path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
-    path("example/", views.example),  # $routeSetup="example/"
+    path("class-based-view/", views.MyClass.as_view()),  # $routeSetup="lcass-based-view/"
+    path("function-based-view/", views.function_based_view),  # $routeSetup="function-based-view/"
 ]
