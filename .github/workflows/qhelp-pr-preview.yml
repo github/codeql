@@ -20,6 +20,7 @@ jobs:
         with:
           ref: refs/pull/${{ github.event.number }}/merge
           fetch-depth: 2
+          persist-credentials: false
       - name: Determine changed files
         id: changes
         run: |
