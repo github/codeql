@@ -511,9 +511,10 @@ class X {
 
             ((s.isArray() || s.isNullableArray()) && s.arguments.isNotEmpty()) || s.isPrimitiveArray() -> {
                 // TODO: fix this, this is only a dummy implementation to let the tests pass
-                val elementType = useType(s.getArrayElementType(pluginContext.irBuiltIns))
-                val id = tw.getLabelFor<DbArray>("@\"array;1;{$elementType}\"")
-                tw.writeArrays(id, "ARRAY", elementType.javaResult.id, elementType.kotlinResult.id, 1, elementType.javaResult.id, elementType.kotlinResult.id)
+                val elementType = useTypeOld(s.getArrayElementType(pluginContext.irBuiltIns))
+                val id = tw.getLabelFor<DbArray>("@\"array;1;{$elementType}\"") {
+                    tw.writeArrays(id, "ARRAY", elementType.javaResult.id, elementType.kotlinResult.id, 1, elementType.javaResult.id, elementType.kotlinResult.id)
+                }
                 val javaSignature = "an array" // TODO: Wrong
                 val javaResult = TypeResult(id, javaSignature)
                 val aClassId = makeClass("kotlin", "Array") // TODO: Wrong
