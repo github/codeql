@@ -129,6 +129,11 @@ predicate isCsrfProtectionRouteHandler(Routing::RouteHandler handler) {
   handler = getAHandlerSettingCsrfCookie()
 }
 
+/** Gets a call to `passport.authenticate` */
+API::CallNode passportAuthenticateCall() {
+  result = API::moduleImport("passport").getMember("authenticate").getACall()
+}
+
 /**
  * A call of form `passport.authenticate(..., { session: false })`, implying that the incoming
  * request must carry its credentials rather than relying on cookies.
@@ -137,8 +142,21 @@ predicate isCsrfProtectionRouteHandler(Routing::RouteHandler handler) {
  * reduce noise we do not want to flag them.
  */
 API::CallNode nonSessionBasedAuthMiddleware() {
-  result = API::moduleImport("passport").getMember("authenticate").getACall() and
+  result = passportAuthenticateCall() and
   result.getParameter(1).getMember("session").getARhs().mayHaveBooleanValue(false)
+}
+
+/**
+ * Gets a middleware node that performs authentication and is considered immune to Login CSRF.
+ *
+ * These are not considered CSRF protectors, but shouldn't themselves be flagged as being vulnerable
+ * to CSRF. In particular, if the middleware is wrapped by a router handler function, we want to avoid
+ * spuriously reporting the wrapper function.
+ */
+API::CallNode authMiddlewareImmuneToCsrf() {
+  result = passportAuthenticateCall() and
+  // The local strategy does not provide its own CSRF protection
+  not result.getArgument(0).getStringValue() = "local"
 }
 
 /**
@@ -179,6 +197,8 @@ where
   not hasCsrfMiddleware(handler) and
   // Sometimes the CSRF protection comes later in the same route setup.
   not setup.getAChild*() = getACsrfMiddleware() and
+  // Ignore auth routes that are immune to Login CSRF
+  not handler.getAChild*() = Routing::getNode(authMiddlewareImmuneToCsrf()) and
   // Only warn for dangerous handlers, such as for POST and PUT.
   setup.getOwnHttpMethod().isUnsafe()
 select cookie, "This cookie middleware is serving a request handler $@ without CSRF protection.",
