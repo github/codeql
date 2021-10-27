@@ -30,14 +30,15 @@ jobs:
       - uses: ./.github/actions/fetch-codeql
 
       - name: QHelp preview
-        if: ${{ steps.changes.outputs.qhelp_files }}
         run: |
-          ( echo "QHelp previews:";
-          cat "${{ runner.temp }}/paths.txt" | while read path; do
-            echo "<details> <summary>${path}</summary>"
-            echo
-            codeql generate query-help --format=markdown "${path}"
-            echo "</details>"
-          done) | gh pr comment "${{ github.event.pull_request.number }}" -F -
+          if [ -s "${{ runner.temp }}/paths.txt" ]; then
+            ( echo "QHelp previews:";
+            cat "${{ runner.temp }}/paths.txt" | while read path; do
+              echo "<details> <summary>${path}</summary>"
+              echo
+              codeql generate query-help --format=markdown "${path}"
+              echo "</details>"
+            done) | gh pr comment "${{ github.event.pull_request.number }}" -F -
+          fi
         env:
           GITHUB_TOKEN: ${{ github.token }}
