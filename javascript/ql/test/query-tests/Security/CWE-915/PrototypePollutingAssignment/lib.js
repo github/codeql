@@ -84,5 +84,10 @@ module.exports.delete = function() {
   delete obj[path[0]]; // OK
   var prop = arguments[2];
   var proto = obj[path[0]];
-  delete proto[prop]; // NOT
+  delete proto[prop]; // NOT OK
+}
+
+module.exports.fixedProp = function (obj, path, value) {
+  var maybeProto = obj[path];
+  maybeProto.foo = value; // OK - fixed properties from library inputs are OK.
 }

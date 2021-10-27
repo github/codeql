@@ -79,6 +79,13 @@ nodes
 | lib.js:86:19:86:25 | path[0] |
 | lib.js:87:10:87:14 | proto |
 | lib.js:87:10:87:14 | proto |
+| lib.js:90:43:90:46 | path |
+| lib.js:90:43:90:46 | path |
+| lib.js:91:7:91:28 | maybeProto |
+| lib.js:91:20:91:28 | obj[path] |
+| lib.js:91:24:91:27 | path |
+| lib.js:92:3:92:12 | maybeProto |
+| lib.js:92:3:92:12 | maybeProto |
 | tst.js:5:9:5:38 | taint |
 | tst.js:5:17:5:38 | String( ... y.data) |
 | tst.js:5:24:5:37 | req.query.data |
@@ -192,6 +199,12 @@ edges
 | lib.js:86:15:86:26 | obj[path[0]] | lib.js:86:7:86:26 | proto |
 | lib.js:86:19:86:22 | path | lib.js:86:19:86:25 | path[0] |
 | lib.js:86:19:86:25 | path[0] | lib.js:86:15:86:26 | obj[path[0]] |
+| lib.js:90:43:90:46 | path | lib.js:91:24:91:27 | path |
+| lib.js:90:43:90:46 | path | lib.js:91:24:91:27 | path |
+| lib.js:91:7:91:28 | maybeProto | lib.js:92:3:92:12 | maybeProto |
+| lib.js:91:7:91:28 | maybeProto | lib.js:92:3:92:12 | maybeProto |
+| lib.js:91:20:91:28 | obj[path] | lib.js:91:7:91:28 | maybeProto |
+| lib.js:91:24:91:27 | path | lib.js:91:20:91:28 | obj[path] |
 | tst.js:5:9:5:38 | taint | tst.js:8:12:8:16 | taint |
 | tst.js:5:9:5:38 | taint | tst.js:9:12:9:16 | taint |
 | tst.js:5:9:5:38 | taint | tst.js:12:25:12:29 | taint |
