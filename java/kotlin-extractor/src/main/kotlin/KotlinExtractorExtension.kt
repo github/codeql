@@ -517,19 +517,19 @@ class X {
                 }
                 val javaSignature = "an array" // TODO: Wrong
                 val javaResult = TypeResult(id, javaSignature)
-                val aClassId = makeClass("kotlin", "Array") // TODO: Wrong
+                val kotlinClassName = getUnquotedClassLabel(s.classifier.owner as IrClass, s.arguments)
                 val kotlinResult = if (s.hasQuestionMark) {
                         val kotlinSignature = "$javaSignature?" // TODO: Wrong
-                        val kotlinLabel = "@\"kt_type;nullable;array\"" // TODO: Wrong
+                        val kotlinLabel = "@\"kt_type;nullable;${kotlinClassName}\""
                         val kotlinId: Label<DbKt_nullable_type> = tw.getLabelFor(kotlinLabel, {
-                            tw.writeKt_nullable_types(it, aClassId)
+                            tw.writeKt_nullable_types(it, id)
                         })
                         TypeResult(kotlinId, kotlinSignature)
                     } else {
                         val kotlinSignature = "$javaSignature" // TODO: Wrong
-                        val kotlinLabel = "@\"kt_type;notnull;array\"" // TODO: Wrong
+                        val kotlinLabel = "@\"kt_type;notnull;${kotlinClassName}\"" // TODO: Wrong
                         val kotlinId: Label<DbKt_notnull_type> = tw.getLabelFor(kotlinLabel, {
-                            tw.writeKt_notnull_types(it, aClassId)
+                            tw.writeKt_notnull_types(it, id)
                         })
                         TypeResult(kotlinId, kotlinSignature)
                     }

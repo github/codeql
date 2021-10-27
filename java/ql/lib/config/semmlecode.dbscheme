@@ -328,12 +328,12 @@ class_companion_object(
 
 kt_nullable_types(
   unique int id: @kt_nullable_type,
-  int classid: @classorinterface ref
+  int classid: @reftype ref
 )
 
 kt_notnull_types(
   unique int id: @kt_notnull_type,
-  int classid: @classorinterface ref
+  int classid: @reftype ref
 )
 
 kt_type_alias(
