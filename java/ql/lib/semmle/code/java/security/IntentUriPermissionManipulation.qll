@@ -51,9 +51,6 @@ private class IntentFlagsOrDataChangedSanitizer extends IntentUriPermissionManip
       TaintTracking::localExprTaint(any(GrantWriteUriPermissionFlag f).getAnAccess(),
         ma.getArgument(0))
       or
-      ma.getMethod() = m and
-      m.getDeclaringType() instanceof TypeIntent and
-      this.asExpr() = ma.getQualifier() and
       m.hasName("setFlags") and
       not TaintTracking::localExprTaint(any(GrantUriPermissionFlag f).getAnAccess(),
         ma.getArgument(0))

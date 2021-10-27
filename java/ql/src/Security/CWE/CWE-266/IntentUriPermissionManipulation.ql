@@ -5,6 +5,7 @@
  *              arbitrary Content Providers that are accessible by the vulnerable application.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 7.8
  * @precision high
  * @id java/android/intent-uri-permission-manipulation
  * @tags security
