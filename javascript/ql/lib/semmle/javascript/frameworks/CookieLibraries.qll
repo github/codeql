@@ -23,7 +23,7 @@ module CookieWrites {
     abstract predicate isHttpOnly();
 
     /**
-     * Holds if the cookie is likely an authentication cookie or otherwise sensitive.
+     * Holds if the cookie likely is an authentication cookie or otherwise sensitive.
      */
     abstract predicate isSensitive();
 
@@ -57,8 +57,10 @@ module CookieWrites {
 
 /**
  * Holds if `node` looks like it can contain a sensitive cookie.
- * Either from `node` being a sensitive expression, or from `node` containing
- * a string value that looks like a sensitive cookie name.
+ *
+ * Heuristics:
+ * - `node` contains a string value that looks like a sensitive cookie name
+ * - `node` is a sensitive expression
  */
 private predicate canHaveSensitiveCookie(DataFlow::Node node) {
   exists(string s |
@@ -72,7 +74,7 @@ private predicate canHaveSensitiveCookie(DataFlow::Node node) {
 }
 
 /**
- * Gets cookie name from a `Set-Cookie` header value.
+ * Gets the cookie name of a `Set-Cookie` header value.
  * The header value always starts with `<cookie-name>=<cookie-value>` optionally followed by attributes:
  * `<cookie-name>=<cookie-value>; Domain=<domain-value>; Secure; HttpOnly`
  */
