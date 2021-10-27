@@ -2158,9 +2158,13 @@ class WhenBranch extends Top, @whenbranch {
   Expr getCondition() { result.isNthChildOf(this, 0) }
 
   /** Gets the result of this branch. */
-  Top getResult() {
-    result.(Expr).isNthChildOf(this, 1) or
-    result.(Stmt).isNthChildOf(this, 1)
+  Stmt getRhs() {
+    result.isNthChildOf(this, 1)
+  }
+
+  /** Gets a result expression of this `when` branch. */
+  Expr getAResult() {
+    result = getAResult(this.getRhs())
   }
 
   /** Holds if this is an `else` branch. */
@@ -2171,6 +2175,13 @@ class WhenBranch extends Top, @whenbranch {
   override string toString() { result = "... -> ..." }
 
   override string getAPrimaryQlClass() { result = "WhenBranch" }
+}
+
+// TODO: This might need more cases. It might be better as a predicate
+// on Stmt, overridden in each subclass.
+private Expr getAResult(Stmt s) {
+  result = s.(ExprStmt).getExpr() or
+  result = getAResult(s.(BlockStmt).getLastStmt())
 }
 
 /** A Kotlin `::class` expression. */

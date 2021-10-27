@@ -309,7 +309,7 @@ private module ControlFlowGraphImpl {
     or
     exists(WhenExpr whenexpr |
       inBooleanContext(whenexpr) and
-      whenexpr.getBranch(_).getResult() = b)
+      whenexpr.getBranch(_).getAResult() = b)
   }
 
   /**
@@ -417,9 +417,7 @@ private module ControlFlowGraphImpl {
     exists(WhenExpr whenexpr | whenexpr = result |
       whenexpr.getBranch(_).isElseBranch() and
       forex(WhenBranch whenbranch | whenbranch = whenexpr.getBranch(_) |
-        whenbranch.getResult() = nonReturningExpr()
-        or
-        whenbranch.getResult() = nonReturningStmt()))
+        whenbranch.getRhs() = nonReturningStmt()))
   }
 
   /**
@@ -907,20 +905,42 @@ private module ControlFlowGraphImpl {
     )
     or
     // The last node in a `when` expression is the last node in any of its branches or
-    // the last node of the condition in the absence of an else-branch.
+    // the last node of the condition of the last branch in the absence of an else-branch.
     exists(WhenExpr whenexpr | whenexpr = n |
+      // If we have no branches then we are the last node
       last = n and
       completion = NormalCompletion() and
-      not whenexpr.getBranch(_).isElseBranch()
+      not exists(whenexpr.getBranch(_))
       or
-      last(whenexpr.getBranch(_).getResult(), last, completion)
+      // If our last branch condition is false then we are done
+      exists(int i |
+             last(whenexpr.getBranch(i), last, BooleanCompletion(false, _)) and
+             completion = NormalCompletion() and
+             not exists(whenexpr.getBranch(i + 1)))
+      or
+      // Any branch getting an abnormal completion is propogated
+      last(whenexpr.getBranch(_), last, completion) and
+      not completion instanceof YieldCompletion and
+      not completion instanceof NormalOrBooleanCompletion
+      or
+      // The last node in any branch. This will be wrapped up as a
+      // YieldCompletion, so we need to unwrap it here.
+      last(whenexpr.getBranch(_), last, YieldCompletion(completion))
     )
     or
     exists(WhenBranch whenbranch | whenbranch = n |
-      last(whenbranch.getCondition(), last, BooleanCompletion(false, _)) and
-      completion = NormalCompletion()
+      // If the condition completes with anything other than true
+      // (e.g. false or an exception), then the branch is done
+      last(whenbranch.getCondition(), last, completion) and
+      completion != BooleanCompletion(true, _)
       or
-      last(whenbranch.getResult(), last, completion)
+      // Otherwise we wrap the completion up in a YieldCompletion
+      // so that the `when` expression can tell that we have finished,
+      // and it shouldn't go on to the next branch.
+      exists(Completion branchCompletion |
+        last(whenbranch.getRhs(), last, branchCompletion) and
+        completion = YieldCompletion(branchCompletion)
+      )
     )
   }
 
@@ -1191,19 +1211,20 @@ private module ControlFlowGraphImpl {
       completion = NormalCompletion()
       or
       exists(int i |
-        last(whenexpr.getBranch(i).getCondition(), n, completion) and
+        last(whenexpr.getBranch(i), n, completion) and
         completion = BooleanCompletion(false, _) and
         result = first(whenexpr.getBranch(i + 1)))
     )
     or
     // When branches:
-    exists(WhenBranch whenbranch | n = whenbranch |
+    exists(WhenBranch whenbranch |
+      n = whenbranch and
       completion = NormalCompletion() and
       result = first(whenbranch.getCondition())
       or
       last(whenbranch.getCondition(), n, completion) and
       completion = BooleanCompletion(true, _) and
-      result = first(whenbranch.getResult())
+      result = first(whenbranch.getRhs())
     )
   }
 
