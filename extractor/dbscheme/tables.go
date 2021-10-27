@@ -1163,3 +1163,8 @@ var ErrorsTable = NewTable("errors",
 var HasEllipsisTable = NewTable("has_ellipsis",
 	EntityColumn(CallOrConversionExpr, "id"),
 )
+
+// VariadicTable is the table describing which functions are variadic
+var VariadicTable = NewTable("variadic",
+	EntityColumn(SignatureType, "id"),
+)

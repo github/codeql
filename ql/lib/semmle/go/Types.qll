@@ -581,6 +581,9 @@ class SignatureType extends @signaturetype, CompositeType {
   /** Gets the number of results specified by this signature. */
   int getNumResult() { result = count(int i | exists(this.getResultType(i))) }
 
+  /** Holds if this signature type is variadic. */
+  predicate isVariadic() { variadic(this) }
+
   language[monotonicAggregates]
   override string pp() {
     result =
