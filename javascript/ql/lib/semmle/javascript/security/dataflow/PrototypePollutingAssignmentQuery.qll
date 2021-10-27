@@ -11,7 +11,7 @@ private import javascript
 private import semmle.javascript.DynamicPropertyAccess
 private import semmle.javascript.dataflow.InferredTypes
 import PrototypePollutingAssignmentCustomizations::PrototypePollutingAssignment
-private import filters.ClassifyFiles as ClassifyFiles
+private import semmle.javascript.filters.ClassifyFiles as ClassifyFiles
 
 // Materialize flow labels
 private class ConcreteObjectPrototype extends ObjectPrototype {
