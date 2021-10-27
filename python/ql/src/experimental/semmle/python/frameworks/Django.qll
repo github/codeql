@@ -87,15 +87,24 @@ private module PrivateDjango {
             override DataFlow::Node getValueArg() { result = headerInput }
           }
 
-          class DjangoSetCookieCall extends DataFlow::CallCfgNode,
-            ExperimentalHTTP::CookieWrite::Range {
+          class DjangoSetCookieCall extends DataFlow::CallCfgNode, Cookie::Range {
             DjangoSetCookieCall() { this = baseClassRef().getMember("set_cookie").getACall() }
 
-            override DataFlow::Node getHeaderArg() { none() }
+            override predicate isSecure() {
+              DataFlow::exprNode(any(True t))
+                  .(DataFlow::LocalSourceNode)
+                  .flowsTo(this.getArgByName("secure"))
+            }
 
-            override DataFlow::Node getNameArg() { result = this.getArg(0) }
+            override predicate isHttpOnly() {
+              DataFlow::exprNode(any(True t))
+                  .(DataFlow::LocalSourceNode)
+                  .flowsTo(this.getArgByName("httponly"))
+            }
 
-            override DataFlow::Node getValueArg() { result = this.getArg(1) }
+            override predicate isSameSite() {
+              this.getArgByName("samesite").asExpr().(Str_).getS() in ["Strict", "Lax"]
+            }
           }
         }
       }

@@ -12,23 +12,16 @@
 // determine precision above
 import python
 import semmle.python.dataflow.new.DataFlow
-import semmle.python.Concepts
 import experimental.semmle.python.Concepts
 
-from Expr cookieExpr
+from Cookie cookie, string alert
 where
-  exists(HeaderDeclaration headerWrite, StrConst headerName, StrConst headerValue |
-    headerName.getText() = "Set-Cookie" and
-    DataFlow::exprNode(headerName).(DataFlow::LocalSourceNode).flowsTo(headerWrite.getNameArg()) and
-    not headerValue.getText().regexpMatch(".*; *Secure;.*") and
-    DataFlow::exprNode(headerValue).(DataFlow::LocalSourceNode).flowsTo(headerWrite.getValueArg()) and
-    cookieExpr = headerWrite.asExpr()
-  )
+  cookie.isSecure() and
+  alert = "secure"
   or
-  exists(ExperimentalHTTP::CookieWrite cookieWrite, False f, None n |
-    [DataFlow::exprNode(f), DataFlow::exprNode(n)]
-        .(DataFlow::LocalSourceNode)
-        .flowsTo(cookieWrite.(DataFlow::CallCfgNode).getArgByName("secure")) and
-    cookieExpr = cookieWrite.asExpr()
-  )
-select cookieExpr, "Cookie is added to response without the 'secure' flag being set."
+  not cookie.isHttpOnly() and
+  alert = "httponly"
+  or
+  cookie.isSameSite() and
+  alert = "samesite"
+select cookie, "Cookie is added without the ", alert, " flag properly set."

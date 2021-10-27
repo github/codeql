@@ -82,8 +82,8 @@ module ExperimentalFlask {
     override DataFlow::Node getValueArg() { result.asExpr() = item.getValue() }
   }
 
-  class DjangoSetCookieCall extends DataFlow::CallCfgNode, ExperimentalHTTP::CookieWrite::Range {
-    DjangoSetCookieCall() {
+  class FlaskSetCookieCall extends DataFlow::CallCfgNode, Cookie::Range {
+    FlaskSetCookieCall() {
       this =
         [Flask::Response::classRef(), flaskMakeResponse()]
             .getReturn()
@@ -91,10 +91,20 @@ module ExperimentalFlask {
             .getACall()
     }
 
-    override DataFlow::Node getHeaderArg() { none() }
+    override predicate isSecure() {
+      DataFlow::exprNode(any(True t))
+          .(DataFlow::LocalSourceNode)
+          .flowsTo(this.getArgByName("secure"))
+    }
 
-    override DataFlow::Node getNameArg() { result = this.getArg(0) }
+    override predicate isHttpOnly() {
+      DataFlow::exprNode(any(True t))
+          .(DataFlow::LocalSourceNode)
+          .flowsTo(this.getArgByName("httponly"))
+    }
 
-    override DataFlow::Node getValueArg() { result = this.getArg(1) }
+    override predicate isSameSite() {
+      this.getArgByName("samesite").asExpr().(Str_).getS() in ["Strict", "Lax"]
+    }
   }
 }

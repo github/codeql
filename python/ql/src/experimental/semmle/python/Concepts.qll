@@ -301,54 +301,51 @@ class HeaderDeclaration extends DataFlow::Node {
  * A data-flow node that sets a cookie in an HTTP response.
  *
  * Extend this class to refine existing API models. If you want to model new APIs,
- * extend `HTTP::CookieWrite::Range` instead.
+ * extend `Cookie::Range` instead.
  */
-class CookieWrite extends DataFlow::Node {
-  CookieWrite::Range range;
+class Cookie extends DataFlow::Node {
+  Cookie::Range range;
 
-  CookieWrite() { this = range }
-
-  /**
-   * Gets the argument, if any, specifying the raw cookie header.
-   */
-  DataFlow::Node getHeaderArg() { result = range.getHeaderArg() }
+  Cookie() { this = range }
 
   /**
-   * Gets the argument, if any, specifying the cookie name.
+   * Holds if this cookie is secure.
    */
-  DataFlow::Node getNameArg() { result = range.getNameArg() }
+  predicate isSecure() { range.isSecure() }
 
   /**
-   * Gets the argument, if any, specifying the cookie value.
+   * Holds if this cookie is HttpOnly.
    */
-  DataFlow::Node getValueArg() { result = range.getValueArg() }
+  predicate isHttpOnly() { range.isHttpOnly() }
+
+  /**
+   * Holds if the cookie is SameSite
+   */
+  predicate isSameSite() { range.isSameSite() }
 }
 
 /** Provides a class for modeling new cookie writes on HTTP responses. */
-module CookieWrite {
+module Cookie {
   /**
    * A data-flow node that sets a cookie in an HTTP response.
    *
-   * Note: we don't require that this redirect must be sent to a client (a kind of
-   * "if a tree falls in a forest and nobody hears it" situation).
-   *
    * Extend this class to model new APIs. If you want to refine existing API models,
-   * extend `HttpResponse` instead.
+   * extend `Cookie` instead.
    */
   abstract class Range extends DataFlow::Node {
     /**
-     * Gets the argument, if any, specifying the raw cookie header.
+     * Holds if this cookie is secure.
      */
-    abstract DataFlow::Node getHeaderArg();
+    abstract predicate isSecure();
 
     /**
-     * Gets the argument, if any, specifying the cookie name.
+     * Holds if this cookie is HttpOnly.
      */
-    abstract DataFlow::Node getNameArg();
+    abstract predicate isHttpOnly();
 
     /**
-     * Gets the argument, if any, specifying the cookie value.
+     * Holds if the cookie is SameSite.
      */
-    abstract DataFlow::Node getValueArg();
+    abstract predicate isSameSite();
   }
 }
