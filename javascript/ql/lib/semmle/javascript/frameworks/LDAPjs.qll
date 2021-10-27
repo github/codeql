@@ -35,7 +35,7 @@ module LDAPjs {
   }
 
   /** A creation of an LDAPjs filter, or object containing a filter, that doesn't sanitizes the input. */
-  abstract class LDAPFilterStep extends DataFlow::Node {
+  abstract class TaintPreservingLdapFilterStep extends DataFlow::Node {
     /** The input that creates (part of) an LDAPjs filter. */
     abstract DataFlow::Node getInput();
 
@@ -44,7 +44,7 @@ module LDAPjs {
   }
 
   /** A call to the ldap utility method "parseFilter". */
-  private class ParseFilter extends LDAPFilterStep, API::CallNode {
+  private class ParseFilter extends TaintPreservingLdapFilterStep, API::CallNode {
     ParseFilter() { this = ldapjs().getMember("parseFilter").getACall() }
 
     override DataFlow::Node getInput() { result = this.getArgument(0) }
@@ -56,7 +56,7 @@ module LDAPjs {
    * A filter used in call to "search" on an LDAPjs client.
    * We model that as a step from the ".filter" write to the options object itself.
    */
-  private class SearchFilter extends LDAPFilterStep {
+  private class SearchFilter extends TaintPreservingLdapFilterStep {
     SearchOptions options;
 
     SearchFilter() {

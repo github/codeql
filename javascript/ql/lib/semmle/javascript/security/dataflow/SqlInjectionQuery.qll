@@ -26,7 +26,7 @@ class Configuration extends TaintTracking::Configuration {
   }
 
   override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
-    exists(LDAPjs::LDAPFilterStep filter |
+    exists(LDAPjs::TaintPreservingLdapFilterStep filter |
       pred = filter.getInput() and
       succ = filter.getOutput()
     )
