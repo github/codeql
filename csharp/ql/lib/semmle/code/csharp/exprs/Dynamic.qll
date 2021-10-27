@@ -15,7 +15,7 @@ private import semmle.code.csharp.dispatch.Dispatch
  * (`DynamicAccessorCall`), or a dynamic element access (`DynamicElementAccess`).
  */
 class DynamicExpr extends LateBindableExpr {
-  DynamicExpr() { isLateBound() }
+  DynamicExpr() { this.isLateBound() }
 }
 
 /**
@@ -67,7 +67,7 @@ class DynamicObjectCreation extends DynamicExpr, ObjectCreation {
  * may not be known at compile-time (as in the example above).
  */
 class DynamicMethodCall extends DynamicExpr, MethodCall {
-  override string toString() { result = "dynamic call to method " + getLateBoundTargetName() }
+  override string toString() { result = "dynamic call to method " + this.getLateBoundTargetName() }
 
   override string getAPrimaryQlClass() { result = "DynamicMethodCall" }
 }
@@ -97,7 +97,9 @@ class DynamicMethodCall extends DynamicExpr, MethodCall {
  * target operator may not be known at compile-time (as in the example above).
  */
 class DynamicOperatorCall extends DynamicExpr, OperatorCall {
-  override string toString() { result = "dynamic call to operator " + getLateBoundTargetName() }
+  override string toString() {
+    result = "dynamic call to operator " + this.getLateBoundTargetName()
+  }
 
   override string getAPrimaryQlClass() { result = "DynamicOperatorCall" }
 }
@@ -189,7 +191,9 @@ class DynamicAccess extends DynamicExpr {
  */
 class DynamicMemberAccess extends DynamicAccess, MemberAccess, AssignableAccess,
   @dynamic_member_access_expr {
-  override string toString() { result = "dynamic access to member " + getLateBoundTargetName() }
+  override string toString() {
+    result = "dynamic access to member " + this.getLateBoundTargetName()
+  }
 
   override string getAPrimaryQlClass() { result = "DynamicMemberAccess" }
 

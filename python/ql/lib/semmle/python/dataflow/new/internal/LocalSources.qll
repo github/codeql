@@ -62,12 +62,12 @@ class LocalSourceNode extends Node {
   /**
    * Gets a read of attribute `attrName` on this node.
    */
-  AttrRead getAnAttributeRead(string attrName) { result = getAnAttributeReference(attrName) }
+  AttrRead getAnAttributeRead(string attrName) { result = this.getAnAttributeReference(attrName) }
 
   /**
    * Gets a write of attribute `attrName` on this node.
    */
-  AttrWrite getAnAttributeWrite(string attrName) { result = getAnAttributeReference(attrName) }
+  AttrWrite getAnAttributeWrite(string attrName) { result = this.getAnAttributeReference(attrName) }
 
   /**
    * Gets a reference (read or write) of any attribute on this node.
@@ -81,12 +81,12 @@ class LocalSourceNode extends Node {
   /**
    * Gets a read of any attribute on this node.
    */
-  AttrRead getAnAttributeRead() { result = getAnAttributeReference() }
+  AttrRead getAnAttributeRead() { result = this.getAnAttributeReference() }
 
   /**
    * Gets a write of any attribute on this node.
    */
-  AttrWrite getAnAttributeWrite() { result = getAnAttributeReference() }
+  AttrWrite getAnAttributeWrite() { result = this.getAnAttributeReference() }
 
   /**
    * Gets a call to this node.

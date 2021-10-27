@@ -88,12 +88,7 @@ module ClientSideUrlRedirect {
   class LocationSink extends Sink, DataFlow::ValueNode {
     LocationSink() {
       // A call to a `window.navigate` or `window.open`
-      exists(string name |
-        name = "navigate" or
-        name = "open" or
-        name = "openDialog" or
-        name = "showModalDialog"
-      |
+      exists(string name | name = ["navigate", "open", "openDialog", "showModalDialog"] |
         this = DataFlow::globalVarRef(name).getACall().getArgument(0)
       )
       or
@@ -102,7 +97,7 @@ module ClientSideUrlRedirect {
         locationCall = DOM::locationRef().getAMethodCall(name) and
         this = locationCall.getArgument(0)
       |
-        name = "replace" or name = "assign"
+        name = ["replace", "assign"]
       )
       or
       // An assignment to `location`
@@ -113,7 +108,7 @@ module ClientSideUrlRedirect {
         pw = DOM::locationRef().getAPropertyWrite(propName) and
         this = pw.getRhs()
       |
-        propName = "href" or propName = "protocol" or propName = "hostname"
+        propName = ["href", "protocol", "hostname"]
       )
       or
       // A redirection using the AngularJS `$location` service
@@ -153,9 +148,8 @@ module ClientSideUrlRedirect {
    */
   class SrcAttributeUrlSink extends ScriptUrlSink, DataFlow::ValueNode {
     SrcAttributeUrlSink() {
-      exists(DOM::AttributeDefinition attr, string eltName |
-        attr.getElement().getName() = eltName and
-        (eltName = "script" or eltName = "iframe") and
+      exists(DOM::AttributeDefinition attr |
+        attr.getElement().getName() = ["script", "iframe"] and
         attr.getName() = "src" and
         this = attr.getValueNode()
       )

@@ -277,24 +277,11 @@ private module Lexer {
     override string getPattern() {
       result =
         concat(string op |
-          op = "===" or
-          op = "!==" or
-          op = "==" or
-          op = "!=" or
-          op = "<=" or
-          op = ">=" or
-          op = "&&" or
-          op = "||" or
-          op = "*" or
-          op = "!" or
-          op = "=" or
-          op = "<" or
-          op = ">" or
-          op = "+" or
-          op = "-" or
-          op = "/" or
-          op = "%" or
-          op = "|"
+          op =
+            [
+              "===", "!==", "==", "!=", "<=", ">=", "&&", "||", "*", "!", "=", "<", ">", "+", "-",
+              "/", "%", "|"
+            ]
         |
           "\\Q" + op + "\\E", "|" order by op.length() desc
         )

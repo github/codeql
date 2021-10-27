@@ -149,7 +149,7 @@ class Parameter extends DotNet::Parameter, LocalScopeVariable, Attributable, Top
   predicate isIn() { params(this, _, _, _, 5, _, _) }
 
   /** Holds if this parameter is an output or reference parameter. */
-  predicate isOutOrRef() { isOut() or isRef() }
+  predicate isOutOrRef() { this.isOut() or this.isRef() }
 
   /**
    * Holds if this parameter is a parameter array. For example, `args`
@@ -210,7 +210,7 @@ class Parameter extends DotNet::Parameter, LocalScopeVariable, Attributable, Top
   Expr getDefaultValue() { result = this.getUnboundDeclaration().getChildExpr(0) }
 
   /** Holds if this parameter has a default value. */
-  predicate hasDefaultValue() { exists(getDefaultValue()) }
+  predicate hasDefaultValue() { exists(this.getDefaultValue()) }
 
   /** Gets the callable to which this parameter belongs, if any. */
   override Callable getCallable() { result = this.getDeclaringElement() }
@@ -238,7 +238,9 @@ class Parameter extends DotNet::Parameter, LocalScopeVariable, Attributable, Top
    * `y` is `5`, and the assigned arguments to `z` are `3` and `6`, respectively.
    */
   pragma[nomagic]
-  Expr getAnAssignedArgument() { result = getCallable().getACall().getArgumentForParameter(this) }
+  Expr getAnAssignedArgument() {
+    result = this.getCallable().getACall().getArgumentForParameter(this)
+  }
 
   /** Holds if this parameter is potentially overwritten in the body of its callable. */
   predicate isOverwritten() {
@@ -323,7 +325,7 @@ class LocalVariable extends LocalScopeVariable, @local_variable {
   /** Gets the enclosing callable of this local variable. */
   Callable getEnclosingCallable() { result = this.getVariableDeclExpr().getEnclosingCallable() }
 
-  override Callable getCallable() { result = getEnclosingCallable() }
+  override Callable getCallable() { result = this.getEnclosingCallable() }
 
   override predicate isRef() { localvars(this, 3, _, _, _, _) }
 

@@ -116,7 +116,7 @@ private module CryptodomeModel {
         ] and
       this =
         API::moduleImport(["Crypto", "Cryptodome"])
-            .getMember(["Cipher"])
+            .getMember("Cipher")
             .getMember(cipherName)
             .getMember("new")
             .getReturn()
@@ -135,21 +135,21 @@ private module CryptodomeModel {
       or
       // for the following methods, method signatures can be found in
       // https://pycryptodome.readthedocs.io/en/latest/src/cipher/modern.html
-      methodName in ["update"] and
+      methodName = "update" and
       result in [this.getArg(0), this.getArgByName("data")]
       or
       // although `mac_tag` is used as the parameter name in the spec above, some implementations use `received_mac_tag`, for an example, see
       // https://github.com/Legrandin/pycryptodome/blob/5dace638b70ac35bb5d9b565f3e75f7869c9d851/lib/Crypto/Cipher/ChaCha20_Poly1305.py#L207
-      methodName in ["verify"] and
+      methodName = "verify" and
       result in [this.getArg(0), this.getArgByName(["mac_tag", "received_mac_tag"])]
       or
-      methodName in ["hexverify"] and
+      methodName = "hexverify" and
       result in [this.getArg(0), this.getArgByName("mac_tag_hex")]
       or
-      methodName in ["encrypt_and_digest"] and
+      methodName = "encrypt_and_digest" and
       result in [this.getArg(0), this.getArgByName("plaintext")]
       or
-      methodName in ["decrypt_and_verify"] and
+      methodName = "decrypt_and_verify" and
       result in [
           this.getArg(0), this.getArgByName("ciphertext"), this.getArg(1),
           this.getArgByName("mac_tag")
@@ -169,7 +169,7 @@ private module CryptodomeModel {
       methodName in ["sign", "verify"] and
       this =
         API::moduleImport(["Crypto", "Cryptodome"])
-            .getMember(["Signature"])
+            .getMember("Signature")
             .getMember(signatureName)
             .getMember("new")
             .getReturn()
@@ -185,11 +185,11 @@ private module CryptodomeModel {
       methodName = "sign" and
       result in [this.getArg(0), this.getArgByName("msg_hash")] // Cryptodome.Hash instance
       or
-      methodName in ["verify"] and
+      methodName = "verify" and
       (
-        result in [this.getArg(0), this.getArgByName(["msg_hash"])] // Cryptodome.Hash instance
+        result in [this.getArg(0), this.getArgByName("msg_hash")] // Cryptodome.Hash instance
         or
-        result in [this.getArg(1), this.getArgByName(["signature"])]
+        result in [this.getArg(1), this.getArgByName("signature")]
       )
     }
   }
@@ -204,7 +204,7 @@ private module CryptodomeModel {
     CryptodomeGenericHashOperation() {
       exists(API::Node hashModule |
         hashModule =
-          API::moduleImport(["Crypto", "Cryptodome"]).getMember(["Hash"]).getMember(hashName)
+          API::moduleImport(["Crypto", "Cryptodome"]).getMember("Hash").getMember(hashName)
       |
         this = hashModule.getMember("new").getACall()
         or

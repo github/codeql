@@ -2,20 +2,20 @@ public class B
 {
     public void M1()
     {
-        var e = new Elem();
+        var e = Source<Elem>(1);
         var b1 = new Box1(e, null);
         var b2 = new Box2(b1);
-        Sink(b2.box1.elem1); // flow
+        Sink(b2.box1.elem1); // $ hasValueFlow=1
         Sink(b2.box1.elem2); // no flow
     }
 
     public void M2()
     {
-        var e = new Elem();
+        var e = Source<Elem>(2);
         var b1 = new Box1(null, e);
         var b2 = new Box2(b1);
         Sink(b2.box1.elem1); // no flow
-        Sink(b2.box1.elem2); // flow
+        Sink(b2.box1.elem2); // $ hasValueFlow=2
     }
 
     public static void Sink(object o) { }
@@ -41,4 +41,6 @@ public class B
             this.box1 = b1;
         }
     }
+
+    static T Source<T>(object source) => throw null;
 }

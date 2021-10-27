@@ -153,90 +153,36 @@ class JSLintOptions extends JSLintDirective {
 private string jsLintImplicitGlobal(string category) {
   // cf. http://www.jslint.com/help.html#global
   category = "browser" and
-  (
-    result = "clearInterval" or
-    result = "clearTimeout" or
-    result = "document" or
-    result = "event" or
-    result = "frames" or
-    result = "history" or
-    result = "Image" or
-    result = "location" or
-    result = "name" or
-    result = "navigator" or
-    result = "Option" or
-    result = "parent" or
-    result = "screen" or
-    result = "setInterval" or
-    result = "setTimeout" or
-    result = "window" or
-    result = "XMLHttpRequest"
-  )
+  result =
+    [
+      "clearInterval", "clearTimeout", "Option", "parent", "screen", "setInterval", "setTimeout",
+      "window", "XMLHttpRequest", "document", "event", "frames", "history", "Image", "location",
+      "name", "navigator"
+    ]
   or
   category = "devel" and
-  (
-    result = "alert" or
-    result = "confirm" or
-    result = "console" or
-    result = "Debug" or
-    result = "opera" or
-    result = "prompt" or
-    result = "WSH"
-  )
+  result = ["alert", "confirm", "console", "Debug", "opera", "prompt", "WSH"]
   or
   category = "node" and
-  (
-    result = "Buffer" or
-    result = "clearInterval" or
-    result = "clearTimeout" or
-    result = "console" or
-    result = "exports" or
-    result = "result" or
-    result = "module" or
-    result = "process" or
-    result = "querystring" or
-    result = "require" or
-    result = "setInterval" or
-    result = "setTimeout" or
-    result = "__filename" or
-    result = "__dirname"
-  )
+  result =
+    [
+      "Buffer", "clearInterval", "setInterval", "setTimeout", "__filename", "__dirname",
+      "clearTimeout", "console", "exports", "result", "module", "process", "querystring", "require"
+    ]
   or
   category = "couch" and
-  (
-    result = "emit" or
-    result = "getRow" or
-    result = "isArray" or
-    result = "log" or
-    result = "provides" or
-    result = "registerType" or
-    result = "require" or
-    result = "send" or
-    result = "start" or
-    result = "sum" or
-    result = "toJSON"
-  )
+  result =
+    [
+      "emit", "getRow", "toJSON", "isArray", "log", "provides", "registerType", "require", "send",
+      "start", "sum"
+    ]
   or
   category = "rhino" and
-  (
-    result = "defineClass" or
-    result = "deserialize" or
-    result = "gc" or
-    result = "help" or
-    result = "load" or
-    result = "loadClass" or
-    result = "print" or
-    result = "quit" or
-    result = "readFile" or
-    result = "readUrl" or
-    result = "runCommand" or
-    result = "seal" or
-    result = "serialize" or
-    result = "spawn" or
-    result = "sync" or
-    result = "toint32" or
-    result = "version"
-  )
+  result =
+    [
+      "defineClass", "deserialize", "runCommand", "seal", "serialize", "spawn", "sync", "toint32",
+      "version", "gc", "help", "load", "loadClass", "print", "quit", "readFile", "readUrl"
+    ]
 }
 
 /**

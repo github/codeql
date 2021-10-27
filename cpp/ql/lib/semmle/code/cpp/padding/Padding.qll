@@ -72,7 +72,7 @@ abstract class Architecture extends string {
     or
     t instanceof CharType and result = 8
     or
-    t instanceof WideCharType and result = wideCharSize()
+    t instanceof WideCharType and result = this.wideCharSize()
     or
     t instanceof Char8Type and result = 8
     or
@@ -84,22 +84,22 @@ abstract class Architecture extends string {
     or
     t instanceof IntType and result = 32
     or
-    t instanceof LongType and result = longSize()
+    t instanceof LongType and result = this.longSize()
     or
-    t instanceof LongLongType and result = longLongSize()
+    t instanceof LongLongType and result = this.longLongSize()
     or
-    result = enumBitSize(t.(Enum))
+    result = this.enumBitSize(t.(Enum))
     or
-    result = integralBitSize(t.(SpecifiedType).getBaseType())
+    result = this.integralBitSize(t.(SpecifiedType).getBaseType())
     or
-    result = integralBitSize(t.(TypedefType).getBaseType())
+    result = this.integralBitSize(t.(TypedefType).getBaseType())
   }
 
   /**
    * Gets the bit size of enum type `e`.
    */
   int enumBitSize(Enum e) {
-    result = integralBitSize(e.getExplicitUnderlyingType())
+    result = this.integralBitSize(e.getExplicitUnderlyingType())
     or
     not exists(e.getExplicitUnderlyingType()) and result = 32
   }
@@ -108,7 +108,7 @@ abstract class Architecture extends string {
    * Gets the alignment of enum type `e`.
    */
   int enumAlignment(Enum e) {
-    result = alignment(e.getExplicitUnderlyingType())
+    result = this.alignment(e.getExplicitUnderlyingType())
     or
     not exists(e.getExplicitUnderlyingType()) and result = 32
   }
@@ -120,26 +120,26 @@ abstract class Architecture extends string {
    */
   cached
   int bitSize(Type t) {
-    result = integralBitSize(t)
+    result = this.integralBitSize(t)
     or
     t instanceof FloatType and result = 32
     or
     t instanceof DoubleType and result = 64
     or
-    t instanceof LongDoubleType and result = longDoubleSize()
+    t instanceof LongDoubleType and result = this.longDoubleSize()
     or
-    t instanceof PointerType and result = pointerSize()
+    t instanceof PointerType and result = this.pointerSize()
     or
-    t instanceof ReferenceType and result = pointerSize()
+    t instanceof ReferenceType and result = this.pointerSize()
     or
-    t instanceof FunctionPointerType and result = pointerSize()
+    t instanceof FunctionPointerType and result = this.pointerSize()
     or
-    result = bitSize(t.(SpecifiedType).getBaseType())
+    result = this.bitSize(t.(SpecifiedType).getBaseType())
     or
-    result = bitSize(t.(TypedefType).getBaseType())
+    result = this.bitSize(t.(TypedefType).getBaseType())
     or
     exists(ArrayType array | array = t |
-      result = array.getArraySize() * paddedSize(array.getBaseType())
+      result = array.getArraySize() * this.paddedSize(array.getBaseType())
     )
     or
     result = t.(PaddedType).typeBitSize(this)
@@ -155,7 +155,7 @@ abstract class Architecture extends string {
     or
     t instanceof CharType and result = 8
     or
-    t instanceof WideCharType and result = wideCharSize()
+    t instanceof WideCharType and result = this.wideCharSize()
     or
     t instanceof Char8Type and result = 8
     or
@@ -169,27 +169,27 @@ abstract class Architecture extends string {
     or
     t instanceof FloatType and result = 32
     or
-    t instanceof DoubleType and result = doubleAlign()
+    t instanceof DoubleType and result = this.doubleAlign()
     or
-    t instanceof LongType and result = longSize()
+    t instanceof LongType and result = this.longSize()
     or
-    t instanceof LongDoubleType and result = longDoubleAlign()
+    t instanceof LongDoubleType and result = this.longDoubleAlign()
     or
-    t instanceof LongLongType and result = longLongAlign()
+    t instanceof LongLongType and result = this.longLongAlign()
     or
-    t instanceof PointerType and result = pointerSize()
+    t instanceof PointerType and result = this.pointerSize()
     or
-    t instanceof FunctionPointerType and result = pointerSize()
+    t instanceof FunctionPointerType and result = this.pointerSize()
     or
-    t instanceof ReferenceType and result = pointerSize()
+    t instanceof ReferenceType and result = this.pointerSize()
     or
-    result = enumAlignment(t.(Enum))
+    result = this.enumAlignment(t.(Enum))
     or
-    result = alignment(t.(SpecifiedType).getBaseType())
+    result = this.alignment(t.(SpecifiedType).getBaseType())
     or
-    result = alignment(t.(TypedefType).getBaseType())
+    result = this.alignment(t.(TypedefType).getBaseType())
     or
-    result = alignment(t.(ArrayType).getBaseType())
+    result = this.alignment(t.(ArrayType).getBaseType())
     or
     result = t.(PaddedType).typeAlignment(this)
   }
@@ -203,7 +203,7 @@ abstract class Architecture extends string {
     exists(Type realType | realType = stripSpecifiers(t) |
       if realType instanceof PaddedType
       then result = realType.(PaddedType).paddedSize(this)
-      else result = bitSize(realType)
+      else result = this.bitSize(realType)
     )
   }
 
@@ -429,7 +429,7 @@ class PaddedType extends Class {
    * Gets the number of bits wasted by padding at the end of this
    * struct.
    */
-  int trailingPadding(Architecture arch) { result = paddedSize(arch) - arch.bitSize(this) }
+  int trailingPadding(Architecture arch) { result = this.paddedSize(arch) - arch.bitSize(this) }
 
   /**
    * Gets the number of bits wasted in this struct definition; that is.
@@ -440,7 +440,7 @@ class PaddedType extends Class {
    * laid out one after another, and hence there is no padding between
    * them.
    */
-  int wastedSpace(Architecture arch) { result = arch.paddedSize(this) - dataSize(arch) }
+  int wastedSpace(Architecture arch) { result = arch.paddedSize(this) - this.dataSize(arch) }
 
   /**
    * Gets the total size of all fields declared in this class, not including any
@@ -448,8 +448,8 @@ class PaddedType extends Class {
    */
   private int fieldDataSize(Architecture arch) {
     if this instanceof Union
-    then result = max(Field f | f = this.getAMember() | fieldSize(f, arch))
-    else result = sum(Field f | f = this.getAMember() | fieldSize(f, arch))
+    then result = max(Field f | f = this.getAMember() | this.fieldSize(f, arch))
+    else result = sum(Field f | f = this.getAMember() | this.fieldSize(f, arch))
   }
 
   /**
@@ -472,7 +472,7 @@ class PaddedType extends Class {
    * reorganizing member structs' field layouts.
    */
   int optimalSize(Architecture arch) {
-    result = alignUp(dataSize(arch), arch.alignment(this)).maximum(8)
+    result = alignUp(this.dataSize(arch), arch.alignment(this)).maximum(8)
   }
 
   /**
@@ -490,11 +490,11 @@ class PaddedType extends Class {
       // but that uses a recursive aggregate, which isn't supported in
       // QL. We therefore use this slightly more complex implementation
       // instead.
-      result = biggestFieldSizeUpTo(lastFieldIndex(), arch)
+      result = this.biggestFieldSizeUpTo(this.lastFieldIndex(), arch)
     else
       // If we're not a union type, the size is the padded
       // sum of field sizes, padded.
-      result = fieldEnd(lastFieldIndex(), arch)
+      result = this.fieldEnd(this.lastFieldIndex(), arch)
   }
 
   /**
@@ -522,8 +522,8 @@ class PaddedType extends Class {
     if index = 0
     then result = 0
     else
-      exists(Field f, int fSize | index = fieldIndex(f) and fSize = fieldSize(f, arch) |
-        result = fSize.maximum(biggestFieldSizeUpTo(index - 1, arch))
+      exists(Field f, int fSize | index = this.fieldIndex(f) and fSize = this.fieldSize(f, arch) |
+        result = fSize.maximum(this.biggestFieldSizeUpTo(index - 1, arch))
       )
   }
 
@@ -536,8 +536,10 @@ class PaddedType extends Class {
     if index = 0
     then result = 1 // Minimum possible alignment
     else
-      exists(Field f, int fAlign | index = fieldIndex(f) and fAlign = arch.alignment(f.getType()) |
-        result = fAlign.maximum(biggestAlignmentUpTo(index - 1, arch))
+      exists(Field f, int fAlign |
+        index = this.fieldIndex(f) and fAlign = arch.alignment(f.getType())
+      |
+        result = fAlign.maximum(this.biggestAlignmentUpTo(index - 1, arch))
       )
   }
 
@@ -545,17 +547,18 @@ class PaddedType extends Class {
    * Gets the 1-based index for each field.
    */
   int fieldIndex(Field f) {
-    memberIndex(f) = rank[result](Field field, int index | memberIndex(field) = index | index)
+    this.memberIndex(f) =
+      rank[result](Field field, int index | this.memberIndex(field) = index | index)
   }
 
-  private int memberIndex(Field f) { result = min(int i | getCanonicalMember(i) = f) }
+  private int memberIndex(Field f) { result = min(int i | this.getCanonicalMember(i) = f) }
 
   /**
    * Gets the 1-based index for the last field.
    */
   int lastFieldIndex() {
-    if exists(lastField())
-    then result = fieldIndex(lastField())
+    if exists(this.lastField())
+    then result = this.fieldIndex(this.lastField())
     else
       // Field indices are 1-based, so return 0 to represent the lack of fields.
       result = 0
@@ -566,25 +569,27 @@ class PaddedType extends Class {
    * `arch`.
    */
   int fieldSize(Field f, Architecture arch) {
-    exists(fieldIndex(f)) and
+    exists(this.fieldIndex(f)) and
     if f instanceof BitField
     then result = f.(BitField).getNumBits()
     else result = arch.paddedSize(f.getType())
   }
 
   /** Gets the last field of this type. */
-  Field lastField() { fieldIndex(result) = max(Field other | | fieldIndex(other)) }
+  Field lastField() { this.fieldIndex(result) = max(Field other | | this.fieldIndex(other)) }
 
   /**
    * Gets the offset, in bits, of the end of the class' last base class
    * subobject, or zero if the class has no base classes.
    */
   int baseClassEnd(Architecture arch) {
-    if exists(getABaseClass()) then result = arch.baseClassSize(getADerivation()) else result = 0
+    if exists(this.getABaseClass())
+    then result = arch.baseClassSize(this.getADerivation())
+    else result = 0
   }
 
   /** Gets the bitfield at field index `index`, if that field is a bitfield. */
-  private BitField bitFieldAt(int index) { fieldIndex(result) = index }
+  private BitField bitFieldAt(int index) { this.fieldIndex(result) = index }
 
   /**
    * Gets the 0-based offset, in bits, of the first free bit after
@@ -596,13 +601,13 @@ class PaddedType extends Class {
     then
       // Base case: No fields seen yet, so return the offset of the end of the
       // base class subojects.
-      result = baseClassEnd(arch)
+      result = this.baseClassEnd(arch)
     else
-      exists(Field f | index = fieldIndex(f) |
-        exists(int fSize | fSize = fieldSize(f, arch) |
+      exists(Field f | index = this.fieldIndex(f) |
+        exists(int fSize | fSize = this.fieldSize(f, arch) |
           // Recursive case: Take previous field's end point, pad and add
           // this field's size
-          exists(int firstFree | firstFree = fieldEnd(index - 1, arch) |
+          exists(int firstFree | firstFree = this.fieldEnd(index - 1, arch) |
             if f instanceof BitField
             then
               // Bitfield packing:
@@ -629,9 +634,11 @@ class PaddedType extends Class {
                     // No additional restrictions, so just pack it in with no padding.
                     result = firstFree + fSize
                 ) else (
-                  if exists(bitFieldAt(index - 1))
+                  if exists(this.bitFieldAt(index - 1))
                   then
-                    exists(BitField previousBitField | previousBitField = bitFieldAt(index - 1) |
+                    exists(BitField previousBitField |
+                      previousBitField = this.bitFieldAt(index - 1)
+                    |
                       // Previous field was a bitfield.
                       if
                         nextSizeofBoundary >= (firstFree + fSize) and

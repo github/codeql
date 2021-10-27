@@ -78,7 +78,7 @@ class SecurityOptions extends string {
       functionCall.getTarget().getName() = fname and
       (
         fname = ["fgets", "gets"] or
-        userInputReturn(fname)
+        this.userInputReturn(fname)
       )
     )
     or

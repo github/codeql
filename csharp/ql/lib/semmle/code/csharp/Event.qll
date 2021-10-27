@@ -29,10 +29,10 @@ class Event extends DeclarationWithAccessors, @event {
   EventAccessor getAnEventAccessor() { result.getDeclaration() = this }
 
   /** Gets the `add` accessor of this event, if any. */
-  AddEventAccessor getAddEventAccessor() { result = getAnEventAccessor() }
+  AddEventAccessor getAddEventAccessor() { result = this.getAnEventAccessor() }
 
   /** Gets the `remove` accessor of this event, if any. */
-  RemoveEventAccessor getRemoveEventAccessor() { result = getAnEventAccessor() }
+  RemoveEventAccessor getRemoveEventAccessor() { result = this.getAnEventAccessor() }
 
   /**
    * Holds if this event can be used like a field within its declaring type
@@ -111,9 +111,9 @@ class EventAccessor extends Accessor, @event_accessor {
  * ```
  */
 class AddEventAccessor extends EventAccessor, @add_event_accessor {
-  override string getName() { result = "add" + "_" + getDeclaration().getName() }
+  override string getName() { result = "add" + "_" + this.getDeclaration().getName() }
 
-  override string getUndecoratedName() { result = "add" + "_" + getDeclaration().getName() }
+  override string getUndecoratedName() { result = "add" + "_" + this.getDeclaration().getName() }
 
   override string getAPrimaryQlClass() { result = "AddEventAccessor" }
 }
@@ -132,9 +132,9 @@ class AddEventAccessor extends EventAccessor, @add_event_accessor {
  * ```
  */
 class RemoveEventAccessor extends EventAccessor, @remove_event_accessor {
-  override string getName() { result = "remove" + "_" + getDeclaration().getName() }
+  override string getName() { result = "remove" + "_" + this.getDeclaration().getName() }
 
-  override string getUndecoratedName() { result = "remove" + "_" + getDeclaration().getName() }
+  override string getUndecoratedName() { result = "remove" + "_" + this.getDeclaration().getName() }
 
   override string getAPrimaryQlClass() { result = "RemoveEventAccessor" }
 }

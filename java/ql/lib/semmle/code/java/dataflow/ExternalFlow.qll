@@ -77,6 +77,9 @@ private import FlowSummary
  */
 private module Frameworks {
   private import internal.ContainerFlow
+  private import semmle.code.java.frameworks.android.Android
+  private import semmle.code.java.frameworks.android.Intent
+  private import semmle.code.java.frameworks.android.SQLite
   private import semmle.code.java.frameworks.android.XssSinks
   private import semmle.code.java.frameworks.ApacheHttp
   private import semmle.code.java.frameworks.apache.Collections
@@ -91,7 +94,10 @@ private module Frameworks {
   private import semmle.code.java.frameworks.JsonJava
   private import semmle.code.java.frameworks.Objects
   private import semmle.code.java.frameworks.Optional
+  private import semmle.code.java.frameworks.Stream
   private import semmle.code.java.frameworks.Strings
+  private import semmle.code.java.frameworks.ratpack.Ratpack
+  private import semmle.code.java.frameworks.ratpack.RatpackExec
   private import semmle.code.java.frameworks.spring.SpringCache
   private import semmle.code.java.frameworks.spring.SpringHttp
   private import semmle.code.java.frameworks.spring.SpringUtil
@@ -111,8 +117,6 @@ private module Frameworks {
   private import semmle.code.java.security.OgnlInjection
   private import semmle.code.java.security.XPath
   private import semmle.code.java.security.XsltInjection
-  private import semmle.code.java.frameworks.android.Android
-  private import semmle.code.java.frameworks.android.SQLite
   private import semmle.code.java.frameworks.Jdbc
   private import semmle.code.java.frameworks.SpringJdbc
   private import semmle.code.java.frameworks.MyBatis
@@ -573,7 +577,7 @@ module CsvValidation {
         not (part = "Argument" and pred = "sink") and
         not parseArg(part, _)
         or
-        specSplit(input, part, _) and
+        part = specLast(input) and
         parseParam(part, _)
       ) and
       msg = "Unrecognized input specification \"" + part + "\" in " + pred + " model."
@@ -641,6 +645,7 @@ private string paramsStringPart(Callable c, int i) {
  * Returns the empty string if the callable has no parameters.
  * Parameter types are represented by their type erasure.
  */
+cached
 string paramsString(Callable c) { result = concat(int i | | paramsStringPart(c, i) order by i) }
 
 private Element interpretElement0(

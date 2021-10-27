@@ -246,13 +246,7 @@ class File extends Container, @file {
  * A file type.
  */
 class FileType extends string {
-  FileType() {
-    this = "javascript" or
-    this = "html" or
-    this = "typescript" or
-    this = "json" or
-    this = "yaml"
-  }
+  FileType() { this = ["javascript", "html", "typescript", "json", "yaml"] }
 
   /**
    * Holds if this is the JavaScript file type.

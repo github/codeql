@@ -225,9 +225,9 @@ class ModuleVariable extends SsaSourceVariable {
   }
 
   override ControlFlowNode getAnImplicitUse() {
-    result = global_variable_callnode()
+    result = this.global_variable_callnode()
     or
-    result = global_variable_import()
+    result = this.global_variable_import()
     or
     exists(ImportTimeScope scope | scope.entryEdge(result, _) |
       this = scope.getOuterVariable(_) or

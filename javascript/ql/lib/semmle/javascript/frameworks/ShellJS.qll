@@ -80,17 +80,7 @@ module ShellJS {
    */
   private class ShellJSGenericFileAccess extends FileSystemAccess, ShellJSCall {
     ShellJSGenericFileAccess() {
-      name = "cd" or
-      name = "cp" or
-      name = "chmod" or
-      name = "pushd" or
-      name = "find" or
-      name = "ls" or
-      name = "ln" or
-      name = "mkdir" or
-      name = "mv" or
-      name = "rm" or
-      name = "touch"
+      name = ["cd", "cp", "touch", "chmod", "pushd", "find", "ls", "ln", "mkdir", "mv", "rm"]
     }
 
     override DataFlow::Node getAPathArgument() { result = getAnArgument() }
@@ -110,13 +100,7 @@ module ShellJS {
    * A file system access that returns the contents of a file.
    */
   private class ShellJSRead extends FileSystemReadAccess, ShellJSCall {
-    ShellJSRead() {
-      name = "cat" or
-      name = "head" or
-      name = "sort" or
-      name = "tail" or
-      name = "uniq"
-    }
+    ShellJSRead() { name = ["cat", "head", "sort", "tail", "uniq"] }
 
     override DataFlow::Node getAPathArgument() { result = getAnArgument() }
 

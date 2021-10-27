@@ -152,6 +152,7 @@ class DataFlowExpr = Expr;
  * Flow comes from definitions, uses and refinements.
  */
 // TODO: Consider constraining `nodeFrom` and `nodeTo` to be in the same scope.
+// If they have different enclosing callables, we get consistency errors.
 module EssaFlow {
   predicate essaFlowStep(Node nodeFrom, Node nodeTo) {
     // Definition
@@ -200,6 +201,9 @@ module EssaFlow {
     // If expressions
     nodeFrom.asCfgNode() = nodeTo.asCfgNode().(IfExprNode).getAnOperand()
     or
+    // boolean inline expressions such as `x or y` or `x and y`
+    nodeFrom.asCfgNode() = nodeTo.asCfgNode().(BoolExprNode).getAnOperand()
+    or
     // Flow inside an unpacking assignment
     iterableUnpackingFlowStep(nodeFrom, nodeTo)
     or
@@ -225,35 +229,60 @@ module EssaFlow {
 //--------
 /**
  * This is the local flow predicate that is used as a building block in global
- * data flow. It is a strict subset of the `localFlowStep` predicate, as it
- * excludes SSA flow through instance fields.
+ * data flow.
+ *
+ * Local flow can happen either at import time, when the module is initialised
+ * or at runtime when callables in the module are called.
  */
 predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
-  // If there is ESSA-flow out of a node `node`, we want flow
+  // If there is local flow out of a node `node`, we want flow
   // both out of `node` and any post-update node of `node`.
   exists(Node node |
-    EssaFlow::essaFlowStep(node, nodeTo) and
     nodeFrom = update(node) and
     (
-      not node instanceof EssaNode or
-      not nodeTo instanceof EssaNode or
-      localEssaStep(node, nodeTo)
+      importTimeLocalFlowStep(node, nodeTo) or
+      runtimeLocalFlowStep(node, nodeTo)
     )
   )
 }
 
 /**
- * Holds if there is an Essa flow step from `nodeFrom` to `nodeTo` that does not switch between
- * local and global SSA variables.
+ * Holds if `node` is found at the top level of a module.
  */
-private predicate localEssaStep(EssaNode nodeFrom, EssaNode nodeTo) {
-  EssaFlow::essaFlowStep(nodeFrom, nodeTo) and
-  (
-    nodeFrom.getVar() instanceof GlobalSsaVariable and
-    nodeTo.getVar() instanceof GlobalSsaVariable
-    or
-    not nodeFrom.getVar() instanceof GlobalSsaVariable and
-    not nodeTo.getVar() instanceof GlobalSsaVariable
+pragma[inline]
+predicate isTopLevel(Node node) { node.getScope() instanceof Module }
+
+/** Holds if there is local flow from `nodeFrom` to `nodeTo` at import time. */
+predicate importTimeLocalFlowStep(Node nodeFrom, Node nodeTo) {
+  // As a proxy for whether statements can be executed at import time,
+  // we check if they appear at the top level.
+  // This will miss statements inside functions called from the top level.
+  isTopLevel(nodeFrom) and
+  isTopLevel(nodeTo) and
+  EssaFlow::essaFlowStep(nodeFrom, nodeTo)
+}
+
+/** Holds if there is local flow from `nodeFrom` to `nodeTo` at runtime. */
+predicate runtimeLocalFlowStep(Node nodeFrom, Node nodeTo) {
+  // Anything not at the top level can be executed at runtime.
+  not isTopLevel(nodeFrom) and
+  not isTopLevel(nodeTo) and
+  EssaFlow::essaFlowStep(nodeFrom, nodeTo)
+}
+
+/** `ModuleVariable`s are accessed via jump steps at runtime. */
+predicate runtimeJumpStep(Node nodeFrom, Node nodeTo) {
+  // Module variable read
+  nodeFrom.(ModuleVariableNode).getARead() = nodeTo
+  or
+  // Module variable write
+  nodeFrom = nodeTo.(ModuleVariableNode).getAWrite()
+  or
+  // Setting the possible values of the variable at the end of import time
+  exists(SsaVariable def |
+    def = any(SsaVariable var).getAnUltimateDefinition() and
+    def.getDefinition() = nodeFrom.asCfgNode() and
+    def.getVariable() = nodeTo.(ModuleVariableNode).getVariable()
   )
 }
 
@@ -581,11 +610,11 @@ class DataFlowLambda extends DataFlowCallable, TLambda {
 
   override string toString() { result = lambda.toString() }
 
-  override CallNode getACall() { result = getCallableValue().getACall() }
+  override CallNode getACall() { result = this.getCallableValue().getACall() }
 
   override Scope getScope() { result = lambda.getEvaluatingScope() }
 
-  override NameNode getParameter(int n) { result = getParameter(getCallableValue(), n) }
+  override NameNode getParameter(int n) { result = getParameter(this.getCallableValue(), n) }
 
   override string getName() { result = "Lambda callable" }
 
@@ -857,11 +886,7 @@ string ppReprType(DataFlowType t) { none() }
  * taken into account.
  */
 predicate jumpStep(Node nodeFrom, Node nodeTo) {
-  // Module variable read
-  nodeFrom.(ModuleVariableNode).getARead() = nodeTo
-  or
-  // Module variable write
-  nodeFrom = nodeTo.(ModuleVariableNode).getAWrite()
+  runtimeJumpStep(nodeFrom, nodeTo)
   or
   // Read of module attribute:
   exists(AttrRead r, ModuleValue mv |
@@ -1620,6 +1645,12 @@ predicate isImmutableOrUnobservable(Node n) { none() }
 
 int accessPathLimit() { result = 5 }
 
+/**
+ * Holds if access paths with `c` at their head always should be tracked at high
+ * precision. This disables adaptive access path precision for such access paths.
+ */
+predicate forceHighPrecision(Content c) { none() }
+
 /** Holds if `n` should be hidden from path explanations. */
 predicate nodeIsHidden(Node n) { none() }
 
@@ -1633,3 +1664,12 @@ predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) { no
 
 /** Extra data-flow steps needed for lambda flow analysis. */
 predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) { none() }
+
+/**
+ * Holds if flow is allowed to pass from parameter `p` and back to itself as a
+ * side-effect, resulting in a summary from `p` to itself.
+ *
+ * One example would be to allow flow like `p.foo = p.bar;`, which is disallowed
+ * by default as a heuristic.
+ */
+predicate allowParameterReturnInSelf(ParameterNode p) { none() }

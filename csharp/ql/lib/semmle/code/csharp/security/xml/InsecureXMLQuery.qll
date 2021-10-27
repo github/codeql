@@ -157,8 +157,8 @@ module XmlReader {
 
     override predicate isUnsafe(string reason) {
       exists(string dtdReason, string resolverReason |
-        dtdEnabled(dtdReason, _) and
-        insecureResolver(resolverReason, _) and
+        this.dtdEnabled(dtdReason, _) and
+        this.insecureResolver(resolverReason, _) and
         reason = dtdReason + ", " + resolverReason
       )
     }

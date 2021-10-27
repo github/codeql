@@ -55,7 +55,7 @@
 
 import javascript
 private import DataFlow
-private import filters.ClassifyFiles
+private import semmle.javascript.filters.ClassifyFiles
 private import semmle.javascript.RestrictedLocations
 
 /**

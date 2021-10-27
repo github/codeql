@@ -429,6 +429,16 @@ namespace Semmle.Extraction
         /// <summary>
         /// Signal an error in the program model.
         /// </summary>
+        /// <param name="loc">The location of the error.</param>
+        /// <param name="msg">The error message.</param>
+        public void ModelError(Entities.Location loc, string msg)
+        {
+            ReportError(new InternalError(loc.ReportingLocation, msg));
+        }
+
+        /// <summary>
+        /// Signal an error in the program model.
+        /// </summary>
         /// <param name="msg">The error message.</param>
         public void ModelError(string msg)
         {

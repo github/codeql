@@ -11,13 +11,7 @@ module EventEmitter {
   }
 
   /** Gets the name of a method on `EventEmitter` that registers an event handler. */
-  string on() {
-    result = "addListener" or
-    result = "on" or
-    result = "once" or
-    result = "prependListener" or
-    result = "prependOnceListener"
-  }
+  string on() { result = ["addListener", "on", "once", "prependListener", "prependOnceListener"] }
 
   /**
    * Gets a node that refers to an EventEmitter object.

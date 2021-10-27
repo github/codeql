@@ -196,6 +196,101 @@ private module StdlibPrivate {
   }
 
   /**
+   * The `os.path` module offers a number of methods for checking if a file exists and/or has certain
+   * properties, leading to a file system access.
+   * A call to `os.path.exists` or `os.path.lexists` will check if a file exists on the file system.
+   * (Although, on some platforms, the check may return `false` due to missing permissions.)
+   * A call to `os.path.getatime` will raise `OSError` if the file does not exist or is inaccessible.
+   * See:
+   * - https://docs.python.org/3/library/os.path.html#os.path.exists
+   * - https://docs.python.org/3/library/os.path.html#os.path.lexists
+   * - https://docs.python.org/3/library/os.path.html#os.path.isfile
+   * - https://docs.python.org/3/library/os.path.html#os.path.isdir
+   * - https://docs.python.org/3/library/os.path.html#os.path.islink
+   * - https://docs.python.org/3/library/os.path.html#os.path.ismount
+   * - https://docs.python.org/3/library/os.path.html#os.path.getatime
+   * - https://docs.python.org/3/library/os.path.html#os.path.getmtime
+   * - https://docs.python.org/3/library/os.path.html#os.path.getctime
+   * - https://docs.python.org/3/library/os.path.html#os.path.getsize
+   * - https://docs.python.org/3/library/os.path.html#os.path.realpath
+   */
+  private class OsPathProbingCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    OsPathProbingCall() {
+      this =
+        os::path()
+            .getMember([
+                // these check if the file exists
+                "exists", "lexists", "isfile", "isdir", "islink", "ismount",
+                // these raise errors if the file does not exist
+                "getatime", "getmtime", "getctime", "getsize"
+              ])
+            .getACall()
+    }
+
+    override DataFlow::Node getAPathArgument() {
+      result in [this.getArg(0), this.getArgByName("path")]
+    }
+  }
+
+  /** A call to `os.path.samefile` will raise an exception if an `os.stat()` call on either pathname fails. */
+  private class OsPathSamefileCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    OsPathSamefileCall() { this = os::path().getMember("samefile").getACall() }
+
+    override DataFlow::Node getAPathArgument() {
+      result in [
+          this.getArg(0), this.getArgByName("path1"), this.getArg(1), this.getArgByName("path2")
+        ]
+    }
+  }
+
+  // Functions with non-standard arguments:
+  // - os.path.join(path, *paths)
+  // - os.path.relpath(path, start=os.curdir)
+  // these functions need special treatment when computing `getPathArg`.
+  //
+  // Functions that excluded because they can act as sanitizers:
+  // - os.path.commonpath(paths): takes a sequence
+  // - os.path.commonprefix(list): takes a list argument
+  // unless the user control all arguments, we are comparing with a known value.
+  private string pathComputation() {
+    result in [
+        "abspath", "basename", "commonpath", "dirname", "expanduser", "expandvars", "join",
+        "normcase", "normpath", "realpath", "relpath", "split", "splitdrive", "splitext"
+      ]
+  }
+
+  /**
+   * The `os.path` module offers a number of methods for computing new paths from existing paths.
+   * These should all propagate taint.
+   */
+  private class OsPathComputation extends DataFlow::CallCfgNode {
+    string methodName;
+
+    OsPathComputation() {
+      methodName = pathComputation() and
+      this = os::path().getMember(methodName).getACall()
+    }
+
+    DataFlow::Node getPathArg() {
+      result in [this.getArg(0), this.getArgByName("path")]
+      or
+      methodName = "join" and result = this.getArg(_)
+      or
+      methodName = "relpath" and result in [this.getArg(1), this.getArgByName("start")]
+    }
+  }
+
+  /** An additional taint step for path computations. */
+  private class OsPathComputationAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+    override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+      exists(OsPathComputation call |
+        nodeTo = call and
+        nodeFrom = call.getPathArg()
+      )
+    }
+  }
+
+  /**
    * A call to `os.path.normpath`.
    * See https://docs.python.org/3/library/os.path.html#os.path.normpath
    */
@@ -203,16 +298,6 @@ private module StdlibPrivate {
     OsPathNormpathCall() { this = os::path().getMember("normpath").getACall() }
 
     DataFlow::Node getPathArg() { result in [this.getArg(0), this.getArgByName("path")] }
-  }
-
-  /** An additional taint step for calls to `os.path.normpath` */
-  private class OsPathNormpathCallAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
-    override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-      exists(OsPathNormpathCall call |
-        nodeTo = call and
-        nodeFrom = call.getPathArg()
-      )
-    }
   }
 
   /**
@@ -225,16 +310,6 @@ private module StdlibPrivate {
     DataFlow::Node getPathArg() { result in [this.getArg(0), this.getArgByName("path")] }
   }
 
-  /** An additional taint step for calls to `os.path.abspath` */
-  private class OsPathAbspathCallAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
-    override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-      exists(OsPathAbspathCall call |
-        nodeTo = call and
-        nodeFrom = call.getPathArg()
-      )
-    }
-  }
-
   /**
    * A call to `os.path.realpath`.
    * See https://docs.python.org/3/library/os.path.html#os.path.realpath
@@ -243,16 +318,6 @@ private module StdlibPrivate {
     OsPathRealpathCall() { this = os::path().getMember("realpath").getACall() }
 
     DataFlow::Node getPathArg() { result in [this.getArg(0), this.getArgByName("path")] }
-  }
-
-  /** An additional taint step for calls to `os.path.realpath` */
-  private class OsPathRealpathCallAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
-    override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-      exists(OsPathRealpathCall call |
-        nodeTo = call and
-        nodeFrom = call.getPathArg()
-      )
-    }
   }
 
   /**
@@ -397,8 +462,8 @@ private module StdlibPrivate {
       result = this.get_executable_arg()
       or
       exists(DataFlow::Node arg_args, boolean shell |
-        arg_args = get_args_arg() and
-        shell = get_shell_arg_value()
+        arg_args = this.get_args_arg() and
+        shell = this.get_shell_arg_value()
       |
         // When "executable" argument is set, and "shell" argument is `False`, the
         // "args" argument will only be used to set the program name and arguments to
@@ -429,6 +494,22 @@ private module StdlibPrivate {
   // marshal
   // ---------------------------------------------------------------------------
   /**
+   * A call to `marshal.load`
+   * See https://docs.python.org/3/library/marshal.html#marshal.load
+   */
+  private class MarshalLoadCall extends Decoding::Range, DataFlow::CallCfgNode {
+    MarshalLoadCall() { this = API::moduleImport("marshal").getMember("load").getACall() }
+
+    override predicate mayExecuteInput() { any() }
+
+    override DataFlow::Node getAnInput() { result = this.getArg(0) }
+
+    override DataFlow::Node getOutput() { result = this }
+
+    override string getFormat() { result = "marshal" }
+  }
+
+  /**
    * A call to `marshal.loads`
    * See https://docs.python.org/3/library/marshal.html#marshal.loads
    */
@@ -447,15 +528,23 @@ private module StdlibPrivate {
   // ---------------------------------------------------------------------------
   // pickle
   // ---------------------------------------------------------------------------
-  /** Gets a reference to the `pickle` module. */
-  DataFlow::Node pickle() { result = API::moduleImport(["pickle", "cPickle", "_pickle"]).getAUse() }
+  /** Gets a reference to any of the `pickle` modules. */
+  API::Node pickle() { result = API::moduleImport(["pickle", "cPickle", "_pickle"]) }
 
-  /** Provides models for the `pickle` module. */
-  module pickle {
-    /** Gets a reference to the `pickle.loads` function. */
-    DataFlow::Node loads() {
-      result = API::moduleImport(["pickle", "cPickle", "_pickle"]).getMember("loads").getAUse()
-    }
+  /**
+   * A call to `pickle.load`
+   * See https://docs.python.org/3/library/pickle.html#pickle.load
+   */
+  private class PickleLoadCall extends Decoding::Range, DataFlow::CallCfgNode {
+    PickleLoadCall() { this = pickle().getMember("load").getACall() }
+
+    override predicate mayExecuteInput() { any() }
+
+    override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("file")] }
+
+    override DataFlow::Node getOutput() { result = this }
+
+    override string getFormat() { result = "pickle" }
   }
 
   /**
@@ -463,11 +552,63 @@ private module StdlibPrivate {
    * See https://docs.python.org/3/library/pickle.html#pickle.loads
    */
   private class PickleLoadsCall extends Decoding::Range, DataFlow::CallCfgNode {
-    PickleLoadsCall() { this.getFunction() = pickle::loads() }
+    PickleLoadsCall() { this = pickle().getMember("loads").getACall() }
 
     override predicate mayExecuteInput() { any() }
 
-    override DataFlow::Node getAnInput() { result = this.getArg(0) }
+    override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("data")] }
+
+    override DataFlow::Node getOutput() { result = this }
+
+    override string getFormat() { result = "pickle" }
+  }
+
+  /**
+   * A construction of a `pickle.Unpickler`
+   * See https://docs.python.org/3/library/pickle.html#pickle.Unpickler
+   */
+  private class PickleUnpicklerCall extends Decoding::Range, DataFlow::CallCfgNode {
+    PickleUnpicklerCall() { this = pickle().getMember("Unpickler").getACall() }
+
+    override predicate mayExecuteInput() { any() }
+
+    override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("file")] }
+
+    override DataFlow::Node getOutput() { result = this.getAMethodCall("load") }
+
+    override string getFormat() { result = "pickle" }
+  }
+
+  // ---------------------------------------------------------------------------
+  // shelve
+  // ---------------------------------------------------------------------------
+  /**
+   * A call to `shelve.open`
+   * See https://docs.python.org/3/library/shelve.html#shelve.open
+   *
+   * Claiming there is decoding of the input to `shelve.open` is a bit questionable, since
+   * it's not the filename, but the contents of the file that is decoded.
+   *
+   * However, we definitely want to be able to alert if a user is able to control what
+   * file is used, since that can lead to code execution (even if that file is free of
+   * path injection).
+   *
+   * So right now the best way we have of modeling this seems to be to treat the filename
+   * argument as being deserialized...
+   */
+  private class ShelveOpenCall extends Decoding::Range, FileSystemAccess::Range,
+    DataFlow::CallCfgNode {
+    ShelveOpenCall() { this = API::moduleImport("shelve").getMember("open").getACall() }
+
+    override predicate mayExecuteInput() { any() }
+
+    override DataFlow::Node getAnInput() {
+      result in [this.getArg(0), this.getArgByName("filename")]
+    }
+
+    override DataFlow::Node getAPathArgument() {
+      result in [this.getArg(0), this.getArgByName("filename")]
+    }
 
     override DataFlow::Node getOutput() { result = this }
 
@@ -1136,7 +1277,7 @@ private module StdlibPrivate {
   /**
    * Gets a name of an attribute of a `pathlib.Path` object that is also a `pathlib.Path` object.
    */
-  private string pathlibPathAttribute() { result in ["parent"] }
+  private string pathlibPathAttribute() { result = "parent" }
 
   /**
    * Gets a name of a method of a `pathlib.Path` object that returns a `pathlib.Path` object.
@@ -1494,6 +1635,119 @@ private module StdlibPrivate {
       or
       result = this.getArg(any(int i | i >= msgIndex))
     }
+  }
+
+  // ---------------------------------------------------------------------------
+  // re
+  // ---------------------------------------------------------------------------
+  /**
+   * List of methods in the `re` module immediately executing a regular expression.
+   *
+   * See https://docs.python.org/3/library/re.html#module-contents
+   */
+  private class RegexExecutionMethod extends string {
+    RegexExecutionMethod() {
+      this in ["match", "fullmatch", "search", "split", "findall", "finditer", "sub", "subn"]
+    }
+
+    /** Gets the index of the argument representing the string to be searched by a regex. */
+    int getStringArgIndex() {
+      this in ["match", "fullmatch", "search", "split", "findall", "finditer"] and
+      result = 1
+      or
+      this in ["sub", "subn"] and
+      result = 2
+    }
+  }
+
+  /**
+   * A a call to a method from the `re` module immediately executing a regular expression.
+   *
+   * See `RegexExecutionMethods`
+   */
+  private class DirectRegexExecution extends DataFlow::CallCfgNode, RegexExecution::Range {
+    RegexExecutionMethod method;
+
+    DirectRegexExecution() { this = API::moduleImport("re").getMember(method).getACall() }
+
+    override DataFlow::Node getRegex() { result in [this.getArg(0), this.getArgByName("pattern")] }
+
+    override DataFlow::Node getString() {
+      result in [this.getArg(method.getStringArgIndex()), this.getArgByName("string")]
+    }
+
+    override string getName() { result = "re." + method }
+  }
+
+  /** Helper module for tracking compiled regexes. */
+  private module CompiledRegexes {
+    private DataFlow::TypeTrackingNode compiledRegex(DataFlow::TypeTracker t, DataFlow::Node regex) {
+      t.start() and
+      result = API::moduleImport("re").getMember("compile").getACall() and
+      regex in [
+          result.(DataFlow::CallCfgNode).getArg(0),
+          result.(DataFlow::CallCfgNode).getArgByName("pattern")
+        ]
+      or
+      exists(DataFlow::TypeTracker t2 | result = compiledRegex(t2, regex).track(t2, t))
+    }
+
+    DataFlow::Node compiledRegex(DataFlow::Node regex) {
+      compiledRegex(DataFlow::TypeTracker::end(), regex).flowsTo(result)
+    }
+  }
+
+  private import CompiledRegexes
+
+  /**
+   * A call on compiled regular expression (obtained via `re.compile`) executing a
+   * regular expression.
+   *
+   * Given the following example:
+   *
+   * ```py
+   * pattern = re.compile(input)
+   * pattern.match(s)
+   * ```
+   *
+   * This class will identify that `re.compile` compiles `input` and afterwards
+   * executes `re`'s `match`. As a result, `this` will refer to `pattern.match(s)`
+   * and `this.getRegexNode()` will return the node for `input` (`re.compile`'s first argument).
+   *
+   *
+   * See `RegexExecutionMethods`
+   *
+   * See https://docs.python.org/3/library/re.html#regular-expression-objects
+   */
+  private class CompiledRegexExecution extends DataFlow::MethodCallNode, RegexExecution::Range {
+    DataFlow::Node regexNode;
+    RegexExecutionMethod method;
+
+    CompiledRegexExecution() { this.calls(compiledRegex(regexNode), method) }
+
+    override DataFlow::Node getRegex() { result = regexNode }
+
+    override DataFlow::Node getString() {
+      result in [this.getArg(method.getStringArgIndex() - 1), this.getArgByName("string")]
+    }
+
+    override string getName() { result = "re." + method }
+  }
+
+  /**
+   * A call to 're.escape'.
+   * See https://docs.python.org/3/library/re.html#re.escape
+   */
+  private class ReEscapeCall extends Escaping::Range, DataFlow::CallCfgNode {
+    ReEscapeCall() { this = API::moduleImport("re").getMember("escape").getACall() }
+
+    override DataFlow::Node getAnInput() {
+      result in [this.getArg(0), this.getArgByName("pattern")]
+    }
+
+    override DataFlow::Node getOutput() { result = this }
+
+    override string getKind() { result = Escaping::getRegexKind() }
   }
 }
 

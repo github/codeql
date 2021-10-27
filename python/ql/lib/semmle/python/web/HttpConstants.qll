@@ -1,13 +1,5 @@
 /** Gets an HTTP verb, in upper case */
-string httpVerb() {
-  result = "GET" or
-  result = "POST" or
-  result = "PUT" or
-  result = "PATCH" or
-  result = "DELETE" or
-  result = "OPTIONS" or
-  result = "HEAD"
-}
+string httpVerb() { result in ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "HEAD"] }
 
 /** Gets an HTTP verb, in lower case */
 string httpVerbLower() { result = httpVerb().toLowerCase() }

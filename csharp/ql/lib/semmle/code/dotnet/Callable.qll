@@ -75,7 +75,7 @@ class Callable extends Parameterizable, @dotnet_callable {
   }
 
   private string getReturnTypeLabel() {
-    result = getReturnType().getLabel()
+    result = this.getReturnType().getLabel()
     or
     not exists(this.getReturnType()) and result = "System.Void"
   }

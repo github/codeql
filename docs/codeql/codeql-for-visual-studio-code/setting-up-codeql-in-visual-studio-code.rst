@@ -78,7 +78,7 @@ Using the starter workspace
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 The starter workspace is a Git repository. It contains:
 
-* The `repository of CodeQL libraries and queries <https://github.com/github/codeql>`__ for C/C++, C#, Java, JavaScript, and Python. This is included as a submodule, so it can be updated without affecting your custom queries.
+* The `repository of CodeQL libraries and queries <https://github.com/github/codeql>`__ for C/C++, C#, Java, JavaScript, Python, and Ruby. This is included as a submodule, so it can be updated without affecting your custom queries.
 * The `repository of CodeQL libraries and queries <https://github.com/github/codeql-go>`__ for Go. This is also included as a submodule.
 * A series of folders named ``codeql-custom-queries-<language>``. These are ready for you to start developing your own custom queries for each language, using the standard libraries. There are some example queries to get you started.
 

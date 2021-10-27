@@ -14,7 +14,7 @@ private import semmle.javascript.dataflow.internal.FlowSteps
 SourceNode getAnEnumeratedArrayElement(SourceNode array) {
   exists(MethodCallNode call, string name |
     call = array.getAMethodCall(name) and
-    (name = "forEach" or name = "map") and
+    name = ["forEach", "map"] and
     result = call.getCallback(0).getParameter(0)
   )
   or

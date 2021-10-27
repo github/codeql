@@ -82,19 +82,19 @@ class SuppressedConstructor extends Constructor {
   SuppressedConstructor() {
     // Must be private or protected to suppress it.
     (
-      isPrivate()
+      this.isPrivate()
       or
       // A protected, suppressed constructor only makes sense in a non-abstract class.
-      isProtected() and not getDeclaringType().isAbstract()
+      this.isProtected() and not this.getDeclaringType().isAbstract()
     ) and
     // Must be no-arg in order to replace the compiler generated default constructor.
-    getNumberOfParameters() = 0 and
+    this.getNumberOfParameters() = 0 and
     // Not the compiler-generated constructor itself.
-    not isDefaultConstructor() and
+    not this.isDefaultConstructor() and
     // Verify that there is only one statement, which is the `super()` call. This exists
     // even for empty constructors.
-    getBody().(BlockStmt).getNumStmt() = 1 and
-    getBody().(BlockStmt).getAStmt().(SuperConstructorInvocationStmt).getNumArgument() = 0 and
+    this.getBody().(BlockStmt).getNumStmt() = 1 and
+    this.getBody().(BlockStmt).getAStmt().(SuperConstructorInvocationStmt).getNumArgument() = 0 and
     // A constructor that is called is not acting to suppress the default constructor. We permit
     // calls from suppressed and default constructors - in both cases, they can only come from
     // sub-class constructors.
@@ -105,7 +105,9 @@ class SuppressedConstructor extends Constructor {
     ) and
     // If other constructors are declared, then no compiler-generated constructor is added, so
     // this constructor is not acting to suppress the default compiler-generated constructor.
-    not exists(Constructor other | other = getDeclaringType().getAConstructor() and other != this)
+    not exists(Constructor other |
+      other = this.getDeclaringType().getAConstructor() and other != this
+    )
   }
 }
 
@@ -114,7 +116,7 @@ class SuppressedConstructor extends Constructor {
  */
 class NamespaceClass extends RefType {
   NamespaceClass() {
-    fromSource() and
+    this.fromSource() and
     // All members, apart from the default constructor and, if present, a "suppressed" constructor
     // must be static. There must be at least one member apart from the permitted constructors.
     forex(Member m |
@@ -125,7 +127,9 @@ class NamespaceClass extends RefType {
       m.isStatic()
     ) and
     // Must only extend other namespace classes, or `Object`.
-    forall(RefType r | r = getASupertype() | r instanceof TypeObject or r instanceof NamespaceClass)
+    forall(RefType r | r = this.getASupertype() |
+      r instanceof TypeObject or r instanceof NamespaceClass
+    )
   }
 }
 
@@ -197,7 +201,7 @@ class DeadClass extends SourceClassOrInterface {
   /**
    * Identify all the "dead" roots of this dead class.
    */
-  DeadRoot getADeadRoot() { result = getADeadRoot(getACallable()) }
+  DeadRoot getADeadRoot() { result = getADeadRoot(this.getACallable()) }
 
   /**
    * Holds if this dead class is only used within the class itself.
@@ -206,8 +210,8 @@ class DeadClass extends SourceClassOrInterface {
     // Accessed externally if any callable in the class has a possible liveness cause outside the
     // class. Only one step is required.
     not exists(Callable c |
-      c = possibleLivenessCause(getACallable()) and
-      not c = getACallable()
+      c = possibleLivenessCause(this.getACallable()) and
+      not c = this.getACallable()
     )
   }
 }
@@ -229,7 +233,7 @@ abstract class WhitelistedLiveClass extends RefType { }
  */
 class DeadMethod extends Callable {
   DeadMethod() {
-    fromSource() and
+    this.fromSource() and
     not isLive(this) and
     not this.(Constructor).isDefaultConstructor() and
     // Ignore `SuppressedConstructor`s in `NamespaceClass`es. There is no reason to use a suppressed

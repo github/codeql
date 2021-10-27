@@ -1,0 +1,102 @@
+moduleBases
+| classes.rb:2:1:56:3 | classes.rb | Toplevel |
+| classes.rb:3:1:4:3 | Foo | ClassDeclaration |
+| classes.rb:7:1:8:3 | Bar | ClassDeclaration |
+| classes.rb:11:1:12:3 | Baz | ClassDeclaration |
+| classes.rb:15:1:15:20 | MyModule | ModuleDeclaration |
+| classes.rb:16:1:17:3 | MyClass | ClassDeclaration |
+| classes.rb:20:1:37:3 | Wibble | ClassDeclaration |
+| classes.rb:32:3:33:5 | ClassInWibble | ClassDeclaration |
+| classes.rb:35:3:36:5 | ModuleInWibble | ModuleDeclaration |
+| classes.rb:41:1:52:3 | class << ... | SingletonClass |
+| classes.rb:55:1:56:3 | MyClassInGlobalScope | ClassDeclaration |
+| modules.rb:1:1:2:3 | Empty | ModuleDeclaration |
+| modules.rb:1:1:122:1 | modules.rb | Toplevel |
+| modules.rb:4:1:24:3 | Foo | ModuleDeclaration |
+| modules.rb:5:3:14:5 | Bar | ModuleDeclaration |
+| modules.rb:6:5:7:7 | ClassInFooBar | ClassDeclaration |
+| modules.rb:19:3:20:5 | ClassInFoo | ClassDeclaration |
+| modules.rb:26:1:35:3 | Foo | ModuleDeclaration |
+| modules.rb:30:3:31:5 | ClassInAnotherDefinitionOfFoo | ClassDeclaration |
+| modules.rb:37:1:46:3 | Bar | ModuleDeclaration |
+| modules.rb:48:1:57:3 | Bar | ModuleDeclaration |
+| modules.rb:49:3:50:5 | ClassInAnotherDefinitionOfFooBar | ClassDeclaration |
+| modules.rb:60:1:61:3 | MyModuleInGlobalScope | ModuleDeclaration |
+| modules.rb:63:1:81:3 | Test | ModuleDeclaration |
+| modules.rb:65:3:68:5 | Foo1 | ModuleDeclaration |
+| modules.rb:66:5:67:7 | Bar | ClassDeclaration |
+| modules.rb:70:3:74:5 | Foo2 | ModuleDeclaration |
+| modules.rb:71:5:71:19 | Foo2 | ModuleDeclaration |
+| modules.rb:72:5:73:7 | Bar | ClassDeclaration |
+| modules.rb:76:3:80:5 | Foo3 | ModuleDeclaration |
+| modules.rb:78:5:79:7 | Bar | ClassDeclaration |
+| modules.rb:83:1:86:3 | Other | ModuleDeclaration |
+| modules.rb:84:3:85:5 | Foo1 | ModuleDeclaration |
+| modules.rb:88:1:93:3 | IncludeTest | ModuleDeclaration |
+| modules.rb:91:3:92:5 | Y | ModuleDeclaration |
+| modules.rb:95:1:99:3 | IncludeTest2 | ModuleDeclaration |
+| modules.rb:97:3:98:5 | Z | ModuleDeclaration |
+| modules.rb:101:1:105:3 | PrependTest | ModuleDeclaration |
+| modules.rb:103:3:104:5 | Y | ModuleDeclaration |
+| modules.rb:107:1:110:3 | MM | ModuleDeclaration |
+| modules.rb:108:3:109:5 | MM | ModuleDeclaration |
+| modules.rb:112:1:113:3 | YY | ClassDeclaration |
+| modules.rb:115:1:118:3 | XX | ModuleDeclaration |
+| modules.rb:116:7:117:9 | YY | ClassDeclaration |
+| modules.rb:120:1:121:3 | Baz | ModuleDeclaration |
+| toplevel.rb:1:1:5:23 | toplevel.rb | Toplevel |
+moduleBaseClasses
+| classes.rb:2:1:56:3 | classes.rb | classes.rb:3:1:4:3 | Foo |
+| classes.rb:2:1:56:3 | classes.rb | classes.rb:7:1:8:3 | Bar |
+| classes.rb:2:1:56:3 | classes.rb | classes.rb:11:1:12:3 | Baz |
+| classes.rb:2:1:56:3 | classes.rb | classes.rb:16:1:17:3 | MyClass |
+| classes.rb:2:1:56:3 | classes.rb | classes.rb:20:1:37:3 | Wibble |
+| classes.rb:2:1:56:3 | classes.rb | classes.rb:55:1:56:3 | MyClassInGlobalScope |
+| classes.rb:20:1:37:3 | Wibble | classes.rb:32:3:33:5 | ClassInWibble |
+| modules.rb:1:1:122:1 | modules.rb | modules.rb:112:1:113:3 | YY |
+| modules.rb:4:1:24:3 | Foo | modules.rb:19:3:20:5 | ClassInFoo |
+| modules.rb:5:3:14:5 | Bar | modules.rb:6:5:7:7 | ClassInFooBar |
+| modules.rb:26:1:35:3 | Foo | modules.rb:30:3:31:5 | ClassInAnotherDefinitionOfFoo |
+| modules.rb:48:1:57:3 | Bar | modules.rb:49:3:50:5 | ClassInAnotherDefinitionOfFooBar |
+| modules.rb:65:3:68:5 | Foo1 | modules.rb:66:5:67:7 | Bar |
+| modules.rb:70:3:74:5 | Foo2 | modules.rb:72:5:73:7 | Bar |
+| modules.rb:76:3:80:5 | Foo3 | modules.rb:78:5:79:7 | Bar |
+| modules.rb:115:1:118:3 | XX | modules.rb:116:7:117:9 | YY |
+moduleBaseMethods
+| classes.rb:20:1:37:3 | Wibble | classes.rb:21:3:23:5 | method_a |
+| classes.rb:20:1:37:3 | Wibble | classes.rb:25:3:27:5 | method_b |
+| classes.rb:41:1:52:3 | class << ... | classes.rb:42:3:44:5 | length |
+| classes.rb:41:1:52:3 | class << ... | classes.rb:46:3:48:5 | wibble |
+| modules.rb:4:1:24:3 | Foo | modules.rb:16:3:17:5 | method_in_foo |
+| modules.rb:5:3:14:5 | Bar | modules.rb:9:5:10:7 | method_in_foo_bar |
+| modules.rb:26:1:35:3 | Foo | modules.rb:27:3:28:5 | method_in_another_definition_of_foo |
+| modules.rb:37:1:46:3 | Bar | modules.rb:38:3:39:5 | method_a |
+| modules.rb:37:1:46:3 | Bar | modules.rb:41:3:42:5 | method_b |
+| modules.rb:48:1:57:3 | Bar | modules.rb:52:3:53:5 | method_in_another_definition_of_foo_bar |
+moduleBaseModules
+| classes.rb:2:1:56:3 | classes.rb | classes.rb:15:1:15:20 | MyModule |
+| classes.rb:20:1:37:3 | Wibble | classes.rb:35:3:36:5 | ModuleInWibble |
+| modules.rb:1:1:122:1 | modules.rb | modules.rb:1:1:2:3 | Empty |
+| modules.rb:1:1:122:1 | modules.rb | modules.rb:4:1:24:3 | Foo |
+| modules.rb:1:1:122:1 | modules.rb | modules.rb:26:1:35:3 | Foo |
+| modules.rb:1:1:122:1 | modules.rb | modules.rb:37:1:46:3 | Bar |
+| modules.rb:1:1:122:1 | modules.rb | modules.rb:48:1:57:3 | Bar |
+| modules.rb:1:1:122:1 | modules.rb | modules.rb:60:1:61:3 | MyModuleInGlobalScope |
+| modules.rb:1:1:122:1 | modules.rb | modules.rb:63:1:81:3 | Test |
+| modules.rb:1:1:122:1 | modules.rb | modules.rb:83:1:86:3 | Other |
+| modules.rb:1:1:122:1 | modules.rb | modules.rb:88:1:93:3 | IncludeTest |
+| modules.rb:1:1:122:1 | modules.rb | modules.rb:95:1:99:3 | IncludeTest2 |
+| modules.rb:1:1:122:1 | modules.rb | modules.rb:101:1:105:3 | PrependTest |
+| modules.rb:1:1:122:1 | modules.rb | modules.rb:107:1:110:3 | MM |
+| modules.rb:1:1:122:1 | modules.rb | modules.rb:115:1:118:3 | XX |
+| modules.rb:1:1:122:1 | modules.rb | modules.rb:120:1:121:3 | Baz |
+| modules.rb:4:1:24:3 | Foo | modules.rb:5:3:14:5 | Bar |
+| modules.rb:63:1:81:3 | Test | modules.rb:65:3:68:5 | Foo1 |
+| modules.rb:63:1:81:3 | Test | modules.rb:70:3:74:5 | Foo2 |
+| modules.rb:63:1:81:3 | Test | modules.rb:76:3:80:5 | Foo3 |
+| modules.rb:70:3:74:5 | Foo2 | modules.rb:71:5:71:19 | Foo2 |
+| modules.rb:83:1:86:3 | Other | modules.rb:84:3:85:5 | Foo1 |
+| modules.rb:88:1:93:3 | IncludeTest | modules.rb:91:3:92:5 | Y |
+| modules.rb:95:1:99:3 | IncludeTest2 | modules.rb:97:3:98:5 | Z |
+| modules.rb:101:1:105:3 | PrependTest | modules.rb:103:3:104:5 | Y |
+| modules.rb:107:1:110:3 | MM | modules.rb:108:3:109:5 | MM |

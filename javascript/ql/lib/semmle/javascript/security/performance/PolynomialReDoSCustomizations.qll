@@ -67,14 +67,7 @@ module PolynomialReDoS {
       |
         this = mcn.getArgument(0) and
         regexp = mcn.getReceiver() and
-        (
-          name = "match" or
-          name = "split" or
-          name = "matchAll" or
-          name = "replace" or
-          name = "replaceAll" or
-          name = "search"
-        )
+        name = ["match", "split", "matchAll", "replace", "replaceAll", "search"]
         or
         this = mcn.getReceiver() and
         regexp = mcn.getArgument(0) and
