@@ -1,3 +1,4 @@
+| Test.kt:0:0:0:0 | TestKt | Class | file://:0:0:0:0 | <none> | <none> |
 | Test.kt:3:1:80:1 | <Expr>; | ExprStmt | Test.kt:3:1:80:1 | <obinit>(...) | MethodAccess |
 | Test.kt:3:1:80:1 | <obinit> | Method | file://:0:0:0:0 | <none> | <none> |
 | Test.kt:3:1:80:1 | <obinit>(...) | MethodAccess | Test.kt:3:8:80:1 | Test | Constructor |
@@ -102,32 +103,3 @@
 | Test.kt:77:3:77:3 | <Expr>; | ExprStmt | Test.kt:77:7:77:8 | 40 | IntegerLiteral |
 | Test.kt:77:7:77:8 | 40 | IntegerLiteral | Test.kt:77:3:77:3 | ...=... | AssignExpr |
 | Test.kt:78:3:78:8 | return ... | ReturnStmt | Test.kt:4:2:79:2 | test | Method |
-| file://:0:0:0:0 | Any | Class | file://:0:0:0:0 | <none> | <none> |
-| file://:0:0:0:0 | Any | Constructor | file://:0:0:0:0 | <none> | <none> |
-| file://:0:0:0:0 | Boolean | Class | file://:0:0:0:0 | <none> | <none> |
-| file://:0:0:0:0 | Int | Class | file://:0:0:0:0 | <none> | <none> |
-| file://:0:0:0:0 | Long | Class | file://:0:0:0:0 | <none> | <none> |
-| file://:0:0:0:0 | String | Class | file://:0:0:0:0 | <none> | <none> |
-| file://:0:0:0:0 | String | Class | file://:0:0:0:0 | <none> | <none> |
-| file://:0:0:0:0 | Unit | Class | file://:0:0:0:0 | <none> | <none> |
-| file://:0:0:0:0 | equals | Method | file://:0:0:0:0 | <none> | <none> |
-| file://:0:0:0:0 | equals | Method | file://:0:0:0:0 | <none> | <none> |
-| file://:0:0:0:0 | hashCode | Method | file://:0:0:0:0 | <none> | <none> |
-| file://:0:0:0:0 | hashCode | Method | file://:0:0:0:0 | <none> | <none> |
-| file://:0:0:0:0 | other | Parameter | file://:0:0:0:0 | <none> | <none> |
-| file://:0:0:0:0 | other | Parameter | file://:0:0:0:0 | <none> | <none> |
-| file://:0:0:0:0 | toString | Method | file://:0:0:0:0 | <none> | <none> |
-| file://:0:0:0:0 | toString | Method | file://:0:0:0:0 | <none> | <none> |
-| file://:0:0:0:0 | w | VarAccess | file://:0:0:0:0 | <none> | <none> |
-| file://:0:0:0:0 | y | VarAccess | file://:0:0:0:0 | <none> | <none> |
-| file://:0:0:0:0 | y | VarAccess | file://:0:0:0:0 | <none> | <none> |
-| file://:0:0:0:0 | y | VarAccess | file://:0:0:0:0 | <none> | <none> |
-| file://:0:0:0:0 | y | VarAccess | file://:0:0:0:0 | <none> | <none> |
-| file://:0:0:0:0 | y | VarAccess | file://:0:0:0:0 | <none> | <none> |
-| file://:0:0:0:0 | z | VarAccess | file://:0:0:0:0 | <none> | <none> |
-| file://:0:0:0:0 | z | VarAccess | file://:0:0:0:0 | <none> | <none> |
-| file://:0:0:0:0 | z | VarAccess | file://:0:0:0:0 | <none> | <none> |
-| file://:0:0:0:0 | z | VarAccess | file://:0:0:0:0 | <none> | <none> |
-| file://:0:0:0:0 | z | VarAccess | file://:0:0:0:0 | <none> | <none> |
-| file://:0:0:0:0 | z | VarAccess | file://:0:0:0:0 | <none> | <none> |
-| file://:0:0:0:0 | z | VarAccess | file://:0:0:0:0 | <none> | <none> |

@@ -33,5 +33,6 @@ MaybeControlFlowNode maybeSuccessor(ControlFlowNode n) {
 
 from ControlFlowNode n, MaybeControlFlowNode m
 where m = maybeSuccessor(n)
+  and n.getFile().(CompilationUnit).fromSource()
 select n, n.getPrimaryQlClasses(), m, m.getPrimaryQlClasses()
 
