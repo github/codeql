@@ -80,7 +80,7 @@ private predicate canHaveSensitiveCookie(DataFlow::Node node) {
  */
 bindingset[s]
 private string getCookieName(string s) {
-  result = s.regexpCapture("\\s*\\b([^=\\s]*)\\b\\s*=.*", 1)
+  result = s.regexpCapture("([^=]*)=.*", 1).trim()
 }
 
 /**
