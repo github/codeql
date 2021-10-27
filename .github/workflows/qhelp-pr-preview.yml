@@ -1,10 +1,14 @@
 name: Query help preview
 
+permissions:
+  contents: read
+  pull-requests: write
+
 on:
-  pull_request:
+  pull_request_target:
     branches:
       - main
-      - 'rc/*'
+      - "rc/*"
     paths:
       - "ruby/**/*.qhelp"
 
@@ -14,14 +18,14 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
+          ref: refs/pull/${{ github.event.number }}/merge
           fetch-depth: 2
       - name: Determine changed files
         id: changes
         run: |
-          echo -n "::set-output name=qhelp_files::"
-          (git diff --name-only --diff-filter=ACMRT HEAD~1 HEAD | grep .qhelp$ | grep -v .inc.qhelp;
-           git diff --name-only --diff-filter=ACMRT HEAD~1 HEAD | grep .inc.qhelp$ | xargs -d '\n' -rn1 basename | xargs -d '\n' -rn1 git grep -l) |
-           sort -u | xargs -d '\n' -n1 printf "'%s' "
+          (git diff --name-only --diff-filter=ACMRT HEAD~1 HEAD | grep '.qhelp$' | grep -v '.inc.qhelp';
+           git diff --name-only --diff-filter=ACMRT HEAD~1 HEAD | grep '.inc.qhelp$' | xargs -d '\n' -rn1 basename | xargs -d '\n' -rn1 git grep -l) |
+           sort -u > "${{ runner.temp }}/paths.txt"
 
       - uses: ./.github/actions/fetch-codeql
 
@@ -29,10 +33,10 @@ jobs:
         if: ${{ steps.changes.outputs.qhelp_files }}
         run: |
           ( echo "QHelp previews:";
-          for path in ${{ steps.changes.outputs.qhelp_files }} ; do
+          cat "${{ runner.temp }}/paths.txt" | while read path; do
             echo "<details> <summary>${path}</summary>"
             echo
-            codeql generate query-help --format=markdown ${path}
+            codeql generate query-help --format=markdown "${path}"
             echo "</details>"
           done) | gh pr comment "${{ github.event.pull_request.number }}" -F -
         env:
