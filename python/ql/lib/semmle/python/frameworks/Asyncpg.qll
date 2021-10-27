@@ -10,6 +10,8 @@ private import semmle.python.ApiGraphs
 
 /** Provides models for the `asyncpg` PyPI package. */
 private module Asyncpg {
+  private import semmle.python.internal.Awaited
+
   /** A `ConectionPool` is created when the result of `asyncpg.create_pool()` is awaited. */
   API::Node connectionPool() {
     result = API::moduleImport("asyncpg").getMember("create_pool").getReturn().getAwaited()
@@ -61,41 +63,6 @@ private module Asyncpg {
       methodName = "copy_to_table" and
       result = this.getArgByName("source")
     }
-  }
-
-  /**
-   * Holds if `result` is the result of awaiting `awaitedValue`.
-   *
-   * Internal helper predicate to achieve the same as `.awaited()` does for API graphs,
-   * but sutiable for use with type-tracking.
-   */
-  pragma[inline]
-  DataFlow::Node awaited(DataFlow::Node awaitedValue) {
-    // `await` x
-    // - `awaitedValue` is `x`
-    // - `result` is `await x`
-    exists(Await await |
-      await.getValue() = awaitedValue.asExpr() and
-      result.asExpr() = await
-    )
-    or
-    // `async for x in l`
-    // - `awaitedValue` is local source of `l`
-    // - `result` is `l`
-    exists(AsyncFor asyncFor, DataFlow::Node awaited |
-      asyncFor.getIter() = awaited.asExpr() and
-      awaited.getALocalSource() = awaitedValue and
-      result.asExpr() = asyncFor.getIter()
-    )
-    or
-    // `async with x as y`
-    // - `awaitedValue` is local source of `x`
-    // - `result` is `x` and `y`
-    exists(AsyncWith asyncWith, DataFlow::Node awaited |
-      awaited.asExpr() = asyncWith.getContextExpr() and
-      awaited.getALocalSource() = awaitedValue and
-      result.asExpr() in [asyncWith.getContextExpr(), asyncWith.getOptionalVars()]
-    )
   }
 
   /**
