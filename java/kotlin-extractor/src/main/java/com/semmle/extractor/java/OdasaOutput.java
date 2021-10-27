@@ -278,13 +278,13 @@ public class OdasaOutput {
 			if (!currVersion.isValid()) {
 				log.warn("Not rewriting trap file for: " + sym + " " + trapVersion + " " + currVersion + " " + trap);
 			} else if (currVersion.newerThan(trapVersion)) {
-				log.info("Rewriting trap file for: " + sym + " " + trapVersion + " " + currVersion + " " + trap);
+				log.trace("Rewriting trap file for: " + sym + " " + trapVersion + " " + currVersion + " " + trap);
 				deleteTrapFileAndDependencies(sym);
 			} else {
 				return null;
 			}
 		} else {
-			log.info("Writing trap file for: " + sym.getName() + " " + currVersion + " " + trap);
+			log.trace("Writing trap file for: " + sym.getName() + " " + currVersion + " " + trap);
 		}
 		return trapWriter(trap, sym);
 	}

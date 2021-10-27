@@ -43,13 +43,15 @@ open class Logger(val logCounter: LogCounter, open val tw: TrapWriter) {
         println(fullMsg)
     }
     fun trace(msg: String) {
-        info(msg)
+        if(false) {
+            info(msg)
+        }
     }
     fun debug(msg: String) {
         info(msg)
     }
     fun trace(msg: String, exn: Exception) {
-        info(msg + " // " + exn)
+        trace(msg + " // " + exn)
     }
     fun warn(severity: Severity, msg: String, locationString: String? = null, locationId: Label<DbLocation> = tw.unknownLocation, stackIndex: Int = 2) {
         val st = Exception().stackTrace
