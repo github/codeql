@@ -171,6 +171,7 @@ module EssaFlow {
       // see `with_flow` in `python/ql/src/semmle/python/dataflow/Implementation.qll`
       with.getContextExpr() = contextManager.getNode() and
       with.getOptionalVars() = var.getNode() and
+      not with.isAsync() and
       contextManager.strictlyDominates(var)
     )
     or
