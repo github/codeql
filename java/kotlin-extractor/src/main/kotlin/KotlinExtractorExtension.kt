@@ -511,6 +511,10 @@ class X {
 
             ((s.isArray() || s.isNullableArray()) && s.arguments.isNotEmpty()) || s.isPrimitiveArray() -> {
                 // TODO: fix this, this is only a dummy implementation to let the tests pass
+                // TODO: Figure out what signatures should be returned
+                // TODO: The Java extractor describes the dimensionality of array types; here we always report 1 dimension
+                // TODO: The Java extractor extracts a .length field, a .clone method and a type hierarchy for arrays
+                // TODO: Generate a short name for array types
                 val elementType = useTypeOld(s.getArrayElementType(pluginContext.irBuiltIns))
                 val id = tw.getLabelFor<DbArray>("@\"array;1;{$elementType}\"") {
                     tw.writeArrays(id, "ARRAY", elementType.javaResult.id, elementType.kotlinResult.id, 1, elementType.javaResult.id, elementType.kotlinResult.id)
