@@ -1466,8 +1466,31 @@ class X {
                 tw.writeHasLocation(id, locId)
                 extractExpressionExpr(e.argument, callable, id, 0)
             }
+            is IrTypeOperatorCall -> {
+                extractTypeOperatorCall(e, callable, parent, idx)
+            }
             else -> {
                 logger.warnElement(Severity.ErrorSevere, "Unrecognised IrExpression: " + e.javaClass, e)
+            }
+        }
+    }
+
+    fun extractTypeOperatorCall(e: IrTypeOperatorCall, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int) {
+        when(e.operator) {
+            IrTypeOperator.INSTANCEOF -> {
+                val id = tw.getFreshIdLabel<DbInstanceofexpr>()
+                val locId = tw.getLocation(e)
+                val type = useType(e.type)
+                tw.writeExprs_instanceofexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
+                tw.writeHasLocation(id, locId)
+                extractExpressionExpr(e.argument, callable, id, 0)
+                val typeArg = useType(e.typeOperand)
+                val typeAccessId = tw.getFreshIdLabel<DbUnannotatedtypeaccess>()
+                tw.writeExprs_unannotatedtypeaccess(typeAccessId, typeArg.javaResult.id, typeArg.kotlinResult.id, id, 1)
+                // TODO: Type access location
+            }
+            else -> {
+                logger.warnElement(Severity.ErrorSevere, "Unrecognised IrTypeOperatorCall: " + e.render(), e)
             }
         }
     }
