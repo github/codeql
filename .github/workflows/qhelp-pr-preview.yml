@@ -16,19 +16,19 @@ jobs:
   qhelp:
     runs-on: ubuntu-latest
     steps:
+      - uses: github/codeql/.github/actions/fetch-codeql@main
       - uses: actions/checkout@v2
         with:
           ref: refs/pull/${{ github.event.number }}/merge
           fetch-depth: 2
           persist-credentials: false
+
       - name: Determine changed files
         id: changes
         run: |
           (git diff --name-only --diff-filter=ACMRT HEAD~1 HEAD | grep '.qhelp$' | grep -v '.inc.qhelp';
            git diff --name-only --diff-filter=ACMRT HEAD~1 HEAD | grep '.inc.qhelp$' | xargs -d '\n' -rn1 basename | xargs -d '\n' -rn1 git grep -l) |
            sort -u > "${{ runner.temp }}/paths.txt"
-
-      - uses: ./.github/actions/fetch-codeql
 
       - name: QHelp preview
         run: |
