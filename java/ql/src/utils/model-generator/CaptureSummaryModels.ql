@@ -119,6 +119,7 @@ string captureFieldFlowIn(Callable api) {
   exists(DataFlow::ParameterNode source, DataFlow::ExprNode sink, ParameterToFieldConfig config |
     sink.asExpr().getEnclosingCallable().getDeclaringType() =
       source.asParameter().getCallable().getDeclaringType() and
+    not api.isStatic() and
     config.hasFlow(source, sink) and
     source.asParameter().getCallable() = api
   |
@@ -140,6 +141,11 @@ class ParameterToReturnValueTaintConfig extends TaintTracking::Configuration {
   }
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof ReturnNodeExt }
+
+  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+    node2.asExpr().(ConstructorCall).getAnArgument() = node1.asExpr() and
+    node1.asExpr().(Argument).getCall().getCallee().fromSource()
+  }
 }
 
 predicate paramFlowToReturnValueExists(Parameter p) {

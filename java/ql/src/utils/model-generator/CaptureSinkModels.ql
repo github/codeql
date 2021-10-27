@@ -5,19 +5,24 @@
  */
 
 import java
-import Telemetry.ExternalAPI
-import semmle.code.java.dataflow.DataFlow
-import semmle.code.java.dataflow.TaintTracking
-import semmle.code.java.dataflow.ExternalFlow
-import ModelGeneratorUtils
+private import Telemetry.ExternalAPI
+private import semmle.code.java.dataflow.DataFlow
+private import semmle.code.java.dataflow.TaintTracking
+private import semmle.code.java.dataflow.ExternalFlow
+private import ModelGeneratorUtils
+private import semmle.code.java.dataflow.internal.DataFlowNodes::Private
 
 class PropagateToSinkConfiguration extends TaintTracking::Configuration {
-  PropagateToSinkConfiguration() { this = "parameters on public api flowing into sinks" }
+  PropagateToSinkConfiguration() { this = "parameters or  flowing into sinks" }
 
   override predicate isSource(DataFlow::Node source) {
-    source instanceof DataFlow::ParameterNode and
+    (source.asExpr() instanceof FieldAccess or source instanceof DataFlow::ParameterNode) and
     source.getEnclosingCallable().isPublic() and
-    source.getEnclosingCallable().getDeclaringType().isPublic() and
+    exists(RefType t |
+      t = source.getEnclosingCallable().getDeclaringType().getAnAncestor() and
+      not t instanceof TypeObject and
+      t.isPublic()
+    ) and
     isRelevantForModels(source.getEnclosingCallable())
   }
 
@@ -29,6 +34,9 @@ string asInputArgument(DataFlow::Node source) {
     source.(DataFlow::ParameterNode).isParameterOf(_, pos) and
     result = "Argument[" + pos + "]"
   )
+  or
+  source.asExpr() instanceof FieldAccess and
+  result = "Argument[-1]"
 }
 
 string captureSink(Callable api) {
@@ -42,4 +50,6 @@ string captureSink(Callable api) {
 
 from TargetAPI api, string sink
 where sink = captureSink(api)
+// and
+// api.hasName("openStream")
 select sink order by sink

@@ -1,5 +1,5 @@
-| p;Factory;false;create;(String);;Argument[0];Argument[-1];taint; |
-| p;Factory;false;create;(String,int);;Argument[0];Argument[-1];taint; |
+| p;Factory;false;create;(String);;Argument[0];ReturnValue;taint; |
+| p;Factory;false;create;(String,int);;Argument[0];ReturnValue;taint; |
 | p;Factory;false;getValue;();;Argument[-1];ReturnValue;taint; |
 | p;FinalClass;false;returnsInput;(String);;Argument[0];ReturnValue;taint; |
 | p;FluentAPI;false;returnsThis;(String);;Argument[-1];ReturnValue;value; |
@@ -38,3 +38,4 @@
 | p;Pojo;false;getCharArray;();;Argument[-1];ReturnValue;taint; |
 | p;Pojo;false;getValue;();;Argument[-1];ReturnValue;taint; |
 | p;Pojo;false;setValue;(String);;Argument[0];Argument[-1];taint; |
+| p;PrivateFlowViaPublicInterface;true;createAnSPI;(File);;Argument[0];ReturnValue;taint; |

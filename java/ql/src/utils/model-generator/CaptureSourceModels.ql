@@ -13,7 +13,7 @@ private import ModelGeneratorUtils
 private import semmle.code.java.dataflow.internal.FlowSummaryImplSpecific
 private import semmle.code.java.dataflow.internal.FlowSummaryImpl
 private import semmle.code.java.dataflow.internal.DataFlowImplCommon
-import semmle.code.java.dataflow.internal.DataFlowNodes::Private
+private import semmle.code.java.dataflow.internal.DataFlowNodes::Private
 
 class FromSourceConfiguration extends TaintTracking::Configuration {
   FromSourceConfiguration() { this = "FromSourceConfiguration" }

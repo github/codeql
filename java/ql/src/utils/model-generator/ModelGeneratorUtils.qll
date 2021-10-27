@@ -2,11 +2,20 @@ import java
 import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.java.dataflow.internal.ContainerFlow
 
+Method superImpl(Method m) {
+  result = m.getAnOverride() and
+  not exists(result.getAnOverride()) and
+  not m instanceof ToStringMethod
+}
+
 class TargetAPI extends Callable {
   TargetAPI() {
     this.isPublic() and
     this.fromSource() and
-    this.getDeclaringType().isPublic() and
+    (
+      this.getDeclaringType().isPublic() or
+      superImpl(this).getDeclaringType().isPublic()
+    ) and
     isRelevantForModels(this)
   }
 }
@@ -70,7 +79,7 @@ string asSourceModel(Callable api, string output, string kind) {
 private string asPartialModel(Callable api) {
   result =
     typeAsSummaryModel(api) + ";" //
-      + isExtensible(api.getDeclaringType()).toString() + ";" //
+      + isExtensible(bestTypeForModel(api)) + ";" //
       + api.getName() + ";" //
       + paramsString(api) + ";" //
       + /* ext + */ ";" //
@@ -80,18 +89,12 @@ private string asPartialModel(Callable api) {
  * Returns the appropriate type name for the model. Either the type
  * declaring the method or the supertype introducing the method.
  */
-private string typeAsSummaryModel(Callable api) {
-  if exists(superImpl(api.(Method)))
-  then
-    superImpl(api.(Method)).fromSource() and
-    result = typeAsModel(superImpl(api.(Method)).getDeclaringType())
-  else result = typeAsModel(api.getDeclaringType())
-}
+private string typeAsSummaryModel(Callable api) { result = typeAsModel(bestTypeForModel(api)) }
 
-Method superImpl(Method m) {
-  result = m.getAnOverride() and
-  not exists(result.getAnOverride()) and
-  not m instanceof ToStringMethod
+private RefType bestTypeForModel(Callable api) {
+  if exists(superImpl(api))
+  then superImpl(api).fromSource() and result = superImpl(api).getDeclaringType()
+  else result = api.getDeclaringType()
 }
 
 private string typeAsModel(RefType type) {
