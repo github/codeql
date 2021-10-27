@@ -1,6 +1,7 @@
 import csharp
 import DataFlow
 import semmle.code.csharp.dataflow.ExternalFlow
+import semmle.code.csharp.dataflow.FlowSummary
 import semmle.code.csharp.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 import CsvValidation
 
@@ -20,8 +21,9 @@ class SummaryModelTest extends SummaryModelCsv {
         "My.Qltest;C;false;StepPropertySetter;(System.Int32);;Argument[0];Property[My.Qltest.C.Property] of Argument[-1];value",
         "My.Qltest;C;false;StepElementGetter;();;Element of Argument[-1];ReturnValue;value",
         "My.Qltest;C;false;StepElementSetter;(System.Int32);;Argument[0];Element of Argument[-1];value",
-        "My.Qltest;C+Generic<>;false;StepGeneric;(T);;Argument[0];ReturnValue;value",
-        "My.Qltest;C+Generic<>;false;StepGeneric2;(S);;Argument[0];ReturnValue;value"
+        "My.Qltest;C+Generic<,>;false;StepGeneric;(T);;Argument[0];ReturnValue;value",
+        "My.Qltest;C+Generic<,>;false;StepGeneric2<>;(S);;Argument[0];ReturnValue;value",
+        "My.Qltest;C+Base<>;true;StepOverride;(T);;Argument[0];ReturnValue;value"
       ]
   }
 }
@@ -38,4 +40,9 @@ query predicate summaryGetterStep(DataFlow::Node arg, DataFlow::Node out, Conten
 
 query predicate summarySetterStep(DataFlow::Node arg, DataFlow::Node out, Content c) {
   FlowSummaryImpl::Private::Steps::summarySetterStep(arg, c, out)
+}
+
+query predicate clearsContent(SummarizedCallable c, DataFlow::Content k, int i) {
+  c.clearsContent(i, k) and
+  c.fromSource()
 }

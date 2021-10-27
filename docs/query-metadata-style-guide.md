@@ -166,6 +166,8 @@ When you tag a query like this, the associated CWE pages from [MITRE.org](https:
 Code Scanning may use tags to identify queries with specific meanings across languages. Currently, there is only one such tag: `lines-of-code`. The sum of the results for queries with this tag that return a single number column ([example for JavaScript](https://github.com/github/codeql/blob/c47d680d65f09a851e41d4edad58ffa7486b5431/java/ql/src/Metrics/Summaries/LinesOfCode.ql)) is interpreted by Code Scanning as the lines of code under the source root present in the database. Each language should have exactly one query of this form.
 
 
+Maintainers are expected to add a `@security-severity` tag to security relevant queries that will be run on Code Scanning.  There is a documented internal process for generating these `@security-severity` values.
+
 ## QL area
 
 ### Alert messages

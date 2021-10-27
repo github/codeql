@@ -1,0 +1,6 @@
+| MyFinalRecord.java:1:14:1:26 | MyFinalRecord | final=true | static=false | Record |
+| MyRecord.java:2:8:2:15 | MyRecord | final=true | static=false | Record |
+| Test.java:3:12:3:13 | R1 | final=true | static=true | Record |
+| Test.java:4:25:4:26 | R2 | final=true | static=true | Record |
+| Test.java:8:12:8:13 | R3 | final=true | static=true | Record,SuperInterface |
+| Test.java:12:16:12:26 | LocalRecord | final=true | static=true | Record |

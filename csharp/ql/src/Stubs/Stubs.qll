@@ -128,6 +128,7 @@ abstract private class GeneratedType extends Type, GeneratedElement {
   /** Gets the entire C# stub code for this type. */
   pragma[nomagic]
   final string getStub(Assembly assembly) {
+    this.isInAssembly(assembly) and
     if this.isDuplicate(assembly)
     then
       result =
@@ -161,7 +162,7 @@ abstract private class GeneratedType extends Type, GeneratedElement {
     if this instanceof Enum
     then result = ""
     else
-      if exists(getAnInterestingBaseType())
+      if exists(this.getAnInterestingBaseType())
       then
         result =
           " : " +
@@ -169,7 +170,7 @@ abstract private class GeneratedType extends Type, GeneratedElement {
               t = this.getAnInterestingBaseType() and
               (if t instanceof Class then i = 0 else i = 1)
             |
-              stubClassName(t), ", " order by i
+              stubClassName(t), ", " order by i, t.getQualifiedName()
             )
       else result = ""
   }
@@ -180,7 +181,9 @@ abstract private class GeneratedType extends Type, GeneratedElement {
       concat(GeneratedMember m |
         m = this.getAGeneratedMember(assembly)
       |
-        stubMember(m, assembly) order by m.getName()
+        stubMember(m, assembly)
+        order by
+          m.getQualifiedNameWithTypes(), stubExplicitImplementation(m)
       )
   }
 
@@ -218,15 +221,15 @@ abstract private class GeneratedType extends Type, GeneratedElement {
   }
 
   final Type getAGeneratedType() {
-    result = getAnInterestingBaseType()
+    result = this.getAnInterestingBaseType()
     or
-    result = getAGeneratedMember().(Callable).getReturnType()
+    result = this.getAGeneratedMember().(Callable).getReturnType()
     or
-    result = getAGeneratedMember().(Callable).getAParameter().getType()
+    result = this.getAGeneratedMember().(Callable).getAParameter().getType()
     or
-    result = getAGeneratedMember().(Property).getType()
+    result = this.getAGeneratedMember().(Property).getType()
     or
-    result = getAGeneratedMember().(Field).getType()
+    result = this.getAGeneratedMember().(Field).getType()
   }
 }
 
@@ -329,7 +332,8 @@ private class GeneratedNamespace extends Namespace, GeneratedElement {
 
   final string getStubs(Assembly assembly) {
     result =
-      getPreamble() + getTypeStubs(assembly) + getSubNamespaceStubs(assembly) + getPostAmble()
+      this.getPreamble() + this.getTypeStubs(assembly) + this.getSubNamespaceStubs(assembly) +
+        this.getPostAmble()
   }
 
   /** Gets the `n`th generated child namespace, indexed from 0. */
@@ -356,7 +360,7 @@ private class GeneratedNamespace extends Namespace, GeneratedElement {
     this.isInAssembly(assembly) and
     result =
       concat(GeneratedNamespace child, int i |
-        child = getChildNamespace(i) and child.isInAssembly(assembly)
+        child = this.getChildNamespace(i) and child.isInAssembly(assembly)
       |
         child.getStubs(assembly) order by i
       )
@@ -610,83 +614,18 @@ private string stubImplementation(Virtualizable c) {
 }
 
 private predicate isKeyword(string s) {
-  s = "abstract" or
-  s = "as" or
-  s = "base" or
-  s = "bool" or
-  s = "break" or
-  s = "byte" or
-  s = "case" or
-  s = "catch" or
-  s = "char" or
-  s = "checked" or
-  s = "class" or
-  s = "const" or
-  s = "continue" or
-  s = "decimal" or
-  s = "default" or
-  s = "delegate" or
-  s = "do" or
-  s = "double" or
-  s = "else" or
-  s = "enum" or
-  s = "event" or
-  s = "explicit" or
-  s = "extern" or
-  s = "false" or
-  s = "finally" or
-  s = "fixed" or
-  s = "float" or
-  s = "for" or
-  s = "foreach" or
-  s = "goto" or
-  s = "if" or
-  s = "implicit" or
-  s = "in" or
-  s = "int" or
-  s = "interface" or
-  s = "internal" or
-  s = "is" or
-  s = "lock" or
-  s = "long" or
-  s = "namespace" or
-  s = "new" or
-  s = "null" or
-  s = "object" or
-  s = "operator" or
-  s = "out" or
-  s = "override" or
-  s = "params" or
-  s = "private" or
-  s = "protected" or
-  s = "public" or
-  s = "readonly" or
-  s = "ref" or
-  s = "return" or
-  s = "sbyte" or
-  s = "sealed" or
-  s = "short" or
-  s = "sizeof" or
-  s = "stackalloc" or
-  s = "static" or
-  s = "string" or
-  s = "struct" or
-  s = "switch" or
-  s = "this" or
-  s = "throw" or
-  s = "true" or
-  s = "try" or
-  s = "typeof" or
-  s = "uint" or
-  s = "ulong" or
-  s = "unchecked" or
-  s = "unsafe" or
-  s = "ushort" or
-  s = "using" or
-  s = "virtual" or
-  s = "void" or
-  s = "volatile" or
-  s = "while"
+  s =
+    [
+      "abstract", "as", "base", "bool", "break", "byte", "case", "catch", "char", "checked",
+      "class", "const", "continue", "decimal", "default", "delegate", "do", "double", "else",
+      "enum", "event", "explicit", "extern", "false", "finally", "fixed", "float", "for", "foreach",
+      "goto", "if", "implicit", "in", "int", "interface", "internal", "is", "lock", "long",
+      "namespace", "new", "null", "object", "operator", "out", "override", "params", "private",
+      "protected", "public", "readonly", "ref", "return", "sbyte", "sealed", "short", "sizeof",
+      "stackalloc", "static", "string", "struct", "switch", "this", "throw", "true", "try",
+      "typeof", "uint", "ulong", "unchecked", "unsafe", "ushort", "using", "virtual", "void",
+      "volatile", "while"
+    ]
 }
 
 bindingset[s]
@@ -759,8 +698,9 @@ private string stubMethod(Method m, Assembly assembly) {
   then
     result =
       "    " + stubModifiers(m) + stubClassName(m.(Method).getReturnType()) + " " +
-        stubExplicitImplementation(m) + m.getName() + stubGenericMethodParams(m) + "(" +
-        stubParameters(m) + ")" + stubTypeParametersConstraints(m) + stubImplementation(m) + ";\n"
+        stubExplicitImplementation(m) + escapeIfKeyword(m.getUndecoratedName()) +
+        stubGenericMethodParams(m) + "(" + stubParameters(m) + ")" +
+        stubTypeParametersConstraints(m) + stubImplementation(m) + ";\n"
   else result = "    // Stub generator skipped method: " + m.getName() + "\n"
 }
 
@@ -786,7 +726,7 @@ pragma[noinline]
 private string stubEnumConstant(EnumConstant ec, Assembly assembly) {
   ec instanceof GeneratedMember and
   ec.getALocation() = assembly and
-  result = "    " + ec.getName() + ",\n"
+  result = "    " + escapeIfKeyword(ec.getName()) + ",\n"
 }
 
 pragma[noinline]
@@ -795,7 +735,7 @@ private string stubProperty(Property p, Assembly assembly) {
   p.getALocation() = assembly and
   result =
     "    " + stubModifiers(p) + stubClassName(p.getType()) + " " + stubExplicitImplementation(p) +
-      p.getName() + " { " + stubGetter(p) + stubSetter(p) + "}\n"
+      escapeIfKeyword(p.getName()) + " { " + stubGetter(p) + stubSetter(p) + "}\n"
 }
 
 pragma[noinline]
@@ -810,7 +750,7 @@ private string stubConstructor(Constructor c, Assembly assembly) {
       c.getNumberOfParameters() > 0
     then
       result =
-        "    " + stubModifiers(c) + c.getName() + "(" + stubParameters(c) + ")" +
+        "    " + stubModifiers(c) + escapeIfKeyword(c.getName()) + "(" + stubParameters(c) + ")" +
           stubConstructorInitializer(c) + " => throw null;\n"
     else result = "    // Stub generator skipped constructor \n"
 }
@@ -844,7 +784,7 @@ private string stubEvent(Event e, Assembly assembly) {
   e.getALocation() = assembly and
   result =
     "    " + stubModifiers(e) + "event " + stubClassName(e.getType()) + " " +
-      stubExplicitImplementation(e) + e.getName() + stubEventAccessors(e) + "\n"
+      stubExplicitImplementation(e) + escapeIfKeyword(e.getName()) + stubEventAccessors(e) + "\n"
 }
 
 pragma[nomagic]

@@ -9,7 +9,7 @@
  * @precision medium
  * @id java/uncaught-servlet-exception
  * @tags security
- *       external/cwe-600
+ *       external/cwe/cwe-600
  */
 
 import java

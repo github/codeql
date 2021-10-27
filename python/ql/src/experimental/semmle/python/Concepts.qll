@@ -14,71 +14,34 @@ private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.TaintTracking
 private import experimental.semmle.python.Frameworks
 
-/** Provides classes for modeling Regular Expression-related APIs. */
-module RegexExecution {
+/** Provides classes for modeling log related APIs. */
+module LogOutput {
   /**
-   * A data-flow node that executes a regular expression.
+   * A data flow node for log output.
    *
    * Extend this class to model new APIs. If you want to refine existing API models,
-   * extend `RegexExecution` instead.
+   * extend `LogOutput` instead.
    */
   abstract class Range extends DataFlow::Node {
     /**
-     * Gets the argument containing the executed expression.
+     * Get the parameter value of the log output function.
      */
-    abstract DataFlow::Node getRegexNode();
-
-    /**
-     * Gets the library used to execute the regular expression.
-     */
-    abstract string getRegexModule();
+    abstract DataFlow::Node getAnInput();
   }
 }
 
 /**
- * A data-flow node that executes a regular expression.
+ * A data flow node for log output.
  *
  * Extend this class to refine existing API models. If you want to model new APIs,
- * extend `RegexExecution::Range` instead.
+ * extend `LogOutput::Range` instead.
  */
-class RegexExecution extends DataFlow::Node {
-  RegexExecution::Range range;
+class LogOutput extends DataFlow::Node {
+  LogOutput::Range range;
 
-  RegexExecution() { this = range }
+  LogOutput() { this = range }
 
-  DataFlow::Node getRegexNode() { result = range.getRegexNode() }
-
-  string getRegexModule() { result = range.getRegexModule() }
-}
-
-/** Provides classes for modeling Regular Expression escape-related APIs. */
-module RegexEscape {
-  /**
-   * A data-flow node that escapes a regular expression.
-   *
-   * Extend this class to model new APIs. If you want to refine existing API models,
-   * extend `RegexEscape` instead.
-   */
-  abstract class Range extends DataFlow::Node {
-    /**
-     * Gets the argument containing the escaped expression.
-     */
-    abstract DataFlow::Node getRegexNode();
-  }
-}
-
-/**
- * A data-flow node that escapes a regular expression.
- *
- * Extend this class to refine existing API models. If you want to model new APIs,
- * extend `RegexEscape::Range` instead.
- */
-class RegexEscape extends DataFlow::Node {
-  RegexEscape::Range range;
-
-  RegexEscape() { this = range }
-
-  DataFlow::Node getRegexNode() { result = range.getRegexNode() }
+  DataFlow::Node getAnInput() { result = range.getAnInput() }
 }
 
 /** Provides classes for modeling LDAP query execution-related APIs. */
@@ -157,9 +120,19 @@ module LDAPBind {
    */
   abstract class Range extends DataFlow::Node {
     /**
+     * Gets the argument containing the binding host.
+     */
+    abstract DataFlow::Node getHost();
+
+    /**
      * Gets the argument containing the binding expression.
      */
     abstract DataFlow::Node getPassword();
+
+    /**
+     * Holds if the binding process use SSL.
+     */
+    abstract predicate useSSL();
   }
 }
 
@@ -174,7 +147,20 @@ class LDAPBind extends DataFlow::Node {
 
   LDAPBind() { this = range }
 
+  /**
+   * Gets the argument containing the binding host.
+   */
+  DataFlow::Node getHost() { result = range.getHost() }
+
+  /**
+   * Gets the argument containing the binding expression.
+   */
   DataFlow::Node getPassword() { result = range.getPassword() }
+
+  /**
+   * Holds if the binding process use SSL.
+   */
+  predicate useSSL() { range.useSSL() }
 }
 
 /** Provides classes for modeling SQL sanitization libraries. */
@@ -210,6 +196,64 @@ class SQLEscape extends DataFlow::Node {
   DataFlow::Node getAnInput() { result = range.getAnInput() }
 }
 
+/** Provides a class for modeling NoSQL execution APIs. */
+module NoSQLQuery {
+  /**
+   * A data-flow node that executes NoSQL queries.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `NoSQLQuery` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /** Gets the argument that specifies the NoSQL query to be executed. */
+    abstract DataFlow::Node getQuery();
+  }
+}
+
+/**
+ * A data-flow node that executes NoSQL queries.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `NoSQLQuery::Range` instead.
+ */
+class NoSQLQuery extends DataFlow::Node {
+  NoSQLQuery::Range range;
+
+  NoSQLQuery() { this = range }
+
+  /** Gets the argument that specifies the NoSQL query to be executed. */
+  DataFlow::Node getQuery() { result = range.getQuery() }
+}
+
+/** Provides classes for modeling NoSQL sanitization-related APIs. */
+module NoSQLSanitizer {
+  /**
+   * A data-flow node that collects functions sanitizing NoSQL queries.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `NoSQLSanitizer` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /** Gets the argument that specifies the NoSQL query to be sanitized. */
+    abstract DataFlow::Node getAnInput();
+  }
+}
+
+/**
+ * A data-flow node that collects functions sanitizing NoSQL queries.
+ *
+ * Extend this class to model new APIs. If you want to refine existing API models,
+ * extend `NoSQLSanitizer::Range` instead.
+ */
+class NoSQLSanitizer extends DataFlow::Node {
+  NoSQLSanitizer::Range range;
+
+  NoSQLSanitizer() { this = range }
+
+  /** Gets the argument that specifies the NoSQL query to be sanitized. */
+  DataFlow::Node getAnInput() { result = range.getAnInput() }
+}
+
 /** Provides classes for modeling HTTP Header APIs. */
 module HeaderDeclaration {
   /**
@@ -234,8 +278,8 @@ module HeaderDeclaration {
 /**
  * A data-flow node that collects functions setting HTTP Headers.
  *
- * Extend this class to model new APIs. If you want to refine existing API models,
- * extend `HeaderDeclaration` instead.
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `HeaderDeclaration::Range` instead.
  */
 class HeaderDeclaration extends DataFlow::Node {
   HeaderDeclaration::Range range;
@@ -248,65 +292,63 @@ class HeaderDeclaration extends DataFlow::Node {
   DataFlow::Node getNameArg() { result = range.getNameArg() }
 
   /**
-   * Gets the argument containing the header name.
+   * Gets the argument containing the header value.
    */
   DataFlow::Node getValueArg() { result = range.getValueArg() }
 }
 
-module ExperimentalHTTP {
+/**
+ * A data-flow node that sets a cookie in an HTTP response.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `HTTP::CookieWrite::Range` instead.
+ */
+class CookieWrite extends DataFlow::Node {
+  CookieWrite::Range range;
+
+  CookieWrite() { this = range }
+
+  /**
+   * Gets the argument, if any, specifying the raw cookie header.
+   */
+  DataFlow::Node getHeaderArg() { result = range.getHeaderArg() }
+
+  /**
+   * Gets the argument, if any, specifying the cookie name.
+   */
+  DataFlow::Node getNameArg() { result = range.getNameArg() }
+
+  /**
+   * Gets the argument, if any, specifying the cookie value.
+   */
+  DataFlow::Node getValueArg() { result = range.getValueArg() }
+}
+
+/** Provides a class for modeling new cookie writes on HTTP responses. */
+module CookieWrite {
   /**
    * A data-flow node that sets a cookie in an HTTP response.
    *
-   * Extend this class to refine existing API models. If you want to model new APIs,
-   * extend `HTTP::CookieWrite::Range` instead.
+   * Note: we don't require that this redirect must be sent to a client (a kind of
+   * "if a tree falls in a forest and nobody hears it" situation).
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `HttpResponse` instead.
    */
-  class CookieWrite extends DataFlow::Node {
-    CookieWrite::Range range;
-
-    CookieWrite() { this = range }
-
+  abstract class Range extends DataFlow::Node {
     /**
      * Gets the argument, if any, specifying the raw cookie header.
      */
-    DataFlow::Node getHeaderArg() { result = range.getHeaderArg() }
+    abstract DataFlow::Node getHeaderArg();
 
     /**
      * Gets the argument, if any, specifying the cookie name.
      */
-    DataFlow::Node getNameArg() { result = range.getNameArg() }
+    abstract DataFlow::Node getNameArg();
 
     /**
      * Gets the argument, if any, specifying the cookie value.
      */
-    DataFlow::Node getValueArg() { result = range.getValueArg() }
-  }
-
-  /** Provides a class for modeling new cookie writes on HTTP responses. */
-  module CookieWrite {
-    /**
-     * A data-flow node that sets a cookie in an HTTP response.
-     *
-     * Note: we don't require that this redirect must be sent to a client (a kind of
-     * "if a tree falls in a forest and nobody hears it" situation).
-     *
-     * Extend this class to model new APIs. If you want to refine existing API models,
-     * extend `HttpResponse` instead.
-     */
-    abstract class Range extends DataFlow::Node {
-      /**
-       * Gets the argument, if any, specifying the raw cookie header.
-       */
-      abstract DataFlow::Node getHeaderArg();
-
-      /**
-       * Gets the argument, if any, specifying the cookie name.
-       */
-      abstract DataFlow::Node getNameArg();
-
-      /**
-       * Gets the argument, if any, specifying the cookie value.
-       */
-      abstract DataFlow::Node getValueArg();
-    }
+    abstract DataFlow::Node getValueArg();
   }
 }

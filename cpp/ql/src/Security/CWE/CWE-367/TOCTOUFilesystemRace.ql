@@ -6,7 +6,7 @@
  * @kind problem
  * @problem.severity warning
  * @security-severity 7.7
- * @precision medium
+ * @precision high
  * @id cpp/toctou-race-condition
  * @tags security
  *       external/cwe/cwe-367

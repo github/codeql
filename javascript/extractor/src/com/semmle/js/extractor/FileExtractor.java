@@ -5,7 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.nio.charset.Charset;
+import java.nio.charset.CharacterCodingException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.LinkedHashSet;
@@ -17,6 +17,7 @@ import com.semmle.js.extractor.trapcache.CachingTrapWriter;
 import com.semmle.js.extractor.trapcache.ITrapCache;
 import com.semmle.util.data.StringUtil;
 import com.semmle.util.exception.Exceptions;
+import com.semmle.util.exception.ResourceError;
 import com.semmle.util.extraction.ExtractorOutputConfig;
 import com.semmle.util.files.FileUtil;
 import com.semmle.util.io.WholeIO;
@@ -104,7 +105,7 @@ public class FileExtractor {
 
   /** Information about supported file types. */
   public static enum FileType {
-    HTML(".htm", ".html", ".xhtm", ".xhtml", ".vue") {
+    HTML(".htm", ".html", ".xhtm", ".xhtml", ".vue", ".hbs", ".ejs", ".njk") {
       @Override
       public IExtractor mkExtractor(ExtractorConfig config, ExtractorState state) {
         return new HTMLExtractor(config, state);
@@ -113,6 +114,14 @@ public class FileExtractor {
       @Override
       public String toString() {
         return "html";
+      }
+
+      @Override
+      protected boolean contains(File f, String lcExt, ExtractorConfig config) {
+        if (isBinaryFile(f, lcExt, config)) {
+          return false;
+        }
+        return super.contains(f, lcExt, config);
       }
     },
 
@@ -151,32 +160,6 @@ public class FileExtractor {
       @Override
       public String toString() {
         return "javascript";
-      }
-
-      /** Number of bytes to read from the beginning of a ".js" file to detect if it is a binary file. */
-      private static final int fileHeaderSize = 128;
-
-      /** Computes if `f` is a binary file based on whether the initial `fileHeaderSize` bytes are printable UTF-8 chars. */
-      private boolean isBinaryFile(File f, String lcExt, ExtractorConfig config) {
-        if (!config.getDefaultEncoding().equals(StandardCharsets.UTF_8.name())) {
-          return false;
-        }
-        try (FileInputStream fis = new FileInputStream(f)) {
-          byte[] bytes = new byte[fileHeaderSize];
-          int length = fis.read(bytes);
-
-          if (length == -1) return false;
-
-          // Avoid invalid or unprintable UTF-8 files.
-          if (hasUnprintableUtf8(bytes, length)) {
-            return true;
-          }
-
-          return false;
-        } catch (IOException e) {
-          Exceptions.ignore(e, "Let extractor handle this one.");
-        }
-        return false;
       }
     },
 
@@ -233,9 +216,6 @@ public class FileExtractor {
 
         return super.contains(f, lcExt, config);
       }
-
-      /** Number of bytes to read from the beginning of a ".ts" file for sniffing its file type. */
-      private static final int fileHeaderSize = 128;
 
       private boolean hasBadFileHeader(File f, String lcExt, ExtractorConfig config) {
         if (!".ts".equals(lcExt)) {
@@ -348,6 +328,9 @@ public class FileExtractor {
       }
     };
 
+    /** Number of bytes to read from the beginning of a file to sniff its file type. */
+    private static final int fileHeaderSize = 128;
+
     /** The file extensions (lower-case, including leading dot) corresponding to this file type. */
     private final Set<String> extensions = new LinkedHashSet<String>();
 
@@ -398,6 +381,29 @@ public class FileExtractor {
       return true;
     }
 
+    /** Computes if `f` is a binary file based on whether the initial `fileHeaderSize` bytes are printable UTF-8 chars. */
+    public static boolean isBinaryFile(File f, String lcExt, ExtractorConfig config) {
+      if (!config.getDefaultEncoding().equals(StandardCharsets.UTF_8.name())) {
+        return false;
+      }
+      try (FileInputStream fis = new FileInputStream(f)) {
+        byte[] bytes = new byte[fileHeaderSize];
+        int length = fis.read(bytes);
+
+        if (length == -1) return false;
+
+        // Avoid invalid or unprintable UTF-8 files.
+        if (hasUnprintableUtf8(bytes, length)) {
+          return true;
+        }
+
+        return false;
+      } catch (IOException e) {
+        Exceptions.ignore(e, "Let extractor handle this one.");
+      }
+      return false;
+    }
+
     /** The names of all defined {@linkplain FileType}s. */
     public static final Set<String> allNames = new LinkedHashSet<String>();
 
@@ -433,7 +439,16 @@ public class FileExtractor {
     }
 
     // populate source archive
-    String source = new WholeIO(config.getDefaultEncoding()).strictread(f);
+    WholeIO wholeIO = new WholeIO(config.getDefaultEncoding(), true);
+    String source = wholeIO.read(f);
+    if (source == null) {
+      if (wholeIO.getLastException() instanceof CharacterCodingException) {
+        System.err.println("Skipped due to unsupported character encoding: " + f);
+        return 0;
+      } else {
+        throw new ResourceError("Failed to read file " + f, wholeIO.getLastException());
+      }
+    }
     outputConfig.getSourceArchive().add(f, source);
 
     // extract language-independent bits

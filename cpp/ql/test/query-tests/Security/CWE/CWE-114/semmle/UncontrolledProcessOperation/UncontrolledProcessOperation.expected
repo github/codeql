@@ -47,6 +47,7 @@ edges
 | test.cpp:106:17:106:22 | recv output argument | test.cpp:107:15:107:20 | (const char *)... |
 | test.cpp:106:17:106:22 | recv output argument | test.cpp:107:15:107:20 | buffer |
 | test.cpp:106:17:106:22 | recv output argument | test.cpp:107:15:107:20 | buffer indirection |
+subpaths
 nodes
 | test.cpp:24:30:24:36 | *command | semmle.label | *command |
 | test.cpp:24:30:24:36 | command | semmle.label | command |

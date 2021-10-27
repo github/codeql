@@ -16,8 +16,9 @@
 package android.app;
 
 import android.content.Intent;
+import android.content.ComponentCallbacks2;
 import android.os.Bundle;
-import android.view.View;
+import android.view.*;
 
 /**
  * An activity is a single, focused thing that the user can do. Almost all
@@ -187,7 +188,7 @@ import android.view.View;
  * </p>
  *
  * </p>
- * 
+ *
  * <pre class="prettyprint">
  * public class Activity extends ApplicationContext {
  *     protected void onCreate(Bundle savedInstanceState);
@@ -675,7 +676,7 @@ import android.view.View;
  * upload, independent of whether the original activity is paused, stopped, or
  * finished.
  */
-public class Activity {
+public class Activity extends ContextThemeWrapper {
     /** Return the intent that started this activity. */
     public Intent getIntent() {
         return null;
@@ -1142,4 +1143,8 @@ public class Activity {
      */
     public void startActivities(Intent[] intents, Bundle options) {
     }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) { }
+
+    public static final int RESULT_OK = -1;
 }

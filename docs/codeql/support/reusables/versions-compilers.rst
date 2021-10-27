@@ -22,14 +22,16 @@
    Eclipse compiler for Java (ECJ) [5]_",``.java``
    JavaScript,ECMAScript 2021 or lower,Not applicable,"``.js``, ``.jsx``, ``.mjs``, ``.es``, ``.es6``, ``.htm``, ``.html``, ``.xhm``, ``.xhtml``, ``.vue``, ``.json``, ``.yaml``, ``.yml``, ``.raml``, ``.xml`` [6]_"
    Python,"2.7, 3.5, 3.6, 3.7, 3.8, 3.9",Not applicable,``.py``
-   TypeScript [7]_,"2.6-4.2",Standard TypeScript compiler,"``.ts``, ``.tsx``"
+   Ruby [7]_,"up to 3.02",Not applicable,"``.rb``, ``.erb``, ``.gemspec``, ``Gemfile``"
+   TypeScript [8]_,"2.6-4.4",Standard TypeScript compiler,"``.ts``, ``.tsx``"
 
 .. container:: footnote-group
 
     .. [1] C++20 support is currently in beta. Supported for GCC on Linux only. Modules are *not* supported.
     .. [2] Support for the clang-cl compiler is preliminary.
     .. [3] Support for the Arm Compiler (armcc) is preliminary.
-    .. [4] Builds that execute on Java 7 to 16 can be analyzed. The analysis understands Java 15 standard language features.
+    .. [4] Builds that execute on Java 7 to 16 can be analyzed. The analysis understands Java 16 standard language features.
     .. [5] ECJ is supported when the build invokes it via the Maven Compiler plugin or the Takari Lifecycle plugin.
     .. [6] JSX and Flow code, YAML, JSON, HTML, and XML files may also be analyzed with JavaScript files.
-    .. [7] TypeScript analysis is performed by running the JavaScript extractor with TypeScript enabled. This is the default for LGTM.
+    .. [7] Requires glibc 2.17.
+    .. [8] TypeScript analysis is performed by running the JavaScript extractor with TypeScript enabled. This is the default for LGTM.

@@ -45,15 +45,15 @@ namespace generics
         void f<X>() where X : class { new B<X>(); }
     }
 
-    public class Outer<T>
+    public class Outer<T1, T2>
     {
 
-        public class Inner<U> where U : T
+        public class Inner<U1, U2> where U1 : T1
         {
 
-            public T t;
-            public Func<U, T> myFunc;
-
+            public T1 t;
+            public Func<U1, T1> myFunc;
+            public void MyMethod<W1, W2>(W1 a, W2 b, U2 c, T2 d) => throw null;
         }
     }
 
@@ -121,7 +121,8 @@ namespace generics
             Grid<int> g = new Grid<int>();
             int j = g['e', 1];
 
-            new Outer<object>.Inner<string>().t = 3;
+            new Outer<object, int>.Inner<string, int>().t = 3;
+            new Outer<object, bool>.Inner<object, string>().MyMethod<double, int>(1.0, 2, "3", true);
 
             new A<string>().bar(2, "");
             new A<int>().bar(new Test(), 2);

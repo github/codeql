@@ -199,6 +199,58 @@ void test2_10(int dir, const char *path, int arg)
 	// ...
 }
 
+void test2_11(const char *path, int arg)
+{
+	stat_data buf;
+	int f;
+
+	if (stat(path, &buf))
+	{
+		f = open(path, arg); // GOOD (here stat is just a redundant check that the file exists / path is valid, confirmed by the return value of open) [FALSE POSITIVE]
+		if (f == -1)
+		{
+			// handle error
+		}
+
+		// ...
+	}
+}
+
+void test2_12(const char *path, int arg)
+{
+	stat_data buf;
+	int f;
+
+	if (stat(path, &buf))
+	{
+		if (buf.foo == 11) // check a property of the file
+		{
+			f = open(path, arg); // BAD
+			if (f == -1)
+			{
+				// handle error
+			}
+		}
+
+		// ...
+	}
+}
+
+void test2_13(const char *path, int arg)
+{
+	stat_data buf;
+	FILE *f;
+
+	if (stat(path, &buf)) // check the file does *not* exist
+	{
+		return;
+	}
+
+	f = fopen(path, "wt"); // BAD
+
+	// ...
+}
+
 // --- open -> stat ---
 
 void test3_1(const char *path, int arg)

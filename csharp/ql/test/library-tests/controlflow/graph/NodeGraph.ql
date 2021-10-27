@@ -1,11 +1,9 @@
+/**
+ * @kind graph
+ */
+
 import csharp
 import Common
+import semmle.code.csharp.controlflow.internal.ControlFlowGraphImplShared::TestOutput
 
-query predicate edges(
-  SourceControlFlowNode node, SourceControlFlowNode successor, string attr, string val
-) {
-  exists(ControlFlow::SuccessorType t | successor = node.getASuccessorByType(t) |
-    attr = "semmle.label" and
-    val = t.toString()
-  )
-}
+private class MyRelevantNode extends RelevantNode, SourceControlFlowNode { }

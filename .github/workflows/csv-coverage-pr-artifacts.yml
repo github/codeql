@@ -6,6 +6,8 @@ on:
       - '.github/workflows/csv-coverage-pr-comment.yml'
       - '*/ql/src/**/*.ql'
       - '*/ql/src/**/*.qll'
+      - '*/ql/lib/**/*.ql'
+      - '*/ql/lib/**/*.qll'
       - 'misc/scripts/library-coverage/*.py'
       # input data files
       - '*/documentation/library-coverage/cwe-sink.csv'
