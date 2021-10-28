@@ -7,10 +7,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-    - name: Set up Go 1.16
+    - name: Set up Go 1.17
       uses: actions/setup-go@v1
       with:
-        go-version: 1.16
+        go-version: 1.17
       id: go
 
     - name: Set up CodeQL CLI
@@ -20,7 +20,7 @@ jobs:
         echo "Done"
         cd $HOME
         echo "Downloading CodeQL CLI..."
-        LATEST=$(gh release list --repo https://github.com/github/codeql-cli-binaries | cut -f 1 | sort --version-sort | tail -1)
+        LATEST=$(gh release list --repo https://github.com/github/codeql-cli-binaries | cut -f 1 | sort --version-sort | grep -v beta | tail -1)
         gh release download --repo https://github.com/github/codeql-cli-binaries --pattern codeql-linux64.zip "$LATEST"
         echo "Done"
         echo "Unpacking CodeQL CLI..."
@@ -59,10 +59,10 @@ jobs:
     name: Test MacOS
     runs-on: macOS-latest
     steps:
-    - name: Set up Go 1.16
+    - name: Set up Go 1.17
       uses: actions/setup-go@v1
       with:
-        go-version: 1.16
+        go-version: 1.17
       id: go
 
     - name: Set up CodeQL CLI
@@ -72,7 +72,7 @@ jobs:
         echo "Done"
         cd $HOME
         echo "Downloading CodeQL CLI..."
-        LATEST=$(gh release list --repo https://github.com/github/codeql-cli-binaries | cut -f 1 | sort --version-sort | tail -1)
+        LATEST=$(gh release list --repo https://github.com/github/codeql-cli-binaries | cut -f 1 | sort --version-sort | grep -v beta | tail -1)
         gh release download --repo https://github.com/github/codeql-cli-binaries --pattern codeql-osx64.zip "$LATEST"
         echo "Done"
         echo "Unpacking CodeQL CLI..."
@@ -98,11 +98,13 @@ jobs:
   test-win:
     name: Test Windows
     runs-on: windows-latest
+    env:
+      CODEQL_LOCK_MODE: verify
     steps:
-    - name: Set up Go 1.16
+    - name: Set up Go 1.17
       uses: actions/setup-go@v1
       with:
-        go-version: 1.16
+        go-version: 1.17
       id: go
 
     - name: Set up CodeQL CLI
@@ -112,7 +114,7 @@ jobs:
         echo "Done"
         cd "$HOME"
         echo "Downloading CodeQL CLI..."
-        LATEST=$(gh release list --repo https://github.com/github/codeql-cli-binaries | cut -f 1 | sort --version-sort | tail -1)
+        LATEST=$(gh release list --repo https://github.com/github/codeql-cli-binaries | cut -f 1 | sort --version-sort | grep -v beta | tail -1)
         gh release download --repo https://github.com/github/codeql-cli-binaries --pattern codeql-win64.zip "$LATEST"
         echo "Done"
         echo "Unpacking CodeQL CLI..."

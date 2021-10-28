@@ -25,40 +25,40 @@ func main() {
 
 	// func MergeMergePatches(patch1Data, patch2Data []byte) ([]byte, error)
 	b1, _ := patch.MergeMergePatches(getTaintedByteArray(), untaintedByteArray)
-	sinkByteArray(b1) // $taintflow
+	sinkByteArray(b1) // $ taintflow
 
 	b2, _ := patch.MergeMergePatches(untaintedByteArray, getTaintedByteArray())
-	sinkByteArray(b2) // $taintflow
+	sinkByteArray(b2) // $ taintflow
 
 	// func MergePatch(docData, patchData []byte) ([]byte, error)
 	b3, _ := patch.MergePatch(getTaintedByteArray(), untaintedByteArray)
-	sinkByteArray(b3) // $taintflow
+	sinkByteArray(b3) // $ taintflow
 
 	b4, _ := patch.MergePatch(untaintedByteArray, getTaintedByteArray())
-	sinkByteArray(b4) // $taintflow
+	sinkByteArray(b4) // $ taintflow
 
 	// func CreateMergePatch(originalJSON, modifiedJSON []byte) ([]byte, error)
 	b5, _ := patch.CreateMergePatch(getTaintedByteArray(), untaintedByteArray)
-	sinkByteArray(b5) // $taintflow
+	sinkByteArray(b5) // $ taintflow
 
 	b6, _ := patch.CreateMergePatch(untaintedByteArray, getTaintedByteArray())
-	sinkByteArray(b6) // $taintflow
+	sinkByteArray(b6) // $ taintflow
 
 	// func DecodePatch(buf []byte) (Patch, error)
 	p7, _ := patch.DecodePatch(getTaintedByteArray())
-	sinkPatch(p7) // $taintflow
+	sinkPatch(p7) // $ taintflow
 
 	// func (p Patch) Apply(doc []byte) ([]byte, error)
 	b8, _ := untaintedPatch.Apply(getTaintedByteArray())
-	sinkByteArray(b8) // $taintflow
+	sinkByteArray(b8) // $ taintflow
 
 	b9, _ := getTaintedPatch().Apply(untaintedByteArray)
-	sinkByteArray(b9) // $taintflow
+	sinkByteArray(b9) // $ taintflow
 
 	// func (p Patch) ApplyIndent(doc []byte, indent string) ([]byte, error)
 	b10, _ := untaintedPatch.ApplyIndent(getTaintedByteArray(), "  ")
-	sinkByteArray(b10) // $taintflow
+	sinkByteArray(b10) // $ taintflow
 
 	b11, _ := getTaintedPatch().ApplyIndent(untaintedByteArray, "  ")
-	sinkByteArray(b11) // $taintflow
+	sinkByteArray(b11) // $ taintflow
 }

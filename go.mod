@@ -1,8 +1,13 @@
 module github.com/github/codeql-go
 
-go 1.16
+go 1.17
 
 require (
-	golang.org/x/mod v0.3.0
-	golang.org/x/tools v0.0.0-20201022035929-9cf592e881e9
+	golang.org/x/mod v0.5.0
+	golang.org/x/tools v0.1.5
+)
+
+require (
+	golang.org/x/sys v0.0.0-20210510120138-977fb7262007 // indirect
+	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
 )

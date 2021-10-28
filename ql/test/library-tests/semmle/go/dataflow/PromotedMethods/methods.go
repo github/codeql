@@ -19,27 +19,27 @@ type Base2 struct {
 }
 
 func (e Embedded) sinkFieldOnEmbeddedNonPointerReceiver() {
-	sink(e.field) // $promotedmethods=nonPointerSender1 $promotedmethods=pointerSender1 $promotedmethods=nonPointerSender2 $promotedmethods=pointerSender2
+	sink(e.field) // $ promotedmethods=nonPointerSender1 promotedmethods=pointerSender1 promotedmethods=nonPointerSender2 promotedmethods=pointerSender2
 }
 
 func (e *Embedded) sinkFieldOnEmbeddedPointerReceiver() {
-	sink(e.field) // $f-:promotedmethods=nonPointerSender1 $f-:promotedmethods=pointerSender1 $f-:promotedmethods=nonPointerSender2 $f-:promotedmethods=pointerSender2
+	sink(e.field) // $ MISSING: promotedmethods=nonPointerSender1 promotedmethods=pointerSender1 promotedmethods=nonPointerSender2 promotedmethods=pointerSender2
 }
 
 func (base1 Base1) sinkFieldOnBase1NonPointerReceiver() {
-	sink(base1.field) // $promotedmethods=nonPointerSender1 $promotedmethods=pointerSender1
+	sink(base1.field) // $ promotedmethods=nonPointerSender1 promotedmethods=pointerSender1
 }
 
 func (base1 *Base1) sinkFieldOnBase1PointerReceiver() {
-	sink(base1.field) // $f-:promotedmethods=nonPointerSender1 $promotedmethods=pointerSender1
+	sink(base1.field) // $ promotedmethods=pointerSender1 MISSING: promotedmethods=nonPointerSender1
 }
 
 func (base2 Base2) sinkFieldOnBase2NonPointerReceiver() {
-	sink(base2.field) // $promotedmethods=nonPointerSender2 $promotedmethods=pointerSender2
+	sink(base2.field) // $ promotedmethods=nonPointerSender2 promotedmethods=pointerSender2
 }
 
 func (base2 *Base2) sinkFieldOnBase2PointerReceiver() {
-	sink(base2.field) // $f-:promotedmethods=nonPointerSender2 $promotedmethods=pointerSender2
+	sink(base2.field) // $ promotedmethods=pointerSender2 MISSING: promotedmethods=nonPointerSender2
 }
 
 func nonPointerSender1() {

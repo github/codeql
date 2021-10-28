@@ -458,7 +458,7 @@ func (extraction *Extraction) extractError(tw *trap.Writer, err packages.Error, 
 		e         error
 	)
 
-	if pos == "" {
+	if pos == "" || pos == "-" {
 		// extract a dummy file
 		wd, e := os.Getwd()
 		if e != nil {
@@ -590,15 +590,6 @@ func (extraction *Extraction) extractFile(ast *ast.File, pkg *packages.Package) 
 	return nil
 }
 
-// stemAndExt splits a given file name into its stem (the part before the last '.')
-// and extension (the part after the last '.')
-func stemAndExt(base string) (string, string) {
-	if i := strings.LastIndexByte(base, '.'); i >= 0 {
-		return base[:i], base[i+1:]
-	}
-	return base, ""
-}
-
 // extractFileInfo extracts file-system level information for the given file, populating
 // the `files` and `containerparent` tables
 func (extraction *Extraction) extractFileInfo(tw *trap.Writer, file string) {
@@ -627,9 +618,8 @@ func (extraction *Extraction) extractFileInfo(tw *trap.Writer, file string) {
 			path = parentPath + "/" + component
 		}
 		if i == len(components)-1 {
-			stem, ext := stemAndExt(component)
 			lbl := tw.Labeler.FileLabelFor(file)
-			dbscheme.FilesTable.Emit(tw, lbl, path, stem, ext, 0)
+			dbscheme.FilesTable.Emit(tw, lbl, path)
 			dbscheme.ContainerParentTable.Emit(tw, parentLbl, lbl)
 			dbscheme.HasLocationTable.Emit(tw, lbl, emitLocation(tw, lbl, 0, 0, 0, 0))
 			extraction.Lock.Lock()
@@ -639,7 +629,7 @@ func (extraction *Extraction) extractFileInfo(tw *trap.Writer, file string) {
 			break
 		}
 		lbl := tw.Labeler.GlobalID(util.EscapeTrapSpecialChars(path) + ";folder")
-		dbscheme.FoldersTable.Emit(tw, lbl, path, component)
+		dbscheme.FoldersTable.Emit(tw, lbl, path)
 		if i > 0 {
 			dbscheme.ContainerParentTable.Emit(tw, parentLbl, lbl)
 		}

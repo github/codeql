@@ -1,2 +1,4 @@
-name: codeql-go-upgrades
+name: codeql/go-upgrades
+version: 0.0.2
 upgrades: .
+library: true

@@ -11,7 +11,7 @@ class TaintFunctionModelTest extends InlineExpectationsTest {
     exists(TaintTracking::FunctionModel model, DataFlow::CallNode call | call = model.getACall() |
       call.hasLocationInfo(file, line, _, _, _) and
       element = call.toString() and
-      value = model.getAnInputNode(call) + " -> " + model.getAnOutputNode(call)
+      value = "\"" + model.getAnInputNode(call) + " -> " + model.getAnOutputNode(call) + "\""
     )
   }
 }
@@ -27,7 +27,8 @@ class MarshalerTest extends InlineExpectationsTest {
       call.hasLocationInfo(file, line, _, _, _) and
       element = call.toString() and
       value =
-        m.getFormat() + ": " + m.getAnInput().getNode(call) + " -> " + m.getOutput().getNode(call)
+        "\"" + m.getFormat() + ": " + m.getAnInput().getNode(call) + " -> " +
+          m.getOutput().getNode(call) + "\""
     )
   }
 }
@@ -43,7 +44,8 @@ class UnmarshalerTest extends InlineExpectationsTest {
       call.hasLocationInfo(file, line, _, _, _) and
       element = call.toString() and
       value =
-        m.getFormat() + ": " + m.getAnInput().getNode(call) + " -> " + m.getOutput().getNode(call)
+        "\"" + m.getFormat() + ": " + m.getAnInput().getNode(call) + " -> " +
+          m.getOutput().getNode(call) + "\""
     )
   }
 }

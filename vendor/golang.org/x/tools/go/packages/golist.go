@@ -10,9 +10,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"go/types"
+	"io/ioutil"
 	"log"
 	"os"
-	"os/exec"
 	"path"
 	"path/filepath"
 	"reflect"
@@ -22,8 +22,10 @@ import (
 	"sync"
 	"unicode"
 
+	exec "golang.org/x/sys/execabs"
 	"golang.org/x/tools/go/internal/packagesdriver"
 	"golang.org/x/tools/internal/gocommand"
+	"golang.org/x/tools/internal/packagesinternal"
 	"golang.org/x/xerrors"
 )
 
@@ -208,56 +210,58 @@ extractQueries:
 		}
 	}
 
-	modifiedPkgs, needPkgs, err := state.processGolistOverlay(response)
-	if err != nil {
-		return nil, err
-	}
+	// Only use go/packages' overlay processing if we're using a Go version
+	// below 1.16. Otherwise, go list handles it.
+	if goVersion, err := state.getGoVersion(); err == nil && goVersion < 16 {
+		modifiedPkgs, needPkgs, err := state.processGolistOverlay(response)
+		if err != nil {
+			return nil, err
+		}
 
-	var containsCandidates []string
-	if len(containFiles) > 0 {
-		containsCandidates = append(containsCandidates, modifiedPkgs...)
-		containsCandidates = append(containsCandidates, needPkgs...)
-	}
-	if err := state.addNeededOverlayPackages(response, needPkgs); err != nil {
-		return nil, err
-	}
-	// Check candidate packages for containFiles.
-	if len(containFiles) > 0 {
-		for _, id := range containsCandidates {
-			pkg, ok := response.seenPackages[id]
-			if !ok {
-				response.addPackage(&Package{
-					ID: id,
-					Errors: []Error{
-						{
+		var containsCandidates []string
+		if len(containFiles) > 0 {
+			containsCandidates = append(containsCandidates, modifiedPkgs...)
+			containsCandidates = append(containsCandidates, needPkgs...)
+		}
+		if err := state.addNeededOverlayPackages(response, needPkgs); err != nil {
+			return nil, err
+		}
+		// Check candidate packages for containFiles.
+		if len(containFiles) > 0 {
+			for _, id := range containsCandidates {
+				pkg, ok := response.seenPackages[id]
+				if !ok {
+					response.addPackage(&Package{
+						ID: id,
+						Errors: []Error{{
 							Kind: ListError,
 							Msg:  fmt.Sprintf("package %s expected but not seen", id),
-						},
-					},
-				})
-				continue
-			}
-			for _, f := range containFiles {
-				for _, g := range pkg.GoFiles {
-					if sameFile(f, g) {
-						response.addRoot(id)
+						}},
+					})
+					continue
+				}
+				for _, f := range containFiles {
+					for _, g := range pkg.GoFiles {
+						if sameFile(f, g) {
+							response.addRoot(id)
+						}
 					}
 				}
 			}
 		}
-	}
-	// Add root for any package that matches a pattern. This applies only to
-	// packages that are modified by overlays, since they are not added as
-	// roots automatically.
-	for _, pattern := range restPatterns {
-		match := matchPattern(pattern)
-		for _, pkgID := range modifiedPkgs {
-			pkg, ok := response.seenPackages[pkgID]
-			if !ok {
-				continue
-			}
-			if match(pkg.PkgPath) {
-				response.addRoot(pkg.ID)
+		// Add root for any package that matches a pattern. This applies only to
+		// packages that are modified by overlays, since they are not added as
+		// roots automatically.
+		for _, pattern := range restPatterns {
+			match := matchPattern(pattern)
+			for _, pkgID := range modifiedPkgs {
+				pkg, ok := response.seenPackages[pkgID]
+				if !ok {
+					continue
+				}
+				if match(pkg.PkgPath) {
+					response.addRoot(pkg.ID)
+				}
 			}
 		}
 	}
@@ -410,7 +414,8 @@ type jsonPackage struct {
 	ForTest           string // q in a "p [q.test]" package, else ""
 	DepOnly           bool
 
-	Error *jsonPackageError
+	Error      *packagesinternal.PackageError
+	DepsErrors []*packagesinternal.PackageError
 }
 
 type jsonPackageError struct {
@@ -562,6 +567,7 @@ func (state *golistState) createDriverResponse(words ...string) (*driverResponse
 			OtherFiles:      absJoin(p.Dir, otherFiles(p)...),
 			IgnoredFiles:    absJoin(p.Dir, p.IgnoredGoFiles, p.IgnoredOtherFiles),
 			forTest:         p.ForTest,
+			depsErrors:      p.DepsErrors,
 			Module:          p.Module,
 		}
 
@@ -578,7 +584,7 @@ func (state *golistState) createDriverResponse(words ...string) (*driverResponse
 				// golang/go#38990: go list silently fails to do cgo processing
 				pkg.CompiledGoFiles = nil
 				pkg.Errors = append(pkg.Errors, Error{
-					Msg:  "go list failed to return CompiledGoFiles; https://golang.org/issue/38990?",
+					Msg:  "go list failed to return CompiledGoFiles. This may indicate failure to perform cgo processing; try building at the command line. See https://golang.org/issue/38990.",
 					Kind: ListError,
 				})
 			}
@@ -824,6 +830,7 @@ func (state *golistState) cfgInvocation() gocommand.Invocation {
 		BuildFlags: cfg.BuildFlags,
 		ModFile:    cfg.modFile,
 		ModFlag:    cfg.modFlag,
+		CleanEnv:   cfg.Env != nil,
 		Env:        cfg.Env,
 		Logf:       cfg.Logf,
 		WorkingDir: cfg.Dir,
@@ -835,13 +842,33 @@ func (state *golistState) invokeGo(verb string, args ...string) (*bytes.Buffer, 
 	cfg := state.cfg
 
 	inv := state.cfgInvocation()
+
+	// For Go versions 1.16 and above, `go list` accepts overlays directly via
+	// the -overlay flag. Set it, if it's available.
+	//
+	// The check for "list" is not necessarily required, but we should avoid
+	// getting the go version if possible.
+	if verb == "list" {
+		goVersion, err := state.getGoVersion()
+		if err != nil {
+			return nil, err
+		}
+		if goVersion >= 16 {
+			filename, cleanup, err := state.writeOverlays()
+			if err != nil {
+				return nil, err
+			}
+			defer cleanup()
+			inv.Overlay = filename
+		}
+	}
 	inv.Verb = verb
 	inv.Args = args
 	gocmdRunner := cfg.gocmdRunner
 	if gocmdRunner == nil {
 		gocmdRunner = &gocommand.Runner{}
 	}
-	stdout, stderr, _, err := gocmdRunner.RunRaw(cfg.Context, inv)
+	stdout, stderr, friendlyErr, err := gocmdRunner.RunRaw(cfg.Context, inv)
 	if err != nil {
 		// Check for 'go' executable not being found.
 		if ee, ok := err.(*exec.Error); ok && ee.Err == exec.ErrNotFound {
@@ -862,7 +889,7 @@ func (state *golistState) invokeGo(verb string, args ...string) (*bytes.Buffer, 
 
 		// Related to #24854
 		if len(stderr.String()) > 0 && strings.Contains(stderr.String(), "unexpected directory layout") {
-			return nil, fmt.Errorf("%s", stderr.String())
+			return nil, friendlyErr
 		}
 
 		// Is there an error running the C compiler in cgo? This will be reported in the "Error" field
@@ -878,8 +905,13 @@ func (state *golistState) invokeGo(verb string, args ...string) (*bytes.Buffer, 
 			return unicode.IsOneOf([]*unicode.RangeTable{unicode.L, unicode.M, unicode.N, unicode.P, unicode.S}, r) &&
 				!strings.ContainsRune("!\"#$%&'()*,:;<=>?[\\]^`{|}\uFFFD", r)
 		}
+		// golang/go#36770: Handle case where cmd/go prints module download messages before the error.
+		msg := stderr.String()
+		for strings.HasPrefix(msg, "go: downloading") {
+			msg = msg[strings.IndexRune(msg, '\n')+1:]
+		}
 		if len(stderr.String()) > 0 && strings.HasPrefix(stderr.String(), "# ") {
-			msg := stderr.String()[len("# "):]
+			msg := msg[len("# "):]
 			if strings.HasPrefix(strings.TrimLeftFunc(msg, isPkgPathRune), "\n") {
 				return stdout, nil
 			}
@@ -970,10 +1002,71 @@ func (state *golistState) invokeGo(verb string, args ...string) (*bytes.Buffer, 
 		// TODO(matloob): Remove these once we can depend on go list to exit with a zero status with -e even when
 		// packages don't exist or a build fails.
 		if !usesExportData(cfg) && !containsGoFile(args) {
-			return nil, fmt.Errorf("go %v: %s: %s", args, exitErr, stderr)
+			return nil, friendlyErr
 		}
 	}
 	return stdout, nil
+}
+
+// OverlayJSON is the format overlay files are expected to be in.
+// The Replace map maps from overlaid paths to replacement paths:
+// the Go command will forward all reads trying to open
+// each overlaid path to its replacement path, or consider the overlaid
+// path not to exist if the replacement path is empty.
+//
+// From golang/go#39958.
+type OverlayJSON struct {
+	Replace map[string]string `json:"replace,omitempty"`
+}
+
+// writeOverlays writes out files for go list's -overlay flag, as described
+// above.
+func (state *golistState) writeOverlays() (filename string, cleanup func(), err error) {
+	// Do nothing if there are no overlays in the config.
+	if len(state.cfg.Overlay) == 0 {
+		return "", func() {}, nil
+	}
+	dir, err := ioutil.TempDir("", "gopackages-*")
+	if err != nil {
+		return "", nil, err
+	}
+	// The caller must clean up this directory, unless this function returns an
+	// error.
+	cleanup = func() {
+		os.RemoveAll(dir)
+	}
+	defer func() {
+		if err != nil {
+			cleanup()
+		}
+	}()
+	overlays := map[string]string{}
+	for k, v := range state.cfg.Overlay {
+		// Create a unique filename for the overlaid files, to avoid
+		// creating nested directories.
+		noSeparator := strings.Join(strings.Split(filepath.ToSlash(k), "/"), "")
+		f, err := ioutil.TempFile(dir, fmt.Sprintf("*-%s", noSeparator))
+		if err != nil {
+			return "", func() {}, err
+		}
+		if _, err := f.Write(v); err != nil {
+			return "", func() {}, err
+		}
+		if err := f.Close(); err != nil {
+			return "", func() {}, err
+		}
+		overlays[k] = f.Name()
+	}
+	b, err := json.Marshal(OverlayJSON{Replace: overlays})
+	if err != nil {
+		return "", func() {}, err
+	}
+	// Write out the overlay file that contains the filepath mappings.
+	filename = filepath.Join(dir, "overlay.json")
+	if err := ioutil.WriteFile(filename, b, 0665); err != nil {
+		return "", func() {}, err
+	}
+	return filename, cleanup, nil
 }
 
 func containsGoFile(s []string) bool {
@@ -985,17 +1078,22 @@ func containsGoFile(s []string) bool {
 	return false
 }
 
-func cmdDebugStr(cmd *exec.Cmd, args ...string) string {
+func cmdDebugStr(cmd *exec.Cmd) string {
 	env := make(map[string]string)
 	for _, kv := range cmd.Env {
-		split := strings.Split(kv, "=")
+		split := strings.SplitN(kv, "=", 2)
 		k, v := split[0], split[1]
 		env[k] = v
 	}
-	var quotedArgs []string
-	for _, arg := range args {
-		quotedArgs = append(quotedArgs, strconv.Quote(arg))
-	}
 
-	return fmt.Sprintf("GOROOT=%v GOPATH=%v GO111MODULE=%v PWD=%v go %s", env["GOROOT"], env["GOPATH"], env["GO111MODULE"], env["PWD"], strings.Join(quotedArgs, " "))
+	var args []string
+	for _, arg := range cmd.Args {
+		quoted := strconv.Quote(arg)
+		if quoted[1:len(quoted)-1] != arg || strings.Contains(arg, " ") {
+			args = append(args, quoted)
+		} else {
+			args = append(args, arg)
+		}
+	}
+	return fmt.Sprintf("GOROOT=%v GOPATH=%v GO111MODULE=%v GOPROXY=%v PWD=%v %v", env["GOROOT"], env["GOPATH"], env["GO111MODULE"], env["GOPROXY"], env["PWD"], strings.Join(args, " "))
 }

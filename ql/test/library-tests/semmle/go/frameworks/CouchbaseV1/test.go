@@ -19,7 +19,7 @@ func analyticsQuery(bucket gocb.Bucket, untrustedSource *http.Request) {
 	q5 := q4.RawParam("name", nil)
 	duration, _ := time.ParseDuration("300s")
 	q6 := q5.ServerSideTimeout(duration)
-	bucket.ExecuteAnalyticsQuery(q6, nil) // $sqlinjection=q6
+	bucket.ExecuteAnalyticsQuery(q6, nil) // $ sqlinjection=q6
 }
 
 func n1qlQuery(cluster gocb.Cluster, untrustedSource *http.Request) {
@@ -36,5 +36,5 @@ func n1qlQuery(cluster gocb.Cluster, untrustedSource *http.Request) {
 	q9 := q8.ScanCap(10)
 	duration, _ := time.ParseDuration("300s")
 	q10 := q9.Timeout(duration)
-	cluster.ExecuteN1qlQuery(q10, nil) // $sqlinjection=q10
+	cluster.ExecuteN1qlQuery(q10, nil) // $ sqlinjection=q10
 }

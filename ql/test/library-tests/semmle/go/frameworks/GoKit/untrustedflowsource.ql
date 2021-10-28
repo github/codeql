@@ -11,7 +11,7 @@ class UntrustedFlowSourceTest extends InlineExpectationsTest {
     exists(UntrustedFlowSource source |
       source.hasLocationInfo(file, line, _, _, _) and
       element = source.toString() and
-      value = source.toString() and
+      value = "\"" + source.toString() + "\"" and
       tag = "source"
     )
   }

@@ -14,7 +14,7 @@ func HttpRedirect_ClevergoTechClevergoV052() {
 			{
 				urlString316 := source().(string)
 				var rece clevergo.Context
-				rece.Redirect(0, urlString316) // $redirectUrl=urlString316
+				rece.Redirect(0, urlString316) // $ redirectUrl=urlString316
 			}
 		}
 	}

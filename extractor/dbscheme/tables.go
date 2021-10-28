@@ -896,16 +896,12 @@ var NumlinesTable = NewTable("numlines",
 var FilesTable = NewTable("files",
 	EntityColumn(FileType, "id").Key(),
 	StringColumn("name"),
-	StringColumn("simple"),
-	StringColumn("ext"),
-	IntColumn("fromSource"),
 )
 
 // FoldersTable is the table defining folder entities
 var FoldersTable = NewTable("folders",
 	EntityColumn(FolderType, "id").Key(),
 	StringColumn("name"),
-	StringColumn("simple"),
 )
 
 // ContainerParentTable is the table defining the parent-child relation among container entities
@@ -1163,6 +1159,7 @@ var ErrorsTable = NewTable("errors",
 	IntColumn("idx"),
 ).KeySet("package", "idx")
 
+// HasEllipsisTable is the table containing all call expressions that have ellipses
 var HasEllipsisTable = NewTable("has_ellipsis",
 	EntityColumn(CallOrConversionExpr, "id"),
 )

@@ -27,14 +27,14 @@ func main() {
 	use(t.Delete(ctx, name, opts))
 	use(s.DeleteCollection(ctx, opts, listOpts))
 	use(t.DeleteCollection(ctx, opts, listOpts))
-	use(s.Get(ctx, name, opts)) // $KsIoClientGo
-	use(t.Get(ctx, name, opts)) // $KsIoClientGo
-	use(s.List(ctx, opts))      // $KsIoClientGo
-	use(t.List(ctx, opts))      // $KsIoClientGo
+	use(s.Get(ctx, name, opts)) // $ KsIoClientGo
+	use(t.Get(ctx, name, opts)) // $ KsIoClientGo
+	use(s.List(ctx, opts))      // $ KsIoClientGo
+	use(t.List(ctx, opts))      // $ KsIoClientGo
 	use(s.Watch(ctx, opts))
 	use(t.Watch(ctx, opts))
-	use(s.Patch(ctx, name, pt, data, opts)) // $KsIoClientGo
-	use(t.Patch(ctx, name, pt, data, opts)) // $KsIoClientGo
+	use(s.Patch(ctx, name, pt, data, opts)) // $ KsIoClientGo
+	use(t.Patch(ctx, name, pt, data, opts)) // $ KsIoClientGo
 }
 
 func use(arg ...interface{}) {}

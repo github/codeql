@@ -1,5 +1,5 @@
-// +build gc
-// +build go1.4
+//go:build gc && go1.4
+// +build gc,go1.4
 
 package main
 

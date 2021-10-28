@@ -1,3 +1,4 @@
+//go:build (386 || amd64p32 || arm || armbe || mips || mipsle || mips64p32 || mips64p32le || ppc || s390 || sparc) && gc && go1.4
 // +build 386 amd64p32 arm armbe mips mipsle mips64p32 mips64p32le ppc s390 sparc
 // +build gc
 // +build go1.4

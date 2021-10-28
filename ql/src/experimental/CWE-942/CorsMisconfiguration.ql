@@ -1,7 +1,7 @@
 /**
  * @name CORS misconfiguration
  * @description If a CORS policy is configured to accept an origin value obtained from the request data,
- * 				or is set to `*` or `null`, and it allows credential sharing, then the users of the
+ * 				or is set to `null`, and it allows credential sharing, then the users of the
  * 				application are vulnerable to the same range of attacks as in XSS (credential stealing, etc.).
  * @kind problem
  * @problem.severity warning
