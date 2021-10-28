@@ -43,12 +43,14 @@ import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.java.dataflow.TaintTracking
 import TestUtilities.InlineExpectationsTest
 
+private predicate defaultSource(DataFlow::Node src) {
+  src.asExpr().(MethodAccess).getMethod().getName() = ["source", "taint"]
+}
+
 class DefaultValueFlowConf extends DataFlow::Configuration {
   DefaultValueFlowConf() { this = "qltest:defaultValueFlowConf" }
 
-  override predicate isSource(DataFlow::Node n) {
-    n.asExpr().(MethodAccess).getMethod().getName() = ["source", "taint"]
-  }
+  override predicate isSource(DataFlow::Node n) { defaultSource(n) }
 
   override predicate isSink(DataFlow::Node n) {
     exists(MethodAccess ma | ma.getMethod().hasName("sink") | n.asExpr() = ma.getAnArgument())
@@ -60,15 +62,18 @@ class DefaultValueFlowConf extends DataFlow::Configuration {
 class DefaultTaintFlowConf extends TaintTracking::Configuration {
   DefaultTaintFlowConf() { this = "qltest:defaultTaintFlowConf" }
 
-  override predicate isSource(DataFlow::Node n) {
-    n.asExpr().(MethodAccess).getMethod().getName() = ["source", "taint"]
-  }
+  override predicate isSource(DataFlow::Node n) { defaultSource(n) }
 
   override predicate isSink(DataFlow::Node n) {
     exists(MethodAccess ma | ma.getMethod().hasName("sink") | n.asExpr() = ma.getAnArgument())
   }
 
   override int fieldFlowBranchLimit() { result = 1000 }
+}
+
+private string getSourceArgString(DataFlow::Node src) {
+  defaultSource(src) and
+  src.asExpr().(MethodAccess).getAnArgument().(StringLiteral).getValue() = result
 }
 
 class InlineFlowTest extends InlineExpectationsTest {
@@ -81,7 +86,7 @@ class InlineFlowTest extends InlineExpectationsTest {
     exists(DataFlow::Node src, DataFlow::Node sink | getValueFlowConfig().hasFlow(src, sink) |
       sink.getLocation() = location and
       element = sink.toString() and
-      value = ""
+      if exists(getSourceArgString(src)) then value = getSourceArgString(src) else value = ""
     )
     or
     tag = "hasTaintFlow" and
@@ -90,7 +95,7 @@ class InlineFlowTest extends InlineExpectationsTest {
     |
       sink.getLocation() = location and
       element = sink.toString() and
-      value = ""
+      if exists(getSourceArgString(src)) then value = getSourceArgString(src) else value = ""
     )
   }
 

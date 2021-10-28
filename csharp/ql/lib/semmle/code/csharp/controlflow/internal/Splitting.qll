@@ -628,7 +628,7 @@ module FinallySplitting {
      */
     private predicate exit(ControlFlowElement pred, Completion c, boolean inherited) {
       exists(TryStmt try, FinallySplitType type |
-        exit0(pred, try, this.getNestLevel(), c) and
+        this.exit0(pred, try, this.getNestLevel(), c) and
         type = this.getType()
       |
         if last(try.getFinally(), pred, c)
@@ -690,18 +690,18 @@ module FinallySplitting {
     override predicate hasExit(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
       succ(pred, succ, c) and
       (
-        exit(pred, c, _)
+        this.exit(pred, c, _)
         or
-        exit(pred, c.(NestedBreakCompletion).getAnInnerCompatibleCompletion(), _)
+        this.exit(pred, c.(NestedBreakCompletion).getAnInnerCompatibleCompletion(), _)
       )
     }
 
     override predicate hasExitScope(CfgScope scope, ControlFlowElement last, Completion c) {
       scopeLast(scope, last, c) and
       (
-        exit(last, c, _)
+        this.exit(last, c, _)
         or
-        exit(last, c.(NestedBreakCompletion).getAnInnerCompatibleCompletion(), _)
+        this.exit(last, c.(NestedBreakCompletion).getAnInnerCompatibleCompletion(), _)
       )
     }
 

@@ -58,7 +58,6 @@ string prettyNode(DataFlow::Node node) {
  */
 bindingset[node]
 string prettyNodeForInlineTest(DataFlow::Node node) {
-  exists(node.asExpr()) and
   result = prettyExpr(node.asExpr())
   or
   exists(Expr e | e = node.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr() |

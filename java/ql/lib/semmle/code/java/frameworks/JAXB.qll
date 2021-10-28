@@ -17,11 +17,11 @@ library class JAXBMarshalMethod extends Method {
 }
 
 class JaxbAnnotationType extends AnnotationType {
-  JaxbAnnotationType() { getPackage().getName() = "javax.xml.bind.annotation" }
+  JaxbAnnotationType() { this.getPackage().getName() = "javax.xml.bind.annotation" }
 }
 
 class JaxbAnnotated extends Annotatable {
-  JaxbAnnotated() { getAnAnnotation().getType() instanceof JaxbAnnotationType }
+  JaxbAnnotated() { this.getAnAnnotation().getType() instanceof JaxbAnnotationType }
 
   predicate hasJaxbAnnotation(string name) { hasJaxbAnnotation(this, name) }
 }
@@ -62,8 +62,8 @@ class JaxbType extends Class {
    * Gets the `XmlAccessType` associated with this class.
    */
   XmlAccessType getXmlAccessType() {
-    if exists(getDeclaredAccessType())
-    then result = getDeclaredAccessType()
+    if exists(this.getDeclaredAccessType())
+    then result = this.getDeclaredAccessType()
     else
       // Default access type, if not specified.
       result.isPublicMember()
@@ -81,22 +81,22 @@ class XmlAccessType extends EnumConstant {
   /**
    * All public getter/setter pairs and public fields will be bound.
    */
-  predicate isPublicMember() { getName() = "PUBLIC_MEMBER" }
+  predicate isPublicMember() { this.getName() = "PUBLIC_MEMBER" }
 
   /**
    * All non-static, non-transient fields will be bound.
    */
-  predicate isField() { getName() = "FIELD" }
+  predicate isField() { this.getName() = "FIELD" }
 
   /**
    * All getter/setter pairs will be bound.
    */
-  predicate isProperty() { getName() = "PROPERTY" }
+  predicate isProperty() { this.getName() = "PROPERTY" }
 
   /**
    * Nothing will be bound automatically.
    */
-  predicate isNone() { getName() = "NONE" }
+  predicate isNone() { this.getName() = "NONE" }
 }
 
 /**
@@ -105,10 +105,10 @@ class XmlAccessType extends EnumConstant {
  */
 class JaxbMemberAnnotation extends JaxbAnnotationType {
   JaxbMemberAnnotation() {
-    hasName("XmlElement") or
-    hasName("XmlAttribute") or
-    hasName("XmlElementRefs") or
-    hasName("XmlElements")
+    this.hasName("XmlElement") or
+    this.hasName("XmlAttribute") or
+    this.hasName("XmlElementRefs") or
+    this.hasName("XmlElements")
   }
 }
 
@@ -121,14 +121,14 @@ private predicate isTransient(Member m) { hasJaxbAnnotation(m, "XmlTransient") }
 class JaxbBoundField extends Field {
   JaxbBoundField() {
     // Fields cannot be static, because JAXB creates instances.
-    not isStatic() and
+    not this.isStatic() and
     // Fields cannot be final, because JAXB instantiates the object, then sets the properties.
-    not isFinal() and
+    not this.isFinal() and
     // No transient fields are ever bound.
     not isTransient(this) and
     (
       // Explicitly annotated to be bound.
-      exists(getAnAnnotation().getType().(JaxbMemberAnnotation))
+      exists(this.getAnAnnotation().getType().(JaxbMemberAnnotation))
       or
       // Within a JAXB type which has an `XmlAcessType` that binds this field.
       exists(JaxbType type | this.getDeclaringType() = type |
@@ -136,7 +136,7 @@ class JaxbBoundField extends Field {
         type.getXmlAccessType().isField()
         or
         // Only public fields are automatically bound in this access type.
-        type.getXmlAccessType().isPublicMember() and isPublic()
+        type.getXmlAccessType().isPublicMember() and this.isPublic()
       )
     )
   }
@@ -157,7 +157,7 @@ library class GetterOrSetterMethod extends Method {
    * Holds if this method has a "pair"ed method, e.g. whether there is an equivalent getter if this
    * is a setter, and vice versa.
    */
-  predicate isProperty() { exists(getPair()) }
+  predicate isProperty() { exists(this.getPair()) }
 
   /**
    * Gets the "pair" method, if one exists; that is, the getter if this is a setter, and vice versa.
@@ -183,16 +183,16 @@ class JaxbBoundGetterSetter extends GetterOrSetterMethod {
       this.getField() instanceof JaxbBoundField
       or
       // An annotation on this method or the pair that indicate that it is a valid setter/getter.
-      getThisOrPair().getAnAnnotation().getType() instanceof JaxbMemberAnnotation
+      this.getThisOrPair().getAnAnnotation().getType() instanceof JaxbMemberAnnotation
       or
       // Within a JAXB type which has an `XmlAcessType` that binds this method.
       exists(JaxbType c | this.getDeclaringType() = c |
         // If this is a "property" - both a setter and getter present for the XML element or attribute
         // - the `XmlAccessType` of the declaring type may cause this property to be bound.
-        isProperty() and
+        this.isProperty() and
         (
           // In the `PUBLIC_MEMBER` case all public properties are considered bound.
-          c.getXmlAccessType().isPublicMember() and isPublic()
+          c.getXmlAccessType().isPublicMember() and this.isPublic()
           or
           // In "property" all properties are considered bound.
           c.getXmlAccessType().isProperty()

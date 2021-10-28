@@ -802,6 +802,9 @@ private module Cached {
   }
 
   cached
+  predicate allowParameterReturnInSelfCached(ParamNode p) { allowParameterReturnInSelf(p) }
+
+  cached
   newtype TCallContext =
     TAnyCallContext() or
     TSpecificCall(DataFlowCall call) { recordDataFlowCallSite(call, _) } or
@@ -937,7 +940,7 @@ class CallContextSpecificCall extends CallContextCall, TSpecificCall {
   }
 
   override predicate relevantFor(DataFlowCallable callable) {
-    recordDataFlowCallSite(getCall(), callable)
+    recordDataFlowCallSite(this.getCall(), callable)
   }
 
   override predicate matchesCall(DataFlowCall call) { call = this.getCall() }
@@ -1236,6 +1239,13 @@ class TypedContent extends MkTypedContent {
 
   /** Gets a textual representation of this content. */
   string toString() { result = c.toString() }
+
+  /**
+   * Holds if access paths with this `TypedContent` at their head always should
+   * be tracked at high precision. This disables adaptive access path precision
+   * for such access paths.
+   */
+  predicate forceHighPrecision() { forceHighPrecision(c) }
 }
 
 /**
@@ -1250,7 +1260,7 @@ abstract class AccessPathFront extends TAccessPathFront {
 
   TypedContent getHead() { this = TFrontHead(result) }
 
-  predicate isClearedAt(Node n) { clearsContentCached(n, getHead().getContent()) }
+  predicate isClearedAt(Node n) { clearsContentCached(n, this.getHead().getContent()) }
 }
 
 class AccessPathFrontNil extends AccessPathFront, TFrontNil {

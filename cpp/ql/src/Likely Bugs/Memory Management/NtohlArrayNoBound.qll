@@ -126,13 +126,7 @@ class MallocSizeExpr extends BufferAccess, FunctionCall {
 }
 
 class NetworkFunctionCall extends FunctionCall {
-  NetworkFunctionCall() {
-    getTarget().hasName("ntohd") or
-    getTarget().hasName("ntohf") or
-    getTarget().hasName("ntohl") or
-    getTarget().hasName("ntohll") or
-    getTarget().hasName("ntohs")
-  }
+  NetworkFunctionCall() { getTarget().hasName(["ntohd", "ntohf", "ntohl", "ntohll", "ntohs"]) }
 }
 
 class NetworkToBufferSizeConfiguration extends DataFlow::Configuration {

@@ -21,7 +21,7 @@ class ReturnsMethod extends Method {
    */
   Expr getAReturnedExpr() {
     exists(MethodCall mc, Expr arg |
-      mc = getACall() and
+      mc = this.getACall() and
       arg = mc.getArgument(0)
     |
       if arg instanceof LambdaExpr then arg.(LambdaExpr).canReturn(result) else result = arg

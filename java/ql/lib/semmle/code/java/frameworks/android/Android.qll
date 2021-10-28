@@ -37,10 +37,12 @@ class AndroidComponent extends Class {
   }
 
   /** Holds if this Android component is configured as `exported` in an `AndroidManifest.xml` file. */
-  predicate isExported() { getAndroidComponentXmlElement().isExported() }
+  predicate isExported() { this.getAndroidComponentXmlElement().isExported() }
 
   /** Holds if this Android component has an intent filter configured in an `AndroidManifest.xml` file. */
-  predicate hasIntentFilter() { exists(getAndroidComponentXmlElement().getAnIntentFilterElement()) }
+  predicate hasIntentFilter() {
+    exists(this.getAndroidComponentXmlElement().getAnIntentFilterElement())
+  }
 }
 
 /**
@@ -53,10 +55,10 @@ class ExportableAndroidComponent extends AndroidComponent {
    * `AndroidManifest.xml` file.
    */
   override predicate isExported() {
-    getAndroidComponentXmlElement().isExported()
+    this.getAndroidComponentXmlElement().isExported()
     or
-    hasIntentFilter() and
-    not getAndroidComponentXmlElement().isNotExported()
+    this.hasIntentFilter() and
+    not this.getAndroidComponentXmlElement().isNotExported()
   }
 }
 
@@ -88,7 +90,7 @@ class AndroidContentProvider extends ExportableAndroidComponent {
    * in an `AndroidManifest.xml` file.
    */
   predicate requiresPermissions() {
-    getAndroidComponentXmlElement().(AndroidProviderXmlElement).requiresPermissions()
+    this.getAndroidComponentXmlElement().(AndroidProviderXmlElement).requiresPermissions()
   }
 }
 
@@ -200,5 +202,46 @@ private class ContentProviderSourceModels extends SourceModelCsv {
         "android.content;ContentProvider;true;update;(Uri,ContentValues,Bundle);;Parameter[0..2];contentprovider",
         "android.content;ContentProvider;true;update;(Uri,ContentValues,String,String[]);;Parameter[0..3];contentprovider"
       ]
+  }
+}
+
+/** Interface for classes whose instances can be written to and restored from a Parcel. */
+class TypeParcelable extends Interface {
+  TypeParcelable() { this.hasQualifiedName("android.os", "Parcelable") }
+}
+
+/**
+ * A method that overrides `android.os.Parcelable.Creator.createFromParcel`.
+ */
+class CreateFromParcelMethod extends Method {
+  CreateFromParcelMethod() {
+    this.hasName("createFromParcel") and
+    this.getEnclosingCallable().getDeclaringType().getASupertype*() instanceof TypeParcelable
+  }
+}
+
+private class ParcelPropagationModels extends SummaryModelCsv {
+  override predicate row(string s) {
+    // Parcel readers that return their value
+    s =
+      "android.os;Parcel;false;read" +
+        [
+          "Array", "ArrayList", "Boolean", "Bundle", "Byte", "Double", "FileDescriptor", "Float",
+          "HashMap", "Int", "Long", "Parcelable", "ParcelableArray", "PersistableBundle",
+          "Serializable", "Size", "SizeF", "SparseArray", "SparseBooleanArray", "String",
+          "StrongBinder", "TypedObject", "Value"
+        ] + ";;;Argument[-1];ReturnValue;taint"
+    or
+    // Parcel readers that write to an existing object
+    s =
+      "android.os;Parcel;false;read" +
+        [
+          "BinderArray", "BinderList", "BooleanArray", "ByteArray", "CharArray", "DoubleArray",
+          "FloatArray", "IntArray", "List", "LongArray", "Map", "ParcelableList", "StringArray",
+          "StringList", "TypedArray", "TypedList"
+        ] + ";;;Argument[-1];Argument[0];taint"
+    or
+    // One Parcel method that aliases an argument to a return value
+    s = "android.os;Parcel;false;readParcelableList;;;Argument[0];ReturnValue;value"
   }
 }

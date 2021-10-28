@@ -492,8 +492,18 @@ namespace Semmle.Extraction.CSharp
         /// <summary>
         /// Gets a list of all `csharp.{hash}.txt` files currently written to the log directory.
         /// </summary>
-        public static IEnumerable<string> GetCSharpArgsLogs() =>
-            Directory.EnumerateFiles(GetCSharpLogDirectory(), "csharp.*.txt");
+        public static IEnumerable<string> GetCSharpArgsLogs()
+        {
+            try
+            {
+                return Directory.EnumerateFiles(GetCSharpLogDirectory(), "csharp.*.txt");
+            }
+            catch (DirectoryNotFoundException)
+            {
+                // If the directory does not exist, there are no log files
+                return Enumerable.Empty<string>();
+            }
+        }
 
         private static string GetCSharpLogDirectory()
         {

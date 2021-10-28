@@ -269,13 +269,13 @@ class Class extends UserType {
    * DEPRECATED: name changed to `hasImplicitCopyConstructor` to reflect that
    * `= default` members are no longer included.
    */
-  deprecated predicate hasGeneratedCopyConstructor() { hasImplicitCopyConstructor() }
+  deprecated predicate hasGeneratedCopyConstructor() { this.hasImplicitCopyConstructor() }
 
   /**
    * DEPRECATED: name changed to `hasImplicitCopyAssignmentOperator` to
    * reflect that `= default` members are no longer included.
    */
-  deprecated predicate hasGeneratedCopyAssignmentOperator() { hasImplicitCopyConstructor() }
+  deprecated predicate hasGeneratedCopyAssignmentOperator() { this.hasImplicitCopyConstructor() }
 
   /**
    * Holds if this class, struct or union has an implicitly-declared copy
@@ -487,7 +487,7 @@ class Class extends UserType {
     exists(ClassDerivation cd |
       // Add the offset of the direct base class and the offset of `baseClass`
       // within that direct base class.
-      cd = getADerivation() and
+      cd = this.getADerivation() and
       result = cd.getBaseClass().getANonVirtualBaseClassByteOffset(baseClass) + cd.getByteOffset()
     )
   }
@@ -502,12 +502,12 @@ class Class extends UserType {
    */
   int getABaseClassByteOffset(Class baseClass) {
     // Handle the non-virtual case.
-    result = getANonVirtualBaseClassByteOffset(baseClass)
+    result = this.getANonVirtualBaseClassByteOffset(baseClass)
     or
     exists(Class virtualBaseClass, int virtualBaseOffset, int offsetFromVirtualBase |
       // Look for the base class as a non-virtual base of a direct or indirect
       // virtual base, adding the two offsets.
-      getVirtualBaseClassByteOffset(virtualBaseClass) = virtualBaseOffset and
+      this.getVirtualBaseClassByteOffset(virtualBaseClass) = virtualBaseOffset and
       offsetFromVirtualBase = virtualBaseClass.getANonVirtualBaseClassByteOffset(baseClass) and
       result = virtualBaseOffset + offsetFromVirtualBase
     )
@@ -623,11 +623,11 @@ class Class extends UserType {
    * inherits one).
    */
   predicate isPolymorphic() {
-    exists(MemberFunction f | f.getDeclaringType() = getABaseClass*() and f.isVirtual())
+    exists(MemberFunction f | f.getDeclaringType() = this.getABaseClass*() and f.isVirtual())
   }
 
   override predicate involvesTemplateParameter() {
-    getATemplateArgument().(Type).involvesTemplateParameter()
+    this.getATemplateArgument().(Type).involvesTemplateParameter()
   }
 
   /** Holds if this class, struct or union was declared 'final'. */
@@ -765,7 +765,7 @@ class ClassDerivation extends Locatable, @derivation {
    * };
    * ```
    */
-  Class getBaseClass() { result = getBaseType().getUnderlyingType() }
+  Class getBaseClass() { result = this.getBaseType().getUnderlyingType() }
 
   override string getAPrimaryQlClass() { result = "ClassDerivation" }
 
@@ -818,7 +818,7 @@ class ClassDerivation extends Locatable, @derivation {
   predicate hasSpecifier(string s) { this.getASpecifier().hasName(s) }
 
   /** Holds if the derivation is for a virtual base class. */
-  predicate isVirtual() { hasSpecifier("virtual") }
+  predicate isVirtual() { this.hasSpecifier("virtual") }
 
   /** Gets the location of the derivation. */
   override Location getLocation() { derivations(underlyingElement(this), _, _, _, result) }
@@ -846,7 +846,7 @@ class ClassDerivation extends Locatable, @derivation {
  * ```
  */
 class LocalClass extends Class {
-  LocalClass() { isLocal() }
+  LocalClass() { this.isLocal() }
 
   override string getAPrimaryQlClass() { not this instanceof LocalStruct and result = "LocalClass" }
 
@@ -989,9 +989,9 @@ class ClassTemplateSpecialization extends Class {
   TemplateClass getPrimaryTemplate() {
     // Ignoring template arguments, the primary template has the same name
     // as each of its specializations.
-    result.getSimpleName() = getSimpleName() and
+    result.getSimpleName() = this.getSimpleName() and
     // It is in the same namespace as its specializations.
-    result.getNamespace() = getNamespace() and
+    result.getNamespace() = this.getNamespace() and
     // It is distinguished by the fact that each of its template arguments
     // is a distinct template parameter.
     count(TemplateParameter tp | tp = result.getATemplateArgument()) =
@@ -1108,7 +1108,7 @@ deprecated class Interface extends Class {
  * ```
  */
 class VirtualClassDerivation extends ClassDerivation {
-  VirtualClassDerivation() { hasSpecifier("virtual") }
+  VirtualClassDerivation() { this.hasSpecifier("virtual") }
 
   override string getAPrimaryQlClass() { result = "VirtualClassDerivation" }
 }
@@ -1136,7 +1136,7 @@ class VirtualBaseClass extends Class {
   VirtualClassDerivation getAVirtualDerivation() { result.getBaseClass() = this }
 
   /** A class/struct that is derived from this one using virtual inheritance. */
-  Class getAVirtuallyDerivedClass() { result = getAVirtualDerivation().getDerivedClass() }
+  Class getAVirtuallyDerivedClass() { result = this.getAVirtualDerivation().getDerivedClass() }
 }
 
 /**
@@ -1155,7 +1155,7 @@ class ProxyClass extends UserType {
   override string getAPrimaryQlClass() { result = "ProxyClass" }
 
   /** Gets the location of the proxy class. */
-  override Location getLocation() { result = getTemplateParameter().getDefinitionLocation() }
+  override Location getLocation() { result = this.getTemplateParameter().getDefinitionLocation() }
 
   /** Gets the template parameter for which this is the proxy class. */
   TemplateParameter getTemplateParameter() {

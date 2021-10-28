@@ -3,12 +3,7 @@ private import TestUtilities.InlineExpectationsTest
 private import semmle.code.cpp.ir.internal.IntegerConstant as Ints
 
 private predicate ignoreAllocation(string name) {
-  name = "i" or
-  name = "p" or
-  name = "q" or
-  name = "s" or
-  name = "t" or
-  name = "?{AllAliased}"
+  name = ["i", "p", "q", "s", "t", "?{AllAliased}"]
 }
 
 private predicate ignoreFile(File file) {

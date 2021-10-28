@@ -141,7 +141,7 @@ predicate builtin_object_consistency(string clsname, string problem, string what
     or
     not exists(o.toString()) and
     problem = "no toString" and
-    not exists(string name | name.prefix(7) = "_semmle" | py_special_objects(o, name)) and
+    not exists(string name | name.matches("\\_semmle%") | py_special_objects(o, name)) and
     not o = unknownValue()
   )
 }
