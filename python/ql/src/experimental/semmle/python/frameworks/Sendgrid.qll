@@ -120,6 +120,19 @@ private module Sendgrid {
         htmlWrite.getAttributeName() = "html_content" and
         result = htmlWrite.getValue()
       )
+      or
+      exists(KeyValuePair content, Dict generalDict, KeyValuePair typePair, KeyValuePair valuePair |
+        // find L33
+        content.getKey().(Str_).getS() = "content" and
+        content.getValue().(List).getAnElt() = generalDict and
+        // declare KeyValuePairs keys and values
+        typePair.getKey().(Str_).getS() = "type" and
+        typePair.getValue().(Str_).getS() = "text/html" and
+        valuePair.getKey().(Str_).getS() = "value" and
+        result.asExpr() = valuePair.getValue() and
+        // since the pairs' keys are already set, this will set the items accordingly
+        generalDict.getAnItem() in [typePair, valuePair]
+      )
     }
 
     override DataFlow::Node getTo() {
