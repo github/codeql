@@ -28,6 +28,7 @@ import com.semmle.extractor.java.OdasaOutput
 import com.semmle.extractor.java.OdasaOutput.TrapFileManager
 import com.semmle.util.files.FileUtil
 import org.jetbrains.kotlin.ir.util.*
+import org.jetbrains.kotlin.types.Variance
 import kotlin.system.exitProcess
 
 class KotlinExtractorExtension(private val invocationTrapFile: String, private val checkTrapIdentical: Boolean) : IrGenerationExtension {
@@ -353,7 +354,7 @@ open class KotlinUsesExtractor(
 
         val id = addClassLabel(c, typeArgs)
         val pkg = c.packageFqName?.asString() ?: ""
-        val cls = c.name.asString()
+        val cls = classShortName(c, typeArgs)
         val pkgId = extractPackage(pkg)
         if(c.kind == ClassKind.INTERFACE) {
             @Suppress("UNCHECKED_CAST")
@@ -701,19 +702,6 @@ class X {
     }
 
     fun extractClassCommon(c: IrClass, id: Label<out DbClassorinterface>) {
-<<<<<<< HEAD
-||||||| parent of 6b88884415 (Extract array type inheritence graph)
-        val locId = tw.getLocation(c)
-        tw.writeHasLocation(id, locId)
-
-=======
-        val locId = tw.getLocation(c)
-        tw.writeHasLocation(id, locId)
-        extractClassInheritence(c, id)
-    }
-
-    fun extractClassInheritence(c: IrClass, id: Label<out DbReftype>) {
->>>>>>> 6b88884415 (Extract array type inheritence graph)
         for(t in c.superTypes) {
             when(t) {
                 is IrSimpleType -> {
@@ -897,6 +885,63 @@ open class KotlinFileExtractor(
 
         return id
     }
+
+    fun shortName(type: IrType): String =
+        when(type) {
+            is IrSimpleType ->
+                when {
+                    type.isByte() -> "byte"
+                    type.isShort() -> "short"
+                    type.isInt() -> "int"
+                    type.isLong() -> "long"
+                    type.isUByte() -> "byte"
+                    type.isUShort() -> "short"
+                    type.isUInt() -> "int"
+                    type.isULong() -> "long"
+                    type.isDouble() -> "double"
+                    type.isFloat() -> "float"
+                    type.isBoolean() -> "boolean"
+                    type.isChar() -> "char"
+                    type.isUnit() -> "void"
+
+                    type.isBoxedArray || type.isPrimitiveArray() -> shortName(type.getArrayElementType(pluginContext.irBuiltIns)) + "[]"
+
+                    // TODO: Consider when Kotlin -> Java type substitution is needed
+                    type.classifier.owner is IrClass -> classShortName(type.classifier.owner as IrClass, type.arguments)
+
+                    type.classifier.owner is IrTypeParameter -> (type.classifier.owner as IrTypeParameter).name.asString()
+
+                    else -> "???"
+                }
+            else -> "???"
+        }
+
+    // Pretty-print typeArg the same way the Java extractor would:
+    fun typeArgShortName(typeArg: IrTypeArgument): String =
+        when(typeArg) {
+            is IrStarProjection -> "?"
+            is IrTypeProjection -> {
+                val prefix = when(typeArg.variance) {
+                    Variance.INVARIANT -> ""
+                    Variance.OUT_VARIANCE -> "? extends "
+                    Variance.IN_VARIANCE -> "? super "
+                }
+                "$prefix${shortName(typeArg.type)}"
+            }
+            else -> {
+                logger.warn(Severity.ErrorSevere, "Unexpected type argument.")
+                "???"
+            }
+        }
+
+    fun typeArgsShortName(typeArgs: List<IrTypeArgument>): String {
+        if(typeArgs.isEmpty())
+            return ""
+        return typeArgs.joinToString(prefix = "<", postfix = ">", separator = ",") { typeArgShortName(it) }
+    }
+
+    fun classShortName(c: IrClass, typeArgs: List<IrTypeArgument>) =
+        "${c.name}${typeArgsShortName(typeArgs)}"
 
     fun extractClassSource(c: IrClass): Label<out DbClassorinterface> {
         val id = useClassSource(c)
