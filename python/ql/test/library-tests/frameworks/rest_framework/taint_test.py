@@ -1,0 +1,119 @@
+from rest_framework.decorators import api_view, parser_classes
+from rest_framework.views import APIView
+from rest_framework.request import Request
+from rest_framework.response import Response
+from rest_framework.parsers import JSONParser
+
+from django.urls import path
+
+ensure_tainted = ensure_not_tainted = print
+
+# function based view
+# see https://www.django-rest-framework.org/api-guide/views/#function-based-views
+
+
+@api_view(["POST"])
+@parser_classes([JSONParser])
+def test_taint(request: Request, routed_param): # $ requestHandler routedParameter=routed_param
+    ensure_tainted(routed_param) # $ tainted
+
+    ensure_tainted(request) # $ tainted
+
+    # Has all the standard attributes of a django HttpRequest
+    # see https://github.com/encode/django-rest-framework/blob/00cd4ef864a8bf6d6c90819a983017070f9f08a5/rest_framework/request.py#L410-L418
+    ensure_tainted(request.resolve_match.args) # $ MISSING: tainted
+
+    # special new attributes added, see https://www.django-rest-framework.org/api-guide/requests/
+    ensure_tainted(
+        request.data, # $ MISSING: tainted
+        request.data["key"], # $ MISSING: tainted
+
+        # alias for .GET
+        request.query_params, # $ MISSING: tainted
+        request.query_params["key"], # $ MISSING: tainted
+        request.query_params.get("key"), # $ MISSING: tainted
+        request.query_params.getlist("key"), # $ MISSING: tainted
+        request.query_params.getlist("key")[0], # $ MISSING: tainted
+        request.query_params.pop("key"), # $ MISSING: tainted
+        request.query_params.pop("key")[0], # $ MISSING: tainted
+
+        # see more detailed tests of `request.user` below
+        request.user, # $ MISSING: tainted
+
+        request.auth, # $ MISSING: tainted
+
+        # seems much more likely attack vector than .method, so included
+        request.content_type, # $ tainted
+
+        # file-like
+        request.stream, # $ MISSING: tainted
+        request.stream.read(), # $ MISSING: tainted
+    )
+
+    ensure_not_tainted(
+        # although these could technically be user-controlled, it seems more likely to lead to FPs than interesting results.
+        request.accepted_media_type,
+        request.method, # $ SPURIOUS: tainted
+    )
+
+    # --------------------------------------------------------------------------
+    # request.user
+    # --------------------------------------------------------------------------
+    #
+    # This will normally be an instance of django.contrib.auth.models.User
+    # (authenticated) so we assume that normally user-controlled fields such as
+    # username/email is user-controlled, but that password isn't (since it's a hash).
+    # see https://docs.djangoproject.com/en/3.2/ref/contrib/auth/#fields
+    ensure_tainted(
+        request.user.username, # $ MISSING: tainted
+        request.user.first_name, # $ MISSING: tainted
+        request.user.last_name, # $ MISSING: tainted
+        request.user.email, # $ MISSING: tainted
+    )
+    ensure_not_tainted(request.user.password)
+
+    return Response("ok")
+
+
+# class based view
+# see https://www.django-rest-framework.org/api-guide/views/#class-based-views
+
+
+class MyClass(APIView):
+    def initial(self, request, *args, **kwargs):
+        # this method will be called before processing any request
+        ensure_tainted(request) # $ MISSING: tainted
+
+    def get(self, request: Request, routed_param): # $ requestHandler routedParameter=routed_param
+        ensure_tainted(routed_param) # $ tainted
+
+        # request taint is the same as in function_based_view above
+        ensure_tainted(
+            request, # $ tainted
+            request.data # $ MISSING: tainted
+        )
+
+        # same as for standard Django view
+        ensure_tainted(self.args, self.kwargs) # $ tainted
+
+        return Response("ok")
+
+
+
+# fake setup, you can't actually run this
+urlpatterns = [
+    path("test-taint/<routed_param>", test_taint),  # $ routeSetup="test-taint/<routed_param>"
+    path("ClassView/<routed_param>", MyClass.as_view()), # $ routeSetup="ClassView/<routed_param>"
+]
+
+# tests with no route-setup, but we can still tell that these are using Django REST
+# framework
+
+@api_view(["POST"])
+def function_based_no_route(request: Request, possible_routed_param):
+    ensure_tainted(request, possible_routed_param) # $ MISSING: tainted
+
+
+class ClassBasedNoRoute(APIView):
+    def get(self, request: Request, possible_routed_param):
+        ensure_tainted(request, possible_routed_param) # $ MISSING: tainted
