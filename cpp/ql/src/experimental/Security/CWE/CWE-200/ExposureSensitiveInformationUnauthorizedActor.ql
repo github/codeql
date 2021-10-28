@@ -61,10 +61,5 @@ where
     fctmp.getTarget().hasGlobalOrStdName("umask") or
     fctmp.getTarget().hasGlobalOrStdName("fchmod") or
     fctmp.getTarget().hasGlobalOrStdName("chmod")
-  ) and
-  not exists(FunctionCall fctmp |
-    fctmp.getTarget().hasGlobalOrStdName("fdopen") and
-    fctmp.getNumberOfArguments() = 3 and
-    globalValueNumber(fctmp) = globalValueNumber(fc.getArgument(0))
   )
 select fc, "You may have forgotten to restrict access rights when working with a file."
