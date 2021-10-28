@@ -66,3 +66,12 @@ private class MongoJsonStep extends AdditionalQueryInjectionTaintStep {
     )
   }
 }
+
+private class InternalObjectTaintStep extends AdditionalQueryInjectionTaintStep {
+  override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
+    exists(InstanceField ia |
+      ia.getAnAssignedValue() = node1.asExpr() and
+      ia.getAnAccess() = node2.asExpr()
+    )
+  }
+}
