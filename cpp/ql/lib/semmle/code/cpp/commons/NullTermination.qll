@@ -5,13 +5,12 @@ import semmle.code.cpp.dataflow.DataFlow
 
 /**
  * Holds if the expression `e` assigns something including `va` to a
- * stack variable that is later null terminated at `e0`.
+ * stack variable `v0` that is later null terminated at `e0`.
  */
-private predicate mayAddNullTerminatorHelper(Expr e, VariableAccess va, Expr e0) {
-  exists(StackVariable v0, Expr val |
+private predicate mayAddNullTerminatorHelper(Expr e, VariableAccess va, StackVariable v0) {
+  exists(Expr val |
     exprDefinition(v0, e, val) and // `e` is `v0 := val`
-    val.getAChild*() = va and
-    mayAddNullTerminator(e0, v0.getAnAccess())
+    val.getAChild*() = va
   )
 }
 
@@ -47,8 +46,9 @@ predicate mayAddNullTerminator(Expr e, VariableAccess va) {
   )
   or
   // Assignment to another stack variable
-  exists(Expr e0 |
-    mayAddNullTerminatorHelper(pragma[only_bind_into](e), va, pragma[only_bind_into](e0)) and
+  exists(StackVariable v0, Expr e0 |
+    mayAddNullTerminatorHelper(e, va, v0) and
+    mayAddNullTerminator(pragma[only_bind_into](e0), pragma[only_bind_into](v0.getAnAccess())) and
     controlFlowNodeSuccessorTransitive(e, e0)
   )
   or
