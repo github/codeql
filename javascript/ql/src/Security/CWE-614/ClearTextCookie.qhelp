@@ -33,6 +33,6 @@ attribute on the cookie.
 <references>
 <li>ExpressJS: <a href="https://expressjs.com/en/advanced/best-practice-security.html#use-cookies-securely">Use cookies securely</a>.</li>
 <li>OWASP: <a href="https://cheatsheetseries.owasp.org/cheatsheets/Nodejs_Security_Cheat_Sheet.html#set-cookie-flags-appropriately">Set cookie flags appropriately</a>.</li>
-<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie">Set-Cookie</a>.</li>
+<li>Mozilla: <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie">Set-Cookie</a>.</li>
 </references>
 </qhelp>
