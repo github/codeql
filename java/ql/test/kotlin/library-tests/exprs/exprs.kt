@@ -1,3 +1,5 @@
+import java.awt.Polygon
+import java.awt.Rectangle
 
 fun topLevelMethod(x: Int, y: Int): Int {
     val i1 = 1
@@ -61,5 +63,12 @@ class Subclass2: Root() {}
 fun typeTests(x: Root) {
     if(x is Subclass1) {
         val y: Subclass1 = x
+    }
+}
+
+fun foo(p: Polygon) {
+    val r = p.getBounds()
+    if(r != null) {
+        val r2: Rectangle = r
     }
 }
