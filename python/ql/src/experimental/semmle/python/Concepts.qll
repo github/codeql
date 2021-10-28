@@ -317,12 +317,12 @@ module JWTEncoding {
     abstract DataFlow::Node getKey();
 
     /**
-     * Gets the algorithm Node used in the encoding.
+     * Gets the argument for the algorithm used in the encoding.
      */
     abstract DataFlow::Node getAlgorithm();
 
     /**
-     * Tries to get the algorithm used in the encoding.
+     * Gets a string representation of the algorithm used in the encoding.
      */
     abstract string getAlgorithmString();
   }
@@ -359,7 +359,7 @@ class JWTEncoding extends DataFlow::Node instanceof JWTEncoding::Range {
 /** Provides classes for modeling JWT decoding-related APIs. */
 module JWTDecoding {
   /**
-   * A data-flow node that collects methods encoding a JWT token.
+   * A data-flow node that collects methods decoding a JWT token.
    *
    * Extend this class to model new APIs. If you want to refine existing API models,
    * extend `JWTDecoding` instead.

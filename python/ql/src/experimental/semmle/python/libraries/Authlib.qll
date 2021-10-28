@@ -7,7 +7,7 @@ private module Authlib {
   /** Gets a reference to `authlib.jose.(jwt|JsonWebToken)` */
   private API::Node authlibJWT() {
     result in [
-        API::moduleImport("authlib.jose").getMember("jwt"),
+        API::moduleImport("authlib").getMember("jose").getMember("jwt"),
         API::moduleImport("authlib.jose").getMember("JsonWebToken").getReturn()
       ]
   }
