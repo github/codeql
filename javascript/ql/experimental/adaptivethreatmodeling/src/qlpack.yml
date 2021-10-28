@@ -1,4 +1,4 @@
-name: codeql/javascript-experimental-atm-src
+name: codeql/javascript-experimental-atm-queries
 language: javascript
 version: 0.0.0
 suites: codeql-suites

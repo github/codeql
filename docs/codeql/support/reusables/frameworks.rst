@@ -160,8 +160,9 @@ Python built-in support
    Tornado, Web framework
    Twisted, Web framework
    starlette, Asynchronous Server Gateway Interface (ASGI)
-   PyYAML, Serialization
    dill, Serialization
+   PyYAML, Serialization
+   ruamel.yaml, Serialization
    simplejson, Serialization
    ujson, Serialization
    fabric, Utility library

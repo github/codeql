@@ -1,0 +1,58 @@
+#!/usr/bin/env python3
+
+# this file doesn't have a .py extension so the extractor doesn't pick it up, so it
+# doesn't have to be annotated
+
+# This file is just a Proof of Concept for how code execution can be triggered.
+
+
+import os
+import yaml
+
+class Exploit(object):
+    def __reduce__(self):
+        return (os.system, ('ls',))
+
+data = Exploit()
+serialized_data = yaml.dump(data)
+
+# All these will execute `ls`
+print("!!! yaml.unsafe_load")
+yaml.unsafe_load(serialized_data)
+
+print("!!! yaml.unsafe_load kwarg")
+yaml.unsafe_load(stream=serialized_data)
+
+print("!!! yaml.load with Loader=yaml.UnsafeLoader")
+yaml.load(serialized_data, yaml.UnsafeLoader)
+
+# you need to iterate through the result for it to execute... but it still works
+print("!!! yaml.unsafe_load_all")
+for _ in yaml.unsafe_load_all(serialized_data):
+    pass
+
+# check that the safe version is actually safe
+print("\n" + "-"*80)
+print("safe versions")
+print("-" * 80)
+
+print("!!! yaml.load")
+try:
+    yaml.load(serialized_data)
+    raise Exception("should not happen")
+except yaml.constructor.ConstructorError:
+    pass
+
+print("!!! yaml.safe_load")
+try:
+    yaml.safe_load(serialized_data)
+    raise Exception("should not happen")
+except yaml.constructor.ConstructorError:
+    pass
+
+print("!!! yaml.load with Loader=yaml.SafeLoader")
+try:
+    yaml.load(serialized_data, yaml.SafeLoader)
+    raise Exception("should not happen")
+except yaml.constructor.ConstructorError:
+    pass

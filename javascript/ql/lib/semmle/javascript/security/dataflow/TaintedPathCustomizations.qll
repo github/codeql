@@ -751,13 +751,11 @@ module TaintedPath {
       exists(mcn.getAnArgument().asExpr().getIntValue())
       or
       exists(string argumentlessMethodName |
-        argumentlessMethodName = "toLocaleLowerCase" or
-        argumentlessMethodName = "toLocaleUpperCase" or
-        argumentlessMethodName = "toLowerCase" or
-        argumentlessMethodName = "toUpperCase" or
-        argumentlessMethodName = "trim" or
-        argumentlessMethodName = "trimLeft" or
-        argumentlessMethodName = "trimRight"
+        argumentlessMethodName =
+          [
+            "toLocaleLowerCase", "toLocaleUpperCase", "toLowerCase", "toUpperCase", "trim",
+            "trimLeft", "trimRight"
+          ]
       |
         name = argumentlessMethodName
       )

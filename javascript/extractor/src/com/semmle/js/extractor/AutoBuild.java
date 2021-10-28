@@ -991,7 +991,7 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
           @Override
           public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
               throws IOException {
-            if (attrs.isSymbolicLink()) return FileVisitResult.SKIP_SUBTREE;
+            if (!attrs.isRegularFile() && !attrs.isDirectory()) return FileVisitResult.SKIP_SUBTREE;
 
             if (!file.equals(currentRoot[0]) && excludes.contains(file))
               return FileVisitResult.SKIP_SUBTREE;

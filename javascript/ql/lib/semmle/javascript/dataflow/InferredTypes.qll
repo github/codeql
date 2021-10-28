@@ -29,13 +29,7 @@ newtype TypeTag =
  */
 class TypeofTag extends string {
   TypeofTag() {
-    this = "undefined" or
-    this = "boolean" or
-    this = "number" or
-    this = "string" or
-    this = "function" or
-    this = "object" or
-    this = "symbol"
+    this = ["undefined", "boolean", "number", "string", "function", "object", "symbol"]
   }
 }
 

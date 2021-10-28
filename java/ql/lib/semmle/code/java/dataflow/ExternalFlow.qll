@@ -79,6 +79,7 @@ private module Frameworks {
   private import internal.ContainerFlow
   private import semmle.code.java.frameworks.android.Android
   private import semmle.code.java.frameworks.android.Intent
+  private import semmle.code.java.frameworks.android.SQLite
   private import semmle.code.java.frameworks.android.XssSinks
   private import semmle.code.java.frameworks.ApacheHttp
   private import semmle.code.java.frameworks.apache.Collections
@@ -95,6 +96,8 @@ private module Frameworks {
   private import semmle.code.java.frameworks.Optional
   private import semmle.code.java.frameworks.Stream
   private import semmle.code.java.frameworks.Strings
+  private import semmle.code.java.frameworks.ratpack.Ratpack
+  private import semmle.code.java.frameworks.ratpack.RatpackExec
   private import semmle.code.java.frameworks.spring.SpringCache
   private import semmle.code.java.frameworks.spring.SpringHttp
   private import semmle.code.java.frameworks.spring.SpringUtil
@@ -114,8 +117,6 @@ private module Frameworks {
   private import semmle.code.java.security.OgnlInjection
   private import semmle.code.java.security.XPath
   private import semmle.code.java.security.XsltInjection
-  private import semmle.code.java.frameworks.android.Android
-  private import semmle.code.java.frameworks.android.SQLite
   private import semmle.code.java.frameworks.Jdbc
   private import semmle.code.java.frameworks.SpringJdbc
   private import semmle.code.java.frameworks.MyBatis
