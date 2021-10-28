@@ -29,14 +29,17 @@ jobs:
         run: |
           (git diff --name-only --diff-filter=ACMRT HEAD~1 HEAD | grep '.qhelp$' | grep -v '.inc.qhelp';
            git diff --name-only --diff-filter=ACMRT HEAD~1 HEAD | grep '.inc.qhelp$' | xargs -d '\n' -rn1 basename | xargs -d '\n' -rn1 git grep -l) |
-           grep '.qhelp$' | sort -u > "${{ runner.temp }}/paths.txt"
+           grep '.qhelp$' | grep -v '^-' | sort -u > "${{ runner.temp }}/paths.txt"
 
       - name: QHelp preview
         run: |
           cat "${{ runner.temp }}/paths.txt" | while read path; do
+            if [ ! -f "${path}" ]; then
+               exit 1
+            fi
             echo "<details> <summary>${path}</summary>"
             echo
-            codeql generate query-help --format=markdown "${path}"
+            codeql generate query-help --format=markdown -- "./${path}"
             echo "</details>"
           done > comment.txt
 
