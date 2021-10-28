@@ -101,3 +101,6 @@
 | exprs.kt:71:8:71:16 | ... != ... | NEExpr |
 | exprs.kt:71:13:71:16 | null | NullLiteral |
 | exprs.kt:72:9:72:29 | r2 | LocalVariableDeclExpr |
+| exprs.kt:72:29:72:29 | (...)... | CastExpr |
+| exprs.kt:72:29:72:29 | Rectangle | TypeAccess |
+| exprs.kt:72:29:72:29 | r | VarAccess |
