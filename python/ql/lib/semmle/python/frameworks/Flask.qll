@@ -11,6 +11,7 @@ private import semmle.python.Concepts
 private import semmle.python.frameworks.Werkzeug
 private import semmle.python.ApiGraphs
 private import semmle.python.frameworks.internal.InstanceTaintStepsHelper
+private import semmle.python.security.dataflow.PathInjectionCustomizations
 
 /**
  * Provides models for the `flask` PyPI package.
@@ -537,8 +538,18 @@ module Flask {
           // the provided directory, so is not exposed to path-injection. (but is still a
           // path-argument).
           this.getArg(1), this.getArgByName("filename")
-          // TODO: Exclude filename as path-injection sink
         ]
+    }
+  }
+
+  /**
+   * To exclude `filename` argument to `flask.send_from_directory` as a path-injection sink.
+   */
+  private class FlaskSendFromDirectoryCallFilenameSanitizer extends PathInjection::Sanitizer {
+    FlaskSendFromDirectoryCallFilenameSanitizer() {
+      this = any(FlaskSendFromDirectoryCall c).getArg(1)
+      or
+      this = any(FlaskSendFromDirectoryCall c).getArgByName("filename")
     }
   }
 
