@@ -3,9 +3,13 @@ private import semmle.code.cpp.models.interfaces.ArrayFunction
 private import semmle.code.cpp.models.implementations.Strcat
 import semmle.code.cpp.dataflow.DataFlow
 
+/**
+ * Holds if the expression `e` assigns something including `va` to a
+ * stack variable that is later null terminated at `e0`.
+ */
 private predicate mayAddNullTerminatorHelper(Expr e, VariableAccess va, Expr e0) {
   exists(StackVariable v0, Expr val |
-    exprDefinition(v0, e, val) and
+    exprDefinition(v0, e, val) and // `e` is `v0 := val`
     val.getAChild*() = va and
     mayAddNullTerminator(e0, v0.getAnAccess())
   )
@@ -25,8 +29,8 @@ private predicate controlFlowNodeSuccessorTransitive(ControlFlowNode n1, Control
 }
 
 /**
- * Holds if the expression `e` may add a null terminator to the string in
- * variable `v`.
+ * Holds if the expression `e` may add a null terminator to the string
+ * accessed by `va`.
  */
 predicate mayAddNullTerminator(Expr e, VariableAccess va) {
   // Assignment: dereferencing or array access
