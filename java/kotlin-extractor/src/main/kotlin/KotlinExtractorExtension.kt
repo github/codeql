@@ -509,7 +509,7 @@ class X {
 }
 */
 
-            ((s.isArray() || s.isNullableArray()) && s.arguments.isNotEmpty()) || s.isPrimitiveArray() -> {
+            s.isBoxedArray || s.isPrimitiveArray() -> {
                 // TODO: fix this, this is only a dummy implementation to let the tests pass
                 // TODO: Figure out what signatures should be returned
                 // TODO: The Java extractor describes the dimensionality of array types; here we always report 1 dimension
