@@ -8,6 +8,8 @@ private import python
 private import semmle.python.dataflow.new.DataFlow
 
 /**
+ * INTERNAL: Do not use.
+ *
  * Holds if `result` is the result of awaiting `awaitedValue`.
  */
 cached
