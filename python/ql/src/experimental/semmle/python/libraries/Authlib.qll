@@ -42,7 +42,7 @@ private module Authlib {
 
     override DataFlow::Node getAlgorithm() {
       exists(KeyValuePair headerDict |
-        headerDict = this.getArg(0).asExpr().(Dict).getItems().getAnItem() and
+        headerDict = this.getArg(0).asExpr().(Dict).getItem(_) and
         headerDict.getKey().(Str_).getS().matches("alg") and
         result.asExpr() = headerDict.getValue()
       )

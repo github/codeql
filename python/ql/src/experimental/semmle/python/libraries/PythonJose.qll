@@ -88,12 +88,18 @@ private module PythonJose {
 
     override predicate verifiesSignature() {
       // jwt.decode(token, "key", "HS256")
-      not exists(this.getOptions())
+      this.hasNoOptions()
       or
       // jwt.decode(token, key, options={"verify_signature": False})
-      not exists(KeyValuePair optionsDict, NameConstant falseName |
+      not this.hasVerifySignatureSetToFalse()
+    }
+
+    predicate hasNoOptions() { not exists(this.getOptions()) }
+
+    predicate hasVerifySignatureSetToFalse() {
+      exists(KeyValuePair optionsDict, NameConstant falseName |
         falseName.getId() = "False" and
-        optionsDict = this.getOptions().asExpr().(Dict).getItems().getAnItem() and
+        optionsDict = this.getOptions().asExpr().(Dict).getItem(_) and
         optionsDict.getKey().(Str_).getS().matches("%verify%") and
         falseName = optionsDict.getValue()
       )

@@ -101,7 +101,7 @@ private module PyJWT {
     predicate hasVerifySignatureSetToFalse() {
       exists(KeyValuePair optionsDict, NameConstant falseName |
         falseName.getId() = "False" and
-        optionsDict = this.getOptions().asExpr().(Dict).getItems().getAnItem() and
+        optionsDict = this.getOptions().asExpr().(Dict).getItem(_) and
         optionsDict.getKey().(Str_).getS().matches("%verify%") and
         falseName = optionsDict.getValue()
       )
