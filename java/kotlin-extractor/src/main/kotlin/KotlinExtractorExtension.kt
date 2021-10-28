@@ -512,12 +512,21 @@ class X {
             s.isBoxedArray || s.isPrimitiveArray() -> {
                 // TODO: fix this, this is only a dummy implementation to let the tests pass
                 // TODO: Figure out what signatures should be returned
-                // TODO: The Java extractor describes the dimensionality of array types; here we always report 1 dimension
                 // TODO: The Java extractor extracts a .length field, a .clone method and a type hierarchy for arrays
                 // TODO: Generate a short name for array types
-                val elementType = useTypeOld(s.getArrayElementType(pluginContext.irBuiltIns))
-                val id = tw.getLabelFor<DbArray>("@\"array;1;{$elementType}\"") {
-                    tw.writeArrays(id, "ARRAY", elementType.javaResult.id, elementType.kotlinResult.id, 1, elementType.javaResult.id, elementType.kotlinResult.id)
+
+                var dimensions = 1
+                val componentType = s.getArrayElementType(pluginContext.irBuiltIns)
+                var elementType = componentType
+                while (elementType.isBoxedArray || elementType.isPrimitiveArray()) {
+                    dimensions++
+                    elementType = elementType.getArrayElementType(pluginContext.irBuiltIns)
+                }
+
+                val componentTypeLabel = useType(componentType)
+                val elementTypeLabel = useType(elementType)
+                val id = tw.getLabelFor<DbArray>("@\"array;$dimensions;{$elementTypeLabel.javaResult.id}\"") {
+                    tw.writeArrays(it, "ARRAY", elementTypeLabel.javaResult.id, elementTypeLabel.kotlinResult.id, 1, componentTypeLabel.javaResult.id, componentTypeLabel.kotlinResult.id)
                 }
                 val javaSignature = "an array" // TODO: Wrong
                 val javaResult = TypeResult(id, javaSignature)
