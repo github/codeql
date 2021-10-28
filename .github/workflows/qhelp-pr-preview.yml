@@ -4,7 +4,7 @@ permissions:
   contents: read
 
 on:
-  pull_request_target:
+  pull_request:
     branches:
       - main
       - "rc/*"
@@ -17,10 +17,16 @@ jobs:
       contents: read
     runs-on: ubuntu-latest
     steps:
+      - run: echo "${{  github.event.number }}" > pr.txt
+      - uses: actions/upload-artifact@v2
+        with:
+          name: comment
+          path: pr.txt
+          retention-days: 1
+
       - uses: github/codeql/.github/actions/fetch-codeql@main
       - uses: actions/checkout@v2
         with:
-          ref: refs/pull/${{ github.event.number }}/merge
           fetch-depth: 2
           persist-credentials: false
 
@@ -33,6 +39,7 @@ jobs:
 
       - name: QHelp preview
         run: |
+          echo "QHelp previews:" > comment.txt
           cat "${{ runner.temp }}/paths.txt" | while read path; do
             if [ ! -f "${path}" ]; then
                exit 1
@@ -41,23 +48,10 @@ jobs:
             echo
             codeql generate query-help --format=markdown -- "./${path}"
             echo "</details>"
-          done > comment.txt
+          done >> comment.txt
 
       - uses: actions/upload-artifact@v2
         with:
-          name: comment.txt
+          name: comment
           path: comment.txt
-
-  post_comment:
-    permissions:
-      pull-requests: write
-    runs-on: ubuntu-latest
-    needs: qhelp
-    steps:
-      - uses: actions/download-artifact@v2
-        with:
-          name: comment.txt
-      - run: |
-          (echo "QHelp previews:"; cat comment.txt) | gh pr comment "${{ github.event.pull_request.number }}" --repo "${{ github.repository }}" -F -
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
+          retention-days: 1

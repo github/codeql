@@ -1,0 +1,31 @@
+name: Post pull-request comment
+on:
+  workflow_run:
+    workflows: ["Query help preview"]
+    types:
+      - completed
+
+permissions:
+  pull-requests: write
+
+jobs:
+  post_comment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifact
+        uses: dawidd6/action-download-artifact@af92a8455a59214b7b932932f2662fdefbd78126
+        with:
+          workflow: ${{ github.event.workflow_run.workflow_id }}
+          workflow_conclusion: success
+          name: comment
+      - run: |
+          PR=$(grep -o '^[0-9]\+$' pr.txt)
+          PR_HEAD_SHA=$(gh api "/repos/${{ github.repository }}/pulls/${PR}" --jq .head.sha)
+          # Check that the pull-request head SHA matches the head SHA of the workflow run
+          if [ "${WORKFLOW_RUN_HEAD_SHA}" != "${PR_HEAD_SHA}" ]; then
+            exit 1
+          fi
+          cat comment.txt | gh pr comment "${PR}" --repo "${{ github.repository }}" -F -
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          WORKFLOW_RUN_HEAD_SHA: ${{ github.event.workflow_run.head_commit.id }}
