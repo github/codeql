@@ -525,13 +525,20 @@ module Flask {
    *
    * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.send_from_directory
    */
-  class FlaskSendFromDirectory extends FileSystemAccess::Range, DataFlow::CallCfgNode {
-    FlaskSendFromDirectory() {
+  private class FlaskSendFromDirectoryCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    FlaskSendFromDirectoryCall() {
       this = API::moduleImport("flask").getMember("send_from_directory").getACall()
     }
 
     override DataFlow::Node getAPathArgument() {
-      result in [this.getArg(_), this.getArgByName(["directory", "filename"])]
+      result in [
+          this.getArg(0), this.getArgByName("directory"),
+          // as described in the docs, the `filename` argument is restrained to be within
+          // the provided directory, so is not exposed to path-injection. (but is still a
+          // path-argument).
+          this.getArg(1), this.getArgByName("filename")
+          // TODO: Exclude filename as path-injection sink
+        ]
     }
   }
 
@@ -540,8 +547,8 @@ module Flask {
    *
    * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.send_file
    */
-  class FlaskSendFile extends FileSystemAccess::Range, DataFlow::CallCfgNode {
-    FlaskSendFile() { this = API::moduleImport("flask").getMember("send_file").getACall() }
+  private class FlaskSendFileCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    FlaskSendFileCall() { this = API::moduleImport("flask").getMember("send_file").getACall() }
 
     override DataFlow::Node getAPathArgument() {
       result in [this.getArg(0), this.getArgByName("filename_or_fp")]
