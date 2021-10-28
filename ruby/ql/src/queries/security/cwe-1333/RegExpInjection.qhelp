@@ -26,31 +26,12 @@ special meaning.
 The following examples construct regular expressions from an HTTP request
 parameter without sanitizing it first:
 </p>
-<sample language="ruby">
-class UsersController < ActionController::Base
-  def first_example
-    # BAD: Unsanitized user input is used to construct a regular expression
-    regex = /#{ params[:key] }/
-  end
-
-  def second_example
-    # BAD: Unsanitized user input is used to construct a regular expression
-    regex = Regexp.new(params[:key])
-  end
-end
-</sample>
+<sample src="examples/regexp_injection_bad.rb" />
 <p>
 Instead, the request parameter should be sanitized first. This ensures that the
 user cannot insert characters that have special meanings in regular expressions.
 </p>
-<sample language="ruby">
-class UsersController < ActionController::Base
-  def example
-    # GOOD: User input is sanitized before constructing the regular expression
-    regex = Regexp.new(Regex.escape(params[:key]))
-  end
-end
-</sample>
+<sample src="examples/regexp_injection_good.rb" />
 </example>
 
 <references>
