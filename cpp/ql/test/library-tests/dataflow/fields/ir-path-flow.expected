@@ -389,25 +389,19 @@ edges
 | by_reference.cpp:24:5:24:17 | value | by_reference.cpp:11:48:11:52 | value |
 | by_reference.cpp:24:5:24:17 | value | by_reference.cpp:24:5:24:17 | this [post update] [a] |
 | by_reference.cpp:31:46:31:46 | *s [a] | by_reference.cpp:32:12:32:12 | s [read] [a] |
-| by_reference.cpp:31:46:31:46 | s [a] | by_reference.cpp:32:12:32:12 | s [read] [a] |
 | by_reference.cpp:32:12:32:12 | s [read] [a] | by_reference.cpp:32:15:32:15 | FieldAddress [read] |
-| by_reference.cpp:32:12:32:12 | s [read] [a] | by_reference.cpp:32:15:32:15 | FieldAddress [read] |
-| by_reference.cpp:32:15:32:15 | FieldAddress [read] | by_reference.cpp:31:16:31:28 | ReturnValue |
 | by_reference.cpp:32:15:32:15 | FieldAddress [read] | by_reference.cpp:31:16:31:28 | ReturnValue |
 | by_reference.cpp:35:9:35:19 | *#this [a] | by_reference.cpp:36:12:36:15 | this [read] [a] |
-| by_reference.cpp:35:9:35:19 | this [a] | by_reference.cpp:36:12:36:15 | this [read] [a] |
-| by_reference.cpp:36:12:36:15 | this [read] [a] | by_reference.cpp:36:18:36:18 | FieldAddress [read] |
 | by_reference.cpp:36:12:36:15 | this [read] [a] | by_reference.cpp:36:18:36:18 | FieldAddress [read] |
 | by_reference.cpp:36:18:36:18 | FieldAddress [read] | by_reference.cpp:35:9:35:19 | ReturnValue |
-| by_reference.cpp:36:18:36:18 | FieldAddress [read] | by_reference.cpp:35:9:35:19 | ReturnValue |
-| by_reference.cpp:39:9:39:21 | *#this [a] | by_reference.cpp:40:18:40:28 | this [a] |
+| by_reference.cpp:39:9:39:21 | *#this [a] | by_reference.cpp:40:12:40:15 | this indirection [a] |
+| by_reference.cpp:40:12:40:15 | this indirection [a] | by_reference.cpp:35:9:35:19 | *#this [a] |
+| by_reference.cpp:40:12:40:15 | this indirection [a] | by_reference.cpp:40:18:40:28 | call to getDirectly |
 | by_reference.cpp:40:18:40:28 | call to getDirectly | by_reference.cpp:39:9:39:21 | ReturnValue |
-| by_reference.cpp:40:18:40:28 | this [a] | by_reference.cpp:35:9:35:19 | this [a] |
-| by_reference.cpp:40:18:40:28 | this [a] | by_reference.cpp:40:18:40:28 | call to getDirectly |
-| by_reference.cpp:43:9:43:27 | *#this [a] | by_reference.cpp:44:12:44:24 | this [a] |
+| by_reference.cpp:43:9:43:27 | *#this [a] | by_reference.cpp:44:26:44:29 | this indirection [a] |
 | by_reference.cpp:44:12:44:24 | call to nonMemberGetA | by_reference.cpp:43:9:43:27 | ReturnValue |
-| by_reference.cpp:44:12:44:24 | this [a] | by_reference.cpp:31:46:31:46 | s [a] |
-| by_reference.cpp:44:12:44:24 | this [a] | by_reference.cpp:44:12:44:24 | call to nonMemberGetA |
+| by_reference.cpp:44:26:44:29 | this indirection [a] | by_reference.cpp:31:46:31:46 | *s [a] |
+| by_reference.cpp:44:26:44:29 | this indirection [a] | by_reference.cpp:44:12:44:24 | call to nonMemberGetA |
 | by_reference.cpp:50:5:50:15 | call to user_input | by_reference.cpp:15:26:15:30 | value |
 | by_reference.cpp:50:5:50:15 | call to user_input | by_reference.cpp:50:5:50:15 | s [post update] [a] |
 | by_reference.cpp:50:5:50:15 | s [post update] [a] | by_reference.cpp:51:8:51:8 | s indirection [a] |
@@ -1226,29 +1220,21 @@ nodes
 | by_reference.cpp:24:5:24:17 | value | semmle.label | value |
 | by_reference.cpp:24:19:24:22 | this [post update] [a] | semmle.label | this [post update] [a] |
 | by_reference.cpp:31:16:31:28 | ReturnValue | semmle.label | ReturnValue |
-| by_reference.cpp:31:16:31:28 | ReturnValue | semmle.label | ReturnValue |
 | by_reference.cpp:31:46:31:46 | *s [a] | semmle.label | *s [a] |
-| by_reference.cpp:31:46:31:46 | s [a] | semmle.label | s [a] |
 | by_reference.cpp:32:12:32:12 | s [read] [a] | semmle.label | s [read] [a] |
-| by_reference.cpp:32:12:32:12 | s [read] [a] | semmle.label | s [read] [a] |
-| by_reference.cpp:32:15:32:15 | FieldAddress [read] | semmle.label | FieldAddress [read] |
 | by_reference.cpp:32:15:32:15 | FieldAddress [read] | semmle.label | FieldAddress [read] |
 | by_reference.cpp:35:9:35:19 | *#this [a] | semmle.label | *#this [a] |
 | by_reference.cpp:35:9:35:19 | ReturnValue | semmle.label | ReturnValue |
-| by_reference.cpp:35:9:35:19 | ReturnValue | semmle.label | ReturnValue |
-| by_reference.cpp:35:9:35:19 | this [a] | semmle.label | this [a] |
 | by_reference.cpp:36:12:36:15 | this [read] [a] | semmle.label | this [read] [a] |
-| by_reference.cpp:36:12:36:15 | this [read] [a] | semmle.label | this [read] [a] |
-| by_reference.cpp:36:18:36:18 | FieldAddress [read] | semmle.label | FieldAddress [read] |
 | by_reference.cpp:36:18:36:18 | FieldAddress [read] | semmle.label | FieldAddress [read] |
 | by_reference.cpp:39:9:39:21 | *#this [a] | semmle.label | *#this [a] |
 | by_reference.cpp:39:9:39:21 | ReturnValue | semmle.label | ReturnValue |
+| by_reference.cpp:40:12:40:15 | this indirection [a] | semmle.label | this indirection [a] |
 | by_reference.cpp:40:18:40:28 | call to getDirectly | semmle.label | call to getDirectly |
-| by_reference.cpp:40:18:40:28 | this [a] | semmle.label | this [a] |
 | by_reference.cpp:43:9:43:27 | *#this [a] | semmle.label | *#this [a] |
 | by_reference.cpp:43:9:43:27 | ReturnValue | semmle.label | ReturnValue |
 | by_reference.cpp:44:12:44:24 | call to nonMemberGetA | semmle.label | call to nonMemberGetA |
-| by_reference.cpp:44:12:44:24 | this [a] | semmle.label | this [a] |
+| by_reference.cpp:44:26:44:29 | this indirection [a] | semmle.label | this indirection [a] |
 | by_reference.cpp:50:5:50:15 | call to user_input | semmle.label | call to user_input |
 | by_reference.cpp:50:5:50:15 | s [post update] [a] | semmle.label | s [post update] [a] |
 | by_reference.cpp:50:17:50:26 | call to user_input | semmle.label | call to user_input |
@@ -1694,8 +1680,8 @@ subpaths
 | D.cpp:51:19:51:25 | e | D.cpp:11:24:11:24 | e | D.cpp:11:29:11:32 | this [post update] [elem] | D.cpp:51:19:51:25 | call to getBox1 [post update] [elem] |
 | by_reference.cpp:20:11:20:21 | value | by_reference.cpp:15:26:15:30 | value | by_reference.cpp:16:5:16:8 | this [post update] [a] | by_reference.cpp:20:11:20:21 | this [post update] [a] |
 | by_reference.cpp:24:5:24:17 | value | by_reference.cpp:11:48:11:52 | value | by_reference.cpp:12:5:12:5 | s [post update] [a] | by_reference.cpp:24:5:24:17 | this [post update] [a] |
-| by_reference.cpp:40:18:40:28 | this [a] | by_reference.cpp:35:9:35:19 | this [a] | by_reference.cpp:35:9:35:19 | ReturnValue | by_reference.cpp:40:18:40:28 | call to getDirectly |
-| by_reference.cpp:44:12:44:24 | this [a] | by_reference.cpp:31:46:31:46 | s [a] | by_reference.cpp:31:16:31:28 | ReturnValue | by_reference.cpp:44:12:44:24 | call to nonMemberGetA |
+| by_reference.cpp:40:12:40:15 | this indirection [a] | by_reference.cpp:35:9:35:19 | *#this [a] | by_reference.cpp:35:9:35:19 | ReturnValue | by_reference.cpp:40:18:40:28 | call to getDirectly |
+| by_reference.cpp:44:26:44:29 | this indirection [a] | by_reference.cpp:31:46:31:46 | *s [a] | by_reference.cpp:31:16:31:28 | ReturnValue | by_reference.cpp:44:12:44:24 | call to nonMemberGetA |
 | by_reference.cpp:50:5:50:15 | call to user_input | by_reference.cpp:15:26:15:30 | value | by_reference.cpp:16:5:16:8 | this [post update] [a] | by_reference.cpp:50:5:50:15 | s [post update] [a] |
 | by_reference.cpp:51:8:51:8 | s indirection [a] | by_reference.cpp:35:9:35:19 | *#this [a] | by_reference.cpp:35:9:35:19 | ReturnValue | by_reference.cpp:51:10:51:20 | call to getDirectly |
 | by_reference.cpp:56:5:56:17 | call to user_input | by_reference.cpp:19:28:19:32 | value | by_reference.cpp:20:5:20:8 | this [post update] [a] | by_reference.cpp:56:5:56:17 | s [post update] [a] |

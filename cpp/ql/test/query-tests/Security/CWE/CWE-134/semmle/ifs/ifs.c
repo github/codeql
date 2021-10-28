@@ -86,13 +86,13 @@ int main(int argc, char **argv) {
 		i3 = argv[1];
 	printf(i3);
 	
-	// BAD [FALSE NEGATIVE]: varOne is 1 so condition is true and it always goes inside the if
+	// BAD: varOne is 1 so condition is true and it always goes inside the if
 	char *i4;
 	if (varOne)
 		i4 = argv[1];
 	printf(i4);
 	
-	// BAD [FALSE NEGATIVE]: varZero is 0 so condition is true and it always goes inside the if
+	// BAD: varZero is 0 so condition is true and it always goes inside the if
 	char *i5;
 	if (!varZero)
 		i5 = argv[1];

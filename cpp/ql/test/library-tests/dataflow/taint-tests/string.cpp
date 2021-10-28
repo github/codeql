@@ -127,7 +127,7 @@ void test_range_based_for_loop_string() {
 	}
 
 	for(char& c : s) {
-		sink(c); // $ ast MISSING: ir
+		sink(c); // $ ast,ir
 	}
 
 	const std::string const_s(source());

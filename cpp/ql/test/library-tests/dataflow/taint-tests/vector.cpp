@@ -25,7 +25,7 @@ void test_range_based_for_loop_vector(int source1) {
 	}
 
 	for(int& x : v) {
-		sink(x); // $ ast MISSING: ir
+		sink(x); // $ ast,ir
 	}
 
 	const std::vector<int> const_v(100, source1);

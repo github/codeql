@@ -31,6 +31,8 @@ edges
 | tests.c:29:28:29:31 | argv | tests.c:33:21:33:29 | buffer100 indirection |
 | tests.c:31:15:31:23 | array to pointer conversion | tests.c:31:15:31:23 | buffer100 |
 | tests.c:31:15:31:23 | array to pointer conversion | tests.c:31:15:31:23 | buffer100 indirection |
+| tests.c:31:15:31:23 | array to pointer conversion | tests.c:33:21:33:29 | buffer100 |
+| tests.c:31:15:31:23 | array to pointer conversion | tests.c:33:21:33:29 | buffer100 indirection |
 | tests.c:31:15:31:23 | buffer100 | tests.c:31:15:31:23 | buffer100 |
 | tests.c:31:15:31:23 | buffer100 | tests.c:31:15:31:23 | buffer100 indirection |
 | tests.c:31:15:31:23 | buffer100 | tests.c:33:21:33:29 | buffer100 |

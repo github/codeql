@@ -54,7 +54,7 @@ void test_myint_member_assignment()
 	mi.i = source();
 
 	sink(mi); // $ MISSING: ast,ir
-	sink(mi.get()); // $ ast,ir
+	sink(mi.get()); // $ ast MISSING: ir
 }
 
 void test_myint_method_assignment()
@@ -64,7 +64,7 @@ void test_myint_method_assignment()
 	mi.get() = source();
 
 	sink(mi); // $ ir MISSING: ast
-	sink(mi.get()); // $ ast,ir
+	sink(mi.get()); // $ ast MISSING: ir
 }
 
 void test_myint_overloaded_assignment()
@@ -107,7 +107,7 @@ void test_myarray_method_assignment()
 
 	ma.get(0) = source();
 
-	sink(ma.get(0)); // $ ir MISSING: ast
+	sink(ma.get(0)); // $ MISSING: ast,ir
 }
 
 void test_myarray_overloaded_assignment()
