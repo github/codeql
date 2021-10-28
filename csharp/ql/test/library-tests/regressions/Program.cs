@@ -1,5 +1,3 @@
-// semmle-extractor-options: /langversion:8.0
-
 using System;
 using System.Threading.Tasks;
 
@@ -196,5 +194,3 @@ class C3<T> : C2<C4<T>> { }
 class C4<T> : C2<C3<T>> { }
 
 class C5 : C4<C5> { }
-
-// semmle-extractor-options: /r:System.Dynamic.Runtime.dll

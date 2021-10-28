@@ -179,10 +179,19 @@ namespace System.Web
 
     public class HttpCookie
     {
+        public HttpCookie(string name)
+        {
+        }
+
+        public HttpCookie(string name, string value)
+        {
+        }
+
         public string Value { get; set; }
         public NameValueCollection Values => null;
         public string this[string s] { get => null; set { } }
         public bool Secure { get; set; }
+        public bool HttpOnly { get; set; }
         public System.DateTime Expires { get; set; }
     }
 

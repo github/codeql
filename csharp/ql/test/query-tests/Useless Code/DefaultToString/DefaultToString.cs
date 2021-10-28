@@ -63,5 +63,3 @@ public class DefaultToString
     {
     }
 }
-
-// semmle-extractor-options: /r:System.Runtime.Extensions.dll

@@ -1,5 +1,5 @@
 import csharp
-import semmle.code.csharp.security.xml.InsecureXML::InsecureXML
+import semmle.code.csharp.security.xml.InsecureXMLQuery
 
 from ObjectCreation creation, Expr evidence, string reason
 where

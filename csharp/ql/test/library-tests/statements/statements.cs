@@ -65,7 +65,6 @@ namespace Statements
             }
         }
 
-
         static void MainSwitch(string[] args)
         {
             int n = args.Length;
@@ -135,7 +134,6 @@ namespace Statements
                 Console.WriteLine(args[i]);
             }
         }
-
 
         static void MainForeach(string[] args)
         {
@@ -280,5 +278,3 @@ namespace Statements
         }
     }
 }
-
-// semmle-extractor-options: /r:System.Runtime.Extensions.dll /r:System.IO.FileSystem.dll

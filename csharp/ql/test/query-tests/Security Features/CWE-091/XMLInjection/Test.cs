@@ -1,5 +1,3 @@
-// semmle-extractor-options: /r:System.Private.Xml.dll /r:System.Xml.dll /r:System.Xml.ReaderWriter.dll /r:System.Runtime.Extensions.dll /r:System.Collections.Specialized.dll ${testdir}/../../../../resources/stubs/System.Web.cs
-
 using System;
 using System.Security;
 using System.Web;

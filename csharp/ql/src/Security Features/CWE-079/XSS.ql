@@ -13,7 +13,7 @@
  */
 
 import csharp
-import semmle.code.csharp.security.dataflow.XSS::XSS
+import semmle.code.csharp.security.dataflow.XSSQuery
 import PathGraph
 
 from XssNode source, XssNode sink, string message

@@ -139,7 +139,7 @@ class TranslatedDirectInitialization extends TranslatedInitialization {
     opcode instanceof Opcode::Store and
     resultType = getTypeForPRValue(this.getContext().getTargetType())
     or
-    needsConversion() and
+    this.needsConversion() and
     tag = AssignmentConvertRightTag() and
     // For now only use `Opcode::Convert` to
     // crudely represent conversions. Could
@@ -153,9 +153,9 @@ class TranslatedDirectInitialization extends TranslatedInitialization {
     result = this.getParent().getChildSuccessor(this) and
     kind instanceof GotoEdge
     or
-    needsConversion() and
+    this.needsConversion() and
     tag = AssignmentConvertRightTag() and
-    result = getInstruction(InitializerStoreTag()) and
+    result = this.getInstruction(InitializerStoreTag()) and
     kind instanceof GotoEdge
   }
 
@@ -203,7 +203,7 @@ abstract class TranslatedElementInitialization extends TranslatedElement {
   ArrayInitializer initList;
 
   final override string toString() {
-    result = initList.toString() + "[" + getElementIndex().toString() + "]"
+    result = initList.toString() + "[" + this.getElementIndex().toString() + "]"
   }
 
   final override Language::AST getAST() { result = initList }
@@ -211,54 +211,54 @@ abstract class TranslatedElementInitialization extends TranslatedElement {
   final override Callable getFunction() { result = initList.getEnclosingCallable() }
 
   final override Instruction getFirstInstruction() {
-    result = this.getInstruction(getElementIndexTag())
+    result = this.getInstruction(this.getElementIndexTag())
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CSharpType resultType) {
-    tag = getElementIndexTag() and
+    tag = this.getElementIndexTag() and
     opcode instanceof Opcode::Constant and
     resultType = getIntType()
     or
-    tag = getElementAddressTag() and
+    tag = this.getElementAddressTag() and
     opcode instanceof Opcode::PointerAdd and
-    resultType = getTypeForGLValue(getElementType())
+    resultType = getTypeForGLValue(this.getElementType())
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
-    tag = getElementIndexTag() and
-    result = this.getInstruction(getElementAddressTag()) and
+    tag = this.getElementIndexTag() and
+    result = this.getInstruction(this.getElementAddressTag()) and
     kind instanceof GotoEdge
   }
 
   override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
-    tag = getElementAddressTag() and
+    tag = this.getElementAddressTag() and
     (
       operandTag instanceof LeftOperandTag and
       result = this.getParent().(InitializationContext).getTargetAddress()
       or
       operandTag instanceof RightOperandTag and
-      result = this.getInstruction(getElementIndexTag())
+      result = this.getInstruction(this.getElementIndexTag())
     )
   }
 
   override int getInstructionElementSize(InstructionTag tag) {
-    tag = getElementAddressTag() and
-    result = Language::getTypeSize(getElementType())
+    tag = this.getElementAddressTag() and
+    result = Language::getTypeSize(this.getElementType())
   }
 
   override string getInstructionConstantValue(InstructionTag tag) {
-    tag = getElementIndexTag() and
-    result = getElementIndex().toString()
+    tag = this.getElementIndexTag() and
+    result = this.getElementIndex().toString()
   }
 
   abstract int getElementIndex();
 
   final InstructionTag getElementAddressTag() {
-    result = InitializerElementAddressTag(getElementIndex())
+    result = InitializerElementAddressTag(this.getElementIndex())
   }
 
   final InstructionTag getElementIndexTag() {
-    result = InitializerElementIndexTag(getElementIndex())
+    result = InitializerElementIndexTag(this.getElementIndex())
   }
 
   final ArrayInitializer getInitList() { result = initList }
@@ -278,14 +278,16 @@ class TranslatedExplicitElementInitialization extends TranslatedElementInitializ
     this = TTranslatedExplicitElementInitialization(initList, elementIndex)
   }
 
-  override Instruction getTargetAddress() { result = this.getInstruction(getElementAddressTag()) }
+  override Instruction getTargetAddress() {
+    result = this.getInstruction(this.getElementAddressTag())
+  }
 
-  override Type getTargetType() { result = getElementType() }
+  override Type getTargetType() { result = this.getElementType() }
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
     result = TranslatedElementInitialization.super.getInstructionSuccessor(tag, kind)
     or
-    tag = getElementAddressTag() and
+    tag = this.getElementAddressTag() and
     result = this.getInitialization().getFirstInstruction() and
     kind instanceof GotoEdge
   }
@@ -340,7 +342,7 @@ class TranslatedConstructorInitializer extends TranslatedConstructorCallFromCons
   override string toString() { result = "constructor init: " + call.toString() }
 
   override Instruction getFirstInstruction() {
-    if needsConversion()
+    if this.needsConversion()
     then result = this.getInstruction(OnlyInstructionTag())
     else result = this.getConstructorCall().getFirstInstruction()
   }
@@ -361,13 +363,13 @@ class TranslatedConstructorInitializer extends TranslatedConstructorCallFromCons
   override Instruction getReceiver() {
     if this.needsConversion()
     then result = this.getInstruction(OnlyInstructionTag())
-    else result = getTranslatedFunction(getFunction()).getInitializeThisInstruction()
+    else result = getTranslatedFunction(this.getFunction()).getInitializeThisInstruction()
   }
 
   override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
     tag = OnlyInstructionTag() and
     operandTag instanceof UnaryOperandTag and
-    result = getTranslatedFunction(getFunction()).getInitializeThisInstruction()
+    result = getTranslatedFunction(this.getFunction()).getInitializeThisInstruction()
   }
 
   predicate needsConversion() {

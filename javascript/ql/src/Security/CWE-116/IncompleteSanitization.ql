@@ -79,14 +79,11 @@ predicate allBackslashesEscaped(DataFlow::Node nd) {
   or
   // flow through string methods
   exists(DataFlow::MethodCallNode mc, string m |
-    m = "replace" or
-    m = "replaceAll" or
-    m = "slice" or
-    m = "substr" or
-    m = "substring" or
-    m = "toLowerCase" or
-    m = "toUpperCase" or
-    m = "trim"
+    m =
+      [
+        "replace", "replaceAll", "slice", "substr", "substring", "toLowerCase", "toUpperCase",
+        "trim"
+      ]
   |
     mc = nd and m = mc.getMethodName() and allBackslashesEscaped(mc.getReceiver())
   )

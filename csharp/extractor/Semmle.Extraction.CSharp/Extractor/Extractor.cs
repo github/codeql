@@ -107,6 +107,11 @@ namespace Semmle.Extraction.CSharp
 
             try
             {
+                if (options.ProjectsToLoad.Any())
+                {
+                    AddSourceFilesFromProjects(options.ProjectsToLoad, options.CompilerArguments, logger);
+                }
+
                 var compilerVersion = new CompilerVersion(options);
 
                 if (compilerVersion.SkipExtraction)
@@ -143,6 +148,41 @@ namespace Semmle.Extraction.CSharp
             {
                 logger.Log(Severity.Error, "  Unhandled exception: {0}", ex);
                 return ExitCode.Errors;
+            }
+        }
+
+        private static void AddSourceFilesFromProjects(IEnumerable<string> projectsToLoad, IList<string> compilerArguments, ILogger logger)
+        {
+            logger.Log(Severity.Info, "  Loading referenced projects.");
+            var projects = new Queue<string>(projectsToLoad);
+            var processed = new HashSet<string>();
+            while (projects.Count > 0)
+            {
+                var project = projects.Dequeue();
+                var fi = new FileInfo(project);
+                if (processed.Contains(fi.FullName))
+                {
+                    continue;
+                }
+
+                processed.Add(fi.FullName);
+                logger.Log(Severity.Info, "  Processing referenced project: " + fi.FullName);
+
+                var csProj = new CsProjFile(fi);
+
+                foreach (var cs in csProj.Sources)
+                {
+                    if (cs.Contains("/obj/"))
+                    {
+                        continue;
+                    }
+                    compilerArguments.Add(cs);
+                }
+
+                foreach (var pr in csProj.ProjectReferences)
+                {
+                    projects.Enqueue(pr);
+                }
             }
         }
 
@@ -452,8 +492,18 @@ namespace Semmle.Extraction.CSharp
         /// <summary>
         /// Gets a list of all `csharp.{hash}.txt` files currently written to the log directory.
         /// </summary>
-        public static IEnumerable<string> GetCSharpArgsLogs() =>
-            Directory.EnumerateFiles(GetCSharpLogDirectory(), "csharp.*.txt");
+        public static IEnumerable<string> GetCSharpArgsLogs()
+        {
+            try
+            {
+                return Directory.EnumerateFiles(GetCSharpLogDirectory(), "csharp.*.txt");
+            }
+            catch (DirectoryNotFoundException)
+            {
+                // If the directory does not exist, there are no log files
+                return Enumerable.Empty<string>();
+            }
+        }
 
         private static string GetCSharpLogDirectory()
         {

@@ -288,3 +288,8 @@ def avoid_redundant_split(a):
         var = False
     if var:
         foo.bar() #foo is defined here.
+
+def type_annotation_fp():
+    annotated : annotation = [1,2,3]
+    for x in annotated:
+        print(x)

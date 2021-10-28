@@ -57,11 +57,11 @@ public class JakartaRsFlow {
   static PathSegment taint(PathSegment ps) { return ps; }
 
   static UriInfo taint(UriInfo ui) { return ui; }
-  
+
   static Map taint(Map m) { return m; }
-  
+
   static Link taint(Link l) { return l; }
-  
+
   static Class taint(Class c) { return c; }
 
   private static class UriSource {
@@ -160,12 +160,16 @@ public class JakartaRsFlow {
   void testAbstractMultivaluedMap(Map<String, List<String>> map1, Map<String, List<String>> map2, List<String> list) {
     map1.put(taint(), list);
     AbstractMultivaluedMap<String, String> amm1 = new MyAbstractMultivaluedMapJak<String, String>(map1);
-    sink(amm1.keySet().iterator().next()); // $  MISSING: hasValueFlow
+    sink(amm1.keySet().iterator().next()); // $ hasValueFlow
 
     list.add(taint());
     map2.put("key", list);
     AbstractMultivaluedMap<String, String> amm2 = new MyAbstractMultivaluedMapJak<String, String>(map2);
-    sink(amm2.get("key").get(0)); // $  MISSING: hasValueFlow SPURIOUS: hasTaintFlow
+    sink(amm2.get("key").get(0)); // $ hasValueFlow
+
+    AbstractMultivaluedMap<String, String> amm3 = new MyAbstractMultivaluedMapJak<String, String>(null);
+    amm3.put("key", list);
+    sink(amm3.get("key").get(0)); // $ hasValueFlow
   }
 
   void testMultivaluedHashMap(Map<String, String> map1, Map<String, String> map2,
@@ -192,12 +196,21 @@ public class JakartaRsFlow {
     sink(taint(ps2).getPath()); // $ hasTaintFlow
   }
 
-  void testUriInfo(UriInfo ui1, UriInfo ui2, UriInfo ui3, UriInfo ui4, UriInfo ui5) {
-    sink(taint(ui1).getPathParameters()); // $ hasTaintFlow
-    sink(taint(ui2).getPathSegments()); // $ hasTaintFlow
-    sink(taint(ui2).getQueryParameters()); // $ hasTaintFlow
-    sink(taint(ui2).getRequestUri()); // $ hasTaintFlow
-    sink(taint(ui2).getRequestUriBuilder()); // $ hasTaintFlow
+  void testUriInfo(UriInfo ui, UriInfo untaintedUriInfo) throws Exception {
+    ui = taint(ui);
+    sink(ui.getPathParameters()); // $ hasTaintFlow
+    sink(ui.getPathSegments()); // $ hasTaintFlow
+    sink(ui.getQueryParameters()); // $ hasTaintFlow
+    sink(ui.getRequestUri()); // $ hasTaintFlow
+    sink(ui.getRequestUriBuilder()); // $ hasTaintFlow
+    sink(ui.getQueryParameters().getFirst("someKey")); // $ hasTaintFlow
+    sink(ui.getRequestUri()); // $ hasTaintFlow
+    sink(ui.getRequestUriBuilder().build()); // $ hasTaintFlow
+    URI taintedUri = UriSource.taint();
+    URI untaintedUri = new URI("");
+    sink(untaintedUriInfo.relativize(taintedUri)); // $ hasTaintFlow
+    sink(untaintedUriInfo.resolve(taintedUri)); // $ hasTaintFlow
+    sink(ui.resolve(untaintedUri)); // $ hasTaintFlow
   }
 
   void testCookie() {
@@ -337,7 +350,7 @@ public class JakartaRsFlow {
     sink(UriBuilder.fromPath(taint()).buildFromEncodedMap(new HashMap<String, String>())); // $ hasTaintFlow
     sink(UriBuilder.fromPath("").buildFromMap(taint(new HashMap<String, String>()), false)); // $ hasTaintFlow
     sink(UriBuilder.fromPath(taint()).buildFromMap(new HashMap<String, String>(), true)); // $ hasTaintFlow
-    
+
     sink(UriBuilder.fromPath(taint()).clone()); // $ hasTaintFlow
     sink(UriBuilder.fromPath("").fragment(taint())); // $ hasTaintFlow
     sink(UriBuilder.fromPath(taint()).fragment("")); // $ hasTaintFlow
