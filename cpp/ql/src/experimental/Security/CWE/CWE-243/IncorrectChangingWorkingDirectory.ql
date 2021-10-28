@@ -13,7 +13,7 @@
 
 import cpp
 
-/** Holds if a `fc` function call is available before or before a `chdir` function call. */
+/** Holds if a `fc` function call is available before or after a `chdir` function call. */
 predicate inExistsChdir(FunctionCall fcp) {
   exists(FunctionCall fctmp |
     (
@@ -54,7 +54,7 @@ where
     not inExistsChdir(fctmp) and
     not outExistsChdir(fctmp)
   ) and
-  msg = "Creation of chroot Jail Without Changing Working Directory out"
+  msg = "Creation of 'chroot' jail without changing the working directory"
   or
   (
     fc.getTarget().hasGlobalOrStdName("chdir") or
@@ -65,6 +65,6 @@ where
   not exists(ReturnStmt rttmp | rttmp.getExpr().getAChild*() = fc) and
   not exists(Assignment astmp | astmp.getAChild*() = fc) and
   not exists(Initializer ittmp | ittmp.getExpr().getAChild*() = fc) and
-  not fc.isInMacroExpansion() and
-  msg = fc.getTarget().getName() + " unchecked return value."
+  not isFromMacroDefinition(fc)
+  msg = "Unchecked return value for call to '" + fc.getTarget().getName() + "'."
 select fc, msg
