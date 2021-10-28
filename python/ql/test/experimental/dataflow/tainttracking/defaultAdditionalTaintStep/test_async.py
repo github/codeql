@@ -31,7 +31,7 @@ async def test_async_with():
     ctx = AsyncContext()
     taint(ctx)
     async with ctx as tainted:
-        ensure_tainted(tainted) # $ MISSING: tainted
+        ensure_tainted(tainted) # $ tainted
 
 
 class AsyncIter:
