@@ -79,9 +79,7 @@ private predicate canHaveSensitiveCookie(DataFlow::Node node) {
  * `<cookie-name>=<cookie-value>; Domain=<domain-value>; Secure; HttpOnly`
  */
 bindingset[s]
-private string getCookieName(string s) {
-  result = s.regexpCapture("([^=]*)=.*", 1).trim()
-}
+private string getCookieName(string s) { result = s.regexpCapture("([^=]*)=.*", 1).trim() }
 
 /**
  * Holds if the `Set-Cookie` header value contains the specified attribute
