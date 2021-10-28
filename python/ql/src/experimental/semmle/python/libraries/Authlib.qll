@@ -18,8 +18,23 @@ private module Authlib {
   /** Gets a reference to `jwt.decode` */
   private API::Node authlibJWTDecode() { result = authlibJWT().getMember("decode") }
 
-  // def encode(self, header, payload, key, check=True):
+  /**
+   * Gets a call to `authlib.jose.(jwt|JsonWebToken).encode`.
+   *
+   * Given the following example:
+   *
+   * ```py
+   * jwt.encode({"alg": "HS256"}, token, "key")
+   * ```
+   *
+   * * `this` would be `jwt.encode({"alg": "HS256"}, token, "key")`.
+   * * `getPayload()`'s result would be `token`.
+   * * `getKey()`'s result would be `"key"`.
+   * * `getAlgorithm()`'s result would be `"HS256"`.
+   * * `getAlgorithmstring()`'s result would be `HS256`.
+   */
   private class AuthlibJWTEncodeCall extends DataFlow::CallCfgNode, JWTEncoding::Range {
+    // def encode(self, header, payload, key, check=True):
     AuthlibJWTEncodeCall() { this = authlibJWTEncode().getACall() }
 
     override DataFlow::Node getPayload() { result = this.getArg(1) }
@@ -42,8 +57,21 @@ private module Authlib {
     }
   }
 
-  // def decode(self, s, key, claims_cls=None, claims_options=None, claims_params=None):
+  /**
+   * Gets a call to `authlib.jose.(jwt|JsonWebToken).decode`
+   *
+   * Given the following example:
+   *
+   * ```py
+   * jwt.decode(token, key)
+   * ```
+   *
+   * * `this` would be `jwt.decode(token, key)`.
+   * * `getPayload()`'s result would be `token`.
+   * * `getKey()`'s result would be `key`.
+   */
   private class AuthlibJWTDecodeCall extends DataFlow::CallCfgNode, JWTDecoding::Range {
+    // def decode(self, s, key, claims_cls=None, claims_options=None, claims_params=None):
     AuthlibJWTDecodeCall() { this = authlibJWTDecode().getACall() }
 
     override DataFlow::Node getPayload() { result = this.getArg(0) }

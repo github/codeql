@@ -13,8 +13,23 @@ private module PythonJose {
   /** Gets a reference to `jwt.decode` */
   private API::Node joseJWTDecode() { result = joseJWT().getMember("decode") }
 
-  // def encode(claims, key, algorithm=ALGORITHMS.HS256, headers=None, access_token=None):
+  /**
+   * Gets a call to `jwt.encode`.
+   *
+   * Given the following example:
+   *
+   * ```py
+   * jwt.encode(token, key="key", algorithm="HS256")
+   * ```
+   *
+   * * `this` would be `jwt.encode(token, key="key", algorithm="HS256")`.
+   * * `getPayload()`'s result would be `token`.
+   * * `getKey()`'s result would be `"key"`.
+   * * `getAlgorithm()`'s result would be `"HS256"`.
+   * * `getAlgorithmstring()`'s result would be `HS256`.
+   */
   private class JoseJWTEncodeCall extends DataFlow::CallCfgNode, JWTEncoding::Range {
+    // def encode(claims, key, algorithm=ALGORITHMS.HS256, headers=None, access_token=None):
     JoseJWTEncodeCall() { this = joseJWTEncode().getACall() }
 
     override DataFlow::Node getPayload() { result = this.getArg(0) }
@@ -33,8 +48,25 @@ private module PythonJose {
     }
   }
 
-  // def decode(token, key, algorithms=None, options=None, audience=None, issuer=None, subject=None, access_token=None):
+  /**
+   * Gets a call to `jwt.decode`.
+   *
+   * Given the following example:
+   *
+   * ```py
+   * jwt.decode(token, "key", "HS256")
+   * ```
+   *
+   * * `this` would be `jwt.decode(token, "key", "HS256")`.
+   * * `getPayload()`'s result would be `token`.
+   * * `getKey()`'s result would be `"key"`.
+   * * `getAlgorithm()`'s result would be `"HS256"`.
+   * * `getAlgorithmstring()`'s result would be `HS256`.
+   * * `getOptions()`'s result would be none.
+   * * `verifiesSignature()` predicate would succeed.
+   */
   private class JoseJWTDecodeCall extends DataFlow::CallCfgNode, JWTDecoding::Range {
+    // def decode(token, key, algorithms=None, options=None, audience=None, issuer=None, subject=None, access_token=None):
     JoseJWTDecodeCall() { this = joseJWTDecode().getACall() }
 
     override DataFlow::Node getPayload() { result = this.getArg(0) }

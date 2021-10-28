@@ -10,8 +10,23 @@ private module PyJWT {
   /** Gets a reference to `jwt.decode` */
   private API::Node pyjwtDecode() { result = API::moduleImport("jwt").getMember("decode") }
 
-  // def encode(self, payload, key, algorithm="HS256", headers=None, json_encoder=None)
+  /**
+   * Gets a call to `jwt.encode`.
+   *
+   * Given the following example:
+   *
+   * ```py
+   * jwt.encode(token, "key", "HS256")
+   * ```
+   *
+   * * `this` would be `jwt.encode(token, "key", "HS256")`.
+   * * `getPayload()`'s result would be `token`.
+   * * `getKey()`'s result would be `"key"`.
+   * * `getAlgorithm()`'s result would be `"HS256"`.
+   * * `getAlgorithmstring()`'s result would be `HS256`.
+   */
   private class PyJWTEncodeCall extends DataFlow::CallCfgNode, JWTEncoding::Range {
+    // def encode(self, payload, key, algorithm="HS256", headers=None, json_encoder=None)
     PyJWTEncodeCall() { this = pyjwtEncode().getACall() }
 
     override DataFlow::Node getPayload() {
@@ -32,8 +47,25 @@ private module PyJWT {
     }
   }
 
-  // def decode(self, jwt, key="", algorithms=None, options=None)
+  /**
+   * Gets a call to `jwt.decode`.
+   *
+   * Given the following example:
+   *
+   * ```py
+   * jwt.decode(token, key, "HS256", options={"verify_signature": True})
+   * ```
+   *
+   * * `this` would be `jwt.decode(token, key, options={"verify_signature": True})`.
+   * * `getPayload()`'s result would be `token`.
+   * * `getKey()`'s result would be `key`.
+   * * `getAlgorithm()`'s result would be `"HS256"`.
+   * * `getAlgorithmstring()`'s result would be `HS256`.
+   * * `getOptions()`'s result would be `{"verify_signature": True}`.
+   * * `verifiesSignature()` predicate would succeed.
+   */
   private class PyJWTDecodeCall extends DataFlow::CallCfgNode, JWTDecoding::Range {
+    // def decode(self, jwt, key="", algorithms=None, options=None)
     PyJWTDecodeCall() { this = pyjwtDecode().getACall() }
 
     override DataFlow::Node getPayload() { result in [this.getArg(0), this.getArgByName("jwt")] }

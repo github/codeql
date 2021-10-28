@@ -4,11 +4,11 @@
 <qhelp>
 <overview>
 <p>Applications encoding a JSON Web Token (JWT) may be vulnerable when the applied key or algorithm
-is empty or None.</p>
+is empty or <code>None</code>.</p>
 </overview>
 
 <recommendation>
-<p>Use non-empty nor None values while encoding JWT payloads.</p>
+<p>Use non-empty nor <code>None</code> values while encoding JWT payloads.</p>
 </recommendation>
 
 <example>
