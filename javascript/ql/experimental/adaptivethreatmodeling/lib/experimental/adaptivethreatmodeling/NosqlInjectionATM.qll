@@ -126,10 +126,7 @@ DataFlow::Node getASubexpressionWithinQuery(DataFlow::Node query) {
   exists(DataFlow::SourceNode receiver |
     receiver.flowsTo(getASubexpressionWithinQuery*(query.getALocalSource())) and
     result =
-      [
-        receiver.(DataFlow::SourceNode).getAPropertyWrite().getRhs(),
-        receiver.(DataFlow::ArrayCreationNode).getAnElement()
-      ]
+      [receiver.getAPropertyWrite().getRhs(), receiver.(DataFlow::ArrayCreationNode).getAnElement()]
   )
 }
 

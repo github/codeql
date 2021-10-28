@@ -89,7 +89,7 @@ class TranslatedDeclStmt extends TranslatedStmt {
 class TranslatedExprStmt extends TranslatedStmt {
   override ExprStmt stmt;
 
-  TranslatedExpr getExpr() { result = getTranslatedExpr(stmt.(ExprStmt).getExpr()) }
+  TranslatedExpr getExpr() { result = getTranslatedExpr(stmt.getExpr()) }
 
   override TranslatedElement getChild(int id) { id = 0 and result = this.getExpr() }
 
@@ -123,7 +123,7 @@ class TranslatedExprStmtAccessorSet extends TranslatedExprStmt {
   }
 
   override TranslatedExpr getExpr() {
-    result = getTranslatedExpr(stmt.(ExprStmt).getExpr().(AssignExpr).getLValue())
+    result = getTranslatedExpr(stmt.getExpr().(AssignExpr).getLValue())
   }
 
   override TranslatedElement getChild(int id) { id = 0 and result = this.getExpr() }

@@ -150,7 +150,7 @@ private Type parameterForSubTypes(ParameterizedType type) {
       lowerBound = arg.(Wildcard).getLowerBoundType()
     |
       // `T super Foo` implies that `Foo`, or any super-type of `Foo`, may be represented.
-      lowerBound.(RefType).getAnAncestor() = result
+      lowerBound.getAnAncestor() = result
     )
   )
 }

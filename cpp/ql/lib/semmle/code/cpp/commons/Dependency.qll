@@ -275,7 +275,7 @@ private predicate dependsOnDeclarationEntry(Element src, DeclarationEntry dest) 
     dependsOnTransitive(src, mid) and
     not mid instanceof Type and
     not mid instanceof EnumConstant and
-    getDeclarationEntries(mid, dest.(DeclarationEntry)) and
+    getDeclarationEntries(mid, dest) and
     not dest instanceof TypeDeclarationEntry
   )
   or
@@ -283,9 +283,9 @@ private predicate dependsOnDeclarationEntry(Element src, DeclarationEntry dest) 
     // dependency from a Type / Variable / Function use -> any (visible) definition
     dependsOnTransitive(src, mid) and
     not mid instanceof EnumConstant and
-    getDeclarationEntries(mid, dest.(DeclarationEntry)) and
+    getDeclarationEntries(mid, dest) and
     // must be definition
-    dest.(DeclarationEntry).isDefinition()
+    dest.isDefinition()
   )
 }
 

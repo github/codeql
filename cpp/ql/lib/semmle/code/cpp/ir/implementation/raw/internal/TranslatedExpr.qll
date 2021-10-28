@@ -1032,7 +1032,7 @@ abstract class TranslatedConversion extends TranslatedNonConstantExpr {
 
   final override TranslatedElement getChild(int id) { id = 0 and result = this.getOperand() }
 
-  final TranslatedExpr getOperand() { result = getTranslatedExpr(expr.(Conversion).getExpr()) }
+  final TranslatedExpr getOperand() { result = getTranslatedExpr(expr.getExpr()) }
 }
 
 /**

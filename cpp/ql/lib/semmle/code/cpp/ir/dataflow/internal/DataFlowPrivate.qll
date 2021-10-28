@@ -188,7 +188,7 @@ private predicate fieldStoreStepNoChi(Node node1, FieldContent f, PostUpdateNode
   exists(StoreInstruction store, Class c |
     store = node2.asInstruction() and
     store.getSourceValueOperand() = node1.asOperand() and
-    getWrittenField(store, f.(FieldContent).getAField(), c) and
+    getWrittenField(store, f.getAField(), c) and
     f.hasOffset(c, _, _)
   )
 }

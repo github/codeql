@@ -589,7 +589,7 @@ private predicate mk_HasAlloc(HashCons hc, NewOrNewArrayExpr new) {
 }
 
 private predicate mk_HasExtent(HashCons hc, NewArrayExpr new) {
-  hc = hashCons(new.(NewArrayExpr).getExtent().getFullyConverted())
+  hc = hashCons(new.getExtent().getFullyConverted())
 }
 
 private predicate analyzableNewExpr(NewExpr new) {
@@ -619,7 +619,7 @@ private predicate analyzableNewArrayExpr(NewArrayExpr new) {
   strictcount(new.getAllocatedType().getUnspecifiedType()) = 1 and
   count(new.getAllocatorCall().getFullyConverted()) <= 1 and
   count(new.getInitializer().getFullyConverted()) <= 1 and
-  count(new.(NewArrayExpr).getExtent().getFullyConverted()) <= 1
+  count(new.getExtent().getFullyConverted()) <= 1
 }
 
 private predicate mk_NewArrayExpr(

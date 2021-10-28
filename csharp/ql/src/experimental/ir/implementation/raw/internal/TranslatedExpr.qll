@@ -1083,7 +1083,7 @@ class TranslatedCast extends TranslatedNonConstantExpr {
     )
   }
 
-  private TranslatedExpr getOperand() { result = getTranslatedExpr(expr.(Cast).getExpr()) }
+  private TranslatedExpr getOperand() { result = getTranslatedExpr(expr.getExpr()) }
 
   private Opcode getOpcode() {
     expr instanceof CastExpr and result instanceof Opcode::CheckedConvertOrThrow

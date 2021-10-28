@@ -699,7 +699,7 @@ module PrintHTML {
       childIndex = -1 and result.(HTMLAttributesNodes).getElement() = element
       or
       exists(HTML::Element child | result.(HTMLElementNode).getElement() = child |
-        child = element.(HTML::Element).getChild(childIndex)
+        child = element.getChild(childIndex)
       )
     }
   }

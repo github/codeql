@@ -8,7 +8,7 @@ pragma[nomagic]
 predicate isAnalyzedParameter(Parameter p) {
   exists(FunctionWithAnalyzedParameters f, int parmIdx | p = f.getParameter(parmIdx) |
     // we cannot track flow into rest parameters
-    not p.(Parameter).isRestParameter()
+    not p.isRestParameter()
   )
 }
 

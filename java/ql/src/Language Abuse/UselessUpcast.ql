@@ -25,7 +25,7 @@ predicate usefulUpcast(CastExpr e) {
       other.getName() = target.getName() and
       other.getSourceDeclaration() != target.getSourceDeclaration()
     |
-      c.(MethodAccess).getReceiverType().(RefType).inherits(other.(Method)) or
+      c.(MethodAccess).getReceiverType().inherits(other.(Method)) or
       other = target.(Constructor).getDeclaringType().getAConstructor()
     )
   )

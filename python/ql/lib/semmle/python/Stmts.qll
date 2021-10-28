@@ -94,13 +94,13 @@ class AugAssign extends AugAssign_ {
    * Gets the target of this augmented assignment statement.
    * That is, the `a` in `a += b`.
    */
-  Expr getTarget() { result = this.getOperation().(BinaryExpr).getLeft() }
+  Expr getTarget() { result = this.getOperation().getLeft() }
 
   /**
    * Gets the value of this augmented assignment statement.
    * That is, the `b` in `a += b`.
    */
-  Expr getValue() { result = this.getOperation().(BinaryExpr).getRight() }
+  Expr getValue() { result = this.getOperation().getRight() }
 
   override Stmt getASubStatement() { none() }
 }

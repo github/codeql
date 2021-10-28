@@ -175,9 +175,7 @@ class FormattingFunctionCall extends Expr {
   /**
    * Gets the index at which the format string occurs in the argument list.
    */
-  int getFormatParameterIndex() {
-    result = this.getTarget().(FormattingFunction).getFormatParameterIndex()
-  }
+  int getFormatParameterIndex() { result = this.getTarget().getFormatParameterIndex() }
 
   /**
    * Gets the format expression used in this call.
@@ -191,7 +189,7 @@ class FormattingFunctionCall extends Expr {
     exists(int i |
       result = this.getArgument(i) and
       n >= 0 and
-      n = i - this.getTarget().(FormattingFunction).getFirstFormatArgumentIndex()
+      n = i - this.getTarget().getFirstFormatArgumentIndex()
     )
   }
 
@@ -251,7 +249,7 @@ class FormattingFunctionCall extends Expr {
   int getNumFormatArgument() {
     result = count(this.getFormatArgument(_)) and
     // format arguments must be known
-    exists(this.getTarget().(FormattingFunction).getFirstFormatArgumentIndex())
+    exists(this.getTarget().getFirstFormatArgumentIndex())
   }
 
   /**
@@ -289,35 +287,27 @@ class FormatLiteral extends Literal {
    * a `char *` (either way, `%S` will have the opposite meaning).
    * DEPRECATED: Use getDefaultCharType() instead.
    */
-  deprecated predicate isWideCharDefault() {
-    this.getUse().getTarget().(FormattingFunction).isWideCharDefault()
-  }
+  deprecated predicate isWideCharDefault() { this.getUse().getTarget().isWideCharDefault() }
 
   /**
    * Gets the default character type expected for `%s` by this format literal.  Typically
    * `char` or `wchar_t`.
    */
-  Type getDefaultCharType() {
-    result = this.getUse().getTarget().(FormattingFunction).getDefaultCharType()
-  }
+  Type getDefaultCharType() { result = this.getUse().getTarget().getDefaultCharType() }
 
   /**
    * Gets the non-default character type expected for `%S` by this format literal.  Typically
    * `wchar_t` or `char`.  On some snapshots there may be multiple results where we can't tell
    * which is correct for a particular function.
    */
-  Type getNonDefaultCharType() {
-    result = this.getUse().getTarget().(FormattingFunction).getNonDefaultCharType()
-  }
+  Type getNonDefaultCharType() { result = this.getUse().getTarget().getNonDefaultCharType() }
 
   /**
    * Gets the wide character type for this format literal.  This is usually `wchar_t`.  On some
    * snapshots there may be multiple results where we can't tell which is correct for a
    * particular function.
    */
-  Type getWideCharType() {
-    result = this.getUse().getTarget().(FormattingFunction).getWideCharType()
-  }
+  Type getWideCharType() { result = this.getUse().getTarget().getWideCharType() }
 
   /**
    * Holds if this `FormatLiteral` is in a context that supports
@@ -896,7 +886,7 @@ class FormatLiteral extends Literal {
     exists(string len, string conv |
       this.parseConvSpec(n, _, _, _, _, _, len, conv) and
       (len != "l" and len != "w" and len != "h") and
-      this.getUse().getTarget().(FormattingFunction).getFormatCharType().getSize() > 1 and // wide function
+      this.getUse().getTarget().getFormatCharType().getSize() > 1 and // wide function
       (
         conv = "c" and
         result = this.getNonDefaultCharType()

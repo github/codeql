@@ -141,8 +141,7 @@ class ExternalAPIUsedWithUntrustedData extends TExternalAPI {
     |
       this = TExternalAPIParameter(m, index) and
       result =
-        m.getDeclaringType().(RefType).getQualifiedName() + "." + m.getSignature() + " [" +
-          indexString + "]"
+        m.getDeclaringType().getQualifiedName() + "." + m.getSignature() + " [" + indexString + "]"
     )
   }
 }

@@ -93,8 +93,8 @@ class SuppressedConstructor extends Constructor {
     not this.isDefaultConstructor() and
     // Verify that there is only one statement, which is the `super()` call. This exists
     // even for empty constructors.
-    this.getBody().(BlockStmt).getNumStmt() = 1 and
-    this.getBody().(BlockStmt).getAStmt().(SuperConstructorInvocationStmt).getNumArgument() = 0 and
+    this.getBody().getNumStmt() = 1 and
+    this.getBody().getAStmt().(SuperConstructorInvocationStmt).getNumArgument() = 0 and
     // A constructor that is called is not acting to suppress the default constructor. We permit
     // calls from suppressed and default constructors - in both cases, they can only come from
     // sub-class constructors.
