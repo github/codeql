@@ -1,0 +1,3 @@
+| query-tests/Security/CWE-022/TaintedPath/normalizedPaths.js:390 | did not expect an alert, but found an alert for TaintedPath | OK |  |
+| query-tests/Security/CWE-022/TaintedPath/normalizedPaths.js:393 | did not expect an alert, but found an alert for TaintedPath | OK |  |
+| query-tests/Security/CWE-022/TaintedPath/normalizedPaths.js:396 | did not expect an alert, but found an alert for TaintedPath | OK |  |
