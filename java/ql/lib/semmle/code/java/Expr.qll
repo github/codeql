@@ -1366,15 +1366,11 @@ class InstanceOfExpr extends Expr, @instanceofexpr {
   }
 
   /**
-   * PREVIEW FEATURE in Java 14. Subject to removal in a future release.
-   *
    * Holds if this `instanceof` expression uses pattern matching.
    */
   predicate isPattern() { exists(this.getLocalVariableDeclExpr()) }
 
   /**
-   * PREVIEW FEATURE in Java 14. Subject to removal in a future release.
-   *
    * Gets the local variable declaration of this `instanceof` expression if pattern matching is used.
    */
   LocalVariableDeclExpr getLocalVariableDeclExpr() { result.isNthChildOf(this, 0) }
