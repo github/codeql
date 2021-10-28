@@ -346,12 +346,12 @@ class JWTEncoding extends DataFlow::Node instanceof JWTEncoding::Range {
   DataFlow::Node getKey() { result = super.getKey() }
 
   /**
-   * Gets the algorithm Node used in the encoding.
+   * Gets the argument for the algorithm used in the encoding.
    */
   DataFlow::Node getAlgorithm() { result = super.getAlgorithm() }
 
   /**
-   * Tries to get the algorithm used in the encoding.
+   * Gets a string representation of the algorithm used in the encoding.
    */
   string getAlgorithmString() { result = super.getAlgorithmString() }
 }
@@ -376,12 +376,12 @@ module JWTDecoding {
     abstract DataFlow::Node getKey();
 
     /**
-     * Gets the algorithm Node used in the encoding.
+     * Gets the argument for the algorithm used in the encoding.
      */
     abstract DataFlow::Node getAlgorithm();
 
     /**
-     * Tries to get the algorithm used in the encoding.
+     * Gets a string representation of the algorithm used in the encoding.
      */
     abstract string getAlgorithmString();
 
@@ -415,12 +415,12 @@ class JWTDecoding extends DataFlow::Node instanceof JWTDecoding::Range {
   DataFlow::Node getKey() { result = super.getKey() }
 
   /**
-   * Gets the algorithm Node used in the encoding.
+   * Gets the argument for the algorithm used in the encoding.
    */
   DataFlow::Node getAlgorithm() { result = super.getAlgorithm() }
 
   /**
-   * Tries to get the algorithm used in the encoding.
+   * Gets a string representation of the algorithm used in the encoding.
    */
   string getAlgorithmString() { result = super.getAlgorithmString() }
 
