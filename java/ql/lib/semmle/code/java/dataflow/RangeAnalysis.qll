@@ -360,8 +360,8 @@ private predicate safeCast(Type fromtyp, Type totyp) {
 /**
  * A cast that can be ignored for the purpose of range analysis.
  */
-private class SafeCastExpr extends CastExpr {
-  SafeCastExpr() { safeCast(getExpr().getType(), getType()) }
+private class RangeAnalysisSafeCastExpr extends CastExpr {
+  RangeAnalysisSafeCastExpr() { safeCast(getExpr().getType(), getType()) }
 }
 
 /**
@@ -382,7 +382,7 @@ private predicate typeBound(Type typ, int lowerbound, int upperbound) {
  */
 private class NarrowingCastExpr extends CastExpr {
   NarrowingCastExpr() {
-    not this instanceof SafeCastExpr and
+    not this instanceof RangeAnalysisSafeCastExpr and
     typeBound(getType(), _, _)
   }
 
@@ -412,7 +412,7 @@ private predicate boundFlowStep(Expr e2, Expr e1, int delta, boolean upper) {
   valueFlowStep(e2, e1, delta) and
   (upper = true or upper = false)
   or
-  e2.(SafeCastExpr).getExpr() = e1 and
+  e2.(RangeAnalysisSafeCastExpr).getExpr() = e1 and
   delta = 0 and
   (upper = true or upper = false)
   or

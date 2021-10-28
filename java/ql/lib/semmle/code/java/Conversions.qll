@@ -123,6 +123,18 @@ class CastConversionContext extends ConversionSite {
   override string kind() { result = "cast context" }
 }
 
+class SafeCastConversionContext extends ConversionSite {
+  SafeCastExpr c;
+
+  CastConversionContext() { this = c.getExpr() }
+
+  override Type getConversionTarget() { result = c.getType() }
+
+  override predicate isImplicit() { none() }
+
+  override string kind() { result = "safe cast context" }
+}
+
 /**
  * A numeric conversion. For example, `a * b` converts `a` and
  * `b` to have an appropriate numeric type.

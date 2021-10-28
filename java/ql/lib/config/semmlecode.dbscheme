@@ -667,6 +667,8 @@ case @expr.kind of
 | 74  = @errorexpr
 | 75  = @whenexpr
 | 76  = @getclassexpr
+| 77  = @safecastexpr
+| 78  = @notinstanceofexpr
 ;
 
 /** Holds if this `when` expression was written as an `if` expression. */

@@ -1475,8 +1475,28 @@ class X {
         }
     }
 
+    fun extractTypeAccess(t: IrType, parent: Label<out DbExprparent>, idx: Int, elementForLocation: IrElement) {
+        // TODO: elementForLocation allows us to give some sort of
+        // location, but a proper location for the type access will
+        // require upstream changes
+        val type = useType(t)
+        val id = tw.getFreshIdLabel<DbUnannotatedtypeaccess>()
+        tw.writeExprs_unannotatedtypeaccess(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
+        val locId = tw.getLocation(elementForLocation)
+        tw.writeHasLocation(id, locId)
+    }
+
     fun extractTypeOperatorCall(e: IrTypeOperatorCall, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int) {
         when(e.operator) {
+            IrTypeOperator.CAST -> {
+                val id = tw.getFreshIdLabel<DbCastexpr>()
+                val locId = tw.getLocation(e)
+                val type = useType(e.type)
+                tw.writeExprs_castexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
+                tw.writeHasLocation(id, locId)
+                extractTypeAccess(e.typeOperand, id, 0, e)
+                extractExpressionExpr(e.argument, callable, id, 1)
+            }
             IrTypeOperator.INSTANCEOF -> {
                 val id = tw.getFreshIdLabel<DbInstanceofexpr>()
                 val locId = tw.getLocation(e)
@@ -1484,10 +1504,16 @@ class X {
                 tw.writeExprs_instanceofexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 tw.writeHasLocation(id, locId)
                 extractExpressionExpr(e.argument, callable, id, 0)
-                val typeArg = useType(e.typeOperand)
-                val typeAccessId = tw.getFreshIdLabel<DbUnannotatedtypeaccess>()
-                tw.writeExprs_unannotatedtypeaccess(typeAccessId, typeArg.javaResult.id, typeArg.kotlinResult.id, id, 1)
-                // TODO: Type access location
+                extractTypeAccess(e.typeOperand, id, 1, e)
+            }
+            IrTypeOperator.NOT_INSTANCEOF -> {
+                val id = tw.getFreshIdLabel<DbNotinstanceofexpr>()
+                val locId = tw.getLocation(e)
+                val type = useType(e.type)
+                tw.writeExprs_notinstanceofexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
+                tw.writeHasLocation(id, locId)
+                extractExpressionExpr(e.argument, callable, id, 0)
+                extractTypeAccess(e.typeOperand, id, 1, e)
             }
             else -> {
                 logger.warnElement(Severity.ErrorSevere, "Unrecognised IrTypeOperatorCall: " + e.render(), e)

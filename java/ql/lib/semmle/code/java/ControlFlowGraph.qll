@@ -448,7 +448,11 @@ private module ControlFlowGraphImpl {
       or
       this instanceof CastExpr
       or
+      this instanceof SafeCastExpr
+      or
       this instanceof InstanceOfExpr and not this.(InstanceOfExpr).isPattern()
+      or
+      this instanceof NotInstanceOfExpr
       or
       this instanceof LocalVariableDeclExpr and
       not this = any(InstanceOfExpr ioe).getLocalVariableDeclExpr()
@@ -526,7 +530,11 @@ private module ControlFlowGraphImpl {
       or
       index = 0 and result = this.(CastExpr).getExpr()
       or
+      index = 0 and result = this.(SafeCastExpr).getExpr()
+      or
       index = 0 and result = this.(InstanceOfExpr).getExpr()
+      or
+      index = 0 and result = this.(NotInstanceOfExpr).getExpr()
       or
       index = 0 and result = this.(LocalVariableDeclExpr).getInit()
       or
@@ -598,6 +606,8 @@ private module ControlFlowGraphImpl {
     result = first(n.(PostOrderNode).firstChild())
     or
     result = first(n.(InstanceOfExpr).getExpr())
+    or
+    result = first(n.(NotInstanceOfExpr).getExpr())
     or
     result = first(n.(SynchronizedStmt).getExpr())
     or

@@ -1152,6 +1152,21 @@ class CastExpr extends Expr, @castexpr {
   override string getAPrimaryQlClass() { result = "CastExpr" }
 }
 
+// TODO: Would this be better as a predicate on CastExpr?
+/** A safe cast expression. */
+class SafeCastExpr extends Expr, @safecastexpr {
+  /** Gets the target type of this cast expression. */
+  Expr getTypeExpr() { result.isNthChildOf(this, 0) }
+
+  /** Gets the expression to which the cast operator is applied. */
+  Expr getExpr() { result.isNthChildOf(this, 1) }
+
+  /** Gets a printable representation of this expression. */
+  override string toString() { result = "... as? ..." }
+
+  override string getAPrimaryQlClass() { result = "SafeCastExpr" }
+}
+
 /** A class instance creation expression. */
 class ClassInstanceExpr extends Expr, ConstructorCall, @classinstancexpr {
   /** Gets the number of arguments provided to the constructor of the class instance creation expression. */
@@ -1440,6 +1455,28 @@ class InstanceOfExpr extends Expr, @instanceofexpr {
   override string toString() { result = "...instanceof..." }
 
   override string getAPrimaryQlClass() { result = "InstanceOfExpr" }
+}
+
+// TODO: Should this be desugared into instanceof.not()?
+// Note expressions/IrTypeOperatorCall.kt says:
+//     NOT_INSTANCEOF, // TODO drop and replace with `INSTANCEOF<T>(x).not()`?
+/** An `instanceof` expression. */
+class NotInstanceOfExpr extends Expr, @notinstanceofexpr {
+  /** Gets the expression on the left-hand side of the `!is` operator. */
+  Expr getExpr() {
+    result.isNthChildOf(this, 0)
+  }
+
+  /** Gets the access to the type on the right-hand side of the `!is` operator. */
+  Expr getTypeName() { result.isNthChildOf(this, 1) }
+
+  /** Gets the type this `!is` expression checks for. */
+  RefType getCheckedType() { result = getTypeName().getType() }
+
+  /** Gets a printable representation of this expression. */
+  override string toString() { result = "... !is ..." }
+
+  override string getAPrimaryQlClass() { result = "NotInstanceOfExpr" }
 }
 
 /**

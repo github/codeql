@@ -54,8 +54,15 @@
 | exprs.kt:40:5:40:22 | b6 | LocalVariableDeclExpr |
 | exprs.kt:40:14:40:15 | i1 | VarAccess |
 | exprs.kt:40:14:40:22 | ...instanceof... | InstanceOfExpr |
+| exprs.kt:40:14:40:22 | int | TypeAccess |
 | exprs.kt:41:5:41:23 | b7 | LocalVariableDeclExpr |
+| exprs.kt:41:14:41:15 | i1 | VarAccess |
+| exprs.kt:41:14:41:23 | ... !is ... | NotInstanceOfExpr |
+| exprs.kt:41:14:41:23 | int | TypeAccess |
 | exprs.kt:42:5:42:26 | b8 | LocalVariableDeclExpr |
+| exprs.kt:42:14:42:15 | b7 | VarAccess |
+| exprs.kt:42:14:42:26 | (...)... | CastExpr |
+| exprs.kt:42:14:42:26 | boolean | TypeAccess |
 | exprs.kt:43:5:43:35 | str1 | LocalVariableDeclExpr |
 | exprs.kt:43:25:43:34 | string lit | StringLiteral |
 | exprs.kt:44:5:44:36 | str2 | LocalVariableDeclExpr |
@@ -74,4 +81,3 @@
 | exprs.kt:53:9:53:18 | n | VarAccess |
 | exprs.kt:54:27:54:31 | new C(...) | ClassInstanceExpr |
 | exprs.kt:54:29:54:30 | 42 | IntegerLiteral |
-| file://:0:0:0:0 | int | TypeAccess |
