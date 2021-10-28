@@ -14,29 +14,27 @@ private module SourceVariables {
   abstract class SourceVariable extends TSourceVariable {
     IRVariable var;
 
-    IRVariable getIRVariable() { result = var }
-
     abstract string toString();
-
-    predicate isIndirection() { none() }
   }
 
-  private class SourceIRVariable extends SourceVariable, TSourceIRVariable {
+  class SourceIRVariable extends SourceVariable, TSourceIRVariable {
     SourceIRVariable() { this = TSourceIRVariable(var) }
+
+    IRVariable getIRVariable() { result = var }
 
     override string toString() { result = this.getIRVariable().toString() }
   }
 
-  private class SourceIRVariableIndirection extends SourceVariable, TSourceIRVariableIndirection {
+  class SourceIRVariableIndirection extends SourceVariable, TSourceIRVariableIndirection {
     InitializeIndirectionInstruction init;
 
     SourceIRVariableIndirection() {
       this = TSourceIRVariableIndirection(init) and var = init.getIRVariable()
     }
 
-    override string toString() { result = "*" + this.getIRVariable().toString() }
+    IRVariable getUnderlyingIRVariable() { result = var }
 
-    override predicate isIndirection() { any() }
+    override string toString() { result = "*" + this.getUnderlyingIRVariable().toString() }
   }
 }
 
@@ -120,8 +118,7 @@ private class ExplicitDef extends Def, TExplicitDef {
   override SourceVariable getSourceVariable() {
     exists(VariableInstruction var |
       explicitWrite(_, this.getInstruction(), var) and
-      result.getIRVariable() = var.getIRVariable() and
-      not result.isIndirection()
+      result.(SourceIRVariable).getIRVariable() = var.getIRVariable()
     )
   }
 
@@ -132,11 +129,11 @@ private class ParameterDef extends Def, TInitializeParam {
   ParameterDef() { this = TInitializeParam(store) }
 
   override SourceVariable getSourceVariable() {
-    result.getIRVariable() = store.(InitializeParameterInstruction).getIRVariable() and
-    not result.isIndirection()
+    result.(SourceIRVariable).getIRVariable() =
+      store.(InitializeParameterInstruction).getIRVariable()
     or
-    result.getIRVariable() = store.(InitializeIndirectionInstruction).getIRVariable() and
-    result.isIndirection()
+    result.(SourceIRVariableIndirection).getUnderlyingIRVariable() =
+      store.(InitializeIndirectionInstruction).getIRVariable()
   }
 
   override predicate isCertain() { any() }
@@ -166,12 +163,9 @@ private class ExplicitUse extends Use, TExplicitUse {
   override SourceVariable getSourceVariable() {
     exists(VariableInstruction var |
       use.getDef() = var and
-      result.getIRVariable() = var.getIRVariable() and
-      (
-        if use.getUse() instanceof ReadSideEffectInstruction
-        then result.isIndirection()
-        else not result.isIndirection()
-      )
+      if use.getUse() instanceof ReadSideEffectInstruction
+      then result.(SourceIRVariableIndirection).getUnderlyingIRVariable() = var.getIRVariable()
+      else result.(SourceIRVariable).getIRVariable() = var.getIRVariable()
     )
   }
 }
@@ -182,8 +176,7 @@ private class ReturnParameterIndirection extends Use, TReturnParamIndirection {
   override SourceVariable getSourceVariable() {
     exists(ReturnIndirectionInstruction ret |
       returnParameterIndirection(use, ret) and
-      result.getIRVariable() = ret.getIRVariable() and
-      result.isIndirection()
+      result.(SourceIRVariableIndirection).getUnderlyingIRVariable() = ret.getIRVariable()
     )
   }
 }
