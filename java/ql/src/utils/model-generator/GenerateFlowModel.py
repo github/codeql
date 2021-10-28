@@ -11,17 +11,22 @@ import tempfile
 
 def printHelp():
     print("""Usage:
-GenerateFlowModel.py <library-database> <simpleName> [--with-sinks] [--with-sources] [--with-summaries]
+GenerateFlowModel.py <library-database> <outputQll> [--with-sinks] [--with-sources] [--with-summaries]
 
 This generates summary, source and sink models for the code in the database.
-The files will be placed in `java/ql/lib/semmle/code/java/frameworks/generated/<simpleName>/`
+The files will be placed in `java/ql/lib/semmle/code/java/frameworks/<outputQll>` where
+outputQll is the name (and path) of the output QLL file. Usually, models are grouped by their
+respective frameworks.
 
-A simple name is used for the generated target files (e.g. `simpleName.qll`).
 Which models are generated is controlled by the flags:
     --with-sinks
     --with-sources
     --with-summaries
 If none of these flags are specified, all models are generated.
+
+Example invocations:
+$ GenerateFlowModel.py /tmp/dbs/apache_commons-codec_45649c8 "apache/Codec.qll"
+$ GenerateFlowModel.py /tmp/dbs/jdk15_db "javase/jdk_sinks.qll" --with-sinks
 
 Requirements: `codeql` should both appear on your path.
 """)
