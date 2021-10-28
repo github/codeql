@@ -445,17 +445,14 @@ module TaintedPath {
   /**
    * An expression of form `x.includes("..")` or similar.
    */
-  class ContainsDotDotSanitizer extends BarrierGuardNode {
-    StringOps::Includes contains;
-
+  class ContainsDotDotSanitizer extends BarrierGuardNode instanceof StringOps::Includes {
     ContainsDotDotSanitizer() {
-      this = contains and
-      isDotDotSlashPrefix(contains.getSubstring())
+      isDotDotSlashPrefix(super.getSubstring())
     }
 
     override predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel label) {
-      e = contains.getBaseString().asExpr() and
-      outcome = contains.getPolarity().booleanNot() and
+      e = super.getBaseString().asExpr() and
+      outcome = super.getPolarity().booleanNot() and
       label.(Label::PosixPath).canContainDotDotSlash() // can still be bypassed by normalized absolute path
     }
   }
@@ -463,17 +460,14 @@ module TaintedPath {
   /**
    * An expression of form `x.matches(/\.\./)` or similar.
    */
-  class ContainsDotDotRegExpSanitizer extends BarrierGuardNode {
-    StringOps::RegExpTest test;
-
+  class ContainsDotDotRegExpSanitizer extends BarrierGuardNode instanceof StringOps::RegExpTest {
     ContainsDotDotRegExpSanitizer() {
-      this = test and
-      test.getRegExp().getConstantValue() = [".", "..", "../"]
+      super.getRegExp().getConstantValue() = [".", "..", "../"]
     }
 
     override predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel label) {
-      e = test.getStringOperand().asExpr() and
-      outcome = test.getPolarity().booleanNot() and
+      e = super.getStringOperand().asExpr() and
+      outcome = super.getPolarity().booleanNot() and
       label.(Label::PosixPath).canContainDotDotSlash() // can still be bypassed by normalized absolute path
     }
   }
