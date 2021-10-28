@@ -1,8 +1,8 @@
 /**
- * @name Find insecure work with the file name.
+ * @name Insecure generation of filenames.
  * @description The file can be used to influence the correct operation of the program.
  * @kind problem
- * @id cpp/insecure-work-with-file-name
+ * @id cpp/insecure-generation-of-filename
  * @problem.severity warning
  * @precision medium
  * @tags correctness
