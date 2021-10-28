@@ -275,7 +275,9 @@ predicate explicitWrite(boolean certain, Instruction instr, Instruction address)
   |
     if
       addressFlowTC(any(Instruction i |
-          i instanceof FieldAddressInstruction or i instanceof PointerArithmeticInstruction
+          i instanceof FieldAddressInstruction or
+          i instanceof PointerArithmeticInstruction or
+          i instanceof LoadInstruction
         ), store.getDestinationAddress())
     then certain = false
     else certain = true

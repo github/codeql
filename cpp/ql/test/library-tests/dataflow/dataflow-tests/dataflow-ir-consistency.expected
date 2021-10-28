@@ -181,7 +181,10 @@ postWithInFlow
 | dispatch.cpp:130:10:130:15 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
 | dispatch.cpp:130:10:130:15 | topRef [post update] | PostUpdateNode should not be the target of local flow. |
 | dispatch.cpp:130:17:130:24 | topRef [post update] | PostUpdateNode should not be the target of local flow. |
+| dispatch.cpp:148:3:148:3 | u [post update] | PostUpdateNode should not be the target of local flow. |
 | dispatch.cpp:148:5:148:5 | f [post update] | PostUpdateNode should not be the target of local flow. |
+| dispatch.cpp:168:3:168:4 | u2 [post update] | PostUpdateNode should not be the target of local flow. |
+| dispatch.cpp:168:6:168:6 | u [post update] | PostUpdateNode should not be the target of local flow. |
 | dispatch.cpp:168:8:168:8 | f [post update] | PostUpdateNode should not be the target of local flow. |
 | example.c:17:19:17:22 | FieldAddress [post update] | PostUpdateNode should not be the target of local flow. |
 | example.c:17:19:17:22 | FieldAddress [post update] | PostUpdateNode should not be the target of local flow. |
