@@ -1,0 +1,37 @@
+edges
+| flask_mail.py:16:22:16:28 | ControlFlowNode for request | flask_mail.py:16:22:16:33 | ControlFlowNode for Attribute |
+| flask_mail.py:16:22:16:28 | ControlFlowNode for request | flask_mail.py:20:14:20:20 | ControlFlowNode for request |
+| flask_mail.py:16:22:16:28 | ControlFlowNode for request | flask_mail.py:20:14:20:25 | ControlFlowNode for Attribute |
+| flask_mail.py:16:22:16:33 | ControlFlowNode for Attribute | flask_mail.py:16:22:16:41 | ControlFlowNode for Subscript |
+| flask_mail.py:20:14:20:20 | ControlFlowNode for request | flask_mail.py:20:14:20:25 | ControlFlowNode for Attribute |
+| flask_mail.py:20:14:20:25 | ControlFlowNode for Attribute | flask_mail.py:20:14:20:33 | ControlFlowNode for Subscript |
+| flask_mail.py:33:24:33:30 | ControlFlowNode for request | flask_mail.py:33:24:33:35 | ControlFlowNode for Attribute |
+| flask_mail.py:33:24:33:35 | ControlFlowNode for Attribute | flask_mail.py:33:24:33:43 | ControlFlowNode for Subscript |
+| sendgrid_mail.py:15:20:15:26 | ControlFlowNode for request | sendgrid_mail.py:15:20:15:31 | ControlFlowNode for Attribute |
+| sendgrid_mail.py:15:20:15:31 | ControlFlowNode for Attribute | sendgrid_mail.py:15:20:15:47 | ControlFlowNode for Subscript |
+| sendgrid_mail.py:25:34:25:40 | ControlFlowNode for request | sendgrid_mail.py:25:34:25:45 | ControlFlowNode for Attribute |
+| sendgrid_mail.py:25:34:25:45 | ControlFlowNode for Attribute | sendgrid_mail.py:25:34:25:61 | ControlFlowNode for Subscript |
+nodes
+| flask_mail.py:16:22:16:28 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| flask_mail.py:16:22:16:33 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| flask_mail.py:16:22:16:41 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| flask_mail.py:20:14:20:20 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| flask_mail.py:20:14:20:25 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| flask_mail.py:20:14:20:33 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| flask_mail.py:33:24:33:30 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| flask_mail.py:33:24:33:35 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| flask_mail.py:33:24:33:43 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| sendgrid_mail.py:15:20:15:26 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| sendgrid_mail.py:15:20:15:31 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| sendgrid_mail.py:15:20:15:47 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| sendgrid_mail.py:25:34:25:40 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| sendgrid_mail.py:25:34:25:45 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| sendgrid_mail.py:25:34:25:61 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+subpaths
+#select
+| flask_mail.py:16:22:16:41 | ControlFlowNode for Subscript | flask_mail.py:16:22:16:28 | ControlFlowNode for request | flask_mail.py:16:22:16:41 | ControlFlowNode for Subscript | Cross-site scripting vulnerability due to $@. | flask_mail.py:16:22:16:28 | ControlFlowNode for request | a user-provided value |
+| flask_mail.py:20:14:20:33 | ControlFlowNode for Subscript | flask_mail.py:16:22:16:28 | ControlFlowNode for request | flask_mail.py:20:14:20:33 | ControlFlowNode for Subscript | Cross-site scripting vulnerability due to $@. | flask_mail.py:16:22:16:28 | ControlFlowNode for request | a user-provided value |
+| flask_mail.py:20:14:20:33 | ControlFlowNode for Subscript | flask_mail.py:20:14:20:20 | ControlFlowNode for request | flask_mail.py:20:14:20:33 | ControlFlowNode for Subscript | Cross-site scripting vulnerability due to $@. | flask_mail.py:20:14:20:20 | ControlFlowNode for request | a user-provided value |
+| flask_mail.py:33:24:33:43 | ControlFlowNode for Subscript | flask_mail.py:33:24:33:30 | ControlFlowNode for request | flask_mail.py:33:24:33:43 | ControlFlowNode for Subscript | Cross-site scripting vulnerability due to $@. | flask_mail.py:33:24:33:30 | ControlFlowNode for request | a user-provided value |
+| sendgrid_mail.py:15:20:15:47 | ControlFlowNode for Subscript | sendgrid_mail.py:15:20:15:26 | ControlFlowNode for request | sendgrid_mail.py:15:20:15:47 | ControlFlowNode for Subscript | Cross-site scripting vulnerability due to $@. | sendgrid_mail.py:15:20:15:26 | ControlFlowNode for request | a user-provided value |
+| sendgrid_mail.py:25:34:25:61 | ControlFlowNode for Subscript | sendgrid_mail.py:25:34:25:40 | ControlFlowNode for request | sendgrid_mail.py:25:34:25:61 | ControlFlowNode for Subscript | Cross-site scripting vulnerability due to $@. | sendgrid_mail.py:25:34:25:40 | ControlFlowNode for request | a user-provided value |

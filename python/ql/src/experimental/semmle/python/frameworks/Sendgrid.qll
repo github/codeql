@@ -9,14 +9,18 @@ private import experimental.semmle.python.Concepts
 private import semmle.python.ApiGraphs
 
 private module Sendgrid {
+  /** Gets a reference to the `sendgrid` module. */
   private API::Node sendgrid() { result = API::moduleImport("sendgrid") }
 
+  /** Gets a reference to `sendgrid.helpers.mail` */
   private API::Node sendgridMailHelper() {
     result = sendgrid().getMember("helpers").getMember("mail")
   }
 
+  /** Gets a reference to `sendgrid.helpers.mail.Mail` */
   private API::Node sendgridMailInstance() { result = sendgridMailHelper().getMember("Mail") }
 
+  /** Gets a call to `sendgrid.helpers.mail.Mail()`. */
   private DataFlow::CallCfgNode sendgridMailCall() { result = sendgridMailInstance().getACall() }
 
   /** Gets a reference to a `SendGridAPIClient` instance. */
