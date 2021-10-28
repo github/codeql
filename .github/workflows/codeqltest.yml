@@ -98,6 +98,8 @@ jobs:
   test-win:
     name: Test Windows
     runs-on: windows-latest
+    env:
+      CODEQL_LOCK_MODE: verify
     steps:
     - name: Set up Go 1.17
       uses: actions/setup-go@v1

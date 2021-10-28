@@ -3,7 +3,7 @@ go.mod:
 #    1|   0: [GoModModuleLine] go.mod module line
 #    3|   1: [GoModGoLine] go.mod go line
 input.go:
-#    0| [File] library-tests/semmle/go/PrintAst/input.go
+#    0| [GoFile] library-tests/semmle/go/PrintAst/input.go
 #    1|   package: [Ident] main
 #    5|   1: [CommentGroup] comment group
 #    5|     0: [SlashSlashComment] comment
@@ -29,7 +29,7 @@ input.go:
 #    3|     0: [ImportSpec] import specifier
 #    3|       0: [StringLit] "fmt"
 other.go:
-#    0| [File] library-tests/semmle/go/PrintAst/other.go
+#    0| [GoFile] library-tests/semmle/go/PrintAst/other.go
 #    1|   package: [Ident] main
 #    6|   1: [FuncDecl] function declaration
 #    6|     0: [FunctionName, Ident] g

@@ -15,8 +15,8 @@ func UntrustedSources_ClevergoTechClevergoV052() {
 				var receiverContext656 clevergo.Context
 				resultUsername414, resultPassword518, _ := receiverContext656.BasicAuth()
 				sink(
-					resultUsername414, // $untrustedFlowSource
-					resultPassword518, // $untrustedFlowSource
+					resultUsername414, // $ untrustedFlowSource
+					resultPassword518, // $ untrustedFlowSource
 				)
 			}
 			// func (*Context).Decode(v interface{}) (err error)
@@ -24,49 +24,49 @@ func UntrustedSources_ClevergoTechClevergoV052() {
 				var receiverContext650 clevergo.Context
 				var paramV784 interface{}
 				receiverContext650.Decode(paramV784)
-				sink(paramV784) // $untrustedFlowSource
+				sink(paramV784) // $ untrustedFlowSource
 			}
 			// func (*Context).DefaultQuery(key string, defaultVlue string) string
 			{
 				var receiverContext957 clevergo.Context
 				result520 := receiverContext957.DefaultQuery("", "")
-				sink(result520) // $untrustedFlowSource
+				sink(result520) // $ untrustedFlowSource
 			}
 			// func (*Context).FormValue(key string) string
 			{
 				var receiverContext443 clevergo.Context
 				result127 := receiverContext443.FormValue("")
-				sink(result127) // $untrustedFlowSource
+				sink(result127) // $ untrustedFlowSource
 			}
 			// func (*Context).GetHeader(name string) string
 			{
 				var receiverContext483 clevergo.Context
 				result989 := receiverContext483.GetHeader("")
-				sink(result989) // $untrustedFlowSource
+				sink(result989) // $ untrustedFlowSource
 			}
 			// func (*Context).PostFormValue(key string) string
 			{
 				var receiverContext982 clevergo.Context
 				result417 := receiverContext982.PostFormValue("")
-				sink(result417) // $untrustedFlowSource
+				sink(result417) // $ untrustedFlowSource
 			}
 			// func (*Context).QueryParam(key string) string
 			{
 				var receiverContext584 clevergo.Context
 				result991 := receiverContext584.QueryParam("")
-				sink(result991) // $untrustedFlowSource
+				sink(result991) // $ untrustedFlowSource
 			}
 			// func (*Context).QueryParams() net/url.Values
 			{
 				var receiverContext881 clevergo.Context
 				result186 := receiverContext881.QueryParams()
-				sink(result186) // $untrustedFlowSource
+				sink(result186) // $ untrustedFlowSource
 			}
 			// func (*Context).QueryString() string
 			{
 				var receiverContext284 clevergo.Context
 				result908 := receiverContext284.QueryString()
-				sink(result908) // $untrustedFlowSource
+				sink(result908) // $ untrustedFlowSource
 			}
 		}
 		// Untrusted flow sources from method calls on clevergo.tech/clevergo.Params.
@@ -75,7 +75,7 @@ func UntrustedSources_ClevergoTechClevergoV052() {
 			{
 				var receiverParams137 clevergo.Params
 				result494 := receiverParams137.String("")
-				sink(result494) // $untrustedFlowSource
+				sink(result494) // $ untrustedFlowSource
 			}
 		}
 	}
@@ -88,7 +88,7 @@ func UntrustedSources_ClevergoTechClevergoV052() {
 				var receiverDecoder873 clevergo.Decoder
 				var paramV599 interface{}
 				receiverDecoder873.Decode(nil, paramV599)
-				sink(paramV599) // $untrustedFlowSource
+				sink(paramV599) // $ untrustedFlowSource
 			}
 		}
 	}
@@ -97,14 +97,14 @@ func UntrustedSources_ClevergoTechClevergoV052() {
 		// Untrusted flow sources from clevergo.tech/clevergo.Context struct fields.
 		{
 			structContext409 := new(clevergo.Context)
-			sink(structContext409.Params) // $untrustedFlowSource
+			sink(structContext409.Params) // $ untrustedFlowSource
 		}
 		// Untrusted flow sources from clevergo.tech/clevergo.Param struct fields.
 		{
 			structParam246 := new(clevergo.Param)
 			sink(
-				structParam246.Key,   // $untrustedFlowSource
-				structParam246.Value, // $untrustedFlowSource
+				structParam246.Key,   // $ untrustedFlowSource
+				structParam246.Value, // $ untrustedFlowSource
 			)
 		}
 	}
@@ -112,7 +112,7 @@ func UntrustedSources_ClevergoTechClevergoV052() {
 	{
 		{
 			var typeParams898 clevergo.Params
-			sink(typeParams898) // $untrustedFlowSource
+			sink(typeParams898) // $ untrustedFlowSource
 		}
 	}
 }

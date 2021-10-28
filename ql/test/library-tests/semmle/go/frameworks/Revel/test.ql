@@ -41,7 +41,7 @@ class HttpResponseBodyTest extends InlineExpectationsTest {
     exists(HTTP::ResponseBody rb |
       rb.hasLocationInfo(file, line, _, _, _) and
       element = rb.toString() and
-      value = rb.toString()
+      value = "'" + rb.toString() + "'"
     )
   }
 }

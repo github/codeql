@@ -31,6 +31,7 @@ import (
 	"strings"
 
 	"codeql-go-tests/frameworks/Revel/examples/booking/app/models"
+
 	"github.com/revel/revel"
 )
 
@@ -104,7 +105,7 @@ func (c Hotels) ListJson(search string, size, page uint64) revel.Result {
 
 	var hotels []*models.Hotel
 
-	return c.RenderJSON(map[string]interface{}{"hotels": hotels, "search": search, "size": size, "page": page, "nextPage": nextPage}) // $responsebody=map literal
+	return c.RenderJSON(map[string]interface{}{"hotels": hotels, "search": search, "size": size, "page": page, "nextPage": nextPage}) // $ responsebody='map literal'
 }
 func (c Hotels) List(search string, size, page uint64) revel.Result {
 	if page == 0 {
@@ -155,7 +156,7 @@ func (c Hotels) SaveSettings(password, verifyPassword string) revel.Result {
 }
 
 func (c Hotels) ConfirmBooking(id int, booking models.Booking) revel.Result {
-	hotel := c.loadHotelById(id) // $responsebody=call to loadHotelById
+	hotel := c.loadHotelById(id) // $ responsebody='call to loadHotelById'
 	if hotel == nil {
 		return c.NotFound("Hotel %d does not exist", id)
 	}

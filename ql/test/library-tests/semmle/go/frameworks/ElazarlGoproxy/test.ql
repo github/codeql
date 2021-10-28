@@ -9,7 +9,7 @@ class UntrustedFlowSourceTest extends InlineExpectationsTest {
   override predicate hasActualResult(string file, int line, string element, string tag, string value) {
     tag = "untrustedflowsource" and
     value = element and
-    exists(UntrustedFlowSource src | value = src.toString() |
+    exists(UntrustedFlowSource src | value = "\"" + src.toString() + "\"" |
       src.hasLocationInfo(file, line, _, _, _)
     )
   }

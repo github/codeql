@@ -3,7 +3,7 @@ go.mod:
 #    1|   0: [GoModModuleLine] go.mod module line
 #    3|   1: [GoModGoLine] go.mod go line
 input.go:
-#    0| [File] library-tests/semmle/go/PrintAst/input.go
+#    0| [GoFile] library-tests/semmle/go/PrintAst/input.go
 #    1|   package: [Ident] main
 #    3|   1: [ImportDecl] import declaration
 #    3|     0: [ImportSpec] import specifier
@@ -577,7 +577,7 @@ input.go:
 #  145|             Type = []int
 #  145|         1: [BlockStmt] block statement
 other.go:
-#    0| [File] library-tests/semmle/go/PrintAst/other.go
+#    0| [GoFile] library-tests/semmle/go/PrintAst/other.go
 #    1|   package: [Ident] main
 #    3|   1: [FuncDecl] function declaration
 #    3|     0: [FunctionName, Ident] main
