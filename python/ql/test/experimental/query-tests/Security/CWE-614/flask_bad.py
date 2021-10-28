@@ -6,7 +6,7 @@ app = Flask(__name__)
 @app.route("/false")
 def false():
     resp = make_response()
-    resp.set_cookie("name", value="value", secure=False,
+    resp.set_cookie(request.args["name"], value=request.args["value"], secure=False,
                     httponly=False, samesite='None')
     return resp
 

@@ -9,18 +9,28 @@ import experimental.semmle.python.Concepts
 
 class CookieHeader extends HeaderDeclaration, Cookie::Range {
   CookieHeader() {
-    this instanceof HeaderDeclaration and this.getNameArg().asExpr().(Str_).getS() = "Set-Cookie"
+    this instanceof HeaderDeclaration and
+    this.(HeaderDeclaration).getNameArg().asExpr().(Str_).getS() = "Set-Cookie"
   }
 
   override predicate isSecure() {
-    this.getValueArg().asExpr().(Str_).getS().regexpMatch(".*; *Secure;.*")
+    this.(HeaderDeclaration).getValueArg().asExpr().(Str_).getS().regexpMatch(".*; *Secure;.*")
   }
 
   override predicate isHttpOnly() {
-    this.getValueArg().asExpr().(Str_).getS().regexpMatch(".*; *HttpOnly;.*")
+    this.(HeaderDeclaration).getValueArg().asExpr().(Str_).getS().regexpMatch(".*; *HttpOnly;.*")
   }
 
   override predicate isSameSite() {
-    this.getValueArg().asExpr().(Str_).getS().regexpMatch(".*; *SameSite=(Strict|Lax);.*")
+    this.(HeaderDeclaration)
+        .getValueArg()
+        .asExpr()
+        .(Str_)
+        .getS()
+        .regexpMatch(".*; *SameSite=(Strict|Lax);.*")
   }
+
+  override DataFlow::Node getName() { result = this.(HeaderDeclaration).getValueArg() }
+
+  override DataFlow::Node getValue() { result = this.(HeaderDeclaration).getValueArg() }
 }

@@ -90,6 +90,10 @@ private module PrivateDjango {
           class DjangoSetCookieCall extends DataFlow::CallCfgNode, Cookie::Range {
             DjangoSetCookieCall() { this = baseClassRef().getMember("set_cookie").getACall() }
 
+            override DataFlow::Node getName() { result = this.getArg(0) }
+
+            override DataFlow::Node getValue() { result = this.getArgByName("value") }
+
             override predicate isSecure() {
               DataFlow::exprNode(any(True t))
                   .(DataFlow::LocalSourceNode)

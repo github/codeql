@@ -91,6 +91,10 @@ module ExperimentalFlask {
             .getACall()
     }
 
+    override DataFlow::Node getName() { result = this.getArg(0) }
+
+    override DataFlow::Node getValue() { result = this.getArgByName("value") }
+
     override predicate isSecure() {
       DataFlow::exprNode(any(True t))
           .(DataFlow::LocalSourceNode)

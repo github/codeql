@@ -322,6 +322,16 @@ class Cookie extends DataFlow::Node {
    * Holds if the cookie is SameSite
    */
   predicate isSameSite() { range.isSameSite() }
+
+  /**
+   * Gets the argument containing the header name.
+   */
+  DataFlow::Node getName() { result = range.getName() }
+
+  /**
+   * Gets the argument containing the header value.
+   */
+  DataFlow::Node getValue() { result = range.getValue() }
 }
 
 /** Provides a class for modeling new cookie writes on HTTP responses. */
@@ -347,5 +357,15 @@ module Cookie {
      * Holds if the cookie is SameSite.
      */
     abstract predicate isSameSite();
+
+    /**
+     * Gets the argument containing the header name.
+     */
+    abstract DataFlow::Node getName();
+
+    /**
+     * Gets the argument containing the header value.
+     */
+    abstract DataFlow::Node getValue();
   }
 }
