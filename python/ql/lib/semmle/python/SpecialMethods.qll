@@ -107,7 +107,7 @@ class SpecialMethodCallNode extends PotentialSpecialMethodCallNode {
 
   SpecialMethodCallNode() {
     exists(SpecialMethod::Potential pot |
-      this.(SpecialMethod::Potential) = pot and
+      this = pot and
       pot.getSelf().pointsTo().getClass().lookup(pot.getSpecialMethodName()) = resolvedSpecialMethod
     )
   }

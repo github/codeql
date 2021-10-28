@@ -159,7 +159,7 @@ predicate badMethodAccessLockOrder(
   MethodAccess outerAccess, MethodAccess innerAccess, MethodAccess other
 ) {
   exists(Synched outer, Synched inner |
-    inner.(MethodAccess) = innerAccess and
+    inner = innerAccess and
     inner = outer.getInnerSynch() and
     inner.getLockType() = outer.getLockType() and
     exists(Parameter p, int i | outer.(Method).getAParameter() = p and p.getPosition() = i |

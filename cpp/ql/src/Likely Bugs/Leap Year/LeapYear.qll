@@ -10,7 +10,7 @@ import semmle.code.cpp.commons.DateTime
  * Get the top-level `BinaryOperation` enclosing the expression e.
  */
 private BinaryOperation getATopLevelBinaryOperationExpression(Expr e) {
-  result = e.getEnclosingElement().(BinaryOperation)
+  result = e.getEnclosingElement()
   or
   result = getATopLevelBinaryOperationExpression(e.getEnclosingElement())
 }

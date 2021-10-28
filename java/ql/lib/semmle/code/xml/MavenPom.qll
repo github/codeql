@@ -395,9 +395,7 @@ class MavenRepo extends Folder {
   /**
    * Gets a Jar file contained within this repository.
    */
-  File getAJarFile() {
-    result = this.getAChildContainer*().(File) and result.getExtension() = "jar"
-  }
+  File getAJarFile() { result = this.getAChildContainer*() and result.getExtension() = "jar" }
 
   /**
    * Gets any jar artifacts in this repository that match the POM project definition. This is an

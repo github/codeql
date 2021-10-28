@@ -31,7 +31,7 @@ class Expr extends StmtParent, @expr {
   override Stmt getEnclosingStmt() {
     result = this.getParent().(Expr).getEnclosingStmt()
     or
-    result = this.getParent().(Stmt)
+    result = this.getParent()
     or
     exists(Expr other | result = other.getEnclosingStmt() and other.getConversion() = this)
     or

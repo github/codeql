@@ -26,7 +26,7 @@ import cpp
 from Assignment a, Variable global, Variable local
 where
   a.fromSource() and
-  global.getAnAccess() = a.getLValue().(VariableAccess) and
+  global.getAnAccess() = a.getLValue() and
   local.getAnAccess() = a.getRValue().(AddressOfExpr).getOperand() and
   local.hasSpecifier("auto") and
   (

@@ -54,7 +54,7 @@ class JaxbType extends Class {
       this.getAnAnnotation() = a and
       a.getType().(JaxbAnnotationType).hasName("XmlAccessorType")
     |
-      result.getAnAccess() = a.getValue("value").(VarAccess)
+      result.getAnAccess() = a.getValue("value")
     )
   }
 

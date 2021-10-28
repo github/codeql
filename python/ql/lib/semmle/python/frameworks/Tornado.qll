@@ -102,7 +102,7 @@ private module Tornado {
           /** Gets a reference to this class. */
           private DataFlow::TypeTrackingNode getARef(DataFlow::TypeTracker t) {
             t.start() and
-            result.asExpr().(ClassExpr) = this.getParent()
+            result.asExpr() = this.getParent()
             or
             exists(DataFlow::TypeTracker t2 | result = this.getARef(t2).track(t2, t))
           }
