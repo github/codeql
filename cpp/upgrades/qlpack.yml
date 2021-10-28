@@ -1,2 +1,4 @@
-name: codeql-cpp-upgrades
+name: codeql/cpp-upgrades
 upgrades: .
+version: 0.0.2
+library: true

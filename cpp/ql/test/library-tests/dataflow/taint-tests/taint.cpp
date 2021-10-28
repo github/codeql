@@ -361,6 +361,8 @@ typedef unsigned long size_t;
 char *strdup(const char *s1);
 char *strndup(const char *s1, size_t n);
 wchar_t* wcsdup(const wchar_t* s1);
+char *strdupa(const char *s1);
+char *strndupa(const char *s1, size_t n);
 
 void test_strdup(char *source)
 {
@@ -390,6 +392,26 @@ void test_wcsdup(wchar_t *source)
 	b = wcsdup(L"hello, world");
 	sink(a); // $ ast,ir
 	sink(b);
+}
+
+void test_strdupa(char *source)
+{
+	char *a, *b, *c;
+
+	a = strdupa(source);
+	b = strdupa("hello, world");
+	c = strndupa(source, 100);
+	sink(a); // $ ast,ir
+	sink(b);
+	sink(c); // $ ast,ir
+}
+
+void test_strndupa(int source)
+{
+	char *a;
+
+	a = strndupa("hello, world", source);
+	sink(a); // $ ast,ir
 }
 
 // --- qualifiers ---
@@ -444,7 +466,7 @@ void test_qualifiers()
 	sink(d.getString());
 	d.setString(strings::source());
 	sink(d); // $ ast,ir
-	sink(d.getString()); // $ ast MISSING: ir
+	sink(d.getString()); // $ ast,ir
 }
 
 // --- non-standard swap ---
@@ -518,7 +540,7 @@ void *mempcpy(void *dest, const void *src, size_t n);
 void test_mempcpy(int *source) {
 	int x;
 	mempcpy(&x, source, sizeof(int));
-	sink(x); // $ ast=518:24 ir SPURIOUS: ast=519:6
+	sink(x); // $ ast=540:24 ir SPURIOUS: ast=541:6
 }
 
 // --- memccpy ---
@@ -528,7 +550,7 @@ void *memccpy(void *dest, const void *src, int c, size_t n);
 void test_memccpy(int *source) {
 	int dest[16];
 	memccpy(dest, source, 42, sizeof(dest));
-	sink(dest); // $ ast=528:24 ir SPURIOUS: ast=529:6
+	sink(dest); // $ ast=550:24 ir SPURIOUS: ast=551:6
 }
 
 // --- strcat and related functions ---

@@ -4,7 +4,7 @@
  *              expose it to an attacker.
  * @kind path-problem
  * @problem.severity error
- * @security-severity 5.9
+ * @security-severity 7.5
  * @precision high
  * @id js/clear-text-logging
  * @tags security
@@ -14,7 +14,7 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.CleartextLogging::CleartextLogging
+import semmle.javascript.security.dataflow.CleartextLoggingQuery
 import DataFlow::PathGraph
 
 /**

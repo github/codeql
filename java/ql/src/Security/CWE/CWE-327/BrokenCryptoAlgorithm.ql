@@ -3,7 +3,7 @@
  * @description Using broken or weak cryptographic algorithms can allow an attacker to compromise security.
  * @kind path-problem
  * @problem.severity warning
- * @security-severity 5.2
+ * @security-severity 7.5
  * @precision high
  * @id java/weak-cryptographic-algorithm
  * @tags security
@@ -17,14 +17,14 @@ import DataFlow
 import PathGraph
 
 private class ShortStringLiteral extends StringLiteral {
-  ShortStringLiteral() { getLiteral().length() < 100 }
+  ShortStringLiteral() { getRepresentedString().length() < 100 }
 }
 
 class BrokenAlgoLiteral extends ShortStringLiteral {
   BrokenAlgoLiteral() {
-    getValue().regexpMatch(getInsecureAlgorithmRegex()) and
+    getRepresentedString().regexpMatch(getInsecureAlgorithmRegex()) and
     // Exclude German and French sentences.
-    not getValue().regexpMatch(".*\\p{IsLowercase} des \\p{IsLetter}.*")
+    not getRepresentedString().regexpMatch(".*\\p{IsLowercase} des \\p{IsLetter}.*")
   }
 }
 
@@ -48,4 +48,4 @@ where
   source.getNode().asExpr() = s and
   conf.hasFlowPath(source, sink)
 select c, source, sink, "Cryptographic algorithm $@ is weak and should not be used.", s,
-  s.getLiteral()
+  s.getRepresentedString()

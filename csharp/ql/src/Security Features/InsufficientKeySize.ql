@@ -3,11 +3,11 @@
  * @description Finds uses of encryption algorithms with too small a key size
  * @kind problem
  * @problem.severity warning
- * @security-severity 5.2
+ * @security-severity 7.5
  * @precision high
  * @id cs/insufficient-key-size
  * @tags security
- *       external/cwe/cwe-327
+ *       external/cwe/cwe-326
  */
 
 import csharp

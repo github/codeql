@@ -1,7 +1,7 @@
 C and C++ built-in support
 ================================
 
-.. csv-table:: 
+.. csv-table::
    :header-rows: 1
    :class: fullWidthTable
    :widths: auto
@@ -14,7 +14,7 @@ C and C++ built-in support
 C# built-in support
 ================================
 
-.. csv-table:: 
+.. csv-table::
    :header-rows: 1
    :class: fullWidthTable
    :widths: auto
@@ -84,7 +84,7 @@ Go built-in support
 Java built-in support
 ==================================
 
-.. csv-table:: 
+.. csv-table::
    :header-rows: 1
    :class: fullWidthTable
    :widths: auto
@@ -95,6 +95,7 @@ Java built-in support
    Guava, Utility and collections library
    Hibernate, Database
    iBatis / MyBatis, Database
+   Jackson, Serialization
    Java Persistence API (JPA), Database
    JDBC, Database
    Protobuf, Serialization
@@ -109,7 +110,7 @@ Java built-in support
 JavaScript and TypeScript built-in support
 =======================================================
 
-.. csv-table:: 
+.. csv-table::
    :header-rows: 1
    :class: fullWidthTable
    :widths: auto
@@ -156,20 +157,32 @@ Python built-in support
    Django, Web framework
    Flask, Web framework
    Tornado, Web framework
-   PyYAML, Serialization
+   Twisted, Web framework
+   starlette, Asynchronous Server Gateway Interface (ASGI)
    dill, Serialization
+   PyYAML, Serialization
+   ruamel.yaml, Serialization
    simplejson, Serialization
    ujson, Serialization
    fabric, Utility library
    idna, Utility library
    invoke, Utility library
+   jmespath, Utility library
    multidict, Utility library
    yarl, Utility library
+   aioch, Database
+   clickhouse-driver, Database
    mysql-connector-python, Database
    mysql-connector, Database
    MySQL-python, Database
+   mysqlclient, Database
    psycopg2, Database
    sqlite3, Database
+   Flask-SQLAlchemy, Database ORM
+   peewee, Database ORM
+   SQLAlchemy, Database ORM
    cryptography, Cryptography library
    pycryptodome, Cryptography library
    pycryptodomex, Cryptography library
+   rsa, Cryptography library
+   MarkupSafe, Escaping Library

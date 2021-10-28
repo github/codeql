@@ -5,7 +5,7 @@
  *              and possibly escalate to remote code execution or cross-site scripting.
  * @kind path-problem
  * @problem.severity warning
- * @security-severity 3.6
+ * @security-severity 6.1
  * @precision high
  * @id js/prototype-polluting-assignment
  * @tags security
@@ -17,7 +17,7 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.PrototypePollutingAssignment::PrototypePollutingAssignment
+import semmle.javascript.security.dataflow.PrototypePollutingAssignmentQuery
 import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink

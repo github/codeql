@@ -5,13 +5,13 @@
  * @kind path-problem
  * @precision low
  * @problem.severity error
- * @security-severity 5.9
+ * @security-severity 7.8
  * @tags security external/cwe/cwe-20
  */
 
 import csharp
 import semmle.code.csharp.dataflow.TaintTracking
-import semmle.code.csharp.security.dataflow.ExternalAPIs
+import semmle.code.csharp.security.dataflow.ExternalAPIsQuery
 import DataFlow::PathGraph
 
 from UntrustedDataToExternalAPIConfig config, DataFlow::PathNode source, DataFlow::PathNode sink

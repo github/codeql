@@ -4,7 +4,7 @@
  *              user to perform a cross-site scripting attack.
  * @kind path-problem
  * @problem.severity error
- * @security-severity 2.9
+ * @security-severity 6.1
  * @precision high
  * @id js/html-constructed-from-input
  * @tags security
@@ -14,7 +14,7 @@
 
 import javascript
 import DataFlow::PathGraph
-import semmle.javascript.security.dataflow.UnsafeHtmlConstruction::UnsafeHtmlConstruction
+import semmle.javascript.security.dataflow.UnsafeHtmlConstructionQuery
 
 from DataFlow::Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, Sink sinkNode
 where cfg.hasFlowPath(source, sink) and sink.getNode() = sinkNode

@@ -3,11 +3,11 @@
  * @description Disabling cryptographic certificate validation can cause security vulnerabilities.
  * @kind problem
  * @problem.severity error
- * @security-severity 5.2
+ * @security-severity 7.5
  * @precision very-high
  * @id js/disabling-certificate-validation
  * @tags security
- *       external/cwe-295
+ *       external/cwe/cwe-295
  */
 
 import javascript

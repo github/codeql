@@ -113,3 +113,15 @@ function getX(obj) {
 }
 getX({ x: getConnection() });
 getX({ x: somethingElse() });
+
+function makeConnectionAsync(callback) {
+  callback(getConnection());
+}
+makeConnectionAsync(conn => {});
+makeConnectionAsync(); // suppress single-call precision gains
+
+function makeConnectionAsync2(callback) {
+  makeConnectionAsync(callback);
+}
+makeConnectionAsync2(conn => {});
+makeConnectionAsync2(); // suppress single-call precision gains

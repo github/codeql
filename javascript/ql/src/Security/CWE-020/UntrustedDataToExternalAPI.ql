@@ -5,12 +5,12 @@
  * @kind path-problem
  * @precision low
  * @problem.severity error
- * @security-severity 5.9
+ * @security-severity 7.8
  * @tags security external/cwe/cwe-20
  */
 
 import javascript
-import semmle.javascript.security.dataflow.ExternalAPIUsedWithUntrustedData::ExternalAPIUsedWithUntrustedData
+import semmle.javascript.security.dataflow.ExternalAPIUsedWithUntrustedDataQuery
 import DataFlow::PathGraph
 
 from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink

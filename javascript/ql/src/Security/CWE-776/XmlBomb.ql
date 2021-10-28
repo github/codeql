@@ -4,7 +4,7 @@
  *              entity expansion is vulnerable to denial-of-service attacks.
  * @kind path-problem
  * @problem.severity warning
- * @security-severity 3.6
+ * @security-severity 7.5
  * @precision high
  * @id js/xml-bomb
  * @tags security
@@ -13,7 +13,7 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.XmlBomb::XmlBomb
+import semmle.javascript.security.dataflow.XmlBombQuery
 import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink

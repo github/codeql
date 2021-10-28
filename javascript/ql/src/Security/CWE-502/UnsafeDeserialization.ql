@@ -4,7 +4,7 @@
  *              execute arbitrary code.
  * @kind path-problem
  * @problem.severity warning
- * @security-severity 5.9
+ * @security-severity 9.8
  * @precision high
  * @id js/unsafe-deserialization
  * @tags security
@@ -12,7 +12,7 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.UnsafeDeserialization::UnsafeDeserialization
+import semmle.javascript.security.dataflow.UnsafeDeserializationQuery
 import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink

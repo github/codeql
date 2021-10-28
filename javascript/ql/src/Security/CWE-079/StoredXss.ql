@@ -4,7 +4,7 @@
  *              a stored cross-site scripting vulnerability.
  * @kind path-problem
  * @problem.severity error
- * @security-severity 2.9
+ * @security-severity 6.1
  * @precision high
  * @id js/stored-xss
  * @tags security
@@ -13,7 +13,7 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.StoredXss::StoredXss
+import semmle.javascript.security.dataflow.StoredXssQuery
 import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink

@@ -18,7 +18,7 @@ void test1()
 	create(file1);
 	if (!rename(file1, file2))
 	{
-		remove(file1); // BAD
+		remove(file1); // DUBIOUS (bad but perhaps not exploitable)
 	}
 }
 
@@ -32,7 +32,7 @@ void test2()
 	if (!rename(file1, file2))
 	{
 		file1.set("d.txt");
-		remove(file1); // GOOD [FALSE POSITIVE]
+		remove(file1); // GOOD
 	}
 }
 
@@ -46,6 +46,6 @@ void test3()
 	create(file1);
 	if (!rename(file1, file2))
 	{
-		remove(file1); // BAD
+		remove(file1); // DUBIOUS (bad but perhaps not exploitable)
 	}
 }

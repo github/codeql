@@ -13,12 +13,12 @@ class PyOpenSSLContextCreation extends ContextCreation, DataFlow::CallCfgNode {
   }
 
   override string getProtocol() {
-    exists(ControlFlowNode protocolArg, PyOpenSSL pyo |
-      protocolArg in [node.getArg(0), node.getArgByName("method")]
+    exists(DataFlow::Node protocolArg, PyOpenSSL pyo |
+      protocolArg in [this.getArg(0), this.getArgByName("method")]
     |
-      protocolArg =
-        [pyo.specific_version(result).getAUse(), pyo.unspecific_version(result).getAUse()]
-            .asCfgNode()
+      protocolArg in [
+          pyo.specific_version(result).getAUse(), pyo.unspecific_version(result).getAUse()
+        ]
     )
   }
 }
@@ -29,7 +29,7 @@ class ConnectionCall extends ConnectionCreation, DataFlow::CallCfgNode {
   }
 
   override DataFlow::CfgNode getContext() {
-    result.getNode() in [node.getArg(0), node.getArgByName("context")]
+    result in [this.getArg(0), this.getArgByName("context")]
   }
 }
 
@@ -43,8 +43,8 @@ class SetOptionsCall extends ProtocolRestriction, DataFlow::CallCfgNode {
   }
 
   override ProtocolVersion getRestriction() {
-    API::moduleImport("OpenSSL").getMember("SSL").getMember("OP_NO_" + result).getAUse().asCfgNode() in [
-        node.getArg(0), node.getArgByName("options")
+    API::moduleImport("OpenSSL").getMember("SSL").getMember("OP_NO_" + result).getAUse() in [
+        this.getArg(0), this.getArgByName("options")
       ]
   }
 }

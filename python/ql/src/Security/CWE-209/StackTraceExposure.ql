@@ -5,7 +5,7 @@
  *              developing a subsequent exploit.
  * @kind path-problem
  * @problem.severity error
- * @security-severity 3.6
+ * @security-severity 5.4
  * @precision high
  * @id py/stack-trace-exposure
  * @tags security
@@ -17,7 +17,7 @@ import python
 import semmle.python.security.dataflow.StackTraceExposure
 import DataFlow::PathGraph
 
-from StackTraceExposureConfiguration config, DataFlow::PathNode source, DataFlow::PathNode sink
+from StackTraceExposure::Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "$@ may be exposed to an external user", source.getNode(),
   "Error information"

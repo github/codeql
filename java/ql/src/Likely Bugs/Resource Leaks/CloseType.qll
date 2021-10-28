@@ -228,8 +228,8 @@ private predicate closeCalled(Variable v) {
     )
     or
     // The "close" call could happen indirectly inside a helper method of unknown name.
-    exists(int i | exprs(v.getAnAccess(), _, _, e, i) |
-      exists(Parameter p, int j | params(p, _, j, e.getMethod(), _) |
+    exists(int i | e.getArgument(i) = v.getAnAccess() |
+      exists(Parameter p, int j | p.getPosition() = j and p.getCallable() = e.getMethod() |
         closeCalled(p) and i = j
         or
         // The helper method could be iterating over a varargs parameter.

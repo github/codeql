@@ -111,16 +111,11 @@ predicate callToVoidFunction(DataFlow::CallNode call, Function func) {
  * and the callback is expected to return a value.
  */
 predicate hasNonVoidCallbackMethod(string name) {
-  name = "every" or
-  name = "filter" or
-  name = "find" or
-  name = "findIndex" or
-  name = "flatMap" or
-  name = "map" or
-  name = "reduce" or
-  name = "reduceRight" or
-  name = "some" or
-  name = "sort"
+  name =
+    [
+      "every", "filter", "find", "findIndex", "flatMap", "map", "reduce", "reduceRight", "some",
+      "sort"
+    ]
 }
 
 DataFlow::SourceNode array(DataFlow::TypeTracker t) {

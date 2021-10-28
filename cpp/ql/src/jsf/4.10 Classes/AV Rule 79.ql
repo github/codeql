@@ -230,13 +230,13 @@ predicate leakedInSameMethod(Resource r, Expr acquire) {
         )
       )
     )
-    or
-    exists(FunctionAccess fa, string kind |
-      // the address of a function that releases `r` is taken (and likely
-      // used to release `r` at some point).
-      r.acquisitionWithRequiredKind(acquire, kind) and
-      fa.getTarget() = r.getAReleaseExpr(kind).getEnclosingFunction()
-    )
+  )
+  or
+  exists(FunctionAccess fa, string kind |
+    // the address of a function that releases `r` is taken (and likely
+    // used to release `r` at some point).
+    r.acquisitionWithRequiredKind(acquire, kind) and
+    fa.getTarget() = r.getAReleaseExpr(kind).getEnclosingFunction()
   )
 }
 

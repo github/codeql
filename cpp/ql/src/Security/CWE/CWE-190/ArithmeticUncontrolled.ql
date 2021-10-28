@@ -4,7 +4,7 @@
  *              validated can cause overflows.
  * @kind path-problem
  * @problem.severity warning
- * @security-severity 5.9
+ * @security-severity 8.6
  * @precision medium
  * @id cpp/uncontrolled-arithmetic
  * @tags security
@@ -15,126 +15,122 @@
 import cpp
 import semmle.code.cpp.security.Overflow
 import semmle.code.cpp.security.Security
-import semmle.code.cpp.security.TaintTracking
-import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
-import TaintedWithPath
+import semmle.code.cpp.security.FlowSources
+import semmle.code.cpp.ir.dataflow.TaintTracking
+import DataFlow::PathGraph
+import Bounded
 
-predicate isUnboundedRandCall(FunctionCall fc) {
-  exists(Function func | func = fc.getTarget() |
-    func.hasGlobalOrStdOrBslName("rand") and
-    not bounded(fc) and
-    func.getNumberOfParameters() = 0
-  )
+/**
+ * A function that outputs random data such as `std::rand`.
+ */
+abstract class RandomFunction extends Function {
+  /**
+   * Gets the `FunctionOutput` that describes how this function returns the random data.
+   */
+  FunctionOutput getFunctionOutput() { result.isReturnValue() }
 }
 
 /**
- * An operand `e` of a division expression (i.e., `e` is an operand of either a `DivExpr` or
- * a `AssignDivExpr`) is bounded when `e` is the left-hand side of the division.
+ * The standard function `std::rand`.
  */
-pragma[inline]
-predicate boundedDiv(Expr e, Expr left) { e = left }
-
-/**
- * An operand `e` of a remainder expression `rem` (i.e., `rem` is either a `RemExpr` or
- * an `AssignRemExpr`) with left-hand side `left` and right-ahnd side `right` is bounded
- * when `e` is `left` and `right` is upper bounded by some number that is less than the maximum integer
- * allowed by the result type of `rem`.
- */
-pragma[inline]
-predicate boundedRem(Expr e, Expr rem, Expr left, Expr right) {
-  e = left and
-  upperBound(right.getFullyConverted()) < exprMaxVal(rem.getFullyConverted())
-}
-
-/**
- * An operand `e` of a bitwise and expression `andExpr` (i.e., `andExpr` is either an `BitwiseAndExpr`
- * or an `AssignAndExpr`) with operands `operand1` and `operand2` is the operand that is not `e` is upper
- * bounded by some number that is less than the maximum integer allowed by the result type of `andExpr`.
- */
-pragma[inline]
-predicate boundedBitwiseAnd(Expr e, Expr andExpr, Expr operand1, Expr operand2) {
-  operand1 != operand2 and
-  e = operand1 and
-  upperBound(operand2.getFullyConverted()) < exprMaxVal(andExpr.getFullyConverted())
-}
-
-/**
- * Holds if `fc` is a part of the left operand of a binary operation that greatly reduces the range
- * of possible values.
- */
-predicate bounded(Expr e) {
-  //  For `%` and `&` we require that `e` is bounded by a value that is strictly smaller than the
-  //  maximum possible value of the result type of the operation.
-  //  For example, the function call `rand()` is considered bounded in the following program:
-  //  ```
-  //  int i = rand() % (UINT8_MAX + 1);
-  //  ```
-  //  but not in:
-  //  ```
-  //  unsigned char uc = rand() % (UINT8_MAX + 1);
-  //  ```
-  exists(RemExpr rem | boundedRem(e, rem, rem.getLeftOperand(), rem.getRightOperand()))
-  or
-  exists(AssignRemExpr rem | boundedRem(e, rem, rem.getLValue(), rem.getRValue()))
-  or
-  exists(BitwiseAndExpr andExpr |
-    boundedBitwiseAnd(e, andExpr, andExpr.getAnOperand(), andExpr.getAnOperand())
-  )
-  or
-  exists(AssignAndExpr andExpr |
-    boundedBitwiseAnd(e, andExpr, andExpr.getAnOperand(), andExpr.getAnOperand())
-  )
-  or
-  // Optimitically assume that a division always yields a much smaller value.
-  boundedDiv(e, any(DivExpr div).getLeftOperand())
-  or
-  boundedDiv(e, any(AssignDivExpr div).getLValue())
-  or
-  boundedDiv(e, any(RShiftExpr shift).getLeftOperand())
-  or
-  boundedDiv(e, any(AssignRShiftExpr div).getLValue())
-}
-
-predicate isUnboundedRandCallOrParent(Expr e) {
-  isUnboundedRandCall(e)
-  or
-  isUnboundedRandCallOrParent(e.getAChild())
-}
-
-predicate isUnboundedRandValue(Expr e) {
-  isUnboundedRandCall(e)
-  or
-  exists(MacroInvocation mi |
-    e = mi.getExpr() and
-    isUnboundedRandCallOrParent(e)
-  )
-}
-
-class SecurityOptionsArith extends SecurityOptions {
-  override predicate isUserInput(Expr expr, string cause) {
-    isUnboundedRandValue(expr) and
-    cause = "rand"
+private class StdRand extends RandomFunction {
+  StdRand() {
+    this.hasGlobalOrStdOrBslName("rand") and
+    this.getNumberOfParameters() = 0
   }
+}
+
+/**
+ * The Unix function `rand_r`.
+ */
+private class RandR extends RandomFunction {
+  RandR() {
+    this.hasGlobalName("rand_r") and
+    this.getNumberOfParameters() = 1
+  }
+}
+
+/**
+ * The Unix function `random`.
+ */
+private class Random extends RandomFunction {
+  Random() {
+    this.hasGlobalName("random") and
+    this.getNumberOfParameters() = 1
+  }
+}
+
+/**
+ * The Windows `rand_s` function.
+ */
+private class RandS extends RandomFunction {
+  RandS() {
+    this.hasGlobalName("rand_s") and
+    this.getNumberOfParameters() = 1
+  }
+
+  override FunctionOutput getFunctionOutput() { result.isParameterDeref(0) }
 }
 
 predicate missingGuard(VariableAccess va, string effect) {
   exists(Operation op | op.getAnOperand() = va |
-    missingGuardAgainstUnderflow(op, va) and effect = "underflow"
+    // underflow - random numbers are usually non-negative, so underflow is
+    // only likely if the type is unsigned. Multiplication is also unlikely to
+    // cause underflow of a non-negative number.
+    missingGuardAgainstUnderflow(op, va) and
+    effect = "underflow" and
+    op.getUnspecifiedType().(IntegralType).isUnsigned() and
+    not op instanceof MulExpr
     or
+    // overflow
     missingGuardAgainstOverflow(op, va) and effect = "overflow"
   )
 }
 
-class Configuration extends TaintTrackingConfiguration {
-  override predicate isSink(Element e) { missingGuard(e, _) }
+class UncontrolledArithConfiguration extends TaintTracking::Configuration {
+  UncontrolledArithConfiguration() { this = "UncontrolledArithConfiguration" }
 
-  override predicate isBarrier(Expr e) { super.isBarrier(e) or bounded(e) }
+  override predicate isSource(DataFlow::Node source) {
+    exists(RandomFunction rand, Call call | call.getTarget() = rand |
+      rand.getFunctionOutput().isReturnValue() and
+      source.asExpr() = call
+      or
+      exists(int n |
+        source.asDefiningArgument() = call.getArgument(n) and
+        rand.getFunctionOutput().isParameterDeref(n)
+      )
+    )
+  }
+
+  override predicate isSink(DataFlow::Node sink) { missingGuard(sink.asExpr(), _) }
+
+  override predicate isSanitizer(DataFlow::Node node) {
+    bounded(node.asExpr())
+    or
+    // If this expression is part of bitwise 'and' or 'or' operation it's likely that the value is
+    // only used as a bit pattern.
+    node.asExpr() =
+      any(Operation op |
+        op instanceof BitwiseOrExpr or
+        op instanceof BitwiseAndExpr or
+        op instanceof ComplementExpr
+      ).getAnOperand*()
+    or
+    // block unintended flow to pointers
+    node.asExpr().getUnspecifiedType() instanceof PointerType
+  }
 }
 
-from Expr origin, VariableAccess va, string effect, PathNode sourceNode, PathNode sinkNode
+/** Gets the expression that corresponds to `node`, if any. */
+Expr getExpr(DataFlow::Node node) { result = [node.asExpr(), node.asDefiningArgument()] }
+
+from
+  UncontrolledArithConfiguration config, DataFlow::PathNode source, DataFlow::PathNode sink,
+  VariableAccess va, string effect
 where
-  taintedWithPath(origin, va, sourceNode, sinkNode) and
+  config.hasFlowPath(source, sink) and
+  sink.getNode().asExpr() = va and
   missingGuard(va, effect)
-select va, sourceNode, sinkNode,
-  "$@ flows to here and is used in arithmetic, potentially causing an " + effect + ".", origin,
-  "Uncontrolled value"
+select sink.getNode(), source, sink,
+  "$@ flows to here and is used in arithmetic, potentially causing an " + effect + ".",
+  getExpr(source.getNode()), "Uncontrolled value"

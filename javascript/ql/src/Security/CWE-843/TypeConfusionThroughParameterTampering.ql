@@ -3,7 +3,7 @@
  * @description Sanitizing an HTTP request parameter may be ineffective if the user controls its type.
  * @kind path-problem
  * @problem.severity error
- * @security-severity 5.9
+ * @security-severity 9.8
  * @precision high
  * @id js/type-confusion-through-parameter-tampering
  * @tags security
@@ -11,7 +11,7 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.TypeConfusionThroughParameterTampering::TypeConfusionThroughParameterTampering
+import semmle.javascript.security.dataflow.TypeConfusionThroughParameterTamperingQuery
 import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink

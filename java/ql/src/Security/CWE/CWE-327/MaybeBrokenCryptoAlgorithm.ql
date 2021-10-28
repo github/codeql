@@ -3,7 +3,7 @@
  * @description Using broken or weak cryptographic algorithms can allow an attacker to compromise security.
  * @kind path-problem
  * @problem.severity warning
- * @security-severity 5.2
+ * @security-severity 7.5
  * @precision medium
  * @id java/potentially-weak-cryptographic-algorithm
  * @tags security
@@ -18,14 +18,14 @@ import semmle.code.java.dispatch.VirtualDispatch
 import PathGraph
 
 private class ShortStringLiteral extends StringLiteral {
-  ShortStringLiteral() { getLiteral().length() < 100 }
+  ShortStringLiteral() { getRepresentedString().length() < 100 }
 }
 
 class InsecureAlgoLiteral extends ShortStringLiteral {
   InsecureAlgoLiteral() {
     // Algorithm identifiers should be at least two characters.
-    getValue().length() > 1 and
-    exists(string s | s = getLiteral() |
+    getRepresentedString().length() > 1 and
+    exists(string s | s = getRepresentedString() |
       not s.regexpMatch(getSecureAlgorithmRegex()) and
       // Exclude results covered by another query.
       not s.regexpMatch(getInsecureAlgorithmRegex())
@@ -72,4 +72,4 @@ where
   conf.hasFlowPath(source, sink)
 select c, source, sink,
   "Cryptographic algorithm $@ may not be secure, consider using a different algorithm.", s,
-  s.getLiteral()
+  s.getRepresentedString()

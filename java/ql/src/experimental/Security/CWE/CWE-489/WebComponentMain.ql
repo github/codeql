@@ -6,7 +6,7 @@
  * @precision medium
  * @id java/main-method-in-web-components
  * @tags security
- *       external/cwe-489
+ *       external/cwe/cwe-489
  */
 
 import java

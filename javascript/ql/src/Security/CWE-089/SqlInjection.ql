@@ -4,7 +4,7 @@
  *              malicious code by the user.
  * @kind path-problem
  * @problem.severity error
- * @security-severity 6.4
+ * @security-severity 8.8
  * @precision high
  * @id js/sql-injection
  * @tags security
@@ -12,8 +12,8 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.SqlInjection
-import semmle.javascript.security.dataflow.NosqlInjection
+import semmle.javascript.security.dataflow.SqlInjectionQuery as SqlInjection
+import semmle.javascript.security.dataflow.NosqlInjectionQuery as NosqlInjection
 import DataFlow::PathGraph
 
 from DataFlow::Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink

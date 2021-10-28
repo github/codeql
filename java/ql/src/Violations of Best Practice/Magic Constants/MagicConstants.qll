@@ -5,179 +5,30 @@ import java
  */
 
 private predicate trivialPositiveIntValue(string s) {
-  s = "0" or
-  s = "1" or
-  s = "2" or
-  s = "3" or
-  s = "4" or
-  s = "5" or
-  s = "6" or
-  s = "7" or
-  s = "8" or
-  s = "9" or
-  s = "10" or
-  s = "11" or
-  s = "12" or
-  s = "13" or
-  s = "14" or
-  s = "15" or
-  s = "16" or
-  s = "17" or
-  s = "18" or
-  s = "19" or
-  s = "20" or
-  s = "16" or
-  s = "32" or
-  s = "64" or
-  s = "128" or
-  s = "256" or
-  s = "512" or
-  s = "1024" or
-  s = "2048" or
-  s = "4096" or
-  s = "16384" or
-  s = "32768" or
-  s = "65536" or
-  s = "1048576" or
-  s = "2147483648" or
-  s = "4294967296" or
-  s = "15" or
-  s = "31" or
-  s = "63" or
-  s = "127" or
-  s = "255" or
-  s = "511" or
-  s = "1023" or
-  s = "2047" or
-  s = "4095" or
-  s = "16383" or
-  s = "32767" or
-  s = "65535" or
-  s = "1048577" or
-  s = "2147483647" or
-  s = "4294967295" or
-  s = "0x00000001" or
-  s = "0x00000002" or
-  s = "0x00000004" or
-  s = "0x00000008" or
-  s = "0x00000010" or
-  s = "0x00000020" or
-  s = "0x00000040" or
-  s = "0x00000080" or
-  s = "0x00000100" or
-  s = "0x00000200" or
-  s = "0x00000400" or
-  s = "0x00000800" or
-  s = "0x00001000" or
-  s = "0x00002000" or
-  s = "0x00004000" or
-  s = "0x00008000" or
-  s = "0x00010000" or
-  s = "0x00020000" or
-  s = "0x00040000" or
-  s = "0x00080000" or
-  s = "0x00100000" or
-  s = "0x00200000" or
-  s = "0x00400000" or
-  s = "0x00800000" or
-  s = "0x01000000" or
-  s = "0x02000000" or
-  s = "0x04000000" or
-  s = "0x08000000" or
-  s = "0x10000000" or
-  s = "0x20000000" or
-  s = "0x40000000" or
-  s = "0x80000000" or
-  s = "0x00000001" or
-  s = "0x00000003" or
-  s = "0x00000007" or
-  s = "0x0000000f" or
-  s = "0x0000001f" or
-  s = "0x0000003f" or
-  s = "0x0000007f" or
-  s = "0x000000ff" or
-  s = "0x000001ff" or
-  s = "0x000003ff" or
-  s = "0x000007ff" or
-  s = "0x00000fff" or
-  s = "0x00001fff" or
-  s = "0x00003fff" or
-  s = "0x00007fff" or
-  s = "0x0000ffff" or
-  s = "0x0001ffff" or
-  s = "0x0003ffff" or
-  s = "0x0007ffff" or
-  s = "0x000fffff" or
-  s = "0x001fffff" or
-  s = "0x003fffff" or
-  s = "0x007fffff" or
-  s = "0x00ffffff" or
-  s = "0x01ffffff" or
-  s = "0x03ffffff" or
-  s = "0x07ffffff" or
-  s = "0x0fffffff" or
-  s = "0x1fffffff" or
-  s = "0x3fffffff" or
-  s = "0x7fffffff" or
-  s = "0xffffffff" or
-  s = "0x0001" or
-  s = "0x0002" or
-  s = "0x0004" or
-  s = "0x0008" or
-  s = "0x0010" or
-  s = "0x0020" or
-  s = "0x0040" or
-  s = "0x0080" or
-  s = "0x0100" or
-  s = "0x0200" or
-  s = "0x0400" or
-  s = "0x0800" or
-  s = "0x1000" or
-  s = "0x2000" or
-  s = "0x4000" or
-  s = "0x8000" or
-  s = "0x0001" or
-  s = "0x0003" or
-  s = "0x0007" or
-  s = "0x000f" or
-  s = "0x001f" or
-  s = "0x003f" or
-  s = "0x007f" or
-  s = "0x00ff" or
-  s = "0x01ff" or
-  s = "0x03ff" or
-  s = "0x07ff" or
-  s = "0x0fff" or
-  s = "0x1fff" or
-  s = "0x3fff" or
-  s = "0x7fff" or
-  s = "0xffff" or
-  s = "0x01" or
-  s = "0x02" or
-  s = "0x04" or
-  s = "0x08" or
-  s = "0x10" or
-  s = "0x20" or
-  s = "0x40" or
-  s = "0x80" or
-  s = "0x01" or
-  s = "0x03" or
-  s = "0x07" or
-  s = "0x0f" or
-  s = "0x1f" or
-  s = "0x3f" or
-  s = "0x7f" or
-  s = "0xff" or
-  s = "0x00" or
-  s = "10" or
-  s = "100" or
-  s = "1000" or
-  s = "10000" or
-  s = "100000" or
-  s = "1000000" or
-  s = "10000000" or
-  s = "100000000" or
-  s = "1000000000"
+  s =
+    [
+      "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16",
+      "17", "18", "19", "20", "16", "32", "64", "128", "256", "512", "1024", "2048", "4096",
+      "16384", "32768", "65536", "1048576", "2147483648", "4294967296", "15", "31", "63", "127",
+      "255", "511", "1023", "2047", "4095", "16383", "32767", "65535", "1048577", "2147483647",
+      "4294967295", "0x00000001", "0x00000002", "0x00000004", "0x00000008", "0x00000010",
+      "0x00000020", "0x00000040", "0x00000080", "0x00000100", "0x00000200", "0x00000400",
+      "0x00000800", "0x00001000", "0x00002000", "0x00004000", "0x00008000", "0x00010000",
+      "0x00020000", "0x00040000", "0x00080000", "0x00100000", "0x00200000", "0x00400000",
+      "0x00800000", "0x01000000", "0x02000000", "0x04000000", "0x08000000", "0x10000000",
+      "0x20000000", "0x40000000", "0x80000000", "0x00000001", "0x00000003", "0x00000007",
+      "0x0000000f", "0x0000001f", "0x0000003f", "0x0000007f", "0x000000ff", "0x000001ff",
+      "0x000003ff", "0x000007ff", "0x00000fff", "0x00001fff", "0x00003fff", "0x00007fff",
+      "0x0000ffff", "0x0001ffff", "0x0003ffff", "0x0007ffff", "0x000fffff", "0x001fffff",
+      "0x003fffff", "0x007fffff", "0x00ffffff", "0x01ffffff", "0x03ffffff", "0x07ffffff",
+      "0x0fffffff", "0x1fffffff", "0x3fffffff", "0x7fffffff", "0xffffffff", "0x0001", "0x0002",
+      "0x0004", "0x0008", "0x0010", "0x0020", "0x0040", "0x0080", "0x0100", "0x0200", "0x0400",
+      "0x0800", "0x1000", "0x2000", "0x4000", "0x8000", "0x0001", "0x0003", "0x0007", "0x000f",
+      "0x001f", "0x003f", "0x007f", "0x00ff", "0x01ff", "0x03ff", "0x07ff", "0x0fff", "0x1fff",
+      "0x3fff", "0x7fff", "0xffff", "0x01", "0x02", "0x04", "0x08", "0x10", "0x20", "0x40", "0x80",
+      "0x01", "0x03", "0x07", "0x0f", "0x1f", "0x3f", "0x7f", "0xff", "0x00", "10", "100", "1000",
+      "10000", "100000", "1000000", "10000000", "100000000", "1000000000"
+    ]
 }
 
 private predicate trivialIntValue(string s) {
@@ -186,24 +37,21 @@ private predicate trivialIntValue(string s) {
   exists(string pos | trivialPositiveIntValue(pos) and s = "-" + pos)
 }
 
-private predicate intTrivial(Literal lit) {
-  exists(string v | trivialIntValue(v) and v = lit.getLiteral())
+private predicate intTrivial(IntegerLiteral lit) {
+  // Remove all `_` from literal, if any (e.g. `1_000_000`)
+  exists(string v | trivialIntValue(v) and v = lit.getLiteral().replaceAll("_", ""))
 }
 
-private predicate longTrivial(Literal lit) {
-  exists(string v | trivialIntValue(v) and v + "L" = lit.getLiteral())
+private predicate longTrivial(LongLiteral lit) {
+  exists(string v |
+    trivialIntValue(v) and
+    // Remove all `_` from literal, if any (e.g. `1_000_000L`)
+    v + ["l", "L"] = lit.getLiteral().replaceAll("_", "")
+  )
 }
 
 private predicate powerOfTen(float f) {
-  f = 10 or
-  f = 100 or
-  f = 1000 or
-  f = 10000 or
-  f = 100000 or
-  f = 1000000 or
-  f = 10000000 or
-  f = 100000000 or
-  f = 1000000000
+  f = [10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000]
 }
 
 private predicate floatTrivial(Literal lit) {
@@ -244,7 +92,7 @@ private predicate literalIsConstantInitializer(Literal literal, Field f) {
 }
 
 private predicate nonTrivialValue(string value, Literal literal, string context) {
-  value = literal.getLiteral() and
+  value = literal.getValue() and
   not trivial(literal) and
   not literalIsConstantInitializer(literal, _) and
   not literal.getParent*() instanceof ArrayInit and
@@ -259,7 +107,7 @@ private predicate valueOccurrenceCount(string value, int n, string context) {
 
 private predicate occurenceCount(Literal lit, string value, int n, string context) {
   valueOccurrenceCount(value, n, context) and
-  value = lit.getLiteral() and
+  value = lit.getValue() and
   nonTrivialValue(_, lit, context)
 }
 
@@ -296,14 +144,7 @@ private predicate firstOccurrence(Literal lit, string value, string context, int
   )
 }
 
-predicate isNumber(Literal lit) {
-  lit.getType().getName() = "char" or
-  lit.getType().getName() = "short" or
-  lit.getType().getName() = "int" or
-  lit.getType().getName() = "long" or
-  lit.getType().getName() = "float" or
-  lit.getType().getName() = "double"
-}
+predicate isNumber(Literal lit) { lit.getType() instanceof NumericOrCharType }
 
 predicate magicConstant(Literal e, string msg) {
   exists(string value, int n, string context |
@@ -320,7 +161,7 @@ predicate magicConstant(Literal e, string msg) {
 
 private predicate relevantField(Field f, string value) {
   exists(Literal lit |
-    not trivial(lit) and value = lit.getLiteral() and literalIsConstantInitializer(lit, f)
+    not trivial(lit) and value = lit.getValue() and literalIsConstantInitializer(lit, f)
   )
 }
 
@@ -344,7 +185,7 @@ private predicate candidateConstantForLiteral(
   exists(Literal initLiteral |
     literalIsConstantInitializer(initLiteral, constField) and
     exists(string value |
-      value = initLiteral.getLiteral() and
+      value = initLiteral.getValue() and
       nonTrivialValue(value, magicLiteral, context) and
       fieldUsedInContext(constField, context)
     ) and

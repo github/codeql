@@ -3,7 +3,7 @@
  * @description Escaping code as HTML does not provide protection against code injection.
  * @kind path-problem
  * @problem.severity error
- * @security-severity 2.9
+ * @security-severity 6.1
  * @precision high
  * @id js/bad-code-sanitization
  * @tags security
@@ -13,7 +13,7 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.ImproperCodeSanitization::ImproperCodeSanitization
+import semmle.javascript.security.dataflow.ImproperCodeSanitizationQuery
 import DataFlow::PathGraph
 private import semmle.javascript.heuristics.HeuristicSinks
 private import semmle.javascript.security.dataflow.CodeInjectionCustomizations

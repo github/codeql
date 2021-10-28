@@ -129,7 +129,6 @@ public class A
             }
         }
 
-
         public void CallSinkIfFalse(object o, bool cond)
         {
             if (!cond)
@@ -137,7 +136,6 @@ public class A
                 Sink(o);
             }
         }
-
 
         public void LocalCallSensitivity(object o, bool c)
         {
@@ -171,6 +169,10 @@ public class A2
         a2.M(o);
     }
 
+    public virtual object MOut() => new object();
+
+    public static object CallMOut(A2 a2) => a2.MOut();
+
     public void Callsite(InterfaceB intF)
     {
         B b = new B();
@@ -181,6 +183,11 @@ public class A2
 
         CallM(b, new object()); // no flow to `Sink()`
         CallM(this, new object());  // flow to `Sink()`
+
+        var o = CallMOut(this);
+        Sink(o); // flow
+        o = CallMOut(b);
+        Sink(o); // no flow
     }
 
     public class B : A2
@@ -189,11 +196,12 @@ public class A2
         {
 
         }
+
+        public override object MOut() => throw null;
     }
 
     public class IntA : InterfaceB
     {
-
         public void Foo(A2 obj, object o, bool cond)
         {
             obj.M(o);
@@ -212,7 +220,6 @@ public class A2
             }
         }
     }
-
 }
 
 public interface InterfaceA

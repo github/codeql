@@ -17,7 +17,5 @@ namespace Semmle.Extraction.Entities
             trapFile.extractor_messages(this, msg.Severity, "C# extractor", msg.Text, msg.EntityText ?? string.Empty,
                 msg.Location ?? Context.CreateLocation(), msg.StackTrace ?? string.Empty);
         }
-
-        public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NoLabel;
     }
 }

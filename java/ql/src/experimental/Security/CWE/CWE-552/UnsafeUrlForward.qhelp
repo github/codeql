@@ -1,0 +1,31 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>Constructing a server-side redirect path with user input could allow an attacker to download application binaries 
+(including application classes or jar files) or view arbitrary files within protected directories.</p>
+
+</overview>
+<recommendation>
+
+<p>In order to prevent untrusted URL forwarding, it is recommended to avoid concatenating user input directly into the forwarding URL.</p>
+
+</recommendation>
+<example>
+
+<p>The following examples show the bad case and the good case respectively.
+The <code>bad</code> methods show an HTTP request parameter being used directly in a URL forward
+without validating the input, which may cause file leakage. In <code>good1</code> method, 
+ordinary forwarding requests are shown, which will not cause file leakage.
+</p>
+
+<sample src="UnsafeUrlForward.java" />
+
+</example>
+<references>
+<li>File Disclosure: <a href="https://vulncat.fortify.com/en/detail?id=desc.dataflow.java.file_disclosure_spring">Unsafe Url Forward</a>.</li>
+</references>
+</qhelp>

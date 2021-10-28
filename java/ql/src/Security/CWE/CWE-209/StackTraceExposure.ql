@@ -5,7 +5,7 @@
  *              that are useful to an attacker for developing a subsequent exploit.
  * @kind problem
  * @problem.severity error
- * @security-severity 3.6
+ * @security-severity 5.4
  * @precision high
  * @id java/stack-trace-exposure
  * @tags security
@@ -36,7 +36,9 @@ class ServletWriterSourceToPrintStackTraceMethodFlowConfig extends TaintTracking
     this = "StackTraceExposure::ServletWriterSourceToPrintStackTraceMethodFlowConfig"
   }
 
-  override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof ServletWriterSource }
+  override predicate isSource(DataFlow::Node src) {
+    src.asExpr() instanceof XssVulnerableWriterSource
+  }
 
   override predicate isSink(DataFlow::Node sink) {
     exists(MethodAccess ma |

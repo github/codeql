@@ -497,6 +497,7 @@ The following sequences of characters are keyword tokens:
    max
    min
    module
+   newtype
    none
    not
    or
@@ -514,6 +515,7 @@ The following sequences of characters are keyword tokens:
    then
    this
    true
+   unique
    where
 
 Operators
@@ -1323,13 +1325,15 @@ Set literals denote a choice from a collection of values.
 
 ::
 
-   setliteral ::= "[" expr ("," expr)* "]"
+   setliteral ::= "[" expr ("," expr)* ","? "]"
 
 Set literals can be of any type, but the types within a set literal have to be consistent according to the following criterion: At least one of the set elements has to be of a type that is a supertype of all the set element types. This supertype is the type of the set literal. For example, ``float`` is a supertype of ``float`` and ``int``, therefore ``x = [4, 5.6]`` is valid. On the other hand, ``y = [5, "test"]`` does not adhere to the criterion.
 
 The values of a set literal expression are all the values of all the contained element expressions.
 
 Set literals are supported from release 2.1.0 of the CodeQL CLI, and release 1.24 of LGTM Enterprise.
+
+Since release 2.7.1 of the CodeQL CLI, and release 1.28 of LGTM Enterprise, a trailing comma is allowed in a set literal.
 
 Disambiguation of expressions
 -----------------------------
@@ -1774,6 +1778,8 @@ The following built-in predicates are members of type ``int``:
 +-------------------------+-------------+----------------+----------------------------------------------------------------------------------------------------------------+
 | ``toString``            | string      |                | The result is the decimal representation of the number as a string.                                            |
 +-------------------------+-------------+----------------+----------------------------------------------------------------------------------------------------------------+
+| ``toUnicode``           | string      |                | The result is the unicode character for the receiver seen as a unicode code point.                             |
++-------------------------+-------------+----------------+----------------------------------------------------------------------------------------------------------------+
 
 The leftmost bit after ``bitShiftRightSigned`` depends on sign extension, whereas after ``bitShiftRight`` it is zero.
 
@@ -2058,7 +2064,7 @@ The complete grammar for QL is as follows:
 
    exprs ::= expr ("," expr)*
 
-   alias := qldoc? annotations "predicate" literalId "=" predicateRef "/" int ";"
+   alias ::= qldoc? annotations "predicate" literalId "=" predicateRef "/" int ";"
          |  qldoc? annotations "class" classname "=" type ";"
          |  qldoc? annotations "module" modulename "=" moduleId ";"
          
@@ -2166,7 +2172,7 @@ The complete grammar for QL is as follows:
                    
    range ::= "[" expr ".." expr "]"
    
-   setliteral ::= "[" expr ("," expr)* "]"
+   setliteral ::= "[" expr ("," expr)* ","? "]"
 
    simpleId ::= lowerId | upperId
 

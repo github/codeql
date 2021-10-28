@@ -103,7 +103,7 @@ Analysis overview
 
   CodeQL analysis works by extracting a queryable database from your project. For compiled languages, the tools observe an ordinary build of the source code. Each time a compiler is invoked to process a source file, a copy of that file is made, and all relevant information about the source code (syntactic data about the abstract syntax tree, semantic data like name binding and type information, data on the operation of the C preprocessor, etc.) is collected. For interpreted languages, the extractor gathers similar information by running directly on the source code. Multi-language code bases are analyzed one language at a time.
 
-  Once the extraction finishes, all this information is collected into a single `CodeQL database <https://help.semmle.com/codeql/about-codeql.html#about-codeql-databases>`__, which is then ready to query, possibly on a different machine. A copy of the source files, made at the time the database was created, is also included in the CodeQL database so analysis results can be displayed at the correct location in the code. The database schema is (source) language specific.
+  Once the extraction finishes, all this information is collected into a single `CodeQL database <https://codeql.github.com/docs/codeql-overview/about-codeql/#about-codeql-databases>`__, which is then ready to query, possibly on a different machine. A copy of the source files, made at the time the database was created, is also included in the CodeQL database so analysis results can be displayed at the correct location in the code. The database schema is (source) language specific.
 
   Queries are written in QL and usually depend on one or more of the `standard CodeQL libraries <https://github.com/github/codeql>`__ (and of course you can write your own custom libraries). They are compiled into an efficiently executable format by the QL compiler and then run on a CodeQL database by the QL evaluator, either on a remote worker machine or locally on a developer’s machine.
 
@@ -124,7 +124,7 @@ QL is:
 
 .. note::
 
-  QL is the high-level, object-oriented logic language that underpins all CodeQL libraries and analyses. You can learn lots more about QL by visiting the `QL language reference <https://help.semmle.com/QL/ql-handbook>`__.
+  QL is the high-level, object-oriented logic language that underpins all CodeQL libraries and analyses. You can learn lots more about QL by visiting the `QL language reference <https://codeql.github.com/docs/ql-language-reference/>`__.
   The key features of QL are:
   
   - All common logic connectives are available, including quantifiers like ``exist``, which can also introduce new variables. 

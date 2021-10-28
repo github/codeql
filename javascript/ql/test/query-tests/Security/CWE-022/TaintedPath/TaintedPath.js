@@ -194,3 +194,22 @@ var server = http.createServer(function(req, res) {
   res.write(fs.readFileSync("prefix" + path.replace(/^(\.\.[\/\\])+/, ''))); // NOT OK - not normalized
   res.write(fs.readFileSync(pathModule.normalize(path).replace(/^(\.\.[\/\\])+/, ''))); // NOT OK (can be absolute)
 });
+
+import normalizeUrl from 'normalize-url';
+
+var server = http.createServer(function(req, res) {
+  // tests for a few more uri-libraries
+  const qs = require("qs");
+  res.write(fs.readFileSync(qs.parse(req.url).foo)); // NOT OK
+  res.write(fs.readFileSync(qs.parse(normalizeUrl(req.url)).foo)); // NOT OK
+  const parseqs = require("parseqs");
+  res.write(fs.readFileSync(parseqs.decode(req.url).foo)); // NOT OK
+});
+
+const cp = require("child_process");
+var server = http.createServer(function(req, res) {
+  let path = url.parse(req.url, true).query.path;
+  cp.execSync("foobar", {cwd: path}); // NOT OK
+  cp.execFileSync("foobar", ["args"], {cwd: path}); // NOT OK
+  cp.execFileSync("foobar", {cwd: path}); // NOT OK
+});

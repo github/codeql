@@ -1,0 +1,109 @@
+edges
+| InsecureTrustManagerTest.java:121:33:121:81 | {...} [[]] : InsecureTrustManager | InsecureTrustManagerTest.java:122:22:122:33 | trustManager |
+| InsecureTrustManagerTest.java:121:54:121:79 | new InsecureTrustManager(...) : InsecureTrustManager | InsecureTrustManagerTest.java:121:33:121:81 | {...} [[]] : InsecureTrustManager |
+| InsecureTrustManagerTest.java:130:34:130:82 | {...} [[]] : InsecureTrustManager | InsecureTrustManagerTest.java:131:23:131:34 | trustManager |
+| InsecureTrustManagerTest.java:130:55:130:80 | new InsecureTrustManager(...) : InsecureTrustManager | InsecureTrustManagerTest.java:130:34:130:82 | {...} [[]] : InsecureTrustManager |
+| InsecureTrustManagerTest.java:151:34:151:82 | {...} [[]] : InsecureTrustManager | InsecureTrustManagerTest.java:152:23:152:34 | trustManager |
+| InsecureTrustManagerTest.java:151:55:151:80 | new InsecureTrustManager(...) : InsecureTrustManager | InsecureTrustManagerTest.java:151:34:151:82 | {...} [[]] : InsecureTrustManager |
+| InsecureTrustManagerTest.java:172:34:172:82 | {...} [[]] : InsecureTrustManager | InsecureTrustManagerTest.java:173:23:173:34 | trustManager |
+| InsecureTrustManagerTest.java:172:55:172:80 | new InsecureTrustManager(...) : InsecureTrustManager | InsecureTrustManagerTest.java:172:34:172:82 | {...} [[]] : InsecureTrustManager |
+| InsecureTrustManagerTest.java:193:34:193:82 | {...} [[]] : InsecureTrustManager | InsecureTrustManagerTest.java:194:23:194:34 | trustManager |
+| InsecureTrustManagerTest.java:193:55:193:80 | new InsecureTrustManager(...) : InsecureTrustManager | InsecureTrustManagerTest.java:193:34:193:82 | {...} [[]] : InsecureTrustManager |
+| InsecureTrustManagerTest.java:214:34:214:82 | {...} [[]] : InsecureTrustManager | InsecureTrustManagerTest.java:215:23:215:34 | trustManager |
+| InsecureTrustManagerTest.java:214:55:214:80 | new InsecureTrustManager(...) : InsecureTrustManager | InsecureTrustManagerTest.java:214:34:214:82 | {...} [[]] : InsecureTrustManager |
+| InsecureTrustManagerTest.java:235:34:235:82 | {...} [[]] : InsecureTrustManager | InsecureTrustManagerTest.java:236:23:236:34 | trustManager |
+| InsecureTrustManagerTest.java:235:55:235:80 | new InsecureTrustManager(...) : InsecureTrustManager | InsecureTrustManagerTest.java:235:34:235:82 | {...} [[]] : InsecureTrustManager |
+| InsecureTrustManagerTest.java:257:34:257:82 | {...} [[]] : InsecureTrustManager | InsecureTrustManagerTest.java:258:23:258:34 | trustManager |
+| InsecureTrustManagerTest.java:257:55:257:80 | new InsecureTrustManager(...) : InsecureTrustManager | InsecureTrustManagerTest.java:257:34:257:82 | {...} [[]] : InsecureTrustManager |
+| InsecureTrustManagerTest.java:280:34:280:82 | {...} [[]] : InsecureTrustManager | InsecureTrustManagerTest.java:281:23:281:34 | trustManager |
+| InsecureTrustManagerTest.java:280:55:280:80 | new InsecureTrustManager(...) : InsecureTrustManager | InsecureTrustManagerTest.java:280:34:280:82 | {...} [[]] : InsecureTrustManager |
+| InsecureTrustManagerTest.java:305:33:305:81 | {...} [[]] : InsecureTrustManager | InsecureTrustManagerTest.java:306:22:306:33 | trustManager |
+| InsecureTrustManagerTest.java:305:54:305:79 | new InsecureTrustManager(...) : InsecureTrustManager | InsecureTrustManagerTest.java:305:33:305:81 | {...} [[]] : InsecureTrustManager |
+| InsecureTrustManagerTest.java:319:33:319:81 | {...} [[]] : InsecureTrustManager | InsecureTrustManagerTest.java:320:22:320:33 | trustManager |
+| InsecureTrustManagerTest.java:319:54:319:79 | new InsecureTrustManager(...) : InsecureTrustManager | InsecureTrustManagerTest.java:319:33:319:81 | {...} [[]] : InsecureTrustManager |
+| InsecureTrustManagerTest.java:333:33:333:81 | {...} [[]] : InsecureTrustManager | InsecureTrustManagerTest.java:334:22:334:33 | trustManager |
+| InsecureTrustManagerTest.java:333:54:333:79 | new InsecureTrustManager(...) : InsecureTrustManager | InsecureTrustManagerTest.java:333:33:333:81 | {...} [[]] : InsecureTrustManager |
+| InsecureTrustManagerTest.java:347:33:347:81 | {...} [[]] : InsecureTrustManager | InsecureTrustManagerTest.java:348:22:348:33 | trustManager |
+| InsecureTrustManagerTest.java:347:54:347:79 | new InsecureTrustManager(...) : InsecureTrustManager | InsecureTrustManagerTest.java:347:33:347:81 | {...} [[]] : InsecureTrustManager |
+| InsecureTrustManagerTest.java:361:33:361:81 | {...} [[]] : InsecureTrustManager | InsecureTrustManagerTest.java:362:22:362:33 | trustManager |
+| InsecureTrustManagerTest.java:361:54:361:79 | new InsecureTrustManager(...) : InsecureTrustManager | InsecureTrustManagerTest.java:361:33:361:81 | {...} [[]] : InsecureTrustManager |
+| InsecureTrustManagerTest.java:375:33:375:81 | {...} [[]] : InsecureTrustManager | InsecureTrustManagerTest.java:376:22:376:33 | trustManager |
+| InsecureTrustManagerTest.java:375:54:375:79 | new InsecureTrustManager(...) : InsecureTrustManager | InsecureTrustManagerTest.java:375:33:375:81 | {...} [[]] : InsecureTrustManager |
+| InsecureTrustManagerTest.java:390:33:390:81 | {...} [[]] : InsecureTrustManager | InsecureTrustManagerTest.java:391:22:391:33 | trustManager |
+| InsecureTrustManagerTest.java:390:54:390:79 | new InsecureTrustManager(...) : InsecureTrustManager | InsecureTrustManagerTest.java:390:33:390:81 | {...} [[]] : InsecureTrustManager |
+| InsecureTrustManagerTest.java:405:33:405:81 | {...} [[]] : InsecureTrustManager | InsecureTrustManagerTest.java:406:22:406:33 | trustManager |
+| InsecureTrustManagerTest.java:405:54:405:79 | new InsecureTrustManager(...) : InsecureTrustManager | InsecureTrustManagerTest.java:405:33:405:81 | {...} [[]] : InsecureTrustManager |
+| InsecureTrustManagerTest.java:414:33:414:81 | {...} [[]] : InsecureTrustManager | InsecureTrustManagerTest.java:415:22:415:33 | trustManager |
+| InsecureTrustManagerTest.java:414:54:414:79 | new InsecureTrustManager(...) : InsecureTrustManager | InsecureTrustManagerTest.java:414:33:414:81 | {...} [[]] : InsecureTrustManager |
+nodes
+| InsecureTrustManagerTest.java:121:33:121:81 | {...} [[]] : InsecureTrustManager | semmle.label | {...} [[]] : InsecureTrustManager |
+| InsecureTrustManagerTest.java:121:54:121:79 | new InsecureTrustManager(...) : InsecureTrustManager | semmle.label | new InsecureTrustManager(...) : InsecureTrustManager |
+| InsecureTrustManagerTest.java:122:22:122:33 | trustManager | semmle.label | trustManager |
+| InsecureTrustManagerTest.java:130:34:130:82 | {...} [[]] : InsecureTrustManager | semmle.label | {...} [[]] : InsecureTrustManager |
+| InsecureTrustManagerTest.java:130:55:130:80 | new InsecureTrustManager(...) : InsecureTrustManager | semmle.label | new InsecureTrustManager(...) : InsecureTrustManager |
+| InsecureTrustManagerTest.java:131:23:131:34 | trustManager | semmle.label | trustManager |
+| InsecureTrustManagerTest.java:151:34:151:82 | {...} [[]] : InsecureTrustManager | semmle.label | {...} [[]] : InsecureTrustManager |
+| InsecureTrustManagerTest.java:151:55:151:80 | new InsecureTrustManager(...) : InsecureTrustManager | semmle.label | new InsecureTrustManager(...) : InsecureTrustManager |
+| InsecureTrustManagerTest.java:152:23:152:34 | trustManager | semmle.label | trustManager |
+| InsecureTrustManagerTest.java:172:34:172:82 | {...} [[]] : InsecureTrustManager | semmle.label | {...} [[]] : InsecureTrustManager |
+| InsecureTrustManagerTest.java:172:55:172:80 | new InsecureTrustManager(...) : InsecureTrustManager | semmle.label | new InsecureTrustManager(...) : InsecureTrustManager |
+| InsecureTrustManagerTest.java:173:23:173:34 | trustManager | semmle.label | trustManager |
+| InsecureTrustManagerTest.java:193:34:193:82 | {...} [[]] : InsecureTrustManager | semmle.label | {...} [[]] : InsecureTrustManager |
+| InsecureTrustManagerTest.java:193:55:193:80 | new InsecureTrustManager(...) : InsecureTrustManager | semmle.label | new InsecureTrustManager(...) : InsecureTrustManager |
+| InsecureTrustManagerTest.java:194:23:194:34 | trustManager | semmle.label | trustManager |
+| InsecureTrustManagerTest.java:214:34:214:82 | {...} [[]] : InsecureTrustManager | semmle.label | {...} [[]] : InsecureTrustManager |
+| InsecureTrustManagerTest.java:214:55:214:80 | new InsecureTrustManager(...) : InsecureTrustManager | semmle.label | new InsecureTrustManager(...) : InsecureTrustManager |
+| InsecureTrustManagerTest.java:215:23:215:34 | trustManager | semmle.label | trustManager |
+| InsecureTrustManagerTest.java:235:34:235:82 | {...} [[]] : InsecureTrustManager | semmle.label | {...} [[]] : InsecureTrustManager |
+| InsecureTrustManagerTest.java:235:55:235:80 | new InsecureTrustManager(...) : InsecureTrustManager | semmle.label | new InsecureTrustManager(...) : InsecureTrustManager |
+| InsecureTrustManagerTest.java:236:23:236:34 | trustManager | semmle.label | trustManager |
+| InsecureTrustManagerTest.java:257:34:257:82 | {...} [[]] : InsecureTrustManager | semmle.label | {...} [[]] : InsecureTrustManager |
+| InsecureTrustManagerTest.java:257:55:257:80 | new InsecureTrustManager(...) : InsecureTrustManager | semmle.label | new InsecureTrustManager(...) : InsecureTrustManager |
+| InsecureTrustManagerTest.java:258:23:258:34 | trustManager | semmle.label | trustManager |
+| InsecureTrustManagerTest.java:280:34:280:82 | {...} [[]] : InsecureTrustManager | semmle.label | {...} [[]] : InsecureTrustManager |
+| InsecureTrustManagerTest.java:280:55:280:80 | new InsecureTrustManager(...) : InsecureTrustManager | semmle.label | new InsecureTrustManager(...) : InsecureTrustManager |
+| InsecureTrustManagerTest.java:281:23:281:34 | trustManager | semmle.label | trustManager |
+| InsecureTrustManagerTest.java:305:33:305:81 | {...} [[]] : InsecureTrustManager | semmle.label | {...} [[]] : InsecureTrustManager |
+| InsecureTrustManagerTest.java:305:54:305:79 | new InsecureTrustManager(...) : InsecureTrustManager | semmle.label | new InsecureTrustManager(...) : InsecureTrustManager |
+| InsecureTrustManagerTest.java:306:22:306:33 | trustManager | semmle.label | trustManager |
+| InsecureTrustManagerTest.java:319:33:319:81 | {...} [[]] : InsecureTrustManager | semmle.label | {...} [[]] : InsecureTrustManager |
+| InsecureTrustManagerTest.java:319:54:319:79 | new InsecureTrustManager(...) : InsecureTrustManager | semmle.label | new InsecureTrustManager(...) : InsecureTrustManager |
+| InsecureTrustManagerTest.java:320:22:320:33 | trustManager | semmle.label | trustManager |
+| InsecureTrustManagerTest.java:333:33:333:81 | {...} [[]] : InsecureTrustManager | semmle.label | {...} [[]] : InsecureTrustManager |
+| InsecureTrustManagerTest.java:333:54:333:79 | new InsecureTrustManager(...) : InsecureTrustManager | semmle.label | new InsecureTrustManager(...) : InsecureTrustManager |
+| InsecureTrustManagerTest.java:334:22:334:33 | trustManager | semmle.label | trustManager |
+| InsecureTrustManagerTest.java:347:33:347:81 | {...} [[]] : InsecureTrustManager | semmle.label | {...} [[]] : InsecureTrustManager |
+| InsecureTrustManagerTest.java:347:54:347:79 | new InsecureTrustManager(...) : InsecureTrustManager | semmle.label | new InsecureTrustManager(...) : InsecureTrustManager |
+| InsecureTrustManagerTest.java:348:22:348:33 | trustManager | semmle.label | trustManager |
+| InsecureTrustManagerTest.java:361:33:361:81 | {...} [[]] : InsecureTrustManager | semmle.label | {...} [[]] : InsecureTrustManager |
+| InsecureTrustManagerTest.java:361:54:361:79 | new InsecureTrustManager(...) : InsecureTrustManager | semmle.label | new InsecureTrustManager(...) : InsecureTrustManager |
+| InsecureTrustManagerTest.java:362:22:362:33 | trustManager | semmle.label | trustManager |
+| InsecureTrustManagerTest.java:375:33:375:81 | {...} [[]] : InsecureTrustManager | semmle.label | {...} [[]] : InsecureTrustManager |
+| InsecureTrustManagerTest.java:375:54:375:79 | new InsecureTrustManager(...) : InsecureTrustManager | semmle.label | new InsecureTrustManager(...) : InsecureTrustManager |
+| InsecureTrustManagerTest.java:376:22:376:33 | trustManager | semmle.label | trustManager |
+| InsecureTrustManagerTest.java:390:33:390:81 | {...} [[]] : InsecureTrustManager | semmle.label | {...} [[]] : InsecureTrustManager |
+| InsecureTrustManagerTest.java:390:54:390:79 | new InsecureTrustManager(...) : InsecureTrustManager | semmle.label | new InsecureTrustManager(...) : InsecureTrustManager |
+| InsecureTrustManagerTest.java:391:22:391:33 | trustManager | semmle.label | trustManager |
+| InsecureTrustManagerTest.java:405:33:405:81 | {...} [[]] : InsecureTrustManager | semmle.label | {...} [[]] : InsecureTrustManager |
+| InsecureTrustManagerTest.java:405:54:405:79 | new InsecureTrustManager(...) : InsecureTrustManager | semmle.label | new InsecureTrustManager(...) : InsecureTrustManager |
+| InsecureTrustManagerTest.java:406:22:406:33 | trustManager | semmle.label | trustManager |
+| InsecureTrustManagerTest.java:414:33:414:81 | {...} [[]] : InsecureTrustManager | semmle.label | {...} [[]] : InsecureTrustManager |
+| InsecureTrustManagerTest.java:414:54:414:79 | new InsecureTrustManager(...) : InsecureTrustManager | semmle.label | new InsecureTrustManager(...) : InsecureTrustManager |
+| InsecureTrustManagerTest.java:415:22:415:33 | trustManager | semmle.label | trustManager |
+subpaths
+#select
+| InsecureTrustManagerTest.java:122:22:122:33 | trustManager | InsecureTrustManagerTest.java:121:54:121:79 | new InsecureTrustManager(...) : InsecureTrustManager | InsecureTrustManagerTest.java:122:22:122:33 | trustManager | $@ that is defined $@ and trusts any certificate, is used here. | InsecureTrustManagerTest.java:121:54:121:79 | new InsecureTrustManager(...) : InsecureTrustManager | This trustmanager | InsecureTrustManagerTest.java:35:23:35:42 | InsecureTrustManager | here |
+| InsecureTrustManagerTest.java:152:23:152:34 | trustManager | InsecureTrustManagerTest.java:151:55:151:80 | new InsecureTrustManager(...) : InsecureTrustManager | InsecureTrustManagerTest.java:152:23:152:34 | trustManager | $@ that is defined $@ and trusts any certificate, is used here. | InsecureTrustManagerTest.java:151:55:151:80 | new InsecureTrustManager(...) : InsecureTrustManager | This trustmanager | InsecureTrustManagerTest.java:35:23:35:42 | InsecureTrustManager | here |
+| InsecureTrustManagerTest.java:194:23:194:34 | trustManager | InsecureTrustManagerTest.java:193:55:193:80 | new InsecureTrustManager(...) : InsecureTrustManager | InsecureTrustManagerTest.java:194:23:194:34 | trustManager | $@ that is defined $@ and trusts any certificate, is used here. | InsecureTrustManagerTest.java:193:55:193:80 | new InsecureTrustManager(...) : InsecureTrustManager | This trustmanager | InsecureTrustManagerTest.java:35:23:35:42 | InsecureTrustManager | here |
+| InsecureTrustManagerTest.java:236:23:236:34 | trustManager | InsecureTrustManagerTest.java:235:55:235:80 | new InsecureTrustManager(...) : InsecureTrustManager | InsecureTrustManagerTest.java:236:23:236:34 | trustManager | $@ that is defined $@ and trusts any certificate, is used here. | InsecureTrustManagerTest.java:235:55:235:80 | new InsecureTrustManager(...) : InsecureTrustManager | This trustmanager | InsecureTrustManagerTest.java:35:23:35:42 | InsecureTrustManager | here |
+| InsecureTrustManagerTest.java:258:23:258:34 | trustManager | InsecureTrustManagerTest.java:257:55:257:80 | new InsecureTrustManager(...) : InsecureTrustManager | InsecureTrustManagerTest.java:258:23:258:34 | trustManager | $@ that is defined $@ and trusts any certificate, is used here. | InsecureTrustManagerTest.java:257:55:257:80 | new InsecureTrustManager(...) : InsecureTrustManager | This trustmanager | InsecureTrustManagerTest.java:35:23:35:42 | InsecureTrustManager | here |
+| InsecureTrustManagerTest.java:281:23:281:34 | trustManager | InsecureTrustManagerTest.java:280:55:280:80 | new InsecureTrustManager(...) : InsecureTrustManager | InsecureTrustManagerTest.java:281:23:281:34 | trustManager | $@ that is defined $@ and trusts any certificate, is used here. | InsecureTrustManagerTest.java:280:55:280:80 | new InsecureTrustManager(...) : InsecureTrustManager | This trustmanager | InsecureTrustManagerTest.java:35:23:35:42 | InsecureTrustManager | here |
+| InsecureTrustManagerTest.java:306:22:306:33 | trustManager | InsecureTrustManagerTest.java:305:54:305:79 | new InsecureTrustManager(...) : InsecureTrustManager | InsecureTrustManagerTest.java:306:22:306:33 | trustManager | $@ that is defined $@ and trusts any certificate, is used here. | InsecureTrustManagerTest.java:305:54:305:79 | new InsecureTrustManager(...) : InsecureTrustManager | This trustmanager | InsecureTrustManagerTest.java:35:23:35:42 | InsecureTrustManager | here |
+| InsecureTrustManagerTest.java:320:22:320:33 | trustManager | InsecureTrustManagerTest.java:319:54:319:79 | new InsecureTrustManager(...) : InsecureTrustManager | InsecureTrustManagerTest.java:320:22:320:33 | trustManager | $@ that is defined $@ and trusts any certificate, is used here. | InsecureTrustManagerTest.java:319:54:319:79 | new InsecureTrustManager(...) : InsecureTrustManager | This trustmanager | InsecureTrustManagerTest.java:35:23:35:42 | InsecureTrustManager | here |
+| InsecureTrustManagerTest.java:334:22:334:33 | trustManager | InsecureTrustManagerTest.java:333:54:333:79 | new InsecureTrustManager(...) : InsecureTrustManager | InsecureTrustManagerTest.java:334:22:334:33 | trustManager | $@ that is defined $@ and trusts any certificate, is used here. | InsecureTrustManagerTest.java:333:54:333:79 | new InsecureTrustManager(...) : InsecureTrustManager | This trustmanager | InsecureTrustManagerTest.java:35:23:35:42 | InsecureTrustManager | here |
+| InsecureTrustManagerTest.java:348:22:348:33 | trustManager | InsecureTrustManagerTest.java:347:54:347:79 | new InsecureTrustManager(...) : InsecureTrustManager | InsecureTrustManagerTest.java:348:22:348:33 | trustManager | $@ that is defined $@ and trusts any certificate, is used here. | InsecureTrustManagerTest.java:347:54:347:79 | new InsecureTrustManager(...) : InsecureTrustManager | This trustmanager | InsecureTrustManagerTest.java:35:23:35:42 | InsecureTrustManager | here |
+| InsecureTrustManagerTest.java:362:22:362:33 | trustManager | InsecureTrustManagerTest.java:361:54:361:79 | new InsecureTrustManager(...) : InsecureTrustManager | InsecureTrustManagerTest.java:362:22:362:33 | trustManager | $@ that is defined $@ and trusts any certificate, is used here. | InsecureTrustManagerTest.java:361:54:361:79 | new InsecureTrustManager(...) : InsecureTrustManager | This trustmanager | InsecureTrustManagerTest.java:35:23:35:42 | InsecureTrustManager | here |
+| InsecureTrustManagerTest.java:376:22:376:33 | trustManager | InsecureTrustManagerTest.java:375:54:375:79 | new InsecureTrustManager(...) : InsecureTrustManager | InsecureTrustManagerTest.java:376:22:376:33 | trustManager | $@ that is defined $@ and trusts any certificate, is used here. | InsecureTrustManagerTest.java:375:54:375:79 | new InsecureTrustManager(...) : InsecureTrustManager | This trustmanager | InsecureTrustManagerTest.java:35:23:35:42 | InsecureTrustManager | here |
+| InsecureTrustManagerTest.java:391:22:391:33 | trustManager | InsecureTrustManagerTest.java:390:54:390:79 | new InsecureTrustManager(...) : InsecureTrustManager | InsecureTrustManagerTest.java:391:22:391:33 | trustManager | $@ that is defined $@ and trusts any certificate, is used here. | InsecureTrustManagerTest.java:390:54:390:79 | new InsecureTrustManager(...) : InsecureTrustManager | This trustmanager | InsecureTrustManagerTest.java:35:23:35:42 | InsecureTrustManager | here |
+| InsecureTrustManagerTest.java:406:22:406:33 | trustManager | InsecureTrustManagerTest.java:405:54:405:79 | new InsecureTrustManager(...) : InsecureTrustManager | InsecureTrustManagerTest.java:406:22:406:33 | trustManager | $@ that is defined $@ and trusts any certificate, is used here. | InsecureTrustManagerTest.java:405:54:405:79 | new InsecureTrustManager(...) : InsecureTrustManager | This trustmanager | InsecureTrustManagerTest.java:35:23:35:42 | InsecureTrustManager | here |
+| InsecureTrustManagerTest.java:415:22:415:33 | trustManager | InsecureTrustManagerTest.java:414:54:414:79 | new InsecureTrustManager(...) : InsecureTrustManager | InsecureTrustManagerTest.java:415:22:415:33 | trustManager | $@ that is defined $@ and trusts any certificate, is used here. | InsecureTrustManagerTest.java:414:54:414:79 | new InsecureTrustManager(...) : InsecureTrustManager | This trustmanager | InsecureTrustManagerTest.java:35:23:35:42 | InsecureTrustManager | here |
