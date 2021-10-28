@@ -461,6 +461,24 @@ module TaintedPath {
   }
 
   /**
+   * An expression of form `x.matches(/\.\./)` or similar.
+   */
+  class ContainsDotDotRegExpSanitizer extends BarrierGuardNode {
+    StringOps::RegExpTest test;
+
+    ContainsDotDotRegExpSanitizer() {
+      this = test and
+      test.getRegExp().getConstantValue() = [".", "..", "../"]
+    }
+
+    override predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+      e = test.getStringOperand().asExpr() and
+      outcome = test.getPolarity().booleanNot() and
+      label.(Label::PosixPath).canContainDotDotSlash() // can still be bypassed by normalized absolute path
+    }
+  }
+
+  /**
    * A sanitizer that recognizes the following pattern:
    * ```
    * var relative = path.relative(webroot, pathname);
