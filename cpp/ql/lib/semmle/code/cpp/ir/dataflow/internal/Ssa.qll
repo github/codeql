@@ -201,8 +201,7 @@ predicate addressFlowTC(Instruction iFrom, Instruction iTo) {
 
 /**
  * Gets the destination address of `instr` if it is a `StoreInstruction` or
- * a `WriteSideEffectInstruction`. The destination address of a `WriteSideEffectInstruction` is adjusted
- * in the case of calls to operator `new` to give the destination address of a subsequent store (if any).
+ * a `WriteSideEffectInstruction`.
  */
 Instruction getDestinationAddress(Instruction instr) {
   result =
