@@ -1,6 +1,21 @@
-| django_bad.py:6:5:6:49 | Attribute() | Cookie is added to response without the 'secure' flag being set. |
-| django_bad.py:12:5:12:50 | Attribute() | Cookie is added to response without the 'secure' flag being set. |
-| flask_bad.py:9:5:9:56 | Attribute() | Cookie is added to response without the 'secure' flag being set. |
-| flask_bad.py:16:5:16:55 | Attribute() | Cookie is added to response without the 'secure' flag being set. |
-| flask_bad.py:23:5:23:30 | Subscript | Cookie is added to response without the 'secure' flag being set. |
-| flask_bad.py:30:5:30:30 | Subscript | Cookie is added to response without the 'secure' flag being set. |
+| django_bad.py:6:5:7:52 | ControlFlowNode for Attribute() | Cookie is added without the  | httponly |  flag properly set. |
+| django_bad.py:6:5:7:52 | ControlFlowNode for Attribute() | Cookie is added without the  | samesite |  flag properly set. |
+| django_bad.py:6:5:7:52 | ControlFlowNode for Attribute() | Cookie is added without the  | secure |  flag properly set. |
+| django_bad.py:13:5:14:52 | ControlFlowNode for Attribute() | Cookie is added without the  | httponly |  flag properly set. |
+| django_bad.py:13:5:14:52 | ControlFlowNode for Attribute() | Cookie is added without the  | samesite |  flag properly set. |
+| django_bad.py:13:5:14:52 | ControlFlowNode for Attribute() | Cookie is added without the  | secure |  flag properly set. |
+| django_good.py:19:5:19:44 | ControlFlowNode for Attribute() | Cookie is added without the  | httponly |  flag properly set. |
+| django_good.py:19:5:19:44 | ControlFlowNode for Attribute() | Cookie is added without the  | samesite |  flag properly set. |
+| django_good.py:19:5:19:44 | ControlFlowNode for Attribute() | Cookie is added without the  | secure |  flag properly set. |
+| flask_bad.py:9:5:10:52 | ControlFlowNode for Attribute() | Cookie is added without the  | httponly |  flag properly set. |
+| flask_bad.py:9:5:10:52 | ControlFlowNode for Attribute() | Cookie is added without the  | samesite |  flag properly set. |
+| flask_bad.py:9:5:10:52 | ControlFlowNode for Attribute() | Cookie is added without the  | secure |  flag properly set. |
+| flask_bad.py:17:5:17:30 | ControlFlowNode for Subscript | Cookie is added without the  | httponly |  flag properly set. |
+| flask_bad.py:17:5:17:30 | ControlFlowNode for Subscript | Cookie is added without the  | samesite |  flag properly set. |
+| flask_bad.py:17:5:17:30 | ControlFlowNode for Subscript | Cookie is added without the  | secure |  flag properly set. |
+| flask_bad.py:24:5:24:30 | ControlFlowNode for Subscript | Cookie is added without the  | httponly |  flag properly set. |
+| flask_bad.py:24:5:24:30 | ControlFlowNode for Subscript | Cookie is added without the  | samesite |  flag properly set. |
+| flask_bad.py:24:5:24:30 | ControlFlowNode for Subscript | Cookie is added without the  | secure |  flag properly set. |
+| flask_good.py:31:5:31:57 | ControlFlowNode for Attribute() | Cookie is added without the  | httponly |  flag properly set. |
+| flask_good.py:31:5:31:57 | ControlFlowNode for Attribute() | Cookie is added without the  | samesite |  flag properly set. |
+| flask_good.py:31:5:31:57 | ControlFlowNode for Attribute() | Cookie is added without the  | secure |  flag properly set. |
