@@ -44,8 +44,28 @@ private module Sendgrid {
   }
 
   /**
-   * https://github.com/sendgrid/sendgrid-python
-   * https://github.com/sendgrid/sendgrid-python/blob/cf0924c35c37bbec8e5ca39e963a55f54f0eec11/sendgrid/helpers/mail/mail.py#L20
+   * Gets a reference to `sg.send()` and `sg.client.mail.send.post()`.
+   *
+   * Given the following example:
+   *
+   * ```py
+   *  from_email = Email("from@example.com")
+   *  to_email = To("to@example.com")
+   *  subject = "Sending with SendGrid is Fun"
+   *  content = Content("text/html", request.args["html_content"])
+   *
+   *  mail = Mail(from_email, to_email, subject, content)
+   *
+   *  sg = SendGridAPIClient(api_key='SENDGRID_API_KEY')
+   *  response = sg.client.mail.send.post(request_body=mail.get())
+   *  ```
+   *
+   * * `this` would be `sg.client.mail.send.post(request_body=mail.get())`.
+   * * `getPlainTextBody()`'s result would be `none()`.
+   * * `getHtmlBody()`'s result would be `request.args["html_content"]`.
+   * * `getTo()`'s result would be `"to@example.com"`.
+   * * `getFrom()`'s result would be `"from@example.com"`.
+   * * `getSubject()`'s result would be `"Sending with SendGrid is Fun"`.
    */
   private class SendGridMail extends DataFlow::CallCfgNode, EmailSender {
     SendGridMail() { this.getFunction() = sendgridApiSendCall() }
