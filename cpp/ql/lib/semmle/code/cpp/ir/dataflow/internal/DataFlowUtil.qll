@@ -11,7 +11,7 @@ private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.controlflow.IRGuards
 private import semmle.code.cpp.models.interfaces.DataFlow
 private import DataFlowPrivate
-private import Ssa as Ssa
+private import SsaInternals as Ssa
 
 cached
 private module Cached {

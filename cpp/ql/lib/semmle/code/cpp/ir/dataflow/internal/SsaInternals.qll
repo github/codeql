@@ -1,11 +1,46 @@
 import SsaImplCommon
-import SsaImplSpecific
 private import cpp as Cpp
 private import semmle.code.cpp.ir.IR
 private import DataFlowUtil
-private import DataFlowPrivate
+private import DataFlowImplCommon as DataFlowImplCommon
 private import semmle.code.cpp.models.interfaces.Allocation as Alloc
 private import semmle.code.cpp.models.interfaces.DataFlow as DataFlow
+
+private module SourceVariables {
+  private newtype TSourceVariable =
+    TSourceIRVariable(IRVariable var) or
+    TSourceIRVariableIndirection(InitializeIndirectionInstruction init)
+
+  abstract class SourceVariable extends TSourceVariable {
+    IRVariable var;
+
+    IRVariable getIRVariable() { result = var }
+
+    abstract string toString();
+
+    predicate isIndirection() { none() }
+  }
+
+  private class SourceIRVariable extends SourceVariable, TSourceIRVariable {
+    SourceIRVariable() { this = TSourceIRVariable(var) }
+
+    override string toString() { result = this.getIRVariable().toString() }
+  }
+
+  private class SourceIRVariableIndirection extends SourceVariable, TSourceIRVariableIndirection {
+    InitializeIndirectionInstruction init;
+
+    SourceIRVariableIndirection() {
+      this = TSourceIRVariableIndirection(init) and var = init.getIRVariable()
+    }
+
+    override string toString() { result = "*" + this.getIRVariable().toString() }
+
+    override predicate isIndirection() { any() }
+  }
+}
+
+import SourceVariables
 
 cached
 private newtype TDefOrUse =
@@ -509,3 +544,28 @@ private module Cached {
 }
 
 import Cached
+
+/**
+ * Holds if the `i`'th write in block `bb` writes to the variable `v`.
+ * `certain` is `true` if the write is guaranteed to overwrite the entire variable.
+ */
+predicate variableWrite(IRBlock bb, int i, SourceVariable v, boolean certain) {
+  DataFlowImplCommon::forceCachingInSameStage() and
+  exists(Def def |
+    def.hasRankInBlock(bb, i) and
+    v = def.getSourceVariable() and
+    (if def.isCertain() then certain = true else certain = false)
+  )
+}
+
+/**
+ * Holds if the `i`'th read in block `bb` reads to the variable `v`.
+ * `certain` is `true` if the read is guaranteed. For C++, this is always the case.
+ */
+predicate variableRead(IRBlock bb, int i, SourceVariable v, boolean certain) {
+  exists(Use use |
+    use.hasRankInBlock(bb, i) and
+    v = use.getSourceVariable() and
+    certain = true
+  )
+}
