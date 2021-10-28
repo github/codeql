@@ -527,7 +527,9 @@ class X {
                 val elementTypeLabel = useType(elementType)
                 val id = tw.getLabelFor<DbArray>("@\"array;$dimensions;{$elementTypeLabel.javaResult.id}\"") {
                     tw.writeArrays(it, "ARRAY", elementTypeLabel.javaResult.id, elementTypeLabel.kotlinResult.id, 1, componentTypeLabel.javaResult.id, componentTypeLabel.kotlinResult.id)
+                    extractClassInheritence(s.classifier.owner as IrClass, it)
                 }
+
                 val javaSignature = "an array" // TODO: Wrong
                 val javaResult = TypeResult(id, javaSignature)
                 val kotlinClassName = getUnquotedClassLabel(s.classifier.owner as IrClass, s.arguments)
@@ -687,6 +689,19 @@ class X {
     }
 
     fun extractClassCommon(c: IrClass, id: Label<out DbClassorinterface>) {
+<<<<<<< HEAD
+||||||| parent of 6b88884415 (Extract array type inheritence graph)
+        val locId = tw.getLocation(c)
+        tw.writeHasLocation(id, locId)
+
+=======
+        val locId = tw.getLocation(c)
+        tw.writeHasLocation(id, locId)
+        extractClassInheritence(c, id)
+    }
+
+    fun extractClassInheritence(c: IrClass, id: Label<out DbReftype>) {
+>>>>>>> 6b88884415 (Extract array type inheritence graph)
         for(t in c.superTypes) {
             when(t) {
                 is IrSimpleType -> {
