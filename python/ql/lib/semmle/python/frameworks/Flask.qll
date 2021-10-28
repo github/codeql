@@ -521,7 +521,7 @@ module Flask {
   }
 
   /**
-   * A `send_from_directory` call considered a sink for file system access vulnerabilities.
+   * A call to `flask.send_from_directory`.
    *
    * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.send_from_directory
    */
@@ -536,14 +536,12 @@ module Flask {
   }
 
   /**
-   * A `send_file` call considered a sink for file system access vulnerabilities.
+   * A call to `flask.send_file`.
    *
    * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.send_file
    */
   class FlaskSendFile extends FileSystemAccess::Range, DataFlow::CallCfgNode {
-    FlaskSendFile() {
-      this = API::moduleImport("flask").getMember("send_file").getACall()
-    }
+    FlaskSendFile() { this = API::moduleImport("flask").getMember("send_file").getACall() }
 
     override DataFlow::Node getAPathArgument() {
       result in [this.getArg(0), this.getArgByName("filename_or_fp")]
