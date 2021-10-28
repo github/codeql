@@ -28,3 +28,6 @@ function indirect(res, obj) {
 
     res.render("template", JSON.parse(str)); // NOT OK
 }
+
+let routes = require('./routes');
+app.post('/foo', routes.foo);
