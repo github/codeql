@@ -99,7 +99,8 @@ private module XML {
   /**
    * Gets a call to `lxml.etree.XMLParser` or `lxml.etree.get_default_parser` and `mayBeDangerous()`
    * identifies whether the argument `no_network` is set to `False` or the arguments `huge_tree`
-   * or `resolve_entities` are set to True.
+   * or `resolve_entities` are set to True. Since `resolve_entities` default value is `True`,
+   * the predicate will also succeed if the argument is not set.
    */
   private class LXMLParser extends DataFlow::CallCfgNode, XMLParser::Range {
     LXMLParser() { this = lxmlEtree().getMember(["XMLParser", "get_default_parser"]).getACall() }
@@ -110,7 +111,8 @@ private module XML {
       not exists(this.getArgByName(_)) or
       DataFlow::localFlow(DataFlow::exprNode(any(False falseName)), this.getArgByName("no_network")) or
       DataFlow::localFlow(DataFlow::exprNode(any(True trueName)),
-        this.getArgByName(["huge_tree", "resolve_entities"]))
+        this.getArgByName(["huge_tree", "resolve_entities"])) or
+      not exists(this.getArgByName("resolve_entities"))
     }
   }
 
