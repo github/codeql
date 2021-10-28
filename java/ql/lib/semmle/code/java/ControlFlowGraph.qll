@@ -478,8 +478,6 @@ private module ControlFlowGraphImpl {
       this instanceof LocalTypeDeclStmt
       or
       this instanceof AssertStmt
-      or
-      this instanceof WhenBranch
     }
 
     /** Gets child nodes in their order of execution. Indexing starts at either -1 or 0. */
@@ -592,6 +590,8 @@ private module ControlFlowGraphImpl {
     result = n and n instanceof ConditionalExpr
     or
     result = n and n instanceof WhenExpr
+    or
+    result = n and n instanceof WhenBranch
     or
     result = n and n.(PostOrderNode).isLeafNode()
     or
