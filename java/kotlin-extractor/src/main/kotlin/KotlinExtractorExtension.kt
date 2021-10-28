@@ -1517,6 +1517,16 @@ class X {
                 extractTypeAccess(e.typeOperand, id, 0, e)
                 extractExpressionExpr(e.argument, callable, id, 1)
             }
+            IrTypeOperator.IMPLICIT_COERCION_TO_UNIT -> {
+                // TODO: Make this distinguishable from an explicit cast?
+                val id = tw.getFreshIdLabel<DbCastexpr>()
+                val locId = tw.getLocation(e)
+                val type = useType(e.type)
+                tw.writeExprs_castexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
+                tw.writeHasLocation(id, locId)
+                extractTypeAccess(e.typeOperand, id, 0, e)
+                extractExpressionExpr(e.argument, callable, id, 1)
+            }
             IrTypeOperator.INSTANCEOF -> {
                 val id = tw.getFreshIdLabel<DbInstanceofexpr>()
                 val locId = tw.getLocation(e)

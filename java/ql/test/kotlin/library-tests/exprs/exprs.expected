@@ -74,6 +74,8 @@
 | exprs.kt:50:12:50:19 | variable | VarAccess |
 | exprs.kt:50:12:50:23 | ... > ... | GTExpr |
 | exprs.kt:50:23:50:23 | 0 | IntegerLiteral |
+| exprs.kt:51:9:51:18 | (...)... | CastExpr |
+| exprs.kt:51:9:51:18 | void | TypeAccess |
 | exprs.kt:54:12:54:14 | 123 | IntegerLiteral |
 | exprs.kt:54:12:54:20 | ... + ... | AddExpr |
 | exprs.kt:54:18:54:20 | 456 | IntegerLiteral |
