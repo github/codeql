@@ -11,7 +11,7 @@ import tempfile
 
 def printHelp():
     print("""Usage:
-GenerateFlowModel.py <library-database> "simpleName" [--with-sinks] [--with-sources] [--with-summaries]
+GenerateFlowModel.py <library-database> <simpleName> [--with-sinks] [--with-sources] [--with-summaries]
 
 This generates summary, source and sink models for the code in the database.
 The files will be placed in `java/ql/lib/semmle/code/java/frameworks/generated/<simpleName>/`
@@ -158,6 +158,12 @@ qllContents = qllTemplate.format(shortname, sinkCsv, sourceCsv, summaryCsv)
 
 with open(frameworkTarget, "w") as frameworkQll:
     frameworkQll.write(qllContents)
+
+cmd = ['codeql', 'query', 'format', '--in-place', frameworkTarget]
+ret = subprocess.call(cmd)
+if ret != 0:
+    print("Failed to format query. Failed command was: " + shlex.join(cmd))
+    sys.exit(1)
 
 print("")
 print("CSV model written to " + frameworkTarget)
