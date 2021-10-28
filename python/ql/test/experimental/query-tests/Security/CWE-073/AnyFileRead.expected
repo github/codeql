@@ -1,16 +1,20 @@
 edges
-| AnyFileRead.py:16:16:16:22 | ControlFlowNode for request | AnyFileRead.py:16:16:16:27 | ControlFlowNode for Attribute |
-| AnyFileRead.py:16:16:16:27 | ControlFlowNode for Attribute | AnyFileRead.py:17:25:17:32 | ControlFlowNode for filename |
 | AnyFileRead.py:22:16:22:22 | ControlFlowNode for request | AnyFileRead.py:22:16:22:27 | ControlFlowNode for Attribute |
-| AnyFileRead.py:22:16:22:27 | ControlFlowNode for Attribute | AnyFileRead.py:23:20:23:27 | ControlFlowNode for filename |
+| AnyFileRead.py:22:16:22:27 | ControlFlowNode for Attribute | AnyFileRead.py:23:25:23:32 | ControlFlowNode for filename |
+| AnyFileRead.py:28:16:28:22 | ControlFlowNode for request | AnyFileRead.py:28:16:28:27 | ControlFlowNode for Attribute |
+| AnyFileRead.py:28:16:28:27 | ControlFlowNode for Attribute | AnyFileRead.py:29:20:29:27 | ControlFlowNode for filename |
+| AnyFileRead.py:34:10:34:17 | ControlFlowNode for filename | AnyFileRead.py:38:30:38:38 | ControlFlowNode for file_path |
 nodes
-| AnyFileRead.py:16:16:16:22 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
-| AnyFileRead.py:16:16:16:27 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
-| AnyFileRead.py:17:25:17:32 | ControlFlowNode for filename | semmle.label | ControlFlowNode for filename |
 | AnyFileRead.py:22:16:22:22 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
 | AnyFileRead.py:22:16:22:27 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
-| AnyFileRead.py:23:20:23:27 | ControlFlowNode for filename | semmle.label | ControlFlowNode for filename |
+| AnyFileRead.py:23:25:23:32 | ControlFlowNode for filename | semmle.label | ControlFlowNode for filename |
+| AnyFileRead.py:28:16:28:22 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| AnyFileRead.py:28:16:28:27 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| AnyFileRead.py:29:20:29:27 | ControlFlowNode for filename | semmle.label | ControlFlowNode for filename |
+| AnyFileRead.py:34:10:34:17 | ControlFlowNode for filename | semmle.label | ControlFlowNode for filename |
+| AnyFileRead.py:38:30:38:38 | ControlFlowNode for file_path | semmle.label | ControlFlowNode for file_path |
 subpaths
 #select
-| AnyFileRead.py:17:25:17:32 | ControlFlowNode for filename | AnyFileRead.py:16:16:16:22 | ControlFlowNode for request | AnyFileRead.py:17:25:17:32 | ControlFlowNode for filename | Any file read might include code from $@. | AnyFileRead.py:16:16:16:22 | ControlFlowNode for request | this user input |
-| AnyFileRead.py:23:20:23:27 | ControlFlowNode for filename | AnyFileRead.py:22:16:22:22 | ControlFlowNode for request | AnyFileRead.py:23:20:23:27 | ControlFlowNode for filename | Any file read might include code from $@. | AnyFileRead.py:22:16:22:22 | ControlFlowNode for request | this user input |
+| AnyFileRead.py:23:25:23:32 | ControlFlowNode for filename | AnyFileRead.py:22:16:22:22 | ControlFlowNode for request | AnyFileRead.py:23:25:23:32 | ControlFlowNode for filename | Any file read might include code from $@. | AnyFileRead.py:22:16:22:22 | ControlFlowNode for request | this user input |
+| AnyFileRead.py:29:20:29:27 | ControlFlowNode for filename | AnyFileRead.py:28:16:28:22 | ControlFlowNode for request | AnyFileRead.py:29:20:29:27 | ControlFlowNode for filename | Any file read might include code from $@. | AnyFileRead.py:28:16:28:22 | ControlFlowNode for request | this user input |
+| AnyFileRead.py:38:30:38:38 | ControlFlowNode for file_path | AnyFileRead.py:34:10:34:17 | ControlFlowNode for filename | AnyFileRead.py:38:30:38:38 | ControlFlowNode for file_path | Any file read might include code from $@. | AnyFileRead.py:34:10:34:17 | ControlFlowNode for filename | this user input |

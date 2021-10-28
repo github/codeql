@@ -5,7 +5,13 @@
 """
 from flask import Flask, send_file, make_response
 from flask import request
+from flask.blueprints import Blueprint
 import os
+
+blueprint = Blueprint('routes_general',
+                      __name__,
+                      static_folder='../static',
+                      template_folder='../templates')
 
 filenames = ["/home/work/temp/a.png", "/home/work/temp/b.png"]
 
@@ -23,6 +29,15 @@ def bad2():
     context = open(filename, 'r') # Bad
     response = make_response(context)
     return response
+
+@blueprint.route('/note_attachment/<filename>')
+def bad3(filename):
+    file_path = os.path.join(PATH_NOTE_ATTACHMENTS, filename)
+    if file_path is not None:
+        try:
+            return send_file(file_path, as_attachment=True)
+        except Exception:
+            logger.exception("Send note attachment")
 
 @app.route('/good1')
 def good1():

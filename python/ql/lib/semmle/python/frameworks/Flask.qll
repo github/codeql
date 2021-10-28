@@ -73,7 +73,10 @@ module Flask {
    */
   module Blueprint {
     /** Gets a reference to the `flask.Blueprint` class. */
-    API::Node classRef() { result = API::moduleImport("flask").getMember("Blueprint") }
+    API::Node classRef() {
+      result = API::moduleImport("flask").getMember("Blueprint") or
+      result = API::moduleImport("flask").getMember("blueprints").getMember("Blueprint")
+    }
 
     /** Gets a reference to an instance of `flask.Blueprint`. */
     API::Node instance() { result = classRef().getReturn() }

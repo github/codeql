@@ -66,7 +66,7 @@ private class ResponseFlowConfig extends TaintTracking2::Configuration {
 
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
     exists(DataFlow::CallCfgNode call |
-      call = API::moduleImport("falsk").getMember("make_response").getACall() and
+      call = API::moduleImport("flask").getMember("make_response").getACall() and
       call.getArg(0) = node1 and
       call = node2
     )
