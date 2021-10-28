@@ -41,11 +41,13 @@ predicate numberArgumentWrite(Function f, int apos) {
 
 from FunctionCall fc
 where
+  // a file is opened
   (
     fc.getTarget().hasGlobalOrStdName("fopen") or
     fc.getTarget().hasGlobalOrStdName("open")
   ) and
   fc.getNumberOfArguments() = 2 and
+  // the file is used for writing (but not reading)
   exists(FunctionCall fctmp, int i |
     numberArgumentWrite(fctmp.getTarget(), i) and
     globalValueNumber(fc) = globalValueNumber(fctmp.getArgument(i))
@@ -54,6 +56,7 @@ where
     numberArgumentRead(fctmp.getTarget(), i) and
     globalValueNumber(fc) = globalValueNumber(fctmp.getArgument(i))
   ) and
+  // a file creation mode is not set globally by `umask` anywhere in the program
   not exists(FunctionCall fctmp |
     fctmp.getTarget().hasGlobalOrStdName("umask") or
     fctmp.getTarget().hasGlobalOrStdName("fchmod") or
