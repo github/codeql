@@ -6,21 +6,22 @@ app = Flask(__name__)
 @app.route("/true")
 def true():
     resp = make_response()
-    resp.set_cookie("name", value="value", secure=True)
+    resp.set_cookie("name", value="value", secure=True,
+                    httponly=True, samesite='Lax')
     return resp
 
 
 @app.route("/flask_Response")
 def flask_Response():
     resp = Response()
-    resp.headers['Set-Cookie'] = "name=value; Secure;"
+    resp.headers['Set-Cookie'] = "name=value; Secure; HttpOnly; SameSite=Lax;"
     return resp
 
 
 @app.route("/flask_make_response")
 def flask_make_response():
     resp = make_response("hello")
-    resp.headers['Set-Cookie'] = "name=value; Secure;"
+    resp.headers['Set-Cookie'] = "name=value; Secure; HttpOnly; SameSite=Lax;"
     return resp
 
 

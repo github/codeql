@@ -6,14 +6,8 @@ app = Flask(__name__)
 @app.route("/false")
 def false():
     resp = make_response()
-    resp.set_cookie("name", value="value", secure=False)
-    return resp
-
-
-@app.route("/none")
-def none():
-    resp = make_response()
-    resp.set_cookie("name", value="value", secure=None)
+    resp.set_cookie("name", value="value", secure=False,
+                    httponly=False, samesite='None')
     return resp
 
 
@@ -27,7 +21,7 @@ def flask_Response():
 @app.route("/flask_make_response")
 def flask_make_response():
     resp = make_response("hello")
-    resp.headers['Set-Cookie'] = "name=value;"
+    resp.headers['Set-Cookie'] = "name=value; SameSite=None;"
     return resp
 
 # if __name__ == "__main__":
