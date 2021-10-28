@@ -48,16 +48,8 @@ private class DefOrUse extends TDefOrUse {
     rnk = getRank(this, block)
   }
 
-  /**
-   * Holds if this element is at the specified location.
-   * The location spans column `startcolumn` of line `startline` to
-   * column `endcolumn` of line `endline` in file `filepath`.
-   * For more information, see
-   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
-   */
-  abstract predicate hasLocationInfo(
-    string filepath, int startline, int startcolumn, int endline, int endcolumn
-  );
+  /** Gets the location of this element. */
+  abstract Cpp::Location getLocation();
 }
 
 private Instruction toInstruction(DefOrUse defOrUse) {
@@ -84,11 +76,7 @@ abstract class Def extends DefOrUse {
 
   override IRBlock getBlock() { result = this.getInstruction().getBlock() }
 
-  override predicate hasLocationInfo(
-    string filepath, int startline, int startcolumn, int endline, int endcolumn
-  ) {
-    store.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-  }
+  override Cpp::Location getLocation() { result = store.getLocation() }
 }
 
 private class ExplicitDef extends Def, TExplicitDef {
@@ -134,11 +122,7 @@ abstract class Use extends DefOrUse {
 
   override IRBlock getBlock() { result = use.getUse().getBlock() }
 
-  override predicate hasLocationInfo(
-    string filepath, int startline, int startcolumn, int endline, int endcolumn
-  ) {
-    use.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-  }
+  override Cpp::Location getLocation() { result = use.getLocation() }
 }
 
 private class ExplicitUse extends Use, TExplicitUse {
