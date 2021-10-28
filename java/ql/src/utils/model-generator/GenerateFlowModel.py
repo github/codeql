@@ -60,10 +60,14 @@ if len(sys.argv) != 3:
 
 codeQlRoot = subprocess.check_output(
     ["git", "rev-parse", "--show-toplevel"]).decode("utf-8").strip()
-shortname = sys.argv[2]
+targetQll = sys.argv[2]
+if not targetQll.endswith(".qll"):
+    targetQll += ".qll"
+filename = os.path.basename(targetQll)
+shortname = filename[:-4]
 generatedFrameworks = os.path.join(
-    codeQlRoot, "java/ql/lib/semmle/code/java/frameworks/generated/")
-frameworkTarget = os.path.join(generatedFrameworks, shortname + ".qll")
+    codeQlRoot, "java/ql/lib/semmle/code/java/frameworks/")
+frameworkTarget = os.path.join(generatedFrameworks, targetQll)
 
 workDir = tempfile.mkdtemp()
 os.makedirs(generatedFrameworks, exist_ok=True)
