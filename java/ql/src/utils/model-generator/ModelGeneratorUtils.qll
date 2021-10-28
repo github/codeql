@@ -102,10 +102,16 @@ private string typeAsModel(RefType type) {
 }
 
 string parameterAccess(Parameter p) {
-  if p.getType() instanceof Array
+  if
+    p.getType() instanceof Array and
+    not isPrimitiveTypeUsedForBulkData(p.getType().(Array).getElementType())
   then result = "ArrayElement of Argument[" + p.getPosition() + "]"
   else
     if p.getType() instanceof ContainerType
     then result = "Element of Argument[" + p.getPosition() + "]"
     else result = "Argument[" + p.getPosition() + "]"
+}
+
+predicate isPrimitiveTypeUsedForBulkData(Type t) {
+  t.getName().regexpMatch("byte|char|Byte|Character")
 }

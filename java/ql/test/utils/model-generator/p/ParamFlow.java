@@ -51,6 +51,11 @@ public class ParamFlow {
             throws IOException {
         output.write(data, 0, data.length);
     }
+    
+    public void writeChunked(char[] data, OutputStream output)
+            throws IOException {
+        output.write(String.valueOf(data).getBytes(), 0, data.length);
+    }
 
     public void addTo(String data, List<String> target) {
         target.add(data);

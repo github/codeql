@@ -228,10 +228,6 @@ predicate isRelevantType(Type t) {
   )
 }
 
-predicate isPrimitiveTypeUsedForBulkData(Type t) {
-  t.getName().regexpMatch("byte|char|Byte|Character")
-}
-
 from TargetAPI api, string flow
 where flow = captureFlow(api)
 select flow order by flow
