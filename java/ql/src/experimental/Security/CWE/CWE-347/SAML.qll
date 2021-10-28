@@ -1,14 +1,13 @@
 /** Provides classes for working with SAML using the JAXB library. */
 
 import java
-import DOM
+import semmle.code.java.dataflow.DataFlow
+import semmle.code.java.dataflow.ExternalFlow
 
-/** Gets the annotation of the type `typeName` in the package `packageName` on `target`. */
-Annotation getAnnotation(Annotatable target, string packageName, string typeName) {
-  result = target.getAnAnnotation() and
-  exists(AnnotationType at | at = result.getType() |
-    at.nestedName() = typeName and at.getPackage().getName() = packageName
-  )
+class XmlElementsAnnotation extends Annotation {
+  XmlElementsAnnotation() {
+    this.getType().hasQualifiedName("javax.xml.bind.annotation", "XmlElements")
+  }
 }
 
 /** XML element of SAML assertion mapped to a Java class field. */
@@ -18,10 +17,7 @@ class TypeSamlAssertionField extends Field {
   TypeSamlAssertionField() {
     this.fromSource() and
     xmlElement =
-      getAnnotation(this, "javax.xml.bind.annotation", "XmlElements")
-          .getValue("value")
-          .(ArrayInit)
-          .getAnInit() and
+      this.getAnAnnotation().(XmlElementsAnnotation).getValue("value").(ArrayInit).getAnInit() and
     xmlElement.getValue("name").(CompileTimeConstantExpr).getStringValue() =
       ["Assertion", "EncryptedAssertion"] and
     xmlElement.getValue("namespace").(CompileTimeConstantExpr).getStringValue() =

@@ -10,6 +10,7 @@
 
 import java
 import SAML
+import DOM
 import semmle.code.java.controlflow.Guards
 import semmle.code.java.dataflow.TaintTracking
 import DataFlow::PathGraph
@@ -21,42 +22,46 @@ class SamlAssertionConf extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node source) { source instanceof SamlAssertionSource }
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof SamlAssertionSink }
+
+  override predicate isSanitizer(DataFlow::Node sanitizer) {
+    exists(Method validator |
+      isValidationMethod(validator, sanitizer.asExpr()) and
+      not skipsValidationOnEmptySignature(validator)
+    )
+  }
 }
 
-/** Configuration of validating signature in XML file. */
-class SamlAssertionSignatureCheckConf extends TaintTracking::Configuration {
-  SamlAssertionSignatureCheckConf() { this = "SamlAssertionSignatureCheckConf" }
+/** Holds if the method `validator` validates `validated`. */
+predicate isValidationMethod(Method validator, Expr validated) {
+  validator instanceof ValidateSignatureMethod and
+  validated = validator.getAReference().getQualifier()
+  or
+  exists(MethodAccess call, Expr recursiveValidated |
+    call.getMethod() = validator and
+    exists(int i |
+      validated = call.getArgument(i) and
+      TaintTracking::localTaint(DataFlow::parameterNode(validator.getParameter(i)),
+        DataFlow::exprNode(recursiveValidated))
+    ) and
+    isValidationMethod(validator.getACallee(), recursiveValidated)
+  )
+}
 
-  override predicate isSource(DataFlow::Node source) { source instanceof SamlAssertionSource }
-
-  override predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma |
-      ma.getMethod() instanceof ValidateSignatureMethod and
-      sink.asExpr() = ma.getQualifier()
-    )
-  }
-
-  override predicate isSanitizer(DataFlow::Node node) {
-    exists(
-      ConditionBlock cb, EQExpr ee, CompileTimeConstantExpr zero, MethodAccess ma, ReturnStmt stmt
-    |
-      // if (signatureNodeList.getLength() == 0) { return; }
-      cb.getCondition() = ee and
-      zero.(IntegerLiteral).getIntValue() = 0 and
-      ma.getMethod().getDeclaringType().getASupertype*() instanceof TypeDomNodeList and
-      ma.getMethod().hasName("getLength") and
-      ee.hasOperands(ma, zero) and
-      node.asExpr() = ma.getQualifier() and
-      cb.controls(stmt.getBasicBlock(), true)
-    )
-  }
+/** Holds if `m` skips signature validation when the signature length is 0. */
+predicate skipsValidationOnEmptySignature(Method m) {
+  exists(ConditionBlock cb, EqualityTest et, IntegerLiteral zero, MethodAccess ma, ReturnStmt stmt |
+    // if (signatureNodeList.getLength() == 0) { return; }
+    cb.getCondition() = et and
+    zero.getIntValue() = 0 and
+    ma.getMethod().getDeclaringType().getASupertype*() instanceof TypeDomNodeList and
+    ma.getMethod().hasName("getLength") and
+    et.hasOperands(ma, zero) and
+    cb.controls(stmt.getBasicBlock(), et.polarity()) and
+    ma.getEnclosingCallable() = m
+  )
 }
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, SamlAssertionConf conf
-where
-  conf.hasFlowPath(source, sink) and
-  not exists(SamlAssertionSignatureCheckConf conf2, DataFlow::PathNode sink2 |
-    conf2.hasFlow(source.getNode(), sink2.getNode())
-  )
+where conf.hasFlowPath(source, sink)
 select sink.getNode(), source, sink,
   "SAMLv2 assertion is used $@, but the signature is not verified.", source.getNode(), "here"
