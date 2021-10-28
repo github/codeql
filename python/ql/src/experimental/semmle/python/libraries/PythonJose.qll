@@ -29,7 +29,6 @@ private module PythonJose {
    * * `getAlgorithmstring()`'s result would be `HS256`.
    */
   private class JoseJWTEncodeCall extends DataFlow::CallCfgNode, JWTEncoding::Range {
-    // def encode(claims, key, algorithm=ALGORITHMS.HS256, headers=None, access_token=None):
     JoseJWTEncodeCall() { this = joseJWTEncode().getACall() }
 
     override DataFlow::Node getPayload() { result = this.getArg(0) }
@@ -66,7 +65,6 @@ private module PythonJose {
    * * `verifiesSignature()` predicate would succeed.
    */
   private class JoseJWTDecodeCall extends DataFlow::CallCfgNode, JWTDecoding::Range {
-    // def decode(token, key, algorithms=None, options=None, audience=None, issuer=None, subject=None, access_token=None):
     JoseJWTDecodeCall() { this = joseJWTDecode().getACall() }
 
     override DataFlow::Node getPayload() { result = this.getArg(0) }

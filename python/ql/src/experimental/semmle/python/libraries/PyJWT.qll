@@ -26,7 +26,6 @@ private module PyJWT {
    * * `getAlgorithmstring()`'s result would be `HS256`.
    */
   private class PyJWTEncodeCall extends DataFlow::CallCfgNode, JWTEncoding::Range {
-    // def encode(self, payload, key, algorithm="HS256", headers=None, json_encoder=None)
     PyJWTEncodeCall() { this = pyjwtEncode().getACall() }
 
     override DataFlow::Node getPayload() {
@@ -65,7 +64,6 @@ private module PyJWT {
    * * `verifiesSignature()` predicate would succeed.
    */
   private class PyJWTDecodeCall extends DataFlow::CallCfgNode, JWTDecoding::Range {
-    // def decode(self, jwt, key="", algorithms=None, options=None)
     PyJWTDecodeCall() { this = pyjwtDecode().getACall() }
 
     override DataFlow::Node getPayload() { result in [this.getArg(0), this.getArgByName("jwt")] }
@@ -88,13 +86,20 @@ private module PyJWT {
     }
 
     override predicate verifiesSignature() {
-      // jwt.decode(token, "key", "HS256")
-      not exists(this.getArgByName("verify")) and not exists(this.getOptions())
+      this.hasNoVerifyArgumentOrOptions()
       or
-      // jwt.decode(token, verify=False)
-      not isFalse(this.getArgByName("verify")) and
-      // jwt.decode(token, key, options={"verify_signature": False})
-      not exists(KeyValuePair optionsDict, NameConstant falseName |
+      not this.hasVerifySetToFalse() and
+      not this.hasVerifySignatureSetToFalse()
+    }
+
+    predicate hasNoVerifyArgumentOrOptions() {
+      not exists(this.getArgByName("verify")) and not exists(this.getOptions())
+    }
+
+    predicate hasVerifySetToFalse() { isFalse(this.getArgByName("verify")) }
+
+    predicate hasVerifySignatureSetToFalse() {
+      exists(KeyValuePair optionsDict, NameConstant falseName |
         falseName.getId() = "False" and
         optionsDict = this.getOptions().asExpr().(Dict).getItems().getAnItem() and
         optionsDict.getKey().(Str_).getS().matches("%verify%") and

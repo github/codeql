@@ -14,11 +14,9 @@ import experimental.semmle.python.frameworks.JWT
 
 from JWTEncoding jwtEncoding, string affectedComponent
 where
-  exists( |
-    affectedComponent = "algorithm" and
-    isEmptyOrNone(jwtEncoding.getAlgorithm())
-    or
-    affectedComponent = "key" and
-    isEmptyOrNone(jwtEncoding.getKey())
-  )
-select jwtEncoding, affectedComponent, "is empty."
+  affectedComponent = "algorithm" and
+  isEmptyOrNone(jwtEncoding.getAlgorithm())
+  or
+  affectedComponent = "key" and
+  isEmptyOrNone(jwtEncoding.getKey())
+select jwtEncoding, "This JWT encoding has an empty " + affectedComponent + "."

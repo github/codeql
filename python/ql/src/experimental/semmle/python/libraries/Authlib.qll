@@ -34,7 +34,6 @@ private module Authlib {
    * * `getAlgorithmstring()`'s result would be `HS256`.
    */
   private class AuthlibJWTEncodeCall extends DataFlow::CallCfgNode, JWTEncoding::Range {
-    // def encode(self, header, payload, key, check=True):
     AuthlibJWTEncodeCall() { this = authlibJWTEncode().getACall() }
 
     override DataFlow::Node getPayload() { result = this.getArg(1) }
@@ -71,7 +70,6 @@ private module Authlib {
    * * `getKey()`'s result would be `key`.
    */
   private class AuthlibJWTDecodeCall extends DataFlow::CallCfgNode, JWTDecoding::Range {
-    // def decode(self, s, key, claims_cls=None, claims_options=None, claims_params=None):
     AuthlibJWTDecodeCall() { this = authlibJWTDecode().getACall() }
 
     override DataFlow::Node getPayload() { result = this.getArg(0) }

@@ -334,30 +334,26 @@ module JWTEncoding {
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `JWTEncoding::Range` instead.
  */
-class JWTEncoding extends DataFlow::Node {
-  JWTEncoding::Range range;
-
-  JWTEncoding() { this = range }
-
+class JWTEncoding extends DataFlow::Node instanceof JWTEncoding::Range {
   /**
    * Gets the argument containing the payload.
    */
-  DataFlow::Node getPayload() { result = range.getPayload() }
+  DataFlow::Node getPayload() { result = super.getPayload() }
 
   /**
    * Gets the argument containing the encoding key.
    */
-  DataFlow::Node getKey() { result = range.getKey() }
+  DataFlow::Node getKey() { result = super.getKey() }
 
   /**
    * Gets the algorithm Node used in the encoding.
    */
-  DataFlow::Node getAlgorithm() { result = range.getAlgorithm() }
+  DataFlow::Node getAlgorithm() { result = super.getAlgorithm() }
 
   /**
    * Tries to get the algorithm used in the encoding.
    */
-  string getAlgorithmString() { result = range.getAlgorithmString() }
+  string getAlgorithmString() { result = super.getAlgorithmString() }
 }
 
 /** Provides classes for modeling JWT decoding-related APIs. */
@@ -407,38 +403,34 @@ module JWTDecoding {
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `JWTDecoding::Range` instead.
  */
-class JWTDecoding extends DataFlow::Node {
-  JWTDecoding::Range range;
-
-  JWTDecoding() { this = range }
-
+class JWTDecoding extends DataFlow::Node instanceof JWTDecoding::Range {
   /**
    * Gets the argument containing the payload.
    */
-  DataFlow::Node getPayload() { result = range.getPayload() }
+  DataFlow::Node getPayload() { result = super.getPayload() }
 
   /**
    * Gets the argument containing the encoding key.
    */
-  DataFlow::Node getKey() { result = range.getKey() }
+  DataFlow::Node getKey() { result = super.getKey() }
 
   /**
    * Gets the algorithm Node used in the encoding.
    */
-  DataFlow::Node getAlgorithm() { result = range.getAlgorithm() }
+  DataFlow::Node getAlgorithm() { result = super.getAlgorithm() }
 
   /**
    * Tries to get the algorithm used in the encoding.
    */
-  string getAlgorithmString() { result = range.getAlgorithmString() }
+  string getAlgorithmString() { result = super.getAlgorithmString() }
 
   /**
    * Gets the options Node used in the encoding.
    */
-  DataFlow::Node getOptions() { result = range.getOptions() }
+  DataFlow::Node getOptions() { result = super.getOptions() }
 
   /**
    * Checks if the signature gets verified while decoding.
    */
-  predicate verifiesSignature() { range.verifiesSignature() }
+  predicate verifiesSignature() { super.verifiesSignature() }
 }
