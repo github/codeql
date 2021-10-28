@@ -6,6 +6,7 @@ import subprocess
 import shutil
 import os
 import os.path
+import sys
 
 kotlinc = 'kotlinc'
 javac = 'javac'
@@ -90,9 +91,9 @@ def compile_embeddable():
     x = subprocess.run(['gradle', 'getHomeDir'],
                        check=True, capture_output=True)
     output = x.stdout.decode(encoding='UTF-8', errors='strict')
-    m = re.match(
-        r'.*\n> Task :getHomeDir\n([^\n]+)\n.*', output)
+    m = re.search(r'(?m)^> Task :getHomeDir\n([^\n]+)$', output)
     if m is None:
+        print("gradle getHomeDir output:\n" + output, file = sys.stderr)
         raise Exception('Cannot determine gradle home directory')
     gradle_home = m.group(1)
 
