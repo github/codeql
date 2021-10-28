@@ -73,7 +73,7 @@ abstract class Def extends DefOrUse {
   Instruction getInstruction() { result = store }
 
   /** Gets the variable that is defined by this definition. */
-  abstract SourceVariable getVariable();
+  abstract SourceVariable getSourceVariable();
 
   /** Holds if this definition is guaranteed to happen. */
   abstract predicate isCertain();
@@ -94,10 +94,10 @@ abstract class Def extends DefOrUse {
 private class ExplicitDef extends Def, TExplicitDef {
   ExplicitDef() { this = TExplicitDef(store) }
 
-  override SourceVariable getVariable() {
+  override SourceVariable getSourceVariable() {
     exists(VariableInstruction var |
       explicitWrite(_, this.getInstruction(), var) and
-      result.getVariable() = var.getIRVariable() and
+      result.getIRVariable() = var.getIRVariable() and
       not result.isIndirection()
     )
   }
@@ -108,11 +108,11 @@ private class ExplicitDef extends Def, TExplicitDef {
 private class ParameterDef extends Def, TInitializeParam {
   ParameterDef() { this = TInitializeParam(store) }
 
-  override SourceVariable getVariable() {
-    result.getVariable() = store.(InitializeParameterInstruction).getIRVariable() and
+  override SourceVariable getSourceVariable() {
+    result.getIRVariable() = store.(InitializeParameterInstruction).getIRVariable() and
     not result.isIndirection()
     or
-    result.getVariable() = store.(InitializeIndirectionInstruction).getIRVariable() and
+    result.getIRVariable() = store.(InitializeIndirectionInstruction).getIRVariable() and
     result.isIndirection()
   }
 
@@ -130,7 +130,7 @@ abstract class Use extends DefOrUse {
   override string toString() { result = "Use" }
 
   /** Gets the variable that is used by this use. */
-  abstract SourceVariable getVariable();
+  abstract SourceVariable getSourceVariable();
 
   override IRBlock getBlock() { result = use.getUse().getBlock() }
 
@@ -144,10 +144,10 @@ abstract class Use extends DefOrUse {
 private class ExplicitUse extends Use, TExplicitUse {
   ExplicitUse() { this = TExplicitUse(use) }
 
-  override SourceVariable getVariable() {
+  override SourceVariable getSourceVariable() {
     exists(VariableInstruction var |
       use.getDef() = var and
-      result.getVariable() = var.getIRVariable() and
+      result.getIRVariable() = var.getIRVariable() and
       (
         if use.getUse() instanceof ReadSideEffectInstruction
         then result.isIndirection()
@@ -160,10 +160,10 @@ private class ExplicitUse extends Use, TExplicitUse {
 private class ReturnParameterIndirection extends Use, TReturnParamIndirection {
   ReturnParameterIndirection() { this = TReturnParamIndirection(use) }
 
-  override SourceVariable getVariable() {
+  override SourceVariable getSourceVariable() {
     exists(ReturnIndirectionInstruction ret |
       returnParameterIndirection(use, ret) and
-      result.getVariable() = ret.getIRVariable() and
+      result.getIRVariable() = ret.getIRVariable() and
       result.isIndirection()
     )
   }

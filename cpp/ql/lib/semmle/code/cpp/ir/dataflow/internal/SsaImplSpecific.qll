@@ -21,7 +21,7 @@ private newtype TSourceVariable =
 abstract class SourceVariable extends TSourceVariable {
   IRVariable var;
 
-  IRVariable getVariable() { result = var }
+  IRVariable getIRVariable() { result = var }
 
   abstract string toString();
 
@@ -31,7 +31,7 @@ abstract class SourceVariable extends TSourceVariable {
 class SourceIRVariable extends SourceVariable, TSourceIRVariable {
   SourceIRVariable() { this = TSourceIRVariable(var) }
 
-  override string toString() { result = this.getVariable().toString() }
+  override string toString() { result = this.getIRVariable().toString() }
 }
 
 class SourceIRVariableIndirection extends SourceVariable, TSourceIRVariableIndirection {
@@ -41,7 +41,7 @@ class SourceIRVariableIndirection extends SourceVariable, TSourceIRVariableIndir
     this = TSourceIRVariableIndirection(init) and var = init.getIRVariable()
   }
 
-  override string toString() { result = "*" + this.getVariable().toString() }
+  override string toString() { result = "*" + this.getIRVariable().toString() }
 
   override predicate isIndirection() { any() }
 }
@@ -50,7 +50,7 @@ predicate variableWrite(BasicBlock bb, int i, SourceVariable v, boolean certain)
   DataFlowImplCommon::forceCachingInSameStage() and
   exists(Ssa::Def def |
     def.hasRankInBlock(bb, i) and
-    v = def.getVariable() and
+    v = def.getSourceVariable() and
     (if def.isCertain() then certain = true else certain = false)
   )
 }
@@ -58,7 +58,7 @@ predicate variableWrite(BasicBlock bb, int i, SourceVariable v, boolean certain)
 predicate variableRead(BasicBlock bb, int i, SourceVariable v, boolean certain) {
   exists(Ssa::Use use |
     use.hasRankInBlock(bb, i) and
-    v = use.getVariable() and
+    v = use.getSourceVariable() and
     certain = true
   )
 }
