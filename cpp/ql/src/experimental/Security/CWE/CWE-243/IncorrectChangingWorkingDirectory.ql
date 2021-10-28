@@ -12,6 +12,7 @@
  */
 
 import cpp
+import semmle.code.cpp.commons.Exclusions
 
 /** Holds if a `fc` function call is available before or after a `chdir` function call. */
 predicate inExistsChdir(FunctionCall fcp) {
@@ -27,7 +28,7 @@ predicate inExistsChdir(FunctionCall fcp) {
   )
 }
 
-/** Holds if a `fc` function call is available before or before a function call containing a `chdir` call. */
+/** Holds if a `fc` function call is available before or after a function call containing a `chdir` call. */
 predicate outExistsChdir(FunctionCall fcp) {
   exists(FunctionCall fctmp |
     exists(FunctionCall fctmp2 |
