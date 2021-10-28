@@ -45,6 +45,12 @@ TODO
     val str1: String = "string lit"
     val str2: String? = "string lit"
     val str3: String? = null
+
+    var variable = 10
+    while (variable > 0) {
+        variable--
+    }
+
     return 123 + 456
 }
 
