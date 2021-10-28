@@ -53,3 +53,13 @@ fun getClass() {
 class C(val n: Int) {
     fun foo(): C { return C(42) }
 }
+
+open class Root {}
+class Subclass1: Root() {}
+class Subclass2: Root() {}
+
+fun typeTests(x: Root) {
+    if(x is Subclass1) {
+        val y: Subclass1 = x
+    }
+}

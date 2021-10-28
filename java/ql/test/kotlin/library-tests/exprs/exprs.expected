@@ -81,3 +81,11 @@
 | exprs.kt:53:9:53:18 | n | VarAccess |
 | exprs.kt:54:27:54:31 | new C(...) | ClassInstanceExpr |
 | exprs.kt:54:29:54:30 | 42 | IntegerLiteral |
+| exprs.kt:57:1:57:18 | <obinit>(...) | MethodAccess |
+| exprs.kt:58:1:58:26 | <obinit>(...) | MethodAccess |
+| exprs.kt:59:1:59:26 | <obinit>(...) | MethodAccess |
+| exprs.kt:62:5:64:5 | when ... | WhenExpr |
+| exprs.kt:62:8:62:8 | x | VarAccess |
+| exprs.kt:62:8:62:21 | ...instanceof... | InstanceOfExpr |
+| exprs.kt:62:8:62:21 | Subclass1 | TypeAccess |
+| exprs.kt:63:9:63:28 | y | LocalVariableDeclExpr |
