@@ -512,7 +512,6 @@ class X {
             s.isBoxedArray || s.isPrimitiveArray() -> {
                 // TODO: fix this, this is only a dummy implementation to let the tests pass
                 // TODO: Figure out what signatures should be returned
-                // TODO: The Java extractor extracts a .length field, a .clone method and a type hierarchy for arrays
                 // TODO: Generate a short name for array types
 
                 var dimensions = 1
@@ -527,7 +526,20 @@ class X {
                 val elementTypeLabel = useType(elementType)
                 val id = tw.getLabelFor<DbArray>("@\"array;$dimensions;{$elementTypeLabel.javaResult.id}\"") {
                     tw.writeArrays(it, "ARRAY", elementTypeLabel.javaResult.id, elementTypeLabel.kotlinResult.id, 1, componentTypeLabel.javaResult.id, componentTypeLabel.kotlinResult.id)
+
                     extractClassInheritence(s.classifier.owner as IrClass, it)
+
+                    // array.length
+                    val length = tw.getLabelFor<DbField>("@\"field;{$it};length\"")
+                    tw.writeFields(length, "length", useType(pluginContext.irBuiltIns.intType).javaResult.id, it, length)
+                    // TODO: modifiers
+                    // tw.writeHasModifier(length, getModifierKey("public"))
+                    // tw.writeHasModifier(length, getModifierKey("final"))
+
+                    val clone = tw.getLabelFor<DbMethod>("@\"callable;{$it}.clone(){$it}\"")
+                    tw.writeMethods(clone, "clone", "clone()", it, it, clone)
+                    // TODO: modifiers
+                    // tw.writeHasModifier(clone, getModifierKey("public"))
                 }
 
                 val javaSignature = "an array" // TODO: Wrong
