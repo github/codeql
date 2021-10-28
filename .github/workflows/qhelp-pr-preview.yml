@@ -8,6 +8,7 @@ on:
     branches:
       - main
       - "rc/*"
+      - "*qhelp-check"
     paths:
       - "ruby/**/*.qhelp"
 
