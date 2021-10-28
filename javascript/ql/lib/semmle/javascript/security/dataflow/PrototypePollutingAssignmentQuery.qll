@@ -79,7 +79,15 @@ class Configuration extends TaintTracking::Configuration {
       source.getNode() = src and sink.getNode() = snk
     |
       snk = write.getBase() and
-      exists(write.getPropertyName())
+      (
+        // fixed property name
+        exists(write.getPropertyName())
+        or
+        // non-string property name (likely number)
+        exists(Expr prop | prop = write.getPropertyNameExpr() |
+          not prop.analyze().getAType() = TTString()
+        )
+      )
     )
   }
 

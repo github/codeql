@@ -90,4 +90,7 @@ module.exports.delete = function() {
 module.exports.fixedProp = function (obj, path, value) {
   var maybeProto = obj[path];
   maybeProto.foo = value; // OK - fixed properties from library inputs are OK.
+
+  var i = 0;
+  maybeProto[i + 2] = value; // OK - number properties are OK.
 }
