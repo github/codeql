@@ -47,11 +47,7 @@ module ClearTextLogging {
         meth.getObject(name).(NameNode).getId().matches("logg%") and
         call.getAnArg() = this
       |
-        name = "error" or
-        name = "warn" or
-        name = "warning" or
-        name = "debug" or
-        name = "info"
+        name = ["error", "warn", "warning", "debug", "info"]
       )
     }
   }

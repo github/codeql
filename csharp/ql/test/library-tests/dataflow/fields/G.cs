@@ -4,7 +4,7 @@ public class G
 
     public void M1()
     {
-        Elem e = new Elem();
+        Elem e = Source<Elem>(1);
         Box2 b = new Box2(new Box1(null));
         b.Box1.Elem = e;
         SinkWrap(b);
@@ -12,7 +12,7 @@ public class G
 
     public void M2()
     {
-        Elem e = new Elem();
+        Elem e = Source<Elem>(2);
         Box2 b = new Box2(new Box1(null));
         b.Box1.SetElem(e);
         SinkWrap(b);
@@ -20,7 +20,7 @@ public class G
 
     public void M3()
     {
-        Elem e = new Elem();
+        Elem e = Source<Elem>(3);
         Box2 b = new Box2(new Box1(null));
         b.GetBox1().Elem = e;
         SinkWrap(b);
@@ -28,7 +28,7 @@ public class G
 
     public void M4()
     {
-        Elem e = new Elem();
+        Elem e = Source<Elem>(4);
         Box2 b = new Box2(new Box1(null));
         b.GetBox1().SetElem(e);
         SinkWrap(b);
@@ -36,12 +36,12 @@ public class G
 
     public static void SinkWrap(Box2 b2)
     {
-        Sink(b2.GetBox1().GetElem());
+        Sink(b2.GetBox1().GetElem()); // $ hasValueFlow=1 $ hasValueFlow=2 $ hasValueFlow=3 $ hasValueFlow=4
     }
 
     public void M5a()
     {
-        Elem e = new Elem();
+        Elem e = Source<Elem>(5);
         boxfield = new Box2(new Box1(null));
         boxfield.Box1.Elem = e;
         M5b();
@@ -49,7 +49,7 @@ public class G
 
     private void M5b()
     {
-        Sink(boxfield.Box1.Elem);
+        Sink(boxfield.Box1.Elem); // $ hasValueFlow=5
     }
 
     public static void Sink(object o) { }
@@ -71,4 +71,6 @@ public class G
         public Box1 GetBox1() => Box1;
         public void SetBox1(Box1 b) { Box1 = b; }
     }
+
+    static T Source<T>(object source) => throw null;
 }

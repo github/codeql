@@ -155,13 +155,13 @@ class InvalidFormatString extends StringLiteral {
       int oldstartcolumn, int padding
     |
       this.getLocation().hasLocationInfo(filepath, startline, oldstartcolumn, endline, endcolumn) and
-      startcolumn = padding + oldstartcolumn + getInvalidOffset() and
+      startcolumn = padding + oldstartcolumn + this.getInvalidOffset() and
       toUrl(filepath, startline, startcolumn, endline, endcolumn, result)
     |
       // Single-line string literal beginning " or @"
       // Figure out the correct indent.
       startline = endline and
-      padding = endcolumn - oldstartcolumn - getValue().length()
+      padding = endcolumn - oldstartcolumn - this.getValue().length()
       or
       // Multi-line literal beginning @"
       startline != endline and

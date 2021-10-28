@@ -66,7 +66,7 @@ class ControlFlowNode extends Locatable, ControlFlowNodeBase {
    */
   ControlFlowNode getATrueSuccessor() {
     qlCFGTrueSuccessor(this, result) and
-    result = getASuccessor()
+    result = this.getASuccessor()
   }
 
   /**
@@ -75,7 +75,7 @@ class ControlFlowNode extends Locatable, ControlFlowNodeBase {
    */
   ControlFlowNode getAFalseSuccessor() {
     qlCFGFalseSuccessor(this, result) and
-    result = getASuccessor()
+    result = this.getASuccessor()
   }
 
   /** Gets the `BasicBlock` containing this control-flow node. */

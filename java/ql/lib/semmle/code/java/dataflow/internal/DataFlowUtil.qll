@@ -101,6 +101,8 @@ predicate hasNonlocalValue(FieldRead fr) {
 predicate localFlowStep(Node node1, Node node2) {
   simpleLocalFlowStep(node1, node2)
   or
+  adjacentUseUse(node1.asExpr(), node2.asExpr())
+  or
   // Simple flow through library code is included in the exposed local
   // step relation, even though flow is technically inter-procedural
   FlowSummaryImpl::Private::Steps::summaryThroughStep(node1, node2, true)
@@ -131,7 +133,8 @@ predicate simpleLocalFlowStep(Node node1, Node node2) {
   adjacentUseUse(node1.asExpr(), node2.asExpr()) and
   not exists(FieldRead fr |
     hasNonlocalValue(fr) and fr.getField().isStatic() and fr = node1.asExpr()
-  )
+  ) and
+  not FlowSummaryImpl::Private::Steps::summaryClearsContentArg(node1, _)
   or
   ThisFlow::adjacentThisRefs(node1, node2)
   or
@@ -182,7 +185,7 @@ class Content extends TContent {
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
-   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
   predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
     path = "" and sl = 0 and sc = 0 and el = 0 and ec = 0

@@ -404,6 +404,7 @@ private string paramsString(InterpretedCallable c) {
     )
 }
 
+pragma[nomagic]
 private Element interpretElement0(
   string namespace, string type, boolean subtypes, string name, string signature
 ) {

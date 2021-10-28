@@ -110,7 +110,7 @@ class Node extends TIRDataFlowNode {
   /**
    * Gets an upper bound on the type of this node.
    */
-  IRType getTypeBound() { result = getType() }
+  IRType getTypeBound() { result = this.getType() }
 
   /** Gets the location of this element. */
   Location getLocation() { none() } // overridden by subclasses
@@ -120,7 +120,7 @@ class Node extends TIRDataFlowNode {
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
-   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
@@ -831,7 +831,7 @@ class FieldContent extends Content, TFieldContent {
   FieldContent() { this = TFieldContent(c, startBit, endBit) }
 
   // Ensure that there's just 1 result for `toString`.
-  override string toString() { result = min(Field f | f = getAField() | f.toString()) }
+  override string toString() { result = min(Field f | f = this.getAField() | f.toString()) }
 
   predicate hasOffset(Class cl, int start, int end) { cl = c and start = startBit and end = endBit }
 

@@ -188,8 +188,8 @@ private predicate isPointerToMemberOrNullPointer(Type type) {
 class ArithmeticConversion extends Cast {
   ArithmeticConversion() {
     conversionkinds(underlyingElement(this), 0) and
-    isArithmeticOrEnum(getUnspecifiedType()) and
-    isArithmeticOrEnum(getExpr().getUnspecifiedType())
+    isArithmeticOrEnum(this.getUnspecifiedType()) and
+    isArithmeticOrEnum(this.getExpr().getUnspecifiedType())
   }
 
   override string getSemanticConversionString() { result = "arithmetic conversion" }
@@ -204,8 +204,8 @@ class ArithmeticConversion extends Cast {
  */
 class IntegralConversion extends ArithmeticConversion {
   IntegralConversion() {
-    isIntegralOrEnum(getUnspecifiedType()) and
-    isIntegralOrEnum(getExpr().getUnspecifiedType())
+    isIntegralOrEnum(this.getUnspecifiedType()) and
+    isIntegralOrEnum(this.getExpr().getUnspecifiedType())
   }
 
   override string getAPrimaryQlClass() {
@@ -224,8 +224,8 @@ class IntegralConversion extends ArithmeticConversion {
  */
 class FloatingPointConversion extends ArithmeticConversion {
   FloatingPointConversion() {
-    getUnspecifiedType() instanceof FloatingPointType and
-    getExpr().getUnspecifiedType() instanceof FloatingPointType
+    this.getUnspecifiedType() instanceof FloatingPointType and
+    this.getExpr().getUnspecifiedType() instanceof FloatingPointType
   }
 
   override string getAPrimaryQlClass() {
@@ -244,8 +244,8 @@ class FloatingPointConversion extends ArithmeticConversion {
  */
 class FloatingPointToIntegralConversion extends ArithmeticConversion {
   FloatingPointToIntegralConversion() {
-    isIntegralOrEnum(getUnspecifiedType()) and
-    getExpr().getUnspecifiedType() instanceof FloatingPointType
+    isIntegralOrEnum(this.getUnspecifiedType()) and
+    this.getExpr().getUnspecifiedType() instanceof FloatingPointType
   }
 
   override string getAPrimaryQlClass() {
@@ -264,8 +264,8 @@ class FloatingPointToIntegralConversion extends ArithmeticConversion {
  */
 class IntegralToFloatingPointConversion extends ArithmeticConversion {
   IntegralToFloatingPointConversion() {
-    getUnspecifiedType() instanceof FloatingPointType and
-    isIntegralOrEnum(getExpr().getUnspecifiedType())
+    this.getUnspecifiedType() instanceof FloatingPointType and
+    isIntegralOrEnum(this.getExpr().getUnspecifiedType())
   }
 
   override string getAPrimaryQlClass() {
@@ -290,8 +290,8 @@ class IntegralToFloatingPointConversion extends ArithmeticConversion {
 class PointerConversion extends Cast {
   PointerConversion() {
     conversionkinds(underlyingElement(this), 0) and
-    isPointerOrNullPointer(getUnspecifiedType()) and
-    isPointerOrNullPointer(getExpr().getUnspecifiedType())
+    isPointerOrNullPointer(this.getUnspecifiedType()) and
+    isPointerOrNullPointer(this.getExpr().getUnspecifiedType())
   }
 
   override string getAPrimaryQlClass() { not exists(qlCast(this)) and result = "PointerConversion" }
@@ -315,8 +315,8 @@ class PointerToMemberConversion extends Cast {
   PointerToMemberConversion() {
     conversionkinds(underlyingElement(this), 0) and
     exists(Type fromType, Type toType |
-      fromType = getExpr().getUnspecifiedType() and
-      toType = getUnspecifiedType() and
+      fromType = this.getExpr().getUnspecifiedType() and
+      toType = this.getUnspecifiedType() and
       isPointerToMemberOrNullPointer(fromType) and
       isPointerToMemberOrNullPointer(toType) and
       // A conversion from nullptr to nullptr is a `PointerConversion`, not a
@@ -345,8 +345,8 @@ class PointerToMemberConversion extends Cast {
 class PointerToIntegralConversion extends Cast {
   PointerToIntegralConversion() {
     conversionkinds(underlyingElement(this), 0) and
-    isIntegralOrEnum(getUnspecifiedType()) and
-    isPointerOrNullPointer(getExpr().getUnspecifiedType())
+    isIntegralOrEnum(this.getUnspecifiedType()) and
+    isPointerOrNullPointer(this.getExpr().getUnspecifiedType())
   }
 
   override string getAPrimaryQlClass() {
@@ -366,8 +366,8 @@ class PointerToIntegralConversion extends Cast {
 class IntegralToPointerConversion extends Cast {
   IntegralToPointerConversion() {
     conversionkinds(underlyingElement(this), 0) and
-    isPointerOrNullPointer(getUnspecifiedType()) and
-    isIntegralOrEnum(getExpr().getUnspecifiedType())
+    isPointerOrNullPointer(this.getUnspecifiedType()) and
+    isIntegralOrEnum(this.getExpr().getUnspecifiedType())
   }
 
   override string getAPrimaryQlClass() {
@@ -403,7 +403,7 @@ class BoolConversion extends Cast {
 class VoidConversion extends Cast {
   VoidConversion() {
     conversionkinds(underlyingElement(this), 0) and
-    getUnspecifiedType() instanceof VoidType
+    this.getUnspecifiedType() instanceof VoidType
   }
 
   override string getAPrimaryQlClass() { not exists(qlCast(this)) and result = "VoidConversion" }
@@ -434,8 +434,8 @@ class InheritanceConversion extends Cast {
    * conversion is to an indirect virtual base class.
    */
   final ClassDerivation getDerivation() {
-    result.getBaseClass() = getBaseClass() and
-    result.getDerivedClass() = getDerivedClass()
+    result.getBaseClass() = this.getBaseClass() and
+    result.getDerivedClass() = this.getDerivedClass()
   }
 
   /**
@@ -490,12 +490,12 @@ class BaseClassConversion extends InheritanceConversion {
 
   override Class getBaseClass() { result = getConversionClass(this) }
 
-  override Class getDerivedClass() { result = getConversionClass(getExpr()) }
+  override Class getDerivedClass() { result = getConversionClass(this.getExpr()) }
 
   /**
    * Holds if this conversion is to a virtual base class.
    */
-  predicate isVirtual() { getDerivation().isVirtual() or not exists(getDerivation()) }
+  predicate isVirtual() { this.getDerivation().isVirtual() or not exists(this.getDerivation()) }
 }
 
 /**
@@ -515,7 +515,7 @@ class DerivedClassConversion extends InheritanceConversion {
 
   override string getSemanticConversionString() { result = "derived class conversion" }
 
-  override Class getBaseClass() { result = getConversionClass(getExpr()) }
+  override Class getBaseClass() { result = getConversionClass(this.getExpr()) }
 
   override Class getDerivedClass() { result = getConversionClass(this) }
 }
@@ -637,8 +637,8 @@ class DynamicCast extends Cast, @dynamic_cast {
  */
 class UuidofOperator extends Expr, @uuidof {
   override string toString() {
-    if exists(getTypeOperand())
-    then result = "__uuidof(" + getTypeOperand().getName() + ")"
+    if exists(this.getTypeOperand())
+    then result = "__uuidof(" + this.getTypeOperand().getName() + ")"
     else result = "__uuidof(0)"
   }
 

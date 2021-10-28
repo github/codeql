@@ -9,26 +9,11 @@ module Templating {
    * Gets a string that is a known template delimiter.
    */
   string getADelimiter() {
-    result = "<%" or
-    result = "%>" or
-    result = "{{" or
-    result = "}}" or
-    result = "{%" or
-    result = "%}" or
-    result = "<@" or
-    result = "@>" or
-    result = "<#" or
-    result = "#>" or
-    result = "{#" or
-    result = "#}" or
-    result = "{$" or
-    result = "$}" or
-    result = "[%" or
-    result = "%]" or
-    result = "[[" or
-    result = "]]" or
-    result = "<?" or
-    result = "?>"
+    result =
+      [
+        "<%", "%>", "{#", "#}", "{$", "$}", "[%", "%]", "[[", "]]", "<?", "?>", "{{", "}}", "{%",
+        "%}", "<@", "@>", "<#", "#>"
+      ]
   }
 
   /**

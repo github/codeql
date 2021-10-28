@@ -179,15 +179,7 @@ module DOM {
       eltName = attr.getElement().getName() and
       attrName = attr.getName()
     |
-      (
-        eltName = "script" or
-        eltName = "iframe" or
-        eltName = "embed" or
-        eltName = "video" or
-        eltName = "audio" or
-        eltName = "source" or
-        eltName = "track"
-      ) and
+      eltName = ["script", "iframe", "embed", "video", "audio", "source", "track"] and
       attrName = "src"
       or
       (
@@ -258,11 +250,11 @@ module DOM {
   /** Gets a call that queries the DOM for a collection of DOM nodes. */
   private DataFlow::SourceNode domElementCollection() {
     exists(string collectionName |
-      collectionName = "getElementsByClassName" or
-      collectionName = "getElementsByName" or
-      collectionName = "getElementsByTagName" or
-      collectionName = "getElementsByTagNameNS" or
-      collectionName = "querySelectorAll"
+      collectionName =
+        [
+          "getElementsByClassName", "getElementsByName", "getElementsByTagName",
+          "getElementsByTagNameNS", "querySelectorAll"
+        ]
     |
       (
         result = documentRef().getAMethodCall(collectionName) or
@@ -274,11 +266,8 @@ module DOM {
   /** Gets a call that creates a DOM node or queries the DOM for a DOM node. */
   private DataFlow::SourceNode domElementCreationOrQuery() {
     exists(string methodName |
-      methodName = "createElement" or
-      methodName = "createElementNS" or
-      methodName = "createRange" or
-      methodName = "getElementById" or
-      methodName = "querySelector"
+      methodName =
+        ["createElement", "createElementNS", "createRange", "getElementById", "querySelector"]
     |
       result = documentRef().getAMethodCall(methodName) or
       result = DataFlow::globalVarRef(methodName).getACall()
@@ -465,11 +454,7 @@ module DOM {
     private class DefaultRange extends Range {
       DefaultRange() {
         exists(string propName | this = documentRef().getAPropertyRead(propName) |
-          propName = "documentURI" or
-          propName = "documentURIObject" or
-          propName = "location" or
-          propName = "referrer" or
-          propName = "URL"
+          propName = ["documentURI", "documentURIObject", "location", "referrer", "URL"]
         )
         or
         this = DOM::domValueRef().getAPropertyRead("baseUri")

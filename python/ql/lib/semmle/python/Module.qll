@@ -86,13 +86,13 @@ class Module extends Module_, Scope, AstNode {
   /** Gets the package containing this module (or parent package if this is a package) */
   Module getPackage() {
     this.getName().matches("%.%") and
-    result.getName() = getName().regexpReplaceAll("\\.[^.]*$", "")
+    result.getName() = this.getName().regexpReplaceAll("\\.[^.]*$", "")
   }
 
   /** Gets the name of the package containing this module */
   string getPackageName() {
     this.getName().matches("%.%") and
-    result = getName().regexpReplaceAll("\\.[^.]*$", "")
+    result = this.getName().regexpReplaceAll("\\.[^.]*$", "")
   }
 
   /** Gets the metrics for this module */

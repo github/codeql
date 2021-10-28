@@ -51,13 +51,13 @@ private class StdPairConstructor extends Constructor, TaintFunction {
    * either value type of the pair.
    */
   int getAValueTypeParameterIndex() {
-    getParameter(result).getUnspecifiedType().(ReferenceType).getBaseType() =
-      getDeclaringType().getTemplateArgument(_).(Type).getUnspecifiedType() // i.e. the `T1` or `T2` of this `std::pair<T1, T2>`
+    this.getParameter(result).getUnspecifiedType().(ReferenceType).getBaseType() =
+      this.getDeclaringType().getTemplateArgument(_).(Type).getUnspecifiedType() // i.e. the `T1` or `T2` of this `std::pair<T1, T2>`
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // taint flow from second parameter of a value type to the qualifier
-    getAValueTypeParameterIndex() = 1 and
+    this.getAValueTypeParameterIndex() = 1 and
     input.isParameterDeref(1) and
     (
       output.isReturnValue() // TODO: this is only needed for AST data flow, which treats constructors as returning the new object

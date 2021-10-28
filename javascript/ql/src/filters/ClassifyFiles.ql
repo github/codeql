@@ -8,7 +8,7 @@
  */
 
 import javascript
-import ClassifyFiles
+import semmle.javascript.filters.ClassifyFiles
 
 from File f, string category
 where classify(f, category)

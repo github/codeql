@@ -24,14 +24,17 @@
     "python/ql/lib/semmle/python/dataflow/new/internal/DataFlowImpl.qll",
     "python/ql/lib/semmle/python/dataflow/new/internal/DataFlowImpl2.qll",
     "python/ql/lib/semmle/python/dataflow/new/internal/DataFlowImpl3.qll",
-    "python/ql/lib/semmle/python/dataflow/new/internal/DataFlowImpl4.qll"
+    "python/ql/lib/semmle/python/dataflow/new/internal/DataFlowImpl4.qll",
+    "ruby/ql/lib/codeql/ruby/dataflow/internal/DataFlowImpl.qll",
+    "ruby/ql/lib/codeql/ruby/dataflow/internal/DataFlowImpl2.qll"
   ],
   "DataFlow Java/C++/C#/Python Common": [
     "java/ql/lib/semmle/code/java/dataflow/internal/DataFlowImplCommon.qll",
     "cpp/ql/lib/semmle/code/cpp/dataflow/internal/DataFlowImplCommon.qll",
     "cpp/ql/lib/semmle/code/cpp/ir/dataflow/internal/DataFlowImplCommon.qll",
     "csharp/ql/lib/semmle/code/csharp/dataflow/internal/DataFlowImplCommon.qll",
-    "python/ql/lib/semmle/python/dataflow/new/internal/DataFlowImplCommon.qll"
+    "python/ql/lib/semmle/python/dataflow/new/internal/DataFlowImplCommon.qll",
+    "ruby/ql/lib/codeql/ruby/dataflow/internal/DataFlowImplCommon.qll"
   ],
   "TaintTracking::Configuration Java/C++/C#/Python": [
     "cpp/ql/lib/semmle/code/cpp/dataflow/internal/tainttracking1/TaintTrackingImpl.qll",
@@ -49,18 +52,21 @@
     "python/ql/lib/semmle/python/dataflow/new/internal/tainttracking1/TaintTrackingImpl.qll",
     "python/ql/lib/semmle/python/dataflow/new/internal/tainttracking2/TaintTrackingImpl.qll",
     "python/ql/lib/semmle/python/dataflow/new/internal/tainttracking3/TaintTrackingImpl.qll",
-    "python/ql/lib/semmle/python/dataflow/new/internal/tainttracking4/TaintTrackingImpl.qll"
+    "python/ql/lib/semmle/python/dataflow/new/internal/tainttracking4/TaintTrackingImpl.qll",
+    "ruby/ql/lib/codeql/ruby/dataflow/internal/tainttracking1/TaintTrackingImpl.qll"
   ],
   "DataFlow Java/C++/C#/Python Consistency checks": [
     "java/ql/lib/semmle/code/java/dataflow/internal/DataFlowImplConsistency.qll",
     "cpp/ql/lib/semmle/code/cpp/dataflow/internal/DataFlowImplConsistency.qll",
     "cpp/ql/lib/semmle/code/cpp/ir/dataflow/internal/DataFlowImplConsistency.qll",
     "csharp/ql/lib/semmle/code/csharp/dataflow/internal/DataFlowImplConsistency.qll",
-    "python/ql/lib/semmle/python/dataflow/new/internal/DataFlowImplConsistency.qll"
+    "python/ql/lib/semmle/python/dataflow/new/internal/DataFlowImplConsistency.qll",
+    "ruby/ql/lib/codeql/ruby/dataflow/internal/DataFlowImplConsistency.qll"
   ],
   "DataFlow Java/C# Flow Summaries": [
     "java/ql/lib/semmle/code/java/dataflow/internal/FlowSummaryImpl.qll",
-    "csharp/ql/lib/semmle/code/csharp/dataflow/internal/FlowSummaryImpl.qll"
+    "csharp/ql/lib/semmle/code/csharp/dataflow/internal/FlowSummaryImpl.qll",
+    "ruby/ql/lib/codeql/ruby/dataflow/internal/FlowSummaryImpl.qll"
   ],
   "SsaReadPosition Java/C#": [
     "java/ql/lib/semmle/code/java/dataflow/internal/rangeanalysis/SsaReadPositionCommon.qll",
@@ -367,8 +373,10 @@
   ],
   "Inline Test Expectations": [
     "cpp/ql/test/TestUtilities/InlineExpectationsTest.qll",
+    "csharp/ql/test/TestUtilities/InlineExpectationsTest.qll",
     "java/ql/test/TestUtilities/InlineExpectationsTest.qll",
-    "python/ql/test/TestUtilities/InlineExpectationsTest.qll"
+    "python/ql/test/TestUtilities/InlineExpectationsTest.qll",
+    "ruby/ql/test/TestUtilities/InlineExpectationsTest.qll"
   ],
   "C++ ExternalAPIs": [
     "cpp/ql/src/Security/CWE/CWE-020/ExternalAPIs.qll",
@@ -440,7 +448,8 @@
     "csharp/ql/lib/semmle/code/csharp/dataflow/internal/SsaImplCommon.qll",
     "csharp/ql/lib/semmle/code/csharp/controlflow/internal/pressa/SsaImplCommon.qll",
     "csharp/ql/lib/semmle/code/csharp/dataflow/internal/basessa/SsaImplCommon.qll",
-    "csharp/ql/lib/semmle/code/cil/internal/SsaImplCommon.qll"
+    "csharp/ql/lib/semmle/code/cil/internal/SsaImplCommon.qll",
+    "ruby/ql/lib/codeql/ruby/dataflow/internal/SsaImplCommon.qll"
   ],
   "CryptoAlgorithms Python/JS": [
     "javascript/ql/lib/semmle/javascript/security/CryptoAlgorithms.qll",
@@ -460,6 +469,23 @@
   ],
   "ReDoS Polynomial Python/JS": [
     "javascript/ql/lib/semmle/javascript/security/performance/SuperlinearBackTracking.qll",
-    "python/ql/lib/semmle/python/security/performance/SuperlinearBackTracking.qll"
+    "python/ql/lib/semmle/python/security/performance/SuperlinearBackTracking.qll",
+    "ruby/ql/lib/codeql/ruby/regexp/SuperlinearBackTracking.qll"
+  ],
+  "CFG": [
+    "csharp/ql/lib/semmle/code/csharp/controlflow/internal/ControlFlowGraphImplShared.qll",
+    "ruby/ql/lib/codeql/ruby/controlflow/internal/ControlFlowGraphImplShared.qll"
+  ],
+  "TypeTracker": [
+    "python/ql/lib/semmle/python/dataflow/new/internal/TypeTracker.qll",
+    "ruby/ql/lib/codeql/ruby/typetracking/TypeTracker.qll"
+  ],
+  "CodeQL Tutorial": [
+    "cpp/ql/lib/tutorial.qll",
+    "csharp/ql/lib/tutorial.qll",
+    "java/ql/lib/tutorial.qll",
+    "javascript/ql/lib/tutorial.qll",
+    "python/ql/lib/tutorial.qll",
+    "ruby/ql/lib/tutorial.qll"
   ]
 }

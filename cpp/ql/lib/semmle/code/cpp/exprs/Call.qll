@@ -71,10 +71,10 @@ class Call extends Expr, NameQualifiableElement, TCall {
    * at index 2, respectively.
    */
   Expr getAnArgumentSubExpr(int index) {
-    result = getArgument(index)
+    result = this.getArgument(index)
     or
     exists(Expr mid |
-      mid = getAnArgumentSubExpr(index) and
+      mid = this.getAnArgumentSubExpr(index) and
       not mid instanceof Call and
       not mid instanceof SizeofOperator and
       result = mid.getAChild()
@@ -167,27 +167,27 @@ class FunctionCall extends Call, @funbindexpr {
   override string getAPrimaryQlClass() { result = "FunctionCall" }
 
   /** Gets an explicit template argument for this call. */
-  Locatable getAnExplicitTemplateArgument() { result = getExplicitTemplateArgument(_) }
+  Locatable getAnExplicitTemplateArgument() { result = this.getExplicitTemplateArgument(_) }
 
   /** Gets an explicit template argument value for this call. */
-  Locatable getAnExplicitTemplateArgumentKind() { result = getExplicitTemplateArgumentKind(_) }
+  Locatable getAnExplicitTemplateArgumentKind() { result = this.getExplicitTemplateArgumentKind(_) }
 
   /** Gets a template argument for this call. */
-  Locatable getATemplateArgument() { result = getTarget().getATemplateArgument() }
+  Locatable getATemplateArgument() { result = this.getTarget().getATemplateArgument() }
 
   /** Gets a template argument value for this call. */
-  Locatable getATemplateArgumentKind() { result = getTarget().getATemplateArgumentKind() }
+  Locatable getATemplateArgumentKind() { result = this.getTarget().getATemplateArgumentKind() }
 
   /** Gets the nth explicit template argument for this call. */
   Locatable getExplicitTemplateArgument(int n) {
-    n < getNumberOfExplicitTemplateArguments() and
-    result = getTemplateArgument(n)
+    n < this.getNumberOfExplicitTemplateArguments() and
+    result = this.getTemplateArgument(n)
   }
 
   /** Gets the nth explicit template argument value for this call. */
   Locatable getExplicitTemplateArgumentKind(int n) {
-    n < getNumberOfExplicitTemplateArguments() and
-    result = getTemplateArgumentKind(n)
+    n < this.getNumberOfExplicitTemplateArguments() and
+    result = this.getTemplateArgumentKind(n)
   }
 
   /** Gets the number of explicit template arguments for this call. */
@@ -198,19 +198,19 @@ class FunctionCall extends Call, @funbindexpr {
   }
 
   /** Gets the number of template arguments for this call. */
-  int getNumberOfTemplateArguments() { result = count(int i | exists(getTemplateArgument(i))) }
+  int getNumberOfTemplateArguments() { result = count(int i | exists(this.getTemplateArgument(i))) }
 
   /** Gets the nth template argument for this call (indexed from 0). */
-  Locatable getTemplateArgument(int n) { result = getTarget().getTemplateArgument(n) }
+  Locatable getTemplateArgument(int n) { result = this.getTarget().getTemplateArgument(n) }
 
   /** Gets the nth template argument value for this call (indexed from 0). */
-  Locatable getTemplateArgumentKind(int n) { result = getTarget().getTemplateArgumentKind(n) }
+  Locatable getTemplateArgumentKind(int n) { result = this.getTarget().getTemplateArgumentKind(n) }
 
   /** Holds if any template arguments for this call are implicit / deduced. */
   predicate hasImplicitTemplateArguments() {
     exists(int i |
-      exists(getTemplateArgument(i)) and
-      not exists(getExplicitTemplateArgument(i))
+      exists(this.getTemplateArgument(i)) and
+      not exists(this.getExplicitTemplateArgument(i))
     )
   }
 
@@ -233,9 +233,9 @@ class FunctionCall extends Call, @funbindexpr {
    * visible at the call site.
    */
   Type getExpectedReturnType() {
-    if getTargetType() instanceof RoutineType
-    then result = getTargetType().(RoutineType).getReturnType()
-    else result = getTarget().getType()
+    if this.getTargetType() instanceof RoutineType
+    then result = this.getTargetType().(RoutineType).getReturnType()
+    else result = this.getTarget().getType()
   }
 
   /**
@@ -247,9 +247,9 @@ class FunctionCall extends Call, @funbindexpr {
    * was visible at the call site.
    */
   Type getExpectedParameterType(int n) {
-    if getTargetType() instanceof RoutineType
-    then result = getTargetType().(RoutineType).getParameterType(n)
-    else result = getTarget().getParameter(n).getType()
+    if this.getTargetType() instanceof RoutineType
+    then result = this.getTargetType().(RoutineType).getParameterType(n)
+    else result = this.getTarget().getParameter(n).getType()
   }
 
   /**
@@ -263,7 +263,7 @@ class FunctionCall extends Call, @funbindexpr {
   /**
    * Gets the type of this expression, that is, the return type of the function being called.
    */
-  override Type getType() { result = getExpectedReturnType() }
+  override Type getType() { result = this.getExpectedReturnType() }
 
   /**
    * Holds if this is a call to a virtual function.
@@ -280,7 +280,7 @@ class FunctionCall extends Call, @funbindexpr {
 
   /** Gets a textual representation of this function call. */
   override string toString() {
-    if exists(getTarget())
+    if exists(this.getTarget())
     then result = "call to " + this.getTarget().getName()
     else result = "call to unknown function"
   }
@@ -288,15 +288,15 @@ class FunctionCall extends Call, @funbindexpr {
   override predicate mayBeImpure() {
     this.getChild(_).mayBeImpure() or
     this.getTarget().mayHaveSideEffects() or
-    isVirtual() or
-    getTarget().getAnAttribute().getName() = "weak"
+    this.isVirtual() or
+    this.getTarget().getAnAttribute().getName() = "weak"
   }
 
   override predicate mayBeGloballyImpure() {
     this.getChild(_).mayBeGloballyImpure() or
     this.getTarget().mayHaveSideEffects() or
-    isVirtual() or
-    getTarget().getAnAttribute().getName() = "weak"
+    this.isVirtual() or
+    this.getTarget().getAnAttribute().getName() = "weak"
   }
 }
 
@@ -367,7 +367,7 @@ class OverloadedPointerDereferenceExpr extends FunctionCall {
  * ```
  */
 class OverloadedArrayExpr extends FunctionCall {
-  OverloadedArrayExpr() { getTarget().hasName("operator[]") }
+  OverloadedArrayExpr() { this.getTarget().hasName("operator[]") }
 
   override string getAPrimaryQlClass() { result = "OverloadedArrayExpr" }
 
@@ -585,7 +585,7 @@ class ConstructorFieldInit extends ConstructorInit, @ctorfieldinit {
    */
   Expr getExpr() { result = this.getChild(0) }
 
-  override string toString() { result = "constructor init of field " + getTarget().getName() }
+  override string toString() { result = "constructor init of field " + this.getTarget().getName() }
 
   override predicate mayBeImpure() { this.getExpr().mayBeImpure() }
 

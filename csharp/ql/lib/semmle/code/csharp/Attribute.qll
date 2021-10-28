@@ -25,7 +25,7 @@ class Attributable extends @attributable {
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
-   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
@@ -89,7 +89,7 @@ class Attribute extends TopLevelExprParent, @attribute {
   override Location getALocation() { attribute_location(this, result) }
 
   override string toString() {
-    exists(string type, string name | type = getType().getName() |
+    exists(string type, string name | type = this.getType().getName() |
       (if type.matches("%Attribute") then name = type.prefix(type.length() - 9) else name = type) and
       result = "[" + name + "(...)]"
     )

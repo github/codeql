@@ -7,23 +7,25 @@ public class F
 
     private void M()
     {
-        var o = new object();
+        var o = Source<object>(1);
         var f = Create(o, null);
-        Sink(f.Field1); // flow
+        Sink(f.Field1); // $ hasValueFlow=1
         Sink(f.Field2); // no flow
 
-        f = Create(null, o);
+        f = Create(null, Source<object>(2));
         Sink(f.Field1); // no flow
-        Sink(f.Field2); // flow
+        Sink(f.Field2); // $ hasValueFlow=2
 
-        f = new F() { Field1 = o };
-        Sink(f.Field1); // flow
+        f = new F() { Field1 = Source<object>(3) };
+        Sink(f.Field1); // $ hasValueFlow=3
         Sink(f.Field2); // no flow
 
-        f = new F() { Field2 = o };
+        f = new F() { Field2 = Source<object>(4) };
         Sink(f.Field1); // no flow
-        Sink(f.Field2); // flow
+        Sink(f.Field2); // $ hasValueFlow=4
     }
 
     public static void Sink(object o) { }
+
+    static T Source<T>(object source) => throw null;
 }

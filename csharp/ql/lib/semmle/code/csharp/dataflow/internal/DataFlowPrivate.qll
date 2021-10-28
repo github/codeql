@@ -311,6 +311,18 @@ module LocalFlow {
   }
 
   /**
+   * Holds if there is a local use-use flow step from `nodeFrom` to `nodeTo`
+   * involving SSA definition `def`.
+   */
+  predicate localSsaFlowStepUseUse(Ssa::Definition def, Node nodeFrom, Node nodeTo) {
+    exists(ControlFlow::Node cfnFrom, ControlFlow::Node cfnTo |
+      SsaImpl::adjacentReadPairSameVar(def, cfnFrom, cfnTo) and
+      nodeTo = TExprNode(cfnTo) and
+      nodeFrom = TExprNode(cfnFrom)
+    )
+  }
+
+  /**
    * Holds if there is a local flow step from `nodeFrom` to `nodeTo` involving
    * SSA definition `def.
    */
@@ -322,14 +334,7 @@ module LocalFlow {
     )
     or
     // Flow from read to next read
-    exists(ControlFlow::Node cfnFrom, ControlFlow::Node cfnTo |
-      SsaImpl::adjacentReadPairSameVar(def, cfnFrom, cfnTo) and
-      nodeTo = TExprNode(cfnTo)
-    |
-      nodeFrom = TExprNode(cfnFrom)
-      or
-      cfnFrom = nodeFrom.(PostUpdateNode).getPreUpdateNode().getControlFlowNode()
-    )
+    localSsaFlowStepUseUse(def, nodeFrom.(PostUpdateNode).getPreUpdateNode(), nodeTo)
     or
     // Flow into phi node
     exists(Ssa::PhiNode phi |
@@ -398,6 +403,12 @@ module LocalFlow {
  */
 predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   LocalFlow::localFlowStepCommon(nodeFrom, nodeTo)
+  or
+  exists(Ssa::Definition def |
+    LocalFlow::localSsaFlowStepUseUse(def, nodeFrom, nodeTo) and
+    not FlowSummaryImpl::Private::Steps::summaryClearsContentArg(nodeFrom, _) and
+    not LocalFlow::usesInstanceField(def)
+  )
   or
   LocalFlow::localFlowCapturedVarStep(nodeFrom, nodeTo)
   or
@@ -716,6 +727,8 @@ private module Cached {
   predicate localFlowStepImpl(Node nodeFrom, Node nodeTo) {
     LocalFlow::localFlowStepCommon(nodeFrom, nodeTo)
     or
+    LocalFlow::localSsaFlowStepUseUse(_, nodeFrom, nodeTo)
+    or
     exists(Ssa::Definition def |
       LocalFlow::localSsaFlowStep(def, nodeFrom, nodeTo) and
       LocalFlow::usesInstanceField(def)
@@ -940,13 +953,9 @@ private module ParameterNodes {
 import ParameterNodes
 
 /** A data-flow node that represents a call argument. */
-class ArgumentNode extends Node {
-  ArgumentNode() { this instanceof ArgumentNodeImpl }
-
+class ArgumentNode extends Node instanceof ArgumentNodeImpl {
   /** Holds if this argument occurs at the given position in the given call. */
-  final predicate argumentOf(DataFlowCall call, int pos) {
-    this.(ArgumentNodeImpl).argumentOf(call, pos)
-  }
+  final predicate argumentOf(DataFlowCall call, int pos) { super.argumentOf(call, pos) }
 }
 
 abstract private class ArgumentNodeImpl extends Node {
@@ -1695,9 +1704,6 @@ predicate clearsContent(Node n, Content c) {
   or
   fieldOrPropertyStore(_, c, _, n.(ObjectInitializerNode).getInitializer(), false)
   or
-  FlowSummaryImpl::Private::Steps::summaryStoresIntoArg(c, n) and
-  not c instanceof ElementContent
-  or
   FlowSummaryImpl::Private::Steps::summaryClearsContent(n, c)
   or
   exists(WithExpr we, ObjectInitializer oi, FieldOrProperty f |
@@ -1918,6 +1924,12 @@ private predicate viableConstantBooleanParamArg(
 
 int accessPathLimit() { result = 5 }
 
+/**
+ * Holds if access paths with `c` at their head always should be tracked at high
+ * precision. This disables adaptive access path precision for such access paths.
+ */
+predicate forceHighPrecision(Content c) { c instanceof ElementContent }
+
 /** The unit type. */
 private newtype TUnit = TMkUnit()
 
@@ -2000,4 +2012,15 @@ predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preserves
     nodeTo.asExpr().(EventRead).getTarget() = aee.getTarget() and
     preservesValue = false
   )
+}
+
+/**
+ * Holds if flow is allowed to pass from parameter `p` and back to itself as a
+ * side-effect, resulting in a summary from `p` to itself.
+ *
+ * One example would be to allow flow like `p.foo = p.bar;`, which is disallowed
+ * by default as a heuristic.
+ */
+predicate allowParameterReturnInSelf(ParameterNode p) {
+  FlowSummaryImpl::Private::summaryAllowParameterReturnInSelf(p)
 }

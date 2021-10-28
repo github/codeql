@@ -39,7 +39,10 @@ private Expr getRunnerArgument(MethodAccess ma, Method runmethod) {
   or
   getRunnerArgument(ma, runmethod).(CastExpr).getExpr() = result
   or
-  getRunnerArgument(ma, runmethod).(VarAccess).getVariable().getAnAssignedValue() = result
+  pragma[only_bind_out](getRunnerArgument(ma, runmethod))
+      .(VarAccess)
+      .getVariable()
+      .getAnAssignedValue() = result
 }
 
 /**

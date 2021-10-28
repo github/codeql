@@ -127,17 +127,22 @@ private string getValue(Expr e) {
 private class UnsignedBitwiseAndExpr extends BitwiseAndExpr {
   UnsignedBitwiseAndExpr() {
     (
-      getLeftOperand().getFullyConverted().getType().getUnderlyingType().(IntegralType).isUnsigned() or
-      getValue(getLeftOperand().getFullyConverted()).toInt() >= 0
-    ) and
-    (
-      getRightOperand()
+      this.getLeftOperand()
           .getFullyConverted()
           .getType()
           .getUnderlyingType()
           .(IntegralType)
           .isUnsigned() or
-      getValue(getRightOperand().getFullyConverted()).toInt() >= 0
+      getValue(this.getLeftOperand().getFullyConverted()).toInt() >= 0
+    ) and
+    (
+      this.getRightOperand()
+          .getFullyConverted()
+          .getType()
+          .getUnderlyingType()
+          .(IntegralType)
+          .isUnsigned() or
+      getValue(this.getRightOperand().getFullyConverted()).toInt() >= 0
     )
   }
 }
@@ -1584,6 +1589,15 @@ private module SimpleRangeAnalysisCached {
     // Combine the upper bounds returned by getTruncatedUpperBounds and
     // getGuardedUpperBound into a single maximum value
     result = min([max(getTruncatedUpperBounds(expr)), getGuardedUpperBound(expr)])
+  }
+
+  /** Holds if the upper bound of `expr` may have been widened. This means the the upper bound is in practice likely to be overly wide. */
+  cached
+  predicate upperBoundMayBeWidened(Expr e) {
+    isRecursiveExpr(e) and
+    // Widening is not a problem if the post-analysis in `getGuardedUpperBound` has overridden the widening.
+    // Note that the RHS of `<` may be multi-valued.
+    not getGuardedUpperBound(e) < getTruncatedUpperBounds(e)
   }
 
   /**

@@ -81,29 +81,12 @@ module HTTP {
    */
   class RequestMethodName extends string {
     RequestMethodName() {
-      this = "CHECKOUT" or
-      this = "COPY" or
-      this = "DELETE" or
-      this = "GET" or
-      this = "HEAD" or
-      this = "LOCK" or
-      this = "MERGE" or
-      this = "MKACTIVITY" or
-      this = "MKCOL" or
-      this = "MOVE" or
-      this = "M-SEARCH" or
-      this = "NOTIFY" or
-      this = "OPTIONS" or
-      this = "PATCH" or
-      this = "POST" or
-      this = "PURGE" or
-      this = "PUT" or
-      this = "REPORT" or
-      this = "SEARCH" or
-      this = "SUBSCRIBE" or
-      this = "TRACE" or
-      this = "UNLOCK" or
-      this = "UNSUBSCRIBE"
+      this =
+        [
+          "CHECKOUT", "COPY", "DELETE", "GET", "HEAD", "LOCK", "MERGE", "MKACTIVITY", "MKCOL",
+          "MOVE", "M-SEARCH", "NOTIFY", "OPTIONS", "PATCH", "POST", "PURGE", "PUT", "REPORT",
+          "SEARCH", "SUBSCRIBE", "TRACE", "UNLOCK", "UNSUBSCRIBE"
+        ]
     }
 
     /**
@@ -111,14 +94,7 @@ module HTTP {
      * such as for `GET` and `HEAD` requests.
      */
     predicate isSafe() {
-      this = "GET" or
-      this = "HEAD" or
-      this = "OPTIONS" or
-      this = "PRI" or
-      this = "PROPFIND" or
-      this = "REPORT" or
-      this = "SEARCH" or
-      this = "TRACE"
+      this = ["GET", "HEAD", "OPTIONS", "PRI", "PROPFIND", "REPORT", "SEARCH", "TRACE"]
     }
   }
 
@@ -477,13 +453,7 @@ module HTTP {
      * Headers are never considered third-party controllable by this predicate, although the
      * third party does have some control over the the Referer and Origin headers.
      */
-    predicate isThirdPartyControllable() {
-      exists(string kind | kind = getKind() |
-        kind = "parameter" or
-        kind = "url" or
-        kind = "body"
-      )
-    }
+    predicate isThirdPartyControllable() { getKind() = ["parameter", "url", "body"] }
   }
 
   /**
