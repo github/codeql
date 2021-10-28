@@ -3,5 +3,7 @@
 | Test.kt:18:3:18:3 | <Expr>; | Test.kt:30:15:33:3 | { ... } |
 | Test.kt:18:3:18:3 | <Expr>; | Test.kt:35:3:35:3 | <Expr>; |
 | Test.kt:30:15:33:3 | { ... } | Test.kt:35:3:35:3 | <Expr>; |
-| Test.kt:35:3:35:3 | <Expr>; | Test.kt:38:16:41:3 | { ... } |
-| Test.kt:35:3:35:3 | <Expr>; | Test.kt:43:3:43:3 | <Expr>; |
+| Test.kt:35:3:35:3 | <Expr>; | Test.kt:38:9:38:9 | x |
+| Test.kt:38:9:38:9 | x | Test.kt:38:16:41:3 | { ... } |
+| Test.kt:38:9:38:9 | x | Test.kt:43:3:43:3 | <Expr>; |
+| Test.kt:38:16:41:3 | { ... } | Test.kt:38:9:38:9 | x |

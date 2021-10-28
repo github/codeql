@@ -92,7 +92,9 @@
 | Test.kt:39:4:39:4 | ...=... | AssignExpr | Test.kt:40:4:40:6 | <Expr>; | ExprStmt |
 | Test.kt:39:4:39:4 | <Expr>; | ExprStmt | Test.kt:39:8:39:9 | 10 | LongLiteral |
 | Test.kt:39:8:39:9 | 10 | LongLiteral | Test.kt:39:4:39:4 | ...=... | AssignExpr |
-| Test.kt:40:4:40:6 | <Expr>; | ExprStmt | file://:0:0:0:0 | <none> | <none> |
+| Test.kt:40:4:40:6 | (...)... | CastExpr | Test.kt:38:9:38:9 | x | VarAccess |
+| Test.kt:40:4:40:6 | <Expr>; | ExprStmt | Test.kt:40:4:40:6 | (...)... | CastExpr |
+| Test.kt:40:4:40:6 | void | TypeAccess | file://:0:0:0:0 | <none> | <none> |
 | Test.kt:43:3:43:3 | ...=... | AssignExpr | Test.kt:73:3:73:3 | <Expr>; | ExprStmt |
 | Test.kt:43:3:43:3 | <Expr>; | ExprStmt | Test.kt:43:7:43:8 | 30 | IntegerLiteral |
 | Test.kt:43:7:43:8 | 30 | IntegerLiteral | Test.kt:43:3:43:3 | ...=... | AssignExpr |
