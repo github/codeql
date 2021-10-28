@@ -930,9 +930,12 @@ private module ControlFlowGraphImpl {
     or
     exists(WhenBranch whenbranch | whenbranch = n |
       // If the condition completes with anything other than true
-      // (e.g. false or an exception), then the branch is done
+      // (or "normal", which we will also see if we don't know how
+      // to make specific true/false edges for the condition)
+      // (e.g. false or an exception), then the branch is done.
       last(whenbranch.getCondition(), last, completion) and
-      completion != BooleanCompletion(true, _)
+      not completion = BooleanCompletion(true, _) and
+      not completion = NormalCompletion()
       or
       // Otherwise we wrap the completion up in a YieldCompletion
       // so that the `when` expression can tell that we have finished,
