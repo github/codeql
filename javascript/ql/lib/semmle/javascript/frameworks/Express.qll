@@ -613,10 +613,9 @@ module Express {
 
     override predicate isUserControlledObject() {
       kind = "body" and
-      exists(ExpressLibraries::BodyParser bodyParser, RouteHandlerExpr expr |
-        expr.getBody() = request.getRouteHandler() and
-        bodyParser.producesUserControlledObjects() and
-        bodyParser.flowsToExpr(expr.getAMatchingAncestor())
+      exists(ExpressLibraries::BodyParser bodyParser |
+        Routing::getNode(request.getRouteHandler()).isGuardedBy(bodyParser) and
+        bodyParser.producesUserControlledObjects()
       )
       or
       // If we can't find the middlewares for the route handler,

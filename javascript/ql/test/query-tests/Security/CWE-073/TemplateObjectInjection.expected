@@ -1,4 +1,7 @@
 nodes
+| routes.js:2:23:2:30 | req.body |
+| routes.js:2:23:2:30 | req.body |
+| routes.js:2:23:2:30 | req.body |
 | tst2.js:6:9:6:46 | bodyParameter |
 | tst2.js:6:25:6:32 | req.body |
 | tst2.js:6:25:6:32 | req.body |
@@ -55,6 +58,7 @@ nodes
 | tst.js:29:28:29:42 | JSON.parse(str) |
 | tst.js:29:39:29:41 | str |
 edges
+| routes.js:2:23:2:30 | req.body | routes.js:2:23:2:30 | req.body |
 | tst2.js:6:9:6:46 | bodyParameter | tst2.js:7:28:7:40 | bodyParameter |
 | tst2.js:6:9:6:46 | bodyParameter | tst2.js:7:28:7:40 | bodyParameter |
 | tst2.js:6:25:6:32 | req.body | tst2.js:6:25:6:46 | req.bod ... rameter |
@@ -104,6 +108,7 @@ edges
 | tst.js:29:39:29:41 | str | tst.js:29:28:29:42 | JSON.parse(str) |
 | tst.js:29:39:29:41 | str | tst.js:29:28:29:42 | JSON.parse(str) |
 #select
+| routes.js:2:23:2:30 | req.body | routes.js:2:23:2:30 | req.body | routes.js:2:23:2:30 | req.body | Template object injection due to $@. | routes.js:2:23:2:30 | req.body | user-provided value |
 | tst2.js:7:28:7:40 | bodyParameter | tst2.js:6:25:6:32 | req.body | tst2.js:7:28:7:40 | bodyParameter | Template object injection due to $@. | tst2.js:6:25:6:32 | req.body | user-provided value |
 | tst2.js:27:28:27:40 | bodyParameter | tst2.js:26:25:26:32 | req.body | tst2.js:27:28:27:40 | bodyParameter | Template object injection due to $@. | tst2.js:26:25:26:32 | req.body | user-provided value |
 | tst2.js:35:28:35:40 | bodyParameter | tst2.js:34:25:34:32 | req.body | tst2.js:35:28:35:40 | bodyParameter | Template object injection due to $@. | tst2.js:34:25:34:32 | req.body | user-provided value |
