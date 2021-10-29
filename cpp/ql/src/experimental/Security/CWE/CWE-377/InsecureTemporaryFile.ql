@@ -39,6 +39,7 @@ predicate numberArgumentWrite(Function f, int apos) {
 
 from FunctionCall fc, string msg
 where
+  // search for functions for generating a name, without a guarantee of the absence of a file during the period of work with it.
   (
     fc.getTarget().hasGlobalOrStdName("tmpnam") or
     fc.getTarget().hasGlobalOrStdName("tmpnam_s") or
@@ -53,6 +54,7 @@ where
   msg =
     "Finding the name of a file that does not exist does not mean that it will not be exist at the next operation."
   or
+  // finding places to work with a file without setting permissions, but with predictable names.
   (
     fc.getTarget().hasGlobalOrStdName("fopen") or
     fc.getTarget().hasGlobalOrStdName("open")
