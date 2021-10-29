@@ -171,5 +171,46 @@ private module RestFramework {
 
     /** Gets a reference to an instance of `rest_framework.request.Request`. */
     DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
+
+    /**
+     * Taint propagation for `rest_framework.request.Request`.
+     */
+    private class InstanceTaintSteps extends InstanceTaintStepsHelper {
+      InstanceTaintSteps() { this = "rest_framework.request.Request" }
+
+      override DataFlow::Node getInstance() { result = instance() }
+
+      override string getAttributeName() {
+        result in ["data", "query_params", "user", "auth", "content_type", "stream"]
+      }
+
+      override string getMethodName() { none() }
+
+      override string getAsyncMethodName() { none() }
+    }
+
+    /** An attribute read that is a `MultiValueDict` instance. */
+    private class MultiValueDictInstances extends Django::MultiValueDict::InstanceSource {
+      MultiValueDictInstances() {
+        this.(DataFlow::AttrRead).getObject() = instance() and
+        this.(DataFlow::AttrRead).getAttributeName() = "query_params"
+      }
+    }
+
+    /** An attribute read that is a `User` instance. */
+    private class UserInstances extends Django::User::InstanceSource {
+      UserInstances() {
+        this.(DataFlow::AttrRead).getObject() = instance() and
+        this.(DataFlow::AttrRead).getAttributeName() = "user"
+      }
+    }
+
+    /** An attribute read that is a file-like instance. */
+    private class FileLikeInstances extends Stdlib::FileLikeObject::InstanceSource {
+      FileLikeInstances() {
+        this.(DataFlow::AttrRead).getObject() = instance() and
+        this.(DataFlow::AttrRead).getAttributeName() = "stream"
+      }
+    }
   }
 }

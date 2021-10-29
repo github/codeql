@@ -25,29 +25,29 @@ def test_taint(request: Request, routed_param): # $ requestHandler routedParamet
 
     # special new attributes added, see https://www.django-rest-framework.org/api-guide/requests/
     ensure_tainted(
-        request.data, # $ MISSING: tainted
-        request.data["key"], # $ MISSING: tainted
+        request.data, # $ tainted
+        request.data["key"], # $ tainted
 
         # alias for .GET
-        request.query_params, # $ MISSING: tainted
-        request.query_params["key"], # $ MISSING: tainted
-        request.query_params.get("key"), # $ MISSING: tainted
-        request.query_params.getlist("key"), # $ MISSING: tainted
-        request.query_params.getlist("key")[0], # $ MISSING: tainted
-        request.query_params.pop("key"), # $ MISSING: tainted
-        request.query_params.pop("key")[0], # $ MISSING: tainted
+        request.query_params, # $ tainted
+        request.query_params["key"], # $ tainted
+        request.query_params.get("key"), # $ tainted
+        request.query_params.getlist("key"), # $ tainted
+        request.query_params.getlist("key")[0], # $ tainted
+        request.query_params.pop("key"), # $ tainted
+        request.query_params.pop("key")[0], # $ tainted
 
         # see more detailed tests of `request.user` below
-        request.user, # $ MISSING: tainted
+        request.user, # $ tainted
 
-        request.auth, # $ MISSING: tainted
+        request.auth, # $ tainted
 
         # seems much more likely attack vector than .method, so included
         request.content_type, # $ tainted
 
         # file-like
-        request.stream, # $ MISSING: tainted
-        request.stream.read(), # $ MISSING: tainted
+        request.stream, # $ tainted
+        request.stream.read(), # $ tainted
     )
 
     ensure_not_tainted(
@@ -74,10 +74,10 @@ def test_taint(request: Request, routed_param): # $ requestHandler routedParamet
     # username/email is user-controlled, but that password isn't (since it's a hash).
     # see https://docs.djangoproject.com/en/3.2/ref/contrib/auth/#fields
     ensure_tainted(
-        request.user.username, # $ MISSING: tainted
-        request.user.first_name, # $ MISSING: tainted
-        request.user.last_name, # $ MISSING: tainted
-        request.user.email, # $ MISSING: tainted
+        request.user.username, # $ tainted
+        request.user.first_name, # $ tainted
+        request.user.last_name, # $ tainted
+        request.user.email, # $ tainted
     )
     ensure_not_tainted(request.user.password)
 
@@ -99,7 +99,7 @@ class MyClass(APIView):
         # request taint is the same as in function_based_view above
         ensure_tainted(
             request, # $ tainted
-            request.data # $ MISSING: tainted
+            request.data # $ tainted
         )
 
         # same as for standard Django view

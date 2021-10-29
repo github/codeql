@@ -370,6 +370,52 @@ module Django {
   }
 
   /**
+   * Provides models for the `django.contrib.auth.models.User` class
+   *
+   * See https://docs.djangoproject.com/en/3.2/ref/contrib/auth/#user-model.
+   */
+  module User {
+    /**
+     * A source of instances of `django.contrib.auth.models.User`, extend this class to model new instances.
+     *
+     * This can include instantiations of the class, return values from function
+     * calls, or a special parameter that will be set when functions are called by an external
+     * library.
+     *
+     * Use the predicate `User::instance()` to get references to instances of `django.contrib.auth.models.User`.
+     */
+    abstract class InstanceSource extends DataFlow::LocalSourceNode { }
+
+    /** Gets a reference to an instance of `django.contrib.auth.models.User`. */
+    private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
+      t.start() and
+      result instanceof InstanceSource
+      or
+      exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+    }
+
+    /** Gets a reference to an instance of `django.contrib.auth.models.User`. */
+    DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
+
+    /**
+     * Taint propagation for `django.contrib.auth.models.User`.
+     */
+    private class InstanceTaintSteps extends InstanceTaintStepsHelper {
+      InstanceTaintSteps() { this = "django.contrib.auth.models.User" }
+
+      override DataFlow::Node getInstance() { result = instance() }
+
+      override string getAttributeName() {
+        result in ["username", "first_name", "last_name", "email"]
+      }
+
+      override string getMethodName() { none() }
+
+      override string getAsyncMethodName() { none() }
+    }
+  }
+
+  /**
    * Provides models for the `django.core.files.uploadedfile.UploadedFile` class
    *
    * See https://docs.djangoproject.com/en/3.0/ref/files/uploads/#django.core.files.uploadedfile.UploadedFile.
