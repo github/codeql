@@ -50,6 +50,7 @@ where
   fc.getTarget().hasGlobalOrStdName("chroot") and
   not inExistsChdir(fc) and
   not outExistsChdir(fc) and
+  // in this section I want to exclude calls to functions containing chroot that have a direct path to chdir, or to a function containing chdir
   exists(FunctionCall fctmp |
     fc.getEnclosingStmt().getParentStmt*() = fctmp.getTarget().getEntryPoint().getChildStmt*() and
     not inExistsChdir(fctmp) and
