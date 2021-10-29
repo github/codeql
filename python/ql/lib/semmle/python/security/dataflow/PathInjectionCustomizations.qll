@@ -7,6 +7,7 @@
 private import python
 private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.Concepts
+private import semmle.python.ApiGraphs
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.BarrierGuards
 
@@ -63,4 +64,18 @@ module PathInjection {
    * A comparison with a constant string, considered as a sanitizer-guard.
    */
   class StringConstCompareAsSanitizerGuard extends SanitizerGuard, StringConstCompare { }
+
+  /**
+   * A safe access check, considered as a sanitizer-guard.
+   */
+  private class SafeAccessCheckAsSanitizerGuard extends SanitizerGuard, Path::SafeAccessCheck { }
+
+  /**
+   * A call to `os.path.abspath`, considered as sanitizer.
+   */
+  private class OsPathAbsoluteCallAsSanitizer extends Sanitizer {
+    OsPathAbsoluteCallAsSanitizer() {
+      this = API::moduleImport("os").getMember("path").getMember("abspath").getACall().getArg(_)
+    }
+  }
 }
