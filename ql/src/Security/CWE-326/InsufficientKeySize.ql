@@ -27,6 +27,25 @@ class RsaKeyTrackingConfiguration extends DataFlow::Configuration {
       c.getTarget().hasQualifiedName("crypto/rsa", "GenerateKey")
     )
   }
+
+  override predicate isBarrierGuard(DataFlow::BarrierGuard guard) {
+    guard instanceof ComparisonBarrierGuard
+  }
+}
+
+/**
+ * A comparison which guarantees that an expression is at least 2048,
+ * considered as a barrier guard for key sizes.
+ */
+class ComparisonBarrierGuard extends DataFlow::BarrierGuard instanceof DataFlow::RelationalComparisonNode {
+  override predicate checks(Expr e, boolean branch) {
+    exists(DataFlow::Node lesser, DataFlow::Node greater, int bias |
+      super.leq(branch, lesser, greater, bias)
+    |
+      globalValueNumber(DataFlow::exprNode(e)) = globalValueNumber(greater) and
+      lesser.getIntValue() - bias >= 2048
+    )
+  }
 }
 
 from RsaKeyTrackingConfiguration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
