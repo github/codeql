@@ -11,28 +11,10 @@
  */
 
 import java
+import semmle.code.java.security.LogInjectionQuery
 import DataFlow::PathGraph
-import experimental.semmle.code.java.Logging
-import semmle.code.java.dataflow.FlowSources
-
-/**
- * A taint-tracking configuration for tracking untrusted user input used in log entries.
- */
-private class LogInjectionConfiguration extends TaintTracking::Configuration {
-  LogInjectionConfiguration() { this = "Log Injection" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
-
-  override predicate isSink(DataFlow::Node sink) {
-    sink.asExpr() = any(LoggingCall c).getALogArgument()
-  }
-
-  override predicate isSanitizer(DataFlow::Node node) {
-    node.getType() instanceof BoxedType or node.getType() instanceof PrimitiveType
-  }
-}
 
 from LogInjectionConfiguration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where cfg.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "$@ flows to log entry.", source.getNode(),
-  "User-provided value"
+select sink.getNode(), source, sink, "This $@ flows to a log entry.", source.getNode(),
+  "user-provided value"
