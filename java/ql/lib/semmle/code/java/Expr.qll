@@ -304,11 +304,7 @@ class CompileTimeConstantExpr extends Expr {
   int getIntValue() {
     exists(IntegralType t | this.getType() = t | t.getName().toLowerCase() != "long") and
     (
-      exists(string lit | lit = this.(Literal).getValue() |
-        // Don't parse `char` literal as int, instead get its code point value (see below)
-        not this instanceof CharacterLiteral and
-        result = lit.toInt()
-      )
+      result = this.(IntegerLiteral).getIntValue()
       or
       result = this.(CharacterLiteral).getCodePointValue()
       or
