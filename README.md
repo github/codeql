@@ -66,8 +66,8 @@ intermediate and advanced material as time permits.
 Currently all projects require installing VS Code and the CodeQL plugin.  They can
 be run on linux, macOS, and Windows.  Some additionally require the CodeQL command
 line tools.  See the individual project's instructions, or 
-[./common/cli-for-codeql.org](here for the cli) and 
-[./common/vscode-for-codeql.org](here for VS Code).
+[here for the cli](./common/cli-for-codeql.org) and 
+[here for VS Code](./common/vscode-for-codeql.org)
 
 # Contributing
 New tutorials should use the `language/project/content` structure to allow for
