@@ -304,6 +304,14 @@ private class ImplicitExprPostUpdate extends ImplicitPostUpdateNode, TImplicitEx
 }
 
 module Private {
+  /** Gets the callable in which this node occurs. */
+  DataFlowCallable nodeGetEnclosingCallable(Node n) { result = n.getEnclosingCallable() }
+
+  /** Holds if `p` is a `ParameterNode` of `c` with position `pos`. */
+  predicate isParameterNode(ParameterNode p, DataFlowCallable c, int pos) {
+    p.isParameterOf(c, pos)
+  }
+
   /**
    * A data flow node that occurs as the argument of a call and is passed as-is
    * to the callable. Arguments that are wrapped in an implicit varargs array

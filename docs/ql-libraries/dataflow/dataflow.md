@@ -150,14 +150,19 @@ call-graph should be defined as a predicate:
 ```ql
 DataFlowCallable viableCallable(DataFlowCall c)
 ```
+Furthermore, each `Node` must be associated with exactly one callable and this
+relation should be defined as:
+```ql
+DataFlowCallable nodeGetEnclosingCallable(Node n)
+```
 
 In order to connect data-flow across calls, the 4 `Node` subclasses
 `ArgumentNode`, `ParameterNode`, `ReturnNode`, and `OutNode` are used.
 Flow into callables from arguments to parameters are matched up using an
-integer position, so these two classes must define:
+integer position, so these two predicates must be defined:
 ```ql
 ArgumentNode::argumentOf(DataFlowCall call, int pos)
-ParameterNode::isParameterOf(DataFlowCallable c, int pos)
+predicate isParameterNode(ParameterNode p, DataFlowCallable c, int pos)
 ```
 It is typical to use `pos = -1` for an implicit `this`-parameter.
 
