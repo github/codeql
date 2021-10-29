@@ -1,5 +1,5 @@
 use serde::Deserialize;
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, HashMap, HashSet};
 use std::path::Path;
 
 use std::collections::BTreeSet as Set;
@@ -22,14 +22,23 @@ pub enum EntryKind {
     Token { kind_id: usize },
 }
 
-#[derive(Debug, Ord, PartialOrd, Eq, PartialEq)]
+#[derive(Debug, Ord, PartialOrd, Eq, PartialEq, Hash, Clone)]
 pub struct TypeName {
     pub kind: String,
     pub named: bool,
 }
 
-#[derive(Debug)]
-pub enum FieldTypeInfo {
+#[derive(Debug, Eq, PartialEq)]
+pub struct FieldTypeInfo {
+    pub kind: FieldTypeKind,
+
+    /// The set of types this field is allowed to take, after recursively
+    /// expanding subtypes.
+    pub valid_types: HashSet<TypeName>,
+}
+
+#[derive(Debug, Eq, PartialEq)]
+pub enum FieldTypeKind {
     /// The field has a single type.
     Single(TypeName),
 
@@ -103,7 +112,49 @@ fn convert_types(node_types: &[NodeType]) -> Set<TypeName> {
     node_types.iter().map(convert_type).collect()
 }
 
+fn get_matching_types(
+    node: &NodeInfo,
+    type_map: &HashMap<NodeType, &NodeInfo>,
+) -> HashSet<TypeName> {
+    let mut result = HashSet::new();
+    let node_type_name = TypeName {
+        kind: node.kind.clone(),
+        named: node.named,
+    };
+    result.insert(node_type_name);
+    if let Some(subtypes) = &node.subtypes {
+        for subtype in subtypes {
+            let subtype = type_map.get(subtype).unwrap();
+            result.extend(get_matching_types(subtype, type_map));
+        }
+    }
+    result
+}
+
 pub fn convert_nodes(prefix: &str, nodes: &[NodeInfo]) -> NodeTypeMap {
+    // Since the nodes contain only weak references to their subtypes, build a
+    // map so we can resolve them.
+    let mut type_map: HashMap<NodeType, &NodeInfo> = HashMap::new();
+    for node in nodes {
+        let node_type = NodeType {
+            kind: node.kind.clone(),
+            named: node.named,
+        };
+        type_map.insert(node_type, node);
+    }
+
+    // Now recursively expand subtypes so that for each tree-sitter node type,
+    // we have a set of all matching types.
+    let mut transitive_type_map = HashMap::new();
+    for node in nodes {
+        let type_name = TypeName {
+            kind: node.kind.clone(),
+            named: node.named,
+        };
+        let matching_types = get_matching_types(node, &type_map);
+        transitive_type_map.insert(type_name, matching_types);
+    }
+
     let mut entries = NodeTypeMap::new();
     let mut token_kinds = Set::new();
 
@@ -166,6 +217,7 @@ pub fn convert_nodes(prefix: &str, nodes: &[NodeInfo]) -> NodeTypeMap {
                         field_info,
                         &mut fields,
                         &token_kinds,
+                        &transitive_type_map,
                     );
                 }
             }
@@ -178,6 +230,7 @@ pub fn convert_nodes(prefix: &str, nodes: &[NodeInfo]) -> NodeTypeMap {
                     children,
                     &mut fields,
                     &token_kinds,
+                    &transitive_type_map,
                 );
             }
             entries.insert(
@@ -222,6 +275,7 @@ fn add_field(
     field_info: &FieldInfo,
     fields: &mut Vec<Field>,
     token_kinds: &Set<TypeName>,
+    transitive_type_map: &HashMap<TypeName, HashSet<TypeName>>,
 ) {
     let parent_flattened_name = node_type_name(&parent_type_name.kind, parent_type_name.named);
     let column_name = escape_name(&name_for_field_or_child(&field_name));
@@ -245,6 +299,18 @@ fn add_field(
         }
     };
     let converted_types = convert_types(&field_info.types);
+
+    // Use the transitive type map we built earlier to create the set of all
+    // possible types this field could take.
+    let mut valid_types: HashSet<TypeName> = HashSet::new();
+    for type_name in &converted_types {
+        if let Some(types) = transitive_type_map.get(type_name) {
+            for t in types {
+                valid_types.insert(t.clone());
+            }
+        }
+    }
+
     let type_info = if field_info
         .types
         .iter()
@@ -259,20 +325,29 @@ fn add_field(
                 escape_name(&format!("{}_{}_{}", &prefix, parent_flattened_name, t.kind));
             field_token_ints.insert(t.kind.to_owned(), (counter, dbscheme_variant_name));
         }
-        FieldTypeInfo::ReservedWordInt(field_token_ints)
+        FieldTypeInfo {
+            kind: FieldTypeKind::ReservedWordInt(field_token_ints),
+            valid_types,
+        }
     } else if field_info.types.len() == 1 {
-        FieldTypeInfo::Single(converted_types.into_iter().next().unwrap())
+        FieldTypeInfo {
+            kind: FieldTypeKind::Single(converted_types.into_iter().next().unwrap()),
+            valid_types,
+        }
     } else {
         // The dbscheme type for this field will be a union. In QL, it'll just be AstNode.
-        FieldTypeInfo::Multiple {
-            types: converted_types,
-            dbscheme_union: format!(
-                "{}_{}_{}_type",
-                &prefix,
-                &parent_flattened_name,
-                &name_for_field_or_child(&field_name)
-            ),
-            ql_class: "AstNode".to_owned(),
+        FieldTypeInfo {
+            kind: FieldTypeKind::Multiple {
+                types: converted_types,
+                dbscheme_union: format!(
+                    "{}_{}_{}_type",
+                    &prefix,
+                    &parent_flattened_name,
+                    &name_for_field_or_child(&field_name)
+                ),
+                ql_class: "AstNode".to_owned(),
+            },
+            valid_types,
         }
     };
     let getter_name = format!(
@@ -303,7 +378,7 @@ pub struct NodeInfo {
     pub subtypes: Option<Vec<NodeType>>,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Hash, Eq, PartialEq)]
 pub struct NodeType {
     #[serde(rename = "type")]
     pub kind: String,

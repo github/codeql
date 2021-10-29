@@ -345,16 +345,16 @@ fn create_field_getters<'a>(
     field: &'a node_types::Field,
     nodes: &'a node_types::NodeTypeMap,
 ) -> (ql::Predicate<'a>, Option<ql::Expression<'a>>) {
-    let return_type = match &field.type_info {
-        node_types::FieldTypeInfo::Single(t) => {
+    let return_type = match &field.type_info.kind {
+        node_types::FieldTypeKind::Single(t) => {
             Some(ql::Type::Normal(&nodes.get(t).unwrap().ql_class_name))
         }
-        node_types::FieldTypeInfo::Multiple {
+        node_types::FieldTypeKind::Multiple {
             types: _,
             dbscheme_union: _,
             ql_class,
         } => Some(ql::Type::Normal(ql_class)),
-        node_types::FieldTypeInfo::ReservedWordInt(_) => Some(ql::Type::String),
+        node_types::FieldTypeKind::ReservedWordInt(_) => Some(ql::Type::String),
     };
     let formal_parameters = match &field.storage {
         node_types::Storage::Column { .. } => vec![],
@@ -372,10 +372,10 @@ fn create_field_getters<'a>(
 
     // For the expression to get a value, what variable name should the result
     // be bound to?
-    let get_value_result_var_name = match &field.type_info {
-        node_types::FieldTypeInfo::ReservedWordInt(_) => "value",
-        node_types::FieldTypeInfo::Single(_) => "result",
-        node_types::FieldTypeInfo::Multiple { .. } => "result",
+    let get_value_result_var_name = match &field.type_info.kind {
+        node_types::FieldTypeKind::ReservedWordInt(_) => "value",
+        node_types::FieldTypeKind::Single(_) => "result",
+        node_types::FieldTypeKind::Multiple { .. } => "result",
     };
 
     // Two expressions for getting the value. One that's suitable use in the
@@ -418,8 +418,8 @@ fn create_field_getters<'a>(
             ),
         ),
     };
-    let (body, optional_expr) = match &field.type_info {
-        node_types::FieldTypeInfo::ReservedWordInt(int_mapping) => {
+    let (body, optional_expr) = match &field.type_info.kind {
+        node_types::FieldTypeKind::ReservedWordInt(int_mapping) => {
             // Create an expression that binds the corresponding string to `result` for each `value`, e.g.:
             //   result = "foo" and value = 0 or
             //   result = "bar" and value = 1 or
@@ -454,7 +454,7 @@ fn create_field_getters<'a>(
                 None,
             )
         }
-        node_types::FieldTypeInfo::Single(_) | node_types::FieldTypeInfo::Multiple { .. } => {
+        node_types::FieldTypeKind::Single(_) | node_types::FieldTypeKind::Multiple { .. } => {
             (get_value, Some(get_value_any_index))
         }
     };

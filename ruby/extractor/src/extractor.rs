@@ -1,7 +1,6 @@
 use node_types::{EntryKind, Field, NodeTypeMap, Storage, TypeName};
 use std::borrow::Cow;
 use std::collections::BTreeMap as Map;
-use std::collections::BTreeSet as Set;
 use std::fmt;
 use std::io::Write;
 use std::path::Path;
@@ -328,12 +327,13 @@ impl Visitor<'_> {
         );
     }
 
-    fn record_parse_error_for_node(
-        &mut self,
-        error_message: String,
-        full_error_message: String,
-        node: Node,
-    ) {
+    fn record_parse_error_for_node(&mut self, error_message: String, node: &Node) {
+        let full_error_message = format!(
+            "{}:{}: {}",
+            &self.path,
+            node.start_position().row + 1,
+            &error_message
+        );
         let (start_line, start_column, end_line, end_column) = location_for(self.source, node);
         let loc = self.trap_writer.location(
             self.file_label,
@@ -345,20 +345,14 @@ impl Visitor<'_> {
         self.record_parse_error(error_message, full_error_message, loc);
     }
 
-    fn enter_node(&mut self, node: Node) -> bool {
+    fn enter_node(&mut self, node: &Node) -> bool {
         if node.is_error() || node.is_missing() {
             let error_message = if node.is_missing() {
                 format!("parse error: expecting '{}'", node.kind())
             } else {
                 "parse error".to_string()
             };
-            let full_error_message = format!(
-                "{}:{}: {}",
-                &self.path,
-                node.start_position().row + 1,
-                error_message
-            );
-            self.record_parse_error_for_node(error_message, full_error_message, node);
+            self.record_parse_error_for_node(error_message, node);
             return false;
         }
 
@@ -368,7 +362,7 @@ impl Visitor<'_> {
         true
     }
 
-    fn leave_node(&mut self, field_name: Option<&'static str>, node: Node) {
+    fn leave_node(&mut self, field_name: Option<&'static str>, node: &Node) {
         if node.is_error() || node.is_missing() {
             return;
         }
@@ -482,46 +476,47 @@ impl Visitor<'_> {
             if let Some((field, values)) = map.get_mut(&child_node.field_name.map(|x| x.to_owned()))
             {
                 //TODO: handle error and missing nodes
-                if self.type_matches(&child_node.type_name, &field.type_info) {
-                    if let node_types::FieldTypeInfo::ReservedWordInt(int_mapping) =
-                        &field.type_info
+                if field.type_info.valid_types.contains(&child_node.type_name) {
+                    if let node_types::FieldTypeKind::ReservedWordInt(int_mapping) =
+                        &field.type_info.kind
                     {
-                        // We can safely unwrap because type_matches checks the key is in the map.
-                        let (int_value, _) = int_mapping.get(&child_node.type_name.kind).unwrap();
-                        values.push(Arg::Int(*int_value));
+                        match int_mapping.get(&child_node.type_name.kind) {
+                            Some((int_value, _)) => values.push(Arg::Int(*int_value)),
+                            None => self.record_parse_error_for_node(
+                                format!(
+                                    "could not map field {}::{} with type {:?} to an integer value",
+                                    node.kind(),
+                                    child_node.field_name.unwrap_or("child"),
+                                    child_node.type_name
+                                ),
+                                node,
+                            ),
+                        };
                     } else {
                         values.push(Arg::Label(child_node.label));
                     }
                 } else if field.name.is_some() {
-                    let error_message = format!(
-                        "type mismatch for field {}::{} with type {:?} != {:?}",
-                        node.kind(),
-                        child_node.field_name.unwrap_or("child"),
-                        child_node.type_name,
-                        field.type_info
+                    self.record_parse_error_for_node(
+                        format!(
+                            "type mismatch for field {}::{} with type {:?} != {:?}",
+                            node.kind(),
+                            child_node.field_name.unwrap_or("child"),
+                            child_node.type_name,
+                            field.type_info
+                        ),
+                        node,
                     );
-                    let full_error_message = format!(
-                        "{}:{}: {}",
-                        &self.path,
-                        node.start_position().row + 1,
-                        error_message
-                    );
-                    self.record_parse_error_for_node(error_message, full_error_message, *node);
                 }
             } else if child_node.field_name.is_some() || child_node.type_name.named {
-                let error_message = format!(
-                    "value for unknown field: {}::{} and type {:?}",
-                    node.kind(),
-                    &child_node.field_name.unwrap_or("child"),
-                    &child_node.type_name
+                self.record_parse_error_for_node(
+                    format!(
+                        "value for unknown field: {}::{} and type {:?}",
+                        node.kind(),
+                        &child_node.field_name.unwrap_or("child"),
+                        &child_node.type_name
+                    ),
+                    node,
                 );
-                let full_error_message = format!(
-                    "{}:{}: {}",
-                    &self.path,
-                    node.start_position().row + 1,
-                    error_message
-                );
-                self.record_parse_error_for_node(error_message, full_error_message, *node);
             }
         }
         let mut args = Vec::new();
@@ -534,23 +529,19 @@ impl Visitor<'_> {
                         args.push(child_values.first().unwrap().clone());
                     } else {
                         is_valid = false;
-                        let error_message = format!(
-                            "{} for field: {}::{}",
-                            if child_values.is_empty() {
-                                "missing value"
-                            } else {
-                                "too many values"
-                            },
-                            node.kind(),
-                            column_name
+                        self.record_parse_error_for_node(
+                            format!(
+                                "{} for field: {}::{}",
+                                if child_values.is_empty() {
+                                    "missing value"
+                                } else {
+                                    "too many values"
+                                },
+                                node.kind(),
+                                column_name
+                            ),
+                            node,
                         );
-                        let full_error_message = format!(
-                            "{}:{}: {}",
-                            &self.path,
-                            node.start_position().row + 1,
-                            error_message
-                        );
-                        self.record_parse_error_for_node(error_message, full_error_message, *node);
                     }
                 }
                 Storage::Table {
@@ -585,47 +576,10 @@ impl Visitor<'_> {
             None
         }
     }
-
-    fn type_matches(&self, tp: &TypeName, type_info: &node_types::FieldTypeInfo) -> bool {
-        match type_info {
-            node_types::FieldTypeInfo::Single(single_type) => {
-                if tp == single_type {
-                    return true;
-                }
-                if let EntryKind::Union { members } = &self.schema.get(single_type).unwrap().kind {
-                    if self.type_matches_set(tp, members) {
-                        return true;
-                    }
-                }
-            }
-            node_types::FieldTypeInfo::Multiple { types, .. } => {
-                return self.type_matches_set(tp, types);
-            }
-
-            node_types::FieldTypeInfo::ReservedWordInt(int_mapping) => {
-                return !tp.named && int_mapping.contains_key(&tp.kind)
-            }
-        }
-        false
-    }
-
-    fn type_matches_set(&self, tp: &TypeName, types: &Set<TypeName>) -> bool {
-        if types.contains(tp) {
-            return true;
-        }
-        for other in types.iter() {
-            if let EntryKind::Union { members } = &self.schema.get(other).unwrap().kind {
-                if self.type_matches_set(tp, members) {
-                    return true;
-                }
-            }
-        }
-        false
-    }
 }
 
 // Emit a slice of a source file as an Arg.
-fn sliced_source_arg(source: &[u8], n: Node) -> Arg {
+fn sliced_source_arg(source: &[u8], n: &Node) -> Arg {
     let range = n.byte_range();
     Arg::String(String::from_utf8_lossy(&source[range.start..range.end]).into_owned())
 }
@@ -633,7 +587,7 @@ fn sliced_source_arg(source: &[u8], n: Node) -> Arg {
 // Emit a pair of `TrapEntry`s for the provided node, appropriately calibrated.
 // The first is the location and label definition, and the second is the
 // 'Located' entry.
-fn location_for(source: &[u8], n: Node) -> (usize, usize, usize, usize) {
+fn location_for(source: &[u8], n: &Node) -> (usize, usize, usize, usize) {
     // Tree-sitter row, column values are 0-based while CodeQL starts
     // counting at 1. In addition Tree-sitter's row and column for the
     // end position are exclusive while CodeQL's end positions are inclusive.
@@ -680,16 +634,16 @@ fn location_for(source: &[u8], n: Node) -> (usize, usize, usize, usize) {
 
 fn traverse(tree: &Tree, visitor: &mut Visitor) {
     let cursor = &mut tree.walk();
-    visitor.enter_node(cursor.node());
+    visitor.enter_node(&cursor.node());
     let mut recurse = true;
     loop {
         if recurse && cursor.goto_first_child() {
-            recurse = visitor.enter_node(cursor.node());
+            recurse = visitor.enter_node(&cursor.node());
         } else {
-            visitor.leave_node(cursor.field_name(), cursor.node());
+            visitor.leave_node(cursor.field_name(), &cursor.node());
 
             if cursor.goto_next_sibling() {
-                recurse = visitor.enter_node(cursor.node());
+                recurse = visitor.enter_node(&cursor.node());
             } else if cursor.goto_parent() {
                 recurse = false;
             } else {

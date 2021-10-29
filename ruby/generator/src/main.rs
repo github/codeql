@@ -19,8 +19,8 @@ fn make_field_type<'a>(
     field: &'a node_types::Field,
     nodes: &'a node_types::NodeTypeMap,
 ) -> (ql::Type<'a>, Option<dbscheme::Entry<'a>>) {
-    match &field.type_info {
-        node_types::FieldTypeInfo::Multiple {
+    match &field.type_info.kind {
+        node_types::FieldTypeKind::Multiple {
             types,
             dbscheme_union,
             ql_class: _,
@@ -39,11 +39,11 @@ fn make_field_type<'a>(
                 })),
             )
         }
-        node_types::FieldTypeInfo::Single(t) => {
+        node_types::FieldTypeKind::Single(t) => {
             let dbscheme_name = &nodes.get(t).unwrap().dbscheme_name;
             (ql::Type::At(dbscheme_name), None)
         }
-        node_types::FieldTypeInfo::ReservedWordInt(int_mapping) => {
+        node_types::FieldTypeKind::ReservedWordInt(int_mapping) => {
             // The field will be an `int` in the db, and we add a case split to
             // create other db types for each integer value.
             let mut branches: Vec<(usize, &'a str)> = Vec::new();
