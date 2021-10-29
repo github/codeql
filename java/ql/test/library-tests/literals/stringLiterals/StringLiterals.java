@@ -24,6 +24,7 @@ public class StringLiterals {
 		"\uD800\uDC00", // surrogate pair
 		"\uDBFF\uDFFF", // U+10FFFF
 		// Unpaired surrogates
+		// CodeQL uses U+FFFD for them, see https://github.com/github/codeql/issues/6611
 		"\uD800",
 		"\uDC00",
 		"hello\uD800hello\uDC00world", // malformed surrogates

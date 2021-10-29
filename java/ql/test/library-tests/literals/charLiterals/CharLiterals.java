@@ -13,6 +13,7 @@ public class CharLiterals {
 		'\\',
 		'\'',
 		'\123', // octal escape sequence for 'S'
+		// CodeQL uses U+FFFD for unpaired surrogates, see https://github.com/github/codeql/issues/6611
 		'\uD800', // high surrogate
 		'\uDC00', // low surrogate
 		// Using Unicode escapes (which are handled during pre-processing)
