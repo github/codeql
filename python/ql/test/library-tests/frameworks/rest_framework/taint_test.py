@@ -119,8 +119,11 @@ urlpatterns = [
 # framework
 
 @api_view(["POST"])
-def function_based_no_route(request: Request, possible_routed_param):
-    ensure_tainted(request, possible_routed_param) # $ MISSING: tainted
+def function_based_no_route(request: Request, possible_routed_param): # $ requestHandler routedParameter=possible_routed_param
+    ensure_tainted(
+        request, # $ MISSING: tainted
+        possible_routed_param, # $ tainted
+    )
 
 
 class ClassBasedNoRoute(APIView):

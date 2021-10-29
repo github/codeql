@@ -1898,13 +1898,7 @@ module PrivateDjango {
    *
    * Most functions take a django HttpRequest as a parameter (but not all).
    */
-  private class DjangoRouteHandler extends Function {
-    DjangoRouteHandler() {
-      exists(DjangoRouteSetup route | route.getViewArg() = poorMansFunctionTracker(this))
-      or
-      any(DjangoViewClass vc).getARequestHandler() = this
-    }
-
+  class DjangoRouteHandler extends Function instanceof DjangoRouteHandler::Range {
     /**
      * Gets the index of the parameter where the first routed parameter can be passed --
      * that is, the one just after any possible `self` or HttpRequest parameters.
@@ -1922,6 +1916,18 @@ module PrivateDjango {
 
     /** Gets the request parameter. */
     Parameter getRequestParam() { result = this.getArg(this.getRequestParamIndex()) }
+  }
+
+  module DjangoRouteHandler {
+    abstract class Range extends Function { }
+
+    class StandardDjangoRouteHandlers extends Range {
+      StandardDjangoRouteHandlers() {
+        exists(DjangoRouteSetup route | route.getViewArg() = poorMansFunctionTracker(this))
+        or
+        any(DjangoViewClass vc).getARequestHandler() = this
+      }
+    }
   }
 
   /**
@@ -1945,7 +1951,7 @@ module PrivateDjango {
   }
 
   /** A data-flow node that sets up a route on a server, using the django framework. */
-  abstract private class DjangoRouteSetup extends HTTP::Server::RouteSetup::Range, DataFlow::CfgNode {
+  abstract class DjangoRouteSetup extends HTTP::Server::RouteSetup::Range, DataFlow::CfgNode {
     /** Gets the data-flow node that is used as the argument for the view handler. */
     abstract DataFlow::Node getViewArg();
 

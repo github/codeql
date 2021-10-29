@@ -28,6 +28,9 @@ private import semmle.python.frameworks.Stdlib
  * - https://pypi.org/project/djangorestframework/
  */
 private module RestFramework {
+  // ---------------------------------------------------------------------------
+  // rest_framework.views.APIView handling
+  // ---------------------------------------------------------------------------
   /**
    * An `API::Node` representing the `rest_framework.views.APIView` class or any subclass
    * that has explicitly been modeled in the CodeQL libraries.
@@ -64,5 +67,44 @@ private module RestFramework {
           "initialize_request", "finalize_response", "dispatch", "options"
         ]
     }
+  }
+
+  // ---------------------------------------------------------------------------
+  // rest_framework.decorators.api_view handling
+  // ---------------------------------------------------------------------------
+  /**
+   * A function that is a request handler since it is decorated with `rest_framework.decorators.api_view`
+   */
+  class RestFrameworkFunctionBasedView extends PrivateDjango::DjangoRouteHandler::Range {
+    RestFrameworkFunctionBasedView() {
+      this.getADecorator() =
+        API::moduleImport("rest_framework")
+            .getMember("decorators")
+            .getMember("api_view")
+            .getACall()
+            .asExpr()
+    }
+  }
+
+  /**
+   * Ensuring that all `RestFrameworkFunctionBasedView` are also marked as a
+   * `HTTP::Server::RequestHandler`. We only need this for the ones that doesn't have a
+   * known route setup.
+   */
+  class RestFrameworkFunctionBasedViewWithoutKnownRoute extends HTTP::Server::RequestHandler::Range,
+    PrivateDjango::DjangoRouteHandler instanceof RestFrameworkFunctionBasedView {
+    RestFrameworkFunctionBasedViewWithoutKnownRoute() {
+      not exists(PrivateDjango::DjangoRouteSetup setup | setup.getARequestHandler() = this)
+    }
+
+    override Parameter getARoutedParameter() {
+      // Since we don't know the URL pattern, we simply mark all parameters as a routed
+      // parameter. This should give us more RemoteFlowSources but could also lead to
+      // more FPs. If this turns out to be the wrong tradeoff, we can always change our mind.
+      result in [this.getArg(_), this.getArgByName(_)] and
+      not result = any(int i | i < this.getFirstPossibleRoutedParamIndex() | this.getArg(i))
+    }
+
+    override string getFramework() { result = "Django (rest_framework)" }
   }
 }
