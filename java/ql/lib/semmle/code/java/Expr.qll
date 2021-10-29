@@ -2230,3 +2230,19 @@ class ClassExpr extends Expr, @getclassexpr {
 
   override string getAPrimaryQlClass() { result = "ClassExpr" }
 }
+
+/**
+ * An statement expression.
+ *
+ * In some contexts, a Kotlin expression can contain a statement.
+ */
+class StmtExpr extends Expr, @stmtexpr {
+  /** Gets the statement of this statement expression. */
+  Stmt getStmt() { result.getParent() = this }
+
+  override string toString() { result = "<Stmt>" }
+
+  override string getHalsteadID() { result = "StmtExpr" }
+
+  override string getAPrimaryQlClass() { result = "StmtExpr" }
+}

@@ -414,6 +414,8 @@ private module ControlFlowGraphImpl {
   private Expr nonReturningExpr() {
     result = nonReturningMethodAccess()
     or
+    result.(StmtExpr).getStmt() = nonReturningStmt()
+    or
     exists(WhenExpr whenexpr | whenexpr = result |
       whenexpr.getBranch(_).isElseBranch() and
       forex(WhenBranch whenbranch | whenbranch = whenexpr.getBranch(_) |
@@ -895,6 +897,9 @@ private module ControlFlowGraphImpl {
     // the last node in an `ExprStmt` is the last node in the expression
     last(n.(ExprStmt).getExpr(), last, completion) and completion = NormalCompletion()
     or
+    // the last node in a `StmtExpr` is the last node in the statement
+    last(n.(StmtExpr).getStmt(), last, completion) and completion = NormalCompletion()
+    or
     // the last statement of a labeled statement is the last statement of its body...
     exists(LabeledStmt lbl, Completion bodyCompletion |
       lbl = n and last(lbl.getStmt(), last, bodyCompletion)
@@ -1208,6 +1213,8 @@ private module ControlFlowGraphImpl {
     )
     or
     result = first(n.(ExprStmt).getExpr()) and completion = NormalCompletion()
+    or
+    result = first(n.(StmtExpr).getStmt()) and completion = NormalCompletion()
     or
     result = first(n.(LabeledStmt).getStmt()) and completion = NormalCompletion()
     or

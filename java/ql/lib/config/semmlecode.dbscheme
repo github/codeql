@@ -535,7 +535,7 @@ stmts(
   int bodydecl: @callable ref
 );
 
-@stmtparent = @callable | @stmt | @switchexpr | @whenbranch;
+@stmtparent = @callable | @stmt | @switchexpr | @whenbranch | @stmtexpr;
 
 case @stmt.kind of
   0 = @block
@@ -669,6 +669,7 @@ case @expr.kind of
 | 76  = @getclassexpr
 | 77  = @safecastexpr
 | 78  = @notinstanceofexpr
+| 79  = @stmtexpr
 ;
 
 /** Holds if this `when` expression was written as an `if` expression. */
