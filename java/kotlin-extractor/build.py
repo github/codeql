@@ -23,7 +23,7 @@ def compile_to_dir(srcs, classpath, java_classpath, output):
     # Use javac to compile .java files, referencing the Kotlin class files:
     subprocess.run([javac,
                     '-d', output,
-                    '--release', '8',
+                    '-source', '8', '-target', '8',
                     '-classpath', "%s:%s:%s" % (output, classpath, java_classpath)] + [s for s in srcs if s.endswith(".java")], check=True)
 
 
