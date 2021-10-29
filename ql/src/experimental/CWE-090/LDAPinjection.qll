@@ -19,19 +19,23 @@ abstract class LdapSanitizer extends DataFlow::Node {
 
 }
 /*
- * The Sanitizer func from github.com/go-ldap/ldap
+ * The Sanitizer func from github.com/go-ldap/ldap or github.com/go-ldap/ldap/v3
  */
 private class GoLdapEscape extends LdapSanitizer {
     GoLdapEscape() { exists(Function f 
         |f.hasQualifiedName("github.com/go-ldap/ldap", "EscapeFilter")
+        or
+        f.hasQualifiedName("github.com/go-ldap/ldap/v3", "EscapeFilter")
         |this = f.getACall()) }
 }
 /*
- * The Sanitizer func from gopkg.in/ldap.v2
+ * The Sanitizer func from gopkg.in/ldap.v2 or gopkg.in/ldap.v3
  */
 private class LdapV2Escape extends LdapSanitizer {
     LdapV2Escape() { exists(Function f 
-        |f.hasQualifiedName("github.com/go-ldap/ldap", "EscapeFilter")
+        |f.hasQualifiedName("gopkg.in/ldap.v2", "EscapeFilter")
+        or 
+        f.hasQualifiedName("gopkg.in/ldap.v3", "EscapeFilter")
         |this = f.getACall()) }
 }
 
@@ -43,29 +47,32 @@ abstract class LdapSink extends DataFlow::Node {
 }
 
 /*
- * ldap sink from github.com/go-ldap/ldap NewSearchRequest
+ * ldap sink from github.com/go-ldap/ldap or github.com/go-ldap/ldap/v3 NewSearchRequest
  */
 private class GoLdapSink extends LdapSink{
     GoLdapSink(){exists(Function f 
-        | f.hasQualifiedName("github.com/go-ldap/ldap", "NewSearchRequest") 
+        | f.hasQualifiedName("github.com/go-ldap/ldap", "NewSearchRequest")
+        or 
+          f.hasQualifiedName("github.com/go-ldap/ldap/v3", "NewSearchRequest")
         | this = f.getACall().getArgument(6) 
         or 
         this = f.getACall().getArgument(7)
     )}
 }
 /*
- * ldap sink from gopkg.in/ldap.v2 NewSearchRequest
+ * ldap sink from gopkg.in/ldap.v2 or gopkg.in/ldap.v3 NewSearchRequest
  */
 private class LdapV2Sink extends LdapSink{
     LdapV2Sink(){exists(Function f 
         | f.hasQualifiedName("gopkg.in/ldap.v2", "NewSearchRequest") 
+        or 
+          f.hasQualifiedName("gopkg.in/ldap.v3", "NewSearchRequest")
         | this = f.getACall().getArgument(6) 
         or 
-        this = f.getACall().getArgument(7)
+          this = f.getACall().getArgument(7)
     )}
 }
-
-/**
+/*
  * A taint-tracking configuration for reasoning about when an UntrustedFlowSource
  * flows into a github.com/go-ldap/ldap newsearchrequest call.
  */
