@@ -720,6 +720,9 @@ class CharacterLiteral extends Literal, @characterliteral {
   /**
    * Gets a string which consists of the single character represented by
    * this literal.
+   *
+   * Unicode surrogate characters (U+D800 to U+DFFF) have the replacement character
+   * U+FFFD as result instead.
    */
   override string getValue() { result = super.getValue() }
 
