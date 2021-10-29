@@ -1379,7 +1379,7 @@ class X {
                 val exprParent = parent.expr(e, callable)
                 val v = e.value
                 when(v) {
-                    is Int -> {
+                    is Int, is Short, is Byte -> {
                         val id = tw.getFreshIdLabel<DbIntegerliteral>()
                         val type = useType(e.type)
                         val locId = tw.getLocation(e)
