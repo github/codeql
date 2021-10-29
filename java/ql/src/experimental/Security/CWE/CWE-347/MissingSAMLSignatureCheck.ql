@@ -9,6 +9,8 @@
  */
 
 import java
+import DOM
+import JavaXml
 import SAML
 import semmle.code.java.controlflow.Guards
 import semmle.code.java.dataflow.TaintTracking
@@ -21,6 +23,18 @@ class SamlAssertionConf extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node source) { source instanceof SamlAssertionSource }
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof SamlAssertionSink }
+
+  override predicate isAdditionalTaintStep(DataFlow::Node prev, DataFlow::Node succ) {
+    exists(MethodAccess ma |
+      ma.getMethod() instanceof GetElementValueMethod and // jaxbElement.getValue()
+      prev.asExpr() = ma.getQualifier() and
+      succ.asExpr() = ma
+      or
+      ma.getMethod() instanceof UnmarshalElementMethod and // unmarshaller.unmarshal(document, type)
+      prev.asExpr() = ma.getArgument(0) and
+      succ.asExpr() = ma
+    )
+  }
 }
 
 /** Configuration of validating signature in XML file. */

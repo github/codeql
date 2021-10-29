@@ -1,8 +1,5 @@
 edges
-| MissingSAMLSignatureCheckTest.java:25:42:25:58 | document : Document | MissingSAMLSignatureCheckTest.java:29:61:29:68 | document : Document |
-| MissingSAMLSignatureCheckTest.java:29:38:29:75 | unmarshal(...) : JAXBElement | MissingSAMLSignatureCheckTest.java:30:20:30:26 | element : JAXBElement |
-| MissingSAMLSignatureCheckTest.java:29:61:29:68 | document : Document | MissingSAMLSignatureCheckTest.java:29:38:29:75 | unmarshal(...) : JAXBElement |
-| MissingSAMLSignatureCheckTest.java:30:20:30:26 | element : JAXBElement | MissingSAMLSignatureCheckTest.java:30:20:30:37 | getValue(...) : Object |
+| MissingSAMLSignatureCheckTest.java:25:42:25:58 | document : Document | MissingSAMLSignatureCheckTest.java:30:20:30:37 | getValue(...) : Object |
 | MissingSAMLSignatureCheckTest.java:69:24:69:79 | parse(...) : Document | MissingSAMLSignatureCheckTest.java:76:60:76:67 | document : Document |
 | MissingSAMLSignatureCheckTest.java:76:37:76:88 | unmarshallFromDocument(...) : Object | MissingSAMLSignatureCheckTest.java:77:35:77:46 | jaxbResponse |
 | MissingSAMLSignatureCheckTest.java:76:60:76:67 | document : Document | MissingSAMLSignatureCheckTest.java:25:42:25:58 | document : Document |
@@ -41,9 +38,6 @@ edges
 | MissingSAMLSignatureCheckTest.java:181:64:181:71 | document : Document | MissingSAMLSignatureCheckTest.java:181:41:181:92 | unmarshallFromDocument(...) : Object |
 nodes
 | MissingSAMLSignatureCheckTest.java:25:42:25:58 | document : Document | semmle.label | document : Document |
-| MissingSAMLSignatureCheckTest.java:29:38:29:75 | unmarshal(...) : JAXBElement | semmle.label | unmarshal(...) : JAXBElement |
-| MissingSAMLSignatureCheckTest.java:29:61:29:68 | document : Document | semmle.label | document : Document |
-| MissingSAMLSignatureCheckTest.java:30:20:30:26 | element : JAXBElement | semmle.label | element : JAXBElement |
 | MissingSAMLSignatureCheckTest.java:30:20:30:37 | getValue(...) : Object | semmle.label | getValue(...) : Object |
 | MissingSAMLSignatureCheckTest.java:69:24:69:79 | parse(...) : Document | semmle.label | parse(...) : Document |
 | MissingSAMLSignatureCheckTest.java:76:37:76:88 | unmarshallFromDocument(...) : Object | semmle.label | unmarshallFromDocument(...) : Object |
