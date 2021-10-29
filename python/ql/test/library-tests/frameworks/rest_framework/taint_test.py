@@ -53,6 +53,15 @@ def test_taint(request: Request, routed_param): # $ requestHandler routedParamet
     ensure_not_tainted(
         # although these could technically be user-controlled, it seems more likely to lead to FPs than interesting results.
         request.accepted_media_type,
+
+        # In normal Django, if you disable CSRF middleware, you're allowed to use custom
+        # HTTP methods, like `curl -X FOO <url>`.
+        # However, with Django REST framework, doing that will yield:
+        # `{"detail":"Method \"FOO\" not allowed."}`
+        #
+        # In the end, since we model a Django REST framework request entirely as a
+        # extension of a Django request, we're not easily able to remove the taint from
+        # `.method`.
         request.method, # $ SPURIOUS: tainted
     )
 
