@@ -45,6 +45,7 @@ java
 ├── Introduction\ to\ CodeQL\ -\ Java.pdf           | slide presentation 
 ├── codeql-java-workshop-notes.md                   | notes for presentation
 ├── apache-struts-online.txt                        |
+├── codeql-dataflow-sql-injection/                  | full example, beginner, db build, source build
 ├── codeql-java-workshop-sqlinjection.md            | sql injection OWASP Security Shepherd
 ├── java-unsafe-deserialization.md                  | lecture notes
 ├── unsafe-deserialization-apache-struts.md         | unsafe deserialization, compact, intermediate, db build
