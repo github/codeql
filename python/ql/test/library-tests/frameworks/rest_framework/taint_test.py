@@ -21,7 +21,7 @@ def test_taint(request: Request, routed_param): # $ requestHandler routedParamet
 
     # Has all the standard attributes of a django HttpRequest
     # see https://github.com/encode/django-rest-framework/blob/00cd4ef864a8bf6d6c90819a983017070f9f08a5/rest_framework/request.py#L410-L418
-    ensure_tainted(request.resolve_match.args) # $ MISSING: tainted
+    ensure_tainted(request.resolver_match.args) # $ tainted
 
     # special new attributes added, see https://www.django-rest-framework.org/api-guide/requests/
     ensure_tainted(
@@ -121,7 +121,7 @@ urlpatterns = [
 @api_view(["POST"])
 def function_based_no_route(request: Request, possible_routed_param): # $ requestHandler routedParameter=possible_routed_param
     ensure_tainted(
-        request, # $ MISSING: tainted
+        request, # $ tainted
         possible_routed_param, # $ tainted
     )
 

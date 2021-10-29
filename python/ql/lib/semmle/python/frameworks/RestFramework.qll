@@ -107,4 +107,69 @@ private module RestFramework {
 
     override string getFramework() { result = "Django (rest_framework)" }
   }
+
+  // ---------------------------------------------------------------------------
+  // request modeling
+  // ---------------------------------------------------------------------------
+  /**
+   * A parameter that will receive a `rest_framework.request.Request` instance when a
+   * request handler is invoked.
+   */
+  private class RestFrameworkRequestHandlerRequestParam extends Request::InstanceSource,
+    RemoteFlowSource::Range, DataFlow::ParameterNode {
+    RestFrameworkRequestHandlerRequestParam() {
+      // rest_framework.views.APIView subclass
+      exists(RestFrameworkApiViewClass vc |
+        this.getParameter() =
+          vc.getARequestHandler().(PrivateDjango::DjangoRouteHandler).getRequestParam()
+      )
+      or
+      // annotated with @api_view decorator
+      exists(PrivateDjango::DjangoRouteHandler rh | rh instanceof RestFrameworkFunctionBasedView |
+        this.getParameter() = rh.getRequestParam()
+      )
+    }
+
+    override string getSourceType() { result = "rest_framework.request.HttpRequest" }
+  }
+
+  /**
+   * Provides models for the `rest_framework.request.Request` class
+   *
+   * See https://www.django-rest-framework.org/api-guide/requests/.
+   */
+  module Request {
+    /** Gets a reference to the `rest_framework.request.Request` class. */
+    private API::Node classRef() {
+      result = API::moduleImport("rest_framework").getMember("request").getMember("Request")
+    }
+
+    /**
+     * A source of instances of `rest_framework.request.Request`, extend this class to model new instances.
+     *
+     * This can include instantiations of the class, return values from function
+     * calls, or a special parameter that will be set when functions are called by an external
+     * library.
+     *
+     * Use the predicate `Request::instance()` to get references to instances of `rest_framework.request.Request`.
+     */
+    abstract class InstanceSource extends PrivateDjango::django::http::request::HttpRequest::InstanceSource {
+    }
+
+    /** A direct instantiation of `rest_framework.request.Request`. */
+    private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
+      ClassInstantiation() { this = classRef().getACall() }
+    }
+
+    /** Gets a reference to an instance of `rest_framework.request.Request`. */
+    private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
+      t.start() and
+      result instanceof InstanceSource
+      or
+      exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+    }
+
+    /** Gets a reference to an instance of `rest_framework.request.Request`. */
+    DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
+  }
 }
