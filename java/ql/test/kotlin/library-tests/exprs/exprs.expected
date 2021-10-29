@@ -74,7 +74,13 @@
 | exprs.kt:50:12:50:19 | variable | VarAccess |
 | exprs.kt:50:12:50:23 | ... > ... | GTExpr |
 | exprs.kt:50:23:50:23 | 0 | IntegerLiteral |
+| exprs.kt:51:9:51:16 | ...=... | AssignExpr |
+| exprs.kt:51:9:51:16 | variable | VarAccess |
 | exprs.kt:51:9:51:18 | (...)... | CastExpr |
+| exprs.kt:51:9:51:18 | <Stmt> | StmtExpr |
+| exprs.kt:51:9:51:18 | dec(...) | MethodAccess |
+| exprs.kt:51:9:51:18 | tmp0 | VarAccess |
+| exprs.kt:51:9:51:18 | tmp0 | VarAccess |
 | exprs.kt:51:9:51:18 | void | TypeAccess |
 | exprs.kt:54:12:54:14 | 123 | IntegerLiteral |
 | exprs.kt:54:12:54:20 | ... + ... | AddExpr |
@@ -111,3 +117,5 @@
 | exprs.kt:78:29:78:29 | (...)... | CastExpr |
 | exprs.kt:78:29:78:29 | Rectangle | TypeAccess |
 | exprs.kt:78:29:78:29 | r | VarAccess |
+| file://:0:0:0:0 | tmp0 | LocalVariableDeclExpr |
+| file://:0:0:0:0 | variable | VarAccess |

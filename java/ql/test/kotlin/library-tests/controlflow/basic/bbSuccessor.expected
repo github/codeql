@@ -6,4 +6,4 @@
 | Test.kt:35:3:35:3 | <Expr>; | Test.kt:38:9:38:9 | x |
 | Test.kt:38:9:38:9 | x | Test.kt:38:16:41:3 | { ... } |
 | Test.kt:38:9:38:9 | x | Test.kt:43:3:43:3 | <Expr>; |
-| Test.kt:38:16:41:3 | { ... } | Test.kt:38:9:38:9 | x |
+| Test.kt:40:4:40:6 | <Stmt> | Test.kt:38:9:38:9 | x |
