@@ -734,6 +734,9 @@ class StringLiteral extends Literal, @stringliteral {
   /**
    * Gets the string represented by this string literal, that is, the content
    * of the literal without enclosing quotes and with escape sequences translated.
+   *
+   * Unpaired Unicode surrogate characters (U+D800 to U+DFFF) are replaced with the
+   * replacement character U+FFFD.
    */
   override string getValue() { result = super.getValue() }
 
