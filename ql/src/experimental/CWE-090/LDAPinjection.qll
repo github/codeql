@@ -1,14 +1,3 @@
-/**
- * @name LDAP query built from user-controlled sources
- * @description Building an LDAP query from user-controlled sources is vulnerable to insertion of
- *              malicious LDAP code by the user.
- * @kind path-problem
- * @problem.severity error
- * @id go/ldap-inject
- * @tags security
- *       external/cwe/cwe-090
- */
-
 import go
 import DataFlow::PathGraph
 
@@ -23,20 +12,18 @@ abstract class LdapSanitizer extends DataFlow::Node {
  */
 private class GoLdapEscape extends LdapSanitizer {
     GoLdapEscape() { exists(Function f 
-        |f.hasQualifiedName("github.com/go-ldap/ldap", "EscapeFilter")
-        or
-        f.hasQualifiedName("github.com/go-ldap/ldap/v3", "EscapeFilter")
-        |this = f.getACall()) }
+        | f.hasQualifiedName(["github.com/go-ldap/ldap","github.com/go-ldap/ldap/v3"], "EscapeFilter")
+        | this = f.getACall()) }
 }
+
+
 /*
  * The Sanitizer func from gopkg.in/ldap.v2 or gopkg.in/ldap.v3
  */
 private class LdapV2Escape extends LdapSanitizer {
     LdapV2Escape() { exists(Function f 
-        |f.hasQualifiedName("gopkg.in/ldap.v2", "EscapeFilter")
-        or 
-        f.hasQualifiedName("gopkg.in/ldap.v3", "EscapeFilter")
-        |this = f.getACall()) }
+        | f.hasQualifiedName(["gopkg.in/ldap.v2","gopkg.in/ldap.v3"], "EscapeFilter")
+        | this = f.getACall()) }
 }
 
 
@@ -51,25 +38,45 @@ abstract class LdapSink extends DataFlow::Node {
  */
 private class GoLdapSink extends LdapSink{
     GoLdapSink(){exists(Function f 
-        | f.hasQualifiedName("github.com/go-ldap/ldap", "NewSearchRequest")
-        or 
-          f.hasQualifiedName("github.com/go-ldap/ldap/v3", "NewSearchRequest")
-        | this = f.getACall().getArgument(6) 
-        or 
-        this = f.getACall().getArgument(7)
+        | f.hasQualifiedName(["github.com/go-ldap/ldap","github.com/go-ldap/ldap/v3"], "NewSearchRequest")
+        | this = f.getACall().getArgument([0,6,7])
     )}
 }
+
 /*
  * ldap sink from gopkg.in/ldap.v2 or gopkg.in/ldap.v3 NewSearchRequest
  */
 private class LdapV2Sink extends LdapSink{
     LdapV2Sink(){exists(Function f 
-        | f.hasQualifiedName("gopkg.in/ldap.v2", "NewSearchRequest") 
+        | f.hasQualifiedName(["gopkg.in/ldap.v2","gopkg.in/ldap.v3"], "NewSearchRequest")
+        | this = f.getACall().getArgument([0,6,7]) 
+    )}
+}
+
+private class LdapV2DNSink extends LdapSink{
+    LdapV2DNSink(){exists(Field f, Write w
+        | f.hasQualifiedName(["gopkg.in/ldap.v2","gopkg.in/ldap.v3"], "SearchRequest","BaseDN")
+        and 
+        w.writesField(_, f, this)
+    )}
+}
+/*
+ * ldap sink from github.com/jtblin/go-ldap-client or github.com/jtblin/go-ldap-client Authenticate or GetGroupsOfUser
+ */
+private class LdapClientSink extends LdapSink{
+    LdapClientSink(){exists(Method m
+        | m.hasQualifiedName("github.com/jtblin/go-ldap-client", "LDAPClient","Authenticate")
         or 
-          f.hasQualifiedName("gopkg.in/ldap.v3", "NewSearchRequest")
-        | this = f.getACall().getArgument(6) 
-        or 
-          this = f.getACall().getArgument(7)
+          m.hasQualifiedName("github.com/jtblin/go-ldap-client", "LDAPClient","GetGroupsOfUser")       
+        | this = m.getACall().getArgument(0) 
+    )}
+}
+
+private class LdapClientDNSink extends LdapSink{
+    LdapClientDNSink(){exists(Field f,Write w
+        | f.hasQualifiedName("github.com/jtblin/go-ldap-client","LDAPClient","Base")
+        and
+        w.writesField(_, f, this)
     )}
 }
 /*
