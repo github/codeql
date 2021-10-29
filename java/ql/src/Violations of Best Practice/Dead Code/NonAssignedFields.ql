@@ -34,7 +34,7 @@ predicate subjectToAtomicReferenceFieldUpdater(Field f) {
     c.getMethod().getSourceDeclaration() = newUpdater and
     isClassOf(c.getArgument(0).getType(), f.getDeclaringType()) and
     isClassOf(c.getArgument(1).getType(), f.getType()) and
-    c.getArgument(2).(StringLiteral).getRepresentedString() = f.getName()
+    c.getArgument(2).(StringLiteral).getValue() = f.getName()
   )
 }
 
@@ -45,7 +45,7 @@ predicate lookedUpReflectively(Field f) {
   exists(MethodAccess getDeclaredField |
     isClassOf(getDeclaredField.getQualifier().getType(), f.getDeclaringType()) and
     getDeclaredField.getMethod().hasName("getDeclaredField") and
-    getDeclaredField.getArgument(0).(StringLiteral).getRepresentedString() = f.getName()
+    getDeclaredField.getArgument(0).(StringLiteral).getValue() = f.getName()
   )
 }
 

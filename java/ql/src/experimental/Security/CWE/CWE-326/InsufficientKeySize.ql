@@ -139,7 +139,7 @@ predicate hasShortECKeyPair(MethodAccess ma, string msg) {
     kc.hasFlowPath(source, dest) and
     DataFlow::localExprFlow(cie, ma.getArgument(0)) and
     ma.getArgument(0).getType() instanceof ECGenParameterSpec and
-    getECKeySize(cie.getArgument(0).(StringLiteral).getRepresentedString()) < 256
+    getECKeySize(cie.getArgument(0).(StringLiteral).getValue()) < 256
   ) and
   msg = "Key size should be at least 256 bits for EC encryption."
 }

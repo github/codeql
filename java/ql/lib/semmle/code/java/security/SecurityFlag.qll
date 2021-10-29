@@ -27,7 +27,7 @@ abstract class FlagKind extends string {
         flag.asExpr() = v and v.getType() instanceof FlagType
       )
       or
-      exists(StringLiteral s | s.getRepresentedString() = getAFlagName() | flag.asExpr() = s)
+      exists(StringLiteral s | s.getValue() = getAFlagName() | flag.asExpr() = s)
       or
       exists(MethodAccess ma | ma.getMethod().getName() = getAFlagName() |
         flag.asExpr() = ma and

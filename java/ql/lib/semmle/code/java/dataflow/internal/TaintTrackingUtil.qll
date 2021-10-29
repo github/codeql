@@ -300,8 +300,8 @@ private predicate unsafeEscape(MethodAccess ma) {
   // Removing `<script>` tags using a string-replace method is
   // unsafe if such a tag is embedded inside another one (e.g. `<scr<script>ipt>`).
   exists(StringReplaceMethod m | ma.getMethod() = m |
-    ma.getArgument(0).(StringLiteral).getRepresentedString() = "(<script>)" and
-    ma.getArgument(1).(StringLiteral).getRepresentedString() = ""
+    ma.getArgument(0).(StringLiteral).getValue() = "(<script>)" and
+    ma.getArgument(1).(StringLiteral).getValue() = ""
   )
 }
 

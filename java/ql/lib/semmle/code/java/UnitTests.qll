@@ -162,7 +162,7 @@ class TestNGTestMethod extends Method {
       testAnnotation = this.getAnAnnotation() and
       // The data provider must have the same name as the referenced data provider
       result.getDataProviderName() =
-        testAnnotation.getValue("dataProvider").(StringLiteral).getRepresentedString()
+        testAnnotation.getValue("dataProvider").(StringLiteral).getValue()
     |
       // Either the data provider should be on the current class, or a supertype
       this.getDeclaringType().getAnAncestor() = result.getDeclaringType()
@@ -258,7 +258,7 @@ class TestNGDataProviderMethod extends Method {
           .(TestNGDataProviderAnnotation)
           .getValue("name")
           .(StringLiteral)
-          .getRepresentedString()
+          .getValue()
   }
 }
 
