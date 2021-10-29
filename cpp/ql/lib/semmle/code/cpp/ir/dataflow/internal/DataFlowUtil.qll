@@ -232,8 +232,6 @@ abstract class StoreNode extends Node {
 
   /**
    * Gets the `StoreNode` that computes the address used by this `StoreNode`.
-   * The boolean `readEffect` is `true` if the predecessor is accessed through the
-   * address of a `ReadSideEffectInstruction`.
    */
   abstract StoreNode getAPredecessor();
 
