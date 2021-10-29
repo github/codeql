@@ -411,7 +411,7 @@ module API {
         any(Type t).hasUnderlyingType(moduleName, exportName)
       } or
       MkSyntheticCallbackArg(DataFlow::Node src, int bound, DataFlow::InvokeNode nd) {
-        trackUseNode(src, true, bound).flowsTo(nd.getCalleeNode())
+        trackUseNode(src, true, bound, "").flowsTo(nd.getCalleeNode())
       }
 
     class TDef = MkModuleDef or TNonModuleDef;
@@ -528,7 +528,7 @@ module API {
      */
     private predicate argumentPassing(TApiNode base, int i, DataFlow::Node arg) {
       exists(DataFlow::Node use, DataFlow::SourceNode pred, int bound |
-        use(base, use) and pred = trackUseNode(use, _, bound)
+        use(base, use) and pred = trackUseNode(use, _, bound, "")
       |
         arg = pred.getAnInvocation().getArgument(i - bound)
         or
@@ -567,26 +567,37 @@ module API {
         base = MkRoot() and
         ref = lbl.(EntryPoint).getAUse()
         or
-        exists(DataFlow::SourceNode src, DataFlow::SourceNode pred |
-          use(base, src) and pred = trackUseNode(src)
+        exists(DataFlow::SourceNode src, DataFlow::SourceNode pred, string prop |
+          use(base, src) and pred = trackUseNode(src, false, 0, prop)
         |
           // `module.exports` is special: it is a use of a def-node, not a use-node,
           // so we want to exclude it here
           (base instanceof TNonModuleDef or base instanceof TUse) and
           lbl = Label::memberFromRef(ref) and
+          (
+            lbl = Label::member(prop)
+            or
+            prop = ""
+          ) and
           ref = pred.getAPropertyRead()
           or
           lbl = Label::instance() and
+          prop = "" and
           ref = pred.getAnInstantiation()
           or
           lbl = Label::return() and
+          prop = "" and
           ref = pred.getAnInvocation()
           or
-          lbl = Label::promised() and
-          PromiseFlow::loadStep(pred.getALocalUse(), ref, Promises::valueProp())
-          or
-          lbl = Label::promisedError() and
-          PromiseFlow::loadStep(pred.getALocalUse(), ref, Promises::errorProp())
+          (
+            lbl = Label::promised() and
+            (prop = Promises::valueProp() or prop = "") and
+            PromiseFlow::loadStep(pred.getALocalUse(), ref, Promises::valueProp())
+            or
+            lbl = Label::promisedError() and
+            (prop = Promises::errorProp() or prop = "") and
+            PromiseFlow::loadStep(pred.getALocalUse(), ref, Promises::errorProp())
+          )
         )
         or
         exists(DataFlow::Node def, DataFlow::FunctionNode fn |
@@ -680,36 +691,58 @@ module API {
       )
     }
 
+    private import semmle.javascript.dataflow.TypeTracking
+
     /**
      * Gets a data-flow node to which `nd`, which is a use of an API-graph node, flows.
      *
-     * The flow from `nd` to that node may be inter-procedural. If `promisified` is `true`, the
-     * flow goes through a promisification, and `boundArgs` indicates how many arguments have been
-     * bound throughout the flow. (To ensure termination, we somewhat arbitrarily constrain the
-     * number of bound arguments to be at most ten.)
+     * The flow from `nd` to that node may be inter-procedural, and is further described by three
+     * flags:
+     *
+     *   - `promisified`: if true `true`, the flow goes through a promisification;
+     *   - `boundArgs`: for function values, tracks how many arguments have been bound throughout
+     *     the flow. To ensure termination, we somewhat arbitrarily constrain the number of bound
+     *     arguments to be at most ten.
+     *   - `prop`: if non-empty, the flow is only guaranteed to preserve the value of this property,
+     *     and not necessarily the entire object.
      */
     private DataFlow::SourceNode trackUseNode(
-      DataFlow::SourceNode nd, boolean promisified, int boundArgs, DataFlow::TypeTracker t
+      DataFlow::SourceNode nd, boolean promisified, int boundArgs, string prop,
+      DataFlow::TypeTracker t
     ) {
       t.start() and
       use(_, nd) and
       result = nd and
       promisified = false and
-      boundArgs = 0
+      boundArgs = 0 and
+      prop = ""
       or
       exists(Promisify::PromisifyCall promisify |
-        trackUseNode(nd, false, boundArgs, t.continue()).flowsTo(promisify.getArgument(0)) and
+        trackUseNode(nd, false, boundArgs, prop, t.continue()).flowsTo(promisify.getArgument(0)) and
         promisified = true and
+        prop = "" and
         result = promisify
       )
       or
       exists(DataFlow::PartialInvokeNode pin, DataFlow::Node pred, int predBoundArgs |
-        trackUseNode(nd, promisified, predBoundArgs, t.continue()).flowsTo(pred) and
+        trackUseNode(nd, promisified, predBoundArgs, prop, t.continue()).flowsTo(pred) and
+        prop = "" and
         result = pin.getBoundFunction(pred, boundArgs - predBoundArgs) and
         boundArgs in [0 .. 10]
       )
       or
-      t = useStep(nd, promisified, boundArgs, result)
+      exists(DataFlow::Node pred, string preprop |
+        trackUseNode(nd, promisified, boundArgs, preprop, t.continue()).flowsTo(pred) and
+        promisified = false and
+        boundArgs = 0 and
+        SharedTypeTrackingStep::loadStoreStep(pred, result, prop)
+      |
+        prop = preprop
+        or
+        preprop = ""
+      )
+      or
+      t = useStep(nd, promisified, boundArgs, prop, result)
     }
 
     private import semmle.javascript.dataflow.internal.StepSummary
@@ -723,19 +756,19 @@ module API {
      */
     pragma[noopt]
     private DataFlow::TypeTracker useStep(
-      DataFlow::Node nd, boolean promisified, int boundArgs, DataFlow::Node res
+      DataFlow::Node nd, boolean promisified, int boundArgs, string prop, DataFlow::Node res
     ) {
       exists(DataFlow::TypeTracker t, StepSummary summary, DataFlow::SourceNode prev |
-        prev = trackUseNode(nd, promisified, boundArgs, t) and
+        prev = trackUseNode(nd, promisified, boundArgs, prop, t) and
         StepSummary::step(prev, res, summary) and
         result = t.append(summary)
       )
     }
 
     private DataFlow::SourceNode trackUseNode(
-      DataFlow::SourceNode nd, boolean promisified, int boundArgs
+      DataFlow::SourceNode nd, boolean promisified, int boundArgs, string prop
     ) {
-      result = trackUseNode(nd, promisified, boundArgs, DataFlow::TypeTracker::end())
+      result = trackUseNode(nd, promisified, boundArgs, prop, DataFlow::TypeTracker::end())
     }
 
     /**
@@ -743,7 +776,7 @@ module API {
      */
     cached
     DataFlow::SourceNode trackUseNode(DataFlow::SourceNode nd) {
-      result = trackUseNode(nd, false, 0)
+      result = trackUseNode(nd, false, 0, "")
     }
 
     private DataFlow::SourceNode trackDefNode(DataFlow::Node nd, DataFlow::TypeBackTracker t) {

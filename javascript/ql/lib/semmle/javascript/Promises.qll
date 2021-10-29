@@ -425,6 +425,14 @@ module PromiseFlow {
       prop = errorProp() and
       pred = call.getCallback(0).getAReturn()
     )
+    or
+    // return from `async` function
+    exists(DataFlow::FunctionNode f | f.getFunction().isAsync() |
+      // ordinary return
+      prop = valueProp() and
+      pred = f.getAReturn() and
+      succ = f.getReturnNode()
+    )
   }
 }
 
