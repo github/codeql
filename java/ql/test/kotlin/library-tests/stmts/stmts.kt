@@ -28,3 +28,15 @@ fun loops(x: Int, y: Int) {
     while(x > y)
         continue
 }
+
+fun exceptions(): Int {
+    try {
+        throw Exception("Foo")
+    }
+    catch (e: Exception) {
+        return 1
+    }
+    finally {
+        return 2
+    }
+}

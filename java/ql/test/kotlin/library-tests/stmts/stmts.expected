@@ -1,3 +1,4 @@
+| file://:0:0:0:0 | catch (...) | CatchClause |
 | stmts.kt:2:41:20:1 | { ... } | BlockStmt |
 | stmts.kt:3:5:6:5 | <Expr>; | ExprStmt |
 | stmts.kt:3:15:4:5 | { ... } | BlockStmt |
@@ -32,3 +33,11 @@
 | stmts.kt:25:24:25:33 | break | BreakStmt |
 | stmts.kt:28:5:29:16 | while (...) | WhileStmt |
 | stmts.kt:29:9:29:16 | continue | ContinueStmt |
+| stmts.kt:32:23:42:1 | { ... } | BlockStmt |
+| stmts.kt:33:5:41:5 | try ... | TryStmt |
+| stmts.kt:33:9:35:5 | { ... } | BlockStmt |
+| stmts.kt:34:9:34:30 | throw ... | ThrowStmt |
+| stmts.kt:36:26:38:5 | { ... } | BlockStmt |
+| stmts.kt:37:9:37:16 | return ... | ReturnStmt |
+| stmts.kt:39:13:41:5 | { ... } | BlockStmt |
+| stmts.kt:40:9:40:16 | return ... | ReturnStmt |

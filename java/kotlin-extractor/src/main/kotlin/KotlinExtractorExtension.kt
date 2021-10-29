@@ -1000,17 +1000,22 @@ class X {
     }
 
     fun extractVariable(v: IrVariable, callable: Label<out DbCallable>, parent: Label<out DbStmtparent>, idx: Int) {
+        val stmtId = tw.getFreshIdLabel<DbLocalvariabledeclstmt>()
+        val locId = tw.getLocation(v)
+        tw.writeStmts_localvariabledeclstmt(stmtId, parent, idx, callable)
+        tw.writeHasLocation(stmtId, locId)
+        extractVariableExpr(v, callable, stmtId, 1)
+    }
+
+    fun extractVariableExpr(v: IrVariable, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int) {
         val varId = useVariable(v)
         val exprId = tw.getFreshIdLabel<DbLocalvariabledeclexpr>()
-        val stmtId = tw.getFreshIdLabel<DbLocalvariabledeclstmt>()
         val locId = tw.getLocation(v)
         val type = useType(v.type)
         tw.writeLocalvars(varId, v.name.asString(), type.javaResult.id, exprId) // TODO: KT type
         tw.writeHasLocation(varId, locId)
-        tw.writeExprs_localvariabledeclexpr(exprId, type.javaResult.id, type.kotlinResult.id, stmtId, 1)
+        tw.writeExprs_localvariabledeclexpr(exprId, type.javaResult.id, type.kotlinResult.id, parent, idx)
         tw.writeHasLocation(exprId, locId)
-        tw.writeStmts_localvariabledeclstmt(stmtId, parent, idx, callable)
-        tw.writeHasLocation(stmtId, locId)
         val i = v.initializer
         if(i != null) {
             extractExpressionExpr(i, callable, exprId, 0)
@@ -1302,6 +1307,25 @@ class X {
                 tw.writeStmts_returnstmt(id, stmtParent.parent, stmtParent.idx, callable)
                 tw.writeHasLocation(id, locId)
                 extractExpressionExpr(e.value, callable, id, 0)
+            }
+            is IrTry -> {
+                val stmtParent = parent.stmt(e, callable)
+                val id = tw.getFreshIdLabel<DbTrystmt>()
+                val locId = tw.getLocation(e)
+                tw.writeStmts_trystmt(id, stmtParent.parent, stmtParent.idx, callable)
+                tw.writeHasLocation(id, locId)
+                extractExpressionExpr(e.tryResult, callable, id, -1)
+                val finallyStmt = e.finallyExpression
+                if(finallyStmt != null) {
+                    extractExpressionExpr(finallyStmt, callable, id, -2)
+                }
+                for((catchIdx, catchClause) in e.catches.withIndex()) {
+                    val catchId = tw.getFreshIdLabel<DbCatchclause>()
+                    tw.writeStmts_catchclause(catchId, id, catchIdx, callable)
+                    // TODO: Index -1: unannotatedtypeaccess
+                    extractVariableExpr(catchClause.catchParameter, callable, catchId, 0)
+                    extractExpressionExpr(catchClause.result, callable, catchId, 1)
+                }
             }
             is IrContainerExpression -> {
                 val stmtParent = parent.stmt(e, callable)

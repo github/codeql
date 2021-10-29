@@ -56,3 +56,11 @@
 | stmts.kt:28:11:28:11 | x | VarAccess |
 | stmts.kt:28:11:28:15 | ... > ... | GTExpr |
 | stmts.kt:28:15:28:15 | y | VarAccess |
+| stmts.kt:33:9:35:5 | <Stmt> | StmtExpr |
+| stmts.kt:34:15:34:30 | new Exception(...) | ClassInstanceExpr |
+| stmts.kt:34:26:34:28 | Foo | StringLiteral |
+| stmts.kt:36:12:36:23 | e | LocalVariableDeclExpr |
+| stmts.kt:36:26:38:5 | <Stmt> | StmtExpr |
+| stmts.kt:37:16:37:16 | 1 | IntegerLiteral |
+| stmts.kt:39:13:41:5 | <Stmt> | StmtExpr |
+| stmts.kt:40:16:40:16 | 2 | IntegerLiteral |
