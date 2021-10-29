@@ -23,13 +23,11 @@ jobs:
           name: comment
           path: pr.txt
           retention-days: 1
-
-      - uses: github/codeql/.github/actions/fetch-codeql@main
       - uses: actions/checkout@v2
         with:
           fetch-depth: 2
           persist-credentials: false
-
+      - uses: ./.github/actions/fetch-codeql
       - name: Determine changed files
         id: changes
         run: |
