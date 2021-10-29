@@ -189,7 +189,6 @@ predicate jumpStep(Node n1, Node n2) { none() }
  */
 predicate storeStep(StoreNode node1, FieldContent f, StoreNode node2) {
   exists(FieldAddressInstruction fai |
-    not fai.getObjectAddress().getResultType().stripType() instanceof Union and
     node1.getInstruction() = fai and
     node2.getInstruction() = fai.getObjectAddress() and
     f.getField() = fai.getField()
@@ -203,7 +202,6 @@ predicate storeStep(StoreNode node1, FieldContent f, StoreNode node2) {
  */
 predicate readStep(ReadNode node1, FieldContent f, ReadNode node2) {
   exists(FieldAddressInstruction fai |
-    not fai.getObjectAddress().getResultType().stripType() instanceof Union and
     node1.getInstruction() = fai.getObjectAddress() and
     node2.getInstruction() = fai and
     f.getField() = fai.getField()

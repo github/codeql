@@ -1959,6 +1959,7 @@ postWithInFlow
 | ir.cpp:522:9:522:10 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
 | ir.cpp:522:16:522:21 | PointerAdd [post update] | PostUpdateNode should not be the target of local flow. |
 | ir.cpp:522:16:522:21 | PointerAdd [post update] | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:531:7:531:8 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
 | ir.cpp:531:11:531:16 | FieldAddress [post update] | PostUpdateNode should not be the target of local flow. |
 | ir.cpp:540:5:540:5 | y [post update] | PostUpdateNode should not be the target of local flow. |
 | ir.cpp:545:9:545:17 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |

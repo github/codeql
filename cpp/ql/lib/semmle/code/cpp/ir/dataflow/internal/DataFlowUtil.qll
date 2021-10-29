@@ -972,7 +972,11 @@ predicate localInstructionFlow(Instruction e1, Instruction e2) {
 predicate localExprFlow(Expr e1, Expr e2) { localFlow(exprNode(e1), exprNode(e2)) }
 
 private newtype TContent =
-  TFieldContent(Field f) or
+  TFieldContent(Field f) {
+    // As reads and writes to union fields can create flow even though the reads and writes
+    // target different fields, we don't want a read (write) to create a read (write) step.
+    not f.getDeclaringType() instanceof Union
+  } or
   TCollectionContent() or // Not used in C/C++
   TArrayContent() // Not used in C/C++.
 
