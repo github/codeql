@@ -66,10 +66,13 @@ open class Root {}
 class Subclass1: Root() {}
 class Subclass2: Root() {}
 
-fun typeTests(x: Root) {
+fun typeTests(x: Root, y: Subclass1) {
     if(x is Subclass1) {
-        val y: Subclass1 = x
+        val x1: Subclass1 = x
     }
+    val y1: Subclass1 = if (x is Subclass1) { x } else { y }
+    var q = 1
+    if (x is Subclass1) { q = 2 } else { q = 3 }
 }
 
 fun foo(p: Polygon) {
