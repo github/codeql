@@ -160,13 +160,11 @@ jobs:
           name: codeql-ruby-queries
           path: ruby/qlpacks
       - run: |
-          echo '{
-            "provide": [
-            "ruby/codeql-extractor.yml",
-            "qlpacks/*/*/*/qlpack.yml"
-            ]
-          }' > .codeqlmanifest.json
-          zip -rq codeql-ruby-bundle.zip .codeqlmanifest.json ruby qlpacks
+          echo '
+            provide:
+              - "ruby/codeql-extractor.yml"
+              - "qlpacks/*/*/*/qlpack.yml"' > codeql-workspace.yml
+          zip -rq codeql-ruby-bundle.zip codeql-workspace.yml ruby qlpacks
       - uses: actions/upload-artifact@v2
         with:
           name: codeql-ruby-bundle
