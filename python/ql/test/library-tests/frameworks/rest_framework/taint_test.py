@@ -89,9 +89,9 @@ def test_taint(request: Request, routed_param): # $ requestHandler routedParamet
 
 
 class MyClass(APIView):
-    def initial(self, request, *args, **kwargs):
+    def initial(self, request, *args, **kwargs): # $ requestHandler
         # this method will be called before processing any request
-        ensure_tainted(request) # $ MISSING: tainted
+        ensure_tainted(request) # $ tainted
 
     def get(self, request: Request, routed_param): # $ requestHandler routedParameter=routed_param
         ensure_tainted(routed_param) # $ tainted
@@ -124,5 +124,5 @@ def function_based_no_route(request: Request, possible_routed_param):
 
 
 class ClassBasedNoRoute(APIView):
-    def get(self, request: Request, possible_routed_param):
-        ensure_tainted(request, possible_routed_param) # $ MISSING: tainted
+    def get(self, request: Request, possible_routed_param): # $ requestHandler routedParameter=possible_routed_param
+        ensure_tainted(request, possible_routed_param) # $ tainted

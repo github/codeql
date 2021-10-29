@@ -155,6 +155,7 @@ Python built-in support
    Name, Category
    aiohttp.web, Web framework
    Django, Web framework
+   djangorestframework, Web framework
    Flask, Web framework
    Tornado, Web framework
    Twisted, Web framework

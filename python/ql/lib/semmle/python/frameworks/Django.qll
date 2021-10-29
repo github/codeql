@@ -17,10 +17,12 @@ private import semmle.python.frameworks.internal.SelfRefMixin
 private import semmle.python.frameworks.internal.InstanceTaintStepsHelper
 
 /**
+ * INTERNAL: Do not use.
+ *
  * Provides models for the `django` PyPI package.
  * See https://www.djangoproject.com/.
  */
-private module Django {
+module Django {
   /** Provides models for the `django.views` module */
   module Views {
     /**
@@ -466,10 +468,12 @@ private module Django {
 }
 
 /**
+ * INTERNAL: Do not use.
+ *
  * Provides models for the `django` PyPI package (that we are not quite ready to publicly expose yet).
  * See https://www.djangoproject.com/.
  */
-private module PrivateDjango {
+module PrivateDjango {
   // ---------------------------------------------------------------------------
   // django
   // ---------------------------------------------------------------------------
