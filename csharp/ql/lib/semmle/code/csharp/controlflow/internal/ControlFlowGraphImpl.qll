@@ -1540,7 +1540,7 @@ module Statements {
       c =
         any(NestedCompletion nc |
           nc.getNestLevel() = 0 and
-          this.throwMayBeUncaught(nc.getOuterCompletion().(ThrowCompletion)) and
+          this.throwMayBeUncaught(nc.getOuterCompletion()) and
           (
             // Incompatible exception type: clause itself
             last = this and

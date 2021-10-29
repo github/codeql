@@ -18,12 +18,12 @@ predicate isLive(Callable c) {
  * would imply the liveness of `c`.
  */
 Callable possibleLivenessCause(Callable c, string reason) {
-  c.(Method).overridesOrInstantiates(result.(Method)) and
+  c.(Method).overridesOrInstantiates(result) and
   reason = "is overridden or instantiated by"
   or
   result.calls(c) and reason = "calls"
   or
-  result.callsConstructor(c.(Constructor)) and reason = "calls constructor"
+  result.callsConstructor(c) and reason = "calls constructor"
   or
   exists(ClassInstanceExpr e | e.getEnclosingCallable() = result |
     e.getConstructor() = c and reason = "constructs"
@@ -243,7 +243,7 @@ class DeadMethod extends Callable {
     ) and
     not (
       this.(Method).isAbstract() and
-      exists(Method m | m.overridesOrInstantiates+(this.(Method)) | isLive(m))
+      exists(Method m | m.overridesOrInstantiates+(this) | isLive(m))
     ) and
     // A getter or setter associated with a live JPA field.
     //

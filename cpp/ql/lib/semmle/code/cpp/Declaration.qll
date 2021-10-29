@@ -490,8 +490,7 @@ class AccessHolder extends Declaration, TAccessHolder {
    */
   pragma[inline]
   predicate canAccessMember(Declaration member, Class derived) {
-    this.couldAccessMember(member.getDeclaringType(), member.getASpecifier().(AccessSpecifier),
-      derived)
+    this.couldAccessMember(member.getDeclaringType(), member.getASpecifier(), derived)
   }
 
   /**

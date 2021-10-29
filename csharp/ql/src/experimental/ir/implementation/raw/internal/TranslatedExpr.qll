@@ -1183,9 +1183,9 @@ class TranslatedBinaryOperation extends TranslatedSingleInstructionExpr {
   }
 
   override Opcode getOpcode() {
-    result = binaryArithmeticOpcode(expr.(BinaryArithmeticOperation)) or
-    result = binaryBitwiseOpcode(expr.(BinaryBitwiseOperation)) or
-    result = comparisonOpcode(expr.(ComparisonOperation))
+    result = binaryArithmeticOpcode(expr) or
+    result = binaryBitwiseOpcode(expr) or
+    result = comparisonOpcode(expr)
   }
 
   override int getInstructionElementSize(InstructionTag tag) {

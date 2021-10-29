@@ -210,9 +210,9 @@ class CommentedOutCodeBlock extends @py_comment {
 
   /** Whether this commented-out code block is likely to be example code embedded in a larger comment. */
   predicate maybeExampleCode() {
-    exists(CommentBlock block | block.contains(this.(Comment)) |
+    exists(CommentBlock block | block.contains(this) |
       exists(int all_code |
-        all_code = sum(CommentedOutCodeBlock code | block.contains(code.(Comment)) | code.length()) and
+        all_code = sum(CommentedOutCodeBlock code | block.contains(code) | code.length()) and
         /* This ratio may need fine tuning */
         block.length() > all_code * 2
       )

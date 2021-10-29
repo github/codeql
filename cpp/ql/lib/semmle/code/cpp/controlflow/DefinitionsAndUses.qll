@@ -25,7 +25,7 @@ predicate definitionUsePair(SemanticStackVariable var, Expr def, Expr use) {
  * Holds if the definition `def` of some stack variable can reach `node`, which
  * is a definition or use, without crossing definitions of the same variable.
  */
-predicate definitionReaches(Expr def, Expr node) { def.(Def).reaches(true, _, node.(DefOrUse)) }
+predicate definitionReaches(Expr def, Expr node) { def.(Def).reaches(true, _, node) }
 
 private predicate hasAddressOfAccess(SemanticStackVariable var) {
   var.getAnAccess().isAddressOfAccessNonConst()

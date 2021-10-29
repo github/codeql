@@ -88,7 +88,7 @@ abstract class Architecture extends string {
     or
     t instanceof LongLongType and result = this.longLongSize()
     or
-    result = this.enumBitSize(t.(Enum))
+    result = this.enumBitSize(t)
     or
     result = this.integralBitSize(t.(SpecifiedType).getBaseType())
     or
@@ -183,7 +183,7 @@ abstract class Architecture extends string {
     or
     t instanceof ReferenceType and result = this.pointerSize()
     or
-    result = this.enumAlignment(t.(Enum))
+    result = this.enumAlignment(t)
     or
     result = this.alignment(t.(SpecifiedType).getBaseType())
     or
@@ -232,14 +232,14 @@ private Field getAnInitialField(PaddedType t) {
     result = t.getAField()
     or
     // Initial field of the type of a field of the union
-    result = getAnInitialField(t.getAField().getUnspecifiedType().(PaddedType))
+    result = getAnInitialField(t.getAField().getUnspecifiedType())
   else
     exists(Field firstField | t.fieldIndex(firstField) = 1 |
       // The first field of `t`
       result = firstField
       or
       // Initial field of the first field of `t`
-      result = getAnInitialField(firstField.getUnspecifiedType().(PaddedType))
+      result = getAnInitialField(firstField.getUnspecifiedType())
     )
 }
 

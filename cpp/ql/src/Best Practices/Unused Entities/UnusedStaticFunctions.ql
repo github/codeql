@@ -62,7 +62,7 @@ class Thing extends Locatable {
   }
 
   Thing callsOrAccesses() {
-    this.(Function).calls(result.(Function))
+    this.(Function).calls(result)
     or
     this.(Function).accesses(result.(Function))
     or

@@ -658,7 +658,7 @@ abstract class ReExportDeclaration extends ExportDeclaration {
   cached
   Module getReExportedModule() {
     Stages::Imports::ref() and
-    result.getFile() = getEnclosingModule().resolve(getImportedPath().(PathExpr))
+    result.getFile() = getEnclosingModule().resolve(getImportedPath())
     or
     result = resolveFromTypeRoot()
   }
