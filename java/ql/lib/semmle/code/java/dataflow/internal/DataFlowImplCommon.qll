@@ -251,7 +251,7 @@ private module Cached {
   predicate forceCachingInSameStage() { any() }
 
   cached
-  predicate nodeEnclosingCallable(Node n, DataFlowCallable c) { c = n.getEnclosingCallable() }
+  predicate nodeEnclosingCallable(Node n, DataFlowCallable c) { c = nodeGetEnclosingCallable(n) }
 
   cached
   predicate callEnclosingCallable(DataFlowCall call, DataFlowCallable c) {
@@ -316,9 +316,7 @@ private module Cached {
   }
 
   cached
-  predicate parameterNode(Node n, DataFlowCallable c, int i) {
-    n.(ParameterNode).isParameterOf(c, i)
-  }
+  predicate parameterNode(Node p, DataFlowCallable c, int pos) { isParameterNode(p, c, pos) }
 
   cached
   predicate argumentNode(Node n, DataFlowCall call, int pos) {
