@@ -117,7 +117,7 @@ private module FastApi {
      */
     private API::Node getModeledResponseClass(string name) {
       name = "Response" and
-      result = API::moduleImport("fastapi").getMember("Response")
+      result = API::moduleImport("fastapi").getMember(name)
       or
       // see https://github.com/tiangolo/fastapi/blob/master/fastapi/responses.py
       name in [
