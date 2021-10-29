@@ -457,7 +457,7 @@ open class KotlinUsesExtractor(
             })
             return classId
         }
-        fun primitiveType(primitiveName: String?,
+        fun primitiveType(kotlinClass: IrClass, primitiveName: String?,
                           javaPackageName: String, javaClassName: String,
                           kotlinPackageName: String, kotlinClassName: String): TypeResults {
             val javaResult = if (canReturnPrimitiveTypes && !s.hasQuestionMark && primitiveName != null) {
@@ -470,7 +470,7 @@ open class KotlinUsesExtractor(
                     val signature = "$javaPackageName.$javaClassName" // TODO: Is this right?
                     TypeResult(label, signature)
                 }
-            val kotlinClassId = makeClass(kotlinPackageName, kotlinClassName)
+            val kotlinClassId = useClassInstance(kotlinClass, listOf()).classLabel
             val kotlinResult = if (s.hasQuestionMark) {
                     val kotlinSignature = "$kotlinPackageName.$kotlinClassName?" // TODO: Is this right?
                     val kotlinLabel = "@\"kt_type;nullable;$kotlinPackageName.$kotlinClassName\""
