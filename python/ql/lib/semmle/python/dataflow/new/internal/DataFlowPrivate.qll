@@ -178,7 +178,21 @@ module EssaFlow {
       // see `with_flow` in `python/ql/src/semmle/python/dataflow/Implementation.qll`
       with.getContextExpr() = contextManager.getNode() and
       with.getOptionalVars() = var.getNode() and
+      not with.isAsync() and
       contextManager.strictlyDominates(var)
+    )
+    or
+    // Async with var definition
+    //  `async with f(42) as x:`
+    //  nodeFrom is `x`, cfg node
+    //  nodeTo is `x`, essa var
+    //
+    // This makes the cfg node the local source of the awaited value.
+    exists(With with, ControlFlowNode var |
+      nodeFrom.(CfgNode).getNode() = var and
+      nodeTo.(EssaNode).getVar().getDefinition().(WithDefinition).getDefiningNode() = var and
+      with.getOptionalVars() = var.getNode() and
+      with.isAsync()
     )
     or
     // Parameter definition
