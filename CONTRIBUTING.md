@@ -2,7 +2,7 @@
 
 Hi there! We're thrilled that you'd like to contribute to this project. Your help is essential for keeping it great.
 
-Contributions to this project are [released](https://help.github.com/articles/github-terms-of-service/#6-contributions-under-repository-license) to the public under the [project's open source license](LICENSE).
+Contributions to this project are [released](https://docs.github.com/en/github/site-policy/github-terms-of-service#6-contributions-under-repository-license) to the public under the [project's open source license](LICENSE).
 
 Please note that this project is released with a [Contributor Code of Conduct](CODE_OF_CONDUCT.md). By participating in this project you agree to abide by its terms.
 
@@ -29,11 +29,11 @@ Follow the steps below to help other users understand what your query does, and 
 
 1. **Consult the documentation for query writers**
 
-   There is lots of useful documentation to help you write CodeQL queries, ranging from information about query file structure to language-specific tutorials. For more information on the documentation available, see [Writing QL queries](https://help.semmle.com/QL/learn-ql/writing-queries/writing-queries.html) on [help.semmle.com](https://help.semmle.com).
+   There is lots of useful documentation to help you write CodeQL queries, ranging from information about query file structure to language-specific tutorials. For more information on the documentation available, see [Writing QL queries](https://codeql.github.com/docs/writing-codeql-queries/) on [codeql.github.com/docs](https://codeql.github.com/docs/).
 
 2. **Format your code correctly**
 
-   All of the standard CodeQL queries and libraries are uniformly formatted for clarity and consistency, so we strongly recommend that all contributions follow the same formatting guidelines. If you use the CodeQL extension for Visual Studio Code, you can auto-format your query using the [Format Document command](https://help.semmle.com/codeql/codeql-for-vscode/procedures/about-codeql-for-vscode.html). For more information, see the [QL style guide](https://github.com/github/codeql/blob/main/docs/ql-style-guide.md).
+   All of the standard CodeQL queries and libraries are uniformly formatted for clarity and consistency, so we strongly recommend that all contributions follow the same formatting guidelines. If you use the CodeQL extension for Visual Studio Code, you can auto-format your query using the [Format Document command](https://codeql.github.com/docs/codeql-for-visual-studio-code/about-codeql-for-visual-studio-code/). For more information, see the [QL style guide](https://github.com/github/codeql/blob/main/docs/ql-style-guide.md).
 
 3. **Make sure your query has the correct metadata**
 
@@ -45,7 +45,7 @@ Follow the steps below to help other users understand what your query does, and 
 4. **Make sure the `select` statement is compatible with the query type**
 
    The `select` statement of your query must be compatible with the query type (determined by the `@kind` metadata property) for alert or path results to be displayed correctly in LGTM and Visual Studio Code.
-   For more information on `select` statement format, see [Introduction to query files](https://help.semmle.com/QL/learn-ql/writing-queries/introduction-to-queries.html#select-clause) on help.semmle.com.
+   For more information on `select` statement format, see [Introduction to query files](https://codeql.github.com/docs/writing-codeql-queries/introduction-to-ql/) on help.semmle.com.
 
 5. **Write a query help file**
 
@@ -61,6 +61,6 @@ In addition to contributions to our standard queries and libraries, we also welc
 ## Resources
 
 - [How to Contribute to Open Source](https://opensource.guide/how-to-contribute/)
-- [Using Pull Requests](https://help.github.com/articles/about-pull-requests/)
-- [GitHub Help](https://help.github.com)
-- [A Note About Git Commit Messages](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html)
+- [Using Pull Requests](https://docs.github.com/en/github/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests)
+- [GitHub Help](https://docs.github.com/en)
+- [A Note About Git Commit Messages](https://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html)

@@ -7,7 +7,7 @@ makes available to its customers worldwide.
 It contains two major components:
   - an extractor, itself written in Go, that parses Go source code and converts it into a database
     that can be queried using CodeQL.
-  - static analysis libraries and queries written in [QL](https://help.semmle.com/QL) that can be
+  - static analysis libraries and queries written in [QL](https://codeql.github.com/docs/) that can be
     used to analyze such a database to find coding mistakes or security vulnerabilities.
 
 The goal of this project is to provide comprehensive static analysis support for Go in CodeQL.
@@ -29,7 +29,7 @@ Code workspace.
 ## Usage
 
 To analyze a Go codebase, either use the [CodeQL command-line
-interface](https://help.semmle.com/codeql/codeql-cli.html) to create a database yourself, or
+interface](https://codeql.github.com/docs/codeql-cli/) to create a database yourself, or
 download a pre-built database from [LGTM.com](https://lgtm.com/). You can then run any of the
 queries contained in this repository either on the command line or using the VS Code extension.
 
@@ -50,5 +50,5 @@ The code in this repository is licensed under the [MIT license](LICENSE).
 
 ## Resources
 
-- [Writing CodeQL queries](https://help.semmle.com/QL/learn-ql/ql/writing-queries/writing-queries.html)
-- [Learning CodeQL](https://help.semmle.com/QL/learn-ql/index.html)
+- [Writing CodeQL queries](https://codeql.github.com/docs/writing-codeql-queries/codeql-queries/)
+- [Learning CodeQL](https://codeql.github.com/docs/writing-codeql-queries/ql-tutorials/)
