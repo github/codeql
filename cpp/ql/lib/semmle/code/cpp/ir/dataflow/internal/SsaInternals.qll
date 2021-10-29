@@ -407,13 +407,13 @@ private module Cached {
    */
   cached
   predicate ssaFlow(Node nodeFrom, Node nodeTo) {
-    // Def-use/use-use flow from an `InstructionNode` to an `OperandNode`.
+    // Def-use/use-use flow from an `InstructionNode`.
     defUseFlow(nodeFrom, nodeTo)
     or
-    // Def-use flow from a `StoreNode` to an `OperandNode`.
+    // Def-use flow from a `StoreNode`.
     fromStoreNode(nodeFrom, nodeTo)
     or
-    // Use-use flow from a `ReadNode` to an `OperandNode`
+    // Use-use flow from a `ReadNode`.
     fromReadNode(nodeFrom, nodeTo)
     or
     fromPhiNode(nodeFrom, nodeTo)
@@ -521,7 +521,7 @@ private module Cached {
       flowOutOfAddressStep(arith.getAUse(), nTo)
     )
     or
-    // Flow through a modelled function that has parameter -> return value flow.
+    // Flow through a modeled function that has parameter -> return value flow.
     exists(
       CallInstruction call, int index, DataFlow::FunctionInput input,
       DataFlow::FunctionOutput output
