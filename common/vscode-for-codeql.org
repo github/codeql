@@ -1,0 +1,29 @@
+* Setup Instructions
+  :PROPERTIES:
+  :CUSTOM_ID: Setup-Instructions
+  :END:
+  To write and run CodeQL queries, follow these steps:
+
+  1. Install the Visual Studio Code IDE.
+
+  2. Download and install the
+     [[https://codeql.github.com/docs/codeql-for-visual-studio-code/setting-up-codeql-in-visual-studio-code/#installing-the-extension][CodeQL extension for Visual Studio Code]].
+
+  3. [[https://codeql.github.com/docs/codeql-for-visual-studio-code/setting-up-codeql-in-visual-studio-code/#using-the-starter-workspace][Set up the starter workspace]].
+     - Basically,
+       =git clone --recursive https://github.com/github/vscode-codeql-starter.git=
+     - *Important*: Don't forget to =git clone --recursive= or
+       =git submodule update --init --remote=, so that you obtain the
+       standard query libraries.
+
+  4. Open the starter workspace: File > Open Workspace > Browse to
+     =vscode-codeql-starter/vscode-codeql-starter.code-workspace=.
+
+  5. (optional) Download a sample database
+
+  6. Import the database into Visual Studio Code:
+     - Click the *CodeQL* icon in the left sidebar.
+     - Place your mouse over *Databases*, and click the + sign that
+       appears on the right.
+     - Choose the database on your filesystem.
+

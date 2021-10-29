@@ -1,4 +1,7 @@
 * overview
+  These are some lecture notes for the [[./codeql-workshop-go-bad-redirect-check.md]]
+  workshop.  They may be useful for other presenters.
+
   The gist https://gist.github.com/hohn/b4c32ce35b6bdc2ade04c911985c7d46
 
   * fix: Get("X-Redirect") is "X-Auth-Request-Redirect"

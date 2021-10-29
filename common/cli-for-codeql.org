@@ -1,0 +1,112 @@
+* Introduction
+  As for any compiler / libary pair, only certain versions of the codeql compiler
+  will work with certain versions of the libary.  To ensure compatibility, the
+  tools creating the db, the query writers (if any), and the query runners should
+  all sync up on a particular version.
+
+  In practice, this means installing a consistent set of command-line tools
+  across a group/organization.  For query developers, it means using those
+  versions with the VS Code plugin.
+
+  This document is a sample walkthrough of such a setup; specifically, it
+  illustrates using a codeql bundle to set up both the cli and VS Code.  All the
+  steps use unix shell commands, familiarity with the sh-family is assumed.  The
+  directory paths chosen here are short and (very likely) unique, so you should be
+  able to copy and paste most of the snippets without change.
+
+  There are two other approaches to installing and using the codeql
+  command-line tools and associated libraries.  The steps are similar to this
+  document, so we just mention them:
+  1. cli and library from files
+     - download a version of the cli
+     - download a /matching/ version of the ql library
+     - extract them in parallel directories
+     - add the cli directory to the =PATH=
+  2. cli from file, library from git clone
+     - download a version of the cli
+     - in a parallel directory, git clone the ql library
+     - check out a /matching/ version of the library (see the list via =git tag -l=)
+     - add the cli directory to the =PATH=
+  
+* CodeQL command-line tool setup via bundle
+  Choose one of the cli/library bundles from 
+  https://github.com/github/codeql-action/releases, then download and extract it.
+  To avoid picking up parallel bundles / ql libraries, add one level of directory
+  nesting.  We can also use this extra level to identify the codeql version as
+  follows. 
+  
+  #+BEGIN_SRC sh
+    # We're going to get version 2.6.3, so use that as prefix 
+    mkdir -p ~/qld1/codeql263
+    cd ~/qld1/codeql263
+
+    # Get the bundle
+    wget https://github.com/github/codeql-action/releases/download/codeql-bundle-20211005/codeql-bundle-osx64.tar.gz
+    # On mac, also do this:
+    /usr/bin/xattr -c codeql*.tar.gz
+    tar zxf codeql-bundle-osx64.tar.gz
+
+    # Verify the version
+    ./codeql/codeql --version
+
+    # Sanity check -- this should show no output
+    ./codeql/codeql resolve qlpacks |grep -v qld1/codeql263
+  #+END_SRC
+
+* Create database
+  Now we can build the ql database.  This requires some source code, we just clone a
+  simple C demo repository here and use the tools just installed.
+
+  Note that =build.sh= uses =clang=, so you may have to adjust this to actually
+  work.
+  #+BEGIN_SRC sh
+    # grab a sample repository
+    mkdir ~/t0 && cd ~/t0
+    git clone https://github.com/hohn/codeql-external-data
+
+    # Set PATH
+    export PATH=$HOME/qld1/codeql263/codeql:"$PATH"
+
+    # Build db via codeql database create
+    cd  ~/t0/codeql-external-data/
+    codeql database create -l cpp -s . -j 8 -v simple.db --command='./build.sh'
+
+    # Make sure the source is in it
+    unzip -v simple.db/src.zip | grep simple
+    : should be similar to
+    : 92  Defl:N ... .../t0/codeql-external-data/simple.c
+  #+END_SRC
+
+* Run a query against the database
+  With the database in place at =~/t0/codeql-external-data/simple.db=, create this
+  simple query file
+  #+BEGIN_SRC sh
+    cd  ~/t0/codeql-external-data/
+    cat > FindMain.ql <<EOF
+    /**
+     ,* @kind problem
+     ,* @id sample/find-main
+    ,*/
+
+    import cpp
+
+    from Function f
+    where f.getName() = "main"
+    select f, "the main function"
+    EOF
+  #+END_SRC
+
+  and run it via
+
+  #+BEGIN_SRC sh
+    cd  ~/t0/codeql-external-data/
+    codeql database analyze                         \
+           -v                                       \
+           --rerun                                  \
+           --format=sarif-latest                    \
+           --output cpp-main.sarif                  \
+           --                                       \
+           simple.db                                \
+           FindMain.ql
+  #+END_SRC
+
