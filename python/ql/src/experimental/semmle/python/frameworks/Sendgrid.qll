@@ -122,7 +122,6 @@ private module Sendgrid {
       )
       or
       exists(KeyValuePair content, Dict generalDict, KeyValuePair typePair, KeyValuePair valuePair |
-        // find L33
         content.getKey().(Str_).getS() = "content" and
         content.getValue().(List).getAnElt() = generalDict and
         // declare KeyValuePairs keys and values
