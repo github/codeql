@@ -206,13 +206,7 @@ class OperandNode extends Node, TOperandNode {
  * A `StoreNode` is a node that has been (or is about to be) the
  * source or target of a `storeStep`.
  */
-abstract class StoreNode extends Node {
-  /** Gets the underlying instruction, if any. */
-  Instruction getInstruction() { none() }
-
-  /** Gets the underlying operand, if any. */
-  Operand getOperand() { none() }
-
+abstract private class StoreNode extends Node {
   /** Holds if this node should receive flow from `addr`. */
   abstract predicate flowInto(Instruction addr);
 
@@ -220,7 +214,7 @@ abstract class StoreNode extends Node {
 
   /** Holds if this `StoreNode` is the root of the address computation used by a store operation. */
   predicate isTerminal() {
-    not exists(this.getAPredecessor()) and
+    not exists(this.getInner()) and
     not storeStep(this, _, _)
   }
 
@@ -233,20 +227,21 @@ abstract class StoreNode extends Node {
   /**
    * Gets the `StoreNode` that computes the address used by this `StoreNode`.
    */
-  abstract StoreNode getAPredecessor();
+  abstract StoreNode getInner();
 
-  /** The inverse of `StoreNode.getAPredecessor`. */
-  final StoreNode getASuccessor() { result.getAPredecessor() = this }
+  /** The inverse of `StoreNode.getInner`. */
+  final StoreNode getOuter() { result.getInner() = this }
 }
 
-private class StoreNodeInstr extends StoreNode, TStoreNodeInstr {
+class StoreNodeInstr extends StoreNode, TStoreNodeInstr {
   Instruction instr;
 
   StoreNodeInstr() { this = TStoreNodeInstr(instr) }
 
   override predicate flowInto(Instruction addr) { this.getInstruction() = addr }
 
-  override Instruction getInstruction() { result = instr }
+  /** Gets the underlying instruction. */
+  Instruction getInstruction() { result = instr }
 
   override Function getFunction() { result = this.getInstruction().getEnclosingFunction() }
 
@@ -262,19 +257,45 @@ private class StoreNodeInstr extends StoreNode, TStoreNodeInstr {
     Ssa::explicitWrite(_, result, this.getInstruction())
   }
 
-  override StoreNode getAPredecessor() {
+  override StoreNodeInstr getInner() {
     Ssa::addressFlow(result.getInstruction(), this.getInstruction())
   }
 }
 
-private class StoreNodeOperand extends StoreNode, TStoreNodeOperand {
+/**
+ * To avoid having `PostUpdateNode`s with multiple pre-update nodes (which can cause performance
+ * problems) we attach the `PostUpdateNode` that represent output arguments to an operand instead of
+ * an instruction.
+ *
+ * To see why we need this, consider the expression `b->set(new C())`. The IR of this expression looks
+ * like (simplified):
+ * ```
+ * r1(glval<unknown>) = FunctionAddress[set]            :
+ * r2(glval<unknown>) = FunctionAddress[operator new]   :
+ * r3(unsigned long)  = Constant[8]                     :
+ * r4(void *)         = Call[operator new]              : func:r2, 0:r3
+ * r5(C *)            = Convert                         : r4
+ * r6(glval<unknown>) = FunctionAddress[C]              :
+ * v1(void)           = Call[C]                         : func:r6, this:r5
+ * v2(void)           = Call[set]                       : func:r1, this:r0, 0:r5
+ * ```
+ *
+ * Notice that both the call to `C` and the call to `set` will have an argument that is the
+ * result of calling `operator new` (i.e., `r4`). If we only have `PostUpdateNode`s that are
+ * instructions, both `PostUpdateNode`s would have `r4` as their pre-update node.
+ *
+ * We avoid this issue by having a `PostUpdateNode` for each argument, and let the pre-update node of
+ * each `PostUpdateNode` be the argument _operand_, instead of the defining instruction.
+ */
+class StoreNodeOperand extends StoreNode, TStoreNodeOperand {
   ArgumentOperand operand;
 
   StoreNodeOperand() { this = TStoreNodeOperand(operand) }
 
   override predicate flowInto(Instruction addr) { this.getOperand().getDef() = addr }
 
-  override Operand getOperand() { result = operand }
+  /** Gets the underlying operand. */
+  Operand getOperand() { result = operand }
 
   override Function getFunction() { result = operand.getDef().getEnclosingFunction() }
 
@@ -288,7 +309,32 @@ private class StoreNodeOperand extends StoreNode, TStoreNodeOperand {
     Ssa::explicitWrite(_, result, operand.getDef())
   }
 
-  override StoreNode getAPredecessor() { operand.getDef() = result.getInstruction() }
+  /**
+   * The result of `StoreNodeOperand.getInner` is the `StoreNodeInstr` representation the instruction
+   * that defines this operand. This means the graph of `getInner` looks like this:
+   * ```
+   * I---I---I
+   *  \   \   \
+   *   O   O   O
+   * ```
+   * where each `StoreNodeOperand` "hooks" into the chain computed by `StoreNodeInstr.getInner`.
+   * This means that the chain of `getInner` calls on the argument `&o.f` on an expression
+   * like `func(&o.f)` is:
+   * ```
+   * r4---r3---r2
+   *  \
+   *   0:r4
+   * ```
+   * where the IR for `func(&o.f)` looks like (simplified):
+   * ```
+   * r1(glval<unknown>) = FunctionAddress[func]        :
+   * r2(glval<O>)       = VariableAddress[o]           :
+   * r3(glval<int>)     = FieldAddress[f]              : r2
+   * r4(int *)          = CopyValue                    : r3
+   * v1(void)           = Call[func]                   : func:r1, 0:r4
+   * ```
+   */
+  override StoreNodeInstr getInner() { operand.getDef() = result.getInstruction() }
 }
 
 /**
@@ -326,22 +372,20 @@ class ReadNode extends Node, TReadNode {
    * Gets a read node with an underlying instruction that is used by this
    * underlying instruction to compute an address of a load instruction.
    */
-  final ReadNode getAPredecessor() {
-    Ssa::addressFlow(result.getInstruction(), this.getInstruction())
-  }
+  final ReadNode getInner() { Ssa::addressFlow(result.getInstruction(), this.getInstruction()) }
 
-  /** The inverse of `ReadNode.getAPredecessor`. */
-  final ReadNode getASuccessor() { result.getAPredecessor() = this }
+  /** The inverse of `ReadNode.getInner`. */
+  final ReadNode getOuter() { result.getInner() = this }
 
   /** Holds if this read node computes a value that will not be used for any future read nodes. */
   final predicate isTerminal() {
-    not exists(this.getASuccessor()) and
+    not exists(this.getOuter()) and
     not readStep(this, _, _)
   }
 
   /** Holds if this read node computes a value that has not yet been used for any read operations. */
   final predicate isInitial() {
-    not exists(this.getAPredecessor()) and
+    not exists(this.getInner()) and
     not readStep(_, _, this)
   }
 }
@@ -787,7 +831,7 @@ private module ReadNodeFlow {
   /** Holds if the read node `nodeTo` should receive flow from the read node `nodeFrom`. */
   predicate flowThrough(ReadNode nodeFrom, ReadNode nodeTo) {
     not readStep(nodeFrom, _, _) and
-    nodeFrom.getASuccessor() = nodeTo
+    nodeFrom.getOuter() = nodeTo
   }
 
   /**
@@ -800,7 +844,7 @@ private module ReadNodeFlow {
     // Use-use flow to another use of the same variable instruction
     Ssa::ssaFlow(nFrom, nodeTo)
     or
-    not exists(nFrom.getAPredecessor()) and
+    not exists(nFrom.getInner()) and
     exists(Node store |
       Ssa::explicitWrite(_, store.asInstruction(), nFrom.getInstruction()) and
       Ssa::ssaFlow(store, nodeTo)
@@ -833,7 +877,7 @@ private module StoreNodeFlow {
   predicate flowThrough(StoreNode nFrom, StoreNode nodeTo) {
     // Flow through a post update node that doesn't need a store step.
     not storeStep(nFrom, _, _) and
-    nodeTo.getASuccessor() = nFrom
+    nodeTo.getOuter() = nFrom
   }
 
   /**
@@ -841,7 +885,7 @@ private module StoreNodeFlow {
    * This happens because we have traversed an entire chain of field dereferences
    * after a store operation.
    */
-  predicate flowOutOf(StoreNode nFrom, Node nodeTo) {
+  predicate flowOutOf(StoreNodeInstr nFrom, Node nodeTo) {
     nFrom.isTerminal() and
     Ssa::ssaFlow(nFrom, nodeTo)
   }

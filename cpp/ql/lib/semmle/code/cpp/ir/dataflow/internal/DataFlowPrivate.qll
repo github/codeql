@@ -187,7 +187,7 @@ predicate jumpStep(Node n1, Node n2) { none() }
  * Thus, `node2` references an object with a field `f` that contains the
  * value of `node1`.
  */
-predicate storeStep(StoreNode node1, FieldContent f, StoreNode node2) {
+predicate storeStep(StoreNodeInstr node1, FieldContent f, StoreNodeInstr node2) {
   exists(FieldAddressInstruction fai |
     node1.getInstruction() = fai and
     node2.getInstruction() = fai.getObjectAddress() and

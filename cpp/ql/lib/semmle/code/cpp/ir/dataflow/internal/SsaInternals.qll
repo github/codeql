@@ -327,7 +327,7 @@ private module Cached {
     )
   }
 
-  private predicate fromStoreNode(StoreNode nodeFrom, Node nodeTo) {
+  private predicate fromStoreNode(StoreNodeInstr nodeFrom, Node nodeTo) {
     // Def-use flow from a `StoreNode`.
     exists(IRBlock bb1, int i1, IRBlock bb2, int i2, Def def, Use use |
       nodeFrom.isTerminal() and
@@ -388,10 +388,10 @@ private module Cached {
       def.hasRankInBlock(block, rnk) and
       nodeTo.hasInputAtRankInBlock(block, rnk)
     |
-      exists(StoreNode store |
-        store = nodeFrom and
-        store.isTerminal() and
-        def.getInstruction() = store.getStoreInstruction()
+      exists(StoreNodeInstr storeNode |
+        storeNode = nodeFrom and
+        storeNode.isTerminal() and
+        def.getInstruction() = storeNode.getStoreInstruction()
       )
       or
       def.getInstruction() = nodeFrom.asInstruction()
@@ -466,7 +466,7 @@ private module Cached {
       operand.getDef() = readNode.getInstruction()
     )
     or
-    exists(StoreNode storeNode, Instruction def |
+    exists(StoreNodeInstr storeNode, Instruction def |
       storeNode = nTo and
       def = operand.getDef()
     |
