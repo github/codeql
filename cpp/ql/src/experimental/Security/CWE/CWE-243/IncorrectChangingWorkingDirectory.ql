@@ -36,6 +36,7 @@ predicate outExistsChdir(FunctionCall fcp) {
         fctmp2.getTarget().hasGlobalOrStdName("chdir") or
         fctmp2.getTarget().hasGlobalOrStdName("fchdir")
       ) and
+      // we are looking for a call containing calls chdir and fchdir
       fctmp2.getEnclosingStmt().getParentStmt*() = fctmp.getTarget().getEntryPoint().getChildStmt*()
     ) and
     (
