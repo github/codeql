@@ -15,6 +15,45 @@ private import SsaInternals as Ssa
 
 cached
 private module Cached {
+  /**
+   * The IR dataflow graph consists of the following nodes:
+   * - `InstructionNode`, which represents an `Instruction` in the graph.
+   * - `OperandNode`, which represents an `Operand` in the graph.
+   * - `VariableNode`, which is used to model global variables.
+   * - Two kinds of `StoreNode`s:
+   *   1. `StoreNodeInstr`, which represents the value of an address computed by an `Instruction` that
+   *      has been updated by a write operation.
+   *   2. `StoreNodeOperand`, which represents the value of an address in an `ArgumentOperand` after a
+   *      function call that may have changed the value.
+   * - `ReadNode`, which represents the result of reading a field of an object.
+   * - `SsaPhiNode`, which represents phi nodes as computed by the shared SSA library.
+   *
+   * The following section describes how flow is generally transferred between these nodes:
+   * - Flow between `InstructionNode`s and `OperandNode`s follow the def-use information as computed by
+   *   the IR. Because the IR compute must-alias information for memory operands, we only follow def-use
+   *   flow for register operands.
+   * - Flow can enter a `StoreNode` in two ways (both done in `StoreNode.flowInto`):
+   *   1. Flow is transferred from a `StoreValueOperand` to a `StoreNodeInstr`. Flow will then proceed
+   *      along the chain of addresses computed by `StoreNodeInstr.getInner` to identify field writes
+   *      and call `storeStep` accordingly (i.e., for an expression like `a.b.c = x`, we visit `c`, then
+   *      `b`, then `a`).
+   *   2. Flow is transfered from a `WriteSideEffectInstruction` to a `StoreNodeOperand` after flow
+   *      returns to a caller. Flow will then proceed to the defining instruction of the operand (because
+   *      the `StoreNodeInstr` computed by `StoreNodeOperand.getInner()` is the `StoreNode` containing
+   *      the defining instruction), and then along the chain computed by `StoreNodeInstr.getInner` like
+   *      above.
+   *   In both cases, flow leaves a `StoreNode` once the entire chain has been traversed, and the shared
+   *   SSA library is used to find the next use of the variable at the end of the chain.
+   * - Flow can enter a `ReadNode` through an `OperandNode` that represents an address of some variable.
+   *   Flow will then proceed along the chain of addresses computed by `ReadNode.getOuter` (i.e., for an
+   *   expression like `use(a.b.c)` we visit `a`, then `b`, then `c`) and call `readStep` accordingly.
+   *   Once the entire chain has been traversed, flow is transferred to the load instruction that reads
+   *   the final address of the chain.
+   * - Flow can enter a `SsaPhiNode` from an `InstructionNode`, a `StoreNode` or another `SsaPhiNode`
+   *   (in `toPhiNode`), depending on which node provided the previous definition of the underlying
+   *   variable. Flow leaves a `SsaPhiNode` (in `fromPhiNode`) by using the shared SSA library to
+   *   determine the next use of the variable.
+   */
   cached
   newtype TIRDataFlowNode =
     TInstructionNode(Instruction i) or
