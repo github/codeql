@@ -1,6 +1,3 @@
-# https://pythonhosted.org/Flask-Mail/
-# https://github.com/mattupstate/flask-mail/blob/1709c70d839a7cc7b1f7eeb97333b71cd420fe32/flask_mail.py#L239
-
 from flask import request, Flask
 from flask_mail import Mail, Message
 
@@ -17,6 +14,7 @@ def send():
 
   # The message can contain a body and/or HTML:
   msg.body = "plain-text body"
+  # The email's HTML can be set via msg.html or as an initialize argument when creating a Message object.
   msg.html = request.args["html"]
 
   mail.send(msg)

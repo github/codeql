@@ -1,5 +1,3 @@
-# https://www.twilio.com/blog/how-to-send-emails-in-python-with-sendgrid
-
 from flask import request, Flask
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail, Email, To, Content, MimeType
@@ -24,7 +22,6 @@ def send_post():
   subject = "Sending with SendGrid is Fun"
   content = Content("text/html", request.args["html_content"]) 
 
-  # https://github.com/sendgrid/sendgrid-python/blob/cf0924c35c37bbec8e5ca39e963a55f54f0eec11/sendgrid/helpers/mail/mime_type.py#L1
   content = Content(MimeType.html, request.args["html_content"]) 
 
   mail = Mail(from_email, to_email, subject, content)

@@ -1,5 +1,4 @@
 # This test checks that the developer doesn't pass a MIMEText instance to a MIMEMultipart message.
-# source꞉ https꞉//realpython.com/python-send-email/
 from flask import Flask, request
 import json
 import smtplib, ssl
@@ -10,9 +9,8 @@ app = Flask(__name__)
 
 @app.route("/")
 def email_person():
-    sender_email = "my@gmail.com"
-    receiver_email = "your@gmail.com"
-    password = input("Type your password and press enter:")
+    sender_email = "sender@gmail.com"
+    receiver_email = "receiver@example.com"
 
     message = MIMEMultipart("alternative")
     message["Subject"] = "multipart test"
@@ -22,7 +20,7 @@ def email_person():
     name = request.args['name']
     # Create the plain-text and HTML version of your message
     text = "hello there"
-    html = f"hello {name}" # here is the exploit. passing vulnerable data into the html portion of the email
+    html = f"hello {name}"  
 
     # Turn these into plain/html MIMEText objects
     part1 = MIMEText(text, "plain")
@@ -37,7 +35,7 @@ def email_person():
     context = ssl.create_default_context()
     server = smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context)
 
-    server.login(sender_email, password)
+    server.login(sender_email, "SERVER_PASSWORD")
     server.sendmail(
         sender_email, receiver_email, message.as_string()
     )
