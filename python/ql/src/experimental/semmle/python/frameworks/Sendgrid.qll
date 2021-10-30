@@ -103,14 +103,14 @@ private module Sendgrid {
       or
       exists(DataFlow::CallCfgNode contentCall, StrConst mime |
         contentCall = sendgridMailHelper().getMember("Content").getACall() and
-        mime.getText() = "text/html" and
+        mime.getText() = ["text/html", "text/x-amp-html"] and
         DataFlow::exprNode(mime).(DataFlow::LocalSourceNode).flowsTo(contentCall.getArg(0)) and
         result = contentCall.getArg(1)
       )
       or
       exists(DataFlow::CallCfgNode addContentCall, StrConst mime |
         addContentCall = sendgridMailInstance().getMember("add_content").getACall() and
-        mime.getText() = "text/html" and
+        mime.getText() = ["text/html", "text/x-amp-html"] and
         DataFlow::exprNode(mime).(DataFlow::LocalSourceNode).flowsTo(addContentCall.getArg(1)) and
         result = addContentCall.getArg(0)
       )
@@ -126,7 +126,7 @@ private module Sendgrid {
         content.getValue().(List).getAnElt() = generalDict and
         // declare KeyValuePairs keys and values
         typePair.getKey().(Str_).getS() = "type" and
-        typePair.getValue().(Str_).getS() = "text/html" and
+        typePair.getValue().(Str_).getS() = ["text/html", "text/x-amp-html"] and
         valuePair.getKey().(Str_).getS() = "value" and
         result.asExpr() = valuePair.getValue() and
         // since the pairs' keys are already set, this will set the items accordingly
