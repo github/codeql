@@ -459,15 +459,31 @@ private module Cached {
     )
   }
 
-  private predicate flowOutOfAddressStep(Operand operand, Node nTo) {
+  /**
+   * The role of `flowOutOfAddressStep` is to select the node for which we want dataflow to end up in
+   * after the shared SSA library's `adjacentDefRead` predicate has determined that `operand` is the
+   * next use of some variable.
+   *
+   * More precisely, this predicate holds if `operand` is an operand that represents an address, and:
+   * - `nodeTo` is the next load of that address, or
+   * - `nodeTo` is a `ReadNode` that uses the definition of `operand` to start a sequence of reads, or
+   * - `nodeTo` is the outer-most `StoreNode` that uses the address represented by `operand`. We obtain
+   *    use-use flow in this case since `StoreNodeFlow::flowOutOf` will then provide flow to the next of
+   *    of `operand`.
+   *
+   * There is one final (slightly annoying) case: When `operand` is a an argument to a modeled function
+   * without any `ReadSideEffect` (such as `std::move`). Here, the address flows from the argument to
+   * the return value, which might then be read later.
+   */
+  private predicate flowOutOfAddressStep(Operand operand, Node nodeTo) {
     // Flow into a read node
-    exists(ReadNode readNode | readNode = nTo |
+    exists(ReadNode readNode | readNode = nodeTo |
       readNode.isInitial() and
       operand.getDef() = readNode.getInstruction()
     )
     or
     exists(StoreNodeInstr storeNode, Instruction def |
-      storeNode = nTo and
+      storeNode = nodeTo and
       def = operand.getDef()
     |
       storeNode.isTerminal() and
@@ -477,48 +493,48 @@ private module Cached {
       explicitWrite(false, storeNode.getStoreInstruction(), def)
     )
     or
-    operand = getSourceAddressOperand(nTo.asInstruction())
+    operand = getSourceAddressOperand(nodeTo.asInstruction())
     or
     exists(ReturnIndirectionInstruction ret |
       ret.getSourceAddressOperand() = operand and
-      ret = nTo.asInstruction()
+      ret = nodeTo.asInstruction()
     )
     or
     exists(ReturnValueInstruction ret |
       ret.getReturnAddressOperand() = operand and
-      nTo.asInstruction() = ret
+      nodeTo.asInstruction() = ret
     )
     or
     exists(CallInstruction call, int index, ReadSideEffectInstruction read |
       call.getArgumentOperand(index) = operand and
       read = getSideEffectFor(call, index) and
-      nTo.asOperand() = read.getSideEffectOperand()
+      nodeTo.asOperand() = read.getSideEffectOperand()
     )
     or
     exists(CopyInstruction copy |
       not exists(getSourceAddressOperand(copy)) and
       copy.getSourceValueOperand() = operand and
-      flowOutOfAddressStep(copy.getAUse(), nTo)
+      flowOutOfAddressStep(copy.getAUse(), nodeTo)
     )
     or
     exists(ConvertInstruction convert |
       convert.getUnaryOperand() = operand and
-      flowOutOfAddressStep(convert.getAUse(), nTo)
+      flowOutOfAddressStep(convert.getAUse(), nodeTo)
     )
     or
     exists(CheckedConvertOrNullInstruction convert |
       convert.getUnaryOperand() = operand and
-      flowOutOfAddressStep(convert.getAUse(), nTo)
+      flowOutOfAddressStep(convert.getAUse(), nodeTo)
     )
     or
     exists(InheritanceConversionInstruction convert |
       convert.getUnaryOperand() = operand and
-      flowOutOfAddressStep(convert.getAUse(), nTo)
+      flowOutOfAddressStep(convert.getAUse(), nodeTo)
     )
     or
     exists(PointerArithmeticInstruction arith |
       arith.getLeftOperand() = operand and
-      flowOutOfAddressStep(arith.getAUse(), nTo)
+      flowOutOfAddressStep(arith.getAUse(), nodeTo)
     )
     or
     // Flow through a modeled function that has parameter -> return value flow.
@@ -531,7 +547,7 @@ private module Cached {
       not getSideEffectFor(call, index) instanceof ReadSideEffectInstruction and
       input.isParameter(index) and
       output.isReturnValue() and
-      flowOutOfAddressStep(call.getAUse(), nTo)
+      flowOutOfAddressStep(call.getAUse(), nodeTo)
     )
   }
 }
