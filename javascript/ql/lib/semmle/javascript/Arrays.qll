@@ -36,12 +36,18 @@ module ArrayTaintTracking {
       succ = call
     )
     or
-    // `array.filter(x => x)` keeps the taint
+    // `array.filter(x => x)` and `array.filter(x => !!x)` keeps the taint
     call.(DataFlow::MethodCallNode).getMethodName() = "filter" and
     pred = call.getReceiver() and
     succ = call and
-    exists(DataFlow::FunctionNode callback | callback = call.getArgument(0).getAFunctionValue() |
-      callback.getParameter(0).getALocalUse() = callback.getAReturn()
+    exists(DataFlow::FunctionNode callback, DataFlow::Node param, DataFlow::Node ret |
+      callback = call.getArgument(0).getAFunctionValue() and
+      param = callback.getParameter(0).getALocalUse() and
+      ret = callback.getAReturn()
+    |
+      param = ret
+      or
+      param = DataFlow::exprNode(ret.asExpr().(LogNotExpr).getOperand().(LogNotExpr).getOperand())
     )
     or
     // `array.reduce` with tainted value in callback
