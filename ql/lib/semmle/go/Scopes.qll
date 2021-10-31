@@ -377,6 +377,12 @@ class Function extends ValueEntity, @functionobject {
   /** Gets the declaration of this function, if any. */
   FuncDecl getFuncDecl() { none() }
 
+  predicate isVariadic() {
+    this.(BuiltinFunction).getName() = ["append", "make", "print", "println"]
+    or
+    this.(DeclaredFunction).getFuncDecl().isVariadic()
+  }
+
   /** Holds if this function has no observable side effects. */
   predicate mayHaveSideEffects() { none() }
 
