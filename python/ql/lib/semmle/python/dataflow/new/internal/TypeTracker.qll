@@ -475,7 +475,7 @@ class TypeBackTracker extends TTypeBackTracker {
    */
   TypeTracker getACompatibleTypeTracker() {
     exists(boolean hasCall | result = MkTypeTracker(hasCall, content) |
-      hasCall = false or hasReturn() = false
+      hasCall = false or this.hasReturn() = false
     )
   }
 }
