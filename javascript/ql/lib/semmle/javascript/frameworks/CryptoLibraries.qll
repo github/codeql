@@ -141,14 +141,9 @@ private module NodeJSCrypto {
        *       Also matches `createHash`, `createHmac`, `createSign` instead of `createCipher`.
        */
 
-      exists(DataFlow::SourceNode mod, string createSuffix |
-        createSuffix = "Hash" or
-        createSuffix = "Hmac" or
-        createSuffix = "Sign" or
-        createSuffix = "Cipher"
-      |
+      exists(DataFlow::SourceNode mod |
         mod = DataFlow::moduleImport("crypto") and
-        this = mod.getAMemberCall("create" + createSuffix) and
+        this = mod.getAMemberCall("create" + ["Hash", "Hmac", "Sign", "Cipher"]) and
         algorithm.matchesName(getArgument(0).getStringValue())
       )
     }
