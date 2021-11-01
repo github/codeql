@@ -160,7 +160,20 @@
 | exprs.kt:84:29:84:29 | (...)... | CastExpr |
 | exprs.kt:84:29:84:29 | Rectangle | TypeAccess |
 | exprs.kt:84:29:84:29 | r | VarAccess |
+| exprs.kt:88:1:90:1 | <obinit>(...) | MethodAccess |
+| exprs.kt:88:1:90:1 | new Enum(...) | ClassInstanceExpr |
+| exprs.kt:92:1:96:1 | <obinit>(...) | MethodAccess |
+| exprs.kt:92:1:96:1 | new Enum(...) | ClassInstanceExpr |
+| exprs.kt:92:18:92:29 | ...=... | AssignExpr |
+| exprs.kt:92:18:92:29 | rgb | VarAccess |
+| exprs.kt:92:18:92:29 | rgb | VarAccess |
+| exprs.kt:99:5:99:31 | south | LocalVariableDeclExpr |
+| exprs.kt:100:5:100:27 | green | LocalVariableDeclExpr |
+| file://:0:0:0:0 | Color | TypeAccess |
+| file://:0:0:0:0 | Direction | TypeAccess |
 | file://:0:0:0:0 | q | VarAccess |
 | file://:0:0:0:0 | q | VarAccess |
 | file://:0:0:0:0 | tmp0 | LocalVariableDeclExpr |
 | file://:0:0:0:0 | variable | VarAccess |
+| file://:0:0:0:0 | void | TypeAccess |
+| file://:0:0:0:0 | void | TypeAccess |
