@@ -292,6 +292,7 @@ open class KotlinFileExtractor(
                 // Leaving this intentionally empty. init blocks are extracted during class extraction.
             }
             is IrProperty -> extractProperty(declaration, parentId)
+            is IrEnumEntry -> extractEnumEntry(declaration, parentId)
             else -> logger.warnElement(Severity.ErrorSevere, "Unrecognised IrDeclaration: " + declaration.javaClass, declaration)
         }
     }
@@ -976,6 +977,25 @@ class X {
             tw.writeFields(id, p.name.asString(), typeId, parentId, id)
             tw.writeHasLocation(id, locId)
         }
+    }
+
+    private fun getEnumEntryLabel(ee: IrEnumEntry) : String {
+        val parentId = useDeclarationParent(ee.parent)
+        val label = "@\"field;{$parentId};${ee.name.asString()}\""
+        return label
+    }
+
+    fun useEnumEntry(ee: IrEnumEntry): Label<out DbField> {
+        var label = getEnumEntryLabel(ee)
+        val id: Label<DbField> = tw.getLabelFor(label)
+        return id
+    }
+
+    fun extractEnumEntry(ee: IrEnumEntry, parentId: Label<out DbReftype>) {
+        val id = useEnumEntry(ee)
+        val locId = tw.getLocation(ee)
+        tw.writeFields(id, ee.name.asString(), parentId, parentId, id)
+        tw.writeHasLocation(id, locId)
     }
 
     fun extractBody(b: IrBody, callable: Label<out DbCallable>) {
