@@ -731,7 +731,7 @@ class CharacterLiteral extends Literal, @characterliteral {
    * this literal. The result is the same as if the Java code had cast
    * the character to an `int`.
    */
-  int getCodePointValue() { result = any(int i | i.toUnicode() = getValue()) }
+  int getCodePointValue() { result.toUnicode() = this.getValue() }
 }
 
 /**
