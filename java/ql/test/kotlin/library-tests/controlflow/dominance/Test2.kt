@@ -26,10 +26,13 @@ public class Test2 {
         var y = x
 		while(y >= 0) {
 			if (y > 10) {
+/*
+TODO
 				try {
 					val n: BigInteger = BigInteger( "wrong" );
 				} catch (e: NumberFormatException) { // unchecked exception
 				}
+*/
 			}
 			y--
 		}
