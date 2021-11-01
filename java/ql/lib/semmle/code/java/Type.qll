@@ -1123,7 +1123,10 @@ predicate erasedHaveIntersection(RefType t1, RefType t2) {
   t2 = erase(_)
 }
 
-/** An integral type, which may be either a primitive or a boxed type. */
+/**
+ * An integral type, which may be either a primitive or a boxed type.
+ * This includes the types `char` and `Character`.
+ */
 class IntegralType extends Type {
   IntegralType() {
     exists(string name |
