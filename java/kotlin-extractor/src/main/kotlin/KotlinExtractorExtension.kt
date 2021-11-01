@@ -1419,6 +1419,17 @@ class X {
                 val exprParent = parent.expr(e, callable)
                 extractCall(e, callable, exprParent.parent, exprParent.idx)
             }
+            is IrStringConcatenation -> {
+                val exprParent = parent.expr(e, callable)
+                val id = tw.getFreshIdLabel<DbStringtemplateexpr>()
+                val type = useType(e.type)
+                val locId = tw.getLocation(e)
+                tw.writeExprs_stringtemplateexpr(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
+                tw.writeHasLocation(id, locId)
+                e.arguments.forEachIndexed { i, a ->
+                    extractExpressionExpr(a, callable, id, i)
+                }
+            }
             is IrConst<*> -> {
                 val exprParent = parent.expr(e, callable)
                 val v = e.value

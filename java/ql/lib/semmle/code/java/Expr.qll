@@ -2246,3 +2246,24 @@ class StmtExpr extends Expr, @stmtexpr {
 
   override string getAPrimaryQlClass() { result = "StmtExpr" }
 }
+
+/**
+ * A Kotlin string template expression. For example, `"foo${bar}baz"`.
+ */
+class StringTemplateExpr extends Expr, @stringtemplateexpr {
+  /**
+   * Gets the `i`th component of this string template.
+   *
+   * For example, in the string template `"foo${bar}baz"`, the 0th
+   * component is the string literal `"foo"`, the 1st component is
+   * the variable access `bar`, and the 2nd component is the string
+   * literal `"bar"`.
+   */
+  Expr getComponent(int i) { result.isNthChildOf(this, i) }
+
+  override string toString() { result = "\"...\"" }
+
+  override string getHalsteadID() { result = "StringTemplateExpr" }
+
+  override string getAPrimaryQlClass() { result = "StringTemplateExpr" }
+}
