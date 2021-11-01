@@ -46,7 +46,7 @@ private module AlgorithmNames {
     name = ["ARGON2", "PBKDF2", "BCRYPT", "SCRYPT"]
   }
 
-  predicate isWeakPasswordHashingAlgorithm(string name) { none() }
+  predicate isWeakPasswordHashingAlgorithm(string name) { name = "EVPKDF" }
 }
 
 private import AlgorithmNames

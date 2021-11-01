@@ -330,6 +330,35 @@ private module CryptoJS {
       )
     }
   }
+
+  private class CreateKey extends CryptographicKeyCreation, DataFlow::CallNode {
+    string algorithm;
+    int optionArg;
+
+    CreateKey() {
+      // var key = CryptoJS.PBKDF2(password, salt, { keySize: 8 });
+      this =
+        getAlgorithmExpr(any(CryptographicAlgorithm algo | algo.getName() = algorithm)).getACall() and
+      optionArg = 2
+      or
+      // var key = CryptoJS.algo.PBKDF2.create({ keySize: 8 });
+      this =
+        DataFlow::moduleMember("crypto-js", "algo")
+            .getAPropertyRead(algorithm)
+            .getAMethodCall("create") and
+      optionArg = 0
+    }
+
+    override CryptographicAlgorithm getAlgorithm() { result.matchesName(algorithm) }
+
+    override int getSize() {
+      result = getOptionArgument(optionArg, "keySize").getIntValue() * 32 // size is in words
+      or
+      result = getArgument(optionArg).getIntValue() * 32 // size is in words
+    }
+
+    override predicate isSymmetricKey() { any() }
+  }
 }
 
 /**
