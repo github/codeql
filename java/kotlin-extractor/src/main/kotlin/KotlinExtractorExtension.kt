@@ -690,10 +690,10 @@ class X {
             }
         }
 
-        extractClassCommon(c, id)
         c.typeParameters.map { extractTypeParameter(it) }
         c.declarations.map { extractDeclaration(it, id) }
         extractObjectInitializerFunction(c, id)
+        extractClassCommon(c, id)
 
         return id
     }
@@ -724,7 +724,6 @@ class X {
                 tw.writeIsEnumType(classId)
             }
         }
-        extractClassCommon(c, id)
 
         for ((idx, arg) in typeArgs.withIndex()) {
             val argId = getTypeArgumentLabel(arg, c)
@@ -733,6 +732,7 @@ class X {
         tw.writeIsParameterized(id)
         val unbound = useClassSource(c)
         tw.writeErasure(id, unbound)
+        extractClassCommon(c, id)
 
         return id
     }
