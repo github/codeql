@@ -193,12 +193,12 @@ class ExternalClassExtractor(val logger: FileLogger, val sourceFilePath: String,
                     locker.getTrapFileManager().useAC { manager ->
                         if(manager == null) {
                             logger.info("Skipping extracting class ${irClass.name}")
-                            return
-                        }
-                        GZIPOutputStream(manager.getFile().outputStream()).bufferedWriter().use { trapFileBW ->
-                            val tw = ClassFileTrapWriter(TrapLabelManager(), trapFileBW, getIrClassBinaryPath(irClass))
-                            val fileExtractor = KotlinFileExtractor(logger, tw, manager, this, pluginContext)
-                            fileExtractor.extractClassSource(irClass)
+                        } else {
+                            GZIPOutputStream(manager.getFile().outputStream()).bufferedWriter().use { trapFileBW ->
+                                val tw = ClassFileTrapWriter(TrapLabelManager(), trapFileBW, getIrClassBinaryPath(irClass))
+                                val fileExtractor = KotlinFileExtractor(logger, tw, manager, this, pluginContext)
+                                fileExtractor.extractClassSource(irClass)
+                            }
                         }
                     }
                 }
