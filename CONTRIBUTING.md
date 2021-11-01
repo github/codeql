@@ -45,7 +45,7 @@ Follow the steps below to help other users understand what your query does, and 
 4. **Make sure the `select` statement is compatible with the query type**
 
    The `select` statement of your query must be compatible with the query type (determined by the `@kind` metadata property) for alert or path results to be displayed correctly in LGTM and Visual Studio Code.
-   For more information on `select` statement format, see [Introduction to query files](https://codeql.github.com/docs/writing-codeql-queries/introduction-to-ql/) on help.semmle.com.
+   For more information on `select` statement format, see [About CodeQL queries](https://codeql.github.com/docs/writing-codeql-queries/about-codeql-queries/#select-clause) on codeql.github.com.
 
 5. **Write a query help file**
 
