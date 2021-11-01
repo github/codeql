@@ -1,0 +1,2 @@
+| tst.js:3:14:3:71 | crypto. ... 1024 }) | Creation of an asymmetric RSA key uses 1024 bits, which is below 2048 and considered breakable. |
+| tst.js:7:14:7:59 | crypto. ... : 64 }) | Creation of an symmetric key uses 64 bits, which is below 128 and considered breakable. |

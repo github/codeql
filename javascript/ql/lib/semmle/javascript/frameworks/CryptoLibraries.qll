@@ -26,6 +26,26 @@ abstract class CryptographicOperation extends Expr {
 abstract class CryptographicKey extends DataFlow::ValueNode { }
 
 /**
+ * The creation of a cryptographic key.
+ */
+abstract class CryptographicKeyCreation extends DataFlow::Node {
+  /**
+   * Gets the algorithm used to create the key.
+   */
+  abstract CryptographicAlgorithm getAlgorithm();
+
+  /**
+   * Gets the size of the key.
+   */
+  abstract int getSize();
+
+  /**
+   * Gets whether the key is symmetric.
+   */
+  abstract predicate isSymmetricKey();
+}
+
+/**
  * A key used in a cryptographic algorithm, viewed as a `CredentialsExpr`.
  */
 class CryptographicKeyCredentialsExpr extends CredentialsExpr {
@@ -149,6 +169,39 @@ private module NodeJSCrypto {
     }
 
     CryptographicAlgorithm getAlgorithm() { result = algorithm }
+  }
+
+  private class CreateKey extends CryptographicKeyCreation, DataFlow::CallNode {
+    boolean symmetric;
+
+    CreateKey() {
+      // crypto.generateKey(type, options, callback)
+      // crypto.generateKeyPair(type, options, callback)
+      // crypto.generateKeyPairSync(type, options)
+      // crypto.generateKeySync(type, options)
+      exists(DataFlow::SourceNode mod, string keyType |
+        keyType = "Key" and symmetric = true
+        or
+        keyType = "KeyPair" and symmetric = false
+      |
+        mod = DataFlow::moduleImport("crypto") and
+        this = mod.getAMemberCall("generate" + keyType + ["", "Sync"])
+      )
+    }
+
+    override CryptographicAlgorithm getAlgorithm() {
+      result.matchesName(getArgument(0).getStringValue())
+    }
+
+    override int getSize() {
+      symmetric = true and
+      result = getOptionArgument(1, "length").getIntValue()
+      or
+      symmetric = false and
+      result = getOptionArgument(1, "modulusLength").getIntValue()
+    }
+
+    override predicate isSymmetricKey() { symmetric = true }
   }
 
   private class Apply extends CryptographicOperation, MethodCallExpr {
