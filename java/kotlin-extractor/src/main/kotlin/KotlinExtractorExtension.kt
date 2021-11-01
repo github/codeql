@@ -525,7 +525,7 @@ class X {
     private fun extractTypeParameter(tp: IrTypeParameter): Label<out DbTypevariable> {
         val id = tw.getLabelFor<DbTypevariable>(getTypeParameterLabel(tp))
 
-        val parentId: Label<out DbTypeorcallable> = when (val parent = tp.parent) {
+        val parentId: Label<out DbClassorinterfaceorcallable> = when (val parent = tp.parent) {
             is IrFunction -> useFunction(parent)
             is IrClass -> useClassSource(parent)
             else -> {
