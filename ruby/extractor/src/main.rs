@@ -1,49 +1,13 @@
 mod extractor;
+mod trap;
 
 extern crate num_cpus;
 
-use flate2::write::GzEncoder;
 use rayon::prelude::*;
 use std::fs;
-use std::io::{BufRead, BufWriter};
+use std::io::BufRead;
 use std::path::{Path, PathBuf};
 use tree_sitter::{Language, Parser, Range};
-
-enum TrapCompression {
-    None,
-    Gzip,
-}
-
-impl TrapCompression {
-    fn from_env() -> TrapCompression {
-        match std::env::var("CODEQL_RUBY_TRAP_COMPRESSION") {
-            Ok(method) => match TrapCompression::from_string(&method) {
-                Some(c) => c,
-                None => {
-                    tracing::error!("Unknown compression method '{}'; using gzip.", &method);
-                    TrapCompression::Gzip
-                }
-            },
-            // Default compression method if the env var isn't set:
-            Err(_) => TrapCompression::Gzip,
-        }
-    }
-
-    fn from_string(s: &str) -> Option<TrapCompression> {
-        match s.to_lowercase().as_ref() {
-            "none" => Some(TrapCompression::None),
-            "gzip" => Some(TrapCompression::Gzip),
-            _ => None,
-        }
-    }
-
-    fn extension(&self) -> &str {
-        match self {
-            TrapCompression::None => "trap",
-            TrapCompression::Gzip => "trap.gz",
-        }
-    }
-}
 
 /**
  * Gets the number of threads the extractor should use, by reading the
@@ -119,7 +83,7 @@ fn main() -> std::io::Result<()> {
         .value_of("output-dir")
         .expect("missing --output-dir");
     let trap_dir = PathBuf::from(trap_dir);
-    let trap_compression = TrapCompression::from_env();
+    let trap_compression = trap::Compression::from_env("CODEQL_RUBY_TRAP_COMPRESSION");
 
     let file_list = matches.value_of("file-list").expect("missing --file-list");
     let file_list = fs::File::open(file_list)?;
@@ -142,7 +106,7 @@ fn main() -> std::io::Result<()> {
             let src_archive_file = path_for(&src_archive_dir, &path, "");
             let mut source = std::fs::read(&path)?;
             let code_ranges;
-            let mut trap_writer = extractor::new_trap_writer();
+            let mut trap_writer = trap::Writer::new();
             if path.extension().map_or(false, |x| x == "erb") {
                 tracing::info!("scanning: {}", path.display());
                 extractor::extract(
@@ -187,28 +151,20 @@ fn main() -> std::io::Result<()> {
         .expect("failed to extract files");
 
     let path = PathBuf::from("extras");
-    let mut trap_writer = extractor::new_trap_writer();
-    trap_writer.populate_empty_location();
+    let mut trap_writer = trap::Writer::new();
+    extractor::populate_empty_location(&mut trap_writer);
     write_trap(&trap_dir, path, trap_writer, &trap_compression)
 }
 
 fn write_trap(
     trap_dir: &Path,
     path: PathBuf,
-    trap_writer: extractor::TrapWriter,
-    trap_compression: &TrapCompression,
+    trap_writer: trap::Writer,
+    trap_compression: &trap::Compression,
 ) -> std::io::Result<()> {
     let trap_file = path_for(trap_dir, &path, trap_compression.extension());
     std::fs::create_dir_all(&trap_file.parent().unwrap())?;
-    let trap_file = std::fs::File::create(&trap_file)?;
-    let mut trap_file = BufWriter::new(trap_file);
-    match trap_compression {
-        TrapCompression::None => trap_writer.output(&mut trap_file),
-        TrapCompression::Gzip => {
-            let mut compressed_writer = GzEncoder::new(trap_file, flate2::Compression::fast());
-            trap_writer.output(&mut compressed_writer)
-        }
-    }
+    trap_writer.write_to_file(&trap_file, trap_compression)
 }
 
 fn scan_erb(
