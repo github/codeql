@@ -168,7 +168,9 @@
 | exprs.kt:92:18:92:29 | rgb | VarAccess |
 | exprs.kt:92:18:92:29 | rgb | VarAccess |
 | exprs.kt:99:5:99:31 | south | LocalVariableDeclExpr |
+| exprs.kt:99:27:99:31 | SOUTH | VarAccess |
 | exprs.kt:100:5:100:27 | green | LocalVariableDeclExpr |
+| exprs.kt:100:23:100:27 | GREEN | VarAccess |
 | file://:0:0:0:0 | Color | TypeAccess |
 | file://:0:0:0:0 | Direction | TypeAccess |
 | file://:0:0:0:0 | q | VarAccess |

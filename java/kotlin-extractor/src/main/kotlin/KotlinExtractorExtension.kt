@@ -1520,6 +1520,17 @@ class X {
                     tw.writeVariableBinding(id, vId)
                 }
             }
+            is IrGetEnumValue -> {
+                val exprParent = parent.expr(e, callable)
+                val id = tw.getFreshIdLabel<DbVaraccess>()
+                val type = useType(e.type)
+                val locId = tw.getLocation(e)
+                tw.writeExprs_varaccess(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
+                tw.writeHasLocation(id, locId)
+                val owner = e.symbol.owner
+                val vId = useEnumEntry(owner)
+                tw.writeVariableBinding(id, vId)
+            }
             is IrSetValue -> {
                 val exprParent = parent.expr(e, callable)
                 val id = tw.getFreshIdLabel<DbAssignexpr>()
