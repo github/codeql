@@ -33,6 +33,8 @@ class PathNotNormalizedConfiguration extends TaintTracking::Configuration {
   }
 
   override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
+    guard instanceof Path::SafeAccessCheck
+    or
     guard instanceof SanitizerGuard
   }
 }
@@ -61,6 +63,8 @@ class FirstNormalizationConfiguration extends TaintTracking::Configuration {
   override predicate isSanitizerOut(DataFlow::Node node) { node instanceof Path::PathNormalization }
 
   override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
+    guard instanceof Path::SafeAccessCheck
+    or
     guard instanceof SanitizerGuard
   }
 }
