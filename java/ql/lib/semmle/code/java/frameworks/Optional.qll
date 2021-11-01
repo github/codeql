@@ -22,9 +22,9 @@ private class OptionalModel extends SummaryModelCsv {
         "java.util;Optional;false;orElse;;;Element of Argument[-1];ReturnValue;value",
         "java.util;Optional;false;orElse;;;Argument[0];ReturnValue;value",
         "java.util;Optional;false;orElseGet;;;Element of Argument[-1];ReturnValue;value",
-        "java.util;Optional;false;orElseGet;;;ReturnValue of Argument[0];ReturnValue;value"
+        "java.util;Optional;false;orElseGet;;;ReturnValue of Argument[0];ReturnValue;value",
         "java.util;Optional;false;orElseThrow;;;Element of Argument[-1];ReturnValue;value",
-        "java.util;Optional;false;stream;;;Element of Argument[-1];Element of ReturnValue;value",
+        "java.util;Optional;false;stream;;;Element of Argument[-1];Element of ReturnValue;value"
       ]
   }
 }
