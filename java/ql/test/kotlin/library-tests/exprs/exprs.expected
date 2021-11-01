@@ -70,7 +70,22 @@
 | exprs.kt:47:5:47:28 | str3 | LocalVariableDeclExpr |
 | exprs.kt:47:25:47:28 | null | NullLiteral |
 | exprs.kt:48:5:48:48 | str4 | LocalVariableDeclExpr |
+| exprs.kt:48:24:48:48 | "..." | StringTemplateExpr |
+| exprs.kt:48:25:48:28 | foo  | StringLiteral |
+| exprs.kt:48:30:48:33 | str1 | VarAccess |
+| exprs.kt:48:34:48:38 |  bar  | StringLiteral |
+| exprs.kt:48:40:48:43 | str2 | VarAccess |
+| exprs.kt:48:44:48:47 |  baz | StringLiteral |
 | exprs.kt:49:5:49:66 | str5 | LocalVariableDeclExpr |
+| exprs.kt:49:24:49:66 | "..." | StringTemplateExpr |
+| exprs.kt:49:25:49:28 | foo  | StringLiteral |
+| exprs.kt:49:31:49:34 | str1 | VarAccess |
+| exprs.kt:49:31:49:41 | ... + ... | AddExpr |
+| exprs.kt:49:38:49:41 | str2 | VarAccess |
+| exprs.kt:49:43:49:47 |  bar  | StringLiteral |
+| exprs.kt:49:50:49:60 | ... + ... | AddExpr |
+| exprs.kt:49:57:49:60 | str1 | VarAccess |
+| exprs.kt:49:62:49:65 |  baz | StringLiteral |
 | exprs.kt:50:5:50:26 | str6 | LocalVariableDeclExpr |
 | exprs.kt:50:16:50:19 | str1 | VarAccess |
 | exprs.kt:50:16:50:26 | ... + ... | AddExpr |
