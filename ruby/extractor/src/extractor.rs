@@ -1,6 +1,6 @@
 use crate::trap;
+use indexmap::IndexMap;
 use node_types::{EntryKind, Field, NodeTypeMap, Storage, TypeName};
-use std::collections::BTreeMap as Map;
 use std::fmt;
 use std::path::Path;
 
@@ -407,7 +407,7 @@ impl<'a> Visitor<'a> {
         child_nodes: &[ChildNode],
         parent_id: trap::Label,
     ) -> Option<Vec<trap::Arg>> {
-        let mut map: Map<&Option<String>, (&Field, Vec<trap::Arg>)> = Map::new();
+        let mut map: IndexMap<&Option<String>, (&Field, Vec<trap::Arg>)> = IndexMap::new();
         for field in fields {
             map.insert(&field.name, (field, Vec::new()));
         }

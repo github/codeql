@@ -1,22 +1,22 @@
 use std::borrow::Cow;
-use std::collections::BTreeMap;
 use std::fmt;
 use std::io::BufWriter;
 use std::path::Path;
 
 use flate2::write::GzEncoder;
+use indexmap::IndexMap;
 
 pub struct Writer {
     /// Labels that should be assigned fresh ids, e.g. `#123=*`.
     fresh_ids: Vec<Label>,
 
     /// Labels that should be assigned trap keys, e.g. `#7=@"foo"`.
-    global_keys: BTreeMap<String, Label>,
+    global_keys: IndexMap<String, Label>,
 
     /// Database rows to emit. Each key is the tuple name, each value is a list.
     /// Each member of *that* list represents an instance of that tuple,
     /// containing a list of the arguments/column values.
-    tuples: BTreeMap<String, Vec<Vec<Arg>>>,
+    tuples: IndexMap<String, Vec<Vec<Arg>>>,
 
     /// A counter for generating fresh labels
     counter: u32,
@@ -26,8 +26,8 @@ impl Writer {
     pub fn new() -> Writer {
         Writer {
             fresh_ids: Vec::new(),
-            tuples: BTreeMap::new(),
-            global_keys: BTreeMap::new(),
+            tuples: IndexMap::new(),
+            global_keys: IndexMap::new(),
             counter: 0,
         }
     }
