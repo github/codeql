@@ -154,11 +154,23 @@ class UpperBoundCheckGuard extends DataFlow::BarrierGuard, DataFlow::RelationalC
    */
   predicate isBoundFor(int bitSize, boolean isSigned) {
     bitSize = [8, 16, 32] and
-    exists(int strictnessOffset |
+    exists(float bound, float strictnessOffset |
       if expr.isStrict() then strictnessOffset = 1 else strictnessOffset = 0
     |
-      expr.getAnOperand().getExactValue().toFloat() - strictnessOffset <=
-        getMaxIntValue(bitSize, isSigned)
+      (
+        bound = expr.getAnOperand().getExactValue().toFloat()
+        or
+        exists(DeclaredConstant maxint | maxint.hasQualifiedName("math", "MaxInt") |
+          expr.getAnOperand() = maxint.getAReference() and
+          bound = getMaxIntValue(32, true)
+        )
+        or
+        exists(DeclaredConstant maxuint | maxuint.hasQualifiedName("math", "MaxUint") |
+          expr.getAnOperand() = maxuint.getAReference() and
+          bound = getMaxIntValue(32, false)
+        )
+      ) and
+      bound - strictnessOffset <= getMaxIntValue(bitSize, isSigned)
     )
   }
 

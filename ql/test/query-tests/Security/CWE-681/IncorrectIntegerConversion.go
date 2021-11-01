@@ -392,7 +392,7 @@ func parsePositiveInt1(value string) (int, error) {
 	case i64 > math.MaxInt:
 		return 0, fmt.Errorf("unable to parse positive integer %q: overflow", value)
 	default:
-		return int(i64), nil // $ SPURIOUS: hasValueFlow="type conversion"
+		return int(i64), nil
 	}
 }
 
@@ -407,5 +407,5 @@ func parsePositiveInt2(value string) (int, error) {
 	if i64 > math.MaxInt {
 		return 0, fmt.Errorf("unable to parse positive integer %q: overflow", value)
 	}
-	return int(i64), nil // $ SPURIOUS: hasValueFlow="type conversion"
+	return int(i64), nil
 }
