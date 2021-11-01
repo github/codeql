@@ -143,7 +143,10 @@ class ConversionWithoutBoundsCheckConfig extends TaintTracking::Configuration {
 
 /** An upper bound check that compares a variable to a constant value. */
 class UpperBoundCheckGuard extends DataFlow::BarrierGuard, DataFlow::RelationalComparisonNode {
-  UpperBoundCheckGuard() { count(expr.getAnOperand().getIntValue()) = 1 }
+  UpperBoundCheckGuard() {
+    count(expr.getAnOperand().getExactValue()) = 1 and
+    expr.getAnOperand().getType().getUnderlyingType() instanceof IntegerType
+  }
 
   /**
    * Gets the constant value which this upper bound check ensures the
@@ -159,7 +162,7 @@ class UpperBoundCheckGuard extends DataFlow::BarrierGuard, DataFlow::RelationalC
 
   override predicate checks(Expr e, boolean branch) {
     this.leq(branch, DataFlow::exprNode(e), _, _) and
-    not exists(e.getIntValue())
+    not e.isConst()
   }
 }
 
