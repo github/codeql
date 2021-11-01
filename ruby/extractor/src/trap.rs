@@ -1,25 +1,34 @@
 use std::borrow::Cow;
+use std::collections::BTreeMap;
 use std::fmt;
-use std::io::{BufWriter, Write};
+use std::io::BufWriter;
 use std::path::Path;
 
 use flate2::write::GzEncoder;
 
 pub struct Writer {
-    /// The accumulated trap entries
-    trap_output: Vec<Entry>,
+    /// Labels that should be assigned fresh ids, e.g. `#123=*`.
+    fresh_ids: Vec<Label>,
+
+    /// Labels that should be assigned trap keys, e.g. `#7=@"foo"`.
+    global_keys: BTreeMap<String, Label>,
+
+    /// Database rows to emit. Each key is the tuple name, each value is a list.
+    /// Each member of *that* list represents an instance of that tuple,
+    /// containing a list of the arguments/column values.
+    tuples: BTreeMap<String, Vec<Vec<Arg>>>,
+
     /// A counter for generating fresh labels
     counter: u32,
-    /// cache of global keys
-    global_keys: std::collections::HashMap<String, Label>,
 }
 
 impl Writer {
     pub fn new() -> Writer {
         Writer {
+            fresh_ids: Vec::new(),
+            tuples: BTreeMap::new(),
+            global_keys: BTreeMap::new(),
             counter: 0,
-            trap_output: Vec::new(),
-            global_keys: std::collections::HashMap::new(),
         }
     }
 
@@ -34,79 +43,58 @@ impl Writer {
     pub fn fresh_id(&mut self) -> Label {
         let label = Label(self.counter);
         self.counter += 1;
-        self.trap_output.push(Entry::FreshId(label));
+        self.fresh_ids.push(label);
         label
     }
 
-    pub fn global_id(&mut self, key: &str) -> (Label, bool) {
-        if let Some(label) = self.global_keys.get(key) {
+    pub fn global_id(&mut self, key: String) -> (Label, bool) {
+        if let Some(label) = self.global_keys.get(&key) {
             return (*label, false);
         }
         let label = Label(self.counter);
         self.counter += 1;
-        self.global_keys.insert(key.to_owned(), label);
-        self.trap_output
-            .push(Entry::MapLabelToKey(label, key.to_owned()));
+        self.global_keys.insert(key, label);
         (label, true)
     }
 
     pub fn add_tuple(&mut self, table_name: &str, args: Vec<Arg>) {
-        self.trap_output
-            .push(Entry::GenericTuple(table_name.to_owned(), args))
+        self.tuples
+            .entry(table_name.to_owned())
+            .or_insert_with(Vec::new)
+            .push(args);
     }
 
-    pub fn comment(&mut self, text: String) {
-        self.trap_output.push(Entry::Comment(text));
+    fn write<T: std::io::Write>(&self, dest: &mut T) -> std::io::Result<()> {
+        for label in &self.fresh_ids {
+            writeln!(dest, "{}=*", label)?;
+        }
+        for (key, label) in &self.global_keys {
+            writeln!(dest, "{}=@\"{}\"", label, key.replace("\"", "\"\""))?;
+        }
+        for (name, instances) in &self.tuples {
+            for instance in instances {
+                write!(dest, "{}(", name)?;
+                for (index, arg) in instance.iter().enumerate() {
+                    if index > 0 {
+                        write!(dest, ",")?;
+                    }
+                    write!(dest, "{}", arg)?;
+                }
+                writeln!(dest, ")")?;
+            }
+        }
+        Ok(())
     }
 
     pub fn write_to_file(&self, path: &Path, compression: &Compression) -> std::io::Result<()> {
         let trap_file = std::fs::File::create(path)?;
         let mut trap_file = BufWriter::new(trap_file);
         match compression {
-            Compression::None => {
-                for trap_entry in &self.trap_output {
-                    writeln!(trap_file, "{}", trap_entry)?;
-                }
-            }
+            Compression::None => self.write(&mut trap_file),
             Compression::Gzip => {
                 let mut compressed_writer = GzEncoder::new(trap_file, flate2::Compression::fast());
-                for trap_entry in &self.trap_output {
-                    writeln!(compressed_writer, "{}", trap_entry)?;
-                }
+                self.write(&mut compressed_writer)
             }
-        }
-        std::io::Result::Ok(())
-    }
-}
-
-pub enum Entry {
-    /// Maps the label to a fresh id, e.g. `#123=*`.
-    FreshId(Label),
-    /// Maps the label to a key, e.g. `#7=@"foo"`.
-    MapLabelToKey(Label, String),
-    /// foo_bar(arg*)
-    GenericTuple(String, Vec<Arg>),
-    Comment(String),
-}
-
-impl fmt::Display for Entry {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        match self {
-            Entry::FreshId(label) => write!(f, "{}=*", label),
-            Entry::MapLabelToKey(label, key) => {
-                write!(f, "{}=@\"{}\"", label, key.replace("\"", "\"\""))
-            }
-            Entry::GenericTuple(name, args) => {
-                write!(f, "{}(", name)?;
-                for (index, arg) in args.iter().enumerate() {
-                    if index > 0 {
-                        write!(f, ",")?;
-                    }
-                    write!(f, "{}", arg)?;
-                }
-                write!(f, ")")
-            }
-            Entry::Comment(line) => write!(f, "// {}", line),
         }
     }
 }
@@ -142,18 +130,6 @@ impl fmt::Display for Arg {
                 limit_string(x, MAX_STRLEN).replace("\"", "\"\"")
             ),
         }
-    }
-}
-
-pub struct Program(Vec<Entry>);
-
-impl fmt::Display for Program {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        let mut text = String::new();
-        for trap_entry in &self.0 {
-            text.push_str(&format!("{}\n", trap_entry));
-        }
-        write!(f, "{}", text)
     }
 }
 

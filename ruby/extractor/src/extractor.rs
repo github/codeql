@@ -9,7 +9,7 @@ use tree_sitter::{Language, Node, Parser, Range, Tree};
 
 pub fn populate_file(writer: &mut trap::Writer, absolute_path: &Path) -> trap::Label {
     let (file_label, fresh) =
-        writer.global_id(&trap::full_id_for_file(&normalize_path(absolute_path)));
+        writer.global_id(trap::full_id_for_file(&normalize_path(absolute_path)));
     if fresh {
         writer.add_tuple(
             "files",
@@ -24,7 +24,7 @@ pub fn populate_file(writer: &mut trap::Writer, absolute_path: &Path) -> trap::L
 }
 
 fn populate_empty_file(writer: &mut trap::Writer) -> trap::Label {
-    let (file_label, fresh) = writer.global_id("empty;sourcefile");
+    let (file_label, fresh) = writer.global_id("empty;sourcefile".to_owned());
     if fresh {
         writer.add_tuple(
             "files",
@@ -54,7 +54,7 @@ pub fn populate_parent_folders(
             None => break,
             Some(folder) => {
                 let (folder_label, fresh) =
-                    writer.global_id(&trap::full_id_for_folder(&normalize_path(folder)));
+                    writer.global_id(trap::full_id_for_folder(&normalize_path(folder)));
                 writer.add_tuple(
                     "containerparent",
                     vec![
@@ -88,7 +88,7 @@ fn location(
     end_line: usize,
     end_column: usize,
 ) -> trap::Label {
-    let (loc_label, fresh) = writer.global_id(&format!(
+    let (loc_label, fresh) = writer.global_id(format!(
         "loc,{{{}}},{},{},{},{}",
         file_label, start_line, start_column, end_line, end_column
     ));
@@ -133,7 +133,6 @@ pub fn extract(
     parser.set_language(language).unwrap();
     parser.set_included_ranges(ranges).unwrap();
     let tree = parser.parse(&source, None).expect("Failed to parse file");
-    trap_writer.comment(format!("Auto-generated TRAP file for {}", path_str));
     let file_label = populate_file(trap_writer, path);
     let mut visitor = Visitor {
         source,
