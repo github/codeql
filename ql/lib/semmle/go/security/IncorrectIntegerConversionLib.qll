@@ -130,7 +130,7 @@ class ConversionWithoutBoundsCheckConfig extends TaintTracking::Configuration {
     // To catch flows that only happen on 32-bit architectures we
     // consider an architecture-dependent sink bit size to be 32.
     exists(int bitSize | if sinkBitSize != 0 then bitSize = sinkBitSize else bitSize = 32 |
-      guard.(UpperBoundCheckGuard).getBound() <= getMaxIntValue(bitSize, sourceIsSigned)
+      guard.(UpperBoundCheckGuard).isBoundFor(bitSize, sourceIsSigned)
     )
   }
 
@@ -152,11 +152,13 @@ class UpperBoundCheckGuard extends DataFlow::BarrierGuard, DataFlow::RelationalC
    * Gets the constant value which this upper bound check ensures the
    * other value is less than or equal to.
    */
-  float getBound() {
+  predicate isBoundFor(int bitSize, boolean isSigned) {
+    bitSize = [8, 16, 32] and
     exists(int strictnessOffset |
       if expr.isStrict() then strictnessOffset = 1 else strictnessOffset = 0
     |
-      result = expr.getAnOperand().getExactValue().toFloat() - strictnessOffset
+      expr.getAnOperand().getExactValue().toFloat() - strictnessOffset <=
+        getMaxIntValue(bitSize, isSigned)
     )
   }
 
