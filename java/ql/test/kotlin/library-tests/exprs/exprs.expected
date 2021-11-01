@@ -69,76 +69,82 @@
 | exprs.kt:46:26:46:35 | string lit | StringLiteral |
 | exprs.kt:47:5:47:28 | str3 | LocalVariableDeclExpr |
 | exprs.kt:47:25:47:28 | null | NullLiteral |
-| exprs.kt:49:5:49:21 | variable | LocalVariableDeclExpr |
-| exprs.kt:49:20:49:21 | 10 | IntegerLiteral |
-| exprs.kt:50:12:50:19 | variable | VarAccess |
-| exprs.kt:50:12:50:23 | ... > ... | GTExpr |
-| exprs.kt:50:23:50:23 | 0 | IntegerLiteral |
-| exprs.kt:51:9:51:16 | ...=... | AssignExpr |
-| exprs.kt:51:9:51:16 | variable | VarAccess |
-| exprs.kt:51:9:51:18 | (...)... | CastExpr |
-| exprs.kt:51:9:51:18 | <Stmt> | StmtExpr |
-| exprs.kt:51:9:51:18 | dec(...) | MethodAccess |
-| exprs.kt:51:9:51:18 | tmp0 | VarAccess |
-| exprs.kt:51:9:51:18 | tmp0 | VarAccess |
-| exprs.kt:51:9:51:18 | void | TypeAccess |
-| exprs.kt:54:12:54:14 | 123 | IntegerLiteral |
-| exprs.kt:54:12:54:20 | ... + ... | AddExpr |
-| exprs.kt:54:18:54:20 | 456 | IntegerLiteral |
-| exprs.kt:58:5:58:23 | d | LocalVariableDeclExpr |
-| exprs.kt:58:13:58:16 | true | BooleanLiteral |
-| exprs.kt:58:13:58:23 | ::class | ClassExpr |
-| exprs.kt:61:1:63:1 | <obinit>(...) | MethodAccess |
-| exprs.kt:61:9:61:18 | ...=... | AssignExpr |
-| exprs.kt:61:9:61:18 | n | VarAccess |
-| exprs.kt:61:9:61:18 | n | VarAccess |
-| exprs.kt:62:27:62:31 | new C(...) | ClassInstanceExpr |
-| exprs.kt:62:29:62:30 | 42 | IntegerLiteral |
-| exprs.kt:65:1:65:18 | <obinit>(...) | MethodAccess |
-| exprs.kt:66:1:66:26 | <obinit>(...) | MethodAccess |
-| exprs.kt:67:1:67:26 | <obinit>(...) | MethodAccess |
-| exprs.kt:70:5:72:5 | when ... | WhenExpr |
-| exprs.kt:70:8:70:8 | x | VarAccess |
-| exprs.kt:70:8:70:21 | ...instanceof... | InstanceOfExpr |
-| exprs.kt:70:8:70:21 | Subclass1 | TypeAccess |
-| exprs.kt:71:9:71:29 | x1 | LocalVariableDeclExpr |
-| exprs.kt:71:29:71:29 | (...)... | CastExpr |
-| exprs.kt:71:29:71:29 | Subclass1 | TypeAccess |
-| exprs.kt:71:29:71:29 | x | VarAccess |
-| exprs.kt:73:5:73:60 | y1 | LocalVariableDeclExpr |
-| exprs.kt:73:25:73:60 | true | BooleanLiteral |
-| exprs.kt:73:25:73:60 | when ... | WhenExpr |
-| exprs.kt:73:29:73:29 | x | VarAccess |
-| exprs.kt:73:29:73:42 | ...instanceof... | InstanceOfExpr |
-| exprs.kt:73:29:73:42 | Subclass1 | TypeAccess |
-| exprs.kt:73:45:73:49 | (...)... | CastExpr |
-| exprs.kt:73:45:73:49 | <Stmt> | StmtExpr |
-| exprs.kt:73:45:73:49 | Subclass1 | TypeAccess |
-| exprs.kt:73:47:73:47 | x | VarAccess |
-| exprs.kt:73:58:73:58 | y | VarAccess |
-| exprs.kt:74:5:74:13 | q | LocalVariableDeclExpr |
-| exprs.kt:74:13:74:13 | 1 | IntegerLiteral |
-| exprs.kt:75:5:75:48 | true | BooleanLiteral |
-| exprs.kt:75:5:75:48 | when ... | WhenExpr |
-| exprs.kt:75:9:75:9 | x | VarAccess |
-| exprs.kt:75:9:75:22 | ...instanceof... | InstanceOfExpr |
-| exprs.kt:75:9:75:22 | Subclass1 | TypeAccess |
-| exprs.kt:75:27:75:27 | ...=... | AssignExpr |
-| exprs.kt:75:31:75:31 | 2 | IntegerLiteral |
-| exprs.kt:75:42:75:42 | ...=... | AssignExpr |
-| exprs.kt:75:46:75:46 | 3 | IntegerLiteral |
-| exprs.kt:79:5:79:25 | r | LocalVariableDeclExpr |
-| exprs.kt:79:13:79:13 | p | VarAccess |
-| exprs.kt:79:15:79:25 | getBounds(...) | MethodAccess |
-| exprs.kt:80:5:82:5 | when ... | WhenExpr |
-| exprs.kt:80:8:80:8 | r | VarAccess |
-| exprs.kt:80:8:80:16 | ... != ... | NEExpr |
-| exprs.kt:80:8:80:16 | ... != ... | NEExpr |
-| exprs.kt:80:13:80:16 | null | NullLiteral |
-| exprs.kt:81:9:81:29 | r2 | LocalVariableDeclExpr |
-| exprs.kt:81:29:81:29 | (...)... | CastExpr |
-| exprs.kt:81:29:81:29 | Rectangle | TypeAccess |
-| exprs.kt:81:29:81:29 | r | VarAccess |
+| exprs.kt:48:5:48:48 | str4 | LocalVariableDeclExpr |
+| exprs.kt:49:5:49:66 | str5 | LocalVariableDeclExpr |
+| exprs.kt:50:5:50:26 | str6 | LocalVariableDeclExpr |
+| exprs.kt:50:16:50:19 | str1 | VarAccess |
+| exprs.kt:50:16:50:26 | ... + ... | AddExpr |
+| exprs.kt:50:23:50:26 | str2 | VarAccess |
+| exprs.kt:52:5:52:21 | variable | LocalVariableDeclExpr |
+| exprs.kt:52:20:52:21 | 10 | IntegerLiteral |
+| exprs.kt:53:12:53:19 | variable | VarAccess |
+| exprs.kt:53:12:53:23 | ... > ... | GTExpr |
+| exprs.kt:53:23:53:23 | 0 | IntegerLiteral |
+| exprs.kt:54:9:54:16 | ...=... | AssignExpr |
+| exprs.kt:54:9:54:16 | variable | VarAccess |
+| exprs.kt:54:9:54:18 | (...)... | CastExpr |
+| exprs.kt:54:9:54:18 | <Stmt> | StmtExpr |
+| exprs.kt:54:9:54:18 | dec(...) | MethodAccess |
+| exprs.kt:54:9:54:18 | tmp0 | VarAccess |
+| exprs.kt:54:9:54:18 | tmp0 | VarAccess |
+| exprs.kt:54:9:54:18 | void | TypeAccess |
+| exprs.kt:57:12:57:14 | 123 | IntegerLiteral |
+| exprs.kt:57:12:57:20 | ... + ... | AddExpr |
+| exprs.kt:57:18:57:20 | 456 | IntegerLiteral |
+| exprs.kt:61:5:61:23 | d | LocalVariableDeclExpr |
+| exprs.kt:61:13:61:16 | true | BooleanLiteral |
+| exprs.kt:61:13:61:23 | ::class | ClassExpr |
+| exprs.kt:64:1:66:1 | <obinit>(...) | MethodAccess |
+| exprs.kt:64:9:64:18 | ...=... | AssignExpr |
+| exprs.kt:64:9:64:18 | n | VarAccess |
+| exprs.kt:64:9:64:18 | n | VarAccess |
+| exprs.kt:65:27:65:31 | new C(...) | ClassInstanceExpr |
+| exprs.kt:65:29:65:30 | 42 | IntegerLiteral |
+| exprs.kt:68:1:68:18 | <obinit>(...) | MethodAccess |
+| exprs.kt:69:1:69:26 | <obinit>(...) | MethodAccess |
+| exprs.kt:70:1:70:26 | <obinit>(...) | MethodAccess |
+| exprs.kt:73:5:75:5 | when ... | WhenExpr |
+| exprs.kt:73:8:73:8 | x | VarAccess |
+| exprs.kt:73:8:73:21 | ...instanceof... | InstanceOfExpr |
+| exprs.kt:73:8:73:21 | Subclass1 | TypeAccess |
+| exprs.kt:74:9:74:29 | x1 | LocalVariableDeclExpr |
+| exprs.kt:74:29:74:29 | (...)... | CastExpr |
+| exprs.kt:74:29:74:29 | Subclass1 | TypeAccess |
+| exprs.kt:74:29:74:29 | x | VarAccess |
+| exprs.kt:76:5:76:60 | y1 | LocalVariableDeclExpr |
+| exprs.kt:76:25:76:60 | true | BooleanLiteral |
+| exprs.kt:76:25:76:60 | when ... | WhenExpr |
+| exprs.kt:76:29:76:29 | x | VarAccess |
+| exprs.kt:76:29:76:42 | ...instanceof... | InstanceOfExpr |
+| exprs.kt:76:29:76:42 | Subclass1 | TypeAccess |
+| exprs.kt:76:45:76:49 | (...)... | CastExpr |
+| exprs.kt:76:45:76:49 | <Stmt> | StmtExpr |
+| exprs.kt:76:45:76:49 | Subclass1 | TypeAccess |
+| exprs.kt:76:47:76:47 | x | VarAccess |
+| exprs.kt:76:58:76:58 | y | VarAccess |
+| exprs.kt:77:5:77:13 | q | LocalVariableDeclExpr |
+| exprs.kt:77:13:77:13 | 1 | IntegerLiteral |
+| exprs.kt:78:5:78:48 | true | BooleanLiteral |
+| exprs.kt:78:5:78:48 | when ... | WhenExpr |
+| exprs.kt:78:9:78:9 | x | VarAccess |
+| exprs.kt:78:9:78:22 | ...instanceof... | InstanceOfExpr |
+| exprs.kt:78:9:78:22 | Subclass1 | TypeAccess |
+| exprs.kt:78:27:78:27 | ...=... | AssignExpr |
+| exprs.kt:78:31:78:31 | 2 | IntegerLiteral |
+| exprs.kt:78:42:78:42 | ...=... | AssignExpr |
+| exprs.kt:78:46:78:46 | 3 | IntegerLiteral |
+| exprs.kt:82:5:82:25 | r | LocalVariableDeclExpr |
+| exprs.kt:82:13:82:13 | p | VarAccess |
+| exprs.kt:82:15:82:25 | getBounds(...) | MethodAccess |
+| exprs.kt:83:5:85:5 | when ... | WhenExpr |
+| exprs.kt:83:8:83:8 | r | VarAccess |
+| exprs.kt:83:8:83:16 | ... != ... | NEExpr |
+| exprs.kt:83:8:83:16 | ... != ... | NEExpr |
+| exprs.kt:83:13:83:16 | null | NullLiteral |
+| exprs.kt:84:9:84:29 | r2 | LocalVariableDeclExpr |
+| exprs.kt:84:29:84:29 | (...)... | CastExpr |
+| exprs.kt:84:29:84:29 | Rectangle | TypeAccess |
+| exprs.kt:84:29:84:29 | r | VarAccess |
 | file://:0:0:0:0 | q | VarAccess |
 | file://:0:0:0:0 | q | VarAccess |
 | file://:0:0:0:0 | tmp0 | LocalVariableDeclExpr |
