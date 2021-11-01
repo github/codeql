@@ -264,8 +264,8 @@ module UnsafeShellCommandConstruction {
     override predicate sanitizes(boolean outcome, Expr e) {
       outcome = true and
       (
-        e = getArgument(0).asExpr() or
-        e = getArgument(0).(StringOps::ConcatenationRoot).getALeaf().asExpr()
+        e = this.getArgument(0).asExpr() or
+        e = this.getArgument(0).(StringOps::ConcatenationRoot).getALeaf().asExpr()
       )
     }
   }

@@ -110,7 +110,7 @@ class DatabaseAccessAsExpensiveAction extends ExpensiveAction {
  */
 class RouteHandlerExpressionWithRateLimiter extends RateLimitedRouteHandlerExpr {
   RouteHandlerExpressionWithRateLimiter() {
-    any(RateLimitingMiddleware m).ref().flowsToExpr(getAMatchingAncestor())
+    any(RateLimitingMiddleware m).ref().flowsToExpr(this.getAMatchingAncestor())
   }
 }
 
@@ -132,13 +132,13 @@ abstract class RateLimitingMiddleware extends DataFlow::SourceNode {
     t.start() and
     result = this
     or
-    DataFlow::functionOneWayForwardingStep(ref(t.continue()).getALocalUse(), result)
+    DataFlow::functionOneWayForwardingStep(this.ref(t.continue()).getALocalUse(), result)
     or
-    exists(DataFlow::TypeTracker t2 | result = ref(t2).track(t2, t))
+    exists(DataFlow::TypeTracker t2 | result = this.ref(t2).track(t2, t))
   }
 
   /** Gets a data flow node referring to this middleware. */
-  DataFlow::SourceNode ref() { result = ref(DataFlow::TypeTracker::end()) }
+  DataFlow::SourceNode ref() { result = this.ref(DataFlow::TypeTracker::end()) }
 }
 
 /**
@@ -194,7 +194,7 @@ class RateLimiterFlexibleRateLimiter extends DataFlow::FunctionNode {
       rateLimiterClassName.matches("RateLimiter%") and
       rateLimiterClass = API::moduleImport("rate-limiter-flexible").getMember(rateLimiterClassName) and
       rateLimiterConsume = rateLimiterClass.getInstance().getMember("consume") and
-      request.getParameter() = getRouteHandlerParameter(getFunction(), "request") and
+      request.getParameter() = getRouteHandlerParameter(this.getFunction(), "request") and
       request.getAPropertyRead().flowsTo(rateLimiterConsume.getAParameter().getARhs())
     )
   }

@@ -80,18 +80,18 @@ module Express {
    */
   class RouteSetup extends HTTP::Servers::StandardRouteSetup, MethodCallExpr {
     RouteSetup() {
-      isRouter(getReceiver()) and
-      getMethodName() = routeSetupMethodName()
+      isRouter(this.getReceiver()) and
+      this.getMethodName() = routeSetupMethodName()
     }
 
     /** Gets the path associated with the route. */
-    string getPath() { getArgument(0).mayHaveStringValue(result) }
+    string getPath() { this.getArgument(0).mayHaveStringValue(result) }
 
     /** Gets the router on which handlers are being registered. */
-    RouterDefinition getRouter() { isRouter(getReceiver(), result) }
+    RouterDefinition getRouter() { isRouter(this.getReceiver(), result) }
 
     /** Holds if this is a call `use`, such as `app.use(handler)`. */
-    predicate isUseCall() { getMethodName() = "use" }
+    predicate isUseCall() { this.getMethodName() = "use" }
 
     /**
      * Gets the `n`th handler registered by this setup, with 0 being the first.
@@ -102,30 +102,34 @@ module Express {
     Expr getRouteHandlerExpr(int index) {
       // The first argument is a URI pattern if it is a string. If it could possibly be
       // a function, we consider it to be a route handler, otherwise a URI pattern.
-      exists(AnalyzedNode firstArg | firstArg = getArgument(0).analyze() |
+      exists(AnalyzedNode firstArg | firstArg = this.getArgument(0).analyze() |
         if firstArg.getAType() = TTFunction()
-        then result = getArgument(index)
+        then result = this.getArgument(index)
         else (
-          index >= 0 and result = getArgument(index + 1)
+          index >= 0 and result = this.getArgument(index + 1)
         )
       )
     }
 
     /** Gets an argument that represents a route handler being registered. */
-    Expr getARouteHandlerExpr() { result = getRouteHandlerExpr(_) }
+    Expr getARouteHandlerExpr() { result = this.getRouteHandlerExpr(_) }
 
     /** Gets the last argument representing a route handler being registered. */
-    Expr getLastRouteHandlerExpr() { result = max(int i | | getRouteHandlerExpr(i) order by i) }
+    Expr getLastRouteHandlerExpr() {
+      result = max(int i | | this.getRouteHandlerExpr(i) order by i)
+    }
 
     override DataFlow::SourceNode getARouteHandler() {
-      result = getARouteHandler(DataFlow::TypeBackTracker::end())
+      result = this.getARouteHandler(DataFlow::TypeBackTracker::end())
     }
 
     private DataFlow::SourceNode getARouteHandler(DataFlow::TypeBackTracker t) {
       t.start() and
-      result = getARouteHandlerExpr().flow().getALocalSource()
+      result = this.getARouteHandlerExpr().flow().getALocalSource()
       or
-      exists(DataFlow::TypeBackTracker t2, DataFlow::SourceNode succ | succ = getARouteHandler(t2) |
+      exists(DataFlow::TypeBackTracker t2, DataFlow::SourceNode succ |
+        succ = this.getARouteHandler(t2)
+      |
         result = succ.backtrack(t2, t)
         or
         HTTP::routeHandlerStep(result, succ) and
@@ -133,19 +137,19 @@ module Express {
       )
     }
 
-    override Expr getServer() { result.(Application).getARouteHandler() = getARouteHandler() }
+    override Expr getServer() { result.(Application).getARouteHandler() = this.getARouteHandler() }
 
     /**
      * Gets the HTTP request type this is registered for, if any.
      *
      * Has no result for `use`, `all`, or `param` calls.
      */
-    HTTP::RequestMethodName getRequestMethod() { result.toLowerCase() = getMethodName() }
+    HTTP::RequestMethodName getRequestMethod() { result.toLowerCase() = this.getMethodName() }
 
     /**
      * Holds if this registers a route for all request methods.
      */
-    predicate handlesAllRequestMethods() { getMethodName() = ["use", "all", "param"] }
+    predicate handlesAllRequestMethods() { this.getMethodName() = ["use", "all", "param"] }
 
     /**
      * Holds if this route setup sets up a route for the same
@@ -161,7 +165,7 @@ module Express {
     /**
      * Holds if this route setup is a parameter handler, such as `app.param("foo", ...)`.
      */
-    predicate isParameterHandler() { getMethodName() = "param" }
+    predicate isParameterHandler() { this.getMethodName() = "param" }
   }
 
   /**
@@ -228,7 +232,7 @@ module Express {
      * Gets the function body of this handler, if it is defined locally.
      */
     RouteHandler getBody() {
-      exists(DataFlow::SourceNode source | source = flow().getALocalSource() |
+      exists(DataFlow::SourceNode source | source = this.flow().getALocalSource() |
         result = source
         or
         DataFlow::functionOneWayForwardingStep(result.(DataFlow::SourceNode).getALocalUse(), source)
@@ -296,7 +300,7 @@ module Express {
      * `r2` installed on a subrouter, `r1` will not be recognized as an ancestor of `r2`.
      */
     Express::RouteHandlerExpr getAMatchingAncestor() {
-      result = getPreviousMiddleware+() and
+      result = this.getPreviousMiddleware+() and
       exists(RouteSetup resSetup | resSetup = result.getSetup() |
         // check whether request methods are compatible
         resSetup.handlesSameRequestMethodAs(setup) and
@@ -343,17 +347,17 @@ module Express {
     /**
      * Gets the parameter of the route handler that contains the request object.
      */
-    Parameter getRequestParameter() { result = getRouteHandlerParameter("request") }
+    Parameter getRequestParameter() { result = this.getRouteHandlerParameter("request") }
 
     /**
      * Gets the parameter of the route handler that contains the response object.
      */
-    Parameter getResponseParameter() { result = getRouteHandlerParameter("response") }
+    Parameter getResponseParameter() { result = this.getRouteHandlerParameter("response") }
 
     /**
      * Gets a request body access of this handler.
      */
-    Expr getARequestBodyAccess() { result.(PropAccess).accesses(getARequestExpr(), "body") }
+    Expr getARequestBodyAccess() { result.(PropAccess).accesses(this.getARequestExpr(), "body") }
   }
 
   /**
@@ -412,7 +416,7 @@ module Express {
    * An Express response source, based on static type information.
    */
   private class TypedResponseSource extends ResponseSource {
-    TypedResponseSource() { hasUnderlyingType("express", "Response") }
+    TypedResponseSource() { this.hasUnderlyingType("express", "Response") }
 
     override RouteHandler getRouteHandler() { none() } // Not known.
   }
@@ -439,7 +443,7 @@ module Express {
    * An Express request source, based on static type information.
    */
   private class TypedRequestSource extends RequestSource {
-    TypedRequestSource() { hasUnderlyingType("express", "Request") }
+    TypedRequestSource() { this.hasUnderlyingType("express", "Request") }
 
     override RouteHandler getRouteHandler() { none() } // Not known.
   }
@@ -637,7 +641,7 @@ module Express {
 
     RedirectInvocation() { this = response.ref().getAMethodCall("redirect").asExpr() }
 
-    override Expr getUrlArgument() { result = getLastArgument() }
+    override Expr getUrlArgument() { result = this.getLastArgument() }
 
     override RouteHandler getRouteHandler() { result = response.getRouteHandler() }
   }
@@ -662,17 +666,17 @@ module Express {
 
     SetMultipleHeaders() {
       this = response.ref().getAMethodCall(["set", "header"]) and
-      getNumArgument() = 1
+      this.getNumArgument() = 1
     }
 
     /**
      * Gets a reference to the multiple headers object that is to be set.
      */
-    private DataFlow::SourceNode getAHeaderSource() { result.flowsTo(getArgument(0)) }
+    private DataFlow::SourceNode getAHeaderSource() { result.flowsTo(this.getArgument(0)) }
 
     override predicate definesExplicitly(string headerName, Expr headerValue) {
       exists(string header |
-        getAHeaderSource().hasPropertyWrite(header, DataFlow::valueNode(headerValue)) and
+        this.getAHeaderSource().hasPropertyWrite(header, DataFlow::valueNode(headerValue)) and
         headerName = header.toLowerCase()
       )
     }
@@ -680,7 +684,7 @@ module Express {
     override RouteHandler getRouteHandler() { result = response.getRouteHandler() }
 
     override Expr getNameExpr() {
-      exists(DataFlow::PropWrite write | getAHeaderSource().getAPropertyWrite() = write |
+      exists(DataFlow::PropWrite write | this.getAHeaderSource().getAPropertyWrite() = write |
         result = write.getPropertyNameExpr()
       )
     }
@@ -712,9 +716,9 @@ module Express {
 
     SetCookie() { this = response.ref().getAMethodCall("cookie").asExpr() }
 
-    override Expr getNameArgument() { result = getArgument(0) }
+    override Expr getNameArgument() { result = this.getArgument(0) }
 
-    override Expr getValueArgument() { result = getArgument(1) }
+    override Expr getValueArgument() { result = this.getArgument(1) }
 
     override RouteHandler getRouteHandler() { result = response.getRouteHandler() }
   }
@@ -776,18 +780,18 @@ module Express {
       t.start() and
       result = DataFlow::exprNode(this)
       or
-      exists(string name | result = ref(t.continue()).getAMethodCall(name) |
+      exists(string name | result = this.ref(t.continue()).getAMethodCall(name) |
         name = "route" or
         name = routeSetupMethodName()
       )
       or
-      exists(DataFlow::TypeTracker t2 | result = ref(t2).track(t2, t))
+      exists(DataFlow::TypeTracker t2 | result = this.ref(t2).track(t2, t))
     }
 
     /**
      * Holds if `sink` may refer to this router.
      */
-    predicate flowsTo(Expr sink) { ref(DataFlow::TypeTracker::end()).flowsToExpr(sink) }
+    predicate flowsTo(Expr sink) { this.ref(DataFlow::TypeTracker::end()).flowsToExpr(sink) }
 
     /**
      * Gets a `RouteSetup` that was used for setting up a route on this router.
@@ -799,7 +803,7 @@ module Express {
      *
      * Example: `router2` for `router1.use(router2)` or `router1.use("/route2", router2)`
      */
-    RouterDefinition getASubRouter() { result.flowsTo(getARouteSetup().getAnArgument()) }
+    RouterDefinition getASubRouter() { result.flowsTo(this.getARouteSetup().getAnArgument()) }
 
     /**
      * Gets a route handler registered on this router.
@@ -807,7 +811,7 @@ module Express {
      * Example: `fun` for `router1.use(fun)` or `router.use("/route", fun)`
      */
     HTTP::RouteHandler getARouteHandler() {
-      result.(DataFlow::SourceNode).flowsToExpr(getARouteSetup().getAnArgument())
+      result.(DataFlow::SourceNode).flowsToExpr(this.getARouteSetup().getAnArgument())
     }
 
     /**
@@ -831,14 +835,14 @@ module Express {
           setup.isUseCall()
         )
       then result = node.(Express::RouteSetup).getLastRouteHandlerExpr()
-      else result = getMiddlewareStackAt(node.getAPredecessor())
+      else result = this.getMiddlewareStackAt(node.getAPredecessor())
     }
 
     /**
      * Gets the final middleware registered on this router.
      */
     Express::RouteHandlerExpr getMiddlewareStack() {
-      result = getMiddlewareStackAt(getContainer().getExit())
+      result = this.getMiddlewareStackAt(this.getContainer().getExit())
     }
   }
 
@@ -869,20 +873,20 @@ module Express {
     DataFlow::MethodCallNode {
     ResponseSendFileAsFileSystemAccess() {
       exists(string name | name = "sendFile" or name = "sendfile" |
-        calls(any(ResponseExpr res).flow(), name)
+        this.calls(any(ResponseExpr res).flow(), name)
       )
     }
 
     override DataFlow::Node getADataNode() { none() }
 
-    override DataFlow::Node getAPathArgument() { result = getArgument(0) }
+    override DataFlow::Node getAPathArgument() { result = this.getArgument(0) }
 
     override DataFlow::Node getRootPathArgument() {
       result = this.(DataFlow::CallNode).getOptionArgument(1, "root")
     }
 
     override predicate isUpwardNavigationRejected(DataFlow::Node argument) {
-      argument = getAPathArgument()
+      argument = this.getAPathArgument()
     }
   }
 
@@ -918,8 +922,8 @@ module Express {
         methodName = "use" or
         methodName = any(HTTP::RequestMethodName m).toLowerCase()
       |
-        getMethodName() = methodName and
-        exists(DataFlow::ValueNode arg | arg = getAnArgument() |
+        this.getMethodName() = methodName and
+        exists(DataFlow::ValueNode arg | arg = this.getAnArgument() |
           exists(DataFlow::ArrayCreationNode array |
             array.flowsTo(arg) and
             routeHandlerArg = array.getAnElement()
@@ -970,10 +974,10 @@ module Express {
       this = any(ResponseSource res).ref().getAMethodCall("render")
     }
 
-    override DataFlow::Node getTemplateFileNode() { result = getArgument(0) }
+    override DataFlow::Node getTemplateFileNode() { result = this.getArgument(0) }
 
-    override DataFlow::Node getTemplateParamsNode() { result = getArgument(1) }
+    override DataFlow::Node getTemplateParamsNode() { result = this.getArgument(1) }
 
-    override DataFlow::SourceNode getOutput() { result = getCallback(2).getParameter(1) }
+    override DataFlow::SourceNode getOutput() { result = this.getCallback(2).getParameter(1) }
   }
 }

@@ -112,7 +112,7 @@ private module JsCookie {
     ReadAccess() { this = libMemberCall("get") }
 
     override PersistentWriteAccess getAWrite() {
-      getArgument(0).mayHaveStringValue(result.(WriteAccess).getKey())
+      this.getArgument(0).mayHaveStringValue(result.(WriteAccess).getKey())
     }
   }
 
@@ -120,9 +120,9 @@ private module JsCookie {
     CookieWrites::ClientSideCookieWrite {
     WriteAccess() { this = libMemberCall("set") }
 
-    string getKey() { getArgument(0).mayHaveStringValue(result) }
+    string getKey() { this.getArgument(0).mayHaveStringValue(result) }
 
-    override DataFlow::Node getValue() { result = getArgument(1) }
+    override DataFlow::Node getValue() { result = this.getArgument(1) }
 
     override predicate isSecure() {
       // A cookie is secure if there are cookie options with the `secure` flag set to `true`.
@@ -150,7 +150,7 @@ private module BrowserCookies {
     ReadAccess() { this = libMemberCall("get") }
 
     override PersistentWriteAccess getAWrite() {
-      getArgument(0).mayHaveStringValue(result.(WriteAccess).getKey())
+      this.getArgument(0).mayHaveStringValue(result.(WriteAccess).getKey())
     }
   }
 
@@ -158,9 +158,9 @@ private module BrowserCookies {
     CookieWrites::ClientSideCookieWrite {
     WriteAccess() { this = libMemberCall("set") }
 
-    string getKey() { getArgument(0).mayHaveStringValue(result) }
+    string getKey() { this.getArgument(0).mayHaveStringValue(result) }
 
-    override DataFlow::Node getValue() { result = getArgument(1) }
+    override DataFlow::Node getValue() { result = this.getArgument(1) }
 
     override predicate isSecure() {
       // A cookie is secure if there are cookie options with the `secure` flag set to `true`.
@@ -199,9 +199,9 @@ private module LibCookie {
     CookieWrites::ClientSideCookieWrite {
     WriteAccess() { this = libMemberCall("serialize") }
 
-    string getKey() { getArgument(0).mayHaveStringValue(result) }
+    string getKey() { this.getArgument(0).mayHaveStringValue(result) }
 
-    override DataFlow::Node getValue() { result = getArgument(1) }
+    override DataFlow::Node getValue() { result = this.getArgument(1) }
 
     override predicate isSecure() {
       // A cookie is secure if there are cookie options with the `secure` flag set to `true`.
@@ -256,7 +256,7 @@ private module ExpressCookies {
     override predicate isSecure() {
       // The flag `secure` is set to `false` by default for HTTP, `true` by default for HTTPS (https://github.com/expressjs/cookie-session#cookie-options).
       // A cookie is secure if the `secure` flag is not explicitly set to `false`.
-      not getCookieFlagValue(CookieWrites::secure()).mayHaveBooleanValue(false)
+      not this.getCookieFlagValue(CookieWrites::secure()).mayHaveBooleanValue(false)
     }
 
     override predicate isSensitive() {
@@ -266,7 +266,7 @@ private module ExpressCookies {
     override predicate isHttpOnly() {
       // The flag `httpOnly` is set to `true` by default (https://github.com/expressjs/cookie-session#cookie-options).
       // A cookie is httpOnly if the `httpOnly` flag is not explicitly set to `false`.
-      not getCookieFlagValue(CookieWrites::httpOnly()).mayHaveBooleanValue(false)
+      not this.getCookieFlagValue(CookieWrites::httpOnly()).mayHaveBooleanValue(false)
     }
   }
 
@@ -282,7 +282,7 @@ private module ExpressCookies {
     override predicate isSecure() {
       // The flag `secure` is not set by default (https://github.com/expressjs/session#Cookiesecure).
       // The default value for cookie options is { path: '/', httpOnly: true, secure: false, maxAge: null }.
-      exists(DataFlow::Node value | value = getCookieFlagValue(CookieWrites::secure()) |
+      exists(DataFlow::Node value | value = this.getCookieFlagValue(CookieWrites::secure()) |
         not value.mayHaveBooleanValue(false) // anything but `false` is accepted as being maybe true
       )
     }
@@ -295,7 +295,7 @@ private module ExpressCookies {
       // The flag `httpOnly` is set by default (https://github.com/expressjs/session#Cookiesecure).
       // The default value for cookie options is { path: '/', httpOnly: true, secure: false, maxAge: null }.
       // A cookie is httpOnly if the `httpOnly` flag is not explicitly set to `false`.
-      not getCookieFlagValue(CookieWrites::httpOnly()).mayHaveBooleanValue(false)
+      not this.getCookieFlagValue(CookieWrites::httpOnly()).mayHaveBooleanValue(false)
     }
   }
 }
