@@ -544,6 +544,39 @@ private module Forge {
   private class Key extends CryptographicKey {
     Key() { this = any(KeyCipher cipher).getKey() }
   }
+
+  private class CreateKey extends CryptographicKeyCreation, DataFlow::CallNode {
+    CryptographicAlgorithm algorithm;
+
+    CreateKey() {
+      // var cipher = forge.rc2.createEncryptionCipher(key, 128);
+      this =
+        getAnImportNode()
+            .getAPropertyRead(any(string s | algorithm.matchesName(s)))
+            .getAMemberCall("createEncryptionCipher")
+      or
+      // var key = forge.random.getBytesSync(16);
+      // var cipher = forge.cipher.createCipher('AES-CBC', key);
+      this =
+        getAnImportNode()
+            .getAPropertyRead("cipher")
+            .getAMemberCall(["createCipher", "createDecipher"]) and
+      algorithm.matchesName(this.getArgument(0).getStringValue())
+    }
+
+    override CryptographicAlgorithm getAlgorithm() { result = algorithm }
+
+    override int getSize() {
+      result = this.getArgument(1).getIntValue()
+      or
+      exists(DataFlow::CallNode call | call.getCalleeName() = ["getBytes", "getBytesSync"] |
+        getArgument(1).getALocalSource() = call and
+        result = call.getArgument(0).getIntValue() * 8 // bytes to bits
+      )
+    }
+
+    override predicate isSymmetricKey() { any() }
+  }
 }
 
 /**

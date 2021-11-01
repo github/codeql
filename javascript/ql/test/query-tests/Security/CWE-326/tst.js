@@ -13,4 +13,21 @@ var CryptoJS = require("crypto-js");
 const bad3 = CryptoJS.algo.PBKDF2.create({ keySize: 2 }); // NOT OK
 const bad4 = CryptoJS.PBKDF2(password, salt, { keySize: 2 }); // NOT OK
 const bad5 = CryptoJS.EvpKDF(password, salt, { keySize: 2 }); // NOT OK
-const bad4 = CryptoJS.PBKDF2(password, salt, { keySize: 8 }); // OK
+const bad6 = CryptoJS.PBKDF2(password, salt, { keySize: 8 }); // OK
+
+const forge = require("node-forge");
+var bad7 = forge.rc2.createEncryptionCipher(password, 64); // NOT OK
+var good3 = forge.rc2.createEncryptionCipher(password, 128); // OK
+
+var key1 = forge.random.getBytesSync(16);
+var good4 = forge.cipher.createCipher('AES-CBC', key1); // OK
+
+var key2 = forge.random.getBytesSync(8);
+var bad8 = forge.cipher.createCipher('AES-CBC', key2); // NOT OK
+
+var myBuffer = forge.util.createBuffer(manyBytes);
+var key3 = myBuffer.getBytes(8);
+var bad9 = forge.cipher.createDecipher('3DES-CBC', key3); // NOT OK
+
+var key4 = myBuffer.getBytes(16);
+var good5 = forge.cipher.createDecipher('AES-CBC', key4); // OK
