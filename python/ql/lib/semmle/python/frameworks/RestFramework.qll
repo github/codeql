@@ -259,4 +259,44 @@ private module RestFramework {
       }
     }
   }
+
+  // ---------------------------------------------------------------------------
+  // response modeling
+  // ---------------------------------------------------------------------------
+  /**
+   * Provides models for the `rest_framework.response.Response` class
+   *
+   * See https://www.django-rest-framework.org/api-guide/responses/.
+   */
+  module Response {
+    /** Gets a reference to the `rest_framework.response.Response` class. */
+    private API::Node classRef() {
+      result = API::moduleImport("rest_framework").getMember("response").getMember("Response")
+    }
+
+    /**
+     * A source of instances of `rest_framework.response.Response`, extend this class to model new instances.
+     *
+     * This can include instantiations of the class, return values from function
+     * calls, or a special parameter that will be set when functions are called by an external
+     * library.
+     *
+     * Use the predicate `Response::instance()` to get references to instances of `rest_framework.response.Response`.
+     */
+    abstract class InstanceSource extends DataFlow::LocalSourceNode { }
+
+    /** A direct instantiation of `rest_framework.response.Response`. */
+    private class ClassInstantiation extends PrivateDjango::django::http::response::HttpResponse::InstanceSource,
+      DataFlow::CallCfgNode {
+      ClassInstantiation() { this = classRef().getACall() }
+
+      override DataFlow::Node getBody() { result in [this.getArg(0), this.getArgByName("data")] }
+
+      override DataFlow::Node getMimetypeOrContentTypeArg() {
+        result in [this.getArg(5), this.getArgByName("content_type")]
+      }
+
+      override string getMimetypeDefault() { none() }
+    }
+  }
 }

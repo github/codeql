@@ -40,3 +40,13 @@ class MyClass(APIView):
 @api_view(["GET", "POST"])
 def function_based_view(request: Request):
     return Response({"message": "Hello, world!"})
+
+
+@api_view(["GET", "POST"])
+def cookie_test(request: Request):
+    resp = Response("wat")
+    resp.set_cookie("key", "value") # $ CookieWrite CookieName="key" CookieValue="value"
+    resp.set_cookie(key="key4", value="value") # $ CookieWrite CookieName="key" CookieValue="value"
+    resp.headers["Set-Cookie"] = "key2=value2" # $ MISSING: CookieWrite CookieRawHeader="key2=value2"
+    resp.cookies["key3"] = "value3" # $ CookieWrite CookieName="key3" CookieValue="value3"
+    return resp

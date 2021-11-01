@@ -13,4 +13,5 @@ urlpatterns = [
     path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
     path("class-based-view/", views.MyClass.as_view()),  # $routeSetup="lcass-based-view/"
     path("function-based-view/", views.function_based_view),  # $routeSetup="function-based-view/"
+    path("cookie-test/", views.cookie_test),  # $routeSetup="function-based-view/"
 ]
