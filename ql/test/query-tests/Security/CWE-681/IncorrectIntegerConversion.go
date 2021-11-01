@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"math"
 	"strconv"
 )
@@ -378,4 +379,33 @@ func testUsingStrConvIntSize(input string) {
 	_ = uint64(parsed)
 	_ = int(parsed)
 	_ = uint(parsed)
+}
+
+// parsePositiveInt parses value as an int. It returns an error if value cannot
+// be parsed or is negative.
+func parsePositiveInt1(value string) (int, error) {
+	switch i64, err := strconv.ParseInt(value, 10, 64); {
+	case err != nil:
+		return 0, fmt.Errorf("unable to parse positive integer %q: %v", value, err)
+	case i64 < 0:
+		return 0, fmt.Errorf("unable to parse positive integer %q: negative value", value)
+	case i64 > math.MaxInt:
+		return 0, fmt.Errorf("unable to parse positive integer %q: overflow", value)
+	default:
+		return int(i64), nil // $ SPURIOUS: hasValueFlow="type conversion"
+	}
+}
+
+func parsePositiveInt2(value string) (int, error) {
+	i64, err := strconv.ParseInt(value, 10, 64)
+	if err != nil {
+		return 0, fmt.Errorf("unable to parse positive integer %q: %w", value, err)
+	}
+	if i64 < 0 {
+		return 0, fmt.Errorf("unable to parse positive integer %q: negative value", value)
+	}
+	if i64 > math.MaxInt {
+		return 0, fmt.Errorf("unable to parse positive integer %q: overflow", value)
+	}
+	return int(i64), nil // $ SPURIOUS: hasValueFlow="type conversion"
 }
