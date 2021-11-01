@@ -136,17 +136,15 @@ pub fn extract(
     let tree = parser.parse(&source, None).expect("Failed to parse file");
     trap_writer.comment(format!("Auto-generated TRAP file for {}", path_str));
     let file_label = populate_file(trap_writer, path);
-    let mut visitor = Visitor {
+    let mut visitor = Visitor::new(
         source,
         trap_writer,
         // TODO: should we handle path strings that are not valid UTF8 better?
-        path: &path_str,
+        &path_str,
         file_label,
-        toplevel_child_counter: 0,
-        stack: Vec::new(),
         language_prefix,
         schema,
-    };
+    );
     traverse(&tree, &mut visitor);
 
     parser.reset();
@@ -210,8 +208,10 @@ struct Visitor<'a> {
     trap_writer: &'a mut trap::Writer,
     /// A counter for top-level child nodes
     toplevel_child_counter: usize,
-    /// Language prefix
-    language_prefix: &'a str,
+    /// Language-specific name of the AST info table
+    ast_node_info_table_name: String,
+    /// Language-specific name of the tokeninfo table
+    tokeninfo_table_name: String,
     /// A lookup table from type name to node types
     schema: &'a NodeTypeMap,
     /// A stack for gathering information from child nodes. Whenever a node is
@@ -223,7 +223,28 @@ struct Visitor<'a> {
     stack: Vec<(trap::Label, usize, Vec<ChildNode>)>,
 }
 
-impl Visitor<'_> {
+impl<'a> Visitor<'a> {
+    fn new(
+        source: &'a [u8],
+        trap_writer: &'a mut trap::Writer,
+        path: &'a str,
+        file_label: trap::Label,
+        language_prefix: &str,
+        schema: &'a NodeTypeMap,
+    ) -> Visitor<'a> {
+        Visitor {
+            path,
+            file_label,
+            source,
+            trap_writer,
+            toplevel_child_counter: 0,
+            ast_node_info_table_name: format!("{}_ast_node_info", language_prefix),
+            tokeninfo_table_name: format!("{}_tokeninfo", language_prefix),
+            schema,
+            stack: Vec::new(),
+        }
+    }
+
     fn record_parse_error(
         &mut self,
         error_message: String,
@@ -321,7 +342,7 @@ impl Visitor<'_> {
         match &table.kind {
             EntryKind::Token { kind_id, .. } => {
                 self.trap_writer.add_tuple(
-                    &format!("{}_ast_node_info", self.language_prefix),
+                    &self.ast_node_info_table_name,
                     vec![
                         trap::Arg::Label(id),
                         trap::Arg::Label(parent_id),
@@ -330,12 +351,11 @@ impl Visitor<'_> {
                     ],
                 );
                 self.trap_writer.add_tuple(
-                    &format!("{}_tokeninfo", self.language_prefix),
+                    &self.tokeninfo_table_name,
                     vec![
                         trap::Arg::Label(id),
                         trap::Arg::Int(*kind_id),
                         sliced_source_arg(self.source, node),
-                        trap::Arg::Label(loc),
                     ],
                 );
             }
@@ -345,7 +365,7 @@ impl Visitor<'_> {
             } => {
                 if let Some(args) = self.complex_node(&node, fields, &child_nodes, id) {
                     self.trap_writer.add_tuple(
-                        &format!("{}_ast_node_info", self.language_prefix),
+                        &self.ast_node_info_table_name,
                         vec![
                             trap::Arg::Label(id),
                             trap::Arg::Label(parent_id),
