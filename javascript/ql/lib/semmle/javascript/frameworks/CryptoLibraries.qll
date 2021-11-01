@@ -204,6 +204,19 @@ private module NodeJSCrypto {
     override predicate isSymmetricKey() { symmetric = true }
   }
 
+  private class CreateDiffieHellmanKey extends CryptographicKeyCreation, DataFlow::CallNode {
+    // require("crypto").createDiffieHellman(prime_length);
+    CreateDiffieHellmanKey() {
+      this = DataFlow::moduleMember("crypto", "createDiffieHellman").getACall()
+    }
+
+    override CryptographicAlgorithm getAlgorithm() { none() }
+
+    override int getSize() { result = getArgument(0).getIntValue() }
+
+    override predicate isSymmetricKey() { none() }
+  }
+
   private class Apply extends CryptographicOperation, MethodCallExpr {
     InstantiatedAlgorithm instantiation;
 

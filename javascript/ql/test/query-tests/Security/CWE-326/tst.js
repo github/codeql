@@ -31,3 +31,6 @@ var bad9 = forge.cipher.createDecipher('3DES-CBC', key3); // NOT OK
 
 var key4 = myBuffer.getBytes(16);
 var good5 = forge.cipher.createDecipher('AES-CBC', key4); // OK
+
+var bad10 = crypto.createDiffieHellman(512);
+var good6 = crypto.createDiffieHellman(2048);
