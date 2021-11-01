@@ -7,7 +7,7 @@ makes available to its customers worldwide.
 It contains two major components:
   - an extractor, itself written in Go, that parses Go source code and converts it into a database
     that can be queried using CodeQL.
-  - static analysis libraries and queries written in [QL](https://codeql.github.com/docs/) that can be
+  - static analysis libraries and queries written in [CodeQL](https://codeql.github.com/docs/) that can be
     used to analyze such a database to find coding mistakes or security vulnerabilities.
 
 The goal of this project is to provide comprehensive static analysis support for Go in CodeQL.
