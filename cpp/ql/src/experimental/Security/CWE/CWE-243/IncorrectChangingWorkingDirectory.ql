@@ -68,6 +68,6 @@ where
   not exists(ReturnStmt rttmp | rttmp.getExpr().getAChild*() = fc) and
   not exists(Assignment astmp | astmp.getAChild*() = fc) and
   not exists(Initializer ittmp | ittmp.getExpr().getAChild*() = fc) and
-  not isFromMacroDefinition(fc)
+  not isFromMacroDefinition(fc) and
   msg = "Unchecked return value for call to '" + fc.getTarget().getName() + "'."
 select fc, msg
