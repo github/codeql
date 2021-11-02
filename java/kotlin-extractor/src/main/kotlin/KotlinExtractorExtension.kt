@@ -352,7 +352,7 @@ open class KotlinUsesExtractor(
 
     fun extractClassInstance(c: IrClass, typeArgs: List<IrTypeArgument>): Label<out DbClassorinterface> {
         if (typeArgs.isEmpty()) {
-            // TODO logger.warnElement(Severity.ErrorSevere, "Instance without type arguments: " + c.name.asString(), c)
+            logger.warn(Severity.ErrorSevere, "Instance without type arguments: " + c.name.asString())
         }
 
         val id = addClassLabel(c, typeArgs)
@@ -378,7 +378,7 @@ open class KotlinUsesExtractor(
         }
 
         for ((idx, arg) in typeArgs.withIndex()) {
-            val argId = getTypeArgumentLabel(arg, c)
+            val argId = getTypeArgumentLabel(arg)
             tw.writeTypeArgs(argId, idx, id)
         }
         tw.writeIsParameterized(id)
@@ -572,7 +572,7 @@ class X {
             is IrClass -> return useClassSource(dp)
             is IrFunction -> return useFunction(dp)
             else -> {
-                // TODO logger.warnElement(Severity.ErrorSevere, "Unrecognised IrDeclarationParent: " + dp.javaClass, dp)
+                logger.warn(Severity.ErrorSevere, "Unrecognised IrDeclarationParent: " + dp.javaClass)
                 return fakeLabel()
             }
         }
@@ -597,8 +597,7 @@ class X {
     }
 
     fun getTypeArgumentLabel(
-        arg: IrTypeArgument,
-        reportOn: IrElement
+        arg: IrTypeArgument
     ): Label<out DbReftype> {
         when (arg) {
             is IrStarProjection -> {
@@ -613,7 +612,7 @@ class X {
                 return useTypeOld(arg.type, false) as Label<out DbReftype>
             }
             else -> {
-                // TODO logger.warnElement(Severity.ErrorSevere, "Unexpected type argument.", reportOn)
+                logger.warn(Severity.ErrorSevere, "Unexpected type argument.")
                 return fakeLabel()
             }
         }
@@ -633,7 +632,7 @@ class X {
         }
 
         for (arg in typeArgs) {
-            val argId = getTypeArgumentLabel(arg, c)
+            val argId = getTypeArgumentLabel(arg)
             label += ";{$argId}"
         }
 
@@ -668,7 +667,7 @@ class X {
             return extractTypeParameter(param)
         }
 
-        // TODO logger.warnElement(Severity.ErrorSevere, "Missing type parameter label", param)
+        logger.warn(Severity.ErrorSevere, "Missing type parameter label")
         return tw.getLabelFor(l)
     }
 
@@ -681,6 +680,7 @@ class X {
             is IrClass -> useClassSource(parent)
             else -> {
                 // TODO logger.warnElement(Severity.ErrorSevere, "Unexpected type parameter parent", tp)
+                logger.warn(Severity.ErrorSevere, "Unexpected type parameter parent")
                 fakeLabel()
             }
         }
