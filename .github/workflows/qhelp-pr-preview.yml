@@ -13,8 +13,6 @@ on:
 
 jobs:
   qhelp:
-    permissions:
-      contents: read
     runs-on: ubuntu-latest
     steps:
       - run: echo "${{  github.event.number }}" > pr.txt
