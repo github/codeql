@@ -315,11 +315,14 @@ predicate explicitWrite(boolean certain, Instruction instr, Instruction address)
   exists(StoreInstruction store |
     store = instr and addressFlowTC(address, store.getDestinationAddress())
   |
+    // Set `certain = false` if the address is derived from any instructions that prevents us from
+    // concluding that the entire variable is overridden.
     if
       addressFlowTC(any(Instruction i |
           i instanceof FieldAddressInstruction or
           i instanceof PointerArithmeticInstruction or
-          i instanceof LoadInstruction
+          i instanceof LoadInstruction or
+          i instanceof InheritanceConversionInstruction
         ), store.getDestinationAddress())
     then certain = false
     else certain = true
