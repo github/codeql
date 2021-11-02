@@ -91,12 +91,15 @@ Java built-in support
 
    Name, Category
    Apache Commons Lang, Utility library
+   Apache Commons Collections, Data structure utility library
    Apache HTTP components, Network communicator
    Guava, Utility and collections library
    Hibernate, Database
    iBatis / MyBatis, Database
    Jackson, Serialization
+   JSON-java, Serialization
    Java Persistence API (JPA), Database
+   JaxRS, Jakarta EE API specification
    JDBC, Database
    Protobuf, Serialization
    Kryo deserialization, Serialization
@@ -120,17 +123,22 @@ JavaScript and TypeScript built-in support
    angular.js (legacy version), HTML framework
    axios, Network communicator
    browser, Runtime environment
+   EJS, templating language
    electron, Runtime environment
    express, Server
+   handlebars, templating language
    hapi, Server
+   hogan, templating language
    jquery, Utility library
    koa, Server
    lodash, Utility library
    mongodb, Database
    mssql, Database
+   mustache, templating language
    mysql, Database
    node, Runtime environment
    nest.js, Server
+   nunjucks, templating language
    postgres, Database
    ramda, Utility library
    react, HTML framework
@@ -140,6 +148,7 @@ JavaScript and TypeScript built-in support
    socket.io, Network communicator
    sqlite3, Database
    superagent, Network communicator
+   swig, templating language
    underscore, Utility library
    vue, HTML framework
 
