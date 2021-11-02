@@ -164,6 +164,7 @@ Python built-in support
    PyYAML, Serialization
    ruamel.yaml, Serialization
    simplejson, Serialization
+   toml, Serialization
    ujson, Serialization
    fabric, Utility library
    idna, Utility library
