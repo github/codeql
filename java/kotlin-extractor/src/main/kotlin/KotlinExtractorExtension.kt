@@ -661,37 +661,8 @@ class X {
             return label
         }
 
-        // todo: fix this
-        if (param.origin == IrDeclarationOrigin.IR_EXTERNAL_DECLARATION_STUB ||
-            param.origin == IrDeclarationOrigin.IR_EXTERNAL_JAVA_DECLARATION_STUB){
-            return extractTypeParameter(param)
-        }
-
         logger.warn(Severity.ErrorSevere, "Missing type parameter label")
         return tw.getLabelFor(l)
-    }
-
-    // TODO: This should be in KotlinFileExtractor
-    fun extractTypeParameter(tp: IrTypeParameter): Label<out DbTypevariable> {
-        val id = tw.getLabelFor<DbTypevariable>(getTypeParameterLabel(tp))
-
-        val parentId: Label<out DbClassorinterfaceorcallable> = when (val parent = tp.parent) {
-            is IrFunction -> useFunction(parent)
-            is IrClass -> useClassSource(parent)
-            else -> {
-                // TODO logger.warnElement(Severity.ErrorSevere, "Unexpected type parameter parent", tp)
-                logger.warn(Severity.ErrorSevere, "Unexpected type parameter parent")
-                fakeLabel()
-            }
-        }
-
-        tw.writeTypeVars(id, tp.name.asString(), tp.index, 0, parentId)
-        // TODO val locId = tw.getLocation(tp)
-        // TODO tw.writeHasLocation(id, locId)
-
-        // todo: add type bounds
-
-        return id
     }
 
     fun extractClassCommon(c: IrClass, id: Label<out DbClassorinterface>) {
@@ -843,6 +814,27 @@ open class KotlinFileExtractor(
                 return null
             }
         }
+    }
+
+    fun extractTypeParameter(tp: IrTypeParameter): Label<out DbTypevariable> {
+        val id = tw.getLabelFor<DbTypevariable>(getTypeParameterLabel(tp))
+
+        val parentId: Label<out DbClassorinterfaceorcallable> = when (val parent = tp.parent) {
+            is IrFunction -> useFunction(parent)
+            is IrClass -> useClassSource(parent)
+            else -> {
+                logger.warnElement(Severity.ErrorSevere, "Unexpected type parameter parent", tp)
+                fakeLabel()
+            }
+        }
+
+        tw.writeTypeVars(id, tp.name.asString(), tp.index, 0, parentId)
+        val locId = tw.getLocation(tp)
+        tw.writeHasLocation(id, locId)
+
+        // todo: add type bounds
+
+        return id
     }
 
     fun extractClassSource(c: IrClass): Label<out DbClassorinterface> {
