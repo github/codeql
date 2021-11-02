@@ -265,13 +265,12 @@ class KotlinSourceFileExtractor(
 
 }
 
-open class KotlinFileExtractor(
-    val logger: FileLogger,
-    val tw: FileTrapWriter,
+open class KotlinUsesExtractor(
+    open val logger: Logger,
+    open val tw: TrapWriter,
     val dependencyCollector: TrapFileManager?,
     val externalClassExtractor: ExternalClassExtractor,
     val pluginContext: IrPluginContext) {
-
     fun usePackage(pkg: String): Label<out DbPackage> {
         return extractPackage(pkg)
     }
@@ -284,22 +283,111 @@ open class KotlinFileExtractor(
         return id
     }
 
-    fun extractDeclaration(declaration: IrDeclaration, parentId: Label<out DbReftype>) {
-        when (declaration) {
-            is IrClass -> extractClassSource(declaration)
-            is IrFunction -> extractFunction(declaration, parentId)
-            is IrAnonymousInitializer -> {
-                // Leaving this intentionally empty. init blocks are extracted during class extraction.
-            }
-            is IrProperty -> extractProperty(declaration, parentId)
-            is IrEnumEntry -> extractEnumEntry(declaration, parentId)
-            else -> logger.warnElement(Severity.ErrorSevere, "Unrecognised IrDeclaration: " + declaration.javaClass, declaration)
-        }
-    }
-
     data class UseClassInstanceResult(val classLabel: Label<out DbClassorinterface>, val javaClass: IrClass)
     data class TypeResult<LabelType>(val id: Label<LabelType>, val signature: String)
     data class TypeResults(val javaResult: TypeResult<out DbType>, val kotlinResult: TypeResult<out DbKt_type>)
+
+    fun useTypeOld(t: IrType, canReturnPrimitiveTypes: Boolean = true): Label<out DbType> {
+        return useType(t, canReturnPrimitiveTypes).javaResult.id
+    }
+
+    fun useType(t: IrType, canReturnPrimitiveTypes: Boolean = true): TypeResults {
+        when(t) {
+            is IrSimpleType -> return useSimpleType(t, canReturnPrimitiveTypes)
+            else -> {
+                logger.warn(Severity.ErrorSevere, "Unrecognised IrType: " + t.javaClass)
+                return TypeResults(TypeResult(fakeLabel(), "unknown"), TypeResult(fakeLabel(), "unknown"))
+            }
+        }
+    }
+
+    fun useClassInstance(c: IrClass, typeArgs: List<IrTypeArgument>): UseClassInstanceResult {
+        // TODO: only substitute in class and function signatures
+        //       because within function bodies we can get things like Unit.INSTANCE
+        //       and List.asIterable (an extension, i.e. static, method)
+        // Map Kotlin class to its equivalent Java class:
+        val substituteClass = c.fqNameWhenAvailable?.toUnsafe()
+            ?.let { JavaToKotlinClassMap.mapKotlinToJava(it) }
+            ?.let { pluginContext.referenceClass(it.asSingleFqName()) }
+            ?.owner
+
+        val extractClass = substituteClass ?: c
+
+        val classId = getClassLabel(extractClass, typeArgs)
+        val classLabel : Label<out DbClassorinterface> = tw.getLabelFor(classId, {
+            // If this is a generic type instantiation then it has no
+            // source entity, so we need to extract it here
+            if (typeArgs.isNotEmpty()) {
+                extractClassInstance(extractClass, typeArgs)
+            }
+
+            // Extract both the Kotlin and equivalent Java classes, so that we have database entries
+            // for both even if all internal references to the Kotlin type are substituted.
+            extractClassLaterIfExternal(c)
+            substituteClass?.let { extractClassLaterIfExternal(it) }
+        })
+
+        return UseClassInstanceResult(classLabel, extractClass)
+    }
+
+    fun extractClassLaterIfExternal(c: IrClass) {
+        // we don't have an "external dependencies" extractor yet,
+        // so for now we extract the source class for those too
+        if (c.origin == IrDeclarationOrigin.IR_EXTERNAL_DECLARATION_STUB ||
+            c.origin == IrDeclarationOrigin.IR_EXTERNAL_JAVA_DECLARATION_STUB) {
+            extractExternalClassLater(c)
+        }
+    }
+
+    fun extractExternalClassLater(c: IrClass) {
+        dependencyCollector?.addDependency(c)
+        externalClassExtractor.extractLater(c)
+    }
+
+    fun addClassLabel(c: IrClass, typeArgs: List<IrTypeArgument>): Label<out DbClassorinterface> {
+        var label = getClassLabel(c, typeArgs)
+        val id: Label<DbClassorinterface> = tw.getLabelFor(label)
+        return id
+    }
+
+    fun extractClassInstance(c: IrClass, typeArgs: List<IrTypeArgument>): Label<out DbClassorinterface> {
+        if (typeArgs.isEmpty()) {
+            // TODO logger.warnElement(Severity.ErrorSevere, "Instance without type arguments: " + c.name.asString(), c)
+        }
+
+        val id = addClassLabel(c, typeArgs)
+        val pkg = c.packageFqName?.asString() ?: ""
+        val cls = c.name.asString()
+        val pkgId = extractPackage(pkg)
+        if(c.kind == ClassKind.INTERFACE) {
+            @Suppress("UNCHECKED_CAST")
+            val interfaceId = id as Label<out DbInterface>
+            @Suppress("UNCHECKED_CAST")
+            val sourceInterfaceId = useClassSource(c) as Label<out DbInterface>
+            tw.writeInterfaces(interfaceId, cls, pkgId, sourceInterfaceId)
+        } else {
+            @Suppress("UNCHECKED_CAST")
+            val classId = id as Label<out DbClass>
+            @Suppress("UNCHECKED_CAST")
+            val sourceClassId = useClassSource(c) as Label<out DbClass>
+            tw.writeClasses(classId, cls, pkgId, sourceClassId)
+
+            if (c.kind == ClassKind.ENUM_CLASS) {
+                tw.writeIsEnumType(classId)
+            }
+        }
+
+        for ((idx, arg) in typeArgs.withIndex()) {
+            val argId = getTypeArgumentLabel(arg, c)
+            tw.writeTypeArgs(argId, idx, id)
+        }
+        tw.writeIsParameterized(id)
+        val unbound = useClassSource(c)
+        tw.writeErasure(id, unbound)
+        extractClassCommon(c, id)
+
+        return id
+    }
 
     fun useSimpleType(s: IrSimpleType, canReturnPrimitiveTypes: Boolean): TypeResults {
         // We use this when we don't actually have an IrClass for a class
@@ -478,75 +566,57 @@ class X {
         }
     }
 
-
-
-    fun getLabel(element: IrElement) : String? {
-        when (element) {
-            is IrFile -> return "@\"${element.path};sourcefile\"" // todo: remove copy-pasted code
-            is IrClass -> return getClassLabel(element, listOf())
-            is IrTypeParameter -> return getTypeParameterLabel(element)
-            is IrFunction -> return getFunctionLabel(element)
-            is IrValueParameter -> return getValueParameterLabel(element)
-            is IrProperty -> return getPropertyLabel(element)
-
-            // Fresh entities:
-            is IrBody -> return null
-            is IrExpression -> return null
-
-            // todo add others:
+    fun useDeclarationParent(dp: IrDeclarationParent): Label<out DbElement> {
+        when(dp) {
+            is IrFile -> return usePackage(dp.fqName.asString())
+            is IrClass -> return useClassSource(dp)
+            is IrFunction -> return useFunction(dp)
             else -> {
-                logger.warnElement(Severity.ErrorSevere, "Unhandled element type: ${element::class}", element)
-                return null
+                // TODO logger.warnElement(Severity.ErrorSevere, "Unrecognised IrDeclarationParent: " + dp.javaClass, dp)
+                return fakeLabel()
             }
         }
     }
 
-    private fun getTypeParameterLabel(param: IrTypeParameter): String {
-        val parentLabel = useDeclarationParent(param.parent)
-        return "@\"typevar;{$parentLabel};${param.name}\""
+    fun getFunctionLabel(f: IrFunction) : String {
+        return getFunctionLabel(f.parent, f.name.asString(), f.valueParameters, f.returnType)
     }
 
-    fun useTypeParameter(param: IrTypeParameter): Label<out DbTypevariable> {
-        val l = getTypeParameterLabel(param)
-        val label = tw.getExistingLabelFor<DbTypevariable>(l)
-        if (label != null) {
-            return label
-        }
-
-        // todo: fix this
-        if (param.origin == IrDeclarationOrigin.IR_EXTERNAL_DECLARATION_STUB ||
-            param.origin == IrDeclarationOrigin.IR_EXTERNAL_JAVA_DECLARATION_STUB){
-            return extractTypeParameter(param)
-        }
-
-        logger.warnElement(Severity.ErrorSevere, "Missing type parameter label", param)
-        return tw.getLabelFor(l)
+    fun getFunctionLabel(parent: IrDeclarationParent, name: String, parameters: List<IrValueParameter>, returnType: IrType) : String {
+        val paramTypeIds = parameters.joinToString() { "{${useTypeOld(erase(it.type)).toString()}}" }
+        val returnTypeId = useTypeOld(erase(returnType))
+        val parentId = useDeclarationParent(parent)
+        val label = "@\"callable;{$parentId}.$name($paramTypeIds){$returnTypeId}\""
+        return label
     }
 
-    private fun extractTypeParameter(tp: IrTypeParameter): Label<out DbTypevariable> {
-        val id = tw.getLabelFor<DbTypevariable>(getTypeParameterLabel(tp))
-
-        val parentId: Label<out DbClassorinterfaceorcallable> = when (val parent = tp.parent) {
-            is IrFunction -> useFunction(parent)
-            is IrClass -> useClassSource(parent)
-            else -> {
-                logger.warnElement(Severity.ErrorSevere, "Unexpected type parameter parent", tp)
-                fakeLabel()
-            }
-        }
-
-        tw.writeTypeVars(id, tp.name.asString(), tp.index, 0, parentId)
-        val locId = tw.getLocation(tp)
-        tw.writeHasLocation(id, locId)
-
-        // todo: add type bounds
-
+    fun <T: DbCallable> useFunction(f: IrFunction): Label<out T> {
+        val label = getFunctionLabel(f)
+        val id: Label<T> = tw.getLabelFor(label)
         return id
     }
 
-    fun extractExternalClassLater(c: IrClass) {
-        dependencyCollector?.addDependency(c)
-        externalClassExtractor.extractLater(c)
+    fun getTypeArgumentLabel(
+        arg: IrTypeArgument,
+        reportOn: IrElement
+    ): Label<out DbReftype> {
+        when (arg) {
+            is IrStarProjection -> {
+                val wildcardLabel = "@\"wildcard;\""
+                val wildcardId: Label<DbWildcard> = tw.getLabelFor(wildcardLabel)
+                tw.writeWildcards(wildcardId, "*", 1)
+                tw.writeHasLocation(wildcardId, tw.unknownLocation)
+                return wildcardId
+            }
+            is IrTypeProjection -> {
+                @Suppress("UNCHECKED_CAST")
+                return useTypeOld(arg.type, false) as Label<out DbReftype>
+            }
+            else -> {
+                // TODO logger.warnElement(Severity.ErrorSevere, "Unexpected type argument.", reportOn)
+                return fakeLabel()
+            }
+        }
     }
 
     private fun getUnquotedClassLabel(c: IrClass, typeArgs: List<IrTypeArgument>): String {
@@ -570,37 +640,8 @@ class X {
         return label
     }
 
-    private fun getClassLabel(c: IrClass, typeArgs: List<IrTypeArgument>) =
+    fun getClassLabel(c: IrClass, typeArgs: List<IrTypeArgument>) =
         "@\"class;${getUnquotedClassLabel(c, typeArgs)}\""
-
-    private fun getTypeArgumentLabel(
-        arg: IrTypeArgument,
-        reportOn: IrElement
-    ): Label<out DbReftype> {
-        when (arg) {
-            is IrStarProjection -> {
-                val wildcardLabel = "@\"wildcard;\""
-                val wildcardId: Label<DbWildcard> = tw.getLabelFor(wildcardLabel)
-                tw.writeWildcards(wildcardId, "*", 1)
-                tw.writeHasLocation(wildcardId, tw.getLocation(-1, -1))
-                return wildcardId
-            }
-            is IrTypeProjection -> {
-                @Suppress("UNCHECKED_CAST")
-                return useTypeOld(arg.type, false) as Label<out DbReftype>
-            }
-            else -> {
-                logger.warnElement(Severity.ErrorSevere, "Unexpected type argument.", reportOn)
-                return fakeLabel()
-            }
-        }
-    }
-
-    fun addClassLabel(c: IrClass, typeArgs: List<IrTypeArgument>): Label<out DbClassorinterface> {
-        var label = getClassLabel(c, typeArgs)
-        val id: Label<DbClassorinterface> = tw.getLabelFor(label)
-        return id
-    }
 
     fun useClassSource(c: IrClass): Label<out DbClassorinterface> {
         // For source classes, the label doesn't include and type arguments
@@ -609,48 +650,51 @@ class X {
         return tw.getLabelFor(classId)
     }
 
-    fun extractClassLaterIfExternal(c: IrClass) {
-        // we don't have an "external dependencies" extractor yet,
-        // so for now we extract the source class for those too
-        if (c.origin == IrDeclarationOrigin.IR_EXTERNAL_DECLARATION_STUB ||
-            c.origin == IrDeclarationOrigin.IR_EXTERNAL_JAVA_DECLARATION_STUB) {
-            extractExternalClassLater(c)
-        }
+    fun getTypeParameterLabel(param: IrTypeParameter): String {
+        val parentLabel = useDeclarationParent(param.parent)
+        return "@\"typevar;{$parentLabel};${param.name}\""
     }
 
-    fun useClassInstance(c: IrClass, typeArgs: List<IrTypeArgument>): UseClassInstanceResult {
-        // TODO: only substitute in class and function signatures
-        //       because within function bodies we can get things like Unit.INSTANCE
-        //       and List.asIterable (an extension, i.e. static, method)
-        // Map Kotlin class to its equivalent Java class:
-        val substituteClass = c.fqNameWhenAvailable?.toUnsafe()
-            ?.let { JavaToKotlinClassMap.mapKotlinToJava(it) }
-            ?.let { pluginContext.referenceClass(it.asSingleFqName()) }
-            ?.owner
+    fun useTypeParameter(param: IrTypeParameter): Label<out DbTypevariable> {
+        val l = getTypeParameterLabel(param)
+        val label = tw.getExistingLabelFor<DbTypevariable>(l)
+        if (label != null) {
+            return label
+        }
 
-        val extractClass = substituteClass ?: c
+        // todo: fix this
+        if (param.origin == IrDeclarationOrigin.IR_EXTERNAL_DECLARATION_STUB ||
+            param.origin == IrDeclarationOrigin.IR_EXTERNAL_JAVA_DECLARATION_STUB){
+            return extractTypeParameter(param)
+        }
 
-        val classId = getClassLabel(extractClass, typeArgs)
-        val classLabel : Label<out DbClassorinterface> = tw.getLabelFor(classId, {
-            // If this is a generic type instantiation then it has no
-            // source entity, so we need to extract it here
-            if (typeArgs.isNotEmpty()) {
-                extractClassInstance(extractClass, typeArgs)
+        // TODO logger.warnElement(Severity.ErrorSevere, "Missing type parameter label", param)
+        return tw.getLabelFor(l)
+    }
+
+    // TODO: This should be in KotlinFileExtractor
+    fun extractTypeParameter(tp: IrTypeParameter): Label<out DbTypevariable> {
+        val id = tw.getLabelFor<DbTypevariable>(getTypeParameterLabel(tp))
+
+        val parentId: Label<out DbClassorinterfaceorcallable> = when (val parent = tp.parent) {
+            is IrFunction -> useFunction(parent)
+            is IrClass -> useClassSource(parent)
+            else -> {
+                // TODO logger.warnElement(Severity.ErrorSevere, "Unexpected type parameter parent", tp)
+                fakeLabel()
             }
+        }
 
-            // Extract both the Kotlin and equivalent Java classes, so that we have database entries
-            // for both even if all internal references to the Kotlin type are substituted.
-            extractClassLaterIfExternal(c)
-            substituteClass?.let { extractClassLaterIfExternal(it) }
-        })
+        tw.writeTypeVars(id, tp.name.asString(), tp.index, 0, parentId)
+        // TODO val locId = tw.getLocation(tp)
+        // TODO tw.writeHasLocation(id, locId)
 
-        return UseClassInstanceResult(classLabel, extractClass)
+        // todo: add type bounds
+
+        return id
     }
 
     fun extractClassCommon(c: IrClass, id: Label<out DbClassorinterface>) {
-        val locId = tw.getLocation(c)
-        tw.writeHasLocation(id, locId)
-
         for(t in c.superTypes) {
             when(t) {
                 is IrSimpleType -> {
@@ -667,6 +711,75 @@ class X {
                 } else -> {
                     logger.warn(Severity.ErrorSevere, "Unexpected supertype: " + t.javaClass + ": " + t.render())
                 }
+            }
+        }
+    }
+
+    fun erase (t: IrType): IrType {
+        if (t is IrSimpleType) {
+            val classifier = t.classifier
+            val owner = classifier.owner
+            if(owner is IrTypeParameter) {
+                return erase(owner.superTypes.get(0))
+            }
+
+            // todo: fix this:
+            if (t.makeNotNull().isArray()) {
+                val elementType = t.getArrayElementType(pluginContext.irBuiltIns)
+                val erasedElementType = erase(elementType)
+                return withQuestionMark((classifier as IrClassSymbol).typeWith(erasedElementType), t.hasQuestionMark)
+            }
+
+            if (owner is IrClass) {
+                return withQuestionMark((classifier as IrClassSymbol).typeWith(), t.hasQuestionMark)
+            }
+        }
+        return t
+    }
+
+    fun withQuestionMark(t: IrType, hasQuestionMark: Boolean) = if(hasQuestionMark) t.makeNullable() else t.makeNotNull()
+
+}
+
+open class KotlinFileExtractor(
+    override val logger: FileLogger,
+    override val tw: FileTrapWriter,
+    dependencyCollector: TrapFileManager?,
+    externalClassExtractor: ExternalClassExtractor,
+    pluginContext: IrPluginContext): KotlinUsesExtractor(logger, tw, dependencyCollector, externalClassExtractor, pluginContext) {
+
+    fun extractDeclaration(declaration: IrDeclaration, parentId: Label<out DbReftype>) {
+        when (declaration) {
+            is IrClass -> extractClassSource(declaration)
+            is IrFunction -> extractFunction(declaration, parentId)
+            is IrAnonymousInitializer -> {
+                // Leaving this intentionally empty. init blocks are extracted during class extraction.
+            }
+            is IrProperty -> extractProperty(declaration, parentId)
+            is IrEnumEntry -> extractEnumEntry(declaration, parentId)
+            else -> logger.warnElement(Severity.ErrorSevere, "Unrecognised IrDeclaration: " + declaration.javaClass, declaration)
+        }
+    }
+
+
+
+    fun getLabel(element: IrElement) : String? {
+        when (element) {
+            is IrFile -> return "@\"${element.path};sourcefile\"" // todo: remove copy-pasted code
+            is IrClass -> return getClassLabel(element, listOf())
+            is IrTypeParameter -> return getTypeParameterLabel(element)
+            is IrFunction -> return getFunctionLabel(element)
+            is IrValueParameter -> return getValueParameterLabel(element)
+            is IrProperty -> return getPropertyLabel(element)
+
+            // Fresh entities:
+            is IrBody -> return null
+            is IrExpression -> return null
+
+            // todo add others:
+            else -> {
+                logger.warnElement(Severity.ErrorSevere, "Unhandled element type: ${element::class}", element)
+                return null
             }
         }
     }
@@ -693,115 +806,12 @@ class X {
         c.typeParameters.map { extractTypeParameter(it) }
         c.declarations.map { extractDeclaration(it, id) }
         extractObjectInitializerFunction(c, id)
+
+        val locId = tw.getLocation(c)
+        tw.writeHasLocation(id, locId)
+
         extractClassCommon(c, id)
 
-        return id
-    }
-
-    fun extractClassInstance(c: IrClass, typeArgs: List<IrTypeArgument>): Label<out DbClassorinterface> {
-        if (typeArgs.isEmpty()) {
-            logger.warnElement(Severity.ErrorSevere, "Instance without type arguments: " + c.name.asString(), c)
-        }
-
-        val id = addClassLabel(c, typeArgs)
-        val pkg = c.packageFqName?.asString() ?: ""
-        val cls = c.name.asString()
-        val pkgId = extractPackage(pkg)
-        if(c.kind == ClassKind.INTERFACE) {
-            @Suppress("UNCHECKED_CAST")
-            val interfaceId = id as Label<out DbInterface>
-            @Suppress("UNCHECKED_CAST")
-            val sourceInterfaceId = useClassSource(c) as Label<out DbInterface>
-            tw.writeInterfaces(interfaceId, cls, pkgId, sourceInterfaceId)
-        } else {
-            @Suppress("UNCHECKED_CAST")
-            val classId = id as Label<out DbClass>
-            @Suppress("UNCHECKED_CAST")
-            val sourceClassId = useClassSource(c) as Label<out DbClass>
-            tw.writeClasses(classId, cls, pkgId, sourceClassId)
-
-            if (c.kind == ClassKind.ENUM_CLASS) {
-                tw.writeIsEnumType(classId)
-            }
-        }
-
-        for ((idx, arg) in typeArgs.withIndex()) {
-            val argId = getTypeArgumentLabel(arg, c)
-            tw.writeTypeArgs(argId, idx, id)
-        }
-        tw.writeIsParameterized(id)
-        val unbound = useClassSource(c)
-        tw.writeErasure(id, unbound)
-        extractClassCommon(c, id)
-
-        return id
-    }
-
-    fun useTypeOld(t: IrType, canReturnPrimitiveTypes: Boolean = true): Label<out DbType> {
-        return useType(t, canReturnPrimitiveTypes).javaResult.id
-    }
-
-    fun useType(t: IrType, canReturnPrimitiveTypes: Boolean = true): TypeResults {
-        when(t) {
-            is IrSimpleType -> return useSimpleType(t, canReturnPrimitiveTypes)
-            else -> {
-                logger.warn(Severity.ErrorSevere, "Unrecognised IrType: " + t.javaClass)
-                return TypeResults(TypeResult(fakeLabel(), "unknown"), TypeResult(fakeLabel(), "unknown"))
-            }
-        }
-    }
-
-    fun useDeclarationParent(dp: IrDeclarationParent): Label<out DbElement> {
-        when(dp) {
-            is IrFile -> return usePackage(dp.fqName.asString())
-            is IrClass -> return useClassSource(dp)
-            is IrFunction -> return useFunction(dp)
-            else -> {
-                logger.warnElement(Severity.ErrorSevere, "Unrecognised IrDeclarationParent: " + dp.javaClass, dp)
-                return fakeLabel()
-            }
-        }
-    }
-
-    fun withQuestionMark(t: IrType, hasQuestionMark: Boolean) = if(hasQuestionMark) t.makeNullable() else t.makeNotNull()
-
-    fun erase (t: IrType): IrType {
-        if (t is IrSimpleType) {
-            val classifier = t.classifier
-            val owner = classifier.owner
-            if(owner is IrTypeParameter) {
-                return erase(owner.superTypes.get(0))
-            }
-
-            // todo: fix this:
-            if (t.makeNotNull().isArray()) {
-                val elementType = t.getArrayElementType(pluginContext.irBuiltIns)
-                val erasedElementType = erase(elementType)
-                return withQuestionMark((classifier as IrClassSymbol).typeWith(erasedElementType), t.hasQuestionMark)
-            }
-
-            if (owner is IrClass) {
-                return withQuestionMark((classifier as IrClassSymbol).typeWith(), t.hasQuestionMark)
-            }
-        }
-        return t
-    }
-
-    private fun getFunctionLabel(f: IrFunction) : String {
-        return getFunctionLabel(f.parent, f.name.asString(), f.valueParameters, f.returnType)
-    }
-
-    private fun getFunctionLabel(parent: IrDeclarationParent, name: String, parameters: List<IrValueParameter>, returnType: IrType) : String {
-        val paramTypeIds = parameters.joinToString() { "{${useTypeOld(erase(it.type)).toString()}}" }
-        val returnTypeId = useTypeOld(erase(returnType))
-        val parentId = useDeclarationParent(parent)
-        val label = "@\"callable;{$parentId}.$name($paramTypeIds){$returnTypeId}\""
-        return label
-    }
-
-    fun <T: DbCallable> useFunction(f: IrFunction): Label<out T> {
-        val label = getFunctionLabel(f)
-        val id: Label<T> = tw.getLabelFor(label)
         return id
     }
 
