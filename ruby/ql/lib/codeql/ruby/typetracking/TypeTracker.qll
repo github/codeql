@@ -52,6 +52,24 @@ private module Cached {
     )
   }
 
+  /** Gets the summary resulting from prepending `step` to this type-tracking summary. */
+  cached
+  TypeBackTracker prepend(TypeBackTracker tbt, StepSummary step) {
+    exists(Boolean hasReturn, string content | tbt = MkTypeBackTracker(hasReturn, content) |
+      step = LevelStep() and result = tbt
+      or
+      step = CallStep() and hasReturn = false and result = tbt
+      or
+      step = ReturnStep() and result = MkTypeBackTracker(true, content)
+      or
+      exists(string p |
+        step = LoadStep(p) and content = "" and result = MkTypeBackTracker(hasReturn, p)
+      )
+      or
+      step = StoreStep(content) and result = MkTypeBackTracker(hasReturn, "")
+    )
+  }
+
   /**
    * Gets the summary that corresponds to having taken a forwards
    * heap and/or intra-procedural step from `nodeFrom` to `nodeTo`.
@@ -365,19 +383,7 @@ class TypeBackTracker extends TTypeBackTracker {
   TypeBackTracker() { this = MkTypeBackTracker(hasReturn, content) }
 
   /** Gets the summary resulting from prepending `step` to this type-tracking summary. */
-  TypeBackTracker prepend(StepSummary step) {
-    step = LevelStep() and result = this
-    or
-    step = CallStep() and hasReturn = false and result = this
-    or
-    step = ReturnStep() and result = MkTypeBackTracker(true, content)
-    or
-    exists(string p |
-      step = LoadStep(p) and content = "" and result = MkTypeBackTracker(hasReturn, p)
-    )
-    or
-    step = StoreStep(content) and result = MkTypeBackTracker(hasReturn, "")
-  }
+  TypeBackTracker prepend(StepSummary step) { result = prepend(this, step) }
 
   /** Gets a textual representation of this summary. */
   string toString() {
@@ -458,6 +464,19 @@ class TypeBackTracker extends TTypeBackTracker {
     or
     simpleLocalFlowStep(nodeFrom, nodeTo) and
     this = result
+  }
+
+  /**
+   * Gets a forwards summary that is compatible with this backwards summary.
+   * That is, if this summary describes the steps needed to back-track a value
+   * from `sink` to `mid`, and the result is a valid summary of the steps needed
+   * to track a value from `source` to `mid`, then the value from `source` may
+   * also flow to `sink`.
+   */
+  TypeTracker getACompatibleTypeTracker() {
+    exists(boolean hasCall | result = MkTypeTracker(hasCall, content) |
+      hasCall = false or this.hasReturn() = false
+    )
   }
 }
 
