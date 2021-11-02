@@ -715,6 +715,21 @@ class X {
         }
     }
 
+    fun useValueDeclaration(d: IrValueDeclaration): Label<out DbVariable> {
+        when(d) {
+            is IrValueParameter -> {
+                return useValueParameter(d)
+            }
+            is IrVariable -> {
+                return useVariable(d)
+            }
+            else -> {
+                logger.warn(Severity.ErrorSevere, "Unrecognised IrValueDeclaration: " + d.javaClass)
+                return fakeLabel()
+            }
+        }
+    }
+
     fun erase (t: IrType): IrType {
         if (t is IrSimpleType) {
             val classifier = t.classifier
@@ -735,6 +750,52 @@ class X {
             }
         }
         return t
+    }
+
+    fun getValueParameterLabel(vp: IrValueParameter) : String {
+        @Suppress("UNCHECKED_CAST")
+        val parentId: Label<out DbMethod> = useDeclarationParent(vp.parent) as Label<out DbMethod>
+        var idx = vp.index
+        if (idx < 0) {
+            // We're not extracting this and this@TYPE parameters of functions:
+            logger.warn(Severity.ErrorSevere, "Unexpected negative index for parameter")
+        }
+        val label = "@\"params;{$parentId};$idx\""
+        return label
+    }
+
+    fun useValueParameter(vp: IrValueParameter): Label<out DbParam> {
+        val label = getValueParameterLabel(vp)
+        val id = tw.getLabelFor<DbParam>(label)
+        return id
+    }
+
+    fun getPropertyLabel(p: IrProperty) : String {
+        val parentId = useDeclarationParent(p.parent)
+        val label = "@\"field;{$parentId};${p.name.asString()}\""
+        return label
+    }
+
+    fun useProperty(p: IrProperty): Label<out DbField> {
+        var label = getPropertyLabel(p)
+        val id: Label<DbField> = tw.getLabelFor(label)
+        return id
+    }
+
+    private fun getEnumEntryLabel(ee: IrEnumEntry) : String {
+        val parentId = useDeclarationParent(ee.parent)
+        val label = "@\"field;{$parentId};${ee.name.asString()}\""
+        return label
+    }
+
+    fun useEnumEntry(ee: IrEnumEntry): Label<out DbField> {
+        var label = getEnumEntryLabel(ee)
+        val id: Label<DbField> = tw.getLabelFor(label)
+        return id
+    }
+
+    fun useVariable(v: IrVariable): Label<out DbLocalvar> {
+        return tw.getVariableLabelFor<DbLocalvar>(v)
     }
 
     fun withQuestionMark(t: IrType, hasQuestionMark: Boolean) = if(hasQuestionMark) t.makeNullable() else t.makeNotNull()
@@ -815,18 +876,6 @@ open class KotlinFileExtractor(
         return id
     }
 
-    private fun getValueParameterLabel(vp: IrValueParameter) : String {
-        @Suppress("UNCHECKED_CAST")
-        val parentId: Label<out DbMethod> = useDeclarationParent(vp.parent) as Label<out DbMethod>
-        var idx = vp.index
-        if (idx < 0) {
-            // We're not extracting this and this@TYPE parameters of functions:
-            logger.warnElement(Severity.ErrorSevere, "Unexpected negative index for parameter", vp)
-        }
-        val label = "@\"params;{$parentId};$idx\""
-        return label
-    }
-
     private fun isQualifiedThis(vp: IrValueParameter): Boolean {
         return isQualifiedThisFunction(vp) ||
                isQualifiedThisClass(vp)
@@ -845,12 +894,6 @@ open class KotlinFileExtractor(
         return vp.index == -1 &&
                parent is IrClass &&
                parent.thisReceiver == vp
-    }
-
-    fun useValueParameter(vp: IrValueParameter): Label<out DbParam> {
-        val label = getValueParameterLabel(vp)
-        val id = tw.getLabelFor<DbParam>(label)
-        return id
     }
 
     fun extractValueParameter(vp: IrValueParameter, parent: Label<out DbCallable>, idx: Int) {
@@ -964,18 +1007,6 @@ open class KotlinFileExtractor(
         currentFunction = null
     }
 
-    private fun getPropertyLabel(p: IrProperty) : String {
-        val parentId = useDeclarationParent(p.parent)
-        val label = "@\"field;{$parentId};${p.name.asString()}\""
-        return label
-    }
-
-    fun useProperty(p: IrProperty): Label<out DbField> {
-        var label = getPropertyLabel(p)
-        val id: Label<DbField> = tw.getLabelFor(label)
-        return id
-    }
-
     fun extractProperty(p: IrProperty, parentId: Label<out DbReftype>) {
         val bf = p.backingField
         if(bf == null) {
@@ -987,18 +1018,6 @@ open class KotlinFileExtractor(
             tw.writeFields(id, p.name.asString(), typeId, parentId, id)
             tw.writeHasLocation(id, locId)
         }
-    }
-
-    private fun getEnumEntryLabel(ee: IrEnumEntry) : String {
-        val parentId = useDeclarationParent(ee.parent)
-        val label = "@\"field;{$parentId};${ee.name.asString()}\""
-        return label
-    }
-
-    fun useEnumEntry(ee: IrEnumEntry): Label<out DbField> {
-        var label = getEnumEntryLabel(ee)
-        val id: Label<DbField> = tw.getLabelFor(label)
-        return id
     }
 
     fun extractEnumEntry(ee: IrEnumEntry, parentId: Label<out DbReftype>) {
@@ -1023,10 +1042,6 @@ open class KotlinFileExtractor(
         for((sIdx, stmt) in b.statements.withIndex()) {
             extractStatement(stmt, callable, id, sIdx)
         }
-    }
-
-    fun useVariable(v: IrVariable): Label<out DbLocalvar> {
-        return tw.getVariableLabelFor<DbLocalvar>(v)
     }
 
     fun extractVariable(v: IrVariable, callable: Label<out DbCallable>, parent: Label<out DbStmtparent>, idx: Int) {
@@ -1062,21 +1077,6 @@ open class KotlinFileExtractor(
             }
             else -> {
                 logger.warnElement(Severity.ErrorSevere, "Unrecognised IrStatement: " + s.javaClass, s)
-            }
-        }
-    }
-
-    fun useValueDeclaration(d: IrValueDeclaration): Label<out DbVariable> {
-        when(d) {
-            is IrValueParameter -> {
-                return useValueParameter(d)
-            }
-            is IrVariable -> {
-                return useVariable(d)
-            }
-            else -> {
-                logger.warnElement(Severity.ErrorSevere, "Unrecognised IrValueDeclaration: " + d.javaClass, d)
-                return fakeLabel()
             }
         }
     }

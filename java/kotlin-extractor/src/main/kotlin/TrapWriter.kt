@@ -38,6 +38,18 @@ open class TrapWriter (val lm: TrapLabelManager, val bw: BufferedWriter) {
             return maybeId
         }
     }
+    val variableLabelMapping: MutableMap<IrVariable, Label<out DbLocalvar>> = mutableMapOf<IrVariable, Label<out DbLocalvar>>()
+    fun <T> getVariableLabelFor(v: IrVariable): Label<out DbLocalvar> {
+        val maybeId = variableLabelMapping.get(v)
+        if(maybeId == null) {
+            val id = lm.getFreshLabel<DbLocalvar>()
+            variableLabelMapping.put(v, id)
+            writeTrap("$id = *\n")
+            return id
+        } else {
+            return maybeId
+        }
+    }
 
     fun getLocation(fileId: Label<DbFile>, startLine: Int, startColumn: Int, endLine: Int, endColumn: Int): Label<DbLocation> {
         return getLabelFor("@\"loc,{$fileId},$startLine,$startColumn,$endLine,$endColumn\"") {
@@ -139,18 +151,6 @@ open class FileTrapWriter (
             val endLine =     sourceOffsetResolver.getLineNumber(e.endOffset) + 1
             val endColumn =   sourceOffsetResolver.getColumnNumber(e.endOffset)
             return "file://$filePath:$startLine:$startColumn:$endLine:$endColumn"
-        }
-    }
-    val variableLabelMapping: MutableMap<IrVariable, Label<out DbLocalvar>> = mutableMapOf<IrVariable, Label<out DbLocalvar>>()
-    fun <T> getVariableLabelFor(v: IrVariable): Label<out DbLocalvar> {
-        val maybeId = variableLabelMapping.get(v)
-        if(maybeId == null) {
-            val id = lm.getFreshLabel<DbLocalvar>()
-            variableLabelMapping.put(v, id)
-            writeTrap("$id = *\n")
-            return id
-        } else {
-            return maybeId
         }
     }
     fun <T> getFreshIdLabel(): Label<T> {
