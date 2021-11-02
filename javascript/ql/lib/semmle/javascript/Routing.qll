@@ -907,6 +907,7 @@ module Routing {
   /**
    * Like `getAnAccessPathRhs` but with `base` mapped to its root node.
    */
+  pragma[nomagic]
   private DataFlow::Node getAnAccessPathRhsUnderRoot(RootNode root, int n, string path) {
     result = getAnAccessPathRhs(root.getADescendant(), n, path)
   }
@@ -914,6 +915,7 @@ module Routing {
   /**
    * Like `getAnAccessPathRead` but with `base` mapped to its root node.
    */
+  pragma[nomagic]
   private DataFlow::SourceNode getAnAccessPathReadUnderRoot(RootNode root, int n, string path) {
     result = getAnAccessPathRead(root.getADescendant(), n, path)
   }
@@ -928,7 +930,7 @@ module Routing {
   private predicate middlewareApiStep(DataFlow::SourceNode pred, DataFlow::SourceNode succ) {
     exists(RootNode root, int n, string path |
       pred = getAnAccessPathRhsUnderRoot(root, n, path) and
-      succ = getAnAccessPathReadUnderRoot(root, n, path)
+      succ = getAnAccessPathReadUnderRoot(root, n, pragma[only_bind_out](path))
     )
     or
     // We can't augment the call graph as this depends on type tracking, so just
@@ -947,13 +949,21 @@ module Routing {
     }
   }
 
+  pragma[nomagic]
+  private predicate potentialAccessPathStep(
+    Node writer, DataFlow::SourceNode pred, Node reader, DataFlow::SourceNode succ, int n,
+    string path
+  ) {
+    pred = getAnAccessPathRhs(writer, n, path) and
+    succ = getAnAccessPathRead(reader, n, pragma[only_bind_out](path))
+  }
+
   /**
    * Holds if `pred -> succ` is a data-flow step between access paths on request input objects.
    */
   private predicate middlewareDataFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
     exists(Node writer, Node reader, int n, string path |
-      pred = getAnAccessPathRhs(writer, n, path) and
-      succ = getAnAccessPathRead(reader, n, path) and
+      potentialAccessPathStep(writer, pred, reader, succ, n, path) and
       pragma[only_bind_out](reader).isGuardedByNode(pragma[only_bind_out](writer))
     )
     or
