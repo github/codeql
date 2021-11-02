@@ -292,7 +292,6 @@
 | file://:0:0:0:0 | Array | Class, ParameterizedType |
 | file://:0:0:0:0 | Array | Class, ParameterizedType |
 | file://:0:0:0:0 | Array | Class, ParameterizedType |
-| file://:0:0:0:0 | Array | Class, ParameterizedType |
 | file://:0:0:0:0 | ArrayIndexOutOfBoundsException | Class |
 | file://:0:0:0:0 | ArrayList | Class, GenericType, ParameterizedType |
 | file://:0:0:0:0 | ArrayList | Class, ParameterizedType |
@@ -847,7 +846,6 @@
 | file://:0:0:0:0 | Collection | Interface, ParameterizedType |
 | file://:0:0:0:0 | Collection | Interface, ParameterizedType |
 | file://:0:0:0:0 | Collection | Interface, ParameterizedType |
-| file://:0:0:0:0 | Collection | Interface, ParameterizedType |
 | file://:0:0:0:0 | CollectionView | Class, GenericType, ParameterizedType |
 | file://:0:0:0:0 | CollectionView | Class, ParameterizedType |
 | file://:0:0:0:0 | CollectionView | Class, ParameterizedType |
@@ -1073,7 +1071,6 @@
 | file://:0:0:0:0 | Consumer | Interface, ParameterizedType |
 | file://:0:0:0:0 | Consumer | Interface, ParameterizedType |
 | file://:0:0:0:0 | Consumer | Interface, ParameterizedType |
-| file://:0:0:0:0 | Consumer | Interface, ParameterizedType |
 | file://:0:0:0:0 | ContentHandler | Class |
 | file://:0:0:0:0 | ContentHandlerFactory | Interface |
 | file://:0:0:0:0 | Controller | Class |
@@ -1121,7 +1118,6 @@
 | file://:0:0:0:0 | DoubleToLongFunction | Interface |
 | file://:0:0:0:0 | DoubleUnaryOperator | Interface |
 | file://:0:0:0:0 | Duration | Class |
-| file://:0:0:0:0 | E | TypeVariable |
 | file://:0:0:0:0 | E | TypeVariable |
 | file://:0:0:0:0 | E | TypeVariable |
 | file://:0:0:0:0 | E | TypeVariable |
@@ -1626,7 +1622,6 @@
 | file://:0:0:0:0 | IntFunction | Interface, ParameterizedType |
 | file://:0:0:0:0 | IntFunction | Interface, ParameterizedType |
 | file://:0:0:0:0 | IntFunction | Interface, ParameterizedType |
-| file://:0:0:0:0 | IntFunction | Interface, ParameterizedType |
 | file://:0:0:0:0 | IntIterator | Class |
 | file://:0:0:0:0 | IntPredicate | Interface |
 | file://:0:0:0:0 | IntProgression | Class |
@@ -1663,7 +1658,6 @@
 | file://:0:0:0:0 | Iterable | Interface, ParameterizedType |
 | file://:0:0:0:0 | Iterator | GenericType, Interface, ParameterizedType |
 | file://:0:0:0:0 | Iterator | GenericType, Interface, ParameterizedType |
-| file://:0:0:0:0 | Iterator | Interface, ParameterizedType |
 | file://:0:0:0:0 | Iterator | Interface, ParameterizedType |
 | file://:0:0:0:0 | Iterator | Interface, ParameterizedType |
 | file://:0:0:0:0 | Iterator | Interface, ParameterizedType |
@@ -1838,8 +1832,6 @@
 | file://:0:0:0:0 | LineReader | Class |
 | file://:0:0:0:0 | LinkOption | Class |
 | file://:0:0:0:0 | List | GenericType, Interface, ParameterizedType |
-| file://:0:0:0:0 | List | GenericType, Interface, ParameterizedType |
-| file://:0:0:0:0 | List | Interface, ParameterizedType |
 | file://:0:0:0:0 | List | Interface, ParameterizedType |
 | file://:0:0:0:0 | List | Interface, ParameterizedType |
 | file://:0:0:0:0 | List | Interface, ParameterizedType |
@@ -1894,7 +1886,6 @@
 | file://:0:0:0:0 | List | Interface, ParameterizedType |
 | file://:0:0:0:0 | ListIterator | GenericType, Interface, ParameterizedType |
 | file://:0:0:0:0 | ListIterator | GenericType, Interface, ParameterizedType |
-| file://:0:0:0:0 | ListIterator | Interface, ParameterizedType |
 | file://:0:0:0:0 | ListIterator | Interface, ParameterizedType |
 | file://:0:0:0:0 | ListIterator | Interface, ParameterizedType |
 | file://:0:0:0:0 | ListIterator | Interface, ParameterizedType |
@@ -2477,7 +2468,6 @@
 | file://:0:0:0:0 | Spliterator | Interface, ParameterizedType |
 | file://:0:0:0:0 | Spliterator | Interface, ParameterizedType |
 | file://:0:0:0:0 | Spliterator | Interface, ParameterizedType |
-| file://:0:0:0:0 | Spliterator | Interface, ParameterizedType |
 | file://:0:0:0:0 | StackFrame | Interface |
 | file://:0:0:0:0 | StackFrameInfo | Class |
 | file://:0:0:0:0 | StackTraceElement | Class |
@@ -2485,7 +2475,6 @@
 | file://:0:0:0:0 | State | Class |
 | file://:0:0:0:0 | Status | Class |
 | file://:0:0:0:0 | Stream | GenericType, Interface, ParameterizedType |
-| file://:0:0:0:0 | Stream | Interface, ParameterizedType |
 | file://:0:0:0:0 | Stream | Interface, ParameterizedType |
 | file://:0:0:0:0 | Stream | Interface, ParameterizedType |
 | file://:0:0:0:0 | Stream | Interface, ParameterizedType |
@@ -2562,7 +2551,6 @@
 | file://:0:0:0:0 | Supplier | Interface, ParameterizedType |
 | file://:0:0:0:0 | Sync | Class |
 | file://:0:0:0:0 | SystemClock | Class |
-| file://:0:0:0:0 | T | TypeVariable |
 | file://:0:0:0:0 | T | TypeVariable |
 | file://:0:0:0:0 | T | TypeVariable |
 | file://:0:0:0:0 | T | TypeVariable |

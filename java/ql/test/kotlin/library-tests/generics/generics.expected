@@ -1,35 +1,23 @@
 genericType
-| generics.kt:11:1:11:19 | C0 | generics.kt:11:15:11:15 | V | 0 |
-| generics.kt:13:1:18:1 | C1 | generics.kt:13:10:13:10 | T | 0 |
-| generics.kt:13:1:18:1 | C1 | generics.kt:13:13:13:13 | W | 1 |
+| generics.kt:11:1:11:19 | C0 | file://:0:0:0:0 | V | 0 |
+| generics.kt:13:1:18:1 | C1 | file://:0:0:0:0 | T | 0 |
+| generics.kt:13:1:18:1 | C1 | file://:0:0:0:0 | W | 1 |
 parameterizedType
-| generics.kt:11:1:11:19 | C0 | generics.kt:11:1:11:19 | C0 | 0 | file://:0:0:0:0 | * |
-| generics.kt:11:1:11:19 | C0 | generics.kt:11:1:11:19 | C0 | 0 | file://:0:0:0:0 | Integer |
-| generics.kt:11:1:11:19 | C0 | generics.kt:11:1:11:19 | C0 | 0 | generics.kt:7:6:7:6 | S |
-| generics.kt:11:1:11:19 | C0 | generics.kt:11:1:11:19 | C0 | 0 | generics.kt:11:15:11:15 | V |
-| generics.kt:11:1:11:19 | C0 | generics.kt:11:1:11:19 | C0 | 0 | generics.kt:13:13:13:13 | W |
-| generics.kt:13:1:18:1 | C1 | generics.kt:13:1:18:1 | C1 | 0 | file://:0:0:0:0 | Integer |
-| generics.kt:13:1:18:1 | C1 | generics.kt:13:1:18:1 | C1 | 0 | file://:0:0:0:0 | String |
-| generics.kt:13:1:18:1 | C1 | generics.kt:13:1:18:1 | C1 | 0 | file://:0:0:0:0 | String |
-| generics.kt:13:1:18:1 | C1 | generics.kt:13:1:18:1 | C1 | 0 | generics.kt:13:10:13:10 | T |
-| generics.kt:13:1:18:1 | C1 | generics.kt:13:1:18:1 | C1 | 0 | generics.kt:15:10:15:10 | U |
-| generics.kt:13:1:18:1 | C1 | generics.kt:13:1:18:1 | C1 | 1 | file://:0:0:0:0 | Integer |
-| generics.kt:13:1:18:1 | C1 | generics.kt:13:1:18:1 | C1 | 1 | file://:0:0:0:0 | Integer |
-| generics.kt:13:1:18:1 | C1 | generics.kt:13:1:18:1 | C1 | 1 | file://:0:0:0:0 | String |
-| generics.kt:13:1:18:1 | C1 | generics.kt:13:1:18:1 | C1 | 1 | generics.kt:13:13:13:13 | W |
-| generics.kt:13:1:18:1 | C1 | generics.kt:13:1:18:1 | C1 | 1 | generics.kt:15:10:15:10 | U |
+| generics.kt:11:1:11:19 | C0 | generics.kt:11:1:11:19 | C0 | 0 | file://:0:0:0:0 | V |
+| generics.kt:13:1:18:1 | C1 | generics.kt:13:1:18:1 | C1 | 0 | file://:0:0:0:0 | T |
+| generics.kt:13:1:18:1 | C1 | generics.kt:13:1:18:1 | C1 | 1 | file://:0:0:0:0 | W |
 genericFunction
-| generics.kt:3:1:5:1 | f0 | generics.kt:3:6:3:6 | S | 0 |
-| generics.kt:7:1:9:1 | f1 | generics.kt:7:6:7:6 | S | 0 |
-| generics.kt:15:5:17:5 | f2 | generics.kt:15:10:15:10 | U | 0 |
-| generics.kt:21:5:21:23 | f4 | generics.kt:21:10:21:10 | P | 0 |
+| generics.kt:3:1:5:1 | f0 | file://:0:0:0:0 | S | 0 |
+| generics.kt:7:1:9:1 | f1 | file://:0:0:0:0 | S | 0 |
+| generics.kt:15:5:17:5 | f2 | file://:0:0:0:0 | U | 0 |
+| generics.kt:21:5:21:23 | f4 | file://:0:0:0:0 | P | 0 |
 genericCall
-| generics.kt:27:17:27:22 | f2(...) | generics.kt:15:10:15:10 | U | file://:0:0:0:0 | String |
-| generics.kt:30:17:30:21 | f2(...) | generics.kt:15:10:15:10 | U | file://:0:0:0:0 | Integer |
-| generics.kt:32:8:32:12 | f4(...) | generics.kt:21:10:21:10 | P | file://:0:0:0:0 | Integer |
+| generics.kt:27:17:27:22 | f2(...) | file://:0:0:0:0 | U | file://:0:0:0:0 | String |
+| generics.kt:30:17:30:21 | f2(...) | file://:0:0:0:0 | U | file://:0:0:0:0 | Integer |
+| generics.kt:32:8:32:12 | f4(...) | file://:0:0:0:0 | P | file://:0:0:0:0 | Integer |
 genericCtor
-| generics.kt:16:16:16:26 | new C1(...) | 0 | generics.kt:15:10:15:10 | U |
-| generics.kt:16:16:16:26 | new C1(...) | 1 | generics.kt:15:10:15:10 | U |
+| generics.kt:16:16:16:26 | new C1(...) | 0 | file://:0:0:0:0 | U |
+| generics.kt:16:16:16:26 | new C1(...) | 1 | file://:0:0:0:0 | U |
 | generics.kt:25:14:25:28 | new C1(...) | 0 | file://:0:0:0:0 | Integer |
 | generics.kt:25:14:25:28 | new C1(...) | 1 | file://:0:0:0:0 | Integer |
 | generics.kt:28:14:28:32 | new C1(...) | 0 | file://:0:0:0:0 | String |
