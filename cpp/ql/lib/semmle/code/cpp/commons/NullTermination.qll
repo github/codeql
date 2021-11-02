@@ -5,7 +5,7 @@ import semmle.code.cpp.dataflow.DataFlow
 
 /**
  * Holds if the expression `e` assigns something including `va` to a
- * stack variable `v0` that is later null terminated at `e0`.
+ * stack variable `v0`.
  */
 private predicate mayAddNullTerminatorHelper(Expr e, VariableAccess va, StackVariable v0) {
   exists(Expr val |
