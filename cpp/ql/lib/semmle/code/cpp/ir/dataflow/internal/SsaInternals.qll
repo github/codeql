@@ -215,8 +215,16 @@ predicate addressFlow(Instruction iFrom, Instruction iTo) {
   or
   iTo.(FieldAddressInstruction).getObjectAddress() = iFrom
   or
+  // We traverse `LoadInstruction`s since we want to conclude that the
+  // destination of the store operation `*x = source()` is derived from `x`.
   iTo.(LoadInstruction).getSourceAddress() = iFrom
   or
+  // We want to include `ReadSideEffectInstruction`s for the same reason that we include
+  // `LoadInstruction`s, but only when a `WriteSideEffectInstruction` for the same index exists as well
+  // (as otherwise we know that the callee won't override the data). However, given an index `i`, the
+  // destination of the `WriteSideEffectInstruction` for `i` is identical to the source address of the
+  // `ReadSideEffectInstruction` for `i`. So we don't have to talk about the `ReadSideEffectInstruction`
+  // at all.
   exists(WriteSideEffectInstruction write |
     write.getPrimaryInstruction() = iTo and
     write.getDestinationAddress() = iFrom
