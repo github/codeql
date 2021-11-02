@@ -161,9 +161,8 @@ private module FastApi {
       or
       // user-defined subclasses
       exists(Class cls, API::Node base |
+        base = getModeledResponseClass(_).getASubclass*() and
         cls.getABase() = base.getAUse().asExpr() and
-        // since we _know_ that the base has an API Node, that means there is a subclass
-        // edge leading to the `ClassExpr` for the class.
         responseClass.getAnImmediateUse().asExpr().(ClassExpr) = cls.getParent()
       |
         exists(Assign assign | assign = cls.getAStmt() |
