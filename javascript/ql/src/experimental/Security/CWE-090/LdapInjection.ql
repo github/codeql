@@ -5,7 +5,7 @@
  * @kind path-problem
  * @problem.severity error
  * @precision high
- * @id javascript/ldap-injection
+ * @id js/ldap-injection
  * @tags security
  *       external/cwe/cwe-090
  */
