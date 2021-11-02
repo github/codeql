@@ -42,7 +42,10 @@ class ComparisonBarrierGuard extends DataFlow::BarrierGuard instanceof DataFlow:
     exists(DataFlow::Node lesser, DataFlow::Node greater, int bias |
       super.leq(branch, lesser, greater, bias)
     |
-      globalValueNumber(DataFlow::exprNode(e)) = globalValueNumber(greater) and
+      // Force join order: find comparisons checking x >= 2048, then take the global value
+      // number of x. Otherwise this can be realised by starting from all pairs of matching value
+      // numbers, which can be huge.
+      pragma[only_bind_into](globalValueNumber(DataFlow::exprNode(e))) = globalValueNumber(greater) and
       lesser.getIntValue() - bias >= 2048
     )
   }
