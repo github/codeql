@@ -37,18 +37,28 @@ jobs:
 
       - name: QHelp preview
         run: |
+          EXIT_CODE=0
           echo "QHelp previews:" > comment.txt
-          cat "${{ runner.temp }}/paths.txt" | while read path; do
+          while read path; do
             if [ ! -f "${path}" ]; then
                exit 1
             fi
             echo "<details> <summary>${path}</summary>"
             echo
-            codeql generate query-help --format=markdown -- "./${path}"
+            codeql generate query-help --format=markdown -- "./${path}" 2> errors.txt || EXIT_CODE="$?"
+            if [ -s errors.txt ]; then
+               echo "# errors/warnings:"
+               echo '```'
+               cat errors.txt
+               cat errors.txt 1>&2
+               echo '```'
+            fi
             echo "</details>"
-          done >> comment.txt
+          done < "${{ runner.temp }}/paths.txt" >> comment.txt
+          exit "${EXIT_CODE}"
 
-      - uses: actions/upload-artifact@v2
+      - if: always()
+        uses: actions/upload-artifact@v2
         with:
           name: comment
           path: comment.txt
