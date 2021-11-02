@@ -39,21 +39,17 @@ module LdapInjection {
   /**
    * An LDAP filter for an API call that executes an operation against the LDAP server.
    */
-  class LdapjsSearchFilterAsSink extends Sink {
-    LdapjsSearchFilterAsSink() { this instanceof LdapjsSearchFilter }
-
+  class LdapjsSearchFilterAsSink extends Sink instanceof LdapjsSearchFilter {
     override DataFlow::InvokeNode getQueryCall() {
-      result = this.(LdapjsSearchFilter).getQueryCall()
+      result = LdapjsSearchFilter.super.getQueryCall()
     }
   }
 
   /**
    * An LDAP DN argument for an API call that executes an operation against the LDAP server.
    */
-  class LdapjsDNArgumentAsSink extends Sink {
-    LdapjsDNArgumentAsSink() { this instanceof LdapjsDNArgument }
-
-    override DataFlow::InvokeNode getQueryCall() { result = this.(LdapjsDNArgument).getQueryCall() }
+  class LdapjsDNArgumentAsSink extends Sink instanceof LdapjsDNArgument {
+    override DataFlow::InvokeNode getQueryCall() { result = LdapjsDNArgument.super.getQueryCall() }
   }
 
   /**
