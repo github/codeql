@@ -6,6 +6,7 @@
 // `docs/codeql/support/reusables/frameworks.rst`
 private import semmle.python.frameworks.Aioch
 private import semmle.python.frameworks.Aiohttp
+private import semmle.python.frameworks.Asyncpg
 private import semmle.python.frameworks.ClickhouseDriver
 private import semmle.python.frameworks.Cryptodome
 private import semmle.python.frameworks.Cryptography
@@ -25,6 +26,7 @@ private import semmle.python.frameworks.Peewee
 private import semmle.python.frameworks.Psycopg2
 private import semmle.python.frameworks.PyMySQL
 private import semmle.python.frameworks.Rsa
+private import semmle.python.frameworks.RuamelYaml
 private import semmle.python.frameworks.Simplejson
 private import semmle.python.frameworks.SqlAlchemy
 private import semmle.python.frameworks.Stdlib

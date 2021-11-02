@@ -15,7 +15,7 @@ import cpp
 from File f, float complexity, float loc
 where
   f.fromSource() and
-  loc = sum(FunctionDeclarationEntry fde | fde.getFile() = f | fde.getNumberOfLines()).(float) and
+  loc = sum(FunctionDeclarationEntry fde | fde.getFile() = f | fde.getNumberOfLines()) and
   if loc > 0
   then
     // Weighted average of complexity by function length

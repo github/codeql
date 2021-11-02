@@ -6,6 +6,12 @@ private import DataFlowDispatch
 private import SsaImpl as SsaImpl
 private import FlowSummaryImpl as FlowSummaryImpl
 
+/** Gets the callable in which this node occurs. */
+DataFlowCallable nodeGetEnclosingCallable(Node n) { result = n.getEnclosingCallable() }
+
+/** Holds if `p` is a `ParameterNode` of `c` with position `pos`. */
+predicate isParameterNode(ParameterNode p, DataFlowCallable c, int pos) { p.isParameterOf(c, pos) }
+
 abstract class NodeImpl extends Node {
   /** Do not call: use `getEnclosingCallable()` instead. */
   abstract CfgScope getCfgScope();

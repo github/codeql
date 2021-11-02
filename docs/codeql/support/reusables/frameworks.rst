@@ -158,8 +158,10 @@ Python built-in support
    Flask, Web framework
    Tornado, Web framework
    Twisted, Web framework
-   PyYAML, Serialization
+   starlette, Asynchronous Server Gateway Interface (ASGI)
    dill, Serialization
+   PyYAML, Serialization
+   ruamel.yaml, Serialization
    simplejson, Serialization
    ujson, Serialization
    fabric, Utility library
@@ -169,6 +171,7 @@ Python built-in support
    multidict, Utility library
    yarl, Utility library
    aioch, Database
+   asyncpg, Database
    clickhouse-driver, Database
    mysql-connector-python, Database
    mysql-connector, Database

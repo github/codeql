@@ -484,7 +484,7 @@ library class ExprEvaluator extends int {
       this.interestingInternal(e, req, true) and
       (
         result = req.(CompileTimeConstantInt).getIntValue() or
-        result = this.getCompoundValue(e, req.(CompileTimeVariableExpr))
+        result = this.getCompoundValue(e, req)
       ) and
       (
         req.getUnderlyingType().(IntegralType).isSigned() or
@@ -611,7 +611,7 @@ library class ExprEvaluator extends int {
       or
       exists(AssignExpr req | req = val | result = this.getValueInternal(e, req.getRValue()))
       or
-      result = this.getVariableValue(e, val.(VariableAccess))
+      result = this.getVariableValue(e, val)
       or
       exists(FunctionCall call | call = val and not callWithMultipleTargets(call) |
         result = this.getFunctionValue(call.getTarget())
@@ -663,7 +663,7 @@ library class ExprEvaluator extends int {
     this.interestingInternal(_, req, false) and
     (
       result = req.(CompileTimeConstantInt).getIntValue() or
-      result = this.getCompoundValueNonSubExpr(req.(CompileTimeVariableExpr))
+      result = this.getCompoundValueNonSubExpr(req)
     ) and
     (
       req.getUnderlyingType().(IntegralType).isSigned() or
@@ -787,7 +787,7 @@ library class ExprEvaluator extends int {
       or
       exists(AssignExpr req | req = val | result = this.getValueInternalNonSubExpr(req.getRValue()))
       or
-      result = this.getVariableValueNonSubExpr(val.(VariableAccess))
+      result = this.getVariableValueNonSubExpr(val)
       or
       exists(FunctionCall call | call = val and not callWithMultipleTargets(call) |
         result = this.getFunctionValue(call.getTarget())
