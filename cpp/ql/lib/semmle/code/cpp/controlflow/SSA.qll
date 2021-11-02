@@ -62,7 +62,7 @@ class SsaDefinition extends ControlFlowNodeBase {
   BasicBlock getBasicBlock() { result.contains(this.getDefinition()) }
 
   /** Holds if this definition is a phi node for variable `v`. */
-  predicate isPhiNode(StackVariable v) { exists(StandardSSA x | x.phi_node(v, this.(BasicBlock))) }
+  predicate isPhiNode(StackVariable v) { exists(StandardSSA x | x.phi_node(v, this)) }
 
   /** Gets the location of this definition. */
   Location getLocation() { result = this.(ControlFlowNode).getLocation() }

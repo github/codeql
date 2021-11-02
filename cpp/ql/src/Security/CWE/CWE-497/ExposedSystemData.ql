@@ -378,5 +378,5 @@ class SocketOutput extends DataOutput {
 from SystemData sd, DataOutput ow
 where
   sd.getAnExprIndirect() = ow.getASource() or
-  sd.getAnExprIndirect() = ow.getASource().(Expr).getAChild*()
+  sd.getAnExprIndirect() = ow.getASource().getAChild*()
 select ow, "This operation exposes system data from $@.", sd, sd.toString()
