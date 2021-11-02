@@ -34,3 +34,11 @@ var good5 = forge.cipher.createDecipher('AES-CBC', key4); // OK
 
 var bad10 = crypto.createDiffieHellman(512);
 var good6 = crypto.createDiffieHellman(2048);
+
+const NodeRSA = require('node-rsa');
+var bad11 = new NodeRSA({b: 512}); // NOT OK
+var good7 = new NodeRSA({b: 4096}); // OK
+
+var key = new NodeRSA(); // OK
+key.generateKeyPair(512, 65537); // NOT OK
+key.generateKeyPair(4096, 65537); // OK

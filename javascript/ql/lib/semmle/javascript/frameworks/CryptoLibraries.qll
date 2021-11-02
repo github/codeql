@@ -689,3 +689,28 @@ private module ExpressJwt {
     Key() { this = DataFlow::moduleMember("express-jwt", "sign").getACall().getArgument(1) }
   }
 }
+
+/**
+ * Provides classes for working with the `node-rsa` package (https://www.npmjs.com/package/node-rsa)
+ */
+private module NodeRsa {
+  private class CreateKey extends CryptographicKeyCreation, API::InvokeNode {
+    CryptographicAlgorithm algorithm;
+
+    CreateKey() {
+      this = API::moduleImport("node-rsa").getAnInstantiation()
+      or
+      this = API::moduleImport("node-rsa").getInstance().getMember("generateKeyPair").getACall()
+    }
+
+    override CryptographicAlgorithm getAlgorithm() { result.matchesName("rsa") }
+
+    override int getSize() {
+      result = this.getArgument(0).getIntValue()
+      or
+      result = this.getOptionArgument(0, "b").getIntValue()
+    }
+
+    override predicate isSymmetricKey() { none() }
+  }
+}
