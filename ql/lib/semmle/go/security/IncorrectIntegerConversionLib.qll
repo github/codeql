@@ -155,7 +155,12 @@ class UpperBoundCheckGuard extends DataFlow::BarrierGuard, DataFlow::RelationalC
   predicate isBoundFor(int bitSize, boolean isSigned) {
     bitSize = [8, 16, 32] and
     exists(float bound, float strictnessOffset |
-      if expr.isStrict() then strictnessOffset = 1 else strictnessOffset = 0
+      // For `x < c` the bound is `c-1`. For `x >= c` we will be an upper bound
+      // on the `branch` argument of `checks` is false, which is equivalent to
+      // `x < c`.
+      if expr instanceof LssExpr or expr instanceof GeqExpr
+      then strictnessOffset = 1
+      else strictnessOffset = 0
     |
       (
         bound = expr.getAnOperand().getExactValue().toFloat()

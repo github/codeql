@@ -270,7 +270,7 @@ func testBoundsChecking(input string) {
 		if err != nil {
 			panic(err)
 		}
-		if parsed <= math.MaxInt8 {
+		if parsed <= math.MaxUint8 {
 			_ = uint8(parsed)
 		}
 		if parsed < 5 {
@@ -282,7 +282,7 @@ func testBoundsChecking(input string) {
 		if parsed > 42 {
 			_ = uint16(parsed) // $ hasValueFlow="type conversion"
 		}
-		if parsed > 5 {
+		if parsed >= math.MaxUint8+1 {
 			return
 		}
 		_ = uint8(parsed)
