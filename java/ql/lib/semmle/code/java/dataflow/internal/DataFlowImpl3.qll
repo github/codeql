@@ -3632,7 +3632,7 @@ private predicate pathIntoArg(
   )
 }
 
-pragma[noinline]
+pragma[nomagic]
 private predicate parameterCand(
   DataFlowCallable callable, int i, AccessPathApprox apa, Configuration config
 ) {
