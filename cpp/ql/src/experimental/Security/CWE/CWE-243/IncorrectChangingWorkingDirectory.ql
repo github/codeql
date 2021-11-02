@@ -63,11 +63,7 @@ where
     fc.getTarget().hasGlobalOrStdName("chdir") or
     fc.getTarget().hasGlobalOrStdName("fchdir")
   ) and
-  not exists(ConditionalStmt cotmp | cotmp.getControllingExpr().getAChild*() = fc) and
-  not exists(Loop lptmp | lptmp.getCondition().getAChild*() = fc) and
-  not exists(ReturnStmt rttmp | rttmp.getExpr().getAChild*() = fc) and
-  not exists(Assignment astmp | astmp.getAChild*() = fc) and
-  not exists(Initializer ittmp | ittmp.getExpr().getAChild*() = fc) and
+  fc instanceof ExprInVoidContext
   not isFromMacroDefinition(fc) and
   msg = "Unchecked return value for call to '" + fc.getTarget().getName() + "'."
 select fc, msg
