@@ -62,9 +62,12 @@ module Pydantic {
      * A step from an instance of a `pydantic.BaseModel` subclass, that might result in
      * an instance of a `pydantic.BaseModel` subclass.
      *
-     * NOTE: We currently overapproximate, and treat all attributes as containing another
-     * pydantic model. For the code below, we _could_ limit this to `main_foo` and
-     * members of `other_foos`.
+     * NOTE: We currently overapproximate, and treat all attributes as containing
+     * another pydantic model. For the code below, we _could_ limit this to `main_foo`
+     * and members of `other_foos`. IF THIS IS CHANGED, YOU MUST CHANGE THE ADDITIONAL
+     * TAINT STEPS BELOW, SUCH THAT SIMPLE ACCESS OF SOMETHIGN LIKE `str` IS STILL
+     * TAINTED.
+     *
      *
      * ```py
      * class MyComplexModel(BaseModel):
@@ -78,8 +81,15 @@ module Pydantic {
       nodeFrom = instance() and
       nodeTo.(DataFlow::AttrRead).getObject() = nodeFrom
       or
-      // subscripts on attributes (such as `model.foo[0]`)
-      nodeFrom.(DataFlow::AttrRead).getObject() = instance() and
+      // subscripts on attributes (such as `model.foo[0]`). This needs to handle nested
+      // lists (such as `model.foo[0][0]`), and access being split into multiple
+      // statements (such as `xs = model.foo; xs[0]`).
+      //
+      // To handle this we overapproximate which things are a Pydantic model, by
+      // treating any subscript on anything that originates on a Pydantic model to also
+      // be a Pydantic model. So `model[0]` will be an overapproximation, but should not
+      // really cause problems (since we don't expect real code to contain such accesses)
+      nodeFrom = instance() and
       nodeTo.asCfgNode().(SubscriptNode).getObject() = nodeFrom.asCfgNode()
     }
 
@@ -88,13 +98,10 @@ module Pydantic {
      */
     private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
       override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-        // attributes (such as `model.foo`)
-        nodeFrom = instance() and
-        nodeTo.(DataFlow::AttrRead).getObject() = nodeFrom
-        or
-        // subscripts on attributes (such as `model.foo[0]`)
-        nodeFrom.(DataFlow::AttrRead).getObject() = instance() and
-        nodeTo.asCfgNode().(SubscriptNode).getObject() = nodeFrom.asCfgNode()
+        // NOTE: if `instanceStepToPydanticModel` is changed to be more precise, these
+        // taint steps should be expanded, such that a field that has type `str` is
+        // still tainted.
+        instanceStepToPydanticModel(nodeFrom, nodeTo)
       }
     }
   }
