@@ -546,6 +546,7 @@ module PrivateDjango {
       /** Gets a reference to the `django.db.connection` object. */
       API::Node connection() { result = db().getMember("connection") }
 
+      /** A `django.db.connection` is a PEP249 compliant DB connection. */
       class DjangoDbConnection extends PEP249::Connection::InstanceSource {
         DjangoDbConnection() { this = connection().getAUse() }
       }
@@ -742,6 +743,7 @@ module PrivateDjango {
 
     /** Provides models for the `django.conf` module */
     module conf {
+      /** Provides models for the `django.conf.urls` module */
       module conf_urls {
         // -------------------------------------------------------------------------
         // django.conf.urls
@@ -940,6 +942,7 @@ module PrivateDjango {
          * See https://docs.djangoproject.com/en/3.1/ref/request-response/#django.http.HttpResponse.
          */
         module HttpResponse {
+          /** Gets a reference to the `django.http.response.HttpResponse` class. */
           API::Node baseClassRef() {
             result = response().getMember("HttpResponse")
             or
@@ -947,7 +950,7 @@ module PrivateDjango {
             result = http().getMember("HttpResponse")
           }
 
-          /** Gets a reference to the `django.http.response.HttpResponse` class. */
+          /** Gets a reference to the `django.http.response.HttpResponse` class or any subclass. */
           API::Node classRef() { result = baseClassRef().getASubclass*() }
 
           /**
@@ -1943,6 +1946,9 @@ module PrivateDjango {
    * with the django framework.
    *
    * Most functions take a django HttpRequest as a parameter (but not all).
+   *
+   * Extend this class to refine existing API models. If you want to model new APIs,
+   * extend `DjangoRouteHandler::Range` instead.
    */
   class DjangoRouteHandler extends Function instanceof DjangoRouteHandler::Range {
     /**
@@ -1964,10 +1970,16 @@ module PrivateDjango {
     Parameter getRequestParam() { result = this.getArg(this.getRequestParamIndex()) }
   }
 
+  /** Provides a class for modeling new django route handlers. */
   module DjangoRouteHandler {
+    /**
+     * Extend this class to model new APIs. If you want to refine existing API models,
+     * extend `DjangoRouteHandler` instead.
+     */
     abstract class Range extends Function { }
 
-    class StandardDjangoRouteHandlers extends Range {
+    /** Route handlers from normal usage of django. */
+    private class StandardDjangoRouteHandlers extends Range {
       StandardDjangoRouteHandlers() {
         exists(DjangoRouteSetup route | route.getViewArg() = poorMansFunctionTracker(this))
         or
