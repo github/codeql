@@ -155,6 +155,7 @@ Python built-in support
    Name, Category
    aiohttp.web, Web framework
    Django, Web framework
+   FastAPI, Web framework
    Flask, Web framework
    Tornado, Web framework
    Twisted, Web framework
@@ -169,6 +170,7 @@ Python built-in support
    invoke, Utility library
    jmespath, Utility library
    multidict, Utility library
+   pydantic, Utility library
    yarl, Utility library
    aioch, Database
    asyncpg, Database
