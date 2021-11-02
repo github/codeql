@@ -63,7 +63,7 @@ where
     fc.getTarget().hasGlobalOrStdName("chdir") or
     fc.getTarget().hasGlobalOrStdName("fchdir")
   ) and
-  fc instanceof ExprInVoidContext
+  fc instanceof ExprInVoidContext and
   not isFromMacroDefinition(fc) and
   msg = "Unchecked return value for call to '" + fc.getTarget().getName() + "'."
 select fc, msg
