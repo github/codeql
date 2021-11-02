@@ -10,6 +10,7 @@
 private import DataFlowImplCommon
 private import DataFlowImplSpecific::Private
 import DataFlowImplSpecific::Public
+import DataFlowImplCommonPublic
 
 /**
  * A configuration of interprocedural data flow analysis. This defines
@@ -93,6 +94,22 @@ abstract class Configuration extends string {
    * value of 0 disables field flow), or a larger value to get more results.
    */
   int fieldFlowBranchLimit() { result = 2 }
+
+  /**
+   * Gets a data flow configuration feature to add restrictions to the set of
+   * valid flow paths.
+   *
+   * - `FeatureHasSourceCallContext`:
+   *    Assume that sources have some existing call context to disallow
+   *    conflicting return-flow directly following the source.
+   * - `FeatureHasSinkCallContext`:
+   *    Assume that sinks have some existing call context to disallow
+   *    conflicting argument-to-parameter flow directly preceding the sink.
+   * - `FeatureEqualSourceSinkCallContext`:
+   *    Implies both of the above and additionally ensures that the entire flow
+   *    path preserves the call context.
+   */
+  FlowFeature getAFeature() { none() }
 
   /**
    * Holds if data may flow from `source` to `sink` for this configuration.
@@ -349,7 +366,8 @@ private predicate jumpStep(NodeEx node1, NodeEx node2, Configuration config) {
     not outBarrier(node1, config) and
     not inBarrier(node2, config) and
     not fullBarrier(node1, config) and
-    not fullBarrier(node2, config)
+    not fullBarrier(node2, config) and
+    not config.getAFeature() instanceof FeatureEqualSourceSinkCallContext
   )
 }
 
@@ -365,7 +383,8 @@ private predicate additionalJumpStep(NodeEx node1, NodeEx node2, Configuration c
     not outBarrier(node1, config) and
     not inBarrier(node2, config) and
     not fullBarrier(node1, config) and
-    not fullBarrier(node2, config)
+    not fullBarrier(node2, config) and
+    not config.getAFeature() instanceof FeatureEqualSourceSinkCallContext
   )
 }
 
@@ -401,6 +420,20 @@ private predicate viableParamArgEx(DataFlowCall call, ParamNodeEx p, ArgNodeEx a
  */
 private predicate useFieldFlow(Configuration config) { config.fieldFlowBranchLimit() >= 1 }
 
+private predicate hasSourceCallCtx(Configuration config) {
+  exists(FlowFeature feature | feature = config.getAFeature() |
+    feature instanceof FeatureHasSourceCallContext or
+    feature instanceof FeatureEqualSourceSinkCallContext
+  )
+}
+
+private predicate hasSinkCallCtx(Configuration config) {
+  exists(FlowFeature feature | feature = config.getAFeature() |
+    feature instanceof FeatureHasSinkCallContext or
+    feature instanceof FeatureEqualSourceSinkCallContext
+  )
+}
+
 private module Stage1 {
   class ApApprox = Unit;
 
@@ -421,7 +454,7 @@ private module Stage1 {
     not fullBarrier(node, config) and
     (
       sourceNode(node, config) and
-      cc = false
+      if hasSourceCallCtx(config) then cc = true else cc = false
       or
       exists(NodeEx mid |
         fwdFlow(mid, cc, config) and
@@ -551,7 +584,7 @@ private module Stage1 {
   private predicate revFlow0(NodeEx node, boolean toReturn, Configuration config) {
     fwdFlow(node, config) and
     sinkNode(node, config) and
-    toReturn = false
+    if hasSinkCallCtx(config) then toReturn = true else toReturn = false
     or
     exists(NodeEx mid |
       localFlowStep(node, mid, config) and
@@ -937,6 +970,8 @@ private module Stage2 {
 
   Cc ccNone() { result instanceof CallContextAny }
 
+  CcCall ccSomeCall() { result instanceof CallContextSomeCall }
+
   private class LocalCc = Unit;
 
   bindingset[call, c, outercc]
@@ -1004,7 +1039,7 @@ private module Stage2 {
   predicate fwdFlow(NodeEx node, Cc cc, ApOption argAp, Ap ap, Configuration config) {
     flowCand(node, _, config) and
     sourceNode(node, config) and
-    cc = ccNone() and
+    (if hasSourceCallCtx(config) then cc = ccSomeCall() else cc = ccNone()) and
     argAp = apNone() and
     ap = getApNil(node)
     or
@@ -1215,7 +1250,7 @@ private module Stage2 {
   ) {
     fwdFlow(node, _, _, ap, config) and
     sinkNode(node, config) and
-    toReturn = false and
+    (if hasSinkCallCtx(config) then toReturn = true else toReturn = false) and
     returnAp = apNone() and
     ap instanceof ApNil
     or
@@ -1616,6 +1651,8 @@ private module Stage3 {
 
   Cc ccNone() { result = false }
 
+  CcCall ccSomeCall() { result = true }
+
   private class LocalCc = Unit;
 
   bindingset[call, c, outercc]
@@ -1697,7 +1734,7 @@ private module Stage3 {
   private predicate fwdFlow0(NodeEx node, Cc cc, ApOption argAp, Ap ap, Configuration config) {
     flowCand(node, _, config) and
     sourceNode(node, config) and
-    cc = ccNone() and
+    (if hasSourceCallCtx(config) then cc = ccSomeCall() else cc = ccNone()) and
     argAp = apNone() and
     ap = getApNil(node)
     or
@@ -1908,7 +1945,7 @@ private module Stage3 {
   ) {
     fwdFlow(node, _, _, ap, config) and
     sinkNode(node, config) and
-    toReturn = false and
+    (if hasSinkCallCtx(config) then toReturn = true else toReturn = false) and
     returnAp = apNone() and
     ap instanceof ApNil
     or
@@ -2366,6 +2403,8 @@ private module Stage4 {
 
   Cc ccNone() { result instanceof CallContextAny }
 
+  CcCall ccSomeCall() { result instanceof CallContextSomeCall }
+
   private class LocalCc = LocalCallContext;
 
   bindingset[call, c, outercc]
@@ -2461,7 +2500,7 @@ private module Stage4 {
   private predicate fwdFlow0(NodeEx node, Cc cc, ApOption argAp, Ap ap, Configuration config) {
     flowCand(node, _, config) and
     sourceNode(node, config) and
-    cc = ccNone() and
+    (if hasSourceCallCtx(config) then cc = ccSomeCall() else cc = ccNone()) and
     argAp = apNone() and
     ap = getApNil(node)
     or
@@ -2672,7 +2711,7 @@ private module Stage4 {
   ) {
     fwdFlow(node, _, _, ap, config) and
     sinkNode(node, config) and
-    toReturn = false and
+    (if hasSinkCallCtx(config) then toReturn = true else toReturn = false) and
     returnAp = apNone() and
     ap instanceof ApNil
     or
@@ -3064,7 +3103,11 @@ private newtype TPathNode =
     // A PathNode is introduced by a source ...
     Stage4::revFlow(node, config) and
     sourceNode(node, config) and
-    cc instanceof CallContextAny and
+    (
+      if hasSourceCallCtx(config)
+      then cc instanceof CallContextSomeCall
+      else cc instanceof CallContextAny
+    ) and
     sc instanceof SummaryCtxNone and
     ap = TAccessPathNil(node.getDataFlowType())
     or
@@ -3076,17 +3119,10 @@ private newtype TPathNode =
     )
   } or
   TPathNodeSink(NodeEx node, Configuration config) {
-    sinkNode(node, pragma[only_bind_into](config)) and
-    Stage4::revFlow(node, pragma[only_bind_into](config)) and
-    (
-      // A sink that is also a source ...
-      sourceNode(node, config)
-      or
-      // ... or a sink that can be reached from a source
-      exists(PathNodeMid mid |
-        pathStep(mid, node, _, _, TAccessPathNil(_)) and
-        pragma[only_bind_into](config) = mid.getConfiguration()
-      )
+    exists(PathNodeMid sink |
+      sink.isAtSink() and
+      node = sink.getNodeEx() and
+      config = sink.getConfiguration()
     )
   }
 
@@ -3403,21 +3439,45 @@ private class PathNodeMid extends PathNodeImpl, TPathNodeMid {
     // an intermediate step to another intermediate node
     result = this.getSuccMid()
     or
-    // a final step to a sink via zero steps means we merge the last two steps to prevent trivial-looking edges
-    exists(PathNodeMid mid, PathNodeSink sink |
-      mid = this.getSuccMid() and
-      mid.getNodeEx() = sink.getNodeEx() and
-      mid.getAp() instanceof AccessPathNil and
-      sink.getConfiguration() = unbindConf(mid.getConfiguration()) and
-      result = sink
-    )
+    // a final step to a sink
+    result = this.getSuccMid().projectToSink()
   }
 
   override predicate isSource() {
     sourceNode(node, config) and
-    cc instanceof CallContextAny and
+    (
+      if hasSourceCallCtx(config)
+      then cc instanceof CallContextSomeCall
+      else cc instanceof CallContextAny
+    ) and
     sc instanceof SummaryCtxNone and
     ap instanceof AccessPathNil
+  }
+
+  predicate isAtSink() {
+    sinkNode(node, config) and
+    ap instanceof AccessPathNil and
+    if hasSinkCallCtx(config)
+    then
+      // For `FeatureHasSinkCallContext` the condition `cc instanceof CallContextNoCall`
+      // is exactly what we need to check. This also implies
+      // `sc instanceof SummaryCtxNone`.
+      // For `FeatureEqualSourceSinkCallContext` the initial call context was
+      // set to `CallContextSomeCall` and jumps are disallowed, so
+      // `cc instanceof CallContextNoCall` never holds. On the other hand,
+      // in this case there's never any need to enter a call except to identify
+      // a summary, so the condition in `pathIntoCallable` enforces this, which
+      // means that `sc instanceof SummaryCtxNone` holds if and only if we are
+      // in the call context of the source.
+      sc instanceof SummaryCtxNone or
+      cc instanceof CallContextNoCall
+    else any()
+  }
+
+  PathNodeSink projectToSink() {
+    this.isAtSink() and
+    result.getNodeEx() = node and
+    result.getConfiguration() = unbindConf(config)
   }
 }
 
@@ -3613,7 +3673,11 @@ private predicate pathIntoCallable(
       sc = TSummaryCtxSome(p, ap)
       or
       not exists(TSummaryCtxSome(p, ap)) and
-      sc = TSummaryCtxNone()
+      sc = TSummaryCtxNone() and
+      // When the call contexts of source and sink needs to match then there's
+      // never any reason to enter a callable except to find a summary. See also
+      // the comment in `PathNodeMid::isAtSink`.
+      not config.getAFeature() instanceof FeatureEqualSourceSinkCallContext
     )
   |
     if recordDataFlowCallSite(call, callable)

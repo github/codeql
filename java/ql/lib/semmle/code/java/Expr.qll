@@ -166,7 +166,7 @@ class CompileTimeConstantExpr extends Expr {
    */
   pragma[nomagic]
   string getStringValue() {
-    result = this.(StringLiteral).getRepresentedString()
+    result = this.(StringLiteral).getValue()
     or
     result =
       this.(AddExpr).getLeftOperand().(CompileTimeConstantExpr).getStringValue() +
@@ -745,9 +745,21 @@ class CharacterLiteral extends Literal, @characterliteral {
  */
 class StringLiteral extends Literal, @stringliteral {
   /**
+   * Gets the string represented by this string literal, that is, the content
+   * of the literal without enclosing quotes and with escape sequences translated.
+   *
+   * Unpaired Unicode surrogate characters (U+D800 to U+DFFF) are replaced with the
+   * replacement character U+FFFD.
+   */
+  override string getValue() { result = super.getValue() }
+
+  /**
+   * DEPRECATED: This predicate will be removed in a future version because
+   * it is just an alias for `getValue()`; that predicate should be used instead.
+   *
    * Gets the literal string without the quotes.
    */
-  string getRepresentedString() { result = this.getValue() }
+  deprecated string getRepresentedString() { result = this.getValue() }
 
   /** Holds if this string literal is a text block (`""" ... """`). */
   predicate isTextBlock() { this.getLiteral().matches("\"\"\"%") }

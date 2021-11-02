@@ -511,7 +511,7 @@ class RefType extends Type, Annotatable, Modifiable, @reftype {
       this.getSourceDeclaration().inherits(f)
     )
     or
-    this.hasMethod(m.(Method), _)
+    this.hasMethod(m, _)
   }
 
   /** Holds if this is a top-level type, which is not nested inside any other types. */

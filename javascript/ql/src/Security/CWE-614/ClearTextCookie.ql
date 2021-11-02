@@ -11,6 +11,7 @@
  *       external/cwe/cwe-614
  *       external/cwe/cwe-311
  *       external/cwe/cwe-312
+ *       external/cwe/cwe-319
  */
 
 import javascript
