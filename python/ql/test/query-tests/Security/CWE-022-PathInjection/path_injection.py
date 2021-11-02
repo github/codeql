@@ -127,3 +127,20 @@ def stackoverflow_solution():
     if os.path.commonprefix((os.path.realpath(path), STATIC_DIR)) != STATIC_DIR:
         return "not this time"
     f = open(path) # OK TODO: FP
+
+
+@app.route("/getctime")
+def camera_img_acquire():
+    filename = request.args.get('filename', '')
+    image_path = os.path.join(STATIC_DIR, filename)
+    timestamp = os.path.getctime(image_path) # OK as exposure of ctime of a particular file does not pose a security thread
+    return "something"
+
+
+@app.route("/exists/makedirs")
+def camera_img_acquire(filename):
+    filename = request.args.get('filename', '')
+    image_path = os.path.join(STATIC_DIR, filename)
+    if not os.path.exists(image_path): # OK as exposure of ctime of a particular file does not pose a security thread
+        os.makedirs(path) # NOT OK attacker can potentially create multiple malicious directories
+    return "something"
