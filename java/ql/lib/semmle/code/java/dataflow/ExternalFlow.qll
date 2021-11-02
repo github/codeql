@@ -296,7 +296,7 @@ private predicate summaryModelCsv(string row) {
       "java.nio;ByteBuffer;false;get;;;Argument[-1];ReturnValue;taint",
       "java.net;URI;false;toURL;;;Argument[-1];ReturnValue;taint",
       "java.net;URI;false;toString;;;Argument[-1];ReturnValue;taint",
-      "java.net;URI;false;toAsciiString;;;Argument[-1];ReturnValue;taint",
+      "java.net;URI;false;toASCIIString;;;Argument[-1];ReturnValue;taint",
       "java.io;File;false;toURI;;;Argument[-1];ReturnValue;taint",
       "java.io;File;false;toPath;;;Argument[-1];ReturnValue;taint",
       "java.nio;ByteBuffer;false;array;();;Argument[-1];ReturnValue;taint",
@@ -406,89 +406,86 @@ class SummaryModelCsv extends Unit {
   abstract predicate row(string row);
 }
 
-private predicate sourceModel(string row) {
-  sourceModelCsv(row) or
-  any(SourceModelCsv s).row(row)
+private string sourceModelRow() {
+  sourceModelCsv(result) or
+  any(SourceModelCsv s).row(result)
 }
 
-private predicate sinkModel(string row) {
-  sinkModelCsv(row) or
-  any(SinkModelCsv s).row(row)
+private string sinkModelRow() {
+  sinkModelCsv(result) or
+  any(SinkModelCsv s).row(result)
 }
 
-private predicate summaryModel(string row) {
-  summaryModelCsv(row) or
-  any(SummaryModelCsv s).row(row)
+private string summaryModelRow() {
+  summaryModelCsv(result) or
+  any(SummaryModelCsv s).row(result)
 }
 
-/** Holds if a source model exists for the given parameters. */
-predicate sourceModel(
+/**
+ * Holds if a source model exists for the given parameters. The result is the CSV row
+ * representing the model.
+ */
+string sourceModel(
   string namespace, string type, boolean subtypes, string name, string signature, string ext,
   string output, string kind
 ) {
-  exists(string row |
-    sourceModel(row) and
-    row.splitAt(";", 0) = namespace and
-    row.splitAt(";", 1) = type and
-    row.splitAt(";", 2) = subtypes.toString() and
-    subtypes = [true, false] and
-    row.splitAt(";", 3) = name and
-    row.splitAt(";", 4) = signature and
-    row.splitAt(";", 5) = ext and
-    row.splitAt(";", 6) = output and
-    row.splitAt(";", 7) = kind
-  )
+  result = sourceModelRow() and
+  result.splitAt(";", 0) = namespace and
+  result.splitAt(";", 1) = type and
+  result.splitAt(";", 2) = subtypes.toString() and
+  subtypes = [true, false] and
+  result.splitAt(";", 3) = name and
+  result.splitAt(";", 4) = signature and
+  result.splitAt(";", 5) = ext and
+  result.splitAt(";", 6) = output and
+  result.splitAt(";", 7) = kind
 }
 
-/** Holds if a sink model exists for the given parameters. */
-predicate sinkModel(
+/**
+ * Holds if a sink model exists for the given parameters. The result is the CSV row
+ * representing the model.
+ */
+string sinkModel(
   string namespace, string type, boolean subtypes, string name, string signature, string ext,
   string input, string kind
 ) {
-  exists(string row |
-    sinkModel(row) and
-    row.splitAt(";", 0) = namespace and
-    row.splitAt(";", 1) = type and
-    row.splitAt(";", 2) = subtypes.toString() and
-    subtypes = [true, false] and
-    row.splitAt(";", 3) = name and
-    row.splitAt(";", 4) = signature and
-    row.splitAt(";", 5) = ext and
-    row.splitAt(";", 6) = input and
-    row.splitAt(";", 7) = kind
-  )
+  result = sinkModelRow() and
+  result.splitAt(";", 0) = namespace and
+  result.splitAt(";", 1) = type and
+  result.splitAt(";", 2) = subtypes.toString() and
+  subtypes = [true, false] and
+  result.splitAt(";", 3) = name and
+  result.splitAt(";", 4) = signature and
+  result.splitAt(";", 5) = ext and
+  result.splitAt(";", 6) = input and
+  result.splitAt(";", 7) = kind
 }
 
-/** Holds if a summary model exists for the given parameters. */
-predicate summaryModel(
+/**
+ * Holds if a summary model exists for the given parameters. The result is the CSV row
+ * representing the model.
+ */
+string summaryModel(
   string namespace, string type, boolean subtypes, string name, string signature, string ext,
   string input, string output, string kind
 ) {
-  summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind, _)
-}
-
-/** Holds if a summary model `row` exists for the given parameters. */
-predicate summaryModel(
-  string namespace, string type, boolean subtypes, string name, string signature, string ext,
-  string input, string output, string kind, string row
-) {
-  summaryModel(row) and
-  row.splitAt(";", 0) = namespace and
-  row.splitAt(";", 1) = type and
-  row.splitAt(";", 2) = subtypes.toString() and
+  result = summaryModelRow() and
+  result.splitAt(";", 0) = namespace and
+  result.splitAt(";", 1) = type and
+  result.splitAt(";", 2) = subtypes.toString() and
   subtypes = [true, false] and
-  row.splitAt(";", 3) = name and
-  row.splitAt(";", 4) = signature and
-  row.splitAt(";", 5) = ext and
-  row.splitAt(";", 6) = input and
-  row.splitAt(";", 7) = output and
-  row.splitAt(";", 8) = kind
+  result.splitAt(";", 3) = name and
+  result.splitAt(";", 4) = signature and
+  result.splitAt(";", 5) = ext and
+  result.splitAt(";", 6) = input and
+  result.splitAt(";", 7) = output and
+  result.splitAt(";", 8) = kind
 }
 
 private predicate relevantPackage(string package) {
-  sourceModel(package, _, _, _, _, _, _, _) or
-  sinkModel(package, _, _, _, _, _, _, _) or
-  summaryModel(package, _, _, _, _, _, _, _, _)
+  exists(sourceModel(package, _, _, _, _, _, _, _)) or
+  exists(sinkModel(package, _, _, _, _, _, _, _)) or
+  exists(summaryModel(package, _, _, _, _, _, _, _, _))
 }
 
 private predicate packageLink(string shortpkg, string longpkg) {
@@ -518,7 +515,7 @@ predicate modelCoverage(string package, int pkgs, string kind, string part, int 
       strictcount(string subpkg, string type, boolean subtypes, string name, string signature,
         string ext, string output |
         canonicalPkgLink(package, subpkg) and
-        sourceModel(subpkg, type, subtypes, name, signature, ext, output, kind)
+        exists(sourceModel(subpkg, type, subtypes, name, signature, ext, output, kind))
       )
     or
     part = "sink" and
@@ -526,7 +523,7 @@ predicate modelCoverage(string package, int pkgs, string kind, string part, int 
       strictcount(string subpkg, string type, boolean subtypes, string name, string signature,
         string ext, string input |
         canonicalPkgLink(package, subpkg) and
-        sinkModel(subpkg, type, subtypes, name, signature, ext, input, kind)
+        exists(sinkModel(subpkg, type, subtypes, name, signature, ext, input, kind))
       )
     or
     part = "summary" and
@@ -534,7 +531,7 @@ predicate modelCoverage(string package, int pkgs, string kind, string part, int 
       strictcount(string subpkg, string type, boolean subtypes, string name, string signature,
         string ext, string input, string output |
         canonicalPkgLink(package, subpkg) and
-        summaryModel(subpkg, type, subtypes, name, signature, ext, input, output, kind)
+        exists(summaryModel(subpkg, type, subtypes, name, signature, ext, input, output, kind))
       )
   )
 }
@@ -542,34 +539,49 @@ predicate modelCoverage(string package, int pkgs, string kind, string part, int 
 /** Provides a query predicate to check the CSV data for validation errors. */
 module CsvValidation {
   /** Holds if some row in a CSV-based flow model appears to contain typos. */
-  query predicate invalidModelRow(string msg) {
-    exists(string pred, string namespace, string type, string name, string signature, string ext |
-      sourceModel(namespace, type, _, name, signature, ext, _, _) and pred = "source"
+  query predicate invalidModelRow(string row, string msg) {
+    exists(
+      string namespace, string type, boolean subtypes, string name, string signature, string ext
+    |
+      row = sourceModel(namespace, type, subtypes, name, signature, ext, _, _)
       or
-      sinkModel(namespace, type, _, name, signature, ext, _, _) and pred = "sink"
+      row = sinkModel(namespace, type, subtypes, name, signature, ext, _, _)
       or
-      summaryModel(namespace, type, _, name, signature, ext, _, _, _) and pred = "summary"
+      row = summaryModel(namespace, type, subtypes, name, signature, ext, _, _, _)
     |
       not namespace.regexpMatch("[a-zA-Z0-9_\\.]+") and
-      msg = "Dubious namespace \"" + namespace + "\" in " + pred + " model."
+      msg = "Dubious namespace \"" + namespace + "\""
       or
       not type.regexpMatch("[a-zA-Z0-9_\\$<>]+") and
-      msg = "Dubious type \"" + type + "\" in " + pred + " model."
+      msg = "Dubious type \"" + type + "\""
       or
       not name.regexpMatch("[a-zA-Z0-9_]*") and
-      msg = "Dubious name \"" + name + "\" in " + pred + " model."
+      msg = "Dubious name \"" + name + "\""
       or
       not signature.regexpMatch("|\\([a-zA-Z0-9_\\.\\$<>,\\[\\]]*\\)") and
-      msg = "Dubious signature \"" + signature + "\" in " + pred + " model."
+      msg = "Dubious signature \"" + signature + "\"."
       or
       not ext.regexpMatch("|Annotated") and
-      msg = "Unrecognized extra API graph element \"" + ext + "\" in " + pred + " model."
+      msg = "Unrecognized extra API graph element \"" + ext + "\""
+      or
+      ext = "Annotated" and
+      (
+        subtypes = true and
+        msg = "subtypes does not work for Annotated"
+        or
+        "" != [name, signature] and
+        msg = "Annotated does not support name or signature"
+      )
+      or
+      ext = "" and
+      name = "" and
+      msg = "Must provide member name"
     )
     or
     exists(string pred, string input, string part |
-      sinkModel(_, _, _, _, _, _, input, _) and pred = "sink"
+      row = sinkModel(_, _, _, _, _, _, input, _) and pred = "sink"
       or
-      summaryModel(_, _, _, _, _, _, input, _, _) and pred = "summary"
+      row = summaryModel(_, _, _, _, _, _, input, _, _) and pred = "summary"
     |
       (
         invalidSpecComponent(input, part) and
@@ -580,26 +592,92 @@ module CsvValidation {
         part = specLast(input) and
         parseParam(part, _)
       ) and
-      msg = "Unrecognized input specification \"" + part + "\" in " + pred + " model."
+      msg = "Unrecognized input specification \"" + part + "\""
     )
     or
     exists(string pred, string output, string part |
-      sourceModel(_, _, _, _, _, _, output, _) and pred = "source"
+      row = sourceModel(_, _, _, _, _, _, output, _) and pred = "source"
       or
-      summaryModel(_, _, _, _, _, _, _, output, _) and pred = "summary"
+      row = summaryModel(_, _, _, _, _, _, _, output, _) and pred = "summary"
     |
       invalidSpecComponent(output, part) and
       not part = "" and
       not (part = ["Argument", "Parameter"] and pred = "source") and
-      msg = "Unrecognized output specification \"" + part + "\" in " + pred + " model."
+      msg = "Unrecognized output specification \"" + part + "\""
     )
     or
-    exists(string pred, string row, int expect |
-      sourceModel(row) and expect = 8 and pred = "source"
+    exists(
+      string package, string typeName, boolean subtypes, string memberName, string signature,
+      string input, string output, string kind, string otherRow, boolean otherSubtypes,
+      string otherSignature, string otherInput, string otherOutput
+    |
+      row = sourceModelRow() and
+      row = sourceModel(package, typeName, subtypes, memberName, signature, _, output, kind) and
+      input = ""
       or
-      sinkModel(row) and expect = 8 and pred = "sink"
+      row = sinkModelRow() and
+      row = sinkModel(package, typeName, subtypes, memberName, signature, _, input, kind) and
+      output = ""
       or
-      summaryModel(row) and expect = 9 and pred = "summary"
+      row = summaryModelRow() and
+      row = summaryModel(package, typeName, subtypes, memberName, signature, _, input, output, kind)
+    |
+      (
+        otherRow = sourceModelRow() and
+        otherRow =
+          sourceModel(package, typeName, otherSubtypes, memberName, otherSignature, _, otherOutput,
+            kind) and
+        otherInput = ""
+        or
+        otherRow = sinkModelRow() and
+        otherRow =
+          sinkModel(package, typeName, otherSubtypes, memberName, otherSignature, _, otherInput,
+            kind) and
+        otherOutput = ""
+        or
+        otherRow = summaryModelRow() and
+        otherRow =
+          summaryModel(package, typeName, otherSubtypes, memberName, otherSignature, _, otherInput,
+            otherOutput, kind)
+      ) and
+      otherRow != row and
+      (
+        // Duplicate row with same input and output
+        (
+          input = otherInput and
+          output = otherOutput
+        ) and
+        (
+          signature = "" or
+          signature = otherSignature
+        )
+        or
+        // subtypes mismatch and row considering subtypes allows any signature
+        subtypes = true and
+        signature = "" and
+        otherSubtypes = false
+      ) and
+      msg = "Duplicates row: " + otherRow
+    )
+    or
+    (
+      row = sourceModelRow() and
+      not row = sourceModel(_, _, _, _, _, _, _, _)
+      or
+      row = sinkModelRow() and
+      not row = sinkModel(_, _, _, _, _, _, _, _)
+      or
+      row = summaryModelRow() and
+      not row = summaryModel(_, _, _, _, _, _, _, _, _)
+    ) and
+    msg = "Malformed row"
+    or
+    exists(string pred, int expect |
+      row = sourceModelRow() and expect = 8 and pred = "source"
+      or
+      row = sinkModelRow() and expect = 8 and pred = "sink"
+      or
+      row = summaryModelRow() and expect = 9 and pred = "summary"
     |
       exists(int cols |
         cols = 1 + max(int n | exists(row.splitAt(";", n))) and
@@ -618,13 +696,227 @@ module CsvValidation {
   }
 }
 
+/**
+ * Provides a query predicate to verify that the CSV data is reasonable. The query should be run against
+ * one of the projects for which the CSV data is written.
+ */
+module CsvDataValidation {
+  bindingset[memberName, signature]
+  private Member getMatchingMember(RefType declaringType, string memberName, string signature) {
+    (
+      result instanceof Field or
+      result instanceof Callable
+    ) and
+    result.fromSource() and
+    result.getDeclaringType() = declaringType and
+    result.hasName(memberName) and
+    if signature = "" then any() else paramsString(result) = signature
+  }
+
+  bindingset[memberName, signature]
+  private boolean hasOverridableMember(RefType declaringType, string memberName, string signature) {
+    exists(Member m | m = getMatchingMember(declaringType, memberName, signature) |
+      if
+        m.isFinal() or
+        m.isStatic() or
+        m instanceof Constructor or
+        m instanceof Field
+      then result = false
+      else result = true
+    )
+  }
+
+  // Workaround for https://github.com/github/codeql/issues/5556
+  private CompilationUnit getACompilationUnit(RefType t) {
+    exists(CompilationUnit c | c = t.getCompilationUnit() |
+      c.getPackage() = result.getPackage() and
+      c.getName() = result.getName()
+    )
+  }
+
+  private predicate isPubliclyVisible(RefType t) {
+    (t.isProtected() or t.isPublic()) and
+    (
+      if t instanceof TopLevelType
+      then
+        // If source code is modular, package must be exported
+        if exists(getACompilationUnit(t).getModule())
+        then
+          exists(Module m, ExportsDirective exportsDirective |
+            m = getACompilationUnit(t).getModule()
+          |
+            exportsDirective.getExportedPackage().getName() = t.getPackage().getName() and
+            // Require that export is to all modules
+            not exportsDirective.isQualified()
+          )
+        else any()
+      else isPubliclyVisible(t.getEnclosingType())
+    ) and
+    not (
+      t instanceof LocalClassOrInterface or
+      t instanceof AnonymousClass
+    )
+  }
+
+  // Severity: 0 (issue), 1 (warning), 2 (info)
+  query predicate checkRowData(int severity, string csvRow, string msg) {
+    exists(
+      boolean considerSubtypes, string package, string typeName, string memberName,
+      string signature, string ext
+    |
+      csvRow = sourceModelRow() and
+      csvRow = sourceModel(package, typeName, considerSubtypes, memberName, signature, ext, _, _)
+      or
+      csvRow = sinkModelRow() and
+      csvRow = sinkModel(package, typeName, considerSubtypes, memberName, signature, ext, _, _)
+      or
+      csvRow = summaryModelRow() and
+      csvRow =
+        summaryModel(package, typeName, considerSubtypes, memberName, signature, ext, _, _, _)
+    |
+      // Only consider if package is part of database
+      exists(RefType o |
+        o.fromSource() and
+        o.hasQualifiedName(package, _) and
+        // Ignore AnonymousClass; it has same package name as subclassed type and is from source
+        not o instanceof AnonymousClass
+      ) and
+      not exists(RefType t |
+        t.fromSource() and
+        t.hasQualifiedName(package, typeName)
+      ) and
+      msg = "Type '" + package + "." + typeName + "' does not exist" and
+      severity = 0
+      or
+      exists(RefType t, string qualifiedTypeName |
+        t.fromSource() and
+        t.hasQualifiedName(package, typeName) and
+        qualifiedTypeName = package + "." + typeName
+      |
+        memberName.length() > 0 and
+        not exists(getMatchingMember(t, memberName, signature)) and
+        msg = "Type " + qualifiedTypeName + " has no member called '" + memberName + "'" and
+        severity = 0
+        or
+        ext = "Annotated" and
+        not t instanceof AnnotationType and
+        msg = "Type " + qualifiedTypeName + " is not an annotation type" and
+        severity = 0
+        or
+        considerSubtypes = true and
+        (
+          t.isFinal()
+          or
+          forex(Constructor c | c.getDeclaringType() = t | t.isPrivate()) and
+          not exists(RefType sub |
+            sub.fromSource() and
+            sub.getASourceSupertype+() = t
+          )
+        ) and
+        msg = "Type " + qualifiedTypeName + " cannot have subtypes" and
+        severity = 1
+        or
+        considerSubtypes = true and
+        hasOverridableMember(t, memberName, signature) = false and
+        msg = "Member '" + memberName + "' cannot be overridden" and
+        severity = 1
+        or
+        considerSubtypes = true and
+        (
+          t instanceof Class and
+          not exists(Constructor c |
+            c.getDeclaringType() = t and
+            (c.isProtected() or c.isPublic())
+          )
+          or
+          not (t.isProtected() or t.isPublic())
+        ) and
+        not exists(RefType sub |
+          sub.fromSource() and
+          sub.getASourceSupertype+() = t and
+          isPubliclyVisible(sub)
+        ) and
+        msg = "Type " + qualifiedTypeName + " does not have public subtypes" and
+        severity = 2
+        or
+        considerSubtypes = false and
+        (
+          t instanceof Interface and
+          isPubliclyVisible(t) and
+          msg = "Type " + qualifiedTypeName + " likely has subtypes" and
+          severity = 1
+          or
+          t.isAbstract() and
+          isPubliclyVisible(t) and
+          exists(Constructor c |
+            c.getDeclaringType() = t and
+            (c.isProtected() or c.isPublic())
+          ) and
+          msg = "Type " + qualifiedTypeName + " might have subtypes" and
+          severity = 2
+          or
+          // Or exists (probably) publicly visible subtype
+          exists(RefType sub |
+            sub.fromSource() and
+            sub.getASourceSupertype+() = t and
+            isPubliclyVisible(sub) and
+            (
+              exists(Method m, Method overriding |
+                m = getMatchingMember(t, memberName, signature) and
+                overriding.getDeclaringType() = sub and
+                overriding.overrides+(m)
+              ) and
+              msg = "Method '" + memberName + "' is overridden by subtype " + sub.getQualifiedName() and
+              severity = 1
+              or
+              msg = "Type " + qualifiedTypeName + " has subtype " + sub.getQualifiedName() and
+              severity = 1
+            )
+          )
+        ) and
+        // Only report row when member can actually be overridden
+        (
+          hasOverridableMember(t, memberName, signature) = true or
+          memberName = ""
+        )
+        or
+        // Modelling private types probably does not add much value because they won't be used externally
+        considerSubtypes = false and
+        not isPubliclyVisible(t) and
+        msg = "Type " + qualifiedTypeName + " is not publicly visible" and
+        severity = 1
+        or
+        // Modelling private members probably does not add much value because they won't be used externally
+        // Note: Uses `forex` to ignore cases where multiple members match and only one is private
+        forex(Member m | m = getMatchingMember(t, memberName, signature) |
+          not (m.isProtected() or m.isPublic())
+        ) and
+        msg = "Member '" + memberName + "' is not publicly visible" and
+        severity = 1
+        or
+        exists(Method m, Method overridden, RefType declaringType |
+          m = getMatchingMember(t, memberName, signature)
+        |
+          m.overridesOrInstantiates+(overridden) and
+          declaringType = overridden.getDeclaringType().getSourceDeclaration() and
+          not declaringType instanceof TypeObject and
+          msg =
+            "Method '" + memberName + "' overrides method of type " +
+              declaringType.getQualifiedName() + "; could model that instead" and
+          severity = 2
+        )
+      )
+    )
+  }
+}
+
 pragma[nomagic]
 private predicate elementSpec(
   string namespace, string type, boolean subtypes, string name, string signature, string ext
 ) {
-  sourceModel(namespace, type, subtypes, name, signature, ext, _, _) or
-  sinkModel(namespace, type, subtypes, name, signature, ext, _, _) or
-  summaryModel(namespace, type, subtypes, name, signature, ext, _, _, _)
+  exists(sourceModel(namespace, type, subtypes, name, signature, ext, _, _)) or
+  exists(sinkModel(namespace, type, subtypes, name, signature, ext, _, _)) or
+  exists(summaryModel(namespace, type, subtypes, name, signature, ext, _, _, _))
 }
 
 private string paramsStringPart(Callable c, int i) {
