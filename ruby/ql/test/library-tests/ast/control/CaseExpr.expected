@@ -1,0 +1,22 @@
+caseValues
+| cases.rb:8:1:15:3 | case ... | cases.rb:8:6:8:6 | a |
+caseNoValues
+| cases.rb:18:1:22:3 | case ... |
+caseElseBranches
+| cases.rb:8:1:15:3 | case ... | cases.rb:13:1:14:7 | else ... |
+caseNoElseBranches
+| cases.rb:18:1:22:3 | case ... |
+caseWhenBranches
+| cases.rb:8:1:15:3 | case ... | cases.rb:9:1:10:7 | when ... | 0 | cases.rb:9:6:9:6 | b | cases.rb:9:7:10:7 | then ... |
+| cases.rb:8:1:15:3 | case ... | cases.rb:11:1:12:7 | when ... | 0 | cases.rb:11:6:11:6 | c | cases.rb:11:10:12:7 | then ... |
+| cases.rb:8:1:15:3 | case ... | cases.rb:11:1:12:7 | when ... | 1 | cases.rb:11:9:11:9 | d | cases.rb:11:10:12:7 | then ... |
+| cases.rb:18:1:22:3 | case ... | cases.rb:19:1:19:19 | when ... | 0 | cases.rb:19:6:19:10 | ... > ... | cases.rb:19:13:19:19 | then ... |
+| cases.rb:18:1:22:3 | case ... | cases.rb:20:1:20:19 | when ... | 0 | cases.rb:20:6:20:11 | ... == ... | cases.rb:20:13:20:19 | then ... |
+| cases.rb:18:1:22:3 | case ... | cases.rb:21:1:21:19 | when ... | 0 | cases.rb:21:6:21:10 | ... < ... | cases.rb:21:13:21:19 | then ... |
+caseAllBranches
+| cases.rb:8:1:15:3 | case ... | 0 | cases.rb:9:1:10:7 | when ... |
+| cases.rb:8:1:15:3 | case ... | 1 | cases.rb:11:1:12:7 | when ... |
+| cases.rb:8:1:15:3 | case ... | 2 | cases.rb:13:1:14:7 | else ... |
+| cases.rb:18:1:22:3 | case ... | 0 | cases.rb:19:1:19:19 | when ... |
+| cases.rb:18:1:22:3 | case ... | 1 | cases.rb:20:1:20:19 | when ... |
+| cases.rb:18:1:22:3 | case ... | 2 | cases.rb:21:1:21:19 | when ... |

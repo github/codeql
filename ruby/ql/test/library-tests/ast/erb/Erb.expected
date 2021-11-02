@@ -1,0 +1,130 @@
+erbFiles
+| template.html.erb:0:0:0:0 | template.html.erb |
+erbAstNodes
+| template.html.erb:1:1:1:9 | <%graphql |
+| template.html.erb:1:1:17:2 | <%graphql\n  fragment Foo on Bar {\n    ...%> |
+| template.html.erb:1:1:32:6 | erb template |
+| template.html.erb:1:10:16:4 | \n  fragment Foo on Bar {\n    ... |
+| template.html.erb:1:10:16:4 | \n  fragment Foo on Bar {\n    ... |
+| template.html.erb:17:1:17:2 | %> |
+| template.html.erb:17:3:19:3 | \n\n<%= |
+| template.html.erb:17:3:19:20 | <%= "hello world" %> |
+| template.html.erb:19:4:19:18 |  "hello world"  |
+| template.html.erb:19:4:19:18 |  "hello world"  |
+| template.html.erb:19:19:19:20 | %> |
+| template.html.erb:19:21:21:3 | \n\n<%# |
+| template.html.erb:19:21:21:31 | <%#= "this is commented out" %> |
+| template.html.erb:21:4:21:29 | = "this is commented out"  |
+| template.html.erb:21:4:21:29 | = "this is commented out"  |
+| template.html.erb:21:30:21:31 | %> |
+| template.html.erb:21:32:23:3 | \n\n<%# |
+| template.html.erb:21:32:23:35 | <%# "this is also commented out" %> |
+| template.html.erb:23:4:23:33 |  "this is also commented out"  |
+| template.html.erb:23:4:23:33 |  "this is also commented out"  |
+| template.html.erb:23:34:23:35 | %> |
+| template.html.erb:23:36:25:2 | \n\n<% |
+| template.html.erb:23:36:25:13 | <% xs = "" %> |
+| template.html.erb:25:3:25:11 |  xs = ""  |
+| template.html.erb:25:3:25:11 |  xs = ""  |
+| template.html.erb:25:12:25:13 | %> |
+| template.html.erb:25:14:27:2 | \n<ul>\n   |
+| template.html.erb:27:3:27:4 | <% |
+| template.html.erb:27:3:27:41 | <% for x in ["foo", "bar", "baz...%> |
+| template.html.erb:27:5:27:39 |  for x in ["foo", "bar", "baz... |
+| template.html.erb:27:5:27:39 |  for x in ["foo", "bar", "baz... |
+| template.html.erb:27:40:27:41 | %> |
+| template.html.erb:27:42:28:6 | \n  <li> |
+| template.html.erb:28:7:28:9 | <%= |
+| template.html.erb:28:7:30:12 | <%= xs += x\n          xs\n          %> |
+| template.html.erb:28:10:30:10 |  xs += x\n          xs\n           |
+| template.html.erb:28:10:30:10 |  xs += x\n          xs\n           |
+| template.html.erb:30:11:30:12 | %> |
+| template.html.erb:30:13:31:2 | </li>\n   |
+| template.html.erb:31:3:31:4 | <% |
+| template.html.erb:31:3:31:11 | <% end %> |
+| template.html.erb:31:5:31:9 |  end  |
+| template.html.erb:31:5:31:9 |  end  |
+| template.html.erb:31:10:31:11 | %> |
+| template.html.erb:31:12:32:6 | \n</ul>\n |
+erbTemplates
+| template.html.erb:1:1:32:6 | erb template |
+erbDirectives
+| template.html.erb:1:1:17:2 | <%graphql\n  fragment Foo on Bar {\n    ...%> |
+| template.html.erb:17:3:19:20 | <%= "hello world" %> |
+| template.html.erb:19:21:21:31 | <%#= "this is commented out" %> |
+| template.html.erb:21:32:23:35 | <%# "this is also commented out" %> |
+| template.html.erb:23:36:25:13 | <% xs = "" %> |
+| template.html.erb:27:3:27:41 | <% for x in ["foo", "bar", "baz...%> |
+| template.html.erb:28:7:30:12 | <%= xs += x\n          xs\n          %> |
+| template.html.erb:31:3:31:11 | <% end %> |
+erbCommentDirectives
+| template.html.erb:19:21:21:31 | <%#= "this is commented out" %> |
+| template.html.erb:21:32:23:35 | <%# "this is also commented out" %> |
+erbGraphqlDirectives
+| template.html.erb:1:1:17:2 | <%graphql\n  fragment Foo on Bar {\n    ...%> |
+erbOutputDirectives
+| template.html.erb:17:3:19:20 | <%= "hello world" %> |
+| template.html.erb:28:7:30:12 | <%= xs += x\n          xs\n          %> |
+erbExecutionDirectives
+| template.html.erb:23:36:25:13 | <% xs = "" %> |
+| template.html.erb:27:3:27:41 | <% for x in ["foo", "bar", "baz...%> |
+| template.html.erb:31:3:31:11 | <% end %> |
+childStmts
+| template.html.erb:17:3:19:20 | <%= "hello world" %> | template.html.erb:19:5:19:17 | "hello world" |
+| template.html.erb:23:36:25:13 | <% xs = "" %> | template.html.erb:25:4:25:10 | ... = ... |
+| template.html.erb:27:3:27:41 | <% for x in ["foo", "bar", "baz...%> | template.html.erb:27:6:31:8 | for ... in ... |
+| template.html.erb:28:7:30:12 | <%= xs += x\n          xs\n          %> | template.html.erb:28:11:28:17 | ... += ... |
+| template.html.erb:28:7:30:12 | <%= xs += x\n          xs\n          %> | template.html.erb:29:11:29:12 | xs |
+terminalStatements
+| template.html.erb:17:3:19:20 | <%= "hello world" %> | template.html.erb:19:5:19:17 | "hello world" |
+| template.html.erb:23:36:25:13 | <% xs = "" %> | template.html.erb:25:4:25:10 | ... = ... |
+| template.html.erb:27:3:27:41 | <% for x in ["foo", "bar", "baz...%> | template.html.erb:27:6:31:8 | for ... in ... |
+| template.html.erb:28:7:30:12 | <%= xs += x\n          xs\n          %> | template.html.erb:29:11:29:12 | xs |
+primaryQlClasses
+| template.html.erb:1:1:1:9 | <%graphql | ErbToken |
+| template.html.erb:1:1:17:2 | <%graphql\n  fragment Foo on Bar {\n    ...%> | ErbGraphqlDirective |
+| template.html.erb:1:1:32:6 | erb template | ErbTemplate |
+| template.html.erb:1:10:16:4 | \n  fragment Foo on Bar {\n    ... | ErbCode |
+| template.html.erb:1:10:16:4 | \n  fragment Foo on Bar {\n    ... | ErbToken |
+| template.html.erb:17:1:17:2 | %> | ErbToken |
+| template.html.erb:17:3:19:3 | \n\n<%= | ErbToken |
+| template.html.erb:17:3:19:20 | <%= "hello world" %> | ErbOutputDirective |
+| template.html.erb:19:4:19:18 |  "hello world"  | ErbCode |
+| template.html.erb:19:4:19:18 |  "hello world"  | ErbToken |
+| template.html.erb:19:19:19:20 | %> | ErbToken |
+| template.html.erb:19:21:21:3 | \n\n<%# | ErbToken |
+| template.html.erb:19:21:21:31 | <%#= "this is commented out" %> | ErbCommentDirective |
+| template.html.erb:21:4:21:29 | = "this is commented out"  | ErbComment |
+| template.html.erb:21:4:21:29 | = "this is commented out"  | ErbToken |
+| template.html.erb:21:30:21:31 | %> | ErbToken |
+| template.html.erb:21:32:23:3 | \n\n<%# | ErbToken |
+| template.html.erb:21:32:23:35 | <%# "this is also commented out" %> | ErbCommentDirective |
+| template.html.erb:23:4:23:33 |  "this is also commented out"  | ErbComment |
+| template.html.erb:23:4:23:33 |  "this is also commented out"  | ErbToken |
+| template.html.erb:23:34:23:35 | %> | ErbToken |
+| template.html.erb:23:36:25:2 | \n\n<% | ErbToken |
+| template.html.erb:23:36:25:13 | <% xs = "" %> | ErbExecutionDirective |
+| template.html.erb:25:3:25:11 |  xs = ""  | ErbCode |
+| template.html.erb:25:3:25:11 |  xs = ""  | ErbToken |
+| template.html.erb:25:12:25:13 | %> | ErbToken |
+| template.html.erb:25:14:27:2 | \n<ul>\n   | ErbToken |
+| template.html.erb:27:3:27:4 | <% | ErbToken |
+| template.html.erb:27:3:27:41 | <% for x in ["foo", "bar", "baz...%> | ErbExecutionDirective |
+| template.html.erb:27:5:27:39 |  for x in ["foo", "bar", "baz... | ErbCode |
+| template.html.erb:27:5:27:39 |  for x in ["foo", "bar", "baz... | ErbToken |
+| template.html.erb:27:40:27:41 | %> | ErbToken |
+| template.html.erb:27:42:28:6 | \n  <li> | ErbToken |
+| template.html.erb:28:7:28:9 | <%= | ErbToken |
+| template.html.erb:28:7:30:12 | <%= xs += x\n          xs\n          %> | ErbOutputDirective |
+| template.html.erb:28:10:30:10 |  xs += x\n          xs\n           | ErbCode |
+| template.html.erb:28:10:30:10 |  xs += x\n          xs\n           | ErbToken |
+| template.html.erb:30:11:30:12 | %> | ErbToken |
+| template.html.erb:30:13:31:2 | </li>\n   | ErbToken |
+| template.html.erb:31:3:31:4 | <% | ErbToken |
+| template.html.erb:31:3:31:11 | <% end %> | ErbExecutionDirective |
+| template.html.erb:31:5:31:9 |  end  | ErbCode |
+| template.html.erb:31:5:31:9 |  end  | ErbToken |
+| template.html.erb:31:10:31:11 | %> | ErbToken |
+| template.html.erb:31:12:32:6 | \n</ul>\n | ErbToken |
+erbFileTemplates
+| template.html.erb:0:0:0:0 | template.html.erb | template.html.erb:1:1:32:6 | erb template |

@@ -1,0 +1,39 @@
+name: Query help preview
+
+on:
+  pull_request:
+    branches:
+      - main
+      - 'rc/*'
+    paths:
+      - "ruby/**/*.qhelp"
+
+jobs:
+  qhelp:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
+      - name: Determine changed files
+        id: changes
+        run: |
+          echo -n "::set-output name=qhelp_files::"
+          (git diff --name-only --diff-filter=ACMRT HEAD~1 HEAD | grep .qhelp$ | grep -v .inc.qhelp;
+           git diff --name-only --diff-filter=ACMRT HEAD~1 HEAD | grep .inc.qhelp$ | xargs -d '\n' -rn1 basename | xargs -d '\n' -rn1 git grep -l) |
+           sort -u | xargs -d '\n' -n1 printf "'%s' "
+
+      - uses: ./.github/actions/fetch-codeql
+
+      - name: QHelp preview
+        if: ${{ steps.changes.outputs.qhelp_files }}
+        run: |
+          ( echo "QHelp previews:";
+          for path in ${{ steps.changes.outputs.qhelp_files }} ; do
+            echo "<details> <summary>${path}</summary>"
+            echo
+            codeql generate query-help --format=markdown ${path}
+            echo "</details>"
+          done) | gh pr comment "${{ github.event.pull_request.number }}" -F -
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
