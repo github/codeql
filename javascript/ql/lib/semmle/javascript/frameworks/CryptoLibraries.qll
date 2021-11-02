@@ -679,13 +679,13 @@ private module Hasha {
 
     override CryptographicAlgorithm getAlgorithm() { result = algorithm }
   }
+}
 
-  /**
-   * Provides classes for working with the `express-jwt` package (https://github.com/auth0/express-jwt);
-   */
-  module ExpressJwt {
-    private class Key extends CryptographicKey {
-      Key() { this = DataFlow::moduleMember("express-jwt", "sign").getACall().getArgument(1) }
-    }
+/**
+ * Provides classes for working with the `express-jwt` package (https://github.com/auth0/express-jwt);
+ */
+private module ExpressJwt {
+  private class Key extends CryptographicKey {
+    Key() { this = DataFlow::moduleMember("express-jwt", "sign").getACall().getArgument(1) }
   }
 }
