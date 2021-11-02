@@ -1,20 +1,4 @@
-/**
- * @name Incorrect conversion between integer types
- * @description Converting the result of `strconv.Atoi`, `strconv.ParseInt`,
- *              and `strconv.ParseUint` to integer types of smaller bit size
- *              can produce unexpected values.
- * @kind path-problem
- * @problem.severity warning
- * @security-severity 8.1
- * @id go/incorrect-integer-conversion
- * @tags security
- *       external/cwe/cwe-190
- *       external/cwe/cwe-681
- * @precision very-high
- */
-
 import go
-import DataFlow::PathGraph
 
 /**
  * Gets the maximum value of an integer (signed if `isSigned`
@@ -146,7 +130,7 @@ class ConversionWithoutBoundsCheckConfig extends TaintTracking::Configuration {
     // To catch flows that only happen on 32-bit architectures we
     // consider an architecture-dependent sink bit size to be 32.
     exists(int bitSize | if sinkBitSize != 0 then bitSize = sinkBitSize else bitSize = 32 |
-      guard.(UpperBoundCheckGuard).getBound() <= getMaxIntValue(bitSize, sourceIsSigned)
+      guard.(UpperBoundCheckGuard).isBoundFor(bitSize, sourceIsSigned)
     )
   }
 
@@ -159,23 +143,45 @@ class ConversionWithoutBoundsCheckConfig extends TaintTracking::Configuration {
 
 /** An upper bound check that compares a variable to a constant value. */
 class UpperBoundCheckGuard extends DataFlow::BarrierGuard, DataFlow::RelationalComparisonNode {
-  UpperBoundCheckGuard() { count(expr.getAnOperand().getIntValue()) = 1 }
+  UpperBoundCheckGuard() {
+    count(expr.getAnOperand().getExactValue()) = 1 and
+    expr.getAnOperand().getType().getUnderlyingType() instanceof IntegerType
+  }
 
   /**
    * Gets the constant value which this upper bound check ensures the
    * other value is less than or equal to.
    */
-  float getBound() {
-    exists(int strictnessOffset |
-      if expr.isStrict() then strictnessOffset = 1 else strictnessOffset = 0
+  predicate isBoundFor(int bitSize, boolean isSigned) {
+    bitSize = [8, 16, 32] and
+    exists(float bound, float strictnessOffset |
+      // For `x < c` the bound is `c-1`. For `x >= c` we will be an upper bound
+      // on the `branch` argument of `checks` is false, which is equivalent to
+      // `x < c`.
+      if expr instanceof LssExpr or expr instanceof GeqExpr
+      then strictnessOffset = 1
+      else strictnessOffset = 0
     |
-      result = expr.getAnOperand().getExactValue().toFloat() - strictnessOffset
+      (
+        bound = expr.getAnOperand().getExactValue().toFloat()
+        or
+        exists(DeclaredConstant maxint | maxint.hasQualifiedName("math", "MaxInt") |
+          expr.getAnOperand() = maxint.getAReference() and
+          bound = getMaxIntValue(32, true)
+        )
+        or
+        exists(DeclaredConstant maxuint | maxuint.hasQualifiedName("math", "MaxUint") |
+          expr.getAnOperand() = maxuint.getAReference() and
+          bound = getMaxIntValue(32, false)
+        )
+      ) and
+      bound - strictnessOffset <= getMaxIntValue(bitSize, isSigned)
     )
   }
 
   override predicate checks(Expr e, boolean branch) {
     this.leq(branch, DataFlow::exprNode(e), _, _) and
-    not exists(e.getIntValue())
+    not e.isConst()
   }
 }
 
@@ -192,13 +198,3 @@ string describeBitSize(int bitSize, int intTypeBitSize) {
         "a number with architecture-dependent bit-width, which is constrained to be " +
           intTypeBitSize + "-bit by build constraints,"
 }
-
-from
-  DataFlow::PathNode source, DataFlow::PathNode sink, ConversionWithoutBoundsCheckConfig cfg,
-  DataFlow::CallNode call
-where cfg.hasFlowPath(source, sink) and call.getResult(0) = source.getNode()
-select sink.getNode(), source, sink,
-  "Incorrect conversion of " +
-    describeBitSize(cfg.getSourceBitSize(), getIntTypeBitSize(source.getNode().getFile())) +
-    " from $@ to a lower bit size type " + sink.getNode().getType().getUnderlyingType().getName() +
-    " without an upper bound check.", source, call.getTarget().getQualifiedName()

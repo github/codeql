@@ -12,23 +12,23 @@ func testIntSource386() {
 		if err != nil {
 			panic(err)
 		}
-		_ = int32(parsed)  // OK
-		_ = uint32(parsed) // OK
+		_ = int32(parsed)
+		_ = uint32(parsed)
 	}
 	{
 		parsed, err := strconv.ParseUint("3456", 10, 0)
 		if err != nil {
 			panic(err)
 		}
-		_ = int32(parsed)  // OK
-		_ = uint32(parsed) // OK
+		_ = int32(parsed)
+		_ = uint32(parsed)
 	}
 	{
 		parsed, err := strconv.Atoi("3456")
 		if err != nil {
 			panic(err)
 		}
-		_ = int32(parsed)  // OK
-		_ = uint32(parsed) // OK
+		_ = int32(parsed)
+		_ = uint32(parsed)
 	}
 }

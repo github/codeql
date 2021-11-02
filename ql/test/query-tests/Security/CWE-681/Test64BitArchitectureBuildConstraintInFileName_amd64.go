@@ -12,15 +12,15 @@ func testIntSinkAmd64() {
 		if err != nil {
 			panic(err)
 		}
-		_ = int(parsed)  // OK
-		_ = uint(parsed) // OK
+		_ = int(parsed)
+		_ = uint(parsed)
 	}
 	{
 		parsed, err := strconv.ParseUint("3456", 10, 64)
 		if err != nil {
 			panic(err)
 		}
-		_ = int(parsed)  // OK
-		_ = uint(parsed) // OK
+		_ = int(parsed)
+		_ = uint(parsed)
 	}
 }
