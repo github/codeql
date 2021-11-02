@@ -20,6 +20,7 @@ class MyComplexModel(BaseModel):
     field: str
     main_foo: Foo
     other_foos: List[Foo]
+    nested_foos: List[List[Foo]]
 
 
 @app.post("/test_taint/{name}/{number}") # $ routeSetup="/test_taint/{name}/{number}"
@@ -38,6 +39,20 @@ async def test_taint(name : str, number : int, also_input: MyComplexModel): # $ 
         also_input.other_foos[0], # $ tainted
         also_input.other_foos[0].foo, # $ tainted
         [f.foo for f in also_input.other_foos], # $ MISSING: tainted
+
+        also_input.nested_foos, # $ tainted
+        also_input.nested_foos[0], # $ tainted
+        also_input.nested_foos[0][0], # $ tainted
+        also_input.nested_foos[0][0].foo, # $ MISSING: tainted
+    )
+
+    other_foos = also_input.other_foos
+
+    ensure_tainted(
+        other_foos, # $ tainted
+        other_foos[0], # $ tainted
+        other_foos[0].foo, # $ MISSING: tainted
+        [f.foo for f in other_foos], # $ MISSING: tainted
     )
 
     return "ok" # $ HttpResponse
