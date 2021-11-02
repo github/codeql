@@ -159,6 +159,7 @@ Python built-in support
    Flask, Web framework
    Tornado, Web framework
    Twisted, Web framework
+   Flask-Admin, Web framework
    starlette, Asynchronous Server Gateway Interface (ASGI)
    dill, Serialization
    PyYAML, Serialization

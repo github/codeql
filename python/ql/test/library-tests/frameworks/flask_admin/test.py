@@ -13,36 +13,36 @@ UNKNOWN_ROUTE = eval(foo) # $ getCode=foo
 
 
 class ExampleClass(flask_admin.BaseView):
-    @flask_admin.expose('/')
-    def foo(self): # $ MISSING: requestHandler
-        return "foo"
+    @flask_admin.expose('/') # $ routeSetup="/"
+    def foo(self): # $ requestHandler
+        return "foo" # $ HttpResponse
 
-    @flask_admin.expose(url='/bar/<arg>')
-    def bar(self, arg): # $ MISSING: requestHandler
-        ensure_tainted(arg) # $ MISSING: tainted
-        return "bar: " + arg
+    @flask_admin.expose(url='/bar/<arg>') # $ routeSetup="/bar/<arg>"
+    def bar(self, arg): # $ requestHandler routedParameter=arg
+        ensure_tainted(arg) # $ tainted
+        return "bar: " + arg # $ HttpResponse
 
-    @flask_admin.expose_plugview("/flask-class")
-    @flask_admin.expose_plugview(url="/flask-class/<arg>")
+    @flask_admin.expose_plugview("/flask-class") # $ routeSetup="/flask-class"
+    @flask_admin.expose_plugview(url="/flask-class/<arg>") # $ routeSetup="/flask-class/<arg>"
     class Nested(MethodView):
-        def get(self, cls, arg="default"): # $ requestHandler routedParameter=arg SPURIOUS: routedParameter=cls
+        def get(self, cls, arg="default"): # $ requestHandler routedParameter=arg
             assert isinstance(cls, ExampleClass)
             ensure_tainted(arg) # $ tainted
-            ensure_not_tainted(cls) # $ SPURIOUS: tainted
-            return "GET: " + arg
+            ensure_not_tainted(cls)
+            return "GET: " + arg # $ HttpResponse
 
-        def post(self, cls, arg): # $ requestHandler routedParameter=arg SPURIOUS: routedParameter=cls
+        def post(self, cls, arg): # $ requestHandler routedParameter=arg
             assert isinstance(cls, ExampleClass)
             ensure_tainted(arg) # $ tainted
-            ensure_not_tainted(cls) # $ SPURIOUS: tainted
-            return "POST: " + arg
+            ensure_not_tainted(cls)
+            return "POST: " + arg # $ HttpResponse
 
-    @flask_admin.expose_plugview(UNKNOWN_ROUTE)
+    @flask_admin.expose_plugview(UNKNOWN_ROUTE) # $ routeSetup
     class WithUnknownRoute(MethodView):
-        def get(self, cls, maybeRouted): # $ requestHandler routedParameter=maybeRouted SPURIOUS: routedParameter=cls
+        def get(self, cls, maybeRouted): # $ requestHandler routedParameter=maybeRouted
             ensure_tainted(maybeRouted) # $ tainted
-            ensure_not_tainted(cls) # $ SPURIOUS: tainted
-            return "ok"
+            ensure_not_tainted(cls)
+            return "ok" # $ HttpResponse
 
 
 @app.route('/') # $ routeSetup="/"
