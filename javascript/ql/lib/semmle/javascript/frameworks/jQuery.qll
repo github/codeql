@@ -139,7 +139,7 @@ private class JQueryDomElementDefinition extends DOM::ElementDefinition, @call_e
   JQueryDomElementDefinition() {
     this = call and
     call = jquery().getACall().asExpr() and
-    exists(string s | s = call.getArgument(0).(Expr).getStringValue() |
+    exists(string s | s = call.getArgument(0).getStringValue() |
       // match an opening angle bracket followed by a tag name, followed by arbitrary
       // text and a closing angle bracket, potentially with whitespace in between
       tagName = s.regexpCapture("\\s*<\\s*(\\w+)\\b[^>]*>\\s*", 1).toLowerCase()

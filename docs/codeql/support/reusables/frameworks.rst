@@ -155,6 +155,7 @@ Python built-in support
    Name, Category
    aiohttp.web, Web framework
    Django, Web framework
+   FastAPI, Web framework
    Flask, Web framework
    Tornado, Web framework
    Twisted, Web framework
@@ -163,14 +164,17 @@ Python built-in support
    PyYAML, Serialization
    ruamel.yaml, Serialization
    simplejson, Serialization
+   toml, Serialization
    ujson, Serialization
    fabric, Utility library
    idna, Utility library
    invoke, Utility library
    jmespath, Utility library
    multidict, Utility library
+   pydantic, Utility library
    yarl, Utility library
    aioch, Database
+   asyncpg, Database
    clickhouse-driver, Database
    mysql-connector-python, Database
    mysql-connector, Database

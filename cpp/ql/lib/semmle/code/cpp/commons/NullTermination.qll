@@ -11,6 +11,19 @@ private predicate mayAddNullTerminatorHelper(Expr e, VariableAccess va, Expr e0)
   )
 }
 
+bindingset[n1, n2]
+private predicate controlFlowNodeSuccessorTransitive(ControlFlowNode n1, ControlFlowNode n2) {
+  exists(BasicBlock bb1, int pos1, BasicBlock bb2, int pos2 |
+    pragma[only_bind_into](bb1).getNode(pos1) = n1 and
+    pragma[only_bind_into](bb2).getNode(pos2) = n2 and
+    (
+      bb1 = bb2 and pos1 < pos2
+      or
+      bb1.getASuccessor+() = bb2
+    )
+  )
+}
+
 /**
  * Holds if the expression `e` may add a null terminator to the string in
  * variable `v`.
@@ -30,14 +43,9 @@ predicate mayAddNullTerminator(Expr e, VariableAccess va) {
   )
   or
   // Assignment to another stack variable
-  exists(Expr e0, BasicBlock bb, int pos, BasicBlock bb0, int pos0 |
-    mayAddNullTerminatorHelper(e, va, e0) and
-    bb.getNode(pos) = e and
-    bb0.getNode(pos0) = e0
-  |
-    bb = bb0 and pos < pos0
-    or
-    bb.getASuccessor+() = bb0
+  exists(Expr e0 |
+    mayAddNullTerminatorHelper(pragma[only_bind_into](e), va, pragma[only_bind_into](e0)) and
+    controlFlowNodeSuccessorTransitive(e, e0)
   )
   or
   // Assignment to non-stack variable
@@ -119,14 +127,9 @@ predicate variableMustBeNullTerminated(VariableAccess va) {
       variableMustBeNullTerminated(use) and
       // Simplified: check that `p` may not be null terminated on *any*
       // path to `use` (including the one found via `parameterUsePair`)
-      not exists(Expr e, BasicBlock bb1, int pos1, BasicBlock bb2, int pos2 |
-        mayAddNullTerminator(e, p.getAnAccess()) and
-        bb1.getNode(pos1) = e and
-        bb2.getNode(pos2) = use
-      |
-        bb1 = bb2 and pos1 < pos2
-        or
-        bb1.getASuccessor+() = bb2
+      not exists(Expr e |
+        mayAddNullTerminator(pragma[only_bind_into](e), p.getAnAccess()) and
+        controlFlowNodeSuccessorTransitive(e, use)
       )
     )
   )

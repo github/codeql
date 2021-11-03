@@ -567,7 +567,7 @@ class ThrowStmt extends Stmt, @throwstmt {
     or
     exists(Stmt mid |
       mid = this.findEnclosing() and
-      not exists(this.catchClauseForThis(mid.(TryStmt))) and
+      not exists(this.catchClauseForThis(mid)) and
       result = mid.getEnclosingStmt()
     )
   }
@@ -575,7 +575,7 @@ class ThrowStmt extends Stmt, @throwstmt {
   private CatchClause catchClauseForThis(TryStmt try) {
     result = try.getACatchClause() and
     result.getEnclosingCallable() = this.getEnclosingCallable() and
-    this.getExpr().getType().(RefType).hasSupertype*(result.getVariable().getType().(RefType)) and
+    this.getExpr().getType().(RefType).hasSupertype*(result.getVariable().getType()) and
     not this.getEnclosingStmt+() = result
   }
 

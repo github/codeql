@@ -30,7 +30,7 @@ string access(int p) {
   p.bitAnd(4) != 0 and result = "readable"
 }
 
-/** An expression specifing a file permission that allows group/others read or write access */
+/** An expression specifying a file permission that allows group/others read or write access */
 class PermissivePermissionsExpr extends Expr {
   // TODO: non-literal expressions?
   PermissivePermissionsExpr() {

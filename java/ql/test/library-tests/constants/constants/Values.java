@@ -16,7 +16,7 @@ class Values {
         int binary_literal = 0b101010; //42
         int negative_binary_literal = -0b101010; //-42
         int binary_literal_underscores = 0b1_0101_0; //42
-        char char_literal = '*'; //Not handled
+        char char_literal = '*'; //42
         long long_literal = 42L; //Not handled
         boolean boolean_literal = true; //true
         Integer boxed_int = new Integer(42); //Not handled
@@ -30,7 +30,7 @@ class Values {
         byte downcast_byte_4 = (byte) 214; // -42
         byte downcast_byte_5 = (byte) (-214); // 42
         short downcast_short = (short) 32768; // -32768
-        int cast_of_non_constant = (int) '*'; //Not handled
+        int cast_of_non_constant = (int) '*'; //42
         long cast_to_long = (long) 42; //Not handled
 
         int unary_plus = +42; //42

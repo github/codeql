@@ -14,11 +14,14 @@ import semmle.javascript.security.internal.SensitiveDataHeuristics
 private import HeuristicNames
 
 /** An expression that might contain sensitive data. */
+cached
 abstract class SensitiveExpr extends Expr {
   /** Gets a human-readable description of this expression for use in alert messages. */
+  cached
   abstract string describe();
 
   /** Gets a classification of the kind of sensitive data this expression might contain. */
+  cached
   abstract SensitiveDataClassification getClassification();
 }
 

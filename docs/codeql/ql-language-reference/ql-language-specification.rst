@@ -1333,7 +1333,7 @@ The values of a set literal expression are all the values of all the contained e
 
 Set literals are supported from release 2.1.0 of the CodeQL CLI, and release 1.24 of LGTM Enterprise.
 
-Since release 2.7.1 of the CodeQL CLI, and release 1.28 of LGTM Enterprise, a trailing comma is allowed in a set literal.
+Since release 2.7.1 of the CodeQL CLI, and release 1.30 of LGTM Enterprise, a trailing comma is allowed in a set literal.
 
 Disambiguation of expressions
 -----------------------------
