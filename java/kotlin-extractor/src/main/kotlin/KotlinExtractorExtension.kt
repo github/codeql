@@ -1061,7 +1061,7 @@ open class KotlinFileExtractor(
         val exprId = tw.getFreshIdLabel<DbLocalvariabledeclexpr>()
         val locId = tw.getLocation(v)
         val type = useType(v.type)
-        tw.writeLocalvars(varId, v.name.asString(), type.javaResult.id, exprId) // TODO: KT type
+        tw.writeLocalvars(varId, v.name.asString(), type.javaResult.id, type.kotlinResult.id, exprId)
         tw.writeHasLocation(varId, locId)
         tw.writeExprs_localvariabledeclexpr(exprId, type.javaResult.id, type.kotlinResult.id, parent, idx)
         tw.writeHasLocation(exprId, locId)

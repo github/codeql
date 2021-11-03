@@ -785,6 +785,7 @@ localvars(
   unique int id: @localvar,
   string nodeName: string ref,
   int typeid: @type ref,
+  int kttypeid: @kt_type ref,
   int parentid: @localvariabledeclexpr ref
 );
 
