@@ -9,6 +9,9 @@ class Variable extends @variable, Annotatable, Element, Modifiable {
   /** Gets the type of this variable. */
   /*abstract*/ Type getType() { none() }
 
+  /** Gets the Kotlin type of this variable. */
+  /*abstract*/ KotlinType getKotlinType() { none() }
+
   /** Gets an access to this variable. */
   VarAccess getAnAccess() { variableBinding(result, this) }
 
