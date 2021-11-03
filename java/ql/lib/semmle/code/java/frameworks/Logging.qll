@@ -7,21 +7,20 @@ private class LoggingSummaryModels extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
-        "org.apache.logging.log4j;Logger;true;entry;(Object[]);;Argument[0];ReturnValue;taint",
         "org.apache.logging.log4j;Logger;true;traceEntry;(Message);;Argument[0];ReturnValue;taint",
         "org.apache.logging.log4j;Logger;true;traceEntry;(String,Object[]);;Argument[0..1];ReturnValue;taint",
-        "org.apache.logging.log4j;Logger;true;traceEntry;(String,Supplier);;Argument[0..1];ReturnValue;taint",
-        "org.apache.logging.log4j;Logger;true;traceEntry;(Supplier);;Argument[0];ReturnValue;taint",
+        "org.apache.logging.log4j;Logger;true;traceEntry;(String,Supplier[]);;Argument[0..1];ReturnValue;taint",
+        "org.apache.logging.log4j;Logger;true;traceEntry;(Supplier[]);;Argument[0];ReturnValue;taint",
         "org.apache.logging.log4j;Logger;true;traceExit;(EntryMessage,Object);;Argument[1];ReturnValue;value",
         "org.apache.logging.log4j;Logger;true;traceExit;(Message,Object);;Argument[1];ReturnValue;value",
         "org.apache.logging.log4j;Logger;true;traceExit;(Object);;Argument[0];ReturnValue;value",
         "org.apache.logging.log4j;Logger;true;traceExit;(String,Object);;Argument[1];ReturnValue;value",
-        "org.slf4j.spi.LoggingEventBuilder;true;addArgument;;;Argument[1];Argument[-1];taint",
-        "org.slf4j.spi.LoggingEventBuilder;true;addArgument;;;Argument[-1];ReturnValue;value",
-        "org.slf4j.spi.LoggingEventBuilder;true;addKeyValue;;;Argument[1];Argument[-1];taint",
-        "org.slf4j.spi.LoggingEventBuilder;true;addKeyValue;;;Argument[-1];ReturnValue;value",
-        "org.slf4j.spi.LoggingEventBuilder;true;addMarker;;;Argument[-1];ReturnValue;value",
-        "org.slf4j.spi.LoggingEventBuilder;true;setCause;;;Argument[-1];ReturnValue;value",
+        "org.slf4j.spi;LoggingEventBuilder;true;addArgument;;;Argument[1];Argument[-1];taint",
+        "org.slf4j.spi;LoggingEventBuilder;true;addArgument;;;Argument[-1];ReturnValue;value",
+        "org.slf4j.spi;LoggingEventBuilder;true;addKeyValue;;;Argument[1];Argument[-1];taint",
+        "org.slf4j.spi;LoggingEventBuilder;true;addKeyValue;;;Argument[-1];ReturnValue;value",
+        "org.slf4j.spi;LoggingEventBuilder;true;addMarker;;;Argument[-1];ReturnValue;value",
+        "org.slf4j.spi;LoggingEventBuilder;true;setCause;;;Argument[-1];ReturnValue;value",
         "java.util.logging;LogRecord;false;LogRecord;;;Argument[1];Argument[-1];taint"
       ]
   }
