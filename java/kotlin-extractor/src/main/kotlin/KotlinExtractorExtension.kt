@@ -986,8 +986,8 @@ open class KotlinFileExtractor(
 
             val extReceiver = f.extensionReceiverParameter
             if (extReceiver != null) {
-                val extendedType = useTypeOld(extReceiver.type)
-                tw.writeKtExtensionFunctions(id, extendedType)
+                val extendedType = useType(extReceiver.type)
+                tw.writeKtExtensionFunctions(id, extendedType.javaResult.id, extendedType.kotlinResult.id)
             }
         }
 

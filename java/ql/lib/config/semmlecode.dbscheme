@@ -1085,5 +1085,6 @@ ktBreakContinueTargets(
 
 ktExtensionFunctions(
   unique int id: @method ref,
-  int typeid: @type ref
+  int typeid: @type ref,
+  int kttypeid: @kt_type ref
 )
