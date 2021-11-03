@@ -1,4 +1,4 @@
-require "Excon"
+require "excon"
 require "json"
 
 class PostsController < ActionController::Base

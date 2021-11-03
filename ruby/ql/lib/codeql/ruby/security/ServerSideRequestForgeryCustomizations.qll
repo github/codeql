@@ -11,6 +11,10 @@ private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.Concepts
 private import codeql.ruby.dataflow.Sanitizers
 
+/**
+ * Provides default sources, sinks and sanitizers for reasoning about
+ * server side request forgery, as well as extension points for adding your own.
+ */
 module ServerSideRequestForgery {
   /**
    * A data flow source for server side request forgery vulnerabilities.
