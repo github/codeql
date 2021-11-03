@@ -292,7 +292,7 @@ library class SSAHelper extends int {
    */
   cached
   string toString(ControlFlowNode node, StackVariable v) {
-    if phi_node(v, node.(BasicBlock))
+    if phi_node(v, node)
     then result = "SSA phi(" + v.getName() + ")"
     else (
       ssa_defn(v, node, _, _) and result = "SSA def(" + v.getName() + ")"

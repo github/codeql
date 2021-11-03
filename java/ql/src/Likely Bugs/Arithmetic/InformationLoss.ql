@@ -25,7 +25,7 @@ class DangerousAssignOpExpr extends AssignOp {
   }
 }
 
-predicate problematicCasting(Type t, Expr e) { e.getType().(NumType).widerThan(t.(NumType)) }
+predicate problematicCasting(Type t, Expr e) { e.getType().(NumType).widerThan(t) }
 
 from DangerousAssignOpExpr a, Expr e
 where

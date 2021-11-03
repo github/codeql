@@ -131,7 +131,7 @@ private DataFlow::LocalSourceNode trackFeature(Feature f, boolean enable, TypeTr
     // same code.
     exists(CfgNodes::ExprNodes::OperationCfgNode operation |
       bitWiseAndOr(operation) and
-      operation = result.asExpr().(CfgNodes::ExprNodes::OperationCfgNode) and
+      operation = result.asExpr() and
       operation.getAnOperand() = trackFeature(f, enable).asExpr()
     )
     or

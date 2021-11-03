@@ -132,7 +132,7 @@ private string getSetterCallAttributeName(AST::SetterMethodCall call) {
 predicate basicLoadStep(Node nodeFrom, Node nodeTo, string content) {
   exists(ExprNodes::MethodCallCfgNode call |
     call.getExpr().getNumberOfArguments() = 0 and
-    content = call.getExpr().(AST::MethodCall).getMethodName() and
+    content = call.getExpr().getMethodName() and
     nodeFrom.asExpr() = call.getReceiver() and
     nodeTo.asExpr() = call
   )

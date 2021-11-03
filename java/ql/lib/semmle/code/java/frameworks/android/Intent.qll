@@ -77,6 +77,61 @@ class IntentGetParcelableExtraMethod extends Method {
   }
 }
 
+/** The class `android.os.BaseBundle`, or a class that extends it. */
+class AndroidBundle extends Class {
+  AndroidBundle() { this.getASupertype*().hasQualifiedName("android.os", "BaseBundle") }
+}
+
+/** An `Intent` that explicitly sets a destination component. */
+class ExplicitIntent extends Expr {
+  ExplicitIntent() {
+    exists(MethodAccess ma, Method m |
+      ma.getMethod() = m and
+      m.getDeclaringType() instanceof TypeIntent and
+      m.hasName(["setPackage", "setClass", "setClassName", "setComponent"]) and
+      ma.getQualifier() = this
+    )
+    or
+    exists(ConstructorCall cc, Argument classArg |
+      cc.getConstructedType() instanceof TypeIntent and
+      cc.getAnArgument() = classArg and
+      classArg.getType() instanceof TypeClass and
+      not exists(NullLiteral nullLiteral | DataFlow::localExprFlow(nullLiteral, classArg)) and
+      cc = this
+    )
+  }
+}
+
+/**
+ * A sanitizer for explicit intents.
+ *
+ * Use this when you want to work only with implicit intents
+ * in a `DataFlow` or `TaintTracking` configuration.
+ */
+class ExplicitIntentSanitizer extends DataFlow::Node {
+  ExplicitIntentSanitizer() {
+    exists(ExplicitIntent explIntent | DataFlow::localExprFlow(explIntent, this.asExpr()))
+  }
+}
+
+private class BundleExtrasSyntheticField extends SyntheticField {
+  BundleExtrasSyntheticField() { this = "android.content.Intent.extras" }
+
+  override RefType getType() { result instanceof AndroidBundle }
+}
+
+/**
+ * Holds if extras may be implicitly read from the Intent `node`.
+ */
+predicate allowIntentExtrasImplicitRead(DataFlow::Node node, DataFlow::Content c) {
+  node.getType() instanceof TypeIntent and
+  (
+    c instanceof DataFlow::MapValueContent
+    or
+    c.(DataFlow::SyntheticFieldContent).getType() instanceof AndroidBundle
+  )
+}
+
 private class IntentBundleFlowSteps extends SummaryModelCsv {
   override predicate row(string row) {
     row =

@@ -199,7 +199,7 @@ private class AnalyzedNewExpr extends DataFlow::AnalyzedValueNode {
    */
   private predicate isIndefinite() {
     exists(DataFlow::AnalyzedNode callee, AbstractValue calleeVal |
-      callee = astNode.(NewExpr).getCallee().analyze() and
+      callee = astNode.getCallee().analyze() and
       calleeVal = callee.getALocalValue()
     |
       calleeVal.isIndefinite(_) or
@@ -217,7 +217,7 @@ private class NewInstance extends DataFlow::AnalyzedValueNode {
 
   override AbstractValue getALocalValue() {
     exists(DataFlow::AnalyzedNode callee |
-      callee = astNode.(NewExpr).getCallee().analyze() and
+      callee = astNode.getCallee().analyze() and
       result = TAbstractInstance(callee.getALocalValue())
     )
   }

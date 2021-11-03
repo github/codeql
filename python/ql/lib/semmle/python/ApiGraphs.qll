@@ -304,6 +304,8 @@ module API {
      * API graph node for the prefix `foo`), in accordance with the usual semantics of Python.
      */
 
+    private import semmle.python.internal.Awaited
+
     cached
     newtype TApiNode =
       /** The root of the API graph. */
@@ -518,10 +520,9 @@ module API {
         )
         or
         // awaiting
-        exists(Await await, DataFlow::Node awaitedValue |
+        exists(DataFlow::Node awaitedValue |
           lbl = Label::await() and
-          ref.asExpr() = await and
-          await.getValue() = awaitedValue.asExpr() and
+          ref = awaited(awaitedValue) and
           pred.flowsTo(awaitedValue)
         )
       )
