@@ -363,6 +363,7 @@ constrs(
   string nodeName: string ref,
   string signature: string ref,
   int typeid: @type ref,
+  int kttypeid: @kt_type ref,
   int parentid: @reftype ref,
   int sourceid: @constructor ref
 );
@@ -372,6 +373,7 @@ methods(
   string nodeName: string ref,
   string signature: string ref,
   int typeid: @type ref,
+  int kttypeid: @kt_type ref,
   int parentid: @reftype ref,
   int sourceid: @method ref
 );

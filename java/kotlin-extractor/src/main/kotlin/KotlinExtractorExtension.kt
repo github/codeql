@@ -911,8 +911,8 @@ open class KotlinFileExtractor(
         var obinitLabel = getFunctionLabel(c, "<obinit>", listOf(), pluginContext.irBuiltIns.unitType)
         val obinitId = tw.getLabelFor<DbMethod>(obinitLabel)
         val signature = "TODO"
-        val returnTypeId = useTypeOld(pluginContext.irBuiltIns.unitType)
-        tw.writeMethods(obinitId, "<obinit>", signature, returnTypeId, parentId, obinitId)
+        val returnType = useType(pluginContext.irBuiltIns.unitType)
+        tw.writeMethods(obinitId, "<obinit>", signature, returnType.javaResult.id, returnType.kotlinResult.id, parentId, obinitId)
 
         val locId = tw.getLocation(c)
         tw.writeHasLocation(obinitId, locId)
@@ -976,13 +976,13 @@ open class KotlinFileExtractor(
 
         val id: Label<out DbCallable>
         if (f.symbol is IrConstructorSymbol) {
-            val returnTypeId = useTypeOld(erase(f.returnType))
+            val returnType = useType(erase(f.returnType))
             id = useFunction<DbConstructor>(f)
-            tw.writeConstrs(id, f.returnType.classFqName?.shortName()?.asString() ?: f.name.asString(), signature, returnTypeId, parentId, id)
+            tw.writeConstrs(id, f.returnType.classFqName?.shortName()?.asString() ?: f.name.asString(), signature, returnType.javaResult.id, returnType.kotlinResult.id, parentId, id)
         } else {
-            val returnTypeId = useTypeOld(f.returnType)
+            val returnType = useType(f.returnType)
             id = useFunction<DbMethod>(f)
-            tw.writeMethods(id, f.name.asString(), signature, returnTypeId, parentId, id)
+            tw.writeMethods(id, f.name.asString(), signature, returnType.javaResult.id, returnType.kotlinResult.id, parentId, id)
 
             val extReceiver = f.extensionReceiverParameter
             if (extReceiver != null) {
