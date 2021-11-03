@@ -3,16 +3,18 @@ name: "Ruby: Run QL Tests"
 on:
   push:
     paths:
-      - 'ruby/**'
+      - "ruby/**"
+      - .github/workflows/ruby-qltest.yml
     branches:
       - main
-      - 'rc/*'
+      - "rc/*"
   pull_request:
     paths:
-      - 'ruby/**'
+      - "ruby/**"
+      - .github/workflows/ruby-qltest.yml
     branches:
       - main
-      - 'rc/*'
+      - "rc/*"
 
 env:
   CARGO_TERM_COLOR: always
