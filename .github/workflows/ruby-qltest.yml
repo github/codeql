@@ -4,12 +4,14 @@ on:
   push:
     paths:
       - "ruby/**"
+      - .github/workflows/ruby-qltest.yml
     branches:
       - main
       - "rc/*"
   pull_request:
     paths:
       - "ruby/**"
+      - .github/workflows/ruby-qltest.yml
     branches:
       - main
       - "rc/*"

@@ -3,16 +3,18 @@ name: "Ruby: Build"
 on:
   push:
     paths:
-      - 'ruby/**'
+      - "ruby/**"
+      - .github/workflows/ruby-build.yml
     branches:
       - main
-      - 'rc/*'
+      - "rc/*"
   pull_request:
     paths:
-      - 'ruby/**'
+      - "ruby/**"
+      - .github/workflows/ruby-build.yml
     branches:
       - main
-      - 'rc/*'
+      - "rc/*"
   workflow_dispatch:
     inputs:
       tag:
