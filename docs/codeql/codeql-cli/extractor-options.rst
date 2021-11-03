@@ -81,7 +81,7 @@ You can also specify extractor option names without the extractor name. For exam
 *   ``codeql database create --extractor-option option1=abc ...``
 *   ``codeql database start-tracing --extractor-option group1.option2=102 ...``
 
-If you do not specify an extractor name, the extractor option settings will apply to all extractors that declare an option with the given name. In the above example, the first command would set the extractor option ``option1`` to ``abc`` for the ``java`` extractor and every extractor that has an option of ``option1``, for example the ``cpp`` extractor, if the ``option1` extractor option exists for that extractor.
+If you do not specify an extractor name, the extractor option settings will apply to all extractors that declare an option with the given name. In the above example, the first command would set the extractor option ``option1`` to ``abc`` for the ``java`` extractor and every extractor that has an option of ``option1``, for example the ``cpp`` extractor, if the ``option1`` extractor option exists for that extractor.
 
 Setting extractor options from files
 ------------------------------------
