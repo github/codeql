@@ -287,10 +287,6 @@ open class KotlinUsesExtractor(
     data class TypeResult<LabelType>(val id: Label<LabelType>, val signature: String)
     data class TypeResults(val javaResult: TypeResult<out DbType>, val kotlinResult: TypeResult<out DbKt_type>)
 
-    fun useTypeOld(t: IrType, canReturnPrimitiveTypes: Boolean = true): Label<out DbType> {
-        return useType(t, canReturnPrimitiveTypes).javaResult.id
-    }
-
     fun useType(t: IrType, canReturnPrimitiveTypes: Boolean = true): TypeResults {
         when(t) {
             is IrSimpleType -> return useSimpleType(t, canReturnPrimitiveTypes)
@@ -587,8 +583,8 @@ class X {
     }
 
     fun getFunctionLabel(parent: IrDeclarationParent, name: String, parameters: List<IrValueParameter>, returnType: IrType) : String {
-        val paramTypeIds = parameters.joinToString() { "{${useTypeOld(erase(it.type)).toString()}}" }
-        val returnTypeId = useTypeOld(erase(returnType))
+        val paramTypeIds = parameters.joinToString() { "{${useType(erase(it.type)).javaResult.id.toString()}}" }
+        val returnTypeId = useType(erase(returnType)).javaResult.id
         val parentId = useDeclarationParent(parent)
         val label = "@\"callable;{$parentId}.$name($paramTypeIds){$returnTypeId}\""
         return label
@@ -613,7 +609,7 @@ class X {
             }
             is IrTypeProjection -> {
                 @Suppress("UNCHECKED_CAST")
-                return useTypeOld(arg.type, false) as Label<out DbReftype>
+                return useType(arg.type, false).javaResult.id as Label<out DbReftype>
             }
             else -> {
                 logger.warn(Severity.ErrorSevere, "Unexpected type argument.")
