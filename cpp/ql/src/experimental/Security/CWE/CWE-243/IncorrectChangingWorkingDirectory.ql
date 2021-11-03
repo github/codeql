@@ -22,8 +22,8 @@ predicate inExistsChdir(FunctionCall fcp) {
       fctmp.getTarget().hasGlobalOrStdName("fchdir")
     ) and
     (
-      fctmp.getASuccessor*() = fcp or
-      fcp.getASuccessor*() = fctmp
+      fcp.getBasicBlock().getASuccessor*() = fctmp.getBasicBlock() or
+      fctmp.getBasicBlock().getASuccessor*() = fcp.getBasicBlock()
     )
   )
 }
@@ -40,8 +40,8 @@ predicate outExistsChdir(FunctionCall fcp) {
       fctmp2.getEnclosingStmt().getParentStmt*() = fctmp.getTarget().getEntryPoint().getChildStmt*()
     ) and
     (
-      fctmp.getASuccessor*() = fcp or
-      fcp.getASuccessor*() = fctmp
+      fcp.getBasicBlock().getASuccessor*() = fctmp.getBasicBlock() or
+      fctmp.getBasicBlock().getASuccessor*() = fcp.getBasicBlock()
     )
   )
 }
