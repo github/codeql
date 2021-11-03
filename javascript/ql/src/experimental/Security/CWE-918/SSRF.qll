@@ -21,13 +21,14 @@ class Configuration extends TaintTracking::Configuration {
     or
     hasSanitizingSubstring(nd.getAPredecessor())
   }
-  
+
   private predicate strictSanitizingPrefixEdge(DataFlow::Node source, DataFlow::Node sink) {
     exists(DataFlow::Node operator, int n |
       StringConcatenation::taintStep(source, sink, operator, n) and
       hasSanitizingSubstring(StringConcatenation::getOperand(operator, [0 .. n - 1]))
     )
   }
+
   override predicate isSanitizerEdge(DataFlow::Node source, DataFlow::Node sink) {
     strictSanitizingPrefixEdge(source, sink)
   }
