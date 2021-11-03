@@ -389,6 +389,31 @@ open class KotlinUsesExtractor(
         return id
     }
 
+    fun useSimpleTypeClass(c: IrClass, args: List<IrTypeArgument>, hasQuestionMark: Boolean): TypeResults {
+        val classInstanceResult = useClassInstance(c, args)
+        val javaClassId = classInstanceResult.classLabel
+        val kotlinQualClassName = getUnquotedClassLabel(c, args)
+        val javaQualClassName = classInstanceResult.javaClass.fqNameForIrSerialization.asString()
+        val javaSignature = javaQualClassName // TODO: Is this right?
+        val javaResult = TypeResult(javaClassId, javaSignature)
+        val kotlinResult = if (hasQuestionMark) {
+                val kotlinSignature = "$kotlinQualClassName?" // TODO: Is this right?
+                val kotlinLabel = "@\"kt_type;nullable;$kotlinQualClassName\""
+                val kotlinId: Label<DbKt_nullable_type> = tw.getLabelFor(kotlinLabel, {
+                    tw.writeKt_nullable_types(it, javaClassId)
+                })
+                TypeResult(kotlinId, kotlinSignature)
+            } else {
+                val kotlinSignature = kotlinQualClassName // TODO: Is this right?
+                val kotlinLabel = "@\"kt_type;notnull;$kotlinQualClassName\""
+                val kotlinId: Label<DbKt_notnull_type> = tw.getLabelFor(kotlinLabel, {
+                    tw.writeKt_notnull_types(it, javaClassId)
+                })
+                TypeResult(kotlinId, kotlinSignature)
+            }
+        return TypeResults(javaResult, kotlinResult)
+    }
+
     fun useSimpleType(s: IrSimpleType, canReturnPrimitiveTypes: Boolean): TypeResults {
         // We use this when we don't actually have an IrClass for a class
         // we want to refer to
@@ -514,28 +539,7 @@ class X {
                 val classifier: IrClassifierSymbol = s.classifier
                 val cls: IrClass = classifier.owner as IrClass
 
-                val classInstanceResult = useClassInstance(cls, s.arguments)
-                val javaClassId = classInstanceResult.classLabel
-                val kotlinQualClassName = getUnquotedClassLabel(cls, s.arguments)
-                val javaQualClassName = classInstanceResult.javaClass.fqNameForIrSerialization.asString()
-                val javaSignature = javaQualClassName // TODO: Is this right?
-                val javaResult = TypeResult(javaClassId, javaSignature)
-                val kotlinResult = if (s.hasQuestionMark) {
-                        val kotlinSignature = "$kotlinQualClassName?" // TODO: Is this right?
-                        val kotlinLabel = "@\"kt_type;nullable;$kotlinQualClassName\""
-                        val kotlinId: Label<DbKt_nullable_type> = tw.getLabelFor(kotlinLabel, {
-                            tw.writeKt_nullable_types(it, javaClassId)
-                        })
-                        TypeResult(kotlinId, kotlinSignature)
-                    } else {
-                        val kotlinSignature = kotlinQualClassName // TODO: Is this right?
-                        val kotlinLabel = "@\"kt_type;notnull;$kotlinQualClassName\""
-                        val kotlinId: Label<DbKt_notnull_type> = tw.getLabelFor(kotlinLabel, {
-                            tw.writeKt_notnull_types(it, javaClassId)
-                        })
-                        TypeResult(kotlinId, kotlinSignature)
-                    }
-                return TypeResults(javaResult, kotlinResult)
+                return useSimpleTypeClass(cls, s.arguments, s.hasQuestionMark)
             }
             s.classifier.owner is IrTypeParameter -> {
                 val javaId = useTypeParameter(s.classifier.owner as IrTypeParameter)
@@ -1006,8 +1010,8 @@ open class KotlinFileExtractor(
         } else {
             val id = useProperty(p)
             val locId = tw.getLocation(p)
-            val typeId = useTypeOld(bf.type)
-            tw.writeFields(id, p.name.asString(), typeId, parentId, id)
+            val type = useType(bf.type)
+            tw.writeFields(id, p.name.asString(), type.javaResult.id, type.kotlinResult.id, parentId, id)
             tw.writeHasLocation(id, locId)
         }
     }
@@ -1015,8 +1019,16 @@ open class KotlinFileExtractor(
     fun extractEnumEntry(ee: IrEnumEntry, parentId: Label<out DbReftype>) {
         val id = useEnumEntry(ee)
         val locId = tw.getLocation(ee)
-        tw.writeFields(id, ee.name.asString(), parentId, parentId, id)
-        tw.writeHasLocation(id, locId)
+        val parent = ee.parent
+        if(parent !is IrClass) {
+            logger.warnElement(Severity.ErrorSevere, "Enum entry with unexpected parent: " + parent.javaClass, ee)
+        } else if (!parent.typeParameters.isEmpty()) {
+            logger.warnElement(Severity.ErrorSevere, "Enum entry parent class has type parameters: " + parent.name, ee)
+        } else {
+            val type = useSimpleTypeClass(parent, emptyList(), false)
+            tw.writeFields(id, ee.name.asString(), type.javaResult.id, type.kotlinResult.id, parentId, id)
+            tw.writeHasLocation(id, locId)
+        }
     }
 
     fun extractBody(b: IrBody, callable: Label<out DbCallable>) {
