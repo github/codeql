@@ -606,13 +606,17 @@ public class ASTExtractor {
         if (be.getOperator().equals("+")) {
           Pair<String, OffsetTranslation> left = getStringConcatResult(be.getLeft());
           Pair<String, OffsetTranslation> right = getStringConcatResult(be.getRight());
-          if (left != null && right != null) {
-            String str = left.fst() + right.fst();
-            
-            int delta = be.getRight().getLoc().getStart().getOffset() - be.getLeft().getLoc().getStart().getOffset();
-            int offset = left.fst().length();
-            return Pair.make(str, left.snd().append(right.snd(), offset, delta));
+          if (left == null || right == null) {
+            return null;
           }
+          String str = left.fst() + right.fst();
+          if (str.length() > 1000) {
+            return null;
+          }
+            
+          int delta = be.getRight().getLoc().getStart().getOffset() - be.getLeft().getLoc().getStart().getOffset();
+          int offset = left.fst().length();
+          return Pair.make(str, left.snd().append(right.snd(), offset, delta));
         }
       } else if (exp instanceof Literal) {
         Literal lit = (Literal) exp;
