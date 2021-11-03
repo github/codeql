@@ -166,9 +166,6 @@ import com.semmle.util.locations.SourceMap;
 import com.semmle.util.trap.TrapWriter;
 import com.semmle.util.trap.TrapWriter.Label;
 
-import com.semmle.util.files.FileLineOffsetCache;
-
-
 /** Extractor for AST-based information; invoked by the {@link JSExtractor}. */
 public class ASTExtractor {
   private final TrapWriter trapwriter;
