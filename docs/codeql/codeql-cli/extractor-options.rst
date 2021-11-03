@@ -4,7 +4,7 @@ Extractor options
 =================
 
 The CodeQL CLI uses special programs, called extractors, to extract information from the source code of a
-software system into a database that can be queried.  You can customize the behavior of extractors by
+software system into a database that can be queried. You can customize the behavior of extractors by
 setting extractor configuration options through the CodeQL CLI.
 
 About extractor options
