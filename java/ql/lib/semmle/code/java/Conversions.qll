@@ -126,7 +126,7 @@ class CastConversionContext extends ConversionSite {
 class SafeCastConversionContext extends ConversionSite {
   SafeCastExpr c;
 
-  CastConversionContext() { this = c.getExpr() }
+  SafeCastConversionContext() { this = c.getExpr() }
 
   override Type getConversionTarget() { result = c.getType() }
 
