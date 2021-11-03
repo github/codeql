@@ -31,22 +31,14 @@ private module AlgorithmNames {
   }
 
   predicate isStrongEncryptionAlgorithm(string name) {
-    name = [appendMode("AES"), "AES128", "AES192", "AES256", "AES512", "RSA", "RABBIT", "BLOWFISH"]
-  }
-
-  /**
-   * Gets the name with a mode of operation added as a suffix.
-   */
-  bindingset[name]
-  private string appendMode(string name) {
-    result = name + ["", "CBC", "ECB", "CFB", "OFB", "CTR", "GCM"]
+    name = ["AES", "AES128", "AES192", "AES256", "AES512", "RSA", "RABBIT", "BLOWFISH"]
   }
 
   predicate isWeakEncryptionAlgorithm(string name) {
     name =
       [
-        appendMode("DES"), appendMode("3DES"), "TRIPLEDES", "TDEA", "TRIPLEDEA", "ARC2", "RC2",
-        "ARC4", "RC4", "ARCFOUR", "ARC5", "RC5"
+        "DES", "3DES", "TRIPLEDES", "TDEA", "TRIPLEDEA", "ARC2", "RC2", "ARC4", "RC4", "ARCFOUR",
+        "ARC5", "RC5"
       ]
   }
 
@@ -93,11 +85,12 @@ abstract class CryptographicAlgorithm extends TCryptographicAlgorithm {
 
   /**
    * Holds if the name of this algorithm matches `name` modulo case,
-   * white space, dashes, and underscores.
+   * white space, dashes, underscores, and anything after a dash in the name.
    */
   bindingset[name]
   predicate matchesName(string name) {
-    name.toUpperCase().regexpReplaceAll("[-_ ]", "") = getName()
+    name.toUpperCase().regexpCapture("^(\\w+)(?:-.*)?$", 1).regexpReplaceAll("[-_ ]", "") =
+      getName()
   }
 
   /**
