@@ -76,10 +76,7 @@ private class DefOrUse extends TDefOrUse {
 
   /** Holds if this definition or use has rank `rank` in block `block`. */
   cached
-  final predicate hasRankInBlock(IRBlock block, int rnk) {
-    block = getBlock() and
-    rnk = getRank(this, block)
-  }
+  final predicate hasRankInBlock(IRBlock block, int rnk) { rnk = getRank(this, block) }
 
   /** Gets the location of this element. */
   abstract Cpp::Location getLocation();
