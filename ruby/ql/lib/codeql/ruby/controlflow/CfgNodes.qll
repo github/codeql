@@ -108,6 +108,7 @@ class ExprCfgNode extends AstCfgNode {
   }
 
   /** Gets the textual (constant) value of this expression, if any. */
+  cached
   string getValueText() { result = this.getSource().getValueText() }
 }
 
@@ -247,7 +248,18 @@ module ExprNodes {
           result = (left.toFloat() + right.toFloat()).toString()
           or
           not (exists(left.toFloat()) and exists(right.toFloat())) and
-          result = left + right
+          exists(int l, int r, int limit |
+            l = left.length() and
+            r = right.length() and
+            limit = 10000
+          |
+            if l > limit
+            then result = left.prefix(limit) + "..."
+            else
+              if l + r > limit
+              then result = left + right.prefix(limit - l) + "..."
+              else result = left + right
+          )
         )
         or
         op = "-" and
