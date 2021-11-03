@@ -223,8 +223,6 @@ errors(unique int id: @error, int kind: int ref, string msg: string ref, string 
 
 has_ellipsis(int id: @callorconversionexpr ref);
 
-variadic(int id: @signaturetype ref);
-
 @container = @file | @folder;
 
 @locatable = @xmllocatable | @node | @localscope;
