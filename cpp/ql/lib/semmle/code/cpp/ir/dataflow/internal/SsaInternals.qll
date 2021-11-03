@@ -361,13 +361,13 @@ private module Cached {
       bb.getInstruction(i1) = write and
       bb.getInstruction(i2) = op.getUse() and
       // Flow to an instruction that occurs later in the block.
-      valueFlow*(nodeFrom.getInstruction(), op.getDef()) and
+      conversionFlow*(nodeFrom.getInstruction(), op.getDef()) and
       nodeTo.asOperand() = op and
       i2 > i1 and
       // There is no previous instruction that also occurs after `nodeFrom`.
       not exists(Instruction instr, int i |
         bb.getInstruction(i) = instr and
-        valueFlow(instr, op.getDef()) and
+        conversionFlow(instr, op.getDef()) and
         i1 < i and
         i < i2
       )
@@ -450,7 +450,14 @@ private module Cached {
     )
   }
 
-  private predicate valueFlow(Instruction iFrom, Instruction iTo) {
+  /**
+   * Holds if `iTo` is a conversion-like instruction that copies
+   * the value computed by `iFrom`.
+   *
+   * This predicate is used by `fromStoreNode` to find the next use of a pointer that
+   * points to freshly allocated memory.
+   */
+  private predicate conversionFlow(Instruction iFrom, Instruction iTo) {
     iTo.(CopyValueInstruction).getSourceValue() = iFrom
     or
     iTo.(ConvertInstruction).getUnary() = iFrom
