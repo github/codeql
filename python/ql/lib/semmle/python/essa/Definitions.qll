@@ -221,7 +221,7 @@ class ModuleVariable extends SsaSourceVariable {
   pragma[noinline]
   ImportMemberNode global_variable_import() {
     result.getScope() = this.(GlobalVariable).getScope() and
-    import_from_dot_in_init(result.(ImportMemberNode).getModule(this.getName()))
+    import_from_dot_in_init(result.getModule(this.getName()))
   }
 
   override ControlFlowNode getAnImplicitUse() {
@@ -306,7 +306,7 @@ class EscapingGlobalVariable extends ModuleVariable {
   Scope scope_as_global_variable() { result = this.(GlobalVariable).getScope() }
 
   override CallNode redefinedAtCallSite() {
-    result.(CallNode).getScope().getScope*() = this.scope_as_global_variable()
+    result.getScope().getScope*() = this.scope_as_global_variable()
   }
 }
 
@@ -332,7 +332,7 @@ class SpecialSsaSourceVariable extends SsaSourceVariable {
   Scope scope_as_global_variable() { result = this.(GlobalVariable).getScope() }
 
   override CallNode redefinedAtCallSite() {
-    result.(CallNode).getScope().getScope*() = this.scope_as_global_variable()
+    result.getScope().getScope*() = this.scope_as_global_variable()
   }
 }
 

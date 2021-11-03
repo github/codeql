@@ -526,9 +526,7 @@ module ReflectedXss {
    * ```
    */
   predicate isLocalHeaderDefinition(HTTP::HeaderDefinition header) {
-    exists(ReachableBasicBlock headerBlock |
-      headerBlock = header.getBasicBlock().(ReachableBasicBlock)
-    |
+    exists(ReachableBasicBlock headerBlock | headerBlock = header.getBasicBlock() |
       1 =
         strictcount(HTTP::ResponseSendArgument sender |
           sender.getRouteHandler() = header.getRouteHandler() and

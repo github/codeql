@@ -167,6 +167,74 @@ module Stdlib {
       override string getAsyncMethodName() { none() }
     }
   }
+
+  /**
+   * Provides models for the `urllib.parse.SplitResult` class
+   *
+   * See https://docs.python.org/3.9/library/urllib.parse.html#urllib.parse.SplitResult.
+   */
+  module SplitResult {
+    /** Gets a reference to the `urllib.parse.SplitResult` class. */
+    private API::Node classRef() {
+      result = API::moduleImport("urllib").getMember("parse").getMember("SplitResult")
+    }
+
+    /**
+     * A source of instances of `urllib.parse.SplitResult`, extend this class to model new instances.
+     *
+     * This can include instantiations of the class, return values from function
+     * calls, or a special parameter that will be set when functions are called by an external
+     * library.
+     *
+     * Use the predicate `SplitResult::instance()` to get references to instances of `urllib.parse.SplitResult`.
+     */
+    abstract class InstanceSource extends DataFlow::LocalSourceNode { }
+
+    /** A direct instantiation of `urllib.parse.SplitResult`. */
+    private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
+      ClassInstantiation() { this = classRef().getACall() }
+    }
+
+    /** Gets a reference to an instance of `urllib.parse.SplitResult`. */
+    private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
+      t.start() and
+      result instanceof InstanceSource
+      or
+      exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+    }
+
+    /** Gets a reference to an instance of `urllib.parse.SplitResult`. */
+    DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
+
+    /**
+     * Taint propagation for `urllib.parse.SplitResult`.
+     */
+    private class InstanceTaintSteps extends InstanceTaintStepsHelper {
+      InstanceTaintSteps() { this = "urllib.parse.SplitResult" }
+
+      override DataFlow::Node getInstance() { result = instance() }
+
+      override string getAttributeName() {
+        result in [
+            "netloc", "path", "query", "fragment", "username", "password", "hostname", "port"
+          ]
+      }
+
+      override string getMethodName() { none() }
+
+      override string getAsyncMethodName() { none() }
+    }
+
+    /**
+     * Extra taint propagation for `urllib.parse.SplitResult`, not covered by `InstanceTaintSteps`.
+     */
+    private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+      override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+        // TODO
+        none()
+      }
+    }
+  }
 }
 
 /**
@@ -1748,6 +1816,30 @@ private module StdlibPrivate {
     override DataFlow::Node getOutput() { result = this }
 
     override string getKind() { result = Escaping::getRegexKind() }
+  }
+
+  // ---------------------------------------------------------------------------
+  // urllib
+  // ---------------------------------------------------------------------------
+  /**
+   * A call to `urllib.parse.urlsplit`
+   *
+   * See https://docs.python.org/3.9/library/urllib.parse.html#urllib.parse.urlsplit
+   */
+  class UrllibParseUrlsplitCall extends Stdlib::SplitResult::InstanceSource, DataFlow::CallCfgNode {
+    UrllibParseUrlsplitCall() {
+      this = API::moduleImport("urllib").getMember("parse").getMember("urlsplit").getACall()
+    }
+
+    /** Gets the argument that specifies the URL. */
+    DataFlow::Node getUrl() { result in [this.getArg(0), this.getArgByName("url")] }
+  }
+
+  /** Extra taint-step such that the result of `urllib.parse.urlsplit(tainted_string)` is tainted. */
+  private class UrllibParseUrlsplitCallAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+    override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+      nodeTo.(UrllibParseUrlsplitCall).getUrl() = nodeFrom
+    }
   }
 }
 

@@ -237,7 +237,7 @@ class Class extends UserType {
     exists(ClassDerivation cd | cd.getBaseClass() = base |
       result =
         this.accessOfBaseMemberMulti(cd.getDerivedClass(),
-          fieldInBase.accessInDirectDerived(cd.getASpecifier().(AccessSpecifier)))
+          fieldInBase.accessInDirectDerived(cd.getASpecifier()))
     )
   }
 
@@ -261,8 +261,7 @@ class Class extends UserType {
    * includes the case of `base` = `this`.
    */
   AccessSpecifier accessOfBaseMember(Declaration member) {
-    result =
-      this.accessOfBaseMember(member.getDeclaringType(), member.getASpecifier().(AccessSpecifier))
+    result = this.accessOfBaseMember(member.getDeclaringType(), member.getASpecifier())
   }
 
   /**
@@ -319,7 +318,7 @@ class Class extends UserType {
     exists(Type t | t = this.getAFieldSubobjectType().getUnspecifiedType() |
       // Note: Overload resolution is not implemented -- all copy
       // constructors are considered equal.
-      this.cannotAccessCopyConstructorOnAny(t.(Class))
+      this.cannotAccessCopyConstructorOnAny(t)
     )
     or
     // - T has direct or virtual base class that cannot be copied (has deleted,
@@ -392,7 +391,7 @@ class Class extends UserType {
     exists(Type t | t = this.getAFieldSubobjectType().getUnspecifiedType() |
       // Note: Overload resolution is not implemented -- all copy assignment
       // operators are considered equal.
-      this.cannotAccessCopyAssignmentOperatorOnAny(t.(Class))
+      this.cannotAccessCopyAssignmentOperatorOnAny(t)
     )
     or
     exists(Class c | c = this.getADirectOrVirtualBase() |
