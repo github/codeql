@@ -613,7 +613,7 @@ class Field extends Member, ExprParent, @field, Variable {
   override Type getType() { fields(this, _, result, _, _, _) }
 
   /** Gets the Kotlin type of this field. */
-  KotlinType getKotlinType() { fields(this, _, _, result, _, _) }
+  override KotlinType getKotlinType() { fields(this, _, _, result, _, _) }
 
   /** Gets the type in which this field is declared. */
   override RefType getDeclaringType() { fields(this, _, _, _, result, _) }

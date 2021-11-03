@@ -354,21 +354,35 @@ class Array extends RefType, @array {
    *
    * For example, the component type of `Object[][]` is `Object[]`.
    */
-  Type getComponentType() { arrays(this, _, _, _, result) }
+  Type getComponentType() { arrays(this, _, _, _, _, result, _) }
 
   /**
-   * Gets the type of the elements used to construct this array type.
+   * Gets the type of the components of this array type.
+   *
+   * For example, the component type of `Object[][]` is `Object[]`.
+   */
+  KotlinType getComponentKotlinType() { arrays(this, _, _, _, _, _, result) }
+
+  /**
+   * Gets the Kotlin type of the elements used to construct this array type.
    *
    * For example, the element type of `Object[][]` is `Object`.
    */
-  Type getElementType() { arrays(this, _, result, _, _) }
+  Type getElementType() { arrays(this, _, result, _, _, _, _) }
+
+  /**
+   * Gets the Kotlin type of the elements used to construct this array type.
+   *
+   * For example, the element type of `Object[][]` is `Object`.
+   */
+  KotlinType getElementKotlinType() { arrays(this, _, _, result, _, _, _) }
 
   /**
    * Gets the arity of this array type.
    *
    * For example, the dimension of `Object[][]` is 2.
    */
-  int getDimension() { arrays(this, _, _, result, _) }
+  int getDimension() { arrays(this, _, _, _, result, _, _) }
 
   /**
    * Gets the JVM descriptor for this type, as used in bytecode.

@@ -29,7 +29,7 @@ predicate hasName(Element e, string name) {
   paramName(e, name)
   or
   exists(int pos |
-    params(e, _, pos, _, _, _) and
+    params(e, _, _, pos, _, _) and
     not paramName(e, _) and
     name = "p" + pos
   )
@@ -40,7 +40,7 @@ predicate hasName(Element e, string name) {
   or
   wildcards(e, name, _)
   or
-  arrays(e, name, _, _, _)
+  arrays(e, name, _, _, _, _, _)
   or
   modifiers(e, name)
 }
