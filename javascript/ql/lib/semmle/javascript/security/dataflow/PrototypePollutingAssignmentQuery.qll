@@ -33,6 +33,8 @@ class Configuration extends TaintTracking::Configuration {
     // Concatenating with a string will in practice prevent the string `__proto__` from arising.
     node instanceof StringOps::ConcatenationRoot
     or
+    node instanceof DataFlow::ThisNode
+    or
     // Stop at .replace() calls that likely prevent __proto__ from arising
     exists(StringReplaceCall replace |
       node = replace and
