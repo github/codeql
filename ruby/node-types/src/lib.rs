@@ -100,8 +100,7 @@ fn convert_type(node_type: &NodeType) -> TypeName {
 }
 
 fn convert_types(node_types: &Vec<NodeType>) -> Set<TypeName> {
-    let iter = node_types.iter().map(convert_type).collect();
-    std::collections::BTreeSet::from(iter)
+    node_types.iter().map(convert_type).collect()
 }
 
 pub fn convert_nodes(prefix: &str, nodes: &Vec<NodeInfo>) -> NodeTypeMap {
