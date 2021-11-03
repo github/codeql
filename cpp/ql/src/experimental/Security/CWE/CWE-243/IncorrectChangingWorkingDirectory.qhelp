@@ -15,7 +15,7 @@
 
 <li>
   CERT C Coding Standard:
-  <a href="https://wiki.sei.cmu.edu/confluence/display/c/POS05-C.+Limit+access+to+files+by+creating+a+jail">POS05-C. Limit access to files by creating a jail</a>.
+  <a href="https://wiki.sei.cmu.edu/confluence/display/c/POS05-C.+Limit+access+to+files+by+creating+a+jail">POS05-C. Limit access to files by creating a jail.</a>
 </li>
 
 </references>
