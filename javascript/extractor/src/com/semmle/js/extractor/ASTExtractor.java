@@ -600,14 +600,18 @@ public class ASTExtractor {
       return '0' <= ch && ch <= '7';
     }
 
-    private String getStringConcatResult(Expression exp) {
+    private Pair<String, OffsetTranslation> getStringConcatResult(Expression exp) {
       if (exp instanceof BinaryExpression) {
         BinaryExpression be = (BinaryExpression) exp;
         if (be.getOperator().equals("+")) {
-          String left = getStringConcatResult(be.getLeft());
-          String right = getStringConcatResult(be.getRight());
+          Pair<String, OffsetTranslation> left = getStringConcatResult(be.getLeft());
+          Pair<String, OffsetTranslation> right = getStringConcatResult(be.getRight());
           if (left != null && right != null) {
-            return left + right;
+            String str = left.fst() + right.fst();
+            
+            int delta = be.getRight().getLoc().getStart().getOffset() - be.getLeft().getLoc().getStart().getOffset();
+            int offset = left.fst().length();
+            return Pair.make(str, left.snd().append(right.snd(), offset, delta));
           }
         }
       } else if (exp instanceof Literal) {
@@ -615,30 +619,8 @@ public class ASTExtractor {
         if (!lit.isStringLiteral()) {
           return null;
         }
-        return lit.getStringValue();
+        return Pair.make(lit.getStringValue(), makeStringLiteralOffsets(lit.getRaw()));
       }
-      return null;
-    }
-
-    private OffsetTranslation computeStringConcatOffset(Expression exp) {
-      if (exp instanceof Literal && ((Literal)exp).isStringLiteral()) {
-        String raw = ((Literal) exp).getRaw();
-        return makeStringLiteralOffsets(raw); 
-      }
-
-      if (exp instanceof BinaryExpression) {
-        BinaryExpression be = (BinaryExpression) exp;
-        OffsetTranslation left = computeStringConcatOffset(be.getLeft());
-        OffsetTranslation right = computeStringConcatOffset(be.getRight());
-        
-        if (left == null || right == null) {
-          return null;
-        }
-        int delta = be.getRight().getLoc().getStart().getOffset() - be.getLeft().getLoc().getStart().getOffset();
-        int offset = getStringConcatResult(be.getLeft()).length();
-        return left.append(right, offset, delta);
-      }
-
       return null;
     }
 
@@ -848,14 +830,15 @@ public class ASTExtractor {
       if (extractedAsRegexp.contains(nd)) {
         return key;
       }
-      String rawString = getStringConcatResult(nd);
-      if (rawString == null) {
+      Pair<String, OffsetTranslation> concatResult = getStringConcatResult(nd);
+      if (concatResult == null) {
         return key;
       }
+      String rawString = concatResult.fst();
       if (rawString.length() > 1000 && !rawString.trim().isEmpty()) {
         return key;
       }
-      OffsetTranslation offsets = computeStringConcatOffset(nd);
+      OffsetTranslation offsets = concatResult.snd();
       Position start = nd.getLoc().getStart();
       com.semmle.util.locations.Position startPos = new com.semmle.util.locations.Position(start.getLine(), start.getColumn(), start.getOffset());
       SourceMap sourceMap = SourceMap.legacyWithStartPos(SourceMap.fromString(nd.getLoc().getSource()).offsetBy(0, offsets), startPos);
