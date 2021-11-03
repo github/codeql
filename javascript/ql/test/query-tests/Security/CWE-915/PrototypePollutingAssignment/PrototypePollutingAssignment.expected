@@ -23,6 +23,16 @@ nodes
 | tst.js:45:9:45:11 | obj |
 | tst.js:48:9:48:11 | obj |
 | tst.js:48:9:48:11 | obj |
+| tst.js:78:5:78:37 | obj[req ... ', '')] |
+| tst.js:78:5:78:37 | obj[req ... ', '')] |
+| tst.js:78:9:78:19 | req.query.x |
+| tst.js:78:9:78:19 | req.query.x |
+| tst.js:78:9:78:36 | req.que ... _', '') |
+| tst.js:81:5:81:46 | obj[req ... g, '')] |
+| tst.js:81:5:81:46 | obj[req ... g, '')] |
+| tst.js:81:9:81:19 | req.query.x |
+| tst.js:81:9:81:19 | req.query.x |
+| tst.js:81:9:81:45 | req.que ... /g, '') |
 edges
 | tst.js:5:9:5:38 | taint | tst.js:8:12:8:16 | taint |
 | tst.js:5:9:5:38 | taint | tst.js:9:12:9:16 | taint |
@@ -47,6 +57,14 @@ edges
 | tst.js:33:23:33:25 | obj | tst.js:45:9:45:11 | obj |
 | tst.js:33:23:33:25 | obj | tst.js:48:9:48:11 | obj |
 | tst.js:33:23:33:25 | obj | tst.js:48:9:48:11 | obj |
+| tst.js:78:9:78:19 | req.query.x | tst.js:78:9:78:36 | req.que ... _', '') |
+| tst.js:78:9:78:19 | req.query.x | tst.js:78:9:78:36 | req.que ... _', '') |
+| tst.js:78:9:78:36 | req.que ... _', '') | tst.js:78:5:78:37 | obj[req ... ', '')] |
+| tst.js:78:9:78:36 | req.que ... _', '') | tst.js:78:5:78:37 | obj[req ... ', '')] |
+| tst.js:81:9:81:19 | req.query.x | tst.js:81:9:81:45 | req.que ... /g, '') |
+| tst.js:81:9:81:19 | req.query.x | tst.js:81:9:81:45 | req.que ... /g, '') |
+| tst.js:81:9:81:45 | req.que ... /g, '') | tst.js:81:5:81:46 | obj[req ... g, '')] |
+| tst.js:81:9:81:45 | req.que ... /g, '') | tst.js:81:5:81:46 | obj[req ... g, '')] |
 #select
 | tst.js:8:5:8:17 | object[taint] | tst.js:5:24:5:37 | req.query.data | tst.js:8:5:8:17 | object[taint] | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | tst.js:5:24:5:37 | req.query.data | here |
 | tst.js:9:5:9:17 | object[taint] | tst.js:5:24:5:37 | req.query.data | tst.js:9:5:9:17 | object[taint] | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | tst.js:5:24:5:37 | req.query.data | here |
@@ -55,3 +73,5 @@ edges
 | tst.js:39:9:39:11 | obj | tst.js:5:24:5:37 | req.query.data | tst.js:39:9:39:11 | obj | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | tst.js:5:24:5:37 | req.query.data | here |
 | tst.js:45:9:45:11 | obj | tst.js:5:24:5:37 | req.query.data | tst.js:45:9:45:11 | obj | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | tst.js:5:24:5:37 | req.query.data | here |
 | tst.js:48:9:48:11 | obj | tst.js:5:24:5:37 | req.query.data | tst.js:48:9:48:11 | obj | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | tst.js:5:24:5:37 | req.query.data | here |
+| tst.js:78:5:78:37 | obj[req ... ', '')] | tst.js:78:9:78:19 | req.query.x | tst.js:78:5:78:37 | obj[req ... ', '')] | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | tst.js:78:9:78:19 | req.query.x | here |
+| tst.js:81:5:81:46 | obj[req ... g, '')] | tst.js:81:9:81:19 | req.query.x | tst.js:81:5:81:46 | obj[req ... g, '')] | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | tst.js:81:9:81:19 | req.query.x | here |

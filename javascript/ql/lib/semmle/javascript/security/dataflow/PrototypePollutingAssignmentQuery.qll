@@ -32,6 +32,21 @@ class Configuration extends TaintTracking::Configuration {
     or
     // Concatenating with a string will in practice prevent the string `__proto__` from arising.
     node instanceof StringOps::ConcatenationRoot
+    or
+    // Stop at .replace() calls that likely prevent __proto__ from arising
+    exists(StringReplaceCall replace |
+      node = replace and
+      replace.getAReplacedString() = ["_", "p", "r", "o", "t"] and
+      // Replacing with "_" is likely to be exploitable
+      not replace.getRawReplacement().getStringValue() = "_" and
+      (
+        replace.isGlobal()
+        or
+        // Non-global replace with a non-empty string can also prevent __proto__ by
+        // inserting a chunk of text that doesn't fit anywhere in __proto__
+        not replace.getRawReplacement().getStringValue() = ""
+      )
+    )
   }
 
   override predicate isAdditionalFlowStep(
