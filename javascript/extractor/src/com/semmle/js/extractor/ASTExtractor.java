@@ -334,16 +334,27 @@ public class ASTExtractor {
     private final Label parent;
     private final int childIndex;
     private final IdContext idcontext;
+    private final boolean binopOperand;
 
     public Context(Label parent, int childIndex, IdContext idcontext) {
+      this(parent, childIndex, idcontext, false);
+    }
+
+    public Context(Label parent, int childIndex, IdContext idcontext, boolean binopOperand) {
       this.parent = parent;
       this.childIndex = childIndex;
       this.idcontext = idcontext;
+      this.binopOperand = binopOperand;
     }
 
     /** True if the visited AST node occurs as part of a type annotation. */
     public boolean isInsideType() {
       return idcontext.isInsideType();
+    }
+
+    /** True if the visited AST node occurs as one of the operands of a binary operation. */
+    public boolean isBinopOperand() {
+      return binopOperand;
     }
   }
 
@@ -360,7 +371,7 @@ public class ASTExtractor {
     }
 
     private Label visit(INode child, Label parent, int childIndex) {
-      return visit(child, parent, childIndex, IdContext.VAR_BIND);
+      return visit(child, parent, childIndex, IdContext.VAR_BIND, false);
     }
 
     private Label visitAll(List<? extends INode> children, Label parent) {
@@ -368,8 +379,16 @@ public class ASTExtractor {
     }
 
     private Label visit(INode child, Label parent, int childIndex, IdContext idContext) {
+      return visit(child, parent, childIndex, idContext, false);
+    }
+
+    private Label visit(INode child, Label parent, int childIndex, boolean binopOperand) {
+      return visit(child, parent, childIndex, IdContext.VAR_BIND, binopOperand);
+    }
+
+    private Label visit(INode child, Label parent, int childIndex, IdContext idContext, boolean binopOperand) {
       if (child == null) return null;
-      return child.accept(this, new Context(parent, childIndex, idContext));
+      return child.accept(this, new Context(parent, childIndex, idContext, binopOperand));
     }
 
     private Label visitAll(
@@ -381,7 +400,7 @@ public class ASTExtractor {
         List<? extends INode> children, Label parent, IdContext idContext, int index, int step) {
       Label res = null;
       for (INode child : children) {
-        res = visit(child, parent, index, idContext);
+        res = visit(child, parent, index, idContext, false);
         index += step;
       }
       return res;
@@ -821,33 +840,33 @@ public class ASTExtractor {
       return key;
     }
 
-    // set to determine which BinaryExpression has been extracted as regexp
-    private Set<Expression> extractedAsRegexp = new HashSet<>();
-
     @Override
     public Label visit(BinaryExpression nd, Context c) {
       Label key = super.visit(nd, c);
-      extractedAsRegexp.add(nd.getLeft());
-      extractedAsRegexp.add(nd.getRight());
-      visit(nd.getLeft(), key, 0);
-      visit(nd.getRight(), key, 1);
-      if (extractedAsRegexp.contains(nd)) {
-        return key;
+      visit(nd.getLeft(), key, 0, true);
+      visit(nd.getRight(), key, 1, true);
+      extractRegxpFromBinop(nd, c);
+      return key;
+    }
+
+    private void extractRegxpFromBinop(BinaryExpression nd, Context c) {
+      if (c.isBinopOperand()) {
+        return;
       }
       Pair<String, OffsetTranslation> concatResult = getStringConcatResult(nd);
       if (concatResult == null) {
-        return key;
+        return;
       }
       String rawString = concatResult.fst();
       if (rawString.length() > 1000 && !rawString.trim().isEmpty()) {
-        return key;
+        return;
       }
       OffsetTranslation offsets = concatResult.snd();
       Position start = nd.getLoc().getStart();
       com.semmle.util.locations.Position startPos = new com.semmle.util.locations.Position(start.getLine(), start.getColumn(), start.getOffset());
       SourceMap sourceMap = SourceMap.legacyWithStartPos(SourceMap.fromString(nd.getLoc().getSource()).offsetBy(0, offsets), startPos);
       regexpExtractor.extract(rawString, sourceMap, nd, true);
-      return key;
+      return;
     }
 
     @Override
