@@ -5,7 +5,8 @@
 <overview>
 <p>Working with changing directories, without checking the return value or pinning the directory, may not be safe. Requires the attention of developers.</p>
 
-</recommendation>
+</overview>
+
 <example>
 <p>The following example demonstrates erroneous and corrected work with changing working directories.</p>
 <sample src="IncorrectChangingWorkingDirectory.cpp" />
