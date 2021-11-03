@@ -382,6 +382,7 @@ methods(
 params(
   unique int id: @param,
   int typeid: @type ref,
+  int kttypeid: @kt_type ref,
   int pos: int ref,
   int parentid: @callable ref,
   int sourceid: @param ref

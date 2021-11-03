@@ -894,9 +894,9 @@ open class KotlinFileExtractor(
 
     fun extractValueParameter(vp: IrValueParameter, parent: Label<out DbCallable>, idx: Int) {
         val id = useValueParameter(vp)
-        val typeId = useTypeOld(vp.type)
+        val type = useType(vp.type)
         val locId = tw.getLocation(vp.startOffset, vp.endOffset)
-        tw.writeParams(id, typeId, idx, parent, id)
+        tw.writeParams(id, type.javaResult.id, type.kotlinResult.id, idx, parent, id)
         tw.writeHasLocation(id, locId)
         tw.writeParamName(id, vp.name.asString())
     }
