@@ -3740,13 +3740,14 @@ private module Subpaths {
    */
   pragma[nomagic]
   private predicate subpaths01(
-    PathNode arg, ParamNodeEx par, SummaryCtxSome sc, CallContext innercc, ReturnKindExt kind,
+    PathNodeImpl arg, ParamNodeEx par, SummaryCtxSome sc, CallContext innercc, ReturnKindExt kind,
     NodeEx out, AccessPath apout
   ) {
     exists(Configuration config |
       pathThroughCallable(arg, out, _, pragma[only_bind_into](apout)) and
       pathIntoCallable(arg, par, _, innercc, sc, _, config) and
-      paramFlowsThrough(kind, innercc, sc, pragma[only_bind_into](apout), _, unbindConf(config))
+      paramFlowsThrough(kind, innercc, sc, pragma[only_bind_into](apout), _, unbindConf(config)) and
+      not arg.isHidden()
     )
   }
 
@@ -3780,9 +3781,14 @@ private module Subpaths {
       innercc = ret.getCallContext() and
       sc = ret.getSummaryCtx() and
       ret.getConfiguration() = unbindConf(getPathNodeConf(arg)) and
-      apout = ret.getAp() and
-      not ret.isHidden()
+      apout = ret.getAp()
     )
+  }
+
+  private PathNodeImpl localStepToHidden(PathNodeImpl n) {
+    n.getASuccessorImpl() = result and
+    result.isHidden() and
+    localFlowBigStep(n.getNodeEx(), result.getNodeEx(), _, _, _, _)
   }
 
   /**
@@ -3790,11 +3796,12 @@ private module Subpaths {
    * a subpath between `par` and `ret` with the connecting edges `arg -> par` and
    * `ret -> out` is summarized as the edge `arg -> out`.
    */
-  predicate subpaths(PathNode arg, PathNodeImpl par, PathNodeMid ret, PathNodeMid out) {
+  predicate subpaths(PathNode arg, PathNodeImpl par, PathNodeImpl ret, PathNodeMid out) {
     exists(ParamNodeEx p, NodeEx o, AccessPath apout |
       pragma[only_bind_into](arg).getASuccessor() = par and
       pragma[only_bind_into](arg).getASuccessor() = out and
-      subpaths03(arg, p, ret, o, apout) and
+      subpaths03(arg, p, localStepToHidden*(ret), o, apout) and
+      not ret.isHidden() and
       par.getNodeEx() = p and
       out.getNodeEx() = o and
       out.getAp() = apout
