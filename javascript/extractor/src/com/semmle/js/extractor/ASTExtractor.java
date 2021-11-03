@@ -619,6 +619,10 @@ public class ASTExtractor {
       return '0' <= ch && ch <= '7';
     }
 
+    /**
+     * Constant-folds simple string concatenations in `exp` while keeping an offset translation
+     * that tracks back to the original source.
+     */ 
     private Pair<String, OffsetTranslation> getStringConcatResult(Expression exp) {
       if (exp instanceof BinaryExpression) {
         BinaryExpression be = (BinaryExpression) exp;
@@ -857,15 +861,15 @@ public class ASTExtractor {
       if (concatResult == null) {
         return;
       }
-      String rawString = concatResult.fst();
-      if (rawString.length() > 1000 && !rawString.trim().isEmpty()) {
+      String foldedString = concatResult.fst();
+      if (foldedString.length() > 1000 && !foldedString.trim().isEmpty()) {
         return;
       }
       OffsetTranslation offsets = concatResult.snd();
       Position start = nd.getLoc().getStart();
       com.semmle.util.locations.Position startPos = new com.semmle.util.locations.Position(start.getLine(), start.getColumn(), start.getOffset());
       SourceMap sourceMap = SourceMap.legacyWithStartPos(SourceMap.fromString(nd.getLoc().getSource()).offsetBy(0, offsets), startPos);
-      regexpExtractor.extract(rawString, sourceMap, nd, true);
+      regexpExtractor.extract(foldedString, sourceMap, nd, true);
       return;
     }
 
