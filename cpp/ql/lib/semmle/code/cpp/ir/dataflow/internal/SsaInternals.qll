@@ -267,6 +267,9 @@ Operand getSourceAddressOperand(Instruction instr) {
     [
       instr.(LoadInstruction).getSourceAddressOperand(),
       instr.(ReadSideEffectInstruction).getArgumentOperand(),
+      // `ReferenceToInstruction` is really more of an address-of operation,
+      // but by including it in this list we break out of `flowOutOfAddressStep` at an
+      // instruction that, at the source level, looks like a use of a variable.
       instr.(ReferenceToInstruction).getSourceAddressOperand()
     ]
 }
@@ -293,6 +296,8 @@ Operand getSourceValueOperand(Instruction instr) {
   or
   result = instr.(ReadSideEffectInstruction).getSideEffectOperand()
   or
+  // See the comment on the `ReferenceToInstruction` disjunct in `getSourceAddressOperand` for why
+  // this case is included.
   result = instr.(ReferenceToInstruction).getSourceValueOperand()
 }
 
