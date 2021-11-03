@@ -3,16 +3,16 @@ name: "Ruby: Run QL Tests"
 on:
   push:
     paths:
-      - 'ruby/**'
+      - "ruby/**"
     branches:
       - main
-      - 'rc/*'
+      - "rc/*"
   pull_request:
     paths:
-      - 'ruby/**'
+      - "ruby/**"
     branches:
       - main
-      - 'rc/*'
+      - "rc/*"
 
 env:
   CARGO_TERM_COLOR: always
@@ -44,5 +44,5 @@ jobs:
         run: |
           echo >empty.trap
           codeql dataset import -S ql/lib/upgrades/initial/ruby.dbscheme testdb empty.trap
-          codeql dataset upgrade testdb --additional-packs ql/lib/upgrades
+          codeql dataset upgrade testdb --additional-packs ql/lib
           diff -q testdb/ruby.dbscheme ql/lib/ruby.dbscheme
