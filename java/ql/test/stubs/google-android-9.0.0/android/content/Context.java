@@ -2,15 +2,11 @@
 
 package android.content;
 
-import android.content.BroadcastReceiver;
-import android.content.ComponentCallbacks;
-import android.content.ComponentName;
-import android.content.ContentResolver;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.IntentSender;
-import android.content.ServiceConnection;
-import android.content.SharedPreferences;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.util.concurrent.Executor;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
@@ -29,11 +25,6 @@ import android.os.Looper;
 import android.os.UserHandle;
 import android.util.AttributeSet;
 import android.view.Display;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.util.concurrent.Executor;
 
 abstract public class Context
 {
@@ -45,6 +36,7 @@ abstract public class Context
     public abstract ClassLoader getClassLoader();
     public abstract ComponentName startForegroundService(Intent p0);
     public abstract ComponentName startService(Intent p0);
+    public abstract ComponentName startServiceAsUser(Intent p0, UserHandle p1);
     public abstract ContentResolver getContentResolver();
     public abstract Context createConfigurationContext(Configuration p0);
     public abstract Context createContextForSplit(String p0);
@@ -90,6 +82,7 @@ abstract public class Context
     public abstract String[] databaseList();
     public abstract String[] fileList();
     public abstract boolean bindService(Intent p0, ServiceConnection p1, int p2);
+    public abstract boolean bindServiceAsUser(Intent p0, ServiceConnection p1, int p2, UserHandle p3);
     public abstract boolean deleteDatabase(String p0);
     public abstract boolean deleteFile(String p0);
     public abstract boolean deleteSharedPreferences(String p0);
@@ -141,6 +134,7 @@ abstract public class Context
     public abstract void startActivities(Intent[] p0, Bundle p1);
     public abstract void startActivity(Intent p0);
     public abstract void startActivity(Intent p0, Bundle p1);
+    public abstract void startActivityAsUser(Intent intent, UserHandle user);
     public abstract void startIntentSender(IntentSender p0, Intent p1, int p2, int p3, int p4);
     public abstract void startIntentSender(IntentSender p0, Intent p1, int p2, int p3, int p4, Bundle p5);
     public abstract void unbindService(ServiceConnection p0);

@@ -49,11 +49,11 @@ class ExposingIntegralUnion extends Union {
     exists(MemberVariable mv1, MemberVariable mv2, IntegralType mv1tp, IntegralType mv2tp |
       mv1 = this.getAMemberVariable() and
       mv2 = this.getAMemberVariable() and
-      mv1tp = mv1.getUnderlyingType().(IntegralType) and
+      mv1tp = mv1.getUnderlyingType() and
       (
-        mv2tp = mv2.getUnderlyingType().(IntegralType)
+        mv2tp = mv2.getUnderlyingType()
         or
-        mv2tp = mv2.getUnderlyingType().(ArrayType).getBaseType().getUnderlyingType().(IntegralType)
+        mv2tp = mv2.getUnderlyingType().(ArrayType).getBaseType().getUnderlyingType()
       ) and
       mv1tp.getSize() > mv2tp.getSize()
     )

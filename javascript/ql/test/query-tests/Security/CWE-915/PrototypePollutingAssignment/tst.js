@@ -71,3 +71,13 @@ class Box {
         this.foo = 'bar'; // OK - 'this' won't refer to Object.prototype
     }
 }
+
+app.get('/foo', (req, res) => {
+    let obj = {};
+    obj[req.query.x.replace('_', '-')].x = 'foo'; // OK
+    obj[req.query.x.replace('_', '')].x = 'foo'; // NOT OK
+    obj[req.query.x.replace(/_/g, '')].x = 'foo'; // OK
+    obj[req.query.x.replace(/_/g, '-')].x = 'foo'; // OK
+    obj[req.query.x.replace(/__proto__/g, '')].x = 'foo'; // NOT OK - "__pr__proto__oto__"
+    obj[req.query.x.replace('o', '0')].x = 'foo'; // OK
+});

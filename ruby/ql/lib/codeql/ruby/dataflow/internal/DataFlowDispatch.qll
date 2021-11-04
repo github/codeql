@@ -450,7 +450,7 @@ DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) { 
  */
 predicate exprNodeReturnedFrom(DataFlow::ExprNode e, Callable c) {
   exists(ReturningNode r |
-    r.getEnclosingCallable().asCallable() = c and
+    nodeGetEnclosingCallable(r).asCallable() = c and
     (
       r.(ExplicitReturnNode).getReturningNode().getReturnedValueNode() = e.asExpr() or
       r.(ExprReturnNode) = e

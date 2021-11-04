@@ -1,0 +1,31 @@
+name: Post pull-request comment
+on:
+  workflow_run:
+    workflows: ["Query help preview"]
+    types:
+      - completed
+
+permissions:
+  pull-requests: write
+
+jobs:
+  post_comment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifact
+        run: gh run download "${WORKFLOW_RUN_ID}" --repo "${GITHUB_REPOSITORY}" --name "comment"
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          WORKFLOW_RUN_ID: ${{ github.event.workflow_run.id }}
+      - run: |
+          PR="$(grep -o '^[0-9]\+$' pr.txt)"
+          PR_HEAD_SHA="$(gh api "/repos/${GITHUB_REPOSITORY}/pulls/${PR}" --jq .head.sha)"
+          # Check that the pull-request head SHA matches the head SHA of the workflow run
+          if [ "${WORKFLOW_RUN_HEAD_SHA}" != "${PR_HEAD_SHA}" ]; then
+            echo "PR head SHA ${PR_HEAD_SHA} does not match workflow_run event SHA ${WORKFLOW_RUN_HEAD_SHA}. Stopping." 1>&2
+            exit 1
+          fi
+          gh pr comment "${PR}" --repo "${GITHUB_REPOSITORY}" -F comment.txt
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          WORKFLOW_RUN_HEAD_SHA: ${{ github.event.workflow_run.head_commit.id }}

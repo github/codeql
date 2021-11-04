@@ -60,7 +60,7 @@ Running the query
 
    The query will take a few moments to return results. When the query completes, the results are displayed below the project name. The query results are listed in two columns, corresponding to the two expressions in the ``select`` clause of the query. The first column corresponds to the expression ``ifexpr`` and is linked to the location in the source code of the project where ``ifexpr`` occurs. The second column is the alert message.
 
-   ➤ `Example query results <https://lgtm.com/query/1214010107827821393/>`__
+   ➤ `Example query results <https://lgtm.com/query/4416853782037269427/>`__
 
    .. pull-quote::
 
@@ -135,7 +135,7 @@ To exclude ``if`` statements that have an ``else`` branch:
 
    There are now fewer results because ``if`` expressions with an ``else`` branch are no longer included.
 
-➤ `See this in the query console <https://lgtm.com/query/6233102733683510530/>`__
+➤ `See this in the query console <https://lgtm.com/query/4694253275631320752/>`__
 
 Further reading
 ---------------
