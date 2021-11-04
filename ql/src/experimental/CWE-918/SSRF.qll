@@ -10,11 +10,11 @@ import go
  * (SSRF) vulnerabilities.
  */
 module ServerSideRequestForgery {
-  import semmle.go.frameworks.Gin
-  import validator
-  import semmle.go.security.UrlConcatenation
-  import semmle.go.dataflow.barrierguardutil.RegexpCheck
-  import semmle.go.dataflow.Properties
+  private import semmle.go.frameworks.Gin
+  private import validator
+  private import semmle.go.security.UrlConcatenation
+  private import semmle.go.dataflow.barrierguardutil.RegexpCheck
+  private import semmle.go.dataflow.Properties
 
   /**
    * A taint-tracking configuration for reasoning about request forgery.

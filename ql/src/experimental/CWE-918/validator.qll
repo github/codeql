@@ -1,5 +1,5 @@
 import go
-import semmle.go.dataflow.Properties
+private import semmle.go.dataflow.Properties
 
 /**
  * Holds if `validationKind` is a validation kind that restricts to alphanumeric characters,
