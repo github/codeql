@@ -1145,7 +1145,8 @@ private predicate reachableFromInput(
   DataFlow::Configuration cfg, PathSummary summary
 ) {
   callInputStep(f, invk, input, nd, cfg) and
-  summary = PathSummary::level()
+  summary = PathSummary::level() and
+  not cfg.isLabeledBarrier(nd, summary.getEndLabel())
   or
   exists(DataFlow::Node mid, PathSummary oldSummary |
     reachableFromInput(f, invk, input, mid, cfg, oldSummary) and
