@@ -37,11 +37,11 @@ Each extractor defines its own set of configuration options. To find out which o
          }
      }
 
-The extractor option names and descriptions are listed under ``extractor_options``. Each option may contain the following fields::
+The extractor option names and descriptions are listed under ``extractor_options``. Each option may contain the following fields:
 
-- ``title`` (required): The title of the option
-- ``description`` (required): The description of the option
-- ``type`` (required): The type of the option, which can be
+* ``title`` (required): The title of the option
+* ``description`` (required): The description of the option
+* ``type`` (required): The type of the option, which can be
 
   * ``string``: indicating that the option can have a single string value
   * ``array``: indicating that the option can have a sequence of string values
@@ -50,7 +50,7 @@ The extractor option names and descriptions are listed under ``extractor_options
 * ``pattern`` (optional): The regular expression patterns that all values of the option should match. Note that the extractor may impose additional constraints on option values that are not or cannot be expressed in this regular expression pattern. Such constraints, if they exist, would be explained under the description field.
 * ``properties`` (optional): A map from extractor option names in the option group to the corresponding extractor option descriptions. This field can only be present for option groups. For example, options of ``object`` type.
 
-In the example above, the extractor declares two options::
+In the example above, the extractor declares two options:
 
 * ``option1`` is a ``string`` option with value matching ``[a-z]+``
 * ``group1.option2`` is an ``array`` option with values matching ``[1-9][0-9]*``
@@ -58,14 +58,14 @@ In the example above, the extractor declares two options::
 Setting extractor options with the CodeQL CLI
 ---------------------------------------------
 
-The CodeQL CLI supports setting extractor options in subcommands that directly or indirectly invoke extractors. These commands are::
+The CodeQL CLI supports setting extractor options in subcommands that directly or indirectly invoke extractors. These commands are:
 
 * ``codeql database create``
 * ``codeql database start-tracing``
 * ``codeql database trace-command``
 * ``codeql database index-files``
 
-When running these subcommands, you can set extractor options with the ``--extractor-option`` CLI option. For example::
+When running these subcommands, you can set extractor options with the ``--extractor-option`` CLI option. For example:
 
 * ``codeql database create --extractor-option java.option1=abc ...``
 * ``codeql database start-tracing --extractor-option java.group1.option2=102 ...``
@@ -76,7 +76,7 @@ Using ``--extractor-option`` to assign an extractor option that does not exist i
 
 The CodeQL CLI accepts multiple ``--extractor-option`` options in the same invocation. If you set a ``string`` extractor option multiple times, the last option value overwrites all previous ones. If you set an `array` extractor option multiple times, all option values are concatenated in order.
 
-You can also specify extractor option names without the extractor name. For example::
+You can also specify extractor option names without the extractor name. For example:
 
 * ``codeql database create --extractor-option option1=abc ...``
 * ``codeql database start-tracing --extractor-option group1.option2=102 ...``
@@ -86,7 +86,7 @@ If you do not specify an extractor name, the extractor option settings will appl
 Setting extractor options from files
 ------------------------------------
 
-You can also set extractor options through a file. The CodeQL CLI subcommands that accept ``--extractor-option`` also accept ``--extractor-options-file``, which has a required argument of the path to a YAML file (with extension ``.yaml`` or ``.yml``) or a JSON file (with extension ``.json``). For example::
+You can also set extractor options through a file. The CodeQL CLI subcommands that accept ``--extractor-option`` also accept ``--extractor-options-file``, which has a required argument of the path to a YAML file (with extension ``.yaml`` or ``.yml``) or a JSON file (with extension ``.json``). For example:
 
 # ``codeql database create --extractor-options-file options.yml ...``
 # ``codeql database start-tracing --extractor-options-file options.json ...``
@@ -132,7 +132,7 @@ Assigning an extractor option that does not exist is an error. You can make the 
              __allow_unknown_properties: true
              option2: [ 102 ]
 
-You can specify ``--extractor-options-file`` multiple times. The extractor option assignments are processed in the following order::
+You can specify ``--extractor-options-file`` multiple times. The extractor option assignments are processed in the following order:
 
 # All extractor option files specified by ``--extractor-options-file`` are processed in the order they appear on the command line, then
 # All extractor option assignments specified by ``--extractor-option`` are processed in the order they appear on the command line
