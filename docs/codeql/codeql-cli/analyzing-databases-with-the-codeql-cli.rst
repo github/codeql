@@ -64,9 +64,9 @@ You can also specify:
   see `Configuring CodeQL CLI in your CI system <https://docs.github.com/en/code-security/secure-coding/using-codeql-code-scanning-with-your-existing-ci-system/configuring-codeql-cli-in-your-ci-system>`__ in the GitHub documentation.
 
 - ``--sarif-add-query-help``: (supported in version 2.7.1 onwards) adds any custom query help written 
-   in Markdown to SARIF (v2.1.0 or later) analysis results. For each query that runs, CodeQL command 
-   replaces the ``.ql`` extension of the query file with ``.md``. If the .md file exists, 
-   its contents are treated as Markdown-formatted help text for the query and included in the SARIF output.
+   in Markdown to SARIF (v2.1.0 or later) analysis results. Query help stored in ``.qhelp`` files must be 
+   converted to ``.md`` before running the analysis. For further information, 
+   see ":doc:`Testing query help files <testing-query-help-files>`."
 
 - .. include:: ../reusables/threads-query-execution.rst
 
@@ -206,6 +206,20 @@ A SARIF results file is generated. Specifying ``--format=sarif-latest`` ensures
 that the results are formatted according to the most recent SARIF specification
 supported by CodeQL.
 
+.. _including-query-help-for-custom-codeql-queries-in-sarif-files: 
+
+Including query help for custom CodeQL queries in SARIF files 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Code scanning does not process ``.qhelp`` files for custom CodeQL queries, so to show 
+query help for custom queries in the code scanning UI you must include markdown-rendered query help 
+in SARIF files generated during an analysis.
+
+For CodeQL CLI 2.7.1 onwards, you can include markdown-rendered query help in SARIF files 
+by providing the ``--sarif-add-query-help`` option when running
+``codeql database analyze``. Query help written in ``.qhelp`` files cannot be include in SARIF files, 
+somust be converted to markdown before running the analysis. For more information, see 
+":doc:`Testing query help files <testing-query-help-files>`."
 
 Results
 -------
