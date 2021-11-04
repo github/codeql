@@ -307,7 +307,7 @@ module API {
       useRoot(_, nd)
       or
       exists(ExprCfgNode node, DataFlow::LocalSourceNode pred |
-        pred = pruneUseNodeFwd() and
+        pred = useCandFwd() and
         pred.flowsTo(any(DataFlow::ExprNode n | n.getExprNode() = node)) and
         useStep(_, node, nd)
       )
@@ -319,31 +319,29 @@ module API {
     cached
     predicate use(TApiNode nd, DataFlow::Node ref) { nd = MkUse(ref) }
 
-    private DataFlow::LocalSourceNode pruneUseNodeFwd(TypeTracker t) {
+    private DataFlow::LocalSourceNode useCandFwd(TypeTracker t) {
       t.start() and
       isUse(result)
       or
-      exists(TypeTracker t2 | result = pruneUseNodeFwd(t2).track(t2, t))
+      exists(TypeTracker t2 | result = useCandFwd(t2).track(t2, t))
     }
 
-    private DataFlow::LocalSourceNode pruneUseNodeFwd() {
-      result = pruneUseNodeFwd(TypeTracker::end())
-    }
+    private DataFlow::LocalSourceNode useCandFwd() { result = useCandFwd(TypeTracker::end()) }
 
-    private DataFlow::Node pruneUseNodeRev(TypeBackTracker tb) {
-      result = pruneUseNodeFwd() and
+    private DataFlow::Node useCandRev(TypeBackTracker tb) {
+      result = useCandFwd() and
       tb.start()
       or
       exists(TypeBackTracker tb2, DataFlow::LocalSourceNode mid, TypeTracker t |
-        mid = pruneUseNodeRev(tb2) and
+        mid = useCandRev(tb2) and
         result = mid.backtrack(tb2, tb) and
-        pragma[only_bind_out](result) = pruneUseNodeFwd(t) and
+        pragma[only_bind_out](result) = useCandFwd(t) and
         pragma[only_bind_out](t) = pragma[only_bind_out](tb).getACompatibleTypeTracker()
       )
     }
 
-    private DataFlow::LocalSourceNode pruneUseNodeRev() {
-      result = pruneUseNodeRev(TypeBackTracker::end()) and
+    private DataFlow::LocalSourceNode useCandRev() {
+      result = useCandRev(TypeBackTracker::end()) and
       isUse(result)
     }
 
@@ -354,13 +352,13 @@ module API {
      */
     private DataFlow::Node trackUseNode(DataFlow::LocalSourceNode src, TypeTracker t) {
       result = src and
-      result = pruneUseNodeRev() and
+      result = useCandRev() and
       t.start()
       or
       exists(TypeTracker t2, DataFlow::LocalSourceNode mid, TypeBackTracker tb |
         mid = trackUseNode(src, t2) and
         result = mid.track(t2, t) and
-        pragma[only_bind_out](result) = pruneUseNodeRev(tb) and
+        pragma[only_bind_out](result) = useCandRev(tb) and
         pragma[only_bind_out](t) = pragma[only_bind_out](tb).getACompatibleTypeTracker()
       )
     }
