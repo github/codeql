@@ -586,12 +586,15 @@ module OrmInstantiation {
 
 /**
  * A data-flow node that may set or unset Cross-site request forgery protection.
- * `getVerificationSetting() = false` corresponds to disabling verification.
  *
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `CSRFProtectionSetting::Range` instead.
  */
 class CSRFProtectionSetting extends DataFlow::Node instanceof CSRFProtectionSetting::Range {
+  /**
+   * Gets the boolean value corresponding to if CSRF protection is enabled
+   * (`true`) or disabled (`false`) by this node.
+   */
   boolean getVerificationSetting() { result = super.getVerificationSetting() }
 }
 
@@ -599,12 +602,15 @@ class CSRFProtectionSetting extends DataFlow::Node instanceof CSRFProtectionSett
 module CSRFProtectionSetting {
   /**
    * A data-flow node that may set or unset Cross-site request forgery protection.
-   * `getVerificationSetting() = false` corresponds to disabling verification.
    *
    * Extend this class to model new APIs. If you want to refine existing API models,
    * extend `CSRFProtectionSetting` instead.
    */
   abstract class Range extends DataFlow::Node {
+    /**
+     * Gets the boolean value corresponding to if CSRF protection is enabled
+     * (`true`) or disabled (`false`) by this node.
+     */
     abstract boolean getVerificationSetting();
   }
 }
