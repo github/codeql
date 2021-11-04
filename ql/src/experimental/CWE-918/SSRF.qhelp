@@ -6,15 +6,16 @@
 <overview>
 <p>
 Directly incorporating user input into an HTTP request without validating the input can facilitate
-server side request forgery attacks, where the attacker essentially controls the request.
+server side request forgery attacks, where the attacker controls the request target.
 </p>
 </overview>
 
 <recommendation>
 <p>
 To guard against server side request forgery, it is advisable to avoid putting user input directly into a
-network request. If using user input is necessary, then is mandatory to validate them. Only allow numeric and alphanumeric values.
-URL encoding is not a solution in certain scenarios, such as, an architecture build over NGINX proxies.
+network request. If using user input is necessary, then it must be validated. It is recommended to only allow
+user input consisting of alphanumeric characters. Simply URL-encoding other chracters is not always a solution,
+for example because a downstream entity that is itself vulnerable may decode again before forwarding the request.
 </p>
 </recommendation>
 
