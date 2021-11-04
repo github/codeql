@@ -88,8 +88,8 @@ Setting extractor options from files
 
 You can also set extractor options through a file. The CodeQL CLI subcommands that accept ``--extractor-option`` also accept ``--extractor-options-file``, which has a required argument of the path to a YAML file (with extension ``.yaml`` or ``.yml``) or a JSON file (with extension ``.json``). For example:
 
-# ``codeql database create --extractor-options-file options.yml ...``
-# ``codeql database start-tracing --extractor-options-file options.json ...``
+* ``codeql database create --extractor-options-file options.yml ...``
+* ``codeql database start-tracing --extractor-options-file options.json ...``
 
 Each option file contains a tree structure of nested maps. At the root is an extractor map key, and beneath it are map keys that correspond to extractor names. Starting at the third level, there are extractor options and option groups.
 
@@ -134,7 +134,7 @@ Assigning an extractor option that does not exist is an error. You can make the 
 
 You can specify ``--extractor-options-file`` multiple times. The extractor option assignments are processed in the following order:
 
-# All extractor option files specified by ``--extractor-options-file`` are processed in the order they appear on the command line, then
-# All extractor option assignments specified by ``--extractor-option`` are processed in the order they appear on the command line
+1. All extractor option files specified by ``--extractor-options-file`` are processed in the order they appear on the command line, then
+2. All extractor option assignments specified by ``--extractor-option`` are processed in the order they appear on the command line
 
 The same rules govern what happens when the same extractor option is set multiple times, regardless of whether the assignments are done using ``--extractor-option``, using ``--extractor-options-file``, or some combination of the two. If you set a ``string`` extractor option multiple times, the last option value overwrites all previous values. If you set an ``array`` extractor option multiple times, all option values are concatenated in order.
