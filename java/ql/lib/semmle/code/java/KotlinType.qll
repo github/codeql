@@ -25,3 +25,10 @@ class KotlinNotnullType extends KotlinType, @kt_notnull_type {
   override string getAPrimaryQlClass() { result = "KotlinNotnullType" }
 }
 
+class KotlinTypeAlias extends Element, @kt_type_alias {
+  override string getAPrimaryQlClass() { result = "KotlinTypeAlias" }
+
+  KotlinType getKotlinType() {
+    kt_type_alias(this, _, result)
+  }
+}

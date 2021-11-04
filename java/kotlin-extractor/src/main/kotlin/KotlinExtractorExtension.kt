@@ -769,6 +769,18 @@ class X {
         return id
     }
 
+    private fun getTypeAliasLabel(ta: IrTypeAlias) : String {
+        val parentId = useDeclarationParent(ta.parent)
+        val label = "@\"type_alias;{$parentId};${ta.name.asString()}\""
+        return label
+    }
+
+    fun useTypeAlias(ta: IrTypeAlias): Label<out DbKt_type_alias> {
+        var label = getTypeAliasLabel(ta)
+        val id: Label<DbKt_type_alias> = tw.getLabelFor(label)
+        return id
+    }
+
     fun useVariable(v: IrVariable): Label<out DbLocalvar> {
         return tw.getVariableLabelFor<DbLocalvar>(v)
     }
@@ -793,6 +805,7 @@ open class KotlinFileExtractor(
             }
             is IrProperty -> extractProperty(declaration, parentId)
             is IrEnumEntry -> extractEnumEntry(declaration, parentId)
+            is IrTypeAlias -> extractTypeAlias(declaration) // TODO: Pass in and use parentId
             else -> logger.warnElement(Severity.ErrorSevere, "Unrecognised IrDeclaration: " + declaration.javaClass, declaration)
         }
     }
@@ -1029,6 +1042,19 @@ open class KotlinFileExtractor(
             tw.writeFields(id, ee.name.asString(), type.javaResult.id, type.kotlinResult.id, parentId, id)
             tw.writeHasLocation(id, locId)
         }
+    }
+
+    fun extractTypeAlias(ta: IrTypeAlias) {
+        if (ta.typeParameters.isNotEmpty()) {
+            // TODO: Extract this information
+            logger.warn(Severity.ErrorSevere, "Type alias type parameters ignored for " + ta.render())
+        }
+        val id = useTypeAlias(ta)
+        val locId = tw.getLocation(ta)
+        // TODO: We don't really want to generate any Java types here; we only want the KT type:
+        val type = useType(ta.expandedType)
+        tw.writeKt_type_alias(id, ta.name.asString(), type.kotlinResult.id)
+        tw.writeHasLocation(id, locId)
     }
 
     fun extractBody(b: IrBody, callable: Label<out DbCallable>) {

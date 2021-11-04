@@ -324,6 +324,12 @@ kt_notnull_types(
   int classid: @classorinterface ref
 )
 
+kt_type_alias(
+  unique int id: @kt_type_alias,
+  string name: string ref,
+  int kttypeid: @kt_type ref
+)
+
 @kt_type = @kt_nullable_type | @kt_notnull_type
 
 isRecord(
@@ -928,8 +934,10 @@ javadocText(
 @classorarray = @class | @array;
 @type = @primitive | @reftype;
 @callable = @method | @constructor;
+
+/** A program element that has a name. */
 @element = @file | @package | @primitive | @class | @interface | @method | @constructor | @modifier | @param | @exception | @field |
-           @annotation | @boundedtype | @array | @localvar | @expr | @stmt | @import | @fielddecl | @kt_type;
+           @annotation | @boundedtype | @array | @localvar | @expr | @stmt | @import | @fielddecl | @kt_type | @kt_type_alias;
 
 @modifiable = @member_modifiable| @param | @localvar ;
 
@@ -937,10 +945,11 @@ javadocText(
 
 @member = @method | @constructor | @field | @reftype ;
 
+/** A program element that has a location. */
 @locatable = @file | @class | @interface | @fielddecl | @field | @constructor | @method | @param | @exception
              | @boundedtype | @typebound | @array | @primitive
              | @import | @stmt | @expr | @whenbranch | @localvar | @javadoc | @javadocTag | @javadocText
-             | @xmllocatable | @ktcomment;
+             | @xmllocatable | @ktcomment | @kt_type_alias;
 
 @top = @element | @locatable | @folder;
 

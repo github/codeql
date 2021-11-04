@@ -43,6 +43,8 @@ predicate hasName(Element e, string name) {
   arrays(e, name, _, _, _, _, _)
   or
   modifiers(e, name)
+  or
+  kt_type_alias(e, name, _)
 }
 
 /**
