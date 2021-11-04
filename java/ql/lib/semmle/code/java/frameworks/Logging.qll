@@ -208,7 +208,7 @@ private class LoggingSinkModels extends SinkModelCsv {
             ";(String,Object,Object,Object,Object);;Argument[0..4];logging",
             ";(Throwable,String,Object);;Argument[1..2];logging",
             ";(Throwable,String,Object,Object);;Argument[1..3];logging",
-            ";(Throwable,String,Object,Object,Object);;Argument[0..4];logging",
+            ";(Throwable,String,Object,Object,Object);;Argument[0..4];logging"
           ],
         jBossLogger() + ";true;log" + ["f", "v"] +
           [
