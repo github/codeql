@@ -11,6 +11,8 @@ private predicate isAlphanumericValidationKind(string validationKind) {
     ]
 }
 
+private string getKeyAndValuesRegex() { result = "([a-zA-Z0-9]+):\"([a-zA-Z0-9,]+)\"" }
+
 /**
  * A struct field with json tags like `key:"value1,value2"`.
  */
@@ -26,11 +28,11 @@ class FieldWithTags extends FieldDecl {
     exists(string tag, string key_value, string values |
       this.getTag().toString() = tag and
       // Each key_value is like key:"value1,value2"
-      tag.regexpFind("[a-zA-Z0-9]+:\"[a-zA-Z0-9,]+\"", _, _) = key_value and
+      tag.regexpFind(getKeyAndValuesRegex(), _, _) = key_value and
       // key is the "key" from key:"value1,value2"
-      key_value.regexpCapture("([a-zA-Z0-9]+):\"([a-zA-Z0-9,]+)\"", 1) = key and
+      key_value.regexpCapture(getKeyAndValuesRegex(), 1) = key and
       // values are the value1,value2 (without the quotation marks) from key:"value1,value2"
-      key_value.regexpCapture("([a-zA-Z0-9]+):\"([a-zA-Z0-9,]+)\"", 2) = values and
+      key_value.regexpCapture(getKeyAndValuesRegex(), 2) = values and
       // value is value1 or value2 from key:"value1,value2"
       values.regexpFind("[a-zA-Z0-9]+", _, _) = value
     )
