@@ -89,8 +89,8 @@ abstract class CryptographicAlgorithm extends TCryptographicAlgorithm {
    */
   bindingset[name]
   predicate matchesName(string name) {
-    name.toUpperCase().regexpCapture("^(\\w+)(?:-.*)?$", 1).regexpReplaceAll("[-_ ]", "") =
-      getName()
+    [name.toUpperCase(), name.toUpperCase().regexpCapture("^(\\w+)(?:-.*)?$", 1)]
+        .regexpReplaceAll("[-_ ]", "") = getName()
   }
 
   /**
