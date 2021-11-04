@@ -71,11 +71,12 @@ private class DefaultIntentRedirectionSink extends IntentRedirectionSink {
  */
 private class DefaultIntentRedirectionSanitizer extends IntentRedirectionSanitizer {
   DefaultIntentRedirectionSanitizer() {
-    exists(MethodAccess ma, Method m |
+    exists(MethodAccess ma, Method m, Guard g, boolean branch |
       ma.getMethod() = m and
       m.getDeclaringType() instanceof TypeComponentName and
       m.hasName(["getPackageName", "getClassName"]) and
-      ma.getBasicBlock().(ConditionBlock).controls(this.asExpr().getBasicBlock(), true)
+      g.isEquality(ma, _, branch) and
+      g.controls(this.asExpr().getBasicBlock(), branch)
     )
   }
 }

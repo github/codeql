@@ -13,6 +13,6 @@ if (destinationComponent.getPackageName().equals("safe.package") &&
 // GOOD: The component that sent the Intent is checked before launching the destination component
 Intent forwardIntent = (Intent) getIntent().getParcelableExtra("forward_intent");
 ComponentName originComponent = getCallingActivity();
-if (originComponent.getPackageName().equals("trusted.package") && originComponent.getClassName("TrustedClass")) {
+if (originComponent.getPackageName().equals("trusted.package") && originComponent.getClassName().equals("TrustedClass")) {
     startActivity(forwardIntent);
 }
