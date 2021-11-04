@@ -1,0 +1,1 @@
+| tst.js:8:22:8:39 | req.query.password | $@ for GET requests uses query parameter as sensitive data. | tst.js:6:19:14:1 | (req, r ... serId\\n} | Route handler |
