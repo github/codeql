@@ -37,7 +37,7 @@ Each extractor defines its own set of configuration options. To find out which o
          }
      }
 
-The extractor option names and descriptions are listed under ``extractor_options``. Each description may contain the following fields::
+The extractor option names and descriptions are listed under ``extractor_options``. Each option may contain the following fields::
 
 *   ``title`` (required): The title of the option
 *   ``description`` (required): The description of the option
