@@ -10,7 +10,7 @@
 
 ## New queries
 
-The CodeQL library for Go now contains a folder of simple "cookbook" queries that show how to access basic Go elements using the predicates defined by the standard library. They're intended to give you a starting point for your own experiments and to help you work out the best way to frame your questions using CodeQL. You can find them in the `examples/snippets` folder in the [CodeQL for Go repository](https://github.com/github/codeql-go/tree/master/ql/examples/snippets).
+The CodeQL library for Go now contains a folder of simple "cookbook" queries that show how to access basic Go elements using the predicates defined by the standard library. They're intended to give you a starting point for your own experiments and to help you work out the best way to frame your questions using CodeQL. You can find them in the `examples/snippets` folder in the [CodeQL for Go repository](https://github.com/github/codeql-go/tree/main/ql/examples/snippets).
 
 | **Query**                                                                    | **Tags**                                                                                | **Purpose**                                                                                                                                                                         |
 |------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

@@ -10,3 +10,6 @@
 | pkg1/tst.go:37:1:37:26 | function declaration | 1 |
 | pkg1/tst.go:39:1:57:1 | function declaration | 2 |
 | unknownFunction.go:8:1:12:1 | function declaration | 0 |
+| variadicFunctions.go:3:1:5:1 | function declaration | 0 |
+| variadicFunctions.go:7:1:14:1 | function declaration | 1 |
+| variadicFunctions.go:12:29:12:62 | function literal | 1 |

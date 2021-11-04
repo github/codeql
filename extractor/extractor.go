@@ -1420,6 +1420,9 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 					extractComponentType(tw, lbl, -(i + 1), "", result.Type())
 				}
 			}
+			if tp.Variadic() {
+				dbscheme.VariadicTable.Emit(tw, lbl)
+			}
 		case *types.Map:
 			kind = dbscheme.MapType.Index()
 			extractKeyType(tw, lbl, tp.Key())
