@@ -1,9 +1,10 @@
 /**
  * @name Log Injection
- * @description Building log entries from user-controlled data is vulnerable to
- *              insertion of forged log entries by a malicious user.
+ * @description Building log entries from user-controlled data may allow
+ *              insertion of forged log entries by malicious users.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 7.8
  * @precision high
  * @id java/log-injection
  * @tags security

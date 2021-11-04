@@ -8,7 +8,7 @@ import semmle.code.java.security.LogInjection
  * A taint-tracking configuration for tracking untrusted user input used in log entries.
  */
 class LogInjectionConfiguration extends TaintTracking::Configuration {
-  LogInjectionConfiguration() { this = "Log Injection" }
+  LogInjectionConfiguration() { this = "LogInjectionConfiguration" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 

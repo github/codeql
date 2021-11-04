@@ -16,9 +16,9 @@ public class LogInjection {
     public String good(@RequestParam(value = "username", defaultValue = "name") String username) {
         // The regex check here, allows only alphanumeric characters to pass.
         // Hence, does not result in log injection
-        if (username.matches("\w*")) {
+        if (username.matches("\\w*")) {
             log.warn("User:'{}'", username);
-            
+
             return username;
         }
     }

@@ -29,16 +29,15 @@ other forms of HTML injection.
 </recommendation>
 
 <example>
-  <p>In the example, a username, provided by the user, is logged using <code>logger.warn</code> (from  <code>org.slf4j.Logger</code>). 
+  <p>In the first example, a username, provided by the user, is logged using <code>logger.warn</code> (from  <code>org.slf4j.Logger</code>). 
     In the first case (<code>/bad</code> endpoint), the username is logged without any sanitization.
     If a malicious user provides <code>Guest'%0AUser:'Admin</code> as a username parameter, 
     the log entry will be split into two separate lines, where the first line will be <code>User:'Guest'</code> and the second one will be <code>User:'Admin'</code>.
 </p>
 <sample src="LogInjectionBad.java" />
 
-<p> In the second case (<code>/good</code> endpoint), <code>matches()</code> is used to ensure the user input only has alphanumeric characters.
-  If a malicious user provides `Guest'%0AUser:'Admin` as a username parameter, 
-  the log entry will not be split into two separate lines, resulting in a single line <code>User:'Guest'User:'Admin'</code>.</p>
+<p> In the second example (<code>/good</code> endpoint), <code>matches()</code> is used to ensure the user input only has alphanumeric characters.
+  If a malicious user provides `Guest'%0AUser:'Admin` as a username parameter, the log entry will not be logged at all, preventing the injection.</p>
 
 <sample src="LogInjectionGood.java" />
 </example>
