@@ -7,6 +7,16 @@ import DataFlow::PathGraph
 abstract class LdapSanitizer extends DataFlow::Node {
 
 }
+
+/*
+ * some common Sanitizer func
+ */
+private class CommonLdapEscape extends LdapSanitizer {
+    CommonLdapEscape() { exists(DataFlow::MethodCallNode m
+        | m.getTarget().getName() in ["sanitizedUserQuery","sanitizedUserDN","sanitizedGroupFilter","sanitizedGroupDN"]
+        | this = m.getResult(0)) }
+}
+
 /*
  * The Sanitizer func from github.com/go-ldap/ldap or github.com/go-ldap/ldap/v3
  */
@@ -96,5 +106,9 @@ class LdapVul extends TaintTracking::Configuration {
     super.isSanitizer(sanitizer) or sanitizer instanceof LdapSanitizer
   }
 }
+from LdapVul config, DataFlow::PathNode source, DataFlow::PathNode sink
+where config.hasFlowPath(source, sink)
+select sink.getNode(), source, sink, "$@ LDAP query parameter comes from $@.", sink.getNode(),
+  "This", source.getNode(), "a user-provided value"
 
 
