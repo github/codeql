@@ -99,7 +99,7 @@ predicate returnStep(Node nodeFrom, Node nodeTo) {
  * to `z` inside `bar`, even though this content write happens _after_ `bar` is
  * called.
  */
-predicate basicStoreStep(Node nodeFrom, DataFlowPublic::LocalSourceNode nodeTo, string content) {
+predicate basicStoreStep(Node nodeFrom, Node nodeTo, string content) {
   // TODO: support SetterMethodCall inside TuplePattern
   exists(ExprNodes::MethodCallCfgNode call |
     content = getSetterCallAttributeName(call.getExpr()) and

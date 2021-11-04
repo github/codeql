@@ -55,7 +55,12 @@ track
 | type_tracker.rb:14:5:14:13 | call to field= | type tracker without call steps | type_tracker.rb:14:5:14:13 | call to field= |
 | type_tracker.rb:14:17:14:23 | "hello" | type tracker with call steps | type_tracker.rb:2:16:2:18 | val |
 | type_tracker.rb:14:17:14:23 | "hello" | type tracker with call steps | type_tracker.rb:2:16:2:18 | val |
+| type_tracker.rb:14:17:14:23 | "hello" | type tracker with call steps | type_tracker.rb:3:14:3:23 | call to field |
+| type_tracker.rb:14:17:14:23 | "hello" | type tracker with call steps with content field | type_tracker.rb:2:5:5:7 | self in field= |
+| type_tracker.rb:14:17:14:23 | "hello" | type tracker with call steps with content field | type_tracker.rb:7:5:9:7 | self in field |
 | type_tracker.rb:14:17:14:23 | "hello" | type tracker without call steps | type_tracker.rb:14:17:14:23 | "hello" |
+| type_tracker.rb:14:17:14:23 | "hello" | type tracker without call steps | type_tracker.rb:15:10:15:18 | call to field |
+| type_tracker.rb:14:17:14:23 | "hello" | type tracker without call steps with content field | type_tracker.rb:13:11:13:23 | call to new |
 | type_tracker.rb:15:5:15:18 | [post] self | type tracker without call steps | type_tracker.rb:15:5:15:18 | [post] self |
 | type_tracker.rb:15:5:15:18 | call to puts | type tracker without call steps | type_tracker.rb:12:1:16:3 | return return in m |
 | type_tracker.rb:15:5:15:18 | call to puts | type tracker without call steps | type_tracker.rb:15:5:15:18 | call to puts |
@@ -120,7 +125,9 @@ trackEnd
 | type_tracker.rb:14:5:14:13 | call to field= | type_tracker.rb:14:5:14:13 | call to field= |
 | type_tracker.rb:14:17:14:23 | "hello" | type_tracker.rb:2:16:2:18 | val |
 | type_tracker.rb:14:17:14:23 | "hello" | type_tracker.rb:2:16:2:18 | val |
+| type_tracker.rb:14:17:14:23 | "hello" | type_tracker.rb:3:14:3:23 | call to field |
 | type_tracker.rb:14:17:14:23 | "hello" | type_tracker.rb:14:17:14:23 | "hello" |
+| type_tracker.rb:14:17:14:23 | "hello" | type_tracker.rb:15:10:15:18 | call to field |
 | type_tracker.rb:15:5:15:18 | [post] self | type_tracker.rb:15:5:15:18 | [post] self |
 | type_tracker.rb:15:5:15:18 | call to puts | type_tracker.rb:12:1:16:3 | return return in m |
 | type_tracker.rb:15:5:15:18 | call to puts | type_tracker.rb:15:5:15:18 | call to puts |
