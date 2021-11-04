@@ -4,15 +4,17 @@ on:
   push:
     branches:
       - main
-      - 'rc/*'
+      - "rc/*"
     paths:
       - ruby/ql/lib/ruby.dbscheme
+      - .github/workflows/ruby-dataset-measure.yml
   pull_request:
     branches:
       - main
-      - 'rc/*'
+      - "rc/*"
     paths:
       - ruby/ql/lib/ruby.dbscheme
+      - .github/workflows/ruby-dataset-measure.yml
   workflow_dispatch:
 
 jobs:
