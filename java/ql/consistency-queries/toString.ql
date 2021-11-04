@@ -20,7 +20,7 @@ string topToString(Top t) {
 }
 
 string not1ToString() {
-  exists(Top t | count(topToString(t)) != 1 and result = "Top which doesn't have exactly 1 toString: " + concat(t.getAQlClass(), ", "))
+  exists(Top t | count(topToString(t)) != 1 and result = "Top which doesn't have exactly 1 toString: " + t.getPrimaryQlClasses())
   or
   exists(Location l | count(l.toString()) != 1 and result = "Location which doesn't have exactly 1 toString: " + concat(l.getAQlClass(), ", "))
   or
