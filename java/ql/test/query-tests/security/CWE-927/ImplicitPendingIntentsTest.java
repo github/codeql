@@ -29,10 +29,10 @@ public class ImplicitPendingIntentsTest {
             PendingIntent pi = PendingIntent.getActivity(ctx, 0, baseIntent, 0);
             Intent fwdIntent = new Intent();
             fwdIntent.putExtra("fwdIntent", pi);
-            ctx.startActivity(fwdIntent); // $hasTaintFlow
-            ctx.startActivities(new Intent[] {fwdIntent}); // $hasTaintFlow
+            ctx.startActivity(fwdIntent); // $hasImplicitPendingIntent
+            ctx.startActivities(new Intent[] {fwdIntent}); // $hasImplicitPendingIntent
             ctx.startService(fwdIntent); // Safe
-            ctx.sendBroadcast(fwdIntent); // $hasTaintFlow
+            ctx.sendBroadcast(fwdIntent); // $hasImplicitPendingIntent
 
             fwdIntent.setPackage("a.safe.package"); // Sanitizer
             ctx.startActivity(fwdIntent); // Safe
@@ -43,7 +43,7 @@ public class ImplicitPendingIntentsTest {
             PendingIntent pi = PendingIntent.getActivityAsUser(ctx, 0, baseIntent, 0, null, null);
             Intent fwdIntent = new Intent();
             fwdIntent.putExtra("fwdIntent", pi);
-            ctx.startActivity(fwdIntent); // $hasTaintFlow
+            ctx.startActivity(fwdIntent); // $hasImplicitPendingIntent
         }
 
         {
@@ -51,7 +51,7 @@ public class ImplicitPendingIntentsTest {
             PendingIntent pi = PendingIntent.getActivities(ctx, 0, new Intent[] {baseIntent}, 0);
             Intent fwdIntent = new Intent();
             fwdIntent.putExtra("fwdIntent", pi);
-            ctx.startActivity(fwdIntent); // $hasTaintFlow
+            ctx.startActivity(fwdIntent); // $hasImplicitPendingIntent
         }
 
         {
@@ -60,7 +60,7 @@ public class ImplicitPendingIntentsTest {
                     0, null, null);
             Intent fwdIntent = new Intent();
             fwdIntent.putExtra("fwdIntent", pi);
-            ctx.startActivity(fwdIntent); // $hasTaintFlow
+            ctx.startActivity(fwdIntent); // $hasImplicitPendingIntent
         }
 
         {
@@ -68,7 +68,7 @@ public class ImplicitPendingIntentsTest {
             PendingIntent pi = PendingIntent.getBroadcast(ctx, 0, baseIntent, 0);
             Intent fwdIntent = new Intent();
             fwdIntent.putExtra("fwdIntent", pi);
-            ctx.sendBroadcast(fwdIntent); // $hasTaintFlow
+            ctx.sendBroadcast(fwdIntent); // $hasImplicitPendingIntent
         }
 
         {
@@ -76,7 +76,7 @@ public class ImplicitPendingIntentsTest {
             PendingIntent pi = PendingIntent.getBroadcastAsUser(ctx, 0, baseIntent, 0, null);
             Intent fwdIntent = new Intent();
             fwdIntent.putExtra("fwdIntent", pi);
-            ctx.sendBroadcast(fwdIntent); // $hasTaintFlow
+            ctx.sendBroadcast(fwdIntent); // $hasImplicitPendingIntent
         }
 
         {
@@ -84,7 +84,7 @@ public class ImplicitPendingIntentsTest {
             PendingIntent pi = PendingIntent.getService(ctx, 0, baseIntent, 0);
             Intent fwdIntent = new Intent();
             fwdIntent.putExtra("fwdIntent", pi);
-            ctx.startActivity(fwdIntent); // $hasTaintFlow
+            ctx.startActivity(fwdIntent); // $hasImplicitPendingIntent
         }
 
         {
@@ -92,7 +92,7 @@ public class ImplicitPendingIntentsTest {
             PendingIntent pi = PendingIntent.getForegroundService(ctx, 0, baseIntent, 0);
             Intent fwdIntent = new Intent();
             fwdIntent.putExtra("fwdIntent", pi);
-            ctx.startActivity(fwdIntent); // $hasTaintFlow
+            ctx.startActivity(fwdIntent); // $hasImplicitPendingIntent
         }
 
         {
@@ -144,7 +144,7 @@ public class ImplicitPendingIntentsTest {
             PendingIntent pi = PendingIntent.getActivity(ctx, 0, baseIntent, flag); // Sanitizer
             Intent fwdIntent = new Intent();
             fwdIntent.putExtra("fwdIntent", pi);
-            ctx.startActivity(fwdIntent); // $ SPURIOUS: $ hasTaintFlow
+            ctx.startActivity(fwdIntent); // $ SPURIOUS: $ hasImplicitPendingIntent
         }
     }
 
@@ -155,10 +155,10 @@ public class ImplicitPendingIntentsTest {
             PendingIntent pi = PendingIntent.getActivity(ctx, 0, baseIntent, 0);
             Intent fwdIntent = new Intent();
             fwdIntent.putExtra("fwdIntent", pi);
-            other.send(ctx, 0, fwdIntent); // $hasTaintFlow
-            other.send(ctx, 0, fwdIntent, null, null); // $hasTaintFlow
-            other.send(ctx, 0, fwdIntent, null, null, null); // $hasTaintFlow
-            other.send(ctx, 0, fwdIntent, null, null, null, null); // $hasTaintFlow
+            other.send(ctx, 0, fwdIntent); // $hasImplicitPendingIntent
+            other.send(ctx, 0, fwdIntent, null, null); // $hasImplicitPendingIntent
+            other.send(ctx, 0, fwdIntent, null, null, null); // $hasImplicitPendingIntent
+            other.send(ctx, 0, fwdIntent, null, null, null, null); // $hasImplicitPendingIntent
         }
     }
 
@@ -173,9 +173,9 @@ public class ImplicitPendingIntentsTest {
                     new Notification.Builder(ctx).addAction(aBuilder.build());
             Notification notification = nBuilder.build();
             NotificationManager nManager = new NotificationManager();
-            nManager.notifyAsPackage("targetPackage", "tag", 0, notification); // $hasTaintFlow
-            nManager.notify(0, notification); // $hasTaintFlow
-            nManager.notifyAsUser("", 0, notification, null); // $hasTaintFlow
+            nManager.notifyAsPackage("targetPackage", "tag", 0, notification); // $hasImplicitPendingIntent
+            nManager.notify(0, notification); // $hasImplicitPendingIntent
+            nManager.notifyAsUser("", 0, notification, null); // $hasImplicitPendingIntent
         }
         {
             Intent baseIntent = new Intent();
@@ -215,7 +215,7 @@ public class ImplicitPendingIntentsTest {
             PendingIntent pi = PendingIntent.getActivity(null, 0, baseIntent, 0);
             Intent fwdIntent = new Intent();
             fwdIntent.putExtra("fwdIntent", pi);
-            setResult(0, fwdIntent); // $hasTaintFlow
+            setResult(0, fwdIntent); // $hasImplicitPendingIntent
         }
     }
 
@@ -232,7 +232,7 @@ public class ImplicitPendingIntentsTest {
                 ListBuilder listBuilder = new ListBuilder(getContext(), sliceUri, null);
                 listBuilder.addRow(new ListBuilder.RowBuilder().setTitle("Title")
                         .setPrimaryAction(activityAction));
-                return listBuilder.build(); // $hasTaintFlow
+                return listBuilder.build(); // $hasImplicitPendingIntent
 
             } else if (sliceUri.getAuthority().equals("2")) {
                 Intent baseIntent = new Intent(getContext(), Activity.class); // Sanitizer
@@ -259,7 +259,7 @@ public class ImplicitPendingIntentsTest {
                 SliceAction action = SliceAction.createDeeplink(mPendingIntent, null, 0, "");
                 ListBuilder listBuilder = new ListBuilder(getContext(), sliceUri, 0);
                 listBuilder.addRow(new ListBuilder.RowBuilder(sliceUri).setPrimaryAction(action));
-                return listBuilder.build(); // $hasTaintFlow
+                return listBuilder.build(); // $hasImplicitPendingIntent
             }
         }
 
@@ -268,7 +268,7 @@ public class ImplicitPendingIntentsTest {
             if (sliceUri.getAuthority().equals("1")) {
                 Intent baseIntent = new Intent();
                 PendingIntent pi = PendingIntent.getActivity(getContext(), 0, baseIntent, 0);
-                return pi; // $hasTaintFlow
+                return pi; // $hasImplicitPendingIntent
             } else {
                 Intent baseIntent = new Intent();
                 PendingIntent pi = PendingIntent.getActivity(getContext(), 0, baseIntent,
