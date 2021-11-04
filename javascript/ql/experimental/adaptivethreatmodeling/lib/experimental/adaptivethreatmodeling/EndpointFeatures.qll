@@ -102,7 +102,9 @@ private string getACallBasedTokenFeatureComponent(
     //
     // would have a callee API name of `mongoose`.
     featureName = "calleeApiName" and
-    exists(API::Node apiNode | AccessPaths::accessPaths(apiNode, false, _, result) and call = apiNode.getInducingNode())
+    exists(API::Node apiNode |
+      AccessPaths::accessPaths(apiNode, false, _, result) and call = apiNode.getInducingNode()
+    )
   )
 }
 
@@ -190,12 +192,15 @@ private module AccessPaths {
   }
 
   /** Get the access path for the node. This includes structural information like `member`, `param`, and `functionalarg` if `includeStructuralInfo` is true. */
-  predicate accessPaths(API::Node node, Boolean includeStructuralInfo, string accessPath, string apiName) {
+  predicate accessPaths(
+    API::Node node, Boolean includeStructuralInfo, string accessPath, string apiName
+  ) {
     //node = API::moduleImport(result)
     node = API::moduleImport(apiName) and accessPath = apiName
     or
     exists(API::Node previousNode, string previousAccessPath |
-      previousNode.getDepth() < node.getDepth() and accessPaths(previousNode, includeStructuralInfo, previousAccessPath, apiName)
+      previousNode.getDepth() < node.getDepth() and
+      accessPaths(previousNode, includeStructuralInfo, previousAccessPath, apiName)
     |
       // e.g. `new X`, `X()`
       node = [previousNode.getInstance(), previousNode.getReturn()] and
@@ -222,7 +227,9 @@ private module AccessPaths {
         node = previousNode.getUnknownMember() or
         node = previousNode.getMember(any(string s | isNumericString(s)))
       ) and
-      if includeStructuralInfo = true then accessPath = previousAccessPath + " member" else accessPath = previousAccessPath
+      if includeStructuralInfo = true
+      then accessPath = previousAccessPath + " member"
+      else accessPath = previousAccessPath
       or
       // e.g. `x.then(y => ...)`
       node = previousNode.getPromised() and
@@ -247,8 +254,9 @@ private module AccessPaths {
           index != "-1" and // ignore receiver
           if includeStructuralInfo = true
           then
-          accessPath =
-              previousAccessPath + " functionalarg " + index + " " + callbackName + " param " + paramName
+            accessPath =
+              previousAccessPath + " functionalarg " + index + " " + callbackName + " param " +
+                paramName
           else accessPath = previousAccessPath + " " + index + " " + callbackName + " " + paramName
         )
       )
