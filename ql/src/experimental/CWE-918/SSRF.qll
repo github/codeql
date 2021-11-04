@@ -153,7 +153,7 @@ module ServerSideRequestForgery {
    * no error, then we consider these fields safe for SSRF.
    */
   class BodySanitizer extends Sanitizer {
-    BodySanitizer() { this instanceof BodyTagSanitizer }
+    BodySanitizer() { this instanceof CheckedAlphanumericStructFieldRead }
   }
 
   /**

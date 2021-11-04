@@ -2,22 +2,25 @@ import go
 import semmle.go.dataflow.Properties
 
 /**
- * Only these tags are safe to build an URL
+ * Holds if `validationKind` is a validation kind that restricts to alphanumeric characters,
+ * which we consider safe for use in a URL.
  */
-private predicate isValidTag(string tag) {
-  tag in ["alpha", "alphanum", "alphaunicode", "alphanumunicode", "number", "numeric", "uuid"]
+private predicate isAlphanumericValidationKind(string validationKind) {
+  validationKind in [
+      "alpha", "alphanum", "alphaunicode", "alphanumunicode", "number", "numeric", "uuid"
+    ]
 }
 
 /**
- * Struct's field with json tags like `key:"value1,value2"`
+ * A struct field with json tags like `key:"value1,value2"`.
  */
 class FieldWithTags extends FieldDecl {
   FieldWithTags() { this.getTag().toString().regexpMatch("`([a-zA-Z0-9]+:\"[a-zA-Z0-9,]+\" *)+`") }
 
   /**
-   * It retrieves the values of a key
-   * For example: `json:"word" binding:"required,alpha"` key: "json" value:"word"
-   * key: "binding" values: "required","alpha".
+   * Holds if this field's tag maps `key` to `value`.
+   * For example: the tag `json:"word" binding:"required,alpha"` yields `key: "json", value: "word"`
+   * and `key: "binding" values: "required","alpha"`.
    */
   predicate getTagByKeyValue(string key, string value) {
     exists(string tag, string key_value, string values |
@@ -35,18 +38,18 @@ class FieldWithTags extends FieldDecl {
 }
 
 /**
- * If the tainted variable comes from a valid tagged field (for example: binding:"alpha")
- * it is safe
+ * A node that reads from a field with a tag indicating it
+ * must be alphanumeric (for example, having the tag `binding:"alpha"`).
  */
-class TaggedNode extends DataFlow::Node {
+class AlphanumericStructFieldRead extends DataFlow::Node {
   string key;
 
-  TaggedNode() {
+  AlphanumericStructFieldRead() {
     exists(FieldWithTags decl, Field field, string tag |
       this = field.getARead() and
       field.getDeclaration() = decl.getNameExpr(0) and
       decl.getTagByKeyValue(key, tag) and
-      isValidTag(tag)
+      isAlphanumericValidationKind(tag)
     )
   }
 
@@ -54,35 +57,36 @@ class TaggedNode extends DataFlow::Node {
 }
 
 /**
- * When we receive a body from a request, we can use certain tags on our struct's fields to hint
- * the binding function to run some validations for that field. If this binding functions returns
- * no error, then we consider these fields safe for SSRF.
+ * A node that is considered safe because it (a) reads a field with a tag indicating it should be
+ * alphanumeric, and (b) is guarded by a call to a validation function checking that it really
+ * is alphanumeric.
  *
- * See TaggedNode and isValidTag for supported tags. See BindErrorCheck for supported binding
- * functions.
+ * See `AlphanumericStructFieldRead` and `isAlphanumericValidationKind` for supported tags.
+ * See `StructValidationFunction` for supported binding functions.
  */
-class BodyTagSanitizer extends TaggedNode {
-  BodyTagSanitizer() {
-    exists(BindErrorCheck guard, SelectorExpr selector |
+class CheckedAlphanumericStructFieldRead extends AlphanumericStructFieldRead {
+  CheckedAlphanumericStructFieldRead() {
+    exists(StructValidationFunction guard, SelectorExpr selector |
       guard.getAGuardedNode().asExpr() = selector.getBase() and
       selector = this.asExpr() and
-      this.getKey() = guard.getSafeKey()
+      this.getKey() = guard.getValidationKindKey()
     )
   }
 }
 
 /**
- * An error check for a bind function considered as a barrier guard
+ * A function that validates a struct, checking that fields conform to restrictions given as a tag.
+ *
+ * The Gin `Context.Bind` family of functions apply checks according to a `binding:` tag, and the
+ * Go-Playground Validator checks fields that have a `validate:` tag.
  */
-private class BindErrorCheck extends DataFlow::BarrierGuard, DataFlow::EqualityTestNode {
+private class StructValidationFunction extends DataFlow::BarrierGuard, DataFlow::EqualityTestNode {
   Expr checked;
-  boolean outcome;
-  string safeKey;
+  boolean safeOutcome;
+  string validationKindKey;
 
-  BindErrorCheck() {
-    exists(
-      Function bindFunction, DataFlow::CallNode bindCall, DataFlow::Node resultErr, Property prop
-    |
+  StructValidationFunction() {
+    exists(Function bindFunction, DataFlow::CallNode bindCall, DataFlow::Node resultErr |
       (
         // Gin call
         bindFunction
@@ -92,29 +96,34 @@ private class BindErrorCheck extends DataFlow::BarrierGuard, DataFlow::EqualityT
                 "BindJSON", "MustBindWith", "BindWith", "Bind", "ShouldBind", "ShouldBindBodyWith",
                 "ShouldBindJSON", "ShouldBindWith"
               ]) and
-        safeKey = "binding"
+        validationKindKey = "binding"
         or
-        //Validator Struct
+        // Validator Struct
         bindFunction
             .(Method)
             .hasQualifiedName("github.com/go-playground/validator", "Validate", "Struct") and
-        safeKey = "validate"
+        validationKindKey = "validate"
       ) and
       bindCall = bindFunction.getACall() and
       checked = dereference(bindCall.getAnArgument()) and
       resultErr = bindCall.getResult().getASuccessor*() and
-      prop.checkOn(this, outcome, resultErr) and
-      prop.isNil()
+      nilProperty().checkOn(this, safeOutcome, resultErr)
     )
   }
 
-  override predicate checks(Expr e, boolean branch) { e = checked and branch = outcome }
+  override predicate checks(Expr e, boolean branch) { e = checked and branch = safeOutcome }
 
-  string getSafeKey() { result = safeKey }
+  /**
+   * Returns the struct tag key from which this validation function draws its validation kind.
+   *
+   * For example, if this returns `xyz` then this function looks for a struct tag like
+   * `` mustBeNumeric string `xyz:"numeric"` ``
+   */
+  string getValidationKindKey() { result = validationKindKey }
 }
 
 /**
- * If nd is of type &a, returns nodes for &a and a. Else, return nd as is.
+ * If `nd` is an address-of expression `&a`, returns expressions `&a` and `a`. Otherwise, returns `nd` as-is.
  */
 private Expr dereference(DataFlow::Node nd) {
   nd.asExpr().(AddressExpr).getOperand() = result
@@ -123,21 +132,21 @@ private Expr dereference(DataFlow::Node nd) {
 }
 
 /**
- * A validation performed by package validator's method Var is a sanitizer guard
- * only when using valid tags (see isValidTag for more information)
+ * A validation performed by package `validator`'s method `Var` to check that an expression is
+ * alphanumeric (see `isAlphanumericValidationKind` for more information) sanitizes guarded uses
+ * of the same variable.
  */
 class ValidatorVarCheck extends DataFlow::BarrierGuard, DataFlow::EqualityTestNode {
   DataFlow::CallNode callToValidator;
   boolean outcome;
 
   ValidatorVarCheck() {
-    exists(Method validatorMethod, Property prop, DataFlow::Node resultErr |
+    exists(Method validatorMethod, DataFlow::Node resultErr |
       validatorMethod.hasQualifiedName("github.com/go-playground/validator", "Validate", "Var") and
       callToValidator = validatorMethod.getACall() and
-      isValidTag(callToValidator.getArgument(1).getStringValue()) and
+      isAlphanumericValidationKind(callToValidator.getArgument(1).getStringValue()) and
       resultErr = callToValidator.getResult().getASuccessor*() and
-      prop.checkOn(this, outcome, resultErr) and
-      prop.isNil()
+      nilProperty().checkOn(this, outcome, resultErr)
     )
   }
 
