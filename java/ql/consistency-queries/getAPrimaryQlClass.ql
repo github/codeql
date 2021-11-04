@@ -9,5 +9,4 @@ where t.getAPrimaryQlClass() = "???"
   // Kotlin bug:
   and not t.(Type).toString() = "string"
 select t,
-       concat(t.getAPrimaryQlClass(), ","),
-       concat(t.getAQlClass(), ",")
+       concat(t.getAPrimaryQlClass(), ",")
