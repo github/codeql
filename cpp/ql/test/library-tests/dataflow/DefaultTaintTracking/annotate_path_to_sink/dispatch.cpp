@@ -28,10 +28,10 @@ void testStruct() {
   globalStruct.sinkPtr(atoi(getenv("TAINTED"))); // $ ir MISSING: ast
   globalStruct.notSinkPtr(atoi(getenv("TAINTED"))); // clean
 
-  globalUnion.sinkPtr(atoi(getenv("TAINTED"))); // $ ast ir-path=31:28 ir-path=32:31 ir-path=34:22 
-  globalUnion.notSinkPtr(atoi(getenv("TAINTED"))); // $ ast ir-path=31:28 ir-path=32:31 ir-path=34:22
+  globalUnion.sinkPtr(atoi(getenv("TAINTED"))); // $ ast ir-path
+  globalUnion.notSinkPtr(atoi(getenv("TAINTED"))); // $ ast ir-path
 
-  globalSinkPtr(atoi(getenv("TAINTED"))); // $ ast ir-path=31:28 ir-path=32:31 ir-path=34:22
+  globalSinkPtr(atoi(getenv("TAINTED"))); // $ ast ir-path
 }
 
 class B {
@@ -55,12 +55,12 @@ class D3 : public D2 {
 
 void test_dynamic_cast() {
     B* b = new D3();
-    b->f(getenv("VAR")); // $ ast ir-path=58:10 ir-path=60:17 ir-path=61:28 ir-path=62:29 ir-path=63:33 ir-path=73:30
+    b->f(getenv("VAR")); // $ ast ir-path
 
-    ((D2*)b)->f(getenv("VAR")); // $ ast ir-path=58:10 ir-path=60:17 ir-path=61:28 ir-path=62:29 ir-path=63:33 ir-path=73:30
-    static_cast<D2*>(b)->f(getenv("VAR")); // $ ast ir-path=58:10 ir-path=60:17 ir-path=61:28 ir-path=62:29 ir-path=63:33 ir-path=73:30
-    dynamic_cast<D2*>(b)->f(getenv("VAR")); // $ ast ir-path=58:10 ir-path=60:17 ir-path=61:28 ir-path=62:29 ir-path=63:33 ir-path=73:30
-    reinterpret_cast<D2*>(b)->f(getenv("VAR")); // $ ast ir-path=58:10 ir-path=60:17 ir-path=61:28 ir-path=62:29 ir-path=63:33 ir-path=73:30
+    ((D2*)b)->f(getenv("VAR")); // $ ast ir-path
+    static_cast<D2*>(b)->f(getenv("VAR")); // $ ast ir-path
+    dynamic_cast<D2*>(b)->f(getenv("VAR")); // $ ast ir-path
+    reinterpret_cast<D2*>(b)->f(getenv("VAR")); // $ ast ir-path
 
     B* b2 = new D2();
     b2->f(getenv("VAR"));
@@ -70,5 +70,5 @@ void test_dynamic_cast() {
     dynamic_cast<D2*>(b2)->f(getenv("VAR"));
     reinterpret_cast<D2*>(b2)->f(getenv("VAR"));
 
-    dynamic_cast<D3*>(b2)->f(getenv("VAR")); // $ SPURIOUS: ast ir-path=58:10 ir-path=60:17 ir-path=61:28 ir-path=62:29 ir-path=63:33 ir-path=73:30
+    dynamic_cast<D3*>(b2)->f(getenv("VAR")); // $ SPURIOUS: ast ir-path
 }

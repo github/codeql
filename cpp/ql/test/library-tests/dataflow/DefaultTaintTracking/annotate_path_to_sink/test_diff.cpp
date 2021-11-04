@@ -79,7 +79,7 @@ class Derived2 : public Derived1 {
 class Derived3 : public Derived2 {
     public:
     void f(const char* p) override { // $ ir-path=124:19 ir-path=126:43 ir-path=128:44
-        sink(p); // $ ir-sink=124:19 ir-sink=126:43 ir-sink=128:44 ast,ir=124:19 ast,ir=126:43 ast,ir=128:44
+        sink(p); // $ ast,ir-sink=124:19 ast,ir-sink=126:43 ast,ir-sink=128:44
     }
 };
 
@@ -89,41 +89,41 @@ class CRTPDoesNotCallSink : public CRTP<CRTPDoesNotCallSink> {
 };
 
 int main(int argc, char *argv[]) {
-    sink(argv[0]); // $ ast ir-path ir-sink
+    sink(argv[0]); // $ ast,ir-path,ir-sink
 
-    sink(reinterpret_cast<int>(argv)); // $ ast ir-sink
+    sink(reinterpret_cast<int>(argv)); // $ ast,ir-sink
 
-    calls_sink_with_argv(argv[1]); // $ ast ir-path=96:26 ir-path=98:18
+    calls_sink_with_argv(argv[1]); // $ ast,ir-path
 
-    char*** p = &argv; // $ ast ir-path=96:26 ir-path=98:18
+    char*** p = &argv; // $ ast,ir-path
 
-    sink(*p[0]); // $ ast ir-sink
+    sink(*p[0]); // $ ast,ir-sink
 
     calls_sink_with_argv(*p[i]); // $ MISSING: ast,ir-path
 
-    sink(*(argv + 1)); // $ ast ir-path ir-sink
+    sink(*(argv + 1)); // $ ast,ir-path ir-sink
 
     BaseWithPureVirtual* b = new DerivedCallsSink;
 
-    b->f(argv[1]); // $ ast ir-path
+    b->f(argv[1]); // $ ast,ir-path
 
     b = new DerivedDoesNotCallSink;
     b->f(argv[0]); // $ SPURIOUS: ast
 
     BaseWithPureVirtual* b2 = new DerivesMultiple;
 
-    b2->f(argv[i]); // $ ast ir-path
+    b2->f(argv[i]); // $ ast,ir-path
 
     CRTP<CRTPDoesNotCallSink> crtp_not_call_sink;
     crtp_not_call_sink.f(argv[0]); // clean
 
     CRTP<CRTPCallsSink> crtp_calls_sink;
-    crtp_calls_sink.f(argv[0]); // $ ast ir-path
+    crtp_calls_sink.f(argv[0]); // $ ast,ir-path
 
     Derived1* calls_sink = new Derived3;
-    calls_sink->f(argv[1]); // $ ast ir-path=124:19 ir-path=126:43 ir-path=128:44
+    calls_sink->f(argv[1]); // $ ast,ir-path
 
-    static_cast<Derived2*>(calls_sink)->f(argv[1]); // $ ast ir-path=124:19 ir-path=126:43 ir-path=128:44
+    static_cast<Derived2*>(calls_sink)->f(argv[1]); // $ ast,ir-path
 
-    dynamic_cast<Derived2*>(calls_sink)->f(argv[1]); // $ ast ir-path=124:19 ir-path=126:43 ir-path=128:44
+    dynamic_cast<Derived2*>(calls_sink)->f(argv[1]); // $ ast,ir-path
 }

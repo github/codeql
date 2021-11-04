@@ -7,6 +7,7 @@ import cpp
 import semmle.code.cpp.security.TaintTrackingImpl as ASTTaintTracking
 import semmle.code.cpp.ir.dataflow.DefaultTaintTracking as IRDefaultTaintTracking
 import IRDefaultTaintTracking::TaintedWithPath as TaintedWithPath
+import TaintedWithPath::Private
 import TestUtilities.InlineExpectationsTest
 
 predicate isSinkArgument(Element sink) {
@@ -25,8 +26,15 @@ class SourceConfiguration extends TaintedWithPath::TaintTrackingConfiguration {
 predicate irTaint(Element source, Element sink, string tag) {
   exists(TaintedWithPath::PathNode sinkNode, TaintedWithPath::PathNode predNode |
     TaintedWithPath::taintedWithPath(source, _, _, sinkNode) and
-    predNode = TaintedWithPath::Private::getAPredecessor*(sinkNode) and
-    sink = TaintedWithPath::Private::getElementFromPathNode(predNode) and
+    predNode = getAPredecessor*(sinkNode) and
+    sink = getElementFromPathNode(predNode) and
+    // Make sure the path is actually reachable from this predecessor.
+    // Otherwise, we could pick `predNode` to be b when `source` is
+    // `source1` in this dataflow graph:
+    // source1 ---> a ---> c ---> sinkNode
+    //                   ^
+    // source2 ---> b --/
+    source = getElementFromPathNode(getAPredecessor*(predNode)) and
     if sinkNode = predNode then tag = "ir-sink" else tag = "ir-path"
   )
 }
