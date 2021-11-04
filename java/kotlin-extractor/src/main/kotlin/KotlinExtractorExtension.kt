@@ -411,6 +411,10 @@ open class KotlinUsesExtractor(
     }
 
     fun useSimpleType(s: IrSimpleType, canReturnPrimitiveTypes: Boolean): TypeResults {
+        if (s.abbreviation != null) {
+            // TODO: Extract this information
+            logger.warn(Severity.ErrorSevere, "Type alias ignored for " + s.render())
+        }
         // We use this when we don't actually have an IrClass for a class
         // we want to refer to
         fun makeClass(pkgName: String, className: String): Label<DbClass> {
