@@ -39,9 +39,9 @@ Each extractor defines its own set of configuration options. To find out which o
 
 The extractor option names and descriptions are listed under ``extractor_options``. Each option may contain the following fields::
 
-* ``title`` (required): The title of the option
-* ``description`` (required): The description of the option
-* ``type`` (required): The type of the option, which can be
+- ``title`` (required): The title of the option
+- ``description`` (required): The description of the option
+- ``type`` (required): The type of the option, which can be
 
   * ``string``: indicating that the option can have a single string value
   * ``array``: indicating that the option can have a sequence of string values
