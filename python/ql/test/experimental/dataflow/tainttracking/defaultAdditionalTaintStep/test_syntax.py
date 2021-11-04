@@ -12,7 +12,7 @@ if TYPE_CHECKING:
 
 class Context:
     def __enter__(self):
-        return TAINTED_STRING
+        return ""
 
     def __exit__(self, exc_type, exc, tb):
         pass
@@ -23,6 +23,33 @@ def test_with():
     with ctx as tainted:
         ensure_tainted(tainted) # $ tainted
 
+class Context_taint:
+    def __enter__(self):
+        return TAINTED_STRING
+
+    def __exit__(self, exc_type, exc, tb):
+        pass
+
+def test_with_taint():
+    ctx = Context_taint()
+    with ctx as tainted:
+        ensure_tainted(tainted) # $ MISSING: tainted
+
+
+class Context_arg:
+    def __init__(self, arg):
+        self.arg = arg
+
+    def __enter__(self):
+        return self.arg
+
+    def __exit__(self, exc_type, exc, tb):
+        pass
+
+def test_with_arg():
+    ctx = Context_arg(TAINTED_STRING)
+    with ctx as tainted:
+        ensure_tainted(tainted) # $ tainted
 
 class Iter:
     def __iter__(self):
@@ -42,4 +69,6 @@ def test_for():
 # Make tests runable
 
 test_with()
+test_with_taint()
+test_with_arg()
 test_for()
