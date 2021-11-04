@@ -33,6 +33,20 @@ open class Logger(val logCounter: LogCounter, open val tw: TrapWriter) {
         return "[${SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date())} K]"
     }
 
+    private fun getWarningLocation(): String? {
+        val st = Exception().stackTrace
+        for(x in st) {
+            when(x.className) {
+                "com.github.codeql.Logger",
+                "com.github.codeql.FileLogger" -> {}
+                else -> {
+                    return x.toString()
+                }
+            }
+        }
+        return null
+    }
+
     fun flush() {
         tw.flush()
         System.out.flush()
@@ -53,18 +67,18 @@ open class Logger(val logCounter: LogCounter, open val tw: TrapWriter) {
     fun trace(msg: String, exn: Exception) {
         trace(msg + " // " + exn)
     }
-    fun warn(severity: Severity, msg: String, locationString: String? = null, locationId: Label<DbLocation> = tw.unknownLocation, stackIndex: Int = 2) {
-        val st = Exception().stackTrace
+    fun warn(severity: Severity, msg: String, locationString: String? = null, locationId: Label<DbLocation> = tw.unknownLocation) {
+        val warningLoc = getWarningLocation()
+        val warningLocStr = if(warningLoc == null) "<unknown location>" else warningLoc
         val suffix =
-            if(st.size < stackIndex + 1) {
+            if(warningLoc == null) {
                 "    Missing caller information.\n"
             } else {
-                val caller = st[stackIndex].toString()
-                val count = logCounter.warningCounts.getOrDefault(caller, 0) + 1
-                logCounter.warningCounts[caller] = count
+                val count = logCounter.warningCounts.getOrDefault(warningLoc, 0) + 1
+                logCounter.warningCounts[warningLoc] = count
                 when {
                     logCounter.warningLimit <= 0 -> ""
-                    count == logCounter.warningLimit -> "    Limit reached for warnings from $caller.\n"
+                    count == logCounter.warningLimit -> "    Limit reached for warnings from $warningLoc.\n"
                     count > logCounter.warningLimit -> return
                     else -> ""
                 }
@@ -72,7 +86,7 @@ open class Logger(val logCounter: LogCounter, open val tw: TrapWriter) {
         val ts = timestamp()
         tw.writeDiagnostics(StarLabel(), severity.sev, "", msg, "$ts $msg\n$suffix", locationId)
         val locStr = if (locationString == null) "" else "At " + locationString + ": "
-        print("$ts Warning: $locStr$msg\n$suffix")
+        print("$ts Warning($warningLocStr): $locStr$msg\n$suffix")
     }
     fun warn(msg: String, exn: Exception) {
         warn(Severity.Warn, msg + " // " + exn)
@@ -102,9 +116,9 @@ class FileLogger(logCounter: LogCounter, override val tw: FileTrapWriter): Logge
         return "[${SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date())} K]"
     }
 
-    fun warnElement(severity: Severity, msg: String, element: IrElement, stackIndex: Int = 3) {
+    fun warnElement(severity: Severity, msg: String, element: IrElement) {
         val locationString = tw.getLocationString(element)
         val locationId = tw.getLocation(element)
-        warn(severity, msg, locationString, locationId, stackIndex)
+        warn(severity, msg, locationString, locationId)
     }
 }
