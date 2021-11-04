@@ -36,7 +36,7 @@ predicate isLoginSetup(Express::RouteSetup setup) {
 }
 
 /**
- * Holds if `handler` is regenerates it's session using `req.session.regenerate`.
+ * Holds if `handler` regenerates its session using `req.session.regenerate`.
  */
 pragma[inline]
 predicate regeneratesSession(Express::RouteSetup setup) {
