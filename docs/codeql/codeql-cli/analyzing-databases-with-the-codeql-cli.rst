@@ -63,6 +63,11 @@ You can also specify:
   language to the GitHub code scanning API. For more information about this use case,
   see `Configuring CodeQL CLI in your CI system <https://docs.github.com/en/code-security/secure-coding/using-codeql-code-scanning-with-your-existing-ci-system/configuring-codeql-cli-in-your-ci-system>`__ in the GitHub documentation.
 
+- ``--sarif-add-query-help``: (supported in version 2.7.1 onwards) adds any custom query help written 
+   in Markdown to SARIF (v2.1.0 or later) analysis results. For each query that runs, CodeQL command 
+   replaces the ``.ql`` extension of the query file with ``.md``. If the .md file exists, 
+   its contents are treated as Markdown-formatted help text for the query and included in the SARIF output.
+
 - .. include:: ../reusables/threads-query-execution.rst
 
 
