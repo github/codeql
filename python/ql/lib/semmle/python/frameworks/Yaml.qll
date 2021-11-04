@@ -9,7 +9,6 @@
 
 private import python
 private import semmle.python.dataflow.new.DataFlow
-private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
 
@@ -41,11 +40,17 @@ private module Yaml {
     }
 
     /**
-     * This function was thought safe from the 5.1 release in 2017, when the default loader was changed to `FullLoader`.
-     * In 2020 new exploits were found, meaning it's not safe. The Current plan is to change the default to `SafeLoader` in release 6.0
-     * (as explained in https://github.com/yaml/pyyaml/issues/420#issuecomment-696752389).
-     * Until 6.0 is released, we will mark `yaml.load` as possibly leading to arbitrary code execution.
-     * See https://github.com/yaml/pyyaml/wiki/PyYAML-yaml.load(input)-Deprecation for more details.
+     * This function was thought safe from the 5.1 release in 2017, when the default
+     * loader was changed to `FullLoader` (see
+     * https://github.com/yaml/pyyaml/wiki/PyYAML-yaml.load(input)-Deprecation).
+     *
+     * In 2020 new exploits were found, meaning it's not safe. With the 6.0 release (see
+     * https://github.com/yaml/pyyaml/commit/8cdff2c80573b8be8e8ad28929264a913a63aa33),
+     * when using `load` and `load_all` you are now required to specify a Loader. But
+     * from what I (@RasmusWL) can gather, `FullLoader` is not to be considered safe,
+     * although known exploits have been mitigated (is at least my impression). Also see
+     * https://github.com/yaml/pyyaml/issues/420#issuecomment-696752389 for more
+     * details.
      */
     override predicate mayExecuteInput() {
       func_name in ["full_load", "full_load_all", "unsafe_load", "unsafe_load_all"]
@@ -63,7 +68,7 @@ private module Yaml {
       )
     }
 
-    override DataFlow::Node getAnInput() { result = this.getArg(0) }
+    override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("stream")] }
 
     override DataFlow::Node getOutput() { result = this }
 

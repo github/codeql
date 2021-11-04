@@ -6,7 +6,17 @@ private import DataFlowDispatch
 private import SsaImpl as SsaImpl
 private import FlowSummaryImpl as FlowSummaryImpl
 
+/** Gets the callable in which this node occurs. */
+DataFlowCallable nodeGetEnclosingCallable(NodeImpl n) { result = n.getEnclosingCallable() }
+
+/** Holds if `p` is a `ParameterNode` of `c` with position `pos`. */
+predicate isParameterNode(ParameterNodeImpl p, DataFlowCallable c, int pos) {
+  p.isParameterOf(c, pos)
+}
+
 abstract class NodeImpl extends Node {
+  DataFlowCallable getEnclosingCallable() { result = TCfgScope(this.getCfgScope()) }
+
   /** Do not call: use `getEnclosingCallable()` instead. */
   abstract CfgScope getCfgScope();
 
@@ -306,7 +316,7 @@ private module ParameterNodes {
   abstract class ParameterNodeImpl extends ParameterNode, NodeImpl {
     abstract predicate isSourceParameterOf(Callable c, int i);
 
-    override predicate isParameterOf(DataFlowCallable c, int i) {
+    predicate isParameterOf(DataFlowCallable c, int i) {
       this.isSourceParameterOf(c.asCallable(), i)
     }
   }
@@ -796,7 +806,7 @@ predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
     )
   or
   receiver = call.(SummaryCall).getReceiver() and
-  if receiver.(ParameterNode).isParameterOf(_, -2)
+  if receiver.(ParameterNodeImpl).isParameterOf(_, -2)
   then kind = TYieldCallKind()
   else kind = TLambdaCallKind()
 }

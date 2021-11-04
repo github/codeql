@@ -317,7 +317,7 @@ module PrettyPrintCatCall {
    */
   string createFileThatIsReadFromCommandList(CommandCall call) {
     exists(DataFlow::ArrayCreationNode array, DataFlow::Node element |
-      array = call.getArgumentList().(DataFlow::ArrayCreationNode) and
+      array = call.getArgumentList() and
       array.getSize() = 1 and
       element = array.getElement(0)
     |

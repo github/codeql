@@ -121,31 +121,6 @@ private predicate isStartActivityOrServiceSink(DataFlow::Node arg) {
   )
 }
 
-private predicate isCleanIntent(Expr intent) {
-  intent.getType() instanceof TypeIntent and
-  (
-    exists(MethodAccess setRecieverMa |
-      setRecieverMa.getQualifier() = intent and
-      setRecieverMa.getMethod().hasName(["setPackage", "setClass", "setClassName", "setComponent"])
-    )
-    or
-    // Handle the cases where the PackageContext and Class are set at construction time
-    //    Intent(Context packageContext, Class<?> cls)
-    //    Intent(String action, Uri uri, Context packageContext, Class<?> cls)
-    exists(ConstructorCall cc | cc = intent |
-      cc.getConstructedType() instanceof TypeIntent and
-      cc.getNumArgument() > 1 and
-      (
-        cc.getArgument(0).getType() instanceof TypeContext and
-        not maybeNullArg(cc.getArgument(1))
-        or
-        cc.getArgument(2).getType() instanceof TypeContext and
-        not maybeNullArg(cc.getArgument(3))
-      )
-    )
-  )
-}
-
 /**
  * Taint configuration tracking flow from variables containing sensitive information to broadcast Intents.
  */
@@ -165,11 +140,7 @@ class SensitiveCommunicationConfig extends TaintTracking::Configuration {
   /**
    * Holds if broadcast doesn't specify receiving package name of the 3rd party app
    */
-  override predicate isSanitizer(DataFlow::Node node) {
-    exists(DataFlow::Node intent | isCleanIntent(intent.asExpr()) |
-      DataFlow::localFlow(intent, node)
-    )
-  }
+  override predicate isSanitizer(DataFlow::Node node) { node instanceof ExplicitIntentSanitizer }
 
   override predicate allowImplicitRead(DataFlow::Node node, DataFlow::Content c) {
     super.allowImplicitRead(node, c)

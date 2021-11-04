@@ -12,7 +12,7 @@ db = SQLAlchemy(app)
 # - https://github.com/pallets/flask-sqlalchemy/blob/931ec00d1e27f51508e05706eef41cc4419a0b32/src/flask_sqlalchemy/__init__.py#L765
 # - https://github.com/pallets/flask-sqlalchemy/blob/931ec00d1e27f51508e05706eef41cc4419a0b32/src/flask_sqlalchemy/__init__.py#L99-L109
 
-assert str(type(db.text("Foo"))) == "<class 'sqlalchemy.sql.elements.TextClause'>"
+assert str(type(db.text("Foo"))) == "<class 'sqlalchemy.sql.elements.TextClause'>"  # $ constructedSql="Foo"
 
 # also has engine/session instantiated
 
@@ -44,8 +44,8 @@ assert result.fetchall() == [("Foo",)]
 
 
 # text
-t = db.text("foo")
+t = db.text("foo")  # $ constructedSql="foo"
 assert isinstance(t, sqlalchemy.sql.expression.TextClause)
 
-t = db.text(text="foo")
+t = db.text(text="foo")  # $ constructedSql="foo"
 assert isinstance(t, sqlalchemy.sql.expression.TextClause)

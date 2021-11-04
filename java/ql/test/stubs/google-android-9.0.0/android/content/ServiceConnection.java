@@ -2,7 +2,6 @@
 
 package android.content;
 
-import android.content.ComponentName;
 import android.os.IBinder;
 
 public interface ServiceConnection

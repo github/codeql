@@ -25,8 +25,6 @@ class Node extends TNode {
   // TODO: cache
   final Location getLocation() { result = this.(NodeImpl).getLocationImpl() }
 
-  DataFlowCallable getEnclosingCallable() { result = TCfgScope(this.(NodeImpl).getCfgScope()) }
-
   /**
    * Holds if this element is at the specified location.
    * The location spans column `startcolumn` of line `startline` to
@@ -85,12 +83,6 @@ class ExprNode extends Node, TExprNode {
 class ParameterNode extends Node, TParameterNode {
   /** Gets the parameter corresponding to this node, if any. */
   Parameter getParameter() { none() }
-
-  /**
-   * Holds if this node is the parameter of callable `c` at the specified
-   * (zero-based) position.
-   */
-  predicate isParameterOf(DataFlowCallable c, int i) { none() }
 }
 
 /**
