@@ -31,7 +31,7 @@ Each extractor defines its own set of configuration options. To find out which o
                      "description" : "An example array option for the Java extractor",
                      "type" : "array",
                      "pattern" : "[1-9][0-9]*"
-                 }
+                }
              }
          }
          }
