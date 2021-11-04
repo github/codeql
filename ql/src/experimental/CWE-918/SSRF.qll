@@ -77,7 +77,7 @@ module ServerSideRequestForgery {
   /**
    * An user controlled input, considered as a flow source for request forgery.
    */
-  class UntrustedFlowAsSource extends Source, UntrustedFlowSource { }
+  class UntrustedFlowAsSource extends Source instanceof UntrustedFlowSource { }
 
   /**
    * The URL of an HTTP request, viewed as a sink for request forgery.
