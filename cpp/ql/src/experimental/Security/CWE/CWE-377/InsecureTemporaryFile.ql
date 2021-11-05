@@ -96,5 +96,5 @@ where
     fctmp.getTarget().hasGlobalOrStdName("chmod")
   ) and
   msg =
-    "Сreating a file for writing without evaluating its existence and setting permissions can be unsafe."
+    "Creating a file for writing without evaluating its existence and setting permissions can be unsafe."
 select fc, msg
