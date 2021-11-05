@@ -18,13 +18,6 @@ def flask_Response():
     return resp
 
 
-@app.route("/flask_make_response")
-def flask_make_response():
-    resp = make_response("hello")
-    resp.headers['Set-Cookie'] = "name=value; Secure; HttpOnly; SameSite=Lax;"
-    return resp
-
-
 def indeterminate(secure):
     resp = make_response()
     resp.set_cookie("name", value="value", secure=secure)
