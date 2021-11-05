@@ -15,7 +15,6 @@ private class SqlSinkCsv extends SinkModelCsv {
     row =
       [
         //"package;type;overrides;name;signature;ext;spec;kind"
-        "org.springframework.jdbc.core;JdbcTemplate;false;batchUpdate;(String[]);;Argument[0];sql",
         "org.springframework.jdbc.core;JdbcTemplate;false;batchUpdate;;;Argument[0];sql",
         "org.springframework.jdbc.core;JdbcTemplate;false;execute;;;Argument[0];sql",
         "org.springframework.jdbc.core;JdbcTemplate;false;update;;;Argument[0];sql",

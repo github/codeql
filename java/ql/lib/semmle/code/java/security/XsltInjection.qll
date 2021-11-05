@@ -19,7 +19,7 @@ private class DefaultXsltInjectionSinkModel extends SinkModelCsv {
   override predicate row(string row) {
     row =
       [
-        "javax.xml.transform;Transformer;false;transform;;;Argument[-1];xslt",
+        "javax.xml.transform;Transformer;true;transform;;;Argument[-1];xslt",
         "net.sf.saxon.s9api;XsltTransformer;false;transform;;;Argument[-1];xslt",
         "net.sf.saxon.s9api;Xslt30Transformer;false;transform;;;Argument[-1];xslt",
         "net.sf.saxon.s9api;Xslt30Transformer;false;applyTemplates;;;Argument[-1];xslt",

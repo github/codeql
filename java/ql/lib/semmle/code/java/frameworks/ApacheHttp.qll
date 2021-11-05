@@ -152,6 +152,8 @@ private class ApacheHttpFlowStep extends SummaryModelCsv {
         "org.apache.http;HttpEntity;true;getContentType;();;Argument[-1];ReturnValue;taint",
         "org.apache.http;RequestLine;true;getMethod;();;Argument[-1];ReturnValue;taint",
         "org.apache.http;RequestLine;true;getUri;();;Argument[-1];ReturnValue;taint",
+        "org.apache.http;RequestLine;true;toString;();;Argument[-1];ReturnValue;taint",
+        "org.apache.http.message;BasicRequestLine;false;BasicRequestLine;;;Argument[1];Argument[-1];taint",
         "org.apache.http.params;HttpParams;true;getParameter;(String);;Argument[-1];ReturnValue;taint",
         "org.apache.http.params;HttpParams;true;getDoubleParameter;(String,double);;Argument[-1];ReturnValue;taint",
         "org.apache.http.params;HttpParams;true;getIntParameter;(String,int);;Argument[-1];ReturnValue;taint",
@@ -261,10 +263,7 @@ private class ApacheHttpFlowStep extends SummaryModelCsv {
         "org.apache.hc.core5.util;CharArrayBuffer;true;toString;();;Argument[-1];ReturnValue;taint",
         "org.apache.hc.core5.util;CharArrayBuffer;true;substring;(int,int);;Argument[-1];ReturnValue;taint",
         "org.apache.hc.core5.util;CharArrayBuffer;true;subSequence;(int,int);;Argument[-1];ReturnValue;taint",
-        "org.apache.hc.core5.util;CharArrayBuffer;true;substringTrimmed;(int,int);;Argument[-1];ReturnValue;taint",
-        "org.apache.http.message;BasicRequestLine;false;BasicRequestLine;;;Argument[1];Argument[-1];taint",
-        "org.apache.http;RequestLine;true;getUri;;;Argument[-1];ReturnValue;taint",
-        "org.apache.http;RequestLine;true;toString;;;Argument[-1];ReturnValue;taint"
+        "org.apache.hc.core5.util;CharArrayBuffer;true;substringTrimmed;(int,int);;Argument[-1];ReturnValue;taint"
       ]
   }
 }
