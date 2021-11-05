@@ -3,7 +3,7 @@ from flask import Flask, request, make_response, Response
 app = Flask(__name__)
 
 
-@app.route("/true")
+@app.route("/1")
 def true():
     resp = make_response()
     resp.set_cookie("name", value="value", secure=True,
@@ -11,7 +11,7 @@ def true():
     return resp
 
 
-@app.route("/flask_Response")
+@app.route("/2")
 def flask_Response():
     resp = Response()
     resp.headers['Set-Cookie'] = "name=value; Secure; HttpOnly; SameSite=Lax;"
