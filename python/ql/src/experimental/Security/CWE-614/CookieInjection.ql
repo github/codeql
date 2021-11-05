@@ -22,7 +22,7 @@ from
 where
   config.hasFlowPath(source, sink) and
   if exists(sink.getNode().(CookieSink))
-  then insecure = "and it's " + sink.getNode().(CookieSink).getFlag() + " flag is not properly set"
+  then insecure = "and its " + sink.getNode().(CookieSink).getFlag() + " flag is not properly set"
   else insecure = ""
 select sink.getNode(), "Cookie is constructed from a", source.getNode(), "user-supplied input",
   insecure
