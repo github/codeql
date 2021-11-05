@@ -519,4 +519,32 @@ module Flask {
 
     override DataFlow::Node getValueArg() { none() }
   }
+
+  /**
+   * A call to `flask.send_from_directory`.
+   *
+   * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.send_from_directory
+   */
+  class FlaskSendFromDirectory extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    FlaskSendFromDirectory() {
+      this = API::moduleImport("flask").getMember("send_from_directory").getACall()
+    }
+
+    override DataFlow::Node getAPathArgument() {
+      result in [this.getArg(_), this.getArgByName(["directory", "filename"])]
+    }
+  }
+
+  /**
+   * A call to `flask.send_file`.
+   *
+   * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.send_file
+   */
+  class FlaskSendFile extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    FlaskSendFile() { this = API::moduleImport("flask").getMember("send_file").getACall() }
+
+    override DataFlow::Node getAPathArgument() {
+      result in [this.getArg(0), this.getArgByName("filename_or_fp")]
+    }
+  }
 }
