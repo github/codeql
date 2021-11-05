@@ -106,9 +106,3 @@ class LdapVul extends TaintTracking::Configuration {
     super.isSanitizer(sanitizer) or sanitizer instanceof LdapSanitizer
   }
 }
-from LdapVul config, DataFlow::PathNode source, DataFlow::PathNode sink
-where config.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "$@ LDAP query parameter comes from $@.", sink.getNode(),
-  "This", source.getNode(), "a user-provided value"
-
-
