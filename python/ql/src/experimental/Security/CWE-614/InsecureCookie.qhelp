@@ -4,12 +4,17 @@
 <qhelp>
 
 <overview>
-<p>Failing to set the 'secure' flag on a cookie can cause it to be sent in cleartext.
-This makes it easier for an attacker to intercept.</p>
+<p>Setting the 'secure' flag on a cookie to <code>False</code> can cause it to be sent in cleartext.
+Setting the 'httponly' flag on a cookie to <code>False</code> may allow attackers access it via JavaScript.
+Setting the 'samesite' flag on a cookie to <code>'None'</code> will make the cookie to be sent in third-party 
+contexts which may be attacker-controlled.</p>
 </overview>
 
 <recommendation>
 <p>Always set <code>secure</code> to <code>True</code> or add "; Secure;" to the cookie's raw value.</p>
+<p>Always set <code>httponly</code> to <code>True</code> or add "; HttpOnly;" to the cookie's raw value.</p>
+<p>Always set <code>samesite</code> to <code>Lax</code> or <code>Strict</code>, or add "; SameSite=Lax;", or
+"; Samesite=Strict;" to the cookie's raw header value.</p>
 </recommendation>
 
 <example>

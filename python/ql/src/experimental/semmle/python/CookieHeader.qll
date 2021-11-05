@@ -7,6 +7,25 @@ import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
 import experimental.semmle.python.Concepts
 
+/**
+ * Gets a header setting a cookie.
+ *
+ * Given the following example:
+ *
+ * ```py
+ * @app.route("/")
+ * def flask_make_response():
+ *    resp = make_response("")
+ *    resp.headers['Set-Cookie'] = "name=value; Secure;"
+ *    return resp
+ * ```
+ *
+ * * `this` would be `resp.headers['Set-Cookie'] = "name=value; Secure;"`.
+ * * `isSecure()` predicate would succeed.
+ * * `isHttpOnly()` predicate would fail.
+ * * `isSameSite()` predicate would fail.
+ * * `getName()` and `getValue()` results would be `"name=value; Secure;"`.
+ */
 class CookieHeader extends HeaderDeclaration, Cookie::Range {
   CookieHeader() {
     this instanceof HeaderDeclaration and

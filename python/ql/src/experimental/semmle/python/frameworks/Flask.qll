@@ -82,6 +82,26 @@ module ExperimentalFlask {
     override DataFlow::Node getValueArg() { result.asExpr() = item.getValue() }
   }
 
+  /**
+   * Gets a call to `set_cookie()`.
+   *
+   * Given the following example:
+   *
+   * ```py
+   * @app.route("/")
+   * def false():
+   *    resp = make_response()
+   *    resp.set_cookie("name", value="value", secure=True, httponly=True, samesite='Lax')
+   *    return resp
+   * ```
+   *
+   * * `this` would be `resp.set_cookie("name", value="value", secure=False, httponly=False, samesite='None')`.
+   * * `getName()`'s result would be `"name"`.
+   * * `getValue()`'s result would be `"value"`.
+   * * `isSecure()` predicate would succeed.
+   * * `isHttpOnly()` predicate would succeed.
+   * * `isSameSite()` predicate would succeed.
+   */
   class FlaskSetCookieCall extends DataFlow::CallCfgNode, Cookie::Range {
     FlaskSetCookieCall() {
       this =

@@ -1,10 +1,9 @@
 /**
- * @name Failure to use secure cookies
- * @description Insecure cookies may be sent in cleartext, which makes them vulnerable to
- *              interception.
+ * @name Construction of a cookie using user-supplied input.
+ * @description Constructing cookies from user input may allow an attacker to perform a Cookie Poisoning attack.
  * @kind problem
  * @problem.severity error
- * @id py/insecure-cookie
+ * @id py/cookie-injection
  * @tags security
  *       external/cwe/cwe-614
  */

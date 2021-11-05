@@ -87,6 +87,25 @@ private module PrivateDjango {
             override DataFlow::Node getValueArg() { result = headerInput }
           }
 
+          /**
+           * Gets a call to `set_cookie()`.
+           *
+           * Given the following example:
+           *
+           * ```py
+           * def django_response(request):
+           *    resp = django.http.HttpResponse()
+           *    resp.set_cookie("name", "value", secure=True, httponly=True, samesite='Lax')
+           *    return resp
+           * ```
+           *
+           * * `this` would be `resp.set_cookie("name", "value", secure=False, httponly=False, samesite='None')`.
+           * * `getName()`'s result would be `"name"`.
+           * * `getValue()`'s result would be `"value"`.
+           * * `isSecure()` predicate would succeed.
+           * * `isHttpOnly()` predicate would succeed.
+           * * `isSameSite()` predicate would succeed.
+           */
           class DjangoSetCookieCall extends DataFlow::CallCfgNode, Cookie::Range {
             DjangoSetCookieCall() { this = baseClassRef().getMember("set_cookie").getACall() }
 
