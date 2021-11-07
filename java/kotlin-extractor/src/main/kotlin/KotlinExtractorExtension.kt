@@ -873,16 +873,41 @@ open class KotlinFileExtractor(
             }
         }
 
+        val locId = tw.getLocation(c)
+        tw.writeHasLocation(id, locId)
+
         c.typeParameters.map { extractTypeParameter(it) }
         c.declarations.map { extractDeclaration(it, id) }
         extractObjectInitializerFunction(c, id)
-
-        val locId = tw.getLocation(c)
-        tw.writeHasLocation(id, locId)
+        if(c.isObject) {
+            // For `object MyObject { ... }`, the .class has an
+            // automatically-generated `public static final MyObject INSTANCE`
+            // field that may be referenced from Java code, and is used in our
+            // IrGetObjectValue support. We therefore need to fabricate it
+            // here.
+            val instance = useObjectClassInstance(c)
+            val type = useSimpleTypeClass(c, emptyList(), false)
+            tw.writeFields(instance.id, instance.name, type.javaResult.id, type.kotlinResult.id, id, instance.id)
+            tw.writeHasLocation(instance.id, locId)
+            @Suppress("UNCHECKED_CAST")
+            tw.writeClass_object(id as Label<DbClass>, instance.id)
+        }
 
         extractClassCommon(c, id)
 
         return id
+    }
+
+    data class ObjectClassInstance(val id: Label<DbField>, val name: String)
+    fun useObjectClassInstance(c: IrClass): ObjectClassInstance {
+        if(!c.isObject) {
+            logger.warn(Severity.ErrorSevere, "Using instance for non-object class")
+        }
+        val classId = useClassSource(c)
+        val instanceName = "INSTANCE"
+        val instanceLabel = "@\"field;{$classId};$instanceName\""
+        val instanceId: Label<DbField> = tw.getLabelFor(instanceLabel)
+        return ObjectClassInstance(instanceId, instanceName)
     }
 
     private fun isQualifiedThis(vp: IrValueParameter): Boolean {
@@ -1622,6 +1647,22 @@ open class KotlinFileExtractor(
             is IrTypeOperatorCall -> {
                 val exprParent = parent.expr(e, callable)
                 extractTypeOperatorCall(e, callable, exprParent.parent, exprParent.idx)
+            }
+            is IrGetObjectValue -> {
+                // For `object MyObject { ... }`, the .class has an
+                // automatically-generated `public static final MyObject INSTANCE`
+                // field that we are accessing here.
+                val exprParent = parent.expr(e, callable)
+                val c: IrClass = e.symbol.owner
+                val instance = useObjectClassInstance(c)
+
+                val id = tw.getFreshIdLabel<DbVaraccess>()
+                val type = useType(e.type)
+                val locId = tw.getLocation(e)
+                tw.writeExprs_varaccess(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
+                tw.writeHasLocation(id, locId)
+
+                tw.writeVariableBinding(id, instance.id)
             }
             else -> {
                 logger.warnElement(Severity.ErrorSevere, "Unrecognised IrExpression: " + e.javaClass, e)

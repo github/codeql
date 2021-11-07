@@ -314,6 +314,11 @@ classes(
   int sourceid: @class ref
 );
 
+class_object(
+  unique int id: @class ref,
+  unique int instance: @field ref
+);
+
 kt_nullable_types(
   unique int id: @kt_nullable_type,
   int classid: @classorinterface ref

@@ -712,6 +712,18 @@ class Class extends ClassOrInterface, @class {
   override string getAPrimaryQlClass() { result = "Class" }
 }
 
+/** A Kotlin `object`. */
+class ClassObject extends Class {
+  ClassObject() {
+    class_object(this, _)
+  }
+
+  /** Gets the instance variable that implements this `object`. */
+  Field getInstance() {
+    class_object(this, result)
+  }
+}
+
 /**
  * A record declaration.
  */
