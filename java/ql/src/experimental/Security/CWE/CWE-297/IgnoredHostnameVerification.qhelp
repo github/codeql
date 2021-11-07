@@ -21,14 +21,14 @@ if the method returns false.
 
 <example>
 <p>
-In the following example, the method <code>HostnameVerifier.verify()</code> but its result is ignored.
+In the following example, the method <code>HostnameVerifier.verify()</code> is called but its result is ignored.
 As a result, no hostname verification actually happens.
 </p>
 <sample src="IgnoredHostnameVerification.java" />
 
 <p>
 In the next example, the result of the <code>HostnameVerifier.verify()</code> method is checked
-and an exeption is thrown if it the verification failed.
+and an exeption is thrown if the verification failed.
 </p>
 <sample src="CheckedHostnameVerification.java" />
 </example>
@@ -36,7 +36,7 @@ and an exeption is thrown if it the verification failed.
 <references>
 <li>
   Java API Specification:
-  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/javax/net/ssl/HostnameVerifier.html#verify(java.lang.String,javax.net.ssl.SSLSession)">HostnameVerifier.veify() method</a>.
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/javax/net/ssl/HostnameVerifier.html#verify(java.lang.String,javax.net.ssl.SSLSession)">HostnameVerifier.verify() method</a>.
 </li>
 </references>
 </qhelp>
