@@ -1,0 +1,32 @@
+nodes
+| tst.js:6:7:6:40 | pw |
+| tst.js:6:12:6:40 | req.par ... sword") |
+| tst.js:6:12:6:40 | req.par ... sword") |
+| tst.js:8:12:8:28 | "password: " + pw |
+| tst.js:8:12:8:28 | "password: " + pw |
+| tst.js:8:27:8:28 | pw |
+| tst.js:15:7:15:58 | pw |
+| tst.js:15:12:15:58 | url.par ... assword |
+| tst.js:15:12:15:58 | url.par ... assword |
+| tst.js:17:15:17:31 | "password: " + pw |
+| tst.js:17:15:17:31 | "password: " + pw |
+| tst.js:17:30:17:31 | pw |
+| tst.js:20:13:20:25 | data.password |
+| tst.js:20:13:20:25 | data.password |
+| tst.js:20:13:20:25 | data.password |
+edges
+| tst.js:6:7:6:40 | pw | tst.js:8:27:8:28 | pw |
+| tst.js:6:12:6:40 | req.par ... sword") | tst.js:6:7:6:40 | pw |
+| tst.js:6:12:6:40 | req.par ... sword") | tst.js:6:7:6:40 | pw |
+| tst.js:8:27:8:28 | pw | tst.js:8:12:8:28 | "password: " + pw |
+| tst.js:8:27:8:28 | pw | tst.js:8:12:8:28 | "password: " + pw |
+| tst.js:15:7:15:58 | pw | tst.js:17:30:17:31 | pw |
+| tst.js:15:12:15:58 | url.par ... assword | tst.js:15:7:15:58 | pw |
+| tst.js:15:12:15:58 | url.par ... assword | tst.js:15:7:15:58 | pw |
+| tst.js:17:30:17:31 | pw | tst.js:17:15:17:31 | "password: " + pw |
+| tst.js:17:30:17:31 | pw | tst.js:17:15:17:31 | "password: " + pw |
+| tst.js:20:13:20:25 | data.password | tst.js:20:13:20:25 | data.password |
+#select
+| tst.js:8:12:8:28 | "password: " + pw | tst.js:6:12:6:40 | req.par ... sword") | tst.js:8:12:8:28 | "password: " + pw | Outputting $@ to log. | tst.js:6:12:6:40 | req.par ... sword") | a call to param |
+| tst.js:17:15:17:31 | "password: " + pw | tst.js:15:12:15:58 | url.par ... assword | tst.js:17:15:17:31 | "password: " + pw | Outputting $@ to log. | tst.js:15:12:15:58 | url.par ... assword | an access to current_password |
+| tst.js:20:13:20:25 | data.password | tst.js:20:13:20:25 | data.password | tst.js:20:13:20:25 | data.password | Outputting $@ to log. | tst.js:20:13:20:25 | data.password | an access to password |
