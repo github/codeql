@@ -10,6 +10,7 @@ private import codeql.ruby.Concepts
 private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.dataflow.BarrierGuards
 private import codeql.ruby.dataflow.Sanitizers
+private import codeql.ruby.frameworks.ActionController
 
 /**
  * Provides default sources, sinks and sanitizers for detecting
@@ -54,15 +55,25 @@ module UrlRedirect {
    */
   class RedirectLocationAsSink extends Sink {
     RedirectLocationAsSink() {
-      exists(HTTP::Server::HttpRedirectResponse e |
+      exists(HTTP::Server::HttpRedirectResponse e, MethodBase method |
         this = e.getRedirectLocation() and
-        // As a rough heuristic, assume that methods with these names are handlers for POST/PUT/PATCH/DELETE requests,
-        // which are not as vulnerable to URL redirection because browsers will not initiate them from clicking a link.
-        not this.asExpr()
-            .getExpr()
-            .getEnclosingMethod()
-            .getName()
-            .regexpMatch(".*(create|update|destroy).*")
+        // We only want handlers for GET requests.
+        // Handlers for other HTTP methods are not as vulnerable to URL
+        // redirection as browsers will not initiate them from clicking a link.
+        method = this.asExpr().getExpr().getEnclosingMethod() and
+        (
+          // If there's a Rails GET route to this handler, we can be certain that it is a candiate.
+          method.(ActionControllerActionMethod).getARoute().getHTTPMethod() = "get"
+          or
+          // Otherwise, we have to rely on a heuristic to filter out invulnerable handlers.
+          // We exclude any handlers with names containing create/update/destroy, as these are not likely to handle GET requests.
+          not exists(method.(ActionControllerActionMethod).getARoute()) and
+          not this.asExpr()
+              .getExpr()
+              .getEnclosingMethod()
+              .getName()
+              .regexpMatch(".*(create|update|destroy).*")
+        )
       )
     }
   }
