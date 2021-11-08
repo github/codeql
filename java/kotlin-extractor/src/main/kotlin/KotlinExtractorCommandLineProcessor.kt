@@ -35,7 +35,7 @@ class KotlinExtractorCommandLineProcessor : CommandLineProcessor {
         "checkTrapIdentical" ->
             when (value) {
             "true" -> configuration.put(KEY_CHECK_TRAP_IDENTICAL, true)
-            "fale" -> configuration.put(KEY_CHECK_TRAP_IDENTICAL, false)
+            "false" -> configuration.put(KEY_CHECK_TRAP_IDENTICAL, false)
             else -> error("kotlin extractor: Bad argument $value for checkTrapIdentical")
         }
         else -> error("kotlin extractor: Bad option: ${option.optionName}")
