@@ -709,6 +709,11 @@ class Class extends ClassOrInterface, @class {
     )
   }
 
+  /** Get the companion object of this class, if any. */
+  ClassCompanionObject getCompanionObject() {
+    class_companion_object(this, _, result)
+  }
+
   override string getAPrimaryQlClass() { result = "Class" }
 }
 
@@ -721,6 +726,18 @@ class ClassObject extends Class {
   /** Gets the instance variable that implements this `object`. */
   Field getInstance() {
     class_object(this, result)
+  }
+}
+
+/** A Kotlin `companion object`. */
+class ClassCompanionObject extends Class {
+  ClassCompanionObject() {
+    class_companion_object(_, _, this)
+  }
+
+  /** Gets the instance variable that implements this `companion object`. */
+  Field getInstance() {
+    class_companion_object(_, result, this)
   }
 }
 

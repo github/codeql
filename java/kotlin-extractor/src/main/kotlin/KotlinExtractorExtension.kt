@@ -622,6 +622,9 @@ class X {
         }
     }
 
+    /*
+    This returns the `X` in c's label `@"class;X"`.
+    */
     private fun getUnquotedClassLabel(c: IrClass, typeArgs: List<IrTypeArgument>): String {
         val pkg = c.packageFqName?.asString() ?: ""
         val cls = c.name.asString()
@@ -876,6 +879,28 @@ open class KotlinFileExtractor(
         val locId = tw.getLocation(c)
         tw.writeHasLocation(id, locId)
 
+        val parent = c.parent
+        if (parent is IrClass) {
+            val parentId = useClassInstance(parent, listOf()).classLabel
+            tw.writeEnclInReftype(id, parentId)
+            if(c.isCompanion) {
+                // If we are a companion then our parent has a
+                //     public static final ParentClass$CompanionObjectClass CompanionObJectName;
+                // that we need to fabricate here
+                val instance = useCompanionObjectClassInstance(c)
+                if(instance != null) {
+                    val type = useSimpleTypeClass(c, emptyList(), false)
+                    tw.writeFields(instance.id, instance.name, type.javaResult.id, type.kotlinResult.id, id, instance.id)
+                    tw.writeHasLocation(instance.id, locId)
+                    tw.writeHasModifier(instance.id, extractModifier("public"))
+                    tw.writeHasModifier(instance.id, extractModifier("static"))
+                    tw.writeHasModifier(instance.id, extractModifier("final"))
+                    @Suppress("UNCHECKED_CAST")
+                    tw.writeClass_companion_object(parentId as Label<DbClass>, instance.id, id as Label<DbClass>)
+                }
+            }
+        }
+
         c.typeParameters.map { extractTypeParameter(it) }
         c.declarations.map { extractDeclaration(it, id) }
         extractObjectInitializerFunction(c, id)
@@ -901,8 +926,27 @@ open class KotlinFileExtractor(
         return id
     }
 
-    data class ObjectClassInstance(val id: Label<DbField>, val name: String)
-    fun useObjectClassInstance(c: IrClass): ObjectClassInstance {
+    data class FieldResult(val id: Label<DbField>, val name: String)
+
+    fun useCompanionObjectClassInstance(c: IrClass): FieldResult? {
+        val parent = c.parent
+        if(!c.isCompanion) {
+            logger.warn(Severity.ErrorSevere, "Using companion instance for non-companion class")
+            return null
+        }
+        else if (parent !is IrClass) {
+            logger.warn(Severity.ErrorSevere, "Using companion instance for non-companion class")
+            return null
+        } else {
+            val parentId = useClassInstance(parent, listOf()).classLabel
+            val instanceName = c.name.asString()
+            val instanceLabel = "@\"field;{$parentId};$instanceName\""
+            val instanceId: Label<DbField> = tw.getLabelFor(instanceLabel)
+            return FieldResult(instanceId, instanceName)
+        }
+    }
+
+    fun useObjectClassInstance(c: IrClass): FieldResult {
         if(!c.isNonCompanionObject) {
             logger.warn(Severity.ErrorSevere, "Using instance for non-object class")
         }
@@ -910,7 +954,7 @@ open class KotlinFileExtractor(
         val instanceName = "INSTANCE"
         val instanceLabel = "@\"field;{$classId};$instanceName\""
         val instanceId: Label<DbField> = tw.getLabelFor(instanceLabel)
-        return ObjectClassInstance(instanceId, instanceName)
+        return FieldResult(instanceId, instanceName)
     }
 
     private fun isQualifiedThis(vp: IrValueParameter): Boolean {
@@ -1657,15 +1701,17 @@ open class KotlinFileExtractor(
                 // field that we are accessing here.
                 val exprParent = parent.expr(e, callable)
                 val c: IrClass = e.symbol.owner
-                val instance = useObjectClassInstance(c)
+                val instance = if (c.isCompanion) useCompanionObjectClassInstance(c) else useObjectClassInstance(c)
 
-                val id = tw.getFreshIdLabel<DbVaraccess>()
-                val type = useType(e.type)
-                val locId = tw.getLocation(e)
-                tw.writeExprs_varaccess(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
-                tw.writeHasLocation(id, locId)
+                if(instance != null) {
+                    val id = tw.getFreshIdLabel<DbVaraccess>()
+                    val type = useType(e.type)
+                    val locId = tw.getLocation(e)
+                    tw.writeExprs_varaccess(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
+                    tw.writeHasLocation(id, locId)
 
-                tw.writeVariableBinding(id, instance.id)
+                    tw.writeVariableBinding(id, instance.id)
+                }
             }
             else -> {
                 logger.warnElement(Severity.ErrorSevere, "Unrecognised IrExpression: " + e.javaClass, e)

@@ -319,6 +319,12 @@ class_object(
   unique int instance: @field ref
 );
 
+class_companion_object(
+  unique int id: @class ref,
+  unique int instance: @field ref,
+  unique int companion_object: @class ref
+);
+
 kt_nullable_types(
   unique int id: @kt_nullable_type,
   int classid: @classorinterface ref

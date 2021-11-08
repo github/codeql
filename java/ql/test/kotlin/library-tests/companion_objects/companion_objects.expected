@@ -1,0 +1,1 @@
+| companion_objects.kt:1:1:6:1 | MyClass | companion_objects.kt:3:5:5:5 | MyClassCompanion | companion_objects.kt:3:5:5:5 | MyClassCompanion | final,public,static |
