@@ -129,8 +129,36 @@ private module Sendgrid {
         typePair.getValue().(Str_).getS() = ["text/html", "text/x-amp-html"] and
         valuePair.getKey().(Str_).getS() = "value" and
         result.asExpr() = valuePair.getValue() and
-        // since the pairs' keys are already set, this will set the items accordingly
+        // correlate generalDict with previously set KeyValuePairs
         generalDict.getAnItem() in [typePair, valuePair]
+      )
+      or
+      exists(KeyValuePair footer, Dict generalDict, KeyValuePair enablePair, KeyValuePair htmlPair |
+        footer.getKey().(Str_).getS() = "footer" and
+        footer.getValue().(Dict) = generalDict and
+        // check footer is enabled
+        enablePair.getKey().(Str_).getS() = "enable" and
+        exists(enablePair.getValue().(True)) and
+        // get html content
+        htmlPair.getKey().(Str_).getS() = "html" and
+        result.asExpr() = htmlPair.getValue() and
+        // correlate generalDict with previously set KeyValuePairs
+        generalDict.getAnItem() in [enablePair, htmlPair]
+      )
+      or
+      exists(
+        KeyValuePair subTracking, Dict generalDict, KeyValuePair enablePair, KeyValuePair htmlPair
+      |
+        subTracking.getKey().(Str_).getS() = "subscription_tracking" and
+        subTracking.getValue().(Dict) = generalDict and
+        // check subscription tracking is enabled
+        enablePair.getKey().(Str_).getS() = "enable" and
+        exists(enablePair.getValue().(True)) and
+        // get html content
+        htmlPair.getKey().(Str_).getS() = "html" and
+        result.asExpr() = htmlPair.getValue() and
+        // correlate generalDict with previously set KeyValuePairs
+        generalDict.getAnItem() in [enablePair, htmlPair]
       )
     }
 
