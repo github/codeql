@@ -60,7 +60,8 @@
 | Test.kt:18:3:18:3 | <Expr>; | 20 | Test.kt:30:7:30:12 | ... == ... |
 | Test.kt:21:3:24:9 | ... -> ... | 0 | Test.kt:21:3:24:9 | ... -> ... |
 | Test.kt:21:3:24:9 | ... -> ... | 1 | Test.kt:21:3:24:9 | true |
-| Test.kt:21:3:24:9 | ... -> ... | 2 | Test.kt:24:4:24:9 | return ... |
+| Test.kt:21:3:24:9 | ... -> ... | 2 | Test.kt:24:4:24:9 | INSTANCE |
+| Test.kt:21:3:24:9 | ... -> ... | 3 | Test.kt:24:4:24:9 | return ... |
 | Test.kt:30:15:33:3 | { ... } | 0 | Test.kt:30:15:33:3 | { ... } |
 | Test.kt:30:15:33:3 | { ... } | 1 | Test.kt:31:4:31:4 | <Expr>; |
 | Test.kt:30:15:33:3 | { ... } | 2 | Test.kt:31:8:31:9 | 60 |
@@ -101,5 +102,6 @@
 | Test.kt:43:3:43:3 | <Expr>; | 6 | Test.kt:77:3:77:3 | <Expr>; |
 | Test.kt:43:3:43:3 | <Expr>; | 7 | Test.kt:77:7:77:8 | 40 |
 | Test.kt:43:3:43:3 | <Expr>; | 8 | Test.kt:77:3:77:3 | ...=... |
-| Test.kt:43:3:43:3 | <Expr>; | 9 | Test.kt:78:3:78:8 | return ... |
-| Test.kt:43:3:43:3 | <Expr>; | 10 | Test.kt:4:2:79:2 | test |
+| Test.kt:43:3:43:3 | <Expr>; | 9 | Test.kt:78:3:78:8 | INSTANCE |
+| Test.kt:43:3:43:3 | <Expr>; | 10 | Test.kt:78:3:78:8 | return ... |
+| Test.kt:43:3:43:3 | <Expr>; | 11 | Test.kt:4:2:79:2 | test |

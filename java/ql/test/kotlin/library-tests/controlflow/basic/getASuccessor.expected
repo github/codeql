@@ -54,7 +54,7 @@
 | Test.kt:21:3:24:9 | ... -> ... | WhenBranch | Test.kt:21:3:24:9 | true | BooleanLiteral |
 | Test.kt:21:3:24:9 | ... -> ... | WhenBranch | Test.kt:21:6:21:6 | x | VarAccess |
 | Test.kt:21:3:24:9 | <Expr>; | ExprStmt | Test.kt:21:3:24:9 | when ... | WhenExpr |
-| Test.kt:21:3:24:9 | true | BooleanLiteral | Test.kt:24:4:24:9 | return ... | ReturnStmt |
+| Test.kt:21:3:24:9 | true | BooleanLiteral | Test.kt:24:4:24:9 | INSTANCE | VarAccess |
 | Test.kt:21:3:24:9 | when ... | WhenExpr | Test.kt:21:3:24:9 | ... -> ... | WhenBranch |
 | Test.kt:21:6:21:6 | x | VarAccess | Test.kt:21:10:21:10 | 0 | IntegerLiteral |
 | Test.kt:21:6:21:10 | ... < ... | LTExpr | Test.kt:22:4:22:4 | <Expr>; | ExprStmt |
@@ -62,6 +62,7 @@
 | Test.kt:22:4:22:4 | ...=... | AssignExpr | Test.kt:27:3:27:3 | <Expr>; | ExprStmt |
 | Test.kt:22:4:22:4 | <Expr>; | ExprStmt | Test.kt:22:8:22:9 | 40 | LongLiteral |
 | Test.kt:22:8:22:9 | 40 | LongLiteral | Test.kt:22:4:22:4 | ...=... | AssignExpr |
+| Test.kt:24:4:24:9 | INSTANCE | VarAccess | Test.kt:24:4:24:9 | return ... | ReturnStmt |
 | Test.kt:24:4:24:9 | return ... | ReturnStmt | file://:0:0:0:0 | <none> | <none> |
 | Test.kt:27:3:27:3 | ...=... | AssignExpr | Test.kt:30:3:33:3 | <Expr>; | ExprStmt |
 | Test.kt:27:3:27:3 | <Expr>; | ExprStmt | Test.kt:27:7:27:8 | 10 | IntegerLiteral |
@@ -110,7 +111,8 @@
 | Test.kt:73:3:73:3 | ...=... | AssignExpr | Test.kt:77:3:77:3 | <Expr>; | ExprStmt |
 | Test.kt:73:3:73:3 | <Expr>; | ExprStmt | Test.kt:73:7:73:8 | 50 | IntegerLiteral |
 | Test.kt:73:7:73:8 | 50 | IntegerLiteral | Test.kt:73:3:73:3 | ...=... | AssignExpr |
-| Test.kt:77:3:77:3 | ...=... | AssignExpr | Test.kt:78:3:78:8 | return ... | ReturnStmt |
+| Test.kt:77:3:77:3 | ...=... | AssignExpr | Test.kt:78:3:78:8 | INSTANCE | VarAccess |
 | Test.kt:77:3:77:3 | <Expr>; | ExprStmt | Test.kt:77:7:77:8 | 40 | IntegerLiteral |
 | Test.kt:77:7:77:8 | 40 | IntegerLiteral | Test.kt:77:3:77:3 | ...=... | AssignExpr |
+| Test.kt:78:3:78:8 | INSTANCE | VarAccess | Test.kt:78:3:78:8 | return ... | ReturnStmt |
 | Test.kt:78:3:78:8 | return ... | ReturnStmt | Test.kt:4:2:79:2 | test | Method |
