@@ -454,6 +454,8 @@ class BoolType extends SimpleType, @bool_type {
   override string toStringWithTypes() { result = "bool" }
 
   override int getSize() { result = 1 }
+
+  override string getAPrimaryQlClass() { result = "BoolType" }
 }
 
 /**
@@ -467,6 +469,8 @@ class CharType extends SimpleType, @char_type {
   override int minValue() { result = 0 }
 
   override int maxValue() { result = 65535 }
+
+  override string getAPrimaryQlClass() { result = "CharType" }
 }
 
 /**
@@ -506,6 +510,8 @@ class SByteType extends SignedIntegralType, @sbyte_type {
   override int minValue() { result = -128 }
 
   override int maxValue() { result = 127 }
+
+  override string getAPrimaryQlClass() { result = "SByteType" }
 }
 
 /**
@@ -519,6 +525,8 @@ class ShortType extends SignedIntegralType, @short_type {
   override int minValue() { result = -32768 }
 
   override int maxValue() { result = 32767 }
+
+  override string getAPrimaryQlClass() { result = "ShortType" }
 }
 
 /**
@@ -532,6 +540,8 @@ class IntType extends SignedIntegralType, @int_type {
   override int minValue() { result = -2147483647 - 1 }
 
   override int maxValue() { result = 2147483647 }
+
+  override string getAPrimaryQlClass() { result = "IntType" }
 }
 
 /**
@@ -541,6 +551,8 @@ class LongType extends SignedIntegralType, @long_type {
   override string toStringWithTypes() { result = "long" }
 
   override int getSize() { result = 8 }
+
+  override string getAPrimaryQlClass() { result = "LongType" }
 }
 
 /**
@@ -552,6 +564,8 @@ class ByteType extends UnsignedIntegralType, @byte_type {
   override int getSize() { result = 1 }
 
   override int maxValue() { result = 255 }
+
+  override string getAPrimaryQlClass() { result = "ByteType" }
 }
 
 /**
@@ -563,6 +577,8 @@ class UShortType extends UnsignedIntegralType, @ushort_type {
   override int getSize() { result = 2 }
 
   override int maxValue() { result = 65535 }
+
+  override string getAPrimaryQlClass() { result = "UShortType" }
 }
 
 /**
@@ -572,6 +588,8 @@ class UIntType extends UnsignedIntegralType, @uint_type {
   override string toStringWithTypes() { result = "uint" }
 
   override int getSize() { result = 4 }
+
+  override string getAPrimaryQlClass() { result = "UIntType" }
 }
 
 /**
@@ -581,6 +599,8 @@ class ULongType extends UnsignedIntegralType, @ulong_type {
   override string toStringWithTypes() { result = "ulong" }
 
   override int getSize() { result = 8 }
+
+  override string getAPrimaryQlClass() { result = "ULongType" }
 }
 
 /**
@@ -597,6 +617,8 @@ class FloatType extends FloatingPointType, @float_type {
   override string toStringWithTypes() { result = "float" }
 
   override int getSize() { result = 4 }
+
+  override string getAPrimaryQlClass() { result = "FloatType" }
 }
 
 /**
@@ -606,6 +628,8 @@ class DoubleType extends FloatingPointType, @double_type {
   override string toStringWithTypes() { result = "double" }
 
   override int getSize() { result = 8 }
+
+  override string getAPrimaryQlClass() { result = "DoubleType" }
 }
 
 /**
@@ -615,6 +639,8 @@ class DecimalType extends SimpleType, @decimal_type {
   override string toStringWithTypes() { result = "decimal" }
 
   override int getSize() { result = 16 }
+
+  override string getAPrimaryQlClass() { result = "DecimalType" }
 }
 
 /**
@@ -775,6 +801,8 @@ class ObjectType extends Class {
   ObjectType() { this.hasQualifiedName("System.Object") }
 
   override string toStringWithTypes() { result = "object" }
+
+  override string getAPrimaryQlClass() { result = "ObjectType" }
 }
 
 /**
@@ -784,6 +812,8 @@ class StringType extends Class {
   StringType() { this.hasQualifiedName("System.String") }
 
   override string toStringWithTypes() { result = "string" }
+
+  override string getAPrimaryQlClass() { result = "StringType" }
 }
 
 /**
@@ -1035,8 +1065,6 @@ class PointerType extends DotNet::PointerType, Type, @pointer_type {
 
   override string toString() { result = DotNet::PointerType.super.toString() }
 
-  override string getAPrimaryQlClass() { result = "PointerType" }
-
   final override predicate hasQualifiedName(string qualifier, string name) {
     exists(string name0 |
       this.getReferentType().hasQualifiedName(qualifier, name0) and
@@ -1120,6 +1148,8 @@ class TupleType extends ValueType, @tuple_type {
   override string getLabel() { result = this.getUnderlyingType().getLabel() }
 
   override Type getChild(int i) { result = this.getUnderlyingType().getChild(i) }
+
+  override string getAPrimaryQlClass() { result = "TupleType" }
 
   final override predicate hasQualifiedName(string qualifier, string name) {
     this.getUnderlyingType().hasQualifiedName(qualifier, name)

@@ -79,6 +79,8 @@ class PointerType extends Type, @dotnet_pointer_type {
   final override string getLabel() { result = this.getReferentType().getLabel() + "*" }
 
   override string toStringWithTypes() { result = this.getReferentType().toStringWithTypes() + "*" }
+
+  override string getAPrimaryQlClass() { result = "PointerType" }
 }
 
 /** An array type. */
@@ -89,4 +91,6 @@ class ArrayType extends ValueOrRefType, @dotnet_array_type {
   final override string getLabel() { result = this.getElementType().getLabel() + "[]" }
 
   override string toStringWithTypes() { result = this.getElementType().toStringWithTypes() + "[]" }
+
+  override string getAPrimaryQlClass() { result = "ArrayType" }
 }
