@@ -161,6 +161,16 @@ module ActionDispatch {
       result = call.getKeywordArgument("module").getValueText()
     }
 
+    /**
+     * Get a URL capture. This is a wildcard URL segment whose value is placed in `params`.
+     * For example, in
+     * ```ruby
+     * get "/foo/:bar/baz", to: "users#index"
+     * ```
+     * the capture is `:bar`.
+     * We don't currently make use of this, but it may be useful in future to more accurately
+     * model the contents of the `params` hash.
+     */
     string getACapture() { result = getPathComponent().regexpFind(":[^:/]+", _, _) }
   }
 
