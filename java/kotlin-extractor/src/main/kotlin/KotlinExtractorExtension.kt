@@ -1654,15 +1654,20 @@ open class KotlinFileExtractor(
                 // field that we are accessing here.
                 val exprParent = parent.expr(e, callable)
                 val c: IrClass = e.symbol.owner
-                val instance = useObjectClassInstance(c)
+                // TODO: If this is enabled for Unit then it currently makes tests fail
+                if(c.name.asString() == "Unit") {
+                    logger.warnElement(Severity.ErrorSevere, "Unit object not handled yet", e)
+                } else {
+                    val instance = useObjectClassInstance(c)
 
-                val id = tw.getFreshIdLabel<DbVaraccess>()
-                val type = useType(e.type)
-                val locId = tw.getLocation(e)
-                tw.writeExprs_varaccess(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
-                tw.writeHasLocation(id, locId)
+                    val id = tw.getFreshIdLabel<DbVaraccess>()
+                    val type = useType(e.type)
+                    val locId = tw.getLocation(e)
+                    tw.writeExprs_varaccess(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
+                    tw.writeHasLocation(id, locId)
 
-                tw.writeVariableBinding(id, instance.id)
+                    tw.writeVariableBinding(id, instance.id)
+                }
             }
             else -> {
                 logger.warnElement(Severity.ErrorSevere, "Unrecognised IrExpression: " + e.javaClass, e)

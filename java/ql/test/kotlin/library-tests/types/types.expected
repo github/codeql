@@ -421,6 +421,7 @@
 | file://:0:0:0:0 | BinaryOperator | Interface, ParameterizedType |
 | file://:0:0:0:0 | Boolean | Class |
 | file://:0:0:0:0 | Boolean | Class |
+| file://:0:0:0:0 | BooleanCompanionObject | Class |
 | file://:0:0:0:0 | BooleanSignature | Class |
 | file://:0:0:0:0 | BottomSignature | Class |
 | file://:0:0:0:0 | BoundMethodHandle | Class |
@@ -577,6 +578,7 @@
 | file://:0:0:0:0 | Char | Class |
 | file://:0:0:0:0 | CharArray | Class |
 | file://:0:0:0:0 | CharBuffer | Class |
+| file://:0:0:0:0 | CharCompanionObject | Class |
 | file://:0:0:0:0 | CharIterator | Class |
 | file://:0:0:0:0 | CharProgression | Class |
 | file://:0:0:0:0 | CharRange | Class |
@@ -1118,6 +1120,7 @@
 | file://:0:0:0:0 | DoubleArray | Class |
 | file://:0:0:0:0 | DoubleBinaryOperator | Interface |
 | file://:0:0:0:0 | DoubleBuffer | Class |
+| file://:0:0:0:0 | DoubleCompanionObject | Class |
 | file://:0:0:0:0 | DoubleConsumer | Interface |
 | file://:0:0:0:0 | DoubleFunction | GenericType, Interface, ParameterizedType |
 | file://:0:0:0:0 | DoubleFunction | Interface, ParameterizedType |
@@ -1291,6 +1294,7 @@
 | file://:0:0:0:0 | Enum | Class, ParameterizedType |
 | file://:0:0:0:0 | Enum | Class, ParameterizedType |
 | file://:0:0:0:0 | Enum | Class, ParameterizedType |
+| file://:0:0:0:0 | EnumCompanionObject | Class |
 | file://:0:0:0:0 | EnumSet | Class, GenericType, ParameterizedType |
 | file://:0:0:0:0 | EnumSet | Class, ParameterizedType |
 | file://:0:0:0:0 | EnumSet | Class, ParameterizedType |
@@ -1612,6 +1616,7 @@
 | file://:0:0:0:0 | IntArray | Class |
 | file://:0:0:0:0 | IntBinaryOperator | Interface |
 | file://:0:0:0:0 | IntBuffer | Class |
+| file://:0:0:0:0 | IntCompanionObject | Class |
 | file://:0:0:0:0 | IntConsumer | Interface |
 | file://:0:0:0:0 | IntFunction | GenericType, Interface, ParameterizedType |
 | file://:0:0:0:0 | IntFunction | Interface, ParameterizedType |
@@ -1916,6 +1921,7 @@
 | file://:0:0:0:0 | LongArray | Class |
 | file://:0:0:0:0 | LongBinaryOperator | Interface |
 | file://:0:0:0:0 | LongBuffer | Class |
+| file://:0:0:0:0 | LongCompanionObject | Class |
 | file://:0:0:0:0 | LongConsumer | Interface |
 | file://:0:0:0:0 | LongFunction | GenericType, Interface, ParameterizedType |
 | file://:0:0:0:0 | LongFunction | Interface, ParameterizedType |
@@ -2541,6 +2547,7 @@
 | file://:0:0:0:0 | String | Class |
 | file://:0:0:0:0 | StringBuffer | Class |
 | file://:0:0:0:0 | StringBuilder | Class |
+| file://:0:0:0:0 | StringCompanionObject | Class |
 | file://:0:0:0:0 | Subject | Class |
 | file://:0:0:0:0 | Subset | Class |
 | file://:0:0:0:0 | SuppliedThreadLocal | Class, GenericType, ParameterizedType |
