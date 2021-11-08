@@ -879,7 +879,7 @@ open class KotlinFileExtractor(
         c.typeParameters.map { extractTypeParameter(it) }
         c.declarations.map { extractDeclaration(it, id) }
         extractObjectInitializerFunction(c, id)
-        if(c.isObject) {
+        if(c.isNonCompanionObject) {
             // For `object MyObject { ... }`, the .class has an
             // automatically-generated `public static final MyObject INSTANCE`
             // field that may be referenced from Java code, and is used in our
@@ -900,7 +900,7 @@ open class KotlinFileExtractor(
 
     data class ObjectClassInstance(val id: Label<DbField>, val name: String)
     fun useObjectClassInstance(c: IrClass): ObjectClassInstance {
-        if(!c.isObject) {
+        if(!c.isNonCompanionObject) {
             logger.warn(Severity.ErrorSevere, "Using instance for non-object class")
         }
         val classId = useClassSource(c)
