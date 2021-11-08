@@ -1,9 +1,16 @@
+/**
+ * Models routing configuration specified using the `ActionDispatch` library, which is part of Rails.
+ */
+
 private import codeql.ruby.AST
 private import codeql.ruby.Concepts
 private import codeql.ruby.DataFlow
 
+/**
+ * Models routing configuration specified using the `ActionDispatch` library, which is part of Rails.
+ */
 module ActionDispatch {
-  newtype TRouteBlock =
+  private newtype TRouteBlock =
     TTopLevelRouteBlock(MethodCall routes, MethodCall draw, Block b) {
       routes.getMethodName() = "routes" and
       draw.getMethodName() = "draw" and
@@ -36,6 +43,9 @@ module ActionDispatch {
     // We ignore the condition and analyze both branches to obtain as
     // much routing information as possible.
     TConditionalRouteBlock(RouteBlock parent, ConditionalExpr e) { parent.getAStmt() = e } or
+    // namespace :admin do
+    //   resources :posts
+    // end
     TNamespaceRouteBlock(RouteBlock parent, MethodCall namespace, Block b) {
       parent.getAStmt() = namespace and
       namespace.getMethodName() = "namespace" and
@@ -55,26 +65,55 @@ module ActionDispatch {
    * We track these contributions via `getPathComponent` and `getControllerComponent`.
    */
   abstract class RouteBlock extends TRouteBlock {
+    /**
+     * Gets the name of a primary CodeQL class to which this route block belongs.
+     */
     string getAPrimaryQlClass() { result = "RouteBlock" }
 
+    /**
+     * Gets a string representation of this route block.
+     */
     string toString() { none() }
 
+    /**
+     * Gets a `Stmt` within this route block.
+     */
     abstract Stmt getAStmt();
 
+    /**
+     * Gets the parent of this route block, if one exists.
+     */
     abstract RouteBlock getParent();
 
+    /**
+     * Gets the `n`th parent of this route block.
+     * The zeroth parent is this block, the first parent is the direct parent of this block, etc.
+     */
     RouteBlock getParent(int n) {
       if n = 0 then result = this else result = getParent().getParent(n - 1)
     }
 
+    /**
+     * Gets the component of the path defined by this block, if it exists.
+     */
     abstract string getPathComponent();
 
+    /**
+     * Gets the component of the controller namespace defined by this block, if it exists.
+     */
     abstract string getControllerComponent();
 
+    /**
+     * Gets the location of this route block.
+     */
     abstract Location getLocation();
   }
 
-  abstract class NestedRouteBlock extends RouteBlock {
+  /**
+   * A route block that is not the top-level block.
+   * This block will always have a parent.
+   */
+  abstract private class NestedRouteBlock extends RouteBlock {
     RouteBlock parent;
 
     override RouteBlock getParent() { result = parent }
@@ -90,7 +129,7 @@ module ActionDispatch {
    * end
    * ```
    */
-  class TopLevelRouteBlock extends RouteBlock, TTopLevelRouteBlock {
+  private class TopLevelRouteBlock extends RouteBlock, TTopLevelRouteBlock {
     MethodCall call;
     // Routing blocks create scopes which define the namespace for controllers and paths,
     // though they can be overridden in various ways.
@@ -116,7 +155,16 @@ module ActionDispatch {
     override string getControllerComponent() { none() }
   }
 
-  class ConstraintsRouteBlock extends NestedRouteBlock, TConstraintsRouteBlock {
+  /**
+   * A route block defined by a call to `constraints`.
+   * ```rb
+   * constraints(foo: /some_regex/) do
+   *   get "/posts/:foo", to "posts#something"
+   * end
+   * ```
+   * https://api.rubyonrails.org/classes/ActionDispatch/Routing/Mapper/Scoping.html#method-i-constraints
+   */
+  private class ConstraintsRouteBlock extends NestedRouteBlock, TConstraintsRouteBlock {
     private Block block;
     private MethodCall call;
 
@@ -135,7 +183,16 @@ module ActionDispatch {
     override Location getLocation() { result = call.getLocation() }
   }
 
-  class ScopeRouteBlock extends NestedRouteBlock, TScopeRouteBlock {
+  /**
+   * A route block defined by a call to `scope`.
+   * ```rb
+   * scope(path: "/some_path", module: "some_module") do
+   *   get "/posts/:foo", to "posts#something"
+   * end
+   * ```
+   * https://api.rubyonrails.org/classes/ActionDispatch/Routing/Mapper/Scoping.html#method-i-scope
+   */
+  private class ScopeRouteBlock extends NestedRouteBlock, TScopeRouteBlock {
     private MethodCall call;
     private Block block;
 
@@ -160,20 +217,17 @@ module ActionDispatch {
       result = call.getKeywordArgument("controller").getValueText() or
       result = call.getKeywordArgument("module").getValueText()
     }
-
-    /**
-     * Get a URL capture. This is a wildcard URL segment whose value is placed in `params`.
-     * For example, in
-     * ```ruby
-     * get "/foo/:bar/baz", to: "users#index"
-     * ```
-     * the capture is `:bar`.
-     * We don't currently make use of this, but it may be useful in future to more accurately
-     * model the contents of the `params` hash.
-     */
-    string getACapture() { result = getPathComponent().regexpFind(":[^:/]+", _, _) }
   }
 
+  /**
+   * A route block defined by a call to `resources`.
+   * ```rb
+   * resources :articles do
+   *   get "/comments", to "comments#index"
+   * end
+   * ```
+   * https://api.rubyonrails.org/classes/ActionDispatch/Routing/Mapper/Resources.html#method-i-resources
+   */
   class ResourcesRouteBlock extends NestedRouteBlock, TResourcesRouteBlock {
     private MethodCall call;
     private Block block;
@@ -184,6 +238,9 @@ module ActionDispatch {
 
     override Stmt getAStmt() { result = block.getAStmt() }
 
+    /**
+     * Gets the `resources` call that gives rise to this route block.
+     */
     MethodCall getDefiningMethodCall() { result = call }
 
     override string getPathComponent() {
@@ -199,6 +256,17 @@ module ActionDispatch {
     override Location getLocation() { result = call.getLocation() }
   }
 
+  /**
+   * A route block that is guarded by a conditional statement.
+   * For example:
+   * ```rb
+   * if Rails.env.test?
+   *   get "/foo/bar", to: "foo#bar"
+   * end
+   * ```
+   * We ignore the condition and analyze both branches to obtain as
+   * much routing information as possible.
+   */
   class ConditionalRouteBlock extends NestedRouteBlock, TConditionalRouteBlock {
     private ConditionalExpr e;
 
@@ -217,6 +285,15 @@ module ActionDispatch {
     override Location getLocation() { result = e.getLocation() }
   }
 
+  /**
+   * A route block defined by a call to `namespace`.
+   * ```rb
+   * namespace :admin do
+   *   resources :posts
+   * end
+   * ```
+   * https://api.rubyonrails.org/classes/ActionDispatch/Routing/Mapper/Scoping.html#method-i-namespace
+   */
   class NamespaceRouteBlock extends NestedRouteBlock, TNamespaceRouteBlock {
     private MethodCall call;
     private Block block;
@@ -229,7 +306,7 @@ module ActionDispatch {
 
     override string getControllerComponent() { result = getNamespace() }
 
-    string getNamespace() { result = call.getArgument(0).getValueText() }
+    private string getNamespace() { result = call.getArgument(0).getValueText() }
 
     override string toString() { result = call.toString() }
 
@@ -237,21 +314,33 @@ module ActionDispatch {
   }
 
   newtype TRoute =
+    /**
+     * See `ExplicitRoute`
+     */
     TExplicitRoute(RouteBlock b, MethodCall m) {
       b.getAStmt() = m and m.getMethodName() in ["get", "post", "put", "patch", "delete"]
     } or
+    /**
+     * See `ResourcesRoute`
+     */
     TResourcesRoute(RouteBlock b, MethodCall m, string action) {
       b.getAStmt() = m and
       m.getMethodName() = "resources" and
       action in ["show", "index", "new", "edit", "create", "update", "destroy"] and
       applyActionFilters(m, action)
     } or
+    /**
+     * See `SingularResourceRoute`
+     */
     TResourceRoute(RouteBlock b, MethodCall m, string action) {
       b.getAStmt() = m and
       m.getMethodName() = "resource" and
       action in ["show", "new", "edit", "create", "update", "destroy"] and
       applyActionFilters(m, action)
     } or
+    /**
+     * See `MatchRoute`
+     */
     TMatchRoute(RouteBlock b, MethodCall m) { b.getAStmt() = m and m.getMethodName() = "match" }
 
   /**
@@ -279,6 +368,18 @@ module ActionDispatch {
     )
   }
 
+  /**
+   * A route configuration. This defines a combination of HTTP method and URL
+   * path which should be routed to a particular controller-action pair.
+   * This can arise from an explicit call to a routing method, for example:
+   * ```rb
+   * get "/photos", to: "photos#index"
+   * ```
+   * or via a convenience method like `resources`, which defines mutiple routes at once:
+   * ```rb
+   * resources :photos
+   * ```
+   */
   abstract class Route extends TRoute {
     string getAPrimaryQlClass() { result = "Route" }
 
@@ -288,6 +389,9 @@ module ActionDispatch {
 
     Location getLocation() { result = method.getLocation() }
 
+    /**
+     * Gets the method call that defines this route.
+     */
     MethodCall getDefiningMethodCall() { result = method }
 
     /**
@@ -300,16 +404,31 @@ module ActionDispatch {
      */
     abstract string getLastPathComponent();
 
+    /**
+     * Gets the HTTP method of this route.
+     * The result is one of [get, post, put, patch, delete].
+     */
     abstract string getHTTPMethod();
 
+    /**
+     * Gets the last controller component.
+     * This is the controller specified in the route itself.
+     */
     abstract string getLastControllerComponent();
 
+    /**
+     * Gets a component of the controller.
+     * This behaves identically to `getPathComponent`, but for controller information.
+     */
     string getControllerComponent(int n) {
       if n = 0
       then result = getLastControllerComponent()
       else result = getParentBlock().getParent(n - 1).getControllerComponent()
     }
 
+    /**
+     * Gets the full controller targeted by this route.
+     */
     string getController() {
       result =
         concat(int n |
@@ -319,16 +438,46 @@ module ActionDispatch {
         )
     }
 
+    /**
+     * Gets the action targeted by this route.
+     */
     abstract string getAction();
 
+    /**
+     * Gets the parent `RouteBlock` of this route.
+     */
     abstract RouteBlock getParentBlock();
 
+    /**
+     * Gets a component of the path. Components are numbered from 0 up, where 0
+     * is the last component, 1 is the second-last, etc.
+     * For example, in the following route:
+     *
+     * ```rb
+     * namespace path: "foo" do
+     *   namespace path: "bar" do
+     *     get "baz", to: "foo#bar
+     *   end
+     * end
+     * ```
+     *
+     * the components are:
+     *
+     * | n | component
+     * |---|----------
+     * | 0 | baz
+     * | 1 | bar
+     * | 2 | foo
+     */
     string getPathComponent(int n) {
       if n = 0
       then result = getLastPathComponent()
       else result = getParentBlock().getParent(n - 1).getPathComponent()
     }
 
+    /**
+     * Gets the full path of the route.
+     */
     string getPath() {
       result =
         concat(int n |
@@ -338,6 +487,18 @@ module ActionDispatch {
           stripSlashes(getPathComponent(n)), "/" order by n desc
         )
     }
+
+    /**
+     * Get a URL capture. This is a wildcard URL segment whose value is placed in `params`.
+     * For example, in
+     * ```ruby
+     * get "/foo/:bar/baz", to: "users#index"
+     * ```
+     * the capture is `:bar`.
+     * We don't currently make use of this, but it may be useful in future to more accurately
+     * model the contents of the `params` hash.
+     */
+    string getACapture() { result = getPathComponent(_).regexpFind(":[^:/]+", _, _) }
   }
 
   /**
@@ -385,7 +546,7 @@ module ActionDispatch {
       )
     }
 
-    string getActionString() {
+    private string getActionString() {
       result = method.getKeywordArgument("to").(StringlikeLiteral).getValueText()
       or
       method.getKeywordArgument("to").(MethodCall).getMethodName() = "redirect" and
@@ -419,8 +580,6 @@ module ActionDispatch {
   /**
    * A route generated by a call to `resources`.
    *
-   * ## Default behaviour
-   *
    * ```ruby
    * resources :photos
    * ```
@@ -436,14 +595,15 @@ module ActionDispatch {
    * delete "/photos/:id", to: "photos#delete"
    * ```
    *
-   * ## Nested routes
+   * `resources` can take a block. Any routes defined inside the block will inherit a path component of
+   * `/<resource>/:<resource>_id`. For example:
    *
    * ```ruby
    * resources :photos do
    *   get "/foo", to: "photos#foo"
    * end
    * ```
-   * This creates the eight default routes, plus one more, which is nested under "/photos/:photo_id":
+   * This creates the eight default routes, plus one more, which is nested under "/photos/:photo_id", equivalent to:
    * ```ruby
    * get "/photos/:photo_id/foo", to: "photos#foo"
    * ```
@@ -472,12 +632,11 @@ module ActionDispatch {
     override string getAction() { result = action }
 
     override string getHTTPMethod() { result = httpMethod }
-
-    string getResource() { result = resource }
   }
 
   /**
-   * Like a `resources` route, but creates routes for a singular resource.
+   * A route generated by a call to `resource`.
+   * This is like a `resources` route, but creates routes for a singular resource.
    * This means there's no index route, no id parameter, and the resource name is expected to be singular.
    * It will still be routed to a pluralised controller name.
    * ```ruby
@@ -508,11 +667,14 @@ module ActionDispatch {
     override string getAction() { result = action }
 
     override string getHTTPMethod() { result = httpMethod }
-
-    MethodCall getMethodCall() { result = method }
   }
 
   /**
+   * A route generated by a call to `match`.
+   * This is a lower level primitive that powers `get`, `post` etc.
+   * The first argument can be a path or a (path, controller-action) pair.
+   * The controller, action and HTTP method can be specified with the
+   * `controller:`, `action:` and `via:` keyword arguments, respectively.
    * ```ruby
    * match 'photos/:id' => 'photos#show', via: :get
    * match 'photos/:id', to: 'photos#show', via: :get
