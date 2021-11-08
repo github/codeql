@@ -227,7 +227,7 @@ corresponding query. Alternatively, for consistency with the standard CodeQL que
 you can write query help in the ``.qhelp`` format. Query help written in ``.qhelp`` 
 files can't be included in SARIF files, and they can't be processed by code
 scanning so must be converted to markdown before running 
-the analysis. For more information, see ":doc:`Query help files <query-help-files>`" 
+the analysis. For more information, see ":ref:`Query help files <query-help-files>`" 
 and ":doc:`Testing query help files <testing-query-help-files>`."
 
 Results
