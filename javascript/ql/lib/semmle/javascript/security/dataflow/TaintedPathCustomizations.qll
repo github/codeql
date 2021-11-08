@@ -459,7 +459,7 @@ module TaintedPath {
    * An expression of form `x.matches(/\.\./)` or similar.
    */
   class ContainsDotDotRegExpSanitizer extends BarrierGuardNode instanceof StringOps::RegExpTest {
-    ContainsDotDotRegExpSanitizer() { super.getRegExp().getConstantValue() = [".", "..", "../"] }
+    ContainsDotDotRegExpSanitizer() { super.getRegExp().getAMatchedString() = [".", "..", "../"] }
 
     override predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel label) {
       e = super.getStringOperand().asExpr() and
