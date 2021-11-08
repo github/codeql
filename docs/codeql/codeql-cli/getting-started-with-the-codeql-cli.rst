@@ -20,7 +20,10 @@ setup, as outlined in the steps below.
 If you use Linux, Windows, or macOS version 10.14 ("Mojave") or earlier, simply
 follow the steps below. For macOS version 10.15 ("Catalina") or newer, steps 1 
 and 4 are slightly different---for further details, see the sections labeled 
-**Information for macOS "Catalina" (or newer) users**.
+**Information for macOS "Catalina" (or newer) users**. If you are using macOS
+on Apple Silicon (e.g. Apple M1), ensure that the `Xcode command-line developer
+tools <https://developer.apple.com/downloads/index.action>`__ and `Rosetta 2
+<https://support.apple.com/en-us/HT211861>`__ are installed.
 
 For information about installing the CodeQL CLI in a CI system to create results
 to display in GitHub as code scanning alerts, see 
