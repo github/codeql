@@ -889,6 +889,9 @@ open class KotlinFileExtractor(
             val type = useSimpleTypeClass(c, emptyList(), false)
             tw.writeFields(instance.id, instance.name, type.javaResult.id, type.kotlinResult.id, id, instance.id)
             tw.writeHasLocation(instance.id, locId)
+            tw.writeHasModifier(instance.id, extractModifier("public"))
+            tw.writeHasModifier(instance.id, extractModifier("static"))
+            tw.writeHasModifier(instance.id, extractModifier("final"))
             @Suppress("UNCHECKED_CAST")
             tw.writeClass_object(id as Label<DbClass>, instance.id)
         }
@@ -1673,6 +1676,14 @@ open class KotlinFileExtractor(
                 logger.warnElement(Severity.ErrorSevere, "Unrecognised IrExpression: " + e.javaClass, e)
             }
         }
+    }
+
+    fun extractModifier(m: String): Label<DbModifier> {
+        val modifierLabel = "@\"modifier;$m\""
+        val id: Label<DbModifier> = tw.getLabelFor(modifierLabel, {
+            tw.writeModifiers(it, m)
+        })
+        return id
     }
 
     fun extractTypeAccess(t: IrType, parent: Label<out DbExprparent>, idx: Int, elementForLocation: IrElement) {
