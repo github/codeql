@@ -30,29 +30,33 @@ DataFlow::Node shouldNotBeTainted() {
   )
 }
 
-class TestTaintTrackingConfiguration extends TaintTracking::Configuration {
-  TestTaintTrackingConfiguration() { this = "TestTaintTrackingConfiguration" }
+module Conf {
+  class TestTaintTrackingConfiguration extends TaintTracking::Configuration {
+    TestTaintTrackingConfiguration() { this = "TestTaintTrackingConfiguration" }
 
-  override predicate isSource(DataFlow::Node source) {
-    source.asCfgNode().(NameNode).getId() in [
-        "TAINTED_STRING", "TAINTED_BYTES", "TAINTED_LIST", "TAINTED_DICT"
-      ]
-    or
-    // User defined sources
-    exists(CallNode call |
-      call.getFunction().(NameNode).getId() = "taint" and
-      source.(DataFlow::CfgNode).getNode() = call.getAnArg()
-    )
-    or
-    source instanceof RemoteFlowSource
-  }
+    override predicate isSource(DataFlow::Node source) {
+      source.asCfgNode().(NameNode).getId() in [
+          "TAINTED_STRING", "TAINTED_BYTES", "TAINTED_LIST", "TAINTED_DICT"
+        ]
+      or
+      // User defined sources
+      exists(CallNode call |
+        call.getFunction().(NameNode).getId() = "taint" and
+        source.(DataFlow::CfgNode).getNode() = call.getAnArg()
+      )
+      or
+      source instanceof RemoteFlowSource
+    }
 
-  override predicate isSink(DataFlow::Node sink) {
-    sink = shouldBeTainted()
-    or
-    sink = shouldNotBeTainted()
+    override predicate isSink(DataFlow::Node sink) {
+      sink = shouldBeTainted()
+      or
+      sink = shouldNotBeTainted()
+    }
   }
 }
+
+import Conf
 
 class InlineTaintTest extends InlineExpectationsTest {
   InlineTaintTest() { this = "InlineTaintTest" }
