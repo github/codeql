@@ -1,14 +1,29 @@
 name: Fetch CodeQL
 description: Fetches the latest version of CodeQL
+inputs:
+  use-bundle:
+    description: Set to `true` to download the CodeQL CLI bundle that also includes compiled queries.
+    default: 'false'
+    required: false
+
 runs:
   using: composite
   steps:
     - name: Fetch CodeQL
       shell: bash
       run: |
-        LATEST=$(gh release list --repo https://github.com/github/codeql-cli-binaries | cut -f 1 | grep -v beta | sort --version-sort | tail -1)
-        gh release download --repo https://github.com/github/codeql-cli-binaries --pattern codeql-linux64.zip "$LATEST"
-        unzip -q -d "${RUNNER_TEMP}" codeql-linux64.zip
+        LATEST=$(gh release list --repo $REPO | cut -f 3 | grep -v beta | sort --version-sort | tail -1)
+        gh release download --repo $REPO --pattern "$PATTERN" "$LATEST"
+
+        if [ "$USE_BUNDLE" == 'true' ]; then
+          tar -xzf "$PATTERN" -C "${RUNNER_TEMP}"
+        else
+          unzip -q -d "${RUNNER_TEMP}" "$PATTERN"
+        fi
         echo "${RUNNER_TEMP}/codeql" >> "${GITHUB_PATH}"
       env:
         GITHUB_TOKEN: ${{ github.token }}
+        USE_BUNDLE: '${{ inputs.use-bundle == ''true'' }}'
+        REPO: '${{ inputs.use-bundle == ''true'' && ''https://github.com/dsp-testing/codeql-cli-nightlies'' || ''https://github.com/github/codeql-cli-binaries''}}'
+        # REPO: '${{ inputs.use-bundle == ''true'' && ''https://github.com/github/codeql-action'' || ''https://github.com/github/codeql-cli-binaries''}}'
+        PATTERN: '${{ inputs.use-bundle == ''true'' && ''codeql-bundle-linux64.tar.gz'' || ''codeql-linux64.zip''}}'
