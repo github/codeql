@@ -26,7 +26,7 @@ class ReflectedXssConfiguration extends TaintTracking::Configuration {
     guard instanceof StringConstCompare
   }
 
-  override predicate isAdditionalTaintStep(DataFlow::Node nodeTo, DataFlow::Node nodeFrom) {
+  override predicate isAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     exists(DataFlow::CallCfgNode htmlContentCall |
       htmlContentCall =
         API::moduleImport("sendgrid")
@@ -34,8 +34,8 @@ class ReflectedXssConfiguration extends TaintTracking::Configuration {
             .getMember("mail")
             .getMember("HtmlContent")
             .getACall() and
-      nodeFrom = htmlContentCall and
-      nodeTo = htmlContentCall.getArg(0)
+      nodeTo = htmlContentCall and
+      nodeFrom = htmlContentCall.getArg(0)
     )
   }
 }
