@@ -27,6 +27,7 @@ import com.intellij.openapi.vfs.StandardFileSystems
 import com.semmle.extractor.java.OdasaOutput
 import com.semmle.extractor.java.OdasaOutput.TrapFileManager
 import com.semmle.util.files.FileUtil
+import org.jetbrains.kotlin.ir.types.impl.makeTypeProjection
 import org.jetbrains.kotlin.ir.util.*
 import org.jetbrains.kotlin.types.Variance
 import kotlin.system.exitProcess
@@ -612,22 +613,13 @@ class X {
 
                 val javaSignature = "an array" // TODO: Wrong
                 val javaResult = TypeResult(id, javaSignature)
-                val kotlinClassName = getUnquotedClassLabel(s.classifier.owner as IrClass, s.arguments)
-                val kotlinResult = if (s.hasQuestionMark) {
-                        val kotlinSignature = "$javaSignature?" // TODO: Wrong
-                        val kotlinLabel = "@\"kt_type;nullable;${kotlinClassName}\""
-                        val kotlinId: Label<DbKt_nullable_type> = tw.getLabelFor(kotlinLabel, {
-                            tw.writeKt_nullable_types(it, id)
-                        })
-                        TypeResult(kotlinId, kotlinSignature)
-                    } else {
-                        val kotlinSignature = "$javaSignature" // TODO: Wrong
-                        val kotlinLabel = "@\"kt_type;notnull;${kotlinClassName}\"" // TODO: Wrong
-                        val kotlinId: Label<DbKt_notnull_type> = tw.getLabelFor(kotlinLabel, {
-                            tw.writeKt_notnull_types(it, id)
-                        })
-                        TypeResult(kotlinId, kotlinSignature)
-                    }
+                val kotlinClassName = getUnquotedClassLabel(s.classifier.owner as IrClass, listOf(makeTypeProjection(componentType, Variance.INVARIANT)))
+                val kotlinSignature = "$javaSignature?" // TODO: Wrong
+                val kotlinLabel = "@\"kt_type;nullable;${kotlinClassName}\""
+                val kotlinId: Label<DbKt_nullable_type> = tw.getLabelFor(kotlinLabel, {
+                    tw.writeKt_nullable_types(it, id)
+                })
+                val kotlinResult = TypeResult(kotlinId, kotlinSignature)
 
                 tw.getLabelFor<DbMethod>("@\"callable;{$id}.clone(){$id}\"") {
                     tw.writeMethods(it, "clone", "clone()", javaResult.id, kotlinResult.id, javaResult.id, it)
