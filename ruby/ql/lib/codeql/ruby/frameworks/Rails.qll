@@ -56,7 +56,11 @@ private class ConfigSourceNode extends DataFlow::LocalSourceNode {
     )
     or
     // `Rails.application.config`
-    this = API::getTopLevelMember("Rails").getReturn("application").getReturn("config").getAnImmediateUse()
+    this =
+      API::getTopLevelMember("Rails")
+          .getReturn("application")
+          .getReturn("config")
+          .getAnImmediateUse()
     or
     // `Rails.application.configure { ... config ... }`
     // `Rails::Application.configure { ... config ... }`
