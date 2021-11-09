@@ -116,16 +116,28 @@ class ParameterToFieldConfig extends TaintTracking::Configuration {
  * `p;Foo;true;doSomething;(String);Argument[0];Argument[-1];taint`
  */
 string captureFieldFlowIn(Callable api) {
-  exists(DataFlow::ParameterNode source, DataFlow::ExprNode sink, ParameterToFieldConfig config |
-    sink.asExpr().getEnclosingCallable().getDeclaringType() =
-      source.asParameter().getCallable().getDeclaringType() and
+  exists(DataFlow::PathNode source, DataFlow::PathNode sink |
     not api.isStatic() and
-    config.hasFlow(source, sink) and
-    source.asParameter().getCallable() = api
+    restrictedFlow(source, sink) and
+    source.getNode().asParameter().getCallable() = api
   |
     result =
-      asTaintModel(api, "Argument[" + source.asParameter().getPosition() + "]", "Argument[-1]")
+      asTaintModel(api, "Argument[" + source.getNode().asParameter().getPosition() + "]",
+        "Argument[-1]")
   )
+}
+
+predicate restrictedEdge(DataFlow::PathNode n1, DataFlow::PathNode n2) {
+  n1.getASuccessor() = n2 and
+  n1.getNode().getEnclosingCallable().getDeclaringType() =
+    n2.getNode().getEnclosingCallable().getDeclaringType()
+}
+
+predicate restrictedFlow(DataFlow::PathNode src, DataFlow::PathNode sink) {
+  src.getConfiguration() instanceof ParameterToFieldConfig and
+  src.isSource() and
+  src.getConfiguration().isSink(sink.getNode()) and
+  restrictedEdge*(src, sink)
 }
 
 class ParameterToReturnValueTaintConfig extends TaintTracking::Configuration {
