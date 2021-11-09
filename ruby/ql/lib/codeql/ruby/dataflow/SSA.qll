@@ -233,6 +233,8 @@ module Ssa {
       )
     }
 
+    override SelfVariable getSourceVariable() { result = v }
+
     final override string toString() { result = "self (" + v.getDeclaringScope() + ")" }
 
     final override Location getLocation() { result = this.getControlFlowNode().getLocation() }

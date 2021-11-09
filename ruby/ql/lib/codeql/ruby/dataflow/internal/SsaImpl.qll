@@ -1,4 +1,5 @@
 private import SsaImplCommon
+private import SsaImplSpecific as SsaImplSpecific
 private import codeql.ruby.AST
 private import codeql.ruby.CFG
 private import codeql.ruby.ast.Variable
@@ -58,13 +59,15 @@ private predicate hasCapturedRead(Variable v, CfgScope scope) {
 }
 
 pragma[noinline]
+private predicate variableWriteInOuterScope(BasicBlock bb, LocalVariable v, CfgScope scope) {
+  SsaImplSpecific::variableWrite(bb, _, v, _) and
+  scope.getOuterCfgScope() = bb.getScope()
+}
+
+pragma[noinline]
 private predicate hasVariableWriteWithCapturedRead(BasicBlock bb, LocalVariable v, CfgScope scope) {
   hasCapturedRead(v, scope) and
-  exists(VariableWriteAccess write |
-    write = bb.getANode().getNode() and
-    write.getVariable() = v and
-    bb.getScope() = scope.getOuterCfgScope()
-  )
+  variableWriteInOuterScope(bb, v, scope)
 }
 
 /**

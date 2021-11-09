@@ -105,7 +105,7 @@ private class ActionControllerContextCall extends MethodCall {
   private ActionControllerControllerClass controllerClass;
 
   ActionControllerContextCall() {
-    this.getReceiver() instanceof Self and
+    this.getReceiver() instanceof SelfVariableAccess and
     this.getEnclosingModule() = controllerClass
   }
 

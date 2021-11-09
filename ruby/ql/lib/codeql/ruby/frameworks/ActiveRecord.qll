@@ -7,6 +7,7 @@ private import codeql.ruby.Concepts
 private import codeql.ruby.controlflow.CfgNodes
 private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.internal.DataFlowDispatch
+private import codeql.ruby.dataflow.internal.DataFlowPrivate
 private import codeql.ruby.ast.internal.Module
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.frameworks.Stdlib
@@ -100,7 +101,7 @@ class ActiveRecordModelClassMethodCall extends MethodCall {
     recvCls = this.getReceiver().(ActiveRecordModelClassMethodCall).getReceiverClass()
     or
     // e.g. self.where(...) within an ActiveRecordModelClass
-    this.getReceiver() instanceof Self and
+    this.getReceiver() instanceof SelfVariableAccess and
     this.getEnclosingModule() = recvCls
   }
 
@@ -283,14 +284,15 @@ private class ActiveRecordModelFinderCall extends ActiveRecordModelInstantiation
 }
 
 // A `self` reference that may resolve to an active record model object
-private class ActiveRecordModelClassSelfReference extends ActiveRecordModelInstantiation {
+private class ActiveRecordModelClassSelfReference extends ActiveRecordModelInstantiation,
+  SsaSelfDefinitionNode {
   private ActiveRecordModelClass cls;
 
   ActiveRecordModelClassSelfReference() {
-    exists(Self s |
-      s.getEnclosingModule() = cls and
-      s.getEnclosingMethod() = cls.getAMethod() and
-      s = this.asExpr().getExpr()
+    exists(MethodBase m |
+      m = this.getCfgScope() and
+      m.getEnclosingModule() = cls and
+      m = cls.getAMethod()
     )
   }
 
