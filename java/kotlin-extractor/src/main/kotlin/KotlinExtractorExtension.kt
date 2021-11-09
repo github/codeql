@@ -596,7 +596,7 @@ class X {
 
                 val componentTypeLabel = useType(componentType)
                 val elementTypeLabel = useType(elementType)
-                val id = tw.getLabelFor<DbArray>("@\"array;$dimensions;{$elementTypeLabel.javaResult.id}\"") {
+                val id = tw.getLabelFor<DbArray>("@\"array;$dimensions;{${elementTypeLabel.javaResult.id}}\"") {
                     tw.writeArrays(it, shortName(s), elementTypeLabel.javaResult.id, elementTypeLabel.kotlinResult.id, 1, componentTypeLabel.javaResult.id, componentTypeLabel.kotlinResult.id)
 
                     extractClassCommon(s.classifier.owner as IrClass, it)
