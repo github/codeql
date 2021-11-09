@@ -11,17 +11,37 @@
  */
 
 import python
-import semmle.python.web.Http
+private import semmle.python.dataflow.new.DataFlow
+private import semmle.python.Concepts
+private import semmle.python.ApiGraphs
 
-FunctionValue requestFunction() { result = Module::named("requests").attr(httpVerbLower()) }
+/**
+ * Gets a call to a method that makes an outgoing request using the `requests` module,
+ * such as `requests.get` or `requests.put`, with the specified HTTP verb `verb`
+ */
+DataFlow::CallCfgNode outgoingRequestCall(string verb) {
+  verb = HTTP::httpVerbLower() and
+  result = API::moduleImport("requests").getMember(verb).getACall()
+}
 
-/** requests treats None as the default and all other "falsey" values as False */
-predicate falseNotNone(Value v) { v.getDefiniteBooleanValue() = false and not v = Value::none_() }
+/** Gets a reference to a falsey value (excluding None), with origin `origin`. */
+private DataFlow::TypeTrackingNode falseyNotNone(DataFlow::TypeTracker t, DataFlow::Node origin) {
+  t.start() and
+  result.asExpr().(ImmutableLiteral).booleanValue() = false and
+  not result.asExpr() instanceof None and
+  origin = result
+  or
+  exists(DataFlow::TypeTracker t2 | result = falseyNotNone(t2, origin).track(t2, t))
+}
 
-from CallNode call, FunctionValue func, Value falsey, ControlFlowNode origin
+/** Gets a reference to a falsey value (excluding None), with origin `origin`. */
+DataFlow::Node falseyNotNone(DataFlow::Node origin) {
+  falseyNotNone(DataFlow::TypeTracker::end(), origin).flowsTo(result)
+}
+
+from DataFlow::CallCfgNode call, DataFlow::Node falseyOrigin, string verb
 where
-  func = requestFunction() and
-  func.getACall() = call and
-  falseNotNone(falsey) and
-  call.getArgByName("verify").pointsTo(falsey, origin)
-select call, "Call to $@ with verify=$@", func, "requests." + func.getName(), origin, "False"
+  call = outgoingRequestCall(verb) and
+  // requests treats `None` as the default and all other "falsey" values as `False`.
+  call.getArgByName("verify") = falseyNotNone(falseyOrigin)
+select call, "Call to requests." + verb + " with verify=$@", falseyOrigin, "False"
