@@ -1,0 +1,89 @@
+# Publishes the core libraries to the CodeQL package registry.
+name: Publish CodeQL core libraries
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/pack-publisher.yml' # for testing changes to this workflow
+
+  workflow_dispatch:
+    # the cli to use, or blank to build it again
+    # the pre-built packs, or blank to build again
+    inputs:
+      packages-build-number:
+        description: |
+          A CodeQL CLI workflow run number to download the packages artifacts from.
+          Leave blank to build packages from this repository.
+        default: ''
+        required: false
+
+permissions:
+  contents: write
+
+jobs:
+  codeql-package-publish:
+    name: CodeQL Package - Publish
+    runs-on: ubuntu-20.04
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
+
+    steps:
+      - name: Dump environment
+        run: env
+      - name: Dump GitHub event context
+        env:
+          GITHUB_CONTEXT: '${{ toJson(github.event) }}'
+        run: echo "$GITHUB_CONTEXT"
+
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # TODO add a way to specify different versions of the CLI
+      - name: Download CLI
+        uses: ./.github/actions/fetch-codeql
+        with:
+          use-bundle: 'true'
+
+      - name: Publish packs
+        run: |
+          # do not publish go or suite-helpers
+          # `ls` all directories in the bundle remove suite-helpers and go
+          PACK_FOLDERS_TO_PUBLISH="$(ls -d $RUNNER_TEMP/codeql/qlpacks/codeql/*/* | grep -v suite | grep -v "\-go")"
+          ARCHIVES="$RUNNER_TEMP/archives"
+
+          mkdir -p "$ARCHIVES"
+
+          echo "Running on: $PACK_FOLDERS_TO_PUBLISH"
+
+          # tgz each folder
+          # then run pack publish on it
+          for folder in $PACK_FOLDERS_TO_PUBLISH
+          do
+            echo "Archiving $folder for publishing"
+            tar cfz "$ARCHIVES/archive.tgz" -C "$folder" .
+            echo "Publishing $ARCHIVES/archive.tgz"
+            echo "Would have run: 'codeql pack publish --file "$ARCHIVES/archive.tgz"'"
+          done
+
+      - name: Bump versions
+        run: |
+          echo "Would have run 'codeql pack release'"
+
+      - name: Update git config
+        run: |
+          git config --global user.email "github-actions@github.com"
+          git config --global user.name "github-actions[bot]"
+
+      - name: Create PR
+        run: |
+          set -exu
+          git add .
+          git status
+          git commit -m "Post-release preparation"
+          NEW_BRANCH="post-release-prep-$(git show -s --format=%h)"
+          git checkout -b $NEW_BRANCH
+          git push origin "$NEW_BRANCH"
+          gh pr create \
+            --head "$NEW_BRANCH" \
+            --base "$GITHUB_BASE_REF" \
+            --fill \
+            --draft
