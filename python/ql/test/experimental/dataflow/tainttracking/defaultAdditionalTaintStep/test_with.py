@@ -51,19 +51,6 @@ def test_with_arg():
     with ctx as tainted:
         ensure_tainted(tainted) # $ tainted
 
-class Iter:
-    def __iter__(self):
-        return self
-
-    def __next__(self):
-        raise StopIteration
-
-def test_for():
-    iter = Iter()
-    taint(iter)
-    for tainted in iter:
-        ensure_tainted(tainted) # $ tainted
-
 
 
 # Make tests runable
@@ -71,4 +58,3 @@ def test_for():
 test_with()
 test_with_taint()
 test_with_arg()
-test_for()
