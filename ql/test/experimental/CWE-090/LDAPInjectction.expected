@@ -1,0 +1,22 @@
+edges
+| LDAPInjectction.go:17:15:17:29 | call to UserAgent : string | LDAPInjectction.go:21:3:21:51 | ...+... |
+| LDAPInjectction.go:17:15:17:29 | call to UserAgent : string | LDAPInjectction.go:22:3:22:33 | slice literal |
+| LDAPInjectction.go:17:15:17:29 | call to UserAgent : string | LDAPInjectction.go:28:3:28:51 | ...+... |
+| LDAPInjectction.go:17:15:17:29 | call to UserAgent : string | LDAPInjectction.go:29:3:29:33 | slice literal |
+| LDAPInjectction.go:17:15:17:29 | call to UserAgent : string | LDAPInjectction.go:35:3:35:51 | ...+... |
+| LDAPInjectction.go:17:15:17:29 | call to UserAgent : string | LDAPInjectction.go:36:3:36:33 | slice literal |
+nodes
+| LDAPInjectction.go:17:15:17:29 | call to UserAgent : string | semmle.label | call to UserAgent : string |
+| LDAPInjectction.go:21:3:21:51 | ...+... | semmle.label | ...+... |
+| LDAPInjectction.go:22:3:22:33 | slice literal | semmle.label | slice literal |
+| LDAPInjectction.go:28:3:28:51 | ...+... | semmle.label | ...+... |
+| LDAPInjectction.go:29:3:29:33 | slice literal | semmle.label | slice literal |
+| LDAPInjectction.go:35:3:35:51 | ...+... | semmle.label | ...+... |
+| LDAPInjectction.go:36:3:36:33 | slice literal | semmle.label | slice literal |
+#select
+| LDAPInjectction.go:21:3:21:51 | ...+... | LDAPInjectction.go:17:15:17:29 | call to UserAgent : string | LDAPInjectction.go:21:3:21:51 | ...+... | LDAP query parameter is derived from $@. | LDAPInjectction.go:17:15:17:29 | call to UserAgent | a user-provided value |
+| LDAPInjectction.go:22:3:22:33 | slice literal | LDAPInjectction.go:17:15:17:29 | call to UserAgent : string | LDAPInjectction.go:22:3:22:33 | slice literal | LDAP query parameter is derived from $@. | LDAPInjectction.go:17:15:17:29 | call to UserAgent | a user-provided value |
+| LDAPInjectction.go:28:3:28:51 | ...+... | LDAPInjectction.go:17:15:17:29 | call to UserAgent : string | LDAPInjectction.go:28:3:28:51 | ...+... | LDAP query parameter is derived from $@. | LDAPInjectction.go:17:15:17:29 | call to UserAgent | a user-provided value |
+| LDAPInjectction.go:29:3:29:33 | slice literal | LDAPInjectction.go:17:15:17:29 | call to UserAgent : string | LDAPInjectction.go:29:3:29:33 | slice literal | LDAP query parameter is derived from $@. | LDAPInjectction.go:17:15:17:29 | call to UserAgent | a user-provided value |
+| LDAPInjectction.go:35:3:35:51 | ...+... | LDAPInjectction.go:17:15:17:29 | call to UserAgent : string | LDAPInjectction.go:35:3:35:51 | ...+... | LDAP query parameter is derived from $@. | LDAPInjectction.go:17:15:17:29 | call to UserAgent | a user-provided value |
+| LDAPInjectction.go:36:3:36:33 | slice literal | LDAPInjectction.go:17:15:17:29 | call to UserAgent : string | LDAPInjectction.go:36:3:36:33 | slice literal | LDAP query parameter is derived from $@. | LDAPInjectction.go:17:15:17:29 | call to UserAgent | a user-provided value |
