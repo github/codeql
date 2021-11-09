@@ -9,12 +9,10 @@
  *       external/cwe/cwe-90
  */
 
-// Determine precision above
 import go
 import LDAPinjection
 import DataFlow::PathGraph
 
 from LdapVul config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "$@ LDAP query parameter comes from $@.", sink.getNode(),
-  "This", source.getNode(), "a user-provided value"
+select sink.getNode(), source, sink, "LDAP query parameter is derived from $@.", source.getNode(), "a user-provided value"
