@@ -10,7 +10,7 @@
  */
 
 import go
-import LDAPinjection
+import LDAPInjection
 import DataFlow::PathGraph
 
 from LdapInjectionConfiguration config, DataFlow::PathNode source, DataFlow::PathNode sink
