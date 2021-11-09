@@ -41,6 +41,7 @@ private module Aiopg {
     result = connection().getMember("cursor").getReturn().getAwaited()
   }
 
+  /** Calling `execute` on a `Cursor` constructs a query. */
   class CursorExecuteCall extends SqlConstruction::Range, DataFlow::CallCfgNode {
     CursorExecuteCall() { this = cursor().getMember("execute").getACall() }
 
@@ -68,6 +69,51 @@ private module Aiopg {
     DataFlow::Node sql;
 
     AwaitedCursorExecuteCall() { this = awaited(cursorExecuteCall(sql)) }
+
+    override DataFlow::Node getSql() { result = sql }
+  }
+
+  /** An `Engine` is created when the result of calling `aiopg.sa.create_engine` is awaited. */
+  API::Node engine() {
+    result =
+      API::moduleImport("aiopg").getMember("sa").getMember("create_engine").getReturn().getAwaited()
+  }
+
+  /**
+   * A `SAConnection` is created when the result of calling `aquire` on an `Engine` is awaited.
+   */
+  API::Node saConnection() { result = engine().getMember("acquire").getReturn().getAwaited() }
+
+  /** Calling `execute` on a `SAConnection` constructs a query. */
+  class SAConnectionExecuteCall extends SqlConstruction::Range, DataFlow::CallCfgNode {
+    SAConnectionExecuteCall() { this = saConnection().getMember("execute").getACall() }
+
+    override DataFlow::Node getSql() { result in [this.getArg(0), this.getArgByName("query")] }
+  }
+
+  /**
+   * This is only needed to connect the argument to the execute call with the subsequnt awaiting.
+   * It should be obsolete once we have `API::CallNode` available.
+   */
+  private DataFlow::TypeTrackingNode saConnectionExecuteCall(
+    DataFlow::TypeTracker t, DataFlow::Node sql
+  ) {
+    // saConnection created from engine
+    t.start() and
+    sql = result.(SAConnectionExecuteCall).getSql()
+    or
+    exists(DataFlow::TypeTracker t2 | result = saConnectionExecuteCall(t2, sql).track(t2, t))
+  }
+
+  DataFlow::Node saConnectionExecuteCall(DataFlow::Node sql) {
+    saConnectionExecuteCall(DataFlow::TypeTracker::end(), sql).flowsTo(result)
+  }
+
+  /** Awaiting the result of calling `execute` executes the query. */
+  class AwaitedSAConnectionExecuteCall extends SqlExecution::Range {
+    DataFlow::Node sql;
+
+    AwaitedSAConnectionExecuteCall() { this = awaited(saConnectionExecuteCall(sql)) }
 
     override DataFlow::Node getSql() { result = sql }
   }
