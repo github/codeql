@@ -3,7 +3,7 @@
   "qhelp.dtd">
 <qhelp>
 <overview>
-<p>Finding for places to work with files without restrictions on access rights.</p>
+<p>When creating a file using a library function such as <code>fopen</code>, the access rights for the newly created file are not specified as part of the call. Instead these rights are determined by the system unless the programmer takes specific measures, such as calling the Posix <code>umask</code> function at some point before the call to <code>fopen</code>. For some applications, the default access rights assigned by the system are not sufficient to protect a file against access by an attacker.</p>
 
 
 </overview>
