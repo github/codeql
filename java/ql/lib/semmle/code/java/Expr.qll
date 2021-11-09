@@ -2267,3 +2267,26 @@ class StringTemplateExpr extends Expr, @stringtemplateexpr {
 
   override string getAPrimaryQlClass() { result = "StringTemplateExpr" }
 }
+
+/**
+ * A Kotlin(TODO: Should Java make these too?) vararg expression.
+ * This is the argument to a function that corresponds to a `vararg`
+ * parameter.
+ */
+class VarArgExpr extends Expr, @varargexpr {
+  /**
+   * Gets the `i`th component of this vararg. TODO: Is this always Expr?
+   *
+   * For example, in the string template `"foo${bar}baz"`, the 0th
+   * component is the string literal `"foo"`, the 1st component is
+   * the variable access `bar`, and the 2nd component is the string
+   * literal `"bar"`.
+   */
+  Expr getComponent(int i) { result.isNthChildOf(this, i) }
+
+  override string toString() { result = "..." }
+
+  override string getHalsteadID() { result = "VarArgExpr" }
+
+  override string getAPrimaryQlClass() { result = "VarArgExpr" }
+}

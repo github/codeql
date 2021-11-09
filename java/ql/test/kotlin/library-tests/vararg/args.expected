@@ -1,0 +1,7 @@
+| test.kt:13:5:13:34 | funWithOnlyVarArgs(...) | 0 | test.kt:13:24:13:33 | ... |
+| test.kt:14:5:14:50 | funWithArgsAndVarArgs(...) | 0 | test.kt:14:28:14:30 | foo |
+| test.kt:14:5:14:50 | funWithArgsAndVarArgs(...) | 1 | test.kt:14:34:14:37 | true |
+| test.kt:14:5:14:50 | funWithArgsAndVarArgs(...) | 2 | test.kt:14:40:14:49 | ... |
+| test.kt:15:5:15:53 | funWithMiddleVarArgs(...) | 0 | test.kt:15:27:15:29 | foo |
+| test.kt:15:5:15:53 | funWithMiddleVarArgs(...) | 1 | test.kt:15:33:15:42 | ... |
+| test.kt:15:5:15:53 | funWithMiddleVarArgs(...) | 2 | test.kt:15:49:15:52 | true |

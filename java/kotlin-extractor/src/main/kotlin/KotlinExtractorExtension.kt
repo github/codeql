@@ -1695,6 +1695,15 @@ open class KotlinFileExtractor(
                 val exprParent = parent.expr(e, callable)
                 extractTypeOperatorCall(e, callable, exprParent.parent, exprParent.idx)
             }
+            is IrVararg -> {
+                val exprParent = parent.expr(e, callable)
+                val id = tw.getFreshIdLabel<DbVarargexpr>()
+                val locId = tw.getLocation(e)
+                val type = useType(e.type)
+                tw.writeExprs_varargexpr(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
+                tw.writeHasLocation(id, locId)
+                e.elements.forEachIndexed { i, arg -> extractVarargElement(arg, callable, id, i) }
+            }
             is IrGetObjectValue -> {
                 // For `object MyObject { ... }`, the .class has an
                 // automatically-generated `public static final MyObject INSTANCE`
@@ -1715,6 +1724,17 @@ open class KotlinFileExtractor(
             }
             else -> {
                 logger.warnElement(Severity.ErrorSevere, "Unrecognised IrExpression: " + e.javaClass, e)
+            }
+        }
+    }
+
+    fun extractVarargElement(e: IrVarargElement, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int) {
+        when(e) {
+            is IrExpression -> {
+                extractExpressionExpr(e, callable, parent, idx)
+            }
+            else -> {
+                logger.warnElement(Severity.ErrorSevere, "Unrecognised IrVarargElement: " + e.javaClass, e)
             }
         }
     }
