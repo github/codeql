@@ -28,10 +28,26 @@ class OnActivityResultIncomingIntent extends DataFlow::Node {
    * Intent to `onActivityResult`.
    */
   predicate isRemoteSource() {
-    exists(ImplicitStartActivityForResultConf conf, DataFlow::Node sink |
+    exists(ImplicitStartActivityForResultConf conf, RefType startingType, DataFlow::Node sink |
       conf.hasFlowTo(sink) and
-      DataFlow::getInstanceArgument(sink.asExpr().(Argument).getCall()).getType() =
-        this.getEnclosingCallable().getDeclaringType()
+      startingType = sink.asExpr().(Argument).getCall().getEnclosingCallable().getDeclaringType()
+    |
+      startingType = this.getEnclosingCallable().getDeclaringType()
+      or
+      // A fragment calls `startActivityForResult`
+      // and the activity it belongs to defines `onActivityResult`.
+      exists(MethodAccess ma |
+        ma.getMethod().hasName(["add", "attach", "replace"]) and
+        ma.getMethod().getDeclaringType().hasName("FragmentTransaction") and
+        any(Argument arg | arg = ma.getAnArgument()).getType() = startingType
+        or
+        ma.getMethod().hasName("show") and
+        ma.getMethod().getDeclaringType().getASupertype*().hasName("DialogFragment") and
+        startingType = ma.getQualifier().getType()
+      |
+        ma.getEnclosingCallable().getDeclaringType() =
+          this.getEnclosingCallable().getDeclaringType()
+      )
     )
   }
 }
@@ -49,15 +65,37 @@ private class ImplicitStartActivityForResultConf extends DataFlow5::Configuratio
   }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(ActivityOrFragment actOrFrag, MethodAccess startActivityForResult |
+    exists(MethodAccess startActivityForResult |
       startActivityForResult.getMethod().hasName("startActivityForResult") and
-      startActivityForResult.getEnclosingCallable() = actOrFrag.getACallable() and
+      startActivityForResult.getMethod().getDeclaringType().getASupertype*() instanceof
+        ActivityOrFragment and
       sink.asExpr() = startActivityForResult.getArgument(0)
     )
   }
 
   override predicate isBarrier(DataFlow::Node barrier) {
     barrier instanceof ExplicitIntentSanitizer
+  }
+
+  override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+    // Wrapping the Intent in a chooser
+    exists(MethodAccess ma, Method m |
+      ma.getMethod() = m and
+      m.hasName("createChooser") and
+      m.getDeclaringType() instanceof TypeIntent
+    |
+      node1.asExpr() = ma.getArgument(0) and
+      node2.asExpr() = ma
+    )
+    or
+    // Using the copy constructor
+    exists(ClassInstanceExpr cie |
+      cie.getConstructedType() instanceof TypeIntent and
+      cie.getArgument(0).getType() instanceof TypeIntent
+    |
+      node1.asExpr() = cie.getArgument(0) and
+      node2.asExpr() = cie
+    )
   }
 }
 
