@@ -11,7 +11,7 @@ is likely to be able to run malicious LDAP queries.</p>
 <recommendation>
 <p>If user input must be included in an LDAP query or DN, it should be escaped to
 avoid a malicious user providing special characters that change the meaning
-of the query. In Go, user input should be escaped with <code>EscapeFilter</code> 
+of the query. In Go, user input should be escaped with <code>EscapeFilter</code>. 
 A good practice is to escape filter characters 
 that could change the meaning of the query (https://tools.ietf.org/search/rfc4515#section-3).</p>
 </recommendation>
