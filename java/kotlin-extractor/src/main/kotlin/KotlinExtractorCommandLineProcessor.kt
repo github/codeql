@@ -30,6 +30,13 @@ class KotlinExtractorCommandLineProcessor : CommandLineProcessor {
             description = "The start time of the compilation as a Unix timestamp",
             required = false,
             allowMultipleOccurrences = false
+        ),
+        CliOption(
+            optionName = OPTION_EXIT_AFTER_EXTRACTION,
+            valueDescription = "Specify whether to call exitProcess after the extraction has completed",
+            description = "Specify whether to call exitProcess after the extraction has completed",
+            required = false,
+            allowMultipleOccurrences = false
         )
     )
 
@@ -39,18 +46,21 @@ class KotlinExtractorCommandLineProcessor : CommandLineProcessor {
         configuration: CompilerConfiguration
     ) = when (option.optionName) {
         OPTION_INVOCATION_TRAP_FILE -> configuration.put(KEY_INVOCATION_TRAP_FILE, value)
-        OPTION_CHECK_TRAP_IDENTICAL ->
-            when (value) {
-                "true" -> configuration.put(KEY_CHECK_TRAP_IDENTICAL, true)
-                "false" -> configuration.put(KEY_CHECK_TRAP_IDENTICAL, false)
-                else -> error("kotlin extractor: Bad argument $value for $OPTION_CHECK_TRAP_IDENTICAL")
-        }
+        OPTION_CHECK_TRAP_IDENTICAL -> processBooleanOption(value, OPTION_CHECK_TRAP_IDENTICAL, KEY_CHECK_TRAP_IDENTICAL, configuration)
+        OPTION_EXIT_AFTER_EXTRACTION -> processBooleanOption(value, OPTION_EXIT_AFTER_EXTRACTION, KEY_EXIT_AFTER_EXTRACTION, configuration)
         OPTION_COMPILATION_STARTTIME ->
             when (val v = value.toLongOrNull()) {
                 is Long -> configuration.put(KEY_COMPILATION_STARTTIME, v)
                 else -> error("kotlin extractor: Bad argument $value for $OPTION_COMPILATION_STARTTIME")
             }
         else -> error("kotlin extractor: Bad option: ${option.optionName}")
+    }
+
+    private fun processBooleanOption(value: String, optionName: String, configKey: CompilerConfigurationKey<Boolean>, configuration: CompilerConfiguration) =
+        when (value) {
+            "true" -> configuration.put(configKey, true)
+            "false" -> configuration.put(configKey, false)
+            else -> error("kotlin extractor: Bad argument $value for $optionName")
     }
 }
 
@@ -60,3 +70,5 @@ private val OPTION_CHECK_TRAP_IDENTICAL = "checkTrapIdentical"
 val KEY_CHECK_TRAP_IDENTICAL= CompilerConfigurationKey<Boolean>(OPTION_CHECK_TRAP_IDENTICAL)
 private val OPTION_COMPILATION_STARTTIME = "compilationStartTime"
 val KEY_COMPILATION_STARTTIME= CompilerConfigurationKey<Long>(OPTION_COMPILATION_STARTTIME)
+private val OPTION_EXIT_AFTER_EXTRACTION = "exitAfterExtraction"
+val KEY_EXIT_AFTER_EXTRACTION= CompilerConfigurationKey<Boolean>(OPTION_EXIT_AFTER_EXTRACTION)

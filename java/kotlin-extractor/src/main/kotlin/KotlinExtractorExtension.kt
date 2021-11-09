@@ -27,8 +27,15 @@ import com.semmle.extractor.java.OdasaOutput.TrapFileManager
 import com.semmle.util.files.FileUtil
 import org.jetbrains.kotlin.ir.types.impl.makeTypeProjection
 import org.jetbrains.kotlin.ir.util.*
+import kotlin.system.exitProcess
 
-class KotlinExtractorExtension(private val invocationTrapFile: String, private val checkTrapIdentical: Boolean, private val compilationStartTime: Long?) : IrGenerationExtension {
+class KotlinExtractorExtension(
+    private val invocationTrapFile: String,
+    private val checkTrapIdentical: Boolean,
+    private val compilationStartTime: Long?,
+    private val exitAfterExtraction: Boolean)
+    : IrGenerationExtension {
+
     override fun generate(moduleFragment: IrModuleFragment, pluginContext: IrPluginContext) {
         val startTimeMs = System.currentTimeMillis()
         // This default should be kept in sync with com.semmle.extractor.java.interceptors.KotlinInterceptor.initializeExtractionContext
@@ -65,6 +72,9 @@ class KotlinExtractorExtension(private val invocationTrapFile: String, private v
             val compilationTimeMs = System.currentTimeMillis() - startTimeMs
             tw.writeCompilation_finished(compilation, -1.0, compilationTimeMs.toDouble() / 1000)
             tw.flush()
+        }
+        if (exitAfterExtraction) {
+            exitProcess(0)
         }
     }
 }
