@@ -15,7 +15,7 @@ def parse_dbscheme(filename):
 
     # Remove comments
     dbscheme = re.sub(r'/\*.*?\*/', '', dbscheme, flags=re.DOTALL)
-    dbscheme = re.sub(r'//[^\r\n]*/', '', dbscheme)
+    dbscheme = re.sub(r'//[^\r\n]*', '', dbscheme)
 
     # kind enums
     for name, kind, body in re.findall(r'case\s+@([^.\s]*)\.([^.\s]*)\s+of\b(.*?);',
