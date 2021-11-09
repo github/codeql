@@ -102,16 +102,14 @@ private predicate hasBooleanValue(DataFlow::Node node, boolean value) {
 
 // `<actionControllerConfig>.allow_forgery_protection = <verificationSetting>`
 private DataFlow::CallNode getAnAllowForgeryProtectionCall(boolean verificationSetting) {
-  exists(ActionControllerConfigNode recv |
-    // exclude some test and development configuration
-    not (
-      result.getLocation().getFile().getRelativePath().matches("%test/%") or
-      result.getLocation().getFile().getStem() = ["test", "development"]
-    ) and
-    result.getReceiver() = recv and
-    result.asExpr().getExpr().(MethodCall).getMethodName() = "allow_forgery_protection=" and
-    hasBooleanValue(result.getArgument(0), verificationSetting)
-  )
+  // exclude some test and development configuration
+  not (
+    result.getLocation().getFile().getRelativePath().matches("%test/%") or
+    result.getLocation().getFile().getStem() = ["test", "development"]
+  ) and
+  result.getReceiver() instanceof ActionControllerConfigNode and
+  result.asExpr().getExpr().(MethodCall).getMethodName() = "allow_forgery_protection=" and
+  hasBooleanValue(result.getArgument(0), verificationSetting)
 }
 
 /**
