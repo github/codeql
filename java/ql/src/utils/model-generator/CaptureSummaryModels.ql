@@ -64,8 +64,8 @@ string captureQualifierFlow(Callable api) {
 string captureFieldFlow(Callable api) {
   exists(FieldAccess fa, ReturnNodeExt returnNode |
     not (fa.getField().isStatic() and fa.getField().isFinal()) and
+    fa.getField().getDeclaringType() = api.getDeclaringType() and
     returnNode.getEnclosingCallable() = api and
-    fa.getCompilationUnit() = api.getCompilationUnit() and
     isRelevantType(api.getReturnType()) and
     not api.getDeclaringType() instanceof EnumType and
     TaintTracking::localTaint(DataFlow::exprNode(fa), returnNode)
