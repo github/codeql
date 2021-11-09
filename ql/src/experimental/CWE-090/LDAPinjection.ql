@@ -5,8 +5,8 @@
  * @kind path-problem
  * @problem.severity error
  * @id go/ldap-injection
- * @tags security	
- *       external/cwe/cwe-090
+ * @tags security
+ *       external/cwe/cwe-90
  */
 
 // Determine precision above
