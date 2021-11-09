@@ -58,7 +58,7 @@ string captureQualifierFlow(Callable api) {
  * Captured Model:
  * ```
  * p;Foo;true;returnsTainted;;Argument[-1];ReturnValue;taint
- * p;Foo;true;putsTaintIntoParameter;(List);Argument[-1];ReturnValue;taint
+ * p;Foo;true;putsTaintIntoParameter;(List);Argument[-1];Argument[0];taint
  * ```
  */
 string captureFieldFlow(Callable api) {
