@@ -183,6 +183,7 @@ Python built-in support
    pydantic, Utility library
    yarl, Utility library
    aioch, Database
+   aiopg, Database
    asyncpg, Database
    clickhouse-driver, Database
    mysql-connector-python, Database
