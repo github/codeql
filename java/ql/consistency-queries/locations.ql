@@ -20,7 +20,7 @@ Location unusedLocation() {
   not exists(Top t | t.getLocation() = result) and
   not exists(XMLLocatable x | x.getLocation() = result) and
   not exists(ConfigLocatable c | c.getLocation() = result) and
-  not exists(@diagnostic d | diagnostics(d, _, _, _, _, result)) and
+  not exists(@diagnostic d | diagnostics(d, _, _, _, _, _, result)) and
   not (result.getFile().getExtension() = "xml" and
        result.getStartLine() = 0 and
        result.getStartColumn() = 0 and

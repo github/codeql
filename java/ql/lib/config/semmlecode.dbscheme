@@ -140,6 +140,7 @@ compilation_finished(
 
 diagnostics(
     unique int id: @diagnostic,
+    string generated_by: string ref, // TODO: Sync this with CPP?
     int severity: int ref,
     string error_tag: string ref,
     string error_message: string ref,

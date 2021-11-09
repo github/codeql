@@ -84,7 +84,7 @@ open class Logger(val logCounter: LogCounter, open val tw: TrapWriter) {
                 }
             }
         val ts = timestamp()
-        tw.writeDiagnostics(StarLabel(), severity.sev, "", msg, "$ts $msg\n$suffix", locationId)
+        tw.writeDiagnostics(StarLabel(), "CodeQL Kotlin extractor", severity.sev, "", msg, "$ts $msg\n$suffix", locationId)
         val locStr = if (locationString == null) "" else "At " + locationString + ": "
         print("$ts Warning($warningLocStr): $locStr$msg\n$suffix")
     }

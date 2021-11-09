@@ -12,7 +12,7 @@ private int getWarnSeverity() { result = 1 }
 
 private predicate knownWarnings(@diagnostic d, string msg, int sev) {
   exists(string filename |
-    diagnostics(d, 2, _, "Skipping Lombok-ed source file: " + filename, _, _) and
+    diagnostics(d, _, 2, _, "Skipping Lombok-ed source file: " + filename, _, _) and
     msg = "Use of Lombok detected. Skipping file: " + filename and
     sev = getWarnSeverity()
   )
@@ -20,19 +20,19 @@ private predicate knownWarnings(@diagnostic d, string msg, int sev) {
 
 private predicate knownErrors(@diagnostic d, string msg, int sev) {
   exists(string numErr, Location l |
-    diagnostics(d, 6, _, numErr, _, l) and
+    diagnostics(d, _, 6, _, numErr, _, l) and
     msg = "Frontend errors in file: " + l.getFile().getAbsolutePath() + " (" + numErr + ")" and
     sev = getErrorSeverity()
   )
   or
   exists(string filename, Location l |
-    diagnostics(d, 7, _, "Exception compiling file " + filename, _, l) and
+    diagnostics(d, _, 7, _, "Exception compiling file " + filename, _, l) and
     msg = "Extraction incomplete in file: " + filename and
     sev = getErrorSeverity()
   )
   or
   exists(string errMsg, Location l |
-    diagnostics(d, 8, _, errMsg, _, l) and
+    diagnostics(d, _, 8, _, errMsg, _, l) and
     msg = "Severe error: " + errMsg and
     sev = getErrorSeverity()
   )
@@ -41,7 +41,7 @@ private predicate knownErrors(@diagnostic d, string msg, int sev) {
 private predicate unknownErrors(@diagnostic d, string msg, int sev) {
   not knownErrors(d, _, _) and
   exists(Location l, File f, int diagSev |
-    diagnostics(d, diagSev, _, _, _, l) and l.getFile() = f and diagSev > 3
+    diagnostics(d, _, diagSev, _, _, _, l) and l.getFile() = f and diagSev > 3
   |
     exists(f.getRelativePath()) and
     msg = "Unknown errors in file: " + f.getAbsolutePath() + " (" + diagSev + ")" and
@@ -77,7 +77,7 @@ predicate reportableWarnings(@diagnostic d, string msg, int sev) { knownWarnings
  */
 predicate successfullyExtracted(CompilationUnit f) {
   not exists(@diagnostic d, Location l |
-    reportableDiagnostics(d, _, _) and diagnostics(d, _, _, _, _, l) and l.getFile() = f
+    reportableDiagnostics(d, _, _) and diagnostics(d, _, _, _, _, _, l) and l.getFile() = f
   ) and
   exists(f.getRelativePath()) and
   f.fromSource()
