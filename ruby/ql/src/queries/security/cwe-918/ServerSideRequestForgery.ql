@@ -11,10 +11,7 @@
  */
 
 import ruby
-import codeql.ruby.Concepts
 import codeql.ruby.DataFlow
-import codeql.ruby.TaintTracking
-import codeql.ruby.dataflow.RemoteFlowSources
 import codeql.ruby.security.ServerSideRequestForgeryQuery
 
 from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
