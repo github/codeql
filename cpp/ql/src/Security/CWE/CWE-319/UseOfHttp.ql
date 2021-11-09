@@ -60,6 +60,9 @@ class HttpStringToUrlOpenConfig extends TaintTracking::Configuration {
       fc.getTarget().getName() = ["send", "URLDownloadToFile"] and
       sink.asExpr() = fc.getArgument(1)
       or
+      fc.getTarget().getName() = "curl_easy_setopt" and
+      sink.asExpr() = fc.getArgument(2)
+      or
       fc.getTarget().getName() = "ShellExecute" and
       sink.asExpr() = fc.getArgument(3)
     )
