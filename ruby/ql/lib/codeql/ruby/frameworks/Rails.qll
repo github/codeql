@@ -32,19 +32,9 @@ private class RailtieClass extends ClassDeclaration {
   }
 }
 
-// `Rails.application.config` calls
-private API::Node getConfigApiNode() {
-  result = API::getTopLevelMember("Rails").getReturn("application").getReturn("config")
-}
-
-// `Rails.application.configure`
-private DataFlow::CallNode getConfigureApiNode() {
-  result = API::getTopLevelMember("Rails").getReturn("application").getAMethodCall("configure")
-}
-
 private DataFlow::CallNode getAConfigureCallNode() {
   // `Rails.application.configure`
-  result = getConfigureApiNode()
+  result = API::getTopLevelMember("Rails").getReturn("application").getAMethodCall("configure")
   or
   // `Rails::Application.configure`
   exists(ConstantReadAccess read, RailtieClass cls |
@@ -66,7 +56,7 @@ private class ConfigSourceNode extends DataFlow::LocalSourceNode {
     )
     or
     // `Rails.application.config`
-    this = getConfigApiNode().getAnImmediateUse()
+    this = API::getTopLevelMember("Rails").getReturn("application").getReturn("config").getAnImmediateUse()
     or
     // `Rails.application.configure { ... config ... }`
     // `Rails::Application.configure { ... config ... }`
