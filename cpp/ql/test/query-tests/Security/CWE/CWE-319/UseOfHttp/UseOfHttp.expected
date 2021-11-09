@@ -1,0 +1,15 @@
+edges
+| test.cpp:11:20:11:22 | url | test.cpp:15:30:15:32 | url |
+| test.cpp:28:10:28:29 | http://example.com | test.cpp:11:20:11:22 | url |
+| test.cpp:38:18:38:26 | http:// | test.cpp:41:11:41:16 | buffer |
+| test.cpp:41:11:41:16 | buffer | test.cpp:11:20:11:22 | url |
+nodes
+| test.cpp:11:20:11:22 | url | semmle.label | url |
+| test.cpp:15:30:15:32 | url | semmle.label | url |
+| test.cpp:28:10:28:29 | http://example.com | semmle.label | http://example.com |
+| test.cpp:38:18:38:26 | http:// | semmle.label | http:// |
+| test.cpp:41:11:41:16 | buffer | semmle.label | buffer |
+subpaths
+#select
+| test.cpp:28:10:28:29 | http://example.com | test.cpp:28:10:28:29 | http://example.com | test.cpp:15:30:15:32 | url | A URL may be constructed with the HTTP protocol. |
+| test.cpp:38:18:38:26 | http:// | test.cpp:38:18:38:26 | http:// | test.cpp:15:30:15:32 | url | A URL may be constructed with the HTTP protocol. |
