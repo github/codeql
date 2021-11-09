@@ -17,3 +17,10 @@ async def test_cursor():
         # Create Cursor directly
         async with pool.cursor() as cur:
             await cur.execute("sql")  # $ getSql="sql" constructedSql="sql"
+
+from aiopg.sa import create_engine
+
+async def test_engine():
+    engine = await create_engine()
+    conn = await engine.acquire()
+    await conn.execute("sql")  # $ MISSING: getSql="sql" constructedSql="sql"
