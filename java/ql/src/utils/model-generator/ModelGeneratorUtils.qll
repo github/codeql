@@ -56,21 +56,17 @@ string asSummaryModel(Callable api, string input, string output, string kind) {
   result =
     asPartialModel(api) + input + ";" //
       + output + ";" //
-      + kind + ";" //
+      + kind
 }
 
 bindingset[input, kind]
 string asSinkModel(Callable api, string input, string kind) {
-  result =
-    asPartialModel(api) + input + ";" //
-      + kind + ";" //
+  result = asPartialModel(api) + input + ";" + kind
 }
 
 bindingset[output, kind]
 string asSourceModel(Callable api, string output, string kind) {
-  result =
-    asPartialModel(api) + output + ";" //
-      + kind + ";" //
+  result = asPartialModel(api) + output + ";" + kind
 }
 
 /**
