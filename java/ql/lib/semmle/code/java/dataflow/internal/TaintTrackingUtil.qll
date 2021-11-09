@@ -376,13 +376,6 @@ private predicate argToQualifierStep(Expr tracked, Expr sink) {
  * `arg` is the index of the argument.
  */
 private predicate taintPreservingArgumentToQualifier(Method method, int arg) {
-  exists(Method write |
-    method.overrides*(write) and
-    write.hasName("write") and
-    arg = 0 and
-    write.getDeclaringType().hasQualifiedName("java.io", "OutputStream")
-  )
-  or
   method.(TaintPreservingCallable).transfersTaint(arg, -1)
 }
 
