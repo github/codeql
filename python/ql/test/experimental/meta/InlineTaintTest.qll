@@ -30,6 +30,8 @@ DataFlow::Node shouldNotBeTainted() {
   )
 }
 
+// this module allows the configuration to be imported in other `.ql` files without the
+// top level query predicates of this file coming into scope.
 module Conf {
   class TestTaintTrackingConfiguration extends TaintTracking::Configuration {
     TestTaintTrackingConfiguration() { this = "TestTaintTrackingConfiguration" }
