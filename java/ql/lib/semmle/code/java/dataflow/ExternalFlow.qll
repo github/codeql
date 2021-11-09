@@ -373,7 +373,11 @@ private predicate summaryModelCsv(string row) {
       "java.io;StringReader;false;StringReader;;;Argument[0];Argument[-1];taint",
       "java.io;CharArrayReader;false;CharArrayReader;;;Argument[0];Argument[-1];taint",
       "java.io;BufferedReader;false;BufferedReader;;;Argument[0];Argument[-1];taint",
-      "java.io;InputStreamReader;false;InputStreamReader;;;Argument[0];Argument[-1];taint"
+      "java.io;InputStreamReader;false;InputStreamReader;;;Argument[0];Argument[-1];taint",
+      "java.io;OutputStream;true;write;(byte[]);;Argument[0];Argument[-1];taint",
+      "java.io;OutputStream;true;write;(byte[],int,int);;Argument[0];Argument[-1];taint",
+      "java.io;OutputStream;true;write;(int);;Argument[0];Argument[-1];taint",
+      "java.io;FilterOutputStream;true;FilterOutputStream;(OutputStream);;Argument[0];Argument[-1];taint"
     ]
 }
 
