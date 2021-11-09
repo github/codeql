@@ -14,7 +14,6 @@ import org.jetbrains.kotlin.ir.symbols.IrClassSymbol
 import org.jetbrains.kotlin.ir.symbols.IrClassifierSymbol
 import org.jetbrains.kotlin.ir.symbols.IrConstructorSymbol
 import org.jetbrains.kotlin.ir.types.*
-import org.jetbrains.kotlin.name.FqName
 import java.io.File
 import java.io.FileOutputStream
 import java.io.PrintWriter
@@ -23,26 +22,26 @@ import java.nio.file.Files
 import java.nio.file.Paths
 import java.util.*
 import java.util.zip.GZIPOutputStream
-import com.intellij.openapi.vfs.StandardFileSystems
 import com.semmle.extractor.java.OdasaOutput
 import com.semmle.extractor.java.OdasaOutput.TrapFileManager
 import com.semmle.util.files.FileUtil
 import org.jetbrains.kotlin.ir.types.impl.makeTypeProjection
 import org.jetbrains.kotlin.ir.util.*
-import org.jetbrains.kotlin.types.Variance
-import kotlin.system.exitProcess
 
-class KotlinExtractorExtension(private val invocationTrapFile: String, private val checkTrapIdentical: Boolean) : IrGenerationExtension {
+class KotlinExtractorExtension(private val invocationTrapFile: String, private val checkTrapIdentical: Boolean, private val compilationStartTime: Long?) : IrGenerationExtension {
     override fun generate(moduleFragment: IrModuleFragment, pluginContext: IrPluginContext) {
         val startTimeMs = System.currentTimeMillis()
-        // This default should be kept in sync with language-packs/java/tools/kotlin-extractor
+        // This default should be kept in sync with com.semmle.extractor.java.interceptors.KotlinInterceptor.initializeExtractionContext
         val trapDir = File(System.getenv("CODEQL_EXTRACTOR_JAVA_TRAP_DIR").takeUnless { it.isNullOrEmpty() } ?: "kotlin-extractor/trap")
         FileOutputStream(File(invocationTrapFile), true).bufferedWriter().use { invocationTrapFileBW ->
             val lm = TrapLabelManager()
             val tw = TrapWriter(lm, invocationTrapFileBW)
-            // The python wrapper has already defined #compilation = *
+            // The interceptor has already defined #compilation = *
             val compilation: Label<DbCompilation> = StringLabel("compilation")
             tw.writeCompilation_started(compilation)
+            if (compilationStartTime != null) {
+                tw.writeCompilation_compiler_times(compilation, -1.0, (System.currentTimeMillis()-compilationStartTime)/1000.0)
+            }
             tw.flush()
             val logCounter = LogCounter()
             val logger = Logger(logCounter, tw)
@@ -67,7 +66,6 @@ class KotlinExtractorExtension(private val invocationTrapFile: String, private v
             tw.writeCompilation_finished(compilation, -1.0, compilationTimeMs.toDouble() / 1000)
             tw.flush()
         }
-        exitProcess(0)
     }
 }
 
