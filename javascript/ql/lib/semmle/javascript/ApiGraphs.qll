@@ -557,6 +557,32 @@ module API {
     }
 
     /**
+     * Holds if `ref` is a read of a property described by `lbl` on `pred`, and
+     * `propDesc` is compatible with that property, meaning it is either the
+     * name of the property itself or the empty string.
+     */
+    pragma[noinline]
+    private predicate propertyRead(
+      DataFlow::SourceNode pred, string propDesc, string lbl, DataFlow::Node ref
+    ) {
+      ref = pred.getAPropertyRead() and
+      lbl = Label::memberFromRef(ref) and
+      (
+        lbl = Label::member(propDesc)
+        or
+        propDesc = ""
+      )
+      or
+      PromiseFlow::loadStep(pred.getALocalUse(), ref, Promises::valueProp()) and
+      lbl = Label::promised() and
+      (propDesc = Promises::valueProp() or propDesc = "")
+      or
+      PromiseFlow::loadStep(pred.getALocalUse(), ref, Promises::errorProp()) and
+      lbl = Label::promisedError() and
+      (propDesc = Promises::errorProp() or propDesc = "")
+    }
+
+    /**
      * Holds if `ref` is a use of a node that should have an incoming edge from `base` labeled
      * `lbl` in the API graph.
      */
@@ -567,37 +593,25 @@ module API {
         base = MkRoot() and
         ref = lbl.(EntryPoint).getAUse()
         or
-        exists(DataFlow::SourceNode src, DataFlow::SourceNode pred, string prop |
-          use(base, src) and pred = trackUseNode(src, false, 0, prop)
-        |
+        // property reads
+        exists(DataFlow::SourceNode src, DataFlow::SourceNode pred, string propDesc |
+          use(base, src) and
+          pred = trackUseNode(src, false, 0, propDesc) and
+          propertyRead(pred, propDesc, lbl, ref) and
           // `module.exports` is special: it is a use of a def-node, not a use-node,
           // so we want to exclude it here
-          (base instanceof TNonModuleDef or base instanceof TUse) and
-          lbl = Label::memberFromRef(ref) and
-          (
-            lbl = Label::member(prop)
-            or
-            prop = ""
-          ) and
-          ref = pred.getAPropertyRead()
-          or
+          (base instanceof TNonModuleDef or base instanceof TUse)
+        )
+        or
+        // invocations
+        exists(DataFlow::SourceNode src, DataFlow::SourceNode pred |
+          use(base, src) and pred = trackUseNode(src)
+        |
           lbl = Label::instance() and
-          prop = "" and
           ref = pred.getAnInstantiation()
           or
           lbl = Label::return() and
-          prop = "" and
           ref = pred.getAnInvocation()
-          or
-          (
-            lbl = Label::promised() and
-            (prop = Promises::valueProp() or prop = "") and
-            PromiseFlow::loadStep(pred.getALocalUse(), ref, Promises::valueProp())
-            or
-            lbl = Label::promisedError() and
-            (prop = Promises::errorProp() or prop = "") and
-            PromiseFlow::loadStep(pred.getALocalUse(), ref, Promises::errorProp())
-          )
         )
         or
         exists(DataFlow::Node def, DataFlow::FunctionNode fn |
