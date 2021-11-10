@@ -1050,7 +1050,7 @@ private module Cached {
   cached
   CfgScope getCfgScopeImpl(AstNode n) {
     forceCachingInSameStage() and
-    result = parent*(ASTInternal::fromGenerated(scopeOf(ASTInternal::toGeneratedInclSynth(n))))
+    result = parent*(scopeOfInclSynth(n))
   }
 
   cached

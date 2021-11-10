@@ -15,7 +15,7 @@ newtype SynthKind =
   BitwiseAndExprKind() or
   BitwiseOrExprKind() or
   BitwiseXorExprKind() or
-  BlockKind() or
+  BraceBlockKind() or
   ClassVariableAccessKind(ClassVariable v) or
   DivExprKind() or
   ExponentExprKind() or
@@ -834,6 +834,7 @@ private module ArrayLiteralDesugar {
  * scoped to the synthesized block.
  */
 private module ForLoopDesugar {
+  pragma[nomagic]
   private predicate forLoopSynthesis(AstNode parent, int i, Child child) {
     exists(ForExpr for |
       // each call
@@ -849,9 +850,9 @@ private module ForLoopDesugar {
         or
         parent = eachCall and
         i = -2 and
-        child = SynthChild(BlockKind())
+        child = SynthChild(BraceBlockKind())
         or
-        exists(Block block | block = TBlockSynth(eachCall, -2) |
+        exists(Block block | block = TBraceBlockSynth(eachCall, -2) |
           // block params
           parent = block and
           i = 0 and

@@ -19,8 +19,6 @@ private class TModuleLike = TToplevel or TModuleDeclaration or TClassDeclaration
 
 private class TScopeReal = TMethodBase or TModuleLike or TDoBlock or TLambda or TBraceBlock;
 
-private class TScopeSynth = TBlockSynth;
-
 module Scope {
   class TypeRange = Callable::TypeRange or ModuleBase::TypeRange or @ruby_end_block;
 
@@ -108,35 +106,74 @@ Ruby::HeredocBody getHereDocBody(Ruby::HeredocBeginning g) {
   )
 }
 
+private Ruby::AstNode specialParentOf(Ruby::AstNode n) {
+  n =
+    [
+      result.(Ruby::Module).getName(), result.(Ruby::Class).getName(),
+      result.(Ruby::Class).getSuperclass(), result.(Ruby::SingletonClass).getValue(),
+      result.(Ruby::Method).getName(), result.(Ruby::SingletonMethod).getName(),
+      result.(Ruby::SingletonMethod).getObject()
+    ]
+}
+
 private Ruby::AstNode parentOf(Ruby::AstNode n) {
   n = getHereDocBody(result)
   or
-  exists(Ruby::AstNode parent | parent = n.getParent() |
-    if
-      n =
-        [
-          parent.(Ruby::Module).getName(), parent.(Ruby::Class).getName(),
-          parent.(Ruby::Class).getSuperclass(), parent.(Ruby::SingletonClass).getValue(),
-          parent.(Ruby::Method).getName(), parent.(Ruby::SingletonMethod).getName(),
-          parent.(Ruby::SingletonMethod).getObject()
-        ]
-    then result = parent.getParent()
-    else result = parent
-  )
+  result = specialParentOf(n).getParent()
+  or
+  not exists(specialParentOf(n)) and
+  result = n.getParent()
 }
 
-/** Gets the enclosing scope of a node */
-cached
-Scope::Range scopeOf(Ruby::AstNode n) {
-  exists(Ruby::AstNode p | p = parentOf(n) |
-    p = result
-    or
-    not p instanceof Scope::Range and result = scopeOf(p)
-  )
+private AstNode specialParentOfInclSynth(AstNode n) {
+  n =
+    [
+      result.(Namespace).getScopeExpr(), result.(ClassDeclaration).getSuperclassExpr(),
+      result.(SingletonMethod).getObject()
+    ]
 }
+
+private AstNode parentOfInclSynth(AstNode n) {
+  (
+    result = specialParentOfInclSynth(n).getParent()
+    or
+    not exists(specialParentOfInclSynth(n)) and
+    result = n.getParent()
+  ) and
+  (synthChild(_, _, n) implies synthChild(result, _, n))
+}
+
+cached
+private module Cached {
+  /** Gets the enclosing scope of a node */
+  cached
+  Scope::Range scopeOf(Ruby::AstNode n) {
+    exists(Ruby::AstNode p | p = parentOf(n) |
+      p = result
+      or
+      not p instanceof Scope::Range and result = scopeOf(p)
+    )
+  }
+
+  /**
+   * Gets the enclosing scope of a node. Unlike `scopeOf`, this predicate
+   * operates on the external AST API, and therefore takes synthesized nodes
+   * and synthesized scopes into account.
+   */
+  cached
+  Scope scopeOfInclSynth(AstNode n) {
+    exists(AstNode p | p = parentOfInclSynth(n) |
+      p = result
+      or
+      not p instanceof Scope and result = scopeOfInclSynth(p)
+    )
+  }
+}
+
+import Cached
 
 abstract class ScopeImpl extends AstNode, TScopeType {
-  abstract Scope getOuterScopeImpl();
+  final Scope getOuterScopeImpl() { result = scopeOfInclSynth(this) }
 
   abstract Variable getAVariableImpl();
 
@@ -151,8 +188,6 @@ private class ScopeRealImpl extends ScopeImpl, TScopeReal {
 
   ScopeRealImpl() { range = toGenerated(this) }
 
-  override Scope getOuterScopeImpl() { toGenerated(result) = range.getOuterScope() }
-
   override Variable getAVariableImpl() { result.getDeclaringScope() = this }
 }
 
@@ -161,17 +196,15 @@ private class ScopeRealImpl extends ScopeImpl, TScopeReal {
 // in practice there is not a real nested scope created, so variables that
 // may appear to be local to the loop body (e.g. the iteration variable) are
 // scoped to the outer scope rather than the loop body.
-private class ScopeSynthImpl extends ScopeImpl, TScopeSynth {
-  ScopeSynthImpl() { this = TBlockSynth(_, _) }
-
-  override Scope getOuterScopeImpl() { scopeOf(toGeneratedInclSynth(this)) = toGenerated(result) }
+private class ScopeSynthImpl extends ScopeImpl, TBraceBlockSynth {
+  ScopeSynthImpl() { this = TBraceBlockSynth(_, _) }
 
   override Variable getAVariableImpl() {
     // Synthesized variables introduced as parameters to this scope
     // As this variable is also synthetic, it is genuinely local to this scope.
-    exists(SimpleParameter p | p = TSimpleParameterSynth(this, _) |
-      p.getVariable() = result and
-      exists(TLocalVariableAccessSynth(p, _, result))
+    exists(SimpleParameterSynthImpl p |
+      p = TSimpleParameterSynth(this, _) and
+      p.getVariableImpl() = result
     )
   }
 }

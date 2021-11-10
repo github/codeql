@@ -183,8 +183,6 @@ class Block extends Callable, StmtSequence, Scope, TBlock {
     or
     result = StmtSequence.super.getAChild(pred)
   }
-
-  override string getAPrimaryQlClass() { result = "Block" }
 }
 
 /** A block enclosed within `do` and `end`. */
@@ -215,16 +213,6 @@ class DoBlock extends Block, BodyStmt, TDoBlock {
  * ```
  */
 class BraceBlock extends Block, TBraceBlock {
-  private Ruby::Block g;
-
-  BraceBlock() { this = TBraceBlock(g) }
-
-  final override Parameter getParameter(int n) {
-    toGenerated(result) = g.getParameters().getChild(n)
-  }
-
-  final override Stmt getStmt(int i) { toGenerated(result) = g.getChild(i) }
-
   final override string toString() { result = "{ ... }" }
 
   final override string getAPrimaryQlClass() { result = "BraceBlock" }
