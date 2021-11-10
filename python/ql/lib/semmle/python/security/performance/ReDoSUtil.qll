@@ -98,6 +98,8 @@ predicate matchesEpsilon(RegExpTerm t) {
   matchesEpsilon(t.(RegExpBackRef).getGroup())
   or
   forex(RegExpTerm child | child = t.(RegExpSequence).getAChild() | matchesEpsilon(child))
+  or
+  t.(RegExpRange).getLowerBound() = 0
 }
 
 /**
@@ -540,6 +542,49 @@ private class EdgeLabel extends TInputSymbol {
 }
 
 /**
+ * A RegExp term that acts like a plus.
+ * Either it's a RegExpPlus, or it is a range {1,X} where X is >= 30.
+ * 30 has been chosen as a threshold because for exponential blowup 2^30 is enough to get a decent DOS attack.
+ */
+private class EffectivelyPlus extends RegExpTerm {
+  EffectivelyPlus() {
+    this instanceof RegExpPlus
+    or
+    exists(RegExpRange range | range.getLowerBound() = 1 and range.getUpperBound() >= 30 |
+      this = range
+    )
+  }
+}
+
+/**
+ * A RegExp term that acts like a star.
+ * Either it's a RegExpStar, or it is a range {0,X} where X is >= 30.
+ */
+private class EffectivelyStar extends RegExpTerm {
+  EffectivelyStar() {
+    this instanceof RegExpStar
+    or
+    exists(RegExpRange range | range.getLowerBound() = 0 and range.getUpperBound() >= 30 |
+      this = range
+    )
+  }
+}
+
+/**
+ * A RegExp term that acts like a question mark.
+ * Either it's a RegExpQuestion, or it is a range {0,1}.
+ */
+private class EffectivelyQuestion extends RegExpTerm {
+  EffectivelyQuestion() {
+    this instanceof RegExpOpt
+    or
+    exists(RegExpRange range | range.getLowerBound() = 0 and range.getUpperBound() = 1 |
+      this = range
+    )
+  }
+}
+
+/**
  * Gets the state before matching `t`.
  */
 pragma[inline]
@@ -559,14 +604,14 @@ State after(RegExpTerm t) {
   or
   exists(RegExpGroup grp | t = grp.getAChild() | result = after(grp))
   or
-  exists(RegExpStar star | t = star.getAChild() | result = before(star))
+  exists(EffectivelyStar star | t = star.getAChild() | result = before(star))
   or
-  exists(RegExpPlus plus | t = plus.getAChild() |
+  exists(EffectivelyPlus plus | t = plus.getAChild() |
     result = before(plus) or
     result = after(plus)
   )
   or
-  exists(RegExpOpt opt | t = opt.getAChild() | result = after(opt))
+  exists(EffectivelyQuestion opt | t = opt.getAChild() | result = after(opt))
   or
   exists(RegExpRoot root | t = root | result = AcceptAnySuffix(root))
 }
@@ -617,15 +662,17 @@ predicate delta(State q1, EdgeLabel lbl, State q2) {
   or
   exists(RegExpGroup grp | lbl = Epsilon() | q1 = before(grp) and q2 = before(grp.getChild(0)))
   or
-  exists(RegExpStar star | lbl = Epsilon() |
+  exists(EffectivelyStar star | lbl = Epsilon() |
     q1 = before(star) and q2 = before(star.getChild(0))
     or
     q1 = before(star) and q2 = after(star)
   )
   or
-  exists(RegExpPlus plus | lbl = Epsilon() | q1 = before(plus) and q2 = before(plus.getChild(0)))
+  exists(EffectivelyPlus plus | lbl = Epsilon() |
+    q1 = before(plus) and q2 = before(plus.getChild(0))
+  )
   or
-  exists(RegExpOpt opt | lbl = Epsilon() |
+  exists(EffectivelyQuestion opt | lbl = Epsilon() |
     q1 = before(opt) and q2 = before(opt.getChild(0))
     or
     q1 = before(opt) and q2 = after(opt)
