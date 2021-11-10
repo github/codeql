@@ -2,6 +2,7 @@ private import codeql.ruby.AST
 private import codeql.ruby.controlflow.ControlFlowGraph
 private import internal.AST
 private import internal.TreeSitter
+private import internal.Method
 
 /** A callable. */
 class Callable extends StmtSequence, Expr, Scope, TCallable {
@@ -182,6 +183,8 @@ class Block extends Callable, StmtSequence, Scope, TBlock {
     or
     result = StmtSequence.super.getAChild(pred)
   }
+
+  override string getAPrimaryQlClass() { result = "Block" }
 }
 
 /** A block enclosed within `do` and `end`. */
@@ -225,23 +228,4 @@ class BraceBlock extends Block, TBraceBlock {
   final override string toString() { result = "{ ... }" }
 
   final override string getAPrimaryQlClass() { result = "BraceBlock" }
-}
-
-/**
- * A synthesized block, such as the block synthesized from the body of
- * a `for` loop.
- */
-class SynthBlock extends Block, TBlockSynth {
-  SynthBlock() { this = TBlockSynth(_, _) }
-
-  final override Parameter getParameter(int n) { synthChild(this, n, result) }
-
-  final override Stmt getStmt(int i) {
-    i >= 0 and
-    synthChild(this, i + this.getNumberOfParameters(), result)
-  }
-
-  final override string toString() { result = "{ ... }" }
-
-  final override string getAPrimaryQlClass() { result = "SynthBlock" }
 }
