@@ -1912,6 +1912,18 @@ open class KotlinFileExtractor(
                     tw.writeVariableBinding(id, vId)
                 }
             }
+            is IrGetField -> {
+                val exprParent = parent.expr(e, callable)
+                val id = tw.getFreshIdLabel<DbVaraccess>()
+                val type = useType(e.type)
+                val locId = tw.getLocation(e)
+                tw.writeExprs_varaccess(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
+                tw.writeHasLocation(id, locId)
+                tw.writeCallableEnclosingExpr(id, callable)
+                val owner = e.symbol.owner
+                val vId = useField(owner)
+                tw.writeVariableBinding(id, vId)
+            }
             is IrGetEnumValue -> {
                 val exprParent = parent.expr(e, callable)
                 val id = tw.getFreshIdLabel<DbVaraccess>()
@@ -1924,7 +1936,8 @@ open class KotlinFileExtractor(
                 val vId = useEnumEntry(owner)
                 tw.writeVariableBinding(id, vId)
             }
-            is IrSetValue -> {
+            is IrSetValue,
+            is IrSetField -> {
                 val exprParent = parent.expr(e, callable)
                 val id = tw.getFreshIdLabel<DbAssignexpr>()
                 val type = useType(e.type)
@@ -1934,14 +1947,24 @@ open class KotlinFileExtractor(
                 tw.writeCallableEnclosingExpr(id, callable)
 
                 val lhsId = tw.getFreshIdLabel<DbVaraccess>()
-                val lhsType = useType(e.symbol.owner.type)
-                tw.writeExprs_varaccess(lhsId, lhsType.javaResult.id, lhsType.kotlinResult.id, id, 0)
                 tw.writeHasLocation(id, locId)
                 tw.writeCallableEnclosingExpr(lhsId, callable)
-                val vId = useValueDeclaration(e.symbol.owner)
-                tw.writeVariableBinding(lhsId, vId)
 
-                extractExpressionExpr(e.value, callable, id, 1)
+                if (e is IrSetValue) {
+                    val lhsType = useType(e.symbol.owner.type)
+                    tw.writeExprs_varaccess(lhsId, lhsType.javaResult.id, lhsType.kotlinResult.id, id, 0)
+                    val vId = useValueDeclaration(e.symbol.owner)
+                    tw.writeVariableBinding(lhsId, vId)
+                    extractExpressionExpr(e.value, callable, id, 1)
+                } else if (e is IrSetField) {
+                    val lhsType = useType(e.symbol.owner.type)
+                    tw.writeExprs_varaccess(lhsId, lhsType.javaResult.id, lhsType.kotlinResult.id, id, 0)
+                    val vId = useField(e.symbol.owner)
+                    tw.writeVariableBinding(lhsId, vId)
+                    extractExpressionExpr(e.value, callable, id, 1)
+                } else {
+                    logger.warnElement(Severity.ErrorSevere, "Unhandled IrSet* element.", e)
+                }
             }
             is IrWhen -> {
                 val exprParent = parent.expr(e, callable)

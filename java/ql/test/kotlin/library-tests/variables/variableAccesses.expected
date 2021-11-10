@@ -1,5 +1,8 @@
 varAcc
 | variables.kt:3:5:3:21 | prop |
+| variables.kt:3:5:3:21 | prop |
+| variables.kt:10:1:10:21 | topLevel |
+| variables.kt:16:11:16:18 | o |
 | variables.kt:16:11:16:18 | o |
 | variables.kt:16:11:16:18 | o |
 instAcc

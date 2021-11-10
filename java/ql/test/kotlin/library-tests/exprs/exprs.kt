@@ -82,6 +82,8 @@ fun foo(p: Polygon) {
     val r = p.getBounds()
     if(r != null) {
         val r2: Rectangle = r
+        val height = r2.height
+        r2.height = 3
     }
 }
 
