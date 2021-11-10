@@ -259,7 +259,7 @@ predicate isRelevantType(Type t) {
   not t instanceof EnumType and
   not t instanceof PrimitiveType and
   not t instanceof BoxedType and
-  not t.(RefType).hasQualifiedName("java.math", "BigInteger") and
+  not t.(RefType).getAnAncestor().hasQualifiedName("java.lang", "Number") and
   (
     not t.(Array).getElementType() instanceof PrimitiveType or
     isPrimitiveTypeUsedForBulkData(t.(Array).getElementType())

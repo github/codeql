@@ -1,5 +1,6 @@
 package p;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Collection;
@@ -84,6 +85,10 @@ public final class Pojo {
     
     public BigInteger getBigInt() {
         return BigInteger.valueOf(intValue);
+    }
+
+    public BigDecimal getBigDecimal() {
+        return new BigDecimal(value);
     }
 
     public void fillIn(List<String> target) {
