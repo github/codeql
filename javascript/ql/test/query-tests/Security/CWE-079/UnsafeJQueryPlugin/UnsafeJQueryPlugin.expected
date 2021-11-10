@@ -1,5 +1,3 @@
-WARNING: Unused predicate sink (/home/erik/dev/code/ql/javascript/ql/src/Security/CWE-079/UnsafeJQueryPlugin.ql:30,6-10)
-WARNING: Unused predicate source (/home/erik/dev/code/ql/javascript/ql/src/Security/CWE-079/UnsafeJQueryPlugin.ql:28,10-16)
 nodes
 | unsafe-jquery-plugin.js:2:38:2:44 | options |
 | unsafe-jquery-plugin.js:2:38:2:44 | options |

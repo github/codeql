@@ -76,19 +76,8 @@ private predicate aliasPropertyPresenceStepHelper(
 ) {
   exists(PropertyPresenceSanitizer sanitizer |
     src = sanitizer.getPropRead() and
+    sink = AccessPath::getAnAliasedSourceNode(src) and
     srcBB = src.getBasicBlock() and
-    sinkBB = sink.getBasicBlock() and
-    (
-      sink = AccessPath::getAnAliasedSourceNode(src)
-      or
-      // step over extend calls
-      exists(ExtendCall extendCall, string prop |
-        src = extendCall.getASourceOperand().getALocalSource().getAPropertyReference(prop) and
-        sink =
-          [extendCall, extendCall.getDestinationOperand()]
-              .(DataFlow::SourceNode)
-              .getAPropertyReference(prop)
-      )
-    )
+    sinkBB = sink.getBasicBlock()
   )
 }
