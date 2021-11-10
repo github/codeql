@@ -53,7 +53,7 @@ open class Logger(val logCounter: LogCounter, open val tw: TrapWriter) {
     }
     fun info(msg: String) {
         val fullMsg = "${timestamp()} $msg"
-        tw.writeTrap("// " + fullMsg.replace("\n", "\n//") + "\n")
+        tw.writeComment(fullMsg)
         println(fullMsg)
     }
     fun trace(msg: String) {
@@ -104,7 +104,7 @@ open class Logger(val logCounter: LogCounter, open val tw: TrapWriter) {
         for((caller, count) in logCounter.warningCounts) {
             if(count >= logCounter.warningLimit) {
                 val msg = "Total of $count warnings from $caller.\n"
-                tw.writeTrap("// $msg")
+                tw.writeComment(msg)
                 print(msg)
             }
         }

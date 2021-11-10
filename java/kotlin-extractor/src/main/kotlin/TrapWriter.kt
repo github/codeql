@@ -71,6 +71,9 @@ open class TrapWriter (val lm: TrapLabelManager, val bw: BufferedWriter) {
     fun writeTrap(trap: String) {
         bw.write(trap)
     }
+    fun writeComment(comment: String) {
+        writeTrap("// ${comment.replace("\n", "\n//    ")}\n")
+    }
     fun flush() {
         bw.flush()
     }
