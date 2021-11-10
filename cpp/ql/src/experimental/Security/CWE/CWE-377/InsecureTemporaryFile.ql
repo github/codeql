@@ -46,10 +46,16 @@ where
     fc.getTarget().hasGlobalOrStdName("tmpnam_r")
   ) and
   not exists(FunctionCall fctmp |
-    fctmp.getTarget().hasGlobalOrStdName("mktemp") or
-    fctmp.getTarget().hasGlobalOrStdName("mkstemp") or
-    fctmp.getTarget().hasGlobalOrStdName("mkstemps") or
-    fctmp.getTarget().hasGlobalOrStdName("mkdtemp")
+    (
+      fctmp.getTarget().hasGlobalOrStdName("mktemp") or
+      fctmp.getTarget().hasGlobalOrStdName("mkstemp") or
+      fctmp.getTarget().hasGlobalOrStdName("mkstemps") or
+      fctmp.getTarget().hasGlobalOrStdName("mkdtemp")
+    ) and
+    (
+      fc.getBasicBlock().getASuccessor*() = fctmp.getBasicBlock() or
+      fctmp.getBasicBlock().getASuccessor*() = fc.getBasicBlock()
+    )
   ) and
   msg =
     "Finding the name of a file that does not exist does not mean that it will not be exist at the next operation."
@@ -91,9 +97,15 @@ where
     )
   ) and
   not exists(FunctionCall fctmp |
-    fctmp.getTarget().hasGlobalOrStdName("umask") or
-    fctmp.getTarget().hasGlobalOrStdName("fchmod") or
-    fctmp.getTarget().hasGlobalOrStdName("chmod")
+    (
+      fctmp.getTarget().hasGlobalOrStdName("umask") or
+      fctmp.getTarget().hasGlobalOrStdName("fchmod") or
+      fctmp.getTarget().hasGlobalOrStdName("chmod")
+    ) and
+    (
+      fc.getBasicBlock().getASuccessor*() = fctmp.getBasicBlock() or
+      fctmp.getBasicBlock().getASuccessor*() = fc.getBasicBlock()
+    )
   ) and
   msg =
     "Creating a file for writing without evaluating its existence and setting permissions can be unsafe."
