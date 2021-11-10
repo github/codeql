@@ -184,6 +184,7 @@ Python built-in support
    yarl, Utility library
    aioch, Database
    aiomysql, Database
+   aiopg, Database
    asyncpg, Database
    clickhouse-driver, Database
    mysql-connector-python, Database

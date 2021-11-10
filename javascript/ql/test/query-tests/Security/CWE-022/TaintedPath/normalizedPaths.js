@@ -398,4 +398,7 @@ app.get('/dotdot-regexp', (req, res) => {
   if (!path.match(/\.\.\/foo/)) {
     fs.readFileSync(path); // NOT OK
   }
+  if (!path.match(/(\.\.\/|\.\.\\)/)) {
+    fs.readFileSync(path); // OK
+  }
 });
