@@ -597,8 +597,20 @@ class X {
 
                 val componentTypeLabel = useType(componentType)
                 val elementTypeLabel = useType(elementType)
+
+                fun kotlinLabelOfJavaType(type: IrType, typeLabel: Label<out DbKt_type>) =
+                    if (type.isPrimitiveType())
+                        // Java lowering distinguishes nullable and non-nullable, so keep the existing label
+                        typeLabel
+                    else
+                        // Java lowering always concerns the nullable type, so get the nullable equivalent
+                        useType(type.makeNullable()).kotlinResult.id
+
+                val kotlinComponentTypeLabel = kotlinLabelOfJavaType(componentType, componentTypeLabel.kotlinResult.id)
+                val kotlinElementTypeLabel = kotlinLabelOfJavaType(elementType, elementTypeLabel.kotlinResult.id)
+
                 val id = tw.getLabelFor<DbArray>("@\"array;$dimensions;{${elementTypeLabel.javaResult.id}}\"") {
-                    tw.writeArrays(it, shortName(s), elementTypeLabel.javaResult.id, elementTypeLabel.kotlinResult.id, 1, componentTypeLabel.javaResult.id, componentTypeLabel.kotlinResult.id)
+                    tw.writeArrays(it, shortName(s), elementTypeLabel.javaResult.id, kotlinElementTypeLabel, 1, componentTypeLabel.javaResult.id, kotlinComponentTypeLabel)
 
                     extractClassCommon(s.classifier.owner as IrClass, it)
 
