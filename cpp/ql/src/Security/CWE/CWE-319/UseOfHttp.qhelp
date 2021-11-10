@@ -17,7 +17,7 @@
 <p>The following example shows two ways of opening a connection using a URL. When the connection is 
 opened using an HTTP URL rather than an HTTPS URL, the connection is unsecured. When the connection is opened using an HTTPS URL, the connection is a secure SSL connection.</p>
 
-<sample src="HttpsUrls.cpp" />
+<sample src="UseOfHttp.cpp" />
 
 </example>
 <references>
