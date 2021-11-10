@@ -179,12 +179,12 @@ void test_map()
 	m14.insert(std::make_pair("b", source()));
 	m14.insert(std::make_pair("c", source()));
 	m14.insert(std::make_pair("d", "d"));
-	sink(m2.lower_bound("b")); // $ ast,ir
-	sink(m2.upper_bound("b")); // $ ast,ir
-	sink(m2.equal_range("b").first); // $ MISSING: ast,ir
-	sink(m2.equal_range("b").second); // $ MISSING: ast,ir
-	sink(m2.upper_bound("c")); // $ SPURIOUS: ast,ir
-	sink(m2.equal_range("c").second);
+	sink(m14.lower_bound("b")); // $ ast,ir=179:33 ast,ir=180:33
+	sink(m14.upper_bound("b")); // $ ast,ir=179:33 ast,ir=180:33
+	sink(m14.equal_range("b").first); // $ MISSING: ast,ir
+	sink(m14.equal_range("b").second); // $ MISSING: ast,ir
+	sink(m14.upper_bound("c")); // $ SPURIOUS: ast,ir=179:33 ast,ir=180:33
+	sink(m14.equal_range("c").second);
 
 	// swap
 	std::map<char *, char *> m15, m16, m17, m18;

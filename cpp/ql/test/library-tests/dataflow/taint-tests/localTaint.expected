@@ -594,12 +594,6 @@
 | map.cpp:105:31:105:32 | call to map | map.cpp:136:7:136:8 | m2 |  |
 | map.cpp:105:31:105:32 | call to map | map.cpp:152:12:152:13 | m2 |  |
 | map.cpp:105:31:105:32 | call to map | map.cpp:152:30:152:31 | m2 |  |
-| map.cpp:105:31:105:32 | call to map | map.cpp:182:7:182:8 | m2 |  |
-| map.cpp:105:31:105:32 | call to map | map.cpp:183:7:183:8 | m2 |  |
-| map.cpp:105:31:105:32 | call to map | map.cpp:184:7:184:8 | m2 |  |
-| map.cpp:105:31:105:32 | call to map | map.cpp:185:7:185:8 | m2 |  |
-| map.cpp:105:31:105:32 | call to map | map.cpp:186:7:186:8 | m2 |  |
-| map.cpp:105:31:105:32 | call to map | map.cpp:187:7:187:8 | m2 |  |
 | map.cpp:105:31:105:32 | call to map | map.cpp:252:1:252:1 | m2 |  |
 | map.cpp:105:35:105:36 | call to map | map.cpp:109:7:109:8 | m3 |  |
 | map.cpp:105:35:105:36 | call to map | map.cpp:115:7:115:8 | m3 |  |
@@ -643,12 +637,6 @@
 | map.cpp:108:7:108:8 | ref arg m2 | map.cpp:136:7:136:8 | m2 |  |
 | map.cpp:108:7:108:8 | ref arg m2 | map.cpp:152:12:152:13 | m2 |  |
 | map.cpp:108:7:108:8 | ref arg m2 | map.cpp:152:30:152:31 | m2 |  |
-| map.cpp:108:7:108:8 | ref arg m2 | map.cpp:182:7:182:8 | m2 |  |
-| map.cpp:108:7:108:8 | ref arg m2 | map.cpp:183:7:183:8 | m2 |  |
-| map.cpp:108:7:108:8 | ref arg m2 | map.cpp:184:7:184:8 | m2 |  |
-| map.cpp:108:7:108:8 | ref arg m2 | map.cpp:185:7:185:8 | m2 |  |
-| map.cpp:108:7:108:8 | ref arg m2 | map.cpp:186:7:186:8 | m2 |  |
-| map.cpp:108:7:108:8 | ref arg m2 | map.cpp:187:7:187:8 | m2 |  |
 | map.cpp:108:7:108:8 | ref arg m2 | map.cpp:252:1:252:1 | m2 |  |
 | map.cpp:108:17:108:30 | call to make_pair | map.cpp:108:17:108:47 | call to pair | TAINT |
 | map.cpp:108:17:108:47 | call to pair | map.cpp:108:7:108:8 | ref arg m2 | TAINT |
@@ -717,12 +705,6 @@
 | map.cpp:120:7:120:8 | ref arg m2 | map.cpp:136:7:136:8 | m2 |  |
 | map.cpp:120:7:120:8 | ref arg m2 | map.cpp:152:12:152:13 | m2 |  |
 | map.cpp:120:7:120:8 | ref arg m2 | map.cpp:152:30:152:31 | m2 |  |
-| map.cpp:120:7:120:8 | ref arg m2 | map.cpp:182:7:182:8 | m2 |  |
-| map.cpp:120:7:120:8 | ref arg m2 | map.cpp:183:7:183:8 | m2 |  |
-| map.cpp:120:7:120:8 | ref arg m2 | map.cpp:184:7:184:8 | m2 |  |
-| map.cpp:120:7:120:8 | ref arg m2 | map.cpp:185:7:185:8 | m2 |  |
-| map.cpp:120:7:120:8 | ref arg m2 | map.cpp:186:7:186:8 | m2 |  |
-| map.cpp:120:7:120:8 | ref arg m2 | map.cpp:187:7:187:8 | m2 |  |
 | map.cpp:120:7:120:8 | ref arg m2 | map.cpp:252:1:252:1 | m2 |  |
 | map.cpp:121:7:121:8 | m3 | map.cpp:121:10:121:13 | call to find | TAINT |
 | map.cpp:121:7:121:8 | ref arg m3 | map.cpp:127:7:127:8 | m3 |  |
@@ -748,12 +730,6 @@
 | map.cpp:126:7:126:8 | ref arg m2 | map.cpp:136:7:136:8 | m2 |  |
 | map.cpp:126:7:126:8 | ref arg m2 | map.cpp:152:12:152:13 | m2 |  |
 | map.cpp:126:7:126:8 | ref arg m2 | map.cpp:152:30:152:31 | m2 |  |
-| map.cpp:126:7:126:8 | ref arg m2 | map.cpp:182:7:182:8 | m2 |  |
-| map.cpp:126:7:126:8 | ref arg m2 | map.cpp:183:7:183:8 | m2 |  |
-| map.cpp:126:7:126:8 | ref arg m2 | map.cpp:184:7:184:8 | m2 |  |
-| map.cpp:126:7:126:8 | ref arg m2 | map.cpp:185:7:185:8 | m2 |  |
-| map.cpp:126:7:126:8 | ref arg m2 | map.cpp:186:7:186:8 | m2 |  |
-| map.cpp:126:7:126:8 | ref arg m2 | map.cpp:187:7:187:8 | m2 |  |
 | map.cpp:126:7:126:8 | ref arg m2 | map.cpp:252:1:252:1 | m2 |  |
 | map.cpp:127:7:127:8 | m3 | map.cpp:127:10:127:13 | call to find | TAINT |
 | map.cpp:127:7:127:8 | ref arg m3 | map.cpp:158:12:158:13 | m3 |  |
@@ -830,12 +806,6 @@
 | map.cpp:150:8:150:9 | ref arg i1 | map.cpp:150:8:150:9 | i1 |  |
 | map.cpp:152:12:152:13 | m2 | map.cpp:152:15:152:19 | call to begin | TAINT |
 | map.cpp:152:12:152:13 | ref arg m2 | map.cpp:152:30:152:31 | m2 |  |
-| map.cpp:152:12:152:13 | ref arg m2 | map.cpp:182:7:182:8 | m2 |  |
-| map.cpp:152:12:152:13 | ref arg m2 | map.cpp:183:7:183:8 | m2 |  |
-| map.cpp:152:12:152:13 | ref arg m2 | map.cpp:184:7:184:8 | m2 |  |
-| map.cpp:152:12:152:13 | ref arg m2 | map.cpp:185:7:185:8 | m2 |  |
-| map.cpp:152:12:152:13 | ref arg m2 | map.cpp:186:7:186:8 | m2 |  |
-| map.cpp:152:12:152:13 | ref arg m2 | map.cpp:187:7:187:8 | m2 |  |
 | map.cpp:152:12:152:13 | ref arg m2 | map.cpp:252:1:252:1 | m2 |  |
 | map.cpp:152:15:152:19 | call to begin | map.cpp:152:7:152:21 | ... = ... |  |
 | map.cpp:152:15:152:19 | call to begin | map.cpp:152:24:152:25 | i2 |  |
@@ -845,12 +815,6 @@
 | map.cpp:152:15:152:19 | call to begin | map.cpp:156:8:156:9 | i2 |  |
 | map.cpp:152:30:152:31 | m2 | map.cpp:152:33:152:35 | call to end | TAINT |
 | map.cpp:152:30:152:31 | ref arg m2 | map.cpp:152:30:152:31 | m2 |  |
-| map.cpp:152:30:152:31 | ref arg m2 | map.cpp:182:7:182:8 | m2 |  |
-| map.cpp:152:30:152:31 | ref arg m2 | map.cpp:183:7:183:8 | m2 |  |
-| map.cpp:152:30:152:31 | ref arg m2 | map.cpp:184:7:184:8 | m2 |  |
-| map.cpp:152:30:152:31 | ref arg m2 | map.cpp:185:7:185:8 | m2 |  |
-| map.cpp:152:30:152:31 | ref arg m2 | map.cpp:186:7:186:8 | m2 |  |
-| map.cpp:152:30:152:31 | ref arg m2 | map.cpp:187:7:187:8 | m2 |  |
 | map.cpp:152:30:152:31 | ref arg m2 | map.cpp:252:1:252:1 | m2 |  |
 | map.cpp:152:40:152:41 | i2 | map.cpp:152:42:152:42 | call to operator++ |  |
 | map.cpp:152:40:152:41 | ref arg i2 | map.cpp:152:24:152:25 | i2 |  |
@@ -962,59 +926,89 @@
 | map.cpp:177:27:177:29 | call to map | map.cpp:179:2:179:4 | m14 |  |
 | map.cpp:177:27:177:29 | call to map | map.cpp:180:2:180:4 | m14 |  |
 | map.cpp:177:27:177:29 | call to map | map.cpp:181:2:181:4 | m14 |  |
+| map.cpp:177:27:177:29 | call to map | map.cpp:182:7:182:9 | m14 |  |
+| map.cpp:177:27:177:29 | call to map | map.cpp:183:7:183:9 | m14 |  |
+| map.cpp:177:27:177:29 | call to map | map.cpp:184:7:184:9 | m14 |  |
+| map.cpp:177:27:177:29 | call to map | map.cpp:185:7:185:9 | m14 |  |
+| map.cpp:177:27:177:29 | call to map | map.cpp:186:7:186:9 | m14 |  |
+| map.cpp:177:27:177:29 | call to map | map.cpp:187:7:187:9 | m14 |  |
 | map.cpp:177:27:177:29 | call to map | map.cpp:252:1:252:1 | m14 |  |
 | map.cpp:178:2:178:4 | ref arg m14 | map.cpp:179:2:179:4 | m14 |  |
 | map.cpp:178:2:178:4 | ref arg m14 | map.cpp:180:2:180:4 | m14 |  |
 | map.cpp:178:2:178:4 | ref arg m14 | map.cpp:181:2:181:4 | m14 |  |
+| map.cpp:178:2:178:4 | ref arg m14 | map.cpp:182:7:182:9 | m14 |  |
+| map.cpp:178:2:178:4 | ref arg m14 | map.cpp:183:7:183:9 | m14 |  |
+| map.cpp:178:2:178:4 | ref arg m14 | map.cpp:184:7:184:9 | m14 |  |
+| map.cpp:178:2:178:4 | ref arg m14 | map.cpp:185:7:185:9 | m14 |  |
+| map.cpp:178:2:178:4 | ref arg m14 | map.cpp:186:7:186:9 | m14 |  |
+| map.cpp:178:2:178:4 | ref arg m14 | map.cpp:187:7:187:9 | m14 |  |
 | map.cpp:178:2:178:4 | ref arg m14 | map.cpp:252:1:252:1 | m14 |  |
 | map.cpp:178:13:178:26 | call to make_pair | map.cpp:178:13:178:36 | call to pair | TAINT |
 | map.cpp:178:13:178:36 | call to pair | map.cpp:178:2:178:4 | ref arg m14 | TAINT |
 | map.cpp:178:13:178:36 | call to pair | map.cpp:178:6:178:11 | call to insert | TAINT |
 | map.cpp:179:2:179:4 | ref arg m14 | map.cpp:180:2:180:4 | m14 |  |
 | map.cpp:179:2:179:4 | ref arg m14 | map.cpp:181:2:181:4 | m14 |  |
+| map.cpp:179:2:179:4 | ref arg m14 | map.cpp:182:7:182:9 | m14 |  |
+| map.cpp:179:2:179:4 | ref arg m14 | map.cpp:183:7:183:9 | m14 |  |
+| map.cpp:179:2:179:4 | ref arg m14 | map.cpp:184:7:184:9 | m14 |  |
+| map.cpp:179:2:179:4 | ref arg m14 | map.cpp:185:7:185:9 | m14 |  |
+| map.cpp:179:2:179:4 | ref arg m14 | map.cpp:186:7:186:9 | m14 |  |
+| map.cpp:179:2:179:4 | ref arg m14 | map.cpp:187:7:187:9 | m14 |  |
 | map.cpp:179:2:179:4 | ref arg m14 | map.cpp:252:1:252:1 | m14 |  |
 | map.cpp:179:13:179:26 | call to make_pair | map.cpp:179:13:179:41 | call to pair | TAINT |
 | map.cpp:179:13:179:41 | call to pair | map.cpp:179:2:179:4 | ref arg m14 | TAINT |
 | map.cpp:179:13:179:41 | call to pair | map.cpp:179:6:179:11 | call to insert | TAINT |
 | map.cpp:180:2:180:4 | ref arg m14 | map.cpp:181:2:181:4 | m14 |  |
+| map.cpp:180:2:180:4 | ref arg m14 | map.cpp:182:7:182:9 | m14 |  |
+| map.cpp:180:2:180:4 | ref arg m14 | map.cpp:183:7:183:9 | m14 |  |
+| map.cpp:180:2:180:4 | ref arg m14 | map.cpp:184:7:184:9 | m14 |  |
+| map.cpp:180:2:180:4 | ref arg m14 | map.cpp:185:7:185:9 | m14 |  |
+| map.cpp:180:2:180:4 | ref arg m14 | map.cpp:186:7:186:9 | m14 |  |
+| map.cpp:180:2:180:4 | ref arg m14 | map.cpp:187:7:187:9 | m14 |  |
 | map.cpp:180:2:180:4 | ref arg m14 | map.cpp:252:1:252:1 | m14 |  |
 | map.cpp:180:13:180:26 | call to make_pair | map.cpp:180:13:180:41 | call to pair | TAINT |
 | map.cpp:180:13:180:41 | call to pair | map.cpp:180:2:180:4 | ref arg m14 | TAINT |
 | map.cpp:180:13:180:41 | call to pair | map.cpp:180:6:180:11 | call to insert | TAINT |
+| map.cpp:181:2:181:4 | ref arg m14 | map.cpp:182:7:182:9 | m14 |  |
+| map.cpp:181:2:181:4 | ref arg m14 | map.cpp:183:7:183:9 | m14 |  |
+| map.cpp:181:2:181:4 | ref arg m14 | map.cpp:184:7:184:9 | m14 |  |
+| map.cpp:181:2:181:4 | ref arg m14 | map.cpp:185:7:185:9 | m14 |  |
+| map.cpp:181:2:181:4 | ref arg m14 | map.cpp:186:7:186:9 | m14 |  |
+| map.cpp:181:2:181:4 | ref arg m14 | map.cpp:187:7:187:9 | m14 |  |
 | map.cpp:181:2:181:4 | ref arg m14 | map.cpp:252:1:252:1 | m14 |  |
 | map.cpp:181:13:181:26 | call to make_pair | map.cpp:181:13:181:36 | call to pair | TAINT |
 | map.cpp:181:13:181:36 | call to pair | map.cpp:181:2:181:4 | ref arg m14 | TAINT |
 | map.cpp:181:13:181:36 | call to pair | map.cpp:181:6:181:11 | call to insert | TAINT |
-| map.cpp:182:7:182:8 | m2 | map.cpp:182:10:182:20 | call to lower_bound | TAINT |
-| map.cpp:182:7:182:8 | ref arg m2 | map.cpp:183:7:183:8 | m2 |  |
-| map.cpp:182:7:182:8 | ref arg m2 | map.cpp:184:7:184:8 | m2 |  |
-| map.cpp:182:7:182:8 | ref arg m2 | map.cpp:185:7:185:8 | m2 |  |
-| map.cpp:182:7:182:8 | ref arg m2 | map.cpp:186:7:186:8 | m2 |  |
-| map.cpp:182:7:182:8 | ref arg m2 | map.cpp:187:7:187:8 | m2 |  |
-| map.cpp:182:7:182:8 | ref arg m2 | map.cpp:252:1:252:1 | m2 |  |
-| map.cpp:183:7:183:8 | m2 | map.cpp:183:10:183:20 | call to upper_bound | TAINT |
-| map.cpp:183:7:183:8 | ref arg m2 | map.cpp:184:7:184:8 | m2 |  |
-| map.cpp:183:7:183:8 | ref arg m2 | map.cpp:185:7:185:8 | m2 |  |
-| map.cpp:183:7:183:8 | ref arg m2 | map.cpp:186:7:186:8 | m2 |  |
-| map.cpp:183:7:183:8 | ref arg m2 | map.cpp:187:7:187:8 | m2 |  |
-| map.cpp:183:7:183:8 | ref arg m2 | map.cpp:252:1:252:1 | m2 |  |
-| map.cpp:184:7:184:8 | m2 | map.cpp:184:10:184:20 | call to equal_range | TAINT |
-| map.cpp:184:7:184:8 | ref arg m2 | map.cpp:185:7:185:8 | m2 |  |
-| map.cpp:184:7:184:8 | ref arg m2 | map.cpp:186:7:186:8 | m2 |  |
-| map.cpp:184:7:184:8 | ref arg m2 | map.cpp:187:7:187:8 | m2 |  |
-| map.cpp:184:7:184:8 | ref arg m2 | map.cpp:252:1:252:1 | m2 |  |
-| map.cpp:184:27:184:31 | first | map.cpp:184:7:184:31 | call to iterator |  |
-| map.cpp:185:7:185:8 | m2 | map.cpp:185:10:185:20 | call to equal_range | TAINT |
-| map.cpp:185:7:185:8 | ref arg m2 | map.cpp:186:7:186:8 | m2 |  |
-| map.cpp:185:7:185:8 | ref arg m2 | map.cpp:187:7:187:8 | m2 |  |
-| map.cpp:185:7:185:8 | ref arg m2 | map.cpp:252:1:252:1 | m2 |  |
-| map.cpp:185:27:185:32 | second | map.cpp:185:7:185:32 | call to iterator |  |
-| map.cpp:186:7:186:8 | m2 | map.cpp:186:10:186:20 | call to upper_bound | TAINT |
-| map.cpp:186:7:186:8 | ref arg m2 | map.cpp:187:7:187:8 | m2 |  |
-| map.cpp:186:7:186:8 | ref arg m2 | map.cpp:252:1:252:1 | m2 |  |
-| map.cpp:187:7:187:8 | m2 | map.cpp:187:10:187:20 | call to equal_range | TAINT |
-| map.cpp:187:7:187:8 | ref arg m2 | map.cpp:252:1:252:1 | m2 |  |
-| map.cpp:187:27:187:32 | second | map.cpp:187:7:187:32 | call to iterator |  |
+| map.cpp:182:7:182:9 | m14 | map.cpp:182:11:182:21 | call to lower_bound | TAINT |
+| map.cpp:182:7:182:9 | ref arg m14 | map.cpp:183:7:183:9 | m14 |  |
+| map.cpp:182:7:182:9 | ref arg m14 | map.cpp:184:7:184:9 | m14 |  |
+| map.cpp:182:7:182:9 | ref arg m14 | map.cpp:185:7:185:9 | m14 |  |
+| map.cpp:182:7:182:9 | ref arg m14 | map.cpp:186:7:186:9 | m14 |  |
+| map.cpp:182:7:182:9 | ref arg m14 | map.cpp:187:7:187:9 | m14 |  |
+| map.cpp:182:7:182:9 | ref arg m14 | map.cpp:252:1:252:1 | m14 |  |
+| map.cpp:183:7:183:9 | m14 | map.cpp:183:11:183:21 | call to upper_bound | TAINT |
+| map.cpp:183:7:183:9 | ref arg m14 | map.cpp:184:7:184:9 | m14 |  |
+| map.cpp:183:7:183:9 | ref arg m14 | map.cpp:185:7:185:9 | m14 |  |
+| map.cpp:183:7:183:9 | ref arg m14 | map.cpp:186:7:186:9 | m14 |  |
+| map.cpp:183:7:183:9 | ref arg m14 | map.cpp:187:7:187:9 | m14 |  |
+| map.cpp:183:7:183:9 | ref arg m14 | map.cpp:252:1:252:1 | m14 |  |
+| map.cpp:184:7:184:9 | m14 | map.cpp:184:11:184:21 | call to equal_range | TAINT |
+| map.cpp:184:7:184:9 | ref arg m14 | map.cpp:185:7:185:9 | m14 |  |
+| map.cpp:184:7:184:9 | ref arg m14 | map.cpp:186:7:186:9 | m14 |  |
+| map.cpp:184:7:184:9 | ref arg m14 | map.cpp:187:7:187:9 | m14 |  |
+| map.cpp:184:7:184:9 | ref arg m14 | map.cpp:252:1:252:1 | m14 |  |
+| map.cpp:184:28:184:32 | first | map.cpp:184:7:184:32 | call to iterator |  |
+| map.cpp:185:7:185:9 | m14 | map.cpp:185:11:185:21 | call to equal_range | TAINT |
+| map.cpp:185:7:185:9 | ref arg m14 | map.cpp:186:7:186:9 | m14 |  |
+| map.cpp:185:7:185:9 | ref arg m14 | map.cpp:187:7:187:9 | m14 |  |
+| map.cpp:185:7:185:9 | ref arg m14 | map.cpp:252:1:252:1 | m14 |  |
+| map.cpp:185:28:185:33 | second | map.cpp:185:7:185:33 | call to iterator |  |
+| map.cpp:186:7:186:9 | m14 | map.cpp:186:11:186:21 | call to upper_bound | TAINT |
+| map.cpp:186:7:186:9 | ref arg m14 | map.cpp:187:7:187:9 | m14 |  |
+| map.cpp:186:7:186:9 | ref arg m14 | map.cpp:252:1:252:1 | m14 |  |
+| map.cpp:187:7:187:9 | m14 | map.cpp:187:11:187:21 | call to equal_range | TAINT |
+| map.cpp:187:7:187:9 | ref arg m14 | map.cpp:252:1:252:1 | m14 |  |
+| map.cpp:187:28:187:33 | second | map.cpp:187:7:187:33 | call to iterator |  |
 | map.cpp:190:27:190:29 | call to map | map.cpp:191:2:191:4 | m15 |  |
 | map.cpp:190:27:190:29 | call to map | map.cpp:193:7:193:9 | m15 |  |
 | map.cpp:190:27:190:29 | call to map | map.cpp:197:2:197:4 | m15 |  |
