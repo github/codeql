@@ -718,13 +718,21 @@ class X {
     fun getTypeArgumentLabel(
         arg: IrTypeArgument
     ): Label<out DbReftype> {
-        when (arg) {
-            is IrStarProjection -> {
-                val wildcardLabel = "@\"wildcard;\""
-                return tw.getLabelFor<DbWildcard>(wildcardLabel) {
-                    tw.writeWildcards(it, "*", 1)
-                    tw.writeHasLocation(it, tw.unknownLocation)
+
+        fun extractBoundedWildcard(wildcardKind: Int, wildcardLabelStr: String, boundLabel: Label<out DbReftype>): Label<DbWildcard> =
+            tw.getLabelFor(wildcardLabelStr) { wildcardLabel ->
+                tw.writeWildcards(wildcardLabel, typeArgShortName(arg), wildcardKind)
+                tw.writeHasLocation(wildcardLabel, tw.unknownLocation)
+                tw.getLabelFor<DbTypebound>("@\"bound;0;{$wildcardLabel}\"") {
+                    tw.writeTypeBounds(it, boundLabel, 0, wildcardLabel)
                 }
+            }
+
+        return when (arg) {
+            is IrStarProjection -> {
+                @Suppress("UNCHECKED_CAST")
+                val anyTypeLabel = useType(pluginContext.irBuiltIns.anyType).javaResult.id as Label<out DbReftype>
+                extractBoundedWildcard(1, "@\"wildcard;\"", anyTypeLabel)
             }
             is IrTypeProjection -> {
                 @Suppress("UNCHECKED_CAST")
@@ -735,10 +743,7 @@ class X {
                 else {
                     val keyPrefix = if (arg.variance == Variance.IN_VARIANCE) "super" else "extends"
                     val wildcardKind = if (arg.variance == Variance.IN_VARIANCE) 2 else 1
-                    tw.getLabelFor<DbWildcard>("@\"wildcard;$keyPrefix{$boundLabel}\"") {
-                        tw.writeWildcards(it, typeArgShortName(arg), wildcardKind)
-                        tw.writeHasLocation(it, tw.unknownLocation)
-                    }
+                    extractBoundedWildcard(wildcardKind, "@\"wildcard;$keyPrefix{$boundLabel}\"", boundLabel)
                 }
             }
             else -> {
